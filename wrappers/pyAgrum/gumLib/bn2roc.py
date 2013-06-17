@@ -65,11 +65,18 @@ def computeAUC(points):
     somme=0
     for i in range(1,len(points)):
       somme+=(points[i-1][0]-points[i][0])*points[i][1]
-      
+
     return -somme
 
 def computeROCpoints(bn,csv_name,target,label,visible=False):
     idTarget=bn.idFromName(target)
+    idLabel=-1
+    for i in range(len(bn.variable(idTarget))):
+      if bn.variable(idTarget).label(i)==label:
+        idLabel=i
+        break;
+    assert(idLabel>=0)
+
     engine=gum.LazyPropagation(bn)
 
     nbr_lines=lines_count(csv_name)-1
@@ -86,6 +93,7 @@ def computeROCpoints(bn,csv_name,target,label,visible=False):
         fields[nom]=i
 
     positions=checkCompatibility(bn,fields,csv_name)
+
     if positions is None:
          sys.exit(1)
 
@@ -97,8 +105,8 @@ def computeROCpoints(bn,csv_name,target,label,visible=False):
     totalN=0
     res=[]
     for data in batchReader:
-        target_label=bn.variable(idTarget).label(int(data[positions[idTarget]]))
-        if str(target_label)==str(label):
+        idTargetLine=int(data[positions[idTarget]])
+        if idTargetLine==idLabel:
             totalP+=1
         else:
             totalN+=1
@@ -113,7 +121,7 @@ def computeROCpoints(bn,csv_name,target,label,visible=False):
             engine.setEvidence(e)
             engine.makeInference()
             px=engine.marginal(idTarget)[{target:label}]
-            res.append((px,data[positions[idTarget]]))
+            res.append((px,int(data[positions[idTarget]])))
         except gum.OutOfBounds as err:
             print err
             print "erreur : ",e
@@ -124,9 +132,10 @@ def computeROCpoints(bn,csv_name,target,label,visible=False):
 
     if visible:
         print
-    return (res,totalP,totalN,idTarget)
-    
-def computeROC(bn,values,totalP,totalN,idTarget,modalite):
+
+    return (res,totalP,totalN,idLabel)
+
+def computeROC(bn,values,totalP,totalN,idLabel,modalite):
     res=sorted(values,key=lambda x:x[0])
 
     vp=0.0
@@ -135,22 +144,29 @@ def computeROC(bn,values,totalP,totalN,idTarget,modalite):
     yopt=0.0
     opt=100.0
     seuilopt=0
-    points=[(vp/totalP,fp/totalN)]
+    points=[(0,0)] # first one
+    old_seuil=res[0][0]
     for i in range(len(res)):
-        res_id=int(res[i][1])
-        if res_id==idTarget:
+        # we add a point only if the seuil has changed
+        if res[i][0]-old_seuil>1e-6: # the seuil allows to take computation variation into account
+          x=vp/totalP
+          y=fp/totalN
+          d=x*x+(1-y)*(1-y)
+          if d<opt:
+            opt=d
+            xopt=x
+            yopt=y
+            seuilopt=old_seuil
+          points.append((x,y))
+          old_seuil=res[i][0]
+
+        res_id=res[i][1]
+        if res_id==idLabel:
             vp+=1.0
         else:
             fp+=1.0
-        x=vp/totalP
-        y=fp/totalN
-        d=x*x+(1-y)*(1-y)
-        if d<opt:
-          opt=d
-          xopt=x
-          yopt=y
-          seuilopt=res[i][0]
-        points.append((x,y))
+
+    points.append((1,1)) # last one
 
     return points,(xopt,yopt),seuilopt
 
@@ -167,29 +183,32 @@ def module_help(exit_value=1,message=""):
 def drawROC(points,zeTitle,zeFilename,visible,show_fig,save_fig=True,
             special_point=None,special_value=None,special_label=None):
     AUC=computeAUC(points)
-    
     import pylab
 
     pylab.clf()
     pylab.grid(color='#aaaaaa', linestyle='-', linewidth=1,alpha=0.5)
-    
+
     pylab.plot([x[0] for x in points], [y[1] for y in points], '-', linewidth=3,color="#000088",zorder=3)
     pylab.plot([0.0,1.0], [0.0, 1.0], '-',color="#AAAAAA")
-    
+
     pylab.ylim((-0.01,1.01))
     pylab.xlim((-0.01,1.01))
     pylab.xticks(pylab.arange(0,1.1,.1))
     pylab.yticks(pylab.arange(0,1.1,.1))
     pylab.grid(True)
-    
+
     ax=pylab.gca()
     r = pylab.Rectangle((0,0), 1, 1, edgecolor='#444444', facecolor='none',zorder=1)
     ax.add_patch(r)
     [spine.set_visible(False) for spine in ax.spines.values()]
-    
+
+    if len(points)<10:
+      for i in range(1,len(points)-1):
+        pylab.plot(points[i][0],points[i][1],'o',color="#000066",zorder=6)
+
     pylab.xlabel('False positive rate')
     pylab.ylabel('True positive rate')
-    
+
     if special_point is not None:
         pylab.plot(special_point[0],special_point[1],'o',color="#DD9999",zorder=6)
         if special_value is not None:
@@ -207,10 +226,9 @@ def drawROC(points,zeTitle,zeFilename,visible,show_fig,save_fig=True,
             legend_location = 'lower right'
             pylab.legend(circles, labels, loc=legend_location)
 
-    pylab.text(0.5, 0.55,'AUC=%f'%AUC,
+    pylab.text(0.5, 0.3,'AUC=%f'%AUC,
      horizontalalignment='center',
      verticalalignment='center',
-     rotation=39,
      fontsize=18)
 
     pylab.title(zeTitle)
@@ -224,14 +242,14 @@ def drawROC(points,zeTitle,zeFilename,visible,show_fig,save_fig=True,
 
 def showROC(bn,csv_name,variable,label,visible=True,show_fig=False):
   (res,totalP,totalN,idTarget)=computeROCpoints(bn,csv_name,variable,label,visible)
-  points,opt,seuil=computeROC(bn,res,totalP,totalN,idTarget,label) 
+  points,opt,seuil=computeROC(bn,res,totalP,totalN,idTarget,label)
 
   shortname=os.path.basename(bn.property("name"))
   title=shortname+" vs "+csv_name+ " - "+variable+"="+str(label)
 
   figname='roc_'+shortname+"-"+csv_name+ "-"+variable+"-"+str(label)+'.png'
 
-  drawROC(points,title,figname,visible,show_fig,special_point=opt,special_value=seuil)
+  drawROC(points,title,figname,not visible,show_fig,special_point=opt,special_value=seuil)
 
 def checkROCargs():
   pyAgrum_header("2011-13")

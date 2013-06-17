@@ -22,7 +22,7 @@
 #OR PERFORMANCE OF THIS SOFTWARE!
 import sys,os
 
-from pyAgrum_header import pyAgrum_header
+from utils.pyAgrum_header import pyAgrum_header
 import pyAgrum as gum
 
 DECIMAL_LENGTH=4
