@@ -31,7 +31,7 @@
 
 #include <agrum/prm/gspan/DFSTree.h>
 
-#include <agrum/prm/skool/SkoolReader.h>
+#include <agrum/prm/o3prm/O3prmReader.h>
 
 
 namespace gum_tests {

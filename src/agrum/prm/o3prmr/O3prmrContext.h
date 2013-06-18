@@ -20,7 +20,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of SkoolInterpreter
+ * @brief Headers of O3prmInterpreter
  *
  * @author Pierre-Henri WUILLEMIN, Ni NI, Lionel TORTI & Vincent RENAUDINEAU
  */
@@ -37,21 +37,21 @@
 
 namespace gum {
   namespace prm {    
-    namespace skoor {
+    namespace o3prmr {
 
 /**
  * This is an abstract class.
- * It represent a skoor command.
+ * It represent a o3prmr command.
  * There five types of command, such sub-classes.
  * */
-class SkoorCommand {
+class O3prmrCommand {
 public :
   int line;
   enum Type {Observe, Unobserve, Query, SetEngine, SetGndEngine};
   
-  SkoorCommand( int line ) : line(line) {}
-  SkoorCommand( const SkoorCommand & c ) : line(c.line) {}
-  virtual ~SkoorCommand() {}
+  O3prmrCommand( int line ) : line(line) {}
+  O3prmrCommand( const O3prmrCommand & c ) : line(c.line) {}
+  virtual ~O3prmrCommand() {}
   
   virtual Type type() const = 0;
   virtual std::string toString() const = 0;
@@ -75,10 +75,10 @@ public :
 };
 
 ///
-class SetEngineCommand : public SkoorCommand {
+class SetEngineCommand : public O3prmrCommand {
 public :
-  SetEngineCommand( int line, const std::string & value ) : SkoorCommand(line), value(value) {}
-  SetEngineCommand( const SetEngineCommand & c ) : SkoorCommand(c), value(c.value) {}
+  SetEngineCommand( int line, const std::string & value ) : O3prmrCommand(line), value(value) {}
+  SetEngineCommand( const SetEngineCommand & c ) : O3prmrCommand(c), value(c.value) {}
   
   std::string value;
   
@@ -89,10 +89,10 @@ public :
 };
 
 ///
-class SetGndEngineCommand : public SkoorCommand {
+class SetGndEngineCommand : public O3prmrCommand {
 public :
-  SetGndEngineCommand( int line, const std::string & value ) : SkoorCommand(line), value(value) {}
-  SetGndEngineCommand( const SetGndEngineCommand & c ) : SkoorCommand(c), value(c.value) {}
+  SetGndEngineCommand( int line, const std::string & value ) : O3prmrCommand(line), value(value) {}
+  SetGndEngineCommand( const SetGndEngineCommand & c ) : O3prmrCommand(c), value(c.value) {}
   
   std::string value;
   
@@ -103,12 +103,12 @@ public :
 };
 
 ///
-class ObserveCommand : public SkoorCommand {
+class ObserveCommand : public O3prmrCommand {
 public :
   ObserveCommand( int line, const std::string & leftValue, const std::string & rightValue )
-   : SkoorCommand(line), leftValue(leftValue), rightValue(rightValue), system(0) {}
+   : O3prmrCommand(line), leftValue(leftValue), rightValue(rightValue), system(0) {}
   ObserveCommand( const ObserveCommand & c )
-   : SkoorCommand(c), leftValue(c.leftValue), rightValue(c.rightValue), system(c.system), chain(c.chain) {}
+   : O3prmrCommand(c), leftValue(c.leftValue), rightValue(c.rightValue), system(c.system), chain(c.chain) {}
   
   std::string leftValue;
   std::string rightValue;
@@ -123,16 +123,16 @@ public :
 };
 
 ///
-class UnobserveCommand : public SkoorCommand {
+class UnobserveCommand : public O3prmrCommand {
 public :
   std::string value;
   const System * system;
   PRMInference::Chain chain;
   
   UnobserveCommand( int line, const std::string & value )
-   : SkoorCommand(line), value(value), system(0) {}
+   : O3prmrCommand(line), value(value), system(0) {}
   UnobserveCommand( const UnobserveCommand & c )
-   : SkoorCommand(c), value(c.value), system(c.system), chain(c.chain) {}
+   : O3prmrCommand(c), value(c.value), system(c.system), chain(c.chain) {}
   
   Type type() const { return Unobserve; }
   std::string toString() const {
@@ -141,9 +141,9 @@ public :
 };
 
 ///
-class QueryCommand : public SkoorCommand {
+class QueryCommand : public O3prmrCommand {
 public :
-  QueryCommand( int line, const std::string & value ) : SkoorCommand(line) { this->value = value; }
+  QueryCommand( int line, const std::string & value ) : O3prmrCommand(line) { this->value = value; }
   
   std::string value;
   const System * system;
@@ -156,52 +156,52 @@ public :
 };
 
 /**
- * This class contains a skoor session.
+ * This class contains a o3prmr session.
  * It have a name and a sequence of commands.
  * */
-class SkoorSession {
+class O3prmrSession {
   /// The session name;
   std::string m_name;
   /// A sequence of commands.
-  std::vector<SkoorCommand *> m_commands;
+  std::vector<O3prmrCommand *> m_commands;
   std::map<const System *,PRMInference *> m_infEngineMap;
   
 public:
-  SkoorSession(const std::string & name = std::string());
-  SkoorSession( const SkoorSession & s );
-  virtual ~SkoorSession();
+  O3prmrSession(const std::string & name = std::string());
+  O3prmrSession( const O3prmrSession & s );
+  virtual ~O3prmrSession();
   
   std::string name() const;
   
-  std::vector<SkoorCommand *> commands() const;
+  std::vector<O3prmrCommand *> commands() const;
   void addObserve( int line, const std::string & leftValue, const std::string & rightValue );
   void addUnobserve( int line, const std::string & value );
   void addQuery( int line, const std::string & value );
   void addSetEngine( int line, const std::string & value );
   void addSetGndEngine( int line, const std::string & value );
-  void addCommand( const SkoorCommand * command );
+  void addCommand( const O3prmrCommand * command );
   
   virtual std::string toString() const;
-  SkoorSession & operator+=( const SkoorSession & c );
+  O3prmrSession & operator+=( const O3prmrSession & c );
 
 private:
-  void addCommand( SkoorCommand * command );
+  void addCommand( O3prmrCommand * command );
 };
 
 /**
-  Represent a skoor context, with an import, and some sequencials commands.
+  Represent a o3prmr context, with an import, and some sequencials commands.
  */
-class SkoorContext {
+class O3prmrContext {
   std::string m_filename;
   std::string m_package;
-  std::vector<SkoorSession *> m_sessions;
+  std::vector<O3prmrSession *> m_sessions;
   std::vector<ImportCommand *> m_imports;
   ImportCommand * m_mainImport;
   
 public :
-  SkoorContext(const std::string & filename = std::string());
-  SkoorContext( const SkoorContext & s );
-  virtual ~SkoorContext();
+  O3prmrContext(const std::string & filename = std::string());
+  O3prmrContext( const O3prmrContext & s );
+  virtual ~O3prmrContext();
   
   const ImportCommand * mainImport() const { return m_mainImport; }
 
@@ -218,16 +218,16 @@ public :
     m_imports.push_back( new ImportCommand(i.line,i.value,i.alias) );
     if ( i.alias == "default" ) m_mainImport = m_imports.back(); }
   
-  std::vector<SkoorSession *> sessions() const;
-  void addSession( SkoorSession * session );
-  void addSession( const SkoorSession & session );
+  std::vector<O3prmrSession *> sessions() const;
+  void addSession( O3prmrSession * session );
+  void addSession( const O3prmrSession & session );
   
   virtual std::string toString() const;
-  SkoorContext & operator+=( const SkoorContext & c );
+  O3prmrContext & operator+=( const O3prmrContext & c );
 };
 
 
-    } // namespace skoor
+    } // namespace o3prmr
   } // namespace prm
 } // namespace gum
 

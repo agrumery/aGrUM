@@ -32,8 +32,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined(gum_prm_skoor_COCO_PARSER_H__)
-#define gum_prm_skoor_COCO_PARSER_H__
+#if !defined(gum_prm_o3prmr_COCO_PARSER_H__)
+#define gum_prm_o3prmr_COCO_PARSER_H__
 
 #include <string>
 #include <sstream>
@@ -42,7 +42,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 #include<dirent.h>
 
-#include <agrum/prm/skoor/SkoorContext.h>
+#include <agrum/prm/o3prmr/O3prmrContext.h>
 
 #include <iostream>
 #include <string>
@@ -51,7 +51,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 namespace gum {
 namespace prm {
-namespace skoor {
+namespace o3prmr {
 
 
 
@@ -95,14 +95,14 @@ public:
 	Token *t;			// last recognized token
 	Token *la;			// lookahead token
 
-gum::prm::skoor::SkoorContext *__context;
-gum::prm::skoor::SkoorSession *__currentSession;
+gum::prm::o3prmr::O3prmrContext *__context;
+gum::prm::o3prmr::O3prmrSession *__currentSession;
 
 void SemErr(std::string s) {
   SemErr(widen(s).c_str());
 }
 
-void setSkoorContext(gum::prm::skoor::SkoorContext *c) {
+void setO3prmrContext(gum::prm::o3prmr::O3prmrContext *c) {
   __context=c;
 }
 
@@ -115,7 +115,7 @@ void setSkoorContext(gum::prm::skoor::SkoorContext *c) {
 	void Warning(const wchar_t* msg);
 	const ErrorsContainer& errors() const;
 
-	void skoor();
+	void o3prmr();
 	void Ident(std::string& s);
 	void RequestBloc();
 	void Command();

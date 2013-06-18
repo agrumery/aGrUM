@@ -39,7 +39,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 namespace gum {
 namespace prm {
-namespace skoor {
+namespace o3prmr {
 
 
 Token::Token() {

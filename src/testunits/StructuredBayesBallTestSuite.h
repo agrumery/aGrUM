@@ -26,7 +26,7 @@
 #include <agrum/prm/SVE.h>
 #include <agrum/prm/structuredBayesBall.h>
 
-#include <agrum/prm/skool/SkoolReader.h>
+#include <agrum/prm/o3prm/O3prmReader.h>
 
 
 namespace gum_tests {
@@ -42,15 +42,15 @@ namespace gum_tests {
     public:
       void setUp() {
         {
-          gum::prm::skool::SkoolReader reader;
-          reader.readFile ( "../../../src/testunits/ressources/skool/inference.skool" );
+          gum::prm::o3prm::O3prmReader reader;
+          reader.readFile ( "../../../src/testunits/ressources/o3prm/inference.o3prm" );
           prm = reader.prm();
           sys = & ( prm->system ( "aSys" ) );
           prm_inf = new gum::prm::SVE ( *prm, *sys );
         }
         {
-          gum::prm::skool::SkoolReader reader;
-          reader.readFile ( "../../../src/testunits/ressources/skool/printers_systems.skool" );
+          gum::prm::o3prm::O3prmReader reader;
+          reader.readFile ( "../../../src/testunits/ressources/o3prm/printers_systems.o3prm" );
           small = reader.prm();
           small_sys = & ( small->system ( "smallSys" ) );
           small_inf = new gum::prm::SVE ( *small, *small_sys );

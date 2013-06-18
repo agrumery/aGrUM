@@ -20,7 +20,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of SkoolInterpreter
+ * @brief Headers of O3prmInterpreter
  *
  * @author Pierre-Henri WUILLEMIN, Ni NI, Lionel TORTI & Vincent RENAUDINEAU
  */
@@ -29,8 +29,8 @@
 #define SKOORINTERPRETER_H
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#include <agrum/prm/skoor/SkoorContext.h>
-#include <agrum/prm/skool/SkoolReader.h>
+#include <agrum/prm/o3prmr/O3prmrContext.h>
+#include <agrum/prm/o3prm/O3prmReader.h>
 #include <agrum/prm/PRMInference.h>
 #include <agrum/core/errorsContainer.h>
 #endif //DOXYGEN_SHOULD_SKIP_THIS
@@ -40,7 +40,7 @@ namespace gum {
 
   namespace prm {
 
-    namespace skoor {
+    namespace o3prmr {
 
       /**
        *
@@ -62,16 +62,16 @@ namespace gum {
       };
 
       /**
-       * Permet de manipuler un contexte skoor
+       * Permet de manipuler un contexte o3prmr
        * et d'interpréter celui-ci.
        */
-      class SkoorInterpreter {
+      class O3prmrInterpreter {
 
         public:
           /// This constructor create an empty context.
-          SkoorInterpreter();
+          O3prmrInterpreter();
           /// Destructor. Delete current context.
-          ~SkoorInterpreter();
+          ~O3prmrInterpreter();
 
           /**
            * Interpret the file or the command line.
@@ -96,8 +96,8 @@ namespace gum {
           ErrorsContainer errorsContainer() const;
 
           /// Getter and setter for the context.
-          SkoorContext* getContext() const;
-          void setContext ( SkoorContext* context );
+          O3prmrContext* getContext() const;
+          void setContext ( O3prmrContext* context );
 
           /// Root paths to search from there packages.
           /// Default are working dir, request file dir if any
@@ -133,15 +133,15 @@ namespace gum {
           void showErrorCounts() const;
 
         private:
-          bool checkSemantic ( SkoorContext* context );
+          bool checkSemantic ( O3prmrContext* context );
           bool checkSetEngine ( SetEngineCommand* command );
           bool checkSetGndEngine ( SetGndEngineCommand* command );
           bool checkObserve ( ObserveCommand* command );
           bool checkUnobserve ( UnobserveCommand* command );
           bool checkQuery ( QueryCommand* command );
 
-          bool interpret ( SkoorContext* c );
-          bool import ( SkoorContext* context, std::string import );
+          bool interpret ( O3prmrContext* c );
+          bool import ( O3prmrContext* context, std::string import );
           bool observe ( const ObserveCommand* command );
           bool unobserve ( const UnobserveCommand* command );
           void query ( const QueryCommand* command );
@@ -157,8 +157,8 @@ namespace gum {
           void addError ( std::string msg );
           void addWarning ( std::string msg );
 
-          SkoorContext* m_context;
-          gum::prm::skool::SkoolReader* m_reader;
+          O3prmrContext* m_context;
+          gum::prm::o3prm::O3prmReader* m_reader;
           std::vector<std::string> m_paths;
           gum::prm::PRMInference* m_inf;
           std::string m_engine;
@@ -173,9 +173,9 @@ namespace gum {
           //// We need this when using grounded inference
           //gum::BayesNetInference<gum::prm::prm_float>* bn;
 
-      }; // class SkoorInterpreter
+      }; // class O3prmrInterpreter
 
-    } // namespace skoor
+    } // namespace o3prmr
   } // namespace prm
 } // namespace gum
 

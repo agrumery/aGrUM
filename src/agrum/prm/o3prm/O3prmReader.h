@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of SkoolReader.
+ * @brief Headers of O3prmReader.
  *
  * @author Lionel TORTI & PH WUILLEMIN
  */
@@ -35,20 +35,20 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 //including coco-generated PARSER and SCANNER
 
-#include <agrum/prm/skool/cocoR/Parser.h>
+#include <agrum/prm/o3prm/cocoR/Parser.h>
 #endif //DOXYGEN_SHOULD_SKIP_THIS
 
 
 namespace gum {
 namespace prm {
-namespace skool {
+namespace o3prm {
 
-class SkoolReader {
+class O3prmReader {
 public:
 
-    SkoolReader();
+    O3prmReader();
 
-    ~SkoolReader();
+    ~O3prmReader();
 
     int readFile(const std::string& file);
     /// With readString method, you must set the current path
@@ -56,7 +56,7 @@ public:
     int readString(const std::string & string);
 
     /**
-     * @brief This methods defines the list of paths to look for skool files.
+     * @brief This methods defines the list of paths to look for o3prm files.
      * Use / for path separator ! Even on Windows !
      *
      * @param class_path A semicolon separated list of paths.
@@ -100,9 +100,9 @@ public:
     /// @}
 
 private:
-    SkoolReader(const SkoolReader& source);
+    O3prmReader(const O3prmReader& source);
 
-    SkoolReader& operator=(const SkoolReader& source);
+    O3prmReader& operator=(const O3prmReader& source);
 
     gum::prm::PRMFactory __factory;
 
@@ -115,12 +115,12 @@ private:
     ErrorsContainer __errors;
 };
 
-} /* namespace skool */
+} /* namespace o3prm */
 } /* namespace prm */
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/prm/skool/SkoolReader.inl>
+#include <agrum/prm/o3prm/O3prmReader.inl>
 #endif // GUM_NO_INLINE
 
 // ============================================================================

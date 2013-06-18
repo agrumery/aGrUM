@@ -30,9 +30,9 @@
 //#ifndef DOXYGEN_SHOULD_SKIP_THIS
 //including coco-generated PARSER and SCANNER
 
-//#include <agrum/prm/skool/cocoR/Parser.h>
+//#include <agrum/prm/o3prm/cocoR/Parser.h>
 //#endif //DOXYGEN_SHOULD_SKIP_THIS
-//#include <agrum/prm/skool/SkoolReader.h>
+//#include <agrum/prm/o3prm/O3prmReader.h>
 //>>>>>>> Bug found for test -t all : now use of string::size() instead of string::length()
 
 
@@ -47,9 +47,9 @@
 //#ifndef DOXYGEN_SHOULD_SKIP_THIS
 //including coco-generated PARSER and SCANNER
 
-//#include <agrum/prm/skool/cocoR/Parser.h>
+//#include <agrum/prm/o3prm/cocoR/Parser.h>
 //#endif //DOXYGEN_SHOULD_SKIP_THIS
-//#include <agrum/prm/skool/SkoolReader.h>
+//#include <agrum/prm/o3prm/O3prmReader.h>
 
 
 //#include <agrum/core/Rational.h> // custom decimal to rational

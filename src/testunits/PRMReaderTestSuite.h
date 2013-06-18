@@ -21,16 +21,16 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include "testsuite_utils.h"
 
-#include <agrum/prm/skool/SkoolReader.h>
+#include <agrum/prm/o3prm/O3prmReader.h>
 
 namespace gum_tests {
 
   class PRMReaderTestSuite: public CxxTest::TestSuite {
     public:
       void /*test*/BasicRead() {
-        gum::prm::skool::SkoolReader reader;
+        gum::prm::o3prm::O3prmReader reader;
         int res;
-        TS_GUM_ASSERT_THROWS_NOTHING ( res=reader.readFile ( GET_PATH_STR ( skool/inference.skool ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( res=reader.readFile ( GET_PATH_STR ( o3prm/inference.o3prm ) ) );
 
         if ( res!=0 ) reader.showElegantErrors();
 
@@ -44,9 +44,9 @@ namespace gum_tests {
       }
 
       void testRegression1() {
-        gum::prm::skool::SkoolReader reader;
+        gum::prm::o3prm::O3prmReader reader;
         int res;
-        TS_GUM_ASSERT_THROWS_NOTHING ( res=reader.readFile ( GET_PATH_STR ( skool/withinterfaces.skool ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( res=reader.readFile ( GET_PATH_STR ( o3prm/withinterfaces.o3prm ) ) );
 
         if ( res!=0 ) reader.showElegantErrors();
 
@@ -59,9 +59,9 @@ namespace gum_tests {
       }
 
       void /*test*/Regression2() {
-        gum::prm::skool::SkoolReader reader;
+        gum::prm::o3prm::O3prmReader reader;
         int res;
-        TS_GUM_ASSERT_THROWS_NOTHING ( res=reader.readFile ( GET_PATH_STR ( skool/foo2.skool ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( res=reader.readFile ( GET_PATH_STR ( o3prm/foo2.o3prm ) ) );
 
         //if ( res!=0 ) reader.showElegantErrors();
 

@@ -23,13 +23,13 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include "testsuite_utils.h"
 
-#include <agrum/prm/skoor/SkoorInterpreter.h>
+#include <agrum/prm/o3prmr/O3prmrInterpreter.h>
 
 
 
 namespace gum_tests {
 
-  class SkoorTestSuite: public CxxTest::TestSuite {
+  class O3prmrTestSuite: public CxxTest::TestSuite {
     public:
       void setUp() {
         //std::cerr << std::endl;
@@ -39,11 +39,11 @@ namespace gum_tests {
       }
 
       void testParseFile1() {
-        gum::prm::skoor::SkoorInterpreter* si = new gum::prm::skoor::SkoorInterpreter();
+        gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode ( true );
-        si->addPath ( "../../../src/testunits/ressources/skoor/" );
+        si->addPath ( "../../../src/testunits/ressources/o3prmr/" );
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/skoor/requests/query1.skoor" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/o3prmr/requests/query1.o3prmr" ) );
 
         TS_ASSERT_EQUALS ( si->errors(), 0 );
         TS_ASSERT_EQUALS ( si->warnings(), 0 );
@@ -53,11 +53,11 @@ namespace gum_tests {
 
 
       void testParseFile2() {
-        gum::prm::skoor::SkoorInterpreter* si = new gum::prm::skoor::SkoorInterpreter();
+        gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode ( true );
-        si->addPath ( "../../../src/testunits/ressources/skoor/" );
+        si->addPath ( "../../../src/testunits/ressources/o3prmr/" );
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/skoor/requests/query2.skoor" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/o3prmr/requests/query2.o3prmr" ) );
 
         TS_ASSERT_EQUALS ( si->errors(), 1 );
         TS_ASSERT_EQUALS ( si->warnings(), 0 );
@@ -67,11 +67,11 @@ namespace gum_tests {
 
 
       void testInference() {
-        gum::prm::skoor::SkoorInterpreter* si = new gum::prm::skoor::SkoorInterpreter();
+        gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode ( false );
-        si->addPath ( "../../../src/testunits/ressources/skoor/" );
+        si->addPath ( "../../../src/testunits/ressources/o3prmr/" );
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/skoor/requests/query1.skoor" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/o3prmr/requests/query1.o3prmr" ) );
 
         TS_ASSERT_EQUALS ( si->errors(), 0 );
         TS_ASSERT_EQUALS ( si->warnings(), 0 );
@@ -81,11 +81,11 @@ namespace gum_tests {
 
 
       void testObserve() {
-        gum::prm::skoor::SkoorInterpreter* si = new gum::prm::skoor::SkoorInterpreter();
+        gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode ( false );
-        si->addPath ( "../../../src/testunits/ressources/skoor/" );
+        si->addPath ( "../../../src/testunits/ressources/o3prmr/" );
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/skoor/requests/queryObserveTest.skoor" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/o3prmr/requests/queryObserveTest.o3prmr" ) );
 
         TS_ASSERT_EQUALS ( si->errors(), 0 );
         TS_ASSERT_EQUALS ( si->warnings(), 0 );
@@ -117,11 +117,11 @@ namespace gum_tests {
       }
 
       void testUnobserve() {
-        gum::prm::skoor::SkoorInterpreter* si = new gum::prm::skoor::SkoorInterpreter();
+        gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode ( false );
-        si->addPath ( "../../../src/testunits/ressources/skoor/" );
+        si->addPath ( "../../../src/testunits/ressources/o3prmr/" );
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/skoor/requests/queryUnobserveTest.skoor" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/o3prmr/requests/queryUnobserveTest.o3prmr" ) );
 
         TS_ASSERT_EQUALS ( si->errors(), 0 );
         TS_ASSERT_EQUALS ( si->warnings(), 0 );
@@ -139,11 +139,11 @@ namespace gum_tests {
       }
 
       void testQuery() {
-        gum::prm::skoor::SkoorInterpreter* si = new gum::prm::skoor::SkoorInterpreter();
+        gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode ( false );
-        si->addPath ( "../../../src/testunits/ressources/skoor/" );
+        si->addPath ( "../../../src/testunits/ressources/o3prmr/" );
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/skoor/requests/query1.skoor" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( si->interpretFile ( "../../../src/testunits/ressources/o3prmr/requests/query1.o3prmr" ) );
 
         si->showElegantErrorsAndWarnings();
         TS_ASSERT_EQUALS ( si->errors(), 0 );

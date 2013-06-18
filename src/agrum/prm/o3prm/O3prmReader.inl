@@ -19,24 +19,24 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Inline implementation of SkoolReader.
+ * @brief Inline implementation of O3prmReader.
  *
  * @author Lionel TORTI
  */
 // ============================================================================
 
 //to ease automatic parsing
-#include <agrum/prm/skool/SkoolReader.h>
+#include <agrum/prm/o3prm/O3prmReader.h>
 
 namespace gum {
 
   namespace prm {
 
-    namespace skool {
+    namespace o3prm {
 
       INLINE
-      SkoolReader::SkoolReader() {
-        GUM_CONSTRUCTOR ( SkoolReader );
+      O3prmReader::O3prmReader() {
+        GUM_CONSTRUCTOR ( O3prmReader );
         __parseDone = false;
         __prmTake = false;
         __parser = 0;
@@ -44,8 +44,8 @@ namespace gum {
 
 
       INLINE
-      SkoolReader::~SkoolReader() {
-        GUM_DESTRUCTOR ( SkoolReader );
+      O3prmReader::~O3prmReader() {
+        GUM_DESTRUCTOR ( O3prmReader );
 
         if ( __parseDone )
           delete __parser;
@@ -56,7 +56,7 @@ namespace gum {
 
       INLINE
       int
-      SkoolReader::readFile ( const std::string& file ) {
+      O3prmReader::readFile ( const std::string& file ) {
         size_t lastSlashIndex = file.find_last_of ( '/' );
         Directory dir ( file.substr ( 0, lastSlashIndex+1 ) );
 
@@ -101,7 +101,7 @@ namespace gum {
 
       INLINE
       int
-      SkoolReader::readString ( const std::string& st ) {
+      O3prmReader::readString ( const std::string& st ) {
         // errors += parser.errors
         try {
           Scanner s ( ( unsigned char* ) st.c_str(), ( int ) ( st.size() ) );
@@ -123,74 +123,74 @@ namespace gum {
 
       INLINE
       gum::prm::PRM*
-      SkoolReader::prm() {
+      O3prmReader::prm() {
         __prmTake = true;
         return __factory.prm();
       }
 
       INLINE
       const gum::prm::PRM*
-      SkoolReader::prm() const {
+      O3prmReader::prm() const {
         return __factory.prm();
       }
 
 /// publishing Errors API
       INLINE
-      unsigned int SkoolReader::errLine ( unsigned int i ) const {
+      unsigned int O3prmReader::errLine ( unsigned int i ) const {
         return __errors.line ( i );
       }
 
       INLINE
-      unsigned int SkoolReader::errCol ( unsigned int i ) const {
+      unsigned int O3prmReader::errCol ( unsigned int i ) const {
         return __errors.col ( i );
       }
 
       INLINE
-      std::wstring SkoolReader::errFilename ( unsigned int i ) const {
+      std::wstring O3prmReader::errFilename ( unsigned int i ) const {
         return __errors.filename ( i );
       }
 
       INLINE
-      bool SkoolReader::errIsError ( unsigned int i ) const {
+      bool O3prmReader::errIsError ( unsigned int i ) const {
         return __errors.is_error ( i );
       }
 
       INLINE
-      std::string SkoolReader::errMsg ( unsigned int i ) const {
+      std::string O3prmReader::errMsg ( unsigned int i ) const {
         return gum::narrow ( __errors.msg ( i ) );
       }
 
       INLINE
-      void SkoolReader::showElegantErrors() const {
+      void O3prmReader::showElegantErrors() const {
         __errors.showElegantErrors();
       }
 
       INLINE
-      void SkoolReader::showElegantErrorsAndWarnings() const {
+      void O3prmReader::showElegantErrorsAndWarnings() const {
         __errors.showElegantErrorsAndWarnings();
       }
 
       INLINE
-      void SkoolReader::showErrorCounts() const {
+      void O3prmReader::showErrorCounts() const {
         __errors.showSyntheticResults();
       }
 
       INLINE
-      Size  SkoolReader::errors() const {
+      Size  O3prmReader::errors() const {
         return __errors.error_count;
       }
 
       INLINE
-      Size  SkoolReader::warnings() const {
+      Size  O3prmReader::warnings() const {
         return __errors.warning_count;
       }
 
       INLINE
-      const ErrorsContainer& SkoolReader::errorsContainer() const {
+      const ErrorsContainer& O3prmReader::errorsContainer() const {
         return __errors;
       }
 
-    } /* namespace skool */
+    } /* namespace o3prm */
   } /* namespace prm */
 } /* namespace gum */
 

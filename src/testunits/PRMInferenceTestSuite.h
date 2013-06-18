@@ -33,7 +33,7 @@
 #include <agrum/prm/structuredBayesBall.h>
 #include <agrum/prm/structuredInference.h>
 
-#include <agrum/prm/skool/SkoolReader.h>
+#include <agrum/prm/o3prm/O3prmReader.h>
 
 namespace gum_tests {
 
@@ -45,13 +45,13 @@ namespace gum_tests {
     public:
       void setUp() {
         {
-          gum::prm::skool::SkoolReader reader;
-          reader.readFile ( GET_PATH_STR ( skool/inference.skool ) );
+          gum::prm::o3prm::O3prmReader reader;
+          reader.readFile ( GET_PATH_STR ( o3prm/inference.o3prm ) );
           prm = reader.prm();
         }
         {
-          gum::prm::skool::SkoolReader reader;
-          reader.readFile ( GET_PATH_STR ( skool/printers_systems.skool ) );
+          gum::prm::o3prm::O3prmReader reader;
+          reader.readFile ( GET_PATH_STR ( o3prm/printers_systems.o3prm ) );
           small = reader.prm();
         }
       }

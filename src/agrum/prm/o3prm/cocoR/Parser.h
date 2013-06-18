@@ -32,8 +32,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined(gum_prm_skool_COCO_PARSER_H__)
-#define gum_prm_skool_COCO_PARSER_H__
+#if !defined(gum_prm_o3prm_COCO_PARSER_H__)
+#define gum_prm_o3prm_COCO_PARSER_H__
 
 #include <string>
 #include <sstream>
@@ -56,7 +56,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 namespace gum {
 namespace prm {
-namespace skool {
+namespace o3prm {
 
 
 
@@ -185,7 +185,7 @@ private:
 
             if ( Directory::isDir(dirpath+(*i)) )
                 importDir( dirpath+(*i)+"/" );
-            else if ( (*i).substr( (*i).find_last_of('.') ) == ".skool" ) // if .skool
+            else if ( (*i).substr( (*i).find_last_of('.') ) == ".o3prm" ) // if .o3prm
                 importFile( dirpath+(*i) );
         }
 
@@ -234,7 +234,7 @@ private:
 
         // Create filename
         replace(filename.begin(), filename.end(), '.', '/');
-        filename += ".skool";
+        filename += ".o3prm";
 
         // Search in current directory.
         if ( __current_directory.isValid() ) {
@@ -322,7 +322,7 @@ public:
     void setCurrentDirectory( const std::string & cd ) {
         __current_directory = Directory(cd);
         if ( ! __current_directory.isValid() )
-          Warning( widen("gum::skool::Parser::setCurrentDirectory : " + cd + " is not a valid directory.").c_str() );
+          Warning( widen("gum::o3prm::Parser::setCurrentDirectory : " + cd + " is not a valid directory.").c_str() );
     }
 
     // Get files imports.
@@ -353,7 +353,7 @@ public:
 	void Warning(const wchar_t* msg);
 	const ErrorsContainer& errors() const;
 
-	void Skool();
+	void O3PRM();
 	void Package();
 	void Import();
 	void Unit();

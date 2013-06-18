@@ -23,22 +23,22 @@
 
 #include <agrum/prm/gspan.h>
 
-#include <agrum/prm/skool/SkoolReader.h>
+#include <agrum/prm/o3prm/O3prmReader.h>
 
 
 namespace gum_tests {
 
   class GSpanTestSuite: public CxxTest::TestSuite {
     private:
-      gum::prm::skool::SkoolReader* __driver;
+      gum::prm::o3prm::O3prmReader* __driver;
       std::string dot_dir;
 
       gum::prm::gspan::InterfaceGraph* ig;
 
     public:
       void setUp() {
-        __driver  = new gum::prm::skool::SkoolReader();
-        __driver->readFile ( GET_PATH_STR ( skool/specialprinters.skool ) );
+        __driver  = new gum::prm::o3prm::O3prmReader();
+        __driver->readFile ( GET_PATH_STR ( o3prm/specialprinters.o3prm ) );
         ig = new gum::prm::gspan::InterfaceGraph ( __driver->prm()->system ( "m" ) );
       }
 

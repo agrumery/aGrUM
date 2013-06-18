@@ -19,12 +19,12 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Implementation of SkoolReader.
+ * @brief Implementation of O3prmReader.
  *
  * @author Pierre-Henri WUILLEMIN, Ni NI, Lionel TORTI & Vincent RENAUDINEAU
  */
 // =============================================================================
-#include <agrum/prm/skoor/SkoorInterpreter.h>
+#include <agrum/prm/o3prmr/O3prmrInterpreter.h>
 
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/BN/inference/variableElimination.h>
@@ -36,20 +36,20 @@
 #include <agrum/prm/SVE.h>
 #include <agrum/core/dir_utils.h>
 
-#include <agrum/prm/skoor/cocoR/Parser.h>
+#include <agrum/prm/o3prmr/cocoR/Parser.h>
 
 namespace gum {
 
   namespace prm {
 
-    namespace skoor {
+    namespace o3prmr {
 
       /* ************************************************************************** */
 
 /// This constructor create an empty context.
-      SkoorInterpreter::SkoorInterpreter() :
-        m_context ( new SkoorContext() ),
-        m_reader ( new skool::SkoolReader() ),
+      O3prmrInterpreter::O3prmrInterpreter() :
+        m_context ( new O3prmrContext() ),
+        m_reader ( new o3prm::O3prmReader() ),
         m_inf ( 0 ),
         m_syntax_flag ( false ),
         m_verbose ( false ),
@@ -58,7 +58,7 @@ namespace gum {
       }
 
 /// Destructor. Delete current context.
-      SkoorInterpreter::~SkoorInterpreter() {
+      O3prmrInterpreter::~O3prmrInterpreter() {
         delete m_context;
         delete m_inf;
         delete m_reader->prm();
@@ -68,72 +68,72 @@ namespace gum {
       /* ************************************************************************** */
 
 /// Getter for the context.
-      SkoorContext* SkoorInterpreter::getContext() const {
+      O3prmrContext* O3prmrInterpreter::getContext() const {
         return m_context;
       }
 
 /// Setter for the context.
-      void SkoorInterpreter::setContext ( SkoorContext* context ) {
+      void O3prmrInterpreter::setContext ( O3prmrContext* context ) {
         delete m_context;
 
         if ( context == 0 )
-          m_context = new SkoorContext();
+          m_context = new O3prmrContext();
         else
           m_context = context;
       }
 
 /// Root paths to search from there packages.
 /// Default are './' and one is calculate from request package if any.
-      std::vector<std::string> SkoorInterpreter::getPaths() const {
+      std::vector<std::string> O3prmrInterpreter::getPaths() const {
         return m_paths;
       }
 
 /// Root paths to search from there packages.
 /// Default are './' and one is calculate from request package if any.
-      void SkoorInterpreter::addPath ( const std::string& path ) {
+      void O3prmrInterpreter::addPath ( const std::string& path ) {
         m_paths.push_back ( path );
       }
 
 /// Root paths to search from there packages.
 /// Default are './' and one is calculate from request package if any.
-      void SkoorInterpreter::clearPaths() {
+      void O3prmrInterpreter::clearPaths() {
         m_paths.clear();
       }
 
 /// syntax mode don't process anything, just check syntax.
-      bool SkoorInterpreter::isInSyntaxMode() const {
+      bool O3prmrInterpreter::isInSyntaxMode() const {
         return m_syntax_flag;
       }
 
 /// syntax mode don't process anything, just check syntax.
-      void SkoorInterpreter::setSyntaxMode ( bool f ) {
+      void O3prmrInterpreter::setSyntaxMode ( bool f ) {
         m_syntax_flag = f;
       }
 
 /// verbose mode show more details on the program execution.
-      bool SkoorInterpreter::isVerboseMode() const {
+      bool O3prmrInterpreter::isVerboseMode() const {
         return m_verbose;
       }
 
 /// verbose mode show more details on the program execution.
-      void SkoorInterpreter::setVerboseMode ( bool f ) {
+      void O3prmrInterpreter::setVerboseMode ( bool f ) {
         m_verbose = f;
       }
 
 /// Retrieve prm object.
-      const gum::prm::PRM* SkoorInterpreter::prm() const {
+      const gum::prm::PRM* O3prmrInterpreter::prm() const {
         return m_reader->prm();
       }
 
 /// Retrieve inference motor object.
-      const gum::prm::PRMInference* SkoorInterpreter::inference() const {
+      const gum::prm::PRMInference* O3prmrInterpreter::inference() const {
         return m_inf;
       }
 
 /// Return a std::vector of QueryResults.
 /// Each QueryResults is a struct with query command, time and values,
 /// a std::vector of struct SingleResult, with pair label/value.
-      const std::vector<QueryResult> & SkoorInterpreter::results() const {
+      const std::vector<QueryResult> & O3prmrInterpreter::results() const {
         return m_results;
       }
 
@@ -144,7 +144,7 @@ namespace gum {
        * If any errors occured, return true.
        * Requests results can be retrieve be results() methods.
        * */
-      bool SkoorInterpreter::interpretFile ( const std::string& filename ) {
+      bool O3prmrInterpreter::interpretFile ( const std::string& filename ) {
         m_results.clear();
 
         // Test if filename exist
@@ -159,13 +159,13 @@ namespace gum {
         file_test.close();
 
         delete m_context;
-        m_context = new SkoorContext ( filename );
-        SkoorContext c ( filename );
+        m_context = new O3prmrContext ( filename );
+        O3prmrContext c ( filename );
 
         // On vérifie la syntaxe
         Scanner s ( filename.c_str() );
         Parser p ( &s );
-        p.setSkoorContext ( &c );
+        p.setO3prmrContext ( &c );
         p.Parse();
 
         m_errors = p.errors();
@@ -175,7 +175,7 @@ namespace gum {
 
         // Set paths to search from.
         delete m_reader;
-        m_reader = new skool::SkoolReader();
+        m_reader = new o3prm::O3prmReader();
 
         for ( size_t i = 0 ; i < m_paths.size() ; i++ )
           m_reader->addClassPath ( m_paths[i] );
@@ -190,14 +190,14 @@ namespace gum {
           return interpret ( &c );
       }
 
-      bool SkoorInterpreter::interpretLine ( const std::string& line ) {
+      bool O3prmrInterpreter::interpretLine ( const std::string& line ) {
         m_results.clear();
 
         // On vérifie la syntaxe
-        SkoorContext c;
+        O3prmrContext c;
         Scanner s ( ( unsigned char* ) line.c_str(), ( int ) line.length() );
         Parser p ( &s );
-        p.setSkoorContext ( &c );
+        p.setO3prmrContext ( &c );
         p.Parse();
         m_errors = p.errors();
 
@@ -220,7 +220,7 @@ namespace gum {
        * de l'interprétation du contexte (import introuvable ou non défini,
        * etc).
        * */
-      bool SkoorInterpreter::interpret ( SkoorContext* c ) {
+      bool O3prmrInterpreter::interpret ( O3prmrContext* c ) {
         if ( isVerboseMode() ) m_log << "## Start interpretation." << std::endl << std::flush;
 
         // Don't parse if any syntax errors.
@@ -228,33 +228,33 @@ namespace gum {
           return false;
 
         // For each session
-        std::vector<SkoorSession*> sessions = c->sessions();
+        std::vector<O3prmrSession*> sessions = c->sessions();
 
-        for ( std::vector<SkoorSession*>::const_iterator i = sessions.begin() ; i < sessions.end() ; i++ ) {
+        for ( std::vector<O3prmrSession*>::const_iterator i = sessions.begin() ; i < sessions.end() ; i++ ) {
 
           // For each command
-          std::vector<SkoorCommand*> commands = ( *i )->commands();
+          std::vector<O3prmrCommand*> commands = ( *i )->commands();
 
-          for ( std::vector<SkoorCommand*>::const_iterator j = commands.begin() ; j < commands.end() ; j++ ) {
+          for ( std::vector<O3prmrCommand*>::const_iterator j = commands.begin() ; j < commands.end() ; j++ ) {
 
             // We process it.
             bool result = true;
 
             try {
               switch ( ( *j )->type() ) {
-                case SkoorCommand::Observe :
+                case O3prmrCommand::Observe :
                   result = observe ( ( ObserveCommand* ) ( *j ) );
                   break;
-                case SkoorCommand::Unobserve :
+                case O3prmrCommand::Unobserve :
                   result = unobserve ( ( UnobserveCommand* ) ( *j ) );
                   break;
-                case SkoorCommand::SetEngine :
+                case O3prmrCommand::SetEngine :
                   setEngine ( ( SetEngineCommand* ) ( *j ) );
                   break;
-                case SkoorCommand::SetGndEngine :
+                case O3prmrCommand::SetGndEngine :
                   setGndEngine ( ( SetGndEngineCommand* ) ( *j ) );
                   break;
-                case SkoorCommand::Query :
+                case O3prmrCommand::Query :
                   query ( ( QueryCommand* ) ( *j ) );
                   break;
               }
@@ -290,7 +290,7 @@ namespace gum {
        *
        * Note : Stop checking at first error unless syntax mode is activated.
        * */
-      bool SkoorInterpreter::checkSemantic ( SkoorContext* context ) {
+      bool O3prmrInterpreter::checkSemantic ( O3prmrContext* context ) {
         // Don't parse if any syntax errors.
         if ( errors() > 0 )
           return false;
@@ -312,21 +312,21 @@ namespace gum {
         }
 
         // On vérifie chaque session
-        std::vector<SkoorSession*> sessions = context->sessions();
+        std::vector<O3prmrSession*> sessions = context->sessions();
 
         if ( m_verbose ) m_log << "## Check semantic for " << sessions.size() << " sessions" << std::endl;
 
-        for ( std::vector<SkoorSession*>::const_iterator i = sessions.begin() ; i < sessions.end() ; i++ ) {
+        for ( std::vector<O3prmrSession*>::const_iterator i = sessions.begin() ; i < sessions.end() ; i++ ) {
 
           std::string sessionName = ( *i )->name();
-          SkoorSession* session = new SkoorSession ( sessionName );
+          O3prmrSession* session = new O3prmrSession ( sessionName );
 
           if ( m_verbose ) m_log << "## Start session '" << sessionName << "'..." << std::endl << std::endl;
 
           // For each command
-          std::vector<SkoorCommand*> commands = ( *i )->commands();
+          std::vector<O3prmrCommand*> commands = ( *i )->commands();
 
-          for ( std::vector<SkoorCommand*>::const_iterator j = commands.begin() ; j < commands.end() ; j++ ) {
+          for ( std::vector<O3prmrCommand*>::const_iterator j = commands.begin() ; j < commands.end() ; j++ ) {
 
             if ( m_verbose ) m_log << "# * Going to check command : " << ( *j )->toString() << std::endl;
 
@@ -338,19 +338,19 @@ namespace gum {
 
             try {
               switch ( ( *j )->type() ) {
-                case SkoorCommand::SetEngine :
+                case O3prmrCommand::SetEngine :
                   result = checkSetEngine ( ( SetEngineCommand* ) ( *j ) );
                   break;
-                case SkoorCommand::SetGndEngine :
+                case O3prmrCommand::SetGndEngine :
                   result = checkSetGndEngine ( ( SetGndEngineCommand* ) ( *j ) );
                   break;
-                case SkoorCommand::Observe :
+                case O3prmrCommand::Observe :
                   result = checkObserve ( ( ObserveCommand* ) ( *j ) );
                   break;
-                case SkoorCommand::Unobserve :
+                case O3prmrCommand::Unobserve :
                   result = checkUnobserve ( ( UnobserveCommand* ) ( *j ) );
                   break;
-                case SkoorCommand::Query :
+                case O3prmrCommand::Query :
                   result = checkQuery ( ( QueryCommand* ) ( *j ) );
                   break;
                 default :
@@ -372,7 +372,7 @@ namespace gum {
 
             // On l'ajoute au contexte globale
             if ( result )
-              session->addCommand ( ( const SkoorCommand* ) ( *j ) );
+              session->addCommand ( ( const O3prmrCommand* ) ( *j ) );
           }
 
           // Ajoute la session au contexte global,
@@ -390,17 +390,17 @@ namespace gum {
         return errors() == 0;
       }
 
-      bool SkoorInterpreter::checkSetEngine ( SetEngineCommand* command ) {
+      bool O3prmrInterpreter::checkSetEngine ( SetEngineCommand* command ) {
         m_engine = command->value;
         return m_engine == "SVED" || m_engine == "GRD" || m_engine == "SVE";
       }
 
-      bool SkoorInterpreter::checkSetGndEngine ( SetGndEngineCommand* command ) {
+      bool O3prmrInterpreter::checkSetGndEngine ( SetGndEngineCommand* command ) {
         m_bn_engine = command->value;
         return m_bn_engine == "VE" || m_bn_engine == "VEBB" || m_bn_engine == "lazy";
       }
 
-      bool SkoorInterpreter::checkObserve ( ObserveCommand* command ) {
+      bool O3prmrInterpreter::checkObserve ( ObserveCommand* command ) {
         try {
           std::string left_val  = command->leftValue;
           const std::string right_val = command->rightValue;
@@ -442,7 +442,7 @@ namespace gum {
         return false;
       }
 
-      bool SkoorInterpreter::checkUnobserve ( UnobserveCommand* command ) {
+      bool O3prmrInterpreter::checkUnobserve ( UnobserveCommand* command ) {
         try {
           std::string name = command->value;
 
@@ -464,7 +464,7 @@ namespace gum {
         return false;
       }
 
-      bool SkoorInterpreter::checkQuery ( QueryCommand* command ) {
+      bool O3prmrInterpreter::checkQuery ( QueryCommand* command ) {
         try {
           std::string name = command->value;
 
@@ -486,15 +486,15 @@ namespace gum {
         return false;
       }
 
-// Import the system skool file
+// Import the system o3prm file
 // Return false if any error.
 
-      bool SkoorInterpreter::import ( SkoorContext* context, std::string import_name ) try {
+      bool O3prmrInterpreter::import ( O3prmrContext* context, std::string import_name ) try {
 
         if ( m_verbose ) m_log << "# Loading system '" << import_name << "' => '" << std::flush;
 
         std::replace ( import_name.begin(), import_name.end(), '.', '/' );
-        import_name += ".skool";
+        import_name += ".o3prm";
 
         if ( m_verbose ) m_log << import_name << "' ... " << std::endl << std::flush;
 
@@ -502,14 +502,14 @@ namespace gum {
         bool found = false;
         std::string import_abs_filename;
 
-        // Search in skoor file dir.
-        std::string skoorFilename = context->filename();
+        // Search in o3prmr file dir.
+        std::string o3prmrFilename = context->filename();
 
-        if ( ! skoorFilename.empty() ) {
-          size_t index = skoorFilename.find_last_of ( '/' );
+        if ( ! o3prmrFilename.empty() ) {
+          size_t index = o3prmrFilename.find_last_of ( '/' );
 
           if ( index != std::string::npos ) {
-            std::string dir = skoorFilename.substr ( 0, index+1 );
+            std::string dir = o3prmrFilename.substr ( 0, index+1 );
             import_abs_filename = dir + import_name;
 
             if ( m_verbose ) m_log << "# Search from filedir '" << import_abs_filename << "' ... " << std::flush;
@@ -589,14 +589,14 @@ namespace gum {
         }
 
         // May throw std::IOError if file does't exist
-        int previousSkoolError = m_reader->errors();
-        int previousSkoorError = errors();
+        int previousO3prmError = m_reader->errors();
+        int previousO3prmrError = errors();
 
         try {
           m_reader->readFile ( import_abs_filename );
 
           // Show errors and warning
-          if ( m_verbose && ( m_reader->errors() > ( unsigned int ) previousSkoolError || errors() > previousSkoorError ) )
+          if ( m_verbose && ( m_reader->errors() > ( unsigned int ) previousO3prmError || errors() > previousO3prmrError ) )
             m_log << "Finished with errors." << std::endl;
           else if ( m_verbose )
             m_log << "Finished." << std::endl;
@@ -607,11 +607,11 @@ namespace gum {
           addError ( err.content() );
         }
 
-        // Add skool errors and warnings to skoor errors
-        for ( ; previousSkoolError < m_reader->errorsContainer().count() ; previousSkoolError++ )
-          m_errors.add ( m_reader->errorsContainer().error ( previousSkoolError ) );
+        // Add o3prm errors and warnings to o3prmr errors
+        for ( ; previousO3prmError < m_reader->errorsContainer().count() ; previousO3prmError++ )
+          m_errors.add ( m_reader->errorsContainer().error ( previousO3prmError ) );
 
-        return errors() == previousSkoorError;
+        return errors() == previousO3prmrError;
 
       } catch ( const gum::Exception& err ) {
         if ( m_verbose ) m_log << "Finished with exceptions." << std::endl;
@@ -621,7 +621,7 @@ namespace gum {
       }
 
 
-      std::string SkoorInterpreter::findSystemName ( std::string& s ) {
+      std::string O3prmrInterpreter::findSystemName ( std::string& s ) {
         size_t dot = s.find_first_of ( '.' );
         std::string name = s.substr ( 0, dot );
 
@@ -649,7 +649,7 @@ namespace gum {
         throw "could not find any system in '" + s + "'.";
       }
 
-      std::string SkoorInterpreter::findInstanceName ( std::string& s, const gum::prm::System& sys ) {
+      std::string O3prmrInterpreter::findInstanceName ( std::string& s, const gum::prm::System& sys ) {
         // We have found system before, so 's' has been stripped.
         size_t dot = s.find_first_of ( '.' );
         std::string name = s.substr ( 0, dot );
@@ -661,7 +661,7 @@ namespace gum {
         return name;
       }
 
-      std::string SkoorInterpreter::findAttributeName ( const std::string& s, const gum::prm::Instance& instance ) {
+      std::string O3prmrInterpreter::findAttributeName ( const std::string& s, const gum::prm::Instance& instance ) {
         if ( ! instance.exists ( s ) )
           throw "'" + s + "' is not an attribute of instance '" + instance.name() +"'.";
 
@@ -670,7 +670,7 @@ namespace gum {
       }
 
 // After this method, ident doesn't contains the system name anymore.
-      const System& SkoorInterpreter::system ( std::string& ident ) {
+      const System& O3prmrInterpreter::system ( std::string& ident ) {
         try {
           return prm()->system ( findSystemName ( ident ) );
         } catch ( const std::string& ) {}
@@ -683,7 +683,7 @@ namespace gum {
 
 ///
 
-      bool SkoorInterpreter::observe ( const ObserveCommand* command ) try {
+      bool O3prmrInterpreter::observe ( const ObserveCommand* command ) try {
 
         const PRMInference::Chain& chain = command->chain;
 
@@ -714,7 +714,7 @@ namespace gum {
 
 ///
 
-      bool SkoorInterpreter::unobserve ( const UnobserveCommand* command ) try {
+      bool O3prmrInterpreter::unobserve ( const UnobserveCommand* command ) try {
         std::string name = command->value;
         gum::prm::PRMInference::Chain chain = command->chain;
 
@@ -737,7 +737,7 @@ namespace gum {
 
 ///
 
-      void SkoorInterpreter::query ( const QueryCommand* command ) try {
+      void O3prmrInterpreter::query ( const QueryCommand* command ) try {
         const std::string& query = command->value;
         const Attribute& attr = * ( command->chain.second );
 
@@ -795,19 +795,19 @@ namespace gum {
 
 
 ///
-      void SkoorInterpreter::setEngine ( const SetEngineCommand* command ) {
+      void O3prmrInterpreter::setEngine ( const SetEngineCommand* command ) {
         m_engine = command->value;
       }
 
 
 ///
-      void SkoorInterpreter::setGndEngine ( const SetGndEngineCommand* command ) {
+      void O3prmrInterpreter::setGndEngine ( const SetGndEngineCommand* command ) {
         m_bn_engine = command->value;
       }
 
 
 ///
-      void SkoorInterpreter::generateInfEngine ( const gum::prm::System& sys ) {
+      void O3prmrInterpreter::generateInfEngine ( const gum::prm::System& sys ) {
         if ( m_verbose ) m_log << "# Building the inference engine... " << std::flush;
 
         //
@@ -864,22 +864,22 @@ namespace gum {
       /* ************************************************************************** */
 
 /// # of errors + warnings
-      int SkoorInterpreter::count() const {
+      int O3prmrInterpreter::count() const {
         return m_errors.count();
       }
 
 ///
-      int SkoorInterpreter::errors() const {
+      int O3prmrInterpreter::errors() const {
         return m_errors.error_count;
       }
 
 ///
-      int SkoorInterpreter::warnings() const {
+      int O3prmrInterpreter::warnings() const {
         return m_errors.warning_count;
       }
 
 ///
-      ParseError SkoorInterpreter::error ( int i ) const {
+      ParseError O3prmrInterpreter::error ( int i ) const {
         if ( i >= count() )
           throw "Index out of bound.";
 
@@ -887,22 +887,22 @@ namespace gum {
       }
 
 /// Return container with all errors.
-      ErrorsContainer SkoorInterpreter::errorsContainer() const {
+      ErrorsContainer O3prmrInterpreter::errorsContainer() const {
         return m_errors;
       }
 
 ///
-      void SkoorInterpreter::showElegantErrors() const {
+      void O3prmrInterpreter::showElegantErrors() const {
         m_errors.showElegantErrors();
       }
 
 ///
-      void SkoorInterpreter::showElegantErrorsAndWarnings() const {
+      void O3prmrInterpreter::showElegantErrorsAndWarnings() const {
         m_errors.showElegantErrorsAndWarnings();
       }
 
 ///
-      void SkoorInterpreter::showErrorCounts() const {
+      void O3prmrInterpreter::showErrorCounts() const {
         std::cerr << "Errors : "   << m_errors.error_count   << std::endl;
         std::cerr << "Warnings : " << m_errors.warning_count << std::endl;
       }
@@ -911,19 +911,19 @@ namespace gum {
       /* ************************************************************************** */
 
 ///
-      void SkoorInterpreter::addError ( std::string msg ) {
+      void O3prmrInterpreter::addError ( std::string msg ) {
         m_errors.addError ( msg, m_context->filename(), m_current_line, 0 );
 
         if ( m_verbose ) m_log << m_errors.last().toString() << std::endl;
       }
 
 ///
-      void SkoorInterpreter::addWarning ( std::string msg ) {
+      void O3prmrInterpreter::addWarning ( std::string msg ) {
         m_errors.addWarning ( msg, m_context->filename(), m_current_line, 0 );
 
         if ( m_verbose ) m_log << m_errors.last().toString() << std::endl;
       }
 
-    } // namespace skoor
+    } // namespace o3prmr
   } // namespace prm
 } // namespace gum

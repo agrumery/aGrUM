@@ -41,7 +41,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 namespace gum {
 namespace prm {
-namespace skool {
+namespace o3prm {
 
 
 void Parser::SynErr(int n) {
@@ -98,7 +98,7 @@ bool Parser::WeakSeparator(int n, int syFol, int repFol) {
 	}
 }
 
-void Parser::Skool() {
+void Parser::O3PRM() {
 		if (la->kind == 20 /* "package" */) {
 			Package();
 		}
@@ -709,7 +709,7 @@ void Parser::Parse() {
 	la = dummyToken = new Token();
 	la->val = coco_string_create(L"Dummy Token");
 	Get();
-	Skool();
+	O3PRM();
 
 }
 
@@ -796,8 +796,8 @@ void Parser::SynErr(const std::wstring& filename,int line, int col, int n) {
 			case 28: s = coco_string_create(L"\"~\" expected"); break;
 			case 29: s = coco_string_create(L"\"+=\" expected"); break;
 			case 30: s = coco_string_create(L"??? expected"); break;
-			case 31: s = coco_string_create(L"this symbol not expected in Skool"); break;
-			case 32: s = coco_string_create(L"this symbol not expected in Skool"); break;
+			case 31: s = coco_string_create(L"this symbol not expected in O3PRM"); break;
+			case 32: s = coco_string_create(L"this symbol not expected in O3PRM"); break;
 			case 33: s = coco_string_create(L"this symbol not expected in Package"); break;
 			case 34: s = coco_string_create(L"this symbol not expected in Package"); break;
 			case 35: s = coco_string_create(L"this symbol not expected in Import"); break;

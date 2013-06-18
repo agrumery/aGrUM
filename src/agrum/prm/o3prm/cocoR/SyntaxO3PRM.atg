@@ -26,7 +26,7 @@
 //
 //##############################################################################
 
-COMPILER Skool
+COMPILER O3PRM
 
 private:
     gum::prm::PRMFactory*       __factory;
@@ -108,7 +108,7 @@ private:
 
             if ( Directory::isDir(dirpath+(*i)) )
                 importDir( dirpath+(*i)+"/" );
-            else if ( (*i).substr( (*i).find_last_of('.') ) == ".skool" ) // if .skool
+            else if ( (*i).substr( (*i).find_last_of('.') ) == ".o3prm" ) // if .o3prm
                 importFile( dirpath+(*i) );
         }
 
@@ -157,7 +157,7 @@ private:
 
         // Create filename
         replace(filename.begin(), filename.end(), '.', '/');
-        filename += ".skool";
+        filename += ".o3prm";
 
         // Search in current directory.
         if ( __current_directory.isValid() ) {
@@ -245,7 +245,7 @@ public:
     void setCurrentDirectory( const std::string & cd ) {
         __current_directory = Directory(cd);
         if ( ! __current_directory.isValid() )
-          Warning( widen("gum::skool::Parser::setCurrentDirectory : " + cd + " is not a valid directory.").c_str() );
+          Warning( widen("gum::o3prm::Parser::setCurrentDirectory : " + cd + " is not a valid directory.").c_str() );
     }
 
     // Get files imports.
@@ -312,7 +312,7 @@ $checkEOF=false // disable the end of file check
 PRODUCTIONS
 
 //=====================
-Skool = [Package] {SYNC Import} {SYNC Unit} (. factory().popPackage(); .) .
+O3PRM = [Package] {SYNC Import} {SYNC Unit} (. factory().popPackage(); .) .
 
 //=====================
 Package = (. std::string name; .)
@@ -556,4 +556,4 @@ Number<float& val> =    integer (. val=coco_atoi(t->val); .)
                       | float   (. val=coco_atof(t->val); .)
                       .
 
-END Skool.
+END O3PRM.

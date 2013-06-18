@@ -41,7 +41,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 namespace gum {
 namespace prm {
-namespace skoor {
+namespace o3prmr {
 
 
 void Parser::SynErr(int n) {
@@ -98,7 +98,7 @@ bool Parser::WeakSeparator(int n, int syFol, int repFol) {
 	}
 }
 
-void Parser::skoor() {
+void Parser::o3prmr() {
 		std::string s, alias; __currentSession = 0; 
 		if (StartOf(1)) {
 			if (la->kind == _package) {
@@ -130,7 +130,7 @@ void Parser::skoor() {
 				RequestBloc();
 			}
 		} else if (StartOf(2)) {
-			__currentSession = new SkoorSession("default");
+			__currentSession = new O3prmrSession("default");
 			__context->addSession( __currentSession );
 			
 			Command();
@@ -152,7 +152,7 @@ void Parser::Ident(std::string& s) {
 void Parser::RequestBloc() {
 		Expect(_request);
 		Expect(_word);
-		__currentSession = new SkoorSession(gum::narrow(t->val)); 
+		__currentSession = new O3prmrSession(gum::narrow(t->val)); 
 		Expect(16 /* "{" */);
 		while (StartOf(2)) {
 			Command();
@@ -351,7 +351,7 @@ void Parser::Parse() {
 	la = dummyToken = new Token();
 	la->val = coco_string_create(L"Dummy Token");
 	Get();
-	skoor();
+	o3prmr();
 
 }
 
@@ -426,10 +426,10 @@ void Parser::SynErr(const std::wstring& filename,int line, int col, int n) {
 			case 26: s = coco_string_create(L"\"[\" expected"); break;
 			case 27: s = coco_string_create(L"\"]\" expected"); break;
 			case 28: s = coco_string_create(L"??? expected"); break;
-			case 29: s = coco_string_create(L"this symbol not expected in skoor"); break;
-			case 30: s = coco_string_create(L"invalid skoor"); break;
-			case 31: s = coco_string_create(L"this symbol not expected in skoor"); break;
-			case 32: s = coco_string_create(L"invalid skoor"); break;
+			case 29: s = coco_string_create(L"this symbol not expected in o3prmr"); break;
+			case 30: s = coco_string_create(L"invalid o3prmr"); break;
+			case 31: s = coco_string_create(L"this symbol not expected in o3prmr"); break;
+			case 32: s = coco_string_create(L"invalid o3prmr"); break;
 			case 33: s = coco_string_create(L"this symbol not expected in RequestBloc"); break;
 			case 34: s = coco_string_create(L"invalid Command"); break;
 			case 35: s = coco_string_create(L"invalid SetEngine"); break;

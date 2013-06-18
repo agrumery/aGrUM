@@ -5,19 +5,19 @@
 
 #include<dirent.h>
 
-#include <agrum/prm/skoor/SkoorContext.h>
+#include <agrum/prm/o3prmr/O3prmrContext.h>
 
 
-COMPILER skoor
+COMPILER o3prmr
 
-gum::prm::skoor::SkoorContext *__context;
-gum::prm::skoor::SkoorSession *__currentSession;
+gum::prm::o3prmr::O3prmrContext *__context;
+gum::prm::o3prmr::O3prmrSession *__currentSession;
 
 void SemErr(std::string s) {
   SemErr(widen(s).c_str());
 }
 
-void setSkoorContext(gum::prm::skoor::SkoorContext *c) {
+void setO3prmrContext(gum::prm::o3prmr::O3prmrContext *c) {
   __context=c;
 }
 
@@ -57,7 +57,7 @@ $checkEOF=false // disable the end of file check
 PRODUCTIONS
 
 //=====================
-skoor =                 (. std::string s, alias; __currentSession = 0; .)
+o3prmr =                 (. std::string s, alias; __currentSession = 0; .)
   (
     [ package Ident<s>  (. __context->setPackage( s ); .) 
     SYNC ';' ]
@@ -71,13 +71,13 @@ skoor =                 (. std::string s, alias; __currentSession = 0; .)
     }
     { RequestBloc }
   |                     (. 
-                            __currentSession = new SkoorSession("default");
+                            __currentSession = new O3prmrSession("default");
                             __context->addSession( __currentSession );
                         .)
     Command
   ).
 
-RequestBloc = request word  (. __currentSession = new SkoorSession(gum::narrow(t->val)); .)
+RequestBloc = request word  (. __currentSession = new O3prmrSession(gum::narrow(t->val)); .)
               '{' {
                     Command
               } SYNC '}'         (. __context->addSession( __currentSession ); __currentSession = 0; .)
@@ -134,5 +134,5 @@ IdentArray<std::string& s> = (. std::stringstream sBuff; .)
         }                    (. s = sBuff.str(); .)
         .
         
-END skoor.
+END o3prmr.
 

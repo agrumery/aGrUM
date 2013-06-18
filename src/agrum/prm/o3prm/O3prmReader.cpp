@@ -19,15 +19,15 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Implementation of SkoolReader.
+ * @brief Implementation of O3prmReader.
  *
  * @author Lionel TORTI
  */
 // ============================================================================
-#include <agrum/prm/skool/SkoolReader.h>
+#include <agrum/prm/o3prm/O3prmReader.h>
 // ============================================================================
 #ifdef GUM_NO_INLINE
-#include <agrum/prm/skool/SkoolReader.inl>
+#include <agrum/prm/o3prm/O3prmReader.inl>
 #endif // GUM_NO_INLINE
 // ============================================================================
 
@@ -35,10 +35,10 @@ namespace gum {
 
   namespace prm {
 
-    namespace skool {
+    namespace o3prm {
 
       void
-      SkoolReader::setClassPath ( const std::string& class_path ) {
+      O3prmReader::setClassPath ( const std::string& class_path ) {
         size_t i = 0;
         size_t j = class_path.find ( ';' );
 
@@ -55,14 +55,14 @@ namespace gum {
           addClassPath( class_path.substr ( i, std::string::npos ) );
       }
 
-    void SkoolReader::addClassPath(const std::string& class_path) {
+    void O3prmReader::addClassPath(const std::string& class_path) {
         if ( class_path[class_path.size()-1] == '/' )
             __class_path.push_back( class_path );
         else
             __class_path.push_back( class_path + '/' );
     }
 
-    } /* namespace skool */
+    } /* namespace o3prm */
   } /* namespace prm */
 } /* namespace gum */
 // ============================================================================
