@@ -59,7 +59,7 @@ namespace gum {
       // we compute the common penalty to all the single nodes, i.e.,
       // -0.5 log(N) * qi
       std::vector<float> score ( db_single_ids.size (), 0 );
-      float basic_penalty = - 0.5f * log ( _database->nbrLines () );
+      float basic_penalty = 0.5f * log ( _database->nbrLines () );
       for ( unsigned int i = 0; i < _db_conditioning_ids->size(); ++i ) {
         basic_penalty *=
           _database->nbrModalities ( _db_conditioning_ids->operator[] ( i ) );
@@ -110,7 +110,7 @@ namespace gum {
       // we compute the common penalty to all the pairs of target nodes, i.e.,
       // -0.5 log(N) * qi
       std::vector<float> score ( db_pair_ids.size (), 0 );
-      float basic_penalty = - 0.5f * log ( _database->nbrLines () );
+      float basic_penalty = 0.5f * log ( _database->nbrLines () );
       for ( unsigned int i = 0; i < _db_conditioning_ids->size(); ++i ) {
         basic_penalty *=
           _database->nbrModalities ( _db_conditioning_ids->operator[] ( i ) );
@@ -158,6 +158,9 @@ namespace gum {
 
       // now, store the result into the Score class _pair_scores field
       for ( unsigned int i = 0; i < db_pair_ids.size (); ++i ) {
+        std::cout << score[i] << "  " << (basic_penalty *
+            _database->nbrModalities ( db_pair_ids[i].first ) *
+            ( _database->nbrModalities ( db_pair_ids[i].second ) - 1 )) << std::endl;
         _pair_scores.insert
           ( db_pair_ids[i], score[i] - basic_penalty *
             _database->nbrModalities ( db_pair_ids[i].first ) *

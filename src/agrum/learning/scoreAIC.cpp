@@ -58,7 +58,7 @@ namespace gum {
       // the penalty of the AIC score, i.e., -(ri-1 ) * qi, but, here
       // we compute the common penalty to all the single nodes, i.e., -qi
       std::vector<float> score ( db_single_ids.size (), 0 );
-      float basic_penalty = -1;
+      float basic_penalty = 1;
       for ( unsigned int i = 0; i < _db_conditioning_ids->size(); ++i ) {
         basic_penalty *=
           _database->nbrModalities ( _db_conditioning_ids->operator[] ( i ) );
@@ -108,7 +108,7 @@ namespace gum {
       // the penalty of the AIC score, i.e., - (ri-1 ) * qi, but, here we
       // compute the common penalty to all the pairs of target nodes, i.e., -qi
       std::vector<float> score ( db_pair_ids.size (), 0 );
-      float basic_penalty = -1;
+      float basic_penalty = 1;
       for ( unsigned int i = 0; i < _db_conditioning_ids->size(); ++i ) {
         basic_penalty *=
           _database->nbrModalities ( _db_conditioning_ids->operator[] ( i ) );
