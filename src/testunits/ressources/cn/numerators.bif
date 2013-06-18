@@ -1,0 +1,33 @@
+
+network aGrUM_BN {
+   property version 1.0;
+   property author aGrUM;
+}
+
+variable temp_0 {
+   type discrete[3] {0, 1, 2};
+}
+
+variable temp_1 {
+   type discrete[3] {0, 1, 2};
+}
+
+variable temp_2 {
+   type discrete[3] {0, 1, 2};
+}
+
+
+probability (temp_0) {
+   default 500 500 500;
+}
+probability (temp_1 | temp_0) {
+   (0) 0 0 1;
+   (1) 200 200 200;
+   (2) 0 100 0;
+}
+probability (temp_2 | temp_1) {
+   (0) 50 0 50;
+   (1) 0 200 50;
+   (2) 30 0 99;
+}
+

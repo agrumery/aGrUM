@@ -24,8 +24,7 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
-
-#include <agrum/config.h>
+#include "testsuite_utils.h"
 
 #include <agrum/graphs/spanningForestPrim.h>
 

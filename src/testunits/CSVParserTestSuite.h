@@ -20,14 +20,10 @@
 #include <iostream>
 #include <string>
 
-#define GUM_TRACE_ON
-
 #include <cxxtest/AgrumTestSuite.h>
-
-#include <agrum/config.h>
-#include <agrum/learning/CSVParser/CSVParser.h>
-
 #include "testsuite_utils.h"
+
+#include <agrum/learning/CSVParser/CSVParser.h>
 
 namespace gum_tests {
 

@@ -19,6 +19,8 @@
  ***************************************************************************/
 
 #include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
+
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/variables/discretizedVariable.h>
 #include <agrum/multidim/instantiation.h>

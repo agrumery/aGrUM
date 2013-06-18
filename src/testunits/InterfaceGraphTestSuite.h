@@ -17,18 +17,14 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-// ============================================================================
 #include <iostream>
-// ============================================================================
+
 #include <cxxtest/AgrumTestSuite.h>
-// ============================================================================
-#include <agrum/config.h>
-// ============================================================================
+#include "testsuite_utils.h"
+
 #include <agrum/prm/gspan/interfaceGraph.h>
-// ============================================================================
-#include <agrum/prm/skool/SkoolReader.h>
+#include <agrum/prm/o3prm/O3prmReader.h>
 #include <agrum/prm/generator/layerGenerator.h>
-// ============================================================================
 
 
 namespace gum_tests {
@@ -43,8 +39,8 @@ namespace gum_tests {
 
     public:
       void setUp() {
-        gum::prm::skool::SkoolReader reader;
-        reader.readFile( "../../../src/testunits/ressources/skool/printers_systems.skool" );
+        gum::prm::o3prm::O3prmReader reader;
+        reader.readFile( "../../../src/testunits/ressources/o3prm/printers_systems.o3prm" );
         __prm = reader.prm();
       }
 

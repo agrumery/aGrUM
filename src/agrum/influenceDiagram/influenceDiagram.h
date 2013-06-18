@@ -422,4 +422,4 @@ namespace gum {
 #endif /* GUM_INF_DIAG_H */
 // ============================================================================
 
-// kate: indent-mode cstyle; space-indent on; indent-width 0;  replace-tabs on;
+// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;

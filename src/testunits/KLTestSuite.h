@@ -23,14 +23,13 @@
 #include <vector>
 
 #include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
-
-#include "testsuite_utils.h"
 
 // The graph used for the tests:
 //          1   2_          1 -> 3

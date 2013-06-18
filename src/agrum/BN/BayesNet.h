@@ -69,6 +69,7 @@ namespace gum {
        * Default constructor.
        */
       BayesNet();
+      BayesNet(std::string name);
 
       /**
        * Destructor.

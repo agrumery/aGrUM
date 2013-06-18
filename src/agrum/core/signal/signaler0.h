@@ -241,4 +241,4 @@ namespace gum {
 
 #endif // SIGNALER0_H__
 
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;

@@ -147,7 +147,7 @@ STRIP_FROM_PATH        = @GUM_SRC_PATH@
 # definition is used. Otherwise one should specify the include paths that
 # are normally passed to the compiler using the -I flag.
 
-STRIP_FROM_INC_PATH    = ..
+STRIP_FROM_INC_PATH    = 
 
 # If the SHORT_NAMES tag is set to YES, doxygen will generate much shorter
 # (but less readable) file names. This can be useful if your file system
@@ -286,7 +286,7 @@ SIP_SUPPORT            = NO
 # setting a simple type. If this is not the case, or you want to show the
 # methods anyway, you should set this option to NO.
 
-IDL_PROPERTY_SUPPORT   = YES
+IDL_PROPERTY_SUPPORT   = NO
 
 # If member grouping is used in the documentation and the DISTRIBUTE_GROUP_DOC
 # tag is set to YES, then doxygen will reuse the documentation of the first
@@ -701,11 +701,10 @@ RECURSIVE              = YES
 # run.
 
 EXCLUDE                = @GUM_SRC_PATH@/agrum/core/tinyxml \
+                         @GUM_SRC_PATH@/agrum/CN/lrslib \
+                         @GUM_SRC_PATH@/agrum/learning \
                          @GUM_SRC_PATH@/agrum/BN/learning \
-                         @GUM_SRC_PATH@/agrum/prm/bridges \
-                         @GUM_SRC_PATH@/agrum/learning/XmlCsvParser/parseXmlCsv_lex.cpp \
-                         @GUM_SRC_PATH@/agrum/learning/XmlCsvParser/parseXmlCsv_lex.hpp \
-                         @GUM_SRC_PATH@/agrum/learning/XmlCsvParser/parseXmlCsv.cpp \
+                         @GUM_SRC_PATH@/agrum/prm/bridges  \
                          @GUM_SRC_PATH@/agrum/prm/hollowBayesNet.h 
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
@@ -720,7 +719,7 @@ EXCLUDE_SYMLINKS       = NO
 # against the file with absolute path, so to exclude all test directories
 # for example use the pattern */test/*
 
-EXCLUDE_PATTERNS       = */cocoR/*
+EXCLUDE_PATTERNS       = */cocoR/* 
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names
 # (namespaces, classes, functions, etc.) that should be excluded from the
@@ -862,7 +861,7 @@ ALPHABETICAL_INDEX     = YES
 # the COLS_IN_ALPHA_INDEX tag can be used to specify the number of columns
 # in which this list will be split (can be a number in the range [1..20])
 
-COLS_IN_ALPHA_INDEX    = 5
+COLS_IN_ALPHA_INDEX    = 3
 
 # In case all classes in a project start with a common prefix, all
 # classes will be put under the same header in the alphabetical index.
@@ -918,7 +917,7 @@ HTML_FOOTER            = piedpage_agrum.html
 # the style sheet file to the HTML output directory, so don't put your own
 # style sheet in the HTML output directory as well, or it will be erased!
 
-HTML_STYLESHEET        = agrum.css
+HTML_STYLESHEET        = 
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the HTML output directory. Note
@@ -927,7 +926,7 @@ HTML_STYLESHEET        = agrum.css
 # files. In the HTML_STYLESHEET file, use the file name only. Also note that
 # the files will be copied as-is; there are no commands or markers available.
 
-HTML_EXTRA_FILES       =
+HTML_EXTRA_FILES       =agrum.css
 
 # The HTML_COLORSTYLE_HUE tag controls the color of the HTML output.
 # Doxygen will adjust the colors in the style sheet and background images
@@ -964,7 +963,7 @@ HTML_TIMESTAMP         = YES
 # documentation will contain sections that can be hidden and shown after the
 # page has loaded.
 
-HTML_DYNAMIC_SECTIONS  = NO
+HTML_DYNAMIC_SECTIONS  = YES
 
 # With HTML_INDEX_NUM_ENTRIES one can control the preferred number of
 # entries shown in the various tree structured indices initially; the user
@@ -1189,7 +1188,7 @@ FORMULA_TRANSPARENT    = YES
 # output. When enabled you may also need to install MathJax separately and
 # configure the path to it using the MATHJAX_RELPATH option.
 
-USE_MATHJAX            = NO
+USE_MATHJAX            = YES
 
 # When MathJax is enabled you need to specify the location relative to the
 # HTML output directory using the MATHJAX_RELPATH option. The destination

@@ -23,13 +23,12 @@
 #include <string>
 // =====================================================================
 #include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
+
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/io/dat/FMDPDatReader.h>
 #include <agrum/multidim/multiDimDecisionDiagramFactory.h>
-// =====================================================================
-#include "testsuite_utils.h"
-// =====================================================================
 
 
 namespace gum_tests {

@@ -23,6 +23,8 @@
 #include <cstdlib>
 
 #include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
+
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/BN/BayesNet.h>
@@ -274,4 +276,4 @@ namespace gum_tests {
 
   }
 
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;

@@ -28,10 +28,10 @@ before: agrum
 agrum:
 #ifeq ($(OS),Linux)
 	(cd ../../ && $(CMAKE) -E make_directory build/skoobeditor-$(call lc,$(OS))/release)
-	(cd ../../build/skoobeditor-$(call lc,$(OS))/release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j 4)
+	(cd ../../build/skoobeditor-$(call lc,$(OS))/release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j agrum)
 #else
 #	(cd ../../ && $(CMAKE) -E make_directory build/skoobeditor-windows/release)
-#	(cd ../../build/skoobeditor-windows/release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j 4)
+#	(cd ../../build/skoobeditor-windows/release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j agrum)
 #endif
 ################################################################################
 
@@ -44,22 +44,22 @@ before_debug: agrum_debug
 agrum_debug:
 #ifeq ($(OS),Linux)
 	(cd ../../ && $(CMAKE) -E make_directory build/$(call lc,$(OS))/debug)
-	(cd ../../build/skoobeditor-$(call lc,$(OS))/debug && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_VERBOSE_MAKEFILE=1 && $(MAKE) -j 4)
+	(cd ../../build/skoobeditor-$(call lc,$(OS))/debug && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_VERBOSE_MAKEFILE=1 && $(MAKE) -j agrum)
 #else
 #	(cd ../../ && $(CMAKE) -E make_directory build/windows/release)
-#	(cd ../../build/skoobeditor-windows/release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j 4)
+#	(cd ../../build/skoobeditor-windows/release && $(CMAKE) $(UNIX) ../../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j agrum)
 #endif
 
 ################################################################################
 
 debug: before_debug
-	(cd build/Debug && $(CMAKE) $(UNIX) ../../src -DCMAKE_BUILD_TYPE=Debug && $(MAKE) -j 4)
+	(cd build/Debug && $(CMAKE) $(UNIX) ../../src -DCMAKE_BUILD_TYPE=Debug && $(MAKE) -j)
 
 release: before
-	(cd build/Release && $(CMAKE) $(UNIX) ../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j 4)
+	(cd build/Release && $(CMAKE) $(UNIX) ../../src -DCMAKE_BUILD_TYPE=Release && $(MAKE) -j)
 
 minrelease: before
-	(cd build/MinSizeRel && $(CMAKE) $(UNIX) ../../src -DCMAKE_BUILD_TYPE=MinSizeRel && $(MAKE) -j 4)
+	(cd build/MinSizeRel && $(CMAKE) $(UNIX) ../../src -DCMAKE_BUILD_TYPE=MinSizeRel && $(MAKE) -j)
 
 ################################################################################
 

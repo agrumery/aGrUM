@@ -75,7 +75,7 @@ namespace gum {
    */
   class ApproximationScheme {
     public:
-      Signaler3<int, double, double> onProgress; // progression,error
+      Signaler3<Size, double, double> onProgress; // progression,error
       Signaler1<std::string> onStop; // criteria messageApproximationScheme
 
       enum ApproximationSchemeSTATE {
@@ -91,10 +91,19 @@ namespace gum {
       /// @{
       ApproximationScheme ( bool v = false ) :
         __current_state ( APPROX_UNDEFINED ),
+        
         __eps ( 5e-2 ),
+        __test__eps ( true ),
+        
         __min_rate_eps ( 1e-2 ),
-        __max_time ( 0.0 ),
+        __test__min_rate_eps ( true ),
+        
+        __max_time ( 1. ),
+        __test__max_time ( false ),
+        
         __max_iter ( ( Size ) 10000 ) ,
+        __test__max_iter ( true ),
+        
         __burn_in ( ( Size ) 0 ),
         __period_size ( ( Size ) 1 ),
         __verbosity ( v ) {
@@ -106,40 +115,75 @@ namespace gum {
         GUM_DESTRUCTOR ( ApproximationScheme );
       };
       /// @}
+			
 
       /// Given that we approximate f(t), stopping criterion on |f(t+1)-f(t)|
+			/// If the criterion was disabled it will be enabled
       /// @{
-      /// @throw OutOfLowerBound if eps<=0
+      /// @throw OutOfLowerBound if eps<0
       void setEpsilon ( double eps ) {
-        if ( eps <= 0 ) {
-          GUM_ERROR ( OutOfLowerBound, "eps should be >0" );
+        if ( eps < 0. ) {
+          GUM_ERROR ( OutOfLowerBound, "eps should be >=0" );
         }
 
         __eps = eps;
+				__test__eps = true;
       };
 
+			/// Get the value of epsilon
       double epsilon ( void ) const {
         return __eps;
       }
+      
+      /// Disable stopping criterion on epsilon
+      void disableEpsilon () {
+				__test__eps = false;
+			}
+			/// Enable stopping criterion on epsilon
+			void enableEpsilon () {
+				__test__eps = true;
+			}
+			/// @return true if stopping criterion on epsilon is enabled, false otherwise
+			bool testEpsilon () const {
+				return __test__eps;
+			}
       /// @}
 
       /// Given that we approximate f(t), stopping criterion on d/dt(|f(t+1)-f(t)|)
+      /// If the criterion was disabled it will be enabled
       /// @{
-      /// @throw OutOfLowerBound if rate<=0
+      /// @throw OutOfLowerBound if rate<0
       void setMinEpsilonRate ( double rate ) {
-        if ( rate <= 0 ) {
-          GUM_ERROR ( OutOfLowerBound, "rate should be >0" );
+        if ( rate < 0 ) {
+          GUM_ERROR ( OutOfLowerBound, "rate should be >=0" );
         }
 
         __min_rate_eps = rate;
+				__test__min_rate_eps = true;
       };
 
+			/// Get the value of the minimal epsilon rate
       double minEpsilonRate ( void ) const {
         return __min_rate_eps;
       };
+			
+			/// Disable stopping criterion on epsilon rate
+			void disableMinEpsilonRate () {
+				__test__min_rate_eps = false;
+			}
+			/// Enable stopping criterion on epsilon rate
+			void enableMinEpsilonRate () {
+				__test__min_rate_eps = true;
+			}
+			/// @return true if stopping criterion on epsilon rate is enabled, false otherwise
+			bool testMinEpsilonRate () const {
+				return __test__min_rate_eps;
+			}
       /// @}
 
       /// stopping criterion on number of iteration
+      /// If the criterion was disabled it will be enabled
+      /// @param max The maximum number of iterations
       /// @{
       /// @throw OutOfLowerBound if max<=1
       void setMaxIter ( Size max ) {
@@ -148,27 +192,41 @@ namespace gum {
         }
 
         __max_iter = max;
+				__test__max_iter = true;
       };
 
       Size maxIter ( void ) const {
         return __max_iter;
       };
-
+			
+			/// Disable stopping criterion on max iterations
+			void disableMaxIter () {
+				__test__max_iter = false;
+			}
+			/// Enable stopping criterion on max iterations
+			void enableMaxIter () {
+				__test__max_iter = true;
+			}
+			/// @return true if stopping criterion on max iterations is enabled, false otherwise
+			bool testMaxIter () const {
+				return __test__max_iter;
+			}
       /// @}
 
-      
-      /// stopping criterion ontimeout
+
+      /// stopping criterion on timeout
+      /// If the criterion was disabled it will be enabled
       /// @{
       /// @throw OutOfLowerBound if timeout<=0.0
       /** timeout is time in second (double).
-       * if timeout==0, no timeout stopping criterion.
       */
       void setMaxTime ( double timeout ) {
-        if ( timeout < 0.0 ) {
-          GUM_ERROR ( OutOfLowerBound, "timeout should be >=0.0" );
+        if ( timeout <= 0. ) {
+          GUM_ERROR ( OutOfLowerBound, "timeout should be >0." );
         }
 
         __max_time = timeout;
+				__test__max_time = true;
       };
 
       /// returns the timeout (in seconds)
@@ -180,11 +238,23 @@ namespace gum {
       double currentTime ( void ) const {
         return __timer.step();
       }
+      
+      /// Disable stopping criterion on timeout
+      void disableMaxTime () {
+				__test__max_time = false;
+			}
+			/// Enable stopping criterion on timeout
+			void enableMaxTime () {
+				__test__max_time = true;
+			}
+			/// @return true if stopping criterion on timeout is enabled, false otherwise
+			bool tetsMaxTime () {
+				return __test__max_time;
+			}
       /// @}
 
       /// how many samples between 2 stopping tests
       /// @{
-
       /// @throw OutOfLowerBound if p<1
       void setPeriodSize ( Size p ) {
         if ( p < 1 ) {
@@ -279,13 +349,32 @@ namespace gum {
         __current_step++ ;
       }
 
-      /// update the scheme w.r.t the new error. Test the stopping criterion
+      /// update the scheme w.r.t the new error and incr steps
+      void updateApproximationScheme ( unsigned int incr ) {
+        __current_step += incr;
+      }
+
+      Size remainingBurnIn () {
+				if ( __burn_in > __current_step )
+					return __burn_in - __current_step;
+				else
+					return 0;
+			}
+      
+      /// update the scheme w.r.t the new error. Test the stopping criterions that are enabled
       /// @throw OperationNotAllowed if stat!=APPROX_CONTINUE
-      /// @return true if stat become != APPROX_CONTINUE
-      bool continueApproximationScheme ( double error, bool check_rate = true ) {
+      /// @return false if state become != APPROX_CONTINUE
+      bool continueApproximationScheme ( double error ) {
         // For coherence, we fix the time used in the method.
         double timer_step=__timer.step();
 
+				if ( __test__max_time ) {
+					if ( timer_step > __max_time ) {
+						__stopScheme ( APPROX_TIME_LIMIT );
+						return false;
+					}
+				}
+				
         if ( ! startOfPeriod() ) return true;
 
         if ( __current_state != APPROX_CONTINUE ) {
@@ -295,35 +384,43 @@ namespace gum {
 
         if ( verbosity() ) __history.push_back ( error );
 
-        if ( __max_time > 0 ) {
-          if ( timer_step > __max_time ) {
-            __stopScheme ( APPROX_TIME_LIMIT );
-            return false;
-          }
-        }
-
-        if ( __current_step > maxIter() ) {
-          __stopScheme ( APPROX_LIMIT );
-          return false;
-        }
+				if ( __test__max_iter ) {
+					if ( __current_step > __max_iter ) {
+						__stopScheme ( APPROX_LIMIT );
+						return false;
+					}
+				}
 
         __last_epsilon = __current_epsilon;
+				__current_epsilon = error; // eps rate test needs it so affectation was moved from eps test below
 
-        if ( ( __current_epsilon = error ) < epsilon() ) {
-          __stopScheme ( APPROX_EPSILON );
-          return false;
+				if ( __test__eps ) {
+					if ( __current_epsilon <= __eps ) {
+						__stopScheme ( APPROX_EPSILON );
+						return false;
+					}
+				}
+
+				if ( __last_epsilon >= 0. ) {
+					if ( __current_epsilon > .0 ) // ! __current_epsilon can be 0. AND epsilon test can be disabled !
+						__current_rate = fabs ( ( __current_epsilon - __last_epsilon ) / __current_epsilon );
+					// limit with current eps ---> 0 is | 1 - ( last_eps / 0 ) | ---> infinity
+					// the else means a return false if we test the rate below, as we would have returned false if epsilon test was enabled
+					else 
+						__current_rate = __min_rate_eps;
+						
+					if ( __test__min_rate_eps ) {
+						if ( __current_rate <= __min_rate_eps ) {
+							__stopScheme ( APPROX_RATE );
+							return false;
+						}
+					}
+					
         }
 
-        if ( check_rate && __last_epsilon > 0 ) {
-          if ( ( __current_rate = fabs ( ( __current_epsilon - __last_epsilon ) / __current_epsilon ) ) < minEpsilonRate() ) {
-            __stopScheme ( APPROX_RATE );
-            return false;
-          }
+        if ( stateApproximationScheme() == APPROX_CONTINUE ) {
+          if ( onProgress.hasListener() ) GUM_EMIT3 ( onProgress, ( __current_step*100 ) /__max_iter,__current_epsilon,timer_step );
 
-        }
-
-        if (stateApproximationScheme() == APPROX_CONTINUE) {
-          if (onProgress.hasListener()) GUM_EMIT3(onProgress,(__current_step*100)/__max_iter,__current_epsilon,timer_step);
           return true;
         } else
           return false;
@@ -360,7 +457,7 @@ namespace gum {
         __current_state = new_state;
         __timer.pause();
 
-        if (onStop.hasListener()) GUM_EMIT1(onStop,messageApproximationScheme());
+        if ( onStop.hasListener() ) GUM_EMIT1 ( onStop,messageApproximationScheme() );
       }
       /// current state of approximationScheme
       double __current_epsilon, __last_epsilon, __current_rate;
@@ -373,15 +470,23 @@ namespace gum {
 
       /// Threshold for convergence
       double __eps;
+			/// boolean for threshold convergence test
+			bool __test__eps;
 
       /// Threshold for rate of epsilon
       double __min_rate_eps;
+			/// boolean for threshold rate of epsilon test
+			bool __test__min_rate_eps;
 
-      // timeout (not used if 0)
+      // timeout
       double __max_time;
+			// boolean for timeout test
+			bool __test__max_time;
 
       /// max iterations as a stopping criterion
       Size __max_iter;
+			// boolean for max iterations stopping criterion test
+			bool __test__max_iter;
 
       /// nbr of iterations before checking stopping criteria
       Size __burn_in;

@@ -19,14 +19,13 @@
  ***************************************************************************/
 // ============================================================================
 #include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
 // ============================================================================
 #include <agrum/core/dir_utils.h>
 // ============================================================================
 #include <iostream>
 #include <string>
 #include <dirent.h>
-
-#define TEST_RESSOURCES string("../../../src/testunits/ressources/")
 
 namespace gum_tests {
 
@@ -42,14 +41,18 @@ namespace gum_tests {
           oldWorkingDir = std::string ( oldWD );
 
         // Change working directory
-        if ( chdir ( "../../../src/testunits/ressources/dir/" ) != 0 )
-          std::cerr << "Error : Can not go to ../../../src/testunits/ressources/dir/" << std::endl;
+        if ( chdir ( GET_PATH_STR ( dir ) ) != 0 ) {
+          GUM_TRACE ( "Error : Can not go to "<<GET_PATH_STR ( dir ) );
+          TS_ASSERT ( false );
+        }
       }
 
       void tearDown() {
         // Return to previous working directory
-        if ( oldWorkingDir.empty() || chdir ( oldWorkingDir.c_str() ) != 0 )
-          std::cerr << "Warning : Can not go to previous working directory." << std::endl;
+        if ( oldWorkingDir.empty() || chdir ( oldWorkingDir.c_str() ) != 0 ) {
+          GUM_TRACE ( "Warning : Can not go to previous working directory." );
+          TS_ASSERT ( false );
+        }
       }
 
       void testValid() {

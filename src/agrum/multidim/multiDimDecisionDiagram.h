@@ -145,6 +145,6 @@ namespace gum {
 #endif /* GUM_MULTI_DIM_DECISION_DIAGRAM_H */
 // ============================================================================
 
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
 
 

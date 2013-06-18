@@ -22,6 +22,7 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
 
 #include <agrum/core/list.h>
 #include <agrum/core/hashTable.h>

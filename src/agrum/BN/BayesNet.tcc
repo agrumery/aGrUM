@@ -47,6 +47,16 @@ namespace gum {
     __topologicalOrder = new Sequence<NodeId>();
     __moralGraph = new UndiGraph();
   }
+  
+  template<typename GUM_SCALAR> INLINE
+  BayesNet<GUM_SCALAR>::BayesNet(std::string name) :
+    AbstractBayesNet<GUM_SCALAR>(),
+    __moralGraph ( 0 ), __topologicalOrder ( 0 ) {
+    GUM_CONSTRUCTOR ( BayesNet );
+    __topologicalOrder = new Sequence<NodeId>();
+    __moralGraph = new UndiGraph();
+    this->setProperty("name", name);
+  }
 
   template<typename GUM_SCALAR>
   BayesNet<GUM_SCALAR>::BayesNet ( const BayesNet<GUM_SCALAR>& source ) :

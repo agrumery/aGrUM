@@ -1,0 +1,24 @@
+
+network aGrUM_BN {
+   property version 1.0;
+   property author aGrUM;
+}
+
+variable A {
+   type discrete[2] {0, 1};
+}
+
+variable B {
+   type discrete[2] {0, 1};
+}
+
+
+
+probability ( A ) {
+   default 0.4 0.6;
+}
+probability ( B | A ) {
+   (0) 0.4 0.7;
+   (1) 0.8 0.9;
+}
+

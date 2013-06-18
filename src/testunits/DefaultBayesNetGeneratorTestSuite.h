@@ -22,13 +22,14 @@
 #include <vector>
 
 #include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
+
 #include <agrum/BN/generator/defaultBayesNetGenerator.h>
 #include <agrum/BN/generator/defaultCPTGenerator.h>
 #include <agrum/core/set.h>
 #include <agrum/core/exceptions.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-//#include <agrum/prm/skool/cocoR/SyntaxSKOOL.atg>
 
 namespace gum_tests {
 
@@ -171,4 +172,4 @@ namespace gum_tests {
     };
 
   }
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;

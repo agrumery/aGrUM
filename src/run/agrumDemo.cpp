@@ -1,99 +1,286 @@
-/***************************************************************************
-*   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr   *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
-
+#include <vector>
 #include <iostream>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <set>
+#include <string>
+#include <sstream>
+#include <fstream>
+#include <cmath>
+#include <algorithm>
+#include <cstdlib>
+#include "../agrum/CN/CredalNet.h"
 
-#include <clocale>
 
-#define GUM_TRACE_ON
-
-#include <agrum/config.h>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/io/BIF/BIFReader.h>
-#include <agrum/BN/generator/defaultBayesNetGenerator.h>
 #include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/algorithms/approximationSchemeListener.h>
+#include <agrum/core/OMPThreads.h>
+//<<<<<<< HEAD
+
+#include <agrum/CN/LrsWrapper.h>
+
+//<<<<<<< HEAD
+//#include <agrum/CN/CNMonteCarloSamplingInferenceTestSuite.h>
+//=======
+//#include <agrum/prm/PRMFactory.h>
+//#ifndef DOXYGEN_SHOULD_SKIP_THIS
+//including coco-generated PARSER and SCANNER
+
+//#include <agrum/prm/o3prm/cocoR/Parser.h>
+//#endif //DOXYGEN_SHOULD_SKIP_THIS
+//#include <agrum/prm/o3prm/O3prmReader.h>
+//>>>>>>> Bug found for test -t all : now use of string::size() instead of string::length()
 
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-namespace gum {
-  template<typename GUM_SCALAR>
-  class LoopyBeliefPropagation : BayesNetInference<GUM_SCALAR> {
-    private:
+#include <agrum/core/Rational.h> // custom decimal to rational
+#include <agrum/core/pow.h> // custom pow functions with integers, faster implementation
 
-      Property<Potential<float> *>::onArcs __lArcs;
-      Property<Potential<float> *>::onArcs __pArcs;
+//=======
 
-    public:
-      LoopyBeliefPropagation( const BayesNet<GUM_SCALAR>& bn ):BayesNetInference<GUM_SCALAR>( bn ) {
+#include <agrum/CN/LrsWrapper.h>
 
-        const ArcSet& arcs=this->bn().dag().asArcs();
+//#include <agrum/prm/PRMFactory.h>
+//#ifndef DOXYGEN_SHOULD_SKIP_THIS
+//including coco-generated PARSER and SCANNER
 
-        for( ArcSet::const_iterator arc=arcs.begin(); arc!=arcs.end(); ++arc ) {
-          NodeId j=arc->head();
-          __lArcs.insert( *arc,new Potential<float>() );
-          ( *__lArcs[*arc] )<<this->bn().variable( j );
-          __pArcs.insert( *arc,new Potential<float>() );
-          ( *__pArcs[*arc] )<<this->bn().variable( j );
-        }
-      }
+//#include <agrum/prm/o3prm/cocoR/Parser.h>
+//#endif //DOXYGEN_SHOULD_SKIP_THIS
+//#include <agrum/prm/o3prm/O3prmReader.h>
 
-      virtual void insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list ) {};
-      virtual void eraseEvidence( const Potential<GUM_SCALAR>* e ) {};
-      virtual void eraseAllEvidence() {};
-  };
+
+//#include <agrum/core/Rational.h> // custom decimal to rational
+//#include <agrum/core/pow.h> // custom pow functions with integers, faster implementation
+
+//>>>>>>> Bug found for test -t all : now use of string::size() instead of string::length()
+
+#include <agrum/CN/CredalNet.h>
+#include <agrum/CN/CNMonteCarloSampling.h>
+#include <agrum/CN/CNLoopyPropagation.h>
+
+#include <agrum/CN/LpInterface.h>
+
+#include <agrum/core/Rational.h>
+
+#define xstrfy(s) strfy(s)
+#define strfy(x) #x
+
+#define GET_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/cn/" #x
+
+void test_credal() {
+
+	/////////////// OMP test stuff ///////////////////
+
+  std::cout << "isOMP () ? : " << gum::isOMP() << std::endl;
+  std::cout << "threads : " << gum::getMaxNumberOfThreads() << std::endl;
+  gum::setNumberOfThreads( gum::getNumberOfLogicalProcessors()*2 );
+  std::cout << "new number : " << gum::getMaxNumberOfThreads() << std::endl;
+
+  std::cout << "number of procs : " << gum::getNumberOfLogicalProcessors() << std::endl;
+
+  //gum::setDynamicThreadsNumber(true);
+  //gum::setNestedParallelism(true);
+
+  std::cout << "dynamic threads : " << gum::getDynamicThreadsNumber() << std::endl;
+  std::cout << "nested parallelism : " << gum::getNestedParallelism() << std::endl;
+	std::cout << "thread limit : " << omp_get_thread_limit() << std::endl;
+	std::cout << "nested max level : " << omp_get_max_active_levels() << std::endl;
+
+	////////////////////////////////
+	
+	/*
+	gum::Rational< double >::testRationalAlgorithms();
+	return;
+	
+	gum::credal::CredalNet< double > nCN;
+	
+	gum::NodeId a = nCN.addNode( "toto", 2 );
+	gum::NodeId b = nCN.addNode( "titi", 3 );
+	gum::NodeId c = nCN.addNode( "tata", 3 );
+	
+	nCN.addArc( a, c );
+	nCN.addArc( b, c );
+	
+	std::vector< double > lower( 2, 0 );
+	std::vector< double > upper( 2, 1 );
+	
+	std::vector< std::vector< double > > v {{0.2, 0.8}};
+	std::vector< std::vector< double > > v1 {{0.2, 0.4, 0.4}};
+	
+	gum::Instantiation ins( nCN.current_bn().cpt( a ) );
+	nCN.setCPT(a, ins, v);
+	
+	ins = gum::Instantiation( nCN.current_bn().cpt( b ) );
+	nCN.setCPT(b, ins, v1);
+
+	ins = gum::Instantiation( nCN.current_bn().cpt( c ) );
+	
+	gum::credal::lp::LpInterface< double > llp;
+	auto cols = llp.addCols( 3 );
+	
+	for( ; ! ins.end(); ) {
+		for ( auto col : cols )
+			llp.addRow( rand() / RAND_MAX  <= col );
+		
+		llp.addRow( cols[ rand() % cols.size() ] <= cols[ rand() % cols.size() ] );
+		
+		llp.addSumIsOne ();
+		
+		nCN.setCPT(c, ins, llp.solve());
+		ins += 3; // card ( c ) = 3
+		
+		llp.clearRows();
+	}
+	
+	
+	//nCN.fillConstraints( a, lower, upper );
+	
+	//nCN.fillConstraints( b, std::vector< double >( 6, 0 ), std::vector< double >( 6, 1 ) );
+	
+	//nCN.intervalToCredal();
+	
+	std::cout << nCN.toString() << std::endl;	
+		
+	return;
+	*/
+	
+	/////////////////////////////
+	
+	/*
+	gum::credal::CredalNet< double > myCN ( GET_PATH_STR( numerators.bif ) );
+	myCN.idmLearning( 0, true );
+	std::cout << myCN.toString() << std::endl;
+	
+	gum::credal::CredalNet< double > myCN1 ( GET_PATH_STR( numerators.bif ) );
+	myCN1.lagrangeNormalization();
+	myCN1.idmLearning( 0, true );
+	std::cout << myCN1.toString() << std::endl;
+	
+	gum::credal::CredalNet< double > myCN2 ( GET_PATH_STR( numerators.bif ) );
+	myCN2.bnToCredal( 0.8, true, true );
+	std::cout << myCN2.toString() << std::endl;
+	
+	gum::credal::CredalNet< double > myCN3 ( GET_PATH_STR( numerators.bif ) );
+	myCN3.lagrangeNormalization();
+	*/
+	
+	/*myCN3.idmLearning( 10, true );
+	std::cout << myCN3.toString() << std::endl;*/
+	
+	/*
+	myCN3.bnToCredal( 0.8, true, true );
+	std::cout << myCN3.toString() << std::endl;
+	
+	return;
+	*/
+	
+	//////////////////////////////////
+	
+	
+	
+	std::cout << GET_PATH_STR ( bn_c.bif ) << std::endl;
+	
+	gum::BayesNet<double> monBNa;
+	gum::BIFReader< double > readera ( &monBNa, GET_PATH_STR ( gl2uERR_dts3_min.bif ) );
+	//GET_PATH_STR ( bn_c.bif ) );
+	readera.proceed();
+	
+	gum::BayesNet<double> monBNb;
+	gum::BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( gl2uERR_dts3_max.bif ) );
+	//GET_PATH_STR ( den_c.bif ) );
+	readerb.proceed();
+	
+	
+	// (G)(L)2U test
+	gum::credal::CredalNet<double> myCNb(monBNa, monBNb);
+	
+	//myCNb.bnToCredal(0.5);
+	
+	myCNb.intervalToCredal();//intervalToCredal();
+	//std::cout << "computing min/max vertex" << std::endl;
+	
+	
+	std::cout << myCNb.toString() << std::endl;
+	
+	myCNb.computeCPTMinMax();
+	gum::credal::CNLoopyPropagation<double> lp2 = gum::credal::CNLoopyPropagation<double>(myCNb);
+	lp2.makeInference();
+	
+	for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
+		unsigned int dSize = myCNb.src_bn().variable(*id).domainSize();
+		for( unsigned int mod = 0; mod < dSize; mod++ ) {
+			std::cout << "l2u p(" << myCNb.src_bn().variable(*id).name() << " = " << mod  << ") = [ " << lp2.marginalMin(*id)[mod] << ", " << lp2.marginalMax(*id)[mod] << " ] " << std::endl;
+		}
+	}
+	
+	gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double> > MCE( myCNb );
+	MCE.storeVertices(true);
+	MCE.makeInference();
+	
+	for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
+		unsigned int dSize = myCNb.src_bn().variable(*id).domainSize();
+		 for( unsigned int mod = 0; mod < dSize; mod++ ) {
+			 std::cout << "MC p(" << myCNb.src_bn().variable(*id).name() << " = " << mod  << ") = [ " << MCE.marginalMin(*id)[mod] << ", " << MCE.marginalMax(*id)[mod] << " ] " << std::endl;
+		 }
+		std::cout << "MC vertices of : " << myCNb.src_bn().variable(*id).name() << std::endl;
+		std::cout << MCE.vertices(*id) << std::endl;
+	}
+		 
+	return;
+	
+	
+	
+	gum::credal::CredalNet< double > cn ( GET_PATH_STR( /*gl2u2_*/2Umin.bif ), GET_PATH_STR( /*gl2u2_*/2Umax.bif ) );
+	cn.intervalToCredal();
+	std::cout << cn.toString() << std::endl;
+	
+	///cn.approximatedBinarization();
+	
+	gum::credal::CNMonteCarloSampling< double, gum::LazyPropagation< double > > mc ( cn );
+	//mc.setMaxTime ( 60 * 10 );
+	//mc.setPeriodSize ( 4000 );
+	mc.setMaxTime(1*60);
+	mc.setPeriodSize(1000);
+	mc.makeInference();
+	
+	for ( gum::DAG::NodeIterator id = cn.current_bn().beginNodes(); id != cn.current_bn().endNodes(); ++id ) {
+		unsigned int dSize = cn.current_bn().variable(*id).domainSize();
+		for( unsigned int mod = 0; mod < dSize; mod++ ) {
+			std::cout << "mc p(" << cn.current_bn().variable(*id).name() << " = " << mod  << ") = [ " << mc.marginalMin(*id)[mod] << ", " << mc.marginalMax(*id)[mod] << " ] " << std::endl;
+		}
+	}
+	
+	cn.approximatedBinarization();
+	
+	//std::cout << cn.toString() << std::endl;
+	
+	cn.computeCPTMinMax ();
+	
+	gum::credal::CNLoopyPropagation< double > lp ( cn );
+	
+	lp.makeInference();
+	
+	for ( gum::DAG::NodeIterator id = cn.current_bn().beginNodes(); id != cn.current_bn().endNodes(); ++id ) {
+		unsigned int dSize = cn.current_bn().variable(*id).domainSize();
+		for( unsigned int mod = 0; mod < dSize; mod++ ) {
+			std::cout << "l2u p(" << cn.current_bn().variable(*id).name() << " = " << mod  << ") = [ " << lp.marginalMin(*id)[mod] << ", " << lp.marginalMax(*id)[mod] << " ] " << std::endl;
+		}
+	}
 }
 
-int main( void ) {
-  gum::BayesNet<float> bn;
-
-  gum::BIFReader<float> reader( &bn, "tree.bif" ) );
-  reader.trace( true );
-
-  if( ! reader.proceed() ) {
-    reader.showElegantErrorsAndWarnings();
-    reader.showErrorCounts();
-    return false;
+int main ( int argc, char *argv[] ) {
+  try {
+    test_credal();
+		std::cout.flush();
+  } catch (gum::Exception& e) {
+    GUM_SHOWERROR(e);
   }
+  std::cout.clear();
+  std::cout << "Press ENTER to continue...";
+  std::cin.ignore( std::numeric_limits<std::streamsize>::max(), '\n' );
 
-  GUM_TRACE_VAR( bn );
-
-  gum::LoopyBeliefPropagation<float> inf( bn );
-  // inf .makeInference();
-//   for( gum::NodeId i=0; i<bn.size(); i++ ) {
-//     std::cout<<i<<" : "<<bn.variable( i ).name()<<" => "<<inf.marginal( i )<<std::endl;
-//   }
-  gum::LazyPropagation<float> inf1( bn );
-  inf1.makeInference();
-
-  for( gum::NodeId i=0; i<bn.size(); i++ ) {
-    std::cout<<i<<" : "<<bn.variable( i ).name()<<" => "<<inf1.marginal( i )<<std::endl;
-  }
-
-  gum::__atexit();
-
-//     const gum::NodeSet& p=bn.dag().parents(i);
-//     for (gum::NodeSet::const_iterator it=p.begin() ;;))
-//         *it <-
+  return EXIT_SUCCESS;
 }
-
-
-
-#endif // DOXYGEN_SHOULD_SKIP_THIS

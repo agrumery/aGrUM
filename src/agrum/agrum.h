@@ -49,25 +49,26 @@ Here is a list of howtos about some classes of aGrUM :
   \defgroup learning_group Tools for learning
   \defgroup signal_group Signaler and Listener
   \defgroup prm_group Probabilistic Relational Models
+  \defgroup fmdp_group Factored Markov Decision Process
+  \defgroup cn_group Credal Networks
 */
 
 /*! \page installing_agrum Installing the aGrUM library
-\section Installation 
+\section Installation
 
-aGrUM is in heavy developpement. Do not hesitate to have a look at http://agrum.lip6.fr to see which version you should use. 
+aGrUM is in heavy developpement. Do not hesitate to have a look at http://agrum.lip6.fr to see which version you should use.
 
 To install aGrUm :
-     
-\verbatim
-git clone git://forge.lip6.fr/aGrUM
-\endverbatim
 
-To test aGrUM, you could run (quite long)  
-\verbatim
-act test release -t all
-\endverbatim
+    git clone git://forge.lip6.fr/aGrUM
+
+
+To test aGrUM, you could run (quite long)
+
+    act test release -t all
 
 To install aGruM, you classically have the choice between :
+
 - system-wide installation : using root privilege
 \verbatim
 sudo act install release
@@ -96,32 +97,94 @@ set(aGrUM_DIR "${AGRUM_INSTALLATION_DIRECTORY}/lib/aGrUM/")
 find_package(aGrUM)
 
 if (aGrUM_FOUND)
-	include_directories(${AGRUM_INCLUDE_DIR})
-	link_directories(${AGRUM_LIB_DIR})
+  include_directories(${AGRUM_INCLUDE_DIR})
+  link_directories(${AGRUM_LIB_DIR})
 else (aGrUM_FOUND)
   message(FATAL_ERROR "Please install aGrUM")
 endif (aGrUM_FOUND)
 
-set(CMAKE_BUILD_TYPE Release)
+# cmake -DCMAKE_BUILD_TYPE=DEBUG 
+# or
+# cmake -DCMAKE_BUILD_TYPE=RELEASE 
+#     RELEASE is the default option (thanks to the next 3 lines)
+if( NOT CMAKE_BUILD_TYPE )
+  set( CMAKE_BUILD_TYPE Release)
+endif()
 
-file(GLOB FOO_SOURCE ${FOO_SOURCE_DIR}/*.cpp)
-file(GLOB FOO_INCLUDE ${FOO_SOURCE_DIR}/*.h)
+file(GLOB_RECURSE FOO_SOURCE ${FOO_SOURCE_DIR}/*.cpp)
+file(GLOB_RECURSE FOO_INCLUDE ${FOO_SOURCE_DIR}/*.h)
 
 add_executable (foo ${FOO_SOURCE})
-target_link_libraries(foo agrum)
+
+if ($CMAKE_BUILD_TYPE  STREQUAL "RELEASE") # release : act install release
+  target_link_libraries(foo agrum)
+else() # debug : act install debug
+  target_link_libraries(foo agrum-dbg)
+endif()
 \endverbatim
+
+- a small minimum src/example.cpp :
+\code
+#include <iostream>
+
+#include <agrum/core/hashTable.h>
+
+int main(void) {
+  gum::HashTable<std::string,int> h;
+
+  h.insert("Hello",1);
+  h.insert("World",2);
+
+  std::cout<<h<<std::endl;
+}
+\endcode
 
 - to compile the project (from the project folder)
 
 \verbatim
-mkdir build
-cd build
-cmake ../src/
-make
+    mkdir build
+    cd build
+    cmake ../src/
+    make
 \endverbatim
 
 - build/foo is the executable.
-    
+
 */
 
+/// gum is the global namespace for all aGrUM entities
+namespace gum {
+
+  /// Internal namespace for aGrUM signaler/listener components
+  namespace __sig__ {
+  }
+
+  /// Internal namespace for aGrUM debugging tools
+  namespace __debug__ {
+  }
+
+  /// Aggregators are functional description of CPTs
+  namespace aggregator {
+  }
+
+  /// Internal namespace for complexity tools (quite empty for now)
+  namespace complexity {
+  }
+
+  /// namespace for all credal networks entities
+  namespace credal {
+
+    ///namespace for constraint-based description of credal sets
+    namespace lp {
+    }
+  }
+
+  /// namespace for all particles for approximation inference based on simulation
+  namespace particle {
+  }
+
+  /// namespace for all probabilistic relational models entities
+  namespace prm {
+  }
+}
 #endif // CONFIG_H

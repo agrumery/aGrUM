@@ -19,8 +19,9 @@
  ***************************************************************************/
 
 #include <cxxtest/AgrumTestSuite.h>
-#include <agrum/core/list.h>
+#include "testsuite_utils.h"
 
+#include <agrum/core/list.h>
 
 namespace gum_tests {
 

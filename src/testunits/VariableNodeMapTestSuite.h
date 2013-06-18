@@ -22,6 +22,8 @@
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
+
 #include <agrum/BN/BayesNet.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/variables/labelizedVariable.h>
@@ -43,11 +45,11 @@ namespace gum_tests {
       gum::LabelizedVariable *var1, *var2, *var3, *var4, *var5;
 
       void setUp() {
-        var1 = new gum::LabelizedVariable( "var1", "1" );
-        var2 = new gum::LabelizedVariable( "var2", "2" );
-        var3 = new gum::LabelizedVariable( "var3", "3" );
-        var4 = new gum::LabelizedVariable( "var4", "4" );
-        var5 = new gum::LabelizedVariable( "var5", "5" );
+        var1 = new gum::LabelizedVariable ( "var1", "1" );
+        var2 = new gum::LabelizedVariable ( "var2", "2" );
+        var3 = new gum::LabelizedVariable ( "var3", "3" );
+        var4 = new gum::LabelizedVariable ( "var4", "4" );
+        var5 = new gum::LabelizedVariable ( "var5", "5" );
       }
 
 
@@ -61,129 +63,129 @@ namespace gum_tests {
 
       void testConstructor() {
         gum::BayesNet<float> *topology = NULL;
-        TS_GUM_ASSERT_THROWS_NOTHING( topology = new gum::BayesNet<float>() );
+        TS_GUM_ASSERT_THROWS_NOTHING ( topology = new gum::BayesNet<float>() );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( if( topology ) delete topology );
+        TS_GUM_ASSERT_THROWS_NOTHING ( if ( topology ) delete topology );
       }
 
       void testInsertion() {
         gum::BayesNet<float> topo;
         gum::List<gum::Id> idList;
 
-        TS_GUM_ASSERT_THROWS_NOTHING( idList.insert( topo.addVariable( *var1 ) ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( idList.insert( topo.addVariable( *var2 ) ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( idList.insert( topo.addVariable( *var3 ) ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( idList.insert( topo.addVariable( *var4 ) ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( idList.insert( topo.addVariable( *var5 ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( idList.insert ( topo.addVariable ( *var1 ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( idList.insert ( topo.addVariable ( *var2 ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( idList.insert ( topo.addVariable ( *var3 ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( idList.insert ( topo.addVariable ( *var4 ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( idList.insert ( topo.addVariable ( *var5 ) ) );
 
 
-        TS_ASSERT_EQUALS( topo.size(), ( gum::Size )5 );
-        TS_ASSERT_EQUALS( topo.dag().size(), ( gum::Size )5 );
+        TS_ASSERT_EQUALS ( topo.size(), ( gum::Size ) 5 );
+        TS_ASSERT_EQUALS ( topo.dag().size(), ( gum::Size ) 5 );
 
         gum::Id ind = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(
-          const gum::DiscreteVariable& varPtr = topo.variable( idList[0] );
-          ind =  topo.nodeId( varPtr );
+        TS_GUM_ASSERT_THROWS_NOTHING (
+          const gum::DiscreteVariable& varPtr = topo.variable ( idList[0] );
+          ind =  topo.nodeId ( varPtr );
         );
-        TS_ASSERT_EQUALS( idList[0], ind );
+        TS_ASSERT_EQUALS ( idList[0], ind );
 
-        TS_ASSERT_EQUALS( *( ( gum::LabelizedVariable* ) &topo.variable( idList[0] ) ), *var1 );
-        TS_ASSERT_EQUALS( *( ( gum::LabelizedVariable* ) &topo.variable( idList[1] ) ), *var2 );
-        TS_ASSERT_EQUALS( *( ( gum::LabelizedVariable* ) &topo.variable( idList[2] ) ), *var3 );
-        TS_ASSERT_EQUALS( *( ( gum::LabelizedVariable* ) &topo.variable( idList[3] ) ), *var4 );
-        TS_ASSERT_EQUALS( *( ( gum::LabelizedVariable* ) &topo.variable( idList[4] ) ), *var5 );
+        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable* ) &topo.variable ( idList[0] ) ), *var1 );
+        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable* ) &topo.variable ( idList[1] ) ), *var2 );
+        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable* ) &topo.variable ( idList[2] ) ), *var3 );
+        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable* ) &topo.variable ( idList[3] ) ), *var4 );
+        TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable* ) &topo.variable ( idList[4] ) ), *var5 );
       }
 
       void testArcInsertion() {
         gum::BayesNet<float> topo;
         gum::List<gum::Id> idList;
 
-        idList.insert( topo.addVariable( *var1 ) );
-        idList.insert( topo.addVariable( *var2 ) );
-        idList.insert( topo.addVariable( *var3 ) );
-        idList.insert( topo.addVariable( *var4 ) );
-        idList.insert( topo.addVariable( *var5 ) );
+        idList.insert ( topo.addVariable ( *var1 ) );
+        idList.insert ( topo.addVariable ( *var2 ) );
+        idList.insert ( topo.addVariable ( *var3 ) );
+        idList.insert ( topo.addVariable ( *var4 ) );
+        idList.insert ( topo.addVariable ( *var5 ) );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( topo.insertArc( idList[0], idList[2] ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( topo.insertArc( idList[2], idList[4] ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( topo.insertArc( idList[1], idList[3] ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( topo.insertArc( idList[0], idList[3] ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( topo.insertArc( idList[3], idList[4] ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( topo.insertArc( idList[1], idList[4] ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( topo.insertArc ( idList[0], idList[2] ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( topo.insertArc ( idList[2], idList[4] ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( topo.insertArc ( idList[1], idList[3] ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( topo.insertArc ( idList[0], idList[3] ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( topo.insertArc ( idList[3], idList[4] ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( topo.insertArc ( idList[1], idList[4] ) );
 
-        TS_ASSERT_EQUALS( topo.dag().sizeArcs(), ( gum::Size )6 );
+        TS_ASSERT_EQUALS ( topo.dag().sizeArcs(), ( gum::Size ) 6 );
       }
 
       void testEraseVar() {
         gum::BayesNet<float> topo;
         gum::List<gum::Id> idList;
 
-        TS_ASSERT( topo.empty() );
-        TS_ASSERT( topo.dag().empty() );
-        TS_ASSERT( topo.dag().emptyArcs() );
+        TS_ASSERT ( topo.empty() );
+        TS_ASSERT ( topo.dag().empty() );
+        TS_ASSERT ( topo.dag().emptyArcs() );
 
-        fill( topo, idList );
+        fill ( topo, idList );
 
-        TS_ASSERT( ! topo.empty() );
-        TS_ASSERT( ! topo.dag().empty() );
-        TS_ASSERT( ! topo.dag().emptyArcs() );
+        TS_ASSERT ( ! topo.empty() );
+        TS_ASSERT ( ! topo.dag().empty() );
+        TS_ASSERT ( ! topo.dag().emptyArcs() );
 
-        TS_ASSERT_EQUALS( topo.size(), ( gum::Size )5 );
-        TS_ASSERT_EQUALS( topo.dag().size(), ( gum::Size )5 );
-        TS_ASSERT_EQUALS( topo.dag().sizeArcs(), ( gum::Size )6 );
+        TS_ASSERT_EQUALS ( topo.size(), ( gum::Size ) 5 );
+        TS_ASSERT_EQUALS ( topo.dag().size(), ( gum::Size ) 5 );
+        TS_ASSERT_EQUALS ( topo.dag().sizeArcs(), ( gum::Size ) 6 );
 
-        for( gum::List<gum::Id>::iterator iter = idList.begin();
-             iter != idList.end();
-             ++iter ) {
-          topo.eraseVariable( *iter );
+        for ( gum::List<gum::Id>::iterator iter = idList.begin();
+              iter != idList.end();
+              ++iter ) {
+          topo.eraseVariable ( *iter );
         }
 
-        TS_ASSERT( topo.empty() );
+        TS_ASSERT ( topo.empty() );
 
-        TS_ASSERT( topo.dag().empty() );
-        TS_ASSERT( topo.dag().emptyArcs() );
+        TS_ASSERT ( topo.dag().empty() );
+        TS_ASSERT ( topo.dag().emptyArcs() );
 
-        TS_ASSERT_EQUALS( topo.size(), ( gum::Size )0 );
-        TS_ASSERT_EQUALS( topo.dag().size(), ( gum::Size )0 );
-        TS_ASSERT_EQUALS( topo.dag().sizeArcs(), ( gum::Size )0 );
+        TS_ASSERT_EQUALS ( topo.size(), ( gum::Size ) 0 );
+        TS_ASSERT_EQUALS ( topo.dag().size(), ( gum::Size ) 0 );
+        TS_ASSERT_EQUALS ( topo.dag().sizeArcs(), ( gum::Size ) 0 );
       }
 
       void testEraseArc() {
         gum::BayesNet<float> topo;
         gum::List<gum::Id> idList;
 
-        TS_ASSERT( topo.empty() );
-        TS_ASSERT( topo.dag().empty() );
-        TS_ASSERT( topo.dag().emptyArcs() );
+        TS_ASSERT ( topo.empty() );
+        TS_ASSERT ( topo.dag().empty() );
+        TS_ASSERT ( topo.dag().emptyArcs() );
 
-        fill( topo, idList );
+        fill ( topo, idList );
 
-        TS_ASSERT( ! topo.empty() );
-        TS_ASSERT( ! topo.dag().empty() );
-        TS_ASSERT( ! topo.dag().emptyArcs() );
+        TS_ASSERT ( ! topo.empty() );
+        TS_ASSERT ( ! topo.dag().empty() );
+        TS_ASSERT ( ! topo.dag().emptyArcs() );
 
-        TS_ASSERT_EQUALS( topo.size(), ( gum::Size )5 );
-        TS_ASSERT_EQUALS( topo.dag().size(), ( gum::Size )5 );
-        TS_ASSERT_EQUALS( topo.dag().sizeArcs(), ( gum::Size )6 );
+        TS_ASSERT_EQUALS ( topo.size(), ( gum::Size ) 5 );
+        TS_ASSERT_EQUALS ( topo.dag().size(), ( gum::Size ) 5 );
+        TS_ASSERT_EQUALS ( topo.dag().sizeArcs(), ( gum::Size ) 6 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( topo.eraseArc( gum::Arc( idList[0], idList[2] ) ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( topo.eraseArc( gum::Arc( idList[2], idList[4] ) ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( topo.eraseArc( gum::Arc( idList[1], idList[3] ) ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( topo.eraseArc( gum::Arc( idList[0], idList[3] ) ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( topo.eraseArc( gum::Arc( idList[3], idList[4] ) ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( topo.eraseArc( gum::Arc( idList[1], idList[4] ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( topo.eraseArc ( gum::Arc ( idList[0], idList[2] ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( topo.eraseArc ( gum::Arc ( idList[2], idList[4] ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( topo.eraseArc ( gum::Arc ( idList[1], idList[3] ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( topo.eraseArc ( gum::Arc ( idList[0], idList[3] ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( topo.eraseArc ( gum::Arc ( idList[3], idList[4] ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( topo.eraseArc ( gum::Arc ( idList[1], idList[4] ) ) );
 
-        TS_ASSERT( ! topo.empty() );
-        TS_ASSERT( ! topo.dag().empty() );
-        TS_ASSERT( topo.dag().emptyArcs() );
+        TS_ASSERT ( ! topo.empty() );
+        TS_ASSERT ( ! topo.dag().empty() );
+        TS_ASSERT ( topo.dag().emptyArcs() );
       }
 
       void testIterator() {
         gum::BayesNet<float> topo;
         gum::List<gum::Id> idList;
 
-        for( gum::DAG::NodeIterator iter = topo.beginNodes(); iter != topo.endNodes(); ++iter ) {
-          TS_ASSERT( idList.exists( *iter ) );
+        for ( gum::DAG::NodeIterator iter = topo.beginNodes(); iter != topo.endNodes(); ++iter ) {
+          TS_ASSERT ( idList.exists ( *iter ) );
         }
       }
 
@@ -191,29 +193,29 @@ namespace gum_tests {
         gum::BayesNet<float> topo;
         gum::List<gum::Id> idList;
 
-        fill( topo, idList );
+        fill ( topo, idList );
 
         gum::UndiGraph graph;
-        TS_GUM_ASSERT_THROWS_NOTHING( graph = topo.moralGraph() );
-        TS_ASSERT( graph == getRealMoralGraph( topo, idList ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( graph = topo.moralGraph() );
+        TS_ASSERT ( graph == getRealMoralGraph ( topo, idList ) );
       }
 
       void testTopologicalOrder() {
         gum::BayesNet<float> topo;
         gum::List<gum::Id> idList;
 
-        fill( topo, idList );
+        fill ( topo, idList );
 
         gum::Sequence<gum::NodeId> topoOrder;
         //TS_GUM_ASSERT_THROWS_NOTHING( topoOrder = topo.topologicalOrder() );
 
         try {
           topoOrder = topo.topologicalOrder();
-        } catch( gum::Exception& e ) {
-          GUM_SHOWERROR( e );
+        } catch ( gum::Exception& e ) {
+          GUM_SHOWERROR ( e );
         }
 
-        TS_ASSERT_EQUALS( topoOrder.size(), ( gum::Size )5 );
+        TS_ASSERT_EQUALS ( topoOrder.size(), ( gum::Size ) 5 );
       }
 
       void testTriangulation() {
@@ -234,35 +236,35 @@ namespace gum_tests {
       }
 
     private:
-      void fill( gum::BayesNet<float> &topo, gum::List<gum::Id> &idList ) {
-        idList.insert( topo.addVariable( *var1 ) );
-        idList.insert( topo.addVariable( *var2 ) );
-        idList.insert( topo.addVariable( *var3 ) );
-        idList.insert( topo.addVariable( *var4 ) );
-        idList.insert( topo.addVariable( *var5 ) );
+      void fill ( gum::BayesNet<float> &topo, gum::List<gum::Id> &idList ) {
+        idList.insert ( topo.addVariable ( *var1 ) );
+        idList.insert ( topo.addVariable ( *var2 ) );
+        idList.insert ( topo.addVariable ( *var3 ) );
+        idList.insert ( topo.addVariable ( *var4 ) );
+        idList.insert ( topo.addVariable ( *var5 ) );
 
-        topo.insertArc( idList[0], idList[2] );
-        topo.insertArc( idList[2], idList[4] );
-        topo.insertArc( idList[1], idList[3] );
-        topo.insertArc( idList[0], idList[3] );
-        topo.insertArc( idList[3], idList[4] );
-        topo.insertArc( idList[1], idList[4] );
+        topo.insertArc ( idList[0], idList[2] );
+        topo.insertArc ( idList[2], idList[4] );
+        topo.insertArc ( idList[1], idList[3] );
+        topo.insertArc ( idList[0], idList[3] );
+        topo.insertArc ( idList[3], idList[4] );
+        topo.insertArc ( idList[1], idList[4] );
       }
 
-      gum::UndiGraph getRealMoralGraph( const gum::BayesNet<float> &topo, gum::List<gum::Id> &idList ) {
+      gum::UndiGraph getRealMoralGraph ( const gum::BayesNet<float> &topo, gum::List<gum::Id> &idList ) {
         gum::UndiGraph graph;
 
-        graph.populateNodes( topo.dag() );
+        graph.populateNodes ( topo.dag() );
 
-        graph.insertEdge( idList[0], idList[2] );
-        graph.insertEdge( idList[0], idList[3] );
-        graph.insertEdge( idList[0], idList[1] );
-        graph.insertEdge( idList[2], idList[4] );
-        graph.insertEdge( idList[3], idList[4] );
-        graph.insertEdge( idList[2], idList[3] );
-        graph.insertEdge( idList[1], idList[3] );
-        graph.insertEdge( idList[1], idList[4] );
-        graph.insertEdge( idList[1], idList[2] );
+        graph.insertEdge ( idList[0], idList[2] );
+        graph.insertEdge ( idList[0], idList[3] );
+        graph.insertEdge ( idList[0], idList[1] );
+        graph.insertEdge ( idList[2], idList[4] );
+        graph.insertEdge ( idList[3], idList[4] );
+        graph.insertEdge ( idList[2], idList[3] );
+        graph.insertEdge ( idList[1], idList[3] );
+        graph.insertEdge ( idList[1], idList[4] );
+        graph.insertEdge ( idList[1], idList[2] );
 
         return graph;
       }

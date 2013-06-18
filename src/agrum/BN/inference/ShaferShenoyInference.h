@@ -281,4 +281,4 @@ namespace gum {
 // ============================================================================
 #endif /* GUM_SHAFER_SHENOY_INFERENCE_H */
 // ============================================================================
-// kate: indent-mode cstyle; space-indent on; indent-width 2; replace-tabs on;  replace-tabs on;  replace-tabs on;  replace-tabs on;
+// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;

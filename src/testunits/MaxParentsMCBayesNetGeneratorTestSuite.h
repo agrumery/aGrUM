@@ -22,6 +22,8 @@
 #include <vector>
 
 #include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
+
 #include <agrum/BN/generator/maxParentsMCBayesNetGenerator.h>
 #include <agrum/BN/generator/defaultCPTGenerator.h>
 #include <agrum/BN/generator/defaultCPTDisturber.h>

@@ -170,13 +170,13 @@ namespace gum {
     static bool first_time = true;
     if ( first_time ) {
       first_time = false;
-      debug::__inc_deletion( "Sequence", __FILE__, __LINE__, "destructor of",
+      __debug__::__inc_deletion( "Sequence", __FILE__, __LINE__, "destructor of",
                              ( void* ) &empty_seq );
-      debug::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
+      __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
                              ( void* ) &empty_seq );
-      debug::__inc_deletion( "SequenceIterator", __FILE__, __LINE__,
+      __debug__::__inc_deletion( "SequenceIterator", __FILE__, __LINE__,
                              "destructor of", ( void* ) &empty_seq );
-      debug::__inc_deletion( "SequenceIterator", __FILE__, __LINE__,
+      __debug__::__inc_deletion( "SequenceIterator", __FILE__, __LINE__,
                              "destructor of", ( void* ) &empty_seq );
     }
 #endif /* NDEBUG */

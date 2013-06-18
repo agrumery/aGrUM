@@ -1468,4 +1468,4 @@ namespace gum {
 #include <agrum/core/list.tcc>
 
 #endif  /* GUM_LIST_H */
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;

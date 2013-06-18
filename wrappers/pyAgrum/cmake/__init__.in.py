@@ -32,7 +32,18 @@ __license__ = __doc__
 __project_url__ = 'http://forge.lip6.fr/projects/pyagrum'
 
 # selection of imports extracted from dir(pyAgrum)
-from pyAgrum import Arc,BayesNet,BruteForceKL,DefaultInLabel,DiGraph,DiscreteVar,DiscretizedVar,DuplicateElement,DuplicateLabel,Edge,EmptyBSTree,EmptySet,Exception,FatalError,FormatNotFound,GUM_MAJOR_VERSION,GUM_MINOR_VERSION,GUM_PATCH_VERSION,GUM_VERSION,GibbsInference,GibbsKL,GraphError,IOError,IdError,Instantiation,InvalidArc,InvalidArgument,InvalidArgumentsNumber,InvalidDirectedCycle,InvalidEdge,InvalidNode,LabelizedVar,LazyPropagation,ListPotentials,NoChild,NoNeighbour,NoParent,NotFound,NullElement,OperationNotAllowed,OutOfBounds,OutOfLowerBound,OutOfUpperBound,Potential,PythonApproximationListener,PythonBNListener,PythonLoadListener,RangeVar,ReferenceError,Sequence_node,Sequence_string,SizeError,SyntaxError,UndefinedElement,UndefinedIteratorKey,UndefinedIteratorValue,Variable,Vector_double,WrongClassElement,WrongType,generateBN
+from pyAgrum import GUM_MAJOR_VERSION,GUM_MINOR_VERSION,GUM_PATCH_VERSION,GUM_VERSION
+from pyAgrum import Arc,Edge,BayesNet,DiGraph,Sequence_node,Sequence_string,Vector_double
+from pyAgrum import DiscreteVar,DiscretizedVar,Instantiation,LabelizedVar,RangeVar,Variable
+from pyAgrum import ListPotentials,Potential
+from pyAgrum import BruteForceKL,GibbsInference,GibbsKL,LazyPropagation
+from pyAgrum import PythonApproximationListener,PythonBNListener,PythonLoadListener
+from pyAgrum import generateBN
+
+from pyAgrum import isOMP,setNumberOfThreads,getNumberOfLogicalProcessors,getMaxNumberOfThreads
+from pyAgrum import CredalNet,CNMonteCarloSampling,CNLoopyPropagation
+
+from pyAgrum import DefaultInLabel,DuplicateElement,DuplicateLabel,EmptyBSTree,EmptySet,Exception,FatalError,FormatNotFound,GraphError,IOError,IdError,InvalidArc,InvalidArgument,InvalidArgumentsNumber,InvalidDirectedCycle,InvalidEdge,InvalidNode,NoChild,NoNeighbour,NoParent,NotFound,NullElement,OperationNotAllowed,OutOfBounds,OutOfLowerBound,OutOfUpperBound,ReferenceError,SizeError,SyntaxError,UndefinedElement,UndefinedIteratorKey,UndefinedIteratorValue
 
 
 def availableBNExts():

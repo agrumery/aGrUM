@@ -129,4 +129,4 @@ private:
 #include <agrum/influenceDiagram/generator/influenceDiagramGenerator.tcc>
 #endif /* GUM_INF_DIAG_GENERATOR_H */
 
-// kate: indent-mode cstyle; space-indent on; indent-width 0; 
+// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;

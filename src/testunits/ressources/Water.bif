@@ -2,7 +2,7 @@
 //% Preliminary model of the biological processes of a water purification
 //% plant.  The network consists of four structurally identical subnetworks,
 //% each representing a time slice of 15 minutes.  The network was developed
-//% by Finn V. Jensen, Uffe Kjærulff, Kristian G. Olesen, and Jan Pedersen.
+//% by Finn V. Jensen, Uffe Kjï¿½rulff, Kristian G. Olesen, and Jan Pedersen.
 //% 
 //% @TechReport{jensen:kjaerulff:olesen:etal:89,
 //%   author = 	"Finn V. Jensen and Uffe Kj{\ae}rulff and Kristian G.

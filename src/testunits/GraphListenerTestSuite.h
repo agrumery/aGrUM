@@ -19,7 +19,10 @@
  ***************************************************************************/
 
 #include <iostream>
+
 #include <cxxtest/AgrumTestSuite.h>
+#include "testsuite_utils.h"
+
 
 #include <agrum/graphs/graphElements.h>
 

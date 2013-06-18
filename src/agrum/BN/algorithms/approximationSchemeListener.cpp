@@ -29,17 +29,17 @@ namespace gum {
 
   ApproximationSchemeListener::ApproximationSchemeListener( const ApproximationSchemeListener& other ) :__sch(other.__sch){
     GUM_CONS_CPY( ApproximationSchemeListener );
-    GUM_ERROR( OperationNotAllowed,"No copy constructor for UndiGraphListener" );
+    GUM_ERROR( OperationNotAllowed,"No copy constructor for ApproximationSchemeListener" );
 
   }
 
   ApproximationSchemeListener::~ApproximationSchemeListener() {
-
+    GUM_DESTRUCTOR( ApproximationSchemeListener );
   }
 
   ApproximationSchemeListener& ApproximationSchemeListener::operator=( const ApproximationSchemeListener& other ) {
     GUM_CONS_CPY( ApproximationSchemeListener );
-    GUM_ERROR( OperationNotAllowed,"No copy constructor for UndiGraphListener" );
+    GUM_ERROR( OperationNotAllowed,"No copy constructor for ApproximationSchemeListener" );
   }
 
 }

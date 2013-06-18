@@ -1,0 +1,13 @@
+1- namespace credal
+
+2- renommer MCSampling -> CNMonteCarloSampling
+
+3- CNInferenceEngine vs. CNInferenceEngines ??
+
+4- attribut like mySomeThing ??
+
+5- OMPThread not in core ?? in gum_thread namespace ?? 
+  => in core
+  => in gum::omp namesapce (non ?)
+
+6- Ajouter les headers (licence+Authors) aux fichiers

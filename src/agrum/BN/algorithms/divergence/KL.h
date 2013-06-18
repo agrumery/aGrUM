@@ -30,12 +30,16 @@
 #include <agrum/core/sequence.h>
 #include <agrum/BN/BayesNet.h>
 
-extern std::vector< float > v;
-
 namespace gum {
 
+  namespace complexity {
+    enum difficulty {HEAVY,DIFFICULT,CORRECT};
+  }
+  
   /**
-  * KL is the base class for KL computation betweens 2 BNs.
+  * @class KL
+  * 
+  * @brief KL is the base class for KL computation betweens 2 BNs.
   *
   * KL is not virtual because it may be instantiated but protected methods throw gum::OperationNotAllow : we do not know here how the computation is done.
   * Since this computation may be very difficult, KL.difficulty() give an estimation ( KL_HEAVY,KL_DIFFICULT,KL_CORRECT ) of the needed time.
@@ -43,11 +47,6 @@ namespace gum {
   *
   * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a case, KL keeps working but trace this error (errorPQ() and errorQP())?
   */
-
-  namespace complexity {
-    enum difficulty {HEAVY,DIFFICULT,CORRECT};
-  }
-
   template<typename GUM_SCALAR> class KL {
       static const int GAP_heavy_difficult = 12;
       static const int GAP_difficult_correct = 7;
@@ -125,4 +124,4 @@ namespace gum {
 #include <agrum/BN/algorithms/divergence/KL.tcc>
 
 #endif //GUM_KL_H
-// kate: indent-mode cstyle; space-indent on; indent-width 2; 
+// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;

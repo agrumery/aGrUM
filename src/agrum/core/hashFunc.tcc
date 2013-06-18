@@ -385,7 +385,7 @@ namespace gum {
     return HashFunc<unsigned int*>::operator()( key.__refCountPtr() );
   }
 
-
+  
 } /* namespace gum */
 
 

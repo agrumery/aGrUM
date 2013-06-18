@@ -81,4 +81,4 @@ int __fillLoadListeners(std::vector<PythonLoadListener>& py_listener, PyObject *
   }
   
   return l_size;
-};
+}

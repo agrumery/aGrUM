@@ -25,8 +25,7 @@
 #include <sstream>
 
 #include <cxxtest/AgrumTestSuite.h>
-
-#include <agrum/config.h>
+#include "testsuite_utils.h"
 
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/potential.h>

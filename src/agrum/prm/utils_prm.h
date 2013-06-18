@@ -150,46 +150,47 @@
  *    gum::prm::ReferenceSlot which is not an array a gum::OutOfUpperBound will
  *    be raised.
 */
-namespace gum { namespace prm {
+namespace gum {
+  namespace prm {
 
-  /// Type for real numbers
-  typedef float prm_float;
+    /// Type for real numbers
+    typedef float prm_float;
 
-  /// Decompose a string in a vector of strings using "." as separators.
-  void decomposePath(const std::string& path, std::vector<std::string>& v);
+    /// Decompose a string in a vector of strings using "." as separators.
+    void decomposePath ( const std::string& path, std::vector<std::string>& v );
 
-  /**
-   * @brief Returns a copy of a Potential after applying a bijection over the variables in source.
-   * This copies the Potential source in a new Potential by permuting all variables in source with respect
-   * to bij.
-   *
-   * @warning This method in most case creates the new Potential using a gum::MultiDimBijArray, this means
-   *          that the created Potential holds a reference over source, so do not delete source if you
-   *          still need the created potential.
-   *
-   * @param bij A Bijection of DiscreteVariable where firsts are variables in source and seconds variables
-   *            added in the returned Potential.
-   * @param source The copied Potential.
-   * @return a pointer over a Potential which is a copy of source.
-   * @throw FatalError raised if an unknown MultiDimImplementation is encountered.
-   */
-  Potential<prm_float>* copyPotential(const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-                                      const Potential<prm_float>& source);
+    /**
+     * @brief Returns a copy of a Potential after applying a bijection over the variables in source.
+     * This copies the Potential source in a new Potential by permuting all variables in source with respect
+     * to bij.
+     *
+     * @warning This method in most case creates the new Potential using a gum::MultiDimBijArray, this means
+     *          that the created Potential holds a reference over source, so do not delete source if you
+     *          still need the created potential.
+     *
+     * @param bij A Bijection of DiscreteVariable where firsts are variables in source and seconds variables
+     *            added in the returned Potential.
+     * @param source The copied Potential.
+     * @return a pointer over a Potential which is a copy of source.
+     * @throw FatalError raised if an unknown MultiDimImplementation is encountered.
+     */
+    Potential<prm_float>* copyPotential ( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
+                                          const Potential<prm_float>& source );
 
-  Potential<float>* multPotential ( const Potential<float>& t1,
-                                    const Potential<float>& t2 );
-  /**
-   * @brief Proceeds with the elimination of var in pool.
-   * @param var The variable eliminated from every potentials in pool.
-   * @param pool A pool of potentials in wich the elimination of var is done.
-   * @param trash All create potentials are inserted in this set, useful to
-   *              delete later.
-   */
-  void eliminateNode(const DiscreteVariable* var,
-                     Set<Potential<prm_float>*>& pool,
-                     Set<Potential<prm_float>*>& trash);
+    Potential<float>* multPotential ( const Potential<float>& t1,
+                                      const Potential<float>& t2 );
+    /**
+     * @brief Proceeds with the elimination of var in pool.
+     * @param var The variable eliminated from every potentials in pool.
+     * @param pool A pool of potentials in wich the elimination of var is done.
+     * @param trash All create potentials are inserted in this set, useful to
+     *              delete later.
+     */
+    void eliminateNode ( const DiscreteVariable* var,
+                         Set<Potential<prm_float>*>& pool,
+                         Set<Potential<prm_float>*>& trash );
 
-} /* namespace prm */
+  } /* namespace prm */
 } /* namespace gum */
 
 #endif // GUM_UTILS_PRM_H
