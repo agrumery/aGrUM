@@ -156,33 +156,35 @@ namespace gum {
         // fill all the single target boxes of the current target set box
         CountingTreeTargetSetBox* set_box = **iter;
         for ( unsigned int i = 0; i < __db_single_target_ids->size (); ++i ) {
-          // fill the ith single target box
-          CountingTreeTargetBox*
-            single_box = set_box->child ( single_offset + i );
-          const CountingTreeTargetBox*
-            pair_box = set_box->child ( best_pair_index[i] );
+          if ( ! __single_not_paired[i] ) {
+            // fill the ith single target box
+            CountingTreeTargetBox*
+              single_box = set_box->child ( single_offset + i );
+            const CountingTreeTargetBox*
+              pair_box = set_box->child ( best_pair_index[i] );
 
-          // fill the countings for all the modalities of the single target
-          unsigned int pair_modal = __target_modalities[ best_pair_index[i] ];
-          unsigned int nb_modal1  = __target_modalities[ single_offset + i ];
-          unsigned int nb_modal2  = pair_modal / nb_modal1;
-          if ( is_best_pair_first_node[i] ) {
-            for ( unsigned int j = 0; j < nb_modal1; ++j ) {
-              unsigned int count = 0;
-              for ( unsigned int k = j; k < pair_modal; k+= nb_modal2 ) {
-                count += pair_box->nbRecords ( k );
+            // fill the countings for all the modalities of the single target
+            unsigned int pair_modal = __target_modalities[ best_pair_index[i] ];
+            unsigned int nb_modal1  = __target_modalities[ single_offset + i ];
+            unsigned int nb_modal2  = pair_modal / nb_modal1;
+            if ( is_best_pair_first_node[i] ) {
+              for ( unsigned int j = 0; j < nb_modal1; ++j ) {
+                unsigned int count = 0;
+                for ( unsigned int k = j; k < pair_modal; k+= nb_modal2 ) {
+                  count += pair_box->nbRecords ( k );
+                }
+                single_box->setNbRecords ( j , count );
               }
-              single_box->setNbRecords ( j , count );
             }
-          }
-          else {
-            for ( unsigned int j = 0, last = nb_modal2; j < nb_modal1;
-                  ++j, last += nb_modal2 ) {
-              unsigned int count = 0;
-              for ( unsigned int k = j * nb_modal2; k < last; ++k ) {
-                count += pair_box->nbRecords ( k );
+            else {
+              for ( unsigned int j = 0, last = nb_modal2; j < nb_modal1;
+                    ++j, last += nb_modal2 ) {
+                unsigned int count = 0;
+                for ( unsigned int k = j * nb_modal2; k < last; ++k ) {
+                  count += pair_box->nbRecords ( k );
+                }
+                single_box->setNbRecords ( j , count );
               }
-              single_box->setNbRecords ( j , count );
             }
           }
         }

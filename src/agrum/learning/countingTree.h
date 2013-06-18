@@ -187,6 +187,10 @@ namespace gum {
       const std::vector< std::pair<unsigned int,unsigned int> >*
       __db_pair_target_ids;
 
+      /// a vector indicating which single targets do not appear in pairs
+      std::vector<unsigned int> __single_not_paired_indices;
+      std::vector<unsigned int> __single_not_paired;
+
       /// the index in the target sets of a given db node id
       HashTable<unsigned int,unsigned int> __dbSingle2target;
 
@@ -253,6 +257,17 @@ namespace gum {
       void __fillTargetSingleSetBox ( CountingTreeTargetSetBox* box,
                                       const DatabaseIterator& iter );
 
+      /// parse one database record to fill a given target single node set box
+      /** Usually, when there exists pairs of targets, the single targets counts
+       * are computed from the counts of the pairs. However, it may happen that
+       * some algorithms compute both pairs and single targets in one pass. In
+       * such situations, it could be the case that a single target does not
+       * appear in any pair of targets. Method __fillTargetSingleSubsetBox is
+       * intended to compute the counts of such pairs from the database rather
+       * than from pair's counts. */
+      void __fillTargetSingleSubsetBox ( CountingTreeTargetSetBox* box,
+                                         const DatabaseIterator& iter );
+ 
       /// traverse the conditional nodes of the tree corresponding to one db record
       /** this method starts from the root of a conditional tree and traverses
        * the tree, constructing any conditional or target set box needed, until

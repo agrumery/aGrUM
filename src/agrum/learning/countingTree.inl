@@ -70,6 +70,21 @@ namespace gum {
     }
 
     
+    /// parse one database record to fill a given target single node set box
+    ALWAYS_INLINE void
+    CountingTree::__fillTargetSingleSubsetBox ( CountingTreeTargetSetBox* box,
+                                                const DatabaseIterator& iter ) {
+      // parse all the single targets for which we shall count the number of
+      // occurences in the database
+      for ( unsigned int i = 0; i < __single_not_paired_indices.size (); ++i ) {
+        const unsigned int index = __single_not_paired_indices[i];
+        box->incrementNbRecords ( __db_pair_target_ids->size() + index,
+                                  iter[__db_single_target_ids->operator[]
+                                       ( index ) ] );
+      }
+    }
+
+    
     /// traverse the conditional nodes of the tree corresponding to one db record
     ALWAYS_INLINE CountingTreeTargetSetBox*
     CountingTree::__fillConditioningBoxes ( const DatabaseIterator& iter ) {
@@ -152,9 +167,18 @@ namespace gum {
       __target_records.pushFront ( __root.TargetSet );
 
       // now, fill it by parsing the database
-      for ( DatabaseIterator iter = __database->begin ();
-            iter != __database->end (); ++iter ) {
-        __fillTargetPairSetBox ( __root.TargetSet, iter );
+      if ( __single_not_paired_indices.size () ) {
+        for ( DatabaseIterator iter = __database->begin ();
+              iter != __database->end (); ++iter ) {
+          __fillTargetPairSetBox ( __root.TargetSet, iter );
+          __fillTargetSingleSubsetBox ( __root.TargetSet, iter );
+        }
+      }
+      else {
+        for ( DatabaseIterator iter = __database->begin ();
+              iter != __database->end (); ++iter ) {
+          __fillTargetPairSetBox ( __root.TargetSet, iter );
+        }
       }
     }
 
@@ -191,21 +215,42 @@ namespace gum {
       }
       
       // now fill it by parsing the database
-      for ( DatabaseIterator iter = __database->begin ();
-            iter != __database->end (); ++iter ) {
-        CountingTreeTargetSetBox* target_box =__fillConditioningBoxes ( iter );
-        __fillTargetPairSetBox ( target_box, iter );
+      if ( __single_not_paired_indices.size () ) {
+        for ( DatabaseIterator iter = __database->begin ();
+              iter != __database->end (); ++iter ) {
+          CountingTreeTargetSetBox* target_box =__fillConditioningBoxes ( iter );
+          __fillTargetPairSetBox ( target_box, iter );
+          __fillTargetSingleSubsetBox ( target_box, iter );
+        }
+      }
+      else {
+        for ( DatabaseIterator iter = __database->begin ();
+              iter != __database->end (); ++iter ) {
+          CountingTreeTargetSetBox* target_box =__fillConditioningBoxes ( iter );
+          __fillTargetPairSetBox ( target_box, iter );
+        }
       }
     }
 
 
     /// fill a whole tree by parsing the complete database
     ALWAYS_INLINE void CountingTree::__refillConditionalPairTree () {
-      // fill the tree by parsing the database
-      for ( DatabaseIterator iter = __database->begin ();
-            iter != __database->end (); ++iter ) {
-        CountingTreeTargetSetBox* target_box =__fillConditioningBoxes ( iter );
-        __fillTargetPairSetBox ( target_box, iter );
+      if ( __single_not_paired_indices.size () ) {
+        // fill the tree by parsing the database
+        for ( DatabaseIterator iter = __database->begin ();
+              iter != __database->end (); ++iter ) {
+          CountingTreeTargetSetBox* target_box =__fillConditioningBoxes ( iter );
+          __fillTargetPairSetBox ( target_box, iter );
+          __fillTargetSingleSubsetBox ( target_box, iter );
+        }
+      }
+      else {
+        // fill the tree by parsing the database
+        for ( DatabaseIterator iter = __database->begin ();
+              iter != __database->end (); ++iter ) {
+          CountingTreeTargetSetBox* target_box =__fillConditioningBoxes ( iter );
+          __fillTargetPairSetBox ( target_box, iter );
+        }
       }
     }
 
@@ -253,12 +298,15 @@ namespace gum {
 
       // fill the pair target index and the target modalities
       __dbPair2target.clear ();
+      HashTable<unsigned int,bool> all_paired_ids ( 2 * __dbPair2target.size () );
       __target_modalities.resize ( db_single_ids.size () + db_pair_ids.size () );
       for ( unsigned int i = 0; i < db_pair_ids.size (); ++i ) {
         __dbPair2target.insert ( db_pair_ids[i], i );
         __target_modalities[i] =
           __database->nbrModalities ( db_pair_ids[i].first ) *
           __database->nbrModalities ( db_pair_ids[i].second );
+        all_paired_ids.set ( db_pair_ids[i].first, true );
+        all_paired_ids.set ( db_pair_ids[i].second, true );
       }
 
       // fill the single target index and the target modalities
@@ -269,6 +317,22 @@ namespace gum {
         __target_modalities[j] = __database->nbrModalities ( db_single_ids[i] );
       }
 
+      // compute which single target ids need to be computed from the database
+      // rather than from pairs
+      if ( db_pair_ids.size () ) {
+        __single_not_paired_indices.clear ();
+        __single_not_paired.resize ( db_single_ids.size () );
+        for ( unsigned int i = 0; i < db_single_ids.size (); ++i ) {
+          if ( ! all_paired_ids.exists ( db_single_ids[i] ) ) {
+            __single_not_paired_indices.push_back ( i );
+            __single_not_paired[i] = true;
+          }
+          else {
+            __single_not_paired[i] = false;
+          }
+        }
+      }
+             
       // remove the target trees, if any
       bool should_refill = false;
       if ( ! __last_cond_nodes.empty () ) {
