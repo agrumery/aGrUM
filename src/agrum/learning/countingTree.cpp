@@ -170,13 +170,15 @@ namespace gum {
             if ( is_best_pair_first_node[i] ) {
               for ( unsigned int j = 0; j < nb_modal1; ++j ) {
                 unsigned int count = 0;
-                for ( unsigned int k = j; k < pair_modal; k+= nb_modal2 ) {
+                for ( unsigned int k = j; k < pair_modal; k+= nb_modal1 ) {
                   count += pair_box->nbRecords ( k );
                 }
                 single_box->setNbRecords ( j , count );
               }
             }
             else {
+              // beware: here, nb_modal2 = domain size of the first variable
+              // and nb_modal1 = domain size of the second variable
               for ( unsigned int j = 0, last = nb_modal2; j < nb_modal1;
                     ++j, last += nb_modal2 ) {
                 unsigned int count = 0;

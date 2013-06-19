@@ -83,7 +83,7 @@ namespace gum {
             boxset->child ( i )->nbRecords ();
 
           // parse the records
-          score_i = -Nij * _logf ( Nij ); 
+          score_i = -Nij * _logf ( Nij );
           for ( unsigned int j = 0; j < single_records.size (); ++j ) {
             score_i += single_records[j] * _logf ( single_records[j] );
           }
