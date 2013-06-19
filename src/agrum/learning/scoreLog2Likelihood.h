@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for computing BIC scores
+ * @brief the class for computing Log2-likelihood scores
  *
  * The class should be used as follows: first, to speed-up computations, you
  * should consider computing all the scores conditioned to a given set of
@@ -33,8 +33,8 @@
  */
 
 
-#ifndef GUM_LEARNING_SCORE_BIC_H
-#define GUM_LEARNING_SCORE_BIC_H
+#ifndef GUM_LEARNING_SCORE_LOG2_LIKELIHOOD_H
+#define GUM_LEARNING_SCORE_LOG2_LIKELIHOOD_H
 
 
 #include <agrum/learning/asymmetricScore.h>
@@ -48,10 +48,10 @@ namespace gum {
     
     /* ========================================================================= */
     /* ========================================================================= */
-    /* ===                         SCORE BIC CLASS                           === */
+    /* ===                    SCORE LOG2 LIKELIHOOD CLASS                    === */
     /* ========================================================================= */
     /* ========================================================================= */
-    /** @class ScoreBIC the class for computing BIC scores
+    /** @class ScoreLog2Likelihood the class for computing log2-likelihood scores
      *
      * The class should be used as follows: first, to speed-up computations, you
      * should consider computing all the scores conditioned to a given set of
@@ -63,7 +63,7 @@ namespace gum {
      * have been performed, use methods score to retrieve the scores computed.
      * See the Score class for details. */
     /* ========================================================================= */
-    class ScoreBIC : public AsymmetricScore {
+    class ScoreLog2Likelihood : public AsymmetricScore {
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -76,27 +76,27 @@ namespace gum {
        * Parameter max_tree_size indicates which maximal size in bytes the tree
        * should have. This number is used approximately, i.e., we do not count
        * precisely the number of bytes used but we count them roughly. */
-      ScoreBIC ( const Database& database,
+       ScoreLog2Likelihood ( const Database& database,
                  unsigned int max_tree_size = 0 );
 
       /// destructor
-      ~ScoreBIC ();
+      ~ScoreLog2Likelihood ();
 
       /// @}
 
 
     protected:
-      /// computes the BIC score of a set of targets
+      /// computes the Log2Likelihood score of a set of targets
       /** @warning The function assumes that the counting tree has already been
        * constructed */
       void _computeScores ( const std::vector<unsigned int>& db_single_ids );
 
-      /// computes the BIC score of a set of targets
+      /// computes the Log2Likelihood score of a set of targets
       /** @warning The function assumes that the counting tree has already been
        * constructed */
       void _computeScores
       ( const std::vector< std::pair<unsigned int,
-        unsigned int> >& db_pair_ids );
+                                     unsigned int> >& db_pair_ids );
       
     };
     
@@ -107,4 +107,4 @@ namespace gum {
 } /* namespace gum */
 
 
-#endif /* GUM_LEARNING_SCORE_BIC_H */
+#endif /* GUM_LEARNING_SCORE_LOG2_LIKELIHOOD_H */

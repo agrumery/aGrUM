@@ -76,7 +76,7 @@ namespace gum {
        * Parameter max_tree_size indicates which maximal size in bytes the tree
        * should have. This number is used approximately, i.e., we do not count
        * precisely the number of bytes used but we count them roughly. */
-       ScoreAIC ( const Database& database,
+      ScoreAIC ( const Database& database,
                  unsigned int max_tree_size = 0 );
 
       /// destructor
@@ -96,7 +96,7 @@ namespace gum {
        * constructed */
       void _computeScores
       ( const std::vector< std::pair<unsigned int,
-                                     unsigned int> >& db_pair_ids );
+        unsigned int> >& db_pair_ids );
       
     };
     
