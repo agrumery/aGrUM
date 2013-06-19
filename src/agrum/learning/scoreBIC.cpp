@@ -58,8 +58,8 @@ namespace gum {
       // the penalty of the BIC score, i.e., -0.5 log(N) * (ri-1 ) * qi, but, here
       // we compute the common penalty to all the single nodes, i.e.,
       // -0.5 log(N) * qi
-      std::vector<float> score ( db_single_ids.size (), 0 );
-      float basic_penalty = 0.5f * log ( _database->nbrLines () );
+      std::vector<float> score ( db_single_ids.size (), 0.0f );
+      float basic_penalty = 0.5f * _logf ( _database->nbrLines () );
       for ( unsigned int i = 0; i < _db_conditioning_ids->size(); ++i ) {
         basic_penalty *=
           _database->nbrModalities ( _db_conditioning_ids->operator[] ( i ) );
@@ -83,9 +83,9 @@ namespace gum {
             boxset->child ( i )->nbRecords ();
 
           // parse the records
-          score_i = -Nij * log ( Nij ); 
-          for ( unsigned int j = 0; j < single_records.size (); ++j ) { 
-            score_i += single_records[j] * log ( single_records[j] );
+          score_i = -Nij * _logf ( Nij ); 
+          for ( unsigned int j = 0; j < single_records.size (); ++j ) {
+            score_i += single_records[j] * _logf ( single_records[j] );
           }
           score[i] += score_i;
         }
@@ -94,8 +94,9 @@ namespace gum {
       // now, store the result into the Score class _single_scores field
       for ( unsigned int i = 0; i < db_single_ids.size (); ++i ) {
         _single_scores.insert
-          ( db_single_ids[i], score[i] - basic_penalty *
-            ( _database->nbrModalities ( db_single_ids[i] ) - 1 ) );
+          ( db_single_ids[i],
+            ( score[i] - basic_penalty *
+              ( _database->nbrModalities ( db_single_ids[i] ) - 1 ) ) * _1log2 );
       }
     }
 
@@ -110,7 +111,7 @@ namespace gum {
       // we compute the common penalty to all the pairs of target nodes, i.e.,
       // -0.5 log(N) * qi
       std::vector<float> score ( db_pair_ids.size (), 0 );
-      float basic_penalty = 0.5f * log ( _database->nbrLines () );
+      float basic_penalty = 0.5f * _logf ( _database->nbrLines () );
       for ( unsigned int i = 0; i < _db_conditioning_ids->size(); ++i ) {
         basic_penalty *=
           _database->nbrModalities ( _db_conditioning_ids->operator[] ( i ) );
@@ -145,11 +146,11 @@ namespace gum {
           for ( unsigned int j = 0; j < single_records.size (); ++j ) {
             // get the number Nij of occurences of the parents
             const float Nij = single_records[j];
-            score_i -= Nij * log ( Nij );
+            score_i -= Nij * _logf ( Nij );
 
             for ( unsigned int k = j; k < pair_records.size ();
                   k += single_records.size () ) {
-              score_i += pair_records[k] * log ( pair_records[k] );
+              score_i += pair_records[k] * _logf ( pair_records[k] );
             }
           }
           score[i] += score_i;
@@ -158,13 +159,12 @@ namespace gum {
 
       // now, store the result into the Score class _pair_scores field
       for ( unsigned int i = 0; i < db_pair_ids.size (); ++i ) {
-        std::cout << score[i] << "  " << (basic_penalty *
-            _database->nbrModalities ( db_pair_ids[i].first ) *
-            ( _database->nbrModalities ( db_pair_ids[i].second ) - 1 )) << std::endl;
         _pair_scores.insert
-          ( db_pair_ids[i], score[i] - basic_penalty *
-            _database->nbrModalities ( db_pair_ids[i].first ) *
-            ( _database->nbrModalities ( db_pair_ids[i].second ) - 1 ) );
+          ( db_pair_ids[i],
+            ( score[i] - basic_penalty *
+              _database->nbrModalities ( db_pair_ids[i].first ) *
+              ( _database->nbrModalities ( db_pair_ids[i].second ) - 1 ) ) *
+            _1log2  );
       }
     }
     

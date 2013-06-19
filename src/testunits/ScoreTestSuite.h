@@ -42,15 +42,15 @@ namespace gum_tests {
       db_single_target_ids.push_back ( 1 );
       score.computeScores ( db_single_target_ids );
 
-      TS_ASSERT ( fabs ( score.score ( 3 ) + 689.649 ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( 1 ) + 2100.161 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( 3 ) + 994.953  ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( 1 ) + 3029.892 ) <= 0.01 );
 
 
       db_single_target_ids[0] = 0;
       db_single_target_ids[1] = 2;
       score.computeScores ( db_single_target_ids );
-      TS_ASSERT ( fabs ( score.score ( 0 ) + 6935.920 ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( 2 ) + 6887.190 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( 0 ) + 10006.417 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( 2 ) + 9936.115  ) <= 0.01 );
 
       // add pairs
       std::pair<unsigned int,unsigned int> p23 (2,3);
@@ -62,11 +62,176 @@ namespace gum_tests {
       db_pair_target_ids.push_back ( p01 );
       score.computeScores ( db_pair_target_ids );      
 
-      TS_ASSERT ( fabs ( score.score ( p23 ) + 694.075  ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( p32 ) + 6891.619 ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( p01 ) + 1865.902 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( p23 ) + 1001.338  ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( p32 ) + 9942.504 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( p01 ) + 2691.927 ) <= 0.01 );
+
+      score.computeScores ( db_pair_target_ids );      
+
+      TS_ASSERT ( fabs ( score.score ( p23 ) + 1001.338 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( p32 ) + 9942.504 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( p01 ) + 2691.927 ) <= 0.01 );
 
       
+      db_conditioning_ids.clear ();
+      db_conditioning_ids.push_back  ( 4 );
+      db_single_target_ids.clear ();
+      db_single_target_ids.push_back ( 3 );
+      db_single_target_ids.push_back ( 1 );
+      score.computeScores ( db_conditioning_ids, db_single_target_ids );
+
+      TS_ASSERT ( fabs ( score.score ( 3 ) + 991.688  ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( 1 ) + 3030.851 ) <= 0.01 );      
+
+      score.computeScores ( db_conditioning_ids, db_pair_target_ids );
+      TS_ASSERT ( fabs ( score.score ( p23 ) + 1004.619 ) <= 0.01 );      
+      TS_ASSERT ( fabs ( score.score ( p32 ) + 9952.828 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( p01 ) + 2700.123 ) <= 0.01 );
+
+
+      db_conditioning_ids.clear ();
+      db_conditioning_ids.push_back  ( 1 );
+      db_conditioning_ids.push_back  ( 2 );
+      db_pair_target_ids.clear ();
+      std::pair<unsigned int,unsigned int> p12 (1,2);
+      std::pair<unsigned int,unsigned int> p34 (3,4);
+      db_pair_target_ids.push_back ( p12 );
+      db_pair_target_ids.push_back ( p34 );
+      score.computeScores ( db_conditioning_ids, db_pair_target_ids );
+      TS_ASSERT ( fabs ( score.score ( p12 ) + 53.151 ) <= 0.01 );      
+      TS_ASSERT ( fabs ( score.score ( p34 ) + 997.184 ) <= 0.01 );      
+
+
+      
+      score.setMaxSize ( 1 );
+
+      
+      score.computeScores ( db_conditioning_ids, db_pair_target_ids );
+      TS_ASSERT ( fabs ( score.score ( p12 ) + 53.151 ) <= 0.01 );      
+      TS_ASSERT ( fabs ( score.score ( p34 ) + 997.184 ) <= 0.01 );      
+
+      db_conditioning_ids.clear ();
+      db_single_target_ids.clear ();
+      db_single_target_ids.push_back ( 3 );
+      db_single_target_ids.push_back ( 1 );
+      score.computeScores ( db_single_target_ids );
+      TS_ASSERT ( fabs ( score.score ( 3 ) + 994.953  ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( 1 ) + 3029.892 ) <= 0.01 );
+
+      db_single_target_ids[0] = 0;
+      db_single_target_ids[1] = 2;
+      score.computeScores ( db_single_target_ids );
+      TS_ASSERT ( fabs ( score.score ( 0 ) + 10006.417 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( 2 ) + 9936.115  ) <= 0.01 );
+
+      db_pair_target_ids.clear ();
+      db_pair_target_ids.push_back ( p23 );
+      db_pair_target_ids.push_back ( p32 );
+      db_pair_target_ids.push_back ( p01 );
+      score.computeScores ( db_pair_target_ids );      
+
+      TS_ASSERT ( fabs ( score.score ( p23 ) + 1001.338  ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( p32 ) + 9942.504 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( p01 ) + 2691.927 ) <= 0.01 );
+
+      score.computeScores ( db_pair_target_ids );      
+
+      TS_ASSERT ( fabs ( score.score ( p23 ) + 1001.338 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( p32 ) + 9942.504 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( p01 ) + 2691.927 ) <= 0.01 );
+
+
+
+      score.setMaxSize ( 100 );
+       
+      db_conditioning_ids.clear ();
+      db_conditioning_ids.push_back  ( 1 );
+      db_conditioning_ids.push_back  ( 2 );
+      db_pair_target_ids.clear ();
+      db_pair_target_ids.push_back ( p12 );
+      db_pair_target_ids.push_back ( p34 );
+      score.computeScores ( db_conditioning_ids, db_pair_target_ids );
+     
+      TS_ASSERT ( fabs ( score.score ( p12 ) + 53.151 ) <= 0.01 );      
+      TS_ASSERT ( fabs ( score.score ( p34 ) + 997.184 ) <= 0.01 );      
+
+      db_conditioning_ids.clear ();
+      db_single_target_ids.clear ();
+      db_single_target_ids.push_back ( 3 );
+      db_single_target_ids.push_back ( 1 );
+      score.computeScores ( db_single_target_ids );
+      TS_ASSERT ( fabs ( score.score ( 3 ) + 994.953  ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( 1 ) + 3029.892 ) <= 0.01 );
+
+      db_single_target_ids[0] = 0;
+      db_single_target_ids[1] = 2;
+      score.computeScores ( db_single_target_ids );
+      TS_ASSERT ( fabs ( score.score ( 0 ) + 10006.417 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( 2 ) + 9936.115  ) <= 0.01 );
+
+      db_pair_target_ids.clear ();
+      db_pair_target_ids.push_back ( p23 );
+      db_pair_target_ids.push_back ( p32 );
+      db_pair_target_ids.push_back ( p01 );
+     
+      score.computeScores ( db_pair_target_ids );      
+
+      TS_ASSERT ( fabs ( score.score ( p23 ) + 1001.338  ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( p32 ) + 9942.504 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( p01 ) + 2691.927 ) <= 0.01 );
+
+      score.computeScores ( db_pair_target_ids );      
+
+      TS_ASSERT ( fabs ( score.score ( p23 ) + 1001.338 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( p32 ) + 9942.504 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( p01 ) + 2691.927 ) <= 0.01 );
+
+
+
+      score.setMaxSize ( 32 );
+       
+      db_conditioning_ids.clear ();
+      db_conditioning_ids.push_back  ( 1 );
+      db_conditioning_ids.push_back  ( 2 );
+      db_pair_target_ids.clear ();
+      db_pair_target_ids.push_back ( p12 );
+      db_pair_target_ids.push_back ( p34 );
+      score.computeScores ( db_conditioning_ids, db_pair_target_ids );
+     
+      TS_ASSERT ( fabs ( score.score ( p12 ) + 53.151 ) <= 0.01 );      
+      TS_ASSERT ( fabs ( score.score ( p34 ) + 997.184 ) <= 0.01 );      
+
+      db_conditioning_ids.clear ();
+      db_single_target_ids.clear ();
+      db_single_target_ids.push_back ( 3 );
+      db_single_target_ids.push_back ( 1 );
+      score.computeScores ( db_single_target_ids );
+      TS_ASSERT ( fabs ( score.score ( 3 ) + 994.953  ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( 1 ) + 3029.892 ) <= 0.01 );
+
+      db_single_target_ids[0] = 0;
+      db_single_target_ids[1] = 2;
+      score.computeScores ( db_single_target_ids );
+      TS_ASSERT ( fabs ( score.score ( 0 ) + 10006.417 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( 2 ) + 9936.115  ) <= 0.01 );
+
+      db_pair_target_ids.clear ();
+      db_pair_target_ids.push_back ( p23 );
+      db_pair_target_ids.push_back ( p32 );
+      db_pair_target_ids.push_back ( p01 );
+     
+      score.computeScores ( db_pair_target_ids );      
+
+      TS_ASSERT ( fabs ( score.score ( p23 ) + 1001.338  ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( p32 ) + 9942.504 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( p01 ) + 2691.927 ) <= 0.01 );
+
+      score.computeScores ( db_pair_target_ids );      
+
+      TS_ASSERT ( fabs ( score.score ( p23 ) + 1001.338 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( p32 ) + 9942.504 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( p01 ) + 2691.927 ) <= 0.01 );
+
     }
 
 

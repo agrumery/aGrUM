@@ -32,11 +32,29 @@ namespace gum {
   namespace learning {
 
     
+    /// returns the log in base 2
+    ALWAYS_INLINE float Score::_logf ( unsigned int x ) const {
+      if (x < __has_logf.size () ) {
+        if ( __has_logf[x] ) {
+          return __logf[x];
+        }
+        else {
+          __has_logf[x] = true;
+          __logf[x] = logf ( x );
+          return __logf[x];
+        }
+      }
+      else {
+        return logf ( x );
+      }
+    }
+      
+    
     /// modifies the max size of the counting trees
     ALWAYS_INLINE void Score::setMaxSize ( unsigned int new_size ) {
       // mostly, the memory used by CountingTree boxes is for storing
       // counts, i.e., they are unsigned ints
-      __max_tree_size = new_size / sizeof (unsigned int); 
+      __max_tree_size = ceilf ( (float ) new_size / sizeof (unsigned int) );
     }
 
     
@@ -73,12 +91,12 @@ namespace gum {
         unsigned int current_size = 0;
         unsigned int i = 0;
         ids.resize ( db_single_ids.size () );
-        for ( unsigned int j = current_index; j < db_single_ids.size ();
-              ++j, ++i ) {
-          current_size += _database->nbrModalities ( db_single_ids[j] );
-          ids[i] = db_single_ids[j];
+        for ( ; current_index < db_single_ids.size (); ++current_index, ++i ) {
+          current_size +=
+            _database->nbrModalities ( db_single_ids[current_index] );
+          ids[i] = db_single_ids[current_index];
           if ( current_size >= __max_tree_size ) {
-            current_index = j+1;
+            ++current_index;
             ++i;
             break;
           }
@@ -136,13 +154,12 @@ namespace gum {
         unsigned int current_size = size;
         unsigned int i = 0;
         ids.resize ( db_single_ids.size () );
-        for ( unsigned int j = current_index; j < db_single_ids.size ();
-              ++j, ++i ) {
+        for ( ; current_index < db_single_ids.size (); ++current_index, ++i ) {
           current_size +=
-            cond_size * _database->nbrModalities ( db_single_ids[j] );
-          ids[i] = db_single_ids[j];
+            cond_size * _database->nbrModalities ( db_single_ids[current_index] );
+          ids[i] = db_single_ids[current_index];
           if ( current_size >= __max_tree_size ) {
-            current_index = j+1;
+            ++current_index;
             ++i;
             break;
           }
@@ -201,13 +218,13 @@ namespace gum {
         unsigned int current_size = 0;
         unsigned int i = 0;
         ids.clear ();
-        for ( unsigned int j = current_index; j < db_pair_ids.size ();
-              ++j, ++i ) {
-          current_size += _database->nbrModalities ( db_pair_ids[j].first ) *
-            _database->nbrModalities ( db_pair_ids[j].second );
-          ids.push_back ( db_pair_ids[j] );
+        for ( ; current_index < db_pair_ids.size (); ++current_index, ++i ) {
+          current_size +=
+            _database->nbrModalities ( db_pair_ids[current_index].first ) *
+            _database->nbrModalities ( db_pair_ids[current_index].second );
+          ids.push_back ( db_pair_ids[current_index] );
           if ( current_size >= __max_tree_size ) {
-            current_index = j+1;
+            ++current_index;
             ++i;
             break;
           }
@@ -273,13 +290,14 @@ namespace gum {
         unsigned int current_size = size;
         unsigned int i = 0;
         ids.clear ();
-        for ( unsigned int j = current_index; j < db_pair_ids.size ();
-              ++j, ++i ) {
-          current_size += _database->nbrModalities ( db_pair_ids[j].first ) *
-            _database->nbrModalities ( db_pair_ids[j].second ) * cond_size;
-          ids.push_back ( db_pair_ids[j] );
+        for ( ; current_index < db_pair_ids.size (); ++current_index, ++i ) {
+          current_size +=
+            _database->nbrModalities ( db_pair_ids[current_index].first ) *
+            _database->nbrModalities ( db_pair_ids[current_index].second ) *
+            cond_size;
+          ids.push_back ( db_pair_ids[current_index] );
           if ( current_size >= __max_tree_size ) {
-            current_index = j+1;
+            ++current_index;
             ++i;
             break;
           }

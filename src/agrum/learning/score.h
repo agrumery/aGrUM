@@ -205,6 +205,9 @@ namespace gum {
       /// the scores for the pairs of target nodes
       HashTable<std::pair<unsigned int,unsigned int>,float> _pair_scores;
 
+      /// 1 / log(2)
+      const float _1log2;
+
 
     private:
       /// the max size of the tree
@@ -216,7 +219,11 @@ namespace gum {
       /// an empty set of target pairs
       std::vector< std::pair<unsigned int, unsigned int> > __empty_pair_set;
 
+      /// preprocess for the log2f
+      mutable std::vector<float> __logf;
+      mutable std::vector<bool>  __has_logf;
 
+       
     protected:
       // ##########################################################################
       // the real computations of the score given an already constructed tree
@@ -240,7 +247,10 @@ namespace gum {
       _computeScores
       ( const std::vector< std::pair<unsigned int,
         unsigned int> >& db_pair_ids ) = 0;
-      
+
+
+      /// returns the log of an integer (might use a cache to speed-up)
+      float _logf ( unsigned int x ) const;
 
       
       // ##########################################################################

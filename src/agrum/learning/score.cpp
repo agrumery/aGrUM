@@ -26,12 +26,16 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
+#include <cmath>
 #include <agrum/learning/score.h>
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
 #include <agrum/learning/score.inl>
 #endif /* GUM_NO_INLINE */
+
+
+#define MAX_LOG2F_SIZE 100000
 
 
 namespace gum {
@@ -46,6 +50,7 @@ namespace gum {
       _database ( &database ),
       _tree ( database ),
       _db_conditioning_ids ( &__empty_cond_set ),
+      _1log2 ( M_LOG2E ),
       __max_tree_size ( max_tree_size ) {
       // for debugging purposes
       GUM_CONSTRUCTOR ( Score );
@@ -53,6 +58,16 @@ namespace gum {
       // resize the single scores so that it speeds-up computations
       _single_scores.resize ( 2 * _database->nbrNodes () );
       _pair_scores.resize ( 2 * _database->nbrNodes () );
+
+      // fill the log2f
+      unsigned int size = 1 + database.nbrLines ();
+      if ( size > MAX_LOG2F_SIZE ) size = MAX_LOG2F_SIZE;
+      __logf.resize ( size );
+      __has_logf.resize ( size, false );
+
+      // by default, log(0) = 0 because all scores compute things like xlog(x)
+      __has_logf[0] = true;
+      __logf[0] = 0.0f;
     }
 
     

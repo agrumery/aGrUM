@@ -82,9 +82,9 @@ namespace gum {
             boxset->child ( i )->nbRecords ();
 
           // parse the records
-          score_i = -Nij * log ( Nij ); 
+          score_i = -Nij * _logf ( Nij ); 
           for ( unsigned int j = 0; j < single_records.size (); ++j ) { 
-            score_i += single_records[j] * log ( single_records[j] );
+            score_i += single_records[j] * _logf ( single_records[j] );
           }
           score[i] += score_i;
         }
@@ -93,7 +93,7 @@ namespace gum {
       // now, store the result into the Score class _single_scores field
       for ( unsigned int i = 0; i < db_single_ids.size (); ++i ) {
         _single_scores.insert
-          ( db_single_ids[i], score[i] - basic_penalty *
+          ( db_single_ids[i], score[i] * _1log2 - basic_penalty *
             ( _database->nbrModalities ( db_single_ids[i] ) - 1 ) );
       }
     }
@@ -143,11 +143,11 @@ namespace gum {
           for ( unsigned int j = 0; j < single_records.size (); ++j ) {
             // get the number Nij of occurences of the parents
             const float Nij = single_records[j];
-            score_i -= Nij * log ( Nij );
+            score_i -= Nij * _logf ( Nij );
 
             for ( unsigned int k = j; k < pair_records.size ();
                   k += single_records.size () ) {
-              score_i += pair_records[k] * log ( pair_records[k] );
+              score_i += pair_records[k] * _logf ( pair_records[k] );
             }
           }
           score[i] += score_i;
@@ -157,7 +157,7 @@ namespace gum {
       // now, store the result into the Score class _pair_scores field
       for ( unsigned int i = 0; i < db_pair_ids.size (); ++i ) {
         _pair_scores.insert
-          ( db_pair_ids[i], score[i] - basic_penalty *
+          ( db_pair_ids[i], score[i] * _1log2 - basic_penalty *
             _database->nbrModalities ( db_pair_ids[i].first ) *
             ( _database->nbrModalities ( db_pair_ids[i].second ) - 1 ) );
       }
