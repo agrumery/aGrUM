@@ -40,24 +40,34 @@ def getPosterior(bn,ev,target):
     inf.makeInference()
     return inf.marginal(bn.idFromName(target))
 
-def showProba(p):
-    """
-    Show a matplotlib barh (horizontal histogram) for a Potential p.
-
-    """
+def barProba(fig,ax,p,absolute_scale):
     var=p.variable(0)
-    ra=np.arange(len(var))
-    vx=[var.label(int(i)) for i in ra]
-
-    fig=plt.figure()
-    ax=fig.add_subplot(111)
-
-    ax.barh(ra,p.tolist(),align='center')
-    ax.set_yticks(ra)
-    ax.set_yticklabels(vx)
+    vals=p.tolist()
+    ra=np.arange(len(vals))
+    width=0.7
+    vx=["P("+var.name()+"="+var.label(int(i))+")="+str(vals[int(i)]) for i in ra]
+    ax.barh(ra,vals,width,align='center')
+    plt.yticks(ra,vx)
+    
+    if absolute_scale:
+        ax.set_xticks(arange(0,1.1,0.1))
+        
     ax.set_xlabel('Probability')
     ax.set_title(var.name())
     ax.get_xaxis().grid(True)
+    ax.set_ylim(ax.get_ylim()[::-1])
+    
+def showProba(p,absolute_scale=False):
+    """
+    Show a matplotlib barh (horizontal histogram) for a Potential p.
+
+    if absolute_scale if True, xaxis=[0,1]
+    """
+    fig=plt.figure()
+    
+    ax=fig.add_subplot(111)    
+    barProba(fig,ax,p,absolute_scale)
+   
     plt.show()
 
 def showPosterior(bn,ev,target):
