@@ -84,7 +84,6 @@ namespace gum_tests {
         //#ifdef NDEBUG
         gum::setNumberOfThreads ( 1 );
         //#endif
-        GUM_TRACE ( GET_CN_PATH_STR ( 2Umin.bif ) );
         gum::BayesNet<double> monBNa;
         gum::BIFReader< double > readera ( &monBNa, GET_CN_PATH_STR ( 2Umin.bif ) );
         readera.proceed();
