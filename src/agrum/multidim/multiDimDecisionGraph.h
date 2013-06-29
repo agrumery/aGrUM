@@ -20,7 +20,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of gum::MultiDimImplementation.
+ * @brief Headers of gum::MultiDimDecisionGraph.
  *
  * @author Jean-Christophe Magnan
  *
@@ -31,15 +31,17 @@
 // ============================================================================
 #include <agrum/config.h>
 // ============================================================================
+#include <agrum/graphs/graphElements.h>
+// ============================================================================
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimDecisionGraphManager.h>
 // ============================================================================
 
 namespace gum {
 
-  friend class MultiDimDecisionGraphManager;
   /**
    * @class MultiDimDecisionGraph multiDimDecisionGraph.h <agrum/multidim/multiDimDecisionGraph.h>
+   *
    * @brief Class implementingting a decision graph
    * For description of general methods, please refer to multidimdecisiondiagrambase
    * For specific implementation and use of multidimdecisiondiagram this is the right place :
@@ -50,315 +52,351 @@ namespace gum {
    * you just have to declare MultiDimDecisionDiagram<GUM_SCALAR> and play with.
    * If you want to use a different approximation pattern, just MultiDimDecisionDiagram<GUM_SCALAR, CLASS_DESCRIBING_NEW_PATTERN>.
    * Therefor, if do operation on MultiDimDecisionDiagram the return type will likely be MultiDimDecisionDiagramBase
-   * @ingroup multidim_group
    *
+   * @ingroup multidim_group
    */
   template<typename GUM_SCALAR>
   class MultiDimDecisionGraph : public MultiDimImplementation< GUM_SCALAR > {
 
-  public:
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
-      // ============================================================================
-      /// Default constructor.
-      // ============================================================================
-      MultiDimDecisionGraph();
+    friend class MultiDimDecisionGraphManager;
 
-      // ============================================================================
-      /// Copy constructor.
-      // ============================================================================
-      MultiDimDecisionGraph( const MultiDimDecisionGraph<GUM_SCALAR>& from );
+    public:
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
+        // ============================================================================
+        /// Default constructor.
+        // ============================================================================
+        MultiDimDecisionGraph();
 
-      // ============================================================================
-      /// Copy Operator.
-      // ============================================================================
-      MultiDimDecisionGraph<GUM_SCALAR>& operator=(const MultiDimDecisionGraph<GUM_SCALAR>& from);
+        // ============================================================================
+        /// Copy constructor.
+        // ============================================================================
+        MultiDimDecisionGraph( const MultiDimDecisionGraph<GUM_SCALAR>& from );
 
-      // ============================================================================
-      /// Destructor.
-      // ============================================================================
-      virtual ~MultiDimImplementation();
+        // ============================================================================
+        /// Copy Operator.
+        // ============================================================================
+        MultiDimDecisionGraph<GUM_SCALAR>& operator=(const MultiDimDecisionGraph<GUM_SCALAR>& from);
 
-    /// @}
+        // ============================================================================
+        /// Destructor.
+        // ============================================================================
+        ~MultiDimDecisionGraph();
 
-    // ============================================================================
-    /**
-     * This method creates a clone of this object, withouth its content
-     * (including variable), you must use this method if you want to ensure
-     * that the generated object has the same type than the object containing
-     * the called newFactory()
-     * For example :
-     *   MultiDimArray<double> y;
-     *   MultiDimContainer<double>* x = y.newFactory();
-     * Then x is a MultiDimArray<double>*
-     *
-     * @warning you must desallocate by yourself the memory
-     * @return an empty clone of this object with the same type
-     */
-    // ============================================================================
-    virtual MultiDimContainer<GUM_SCALAR>* newFactory() const = 0;
+      /// @}
 
-
-    // ############################################################################
-    /// @name Accessors / Modifiers herited from gum::MultiDimImplementation
-    // ############################################################################
-    /// @{
-
-      // ============================================================================
-      /**
-       * Changes the value pointed by i.
-       *
-       * @warning If i variables set is disjoint with this gum::MultiDimContainer
-       * then 0 is assumed for dimensions (i.e. variables) not prensent in the
-       * instantiation.
-       */
-      // ============================================================================
-      virtual void set ( const Instantiation &i, const GUM_SCALAR &value ) const;
-
-      // ============================================================================
-      /// see gum::MultiDimImplementation
-      // ============================================================================
-      virtual const std::string& name() const;
-
-      // ============================================================================
-      /**
-       * An [] operator using a Instantiation as argument.
-       *
-       * @warning If i variables set is disjoint with this gum::MultiDimContainer
-       * then 0 is assumed for dimensions (i.e. variables) not prensent in the
-       * instantiation.
-       *
-       * @param i An Instantiation.
-       * @return Returns the adressed (GUM_SCALAR) value.
-       */
-      // ============================================================================
-      GUM_SCALAR operator[] ( const Instantiation &i ) const;
-
-      // ============================================================================
-      /**
-       * Fill the table with d.
-       * @param d The value used to fill this gum::MultiDimContainer.
-       */
-      // ============================================================================
-      virtual void fill ( const GUM_SCALAR &d ) const = 0;
-
-      // ==============================================================================
-      /**
-       * @brief Automatically fills this gum::MultiDimContainer with the values in v.
-       *
-       * The order used to fill this gum::MultiDimContainer is the same as with an
-       * instantiation over it.
-       * @code
-       Size cpt = 0;
-       Instantiation i( *this );
-       for (i.setFirst(); !i.end(); ++i, ++cpt) {
-         set(i, v[cpt]);
-       }
-       @endcode
-       *
-       * @param v Vector of values.
-       * @throw SizeError If v size's does not matches this gum::MultiDimContainer
-       *                  domain size.
-       */
-      // ==============================================================================
-      virtual void fillWith ( const std::vector<GUM_SCALAR>& v ) const;
-
-    /// @}
+        // ============================================================================
+        /**
+        * This method creates a clone of this object, withouth its content
+        * (including variable), you must use this method if you want to ensure
+        * that the generated object has the same type than the object containing
+        * the called newFactory()
+        * For example :
+        *   MultiDimArray<double> y;
+        *   MultiDimContainer<double>* x = y.newFactory();
+        * Then x is a MultiDimArray<double>*
+        *
+        * @warning you must desallocate by yourself the memory
+        * @return an empty clone of this object with the same type
+        */
+        // ============================================================================
+        MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
 
-    // ############################################################################
-    /// @name Implementation of MultiDimInterface
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      /// @name Accessors / Modifiers herited from gum::MultiDimImplementation
+      // ############################################################################
+      /// @{
 
-      // ============================================================================
-      /// See gum::MultiDimInterface::erase(const DiscreteVariable& v)
-      // ============================================================================
-      virtual void erase( const DiscreteVariable& v );
+        // ============================================================================
+        /// see gum::MultiDimImplementation
+        // ============================================================================
+        const std::string& name() const;
 
-      // ============================================================================
-      /**
-       * Returns the real number of parameters used for this table. This function is
-       * used by the compressionRatio() method.
-       *
-       * @see compressionRatio()
-       */
-      // ============================================================================
-      virtual Size realSize() const;
+        // ============================================================================
+        /**
+        * see gum::MultiDimImplementation::set ( const Instantiation &i, const GUM_SCALAR &value )
+        *
+        * @throw OperationNotAllowed. Decision Graph can't be edited so easily.
+        * MultiDimDecisionGraphManager provides the framework to editate a Decision Graph.
+        */
+        // ============================================================================
+        void set ( const Instantiation &i, const GUM_SCALAR &value ) const;
 
-    /// @}
+        // ============================================================================
+        /**
+        * see gum::MultiDimImplementation::fill( const GUM_SCALAR &d )
+        *
+        * @throw OperationNotAllowed. Decision Graph can't be edited so easily.
+        * MultiDimDecisionGraphManager provides the framework to editate a Decision Graph.
+        */
+        // ============================================================================
+        void fill( const GUM_SCALAR &d ) const;
 
-public :
+        // ==============================================================================
+        /**
+        * see gum::MultiDimImplementation::fillWith ( const std::vector<GUM_SCALAR>& v )
+        *
+        * @throw OperationNotAllowed. Decision Graph can't be edited so easily.
+        * MultiDimDecisionGraphManager provides the framework to editate a Decision Graph.
+        */
+        // ==============================================================================
+        void fillWith ( const std::vector<GUM_SCALAR>& v ) const;
 
-    // ############################################################################
-    /// @name Slave management and extension due to slave management
-    // ############################################################################
-    /// @{
-      // ============================================================================
-      /**
-       * Listen to change in a given Instantiation.
-       * @param i the Instantiation
-       * @param var The changed dim.
-       * @param oldval The old value.
-       * @param newval The changed value.
-       */
-      // ============================================================================
-      virtual void changeNotification( Instantiation& i,
-                                   const DiscreteVariable* const var,
-                                   const Idx& oldval,const Idx& newval ) =0;
-
-      // ============================================================================
-      /**
-       * Listen to setFirst in a given Instantiation.
-       * @param i The Instantiation.
-       */
-      // ============================================================================
-      virtual void setFirstNotification( Instantiation& i )=0;
-
-      // ============================================================================
-      /**
-       * Listen to setLast in a given Instantiation.
-       * @param i The Instantiation.
-       */
-      // ============================================================================
-      virtual void setLastNotification( Instantiation& i ) =0;
-
-      // ============================================================================
-      /**
-       * Listen to increment in a given Instantiation.
-       * @param i The Instantiation
-       */
-      // ============================================================================
-      virtual void setIncNotification( Instantiation& i ) =0;
-
-      // ============================================================================
-      /**
-       * Listen to increment in each recorded Instantiation.
-       * @param i The Instantiation
-       */
-      // ============================================================================
-      virtual void setDecNotification( Instantiation& i ) =0;
-
-      // ============================================================================
-      /// Listen to an assignment of a value in a Instantiation.
-      // ===========================================================================
-      virtual void setChangeNotification( Instantiation& i ) =0;
-
-      // ============================================================================
-      /// String representation of internal data about i in this.
-      // ============================================================================
-      virtual const std::string toString( const Instantiation *i ) const = 0;
-
-    /// @}
+      /// @}
 
 
-    // ############################################################################
-    /// @name Copy methods.
-    // ############################################################################
-    /// @{
-      // ============================================================================
-      /**
-       * @brief Basic copy src a gum::MultiDimContainer.
-       * This method is virtual because it should be optimized in certain
-       * gum::MultiDimContainer.
-       *
-       * @todo specific versions for decorator and for MultiDimArray
-       *
-       * @param src The gum::MultiDimContainer src which values are copied.
-       * @param p_i Give the order to iterate in this gum::MultiDimContainer during
-       *            the copy (natural order if null).
-       * @throw OperationNotAllowed Raised if src does not have the same domain size
-       *                            than this gum::MultiDimContainer.
-       */
-      // ============================================================================
-      virtual void copyFrom ( const MultiDimContainer<GUM_SCALAR>& src,
-                              Instantiation *p_i = ( Instantiation * ) 0 ) const;
+      // ############################################################################
+      /// @name Implementation of MultiDimInterface
+      // ############################################################################
+      /// @{
+
+        // ============================================================================
+        /// See gum::MultiDimInterface::erase(const DiscreteVariable& v)
+        // ============================================================================
+        void erase( const DiscreteVariable& v );
+
+        // ============================================================================
+        /// see gum::MultiDimImplementation::realSize()
+        // ============================================================================
+        Size realSize() const;
+
+      /// @}
+
+      // ############################################################################
+      /// @name Slave management and extension due to slave management
+      // ############################################################################
+      /// @{
+        // ============================================================================
+        /** see gum::MultiDimImplementation::changeNotification( Instantiation& i,
+        *                                                       const DiscreteVariable* const var,
+        *                                                       const Idx& oldval,const Idx& newval )
+        */
+        // ============================================================================
+        void changeNotification( Instantiation& i,
+                                 const DiscreteVariable* const var,
+                                 const Idx& oldval,const Idx& newval );
+
+        // ============================================================================
+        /// see gum::MultiDimImplementation::setFirstNotification( Instantiation& i )
+        // ============================================================================
+        void setFirstNotification( Instantiation& i );
+
+        // ============================================================================
+        /// see gum::MultiDimImplementation::setLastNotification( Instantiation& i )
+        // ============================================================================
+        void setLastNotification( Instantiation& i );
+
+        // ============================================================================
+        /// see gum::MultiDimImplementation::setIncNotification( Instantiation& i )
+        // ============================================================================
+        void setIncNotification( Instantiation& i );
+
+        // ============================================================================
+        /// see gum::MultiDimImplementation::setDecNotification( Instantiation& i )
+        // ============================================================================
+        void setDecNotification( Instantiation& i );
+
+        // ============================================================================
+        /// see gum::MultiDimImplementation::setChangeNotification( Instantiation& i )
+        // ===========================================================================
+        void setChangeNotification( Instantiation& i );
+
+        // ============================================================================
+        /// see gum::MultiDimImplementation::toString( const Instantiation *i )
+        // ============================================================================
+        const std::string toString( const Instantiation *i ) const;
+
+      /// @}
+
+
+      // ############################################################################
+      /// @name Copy methods.
+      // ############################################################################
+      /// @{
+        // ============================================================================
+        /**
+        * @brief Basic copy src a gum::MultiDimContainer.
+        * This method is virtual because it should be optimized in certain
+        * gum::MultiDimContainer.
+        *
+        * @todo specific versions for decorator and for MultiDimArray
+        *
+        * @param src The gum::MultiDimContainer src which values are copied.
+        * @param p_i Give the order to iterate in this gum::MultiDimContainer during
+        *            the copy (natural order if null).
+        * @throw OperationNotAllowed Raised if src does not have the same domain size
+        *                            than this gum::MultiDimContainer.
+        */
+        // ============================================================================
+        void copyFrom ( const MultiDimContainer<GUM_SCALAR>& src,
+                        Instantiation *p_i = ( Instantiation * ) 0 ) const;
+
+        // ============================================================================
+        /**
+        * Removes all variables in this gum::MultiDimContainer and copy the content
+        * of src, variables included.
+        */
+        // ============================================================================
+        void copy ( const MultiDimContainer<GUM_SCALAR>& src );
+
+      /// @}
+
+
+      // ############################################################################
+      /// @name Graph Handlers.
+      // ############################################################################
+      /// @{
+        // ============================================================================
+        /// Indicates if given node is terminal or not
+        // ============================================================================
+        MultiDimDecisionGraphManager<GUM_SCALAR>* getManager();
+
+        // ============================================================================
+        /// Returns the id of the root node from the diagram
+        // ============================================================================
+        const NodeId& root() const { return __root; };
+
+        // ============================================================================
+        /// Indicates if given node is terminal or not
+        // ============================================================================
+        bool isTerminalNode(const NodeId & node) const;
+
+        // ============================================================================
+        /// Returns value associated to given node
+        /// @throw InvalidNode if node isn't terminal
+        // ============================================================================
+        const GUM_SCALAR& nodeValue( NodeId n ) const;
+        const GUM_SCALAR& unsafeNodeValue( NodeId n ) const;
+
+        // ============================================================================
+        /// Returns associated variable of given node
+        /// @throw InvalidNode if Node is terminal
+        // ============================================================================
+        const DiscreteVariable* nodeVariable( NodeId n ) const;
+        const DiscreteVariable* unsafeNodeVariable( NodeId n ) const;
+
+        // ============================================================================
+        /// Returns node's sons map
+        /// @throw InvalidNode if node is terminal
+        // ============================================================================
+        const NodeId* nodeSons( NodeId n ) const;
+        const NodeId* unsafeNodeSons( NodeId n ) const;
+
+        // ============================================================================
+        /// Returns true if node has a default son
+        // ============================================================================
+        bool hasNodeDefaultSon( NodeId n ) const;
+
+        // ============================================================================
+        /// Returns node's default son
+        /// @throw InvalidNode if node is terminal
+        /// @throw NotFound if node doesn't have a default son
+        // ============================================================================
+        const NodeId nodeDefaultSon( NodeId n ) const;
+        const NodeId unsafeNodeDefaultSon( NodeId n ) const;
+
+        // ============================================================================
+        /// Returns associated nodes of the variable pointed by the given node
+        // ============================================================================
+        const List< NodeId >* variableNodes( const DiscreteVariable* v ) const;
+
+        // ============================================================================
+        /// Returns associated nodes of the variable pointed by the given node
+        // ============================================================================
+        const Idx* variableUsedModalities( const DiscreteVariable* v ) const;
+
+        // ============================================================================
+        /// Returns true if variable is in diagram
+        // ============================================================================
+        bool isInDiagramVariable( const DiscreteVariable* v ) const;
+
+      /// @}
+
+    protected:
+
+        // ============================================================================
+        /// @brief Replace variable x by y.
+        /// Technically this should be call by any subclass overloading this method
+        /// to proceed with the changes in this class containers.
+        // ============================================================================
+        void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
+
+        // ============================================================================
+        /**
+        * @brief Return a data, given a Instantiation.
+        *
+        * Note that get allows to change a value in the container.
+        * The method is still tagged as const.
+        *
+        * @warning If i variables set is disjoint with this gum::MultiDimContainer
+        * then 0 is assumed for dimensions (i.e. variables) not prensent in the
+        * instantiation.
+        *
+        * @param i The instantiation used to find the data.
+        */
+        // ============================================================================
+        GUM_SCALAR &_get (const Instantiation &inst ) const;
+
+    private:
 
       // ============================================================================
-      /**
-       * Removes all variables in this gum::MultiDimContainer and copy the content
-       * of src, variables included.
-       */
+      /// The root node of the decision graph
       // ============================================================================
-      virtual void copy ( const MultiDimContainer<GUM_SCALAR>& src );
-
-    /// @}
-
-    // ############################################################################
-    /// @name Various methods.
-    // ############################################################################
-    /// @{
+      NodeId __root;
 
       // ============================================================================
-      /// Display the internal representation of i.
+      /// Associate each terminal node to a value
       // ============================================================================
-      virtual const std::string toString ( const Instantiation *i ) const = 0;
-
-    /// @}
-
-  protected:
+      Bijection< NodeId, GUM_SCALAR > __valueMap;
 
       // ============================================================================
-      /// @brief Replace variable x by y.
-      /// Technically this should be call by any subclass overloading this method
-      /// to proceed with the changes in this class containers.
+      /// Mapping between var and node
       // ============================================================================
-      virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y ) =0;
+      HashTable< const DiscreteVariable*, List<NodeId>* > __var2NodeIdMap;
 
-  // ============================================================================
-  /**
-   * @brief Return a data, given a Instantiation.
-   *
-   * Note that get allows to change a value in the container.
-   * The method is still tagged as const.
-   *
-   * @warning If i variables set is disjoint with this gum::MultiDimContainer
-   * then 0 is assumed for dimensions (i.e. variables) not prensent in the
-   * instantiation.
-   *
-   * @param i The instantiation used to find the data.
-   */
-  // ============================================================================
-  virtual GUM_SCALAR &_get ( const Instantiation &i ) const = 0;
+      // ============================================================================
+      /// Mapping between var and node
+      // ============================================================================
+      HashTable< const DiscreteVariable*, Idx* > __varUsedModalitiesMap;
 
-  // ==============================================================================
-    /**
-     * @brief Adds a new var to the sequence of vars.
-     *
-     * This function is not VIRTUAL (call of add which IS virtual).
-     * @warning Note that the variable passed in argument is not duplicated, that is,
-     *          only a pointer toward the variable is kept by the MultiDimInterface
-     *
-     * @code mat << var1 << var2 @endcode will insert @code var1 @endcode first.
-     *
-     * @param c the multidim container
-     * @param v the new var
-     * @return a reference to *this
-     *
-     * @throw DuplicateElement is thrown if the variable already belongs to the
-     *                         sequence of variables.
-     * @throw OperationNotAllowed if *this is non mutable
-     *
-     * @ingroup multidim_group
-     */
-  // ==============================================================================
-    MultiDimInterface& operator<< ( MultiDimInterface& c, const DiscreteVariable& v );
 
-  // ==============================================================================
-    /**
-     * @brief Removes a var from the variables of the MutliDimAdressing.
-     *
-     * @throw OperationNotAllowed if this object is non mutable.
-     * @throw NotFound is v does not belong to this
-     *
-     * @ingroup multidim_group
-     */
-  // ==============================================================================
-    MultiDimInterface& operator>> ( MultiDimInterface& c, const DiscreteVariable& v );
+      // ############################################################################
+      /// @name Non Terminal Nodes Data Structure
+      // ############################################################################
+      /// @{
 
-private:
-};
+        // ============================================================================
+        /// Associates each non-terminal node to a variable
+        // ============================================================================
+        HashTable< NodeId, const DiscreteVariable* > __variableMap;
+
+        // ============================================================================
+        /**
+         * Each non-terminal node points to a set of son node
+         * (one for each value that asociate variable can have).
+         * A table gathers those links.
+         * Table index : one of the value assume by the variable.
+         * Table value : corresponding son node.
+         */
+        // ============================================================================
+        HashTable< NodeId, NodeId* > __sonsMap;
+
+        // ============================================================================
+        /**
+         * Each non-terminal node has the possibility to designate a specific son.
+         * This one will be the default son.
+         * If for a given value of bound variable, no son exists, this specific son will be chosen.
+         */
+        // ============================================================================
+        HashTable< NodeId, NodeId > __defaultSonMap;
+
+      /// @}
+  };
+}
+
+#include <agrum/multidim/multiDimDecisionGraph.tcc>
 
 #endif // GUM_MULTI_DIM_DECISION_GRAPH_H
