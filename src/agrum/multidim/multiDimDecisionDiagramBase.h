@@ -275,7 +275,7 @@ namespace gum {
       const HashTable< NodeId, std::vector<NodeId>* >& arcMap() const { return __arcMap; };
 
       /// Mapping between variable's values and associated node
-      const HashTable< NodeId, NodeId >& defaultArcMap() const { return __defaultArcMap; };
+      const HashTable< NodeId, NodeId >& defaultArcMap() const { return __defaultArcMap; }
 
       /**
        * Returns true if node is a chance one
@@ -436,7 +436,7 @@ namespace gum {
       */
       void setRoot( const NodeId& root );
 
-      /// @}
+      /// @}
 
     protected :
       /**

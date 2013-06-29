@@ -39,6 +39,8 @@
 
 namespace gum {
 
+  template<typename GUM_SCALAR>
+  class MultiDimDecisionGraphManager;
   /**
    * @class MultiDimDecisionGraph multiDimDecisionGraph.h <agrum/multidim/multiDimDecisionGraph.h>
    *
@@ -58,7 +60,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   class MultiDimDecisionGraph : public MultiDimImplementation< GUM_SCALAR > {
 
-    friend class MultiDimDecisionGraphManager;
+    template<GUM_SCALAR> friend class MultiDimDecisionGraphManager;
 
     public:
       // ############################################################################
@@ -341,6 +343,11 @@ namespace gum {
         GUM_SCALAR &_get (const Instantiation &inst ) const;
 
     private:
+
+      // ============================================================================
+      /// The root node of the decision graph
+      // ============================================================================
+      MultiDimDecisionGraphManager* __manager;
 
       // ============================================================================
       /// The root node of the decision graph

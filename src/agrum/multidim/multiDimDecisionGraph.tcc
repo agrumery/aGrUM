@@ -20,7 +20,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Template methods of gum::MultiDimImplementation.
+ * @brief Template methods of gum::MultiDimDecisionGraph.
  *
  * @author Jean-Christophe Magnan
  *
@@ -245,7 +245,7 @@ namespace gum {
     INLINE
     const std::string MultiDimDecisionGraph<GUM_SCALAR>::toString( const Instantiation *i ) const{
         std::stringstream sBuff;
-        sBuff << ( *i ) << " = " << get( *i );
+      //  sBuff << ( *i ) << " = " << get( *i );
         return sBuff.str();
     }
 
