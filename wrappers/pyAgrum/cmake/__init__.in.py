@@ -32,18 +32,18 @@ __license__ = __doc__
 __project_url__ = 'http://forge.lip6.fr/projects/pyagrum'
 
 # selection of imports extracted from dir(pyAgrum)
-from pyAgrum import GUM_MAJOR_VERSION,GUM_MINOR_VERSION,GUM_PATCH_VERSION,GUM_VERSION
-from pyAgrum import Arc,Edge,BayesNet,DiGraph,Sequence_node,Sequence_string,Vector_double
-from pyAgrum import DiscreteVar,DiscretizedVar,Instantiation,LabelizedVar,RangeVar,Variable
-from pyAgrum import ListPotentials,Potential
-from pyAgrum import BruteForceKL,GibbsInference,GibbsKL,LazyPropagation
-from pyAgrum import PythonApproximationListener,PythonBNListener,PythonLoadListener
-from pyAgrum import generateBN
+from @PYAGRUM_MODULE@ import GUM_MAJOR_VERSION,GUM_MINOR_VERSION,GUM_PATCH_VERSION,GUM_VERSION
+from @PYAGRUM_MODULE@ import Arc,Edge,BayesNet,DiGraph,Sequence_node,Sequence_string,Vector_double
+from @PYAGRUM_MODULE@ import DiscreteVar,DiscretizedVar,Instantiation,LabelizedVar,RangeVar,Variable
+from @PYAGRUM_MODULE@ import ListPotentials,Potential
+from @PYAGRUM_MODULE@ import BruteForceKL,GibbsInference,GibbsKL,LazyPropagation
+from @PYAGRUM_MODULE@ import PythonApproximationListener,PythonBNListener,PythonLoadListener
+from @PYAGRUM_MODULE@ import generateBN
 
-from pyAgrum import isOMP,setNumberOfThreads,getNumberOfLogicalProcessors,getMaxNumberOfThreads
-from pyAgrum import CredalNet,CNMonteCarloSampling,CNLoopyPropagation
+from @PYAGRUM_MODULE@ import isOMP,setNumberOfThreads,getNumberOfLogicalProcessors,getMaxNumberOfThreads
+from @PYAGRUM_MODULE@ import CredalNet,CNMonteCarloSampling,CNLoopyPropagation
 
-from pyAgrum import DefaultInLabel,DuplicateElement,DuplicateLabel,EmptyBSTree,EmptySet,Exception,FatalError,FormatNotFound,GraphError,IOError,IdError,InvalidArc,InvalidArgument,InvalidArgumentsNumber,InvalidDirectedCycle,InvalidEdge,InvalidNode,NoChild,NoNeighbour,NoParent,NotFound,NullElement,OperationNotAllowed,OutOfBounds,OutOfLowerBound,OutOfUpperBound,ReferenceError,SizeError,SyntaxError,UndefinedElement,UndefinedIteratorKey,UndefinedIteratorValue
+from @PYAGRUM_MODULE@ import DefaultInLabel,DuplicateElement,DuplicateLabel,EmptyBSTree,EmptySet,Exception,FatalError,FormatNotFound,GraphError,IOError,IdError,InvalidArc,InvalidArgument,InvalidArgumentsNumber,InvalidDirectedCycle,InvalidEdge,InvalidNode,NoChild,NoNeighbour,NoParent,NotFound,NullElement,OperationNotAllowed,OutOfBounds,OutOfLowerBound,OutOfUpperBound,ReferenceError,SizeError,SyntaxError,UndefinedElement,UndefinedIteratorKey,UndefinedIteratorValue
 
 
 def availableBNExts():

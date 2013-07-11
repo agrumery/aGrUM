@@ -1,23 +1,47 @@
 project(pyAgrum)
 
 cmake_minimum_required(VERSION 2.6)
-
+message(${CMAKE_CURRENT_BINARY_DIR})
 find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
 
-if (
-if (${OPTIONPYTHONVERSION} == "2") 
-  # python 2 use the standard package from cmake
-  find_package(PythonInterp)
-  find_package(PythonLibs ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}.${PYTHON_VERSION_PATCH} EXACT)  
-  set(PYTHON_VERSION "${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}.${PYTHON_VERSION_PATCH}")
-else (${OPTIONPYTHONVERSION} == "2") 
-  # python 3 : no such package for python 3
-  include("cmake/findPython3.cmake")
-endif (${OPTIONPYTHONVERSION} == "2") 
-                                                                                                                                       
-MESSAGE(STATUS "PYTHONVERSION: ${DEFAULTPYTHONVERSION}")  
-MESSAGE(FATAL_ERROR "${PYTHON_VERSION}")
+if ("a${PYTHONVERSION}" STREQUAL "a2") # we use 3 by default
+  set(PYTHONVERSION "2")
+
+  # hackish
+  set(PYTHON_EXECUTABLE "python2")
+else ("a${PYTHONVERSION}" STREQUAL "a2") 
+  # python 3 : no such package for python 3 
+  set(PYTHONVERSION "3")
+
+  # hackish
+  set(PYTHON_EXECUTABLE "python3")
+endif ("a${PYTHONVERSION}" STREQUAL "a2")
+
+execute_process(
+  COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}'))"
+  OUTPUT_VARIABLE PYTHON_INSTALL
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+execute_process(
+  COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_version())"
+  OUTPUT_VARIABLE PYTHON_VERSION
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+
+execute_process(
+  COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_inc())"
+  OUTPUT_VARIABLE PYTHON_INCLUDE_PATH
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+message("================================")
+message("version : ${PYTHON_VERSION}")  
+message("installation : ${PYTHON_INSTALL}")  
+message("include : ${PYTHON_INCLUDE_PATH}")
+message("================================")
 
 
 #== Initializing aGrUM
@@ -25,22 +49,6 @@ set(AGRUM_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../src")
 include("${AGRUM_SOURCE_DIR}/version.txt")
 include("${AGRUM_SOURCE_DIR}/cmake/Config.agrum.cmake")
 configure_file("${AGRUM_SOURCE_DIR}/cmake/config.h.in" "${CMAKE_CURRENT_BINARY_DIR}/agrum/config.h")
-
-
-execute_process(
-  COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}')"
-  OUTPUT_VARIABLE PYTHON_INSTALL
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-
-# execute_process(
-#   COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print sysconfig.get_python_version()"
-#   OUTPUT_VARIABLE PYTHON_VERSION
-#   OUTPUT_STRIP_TRAILING_WHITESPACE
-#   # why not
-#   # SET(PYTHON_VERSION) "${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}")
-#   # ?
-# )
 
 
 #==
@@ -98,8 +106,16 @@ file(GLOB_RECURSE AGRUM_LEARNING_SOURCES RELATIVE ${CMAKE_CURRENT_BINARY_DIR} ${
 set(AGRUM_C_SOURCES ${AGRUM_SOURCE_DIR}/agrum/CN/lrslib/lrslib.c ${AGRUM_SOURCE_DIR}/agrum/CN/lrslib/lrsmp.c)
 
 # Properties
-set(CMAKE_SWIG_FLAGS  "-Wall" )
+if ("a${PYTHONVERSION}" STREQUAL "a2") 
+  message(FATAL_ERROR "arg")
+  set(CMAKE_SWIG_FLAGS  "-Wall" )
+else ("a${PYTHONVERSION}" STREQUAL "a2") 
+  set(CMAKE_SWIG_FLAGS  "-Wall" )
+  set(CMAKE_SWIG_FLAGS  "${CMAKE_SWIG_FLAGS};-py3" )
+endif ("a${PYTHONVERSION}" STREQUAL "a2") 
+
 set(SWIG_MODULE_pyAgrum_EXTRA_DEPS ${BUILDSWIGFILES})
+
 set(CMAKE_SWIG_OUTDIR ${CMAKE_CURRENT_BINARY_DIR})
 
 set(AGRUM_OPTIMIZATION "-O3 -Wall -Wno-uninitialized -DNDEBUG" )
@@ -144,7 +160,15 @@ file(GLOB GUMLIB_UTILS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/gumLib/utils/*.py")
 
 include("${CMAKE_CURRENT_SOURCE_DIR}/../../src/version.txt")
 set(PYAGRUM_VERSION "${AGRUM_VERSION_MAJOR}.${AGRUM_VERSION_MINOR}.${AGRUM_VERSION_PATCH}")
-set(PYAGRUM_EGGFILE "pyAgrum-${PYAGRUM_VERSION}-py${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}.egg-info")
+set(PYAGRUM_EGGFILE "pyAgrum-${PYAGRUM_VERSION}-py${PYTHON_VERSION}.egg-info")
+
+#change in module naming from inside module between python2 and python3
+if ("a${PYTHONVERSION}" STREQUAL "a2") 
+set(PYAGRUM_MODULE "pyAgrum")
+else ("a${PYTHONVERSION}" STREQUAL "a2") 
+set(PYAGRUM_MODULE "pyAgrum.pyAgrum")
+endif ("a${PYTHONVERSION}" STREQUAL "a2")
+message(FATAL_ERROR ${PYAGRUM_MODULE}) 
 
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/__init__.in.py" "${CMAKE_CURRENT_BINARY_DIR}/__init__.py")
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/egg-info.in" "${CMAKE_CURRENT_BINARY_DIR}/${PYAGRUM_EGGFILE}")
