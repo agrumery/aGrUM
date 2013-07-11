@@ -5,8 +5,20 @@ cmake_minimum_required(VERSION 2.6)
 find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
 
-find_package(PythonInterp)
-find_package(PythonLibs ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}.${PYTHON_VERSION_PATCH} EXACT)
+if (
+if (${OPTIONPYTHONVERSION} == "2") 
+  # python 2 use the standard package from cmake
+  find_package(PythonInterp)
+  find_package(PythonLibs ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}.${PYTHON_VERSION_PATCH} EXACT)  
+  set(PYTHON_VERSION "${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}.${PYTHON_VERSION_PATCH}")
+else (${OPTIONPYTHONVERSION} == "2") 
+  # python 3 : no such package for python 3
+  include("cmake/findPython3.cmake")
+endif (${OPTIONPYTHONVERSION} == "2") 
+                                                                                                                                       
+MESSAGE(STATUS "PYTHONVERSION: ${DEFAULTPYTHONVERSION}")  
+MESSAGE(FATAL_ERROR "${PYTHON_VERSION}")
+
 
 #== Initializing aGrUM
 set(AGRUM_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../src")
