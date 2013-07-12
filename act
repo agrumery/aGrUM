@@ -21,6 +21,7 @@
 #*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 #***************************************************************************
 
+from __future__ import print_function
 
 import sys
 import os
@@ -29,6 +30,7 @@ from optparse import OptionParser
 from datetime import datetime
 import glob
 from distutils import sysconfig
+
 
 OKGREEN = '\033[92m'
 WARNING = '\033[93m'
@@ -92,7 +94,7 @@ def testManagement(cde):
 def checkList(l):
     for s in l:
         if not os.path.exists('src/testunits/'+s):
-            print RED+'Test '+WARNING+s[:-11]+RED+' (src/testunits/'+s+') does not exists'+ENDC
+            print(RED+'Test '+WARNING+s[:-11]+RED+' (src/testunits/'+s+') does not exist'+ENDC)
             print
             afficheTests()
             sys.exit(0)
@@ -136,7 +138,7 @@ def checkTestListCmake():
         if line[0:2]=="  ":
           s=line.strip()
           if not os.path.exists('src/testunits/'+s):
-            print RED+'Test '+WARNING+s[:-11]+RED+' (src/testunits/'+s+') does not exist => removing it from tests list'+ENDC
+            print(RED+'Test '+WARNING+s[:-11]+RED+' (src/testunits/'+s+') does not exist => removing it from tests list'+ENDC)
             rewrite=True
           else:
             res.append(s)
@@ -152,14 +154,14 @@ def afficheTests():
     nbr=80/w
     i=0
     for s in l:
-        print " "+s.ljust(w),
+        print(" "+s.ljust(w),end="")
         i+=1
         if i>nbr:
             i=0
-            print
+            print("")
     if i!=0:
-        print
-    print
+        print("")
+    print("")
 
 
 
@@ -172,22 +174,22 @@ def execute(s):
 
 ##########################################################################################################################
 def cleanAll():
-    print "..."+WARNING+" cleaning"+ENDC+" ...",
+    print("..."+WARNING+" cleaning"+ENDC+" ...",end="")
     os.system("rm -rf build")
-    print OKGREEN+"done"+ENDC
+    print(OKGREEN+"done"+ENDC)
     print
     sys.exit(0)
 
 ##########################################################################################################################
 def showAll():
     global persistent
-    print "Actual options/args"
-    print "-------------------"
+    print("Actual options/args")
+    print("-------------------")
     for key in persistent:
         if key in ['cleanAll']: # keys we do not need to show
             continue
-        print "  "+key+" : "+persistent[key].__str__()
-    print "-------------------"
+        print("  "+key+" : "+persistent[key].__str__())
+    print("-------------------")
     print
     sys.exit(0)
 
@@ -224,7 +226,10 @@ def checkConstraints(parser,options,args):
             parser.error(arg+" is an invalid argument")
     else:
         for key in 'rule option wrapper'.split():
+          if key in persistent:
             current[key]=persistent[key]
+          else:
+            current[key]=""
 
     if current['option']=='':
         current['option']='release'
@@ -277,7 +282,7 @@ def proceed(options):
             if options['wrapper']=='pyAgrum':
                 run_cde="PYTHONPATH=. python ../../../wrappers/pyAgrum/testunits/TestSuite.py"
             else:
-                print RED+"No tests for "+options['wrapper']+ENDC
+                print(RED+"No tests for "+options['wrapper']+ENDC)
                 sys.exit(0)
         else:
             run_cde=""
@@ -325,18 +330,18 @@ def uninstall(options):
     if options['wrapper']!='':
         install_folder=sysconfig.get_python_lib(1,0,prefix=install_folder)
 
-        print "suppresion récursive de "+RED+install_folder+"/pyAgrum"+ENDC
+        print("suppresion récursive de "+RED+install_folder+"/pyAgrum"+ENDC)
         os.system('cd '+install_folder+' && rm -rf pyAgrum')
-        print "suppresion récursive de "+RED+install_folder+"/gumLib"+ENDC
+        print("suppresion récursive de "+RED+install_folder+"/gumLib"+ENDC)
         os.system('cd '+install_folder+' && rm -rf gumLib')
-        print "suppresion de "+RED+install_folder+"/pyAgrum*.egg-info"+ENDC
+        print("suppresion de "+RED+install_folder+"/pyAgrum*.egg-info"+ENDC)
         os.system('rm -f '+install_folder+"/pyAgrum*.egg-info")
     else:
-        print "suppresion de "+RED+install_folder+"/lib/libagrum*"+ENDC
+        print("suppresion de "+RED+install_folder+"/lib/libagrum*"+ENDC)
         os.system('rm -f '+install_folder+"/lib/libagrum*")
-        print "suppresion récursive de "+RED+install_folder+"/lib/aGrUM"+ENDC
+        print("suppresion récursive de "+RED+install_folder+"/lib/aGrUM"+ENDC)
         os.system('cd '+install_folder+'/lib && rm -rf aGrUM')
-        print "suppresion récursive de "+RED+install_folder+"/include/agrum"+ENDC
+        print("suppresion récursive de "+RED+install_folder+"/include/agrum"+ENDC)
         os.system('cd '+install_folder+'/include && rm -rf agrum')
     sys.exit(0)
 
@@ -357,17 +362,23 @@ default['wrapper']=""
 default['jobs']="5"
 default['verbose']=False
 
-
-shlv=shelve.open(".options.mak.py",writeback=True)
-if shlv.has_key('persistent'):
+try: # shelve changes from python3 to python2 : nothing to do else remove context
+  shlv=shelve.open(".options.mak.py",writeback=True)
+except:
+  os.remove('.options.mak.py')
+  shlv=shelve.open(".options.mak.py",writeback=True)
+  
+if 'persistent' in shlv:
     persistent=shlv['persistent']
+#except:
+#  pass
 
 #shlv=shelve.open(".options.mak.py",writeback=True)
 #if shlv.has_key('persistent'):
 #    persistent=shlv['persistent']
 
-for key in default.iterkeys():
-    if persistent.has_key(key):
+for key in default:
+    if key in persistent:
         current[key]=persistent[key]
     else:
         current[key]=default[key]
@@ -375,8 +386,8 @@ for key in default.iterkeys():
 invocation=" agrum release -d /usr -j 5 -q -p linux"
 numversion="1.0"
 
-print ENDC+RED+"aGrUM"+ENDC+" compilation tool "+RED+"v"+numversion+ENDC
-print "(c) 2010 "+OKGREEN+"aGrUM Team"+ENDC
+print(ENDC+RED+"aGrUM"+ENDC+" compilation tool "+RED+"v"+numversion+ENDC)
+print("(c) 2010-2013 "+OKGREEN+"aGrUM Team"+ENDC)
 print
 
 
@@ -396,12 +407,12 @@ if current['rule']=='uninstall':
     uninstall(current)
 if current['rule']=='default':
     current=default
-    print "invocation : act,n "+current['rule']+" "+current['option']+' '+current['wrapper']
+    print("invocation : act,n "+current['rule']+" "+current['option']+' '+current['wrapper'])
 if options.testlists!="":
     testManagement(options.testlists)
 
 if len(args)==0:
-    print WARNING+"invocation"+ENDC+" : "+OKGREEN+"act "+current['rule']+" "+current['option']+' '+current['wrapper']+ENDC
+    print(WARNING+"invocation"+ENDC+" : "+OKGREEN+"act "+current['rule']+" "+current['option']+' '+current['wrapper']+ENDC)
     print
 
 for key in current:
@@ -417,5 +428,5 @@ global sh
 sh="";
 proceed(persistent)
 if (options.verbose):
-    print sh
+    print(sh)
 os.system(sh)
