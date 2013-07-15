@@ -26,9 +26,10 @@
 #ifndef GUM_LISTENER_H__
 #define GUM_LISTENER_H__
 
+#include <vector>
+#include <algorithm>
 
-#include <agrum/core/list.h>
-
+#include <agrum/core/debug.h>
 
 namespace gum {
 
@@ -43,12 +44,12 @@ namespace gum {
      * @ingroup signal
      */
     class ISignaler {
-    public:
-      virtual ~ISignaler() {};
-      virtual void detachFromTarget( Listener* target ) = 0;
-      virtual void duplicateTarget( const Listener* oldtarget,
-                                    Listener* newtarget ) = 0;
-      virtual bool hasListener(void) = 0;
+      public:
+        virtual ~ISignaler() {};
+        virtual void detachFromTarget ( Listener* target ) = 0;
+        virtual void duplicateTarget ( const Listener* oldtarget,
+                                       Listener* newtarget ) = 0;
+        virtual bool hasListener ( void ) = 0;
     };
   } //namespace sig
 
@@ -61,49 +62,62 @@ namespace gum {
    * @ingroup signal_group
    */
   class Listener {
-  private:
-    typedef ListBase<__sig__::ISignaler*> Senders_list;
-    typedef ListBucket<__sig__::ISignaler*> Senders_bucket;
+    private:
+      //typedef ListBase<__sig__::ISignaler*> Senders_list;
+      //typedef ListBucket<__sig__::ISignaler*> Senders_bucket;
+      typedef std::vector<__sig__::ISignaler*> Senders_list;
 
-  public:
-    Listener() {
-      GUM_CONSTRUCTOR( Listener );
-    }
-
-
-    Listener( const Listener& l ) {
-      GUM_CONS_CPY( Listener );
-
-      for ( const Senders_bucket* it = l.__senders.frontBucket ();
-            it ; it = it->next() ) {
-        ( **it )->duplicateTarget( &l, this );
-        __senders.pushBack( **it );
-      }
-    }
+    public:
+      Listener() {
+        GUM_CONSTRUCTOR ( Listener );
+      };
 
 
-    virtual ~Listener() {
-      GUM_DESTRUCTOR( Listener );
+      Listener ( const Listener& l ) {
+        GUM_CONS_CPY ( Listener );
 
-      for ( const Senders_bucket* it = __senders.frontBucket ();
-            it; it = it->next() ) {
-        ( **it )->detachFromTarget( this );
-      }
-      __senders.clear();
-    }
-
-
-    INLINE void attachSignal__( __sig__::ISignaler* sender ) {
-      __senders.pushBack( sender );
-    }
+        /*for ( const Senders_bucket* it = l.__senders.frontBucket ();
+              it ; it = it->next() ) {
+          ( **it )->duplicateTarget( &l, this );
+          __senders.pushBack( **it );
+        }*/
+        for ( auto el : __senders ) {
+          el->duplicateTarget ( &l,this );
+        };
+      };
 
 
-    INLINE void detachSignal__( __sig__::ISignaler* sender ) {
-      __senders.eraseByVal ( sender );
-    }
+      virtual ~Listener() {
+        GUM_DESTRUCTOR ( Listener );
+        /*
+              for ( const Senders_bucket* it = __senders.frontBucket ();
+                    it; it = it->next() ) {
+                ( **it )->detachFromTarget( this );
+              }*/
 
-  private:
-    Senders_list __senders;
+        for ( auto el : __senders ) {
+          el->detachFromTarget ( this );
+        }
+
+        __senders.clear();
+      };
+
+
+      inline void attachSignal__ ( __sig__::ISignaler* sender ) {
+        __senders.push_back ( sender );
+      };
+
+
+      inline void detachSignal__ ( __sig__::ISignaler* sender ) {
+        //__senders.eraseByVal ( sender );
+        auto del=std::remove ( __senders.begin(),__senders.end(),sender );
+
+        if ( del!=__senders.end() )
+          __senders.erase ( del,__senders.end() );
+      };
+
+    private:
+      Senders_list __senders;
   };
 } // namespace gum
 
