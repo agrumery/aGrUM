@@ -324,9 +324,10 @@ namespace gum {
       NodeId addNoisyORCompound ( const DiscreteVariable &variable, GUM_SCALAR externalWeight );
       /** @} */
       
+      
       /**
-      * Add a variable, it's associate node and a noisyOR implementation. The id of the new
-      * variable is automatically generated. Since it seems that the 'classical' noisyOR is the Compound noisyOR, we keep
+      * Add a variable, it's associate node and a noisyOR implementation. 
+      * Since it seems that the 'classical' noisyOR is the Compound noisyOR, we keep
       * the addNoisyOR as an alias for addNoisyORCompound
       *
       * @param variable The variable added by copy.
@@ -340,6 +341,27 @@ namespace gum {
       NodeId addNoisyORNet ( const DiscreteVariable &variable, GUM_SCALAR externalWeight, NodeId id );
       NodeId addNoisyORCompound ( const DiscreteVariable &variable, GUM_SCALAR externalWeight, NodeId id );
 
+      
+      /**
+      * Add a variable, it's associate node and a noisyAND implementation. 
+      *
+      * @param variable The variable added by copy.
+      * @param externalWeight @see gum::MultiDimNoisyAND
+      * @return the id of the added variable. 
+      */
+      NodeId addNoisyAND( const DiscreteVariable &variable, GUM_SCALAR externalWeight, NodeId id );
+      
+      /**
+      * Add a variable, it's associate node and a noisyAND implementation. The id of the new
+      * variable is automatically generated. 
+      *
+      * @param variable The variable added by copy.
+      * @param externalWeight @see gum::MultiDimNoisyAND
+      * @return the id of the added variable. 
+      */
+      NodeId addNoisyAND( const DiscreteVariable &variable, GUM_SCALAR externalWeight );
+      
+      
       /**
        * Add a variable, it's associate node and an OR implementation. The id of the new
        * variable is automatically generated.
@@ -437,3 +459,4 @@ namespace gum {
 #include <agrum/BN/BayesNet.tcc>
 // ============================================================================
 #endif /* GUM_BAYES_NET_H */
+

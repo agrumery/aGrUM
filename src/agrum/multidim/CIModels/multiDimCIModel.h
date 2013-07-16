@@ -18,8 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Abstract base class for all multi dimensionnal Conditional Independency models 
- * (see "The Noisy-Average Model for Local Probability Distributions", Zagorecki, 2003 
+ * @brief Abstract base class for all multi dimensionnal Causal Independency models 
+ * 
+ * Causal Independence (CI) is a method of defining a discrete distribution that can dramatically 
+ * reduce the number of prior probabilities necessary to define a distribution.
+ * (see "The Noisy-Average Model for Local Probability Distributions", Zagorecki, 2003)
+ * 
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
 #ifndef GUM_MULTI_DIM_CI_MODEL_H

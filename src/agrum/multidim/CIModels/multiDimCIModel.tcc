@@ -18,10 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief ANoisy-OR as described by Henrion (UAI-3, 1989, pp161-173)
+ * @brief A Interface to all Causal Independence models
  *
- * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
+ * Causal Independence (CI) is a method of defining a discrete distribution that can dramatically 
+ * reduce the number of prior probabilities necessary to define a distribution.
+ * 
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
+#include<agrum/multidim/multiDimReadOnly.h>
 #include<agrum/multidim/CIModels/multiDimCIModel.h>
 
 namespace gum {
@@ -29,7 +33,10 @@ namespace gum {
   // Default constructor
   // ==============================================================================
   template<typename GUM_SCALAR> INLINE
-  MultiDimCIModel<GUM_SCALAR>::MultiDimCIModel ( GUM_SCALAR external_weight, GUM_SCALAR default_weight ) : MultiDimReadOnly<GUM_SCALAR>(), __external_weight ( external_weight ), __default_weight ( default_weight ) {
+  MultiDimCIModel<GUM_SCALAR>::MultiDimCIModel ( GUM_SCALAR external_weight, GUM_SCALAR default_weight ) :
+    MultiDimReadOnly<GUM_SCALAR>(),
+    __external_weight ( external_weight ),
+    __default_weight ( default_weight ) {
     GUM_CONSTRUCTOR ( MultiDimCIModel ) ;
   }
 
@@ -37,7 +44,8 @@ namespace gum {
 /// Default constructor
 // ==============================================================================
   template<typename GUM_SCALAR> INLINE
-  MultiDimCIModel<GUM_SCALAR>::MultiDimCIModel ( const MultiDimCIModel<GUM_SCALAR>& from ) : MultiDimReadOnly<GUM_SCALAR> ( from ) {
+  MultiDimCIModel<GUM_SCALAR>::MultiDimCIModel ( const MultiDimCIModel<GUM_SCALAR>& from ) :
+    MultiDimReadOnly<GUM_SCALAR> ( from ) {
     GUM_CONS_CPY ( MultiDimCIModel );
     __default_weight = from.__default_weight;
     __external_weight = from.__external_weight;
@@ -48,14 +56,15 @@ namespace gum {
   // Copy constructor using a bijection to swap variables from source.
   // ============================================================================
   template<typename GUM_SCALAR> INLINE
-  MultiDimCIModel<GUM_SCALAR>::MultiDimCIModel ( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-      const MultiDimCIModel<GUM_SCALAR>& from ) :
-    MultiDimReadOnly<GUM_SCALAR>() {
+  MultiDimCIModel<GUM_SCALAR>::MultiDimCIModel (
+    const Bijection < const DiscreteVariable*,
+    const DiscreteVariable* > &bij,
+    const MultiDimCIModel<GUM_SCALAR>& from ) : MultiDimReadOnly<GUM_SCALAR>() {
     GUM_CONSTRUCTOR ( MultiDimCIModel );
     __default_weight = from.__default_weight;
     __external_weight = from.__external_weight;
 
-    for ( HashTableConstIterator< const DiscreteVariable *, GUM_SCALAR > iter = from.__causal_weights.begin(); iter != from.__causal_weights.end(); ++iter ) {
+    for ( HashTableConstIterator< const DiscreteVariable*, GUM_SCALAR > iter = from.__causal_weights.begin(); iter != from.__causal_weights.end(); ++iter ) {
       try {
         causalWeight ( * ( bij.first ( iter.key() ) ), *iter );
       } catch ( NotFound& ) {
@@ -79,10 +88,12 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   void MultiDimCIModel<GUM_SCALAR>::causalWeight ( const DiscreteVariable& v, GUM_SCALAR w ) const {
-    if ( w == ( GUM_SCALAR ) 0 ) {
-      GUM_ERROR ( OperationNotAllowed, "No 0.0 as causal weight in noisyOR" );
+    if (! this->contains( v )) {
+      GUM_ERROR ( InvalidArgument, v.name()<<" is not a cause for this CI Model" );
     }
-
+    if ( w == ( GUM_SCALAR ) 0 ) {
+      GUM_ERROR ( gum::OutOfBounds, "causal weight in CI Model>0" );
+    }
     __causal_weights.set ( &v, w );
   }
 
@@ -129,3 +140,4 @@ namespace gum {
 
 // ==================================================
 } /* namespace gum */
+
