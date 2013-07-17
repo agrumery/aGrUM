@@ -122,7 +122,7 @@ namespace gum {
       if ( !influenceDiagram->isUtilityNode ( map[i] ) )
         for ( Size j = i + 1; j < nbrNodes; ++j )
           if ( ( ( float ) rand() ) < p ) {
-            influenceDiagram->insertArc ( map[i], map[j] );
+            influenceDiagram->addArc ( map[i], map[j] );
           }
 
     // And fill the CPTs and UTs
@@ -158,7 +158,7 @@ namespace gum {
 
       for ( ; orderIter != order.end(); ++orderIter )
         if ( infdiag->isDecisionNode ( *orderIter ) ) {
-          infdiag->insertArc ( parentDecision, ( *orderIter ) );
+          infdiag->addArc ( parentDecision, ( *orderIter ) );
           parentDecision = ( *orderIter );
         }
     }

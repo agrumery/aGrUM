@@ -718,12 +718,18 @@ namespace gum {
 
   // ==========================================================================================
   // Insert an arc in diagram
-  // ==========================================================================================
+  // ========================================================================================== 
   template<typename GUM_SCALAR> INLINE
   void
   FMDPFactory<GUM_SCALAR>::insertArc ( NodeId from, NodeId to, Idx modality ) {
+    addArc(from,to,modality);
+  }
+    
+  template<typename GUM_SCALAR> INLINE
+  void
+  FMDPFactory<GUM_SCALAR>::addArc ( NodeId from, NodeId to, Idx modality ) {
 
-    __decisionDiagramFactory->insertArc ( from, to, modality );
+    __decisionDiagramFactory->addArc ( from, to, modality );
   }
 
   /* **************************************************************************************************** **/

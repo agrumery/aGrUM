@@ -409,10 +409,10 @@ namespace gum_tests {
           gum::Id s = bn->add( vs );
           gum::Id r = bn->add( vr );
           gum::Id w = bn->add( vw );
-          bn->insertArc( c, s );
-          bn->insertArc( c, r );
-          bn->insertArc( s, w );
-          bn->insertArc( r, w );
+          bn->addArc( c, s );
+          bn->addArc( c, r );
+          bn->addArc( s, w );
+          bn->addArc( r, w );
           {
             const float t[2] = {0.5, 0.5};
             const std::vector<float> ca( t, t + 2 );

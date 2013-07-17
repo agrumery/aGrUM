@@ -56,12 +56,12 @@ namespace gum_tests {
         i4 = bn.addVariable ( n4 );
         i5 = bn.addVariable ( n5 );
 
-        bn.insertArc ( i1, i3 );
-        bn.insertArc ( i1, i4 );
-        bn.insertArc ( i3, i5 );
-        bn.insertArc ( i4, i5 );
-        bn.insertArc ( i2, i4 );
-        bn.insertArc ( i2, i5 );
+        bn.addArc ( i1, i3 );
+        bn.addArc ( i1, i4 );
+        bn.addArc ( i3, i5 );
+        bn.addArc ( i4, i5 );
+        bn.addArc ( i2, i4 );
+        bn.addArc ( i2, i5 );
 
         const gum::Potential<double>& p1 = bn.cpt ( i1 );
         {
@@ -130,7 +130,7 @@ namespace gum_tests {
         i5 = i2 = bn.addVariable ( n2 );
 
 
-        bn.insertArc ( i1, i2 );
+        bn.addArc ( i1, i2 );
 
         const gum::Potential<double>& p1 = bn.cpt ( i1 );
         {
@@ -220,10 +220,10 @@ namespace gum_tests {
         r = bn->add ( vr );
         w = bn->add ( vw );
 
-        bn->insertArc ( c, s );
-        bn->insertArc ( c, r );
-        bn->insertArc ( s, w );
-        bn->insertArc ( r, w );
+        bn->addArc ( c, s );
+        bn->addArc ( c, r );
+        bn->addArc ( s, w );
+        bn->addArc ( r, w );
 
         gum::Potential<float> *e_i1, *e_i4;
         e_i1 = new gum::Potential<float>();

@@ -77,38 +77,38 @@ namespace gum_tests {
         idList->insert ( factory->addTerminalNode ( 9 ) );    //17
         idList->insert ( factory->addTerminalNode ( 1 ) );    //18
 
-        factory->insertArc ( ( *idList ) [0], ( *idList ) [1], 1 );
-        factory->insertArc ( ( *idList ) [0], ( *idList ) [8], 0 );
+        factory->addArc ( ( *idList ) [0], ( *idList ) [1], 1 );
+        factory->addArc ( ( *idList ) [0], ( *idList ) [8], 0 );
 
-        factory->insertArc ( ( *idList ) [1], ( *idList ) [17], 1 );
-        factory->insertArc ( ( *idList ) [1], ( *idList ) [2], 0 );
-        factory->insertArc ( ( *idList ) [2], ( *idList ) [3], 1 );
-        factory->insertArc ( ( *idList ) [2], ( *idList ) [5], 0 );
-        factory->insertArc ( ( *idList ) [3], ( *idList ) [4], 1 );
-        factory->insertArc ( ( *idList ) [3], ( *idList ) [5], 0 );
-        factory->insertArc ( ( *idList ) [4], ( *idList ) [7], 1 );
-        factory->insertArc ( ( *idList ) [4], ( *idList ) [15], 0 );
-        factory->insertArc ( ( *idList ) [5], ( *idList ) [6], 1 );
-        factory->insertArc ( ( *idList ) [5], ( *idList ) [15], 0 );
-        factory->insertArc ( ( *idList ) [6], ( *idList ) [7], 1 );
-        factory->insertArc ( ( *idList ) [6], ( *idList ) [15], 0 );
-        factory->insertArc ( ( *idList ) [7], ( *idList ) [17], 1 );
-        factory->insertArc ( ( *idList ) [7], ( *idList ) [15], 0 );
+        factory->addArc ( ( *idList ) [1], ( *idList ) [17], 1 );
+        factory->addArc ( ( *idList ) [1], ( *idList ) [2], 0 );
+        factory->addArc ( ( *idList ) [2], ( *idList ) [3], 1 );
+        factory->addArc ( ( *idList ) [2], ( *idList ) [5], 0 );
+        factory->addArc ( ( *idList ) [3], ( *idList ) [4], 1 );
+        factory->addArc ( ( *idList ) [3], ( *idList ) [5], 0 );
+        factory->addArc ( ( *idList ) [4], ( *idList ) [7], 1 );
+        factory->addArc ( ( *idList ) [4], ( *idList ) [15], 0 );
+        factory->addArc ( ( *idList ) [5], ( *idList ) [6], 1 );
+        factory->addArc ( ( *idList ) [5], ( *idList ) [15], 0 );
+        factory->addArc ( ( *idList ) [6], ( *idList ) [7], 1 );
+        factory->addArc ( ( *idList ) [6], ( *idList ) [15], 0 );
+        factory->addArc ( ( *idList ) [7], ( *idList ) [17], 1 );
+        factory->addArc ( ( *idList ) [7], ( *idList ) [15], 0 );
 
-        factory->insertArc ( ( *idList ) [8], ( *idList ) [18], 1 );
-        factory->insertArc ( ( *idList ) [8], ( *idList ) [9], 0 );
-        factory->insertArc ( ( *idList ) [9], ( *idList ) [10], 1 );
-        factory->insertArc ( ( *idList ) [9], ( *idList ) [12], 0 );
-        factory->insertArc ( ( *idList ) [10], ( *idList ) [11], 1 );
-        factory->insertArc ( ( *idList ) [10], ( *idList ) [12], 0 );
-        factory->insertArc ( ( *idList ) [11], ( *idList ) [14], 1 );
-        factory->insertArc ( ( *idList ) [11], ( *idList ) [16], 0 );
-        factory->insertArc ( ( *idList ) [12], ( *idList ) [13], 1 );
-        factory->insertArc ( ( *idList ) [12], ( *idList ) [16], 0 );
-        factory->insertArc ( ( *idList ) [13], ( *idList ) [14], 1 );
-        factory->insertArc ( ( *idList ) [13], ( *idList ) [16], 0 );
-        factory->insertArc ( ( *idList ) [14], ( *idList ) [18], 1 );
-        factory->insertArc ( ( *idList ) [14], ( *idList ) [16], 0 );
+        factory->addArc ( ( *idList ) [8], ( *idList ) [18], 1 );
+        factory->addArc ( ( *idList ) [8], ( *idList ) [9], 0 );
+        factory->addArc ( ( *idList ) [9], ( *idList ) [10], 1 );
+        factory->addArc ( ( *idList ) [9], ( *idList ) [12], 0 );
+        factory->addArc ( ( *idList ) [10], ( *idList ) [11], 1 );
+        factory->addArc ( ( *idList ) [10], ( *idList ) [12], 0 );
+        factory->addArc ( ( *idList ) [11], ( *idList ) [14], 1 );
+        factory->addArc ( ( *idList ) [11], ( *idList ) [16], 0 );
+        factory->addArc ( ( *idList ) [12], ( *idList ) [13], 1 );
+        factory->addArc ( ( *idList ) [12], ( *idList ) [16], 0 );
+        factory->addArc ( ( *idList ) [13], ( *idList ) [14], 1 );
+        factory->addArc ( ( *idList ) [13], ( *idList ) [16], 0 );
+        factory->addArc ( ( *idList ) [14], ( *idList ) [18], 1 );
+        factory->addArc ( ( *idList ) [14], ( *idList ) [16], 0 );
       }
 
     public:
@@ -205,20 +205,20 @@ namespace gum_tests {
 
         // Test d'ajout d'un arc ayant pour départ un noeud inexistant (doit lever l'exception gum::NotFound)
         // (le noeud 15 a été détruit un peu plus haut)
-        TS_ASSERT_THROWS ( factory->insertArc ( idList[15], idList[1], 2 ), gum::NotFound );
+        TS_ASSERT_THROWS ( factory->addArc ( idList[15], idList[1], 2 ), gum::NotFound );
 
         // Test d'ajout d'un arc ayant pour départ un noeud terminal (doit lever l'exception gum::InvalidNode
         // vu que les noeuds terminaux sont ... terminaux)
-        TS_ASSERT_THROWS ( factory->insertArc ( idList[16], idList[1], 3 ), gum::InvalidNode );
+        TS_ASSERT_THROWS ( factory->addArc ( idList[16], idList[1], 3 ), gum::InvalidNode );
 
         // Test d'ajout d'un arc entre 2 noeuds déjà reliés par un autre arc de valeur différente(doit lever aucune exception)
-        TS_GUM_ASSERT_THROWS_NOTHING ( factory->insertArc ( idList[8], idList[18], 4 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( factory->addArc ( idList[8], idList[18], 4 ) );
 
         // Test d'ajout d'un arc entre 2 noeuds déjà reliés par un autre arc de valeur égale(doit lever aucune exception)
-        TS_ASSERT_THROWS ( factory->insertArc ( idList[8], idList[18], 1 ), gum::DuplicateElement );
+        TS_ASSERT_THROWS ( factory->addArc ( idList[8], idList[18], 1 ), gum::DuplicateElement );
 
         // Test d'ajout d'un arc qui viole l'ordre sur les variables (doit lever l'exception gum::OperationNotAllowed)
-        TS_ASSERT_THROWS ( factory->insertArc ( idList[8], idList[1], 5 ), gum::OperationNotAllowed );
+        TS_ASSERT_THROWS ( factory->addArc ( idList[8], idList[1], 5 ), gum::OperationNotAllowed );
 
         // Test de retrait d'un arc existant (ne doit lever aucune exception)
         TS_GUM_ASSERT_THROWS_NOTHING ( factory->eraseArc ( idList[3], idList[4] ) );
@@ -244,25 +244,25 @@ namespace gum_tests {
         // *********************************************************************
 
         // Test d'ajout d'un arc par défaut sans risque
-        TS_GUM_ASSERT_THROWS_NOTHING ( factory->insertDefaultArc ( idList[5], idList[7] ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( factory->addDefaultArc ( idList[5], idList[7] ) );
         //factory->showProperties();
 
         // Test d'ajout d'un arc par défaut ayant pour départ un noeud inexistant (doit lever l'exception gum::InvalidNode)
         // (le noeud 15 a été détruit un peu plus haut
-        TS_ASSERT_THROWS ( factory->insertDefaultArc ( idList[15], idList[1] ), gum::NotFound );
+        TS_ASSERT_THROWS ( factory->addDefaultArc ( idList[15], idList[1] ), gum::NotFound );
 
         // Test d'ajout d'un arc par défaut ayant pour départ un noeud terminal (doit lever l'exception gum::OperationNotAllowed
         // vu que les noeuds terminaux sont ... terminaux)
-        TS_ASSERT_THROWS ( factory->insertDefaultArc ( idList[16], idList[1] ), gum::InvalidNode );
+        TS_ASSERT_THROWS ( factory->addDefaultArc ( idList[16], idList[1] ), gum::InvalidNode );
 
         // Test d'ajout d'un arc par défaut entre 2 noeuds déjà reliés par un autre arc (doit rien lever)
-        TS_GUM_ASSERT_THROWS_NOTHING ( factory->insertDefaultArc ( idList[0], idList[1] ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( factory->addDefaultArc ( idList[0], idList[1] ) );
 
         // Test d'ajout d'un arc par défaut entre 2 noeuds déjà reliés par un autre arc par defaut(doit lever DuplicateElement)
-        TS_ASSERT_THROWS ( factory->insertDefaultArc ( idList[0], idList[3] ), gum::DuplicateElement );
+        TS_ASSERT_THROWS ( factory->addDefaultArc ( idList[0], idList[3] ), gum::DuplicateElement );
 
         // Test d'ajout d'un arc par défaut qui viole l'ordre sur les variables (doit lever l'exception InvalidArc)
-        TS_ASSERT_THROWS ( factory->insertDefaultArc ( idList[8], idList[1] ), gum::OperationNotAllowed );
+        TS_ASSERT_THROWS ( factory->addDefaultArc ( idList[8], idList[1] ), gum::OperationNotAllowed );
 
         TS_GUM_ASSERT_THROWS_NOTHING ( delete factory );
       }
@@ -280,7 +280,7 @@ namespace gum_tests {
         gum::MultiDimDecisionDiagramFactoryBase<float>* factory = new gum::MultiDimDecisionDiagramFactory<float>();
         gum::List<gum::NodeId> idList;
         __fillFactory ( factory, &idList );
-        factory->insertDefaultArc ( idList[2], idList[15] );
+        factory->addDefaultArc ( idList[2], idList[15] );
 
 
         // *********************************************************************
@@ -686,7 +686,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( container2 = factory->getMultiDimDecisionDiagram() );
 
         factory->eraseArc ( 3,6 );
-        factory->insertArc ( 3,16,0 );
+        factory->addArc ( 3,16,0 );
 
         gum::MultiDimDecisionDiagramBase<float>* container3 = NULL;
         TS_GUM_ASSERT_THROWS_NOTHING ( container3 = factory->getMultiDimDecisionDiagram() );

@@ -178,8 +178,14 @@ namespace gum {
        * @throw DuplicateElement if another arc linking those nodes already exists
        */
       ///@{
-      void insertArc ( NodeId from, NodeId to, Idx modality );
-      void unsafeInsertArc ( NodeId from, NodeId to, Idx modality );
+      /// @deprecated use addArc instead      
+      GUM_DEPRECATED(void insertArc ( NodeId from, NodeId to, Idx modality ));
+      
+      /// @deprecated use addArc instead
+      GUM_DEPRECATED(void unsafeInsertArc ( NodeId from, NodeId to, Idx modality ));
+      
+      void addArc ( NodeId from, NodeId to, Idx modality );
+      void unsafeAddArc ( NodeId from, NodeId to, Idx modality );
       ///@}
       
       
@@ -194,8 +200,10 @@ namespace gum {
        * @throw OperationNotAllowed if arc doesn't respect variable order property
        * @throw DuplicateElement if another arc linking those nodes already exists
        */
-      void insertDefaultArc ( NodeId from, NodeId to );
-      void unsafeInsertDefaultArc ( NodeId from, NodeId to );
+      GUM_DEPRECATED(void insertDefaultArc ( NodeId from, NodeId to ));
+      GUM_DEPRECATED(void unsafeInsertDefaultArc ( NodeId from, NodeId to ));
+      void addDefaultArc ( NodeId from, NodeId to );
+      void unsafeAddDefaultArc ( NodeId from, NodeId to );
 
 
       /**

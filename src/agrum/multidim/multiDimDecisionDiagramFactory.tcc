@@ -314,7 +314,7 @@ MultiDimDecisionDiagramFactory< GUM_SCALAR, IApproximationPolicy >::__mergedNode
             if ( *iter == from  ) {
                 Idx modality = std::distance( this->_arcMap[*parentIter]->begin(), iter );
                 this->eraseSpecificArc( *parentIter, from, modality );
-                this->insertArc( *parentIter, to, modality );
+                this->addArc( *parentIter, to, modality );
             }
 
         if ( this->_defaultArcMap.exists ( *parentIter ) && this->_defaultArcMap[*parentIter] == from )

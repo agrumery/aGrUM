@@ -102,14 +102,14 @@ private :
         gum::NodeId e  = facto.addTerminalNode ( 2 );
         gum::NodeId g  = facto.addTerminalNode ( 3 );
 
-        facto.insertArc ( a, b, 0 );
-        facto.insertArc ( a, c, 1 );
+        facto.addArc ( a, b, 0 );
+        facto.addArc ( a, c, 1 );
 
-        facto.insertArc ( b, d, 0 );
-        facto.insertArc ( b, c, 1 );
+        facto.addArc ( b, d, 0 );
+        facto.addArc ( b, c, 1 );
 
-        facto.insertArc ( c, e, 0 );
-        facto.insertArc ( c, g, 1 );
+        facto.addArc ( c, e, 0 );
+        facto.addArc ( c, g, 1 );
 
         return facto.getMultiDimDecisionDiagram ( false );
 
@@ -216,13 +216,13 @@ private :
                                 }
 
                                 // then we add an arc between our current var associated node id and the considered var random node id
-                                f->unsafeInsertArc ( *numNode, ( *var2NodeIdMap[ toVar ] ) [desiredNode], label );
+                                f->unsafeAddArc ( *numNode, ( *var2NodeIdMap[ toVar ] ) [desiredNode], label );
 
                             } else {
 
                                 // if we add
                                 gum::NodeId toVal  = f->addTerminalNode ( tnList[ rand() %tnList.size()] );
-                                f->unsafeInsertArc ( *numNode, toVal, label );
+                                f->unsafeAddArc ( *numNode, toVal, label );
 
                             }
                         }
@@ -540,14 +540,14 @@ public :
 //       gum::NodeId e  = f.addTerminalNode( 2 );
 //       gum::NodeId g  = f.addTerminalNode( 3 );
 //
-//       f.insertArc( a, b, 0 );
-//       f.insertArc( a, c, 1 );
+//       f.addArc( a, b, 0 );
+//       f.addArc( a, c, 1 );
 //
-//       f.insertArc( b, d, 0 );
-//       f.insertArc( b, c, 1 );
+//       f.addArc( b, d, 0 );
+//       f.addArc( b, c, 1 );
 //
-//       f.insertArc( c, e, 0 );
-//       f.insertArc( c, g, 1 );
+//       f.addArc( c, e, 0 );
+//       f.addArc( c, g, 1 );
 //
 //       gum::MultiDimDecisionDiagramBase<double>* a1  = f.getMultiDimDecisionDiagram( false );
 //
@@ -658,40 +658,40 @@ public :
         gum::NodeId nt92  = facto.addTerminalNode( 92 );
         gum::NodeId nt25  = facto.addTerminalNode( 25 );
 
-        facto.insertArc( nv0, nv1, 0 );
-        facto.insertDefaultArc( nv0, nv22 );
+        facto.addArc( nv0, nv1, 0 );
+        facto.addDefaultArc( nv0, nv22 );
 
-        facto.insertArc( nv1, nv21, 0 );
-        facto.insertDefaultArc( nv1, nv22 );
+        facto.addArc( nv1, nv21, 0 );
+        facto.addDefaultArc( nv1, nv22 );
 
-        facto.insertArc( nv21, nv31, 0 );
-        facto.insertArc( nv21, nv45, 1 );
+        facto.addArc( nv21, nv31, 0 );
+        facto.addArc( nv21, nv45, 1 );
 
-        facto.insertArc( nv22, nv32, 0 );
-        facto.insertArc( nv22, nt0, 1 );
+        facto.addArc( nv22, nv32, 0 );
+        facto.addArc( nv22, nt0, 1 );
 
-        facto.insertArc( nv31, nv41, 0 );
-        facto.insertArc( nv31, nv43, 1 );
-        facto.insertArc( nv31, nv42, 2 );
+        facto.addArc( nv31, nv41, 0 );
+        facto.addArc( nv31, nv43, 1 );
+        facto.addArc( nv31, nv42, 2 );
 
-        facto.insertArc( nv32, nt92, 0 );
-        facto.insertArc( nv32, nv44, 1 );
-        facto.insertArc( nv32, ntm54, 2 );
+        facto.addArc( nv32, nt92, 0 );
+        facto.addArc( nv32, nv44, 1 );
+        facto.addArc( nv32, ntm54, 2 );
 
-        facto.insertArc( nv41, nt25, 0 );
-        facto.insertArc( nv41, nt92, 1 );
+        facto.addArc( nv41, nt25, 0 );
+        facto.addArc( nv41, nt92, 1 );
 
-        facto.insertArc( nv42, ntm121, 0 );
-        facto.insertArc( nv42, ntm54, 1 );
+        facto.addArc( nv42, ntm121, 0 );
+        facto.addArc( nv42, ntm54, 1 );
 
-        facto.insertArc( nv43, ntm164, 0 );
-        facto.insertArc( nv43, ntm78, 1 );
+        facto.addArc( nv43, ntm164, 0 );
+        facto.addArc( nv43, ntm78, 1 );
 
-        facto.insertArc( nv44, ntm97, 0 );
-        facto.insertArc( nv44, ntm78, 1 );
+        facto.addArc( nv44, ntm97, 0 );
+        facto.addArc( nv44, ntm78, 1 );
 
-        facto.insertArc( nv45, ntm67, 0 );
-        facto.insertArc( nv45, nt0, 1 );
+        facto.addArc( nv45, ntm67, 0 );
+        facto.addArc( nv45, nt0, 1 );
 
         gum::MultiDimDecisionDiagramBase<double>* a1  = NULL;
         TS_GUM_ASSERT_THROWS_NOTHING( a1  = facto.getMultiDimDecisionDiagram() );

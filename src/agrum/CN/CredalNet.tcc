@@ -33,9 +33,9 @@ namespace credal {
 	
 	template< typename GUM_SCALAR >
 	void CredalNet< GUM_SCALAR >::addArc ( const NodeId & tail, const NodeId & head ) {
-		__src_bn.insertArc ( tail, head );
-		__src_bn_min.insertArc ( tail, head );
-		__src_bn_max.insertArc ( tail, head );
+		__src_bn.addArc ( tail, head );
+		__src_bn_min.addArc ( tail, head );
+		__src_bn_max.addArc ( tail, head );
 	}
 	
 	

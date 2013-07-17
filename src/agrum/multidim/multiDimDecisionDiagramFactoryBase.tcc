@@ -180,10 +180,10 @@ namespace gum {
 
     for ( std::vector< NodeId >::const_iterator iter = nodeArcMap.begin(); iter != nodeArcMap.end(); ++iter )
       if ( *iter != 0 )
-        insertArc ( node, *iter, std::distance ( nodeArcMap.begin(), iter ) );
+        addArc ( node, *iter, std::distance ( nodeArcMap.begin(), iter ) );
 
     if ( defaultArcTo != 0 )
-      insertDefaultArc ( node, defaultArcTo );
+      addDefaultArc ( node, defaultArcTo );
 
     return node;
   }
@@ -354,6 +354,12 @@ namespace gum {
   template< typename GUM_SCALAR >
   void
   MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::insertArc ( NodeId from, NodeId to, Idx value ) {
+    addArc ( from, to, value );
+  }
+
+  template< typename GUM_SCALAR >
+  void
+  MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::addArc ( NodeId from, NodeId to, Idx value ) {
 
     if ( !_model.exists ( from ) ) {
       GUM_ERROR ( NotFound, " Origin node " <<  from << " does not exist." );
@@ -379,7 +385,7 @@ namespace gum {
         break;
       }
 
-    unsafeInsertArc ( from, to, value );
+    unsafeAddArc( from, to, value );
   }
 
 // =============================================================================
@@ -394,6 +400,12 @@ namespace gum {
   template< typename GUM_SCALAR >
   void
   MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::insertDefaultArc ( NodeId from, NodeId to ) {
+    addDefaultArc(from,to);
+  }
+  
+  template< typename GUM_SCALAR >
+  void
+  MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::addDefaultArc ( NodeId from, NodeId to ) {
 
     if ( !_model.exists ( from ) ) {
       GUM_ERROR ( NotFound, " Origin node " <<  from << " does not exist." );
@@ -417,7 +429,7 @@ namespace gum {
     if ( _defaultArcMap.exists ( from ) && _defaultArcMap[from] != to )
       GUM_ERROR ( DuplicateElement, "A default arc starting from this node " <<  from << " already exist." );
 
-    unsafeInsertDefaultArc ( from, to );
+    unsafeAddDefaultArc ( from, to );
   }
 
   // =============================================================================
@@ -495,17 +507,17 @@ namespace gum {
     for ( NodeGraphPart::NodeIterator nodeIter = _model.beginNodes(); nodeIter != _model.endNodes(); ++nodeIter )
       if ( *nodeIter != 0 ) {
         if ( _valueMap.existsFirst ( *nodeIter ) )
-          terminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\"" << this->_valueMap.second ( *nodeIter ) << "\"]"<< ";" << std::endl;
+          terminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\"" << this->_valueMap.second ( *nodeIter ) << "\"]" << ";" << std::endl;
         else {
-          nonTerminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\"" << _varMap[ *nodeIter ]->name() << "\"]"<< ";" << std::endl;
+          nonTerminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\"" << _varMap[ *nodeIter ]->name() << "\"]" << ";" << std::endl;
 
           if ( _arcMap[*nodeIter] != NULL )
             for ( std::vector<NodeId>::iterator arcIter = _arcMap[*nodeIter]->begin(); arcIter != _arcMap[*nodeIter]->end(); ++arcIter )
               if ( *arcIter != 0 )
-                arcstream << tab <<  *nodeIter << " -> " << *arcIter << " [label=\"" << _varMap[ *nodeIter ]->label ( std::distance ( _arcMap[*nodeIter]->begin(), arcIter ) ) << "\",color=\"#0000ff\"]"<< ";" << std::endl;
+                arcstream << tab <<  *nodeIter << " -> " << *arcIter << " [label=\"" << _varMap[ *nodeIter ]->label ( std::distance ( _arcMap[*nodeIter]->begin(), arcIter ) ) << "\",color=\"#0000ff\"]" << ";" << std::endl;
 
           if ( _defaultArcMap.exists ( *nodeIter ) )
-            defaultarcstream << tab <<  *nodeIter << " -> " << _defaultArcMap[*nodeIter] << " [color=\"#ff0000\"]"<< ";" << std::endl;
+            defaultarcstream << tab <<  *nodeIter << " -> " << _defaultArcMap[*nodeIter] << " [color=\"#ff0000\"]" << ";" << std::endl;
         }
       }
 
@@ -591,12 +603,12 @@ namespace gum {
       GUM_ERROR ( OperationNotAllowed, "Swap must be between two adjacent var. Var " << y->name() << " is at pos " << _varsSeq.pos ( y ) << " and var " << x->name() << " at pos " << _varsSeq.pos ( x ) );
     }
 
-    _varsSeq.swap ( _varsSeq.pos ( x ),_varsSeq.pos ( y ) );
+    _varsSeq.swap ( _varsSeq.pos ( x ), _varsSeq.pos ( y ) );
 
     if ( !_var2NodeIdMap.exists ( x ) || !_var2NodeIdMap.exists ( y ) )
       return;
 
-    List<NodeId> *yNodes = new List<NodeId>(), *xNodes = new List<NodeId>();
+    List<NodeId>* yNodes = new List<NodeId>(), *xNodes = new List<NodeId>();
 
     for ( ListIterator< NodeId > nodeIter = _var2NodeIdMap[x]->begin(); nodeIter != _var2NodeIdMap[x]->end(); ++nodeIter ) {
 
@@ -743,7 +755,7 @@ namespace gum {
       _defaultArcMap.erase ( *nodeIter );
       _varMap.erase ( *nodeIter );
 
-      for ( NodeSetIterator parentIter = _model.parents ( *nodeIter ).begin(); parentIter !=_model.parents ( *nodeIter ).end(); ++parentIter ) {
+      for ( NodeSetIterator parentIter = _model.parents ( *nodeIter ).begin(); parentIter != _model.parents ( *nodeIter ).end(); ++parentIter ) {
         _model.insertArc ( *parentIter, replacingNode );
 
         std::vector<NodeId>* newSonMap = new std::vector<NodeId> ( _arcMap[*parentIter]->size(), 0 );
@@ -943,10 +955,10 @@ namespace gum {
 
     for ( std::vector< NodeId >::const_iterator iter = nodeArcMap.begin(); iter != nodeArcMap.end(); ++iter )
       if ( *iter != 0 )
-        unsafeInsertArc ( node, *iter, std::distance ( nodeArcMap.begin(), iter ) );
+        unsafeAddArc ( node, *iter, std::distance ( nodeArcMap.begin(), iter ) );
 
     if ( defaultArcTo != 0 )
-      unsafeInsertDefaultArc ( node, defaultArcTo );
+      unsafeAddDefaultArc ( node, defaultArcTo );
 
     return node;
   }
@@ -987,6 +999,12 @@ namespace gum {
   template< typename GUM_SCALAR > INLINE
   void
   MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::unsafeInsertArc ( NodeId from, NodeId to, Idx value ) {
+    unsafeAddArc ( from, to, value );
+  }
+
+  template< typename GUM_SCALAR > INLINE
+  void
+  MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::unsafeAddArc ( NodeId from, NodeId to, Idx value ) {
 
     if ( _defaultArcMap.exists ( from ) && _defaultArcMap[from] == to )
       return;
@@ -1001,6 +1019,12 @@ namespace gum {
   template< typename GUM_SCALAR > INLINE
   void
   MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::unsafeInsertDefaultArc ( NodeId from, NodeId to ) {
+    unsafeAddDefaultArc ( from, to );
+  }
+
+  template< typename GUM_SCALAR > INLINE
+  void
+  MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::unsafeAddDefaultArc ( NodeId from, NodeId to ) {
 
     for ( std::vector<NodeId>::iterator iter = _arcMap[from]->begin(); iter != _arcMap[from]->end(); ++iter )
       if ( *iter == to ) {

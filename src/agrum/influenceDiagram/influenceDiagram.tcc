@@ -545,13 +545,21 @@ namespace gum {
 // ===========================================================================
 // @name Arc manipulation methods.
 // ===========================================================================
-
   /*
   * Add an arc in the ID, and update diagram's chance nodes cpt if necessary.
   */
   template<typename GUM_SCALAR> INLINE
   void
   InfluenceDiagram<GUM_SCALAR>::insertArc( NodeId tail, NodeId head ) {
+   addArc(tail,head);
+   
+  }
+  /*
+  * Add an arc in the ID, and update diagram's chance nodes cpt if necessary.
+  */
+  template<typename GUM_SCALAR> INLINE
+  void
+  InfluenceDiagram<GUM_SCALAR>::addArc( NodeId tail, NodeId head ) {
     if ( isUtilityNode( tail ) ) {
       GUM_ERROR( InvalidArc, "Tail cannot be a utility node" );
     }

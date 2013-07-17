@@ -54,12 +54,12 @@ namespace gum_tests {
           idList.insert ( bn.addVariable ( *var4 ) );
           idList.insert ( bn.addVariable ( *var5 ) );
 
-          bn.insertArc ( idList[0], idList[2] );
-          bn.insertArc ( idList[2], idList[4] );
-          bn.insertArc ( idList[1], idList[3] );
-          bn.insertArc ( idList[0], idList[3] );
-          bn.insertArc ( idList[3], idList[4] );
-          bn.insertArc ( idList[1], idList[4] );
+          bn.addArc ( idList[0], idList[2] );
+          bn.addArc ( idList[2], idList[4] );
+          bn.addArc ( idList[1], idList[3] );
+          bn.addArc ( idList[0], idList[3] );
+          bn.addArc ( idList[3], idList[4] );
+          bn.addArc ( idList[1], idList[4] );
 
         } catch ( gum::Exception &e ) {
           std::cerr << std::endl << e.content() << std::endl;
@@ -153,7 +153,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( topology->nbrArcs(), ( gum::Idx ) 0 );
         TS_ASSERT_EQUALS ( topology->dim(), ( gum::Idx ) 0 );
 
-        TS_ASSERT_THROWS ( topology->insertArc ( 1, 2 ), gum::InvalidNode );
+        TS_ASSERT_THROWS ( topology->addArc ( 1, 2 ), gum::InvalidNode );
 
         gum::List<gum::NodeId> idList;
         TS_GUM_ASSERT_THROWS_NOTHING ( fill ( *topology, idList ) );
@@ -379,12 +379,12 @@ namespace gum_tests {
         idList.insert ( bn.addVariable ( *var4 ) );
         idList.insert ( bn.addVariable ( *var5 ) );
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( bn.insertArc ( idList[0], idList[2] ) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( bn.insertArc ( idList[2], idList[4] ) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( bn.insertArc ( idList[1], idList[3] ) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( bn.insertArc ( idList[0], idList[3] ) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( bn.insertArc ( idList[3], idList[4] ) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( bn.insertArc ( idList[1], idList[4] ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( bn.addArc ( idList[0], idList[2] ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( bn.addArc ( idList[2], idList[4] ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( bn.addArc ( idList[1], idList[3] ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( bn.addArc ( idList[0], idList[3] ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( bn.addArc ( idList[3], idList[4] ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( bn.addArc ( idList[1], idList[4] ) );
 
         TS_ASSERT_EQUALS ( bn.dag().sizeArcs(), ( gum::Size ) 6 );
       }
@@ -684,9 +684,9 @@ namespace gum_tests {
           TS_GUM_ASSERT_THROWS_NOTHING ( i1 = bn.addOR ( *var1 ) );
           TS_ASSERT_THROWS ( bn.addOR ( *var5 ), gum::SizeError );
 
-          bn.insertArc ( bn.add ( *var3 ), i1 );
-          bn.insertArc ( bn.add ( *var4 ), i1 );
-          bn.insertArc ( bn.add ( *var5 ), i1 );
+          bn.addArc ( bn.add ( *var3 ), i1 );
+          bn.addArc ( bn.add ( *var4 ), i1 );
+          bn.addArc ( bn.add ( *var5 ), i1 );
         }
         {
           gum::BayesNet<float> bn;
@@ -695,9 +695,9 @@ namespace gum_tests {
           TS_GUM_ASSERT_THROWS_NOTHING ( i2 = bn.addAND ( *var2 ) );
           TS_ASSERT_THROWS ( bn.addAND ( *var5 ), gum::SizeError );
 
-          bn.insertArc ( bn.add ( *var3 ), i2 );
-          bn.insertArc ( bn.add ( *var4 ), i2 );
-          bn.insertArc ( bn.add ( *var5 ), i2 );
+          bn.addArc ( bn.add ( *var3 ), i2 );
+          bn.addArc ( bn.add ( *var4 ), i2 );
+          bn.addArc ( bn.add ( *var5 ), i2 );
         }
       }
 

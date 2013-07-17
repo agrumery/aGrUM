@@ -205,11 +205,11 @@ namespace gum_tests {
         gum::NodeId idOneMoreParent1 = bn.add ( oneMoreParent1 );
         gum::NodeId idOneMoreParent2 = bn.add ( oneMoreParent2 );
 
-        bn.insertWeightedArc ( idMalaria, idFever, 0.9 );
-        bn.insertWeightedArc ( idFlu, idFever, 0.8 );
-        bn.insertWeightedArc ( idCold, idFever, 0.4 );
+        bn.addWeightedArc ( idMalaria, idFever, 0.9 );
+        bn.addWeightedArc ( idFlu, idFever, 0.8 );
+        bn.addWeightedArc ( idCold, idFever, 0.4 );
 
-        TS_ASSERT_THROWS ( bn.insertWeightedArc ( idMalaria, idCold, 0.8 ), gum::InvalidArc );
+        TS_ASSERT_THROWS ( bn.addWeightedArc ( idMalaria, idCold, 0.8 ), gum::InvalidArc );
 
 
         const gum::Potential<float>& pOneMoreParent1 = bn.cpt ( idOneMoreParent1 );
@@ -220,9 +220,9 @@ namespace gum_tests {
         // FILLING PARAMS
         pOneMoreParent2.fillWith ( std::vector<float> {0.3, 0.7} );
 
-        bn.insertArc ( idOneMoreParent1, idOneMore );
-        bn.insertArc ( idFever, idOneMore );
-        bn.insertArc ( idOneMoreParent2, idOneMore );
+        bn.addArc ( idOneMoreParent1, idOneMore );
+        bn.addArc ( idFever, idOneMore );
+        bn.addArc ( idOneMoreParent2, idOneMore );
         const gum::Potential<float>& pOneMore = bn.cpt ( idOneMore );
         // FILLING PARAMS
         pOneMore.fillWith ( std::vector<float> {

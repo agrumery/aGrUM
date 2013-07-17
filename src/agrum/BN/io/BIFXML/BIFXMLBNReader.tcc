@@ -185,7 +185,7 @@ namespace gum {
       }
 
       for( List< NodeId >::iterator parentListIte = parentList.rbegin(); parentListIte != parentList.rend(); --parentListIte )
-        __bn->insertArc( *parentListIte, currentVarId );
+        __bn->addArc( *parentListIte, currentVarId );
 
       // Recuperating tables values
       ticpp::Element* tableElement = currentVar->FirstChildElement( "TABLE" );

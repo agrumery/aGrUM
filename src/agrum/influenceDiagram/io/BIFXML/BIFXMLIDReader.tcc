@@ -181,7 +181,7 @@ namespace gum {
         parentList.push_back( parentId );
       }
       for ( List< NodeId >::iterator parentListIte = parentList.rbegin(); parentListIte != parentList.rend(); --parentListIte )
-        __infdiag->insertArc( *parentListIte, currentVarId );
+        __infdiag->addArc( *parentListIte, currentVarId );
 
 
       // Recuperating tables values

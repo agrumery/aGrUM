@@ -61,7 +61,7 @@ namespace gum {
 // @return A BNs randomly generated.
 
   template <typename GUM_SCALAR, template<class> class ICPTGenerator>
-  void DefaultBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::generateBN ( BayesNet<GUM_SCALAR> & bayesNet ) {
+  void DefaultBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::generateBN ( BayesNet<GUM_SCALAR>& bayesNet ) {
     AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet = bayesNet;
     HashTable<Size, NodeId> map;
     std::stringstream strBuff;
@@ -72,7 +72,7 @@ namespace gum {
     for ( Size i = 0; i < AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes; ++i ) {
       strBuff << "n" << i;
       nb_mod = ( AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_maxModality == 2 ) ? 2 : 2 + rand() % ( AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_maxModality - 1 );
-      map.insert ( i, AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.addVariable ( LabelizedVariable ( strBuff.str(), "" , nb_mod ) ) );      
+      map.insert ( i, AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.addVariable ( LabelizedVariable ( strBuff.str(), "" , nb_mod ) ) );
       strBuff.str ( "" );
     }
 
@@ -83,7 +83,7 @@ namespace gum {
     for ( Size i = 0; i < AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes; ++i )
       for ( Size j = i + 1; j < AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_nbrNodes; ++j )
         if ( ( ( float ) rand() ) < p )
-          AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.insertArc ( map[i], map[j] );
+          AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.addArc ( map[i], map[j] );
 
     AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::fillCPT();
 
@@ -91,4 +91,3 @@ namespace gum {
     bayesNet = AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet;
   }
 } /* namespace gum */
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;

@@ -288,7 +288,7 @@ namespace gum {
         if ( __connect ( *it, i, excluded ) ) {
           std::string nameit = AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.variable ( *it ).name();
           AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.eraseArc ( *it, j ); //TODO reflect
-          AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.insertArc ( head, tail ); return;
+          AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.addArc ( head, tail ); return;
         }
       }
 
@@ -299,7 +299,7 @@ namespace gum {
         if ( __connect ( *it, i, excluded ) ) {
           std::string nameit = AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.variable ( *it ).name();
           AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.eraseArc ( j, *it );
-          AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.insertArc ( head, tail ); return;
+          AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.addArc ( head, tail ); return;
         }
       }
     }
@@ -341,10 +341,10 @@ namespace gum {
     if ( _disturbing ) {
       Potential<GUM_SCALAR> potj;
       potj = AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.cpt ( j );
-      AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.insertArc ( i, j );
+      AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.addArc ( i, j );
 
       this->disturbAugmCPT ( i, j, AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet, potj, ( GUM_SCALAR ) 0.5 );
-    } else AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.insertArc ( i, j );
+    } else AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.addArc ( i, j );
   }
 
 
@@ -361,14 +361,14 @@ namespace gum {
         marg = ( *_hashMarginal[i] );
 
         this->disturbReducCPT ( i, j, AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet, potj, marg );
-      } else AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.insertArc ( i, j );
+      } else AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.addArc ( i, j );
     } else {
       AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.eraseArc ( i, j );
 
 
       if ( !__connect ( i, j ) && mustbeconnex ) {
 
-        AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.insertArc ( i, j );
+        AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.addArc ( i, j );
 
       }
 
@@ -436,7 +436,7 @@ namespace gum {
       SubG = ( rand() % ( maxNodes ) ) + 1 ;
       maxNodes = maxNodes - SubG;
       NodeId rootS = __createPartTree ( SubG , n );
-      AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.insertArc ( root, rootS );
+      AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.addArc ( root, rootS );
     }
   }
 
@@ -455,7 +455,7 @@ namespace gum {
       SubG = ( rand() % ( maxNodes ) ) + 1 ;
       maxNodes = maxNodes - SubG;
       NodeId rootS = __createPartTree ( SubG , n );
-      AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.insertArc ( root, rootS );
+      AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.addArc ( root, rootS );
     }
 
     return root;
@@ -470,7 +470,7 @@ namespace gum {
       __chooseCloseNodes ( i, j );
       _bayesNettemp = AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet;
       __eraseArc ( i,  j, false );
-      AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.insertArc ( j, i );
+      AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.addArc ( j, i );
 
       if ( !__checkConditions() )
         AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet = _bayesNettemp;

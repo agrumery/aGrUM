@@ -67,10 +67,10 @@ namespace gum_tests {
         tempId = bn->addVariable ( *node5 );
         idMap.insert ( node5, tempId );
 
-        bn->insertArc ( idMap[node1], idMap[node3] );
-        bn->insertArc ( idMap[node2], idMap[node3] );
-        bn->insertArc ( idMap[node3], idMap[node5] );
-        bn->insertArc ( idMap[node4], idMap[node5] );
+        bn->addArc ( idMap[node1], idMap[node3] );
+        bn->addArc ( idMap[node2], idMap[node3] );
+        bn->addArc ( idMap[node3], idMap[node5] );
+        bn->addArc ( idMap[node4], idMap[node5] );
 
         evidence = new gum::List< gum::Potential<float>* >();
 

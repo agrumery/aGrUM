@@ -61,18 +61,18 @@ namespace gum_tests {
           idList.insert( infDiag.addUtilityNode( *utilityVar1 ) ); //9
           idList.insert( infDiag.addUtilityNode( *utilityVar2 ) ); //10
 
-          infDiag.insertArc( idList[0], idList[4] );
-          infDiag.insertArc( idList[4], idList[9] );
-          infDiag.insertArc( idList[4], idList[5] );
-          infDiag.insertArc( idList[5], idList[1] );
-          infDiag.insertArc( idList[5], idList[2] );
-          infDiag.insertArc( idList[1], idList[9] );
-          infDiag.insertArc( idList[1], idList[7] );
-          infDiag.insertArc( idList[2], idList[6] );
-          infDiag.insertArc( idList[6], idList[8] );
-          infDiag.insertArc( idList[7], idList[8] );
-          infDiag.insertArc( idList[8], idList[10] );
-          infDiag.insertArc( idList[3], idList[10] );
+          infDiag.addArc( idList[0], idList[4] );
+          infDiag.addArc( idList[4], idList[9] );
+          infDiag.addArc( idList[4], idList[5] );
+          infDiag.addArc( idList[5], idList[1] );
+          infDiag.addArc( idList[5], idList[2] );
+          infDiag.addArc( idList[1], idList[9] );
+          infDiag.addArc( idList[1], idList[7] );
+          infDiag.addArc( idList[2], idList[6] );
+          infDiag.addArc( idList[6], idList[8] );
+          infDiag.addArc( idList[7], idList[8] );
+          infDiag.addArc( idList[8], idList[10] );
+          infDiag.addArc( idList[3], idList[10] );
 
         } catch( gum::Exception &e ) {
           std::cerr << std::endl << e.content() << std::endl;

@@ -130,14 +130,14 @@ namespace gum_tests {
         gum::NodeId e = facto->addTerminalNode( 2 );
         gum::NodeId g = facto->addTerminalNode( 3 );
 
-        facto->insertArc( a, b, 0 );
-        facto->insertArc( a, c, 1 );
+        facto->addArc( a, b, 0 );
+        facto->addArc( a, c, 1 );
 
-        facto->insertArc( b, d, 0 );
-        facto->insertArc( b, c, 1 );
+        facto->addArc( b, d, 0 );
+        facto->addArc( b, c, 1 );
 
-        facto->insertArc( c, e, 0 );
-        facto->insertArc( c, g, 1 );
+        facto->addArc( c, e, 0 );
+        facto->addArc( c, g, 1 );
 
         ret = facto->getMultiDimDecisionDiagram();
 
@@ -171,11 +171,11 @@ namespace gum_tests {
         gum::NodeId e = facto->addTerminalNode( 5 );
         gum::NodeId g = facto->addTerminalNode( 1 );
 
-        facto->insertArc( a, d, 0 );
-        facto->insertArc( a, c, 1 );
+        facto->addArc( a, d, 0 );
+        facto->addArc( a, c, 1 );
 
-        facto->insertArc( c, e, 0 );
-        facto->insertArc( c, g, 1 );
+        facto->addArc( c, e, 0 );
+        facto->addArc( c, g, 1 );
 
         ret = facto->getMultiDimDecisionDiagram();
 
@@ -282,13 +282,13 @@ namespace gum_tests {
                     }
 
                     // then we add an arc between our current var associated node id and the considered var random node id
-                    f->unsafeInsertArc( *numNode, ( *var2NodeIdMap[ toVar ] ) [desiredNode], label );
+                    f->unsafeAddArc( *numNode, ( *var2NodeIdMap[ toVar ] ) [desiredNode], label );
 
                   } else {
 
                     // if we add
                     gum::NodeId toVal = f->addTerminalNode( tnList[ rand() %tnList.size()] );
-                    f->unsafeInsertArc( *numNode, toVal, label );
+                    f->unsafeAddArc( *numNode, toVal, label );
 
                   }
                 }
@@ -763,15 +763,15 @@ namespace gum_tests {
               gum::NodeId n1tm45 = facto.addTerminalNode( -45 );
               gum::NodeId n1t0 = facto.addTerminalNode( 0 );
 
-              facto.insertArc( n10, n17, 0 );
-              facto.insertArc( n10, n1tm90, 1 );
+              facto.addArc( n10, n17, 0 );
+              facto.addArc( n10, n1tm90, 1 );
               facto.insertDefaultArc( n10, n1t0 );
 
-              facto.insertArc( n17, n16, 0 );
+              facto.addArc( n17, n16, 0 );
               facto.insertDefaultArc( n17, n1t0 );
 
-              facto.insertArc( n16, n1t41, 0 );
-              facto.insertArc( n16, n1tm45, 1 );
+              facto.addArc( n16, n1t41, 0 );
+              facto.addArc( n16, n1tm45, 1 );
 
               gum::MultiDimDecisionDiagramBase<double>* a1 = facto.getMultiDimDecisionDiagram();
               // std::cout << std::endl << a1->toDot();
@@ -806,17 +806,17 @@ namespace gum_tests {
               gum::NodeId n2tm99 = facto.addTerminalNode( -99 );
               gum::NodeId n2tm3 = facto.addTerminalNode( -3 );
 
-              facto.insertArc( n21, n241, 0 );
-              facto.insertArc( n21, n29, 1 );
-              facto.insertArc( n21, n2t16, 2 );
+              facto.addArc( n21, n241, 0 );
+              facto.addArc( n21, n29, 1 );
+              facto.addArc( n21, n2t16, 2 );
 
-              facto.insertArc( n241, n2tm99, 0 );
-              facto.insertArc( n241, n2tm3, 1 );
+              facto.addArc( n241, n2tm99, 0 );
+              facto.addArc( n241, n2tm3, 1 );
 
-              facto.insertArc( n29, n242, 0 );
+              facto.addArc( n29, n242, 0 );
               facto.insertDefaultArc( n29, n2t0 );
 
-              facto.insertArc( n242, n2tm3, 0 );
+              facto.addArc( n242, n2tm3, 0 );
               facto.insertDefaultArc( n242, n2t0 );
 
               gum::MultiDimDecisionDiagramBase<double>* a2 = facto.getMultiDimDecisionDiagram();

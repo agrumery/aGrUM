@@ -65,18 +65,18 @@ namespace gum_tests {
             idList.insert( id.addUtilityNode( *utilityVar1 ) );   //9
             idList.insert( id.addUtilityNode( *utilityVar2 ) );   //10
 
-            id.insertArc( idList[0], idList[4] );
-            id.insertArc( idList[4], idList[9] );
-            id.insertArc( idList[4], idList[5] );
-            id.insertArc( idList[5], idList[1] );
-            id.insertArc( idList[5], idList[2] );
-            id.insertArc( idList[1], idList[9] );
-            id.insertArc( idList[1], idList[7] );
-            id.insertArc( idList[2], idList[6] );
-            id.insertArc( idList[6], idList[8] );
-            id.insertArc( idList[7], idList[8] );
-            id.insertArc( idList[8], idList[10] );
-            id.insertArc( idList[3], idList[10] );
+            id.addArc( idList[0], idList[4] );
+            id.addArc( idList[4], idList[9] );
+            id.addArc( idList[4], idList[5] );
+            id.addArc( idList[5], idList[1] );
+            id.addArc( idList[5], idList[2] );
+            id.addArc( idList[1], idList[9] );
+            id.addArc( idList[1], idList[7] );
+            id.addArc( idList[2], idList[6] );
+            id.addArc( idList[6], idList[8] );
+            id.addArc( idList[7], idList[8] );
+            id.addArc( idList[8], idList[10] );
+            id.addArc( idList[3], idList[10] );
 
           } catch ( gum::Exception &e ) {
             std::cerr << std::endl << e.content() << std::endl;
@@ -195,7 +195,7 @@ namespace gum_tests {
           gum::InfluenceDiagram<float> *topology = NULL;
           TS_GUM_ASSERT_THROWS_NOTHING( topology = new gum::InfluenceDiagram<float>() );
 
-          TS_ASSERT_THROWS( topology->insertArc( 1, 2 ), gum::InvalidNode );
+          TS_ASSERT_THROWS( topology->addArc( 1, 2 ), gum::InvalidNode );
           gum::List<gum::NodeId> idList;
           TS_GUM_ASSERT_THROWS_NOTHING( fill( *topology, idList ) );
 
@@ -427,15 +427,15 @@ namespace gum_tests {
           TS_GUM_ASSERT_THROWS_NOTHING( idList.insert( id.addChanceNode( *chanceVar4 ) ) );
           TS_GUM_ASSERT_THROWS_NOTHING( idList.insert( id.addUtilityNode( *utilityVar2 ) ) );
 
-          TS_GUM_ASSERT_THROWS_NOTHING( id.insertArc( idList[0], idList[2] ) );
-          TS_GUM_ASSERT_THROWS_NOTHING( id.insertArc( idList[2], idList[4] ) );
-          TS_GUM_ASSERT_THROWS_NOTHING( id.insertArc( idList[1], idList[3] ) );
-          TS_GUM_ASSERT_THROWS_NOTHING( id.insertArc( idList[0], idList[3] ) );
-          TS_GUM_ASSERT_THROWS_NOTHING( id.insertArc( idList[3], idList[4] ) );
-          TS_GUM_ASSERT_THROWS_NOTHING( id.insertArc( idList[1], idList[4] ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( id.addArc( idList[0], idList[2] ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( id.addArc( idList[2], idList[4] ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( id.addArc( idList[1], idList[3] ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( id.addArc( idList[0], idList[3] ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( id.addArc( idList[3], idList[4] ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( id.addArc( idList[1], idList[4] ) );
 
-          TS_ASSERT_THROWS( id.insertArc( idList[4], idList[0] ) , gum::InvalidArc );
-          TS_ASSERT_THROWS( id.insertArc( idList[4], idList[3] ) , gum::InvalidArc );
+          TS_ASSERT_THROWS( id.addArc( idList[4], idList[0] ) , gum::InvalidArc );
+          TS_ASSERT_THROWS( id.addArc( idList[4], idList[3] ) , gum::InvalidArc );
 
           TS_ASSERT_EQUALS( id.dag().sizeArcs(), ( gum::Size ) 6 );
         }
@@ -716,8 +716,8 @@ namespace gum_tests {
 
           TS_ASSERT( ! id.decisionOrderExists() );
           TS_ASSERT_THROWS( id.getDecisionOrder(), gum::NotFound );
-          id.insertArc( idList[2], idList[1] );
-          id.insertArc( idList[7], idList[3] );
+          id.addArc( idList[2], idList[1] );
+          id.addArc( idList[7], idList[3] );
           TS_ASSERT( id.decisionOrderExists() );
           TS_ASSERT_THROWS_NOTHING( id.getDecisionOrder() );
           TS_ASSERT_THROWS_NOTHING( id.getPartialTemporalOrder() );
@@ -779,33 +779,33 @@ namespace gum_tests {
           idList.insert( id.addUtilityNode( uVar3 ) );   //18
           idList.insert( id.addUtilityNode( uVar4 ) );   //19
 
-          id.insertArc( idList[4], idList[6] );
-          id.insertArc( idList[5], idList[6] );
-          id.insertArc( idList[5], idList[7] );
-          id.insertArc( idList[5], idList[0] );
-          id.insertArc( idList[0], idList[7] );
-          id.insertArc( idList[0], idList[16] );
-          id.insertArc( idList[6], idList[8] );
-          id.insertArc( idList[7], idList[8] );
-          id.insertArc( idList[7], idList[9] );
-          id.insertArc( idList[8], idList[10] );
-          id.insertArc( idList[8], idList[1] );
-          id.insertArc( idList[9], idList[1] );
-          id.insertArc( idList[9], idList[11] );
-          id.insertArc( idList[10], idList[3] );
-          id.insertArc( idList[10], idList[12] );
-          id.insertArc( idList[1], idList[12] );
-          id.insertArc( idList[1], idList[2] );
-          id.insertArc( idList[3], idList[15] );
-          id.insertArc( idList[12], idList[15] );
-          id.insertArc( idList[11], idList[13] );
-          id.insertArc( idList[11], idList[14] );
-          id.insertArc( idList[2], idList[14] );
-          id.insertArc( idList[2], idList[17] );
-          id.insertArc( idList[2], idList[3] );
-          id.insertArc( idList[13], idList[18] );
-          id.insertArc( idList[14], idList[18] );
-          id.insertArc( idList[15], idList[19] );
+          id.addArc( idList[4], idList[6] );
+          id.addArc( idList[5], idList[6] );
+          id.addArc( idList[5], idList[7] );
+          id.addArc( idList[5], idList[0] );
+          id.addArc( idList[0], idList[7] );
+          id.addArc( idList[0], idList[16] );
+          id.addArc( idList[6], idList[8] );
+          id.addArc( idList[7], idList[8] );
+          id.addArc( idList[7], idList[9] );
+          id.addArc( idList[8], idList[10] );
+          id.addArc( idList[8], idList[1] );
+          id.addArc( idList[9], idList[1] );
+          id.addArc( idList[9], idList[11] );
+          id.addArc( idList[10], idList[3] );
+          id.addArc( idList[10], idList[12] );
+          id.addArc( idList[1], idList[12] );
+          id.addArc( idList[1], idList[2] );
+          id.addArc( idList[3], idList[15] );
+          id.addArc( idList[12], idList[15] );
+          id.addArc( idList[11], idList[13] );
+          id.addArc( idList[11], idList[14] );
+          id.addArc( idList[2], idList[14] );
+          id.addArc( idList[2], idList[17] );
+          id.addArc( idList[2], idList[3] );
+          id.addArc( idList[13], idList[18] );
+          id.addArc( idList[14], idList[18] );
+          id.addArc( idList[15], idList[19] );
 
           gum::UndiGraph moralGraph;
           TS_ASSERT_THROWS_NOTHING( moralGraph = id.moralGraph( true ) );
