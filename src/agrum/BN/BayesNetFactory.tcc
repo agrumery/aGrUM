@@ -367,7 +367,7 @@ namespace gum {
       // PLEASE NOTE THAT THE ORDER IS INVERSE
 
       for ( size_t i = __stringBag.size() - 1; i > 0 ; --i ) {
-        __bn->insertArc( __varNameMap[__stringBag[i]], id );
+        __bn->addArc( __varNameMap[__stringBag[i]], id );
         VERBOSITY( "  adding parent " << __stringBag[i] << " for " << __stringBag[0] );
       }
 

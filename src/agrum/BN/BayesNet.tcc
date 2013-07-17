@@ -297,6 +297,12 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   BayesNet<GUM_SCALAR>::insertArc ( NodeId tail, NodeId head ) {
+    addArc ( tail, head );
+  }
+
+  template<typename GUM_SCALAR> INLINE
+  void
+  BayesNet<GUM_SCALAR>::addArc ( NodeId tail, NodeId head ) {
     __dag.insertArc ( tail, head );
     // Add parent in the child's CPT
     ( * ( __probaMap[head] ) ) << variable ( tail );
@@ -411,16 +417,23 @@ namespace gum {
     return add ( var, new MultiDimNoisyORNet<GUM_SCALAR> ( external_weight ) , id );
   }
 
+  
   template<typename GUM_SCALAR>
   void
   BayesNet<GUM_SCALAR>::insertWeightedArc ( NodeId tail, NodeId head, GUM_SCALAR causalWeight ) {
+    addWeightedArc(tail,head,causalWeight);
+  }
+  
+  template<typename GUM_SCALAR>
+  void
+  BayesNet<GUM_SCALAR>::addWeightedArc ( NodeId tail, NodeId head, GUM_SCALAR causalWeight ) {
     const MultiDimAdressable& content = cpt ( head ).getMasterRef();
 
     const MultiDimCIModel<GUM_SCALAR>* CImodel = dynamic_cast<const MultiDimCIModel<GUM_SCALAR>*> ( &content );
 
     if ( CImodel != 0 ) {
       // or is OK
-      insertArc ( tail, head );
+      addArc ( tail, head );
 
       CImodel->causalWeight ( variable ( tail ), causalWeight );
     } else {

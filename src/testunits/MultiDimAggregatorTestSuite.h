@@ -244,7 +244,7 @@ namespace gum_tests {
             idList.insert( bn.addVariable( var, new gum::aggregator::Min<double>() ) );
           } else {
             idList.insert( bn.addVariable( var ) );
-            bn.insertArc( idList[i], idList[0] );
+            bn.addArc( idList[i], idList[0] );
             bn.cpt( idList[i] ).fillWith( v );
 
             gum::Instantiation i( bn.cpt( idList[0] ) );

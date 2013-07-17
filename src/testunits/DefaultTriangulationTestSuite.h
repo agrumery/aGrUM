@@ -319,12 +319,12 @@ namespace gum_tests {
         idList.insert( topo.addVariable( *var4 ) );
         idList.insert( topo.addVariable( *var5 ) );
 
-        topo.insertArc( idList[0], idList[2] );
-        topo.insertArc( idList[2], idList[4] );
-        topo.insertArc( idList[1], idList[3] );
-        topo.insertArc( idList[0], idList[3] );
-        topo.insertArc( idList[3], idList[4] );
-        topo.insertArc( idList[1], idList[4] );
+        topo.addArc( idList[0], idList[2] );
+        topo.addArc( idList[2], idList[4] );
+        topo.addArc( idList[1], idList[3] );
+        topo.addArc( idList[0], idList[3] );
+        topo.addArc( idList[3], idList[4] );
+        topo.addArc( idList[1], idList[4] );
       };
 
       gum::UndiGraph getRealMoralGraph( const gum::List<gum::NodeId> &idList ) {
