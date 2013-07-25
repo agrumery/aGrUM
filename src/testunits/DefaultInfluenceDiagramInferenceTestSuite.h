@@ -51,7 +51,7 @@ namespace gum_tests {
   class DefaultInfluenceDiagramInferenceTestSuite: public CxxTest::TestSuite {
 
     private:
-      void fillTopoOilWildcater( gum::InfluenceDiagram<float> &id, gum::List<gum::NodeId> &idList ) {
+      void fillTopoOilWildcater( gum::InfluenceDiagram<float>& id, gum::List<gum::NodeId>& idList ) {
         try {
           idList.insert( id.addDecisionNode( *TestVar ) );   //0
           idList.insert( id.addDecisionNode( *DrillVar ) );   //1
@@ -68,13 +68,13 @@ namespace gum_tests {
           id.addArc( idList[3], idList[2] );
           id.addArc( idList[3], idList[5] );
 
-        } catch( gum::Exception &e ) {
+        } catch ( gum::Exception& e ) {
           std::cerr << std::endl << e.content() << std::endl;
           throw ;
         }
       }
 
-      void fillwithOilWildcater( gum::InfluenceDiagram<float> &id, gum::List<gum::NodeId> &idList ) {
+      void fillwithOilWildcater( gum::InfluenceDiagram<float>& id, gum::List<gum::NodeId>& idList ) {
         fillTopoOilWildcater( id, idList );
 
         try {
@@ -114,13 +114,13 @@ namespace gum_tests {
             UTUD.fillWith( v );
           }
 
-        } catch( gum::Exception &e ) {
+        } catch ( gum::Exception& e ) {
           std::cerr << std::endl << e.content() << std::endl;
           throw ;
         }
       }
 
-      void fillTopoDecAsia( gum::InfluenceDiagram<float> &id, gum::List<gum::NodeId> &idList ) {
+      void fillTopoDecAsia( gum::InfluenceDiagram<float>& id, gum::List<gum::NodeId>& idList ) {
         try {
           idList.insert( id.addDecisionNode( *HospitalizeVar ) );   //0
           idList.insert( id.addDecisionNode( *TakeXRayVar ) );   //1
@@ -158,13 +158,13 @@ namespace gum_tests {
 
           id.addArc( idList[9], idList[8] );
 
-        } catch( gum::Exception &e ) {
+        } catch ( gum::Exception& e ) {
           std::cerr << std::endl << e.content() << std::endl;
           throw ;
         }
       }
 
-      void fillwithDecAsia( gum::InfluenceDiagram<float> &id, gum::List<gum::NodeId> &idList ) {
+      void fillwithDecAsia( gum::InfluenceDiagram<float>& id, gum::List<gum::NodeId>& idList ) {
         fillTopoDecAsia( id, idList );
 
         try {
@@ -258,7 +258,7 @@ namespace gum_tests {
             UTUTXR.fillWith( v );
           }
 
-        } catch( gum::Exception &e ) {
+        } catch ( gum::Exception& e ) {
           std::cerr << std::endl << e.content() << std::endl;
           throw ;
         }
@@ -266,14 +266,14 @@ namespace gum_tests {
 
     public:
       // OilWildcater test variable
-      gum::LabelizedVariable *TestVar, *DrillVar;
-      gum::LabelizedVariable *ResultTestVar, *OilAmountVar;
-      gum::LabelizedVariable *TestUtilityVar, *DrillingUtilityVar;
+      gum::LabelizedVariable* TestVar, *DrillVar;
+      gum::LabelizedVariable* ResultTestVar, *OilAmountVar;
+      gum::LabelizedVariable* TestUtilityVar, *DrillingUtilityVar;
 
       // Dec-Asia test variable
-      gum::LabelizedVariable *HospitalizeVar, *TakeXRayVar;
-      gum::LabelizedVariable *SmokingVar, *BronchitisVar, *LungCancerVar, *EitherVar, *DyspnoeaVar, *PositiveXRayVar, *TubercolisisVar, *VisitAsiaVar;
-      gum::LabelizedVariable *HospitalizationUtilityVar, *TakingXRayUtilityVar;
+      gum::LabelizedVariable* HospitalizeVar, *TakeXRayVar;
+      gum::LabelizedVariable* SmokingVar, *BronchitisVar, *LungCancerVar, *EitherVar, *DyspnoeaVar, *PositiveXRayVar, *TubercolisisVar, *VisitAsiaVar;
+      gum::LabelizedVariable* HospitalizationUtilityVar, *TakingXRayUtilityVar;
 
       void setUp() {
         TestVar = new gum::LabelizedVariable( "T", "Test", 2 );
@@ -365,12 +365,12 @@ namespace gum_tests {
       }
 
       void testConstructor() {
-        gum::InfluenceDiagram<float> *topology = NULL;
+        gum::InfluenceDiagram<float>* topology = nullptr;
         gum::List<gum::NodeId> idList;
         TS_GUM_ASSERT_THROWS_NOTHING( topology = new gum::InfluenceDiagram<float>() );
         TS_GUM_ASSERT_THROWS_NOTHING( fillwithDecAsia( *topology, idList ) );
 
-        gum::DefaultInfluenceDiagramInference<float> * dIDI = NULL;
+        gum::DefaultInfluenceDiagramInference<float>* dIDI = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( dIDI = new gum::DefaultInfluenceDiagramInference<float> ( *topology ) );
         TS_GUM_ASSERT_THROWS_NOTHING( delete dIDI );
         delete topology;
@@ -456,12 +456,12 @@ namespace gum_tests {
       }
 
       void testInferenceWithOilWildCater() {
-        gum::InfluenceDiagram<float> *topology = NULL;
+        gum::InfluenceDiagram<float>* topology = nullptr;
         gum::List<gum::NodeId> idList;
         topology = new gum::InfluenceDiagram<float>();
         fillwithOilWildcater( *topology, idList );
 
-        gum::DefaultInfluenceDiagramInference<float> * dIDI = NULL;
+        gum::DefaultInfluenceDiagramInference<float>* dIDI = nullptr;
         dIDI = new gum::DefaultInfluenceDiagramInference<float> ( *topology );
 
         TS_GUM_ASSERT_THROWS_NOTHING( dIDI->makeInference() );
@@ -471,13 +471,13 @@ namespace gum_tests {
       }
 
       void testInferenceWithDecAsia() {
-        gum::InfluenceDiagram<float> *topology = NULL;
+        gum::InfluenceDiagram<float>* topology = nullptr;
         gum::List<gum::NodeId> idList;
         topology = new gum::InfluenceDiagram<float>();
         fillwithDecAsia( *topology, idList );
         gum::NullStream devnull;
 
-        gum::DefaultInfluenceDiagramInference<float> * dIDI = NULL;
+        gum::DefaultInfluenceDiagramInference<float>* dIDI = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( dIDI = new gum::DefaultInfluenceDiagramInference<float> ( *topology ) );
 
         TS_ASSERT_THROWS( dIDI->getMEU(), gum::OperationNotAllowed );
@@ -497,7 +497,7 @@ namespace gum_tests {
       }
 
       void testInferenceWithOilWildCaterAndEvidence() {
-        gum::InfluenceDiagram<float> *topology = new gum::InfluenceDiagram<float>();
+        gum::InfluenceDiagram<float>* topology = new gum::InfluenceDiagram<float>();
         gum::List<gum::NodeId> idList;
         fillwithOilWildcater( *topology, idList );
 

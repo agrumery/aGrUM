@@ -36,6 +36,9 @@
 #define GUM_CAST static_cast
 #endif
 
+#include <agrum/core/utils_dir.h>
+#include <agrum/core/utils_string.h>
+
 namespace std {
 
   // used ,e.g., for hashtables
@@ -50,28 +53,31 @@ namespace std {
 
 namespace gum {
   /// Implements a stream with the same behaviour as /dev/null
-
   struct NullStream : std::ostream {
     NullStream() : std::ios( 0 ), std::ostream( 0 ) {}
   };
 
   /// cross-platform replacement for memcmp. returns true if OK
-  bool Memcmp( const void * const _in,
-               const void * const _out,
+  bool Memcmp( const void* const _in,
+               const void* const _out,
                unsigned long size );
 
   /// for debug purpose
   void __atexit( void );
 
   /// returns a random number between 0 and 1 included (i.e. a proba)
-  double getRandomProba();
+  double randomProba();
+
+  /// return a random discrete distribution
+  /// @param n is the number of modalities for the ditribution
+  template<typename GUM_SCALAR>
+  std::vector<GUM_SCALAR> randomDistribution(Size n);
 
   /// initialize random generator seed
-  void initRandom();
+  void initRandom(unsigned int init=0);
 
   /// indicate whether two elements are (almost) different or not
   template <typename T>
-
   struct AlmostDifferent {
     bool operator()( const T& t1, const T& t2 ) {
       return ( ( t1 > t2 + ( T ) 0.000001 ) ||
@@ -80,7 +86,6 @@ namespace gum {
   };
 
   template <typename T>
-
   struct AlmostDifferent<T*> {
     bool operator()( const T* t1, const T* t2 ) {
       return ( t1 != t2 );

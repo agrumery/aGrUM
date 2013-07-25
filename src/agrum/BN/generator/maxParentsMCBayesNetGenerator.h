@@ -85,7 +85,7 @@ namespace gum {
       * @param p probability for the change of the state (see \ref probability_p_q "use of p and q" )
       * @param q probability for the change of the state (see \ref probability_p_q "use of p and q" )
       */
-      MaxParentsMCBayesNetGenerator ( Size nbrNodes,  Size maxArcs, Size maxModality=2, Size maxParents=1, Idx iteration = 5000,  Idx p=30, Idx q=40 );
+      MaxParentsMCBayesNetGenerator( Size nbrNodes,  Size maxArcs, Size maxModality=2, Size maxParents=1, Idx iteration = 5000,  Idx p=30, Idx q=40 );
 
       /**
       * Constructor.
@@ -97,8 +97,8 @@ namespace gum {
       * @param p probability for the change of the state (see \ref probability_p_q "use of p and q" )
       * @param q probability for the change of the state (see \ref probability_p_q "use of p and q" )
       */
-      MaxParentsMCBayesNetGenerator ( BayesNet<GUM_SCALAR> bayesNet, Size maxParents=2, Idx iteration= 5000,  Idx p=30, Idx q=40 );
-      
+      MaxParentsMCBayesNetGenerator( BayesNet<GUM_SCALAR> bayesNet, Size maxParents=2, Idx iteration= 5000,  Idx p=30, Idx q=40 );
+
       /**
        * Destructor.
        */
@@ -122,7 +122,7 @@ namespace gum {
       /**
       * Modifies the value of the number of maximum parents imposed on the BayesNetGenerator
       */
-      void setMaxParents ( Size maxParents );
+      void setMaxParents( Size maxParents );
 /// @}
 
     protected:

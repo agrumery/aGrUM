@@ -33,37 +33,37 @@ namespace gum {
   INLINE bool EdgeGraphPart::emptyEdges() const {
     return __edges.empty();
   }
-  
+
 
   INLINE Size EdgeGraphPart::sizeEdges() const {
     return __edges.size();
   }
 
-  
+
   INLINE const EdgeSet& EdgeGraphPart::edges() const {
     return __edges;
   }
 
-  
+
   INLINE bool EdgeGraphPart::existsEdge( const Edge& edge ) const {
     return __edges.contains( edge );
   }
 
-  
+
   INLINE bool
   EdgeGraphPart::existsEdge( const NodeId first, const NodeId second ) const {
-    return __neighbours.exists ( first ) &&
-      __neighbours[first]->exists( second );
+    return __neighbours.exists( first ) &&
+           __neighbours[first]->exists( second );
   }
 
-  
+
   INLINE void EdgeGraphPart::__checkNeighbours( const NodeId id ) const {
     if ( ! __neighbours.exists( id ) ) {
       __neighbours.insert( id, new NodeSet );
     }
   }
 
-  
+
   INLINE void EdgeGraphPart::insertEdge( const NodeId first,
                                          const NodeId second ) {
     Edge edge( first, second );
@@ -75,12 +75,12 @@ namespace gum {
 
     GUM_EMIT2( onEdgeAdded, first, second );
   }
-  
+
 
   INLINE void EdgeGraphPart::eraseEdge( const Edge& edge ) {
     if ( existsEdge( edge ) ) {
       // ASSUMING first and second exists in __neighbours (if not, it is an error)
-      NodeId id1 = edge.first(), id2 = edge.second ();
+      NodeId id1 = edge.first(), id2 = edge.second();
 
       __neighbours[id1]->erase( id2 );
       __neighbours[id2]->erase( id1 );
@@ -88,32 +88,33 @@ namespace gum {
       GUM_EMIT2( onEdgeDeleted, id1, id2 );
     }
   }
-  
+
 
   INLINE const NodeSet& EdgeGraphPart::neighbours( const NodeId id ) const {
     __checkNeighbours( id );
     return * ( __neighbours[id] );
   }
-  
+
 
   INLINE void EdgeGraphPart::eraseNeighbours( const NodeId id ) {
     if ( __neighbours.exists( id ) ) {
       const NodeSet& set = neighbours( id );
-      for ( NodeSetIterator iter = set.begin();iter != set.end();++iter ) {
+
+      for ( NodeSetIterator iter = set.begin(); iter != set.end(); ++iter ) {
         // warning: use this erase so that you actually use the virtualized
         // edge removal function
-        eraseEdge( Edge ( *iter, id ) );
+        eraseEdge( Edge( *iter, id ) );
       }
     }
   }
-  
+
 
   INLINE void EdgeGraphPart::unvirtualizedEraseNeighbours( const NodeId id ) {
     if ( __neighbours.exists( id ) ) {
       const NodeSet& set = neighbours( id );
 
-      for ( NodeSetIterator iter = set.begin();iter != set.end();++iter ) {
-        EdgeGraphPart::eraseEdge( Edge ( *iter, id ) );
+      for ( NodeSetIterator iter = set.begin(); iter != set.end(); ++iter ) {
+        EdgeGraphPart::eraseEdge( Edge( *iter, id ) );
       }
     }
   }
@@ -123,17 +124,17 @@ namespace gum {
     return __edges.begin();
   }
 
-  
+
   INLINE const EdgeGraphPart::EdgeIterator& EdgeGraphPart::endEdges() const {
     return __edges.end();
   }
 
-  
+
   INLINE bool EdgeGraphPart::operator==( const EdgeGraphPart& p ) const {
     return __edges == p.__edges;
   }
 
-  
+
   INLINE bool EdgeGraphPart::operator!=( const EdgeGraphPart& p ) const {
     return __edges != p.__edges;
   }
@@ -141,4 +142,4 @@ namespace gum {
 
 } /* namespace gum */
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

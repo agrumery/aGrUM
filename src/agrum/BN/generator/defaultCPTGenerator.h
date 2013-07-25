@@ -41,34 +41,34 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   class DefaultCPTGenerator: public AbstractCPTGenerator<GUM_SCALAR> {
-  public:
-    // ############################################################################
-    /// @name Constructors / Destructor
-    // ############################################################################
-    /// @{
-    /**
-     * Default constructor.
-     */
-    DefaultCPTGenerator();
+    public:
+      // ############################################################################
+      /// @name Constructors / Destructor
+      // ############################################################################
+      /// @{
+      /**
+       * Default constructor.
+       */
+      DefaultCPTGenerator();
 
-    /**
-     * Destructor.
-     */
-    virtual ~DefaultCPTGenerator();
-    /// @}
+      /**
+       * Destructor.
+       */
+      virtual ~DefaultCPTGenerator();
+      /// @}
 
-    // ############################################################################
-    /// @name CPT generation methods
-    // ############################################################################
-    /// @{
-    /**
-     * Generates a CPT using floats.
-     * @param varId The variable id of the CPT owner.
-     * @param cpt A reference on the CPT to fill.
-     */
-    virtual void generateCPT(const Idx& varId, const Potential<GUM_SCALAR>& cpt);
+      // ############################################################################
+      /// @name CPT generation methods
+      // ############################################################################
+      /// @{
+      /**
+       * Generates a CPT using floats.
+       * @param varId The variable id of the CPT owner.
+       * @param cpt A reference on the CPT to fill.
+       */
+      virtual void generateCPT( const Idx& varId, const Potential<GUM_SCALAR>& cpt );
 
- 
+
   };
 
 

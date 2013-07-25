@@ -23,24 +23,24 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #ifndef GUM_AGGREGATE_H
 #define GUM_AGGREGATE_H
-// ============================================================================
+
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/aggregators/multiDimAggregator.h>
 #include <agrum/multidim/aggregators/min.h>
 #include <agrum/multidim/aggregators/max.h>
 #include <agrum/multidim/aggregators/exists.h>
 #include <agrum/multidim/aggregators/forall.h>
-// ============================================================================
+
 #include <agrum/prm/classElement.h>
-// ============================================================================
+
 namespace gum {
   namespace prm {
-// ============================================================================
+
     class Class;
-// ============================================================================
+
     /**
      * @class gum::Aggregate aggregate.h <agrum/prm/aggregate.h>
      * @brief Defines an aggregate in a PRM.
@@ -70,7 +70,7 @@ namespace gum {
         /// The different type of aggregates we can have.
         enum AggregateType { agg_min, agg_max, agg_mean, agg_count,
                              agg_exists, agg_forall, agg_or, agg_and
-                         };
+                           };
 
         /**
          * Static method which returns the AggregateType given its string
@@ -216,13 +216,13 @@ namespace gum {
 
         /// @}
     };
-// ============================================================================
+
   } /* namespace prm */
 } // namespace gum
-// ============================================================================
+
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/aggregate.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 #endif /* GUM_CLASS_ELEMENT_H */
-// ============================================================================
+

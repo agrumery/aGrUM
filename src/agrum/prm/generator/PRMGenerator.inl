@@ -23,7 +23,7 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 namespace gum {
   namespace prm {
 
@@ -34,7 +34,7 @@ namespace gum {
 
     INLINE
     PRMGenerator::PRMGenerator( const PRMGenerator& source ):
-        _name_gen( source._name_gen ) {
+      _name_gen( source._name_gen ) {
       GUM_CONS_CPY( PRMGenerator );
     }
 
@@ -57,13 +57,13 @@ namespace gum {
 
     INLINE
     NameGenerator::NameGenerator():
-        __counters( 3, 1 ) {
+      __counters( 3, 1 ) {
       GUM_CONSTRUCTOR( NameGenerator );
     }
 
     INLINE
     NameGenerator::NameGenerator( const NameGenerator& source ):
-        __counters( source.__counters ) {
+      __counters( source.__counters ) {
       GUM_CONS_CPY( NameGenerator );
     }
 
@@ -83,19 +83,27 @@ namespace gum {
     std::string
     NameGenerator::nextName( PRMObject::ObjectType type ) {
       std::stringstream s;
+
       switch ( type ) {
         case PRMObject::all:
         case PRMObject::prm_class:    { s << "class_" << ++( __counters[0] ); break; }
+
         case PRMObject::prm_interface: { s << "iface_" << ++( __counters[0] ); break; }
+
         case PRMObject::prm_system:   { s << "sys_"   << ++( __counters[0] ); break; }
+
         case PRMObject::prm_type:     { s << "type_"  << ++( __counters[0] ); break; }
+
         case PRMObject::prm_class_elt: { s << "elt_"   << ++( __counters[1] ); break; }
+
         case PRMObject::prm_instance: { s << "inst_"  << ++( __counters[2] ); break; }
+
         default: { GUM_ERROR( FatalError, "unknown PRMObject type" ); }
       }
+
       return s.str();
     }
 
   } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

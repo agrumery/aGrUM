@@ -22,18 +22,18 @@
  * @file
  * @brief Class allowing creation of Decision Diagram
  *
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  *
  */
 #ifndef GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_H
 #define GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_H
-// ============================================================================
+
 #include <agrum/core/approximationPolicy/approximationPolicy.h>
 #include <agrum/core/approximationPolicy/exactPolicy.h>
-// ============================================================================
+
 #include <agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
 #include <agrum/multidim/multiDimDecisionDiagram.h>
-// ============================================================================
+
 
 namespace gum {
 
@@ -61,12 +61,12 @@ namespace gum {
        * Default constructor.
        */
       MultiDimDecisionDiagramFactory();
-      
+
       /**
        * clone constructor.
        * @arg md is used for initialize approximation policy
        */
-      MultiDimDecisionDiagramFactory(const IApproximationPolicy<GUM_SCALAR>& md);
+      MultiDimDecisionDiagramFactory( const IApproximationPolicy<GUM_SCALAR>& md );
 
       /**
        * Destructor.
@@ -84,16 +84,16 @@ namespace gum {
       /// Convert value to approximation representation
       inline GUM_SCALAR fromExact( const GUM_SCALAR& value ) const { return IApproximationPolicy<GUM_SCALAR>::fromExact( value ); };
 
-private:
-    void __mergedNode(NodeId from, NodeId to);
+    private:
+      void __mergedNode( NodeId from, NodeId to );
   };
 
 } /* namespace gum */
 
-// ============================================================================
-#include <agrum/multidim/multiDimDecisionDiagramFactory.tcc>
-// ============================================================================
-#endif /* GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_H */
-// ============================================================================
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+#include <agrum/multidim/multiDimDecisionDiagramFactory.tcc>
+
+#endif /* GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_H */
+
+
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

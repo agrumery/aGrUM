@@ -1,6 +1,5 @@
 
-%ignore gum::Instantiation::assign_values;
-
+%ignore gum::Instantiation::setValsFrom;
 
 %pythonprepend gum::List::append %{
         args[0].__disown__() #lets c++ take care of deleting it

@@ -21,9 +21,9 @@
  * @file
  * @brief KL divergence between BNs implementation
  *
- * @author Pierre-Henri Wuillemin
+ * @author Pierre-Henri WUILLEMIN
  */
-// ============================================================================
+
 #include <math.h>
 #include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/BayesNet.h>
@@ -32,13 +32,14 @@
 namespace gum {
   template<typename GUM_SCALAR>
   KL<GUM_SCALAR>::KL( const BayesNet<GUM_SCALAR>& P,const BayesNet<GUM_SCALAR>& Q ) :
-      _p( P ),_q( Q ),
-      _klPQ( 0.0 ),_klQP( 0.0 ),_errorPQ( false ),_errorQP( false ),
-      __difficulty( complexity::HEAVY ),__done( false ) {
+    _p( P ),_q( Q ),
+    _klPQ( 0.0 ),_klQP( 0.0 ),_errorPQ( false ),_errorQP( false ),
+    __difficulty( complexity::HEAVY ),__done( false ) {
     __checkCompatibility(); //may throw OperationNotAlloxed
     GUM_CONSTRUCTOR( KL );
 
     double diff=_p.log10DomainSize();
+
     if ( diff>GAP_heavy_difficult ) __difficulty= complexity::HEAVY;
     else if ( diff>GAP_difficult_correct ) __difficulty= complexity::DIFFICULT;
     else __difficulty=complexity::CORRECT;
@@ -46,9 +47,9 @@ namespace gum {
 
   template<typename GUM_SCALAR>
   KL<GUM_SCALAR>::KL( const KL<GUM_SCALAR>& kl ) :
-      _p( kl._p ),_q( kl._q ),
-      _klPQ( kl._klPQ ),_klQP( kl._klQP ),_errorPQ( kl._errorPQ ),_errorQP( kl._errorPQ ),
-      __difficulty( kl.__difficulty ),__done( kl.__done ) {
+    _p( kl._p ),_q( kl._q ),
+    _klPQ( kl._klPQ ),_klQP( kl._klQP ),_errorPQ( kl._errorPQ ),_errorQP( kl._errorPQ ),
+    __difficulty( kl.__difficulty ),__done( kl.__done ) {
     GUM_CONSTRUCTOR( KL );
   }
 
@@ -121,7 +122,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   bool
   KL<GUM_SCALAR>::__checkCompatibility() const {
-    for ( DAG::NodeIterator it=_p.beginNodes();it!=_p.endNodes();++it ) {
+    for ( DAG::NodeIterator it=_p.beginNodes(); it!=_p.endNodes(); ++it ) {
       const DiscreteVariable& vp=_p.variable( *it );
 
       try {
@@ -129,7 +130,7 @@ namespace gum {
 
         if ( vp.domainSize() !=vq.domainSize() ) GUM_ERROR( OperationNotAllowed, "KL : the 2 BNs are not compatible (not the same domainSize for "+vp.name() +")" );
 
-        for ( Id i=0;i<vp.domainSize();i++ ) {
+        for ( Id i=0; i<vp.domainSize(); i++ ) {
           try {
             vq[vp.label( i )];
             vp[vq.label( i )];
@@ -149,8 +150,8 @@ namespace gum {
     if ( _p.size() !=_q.size() )
       GUM_ERROR( OperationNotAllowed, "KL : the 2 BNs are not compatible (not the same size)" );
 
-    if ( fabs(_p.log10DomainSize() -_q.log10DomainSize()) >1e-14) {
-      GUM_ERROR( OperationNotAllowed, "KL : the 2 BNs are not compatible (not the same domainSize) : p="<<_p.log10DomainSize()<<" q="<<_q.log10DomainSize()<<" => "<< _p.log10DomainSize()-_q.log10DomainSize());
+    if ( fabs( _p.log10DomainSize() -_q.log10DomainSize() ) >1e-14 ) {
+      GUM_ERROR( OperationNotAllowed, "KL : the 2 BNs are not compatible (not the same domainSize) : p="<<_p.log10DomainSize()<<" q="<<_q.log10DomainSize()<<" => "<< _p.log10DomainSize()-_q.log10DomainSize() );
     }
 
 

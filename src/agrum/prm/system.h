@@ -23,23 +23,23 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #ifndef GUM_SYSTEM_H
 #define GUM_SYSTEM_H
-// ============================================================================
+
 #include <utility>
-// ============================================================================
+
 #include <agrum/core/set.h>
 #include <agrum/core/sequence.h>
 #include <agrum/core/hashTable.h>
-// ============================================================================
+
 #include <agrum/graphs/diGraph.h>
-// ============================================================================
+
 #include <agrum/BN/BayesNetFactory.h>
-// ============================================================================
+
 #include <agrum/prm/classElementContainer.h>
 #include <agrum/prm/instance.h>
-// ============================================================================
+
 namespace gum {
   namespace prm {
     class SystemIterator;
@@ -58,7 +58,7 @@ namespace gum {
         /// @{
 
         /// Default constructor.
-        System ( const std::string& name );
+        System( const std::string& name );
 
         /// Destructor.
         virtual ~System();
@@ -77,14 +77,14 @@ namespace gum {
          *
          * @throw NotFound Raised if no Instance matches the given NodeId.
          */
-        Instance& get ( NodeId id );
+        Instance& get( NodeId id );
 
         /**
          * Returns an Instance given it's NodeId in the relational skeleton.
          *
          * @throw NotFound Raised if no Instance matches the given NodeId.
          */
-        const Instance& get ( NodeId id ) const;
+        const Instance& get( NodeId id ) const;
 
         /**
          * @brief Insert an edge between between u and v using the ReferenceSlot
@@ -107,8 +107,8 @@ namespace gum {
          * @throw WrongClassElement Raised if ref does not name a ReferenceSlot.
          * @throw TypeError Raised if v's type does not match ref range type.
          */
-        void insertArc ( const std::string& u, const std::string& v,
-                         const std::string& ref );
+        void insertArc( const std::string& u, const std::string& v,
+                        const std::string& ref );
 
         /// @}
         // ========================================================================
@@ -123,23 +123,23 @@ namespace gum {
         Size size() const;
 
         /// Retruns true either if name is an instance or an array in this System.
-        bool exists ( const std::string& name ) const;
+        bool exists( const std::string& name ) const;
 
         /// Returns true if the given Class has at least one Instance in this
         /// System.
-        bool isInstantiated ( const Class& c ) const;
+        bool isInstantiated( const Class& c ) const;
 
         /// Returns true if an Instance with the given name exists.
-        bool isInstance ( const std::string& name ) const;
+        bool isInstance( const std::string& name ) const;
 
         /// Returns true if an array with the given name exists.
-        bool isArray ( const std::string& name ) const;
+        bool isArray( const std::string& name ) const;
 
         /**
          * Returns the grounded Bayesian Network of this system.
          * @param factory The factory used to build the grounded Bayesian Network.
          */
-        void groundedBN ( BayesNetFactory<prm_float>& factory ) const;
+        void groundedBN( BayesNetFactory<prm_float>& factory ) const;
 
         /// Instantiate all the Instance in this System.
         void instantiate();
@@ -152,20 +152,20 @@ namespace gum {
 
         /// Returns a reference over an Instance given it's name
         /// @throw NotFound Raised if the no Instance matches name.
-        Instance& get ( const std::string& name );
+        Instance& get( const std::string& name );
 
         /// Returns a constant reference over an Instance given it's name
         /// @throw NotFound Raised if the no Instance matches name.
-        const Instance& get ( const std::string& name ) const;
+        const Instance& get( const std::string& name ) const;
 
         /// Returns the sequence of all instances of the given type
         /// @throw NotFound Raised if there is instantiation of type.
-        const Set<Instance*>& get ( const Class& type ) const;
+        const Set<Instance*>& get( const Class& type ) const;
 
         /// Add an Instance to this system.
         /// @throw DuplicateElement Raised if an Instance with the same name
         ///                         already exists.
-        NodeId add ( Instance* i );
+        NodeId add( Instance* i );
 
         /// @}
         // ========================================================================
@@ -175,33 +175,33 @@ namespace gum {
 
         /// Returns the sequence of instances of a given array.
         /// @throw NotFound Raised if no array matches name.
-        const Sequence<Instance*>& getArray ( const std::string& name ) const;
+        const Sequence<Instance*>& getArray( const std::string& name ) const;
 
         /// Returns the type of the given array.
         /// @throw NotFound Raised if no array matches name.
-        ClassElementContainer& getArrayType ( const std::string& name );
+        ClassElementContainer& getArrayType( const std::string& name );
 
         /// Returns the type of the given array.
         /// @throw NotFound Raised if no array matches name.
-        const ClassElementContainer& getArrayType ( const std::string& name ) const;
+        const ClassElementContainer& getArrayType( const std::string& name ) const;
 
         /// @brief Add an Instance to an array in this system.
         /// If the array doesn't exists it is created.
         /// @throw TypeError Raised if i is not of the good type.
         /// @throw DuplicateElement Raised if an Instance with same name already exists.
-        NodeId add ( const std::string& array, Instance* i );
+        NodeId add( const std::string& array, Instance* i );
 
         /// @brief Add an Instance to an array in this system.
         /// If the array doesn't exists it is created.
         /// @throw TypeError Raised if i is not of the good type.
         /// @throw DuplicateElement Raised if an Instance with same name already exists.
-        NodeId add ( const std::string& array, Instance& i );
+        NodeId add( const std::string& array, Instance& i );
 
         /// @brief Add an array of instances in this system.
         /// If the array doesn't exists it is created.
         /// @throw DuplicateElement Raised if an existing array with the same name
         ///                         already exists.
-        void addArray ( const std::string& array, ClassElementContainer& type );
+        void addArray( const std::string& array, ClassElementContainer& type );
 
         /// @}
         // ========================================================================
@@ -235,12 +235,12 @@ namespace gum {
         /// Returns an iterator at the beginning of the Sequence of Instance
         /// in the array named a;
         /// @throw NotFound Raised if no array matches a.
-        array_iterator begin ( const std::string& a );
+        array_iterator begin( const std::string& a );
 
         /// Returns an iterator at the end of the Sequence of Instance
         /// in the array named a.
         /// @throw NotFound Raised if no array matches a.
-        const array_iterator& end ( const std::string& a );
+        const array_iterator& end( const std::string& a );
 
         /// Iterator over the Instance in an array in this System.
         typedef Sequence<Instance*>::const_iterator const_array_iterator;
@@ -248,17 +248,17 @@ namespace gum {
         /// Returns an iterator at the beginning of the Sequence of Instance
         /// in the array named a;
         /// @throw NotFound Raised if no array matches a.
-        const_array_iterator begin ( const std::string& a ) const;
+        const_array_iterator begin( const std::string& a ) const;
 
         /// Returns an iterator at the end of the Sequence of Instance
         /// in the array named a.
         /// @throw NotFound Raised if no array matches a.
-        const const_array_iterator& end ( const std::string& a ) const;
+        const const_array_iterator& end( const std::string& a ) const;
 
         /// @}
       private:
         /// Copy constructor. Don't use it.
-        System ( const System& from );
+        System( const System& from );
 
         /// Copy operator. Don't use it.
         System& operator= ( const System& from );
@@ -298,40 +298,40 @@ namespace gum {
         ///        in the BayesNet.
         /// @param instance The Instance grounded by this method.
         /// @param factory  The factory used to build the grounded BayesNet.
-        void __groundRef ( const Instance& instance,
-                           BayesNetFactory<prm_float>& factory ) const;
+        void __groundRef( const Instance& instance,
+                          BayesNetFactory<prm_float>& factory ) const;
 
         /// @brief Method which ground Atttributes and Aggregators of
         ///        an Instance.
         /// @param instance The Instance grounded by this method.
         /// @param factory  The factory used to build the grounded BayesNet.
-        void __groundAttr ( const Instance& instance,
-                            BayesNetFactory<prm_float>& factory ) const;
+        void __groundAttr( const Instance& instance,
+                           BayesNetFactory<prm_float>& factory ) const;
 
         /// @brief Method which copy node's Potential of an Instance to the grounded
         ///        Bayesian Network.
         /// @param instance The Instance currently grounded.
         /// @param attr     The Attribute for which the Potential is grounded.
         /// @param factory  The factory used to build the grounded BayesNet.
-        void __groundPotential ( const Instance& instance, const Attribute& attr,
-                                 BayesNetFactory<prm_float>& factory ) const;
+        void __groundPotential( const Instance& instance, const Attribute& attr,
+                                BayesNetFactory<prm_float>& factory ) const;
 
         /// @brief Ground an aggregator with the given name in the grounded
         ///        BayesNet.
         /// @param elt     The aggregator grounded.
         /// @param name    The aggregator's name in the grounded BayesNet.
         /// @param factory The factory used to build the grounded BayesNet.
-        void __groundAgg ( const ClassElement& elt, const std::string& name,
-                           BayesNetFactory<prm_float>& factory ) const;
+        void __groundAgg( const ClassElement& elt, const std::string& name,
+                          BayesNetFactory<prm_float>& factory ) const;
         /// @}
     };
 
   } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/system.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 #endif // GUM_SYSTEM_H
-// ============================================================================
+

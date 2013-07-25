@@ -20,7 +20,7 @@
 /** @file
  * @brief Outlined implementation of BIFXMLBNReader
  *
- * @author Jean-Christophe Magnan & Pierre-Henri Wuillemin
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 #include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
 

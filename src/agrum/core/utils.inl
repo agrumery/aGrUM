@@ -25,15 +25,18 @@ namespace gum {
 
 // we do not use INLINE but inline instead
   INLINE
-  double getRandomProba() {
+  double randomProba() {
     return ( ( double ) rand() ) / ( ( double ) RAND_MAX );
   }
-
+ 
 // we do not use INLINE but inline instead
   INLINE
-  void initRandom() {
-    srand ( rand() + ( unsigned int ) std::time ( NULL ) );
+  void initRandom(unsigned int init) {
+    if (init)
+      srand(init);
+    else
+      srand( rand() + ( unsigned int ) std::time( nullptr ) );
   }
 
 } /* namespace gum */
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of the BayesNetFactory class.
  *
- * @author Lionel Torti & Pierre-Henri Wuillemin
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_ABSTRACT_BAYESNET_FACTORY_H
 #define GUM_ABSTRACT_BAYESNET_FACTORY_H
@@ -50,7 +50,7 @@ namespace gum {
        * call it's methods, and in which state it places the factory.
        *
        * There is an exception for the delegated CPT definition methods which do
-       * not changes the state of the factory.
+       * not change the state of the factory.
        */
       typedef enum { NONE, NETWORK, VARIABLE, PARENTS, RAW_CPT, FACT_CPT, FACT_ENTRY}
       factory_state;
@@ -117,7 +117,7 @@ namespace gum {
   };
 } /* namespace gum */
 
-// ============================================================================
+
 #endif // GUM_ASBTRACT_BAYESNET_FACTORY_H
-// ============================================================================
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

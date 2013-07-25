@@ -47,13 +47,13 @@ namespace gum {
   /* ============================================================================ */
   /* ============================================================================ */
 
-  // ==============================================================================
+
   /// basic constructor
-  // ==============================================================================
+
   LearnCounting::LearnCounting( const Database& data ) :
-      database( data ), level_beg( data.nbrNodes() ),
-      level_end( data.nbrNodes() ),
-      level_row( data.nbrNodes() ), tree_level( 0 ), garbage( 0 ) {
+    database( data ), level_beg( data.nbrNodes() ),
+    level_end( data.nbrNodes() ),
+    level_row( data.nbrNodes() ), tree_level( 0 ), garbage( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( LearnCounting );
 
@@ -62,9 +62,9 @@ namespace gum {
     }
   }
 
-  // ==============================================================================
+
   /// destructor
-  // ==============================================================================
+
   LearnCounting::~LearnCounting() {
     // for debugging purposes
     GUM_DESTRUCTOR( LearnCounting );
@@ -72,15 +72,15 @@ namespace gum {
     clear();
     // remove all the boxes of the garbage
 
-    for ( CountingBox *ptr = garbage, *nextptr = 0; ptr; ptr = nextptr ) {
+    for ( CountingBox* ptr = garbage, *nextptr = 0; ptr; ptr = nextptr ) {
       nextptr = ptr->next;
       delete ptr;
     }
   }
 
-  // ==============================================================================
+
   /// adds a new level corresponding to node "row"
-  // ==============================================================================
+
   void LearnCounting::createLevel( unsigned int row ) {
     if ( tree_level == 0 ) {
       level_beg[0] = newCountingBox( database.nbrModalities( row ) );
@@ -91,7 +91,7 @@ namespace gum {
       unsigned int par_modal = database.nbrModalities( level_row[tree_level-1] );
       unsigned int cur_modal = database.nbrModalities( row );
 
-      for ( CountingBox *parent = level_beg[tree_level - 1], *oldbox = 0;
+      for ( CountingBox* parent = level_beg[tree_level - 1], *oldbox = 0;
             parent != 0; parent = parent->next ) {
         for ( unsigned int j = 0; j != par_modal; ++j ) {
           parent->children[j] = newCountingBox( cur_modal );
@@ -112,9 +112,9 @@ namespace gum {
     ++tree_level;
   }
 
-  // ==============================================================================
+
   /// adds a new already constructed level to the tree
-  // ==============================================================================
+
   void LearnCounting::insertLevel( CountingBox* new_level_beg,
                                    CountingBox* new_level_end,
                                    unsigned int    new_level_row ) {
@@ -125,7 +125,7 @@ namespace gum {
     if ( tree_level ) {
       unsigned int par_modal = database.nbrModalities( level_row[tree_level-1] );
 
-      for ( CountingBox *parent = level_beg[tree_level - 1],
+      for ( CountingBox* parent = level_beg[tree_level - 1],
             *cur = level_beg[tree_level]; parent != 0; parent = parent->next ) {
         for ( unsigned int j = 0; j != par_modal; ++j, cur = cur->next ) {
           parent->children[j] = cur;
@@ -136,9 +136,9 @@ namespace gum {
     ++tree_level;
   }
 
-  // ==============================================================================
+
   /// returns the row corresponding to a given level
-  // ==============================================================================
+
   unsigned int LearnCounting::getRow( unsigned int level )
   const  {
     if ( level >= tree_level ) {
@@ -158,29 +158,29 @@ namespace gum {
   /* ============================================================================ */
   /* ============================================================================ */
 
-  // ==============================================================================
+
   /// basic constructor
-  // ==============================================================================
+
   LearnChi2Test::LearnChi2Test( const Database& data, float conf_proba ) :
-      database( data ), tree( data ), has_chi2_value( false ),
-      has_chi2_threshold( false ),
-      has_degrees_of_freedom( false ), confidence_proba( conf_proba ),
-      min_parsing_level( 0 ), require_database_parsing( false ) {
+    database( data ), tree( data ), has_chi2_value( false ),
+    has_chi2_threshold( false ),
+    has_degrees_of_freedom( false ), confidence_proba( conf_proba ),
+    min_parsing_level( 0 ), require_database_parsing( false ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( LearnChi2Test );
   }
 
-  // ==============================================================================
+
   /// destructor
-  // ==============================================================================
+
   LearnChi2Test::~LearnChi2Test() {
     // for debugging purposes
     GUM_DESTRUCTOR( LearnChi2Test );
   }
 
-  // ==============================================================================
+
   /// computes the Chi2 value of the current tree
-  // ==============================================================================
+
   float LearnChi2Test::getChi2Value() {
     // check if the chi2 value has already been computed
     if ( has_chi2_value ) return chi2_value;
@@ -228,7 +228,7 @@ namespace gum {
 
           for ( unsigned int j = 0; j< modalY; ++j ) {
             if ( Nxy[j] )
-              chi2_value += (( float ) Nxy[j] * Nxy[j] ) / (( float ) Nx * Ny[j] );
+              chi2_value += ( ( float ) Nxy[j] * Nxy[j] ) / ( ( float ) Nx * Ny[j] );
           }
         }
 
@@ -279,8 +279,8 @@ namespace gum {
                   const std::vector<int>& Nxyz = Nxz_box_children[j]->getCounters();
 
                   for ( unsigned int k = 0; k < modalY; ++k ) {
-                    float N1 = (( float )Nxz * Nyz[k] ) / Nz;
-                    float N2 = (( float ) Nxyz[k] - N1 );
+                    float N1 = ( ( float )Nxz * Nyz[k] ) / Nz;
+                    float N2 = ( ( float ) Nxyz[k] - N1 );
 
                     if ( N1 ) chi2_value += ( N2 * N2 ) / N1;
                   }
@@ -300,9 +300,9 @@ namespace gum {
   }
 
   // sum_x sum_y sum_z (Nxyz - Nxz * Nyz / Nz)^2 / (Nxz Nyz / Nz)
-  // ==============================================================================
+
   /// returns the number of degrees of freedom
-  // ==============================================================================
+
   unsigned long LearnChi2Test::getChi2DegreesOfFreedom() {
     // check if we have already computed the degrees of freedom
     if ( has_degrees_of_freedom ) return degrees_of_freedom;
@@ -326,9 +326,9 @@ namespace gum {
     return degrees_of_freedom;
   }
 
-  // ==============================================================================
+
   /// computes the thresholdaccording to the number of degrees of freedom
-  // ==============================================================================
+
   float LearnChi2Test::getChi2Threshold() {
     // check if we have already computed the threshold of the chi2
     if ( has_chi2_threshold ) return chi2_threshold;
@@ -357,9 +357,9 @@ namespace gum {
     return chi2_threshold;
   }
 
-  // ==============================================================================
+
   /// modifies the confidence proba
-  // ==============================================================================
+
   void LearnChi2Test::setConfidenceProba( float new_proba ) {
     if ( confidence_proba == new_proba ) return;
 
@@ -371,9 +371,9 @@ namespace gum {
       has_chi2_thresholds[i] = false;
   }
 
-  // ==============================================================================
+
   /// computes the probability of normal z value (used by the cache)
-  // ==============================================================================
+
   double LearnChi2Test::getProbaZValue( double z ) {
     double y, x, w;
 
@@ -386,36 +386,36 @@ namespace gum {
         x = 1.0;
       else if ( y < 1.0 ) {
         w = y*y;
-        x = (((((((( 0.000124818987 * w
-                     -0.001075204047 ) * w +0.005198775019 ) * w
-                  -0.019198292004 ) * w +0.059054035642 ) * w
-                -0.151968751364 ) * w +0.319152932694 ) * w
-              -0.531923007300 ) * w +0.797884560593 ) * y * 2.0;
+        x = ( ( ( ( ( ( ( ( 0.000124818987 * w
+                            -0.001075204047 ) * w +0.005198775019 ) * w
+                        -0.019198292004 ) * w +0.059054035642 ) * w
+                    -0.151968751364 ) * w +0.319152932694 ) * w
+                -0.531923007300 ) * w +0.797884560593 ) * y * 2.0;
       } else {
         y -= 2.0;
-        x = ((((((((((((( -0.000045255659 * y
-                          +0.000152529290 ) * y -0.000019538132 ) * y
-                       -0.000676904986 ) * y +0.001390604284 ) * y
-                     -0.000794620820 ) * y -0.002034254874 ) * y
-                   +0.006549791214 ) * y -0.010557625006 ) * y
-                 +0.011630447319 ) * y -0.009279453341 ) * y
-               +0.005353579108 ) * y -0.002141268741 ) * y
-             +0.000535310849 ) * y +0.999936657524;
+        x = ( ( ( ( ( ( ( ( ( ( ( ( ( -0.000045255659 * y
+                                      +0.000152529290 ) * y -0.000019538132 ) * y
+                                  -0.000676904986 ) * y +0.001390604284 ) * y
+                              -0.000794620820 ) * y -0.002034254874 ) * y
+                          +0.006549791214 ) * y -0.010557625006 ) * y
+                      +0.011630447319 ) * y -0.009279453341 ) * y
+                  +0.005353579108 ) * y -0.002141268741 ) * y
+              +0.000535310849 ) * y +0.999936657524;
       }
     }
 
-    return ( z > 0.0 ? (( x + 1.0 ) * 0.5 ) : (( 1.0 - x ) * 0.5 ) );
+    return ( z > 0.0 ? ( ( x + 1.0 ) * 0.5 ) : ( ( 1.0 - x ) * 0.5 ) );
   }
 
-  // ==============================================================================
+
   /// computes the probability of chi2 value (used by the cache)
-  // ==============================================================================
+
   double LearnChi2Test::getProbaChi2( double x, unsigned long df ) {
     double a, y = 0, s;
     double e, c, z;
     int even; /* true if df is an even number */
 
-    if (( x <= 0.0 ) || ( df < 1 ) )
+    if ( ( x <= 0.0 ) || ( df < 1 ) )
       return ( 1.0 );
 
     a = 0.5 * x;
@@ -458,9 +458,9 @@ namespace gum {
       return ( s );
   }
 
-  // ==============================================================================
+
   /// computes the critical value of a given chi2 test (used by the cache)
-  // ==============================================================================
+
   double LearnChi2Test::getCriticalValue( double proba, unsigned long df ) {
     double minchisq = 0.0;
     double maxchisq = GUM_CHI_MAX;
@@ -485,12 +485,12 @@ namespace gum {
     return ( chisqval );
   }
 
-  // ==============================================================================
+
   /// deletes a variable from the structure containing all the variables
   /**
    * @throw NotFound
    */
-  // ==============================================================================
+
   void LearnChi2Test::deleteVariable( unsigned int row ) {
     // look for the variable
     unsigned int i;
@@ -523,9 +523,9 @@ namespace gum {
     has_degrees_of_freedom = false;
   }
 
-  // ==============================================================================
+
   /// inserts a new variable at the end of the tree
-  // ==============================================================================
+
   void LearnChi2Test::insertVariable( unsigned int row ) {
     require_database_parsing = true;
     rows.push_back( row );
@@ -535,9 +535,9 @@ namespace gum {
     has_degrees_of_freedom = false;
   }
 
-  // ==============================================================================
+
   /// returns the level in the tree of a given variable
-  // ==============================================================================
+
   unsigned int LearnChi2Test::getLevel( unsigned int row )
   const  {
     for ( unsigned int i = 0; i < rows.size(); ++i )
@@ -546,9 +546,9 @@ namespace gum {
     GUM_ERROR( NotFound, "the row does not belong to the tree" );
   }
 
-  // ==============================================================================
+
   /// returns the variable (its row in the database) of a given tree level
-  // ==============================================================================
+
   unsigned int LearnChi2Test::variable( unsigned int level )
   const  {
     if ( level < rows.size() )
@@ -557,9 +557,9 @@ namespace gum {
     GUM_ERROR( NotFound, "the tree does not contain this level" );
   }
 
-  // ==============================================================================
+
   /// removes all the variables from the current structure
-  // ==============================================================================
+
   void LearnChi2Test::clear() {
     rows.clear();
     tree.clear();

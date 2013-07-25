@@ -21,13 +21,13 @@
 * @file
 * @brief Template implementation of InfluenceDiagram/InfluenceDiagram.h classes.
 *
-* @author Jean-Christophe Magnan & Pierre_Henri Wuillemin
+* @author Jean-Christophe Magnan & Pierre_Henri WUILLEMIN
 */
-// ============================================================================
+
 #include <agrum/influenceDiagram/influenceDiagram.h>
 #include <cstdio>
 #include <iostream>
-// ============================================================================
+
 
 namespace gum {
 
@@ -40,7 +40,7 @@ namespace gum {
   */
   template<typename GUM_SCALAR> INLINE
   InfluenceDiagram<GUM_SCALAR>::InfluenceDiagram() :
-      AbstractBayesNet<GUM_SCALAR>(), __topologicalOrder( 0 ) {
+    IBaseBayesNet<GUM_SCALAR>(), __topologicalOrder( 0 ) {
     GUM_CONSTRUCTOR( InfluenceDiagram );
     __topologicalOrder = new Sequence<NodeId>();
   }
@@ -60,7 +60,7 @@ namespace gum {
   */
   template<typename GUM_SCALAR>
   InfluenceDiagram<GUM_SCALAR>::InfluenceDiagram( const InfluenceDiagram<GUM_SCALAR>& source ) :
-      AbstractBayesNet<GUM_SCALAR> ( source ), __dag( source.__dag ), __variableMap( source.__variableMap ), __topologicalOrder( 0 ) {
+    IBaseBayesNet<GUM_SCALAR> ( source ), __dag( source.__dag ), __variableMap( source.__variableMap ), __topologicalOrder( 0 ) {
     GUM_CONS_CPY( InfluenceDiagram );
     _copyTables( source );
     __topologicalOrder = new Sequence<NodeId> ( * ( source.__topologicalOrder ) );
@@ -74,7 +74,7 @@ namespace gum {
   InfluenceDiagram<GUM_SCALAR>&
   InfluenceDiagram<GUM_SCALAR>::operator= ( const InfluenceDiagram<GUM_SCALAR>& source ) {
     if ( this != &source ) {
-      AbstractBayesNet<GUM_SCALAR>::operator= ( source );
+      IBaseBayesNet<GUM_SCALAR>::operator= ( source );
       // Removing previous potentials
       _removeTables();
       __potentialMap.clear();
@@ -111,7 +111,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   void InfluenceDiagram<GUM_SCALAR>::_copyTables( const InfluenceDiagram<GUM_SCALAR>& IDsource ) {
     // Copying potentials
-    Potential<GUM_SCALAR> * potentialCpy = NULL;
+    Potential<GUM_SCALAR>* potentialCpy = nullptr;
 
     for ( typename Property<Potential<GUM_SCALAR>*>::onNodes::const_iterator potentialIter = IDsource.__potentialMap.begin(); potentialIter != IDsource.__potentialMap.end(); ++potentialIter ) {
       // Instanciation of the node's CPT
@@ -143,7 +143,7 @@ namespace gum {
     }
 
     // Copying Utilities
-    UtilityTable<GUM_SCALAR> *utilityCpy;
+    UtilityTable<GUM_SCALAR>* utilityCpy;
 
     for ( typename Property<UtilityTable<GUM_SCALAR>*>::onNodes::const_iterator utilityIter = IDsource.__utilityMap.begin(); utilityIter != IDsource.__utilityMap.end(); ++utilityIter ) {
       // Instanciation of the node's CPT
@@ -355,7 +355,7 @@ namespace gum {
   * Return id node from discrete var pointer.
   */
   template<typename GUM_SCALAR> INLINE
-  NodeId InfluenceDiagram<GUM_SCALAR>::nodeId( const DiscreteVariable &var ) const {
+  NodeId InfluenceDiagram<GUM_SCALAR>::nodeId( const DiscreteVariable& var ) const {
     return __variableMap.get( var );
   }
 
@@ -434,10 +434,10 @@ namespace gum {
   */
   template<typename GUM_SCALAR>
   NodeId
-  InfluenceDiagram<GUM_SCALAR>::addChanceNode( const DiscreteVariable& var, MultiDimImplementation<GUM_SCALAR> *aContent, NodeId DesiredId ) {
+  InfluenceDiagram<GUM_SCALAR>::addChanceNode( const DiscreteVariable& var, MultiDimImplementation<GUM_SCALAR>* aContent, NodeId DesiredId ) {
     NodeId proposedId = _addNode( var, DesiredId );
 
-    Potential<GUM_SCALAR> *varcpt = new Potential<GUM_SCALAR> ( aContent );
+    Potential<GUM_SCALAR>* varcpt = new Potential<GUM_SCALAR> ( aContent );
     ( *varcpt ) << variable( proposedId );
     __potentialMap.insert( proposedId, varcpt );
 
@@ -452,14 +452,14 @@ namespace gum {
   */
   template<typename GUM_SCALAR>
   NodeId
-  InfluenceDiagram<GUM_SCALAR>::addUtilityNode( const DiscreteVariable& var, MultiDimImplementation<GUM_SCALAR> *aContent, NodeId DesiredId ) {
+  InfluenceDiagram<GUM_SCALAR>::addUtilityNode( const DiscreteVariable& var, MultiDimImplementation<GUM_SCALAR>* aContent, NodeId DesiredId ) {
     if ( var.domainSize() != 1 ) {
       GUM_ERROR( InvalidArgument, "Utility var have no state ( which implicates a single label for data output reasons )." );
     }
 
     NodeId proposedId = _addNode( var, DesiredId );
 
-    UtilityTable<GUM_SCALAR> *varut = new UtilityTable<GUM_SCALAR> ( aContent );
+    UtilityTable<GUM_SCALAR>* varut = new UtilityTable<GUM_SCALAR> ( aContent );
 
     ( *varut ) << variable( proposedId );
 
@@ -551,8 +551,8 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   InfluenceDiagram<GUM_SCALAR>::insertArc( NodeId tail, NodeId head ) {
-   addArc(tail,head);
-   
+    addArc( tail,head );
+
   }
   /*
   * Add an arc in the ID, and update diagram's chance nodes cpt if necessary.
@@ -650,7 +650,7 @@ namespace gum {
   InfluenceDiagram<GUM_SCALAR>::topologicalOrder( bool clear ) const {
     if ( clear or( __topologicalOrder->empty() ) ) {
       __topologicalOrder->clear();
-      AbstractBayesNet<GUM_SCALAR>::_topologicalOrder( *__topologicalOrder );
+      IBaseBayesNet<GUM_SCALAR>::_topologicalOrder( *__topologicalOrder );
     }
 
     return *__topologicalOrder;
@@ -668,7 +668,7 @@ namespace gum {
     //Finding first decision node
     Sequence<NodeId>::const_iterator orderIter = order.begin();
 
-    while (( orderIter != order.end() ) && ( !isDecisionNode( *orderIter ) ) )
+    while ( ( orderIter != order.end() ) && ( !isDecisionNode( *orderIter ) ) )
       ++orderIter;
 
     if ( orderIter == order.end() )
@@ -704,7 +704,7 @@ namespace gum {
     List<NodeId> nodeFIFO;
     // mark[node] contains 0 if not visited
     // mark[node] = predecessor if visited
-    Property<int>::onNodes mark = __dag.nodesProperty(( int ) - 1 );
+    Property<int>::onNodes mark = __dag.nodesProperty( ( int ) - 1 );
     NodeId current;
 
     mark[src] = ( int ) src;
@@ -888,4 +888,4 @@ namespace gum {
   }
 
 }
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 

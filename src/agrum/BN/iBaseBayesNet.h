@@ -21,31 +21,33 @@
 * @file
 * @brief Class representing Abstract Bayesian networks
 *
-* @author Lionel Torti & Pierre-Henri Wuillemin
+* @author Lionel TORTI and Pierre-Henri WUILLEMIN
 *
 */
-#ifndef GUM_ABSTRACT_BAYES_NET_H
-#define GUM_ABSTRACT_BAYES_NET_H
+#ifndef GUM_IBASEBAYES_NET_H
+#define GUM_IBASEBAYES_NET_H
 
-// ============================================================================
+
 #include <list>
-// ============================================================================
+
 #include <agrum/graphs/DAG.h>
 #include <agrum/graphs/undiGraph.h>
-// ============================================================================
-#include <agrum/multidim/CIModels/multiDimNoisyORCompound.h>
-#include <agrum/multidim/CIModels/multiDimNoisyORNet.h>
+
+#include <agrum/graphicalModels/variableNodeMap.h>
 #include <agrum/multidim/potential.h>
 
 namespace gum {
 
   /**
-  * @class AbstractBayesNet abstractBayesNet.h <agrum/BN/abstractBayesNet.h>
-   * Abstract class for representing a BayesNet.
+  * @class IBaseBayesNet IBaseBayesNet.h <agrum/BN/iBaseBayesNet.h>
+   * Interface-like class for representing basic functionaalities for a BayesNet.
+   *
+   * This class is not really an interface. Several methods are implemented in order
+   * to
    */
   template<typename GUM_SCALAR>
 
-  class AbstractBayesNet {
+  class IBaseBayesNet {
 
     public:
       /// @name Constructors / Destructors
@@ -54,17 +56,17 @@ namespace gum {
       /**
        * Default constructor.
        */
-      AbstractBayesNet();
+      IBaseBayesNet();
 
       /**
        * Destructor.
        */
-      virtual ~AbstractBayesNet();
+      virtual ~IBaseBayesNet();
 
       /**
        * Copy constructor. Do nothing.
        */
-      AbstractBayesNet( const AbstractBayesNet<GUM_SCALAR>& source );
+      IBaseBayesNet( const IBaseBayesNet<GUM_SCALAR>& source );
 
       /// @}
       /// @name Getter and setters
@@ -131,7 +133,7 @@ namespace gum {
       * Return id node src discrete var pointer.
       * @throw NotFound If no variable matches var.
       */
-      virtual NodeId nodeId( const DiscreteVariable &var ) const = 0;
+      virtual NodeId nodeId( const DiscreteVariable& var ) const = 0;
 
       /// Getter by name
       /// @throw NotFound if no such name exists in the graph.
@@ -142,11 +144,13 @@ namespace gum {
       virtual const DiscreteVariable& variableFromName( const std::string& name ) const = 0;
 
       /// synchronize in (on this) with External
-      void synchroInstantiations( Instantiation& inst,const Instantiation& external,bool sameLabelsOrder=true ) const;
+      //void synchroInstantiations( Instantiation& inst,const Instantiation& external,bool sameLabelsOrder=true ) const;
 
       /// Get an instantiation over all the variables of the BN
       virtual void completeInstantiation( Instantiation& I ) const;
       /// @}
+
+
       /// @name Arc manipulation methods.
       /// @{
 
@@ -161,6 +165,8 @@ namespace gum {
       const DAG::ArcIterator& endArcs() const;
 
       /// @}
+
+
       /// @name Graphical methods
       /// @{
 
@@ -189,16 +195,16 @@ namespace gum {
       virtual std::string toDot( void ) const=0;
 
       /// @return Returns true if the src and this are equal.
-      bool operator==( const AbstractBayesNet<GUM_SCALAR>& src ) const;
+      bool operator==( const IBaseBayesNet<GUM_SCALAR>& src ) const;
 
       /// @return Returns false if the src and this are equal.
-      bool operator!=( const AbstractBayesNet<GUM_SCALAR>& src ) const;
-      
+      bool operator!=( const IBaseBayesNet<GUM_SCALAR>& src ) const;
+
     protected:
       /**
        * Private copy operator.
        */
-      AbstractBayesNet<GUM_SCALAR>& operator=( const AbstractBayesNet<GUM_SCALAR>& source );
+      IBaseBayesNet<GUM_SCALAR>& operator=( const IBaseBayesNet<GUM_SCALAR>& source );
 
       /// Returns the moral graph of this BayesNet.
       void _moralGraph( UndiGraph& graph ) const;
@@ -217,6 +223,6 @@ namespace gum {
   };
 } // gum
 
-#include <agrum/BN/abstractBayesNet.tcc>
+#include <agrum/BN/iBaseBayesNet.tcc>
 
-#endif /* GUM_ABSTRACT_BAYES_NET_H */
+#endif /* GUM_IBASEBAYES_NET_H */

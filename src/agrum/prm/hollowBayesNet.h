@@ -23,17 +23,17 @@
 //  *
 //  * @author Lionel TORTI
 //  */
-// // ============================================================================
+//
 // #include <agrum/BN/BayesNet.h>
-// // ============================================================================
+//
 // #include <agrum/prm/PRM.h>
-// // ============================================================================
+//
 // REMOVED FROM DOC (see agrum.doxy.in)
 // #ifndef GUM_HOLLOW_BAYESNET_H
 // #define GUM_HOLLOW_BAYESNET_H
 // namespace gum {
 // namespace prm {
-// 
+//
 // /**
 //  * @class HollowBayesNet hollowBayesNet.h <agrum/prm/hollowBayesNet.h>
 //  * @brief This class decorates a ClassElementContainer has an AbstractBayesNet.
@@ -58,106 +58,106 @@
 //   /// @name Constructors & destructor.
 //   // ========================================================================
 //     /// @{
-// 
+//
 //     /// Default constructor.
 //     /// @param cec The ClassElementContainer decorated by this HollowBayesNet.
 //     HollowBayesNet(const ClassElementContainer& cec);
-// 
+//
 //     /// Copy constructor.
 //     HollowBayesNet(const HollowBayesNet& from);
-// 
+//
 //     /// Copy operator.
 //     HollowBayesNet& operator=(const HollowBayesNet& from);
-// 
+//
 //     /// Destructor.
 //     virtual ~HollowBayesNet();
-// 
+//
 //     /// @}
 //   // ===========================================================================
 //   /// @name Variable manipulation methods.
 //   // ===========================================================================
 //     /// @{
-// 
+//
 //     /// See gum::AbstractBayesNet::cpt().
 //     /// @warning In some case when varId is an Aggregate and __cec a Class this
 //     ///          will raise an OperationNotAllowed since Aggregate's Potential are
 //     ///          defined at instance-level.
 //     virtual const Potential<prm_float>& cpt( NodeId varId ) const;
-// 
+//
 //     /// See gum::AbstractBayesNet::dag().
 //     virtual const DAG& dag() const;
-// 
+//
 //     /// See gum::AbstractBayesNet::variableNodeMap().
 //     virtual const VariableNodeMap& variableNodeMap() const;
-// 
+//
 //     /// See gum::AbstractBayesNet::size().
 //     virtual Idx size() const;
-// 
+//
 //     /// See gum::AbstractBayesNet::empty().
 //     virtual bool empty() const;
-// 
+//
 //     /// See gum::AbstractBayesNet::variable().
 //     virtual const DiscreteVariable& variable( NodeId id ) const;
-// 
+//
 //     /// See gum::AbstractBayesNet::nodeId().
 //     virtual NodeId nodeId( const DiscreteVariable &var ) const;
-// 
+//
 //     /// See gum::AbstractBayesNet::idFromName().
 //     virtual NodeId idFromName( const std::string& name ) const;
-// 
+//
 //     /// See gum::AbstractBayesNet::variableFromName().
 //     virtual const DiscreteVariable& variableFromName( const std::string& name ) const;
-// 
+//
 //     const Property<unsigned int>::onNodes& modalities() const;
-// 
+//
 //     /// @}
 //   // ===========================================================================
 //   /// @name Graphical methods
 //   // ===========================================================================
 //     /// @{
-// 
+//
 //     /// See gum::AbstractBayesNet::moralGraph().
 //     virtual const UndiGraph& moralGraph( bool clear = true ) const;
-// 
+//
 //     /// See gum::AbstractBayesNet::topologicalOrder().
 //     virtual const Sequence<NodeId>& topologicalOrder( bool clear = true ) const;
-// 
+//
 //     /// @return Returns a dot representation of this BayesNet.
 //     virtual std::string toDot( void ) const;
-// 
+//
 //     /// @}
 //   private:
 //     /// Mapping between DiscreteVariable and their NodeId
 //     HashTable<const DiscreteVariable*, NodeId> __varNodeMap;
-// 
+//
 //     /// Private getter with type checking in case the id is not a formal Attribute.
 //     /// @throw NotFound Raised if id is not a formal attribute.
 //     const ClassElement& __get(NodeId id) const;
-// 
+//
 //     /// The ClassElementContainer decorated by this.
 //     const ClassElementContainer* __cec;
-// 
+//
 //     /// The Dag of a HollowBayesNet is a subgraph of __cec->dag() containing only
 //     /// Attribute and Aggregate
 //     DAG __dag;
-// 
+//
 //     /// HollowBayesNet are a read-only structure, no need to update the moral graph.
 //     mutable UndiGraph* __moralGraph;
-// 
+//
 //     Property<unsigned int>::onNodes __modalities;
-// 
+//
 //     /// HollowBayesNet are a read-only structure, no need to update the
 //     /// topological order.
 //     mutable Sequence<NodeId>* __topo;
-// 
+//
 //     void __init(const ClassElementContainer& cec);
 // };
-// 
+//
 // } /* namespace prm */
 // } /* namespace gum */
 // #ifndef GUM_NO_INLINE
 // #include <agrum/prm/hollowBayesNet.inl>
 // #endif // GUM_NO_INLINE
-// // ============================================================================
+//
 // #endif /* GUM_HOLLOW_BAYESNET_H */
-// // ============================================================================
+//

@@ -51,6 +51,16 @@ def initParser(current):
                                         action="store_false",
                                         dest="verbose",
                                         default=current['verbose'])
+    parser.add_option("", "--profile",
+                                        help="Test procedures are time-normalized",
+                                        action="store_true",
+                                        dest="profile",
+                                        default=current['profile'])
+    parser.add_option("", "--no-profile",
+                                        help="Test procedures are time-randomized",
+                                        action="store_false",
+                                        dest="profile",
+                                        default=current['profile'])
     parser.add_option("-p", "--platform",
                                         help="{linux|windows|mac}",
                                         type="choice",
@@ -121,7 +131,7 @@ def writeTestList(l):
 ##########################################################################################################################
 def allTests():
     return sorted([os.path.basename(x) for x in glob.glob('src/testunits/*TestSuite.h')])
-  
+
 ##########################################################################################################################
 def checkTestListCmake():
     if not os.path.exists('src/testunits/testList.cmake'):
@@ -129,7 +139,7 @@ def checkTestListCmake():
     else:
       with open('src/testunits/testList.cmake') as f:
         content = f.readlines()
-        
+
       res=[]
       rewrite=False
       for line in content:
@@ -142,7 +152,7 @@ def checkTestListCmake():
             res.append(s)
       if rewrite:
         writeTestList(res)
-                            
+
 
 ##########################################################################################################################
 def afficheTests():
@@ -206,6 +216,7 @@ def checkConstraints(parser,options,args):
     current['platform']=options.platform
     current['destination']=options.destination
     current['jobs']=options.jobs
+    current['profile']=options.profile
 
     for key in 'rule option wrapper'.split():
         current[key]=''
@@ -253,22 +264,22 @@ def checkConstraints(parser,options,args):
 
 ##########################################################################################################################
 def proceed(options):
-    folders=cmake_option=make_options=run_cde =""
+    folders=cmake_options=make_options=run_cde =""
 
     if options['wrapper']!="": # we know rule in ["install","wrapper", "test"]
         # ensure creation of agrum/config.h (as a release version of agrum)
         folders=["build",options['platform'],'release']
-        cmake_option=" -DCMAKE_BUILD_TYPE=RELEASE  ../../../src -DCMAKE_VERBOSE_MAKEFILE="
+        cmake_options=" -DCMAKE_BUILD_TYPE=RELEASE  ../../../src -DCMAKE_VERBOSE_MAKEFILE="
         if (options['verbose']):
-            cmake_option=cmake_option+"ON"
+            cmake_options=cmake_options+"ON"
         else:
-            cmake_option=cmake_option+"OFF"
+            cmake_options=cmake_options+"OFF"
         [safe_cd(s) for s in folders]
-        execute("cmake "+cmake_option)
+        execute("cmake "+cmake_options)
         [execute("cd ..") for s in folders]
 
         folders=['build','wrappers',options['wrapper']]
-        cmake_option="-DCMAKE_BUILD_TYPE=RELEASE ../../../wrappers/"+options['wrapper']+"/"
+        cmake_options="-DCMAKE_BUILD_TYPE=RELEASE ../../../wrappers/"+options['wrapper']+"/"
         if options['rule'] in ["install"]:
             make_options=options['rule']
         else:
@@ -288,9 +299,9 @@ def proceed(options):
             folders=["build",options['platform'],'config']
         else:
             folders=["build",options['platform'],options['option']]
-        cmake_option=" -DCMAKE_BUILD_TYPE="+options['option'].upper()+" ../../../src"
+        cmake_options=" -DCMAKE_BUILD_TYPE="+options['option'].upper()+" ../../../src"
         if (options['platform']=="windows"):
-            cmake_option=cmake_option+" -DCMAKE_TOOLCHAIN_FILE=../../../src/cmake/Toolchain-mingw32.cmake -DCMAKE_INSTALL_PREFIX=_CPack_Packages/win32/TGZ/agrum-0.6.0-win32"
+            cmake_options=cmake_options+" -DCMAKE_TOOLCHAIN_FILE=../../../src/cmake/Toolchain-mingw32.cmake -DCMAKE_INSTALL_PREFIX=_CPack_Packages/win32/TGZ/agrum-0.6.0-win32"
 
         if (options['rule']=="test" or options['rule']=="run"):
             make_options=options['rule']
@@ -299,18 +310,22 @@ def proceed(options):
             make_options=options['rule']
 
     if (options['platform'] != "windows"):
-        cmake_option=cmake_option+" -DCMAKE_INSTALL_PREFIX="+options['destination']
+        cmake_options=cmake_options+" -DCMAKE_INSTALL_PREFIX="+options['destination']
 
-    cmake_option=cmake_option+" -DCMAKE_VERBOSE_MAKEFILE="
+    cmake_options=cmake_options+" -DCMAKE_VERBOSE_MAKEFILE="
     if (options['verbose']):
-        cmake_option=cmake_option+"ON"
+        cmake_options=cmake_options+"ON"
     else:
-        cmake_option=cmake_option+"OFF"
+        cmake_options=cmake_options+"OFF"
 
     make_options=make_options+" -j "+options['jobs'].__str__()
 
+    if options['rule']=='test':
+      if options['wrapper']=="":
+	cmake_options=cmake_options+" -DGUM_RANDOMSEED_TEST="+("10" if options['profile'] else "0");
+
     [safe_cd(s) for s in folders]
-    execute("cmake "+cmake_option)
+    execute("cmake "+cmake_options)
     if options['rule']!='config':
         execute("make "+make_options)
     if (run_cde!=""):
@@ -356,6 +371,7 @@ default['destination']="/usr"
 default['wrapper']=""
 default['jobs']="5"
 default['verbose']=False
+default['profile']=False
 
 
 shlv=shelve.open(".options.mak.py",writeback=True)

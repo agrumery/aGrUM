@@ -109,7 +109,7 @@ namespace gum_tests {
       void testEraseAllVal() {
         gum::List<int> list;
 
-        for( int i = 0; i < 7; i++ )
+        for ( int i = 0; i < 7; i++ )
           list.insert( 42 );
 
         list.pushFront( 1 );
@@ -124,7 +124,7 @@ namespace gum_tests {
       void testErase() {
         gum::List<int> list;
 
-        for( int i = 0; i < 7; i++ )
+        for ( int i = 0; i < 7; i++ )
           list.insert( i );
 
         list.erase( 2 );
@@ -143,7 +143,7 @@ namespace gum_tests {
       void testEraseIterator() {
         gum::List<int> list;
 
-        for( int i = 0; i < 6; i++ )
+        for ( int i = 0; i < 6; i++ )
           list.insert( i );
 
         gum::List<int>::iterator iter = list.begin();
@@ -218,13 +218,13 @@ namespace gum_tests {
       gum::List<int> initializeList( int count ) {
         gum::List<int> list;
 
-        if( count >= 1 ) {
-          for( int i = 1; i <= count; i++ )
+        if ( count >= 1 ) {
+          for ( int i = 1; i <= count; i++ )
             list.pushBack( i );
 
           return list;
         } else {
-          for( int i = count; i <= 1; i++ )
+          for ( int i = count; i <= 1; i++ )
             list.pushBack( i );
 
           return list;

@@ -23,16 +23,16 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #ifndef GUM_PRM_OBJECT_H
 #define GUM_PRM_OBJECT_H
-// ============================================================================
+
 #include <string>
-// ============================================================================
+
 #include <agrum/config.h>
-// ============================================================================
+
 #include <agrum/prm/utils_prm.h>
-// ============================================================================
+
 
 namespace gum {
 
@@ -67,23 +67,29 @@ namespace gum {
          */
         enum ObjectType { all, prm_class, prm_interface, prm_class_elt,
                           prm_type, prm_system, prm_instance
-                      };
+                        };
 
         /// Returns the string representation of a PRMObject.
         static std::string enum2str( ObjectType type ) {
           switch ( type ) {
             case prm_class:
               return "prm_class";
+
             case prm_class_elt:
               return "prm_class_elt";
+
             case prm_type:
               return "prm_type";
+
             case prm_system:
               return "prm_system";
+
             case prm_instance:
               return "prm_instance";
+
             case prm_interface:
               return "prm_interface";
+
             default:
               return "unknown";
           }
@@ -182,10 +188,10 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-// ============================================================================
+
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/PRMObject.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 #endif /* GUM_PRM_OBJECT_H */
-// ============================================================================
+

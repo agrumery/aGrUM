@@ -37,8 +37,8 @@ namespace gum {
   /// constructor
   template< typename GUM_SCALAR, template<typename> class TABLE >
   MultiDimCompleteProjection<GUM_SCALAR,TABLE>::MultiDimCompleteProjection
-  ( GUM_SCALAR ( *proj )( const TABLE<GUM_SCALAR>&, Instantiation* ) ) :
-  _proj( proj ) {
+  ( GUM_SCALAR( *proj )( const TABLE<GUM_SCALAR>&, Instantiation* ) ) :
+    _proj( proj ) {
     /// for debugging purposes
     GUM_CONSTRUCTOR( MultiDimCompleteProjection );
   }
@@ -53,14 +53,14 @@ namespace gum {
     GUM_CONS_CPY( MultiDimCompleteProjection );
   }
 
-  
+
   /// destructor
   template< typename GUM_SCALAR, template<typename> class TABLE >
   MultiDimCompleteProjection<GUM_SCALAR,TABLE>::~MultiDimCompleteProjection() {
     /// for debugging purposes
     GUM_DESTRUCTOR( MultiDimCompleteProjection );
   }
-  
+
 
   /// virtual constructor
   template< typename GUM_SCALAR, template<typename> class TABLE >
@@ -82,7 +82,7 @@ namespace gum {
   /// changes the function used for projecting TABLES
   template< typename GUM_SCALAR, template<typename> class TABLE >
   void MultiDimCompleteProjection<GUM_SCALAR,TABLE>::setProjectFunction
-  ( GUM_SCALAR ( *proj ) ( const TABLE<GUM_SCALAR>&, Instantiation* ) ) {
+  ( GUM_SCALAR( *proj )( const TABLE<GUM_SCALAR>&, Instantiation* ) ) {
     _proj = proj;
   }
 

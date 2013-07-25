@@ -33,22 +33,22 @@
 namespace gum {
 
 
-  // ==============================================================================
+
   /// basic constructor
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp>
-  PriorityQueue<Val,Priority,Cmp>::PriorityQueue ( Cmp compare,
-                                                   bool uniqueness,
-                                                   Size capacity ) :
+  PriorityQueue<Val,Priority,Cmp>::PriorityQueue( Cmp compare,
+      bool uniqueness,
+      Size capacity ) :
     __heap( capacity ), __indices( capacity >> 1, true, uniqueness ),
     __nb_elements( 0 ), __cmp( compare ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( PriorityQueue );
   }
 
-  // ==============================================================================
+
   /// copy constructor
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp>
   PriorityQueue<Val,Priority,Cmp>::PriorityQueue
   ( const PriorityQueue<Val,Priority,Cmp>& from ) :
@@ -73,12 +73,11 @@ namespace gum {
                                            const_cast<Val*>( &iter.key() ) );
         }
       }
-    }
-    catch ( ... ) {  // if there was a problem, deallocate everything
+    } catch ( ... ) { // if there was a problem, deallocate everything
       for ( HashTableConstIterator< Val,std::vector<Size> >
-              iter2 = __indices.begin(); iter2!=iter; ++iter2 )
+            iter2 = __indices.begin(); iter2!=iter; ++iter2 )
         for ( typename std::vector<Size>::const_iterator
-                iter_index2 = iter2->begin();
+              iter_index2 = iter2->begin();
               iter_index2 != iter2->end(); ++iter_index2 )
           delete __heap[*iter_index2];
 
@@ -90,9 +89,9 @@ namespace gum {
     }
   }
 
-  // ==============================================================================
+
   /// copy operator
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp>
   PriorityQueue<Val,Priority,Cmp>& PriorityQueue<Val,Priority,Cmp>::operator=
   ( const PriorityQueue<Val,Priority,Cmp>& from ) {
@@ -111,8 +110,7 @@ namespace gum {
 
         // reassign the pairs (val/indices)
         __indices = from.__indices;
-      }
-      catch ( ... ) {
+      } catch ( ... ) {
         for ( Size i = 0; i < __nb_elements; ++i )
           delete __heap[i];
 
@@ -143,15 +141,13 @@ namespace gum {
             if ( *iter_index < __nb_elements ) {
               __heap[*iter_index]->first = from_pair.first;
               __heap[*iter_index]->second = const_cast<Val*>( &iter.key() );
-            }
-            else
+            } else
               __heap[*iter_index] = new std::pair<Priority, Val*>
-                ( from_pair.first, const_cast<Val*>( &iter.key() ) );
+              ( from_pair.first, const_cast<Val*>( &iter.key() ) );
           }
 
         __nb_elements = from.__nb_elements;
-      }
-      catch ( ... ) { // in case something went wrong, clear the queue
+      } catch ( ... ) { // in case something went wrong, clear the queue
         HashTableConstIterator< Val,std::vector<Size> > iter2;
         typename std::vector<Size>::const_iterator iter_index2;
 
@@ -170,7 +166,7 @@ namespace gum {
         }
 
         for ( Size i = 0; i < __nb_elements; ++i )
-          if (__heap[i]) delete __heap[i];
+          if ( __heap[i] ) delete __heap[i];
 
         __indices.clear();
         __heap.clear();
@@ -183,9 +179,9 @@ namespace gum {
     return *this;
   }
 
-  // ==============================================================================
+
   /// destructor
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp>
   PriorityQueue<Val,Priority,Cmp>::~PriorityQueue() {
     // for debugging purposes
@@ -196,9 +192,9 @@ namespace gum {
       delete __heap[i];
   }
 
-  // ==============================================================================
+
   /// returns the element at the top of the priority queue
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp> INLINE
   const Val& PriorityQueue<Val,Priority,Cmp>::top() const {
     if ( !__nb_elements ) {
@@ -208,9 +204,9 @@ namespace gum {
     return *( __heap[0]->second );
   }
 
-  // ==============================================================================
+
   /// returns the priority of the top element
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp> INLINE
   const Priority& PriorityQueue<Val,Priority,Cmp>::topPriority() const {
     if ( !__nb_elements ) {
@@ -220,36 +216,36 @@ namespace gum {
     return __heap[0]->first;
   }
 
-  // ==============================================================================
+
   /// returns the number of elements in the priority queue
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp> INLINE
   Size PriorityQueue<Val,Priority,Cmp>::size() const  {
     return __nb_elements;
   }
 
-  // ==============================================================================
+
   /// return the size of the array storing the priority queue
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp> INLINE
   Size PriorityQueue<Val,Priority,Cmp>::capacity() const  {
     return __heap.size();
   }
 
-  // ==============================================================================
+
   /// changes the size of the array storing the priority queue
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp> INLINE
   void PriorityQueue<Val,Priority,Cmp>::resize( Size new_size ) {
     if ( new_size < __nb_elements ) return;
 
     __heap.resize( new_size );
-    __indices.resize( new_size / 2);
+    __indices.resize( new_size / 2 );
   }
 
-  // ==============================================================================
+
   /// removes all the elements from the queue
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp>
   void PriorityQueue<Val,Priority,Cmp>::clear() {
     // remove the pointers from the heap
@@ -261,9 +257,9 @@ namespace gum {
     __indices.clear();
   }
 
-  // ==============================================================================
+
   /// removes the element at index elt from the priority queue
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp>
   void PriorityQueue<Val,Priority,Cmp>::erase( Size index ) {
     if ( index >= __nb_elements ) return;
@@ -282,6 +278,7 @@ namespace gum {
       __indices.erase( del_val );
     else {
       Size i;
+
       for ( i = 0; i != vect_index.size(); ++i )
         if ( vect_index[i] == index ) break;
 
@@ -298,8 +295,8 @@ namespace gum {
     for ( Size j = ( index << 1 ) + 1; j < __nb_elements;
           i = j, j = ( j << 1 ) + 1 ) {
       // let j be the max child
-      if (( j+1 < __nb_elements ) &&
-          __cmp( __heap[j+1]->first,__heap[j]->first ) ) ++j;
+      if ( ( j+1 < __nb_elements ) &&
+           __cmp( __heap[j+1]->first,__heap[j]->first ) ) ++j;
 
       // if "last" is lower than heap[j], "last" must be stored at index i
       if ( __cmp( last->first,__heap[j]->first ) ) break;
@@ -310,6 +307,7 @@ namespace gum {
       std::vector<Size>& vect_index = __indices[*( __heap[i]->second )];
 
       Size jj = j, ii = i;
+
       for ( Size k = 0; k != vect_index.size(); ++k )
         if ( vect_index[k] == jj ) {
           vect_index[k] = ii;
@@ -330,18 +328,18 @@ namespace gum {
       }
   }
 
-  // ==============================================================================
+
   /// removes a given element from the priority queue (but does not return it)
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp> INLINE
   void PriorityQueue<Val,Priority,Cmp>::eraseByVal( const Val& val ) {
     try { erase( __indices[val][0] ); }
     catch ( NotFound& ) { }
   }
 
-  // ==============================================================================
+
   /// removes the top of the priority queue (but does not return it)
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp> INLINE
   void PriorityQueue<Val,Priority,Cmp>::eraseTop() {
     // if the heap is empty, do nothing
@@ -350,9 +348,9 @@ namespace gum {
     erase( 0 );
   }
 
-  // ==============================================================================
+
   /// removes the top element from the priority queue and return it
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp> INLINE
   Val PriorityQueue<Val,Priority,Cmp>::pop() {
     if ( !__nb_elements ) {
@@ -366,21 +364,21 @@ namespace gum {
     return v;
   }
 
-  // ==============================================================================
+
   /// returns a hashtable the keys of which are the values stored in the queue
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp> INLINE
   const HashTable< Val,std::vector<Size> >&
   PriorityQueue<Val,Priority,Cmp>::allValues() const  {
     return __indices;
   }
 
-  // ==============================================================================
+
   /// inserts a new (a copy) element in the priority queue
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp>
   Size PriorityQueue<Val,Priority,Cmp>::insert( const Priority& priority,
-                                                const Val& val ) {
+      const Val& val ) {
     // check whether val already exists in the queue
     bool val_exists = __indices.exists( val );
 
@@ -396,13 +394,12 @@ namespace gum {
     const Val& indval = __indices.key( val );
 
     // create a new element at the end of the heap
-    std::pair<Priority, Val*> *bucket;
+    std::pair<Priority, Val*>* bucket;
 
     try {
       bucket = new std::pair<Priority, Val*> ( priority,
-                                               const_cast<Val*>( &indval ) );
-    }
-    catch ( ... ) {
+          const_cast<Val*>( &indval ) );
+    } catch ( ... ) {
       std::vector<Size>& vect_index = __indices[val];
 
       if ( vect_index.size() == 0 )
@@ -416,6 +413,7 @@ namespace gum {
 
     // restore the heap property
     Size i = __nb_elements - 1;
+
     for ( Size j = ( i-1 ) >> 1; i && __cmp( priority,__heap[j]->first );
           i=j, j = ( j-1 ) >> 1 ) {
       __heap[i] = __heap[j];
@@ -435,37 +433,38 @@ namespace gum {
     return i;
   }
 
-  // ==============================================================================
+
   /// indicates whether the priority queue is empty
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp> INLINE
   bool PriorityQueue<Val,Priority,Cmp>::empty() const  {
     return ( __nb_elements == 0 );
   }
 
-  // ==============================================================================
+
   /// indicates whether the priority queue contains a given value
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp> INLINE
   bool PriorityQueue<Val,Priority,Cmp>::contains( const Val& val ) const  {
     return __indices.exists( val );
   }
 
-  // ==============================================================================
+
   /// returns the element at position "index" in the priority queue
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp> INLINE
   const Val& PriorityQueue<Val,Priority,Cmp>::operator[]( Size index )
-    const  {
+  const  {
     if ( index >= __nb_elements ) {
       GUM_ERROR( NotFound, "not enough elements in the PriorityQueue" );
     }
+
     return *( __heap[index]->second );
   }
 
-  // ==============================================================================
+
   /// displays the content of the queue
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp>
   std::string PriorityQueue<Val,Priority,Cmp>::toString() const {
     bool deja = false;
@@ -483,13 +482,13 @@ namespace gum {
     return stream.str();
   }
 
-  // ==============================================================================
+
   /// changes the size of the internal structure storing the priority queue
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp>
   Size
   PriorityQueue<Val,Priority,Cmp>::setPriority( Size index,
-                                                const Priority& new_priority ) {
+      const Priority& new_priority ) {
     // check whether the element the priority of which should be changed exists
     if ( index >= __nb_elements ) {
       GUM_ERROR( NotFound, "not enough elements in the PriorityQueue" );
@@ -522,8 +521,8 @@ namespace gum {
     for ( j = ( i << 1 ) + 1; j < __nb_elements;
           new_index = j, i = j, j = ( j << 1 ) + 1 ) {
       // let j be the max child
-      if (( j+1 < __nb_elements ) &&
-          __cmp( __heap[j+1]->first,__heap[j]->first ) ) ++j;
+      if ( ( j+1 < __nb_elements ) &&
+           __cmp( __heap[j+1]->first,__heap[j]->first ) ) ++j;
 
       // if "val" is lower than heap[j], "val" must be stored at index i
       if ( __cmp( new_priority,__heap[j]->first ) ) break;
@@ -534,6 +533,7 @@ namespace gum {
       std::vector<Size>& vect_index = __indices[*( __heap[i]->second )];
 
       Size jj = j, ii = i;
+
       for ( Size k = 0; k != vect_index.size(); ++k ) {
         if ( vect_index[k] == jj ) {
           vect_index[k] = ii;
@@ -558,9 +558,9 @@ namespace gum {
     return new_index;
   }
 
-  // ==============================================================================
+
   /// modifies the priority of each instance of a given element
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp>
   void PriorityQueue<Val,Priority,Cmp>::setPriorityByVal
   ( const Val& elt, const Priority& new_priority ) {
@@ -569,44 +569,43 @@ namespace gum {
 
       for ( Size i = 0; i < vect_index.size(); ++i )
         setPriority( vect_index[i], new_priority );
-    }
-    catch ( ... ) { }
+    } catch ( ... ) { }
   }
 
-  // ==============================================================================
+
   /// modifies the priority of each instance of a given element
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp> INLINE
   const Priority&
   PriorityQueue<Val,Priority,Cmp>::priorityByVal( const Val& elt ) const {
     return __heap[__indices[elt][0]]->first;
   }
 
-  // ==============================================================================
+
   /// returns the current uniqueness policy
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp> INLINE
   bool PriorityQueue<Val,Priority,Cmp>::uniquenessPolicy() const  {
     return __indices.keyUniquenessPolicy();
   }
 
-  // ==============================================================================
+
   /** @brief enables the user to change dynamically the policy for checking
    * whether there can exist several identical elements in the queue */
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp> INLINE
   void PriorityQueue<Val,Priority,Cmp>::setUniquenessPolicy
   ( const bool new_policy )  {
     __indices.setKeyUniquenessPolicy( new_policy );
   }
 
-  // ==============================================================================
+
   /// A \c << operator for priority queues
-  // ==============================================================================
+
   template <typename Val, typename Priority, typename Cmp> INLINE
   std::ostream& operator<< ( std::ostream& stream,
                              const  PriorityQueue<Val,Priority,Cmp>& queue ) {
-    stream << queue.toString ();
+    stream << queue.toString();
     return stream;
   }
 

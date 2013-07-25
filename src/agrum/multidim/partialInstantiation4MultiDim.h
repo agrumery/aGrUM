@@ -37,7 +37,7 @@
 
 namespace gum {
 
-  
+
   /// a specialized function for instantiating variables in a multiDimArray
   /** The function instantiates some variables in a multiDimArray. For instance,
    * if table is a MultiDimArray defined over A,B,C,D and if inst_vars =
@@ -52,71 +52,71 @@ namespace gum {
   MultiDimArray<GUM_SCALAR>*
   partialInstantiationMultiDimArray
   ( const MultiDimArray<GUM_SCALAR>* table,
-    const HashTable<const DiscreteVariable *,Idx>& inst_vars ); 
+    const HashTable<const DiscreteVariable*,Idx>& inst_vars );
 
   template<typename GUM_SCALAR>
   MultiDimImplementation<GUM_SCALAR>*
   partialInstantiationMultiDimArray
   ( const MultiDimImplementation<GUM_SCALAR>* table,
-    const HashTable<const DiscreteVariable *,Idx>& inst_vars ); 
+    const HashTable<const DiscreteVariable*,Idx>& inst_vars );
 
   template<typename GUM_SCALAR>
   MultiDimArray<GUM_SCALAR*>*
   partialInstantiationMultiDimArray4Pointers
   ( const MultiDimArray<GUM_SCALAR*>* table,
-    const HashTable<const DiscreteVariable *,Idx>& inst_vars );
+    const HashTable<const DiscreteVariable*,Idx>& inst_vars );
 
   template<typename GUM_SCALAR>
   MultiDimImplementation<GUM_SCALAR*>*
   partialInstantiationMultiDimArray4Pointers
   ( const MultiDimImplementation<GUM_SCALAR*>* table,
-    const HashTable<const DiscreteVariable *,Idx>& inst_vars );
+    const HashTable<const DiscreteVariable*,Idx>& inst_vars );
 
 
-               
-  
-  // ==============================================================================
+
+
+
   // the operators that should be used to select appropriately the functions
   // to instantiate multiDimDecorators
-  // ==============================================================================
+
 
   /// the function to be used to instantiate a MultiDimImplementation
   template<typename GUM_SCALAR>
   MultiDimImplementation<GUM_SCALAR>*
   partialInstantiation
   ( const MultiDimImplementation<GUM_SCALAR>& table,
-    const HashTable<const DiscreteVariable *,Idx>& inst_vars );
+    const HashTable<const DiscreteVariable*,Idx>& inst_vars );
 
   /// the function to be used to instantiate a MultiDimDecorator
   template<typename GUM_SCALAR>
   MultiDimImplementation<GUM_SCALAR>*
   partialInstantiation
   ( const MultiDimDecorator<GUM_SCALAR>& table,
-    const HashTable<const DiscreteVariable *,Idx>& inst_vars );
+    const HashTable<const DiscreteVariable*,Idx>& inst_vars );
 
 
-  
-  
-  // ==============================================================================
-  // ==============================================================================
+
+
+
+
   //
   // DO NOT FORGET TO REGISTER YOUR PARTIAL INSTANTIATION FUNCTIONS AT THE END
   // OF FILE partialInstantiation4MultiDim.tcc
   //
-  // ==============================================================================
-  // ==============================================================================
+
+
 
   /** @brief the function used to register all the instantiation operators on
    * multidimImplementations over non-pointers types */
   template<typename GUM_SCALAR>
-  void partialInstantiation4MultiDimInit ();
+  void partialInstantiation4MultiDimInit();
 
   /** @brief the function used to register all the instantiations on
    * multidimImplementations over pointers types */
   template<typename GUM_SCALAR>
-  void pointerPartialInstantiation4MultiDimInit ();
+  void pointerPartialInstantiation4MultiDimInit();
 
-  
+
   /// a class used to register instantiation functions over non-pointers types
   /** This class is of course completely redundant with function
    * partialInstantiation4MultiDimInit. Its aim is to enable specialization of
@@ -129,10 +129,10 @@ namespace gum {
    * for pointer types and non-pointer types. */
   template<typename GUM_SCALAR>
   struct PartialInstantiation4MultiDimInitialize {
-    void init () { partialInstantiation4MultiDimInit<GUM_SCALAR> (); };
+    void init() { partialInstantiation4MultiDimInit<GUM_SCALAR> (); };
   };
 
-  
+
   /// a class used to register instantiation functions over pointers types
   /** This class is of course completely redundant with function
    * pointerPartialInstantiation4MultiDimInit. Its aim is to enable different
@@ -146,10 +146,10 @@ namespace gum {
    * partial specialization to obtain. */
   template<typename GUM_SCALAR>
   struct PartialInstantiation4MultiDimInitialize<GUM_SCALAR*> {
-    void init () { pointerPartialInstantiation4MultiDimInit<GUM_SCALAR> (); };
+    void init() { pointerPartialInstantiation4MultiDimInit<GUM_SCALAR> (); };
   };
 
- 
+
 } /* namespace gum */
 
 
@@ -163,4 +163,4 @@ namespace gum {
 
 
 
-  
+

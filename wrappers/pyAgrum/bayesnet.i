@@ -1,6 +1,16 @@
 %ignore gum::BayesNet::addVariable;
 %ignore gum::BayesNet::eraseVariable;
 
+%pythonprepend gum::BayesNet::insertArc %{
+  print("WARNING : pyAgrum.BayesNet.insertArc is deprecated. Please use pyAgrum.BayesNet.addArc")
+%}
+
+%pythonprepend gum::BayesNet::insertWeightedArc %{
+  print("WARNING : pyAgrum.BayesNet.insertWeightedArc is deprecated. Please use pyAgrum.BayesNet.addWeightedArc")
+%}
+
+
+
 %pythonappend gum::BayesNet::cpt %{
         val.__fill_distrib__()
 %}
@@ -60,7 +70,7 @@
 
     return q;
   };
-  
+
     bool loadBIF(std::string name, PyObject *l=(PyObject*)0)
     {
         std::vector<PythonLoadListener> py_listener;
@@ -91,7 +101,7 @@
 
     bool loadDSL(std::string name, PyObject *l=(PyObject*)0)
     {
-  std::vector<PythonLoadListener> py_listener;
+      std::vector<PythonLoadListener> py_listener;
         try {
             gum::DSLReader<GUM_SCALAR> reader(self,name);
             int l_size=__fillLoadListeners(py_listener,l);
@@ -176,7 +186,7 @@ gum::BayesNet<double>& generateBN(gum::Size n_nodes=10,gum::Size n_arcs=15,gum::
     if (n_arcs>n_nodes*(n_nodes+1)/2) GUM_ERROR(gum::OperationNotAllowed,"Too many arcs for a BN");
 
     gum::BayesNet<double>* bn=new gum::BayesNet<double>();
-    
+
     gum::MCBayesNetGenerator<double> gen( n_nodes,n_arcs,n_modmax);
     gen.generateBN(*bn);
 

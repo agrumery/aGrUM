@@ -264,34 +264,34 @@ class gumDAGGenerator {
      * Generates nodes, and dispatch them in a set of root nodes, leaf nodes
      * and middle nodes.
      */
-    void __generateNodes( gumDAG &dag,
-                          gumNodeSet &rootList,
-                          gumNodeSet &middleList,
-                          gumNodeSet &leafList ) const;
+    void __generateNodes( gumDAG& dag,
+                          gumNodeSet& rootList,
+                          gumNodeSet& middleList,
+                          gumNodeSet& leafList ) const;
 
     /*
      * Generates nodes, for a DAG with several connex component.
      */
-    void __generateNodes( gumDAG &dag,
-                          gumNodeSet &rootList,
-                          gumNodeSet &middleList,
-                          gumNodeSet &leafList ) const;
+    void __generateNodes( gumDAG& dag,
+                          gumNodeSet& rootList,
+                          gumNodeSet& middleList,
+                          gumNodeSet& leafList ) const;
 
     /*
      * Generate arcs.
      */
-    void __generateArcs( gumDAG &dag,
-                         gumNodeSet &rootList,
-                         gumNodeSet &middleList,
-                         gumNodeSet &leafList ) const;
+    void __generateArcs( gumDAG& dag,
+                         gumNodeSet& rootList,
+                         gumNodeSet& middleList,
+                         gumNodeSet& leafList ) const;
 
     /*
      * Generate arcs, for a DAG with several connex component.
      */
-    void __generateArcs( gumDAG &dag,
-                         gumNodeSet &rootList,
-                         gumNodeSet &middleList,
-                         gumNodeSet &leafList ) const;
+    void __generateArcs( gumDAG& dag,
+                         gumNodeSet& rootList,
+                         gumNodeSet& middleList,
+                         gumNodeSet& leafList ) const;
 
     /*
      * Removes ancestors of aNode from candidates, and memorize them.
@@ -299,7 +299,7 @@ class gumDAGGenerator {
      * nodes.
      */
     void __removeAncestors( const gumNodeId aNode,
-                            const gumDAG &dag,
+                            const gumDAG& dag,
                             gumNodeSet& candidates,
                             bool restore = false ) const;
 

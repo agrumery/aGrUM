@@ -74,12 +74,12 @@ class TestListeners(PythonBNListenerTestCase):
         c = self.bn.add(self.var3)
         self.assertEqual(self.buffer0, "Noeud++ c (%d)\n"%c)
 
-        self.bn.insertArc(a, b)
+        self.bn.addArc(a, b)
         self.assertEqual(self.buffer0, "Arc++ (%d->%d)\n"%(a, b))
-        self.bn.insertArc(b, c)
+        self.bn.addArc(b, c)
         self.assertEqual(self.buffer0, "Arc++ (%d->%d)\n"%(b, c))
 
-        self.assertRaises(InvalidDirectedCycle, self.bn.insertArc,c,a)
+        self.assertRaises(InvalidDirectedCycle, self.bn.addArc,c,a)
 
         self.buffer1 = ""
         self.bn.erase(b)

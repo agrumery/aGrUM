@@ -23,74 +23,74 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 namespace gum {
-namespace prm {
+  namespace prm {
 
-INLINE
-bool
-PRM::isType(const std::string name) const { return __typeMap.exists(name); }
+    INLINE
+    bool
+    PRM::isType( const std::string name ) const { return __typeMap.exists( name ); }
 
-INLINE
-bool
-PRM::isClass(const std::string name) const { return __classMap.exists(name); }
+    INLINE
+    bool
+    PRM::isClass( const std::string name ) const { return __classMap.exists( name ); }
 
-INLINE
-bool
-PRM::isInterface(const std::string name) const { return __interfaceMap.exists(name); }
+    INLINE
+    bool
+    PRM::isInterface( const std::string name ) const { return __interfaceMap.exists( name ); }
 
-INLINE
-bool
-PRM::isSystem(const std::string name) const { return __systemMap.exists(name); }
+    INLINE
+    bool
+    PRM::isSystem( const std::string name ) const { return __systemMap.exists( name ); }
 
-INLINE
-Type&
-PRM::type(const std::string& name) { return *(__typeMap[name]); }
+    INLINE
+    Type&
+    PRM::type( const std::string& name ) { return *( __typeMap[name] ); }
 
-INLINE
-const Type&
-PRM::type(const std::string& name) const { return *(__typeMap[name]); }
+    INLINE
+    const Type&
+    PRM::type( const std::string& name ) const { return *( __typeMap[name] ); }
 
-INLINE
-const Set<Type*>&
-PRM::types() const { return __types; }
+    INLINE
+    const Set<Type*>&
+    PRM::types() const { return __types; }
 
-INLINE
-Class&
-PRM::getClass(const std::string& name) { return *(__classMap[name]); }
+    INLINE
+    Class&
+    PRM::getClass( const std::string& name ) { return *( __classMap[name] ); }
 
-INLINE
-const Class&
-PRM::getClass(const std::string& name) const { return *(__classMap[name]); }
+    INLINE
+    const Class&
+    PRM::getClass( const std::string& name ) const { return *( __classMap[name] ); }
 
-INLINE
-const Set<Class*>&
-PRM::classes() const { return __classes; }
+    INLINE
+    const Set<Class*>&
+    PRM::classes() const { return __classes; }
 
-INLINE
-Interface&
-PRM::interface(const std::string& name) { return *__interfaceMap[name]; }
+    INLINE
+    Interface&
+    PRM::interface( const std::string& name ) { return *__interfaceMap[name]; }
 
-INLINE
-const Interface&
-PRM::interface(const std::string& name) const { return *__interfaceMap[name]; }
+    INLINE
+    const Interface&
+    PRM::interface( const std::string& name ) const { return *__interfaceMap[name]; }
 
-INLINE
-const Set<Interface*>&
-PRM::interfaces() const { return __interfaces; }
+    INLINE
+    const Set<Interface*>&
+    PRM::interfaces() const { return __interfaces; }
 
-INLINE
-System&
-PRM::system(const std::string& name) { return *(__systemMap[name]); }
+    INLINE
+    System&
+    PRM::system( const std::string& name ) { return *( __systemMap[name] ); }
 
-INLINE
-const System&
-PRM::system(const std::string& name) const { return *(__systemMap[name]); }
+    INLINE
+    const System&
+    PRM::system( const std::string& name ) const { return *( __systemMap[name] ); }
 
-INLINE
-const Set<System*>&
-PRM::systems() const { return __systems; }
+    INLINE
+    const Set<System*>&
+    PRM::systems() const { return __systems; }
 
-} /* namespace prm */
+  } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

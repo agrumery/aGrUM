@@ -35,7 +35,7 @@ namespace gum {
 /// copy constructor
   template<typename GUM_SCALAR>
   MultiDimArray<GUM_SCALAR>::MultiDimArray( const MultiDimArray<GUM_SCALAR>& src ) :
-      MultiDimWithOffset<GUM_SCALAR> ( src ), _values( src._values ) {
+    MultiDimWithOffset<GUM_SCALAR> ( src ), _values( src._values ) {
     // for debugging purposes
     GUM_CONS_CPY( MultiDimArray );
   }
@@ -79,7 +79,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   INLINE
   void MultiDimArray<GUM_SCALAR>::erase( const DiscreteVariable& v ) {
-    Sequence<const DiscreteVariable *> variables=this->variablesSequence();
+    Sequence<const DiscreteVariable*> variables=this->variablesSequence();
     Idx pos=variables[&v]; // throw a NotFound if necessary
 
     if ( variables.size() ==1 ) {
@@ -178,6 +178,7 @@ namespace gum {
     if ( offset >= _values.size() ) {
       GUM_ERROR( OutOfBounds, "offset too large" );
     }
+
     return _values[offset];
   }
 
@@ -188,6 +189,7 @@ namespace gum {
     if ( offset >= _values.size() ) {
       GUM_ERROR( OutOfBounds, "offset too large" );
     }
+
     _values[offset] = data;
   }
 
@@ -201,10 +203,10 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   void MultiDimArray<GUM_SCALAR>::_swap( const DiscreteVariable* x,
-                                     const DiscreteVariable* y ) {
+                                         const DiscreteVariable* y ) {
     MultiDimImplementation<GUM_SCALAR>::_swap( x,y );
   }
 
 } /* namespace gum */
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 

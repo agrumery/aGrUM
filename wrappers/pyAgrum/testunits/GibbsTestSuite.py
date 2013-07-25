@@ -21,7 +21,7 @@ class GibbsTestCase(pyAgrumTestCase):
 
         for link in [(self.c, self.s), (self.c, self.r),
                      (self.s, self.w), (self.r, self.w)]:
-            self.bn.insertArc(*link)
+            self.bn.addArc(*link)
 
         self.bn.cpt(self.c)[:] = [0.5, 0.5]
         self.bn.cpt(self.s)[:] = [ [0.5, 0.5],
@@ -46,7 +46,7 @@ class GibbsTestCase(pyAgrumTestCase):
 
         for link in [(self.ci, self.si), (self.ci, self.ri),
                      (self.si, self.wi), (self.ri, self.wi)]:
-            self.bni.insertArc(*link)
+            self.bni.addArc(*link)
 
         self.bni.cpt(self.ci)[:] = [0.5, 0.5]
         self.bni.cpt(self.si)[:] = [ [0.5, 0.5],
@@ -66,7 +66,7 @@ class GibbsTestCase(pyAgrumTestCase):
 
         for link in [(self.r2, self.s2), (self.s2, self.w2),
                      (self.r2, self.w2)]:
-            self.bn2.insertArc(*link)
+            self.bn2.addArc(*link)
 
         self.bn2.cpt(self.s2)[:] = [ [0.6,  0.4 ],
                                      [0.99, 0.01] ]

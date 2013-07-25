@@ -34,7 +34,7 @@ namespace gum {
     reset();
   }
 
-  Timer::Timer( const Timer &from ) : _start( from._start ),_pause( from._pause ),_sleeping( from._sleeping ) {
+  Timer::Timer( const Timer& from ) : _start( from._start ),_pause( from._pause ),_sleeping( from._sleeping ) {
     GUM_CONS_CPY( Timer );
   }
 
@@ -42,7 +42,7 @@ namespace gum {
     GUM_DESTRUCTOR( Timer );
   }
 
-  Timer &Timer::operator= ( const Timer &from ) {
+  Timer& Timer::operator= ( const Timer& from ) {
     GUM_OP_CPY( Timer );
     _start = from._start;
     _pause = from._pause;

@@ -23,133 +23,133 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #include <list>
-// ============================================================================
-#include <agrum/BN/BayesNet.h>
-// ============================================================================
+
+#include <agrum/BN/iBaseBayesNet.h>
+
 #include <agrum/prm/PRM.h>
-// ============================================================================
+
 #ifndef GUM_INSTANCE_BAYESNET_H
 #define GUM_INSTANCE_BAYESNET_H
 namespace gum {
-namespace prm {
+  namespace prm {
 
-/**
- * @class InstanceBayesNet instanceBayesNet.h <agrum/prm/instanceBayesNet.h>
- * @brief This class decorates an Instance has an AbstractBayesNet.
- *
- * Remember that an InstanceBayesNet does not contain input nodes parents and
- * output nodes children. Thus you should be careful when using one of the
- * BayesNetInference over a InstanceBayesNet since some variables are missing in
- * the DAG but not in the nodes CPT.
- *
- */
-class InstanceBayesNet: public AbstractBayesNet<prm_float> {
-  public:
-  // ========================================================================
-  /// @name Constructors & destructor.
-  // ========================================================================
-    /// @{
+    /**
+     * @class InstanceBayesNet instanceBayesNet.h <agrum/prm/instanceBayesNet.h>
+     * @brief This class decorates an Instance has an IBaseBayesNet.
+     *
+     * Remember that an InstanceBayesNet does not contain input nodes parents and
+     * output nodes children. Thus you should be careful when using one of the
+     * BayesNetInference over a InstanceBayesNet since some variables are missing in
+     * the DAG but not in the nodes CPT.
+     *
+     */
+    class InstanceBayesNet: public IBaseBayesNet<prm_float> {
+      public:
+        // ========================================================================
+        /// @name Constructors & destructor.
+        // ========================================================================
+        /// @{
 
-    /// Default constructor.
-    /// @param i The Instance decorated by this InstanceBayesNet.
-    InstanceBayesNet(const Instance& i);
+        /// Default constructor.
+        /// @param i The Instance decorated by this InstanceBayesNet.
+        InstanceBayesNet( const Instance& i );
 
-    /// Copy constructor.
-    InstanceBayesNet(const InstanceBayesNet& from);
+        /// Copy constructor.
+        InstanceBayesNet( const InstanceBayesNet& from );
 
-    /// Copy operator.
-    InstanceBayesNet& operator=(const InstanceBayesNet& from);
+        /// Copy operator.
+        InstanceBayesNet& operator=( const InstanceBayesNet& from );
 
-    /// Destructor.
-    virtual ~InstanceBayesNet();
+        /// Destructor.
+        virtual ~InstanceBayesNet();
 
-    /// @}
-  // ===========================================================================
-  /// @name Variable manipulation methods.
-  // ===========================================================================
-    /// @{
+        /// @}
+        // ===========================================================================
+        /// @name Variable manipulation methods.
+        // ===========================================================================
+        /// @{
 
-    /// See gum::AbstractBayesNet::cpt().
-    virtual const Potential<prm_float>& cpt( NodeId varId ) const;
+        /// See gum::IBaseBayesNet::cpt().
+        virtual const Potential<prm_float>& cpt( NodeId varId ) const;
 
-    /// See gum::AbstractBayesNet::dag().
-    virtual const DAG& dag() const;
+        /// See gum::IBaseBayesNet::dag().
+        virtual const DAG& dag() const;
 
-    /// See gum::AbstractBayesNet::variableNodeMap().
-    virtual const VariableNodeMap& variableNodeMap() const;
+        /// See gum::IBaseBayesNet::variableNodeMap().
+        virtual const VariableNodeMap& variableNodeMap() const;
 
-    /// See gum::AbstractBayesNet::size().
-    virtual Idx size() const;
+        /// See gum::IBaseBayesNet::size().
+        virtual Idx size() const;
 
-    /// See gum::AbstractBayesNet::empty().
-    virtual bool empty() const;
+        /// See gum::IBaseBayesNet::empty().
+        virtual bool empty() const;
 
-    /// See gum::AbstractBayesNet::variable().
-    virtual const DiscreteVariable& variable( NodeId id ) const;
+        /// See gum::IBaseBayesNet::variable().
+        virtual const DiscreteVariable& variable( NodeId id ) const;
 
-    /// See gum::AbstractBayesNet::nodeId().
-    virtual NodeId nodeId( const DiscreteVariable &var ) const;
+        /// See gum::IBaseBayesNet::nodeId().
+        virtual NodeId nodeId( const DiscreteVariable& var ) const;
 
-    /// See gum::AbstractBayesNet::idFromName().
-    virtual NodeId idFromName( const std::string& name ) const;
+        /// See gum::IBaseBayesNet::idFromName().
+        virtual NodeId idFromName( const std::string& name ) const;
 
-    /// See gum::AbstractBayesNet::variableFromName().
-    virtual const DiscreteVariable& variableFromName( const std::string& name ) const;
+        /// See gum::IBaseBayesNet::variableFromName().
+        virtual const DiscreteVariable& variableFromName( const std::string& name ) const;
 
-    const Property<unsigned int>::onNodes& modalities() const;
+        const Property<unsigned int>::onNodes& modalities() const;
 
-    /// @}
-  // ===========================================================================
-  /// @name Graphical methods
-  // ===========================================================================
-    /// @{
+        /// @}
+        // ===========================================================================
+        /// @name Graphical methods
+        // ===========================================================================
+        /// @{
 
-    /// See gum::AbstractBayesNet::moralGraph().
-    virtual const UndiGraph& moralGraph( bool clear = true ) const;
+        /// See gum::IBaseBayesNet::moralGraph().
+        virtual const UndiGraph& moralGraph( bool clear = true ) const;
 
-    /// See gum::AbstractBayesNet::topologicalOrder().
-    virtual const Sequence<NodeId>& topologicalOrder( bool clear = true ) const;
+        /// See gum::IBaseBayesNet::topologicalOrder().
+        virtual const Sequence<NodeId>& topologicalOrder( bool clear = true ) const;
 
-    /// @return Returns a dot representation of this BayesNet.
-    virtual std::string toDot( void ) const;
+        /// @return Returns a dot representation of this BayesNet.
+        virtual std::string toDot( void ) const;
 
-    /// @}
-  private:
-    /// Mapping between DiscreteVariable and their NodeId
-    HashTable<const DiscreteVariable*, const Attribute*> __varNodeMap;
+        /// @}
+      private:
+        /// Mapping between DiscreteVariable and their NodeId
+        HashTable<const DiscreteVariable*, const Attribute*> __varNodeMap;
 
-    /// Private getter with type checking in case the id is not a formal Attribute.
-    /// @throw NotFound Raised if id is not a formal attribute.
-    const ClassElement& __get(NodeId id) const;
+        /// Private getter with type checking in case the id is not a formal Attribute.
+        /// @throw NotFound Raised if id is not a formal attribute.
+        const ClassElement& __get( NodeId id ) const;
 
-    const ClassElement& __get(const std::string& name) const;
+        const ClassElement& __get( const std::string& name ) const;
 
-    /// The ClassElementContainer decorated by this.
-    const Instance* __inst;
+        /// The ClassElementContainer decorated by this.
+        const Instance* __inst;
 
-    /// The Dag of a InstanceBayesNet is a subgraph of __inst->type().dag() containing only
-    /// Attribute and Aggregate
-    DAG __dag;
+        /// The Dag of a InstanceBayesNet is a subgraph of __inst->type().dag() containing only
+        /// Attribute and Aggregate
+        DAG __dag;
 
-    /// InstanceBayesNet are a read-only structure, no need to update the moral graph.
-    mutable UndiGraph* __moralGraph;
+        /// InstanceBayesNet are a read-only structure, no need to update the moral graph.
+        mutable UndiGraph* __moralGraph;
 
-    mutable Property<unsigned int>::onNodes __modalities;
+        mutable Property<unsigned int>::onNodes __modalities;
 
-    /// InstanceBayesNet are a read-only structure, no need to update the
-    /// topological order.
-    mutable Sequence<NodeId>* __topo;
+        /// InstanceBayesNet are a read-only structure, no need to update the
+        /// topological order.
+        mutable Sequence<NodeId>* __topo;
 
-    void __init(const Instance& i);
-};
+        void __init( const Instance& i );
+    };
 
-} /* namespace prm */
+  } /* namespace prm */
 } /* namespace gum */
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/instanceBayesNet.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 #endif /* GUM_INSTANCE_BAYESNET_H */
-// ============================================================================
+

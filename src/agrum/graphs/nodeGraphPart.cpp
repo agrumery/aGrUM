@@ -36,20 +36,20 @@ namespace gum {
   ///////////////////// NodeGraphPart
   NodeGraphPart::NodeGraphPart( Size holes_size ,
                                 bool holes_resize_policy ) :
-      __holes_size( holes_size ),
-      __holes_resize_policy( holes_resize_policy ),
-      __endIterator( this ),
-      __bound( 0 ) {
+    __holes_size( holes_size ),
+    __holes_resize_policy( holes_resize_policy ),
+    __endIterator( this ),
+    __bound( 0 ) {
     __holes = 0;
     GUM_CONSTRUCTOR( NodeGraphPart );
     __updateEndIterator();
   }
 
   NodeGraphPart::NodeGraphPart( const NodeGraphPart& s ) :
-      __holes_size( s.__holes_size ),
-      __holes_resize_policy( s.__holes_resize_policy ),
-      __endIterator( this ),
-      __bound( s.__bound ) {
+    __holes_size( s.__holes_size ),
+    __holes_resize_policy( s.__holes_resize_policy ),
+    __endIterator( this ),
+    __bound( s.__bound ) {
     __holes = 0;
 
     if ( s.__holes )
@@ -113,7 +113,7 @@ namespace gum {
     bool first = true;
     s << "{";
 
-    for ( NodeId id = 0;id < __bound; ++id ) {
+    for ( NodeId id = 0; id < __bound; ++id ) {
       if ( __inHoles( id ) ) continue;
 
       if ( first ) {

@@ -29,7 +29,7 @@
 #include <agrum/graphs/arcGraphPart.h>
 
 namespace gum {
-  
+
 
   template <typename VAL> INLINE
   typename Property< VAL >::onArcs
@@ -52,5 +52,5 @@ namespace gum {
 
 } /* namespace gum */
 
-  
+
 #endif    // DOXYGEN_SHOULD_SKIP_THIS

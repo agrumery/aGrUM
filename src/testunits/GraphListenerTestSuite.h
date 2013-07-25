@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Lionel Torti                                    *
+ *   (C) 2007-2013 by Christophe GONZALES and Pierre-Henri WUILLEMIN       *
  *   {prenom.nom}@lip6.fr                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -58,32 +58,32 @@ namespace gum_tests {
             __isOn = false;
           }
 
-          void whenNodeAdded( const void * , gum::NodeId ) {
+          void whenNodeAdded( const void* , gum::NodeId ) {
             __nbrNode++;
           }
 
-          void whenNodeDeleted( const void *, gum::NodeId ) {
+          void whenNodeDeleted( const void*, gum::NodeId ) {
             __nbrNode--;
           }
 
-          void whenArcAdded( const void *, gum::NodeId, gum::NodeId ) {
+          void whenArcAdded( const void*, gum::NodeId, gum::NodeId ) {
             __nbrArcs++;
           }
 
-          void whenArcDeleted( const void *, gum::NodeId, gum::NodeId ) {
+          void whenArcDeleted( const void*, gum::NodeId, gum::NodeId ) {
             __nbrArcs--;
           }
 
-          void whenEdgeAdded( const void *, gum::NodeId f, gum::NodeId s ) {
+          void whenEdgeAdded( const void*, gum::NodeId f, gum::NodeId s ) {
             __nbrEdges++;
 
-            if( __isOn ) GUM_TRACE( f << "--" << s << "(" << __nbrEdges << ")" );
+            if ( __isOn ) GUM_TRACE( f << "--" << s << "(" << __nbrEdges << ")" );
           }
 
-          void whenEdgeDeleted( const void *, gum::NodeId f, gum::NodeId s ) {
+          void whenEdgeDeleted( const void*, gum::NodeId f, gum::NodeId s ) {
             __nbrEdges--;
 
-            if( __isOn ) GUM_TRACE( f << "--" << s << "(" << __nbrEdges << ")" );
+            if ( __isOn ) GUM_TRACE( f << "--" << s << "(" << __nbrEdges << ")" );
           }
 
           const int nodes() const {
@@ -115,19 +115,19 @@ namespace gum_tests {
             __nbrNode = __nbrArcs = 0;
           }
 
-          void whenNodeAdded( const void * , gum::NodeId ) {
+          void whenNodeAdded( const void* , gum::NodeId ) {
             __nbrNode++;
           }
 
-          void whenNodeDeleted( const void *, gum::NodeId ) {
+          void whenNodeDeleted( const void*, gum::NodeId ) {
             __nbrNode--;
           }
 
-          void whenArcAdded( const void *, gum::NodeId, gum::NodeId ) {
+          void whenArcAdded( const void*, gum::NodeId, gum::NodeId ) {
             __nbrArcs++;
           }
 
-          void whenArcDeleted( const void *, gum::NodeId, gum::NodeId ) {
+          void whenArcDeleted( const void*, gum::NodeId, gum::NodeId ) {
             __nbrArcs--;
           }
 
@@ -149,19 +149,19 @@ namespace gum_tests {
             __nbrNode = __nbrEdges = 0;
           }
 
-          void whenNodeAdded( const void * , gum::NodeId ) {
+          void whenNodeAdded( const void* , gum::NodeId ) {
             __nbrNode++;
           }
 
-          void whenNodeDeleted( const void *, gum::NodeId ) {
+          void whenNodeDeleted( const void*, gum::NodeId ) {
             __nbrNode--;
           }
 
-          void whenEdgeAdded( const void *, gum::NodeId, gum::NodeId ) {
+          void whenEdgeAdded( const void*, gum::NodeId, gum::NodeId ) {
             __nbrEdges++;
           }
 
-          void whenEdgeDeleted( const void *, gum::NodeId, gum::NodeId ) {
+          void whenEdgeDeleted( const void*, gum::NodeId, gum::NodeId ) {
             __nbrEdges--;
           }
 
@@ -183,27 +183,27 @@ namespace gum_tests {
             __nbrNode = __nbrArcs = __nbrEdges = 0;
           }
 
-          void whenNodeAdded( const void * , gum::NodeId ) {
+          void whenNodeAdded( const void* , gum::NodeId ) {
             __nbrNode++;
           }
 
-          void whenNodeDeleted( const void *, gum::NodeId ) {
+          void whenNodeDeleted( const void*, gum::NodeId ) {
             __nbrNode--;
           }
 
-          void whenArcAdded( const void *, gum::NodeId, gum::NodeId ) {
+          void whenArcAdded( const void*, gum::NodeId, gum::NodeId ) {
             __nbrArcs++;
           }
 
-          void whenArcDeleted( const void *, gum::NodeId, gum::NodeId ) {
+          void whenArcDeleted( const void*, gum::NodeId, gum::NodeId ) {
             __nbrArcs--;
           }
 
-          void whenEdgeAdded( const void *, gum::NodeId, gum::NodeId ) {
+          void whenEdgeAdded( const void*, gum::NodeId, gum::NodeId ) {
             __nbrEdges++;
           }
 
-          void whenEdgeDeleted( const void *, gum::NodeId, gum::NodeId ) {
+          void whenEdgeDeleted( const void*, gum::NodeId, gum::NodeId ) {
             __nbrEdges--;
           }
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Christophe Gonzales                             *
+ *   Copyright (C) 2007 by Christophe GONZALES                             *
  *   {prenom.nom}@lip6.fr                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *

@@ -39,9 +39,9 @@ namespace gum {
   template <typename GUM_SCALAR>
   ScheduleDeleteMultiDim<GUM_SCALAR>::ScheduleDeleteMultiDim
   ( const ScheduleMultiDim<GUM_SCALAR>& table ) :
-      ScheduleOperation<GUM_SCALAR> ( ScheduleOperation<GUM_SCALAR>::GUM_DELETE_MULTIDIM ),
-      __table( table ),
-      __args( 0 ) {
+    ScheduleOperation<GUM_SCALAR> ( ScheduleOperation<GUM_SCALAR>::GUM_DELETE_MULTIDIM ),
+    __table( table ),
+    __args( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( ScheduleDeleteMultiDim );
   }
@@ -51,9 +51,9 @@ namespace gum {
   template <typename GUM_SCALAR>
   ScheduleDeleteMultiDim<GUM_SCALAR>::ScheduleDeleteMultiDim
   ( const ScheduleDeleteMultiDim<GUM_SCALAR>& from ) :
-      ScheduleOperation<GUM_SCALAR> ( from ),
-      __table( from.__table ),
-      __args( 0 ) {
+    ScheduleOperation<GUM_SCALAR> ( from ),
+    __table( from.__table ),
+    __args( 0 ) {
     // for debugging purposes
     GUM_CONS_CPY( ScheduleDeleteMultiDim );
   }
@@ -72,6 +72,7 @@ namespace gum {
   ScheduleDeleteMultiDim<GUM_SCALAR>::~ScheduleDeleteMultiDim() {
     // for debugging purposes
     GUM_DESTRUCTOR( ScheduleDeleteMultiDim );
+
     if ( __args ) delete __args;
   }
 
@@ -85,11 +86,13 @@ namespace gum {
     if ( &from != this ) {
       ScheduleOperation<GUM_SCALAR>::operator= ( from );
       __table = from.__table;
+
       if ( __args ) {
         __args->clear();
         __args->insert( &__table );
       }
     }
+
     return *this;
   }
 
@@ -99,6 +102,7 @@ namespace gum {
   bool ScheduleDeleteMultiDim<GUM_SCALAR>::operator==
   ( const ScheduleOperation<GUM_SCALAR>& op ) const {
     if ( this->type() != op.type() ) return false;
+
     const ScheduleDeleteMultiDim<GUM_SCALAR>& real_op =
       static_cast<const ScheduleDeleteMultiDim<GUM_SCALAR>&>( op );
     return __table == real_op.__table;
@@ -110,6 +114,7 @@ namespace gum {
   bool ScheduleDeleteMultiDim<GUM_SCALAR>::operator!=
   ( const ScheduleOperation<GUM_SCALAR>& op ) const {
     if ( this->type() != op.type() ) return true;
+
     const ScheduleDeleteMultiDim<GUM_SCALAR>& real_op =
       static_cast<const ScheduleDeleteMultiDim<GUM_SCALAR>&>( op );
     return __table != real_op.__table;
@@ -139,9 +144,11 @@ namespace gum {
   INLINE std::pair<long,long>
   ScheduleDeleteMultiDim<GUM_SCALAR>::memoryUsage() const {
     long size_table = __table.domainSize();
+
     if ( size_table < 0 ) {
       GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
     }
+
     return std::pair<long,long> ( -size_table,-size_table );
   }
 
@@ -154,6 +161,7 @@ namespace gum {
       __args = new Sequence<const ScheduleMultiDim<GUM_SCALAR>*>;
       __args->insert( &__table );
     }
+
     return *__args;
   }
 
@@ -168,17 +176,19 @@ namespace gum {
     // the static sequence used here will be removed at the end of the
     // program's execution.
     static bool first_time = true;
+
     if ( first_time ) {
       first_time = false;
       __debug__::__inc_deletion( "Sequence", __FILE__, __LINE__, "destructor of",
-                             ( void* ) &empty_seq );
+                                 ( void* ) &empty_seq );
       __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
-                             ( void* ) &empty_seq );
+                                 ( void* ) &empty_seq );
       __debug__::__inc_deletion( "SequenceIterator", __FILE__, __LINE__,
-                             "destructor of", ( void* ) &empty_seq );
+                                 "destructor of", ( void* ) &empty_seq );
       __debug__::__inc_deletion( "SequenceIterator", __FILE__, __LINE__,
-                             "destructor of", ( void* ) &empty_seq );
+                                 "destructor of", ( void* ) &empty_seq );
     }
+
 #endif /* NDEBUG */
     return empty_seq;
   }

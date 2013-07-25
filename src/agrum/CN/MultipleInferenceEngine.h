@@ -24,7 +24,7 @@
 /**
  * @file
  * @brief Abstract class representing CredalNet inference engines
- * @author Matthieu HOURBRACQ
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
  */
 
 /// @todo virtual for all functions that MAY be one day redefined in any derived class
@@ -40,7 +40,7 @@ namespace gum {
      * @ingroup cn_group
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
      * @tparam BNInferenceEngine A BayesNet inference engine such as LazyPropagation.
-     * @author Matthieu HOURBRACQ
+     * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
      */
     template < typename GUM_SCALAR, class BNInferenceEngine >
     class MultipleInferenceEngine : public InferenceEngine < GUM_SCALAR > {
@@ -71,7 +71,7 @@ namespace gum {
          * @param vertex The vertex to add to the credal set.
          * @param elimRedund \c true if redundancy elimination is to be performed, \c false otherwise and by default.
          */
-        inline void __updateThreadCredalSets ( const NodeId &id, const std::vector< GUM_SCALAR > &vertex, const bool &elimRedund );
+        inline void __updateThreadCredalSets( const NodeId& id, const std::vector< GUM_SCALAR >& vertex, const bool& elimRedund );
 
       protected :
         /** Threads lower marginals, one per thread. */
@@ -92,12 +92,12 @@ namespace gum {
         clusters _l_clusters;
 
         /** Threads BayesNet. */
-        typename std::vector< bnet * > _workingSet;
+        typename std::vector< bnet* > _workingSet;
         /** Threads evidence. */
         typename std::vector< List< const Potential< GUM_SCALAR > * > * > _workingSetE;
 
         /** Threads BNInferenceEngine. */
-        typename std::vector< BNInferenceEngine * > _l_inferenceEngine;
+        typename std::vector< BNInferenceEngine* > _l_inferenceEngine;
         /** Threads optimal BayesNet. */
         std::vector< VarMod2BNsMap< GUM_SCALAR > * > _l_optimalNet;
         /** Fusion of threads optimal BayesNet. */
@@ -114,7 +114,7 @@ namespace gum {
          * @param __storeVertices \c True if vertices should be stored, \c False otherwise.
          * @param __storeBNOpt \c True if optimal BayesNet should be stored, \c false otherwise.
          */
-        void _initThreadsData ( const unsigned int &num_threads, const bool __storeVertices, const bool __storeBNOpt );
+        void _initThreadsData( const unsigned int& num_threads, const bool __storeVertices, const bool __storeBNOpt );
 
         /// @}
 
@@ -129,7 +129,7 @@ namespace gum {
          * @param elimRedund \c true if redundancy elimination is to be performed, \c false otherwise and by default.
          * @return \c True if the BayesNet is kept (for now), \c False otherwise.
          */
-        inline bool _updateThread ( const NodeId &id, const std::vector< GUM_SCALAR > &vertex, const bool &elimRedund = false );
+        inline bool _updateThread( const NodeId& id, const std::vector< GUM_SCALAR >& vertex, const bool& elimRedund = false );
 
         /**
          * @brief Fusion of threads marginals.
@@ -170,7 +170,7 @@ namespace gum {
          * Constructor.
          * @param credalNet The CredalNet to be used.
          */
-        MultipleInferenceEngine ( const CredalNet< GUM_SCALAR > &credalNet );
+        MultipleInferenceEngine( const CredalNet< GUM_SCALAR >& credalNet );
 
         /** Destructor. */
         virtual ~MultipleInferenceEngine();

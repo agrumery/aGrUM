@@ -22,7 +22,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-// // 
+// //
 // // Set the configuration of this generator.
 // //
 // // A union is made with the current configuration. See the class documentation for
@@ -30,16 +30,16 @@
 // //
 // // @param configuration A hastable which key's are parameters and values are those of
 // // their respective parameter.
-// // 
-// void 
+// //
+// void
 // gumBNGenerator::setConfiguration(const gumHashTable<std::string, std::string>& configuration)
 // {
-// 
-// 
+//
+//
 // }
-// 
+//
 // #endif
-// 
+//
 // #ifdef GUM_NO_INLINE
 // #include "gumBNGenerator.inl"
 // #endif

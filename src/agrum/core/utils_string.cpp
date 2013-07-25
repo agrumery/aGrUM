@@ -24,16 +24,16 @@
  *
  */
 
-#include <agrum/core/utilsString.h>
+#include <agrum/core/utils_string.h>
 
 
 namespace gum {
 
 
-  // ==============================================================================
+
   // splits a CSV-like string into a vector of fields. Missing value are
   // labelized by "?"
-  // ==============================================================================
+
   std::vector<std::string> SplitCSVLine( const std::string& str_to_split,
                                          char field_separator,
                                          char field_delimiter,
@@ -67,7 +67,7 @@ namespace gum {
       }
 
       // check if we do have a separator
-      if (( str_to_split[i] == field_separator ) && !delimited ) {
+      if ( ( str_to_split[i] == field_separator ) && !delimited ) {
         last_is_delimiter=true;
 
         if ( new_string_to_add ) {
@@ -94,6 +94,7 @@ namespace gum {
     // check if there remains a string to push into the result vector
     if ( new_string_to_add )
       result.push_back( string_to_add );
+
     if ( last_is_delimiter )
       result.push_back( "?" );
 

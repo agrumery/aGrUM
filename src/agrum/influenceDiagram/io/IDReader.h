@@ -23,7 +23,7 @@
  *
  * All classes used to import an influence diagram from a file must inherit from IDReader
  *
- * @author Jean-Christophe Magnan & Pierre-Henri Wuillemin
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_ID_READER_H
 #define GUM_ID_READER_H
@@ -35,37 +35,37 @@
 
 
 namespace gum {
-  
- 
-  
+
+
+
   /**
    * @class IDReader
    * @brief Pure virtual class for importing an ID from a file.
    * @ingroup id_group
    *
-   * All classes used to read an influence diagram from 
+   * All classes used to read an influence diagram from
    * a file must inherit from this class
    */
   template<typename GUM_SCALAR>
   class IDReader {
-  public:
-    /**
-     * Constructor
-     * A reader is created to reading a defined file. 
-     * Note that an ID as to be created before and given in parameter.
-     */
-    IDReader(InfluenceDiagram<GUM_SCALAR>* infdiag, const std::string& filePath );
+    public:
+      /**
+       * Constructor
+       * A reader is created to reading a defined file.
+       * Note that an ID as to be created before and given in parameter.
+       */
+      IDReader( InfluenceDiagram<GUM_SCALAR>* infdiag, const std::string& filePath );
 
-    /**
-     * Default destructor.
-     */
-    virtual ~IDReader();
+      /**
+       * Default destructor.
+       */
+      virtual ~IDReader();
 
-    /**
-     * Reads the influence diagram from the file referenced by filePath  given at the creation of class
-     * @return Returns the number of error during the parsing (0 if none).
-     */
-    virtual void proceed() =0;
+      /**
+       * Reads the influence diagram from the file referenced by filePath  given at the creation of class
+       * @return Returns the number of error during the parsing (0 if none).
+       */
+      virtual void proceed() =0;
   };
 
 

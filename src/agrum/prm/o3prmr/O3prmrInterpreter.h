@@ -81,8 +81,8 @@ namespace gum {
            * If any errors occured, return true.
            * Requests results can be retrieve be results() methods.
            * */
-          bool interpretFile ( const std::string& filename );
-          bool interpretLine ( const std::string& line );
+          bool interpretFile( const std::string& filename );
+          bool interpretLine( const std::string& line );
 
           /// Retrieve prm object.
           const gum::prm::PRM* prm() const;
@@ -91,28 +91,28 @@ namespace gum {
           /// Return a vector of QueryResults.
           /// Each QueryResults is a struct with query command, time and values,
           /// a vector of struct SingleResult, with pair label/value.
-          const std::vector<QueryResult> & results() const;
+          const std::vector<QueryResult>& results() const;
           /// Return container with all errors.
           ErrorsContainer errorsContainer() const;
 
           /// Getter and setter for the context.
           O3prmrContext* getContext() const;
-          void setContext ( O3prmrContext* context );
+          void setContext( O3prmrContext* context );
 
           /// Root paths to search from there packages.
           /// Default are working dir, request file dir if any
           /// and one is calculate from package if any.
           std::vector<std::string> getPaths() const;
-          void addPath ( const std::string& path );
+          void addPath( const std::string& path );
           void clearPaths();
 
           /// syntax mode don't process anything, just check syntax. Default is false.
           bool isInSyntaxMode() const;
-          void setSyntaxMode ( bool f );
+          void setSyntaxMode( bool f );
 
           /// verbose mode show more details on the program execution. Default is false.
           bool isVerboseMode() const;
-          void setVerboseMode ( bool f );
+          void setVerboseMode( bool f );
 
           /**
            * En cas d'échec, l'API de gestion d'erreurs est présente.
@@ -124,7 +124,7 @@ namespace gum {
           /// # of warnings
           int warnings() const;
           /// throw a string error if i >= count
-          ParseError error ( int i ) const;
+          ParseError error( int i ) const;
           /// send on std::cerr the list of errors
           void showElegantErrors() const;
           /// send on std::cerr the list of errors or warnings
@@ -133,29 +133,29 @@ namespace gum {
           void showErrorCounts() const;
 
         private:
-          bool checkSemantic ( O3prmrContext* context );
-          bool checkSetEngine ( SetEngineCommand* command );
-          bool checkSetGndEngine ( SetGndEngineCommand* command );
-          bool checkObserve ( ObserveCommand* command );
-          bool checkUnobserve ( UnobserveCommand* command );
-          bool checkQuery ( QueryCommand* command );
+          bool checkSemantic( O3prmrContext* context );
+          bool checkSetEngine( SetEngineCommand* command );
+          bool checkSetGndEngine( SetGndEngineCommand* command );
+          bool checkObserve( ObserveCommand* command );
+          bool checkUnobserve( UnobserveCommand* command );
+          bool checkQuery( QueryCommand* command );
 
-          bool interpret ( O3prmrContext* c );
-          bool import ( O3prmrContext* context, std::string import );
-          bool observe ( const ObserveCommand* command );
-          bool unobserve ( const UnobserveCommand* command );
-          void query ( const QueryCommand* command );
-          void setEngine ( const SetEngineCommand* command );
-          void setGndEngine ( const SetGndEngineCommand* command );
+          bool interpret( O3prmrContext* c );
+          bool import( O3prmrContext* context, std::string import );
+          bool observe( const ObserveCommand* command );
+          bool unobserve( const UnobserveCommand* command );
+          void query( const QueryCommand* command );
+          void setEngine( const SetEngineCommand* command );
+          void setGndEngine( const SetGndEngineCommand* command );
 
-          std::string findSystemName ( std::string& s );
-          std::string findInstanceName ( std::string& s, const gum::prm::System& sys );
-          std::string findAttributeName ( const std::string& s, const gum::prm::Instance& instance );
-          const System& system ( std::string& ident );
-          void generateInfEngine ( const gum::prm::System& sys );
+          std::string findSystemName( std::string& s );
+          std::string findInstanceName( std::string& s, const gum::prm::System& sys );
+          std::string findAttributeName( const std::string& s, const gum::prm::Instance& instance );
+          const System& system( std::string& ident );
+          void generateInfEngine( const gum::prm::System& sys );
 
-          void addError ( std::string msg );
-          void addWarning ( std::string msg );
+          void addError( std::string msg );
+          void addWarning( std::string msg );
 
           O3prmrContext* m_context;
           gum::prm::o3prm::O3prmReader* m_reader;

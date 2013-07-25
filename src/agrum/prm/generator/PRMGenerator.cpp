@@ -23,16 +23,16 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #include <agrum/prm/generator/PRMGenerator.h>
-// ============================================================================
+
 #ifdef GUM_NO_INLINE
 #include <agrum/prm/generator/PRMGenerator.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
-namespace gum {
-namespace prm {
 
-} /* namespace prm */
+namespace gum {
+  namespace prm {
+
+  } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

@@ -52,15 +52,15 @@ namespace gum {
 #ifndef NDEBUG
 #ifndef __MINGW32__
 #define callStackDepth 20
-    void *array[callStackDepth];
+    void* array[callStackDepth];
     size_t size;
-    char **strings;
+    char** strings;
     size = backtrace( array, callStackDepth );
     strings = backtrace_symbols( array, size );
 
     std::stringstream stream;
 
-    for( size_t i = 1; i < size; ++i ) {
+    for ( size_t i = 1; i < size; ++i ) {
       stream<< i<<" :" <<strings[i]<<std::endl;
     }
 

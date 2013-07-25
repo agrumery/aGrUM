@@ -21,9 +21,9 @@
  * @file
  * @brief Implementation of the BayesNetFactory class.
  *
- * @author Lionel Torti & Pierre-Henri Wuillemin
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
-// ============================================================================
+
 #include <agrum/BN/BayesNetFactory.h>
 
 
@@ -40,7 +40,7 @@ namespace gum {
 //                         name.
   template<typename GUM_SCALAR> INLINE
   BayesNetFactory<GUM_SCALAR>::BayesNetFactory( BayesNet<GUM_SCALAR>* bn ) :
-      __parents( 0 ), __impl( 0 ), __bn( bn )  {
+    __parents( 0 ), __impl( 0 ), __bn( bn )  {
     GUM_CONSTRUCTOR( BayesNetFactory );
     __states.push_back( BayesNetFactory<GUM_SCALAR>::NONE );
 
@@ -59,7 +59,7 @@ namespace gum {
 // The copy will have an exact copy of the constructed BayesNet in source.
   template<typename GUM_SCALAR> INLINE
   BayesNetFactory<GUM_SCALAR>::BayesNetFactory( const BayesNetFactory<GUM_SCALAR>& source ) :
-      __parents( 0 ), __impl( 0 ), __bn( 0 ) {
+    __parents( 0 ), __impl( 0 ), __bn( 0 ) {
     GUM_CONS_CPY( BayesNetFactory );
 
     if ( source.state() != BayesNetFactory<GUM_SCALAR>::NONE ) {
@@ -134,7 +134,7 @@ namespace gum {
 // @throw OperationNotAllowed if there is no bayesian networks.
   template<typename GUM_SCALAR> INLINE
   Size BayesNetFactory<GUM_SCALAR>::cptDomainSize( const NodeId n ) const {
-    // (from PH) nowhere in the code, I see a check type if (__bn) __bn->. I assume __bn is forced not to be NULL ...
+    // (from PH) nowhere in the code, I see a check type if (__bn) __bn->. I assume __bn is forced not to be nullptr ...
     return __bn->cpt( n ).domainSize();
   }
 
@@ -244,7 +244,7 @@ namespace gum {
 //                            current variable.
   template<typename GUM_SCALAR> INLINE
   void
-  BayesNetFactory<GUM_SCALAR>::setVariableCPTImplementation( MultiDimAdressable *adressable ) {
+  BayesNetFactory<GUM_SCALAR>::setVariableCPTImplementation( MultiDimAdressable* adressable ) {
     MultiDimImplementation<GUM_SCALAR>* impl = dynamic_cast<MultiDimImplementation<GUM_SCALAR>*>( adressable );
 
     if ( state() != VARIABLE ) {
@@ -480,7 +480,7 @@ namespace gum {
     const DiscreteVariable& first = table.variable( 0 );
     Idx j = 0;
 
-    for ( cptInst.setFirstVar( first );! cptInst.end(); cptInst.incVar( first ) ) {
+    for ( cptInst.setFirstVar( first ); ! cptInst.end(); cptInst.incVar( first ) ) {
       for ( cptInst.setFirstNotVar( first ); ! cptInst.end(); cptInst.incNotVar( first ) )
         table.set( cptInst, ( j < rawTable.size() ) ? ( GUM_SCALAR ) rawTable[j++] : ( GUM_SCALAR ) 0 );
 
@@ -490,8 +490,8 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   bool
-  BayesNetFactory<GUM_SCALAR>::__increment( std::vector<gum::Idx> &modCounter,
-                                        List<const DiscreteVariable*>& varList ) {
+  BayesNetFactory<GUM_SCALAR>::__increment( std::vector<gum::Idx>& modCounter,
+      List<const DiscreteVariable*>& varList ) {
     bool last = true;
 
     for ( unsigned int j = 0; j < modCounter.size(); j++ ) {
@@ -633,7 +633,7 @@ namespace gum {
 
       if ( __parents->domainSize() > 0 ) {
         Instantiation inst( __bn->cpt( __varNameMap[var.name()] ) );
-        inst.chgValIn( *__parents );
+        inst.setVals( *__parents );
         // Creating an instantiation containing all the variables not ins __parents.
         Instantiation inst_default;
         inst_default << var;
@@ -657,7 +657,7 @@ namespace gum {
         var_inst << var;
 
         for ( var_inst.setFirst(); ! var_inst.end(); ++var_inst ) {
-          inst.chgValIn( var_inst );
+          inst.setVals( var_inst );
 
           for ( inst.setFirstOut( var_inst ); ! inst.end(); inst.incOut( var_inst ) ) {
             ( __bn->cpt( varId ) ).set( inst, inst.val( var ) < values.size() ? ( GUM_SCALAR ) values[inst.val( var )] : ( GUM_SCALAR ) 0 );
@@ -711,7 +711,7 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   BayesNetFactory<GUM_SCALAR>::setVariable( const DiscreteVariable& var ) {
-    if (( state() != BayesNetFactory<GUM_SCALAR>::NONE ) ) {
+    if ( ( state() != BayesNetFactory<GUM_SCALAR>::NONE ) ) {
       __illegalStateError( "setVariable" );
     } else {
       try {
@@ -719,7 +719,7 @@ namespace gum {
         GUM_ERROR( DuplicateElement, var.name() );
       } catch ( NotFound& ) {
         // The var name is unused
-        __varNameMap.insert( var.name(), __bn->addVariable( var ) );
+        __varNameMap.insert( var.name(), __bn->add( var ) );
       }
     }
   }
@@ -797,43 +797,43 @@ namespace gum {
     switch ( state() ) {
 
       case NONE:        {
-          msg += "NONE";
-          break;
-        }
+        msg += "NONE";
+        break;
+      }
 
       case NETWORK:     {
-          msg += "NETWORK";
-          break;
-        }
+        msg += "NETWORK";
+        break;
+      }
 
       case VARIABLE:    {
-          msg += "VARIABLE";
-          break;
-        }
+        msg += "VARIABLE";
+        break;
+      }
 
       case PARENTS:     {
-          msg += "PARENTS";
-          break;
-        }
+        msg += "PARENTS";
+        break;
+      }
 
       case RAW_CPT:     {
-          msg += "RAW_CPT";
-          break;
-        }
+        msg += "RAW_CPT";
+        break;
+      }
 
       case FACT_CPT:    {
-          msg += "FACT_CPT";
-          break;
-        }
+        msg += "FACT_CPT";
+        break;
+      }
 
       case FACT_ENTRY:  {
-          msg += "FACT_ENTRY";
-          break;
-        }
+        msg += "FACT_ENTRY";
+        break;
+      }
 
       default: {
-          msg += "Unknown state";
-        }
+        msg += "Unknown state";
+      }
     }
 
     GUM_ERROR( OperationNotAllowed, msg );
@@ -886,8 +886,8 @@ namespace gum {
     __bn->__dag.eraseParents( __varNameMap[var.name()] );
 
     for ( Sequence<const DiscreteVariable*>::iterator iter = table->variablesSequence().begin(); iter != table->variablesSequence().end(); ++iter ) {
-      if (( *iter ) != ( &var ) ) {
-        __checkVariableName(( *iter )->name() );
+      if ( ( *iter ) != ( &var ) ) {
+        __checkVariableName( ( *iter )->name() );
         __bn->__dag.insertArc( __varNameMap[( *iter )->name()], __varNameMap[var.name()] );
       }
     }
@@ -908,5 +908,5 @@ namespace gum {
   }
 } /* namespace gum */
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;
 

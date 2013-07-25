@@ -69,138 +69,138 @@ namespace gum {
    */
   class DefaultEliminationSequenceStrategy :
     public UnconstrainedEliminationSequenceStrategy {
-  public:
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
+    public:
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
 
-    /// default constructor (uses an empty graph)
-    /** @param theRatio the ratio used by the SimplicialSet included in the
-     * DefaultEliminationSequenceStrategy
-     * @param theThreshold the weight threshhold of the SimplicialSet included in
-     * the DefaultEliminationSequenceStrategy */
-    DefaultEliminationSequenceStrategy( float theRatio=GUM_QUASI_RATIO,
-                                        float theThreshold=GUM_WEIGHT_THRESHOLD );
+      /// default constructor (uses an empty graph)
+      /** @param theRatio the ratio used by the SimplicialSet included in the
+       * DefaultEliminationSequenceStrategy
+       * @param theThreshold the weight threshhold of the SimplicialSet included in
+       * the DefaultEliminationSequenceStrategy */
+      DefaultEliminationSequenceStrategy( float theRatio=GUM_QUASI_RATIO,
+                                          float theThreshold=GUM_WEIGHT_THRESHOLD );
 
-    /// constructor for an a priori non empty graph
-    /** @param graph the graph to be triangulated, i.e., the nodes of which will
-     * be eliminated
-     * @param dom the domain sizes of the nodes to be eliminated
-     * @param ratio the ratio used by the SimplicialSet included in the
-     * DefaultEliminationSequenceStrategy
-     * @param threshold the weight threshhold of the SimplicialSet included in
-     * the DefaultEliminationSequenceStrategy 
-     * @warning note that, by aGrUM's rule, the graph and the modalities are not
-     * copied but only referenced by the elimination sequence algorithm. */
-    DefaultEliminationSequenceStrategy( UndiGraph* graph,
-                                        const Property<unsigned int>::onNodes* dom,
-                                        float ratio = GUM_QUASI_RATIO,
-                                        float threshold = GUM_WEIGHT_THRESHOLD );
-    
-    /// copy constructor
-    DefaultEliminationSequenceStrategy
-    ( const DefaultEliminationSequenceStrategy& );
+      /// constructor for an a priori non empty graph
+      /** @param graph the graph to be triangulated, i.e., the nodes of which will
+       * be eliminated
+       * @param dom the domain sizes of the nodes to be eliminated
+       * @param ratio the ratio used by the SimplicialSet included in the
+       * DefaultEliminationSequenceStrategy
+       * @param threshold the weight threshhold of the SimplicialSet included in
+       * the DefaultEliminationSequenceStrategy
+       * @warning note that, by aGrUM's rule, the graph and the modalities are not
+       * copied but only referenced by the elimination sequence algorithm. */
+      DefaultEliminationSequenceStrategy( UndiGraph* graph,
+                                          const Property<unsigned int>::onNodes* dom,
+                                          float ratio = GUM_QUASI_RATIO,
+                                          float threshold = GUM_WEIGHT_THRESHOLD );
 
-    /// destructor
-    virtual ~DefaultEliminationSequenceStrategy ();
+      /// copy constructor
+      DefaultEliminationSequenceStrategy
+      ( const DefaultEliminationSequenceStrategy& );
 
-    /** @brief creates a new elimination sequence of the same type as the current
-     * object, but this sequence contains only an empty graph
-     * @warning you must deallocate by yourself the object returned
-     * @return an empty clone of the current object with the same type */
-    DefaultEliminationSequenceStrategy* newFactory() const;
-    
-    /// @}
+      /// destructor
+      virtual ~DefaultEliminationSequenceStrategy();
+
+      /** @brief creates a new elimination sequence of the same type as the current
+       * object, but this sequence contains only an empty graph
+       * @warning you must deallocate by yourself the object returned
+       * @return an empty clone of the current object with the same type */
+      DefaultEliminationSequenceStrategy* newFactory() const;
+
+      /// @}
 
 
-    // ############################################################################
-    /// @name Accessors / Modifiers
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      /// @name Accessors / Modifiers
+      // ############################################################################
+      /// @{
 
-    /// sets a new graph to be triangulated
-    /** The elimination sequence algorithm reinitializes its data to start a new
-     * triangulation with Graph "graph"
-     * @param graph the new graph to be triangulated
-     * @param dom the modalities of the nodes (i.e., their domain sizes)
-     * @warning note that, by aGrUM's rule, the graph and the modalities are not
-     * copied but only referenced by the elimination sequence algorithm. */
-    void setGraph (UndiGraph* graph,
-                   const Property<unsigned int>::onNodes* dom);
+      /// sets a new graph to be triangulated
+      /** The elimination sequence algorithm reinitializes its data to start a new
+       * triangulation with Graph "graph"
+       * @param graph the new graph to be triangulated
+       * @param dom the modalities of the nodes (i.e., their domain sizes)
+       * @warning note that, by aGrUM's rule, the graph and the modalities are not
+       * copied but only referenced by the elimination sequence algorithm. */
+      void setGraph( UndiGraph* graph,
+                     const Property<unsigned int>::onNodes* dom );
 
-    /// clears the sequence (to prepare, for instance, a new elimination sequence)
-    void clear ();
-    
-    /// returns the new node to be eliminated within the triangulation algorithm
-    /** @throws NotFound exception is thrown if there is no more node to
-     * eliminate in the graph */
-    NodeId nextNodeToEliminate ();
+      /// clears the sequence (to prepare, for instance, a new elimination sequence)
+      void clear();
 
-    /** @brief if the elimination sequence is able to compute fill-ins, we indicate
-     * whether we want this feature to be activated
-     *
-     * @param do_it when true and the elimination sequence has the ability to
-     * compute fill-ins, the elimination sequence will actually compute them (for
-     * the triangulation to use them), else they will not be available. */
-    void askFillIns ( bool do_it );
-    
-    /** @brief indicates whether the fill-ins generated by the eliminated
-     * nodes, if needed, will be computed by the elimination sequence, or need be
-     * computed by the triangulation itself.
-     *
-     * An elimination sequence provides fill-ins to its triangulation if and
-     * only if it has the ability to compute them and it has been asked to do so
-     * (by method askFillIns) */
-    bool providesFillIns () const;
+      /// returns the new node to be eliminated within the triangulation algorithm
+      /** @throws NotFound exception is thrown if there is no more node to
+       * eliminate in the graph */
+      NodeId nextNodeToEliminate();
 
-    /** @brief indicates whether the elimination sequence updates by itself the
-     * graph after a node has been eliminated
-     *
-     * Some algorithms have more informations than the triangulation algorithm
-     * to update the graph after a node has been eliminated. They can thus exploit
-     * these informations to update the graph faster than the triangulation. Hence
-     * the latter should delegate this operation to the elimination sequence. This
-     * is the case, for instance, for the defaultEliminationSequence, which uses
-     * a SimplicialSet that knows that some eliminated nodes do not require any
-     * fill-in. */
-    bool providesGraphUpdate () const;
+      /** @brief if the elimination sequence is able to compute fill-ins, we indicate
+       * whether we want this feature to be activated
+       *
+       * @param do_it when true and the elimination sequence has the ability to
+       * compute fill-ins, the elimination sequence will actually compute them (for
+       * the triangulation to use them), else they will not be available. */
+      void askFillIns( bool do_it );
 
-    /// performs all the graph/fill-ins updates provided (if any)
-    /** @param node the node the elimination of which requires the graph update */
-    void eliminationUpdate ( const NodeId node );
+      /** @brief indicates whether the fill-ins generated by the eliminated
+       * nodes, if needed, will be computed by the elimination sequence, or need be
+       * computed by the triangulation itself.
+       *
+       * An elimination sequence provides fill-ins to its triangulation if and
+       * only if it has the ability to compute them and it has been asked to do so
+       * (by method askFillIns) */
+      bool providesFillIns() const;
 
-    /** @brief in case fill-ins are provided, this function returns the fill-ins
-     * due to all the nodes eliminated so far */
-    const EdgeSet& fillIns ();
+      /** @brief indicates whether the elimination sequence updates by itself the
+       * graph after a node has been eliminated
+       *
+       * Some algorithms have more informations than the triangulation algorithm
+       * to update the graph after a node has been eliminated. They can thus exploit
+       * these informations to update the graph faster than the triangulation. Hence
+       * the latter should delegate this operation to the elimination sequence. This
+       * is the case, for instance, for the defaultEliminationSequence, which uses
+       * a SimplicialSet that knows that some eliminated nodes do not require any
+       * fill-in. */
+      bool providesGraphUpdate() const;
 
-    /// @}
+      /// performs all the graph/fill-ins updates provided (if any)
+      /** @param node the node the elimination of which requires the graph update */
+      void eliminationUpdate( const NodeId node );
 
-    
-  private:
-    /// the graph to be triangulated
-    UndiGraph* __graph;
+      /** @brief in case fill-ins are provided, this function returns the fill-ins
+       * due to all the nodes eliminated so far */
+      const EdgeSet& fillIns();
 
-    /// the modalities of the nodes (domain sizes)
-    const Property<unsigned int>::onNodes* __modalities;
-    
-    /// the log of the modalities of the nodes (domain sizes)
-    Property<float>::onNodes __log_modalities;
-    
-    /// for each node, the weight of the clique created by the node's elimination
-    Property<float>::onNodes __log_weights;
+      /// @}
 
-    /// the simplicial set used for determining the best nodes to eliminate
-    SimplicialSet* __simplicial_set;
 
-    /// the ratio used by __simplicial_set for its quasi-simplicial nodes
-    float __simplicial_ratio;
+    private:
+      /// the graph to be triangulated
+      UndiGraph* __graph;
 
-    /// the threshold used by  __simplicial_set to determine small cliques
-    float __simplicial_threshold;
-    
-    /// indicates whether we compute new fill-ins
-    bool __provide_fill_ins;
+      /// the modalities of the nodes (domain sizes)
+      const Property<unsigned int>::onNodes* __modalities;
+
+      /// the log of the modalities of the nodes (domain sizes)
+      Property<float>::onNodes __log_modalities;
+
+      /// for each node, the weight of the clique created by the node's elimination
+      Property<float>::onNodes __log_weights;
+
+      /// the simplicial set used for determining the best nodes to eliminate
+      SimplicialSet* __simplicial_set;
+
+      /// the ratio used by __simplicial_set for its quasi-simplicial nodes
+      float __simplicial_ratio;
+
+      /// the threshold used by  __simplicial_set to determine small cliques
+      float __simplicial_threshold;
+
+      /// indicates whether we compute new fill-ins
+      bool __provide_fill_ins;
 
 
   };

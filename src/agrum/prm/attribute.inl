@@ -23,7 +23,7 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 namespace gum {
   namespace prm {
 
@@ -72,7 +72,7 @@ namespace gum {
     FuncAttribute::FuncAttribute( const std::string& name,
                                   const Type& type,
                                   MultiDimImplementation<prm_float>* impl ):
-        Attribute( name, type, impl ) {
+      Attribute( name, type, impl ) {
       GUM_CONSTRUCTOR( FuncAttribute );
     }
 
@@ -80,7 +80,7 @@ namespace gum {
     FuncAttribute::FuncAttribute( const std::string& name,
                                   Type* type, Potential<prm_float>* cpf,
                                   bool delete_type ):
-        Attribute( name, type, cpf, delete_type ) {
+      Attribute( name, type, cpf, delete_type ) {
       GUM_CONSTRUCTOR( FuncAttribute );
     }
 
@@ -98,8 +98,8 @@ namespace gum {
     FuncAttribute::addChild( const ClassElement& elt ) { }
 
     INLINE
-    FuncAttribute::FuncAttribute( const FuncAttribute &source ):
-        Attribute( source ) {
+    FuncAttribute::FuncAttribute( const FuncAttribute& source ):
+      Attribute( source ) {
       GUM_CONS_CPY( FuncAttribute );
       GUM_ERROR( FatalError, "illegal call to copy constructor" );
     }
@@ -110,7 +110,7 @@ namespace gum {
       GUM_ERROR( FatalError, "illegal call to copy operator" );
     }
 
-// ============================================================================
+
   } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

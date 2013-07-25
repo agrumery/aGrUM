@@ -22,7 +22,7 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #include <agrum/prm/PRMFactory.h>
 
 namespace gum {
@@ -252,8 +252,8 @@ namespace gum {
 
       PRMObject* obj = __stack[__stack.size() - i];
 
-      if (( obj->obj_type() == PRMObject::prm_class ) or
-          ( obj->obj_type() == PRMObject::prm_interface ) ) {
+      if ( ( obj->obj_type() == PRMObject::prm_class ) or
+           ( obj->obj_type() == PRMObject::prm_interface ) ) {
         return static_cast<ClassElementContainer*>( obj );
       } else {
         GUM_ERROR( FactoryInvalidState, "illegal sequence of calls" );
@@ -346,7 +346,7 @@ namespace gum {
       return *( __retrieveCommonType( elts ) );
     }
 
-// ============================================================================
+
   } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

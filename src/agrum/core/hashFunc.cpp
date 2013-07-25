@@ -43,7 +43,7 @@ namespace gum {
    * Therefore pi/4 and the gold number are encoded as X * 2^{-n} where n is the
    * number of bits in an unsigned long. Consequently, we should adapt X's
    * definition to 32 and 64 bits architectures. */
-  #if ULONG_MAX == 4294967295UL // unsigned long = 32 bits
+#if ULONG_MAX == 4294967295UL // unsigned long = 32 bits
   const Size   GUM_HASHTABLE_INT_GOLD  = 2654435769UL;
   const Size   GUM_HASHTABLE_INT_PI    = 3373259426UL;
   const Size   GUM_HASHTABLE_MASK      = 4294967295UL;
@@ -52,7 +52,7 @@ namespace gum {
   const unsigned long long GUM_HASHTABLE_LONG_GOLD = 11400714819323198486ULL;
   const unsigned long long GUM_HASHTABLE_LONG_PI   = 14488038916154245684ULL;
   */
-  #else // unsigned long = 64 bits
+#else // unsigned long = 64 bits
   const Size   GUM_HASHTABLE_INT_GOLD  = 11400714819323198486UL;
   const Size   GUM_HASHTABLE_INT_PI    = 14488038916154245684UL;
   const Size   GUM_HASHTABLE_MASK      = 18446744073709551615UL;
@@ -61,7 +61,7 @@ namespace gum {
   const unsigned long long GUM_HASHTABLE_LONG_GOLD = 11400714819323198486ULL;
   const unsigned long long GUM_HASHTABLE_LONG_PI   = 14488038916154245684ULL;
   */
-  #endif /* unsigned long = 32 bits */
+#endif /* unsigned long = 32 bits */
 
 } /* namespace gum */
 

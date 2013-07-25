@@ -23,7 +23,7 @@
  *
  * @author Pierre-Henri WUILLEMIN, Ni NI, Lionel TORTI & Vincent RENAUDINEAU
  */
-// ============================================================================
+
 
 #include "O3prmrContext.h"
 
@@ -33,12 +33,12 @@ namespace gum {
 
       /* ******************************************************************* */
 
-      O3prmrContext::O3prmrContext ( const std::string& filename ) {
+      O3prmrContext::O3prmrContext( const std::string& filename ) {
         m_filename = filename;
         m_mainImport = 0;
       }
 
-      O3prmrContext::O3prmrContext ( const O3prmrContext& s ) {
+      O3prmrContext::O3prmrContext( const O3prmrContext& s ) {
         m_filename = s.m_filename;
         m_mainImport = s.m_mainImport;
         *this += s;
@@ -60,11 +60,11 @@ namespace gum {
         return m_package;
       }
 
-      void O3prmrContext::setPackage ( const std::string& package ) {
+      void O3prmrContext::setPackage( const std::string& package ) {
         m_package = package;
       }
 
-      std::string O3prmrContext::aliasToImport ( const std::string& alias ) {
+      std::string O3prmrContext::aliasToImport( const std::string& alias ) {
         for ( int i = m_imports.size() - 1 ; i >= 0 ; i-- )
           if ( m_imports[i]->alias == alias )
             return m_imports[i]->value;
@@ -76,15 +76,15 @@ namespace gum {
         return m_imports;
       }
 
-      void O3prmrContext::addImport ( int line, const std::string& import, const std::string& alias ) {
-        m_imports.push_back ( new ImportCommand ( line, import, alias ) );
+      void O3prmrContext::addImport( int line, const std::string& import, const std::string& alias ) {
+        m_imports.push_back( new ImportCommand( line, import, alias ) );
 
         if ( alias == "default" )
           m_mainImport = m_imports.back();
       }
 
-      void O3prmrContext::addImport ( int line, const std::string& import, bool ismain ) {
-        m_imports.push_back ( new ImportCommand ( line, import, import ) );
+      void O3prmrContext::addImport( int line, const std::string& import, bool ismain ) {
+        m_imports.push_back( new ImportCommand( line, import, import ) );
 
         if ( ismain )
           m_mainImport = m_imports.back();
@@ -94,12 +94,12 @@ namespace gum {
         return m_sessions;
       }
 
-      void O3prmrContext::addSession ( O3prmrSession* session ) {
-        m_sessions.push_back ( session );
+      void O3prmrContext::addSession( O3prmrSession* session ) {
+        m_sessions.push_back( session );
       }
 
-      void O3prmrContext::addSession ( const O3prmrSession& session ) {
-        addSession ( new O3prmrSession ( session ) );
+      void O3prmrContext::addSession( const O3prmrSession& session ) {
+        addSession( new O3prmrSession( session ) );
       }
 
       std::string O3prmrContext::toString() const {
@@ -122,29 +122,29 @@ namespace gum {
       }
 
       O3prmrContext& O3prmrContext::operator+= ( const O3prmrContext& c ) {
-        const std::vector<ImportCommand*> & imports = c.imports();
+        const std::vector<ImportCommand*>& imports = c.imports();
 
         for ( std::vector<ImportCommand*>::const_iterator i = imports.begin() ; i != imports.end() ; i++ )
-          addImport ( **i ) ;
+          addImport( **i ) ;
 
-        const std::vector<O3prmrSession*> & sessions = c.sessions();
+        const std::vector<O3prmrSession*>& sessions = c.sessions();
 
         if ( sessions.size() == 1 && sessions.back()->name() == "default" ) {
           * ( this->m_sessions.back() ) += * ( sessions.back() );
         } else
           for ( std::vector<O3prmrSession*>::const_iterator i = sessions.begin() ; i != sessions.end() ; i++ )
-            addSession ( **i ) ;
+            addSession( **i ) ;
 
         return *this;
       }
 
       /* ******************************************************************* */
 
-      O3prmrSession::O3prmrSession ( const std::string& name ) {
+      O3prmrSession::O3prmrSession( const std::string& name ) {
         m_name = name;
       }
 
-      O3prmrSession::O3prmrSession ( const O3prmrSession& s ) {
+      O3prmrSession::O3prmrSession( const O3prmrSession& s ) {
         m_name = s.m_name;
         *this += s;
       }
@@ -164,46 +164,50 @@ namespace gum {
         return m_commands;
       }
 
-      void O3prmrSession::addCommand ( O3prmrCommand* command ) {
-        m_commands.push_back ( command );
+      void O3prmrSession::addCommand( O3prmrCommand* command ) {
+        m_commands.push_back( command );
       }
 
-      void O3prmrSession::addObserve ( int line, const std::string& leftValue, const std::string& rightValue ) {
-        addCommand ( new ObserveCommand ( line,leftValue, rightValue ) );
+      void O3prmrSession::addObserve( int line, const std::string& leftValue, const std::string& rightValue ) {
+        addCommand( new ObserveCommand( line,leftValue, rightValue ) );
       }
 
-      void O3prmrSession::addUnobserve ( int line, const std::string& value ) {
-        addCommand ( new UnobserveCommand ( line,value ) );
+      void O3prmrSession::addUnobserve( int line, const std::string& value ) {
+        addCommand( new UnobserveCommand( line,value ) );
       }
 
-      void O3prmrSession::addQuery ( int line, const std::string& value ) {
-        addCommand ( new QueryCommand ( line,value ) );
+      void O3prmrSession::addQuery( int line, const std::string& value ) {
+        addCommand( new QueryCommand( line,value ) );
       }
 
-      void O3prmrSession::addSetEngine ( int line, const std::string& value ) {
-        addCommand ( new SetEngineCommand ( line,value ) );
+      void O3prmrSession::addSetEngine( int line, const std::string& value ) {
+        addCommand( new SetEngineCommand( line,value ) );
       }
 
-      void O3prmrSession::addSetGndEngine ( int line, const std::string& value ) {
-        addCommand ( new SetGndEngineCommand ( line,value ) );
+      void O3prmrSession::addSetGndEngine( int line, const std::string& value ) {
+        addCommand( new SetGndEngineCommand( line,value ) );
       }
 
-      void O3prmrSession::addCommand ( const O3prmrCommand* command ) {
+      void O3prmrSession::addCommand( const O3prmrCommand* command ) {
         switch ( command->type() ) {
           case O3prmrCommand::SetEngine :
-            m_commands.push_back ( new SetEngineCommand ( * ( SetEngineCommand* ) command ) );
+            m_commands.push_back( new SetEngineCommand( * ( SetEngineCommand* ) command ) );
             break;
+
           case O3prmrCommand::SetGndEngine :
-            m_commands.push_back ( new SetGndEngineCommand ( * ( SetGndEngineCommand* ) command ) );
+            m_commands.push_back( new SetGndEngineCommand( * ( SetGndEngineCommand* ) command ) );
             break;
+
           case O3prmrCommand::Observe :
-            m_commands.push_back ( new ObserveCommand ( * ( ObserveCommand* ) command ) );
+            m_commands.push_back( new ObserveCommand( * ( ObserveCommand* ) command ) );
             break;
+
           case O3prmrCommand::Unobserve :
-            m_commands.push_back ( new UnobserveCommand ( * ( UnobserveCommand* ) command ) );
+            m_commands.push_back( new UnobserveCommand( * ( UnobserveCommand* ) command ) );
             break;
+
           case O3prmrCommand::Query :
-            m_commands.push_back ( new QueryCommand ( * ( QueryCommand* ) command ) );
+            m_commands.push_back( new QueryCommand( * ( QueryCommand* ) command ) );
             break;
         }
       }
@@ -223,7 +227,7 @@ namespace gum {
 
       O3prmrSession& O3prmrSession::operator+= ( const O3prmrSession& c ) {
         for ( std::vector<O3prmrCommand*>::const_iterator i = c.m_commands.begin() ; i < c.m_commands.end() ; i++ )
-          addCommand ( *i );
+          addCommand( *i );
 
         return *this;
       }

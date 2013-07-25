@@ -53,59 +53,59 @@ namespace gum {
    */
   class PartialOrderedEliminationSequenceStrategy :
     public EliminationSequenceStrategy {
-  public:
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
+    public:
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
 
-    /// destructor
-    virtual ~PartialOrderedEliminationSequenceStrategy ();
+      /// destructor
+      virtual ~PartialOrderedEliminationSequenceStrategy();
 
-    /** @brief creates a new elimination sequence of the same type as the current
-     * object, but this sequence contains only an empty graph
-     * @warning you must deallocate by yourself the object returned
-     * @return an empty clone of the current object with the same type */
-    virtual PartialOrderedEliminationSequenceStrategy* newFactory() const = 0;
-    
-    /// @}
+      /** @brief creates a new elimination sequence of the same type as the current
+       * object, but this sequence contains only an empty graph
+       * @warning you must deallocate by yourself the object returned
+       * @return an empty clone of the current object with the same type */
+      virtual PartialOrderedEliminationSequenceStrategy* newFactory() const = 0;
 
-
-    
-    // ############################################################################
-    /// @name Accessors / Modifiers
-    // ############################################################################
-    /// @{
-
-    /// sets a new graph to be triangulated
-    /** The elimination sequence algorithms reinitializes its data to start a new
-     * triangulation with graph Graph
-     * @param graph the new graph to be triangulated
-     * @param dom the modalities of the nodes (i.e., their domain sizes)
-     * @param subsets the list of the subsets constituting the partial ordering
-     * @warning note that, by aGrUM's rule, the graph and the sequence are not
-     * copied but only referenced by the elimination sequence algorithm. */
-    virtual void setGraph ( UndiGraph* graph,
-                            const Property<unsigned int>::onNodes* dom,
-                            const List<NodeSet>* subsets ) = 0;
-    
-    /// @}
+      /// @}
 
 
-  protected:
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
- 
-    /// default constructor (uses an empty graph)
-    PartialOrderedEliminationSequenceStrategy();
 
-    /// copy constructor
-    PartialOrderedEliminationSequenceStrategy
-    ( const PartialOrderedEliminationSequenceStrategy& );
+      // ############################################################################
+      /// @name Accessors / Modifiers
+      // ############################################################################
+      /// @{
 
-    /// @}
+      /// sets a new graph to be triangulated
+      /** The elimination sequence algorithms reinitializes its data to start a new
+       * triangulation with graph Graph
+       * @param graph the new graph to be triangulated
+       * @param dom the modalities of the nodes (i.e., their domain sizes)
+       * @param subsets the list of the subsets constituting the partial ordering
+       * @warning note that, by aGrUM's rule, the graph and the sequence are not
+       * copied but only referenced by the elimination sequence algorithm. */
+      virtual void setGraph( UndiGraph* graph,
+                             const Property<unsigned int>::onNodes* dom,
+                             const List<NodeSet>* subsets ) = 0;
+
+      /// @}
+
+
+    protected:
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
+
+      /// default constructor (uses an empty graph)
+      PartialOrderedEliminationSequenceStrategy();
+
+      /// copy constructor
+      PartialOrderedEliminationSequenceStrategy
+      ( const PartialOrderedEliminationSequenceStrategy& );
+
+      /// @}
 
   };
 

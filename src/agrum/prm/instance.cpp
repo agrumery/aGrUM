@@ -24,30 +24,34 @@
  * @author Lionel TORTI
  *
  */
-// ============================================================================
+
 #include <agrum/prm/instance.h>
 #include <agrum/multidim/multiDimSparse.h>
-// ============================================================================
+
 #ifdef GUM_NO_INLINE
 #include <agrum/prm/instance.inl>
 #endif //GUM_NO_INLINE
-// ============================================================================
+
 namespace gum {
   namespace prm {
-// ============================================================================
+
 
     Instance::Instance( const std::string& name, Class& type ):
-        PRMObject( name ), __type( &type ), __params( 0 ) {
+      PRMObject( name ), __type( &type ), __params( 0 ) {
       GUM_CONSTRUCTOR( Instance );
+
       // First we create attributes for each aggregate in type
       for ( Set<Aggregate*>::iterator agg = __type->aggregates().begin(); agg != __type->aggregates().end(); ++agg )
         __copyAggregates( *agg );
+
       // We add attributes in type by reference for inner ones and by copy for output ones
       for ( Set<Attribute*>::iterator attr = __type->attributes().begin(); attr != __type->attributes().end(); ++attr )
         __copyAttribute( *attr );
+
       // Then we instantiate each parameters in type
       if ( __type->parameters().size() )
         __params = new Set<NodeId>();
+
       for ( Set<Attribute*>::iterator iter = __type->parameters().begin(); iter != __type->parameters().end(); ++iter )
         __copyParameter( *iter );
     }
@@ -56,8 +60,10 @@ namespace gum {
     Instance::__copyParameter( Attribute* source ) {
       Attribute* attr = new Attribute( source->name(), source->type() );
       Instantiation i( attr->cpf() ), j( source->cpf() );
+
       for ( i.setFirst(), j.setFirst(); not( i.end() or j.end() ); i.inc(), j.inc() )
         attr->cpf().set( i, source->cpf().get( j ) );
+
       attr->setId( source->id() );
       __nodeIdMap.insert( attr->id(), attr );
       __bijection.insert( &( source->type().variable() ), &( attr->type().variable() ) );
@@ -66,14 +72,20 @@ namespace gum {
     Instance::~Instance() {
       GUM_DESTRUCTOR( Instance );
       typedef Property<Attribute*>::onNodes::iterator AttrIter;
+
       for ( AttrIter iter = __nodeIdMap.begin(); iter != __nodeIdMap.end(); ++iter )
         delete *iter;
+
       typedef Property< Set< Instance* >* >::onNodes::iterator TmpIterator;
+
       for ( TmpIterator iter = __referenceMap.begin(); iter != __referenceMap.end(); ++iter )
         delete *iter;
+
       typedef Property< std::vector<pair>* >::onNodes::iterator Foo;
+
       for ( Foo iter = __referingAttr.begin(); iter != __referingAttr.end(); ++iter )
         delete *iter;
+
       if ( __params ) delete __params;
     }
 
@@ -82,23 +94,27 @@ namespace gum {
       // First retrieving any referenced instance
       for ( Set<SlotChain*>::iterator chain = type().slotChains().begin(); chain != type().slotChains().end(); ++chain )
         __instantiateSlotChain( *chain );
+
       // Now we need to add referred instance to each input node
       // For Attributes we first add parents, then we initialize CPF
       for ( Set<Attribute*>::iterator iter = type().attributes().begin(); iter != type().attributes().end(); ++iter )
         if ( not type().isParameter( **iter ) )
           __copyAttributeCPF( __nodeIdMap[( **iter ).id()] );
+
       // For Aggregate we add parents
       for ( Set<Aggregate*>::iterator iter = type().aggregates().begin(); iter != type().aggregates().end(); ++iter ) {
-        const NodeSet& parents = type().dag().parents(( *iter )->id() );
-        Attribute& attr = get(( **iter ).safeName() );
+        const NodeSet& parents = type().dag().parents( ( *iter )->id() );
+        Attribute& attr = get( ( **iter ).safeName() );
+
         for ( NodeSet::const_iterator arc = parents.begin(); arc != parents.end(); ++arc ) {
           try {
             attr.addParent( get( *arc ) );
           } catch ( NotFound& ) {
             SlotChain& sc = static_cast<SlotChain&>( type().get( *arc ) );
             const Set<Instance*>& instances = getInstances( sc.id() );
+
             for ( Set<Instance*>::iterator i = instances.begin(); i != instances.end(); ++i ) {
-              attr.addParent(( *i )->get( sc.lastElt().safeName() ) );
+              attr.addParent( ( *i )->get( sc.lastElt().safeName() ) );
             }
           }
         }
@@ -114,17 +130,21 @@ namespace gum {
       Set<Instance*> visited;
       // Last element is an attribute, and we only want the instance containing it
       Size depth_stop = sc->chain().size() -1;
+
       // Let's go!
       while ( not stack.empty() ) {
         Instance* current = stack.back().first;
         Size depth = stack.back().second;
         stack.pop_back();
+
         if ( not visited.exists( current ) ) {
           visited.insert( current );
+
           if ( depth < depth_stop ) {
             try {
               NodeId refId = sc->chain().atPos( depth )->id();
               Set<Instance*>* instances = current->__referenceMap[refId];
+
               for ( Set<Instance*>::iterator iter = instances->begin(); iter != instances->end(); ++iter )
                 stack.push_back( std::make_pair( *iter, depth + 1 ) );
             } catch ( NotFound& ) {
@@ -133,6 +153,7 @@ namespace gum {
           } else {
             __referenceMap[sc->id()]->insert( current );
             __addReferingInstance( sc, current );
+
             // If slot chain is single, it could be used by an attribute so we add the corresponding DiscreteVariable
             // to __bijection for CPF initialisation
             if ( not sc->isMultiple() ) {
@@ -146,58 +167,70 @@ namespace gum {
     void
     Instance::add( NodeId id, Instance& instance ) {
       ClassElement* elt = 0;
+
       try {
         elt = &( type().get( id ) );
       } catch ( NotFound& ) {
         GUM_ERROR( NotFound, "no ClassElement matches the given id" );
       }
+
       switch ( elt->elt_type() ) {
         case ClassElement::prm_refslot: {
-            ReferenceSlot* ref = static_cast<ReferenceSlot*>( elt );
-            // Checking if instance's type is legal
-            if ( not instance.type().isSubTypeOf( ref->slotType() ) ) {
-              GUM_ERROR( TypeError, "given Instance type is not a proper "
-                         "subclass of the ReferenceSlot slot type" );
-            }
-            // Checking the reference's size limit
-            if ( __referenceMap.exists( id ) and
-                 ( not static_cast<ReferenceSlot&>( type().get( id ) ).isArray() ) and
-                 ( __referenceMap[id]->size() == 1 ) ) {
-              GUM_ERROR( OutOfUpperBound, "ReferenceSlot size limit reached" );
-            }
-            break;
+          ReferenceSlot* ref = static_cast<ReferenceSlot*>( elt );
+
+          // Checking if instance's type is legal
+          if ( not instance.type().isSubTypeOf( ref->slotType() ) ) {
+            GUM_ERROR( TypeError, "given Instance type is not a proper "
+                       "subclass of the ReferenceSlot slot type" );
           }
+
+          // Checking the reference's size limit
+          if ( __referenceMap.exists( id ) and
+               ( not static_cast<ReferenceSlot&>( type().get( id ) ).isArray() ) and
+               ( __referenceMap[id]->size() == 1 ) ) {
+            GUM_ERROR( OutOfUpperBound, "ReferenceSlot size limit reached" );
+          }
+
+          break;
+        }
+
         case ClassElement::prm_slotchain: {
-            SlotChain& sc = static_cast<SlotChain&>( type().get( id ) );
-            // Checking if instance's type is legal
-            if ( not instance.type().isSubTypeOf( sc.end() ) ) {
-              GUM_ERROR( TypeError, "given Instance type is not a proper "
-                         "subclass of the ClassElementContainer pointed"
-                         " by the SlotChain" );
-            }
-            // Checking the reference's size limit
-            if ( __referenceMap.exists( id ) and
-                 ( not static_cast<SlotChain&>( type().get( id ) ).isMultiple() ) and
-                 ( __referenceMap[id]->size() == 1 ) ) {
-              GUM_ERROR( OutOfUpperBound, "SlotChain size limit reached" );
-            }
-            // We need to plug this to the referred instance.
-            GUM_CHECKPOINT;
-            break;
+          SlotChain& sc = static_cast<SlotChain&>( type().get( id ) );
+
+          // Checking if instance's type is legal
+          if ( not instance.type().isSubTypeOf( sc.end() ) ) {
+            GUM_ERROR( TypeError, "given Instance type is not a proper "
+                       "subclass of the ClassElementContainer pointed"
+                       " by the SlotChain" );
           }
+
+          // Checking the reference's size limit
+          if ( __referenceMap.exists( id ) and
+               ( not static_cast<SlotChain&>( type().get( id ) ).isMultiple() ) and
+               ( __referenceMap[id]->size() == 1 ) ) {
+            GUM_ERROR( OutOfUpperBound, "SlotChain size limit reached" );
+          }
+
+          // We need to plug this to the referred instance.
+          GUM_CHECKPOINT;
+          break;
+        }
+
         default: {
-            if ( not type().isOutputNode( *elt ) ) {
-              GUM_ERROR( WrongClassElement, "given ClassElement is not an output node" );
-            }
+          if ( not type().isOutputNode( *elt ) ) {
+            GUM_ERROR( WrongClassElement, "given ClassElement is not an output node" );
           }
+        }
       }
+
       if ( not __referenceMap.exists( id ) ) {
         __referenceMap.insert( id, new Set<Instance*>() );
       }
+
       __referenceMap[id]->insert( &instance );
     }
 
-// ============================================================================
+
   } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

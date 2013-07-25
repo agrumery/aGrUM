@@ -21,7 +21,7 @@
  * @file
  * @brief Definition of templatized reader of BIF files for Bayesian Networks.
  *
- * @author Pierre-Henri Wuillemin
+ * @author Pierre-Henri WUILLEMIN
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -44,7 +44,7 @@ namespace gum {
     try {
       __scanner=new BIF::Scanner( __streamName.c_str() );
       __parser=new BIF::Parser( __scanner );
-      __parser->setFactory( (AbstractBayesNetFactory*)__factory );
+      __parser->setFactory( ( AbstractBayesNetFactory* )__factory );
     } catch ( IOError e ) {
       __ioerror=true;
     }
@@ -55,7 +55,7 @@ namespace gum {
     GUM_DESTRUCTOR( BIFReader );
 
     if ( !__ioerror ) {
-			// this could lead to memory leak !!
+      // this could lead to memory leak !!
       if ( __parser ) delete( __parser );
 
       if ( __scanner ) delete( __scanner );
@@ -94,11 +94,11 @@ namespace gum {
     if ( __ioerror ) {
       GUM_ERROR( gum::IOError,"No such file "+streamName() );
     }
-    
+
     if ( !__parseDone ) {
       try {
         __parser->Parse();
-      } catch ( gum::Exception &e ) {
+      } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         return 1+__parser->errors().error_count;
       }
@@ -106,7 +106,7 @@ namespace gum {
       __parseDone=true;
     }
 
-    return (__parser->errors().error_count);
+    return ( __parser->errors().error_count );
   }
 
   /// @{
@@ -169,12 +169,12 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   Size  BIFReader<GUM_SCALAR>::errors() {
-    return (! __parseDone )?( Size )0:__parser->errors().error_count;
+    return ( ! __parseDone )?( Size )0:__parser->errors().error_count;
   }
 
   template<typename GUM_SCALAR> INLINE
   Size  BIFReader<GUM_SCALAR>::warnings() {
-    return (! __parseDone )?( Size )0:__parser->errors().warning_count;
+    return ( ! __parseDone )?( Size )0:__parser->errors().warning_count;
   }
 
   /// @}

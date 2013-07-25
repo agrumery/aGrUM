@@ -27,6 +27,6 @@ package classes;
 import classes.types;
 
 class PowerSupply {
-  t_state state { [ 0.99, 0.01 ] };
+    t_state state { [ 0.99, 0.01 ] };
 }
 

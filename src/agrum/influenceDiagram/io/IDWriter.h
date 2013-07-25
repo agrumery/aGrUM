@@ -19,11 +19,11 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Head of abstract classe for export of influence diagram 
+ * @brief Head of abstract classe for export of influence diagram
  *
  * All classes used to export ID must inherit from IDWriter
  *
- * @author Jean-Christophe Magnan & Pierre-Henri Wuillemin
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_ID_WRITER_H
 #define GUM_ID_WRITER_H
@@ -48,36 +48,36 @@ namespace gum {
   template<typename GUM_SCALAR>
 
   class IDWriter {
-  public:
-    /**
-     * Default constructor.
-     */
-    IDWriter();
+    public:
+      /**
+       * Default constructor.
+       */
+      IDWriter();
 
-    /**
-     * Default destructor.
-     */
-    virtual ~IDWriter();
+      /**
+       * Default destructor.
+       */
+      virtual ~IDWriter();
 
-    /**
-     * Writes an influence diagram in the given ouput stream.
-     *
-     * @param output The output stream.
-     * @param infdiag The influence diagram writen in the stream.
-     * @throws IOError Raised if an I/O error occurs.
-     */
-    virtual void write( std::ostream &output, const InfluenceDiagram<GUM_SCALAR>& infdiag ) =0;
+      /**
+       * Writes an influence diagram in the given ouput stream.
+       *
+       * @param output The output stream.
+       * @param infdiag The influence diagram writen in the stream.
+       * @throws IOError Raised if an I/O error occurs.
+       */
+      virtual void write( std::ostream& output, const InfluenceDiagram<GUM_SCALAR>& infdiag ) =0;
 
-    /**
-     * Writes an Influence Diagram in the file referenced by filePath.
-     * If the file doesn't exists, it is created.
-     * If the file exists, it's content will be erased.
-     *
-     * @param filePath The path to the file used to write the Influence Diagram.
-     * @param infdiag The Influence Diagram writen in the file.
-     * @throw IOError Raised if an I/O error occurs.
-     */
-    virtual void write( std::string filePath, const InfluenceDiagram<GUM_SCALAR>& infdiag ) =0;
+      /**
+       * Writes an Influence Diagram in the file referenced by filePath.
+       * If the file doesn't exists, it is created.
+       * If the file exists, it's content will be erased.
+       *
+       * @param filePath The path to the file used to write the Influence Diagram.
+       * @param infdiag The Influence Diagram writen in the file.
+       * @throw IOError Raised if an I/O error occurs.
+       */
+      virtual void write( std::string filePath, const InfluenceDiagram<GUM_SCALAR>& infdiag ) =0;
   };
 } /* namespace gum */
 

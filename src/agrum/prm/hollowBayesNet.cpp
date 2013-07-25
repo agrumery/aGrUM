@@ -23,23 +23,23 @@
 //  *
 //  * @author Lionel TORTI
 //  */
-// // ============================================================================
+//
 // #include <agrum/prm/hollowBayesNet.h>
-// // ============================================================================
+//
 // #ifdef GUM_NO_INLINE
 // #include <agrum/prm/hollowBayesNet.inl>
 // #endif // GUM_NO_INLINE
-// // ============================================================================
+//
 // namespace gum {
 // namespace prm {
-// 
+//
 // HollowBayesNet::HollowBayesNet(const ClassElementContainer& cec):
 //   AbstractBayesNet<prm_float>(), __cec(&cec), __moralGraph(0), __topo(0)
 // {
 //   GUM_CONSTRUCTOR( HollowBayesNet );
 //   __init(cec);
 // }
-// 
+//
 // void
 // HollowBayesNet::__init(const ClassElementContainer& cec) {
 //   std::list<NodeId> queue;
@@ -67,7 +67,7 @@
 //     queue.pop_front();
 //   }
 // }
-// 
+//
 // HollowBayesNet::HollowBayesNet(const HollowBayesNet& from):
 //   AbstractBayesNet<prm_float>(from), __cec(from.__cec), __dag(from.__dag),
 //   __moralGraph(0), __topo(0)
@@ -80,7 +80,7 @@
 //     __topo = new Sequence<NodeId>(*(from.__topo));
 //   }
 // }
-// 
+//
 // HollowBayesNet&
 // HollowBayesNet::operator=(const HollowBayesNet& from) {
 //   if (this != &from) {
@@ -102,7 +102,7 @@
 //   }
 //   return *this;
 // }
-// 
+//
 // } /* namespace prm */
 // } /* namespace gum */
-// // ============================================================================
+//

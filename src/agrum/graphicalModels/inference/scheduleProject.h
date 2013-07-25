@@ -54,10 +54,10 @@ namespace gum {
       /// default constructor
       /** @warning table and del_vars are passed by copy */
       ScheduleProject( const ScheduleMultiDim<GUM_SCALAR>& table,
-                       const Set<const DiscreteVariable *>& del_vars,
+                       const Set<const DiscreteVariable*>& del_vars,
                        MultiDimImplementation<GUM_SCALAR>*
                        ( *project )( const MultiDimImplementation<GUM_SCALAR>&,
-                                     const Set<const DiscreteVariable *>& ) );
+                                     const Set<const DiscreteVariable*>& ) );
 
       /// copy constructor
       ScheduleProject( const ScheduleProject<GUM_SCALAR>& );
@@ -135,7 +135,7 @@ namespace gum {
       ScheduleMultiDim<GUM_SCALAR> __table;
 
       // the set of variables that should be removed from the table
-      Set<const DiscreteVariable *> __del_vars;
+      Set<const DiscreteVariable*> __del_vars;
 
       /// the result of the operation
       ScheduleMultiDim<GUM_SCALAR>* __result;
@@ -149,7 +149,7 @@ namespace gum {
       /// the projection operator
       MultiDimImplementation<GUM_SCALAR>*
       ( *__project )( const MultiDimImplementation<GUM_SCALAR>&,
-                      const Set<const DiscreteVariable *>& );
+                      const Set<const DiscreteVariable*>& );
 
   };
 

@@ -54,27 +54,27 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// basic constructor: creates an empty clique graph
       /** @param nodes_size the size of the hash table used to store all the nodes
        * @param nodes_resize_policy the resizing policy of this hash table
        * @param edges_size the size of the hash table used to store all the edges
        * @param edges_resize_policy the resizing policy of this hash table */
-      // ============================================================================
+
       explicit CliqueGraph( Size nodes_size = GUM_HASHTABLE_DEFAULT_SIZE,
                             bool nodes_resize_policy    = true,
                             Size edges_size = GUM_HASHTABLE_DEFAULT_SIZE,
                             bool edges_resize_policy    = true );
 
-      // ============================================================================
+
       /// copy constructor
       /** @param from the CliqueGraph that will be copied into \e this */
-      // ============================================================================
+
       CliqueGraph( const CliqueGraph& from );
 
-      // ============================================================================
+
       /// destructor
-      // ============================================================================
+
       virtual ~CliqueGraph();
 
       /// @}
@@ -85,7 +85,7 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// inserts a new edge between two cliques
       /** @param first the id of one extremity of the new edge to be inserted
        * @param second the id of the other extremity of the new edge to be inserted
@@ -93,56 +93,56 @@ namespace gum {
        * exception is raised.
        * @throw InvalidNode if first and/or second do not belong to the
        * graph nodes */
-      // ============================================================================
+
       virtual void insertEdge( const NodeId first,const NodeId second );
 
-      // ============================================================================
+
       /// removes an edge (and its separator) from the clique graph
       /** @param edge the edge to be removed
        * @warning if the edge does not exist, nothing is done. In particular, no
        * exception is thrown. */
-      // ============================================================================
-      virtual void eraseEdge( const Edge &edge );
 
-      // ============================================================================
+      virtual void eraseEdge( const Edge& edge );
+
+
       /// removes all edges and their separators
-      // ============================================================================
+
       virtual void clearEdges();
 
-      // ============================================================================
+
       /// adds a new clique to the graph
       /** @return the id chosen for the new clique */
-      // ============================================================================
+
       virtual NodeId insertNode( const NodeSet& clique = NodeSet() );
 
-      // ============================================================================
+
       /// try to add a new clique to the graph
       /** @throws DuplicateElement exception is thrown if the id of the clique
        * already exists within the clique graph */
-      // ============================================================================
+
       virtual void insertNode( const NodeId id,  const NodeSet& clique = NodeSet() );
 
-      // ============================================================================
+
       /// removes a given clique from the clique graph
       /** If the CliqueGraph does not contain the node, then nothing is done. In
        * particular, no exception is raised. */
-      // ============================================================================
+
       virtual void eraseNode( const NodeId node );
 
-      // ============================================================================
+
       /** @brief removes all the cliques and separators from the graph (as well as
        * their adjacent edges) */
-      // ============================================================================
+
       virtual void clear();
 
-      // ============================================================================
+
       /// returns the set of nodes included into a given clique
       /** @throw NotFound exception is raised if the clique does not belong to
        * the clique graph */
-      // ============================================================================
+
       const NodeSet& clique( const NodeId idClique ) const;
 
-      // ============================================================================
+
       /** @brief returns the id of a clique containing the node the id of which is
        * in argument
        * @warning note that this method is time consuming as the clique graph does
@@ -150,75 +150,75 @@ namespace gum {
        * As a consequence, it searches the cliques until it finds one that actually
        * contains idNode.
        * @throws NotFound exception is thrown if no clique contains idNode */
-      // ============================================================================
+
       NodeId container( const NodeId idNode ) const;
 
-      // ============================================================================
+
       /** @brief changes the set of nodes included into a given clique and returns
        * the new set
        * @throws NotFound exception is thrown if idClique is not a clique of
        * the clique graph */
-      // ============================================================================
+
       virtual void setClique( const NodeId idClique,const NodeSet& new_clique );
 
-      // ============================================================================
+
       /** @brief changes the set of nodes included into a given clique and returns
        * the new set
        *
        * @throws NotFound exception is thrown if clique_id does not exist
        * @throw DuplicateElement exception is thrown if clique_id set already
        * contains the node */
-      // ============================================================================
+
       virtual void addToClique( const NodeId clique_id,const NodeId node_id );
 
-      // ============================================================================
+
       /// remove a node from a clique
       /** If node_id cannot be found in the clique set, then the function does
        * nothing. In particular, it does not throw any exception.
        * @throws NotFound exception is thrown if clique_id does not exist */
-      // ============================================================================
+
       virtual void eraseFromClique( const NodeId clique_id,const NodeId node_id );
 
-      // ============================================================================
+
       /// returns the separator included in a given edge
       /** @throw NotFound exception is thrown if the edge does not belong to the
        * clique graph */
-      // ============================================================================
+
       const NodeSet& separator( const Edge& edge )  const;
 
-      // ============================================================================
+
       /// returns the separator included in an edge specified by its extremities
       /** @throw NotFound exception is thrown if the edge does not belong to the
        * clique graph */
-      // ============================================================================
+
       const NodeSet& separator( const NodeId clique1, const NodeId clique ) const;
 
-      // ============================================================================
+
       /// returns a path from a clique containing node1 to a clique containing node2
       /** @throws NotFound such path cannot be found */
-      // ============================================================================
+
       std::vector<NodeId>
       containerPath( const NodeId node1, const NodeId node2 ) const;
 
-      // ============================================================================
+
       /// indicates whether the running intersection property holds
       /** The function works properly even if the graph contains cycles. */
-      // ============================================================================
+
       bool hasRunningIntersection() const ;
 
-      // ============================================================================
+
       /// indicates whether the graph is a join tree
-      // ============================================================================
+
       bool isJoinTree() const ;
 
-      // ============================================================================
+
       /// friendly displays the content of the CliqueGraph
-      // ============================================================================
+
       virtual const std::string toString() const;
 
-      // ============================================================================
+
       /// friendly displays the content of the CliqueGraph in DOT format
-      // ============================================================================
+
       virtual const std::string toDot() const;
 
       /// @}
@@ -228,20 +228,20 @@ namespace gum {
       /// @name Operators
       // ############################################################################
       /// @{
-      // ============================================================================
+
       /// copy operator
-      // ============================================================================
+
       CliqueGraph&  operator= ( const CliqueGraph& from );
 
-      // ============================================================================
-      /// checks whether two clique graphs are different
-      // ============================================================================
-      bool operator!= ( const CliqueGraph &from ) const;
 
-      // ============================================================================
+      /// checks whether two clique graphs are different
+
+      bool operator!= ( const CliqueGraph& from ) const;
+
+
       /// checks whether two clique graphs are equal
-      // ============================================================================
-      bool operator== ( const CliqueGraph &from ) const;
+
+      bool operator== ( const CliqueGraph& from ) const;
 
       /// @}
 
@@ -253,9 +253,9 @@ namespace gum {
       /// the set of nodes contained into the separators
       Property< NodeSet >::onEdges __separators;
 
-      // ============================================================================
+
       /// function used to update the separators when a clique is modified
-      // ============================================================================
+
       void __updateSeparators( const NodeId clique1 );
 
 
@@ -293,9 +293,9 @@ namespace gum {
         Property<NodeSet>::onNodes cliques_DFS_chain;
       };
 
-      // ============================================================================
+
       /// function used for the computation of the running intersection property
-      // ============================================================================
+
       bool __runningIntersectionDFS( const NodeId clique, const NodeId from,
                                      __RunningIntersect& infos_DFS ) const ;
   };
@@ -305,9 +305,9 @@ namespace gum {
   typedef CliqueGraph JunctionTree;
 
 
-  // ============================================================================
+
   /// for friendly displaying the content of clique graphs
-  // ============================================================================
+
   std::ostream& operator<< ( std::ostream&, const CliqueGraph& );
 
 

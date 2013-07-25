@@ -24,21 +24,21 @@
  * @author Lionel TORTI
  *
  */
-// ============================================================================
+
 #include <agrum/prm/referenceSlot.h>
-// ============================================================================
+
 #ifdef GUM_NO_INLINE
 #include <agrum/prm/referenceSlot.inl>
 #endif //GUM_NO_INLINE
-// ============================================================================
+
 namespace gum {
   namespace prm {
 
     ReferenceSlot::ReferenceSlot( const std::string& name, ClassElementContainer& type,
                                   bool isArray ):
-        ClassElement( name ), __slotType( type ), __isArray( isArray ) {
+      ClassElement( name ), __slotType( type ), __isArray( isArray ) {
       GUM_CONSTRUCTOR( ReferenceSlot );
-      _safeName = ClassElement::LEFT_CAST() + (( PRMObject& )__slotType ).name() + ClassElement::RIGHT_CAST() + name;
+      _safeName = ClassElement::LEFT_CAST() + ( ( PRMObject& )__slotType ).name() + ClassElement::RIGHT_CAST() + name;
     }
 
 // Destructor.
@@ -47,7 +47,7 @@ namespace gum {
     }
 
     ReferenceSlot::ReferenceSlot( const ReferenceSlot& source ):
-        ClassElement( source ), __slotType( source.__slotType ), __isArray( source.__isArray ) {
+      ClassElement( source ), __slotType( source.__slotType ), __isArray( source.__isArray ) {
       GUM_CONS_CPY( ReferenceSlot );
       GUM_ERROR( FatalError, "illegal call to gum::ReferenceSlot copy constructor." );
     }
@@ -58,7 +58,7 @@ namespace gum {
       GUM_ERROR( FatalError, "illegal call to gum::ReferenceSlot copy operator." );
     }
 
-// ============================================================================
+
   } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

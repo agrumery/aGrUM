@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Lionel Torti                                    *
+ *   (C) 2007-2013 by Christophe GONZALES and Pierre-Henri WUILLEMIN       *
  *   {prenom.nom}@lip6.fr                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -47,7 +47,7 @@ namespace gum_tests {
         cliques[9]  << 7 << 14;
         cliques[10] << 14 << 16;
 
-        for( unsigned int i = 0; i <= 10; ++i ) {
+        for ( unsigned int i = 0; i <= 10; ++i ) {
           graph.insertNode( i, cliques[i] );
         }
 
@@ -64,7 +64,7 @@ namespace gum_tests {
 
         gum::Property<unsigned int>::onNodes domain_sizes;
 
-        for( unsigned int i = 1; i <= 17; ++i ) {
+        for ( unsigned int i = 1; i <= 17; ++i ) {
           domain_sizes.insert( i, 3 );
         }
 
@@ -74,7 +74,7 @@ namespace gum_tests {
 
         try {
           gum::CliqueGraph binTree = converter.convert( graph, domain_sizes, roots );
-        } catch( gum::Exception& e ) {
+        } catch ( gum::Exception& e ) {
           GUM_SHOWERROR( e );
         }
       }

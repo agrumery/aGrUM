@@ -25,12 +25,12 @@ class BayesNetTestCase(pyAgrumTestCase):
         idList.append(bn.add(self.var4));
         idList.append(bn.add(self.var5));
 
-        bn.insertArc(idList[0], idList[2]);
-        bn.insertArc(idList[2], idList[4]);
-        bn.insertArc(idList[1], idList[3]);
-        bn.insertArc(idList[0], idList[3]);
-        bn.insertArc(idList[3], idList[4]);
-        bn.insertArc(idList[1], idList[4]);
+        bn.addArc(idList[0], idList[2]);
+        bn.addArc(idList[2], idList[4]);
+        bn.addArc(idList[1], idList[3]);
+        bn.addArc(idList[0], idList[3]);
+        bn.addArc(idList[3], idList[4]);
+        bn.addArc(idList[1], idList[4]);
 
 
 
@@ -87,15 +87,15 @@ class TestInsertions(BayesNetTestCase):
         idList.append(bn.add(self.var4))
         idList.append(bn.add(self.var5))
 
-        bn.insertArc(idList[0], idList[2])
-        bn.insertArc(idList[2], idList[4])
-        bn.insertArc(idList[1], idList[3])
-        bn.insertArc(idList[0], idList[3])
-        bn.insertArc(idList[3], idList[4])
-        bn.insertArc(idList[1], idList[4])
+        bn.addArc(idList[0], idList[2])
+        bn.addArc(idList[2], idList[4])
+        bn.addArc(idList[1], idList[3])
+        bn.addArc(idList[0], idList[3])
+        bn.addArc(idList[3], idList[4])
+        bn.addArc(idList[1], idList[4])
 
-        self.assertRaises(InvalidDirectedCycle, bn.insertArc,idList[4],idList[0])
-        self.assertRaises(InvalidNode, bn.insertArc,42,666)
+        self.assertRaises(InvalidDirectedCycle, bn.addArc,idList[4],idList[0])
+        self.assertRaises(InvalidNode, bn.addArc,42,666)
 
 
     def testEraseArcs(self):

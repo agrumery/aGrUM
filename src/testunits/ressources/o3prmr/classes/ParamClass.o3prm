@@ -27,9 +27,11 @@ package classes;
 import classes.Printer;
 
 class ParamClass {
-  boolean aBoolParam;
+    boolean aBoolParam;
+
   boolean aBoolParamWithDefault default false;
-  t_state aParameter;
+    t_state aParameter;
+
   t_state anotherParameter default OK;
 }
 

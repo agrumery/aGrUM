@@ -22,20 +22,20 @@
  * @brief Implementations of the classes defined in
  * bns/inference/ShaferShenoyInference.h.
  */
-// ============================================================================
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-// ============================================================================
+
 
 // to ease parsing by IDE
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 
 namespace gum {
-// ============================================================================
+
 
 // Default constructor
   template<typename GUM_SCALAR>
-  ShaferShenoyInference<GUM_SCALAR>::ShaferShenoyInference( const AbstractBayesNet<GUM_SCALAR> &bayesNet ):
-      BayesNetInference<GUM_SCALAR>( bayesNet ), __triangulation( 0 ) {
+  ShaferShenoyInference<GUM_SCALAR>::ShaferShenoyInference( const IBaseBayesNet<GUM_SCALAR>& bayesNet ):
+    BayesNetInference<GUM_SCALAR>( bayesNet ), __triangulation( 0 ) {
     GUM_CONSTRUCTOR( ShaferShenoyInference );
 
     typename Property<unsigned int>::onNodes __modalitiesMap;
@@ -45,7 +45,7 @@ namespace gum {
       __modalitiesMap.insert( *iter,  this->bn().variable( *iter ).domainSize() );
     }
 
-    __triangulation = new DefaultTriangulation( &(this->bn().moralGraph()), &__modalitiesMap );
+    __triangulation = new DefaultTriangulation( &( this->bn().moralGraph() ), &__modalitiesMap );
 
     __triangulation->junctionTree();
     __buildCliquesTables();
@@ -87,7 +87,7 @@ namespace gum {
   void
   ShaferShenoyInference<GUM_SCALAR>::makeInference() {
     this->_invalidateMarginals();
-    
+
     // Setting all collect flags at false
     for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator
           iter = __clique_prop.begin(); iter != __clique_prop.end(); ++iter ) {
@@ -116,8 +116,8 @@ namespace gum {
 
     for ( CliqueGraph::NodeIterator iter = __triangulation->junctionTree().beginNodes();
           iter != __triangulation->junctionTree().endNodes(); ++iter ) {
-      if (( __triangulation->junctionTree().clique( *iter ).contains( id ) ) and
-          ( __clique_prop[*iter]->bucket().domainSize() < __clique_prop[cliqueId]->bucket().domainSize() )
+      if ( ( __triangulation->junctionTree().clique( *iter ).contains( id ) ) and
+           ( __clique_prop[*iter]->bucket().domainSize() < __clique_prop[cliqueId]->bucket().domainSize() )
          ) {
         cliqueId = *iter;
       }
@@ -134,6 +134,7 @@ namespace gum {
     bucket.add( __clique_prop[cliqueId]->bucket() );
 
     const NodeSet& neighbours = __getNeighbours( cliqueId );
+
     for ( NodeSetIterator iter = neighbours.begin();
           iter != neighbours.end(); ++iter ) {
       bucket.add( __messagesMap[Arc( *iter, cliqueId )] );
@@ -158,12 +159,12 @@ namespace gum {
     for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = pot_list.begin();
           iter != pot_list.end(); ++iter ) {
       __clique_prop[__node2CliqueMap[
-                      this->bn().nodeId(( *iter )->variable( 0 ) )]
+                      this->bn().nodeId( ( *iter )->variable( 0 ) )]
                    ]->addEvidence( **iter );
       // don't forget that the next line won't be executed if the previous one
       // raised an exception because the evidence isn't valid.
       __removeDiffusedMessages(
-        __node2CliqueMap[ this->bn().nodeId(( *iter )->variable( 0 ) )]
+        __node2CliqueMap[ this->bn().nodeId( ( *iter )->variable( 0 ) )]
       );
     }
   }
@@ -211,7 +212,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   NodeId
   ShaferShenoyInference<GUM_SCALAR>::__getClique
-  ( const std::vector<NodeId> &eliminationOrder, NodeId id ) {
+  ( const std::vector<NodeId>& eliminationOrder, NodeId id ) {
     Set<NodeId> idSet;
     idSet.insert( id );
 
@@ -237,7 +238,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   void
   ShaferShenoyInference<GUM_SCALAR>::__buildCliquesTables() {
-    const std::vector<NodeId> &elim = __triangulation->eliminationOrder();
+    const std::vector<NodeId>& elim = __triangulation->eliminationOrder();
 
     NodeSet cliquesSet;
     // First pass to create the clique's table
@@ -275,6 +276,7 @@ namespace gum {
 
     try {
       const NodeSet& neighbours =  __getNeighbours( source );
+
       for ( NodeSetIterator iter = neighbours.begin();
             iter != neighbours.end(); ++iter ) {
         __collect( source, *iter );
@@ -292,6 +294,7 @@ namespace gum {
     bool newMsg = false; // Flag used to know if we must recompute the message current -> source
 
     const NodeSet& neighbours = __getNeighbours( current );
+
     for ( NodeSetIterator iter = neighbours.begin();
           iter != neighbours.end(); ++iter ) {
       if ( *iter != source ) {
@@ -322,6 +325,7 @@ namespace gum {
   ShaferShenoyInference<GUM_SCALAR>::__diffuseFromClique( NodeId source ) {
     try {
       const NodeSet& neighbours = __getNeighbours( source );
+
       for ( NodeSetIterator iter = neighbours.begin();
             iter != neighbours.end(); ++iter ) {
         if ( __messageExists( source, *iter ) ) {
@@ -344,6 +348,7 @@ namespace gum {
   ShaferShenoyInference<GUM_SCALAR>::__diffuse( NodeId source, NodeId current,
       bool recompute ) {
     const NodeSet& neighbours =  __getNeighbours( current );
+
     for ( NodeSetIterator iter = neighbours.begin();
           iter != __getNeighbours( current ).end(); ++iter ) {
       if ( *iter != source ) {
@@ -365,7 +370,7 @@ namespace gum {
   void
   ShaferShenoyInference<GUM_SCALAR>::__sendMessage( NodeId tail, NodeId head ) {
     // Building the message's table held by the separator
-    MultiDimBucket<GUM_SCALAR> *message = new MultiDimBucket<GUM_SCALAR>();
+    MultiDimBucket<GUM_SCALAR>* message = new MultiDimBucket<GUM_SCALAR>();
 
     for ( NodeSet::iterator iter = __getSeparator( tail, head ).begin();
           iter != __getSeparator( tail, head ).end(); ++iter ) {
@@ -382,6 +387,7 @@ namespace gum {
 
     // Second, add message from tail's neighbours
     const NodeSet& neighbours = __getNeighbours( tail );
+
     for ( NodeSetIterator iter = neighbours.begin();
           iter != __getNeighbours( tail ).end(); ++iter ) {
       if ( *iter != head ) {
@@ -412,6 +418,7 @@ namespace gum {
   void
   ShaferShenoyInference<GUM_SCALAR>::__removeDiffusedMessages( NodeId cliqueId ) {
     const NodeSet& neighbours = __getNeighbours( cliqueId );
+
     for ( NodeSetIterator iter = neighbours.begin();
           iter != neighbours.end(); ++iter ) {
       if ( __messagesMap.exists( Arc( cliqueId, *iter ) ) ) {
@@ -426,7 +433,7 @@ namespace gum {
   template <typename GUM_SCALAR> INLINE
   Potential<GUM_SCALAR>*
   ShaferShenoyInference<GUM_SCALAR>::__makeDummyPotential( NodeId cliqueId ) {
-    Potential<GUM_SCALAR>* pot = new Potential<GUM_SCALAR>( new MultiDimSparse<GUM_SCALAR>(( GUM_SCALAR ) 1 ) );
+    Potential<GUM_SCALAR>* pot = new Potential<GUM_SCALAR>( new MultiDimSparse<GUM_SCALAR>( ( GUM_SCALAR ) 1 ) );
     __dummies.insert( pot );
 
     for ( Set<NodeId>::const_iterator iter = __triangulation->junctionTree().clique( cliqueId ).begin();
@@ -437,16 +444,16 @@ namespace gum {
     return pot;
   }
 
-// ============================================================================
+
 //                                CLIQUEPROP
-// ============================================================================
+
 
 // Default constructor.
 // @param id the id of this clique on which this properties holds.
   template <typename GUM_SCALAR>
   CliqueProp<GUM_SCALAR>::CliqueProp( NodeId id ):
-      isCollected( false ), __potential( new MultiDimBucket<GUM_SCALAR>() ),
-      __varsPotential( 0 ), __name( "" ) {
+    isCollected( false ), __potential( new MultiDimBucket<GUM_SCALAR>() ),
+    __varsPotential( 0 ), __name( "" ) {
     GUM_CONSTRUCTOR( CliqueProp );
     std::stringstream name;
     name << id;
@@ -520,9 +527,11 @@ namespace gum {
     if ( __varsPotential == 0 ) {
       __varsPotential = __potential;
       __potential = new MultiDimBucket<GUM_SCALAR>();
-      for (gum::Sequence<const gum::DiscreteVariable*>::const_iterator iter = __varsPotential->variablesSequence().begin(); iter != __varsPotential->variablesSequence().end(); ++iter) {
-        __potential->add(**iter);
+
+      for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator iter = __varsPotential->variablesSequence().begin(); iter != __varsPotential->variablesSequence().end(); ++iter ) {
+        __potential->add( **iter );
       }
+
       __potential->add( __varsPotential );
     }
 
@@ -577,10 +586,10 @@ namespace gum {
     return *__potential;
   }
 
-// ============================================================================
+
 } /* namespace gum */
 
-// ============================================================================
+
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-// ============================================================================
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; 
+
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 

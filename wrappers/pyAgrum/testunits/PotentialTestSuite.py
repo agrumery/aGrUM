@@ -24,10 +24,10 @@ class PotentialTestCase(pyAgrumTestCase):
         id_list.append(bn.add(self.var["r"]))
         id_list.append(bn.add(self.var["w"]))
 
-        bn.insertArc(id_list[0], id_list[1])
-        bn.insertArc(id_list[0], id_list[2])
-        bn.insertArc(id_list[1], id_list[3])
-        bn.insertArc(id_list[2], id_list[3])
+        bn.addArc(id_list[0], id_list[1])
+        bn.addArc(id_list[0], id_list[2])
+        bn.addArc(id_list[1], id_list[3])
+        bn.addArc(id_list[2], id_list[3])
 
 
 
@@ -74,7 +74,7 @@ class TestInsertions(PotentialTestCase):
 
         addvar = LabelizedVar("d", "rosée", 4)
         addvar_id = bn.add(addvar)
-        bn.insertArc(addvar_id, id_list[3])
+        bn.addArc(addvar_id, id_list[3])
 
         list3 = bn.cpt(id_list[3])
         self.assertEqual(list3.var_names, ['d', 'r', 's', 'w'])
@@ -170,15 +170,15 @@ class TestIndexs(PotentialTestCase):
         list2[{'r': 'carrement'}] = [0.6, 0.4]
         self.assertListsAlmostEqual(list2[{'r': 'bof'}].tolist(), [0.1, 0.9])
         self.assertListsAlmostEqual(list2[{'r': 1}].tolist(), [0.6, 0.4])
-        
+
         self.assertListsAlmostEqual(list2[{'c': 0}].tolist(), [0.1, 0.6])
         self.assertListsAlmostEqual(list2[{'c': 1}].tolist(), [0.9, 0.4])
-        
+
         self.assertListsAlmostEqual(list2[{'r': 'bof','existepas':0}].tolist(), [0.1, 0.9])
         self.assertListsAlmostEqual(list2[{'r': 1,'existepas':'et non'}].tolist(), [0.6, 0.4])
 
         self.assertRaises(IndexError, list2.__getitem__,{'r':99})
-        
+
         self.assertListsAlmostEqual(list2.toarray(), np.array([[0.1, 0.6],[0.9,0.4]]))
 
 

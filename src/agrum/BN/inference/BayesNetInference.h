@@ -22,16 +22,16 @@
  * @brief This file contains abstract class definitions bayesian networks
  *        inference classes.
  *
- * @author Lionel Torti.
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
-// ============================================================================
+
 #ifndef GUM_INFERENCE_H
 #define GUM_INFERENCE_H
-// ============================================================================
+
 #include <agrum/config.h>
-// ============================================================================
+
 #include <agrum/BN/BayesNet.h>
-// ============================================================================
+
 
 namespace gum {
   /**
@@ -47,7 +47,7 @@ namespace gum {
       /**
        * Default constructor
        */
-      BayesNetInference( const AbstractBayesNet<GUM_SCALAR>& bn );
+      BayesNetInference( const IBaseBayesNet<GUM_SCALAR>& bn );
 
       /**
        * Destructor.
@@ -93,7 +93,7 @@ namespace gum {
       /**
        * Returns a constant reference over the BayesNet on which this class work.
        */
-      const AbstractBayesNet<GUM_SCALAR>& bn() const;
+      const IBaseBayesNet<GUM_SCALAR>& bn() const;
 
     protected:
 
@@ -130,15 +130,15 @@ namespace gum {
       /**
        * The Bayes net we wish to perform inference on.
        */
-      const AbstractBayesNet<GUM_SCALAR>& __bayesNet;
+      const IBaseBayesNet<GUM_SCALAR>& __bayesNet;
   };
 
-// ============================================================================
+
 } /* namespace gum */
 
-// ============================================================================
+
 #include <agrum/BN/inference/BayesNetInference.tcc>
-// ============================================================================
+
 #endif /* GUM_INFERENCE_H */
-// ============================================================================
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

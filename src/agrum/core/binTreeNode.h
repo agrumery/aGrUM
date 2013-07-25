@@ -140,199 +140,199 @@ namespace gum {
    */
   /* =========================================================================== */
   template <typename Val> class BinTreeNode {
-  public:
-    // ############################################################################
-    // constructors / destructors
-    // ############################################################################
-    /// @{
-    // ============================================================================
-    /// basic constructor: a node without parent nor children
-    // ============================================================================
-    BinTreeNode( const Val& v );
+    public:
+      // ############################################################################
+      // constructors / destructors
+      // ############################################################################
+      /// @{
 
-    // ============================================================================
-    /** @brief copy constructor: creates a new disconnected node with the same
-     * value as "from"
-     *
-     * @warning Although the new node contains the same value as from, it has
-     * no parent, nor any children, even if from has some. */
-    // ============================================================================
-    BinTreeNode( const BinTreeNode<Val>& from);
+      /// basic constructor: a node without parent nor children
 
-    // ============================================================================
-    /// destructor
-    /** in addition to removing the node, this method updates appropriately
-     * its parent and children */
-    // ============================================================================
-    ~BinTreeNode();
-
-    /// @}
+      BinTreeNode( const Val& v );
 
 
+      /** @brief copy constructor: creates a new disconnected node with the same
+       * value as "from"
+       *
+       * @warning Although the new node contains the same value as from, it has
+       * no parent, nor any children, even if from has some. */
 
-    // ############################################################################
-    // operators
-    // ############################################################################
-    /// @{
-    // ============================================================================
-    /** @brief copy operator: copy the value of from into this. However, this
-     * does not change the current connections (parents and children) of this. */
-    // ============================================================================
-    BinTreeNode<Val>& operator= ( const BinTreeNode<Val>& from );
+      BinTreeNode( const BinTreeNode<Val>& from );
 
-    // ============================================================================
-    /// alias for method value
-    // ============================================================================
-    Val& operator*();
 
-    /// @}
+      /// destructor
+      /** in addition to removing the node, this method updates appropriately
+       * its parent and children */
+
+      ~BinTreeNode();
+
+      /// @}
 
 
 
-    // ############################################################################
-    /// @name Accessors / Modifiers
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      // operators
+      // ############################################################################
+      /// @{
 
-    // ============================================================================
-    /// returns the value stored in a node of the binary search tree
-    // ============================================================================
-    Val& value();
+      /** @brief copy operator: copy the value of from into this. However, this
+       * does not change the current connections (parents and children) of this. */
 
-    // ============================================================================
-    /// returns the given child of a node
-    /** @warning if the child does not exists, the method returns a 0 pointer. */
-    // ============================================================================
-    BinTreeNode<Val>* child ( BinTreeDir dir ) const;
+      BinTreeNode<Val>& operator= ( const BinTreeNode<Val>& from );
 
-    // ============================================================================
-    /// returns the given child of a node
-    /** @warning if the child does not exists, the method returns a 0 pointer. */
-    // ============================================================================
-    BinTreeNode<Val>* leftChild () const;
 
-    // ============================================================================
-    /// returns the given child of a node
-    /** @warning if the child does not exists, the method returns a 0 pointer. */
-    // ============================================================================
-    BinTreeNode<Val>* rightChild () const;
+      /// alias for method value
 
-    // ============================================================================
-    /// returns the parent of a node
-    /** @warning if the parent does not exists, the method returns a 0 pointer. */
-    // ============================================================================
-    BinTreeNode<Val>* parent () const;
+      Val& operator*();
 
-    // ============================================================================
-    /// returns the direction of the edge parent->current node, if any
-    // ============================================================================
-    BinTreeDir parentDir () const;
-
-    // ============================================================================
-    /// adds a new left child to the current node
-    /** @warning the new child is created on the C++ heap (i.e., using a
-     * dynamic memory allocation)
-     * @returns a pointer on the new created child
-     * @throw DuplicateElement if the current node had already a left child */
-    // ============================================================================
-    BinTreeNode<Val>* insertLeftChild ( const Val& );
-
-    // ============================================================================
-    /// adds a new left child to the current node
-    /** @throw DuplicateElement if the current node had already a left child or
-     * if new_child already has a parent */
-    // ============================================================================
-    void insertLeftChild ( BinTreeNode<Val>& new_child );
-
-    // ============================================================================
-    /// adds a new right child to the current node
-    /**  @returns a pointer on the new created child
-     * @throw DuplicateElement if the current node had already a left child */
-    // ============================================================================
-    BinTreeNode<Val>* insertRightChild ( const Val& );
-
-    // ============================================================================
-    /// adds a new right child to the current node
-    /** @throw DuplicateElement if the current node had already a left child or
-     * if new_child already has a parent */
-    // ============================================================================
-    void insertRightChild ( BinTreeNode<Val>& new_child );
-
-    // ============================================================================
-    /// adds a new child to the current node
-    /**  @returns a pointer on the new created child
-     * @throw DuplicateElement if the current node had already a child in the
-     * child_dir subtree */
-    // ============================================================================
-    BinTreeNode<Val>* insertChild ( const Val&, BinTreeDir child_dir);
-
-    // ============================================================================
-    /// adds a new child to the current node
-    /** @throw DuplicateElement if the current node had already a child in the
-     * child_dir direction or if new_child already has a parent */
-    // ============================================================================
-    void insertChild ( BinTreeNode<Val>& new_child, BinTreeDir child_dir);
-
-    // ============================================================================
-    /// remove the link between the current node and its left child
-    /** Note that only the link is removed, i.e., the left child is not removed
-     * itself nor, a fortiori, the left subtree of the current node. If there
-     * is no left child, the method does nothing. In particular, it does not
-     * raise any exception. */
-    // ============================================================================
-    void eraseLeftLink ();
-
-    // ============================================================================
-    /// remove the link between the current node and its right child
-    /** Note that only the link is removed, i.e., the right child is not removed
-     * itself nor, a fortiori, the right subtree of the current node. If there
-     * is no right child, the method does nothing. In particular, it does not
-     * raise any exception. */
-    // ============================================================================
-    void eraseRightLink ();
-
-    // ============================================================================
-    /// remove the link between the current node and one of its children
-    /** Note that only the link is removed, i.e., the child is not removed
-     * itself nor, a fortiori, its subtree. If the child does not exist, the
-     * method does nothing. In particular, it does not raise any exception. */
-    // ============================================================================
-    void eraseLink ( BinTreeDir tree_dir );
-
-    // ============================================================================
-    /// returns the leftmost node of the current tree
-    /** if there is no left child, the method returns this */
-    // ============================================================================
-    BinTreeNode<Val>* leftmostNode() const;
-
-    // ============================================================================
-    /// returns the rightmost node of the current tree
-    /** if there is no right child, the method returns this */
-    // ============================================================================
-    BinTreeNode<Val>* rightmostNode() const;
-
-    // ============================================================================
-    /// returns the top ancestor of the current tree
-    /** if the current node has no parent, the the method returns this */
-    // ============================================================================
-    BinTreeNode<Val>* root() const;
-
-     /// @}
+      /// @}
 
 
 
-  protected:
-    /// the value stored in a node of the tree
-    Val _val;
+      // ############################################################################
+      /// @name Accessors / Modifiers
+      // ############################################################################
+      /// @{
 
-    /// the parent of the node
-    BinTreeNode<Val>* _parent;
 
-    /// the direction to follow from the parent to reach the current node
-    BinTreeDir _parent_dir;
+      /// returns the value stored in a node of the binary search tree
 
-    /// the children of the current node
-    BinTreeNode<Val>* _children[2];
+      Val& value();
+
+
+      /// returns the given child of a node
+      /** @warning if the child does not exists, the method returns a 0 pointer. */
+
+      BinTreeNode<Val>* child( BinTreeDir dir ) const;
+
+
+      /// returns the given child of a node
+      /** @warning if the child does not exists, the method returns a 0 pointer. */
+
+      BinTreeNode<Val>* leftChild() const;
+
+
+      /// returns the given child of a node
+      /** @warning if the child does not exists, the method returns a 0 pointer. */
+
+      BinTreeNode<Val>* rightChild() const;
+
+
+      /// returns the parent of a node
+      /** @warning if the parent does not exists, the method returns a 0 pointer. */
+
+      BinTreeNode<Val>* parent() const;
+
+
+      /// returns the direction of the edge parent->current node, if any
+
+      BinTreeDir parentDir() const;
+
+
+      /// adds a new left child to the current node
+      /** @warning the new child is created on the C++ heap (i.e., using a
+       * dynamic memory allocation)
+       * @returns a pointer on the new created child
+       * @throw DuplicateElement if the current node had already a left child */
+
+      BinTreeNode<Val>* insertLeftChild( const Val& );
+
+
+      /// adds a new left child to the current node
+      /** @throw DuplicateElement if the current node had already a left child or
+       * if new_child already has a parent */
+
+      void insertLeftChild( BinTreeNode<Val>& new_child );
+
+
+      /// adds a new right child to the current node
+      /**  @returns a pointer on the new created child
+       * @throw DuplicateElement if the current node had already a left child */
+
+      BinTreeNode<Val>* insertRightChild( const Val& );
+
+
+      /// adds a new right child to the current node
+      /** @throw DuplicateElement if the current node had already a left child or
+       * if new_child already has a parent */
+
+      void insertRightChild( BinTreeNode<Val>& new_child );
+
+
+      /// adds a new child to the current node
+      /**  @returns a pointer on the new created child
+       * @throw DuplicateElement if the current node had already a child in the
+       * child_dir subtree */
+
+      BinTreeNode<Val>* insertChild( const Val&, BinTreeDir child_dir );
+
+
+      /// adds a new child to the current node
+      /** @throw DuplicateElement if the current node had already a child in the
+       * child_dir direction or if new_child already has a parent */
+
+      void insertChild( BinTreeNode<Val>& new_child, BinTreeDir child_dir );
+
+
+      /// remove the link between the current node and its left child
+      /** Note that only the link is removed, i.e., the left child is not removed
+       * itself nor, a fortiori, the left subtree of the current node. If there
+       * is no left child, the method does nothing. In particular, it does not
+       * raise any exception. */
+
+      void eraseLeftLink();
+
+
+      /// remove the link between the current node and its right child
+      /** Note that only the link is removed, i.e., the right child is not removed
+       * itself nor, a fortiori, the right subtree of the current node. If there
+       * is no right child, the method does nothing. In particular, it does not
+       * raise any exception. */
+
+      void eraseRightLink();
+
+
+      /// remove the link between the current node and one of its children
+      /** Note that only the link is removed, i.e., the child is not removed
+       * itself nor, a fortiori, its subtree. If the child does not exist, the
+       * method does nothing. In particular, it does not raise any exception. */
+
+      void eraseLink( BinTreeDir tree_dir );
+
+
+      /// returns the leftmost node of the current tree
+      /** if there is no left child, the method returns this */
+
+      BinTreeNode<Val>* leftmostNode() const;
+
+
+      /// returns the rightmost node of the current tree
+      /** if there is no right child, the method returns this */
+
+      BinTreeNode<Val>* rightmostNode() const;
+
+
+      /// returns the top ancestor of the current tree
+      /** if the current node has no parent, the the method returns this */
+
+      BinTreeNode<Val>* root() const;
+
+      /// @}
+
+
+
+    protected:
+      /// the value stored in a node of the tree
+      Val _val;
+
+      /// the parent of the node
+      BinTreeNode<Val>* _parent;
+
+      /// the direction to follow from the parent to reach the current node
+      BinTreeDir _parent_dir;
+
+      /// the children of the current node
+      BinTreeNode<Val>* _children[2];
 
   };
 

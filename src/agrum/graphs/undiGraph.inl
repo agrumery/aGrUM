@@ -34,9 +34,11 @@ namespace gum {
     if ( ! exists( first ) ) {
       GUM_ERROR( InvalidNode,"first node" );
     }
+
     if ( ! exists( second ) ) {
       GUM_ERROR( InvalidNode,"second node" );
     }
+
     EdgeGraphPart::insertEdge( second,first );
   }
 
@@ -45,12 +47,13 @@ namespace gum {
     NodeGraphPart::clearNodes();
   }
 
-  INLINE UndiGraph& UndiGraph::operator=(const UndiGraph& g ) {
-    if (this!=&g) {
-      UndiGraph::clear ();
-      NodeGraphPart::operator=(g);
-      EdgeGraphPart::operator=(g);
+  INLINE UndiGraph& UndiGraph::operator=( const UndiGraph& g ) {
+    if ( this!=&g ) {
+      UndiGraph::clear();
+      NodeGraphPart::operator=( g );
+      EdgeGraphPart::operator=( g );
     }
+
     return *this;
   }
 

@@ -27,6 +27,6 @@ package classes;
 import classes.PowerSupply;
 
 class Room {
-  PowerSupply power;
+    PowerSupply power;
 }
 

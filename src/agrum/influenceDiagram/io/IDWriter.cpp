@@ -20,7 +20,7 @@
 /** @file
  * @brief Outlined implementation of IDWriter
  *
- * @author Jean-Christophe Magnan & Pierre-Henri Wuillemin
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 #include "IDWriter.h"
 

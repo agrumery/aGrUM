@@ -23,13 +23,13 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #include <list>
-// ============================================================================
-#include <agrum/BN/BayesNet.h>
-// ============================================================================
+
+#include <agrum/BN/iBaseBayesNet.h>
+
 #include <agrum/prm/PRM.h>
-// ============================================================================
+
 #ifndef GUM_CLASS_BAYESNET_H
 #define GUM_CLASS_BAYESNET_H
 namespace gum {
@@ -37,7 +37,7 @@ namespace gum {
 
     /**
      * @class ClassBayesNet classBayesNet.h <agrum/prm/classBayesNet.h>
-     * @brief This class decorates a gum::prm::Class has an AbstractBayesNet.
+     * @brief This class decorates a gum::prm::Class has an IBaseBayesNet.
      *
      * This class filters Attribute and Aggregate in a way it can be interpreted as
      * a BayesNet. SlotChains and ReferenceSlot are not represented.
@@ -47,7 +47,7 @@ namespace gum {
      * BayesNetInference over a ClassBayesNet since some variables are missing in
      * the DAG but not in the nodes CPT.
      */
-    class ClassBayesNet: public AbstractBayesNet<prm_float> {
+    class ClassBayesNet: public IBaseBayesNet<prm_float> {
       public:
         // ========================================================================
         /// @name Constructors & destructor.
@@ -56,10 +56,10 @@ namespace gum {
 
         /// Default constructor.
         /// @param c The Class decorated by this ClassBayesNet.
-        ClassBayesNet ( const Class& c );
+        ClassBayesNet( const Class& c );
 
         /// Copy constructor.
-        ClassBayesNet ( const ClassBayesNet& from );
+        ClassBayesNet( const ClassBayesNet& from );
 
         /// Copy operator.
         ClassBayesNet& operator= ( const ClassBayesNet& from );
@@ -86,33 +86,33 @@ namespace gum {
          *                 BayesNet.
          * @throw OperationNotAllowed raised if varId is an Aggregate.
          */
-        virtual const Potential<prm_float>& cpt ( NodeId varId ) const;
+        virtual const Potential<prm_float>& cpt( NodeId varId ) const;
 
-        /// See gum::AbstractBayesNet::dag().
+        /// See gum::IBaseBayesNet::dag().
         virtual const DAG& dag() const;
 
-        /// See gum::AbstractBayesNet::variableNodeMap().
+        /// See gum::IBaseBayesNet::variableNodeMap().
         virtual const VariableNodeMap& variableNodeMap() const;
 
-        /// See gum::AbstractBayesNet::size().
+        /// See gum::IBaseBayesNet::size().
         virtual Idx size() const;
 
-        /// See gum::AbstractBayesNet::empty().
+        /// See gum::IBaseBayesNet::empty().
         virtual bool empty() const;
 
-        /// See gum::AbstractBayesNet::variable().
-        virtual const DiscreteVariable& variable ( NodeId id ) const;
+        /// See gum::IBaseBayesNet::variable().
+        virtual const DiscreteVariable& variable( NodeId id ) const;
 
-        /// See gum::AbstractBayesNet::nodeId().
-        virtual NodeId nodeId ( const DiscreteVariable &var ) const;
+        /// See gum::IBaseBayesNet::nodeId().
+        virtual NodeId nodeId( const DiscreteVariable& var ) const;
 
-        /// See gum::AbstractBayesNet::idFromName().
-        virtual NodeId idFromName ( const std::string& name ) const;
+        /// See gum::IBaseBayesNet::idFromName().
+        virtual NodeId idFromName( const std::string& name ) const;
 
-        /// See gum::AbstractBayesNet::variableFromName().
-        virtual const DiscreteVariable& variableFromName ( const std::string& name ) const;
+        /// See gum::IBaseBayesNet::variableFromName().
+        virtual const DiscreteVariable& variableFromName( const std::string& name ) const;
 
-        /// See gum::AbstractBayesNet::modalities().
+        /// See gum::IBaseBayesNet::modalities().
         const Property<unsigned int>::onNodes& modalities() const;
 
         /// @}
@@ -121,11 +121,11 @@ namespace gum {
         // ===========================================================================
         /// @{
 
-        /// See gum::AbstractBayesNet::moralGraph().
-        virtual const UndiGraph& moralGraph ( bool clear = true ) const;
+        /// See gum::IBaseBayesNet::moralGraph().
+        virtual const UndiGraph& moralGraph( bool clear = true ) const;
 
-        /// See gum::AbstractBayesNet::topologicalOrder().
-        virtual const Sequence<NodeId>& topologicalOrder ( bool clear = true ) const;
+        /// See gum::IBaseBayesNet::topologicalOrder().
+        virtual const Sequence<NodeId>& topologicalOrder( bool clear = true ) const;
 
         /// @return Returns a dot representation of this BayesNet.
         virtual std::string toDot() const;
@@ -137,11 +137,11 @@ namespace gum {
 
         /// Private getter with type checking in case the id is not a formal Attribute.
         /// @throw NotFound Raised if id is not a formal attribute.
-        const ClassElement& __get ( NodeId id ) const;
+        const ClassElement& __get( NodeId id ) const;
 
         /// Private getter with type checking in case the id is not a formal Attribute.
         /// @throw NotFound Raised if id is not a formal attribute.
-        const ClassElement& __get ( const std::string& name ) const;
+        const ClassElement& __get( const std::string& name ) const;
 
         /// The ClassElementContainer decorated by this.
         const Class* __class;
@@ -159,7 +159,7 @@ namespace gum {
         /// topological order.
         mutable Sequence<NodeId>* __topo;
 
-        void __init ( const Class& c );
+        void __init( const Class& c );
     };
 
   } /* namespace prm */
@@ -167,7 +167,7 @@ namespace gum {
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/classBayesNet.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 #endif /* GUM_CLASS_BAYESNET_H */
-// ============================================================================
+
 

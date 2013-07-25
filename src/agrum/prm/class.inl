@@ -27,10 +27,10 @@
 //to ease parsing
 #include <agrum/prm/class.h>
 
-// ============================================================================
+
 namespace gum {
   namespace prm {
-// ============================================================================
+
 
     INLINE
     Class::ClassEltIterator
@@ -116,7 +116,7 @@ namespace gum {
     INLINE
     ClassElement&
     Class::get( const std::string& name ) {
-      try {	
+      try {
         return *( __nameMap[name] );
       } catch ( NotFound& ) {
         GUM_ERROR( NotFound, "no ClassElement with the given name" );
@@ -277,7 +277,7 @@ namespace gum {
       }
     }
 
-// ============================================================================
+
   } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

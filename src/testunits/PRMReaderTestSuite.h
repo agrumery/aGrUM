@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-// ============================================================================
+
 #include <cxxtest/AgrumTestSuite.h>
 #include "testsuite_utils.h"
 
@@ -30,48 +30,48 @@ namespace gum_tests {
       void /*test*/BasicRead() {
         gum::prm::o3prm::O3prmReader reader;
         int res;
-        TS_GUM_ASSERT_THROWS_NOTHING ( res=reader.readFile ( GET_PATH_STR ( o3prm/inference.o3prm ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( res=reader.readFile( GET_PATH_STR( o3prm/inference.o3prm ) ) );
 
         if ( res!=0 ) reader.showElegantErrors();
 
-        TS_ASSERT_EQUALS ( res,0 );
+        TS_ASSERT_EQUALS( res,0 );
 
         gum::prm::PRM* prm;
-        TS_GUM_ASSERT_THROWS_NOTHING ( prm = reader.prm() );
-        TS_ASSERT ( prm!= ( gum::prm::PRM* ) 0 );
+        TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
+        TS_ASSERT( prm!= ( gum::prm::PRM* ) 0 );
 
-        delete ( prm );
+        delete( prm );
       }
 
       void testRegression1() {
         gum::prm::o3prm::O3prmReader reader;
         int res;
-        TS_GUM_ASSERT_THROWS_NOTHING ( res=reader.readFile ( GET_PATH_STR ( o3prm/withinterfaces.o3prm ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( res=reader.readFile( GET_PATH_STR( o3prm/withinterfaces.o3prm ) ) );
 
         if ( res!=0 ) reader.showElegantErrors();
 
-        TS_ASSERT_EQUALS ( res,0 );
+        TS_ASSERT_EQUALS( res,0 );
 
         gum::prm::PRM* prm;
-        TS_GUM_ASSERT_THROWS_NOTHING ( prm = reader.prm() );
-        TS_ASSERT ( prm!= ( gum::prm::PRM* ) 0 );
-        delete ( prm );
+        TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
+        TS_ASSERT( prm!= ( gum::prm::PRM* ) 0 );
+        delete( prm );
       }
 
       void /*test*/Regression2() {
         gum::prm::o3prm::O3prmReader reader;
         int res;
-        TS_GUM_ASSERT_THROWS_NOTHING ( res=reader.readFile ( GET_PATH_STR ( o3prm/foo2.o3prm ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( res=reader.readFile( GET_PATH_STR( o3prm/foo2.o3prm ) ) );
 
         //if ( res!=0 ) reader.showElegantErrors();
 
-        TS_ASSERT_EQUALS ( res,0 );
+        TS_ASSERT_EQUALS( res,0 );
 
         gum::prm::PRM* prm;
-        TS_GUM_ASSERT_THROWS_NOTHING ( prm = reader.prm() );
-        TS_ASSERT ( prm!= ( gum::prm::PRM* ) 0 );
+        TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
+        TS_ASSERT( prm!= ( gum::prm::PRM* ) 0 );
 
-        delete ( prm );
+        delete( prm );
       }
   };
 

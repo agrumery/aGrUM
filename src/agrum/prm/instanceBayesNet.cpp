@@ -23,37 +23,38 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #include <agrum/prm/instanceBayesNet.h>
-// ============================================================================
+
 #ifdef GUM_NO_INLINE
 #include <agrum/prm/instanceBayesNet.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 namespace gum {
-namespace prm {
+  namespace prm {
 
-void
-InstanceBayesNet::__init(const Instance& i) {
-  for (DAG::NodeIterator node = i.type().dag().beginNodes(); node != i.type().dag().endNodes(); ++node) {
-    try {
-      // Adding the attribute
-      const Attribute& attr = i.get(*node);
-      __dag.insertNode(attr.id());
-      __varNodeMap.insert(&(attr.type().variable()), &attr);
-    } catch (NotFound&) {
-      // Not an attribute
-    }
-  }
-  for (ArcSet::iterator arc = i.type().dag().beginArcs(); arc != i.type().dag().endArcs(); ++arc) {
-    try {
-      __dag.insertArc(arc->tail(), arc->head());
-    } catch (InvalidNode&) {
-      // Not added means not an attribute
-    }
-  }
-}
+    void
+    InstanceBayesNet::__init( const Instance& i ) {
+      for ( DAG::NodeIterator node = i.type().dag().beginNodes(); node != i.type().dag().endNodes(); ++node ) {
+        try {
+          // Adding the attribute
+          const Attribute& attr = i.get( *node );
+          __dag.insertNode( attr.id() );
+          __varNodeMap.insert( &( attr.type().variable() ), &attr );
+        } catch ( NotFound& ) {
+          // Not an attribute
+        }
+      }
 
-} /* namespace prm */
+      for ( ArcSet::iterator arc = i.type().dag().beginArcs(); arc != i.type().dag().endArcs(); ++arc ) {
+        try {
+          __dag.insertArc( arc->tail(), arc->head() );
+        } catch ( InvalidNode& ) {
+          // Not added means not an attribute
+        }
+      }
+    }
+
+  } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

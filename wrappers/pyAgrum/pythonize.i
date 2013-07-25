@@ -32,8 +32,8 @@
 %rename(pop_front) gum::List::popFront();
 %rename(pop_back) gum::List::popBack();
 
-%rename(__str__) gum::AbstractBayesNet::toString() const;
-%rename(__len__) gum::AbstractBayesNet::size() const;
+%rename(__str__) gum::IBaseBayesNet::toString() const;
+%rename(__len__) gum::IBaseBayesNet::size() const;
 
 %rename(__str__) gum::Instantiation::toString() const;
 %rename(__len__) gum::Instantiation::nbrDim() const;

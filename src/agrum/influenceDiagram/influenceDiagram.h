@@ -22,25 +22,25 @@
  * @file
  * @brief Class representing Influence Diagrams
  *
- * @author Jean-Christophe Magnan & Pierre_Henri Wuillemin
+ * @author Jean-Christophe Magnan & Pierre_Henri WUILLEMIN
  *
  */
 #ifndef GUM_INF_DIAG_H
 #define GUM_INF_DIAG_H
-// ============================================================================
+
 #include <utility>
 #include <string>
-// ============================================================================
+
 #include <agrum/config.h>
 
 #include <agrum/core/hashTable.h>
-// ============================================================================
+
 #include <agrum/graphicalModels/variableNodeMap.h>
-#include <agrum/BN/abstractBayesNet.h>
-// ============================================================================
+#include <agrum/BN/iBaseBayesNet.h>
+
 #include <agrum/multidim/utilityTable.h>
 #include <agrum/graphs/DAG.h>
-// ============================================================================
+
 
 namespace gum {
 
@@ -52,7 +52,7 @@ namespace gum {
    */
   template<typename GUM_SCALAR>
 
-  class InfluenceDiagram : public AbstractBayesNet<GUM_SCALAR> {
+  class InfluenceDiagram : public IBaseBayesNet<GUM_SCALAR> {
 
       //friend class InfluenceDiagramFactory<GUM_SCALAR>;
 
@@ -165,7 +165,7 @@ namespace gum {
       * Return id node from discrete var pointer.
       * @throw NotFound If no variable matches var.
       */
-      virtual NodeId nodeId( const DiscreteVariable &var ) const;
+      virtual NodeId nodeId( const DiscreteVariable& var ) const;
 
       /// Getter by name
       /// @throw NotFound if no such name exists in the graph.
@@ -241,7 +241,7 @@ namespace gum {
        * @return the id of the added variable.
        * @throws DuplicateElement if id(<>0) is already used
        */
-      NodeId addChanceNode( const DiscreteVariable& variable, MultiDimImplementation<GUM_SCALAR> *aContent, NodeId id = 0 );
+      NodeId addChanceNode( const DiscreteVariable& variable, MultiDimImplementation<GUM_SCALAR>* aContent, NodeId id = 0 );
 
       /**
        * Add a chance variable, it's associate node and it's CPT. The id of the new
@@ -254,7 +254,7 @@ namespace gum {
        * @throw InvalidAgrument If variable has more than one label
        * @throws DuplicateElement if id(<>0) is already used
        */
-      NodeId addUtilityNode( const DiscreteVariable& variable, MultiDimImplementation<GUM_SCALAR> *aContent, NodeId id = 0 );
+      NodeId addUtilityNode( const DiscreteVariable& variable, MultiDimImplementation<GUM_SCALAR>* aContent, NodeId id = 0 );
 
 
       /**
@@ -297,7 +297,7 @@ namespace gum {
        */
       void addArc( NodeId tail, NodeId head );
 
-      
+
       /**
        * Add an arc in the ID, and update diagram's potential nodes cpt if necessary.
        *
@@ -307,8 +307,8 @@ namespace gum {
        * @throw InvalidEdge if tail is a utility node
        * @deprecated This function has been deprecated. Please use @ref addArc instead
        */
-      GUM_DEPRECATED(void insertArc( NodeId tail, NodeId head ));
-      
+      GUM_DEPRECATED( void insertArc( NodeId tail, NodeId head ) );
+
       /**
        * Removes an arc in the ID, and update diagram's potential nodes cpt if necessary.
        *
@@ -428,10 +428,10 @@ namespace gum {
 
 } /* namespace gum */
 
-// ============================================================================
-#include <agrum/influenceDiagram/influenceDiagram.tcc>
-// ============================================================================
-#endif /* GUM_INF_DIAG_H */
-// ============================================================================
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+#include <agrum/influenceDiagram/influenceDiagram.tcc>
+
+#endif /* GUM_INF_DIAG_H */
+
+
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

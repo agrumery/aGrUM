@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Christophe Gonzales                             *
+ *   Copyright (C) 2007 by Christophe GONZALES                             *
  *   {prenom.nom}@lip6.fr                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -101,9 +101,9 @@ namespace gum_tests {
         tree.erase( 5 );
 
         TS_ASSERT( tree.size() == 4 );
-        TS_ASSERT_THROWS( tree.erase( 5 ) ,gum::NotFound);
+        TS_ASSERT_THROWS( tree.erase( 5 ) ,gum::NotFound );
         TS_ASSERT( tree.size() == 4 );
-        TS_ASSERT_THROWS( tree.erase( 9 ) ,gum::NotFound);
+        TS_ASSERT_THROWS( tree.erase( 9 ) ,gum::NotFound );
         TS_ASSERT( tree.size() == 4 );
         tree.erase( 1 );
         TS_ASSERT( tree.size() == 3 );
@@ -144,28 +144,38 @@ namespace gum_tests {
 
         unsigned int i = 0;
 
-        for( gum::BinSearchTree<int>::iterator iter = tree.begin();
-             iter != tree.end(); ++iter, ++i ) {
-          switch( i ) {
+        for ( gum::BinSearchTree<int>::iterator iter = tree.begin();
+              iter != tree.end(); ++iter, ++i ) {
+          switch ( i ) {
             case 0: TS_ASSERT( *iter == 1 ); break;
+
             case 1: TS_ASSERT( *iter == 3 ); break;
+
             case 2: TS_ASSERT( *iter == 4 ); break;
+
             case 3: TS_ASSERT( *iter == 5 ); break;
+
             case 4: TS_ASSERT( *iter == 5 ); break;
+
             case 5: TS_ASSERT( *iter == 7 ); break;
           }
         }
 
         i = 5;
 
-        for( gum::BinSearchTree<int>::iterator iter = tree.rbegin();
-             iter != tree.rend(); --iter, --i ) {
-          switch( i ) {
+        for ( gum::BinSearchTree<int>::iterator iter = tree.rbegin();
+              iter != tree.rend(); --iter, --i ) {
+          switch ( i ) {
             case 0: TS_ASSERT( *iter == 1 ); break;
+
             case 1: TS_ASSERT( *iter == 3 ); break;
+
             case 2: TS_ASSERT( *iter == 4 ); break;
+
             case 3: TS_ASSERT( *iter == 5 ); break;
+
             case 4: TS_ASSERT( *iter == 5 ); break;
+
             case 5: TS_ASSERT( *iter == 7 ); break;
           }
         }

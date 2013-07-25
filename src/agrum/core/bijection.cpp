@@ -33,28 +33,30 @@
 namespace gum {
 
   // creates (if needed) and returns the iterator __BijectionIterEnd
-  const BijectionIterator<int,int>* BijectionIteratorStaticEnd::end4Statics () {
+  const BijectionIterator<int,int>* BijectionIteratorStaticEnd::end4Statics() {
     static bool first_time = true;
+
     if ( first_time ) {
       first_time = false;
       __BijectionIterEnd = new BijectionIterator<int,int>;
     }
 
-    return __BijectionIterEnd; 
+    return __BijectionIterEnd;
   }
 
 
   // create the end iterator for all Bijections
   const BijectionIterator<int,int>*
   BijectionIteratorStaticEnd::__BijectionIterEnd =
-    BijectionIteratorStaticEnd::end4Statics ();
-  
+    BijectionIteratorStaticEnd::end4Statics();
 
-  
+
+
   // creates (if needed) and returns the iterator __BijectionStarIterEnd
   const BijectionIterator<int*,int*>*
-  BijectionStarIteratorStaticEnd::end4Statics () {
+  BijectionStarIteratorStaticEnd::end4Statics() {
     static bool first_time = true;
+
     if ( first_time ) {
       first_time = false;
       __BijectionStarIterEnd = new BijectionIterator<int*,int*>;
@@ -67,7 +69,7 @@ namespace gum {
   // create the end iterator for all BijectionStars
   const BijectionIterator<int*,int*>*
   BijectionStarIteratorStaticEnd::__BijectionStarIterEnd =
-    BijectionStarIteratorStaticEnd::end4Statics ();
+    BijectionStarIteratorStaticEnd::end4Statics();
 
 
 } /* namespace gum */

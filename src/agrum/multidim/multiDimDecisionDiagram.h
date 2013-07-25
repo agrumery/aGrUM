@@ -22,18 +22,18 @@
  * @file
  * @brief
  *
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  *
  */
 #ifndef GUM_MULTI_DIM_DECISION_DIAGRAM_H
 #define GUM_MULTI_DIM_DECISION_DIAGRAM_H
-// ============================================================================
+
 #include <agrum/core/approximationPolicy/approximationPolicy.h>
 #include <agrum/core/approximationPolicy/exactPolicy.h>
-// ============================================================================
+
 #include <agrum/multidim/multiDimDecisionDiagramBase.h>
 #include <agrum/multidim/multiDimDecisionDiagramFactory.h>
-// ============================================================================
+
 
 namespace gum {
 
@@ -74,12 +74,12 @@ namespace gum {
       /**
        * Copy constructor.
        */
-      MultiDimDecisionDiagram ( const MultiDimDecisionDiagram< GUM_SCALAR, IApproximationPolicy >& md );
+      MultiDimDecisionDiagram( const MultiDimDecisionDiagram< GUM_SCALAR, IApproximationPolicy >& md );
 
       /**
        * Constructor with approximation initialisation
        */
-      MultiDimDecisionDiagram ( const IApproximationPolicy<GUM_SCALAR>& md );
+      MultiDimDecisionDiagram( const IApproximationPolicy<GUM_SCALAR>& md );
 
       /**
        * Destructor.
@@ -124,11 +124,11 @@ namespace gum {
        * Returns a factory that used same approximation pattern
        * Allows to set parameter for that approximation
        */
-      virtual MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* getFactory ( const ApproximationPolicy<GUM_SCALAR>& md ) const ;
+      virtual MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* getFactory( const ApproximationPolicy<GUM_SCALAR>& md ) const ;
 
       /// Convert value to approximation representation
-      inline GUM_SCALAR fromExact ( const GUM_SCALAR& value ) const {
-        return IApproximationPolicy<GUM_SCALAR>::fromExact ( value );
+      inline GUM_SCALAR fromExact( const GUM_SCALAR& value ) const {
+        return IApproximationPolicy<GUM_SCALAR>::fromExact( value );
       };
 
 
@@ -139,12 +139,12 @@ namespace gum {
 
 } /* namespace gum */
 
-// ============================================================================
-#include <agrum/multidim/multiDimDecisionDiagram.tcc>
-// ============================================================================
-#endif /* GUM_MULTI_DIM_DECISION_DIAGRAM_H */
-// ============================================================================
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+#include <agrum/multidim/multiDimDecisionDiagram.tcc>
+
+#endif /* GUM_MULTI_DIM_DECISION_DIAGRAM_H */
+
+
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
 
 

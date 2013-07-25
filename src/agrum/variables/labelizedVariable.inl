@@ -40,44 +40,44 @@
 namespace gum {
 
 
-  // ==============================================================================
+
   /// erase all the labels
-  // ==============================================================================
+
   INLINE void LabelizedVariable::eraseLabels( void ) {
     __labels.clear();
   }
 
-  // ==============================================================================
+
   /// copies the content of aLDRV
-  // ==============================================================================
+
   INLINE void LabelizedVariable::_copy( const LabelizedVariable& aLDRV ) {
     DiscreteVariable::_copy( aLDRV );
     __labels.clear();
     __labels = aLDRV.labels();
   }
 
-  // ==============================================================================
+
   /// returns the set of labels of the variable
-  // ==============================================================================
+
   INLINE const Sequence<std::string>& LabelizedVariable::labels() const {
     return __labels;
   }
 
-  // ==============================================================================
+
   /// add a label with a new index (we assume that we will NEVER remove a label)
-  // ==============================================================================
+
   INLINE LabelizedVariable& LabelizedVariable::addLabel( const std::string aLabel ) {
     __labels.insert( aLabel );
 
     return *this;
   }
 
-  // ==============================================================================
+
   /// Default constructor
-  // ==============================================================================
+
   INLINE LabelizedVariable::LabelizedVariable
   ( const std::string&  aName, const std::string&  aDesc, const int nbrLabel ) :
-      DiscreteVariable( aName, aDesc ) {
+    DiscreteVariable( aName, aDesc ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( LabelizedVariable );
 
@@ -88,19 +88,19 @@ namespace gum {
     }
   }
 
-  // ==============================================================================
+
   /// Copy constructor
-  // ==============================================================================
+
   INLINE
   LabelizedVariable::LabelizedVariable( const LabelizedVariable& aLDRV ) :
-      DiscreteVariable( aLDRV ), __labels( aLDRV.labels() ) {
+    DiscreteVariable( aLDRV ), __labels( aLDRV.labels() ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( LabelizedVariable );
   }
 
-  // ==============================================================================
+
   /// destructor
-  // ==============================================================================
+
   INLINE LabelizedVariable::~LabelizedVariable() {
     eraseLabels();
     GUM_DESTRUCTOR( LabelizedVariable );
@@ -108,14 +108,14 @@ namespace gum {
 
   INLINE
   DiscreteVariable*
-  LabelizedVariable::copyFactory() const {
+  LabelizedVariable::clone() const {
     LabelizedVariable* varPtr = new LabelizedVariable( *this );
     return ( DiscreteVariable* ) varPtr;
   }
 
-  // ==============================================================================
+
   /// copy operator
-  // ==============================================================================
+
   INLINE const LabelizedVariable& LabelizedVariable::operator=
   ( const LabelizedVariable& aLDRV ) {
     // avoid self assignment
@@ -126,23 +126,23 @@ namespace gum {
     return *this;
   }
 
-  // ==============================================================================
+
   /// indicates whether the variable already has the label passed in argument
-  // ==============================================================================
-  INLINE bool LabelizedVariable::isLabel( const std::string & aLabel ) const {
+
+  INLINE bool LabelizedVariable::isLabel( const std::string& aLabel ) const {
     return __labels.exists( aLabel );
   }
 
-  // ==============================================================================
+
   /// returns the ith label
-  // ==============================================================================
+
   INLINE const std::string LabelizedVariable::label( Idx i ) const {
     return __labels.atPos( i );
   }
 
-  // ==============================================================================
+
   /// returns the index of a given label
-  // ==============================================================================
+
   INLINE Idx LabelizedVariable::operator[]( const std::string& aLabel ) const {
     try {
       return __labels[aLabel];
@@ -151,9 +151,9 @@ namespace gum {
     }
   }
 
-  // ==============================================================================
+
   /// returns the size of the random discrete variable domain
-  // ==============================================================================
+
   INLINE Size LabelizedVariable::domainSize() const {
     return __labels.size();
   }

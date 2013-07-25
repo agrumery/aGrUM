@@ -30,14 +30,12 @@ namespace gum {
 
 
   // Default constructor.
-  SimpleUTGenerator::SimpleUTGenerator() 
-  {
+  SimpleUTGenerator::SimpleUTGenerator() {
     GUM_CONSTRUCTOR( SimpleUTGenerator );
   }
 
   // Destructor.
-  SimpleUTGenerator::~SimpleUTGenerator() 
-  {
+  SimpleUTGenerator::~SimpleUTGenerator() {
     GUM_DESTRUCTOR( SimpleUTGenerator );
   }
 
@@ -45,13 +43,11 @@ namespace gum {
   // @param varID The variable id of the UT owner.
   // @param ut A reference on the UT to fill.
   void
-  SimpleUTGenerator::generateUT( const Idx& varId, const UtilityTable<float>& ut ) 
-  {
+  SimpleUTGenerator::generateUT( const Idx& varId, const UtilityTable<float>& ut ) {
     std::vector<float> v;
-    initRandom() ;
 
-    for ( Size i = 0; i < ut.domainSize();  ++i ) 
-      v.push_back(( float ) rand()*1000 );
+    for ( Size i = 0; i < ut.domainSize();  ++i )
+      v.push_back( ( float ) rand()*1000 );
 
     ut.fillWith( v );
   }
@@ -60,13 +56,11 @@ namespace gum {
   // @param varID The variable id of the UT owner.
   // @param ut A reference on the UT to fill.
   void
-  SimpleUTGenerator::generateUT( const Idx& varId, const UtilityTable<double>& ut ) 
-  {
+  SimpleUTGenerator::generateUT( const Idx& varId, const UtilityTable<double>& ut ) {
     std::vector<double> v;
-    initRandom() ;
 
     for ( Size i = 0; i < ut.domainSize();  ++i )
-      v.push_back(( double ) rand()*1000 );
+      v.push_back( ( double ) rand()*1000 );
 
     ut.fillWith( v );
 

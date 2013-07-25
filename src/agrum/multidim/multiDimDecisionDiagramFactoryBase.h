@@ -22,20 +22,20 @@
  * @file
  * @brief Class allowing creation of Algebraic Decision Diagram
  *
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  *
  */
 #ifndef GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_BASE_H
 #define GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_BASE_H
-// ============================================================================
+
 #include <agrum/core/hashTable.h>
 #include <agrum/core/bijection.h>
 #include <agrum/core/approximationPolicy/approximationPolicy.h>
-// ============================================================================
+
 #include <agrum/multidim/multiDimDecisionDiagramBase.h>
-// ============================================================================
+
 #include <agrum/graphs/diGraph.h>
-// ============================================================================
+
 
 namespace gum {
 
@@ -90,7 +90,7 @@ namespace gum {
        *
        * @param s a sequence containing the variable (wich will be the referent )
        */
-      void setVariablesSequence ( Sequence< const DiscreteVariable* > s );
+      void setVariablesSequence( Sequence< const DiscreteVariable* > s );
 
       // ===========================================================================
       /// @name Nodes manipulation methods.
@@ -100,7 +100,7 @@ namespace gum {
       /**
        * Sets root node of decision diagram
        */
-      void setRootNode ( const NodeId nody );
+      void setRootNode( const NodeId nody );
 
       /**
        * Adds a variable and its associate non terminal node. The id of the new
@@ -111,8 +111,8 @@ namespace gum {
        * @return the id of the added variable.
        */
       ///@{
-      NodeId addNonTerminalNode ( const DiscreteVariable* var );
-      NodeId unsafeAddNonTerminalNode ( const DiscreteVariable* var );
+      NodeId addNonTerminalNode( const DiscreteVariable* var );
+      NodeId unsafeAddNonTerminalNode( const DiscreteVariable* var );
       ///@}
 
       /**
@@ -125,8 +125,8 @@ namespace gum {
        * Returns the id of that node
        */
       ///@{
-      NodeId addNonTerminalNodeWithArcs ( const DiscreteVariable* var, const std::vector< NodeId >& nodeArcMap, NodeId defaultArcTo = 0 );
-      NodeId unsafeAddNonTerminalNodeWithArcs ( const DiscreteVariable* var, const std::vector< NodeId >& nodeArcMap, NodeId defaultArcTo = 0 );
+      NodeId addNonTerminalNodeWithArcs( const DiscreteVariable* var, const std::vector< NodeId >& nodeArcMap, NodeId defaultArcTo = 0 );
+      NodeId unsafeAddNonTerminalNodeWithArcs( const DiscreteVariable* var, const std::vector< NodeId >& nodeArcMap, NodeId defaultArcTo = 0 );
       ///@}
 
 
@@ -134,7 +134,7 @@ namespace gum {
        * Checks if a node with same variable, same sons and same default son does not already exists in diagram
        * returns a pair constituing of a boolean that indicates if such a node exists, and his nodeid
        */
-      std::pair<bool, NodeId> checkredundancy ( const DiscreteVariable* var, const std::vector< NodeId >& nodeArcMap, NodeId defaultArcTo = 0 );
+      std::pair<bool, NodeId> checkredundancy( const DiscreteVariable* var, const std::vector< NodeId >& nodeArcMap, NodeId defaultArcTo = 0 );
 
 
       /**
@@ -146,7 +146,7 @@ namespace gum {
        *
        * If a terminal node with such value already exists, its value will be return instead.
        */
-      NodeId addTerminalNode ( const GUM_SCALAR& value );
+      NodeId addTerminalNode( const GUM_SCALAR& value );
 
 
       /**
@@ -156,7 +156,7 @@ namespace gum {
        * @param id The id of the variable to erase.
        * @throw NotFound if node isn't in diagram
        */
-      void eraseNode ( NodeId id );
+      void eraseNode( NodeId id );
 
       /// @}
 
@@ -178,17 +178,17 @@ namespace gum {
        * @throw DuplicateElement if another arc linking those nodes already exists
        */
       ///@{
-      /// @deprecated use addArc instead      
-      GUM_DEPRECATED(void insertArc ( NodeId from, NodeId to, Idx modality ));
-      
       /// @deprecated use addArc instead
-      GUM_DEPRECATED(void unsafeInsertArc ( NodeId from, NodeId to, Idx modality ));
-      
-      void addArc ( NodeId from, NodeId to, Idx modality );
-      void unsafeAddArc ( NodeId from, NodeId to, Idx modality );
+      GUM_DEPRECATED( void insertArc( NodeId from, NodeId to, Idx modality ) );
+
+      /// @deprecated use addArc instead
+      GUM_DEPRECATED( void unsafeInsertArc( NodeId from, NodeId to, Idx modality ) );
+
+      void addArc( NodeId from, NodeId to, Idx modality );
+      void unsafeAddArc( NodeId from, NodeId to, Idx modality );
       ///@}
-      
-      
+
+
 
       /**
        * Adds a default arc in the DD
@@ -200,10 +200,10 @@ namespace gum {
        * @throw OperationNotAllowed if arc doesn't respect variable order property
        * @throw DuplicateElement if another arc linking those nodes already exists
        */
-      GUM_DEPRECATED(void insertDefaultArc ( NodeId from, NodeId to ));
-      GUM_DEPRECATED(void unsafeInsertDefaultArc ( NodeId from, NodeId to ));
-      void addDefaultArc ( NodeId from, NodeId to );
-      void unsafeAddDefaultArc ( NodeId from, NodeId to );
+      GUM_DEPRECATED( void insertDefaultArc( NodeId from, NodeId to ) );
+      GUM_DEPRECATED( void unsafeInsertDefaultArc( NodeId from, NodeId to ) );
+      void addDefaultArc( NodeId from, NodeId to );
+      void unsafeAddDefaultArc( NodeId from, NodeId to );
 
 
       /**
@@ -216,7 +216,7 @@ namespace gum {
        * if several arcs have different value but same parent and child, this method will erase all of them .
        * If you want to erase a specific one, use eraseSpecificArc
        */
-      void eraseArc ( NodeId from, NodeId to );
+      void eraseArc( NodeId from, NodeId to );
 
 
       /**
@@ -227,7 +227,7 @@ namespace gum {
        * @param modality the modality corresponding to the to delete arc
        * @throw InvalidArc If arc does not exist
        */
-      void eraseSpecificArc ( NodeId from, NodeId to, Idx modality );
+      void eraseSpecificArc( NodeId from, NodeId to, Idx modality );
 
       /// @}
 
@@ -245,24 +245,24 @@ namespace gum {
        * Returns the value of associated node if its a terminal one
        * @throw NotFound if it's not a terminal node
        */
-      GUM_SCALAR nodeValue ( NodeId node );
+      GUM_SCALAR nodeValue( NodeId node );
 
       /// @}
 
       /**
        * Returns the multidimDecisionDiagram made
        */
-      virtual MultiDimDecisionDiagramBase<GUM_SCALAR>* getMultiDimDecisionDiagram ( bool fillWithDefaultArc = true, GUM_SCALAR defaultValue = 0, bool doCompress = false ) = 0;
+      virtual MultiDimDecisionDiagramBase<GUM_SCALAR>* getMultiDimDecisionDiagram( bool fillWithDefaultArc = true, GUM_SCALAR defaultValue = 0, bool doCompress = false ) = 0;
 
       /**
        * Sets the factory from an already existing diagram
        */
-      void setMultiDimDecisionDiagram ( const MultiDimDecisionDiagramBase<GUM_SCALAR>* source );
+      void setMultiDimDecisionDiagram( const MultiDimDecisionDiagramBase<GUM_SCALAR>* source );
 
       /**
        * Swaps two variables in the build on diagram
        */
-      void swap ( const DiscreteVariable* x, const DiscreteVariable* y );
+      void swap( const DiscreteVariable* x, const DiscreteVariable* y );
 
       /**
        * Resets the factory
@@ -322,10 +322,10 @@ namespace gum {
 
 } /* namespace gum */
 
-// ============================================================================
-#include <agrum/multidim/multiDimDecisionDiagramFactoryBase.tcc>
-// ============================================================================
-#endif /* GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_BASE_H */
-// ============================================================================
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+#include <agrum/multidim/multiDimDecisionDiagramFactoryBase.tcc>
+
+#endif /* GUM_MULTI_DIM_DECISION_DIAGRAM_FACTORY_BASE_H */
+
+
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

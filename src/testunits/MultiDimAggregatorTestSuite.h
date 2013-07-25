@@ -47,9 +47,9 @@ namespace gum_tests {
         gum::Idx tmp;
         tmp = b;
 
-        if( tmp > c ) tmp = c;
+        if ( tmp > c ) tmp = c;
 
-        if( tmp > d ) tmp = d;
+        if ( tmp > d ) tmp = d;
 
         return ( tmp == a ) ? ( float )1 : ( float )0;
       }
@@ -58,9 +58,9 @@ namespace gum_tests {
         gum::Idx tmp;
         tmp = b;
 
-        if( tmp < c ) tmp = c;
+        if ( tmp < c ) tmp = c;
 
-        if( tmp < d ) tmp = d;
+        if ( tmp < d ) tmp = d;
 
         return ( tmp == a ) ? ( float )1 : ( float )0;
       }
@@ -69,11 +69,11 @@ namespace gum_tests {
         gum::Idx tmp;
         tmp = ( gum::Idx )0;
 
-        if( b == ( gum::Idx )2 ) tmp++;
+        if ( b == ( gum::Idx )2 ) tmp++;
 
-        if( c == ( gum::Idx )2 ) tmp++;
+        if ( c == ( gum::Idx )2 ) tmp++;
 
-        if( d == ( gum::Idx )2 ) tmp++;
+        if ( d == ( gum::Idx )2 ) tmp++;
 
         return ( tmp == a ) ? ( float )1 : ( float )0;
       }
@@ -119,7 +119,7 @@ namespace gum_tests {
 
         gum::Instantiation i( p );
 
-        for( i.setFirst(); ! i.end(); ++i ) {
+        for ( i.setFirst(); ! i.end(); ++i ) {
           TS_ASSERT_EQUALS( p[i], __is_min( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
         }
       }
@@ -132,7 +132,7 @@ namespace gum_tests {
 
         gum::Instantiation i( p );
 
-        for( i.setFirst(); ! i.end(); ++i ) {
+        for ( i.setFirst(); ! i.end(); ++i ) {
           TS_ASSERT_EQUALS( p[i], __is_max( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
         }
       }
@@ -145,7 +145,7 @@ namespace gum_tests {
 
         gum::Instantiation i( p );
 
-        for( i.setFirst(); ! i.end(); ++i ) {
+        for ( i.setFirst(); ! i.end(); ++i ) {
           TS_ASSERT_EQUALS( p[i], __is_count_2( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
         }
       }
@@ -158,7 +158,7 @@ namespace gum_tests {
 
         gum::Instantiation i( p );
 
-        for( i.setFirst(); ! i.end(); ++i ) {
+        for ( i.setFirst(); ! i.end(); ++i ) {
           TS_ASSERT_EQUALS( p[i], __is_forall_2( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
         }
       }
@@ -171,7 +171,7 @@ namespace gum_tests {
 
         gum::Instantiation i( p );
 
-        for( i.setFirst(); ! i.end(); ++i ) {
+        for ( i.setFirst(); ! i.end(); ++i ) {
           TS_ASSERT_EQUALS( p[i], __is_exists_2( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
         }
       }
@@ -184,7 +184,7 @@ namespace gum_tests {
 
         gum::Instantiation i( p );
 
-        for( i.setFirst(); ! i.end(); ++i ) {
+        for ( i.setFirst(); ! i.end(); ++i ) {
           TS_ASSERT_EQUALS( p[i], __is_or( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
         }
       }
@@ -197,7 +197,7 @@ namespace gum_tests {
 
         gum::Instantiation i( p );
 
-        for( i.setFirst(); ! i.end(); ++i ) {
+        for ( i.setFirst(); ! i.end(); ++i ) {
           TS_ASSERT_EQUALS( p[i], __is_and( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
         }
       }
@@ -210,7 +210,7 @@ namespace gum_tests {
 
         gum::Instantiation i( p );
 
-        for( i.setFirst(); ! i.end(); ++i ) {
+        for ( i.setFirst(); ! i.end(); ++i ) {
           TS_ASSERT_EQUALS( p[i], __is_min( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
         }
 
@@ -232,7 +232,7 @@ namespace gum_tests {
         const double t[4] = {0.1, 0.1, 0.1, 0.7};
         int n = 4; const std::vector<double> v( t, t + n );
 
-        for( int i = 0; i <= nbr; i++ ) {
+        for ( int i = 0; i <= nbr; i++ ) {
           str = "";
           std::stringstream ss;
           ss << "var" << ( i + 1 );
@@ -240,10 +240,10 @@ namespace gum_tests {
 
           gum::LabelizedVariable var( str, str, 4 ) ;
 
-          if( i == 0 ) {
-            idList.insert( bn.addVariable( var, new gum::aggregator::Min<double>() ) );
+          if ( i == 0 ) {
+            idList.insert( bn.add( var, new gum::aggregator::Min<double>() ) );
           } else {
-            idList.insert( bn.addVariable( var ) );
+            idList.insert( bn.add( var ) );
             bn.addArc( idList[i], idList[0] );
             bn.cpt( idList[i] ).fillWith( v );
 
@@ -251,11 +251,11 @@ namespace gum_tests {
 
             gum::Idx res;
 
-            for( i.setFirst( ) ; ! i.end() ; ++i ) {
+            for ( i.setFirst( ) ; ! i.end() ; ++i ) {
               res = ( gum::Idx )10000; //clearly arbitraty choosen
 
-              for( gum::Idx j = 1; j < i.nbrDim(); j++ ) {
-                if( res > i.val( j ) ) res = i.val( j );
+              for ( gum::Idx j = 1; j < i.nbrDim(); j++ ) {
+                if ( res > i.val( j ) ) res = i.val( j );
               }
 
               TS_ASSERT_EQUALS( bn.cpt( idList[0] )[i], ( res == i.val( ( gum::Idx )0 ) ) ? ( float )1 : ( float )0 );
@@ -271,14 +271,14 @@ namespace gum_tests {
           try {
             // Testing the inference
             inf.makeInference();
-          } catch( gum::Exception e ) {
+          } catch ( gum::Exception e ) {
             TS_ASSERT( false );
           }
 
           try {
             TS_ASSERT_EQUALS( inf.marginal( idList[0] ).toString() , "<var1:0> :: 0.468559 /<var1:1> :: 0.269297 /<var1:2> :: 0.144495 /<var1:3> :: 0.117649" );
             TS_ASSERT_EQUALS( inf.marginal( idList[1] ).toString() , "<var2:0> :: 0.1 /<var2:1> :: 0.1 /<var2:2> :: 0.1 /<var2:3> :: 0.7" );
-          } catch( gum::Exception e ) {
+          } catch ( gum::Exception e ) {
             TS_ASSERT( false );
           }
         }
@@ -289,14 +289,14 @@ namespace gum_tests {
           try {
             // Testing the inference
             inf.makeInference();
-          } catch( gum::Exception e ) {
+          } catch ( gum::Exception e ) {
             TS_ASSERT( false );
           }
 
           try {
             TS_ASSERT_EQUALS( inf.marginal( idList[0] ).toString() , "<var1:0> :: 0.468559 /<var1:1> :: 0.269297 /<var1:2> :: 0.144495 /<var1:3> :: 0.117649" );
             TS_ASSERT_EQUALS( inf.marginal( idList[1] ).toString() , "<var2:0> :: 0.1 /<var2:1> :: 0.1 /<var2:2> :: 0.1 /<var2:3> :: 0.7" );
-          } catch( gum::Exception e ) {
+          } catch ( gum::Exception e ) {
             TS_ASSERT( false );
           }
         }

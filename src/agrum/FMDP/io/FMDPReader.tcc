@@ -20,7 +20,7 @@
 /** @file
  * @brief Templates implementation of FMDP/io/FMDPReader.h classes.
  *
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 

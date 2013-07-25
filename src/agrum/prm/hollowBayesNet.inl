@@ -23,14 +23,14 @@
 //  *
 //  * @author Lionel TORTI
 //  */
-// 
+//
 // // to ease IDE parser
 // #include <agrum/prm/hollowBayesNet.h>
-// 
-// // ============================================================================
+//
+//
 // namespace gum {
 // namespace prm {
-// 
+//
 // INLINE
 // HollowBayesNet::~HollowBayesNet() {
 //   GUM_DESTRUCTOR( HollowBayesNet );
@@ -41,49 +41,49 @@
 //     delete __topo;
 //   }
 // }
-// 
+//
 // INLINE
 // const Potential<prm_float>&
 // HollowBayesNet::cpt( NodeId varId ) const {
 //   return __get(varId).cpf();
 // }
-// 
+//
 // INLINE
 // const DAG&
 // HollowBayesNet::dag() const {
 //   return __dag;
 // }
-// 
+//
 // INLINE
 // const VariableNodeMap&
 // HollowBayesNet::variableNodeMap() const {
 //   GUM_ERROR(FatalError, "Sorry no VarMap in a HollowBayesNet.");
 // }
-// 
+//
 // INLINE
 // Idx
 // HollowBayesNet::size() const {
 //   return __dag.size();
 // }
-// 
+//
 // INLINE
 // bool
 // HollowBayesNet::empty() const {
 //   return __dag.empty();
 // }
-// 
+//
 // INLINE
 // const DiscreteVariable&
 // HollowBayesNet::variable( NodeId id ) const {
 //   return __cec->get(id).type().variable();
 // }
-// 
+//
 // INLINE
 // NodeId
 // HollowBayesNet::nodeId( const DiscreteVariable &var ) const {
 //   return __varNodeMap[&var];
 // }
-// 
+//
 // INLINE
 // NodeId
 // HollowBayesNet::idFromName( const std::string& name ) const {
@@ -93,7 +93,7 @@
 //     GUM_ERROR(NotFound, "no element found with that id.");
 //   }
 // }
-// 
+//
 // INLINE
 // const DiscreteVariable&
 // HollowBayesNet::variableFromName( const std::string& name ) const {
@@ -103,7 +103,7 @@
 //     GUM_ERROR(NotFound, "no element found with that id.");
 //   }
 // }
-// 
+//
 // INLINE
 // const UndiGraph&
 // HollowBayesNet::moralGraph( bool clear ) const {
@@ -113,7 +113,7 @@
 //   }
 //   return *__moralGraph;
 // }
-// 
+//
 // INLINE
 // const Sequence<NodeId>&
 // HollowBayesNet::getTopologicalOrder( bool clear ) const {
@@ -123,7 +123,7 @@
 //   }
 //   return *__topo;
 // }
-// 
+//
 // INLINE
 // const ClassElement&
 // HollowBayesNet::__get(NodeId id) const {
@@ -133,13 +133,13 @@
 //     GUM_ERROR(NotFound, "no element found with that id.");
 //   }
 // }
-// 
+//
 // INLINE
 // const Property<unsigned int>::onNodes&
 // HollowBayesNet::modalities() const {
 //   return __modalities;
 // }
-// 
+//
 // inline std::string
 // hollowbayesnet::todot( void ) const {
 //   std::stringstream output;
@@ -165,7 +165,7 @@
 //   output << "}" << std::endl;
 //   return output.str();
 // }
-// 
+//
 // } /* namespace prm */
 // } /* namespace gum */
-// // ============================================================================
+//

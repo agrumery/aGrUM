@@ -23,14 +23,14 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 namespace gum {
   namespace prm {
     namespace gspan {
 
       INLINE
       Pattern::Pattern():
-          DiGraph(), __last( 0 ) {
+        DiGraph(), __last( 0 ) {
         GUM_CONSTRUCTOR( Pattern );
       }
 
@@ -73,6 +73,7 @@ namespace gum {
       Pattern::lastAdded() {
         if ( __last )
           return *__last;
+
         GUM_ERROR( OperationNotAllowed, "there are no LabelData yet" );
       }
 
@@ -81,6 +82,7 @@ namespace gum {
       Pattern::lastAdded() const {
         if ( __last )
           return *__last;
+
         GUM_ERROR( OperationNotAllowed, "there are no LabelData yet" );
       }
 
@@ -130,9 +132,11 @@ namespace gum {
         if ( not( DiGraph::exists( i ) and DiGraph::exists( j ) ) ) {
           GUM_ERROR( NotFound, "node not found in this pattern" );
         }
+
         EdgeCode* edge = new EdgeCode( i, j, __node_map[i]->id, l.id, __node_map[j]->id );
-        if (( code().codes.size() == 0 ) or
-            ( DFSCode::validNeighbors( code().codes.back(), edge ) ) ) {
+
+        if ( ( code().codes.size() == 0 ) or
+             ( DFSCode::validNeighbors( code().codes.back(), edge ) ) ) {
           DiGraph::insertArc( i, j );
           __arc_map.insert( Arc( i, j ), std::make_pair( &l, edge ) );
           code().codes.push_back( edge );
@@ -166,8 +170,10 @@ namespace gum {
       void
       Pattern::rightmostPath( std::list<NodeId>& r_path ) const {
         r_path.push_back( size() );
+
         while ( r_path.front() != 1 ) {
           const NodeSet& parents = DiGraph::parents( r_path.front() );
+
           for ( NodeSetIterator arc = parents.begin();
                 arc != parents.end(); ++arc ) {
             if ( *arc < r_path.front() ) {
@@ -253,6 +259,7 @@ namespace gum {
       Pattern::pop_back() {
         EdgeCode* edge = __code.codes.back();
         __code.codes.pop_back();
+
         if ( edge->isForward() ) {
           __node_map.erase( edge->j );
           __arc_map.erase( Arc( edge->i, edge->j ) );
@@ -262,6 +269,7 @@ namespace gum {
           __arc_map.erase( Arc( edge->i, edge->j ) );
           DiGraph::eraseArc( Arc( edge->i, edge->j ) );
         }
+
         delete edge;
       }
 
@@ -276,18 +284,19 @@ namespace gum {
         }
       }
 
-// ============================================================================
+
 // NeighborIterator
-// ============================================================================
+
 
       INLINE
       NeighborIterator::NeighborIterator( const NodeSet& parents,
                                           const NodeSet& children ):
-          __parents( &parents ), __children( &children ),
-          __parent_iterator( __parents->begin() ),
-          __children_iterator( __children->begin() ),
-          __iterator( 0 ), __end_iterator( 0 ) {
+        __parents( &parents ), __children( &children ),
+        __parent_iterator( __parents->begin() ),
+        __children_iterator( __children->begin() ),
+        __iterator( 0 ), __end_iterator( 0 ) {
         GUM_CONSTRUCTOR( NeighborIterator );
+
         if ( __parents->empty() ) {
           __iterator = &__children_iterator;
           __end_iterator = &( __children->end() );
@@ -299,11 +308,12 @@ namespace gum {
 
       INLINE
       NeighborIterator::NeighborIterator( const NeighborIterator& from ):
-          __parents( from.__parents ), __children( from.__children ),
-          __parent_iterator( from.__parent_iterator ),
-          __children_iterator( from.__children_iterator ),
-          __iterator( 0 ), __end_iterator( from.__end_iterator ) {
+        __parents( from.__parents ), __children( from.__children ),
+        __parent_iterator( from.__parent_iterator ),
+        __children_iterator( from.__children_iterator ),
+        __iterator( 0 ), __end_iterator( from.__end_iterator ) {
         GUM_CONS_CPY( NeighborIterator );
+
         if ( from.__iterator == &( from.__parent_iterator ) ) {
           __iterator = &__parent_iterator;
         } else {
@@ -320,11 +330,13 @@ namespace gum {
       NeighborIterator&
       NeighborIterator::operator++() {
         ++( *__iterator );
-        if (( __iterator == ( &__parent_iterator ) ) and
-            ( *__iterator ) == ( *__end_iterator ) ) {
+
+        if ( ( __iterator == ( &__parent_iterator ) ) and
+             ( *__iterator ) == ( *__end_iterator ) ) {
           __iterator = ( &__children_iterator );
           __end_iterator = &( __children->end() );
         }
+
         return *this;
       }
 
@@ -354,6 +366,7 @@ namespace gum {
         __children = from.__children;
         __parent_iterator = from.__parent_iterator;
         __children_iterator = from.__children_iterator;
+
         if ( from.__iterator == &( from.__parent_iterator ) ) {
           __iterator = &__parent_iterator;
           __end_iterator = &( __parents->end() );
@@ -361,6 +374,7 @@ namespace gum {
           __iterator = &__children_iterator;
           __end_iterator = &( __children->end() );
         }
+
         return *this;
       }
 
@@ -371,4 +385,4 @@ namespace gum {
     } /* namespace gspan */
   } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

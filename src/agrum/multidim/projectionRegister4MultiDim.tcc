@@ -52,7 +52,7 @@ namespace gum {
       // the hashtable contained within the ProjectionRegister4MultiDim will be
       // removed at the end of the program's execution.
       __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
-                             ( void* ) theset );
+                                 ( void* ) theset );
 #endif /* NDEBUG */
     } else {
       theset = __set[projection_name];
@@ -113,7 +113,7 @@ namespace gum {
       // the hashtable contained within the ProjectionRegister4MultiDim will be
       // removed at the end of the program's execution.
       __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
-                             ( void* ) &container.__set );
+                                 ( void* ) &container.__set );
 
     }
 

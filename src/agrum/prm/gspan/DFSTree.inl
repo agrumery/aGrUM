@@ -26,20 +26,20 @@
 
 #include <agrum/prm/gspan/DFSTree.h>
 
-// ============================================================================
+
 namespace gum {
   namespace prm {
     namespace gspan {
 
       INLINE
-      DFSTree::DFSTree ( const InterfaceGraph& graph, gspan::SearchStrategy* strategy ) :
-        __graph ( &graph ), __strategy ( strategy ) {
-        GUM_CONSTRUCTOR ( DFSTree );
+      DFSTree::DFSTree( const InterfaceGraph& graph, gspan::SearchStrategy* strategy ) :
+        __graph( &graph ), __strategy( strategy ) {
+        GUM_CONSTRUCTOR( DFSTree );
 
         if ( not __strategy )
-          __strategy = new FrequenceSearch ( 2 );
+          __strategy = new FrequenceSearch( 2 );
 
-        __strategy->setTree ( this );
+        __strategy->setTree( this );
       }
 
       INLINE
@@ -52,103 +52,103 @@ namespace gum {
 
       INLINE
       Pattern&
-      DFSTree::parent ( const Pattern& p ) {
+      DFSTree::parent( const Pattern& p ) {
         try {
-          return * ( __node_map.second ( * ( DiGraph::parents ( __node_map.first ( const_cast<Pattern*> ( &p ) ) ).begin() ) ) );
+          return * ( __node_map.second( * ( DiGraph::parents( __node_map.first( const_cast<Pattern*>( &p ) ) ).begin() ) ) );
         } catch ( NotFound& ) {
-          if ( __node_map.existsSecond ( const_cast<Pattern*> ( &p ) ) ) {
-            GUM_ERROR ( NotFound, "the given pattern is a root node" );
+          if ( __node_map.existsSecond( const_cast<Pattern*>( &p ) ) ) {
+            GUM_ERROR( NotFound, "the given pattern is a root node" );
           } else {
-            GUM_ERROR ( NotFound, "pattern not found in this DFSTree" );
+            GUM_ERROR( NotFound, "pattern not found in this DFSTree" );
           }
         }
       }
 
       INLINE
       const Pattern&
-      DFSTree::parent ( const Pattern& p ) const {
+      DFSTree::parent( const Pattern& p ) const {
         try {
-          return * ( __node_map.second ( * ( DiGraph::parents ( __node_map.first ( const_cast<Pattern*> ( &p ) ) ).begin() ) ) );
+          return * ( __node_map.second( * ( DiGraph::parents( __node_map.first( const_cast<Pattern*>( &p ) ) ).begin() ) ) );
         } catch ( NotFound& ) {
-          if ( __node_map.existsSecond ( const_cast<Pattern*> ( &p ) ) ) {
-            GUM_ERROR ( NotFound, "the given pattern is a root node" );
+          if ( __node_map.existsSecond( const_cast<Pattern*>( &p ) ) ) {
+            GUM_ERROR( NotFound, "the given pattern is a root node" );
           } else {
-            GUM_ERROR ( NotFound, "pattern not found in this DFSTree" );
+            GUM_ERROR( NotFound, "pattern not found in this DFSTree" );
           }
         }
       }
 
       INLINE
       std::list<NodeId>&
-      DFSTree::children ( const Pattern& p ) {
+      DFSTree::children( const Pattern& p ) {
         try {
-          return __data[const_cast<Pattern*> ( &p )]->children;
+          return __data[const_cast<Pattern*>( &p )]->children;
         } catch ( NotFound& ) {
-          GUM_ERROR ( NotFound, "pattern not found in this DFSTree" );
+          GUM_ERROR( NotFound, "pattern not found in this DFSTree" );
         }
       }
 
       INLINE
       const std::list<NodeId>&
-      DFSTree::children ( const Pattern& p ) const {
+      DFSTree::children( const Pattern& p ) const {
         try {
-          return __data[const_cast<Pattern*> ( &p )]->children;
+          return __data[const_cast<Pattern*>( &p )]->children;
         } catch ( NotFound& ) {
-          GUM_ERROR ( NotFound, "pattern not found in this DFSTree" );
+          GUM_ERROR( NotFound, "pattern not found in this DFSTree" );
         }
       }
 
       INLINE
       Pattern&
-      DFSTree::pattern ( NodeId id ) {
+      DFSTree::pattern( NodeId id ) {
         try {
-          return * ( __node_map.second ( id ) );
+          return * ( __node_map.second( id ) );
         } catch ( NotFound& ) {
-          GUM_ERROR ( NotFound, "no pattern matching the given id" );
+          GUM_ERROR( NotFound, "no pattern matching the given id" );
         }
       }
 
       INLINE
       const Pattern&
-      DFSTree::pattern ( NodeId id ) const {
+      DFSTree::pattern( NodeId id ) const {
         try {
-          return * ( __node_map.second ( id ) );
+          return * ( __node_map.second( id ) );
         } catch ( NotFound& ) {
-          GUM_ERROR ( NotFound, "no pattern matching the given id" );
+          GUM_ERROR( NotFound, "no pattern matching the given id" );
         }
       }
 
       INLINE
       UndiGraph&
-      DFSTree::iso_graph ( const Pattern& p ) {
+      DFSTree::iso_graph( const Pattern& p ) {
         try {
-          return __data[const_cast<Pattern*> ( &p )]->iso_graph;
+          return __data[const_cast<Pattern*>( &p )]->iso_graph;
         } catch ( NotFound& ) {
-          GUM_ERROR ( NotFound, "pattern not found in this DFSTree" );
+          GUM_ERROR( NotFound, "pattern not found in this DFSTree" );
         }
       }
 
       INLINE
       Sequence<Instance*>&
-      DFSTree::iso_map ( const Pattern& p, NodeId node ) {
+      DFSTree::iso_map( const Pattern& p, NodeId node ) {
         try {
-          return * ( __data[const_cast<Pattern*> ( &p )]->iso_map[node] );
+          return * ( __data[const_cast<Pattern*>( &p )]->iso_map[node] );
         } catch ( NotFound& ) {
-          if ( __data.exists ( const_cast<Pattern*> ( &p ) ) ) {
-            GUM_ERROR ( NotFound, "node not found in Pattern's isomorphism graph" );
+          if ( __data.exists( const_cast<Pattern*>( &p ) ) ) {
+            GUM_ERROR( NotFound, "node not found in Pattern's isomorphism graph" );
           } else {
-            GUM_ERROR ( NotFound, "pattern not found in this DFSTree" );
+            GUM_ERROR( NotFound, "pattern not found in this DFSTree" );
           }
         }
       }
 
       INLINE
       Set<NodeId>&
-      DFSTree::max_indep_set ( const Pattern& p ) {
+      DFSTree::max_indep_set( const Pattern& p ) {
         try {
-          return __data[const_cast<Pattern*> ( &p )]->max_indep_set;
+          return __data[const_cast<Pattern*>( &p )]->max_indep_set;
         } catch ( NotFound& ) {
-          GUM_ERROR ( NotFound, "pattern not found in this DFSTree" );
+          GUM_ERROR( NotFound, "pattern not found in this DFSTree" );
         }
       }
 
@@ -160,7 +160,7 @@ namespace gum {
 
       INLINE
       std::ostream&
-      operator<< ( std::ostream& out, const DFSTree::EdgeGrowth &edge ) {
+      operator<< ( std::ostream& out, const DFSTree::EdgeGrowth& edge ) {
         out << edge.u << ", " << * ( edge.edge ) << ", " << * ( edge.l_v ) << ", " << edge.v;
         return out;
       }
@@ -177,23 +177,23 @@ namespace gum {
 //   return __data[const_cast<Pattern*>(&p)]->sub_patterns_map;
 // }
 
-// ============================================================================
+
 // EdgeGrowth
-// ============================================================================
+
 
       INLINE
-      DFSTree::EdgeGrowth::EdgeGrowth ( NodeId a_u, LabelData* an_edge,
-                                        LabelData* a_l_v, NodeId a_v ) :
-        u ( a_u ), edge ( an_edge ), l_v ( a_l_v ), v ( a_v ),
-        degree_list ( new std::vector<NodeId>() ) {
-        GUM_CONSTRUCTOR ( DFSTree::EdgeGrowth );
+      DFSTree::EdgeGrowth::EdgeGrowth( NodeId a_u, LabelData* an_edge,
+                                       LabelData* a_l_v, NodeId a_v ) :
+        u( a_u ), edge( an_edge ), l_v( a_l_v ), v( a_v ),
+        degree_list( new std::vector<NodeId>() ) {
+        GUM_CONSTRUCTOR( DFSTree::EdgeGrowth );
       }
 
       INLINE
-      DFSTree::EdgeGrowth::EdgeGrowth ( const EdgeGrowth& from ) :
-        u ( from.u ), edge ( from.edge ), v ( from.v ), matches ( from.matches ),
-        iso_graph ( from.iso_graph ), degree_list ( 0 ), max_indep_set ( from.max_indep_set ) {
-        GUM_CONS_CPY ( DFSTree::EdgeGrowth );
+      DFSTree::EdgeGrowth::EdgeGrowth( const EdgeGrowth& from ) :
+        u( from.u ), edge( from.edge ), v( from.v ), matches( from.matches ),
+        iso_graph( from.iso_graph ), degree_list( 0 ), max_indep_set( from.max_indep_set ) {
+        GUM_CONS_CPY( DFSTree::EdgeGrowth );
 
         if ( from.degree_list != 0 ) {
           degree_list = new std::vector<NodeId> ( * ( from.degree_list ) );
@@ -202,7 +202,7 @@ namespace gum {
 
       INLINE
       DFSTree::EdgeGrowth::~EdgeGrowth() {
-        GUM_DESTRUCTOR ( DFSTree::EdgeGrowth );
+        GUM_DESTRUCTOR( DFSTree::EdgeGrowth );
 
         if ( degree_list != 0 ) {
           delete degree_list;
@@ -225,20 +225,20 @@ namespace gum {
 
       INLINE
       double
-      DFSTree::frequency ( const Pattern& p ) const {
-        return ( double ) __data[const_cast<Pattern*> ( &p )]->max_indep_set.size();
+      DFSTree::frequency( const Pattern& p ) const {
+        return ( double ) __data[const_cast<Pattern*>( &p )]->max_indep_set.size();
       }
 
       INLINE
       DFSTree::PatternData&
-      DFSTree::data ( const Pattern& p ) {
-        return * ( __data[const_cast<Pattern*> ( &p )] );
+      DFSTree::data( const Pattern& p ) {
+        return * ( __data[const_cast<Pattern*>( &p )] );
       }
 
       INLINE
       const DFSTree::PatternData&
-      DFSTree::data ( const Pattern& p ) const {
-        return * ( __data[const_cast<Pattern*> ( &p )] );
+      DFSTree::data( const Pattern& p ) const {
+        return * ( __data[const_cast<Pattern*>( &p )] );
       }
 
       INLINE
@@ -249,44 +249,44 @@ namespace gum {
       const SearchStrategy&
       DFSTree::strategy() const { return *__strategy; }
 
-// ============================================================================
+
 // NeighborDegreeSort
-// ============================================================================
+
 
       INLINE
-      DFSTree::NeighborDegreeSort::NeighborDegreeSort ( UndiGraph& graph ) :
-        g ( graph ) {
-        GUM_CONSTRUCTOR ( DFSTree::NeighborDegreeSort );
+      DFSTree::NeighborDegreeSort::NeighborDegreeSort( UndiGraph& graph ) :
+        g( graph ) {
+        GUM_CONSTRUCTOR( DFSTree::NeighborDegreeSort );
       }
 
       INLINE
-      DFSTree::NeighborDegreeSort::NeighborDegreeSort ( const NeighborDegreeSort& source ) :
-        g ( source.g ) {
-        GUM_CONS_CPY ( DFSTree::NeighborDegreeSort );
+      DFSTree::NeighborDegreeSort::NeighborDegreeSort( const NeighborDegreeSort& source ) :
+        g( source.g ) {
+        GUM_CONS_CPY( DFSTree::NeighborDegreeSort );
       }
 
       INLINE
       DFSTree::NeighborDegreeSort::~NeighborDegreeSort() {
-        GUM_DESTRUCTOR ( DFSTree::NeighborDegreeSort );
+        GUM_DESTRUCTOR( DFSTree::NeighborDegreeSort );
       }
 
       INLINE
       bool
-      DFSTree::NeighborDegreeSort::operator() ( NodeId i, NodeId j ) {
-        return g.neighbours ( i ).size() < g.neighbours ( j ).size();
+      DFSTree::NeighborDegreeSort::operator()( NodeId i, NodeId j ) {
+        return g.neighbours( i ).size() < g.neighbours( j ).size();
       }
 
-// ============================================================================
+
 // PatternData
-// ============================================================================
+
 
       INLINE
-      DFSTree::PatternData::PatternData ( Pattern* p ) :
-        pattern ( p ), cost ( 0 ), gain ( 0 ) {
-        GUM_CONSTRUCTOR ( DFSTree::PatternData );
+      DFSTree::PatternData::PatternData( Pattern* p ) :
+        pattern( p ), cost( 0 ), gain( 0 ) {
+        GUM_CONSTRUCTOR( DFSTree::PatternData );
       }
 
     } /* namespace gspan */
   } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

@@ -51,7 +51,7 @@ namespace gum {
    */
   template<typename GUM_SCALAR> INLINE
   void
-  BIFXMLIDWriter<GUM_SCALAR>::write( std::ostream &output, const InfluenceDiagram<GUM_SCALAR>& infdiag ) {
+  BIFXMLIDWriter<GUM_SCALAR>::write( std::ostream& output, const InfluenceDiagram<GUM_SCALAR>& infdiag ) {
     if ( ! output.good() ) {
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
     }
@@ -216,7 +216,7 @@ namespace gum {
     //</DEFINITION>
     std::stringstream str;
 
-    if ( !(( infdiag.isDecisionNode( varNodeId ) ) && ( infdiag.dag().parents( varNodeId ).empty() ) ) ) {
+    if ( !( ( infdiag.isDecisionNode( varNodeId ) ) && ( infdiag.dag().parents( varNodeId ).empty() ) ) ) {
       //Declaration
       str << "<DEFINITION>" << std::endl;
 
@@ -281,4 +281,4 @@ namespace gum {
 
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 

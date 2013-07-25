@@ -116,12 +116,12 @@ namespace gum {
 
       /// @}
 
-      /// a virtual copyFactory
-      virtual DiscreteVariable* copyFactory() const;
+      /// a virtual clone
+      virtual DiscreteVariable* clone() const;
 
-      // ============================================================================
+
       /// returns the type of variable
-      // ============================================================================
+
       virtual Type type( void ) const;
 
       /**
@@ -136,14 +136,14 @@ namespace gum {
        * @param aTick
        * @return true if the tick already exists
        */
-      bool isTick( const T_TICKS & aTick ) const;
+      bool isTick( const T_TICKS& aTick ) const;
 
       /**
        * add a tick.
        * @param aTick
        * @throw DefaultInLabel
        */
-      DiscretizedVariable& addTick( const T_TICKS & aTick );
+      DiscretizedVariable& addTick( const T_TICKS& aTick );
 
       /**
        * erase all the Ticks

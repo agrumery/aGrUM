@@ -42,7 +42,7 @@ namespace gum_tests {
         gum::BayesBall* balls = 0;
         TS_ASSERT_THROWS_NOTHING( balls = new gum::BayesBall() );
 
-        TS_ASSERT_THROWS_NOTHING( if( balls != 0 ) delete balls );
+        TS_ASSERT_THROWS_NOTHING( if ( balls != 0 ) delete balls );
       }
 
       void testRequisiteNodes() {
@@ -55,20 +55,20 @@ namespace gum_tests {
         gum::Set<gum::NodeId> query, hardEvidence;
         gum::Sequence<gum::NodeId> nodes_seq;
 
-        for( gum::DiGraph::NodeIterator iter = bn->dag().beginNodes(); iter != bn->dag().endNodes(); ++iter )
+        for ( gum::DiGraph::NodeIterator iter = bn->dag().beginNodes(); iter != bn->dag().endNodes(); ++iter )
           nodes_seq.insert( *iter );
 
-        for( gum::Idx i = 0; i < 5; ++i )
+        for ( gum::Idx i = 0; i < 5; ++i )
           hardEvidence.insert( nodes_seq.atPos( i ) );
 
-        for( gum::Idx j = 24; j > 19; --j )
+        for ( gum::Idx j = 24; j > 19; --j )
           query.insert( nodes_seq.atPos( j ) );
 
         TS_ASSERT_THROWS_NOTHING( balls.requisiteNodes( bn->dag(), query, hardEvidence, requisite ) );
 
         TS_ASSERT( requisite.size() >= 5 );
 
-        if( bn != 0 ) delete bn;
+        if ( bn != 0 ) delete bn;
       }
 
   };

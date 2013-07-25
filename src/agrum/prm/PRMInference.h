@@ -23,18 +23,18 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #include <string>
-// ============================================================================
+
 #include <agrum/core/hashTable.h>
-// ============================================================================
+
 #include <agrum/multidim/potential.h>
-// ============================================================================
+
 #include <agrum/prm/PRM.h>
-// ============================================================================
+
 #ifndef GUM_PRM_INFERENCE_H
 #define GUM_PRM_INFERENCE_H
-// ============================================================================
+
 
 namespace gum {
   namespace prm {
@@ -67,10 +67,10 @@ namespace gum {
         /// @{
 
         /// Default constructor.
-        PRMInference ( const PRM& prm, const System& system );
+        PRMInference( const PRM& prm, const System& system );
 
         /// Copy constructor.
-        PRMInference ( const PRMInference& source );
+        PRMInference( const PRMInference& source );
 
         /// Destructor.
         virtual ~PRMInference();
@@ -104,7 +104,7 @@ namespace gum {
          * @throw WrongType Raised if chain does not point to an Attribute.
          * @throw OperationNotAllowed Raise if m is not empty.
          */
-        void marginal ( const Chain& chain, Potential<prm_float>& m );
+        void marginal( const Chain& chain, Potential<prm_float>& m );
 
         /**
          * Compute the joint probability of the formals attributes pointed by
@@ -117,7 +117,7 @@ namespace gum {
          *                 formal attribute.
          * @throw OperationNotAllowed Raise if m is not empty.
          */
-        void joint ( const std::vector< Chain >& chains, Potential<prm_float>& j );
+        void joint( const std::vector< Chain >& chains, Potential<prm_float>& j );
 
         /// @}
         // ========================================================================
@@ -127,28 +127,28 @@ namespace gum {
 
         /// Returns EMap of evidences over i.
         /// @throw NotFound if i has no evidence.
-        EMap& evidence ( const Instance& i );
+        EMap& evidence( const Instance& i );
 
         /// Returns EMap of evidences over i.
         /// @throw NotFound if i has no evidence.
-        EMap& evidence ( const Instance* i );
+        EMap& evidence( const Instance* i );
 
         /// Returns EMap of evidences over i.
         /// @throw NotFound if i has no evidence.
-        const EMap& evidence ( const Instance& i ) const;
+        const EMap& evidence( const Instance& i ) const;
 
         /// Returns EMap of evidences over i.
         /// @throw NotFound if i has no evidence.
-        const EMap& evidence ( const Instance* i ) const;
+        const EMap& evidence( const Instance* i ) const;
 
         /// Returns true if i has evidence.
-        bool hasEvidence ( const Instance& i ) const;
+        bool hasEvidence( const Instance& i ) const;
 
         /// Returns EMap of evidences over i.
-        bool hasEvidence ( const Instance* i ) const;
+        bool hasEvidence( const Instance* i ) const;
 
         /// Returns true if i has evidence on Attribute a.
-        bool hasEvidence ( const Chain& chain ) const;
+        bool hasEvidence( const Chain& chain ) const;
 
         /// Returns true if i has evidence on Attribute a.
         bool hasEvidence() const;
@@ -159,14 +159,14 @@ namespace gum {
         ///
         /// @throw NotFound Raised if elt does not belong to i.
         /// @throw OperationNotAllowed Raised if p is inconsistent with elt.
-        void addEvidence ( const Chain& chain, const Potential<prm_float>& p );
+        void addEvidence( const Chain& chain, const Potential<prm_float>& p );
 
         /// Remove evidence on the given instance's elt.
         /// @param chain The variable being observed.
         ///
         /// @throw NotFound Raised if the given names are not found.
         /// @throw WrongType Raised if the elt is not an Attribute.
-        void removeEvidence ( const Chain& chain );
+        void removeEvidence( const Chain& chain );
 
         /// Remove all evidences.
         void clearEvidence();
@@ -174,7 +174,7 @@ namespace gum {
         /// Copy evidences from source if they share the same Model.
         /// @throw OperationNotAllowed Raised if source and this does not share
         ///                            the same Model.
-        void copyEvidence ( const PRMInference& source );
+        void copyEvidence( const PRMInference& source );
 
         /// @}
       protected:
@@ -185,23 +185,23 @@ namespace gum {
 
         /// This method is called whenever an evidence is added, but AFTER
         /// any processing made by PRMInference.
-        virtual void _evidenceAdded ( const Chain& chain ) =0;
+        virtual void _evidenceAdded( const Chain& chain ) =0;
 
         /// This method is called whenever an evidence is removed, but BEFORE
         /// any processing made by PRMInference.
-        virtual void _evidenceRemoved ( const Chain& chain ) =0;
+        virtual void _evidenceRemoved( const Chain& chain ) =0;
 
         /// @brief Generic method to compute the marginal of given element.
         /// @param chain
         /// @param m CPF filled with the marginal of elt. It is initialized
         ///          properly.
-        virtual void _marginal ( const Chain& chain, Potential<prm_float>& m ) =0;
+        virtual void _marginal( const Chain& chain, Potential<prm_float>& m ) =0;
 
         /// @brief Generic method to compute the marginal of given element.
         /// @param queries Set of pairs of Instance and Attribute.
         /// @param j CPF filled with the joint probability of queries. It is
         ///          initialized properly.
-        virtual void _joint ( const std::vector< Chain >& queries, Potential<prm_float>& j ) =0;
+        virtual void _joint( const std::vector< Chain >& queries, Potential<prm_float>& j ) =0;
 
         /// The PRM on which inference is done.
         const PRM* _prm;
@@ -227,17 +227,17 @@ namespace gum {
         HashTable<const Instance*, EMap*> __evidences;
 
         /// Private getter over __evidences, if necessary creates an EMap for i.
-        EMap& __EMap ( const Instance* i );
+        EMap& __EMap( const Instance* i );
 
         /// @}
     };
 
   } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/PRMInference.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 #endif /* GUM_PRM_INFERENCE_H */
-// ============================================================================
+

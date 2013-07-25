@@ -25,7 +25,7 @@
  * Every classe used to read or write a BN from a file, must inherit from
  * BNWriter or BNReader.
  *
- * @author Lionel Torti & Pierre-Henri Wuillemin
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_BN_WRITER_H
 #define GUM_BN_WRITER_H
@@ -53,36 +53,36 @@ namespace gum {
   template<typename GUM_SCALAR>
 
   class BNWriter {
-  public:
-    /**
-     * Default constructor.
-     */
-    BNWriter();
+    public:
+      /**
+       * Default constructor.
+       */
+      BNWriter();
 
-    /**
-     * Default destructor.
-     */
-    virtual ~BNWriter();
+      /**
+       * Default destructor.
+       */
+      virtual ~BNWriter();
 
-    /**
-     * Writes a Bayesian Network in the ouput stream.
-     *
-		 * @param output The output stream.
-     * @param bn The Bayesian Network writed in output.
-     * @throws IOError Raised if an I/O error occurs.
-     */
-    virtual void write( std::ostream &output, const BayesNet<GUM_SCALAR>& bn ) =0;
+      /**
+       * Writes a Bayesian Network in the ouput stream.
+       *
+       * @param output The output stream.
+       * @param bn The Bayesian Network writed in output.
+       * @throws IOError Raised if an I/O error occurs.
+       */
+      virtual void write( std::ostream& output, const BayesNet<GUM_SCALAR>& bn ) =0;
 
-    /**
-     * Writes a Bayesian Network in the file referenced by filePath.
-     * If the file doesn't exists, it is created.
-     * If the file exists, it's content will be erased.
-     *
-     * @param filePath The path to the file used to write the Bayesian Network.
-     * @param bn The Bayesian Network writen in the file.
-     * @throw IOError Raised if an I/O error occurs.
-     */
-    virtual void write( std::string filePath, const BayesNet<GUM_SCALAR>& bn ) =0;
+      /**
+       * Writes a Bayesian Network in the file referenced by filePath.
+       * If the file doesn't exists, it is created.
+       * If the file exists, it's content will be erased.
+       *
+       * @param filePath The path to the file used to write the Bayesian Network.
+       * @param bn The Bayesian Network writen in the file.
+       * @throw IOError Raised if an I/O error occurs.
+       */
+      virtual void write( std::string filePath, const BayesNet<GUM_SCALAR>& bn ) =0;
   };
 } /* namespace gum */
 

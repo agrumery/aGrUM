@@ -34,27 +34,28 @@
 namespace gum {
 
 
-  // ==============================================================================
+
   /// basic constructor. Creates an empty heap
-  // ==============================================================================
+
   template <typename Val, typename Cmp>
   Heap<Val,Cmp>::Heap( Cmp compare, Size capacity ) :
-      __heap( capacity ), __nb_elements( 0 ), __cmp( compare ) {
+    __heap( capacity ), __nb_elements( 0 ), __cmp( compare ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Heap );
   }
 
-  // ==============================================================================
+
   /// copy constructor
-  // ==============================================================================
+
   template <typename Val, typename Cmp>
   Heap<Val,Cmp>::Heap( const Heap<Val,Cmp>& from ) :
-      __heap( from.__heap.size() ), __nb_elements( 0 ), __cmp( from.__cmp ) {
+    __heap( from.__heap.size() ), __nb_elements( 0 ), __cmp( from.__cmp ) {
     // for debugging purposes
     GUM_CONS_CPY( Heap );
 
     // copy the elements of from.__heap
     Size i;
+
     try {
       for ( i = 0; i < from.__nb_elements; ++i )
         __heap[i] = new Val( *from.__heap[i] );
@@ -68,9 +69,9 @@ namespace gum {
     __nb_elements = from.__nb_elements;
   }
 
-  // ==============================================================================
+
   /// copy operator
-  // ==============================================================================
+
   template <typename Val, typename Cmp>
   Heap<Val,Cmp>& Heap<Val,Cmp>::operator= ( const Heap<Val,Cmp>& from ) {
     // avoid self assignment
@@ -95,6 +96,7 @@ namespace gum {
 
         // change all the current elements of heap by those in from
         Size i;
+
         for ( i = 0; i < __nb_elements; ++i )
           *__heap[i] = *from.__heap[i];
 
@@ -114,9 +116,9 @@ namespace gum {
     return *this;
   }
 
-  // ==============================================================================
+
   /// destructor
-  // ==============================================================================
+
   template <typename Val, typename Cmp>
   Heap<Val,Cmp>::~Heap() {
     // for debugging purposes
@@ -127,9 +129,9 @@ namespace gum {
       delete __heap[i];
   }
 
-  // ==============================================================================
+
   /// returns the element at the top of the heap
-  // ==============================================================================
+
   template <typename Val, typename Cmp> INLINE
   const Val& Heap<Val,Cmp>::top() const  {
     if ( !__nb_elements ) {
@@ -139,25 +141,25 @@ namespace gum {
     return *__heap[0];
   }
 
-  // ==============================================================================
+
   /// returns the number of elements in the heap
-  // ==============================================================================
+
   template <typename Val, typename Cmp> INLINE
   Size Heap<Val,Cmp>::size() const  {
     return __nb_elements;
   }
 
-  // ==============================================================================
+
   /// return the size of the array storing the heap
-  // ==============================================================================
+
   template <typename Val, typename Cmp> INLINE
   Size Heap<Val,Cmp>::capacity() const  {
     return __heap.size();
   }
 
-  // ==============================================================================
+
   /// changes the size of the array storing the heap
-  // ==============================================================================
+
   template <typename Val, typename Cmp> INLINE
   void Heap<Val,Cmp>::resize( Size new_size ) {
     if ( new_size < __nb_elements ) return;
@@ -165,9 +167,9 @@ namespace gum {
     __heap.resize( new_size );
   }
 
-  // ==============================================================================
+
   /// removes the element at position 'index' from the heap
-  // ==============================================================================
+
   template <typename Val, typename Cmp>
   void Heap<Val,Cmp>::erase( Size index ) {
     if ( index >= __nb_elements ) return;
@@ -183,22 +185,24 @@ namespace gum {
 
     // restore the heap property
     Size i = index;
+
     for ( Size j= ( index << 1 ) + 1; j < __nb_elements;
           i = j, j = ( j << 1 ) + 1 ) {
       // let j be the max child
-      if (( j+1 < __nb_elements ) && __cmp( *__heap[j+1],*__heap[j] ) ) ++j;
+      if ( ( j+1 < __nb_elements ) && __cmp( *__heap[j+1],*__heap[j] ) ) ++j;
 
       // if "last" is smaller than __heap[j], "last" must be stored at index i
       if ( __cmp( *last,*__heap[j] ) ) break;
+
       __heap[i] = __heap[j];
     }
 
     __heap[i] = last;
   }
 
-  // ==============================================================================
+
   /// removes a given element from the heap (but does not return it)
-  // ==============================================================================
+
   template <typename Val, typename Cmp> INLINE
   void Heap<Val,Cmp>::eraseByVal( const Val& val ) {
     // find val in the heap
@@ -209,9 +213,9 @@ namespace gum {
       }
   }
 
-  // ==============================================================================
+
   /// removes the top of the heap (but does not return it)
-  // ==============================================================================
+
   template <typename Val, typename Cmp> INLINE
   void Heap<Val,Cmp>::eraseTop() {
     // if the heap is empty, do nothing
@@ -220,9 +224,9 @@ namespace gum {
     erase( 0 );
   }
 
-  // ==============================================================================
+
   /// removes the top element from the heap and return it
-  // ==============================================================================
+
   template <typename Val, typename Cmp> INLINE
   Val Heap<Val,Cmp>::pop() {
     if ( !__nb_elements ) {
@@ -236,9 +240,9 @@ namespace gum {
     return v;
   }
 
-  // ==============================================================================
+
   /// inserts a new (a copy) element in the heap
-  // ==============================================================================
+
   template <typename Val, typename Cmp>
   Size Heap<Val,Cmp>::insert( const Val& val ) {
     // create a new element at the end of the heap
@@ -248,6 +252,7 @@ namespace gum {
 
     // restore the heap property
     Size i = __nb_elements - 1;
+
     for ( Size j = ( i-1 ) >> 1; i && __cmp( val,*__heap[j] );
           i=j, j = ( j-1 ) >> 1 )
       __heap[i] = __heap[j];
@@ -257,17 +262,17 @@ namespace gum {
     return i;
   }
 
-  // ==============================================================================
+
   /// indicates whether the heap is empty
-  // ==============================================================================
+
   template <typename Val, typename Cmp> INLINE
   bool Heap<Val,Cmp>::empty() const  {
     return ( __nb_elements == 0 );
   }
 
-  // ==============================================================================
+
   /// indicates whether the heap contains a given value
-  // ==============================================================================
+
   template <typename Val, typename Cmp> INLINE
   bool Heap<Val,Cmp>::contains( const Val& val ) const  {
     for ( Size i = 0; i < __nb_elements; ++i )
@@ -277,9 +282,9 @@ namespace gum {
     return false;
   }
 
-  // ==============================================================================
+
   /// returns the element at index elt from the heap
-  // ==============================================================================
+
   template <typename Val, typename Cmp> INLINE
   const Val& Heap<Val,Cmp>::operator[]( Size index ) const  {
     // check if the element exists
@@ -290,9 +295,9 @@ namespace gum {
     return *__heap[index];
   }
 
-  // ==============================================================================
+
   /// displays the content of the heap
-  // ==============================================================================
+
   template <typename Val, typename Cmp>
   std::string Heap<Val,Cmp>::toString() const {
     bool deja = false;
@@ -311,9 +316,9 @@ namespace gum {
   }
 
 
-  // ==============================================================================
+
   /// A \c << operator for Heap
-  // ==============================================================================
+
   template <typename Val, typename Cmp> INLINE
   std::ostream& operator<< ( std::ostream& stream, const Heap<Val,Cmp>& heap ) {
     stream << heap.toString();

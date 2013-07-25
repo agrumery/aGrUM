@@ -24,7 +24,7 @@
 /**
  * @file
  * @brief Class representing a polytope ( credal set ) by a set of linear constraints
- * @author Matthieu HOURBRACQ
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
  */
 
 #include <string>
@@ -49,7 +49,7 @@ namespace gum {
       * @class LpCol LpInterface.h <agrum/CN/LpInterface.h>
       * @brief Class representing a variable ( a column ) of a linear program, i.e. a dimension of the problem.
       * @ingroup cn_group
-      * @author Matthieu HOURBRACQ
+      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
       */
       class LpCol {
         public:
@@ -61,16 +61,16 @@ namespace gum {
           * @brief Default constructor.
           * @param id The id of the variable.
           */
-          LpCol ( unsigned int id );
+          LpCol( unsigned int id );
 
           /**
           * @brief Default copy constructor.
           * @param col The constant reference to the variable to copy.
           */
-          LpCol ( const LpCol& col );
+          LpCol( const LpCol& col );
 
           /** @brief Default destructor. */
-          ~LpCol ();
+          ~LpCol();
 
           /// @}
 
@@ -78,7 +78,7 @@ namespace gum {
           * @brief %Variable id accessor.
           * @return The id of the variable.
           */
-          unsigned int id () const;
+          unsigned int id() const;
 
           /// @name Operators overload
           /// @{
@@ -130,13 +130,13 @@ namespace gum {
           /**
           * @brief Print the representation of a calling variable on std::cout.
           */
-          void print () const;
+          void print() const;
 
           /**
           * @brief Get the string representation of a calling variable.
           * @return The string representation of the calling variable.
           */
-          std::string toString () const;
+          std::string toString() const;
 
         protected:
 
@@ -164,7 +164,7 @@ namespace gum {
       * @brief Overload of operator () to compute hash of a variable \c LpCol.
       * @param key The constant reference to the variable whose hash we want to compute.
       */
-      Size operator() ( const credal::lp::LpCol& key ) const;
+      Size operator()( const credal::lp::LpCol& key ) const;
   };
 } // end of namespace gum
 
@@ -175,7 +175,7 @@ namespace gum {
       /**
       * @class LpExpr LpInterface.h <agrum/CN/LpInterface.h>
       * @brief Class representing a linear expression.
-      * @author Matthieu HOURBRACQ
+      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
       */
       class LpExpr {
           friend class LpRow;
@@ -186,13 +186,13 @@ namespace gum {
           /// @{
 
           /** @brief Default constructor. */
-          LpExpr ();
+          LpExpr();
 
           /**
           * @brief Copy constructor.
           * @param expr The constant reference to the expression to copy.
           */
-          LpExpr ( const LpExpr& expr );
+          LpExpr( const LpExpr& expr );
 
           /**
           * @brief Copy constructor. Makes a ( partial ) copy.
@@ -201,7 +201,7 @@ namespace gum {
           * @param copyMiddle \c True if we want to copy middle side of \c expr, \c False otherwise.
           * @param copyRight \c True if we want to copy right side of \c expr, \c False otherwise.
           */
-          LpExpr ( const LpExpr& expr, bool copyLeft, bool copyMiddle, bool copyRight );
+          LpExpr( const LpExpr& expr, bool copyLeft, bool copyMiddle, bool copyRight );
 
           /**
           * @brief Move copy constructor from temporary.
@@ -209,7 +209,7 @@ namespace gum {
           * Swap ressources between the temporary \c expr and the caller instead of copying the temporary.
           * @param expr The temporary expression to move to this.
           */
-          LpExpr ( LpExpr && expr );
+          LpExpr( LpExpr && expr );
 
           /**
           * @brief Move copy constructor from temporary. Makes ( partial ) moves.
@@ -221,10 +221,10 @@ namespace gum {
           * @param copyMiddle \c True if we want to copy middle side of \c expr, \c False otherwise.
           * @param copyRight \c True if we want to copy right side of \c expr, \c False otherwise.
           */
-          LpExpr ( LpExpr && expr, bool copyLeft, bool copyMiddle, bool copyRight );
+          LpExpr( LpExpr && expr, bool copyLeft, bool copyMiddle, bool copyRight );
 
           /** @brief Default destructor. */
-          ~LpExpr ();
+          ~LpExpr();
 
           /// @}
 
@@ -367,7 +367,7 @@ namespace gum {
 
 
 
-          friend inline void swap ( HashTable< LpCol, double >*& a, HashTable< LpCol, double >*& b );
+          friend inline void swap( HashTable< LpCol, double >*& a, HashTable< LpCol, double >*& b );
 
           // end of false friends
 
@@ -377,13 +377,13 @@ namespace gum {
           /**
           * @brief Print the representation of a calling expression on std::cout.
           */
-          void print () const;
+          void print() const;
 
           /**
           * @brief Get the string representation of a calling expression.
           * @return The string representation of the calling expression.
           */
-          std::string toString () const;
+          std::string toString() const;
 
 
         protected:
@@ -417,19 +417,19 @@ namespace gum {
           * @brief %Set the side of the calling expression, from LEFT TO RIGHT : L <= M <= R.
           * @param from the constant reference to the variable ( the side ) to put on the first empty side met, starting at left.
           */
-          inline void __addSide ( const LpCol& from );
+          inline void __addSide( const LpCol& from );
 
           /**
           * @brief Copy an expression to a side of the calling expression, from LEFT TO RIGHT : L <= M <= R.
           * @param from the constant reference to the expression ( the side ) to copy on the first empty side met, starting at left.
           */
-          inline void __addSide ( const LpExpr& from );
+          inline void __addSide( const LpExpr& from );
 
           /**
           * @brief Move an expression to a side of the calling expression, from LEFT TO RIGHT : L <= M <= R.
           * @param from the expression ( the side ) to move on the first empty side met, starting at left.
           */
-          inline void __addSide ( LpExpr && from );
+          inline void __addSide( LpExpr && from );
 
           /**
           * @brief %Set the side of the calling expression, from LEFT TO RIGHT : L <= M <= R.
@@ -437,7 +437,7 @@ namespace gum {
           * @param from the constant reference to the scalar ( the side ) to put on the first empty side met, starting at left.
           */
           template< typename SCALAR >
-          inline void __addSide ( const SCALAR& from );
+          inline void __addSide( const SCALAR& from );
 
           /// @}
 
@@ -446,7 +446,7 @@ namespace gum {
       /**
       * @class LpRow LpInterface.h <agrum/CN/LpInterface.h>
       * @brief Class representing a row of the linear program, i.e. an inequality.
-      * @author Matthieu HOURBRACQ
+      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
       */
       class LpRow {
           template< typename GUM_SCALAR > friend class LpInterface;
@@ -460,29 +460,29 @@ namespace gum {
           * @param expr the constant reference to the expression to convert into rows ( inequalities ).
           * @param cols the constant reference to the vector of variables of the problem.
           */
-          LpRow ( const LpExpr& expr, const std::vector< LpCol >& cols );
+          LpRow( const LpExpr& expr, const std::vector< LpCol >& cols );
 
           /**
           * @brief Move constructor from a temporary expression and the address of the vector of variables of the problem.
           * @param expr the temporary expression to move into rows ( inequalities ).
           * @param cols the constant reference to the vector of variables of the problem.
           */
-          LpRow ( LpExpr && expr, const std::vector< LpCol >& cols );
+          LpRow( LpExpr && expr, const std::vector< LpCol >& cols );
 
           /**
           * @brief Copy constructor.
           * @param row The constant reference to the row to be copied.
           */
-          LpRow ( const LpRow& row );
+          LpRow( const LpRow& row );
 
           /**
           * @brief Move copy constructor from temporary.
           * @param row The temporary row to be copied.
           */
-          LpRow ( LpRow && row );
+          LpRow( LpRow && row );
 
           /** @brief Default destructor. */
-          ~LpRow ();
+          ~LpRow();
 
           /// @}
 
@@ -513,13 +513,13 @@ namespace gum {
           /**
           * @brief Print the representation of a calling row on std::cout.
           */
-          void print () const;
+          void print() const;
 
           /**
           * @brief Get the string representation of a calling row.
           * @return The string representation of the calling row.
           */
-          std::string toString () const;
+          std::string toString() const;
 
         protected:
 
@@ -535,7 +535,7 @@ namespace gum {
       /**
       * @class LpInterface LpInterface.h <agrum/CN/LpInterface.h>
       * @brief Class representing a linear program.
-      * @author Matthieu HOURBRACQ
+      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
       */
       template< typename GUM_SCALAR >
       class LpInterface {
@@ -544,22 +544,22 @@ namespace gum {
           /// @{
 
           /** @brief Default constructor, empty problem. */
-          LpInterface ();
+          LpInterface();
 
           /**
           * @brief Copy constructor.
           * @param from The LpInterface to be copied.
           */
-          LpInterface ( const LpInterface< GUM_SCALAR >& from );
+          LpInterface( const LpInterface< GUM_SCALAR >& from );
 
           /**
           * @brief Move copy constructor.
           * @param from The temporary LpInterface to be moved.
           */
-          LpInterface ( LpInterface< GUM_SCALAR > && from );
+          LpInterface( LpInterface< GUM_SCALAR > && from );
 
           /** @brief Default destructor. */
-          ~LpInterface ();
+          ~LpInterface();
 
           /// @}
 
@@ -593,41 +593,41 @@ namespace gum {
           * @brief Insert a new column, i.e. a new variable.
           * @return A copy of the variable.
           */
-          LpCol addCol ();
+          LpCol addCol();
 
           /**
           * @brief Insert new columns, i.e. new variables.
           * @param cols the constant reference to the number of variables we want.
           * @return The copy of the vector of all variables of the problem.
           */
-          std::vector< LpCol > addCols ( const unsigned int& cols );
+          std::vector< LpCol > addCols( const unsigned int& cols );
 
           /**
           * @brief Add rows to the linear program according to a given expression ( which must be at least an inequality ).
           * @param expr the constant reference to the expression to convert to rows.
           */
-          void addRow ( const LpExpr& expr );
+          void addRow( const LpExpr& expr );
 
           /**
           * @brief Add rows to the linear program according to a given expression ( which must be at least an inequality ).
           * @param expr the temporary expression to move to rows.
           */
-          void addRow ( LpExpr && expr );
+          void addRow( LpExpr && expr );
 
           /**
           * @brief Add positivity constraints for all variables
           */
-          void addPositivity ();
+          void addPositivity();
 
           /**
           * @brief Add sum of variables is 1 constraints
           */
-          void addSumIsOne ();
+          void addSumIsOne();
 
           /**
           * @brief Add positivity constraints and sum of variables is 1 ( probability constraints )
           */
-          void addProba ();
+          void addProba();
 
           /**
           * @brief Solve the linear program (H-representation of the polytope) by enumeration (of the polytope vertices) using lexicographic reverse search (lrs).
@@ -636,33 +636,33 @@ namespace gum {
           *
           * @return The V-representation (vertices) of the polytope as a vector of vectors (vector of vertices).
           */
-          std::vector< std::vector< GUM_SCALAR > > solve ();
+          std::vector< std::vector< GUM_SCALAR > > solve();
 
           /**
           * @brief Get the variables of the LP.
           * @return A copy of the variables as a vector of variables.
           */
-          std::vector< LpCol > getCols () const;
+          std::vector< LpCol > getCols() const;
 
           /**
           * @brief Print the representation of a calling linear program on std::cout.
           */
-          void print () const;
+          void print() const;
 
           /**
           * @brief Get the string representation of a calling linear program.
           * @return The string representation of the calling linear program.
           */
-          std::string toString () const;
+          std::string toString() const;
 
           /**
           * @brief Reset the rows (inequalities) and columns (variables) of the LP as if it was created.
           */
-          void clear ();
+          void clear();
           /**
           * @brief Reset the rows (inequalities) of the LP but not the columns (variables are kept).
           */
-          void clearRows ();
+          void clearRows();
 
         protected:
 
@@ -687,7 +687,7 @@ namespace gum {
       * @param a the address of the first pointer.
       * @param b the address of the second pointer.
       */
-      inline void swap ( HashTable< LpCol, double >*& a, HashTable< LpCol, double >*& b );
+      inline void swap( HashTable< LpCol, double >*& a, HashTable< LpCol, double >*& b );
 
       /// @name Non-members operators +
       /// @{

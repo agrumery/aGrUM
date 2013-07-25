@@ -35,8 +35,8 @@
 /**
  * @file
  * @brief Mono-threaded version
- * @author Matthieu HOURBRACQ
- * 
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
+ *
  * TestSuite operations are NOT thread safe (yet ?)
  */
 
@@ -51,13 +51,13 @@ namespace gum_tests {
     protected :
 
     public :
-      L2UListener ( gum::ApproximationScheme & aS ) : gum::ApproximationSchemeListener ( aS ), __nbr ( 0 ), __msg ( "" ) {};
+      L2UListener( gum::ApproximationScheme& aS ) : gum::ApproximationSchemeListener( aS ), __nbr( 0 ), __msg( "" ) {};
 
-      void whenProgress ( const void * buffer, const gum::Size a, const double b, const double c ) {
+      void whenProgress( const void* buffer, const gum::Size a, const double b, const double c ) {
         __nbr++;
       }
 
-      void whenStop ( const void * buffer, const std::string s ) {
+      void whenStop( const void* buffer, const std::string s ) {
         __msg = s;
       }
 
@@ -65,7 +65,7 @@ namespace gum_tests {
         return __nbr;
       }
 
-      std::string & msg() {
+      std::string& msg() {
         return __msg;
       }
   }; // end of : class l2uListener
@@ -77,17 +77,17 @@ namespace gum_tests {
     protected :
 
     public :
-      gum::credal::CredalNet< double > *cn;
+      gum::credal::CredalNet< double >* cn;
 
       // not dynamic (2U network - fast)
-      void initCNet () {
-        gum::setNumberOfThreads ( 1 );
+      void initCNet() {
+        gum::setNumberOfThreads( 1 );
         gum::BayesNet<double> monBNa;
-        gum::BIFReader< double > readera ( &monBNa, GET_PATH_STR ( /cn/2Umin.bif ) );
+        gum::BIFReader< double > readera( &monBNa, GET_PATH_STR( /cn/2Umin.bif ) );
         readera.proceed();
 
         gum::BayesNet<double> monBNb;
-        gum::BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( /cn/2Umax.bif ) );
+        gum::BIFReader< double > readerb( &monBNb, GET_PATH_STR( /cn/2Umax.bif ) );
         readerb.proceed();
 
         cn = new gum::credal::CredalNet < double > ( monBNa, monBNb );
@@ -97,76 +97,76 @@ namespace gum_tests {
       }
 
       // dynamic (dynaCheese network - slow)
-      void initDCNet () {
-        gum::setNumberOfThreads ( 1 );
+      void initDCNet() {
+        gum::setNumberOfThreads( 1 );
         gum::BayesNet<double> monBNa;
-        gum::BIFReader< double > readera ( &monBNa, GET_PATH_STR ( /cn/dbn_bin_min.bif ) );
+        gum::BIFReader< double > readera( &monBNa, GET_PATH_STR( /cn/dbn_bin_min.bif ) );
         readera.proceed();
 
         gum::BayesNet<double> monBNb;
-        gum::BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( /cn/dbn_bin_max.bif ) );
+        gum::BIFReader< double > readerb( &monBNb, GET_PATH_STR( /cn/dbn_bin_max.bif ) );
         readerb.proceed();
 
         cn = new gum::credal::CredalNet < double > ( monBNa, monBNb );
 
         cn->intervalToCredal();
-				cn->computeCPTMinMax();
+        cn->computeCPTMinMax();
       }
 
-      void clearCNet () {
+      void clearCNet() {
         delete cn;
       }
 
       // not dynamic (2U network) - with evidence
-      void testL2UInference () {
+      void testL2UInference() {
         initCNet();
 
         gum::credal::CNLoopyPropagation<double> lp = gum::credal::CNLoopyPropagation<double> ( *cn );
 
         // evidence from file
         try {
-          lp.insertEvidenceFile ( GET_PATH_STR ( /cn/L2U.evi ) );
-        } catch ( gum::Exception & e ) {
-          TS_ASSERT ( false );
+          lp.insertEvidenceFile( GET_PATH_STR( /cn/L2U.evi ) );
+        } catch ( gum::Exception& e ) {
+          TS_ASSERT( false );
         }
 
         try {
-          lp.eraseAllEvidence ();
-        } catch ( gum::Exception & e ) {
-          TS_ASSERT ( false );
+          lp.eraseAllEvidence();
+        } catch ( gum::Exception& e ) {
+          TS_ASSERT( false );
         }
 
         // evidence from map
         std::map< std::string, std::vector<double> > eviMap;
-        std::vector<double> evi0 ( 2,0 ); evi0[0] = 1;
-        std::vector<double> evi1 ( 2,0 ); evi1[1] = 1;
+        std::vector<double> evi0( 2,0 ); evi0[0] = 1;
+        std::vector<double> evi1( 2,0 ); evi1[1] = 1;
         eviMap["L"] = evi1;
         eviMap["G"] = evi0;
 
         try {
-          lp.insertEvidence ( eviMap );
-        } catch ( gum::Exception & e ) {
-          TS_ASSERT ( false );
+          lp.insertEvidence( eviMap );
+        } catch ( gum::Exception& e ) {
+          TS_ASSERT( false );
         }
 
         try {
-          lp.eraseAllEvidence ();
-        } catch ( gum::Exception & e ) {
-          TS_ASSERT ( false );
+          lp.eraseAllEvidence();
+        } catch ( gum::Exception& e ) {
+          TS_ASSERT( false );
         }
 
         std::map < std::string, std::vector < double > > modals;
-        std::vector < double > binaryModal ( 2,0 );
+        std::vector < double > binaryModal( 2,0 );
         binaryModal[1] = 1;
 
         // modalities from map
         // from file with dynamic network, not 2U
         try {
           for ( gum::DAG::NodeIterator node_idIt = cn->current_bn().beginNodes(); node_idIt != cn->current_bn().endNodes(); ++node_idIt ) {
-            modals[ cn->current_bn().variable ( *node_idIt ).name() ] = binaryModal;
+            modals[ cn->current_bn().variable( *node_idIt ).name() ] = binaryModal;
           }
-        } catch ( gum::Exception & e ) {
-          TS_ASSERT ( false );
+        } catch ( gum::Exception& e ) {
+          TS_ASSERT( false );
         }
 
         /*try {
@@ -177,32 +177,32 @@ namespace gum_tests {
 
         try {
           lp.makeInference();
-        } catch ( gum::Exception & e ) {
-          TS_ASSERT ( false );
+        } catch ( gum::Exception& e ) {
+          TS_ASSERT( false );
         }
 
         try {
           for ( gum::DAG::NodeIterator node_idIt = cn->current_bn().beginNodes(); node_idIt != cn->current_bn().endNodes(); ++node_idIt ) {
-            std::vector< double > inf ( lp.marginalMin ( *node_idIt ) );
-            std::vector< double > sup ( lp.marginalMax ( *node_idIt ) );
+            std::vector< double > inf( lp.marginalMin( *node_idIt ) );
+            std::vector< double > sup( lp.marginalMax( *node_idIt ) );
             //double e_inf = lp.expectationMin ( *node_idIt );
             //double e_sup = lp.expectationMax ( *node_idIt );
           }
-        } catch ( gum::Exception & e ) {
-          TS_ASSERT ( false );
+        } catch ( gum::Exception& e ) {
+          TS_ASSERT( false );
         }
 
         try {
-          lp.eraseAllEvidence ();
-        } catch ( gum::Exception & e ) {
-          TS_ASSERT ( false );
+          lp.eraseAllEvidence();
+        } catch ( gum::Exception& e ) {
+          TS_ASSERT( false );
         }
 
         clearCNet();
       } // end of : testL2UInference (2U network)
 
       // dynamic (dynaCheese) - strong indep
-      void testL2UInferenceD () {
+      void testL2UInferenceD() {
         initDCNet();
         typedef std::vector< double > exp;
 
@@ -214,9 +214,9 @@ namespace gum_tests {
 
         // evidence from file
         try {
-          lp.insertEvidenceFile ( GET_PATH_STR ( /cn/dbn_bin_evi.evi ) );
-        } catch ( gum::Exception & e ) {
-          TS_ASSERT ( false );
+          lp.insertEvidenceFile( GET_PATH_STR( /cn/dbn_bin_evi.evi ) );
+        } catch ( gum::Exception& e ) {
+          TS_ASSERT( false );
         }
 
         // modalities from file
@@ -228,19 +228,19 @@ namespace gum_tests {
 
         try {
           lp.makeInference();
-        } catch ( gum::Exception & e ) {
-          TS_ASSERT ( false );
+        } catch ( gum::Exception& e ) {
+          TS_ASSERT( false );
         }
 
         try {
           for ( gum::DAG::NodeIterator node_idIt = cn->current_bn().beginNodes(); node_idIt != cn->current_bn().endNodes(); ++node_idIt ) {
-            exp inf ( lp.marginalMin ( *node_idIt ) );
-            exp sup ( lp.marginalMax ( *node_idIt ) );
+            exp inf( lp.marginalMin( *node_idIt ) );
+            exp sup( lp.marginalMax( *node_idIt ) );
             //double e_inf = lp.expectationMin ( *node_idIt );
             //double e_sup = lp.expectationMax ( *node_idIt );
           }
-        } catch ( gum::Exception & e ) {
-          TS_ASSERT ( false );
+        } catch ( gum::Exception& e ) {
+          TS_ASSERT( false );
         }
 
         /*
@@ -262,9 +262,9 @@ namespace gum_tests {
                 }*/
 
         try {
-          lp.eraseAllEvidence ();
-        } catch ( gum::Exception & e ) {
-          TS_ASSERT ( false );
+          lp.eraseAllEvidence();
+        } catch ( gum::Exception& e ) {
+          TS_ASSERT( false );
         }
 
         clearCNet();
@@ -272,33 +272,33 @@ namespace gum_tests {
 
 
       // with dynamic network
-      void testL2UListener () {
+      void testL2UListener() {
         initDCNet();
         gum::credal::CNLoopyPropagation<double> lp = gum::credal::CNLoopyPropagation<double> ( *cn );
 
         // evidence from file
         try {
-          lp.insertEvidenceFile ( GET_PATH_STR ( /cn/dbn_bin_evi.evi ) );
-        } catch ( gum::Exception & e ) {
-          TS_ASSERT ( false );
+          lp.insertEvidenceFile( GET_PATH_STR( /cn/dbn_bin_evi.evi ) );
+        } catch ( gum::Exception& e ) {
+          TS_ASSERT( false );
         }
 
         //lp.inferenceType(gum::CNLoopyPropagation<double>::InferenceType::randomOrder);
-        L2UListener mcl ( lp );
+        L2UListener mcl( lp );
 
         try {
           lp.makeInference();
-        } catch ( gum::Exception & e ) {
-          TS_ASSERT ( false );
+        } catch ( gum::Exception& e ) {
+          TS_ASSERT( false );
         }
 
-        TS_ASSERT_EQUALS ( mcl.nbr() * lp.periodSize() + lp.burnIn(), lp.nbrIterations() );
-        TS_ASSERT_DIFFERS ( mcl.msg(), std::string ( "" ) );
+        TS_ASSERT_EQUALS( mcl.nbr() * lp.periodSize() + lp.burnIn(), lp.nbrIterations() );
+        TS_ASSERT_DIFFERS( mcl.msg(), std::string( "" ) );
 
         try {
-          lp.eraseAllEvidence ();
-        } catch ( gum::Exception & e ) {
-          TS_ASSERT ( false );
+          lp.eraseAllEvidence();
+        } catch ( gum::Exception& e ) {
+          TS_ASSERT( false );
         }
 
         clearCNet();

@@ -25,7 +25,7 @@
  * This class servers to write the content of a Bayesian Network in
  * the BN format.
  *
- * @author Lionel Torti & Pierre-Henri Wuillemin
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_CNF_WRITER_H
@@ -77,11 +77,11 @@ namespace gum {
       /**
        * Writes a Bayesian Network in the output stream using the BN format.
        *
-			 * @param output The output stream.
+       * @param output The output stream.
        * @param bn The Bayesian Network writen in output.
        * @throws IOError Raised if and I/O error occurs.
        */
-      virtual void write( std::ostream &output, const BayesNet<GUM_SCALAR>& bn )=0;
+      virtual void write( std::ostream& output, const BayesNet<GUM_SCALAR>& bn )=0;
 
       /**
        * Writes a Bayesian Network in the referenced file using the BN format.
@@ -93,25 +93,26 @@ namespace gum {
        */
       virtual void write( std::string filePath, const BayesNet<GUM_SCALAR>& bn )=0;
 
-      inline GUM_SCALAR fromExact( const GUM_SCALAR& value ) const { 
-        return IApproximationPolicy<GUM_SCALAR>::fromExact( value ); };
+      inline GUM_SCALAR fromExact( const GUM_SCALAR& value ) const {
+        return IApproximationPolicy<GUM_SCALAR>::fromExact( value );
+      };
 
 
 
-  /*  private:
-      // Returns the header of the BN file.
-      std::string __header( const BayesNet<GUM_SCALAR>& bn );
+      /*  private:
+          // Returns the header of the BN file.
+          std::string __header( const BayesNet<GUM_SCALAR>& bn );
 
-      // Returns a bloc defining a variable in the BN format.
-      std::string __variableBloc( const DiscreteVariable& var );
+          // Returns a bloc defining a variable in the BN format.
+          std::string __variableBloc( const DiscreteVariable& var );
 
-      // Returns a bloc defining a variable's CPT in the BN format.
-      std::string __variableCPT( const Potential<GUM_SCALAR>& cpt );
+          // Returns a bloc defining a variable's CPT in the BN format.
+          std::string __variableCPT( const Potential<GUM_SCALAR>& cpt );
 
-      // Returns the modalities labels of the variables in varsSeq*/
+          // Returns the modalities labels of the variables in varsSeq*/
       //
-      }; 
-      
+  };
+
 } /* namespace gum */
 
 #include <agrum/BN/io/cnf/CNFWriter.tcc>

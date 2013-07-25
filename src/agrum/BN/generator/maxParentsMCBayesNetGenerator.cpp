@@ -23,5 +23,5 @@
  * @author Pierre-Henri WUILLEMIN and Ariele Maesano
  *
  */
-// ============================================================================
+
 #include <agrum/BN/generator/maxParentsMCBayesNetGenerator.h>

@@ -35,7 +35,6 @@
 namespace gum {
 
 
-  // ==============================================================================
   /// splits a CSV-like string into a vector of fields
   /** This function splits a given string representing a single line of a CSV
    * file into a set of strings, each one corresponding to a field of the line
@@ -50,7 +49,7 @@ namespace gum {
    * a string field of the CSV
    * @throws IOError is thrown if, in a field, a delimiter is opened
    * but not closed. */
-  // ==============================================================================
+
   std::vector<std::string> SplitCSVLine( const std::string& str_to_split,
                                          char field_separator = ';',
                                          char field_delimiter = '"',

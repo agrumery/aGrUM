@@ -51,7 +51,7 @@ namespace gum {
    */
   template<typename GUM_SCALAR> INLINE
   void
-  BIFXMLBNWriter<GUM_SCALAR>::write( std::ostream &output, const BayesNet<GUM_SCALAR>& bn ) {
+  BIFXMLBNWriter<GUM_SCALAR>::write( std::ostream& output, const BayesNet<GUM_SCALAR>& bn ) {
     if ( ! output.good() ) {
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
     }
@@ -59,10 +59,12 @@ namespace gum {
     output << __heading() << std::endl;
 
     output << "<!-- Variables -->" << std::endl;
+
     for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter )
       output << __variableBloc( bn.variable( *iter ) ) << std::endl;
 
     output << "<!-- Probability distributions -->" << std::endl;
+
     for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter )
       output << __variableDefinition( *iter, bn );
 
@@ -196,21 +198,25 @@ namespace gum {
     const Potential<GUM_SCALAR>& cpt=bn.cpt( varNodeId );
 
     // Conditional Parents
-    for ( Idx i=1;i<cpt.nbrDim();i++ )
+    for ( Idx i=1; i<cpt.nbrDim(); i++ )
       str << "\t<GIVEN>" <<cpt.variable( i ).name() << "</GIVEN>" << std::endl;
 
     Instantiation inst;
     inst<<cpt.variable( 0 );
-    for ( Idx i=cpt.nbrDim()-1;i>0;i-- ) inst<<cpt.variable( i );
+
+    for ( Idx i=cpt.nbrDim()-1; i>0; i-- ) inst<<cpt.variable( i );
 
     str << "\t<TABLE>";
+
     for ( inst.setFirst(); !inst.end(); inst.inc() ) {
       if ( inst.val( 0 )==0 )
         str<<std::endl<<"\t\t";
       else
         str << " ";
+
       str<<cpt[inst];//"<!-- "<<inst<<" -->"<<std::endl;
     }
+
     str << std::endl<<"\t</TABLE>" << std::endl;
 
     // Closing tag

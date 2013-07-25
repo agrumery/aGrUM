@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Lionel Torti                                    *
+ *   (C) 2007-2013 by Christophe GONZALES and Pierre-Henri WUILLEMIN       *
  *   {prenom.nom}@lip6.fr                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -135,7 +135,7 @@ namespace gum_tests {
         TS_ASSERT( ig->graph().existsNode( ig->id( m.get( "r" ) ) ) );
         node_count += 2;
 
-        for( int i = 0; i < 2; ++i, ++node_count ) {
+        for ( int i = 0; i < 2; ++i, ++node_count ) {
           TS_ASSERT( ig->graph().existsNode( ig->id( m.get( getPrinter( i ) ) ) ) );
         }
 
@@ -143,7 +143,7 @@ namespace gum_tests {
 
         ++node_count;
 
-        for( int i = 0; i < 4; ++i, ++node_count ) {
+        for ( int i = 0; i < 4; ++i, ++node_count ) {
           TS_ASSERT( ig->graph().existsNode( ig->id( m.get( getComputer( i ) ) ) ) );
         }
 
@@ -154,7 +154,7 @@ namespace gum_tests {
         // Checking existing edges from pow
         int edge_count = 0;
 
-        for( int i = 0; i < 2; ++i, ++edge_count ) {
+        for ( int i = 0; i < 2; ++i, ++edge_count ) {
           TS_ASSERT( ig->graph().existsEdge( ig->id( m.get( "pow" ) ), ig->id( m.get( getPrinter( i ) ) ) ) );
         }
 
@@ -162,7 +162,7 @@ namespace gum_tests {
 
         ++edge_count;
 
-        for( int i = 0; i < 4; ++i, ++edge_count ) {
+        for ( int i = 0; i < 4; ++i, ++edge_count ) {
           TS_ASSERT( ig->graph().existsEdge( ig->id( m.get( "pow" ) ), ig->id( m.get( getComputer( i ) ) ) ) );
         }
 
@@ -171,15 +171,15 @@ namespace gum_tests {
         ++edge_count;
         // Checking existing edges from printers
 
-        for( int i = 0; i < 2; ++i, ++edge_count ) {
-          for( int j = 0; j < 4; ++j, ++edge_count ) {
+        for ( int i = 0; i < 2; ++i, ++edge_count ) {
+          for ( int j = 0; j < 4; ++j, ++edge_count ) {
             TS_ASSERT( ig->graph().existsEdge( ig->id( m.get( getPrinter( i ) ) ), ig->id( m.get( getComputer( j ) ) ) ) );
           }
 
           TS_ASSERT( ig->graph().existsEdge( ig->id( m.get( getPrinter( i ) ) ), ig->id( m.get( "another_computer" ) ) ) );
         }
 
-        for( int i = 0; i < 4; ++i, ++edge_count ) {
+        for ( int i = 0; i < 4; ++i, ++edge_count ) {
           TS_ASSERT( ig->graph().existsEdge( ig->id( m.get( "another_printer" ) ), ig->id( m.get( getComputer( i ) ) ) ) );
         }
 
@@ -219,7 +219,7 @@ namespace gum_tests {
       }
 
       void generateLayer( std::vector<gum::prm::LayerGenerator::LayerData>& v, size_t layer_count ) {
-        for( size_t lvl = 0; lvl < layer_count; ++lvl ) {
+        for ( size_t lvl = 0; lvl < layer_count; ++lvl ) {
           v.push_back( gum::prm::LayerGenerator::LayerData() );
           v[lvl].a = 30;
           v[lvl].g = 2;
@@ -242,7 +242,7 @@ namespace gum_tests {
         gum::prm::gspan::InterfaceGraph* g = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( g = new gum::prm::gspan::InterfaceGraph( sys ) );
 
-        if( g != 0 )
+        if ( g != 0 )
           delete g;
 
         delete prm;

@@ -21,7 +21,7 @@
 * @file
 * @brief algorithm for KL divergence between BNs
 *
-* @author Pierre-Henri Wuillemin
+* @author Pierre-Henri WUILLEMIN
 *
 */
 #ifndef GUM_KL_H
@@ -35,10 +35,10 @@ namespace gum {
   namespace complexity {
     enum difficulty {HEAVY,DIFFICULT,CORRECT};
   }
-  
+
   /**
   * @class KL
-  * 
+  *
   * @brief KL is the base class for KL computation betweens 2 BNs.
   *
   * KL is not virtual because it may be instantiated but protected methods throw gum::OperationNotAllow : we do not know here how the computation is done.
@@ -56,11 +56,11 @@ namespace gum {
       /** constructor must give 2 BNs
        * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or compatible node sets.
        */
-      KL ( const BayesNet<GUM_SCALAR>& P,const BayesNet<GUM_SCALAR>& Q );
+      KL( const BayesNet<GUM_SCALAR>& P,const BayesNet<GUM_SCALAR>& Q );
 
       /** copy constructor
        */
-      KL ( const KL< GUM_SCALAR >& kl );
+      KL( const KL< GUM_SCALAR >& kl );
 
       /** destructor */
       ~KL();
@@ -87,20 +87,20 @@ namespace gum {
 
       /// @return hellinger distance (@see http://en.wikipedia.org/wiki/Hellinger_distance)
       double hellinger();
-      
+
       /// @return Bhattacharya distance (@see http://en.wikipedia.org/wiki/Bhattacharya_distance)
       double bhattacharya();
 
       /// @return p
-      const BayesNet<GUM_SCALAR>& p(void) const;
-      
+      const BayesNet<GUM_SCALAR>& p( void ) const;
+
       /// @return q
-      const BayesNet<GUM_SCALAR>& q(void) const;
+      const BayesNet<GUM_SCALAR>& q( void ) const;
       /// @}
 
     protected:
       // should be pure virtual but using KL directly is a way to delay the choice between different computation scheme (@see BruteForceKL)
-      virtual void _computeKL ( void );
+      virtual void _computeKL( void );
       void _process();
 
       const BayesNet<GUM_SCALAR>& _p;
@@ -118,10 +118,10 @@ namespace gum {
       bool __checkCompatibility() const;
       complexity::difficulty __difficulty;
       bool __done;
-    };
+  };
 } //namespace gum
 
 #include <agrum/BN/algorithms/divergence/KL.tcc>
 
 #endif //GUM_KL_H
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

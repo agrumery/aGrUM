@@ -23,7 +23,7 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 namespace gum {
   namespace prm {
 
@@ -59,13 +59,16 @@ namespace gum {
     MultiDimImplementation<prm_float>*
     Aggregate::buildImpl() const {
       MultiDimImplementation<prm_float>* impl = 0;
+
       switch ( agg_type() ) {
         case agg_min:
           impl = new aggregator::Min<prm_float>();
           break;
+
         case agg_max:
           impl = new aggregator::Max<prm_float>();
           break;
+
           //case agg_count:
           //  if (__label < __type.variable().domainSize()) {
           //    impl = new aggregator::Count<prm_float>(__label);
@@ -78,18 +81,22 @@ namespace gum {
         case agg_exists:
           impl = new aggregator::Exists<prm_float>( __label );
           break;
+
         case agg_forall:
           impl = new aggregator::Forall<prm_float>( __label );
           break;
+
         case agg_count:
         case agg_mean:
         case agg_or:
         case agg_and:
           GUM_ERROR( OperationNotAllowed,"Aggregator not implemented yet." );
           break;
+
         default:
           GUM_ERROR( OperationNotAllowed, "Unknown aggregator." );
       }
+
       return impl;
     }
 
@@ -103,7 +110,7 @@ namespace gum {
     void
     Aggregate::addChild( const ClassElement& elt ) { }
 
-// ============================================================================
+
   } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

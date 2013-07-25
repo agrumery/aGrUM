@@ -84,9 +84,9 @@ namespace gum {
 #define GUM_PRIORITY_QUEUE_DEFAULT_CAPACITY 10
 
 
-  // ==============================================================================
+
   // templates provided by this file
-  // ==============================================================================
+
 
   template <typename Val, typename Priority, typename Cmp> class PriorityQueue;
   template <typename Val, typename Priority, typename Cmp>
@@ -155,7 +155,7 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// basic constructor. Creates an empty priority queue
       /** @param compare a function taking two elements in argument, say e1 and e2,
        * and returning a Boolean indicating wether e1 < e2, i.e., whether e1 should
@@ -165,19 +165,19 @@ namespace gum {
        * (default is nonuniqueness)
        * @param capacity the size of the internal data structures containing the
        * elements (could be for instance vectors or hashtables) */
-      // ============================================================================
+
       explicit PriorityQueue( Cmp compare = Cmp(),
                               bool uniqueness = false,
                               Size capacity = GUM_PRIORITY_QUEUE_DEFAULT_CAPACITY );
 
-      // ============================================================================
+
       /// copy constructor
-      // ============================================================================
+
       PriorityQueue( const PriorityQueue<Val,Priority,Cmp>& );
 
-      // ============================================================================
+
       /// destructor
-      // ============================================================================
+
       ~PriorityQueue();
 
       /// @}
@@ -188,56 +188,56 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// returns the number of elements in the priority queue
-      // ============================================================================
+
       Size size() const ;
 
-      // ============================================================================
+
       /// indicates whether the priority queue is empty
-      // ============================================================================
+
       bool empty() const ;
 
-      // ============================================================================
+
       /// indicates whether the priority queue contains a given value
-      // ============================================================================
+
       bool contains( const Val& ) const ;
 
-      // ============================================================================
+
       /// returns the element at the top of the priority queue
       /** @throw NotFound exception is thrown if the queue is empty */
-      // ============================================================================
+
       const Val& top() const;
 
-      // ============================================================================
+
       /// returns the priority of the top element
       /** @throw NotFound exception is thrown if the queue is empty */
-      // ============================================================================
+
       const Priority& topPriority() const;
 
-      // ============================================================================
+
       /// removes the top element from the priority queue and return it
       /** @throw NotFound exception is thrown if the queue is empty */
-      // ============================================================================
+
       Val pop();
 
-      // ============================================================================
+
       /// inserts a new (a copy) element in the priority queue
       /** @return the index of the element inserted into the priority queue (see
        * method erase for more details about the index)
        * @throw DuplicateElement exception is thrown if the uniqueness property is
        * set to true and the element already exists */
-      // ============================================================================
+
       Size insert( const Priority& priority, const Val& val );
 
-      // ============================================================================
+
       /// removes the top of the priority queue (but does not return it)
       /** If the heap is empty, it does nothing (in particular, it does not throw
        * any exception). */
-      // ============================================================================
+
       void eraseTop();
 
-      // ============================================================================
+
       /// removes the element at position "index" from the priority queue
       /** If the element cannot be found, the function returns without throwing any
        * exception.
@@ -250,53 +250,53 @@ namespace gum {
        * incrementing the index by 1 each time we jump to another node, we get a
        * unique index for each element. This is precisely what the index passed in
        * argument of the function represents. */
-      // ============================================================================
+
       void erase( Size index );
 
-      // ============================================================================
+
       /// removes a given element from the priority queue (but does not return it)
       /** If the element cannot be found, the function returns without throwing any
        * exception.
        * @param val the element we wish to remove. If the queue contains several
        * times this element, then the one with the smallest index is removed. */
-      // ============================================================================
+
       void eraseByVal( const Val& val );
 
-      // ============================================================================
+
       /// modifies the priority of the element at position "index" of the queue
       /** @throw NotFound If the element cannot be found
        */
-      // ============================================================================
+
       Size setPriority( Size index, const Priority& new_priority );
 
-      // ============================================================================
+
       /// modifies the priority of each instance of a given element
-      // ============================================================================
+
       void setPriorityByVal( const Val& elt, const Priority& new_priority );
 
-      // ============================================================================
+
       /// returns the priority of an instance of the value passed in argument
       /** Of course, this method is really meaningful only when there is only one
        * instance of the given element within the PriorityQueue. */
-      // ============================================================================
+
       const Priority& priorityByVal( const Val& elt ) const ;
 
-      // ============================================================================
+
       /// removes all the elements from the queue
-      // ============================================================================
+
       void clear();
 
-      // ============================================================================
+
       /// returns a hashtable the keys of which are the values stored in the queue
       /** The keys of the hashtable correspond to the values stored in the
        * priority queue and, for each key, the corresponding value is the list of
        * indices in the queue where we can find the key. */
-      // ============================================================================
+
       const HashTable< Val,std::vector<Size> >& allValues() const ;
 
-      // ============================================================================
+
       /// displays the content of the queue
-      // ============================================================================
+
       std::string toString() const;
 
       /// @}
@@ -307,22 +307,22 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// copy operator
       /** When a problem occurs during the copy (for instance when not enough memory
        * is available), the operator guarantees that the heap stays in a coherent
        * state. Actually, the priority queue becomes empty. An exception is then
        * thrown. */
-      // ============================================================================
+
       PriorityQueue<Val,Priority,Cmp>&
       operator= ( const PriorityQueue<Val,Priority,Cmp>& );
 
-      // ============================================================================
+
       /// returns the element at index "index_elt" from the priority queue
       /**
        * @throw NotFound
        */
-      // ============================================================================
+
       const Val& operator[]( Size index_elt ) const;
 
       /// @}
@@ -333,22 +333,22 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// return the size of the internal structure storing the priority queue
-      // ============================================================================
+
       Size capacity() const ;
 
-      // ============================================================================
+
       /// changes the size of the internal structure storing the priority queue
-      // ============================================================================
+
       void resize( Size new_size );
 
-      // ============================================================================
+
       /// returns the current uniqueness policy
-      // ============================================================================
+
       bool uniquenessPolicy() const ;
 
-      // ============================================================================
+
       /** @brief enables the user to change dynamically the policy for checking
        * whether there can exist several identical elements in the queue
        *
@@ -359,7 +359,7 @@ namespace gum {
        * check whether the queue already contains identical elements. It thus only
        * ensures that elements inserted from now on do not already belong to the
        * queue. */
-      // ============================================================================
+
       void setUniquenessPolicy( const bool new_policy ) ;
 
       /// @}

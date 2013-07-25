@@ -24,14 +24,14 @@
  *
  * @author Jean-Christophe Magnan.
  */
-// ============================================================================
+
 #ifndef GUM_INFLUENCE_DIAGRAM_INFERENCE_H
 #define GUM_INFLUENCE_DIAGRAM_INFERENCE_H
-// ============================================================================
+
 #include <agrum/config.h>
-// ============================================================================
+
 #include <agrum/influenceDiagram/influenceDiagram.h>
-// ============================================================================
+
 
 namespace gum {
   /**
@@ -104,12 +104,12 @@ namespace gum {
       const InfluenceDiagram<GUM_SCALAR>& __infDiag;
   };
 
-// ============================================================================
+
 } /* namespace gum */
 
-// ============================================================================
+
 #include <agrum/influenceDiagram/inference/influenceDiagramInference.tcc>
-// ============================================================================
+
 #endif /* GUM_INFUENCE_DIAGRAM_INFERENCE_H */
-// ============================================================================
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

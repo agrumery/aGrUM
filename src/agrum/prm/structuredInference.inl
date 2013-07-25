@@ -23,86 +23,85 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 namespace gum {
-namespace prm {
+  namespace prm {
 
-INLINE
-void
-StructuredInference::setPatternMining(bool b) {
-  __mining = b;
-}
+    INLINE
+    void
+    StructuredInference::setPatternMining( bool b ) {
+      __mining = b;
+    }
 
-INLINE
-std::string
-StructuredInference::__str(const Instance* i, const Attribute* a) const {
-  return i->name() + __dot + a->safeName();
-}
+    INLINE
+    std::string
+    StructuredInference::__str( const Instance* i, const Attribute* a ) const {
+      return i->name() + __dot + a->safeName();
+    }
 
-INLINE
-std::string
-StructuredInference::__str(const Instance* i, const Attribute& a) const {
-  return i->name() + __dot + a.safeName();
-}
+    INLINE
+    std::string
+    StructuredInference::__str( const Instance* i, const Attribute& a ) const {
+      return i->name() + __dot + a.safeName();
+    }
 
-INLINE
-std::string
-StructuredInference::__str(const Instance* i, const SlotChain& a) const {
-  return i->name() + __dot + a.lastElt().safeName();
-}
+    INLINE
+    std::string
+    StructuredInference::__str( const Instance* i, const SlotChain& a ) const {
+      return i->name() + __dot + a.lastElt().safeName();
+    }
 
-INLINE
-StructuredInference::RGData::~RGData() {
-  GUM_DESTRUCTOR(StructuredInference::RGData);
-}
+    INLINE
+    StructuredInference::RGData::~RGData() {
+      GUM_DESTRUCTOR( StructuredInference::RGData );
+    }
 
-INLINE
-StructuredInference::PData::~PData() {
-  GUM_DESTRUCTOR(StructuredInference::PData);
-}
+    INLINE
+    StructuredInference::PData::~PData() {
+      GUM_DESTRUCTOR( StructuredInference::PData );
+    }
 
-INLINE
-std::string
-StructuredInference::name() const {
-  return "StructuredInference";
-}
+    INLINE
+    std::string
+    StructuredInference::name() const {
+      return "StructuredInference";
+    }
 
-INLINE
-GSpan&
-StructuredInference::gspan() {
-  return *__gspan;
-}
+    INLINE
+    GSpan&
+    StructuredInference::gspan() {
+      return *__gspan;
+    }
 
-INLINE
-const GSpan&
-StructuredInference::gspan() const {
-  return *__gspan;
-}
+    INLINE
+    const GSpan&
+    StructuredInference::gspan() const {
+      return *__gspan;
+    }
 
-INLINE
-void
-StructuredInference::__removeNode(StructuredInference::PData& data,
-                                  NodeId id,
-                                  Set<Potential<prm_float>*>& pool)
-{
-  data.graph.eraseNode(id);
-  GUM_ASSERT(not data.graph.exists(id));
-  data.mod.erase(id);
-  GUM_ASSERT(not data.mod.exists(id));
-  data.node2attr.eraseFirst(id);
-  GUM_ASSERT(not data.node2attr.existsFirst(id));
-  data.map.erase(id);
-  GUM_ASSERT(not data.map.exists(id));
-  data.vars.eraseFirst(id);
-  GUM_ASSERT(not data.vars.existsFirst(id));
-  data.inners().erase(id);
-  GUM_ASSERT(not data.inners().exists(id));
-  pool.erase(data.pots[id]);
-  GUM_ASSERT(not pool.exists(data.pots[id]));
-  data.pots.erase(id);
-  GUM_ASSERT(not data.pots.exists(id));
-}
+    INLINE
+    void
+    StructuredInference::__removeNode( StructuredInference::PData& data,
+                                       NodeId id,
+                                       Set<Potential<prm_float>*>& pool ) {
+      data.graph.eraseNode( id );
+      GUM_ASSERT( not data.graph.exists( id ) );
+      data.mod.erase( id );
+      GUM_ASSERT( not data.mod.exists( id ) );
+      data.node2attr.eraseFirst( id );
+      GUM_ASSERT( not data.node2attr.existsFirst( id ) );
+      data.map.erase( id );
+      GUM_ASSERT( not data.map.exists( id ) );
+      data.vars.eraseFirst( id );
+      GUM_ASSERT( not data.vars.existsFirst( id ) );
+      data.inners().erase( id );
+      GUM_ASSERT( not data.inners().exists( id ) );
+      pool.erase( data.pots[id] );
+      GUM_ASSERT( not pool.exists( data.pots[id] ) );
+      data.pots.erase( id );
+      GUM_ASSERT( not data.pots.exists( id ) );
+    }
 
-} /* namespace prm */
+  } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

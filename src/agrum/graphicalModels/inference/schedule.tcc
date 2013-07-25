@@ -41,11 +41,11 @@ namespace gum {
   /// copy constructor
   template <typename GUM_SCALAR>
   Schedule<GUM_SCALAR>::Schedule( const Schedule<GUM_SCALAR>& from ) :
-      __dag( from.__dag ),
-      __operation2node( from.__operation2node ),
-      __created_multidims( from.__created_multidims ),
-      __operations_with_wrong_parents( from.__operations_with_wrong_parents ),
-      __operations_available( from.__operations_available ) {
+    __dag( from.__dag ),
+    __operation2node( from.__operation2node ),
+    __created_multidims( from.__created_multidims ),
+    __operations_with_wrong_parents( from.__operations_with_wrong_parents ),
+    __operations_available( from.__operations_available ) {
     // for debugging purposes
     GUM_CONS_CPY( Schedule );
 
@@ -170,7 +170,7 @@ namespace gum {
 
     for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
           iter = parents.begin(); iter != parents.end(); ++iter ) {
-      if (( *iter )->isAbstract() ) {
+      if ( ( *iter )->isAbstract() ) {
         // here we shall have a parent in the graph
         operation_available = false;
         MultiDimId multidim_id = ( *iter )->id();
@@ -191,7 +191,7 @@ namespace gum {
 
     // now we shall find whether, upon executing the operation, new multidim
     // tables are created
-    NodeSet *involved_ops;
+    NodeSet* involved_ops;
 
     const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
     created_tables = operation->multiDimResults();
@@ -200,7 +200,7 @@ namespace gum {
           iter = created_tables.begin(); iter != created_tables.end(); ++iter ) {
       MultiDimId table_id = ( *iter )->id();
 
-      if (( *iter )->isAbstract() ) {
+      if ( ( *iter )->isAbstract() ) {
         __created_multidims.insert( table_id, node_id );
       }
 
@@ -247,8 +247,8 @@ namespace gum {
 
       for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
             iter_args = args.begin(); iter_args != args.end(); ++iter_args ) {
-        if (( *iter_args )->isAbstract() &&
-            ! __created_multidims.exists(( *iter_args )->id() ) ) {
+        if ( ( *iter_args )->isAbstract() &&
+             ! __created_multidims.exists( ( *iter_args )->id() ) ) {
           still_wrong = true;
           break;
         }
@@ -263,7 +263,7 @@ namespace gum {
 
         for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
               iter_args = args.begin(); iter_args != args.end(); ++iter_args ) {
-          if (( *iter_args )->isAbstract() ) {
+          if ( ( *iter_args )->isAbstract() ) {
             __dag.insertArc( __created_multidims[( *iter_args )->id()], *iter );
             ++nb_parents;
           }
@@ -298,7 +298,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE void
   Schedule<GUM_SCALAR>::forceAfter( const ScheduleOperation<GUM_SCALAR>& op_to_force,
-                                const ScheduleOperation<GUM_SCALAR>& op_before ) {
+                                    const ScheduleOperation<GUM_SCALAR>& op_before ) {
     forceAfter( __operation2node[op_to_force.id()],
                 __operation2node[op_before.id()] );
   }
@@ -308,7 +308,7 @@ namespace gum {
    * before a set of operations */
   template <typename GUM_SCALAR>
   void Schedule<GUM_SCALAR>::forceAfter( NodeId op_to_force,
-                                     const NodeSet& ops_before ) {
+                                         const NodeSet& ops_before ) {
     for ( typename NodeSet::const_iterator iter = ops_before.begin();
           iter != ops_before.end(); ++iter ) {
       if ( *iter != op_to_force ) {
@@ -351,7 +351,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE void
   Schedule<GUM_SCALAR>::forceBefore( const ScheduleOperation<GUM_SCALAR>& op_to_force,
-                                 const ScheduleOperation<GUM_SCALAR>& op_after ) {
+                                     const ScheduleOperation<GUM_SCALAR>& op_after ) {
     forceBefore( __operation2node[op_to_force.id()],
                  __operation2node[op_after.id()] );
   }
