@@ -58,20 +58,23 @@ namespace gum {
     //Make modalities map
     typename Property<unsigned int>::onNodes __modalitiesMap;
 
-    for ( DAG::NodeIterator iter = this->getInfluenceDiagram().beginNodes(); iter != this->getInfluenceDiagram().endNodes(); ++iter )
-      __modalitiesMap.insert( *iter,  this->getInfluenceDiagram().variable( *iter ).domainSize() );
+    // the moral graph does not include utility nodes
+    UndiGraph partialMoralGraph( this->influenceDiagram().moralGraph() );
 
-    const UndiGraph* moralGraph = & ( this->getInfluenceDiagram().moralGraph() );
+    for ( DAG::NodeIterator iter = this->influenceDiagram().beginNodes(); iter != this->influenceDiagram().endNodes(); ++iter ) {
+      if ( this->influenceDiagram().isUtilityNode( *iter ) ) {
+        partialMoralGraph.eraseNode( *iter );
+      } else {
+        __modalitiesMap.insert( *iter,  this->influenceDiagram().variable( *iter ).domainSize() );
+      }
+    }
 
-    const List<NodeSet>* partialTemporalOrder = & ( this->getInfluenceDiagram().getPartialTemporalOrder() );
+    const List<NodeSet>* partialTemporalOrder = & ( this->influenceDiagram().getPartialTemporalOrder() );
 
     //Make Junction Tree
-    __triangulation = new PartialOrderedTriangulation( moralGraph, &__modalitiesMap, partialTemporalOrder );
-
+    __triangulation = new PartialOrderedTriangulation( &partialMoralGraph, &__modalitiesMap, partialTemporalOrder );
     __triangulation->junctionTree();
-
     __makeCliquePropertiesMap();
-
     __makeStrongJunctionTree();
   }
 
@@ -155,7 +158,7 @@ namespace gum {
     if ( !__inferenceMade )
       GUM_ERROR( OperationNotAllowed, "No inference have yet been made" );
 
-    if ( !this->getInfluenceDiagram().isDecisionNode( decisionId ) )
+    if ( !this->influenceDiagram().isDecisionNode( decisionId ) )
       GUM_ERROR( InvalidNode, "Node is not a decision node" );
 
     return __utakenDecisionMap[ decisionId ];
@@ -178,7 +181,7 @@ namespace gum {
     stream << "Choix maximisant l'espérance d'utilité : " << std::endl << std::flush;
 
     for ( HashTableConstIterator< NodeId, Idx > utilityIter = __utakenDecisionMap.begin(); utilityIter != __utakenDecisionMap.end(); ++utilityIter )
-      stream << "Decision " << this->getInfluenceDiagram().variable( utilityIter.key() ) << " : " << this->getInfluenceDiagram().variable( utilityIter.key() ).label( *utilityIter ) << std::endl;
+      stream << "Decision " << this->influenceDiagram().variable( utilityIter.key() ) << " : " << this->influenceDiagram().variable( utilityIter.key() ).label( *utilityIter ) << std::endl;
 
   }
 
@@ -198,7 +201,7 @@ namespace gum {
   DefaultInfluenceDiagramInference<GUM_SCALAR>::insertEvidence( const List<const Potential<GUM_SCALAR>*>& evidenceList ) {
 
     for ( ListConstIterator<const Potential<GUM_SCALAR>*> evidenceListIter = evidenceList.begin(); evidenceListIter != evidenceList.end(); ++evidenceListIter )
-      __cliquePropertiesMap[ __nodeToCliqueMap[ this->getInfluenceDiagram().nodeId( ( *evidenceListIter )->variable( 0 ) ) ] ]->addEvidence( **evidenceListIter );
+      __cliquePropertiesMap[ __nodeToCliqueMap[ this->influenceDiagram().nodeId( ( *evidenceListIter )->variable( 0 ) ) ] ]->addEvidence( **evidenceListIter );
 
   }
 
@@ -210,7 +213,7 @@ namespace gum {
   DefaultInfluenceDiagramInference<GUM_SCALAR>::eraseEvidence( const Potential<GUM_SCALAR>* evidence ) {
 
     if ( not( evidence->variablesSequence().size() != 1 ) )
-      __cliquePropertiesMap[ __nodeToCliqueMap[ this->getInfluenceDiagram().nodeId( evidence->variable( 0 ) ) ] ]->removeEvidence( evidence->variable( 0 ) );
+      __cliquePropertiesMap[ __nodeToCliqueMap[ this->influenceDiagram().nodeId( evidence->variable( 0 ) ) ] ]->removeEvidence( evidence->variable( 0 ) );
 
   }
 
@@ -269,7 +272,7 @@ namespace gum {
     NodeSet idSet;
     idSet.insert( id );
 
-    const NodeSet& parents = this->getInfluenceDiagram().dag().parents( id );
+    const NodeSet& parents = this->influenceDiagram().dag().parents( id );
 
     for ( NodeSet::const_iterator parentsIter = parents.begin(); parentsIter != parents.end(); ++parentsIter )
       idSet.insert( *parentsIter );
@@ -312,10 +315,10 @@ namespace gum {
       // Insertion in clique properties of the variables contains in the clique
       for ( NodeSetIterator cliqueNodesIter = __triangulation->junctionTree().clique( *cliqueIter ).begin();
             cliqueNodesIter != __triangulation->junctionTree().clique( *cliqueIter ).end(); ++cliqueNodesIter )
-        __cliquePropertiesMap[*cliqueIter]->addVariable( this->getInfluenceDiagram().variable( *cliqueNodesIter ) );
+        __cliquePropertiesMap[*cliqueIter]->addVariable( this->influenceDiagram().variable( *cliqueNodesIter ) );
 
       // Creation of clique own elimination order (based on the general one)
-      __cliquePropertiesMap[*cliqueIter]->makeEliminationOrder( elim, this->getInfluenceDiagram() );
+      __cliquePropertiesMap[*cliqueIter]->makeEliminationOrder( elim, this->influenceDiagram() );
     }
 
     //***********************************************************************************************************************************
@@ -329,8 +332,8 @@ namespace gum {
       __nodeToCliqueMap.insert( elim[i], cliqueId );
 
       // Ajout de la cpt si le noeud est un noeud chance
-      if ( this->getInfluenceDiagram().isChanceNode( elim[i] ) ) {
-        __cliquePropertiesMap[cliqueId]->addPotential( this->getInfluenceDiagram().cpt( elim[i] ) );
+      if ( this->influenceDiagram().isChanceNode( elim[i] ) ) {
+        __cliquePropertiesMap[cliqueId]->addPotential( this->influenceDiagram().cpt( elim[i] ) );
         potentialsCliquesSet.erase( cliqueId );
       }
     }
@@ -347,12 +350,12 @@ namespace gum {
     //***********************************************************************************************************************************
     // Fourth pass to adress utility table to the good clique
     // We go trought all diagram's nodes in search of utility nodes since they do not appear in elimination order
-    for ( NodeGraphPartIterator  nodesIter = this->getInfluenceDiagram().dag().beginNodes();
-          nodesIter != this->getInfluenceDiagram().dag().endNodes(); ++nodesIter )
-      if ( this->getInfluenceDiagram().isUtilityNode( *nodesIter ) ) {
+    for ( NodeGraphPartIterator  nodesIter = this->influenceDiagram().dag().beginNodes();
+          nodesIter != this->influenceDiagram().dag().endNodes(); ++nodesIter )
+      if ( this->influenceDiagram().isUtilityNode( *nodesIter ) ) {
         // Récupération de la bonne clique
         NodeId cliqueId = __getClique( elim, *nodesIter );
-        __cliquePropertiesMap[cliqueId]->addUtility( this->getInfluenceDiagram().utility( *nodesIter ) );
+        __cliquePropertiesMap[cliqueId]->addUtility( this->influenceDiagram().utility( *nodesIter ) );
         utilitiesCliqueSet.erase( cliqueId );
       }
 
@@ -587,7 +590,7 @@ namespace gum {
         UtilityTable<GUM_SCALAR>* newUtility = new UtilityTable<GUM_SCALAR>();
 
         // Then we need to add all not yet eliminated variables of the clique in ours new table
-        cliqueRemainVarList .erase( &( this->getInfluenceDiagram().variable( *eliminationOrderIter ) ) );
+        cliqueRemainVarList .erase( &( this->influenceDiagram().variable( *eliminationOrderIter ) ) );
 
         for ( SequenceIterator<const DiscreteVariable*> cliqueVarListIter = cliqueRemainVarList.begin();
               cliqueVarListIter != cliqueRemainVarList.end(); ++cliqueVarListIter ) {
@@ -611,7 +614,7 @@ namespace gum {
           GUM_SCALAR potentialValue = ( GUM_SCALAR ) 0;
           GUM_SCALAR utilityValue = ( GUM_SCALAR ) 0;
 
-          if ( this->getInfluenceDiagram().isDecisionNode( *eliminationOrderIter ) )
+          if ( this->influenceDiagram().isDecisionNode( *eliminationOrderIter ) )
             utilityValue = -1 * ( std::numeric_limits< GUM_SCALAR>::max() );
 
           // Then we compute value for current newInstanciation
@@ -661,7 +664,7 @@ namespace gum {
 
             //********************************************************************************************************
             // Marginalization
-            if ( this->getInfluenceDiagram().isDecisionNode( *eliminationOrderIter ) ) {
+            if ( this->influenceDiagram().isDecisionNode( *eliminationOrderIter ) ) {
               if ( potentialValue < currentPotential ) {
                 potentialValue = currentPotential;
               }
@@ -673,7 +676,7 @@ namespace gum {
                   __utakenDecisionMap.erase( *eliminationOrderIter );
 
                 __utakenDecisionMap.insert( *eliminationOrderIter,
-                                            cliqueInstance.val( this->getInfluenceDiagram().variable( *eliminationOrderIter ) ) );
+                                            cliqueInstance.val( this->influenceDiagram().variable( *eliminationOrderIter ) ) );
               }
             } else {
               potentialValue += currentPotential;
@@ -702,7 +705,7 @@ namespace gum {
 
         //=====================================================================================
         // Then we removed variable from clique list of variable  ...
-        cliqueInstance.erase( this->getInfluenceDiagram().variable( *eliminationOrderIter ) );
+        cliqueInstance.erase( this->influenceDiagram().variable( *eliminationOrderIter ) );
       }
     }
   }
@@ -721,7 +724,7 @@ namespace gum {
 
     for ( NodeSet::const_iterator cliqueNodesIter = __triangulation->junctionTree().clique( cliqueId ).begin();
           cliqueNodesIter != __triangulation->junctionTree().clique( cliqueId ).end(); ++cliqueNodesIter )
-      pot->add( this->getInfluenceDiagram().variable( *cliqueNodesIter ) );
+      pot->add( this->influenceDiagram().variable( *cliqueNodesIter ) );
 
     pot->normalize();
     return pot;
@@ -738,7 +741,7 @@ namespace gum {
 
     for ( NodeSet::const_iterator cliqueNodesIter = __triangulation->junctionTree().clique( cliqueId ).begin();
           cliqueNodesIter != __triangulation->junctionTree().clique( cliqueId ).end(); ++cliqueNodesIter )
-      ut->add( this->getInfluenceDiagram().variable( *cliqueNodesIter ) );
+      ut->add( this->influenceDiagram().variable( *cliqueNodesIter ) );
 
     return ut;
   }

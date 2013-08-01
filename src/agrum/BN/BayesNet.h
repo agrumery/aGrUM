@@ -33,9 +33,8 @@
 
 #include <agrum/core/hashTable.h>
 
-#include <agrum/graphicalModels/variableNodeMap.h>
-#include <agrum/BN/iBaseBayesNet.h>
-
+#include <agrum/graphicalModels/DAGmodel.h>
+#include <agrum/multidim/potential.h>
 
 namespace gum {
 
@@ -55,7 +54,7 @@ namespace gum {
    * gum::operator<<(std::ostream&, const BayesNet<GUM_SCALAR>&).
    */
   template<typename GUM_SCALAR>
-  class BayesNet: public IBaseBayesNet<GUM_SCALAR> {
+  class BayesNet: public DAGmodel {
 
       friend class BayesNetFactory<GUM_SCALAR>;
 
@@ -96,27 +95,12 @@ namespace gum {
        * Returns the CPT of a variable.
        * @throw NotFound If no variable's id matches varId.
        */
-      const Potential<GUM_SCALAR>& cpt( NodeId varId ) const;
-
-      /**
-       * Returns a constant reference to the dag of this Bayes Net.
-       */
-      const DAG& dag() const;
+      virtual const Potential<GUM_SCALAR>& cpt( NodeId varId ) const;
 
       /**
       * Returns a constant reference to the VariableNodeMap of thisBN
       */
-      const VariableNodeMap& variableNodeMap() const;
-
-      /**
-       * Returns the number of variables in this bayes net.
-       */
-      Idx size() const;
-
-      /**
-       * Returns the number of arcs in this bayes net.
-       */
-      Idx nbrArcs() const;
+      virtual const VariableNodeMap& variableNodeMap() const;
 
       /**
        * Returns the dimension (the number of free parameters) in this bayes net.
@@ -129,11 +113,8 @@ namespace gum {
       /// @return Returns a dot representation of this BayesNet.
       std::string toDot( void ) const;
 
-      /**
-       * Retursn true if this bayes net is empty.
-       */
-      bool empty() const;
-
+      /// @return Returns a string representation of this BayesNet.
+      std::string toString( void ) const;
 
       /**
        * Add a variable, it's associate node and it's CPT. The id of the new
@@ -295,25 +276,7 @@ namespace gum {
       ///@}
 
       /// @}
-      // ===========================================================================
-      /// @name Graphical methods
-      // ===========================================================================
-      /// @{
 
-      /**
-       * The node's id are coherent with the variables and nodes of the topology.
-       * @param clear If false returns the previously created moral graph.
-       */
-      const UndiGraph& moralGraph( bool clear = true ) const;
-
-      /**
-       * The topological order stays the same as long as no variable or arcs are
-       * added or erased from the topology.
-       * @param clear If false returns the previously created topology.
-       */
-      const Sequence<NodeId>& topologicalOrder( bool clear = true ) const;
-
-      /// @}
       // ===========================================================================
       /// @name Accessors for nodes with CI or logical implementation
       // ===========================================================================
@@ -430,23 +393,30 @@ namespace gum {
       /**
        * @deprecated: use add(const DiscreteVariable&).
        */
-      GUM_DEPRECATED(NodeId addVariable( const DiscreteVariable& variable ));
+      GUM_DEPRECATED( NodeId addVariable( const DiscreteVariable& variable ) );
 
       /**
        * @deprecated: use add(const DiscreteVariable&, MultiDimImplementation*)
        */
-      GUM_DEPRECATED(NodeId addVariable( const DiscreteVariable& variable,
-                          MultiDimImplementation<GUM_SCALAR>* aContent ));
+      GUM_DEPRECATED( NodeId addVariable( const DiscreteVariable& variable,
+                                          MultiDimImplementation<GUM_SCALAR>* aContent ) );
 
       /**
        * @deprecated: use erase(NodeId) instead.
        */
-      GUM_DEPRECATED(void eraseVariable( NodeId id ));
+      GUM_DEPRECATED( void eraseVariable( NodeId id ) );
 
       /// @}
 
       /// randomly generates CPTs for a given structure
       void generateCPTs();
+
+
+      /// @return Returns true if the src and this are equal.
+      bool operator==( const BayesNet<GUM_SCALAR>& src ) const;
+
+      /// @return Returns false if the src and this are equal.
+      bool operator!=( const BayesNet<GUM_SCALAR>& src ) const;
     private:
       /// clear all potentials
       void __clearPotentials();
@@ -454,8 +424,6 @@ namespace gum {
       /// copy of potentials from a BN to another, using names of vars as ref.
       void __copyPotentials( const BayesNet<GUM_SCALAR>& bn );
 
-      /// The DAG of this bayes net.
-      DAG __dag;
 
       /// the map between variable and id
       VariableNodeMap __varMap;
@@ -463,19 +431,12 @@ namespace gum {
       /// Mapping between the variable's id and their CPT.
       //Property< Potential< GUM_SCALAR >* >::onNodes __probaMap;
       HashTable<NodeId, Potential<GUM_SCALAR>* > __probaMap;
-
-      /// The moral graph of this bayes net.
-      mutable UndiGraph* __moralGraph;
-
-      /// The topology sequence of this bayes net.
-      mutable Sequence<NodeId>* __topologicalOrder;
-
   };
 
   /// Prints map's DAG in output using the Graphviz-dot format.
   template <typename GUM_SCALAR>
   std::ostream&
-  operator<< ( std::ostream& output, const IBaseBayesNet<GUM_SCALAR>& map );
+  operator<< ( std::ostream& output, const BayesNet<GUM_SCALAR>& map );
 
 } /* namespace gum */
 

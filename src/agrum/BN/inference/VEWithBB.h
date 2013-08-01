@@ -55,7 +55,7 @@ namespace gum {
       /**
        * Default constructor.
        */
-      VEWithBB( const IBaseBayesNet<GUM_SCALAR>& bn );
+      VEWithBB( const BayesNet<GUM_SCALAR>& bn );
 
       /**
        * Destructor.

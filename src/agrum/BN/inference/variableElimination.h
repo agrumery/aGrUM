@@ -67,7 +67,7 @@ namespace gum {
       /**
        * Default constructor.
        */
-      VariableElimination( const IBaseBayesNet<GUM_SCALAR>& bn );
+      VariableElimination( const BayesNet<GUM_SCALAR>& bn );
 
       /**
        * Destructor.

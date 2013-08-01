@@ -47,7 +47,7 @@ namespace gum {
       /**
        * Default constructor
        */
-      BayesNetInference( const IBaseBayesNet<GUM_SCALAR>& bn );
+      BayesNetInference( const BayesNet<GUM_SCALAR>& bn );
 
       /**
        * Destructor.
@@ -93,7 +93,7 @@ namespace gum {
       /**
        * Returns a constant reference over the BayesNet on which this class work.
        */
-      const IBaseBayesNet<GUM_SCALAR>& bn() const;
+      const BayesNet<GUM_SCALAR>& bn() const;
 
     protected:
 
@@ -130,7 +130,7 @@ namespace gum {
       /**
        * The Bayes net we wish to perform inference on.
        */
-      const IBaseBayesNet<GUM_SCALAR>& __bayesNet;
+      const BayesNet<GUM_SCALAR>& __bayesNet;
   };
 
 

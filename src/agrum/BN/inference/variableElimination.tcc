@@ -29,7 +29,7 @@
 namespace gum {
 
   template<typename GUM_SCALAR> INLINE
-  VariableElimination<GUM_SCALAR>::VariableElimination( const IBaseBayesNet<GUM_SCALAR>& bn ):
+  VariableElimination<GUM_SCALAR>::VariableElimination( const BayesNet<GUM_SCALAR>& bn ):
     BayesNetInference<GUM_SCALAR>( bn ) {
     GUM_CONSTRUCTOR( VariableElimination );
   }

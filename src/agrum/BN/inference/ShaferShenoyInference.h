@@ -75,7 +75,7 @@ namespace gum {
        * Default constructor.
        * @param bayesNet The Bayesian Network used for the inference.
        */
-      ShaferShenoyInference( const IBaseBayesNet<GUM_SCALAR>& bayesNet );
+      ShaferShenoyInference( const BayesNet<GUM_SCALAR>& bayesNet );
 
       /**
        * Destructor.

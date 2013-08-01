@@ -34,7 +34,7 @@ namespace gum {
 
 // Default constructor
   template<typename GUM_SCALAR>
-  ShaferShenoyInference<GUM_SCALAR>::ShaferShenoyInference( const IBaseBayesNet<GUM_SCALAR>& bayesNet ):
+  ShaferShenoyInference<GUM_SCALAR>::ShaferShenoyInference( const BayesNet<GUM_SCALAR>& bayesNet ):
     BayesNetInference<GUM_SCALAR>( bayesNet ), __triangulation( 0 ) {
     GUM_CONSTRUCTOR( ShaferShenoyInference );
 
@@ -592,4 +592,4 @@ namespace gum {
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

@@ -75,7 +75,7 @@ namespace gum {
   */
   template <typename GUM_SCALAR>
   const InfluenceDiagram<GUM_SCALAR>&
-  InfluenceDiagramInference<GUM_SCALAR>::getInfluenceDiagram() const {
+  InfluenceDiagramInference<GUM_SCALAR>::influenceDiagram() const {
     return __infDiag;
   }
 

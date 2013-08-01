@@ -192,7 +192,7 @@ namespace gum {
       bool contains( const DiscreteVariable& v ) const ;
 
 
-      /// See gum::MultiDimInterface::empty()
+      /// See gum::MultiDimInterface::clear()
 
       bool empty() const ;
 

@@ -31,63 +31,29 @@ namespace gum {
 
     INLINE
     InstanceBayesNet::InstanceBayesNet( const Instance& i ):
-      IBaseBayesNet<prm_float>(), __inst( &i ), __moralGraph( 0 ), __topo( 0 ) {
+      BayesNet<prm_float>(), __inst( &i ) {
       GUM_CONSTRUCTOR( InstanceBayesNet );
       __init( i );
     }
 
     INLINE
     InstanceBayesNet::InstanceBayesNet( const InstanceBayesNet& from ):
-      IBaseBayesNet<prm_float>( from ), __varNodeMap( from.__varNodeMap ),
-      __inst( from.__inst ), __dag( from.__dag ), __moralGraph( 0 ), __topo( 0 ) {
+      BayesNet<prm_float>( from ), __varNodeMap( from.__varNodeMap ),
+      __inst( from.__inst ) {
       GUM_CONS_CPY( InstanceBayesNet );
 
-      if ( from.__moralGraph != 0 ) {
-        __moralGraph = new UndiGraph( *( from.__moralGraph ) );
-      }
-
-      if ( from.__topo != 0 ) {
-        __topo = new Sequence<NodeId>( *( from.__topo ) );
-      }
     }
 
     INLINE
     InstanceBayesNet::~InstanceBayesNet() {
       GUM_DESTRUCTOR( InstanceBayesNet );
-
-      if ( __moralGraph != 0 ) {
-        delete __moralGraph;
-      }
-
-      if ( __topo != 0 ) {
-        delete __topo;
-      }
     }
 
     INLINE
     InstanceBayesNet&
     InstanceBayesNet::operator=( const InstanceBayesNet& from ) {
       if ( this != &from ) {
-        IBaseBayesNet<prm_float>::operator=( from );
-
-        if ( __moralGraph != 0 ) {
-          delete __moralGraph;
-        }
-
-        if ( __topo != 0 ) {
-          delete __topo;
-        }
-
-        __inst = from.__inst;
-        __dag = from.__dag;
-
-        if ( from.__moralGraph != 0 ) {
-          __moralGraph = new UndiGraph( *( from.__moralGraph ) );
-        }
-
-        if ( from.__topo != 0 ) {
-          __topo = new Sequence<NodeId>( *( from.__topo ) );
-        }
+        BayesNet<prm_float>::operator=( from );
 
         __varNodeMap = from.__varNodeMap;
       }
@@ -102,27 +68,9 @@ namespace gum {
     }
 
     INLINE
-    const DAG&
-    InstanceBayesNet::dag() const {
-      return __dag;
-    }
-
-    INLINE
     const VariableNodeMap&
     InstanceBayesNet::variableNodeMap() const {
       GUM_ERROR( NotFound, "no VariableNodeMap in an InstanceBayesNet" );
-    }
-
-    INLINE
-    Idx
-    InstanceBayesNet::size() const {
-      return __dag.size();
-    }
-
-    INLINE
-    bool
-    InstanceBayesNet::empty() const {
-      return __dag.empty();
     }
 
     INLINE
@@ -149,27 +97,6 @@ namespace gum {
       return __get( name ).type().variable();
     }
 
-    INLINE
-    const UndiGraph&
-    InstanceBayesNet::moralGraph( bool clear ) const {
-      if ( __moralGraph == 0 ) {
-        __moralGraph = new UndiGraph();
-        IBaseBayesNet<prm_float>::_moralGraph( *__moralGraph );
-      }
-
-      return *__moralGraph;
-    }
-
-    INLINE
-    const Sequence<NodeId>&
-    InstanceBayesNet::topologicalOrder( bool clear ) const {
-      if ( __topo == 0 ) {
-        __topo = new Sequence<NodeId>();
-        IBaseBayesNet<prm_float>::_topologicalOrder( *__topo );
-      }
-
-      return *__topo;
-    }
 
     INLINE
     const ClassElement&

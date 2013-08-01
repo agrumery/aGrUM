@@ -49,7 +49,7 @@ namespace gum {
       /**
        * Default constructor
        */
-      GibbsInference( const IBaseBayesNet<GUM_SCALAR>& BN );
+      GibbsInference( const BayesNet<GUM_SCALAR>& BN );
 
       /**
        * Destructor.

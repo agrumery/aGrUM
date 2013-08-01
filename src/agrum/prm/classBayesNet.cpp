@@ -40,7 +40,7 @@ namespace gum {
           // Adding the attribute
           if ( ClassElement::isAttribute( c.get( *node ) ) or ClassElement::isAggregate( c.get( *node ) ) ) {
             const ClassElement& elt = c.get( *node );
-            __dag.insertNode( elt.id() );
+            _dag.insertNode( elt.id() );
             __varNodeMap.insert( &( elt.type().variable() ), &elt );
           }
         } catch ( NotFound& ) {
@@ -50,7 +50,7 @@ namespace gum {
 
       for ( ArcSet::iterator arc = c.dag().beginArcs(); arc != c.dag().endArcs(); ++arc ) {
         try {
-          __dag.insertArc( arc->tail(), arc->head() );
+          _dag.insertArc( arc->tail(), arc->head() );
         } catch ( InvalidNode& ) {
           // Not added means not an attribute
         }

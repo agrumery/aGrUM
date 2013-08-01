@@ -37,7 +37,7 @@
 
 namespace gum {
 
-  template< typename T, template<class> class IApproximationPolicy>
+  template< typename GUM_SCALAR, template<class> class IApproximationPolicy>
   class MultiDimDecisionDiagramFactory;
 
   /**

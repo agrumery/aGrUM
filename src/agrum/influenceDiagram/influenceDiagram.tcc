@@ -40,9 +40,8 @@ namespace gum {
   */
   template<typename GUM_SCALAR> INLINE
   InfluenceDiagram<GUM_SCALAR>::InfluenceDiagram() :
-    IBaseBayesNet<GUM_SCALAR>(), __topologicalOrder( 0 ) {
+    DAGmodel() {
     GUM_CONSTRUCTOR( InfluenceDiagram );
-    __topologicalOrder = new Sequence<NodeId>();
   }
 
   /*
@@ -52,7 +51,6 @@ namespace gum {
   InfluenceDiagram<GUM_SCALAR>::~InfluenceDiagram() {
     GUM_DESTRUCTOR( InfluenceDiagram );
     _removeTables();
-    delete __topologicalOrder;
   }
 
   /*
@@ -60,10 +58,9 @@ namespace gum {
   */
   template<typename GUM_SCALAR>
   InfluenceDiagram<GUM_SCALAR>::InfluenceDiagram( const InfluenceDiagram<GUM_SCALAR>& source ) :
-    IBaseBayesNet<GUM_SCALAR> ( source ), __dag( source.__dag ), __variableMap( source.__variableMap ), __topologicalOrder( 0 ) {
+    DAGmodel( source ),  __variableMap( source.__variableMap ) {
     GUM_CONS_CPY( InfluenceDiagram );
     _copyTables( source );
-    __topologicalOrder = new Sequence<NodeId> ( * ( source.__topologicalOrder ) );
 
   }
 
@@ -74,19 +71,16 @@ namespace gum {
   InfluenceDiagram<GUM_SCALAR>&
   InfluenceDiagram<GUM_SCALAR>::operator= ( const InfluenceDiagram<GUM_SCALAR>& source ) {
     if ( this != &source ) {
-      IBaseBayesNet<GUM_SCALAR>::operator= ( source );
+      DAGmodel::operator= ( source );
       // Removing previous potentials
       _removeTables();
       __potentialMap.clear();
       __utilityMap.clear();
 
-      __dag = source.dag();
       __variableMap = source.__variableMap;
 
       //Copying tables
       _copyTables( source );
-
-      ( *__topologicalOrder ) = * ( source.__topologicalOrder );
     }
 
     return *this;
@@ -97,7 +91,7 @@ namespace gum {
   */
   template<typename GUM_SCALAR>
   void InfluenceDiagram<GUM_SCALAR>::_removeTables() {
-    for ( gum::DAG::NodeIterator iter = dag().beginNodes(); iter != dag().endNodes(); ++iter ) {
+    for ( gum::DAG::NodeIterator iter = _dag.beginNodes(); iter != _dag.endNodes(); ++iter ) {
       if ( isChanceNode( *iter ) )
         delete &cpt( *iter );
       else if ( isUtilityNode( *iter ) )
@@ -119,7 +113,7 @@ namespace gum {
       ( *potentialCpy ) << variable( potentialIter.key() );
 
       // Addition of the parents
-      const NodeSet& parentArcs = __dag.parents( potentialIter.key() );
+      const NodeSet& parentArcs = _dag.parents( potentialIter.key() );
 
       for ( NodeSet::const_iterator arcIter = parentArcs.begin(); arcIter != parentArcs.end(); ++arcIter )
         ( *potentialCpy ) << variable( *arcIter );
@@ -151,7 +145,7 @@ namespace gum {
       ( *utilityCpy ) << variable( utilityIter.key() );
 
       // Addition of the parents
-      const NodeSet& parentArcs = __dag.parents( utilityIter.key() );
+      const NodeSet& parentArcs = _dag.parents( utilityIter.key() );
 
       for ( NodeSet::const_iterator arcIter = parentArcs.begin(); arcIter != parentArcs.end(); ++arcIter )
         ( *utilityCpy ) << variable( *arcIter );
@@ -175,10 +169,7 @@ namespace gum {
     }
   }
 
-  /*
-  * To string editor
-  */
-  template<typename GUM_SCALAR> INLINE
+  template<typename GUM_SCALAR>
   std::string
   InfluenceDiagram<GUM_SCALAR>::toDot( void ) const {
     std::stringstream output;
@@ -200,7 +191,7 @@ namespace gum {
     chanceNode << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
 
-    for ( gum::DAG::NodeIterator node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter ) {
+    for ( gum::DAG::NodeIterator node_iter = _dag.beginNodes(); node_iter != _dag.endNodes(); ++node_iter ) {
       if ( isChanceNode( *node_iter ) )
         chanceNode << tab << variable( *node_iter ).name() << ";";
       else if ( isUtilityNode( *node_iter ) )
@@ -208,8 +199,8 @@ namespace gum {
       else
         decisionNode << tab << variable( *node_iter ).name() << ";";
 
-      if ( dag().children( *node_iter ).size() > 0 ) {
-        const NodeSet& children = dag().children( *node_iter );
+      if ( _dag.children( *node_iter ).size() > 0 ) {
+        const NodeSet& children = _dag.children( *node_iter );
 
         for ( NodeSetIterator arc_iter = children.begin(); arc_iter != children.end(); ++arc_iter )
           arcstream << tab <<  variable( *node_iter ).name() << " -> " << variable( *arc_iter ).name() << ";" << std::endl;
@@ -221,6 +212,31 @@ namespace gum {
     return output.str();
 
 
+  }
+
+
+
+  template<typename GUM_SCALAR>
+  std::string
+  InfluenceDiagram<GUM_SCALAR>::toString( void ) const {
+    std::stringstream output;
+
+    output<<"Influence Diagram{"<<std::endl;
+    output<<"  chance: "<<chanceNodeSize()<<","<<std::endl;
+    output<<"  utility: "<<utilityNodeSize()<<","<<std::endl;
+    output<<"  decision: "<<decisionNodeSize()<<","<<std::endl;
+    output<<"  arcs: "<<dag().sizeArcs()<<","<<std::endl;
+
+    double dSize=log10DomainSize();
+
+    if ( dSize>6 )
+      output<<"  domainSize: 10^" << dSize;
+    else
+      output<<"  domainSize: " << round( pow( 10.0,dSize ) );
+
+    output<<std::endl<< "}";
+
+    return output.str();
   }
 
 
@@ -307,15 +323,6 @@ namespace gum {
   }
 
   /*
-  * Returns a constant reference to the dag of this Influence Diagram.
-  */
-  template<typename GUM_SCALAR> INLINE
-  const DAG&
-  InfluenceDiagram<GUM_SCALAR>::dag() const {
-    return __dag;
-  }
-
-  /*
   * Returns a constant reference to the VariableNodeMap of this Influence Diagram
   */
   template<typename GUM_SCALAR> INLINE
@@ -325,25 +332,7 @@ namespace gum {
   }
 
   /*
-  * Returns the number of variables in this Influence Diagram.
-  */
-  template<typename GUM_SCALAR> INLINE
-  Idx
-  InfluenceDiagram<GUM_SCALAR>::size() const {
-    return __dag.size();
-  }
-
-  /*
-  * Retursn true if this Influence Diagram is empty.
-  */
-  template<typename GUM_SCALAR> INLINE
-  bool
-  InfluenceDiagram<GUM_SCALAR>::empty() const {
-    return size() == 0;
-  }
-
-  /*
-  * Returns a constant reference over a variabe given it's node id.
+  * Returns a constant reference over a variable given it's node id.
   */
   template<typename GUM_SCALAR> INLINE
   const DiscreteVariable&
@@ -477,13 +466,13 @@ namespace gum {
     NodeId proposedId;
 
     if ( DesiredId == 0 )
-      proposedId = __dag.nextNodeId();
+      proposedId = _dag.nextNodeId();
     else
       proposedId = DesiredId;
 
     __variableMap.insert( proposedId, variableType );
 
-    __dag.insertNode( proposedId );
+    _dag.insertNode( proposedId );
 
     // end critical section
     return proposedId;
@@ -499,7 +488,7 @@ namespace gum {
   InfluenceDiagram<GUM_SCALAR>::erase( NodeId varId ) {
     if ( __variableMap.exists( varId ) ) {
       // Reduce the variable child's CPT or Utility Table if necessary
-      const NodeSet& childrenArcs = __dag.children( varId );
+      const NodeSet& childrenArcs = _dag.children( varId );
 
       for ( NodeSetIterator iter = childrenArcs.begin(); iter != childrenArcs.end(); ++iter ) {
         if ( isChanceNode( *iter ) )
@@ -518,7 +507,7 @@ namespace gum {
 
       __variableMap.erase( varId );
 
-      __dag.eraseNode( varId );
+      _dag.eraseNode( varId );
     }
   }
 
@@ -564,7 +553,7 @@ namespace gum {
       GUM_ERROR( InvalidArc, "Tail cannot be a utility node" );
     }
 
-    __dag.insertArc( tail, head );
+    _dag.insertArc( tail, head );
 
     if ( isChanceNode( head ) )
       // Add parent in the child's CPT
@@ -582,9 +571,9 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   InfluenceDiagram<GUM_SCALAR>::eraseArc( const Arc& arc ) {
-    if ( dag().existsArc( arc ) ) {
+    if ( _dag.existsArc( arc ) ) {
       NodeId head = arc.head(), tail = arc.tail();
-      __dag.eraseArc( arc );
+      _dag.eraseArc( arc );
 
       if ( isChanceNode( head ) )
         // Removes parent in the child's CPT
@@ -615,46 +604,27 @@ namespace gum {
   * The node's id are coherent with the variables and nodes of the topology.
   */
   template<typename GUM_SCALAR>
-  const UndiGraph&
-  InfluenceDiagram<GUM_SCALAR>::moralGraph( bool clear ) const {
-    if ( clear ) {
-      __moralGraph.clear();
-      //DAG directGraph( dag() );
+  void
+  InfluenceDiagram<GUM_SCALAR>::_moralGraph( UndiGraph& graph ) const {
+    //DAG directGraph( _dag );
 
-      for ( NodeGraphPartIterator nodeIter = __dag.beginNodes(); nodeIter != __dag.endNodes(); ++nodeIter )
-        if ( !isUtilityNode( *nodeIter ) ) __moralGraph.insertNode( *nodeIter );
+    for ( NodeGraphPartIterator nodeIter = _dag.beginNodes(); nodeIter != _dag.endNodes(); ++nodeIter )
+      if ( !isUtilityNode( *nodeIter ) ) graph.insertNode( *nodeIter );
 
-      for ( NodeGraphPartIterator nodeIter = __dag.beginNodes(); nodeIter != __dag.endNodes(); ++nodeIter ) {
-        if ( !isDecisionNode( *nodeIter ) ) {
-          const NodeSet& parents = __dag.parents( *nodeIter );
+    for ( NodeGraphPartIterator nodeIter = _dag.beginNodes(); nodeIter != _dag.endNodes(); ++nodeIter ) {
+      if ( !isDecisionNode( *nodeIter ) ) {
+        const NodeSet& parents = _dag.parents( *nodeIter );
 
-          for ( NodeSetIterator arcIter = parents.begin(); arcIter != parents.end(); ++arcIter ) {
-            if ( isChanceNode( *nodeIter ) ) __moralGraph.insertEdge( *nodeIter, *arcIter );
+        for ( NodeSetIterator arcIter = parents.begin(); arcIter != parents.end(); ++arcIter ) {
+          if ( isChanceNode( *nodeIter ) ) graph.insertEdge( *nodeIter, *arcIter );
 
-            for ( NodeSetIterator arcIterPrime = arcIter; arcIterPrime != parents.end(); ++arcIterPrime )
-              if ( *arcIter != *arcIterPrime ) __moralGraph.insertEdge( *arcIter, *arcIterPrime );
-          }
+          for ( NodeSetIterator arcIterPrime = arcIter; arcIterPrime != parents.end(); ++arcIterPrime )
+            if ( *arcIter != *arcIterPrime ) graph.insertEdge( *arcIter, *arcIterPrime );
         }
       }
     }
-
-    return __moralGraph;
   }
 
-  /*
-  * The topological order stays the same as long as no variable or arcs are
-  * added or erased from the topology.
-  */
-  template<typename GUM_SCALAR>
-  const Sequence<NodeId>&
-  InfluenceDiagram<GUM_SCALAR>::topologicalOrder( bool clear ) const {
-    if ( clear or( __topologicalOrder->empty() ) ) {
-      __topologicalOrder->clear();
-      IBaseBayesNet<GUM_SCALAR>::_topologicalOrder( *__topologicalOrder );
-    }
-
-    return *__topologicalOrder;
-  }
 
 
   /*
@@ -704,7 +674,7 @@ namespace gum {
     List<NodeId> nodeFIFO;
     // mark[node] contains 0 if not visited
     // mark[node] = predecessor if visited
-    Property<int>::onNodes mark = __dag.nodesProperty( ( int ) - 1 );
+    Property<int>::onNodes mark = _dag.nodesProperty( ( int ) - 1 );
     NodeId current;
 
     mark[src] = ( int ) src;
@@ -715,7 +685,7 @@ namespace gum {
       current = nodeFIFO.front();
       nodeFIFO.popFront();
 
-      const NodeSet& child = __dag.children( current );
+      const NodeSet& child = _dag.children( current );
 
       for ( NodeSet::const_iterator ite = child.begin(); ite != child.end(); ++ite ) {
         NodeId new_one = *ite;
@@ -744,7 +714,7 @@ namespace gum {
   InfluenceDiagram<GUM_SCALAR>::getDecisionGraph() const {
     gum::DAG* temporalGraph = new gum::DAG();
 
-    for ( NodeGraphPartIterator graphIter = dag().beginNodes(); graphIter != dag().endNodes(); ++graphIter ) {
+    for ( NodeGraphPartIterator graphIter = _dag.beginNodes(); graphIter != _dag.endNodes(); ++graphIter ) {
       if ( isDecisionNode( *graphIter ) ) {
         if ( !temporalGraph->existsNode( *graphIter ) )
           temporalGraph->insertNode( *graphIter );
@@ -781,7 +751,7 @@ namespace gum {
 
     // mark[node] contains false if not visited
     // mark[node] contains true if visited
-    Property<bool>::onNodes mark = __dag.nodesProperty( false );
+    Property<bool>::onNodes mark = _dag.nodesProperty( false );
 
     mark[parentDecision] = true;
 
@@ -791,7 +761,7 @@ namespace gum {
       current = nodeFIFO.front();
       nodeFIFO.popFront();
 
-      const ArcSet& set = __dag.children( current );
+      const ArcSet& set = _dag.children( current );
 
       for ( ArcSet::const_iterator childIte = set.begin(); childIte != set.end(); ++childIte ) {
         NodeId new_one = childIte->head();
@@ -850,12 +820,12 @@ namespace gum {
 
       std::vector< NodeId >* decisionOrder = getDecisionOrder();
 
-      NodeSet nodeList = dag().nodes();
+      NodeSet nodeList = _dag.nodes();
 
       for ( unsigned int i = 0; i < decisionOrder->size(); i++ ) {
         NodeSet partialOrderedSet ;
 
-        const NodeSet& parentArcs = __dag.parents( decisionOrder->at( i ) );
+        const NodeSet& parentArcs = _dag.parents( decisionOrder->at( i ) );
 
         for ( NodeSetIterator arcIter = parentArcs.begin(); arcIter != parentArcs.end(); ++arcIter ) {
           if ( nodeList.contains( *arcIter ) && isChanceNode( *arcIter ) ) {
@@ -888,4 +858,4 @@ namespace gum {
   }
 
 }
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

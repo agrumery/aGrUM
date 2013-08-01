@@ -45,34 +45,22 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   BayesNet<GUM_SCALAR>::BayesNet() :
-    IBaseBayesNet<GUM_SCALAR>(),
-    __moralGraph( 0 ), __topologicalOrder( 0 ) {
+    DAGmodel() {
     GUM_CONSTRUCTOR( BayesNet );
-    __topologicalOrder = new Sequence<NodeId>();
-    __moralGraph = new UndiGraph();
   }
 
   template<typename GUM_SCALAR> INLINE
   BayesNet<GUM_SCALAR>::BayesNet( std::string name ) :
-    IBaseBayesNet<GUM_SCALAR>(),
-    __moralGraph( 0 ), __topologicalOrder( 0 ) {
+    DAGmodel() {
     GUM_CONSTRUCTOR( BayesNet );
-    __topologicalOrder = new Sequence<NodeId>();
-    __moralGraph = new UndiGraph();
     this->setProperty( "name", name );
   }
 
   template<typename GUM_SCALAR>
   BayesNet<GUM_SCALAR>::BayesNet( const BayesNet<GUM_SCALAR>& source ) :
-    IBaseBayesNet<GUM_SCALAR> ( source ),
-    __dag( source.__dag ),
-    __varMap( source.__varMap ),
-    __moralGraph( 0 ),
-    __topologicalOrder( 0 ) {
+    DAGmodel ( source ),
+    __varMap( source.__varMap ) {
     GUM_CONS_CPY( BayesNet );
-
-    __moralGraph = new UndiGraph( * ( source.__moralGraph ) );
-    __topologicalOrder = new Sequence<NodeId> ( * ( source.__topologicalOrder ) );
 
     __copyPotentials( source );
   }
@@ -81,12 +69,8 @@ namespace gum {
   BayesNet<GUM_SCALAR>&
   BayesNet<GUM_SCALAR>::operator= ( const BayesNet<GUM_SCALAR>& source ) {
     if ( this != &source ) {
-      IBaseBayesNet<GUM_SCALAR>::operator= ( source );
-      __dag = source.dag();
+      DAGmodel::operator= ( source );
       __varMap = source.__varMap;
-
-      ( *__topologicalOrder ) = * ( source.__topologicalOrder );
-      ( *__moralGraph ) = * ( source.__moralGraph );
 
       __clearPotentials();
       __copyPotentials( source );
@@ -104,9 +88,6 @@ namespace gum {
           ++iter ) {
       delete *iter;
     }
-
-    delete __moralGraph;
-    delete __topologicalOrder;
   }
 
   template<typename GUM_SCALAR> INLINE
@@ -144,10 +125,10 @@ namespace gum {
   template<typename GUM_SCALAR>
   NodeId
   BayesNet<GUM_SCALAR>::add( const DiscreteVariable& var, MultiDimImplementation<GUM_SCALAR>* aContent ) {
-    NodeId proposedId = __dag.nextNodeId();
+    NodeId proposedId = _dag.nextNodeId();
 
     __varMap.insert( proposedId, var );
-    __dag.insertNode( proposedId );
+    _dag.insertNode( proposedId );
 
     Potential<GUM_SCALAR>* cpt = new Potential<GUM_SCALAR> ( aContent );
     ( *cpt ) << variable( proposedId );
@@ -176,7 +157,7 @@ namespace gum {
   NodeId
   BayesNet<GUM_SCALAR>::add( const DiscreteVariable& var, MultiDimImplementation<GUM_SCALAR>* aContent , NodeId id ) {
     __varMap.insert( id, var );
-    __dag.insertNode( id );
+    _dag.insertNode( id );
 
     Potential<GUM_SCALAR>* cpt = new Potential<GUM_SCALAR> ( aContent );
     ( *cpt ) << variable( id );
@@ -214,27 +195,9 @@ namespace gum {
   }
 
   template<typename GUM_SCALAR> INLINE
-  const DAG&
-  BayesNet<GUM_SCALAR>::dag() const {
-    return __dag;
-  }
-
-  template<typename GUM_SCALAR> INLINE
   const VariableNodeMap&
   BayesNet<GUM_SCALAR>::variableNodeMap() const {
     return __varMap;
-  }
-
-  template<typename GUM_SCALAR> INLINE
-  Idx
-  BayesNet<GUM_SCALAR>::size() const {
-    return __dag.size();
-  }
-
-  template<typename GUM_SCALAR> INLINE
-  Idx
-  BayesNet<GUM_SCALAR>::nbrArcs() const {
-    return __dag.sizeArcs();
   }
 
   template<typename GUM_SCALAR>
@@ -244,7 +207,7 @@ namespace gum {
 
     for ( DAG::NodeIterator node = dag().beginNodes(); node != dag().endNodes(); ++node ) {
       Idx q = 1;
-      Set<NodeId> s = __dag.parents( *node );
+      Set<NodeId> s = _dag.parents( *node );
 
       for ( Set<NodeId>::iterator parent = s.begin(); parent != s.end(); ++parent ) {
         q *= variable( *parent ).domainSize();
@@ -254,12 +217,6 @@ namespace gum {
     }
 
     return dim;
-  }
-
-  template<typename GUM_SCALAR> INLINE
-  bool
-  BayesNet<GUM_SCALAR>::empty() const {
-    return size() == 0;
   }
 
   template<typename GUM_SCALAR> INLINE
@@ -279,7 +236,7 @@ namespace gum {
   BayesNet<GUM_SCALAR>::erase( NodeId varId ) {
     if ( __varMap.exists( varId ) ) {
       // Reduce the variable child's CPT
-      const NodeSet& children = __dag.children( varId );
+      const NodeSet& children = _dag.children( varId );
 
       for ( NodeSetIterator iter = children.begin();
             iter != children.end(); ++iter ) {
@@ -290,7 +247,7 @@ namespace gum {
 
       __probaMap.erase( varId );
       __varMap.erase( varId );
-      __dag.eraseNode( varId );
+      _dag.eraseNode( varId );
     }
   }
 
@@ -303,7 +260,7 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   BayesNet<GUM_SCALAR>::addArc( NodeId tail, NodeId head ) {
-    __dag.insertArc( tail, head );
+    _dag.insertArc( tail, head );
     // Add parent in the child's CPT
     ( * ( __probaMap[head] ) ) << variable( tail );
   }
@@ -313,7 +270,7 @@ namespace gum {
   BayesNet<GUM_SCALAR>::eraseArc( const Arc& arc ) {
     if ( __varMap.exists( arc.tail() ) && __varMap.exists( arc.head() ) ) {
       NodeId head = arc.head(), tail = arc.tail();
-      __dag.eraseArc( arc );
+      _dag.eraseArc( arc );
       // Remove parent froms child's CPT
       ( * ( __probaMap[head] ) ) >> variable( tail );
     }
@@ -325,32 +282,6 @@ namespace gum {
     eraseArc( Arc( tail, head ) );
   }
 
-  template<typename GUM_SCALAR>
-  const UndiGraph&
-  BayesNet<GUM_SCALAR>::moralGraph( bool clear ) const {
-    if ( clear or __moralGraph == 0 ) {
-      if ( __moralGraph != 0 ) {
-        delete __moralGraph;
-      }
-
-      __moralGraph = new UndiGraph();
-
-      IBaseBayesNet<GUM_SCALAR>::_moralGraph( *__moralGraph );
-    }
-
-    return *__moralGraph;
-  }
-
-  template<typename GUM_SCALAR>
-  const Sequence<NodeId>&
-  BayesNet<GUM_SCALAR>::topologicalOrder( bool clear ) const {
-    if ( clear or ( __topologicalOrder->empty() ) ) {
-      __topologicalOrder->clear();
-      IBaseBayesNet<GUM_SCALAR>::_topologicalOrder( *__topologicalOrder );
-    }
-
-    return *__topologicalOrder;
-  }
 
   template<typename GUM_SCALAR> INLINE
   NodeId
@@ -443,11 +374,44 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   std::ostream&
-  operator<< ( std::ostream& output, const IBaseBayesNet<GUM_SCALAR>& map ) {
-    output << map.toString();
+  operator<< ( std::ostream& output, const BayesNet<GUM_SCALAR>& bn ) {
+    output << bn.toString();
     return output;
   }
 
+
+  template<typename GUM_SCALAR> INLINE
+  std::string
+  BayesNet<GUM_SCALAR>::toString( void ) const {
+    Size param = 0;
+
+    double dSize=log10DomainSize();
+
+    for ( DAG::NodeIterator it = beginNodes(); it != endNodes(); ++it ) {
+      param += ( ( const MultiDimImplementation<GUM_SCALAR>& ) cpt( *it ).getMasterRef() ).realSize();
+    }
+
+    double compressionRatio = log10( 1.0*param )-dSize;
+
+    std::stringstream s;
+    s << "BN{nodes: " << size() << ", arcs: " << dag().sizeArcs() << ", ";
+
+    if ( dSize>6 )
+      s<<"domainSize: 10^" << dSize;
+    else
+      s<<"domainSize: " << round( pow( 10.0,dSize ) );
+
+    s<< ", parameters: " << param << ", compression ratio: ";
+
+    if ( compressionRatio>-3 )
+      s<<trunc( 100.0-pow( 10.0,compressionRatio+2.0 ) );
+    else
+      s<<"100-10^" << compressionRatio+2.0;
+
+    s<< "% }";
+
+    return s.str();
+  }
 
   template<typename GUM_SCALAR>
   std::string
@@ -597,4 +561,51 @@ namespace gum {
       generator.generateCPT( cpt( *iter ).pos( variable( *iter ) ),  cpt( *iter ) );
     }
   }
+
+
+
+  template <typename GUM_SCALAR>
+  bool
+  BayesNet<GUM_SCALAR>::operator== ( const BayesNet& from ) const {
+    if ( dag() == from.dag() ) {
+      for ( DAG::NodeIterator node = beginNodes(); node != endNodes(); ++node ) {
+        // We don't use Potential::operator== because BN's don't share
+        // DiscreteVariable's pointers.
+        Bijection<const DiscreteVariable*, const DiscreteVariable*> bijection;
+        bijection.insert( & ( variable( *node ) ), & ( from.variable( *node ) ) );
+        const NodeSet& parents = dag().parents( *node );
+
+        for ( NodeSetIterator arc = parents.begin(); arc != parents.end(); ++arc ) {
+          bijection.insert( & ( variable( *arc ) ), & ( from.variable( *arc ) ) );
+        }
+
+        Instantiation i( cpt( *node ) );
+
+        Instantiation j( from.cpt( *node ) );
+
+        for ( i.setFirst(); not i.end(); i.inc() ) {
+          typedef Bijection<const DiscreteVariable*, const DiscreteVariable*>::iterator BiIter;
+
+          for ( BiIter iter = bijection.begin(); iter != bijection.end(); ++iter ) {
+            j.chgVal( * ( iter.second() ), i.val( * ( iter.first() ) ) );
+          }
+
+          if ( std::pow( cpt( *node ).get( i ) - from.cpt( *node ).get( j ), ( GUM_SCALAR ) 2 ) > ( GUM_SCALAR ) 1e-6 ) {
+            return false;
+          }
+        }
+      }
+
+      return true;
+    }
+
+    return false;
+  }
+
+  template <typename GUM_SCALAR>
+  bool
+  BayesNet<GUM_SCALAR>::operator!= ( const BayesNet& from ) const {
+    return not this->operator== ( from );
+  }
+
 } /* namespace gum */

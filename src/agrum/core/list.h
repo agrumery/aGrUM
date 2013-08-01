@@ -952,7 +952,6 @@ namespace gum {
 
 
       /// returns a boolean indicating whether the chained list is empty
-
       using ListBase<Val>::empty;
 
 

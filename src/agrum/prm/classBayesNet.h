@@ -26,7 +26,7 @@
 
 #include <list>
 
-#include <agrum/BN/iBaseBayesNet.h>
+#include <agrum/BN/BayesNet.h>
 
 #include <agrum/prm/PRM.h>
 
@@ -47,7 +47,7 @@ namespace gum {
      * BayesNetInference over a ClassBayesNet since some variables are missing in
      * the DAG but not in the nodes CPT.
      */
-    class ClassBayesNet: public IBaseBayesNet<prm_float> {
+    class ClassBayesNet: public BayesNet<prm_float> {
       public:
         // ========================================================================
         /// @name Constructors & destructor.
@@ -88,17 +88,8 @@ namespace gum {
          */
         virtual const Potential<prm_float>& cpt( NodeId varId ) const;
 
-        /// See gum::IBaseBayesNet::dag().
-        virtual const DAG& dag() const;
-
         /// See gum::IBaseBayesNet::variableNodeMap().
         virtual const VariableNodeMap& variableNodeMap() const;
-
-        /// See gum::IBaseBayesNet::size().
-        virtual Idx size() const;
-
-        /// See gum::IBaseBayesNet::empty().
-        virtual bool empty() const;
 
         /// See gum::IBaseBayesNet::variable().
         virtual const DiscreteVariable& variable( NodeId id ) const;
@@ -120,13 +111,6 @@ namespace gum {
         /// @name Graphical methods
         // ===========================================================================
         /// @{
-
-        /// See gum::IBaseBayesNet::moralGraph().
-        virtual const UndiGraph& moralGraph( bool clear = true ) const;
-
-        /// See gum::IBaseBayesNet::topologicalOrder().
-        virtual const Sequence<NodeId>& topologicalOrder( bool clear = true ) const;
-
         /// @return Returns a dot representation of this BayesNet.
         virtual std::string toDot() const;
 
@@ -146,24 +130,17 @@ namespace gum {
         /// The ClassElementContainer decorated by this.
         const Class* __class;
 
-        /// The Dag of a ClassBayesNet is a subgraph of __class->dag() containing only
-        /// Attribute and Aggregate.
-        DAG __dag;
 
-        /// ClassBayesNet are a read-only structure, no need to update the moral graph.
-        mutable UndiGraph* __moralGraph;
 
         mutable Property<unsigned int>::onNodes __modalities;
 
-        /// ClassBayesNet are a read-only structure, no need to update the
-        /// topological order.
-        mutable Sequence<NodeId>* __topo;
 
         void __init( const Class& c );
     };
 
   } /* namespace prm */
 } /* namespace gum */
+
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/classBayesNet.inl>
 #endif // GUM_NO_INLINE

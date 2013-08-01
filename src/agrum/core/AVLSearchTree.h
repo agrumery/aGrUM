@@ -403,9 +403,9 @@ namespace gum {
       using BinSearchTree<Val,Cmp,Node>::minValue;
       using BinSearchTree<Val,Cmp,Node>::maxValue;
       using BinSearchTree<Val,Cmp,Node>::contains;
-      using BinSearchTree<Val,Cmp,Node>::clear;
-      using BinSearchTree<Val,Cmp,Node>::size;
       using BinSearchTree<Val,Cmp,Node>::empty;
+      using BinSearchTree<Val,Cmp,Node>::size;
+      using BinSearchTree<Val,Cmp,Node>::clear;
       using BinSearchTree<Val,Cmp,Node>::toString;
       using BinSearchTree<Val,Cmp,Node>::insert;
       using BinSearchTree<Val,Cmp,Node>::erase;

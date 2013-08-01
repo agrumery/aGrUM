@@ -58,7 +58,7 @@ namespace gum {
   /// initialization function
 
   template <typename GUM_SCALAR> INLINE
-  void LazyPropagation<GUM_SCALAR>::__initialize( const IBaseBayesNet<GUM_SCALAR>& BN,
+  void LazyPropagation<GUM_SCALAR>::__initialize( const BayesNet<GUM_SCALAR>& BN,
       StaticTriangulation& triangulation,
       const HashTable<NodeId, unsigned int>& modalities )  {
     const JunctionTree& triang_jt = triangulation.junctionTree();
@@ -144,7 +144,7 @@ namespace gum {
   /// default constructor
 
   template <typename GUM_SCALAR> INLINE
-  LazyPropagation<GUM_SCALAR>::LazyPropagation( const IBaseBayesNet<GUM_SCALAR>& BN ) :
+  LazyPropagation<GUM_SCALAR>::LazyPropagation( const BayesNet<GUM_SCALAR>& BN ) :
     BayesNetInference<GUM_SCALAR> ( BN ) {
     // for debugging purposessetRequiredInference
     GUM_CONSTRUCTOR( LazyPropagation );
@@ -173,7 +173,7 @@ namespace gum {
 
   template <typename GUM_SCALAR> INLINE
   LazyPropagation<GUM_SCALAR>::LazyPropagation
-  ( const IBaseBayesNet<GUM_SCALAR>& BN,
+  ( const BayesNet<GUM_SCALAR>& BN,
     const std::vector<NodeId>& elim_order ) :
     BayesNetInference<GUM_SCALAR> ( BN ) {
     // for debugging purposessetRequiredInference

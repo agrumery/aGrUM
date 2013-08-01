@@ -39,7 +39,7 @@ namespace gum {
         try {
           // Adding the attribute
           const Attribute& attr = i.get( *node );
-          __dag.insertNode( attr.id() );
+          _dag.insertNode( attr.id() );
           __varNodeMap.insert( &( attr.type().variable() ), &attr );
         } catch ( NotFound& ) {
           // Not an attribute
@@ -48,7 +48,7 @@ namespace gum {
 
       for ( ArcSet::iterator arc = i.type().dag().beginArcs(); arc != i.type().dag().endArcs(); ++arc ) {
         try {
-          __dag.insertArc( arc->tail(), arc->head() );
+          _dag.insertArc( arc->tail(), arc->head() );
         } catch ( InvalidNode& ) {
           // Not added means not an attribute
         }

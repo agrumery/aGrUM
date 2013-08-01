@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                               *
- *   test $Id: $                                                           *
+ *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -508,7 +508,6 @@ namespace gum {
 
 
   /// returns a boolean indicating whether the chained list is empty
-
   template <typename Val> INLINE
   bool ListBase<Val>::empty() const  {
     return ( __nb_elements == 0 );

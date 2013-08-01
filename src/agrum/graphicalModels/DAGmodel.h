@@ -24,30 +24,24 @@
 * @author Lionel TORTI and Pierre-Henri WUILLEMIN
 *
 */
-#ifndef GUM_IBASEBAYES_NET_H
-#define GUM_IBASEBAYES_NET_H
-
-
-#include <list>
+#ifndef GUM_DAGMODEL_H
+#define GUM_DAGMODEL_H
+#include <agrum/config.h>
 
 #include <agrum/graphs/DAG.h>
 #include <agrum/graphs/undiGraph.h>
 
 #include <agrum/graphicalModels/variableNodeMap.h>
-#include <agrum/multidim/potential.h>
+#include <agrum/multidim/instantiation.h>
 
 namespace gum {
 
   /**
-  * @class IBaseBayesNet IBaseBayesNet.h <agrum/BN/iBaseBayesNet.h>
-   * Interface-like class for representing basic functionaalities for a BayesNet.
+  * @class DAGmodel DAGmodel.h <agrum/graphicalModels/DAGmodel.h>
+   * Virtual base class for PGMs using a DAG
    *
-   * This class is not really an interface. Several methods are implemented in order
-   * to
    */
-  template<typename GUM_SCALAR>
-
-  class IBaseBayesNet {
+  class DAGmodel {
 
     public:
       /// @name Constructors / Destructors
@@ -56,17 +50,17 @@ namespace gum {
       /**
        * Default constructor.
        */
-      IBaseBayesNet();
+      DAGmodel();
 
       /**
        * Destructor.
        */
-      virtual ~IBaseBayesNet();
+      virtual ~DAGmodel();
 
       /**
        * Copy constructor. Do nothing.
        */
-      IBaseBayesNet( const IBaseBayesNet<GUM_SCALAR>& source );
+      DAGmodel( const DAGmodel& source );
 
       /// @}
       /// @name Getter and setters
@@ -86,32 +80,30 @@ namespace gum {
       /// @}
       /// @name Variable manipulation methods.
       /// @{
-
-      /**
-       * Returns the CPT of a variable.
-       * @throw NotFound If no variable's id matches varId.
-       */
-      virtual const Potential<GUM_SCALAR>& cpt( NodeId varId ) const = 0;
-
       /**
        * Returns a constant reference to the dag of this Bayes Net.
        */
-      virtual const DAG& dag() const = 0;
+       const DAG& dag() const ;
 
       /**
-      * Returns a constant reference to the VariableNodeMap of thisBN
+      * Returns a constant reference to the VariableNodeMap of this BN
       */
       virtual const VariableNodeMap& variableNodeMap() const = 0;
 
       /**
-       * Returns the number of variables in this bayes net.
+       * Returns the number of variables in this BN.
        */
-      virtual Idx size() const = 0;
+      Idx size() const;
 
       /**
-       * Retursn true if this bayes net is empty.
+       * Returns the number of arcs in this BN.
        */
-      virtual bool empty() const = 0;
+      Idx nbrArcs() const;
+
+      /**
+       * Retursn true if this BN is empty.
+       */
+      bool empty() const;
 
       /**
        * Shortcut for this->dag().beginNodes().
@@ -143,10 +135,7 @@ namespace gum {
       /// @throw NotFound if no such name exists in the graph.
       virtual const DiscreteVariable& variableFromName( const std::string& name ) const = 0;
 
-      /// synchronize in (on this) with External
-      //void synchroInstantiations( Instantiation& inst,const Instantiation& external,bool sameLabelsOrder=true ) const;
-
-      /// Get an instantiation over all the variables of the BN
+      /// Get an instantiation over all the variables of the model
       virtual void completeInstantiation( Instantiation& I ) const;
       /// @}
 
@@ -174,14 +163,14 @@ namespace gum {
        * The node's id are coherent with the variables and nodes of the topology.
        * @param clear If false returns the previously created moral graph.
        */
-      virtual const UndiGraph& moralGraph( bool clear = true ) const = 0;
+      const UndiGraph& moralGraph( bool clear = true ) const ;
 
       /**
        * The topological order stays the same as long as no variable or arcs are
        * added or erased src the topology.
        * @param clear If false returns the previously created topology.
        */
-      virtual const Sequence<NodeId>& topologicalOrder( bool clear = true ) const = 0;
+      const Sequence<NodeId>& topologicalOrder( bool clear = true ) const ;
 
       /// @}
 
@@ -189,40 +178,51 @@ namespace gum {
       double log10DomainSize( void ) const;
 
       /// @return Returns a string representation of this BayesNet.
-      std::string toString( void ) const;
+      virtual std::string toString( void ) const;
 
       /// @return Returns a dot representation of this BayesNet.
       virtual std::string toDot( void ) const=0;
 
-      /// @return Returns true if the src and this are equal.
-      bool operator==( const IBaseBayesNet<GUM_SCALAR>& src ) const;
-
-      /// @return Returns false if the src and this are equal.
-      bool operator!=( const IBaseBayesNet<GUM_SCALAR>& src ) const;
 
     protected:
       /**
        * Private copy operator.
        */
-      IBaseBayesNet<GUM_SCALAR>& operator=( const IBaseBayesNet<GUM_SCALAR>& source );
+      DAGmodel& operator=( const DAGmodel& source );
 
-      /// Returns the moral graph of this BayesNet.
-      void _moralGraph( UndiGraph& graph ) const;
+      /// The DAG of this BN.
+      DAG _dag;
 
-      /// Returns a topological order of this BayesNet.
-      void _topologicalOrder( Sequence<NodeId>& order ) const;
 
     private:
-      /// The properties of this BayesNet.
+
+      /// Returns the moral graph of this BayesNet.
+      /// @warning __mutableMoralGraph is assumed to be valid and empty
+      void __moralGraph( ) const;
+
+      /// Returns a topological order of this BayesNet.
+      /// @warning __mutableTopologicalOrder is assumed to be valid and empty
+      void __topologicalOrder(  ) const;
+
+      /// The moral graph of this BN.
+      mutable UndiGraph* __mutableMoralGraph;
+
+      /// The topology sequence of this BN.
+      mutable Sequence<NodeId>* __mutableTopologicalOrder;
+
+      /// The properties of this BN.
       /// Initialized using a lazy instantiation.
       mutable HashTable<std::string, std::string>* __propertiesMap;
 
-      /// Return the properties of this BayesNet and initialize the hash table is
+      /// Return the properties of this BN and initialize the hash table is
       /// necessary.
       HashTable<std::string, std::string>& __properties() const;
+
   };
 } // gum
 
-#include <agrum/BN/iBaseBayesNet.tcc>
+#ifndef GUM_NO_INLINE
+#include <agrum/graphicalModels/DAGmodel.inl>
+#endif /* GUM_NO_INLINE */
 
-#endif /* GUM_IBASEBAYES_NET_H */
+#endif /* GUM_DAGMODEL_H */

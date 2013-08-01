@@ -152,7 +152,7 @@
 %include <agrum/core/list.h>
 
 %import <agrum/graphicalModels/variableNodeMap.h>
-%import <agrum/BN/iBaseBayesNet.h>
+%include <agrum/graphicalModels/DAGmodel.h>
 %include <agrum/BN/BayesNet.h>
 
 %include <agrum/BN/inference/BayesNetInference.h>
@@ -394,8 +394,6 @@
 %template(BaseListPotentials_double)  gum::ListBase< const gum::Potential<double> *>;
 %template(ListPotentials_double) gum::List< const gum::Potential<double> *>;
 
-
-%template(IBaseBayesNet_double) gum::IBaseBayesNet<double>;
 %template(BayesNet_double) gum::BayesNet<double>;
 %template(BayesNetInference_double) gum::BayesNetInference<double>;
 %template(LazyPropagation_double) gum::LazyPropagation<double>;

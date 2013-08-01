@@ -883,12 +883,12 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   BayesNetFactory<GUM_SCALAR>::__setCPTAndParents( const DiscreteVariable& var, Potential<GUM_SCALAR>* table ) {
-    __bn->__dag.eraseParents( __varNameMap[var.name()] );
+    __bn->_dag.eraseParents( __varNameMap[var.name()] );
 
     for ( Sequence<const DiscreteVariable*>::iterator iter = table->variablesSequence().begin(); iter != table->variablesSequence().end(); ++iter ) {
       if ( ( *iter ) != ( &var ) ) {
         __checkVariableName( ( *iter )->name() );
-        __bn->__dag.insertArc( __varNameMap[( *iter )->name()], __varNameMap[var.name()] );
+        __bn->_dag.insertArc( __varNameMap[( *iter )->name()], __varNameMap[var.name()] );
       }
     }
 

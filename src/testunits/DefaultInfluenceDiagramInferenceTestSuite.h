@@ -370,6 +370,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( topology = new gum::InfluenceDiagram<float>() );
         TS_GUM_ASSERT_THROWS_NOTHING( fillwithDecAsia( *topology, idList ) );
 
+        GUM_TRACE_VAR(topology->toString());
         gum::DefaultInfluenceDiagramInference<float>* dIDI = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( dIDI = new gum::DefaultInfluenceDiagramInference<float> ( *topology ) );
         TS_GUM_ASSERT_THROWS_NOTHING( delete dIDI );

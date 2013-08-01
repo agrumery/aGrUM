@@ -42,7 +42,7 @@
 namespace gum {
   /// default constructor
   template <typename GUM_SCALAR>
-  GibbsInference<GUM_SCALAR>::GibbsInference( const IBaseBayesNet<GUM_SCALAR>& BN ) :
+  GibbsInference<GUM_SCALAR>::GibbsInference( const BayesNet<GUM_SCALAR>& BN ) :
     ApproximationScheme(),
     BayesNetInference <GUM_SCALAR> ( BN ),
     particle::Gibbs<GUM_SCALAR> ( BN ) {
@@ -233,4 +233,4 @@ namespace gum {
 
 
 #endif    // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

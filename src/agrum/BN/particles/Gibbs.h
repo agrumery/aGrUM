@@ -47,7 +47,7 @@ namespace gum {
         /**
          * Default constructor
          */
-        Gibbs( const IBaseBayesNet<GUM_SCALAR>& BN );
+        Gibbs( const BayesNet<GUM_SCALAR>& BN );
 
         /**
          * Destructor.
@@ -91,7 +91,7 @@ namespace gum {
 
         const Instantiation& particle();
 
-        const IBaseBayesNet<GUM_SCALAR>& bn();
+        const BayesNet<GUM_SCALAR>& bn();
         ///@}
 
       private:
@@ -131,7 +131,7 @@ namespace gum {
         Property<Idx>::onNodes __hard_evidences;
 
         /// The Bayes net we draw particle on
-        const IBaseBayesNet<GUM_SCALAR>& __bayesNet;
+        const BayesNet<GUM_SCALAR>& __bayesNet;
     };
   } // namespace particle
 } //namespace gum
