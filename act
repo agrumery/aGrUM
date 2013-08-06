@@ -52,15 +52,15 @@ def initParser(current):
                                         dest="verbose",
                                         default=current['verbose'])
     parser.add_option("", "--profile",
-                                        help="Test procedures are time-normalized",
+                                        help="Random seed is fixed once. Hence random algorithms are time-normalized.",
                                         action="store_true",
                                         dest="profile",
-                                        default=current['profile'])
-    parser.add_option("", "--no-profile",
-                                        help="Test procedures are time-randomized",
-                                        action="store_false",
-                                        dest="profile",
-                                        default=current['profile'])
+                                        default=False)
+    parser.add_option("", "--stats",
+                                        help="Consolidation on 20 runs.",
+                                        action="store_true",
+                                        dest="stats",
+                                        default=False)
     parser.add_option("-p", "--platform",
                                         help="{linux|windows|mac}",
                                         type="choice",
@@ -174,11 +174,13 @@ def afficheTests():
 
 
 ##########################################################################################################################
-def execute(s):
-    global sh
+def execute(s,exec_cde=False):
+    global sh,sh_no_exec
     if(sh!=""):
-        sh+=" && "
+        s=" && "+s
     sh+=s
+    if not exec_cde:
+      sh_no_exec+=s
 
 ##########################################################################################################################
 def cleanAll():
@@ -186,7 +188,6 @@ def cleanAll():
     os.system("rm -rf build")
     print OKGREEN+"done"+ENDC
     print
-    sys.exit(0)
 
 ##########################################################################################################################
 def showAll():
@@ -199,7 +200,6 @@ def showAll():
         print "  "+key+" : "+persistent[key].__str__()
     print "-------------------"
     print
-    sys.exit(0)
 
 
 ##########################################################################################################################
@@ -217,6 +217,7 @@ def checkConstraints(parser,options,args):
     current['destination']=options.destination
     current['jobs']=options.jobs
     current['profile']=options.profile
+    current['stats']=options.stats
 
     for key in 'rule option wrapper'.split():
         current[key]=''
@@ -263,7 +264,7 @@ def checkConstraints(parser,options,args):
 
 
 ##########################################################################################################################
-def proceed(options):
+def proceed(options,RANDOMSEED_FOR_PROFILE="10"):
     folders=cmake_options=make_options=run_cde =""
 
     if options['wrapper']!="": # we know rule in ["install","wrapper", "test"]
@@ -322,7 +323,8 @@ def proceed(options):
 
     if options['rule']=='test':
       if options['wrapper']=="":
-	cmake_options=cmake_options+" -DGUM_RANDOMSEED_TEST="+("10" if options['profile'] else "0");
+        option_profile=" -DGUM_RANDOMSEED_TEST="+(RANDOMSEED_FOR_PROFILE if options['profile'] else "0")
+        cmake_options=cmake_options+option_profile;
 
     [safe_cd(s) for s in folders]
     execute("cmake "+cmake_options)
@@ -331,7 +333,7 @@ def proceed(options):
     if (run_cde!=""):
         if (options['platform'] == "windows"):
             run_cde="wine "+run_cde
-        execute(run_cde)
+        execute(run_cde,exec_cde=True)
     [execute("cd ..") for s in folders]
 
 ##########################################################################################################################
@@ -353,7 +355,6 @@ def uninstall(options):
         os.system('cd '+install_folder+'/lib && rm -rf aGrUM')
         print "suppresion récursive de "+RED+install_folder+"/include/agrum"+ENDC
         os.system('cd '+install_folder+'/include && rm -rf agrum')
-    sys.exit(0)
 
 ##########################################################################################################################
 default={}
@@ -372,6 +373,9 @@ default['wrapper']=""
 default['jobs']="5"
 default['verbose']=False
 default['profile']=False
+default['stats']=False
+
+not_persistent_options=['profile','stats']
 
 
 shlv=shelve.open(".options.mak.py",writeback=True)
@@ -383,16 +387,17 @@ if shlv.has_key('persistent'):
 #    persistent=shlv['persistent']
 
 for key in default.iterkeys():
+  if not key in not_persistent_options:
     if persistent.has_key(key):
         current[key]=persistent[key]
     else:
         current[key]=default[key]
 
 invocation=" agrum release -d /usr -j 5 -q -p linux"
-numversion="1.0"
+numversion="1.5"
 
 print ENDC+RED+"aGrUM"+ENDC+" compilation tool "+RED+"v"+numversion+ENDC
-print "(c) 2010 "+OKGREEN+"aGrUM Team"+ENDC
+print "(c) 2010-13 "+OKGREEN+"aGrUM Team"+ENDC
 print
 
 
@@ -403,35 +408,92 @@ parser=initParser(current)
 
 checkConstraints(parser,options,args)
 
-## SPECIAL RULES
-if current['rule']=='show':
-    showAll()
-if current['rule']=='clean':
-    cleanAll()
-if current['rule']=='uninstall':
-    uninstall(current)
-if current['rule']=='default':
-    current=default
-    print "invocation : act,n "+current['rule']+" "+current['option']+' '+current['wrapper']
 if options.testlists!="":
     testManagement(options.testlists)
-
+    
 if len(args)==0:
     print WARNING+"invocation"+ENDC+" : "+OKGREEN+"act "+current['rule']+" "+current['option']+' '+current['wrapper']+ENDC
     print
 
+#needed for cmake
+if not os.path.exists('src/testunits/testList.cmake'):
+    writeTestList(allTests())
+    
+## SPECIAL RULES
+if current['rule']=='show':
+    showAll()
+    sys.exit(0)
+if current['rule']=='clean':
+    cleanAll()
+    sys.exit(0)
+if current['rule']=='uninstall':
+    uninstall(current)
+    sys.exit(0)
+    
+if current['rule']=='default':
+    current=default
+    print "invocation : act "+current['rule']+" "+current['option']+' '+current['wrapper']
+
 for key in current:
+  if not key in not_persistent_options:
     persistent[key]=current[key]
 shlv['persistent']=persistent
 shlv.close()
 
-#needed for cmake
-if not os.path.exists('src/testunits/testList.cmake'):
-    writeTestList(allTests())
-
-global sh
+global sh,sh_no_exec
 sh="";
-proceed(persistent)
+sh_no_exec=""
+
+proceed(current,RANDOMSEED_FOR_PROFILE="10")
+
 if (options.verbose):
-    print sh
-os.system(sh)
+  print("")
+  print(sh)
+  print("")
+  print(sh_no_exec)
+  print("")
+
+if not(current['stats']):
+  os.system(sh)
+else:
+  os.system(sh_no_exec)
+  print("###########################################")
+  print("Processing profile for act "+current['rule']+" "+current['option']+' '+current['wrapper'])
+  print("This will take a certain amount of time ...")
+  print("###########################################")
+  import subprocess,re,math
+  time_line=re.compile(r'## Profiling :\s+(.*?)\sms ##')
+  stat_line=re.compile(r"Failed (.*?) of (.*?) test")
+  
+  nbr_tests=20
+  vals=list()
+  for i in range(nbr_tests):
+    p=subprocess.Popen(sh,shell=True,stderr=subprocess.PIPE,stdout=subprocess.PIPE)
+    out=p.stderr.readlines()
+    tps=0
+    failed=0
+    total=0
+    for line in out:
+      time_match = time_line.search(line) 
+      if time_match:
+        tps=int(time_match.groups()[0])
+        continue
+      
+      stat_match = stat_line.search(line)
+      if stat_match:
+        failed=int(stat_match.groups()[0])
+        total=int(stat_match.groups()[1])
+       
+    print("Stats {3}/{4} : succes rate {0}/{1} in {2} ms".format(total-failed,total,tps,i+1,nbr_tests))
+    vals.append(tps)
+    
+  s=0.0
+  s2=0.0
+  for v in vals:
+    s+=v
+    s2+=v*v
+  mean=s/nbr_tests
+  var=s2/nbr_tests-mean*mean
+  print("=======================")
+  print("Mean :{0}".format(mean))
+  print("StdDev :{0}".format(math.sqrt(var)))

@@ -58,7 +58,7 @@ namespace gum {
 
   template<typename GUM_SCALAR>
   BayesNet<GUM_SCALAR>::BayesNet( const BayesNet<GUM_SCALAR>& source ) :
-    DAGmodel ( source ),
+    DAGmodel( source ),
     __varMap( source.__varMap ) {
     GUM_CONS_CPY( BayesNet );
 
@@ -122,18 +122,15 @@ namespace gum {
     return res;
   }
 
-  template<typename GUM_SCALAR>
+  template<typename GUM_SCALAR> INLINE
   NodeId
   BayesNet<GUM_SCALAR>::add( const DiscreteVariable& var, MultiDimImplementation<GUM_SCALAR>* aContent ) {
     NodeId proposedId = _dag.nextNodeId();
+    NodeId res=0;
 
-    __varMap.insert( proposedId, var );
-    _dag.insertNode( proposedId );
+    res=add( var,aContent,proposedId );
 
-    Potential<GUM_SCALAR>* cpt = new Potential<GUM_SCALAR> ( aContent );
-    ( *cpt ) << variable( proposedId );
-    __probaMap.insert( proposedId, cpt );
-    return proposedId;
+    return res;
   }
 
   template<typename GUM_SCALAR> INLINE
