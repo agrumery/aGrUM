@@ -11,26 +11,40 @@ import PotentialTestSuite
 import ListTestSuite
 import LazyPropagationTestSuite
 import GibbsTestSuite
-#import BayesNet_doubleTestSuite
-#import Gibbs_doubleTestSuite
-#import LazyPropagation_doubleTestSuite
-#import List_doubleTestSuite
-#import Potential_doubleTestSuite
-#import PythonBNListener_doubleTestSuite
 
+import time
 
 tests = unittest.TestSuite([SequenceTestSuite.ts, VariablesTestSuite.ts,
                             BayesNetTestSuite.ts,
                             PythonBNListenerTestSuite.ts,
                             PotentialTestSuite.ts, ListTestSuite.ts,
                             LazyPropagationTestSuite.ts, GibbsTestSuite.ts
-														#,
-                            #BayesNet_doubleTestSuite.ts,
-                            #Gibbs_doubleTestSuite.ts,
-                            #LazyPropagation_doubleTestSuite.ts,
-                            #List_doubleTestSuite.ts,
-                            #Potential_doubleTestSuite.ts,
-                            #PythonBNListener_doubleTestSuite.ts
-														])
+                            ])
 
-unittest.TextTestRunner(verbosity=2).run(tests)
+print """
+========================
+PyAgrum Test Unit Module
+========================
+
+using python unittest
+"""
+
+runner=unittest.TextTestRunner(verbosity=2)
+
+result=runner._makeResult()
+
+startTime=time.time()
+tests(result)
+duration=time.time()-startTime
+
+result.printErrors() 
+runner.stream.writeln(result.separator2) 
+
+failed, errored = map(len, (result.failures, result.errors)) 
+errs=failed+errored
+
+print("")
+print("## Profiling : %5.0f ms ##"%(1000.0*duration))
+print("Failed %d of %d tests"%(errs,result.testsRun))
+print("Success rate: %d%%"%(((result.testsRun-errs)*100)/result.testsRun))
+print("")
