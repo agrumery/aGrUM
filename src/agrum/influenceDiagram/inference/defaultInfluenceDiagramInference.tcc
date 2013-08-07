@@ -196,7 +196,7 @@ namespace gum {
     void
     DefaultInfluenceDiagramInference<GUM_SCALAR>::insertEvidence( const List<const Potential<GUM_SCALAR>*>& evidenceList ) {
       
-        for ( ListConstIterator<const Potential<GUM_SCALAR>*> evidenceListIter = evidenceList.begin(); evidenceListIter != evidenceList.end(); ++evidenceListIter )
+        for ( ListConstIterator<const Potential<GUM_SCALAR>*> evidenceListIter = evidenceList.cbegin(); evidenceListIter != evidenceList.cend(); ++evidenceListIter )
             __cliquePropertiesMap[ __nodeToCliqueMap[ this->getInfluenceDiagram().nodeId( ( *evidenceListIter )->variable( 0 ) ) ] ]->addEvidence( **evidenceListIter );
     
     }
@@ -405,8 +405,8 @@ namespace gum {
             
             if( validIndex ){
                   Idx index = 1;
-                  for ( std::vector<NodeId>::const_iterator eliminationOrderIter = __triangulation->eliminationOrder().begin();                        
-                              eliminationOrderIter != __triangulation->eliminationOrder().end() && *eliminationOrderIter != *cliqueNodesIter; ++eliminationOrderIter, ++index );
+                  for ( std::vector<NodeId>::const_iterator eliminationOrderIter = __triangulation->eliminationOrder().cbegin();                        
+                              eliminationOrderIter != __triangulation->eliminationOrder().cend() && *eliminationOrderIter != *cliqueNodesIter; ++eliminationOrderIter, ++index );
                    
                   __cliqueEliminationMap.insert( __triangulation->eliminationOrder().size() - index, *cliqueIter );
                     

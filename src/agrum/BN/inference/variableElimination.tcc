@@ -77,7 +77,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   void
   VariableElimination<GUM_SCALAR>::insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list ) {
-    for( ListConstIterator< const Potential<GUM_SCALAR>* > iter = pot_list.begin(); iter != pot_list.end(); ++iter ) {
+    for( ListConstIterator< const Potential<GUM_SCALAR>* > iter = pot_list.cbegin(); iter != pot_list.cend(); ++iter ) {
       if( ( *iter )->nbrDim() != 1 ) {
         GUM_ERROR( OperationNotAllowed, "Evidence can only be giben w.r.t. one random variable" );
       }

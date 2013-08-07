@@ -345,8 +345,8 @@ namespace gum {
     this->_invalidateMarginals();
     List <const Potential<GUM_SCALAR>*> empty_list;
 
-    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = pot_list.begin();
-          iter != pot_list.end(); ++iter ) {
+    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = pot_list.cbegin();
+          iter != pot_list.cend(); ++iter ) {
       // check that the evidence is given w.r.t.only one random variable
       const Sequence<const DiscreteVariable *>& vars = ( *iter )->variablesSequence();
 
@@ -626,8 +626,8 @@ namespace gum {
     const List <const Potential<GUM_SCALAR>*>& clique_pot = __clique_potentials[from_id];
     __PotentialSet pot_list( clique_pot.size() );
 
-    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = clique_pot.begin();
-          iter != clique_pot.end(); ++iter )
+    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = clique_pot.cbegin();
+          iter != clique_pot.cend(); ++iter )
       pot_list.insert( *iter );
 
     // add the evidence to the clique potentials
@@ -635,7 +635,7 @@ namespace gum {
       __clique_evidence[from_id];
 
     for ( ListConstIterator <const Potential<GUM_SCALAR>*> iter =
-            evidence_list.begin();iter != evidence_list.end(); ++iter )
+            evidence_list.cbegin();iter != evidence_list.cend(); ++iter )
       pot_list.insert( *iter );
 
     // add the messages sent by adjacent nodes to from_id
@@ -869,16 +869,16 @@ namespace gum {
     __PotentialSet pot_list( clique_pot.size() +
                              __clique_evidence[myclique].size() );
 
-    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = clique_pot.begin();
-          iter != clique_pot.end(); ++iter )
+    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = clique_pot.cbegin();
+          iter != clique_pot.cend(); ++iter )
       pot_list.insert( *iter );
 
     // add the evidence to the clique potentials
     const List <const Potential<GUM_SCALAR>*>& evidence_list =
       __clique_evidence[myclique];
 
-    for ( ListConstIterator <const Potential<GUM_SCALAR>*> iter = evidence_list.begin();
-          iter != evidence_list.end(); ++iter )
+    for ( ListConstIterator <const Potential<GUM_SCALAR>*> iter = evidence_list.cbegin();
+          iter != evidence_list.cend(); ++iter )
       pot_list.insert( *iter );
 
     // add the messages sent by adjacent nodes to myclique
@@ -1018,16 +1018,16 @@ namespace gum {
     __PotentialSet pot_list( clique_pot.size() +
                              __clique_evidence[myclique].size() );
 
-    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = clique_pot.begin();
-          iter != clique_pot.end(); ++iter )
+    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = clique_pot.cbegin();
+          iter != clique_pot.cend(); ++iter )
       pot_list.insert( *iter );
 
     // add the evidence to the clique potentials
     const List <const Potential<GUM_SCALAR>*>& evidence_list =
       __clique_evidence[myclique];
 
-    for ( ListConstIterator <const Potential<GUM_SCALAR>*> iter = evidence_list.begin();
-          iter != evidence_list.end(); ++iter )
+    for ( ListConstIterator <const Potential<GUM_SCALAR>*> iter = evidence_list.cbegin();
+          iter != evidence_list.cend(); ++iter )
       pot_list.insert( *iter );
 
     // add the messages sent by adjacent nodes to myclique

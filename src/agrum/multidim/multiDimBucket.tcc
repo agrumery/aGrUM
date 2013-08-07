@@ -456,7 +456,7 @@ namespace gum {
       __bucket->add( **iter );
     }
     if ( not this->_slaves().empty() ) {
-      for ( List<Instantiation*>::const_iterator iter = this->_slaves().begin(); iter != this->_slaves().end(); ++iter ) {
+      for ( List<Instantiation*>::const_iterator iter = this->_slaves().cbegin(); iter != this->_slaves().cend(); ++iter ) {
         __instantiations.insert( *iter, new Instantiation( *__bucket ) );
       }
     }

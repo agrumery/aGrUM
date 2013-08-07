@@ -28,6 +28,7 @@
 // to ease parser
 #include <agrum/core/list.h>
 
+
 namespace gum {
 
 
@@ -37,29 +38,44 @@ namespace gum {
   /* =========================================================================== */
   /* =========================================================================== */
 
-  // ==============================================================================
   /// default constructor
-  // ==============================================================================
   template <typename Val> INLINE
   ListBucket<Val>::ListBucket( const Val& v ) :
-      __prev( 0 ), __next( 0 ), __val( v ) {
+  __val { v } {
     // for debugging purposes
     GUM_CONSTRUCTOR( ListBucket );
   }
 
-  // ==============================================================================
+
+  /// construtor for Val rvalues
+  template <typename Val> INLINE
+  ListBucket<Val>::ListBucket ( Val&& v ) noexcept :
+  __val { std::move( v ) } {
+    // for debugging purposes
+    GUM_CONSTRUCTOR( ListBucket );
+  }
+
+  
+  /// emplace constructor
+  template <typename Val>
+  template <typename... Args> INLINE
+  ListBucket<Val>::ListBucket ( Args&&... args ) :
+    __val ( std::forward<Args>(args)... ) {
+    // for debugging purposes
+    GUM_CONSTRUCTOR( ListBucket );
+  }
+
+    
   /// copy constructor
-  // ==============================================================================
   template <typename Val> INLINE
   ListBucket<Val>::ListBucket( const ListBucket<Val>& src ) :
-      __prev( 0 ), __next( 0 ), __val( src.__val ) {
+    __val { src.__val } {
     // for debugging purposes
     GUM_CONS_CPY( ListBucket );
   }
 
-  // ==============================================================================
+  
   /// copy operator
-  // ==============================================================================
   template <typename Val> INLINE
   ListBucket<Val>& ListBucket<Val>::operator= ( const ListBucket<Val>& src ) {
     // for debugging purposes
@@ -70,67 +86,60 @@ namespace gum {
     return *this;
   }
 
-  // ==============================================================================
+
   // WARNING: during its deletion, the bucket takes care of properly
   // rechaining the chained list. However, it has no knowledge about the variables
   // that keep track of the beginning/end of the chained list, hence it cannot
   // update them properly. This should be done by the List/ListBase themselves
-  // ==============================================================================
   template <typename Val> INLINE
   ListBucket<Val>::~ListBucket() {
     // for debugging purposes
     GUM_DESTRUCTOR( ListBucket );
 
     // rechain properly the buckets
-    if ( __prev ) __prev->__next = __next;
-    if ( __next ) __next->__prev = __prev;
+    if ( __prev != nullptr ) __prev->__next = __next;
+    if ( __next != nullptr ) __next->__prev = __prev;
   }
 
-  // ==============================================================================
+
   // equality check
-  // ==============================================================================
   template <typename Val> INLINE
   bool ListBucket<Val>::operator== ( const ListBucket<Val>& src ) const {
     return ( src.__val == __val );
   }
 
-  // ==============================================================================
+
   // inequality check
-  // ==============================================================================
   template <typename Val> INLINE
   bool ListBucket<Val>::operator!= ( const ListBucket<Val>& src ) const {
     return ( src.__val != __val );
   }
 
-  // ==============================================================================
+
   // dereferencing operator
-  // ==============================================================================
   template <typename Val> INLINE
-  const Val& ListBucket<Val>::operator*() const  {
+  const Val& ListBucket<Val>::operator*() const noexcept {
     return __val;
   }
 
-  // ==============================================================================
+
   // dereferencing operator
-  // ==============================================================================
   template <typename Val> INLINE
-  Val& ListBucket<Val>::operator*()  {
+  Val& ListBucket<Val>::operator*() noexcept {
     return __val;
   }
 
-  // ==============================================================================
+
   /// returns the bucket toward the next element
-  // ==============================================================================
   template <typename Val> INLINE
-  const ListBucket<Val>* ListBucket<Val>::next() const {
+  const ListBucket<Val>* ListBucket<Val>::next() const noexcept {
     return __next;
   }
 
-  // ==============================================================================
+
   /// returns the bucket toward the preceding element
-  // ==============================================================================
   template <typename Val> INLINE
-  const ListBucket<Val>* ListBucket<Val>::previous() const {
+  const ListBucket<Val>* ListBucket<Val>::previous() const noexcept {
     return __prev;
   }
 
@@ -146,9 +155,10 @@ namespace gum {
   // ==============================================================================
   /// a function used to perform copies of elements of ListBases.
   // ==============================================================================
-  template <typename Val>
-  void ListBase<Val>::__copy_elements( const ListBase<Val> &src ) {
-    ListBucket<Val> *ptr, *old_ptr;
+  template <typename Val, typename Alloc>
+  void ListBase<Val,Alloc>::__copy_elements( const ListBase<Val,Alloc> &src ) {
+    const ListBucket<Val> *ptr;
+    ListBucket<Val> *old_ptr;
 
     // set the defaults
     __deb_list = 0;
@@ -173,7 +183,7 @@ namespace gum {
     } catch ( ... ) {
       // problem: we could not allocate an element in the list => we delete
       // the elements created so far and we throw an exception
-      for ( ; __deb_list; __deb_list = ptr ) {
+      for ( ; __deb_list; __deb_list = const_cast<ListBucket<Val>*> ( ptr ) ) {
         ptr = __deb_list->__next;
         delete __deb_list;
       }
@@ -190,8 +200,8 @@ namespace gum {
   // ==============================================================================
   /// returns the bucket corresponding to a given value.
   // ==============================================================================
-  template <typename Val> INLINE
-  ListBucket<Val>* ListBase<Val>::__getBucket( const Val& val ) const {
+  template <typename Val, typename Alloc> INLINE
+  ListBucket<Val>* ListBase<Val,Alloc>::__getBucket( const Val& val ) const {
     for ( ListBucket<Val> *ptr = __deb_list; ptr; ptr = ptr->__next )
       if ( ptr->__val == val ) return ptr;
 
@@ -201,8 +211,8 @@ namespace gum {
   // ==============================================================================
   /// suppresses an element src a chained list.
   // ==============================================================================
-  template <typename Val> INLINE
-  void ListBase<Val>::__erase( ListBucket<Val>* bucket ) {
+  template <typename Val, typename Alloc> INLINE
+  void ListBase<Val,Alloc>::__erase( ListBucket<Val>* bucket ) {
     // perform deletion only if there is a bucket to remove
     if ( bucket ) {
       // set properly the begin and end of the chained list (the other chainings
@@ -219,16 +229,18 @@ namespace gum {
   // ==============================================================================
   /// erases the bucket src the List
   // ==============================================================================
-  template <typename Val> INLINE
-  void ListBase<Val>::erase( const ListBucket<Val>& bucket ) {
+  template <typename Val, typename Alloc> INLINE
+  void ListBase<Val,Alloc>::erase( const ListBucket<Val>& bucket ) {
     __erase( const_cast<ListBucket<Val>*>( &bucket ) );
   }
 
-  // ==============================================================================
+
+
+  
+
   /// displays the content of a chained list
-  // ==============================================================================
-  template <typename Val>
-  std::string ListBase<Val>::toString() const {
+  template <typename Val, typename Alloc>
+  std::string ListBase<Val,Alloc>::toString() const {
     bool deja = false;
     std::stringstream stream;
     stream << "[";
@@ -244,21 +256,18 @@ namespace gum {
     return stream.str();
   }
 
-  // ==============================================================================
+
   /// A basic constructor that creates an empty list.
-  // ==============================================================================
-  template <typename Val> INLINE
-  ListBase<Val>::ListBase() :
-      __deb_list( 0 ), __end_list( 0 ), __nb_elements( 0 ) {
+  template <typename Val, typename Alloc> INLINE
+  ListBase<Val,Alloc>::ListBase() noexcept {
     // for debugging purposes
     GUM_CONSTRUCTOR( ListBase );
   }
 
-  // ==============================================================================
+
   /// Copy constructor
-  // ==============================================================================
-  template <typename Val> INLINE
-  ListBase<Val>::ListBase( const ListBase<Val> &src ) {
+  template <typename Val, typename Alloc> INLINE
+  ListBase<Val,Alloc>::ListBase( const ListBase<Val,Alloc> &src ) {
     // for debugging purposes
     GUM_CONS_CPY( ListBase );
 
@@ -266,23 +275,39 @@ namespace gum {
     __copy_elements( src );
   }
 
-  // ==============================================================================
+
   /// Copy constructor
-  // ==============================================================================
-  template <typename Val> INLINE
-  ListBase<Val>::ListBase( const List<Val> &src ) {
+  template <typename Val, typename Alloc> INLINE
+  ListBase<Val,Alloc>::ListBase( const List<Val,Alloc> &src ) {
     // for debugging purposes
     GUM_CONS_CPY( ListBase );
 
     // actually copy the elements of list src
     __copy_elements( src );
   }
+  
+
+  /// Move constructor
+  template <typename Val, typename Alloc> INLINE
+  ListBase<Val,Alloc>::ListBase( ListBase<Val,Alloc>&& src ) {
+    // for debugging purposes
+    GUM_CONS_CPY( ListBase );
+
+    // actually copy the elements of list src
+    __copy_elements( src );
+  }
+
+
+
+
+
 
   // ==============================================================================
   /// Copy operator.
   // ==============================================================================
-  template <typename Val> INLINE
-  ListBase<Val>& ListBase<Val>::operator= ( const ListBase<Val>& src ) {
+  template <typename Val, typename Alloc> INLINE
+  ListBase<Val,Alloc>&
+  ListBase<Val,Alloc>::operator= ( const ListBase<Val,Alloc>& src ) {
     // avoid self assignment
     if ( this != &src ) {
       // for debugging purposes
@@ -305,8 +330,8 @@ namespace gum {
   // ==============================================================================
   /// Destructor.
   // ==============================================================================
-  template <typename Val>
-  ListBase<Val>::~ListBase() {
+  template <typename Val, typename Alloc>
+  ListBase<Val,Alloc>::~ListBase() {
     // for debugging (although this program is bug-free)
     GUM_DESTRUCTOR( ListBase );
 
@@ -320,10 +345,30 @@ namespace gum {
   // ==============================================================================
   /// Insertion of a new element (a copy) at the beginning of the chained list.
   // ==============================================================================
-  template <typename Val> INLINE
-  Val& ListBase<Val>::pushFront( const Val& val ) {
+  template <typename Val, typename Alloc> INLINE
+  Val& ListBase<Val,Alloc>::pushFront( const Val& val ) {
     // create a new bucket
     ListBucket<Val> *new_elt = new ListBucket<Val>( val );
+
+    // place the bucket at the beginning of the list
+    new_elt->__next = __deb_list;
+    if ( __deb_list ) __deb_list->__prev = new_elt;
+    else __end_list = new_elt;
+    __deb_list = new_elt;
+
+    // update the number of elements
+    ++__nb_elements;
+
+    // returns the current value
+    return new_elt->__val;
+  }
+
+  
+  /// Insertion of a new element (a copy) at the beginning of the chained list.
+  template <typename Val, typename Alloc> INLINE
+  Val& ListBase<Val,Alloc>::pushFront( Val&& val ) {
+    // create a new bucket
+    ListBucket<Val> *new_elt = new ListBucket<Val>( std::move ( val ) );
 
     // place the bucket at the beginning of the list
     new_elt->__next = __deb_list;
@@ -342,16 +387,16 @@ namespace gum {
   // ==============================================================================
   /// alias for push_front
   // ==============================================================================
-  template <typename Val> INLINE
-  Val& ListBase<Val>::push_front( const Val& val ) {
+  template <typename Val, typename Alloc> INLINE
+  Val& ListBase<Val,Alloc>::push_front( const Val& val ) {
     return pushFront( val );
   }
 
   // ==============================================================================
   /// Insertion of a new element (a copy) at the end of the chained list.
   // ==============================================================================
-  template <typename Val> INLINE
-  Val& ListBase<Val>::pushBack( const Val& val ) {
+  template <typename Val, typename Alloc> INLINE
+  Val& ListBase<Val,Alloc>::pushBack( const Val& val ) {
     // create a new bucket
     ListBucket<Val> *new_elt = new ListBucket<Val>( val );
 
@@ -371,24 +416,24 @@ namespace gum {
   // ==============================================================================
   /// alias for push_back
   // ==============================================================================
-  template <typename Val> INLINE
-  Val& ListBase<Val>::push_back( const Val& val ) {
+  template <typename Val, typename Alloc> INLINE
+  Val& ListBase<Val,Alloc>::push_back( const Val& val ) {
     return pushBack( val );
   }
 
   // ==============================================================================
   /// Insertion of a new element at the end of the chained list (alias of pushBack)
   // ==============================================================================
-  template <typename Val> INLINE
-  Val& ListBase<Val>::insert( const Val& val ) {
+  template <typename Val, typename Alloc> INLINE
+  Val& ListBase<Val,Alloc>::insert( const Val& val ) {
     return pushBack( val );
   }
 
   // ==============================================================================
   /// returns a reference to first element of a list
   // ==============================================================================
-  template <typename Val> INLINE
-  Val& ListBase<Val>::front() const  {
+  template <typename Val, typename Alloc> INLINE
+  Val& ListBase<Val,Alloc>::front() const  {
     if ( __nb_elements == 0 ) {
       GUM_ERROR( NotFound, "not enough elements in the chained list" );
     }
@@ -399,8 +444,8 @@ namespace gum {
   // ==============================================================================
   /// returns a reference to last element of a list
   // ==============================================================================
-  template <typename Val> INLINE
-  Val& ListBase<Val>::back() const  {
+  template <typename Val, typename Alloc> INLINE
+  Val& ListBase<Val,Alloc>::back() const  {
     if ( __nb_elements == 0 ) {
       GUM_ERROR( NotFound, "not enough elements in the chained list" );
     }
@@ -411,16 +456,16 @@ namespace gum {
   // ==============================================================================
   /// returns the number of elements in the list.
   // ==============================================================================
-  template <typename Val> INLINE
-  Size ListBase<Val>::size() const  {
+  template <typename Val, typename Alloc> INLINE
+  Size ListBase<Val,Alloc>::size() const  {
     return __nb_elements;
   }
 
   // ==============================================================================
   /// checks whether there exists a given element in the list.
   // ==============================================================================
-  template <typename Val> INLINE
-  bool ListBase<Val>::exists( const Val& val ) const {
+  template <typename Val, typename Alloc> INLINE
+  bool ListBase<Val,Alloc>::exists( const Val& val ) const {
     for ( ListBucket<Val> *ptr = __deb_list; ptr; ptr = ptr->__next )
       if ( ptr->__val == val ) return true;
 
@@ -430,16 +475,16 @@ namespace gum {
   // ==============================================================================
   /// erases the first element encountered with a given value
   // ==============================================================================
-  template <typename Val> INLINE
-  void ListBase<Val>::eraseByVal( const Val& val ) {
+  template <typename Val, typename Alloc> INLINE
+  void ListBase<Val,Alloc>::eraseByVal( const Val& val ) {
     __erase( __getBucket( val ) );
   }
 
   // ==============================================================================
   /// erases the ith element of the List (the first one is in position 0)
   // ==============================================================================
-  template <typename Val> INLINE
-  void ListBase<Val>::erase( unsigned int i ) {
+  template <typename Val, typename Alloc> INLINE
+  void ListBase<Val,Alloc>::erase( unsigned int i ) {
     if ( i >= __nb_elements ) return;
 
     // parse the list
@@ -455,8 +500,8 @@ namespace gum {
   // ==============================================================================
   /// erases all the elements encountered with a given value
   // ==============================================================================
-  template <typename Val> INLINE
-  void ListBase<Val>::eraseAllVal( const Val& val ) {
+  template <typename Val, typename Alloc> INLINE
+  void ListBase<Val,Alloc>::eraseAllVal( const Val& val ) {
     for ( ListBucket<Val> *ptr = __deb_list, *next_ptr=0; ptr; ptr = next_ptr ) {
       next_ptr = ptr->__next;
 
@@ -468,8 +513,8 @@ namespace gum {
   // ==============================================================================
   /// removes the last element of a ListBase
   // ==============================================================================
-  template <typename Val> INLINE
-  void ListBase<Val>::popBack() {
+  template <typename Val, typename Alloc> INLINE
+  void ListBase<Val,Alloc>::popBack() {
     if ( __nb_elements != 0 )
       __erase( __end_list );
   }
@@ -477,8 +522,8 @@ namespace gum {
   // ==============================================================================
   /// removes the first element of a ListBase
   // ==============================================================================
-  template <typename Val> INLINE
-  void ListBase<Val>::popFront() {
+  template <typename Val, typename Alloc> INLINE
+  void ListBase<Val,Alloc>::popFront() {
     if ( __nb_elements != 0 )
       __erase( __deb_list );
   }
@@ -486,8 +531,8 @@ namespace gum {
   // ==============================================================================
   /// deletes all the elements of a chained list.
   // ==============================================================================
-  template <typename Val> INLINE
-  void ListBase<Val>::clear() {
+  template <typename Val, typename Alloc> INLINE
+  void ListBase<Val,Alloc>::clear() {
     for ( ListBucket<Val> *ptr = __deb_list, *next_ptr=0; ptr; ptr = next_ptr ) {
       next_ptr = ptr->__next;
       delete ptr;
@@ -501,33 +546,33 @@ namespace gum {
   // ==============================================================================
   /// returns a boolean indicating whether the chained list is empty
   // ==============================================================================
-  template <typename Val> INLINE
-  bool ListBase<Val>::empty() const  {
+  template <typename Val, typename Alloc> INLINE
+  bool ListBase<Val,Alloc>::empty() const  {
     return ( __nb_elements == 0 );
   }
 
   // ==============================================================================
   /// returns a bucket pointing to the first element of the list
   // ==============================================================================
-  template <typename Val> INLINE
-  const ListBucket<Val>* ListBase<Val>::frontBucket() const {
+  template <typename Val, typename Alloc> INLINE
+  const ListBucket<Val>* ListBase<Val,Alloc>::frontBucket() const {
     return __deb_list;
   }
 
   // ==============================================================================
   /// returns a bucket pointing to the last element of the list
   // ==============================================================================
-  template <typename Val> INLINE
-  const ListBucket<Val>* ListBase<Val>::backBucket() const {
+  template <typename Val, typename Alloc> INLINE
+  const ListBucket<Val>* ListBase<Val,Alloc>::backBucket() const {
     return __end_list;
   }
 
   // ==============================================================================
   /// creates a list of mountains src a list of val
   // ==============================================================================
-  template <typename Val>
+  template <typename Val, typename Alloc>
   template <typename Mount> INLINE
-  ListBase<Mount> ListBase<Val>::map( Mount( *f )( Val& ) ) const {
+  ListBase<Mount> ListBase<Val,Alloc>::map( Mount( *f )( Val& ) ) const {
     // create a new empty list
     ListBase<Mount> list;
 
@@ -541,9 +586,9 @@ namespace gum {
   // ==============================================================================
   /// creates a list of mountains src a list of val
   // ==============================================================================
-  template <typename Val>
+  template <typename Val, typename Alloc>
   template <typename Mount> INLINE
-  ListBase<Mount> ListBase<Val>::map( Mount( *f )( const Val& ) ) const {
+  ListBase<Mount> ListBase<Val,Alloc>::map( Mount( *f )( const Val& ) ) const {
     // create a new empty list
     ListBase<Mount> list;
 
@@ -557,9 +602,9 @@ namespace gum {
   // ==============================================================================
   /// creates a list of mountains src a list of val
   // ==============================================================================
-  template <typename Val>
+  template <typename Val, typename Alloc>
   template <typename Mount> INLINE
-  ListBase<Mount> ListBase<Val>::map( Mount( *f )( Val ) ) const {
+  ListBase<Mount> ListBase<Val,Alloc>::map( Mount( *f )( Val ) ) const {
     // create a new empty list
     ListBase<Mount> list;
 
@@ -573,9 +618,9 @@ namespace gum {
   // ==============================================================================
   /// creates a list of mountains with a given value src a list of val
   // ==============================================================================
-  template <typename Val>
+  template <typename Val, typename Alloc>
   template <typename Mount> INLINE
-  ListBase<Mount> ListBase<Val>::map( const Mount& mount ) const {
+  ListBase<Mount> ListBase<Val,Alloc>::map( const Mount& mount ) const {
     // create a new empty list
     ListBase<Mount> list;
 
@@ -589,16 +634,16 @@ namespace gum {
   // ==============================================================================
   /// creates and insert a new element at the end of the list (alias of pushBack).
   // ==============================================================================
-  template <typename Val> INLINE
-  Val& ListBase<Val>::operator+= ( const Val& val ) {
+  template <typename Val, typename Alloc> INLINE
+  Val& ListBase<Val,Alloc>::operator+= ( const Val& val ) {
     return pushBack( val );
   }
 
   // ==============================================================================
   /// checks whether two lists are identical (same elements in the same order)
   // ==============================================================================
-  template <typename Val> INLINE
-  bool ListBase<Val>::operator== ( const ListBase<Val>& src ) const {
+  template <typename Val, typename Alloc> INLINE
+  bool ListBase<Val,Alloc>::operator== ( const ListBase<Val,Alloc>& src ) const {
     // check if the two lists have at least the same number of elements
     if ( __nb_elements != src.__nb_elements ) return false;
 
@@ -613,8 +658,8 @@ namespace gum {
   // ==============================================================================
   /// checks whether two lists are different (different elements or orders)
   // ==============================================================================
-  template <typename Val> INLINE
-  bool ListBase<Val>::operator!= ( const ListBase<Val>& src ) const {
+  template <typename Val, typename Alloc> INLINE
+  bool ListBase<Val,Alloc>::operator!= ( const ListBase<Val,Alloc>& src ) const {
     // check whether the two lists have different numbers of elements
     if ( __nb_elements != src.__nb_elements ) return true;
 
@@ -629,8 +674,8 @@ namespace gum {
   // ==============================================================================
   /// returns the ith element in the current chained list.
   // ==============================================================================
-  template <typename Val> INLINE
-  Val& ListBase<Val>::operator[]( unsigned int i )  {
+  template <typename Val, typename Alloc> INLINE
+  Val& ListBase<Val,Alloc>::operator[]( unsigned int i )  {
     // check if we can return the element we ask for
     if ( i >= __nb_elements ) {
       GUM_ERROR( NotFound, "not enough elements in the chained list" );
@@ -649,9 +694,9 @@ namespace gum {
   // ==============================================================================
   /// returns the ith element in the current chained list.
   // ==============================================================================
-  template <typename Val> INLINE
-  const Val& ListBase<Val>::operator[]( unsigned int i )
-  const  {
+  template <typename Val, typename Alloc> INLINE
+  const Val& ListBase<Val,Alloc>::operator[]( unsigned int i )
+    const  {
     // check if we can return the element we ask for
     if ( i >= __nb_elements ) {
       GUM_ERROR( NotFound, "not enough elements in the chained list" );
@@ -681,9 +726,9 @@ namespace gum {
   /** @brief A basic constructor that creates an empty list as well as its own
    * iterator's list */
   // ==============================================================================
-  template <typename Val>
-  List<Val>::List():
-      __iterator_list( new ListBase<ListConstIterator<Val>*> ) {
+  template <typename Val, typename Alloc>
+  List<Val,Alloc>::List():
+    __iterator_list( new ListBase<ListConstIterator<Val>*> ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( List );
   }
@@ -693,9 +738,9 @@ namespace gum {
    * may be shared by several List when \e iter_list is different src a
    * RefPtr containing 0. */
   // ==============================================================================
-  template <typename Val>
-  List<Val>::List( const RefPtr<ListBase<ListConstIterator<Val>*> >& iter_list ) :
-      __iterator_list( 0 ) {
+  template <typename Val, typename Alloc>
+  List<Val,Alloc>::List( const RefPtr<ListBase<ListConstIterator<Val>*> >& iter_list ) :
+    __iterator_list( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( List );
 
@@ -706,16 +751,16 @@ namespace gum {
       // raise a NullElement exception
     } catch ( NullElement& ) {
       __iterator_list = RefPtr< ListBase<ListConstIterator<Val>*> >
-                        ( new ListBase<ListConstIterator<Val>*> );
+        ( new ListBase<ListConstIterator<Val>*> );
     }
   }
 
   // ==============================================================================
   /// Copy constructor sharing its iterator's list with that of \c src
   // ==============================================================================
-  template <typename Val>
-  List<Val>::List( const List<Val> &src ) :
-      ListBase<Val>( src ), __iterator_list( src.__iterator_list ) {
+  template <typename Val, typename Alloc>
+  List<Val,Alloc>::List( const List<Val,Alloc> &src ) :
+    ListBase<Val,Alloc>( src ), __iterator_list( src.__iterator_list ) {
     // for debugging purposes
     GUM_CONS_CPY( List );
   }
@@ -724,10 +769,10 @@ namespace gum {
   /** @brief Copy constructor. The iterator's list is shared with that passed in
    * argument */
   // ==============================================================================
-  template <typename Val>
-  List<Val>::List( const List<Val> &src,
+  template <typename Val, typename Alloc>
+  List<Val,Alloc>::List( const List<Val,Alloc> &src,
                    const RefPtr< ListBase<ListConstIterator<Val>*> >& iter_list ) :
-      ListBase<Val>( src ), __iterator_list( 0 ) {
+    ListBase<Val,Alloc>( src ), __iterator_list( 0 ) {
     // for debugging purposes
     GUM_CONS_CPY( List );
 
@@ -738,15 +783,15 @@ namespace gum {
       // raise a NullElement exception
     } catch ( NullElement& ) {
       __iterator_list = RefPtr< ListBase<ListConstIterator<Val>*> >
-                        ( new ListBase<ListConstIterator<Val>*> );
+        ( new ListBase<ListConstIterator<Val>*> );
     }
   }
 
   // ==============================================================================
   /// Copy operator. The List iterator's list is not shared with that of \e src.
   // ==============================================================================
-  template <typename Val>
-  List<Val>& List<Val>::operator= ( const List<Val>& src ) {
+  template <typename Val, typename Alloc>
+  List<Val,Alloc>& List<Val,Alloc>::operator= ( const List<Val,Alloc>& src ) {
     // avoid self assignment
     if ( this != &src ) {
       // for debugging purposes
@@ -756,7 +801,7 @@ namespace gum {
       clear();
 
       // perform the copy
-      ListBase<Val>::operator= ( src );
+      ListBase<Val,Alloc>::operator= ( src );
     }
 
     return *this;
@@ -765,8 +810,8 @@ namespace gum {
   // ==============================================================================
   /// Destructor
   // ==============================================================================
-  template <typename Val>
-  List<Val>::~List() {
+  template <typename Val, typename Alloc>
+  List<Val,Alloc>::~List() {
     // for debugging (although this program is bug-free)
     GUM_DESTRUCTOR( List );
 
@@ -777,14 +822,14 @@ namespace gum {
   // ==============================================================================
   /// deletes all the elements of a chained list.
   // ==============================================================================
-  template <typename Val>
-  void List<Val>::clear() {
+  template <typename Val, typename Alloc>
+  void List<Val,Alloc>::clear() {
     // first we update all the iterators of the list : they should now
     // point to rend
     ListConstIterator<Val> *ptr;
 
     for ( ListBucket<ListConstIterator<Val>*> *iter = __iterator_list->__deb_list,
-          *iter_next=0; iter; iter=iter_next ) {
+            *iter_next=0; iter; iter=iter_next ) {
       ptr = **iter;
       iter_next = iter->__next;
 
@@ -794,21 +839,21 @@ namespace gum {
     }
 
     // we can now safely remove the elements src the list
-    ListBase<Val>::clear();
+    ListBase<Val,Alloc>::clear();
   }
 
   // ==============================================================================
   /** @brief changes the iterator's list (this implies that all iterators
    * previously attached to the List will point to end/rend) */
   // ==============================================================================
-  template <typename Val>
-  void List<Val>::setIteratorList
+  template <typename Val, typename Alloc>
+  void List<Val,Alloc>::setIteratorList
   ( const RefPtr< ListBase<ListConstIterator<Val>*> >& new_list ) {
     // first we update all the iterators of the list : they should now
     // point to rend
     ListConstIterator<Val> *ptr;
     for ( ListBucket<ListConstIterator<Val>*> *iter = __iterator_list->__deb_list,
-          *iter_next=0; iter; iter=iter_next ) {
+            *iter_next=0; iter; iter=iter_next ) {
       ptr = **iter;
       iter_next = iter->__next;
 
@@ -824,23 +869,23 @@ namespace gum {
   // ==============================================================================
   /// returns the list containing the iterators pointing toward the List
   // ==============================================================================
-  template <typename Val> INLINE
+  template <typename Val, typename Alloc> INLINE
   const RefPtr< ListBase<ListConstIterator<Val>*> >&
-  List<Val>::getIteratorList() const  {
+  List<Val,Alloc>::getIteratorList() const  {
     return __iterator_list;
   }
 
   // ==============================================================================
   /// suppresses an element src a chained list.
   // ==============================================================================
-  template <typename Val> INLINE
-  void List<Val>::_erase( ListBucket<Val>* bucket ) {
+  template <typename Val, typename Alloc> INLINE
+  void List<Val,Alloc>::_erase( ListBucket<Val>* bucket ) {
     if ( bucket ) {
       ListConstIterator<Val> *ptr;
 
       // update the iterators pointing on this element
       for ( ListBucket<ListConstIterator<Val>*>
-            *iter = __iterator_list->__deb_list; iter; iter=iter->__next ) {
+              *iter = __iterator_list->__deb_list; iter; iter=iter->__next ) {
         ptr = iter->__val;
 
         if ( ptr->__bucket == bucket ) {
@@ -857,7 +902,7 @@ namespace gum {
           ptr->__prev_current_bucket = bucket->__next;
       }
 
-      ListBase<Val>::__erase( bucket );
+      ListBase<Val,Alloc>::__erase( bucket );
     }
   }
 
@@ -865,42 +910,42 @@ namespace gum {
   // ==============================================================================
   /// the iterator pointing to the end of the List
   // ==============================================================================
-  template <typename Val> INLINE
-  const ListConstIterator<Val>& List<Val>::end() const  {
-    return *( reinterpret_cast<const ListConstIterator<Val>* >( ___get__list_end() ) );
+  template <typename Val, typename Alloc> INLINE
+  const ListConstIterator<Val>& List<Val,Alloc>::cend() const  {
+    return *( reinterpret_cast<const ListConstIterator<Val>* > ( __list_end ) );
   }
 
   // ==============================================================================
   /// the iterator pointing to the end of the List
   // ==============================================================================
-  template <typename Val> INLINE
-  const ListIterator<Val>& List<Val>::end()  {
-    return *( reinterpret_cast<const ListIterator<Val>* >( ___get__list_end() ) );
+  template <typename Val, typename Alloc> INLINE
+  const ListIterator<Val>& List<Val,Alloc>::end() {
+    return *( reinterpret_cast<const ListIterator<Val>* > ( __list_end ) );
   }
 
   // ==============================================================================
   /// the iterator pointing to the rend (just before the beginning) of the List
   // ==============================================================================
-  template <typename Val> INLINE
-  const ListConstIterator<Val>& List<Val>::rend() const  {
-    return *( reinterpret_cast<const ListConstIterator<Val>* >( ___get__list_end() ) );
+  template <typename Val, typename Alloc> INLINE
+  const ListConstIterator<Val>& List<Val,Alloc>::crend() const  {
+    return *( reinterpret_cast<const ListConstIterator<Val>* > ( __list_end ) );
   }
 
   // ==============================================================================
   /// the iterator pointing to the rend (just before the beginning) of the List
   // ==============================================================================
-  template <typename Val> INLINE
-  const ListIterator<Val>& List<Val>::rend()  {
-    return *( reinterpret_cast<const ListIterator<Val>* >( ___get__list_end() ) );
+  template <typename Val, typename Alloc> INLINE
+  const ListIterator<Val>& List<Val,Alloc>::rend() {
+    return *( reinterpret_cast<const ListIterator<Val>* > ( __list_end ) );
   }
 
 
   // ==============================================================================
   /// the iterator pointing to the beginning of the List
   // ==============================================================================
-  template <typename Val> INLINE
-  ListConstIterator<Val> List<Val>::begin() const {
-    if ( ListBase<Val>::__nb_elements )
+  template <typename Val, typename Alloc> INLINE
+  ListConstIterator<Val> List<Val,Alloc>::cbegin() const {
+    if ( ListBase<Val,Alloc>::__nb_elements )
       return ListConstIterator<Val> ( *this, 0U );
     else
       return ListConstIterator<Val>();
@@ -909,9 +954,9 @@ namespace gum {
   // ==============================================================================
   /// the iterator pointing to the beginning of the List
   // ==============================================================================
-  template <typename Val> INLINE
-  ListIterator<Val> List<Val>::begin() {
-    if ( ListBase<Val>::__nb_elements )
+  template <typename Val, typename Alloc> INLINE
+  ListIterator<Val> List<Val,Alloc>::begin() {
+    if ( ListBase<Val,Alloc>::__nb_elements )
       return ListIterator<Val> ( *this, 0U );
     else
       return ListIterator<Val>();
@@ -920,10 +965,11 @@ namespace gum {
   // ==============================================================================
   /// the iterator pointing to the rbegin (the last element) of the List
   // ==============================================================================
-  template <typename Val> INLINE
-  ListConstIterator<Val> List<Val>::rbegin() const {
-    if ( ListBase<Val>::__nb_elements )
-      return ListConstIterator<Val> ( *this, ListBase<Val>::__nb_elements-1 );
+  template <typename Val, typename Alloc> INLINE
+  ListConstIterator<Val> List<Val,Alloc>::crbegin() const {
+    if ( ListBase<Val,Alloc>::__nb_elements )
+      return ListConstIterator<Val>
+        ( *this, ListBase<Val,Alloc>::__nb_elements-1 );
     else
       return ListConstIterator<Val>();
   }
@@ -931,10 +977,10 @@ namespace gum {
   // ==============================================================================
   /// the iterator pointing to the rbegin (the last element) of the List
   // ==============================================================================
-  template <typename Val> INLINE
-  ListIterator<Val> List<Val>::rbegin() {
-    if ( ListBase<Val>::__nb_elements )
-      return ListIterator<Val> ( *this, ListBase<Val>::__nb_elements-1 );
+  template <typename Val, typename Alloc> INLINE
+  ListIterator<Val> List<Val,Alloc>::rbegin() {
+    if ( ListBase<Val,Alloc>::__nb_elements )
+      return ListIterator<Val> ( *this, ListBase<Val,Alloc>::__nb_elements-1 );
     else
       return ListIterator<Val>();
   }
@@ -942,24 +988,24 @@ namespace gum {
   // ==============================================================================
   /// erases the first element encountered with a given value
   // ==============================================================================
-  template <typename Val> INLINE
-  void List<Val>::eraseByVal( const Val& val ) {
-    _erase( ListBase<Val>::__getBucket( val ) );
+  template <typename Val, typename Alloc> INLINE
+  void List<Val,Alloc>::eraseByVal( const Val& val ) {
+    _erase( ListBase<Val,Alloc>::__getBucket( val ) );
   }
 
   // ==============================================================================
   /// erases the ith element of the List (the first one is in position 0)
   // ==============================================================================
-  template <typename Val> INLINE
-  void List<Val>::erase( unsigned int i ) {
-    if ( i >= ListBase<Val>::__nb_elements ) return;
+  template <typename Val, typename Alloc> INLINE
+  void List<Val,Alloc>::erase( unsigned int i ) {
+    if ( i >= ListBase<Val,Alloc>::__nb_elements ) return;
 
     // parse the list
     ListBucket<Val> *ptr;
-    if ( i < ListBase<Val>::__nb_elements / 2 )
+    if ( i < ListBase<Val,Alloc>::__nb_elements / 2 )
       for ( ptr=ListBase<Val>::__deb_list; i; --i, ptr=ptr->__next ) {}
     else
-      for ( ptr=ListBase<Val>::__end_list, i=ListBase<Val>::__nb_elements - i - 1;
+      for ( ptr=ListBase<Val>::__end_list, i=ListBase<Val,Alloc>::__nb_elements - i - 1;
             i; --i, ptr=ptr->__prev ) {}
 
     _erase( ptr );
@@ -968,25 +1014,25 @@ namespace gum {
   // ==============================================================================
   /// erases the element of the List pointed to by the iterator
   // ==============================================================================
-  template <typename Val> INLINE
-  void List<Val>::erase( const iterator& iter ) {
+  template <typename Val, typename Alloc> INLINE
+  void List<Val,Alloc>::erase( const iterator& iter ) {
     _erase( iter.__getBucket() );
   }
 
   // ==============================================================================
   /// erases the element of the List pointed to by the iterator
   // ==============================================================================
-  template <typename Val> INLINE
-  void List<Val>::erase( const const_iterator& iter ) {
+  template <typename Val, typename Alloc> INLINE
+  void List<Val,Alloc>::erase( const const_iterator& iter ) {
     _erase( iter.__getBucket() );
   }
 
   // ==============================================================================
   /// erases all the elements encountered with a given value
   // ==============================================================================
-  template <typename Val> INLINE
-  void List<Val>::eraseAllVal( const Val& val ) {
-    for ( ListBucket<Val> *iter=ListBase<Val>::__deb_list, *next_bucket=0;
+  template <typename Val, typename Alloc> INLINE
+  void List<Val,Alloc>::eraseAllVal( const Val& val ) {
+    for ( ListBucket<Val> *iter=ListBase<Val,Alloc>::__deb_list, *next_bucket=0;
           iter; iter = next_bucket ) {
       next_bucket = iter->__next;
 
@@ -998,27 +1044,27 @@ namespace gum {
   // ==============================================================================
   /// removes the last element of a List
   // ==============================================================================
-  template <typename Val> INLINE
-  void List<Val>::popBack() {
-    if ( ListBase<Val>::__nb_elements )
-      _erase( ListBase<Val>::__end_list );
+  template <typename Val, typename Alloc> INLINE
+  void List<Val,Alloc>::popBack() {
+    if ( ListBase<Val,Alloc>::__nb_elements )
+      _erase( ListBase<Val,Alloc>::__end_list );
   }
 
   // ==============================================================================
   /// removes the first element of a List
   // ==============================================================================
-  template <typename Val> INLINE
-  void List<Val>::popFront() {
-    if ( ListBase<Val>::__nb_elements )
-      _erase( ListBase<Val>::__deb_list );
+  template <typename Val, typename Alloc> INLINE
+  void List<Val,Alloc>::popFront() {
+    if ( ListBase<Val,Alloc>::__nb_elements )
+      _erase( ListBase<Val,Alloc>::__deb_list );
   }
 
   // ==============================================================================
   /// creates a list of mountains src a list of val
   // ==============================================================================
-  template <typename Val>
-  template <typename Mount> List<Mount> List<Val>::map( Mount( *f )( Val ) )
-  const {
+  template <typename Val, typename Alloc>
+  template <typename Mount> List<Mount> List<Val,Alloc>::map( Mount( *f )( Val ) )
+    const {
     // create a new empty list
     List<Mount> list;
 
@@ -1033,9 +1079,9 @@ namespace gum {
   // ==============================================================================
   /// creates a list of mountains src a list of val
   // ==============================================================================
-  template <typename Val>
-  template <typename Mount> List<Mount> List<Val>::map( Mount( *f )( Val& ) )
-  const {
+  template <typename Val, typename Alloc>
+  template <typename Mount> List<Mount> List<Val,Alloc>::map( Mount( *f )( Val& ) )
+    const {
     // create a new empty list
     List<Mount> list;
 
@@ -1050,9 +1096,9 @@ namespace gum {
   // ==============================================================================
   /// creates a list of mountains src a list of val
   // ==============================================================================
-  template <typename Val>
-  template <typename Mount> List<Mount> List<Val>::map( Mount( *f )( const Val& ) )
-  const {
+  template <typename Val, typename Alloc>
+  template <typename Mount> List<Mount> List<Val,Alloc>::map( Mount( *f )( const Val& ) )
+    const {
     // create a new empty list
     List<Mount> list;
 
@@ -1067,9 +1113,9 @@ namespace gum {
   // ==============================================================================
   /// creates a list of mountains with a given value src a list of val
   // ==============================================================================
-  template <typename Val>
-  template <typename Mount> List<Mount> List<Val>::map( const Mount& mount )
-  const {
+  template <typename Val, typename Alloc>
+  template <typename Mount> List<Mount> List<Val,Alloc>::map( const Mount& mount )
+    const {
     // create a new empty list
     List<Mount> list;
 
@@ -1083,41 +1129,41 @@ namespace gum {
   // ==============================================================================
   /// creates and insert a new element at the end of the list (alias of pushBack).
   // ==============================================================================
-  template <typename Val> INLINE
-  Val& List<Val>::operator+= ( const Val& val ) {
-    return ListBase<Val>::operator+= ( val );
+  template <typename Val, typename Alloc> INLINE
+  Val& List<Val,Alloc>::operator+= ( const Val& val ) {
+    return ListBase<Val,Alloc>::operator+= ( val );
   }
 
   // ==============================================================================
   /// checks whether two lists are identical (same elements in the same order)
   // ==============================================================================
-  template <typename Val> INLINE
-  bool List<Val>::operator== ( const List<Val>& src ) const {
-    return ListBase<Val>::operator== ( src );
+  template <typename Val, typename Alloc> INLINE
+  bool List<Val,Alloc>::operator== ( const List<Val,Alloc>& src ) const {
+    return ListBase<Val,Alloc>::operator== ( src );
   }
 
   // ==============================================================================
   /// checks whether two lists are different (different elements or orders)
   // ==============================================================================
-  template <typename Val> INLINE
-  bool List<Val>::operator!= ( const List<Val>& src ) const {
-    return ListBase<Val>::operator!= ( src );
+  template <typename Val, typename Alloc> INLINE
+  bool List<Val,Alloc>::operator!= ( const List<Val,Alloc>& src ) const {
+    return ListBase<Val,Alloc>::operator!= ( src );
   }
 
   // ==============================================================================
   /// returns the ith element in the current chained list.
   // ==============================================================================
-  template <typename Val> INLINE
-  Val& List<Val>::operator[]( const unsigned int i )  {
-    return ListBase<Val>::operator[]( i );
+  template <typename Val, typename Alloc> INLINE
+  Val& List<Val,Alloc>::operator[]( const unsigned int i )  {
+    return ListBase<Val,Alloc>::operator[]( i );
   }
 
   // ==============================================================================
   /// returns the ith element in the current chained list.
   // ==============================================================================
-  template <typename Val> INLINE
-  const Val& List<Val>::operator[]( const unsigned int i ) const {
-    return ListBase<Val>::operator[]( i );
+  template <typename Val, typename Alloc> INLINE
+  const Val& List<Val,Alloc>::operator[]( const unsigned int i ) const {
+    return ListBase<Val,Alloc>::operator[]( i );
   }
 
 
@@ -1135,9 +1181,9 @@ namespace gum {
   // ==============================================================================
   template <typename Val> INLINE
   ListConstIterator<Val>::ListConstIterator()  :
-      __list( 0 ), __bucket( 0 ),
-      __next_current_bucket( 0 ), __prev_current_bucket( 0 ),
-      __null_pointing( false ), __container( 0 ) {
+    __list( 0 ), __bucket( 0 ),
+    __next_current_bucket( 0 ), __prev_current_bucket( 0 ),
+    __null_pointing( false ), __container( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( ListConstIterator );
   }
@@ -1147,10 +1193,10 @@ namespace gum {
   // ==============================================================================
   template <typename Val> INLINE
   ListConstIterator<Val>::ListConstIterator( const ListConstIterator<Val>& src ) :
-      __list( src.__list ), __bucket( src.__bucket ),
-      __next_current_bucket( src.__next_current_bucket ),
-      __prev_current_bucket( src.__prev_current_bucket ),
-      __null_pointing( src.__null_pointing ), __container( 0 ) {
+    __list( src.__list ), __bucket( src.__bucket ),
+    __next_current_bucket( src.__next_current_bucket ),
+    __prev_current_bucket( src.__prev_current_bucket ),
+    __null_pointing( src.__null_pointing ), __container( 0 ) {
     // for debugging purposes
     GUM_CONS_CPY( ListConstIterator );
 
@@ -1166,9 +1212,9 @@ namespace gum {
   // ==============================================================================
   template <typename Val>
   ListConstIterator<Val>::ListConstIterator( const List<Val>& theList,
-      unsigned int ind_elt ) :
-      __list( &theList ), __bucket( 0 ), __next_current_bucket( 0 ),
-      __prev_current_bucket( 0 ), __null_pointing( false ), __container( 0 ) {
+                                             unsigned int ind_elt ) :
+    __list( &theList ), __bucket( 0 ), __next_current_bucket( 0 ),
+    __prev_current_bucket( 0 ), __null_pointing( false ), __container( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( ListConstIterator );
 
@@ -1182,11 +1228,11 @@ namespace gum {
     if ( ind_elt < ( __list->__nb_elements >> 1 ) ) {
       // find the element we shall point to src the start of the list
       for ( __bucket = __list->__deb_list; ind_elt
-            ; --ind_elt, __bucket = __bucket->__next ) {}
+              ; --ind_elt, __bucket = __bucket->__next ) {}
     } else {
       // find the element we shall point to src the end of the list
       for ( __bucket = __list->__end_list,
-            ind_elt = __list->__nb_elements - ind_elt - 1;
+              ind_elt = __list->__nb_elements - ind_elt - 1;
             ind_elt; --ind_elt, __bucket = __bucket->__prev ) {}
     }
 
@@ -1464,7 +1510,7 @@ namespace gum {
   // ==============================================================================
   template <typename Val> INLINE
   ListIterator<Val>::ListIterator( const ListIterator<Val>& src ) :
-      ListConstIterator<Val>( src ) {
+    ListConstIterator<Val>( src ) {
     GUM_CONS_CPY( ListIterator );
   }
 
@@ -1474,7 +1520,7 @@ namespace gum {
   template <typename Val> INLINE
   ListIterator<Val>::ListIterator( const List<Val>& theList,
                                    unsigned int ind_elt ) :
-      ListConstIterator<Val>( theList, ind_elt ) {
+    ListConstIterator<Val>( theList, ind_elt ) {
     GUM_CONSTRUCTOR( ListIterator );
   }
 
