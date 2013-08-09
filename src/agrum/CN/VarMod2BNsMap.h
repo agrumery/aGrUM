@@ -27,6 +27,8 @@
 #ifndef __VAR_MOD_2_BNS_MAP__H__
 #define __VAR_MOD_2_BNS_MAP__H__
 
+#include <list>
+
 #include <tr1/functional>
 #include <agrum/core/pow.h>
 

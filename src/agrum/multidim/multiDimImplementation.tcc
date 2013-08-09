@@ -33,8 +33,8 @@ namespace gum {
   MultiDimImplementation<GUM_SCALAR>::MultiDimImplementation() :
     MultiDimContainer<GUM_SCALAR>(), __vars(), __slaveInstantiations() {
     GUM_CONSTRUCTOR( MultiDimImplementation );
-    __internalChangeMethod = DIRECT_CHANGE;
-    __internalChangeState = NO_CHANGE;
+    __internalChangeMethod = __InternalChangeMethod::DIRECT_CHANGE;
+    __internalChangeState = __InternalChangeState::NO_CHANGE;
     __domainSize = 1;
   }
 
@@ -208,27 +208,27 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   void MultiDimImplementation<GUM_SCALAR>::beginMultipleChanges( void ) {
-    __internalChangeMethod = MULTIPLE_CHANGE;
+    __internalChangeMethod = __InternalChangeMethod::MULTIPLE_CHANGE;
   }
 
   template<typename GUM_SCALAR> INLINE
   void MultiDimImplementation<GUM_SCALAR>::endMultipleChanges( void ) {
-    if ( __internalChangeState == NOT_COMMITTED_CHANGE ) {
+    if ( __internalChangeState == __InternalChangeState::NOT_COMMITTED_CHANGE ) {
       _commitMultipleChanges();
-      __internalChangeState = NO_CHANGE;
+      __internalChangeState = __InternalChangeState::NO_CHANGE;
     }
 
-    __internalChangeMethod = DIRECT_CHANGE;
+    __internalChangeMethod = __InternalChangeMethod::DIRECT_CHANGE;
   }
 
   template<typename GUM_SCALAR> INLINE
   void MultiDimImplementation<GUM_SCALAR>::endMultipleChanges( const GUM_SCALAR& x ) {
-    if ( __internalChangeState == NOT_COMMITTED_CHANGE ) {
+    if ( __internalChangeState == __InternalChangeState::NOT_COMMITTED_CHANGE ) {
       _commitMultipleChanges( x );
-      __internalChangeState = NO_CHANGE;
+      __internalChangeState = __InternalChangeState::NO_CHANGE;
     }
 
-    __internalChangeMethod = DIRECT_CHANGE;
+    __internalChangeMethod = __InternalChangeMethod::DIRECT_CHANGE;
   }
 
   template<typename GUM_SCALAR> INLINE
@@ -244,13 +244,13 @@ namespace gum {
   /// get the actual change method of *this
   template<typename GUM_SCALAR> INLINE
   bool MultiDimImplementation<GUM_SCALAR>::_isInMultipleChangeMethod() const {
-    return ( __internalChangeMethod == MULTIPLE_CHANGE );
+    return ( __internalChangeMethod == __InternalChangeMethod::MULTIPLE_CHANGE );
   }
 
   /// get the actual state of *this
   template<typename GUM_SCALAR> INLINE
   bool MultiDimImplementation<GUM_SCALAR>::_isCommitNeeded() const {
-    return ( __internalChangeState == NOT_COMMITTED_CHANGE );
+    return ( __internalChangeState == __InternalChangeState::NOT_COMMITTED_CHANGE );
   }
 
   /// Returns a constant reference over the list of slaved instantiations.
@@ -263,7 +263,7 @@ namespace gum {
   /// get the actual state of *this
   template<typename GUM_SCALAR> INLINE
   void MultiDimImplementation<GUM_SCALAR>::__setNotCommitedChange() {
-    __internalChangeState = NOT_COMMITTED_CHANGE;
+    __internalChangeState = __InternalChangeState::NOT_COMMITTED_CHANGE;
   }
 
   /// get the actual state of *this

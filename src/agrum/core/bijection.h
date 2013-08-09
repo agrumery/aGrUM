@@ -74,9 +74,9 @@ namespace gum {
     public:
 
       /// the possible positions for the iterators
-      enum Position {
-        GUM_BIJECTION_BEGIN,
-        GUM_BIJECTION_END
+      enum class Position : char {
+        BIJECTION_BEGIN,
+        BIJECTION_END
       };
 
 
@@ -94,7 +94,7 @@ namespace gum {
       /** By default, the iterator points to the starting point of the bijection */
 
       BijectionIterator( const Bijection<T1,T2>& bijection,
-                         Position pos = GUM_BIJECTION_BEGIN );
+                         Position pos = Position::BIJECTION_BEGIN );
 
 
       /// Copy constructor
@@ -453,9 +453,9 @@ namespace gum {
     public:
 
       /// the possible positions for the iterators
-      enum Position {
-        GUM_BIJECTION_BEGIN,
-        GUM_BIJECTION_END
+      enum class Position : char {
+        BIJECTION_BEGIN,
+        BIJECTION_END
       };
 
 
@@ -473,7 +473,7 @@ namespace gum {
       /** By default, the iterator points to the starting point of the bijection */
 
       BijectionIterator( const Bijection<T1*,T2*>& bijection,
-                         Position pos = GUM_BIJECTION_BEGIN );
+                         Position pos = Position::BIJECTION_BEGIN );
 
 
       /// Copy constructor

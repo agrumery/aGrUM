@@ -87,7 +87,7 @@ namespace gum {
         /// @{
 
         /// Implementation of pure virtual method of PRMObject.
-        virtual ObjectType obj_type() const;
+        virtual PRMType obj_type() const;
 
         /// See gum::prm::ClassElementContainer::get(NodeId).
         virtual ClassElement& get( NodeId id );

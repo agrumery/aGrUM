@@ -159,7 +159,7 @@ namespace gum {
         /**
          * Implementation of the pure virtual method of PRMObject.
          */
-        virtual ObjectType obj_type() const;
+        virtual PRMType obj_type() const;
 
         /**
          * Returns the name of this object.

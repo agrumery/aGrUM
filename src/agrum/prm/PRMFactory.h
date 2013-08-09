@@ -102,7 +102,7 @@ namespace gum {
          * @return Returns the PRMObject type of the object begin built.
          * @throw NotFound if no type is being built.
          */
-        PRMObject::ObjectType currentType() const;
+        PRMObject::PRMType currentType() const;
 
         /**
          * @return the current PRMObject being built by this factory.
@@ -592,7 +592,7 @@ namespace gum {
         /// checking the type of the object given obj_type.
         /// @throw FactoryInvalidState Raised if the stack isn't consistent with the
         //                             current declaration.
-        PRMObject* __checkStack( Idx i, PRMObject::ObjectType obj_type );
+        PRMObject* __checkStack( Idx i, PRMObject::PRMType obj_type );
 
         ClassElement* __checkStack( Idx i, ClassElement::ClassElementType obj_type );
 

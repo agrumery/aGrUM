@@ -59,8 +59,8 @@ namespace gum {
     }
 
     INLINE
-    PRMObject::ObjectType
-    System::obj_type() const { return PRMObject::prm_system; }
+    PRMObject::PRMType
+    System::obj_type() const { return PRMObject::PRMType::SYSTEM; }
 
     INLINE
     Size

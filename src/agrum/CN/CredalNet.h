@@ -75,23 +75,12 @@ namespace gum {
     template< typename GUM_SCALAR >
     class CredalNet {
       public:
-        /** @brief nodeType to speed-up computations in some algorithms */
-        enum nodeType {
-          PRECISE = 0,
-          CREDAL = 1,
-          VACUOUS = 2,
-          INDIC = 3
-                  /*,
-                  BARREN_PRECISE = 3,
-                  BARREN_CREDAL = 4,
-                  BARREN_VACUOUS = 5,
-
-                  SOURCE_PRECISE = 6,
-                  SOURCE_CREDAL = 7,
-                  SOURCE_VACUOUS = 8,
-
-                  EVIDENCE = 9
-                  */
+        /** @brief NodeType to speed-up computations in some algorithms */
+        enum class NodeType : char {
+          Precise,
+          Credal,
+          Vacuous,
+          Indic
         };
 
         /// @name Constructors / Destructors
@@ -356,28 +345,28 @@ namespace gum {
          * @param id The constant reference to the choosen NodeId
          * @return Returns the type of the choosen node in the ( up-to-date ) CredalNet __current_bn if any, __src_bn otherwise.
          */
-        nodeType getCurrentNodeType( const NodeId& id ) const;
+        NodeType currentNodeType( const NodeId& id ) const;
 
         /**
          * @param id The constant reference to the choosen NodeId
          * @return Returns the type of the choosen node in the ( up-to-date ) CredalNet in __src_bn.
          */
-        nodeType getNodeType( const NodeId& id ) const;
+        NodeType nodeType( const NodeId& id ) const;
 
         /**
          * @return Returns a constant reference to the lowest perturbation of the BayesNet provided as input for this CredalNet.
          */
-        const double& getEpsilonMin() const;
+        const double& epsilonMin() const;
 
         /**
          * @return Returns a constant reference to the highest perturbation of the BayesNet provided as input for this CredalNet.
          */
-        const double& getEpsilonMax() const;
+        const double& epsilonMax() const;
 
         /**
          * @return Returns a constant reference to the average perturbation of the BayesNet provided as input for this CredalNet.
          */
-        const double& getEpsilonMoy() const;
+        const double& epsilonMean() const;
 
         /**
          * @return Returns \c TRUE if this CredalNet is separately and interval specified, \c FALSE otherwise.
@@ -451,10 +440,10 @@ namespace gum {
         /** @deprecated @brief Corresponding bits of each variable. */
         typename Property< std::vector< NodeId > >::onNodes __var_bits;
 
-        /** @brief The nodeType of each node from the ORIGINAL network. */
-        typename Property< nodeType >::onNodes __nodeType;
-        /** @brief The nodeType of each node from the up-to-date network. */
-        typename Property< nodeType >::onNodes* __current_nodeType;// = nullptr;
+        /** @brief The NodeType of each node from the ORIGINAL network. */
+        typename Property< NodeType >::onNodes __original_nodeType;
+        /** @brief The NodeType of each node from the up-to-date network. */
+        typename Property< NodeType >::onNodes* __current_nodeType;// = nullptr;
 
         /**
          * @brief Used with binary networks to speed-up L2U inference. Store the lower probabilities of each node X over the "true" modality, i.e. \f$ \underline{p}(X = 1 \mid pa(X) = j) \f$.
@@ -466,7 +455,7 @@ namespace gum {
          */
         typename std::vector< std::vector< GUM_SCALAR > > __binCptMax;
 
-        /** @brief %Set the nodeType of each node */
+        /** @brief %Set the NodeType of each node */
         void __sort_varType();
 
         /**

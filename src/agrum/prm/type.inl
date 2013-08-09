@@ -53,8 +53,8 @@ namespace gum {
     Type::operator->() const { return __var; }
 
     INLINE
-    PRMObject::ObjectType
-    Type::obj_type() const { return prm_type; }
+    PRMObject::PRMType
+    Type::obj_type() const { return PRMObject::PRMType::TYPE; }
 
     INLINE
     const std::string&

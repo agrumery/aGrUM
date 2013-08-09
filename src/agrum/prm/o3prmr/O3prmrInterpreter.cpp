@@ -242,23 +242,23 @@ namespace gum {
 
             try {
               switch ( ( *j )->type() ) {
-                case O3prmrCommand::Observe :
+                case O3prmrCommand::RequestType::Observe :
                   result = observe( ( ObserveCommand* )( *j ) );
                   break;
 
-                case O3prmrCommand::Unobserve :
+                case O3prmrCommand::RequestType::Unobserve :
                   result = unobserve( ( UnobserveCommand* )( *j ) );
                   break;
 
-                case O3prmrCommand::SetEngine :
+                case O3prmrCommand::RequestType::SetEngine :
                   setEngine( ( SetEngineCommand* )( *j ) );
                   break;
 
-                case O3prmrCommand::SetGndEngine :
+                case O3prmrCommand::RequestType::SetGndEngine :
                   setGndEngine( ( SetGndEngineCommand* )( *j ) );
                   break;
 
-                case O3prmrCommand::Query :
+                case O3prmrCommand::RequestType::Query :
                   query( ( QueryCommand* )( *j ) );
                   break;
               }
@@ -342,23 +342,23 @@ namespace gum {
 
             try {
               switch ( ( *j )->type() ) {
-                case O3prmrCommand::SetEngine :
+                case O3prmrCommand::RequestType::SetEngine :
                   result = checkSetEngine( ( SetEngineCommand* )( *j ) );
                   break;
 
-                case O3prmrCommand::SetGndEngine :
+                case O3prmrCommand::RequestType::SetGndEngine :
                   result = checkSetGndEngine( ( SetGndEngineCommand* )( *j ) );
                   break;
 
-                case O3prmrCommand::Observe :
+                case O3prmrCommand::RequestType::Observe :
                   result = checkObserve( ( ObserveCommand* )( *j ) );
                   break;
 
-                case O3prmrCommand::Unobserve :
+                case O3prmrCommand::RequestType::Unobserve :
                   result = checkUnobserve( ( UnobserveCommand* )( *j ) );
                   break;
 
-                case O3prmrCommand::Query :
+                case O3prmrCommand::RequestType::Query :
                   result = checkQuery( ( QueryCommand* )( *j ) );
                   break;
 

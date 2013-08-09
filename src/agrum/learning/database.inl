@@ -252,25 +252,25 @@ namespace gum {
   /// initializers used for begin/rbegin/end/rend
 
   INLINE void DatabaseIterator::__initializeIterator
-  ( const Database& data, enum DatabaseIterator::IteratorLocation location ) {
+  ( const Database& data, Location location ) {
     __database = &data;
     __offset = __database->nbrNodes();
 
     switch ( location ) {
-      case GUM_DATABASE_ITER_BEGIN:
+      case Location::BEGIN:
         __current_case = __database->__cases;
         break;
 
-      case GUM_DATABASE_ITER_RBEGIN:
+      case Location::RBEGIN:
         __current_case =
           __database->__cases + __offset * ( __database->__nb_cases - 1 );
         break;
 
-      case GUM_DATABASE_ITER_END:
+      case Location::END:
         __current_case = __database->__cases + __offset * __database->__nb_cases;
         break;
 
-      case GUM_DATABASE_ITER_REND:
+      case Location::REND:
         __current_case = __database->__cases - __offset;
         break;
     }

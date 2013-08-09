@@ -63,9 +63,9 @@ namespace gum {
     }
 
     // ==========================================================================
-    // For printing ObjectType easily.
+    // For printing Type easily.
     // ==========================================================================
-    std::ostream& operator<<( std::ostream& out, PRMObject::ObjectType obj_type ) {
+    std::ostream& operator<<( std::ostream& out, PRMObject::PRMType obj_type ) {
       return ( out << PRMObject::enum2str( obj_type ) );
     }
     // ==========================================================================

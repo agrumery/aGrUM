@@ -41,7 +41,7 @@ namespace gum {
     clique_tables,
     NodeId clique ) :
     ScheduleOperation<GUM_SCALAR>
-    ( ScheduleOperation<GUM_SCALAR>::GUM_CLIQUE_STORE_MULTIDIM ),
+    ( ScheduleOperation<GUM_SCALAR>::Type::CLIQUE_STORE_MULTIDIM ),
     __table( table ),
     __tableSet( &clique_tables ),
     __clique( clique ),

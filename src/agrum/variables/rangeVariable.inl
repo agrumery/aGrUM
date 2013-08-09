@@ -143,7 +143,7 @@ namespace gum {
   }
 
   INLINE DiscreteVariable::Type RangeVariable::type( void ) const {
-    return Range;
+    return Type::Range;
   }
 
 } /* namespace gum */

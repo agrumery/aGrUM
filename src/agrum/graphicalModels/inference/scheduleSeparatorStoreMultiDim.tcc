@@ -40,7 +40,7 @@ namespace gum {
     separator_tables,
     Arc separator ) :
     ScheduleOperation<GUM_SCALAR>
-    ( ScheduleOperation<GUM_SCALAR>::GUM_SEPARATOR_STORE_MULTIDIM ),
+    ( ScheduleOperation<GUM_SCALAR>::Type::SEPARATOR_STORE_MULTIDIM ),
     __table( table ),
     __tableSet( &separator_tables ),
     __separator( separator ),

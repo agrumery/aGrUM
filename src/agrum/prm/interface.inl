@@ -109,9 +109,9 @@ namespace gum {
     }
 
     INLINE
-    PRMObject::ObjectType
+    PRMObject::PRMType
     Interface::obj_type() const {
-      return PRMObject::prm_interface;
+      return PRMObject::PRMType::INTERFACE;
     }
 
     INLINE

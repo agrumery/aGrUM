@@ -49,13 +49,13 @@ namespace gum {
 
     // initialize the __iterators begin/rbegin/end/rend
     __iter_begin.__initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
+    ( *this, Database::iterator::Location::BEGIN );
     __iter_rbegin.__initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
+    ( *this, Database::iterator::Location::RBEGIN );
     __iter_end.__initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_END );
+    ( *this, Database::iterator::Location::END );
     __iter_rend.__initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_REND );
+    ( *this, Database::iterator::Location::REND );
   }
 
 
@@ -77,13 +77,13 @@ namespace gum {
             __nb_nodes * __nb_cases * sizeof( unsigned int ) );
     // initialize the __iterators begin/rbegin/end/rend
     __iter_begin.__initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
+    ( *this, Database::iterator::Location::BEGIN );
     __iter_rbegin.__initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
+    ( *this, Database::iterator::Location::RBEGIN );
     __iter_end.__initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_END );
+    ( *this, Database::iterator::Location::END );
     __iter_rend.__initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_REND );
+    ( *this, Database::iterator::Location::REND );
   }
 
 
@@ -124,16 +124,16 @@ namespace gum {
 
       // initialize the __iterators begin/rbegin/end/rend
       __iter_begin.__initializeIterator
-      ( *this, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
+      ( *this, Database::iterator::Location::BEGIN );
 
       __iter_end.__initializeIterator
-      ( *this, DatabaseIterator::GUM_DATABASE_ITER_END );
+      ( *this, Database::iterator::Location::END );
 
       __iter_rend.__initializeIterator
-      ( *this, DatabaseIterator::GUM_DATABASE_ITER_REND );
+      ( *this, Database::iterator::Location::REND );
 
       __iter_rbegin.__initializeIterator
-      ( *this, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
+      ( *this, Database::iterator::Location::RBEGIN );
     }
 
     return *this;
@@ -289,16 +289,16 @@ namespace gum {
 
     // create the __iterators begin/rbegin/end/rend
     database.__iter_begin.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
+    ( database, Database::iterator::Location::BEGIN );
 
     database.__iter_rbegin.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
+    ( database, Database::iterator::Location::RBEGIN );
 
     database.__iter_end.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_END );
+    ( database, Database::iterator::Location::END );
 
     database.__iter_rend.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_REND );
+    ( database, Database::iterator::Location::REND );
 
     // return the newly constructed database
     return database;
@@ -460,16 +460,16 @@ namespace gum {
 
     // create the __iterators begin/rbegin/end/rend
     database.__iter_begin.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
+    ( database, Database::iterator::Location::BEGIN );
 
     database.__iter_rbegin.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
+    ( database, Database::iterator::Location::RBEGIN );
 
     database.__iter_end.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_END );
+    ( database, Database::iterator::Location::END );
 
     database.__iter_rend.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_REND );
+    ( database, Database::iterator::Location::REND );
 
     // return the newly constructed database
     return database;
@@ -493,13 +493,13 @@ namespace gum {
 
     // create the __iterators begin/rbegin/end/rend
     database.__iter_begin.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
+    ( database, Database::iterator::Location::BEGIN );
     database.__iter_rbegin.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
+    ( database, Database::iterator::Location::RBEGIN );
     database.__iter_end.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_END );
+    ( database, Database::iterator::Location::END );
     database.__iter_rend.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_REND );
+    ( database, Database::iterator::Location::REND );
 
     // return the newly constructed database
     return database;

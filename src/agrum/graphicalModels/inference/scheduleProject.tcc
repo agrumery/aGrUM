@@ -41,7 +41,7 @@ namespace gum {
     MultiDimImplementation<GUM_SCALAR>*
     ( *project )( const MultiDimImplementation<GUM_SCALAR>&,
                   const Set<const DiscreteVariable*>& ) ) :
-    ScheduleOperation<GUM_SCALAR> ( ScheduleOperation<GUM_SCALAR>::GUM_PROJECT_MULTIDIM ),
+    ScheduleOperation<GUM_SCALAR> ( ScheduleOperation<GUM_SCALAR>::Type::PROJECT_MULTIDIM ),
     __table( table ),
     __del_vars( del_vars ),
     __args( 0 ),

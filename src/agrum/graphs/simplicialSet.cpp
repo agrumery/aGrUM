@@ -373,11 +373,11 @@ namespace gum {
         __changed_status.erase( id );
 
       switch ( __containing_list[id] ) {
-        case GUM_ALMOST_SIMPLICIAL:
+        case __Belong::ALMOST_SIMPLICIAL:
           __almost_simplicial_nodes.eraseByVal( id );
           break;
 
-        case GUM_QUASI_SIMPLICIAL:
+        case __Belong::QUASI_SIMPLICIAL:
           __quasi_simplicial_nodes.eraseByVal( id );
           break;
 
@@ -386,7 +386,7 @@ namespace gum {
       }
 
       __simplicial_nodes.insert( ( *__log_weights )[id], id );
-      __containing_list[id] = GUM_SIMPLICIAL;
+      __containing_list[id] = __Belong::SIMPLICIAL;
     } else {
       if ( __changed_status.contains( id ) ) {
         __changed_status.erase( id );
@@ -439,15 +439,15 @@ namespace gum {
     __log_tree_width = std::max( __log_tree_width, ( *__log_weights )[id] );
 
     switch ( __containing_list[id] ) {
-      case GUM_SIMPLICIAL:
+      case __Belong::SIMPLICIAL:
         __simplicial_nodes.eraseByVal( id );
         break;
 
-      case GUM_ALMOST_SIMPLICIAL:
+      case __Belong::ALMOST_SIMPLICIAL:
         __almost_simplicial_nodes.eraseByVal( id );
         break;
 
-      case GUM_QUASI_SIMPLICIAL:
+      case __Belong::QUASI_SIMPLICIAL:
         __quasi_simplicial_nodes.eraseByVal( id );
         break;
 
@@ -479,15 +479,15 @@ namespace gum {
       eraseEdge( Edge( *iter, id ) );
 
     switch ( __containing_list[id] ) {
-      case GUM_SIMPLICIAL:
+      case __Belong::SIMPLICIAL:
         __simplicial_nodes.eraseByVal( id );
         break;
 
-      case GUM_ALMOST_SIMPLICIAL:
+      case __Belong::ALMOST_SIMPLICIAL:
         __almost_simplicial_nodes.eraseByVal( id );
         break;
 
-      case GUM_QUASI_SIMPLICIAL:
+      case __Belong::QUASI_SIMPLICIAL:
         __quasi_simplicial_nodes.eraseByVal( id );
         break;
 
@@ -624,14 +624,14 @@ namespace gum {
 
     // check if the node should belong to the simplicial set
     if ( __nb_adjacent_neighbours[id] == ( nb_adj * ( nb_adj - 1 ) ) / 2 ) {
-      if ( belong != GUM_SIMPLICIAL ) {
-        if ( belong == GUM_ALMOST_SIMPLICIAL )
+      if ( belong != __Belong::SIMPLICIAL ) {
+        if ( belong == __Belong::ALMOST_SIMPLICIAL )
           __almost_simplicial_nodes.eraseByVal( id );
-        else if ( belong == GUM_QUASI_SIMPLICIAL )
+        else if ( belong == __Belong::QUASI_SIMPLICIAL )
           __quasi_simplicial_nodes.eraseByVal( id );
 
         __simplicial_nodes.insert( ( *__log_weights )[id], id );
-        belong = GUM_SIMPLICIAL;
+        belong = __Belong::SIMPLICIAL;
       }
 
       return;
@@ -644,14 +644,14 @@ namespace gum {
     for ( NodeSetIterator iter = nei.begin(); iter != nei.end(); ++iter ) {
       if ( nb_almost == nb - __nb_triangles[Edge( *iter,id )] ) {
         // the node is an almost simplicial node
-        if ( belong != GUM_ALMOST_SIMPLICIAL ) {
-          if ( belong == GUM_SIMPLICIAL )
+        if ( belong != __Belong::ALMOST_SIMPLICIAL ) {
+          if ( belong == __Belong::SIMPLICIAL )
             __simplicial_nodes.eraseByVal( id );
-          else if ( belong == GUM_QUASI_SIMPLICIAL )
+          else if ( belong == __Belong::QUASI_SIMPLICIAL )
             __quasi_simplicial_nodes.eraseByVal( id );
 
           __almost_simplicial_nodes.insert( ( *__log_weights )[id], id );
-          belong = GUM_ALMOST_SIMPLICIAL;
+          belong = __Belong::ALMOST_SIMPLICIAL;
         } else
           __almost_simplicial_nodes.setPriorityByVal( id, ( *__log_weights )[id] );
 
@@ -662,14 +662,14 @@ namespace gum {
     // check if the node should belong to the quasi simplicial nodes
     if ( __nb_adjacent_neighbours[id] / ( ( nb_adj * ( nb_adj - 1 ) ) / 2 ) >=
          __quasi_ratio ) {
-      if ( belong != GUM_QUASI_SIMPLICIAL ) {
-        if ( belong == GUM_SIMPLICIAL )
+      if ( belong != __Belong::QUASI_SIMPLICIAL ) {
+        if ( belong == __Belong::SIMPLICIAL )
           __simplicial_nodes.eraseByVal( id );
-        else if ( belong == GUM_ALMOST_SIMPLICIAL )
+        else if ( belong == __Belong::ALMOST_SIMPLICIAL )
           __almost_simplicial_nodes.eraseByVal( id );
 
         __quasi_simplicial_nodes.insert( ( *__log_weights )[id], id );
-        belong = GUM_QUASI_SIMPLICIAL;
+        belong = __Belong::QUASI_SIMPLICIAL;
       } else
         __quasi_simplicial_nodes.setPriorityByVal( id, ( *__log_weights )[id] );
 
@@ -678,14 +678,14 @@ namespace gum {
 
     // the node does not belong to any list, so remove the node from
     // its current list
-    if ( belong == GUM_QUASI_SIMPLICIAL )
+    if ( belong == __Belong::QUASI_SIMPLICIAL )
       __quasi_simplicial_nodes.eraseByVal( id );
-    else if ( belong == GUM_ALMOST_SIMPLICIAL )
+    else if ( belong == __Belong::ALMOST_SIMPLICIAL )
       __almost_simplicial_nodes.eraseByVal( id );
-    else if ( belong == GUM_SIMPLICIAL )
+    else if ( belong == __Belong::SIMPLICIAL )
       __simplicial_nodes.eraseByVal( id );
 
-    belong = GUM_NO_LIST;
+    belong = __Belong::NO_LIST;
   }
 
 
@@ -818,7 +818,7 @@ namespace gum {
     // __nb_triangles need new insertions
     __nb_triangles = __graph->edgesProperty( 0U );
     __nb_adjacent_neighbours = __graph->nodesProperty( 0U );
-    __containing_list = __graph->nodesProperty( GUM_NO_LIST );
+    __containing_list = __graph->nodesProperty( __Belong::NO_LIST );
     __changed_status = __graph->nodes();
 
     // set the __nb_triangles and the __nb_adjacent_neighbours: for each triangle,

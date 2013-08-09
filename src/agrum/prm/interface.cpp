@@ -240,10 +240,11 @@ namespace gum {
     bool
     Interface::isSubTypeOf( const ClassElementContainer& cec ) const {
       switch ( cec.obj_type() ) {
-        case PRMObject::prm_class:
-        { return false; }
+        case PRMType::CLASS: {
+          return false;
+        }
 
-        case PRMObject::prm_interface: {
+        case PRMType::INTERFACE: {
           const Interface* current = this;
 
           while ( current != 0 ) {

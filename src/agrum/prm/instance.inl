@@ -69,8 +69,8 @@ namespace gum {
     }
 
     INLINE
-    PRMObject::ObjectType
-    Instance::obj_type() const { return PRMObject::prm_instance; }
+    PRMObject::PRMType
+    Instance::obj_type() const { return PRMObject::PRMType::INSTANCE; }
 
     INLINE
     Class&

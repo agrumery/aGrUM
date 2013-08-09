@@ -234,7 +234,7 @@ namespace gum {
 
     Node* par = node->parent();
 
-    while ( par && ( node->parentDir() == GUM_BIN_TREE_RIGHT_CHILD ) ) {
+    while ( par && ( node->parentDir() == BinTreeDir::RIGHT_CHILD ) ) {
       node = par;
       par = par->parent();
     }
@@ -254,7 +254,7 @@ namespace gum {
 
     Node* par = node->parent();
 
-    while ( par && ( node->parentDir() == GUM_BIN_TREE_LEFT_CHILD ) ) {
+    while ( par && ( node->parentDir() == BinTreeDir::LEFT_CHILD ) ) {
       node = par;
       par = par->parent();
     }
@@ -536,8 +536,8 @@ namespace gum {
       parent->insertChild( *new_node, dir );
 
     // if necessary, create the left and right subgraphs
-    _copy( node->leftChild(), new_node, GUM_BIN_TREE_LEFT_CHILD );
-    _copy( node->rightChild(), new_node, GUM_BIN_TREE_RIGHT_CHILD );
+    _copy( node->leftChild(), new_node, BinTreeDir::LEFT_CHILD );
+    _copy( node->rightChild(), new_node, BinTreeDir::RIGHT_CHILD );
 
     return new_node;
   }

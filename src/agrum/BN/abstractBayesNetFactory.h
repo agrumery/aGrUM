@@ -52,8 +52,16 @@ namespace gum {
        * There is an exception for the delegated CPT definition methods which do
        * not change the state of the factory.
        */
-      typedef enum { NONE, NETWORK, VARIABLE, PARENTS, RAW_CPT, FACT_CPT, FACT_ENTRY}
-      factory_state;
+      enum class factory_state : char {
+        NONE,
+        NETWORK,
+        VARIABLE,
+        PARENTS,
+        RAW_CPT,
+        FACT_CPT,
+        FACT_ENTRY
+
+      };
 
 // just to make some compilers happy
       virtual ~AbstractBayesNetFactory() {};

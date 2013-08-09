@@ -147,7 +147,7 @@ namespace gum {
     try {
       return __labels[aLabel];
     } catch ( ... ) {
-      GUM_ERROR( OutOfBounds, "inexisting label : "<<this->toString()<<" with "<<aLabel );
+      GUM_ERROR( OutOfBounds, "label unknown : "<<this->toString()<<" with "<<aLabel );
     }
   }
 
@@ -159,7 +159,7 @@ namespace gum {
   }
 
   INLINE DiscreteVariable::Type LabelizedVariable::type( void ) const {
-    return Labelized;
+    return Type::Labelized;
   }
 
 } /* namespace gum */

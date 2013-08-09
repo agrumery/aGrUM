@@ -112,12 +112,12 @@ namespace gum {
 
 
         /** @enum __states The possible states of the LrsWrapper. Some functions will throw an exception if the state is not correct. It allows the user to avoid making - invisible - mistakes. */
-        enum __states {
-          none,
-          Hup,
-          Vup,
-          H2Vready,
-          V2Hready,
+        enum class __states : char {
+          none=char(0),
+          Hup=char(1),
+          Vup=char(2),
+          H2Vready=char(3),
+          V2Hready=char(4),
         };
 
         /** @brief The current state of the LrsWrapper. */
@@ -130,11 +130,11 @@ namespace gum {
 
         /** @brief To print an enum field name instead of it's value. Used with GUM_ERROR. */
         const char* __setUpStateNames[ 5 ] = {
-          enumStringify( none ),
-          enumStringify( Hup ),
-          enumStringify( Vup ),
-          enumStringify( H2Vready ),
-          enumStringify( V2Hready ),
+          enumStringify( __states::none ),
+          enumStringify( __states::nHup ),
+          enumStringify( __states::nVup ),
+          enumStringify( __states::nH2Vready ),
+          enumStringify( __states::nV2Hready ),
         };
 
         /**

@@ -47,13 +47,19 @@ namespace gum {
       class O3prmrCommand {
         public :
           int line;
-          enum Type {Observe, Unobserve, Query, SetEngine, SetGndEngine};
+          enum class RequestType : char {
+            Observe,
+            Unobserve,
+            Query,
+            SetEngine,
+            SetGndEngine
+          };
 
           O3prmrCommand( int line ) : line( line ) {}
           O3prmrCommand( const O3prmrCommand& c ) : line( c.line ) {}
           virtual ~O3prmrCommand() {}
 
-          virtual Type type() const = 0;
+          virtual RequestType type() const = 0;
           virtual std::string toString() const = 0;
       };
 
@@ -82,7 +88,7 @@ namespace gum {
 
           std::string value;
 
-          Type type() const { return SetEngine; }
+          RequestType type() const { return RequestType::SetEngine; }
           std::string toString() const {
             return "engine " + value + ";";
           }
@@ -96,7 +102,7 @@ namespace gum {
 
           std::string value;
 
-          Type type() const { return SetGndEngine; }
+          RequestType type() const { return RequestType::SetGndEngine; }
           std::string toString() const {
             return "grd_engine " + value + ";";
           }
@@ -116,7 +122,7 @@ namespace gum {
           PRMInference::Chain chain;
           Potential<prm_float> potentiel;
 
-          Type type() const { return Observe; }
+          RequestType type() const { return RequestType::Observe; }
           std::string toString() const {
             return leftValue + " = " + rightValue + ";";
           }
@@ -134,7 +140,7 @@ namespace gum {
           UnobserveCommand( const UnobserveCommand& c )
             : O3prmrCommand( c ), value( c.value ), system( c.system ), chain( c.chain ) {}
 
-          Type type() const { return Unobserve; }
+          RequestType type() const { return RequestType::Unobserve; }
           std::string toString() const {
             return "unobserve " + value + ";";
           }
@@ -149,7 +155,7 @@ namespace gum {
           const System* system;
           PRMInference::Chain chain;
 
-          Type type() const { return Query; }
+          RequestType type() const { return RequestType::Query; }
           std::string toString() const {
             return "? " + value + ";";
           }

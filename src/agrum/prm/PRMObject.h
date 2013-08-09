@@ -61,34 +61,40 @@ namespace gum {
 
         /**
          * Enumeration of the different types of objects handled by a PRM.
-         * The "all" type is used to tell that we want any kind of ObjectType
+         * The "all" type is used to tell that we want any kind of Type
          * (useful with iterators for example). No PRMObject will ever have
          * "all" as type.
          */
-        enum ObjectType { all, prm_class, prm_interface, prm_class_elt,
-                          prm_type, prm_system, prm_instance
-                        };
+        enum class PRMType : char {
+          ALL,
+          CLASS,
+          INTERFACE,
+          CLASS_ELT,
+          TYPE,
+          SYSTEM,
+          INSTANCE
+        };
 
         /// Returns the string representation of a PRMObject.
-        static std::string enum2str( ObjectType type ) {
+        static std::string enum2str( PRMType type ) {
           switch ( type ) {
-            case prm_class:
-              return "prm_class";
+            case PRMType::CLASS:
+              return "PRMType::CLASS";
 
-            case prm_class_elt:
-              return "prm_class_elt";
+            case PRMType::CLASS_ELT:
+              return "PRMType::CLASS_ELT";
 
-            case prm_type:
-              return "prm_type";
+            case PRMType::TYPE:
+              return "PRMType::TYPE";
 
-            case prm_system:
-              return "prm_system";
+            case PRMType::SYSTEM:
+              return "PRMType::SYSTEM";
 
-            case prm_instance:
-              return "prm_instance";
+            case PRMType::INSTANCE:
+              return "PRMType::INSTANCE";
 
-            case prm_interface:
-              return "prm_interface";
+            case PRMType::INTERFACE:
+              return "PRMType::INTERFACE";
 
             default:
               return "unknown";
@@ -97,17 +103,17 @@ namespace gum {
 
         /// Returns true if obj_ptr is of type Class.
         static INLINE bool isClass( const PRMObject& obj ) {
-          return obj.obj_type() == prm_class;
+          return obj.obj_type() == PRMType::CLASS;
         }
 
         /// Returns true if obj_ptr is of type Interface.
         static INLINE bool isInterface( const PRMObject& obj ) {
-          return obj.obj_type() == prm_interface;
+          return obj.obj_type() == PRMType::INTERFACE;
         }
 
         /// Returns true if obj_ptr is of type Instance.
         static INLINE bool isInstance( const PRMObject& obj ) {
-          return obj.obj_type() == prm_instance;
+          return obj.obj_type() == PRMType::INSTANCE;
         }
 
         /// @}
@@ -146,7 +152,7 @@ namespace gum {
         /**
          * Returns the type of this object.
          */
-        virtual ObjectType obj_type() const =0;
+        virtual PRMType obj_type() const =0;
 
         /// @}
         // ==========================================================================
@@ -183,8 +189,8 @@ namespace gum {
         /// @}
     };
 
-/// For printing ObjectType easily.
-    std::ostream& operator<<( std::ostream& out, PRMObject::ObjectType obj_type );
+/// For printing Type easily.
+    std::ostream& operator<<( std::ostream& out, PRMObject::PRMType obj_type );
   } /* namespace prm */
 } /* namespace gum */
 

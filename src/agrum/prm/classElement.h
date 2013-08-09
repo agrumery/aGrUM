@@ -158,7 +158,7 @@ namespace gum {
         virtual void addChild( const ClassElement& elt ) =0;
 
         /// @see gum::PRMObject::obj_type().
-        virtual ObjectType obj_type() const;
+        virtual PRMType obj_type() const;
 
         /// Return the type of class element this object is.
         virtual ClassElementType elt_type() const =0;

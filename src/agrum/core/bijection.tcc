@@ -50,7 +50,7 @@ namespace gum {
   template <typename T1, typename T2> INLINE
   BijectionIterator<T1,T2>::BijectionIterator
   ( const Bijection<T1,T2>& biject, BijectionIterator<T1,T2>::Position pos ) :
-    __iter( pos == GUM_BIJECTION_BEGIN ? biject.__firstToSecond.begin() :
+    __iter( pos == Position::BIJECTION_BEGIN ? biject.__firstToSecond.begin() :
             biject.__firstToSecond.end() ) {
     GUM_CONSTRUCTOR( BijectionIterator );
   }
@@ -477,7 +477,7 @@ namespace gum {
   template <typename T1, typename T2> INLINE
   BijectionIterator<T1*,T2*>::BijectionIterator
   ( const Bijection<T1*,T2*>& biject, BijectionIterator<T1*,T2*>::Position pos ) :
-    __iter( pos == GUM_BIJECTION_BEGIN ? biject.__firstToSecond.begin() :
+    __iter( pos == Position::BIJECTION_BEGIN ? biject.__firstToSecond.begin() :
             biject.__firstToSecond.end() ) {
     GUM_CONSTRUCTOR( BijectionIterator );
   }

@@ -237,7 +237,7 @@ namespace gum {
 
   template<typename T_TICKS>
   INLINE DiscreteVariable::Type DiscretizedVariable<T_TICKS>::type( void ) const {
-    return Discretized;
+    return Type::Discretized;
   }
 
   template<typename T_TICKS>

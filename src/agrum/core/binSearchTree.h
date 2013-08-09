@@ -282,7 +282,7 @@ namespace gum {
 
       Node* _copy( Node* root_from,
                    Node* parent = 0,
-                   BinTreeDir dir = GUM_BIN_TREE_LEFT_CHILD );
+                   BinTreeDir dir = BinTreeDir::LEFT_CHILD );
 
 
       /// returns the smallest node w.r.t. order Cmp in the subtree rooted at node

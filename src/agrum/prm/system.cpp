@@ -170,19 +170,19 @@ namespace gum {
       const Aggregate& agg = static_cast<const Aggregate&>( elt );
 
       switch ( agg.agg_type() ) {
-        case Aggregate::agg_min:
+        case Aggregate::AggregateType::MIN:
           factory.setVariableCPTImplementation( new aggregator::Min<prm_float>() );
           break;
 
-        case Aggregate::agg_max:
+        case Aggregate::AggregateType::MAX:
           factory.setVariableCPTImplementation( new aggregator::Max<prm_float>() );
           break;
 
-        case Aggregate::agg_exists:
+        case Aggregate::AggregateType::EXISTS:
           factory.setVariableCPTImplementation( new aggregator::Exists<prm_float>( agg.label() ) );
           break;
 
-        case Aggregate::agg_forall:
+        case Aggregate::AggregateType::FORALL:
           factory.setVariableCPTImplementation( new aggregator::Forall<prm_float>( agg.label() ) );
           break;
 

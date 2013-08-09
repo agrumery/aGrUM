@@ -39,7 +39,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   ScheduleDeleteMultiDim<GUM_SCALAR>::ScheduleDeleteMultiDim
   ( const ScheduleMultiDim<GUM_SCALAR>& table ) :
-    ScheduleOperation<GUM_SCALAR> ( ScheduleOperation<GUM_SCALAR>::GUM_DELETE_MULTIDIM ),
+    ScheduleOperation<GUM_SCALAR> ( ScheduleOperation<GUM_SCALAR>::Type::DELETE_MULTIDIM ),
     __table( table ),
     __args( 0 ) {
     // for debugging purposes

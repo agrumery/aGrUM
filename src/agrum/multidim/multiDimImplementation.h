@@ -277,16 +277,22 @@ namespace gum {
       List<Instantiation*> __slaveInstantiations;
 
 
-      enum __ENUM_InternalChangeMethod { DIRECT_CHANGE, MULTIPLE_CHANGE};
+      enum class __InternalChangeMethod:char {
+        DIRECT_CHANGE,
+        MULTIPLE_CHANGE
+      };
 
 
-      enum __ENUM_InternalChangeState { NO_CHANGE, NOT_COMMITTED_CHANGE};
+      enum class __InternalChangeState :char {
+        NO_CHANGE,
+        NOT_COMMITTED_CHANGE
+      };
 
 
-      __ENUM_InternalChangeMethod __internalChangeMethod;
+      __InternalChangeMethod __internalChangeMethod;
 
 
-      __ENUM_InternalChangeState __internalChangeState;
+      __InternalChangeState __internalChangeState;
 
 
       void __setNotCommitedChange();

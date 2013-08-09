@@ -37,7 +37,7 @@ namespace gum {
     void
     PRMFactory::addLabel( const std::string& l, std::string extends ) {
       if ( extends == "" ) {
-        Type* t = static_cast<Type*>( __checkStack( 1, PRMObject::prm_type ) );
+        Type* t = static_cast<Type*>( __checkStack( 1, PRMObject::PRMType::TYPE ) );
         LabelizedVariable* var = dynamic_cast<LabelizedVariable*>( t->__var );
 
         if ( not var ) {
@@ -52,7 +52,7 @@ namespace gum {
           GUM_ERROR( DuplicateElement, "a label with the same value already exists" );
         }
       } else {
-        Type* t = static_cast<Type*>( __checkStack( 1, PRMObject::prm_type ) );
+        Type* t = static_cast<Type*>( __checkStack( 1, PRMObject::PRMType::TYPE ) );
         LabelizedVariable* var = dynamic_cast<LabelizedVariable*>( t->__var );
 
         if ( not var ) {
@@ -143,7 +143,7 @@ namespace gum {
 
     void
     PRMFactory::endClass() {
-      Class* c = static_cast<Class*>( __checkStack( 1, PRMObject::prm_class ) );
+      Class* c = static_cast<Class*>( __checkStack( 1, PRMObject::PRMType::CLASS ) );
       Interface* i = 0;
       std::string name;
       std::stringstream msg;
@@ -244,7 +244,7 @@ namespace gum {
 
     void
     PRMFactory::addAttribute( Attribute* attr ) {
-      Class* c = static_cast<Class*>( __checkStack( 1, PRMObject::prm_class ) );
+      Class* c = static_cast<Class*>( __checkStack( 1, PRMObject::PRMType::CLASS ) );
       c->add( attr );
       Size count = 0;
       const Sequence<const DiscreteVariable*>& vars = attr->cpf().variablesSequence();
@@ -419,7 +419,7 @@ namespace gum {
     void
     PRMFactory::addParameter( const std::string& type, const std::string& name,
                               std::string value ) {
-      Class* c = static_cast<Class*>( __checkStack( 1, PRMObject::prm_class ) );
+      Class* c = static_cast<Class*>( __checkStack( 1, PRMObject::PRMType::CLASS ) );
 
       if ( value == "" ) {
         MultiDimSparse<prm_float>* impl =
@@ -453,7 +453,7 @@ namespace gum {
                                const std::string& agg_type,
                                const std::vector<std::string>& chains,
                                const std::vector<std::string>& params ) {
-      Class* c = static_cast<Class*>( __checkStack( 1, PRMObject::prm_class ) );
+      Class* c = static_cast<Class*>( __checkStack( 1, PRMObject::PRMType::CLASS ) );
       // Checking call legality
 
       if ( chains.size() == 0 ) {
@@ -479,15 +479,15 @@ namespace gum {
       Aggregate* agg = 0;
 
       switch ( Aggregate::str2enum( agg_type ) ) {
-        case Aggregate::agg_or:
-        case Aggregate::agg_and: {
+        case Aggregate::AggregateType::OR:
+        case Aggregate::AggregateType::AND: {
           if ( inputs.front()->type() != *( __retrieveType( "boolean" ) ) ) {
             GUM_ERROR( WrongType, "expected booleans" );
           }
         }
 
-        case Aggregate::agg_min:
-        case Aggregate::agg_max: {
+        case Aggregate::AggregateType::MIN:
+        case Aggregate::AggregateType::MAX: {
           if ( params.size() != 0 ) {
             GUM_ERROR( OperationNotAllowed, "invalid number of paramaters" );
           }
@@ -497,10 +497,10 @@ namespace gum {
           break;
         }
 
-        case Aggregate::agg_exists:
-        case Aggregate::agg_forall: {
+        case Aggregate::AggregateType::EXISTS:
+        case Aggregate::AggregateType::FORALL: {
           if ( params.size() != 1 ) {
-            GUM_ERROR( OperationNotAllowed, "invalid number of paramaters" );
+            GUM_ERROR( OperationNotAllowed, "invalid number of parameters" );
           }
 
           Idx label_idx = 0;
@@ -587,7 +587,7 @@ namespace gum {
     void
     PRMFactory::addArray( const std::string& type,
                           const std::string& name, Size size ) {
-      System* model = static_cast<System*>( __checkStack( 1, PRMObject::prm_system ) );
+      System* model = static_cast<System*>( __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
       Class* c = __retrieveClass( type );
       Instance* inst = 0;
 
@@ -611,7 +611,7 @@ namespace gum {
 
     void
     PRMFactory::incArray( const std::string& l_i, const std::string& r_i ) {
-      System* model = static_cast<System*>( __checkStack( 1, PRMObject::prm_system ) );
+      System* model = static_cast<System*>( __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
 
       if ( model->isArray( l_i ) ) {
         if ( model->isInstance( r_i ) ) {
@@ -630,7 +630,7 @@ namespace gum {
                                   const std::string& r_i ) {
       typedef Sequence<Instance*>::iterator Iter;
       typedef std::vector<Instance*>::iterator Jter;
-      System* model = static_cast<System*>( __checkStack( 1, PRMObject::prm_system ) );
+      System* model = static_cast<System*>( __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
       std::vector<Instance*> lefts;
       std::vector<Instance*> rights;
 
@@ -665,7 +665,7 @@ namespace gum {
 
     void
     PRMFactory::setParameter( const std::string& instance, const std::string& param, const std::string& value ) {
-      System* model = static_cast<System*>( __checkStack( 1, PRMObject::prm_system ) );
+      System* model = static_cast<System*>( __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
       Instance* i = 0;
 
       try {
@@ -864,7 +864,7 @@ namespace gum {
                                     const std::vector<std::string>& chains,
                                     const std::vector<float>& numbers, float leak,
                                     const std::vector<std::string>& labels ) {
-      if ( currentType() != PRMObject::prm_class ) {
+      if ( currentType() != PRMObject::PRMType::CLASS ) {
         GUM_ERROR( gum::FactoryInvalidState, "invalid state to add a noisy-or" );
       }
 

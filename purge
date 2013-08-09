@@ -1,9 +1,13 @@
 #! /bin/sh
-echo "Purge tool - aGrUM 2011"
-echo "cleans aGrum and removes cocoR generated files."
-echo "If cocoR is not installed, just 'svn update' to retrieve removed files."
+echo "Purge tool - aGrUM 2011-13"
+echo "cleans aGrum and removes cocoR/swig generated files."
+echo "If cocoR or swig is not installed, just 'git ls-files -d | xargs git checkout --' to retrieve removed files."
+echo
+read -p "Press any key to proceed ..." -n1 -s
+
 python act clean
 find . -name "Parser.h" -print | xargs rm -f
 find . -name "Parser.cpp" -print | xargs rm -f
 find . -name "Scanner.h" -print | xargs rm -f
 find . -name "Scanner.cpp" -print | xargs rm -f
+rm -f wrappers/pyAgrum/generated-files/*

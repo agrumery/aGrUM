@@ -50,7 +50,7 @@ namespace gum {
 
     std::string
     ClusteredLayerGenerator::__generateType( PRMFactory& factory ) {
-      std::string name = _name_gen.nextName( PRMObject::prm_type );
+      std::string name = _name_gen.nextName( PRMObject::PRMType::TYPE );
       factory.startDiscreteType( name );
 
       for ( Size i = 0; i < __domain_size; ++i ) {
@@ -69,21 +69,21 @@ namespace gum {
         std::vector<ClusteredLayerGenerator::MyData>& l ) {
       for ( Size lvl = 0; lvl < __layers.size(); ++lvl ) {
         l.push_back( ClusteredLayerGenerator::MyData() );
-        l[lvl].i = _name_gen.nextName( PRMObject::prm_interface );
+        l[lvl].i = _name_gen.nextName( PRMObject::PRMType::INTERFACE );
         f.startInterface( l[lvl].i );
 
         for ( Size a = 0; a < __layers[lvl].a; ++a ) {
-          l[lvl].a.push_back( _name_gen.nextName( PRMObject::prm_class_elt ) );
+          l[lvl].a.push_back( _name_gen.nextName( PRMObject::PRMType::CLASS_ELT ) );
           f.addAttribute( type, l[lvl].a.back() );
         }
 
         if ( lvl ) {
           for ( Size g = 0; g < __layers[lvl].g; ++g ) {
-            l[lvl].g.push_back( _name_gen.nextName( PRMObject::prm_class_elt ) );
+            l[lvl].g.push_back( _name_gen.nextName( PRMObject::PRMType::CLASS_ELT ) );
             f.addAttribute( "boolean", l[lvl].g.back() );
           }
 
-          l[lvl].r = _name_gen.nextName( PRMObject::prm_class_elt );
+          l[lvl].r = _name_gen.nextName( PRMObject::PRMType::CLASS_ELT );
           f.addReferenceSlot( l[lvl - 1].i, l[lvl].r, true );
         }
 
@@ -133,9 +133,9 @@ namespace gum {
           __generateClass( f, type, l, lvl, i );
           first = l[lvl].c.back();
           v->push_back( first );
-          v->push_back( _name_gen.nextName( PRMObject::prm_class ) );
+          v->push_back( _name_gen.nextName( PRMObject::PRMType::CLASS ) );
           f.startClass( v->back() );
-          v->push_back( _name_gen.nextName( PRMObject::prm_class_elt ) );
+          v->push_back( _name_gen.nextName( PRMObject::PRMType::CLASS_ELT ) );
           f.addReferenceSlot( first, v->back(), true );
           DAG dag;
           Bijection<std::string, NodeId> names;
@@ -190,10 +190,10 @@ namespace gum {
           {
             first = l[lvl].c.back();
             v->push_back( first );
-            v->push_back( _name_gen.nextName( PRMObject::prm_class ) );
+            v->push_back( _name_gen.nextName( PRMObject::PRMType::CLASS ) );
             second = v->back();
             f.startClass( second );
-            v->push_back( _name_gen.nextName( PRMObject::prm_class_elt ) );
+            v->push_back( _name_gen.nextName( PRMObject::PRMType::CLASS_ELT ) );
             f.addReferenceSlot( first, v->back(), true );
             DAG dag;
             Bijection<std::string, NodeId> names;
@@ -239,10 +239,10 @@ namespace gum {
             f.endClass();
           }
           {
-            v->push_back( _name_gen.nextName( PRMObject::prm_class ) );
+            v->push_back( _name_gen.nextName( PRMObject::PRMType::CLASS ) );
             third = v->back();
             f.startClass( third );
-            v->push_back( _name_gen.nextName( PRMObject::prm_class_elt ) );
+            v->push_back( _name_gen.nextName( PRMObject::PRMType::CLASS_ELT ) );
             f.addReferenceSlot( second, v->back(), true );
             DAG dag;
             Bijection<std::string, NodeId> names;
@@ -307,7 +307,7 @@ namespace gum {
       const Set<NodeId>* parents = 0;
       Size size = 0;
       prm_float sum = 0.0;
-      l[lvl].c.push_back( _name_gen.nextName( PRMObject::prm_class ) );
+      l[lvl].c.push_back( _name_gen.nextName( PRMObject::PRMType::CLASS ) );
       f.startClass( l[lvl].c.back(), "", &i );
 
       if ( lvl )
@@ -412,7 +412,7 @@ namespace gum {
 
     void
     ClusteredLayerGenerator::__generateSystem( PRMFactory& factory, std::vector<ClusteredLayerGenerator::MyData>& l ) {
-      factory.startSystem( _name_gen.nextName( PRMObject::prm_system ) );
+      factory.startSystem( _name_gen.nextName( PRMObject::PRMType::SYSTEM ) );
       std::vector< std::vector<std::string> > o( __layers.size() );
       std::string name, c, first, second, third;
       std::vector<std::string>* v = 0;
@@ -429,9 +429,9 @@ namespace gum {
 
             switch ( v->size() ) {
               case 3: {
-                first = _name_gen.nextName( PRMObject::prm_instance );
+                first = _name_gen.nextName( PRMObject::PRMType::INSTANCE );
                 factory.addInstance( c, first );
-                second = _name_gen.nextName( PRMObject::prm_instance );
+                second = _name_gen.nextName( PRMObject::PRMType::INSTANCE );
                 factory.addInstance( v->at( 1 ), second );
                 std::stringstream chain;
                 chain << second << "." << v->at( 2 );
@@ -440,14 +440,14 @@ namespace gum {
               }
 
               case 5: {
-                first = _name_gen.nextName( PRMObject::prm_instance );
+                first = _name_gen.nextName( PRMObject::PRMType::INSTANCE );
                 factory.addInstance( c, first );
-                second = _name_gen.nextName( PRMObject::prm_instance );
+                second = _name_gen.nextName( PRMObject::PRMType::INSTANCE );
                 factory.addInstance( v->at( 1 ), second );
                 std::stringstream chain_1, chain_2;
                 chain_1 << second << "." << v->at( 2 );
                 factory.setReferenceSlot( chain_1.str(), first );
-                third = _name_gen.nextName( PRMObject::prm_instance );
+                third = _name_gen.nextName( PRMObject::PRMType::INSTANCE );
                 factory.addInstance( v->at( 3 ), third );
                 chain_2 << third << "." << v->at( 4 );
                 factory.setReferenceSlot( chain_2.str(), second );
@@ -464,7 +464,7 @@ namespace gum {
             // delete v;
             name = first;
           } else {
-            name = _name_gen.nextName( PRMObject::prm_instance );
+            name = _name_gen.nextName( PRMObject::PRMType::INSTANCE );
             factory.addInstance( c, name );
           }
 

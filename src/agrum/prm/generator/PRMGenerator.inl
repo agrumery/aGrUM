@@ -81,22 +81,22 @@ namespace gum {
 
     INLINE
     std::string
-    NameGenerator::nextName( PRMObject::ObjectType type ) {
+    NameGenerator::nextName( PRMObject::PRMType type ) {
       std::stringstream s;
 
       switch ( type ) {
-        case PRMObject::all:
-        case PRMObject::prm_class:    { s << "class_" << ++( __counters[0] ); break; }
+        case PRMObject::PRMType::ALL:
+        case PRMObject::PRMType::CLASS:    { s << "class_" << ++( __counters[0] ); break; }
 
-        case PRMObject::prm_interface: { s << "iface_" << ++( __counters[0] ); break; }
+        case PRMObject::PRMType::INTERFACE: { s << "iface_" << ++( __counters[0] ); break; }
 
-        case PRMObject::prm_system:   { s << "sys_"   << ++( __counters[0] ); break; }
+        case PRMObject::PRMType::SYSTEM:   { s << "sys_"   << ++( __counters[0] ); break; }
 
-        case PRMObject::prm_type:     { s << "type_"  << ++( __counters[0] ); break; }
+        case PRMObject::PRMType::TYPE:     { s << "type_"  << ++( __counters[0] ); break; }
 
-        case PRMObject::prm_class_elt: { s << "elt_"   << ++( __counters[1] ); break; }
+        case PRMObject::PRMType::CLASS_ELT: { s << "elt_"   << ++( __counters[1] ); break; }
 
-        case PRMObject::prm_instance: { s << "inst_"  << ++( __counters[2] ); break; }
+        case PRMObject::PRMType::INSTANCE: { s << "inst_"  << ++( __counters[2] ); break; }
 
         default: { GUM_ERROR( FatalError, "unknown PRMObject type" ); }
       }

@@ -27,9 +27,9 @@ namespace gum {
 
 /// how copies should be performed (usual or shallow copies)
 /// @todo default is ?
-  enum CopyType {
-    GUM_DEEP_COPY,
-    GUM_SHALLOW_COPY
+  enum class CopyType : char {
+    DEEP_COPY,
+    SHALLOW_COPY
   };
 
 /// type for indexes

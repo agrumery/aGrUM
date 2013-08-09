@@ -50,7 +50,7 @@ namespace gum {
 
     GUM_CONSTRUCTOR( FMDPFactory );
 
-    __states.push_back( NONE );
+    __states.push_back( FMDPfactory_state::NONE );
     resetVerbose();
   }
 
@@ -78,7 +78,7 @@ namespace gum {
   FactoredMarkovDecisionProcess<GUM_SCALAR>*
   FMDPFactory<GUM_SCALAR>::FMDP() const {
 
-    if ( state() != NONE )
+    if ( state() != FMDPfactory_state::NONE )
       GUM_ERROR( OperationNotAllowed, "Illegal state to return the factored markov decision process: it is not yet finished." );
 
     return __fmdp;
@@ -90,7 +90,7 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   FMDPfactory_state
   FMDPFactory<GUM_SCALAR>::state() const {
-    // This is ok because there is alway at least the state NONE in the stack.
+    // This is ok because there is alway at least the state FMDPfactory_state::NONE in the stack.
     return __states.back();
   }
 
@@ -117,7 +117,7 @@ namespace gum {
 
   /* **************************************************************************************************** **/
   /* **                                                                                                                                                    **/
-  /* **                            Network declaration methods (NONE <-> PROPERTY)                                      **/
+  /* **                            Network declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::PROPERTY)                                      **/
   /* **                                                                                                                                                    **/
   /* **************************************************************************************************** **/
 
@@ -128,10 +128,10 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::startPropertyDeclaration() {
 
-    if ( state() != NONE )
+    if ( state() != FMDPfactory_state::NONE )
       __illegalStateError( "startPropertyDeclaration" );
     else
-      __states.push_back( PROPERTY );
+      __states.push_back( FMDPfactory_state::PROPERTY );
 
 //       VERBOSITY ( "starting property" );
   }
@@ -143,7 +143,7 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::addProperty( const std::string& propName, const std::string& propValue ) {
 
-    if ( state() != PROPERTY )
+    if ( state() != FMDPfactory_state::PROPERTY )
       __illegalStateError( "addProperty" );
     else
       __fmdp->setProperty( propName, propValue );
@@ -157,7 +157,7 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::endPropertyDeclaration() {
 
-    if ( state() != PROPERTY )
+    if ( state() != FMDPfactory_state::PROPERTY )
       __illegalStateError( "endPropertyDeclaration" );
     else
       __states.pop_back();
@@ -168,7 +168,7 @@ namespace gum {
 
   /* **************************************************************************************************** **/
   /* **                                                                                                                                                    **/
-  /* **                               Variable declaration methods (NONE <-> VARIABLE)                                     **/
+  /* **                               Variable declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::VARIABLE)                                     **/
   /* **                                                                                                                                                    **/
   /* **************************************************************************************************** **/
 
@@ -179,10 +179,10 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::startVariableDeclaration() {
 
-    if ( state() != NONE )
+    if ( state() != FMDPfactory_state::NONE )
       __illegalStateError( "startVariableDeclaration" );
     else {
-      __states.push_back( VARIABLE );
+      __states.push_back( FMDPfactory_state::VARIABLE );
       __stringBag.push_back( "name" );
       __stringBag.push_back( "desc" );
     }
@@ -197,7 +197,7 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::variableName( const std::string& name ) {
 
-    if ( state() != VARIABLE )
+    if ( state() != FMDPfactory_state::VARIABLE )
       __illegalStateError( "variableName" );
     else {
 
@@ -217,7 +217,7 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::variableDescription( const std::string& desc ) {
 
-    if ( state() != VARIABLE )
+    if ( state() != FMDPfactory_state::VARIABLE )
       __illegalStateError( "variableDescription" );
     else {
       __bar_flag = true;
@@ -234,7 +234,7 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::addModality( const std::string& name ) {
 
-    if ( state() != VARIABLE )
+    if ( state() != FMDPfactory_state::VARIABLE )
       __illegalStateError( "addModality" );
     else {
       __checkModalityInBag( name );
@@ -261,7 +261,7 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::endVariableDeclaration() {
 
-    if ( state() != VARIABLE )
+    if ( state() != FMDPfactory_state::VARIABLE )
       __illegalStateError( "endVariableDeclaration" );
     else if ( __foo_flag and ( __stringBag.size() > 3 ) ) {
 
@@ -310,7 +310,7 @@ namespace gum {
 
   /* **************************************************************************************************** **/
   /* **                                                                                                                                                    **/
-  /* **                                 Action declaration methods (NONE <-> ACTION)                                         **/
+  /* **                                 Action declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::ACTION)                                         **/
   /* **                                                                                                                                                    **/
   /* **************************************************************************************************** **/
 
@@ -320,11 +320,11 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   FMDPFactory<GUM_SCALAR>::startActionDeclaration( ) {
-    if ( state() != NONE )
+    if ( state() != FMDPfactory_state::NONE )
       __illegalStateError( "startActionDeclaration" );
     else {
       __foo_flag = true;
-      __states.push_back( ACTION );
+      __states.push_back( FMDPfactory_state::ACTION );
     }
 
 //       VERBOSITY ( "starting action declaration" );
@@ -336,7 +336,7 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   FMDPFactory<GUM_SCALAR>::addAction( const std::string& action ) {
-    if ( state() != ACTION )
+    if ( state() != FMDPfactory_state::ACTION )
       __illegalStateError( "addAction" );
     else {
       __stringBag.push_back( action );
@@ -351,7 +351,7 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::endActionDeclaration() {
 
-    if ( state() != ACTION )
+    if ( state() != FMDPfactory_state::ACTION )
       __illegalStateError( "endActionDeclaration" );
     else {
       __states.pop_back();
@@ -364,7 +364,7 @@ namespace gum {
 
   /* **************************************************************************************************** **/
   /* **                                                                                                                                                    **/
-  /* **          Transition declaration methods (NONE <-> TRANSITION <-> ACTION)                                **/
+  /* **          Transition declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::TRANSITION <-> FMDPfactory_state::ACTION)                                **/
   /* **                                                                                                                                                    **/
   /* **************************************************************************************************** **/
 
@@ -374,10 +374,10 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   FMDPFactory<GUM_SCALAR>::startTransitionDeclaration( ) {
-    if ( state() != NONE && state() != ACTION )
+    if ( state() != FMDPfactory_state::NONE && state() != FMDPfactory_state::ACTION )
       __illegalStateError( "startTransitionDeclaration" );
     else
-      __states.push_back( TRANSITION );
+      __states.push_back( FMDPfactory_state::TRANSITION );
 
 //       VERBOSITY ( "starting transition declaration" );
   }
@@ -391,7 +391,7 @@ namespace gum {
 
     const MultiDimImplementation<GUM_SCALAR>* t = reinterpret_cast<const MultiDimImplementation<GUM_SCALAR>*>( transition );
 
-    if ( state() != TRANSITION )
+    if ( state() != FMDPfactory_state::TRANSITION )
       __illegalStateError( "addTransition" );
     else if ( __foo_flag )
       __fmdp->addTransitionForAction( __varNameMap[var], t, __stringBag[0] );
@@ -408,7 +408,7 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::addTransition( const std::string& var ) {
 
-    if ( state() != TRANSITION )
+    if ( state() != FMDPfactory_state::TRANSITION )
       __illegalStateError( "addTransition" );
     else {
       if ( __foo_flag )
@@ -429,7 +429,7 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::endTransitionDeclaration() {
 
-    if ( state() != TRANSITION )
+    if ( state() != FMDPfactory_state::TRANSITION )
       __illegalStateError( "endTransitionDeclaration" );
     else
       __states.pop_back();
@@ -440,7 +440,7 @@ namespace gum {
 
   /* **************************************************************************************************** **/
   /* **                                                                                                                                                    **/
-  /* **          Cost declaration methods (NONE <-> COST <-> ACTION)                                                   **/
+  /* **          Cost declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::COST <-> FMDPfactory_state::ACTION)                                                   **/
   /* **                                                                                                                                                    **/
   /* **************************************************************************************************** **/
 
@@ -450,10 +450,10 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   FMDPFactory<GUM_SCALAR>::startCostDeclaration( ) {
-    if ( state() != NONE && state() != ACTION )
+    if ( state() != FMDPfactory_state::NONE && state() != FMDPfactory_state::ACTION )
       __illegalStateError( "startTransitionDeclaration" );
     else
-      __states.push_back( COST );
+      __states.push_back( FMDPfactory_state::COST );
 
 //       VERBOSITY ( "starting Cost declaration" );
   }
@@ -467,7 +467,7 @@ namespace gum {
 
     const MultiDimImplementation<GUM_SCALAR>* c = reinterpret_cast<const MultiDimImplementation<GUM_SCALAR>*>( cost );
 
-    if ( state() != COST )
+    if ( state() != FMDPfactory_state::COST )
       __illegalStateError( "addCost" );
     else if ( __foo_flag )
       __fmdp->addCostForAction( c, __stringBag[0] );
@@ -482,7 +482,7 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   FMDPFactory<GUM_SCALAR>::addCost( ) {
-    if ( state() != COST )
+    if ( state() != FMDPfactory_state::COST )
       __illegalStateError( "addCost" );
     else {
       if ( __foo_flag )
@@ -502,7 +502,7 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::endCostDeclaration() {
 
-    if ( state() != COST )
+    if ( state() != FMDPfactory_state::COST )
       __illegalStateError( "endCostDeclaration" );
     else
       __states.pop_back();
@@ -513,7 +513,7 @@ namespace gum {
 
   /* **************************************************************************************************** **/
   /* **                                                                                                                                                    **/
-  /* **          Reward declaration methods (NONE <-> REWARD <-> ACTION)                                         **/
+  /* **          Reward declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::REWARD <-> FMDPfactory_state::ACTION)                                         **/
   /* **                                                                                                                                                    **/
   /* **************************************************************************************************** **/
 
@@ -523,10 +523,10 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   FMDPFactory<GUM_SCALAR>::startRewardDeclaration( ) {
-    if ( state() != NONE && state() != ACTION )
+    if ( state() != FMDPfactory_state::NONE && state() != FMDPfactory_state::ACTION )
       __illegalStateError( "startRewardDeclaration" );
     else
-      __states.push_back( REWARD );
+      __states.push_back( FMDPfactory_state::REWARD );
 
 //       VERBOSITY ( "starting reward declaration" );
   }
@@ -551,7 +551,7 @@ namespace gum {
 
     const MultiDimImplementation<GUM_SCALAR>* r = reinterpret_cast<const MultiDimImplementation<GUM_SCALAR>*>( reward );
 
-    if ( state() != REWARD )
+    if ( state() != FMDPfactory_state::REWARD )
       __illegalStateError( "addReward" );
     else
       __fmdp->addReward( r );
@@ -564,7 +564,7 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   FMDPFactory<GUM_SCALAR>::addReward( ) {
-    if ( state() != REWARD )
+    if ( state() != FMDPfactory_state::REWARD )
       __illegalStateError( "addReward" );
     else {
       if ( __foo_flag )
@@ -584,7 +584,7 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::endRewardDeclaration() {
 
-    if ( state() != REWARD )
+    if ( state() != FMDPfactory_state::REWARD )
       __illegalStateError( "endRewardDeclaration" );
     else {
       if ( __foo_flag ) {
@@ -630,7 +630,7 @@ namespace gum {
 
   /* **************************************************************************************************** **/
   /* **                                                                                                                                                    **/
-  /* **          Discount declaration methods (NONE <-> DISCOUNT <-> ACTION)                                    **/
+  /* **          Discount declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::DISCOUNT <-> FMDPfactory_state::ACTION)                                    **/
   /* **                                                                                                                                                    **/
   /* **************************************************************************************************** **/
 
@@ -640,10 +640,10 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   FMDPFactory<GUM_SCALAR>::startDiscountDeclaration( ) {
-    if ( state() != NONE )
+    if ( state() != FMDPfactory_state::NONE )
       __illegalStateError( "startDiscountDeclaration" );
     else
-      __states.push_back( DISCOUNT );
+      __states.push_back( FMDPfactory_state::DISCOUNT );
 
 //       VERBOSITY ( "starting discount declaration" );
   }
@@ -654,7 +654,7 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   FMDPFactory<GUM_SCALAR>::addDiscount( float discount ) {
-    if ( state() != DISCOUNT )
+    if ( state() != FMDPfactory_state::DISCOUNT )
       __illegalStateError( "addDiscount" );
     else
       __fmdp->addDiscount( ( GUM_SCALAR ) discount );
@@ -667,7 +667,7 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::endDiscountDeclaration() {
 
-    if ( state() != DISCOUNT )
+    if ( state() != FMDPfactory_state::DISCOUNT )
       __illegalStateError( "endDiscountDeclaration" );
     else
       __states.pop_back();
@@ -678,7 +678,7 @@ namespace gum {
 
   /* **************************************************************************************************** **/
   /* **                                                                                                                                                    **/
-  /* **          Discount declaration methods (NONE <-> DISCOUNT <-> ACTION)                                    **/
+  /* **          Discount declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::DISCOUNT <-> FMDPfactory_state::ACTION)                                    **/
   /* **                                                                                                                                                    **/
   /* **************************************************************************************************** **/
 
@@ -737,28 +737,28 @@ namespace gum {
 
     switch ( state() ) {
 
-      case NONE:       msg += "NONE";
+      case FMDPfactory_state::NONE:       msg += "FMDPfactory_state::NONE";
         break;
 
-      case PROPERTY:    msg += "PROPERTY";
+      case FMDPfactory_state::PROPERTY:    msg += "FMDPfactory_state::PROPERTY";
         break;
 
-      case VARIABLE:    msg += "VARIABLE";
+      case FMDPfactory_state::VARIABLE:    msg += "FMDPfactory_state::VARIABLE";
         break;
 
-      case ACTION:    msg += "ACTION";
+      case FMDPfactory_state::ACTION:    msg += "FMDPfactory_state::ACTION";
         break;
 
-      case TRANSITION:  msg += "TRANSITION";
+      case FMDPfactory_state::TRANSITION:  msg += "FMDPfactory_state::TRANSITION";
         break;
 
-      case COST:      msg += "COST";
+      case FMDPfactory_state::COST:      msg += "FMDPfactory_state::COST";
         break;
 
-      case REWARD:    msg += "REWARD";
+      case FMDPfactory_state::REWARD:    msg += "FMDPfactory_state::REWARD";
         break;
 
-      case DISCOUNT:    msg += "DISCOUNT";
+      case FMDPfactory_state::DISCOUNT:    msg += "FMDPfactory_state::DISCOUNT";
         break;
 
       default:      msg += "Unknown state";

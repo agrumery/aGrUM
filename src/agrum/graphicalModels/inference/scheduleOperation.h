@@ -42,17 +42,17 @@ namespace gum {
   class ScheduleOperation {
     public:
       /// the currently supported types of operations
-      enum Type {
+      enum class Type  : char{
         /// combine 2 ScheduleMultiDims
-        GUM_COMBINE_MULTIDIM,
+        COMBINE_MULTIDIM,
         /// project a ScheduleMultiDim over a subset of its variables
-        GUM_PROJECT_MULTIDIM,
+        PROJECT_MULTIDIM,
         /// delete a MultiDim from memory
-        GUM_DELETE_MULTIDIM,
+        DELETE_MULTIDIM,
         /// store a Multidim into a clique
-        GUM_CLIQUE_STORE_MULTIDIM,
+        CLIQUE_STORE_MULTIDIM,
         /// store a multidim into a separator
-        GUM_SEPARATOR_STORE_MULTIDIM
+        SEPARATOR_STORE_MULTIDIM
       };
 
 

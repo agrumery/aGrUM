@@ -190,23 +190,23 @@ namespace gum {
 
       void O3prmrSession::addCommand( const O3prmrCommand* command ) {
         switch ( command->type() ) {
-          case O3prmrCommand::SetEngine :
+          case O3prmrCommand::RequestType::SetEngine :
             m_commands.push_back( new SetEngineCommand( * ( SetEngineCommand* ) command ) );
             break;
 
-          case O3prmrCommand::SetGndEngine :
+          case O3prmrCommand::RequestType::SetGndEngine :
             m_commands.push_back( new SetGndEngineCommand( * ( SetGndEngineCommand* ) command ) );
             break;
 
-          case O3prmrCommand::Observe :
+          case O3prmrCommand::RequestType::Observe :
             m_commands.push_back( new ObserveCommand( * ( ObserveCommand* ) command ) );
             break;
 
-          case O3prmrCommand::Unobserve :
+          case O3prmrCommand::RequestType::Unobserve :
             m_commands.push_back( new UnobserveCommand( * ( UnobserveCommand* ) command ) );
             break;
 
-          case O3prmrCommand::Query :
+          case O3prmrCommand::RequestType::Query :
             m_commands.push_back( new QueryCommand( * ( QueryCommand* ) command ) );
             break;
         }

@@ -41,7 +41,7 @@ namespace gum {
     MultiDimImplementation<GUM_SCALAR>*
     ( *combine )( const MultiDimImplementation<GUM_SCALAR>&,
                   const MultiDimImplementation<GUM_SCALAR>& ) ) :
-    ScheduleOperation<GUM_SCALAR> ( ScheduleOperation<GUM_SCALAR>::GUM_COMBINE_MULTIDIM ),
+    ScheduleOperation<GUM_SCALAR> ( ScheduleOperation<GUM_SCALAR>::Type::COMBINE_MULTIDIM ),
     __table1( table1 ),
     __table2( table2 ),
     __args( 0 ),

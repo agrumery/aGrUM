@@ -182,11 +182,11 @@ namespace gum {
 
     private:
       /// type used to create the begin/rbegin/end/rend iterators
-      enum IteratorLocation {
-        GUM_DATABASE_ITER_BEGIN,
-        GUM_DATABASE_ITER_RBEGIN,
-        GUM_DATABASE_ITER_END,
-        GUM_DATABASE_ITER_REND
+      enum class Location: char {
+        BEGIN,
+        RBEGIN,
+        END,
+        REND
       };
 
       /// the database the iterator points to
@@ -205,7 +205,7 @@ namespace gum {
 
       /// initializers used for begin/rbegin/end/rend
 
-      void __initializeIterator( const Database& data, enum IteratorLocation );
+      void __initializeIterator( const Database& data, Location );
   };
 
 

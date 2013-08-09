@@ -80,7 +80,7 @@ namespace gum_tests {
         }
 
         gum::BruteForceKL<float> kl( net2,net2 );
-        TS_ASSERT_EQUALS( kl.difficulty(),gum::complexity::CORRECT );
+        TS_ASSERT_EQUALS( kl.difficulty(),gum::Complexity::Correct );
 
         gum::BayesNet<float> net;
         {
@@ -90,7 +90,7 @@ namespace gum_tests {
         }
 
         gum::KL<float> kl2( net,net );
-        TS_ASSERT_EQUALS( kl2.difficulty(),gum::complexity::HEAVY );
+        TS_ASSERT_EQUALS( kl2.difficulty(),gum::Complexity::Heavy );
       }
 
       void testKLComputation() {
@@ -117,7 +117,7 @@ namespace gum_tests {
         }
 
         gum::KL<float> kl( net3,net4 );
-        TS_ASSERT_EQUALS( kl.difficulty(),gum::complexity::CORRECT );
+        TS_ASSERT_EQUALS( kl.difficulty(),gum::Complexity::Correct );
 
         {
           gum::BruteForceKL<float> bfkl( kl );

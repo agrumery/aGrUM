@@ -34,15 +34,15 @@ namespace gum {
   KL<GUM_SCALAR>::KL( const BayesNet<GUM_SCALAR>& P,const BayesNet<GUM_SCALAR>& Q ) :
     _p( P ),_q( Q ),
     _klPQ( 0.0 ),_klQP( 0.0 ),_errorPQ( false ),_errorQP( false ),
-    __difficulty( complexity::HEAVY ),__done( false ) {
+    __difficulty( Complexity::Heavy ),__done( false ) {
     __checkCompatibility(); //may throw OperationNotAlloxed
     GUM_CONSTRUCTOR( KL );
 
     double diff=_p.log10DomainSize();
 
-    if ( diff>GAP_heavy_difficult ) __difficulty= complexity::HEAVY;
-    else if ( diff>GAP_difficult_correct ) __difficulty= complexity::DIFFICULT;
-    else __difficulty=complexity::CORRECT;
+    if ( diff>GAP_COMPLEXITY_KL_HEAVY_DIFFICULT ) __difficulty= Complexity::Heavy;
+    else if ( diff>GAP_COMPLEXITY_KL_DIFFICULT_CORRECT ) __difficulty= Complexity::Difficult;
+    else __difficulty=Complexity::Correct;
   }
 
   template<typename GUM_SCALAR>
@@ -59,7 +59,7 @@ namespace gum {
   }
 
   template<typename GUM_SCALAR>
-  complexity::difficulty
+  Complexity
   KL<GUM_SCALAR>::difficulty() const {
     return __difficulty;
   }

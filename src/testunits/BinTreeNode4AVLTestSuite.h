@@ -52,8 +52,8 @@ namespace gum_tests {
         TS_ASSERT( node.parent() == 0 );
         TS_ASSERT( node.leftChild() == 0 );
         TS_ASSERT( node.rightChild() == 0 );
-        TS_ASSERT( node.child( gum::GUM_BIN_TREE_LEFT_CHILD ) == 0 );
-        TS_ASSERT( node.child( gum::GUM_BIN_TREE_RIGHT_CHILD ) == 0 );
+        TS_ASSERT( node.child( gum::BinTreeDir::LEFT_CHILD ) == 0 );
+        TS_ASSERT( node.child( gum::BinTreeDir::RIGHT_CHILD ) == 0 );
 
         gum::BinTreeNode4AVL<int> node2( 1 );
         gum::BinTreeNode4AVL<int> node3( 2 );
@@ -65,7 +65,7 @@ namespace gum_tests {
         TS_ASSERT( node.rightChild() == &node3 );
         TS_ASSERT( node2.parent() == &node );
         TS_ASSERT( node3.parent() == &node );
-        TS_ASSERT( node3.parentDir() == gum::GUM_BIN_TREE_RIGHT_CHILD );
+        TS_ASSERT( node3.parentDir() == gum::BinTreeDir::RIGHT_CHILD );
 
         node2.insertLeftChild( 4 );
         node2.insertRightChild( 6 );
@@ -86,9 +86,9 @@ namespace gum_tests {
         TS_ASSERT( node5->parent() == &node2 );
 
         gum::BinTreeNode4AVL<int>* node6 =
-          node4->insertChild( 6, gum::GUM_BIN_TREE_LEFT_CHILD );
+          node4->insertChild( 6, gum::BinTreeDir::LEFT_CHILD );
         gum::BinTreeNode4AVL<int>* node7 = new gum::BinTreeNode4AVL<int> ( 8 );
-        node4->insertChild( *node7, gum::GUM_BIN_TREE_RIGHT_CHILD );
+        node4->insertChild( *node7, gum::BinTreeDir::RIGHT_CHILD );
         delete( node4 );
         delete( node5 );
         delete( node6 );
@@ -116,8 +116,8 @@ namespace gum_tests {
 
         node1.insertLeftChild( node2 );
         node1.insertRightChild( node3 );
-        node1.eraseLink( gum::GUM_BIN_TREE_LEFT_CHILD );
-        node1.eraseLink( gum::GUM_BIN_TREE_RIGHT_CHILD );
+        node1.eraseLink( gum::BinTreeDir::LEFT_CHILD );
+        node1.eraseLink( gum::BinTreeDir::RIGHT_CHILD );
       }
 
       void testTopBottom() {

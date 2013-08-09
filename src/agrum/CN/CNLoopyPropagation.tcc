@@ -567,15 +567,15 @@ namespace gum {
       infE::initApproximationScheme();
 
       switch ( __inferenceType ) {
-        case nodeToNeighbours:
+        case InferenceType::nodeToNeighbours:
           _makeInferenceNodeToNeighbours();
           break;
 
-        case ordered:
+        case InferenceType::ordered:
           _makeInferenceByOrderedArcs();
           break;
 
-        case randomOrder:
+        case InferenceType::randomOrder:
           _makeInferenceByRandomOrder();
           break;
       }
@@ -696,7 +696,7 @@ namespace gum {
         GUM_SCALAR msg_p_min = 1.;
         GUM_SCALAR msg_p_max = 0.;
 
-        if ( cn->getCurrentNodeType( *it ) != cn->INDIC )
+        if ( cn->currentNodeType( *it ) != CredalNet<GUM_SCALAR>::NodeType::Indic )
           _enum_combi( msgs_p, *it, msg_p_min, msg_p_max );
 
         if ( msg_p_min <= ( GUM_SCALAR ) 0. )
@@ -749,7 +749,7 @@ namespace gum {
           NodeSet _enfants = graphe.children( *it );
 
           for ( auto jt = _enfants.begin(), theEnd2 = _enfants.end(); jt != theEnd2; ++jt ) {
-            if ( cn->getCurrentNodeType( *jt ) == cn->INDIC )
+            if ( cn->currentNodeType( *jt ) == CredalNet<GUM_SCALAR>::NodeType::Indic )
               continue;
 
             _msgP( *it, *jt );
@@ -758,7 +758,7 @@ namespace gum {
           NodeSet _parents = graphe.parents( *it );
 
           for ( auto kt = _parents.begin(), theEnd2 = _parents.end(); kt != theEnd2; ++kt ) {
-            if ( cn->getCurrentNodeType( *it ) == cn->INDIC )
+            if ( cn->currentNodeType( *it ) == CredalNet<GUM_SCALAR>::NodeType::Indic )
               continue;
 
             _msgL( *it, *kt );
@@ -802,7 +802,8 @@ namespace gum {
         }
 
         for ( auto it = seq.begin(), theEnd = seq.end(); it != theEnd; ++it ) {
-          if ( cn->getCurrentNodeType( ( *it )->tail() ) == cn->INDIC || cn->getCurrentNodeType( ( *it )->head() ) == cn->INDIC )
+          if ( cn->currentNodeType( ( *it )->tail() ) == CredalNet<GUM_SCALAR>::NodeType::Indic ||
+               cn->currentNodeType( ( *it )->head() ) == CredalNet<GUM_SCALAR>::NodeType::Indic )
             continue;
 
           _msgP( ( *it )->tail(), ( *it )->head() );
@@ -834,7 +835,8 @@ namespace gum {
 
       do {
         for ( auto it = seq.begin(), theEnd = seq.end(); it != theEnd; ++it ) {
-          if ( cn->getCurrentNodeType( ( *it )->tail() ) == cn->INDIC || cn->getCurrentNodeType( ( *it )->head() ) == cn->INDIC )
+          if ( cn->currentNodeType( ( *it )->tail() ) == CredalNet<GUM_SCALAR>::NodeType::Indic ||
+               cn->currentNodeType( ( *it )->head() ) == CredalNet<GUM_SCALAR>::NodeType::Indic )
             continue;
 
           _msgP( ( *it )->tail(), ( *it )->head() );
@@ -1243,7 +1245,7 @@ namespace gum {
     void CNLoopyPropagation<GUM_SCALAR>::_refreshLMsPIs( bool refreshIndic ) {
       for ( auto itX = bnet->beginNodes(), theEnd = bnet->endNodes(); itX != theEnd; ++itX ) {
 
-        if ( ( ! refreshIndic ) && cn->getCurrentNodeType( *itX ) == cn->INDIC )
+        if ( ( ! refreshIndic ) && cn->currentNodeType( *itX ) == CredalNet<GUM_SCALAR>::NodeType::Indic )
           continue;
 
         NodeSet const& children = bnet->dag().children( *itX );
@@ -1449,7 +1451,7 @@ namespace gum {
     template<typename GUM_SCALAR>
     void CNLoopyPropagation<GUM_SCALAR>::_updateIndicatrices( ) {
       for ( auto id = bnet->beginNodes(), end = bnet->endNodes(); id != end; ++id ) {
-        if ( cn->getCurrentNodeType( *id ) != cn->INDIC )
+        if ( cn->currentNodeType( *id ) != CredalNet<GUM_SCALAR>::NodeType::Indic)
           continue;
 
         auto parents = bnet->dag( ).parents( *id );
@@ -1508,7 +1510,7 @@ namespace gum {
       cn = &cnet;
       bnet = &cnet.current_bn();
 
-      __inferenceType = nodeToNeighbours;
+      __inferenceType = InferenceType::nodeToNeighbours;
       _InferenceUpToDate = false;
 
       GUM_CONSTRUCTOR( CNLoopyPropagation );

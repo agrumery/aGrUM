@@ -843,7 +843,7 @@ namespace gum {
       typename Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes* __credalNet_bin_cpt = new typename Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes();
 
       // delete old one too
-      typename Property< nodeType >::onNodes* __bin_nodeType = new typename Property< nodeType >::onNodes();
+      typename Property< NodeType >::onNodes* __bin_nodeType = new typename Property< NodeType >::onNodes();
 
       const BayesNet< GUM_SCALAR >* __current_bn;
       //const typename Property< nodeType >::onNodes *__current_nodeType;
@@ -1096,7 +1096,7 @@ namespace gum {
 
           __credalNet_bin_cpt->insert( indic, icpt );
 
-          __bin_nodeType->insert( indic, INDIC );
+          __bin_nodeType->insert( indic, NodeType::Indic );
         } // end of each modality, i.e. as many indicatrice
 
       }
@@ -1118,7 +1118,7 @@ namespace gum {
 
       this->__current_nodeType = __bin_nodeType;
 
-      __sort_varType(); // will fill __bin_nodeType except for INDIC variables
+      __sort_varType(); // will fill __bin_nodeType except for NodeType::Indic variables
     }
 
 
@@ -1136,16 +1136,16 @@ namespace gum {
     }
 
     template< typename GUM_SCALAR >
-    typename CredalNet< GUM_SCALAR >::nodeType CredalNet< GUM_SCALAR >::getCurrentNodeType( const NodeId& id ) const {
+    typename CredalNet< GUM_SCALAR >::NodeType CredalNet< GUM_SCALAR >::currentNodeType( const NodeId& id ) const {
       if ( __current_nodeType != nullptr )
         return ( * ( __current_nodeType ) ) [id];
 
-      return __nodeType[id];
+      return __original_nodeType[id];
     }
 
     template< typename GUM_SCALAR >
-    typename CredalNet< GUM_SCALAR >::nodeType CredalNet< GUM_SCALAR >::getNodeType( const NodeId& id ) const {
-      return __nodeType[id];
+    typename CredalNet< GUM_SCALAR >::NodeType CredalNet< GUM_SCALAR >::nodeType( const NodeId& id ) const {
+      return __original_nodeType[id];
     }
 
     template< typename GUM_SCALAR >
@@ -1195,17 +1195,17 @@ namespace gum {
     }
 
     template< typename GUM_SCALAR >
-    const double& CredalNet< GUM_SCALAR >::getEpsilonMin() const {
+    const double& CredalNet< GUM_SCALAR >::epsilonMin() const {
       return __epsilonMin;
     }
 
     template< typename GUM_SCALAR >
-    const double& CredalNet< GUM_SCALAR >::getEpsilonMax() const {
+    const double& CredalNet< GUM_SCALAR >::epsilonMax() const {
       return __epsilonMax;
     }
 
     template< typename GUM_SCALAR >
-    const double& CredalNet< GUM_SCALAR >::getEpsilonMoy() const {
+    const double& CredalNet< GUM_SCALAR >::epsilonMean() const {
       return __epsilonMoy;
     }
 
@@ -1637,7 +1637,7 @@ namespace gum {
 
     template< typename GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::__sort_varType() {
-      typename Property< nodeType >::onNodes* __current_nodeType;
+      typename Property< NodeType >::onNodes* __current_nodeType;
       const typename Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes* __credalNet_current_cpt;
 
       const BayesNet< GUM_SCALAR >* __current_bn;
@@ -1653,7 +1653,7 @@ namespace gum {
         __credalNet_current_cpt = this->__credalNet_current_cpt;
 
       if ( this->__current_nodeType == nullptr )
-        __current_nodeType = & __nodeType;
+        __current_nodeType = & __original_nodeType;
       else
         __current_nodeType = this->__current_nodeType;
 
@@ -1699,16 +1699,16 @@ namespace gum {
             vacuous = false;
 
           if ( vacuous == false && precise == false ) {
-            __current_nodeType->insert( *node_idIt, CREDAL );
+            __current_nodeType->insert( *node_idIt, NodeType::Credal );
             break;
           }
 
         } // end of : for each parents entry
 
         if ( vacuous )
-          __current_nodeType->insert( *node_idIt, VACUOUS );
+          __current_nodeType->insert( *node_idIt, NodeType::Vacuous );
         else if ( precise )
-          __current_nodeType->insert( *node_idIt, PRECISE );
+          __current_nodeType->insert( *node_idIt, NodeType::Precise );
 
       } // end of : for each variable
     }

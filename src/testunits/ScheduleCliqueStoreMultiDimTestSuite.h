@@ -83,7 +83,7 @@ namespace gum_tests {
         store4 = store1;
         TS_ASSERT( store4 == store1 );
 
-        TS_ASSERT( store4.type() == gum::ScheduleOperation<float>::GUM_CLIQUE_STORE_MULTIDIM );
+        TS_ASSERT( store4.type() == gum::ScheduleOperation<float>::Type::CLIQUE_STORE_MULTIDIM );
 
         gum::ScheduleCliqueStoreMultiDim<float>* store5 = store4.newFactory();
         TS_ASSERT( *store5 == store4 );

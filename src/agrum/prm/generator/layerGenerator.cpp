@@ -50,7 +50,7 @@ namespace gum {
 
     std::string
     LayerGenerator::__generateType( PRMFactory& factory ) {
-      std::string name = _name_gen.nextName( PRMObject::prm_type );
+      std::string name = _name_gen.nextName( PRMObject::PRMType::TYPE );
       factory.startDiscreteType( name );
 
       for ( Size i = 0; i < __domain_size; ++i ) {
@@ -67,21 +67,21 @@ namespace gum {
     LayerGenerator::__generateInterfaces( PRMFactory& f, const std::string& type, std::vector<LayerGenerator::MyData>& l ) {
       for ( Size lvl = 0; lvl < __layers.size(); ++lvl ) {
         l.push_back( LayerGenerator::MyData() );
-        l[lvl].i = _name_gen.nextName( PRMObject::prm_interface );
+        l[lvl].i = _name_gen.nextName( PRMObject::PRMType::INTERFACE );
         f.startInterface( l[lvl].i );
 
         for ( Size a = 0; a < __layers[lvl].a; ++a ) {
-          l[lvl].a.push_back( _name_gen.nextName( PRMObject::prm_class_elt ) );
+          l[lvl].a.push_back( _name_gen.nextName( PRMObject::PRMType::CLASS_ELT ) );
           f.addAttribute( type, l[lvl].a.back() );
         }
 
         if ( lvl ) {
           for ( Size g = 0; g < __layers[lvl].g; ++g ) {
-            l[lvl].g.push_back( _name_gen.nextName( PRMObject::prm_class_elt ) );
+            l[lvl].g.push_back( _name_gen.nextName( PRMObject::PRMType::CLASS_ELT ) );
             f.addAttribute( "boolean", l[lvl].g.back() );
           }
 
-          l[lvl].r = _name_gen.nextName( PRMObject::prm_class_elt );
+          l[lvl].r = _name_gen.nextName( PRMObject::PRMType::CLASS_ELT );
           f.addReferenceSlot( l[lvl - 1].i, l[lvl].r, true );
         }
 
@@ -100,7 +100,7 @@ namespace gum {
         i.insert( l[lvl].i );
 
         for ( Size c = 0; c < __layers[lvl].c; ++c ) {
-          l[lvl].c.push_back( _name_gen.nextName( PRMObject::prm_class ) );
+          l[lvl].c.push_back( _name_gen.nextName( PRMObject::PRMType::CLASS ) );
           f.startClass( l[lvl].c.back(), "", &i );
 
           if ( lvl )
@@ -209,7 +209,7 @@ namespace gum {
 
     void
     LayerGenerator::__generateSystem( PRMFactory& factory, std::vector<LayerGenerator::MyData>& l ) {
-      factory.startSystem( _name_gen.nextName( PRMObject::prm_system ) );
+      factory.startSystem( _name_gen.nextName( PRMObject::PRMType::SYSTEM ) );
       std::vector< std::vector<std::string> > o( __layers.size() );
       std::string name;
       size_t idx = 0;
@@ -218,7 +218,7 @@ namespace gum {
         float density = __layers[lvl].outter_density * RAND_MAX;
 
         for ( size_t count = 0; count < __layers[lvl].o; ++count ) {
-          name = _name_gen.nextName( PRMObject::prm_interface );
+          name = _name_gen.nextName( PRMObject::PRMType::INTERFACE );
           factory.addInstance( l[lvl].c[std::rand() % l[lvl].c.size()], name );
           o[lvl].push_back( name );
 
