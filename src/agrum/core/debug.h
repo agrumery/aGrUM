@@ -52,6 +52,10 @@
 #define GUM_CONS_CPY_BASIC(x) {  gum::__debug__::__inc_creation(#x,__FILE__,__LINE__,"copy constructor of",(void*)this,sizeof(x));}
 #define GUM_CONS_CPY(x) GUM_CONS_CPY_BASIC(x)
 
+// FOR EXPANSION OF MACRO IN ARGS OF GUM_CONS_MOV, WE NEED TO USE A 2-LEVEL DEFINITION OF GUM_CONS_MOV
+#define GUM_CONS_MOV_BASIC(x) {  gum::__debug__::__inc_creation(#x,__FILE__,__LINE__,"move constructor of",(void*)this,sizeof(x));}
+#define GUM_CONS_MOV(x) GUM_CONS_MOV_BASIC(x)
+
 // FOR EXPANSION OF MACRO IN ARGS OF GUM_CONSTRUCTOR, WE NEED TO USE A 2-LEVEL DEFINITION OF GUM_CONSTRUCTOR
 #define GUM_OP_CPY_BASIC(x) {  gum::__debug__::__show_trace(#x,__FILE__,__LINE__,"copy operator of",(void *)this); }
 #define GUM_OP_CPY(x) GUM_OP_CPY_BASIC(x)
@@ -63,6 +67,7 @@
 #define GUM_CONSTRUCTOR(x)
 #define GUM_DESTRUCTOR(x)
 #define GUM_CONS_CPY(x)
+#define GUM_CONS_MOV(x)
 #define GUM_OP_CPY(x)
 /////////////////////////////////////////////////////////////
 #endif //NDEBUG

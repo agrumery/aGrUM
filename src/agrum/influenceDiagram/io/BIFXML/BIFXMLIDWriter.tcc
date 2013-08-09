@@ -228,7 +228,7 @@ namespace gum {
       const NodeSet& parentArcs = infdiag.dag().parents( varNodeId );
 
       for ( NodeSet::const_iterator parentIter = parentArcs.begin(); parentIter !=  parentArcs.end(); ++ parentIter )
-        parentList.push_back( infdiag.variable( *parentIter ).name() );
+        parentList.pushBack( infdiag.variable( *parentIter ).name() );
 
       for ( List< std::string >::iterator parentListIte = parentList.rbegin();
             parentListIte != parentList.rend();

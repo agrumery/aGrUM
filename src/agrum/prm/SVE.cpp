@@ -374,9 +374,9 @@ SVE::__initLiftedNodes(const Class& c)
   ClassBayesNet bn(c);
   List<NodeSet> partial_ordering;
   if (inners.size())
-    partial_ordering.push_back(inners);
+    partial_ordering.pushBack(inners);
   if (outers.size())
-    partial_ordering.push_back(outers);
+    partial_ordering.pushBack(outers);
   PartialOrderedTriangulation t(&(bn.moralGraph()), &(bn.modalities()), &partial_ordering);
   for (size_t idx = 0; idx < inners.size(); ++idx)
     eliminateNode(&(c.get(t.eliminationOrder()[idx]).type().variable()), *lifted_pool, __lifted_trash);

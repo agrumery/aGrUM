@@ -514,12 +514,12 @@ namespace gum {
               // Filling up the partial ordering
               List<NodeSet> partial_order;
               if (data->inners().size())
-                partial_order.push_back(data->inners());
+                partial_order.pushBack(data->inners());
               if (data->aggregators().size())
                 for (NodeSet::iterator node = data->aggregators().begin(); node != data->aggregators().end(); ++node)
                   partial_order[0].insert(*node);
               if (data->outputs().size())
-                partial_order.push_back(data->outputs());
+                partial_order.pushBack(data->outputs());
               if (__query.first == inst) {
                 // First case, the instance contains the query
                 partial_order[0].erase(__query.second->id());
@@ -656,7 +656,7 @@ namespace gum {
     {
       GUM_CONSTRUCTOR(StructuredInference::PData);
       for (int i = 0; i < 4; ++i)
-        __partial_order.push_front(NodeSet());
+        __partial_order.pushFront(NodeSet());
     }
 
     StructuredInference::PData::PData(const StructuredInference::PData& source):
