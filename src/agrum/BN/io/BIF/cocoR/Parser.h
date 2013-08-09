@@ -49,107 +49,104 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include "Scanner.h"
 
 namespace gum {
-  namespace BIF {
+namespace BIF {
 
 
 
-    class Parser {
-      private:
-        enum {
-          _EOF=0,
-          _ident=1,
-          _integer=2,
-          _number=3,
-          _string=4,
-          _largestring=5
-        };
-        int maxT;
+class Parser {
+  private:
+    	enum {
+		_EOF=0,
+		_ident=1,
+		_integer=2,
+		_number=3,
+		_string=4,
+		_largestring=5
+	};
+	int maxT;
 
-        Token* dummyToken;
-        int errDist;
-        int minErrDist;
+    Token* dummyToken;
+    int errDist;
+    int minErrDist;
 
-        void SynErr( int n );
-        void Get();
-        void Expect( int n );
-        bool StartOf( int s );
-        void ExpectWeak( int n, int follow );
-        bool WeakSeparator( int n, int syFol, int repFol );
+    void SynErr( int n );
+    void Get();
+    void Expect( int n );
+    bool StartOf( int s );
+    void ExpectWeak( int n, int follow );
+    bool WeakSeparator( int n, int syFol, int repFol );
 
-        ErrorsContainer  __errors;
+    ErrorsContainer  __errors;
 
-      public:
-        Scanner* scanner;
+  public:
+    Scanner* scanner;
 
-        Token* t;     // last recognized token
-        Token* la;      // lookahead token
+    Token* t;     // last recognized token
+    Token* la;      // lookahead token
 
-        gum::AbstractBayesNetFactory* __factory;
+    gum::AbstractBayesNetFactory* __factory;
 
-        void setFactory( gum::AbstractBayesNetFactory* f ) {
-          __factory=f;
-        }
+void setFactory(gum::AbstractBayesNetFactory* f) {
+  __factory=f;
+}
 
-        gum::AbstractBayesNetFactory& factory( void ) {
-          if ( __factory ) return *__factory;
+gum::AbstractBayesNetFactory& factory(void) {
+  if (__factory) return *__factory;
+  GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning BIF file...");
+}
 
-          GUM_ERROR( gum::OperationNotAllowed,"Please set a factory for scanning BIF file..." );
-        }
+void SemErr(std::string s) {
+  SemErr(widen(s).c_str());
+}
 
-        void SemErr( std::string s ) {
-          SemErr( widen( s ).c_str() );
-        }
+void Warning(std::string s) {
+  Warning(widen("Warning : "+s).c_str());
+}
 
-        void Warning( std::string s ) {
-          Warning( widen( "Warning : "+s ).c_str() );
-        }
-
-        void __checkSizeOfProbabilityAssignation( const std::vector<float>& v,const std::string& var ) {
-          gum::Size s=( gum::Size )0;
-          TRY( s=factory().varInBN( factory().variableId( var ) ).domainSize() );
-
-          if ( v.size()<s )
-            Warning( "Not enough data in probability assignation for node "+var );
-
-          if ( v.size()>s )
-            Warning( "Too many data in probability assignation for node "+var );
-        }
+void __checkSizeOfProbabilityAssignation(const std::vector<float>&v,const std::string& var) {
+  gum::Size s=(gum::Size)0;
+  TRY(s=factory().varInBN(factory().variableId(var)).domainSize());
+  if (v.size()<s)
+    Warning("Not enough data in probability assignation for node "+var);
+  if (v.size()>s)
+    Warning("Too many data in probability assignation for node "+var);
+}
 
 
 
 //=====================
 
-        Parser( Scanner* scanner );
-        ~Parser();
-        void SemErr( const wchar_t* msg );
-        void SynErr( const std::wstring& filename,int line, int col, int n );
-        void Warning( const wchar_t* msg );
-        const ErrorsContainer& errors() const;
+    Parser( Scanner* scanner );
+    ~Parser();
+    void SemErr( const wchar_t* msg );
+    void SynErr( const std::wstring& filename,int line, int col, int n );
+    void Warning( const wchar_t* msg );
+    const ErrorsContainer& errors() const;
 
-        void BIF();
-        void NETWORK();
-        void VARIABLE();
-        void PROBA();
-        void IDENT( std::string& name );
-        void STRING( std::string& str );
-        void PROPERTY();
-        void LABELIZE_VAR( int& nbrMod );
-        void NBR( int& val );
-        void MODALITY_LIST();
-        void IDENT_OR_INTEGER( std::string& name );
-        void LISTE_PARENTS( std::vector<std::string>& parents );
-        void RAW_PROBA( std::vector<float>& v );
-        void FACTORIZED_PROBA( std::string& var,const std::vector<std::string>& parents );
-        void LISTE_FLOAT( std::vector<float>& v );
-        void ASSIGNATION( const std::string& var,const std::vector<std::string>& parents,bool is_first );
-        void LISTE_LABELS( const std::vector<std::string>& parents,std::vector<std::string>& labels, unsigned int num_label );
-        void FLOAT( float& val );
+    	void BIF();
+	void NETWORK();
+	void VARIABLE();
+	void PROBA();
+	void IDENT(std::string& name);
+	void STRING(std::string& str);
+	void PROPERTY();
+	void LABELIZE_VAR(int& nbrMod);
+	void NBR(int& val);
+	void MODALITY_LIST();
+	void IDENT_OR_INTEGER(std::string& name);
+	void LISTE_PARENTS(std::vector<std::string>& parents );
+	void RAW_PROBA(std::vector<float>& v );
+	void FACTORIZED_PROBA(std::string& var,const std::vector<std::string>& parents );
+	void LISTE_FLOAT(std::vector<float>& v );
+	void ASSIGNATION(const std::string& var,const std::vector<std::string>& parents,bool is_first );
+	void LISTE_LABELS(const std::vector<std::string>& parents,std::vector<std::string>& labels, unsigned int num_label );
+	void FLOAT(float& val);
 
-        void Parse();
+    void Parse();
 
-    }; // end Parser
+}; // end Parser
 
-  } // namespace
+} // namespace
 } // namespace
 
 
