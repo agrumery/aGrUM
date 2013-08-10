@@ -100,6 +100,7 @@ namespace gum {
       __deletion() [zeKey]++;
     }
 
+
     void __dumpObjects ( void ) {
       unsigned int nb_err=0;
       int total_size=0;
@@ -154,7 +155,7 @@ namespace gum {
         }
       }
 
-      sort ( res.begin(),res.end() );
+      //sort ( res.begin(),res.end() );
 
       for ( std::vector<std::string>::const_iterator iter=res.begin();
             iter!=res.end();

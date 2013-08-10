@@ -59,6 +59,9 @@
 // FOR EXPANSION OF MACRO IN ARGS OF GUM_CONSTRUCTOR, WE NEED TO USE A 2-LEVEL DEFINITION OF GUM_CONSTRUCTOR
 #define GUM_OP_CPY_BASIC(x) {  gum::__debug__::__show_trace(#x,__FILE__,__LINE__,"copy operator of",(void *)this); }
 #define GUM_OP_CPY(x) GUM_OP_CPY_BASIC(x)
+// FOR EXPANSION OF MACRO IN ARGS OF GUM_CONSTRUCTOR, WE NEED TO USE A 2-LEVEL DEFINITION OF GUM_CONSTRUCTOR
+#define GUM_OP_MOV_BASIC(x) {  gum::__debug__::__show_trace(#x,__FILE__,__LINE__,"move operator of",(void *)this); }
+#define GUM_OP_MOV(x) GUM_OP_MOV_BASIC(x)
 /////////////////////////////////////////////////////////////
 #else //NDEBUG
 /////////////////////////////////////////////////////////////
@@ -69,6 +72,7 @@
 #define GUM_CONS_CPY(x)
 #define GUM_CONS_MOV(x)
 #define GUM_OP_CPY(x)
+#define GUM_OP_MOV(x)
 /////////////////////////////////////////////////////////////
 #endif //NDEBUG
 

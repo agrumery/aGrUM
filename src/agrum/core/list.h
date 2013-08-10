@@ -352,7 +352,7 @@ namespace gum {
     using reference       = Val&;
     using const_reference = const Val&;
     using pointer         = Val*;
-    using const_pointer   = Val*;
+    using const_pointer   = const Val*;
     using size_type       = std::size_t;
     using difference_type = std::ptrdiff_t;
     using allocator_type  = Alloc;
@@ -365,7 +365,6 @@ namespace gum {
 
     /// type of the allocator for ListBuckets
     /// @{
-    using ValueAllocator = Alloc;
     using BucketAllocator =
       typename Alloc::template rebind<ListBucket<Val>>::other;
     /// @}
@@ -517,6 +516,11 @@ namespace gum {
     /// pushFront for rvalues
     Val& pushFront ( Val&& val );
 
+    /// an alias for pushFront used for STL compliance
+    /** defining push_front allows using, for instance, FrontInserters */
+    template <typename... Args>
+    Val& push_front ( Args&&... args );
+
     /// emplace elements at the beginning of the chained list
     /** emplace is a method that allows to construct directly an element of
      * type Val by passing to its constructor all the arguments it needs
@@ -535,6 +539,11 @@ namespace gum {
 
     /// pushBack for rvalues
     Val& pushBack ( Val&& val );
+
+    /// an alias for pushBack used for STL compliance
+    /** defining push_back allows using, for instance, BackInserters */
+    template <typename... Args>
+    Val& push_back ( Args&&... args );
 
     /// emplace elements at the end of the chained list
     /** emplace is a method that allows to construct directly an element of
@@ -865,12 +874,6 @@ namespace gum {
     friend class ListConstIterator<Val>;
     friend class ListConstIteratorUnsafe<Val>;
 
-#ifndef SWIG // SWIG cannot read these lines
-    /// for friendly displaying the content of a list
-    friend std::ostream& operator<< <>
-    ( std::ostream& stream, const List<Val>& list );
-#endif // SWIG
-
   };
 
 
@@ -1001,11 +1004,7 @@ namespace gum {
     ListConstIteratorUnsafe<Val>&
     operator= ( const ListConstIteratorUnsafe<Val>& src ) noexcept;
     ListConstIteratorUnsafe<Val>&
-    operator= ( const ListIteratorUnsafe<Val>& src ) noexcept;
-    ListConstIteratorUnsafe<Val>&
     operator= ( const ListConstIterator<Val>& src ) noexcept;
-    ListConstIteratorUnsafe<Val>&
-    operator= ( const ListIterator<Val>& src ) noexcept;
     /// @}
 
     /// move operator
