@@ -80,7 +80,25 @@
 #include <agrum/CN/CNLoopyPropagation.h>
 %}
 
+
+%typemap(out) std::vector<double> {
+    std::vector<double> vOut = $1;
+    int iLen = vOut.size();
+    $result = PyList_New(iLen);
+    for(unsigned int i = 0; i < iLen; i++) {
+        double fVal = vOut.at(i);
+        PyObject *o = PyFloat_FromDouble((double) fVal);
+        PyList_SetItem($result, i, o);
+    }
+}
+
 %include "std_vector.i"
+
+namespace std {
+%template(Vector_double) vector<double>;
+}
+
+
 %include "std_string.i"
 
 /* DIRECTORS (for cross language polymorphism) */
@@ -118,6 +136,7 @@
 %include <agrum/core/exceptions.h>
 %include <agrum/core/sequence.h>
 %include <agrum/core/set.h>
+%include <agrum/core/utils_random.h>
 
 %include <agrum/core/OMPThreads.h>
 
@@ -377,12 +396,12 @@
 
 /* TEMPLATES INSTANTIATIONS */
 
+%template(randomDistribution) gum::randomDistribution<double>;
 %template(Sequence_node) gum::Sequence<gum::NodeId>;
 %template(Sequence_string) gum::Sequence<std::string>;
 
 %template(DiscretizedVar) gum::DiscretizedVariable<float>;
 
-%template(Vector_double) std::vector<double>;
 
 %template(MultiDimContainer_double) gum::MultiDimContainer<double>;
 %template(MultiDimImplementation_double) gum::MultiDimImplementation<double>;

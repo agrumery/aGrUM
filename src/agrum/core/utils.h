@@ -36,8 +36,11 @@
 #define GUM_CAST static_cast
 #endif
 
+#include <agrum/config.h>
+
 #include <agrum/core/utils_dir.h>
 #include <agrum/core/utils_string.h>
+#include <agrum/core/utils_random.h>
 
 namespace std {
 
@@ -65,17 +68,6 @@ namespace gum {
   /// for debug purpose
   void __atexit( void );
 
-  /// returns a random number between 0 and 1 included (i.e. a proba)
-  double randomProba();
-
-  /// return a random discrete distribution
-  /// @param n is the number of modalities for the ditribution
-  template<typename GUM_SCALAR>
-  std::vector<GUM_SCALAR> randomDistribution(Size n);
-
-  /// initialize random generator seed
-  void initRandom(unsigned int init=0);
-
   /// indicate whether two elements are (almost) different or not
   template <typename T>
   struct AlmostDifferent {
@@ -94,11 +86,6 @@ namespace gum {
 
 
 } /* namespace gum */
-
-
-#ifndef GUM_NO_INLINE
-#include <agrum/core/utils.inl>
-#endif // GUM_NO_INLINE
 
 
 #include <agrum/core/utils.tcc>

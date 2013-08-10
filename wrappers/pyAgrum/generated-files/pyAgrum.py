@@ -293,6 +293,171 @@ def generateBN(n_nodes = 10, n_arcs = 15, n_modmax = 4):
     """
   return _pyAgrum.generateBN(n_nodes, n_arcs, n_modmax)
 
+class Vector_double(_object):
+    """Proxy of C++ std::vector<(double)> class"""
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Vector_double, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Vector_double, name)
+    __repr__ = _swig_repr
+    def iterator(self):
+        """iterator(self) -> SwigPyIterator"""
+        return _pyAgrum.Vector_double_iterator(self)
+
+    def __iter__(self): return self.iterator()
+    def __nonzero__(self):
+        """__nonzero__(self) -> bool"""
+        return _pyAgrum.Vector_double___nonzero__(self)
+
+    def __bool__(self):
+        """__bool__(self) -> bool"""
+        return _pyAgrum.Vector_double___bool__(self)
+
+    def __len__(self):
+        """__len__(self) -> size_type"""
+        return _pyAgrum.Vector_double___len__(self)
+
+    def pop(self):
+        """pop(self) -> value_type"""
+        return _pyAgrum.Vector_double_pop(self)
+
+    def __getslice__(self, *args):
+        """__getslice__(self, difference_type i, difference_type j) -> Vector_double"""
+        return _pyAgrum.Vector_double___getslice__(self, *args)
+
+    def __setslice__(self, *args):
+        """__setslice__(self, difference_type i, difference_type j, Vector_double v)"""
+        return _pyAgrum.Vector_double___setslice__(self, *args)
+
+    def __delslice__(self, *args):
+        """__delslice__(self, difference_type i, difference_type j)"""
+        return _pyAgrum.Vector_double___delslice__(self, *args)
+
+    def __delitem__(self, *args):
+        """
+        __delitem__(self, difference_type i)
+        __delitem__(self, PySliceObject slice)
+        """
+        return _pyAgrum.Vector_double___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        """
+        __getitem__(self, PySliceObject slice) -> Vector_double
+        __getitem__(self, difference_type i) -> value_type
+        """
+        return _pyAgrum.Vector_double___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        """
+        __setitem__(self, PySliceObject slice, Vector_double v)
+        __setitem__(self, difference_type i, value_type x)
+        """
+        return _pyAgrum.Vector_double___setitem__(self, *args)
+
+    def append(self, *args):
+        """append(self, value_type x)"""
+        return _pyAgrum.Vector_double_append(self, *args)
+
+    def empty(self):
+        """empty(self) -> bool"""
+        return _pyAgrum.Vector_double_empty(self)
+
+    def size(self):
+        """size(self) -> size_type"""
+        return _pyAgrum.Vector_double_size(self)
+
+    def clear(self):
+        """clear(self)"""
+        return _pyAgrum.Vector_double_clear(self)
+
+    def swap(self, *args):
+        """swap(self, Vector_double v)"""
+        return _pyAgrum.Vector_double_swap(self, *args)
+
+    def get_allocator(self):
+        """get_allocator(self) -> allocator_type"""
+        return _pyAgrum.Vector_double_get_allocator(self)
+
+    def begin(self):
+        """begin(self) -> const_iterator"""
+        return _pyAgrum.Vector_double_begin(self)
+
+    def end(self):
+        """end(self) -> const_iterator"""
+        return _pyAgrum.Vector_double_end(self)
+
+    def rbegin(self):
+        """rbegin(self) -> const_reverse_iterator"""
+        return _pyAgrum.Vector_double_rbegin(self)
+
+    def rend(self):
+        """rend(self) -> const_reverse_iterator"""
+        return _pyAgrum.Vector_double_rend(self)
+
+    def pop_back(self):
+        """pop_back(self)"""
+        return _pyAgrum.Vector_double_pop_back(self)
+
+    def erase(self, *args):
+        """
+        erase(self, iterator pos) -> iterator
+        erase(self, iterator first, iterator last) -> iterator
+        """
+        return _pyAgrum.Vector_double_erase(self, *args)
+
+    def __init__(self, *args): 
+        """
+        __init__(self) -> Vector_double
+        __init__(self, Vector_double arg0) -> Vector_double
+        __init__(self, size_type size) -> Vector_double
+        __init__(self, size_type size, value_type value) -> Vector_double
+        """
+        this = _pyAgrum.new_Vector_double(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    def push_back(self, *args):
+        """push_back(self, value_type x)"""
+        return _pyAgrum.Vector_double_push_back(self, *args)
+
+    def front(self):
+        """front(self) -> value_type"""
+        return _pyAgrum.Vector_double_front(self)
+
+    def back(self):
+        """back(self) -> value_type"""
+        return _pyAgrum.Vector_double_back(self)
+
+    def assign(self, *args):
+        """assign(self, size_type n, value_type x)"""
+        return _pyAgrum.Vector_double_assign(self, *args)
+
+    def resize(self, *args):
+        """
+        resize(self, size_type new_size)
+        resize(self, size_type new_size, value_type x)
+        """
+        return _pyAgrum.Vector_double_resize(self, *args)
+
+    def insert(self, *args):
+        """
+        insert(self, iterator pos, value_type x) -> iterator
+        insert(self, iterator pos, size_type n, value_type x)
+        """
+        return _pyAgrum.Vector_double_insert(self, *args)
+
+    def reserve(self, *args):
+        """reserve(self, size_type n)"""
+        return _pyAgrum.Vector_double_reserve(self, *args)
+
+    def capacity(self):
+        """capacity(self) -> size_type"""
+        return _pyAgrum.Vector_double_capacity(self)
+
+    __swig_destroy__ = _pyAgrum.delete_Vector_double
+    __del__ = lambda self : None;
+Vector_double_swigregister = _pyAgrum.Vector_double_swigregister
+Vector_double_swigregister(Vector_double)
+
 GUM_MAJOR_VERSION = _pyAgrum.GUM_MAJOR_VERSION
 GUM_MINOR_VERSION = _pyAgrum.GUM_MINOR_VERSION
 GUM_PATCH_VERSION = _pyAgrum.GUM_PATCH_VERSION
@@ -1227,6 +1392,10 @@ SetIteratorStaticEnd_swigregister = _pyAgrum.SetIteratorStaticEnd_swigregister
 SetIteratorStaticEnd_swigregister(SetIteratorStaticEnd)
 
 
+def randomProba():
+  """randomProba() -> double"""
+  return _pyAgrum.randomProba()
+
 def isOMP():
   """isOMP() -> bool"""
   return _pyAgrum.isOMP()
@@ -1306,6 +1475,13 @@ class Variable(_object):
 
 Variable_swigregister = _pyAgrum.Variable_swigregister
 Variable_swigregister(Variable)
+
+def initRandom(init = 0):
+  """
+    initRandom(unsigned int init = 0)
+    initRandom()
+    """
+  return _pyAgrum.initRandom(init)
 
 class DiscreteVar(Variable):
     """Proxy of C++ gum::DiscreteVariable class"""
@@ -2095,6 +2271,10 @@ DAGmodel_swigregister(DAGmodel)
 cvar = _pyAgrum.cvar
 __list_end = cvar.__list_end
 
+
+def randomDistribution(*args):
+  """randomDistribution(Size n) -> Vector_double"""
+  return _pyAgrum.randomDistribution(*args)
 class Sequence_node(_object):
     """Proxy of C++ gum::Sequence<(gum::NodeId)> class"""
     __swig_setmethods__ = {}
@@ -2377,171 +2557,6 @@ class DiscretizedVar(DiscreteVar):
         return weakref_proxy(self)
 DiscretizedVar_swigregister = _pyAgrum.DiscretizedVar_swigregister
 DiscretizedVar_swigregister(DiscretizedVar)
-
-class Vector_double(_object):
-    """Proxy of C++ std::vector<(double)> class"""
-    __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, Vector_double, name, value)
-    __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, Vector_double, name)
-    __repr__ = _swig_repr
-    def iterator(self):
-        """iterator(self) -> SwigPyIterator"""
-        return _pyAgrum.Vector_double_iterator(self)
-
-    def __iter__(self): return self.iterator()
-    def __nonzero__(self):
-        """__nonzero__(self) -> bool"""
-        return _pyAgrum.Vector_double___nonzero__(self)
-
-    def __bool__(self):
-        """__bool__(self) -> bool"""
-        return _pyAgrum.Vector_double___bool__(self)
-
-    def __len__(self):
-        """__len__(self) -> size_type"""
-        return _pyAgrum.Vector_double___len__(self)
-
-    def pop(self):
-        """pop(self) -> value_type"""
-        return _pyAgrum.Vector_double_pop(self)
-
-    def __getslice__(self, *args):
-        """__getslice__(self, difference_type i, difference_type j) -> Vector_double"""
-        return _pyAgrum.Vector_double___getslice__(self, *args)
-
-    def __setslice__(self, *args):
-        """__setslice__(self, difference_type i, difference_type j, Vector_double v)"""
-        return _pyAgrum.Vector_double___setslice__(self, *args)
-
-    def __delslice__(self, *args):
-        """__delslice__(self, difference_type i, difference_type j)"""
-        return _pyAgrum.Vector_double___delslice__(self, *args)
-
-    def __delitem__(self, *args):
-        """
-        __delitem__(self, difference_type i)
-        __delitem__(self, PySliceObject slice)
-        """
-        return _pyAgrum.Vector_double___delitem__(self, *args)
-
-    def __getitem__(self, *args):
-        """
-        __getitem__(self, PySliceObject slice) -> Vector_double
-        __getitem__(self, difference_type i) -> value_type
-        """
-        return _pyAgrum.Vector_double___getitem__(self, *args)
-
-    def __setitem__(self, *args):
-        """
-        __setitem__(self, PySliceObject slice, Vector_double v)
-        __setitem__(self, difference_type i, value_type x)
-        """
-        return _pyAgrum.Vector_double___setitem__(self, *args)
-
-    def append(self, *args):
-        """append(self, value_type x)"""
-        return _pyAgrum.Vector_double_append(self, *args)
-
-    def empty(self):
-        """empty(self) -> bool"""
-        return _pyAgrum.Vector_double_empty(self)
-
-    def size(self):
-        """size(self) -> size_type"""
-        return _pyAgrum.Vector_double_size(self)
-
-    def clear(self):
-        """clear(self)"""
-        return _pyAgrum.Vector_double_clear(self)
-
-    def swap(self, *args):
-        """swap(self, Vector_double v)"""
-        return _pyAgrum.Vector_double_swap(self, *args)
-
-    def get_allocator(self):
-        """get_allocator(self) -> allocator_type"""
-        return _pyAgrum.Vector_double_get_allocator(self)
-
-    def begin(self):
-        """begin(self) -> const_iterator"""
-        return _pyAgrum.Vector_double_begin(self)
-
-    def end(self):
-        """end(self) -> const_iterator"""
-        return _pyAgrum.Vector_double_end(self)
-
-    def rbegin(self):
-        """rbegin(self) -> const_reverse_iterator"""
-        return _pyAgrum.Vector_double_rbegin(self)
-
-    def rend(self):
-        """rend(self) -> const_reverse_iterator"""
-        return _pyAgrum.Vector_double_rend(self)
-
-    def pop_back(self):
-        """pop_back(self)"""
-        return _pyAgrum.Vector_double_pop_back(self)
-
-    def erase(self, *args):
-        """
-        erase(self, iterator pos) -> iterator
-        erase(self, iterator first, iterator last) -> iterator
-        """
-        return _pyAgrum.Vector_double_erase(self, *args)
-
-    def __init__(self, *args): 
-        """
-        __init__(self) -> Vector_double
-        __init__(self, Vector_double arg0) -> Vector_double
-        __init__(self, size_type size) -> Vector_double
-        __init__(self, size_type size, value_type value) -> Vector_double
-        """
-        this = _pyAgrum.new_Vector_double(*args)
-        try: self.this.append(this)
-        except: self.this = this
-    def push_back(self, *args):
-        """push_back(self, value_type x)"""
-        return _pyAgrum.Vector_double_push_back(self, *args)
-
-    def front(self):
-        """front(self) -> value_type"""
-        return _pyAgrum.Vector_double_front(self)
-
-    def back(self):
-        """back(self) -> value_type"""
-        return _pyAgrum.Vector_double_back(self)
-
-    def assign(self, *args):
-        """assign(self, size_type n, value_type x)"""
-        return _pyAgrum.Vector_double_assign(self, *args)
-
-    def resize(self, *args):
-        """
-        resize(self, size_type new_size)
-        resize(self, size_type new_size, value_type x)
-        """
-        return _pyAgrum.Vector_double_resize(self, *args)
-
-    def insert(self, *args):
-        """
-        insert(self, iterator pos, value_type x) -> iterator
-        insert(self, iterator pos, size_type n, value_type x)
-        """
-        return _pyAgrum.Vector_double_insert(self, *args)
-
-    def reserve(self, *args):
-        """reserve(self, size_type n)"""
-        return _pyAgrum.Vector_double_reserve(self, *args)
-
-    def capacity(self):
-        """capacity(self) -> size_type"""
-        return _pyAgrum.Vector_double_capacity(self)
-
-    __swig_destroy__ = _pyAgrum.delete_Vector_double
-    __del__ = lambda self : None;
-Vector_double_swigregister = _pyAgrum.Vector_double_swigregister
-Vector_double_swigregister(Vector_double)
 
 class MultiDimContainer_double(_object):
     """Proxy of C++ gum::MultiDimContainer<(double)> class"""

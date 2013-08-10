@@ -19,7 +19,6 @@
  ***************************************************************************/
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-//#include <agrum/BN/io/BIF/cocoR/SyntaxBIF.atg>
 
 #include <vector>
 #include <numeric>
@@ -52,34 +51,5 @@ namespace std {
 
 
 } /* namespace std */
-namespace gum {
-
-  /// return a random discrete distribution
-  /// @param n is the number of modalities for the ditribution
-  template<typename GUM_SCALAR>
-  std::vector<GUM_SCALAR> randomDistribution( Size n ) {
-    if ( n<2 ) n=2;
-
-    std::vector<GUM_SCALAR> v( n );
-    GUM_SCALAR s;
-
-    do {
-      for ( Idx i=0; i<n; i++ ) {
-        v[i]=( GUM_SCALAR )randomProba();
-      }
-
-      s=std::accumulate( v.begin(),v.end(),( GUM_SCALAR )0.0 );
-
-    } while ( s<( GUM_SCALAR )( 1e-5 ) );
-
-    for ( Idx i=0; i<n; i++ ) {
-      v[i]/=s;
-    }
-
-    return v;
-  }
-
-}
-
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
