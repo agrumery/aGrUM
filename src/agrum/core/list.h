@@ -156,11 +156,19 @@ namespace gum {
    * @warning Values stored in buckets are ALWAYS COPIES. */
   /* =========================================================================== */
   template <typename Val> class ListBucket {
+  private:
+    /// a dummy type for the emplace constructor
+    /** this type is used to prevent the list emplace (int) to compile */
+    enum class Emplace { EMPLACE };
+
   public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     ///@{
+
+    /// remove empty constructor
+    ListBucket () = delete;
     
     /// default constructor
     explicit ListBucket ( const Val& v );
@@ -170,7 +178,7 @@ namespace gum {
 
     /// emplace (universal) constructor
     template <typename... Args>
-    explicit ListBucket ( bool, Args&&... args);
+    explicit ListBucket ( Emplace, Args&&... args);
 
     /// copy constructor
     ListBucket ( const ListBucket<Val>& src );
@@ -244,6 +252,7 @@ namespace gum {
     
     /// val is the value contained in the box.
     Val __val;
+
   };
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
@@ -606,17 +615,6 @@ namespace gum {
     Val& insert ( const const_iterator_unsafe& iter, Val&& val,
                   location place = location::BEFORE );
 
-    /// emplace a new element at the ith pos of the chained list
-    /** emplace is a method that allows to construct directly an element of
-     * type Val by passing to its constructor all the arguments it needs.
-     * The first element of the list is at pos 0. After the insert, the element
-     * is placed precisely at pos if pos is less than the size of the list
-     * before insertion, else it is inserted at the end of the list.
-     * @param args the arguments passed to the constructor
-     * @return a reference on the copy inserted into the list */
-    template <typename... Args>
-    Val& emplace ( unsigned int pos, Args&&... args);
-    
     /// emplace a new element before a given iterator
     /** emplace is a method that allows to construct directly an element of
      * type Val by passing to its constructor all the arguments it needs.
@@ -707,6 +705,9 @@ namespace gum {
 
     /// returns a boolean indicating whether the chained list is empty
     bool empty() const noexcept;
+
+    /// swap the current list with another one
+    void swap ( List& other_list );
     
     /// converts a list into a string
     std::string toString() const;
@@ -1015,17 +1016,21 @@ namespace gum {
     /** for (iter=begin(); iter!=end(); ++iter) loops are guaranteed to parse
      * the whole List as long as no element is added to or deleted from the List
      * while being in the loop. Runs in constant time.
-     * @throw UndefinedIteratorValue if the iterator points to nothing
      */
     ListConstIteratorUnsafe<Val>& operator++() noexcept;
 
+    /// makes the iterator point to i elements further in the List
+    ListConstIteratorUnsafe<Val>& operator+= ( unsigned int ) noexcept;
+    
     /// makes the iterator point to the preceding element in the List
     /** for (iter=rbegin(); iter!=rend(); --iter) loops are guaranteed to
      * parse the whole List as long as no element is added to or deleted from
      * the List while being in the loop. Runs in constant time.
-     * @throw UndefinedIteratorValue if the iterator points to nothing
      */
     ListConstIteratorUnsafe<Val>& operator--() noexcept;
+
+    /// makes the iterator point to i elements befor in the List
+    ListConstIteratorUnsafe<Val>& operator-= ( unsigned int ) noexcept;
 
     /// checks whether two iterators point toward different elements
     /** @warning the end and rend iterators are always equal, whatever the list
@@ -1145,14 +1150,20 @@ namespace gum {
      * the whole List as long as no element is added to or deleted from the List
      * while being in the loop. Deleting elements during the loop is guaranteed
      * to never produce a segmentation fault. Runs in constant time. */
-    ListIteratorUnsafe<Val>& operator++() ;
+    ListIteratorUnsafe<Val>& operator++() noexcept;
+
+    /// makes the iterator point to i elements further in the List
+    ListIteratorUnsafe<Val>& operator+= ( unsigned int ) noexcept;
 
     /// makes the iterator point to the preceding element in the List
     /** for (iter=rbegin(); iter!=rend(); --iter) loops are guaranteed to
      * parse the whole List as long as no element is added to or deleted from
      * the List while being in the loop. Deleting elements during the loop is
      * guaranteed to never produce a segmentation fault. Runs in constant time. */
-    ListIteratorUnsafe<Val>& operator--() ;
+    ListIteratorUnsafe<Val>& operator--() noexcept;
+
+    /// makes the iterator point to i elements befor in the List
+    ListIteratorUnsafe<Val>& operator-= ( unsigned int ) noexcept;
 
     using typename ListConstIteratorUnsafe<Val>::operator==;
     using typename ListConstIteratorUnsafe<Val>::operator!=;
@@ -1255,14 +1266,20 @@ namespace gum {
      * the whole List as long as no element is added to or deleted from the List
      * while being in the loop. Deleting elements during the loop is guaranteed
      * to never produce a segmentation fault. Runs in constant time. */
-    ListConstIterator<Val>& operator++();
+    ListConstIterator<Val>& operator++() noexcept;
+
+    /// makes the iterator point to i elements further in the List
+    ListConstIterator<Val>& operator+= ( unsigned int ) noexcept;
 
     /// makes the iterator point to the preceding element in the List
     /** for (iter=rbegin(); iter!=rend(); --iter) loops are guaranteed to
      * parse the whole List as long as no element is added to or deleted from
      * the List while being in the loop. Deleting elements during the loop is
      * guaranteed to never produce a segmentation fault. Runs in constant time. */
-    ListConstIterator<Val>& operator--();
+    ListConstIterator<Val>& operator--() noexcept;
+
+    /// makes the iterator point to i elements befor in the List
+    ListConstIterator<Val>& operator-= ( unsigned int ) noexcept;
 
     /// checks whether two iterators point toward different elements
     /** @warning the end and rend iterators are always equal, whatever the list
@@ -1430,14 +1447,20 @@ namespace gum {
      * the whole List as long as no element is added to or deleted from the List
      * while being in the loop. Deleting elements during the loop is guaranteed
      * to never produce a segmentation fault. Runs in constant time. */
-    ListIterator<Val>& operator++();
+    ListIterator<Val>& operator++() noexcept;
+
+    /// makes the iterator point to i elements further in the List
+    ListIterator<Val>& operator+= ( unsigned int ) noexcept;
 
     /// makes the iterator point to the preceding element in the List
     /** for (iter=rbegin(); iter!=rend(); --iter) loops are guaranteed to
      * parse the whole List as long as no element is added to or deleted from
      * the List while being in the loop. Deleting elements during the loop is
      * guaranteed to never produce a segmentation fault. Runs in constant time. */
-    ListIterator<Val>& operator--();
+    ListIterator<Val>& operator--() noexcept;
+
+    /// makes the iterator point to i elements befor in the List
+    ListIterator<Val>& operator-= ( unsigned int ) noexcept;
 
     using typename ListConstIterator<Val>::operator!=;
     using typename ListConstIterator<Val>::operator==;

@@ -59,7 +59,7 @@ namespace gum {
   /// emplace constructor
   template <typename Val>
   template <typename... Args> INLINE
-  ListBucket<Val>::ListBucket ( bool, Args&&... args ) :
+  ListBucket<Val>::ListBucket ( ListBucket<Val>::Emplace, Args&&... args ) :
     __val ( std::forward<Args>(args)... ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( ListBucket );
@@ -318,6 +318,15 @@ namespace gum {
     return *this;
   }
 
+  
+  /// makes the iterator point to the next element in the List
+  template <typename Val> INLINE
+  ListConstIteratorUnsafe<Val>&
+  ListConstIteratorUnsafe<Val>::operator+= ( unsigned int i ) noexcept {
+    for ( ; i && ( __bucket != nullptr ) ; --i, __bucket = __bucket->__next ) {}
+    return *this;
+  }
+
 
   /// makes the iterator point to the preceding element in the List
   template <typename Val> INLINE
@@ -329,6 +338,15 @@ namespace gum {
       __bucket = __bucket->__prev;
     }
 
+    return *this;
+  }
+
+
+  /// makes the iterator point to i elements before in the list
+  template <typename Val> INLINE
+  ListConstIteratorUnsafe<Val>&
+  ListConstIteratorUnsafe<Val>::operator-= ( unsigned int i ) noexcept {
+    for ( ; i && ( __bucket != nullptr ) ; --i, __bucket = __bucket->__prev ) {}
     return *this;
   }
 
@@ -471,16 +489,34 @@ namespace gum {
 
   /// makes the iterator point to the next element in the List
   template <typename Val> INLINE
-  ListIteratorUnsafe<Val>& ListIteratorUnsafe<Val>::operator++() {
-    ListConstIterator<Val>::operator++();
+  ListIteratorUnsafe<Val>& ListIteratorUnsafe<Val>::operator++() noexcept {
+    ListConstIteratorUnsafe<Val>::operator++();
+    return *this;
+  }
+
+  
+  /// makes the iterator point to i elements further in the List
+  template <typename Val> INLINE
+  ListIteratorUnsafe<Val>&
+  ListIteratorUnsafe<Val>::operator+= ( unsigned int i ) noexcept {
+    ListConstIteratorUnsafe<Val>::operator+= ( i );
+    return *this;
+  }
+ 
+
+  /// makes the iterator point to the preceding element in the List
+  template <typename Val> INLINE
+  ListIteratorUnsafe<Val>& ListIteratorUnsafe<Val>::operator--() noexcept {
+    ListConstIteratorUnsafe<Val>::operator--();
     return *this;
   }
 
 
-  /// makes the iterator point to the preceding element in the List
+  /// makes the iterator point to i elements before in the List
   template <typename Val> INLINE
-  ListIteratorUnsafe<Val>& ListIteratorUnsafe<Val>::operator--() {
-    ListConstIterator<Val>::operator--();
+  ListIteratorUnsafe<Val>&
+  ListIteratorUnsafe<Val>::operator-= ( const unsigned int i ) noexcept {
+    ListConstIteratorUnsafe<Val>::operator-= ( i );
     return *this;
   }
 
@@ -488,14 +524,14 @@ namespace gum {
   /// dereferences the value pointed to by the iterator
   template <typename Val> INLINE
   Val* ListIteratorUnsafe<Val>::operator->() {
-    return const_cast<Val*>( ListConstIterator<Val>::operator->() );
+    return const_cast<Val*>( ListConstIteratorUnsafe<Val>::operator->() );
   }
 
 
   /// gives access to the content of the iterator
   template <typename Val> INLINE
   Val& ListIteratorUnsafe<Val>::operator*() {
-    return const_cast<Val&>( ListConstIterator<Val>::operator*() );
+    return const_cast<Val&>( ListConstIteratorUnsafe<Val>::operator*() );
   }
 
 
@@ -757,7 +793,7 @@ namespace gum {
 
   /// makes the iterator point to the next element in the List
   template <typename Val> INLINE
-  ListConstIterator<Val>& ListConstIterator<Val>::operator++()  {
+  ListConstIterator<Val>& ListConstIterator<Val>::operator++() noexcept {
     // check if we are pointing to something that has been deleted
     if ( __null_pointing ) {
       __null_pointing = false;
@@ -792,9 +828,52 @@ namespace gum {
   }
 
 
+  /// makes the iterator point to the next element in the List
+  template <typename Val> INLINE
+  ListConstIterator<Val>&
+  ListConstIterator<Val>::operator+= ( unsigned int i ) noexcept {
+    if ( ! i ) return *this;
+    
+    // check if we are pointing to something that has been deleted
+    if ( __null_pointing ) {
+      __null_pointing = false;
+      
+      // if we are pointing to an element of the chained list that has been deleted
+      // but that has a next element, just point on the latter
+      if ( __next_current_bucket != nullptr ) {
+        __bucket = __next_current_bucket->__next;
+      }
+      else {
+        // here we were pointing on an extremity of the list (either end or rend)
+        // if prev_current_bucket is not null, then we are at rend and doing
+        // a ++ shall now point to the beginning of the list
+        if ( __prev_current_bucket != nullptr ) {
+          __bucket = __prev_current_bucket;
+        }
+        else {
+          // here, we are at the end of the chained list, hence we shall
+          // remain at end
+          __bucket = nullptr;
+          return *this;
+        }
+      }
+    }
+    else {
+      // if we are pointing to an element of the chained list, just
+      // point on the next bucket in this list
+      if ( __bucket != nullptr ) {
+        __bucket = __bucket->__next;
+      }
+    }
+
+    for ( --i; i && ( __bucket != nullptr ) ; --i, __bucket = __bucket->__next ) {}
+    return *this;
+  }
+
+
   /// makes the iterator point to the preceding element in the List
   template <typename Val> INLINE
-  ListConstIterator<Val>& ListConstIterator<Val>::operator--()  {
+  ListConstIterator<Val>& ListConstIterator<Val>::operator--() noexcept {
     // check if we are pointing to something that has been deleted
     if ( __null_pointing ) {
       __null_pointing = false;
@@ -827,6 +906,49 @@ namespace gum {
       }
       return *this;
     }
+  }
+
+
+  /// makes the iterator point to i elements before in the List
+  template <typename Val> INLINE
+  ListConstIterator<Val>&
+  ListConstIterator<Val>::operator-=( unsigned int i ) noexcept {
+    if ( ! i ) return *this;
+                 
+    // check if we are pointing to something that has been deleted
+    if ( __null_pointing ) {
+      __null_pointing = false;
+
+      // if we are pointing to an element of the chained list that has been deleted
+      // but that has a preceding element, just point on the latter
+      if ( __prev_current_bucket != nullptr ) {
+        __bucket = __prev_current_bucket->__prev;
+      }
+      else {
+        // here we were pointing on an extremity of the list (either end or rend)
+        // if next_current_bucket is not null, then we are at end and doing
+        // a -- shall now point to the beginning of the list
+        if ( __next_current_bucket != nullptr ) {
+          __bucket = __next_current_bucket;
+        }
+        else {
+          // here, we are at the rend of the chained list, hence we shall remain
+          // at rend
+          __bucket = nullptr;
+          return *this;
+        }
+      }
+    }
+    else {
+      // if we are pointing to an element of the chained list, just
+      // point on the preceding bucket in this list
+      if ( __bucket != nullptr ) {
+        __bucket = __bucket->__prev;
+      }
+    }
+
+    for ( --i; i && ( __bucket != nullptr ) ; --i, __bucket = __bucket->__prev ) {}
+    return *this;
   }
 
   
@@ -954,16 +1076,32 @@ namespace gum {
 
   /// makes the iterator point to the next element in the List
   template <typename Val> INLINE
-  ListIterator<Val>& ListIterator<Val>::operator++() {
+  ListIterator<Val>& ListIterator<Val>::operator++() noexcept {
     ListConstIterator<Val>::operator++();
+    return *this;
+  }
+
+
+  /// makes the iterator point to the next element in the List
+  template <typename Val> INLINE
+  ListIterator<Val>& ListIterator<Val>::operator+= ( unsigned int i ) noexcept {
+    ListConstIterator<Val>::operator+= ( i );
     return *this;
   }
 
 
   /// makes the iterator point to the preceding element in the List
   template <typename Val> INLINE
-  ListIterator<Val>& ListIterator<Val>::operator--() {
+  ListIterator<Val>& ListIterator<Val>::operator--() noexcept {
     ListConstIterator<Val>::operator--();
+    return *this;
+  }
+
+
+  /// makes the iterator point to the preceding element in the List
+  template <typename Val> INLINE
+  ListIterator<Val>& ListIterator<Val>::operator-= ( unsigned int i ) noexcept {
+    ListConstIterator<Val>::operator-= ( i );
     return *this;
   }
 
@@ -1349,7 +1487,9 @@ namespace gum {
     // create a new bucket (catch allocation and construction exceptions)
     ListBucket<Val> *new_elt = __alloc_bucket.allocate ( 1 );
     try {
-      __alloc_bucket.construct ( new_elt, true, std::forward<Args>(args)... );
+      __alloc_bucket.construct ( new_elt,
+                                 ListBucket<Val>::Emplace::EMPLACE,
+                                 std::forward<Args>(args)... );
     }
     catch ( ... ) {
       __alloc_bucket.deallocate ( new_elt, 1 );
@@ -1658,26 +1798,13 @@ namespace gum {
     return __insert ( iter, __createBucket ( std::move ( val ) ), place );
   }
 
-
-  /// emplace a new element at the ith pos of the chained list
-  template <typename Val, typename Alloc> 
-  template <typename... Args> INLINE
-  Val& List<Val,Alloc>::emplace ( unsigned int pos, Args&&... args) {
-    // if ther are fewer elements than pos, put the value at the end of the list
-    if ( __nb_elements <= pos ) {
-      return pushBack ( std::forward ( args )... );
-    }
-    return __insertBefore ( __createBucket ( std::forward<Args>(args)... ),
-                            __getIthBucket ( pos ) );
-  }
-
   
   /// emplace a new element before a given iterator
   template <typename Val, typename Alloc> 
   template <typename... Args> INLINE
   Val& List<Val,Alloc>::emplace ( const const_iterator_unsafe& iter,
                                   Args&&... args ) {
-    return __insert ( iter, __createBucket ( std::forward<Args>(args)... ),
+    return __insert ( iter, __createEmplaceBucket ( std::forward<Args>(args)... ),
                       location::BEFORE );
   }
 
@@ -1989,6 +2116,17 @@ namespace gum {
     }
     
     return **__getIthBucket ( i );
+  }
+
+  
+  /// swap the current list with another one
+  template <typename Val, typename Alloc> INLINE
+  void List<Val,Alloc>::swap ( List& other_list ) {
+    std::swap ( __deb_list, other_list.__deb_list );
+    std::swap ( __end_list, other_list.__end_list );
+    std::swap ( __nb_elements, other_list.__nb_elements );
+    std::swap ( __safe_iterators, other_list.__safe_iterators );
+    std::swap ( __alloc_bucket, other_list.__alloc_bucket );
   }
 
 
