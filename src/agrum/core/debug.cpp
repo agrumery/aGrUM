@@ -33,9 +33,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#ifndef NDEBUG
 #include <map>
-#endif // NDEBUG
 
 
 namespace gum {
@@ -112,7 +110,7 @@ namespace gum {
       std::cerr<<"|-"<<std::setw( 50 ) <<""<<"-|-"<<std::setw( 7 ) <<""<<"-|-"<<std::setw( 8 ) <<""<<"-|-"<<std::setw( 8 ) <<""<<"-|"<<std::endl;
       std::cerr<<std::setfill( ' ' );
       // list of created objects
-      std::vector<std::string> res;
+      std::map<std::string,std::string> res;
 
       for ( DEBUG_MAP::const_iterator xx = __creation().begin(); xx != __creation().end(); ++xx ) {
         std::stringstream stream;
@@ -137,7 +135,8 @@ namespace gum {
           stream<<"<--- failed";
         }
 
-        res.push_back( stream.str() );
+        res.insert(make_pair(xx->first,stream.str()));
+        //res.push_back( stream.str() );
       }
 
       // list of deleted objects, but not created (?)
@@ -147,17 +146,15 @@ namespace gum {
         } catch ( NotFound& ) {
           std::stringstream stream;
           stream<<"| "<<std::setw( 50 ) <<xx->first<<" | "<<std::setw( 7 ) <<__sizeof() [xx->first]<<" | "<<std::setw( 8 ) <<"?????"<<" | "<<std::setw( 8 ) <<xx->second<<" |<--- failed";
-          res.push_back( stream.str() );
+          res.insert(make_pair(xx->first,stream.str()));
+          //res.push_back( stream.str() );
           nb_err+=xx->second;
         }
       }
 
-      sort( res.begin(),res.end() );
 
-      for ( std::vector<std::string>::const_iterator iter=res.begin();
-            iter!=res.end();
-            ++iter ) {
-        std::cerr<<*iter<<std::endl;
+      for ( auto iter : res ) {
+        std::cerr<<iter.second<<std::endl;
       }
 
       std::cerr<<std::setfill( '-' );

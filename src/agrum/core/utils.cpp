@@ -20,9 +20,6 @@
 
 #include <agrum/config.h>
 
-#ifdef GUM_NO_INLINE
-#include <agrum/core/utils.inl>
-#endif // GUM_NO_INLINE
 
 namespace gum {
 
