@@ -200,7 +200,7 @@ namespace gum {
   void
   DefaultInfluenceDiagramInference<GUM_SCALAR>::insertEvidence( const List<const Potential<GUM_SCALAR>*>& evidenceList ) {
 
-    for ( ListConstIterator<const Potential<GUM_SCALAR>*> evidenceListIter = evidenceList.begin(); evidenceListIter != evidenceList.end(); ++evidenceListIter )
+    for ( ListConstIterator<const Potential<GUM_SCALAR>*> evidenceListIter = evidenceList.cbegin(); evidenceListIter != evidenceList.cend(); ++evidenceListIter )
       __cliquePropertiesMap[ __nodeToCliqueMap[ this->influenceDiagram().nodeId( ( *evidenceListIter )->variable( 0 ) ) ] ]->addEvidence( **evidenceListIter );
 
   }

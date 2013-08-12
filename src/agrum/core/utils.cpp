@@ -19,34 +19,33 @@
  ***************************************************************************/
 
 #include <agrum/config.h>
-
+#include <agrum/core/utils.h>
 
 namespace gum {
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  bool Memcmp( const void* const _in,
-               const void* const _out,
-               unsigned long size ) {
-    unsigned char* in=( unsigned char* ) _in;
-    unsigned char* out=( unsigned char* ) _out;
+  bool Memcmp ( const void* const _in,
+                const void* const _out,
+                unsigned long size ) {
+    unsigned char* in = ( unsigned char* ) _in;
+    unsigned char* out = ( unsigned char* ) _out;
 
     for ( unsigned long i = 0; i < size; ++i )
-      if ( *( in++ ) != *( out++ ) )
+      if ( * ( in++ ) != * ( out++ ) )
         return false;
 
     return true;
   }
 
 
-  void __atexit( void ) {
+  void __atexit ( void ) {
 #ifndef NDEBUG
     gum::__debug__::__atexit();
 #endif
   }
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
-
 
 } /* namespace gum */
 

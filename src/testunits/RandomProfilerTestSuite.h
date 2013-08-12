@@ -24,16 +24,16 @@
 
 namespace gum_tests {
 
-  // a test to see if GUM_RANDOMSEED_TEST is working
+  // a test to see if GUM_RANDOMSEED is working
   class RandomProfilerTestSuite: public CxxTest::TestSuite {
     public:
       void testRandomSeed() {
 
-        TS_ASSERT( ( GUM_RANDOMSEED_TEST==0 ) || ( GUM_RANDOMSEED_TEST==10 ) );
+        TS_ASSERT( ( GUM_RANDOMSEED==0 ) || ( GUM_RANDOMSEED==10 ) );
 
-        if ( GUM_RANDOMSEED_TEST==0 ) {
+        if ( GUM_RANDOMSEED==0 ) {
           TS_ASSERT( ! matchedRandomValues() );
-        } else { // GUM_RANDOMSEED_TEST==10
+        } else { // GUM_RANDOMSEED==10
           TS_ASSERT( matchedRandomValues() );
         }
       }
@@ -41,7 +41,7 @@ namespace gum_tests {
     private:
 #define DELTA_DIFFERS(a,b) ((a)<(b))?((b)-(a)>1e-6):((a)-(b)>1e-6)
       bool matchedRandomValues( void ) {
-        gum::initRandom( GUM_RANDOMSEED_TEST );
+        gum::initRandom( GUM_RANDOMSEED );
 
         std::vector<double> v1=gum::randomDistribution<double>( 10 );
         std::vector<double> ref1 {0.134374 , 0.145089 , 0.120114 , 0.0426642 , 0.193954 , 0.0435726 , 0.138849 , 0.100258 , 0.0060166 , 0.0751083};

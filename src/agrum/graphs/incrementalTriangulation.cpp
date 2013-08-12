@@ -273,16 +273,16 @@ namespace gum {
     NodeId Mx = mps1[0];
 
     if ( mps1.size() <= mps2.size() ) {
-      for ( ListConstIterator<NodeId> iter = mps1.begin();
-            iter != mps1.end(); ++iter ) {
+      for ( ListConstIterator<NodeId> iter = mps1.cbegin();
+            iter != mps1.cend(); ++iter ) {
         if ( __T_mpd.clique( *iter ).contains( Y ) ) {
           Mx = *iter;
           break;
         }
       }
     } else {
-      for ( ListConstIterator<NodeId> iter = mps2.begin();
-            iter != mps2.end(); ++iter ) {
+      for ( ListConstIterator<NodeId> iter = mps2.cbegin();
+            iter != mps2.cend(); ++iter ) {
         if ( __T_mpd.clique( *iter ).contains( X ) ) {
           Mx = *iter;
           break;
@@ -721,8 +721,8 @@ namespace gum {
         const List<NodeId>& liste = *iter;
         HashTable<NodeId, bool>& hash = chk[iter.key()];
 
-        for ( ListConstIterator<NodeId> iter2 = liste.begin();
-              iter2 != liste.end(); ++iter2 ) {
+        for ( ListConstIterator<NodeId> iter2 = liste.cbegin();
+              iter2 != liste.cend(); ++iter2 ) {
           if ( !hash.exists( *iter2 ) ) {
             std::cerr << "check mps of nodes" << std::endl
                       << __T_mpd << std::endl << __mps_of_node << std::endl;

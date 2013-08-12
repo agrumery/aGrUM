@@ -409,8 +409,7 @@ namespace std {
 %template(MultiDimWithOffset_double) gum::MultiDimWithOffset<double>;
 %template(MultiDimArray_double) gum::MultiDimArray<double>;
 
-%template(Potential_double) gum::Potential<double>;
-%template(BaseListPotentials_double)  gum::ListBase< const gum::Potential<double> *>;
+%template(Potential_double) gum::Potential<double>
 %template(ListPotentials_double) gum::List< const gum::Potential<double> *>;
 
 %template(BayesNet_double) gum::BayesNet<double>;

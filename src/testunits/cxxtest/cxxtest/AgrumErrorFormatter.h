@@ -22,8 +22,6 @@
 #include <cxxtest/TestTracker.h>
 #include <cxxtest/ValueTraits.h>
 
-#define GUM_RANDOMSEED_TEST @GUM_RANDOMSEED_TEST@ //from cmake configuration
-
 namespace CxxTest {
 
   class OutputStream {
@@ -64,7 +62,7 @@ namespace CxxTest {
 
       void enterWorld( const WorldDescription& /*desc*/ ) {
         __clock=new gum::Timer();
-	gum::initRandom( GUM_RANDOMSEED_TEST);
+        gum::initRandom( GUM_RANDOMSEED);
         __totalTime=0.0;
         ( *_o ) << endl << "======================"<<endl << "Agrum Test Unit Module"<<endl<<"======================"<<endl<<endl<<"Running " << totalTests<<endl;
         _o->flush();

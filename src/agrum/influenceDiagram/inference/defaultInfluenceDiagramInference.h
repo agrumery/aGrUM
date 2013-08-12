@@ -34,6 +34,8 @@
 
 #include <agrum/config.h>
 
+#include <agrum/core/list.h>
+// ============================================================================
 #include <agrum/graphs/partialOrderedTriangulation.h>
 
 #include <agrum/multidim/multiDimBucket.h>
@@ -44,8 +46,6 @@
 
 namespace gum {
 
-  template<class Val >
-  class List;
 
 
 

@@ -161,7 +161,7 @@ namespace gum {
         __simplicial_set->setFillIns( __provide_fill_ins );
 
         // initialize properly the set of nodes that can be currently eliminated
-        __subset_iter = __subsets->begin();
+        __subset_iter = __subsets->cbegin();
 
         __nodeset = *__subset_iter;
       }
@@ -300,7 +300,7 @@ namespace gum {
       if ( __nodeset.empty() ) {
         ++__subset_iter;
 
-        if ( __subset_iter != __subsets->end() )
+        if ( __subset_iter != __subsets->cend() )
           __nodeset = *__subset_iter;
       }
     }

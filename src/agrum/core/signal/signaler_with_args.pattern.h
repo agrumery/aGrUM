@@ -30,164 +30,162 @@ namespace gum {
 
 
     template<LIST_DECL_CLASSES>
-    class MAKE_NAME( IConnector ) {
-      public:
-        virtual ~MAKE_NAME( IConnector )() { }
+    class MAKE_NAME ( IConnector ) {
+    public:
+      virtual ~MAKE_NAME ( IConnector ) () { }
 
-        virtual Listener* target() const = 0;
-        virtual void notify( const void*, LIST_DECL_ARGS ) = 0;
-        virtual MAKE_NAME( IConnector ) <LIST_CLASSES>* clone() = 0;
-        virtual MAKE_NAME( IConnector ) <LIST_CLASSES>*
-        duplicate( Listener* target ) = 0;
+      virtual Listener* target() const = 0;
+      virtual void notify ( const void *, LIST_DECL_ARGS ) = 0;
+      virtual MAKE_NAME ( IConnector ) <LIST_CLASSES>* clone() = 0;
+      virtual MAKE_NAME ( IConnector ) <LIST_CLASSES>*
+        duplicate ( Listener* target ) = 0;
     };
 
 
     template<LIST_DECL_CLASSES>
-    class MAKE_NAME( BasicSignaler ) : public ISignaler {
-      protected:
-        typedef ListBase < MAKE_NAME( IConnector ) <LIST_CLASSES> * >
+    class MAKE_NAME ( BasicSignaler ) : public ISignaler {
+    protected:
+      typedef List < MAKE_NAME ( IConnector ) <LIST_CLASSES> * >
         ConnectorList;
-        typedef ListBucket< MAKE_NAME( IConnector ) <LIST_CLASSES> * >
-        ConnectorBucket;
+      typedef ListConstIteratorUnsafe< MAKE_NAME ( IConnector ) <LIST_CLASSES>*>
+        ConnectorIterator;
 
 
-        MAKE_NAME( BasicSignaler )() {
-          GUM_CONSTRUCTOR( MAKE_NAME( BasicSignaler ) );
+      MAKE_NAME ( BasicSignaler ) () {
+        GUM_CONSTRUCTOR ( MAKE_NAME ( BasicSignaler ) );
+      }
+
+
+      MAKE_NAME ( BasicSignaler ) ( const MAKE_NAME ( BasicSignaler ) & s ) :
+        ISignaler ( s ) {
+        GUM_CONS_CPY ( MAKE_NAME ( BasicSignaler ) );
+
+        for ( ConnectorIterator it = _connectors.beginUnsafe ();
+              it != _connectors.endUnsafe (); ++it ) {
+          (*it)->target()->attachSignal__ ( this );
+          _connectors.pushBack ( (*it)->clone() );
+        }
+      }
+
+
+    public:
+      virtual ~MAKE_NAME ( BasicSignaler ) () {
+        GUM_DESTRUCTOR ( MAKE_NAME ( BasicSignaler ) );
+        for ( ConnectorIterator it = _connectors.rbeginUnsafe ();
+              it != _connectors.rendUnsafe(); --it ) {
+          (*it)->target()->detachSignal__ ( this );
+          delete *it;
         }
 
+        _connectors.clear();
+      }
 
-        MAKE_NAME( BasicSignaler )( const MAKE_NAME( BasicSignaler ) & s ) :
-          ISignaler( s ) {
-          GUM_CONS_CPY( MAKE_NAME( BasicSignaler ) );
+      bool hasListener ( void ) {
+        return ( ! ( _connectors.empty() ) );
+      }
 
-          for ( const ConnectorBucket* it = _connectors.frontBucket();
-                it; it = it->next() ) {
-            ( **it )->target()->attachSignal__( this );
-            _connectors.pushBack( ( **it )->clone() );
+
+      void detach ( Listener* target ) {
+        for ( ConnectorIterator it = _connectors.rbeginUnsafe ();
+              it != _connectors.rendUnsafe (); --it ) {
+          if ( (*it)->target() == target ) {
+            delete *it;
+            _connectors.erase ( it );
+            target->detachSignal__ ( this );
+            return;
           }
         }
+      }
 
 
-      public:
-        virtual ~MAKE_NAME( BasicSignaler )() {
-          GUM_DESTRUCTOR( MAKE_NAME( BasicSignaler ) );
+    protected:
 
-          for ( const ConnectorBucket* it = _connectors.backBucket();
-                it; it = it->previous() ) {
-            ( **it )->target()->detachSignal__( this );
-            delete** it;
-          }
+      friend class Listener;
 
-          _connectors.clear();
-        }
-
-
-        bool hasListener( void ) {
-          return ( !( _connectors.empty() ) );
-        }
-
-
-        void detach( Listener* target ) {
-          for ( const ConnectorBucket* it = _connectors.backBucket();
-                it; it = it->previous() ) {
-            if ( ( **it )->target() == target ) {
-              delete** it;
-              _connectors.erase( *it );
-              target->detachSignal__( this );
-              return;
-            }
+      void duplicateTarget ( const Listener* oldtarget, Listener* newtarget ) {
+        for ( ConnectorIterator it = _connectors.beginUnsafe ();
+              it != _connectors.endUnsafe (); ++it ) {
+          if ( (*it)->target() == oldtarget ) {
+            _connectors.pushBack ( (*it)->duplicate ( newtarget ) );
           }
         }
+      }
 
+      void detachFromTarget ( Listener* target ) {
+        ConnectorIterator itprev;
 
-      protected:
+        for ( ConnectorIterator it = _connectors.rbeginUnsafe ();
+              it != _connectors.rendUnsafe (); ) {
+          itprev = it; --it;
 
-        friend class Listener;
-
-        void duplicateTarget( const Listener* oldtarget, Listener* newtarget ) {
-          for ( const ConnectorBucket* it = _connectors.frontBucket();
-                it; it = it->next() ) {
-            if ( ( **it )->target() == oldtarget ) {
-              _connectors.pushBack( ( **it )->duplicate( newtarget ) );
-            }
+          if ( (*itprev)->target() == target ) {
+            delete *itprev;
+            _connectors.erase ( itprev );
           }
         }
+      }
 
-        void detachFromTarget( Listener* target ) {
-          const ConnectorBucket* itprev= ( ConnectorBucket* ) nullptr;
-
-          for ( const ConnectorBucket* it = _connectors.backBucket();
-                it; it = itprev ) {
-            itprev = it->previous();
-
-            if ( ( **it )->target() == target ) {
-              delete** it;
-              _connectors.erase( *it );
-            }
-          }
-        }
-
-        ConnectorList _connectors;
+      ConnectorList _connectors;
     };
 
 
 
     template<class TargetClass, LIST_DECL_CLASSES>
-    class MAKE_NAME( Connector ) : public MAKE_NAME( IConnector ) <LIST_CLASSES> {
-      public:
-        MAKE_NAME( Connector )() {
-          GUM_CONSTRUCTOR( MAKE_NAME( Connector ) );
-          __target = nullptr;
-          __action = nullptr;
-        }
+    class MAKE_NAME ( Connector ) : public MAKE_NAME ( IConnector ) <LIST_CLASSES> {
+    public:
+      MAKE_NAME ( Connector ) () {
+        GUM_CONSTRUCTOR ( MAKE_NAME ( Connector ) );
+        __target = NULL;
+        __action = NULL;
+      }
 
 
-        MAKE_NAME( Connector )
+      MAKE_NAME ( Connector )
         ( TargetClass* target,
-          void ( TargetClass::*action )( const void*, LIST_CLASSES ) ) {
-          GUM_CONSTRUCTOR( MAKE_NAME( Connector ) );
-          __target = target;
-          __action = action;
-        }
+          void ( TargetClass::*action ) ( const void *, LIST_CLASSES ) ) {
+        GUM_CONSTRUCTOR ( MAKE_NAME ( Connector ) );
+        __target = target;
+        __action = action;
+      }
 
 
-        MAKE_NAME( Connector )
-        ( const MAKE_NAME( Connector ) <TargetClass, LIST_CLASSES>* src ) :
-          MAKE_NAME( IConnector ) <LIST_CLASSES> ( src ) {
-          GUM_CONS_CPY( MAKE_NAME( Connector ) );
-        }
+      MAKE_NAME ( Connector )
+        ( const MAKE_NAME ( Connector ) <TargetClass, LIST_CLASSES>* src ) :
+        MAKE_NAME ( IConnector ) <LIST_CLASSES> ( src ) {
+        GUM_CONS_CPY ( MAKE_NAME ( Connector ) );
+      }
 
 
-        virtual ~MAKE_NAME( Connector )() {
-          GUM_DESTRUCTOR( MAKE_NAME( Connector ) );
-        }
+      virtual ~MAKE_NAME ( Connector ) () {
+        GUM_DESTRUCTOR ( MAKE_NAME ( Connector ) );
+      }
 
 
-        INLINE virtual MAKE_NAME( IConnector ) <LIST_CLASSES>* clone() {
-          return new MAKE_NAME( Connector ) <TargetClass, LIST_CLASSES> ( *this );
-        }
+      INLINE virtual MAKE_NAME ( IConnector ) <LIST_CLASSES>* clone() {
+        return new MAKE_NAME ( Connector ) <TargetClass, LIST_CLASSES> ( *this );
+      }
 
 
-        INLINE virtual
-        MAKE_NAME( IConnector ) <LIST_CLASSES>* duplicate( Listener* target ) {
-          return new MAKE_NAME( Connector ) <TargetClass, LIST_CLASSES>
-                 ( ( TargetClass* ) target, __action );
-        }
+      INLINE virtual
+        MAKE_NAME ( IConnector ) <LIST_CLASSES>* duplicate ( Listener* target ) {
+        return new MAKE_NAME ( Connector ) <TargetClass, LIST_CLASSES>
+          ( ( TargetClass * ) target, __action );
+      }
 
 
-        INLINE virtual void notify( const void* src, LIST_DECL_ARGS ) {
-          ( __target->*__action )( src , LIST_ARGS );
-        }
+      INLINE virtual void notify ( const void * src, LIST_DECL_ARGS ) {
+        ( __target->*__action ) ( src , LIST_ARGS );
+      }
 
 
-        INLINE virtual Listener* target() const {
-          return __target;
-        }
+      INLINE virtual Listener* target() const {
+        return __target;
+      }
 
 
-      private:
-        TargetClass* __target;
-        void ( TargetClass::* __action )( const void* , LIST_CLASSES );
+    private:
+      TargetClass* __target;
+      void ( TargetClass::* __action ) ( const void * , LIST_CLASSES );
     };
 
 
@@ -200,43 +198,43 @@ namespace gum {
   class MAKE_NAME( Signaler ) :
     public __sig__::MAKE_NAME( BasicSignaler ) <LIST_CLASSES> {
 
-      typedef typename __sig__::MAKE_NAME( BasicSignaler ) <LIST_CLASSES>::ConnectorBucket ConnectorBucket;
+    typedef typename __sig__::MAKE_NAME ( BasicSignaler ) <LIST_CLASSES>::ConnectorIterator ConnectorIterator;
 
 
-    public:
-      MAKE_NAME( Signaler )() {
-        GUM_CONSTRUCTOR( MAKE_NAME( Signaler ) );
-      }
+  public:
+    MAKE_NAME ( Signaler ) () {
+      GUM_CONSTRUCTOR ( MAKE_NAME ( Signaler ) );
+    }
 
 
-      MAKE_NAME( Signaler )( const MAKE_NAME( Signaler ) & s ) :
-        __sig__::MAKE_NAME( BasicSignaler ) <LIST_CLASSES> ( s ) {
-        GUM_CONS_CPY( MAKE_NAME( Signaler ) );
-      }
+    MAKE_NAME ( Signaler ) ( const MAKE_NAME ( Signaler ) & s ) :
+      __sig__::MAKE_NAME ( BasicSignaler ) <LIST_CLASSES> ( s ) {
+      GUM_CONS_CPY ( MAKE_NAME ( Signaler ) );
+    }
 
 
-      virtual ~MAKE_NAME( Signaler )() {
-        GUM_DESTRUCTOR( MAKE_NAME( Signaler ) );
-      }
+    virtual ~MAKE_NAME ( Signaler ) () {
+      GUM_DESTRUCTOR ( MAKE_NAME ( Signaler ) );
+    }
 
 
-      template<class TargetClass>
-      void attach( TargetClass* target,
-                   void ( TargetClass::*action )( const void*, LIST_CLASSES ) ) {
-        __sig__::MAKE_NAME( Connector ) <TargetClass, LIST_CLASSES>* conn =
-          new __sig__::MAKE_NAME( Connector ) <TargetClass, LIST_CLASSES> ( target,
-              action );
-        this->_connectors.pushBack( conn );
-        target->attachSignal__( this );
-      }
+    template<class TargetClass>
+      void attach ( TargetClass* target,
+                    void ( TargetClass::*action ) ( const void *, LIST_CLASSES ) ) {
+      __sig__::MAKE_NAME ( Connector ) <TargetClass, LIST_CLASSES>* conn =
+        new __sig__::MAKE_NAME ( Connector ) <TargetClass, LIST_CLASSES> ( target,
+                                                                           action );
+      this->_connectors.pushBack ( conn );
+      target->attachSignal__ ( this );
+    }
 
 
-      INLINE void operator()( const void* src , LIST_DECL_ARGS ) {
-        for ( const ConnectorBucket* it = this->_connectors.frontBucket();
-              it; it = it->next() ) {
-          ( **it )->notify( src, LIST_ARGS );
-        }
-      }
+    INLINE void operator() ( const void *src , LIST_DECL_ARGS ) {
+      for ( ConnectorIterator it = this->_connectors.beginUnsafe ();
+            it != this->_connectors.endUnsafe (); ++it ) {
+        (*it)->notify ( src, LIST_ARGS );
+     }
+    }
 
   };
 
