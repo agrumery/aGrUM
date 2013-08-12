@@ -181,7 +181,7 @@ namespace gum {
       for ( givenIte = givenIte.begin( currentVar ); givenIte != givenIte.end(); ++givenIte ) {
         std::string parentNode = givenIte->GetTextOrDefault( "" );
         NodeId parentId = __bn->idFromName( parentNode );
-        parentList.push_back( parentId );
+        parentList.pushBack( parentId );
       }
 
       for ( List< NodeId >::iterator parentListIte = parentList.rbegin(); parentListIte != parentList.rend(); --parentListIte )

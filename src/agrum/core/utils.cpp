@@ -19,10 +19,11 @@
  ***************************************************************************/
 
 #include <agrum/config.h>
+#include <agrum/core/utils.h>
 
-#ifdef GUM_NO_INLINE
-#include <agrum/core/utils.inl>
-#endif // GUM_NO_INLINE
+// #ifdef GUM_NO_INLINE
+// #include <agrum/core/utils.inl>
+// #endif // GUM_NO_INLINE
 
 namespace gum {
 

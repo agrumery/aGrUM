@@ -152,7 +152,7 @@ namespace gum {
         }
       }
 
-      sort( res.begin(),res.end() );
+      //sort ( res.begin(),res.end() );
 
       for ( std::vector<std::string>::const_iterator iter=res.begin();
             iter!=res.end();

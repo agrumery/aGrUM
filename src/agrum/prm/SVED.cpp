@@ -384,14 +384,11 @@ namespace gum {
       List<NodeSet> partial_ordering;
 
       if ( inners.size() )
-        partial_ordering.push_back( inners );
-
+        partial_ordering.pushBack( inners );
       if ( outers.size() )
-        partial_ordering.push_back( outers );
-
+        partial_ordering.pushBack( outers );
       if ( ignore.size() )
-        partial_ordering.push_back( ignore );
-
+        partial_ordering.pushBack( ignore );
       GUM_ASSERT( inners.size() or outers.size() );
       PartialOrderedTriangulation t( &( bn.moralGraph() ), &( bn.modalities() ), &partial_ordering );
 

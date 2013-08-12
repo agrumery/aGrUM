@@ -130,9 +130,8 @@ namespace gum {
     if ( ! utilitiesList.empty() ) {
       Instantiation globalInst( *this );
       Instantiation partialInst;
-
-      for ( typename List<UtilityTable<GUM_SCALAR>*>::const_iterator iter = utilitiesList.begin();
-            iter != utilitiesList.end(); ++iter ) {
+      for ( typename List<UtilityTable<GUM_SCALAR>*>::const_iterator iter = utilitiesList.cbegin();
+            iter != utilitiesList.cend(); ++iter ) {
         const Sequence<const DiscreteVariable*>& varSeq = ( *iter )->variablesSequence();
 
         for ( typename Sequence<const DiscreteVariable*>::iterator varIter = varSeq.begin();
@@ -154,9 +153,8 @@ namespace gum {
               ++partialInst ) {
 
           GUM_SCALAR sumData = ( GUM_SCALAR ) 0;
-
-          for ( typename List<UtilityTable<GUM_SCALAR>*>::const_iterator iter = utilitiesList.begin();
-                iter != utilitiesList.end(); ++iter ) {
+          for ( typename List<UtilityTable<GUM_SCALAR>*>::const_iterator iter = utilitiesList.cbegin();
+                iter != utilitiesList.cend(); ++iter ) {
             sumData += ( **iter )[partialInst];
           }
 
@@ -172,9 +170,8 @@ namespace gum {
 
         for ( globalInst.setFirst(); ! globalInst.end(); ++globalInst ) {
           GUM_SCALAR sumData = ( GUM_SCALAR ) 0;
-
-          for ( typename List<UtilityTable<GUM_SCALAR>*>::const_iterator iter = utilitiesList.begin();
-                iter != utilitiesList.end(); ++iter ) {
+          for ( typename List<UtilityTable<GUM_SCALAR>*>::const_iterator iter = utilitiesList.cbegin();
+                iter != utilitiesList.cend(); ++iter ) {
             sumData += ( *iter )->get( globalInst );
           }
 
@@ -192,9 +189,8 @@ namespace gum {
   template <typename GUM_SCALAR>
   UtilityTable<GUM_SCALAR> UtilityTable<GUM_SCALAR>::reduceBy( const List<const DiscreteVariable*>& varList ) const {
     UtilityTable<GUM_SCALAR> result( new MultiDimArray<GUM_SCALAR> );
-
-    for ( List<const DiscreteVariable*>::const_iterator iter = varList.begin();
-          iter != varList.end(); ++iter ) {
+    for ( List<const DiscreteVariable*>::const_iterator iter = varList.cbegin();
+          iter != varList.cend(); ++iter ) {
       const DiscreteVariable& var = **iter;
 
       if ( this->contains( var ) ) {
