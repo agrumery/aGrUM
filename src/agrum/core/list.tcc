@@ -322,8 +322,14 @@ namespace gum {
   /// makes the iterator point to the next element in the List
   template <typename Val> INLINE
   ListConstIteratorUnsafe<Val>&
-  ListConstIteratorUnsafe<Val>::operator+= ( unsigned int i ) noexcept {
-    for ( ; i && ( __bucket != nullptr ) ; --i, __bucket = __bucket->__next ) {}
+  ListConstIteratorUnsafe<Val>::operator+=
+  ( typename ListConstIteratorUnsafe<Val>::difference_type i ) noexcept {
+    if ( i >= 0 ) {
+      for ( ; i && ( __bucket != nullptr ) ; --i, __bucket = __bucket->__next ) {}
+    }
+    else {
+      for ( ; i && ( __bucket != nullptr ) ; ++i, __bucket = __bucket->__prev ) {}
+    }
     return *this;
   }
 
@@ -345,9 +351,33 @@ namespace gum {
   /// makes the iterator point to i elements before in the list
   template <typename Val> INLINE
   ListConstIteratorUnsafe<Val>&
-  ListConstIteratorUnsafe<Val>::operator-= ( unsigned int i ) noexcept {
-    for ( ; i && ( __bucket != nullptr ) ; --i, __bucket = __bucket->__prev ) {}
+  ListConstIteratorUnsafe<Val>::operator-=
+  ( typename ListConstIteratorUnsafe<Val>::difference_type i ) noexcept {
+    if ( i >= 0 ) {
+      for ( ; i && ( __bucket != nullptr ) ; --i, __bucket = __bucket->__prev ) {}
+    }
+    else {
+      for ( ; i && ( __bucket != nullptr ) ; ++i, __bucket = __bucket->__next ) {}
+    }
     return *this;
+  }
+
+  
+  /// returns a new iterator
+  template <typename Val> INLINE
+  ListConstIteratorUnsafe<Val>
+  ListConstIteratorUnsafe<Val>::operator+
+  ( typename ListConstIteratorUnsafe<Val>::difference_type i ) noexcept {
+    return ListConstIteratorUnsafe<Val> ( *this ) += i;
+  }
+
+  
+  /// returns a new iterator
+  template <typename Val> INLINE
+  ListConstIteratorUnsafe<Val>
+  ListConstIteratorUnsafe<Val>::operator-
+  ( typename ListConstIteratorUnsafe<Val>::difference_type i ) noexcept {
+    return ListConstIteratorUnsafe<Val> ( *this ) -= i;
   }
 
 
@@ -387,6 +417,18 @@ namespace gum {
     }
   }
 
+  
+  /// for STL compliance, a distance operator
+  template <typename Val> INLINE
+  typename ListConstIteratorUnsafe<Val>::difference_type
+  operator- ( const ListConstIteratorUnsafe<Val>& iter1,
+              const ListConstIteratorUnsafe<Val>& iter2 ) {
+    typename ListConstIteratorUnsafe<Val>::difference_type res = 0;
+    for ( ListConstIteratorUnsafe<Val> iter3 = iter2; iter1 != iter3;
+          ++iter3, ++res ) {}
+    return res;
+  }
+  
 
 
 
@@ -498,7 +540,8 @@ namespace gum {
   /// makes the iterator point to i elements further in the List
   template <typename Val> INLINE
   ListIteratorUnsafe<Val>&
-  ListIteratorUnsafe<Val>::operator+= ( unsigned int i ) noexcept {
+  ListIteratorUnsafe<Val>::operator+=
+  ( typename ListIteratorUnsafe<Val>::difference_type i ) noexcept {
     ListConstIteratorUnsafe<Val>::operator+= ( i );
     return *this;
   }
@@ -515,9 +558,28 @@ namespace gum {
   /// makes the iterator point to i elements before in the List
   template <typename Val> INLINE
   ListIteratorUnsafe<Val>&
-  ListIteratorUnsafe<Val>::operator-= ( const unsigned int i ) noexcept {
+  ListIteratorUnsafe<Val>::operator-=
+  ( typename ListIteratorUnsafe<Val>::difference_type i ) noexcept {
     ListConstIteratorUnsafe<Val>::operator-= ( i );
     return *this;
+  }
+  
+
+  /// returns a new iterator
+  template <typename Val> INLINE
+  ListIteratorUnsafe<Val>
+  ListIteratorUnsafe<Val>::operator+
+  ( typename ListIteratorUnsafe<Val>::difference_type i ) noexcept {
+    return ListIteratorUnsafe<Val> ( *this ) += i;
+  }
+
+  
+  /// returns a new iterator
+  template <typename Val> INLINE
+  ListIteratorUnsafe<Val>
+  ListIteratorUnsafe<Val>::operator-
+  ( typename ListIteratorUnsafe<Val>::difference_type i ) noexcept {
+    return ListIteratorUnsafe<Val> ( *this ) -= i;
   }
 
 
@@ -537,6 +599,7 @@ namespace gum {
 
 
 
+  
   /* =========================================================================== */
   /* =========================================================================== */
   /* ===                  LIST CONST ITERATOR IMPLEMENTATION                 === */
@@ -827,13 +890,52 @@ namespace gum {
     }
   }
 
+  
+  /// makes the iterator point to i elements before in the List
+  template <typename Val> INLINE
+  ListConstIterator<Val>&
+  ListConstIterator<Val>::__opMinus ( unsigned int i ) noexcept {
+    // check if we are pointing to something that has been deleted
+    if ( __null_pointing ) {
+      __null_pointing = false;
 
+      // if we are pointing to an element of the chained list that has been deleted
+      // but that has a preceding element, just point on the latter
+      if ( __prev_current_bucket != nullptr ) {
+        __bucket = __prev_current_bucket->__prev;
+      }
+      else {
+        // here we were pointing on an extremity of the list (either end or rend)
+        // if next_current_bucket is not null, then we are at end and doing
+        // a -- shall now point to the beginning of the list
+        if ( __next_current_bucket != nullptr ) {
+          __bucket = __next_current_bucket;
+        }
+        else {
+          // here, we are at the rend of the chained list, hence we shall remain
+          // at rend
+          __bucket = nullptr;
+          return *this;
+        }
+      }
+    }
+    else {
+      // if we are pointing to an element of the chained list, just
+      // point on the preceding bucket in this list
+      if ( __bucket != nullptr ) {
+        __bucket = __bucket->__prev;
+      }
+    }
+
+    for ( --i; i && ( __bucket != nullptr ) ; --i, __bucket = __bucket->__prev ) {}
+    return *this;
+  }
+
+  
   /// makes the iterator point to the next element in the List
   template <typename Val> INLINE
   ListConstIterator<Val>&
-  ListConstIterator<Val>::operator+= ( unsigned int i ) noexcept {
-    if ( ! i ) return *this;
-    
+  ListConstIterator<Val>::__opPlus ( unsigned int i ) noexcept {
     // check if we are pointing to something that has been deleted
     if ( __null_pointing ) {
       __null_pointing = false;
@@ -870,6 +972,17 @@ namespace gum {
     return *this;
   }
 
+
+  /// makes the iterator point to the next element in the List
+  template <typename Val> INLINE
+  ListConstIterator<Val>&
+  ListConstIterator<Val>::operator+=
+  ( typename ListConstIterator<Val>::difference_type i ) noexcept {
+    if ( ! i ) return *this;
+    if ( i < 0 ) return __opMinus ( -i );
+    else return __opPlus ( i );
+  }
+    
 
   /// makes the iterator point to the preceding element in the List
   template <typename Val> INLINE
@@ -912,43 +1025,29 @@ namespace gum {
   /// makes the iterator point to i elements before in the List
   template <typename Val> INLINE
   ListConstIterator<Val>&
-  ListConstIterator<Val>::operator-=( unsigned int i ) noexcept {
+  ListConstIterator<Val>::operator-=
+  ( typename ListConstIterator<Val>::difference_type i ) noexcept {
     if ( ! i ) return *this;
-                 
-    // check if we are pointing to something that has been deleted
-    if ( __null_pointing ) {
-      __null_pointing = false;
+    if ( i < 0 ) return __opPlus ( -i );
+    else return __opMinus ( i );
+  }
 
-      // if we are pointing to an element of the chained list that has been deleted
-      // but that has a preceding element, just point on the latter
-      if ( __prev_current_bucket != nullptr ) {
-        __bucket = __prev_current_bucket->__prev;
-      }
-      else {
-        // here we were pointing on an extremity of the list (either end or rend)
-        // if next_current_bucket is not null, then we are at end and doing
-        // a -- shall now point to the beginning of the list
-        if ( __next_current_bucket != nullptr ) {
-          __bucket = __next_current_bucket;
-        }
-        else {
-          // here, we are at the rend of the chained list, hence we shall remain
-          // at rend
-          __bucket = nullptr;
-          return *this;
-        }
-      }
-    }
-    else {
-      // if we are pointing to an element of the chained list, just
-      // point on the preceding bucket in this list
-      if ( __bucket != nullptr ) {
-        __bucket = __bucket->__prev;
-      }
-    }
+  
+  /// returns a new iterator
+  template <typename Val> INLINE
+  ListConstIterator<Val>
+  ListConstIterator<Val>::operator+
+  ( typename ListConstIterator<Val>::difference_type i ) noexcept {
+    return ListConstIterator<Val> ( *this ) += i;
+  }
 
-    for ( --i; i && ( __bucket != nullptr ) ; --i, __bucket = __bucket->__prev ) {}
-    return *this;
+  
+  /// returns a new iterator
+  template <typename Val> INLINE
+  ListConstIterator<Val>
+  ListConstIterator<Val>::operator-
+  ( typename ListConstIterator<Val>::difference_type i ) noexcept {
+    return ListConstIterator<Val> ( *this ) -= i;
   }
 
   
@@ -996,6 +1095,19 @@ namespace gum {
   }
 
   
+  /// for STL compliance, a distance operator
+  template <typename Val> INLINE
+  typename ListConstIterator<Val>::difference_type
+  operator- ( const ListConstIterator<Val>& iter1,
+              const ListConstIterator<Val>& iter2 ) {
+    typename ListConstIterator<Val>::difference_type res = 0;
+    ListConstIteratorUnsafe<Val> iter3 {iter2}, iter4 {iter1};
+    for ( ; iter4 != iter3; ++iter3, ++res ) {}
+    return res;
+  }
+  
+  
+
 
 
   /* =========================================================================== */
@@ -1084,7 +1196,8 @@ namespace gum {
 
   /// makes the iterator point to the next element in the List
   template <typename Val> INLINE
-  ListIterator<Val>& ListIterator<Val>::operator+= ( unsigned int i ) noexcept {
+  ListIterator<Val>& ListIterator<Val>::operator+=
+  ( typename ListIterator<Val>::difference_type i ) noexcept {
     ListConstIterator<Val>::operator+= ( i );
     return *this;
   }
@@ -1100,12 +1213,31 @@ namespace gum {
 
   /// makes the iterator point to the preceding element in the List
   template <typename Val> INLINE
-  ListIterator<Val>& ListIterator<Val>::operator-= ( unsigned int i ) noexcept {
+  ListIterator<Val>& ListIterator<Val>::operator-=
+  ( typename ListIterator<Val>::difference_type i ) noexcept {
     ListConstIterator<Val>::operator-= ( i );
     return *this;
   }
 
 
+  /// returns a new iterator
+  template <typename Val> INLINE
+  ListIterator<Val>
+  ListIterator<Val>::operator+
+  ( typename ListIterator<Val>::difference_type i ) noexcept {
+    return ListIterator<Val> ( *this ) += i;
+  }
+
+  
+  /// returns a new iterator
+  template <typename Val> INLINE
+  ListIterator<Val>
+  ListIterator<Val>::operator-
+  ( typename ListIterator<Val>::difference_type i ) noexcept {
+    return ListIterator<Val> ( *this ) -= i;
+  }
+
+  
   /// dereferences the value pointed to by the iterator
   template <typename Val> INLINE
   Val* ListIterator<Val>::operator->() {

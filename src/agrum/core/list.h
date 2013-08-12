@@ -23,17 +23,22 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  *
  * This file provides class List for manipulating generic lists as well as
- * List<>::iterator for parsing lists. The List and their iterators provided
- * here  differ from those of the C++ standard library in that they are "safe",
- * i.e., deleting elements which are pointed to by iterators does never produce any
- * segmentation fault nor unexpected results when the iterators are incremented or
- * decremented. Tests performed on a Fedora Core 3 with programs compiled with
- * g++ 3.4 show that List and their iterators are as fast as their counterparts
- * in the standard library.
+ * List<>::iterator, List<>::const_iterator, List<>::iterator_unsafe and
+ * List<>::const_iterator_unsafe for parsing lists. The List and their (safe)
+ * iterators provided here differ from those of the C++ standard library in that
+ * they are "safe", i.e., deleting elements which are pointed to by iterators does
+ * never produce any segmentation fault nor unexpected results when the iterators
+ * are incremented or decremented. Tests performed on a Fedora Core 3 with
+ * programs compiled with g++ 3.4 show that List and their iterators are as fast
+ * as their counterparts in the standard library. If time responses are an issue,
+ * the "_unsafe" iterators provide fast access (but at the expense of safety:
+ * dereferencing an unsafe iterator pointing to an erased element will most
+ * certainly induce a segfault (like the STL).
  *
  * @warning Developers should keep in mind that whenever a value is inserted
  * into a List, it is actually a copy of this value that is inserted into
- * the List (much like what happens in C++ standard library).
+ * the List (much like what happens in C++ standard library). However, when
+ * inserting rvalues, move insertions are provided.
  *
  * @par Usage example:
  * @code
@@ -45,9 +50,11 @@
  * list1.pushBack (10);
  * list1 += 25;
  * list1.insert (12);
+ * list.emplaceBack (22);
+ * list.emplaceFront (10);
  *
  * // getting the second element of the list
- * cerr << "10 = " << list1[1] << endl;
+ * cerr << "10 = " << list1[2] << endl;
  *
  * // getting the first and last elements
  * cerr << "first = " << list1.front() << " last = " << list1.back() << endl;
@@ -83,10 +90,24 @@
  *   cerr << *iter << endl;
  * for (List<int>::iterator iter = list2.rbegin(); iter != list2.rend(); --iter)
  *   cerr << *iter << endl;
+ * for (List<int>::const_iterator iter = list2.cbegin(); iter != list2.cend(); ++iter)
+ *   cerr << *iter << endl;
+ * for (List<int>::const_iterator iter = list2.crbegin(); iter != list2.crend(); --iter)
+ *   cerr << *iter << endl;
+ * for (List<int>::iterator_unsafe iter = list2.beginUnsafe(); iter != list2.endUnsafe(); ++iter)
+ *   cerr << *iter << endl;
+ * for (List<int>::iterator_unsafe iter = list2.rbeginUnsafe(); iter != list2.rendUnsafe(); --iter)
+ *   cerr << *iter << endl;
+ * for (List<int>::const_iterator_unsafe iter = list2.cbeginUnsafe(); iter != list2.cendUnsafe(); ++iter)
+ *   cerr << *iter << endl;
+ * for (List<int>::const_iterator_unsafe iter = list2.crbeginUnsafe(); iter != list2.crendUnsafe(); --iter)
+ *   cerr << *iter << endl;
  *
  * // use an iterator to point the element we wish to erase
  * List<int>::iterator iter = list2.begin();
  * List2.erase ( iter );
+ * List<int>::iterator iter2 = list2.begin() + 4; // 5th element of the list
+ * iter2 = iter + 4;
  *
  * // map a list into another list (assuming function f is defined as
  * // float f (int x) { return (2.5 * x); } )
@@ -1020,7 +1041,7 @@ namespace gum {
     ListConstIteratorUnsafe<Val>& operator++() noexcept;
 
     /// makes the iterator point to i elements further in the List
-    ListConstIteratorUnsafe<Val>& operator+= ( unsigned int ) noexcept;
+    ListConstIteratorUnsafe<Val>& operator+= ( difference_type ) noexcept;
     
     /// makes the iterator point to the preceding element in the List
     /** for (iter=rbegin(); iter!=rend(); --iter) loops are guaranteed to
@@ -1030,7 +1051,13 @@ namespace gum {
     ListConstIteratorUnsafe<Val>& operator--() noexcept;
 
     /// makes the iterator point to i elements befor in the List
-    ListConstIteratorUnsafe<Val>& operator-= ( unsigned int ) noexcept;
+    ListConstIteratorUnsafe<Val>& operator-= ( difference_type ) noexcept;
+
+    /// returns a new iterator
+    ListConstIteratorUnsafe<Val> operator+ ( difference_type ) noexcept;
+
+    /// returns a new iterator
+    ListConstIteratorUnsafe<Val> operator- ( difference_type ) noexcept;
 
     /// checks whether two iterators point toward different elements
     /** @warning the end and rend iterators are always equal, whatever the list
@@ -1067,6 +1094,12 @@ namespace gum {
   };
 
 
+  /// for STL compliance, a distance operator
+  template <typename Val>
+  typename ListConstIteratorUnsafe<Val>::difference_type
+  operator- ( const ListConstIteratorUnsafe<Val>& iter1,
+              const ListConstIteratorUnsafe<Val>& iter2 );
+  
     
 
   /* =========================================================================== */
@@ -1153,7 +1186,7 @@ namespace gum {
     ListIteratorUnsafe<Val>& operator++() noexcept;
 
     /// makes the iterator point to i elements further in the List
-    ListIteratorUnsafe<Val>& operator+= ( unsigned int ) noexcept;
+    ListIteratorUnsafe<Val>& operator+= ( difference_type ) noexcept;
 
     /// makes the iterator point to the preceding element in the List
     /** for (iter=rbegin(); iter!=rend(); --iter) loops are guaranteed to
@@ -1163,7 +1196,13 @@ namespace gum {
     ListIteratorUnsafe<Val>& operator--() noexcept;
 
     /// makes the iterator point to i elements befor in the List
-    ListIteratorUnsafe<Val>& operator-= ( unsigned int ) noexcept;
+    ListIteratorUnsafe<Val>& operator-= ( difference_type ) noexcept;
+
+    /// returns a new iterator
+    ListIteratorUnsafe<Val> operator+ ( difference_type ) noexcept;
+
+    /// returns a new iterator
+    ListIteratorUnsafe<Val> operator- ( difference_type ) noexcept;
 
     using typename ListConstIteratorUnsafe<Val>::operator==;
     using typename ListConstIteratorUnsafe<Val>::operator!=;
@@ -1181,7 +1220,8 @@ namespace gum {
     /// @}
   };
 
-
+  
+  
 
     
   /* =========================================================================== */
@@ -1269,7 +1309,7 @@ namespace gum {
     ListConstIterator<Val>& operator++() noexcept;
 
     /// makes the iterator point to i elements further in the List
-    ListConstIterator<Val>& operator+= ( unsigned int ) noexcept;
+    ListConstIterator<Val>& operator+= ( difference_type ) noexcept;
 
     /// makes the iterator point to the preceding element in the List
     /** for (iter=rbegin(); iter!=rend(); --iter) loops are guaranteed to
@@ -1279,7 +1319,13 @@ namespace gum {
     ListConstIterator<Val>& operator--() noexcept;
 
     /// makes the iterator point to i elements befor in the List
-    ListConstIterator<Val>& operator-= ( unsigned int ) noexcept;
+    ListConstIterator<Val>& operator-= ( difference_type ) noexcept;
+
+    /// returns a new iterator
+    ListConstIterator<Val> operator+ ( difference_type ) noexcept;
+
+    /// returns a new iterator
+    ListConstIterator<Val> operator- ( difference_type ) noexcept;
 
     /// checks whether two iterators point toward different elements
     /** @warning the end and rend iterators are always equal, whatever the list
@@ -1332,9 +1378,21 @@ namespace gum {
     /// remove the iterator for its list' safe iterators list
     void __removeFromSafeList () const;
 
+    /// makes the iterator point to the next element in the List
+    ListConstIterator<Val>& __opPlus ( unsigned int i ) noexcept;
+
+    /// makes the iterator point to i elements before in the List
+    ListConstIterator<Val>& __opMinus ( unsigned int i ) noexcept;
   };
 
 
+  /// for STL compliance, a distance operator
+  template <typename Val>
+  typename ListConstIterator<Val>::difference_type
+  operator- ( const ListConstIterator<Val>& iter1,
+              const ListConstIterator<Val>& iter2 );
+  
+    
 
 
 
@@ -1450,7 +1508,7 @@ namespace gum {
     ListIterator<Val>& operator++() noexcept;
 
     /// makes the iterator point to i elements further in the List
-    ListIterator<Val>& operator+= ( unsigned int ) noexcept;
+    ListIterator<Val>& operator+= ( difference_type ) noexcept;
 
     /// makes the iterator point to the preceding element in the List
     /** for (iter=rbegin(); iter!=rend(); --iter) loops are guaranteed to
@@ -1460,7 +1518,13 @@ namespace gum {
     ListIterator<Val>& operator--() noexcept;
 
     /// makes the iterator point to i elements befor in the List
-    ListIterator<Val>& operator-= ( unsigned int ) noexcept;
+    ListIterator<Val>& operator-= ( difference_type ) noexcept;
+
+    /// returns a new iterator
+    ListIterator<Val> operator+ ( difference_type ) noexcept;
+
+    /// returns a new iterator
+    ListIterator<Val> operator- ( difference_type ) noexcept;
 
     using typename ListConstIterator<Val>::operator!=;
     using typename ListConstIterator<Val>::operator==;
