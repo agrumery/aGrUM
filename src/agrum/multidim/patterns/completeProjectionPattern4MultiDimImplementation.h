@@ -29,7 +29,7 @@
 #warning To use completeProjectionPattern4MultiDimImplementation.h, you must define GUM_COMPLETE_PROJECTION_PATTERN_ALLOWED
 
 #else
-namespace gum{
+namespace gum {
 
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
@@ -39,23 +39,22 @@ namespace gum{
   ( const MultiDimImplementation<GUM_SCALAR>& ttable,
     Instantiation* instantiation = 0 ) {
 #endif
-    
+
     typename CompleteProjectionRegister4MultiDim<GUM_SCALAR>::CompleteProjectionPtr
-      func;
-  
+    func;
+
     // get the appropriate function to perform the operation
     try {
       // try to find func(ttable,del_vars) in the register
       func = CompleteProjectionRegister4MultiDim<GUM_SCALAR>::Register().get
-        ( GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME, ttable.name() );
-    }
-    catch ( NotFound& ) {
+             ( GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME, ttable.name() );
+    } catch ( NotFound& ) {
       func = CompleteProjectionRegister4MultiDim<GUM_SCALAR>::Register().get
-        ( GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME, ttable.basename() );
+             ( GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME, ttable.basename() );
     }
 
     // perform the projection
-    return func ( &ttable, instantiation );
+    return func( &ttable, instantiation );
   }
 
 

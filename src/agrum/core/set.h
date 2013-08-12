@@ -33,9 +33,9 @@
 
 
 namespace gum {
-  
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  
+
   template<typename KEY> class SetIterator;
   template<typename KEY> class Set;
 
@@ -48,10 +48,10 @@ namespace gum {
       static const SetIterator<int>* __SetIterEnd;
 
       // creates (if needed) and returns the iterator __SetIterEnd
-      static const SetIterator<int>* end4Statics ();
+      static const SetIterator<int>* end4Statics();
 
       // creates (if needed) and returns the iterator __SetIterEnd
-      static const SetIterator<int>* constEnd4Statics ();
+      static const SetIterator<int>* constEnd4Statics();
 
       // friends that have access to the iterator
       template<typename KEY> friend class Set;
@@ -116,10 +116,10 @@ namespace gum {
        * @param resize_policy enables the hashtable to resize itself automatically
        * when its number of elements is sufficiently high that it induces slow
        * retrievals of elements */
-      Set ( Size capacity = GUM_HASHTABLE_DEFAULT_SIZE,  bool resize_policy = true );
+      Set( Size capacity = GUM_HASHTABLE_DEFAULT_SIZE,  bool resize_policy = true );
 
       /// copy constructor
-      Set ( const Set<KEY>& aHT );
+      Set( const Set<KEY>& aHT );
 
       /// destructor
       ~Set();
@@ -173,17 +173,17 @@ namespace gum {
       /// inserts a new element in the set
       /** @warning if the set already contains the element, nothing is done.
        * In particular, it is not added to the set and no exception is thrown. */
-      void insert ( const KEY& k );
+      void insert( const KEY& k );
 
       /// erases an element from the set
       /** @warning if the set does not contain the element, nothing is done.
        * In particular, no exception is thrown. */
-      void erase ( const KEY& k );
+      void erase( const KEY& k );
 
       /// erases an element from the set
       /** @warning if the set does not contain the element, nothing is done.
        * In particular, no exception is thrown. */
-      void erase ( const iterator& k );
+      void erase( const iterator& k );
 
       /// removes all the elements, if any, from the set
       void clear();
@@ -192,10 +192,10 @@ namespace gum {
       Size size() const;
 
       /// indicates whether a given elements belong to the set
-      bool contains ( const KEY& k ) const;
+      bool contains( const KEY& k ) const;
 
       /// indicates whether a given elements belong to the set
-      bool exists ( const KEY& k ) const;
+      bool exists( const KEY& k ) const;
 
       /// indicates whether the set is the empty set
       bool empty() const;
@@ -248,8 +248,8 @@ namespace gum {
        *
        * So, to summarize: when initializing static members, use end4Statics() rather
        * than end(). In all the other cases, use simply the usual method end(). */
-      static const iterator& end4Statics ();
-      static const const_iterator& constEnd4Statics ();
+      static const iterator& end4Statics();
+      static const const_iterator& constEnd4Statics();
 
       /// @}
 
@@ -265,7 +265,7 @@ namespace gum {
 
       /// changes the size of the underlying hashtable containing the set
       /** See HashTable's method resize for more details */
-      void resize ( Size new_capacity ) ;
+      void resize( Size new_capacity ) ;
 
       /** @brief enables the user to change dynamically the resizing policy of
        * the underlying hashtable
@@ -274,7 +274,7 @@ namespace gum {
        * to guarantee that its elements are fast to retrieve. When new_policy is
        * false, the set will not try to change its memory size, hence resulting in
        * potentially slower accesses. */
-      void setResizePolicy ( const bool new_policy ) ;
+      void setResizePolicy( const bool new_policy ) ;
 
       /// returns the current resizing policy of the underlying hashtable
       bool resizePolicy() const ;
@@ -297,8 +297,8 @@ namespace gum {
        * the original set. Hence iterators on the former may not parse it in the same
        * order as iterators on the latter. */
       template <typename NEWKEY>
-      HashTable<KEY,NEWKEY> hashMap ( NEWKEY ( *f ) ( const KEY& ),
-                                      Size capacity = 0 ) const;
+      HashTable<KEY,NEWKEY> hashMap( NEWKEY( *f )( const KEY& ),
+                                     Size capacity = 0 ) const;
 
       /// creates a hashtable of NEWKEY from the set
       /** @param val the value taken by all the elements of the resulting hashtable
@@ -309,14 +309,14 @@ namespace gum {
        * the original set. Hence iterators on the former may not parse it in the same
        * order as iterators on the latter. */
       template <typename NEWKEY>
-      HashTable<KEY,NEWKEY> hashMap ( const NEWKEY& val, Size size = 0 ) const;
+      HashTable<KEY,NEWKEY> hashMap( const NEWKEY& val, Size size = 0 ) const;
 
       /// a method to create a List of NEWKEY from the set
       /** @param f a function that maps a KEY into a NEWKEY
        * @warning the order of the NEWKEY elements in the resulting list is
        * arbitrary */
       template <typename NEWKEY> List<NEWKEY>
-      listMap ( NEWKEY ( *f ) ( const KEY& ) ) const;
+      listMap( NEWKEY( *f )( const KEY& ) ) const;
 
       /// @}
 
@@ -329,7 +329,7 @@ namespace gum {
       HashTable<KEY,bool> __inside;
 
       /// convert a hashtable into a set of keys
-      Set ( const HashTable<KEY,bool>& h );
+      Set( const HashTable<KEY,bool>& h );
 
   };
 
@@ -386,11 +386,11 @@ namespace gum {
       /// creates an iterator for a given set
       /** By default, the iterator points to the beginning of the set, but, using
        * optional argument pos, you can make it point to end() */
-      SetIterator ( const Set<KEY>& from,
-                    Position pos = GUM_SET_ITERATOR_BEGIN );
+      SetIterator( const Set<KEY>& from,
+                   Position pos = GUM_SET_ITERATOR_BEGIN );
 
       /// copy constructor
-      SetIterator ( const SetIterator<KEY>& from );
+      SetIterator( const SetIterator<KEY>& from );
 
       /// destructor
       ~SetIterator();
@@ -407,13 +407,13 @@ namespace gum {
       SetIterator<KEY>& operator++();
 
       /// indicates whether two iterators point to different elements or sets
-      bool operator!= ( const SetIterator<KEY> &from ) const;
+      bool operator!= ( const SetIterator<KEY>& from ) const;
 
       /// indicates whether two iterators point toward the same element of a same set
-      bool operator== ( const SetIterator<KEY> &from ) const;
+      bool operator== ( const SetIterator<KEY>& from ) const;
 
       /// assignment operator
-      SetIterator<KEY>& operator= ( const SetIterator<KEY> &from );
+      SetIterator<KEY>& operator= ( const SetIterator<KEY>& from );
 
       /// returns the element pointed to by the iterator
       /** @throws UndefinedIteratorValue exception if the iterator does not point

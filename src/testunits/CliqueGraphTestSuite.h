@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Lionel Torti                                    *
+ *   (C) 2007-2013 by Christophe GONZALES and Pierre-Henri WUILLEMIN       *
  *   {prenom.nom}@lip6.fr                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -101,7 +101,7 @@ namespace gum_tests {
       }
 
       void testConstructor() {
-        gum::CliqueGraph *graph = NULL;
+        gum::CliqueGraph* graph = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( ( graph = new gum::CliqueGraph() ) );
         TS_GUM_ASSERT_THROWS_NOTHING( delete graph );
       };
@@ -196,9 +196,9 @@ namespace gum_tests {
         fillG2( g2 );
         fillG3( g3 );
 
-        gum::CliqueGraph *copy1 = NULL;
-        gum::CliqueGraph *copy2 = NULL;
-        gum::CliqueGraph *copy3 = NULL;
+        gum::CliqueGraph* copy1 = nullptr;
+        gum::CliqueGraph* copy2 = nullptr;
+        gum::CliqueGraph* copy3 = nullptr;
 
         TS_GUM_ASSERT_THROWS_NOTHING( ( copy1 = new gum::CliqueGraph( g1 ) ) );
         TS_GUM_ASSERT_THROWS_NOTHING( ( copy2 = new gum::CliqueGraph( g2 ) ) );
@@ -232,7 +232,7 @@ namespace gum_tests {
 
         try {
           g1.hasRunningIntersection();
-        } catch( gum::Exception& e ) {GUM_SHOWERROR( e );}
+        } catch ( gum::Exception& e ) {GUM_SHOWERROR( e );}
 
         TS_ASSERT( g1.hasRunningIntersection() );
 
@@ -345,7 +345,7 @@ namespace gum_tests {
 
         gum::Size nodeG1Count = g1.size();
 
-        for( int i = 0; i < 10; i++ ) {
+        for ( int i = 0; i < 10; i++ ) {
           TS_GUM_ASSERT_THROWS_NOTHING( g1.eraseNode( 1 ) );
           TS_ASSERT_EQUALS( g1.size(), nodeG1Count - 1 );
         }
@@ -617,7 +617,7 @@ namespace gum_tests {
 
         try {
           vec = graph.undirectedPath( 1, 4 );
-        } catch( gum::Exception &e ) {GUM_SHOWERROR( e );}
+        } catch ( gum::Exception& e ) {GUM_SHOWERROR( e );}
 
         TS_GUM_ASSERT_THROWS_NOTHING( vec = graph.undirectedPath( 1, 4 ) );
 
@@ -626,17 +626,17 @@ namespace gum_tests {
 
         /* From A, must pass throught B or C. */
 
-        if( vec[1] == 2 ) {
+        if ( vec[1] == 2 ) {
           graph.eraseEdge( gum::Edge( 1, 2 ) );
-        } else if( vec[1] == 3 ) {
+        } else if ( vec[1] == 3 ) {
           /** Paths from A to D  still goes threw 3 or 4 cliques.*/
           TS_ASSERT( ( vec.size() == 3 ) || ( vec.size() == 4 ) );
 
           /** Deleting an edge to force A -> B -> C -> D or A -> C -> B -> D.  */
 
-          if( vec[1] == 2 ) {
+          if ( vec[1] == 2 ) {
             graph.eraseEdge( gum::Edge( 2, 4 ) );
-          } else if( vec[1] == 3 ) {
+          } else if ( vec[1] == 3 ) {
             graph.eraseEdge( gum::Edge( 3, 4 ) );
           }
 

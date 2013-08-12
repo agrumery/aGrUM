@@ -44,7 +44,7 @@ namespace gum_tests {
 
   class DefaultTriangulationTestSuite: public CxxTest::TestSuite {
     public:
-      gum::LabelizedVariable *var1, *var2, *var3, *var4, *var5;
+      gum::LabelizedVariable* var1, *var2, *var3, *var4, *var5;
 
       void setUp() {
         var1 = new gum::LabelizedVariable( "var1", "1" );
@@ -69,26 +69,26 @@ namespace gum_tests {
         gum::List<gum::NodeId> idList;
 
         fill( topo, idList );
-        const gum::UndiGraph &undiGraph = topo.moralGraph();
+        const gum::UndiGraph& undiGraph = topo.moralGraph();
         gum::HashTable<gum::NodeId, gum::Idx> modalities;
 
         // Builds a hashTable where the keys are the id of the variable,
         // and the values the variable's domain size.
 
-        for( gum::DAG::NodeIterator iter = topo.beginNodes();
-             iter != topo.endNodes(); ++iter )
+        for ( gum::DAG::NodeIterator iter = topo.beginNodes();
+              iter != topo.endNodes(); ++iter )
           modalities.insert( *iter, topo.variable( *iter ).domainSize() );
 
-        gum::DefaultTriangulation *triangle = NULL;
+        gum::DefaultTriangulation* triangle = nullptr;
 
         TS_GUM_ASSERT_THROWS_NOTHING
         ( triangle = new gum::DefaultTriangulation( &undiGraph, &modalities ) );
 
         TS_GUM_ASSERT_THROWS_NOTHING( triangle->triangulatedGraph() );
 
-        TS_ASSERT_EQUALS(triangle->maxLog10CliqueDomainSize(),log10(16)); // clique of 4 binary variables
+        TS_ASSERT_EQUALS( triangle->maxLog10CliqueDomainSize(),log10( 16 ) ); // clique of 4 binary variables
 
-        TS_GUM_ASSERT_THROWS_NOTHING( if( triangle ) delete triangle );
+        TS_GUM_ASSERT_THROWS_NOTHING( if ( triangle ) delete triangle );
       };
 
       void testjunctionTree() {
@@ -101,7 +101,7 @@ namespace gum_tests {
 
         try {
           undiGraph = topo.moralGraph();
-        } catch( gum::Exception& e ) {GUM_SHOWERROR( e ); exit( 0 );};
+        } catch ( gum::Exception& e ) {GUM_SHOWERROR( e ); exit( 0 );};
 
 
         gum::HashTable<gum::NodeId, gum::Idx> modalities;
@@ -109,25 +109,25 @@ namespace gum_tests {
         // Builds a hashTable where the keys are the id of the variable,
         // and the values the variable's domain size.
 
-        for( gum::DAG::NodeIterator iter = topo.beginNodes();
-             iter != topo.endNodes(); ++iter )
+        for ( gum::DAG::NodeIterator iter = topo.beginNodes();
+              iter != topo.endNodes(); ++iter )
           modalities.insert( *iter, topo.variable( *iter ).domainSize() );
 
-        gum::DefaultTriangulation *triangle = NULL;
+        gum::DefaultTriangulation* triangle = nullptr;
 
         TS_GUM_ASSERT_THROWS_NOTHING
         ( triangle = new gum::DefaultTriangulation( &undiGraph, &modalities ) );
 
         try {
           triangle->junctionTree();
-        } catch( gum::Exception &e ) {GUM_SHOWERROR( e );};
+        } catch ( gum::Exception& e ) {GUM_SHOWERROR( e );};
 
         TS_GUM_ASSERT_THROWS_NOTHING( triangle->junctionTree() );
 
         /// TODO : problem here !!
         //      TS_ASSERT( triangle->junctionTree().hasRunningIntersection() );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( if( triangle ) delete triangle );
+        TS_GUM_ASSERT_THROWS_NOTHING( if ( triangle ) delete triangle );
       };
 
 
@@ -187,7 +187,7 @@ namespace gum_tests {
 
         gum::UndiGraph graph;
 
-        for( unsigned int i = 1; i <= 8; ++i )
+        for ( unsigned int i = 1; i <= 8; ++i )
           graph.insertNode( i );
 
         createClique( graph, c1 );
@@ -202,7 +202,7 @@ namespace gum_tests {
 
         gum::Property<unsigned int>::onNodes dom;
 
-        for( unsigned int i = 1; i <= 8; ++i )
+        for ( unsigned int i = 1; i <= 8; ++i )
           dom.insert( i, 10 );
 
         gum::DefaultTriangulation triang;
@@ -246,17 +246,17 @@ namespace gum_tests {
       void testTriangulatedGraph2() {
         gum::UndiGraph graph;
 
-        for( unsigned int i = 1; i <= 8; ++i )
+        for ( unsigned int i = 1; i <= 8; ++i )
           graph.insertNode( i );
 
-        for( unsigned int i = 1; i <= 7; ++i )
+        for ( unsigned int i = 1; i <= 7; ++i )
           graph.insertEdge( i, i + 1 );
 
         graph.insertEdge( 8, 1 );
 
         gum::Property<unsigned int>::onNodes dom;
 
-        for( unsigned int i = 1; i <= 8; ++i )
+        for ( unsigned int i = 1; i <= 8; ++i )
           dom.insert( i, 10 );
 
         gum::DefaultTriangulation triang;
@@ -288,19 +288,19 @@ namespace gum_tests {
       void createClique( gum::UndiGraph& graph, const gum::NodeSet& clique ) {
         gum::NodeSetIterator iter2;
 
-        for( gum::NodeSetIterator iter = clique.begin();
-             iter != clique.end(); ++iter ) {
+        for ( gum::NodeSetIterator iter = clique.begin();
+              iter != clique.end(); ++iter ) {
           iter2 = iter;
 
-          for( ++iter2; iter2 != clique.end(); ++iter2 ) {
-            if( ! graph.existsEdge( *iter, *iter2 ) )
+          for ( ++iter2; iter2 != clique.end(); ++iter2 ) {
+            if ( ! graph.existsEdge( *iter, *iter2 ) )
               graph.insertEdge( *iter, *iter2 );
           }
         }
       }
 
       void __triangulate_bif( std::string file ) {
-        gum::BayesNet<float> *bn = new gum::BayesNet<float>();
+        gum::BayesNet<float>* bn = new gum::BayesNet<float>();
         gum::BIFReader<float> reader( bn, file );
         reader.trace( false );
 
@@ -308,16 +308,16 @@ namespace gum_tests {
 
         gum::LazyPropagation<float> inf( *bn );
 
-        if( bn != 0 ) delete( bn );
+        if ( bn != 0 ) delete( bn );
       };
 
-      void fill( gum::BayesNet<float>& topo, gum::List<gum::NodeId> &idList ) {
+      void fill( gum::BayesNet<float>& topo, gum::List<gum::NodeId>& idList ) {
         idList.clear();
-        idList.insert( topo.addVariable( *var1 ) );
-        idList.insert( topo.addVariable( *var2 ) );
-        idList.insert( topo.addVariable( *var3 ) );
-        idList.insert( topo.addVariable( *var4 ) );
-        idList.insert( topo.addVariable( *var5 ) );
+        idList.insert( topo.add( *var1 ) );
+        idList.insert( topo.add( *var2 ) );
+        idList.insert( topo.add( *var3 ) );
+        idList.insert( topo.add( *var4 ) );
+        idList.insert( topo.add( *var5 ) );
 
         topo.addArc( idList[0], idList[2] );
         topo.addArc( idList[2], idList[4] );
@@ -327,7 +327,7 @@ namespace gum_tests {
         topo.addArc( idList[1], idList[4] );
       };
 
-      gum::UndiGraph getRealMoralGraph( const gum::List<gum::NodeId> &idList ) {
+      gum::UndiGraph getRealMoralGraph( const gum::List<gum::NodeId>& idList ) {
         gum::UndiGraph graph;
         /*
           idList.clear();

@@ -23,7 +23,7 @@
  * aGrUM's INLINE is a substitute to the usual C++ inline. It enables compiling
  * aGrUM with or without inline functions, depending on whether we wish to
  * debug parts of aGrUM.
- * 
+ *
  * From eigen library, aGrUM proposes now:
  * INLINE : the compiler has to try to inline
  * STRONG_INLINE : the compiler has to try harder toinline

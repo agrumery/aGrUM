@@ -38,22 +38,22 @@ const std::string gumDAGGenerator::__allowedParam[] = {"NBR_NODES", "NBR_ROOT",
 // their respective parameter.
 //
 void
-gumDAGGenerator::setConfiguration ( const gumHashTable<std::string, std::string>& configuration ) {
+gumDAGGenerator::setConfiguration( const gumHashTable<std::string, std::string>& configuration ) {
   gumSize value; // Used only to check parameters type correctness
 
   for ( short i = 0; i < gumDAGGenerator::__nbrAllowedParam; i++ ) {
-    if ( configuration.exists ( gumDAGGenerator::__allowedParam[i] ) ) {
+    if ( configuration.exists( gumDAGGenerator::__allowedParam[i] ) ) {
       // Checking if it is a legal value
-      std::istringstream input ( configuration[gumDAGGenerator::__allowedParam[i]] );
+      std::istringstream input( configuration[gumDAGGenerator::__allowedParam[i]] );
 
-      if ( ! ( input >> value ) ) {
-        GUM_ERROR ( gumOperationNotAllowed,"Invalid parameter value."+ gumDAGGenerator::__allowedParam[i] );
+      if ( !( input >> value ) ) {
+        GUM_ERROR( gumOperationNotAllowed,"Invalid parameter value."+ gumDAGGenerator::__allowedParam[i] );
       }
 
       try {
         _param[gumDAGGenerator::__allowedParam[i]] = configuration[gumDAGGenerator::__allowedParam[i]];
       } catch ( gumNotFound ) {
-        _param.insert ( gumDAGGenerator::__allowedParam[i], configuration[gumDAGGenerator::__allowedParam[i]] );
+        _param.insert( gumDAGGenerator::__allowedParam[i], configuration[gumDAGGenerator::__allowedParam[i]] );
       }
     }
   }
@@ -64,23 +64,23 @@ gumDAGGenerator::setConfiguration ( const gumHashTable<std::string, std::string>
 // and middle nodes.
 //
 void
-gumDAGGenerator::__generateNodes ( gumDAG &dag,
-                                   gumNodeSet &rootList,
-                                   gumNodeSet &middleList,
-                                   gumNodeSet &leafList ) const {
+gumDAGGenerator::__generateNodes( gumDAG& dag,
+                                  gumNodeSet& rootList,
+                                  gumNodeSet& middleList,
+                                  gumNodeSet& leafList ) const {
   for ( gumSize i = 0; i < getNbrNodes(); i++ ) {
     std::ostringstream os;
     os << i;
-    gumNode aNode ( i, os.str() );
+    gumNode aNode( i, os.str() );
 
-    dag.insertNode ( aNode );
+    dag.insertNode( aNode );
 
     if ( i < getNbrRootNodes() ) {
-      rootList.insert ( aNode );
+      rootList.insert( aNode );
     } else if ( ( i >= getNbrRootNodes() ) && ( i < getNbrNodes() - getNbrLeafNodes() ) ) {
-      middleList.insert ( aNode );
+      middleList.insert( aNode );
     } else {
-      leafList.insert ( aNode );
+      leafList.insert( aNode );
     }
   }
 }
@@ -89,25 +89,25 @@ gumDAGGenerator::__generateNodes ( gumDAG &dag,
 // Generates nodes, for a DAG with several connex component.
 //
 void
-gumDAGGenerator::__generateNodes ( gumDAG &/*dag*/, //@todo ??
-                                   gumNodeSet &rootList,
-                                   gumNodeSet &middleList,
-                                   gumNodeSet &leafList ) const {
+gumDAGGenerator::__generateNodes( gumDAG& /*dag*/,  //@todo ??
+                                  gumNodeSet& rootList,
+                                  gumNodeSet& middleList,
+                                  gumNodeSet& leafList ) const {
   for ( gumSize i = 0; i < getNbrNodes(); i++ ) {
     std::ostringstream os;
     os << i;
-    gumNode aNode ( i, os.str() );
+    gumNode aNode( i, os.str() );
 
     if ( i < getNbrRootNodes() ) {
       if ( i < getNbrConnexComponent() ) {
-        rootLists[i]->pushBack ( aNode );
+        rootLists[i]->pushBack( aNode );
       } else {
-        rootLists[rand() % getNbrConnexComponent()]->pushBack ( aNode );
+        rootLists[rand() % getNbrConnexComponent()]->pushBack( aNode );
       }
     } else if ( ( i >= getNbrRootNodes() ) && ( i < getNbrNodes() - getNbrLeafNodes() ) ) {
-      middleLists[rand() % getNbrConnexComponent()]->pushBack ( aNode );
+      middleLists[rand() % getNbrConnexComponent()]->pushBack( aNode );
     } else {
-      leafLists[rand() % getNbrConnexComponent()]->pushBack ( aNode );
+      leafLists[rand() % getNbrConnexComponent()]->pushBack( aNode );
     }
   }
 }
@@ -116,17 +116,14 @@ gumDAGGenerator::__generateNodes ( gumDAG &/*dag*/, //@todo ??
 // Generate arcs.
 //
 void
-gumDAGGenerator::__generateArcs ( gumDAG &dag,
-                                  gumNodeSet &rootList,
-                                  gumNodeSet &middleList,
-                                  gumNodeSet &leafList ) const {
+gumDAGGenerator::__generateArcs( gumDAG& dag,
+                                 gumNodeSet& rootList,
+                                 gumNodeSet& middleList,
+                                 gumNodeSet& leafList ) const {
 
   if ( rootList.size() + middleList.size() < getMaxParents() ) {
-    throw gumOperationNotAllowed ( "Invalid parameters.", "NBR_ROOT + NBR_NODES - NBR_LEAF < MAX_NBR_PARENT" );
+    throw gumOperationNotAllowed( "Invalid parameters.", "NBR_ROOT + NBR_NODES - NBR_LEAF < MAX_NBR_PARENT" );
   }
-
-  // Initializing the seed at a random value
-  initRandom()
 
   // Adding fathers at the leaf nodes
   for ( gumList<gumNode>::iterator iter = leafList.begin(); iter != leafList.end(); ++iter ) {
@@ -137,10 +134,10 @@ gumDAGGenerator::__generateArcs ( gumDAG &dag,
     do {
       gumSize aParent = ( rand() % ( rootList.size() + middleList.size() ) );
       gumNode aParentNode = ( aParent < rootList.size() ) ?rootList[aParent]:middleList[aParent - rootList.size()];
-      gumArc aArc ( iter->getID(), aParentNode.getID() );
+      gumArc aArc( iter->getID(), aParentNode.getID() );
 
-      if ( ! dag.existsArc ( aArc ) ) {
-        dag.insertArc ( aArc );
+      if ( ! dag.existsArc( aArc ) ) {
+        dag.insertArc( aArc );
         i++;
       }
     } while ( i < nbrParents );
@@ -150,25 +147,25 @@ gumDAGGenerator::__generateArcs ( gumDAG &dag,
 
   gumSize idx = 0;
   gumList<gumNode> parents;
-  gumList<gumNode> candidates ( rootList );
+  gumList<gumNode> candidates( rootList );
 
   for ( gumList<gumNode>::iterator iter = middleList.begin(); iter != middleList.end(); ++iter ) {
-    candidates.pushBack ( *iter );
+    candidates.pushBack( *iter );
   }
 
   // Adding fathers at the middle nodes
   for ( gumList<gumNode>::iterator iter = middleList.begin(); iter != middleList.end(); ++iter ) {
     nbrParents = ( rand() % ( getMaxParents() - getMinParents() + 1 ) ) + getMinParents();
     parents.clear();
-    __removeAncestors ( *iter, dag, candidates );
+    __removeAncestors( *iter, dag, candidates );
 
     for ( gumSize i = 0; i < nbrParents; i++ ) {
       idx = rand() * candidates.size();
-      dag.insertArc ( gumArc ( candidates[idx].getID(), iter->getID() ) );
-      candidates.erase ( idx );
+      dag.insertArc( gumArc( candidates[idx].getID(), iter->getID() ) );
+      candidates.erase( idx );
     }
 
-    __removeAncestors ( *iter, dag, candidates, true );
+    __removeAncestors( *iter, dag, candidates, true );
   }
 }
 
@@ -176,12 +173,12 @@ gumDAGGenerator::__generateArcs ( gumDAG &dag,
  * Generate arcs, for a DAG with several connex component.
  */
 void
-gumDAGGenerator::__generateArcs ( gumDAG &dag,
-                                  gumNodeSet &rootList,
-                                  gumNodeSet &middleList,
-                                  gumNodeSet &leafList ) const {
+gumDAGGenerator::__generateArcs( gumDAG& dag,
+                                 gumNodeSet& rootList,
+                                 gumNodeSet& middleList,
+                                 gumNodeSet& leafList ) const {
   for ( gumSize i = 0; i < getNbrConnexComponent(); i++ ) {
-    __generateArcs ( dag, *rootLists[i], *middleLists[i], *leafLists[i] );
+    __generateArcs( dag, *rootLists[i], *middleLists[i], *leafLists[i] );
   }
 }
 

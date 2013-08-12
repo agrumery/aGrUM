@@ -24,7 +24,7 @@
 
 #include <agrum/config.h>
 
-#include <agrum/core/utilsString.h>
+#include <agrum/core/utils.h>
 #include <agrum/learning/database.h>
 
 #ifdef GUM_NO_INLINE
@@ -39,37 +39,37 @@ extern bool GUM_PARSE_XML_CSV_parser( gum::Database&, const std::string& );
 namespace gum {
 
 
-  // ==============================================================================
+
   /// basic constructor
-  // ==============================================================================
+
   Database::Database() :
-      __nb_nodes( 0 ), __nb_cases( 0 ), __cases( 0 ), __filename( "" ) {
+    __nb_nodes( 0 ), __nb_cases( 0 ), __cases( 0 ), __filename( "" ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Database );
 
     // initialize the __iterators begin/rbegin/end/rend
     __iter_begin.__initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
+    ( *this, Database::iterator::Location::BEGIN );
     __iter_rbegin.__initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
+    ( *this, Database::iterator::Location::RBEGIN );
     __iter_end.__initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_END );
+    ( *this, Database::iterator::Location::END );
     __iter_rend.__initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_REND );
+    ( *this, Database::iterator::Location::REND );
   }
 
-  // ==============================================================================
+
   /// copy constructor
-  // ==============================================================================
+
   Database::Database( const Database& from ) :
-      __nb_nodes( from.__nb_nodes ),
-      __nb_cases( from.__nb_cases ),
-      __node_names( from.__node_names ),
-      __node_name_per_id( from.__node_name_per_id ),
-      __nb_modalities( from.__nb_modalities ),
-      __modalities_names( from.__modalities_names ),
-      __cases( new unsigned int [__nb_nodes * __nb_cases] ),
-      __filename( from.__filename ) {
+    __nb_nodes( from.__nb_nodes ),
+    __nb_cases( from.__nb_cases ),
+    __node_names( from.__node_names ),
+    __node_name_per_id( from.__node_name_per_id ),
+    __nb_modalities( from.__nb_modalities ),
+    __modalities_names( from.__modalities_names ),
+    __cases( new unsigned int [__nb_nodes* __nb_cases] ),
+    __filename( from.__filename ) {
     // for debugging purposes
     GUM_CONS_CPY( Database );
     // copy the __cases
@@ -77,18 +77,18 @@ namespace gum {
             __nb_nodes * __nb_cases * sizeof( unsigned int ) );
     // initialize the __iterators begin/rbegin/end/rend
     __iter_begin.__initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
+    ( *this, Database::iterator::Location::BEGIN );
     __iter_rbegin.__initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
+    ( *this, Database::iterator::Location::RBEGIN );
     __iter_end.__initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_END );
+    ( *this, Database::iterator::Location::END );
     __iter_rend.__initializeIterator
-    ( *this, DatabaseIterator::GUM_DATABASE_ITER_REND );
+    ( *this, Database::iterator::Location::REND );
   }
 
-  // ==============================================================================
+
   /// copy operator
-  // ==============================================================================
+
   Database& Database::operator= ( const Database& from ) {
     // avoid self assignment
     if ( this != &from ) {
@@ -124,24 +124,24 @@ namespace gum {
 
       // initialize the __iterators begin/rbegin/end/rend
       __iter_begin.__initializeIterator
-      ( *this, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
+      ( *this, Database::iterator::Location::BEGIN );
 
       __iter_end.__initializeIterator
-      ( *this, DatabaseIterator::GUM_DATABASE_ITER_END );
+      ( *this, Database::iterator::Location::END );
 
       __iter_rend.__initializeIterator
-      ( *this, DatabaseIterator::GUM_DATABASE_ITER_REND );
+      ( *this, Database::iterator::Location::REND );
 
       __iter_rbegin.__initializeIterator
-      ( *this, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
+      ( *this, Database::iterator::Location::RBEGIN );
     }
 
     return *this;
   }
 
-  // ==============================================================================
+
   /// destructor
-  // ==============================================================================
+
   Database::~Database() {
     // for debugging purposes
     GUM_DESTRUCTOR( Database );
@@ -161,7 +161,7 @@ namespace gum {
 
     if ( l == 0 ) return false;
 
-    for ( unsigned int i = 0;i < l;i++ ) {
+    for ( unsigned int i = 0; i < l; i++ ) {
       const char& c = s.at( i );
 
       if ( c == '#' ) return false;
@@ -172,9 +172,9 @@ namespace gum {
     return false;
   }
 
-  // ==============================================================================
+
   /// creates a new database from a pure CSV file
-  // ==============================================================================
+
   Database Database::createFromCSV( const std::string& filename,
                                     char separator_separator,
                                     char field_delimiter,
@@ -244,7 +244,7 @@ namespace gum {
     database.__cases =
       new unsigned int [database.__nb_cases * database.__nb_nodes];
 
-    unsigned int *ptrcases = database.__cases;
+    unsigned int* ptrcases = database.__cases;
 
     while ( ! inFile.eof() ) {
       // get the content of the new line
@@ -256,7 +256,7 @@ namespace gum {
         SplitCSVLine( str, separator_separator, field_delimiter, escape_char );
 
       // check that it has exactly __nb_nodes fields
-      if (( line.size() != database.__nb_nodes ) && ( line.size() != 0 ) ) {
+      if ( ( line.size() != database.__nb_nodes ) && ( line.size() != 0 ) ) {
         GUM_ERROR( IOError, "CSV file does not have a constant number of fields" );
       }
 
@@ -289,16 +289,16 @@ namespace gum {
 
     // create the __iterators begin/rbegin/end/rend
     database.__iter_begin.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
+    ( database, Database::iterator::Location::BEGIN );
 
     database.__iter_rbegin.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
+    ( database, Database::iterator::Location::RBEGIN );
 
     database.__iter_end.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_END );
+    ( database, Database::iterator::Location::END );
 
     database.__iter_rend.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_REND );
+    ( database, Database::iterator::Location::REND );
 
     // return the newly constructed database
     return database;
@@ -306,7 +306,7 @@ namespace gum {
 
 
   //=============================================================================
-  Database Database::createFromCSVAndBN( BayesNet<float> *bn,
+  Database Database::createFromCSVAndBN( BayesNet<float>* bn,
                                          const std::string& filename,
                                          char separator_separator,
                                          char field_delimiter,
@@ -380,11 +380,11 @@ namespace gum {
     database.__cases =
       new unsigned int [database.__nb_cases * database.__nb_nodes];
 
-    unsigned int *ptrcases = database.__cases;
+    unsigned int* ptrcases = database.__cases;
 
     std::vector<unsigned int> inBN;
 
-    for ( DAG::NodeIterator it = bn->beginNodes();it != bn->endNodes();++it ) {
+    for ( DAG::NodeIterator it = bn->beginNodes(); it != bn->endNodes(); ++it ) {
       std::string not_exist = ( bn->variable( *it ) ).name();
       unsigned int i = 0;
 
@@ -405,7 +405,7 @@ namespace gum {
       database.__nb_modalities[i] = ( bn->variable( *it ) ).domainSize();
 
       for ( unsigned int j = 0 ; j < database.__nb_modalities[i]; j++ )
-        modal_names[i].insert(( bn->variable( *it ) ).label( j ), j );
+        modal_names[i].insert( ( bn->variable( *it ) ).label( j ), j );
     }
 
 
@@ -419,7 +419,7 @@ namespace gum {
         SplitCSVLine( str, separator_separator, field_delimiter, escape_char );
 
       // check that it has exactly __nb_nodes fields
-      if (( line.size() != database.__nb_nodes ) && ( line.size() != 0 ) ) {
+      if ( ( line.size() != database.__nb_nodes ) && ( line.size() != 0 ) ) {
         GUM_ERROR( IOError, "CSV file does not have a constant number of fields" );
       }
 
@@ -460,16 +460,16 @@ namespace gum {
 
     // create the __iterators begin/rbegin/end/rend
     database.__iter_begin.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
+    ( database, Database::iterator::Location::BEGIN );
 
     database.__iter_rbegin.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
+    ( database, Database::iterator::Location::RBEGIN );
 
     database.__iter_end.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_END );
+    ( database, Database::iterator::Location::END );
 
     database.__iter_rend.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_REND );
+    ( database, Database::iterator::Location::REND );
 
     // return the newly constructed database
     return database;
@@ -478,9 +478,9 @@ namespace gum {
 
 
 
-  // ==============================================================================
+
   /// creates a new database from a pure CSV file
-  // ==============================================================================
+
   Database Database::createFromXmlCSV( const std::string& filename ) {
     // create a new empty database, to be filled later
     Database database;
@@ -493,13 +493,13 @@ namespace gum {
 
     // create the __iterators begin/rbegin/end/rend
     database.__iter_begin.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_BEGIN );
+    ( database, Database::iterator::Location::BEGIN );
     database.__iter_rbegin.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_RBEGIN );
+    ( database, Database::iterator::Location::RBEGIN );
     database.__iter_end.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_END );
+    ( database, Database::iterator::Location::END );
     database.__iter_rend.__initializeIterator
-    ( database, DatabaseIterator::GUM_DATABASE_ITER_REND );
+    ( database, Database::iterator::Location::REND );
 
     // return the newly constructed database
     return database;

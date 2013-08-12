@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Lionel Torti                                    *
+ *   (C) 2007-2013 by Christophe GONZALES and Pierre-Henri WUILLEMIN       *
  *   {prenom.nom}@lip6.fr                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -48,7 +48,7 @@ namespace gum_tests {
       }
 
       static gum::Size twistedMapFunction( const gum::NodeId& aNode ) {
-        throw( aNode );
+        throw ( aNode );
       }
 
       gum::DAG buildGraph() {
@@ -73,7 +73,7 @@ namespace gum_tests {
       gum::NodeId id1, id2, id3, id4, id5;
 
       void testConstructor1() {
-        gum::DAG *graph = NULL;
+        gum::DAG* graph = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( ( graph = new gum::DAG() ) );
         TS_GUM_ASSERT_THROWS_NOTHING( ( delete( graph ) ) );
       }
@@ -126,7 +126,7 @@ namespace gum_tests {
       void testCopyConstructor() {
         gum::DAG graph = buildGraph();
 
-        gum::DAG *copy = NULL;
+        gum::DAG* copy = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( copy = new gum::DAG( graph ) ) ;
         TS_ASSERT( graph == *copy );
         delete( copy );
@@ -201,7 +201,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( nodeCount, ( gum::Size )5 );
         TS_ASSERT_EQUALS( arcCount, ( gum::Size )6 );
 
-        for( int i = 0; i < 10; i++ ) {
+        for ( int i = 0; i < 10; i++ ) {
           TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseNode( id5 ) );
         }
 
@@ -240,7 +240,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( nodelist.size(), graph.size() );
         gum::Size nodeCount = graph.size();
 
-        for( auto iter = nodelist.begin(); iter != nodelist.end(); ++iter ) {
+        for ( auto iter = nodelist.begin(); iter != nodelist.end(); ++iter ) {
           graph.eraseNode( *iter );
         }
 
@@ -256,7 +256,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( arclist.size(), graph.sizeArcs() );
         gum::Size arcCount = graph.sizeArcs();
 
-        for( auto iter = arclist.begin(); iter != arclist.end(); ++iter ) {
+        for ( auto iter = arclist.begin(); iter != arclist.end(); ++iter ) {
           graph.eraseArc( *iter );
         }
 
@@ -273,7 +273,7 @@ namespace gum_tests {
 
         gum::Size s = 0;
 
-        for( auto iter = list.begin(); iter != list.end(); ++iter ) {
+        for ( auto iter = list.begin(); iter != list.end(); ++iter ) {
           s += *iter;
         }
 
@@ -298,7 +298,7 @@ namespace gum_tests {
         gum::Size sk = 0;
         gum::Size sv = 0;
 
-        for(
+        for (
           auto iter = hashmap.begin();
           iter != hashmap.end();
           ++iter
@@ -327,7 +327,7 @@ namespace gum_tests {
 
         gum::Size s = 0;
 
-        for( auto iter = list.begin(); iter != list.end(); ++iter ) {
+        for ( auto iter = list.begin(); iter != list.end(); ++iter ) {
           s += *iter;
         }
 
@@ -343,7 +343,7 @@ namespace gum_tests {
         gum::Size sk = 0;
         gum::Size sv = 0;
 
-        for(
+        for (
           auto iter = hashmap.begin();
           iter != hashmap.end();
           ++iter

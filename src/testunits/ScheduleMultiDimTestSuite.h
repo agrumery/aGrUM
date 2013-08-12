@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Lionel Torti                                    *
+ *   (C) 2007-2013 by Christophe GONZALES and Pierre-Henri WUILLEMIN       *
  *   {prenom.nom}@lip6.fr                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -33,7 +33,7 @@ namespace gum_tests {
       void test_construct() {
         std::vector<gum::LabelizedVariable*> vars( 10 );
 
-        for( unsigned int i = 0; i < 10; ++i ) {
+        for ( unsigned int i = 0; i < 10; ++i ) {
           std::stringstream str;
           str << "x" << i;
           std::string s = str.str();
@@ -95,7 +95,7 @@ namespace gum_tests {
         f3 = f5;
         TS_ASSERT( f5 == f3 );
 
-        for( unsigned int i = 0; i < vars.size(); ++i )
+        for ( unsigned int i = 0; i < vars.size(); ++i )
           delete vars[i];
 
       }

@@ -103,9 +103,9 @@ else (aGrUM_FOUND)
   message(FATAL_ERROR "Please install aGrUM")
 endif (aGrUM_FOUND)
 
-# cmake -DCMAKE_BUILD_TYPE=DEBUG 
+# cmake -DCMAKE_BUILD_TYPE=DEBUG
 # or
-# cmake -DCMAKE_BUILD_TYPE=RELEASE 
+# cmake -DCMAKE_BUILD_TYPE=RELEASE
 #     RELEASE is the default option (thanks to the next 3 lines)
 if( NOT CMAKE_BUILD_TYPE )
   set( CMAKE_BUILD_TYPE Release)

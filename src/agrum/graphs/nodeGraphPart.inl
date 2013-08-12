@@ -67,7 +67,7 @@ namespace gum {
     return next;
   }
 
-  // __holes is assumed to be not NULL and id is assumed to be in __holes
+  // __holes is assumed to be not nullptr and id is assumed to be in __holes
   INLINE void NodeGraphPart::__eraseHole( NodeId id ) {
     __holes->erase( id );
 
@@ -173,9 +173,8 @@ namespace gum {
         return ( *__holes == *p.__holes );
       else
         return false;
-    else
-      if ( p.__holes )
-        return false;
+    else if ( p.__holes )
+      return false;
 
     return true;
   }
@@ -189,7 +188,7 @@ namespace gum {
     NodeSet son( sizeNodes() );
 
     if ( ! empty() ) {
-      for ( NodeId n = 0;n < __bound; ++n ) {
+      for ( NodeId n = 0; n < __bound; ++n ) {
         if ( ! __inHoles( n ) )
           son.insert( n );
       }
@@ -216,16 +215,16 @@ namespace gum {
 
   INLINE
   NodeGraphPartIterator::NodeGraphPartIterator( const NodeGraphPart* nodes ) :
-      __nodes( nodes ), __pos( 0 ), __valid( false ) {
+    __nodes( nodes ), __pos( 0 ), __valid( false ) {
 
-    GUM_CONNECT( *const_cast<NodeGraphPart *>( nodes ),
+    GUM_CONNECT( *const_cast<NodeGraphPart*>( nodes ),
                  onNodeDeleted, *this, NodeGraphPartIterator::whenNodeDeleted );
     GUM_CONSTRUCTOR( NodeGraphPartIterator );
   }
 
   INLINE
   NodeGraphPartIterator::NodeGraphPartIterator( const NodeGraphPartIterator& it ):
-      __nodes( it.__nodes ), __pos( it.__pos ), __valid( it.__valid ) {
+    __nodes( it.__nodes ), __pos( it.__pos ), __valid( it.__valid ) {
     GUM_CONS_CPY( NodeGraphPartIterator );
   }
 
@@ -244,13 +243,16 @@ namespace gum {
       Listener::operator=( it );
       GUM_OP_CPY( NodeGraphPartIterator );
     }
+
     return *this;
   }
 
   INLINE
   bool NodeGraphPartIterator::operator==( const NodeGraphPartIterator& it ) const {
     if ( __pos != it.__pos ) return false;
+
     if ( __valid != it.__valid ) return false;
+
     if ( __nodes != it.__nodes ) return false;
 
     return true;

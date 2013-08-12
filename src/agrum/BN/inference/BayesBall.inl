@@ -21,7 +21,7 @@
  * @file
  * @brief Implementation of the BayesBall class.
  */
-// ============================================================================
+
 // to ease IDE parser
 #include <agrum/BN/inference/BayesBall.h>
 
@@ -38,4 +38,4 @@ namespace gum {
   }
 
 } /* namespace gum */
-// ============================================================================
+

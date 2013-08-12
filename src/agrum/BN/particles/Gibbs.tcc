@@ -35,9 +35,9 @@ namespace gum {
   namespace particle {
 
     template <typename GUM_SCALAR>
-    Gibbs<GUM_SCALAR>::Gibbs( const AbstractBayesNet<GUM_SCALAR>& BN ) :
-        __nbr_drawn_by_sample( DEFAULT_DRAWN ),
-        __bayesNet( BN ) {
+    Gibbs<GUM_SCALAR>::Gibbs( const BayesNet<GUM_SCALAR>& BN ) :
+      __nbr_drawn_by_sample( DEFAULT_DRAWN ),
+      __bayesNet( BN ) {
       GUM_CONSTRUCTOR( Gibbs );
 
       BN.completeInstantiation( __particle );
@@ -98,7 +98,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR> INLINE
-    const AbstractBayesNet<GUM_SCALAR>& Gibbs<GUM_SCALAR>::bn( void ) {
+    const BayesNet<GUM_SCALAR>& Gibbs<GUM_SCALAR>::bn( void ) {
       return __bayesNet;
     }
 
@@ -143,7 +143,7 @@ namespace gum {
     void Gibbs<GUM_SCALAR>::__drawVar( NodeId id ) {
       const DiscreteVariable& v = this->bn().variable( id );
       Potential<GUM_SCALAR>& proba = *__sampling_posterior[id];
-      GUM_SCALAR p = ( GUM_SCALAR ) getRandomProba();
+      GUM_SCALAR p = ( GUM_SCALAR ) randomProba();
       // use of __sampling_idx for shrink the number of temporary Instantiation
       Instantiation& I = *__sampling_idx[id];
       Idx choice = 0;
@@ -186,7 +186,7 @@ namespace gum {
       Instantiation* tmp;
       GUM_SCALAR value;
 
-      for ( posterior_idx.setFirst();! posterior_idx.end();posterior_idx.inc() ) {
+      for ( posterior_idx.setFirst(); ! posterior_idx.end(); posterior_idx.inc() ) {
         Idx current_mod_id = posterior_idx.val( v );
         tmp = __cpt_idx[id];
         tmp->chgVal( v, current_mod_id );
@@ -224,7 +224,7 @@ namespace gum {
     /// remove a given evidence from the graph
     template <typename GUM_SCALAR> INLINE
     void Gibbs<GUM_SCALAR>::eraseEvidence( const Potential<GUM_SCALAR>* pot ) {
-      const Sequence<const DiscreteVariable *>& vars = pot->variablesSequence();
+      const Sequence<const DiscreteVariable*>& vars = pot->variablesSequence();
 
       if ( vars.size() != 1 ) {
         GUM_ERROR( SizeError, "The evidence should be one-dimensionnal" );
@@ -254,7 +254,7 @@ namespace gum {
             iter != pot_list.end(); ++iter ) {
         // check that the evidence is given w.r.t.only one random variable
         const Potential<GUM_SCALAR>& pot = **iter;
-        const Sequence<const DiscreteVariable *>& vars = pot.variablesSequence();
+        const Sequence<const DiscreteVariable*>& vars = pot.variablesSequence();
 
         if ( vars.size() != 1 ) {
           GUM_ERROR( SizeError, "The evidence should be one-dimensionnal" );
@@ -268,7 +268,7 @@ namespace gum {
 
         Instantiation I( pot );
 
-        for ( I.setFirst();! I.end() ; ++I ) {
+        for ( I.setFirst(); ! I.end() ; ++I ) {
           if ( pot[I] == ( GUM_SCALAR ) 0 ) {
             nb_zero++;
           } else {
@@ -278,7 +278,7 @@ namespace gum {
         }
 
         // insert the evidence
-        if (( nb_un == 1 ) && ( nb_un + nb_zero == I.domainSize() ) ) {
+        if ( ( nb_un == 1 ) && ( nb_un + nb_zero == I.domainSize() ) ) {
           __hard_evidences.insert( this->bn().nodeId( * ( vars.atPos( 0 ) ) ), pos_un );
         } else {
           __evidences.insert( this->bn().nodeId( * ( vars.atPos( 0 ) ) ), *iter );
@@ -293,7 +293,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void Gibbs<GUM_SCALAR>::__MonteCarloSample() {
       // _nodes_array is assumed to be the list of nodes to draw; in a topological-compatible order
-      for ( unsigned int it=0;it<__nodes_array.size();it++ ) {
+      for ( unsigned int it=0; it<__nodes_array.size(); it++ ) {
         Idx id = __nodes_array[it];
 
         const Potential<GUM_SCALAR>& cpt = this->bn().cpt( id );
@@ -306,7 +306,7 @@ namespace gum {
         Sequence<const DiscreteVariable*> seq = I.variablesSequence();
 
         for ( Sequence<const DiscreteVariable*>::iterator it = seq.begin();
-              it != seq.end();++it ) {
+              it != seq.end(); ++it ) {
           I.chgVal( it.pos() , __particle.valFromPtr( *it ) );
         }
 
@@ -327,14 +327,12 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void Gibbs<GUM_SCALAR>::initParticle() {
-      initRandom();
-
       const Sequence<NodeId>& topo = this->bn().topologicalOrder();
 
       __nodes_array.clear();
       // nodes to be drawn : not the ones with hard evidence
 
-      for ( Sequence<NodeId>::iterator iter = topo.begin() ; iter != topo.end();++iter ) {
+      for ( Sequence<NodeId>::iterator iter = topo.begin() ; iter != topo.end(); ++iter ) {
         if ( ! __hard_evidences.exists( *iter ) ) {
           __nodes_array.push_back( *iter );
         } else {

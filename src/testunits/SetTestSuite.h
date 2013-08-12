@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Lionel Torti                                    *
+ *   (C) 2007-2013 by Christophe GONZALES and Pierre-Henri WUILLEMIN       *
  *   {prenom.nom}@lip6.fr                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -33,7 +33,7 @@ namespace gum_tests {
     public:
 
       void testConstructor() {
-        gum::Set<int> *set = 0;
+        gum::Set<int>* set = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( set = new gum::Set< int>() );
         TS_GUM_ASSERT_THROWS_NOTHING( delete set );
       }
@@ -342,9 +342,9 @@ namespace gum_tests {
 
         gum::Set<int> obtained;
 
-        for( gum::Set<int>::iterator iter = t1.begin();
-             iter != t1.end();
-             ++ iter ) {
+        for ( gum::Set<int>::iterator iter = t1.begin();
+              iter != t1.end();
+              ++ iter ) {
           obtained.insert( *iter );
         }
 
@@ -379,8 +379,8 @@ namespace gum_tests {
         fill( full );
         gum::Set<int> inter;
 
-        for( int i = 1; i < 7; i++ ) {
-          if( set.contains( i ) ) {
+        for ( int i = 1; i < 7; i++ ) {
+          if ( set.contains( i ) ) {
             inter.insert( i );
           }
         }
@@ -393,8 +393,8 @@ namespace gum_tests {
         fill( full );
         gum::Set<int> unionSet;
 
-        for( int i = 1; i < 7; i++ ) {
-          if( set.contains( i ) ) {
+        for ( int i = 1; i < 7; i++ ) {
+          if ( set.contains( i ) ) {
             unionSet.insert( i );
           }
         }
@@ -402,11 +402,11 @@ namespace gum_tests {
         return unionSet;
       }
 
-      static std::string mappingTestFunc_1( const std::string & s ) {
+      static std::string mappingTestFunc_1( const std::string& s ) {
         return s + ".foo";
       }
 
-      static std::string mappingTestFunc_2( std::string & s ) {
+      static std::string mappingTestFunc_2( std::string& s ) {
         return s + ".bar";
       }
 

@@ -23,7 +23,7 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 
 //to ease automatic parsing
 #include <agrum/prm/o3prm/O3prmReader.h>
@@ -36,7 +36,7 @@ namespace gum {
 
       INLINE
       O3prmReader::O3prmReader() {
-        GUM_CONSTRUCTOR ( O3prmReader );
+        GUM_CONSTRUCTOR( O3prmReader );
         __parseDone = false;
         __prmTake = false;
         __parser = 0;
@@ -45,7 +45,7 @@ namespace gum {
 
       INLINE
       O3prmReader::~O3prmReader() {
-        GUM_DESTRUCTOR ( O3prmReader );
+        GUM_DESTRUCTOR( O3prmReader );
 
         if ( __parseDone )
           delete __parser;
@@ -56,35 +56,35 @@ namespace gum {
 
       INLINE
       int
-      O3prmReader::readFile ( const std::string& file ) {
-        size_t lastSlashIndex = file.find_last_of ( '/' );
-        Directory dir ( file.substr ( 0, lastSlashIndex+1 ) );
+      O3prmReader::readFile( const std::string& file ) {
+        size_t lastSlashIndex = file.find_last_of( '/' );
+        Directory dir( file.substr( 0, lastSlashIndex+1 ) );
 
         if ( ! dir.isValid() ) {
-          __errors.addException ( "directory doesn't exist.", dir.path() );
+          __errors.addException( "directory doesn't exist.", dir.path() );
           return __errors.count();
         }
 
-        std::string basename = file.substr ( lastSlashIndex+1 );
+        std::string basename = file.substr( lastSlashIndex+1 );
 
         std::string absFilename = dir.absolutePath() + basename;
 
         try {
-          if ( __parser && __parser->getImports().exists ( absFilename ) )
+          if ( __parser && __parser->getImports().exists( absFilename ) )
             return __errors.count();;
 
-          Scanner s ( absFilename.c_str() );
+          Scanner s( absFilename.c_str() );
 
           if ( ! __parseDone ) {
-            __parser = new Parser ( &s );
-            __parser->setFactory ( &__factory );
-            __parser->setClassPath ( __class_path );
+            __parser = new Parser( &s );
+            __parser->setFactory( &__factory );
+            __parser->setClassPath( __class_path );
           } else
             __parser->scanner = &s;
 
-          __parser->setCurrentDirectory ( dir.absolutePath() );
+          __parser->setCurrentDirectory( dir.absolutePath() );
 
-          __parser->addImport ( absFilename );
+          __parser->addImport( absFilename );
 
           __parser->Parse();
 
@@ -92,8 +92,8 @@ namespace gum {
 
           __errors += __parser->errors();
         } catch ( gum::Exception& e ) {
-          GUM_SHOWERROR ( e );
-          __errors.addException ( e.content(), file );
+          GUM_SHOWERROR( e );
+          __errors.addException( e.content(), file );
         }
 
         return __parser->errors().count();
@@ -101,20 +101,20 @@ namespace gum {
 
       INLINE
       int
-      O3prmReader::readString ( const std::string& st ) {
+      O3prmReader::readString( const std::string& st ) {
         // errors += parser.errors
         try {
-          Scanner s ( ( unsigned char* ) st.c_str(), ( int ) ( st.size() ) );
-          __parser = new Parser ( &s );
-          __parser->setFactory ( &__factory );
-          __parser->setClassPath ( __class_path );
+          Scanner s( ( unsigned char* ) st.c_str(), ( int )( st.size() ) );
+          __parser = new Parser( &s );
+          __parser->setFactory( &__factory );
+          __parser->setClassPath( __class_path );
 
           __parser->Parse();
           __parseDone = true;
           __errors += __parser->errors();
         } catch ( gum::Exception& e ) {
-          GUM_SHOWERROR ( e );
-          __errors.addException ( e.content(), "" );
+          GUM_SHOWERROR( e );
+          __errors.addException( e.content(), "" );
         }
 
         return __parser->errors().count();
@@ -136,28 +136,28 @@ namespace gum {
 
 /// publishing Errors API
       INLINE
-      unsigned int O3prmReader::errLine ( unsigned int i ) const {
-        return __errors.line ( i );
+      unsigned int O3prmReader::errLine( unsigned int i ) const {
+        return __errors.line( i );
       }
 
       INLINE
-      unsigned int O3prmReader::errCol ( unsigned int i ) const {
-        return __errors.col ( i );
+      unsigned int O3prmReader::errCol( unsigned int i ) const {
+        return __errors.col( i );
       }
 
       INLINE
-      std::wstring O3prmReader::errFilename ( unsigned int i ) const {
-        return __errors.filename ( i );
+      std::wstring O3prmReader::errFilename( unsigned int i ) const {
+        return __errors.filename( i );
       }
 
       INLINE
-      bool O3prmReader::errIsError ( unsigned int i ) const {
-        return __errors.is_error ( i );
+      bool O3prmReader::errIsError( unsigned int i ) const {
+        return __errors.is_error( i );
       }
 
       INLINE
-      std::string O3prmReader::errMsg ( unsigned int i ) const {
-        return gum::narrow ( __errors.msg ( i ) );
+      std::string O3prmReader::errMsg( unsigned int i ) const {
+        return gum::narrow( __errors.msg( i ) );
       }
 
       INLINE
@@ -194,5 +194,5 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-// ============================================================================
+
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

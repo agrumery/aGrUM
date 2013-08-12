@@ -21,15 +21,15 @@
  * @file
  * @brief Inline implementation of gum::ClassElementContainer
  *
- * @author Lionel TORTI & PH Wuillemin
+ * @author Lionel TORTI & PH WUILLEMIN
  */
-// ============================================================================
+
 #include <agrum/prm/classElementContainer.h>
 
 namespace gum {
 
   namespace prm {
-// ============================================================================
+
 
     INLINE
     ClassElementContainer::ClassElementContainer( const std::string& name ):
@@ -102,7 +102,8 @@ namespace gum {
     INLINE
     void
     ClassElementContainer::setOutputNode( const ClassElement& elt, bool b ) {
-      GUM_TRACE_VAR(name());
+      GUM_TRACE_VAR( name() );
+
       if ( not exists( elt.safeName() ) ) {
         GUM_ERROR( NotFound, "<"+elt.safeName()+"> is not in <"+name()+">" );
       } else if ( ClassElement::isAttribute( elt ) or ClassElement::isAggregate( elt ) ) {
@@ -199,7 +200,7 @@ namespace gum {
       return _dag();
     }
 
-// ============================================================================
+
   } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

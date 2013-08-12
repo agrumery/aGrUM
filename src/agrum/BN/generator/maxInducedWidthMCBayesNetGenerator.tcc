@@ -23,10 +23,10 @@
  * @author Pierre-Henri WUILLEMIN and Ariele Maesano
  *
  */
-// ============================================================================
+
 #include <agrum/BN/generator/maxInducedWidthMCBayesNetGenerator.h>
 
-// ============================================================================
+
 namespace gum {
 
 // Default constructor.
@@ -34,7 +34,7 @@ namespace gum {
   template<typename GUM_SCALAR, template<class> class ICPTGenerator, template<class> class ICPTDisturber> INLINE
   MaxInducedWidthMCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>::MaxInducedWidthMCBayesNetGenerator( Size nbrNodes,Size maxArcs , Size max_modality, Size maxInducedWidth, Idx iteration,  Idx p,Idx q ):
     MCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>( nbrNodes, maxArcs,max_modality,iteration ,p,q ) {
-    if( maxInducedWidth == 0 ) GUM_ERROR( OperationNotAllowed,"maxInducedWidth must be at least equal to 1 to have a connexe graph" );
+    if ( maxInducedWidth == 0 ) GUM_ERROR( OperationNotAllowed,"maxInducedWidth must be at least equal to 1 to have a connexe graph" );
 
     _maxlog10InducedWidth = maxInducedWidth;
     GUM_CONSTRUCTOR( MaxInducedWidthMCBayesNetGenerator );
@@ -72,14 +72,14 @@ namespace gum {
   bool MaxInducedWidthMCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>::__checkConditions() {
     typename Property<unsigned int>::onNodes __modalitiesMap;
 
-    for( DAG::NodeIterator iter = AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>::_bayesNet.beginNodes();
-         iter != AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>::_bayesNet.endNodes(); ++iter ) {
+    for ( DAG::NodeIterator iter = AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>::_bayesNet.beginNodes();
+          iter != AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>::_bayesNet.endNodes(); ++iter ) {
       __modalitiesMap.insert( *iter,  AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>::_bayesNet.variable( *iter ).domainSize() );
     }
 
     DefaultTriangulation tri( &( AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>::_bayesNet.moralGraph() ), &__modalitiesMap );
 
-    if( tri.maxLog10CliqueDomainSize() > _maxlog10InducedWidth ) return false;
+    if ( tri.maxLog10CliqueDomainSize() > _maxlog10InducedWidth ) return false;
 
     return MCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>::__checkConditions();
   }
@@ -93,10 +93,10 @@ namespace gum {
   }
   template<typename GUM_SCALAR, template<class> class ICPTGenerator, template <class> class ICPTDisturber> INLINE
   void MaxInducedWidthMCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>::setMaxlog10InducedWidth( Size maxlog10InducedWidth ) {
-    if( maxlog10InducedWidth == 0 ) GUM_ERROR( OperationNotAllowed,"maxInducedWidth must be at least equal to 1 to have a connexe graph" );
+    if ( maxlog10InducedWidth == 0 ) GUM_ERROR( OperationNotAllowed,"maxInducedWidth must be at least equal to 1 to have a connexe graph" );
 
     _maxlog10InducedWidth = maxlog10InducedWidth;
   }
 } /* namespace gum */
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
 

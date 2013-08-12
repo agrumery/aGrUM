@@ -23,12 +23,12 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #include <string>
 #include <sstream>
-// ============================================================================
+
 #include <agrum/prm/PRM.h>
-// ============================================================================
+
 #ifndef GUM_PRM_GENERATOR_H
 #define GUM_PRM_GENERATOR_H
 namespace gum {
@@ -53,7 +53,7 @@ namespace gum {
         /// Default constructor.
         NameGenerator();
         /// Copy constructor.
-        NameGenerator ( const NameGenerator& source );
+        NameGenerator( const NameGenerator& source );
         /// Destructor.
         virtual ~NameGenerator();
         /// Affectation operator
@@ -65,8 +65,8 @@ namespace gum {
         // ========================================================================
         /// @{
 
-        /// Returns the next name w.r.t. the given ObjectType.
-        std::string nextName ( PRMObject::ObjectType type );
+        /// Returns the next name w.r.t. the given Type.
+        std::string nextName( PRMObject::PRMType type );
 
         /// @}
       private:
@@ -90,7 +90,7 @@ namespace gum {
         /// Default constructor.
         PRMGenerator();
         /// Copy constructor.
-        PRMGenerator ( const PRMGenerator& source );
+        PRMGenerator( const PRMGenerator& source );
         /// Destructor.
         virtual ~PRMGenerator();
 
@@ -101,7 +101,7 @@ namespace gum {
         /// @{
 
         /// Defines the NameGenerator used by this generator.
-        void setNameGenerator ( const NameGenerator& name_gen );
+        void setNameGenerator( const NameGenerator& name_gen );
 
         /// Returns the NameGenerator used by this generator.
         const NameGenerator& getNameGenerator() const;
@@ -120,6 +120,6 @@ namespace gum {
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/generator/PRMGenerator.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 #endif /* GUM_PRM_GENERATOR_H */
-// ============================================================================
+

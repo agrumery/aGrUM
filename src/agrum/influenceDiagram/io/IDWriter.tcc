@@ -20,7 +20,7 @@
 /** @file
  * @brief Templates implementation of IDWriter.h classes.
  *
- * @author Jean-Christophe Magnan & Pierre-Henri Wuillemin
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 #include "IDWriter.h"
 
@@ -48,5 +48,5 @@ namespace gum {
 
 } /* namespace gum */
 
-  
+
 #endif  // DOXYGEN_SHOULD_SKIP_THIS

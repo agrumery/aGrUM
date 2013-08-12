@@ -21,7 +21,7 @@
 /** @file
  * @brief Templates implementation of bns/io/gumBNWriter.h classes.
  *
- * @author Lionel Torti & Pierre-Henri Wuillemin
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -54,7 +54,7 @@ namespace gum {
    * @throws Raised if an I/O error occurs.
    */
   template<typename GUM_SCALAR>
-  void DSLWriter<GUM_SCALAR>::write( std::ostream &output, const BayesNet<GUM_SCALAR>& bn ) {
+  void DSLWriter<GUM_SCALAR>::write( std::ostream& output, const BayesNet<GUM_SCALAR>& bn ) {
     if ( ! output.good() ) {
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
     }
@@ -116,9 +116,9 @@ namespace gum {
     oss << "\t\t};\n";
 
     oss << "\t\tPARENTS = (";
-    const Sequence< const DiscreteVariable * > &tmp_vars = bn.cpt( id ).variablesSequence();
+    const Sequence< const DiscreteVariable* >& tmp_vars = bn.cpt( id ).variablesSequence();
 
-    for ( Idx i = tmp_vars.size() - 1;i > 0 ;i-- ) {
+    for ( Idx i = tmp_vars.size() - 1; i > 0 ; i-- ) {
       if ( i < tmp_vars.size() - 1 ) oss << ", ";
 
       oss << tmp_vars[i]->name();
@@ -170,4 +170,4 @@ namespace gum {
 
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 

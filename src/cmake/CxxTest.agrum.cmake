@@ -48,13 +48,14 @@ MACRO(add_agrum_test NAME)
 ENDMACRO(add_agrum_test NAME)
 
 IF(PYTHONINTERP_FOUND)
+  configure_file("${CMAKE_CURRENT_SOURCE_DIR}/testunits/cmake/AgrumErrorFormatter.h.in" "${AGRUM_BINARY_DIR}/AgrumErrorFormatter.h")
   IF ( EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/testunits/testList.cmake )
     INCLUDE ( testunits/testList.cmake )
   ELSE ()
     FILE( GLOB AGRUM_TESTS
-          RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/testunits/ 
+          RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/testunits/
           ${CMAKE_CURRENT_SOURCE_DIR}/testunits/*TestSuite.h )
-  ENDIF ()   
+  ENDIF ()
   add_agrum_test(test  ${AGRUM_TESTS})
   target_link_libraries(test ${LIBAGRUM})
 ELSE(PYTHONINTERP_FOUND)

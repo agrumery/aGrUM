@@ -21,21 +21,20 @@
  * @file
  * @brief Class representing Bayesian networks
  *
- * @author Pierre-Henri Wuillemin and Lionel Torti
+ * @author Pierre-Henri WUILLEMIN and Lionel TORTI
  *
  */
 #ifndef GUM_BAYES_NET_H
 #define GUM_BAYES_NET_H
-// ============================================================================
+
 #include <utility>
-// ============================================================================
+
 #include <agrum/config.h>
 
 #include <agrum/core/hashTable.h>
-// ============================================================================
-#include <agrum/graphicalModels/variableNodeMap.h>
-#include <agrum/BN/abstractBayesNet.h>
-// ============================================================================
+
+#include <agrum/graphicalModels/DAGmodel.h>
+#include <agrum/multidim/potential.h>
 
 namespace gum {
 
@@ -55,7 +54,7 @@ namespace gum {
    * gum::operator<<(std::ostream&, const BayesNet<GUM_SCALAR>&).
    */
   template<typename GUM_SCALAR>
-  class BayesNet: public AbstractBayesNet<GUM_SCALAR> {
+  class BayesNet: public DAGmodel {
 
       friend class BayesNetFactory<GUM_SCALAR>;
 
@@ -69,7 +68,7 @@ namespace gum {
        * Default constructor.
        */
       BayesNet();
-      BayesNet(std::string name);
+      BayesNet( std::string name );
 
       /**
        * Destructor.
@@ -79,7 +78,7 @@ namespace gum {
       /**
        * Copy constructor.
        */
-      BayesNet ( const BayesNet<GUM_SCALAR>& source );
+      BayesNet( const BayesNet<GUM_SCALAR>& source );
 
       /**
        * Copy operator.
@@ -96,27 +95,12 @@ namespace gum {
        * Returns the CPT of a variable.
        * @throw NotFound If no variable's id matches varId.
        */
-      const Potential<GUM_SCALAR>& cpt ( NodeId varId ) const;
-
-      /**
-       * Returns a constant reference to the dag of this Bayes Net.
-       */
-      const DAG &dag() const;
+      virtual const Potential<GUM_SCALAR>& cpt( NodeId varId ) const;
 
       /**
       * Returns a constant reference to the VariableNodeMap of thisBN
       */
-      const VariableNodeMap &variableNodeMap() const;
-
-      /**
-       * Returns the number of variables in this bayes net.
-       */
-      Idx size() const;
-
-      /**
-       * Returns the number of arcs in this bayes net.
-       */
-      Idx nbrArcs() const;
+      virtual const VariableNodeMap& variableNodeMap() const;
 
       /**
        * Returns the dimension (the number of free parameters) in this bayes net.
@@ -127,13 +111,10 @@ namespace gum {
 
 
       /// @return Returns a dot representation of this BayesNet.
-      std::string toDot ( void ) const;
+      std::string toDot( void ) const;
 
-      /**
-       * Retursn true if this bayes net is empty.
-       */
-      bool empty() const;
-
+      /// @return Returns a string representation of this BayesNet.
+      std::string toString( void ) const;
 
       /**
        * Add a variable, it's associate node and it's CPT. The id of the new
@@ -144,7 +125,7 @@ namespace gum {
        * @param variable The variable added by copy.
        * @return the id of the added variable.
        */
-      NodeId add ( const DiscreteVariable &variable );
+      NodeId add( const DiscreteVariable& variable );
 
       /**
        * Add a variable, it's associate node and it's CPT. The id of the new
@@ -153,7 +134,7 @@ namespace gum {
        * @param variable The variable added by copy.
        * @param aContent The content used for the variable potential.
        */
-      NodeId add ( const DiscreteVariable &variable, MultiDimImplementation<GUM_SCALAR> *aContent );
+      NodeId add( const DiscreteVariable& variable, MultiDimImplementation<GUM_SCALAR>* aContent );
 
       /**
        * Add a variable, it's associate node and it's CPT. The id of the new
@@ -167,7 +148,7 @@ namespace gum {
        * @return the id of the added variable.
        * @throws DuplicateElement if id is already used
        */
-      NodeId add ( const DiscreteVariable &variable, NodeId id );
+      NodeId add( const DiscreteVariable& variable, NodeId id );
 
       /**
        * Add a variable, it's associate node and it's CPT. The id of the new
@@ -180,7 +161,7 @@ namespace gum {
        * @return the id of the added variable.
        * @throws DuplicateElement if id is already used
        */
-      NodeId add ( const DiscreteVariable &variable, MultiDimImplementation<GUM_SCALAR> *aContent, NodeId id );
+      NodeId add( const DiscreteVariable& variable, MultiDimImplementation<GUM_SCALAR>* aContent, NodeId id );
 
       /**
        * Erase a Variable from the network and remove the variable from
@@ -189,7 +170,7 @@ namespace gum {
        *
        * @param id The id of the variable to erase.
        */
-      void erase ( NodeId id );
+      void erase( NodeId id );
 
       /**
        * Erase a Variable from the network and remove the variable from
@@ -198,33 +179,33 @@ namespace gum {
        *
        * @param var The reference on the variable to remove.
        */
-      void erase ( const DiscreteVariable &var );
+      void erase( const DiscreteVariable& var );
 
       /**
       * Returns a constant reference over a variabe given it's node id.
       * @throw NotFound If no variable's id matches varId.
       */
-      const DiscreteVariable &variable ( NodeId id ) const;
+      const DiscreteVariable& variable( NodeId id ) const;
 
       /** we allow the user to change the name of a variable
       * @throws DuplicateLabel if this name already exists
       * @throws NotFound Raised if no nodes matches id.
       */
-      void changeVariableName ( NodeId id, const std::string &new_name );
+      void changeVariableName( NodeId id, const std::string& new_name );
 
       /**
       * Return id node from discrete var pointer.
       * @throw NotFound If no variable matches var.
       */
-      NodeId nodeId ( const DiscreteVariable &var ) const ;
+      NodeId nodeId( const DiscreteVariable& var ) const ;
 
       /// Getter by name
       /// @throw NotFound if no such name exists in the graph.
-      NodeId idFromName ( const std::string &name ) const;
+      NodeId idFromName( const std::string& name ) const;
 
       /// Getter by name
       /// @throw NotFound if no such name exists in the graph.
-      const DiscreteVariable &variableFromName ( const std::string &name ) const;
+      const DiscreteVariable& variableFromName( const std::string& name ) const;
       /// @}
 
       // ===========================================================================
@@ -234,11 +215,11 @@ namespace gum {
 
       /// Compute a parameter of the joint probability for the BN (given an instantiation of the vars)
       /// @warning a variable not present in the instantiation is assumed to be instantiated to 0.
-      GUM_SCALAR jointProbability ( const Instantiation &i ) const;
+      GUM_SCALAR jointProbability( const Instantiation& i ) const;
 
       /// Compute a parameter of the log joint probability for the BN (given an instantiation of the vars)
       /// @warning a variable not present in the instantiation is assumed to be instantiated to 0.
-      GUM_SCALAR logJointProbability ( const Instantiation &i ) const;
+      GUM_SCALAR logJointProbability( const Instantiation& i ) const;
 
       ///
       /// @}
@@ -255,8 +236,8 @@ namespace gum {
        * @throw InvalidEdge If arc.tail and/or arc.head are not in the BN.
        * @deprecated This function has been deprecated. Please use @ref addArc instead
        */
-      GUM_DEPRECATED(void insertArc( NodeId tail, NodeId head ));
-      
+      GUM_DEPRECATED( void insertArc( NodeId tail, NodeId head ) );
+
       /**
        * Add an arc in the BN, and update arc.head's CPT.
        *
@@ -264,7 +245,7 @@ namespace gum {
        * @param tail as NodeId
        * @throw InvalidEdge If arc.tail and/or arc.head are not in the BN.
        */
-      void addArc(NodeId tail,NodeId head);
+      void addArc( NodeId tail,NodeId head );
 
       /**
        * Removes an arc in the BN, and update head's CTP.
@@ -272,7 +253,7 @@ namespace gum {
        * If (tail, head) doesn't exist, the nothing happens.
        * @param arc The arc removed.
        */
-      void eraseArc ( const Arc &arc );
+      void eraseArc( const Arc& arc );
 
       /**
       * Removes an arc in the BN, and update head's CTP.
@@ -281,7 +262,7 @@ namespace gum {
       * @param head and
       * @param tail as NodeId
       */
-      void eraseArc ( NodeId tail, NodeId head );
+      void eraseArc( NodeId tail, NodeId head );
 
       /**
        * When inserting/removing arcs, node CPTs change their dimension with a cost in time.
@@ -295,25 +276,7 @@ namespace gum {
       ///@}
 
       /// @}
-      // ===========================================================================
-      /// @name Graphical methods
-      // ===========================================================================
-      /// @{
 
-      /**
-       * The node's id are coherent with the variables and nodes of the topology.
-       * @param clear If false returns the previously created moral graph.
-       */
-      const UndiGraph &moralGraph ( bool clear = true ) const;
-
-      /**
-       * The topological order stays the same as long as no variable or arcs are
-       * added or erased from the topology.
-       * @param clear If false returns the previously created topology.
-       */
-      const Sequence<NodeId>& topologicalOrder ( bool clear = true ) const;
-
-      /// @}
       // ===========================================================================
       /// @name Accessors for nodes with CI or logical implementation
       // ===========================================================================
@@ -326,18 +289,18 @@ namespace gum {
       *
       * @param variable The variable added by copy.
       * @param externalWeight @see gum::MultiDimNoisyORNet,gum::MultiDimNoisyORCompound
-      * @return the id of the added variable. 
+      * @return the id of the added variable.
       * @{
       */
-      
-      NodeId addNoisyOR ( const DiscreteVariable &variable, GUM_SCALAR externalWeight );
-      NodeId addNoisyORNet ( const DiscreteVariable &variable, GUM_SCALAR externalWeight );
-      NodeId addNoisyORCompound ( const DiscreteVariable &variable, GUM_SCALAR externalWeight );
+
+      NodeId addNoisyOR( const DiscreteVariable& variable, GUM_SCALAR externalWeight );
+      NodeId addNoisyORNet( const DiscreteVariable& variable, GUM_SCALAR externalWeight );
+      NodeId addNoisyORCompound( const DiscreteVariable& variable, GUM_SCALAR externalWeight );
       /** @} */
-      
-      
+
+
       /**
-      * Add a variable, it's associate node and a noisyOR implementation. 
+      * Add a variable, it's associate node and a noisyOR implementation.
       * Since it seems that the 'classical' noisyOR is the Compound noisyOR, we keep
       * the addNoisyOR as an alias for addNoisyORCompound
       *
@@ -348,31 +311,31 @@ namespace gum {
       * @return the id of the added variable.
       * @throws DuplicateElement if id is already used @{
       */
-      NodeId addNoisyOR ( const DiscreteVariable &variable, GUM_SCALAR externalWeight, NodeId id );
-      NodeId addNoisyORNet ( const DiscreteVariable &variable, GUM_SCALAR externalWeight, NodeId id );
-      NodeId addNoisyORCompound ( const DiscreteVariable &variable, GUM_SCALAR externalWeight, NodeId id );
+      NodeId addNoisyOR( const DiscreteVariable& variable, GUM_SCALAR externalWeight, NodeId id );
+      NodeId addNoisyORNet( const DiscreteVariable& variable, GUM_SCALAR externalWeight, NodeId id );
+      NodeId addNoisyORCompound( const DiscreteVariable& variable, GUM_SCALAR externalWeight, NodeId id );
       /** @} */
-      
+
       /**
-      * Add a variable, it's associate node and a noisyAND implementation. 
+      * Add a variable, it's associate node and a noisyAND implementation.
       *
       * @param variable The variable added by copy.
       * @param externalWeight @see gum::MultiDimNoisyAND
-      * @return the id of the added variable. 
+      * @return the id of the added variable.
       */
-      NodeId addNoisyAND( const DiscreteVariable &variable, GUM_SCALAR externalWeight, NodeId id );
-      
+      NodeId addNoisyAND( const DiscreteVariable& variable, GUM_SCALAR externalWeight, NodeId id );
+
       /**
       * Add a variable, it's associate node and a noisyAND implementation. The id of the new
-      * variable is automatically generated. 
+      * variable is automatically generated.
       *
       * @param variable The variable added by copy.
       * @param externalWeight @see gum::MultiDimNoisyAND
-      * @return the id of the added variable. 
+      * @return the id of the added variable.
       */
-      NodeId addNoisyAND( const DiscreteVariable &variable, GUM_SCALAR externalWeight );
-      
-      
+      NodeId addNoisyAND( const DiscreteVariable& variable, GUM_SCALAR externalWeight );
+
+
       /**
        * Add a variable, it's associate node and an OR implementation. The id of the new
        * variable is automatically generated.
@@ -383,7 +346,7 @@ namespace gum {
        * @return the id of the added variable.
        * @throws SizeError if variable.domainSize()>2
        */
-      NodeId addOR ( const DiscreteVariable &variable );
+      NodeId addOR( const DiscreteVariable& variable );
 
       /**
        * Add a variable, it's associate node and an AND implementation. The id of the new
@@ -395,7 +358,7 @@ namespace gum {
        * @return the id of the added variable.
        * @throws SizeError if variable.domainSize()>2
        */
-      NodeId addAND ( const DiscreteVariable &variable );
+      NodeId addAND( const DiscreteVariable& variable );
 
       /**
       * Add an arc in the BN, and update arc.head's CPT.
@@ -405,11 +368,11 @@ namespace gum {
       * @param causalWeight @see gum::MultiDimCIModel
       * @throw InvalidArc If arc.tail and/or arc.head are not in the BN.
       * @throw InvalidArc If variable in arc.head is not a NoisyOR variable.
-      * 
+      *
       * @deprecated This function has been deprecated. Please use @ref addWeightedArc instead
       */
-      GUM_DEPRECATED(void insertWeightedArc ( NodeId tail, NodeId head, GUM_SCALAR causalWeight ));
-      
+      GUM_DEPRECATED( void insertWeightedArc( NodeId tail, NodeId head, GUM_SCALAR causalWeight ) );
+
       /**
       * Add an arc in the BN, and update arc.head's CPT.
       *
@@ -419,7 +382,7 @@ namespace gum {
       * @throw InvalidArc If arc.tail and/or arc.head are not in the BN.
       * @throw InvalidArc If variable in arc.head is not a NoisyOR variable.
       */
-      void addWeightedArc ( NodeId tail, NodeId head, GUM_SCALAR causalWeight );
+      void addWeightedArc( NodeId tail, NodeId head, GUM_SCALAR causalWeight );
 
       /// @}
       // ===========================================================================
@@ -428,34 +391,39 @@ namespace gum {
       /// @{
 
       /**
-       * @warning Deprecated: use add(const DiscreteVariable&).
+       * @deprecated: use add(const DiscreteVariable&).
        */
-      NodeId addVariable ( const DiscreteVariable &variable );
+      GUM_DEPRECATED( NodeId addVariable( const DiscreteVariable& variable ) );
 
       /**
-       * @warning Deprecated: use add(const DiscreteVariable&, MultiDimImplementation*)
+       * @deprecated: use add(const DiscreteVariable&, MultiDimImplementation*)
        */
-      NodeId addVariable ( const DiscreteVariable &variable,
-                           MultiDimImplementation<GUM_SCALAR> *aContent );
+      GUM_DEPRECATED( NodeId addVariable( const DiscreteVariable& variable,
+                                          MultiDimImplementation<GUM_SCALAR>* aContent ) );
 
       /**
-       * @warning Deprecated: use erase(NodeId) instead.
+       * @deprecated: use erase(NodeId) instead.
        */
-      void eraseVariable ( NodeId id );
+      GUM_DEPRECATED( void eraseVariable( NodeId id ) );
 
       /// @}
 
       /// randomly generates CPTs for a given structure
       void generateCPTs();
+
+
+      /// @return Returns true if the src and this are equal.
+      bool operator==( const BayesNet<GUM_SCALAR>& src ) const;
+
+      /// @return Returns false if the src and this are equal.
+      bool operator!=( const BayesNet<GUM_SCALAR>& src ) const;
     private:
       /// clear all potentials
       void __clearPotentials();
 
       /// copy of potentials from a BN to another, using names of vars as ref.
-      void __copyPotentials ( const BayesNet<GUM_SCALAR>& bn );
+      void __copyPotentials( const BayesNet<GUM_SCALAR>& bn );
 
-      /// The DAG of this bayes net.
-      DAG __dag;
 
       /// the map between variable and id
       VariableNodeMap __varMap;
@@ -463,24 +431,17 @@ namespace gum {
       /// Mapping between the variable's id and their CPT.
       //Property< Potential< GUM_SCALAR >* >::onNodes __probaMap;
       HashTable<NodeId, Potential<GUM_SCALAR>* > __probaMap;
-
-      /// The moral graph of this bayes net.
-      mutable UndiGraph *__moralGraph;
-
-      /// The topology sequence of this bayes net.
-      mutable Sequence<NodeId>* __topologicalOrder;
-
   };
 
   /// Prints map's DAG in output using the Graphviz-dot format.
   template <typename GUM_SCALAR>
-  std::ostream &
-  operator<< ( std::ostream &output, const AbstractBayesNet<GUM_SCALAR>& map );
+  std::ostream&
+  operator<< ( std::ostream& output, const BayesNet<GUM_SCALAR>& map );
 
 } /* namespace gum */
 
-// ============================================================================
+
 #include <agrum/BN/BayesNet.tcc>
-// ============================================================================
+
 #endif /* GUM_BAYES_NET_H */
 

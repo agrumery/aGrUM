@@ -31,46 +31,50 @@ namespace gum {
 
 
 // Default constructor.
-template <typename GUM_SCALAR> INLINE
-DefaultCPTGenerator<GUM_SCALAR>::DefaultCPTGenerator() :
-        AbstractCPTGenerator<GUM_SCALAR>() {
+  template <typename GUM_SCALAR> INLINE
+  DefaultCPTGenerator<GUM_SCALAR>::DefaultCPTGenerator() :
+    AbstractCPTGenerator<GUM_SCALAR>() {
     GUM_CONSTRUCTOR( DefaultCPTGenerator );
-}
+  }
 
 // Destructor.
-template <typename GUM_SCALAR> INLINE
-DefaultCPTGenerator<GUM_SCALAR>::~DefaultCPTGenerator() {
+  template <typename GUM_SCALAR> INLINE
+  DefaultCPTGenerator<GUM_SCALAR>::~DefaultCPTGenerator() {
     GUM_DESTRUCTOR( DefaultCPTGenerator );
-}
+  }
 
 // Generates a CPT using floats.
 // @param varID The variable id of the CPT owner.
 // @param cpt A reference on the CPT to fill.
 
 
-template <typename GUM_SCALAR> void
-DefaultCPTGenerator<GUM_SCALAR>::generateCPT( const Idx& varId, const Potential<GUM_SCALAR>& cpt ) {
+  template <typename GUM_SCALAR> void
+  DefaultCPTGenerator<GUM_SCALAR>::generateCPT( const Idx& varId, const Potential<GUM_SCALAR>& cpt ) {
     std::vector<GUM_SCALAR> v;
-    initRandom();
-    
+
     for ( Size i = 0; i < cpt.domainSize();  ++i ) {
-        v.push_back(( GUM_SCALAR ) rand() );
+      v.push_back( ( GUM_SCALAR ) rand() );
     }
+
     cpt.fillWith( v );
     Instantiation varInst;
     varInst.add( cpt.variable( varId ) );
     Instantiation cptInst( cpt );
+
     for ( cptInst.setFirstOut( varInst ); !cptInst.end(); cptInst.incOut( varInst ) ) {
-        GUM_SCALAR sum = ( GUM_SCALAR ) 0;
-        for ( cptInst.setFirstIn( varInst ); !cptInst.end(); cptInst.incIn( varInst ) ) {
-            sum += cpt[cptInst];
-        }
-        for ( cptInst.setFirstIn( varInst ); !cptInst.end(); cptInst.incIn( varInst ) ) {
-            cpt.set( cptInst,cpt[cptInst] / sum );
-        }
-        cptInst.unsetEnd();
+      GUM_SCALAR sum = ( GUM_SCALAR ) 0;
+
+      for ( cptInst.setFirstIn( varInst ); !cptInst.end(); cptInst.incIn( varInst ) ) {
+        sum += cpt[cptInst];
+      }
+
+      for ( cptInst.setFirstIn( varInst ); !cptInst.end(); cptInst.incIn( varInst ) ) {
+        cpt.set( cptInst,cpt[cptInst] / sum );
+      }
+
+      cptInst.unsetEnd();
     }
-}
+  }
 
 
 

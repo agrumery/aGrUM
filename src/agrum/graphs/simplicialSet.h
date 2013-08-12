@@ -287,11 +287,11 @@ namespace gum {
 
       /** @brief indicates for each node to which list (simplicial, almost
        * simplicial, quasi simplicial) it belongs */
-      enum __Belong {
-        GUM_SIMPLICIAL,
-        GUM_ALMOST_SIMPLICIAL,
-        GUM_QUASI_SIMPLICIAL,
-        GUM_NO_LIST
+      enum class __Belong : char {
+        SIMPLICIAL,
+        ALMOST_SIMPLICIAL,
+        QUASI_SIMPLICIAL,
+        NO_LIST
       };
       Property<__Belong>::onNodes __containing_list;
 

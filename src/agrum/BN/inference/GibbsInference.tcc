@@ -42,7 +42,7 @@
 namespace gum {
   /// default constructor
   template <typename GUM_SCALAR>
-  GibbsInference<GUM_SCALAR>::GibbsInference( const AbstractBayesNet<GUM_SCALAR>& BN ) :
+  GibbsInference<GUM_SCALAR>::GibbsInference( const BayesNet<GUM_SCALAR>& BN ) :
     ApproximationScheme(),
     BayesNetInference <GUM_SCALAR> ( BN ),
     particle::Gibbs<GUM_SCALAR> ( BN ) {
@@ -60,7 +60,7 @@ namespace gum {
     const DAG& dag = bn().dag();
 //    const NodeSet& nodes = dag.nodes();
 
-    for( DAG::NodeIterator iter = dag.beginNodes(); iter != dag.endNodes(); ++iter ) {
+    for ( DAG::NodeIterator iter = dag.beginNodes(); iter != dag.endNodes(); ++iter ) {
       const DiscreteVariable& var = bn().variable( *iter );
       // feed the __sampling
       Potential<GUM_SCALAR>* tmp = new Potential<GUM_SCALAR>();
@@ -77,9 +77,9 @@ namespace gum {
     GUM_DESTRUCTOR( GibbsInference );
 
     // remove all the created potentials and instantiations
-    for( HashTableIterator<NodeId, Potential<GUM_SCALAR>*> iter =
-           __sampling_nbr.begin();
-         iter != __sampling_nbr.end(); ++iter )
+    for ( HashTableIterator<NodeId, Potential<GUM_SCALAR>*> iter =
+            __sampling_nbr.begin();
+          iter != __sampling_nbr.end(); ++iter )
       delete( *iter );
   }
 
@@ -104,9 +104,9 @@ namespace gum {
 
   template <typename GUM_SCALAR> INLINE
   void GibbsInference<GUM_SCALAR>::__initStats() {
-    for( HashTableIterator<NodeId, Potential<GUM_SCALAR>*> iter =
-           __sampling_nbr.begin();
-         iter != __sampling_nbr.end(); ++iter ) {
+    for ( HashTableIterator<NodeId, Potential<GUM_SCALAR>*> iter =
+            __sampling_nbr.begin();
+          iter != __sampling_nbr.end(); ++iter ) {
       ( *iter )->fill( ( GUM_SCALAR ) 0 );
     }
   }
@@ -124,9 +124,9 @@ namespace gum {
     Size nbr = nb + 1; // we compute the new iteration
     double sum_entropy = 0;
 
-    for( HashTableIterator<NodeId, Potential<GUM_SCALAR>*> iter =
-           __sampling_nbr.begin();
-         iter != __sampling_nbr.end(); ++iter ) {
+    for ( HashTableIterator<NodeId, Potential<GUM_SCALAR>*> iter =
+            __sampling_nbr.begin();
+          iter != __sampling_nbr.end(); ++iter ) {
       //NodeId id = iter.key();
       //const DiscreteVariable& v = bn().variable( id );
       //__sampling_idx[id]->chgVal( v, __current_sample.val( v ) );
@@ -136,7 +136,7 @@ namespace gum {
       GUM_SCALAR n_v=1+ ( *iter )->get( particle() );
       ( *iter )->set( particle(),n_v );
 
-      if( n_v == ( GUM_SCALAR ) 1 ) sum_entropy += 100;
+      if ( n_v == ( GUM_SCALAR ) 1 ) sum_entropy += 100;
       else sum_entropy += n_v * log( n_v / ( n_v - 1 ) );
     }
 
@@ -146,9 +146,9 @@ namespace gum {
   /** same as __updateStats_with_err but with no entropy computation */
   template <typename GUM_SCALAR> INLINE
   void GibbsInference<GUM_SCALAR>::__updateStats_without_err() {
-    for( HashTableIterator<NodeId, Potential<GUM_SCALAR>*> iter =
-           __sampling_nbr.begin();
-         iter != __sampling_nbr.end(); ++iter ) {
+    for ( HashTableIterator<NodeId, Potential<GUM_SCALAR>*> iter =
+            __sampling_nbr.begin();
+          iter != __sampling_nbr.end(); ++iter ) {
       //NodeId id = iter.key();
       //const DiscreteVariable& v = bn().variable( id );
       //__sampling_idx[id]->chgVal( v, __current_sample.val( v ) );
@@ -183,7 +183,7 @@ namespace gum {
   /// Returns the probability of the variable.
   template <typename GUM_SCALAR> INLINE
   void GibbsInference<GUM_SCALAR>::_fillMarginal( NodeId id, Potential<GUM_SCALAR>& marginal ) {
-    if( isInferenceRequired() ) makeInference();
+    if ( isInferenceRequired() ) makeInference();
 
     marginal = * ( __sampling_nbr[id] );
 
@@ -196,7 +196,7 @@ namespace gum {
     try {
       I << v;
       I.chgVal( v, __current_sample.val( v ) );
-    } catch( DuplicateElement e ) {
+    } catch ( DuplicateElement e ) {
       // do nothing, it's OK
     }
   }
@@ -206,7 +206,7 @@ namespace gum {
   /// Returns the probability of the variables.
   template <typename GUM_SCALAR>
   void GibbsInference<GUM_SCALAR>::makeInference() {
-    if( ! isInferenceRequired() ) return;
+    if ( ! isInferenceRequired() ) return;
 
     __initStats();
     initParticle();
@@ -219,11 +219,11 @@ namespace gum {
       nextParticle( );
       updateApproximationScheme();
 
-      if( startOfPeriod() )
+      if ( startOfPeriod() )
         error=__updateStats_with_err( nbrIterations() + burnIn() );
       else
         __updateStats_without_err();
-    } while( continueApproximationScheme( error ) );
+    } while ( continueApproximationScheme( error ) );
 
     __unsetRequiredInference();
   }
@@ -233,4 +233,4 @@ namespace gum {
 
 
 #endif    // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

@@ -57,19 +57,19 @@ namespace gum {
 //GCC_DIAG_OFF(strict-aliasing)
 //GCC_DIAG_ON(strict-aliasing)
 
-  // ==============================================================================
+
   /// Destructor for end/rend
-  // ==============================================================================
+
   template <> ListConstIterator<Debug>::~ListConstIterator()  {
   }
 
-  // ==============================================================================
+
   /// constructor for end/rend
-  // ==============================================================================
+
   template <> ListConstIterator<Debug>::ListConstIterator()  :
-      __list( 0 ), __bucket( 0 ),
-      __next_current_bucket( 0 ), __prev_current_bucket( 0 ),
-      __null_pointing( false ), __container( 0 ) {
+    __list( 0 ), __bucket( 0 ),
+    __next_current_bucket( 0 ), __prev_current_bucket( 0 ),
+    __null_pointing( false ), __container( 0 ) {
   }
 
   // an iterator that represents both end and rend for all the Lists

@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
- *   {prenom.nom}_at_lip6.fr                                               * 
+ *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -44,7 +44,7 @@
  *        const MultiDimImplementation<float>& t2 ) {
  *   return new MultiDimImplementation<float> (t1 * t2);
  * }
- *   
+ *
  *
  * MultiDimImplementation<float> t1, t2, t3;
  * Set<const MultiDimImplementation<float>*> set;
@@ -52,7 +52,7 @@
  * ScheduleCombinationBasic<float> Comb ( add );
  * ScheduleMultiDim<float> combined_table = Comb.combine ( set );
  *
- * 
+ *
  * // do the same thing only with ScheduleMultiDims
  * MultiDimImplementation<float> tt4, tt5;
  * ScheduleMultiDim<float> t4 ( &tt4 ), t5 ( &tt5 );
@@ -86,97 +86,97 @@ namespace gum {
 
   template<typename GUM_SCALAR>
   class ScheduleCombination {
-  public:
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
+    public:
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
 
-    /// default constructor
-    ScheduleCombination ();
+      /// default constructor
+      ScheduleCombination();
 
-    /// copy constructor
-    ScheduleCombination ( const ScheduleCombination<GUM_SCALAR>& );
+      /// copy constructor
+      ScheduleCombination( const ScheduleCombination<GUM_SCALAR>& );
 
-    /// destructor
-    virtual ~ScheduleCombination ();
+      /// destructor
+      virtual ~ScheduleCombination();
 
-    /// virtual constructor
-    /** @return a new fresh ScheduleCombinator with the same combination
-     * function. */
-    virtual ScheduleCombination<GUM_SCALAR>* newFactory () const = 0;
+      /// virtual constructor
+      /** @return a new fresh ScheduleCombinator with the same combination
+       * function. */
+      virtual ScheduleCombination<GUM_SCALAR>* newFactory() const = 0;
 
-    /// @}
+      /// @}
 
-    
-    // ############################################################################
-    /// @name Accessors/Modifiers
-    // ############################################################################
-    /// @{
 
-    // adds operations to an already created schedule
-    /**  @returns the ScheduleMultiDim resulting from the combination
-     * @throws InvalidArgumentsNumber exception is thrown if the set passed in
-     * argument contains less than two elements */
-    virtual ScheduleMultiDim<GUM_SCALAR>
-    combine ( const Set<const ScheduleMultiDim<GUM_SCALAR>*>& set,
-              Schedule<GUM_SCALAR>& schedule ) = 0;
-    ScheduleMultiDim<GUM_SCALAR>
-    combine ( const Set<const MultiDimImplementation<GUM_SCALAR>*>& set,
-              Schedule<GUM_SCALAR>& schedule );
-    template <template<typename> class TABLE>
-    ScheduleMultiDim<GUM_SCALAR>
-    combine ( const Set<const TABLE<GUM_SCALAR>*>& set,
-              Schedule<GUM_SCALAR>& schedule );
-   
-    /// changes the function used for combining two TABLES
-    virtual void
-    setCombineFunction( MultiDimImplementation<GUM_SCALAR>*
-                        (*combine) ( const MultiDimImplementation<GUM_SCALAR>&,
-                                     const MultiDimImplementation<GUM_SCALAR>& ) ) = 0;
+      // ############################################################################
+      /// @name Accessors/Modifiers
+      // ############################################################################
+      /// @{
 
-    /// returns the combination function currently used by the combinator
-    virtual MultiDimImplementation<GUM_SCALAR>* (* combineFunction () )
+      // adds operations to an already created schedule
+      /**  @returns the ScheduleMultiDim resulting from the combination
+       * @throws InvalidArgumentsNumber exception is thrown if the set passed in
+       * argument contains less than two elements */
+      virtual ScheduleMultiDim<GUM_SCALAR>
+      combine( const Set<const ScheduleMultiDim<GUM_SCALAR>*>& set,
+               Schedule<GUM_SCALAR>& schedule ) = 0;
+      ScheduleMultiDim<GUM_SCALAR>
+      combine( const Set<const MultiDimImplementation<GUM_SCALAR>*>& set,
+               Schedule<GUM_SCALAR>& schedule );
+      template <template<typename> class TABLE>
+      ScheduleMultiDim<GUM_SCALAR>
+      combine( const Set<const TABLE<GUM_SCALAR>*>& set,
+               Schedule<GUM_SCALAR>& schedule );
+
+      /// changes the function used for combining two TABLES
+      virtual void
+      setCombineFunction( MultiDimImplementation<GUM_SCALAR>*
+                          ( *combine )( const MultiDimImplementation<GUM_SCALAR>&,
+                                        const MultiDimImplementation<GUM_SCALAR>& ) ) = 0;
+
+      /// returns the combination function currently used by the combinator
+      virtual MultiDimImplementation<GUM_SCALAR>* ( * combineFunction() )
       ( const MultiDimImplementation<GUM_SCALAR>&,
         const MultiDimImplementation<GUM_SCALAR>& ) const = 0;
-    
-    /** @brief returns a rough estimate of the number of operations that will be
-     * performed to compute the combination */
-    virtual float nbOperations ( const Set<const ScheduleMultiDim<GUM_SCALAR>*>& set,
-                                 const Schedule<GUM_SCALAR>& schedule ) = 0;
-    float nbOperations ( const Set<const MultiDimImplementation<GUM_SCALAR>*>& set,
-                         const Schedule<GUM_SCALAR>& schedule );
-    template <template<typename> class TABLE>
-    float nbOperations ( const Set<const TABLE<GUM_SCALAR>*>& set,
-                         const Schedule<GUM_SCALAR>& schedule );
 
-    /// returns the memory consumption used during the combination
-    /** Actually, this function does not return a precise account of the memory
-     * used by the multidimCombination but a rough estimate based on the sizes
-     * of the tables involved in the combination.
-     * @return a pair of memory consumption: the first one is the maximum
-     * amount of memory used during the combination and the second one is the
-     * amount of memory still used at the end of the function ( the memory used by
-     * the resulting table ) */
-    virtual std::pair<long,long>
-    memoryUsage ( const Set<const ScheduleMultiDim<GUM_SCALAR>*>& set,
-                  const Schedule<GUM_SCALAR>& schedule ) = 0;
-    std::pair<long,long>
-    memoryUsage ( const Set<const MultiDimImplementation<GUM_SCALAR>*>& set,
-                  const Schedule<GUM_SCALAR>& schedule );
-    template <template<typename> class TABLE>
-    std::pair<long,long>
-    memoryUsage ( const Set<const TABLE<GUM_SCALAR>*>& set,
-                  const Schedule<GUM_SCALAR>& schedule );
- 
-    /// @}
+      /** @brief returns a rough estimate of the number of operations that will be
+       * performed to compute the combination */
+      virtual float nbOperations( const Set<const ScheduleMultiDim<GUM_SCALAR>*>& set,
+                                  const Schedule<GUM_SCALAR>& schedule ) = 0;
+      float nbOperations( const Set<const MultiDimImplementation<GUM_SCALAR>*>& set,
+                          const Schedule<GUM_SCALAR>& schedule );
+      template <template<typename> class TABLE>
+      float nbOperations( const Set<const TABLE<GUM_SCALAR>*>& set,
+                          const Schedule<GUM_SCALAR>& schedule );
+
+      /// returns the memory consumption used during the combination
+      /** Actually, this function does not return a precise account of the memory
+       * used by the multidimCombination but a rough estimate based on the sizes
+       * of the tables involved in the combination.
+       * @return a pair of memory consumption: the first one is the maximum
+       * amount of memory used during the combination and the second one is the
+       * amount of memory still used at the end of the function ( the memory used by
+       * the resulting table ) */
+      virtual std::pair<long,long>
+      memoryUsage( const Set<const ScheduleMultiDim<GUM_SCALAR>*>& set,
+                   const Schedule<GUM_SCALAR>& schedule ) = 0;
+      std::pair<long,long>
+      memoryUsage( const Set<const MultiDimImplementation<GUM_SCALAR>*>& set,
+                   const Schedule<GUM_SCALAR>& schedule );
+      template <template<typename> class TABLE>
+      std::pair<long,long>
+      memoryUsage( const Set<const TABLE<GUM_SCALAR>*>& set,
+                   const Schedule<GUM_SCALAR>& schedule );
+
+      /// @}
 
 
-  private:
-    /// forbid copy operators
-    ScheduleCombination<GUM_SCALAR>& operator= ( const ScheduleCombination<GUM_SCALAR>& );
-    
- };
+    private:
+      /// forbid copy operators
+      ScheduleCombination<GUM_SCALAR>& operator= ( const ScheduleCombination<GUM_SCALAR>& );
+
+  };
 
 
 } /* namespace gum */

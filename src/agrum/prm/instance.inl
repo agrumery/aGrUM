@@ -23,10 +23,10 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 namespace gum {
   namespace prm {
-// ============================================================================
+
 
     INLINE
     Size
@@ -49,7 +49,7 @@ namespace gum {
     Instance::__copyAttribute( Attribute* source ) {
       Attribute* attr = new Attribute( source->name(), source->type() );
       // The potential is copied when instantiate() is called
-      attr->cpf().fill(( prm_float ) 0 );
+      attr->cpf().fill( ( prm_float ) 0 );
       attr->setId( source->id() );
       __bijection.insert( &( source->type().variable() ), &( attr->type().variable() ) );
       __nodeIdMap.insert( attr->id(), attr );
@@ -57,7 +57,7 @@ namespace gum {
 
     INLINE
     Instance::Instance( const Instance& source ):
-        PRMObject( source ), __type( source.__type ), __params( 0 ) {
+      PRMObject( source ), __type( source.__type ), __params( 0 ) {
       GUM_CONS_CPY( Instance );
       GUM_ERROR( FatalError, "do not copy Instance" );
     }
@@ -69,8 +69,8 @@ namespace gum {
     }
 
     INLINE
-    PRMObject::ObjectType
-    Instance::obj_type() const { return PRMObject::prm_instance; }
+    PRMObject::PRMType
+    Instance::obj_type() const { return PRMObject::PRMType::INSTANCE; }
 
     INLINE
     Class&
@@ -142,25 +142,32 @@ namespace gum {
     void
     Instance::setParameterValue( const std::string& name, const Potential<prm_float>& value ) {
       Attribute* attr = 0;
+
       try {
         attr = &( get( name ) );
       } catch ( NotFound& ) {
         GUM_ERROR( NotFound, "the given ClassElement is not in this Instance" );
       }
+
       if ( not __type->isParameter( *attr ) ) {
         GUM_ERROR( WrongClassElement, "the given NodeId is not a parameter" );
       }
+
       if ( attr->cpf().nbrDim() > 1 ) {
         GUM_ERROR( FatalError, "found a parameter's potential with more than one dimension" );
       }
+
       if ( not value.contains( attr->type().variable() ) ) {
         GUM_ERROR( OperationNotAllowed, "the given value is invalid for this parameter" );
       }
+
       // Assigning value
       attr->cpf().copy( value );
+
       if ( not __params ) {
         __params = new Set<NodeId>();
       }
+
       __params->insert( attr->id() );
     }
 
@@ -175,6 +182,7 @@ namespace gum {
     Instance::__addReferingInstance( SlotChain* sc, Instance* i ) {
       NodeId id = i->get( sc->lastElt().safeName() ).id();
       std::string name = sc->lastElt().safeName();
+
       try {
         i->__referenceMap[id]->insert( this );
         i->__referingAttr[id]->push_back( std::make_pair( this, sc->lastElt().safeName() ) );
@@ -260,13 +268,13 @@ namespace gum {
 
     INLINE
     Instance::RefIterator::RefIterator( Set<Instance*>& set ):
-        __set( set ), __iter( set.begin() ) {
+      __set( set ), __iter( set.begin() ) {
       GUM_CONSTRUCTOR( Instance::RefIterator );
     }
 
     INLINE
     Instance::RefIterator::RefIterator( const RefIterator& from ):
-        __set( const_cast< Set<Instance*>& >( from.__set ) ), __iter( from.__iter ) {
+      __set( const_cast< Set<Instance*>& >( from.__set ) ), __iter( from.__iter ) {
       GUM_CONS_CPY( Instance::RefIterator );
     }
 
@@ -321,13 +329,13 @@ namespace gum {
 
     INLINE
     Instance::RefConstIterator::RefConstIterator( const Set<Instance*>& set ):
-        __set( set ), __iter( set.begin() ) {
+      __set( set ), __iter( set.begin() ) {
       GUM_CONSTRUCTOR( Instance::RefConstIterator );
     }
 
     INLINE
     Instance::RefConstIterator::RefConstIterator( const RefConstIterator& from ):
-        __set( from.__set ), __iter( from.__iter ) {
+      __set( from.__set ), __iter( from.__iter ) {
       GUM_CONS_CPY( Instance::RefConstIterator );
     }
 
@@ -434,13 +442,16 @@ namespace gum {
         GUM_TRACE_VAR( name() );
         GUM_TRACE_VAR( attr->safeName() );
         const NodeSet& parents = type().dag().parents( attr->id() );
+
         for ( NodeSet::const_iterator node = parents.begin(); node != parents.end(); ++node ) {
           GUM_TRACE_VAR( type().get( *node ).safeName() );
         }
+
         std::cerr << e.content() << std::endl;
         std::cerr << e.callStack() << std::endl;
         std::exit( 0 );
       }
+
       // } catch (NotFound& e) {
       //   if (dynamic_cast<const MultiDimAggregator<prm_float>*>(type().get(attr->safeName()).cpf().getContent())) {
       //     delete attr->__cpf;
@@ -457,7 +468,7 @@ namespace gum {
       // }
     }
 
-// ============================================================================
+
   } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

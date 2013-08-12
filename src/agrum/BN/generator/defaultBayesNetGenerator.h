@@ -24,18 +24,18 @@
  */
 #ifndef GUM_DEFAULT_BAYES_NET_GENERATOR_H
 #define GUM_DEFAULT_BAYES_NET_GENERATOR_H
-// ============================================================================
+
 #include <climits>
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
 #include <vector>
-// ============================================================================
+
 
 #include <agrum/BN/generator/abstractBayesNetGenerator.h>
-// ============================================================================
 
-// ============================================================================
+
+
 namespace gum {
 
   /**
@@ -64,7 +64,7 @@ namespace gum {
       * @param maxArcs The number of maximum arcs imposed on the generator.
       * @param maxModality Each DRV has from 2 to maxModality modalities
       */
-      DefaultBayesNetGenerator ( Size nbrNodes, Size maxArcs, Size maxModality = 2 );
+      DefaultBayesNetGenerator( Size nbrNodes, Size maxArcs, Size maxModality = 2 );
 
       /**
        * Destructor.
@@ -83,7 +83,7 @@ namespace gum {
        */
 
 
-      void generateBN ( BayesNet<GUM_SCALAR> & bayesNet );
+      void generateBN( BayesNet<GUM_SCALAR>& bayesNet );
 
       /// @}
   }; /* class DefaultBayesNetGenerator */
@@ -91,6 +91,6 @@ namespace gum {
 } /* namespace gum */
 
 #include<agrum/BN/generator/defaultBayesNetGenerator.tcc>
-// ============================================================================
+
 #endif /* GUM_SIMPLE_BAYES_NET_GENERATOR_H */
-// ============================================================================
+

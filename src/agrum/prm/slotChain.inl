@@ -23,71 +23,71 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 namespace gum {
-namespace prm {
+  namespace prm {
 
-INLINE
-ClassElement::ClassElementType
-SlotChain::elt_type() const { return prm_slotchain; }
+    INLINE
+    ClassElement::ClassElementType
+    SlotChain::elt_type() const { return prm_slotchain; }
 
-INLINE
-Type&
-SlotChain::type() { return __chain->back()->type(); }
+    INLINE
+    Type&
+    SlotChain::type() { return __chain->back()->type(); }
 
-INLINE
-const Type&
-SlotChain::type() const { return __chain->back()->type(); }
+    INLINE
+    const Type&
+    SlotChain::type() const { return __chain->back()->type(); }
 
-INLINE
-Potential<prm_float>&
-SlotChain::cpf() { return __chain->back()->cpf(); }
+    INLINE
+    Potential<prm_float>&
+    SlotChain::cpf() { return __chain->back()->cpf(); }
 
-INLINE
-const Potential<prm_float>&
-SlotChain::cpf() const { return __chain->back()->cpf(); }
+    INLINE
+    const Potential<prm_float>&
+    SlotChain::cpf() const { return __chain->back()->cpf(); }
 
-INLINE
-ClassElementContainer&
-SlotChain::end() {
-  return static_cast<ReferenceSlot*>(__chain->atPos(__chain->size() - 2))->slotType();
-}
+    INLINE
+    ClassElementContainer&
+    SlotChain::end() {
+      return static_cast<ReferenceSlot*>( __chain->atPos( __chain->size() - 2 ) )->slotType();
+    }
 
-INLINE
-const ClassElementContainer&
-SlotChain::end() const {
-  return static_cast<ReferenceSlot*>(__chain->atPos(__chain->size() - 2))->slotType();
-}
+    INLINE
+    const ClassElementContainer&
+    SlotChain::end() const {
+      return static_cast<ReferenceSlot*>( __chain->atPos( __chain->size() - 2 ) )->slotType();
+    }
 
-INLINE
-ClassElement&
-SlotChain::lastElt() {return *(__chain->back()); }
+    INLINE
+    ClassElement&
+    SlotChain::lastElt() {return *( __chain->back() ); }
 
-INLINE
-const ClassElement&
-SlotChain::lastElt() const {return *(__chain->back()); }
+    INLINE
+    const ClassElement&
+    SlotChain::lastElt() const {return *( __chain->back() ); }
 
-INLINE
-Sequence<ClassElement*>&
-SlotChain::chain() { return *__chain; }
+    INLINE
+    Sequence<ClassElement*>&
+    SlotChain::chain() { return *__chain; }
 
-INLINE
-const Sequence<ClassElement*>&
-SlotChain::chain() const { return *__chain; }
+    INLINE
+    const Sequence<ClassElement*>&
+    SlotChain::chain() const { return *__chain; }
 
-INLINE
-void
-SlotChain::addParent(const ClassElement& elt) { }
+    INLINE
+    void
+    SlotChain::addParent( const ClassElement& elt ) { }
 
-INLINE
-void
-SlotChain::addChild(const ClassElement& elt) { }
+    INLINE
+    void
+    SlotChain::addChild( const ClassElement& elt ) { }
 
-INLINE
-bool
-SlotChain::isMultiple() const { return __isMultiple; }
+    INLINE
+    bool
+    SlotChain::isMultiple() const { return __isMultiple; }
 
-// ============================================================================
-} /* namespace prm */
+
+  } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

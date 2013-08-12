@@ -23,139 +23,139 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #include <utility>
 #include <string>
 #include <sstream>
-// ============================================================================
+
 #include <agrum/core/hashTable.h>
 #include <agrum/core/set.h>
-// ============================================================================
+
 #include <agrum/prm/PRM.h>
 #include <agrum/prm/PRMInference.h>
-// ============================================================================
+
 #ifndef GUM_STRUCTURED_BB_H
 #define GUM_STRUCTURED_BB_H
 namespace gum {
-namespace prm {
+  namespace prm {
 
-/**
- * @class StructuredBayesBall structuredBayesBall.h <agrum/prm/structuredBayesBall.h>
- * @brief This class represent the BayesBall algorithm applied on PRMs.
- */
-class StructuredBayesBall {
-public:
-    // ========================================================================
-    /// @name Constructors & destructor.
-    // ========================================================================
-    /// @{
+    /**
+     * @class StructuredBayesBall structuredBayesBall.h <agrum/prm/structuredBayesBall.h>
+     * @brief This class represent the BayesBall algorithm applied on PRMs.
+     */
+    class StructuredBayesBall {
+      public:
+        // ========================================================================
+        /// @name Constructors & destructor.
+        // ========================================================================
+        /// @{
 
-    /// Default Constructor.
-    StructuredBayesBall(const PRMInference& inference);
+        /// Default Constructor.
+        StructuredBayesBall( const PRMInference& inference );
 
-    /// Destructor.
-    ~StructuredBayesBall();
+        /// Destructor.
+        ~StructuredBayesBall();
 
-    /// @}
-    // ========================================================================
-    /// @name Getters and Setters.
-    // ========================================================================
-    /// @{
+        /// @}
+        // ========================================================================
+        /// @name Getters and Setters.
+        // ========================================================================
+        /// @{
 
-    /// Returns a unique key w.r.t. d-separation for i.
-    const std::string& key(const Instance* i) const;
+        /// Returns a unique key w.r.t. d-separation for i.
+        const std::string& key( const Instance* i ) const;
 
-    /// Returns a unique key w.r.t. d-separation for i.
-    const std::string& key(const Instance& i) const;
+        /// Returns a unique key w.r.t. d-separation for i.
+        const std::string& key( const Instance& i ) const;
 
-    /// Returns the set of requisite nodes w.r.t. d-separation for i.
-    const Set<NodeId>& requisiteNodes(const Instance* i) const;
+        /// Returns the set of requisite nodes w.r.t. d-separation for i.
+        const Set<NodeId>& requisiteNodes( const Instance* i ) const;
 
-    /// Returns the set of requisite nodes w.r.t. d-separation for i.
-    const Set<NodeId>& requisiteNodes(const Instance& i) const;
+        /// Returns the set of requisite nodes w.r.t. d-separation for i.
+        const Set<NodeId>& requisiteNodes( const Instance& i ) const;
 
-    /// Returns the number of occurrence of the given key, which is the number
-    /// of Instance sharing the same set of requisite nodes.
-    Size occurrence(const std::string& key) const;
+        /// Returns the number of occurrence of the given key, which is the number
+        /// of Instance sharing the same set of requisite nodes.
+        Size occurrence( const std::string& key ) const;
 
-    /// Returns the ratio between the total number of instances and the number
-    /// of instances with the same configuration.
-    float liftRatio() const;
+        /// Returns the ratio between the total number of instances and the number
+        /// of instances with the same configuration.
+        float liftRatio() const;
 
-    /// Returns true if i has requisite nodes.
-    bool exists(const Instance* i) const;
+        /// Returns true if i has requisite nodes.
+        bool exists( const Instance* i ) const;
 
-    /// Returns true if i has requisite nodes.
-    bool exists(const Instance& i) const;
+        /// Returns true if i has requisite nodes.
+        bool exists( const Instance& i ) const;
 
-    /// @}
+        /// @}
 
-    /// Compute the set or requisite nodes for each required instance given
-    /// the current set of observations.
-    /// Discard previous computations.
-    void compute(const Instance* i, NodeId n);
+        /// Compute the set or requisite nodes for each required instance given
+        /// the current set of observations.
+        /// Discard previous computations.
+        void compute( const Instance* i, NodeId n );
 
-    /// Compute the set or requisite nodes for each required instance given
-    /// the current set of observations.
-    /// Discard previous computations.
-    void compute(const Instance& i, NodeId n);
+        /// Compute the set or requisite nodes for each required instance given
+        /// the current set of observations.
+        /// Discard previous computations.
+        void compute( const Instance& i, NodeId n );
 
-    /// Returns true if there is a hard evidence on i->get(n).
-    bool __isHardEvidence(const Instance* i, NodeId n);
-private:
-    /// Copy constructor.
-    StructuredBayesBall(const StructuredBayesBall& source);
+        /// Returns true if there is a hard evidence on i->get(n).
+        bool __isHardEvidence( const Instance* i, NodeId n );
+      private:
+        /// Copy constructor.
+        StructuredBayesBall( const StructuredBayesBall& source );
 
-    /// Copy operator.
-    StructuredBayesBall& operator=(const StructuredBayesBall& source);
+        /// Copy operator.
+        StructuredBayesBall& operator=( const StructuredBayesBall& source );
 
-    /// Code alias
-    typedef HashTable< NodeId, std::pair<bool, bool> > MarkMap;
-    /// Code alias
-    typedef HashTable< const Instance*,  MarkMap* > InstanceMap;
-    /// Code alias
-    std::pair<bool, bool>& __getMark(InstanceMap& marks, const Instance* i, NodeId n);
-    /// Code alias
-    const SlotChain& __getSC(const Instance* i, NodeId n);
+        /// Code alias
+        typedef HashTable< NodeId, std::pair<bool, bool> > MarkMap;
+        /// Code alias
+        typedef HashTable< const Instance*,  MarkMap* > InstanceMap;
+        /// Code alias
+        std::pair<bool, bool>& __getMark( InstanceMap& marks, const Instance* i, NodeId n );
+        /// Code alias
+        const SlotChain& __getSC( const Instance* i, NodeId n );
 
-    /// Cleans this before a new computation.
-    void __clean();
+        /// Cleans this before a new computation.
+        void __clean();
 
 
-    /// The real compute method.
-    void __compute(const Instance* i, NodeId n);
+        /// The real compute method.
+        void __compute( const Instance* i, NodeId n );
 
-    /// When the ball is received on i->get(n) from a child.
-    void __fromChild(const Instance* i, NodeId n, InstanceMap& marks);
+        /// When the ball is received on i->get(n) from a child.
+        void __fromChild( const Instance* i, NodeId n, InstanceMap& marks );
 
-    /// When the ball is receive on i->get(n) from a parent.
-    void __fromParent(const Instance* i, NodeId n, InstanceMap& marks);
+        /// When the ball is receive on i->get(n) from a parent.
+        void __fromParent( const Instance* i, NodeId n, InstanceMap& marks );
 
-    /// Fill __keyMap and __reqMap.
-    void __fillMaps(InstanceMap& marks);
+        /// Fill __keyMap and __reqMap.
+        void __fillMaps( InstanceMap& marks );
 
-    /// Builds the HashKey for the given instance and requisite nodes set.
-    std::string __buildHashKey(const Instance* i, Set<NodeId>& req_nodes);
+        /// Builds the HashKey for the given instance and requisite nodes set.
+        std::string __buildHashKey( const Instance* i, Set<NodeId>& req_nodes );
 
-    /// The PRM at which __model belongs.
-    const PRMInference* __inf;
+        /// The PRM at which __model belongs.
+        const PRMInference* __inf;
 
-    /// Associate an Instance with a unique key w.r.t. d-separation and the
-    /// set of requisite nodes deduced from d-separation analysis.
-    HashTable<const Instance*, std::pair<std::string, Set<NodeId>*> > __keyMap;
+        /// Associate an Instance with a unique key w.r.t. d-separation and the
+        /// set of requisite nodes deduced from d-separation analysis.
+        HashTable<const Instance*, std::pair<std::string, Set<NodeId>*> > __keyMap;
 
-    /// Associate a Key with the set of requisite nodes associated with it.
-    /// The Size value is the number of instance with the same key.
-    HashTable<std::string, std::pair< Set<NodeId>*, Size> > __reqMap;
+        /// Associate a Key with the set of requisite nodes associated with it.
+        /// The Size value is the number of instance with the same key.
+        HashTable<std::string, std::pair< Set<NodeId>*, Size> > __reqMap;
 
-};
+    };
 
-} /* namespace prm */
+  } /* namespace prm */
 } /* namespace gum */
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/structuredBayesBall.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 #endif /* GUM_STRUCTURED_BB_H */
-// ============================================================================
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

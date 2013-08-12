@@ -22,7 +22,7 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #include <agrum/prm/PRMFactory.h>
 
 namespace gum {
@@ -45,7 +45,7 @@ namespace gum {
     PRMFactory::prm() const { return __prm; }
 
     INLINE
-    PRMObject::ObjectType
+    PRMObject::PRMType
     PRMFactory::currentType() const {
       if ( __stack.size() == 0 ) {
         GUM_ERROR( NotFound, "no object being built" );
@@ -102,7 +102,7 @@ namespace gum {
     INLINE
     void
     PRMFactory::endDiscreteType() {
-      Type* t = static_cast<Type*>( __checkStack( 1, PRMObject::prm_type ) );
+      Type* t = static_cast<Type*>( __checkStack( 1, PRMObject::PRMType::TYPE ) );
 
       if ( not t->__isValid() ) {
         GUM_ERROR( OperationNotAllowed, "current type is not a valid subtype" );
@@ -119,14 +119,14 @@ namespace gum {
     INLINE
     void
     PRMFactory::endInterface() {
-      __checkStack( 1, PRMObject::prm_interface );
+      __checkStack( 1, PRMObject::PRMType::INTERFACE );
       __stack.pop_back();
     }
 
     INLINE
     void
     PRMFactory::addAttribute( const std::string& type, const std::string& name ) {
-      __checkStack( 1, PRMObject::prm_interface );
+      __checkStack( 1, PRMObject::PRMType::INTERFACE );
       startAttribute( type, name );
       endAttribute();
     }
@@ -151,7 +151,7 @@ namespace gum {
     void
     PRMFactory::setRawCPFByLines( const std::vector<prm_float>& array ) {
       Attribute* a = static_cast<Attribute*>( __checkStack( 1, ClassElement::prm_attribute ) );
-      __checkStack( 2, PRMObject::prm_class );
+      __checkStack( 2, PRMObject::PRMType::CLASS );
 
       if ( a->cpf().domainSize() != array.size() )
         GUM_ERROR( OperationNotAllowed, "illegal CPF size" );
@@ -177,7 +177,7 @@ namespace gum {
     INLINE
     void
     PRMFactory::endSystem() {
-      System* model = static_cast<System*>( __checkStack( 1, PRMObject::prm_system ) );
+      System* model = static_cast<System*>( __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
       __stack.pop_back();
       model->instantiate();
       __prm->__systemMap.insert( model->name(), model );
@@ -187,7 +187,7 @@ namespace gum {
     INLINE
     void
     PRMFactory::addInstance( const std::string& type, const std::string& name ) {
-      System* model = static_cast<System*>( __checkStack( 1, PRMObject::prm_system ) );
+      System* model = static_cast<System*>( __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
       Class* c = __retrieveClass( type );
       Instance* inst = new Instance( name, *c );
 
@@ -227,7 +227,7 @@ namespace gum {
 
     INLINE
     PRMObject*
-    PRMFactory::__checkStack( Idx i, PRMObject::ObjectType obj_type ) {
+    PRMFactory::__checkStack( Idx i, PRMObject::PRMType obj_type ) {
       // Don't forget that Idx are unsigned int
       if ( __stack.size() - i > __stack.size() ) {
         GUM_ERROR( FactoryInvalidState, "illegal sequence of calls" );
@@ -252,8 +252,8 @@ namespace gum {
 
       PRMObject* obj = __stack[__stack.size() - i];
 
-      if (( obj->obj_type() == PRMObject::prm_class ) or
-          ( obj->obj_type() == PRMObject::prm_interface ) ) {
+      if ( ( obj->obj_type() == PRMObject::PRMType::CLASS ) ||
+           ( obj->obj_type() == PRMObject::PRMType::INTERFACE ) ) {
         return static_cast<ClassElementContainer*>( obj );
       } else {
         GUM_ERROR( FactoryInvalidState, "illegal sequence of calls" );
@@ -346,7 +346,7 @@ namespace gum {
       return *( __retrieveCommonType( elts ) );
     }
 
-// ============================================================================
+
   } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

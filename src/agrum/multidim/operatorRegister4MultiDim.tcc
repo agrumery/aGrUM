@@ -52,7 +52,7 @@ namespace gum {
       // the hashtable contained within the OperatorRegister4MultiDim will be
       // removed at the end of the program's execution.
       __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
-                             ( void* ) theset );
+                                 ( void* ) theset );
 #endif /* NDEBUG */
     } else {
       theset = __set[operation_name];
@@ -96,8 +96,8 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   typename OperatorRegister4MultiDim<GUM_SCALAR>::OperatorPtr
   OperatorRegister4MultiDim<GUM_SCALAR>::get( const std::string& operation_name,
-                                          const std::string& type1,
-                                          const std::string& type2 ) const {
+      const std::string& type1,
+      const std::string& type2 ) const {
     OperatorSet* theset = __set[operation_name];
     return ( *theset )[std::pair<std::string,std::string>( type1,type2 )];
   }
@@ -118,7 +118,7 @@ namespace gum {
       // the hashtable contained within the OperatorRegister4MultiDim will be
       // removed at the end of the program's execution.
       __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
-                             ( void* ) &container.__set );
+                                 ( void* ) &container.__set );
 
     }
 

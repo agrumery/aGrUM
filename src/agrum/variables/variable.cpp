@@ -30,9 +30,9 @@
 namespace gum {
 
 
-  // =============================================================================
+
   /// for friendly displaying the content of the variable
-  // =============================================================================
+
   std::ostream& operator<< ( std::ostream& s, const Variable& LDRV ) {
     s << LDRV.name() << ": " << LDRV.description();
     return s;

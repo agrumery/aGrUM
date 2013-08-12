@@ -23,32 +23,34 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #include <agrum/prm/gspan/DFSCode.h>
-// ============================================================================
+
 #ifdef GUM_NO_INLINE
 #include <agrum/prm/gspan/DFSCode.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 namespace gum {
-namespace prm {
-namespace gspan {
+  namespace prm {
+    namespace gspan {
 
-std::ostream& operator<<(std::ostream& out, const DFSCode& code) {
-  out << "[ ";
-  for (DFSCode::const_iterator iter = code.codes.begin();
-       iter != code.codes.end(); ++iter)
-  {
-    out << **iter;
-    if ( (iter + 1) != code.codes.end() ) {
-      out << ", ";
-    }
-  }
-  out << " ]";
-  return out;
-}
+      std::ostream& operator<<( std::ostream& out, const DFSCode& code ) {
+        out << "[ ";
 
-} /* namespace gspan */
-} /* namespace prm */
+        for ( DFSCode::const_iterator iter = code.codes.begin();
+              iter != code.codes.end(); ++iter ) {
+          out << **iter;
+
+          if ( ( iter + 1 ) != code.codes.end() ) {
+            out << ", ";
+          }
+        }
+
+        out << " ]";
+        return out;
+      }
+
+    } /* namespace gspan */
+  } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

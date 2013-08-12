@@ -23,12 +23,12 @@
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
-// ============================================================================
+
 #ifndef GUM_MULTI_DIM_READONLY_H
 #define GUM_MULTI_DIM_READONLY_H
-// ============================================================================
+
 #include <agrum/multidim/multiDimImplementation.h>
-// ============================================================================
+
 namespace gum {
   /**
    * @class MultiDimReadOnly
@@ -44,19 +44,19 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// Default constructor.
-      // ============================================================================
+
       MultiDimReadOnly();
 
-      // ============================================================================
+
       /// Copy constructor.
-      // ============================================================================
+
       MultiDimReadOnly( const MultiDimReadOnly<GUM_SCALAR>& from );
 
-      // ============================================================================
+
       /// Destructor.
-      // ============================================================================
+
       virtual ~MultiDimReadOnly();
 
       /// @}
@@ -82,24 +82,24 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// @throw OperationNotAllowed Raised because this is a read only table.
-      // ============================================================================
+
       virtual void set( const Instantiation& i ,const GUM_SCALAR& value ) const;
 
-      // ============================================================================
+
       /// @throw OperationNotAllowed Raised because this is a read only table.
-      // ============================================================================
+
       virtual void fill( const GUM_SCALAR& ) const;
 
       /// @}
 
     protected:
 
-      // ============================================================================
+
       /// @throw OperationNotAllowed Raised because this is a read only table.
-      // ============================================================================
-      virtual GUM_SCALAR& _get( const Instantiation &i ) const;
+
+      virtual GUM_SCALAR& _get( const Instantiation& i ) const;
 
   };
 } /* namespace gum */

@@ -23,104 +23,102 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 namespace gum {
-namespace prm {
+  namespace prm {
 
-INLINE
-StructuredBayesBall::StructuredBayesBall(const PRMInference& inference):
-  __inf(&inference)
-{
-  GUM_CONSTRUCTOR( StructuredBayesBall );
-}
+    INLINE
+    StructuredBayesBall::StructuredBayesBall( const PRMInference& inference ):
+      __inf( &inference ) {
+      GUM_CONSTRUCTOR( StructuredBayesBall );
+    }
 
-INLINE
-StructuredBayesBall::StructuredBayesBall(const StructuredBayesBall& source):
-  __inf(0)
-{
-  GUM_CONS_CPY( StructuredBayesBall );
-  GUM_ERROR(FatalError, "Not allowed.");
-}
+    INLINE
+    StructuredBayesBall::StructuredBayesBall( const StructuredBayesBall& source ):
+      __inf( 0 ) {
+      GUM_CONS_CPY( StructuredBayesBall );
+      GUM_ERROR( FatalError, "Not allowed." );
+    }
 
-INLINE
-StructuredBayesBall&
-StructuredBayesBall::operator=(const StructuredBayesBall& source) {
-  GUM_ERROR(FatalError, "Not allowed.");
-}
+    INLINE
+    StructuredBayesBall&
+    StructuredBayesBall::operator=( const StructuredBayesBall& source ) {
+      GUM_ERROR( FatalError, "Not allowed." );
+    }
 
-INLINE
-const std::string&
-StructuredBayesBall::key(const Instance* i) const {
-  return __keyMap[i].first;
-}
+    INLINE
+    const std::string&
+    StructuredBayesBall::key( const Instance* i ) const {
+      return __keyMap[i].first;
+    }
 
-INLINE
-const std::string&
-StructuredBayesBall::key(const Instance& i) const {
-  return __keyMap[&i].first;
-}
+    INLINE
+    const std::string&
+    StructuredBayesBall::key( const Instance& i ) const {
+      return __keyMap[&i].first;
+    }
 
-INLINE
-const Set<NodeId>&
-StructuredBayesBall::requisiteNodes(const Instance* i) const {
-  return *(__keyMap[i].second);
-}
+    INLINE
+    const Set<NodeId>&
+    StructuredBayesBall::requisiteNodes( const Instance* i ) const {
+      return *( __keyMap[i].second );
+    }
 
-INLINE
-const Set<NodeId>&
-StructuredBayesBall::requisiteNodes(const Instance& i) const {
-  return *(__keyMap[&i].second);
-}
+    INLINE
+    const Set<NodeId>&
+    StructuredBayesBall::requisiteNodes( const Instance& i ) const {
+      return *( __keyMap[&i].second );
+    }
 
-INLINE
-Size
-StructuredBayesBall::occurrence(const std::string& key) const {
-  return __reqMap[key].second;
-}
+    INLINE
+    Size
+    StructuredBayesBall::occurrence( const std::string& key ) const {
+      return __reqMap[key].second;
+    }
 
-INLINE
-float
-StructuredBayesBall::liftRatio() const {
-  return ((float) __reqMap.size()) / ((float) __keyMap.size());
-}
+    INLINE
+    float
+    StructuredBayesBall::liftRatio() const {
+      return ( ( float ) __reqMap.size() ) / ( ( float ) __keyMap.size() );
+    }
 
-INLINE
-bool
-StructuredBayesBall::exists(const Instance* i) const {
-  return __keyMap.exists(i);
-}
+    INLINE
+    bool
+    StructuredBayesBall::exists( const Instance* i ) const {
+      return __keyMap.exists( i );
+    }
 
-INLINE
-bool
-StructuredBayesBall::exists(const Instance& i) const {
-  return __keyMap.exists(&i);
-}
+    INLINE
+    bool
+    StructuredBayesBall::exists( const Instance& i ) const {
+      return __keyMap.exists( &i );
+    }
 
-INLINE
-void
-StructuredBayesBall::compute(const Instance* i, NodeId n) {
-  __compute(i, n);
-}
+    INLINE
+    void
+    StructuredBayesBall::compute( const Instance* i, NodeId n ) {
+      __compute( i, n );
+    }
 
-INLINE
-void
-StructuredBayesBall::compute(const Instance& i, NodeId n) {
-  __compute(&i, n);
-}
+    INLINE
+    void
+    StructuredBayesBall::compute( const Instance& i, NodeId n ) {
+      __compute( &i, n );
+    }
 
-INLINE
-const SlotChain&
-StructuredBayesBall::__getSC(const Instance* i, NodeId n) {
-  return static_cast<const SlotChain&>(i->type().get(n));
-}
+    INLINE
+    const SlotChain&
+    StructuredBayesBall::__getSC( const Instance* i, NodeId n ) {
+      return static_cast<const SlotChain&>( i->type().get( n ) );
+    }
 
-INLINE
-std::pair<bool, bool>&
-StructuredBayesBall::__getMark(InstanceMap& marks, const Instance* i, NodeId n) {
-  return (*(marks[i]))[n];
-}
+    INLINE
+    std::pair<bool, bool>&
+    StructuredBayesBall::__getMark( InstanceMap& marks, const Instance* i, NodeId n ) {
+      return ( *( marks[i] ) )[n];
+    }
 
 
-} /* namespace prm */
+  } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

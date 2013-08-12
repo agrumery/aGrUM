@@ -20,6 +20,6 @@
 /** @file
  * @brief Class for generating bayesian netwroks.
  *
- * @author Christophe GONZALES, Pierre-Henri WUILLEMIN, Lionel Torti and Ariele-Paolo MAESANO
+ * @author Christophe GONZALES, Pierre-Henri WUILLEMIN, Lionel TORTI and Ariele-Paolo MAESANO
  */
 #include <agrum/BN/generator/abstractBayesNetGenerator.h>

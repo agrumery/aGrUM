@@ -20,7 +20,7 @@
 /**
  * @file
  * @brief This file contains gibbs sampling (for BNs) class definitions.
- * @author Pierre-Henri Wuillemin and Christophe Gonzales
+ * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */
 #ifndef GUM_GIBBS_INFERENCE_H
 #define GUM_GIBBS_INFERENCE_H
@@ -41,15 +41,15 @@ namespace gum {
   template <typename GUM_SCALAR>
 
   class GibbsInference :
-        public ApproximationScheme,
-        public BayesNetInference<GUM_SCALAR>,
-        public particle::Gibbs<GUM_SCALAR> {
+    public ApproximationScheme,
+    public BayesNetInference<GUM_SCALAR>,
+    public particle::Gibbs<GUM_SCALAR> {
 
     public:
       /**
        * Default constructor
        */
-      GibbsInference( const AbstractBayesNet<GUM_SCALAR>& BN );
+      GibbsInference( const BayesNet<GUM_SCALAR>& BN );
 
       /**
        * Destructor.

@@ -46,10 +46,10 @@ namespace gum {
     class ISignaler {
       public:
         virtual ~ISignaler() {};
-        virtual void detachFromTarget ( Listener* target ) = 0;
-        virtual void duplicateTarget ( const Listener* oldtarget,
-                                       Listener* newtarget ) = 0;
-        virtual bool hasListener ( void ) = 0;
+        virtual void detachFromTarget( Listener* target ) = 0;
+        virtual void duplicateTarget( const Listener* oldtarget,
+                                      Listener* newtarget ) = 0;
+        virtual bool hasListener( void ) = 0;
     };
   } //namespace sig
 
@@ -69,12 +69,12 @@ namespace gum {
 
     public:
       Listener() {
-        GUM_CONSTRUCTOR ( Listener );
+        GUM_CONSTRUCTOR( Listener );
       };
 
 
-      Listener ( const Listener& l ) {
-        GUM_CONS_CPY ( Listener );
+      Listener( const Listener& l ) {
+        GUM_CONS_CPY( Listener );
 
         /*for ( const Senders_bucket* it = l.__senders.frontBucket ();
               it ; it = it->next() ) {
@@ -82,13 +82,13 @@ namespace gum {
           __senders.pushBack( **it );
         }*/
         for ( auto el : __senders ) {
-          el->duplicateTarget ( &l,this );
+          el->duplicateTarget( &l,this );
         };
       };
 
 
       virtual ~Listener() {
-        GUM_DESTRUCTOR ( Listener );
+        GUM_DESTRUCTOR( Listener );
         /*
               for ( const Senders_bucket* it = __senders.frontBucket ();
                     it; it = it->next() ) {
@@ -96,24 +96,24 @@ namespace gum {
               }*/
 
         for ( auto el : __senders ) {
-          el->detachFromTarget ( this );
+          el->detachFromTarget( this );
         }
 
         __senders.clear();
       };
 
 
-      inline void attachSignal__ ( __sig__::ISignaler* sender ) {
-        __senders.push_back ( sender );
+      inline void attachSignal__( __sig__::ISignaler* sender ) {
+        __senders.push_back( sender );
       };
 
 
-      inline void detachSignal__ ( __sig__::ISignaler* sender ) {
+      inline void detachSignal__( __sig__::ISignaler* sender ) {
         //__senders.eraseByVal ( sender );
-        auto del=std::remove ( __senders.begin(),__senders.end(),sender );
+        auto del=std::remove( __senders.begin(),__senders.end(),sender );
 
         if ( del!=__senders.end() )
-          __senders.erase ( del,__senders.end() );
+          __senders.erase( del,__senders.end() );
       };
 
     private:

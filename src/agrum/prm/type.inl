@@ -24,97 +24,98 @@
  * @author Lionel TORTI
  *
  */
-// ============================================================================
+
 namespace gum {
-namespace prm {
+  namespace prm {
 
-  INLINE
-  Type&
-  Type::super() { return *__super; }
+    INLINE
+    Type&
+    Type::super() { return *__super; }
 
-  INLINE
-  DiscreteVariable&
-  Type::variable() { return *__var; }
+    INLINE
+    DiscreteVariable&
+    Type::variable() { return *__var; }
 
-  INLINE
-  const DiscreteVariable&
-  Type::variable() const { return *__var; }
+    INLINE
+    const DiscreteVariable&
+    Type::variable() const { return *__var; }
 
-  INLINE
-  DiscreteVariable&
-  Type::operator*() { return *__var; }
+    INLINE
+    DiscreteVariable&
+    Type::operator*() { return *__var; }
 
-  INLINE
-  const DiscreteVariable&
-  Type::operator*() const { return *__var; }
+    INLINE
+    const DiscreteVariable&
+    Type::operator*() const { return *__var; }
 
-  INLINE
-  DiscreteVariable*
-  Type::operator->() const { return __var; }
+    INLINE
+    DiscreteVariable*
+    Type::operator->() const { return __var; }
 
-  INLINE
-  PRMObject::ObjectType
-  Type::obj_type() const { return prm_type; }
+    INLINE
+    PRMObject::PRMType
+    Type::obj_type() const { return PRMObject::PRMType::TYPE; }
 
-  INLINE
-  const std::string&
-  Type::name() const { return PRMObject::name(); }
+    INLINE
+    const std::string&
+    Type::name() const { return PRMObject::name(); }
 
-  INLINE
-  const Type&
-  Type::super() const {
-    if (__super) {
-      return *__super;
-    } else {
-      GUM_ERROR(NotFound, "No super type for this type.");
-    }
-  }
-
-  INLINE
-  void
-  Type::setSuper(Type& t) {
-    try {
-      if (t != super()) {
-        GUM_ERROR(WrongType, "the given Type is not equal to this Type super.");
+    INLINE
+    const Type&
+    Type::super() const {
+      if ( __super ) {
+        return *__super;
+      } else {
+        GUM_ERROR( NotFound, "No super type for this type." );
       }
-    } catch (NotFound&) {
-      GUM_ERROR(OperationNotAllowed, "this Type has no super Type");
     }
-    __super = &t;
-  }
 
-  INLINE
-  const std::vector<Idx>&
-  Type::label_map() const {
-    if (__label_map) {
-      return *__label_map;
-    } else {
-      GUM_ERROR(NotFound, "No super type for this type.");
+    INLINE
+    void
+    Type::setSuper( Type& t ) {
+      try {
+        if ( t != super() ) {
+          GUM_ERROR( WrongType, "the given Type is not equal to this Type super." );
+        }
+      } catch ( NotFound& ) {
+        GUM_ERROR( OperationNotAllowed, "this Type has no super Type" );
+      }
+
+      __super = &t;
     }
-  }
 
-  INLINE
-  bool
-  Type::isSubType() const { return __super; }
+    INLINE
+    const std::vector<Idx>&
+    Type::label_map() const {
+      if ( __label_map ) {
+        return *__label_map;
+      } else {
+        GUM_ERROR( NotFound, "No super type for this type." );
+      }
+    }
 
-  INLINE
-  bool
-  Type::isSuperTypeOf(const Type& t) const {
-    return t.isSubTypeOf(*this);
-  }
+    INLINE
+    bool
+    Type::isSubType() const { return __super; }
 
-  INLINE
-  bool
-  Type::operator==(const PRMObject& obj) const {
-    return name() == obj.name();
-  }
+    INLINE
+    bool
+    Type::isSuperTypeOf( const Type& t ) const {
+      return t.isSubTypeOf( *this );
+    }
 
-  INLINE
-  bool
-  Type::operator!=(const PRMObject& obj) const {
-    return name() != obj.name();
-  }
+    INLINE
+    bool
+    Type::operator==( const PRMObject& obj ) const {
+      return name() == obj.name();
+    }
 
-} /* namespace prm */
+    INLINE
+    bool
+    Type::operator!=( const PRMObject& obj ) const {
+      return name() != obj.name();
+    }
+
+  } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

@@ -20,9 +20,9 @@ file(GLOB_RECURSE AGRUM_C_SOURCES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DI
 
 ### CONDITIONAL RULES (if flex/bison have been found, we add rules) ####
 include("${CMAKE_CURRENT_CMAKE_DIR}/FlexBison.agrum.cmake")
-# if(BISON_FLEX_EXECUTABLE STREQUAL "ok")
-#     FlexBisonTarget(learning/XmlCsvParser parseXmlCsv)
-# endif(BISON_FLEX_EXECUTABLE STREQUAL "ok")
+if(BISON_FLEX_EXECUTABLE STREQUAL "ok")
+    FlexBisonTarget(learning/XmlCsvParser parseXmlCsv)
+endif(BISON_FLEX_EXECUTABLE STREQUAL "ok")
 ####################################################################
 
 ### CONDITIONAL RULES (if COCO/R has been found, we add rules) ####

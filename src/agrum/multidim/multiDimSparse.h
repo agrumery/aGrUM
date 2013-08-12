@@ -53,24 +53,24 @@ namespace gum {
       /// @name Constructors / Destructors
       // ############################################################################
       /// @{
-      // ============================================================================
+
       /// Default constructor: creates an empty null dimensional matrix
-      // ============================================================================
+
       MultiDimSparse( const GUM_SCALAR& default_value );
 
-      // ============================================================================
+
       /// copy constructor
       /** The newly created matrix contains the same variables and the same values as
        * from, but no instantiation is associated to it.
        * @param from the multidimensional matrix we copy into this */
-      // ============================================================================
+
       MultiDimSparse( const MultiDimSparse<GUM_SCALAR>& from );
 
-      // ============================================================================
+
       /// destructor
       /** Note that, when the multidimensional array is removed from memory, its
        * variables are not removed as well. */
-      // ============================================================================
+
       virtual ~MultiDimSparse();
 
       /// @}
@@ -95,22 +95,22 @@ namespace gum {
       /// @name Operators
       // ############################################################################
       /// @{
-      // ============================================================================
+
       /// copy operator
       /** @param from the multidimensional matrix we copy into this */
-      // ============================================================================
+
       MultiDimSparse<GUM_SCALAR>& operator= ( const MultiDimSparse<GUM_SCALAR>& from );
       /// @}
 
-      // ============================================================================
+
       /// add a new dimension
       /** @param v
        * @throw DuplicateElement
        */
-      // ============================================================================
+
       void add( const DiscreteVariable& v );
 
-      // ============================================================================
+
       /// removes a dimension
       /** If the variable does not belong to the MultiDimBase, then this method does
        * nothing.
@@ -118,7 +118,7 @@ namespace gum {
        * @throw NotFound
        * @throw OperationNotAllowed
        */
-      // ============================================================================
+
       void erase( const DiscreteVariable& v );
 
       /// fill the table with d

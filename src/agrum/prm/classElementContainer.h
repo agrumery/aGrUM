@@ -23,30 +23,30 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #ifndef GUM_CLASS_ELEMENT_CONTAINER_H
 #define GUM_CLASS_ELEMENT_CONTAINER_H
-// ============================================================================
+
 #include <agrum/core/set.h>
 #include <agrum/core/hashTable.h>
-// ============================================================================
+
 #include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/DAG.h>
-// ============================================================================
+
 #include <agrum/prm/utils_prm.h>
 #include <agrum/prm/PRMObject.h>
 #include <agrum/prm/classElement.h>
 #include <agrum/prm/referenceSlot.h>
 #include <agrum/prm/slotChain.h>
-// ============================================================================
+
 namespace gum {
   namespace prm {
-// ============================================================================
+
     class Class;
     class Interface;
     class ClassElementContainterIterator;
     class ClassElementContainterConstIterator;
-// ============================================================================
+
     /**
      * @class ClassElementContainer classElementContainer.h <agrum/prm/classElementContainer.h>
      * @brief Abstract class for classes containing gum::ClassElement.
@@ -67,7 +67,7 @@ namespace gum {
         /// @{
 
         /// Default constructor.
-        ClassElementContainer ( const std::string& name );
+        ClassElementContainer( const std::string& name );
 
         /// Destructor.
         virtual ~ClassElementContainer();
@@ -83,13 +83,13 @@ namespace gum {
          * @param elt A ClassElement.
          * @return true if elt beglons to this ClassElementContainer.
          */
-        bool belongsTo ( const ClassElement& elt ) const;
+        bool belongsTo( const ClassElement& elt ) const;
 
         /**
          * Returns true if a member with the given name exists in this ClassElementContainer or
          * in the ClassElementContainer hierarchy.
          */
-        bool exists ( const std::string& name ) const;
+        bool exists( const std::string& name ) const;
 
         /**
          * Getter on a member of this ClassElementContainer.
@@ -97,7 +97,7 @@ namespace gum {
          * @return Returns a constant reference on the member.
          * @throw NotFound Raised if no attribute matches name.
          */
-        virtual ClassElement& get ( const std::string& name ) =0;
+        virtual ClassElement& get( const std::string& name ) =0;
 
         /**
          * Constant getter on a member of this ClassElementContainer.
@@ -105,7 +105,7 @@ namespace gum {
          * @return Returns a constant reference on the member.
          * @throw NotFound Raised if no attribute matches name.
          */
-        virtual const ClassElement& get ( const std::string& name ) const =0;
+        virtual const ClassElement& get( const std::string& name ) const =0;
 
         /**
          * @brief Add a ClassElement to this ClassElementContainer.
@@ -128,7 +128,7 @@ namespace gum {
          *
          * @throw DuplicateElement Raised if elt's name is already used in this class.
          */
-        virtual NodeId add ( ClassElement* elt ) =0;
+        virtual NodeId add( ClassElement* elt ) =0;
 
         /**
          * @brief Add a ClassElement which overload an inherited ClassElement.
@@ -155,12 +155,12 @@ namespace gum {
          * @throw WrongClassElement Raised if the overloading is illegal.
          * @throw TypeError Raised if elt isn't a legal subtype of this->get(elt->name()).
          */
-        virtual NodeId overload ( ClassElement* elt ) =0;
+        virtual NodeId overload( ClassElement* elt ) =0;
 
         /**
          * Add an arc between two ClassElement.
          */
-        virtual void insertArc ( const std::string& tail, const std::string& head ) =0;
+        virtual void insertArc( const std::string& tail, const std::string& head ) =0;
 
 
         /**
@@ -172,7 +172,7 @@ namespace gum {
          * @param elt A ClassElement.
          * @return Returns true if id is an input node.
          */
-        bool isInputNode ( const ClassElement& elt ) const;
+        bool isInputNode( const ClassElement& elt ) const;
 
         /**
          * @brief Set the input flag value of id at b.
@@ -187,7 +187,7 @@ namespace gum {
          * @throw WrongClassElement Raised if NodeId is neither an Attribute nor
          *                          an Aggregate.
          */
-        void setInputNode ( const ClassElement& elt, bool b );
+        void setInputNode( const ClassElement& elt, bool b );
 
         /**
          * @brief Returns true if the node is an output node.
@@ -198,7 +198,7 @@ namespace gum {
          * @param elt A ClassElement.
          * @return Returns true if id is an input node.
          */
-        bool isOutputNode ( const ClassElement& elt ) const;
+        bool isOutputNode( const ClassElement& elt ) const;
 
         /**
          * @brief Set the output flag value of id at b.
@@ -213,7 +213,7 @@ namespace gum {
          * @throw WrongClassElement Raised if NodeId is neither an Attribute nor
          *                          an Aggregate.
          */
-        void setOutputNode ( const ClassElement& elt, bool b );
+        void setOutputNode( const ClassElement& elt, bool b );
 
         /**
          * @brief Returns true if the node is an inner node.
@@ -228,7 +228,7 @@ namespace gum {
          * @throw WrongClassElement Raised if NodeId is neither an Attribute nor
          *                          an Aggregate.
          */
-        bool isInnerNode ( const ClassElement& elt ) const;
+        bool isInnerNode( const ClassElement& elt ) const;
 
         /// @}
         // ========================================================================
@@ -256,7 +256,7 @@ namespace gum {
          * @param id A NodeId.
          * @return true if id matches a ClassElement.
          */
-        bool exists ( NodeId id ) const;
+        bool exists( NodeId id ) const;
 
         /**
          * Getter on a member of this ClassElementContainer.
@@ -264,7 +264,7 @@ namespace gum {
          * @return Returns a constant reference on the member.
          * @throw NotFound Raised if no attribute matches name.
          */
-        virtual ClassElement& get ( NodeId id ) =0;
+        virtual ClassElement& get( NodeId id ) =0;
 
         /**
          * Constant getter on a member of this ClassElementContainer.
@@ -272,7 +272,7 @@ namespace gum {
          * @return Returns a constant reference on the member.
          * @throw NotFound Raised if no attribute matches name.
          */
-        virtual const ClassElement& get ( NodeId id ) const =0;
+        virtual const ClassElement& get( NodeId id ) const =0;
 
         /// @}
         // ========================================================================
@@ -286,7 +286,7 @@ namespace gum {
          * @return Returns a constant reference on the member.
          * @throw NotFound Raised if no attribute matches name.
          */
-        virtual ClassElement& operator[] ( NodeId id ) =0;
+        virtual ClassElement& operator[]( NodeId id ) =0;
 
         /**
          * Constant getter on a member of this ClassElementContainer.
@@ -294,7 +294,7 @@ namespace gum {
          * @return Returns a constant reference on the member.
          * @throw NotFound Raised if no attribute matches name.
          */
-        virtual const ClassElement& operator[] ( NodeId id ) const =0;
+        virtual const ClassElement& operator[]( NodeId id ) const =0;
 
         /**
          * Getter on a member of this ClassElementContainer.
@@ -302,7 +302,7 @@ namespace gum {
          * @return Returns a constant reference on the member.
          * @throw NotFound Raised if no attribute matches name.
          */
-        virtual ClassElement& operator[] ( const std::string& name ) =0;
+        virtual ClassElement& operator[]( const std::string& name ) =0;
 
         /**
          * Constant getter on a member of this ClassElementContainer.
@@ -310,7 +310,7 @@ namespace gum {
          * @return Returns a constant reference on the member.
          * @throw NotFound Raised if no attribute matches name.
          */
-        virtual const ClassElement& operator[] ( const std::string& name ) const =0;
+        virtual const ClassElement& operator[]( const std::string& name ) const =0;
 
         /// @}
         // ========================================================================
@@ -324,7 +324,7 @@ namespace gum {
          * @param cec
          * @return return true if this ClassElementContainer is a subtype of cec.
          */
-        virtual bool isSubTypeOf ( const ClassElementContainer& cec ) const =0;
+        virtual bool isSubTypeOf( const ClassElementContainer& cec ) const =0;
 
         /**
          * @brief Test if this ClassElementContainer is a super type of cec.
@@ -334,7 +334,7 @@ namespace gum {
          * @param cec
          * @return return true if this ClassElementContainer is a super type of cec.
          */
-        bool isSuperTypeOf ( const ClassElementContainer& cec ) const;
+        bool isSuperTypeOf( const ClassElementContainer& cec ) const;
 
         /// @}
 
@@ -343,7 +343,7 @@ namespace gum {
         ClassElementContainer& operator= ( const ClassElementContainer& source );
 
         /// Copy constructor. Don't use it.
-        ClassElementContainer ( const ClassElementContainer& source );
+        ClassElementContainer( const ClassElementContainer& source );
 
         virtual const DAG& _dag() const =0;
 
@@ -361,55 +361,55 @@ namespace gum {
 
         /// Fills set with all the subtypes of this Interface, this includes extensions
         /// and implementations.
-        virtual void _findAllSubtypes ( Set<ClassElementContainer*>& set ) =0;
+        virtual void _findAllSubtypes( Set<ClassElementContainer*>& set ) =0;
 
         /// Returns the IO flags of a ClassElement.
         /// @param elt The ClassElement.
         /// @return elt's IO flags.
         /// @throw NotFound Raised if elt does not have any IO flags.
-        std::pair<bool, bool>& _getIOFlag ( const ClassElement& elt );
+        std::pair<bool, bool>& _getIOFlag( const ClassElement& elt );
 
         /// Returns the IO flags of a ClassElement.
         /// @param elt The ClassElement.
         /// @return elt's IO flags.
         /// @throw NotFound Raised if elt does not have any IO flags.
-        const std::pair<bool, bool>& _getIOFlag ( const ClassElement& elt ) const;
+        const std::pair<bool, bool>& _getIOFlag( const ClassElement& elt ) const;
 
         /// Defines the IO flags of a ClassElement.
         /// @param elt The ClassElement.
         /// @param flags The IO flags of elt. Overwrite any existing flags.
         /// @return elt's IO flags.
         /// @throw NotFound Raised if elt does not have any IO flags.
-        void _setIOFlag ( const ClassElement& elt, const std::pair<bool, bool>& flags );
+        void _setIOFlag( const ClassElement& elt, const std::pair<bool, bool>& flags );
 
         /// Copy the IO Flags of c in this ClassElementContainer.
         /// @param c A ClassElementContainer.
-        void _copyIOFlags ( const ClassElementContainer& c );
+        void _copyIOFlags( const ClassElementContainer& c );
 
         /// When a ClassElement becomes an Output node we must update any the IO
         /// flags of every descendant of this ClassElementContainer.
         /// Note that after its declaration, input flags can not be changed and
         /// output flags can only become true.
         /// @param elt A ClassElement.
-        virtual void _updateDescendants ( const ClassElement& elt ) =0;
+        virtual void _updateDescendants( const ClassElement& elt ) =0;
 
       private:
         /// input / output flags, useful when inheriting or copying.
         HashTable< std::string, std::pair<bool, bool> > __IOFlags;
 
     };
-// ============================================================================
+
 /// @brief An << operator for ClassElementContainer.
 /// Output in the graphviz-dot format.
     std::ostream& operator<< ( std::ostream& output, const ClassElementContainer& container );
-// ============================================================================
+
 
   } /* namespace prm */
 } // namespace gum
-// ============================================================================
+
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/classElementContainer.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 #endif /* GUM_CLASS_ELEMENT_CONTAINER_H */
-// ============================================================================
+

@@ -20,7 +20,7 @@
 /** @file
  * @brief Templates implementation of IDReader.h
  *
- * @author Jean-Christophe Magnan & Pierre-Henri Wuillemin
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
 #include"IDReader.h"
@@ -33,11 +33,11 @@ namespace gum {
 
   /*
    * Constructor
-   * A reader is created to reading a defined file. 
+   * A reader is created to reading a defined file.
    * Note that an ID as to be created before and given in parameter.
    */
   template<typename GUM_SCALAR> INLINE
-  IDReader<GUM_SCALAR>:: IDReader(InfluenceDiagram<GUM_SCALAR>* infdiag,const std::string& filePath ) {
+  IDReader<GUM_SCALAR>:: IDReader( InfluenceDiagram<GUM_SCALAR>* infdiag,const std::string& filePath ) {
     GUM_CONSTRUCTOR( IDReader );
   }
 

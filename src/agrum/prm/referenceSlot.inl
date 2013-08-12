@@ -23,60 +23,60 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 namespace gum {
-namespace prm {
-// ============================================================================
+  namespace prm {
 
-INLINE
-ClassElement::ClassElementType
-ReferenceSlot::elt_type() const { return prm_refslot; }
 
-INLINE
-ClassElementContainer&
-ReferenceSlot::slotType() { return __slotType; }
+    INLINE
+    ClassElement::ClassElementType
+    ReferenceSlot::elt_type() const { return prm_refslot; }
 
-INLINE
-const ClassElementContainer&
-ReferenceSlot::slotType() const { return __slotType; }
+    INLINE
+    ClassElementContainer&
+    ReferenceSlot::slotType() { return __slotType; }
 
-INLINE
-bool
-ReferenceSlot::isArray() const { return __isArray; }
+    INLINE
+    const ClassElementContainer&
+    ReferenceSlot::slotType() const { return __slotType; }
 
-INLINE
-Type&
-ReferenceSlot::type() {
-  GUM_ERROR(OperationNotAllowed, "This is a ReferenceSlot.");
-}
+    INLINE
+    bool
+    ReferenceSlot::isArray() const { return __isArray; }
 
-INLINE
-const Type&
-ReferenceSlot::type() const {
-  GUM_ERROR(OperationNotAllowed, "This is a ReferenceSlot.");
-}
+    INLINE
+    Type&
+    ReferenceSlot::type() {
+      GUM_ERROR( OperationNotAllowed, "This is a ReferenceSlot." );
+    }
 
-INLINE
-Potential<prm_float>&
-ReferenceSlot::cpf() {
-  GUM_ERROR(OperationNotAllowed, "This is a ReferenceSlot.");
-}
+    INLINE
+    const Type&
+    ReferenceSlot::type() const {
+      GUM_ERROR( OperationNotAllowed, "This is a ReferenceSlot." );
+    }
 
-INLINE
-const Potential<prm_float>&
-ReferenceSlot::cpf() const {
-  GUM_ERROR(OperationNotAllowed, "This is a ReferenceSlot.");
-}
+    INLINE
+    Potential<prm_float>&
+    ReferenceSlot::cpf() {
+      GUM_ERROR( OperationNotAllowed, "This is a ReferenceSlot." );
+    }
 
-INLINE
-void
-ReferenceSlot::addParent(const ClassElement& elt) { }
+    INLINE
+    const Potential<prm_float>&
+    ReferenceSlot::cpf() const {
+      GUM_ERROR( OperationNotAllowed, "This is a ReferenceSlot." );
+    }
 
-INLINE
-void
-ReferenceSlot::addChild(const ClassElement& elt) { }
+    INLINE
+    void
+    ReferenceSlot::addParent( const ClassElement& elt ) { }
 
-// ============================================================================
-} /* namespace prm */
+    INLINE
+    void
+    ReferenceSlot::addChild( const ClassElement& elt ) { }
+
+
+  } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

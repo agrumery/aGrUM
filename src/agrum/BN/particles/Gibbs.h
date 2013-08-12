@@ -20,7 +20,7 @@
 /**
  * @file
  * @brief This file contains gibbs sampling (for BNs) class definitions
- * @author Pierre-Henri Wuillemin and Christophe Gonzales
+ * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */
 #ifndef GUM_GIBBS_H
 #define GUM_GIBBS_H
@@ -47,7 +47,7 @@ namespace gum {
         /**
          * Default constructor
          */
-        Gibbs( const AbstractBayesNet<GUM_SCALAR>& BN );
+        Gibbs( const BayesNet<GUM_SCALAR>& BN );
 
         /**
          * Destructor.
@@ -91,7 +91,7 @@ namespace gum {
 
         const Instantiation& particle();
 
-        const AbstractBayesNet<GUM_SCALAR>& bn();
+        const BayesNet<GUM_SCALAR>& bn();
         ///@}
 
       private:
@@ -131,7 +131,7 @@ namespace gum {
         Property<Idx>::onNodes __hard_evidences;
 
         /// The Bayes net we draw particle on
-        const AbstractBayesNet<GUM_SCALAR>& __bayesNet;
+        const BayesNet<GUM_SCALAR>& __bayesNet;
     };
   } // namespace particle
 } //namespace gum

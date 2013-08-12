@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Lionel Torti                                    *
+ *   (C) 2007-2013 by Christophe GONZALES and Pierre-Henri WUILLEMIN       *
  *   {prenom.nom}@lip6.fr                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -94,15 +94,15 @@ namespace gum_tests {
       void testHash() {
         gum::HashTable<gum::Arc, unsigned long> hash;
 
-        for( gum::NodeId x = 0; x < 1000; ++x ) {
-          for( gum::NodeId y = x; y < 1000; ++y ) {
+        for ( gum::NodeId x = 0; x < 1000; ++x ) {
+          for ( gum::NodeId y = x; y < 1000; ++y ) {
             gum::Arc arc( x, y );
             hash.insert( arc, x + y );
           }
         }
 
-        for( gum::NodeId x = 0; x < 1000; ++x ) {
-          for( gum::NodeId y = x; y < 1000; ++y ) {
+        for ( gum::NodeId x = 0; x < 1000; ++x ) {
+          for ( gum::NodeId y = x; y < 1000; ++y ) {
             gum::Arc arc( x, y );
             TS_ASSERT( hash[arc] == ( x + y ) );
           }

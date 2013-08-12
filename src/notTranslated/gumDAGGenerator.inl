@@ -82,7 +82,7 @@ gumDAGGenerator::getNbrNodes() const {
     gumSize retVal;
 
     if ( !( input >> retVal ) ) {
-    GUM_ERROR( gumOperationNotAllowed, "Incorrect parameter value."<< "NBR_NODES" );
+      GUM_ERROR( gumOperationNotAllowed, "Incorrect parameter value."<< "NBR_NODES" );
     }
 
     return retVal;
@@ -498,8 +498,8 @@ gumDAGGenerator::generateDAG() const {
 // nodes.
 INLINE
 void
-gumDAGGenerator::__removeAncestors( const gumNode &aNode,
-                                    const gumDAGTpl<gumNode, gumArc> &dag,
+gumDAGGenerator::__removeAncestors( const gumNode& aNode,
+                                    const gumDAGTpl<gumNode, gumArc>& dag,
                                     gumList<gumNode>& candidates,
                                     bool restore ) const {
   static gumList<gumNode> ancestors;
@@ -513,7 +513,7 @@ gumDAGGenerator::__removeAncestors( const gumNode &aNode,
     while ( i < ancestors.size() ) {
       for ( gumList< gumRefPtr< gumArc > >::iterator childIter = dag.getChildrenArcs( ancestors[i].getID() ).begin();
             childIter != dag.getChildrenArcs( ancestors[i].getID() ).end(); ++childIter ) {
-        ancestors.pushBack( dag.getNode(( *childIter )->head() ) );
+        ancestors.pushBack( dag.getNode( ( *childIter )->head() ) );
       }
 
       i++;

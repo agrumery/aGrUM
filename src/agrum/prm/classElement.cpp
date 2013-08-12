@@ -24,31 +24,31 @@
  * @author Lionel TORTI
  *
  */
-// ============================================================================
+
 #include <agrum/prm/classElement.h>
-// ============================================================================
+
 #ifdef GUM_NO_INLINE
 #include <agrum/prm/classElement.inl>
 #endif //GUM_NO_INLINE
-// ============================================================================
+
 namespace gum {
-namespace prm {
+  namespace prm {
 
-ClassElement::ClassElement(const std::string& name):
-  PRMObject(name) {
-  GUM_CONSTRUCTOR( ClassElement );
-}
+    ClassElement::ClassElement( const std::string& name ):
+      PRMObject( name ) {
+      GUM_CONSTRUCTOR( ClassElement );
+    }
 
-ClassElement::ClassElement(const ClassElement& source):
-  PRMObject(source.name()), __id(source.id()) {
-  GUM_CONS_CPY( ClassElement);
-}
+    ClassElement::ClassElement( const ClassElement& source ):
+      PRMObject( source.name() ), __id( source.id() ) {
+      GUM_CONS_CPY( ClassElement );
+    }
 
-ClassElement::~ClassElement() {
-  GUM_DESTRUCTOR( ClassElement );
-}
+    ClassElement::~ClassElement() {
+      GUM_DESTRUCTOR( ClassElement );
+    }
 
-// ============================================================================
-} /* namespace prm */
+
+  } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

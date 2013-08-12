@@ -31,57 +31,60 @@ namespace gum {
 
 
 // Default constructor.
-template <typename GUM_SCALAR> INLINE
-DefaultCPTDisturber<GUM_SCALAR>::DefaultCPTDisturber():
-        AbstractCPTDisturber<GUM_SCALAR>() {
+  template <typename GUM_SCALAR> INLINE
+  DefaultCPTDisturber<GUM_SCALAR>::DefaultCPTDisturber():
+    AbstractCPTDisturber<GUM_SCALAR>() {
     GUM_CONSTRUCTOR( DefaultCPTDisturber );
-}
+  }
 
 // Destructor.
-template <typename GUM_SCALAR> INLINE
-DefaultCPTDisturber<GUM_SCALAR>::~DefaultCPTDisturber() {
+  template <typename GUM_SCALAR> INLINE
+  DefaultCPTDisturber<GUM_SCALAR>::~DefaultCPTDisturber() {
     GUM_DESTRUCTOR( DefaultCPTDisturber );
-}
+  }
 
 // Generates a CPT using floats.
 // @param varID The variable id of the CPT owner.
 // @param cpt A reference on the CPT to fill.
 
 
-template <typename GUM_SCALAR> void
-DefaultCPTDisturber<GUM_SCALAR>::disturbReducCPT( NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet, Potential<GUM_SCALAR>& cptCopy, Potential<GUM_SCALAR> & marg ) {
-    Instantiation i(cptCopy);
-    Instantiation iCopy(cptCopy);
-    Instantiation imarg(marg);
+  template <typename GUM_SCALAR> void
+  DefaultCPTDisturber<GUM_SCALAR>::disturbReducCPT( NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet, Potential<GUM_SCALAR>& cptCopy, Potential<GUM_SCALAR>& marg ) {
+    Instantiation i( cptCopy );
+    Instantiation iCopy( cptCopy );
+    Instantiation imarg( marg );
 
     iCopy.forgetMaster();
-    iCopy.erase(bayesNet.variable(varIdi));
-    for (i.setFirstNotVar( bayesNet.variable(varIdi) );! i.end(); i.incNotVar( bayesNet.variable(varIdi) ), ++iCopy) {
-        GUM_SCALAR potval = 0;
-        for (i.setFirstVar(bayesNet.variable(varIdi)), imarg.setFirst();! i.end(); i.incVar(bayesNet.variable(varIdi)), ++imarg) {
-            potval += cptCopy.get(i) * marg.get(imarg);
-        }
-        
-        bayesNet.cpt(varIdj).set(iCopy,potval);
+    iCopy.erase( bayesNet.variable( varIdi ) );
+
+    for ( i.setFirstNotVar( bayesNet.variable( varIdi ) ); ! i.end(); i.incNotVar( bayesNet.variable( varIdi ) ), ++iCopy ) {
+      GUM_SCALAR potval = 0;
+
+      for ( i.setFirstVar( bayesNet.variable( varIdi ) ), imarg.setFirst(); ! i.end(); i.incVar( bayesNet.variable( varIdi ) ), ++imarg ) {
+        potval += cptCopy.get( i ) * marg.get( imarg );
+      }
+
+      bayesNet.cpt( varIdj ).set( iCopy,potval );
     }
-    bayesNet.cpt(varIdj).normalize();
 
-}
+    bayesNet.cpt( varIdj ).normalize();
 
-template <typename GUM_SCALAR> void
-DefaultCPTDisturber<GUM_SCALAR>::disturbAugmCPT( NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet, Potential<GUM_SCALAR>& cptCopy, GUM_SCALAR variation) {
-    static Size c=0;
-    srand(time(NULL) + c++);
-    Instantiation i(cptCopy);
-    Instantiation iCopy(cptCopy);
+  }
+
+  template <typename GUM_SCALAR> void
+  DefaultCPTDisturber<GUM_SCALAR>::disturbAugmCPT( NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet, Potential<GUM_SCALAR>& cptCopy, GUM_SCALAR variation ) {
+    Instantiation i( cptCopy );
+    Instantiation iCopy( cptCopy );
     iCopy.forgetMaster();
-    iCopy.add(bayesNet.variable(varIdi));
-    for (iCopy.setFirstNotVar( bayesNet.variable(varIdi) );! iCopy.end(); iCopy.incNotVar( bayesNet.variable(varIdi) ), ++i) {
-        for (iCopy.setFirstVar(bayesNet.variable(varIdi));! iCopy.end(); iCopy.incVar(bayesNet.variable(varIdi))) {
-            bayesNet.cpt(varIdj).set(iCopy, cptCopy.get(i) + (GUM_SCALAR)(rand() % (Size)(variation * 100000)) / 100000);//TODO better to do here
-        }
+    iCopy.add( bayesNet.variable( varIdi ) );
+
+    for ( iCopy.setFirstNotVar( bayesNet.variable( varIdi ) ); ! iCopy.end(); iCopy.incNotVar( bayesNet.variable( varIdi ) ), ++i ) {
+      for ( iCopy.setFirstVar( bayesNet.variable( varIdi ) ); ! iCopy.end(); iCopy.incVar( bayesNet.variable( varIdi ) ) ) {
+        bayesNet.cpt( varIdj ).set( iCopy, cptCopy.get( i ) + ( GUM_SCALAR )( rand() % ( Size )( variation * 100000 ) ) / 100000 ); //TODO better to do here
+      }
     }
-    bayesNet.cpt(varIdj).normalize();
-}
+
+    bayesNet.cpt( varIdj ).normalize();
+  }
 
 } /* namespace gum */

@@ -1,30 +1,30 @@
-  /***************************************************************************
- *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
- *   {prenom.nom}_at_lip6.fr                                               *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it udnder the terms of the GNU General Public License as published by *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************/
+/***************************************************************************
+*   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+*   {prenom.nom}_at_lip6.fr                                               *
+*                                                                         *
+*   This program is free software; you can redistribute it and/or modify  *
+*   it udnder the terms of the GNU General Public License as published by *
+*   the Free Software Foundation; either version 2 of the License, or     *
+*   (at your option) any later version.                                   *
+*                                                                         *
+*   This program is distributed in the hope that it will be useful,       *
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+*   GNU General Public License for more details.                          *
+*                                                                         *
+*   You should have received a copy of the GNU General Public License     *
+*   along with this program; if not, write to the                         *
+*   Free Software Foundation, Inc.,                                       *
+*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+***************************************************************************/
 #ifndef GUM_UTILS_PRM_H
 #define GUM_UTILS_PRM_H
-// ============================================================================
+
 #include <string>
 #include <vector>
-// ============================================================================
+
 #include <agrum/config.h>
-// ============================================================================
+
 #include <agrum/multidim/aggregators/multiDimAggregator.h>
 #include <agrum/multidim/multiDimBijArray.h>
 #include <agrum/multidim/multiDimBucket.h>
@@ -34,7 +34,7 @@
 #include <agrum/multidim/multiDimSparse.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/multidim/projections4MultiDim.h>
-// ============================================================================
+
 
 /*!  @ingroup prm_group
  *
@@ -157,7 +157,7 @@ namespace gum {
     typedef float prm_float;
 
     /// Decompose a string in a vector of strings using "." as separators.
-    void decomposePath ( const std::string& path, std::vector<std::string>& v );
+    void decomposePath( const std::string& path, std::vector<std::string>& v );
 
     /**
      * @brief Returns a copy of a Potential after applying a bijection over the variables in source.
@@ -174,11 +174,11 @@ namespace gum {
      * @return a pointer over a Potential which is a copy of source.
      * @throw FatalError raised if an unknown MultiDimImplementation is encountered.
      */
-    Potential<prm_float>* copyPotential ( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-                                          const Potential<prm_float>& source );
+    Potential<prm_float>* copyPotential( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
+                                         const Potential<prm_float>& source );
 
-    Potential<float>* multPotential ( const Potential<float>& t1,
-                                      const Potential<float>& t2 );
+    Potential<float>* multPotential( const Potential<float>& t1,
+                                     const Potential<float>& t2 );
     /**
      * @brief Proceeds with the elimination of var in pool.
      * @param var The variable eliminated from every potentials in pool.
@@ -186,9 +186,9 @@ namespace gum {
      * @param trash All create potentials are inserted in this set, useful to
      *              delete later.
      */
-    void eliminateNode ( const DiscreteVariable* var,
-                         Set<Potential<prm_float>*>& pool,
-                         Set<Potential<prm_float>*>& trash );
+    void eliminateNode( const DiscreteVariable* var,
+                        Set<Potential<prm_float>*>& pool,
+                        Set<Potential<prm_float>*>& trash );
 
   } /* namespace prm */
 } /* namespace gum */

@@ -20,7 +20,7 @@
 /** @file
  * @brief Source implementation of gumUTGenerator.
  *
- * @author Jean-Christophe MAGNAN & Pierre-Henri WUILLEMIN 
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  *
  */
 #include <agrum/influenceDiagram/generator/UTGenerator.h>

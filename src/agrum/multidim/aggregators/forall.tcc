@@ -68,7 +68,7 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     MultiDimContainer<GUM_SCALAR>* Forall<GUM_SCALAR>::newFactory() const {
-      return new Forall<GUM_SCALAR>(__value);
+      return new Forall<GUM_SCALAR>( __value );
       // GUM_ERROR( OperationNotAllowed,
       //            "This class doesn't contain an empty constructor" );
       // return 0;
@@ -76,4 +76,4 @@ namespace gum {
 
   }// aggregator
 } // namespace gum
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

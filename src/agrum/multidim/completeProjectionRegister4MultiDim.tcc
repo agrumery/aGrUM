@@ -20,7 +20,7 @@
 /** @file
  * @brief A container for registering complete projection functions on
  * multiDimImplementations, i.e., projections over all variables
- * 
+ *
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -53,13 +53,12 @@ namespace gum {
       // the hashtable contained within the CompleteProjectionRegister4MultiDim
       // will be removed at the end of the program's execution.
       __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
-                             ( void* ) theset );
+                                 ( void* ) theset );
 #endif /* NDEBUG */
-    }
-    else {
+    } else {
       theset = __set[projection_name];
     }
-    
+
     theset->insert( type_multidim, newFunction );
   }
 
@@ -115,14 +114,15 @@ namespace gum {
       // the hashtable contained within the CompleteProjectionRegister4MultiDim
       // will be removed at the end of the program's execution.
       __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
-                             ( void* ) &container.__set );
+                                 ( void* ) &container.__set );
     }
+
 #endif /* NDEBUG */
 
     return container;
   }
 
-  
+
   /// Default constructor: creates an empty register
   template<typename GUM_SCALAR>
   CompleteProjectionRegister4MultiDim<GUM_SCALAR>::CompleteProjectionRegister4MultiDim() {
@@ -148,7 +148,7 @@ namespace gum {
     typename CompleteProjectionRegister4MultiDim<GUM_SCALAR>::CompleteProjectionPtr
     function ) {
     CompleteProjectionRegister4MultiDim<GUM_SCALAR>::Register().insert
-      ( projection_name, type_multidim, function );
+    ( projection_name, type_multidim, function );
   }
 
 

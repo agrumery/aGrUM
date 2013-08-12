@@ -24,7 +24,7 @@
 /**
  * @file
  * @brief Abstract class representing CredalNet inference engines
- * @author Matthieu HOURBRACQ
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
  */
 
 /// @todo virtual for all functions that MAY be one day redefined in any derived class
@@ -47,7 +47,7 @@ namespace gum {
      * @brief Abstract class template representing a CredalNet inference engine. Used by credal network inference algorithms such as CNLoopyPropagation (inner multi-threading) or CNMonteCarloSampling (outer multi-threading).
      * @ingroup cn_group
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
-     * @author Matthieu HOURBRACQ
+     * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
      */
     template < typename GUM_SCALAR >
     class InferenceEngine : public ApproximationScheme {
@@ -63,7 +63,7 @@ namespace gum {
 
       protected:
         /** @brief A pointer to the Credal Net used. */
-        const CredalNet< GUM_SCALAR > *_credalNet;
+        const CredalNet< GUM_SCALAR >* _credalNet;
 
         /** @brief Old lower marginals used to compute epsilon. */
         margi _oldMarginalMin;
@@ -158,7 +158,7 @@ namespace gum {
          * @param id The id of the node to be updated
          * @param vertex A (potential) vertex of the node credal set
          */
-        inline void _updateExpectations ( const NodeId &id, const std::vector< GUM_SCALAR > &vertex );
+        inline void _updateExpectations( const NodeId& id, const std::vector< GUM_SCALAR >& vertex );
 
         /**
          * @deprecated Use _updateCredalSets ( LrsWrapper without intput/output files needed ).
@@ -169,7 +169,7 @@ namespace gum {
          * @param id The id of the node to be updated
          * @param vertex A (potential) vertex of the node credal set
          */
-        inline void _updateCredalSetsWithFiles ( const NodeId &id, const std::vector< GUM_SCALAR > &vertex, const bool &elimRedund = false );
+        inline void _updateCredalSetsWithFiles( const NodeId& id, const std::vector< GUM_SCALAR >& vertex, const bool& elimRedund = false );
 
         /**
          * Given a node id and one of it's possible vertex, update it's credal set.
@@ -178,7 +178,7 @@ namespace gum {
          * @param id The id of the node to be updated
          * @param vertex A (potential) vertex of the node credal set
          */
-        inline void _updateCredalSets ( const NodeId &id, const std::vector< GUM_SCALAR > &vertex, const bool &elimRedund = false );
+        inline void _updateCredalSets( const NodeId& id, const std::vector< GUM_SCALAR >& vertex, const bool& elimRedund = false );
 
         /// @}
 
@@ -201,7 +201,7 @@ namespace gum {
          *
          * @param credalNet The credal net to be used with this inference engine.
          */
-        InferenceEngine ( const CredalNet< GUM_SCALAR > &credalNet );
+        InferenceEngine( const CredalNet< GUM_SCALAR >& credalNet );
         /**
          * Destructor.
          */
@@ -221,30 +221,30 @@ namespace gum {
          * Get optimum BayesNet.
          * @return A pointer to the optimal net object.
          */
-        VarMod2BNsMap<GUM_SCALAR> *getVarMod2BNsMap ();
+        VarMod2BNsMap<GUM_SCALAR>* getVarMod2BNsMap();
 
         /**
          * Get this creadal network.
          * @return A constant reference to this CredalNet.
          */
-        const CredalNet< GUM_SCALAR > &credalNet();
+        const CredalNet< GUM_SCALAR >& credalNet();
 
         /**
          * Get the _t0 cluster.
          * @return A constant reference to the _t0 cluster.
          */
-        const typename Property< std::vector< NodeId > >::onNodes &getT0Cluster() const;
+        const typename Property< std::vector< NodeId > >::onNodes& getT0Cluster() const;
 
         /**
          * Get the _t1 cluster.
          * @return A constant reference to the _t1 cluster.
          */
-        const typename Property< std::vector< NodeId > >::onNodes &getT1Cluster() const;
+        const typename Property< std::vector< NodeId > >::onNodes& getT1Cluster() const;
 
         /**
          * @param repetitive \c True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks.
          */
-        void setRepetitiveInd ( const bool repetitive );
+        void setRepetitiveInd( const bool repetitive );
         /**
          * @param iter_stop The number of iterations without changes needed to stop some algorithms.
          */
@@ -252,17 +252,17 @@ namespace gum {
         /**
          * @param value \c True if vertices are to be stored, false otherwise.
          */
-        void storeVertices ( const bool value );
+        void storeVertices( const bool value );
         /**
          * @param value \c True if optimal bayesian networks are to be stored for each variable and each modality.
          */
-        void storeBNOpt ( const bool value );
+        void storeBNOpt( const bool value );
 
         /**
          * Get the current independence status.
          * @return \c True if repetitive, \c False otherwise.
          */
-        bool repetitiveInd () const;
+        bool repetitiveInd() const;
         /**
          * Get the number of iterations without changes used to stop some algorithms.
          * @return the number of iterations.
@@ -271,11 +271,11 @@ namespace gum {
         /**
          * @return \c True if vertice are stored, \c False otherwise.
          */
-        bool storeVertices () const;
+        bool storeVertices() const;
         /**
          * @return \c True if optimal bayes net are stored for each variable and each modality, \c False otherwise.
          */
-        bool storeBNOpt () const;
+        bool storeBNOpt() const;
         /// @}
 
 
@@ -285,43 +285,43 @@ namespace gum {
          * Insert variables modalities from file to compute expectations.
          * @param path The path to the modalities file.
          */
-        void insertModalsFile ( const std::string &path );
+        void insertModalsFile( const std::string& path );
 
         /**
          * Insert variables modalities from map to compute expectations.
          * @param modals The map variable name - modalities.
          */
-        void insertModals ( const std::map< std::string, std::vector< GUM_SCALAR > > &modals );
+        void insertModals( const std::map< std::string, std::vector< GUM_SCALAR > >& modals );
 
         /**
          * Insert evidence from file.
          * @param path The path to the evidence file.
          */
-        void insertEvidenceFile ( const std::string &path );
+        void insertEvidenceFile( const std::string& path );
 
         /**
          * Insert evidence from map.
          * @param eviMap The map variable name - likelihood.
          */
-        void insertEvidence ( const std::map< std::string, std::vector< GUM_SCALAR > > &eviMap );
+        void insertEvidence( const std::map< std::string, std::vector< GUM_SCALAR > >& eviMap );
 
         /**
          * Insert evidence from Property.
          * @param evidence The on nodes Property containing likelihoods.
          */
-        void insertEvidence ( const typename Property< std::vector< GUM_SCALAR > >::onNodes &evidence );
+        void insertEvidence( const typename Property< std::vector< GUM_SCALAR > >::onNodes& evidence );
 
         /**
          * Insert query variables states from file.
          * @param path The path to the query file.
          */
-        void insertQueryFile ( const std::string &path );
+        void insertQueryFile( const std::string& path );
 
         /**
          * Insert query variables and states from Property.
          * @param query The on nodes Property containing queried variables states.
          */
-        void insertQuery ( const typename Property< std::vector< bool > >::onNodes &query );
+        void insertQuery( const typename Property< std::vector< bool > >::onNodes& query );
 
         /// @}
 
@@ -338,95 +338,95 @@ namespace gum {
          * @param id The node id which lower marginals we want.
          * @return A constant reference to this node lower marginals.
          */
-        const std::vector< GUM_SCALAR > &marginalMin ( const NodeId id ) const;
+        const std::vector< GUM_SCALAR >& marginalMin( const NodeId id ) const;
 
         /**
          * Get the upper marginals of a given node id.
          * @param id The node id which upper marginals we want.
          * @return A constant reference to this node upper marginals.
          */
-        const std::vector< GUM_SCALAR > &marginalMax ( const NodeId id ) const;
+        const std::vector< GUM_SCALAR >& marginalMax( const NodeId id ) const;
 
         /**
          * Get the lower marginals of a given variable name.
          * @param varName The variable name which lower marginals we want.
          * @return A constant reference to this variable lower marginals.
          */
-        const std::vector< GUM_SCALAR > &marginalMin ( const std::string &varName ) const;
+        const std::vector< GUM_SCALAR >& marginalMin( const std::string& varName ) const;
 
         /**
          * Get the upper marginals of a given variable name.
          * @param varName The variable name which upper marginals we want.
          * @return A constant reference to this variable upper marginals.
          */
-        const std::vector< GUM_SCALAR > &marginalMax ( const std::string &varName ) const;
+        const std::vector< GUM_SCALAR >& marginalMax( const std::string& varName ) const;
 
         /**
          * Get the lower expectation of a given node id.
          * @param id The node id which lower expectation we want.
          * @return A constant reference to this node lower expectation.
          */
-        const GUM_SCALAR &expectationMin ( const NodeId id ) const;
+        const GUM_SCALAR& expectationMin( const NodeId id ) const;
 
         /**
          * Get the upper expectation of a given node id.
          * @param id The node id which upper expectation we want.
          * @return A constant reference to this node upper expectation.
          */
-        const GUM_SCALAR &expectationMax ( const NodeId id ) const;
+        const GUM_SCALAR& expectationMax( const NodeId id ) const;
 
         /**
          * Get the lower expectation of a given variable name.
          * @param varName The variable name which lower expectation we want.
          * @return A constant reference to this variable lower expectation.
          */
-        const GUM_SCALAR &expectationMin ( const std::string &varName ) const;
+        const GUM_SCALAR& expectationMin( const std::string& varName ) const;
 
         /**
          * Get the upper expectation of a given variable name.
          * @param varName The variable name which upper expectation we want.
          * @return A constant reference to this variable upper expectation.
          */
-        const GUM_SCALAR &expectationMax ( const std::string &varName ) const;
+        const GUM_SCALAR& expectationMax( const std::string& varName ) const;
 
         /**
          * Get the lower dynamic expectation of a given variable prefix (without the time step included, i.e. call with "temp" to get "temp_0", ..., "temp_T").
          * @param varName The variable name prefix which lower expectation we want.
          * @return A constant reference to the variable lower expectation over all time steps.
          */
-        const std::vector< GUM_SCALAR > &dynamicExpMin ( const std::string &varName ) const;
+        const std::vector< GUM_SCALAR >& dynamicExpMin( const std::string& varName ) const;
 
         /**
          * Get the upper dynamic expectation of a given variable prefix (without the time step included, i.e. call with "temp" to get "temp_0", ..., "temp_T").
          * @param varName The variable name prefix which upper expectation we want.
          * @return A constant reference to the variable upper expectation over all time steps.
          */
-        const std::vector< GUM_SCALAR > &dynamicExpMax ( const std::string &varName ) const;
+        const std::vector< GUM_SCALAR >& dynamicExpMax( const std::string& varName ) const;
 
         /**
          * Get the vertice of a given node id.
          * @param id The node id which vertice we want.
          * @return A constant reference to this node vertice.
          */
-        const std::vector< std::vector< GUM_SCALAR > > &vertices ( const NodeId id ) const;
+        const std::vector< std::vector< GUM_SCALAR > >& vertices( const NodeId id ) const;
 
         /**
          * Saves marginals to file.
          * @param path The path to the file to be used.
          */
-        void saveMarginals ( const std::string &path ) const;
+        void saveMarginals( const std::string& path ) const;
 
         /**
          * Saves expectations to file.
          *  @param path The path to the file to be used.
          */
-        void saveExpectations ( const std::string &path ) const;
+        void saveExpectations( const std::string& path ) const;
 
         /**
          * Saves vertices to file.
          * @param path The path to the file to be used.
          */
-        void saveVertices ( const std::string &path ) const;
+        void saveVertices( const std::string& path ) const;
 
         /**
          * Compute dynamic expectations.

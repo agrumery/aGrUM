@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                               *
- *   test $Id: $                                                           *
+ *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -34,27 +34,28 @@ namespace gum {
 
 
   // creates (if needed) and returns the iterator __SetIterEnd
-  const SetIterator<int>* SetIteratorStaticEnd::end4Statics () {
+  const SetIterator<int>* SetIteratorStaticEnd::end4Statics() {
     static bool first_time = true;
-    if (first_time ) {
+
+    if ( first_time ) {
       first_time = false;
       __SetIterEnd = new SetIterator<int>;
     }
 
-    return __SetIterEnd; 
+    return __SetIterEnd;
   }
 
-  
+
   // creates (if needed) and returns the iterator __SetIterEnd
-  const SetIterator<int>* SetIteratorStaticEnd::constEnd4Statics () {
-    return end4Statics ();
+  const SetIterator<int>* SetIteratorStaticEnd::constEnd4Statics() {
+    return end4Statics();
   }
 
 
   // create the end iterator for all Sets
   const SetIterator<int>* SetIteratorStaticEnd::__SetIterEnd =
-    SetIteratorStaticEnd::end4Statics ();
-  
+    SetIteratorStaticEnd::end4Statics();
+
 
 } /* namespace gum */
 

@@ -38,12 +38,12 @@ namespace gum {
   /// default constructor (uses an empty graph)
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy
   ( float theRatio, float theThreshold ) :
-      __graph( 0 ),
-      __modalities( 0 ),
-      __simplicial_set( 0 ),
-      __simplicial_ratio( theRatio ),
-      __simplicial_threshold( theThreshold ),
-      __provide_fill_ins( false ) {
+    __graph( 0 ),
+    __modalities( 0 ),
+    __simplicial_set( 0 ),
+    __simplicial_ratio( theRatio ),
+    __simplicial_threshold( theThreshold ),
+    __provide_fill_ins( false ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( DefaultEliminationSequenceStrategy );
   }
@@ -54,12 +54,12 @@ namespace gum {
   ( UndiGraph* graph,
     const Property<unsigned int>::onNodes* modal,
     float ratio, float threshold ) :
-      __graph( 0 ),
-      __modalities( 0 ),
-      __simplicial_set( 0 ),
-      __simplicial_ratio( ratio ),
-      __simplicial_threshold( threshold ),
-      __provide_fill_ins( false ) {
+    __graph( 0 ),
+    __modalities( 0 ),
+    __simplicial_set( 0 ),
+    __simplicial_ratio( ratio ),
+    __simplicial_threshold( threshold ),
+    __provide_fill_ins( false ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( DefaultEliminationSequenceStrategy );
     setGraph( graph,modal );
@@ -69,12 +69,12 @@ namespace gum {
   /// copy constructor
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy
   ( const DefaultEliminationSequenceStrategy& from ) :
-      __graph( 0 ),
-      __modalities( 0 ),
-      __simplicial_set( 0 ),
-      __simplicial_ratio( from.__simplicial_ratio ),
-      __simplicial_threshold( from.__simplicial_threshold ),
-      __provide_fill_ins( from.__provide_fill_ins ) {
+    __graph( 0 ),
+    __modalities( 0 ),
+    __simplicial_set( 0 ),
+    __simplicial_ratio( from.__simplicial_ratio ),
+    __simplicial_threshold( from.__simplicial_threshold ),
+    __provide_fill_ins( from.__provide_fill_ins ) {
     GUM_CONS_CPY( DefaultEliminationSequenceStrategy );
 
     if ( __graph ) {
@@ -97,7 +97,7 @@ namespace gum {
   ( UndiGraph* graph, const Property<unsigned int>::onNodes* modal ) {
     // check that both the graph and the modalities are different from 0
     // or else that both are equal to 0
-    if (( ! graph && modal ) || ( graph && ! modal ) ) {
+    if ( ( ! graph && modal ) || ( graph && ! modal ) ) {
       GUM_ERROR( GraphError,
                  "DefaultEliminationSequenceStrategy needs valid graphs and "
                  "domain sizes" );
@@ -114,7 +114,7 @@ namespace gum {
     }
 
     // avoid empty modifications
-    if (( graph != __graph ) || ( modal != __modalities ) ) {
+    if ( ( graph != __graph ) || ( modal != __modalities ) ) {
       // remove, if any, the current graph and its simplicial set
       clear();
 
@@ -128,7 +128,7 @@ namespace gum {
 
         for ( UndiGraph::NodeIterator iter = graph->beginNodes();
               iter != graph->endNodes(); ++iter ) {
-          __log_modalities.insert( *iter, log(( *modal )[*iter] ) );
+          __log_modalities.insert( *iter, log( ( *modal )[*iter] ) );
         }
 
         // creation du simplicial set

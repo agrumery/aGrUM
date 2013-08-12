@@ -24,13 +24,13 @@
  * @author Lionel TORTI
  *
  */
-// ============================================================================
+
 #include <agrum/prm/PRMInference.h>
-// ============================================================================
+
 #ifdef GUM_NO_INLINE
 #include <agrum/prm/PRMInference.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 namespace gum {
   namespace prm {
 
@@ -40,23 +40,29 @@ namespace gum {
         for ( PRMInference::EMapIterator jter = ( *iter )->begin(); jter != ( *iter )->end(); ++jter ) {
           delete *jter;
         }
+
         delete *iter;
       }
+
       __evidences.clear();
     }
 
     PRMInference::PRMInference( const PRMInference& source ):
-        _prm( source._prm ), _sys( source._sys ) {
+      _prm( source._prm ), _sys( source._sys ) {
       GUM_CONS_CPY( PRMInference );
+
       for ( PRMInference::EvidenceConstIterator iter = source.__evidences.begin(); iter != source.__evidences.end(); ++iter ) {
         __evidences.insert( iter.key(), new PRMInference::EMap() );
+
         for ( PRMInference::EMapIterator jter = ( *iter )->begin(); jter != ( *iter )->end(); ++jter ) {
           Potential<prm_float>* e = new Potential<prm_float>();
-          e->add( *(( **jter ).variablesSequence().front() ) );
+          e->add( *( ( **jter ).variablesSequence().front() ) );
           Instantiation i( *e );
+
           for ( i.setFirst(); not i.end(); i.inc() ) {
             e->set( i, ( **jter ).get( i ) );
           }
+
           __evidences[iter.key()]->insert( jter.key(), e );
         }
       }
@@ -67,18 +73,23 @@ namespace gum {
       clearEvidence();
       _prm = source._prm;
       _sys = source._sys;
+
       for ( PRMInference::EvidenceConstIterator iter = source.__evidences.begin(); iter != source.__evidences.end(); ++iter ) {
         __evidences.insert( iter.key(), new PRMInference::EMap() );
+
         for ( PRMInference::EMapIterator jter = ( *iter )->begin(); jter != ( *iter )->end(); ++jter ) {
           Potential<prm_float>* e = new Potential<prm_float>();
-          e->add( *(( **jter ).variablesSequence().front() ) );
+          e->add( *( ( **jter ).variablesSequence().front() ) );
           Instantiation i( *e );
+
           for ( i.setFirst(); not i.end(); i.inc() ) {
             e->set( i, ( **jter ).get( i ) );
           }
+
           __evidences[iter.key()]->insert( jter.key(), e );
         }
       }
+
       return *this;
     }
 
@@ -95,20 +106,25 @@ namespace gum {
     void
     PRMInference::addEvidence( const Chain& chain, const Potential<prm_float>& p ) {
       if ( chain.first->exists( chain.second->id() ) ) {
-        if (( p.nbrDim() != 1 ) or( not p.contains( chain.second->type().variable() ) ) )
+        if ( ( p.nbrDim() != 1 ) or( not p.contains( chain.second->type().variable() ) ) )
           GUM_ERROR( OperationNotAllowed, "illegal evidence for the given Attribute." );
+
         Potential<prm_float>* e = new Potential<prm_float>();
         e->add( chain.second->type().variable() );
         Instantiation i( *e );
+
         for ( i.setFirst(); not i.end(); i.inc() )
           e->set( i, p.get( i ) );
+
         PRMInference::EMap& emap = __EMap( chain.first );
+
         if ( emap.exists( chain.second->id() ) ) {
           delete emap[chain.second->id()];
           emap[chain.second->id()] = e;
         } else {
           emap.insert( chain.second->id(), e );
         }
+
         _evidenceAdded( chain );
       } else {
         GUM_ERROR( NotFound, "the given Attribute does not belong to this Instance." );
@@ -117,4 +133,4 @@ namespace gum {
 
   } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

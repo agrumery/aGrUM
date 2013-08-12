@@ -21,7 +21,7 @@
  * @file
  * @brief This file contains definition for a "loading action" listener in python
  *
- * @author Pierre-Henri Wuillemin
+ * @author Pierre-Henri WUILLEMIN
  */
 
 #include <Python.h>

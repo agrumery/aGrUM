@@ -30,40 +30,40 @@
 
 namespace gum {
 
-  
+
   // an empty fill-ins set returned by default when we ask for a fill-ins set
   const EdgeSet EliminationSequenceStrategy::__empty_fill_ins;
 
 
   /// default constructor
-  EliminationSequenceStrategy::EliminationSequenceStrategy () {
+  EliminationSequenceStrategy::EliminationSequenceStrategy() {
     // for debugging purposes
-    GUM_CONSTRUCTOR (EliminationSequenceStrategy);
+    GUM_CONSTRUCTOR( EliminationSequenceStrategy );
   }
 
-  
+
   /// copy constructor
   EliminationSequenceStrategy::EliminationSequenceStrategy
   ( const EliminationSequenceStrategy& ) {
     // for debugging purposes
-    GUM_CONS_CPY (EliminationSequenceStrategy);
+    GUM_CONS_CPY( EliminationSequenceStrategy );
   }
 
 
   /// destructor
-  EliminationSequenceStrategy::~EliminationSequenceStrategy () {
+  EliminationSequenceStrategy::~EliminationSequenceStrategy() {
     // for debugging purposes
-    GUM_DESTRUCTOR (EliminationSequenceStrategy);
+    GUM_DESTRUCTOR( EliminationSequenceStrategy );
   }
 
-  
-  /// performs all the graph/fill-ins updates provided
-  void EliminationSequenceStrategy::eliminationUpdate ( const NodeId node ) { }
 
-  
+  /// performs all the graph/fill-ins updates provided
+  void EliminationSequenceStrategy::eliminationUpdate( const NodeId node ) { }
+
+
   /** @brief in case fill-ins are provided, this function returns the fill-ins
    * due to all the nodes eliminated so far */
-  const EdgeSet& EliminationSequenceStrategy::fillIns () {
+  const EdgeSet& EliminationSequenceStrategy::fillIns() {
     return __empty_fill_ins;
   }
 

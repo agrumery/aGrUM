@@ -49,7 +49,7 @@ namespace gum {
   // @throws Raised if an I/O error occurs.
   template<typename GUM_SCALAR> INLINE
   void
-  NetWriter<GUM_SCALAR>::write( std::ostream &output, const BayesNet<GUM_SCALAR>& bn ) {
+  NetWriter<GUM_SCALAR>::write( std::ostream& output, const BayesNet<GUM_SCALAR>& bn ) {
     if ( ! output.good() )
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
 
@@ -90,9 +90,11 @@ namespace gum {
     }
 
     output << __header( bn ) << std::endl;
+
     for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
       output << __variableBloc( bn.variable( *iter ) ) << std::endl;
     }
+
     for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
       const Potential<GUM_SCALAR>& proba = bn.cpt( *iter );
 
@@ -115,22 +117,28 @@ namespace gum {
   NetWriter<GUM_SCALAR>::__variableCPT( const Potential<GUM_SCALAR>& cpt ) {
     std::stringstream str;
     std::string tab = "   "; // poor tabulation
+
     if ( cpt.nbrDim() == 1 ) {
       Instantiation inst( cpt );
       str << "potential (" << cpt.variable( 0 ).name() << ") {" << std::endl << tab << "data = ( ";
+
       for ( inst.setFirst(); ! inst.end(); ++inst ) {
         str << " " << cpt[inst];
       }
+
       str << ");" << std::endl << "}" << std::endl;
     } else if ( cpt.domainSize() > 1 ) {
       //Instantiation inst( cpt );
       Instantiation condVars; // Instantiation on the conditioning variables
       const Sequence<const DiscreteVariable*>& varsSeq = cpt.variablesSequence();
       str << "potential ( " << ( varsSeq[( Idx ) 0] )->name() << " | ";
+
       for ( Idx i = 0; i < varsSeq.size() ; i++ ) {
         if ( i != 0 ) str << varsSeq[i]->name() << "   ";
+
         condVars << *( varsSeq[i] );
       }
+
       //condVars << *( varsSeq[(Idx)0] );
       str << ") {" << std::endl << tab << "data = ";
 
@@ -141,13 +149,16 @@ namespace gum {
           str << tab << cpt[condVars] ;
         } else {
           bool notend = false;
+
           for ( Idx i = 0 ; i < condVars.nbrDim() ; i++ ) {
             if ( condVars.val( condVars.variable( i ) ) == 0 ) {
               notend = true;
               str << ( i==0?"\n   ":"" )<<"(";
             } else break;
           }
+
           str << tab << cpt[condVars] ;
+
           if ( !notend ) {
             for ( Idx i = 0 ; i < condVars.nbrDim() ; i++ ) {
 
@@ -158,9 +169,11 @@ namespace gum {
           }
         }
       }
+
       //       inst.unsetOverflow();
       str << "\n}" << std::endl;
     }
+
     return str.str();
   }
 
@@ -202,5 +215,5 @@ namespace gum {
 
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
 

@@ -32,13 +32,13 @@ namespace gum {
   // Default constructor.
   template<typename GUM_SCALAR, template<class> class IApproximationPolicy > INLINE
   GeneralizedCNFWriter<GUM_SCALAR,IApproximationPolicy>::GeneralizedCNFWriter() {
-    GUM_CONSTRUCTOR ( GeneralizedCNFWriter );
+    GUM_CONSTRUCTOR( GeneralizedCNFWriter );
   }
 
   // Default destructor.
   template<typename GUM_SCALAR, template<class> class IApproximationPolicy > INLINE
   GeneralizedCNFWriter<GUM_SCALAR, IApproximationPolicy >::~GeneralizedCNFWriter() {
-    GUM_DESTRUCTOR ( GeneralizedCNFWriter );
+    GUM_DESTRUCTOR( GeneralizedCNFWriter );
   }
 
   //
@@ -49,9 +49,9 @@ namespace gum {
   // @throws Raised if an I/O error occurs.
   template<typename GUM_SCALAR, template<class> class IApproximationPolicy > INLINE
   void
-  GeneralizedCNFWriter<GUM_SCALAR, IApproximationPolicy >::write ( std::ostream &output, const BayesNet<GUM_SCALAR>& bn ) {
+  GeneralizedCNFWriter<GUM_SCALAR, IApproximationPolicy >::write( std::ostream& output, const BayesNet<GUM_SCALAR>& bn ) {
     if ( ! output.good() )
-      GUM_ERROR ( IOError, "Stream states flags are not all unset." );
+      GUM_ERROR( IOError, "Stream states flags are not all unset." );
 
     std::stringstream strfile, strfile2;
 
@@ -60,7 +60,7 @@ namespace gum {
 
     for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
 
-      numparam +=  bn.variable ( *iter ).domainSize();
+      numparam +=  bn.variable( *iter ).domainSize();
     }
 
     Idx clause = 0;
@@ -69,49 +69,49 @@ namespace gum {
     gum::HashTable<std::string, Idx> protable ;
 
     for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
-      for ( Idx i = 0; i <  bn.variable ( *iter ).domainSize(); i++ ) {
+      for ( Idx i = 0; i <  bn.variable( *iter ).domainSize(); i++ ) {
         std::stringstream str;
-        str << bn.variable ( *iter ).name() <<"_"<< bn.variable ( *iter ).label ( i ) ;
-        vartable.insert ( str.str(), ++num ); strfile << num <<"::"<< str.str() <<"\n";
+        str << bn.variable( *iter ).name() <<"_"<< bn.variable( *iter ).label( i ) ;
+        vartable.insert( str.str(), ++num ); strfile << num <<"::"<< str.str() <<"\n";
       }
 
-      const Potential<GUM_SCALAR>& cpt = bn.cpt ( *iter );
+      const Potential<GUM_SCALAR>& cpt = bn.cpt( *iter );
 
-      Instantiation inst ( cpt );
+      Instantiation inst( cpt );
 
       for ( inst.setFirst(); ! inst.end(); ++inst ) {
         std::stringstream strinst;
         strinst << inst.toString();
-        strinst << "_val=" <<this->fromExact ( cpt[inst] );
+        strinst << "_val=" <<this->fromExact( cpt[inst] );
 
-        protable.insert ( inst.toString(), ++numparam ); strfile2 << numparam <<"::"<<  strinst.str()  <<"\n";
+        protable.insert( inst.toString(), ++numparam ); strfile2 << numparam <<"::"<<  strinst.str()  <<"\n";
       }
     }
 
     for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
       std::stringstream str0 ,str1, str2, str3;
 
-      for ( Idx i = 0; i < bn.variable ( *iter ).domainSize(); i++ ) {
+      for ( Idx i = 0; i < bn.variable( *iter ).domainSize(); i++ ) {
         std::stringstream stri ;//= bn.variable(*iter).name()+"_"+ bn.variable(*iter).label( i ) ;
-        stri << bn.variable ( *iter ).name() <<"_"<< bn.variable ( *iter ).label ( i ) ;
+        stri << bn.variable( *iter ).name() <<"_"<< bn.variable( *iter ).label( i ) ;
         str0 << vartable[stri.str()] << " ";
 
-        for ( Idx j = i + 1; j <  bn.variable ( *iter ).domainSize(); j++ ) {
+        for ( Idx j = i + 1; j <  bn.variable( *iter ).domainSize(); j++ ) {
           std::stringstream strj;
-          strj << bn.variable ( *iter ).name() <<"_"<< bn.variable ( *iter ).label ( j ) ;
+          strj << bn.variable( *iter ).name() <<"_"<< bn.variable( *iter ).label( j ) ;
           str1 <<"-"<< vartable[stri.str()]<<" -"<< vartable[strj.str()] << " 0\n"; clause++;
         }
       }
 
       str0 << "0\n"; clause++;
       clausstr << str0.str() << str1.str();
-      const Potential<GUM_SCALAR>& cpt = bn.cpt ( *iter );
-      Instantiation inst ( cpt );
+      const Potential<GUM_SCALAR>& cpt = bn.cpt( *iter );
+      Instantiation inst( cpt );
 
       for ( inst.setFirst(); ! inst.end(); ++inst ) {
         for ( Idx i = 0; i < inst.nbrDim() ; i++ ) {
           std::stringstream str;
-          str << inst.variable ( i ).name() <<"_" << inst.val ( inst.variable ( i ) );
+          str << inst.variable( i ).name() <<"_" << inst.val( inst.variable( i ) );
           str2 <<"-"<<vartable[str.str()]<<" ";
           str3 <<"-"<< protable[inst.toString()]<<" " <<vartable[str.str()]<<" 0\n"; clause++;
         }
@@ -136,24 +136,24 @@ namespace gum {
   // @throws Raised if an I/O error occurs.
   template<typename GUM_SCALAR, template<class> class IApproximationPolicy > INLINE
   void
-  GeneralizedCNFWriter<GUM_SCALAR, IApproximationPolicy>::write ( std::string filePath, const BayesNet<GUM_SCALAR>& bn ) {
-    std::ofstream output ( filePath.c_str(), std::ios_base::trunc );
-    std::ofstream outputvar ( ( filePath+".var" ).c_str(), std::ios_base::trunc );
+  GeneralizedCNFWriter<GUM_SCALAR, IApproximationPolicy>::write( std::string filePath, const BayesNet<GUM_SCALAR>& bn ) {
+    std::ofstream output( filePath.c_str(), std::ios_base::trunc );
+    std::ofstream outputvar( ( filePath+".var" ).c_str(), std::ios_base::trunc );
 
     if ( ! output.good() )
-      GUM_ERROR ( IOError, "Stream states flags are not all unset." );
+      GUM_ERROR( IOError, "Stream states flags are not all unset." );
 
     std::stringstream strfile, strfile2;
 
     if ( ! outputvar.good() )
-      GUM_ERROR ( IOError, "Stream states flags are not all unset." );
+      GUM_ERROR( IOError, "Stream states flags are not all unset." );
 
     Idx num = 0;
     Idx numparam = 0;
 
     for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
 
-      numparam +=  bn.variable ( *iter ).domainSize();
+      numparam +=  bn.variable( *iter ).domainSize();
     }
 
     Idx clause = 0;
@@ -162,49 +162,49 @@ namespace gum {
     gum::HashTable<std::string, Idx> protable ;
 
     for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
-      for ( Idx i = 0; i <  bn.variable ( *iter ).domainSize(); i++ ) {
+      for ( Idx i = 0; i <  bn.variable( *iter ).domainSize(); i++ ) {
         std::stringstream str;
-        str << bn.variable ( *iter ).name() <<"_"<< bn.variable ( *iter ).label ( i ) ;
-        vartable.insert ( str.str(), ++num ); strfile << num <<"::"<< str.str() <<"\n";
+        str << bn.variable( *iter ).name() <<"_"<< bn.variable( *iter ).label( i ) ;
+        vartable.insert( str.str(), ++num ); strfile << num <<"::"<< str.str() <<"\n";
       }
 
-      const Potential<GUM_SCALAR>& cpt = bn.cpt ( *iter );
+      const Potential<GUM_SCALAR>& cpt = bn.cpt( *iter );
 
-      Instantiation inst ( cpt );
+      Instantiation inst( cpt );
 
       for ( inst.setFirst(); ! inst.end(); ++inst ) {
         std::stringstream strinst;
         strinst << inst.toString();
-        strinst << "_val=" <<this->fromExact ( cpt[inst] );
+        strinst << "_val=" <<this->fromExact( cpt[inst] );
 
-        protable.insert ( inst.toString(), ++numparam ); strfile2 << numparam <<"::"<<  strinst.str()  <<"\n";
+        protable.insert( inst.toString(), ++numparam ); strfile2 << numparam <<"::"<<  strinst.str()  <<"\n";
       }
     }
 
     for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
       std::stringstream str0 ,str1, str2, str3;
 
-      for ( Idx i = 0; i < bn.variable ( *iter ).domainSize(); i++ ) {
+      for ( Idx i = 0; i < bn.variable( *iter ).domainSize(); i++ ) {
         std::stringstream stri ;//= bn.variable(*iter).name()+"_"+ bn.variable(*iter).label( i ) ;
-        stri << bn.variable ( *iter ).name() <<"_"<< bn.variable ( *iter ).label ( i ) ;
+        stri << bn.variable( *iter ).name() <<"_"<< bn.variable( *iter ).label( i ) ;
         str0 << vartable[stri.str()] << " ";
 
-        for ( Idx j = i + 1; j <  bn.variable ( *iter ).domainSize(); j++ ) {
+        for ( Idx j = i + 1; j <  bn.variable( *iter ).domainSize(); j++ ) {
           std::stringstream strj;
-          strj << bn.variable ( *iter ).name() <<"_"<< bn.variable ( *iter ).label ( j ) ;
+          strj << bn.variable( *iter ).name() <<"_"<< bn.variable( *iter ).label( j ) ;
           str1 <<"-"<< vartable[stri.str()]<<" -"<< vartable[strj.str()] << " 0\n"; clause++;
         }
       }
 
       str0 << "0\n"; clause++;
       clausstr << str0.str() << str1.str();
-      const Potential<GUM_SCALAR>& cpt = bn.cpt ( *iter );
-      Instantiation inst ( cpt );
+      const Potential<GUM_SCALAR>& cpt = bn.cpt( *iter );
+      Instantiation inst( cpt );
 
       for ( inst.setFirst(); ! inst.end(); ++inst ) {
         for ( Idx i = 0; i < inst.nbrDim() ; i++ ) {
           std::stringstream str;
-          str << inst.variable ( i ).name() <<"_" << inst.val ( inst.variable ( i ) );
+          str << inst.variable( i ).name() <<"_" << inst.val( inst.variable( i ) );
           str2 <<"-"<<vartable[str.str()]<<" ";
           str3 <<"-"<< protable[inst.toString()]<<" " <<vartable[str.str()]<<" 0\n"; clause++;
         }
@@ -223,10 +223,10 @@ namespace gum {
     output.close();
 
     if ( outputvar.fail() )
-      GUM_ERROR ( IOError, "Writting in the ostream failed." );
+      GUM_ERROR( IOError, "Writting in the ostream failed." );
 
     if ( output.fail() )
-      GUM_ERROR ( IOError, "Writting in the ostream failed." );
+      GUM_ERROR( IOError, "Writting in the ostream failed." );
   }
 
   // Returns a bloc defining a variable's CPT in the BN format.
@@ -262,4 +262,4 @@ namespace gum {
 
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

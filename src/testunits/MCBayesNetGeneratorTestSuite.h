@@ -34,136 +34,138 @@
 
 namespace gum_tests {
 
-class MCBayesNetGeneratorTestSuite: public CxxTest::TestSuite {
-public:
+  class MCBayesNetGeneratorTestSuite: public CxxTest::TestSuite {
+    public:
 
-    void setUp() {
-    }
+      void setUp() {
+      }
 
-    void tearDown() {
-    }
+      void tearDown() {
+      }
 
-    void testCreationDeletionFloat() {
-        gum::MCBayesNetGenerator<float>* gen = NULL;
+      void testCreationDeletionFloat() {
+        gum::MCBayesNetGenerator<float>* gen = nullptr;
 
         TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::MCBayesNetGenerator<float>( 30,60,3,30,40,50 ) );
         TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
-    }
+      }
 
-    void testCreationDeletionFloatCPT() {
-        gum::MCBayesNetGenerator<float>* gen = NULL;
+      void testCreationDeletionFloatCPT() {
+        gum::MCBayesNetGenerator<float>* gen = nullptr;
 
 
-        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::MCBayesNetGenerator<float>( 30,60,3,30,40,50 ));
+        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::MCBayesNetGenerator<float>( 30,60,3,30,40,50 ) );
         TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
-    }
+      }
 
       void testCreationDeletionDouble() {
-        gum::MCBayesNetGenerator<double>* gen = NULL;
+        gum::MCBayesNetGenerator<double>* gen = nullptr;
 
         TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::MCBayesNetGenerator<double>( 30,60,3,30,40,50 ) );
         TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
-    }
+      }
 
-    void testCreationDeletionDoubleCPT() {
-        gum::MCBayesNetGenerator<double>* gen = NULL;
+      void testCreationDeletionDoubleCPT() {
+        gum::MCBayesNetGenerator<double>* gen = nullptr;
 
 
-        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::MCBayesNetGenerator<double>( 30,60,3,30,40,50 ));
+        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::MCBayesNetGenerator<double>( 30,60,3,30,40,50 ) );
         TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
-    }
+      }
 
 
-    void testGenerationBNFloat(){
-      
-       gum::MCBayesNetGenerator<float> gen( 30,60,3,30,40,50 );
-        gum::BayesNet<float> * bn = new gum::BayesNet<float>();
-        TS_GUM_ASSERT_THROWS_NOTHING( gen.generateBN(*bn));
-
-        if ( bn != 0 ) delete bn;
-      
-    }
-
-    void testGenerationBNDouble() {
-
-        gum::MCBayesNetGenerator<double> gen( 30,60,3,30,40,50 );
-        gum::BayesNet<double> * bn = new gum::BayesNet<double>();
-        TS_GUM_ASSERT_THROWS_NOTHING( gen.generateBN(*bn));
-
-        if ( bn != 0 ) delete bn;
-
-    }  
-
-            void testGenerationfromBNFloat(){
-      
-       gum::MCBayesNetGenerator<float> gen( 30,60,3,30,40,50 );
-        gum::BayesNet<float> * bn = new gum::BayesNet<float>();
-        gen.generateBN(*bn);
-        TS_GUM_ASSERT_THROWS_NOTHING(gum::MCBayesNetGenerator<float> gen2(*bn,30,40,50));
-	
-	
-        if ( bn != 0 ) delete bn;
-      
-    }
-
-    void testGenerationfromBNDouble() {
-
-        gum::MCBayesNetGenerator<double> gen( 30,100,5,30,40,50 );
-        gum::BayesNet<double> * bn = new gum::BayesNet<double>();
-        gen.generateBN(*bn);
-        TS_GUM_ASSERT_THROWS_NOTHING(gum::MCBayesNetGenerator<double> gen2(*bn,30,40,50));
-        if ( bn != 0 ) delete bn;
-
-    }  
-    
-        void testDisturbBNFloatCPT(){
-      
-
-       gum::MCBayesNetGenerator<float> gen( 30,60,3,30,40,50 );
-        gum::BayesNet<float> * bn = new gum::BayesNet<float>();
-        gen.generateBN(*bn);
-        TS_GUM_ASSERT_THROWS_NOTHING( gen.disturbBN(*bn));
-        if ( bn != 0 ) delete bn;
-      
-    }
-
-    void testGenerationBNDoubleCPT() {
-
-
-        gum::MCBayesNetGenerator<double> gen( 30,60,3,30,40,50 );
-        gum::BayesNet<double> * bn = new gum::BayesNet<double>();
-        gen.generateBN(*bn);
-	TS_GUM_ASSERT_THROWS_NOTHING( gen.disturbBN(*bn));
-
-        if ( bn != 0 ) delete bn;
-
-    }  
-    
-
- 
-    void testInferenceFloat() {
+      void testGenerationBNFloat() {
 
         gum::MCBayesNetGenerator<float> gen( 30,60,3,30,40,50 );
-	gum::BayesNet<float> * bn = new gum::BayesNet<float>();
-        gen.generateBN(*bn);
+        gum::BayesNet<float>* bn = new gum::BayesNet<float>();
+        TS_GUM_ASSERT_THROWS_NOTHING( gen.generateBN( *bn ) );
+
+        if ( bn != 0 ) delete bn;
+
+      }
+
+      void testGenerationBNDouble() {
+
+        gum::MCBayesNetGenerator<double> gen( 30,60,3,30,40,50 );
+        gum::BayesNet<double>* bn = new gum::BayesNet<double>();
+        TS_GUM_ASSERT_THROWS_NOTHING( gen.generateBN( *bn ) );
+
+        if ( bn != 0 ) delete bn;
+
+      }
+
+      void testGenerationfromBNFloat() {
+
+        gum::MCBayesNetGenerator<float> gen( 30,60,3,30,40,50 );
+        gum::BayesNet<float>* bn = new gum::BayesNet<float>();
+        gen.generateBN( *bn );
+        TS_GUM_ASSERT_THROWS_NOTHING( gum::MCBayesNetGenerator<float> gen2( *bn,30,40,50 ) );
+
+
+        if ( bn != 0 ) delete bn;
+
+      }
+
+      void testGenerationfromBNDouble() {
+
+        gum::MCBayesNetGenerator<double> gen( 30,100,5,30,40,50 );
+        gum::BayesNet<double>* bn = new gum::BayesNet<double>();
+        gen.generateBN( *bn );
+        TS_GUM_ASSERT_THROWS_NOTHING( gum::MCBayesNetGenerator<double> gen2( *bn,30,40,50 ) );
+
+        if ( bn != 0 ) delete bn;
+
+      }
+
+      void testDisturbBNFloatCPT() {
+
+
+        gum::MCBayesNetGenerator<float> gen( 30,60,3,30,40,50 );
+        gum::BayesNet<float>* bn = new gum::BayesNet<float>();
+        gen.generateBN( *bn );
+        TS_GUM_ASSERT_THROWS_NOTHING( gen.disturbBN( *bn ) );
+
+        if ( bn != 0 ) delete bn;
+
+      }
+
+      void testGenerationBNDoubleCPT() {
+
+
+        gum::MCBayesNetGenerator<double> gen( 30,60,3,30,40,50 );
+        gum::BayesNet<double>* bn = new gum::BayesNet<double>();
+        gen.generateBN( *bn );
+        TS_GUM_ASSERT_THROWS_NOTHING( gen.disturbBN( *bn ) );
+
+        if ( bn != 0 ) delete bn;
+
+      }
+
+
+
+      void testInferenceFloat() {
+
+        gum::MCBayesNetGenerator<float> gen( 30,60,3,30,40,50 );
+        gum::BayesNet<float>* bn = new gum::BayesNet<float>();
+        gen.generateBN( *bn );
         // Test for inference
         gum::LazyPropagation<float> lazyInf( *bn );
         TS_GUM_ASSERT_THROWS_NOTHING( lazyInf.makeInference() );
 
         if ( bn != 0 ) delete bn;
-    }
+      }
 
-    void testInferenceDouble() {
+      void testInferenceDouble() {
 
         gum::MCBayesNetGenerator<double> gen( 30,60,3,30,40,50 );
-	gum::BayesNet<double> * bn = new gum::BayesNet<double>();
-        gen.generateBN(*bn);
+        gum::BayesNet<double>* bn = new gum::BayesNet<double>();
+        gen.generateBN( *bn );
         // Test for inference
         gum::LazyPropagation<double> lazyInf( *bn );
         TS_GUM_ASSERT_THROWS_NOTHING( lazyInf.makeInference() );
 
         if ( bn != 0 ) delete bn;
-    }
-};
+      }
+  };
 }
 

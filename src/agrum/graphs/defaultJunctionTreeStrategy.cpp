@@ -31,50 +31,51 @@
 
 
 namespace gum {
-  
+
 
   /// default constructor
-  DefaultJunctionTreeStrategy::DefaultJunctionTreeStrategy () :
-    __triangulation ( 0 ),
-    __has_junction_tree ( true ) {
+  DefaultJunctionTreeStrategy::DefaultJunctionTreeStrategy() :
+    __triangulation( 0 ),
+    __has_junction_tree( true ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR ( DefaultJunctionTreeStrategy );
+    GUM_CONSTRUCTOR( DefaultJunctionTreeStrategy );
   }
 
 
   /// destructor
-  DefaultJunctionTreeStrategy::~DefaultJunctionTreeStrategy () {
+  DefaultJunctionTreeStrategy::~DefaultJunctionTreeStrategy() {
     // for debugging purposes
-    GUM_DESTRUCTOR ( DefaultJunctionTreeStrategy );
+    GUM_DESTRUCTOR( DefaultJunctionTreeStrategy );
   }
 
 
   /// virtual copy constructor
-  DefaultJunctionTreeStrategy* DefaultJunctionTreeStrategy::newFactory () const {
+  DefaultJunctionTreeStrategy* DefaultJunctionTreeStrategy::newFactory() const {
     return new DefaultJunctionTreeStrategy;
   }
 
 
   /// indicates whether the junction tree strategy needs fill-ins to work properly
-  bool DefaultJunctionTreeStrategy::requiresFillIns () const {
+  bool DefaultJunctionTreeStrategy::requiresFillIns() const {
     return false;
   }
 
-  
+
   /// assign the triangulation to the junction tree strategy
-  void DefaultJunctionTreeStrategy::setTriangulation ( StaticTriangulation* tr ) {
+  void DefaultJunctionTreeStrategy::setTriangulation( StaticTriangulation* tr ) {
     __triangulation = tr;
     __has_junction_tree = false;
-    __junction_tree.clear ();
-    __node_2_junction_clique.clear ();
+    __junction_tree.clear();
+    __node_2_junction_clique.clear();
   }
 
-  
+
   /// returns, for each node, the clique which was created by its deletion
   const Property<NodeId>::onNodes&
-  DefaultJunctionTreeStrategy::createdCliques () {
+  DefaultJunctionTreeStrategy::createdCliques() {
     // compute the junction tree only if it does not already exist
     if ( !__has_junction_tree ) __computeJunctionTree();
+
     return __node_2_junction_clique;
   }
 
@@ -83,14 +84,16 @@ namespace gum {
   NodeId DefaultJunctionTreeStrategy::createdClique( const NodeId id ) {
     // compute the junction tree only if it does not already exist
     if ( !__has_junction_tree ) __computeJunctionTree();
+
     return __node_2_junction_clique[id];
   }
 
-  
+
   /// returns the junction tree asked by the triangulation
   const CliqueGraph& DefaultJunctionTreeStrategy::junctionTree() {
     // compute the junction tree only if it does not already exist
     if ( !__has_junction_tree ) __computeJunctionTree();
+
     return __junction_tree;
   }
 
@@ -100,7 +103,7 @@ namespace gum {
   void DefaultJunctionTreeStrategy::__computeJunctionTree() {
     // if no triangulation is assigned to the strategy, do nothing
     if ( ! __triangulation ) return;
-    
+
     // get the elimination tree
     const CliqueGraph& elim_tree = __triangulation->eliminationTree();
 
@@ -119,6 +122,7 @@ namespace gum {
     const std::vector<NodeId>& elim_order =
       __triangulation->eliminationOrder();
     std::vector<unsigned int> substitution( elim_order.size() );
+
     for ( unsigned int i = 0; i < substitution.size(); ++i )
       substitution[i] = i;
 
@@ -130,7 +134,7 @@ namespace gum {
     // neighbour can be included in C_j (and conversely).
     NodeSetIterator iter;
 
-    for(unsigned int i = elim_order.size() - 1; i < elim_order.size(); --i) {
+    for ( unsigned int i = elim_order.size() - 1; i < elim_order.size(); --i ) {
       NodeId C_i = i;
       unsigned int card_C_i = __junction_tree.clique( C_i ).size();
 
@@ -138,10 +142,11 @@ namespace gum {
       NodeId C_j = C_i;
 
       const NodeSet& nei = __junction_tree.neighbours( C_i );
-      for ( iter = nei.begin(); iter != nei.end(); ++iter ) {	
+
+      for ( iter = nei.begin(); iter != nei.end(); ++iter ) {
         NodeId C_jj = *iter;
 
-        if ( (i > C_jj ) && ! mark[Edge( C_i,C_jj )] && 
+        if ( ( i > C_jj ) && ! mark[Edge( C_i,C_jj )] &&
              ( __junction_tree.clique( C_jj ).size() == card_C_i + 1 ) ) {
           // ok, here we found a parent such that |C_jj| = [C_i| + 1
           C_j = C_jj;
@@ -153,9 +158,10 @@ namespace gum {
       // if we found a C_j, link the neighbours of C_i to C_j
       if ( C_j != C_i ) {
         const NodeSet& nei = __junction_tree.neighbours( C_i );
+
         for ( iter = nei.begin(); iter != nei.end(); ++iter ) {
           __junction_tree.insertEdge( C_j, *iter );
-          mark.insert( Edge ( C_j, *iter ), true );
+          mark.insert( Edge( C_j, *iter ), true );
         }
 
         substitution[i] = C_j;
@@ -177,14 +183,14 @@ namespace gum {
     __has_junction_tree = true;
   }
 
-  
+
   /// resets the current junction tree strategy data structures
-  void DefaultJunctionTreeStrategy::clear () {
+  void DefaultJunctionTreeStrategy::clear() {
     __has_junction_tree = false;
-    __junction_tree.clear ();
-    __node_2_junction_clique.clear ();
+    __junction_tree.clear();
+    __node_2_junction_clique.clear();
   }
- 
+
 
 } /* namespace gum */
 

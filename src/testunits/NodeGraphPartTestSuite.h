@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Lionel Torti                                    *
+ *   (C) 2007-2013 by Christophe GONZALES and Pierre-Henri WUILLEMIN       *
  *   {prenom.nom}@lip6.fr                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -165,7 +165,7 @@ namespace gum_tests {
         gum::NodeGraphPart ngp2;
         ngp2.insertNode( node );
 
-        for( gum::Size i = 1; i < node; i++ ) {
+        for ( gum::Size i = 1; i < node; i++ ) {
           TS_ASSERT_EQUALS( ngp2.__sizeHoles(), ( gum::Size( node ) + 1 - i ) );
           TS_ASSERT( ngp2.insertNode() < node );
         }
@@ -190,9 +190,9 @@ namespace gum_tests {
         nodeset.insertNode();
         unsigned int cpt = 0;
 
-        for( gum::NodeGraphPartIterator iter = nodeset.beginNodes();
-             iter != nodeset.endNodes(); ++iter ) {
-          if( cpt == 0 ) {
+        for ( gum::NodeGraphPartIterator iter = nodeset.beginNodes();
+              iter != nodeset.endNodes(); ++iter ) {
+          if ( cpt == 0 ) {
             nodeset.eraseNode( *iter );
             cpt++;
           } else {
@@ -207,19 +207,19 @@ namespace gum_tests {
         gum::NodeGraphPart nodeset;
         const unsigned int max_cpt = 100;
 
-        for( unsigned int i = 0; i < max_cpt; ++i ) {
+        for ( unsigned int i = 0; i < max_cpt; ++i ) {
           nodeset.insertNode();
         }
 
         unsigned int cpt = 0;
 
-        for( gum::NodeGraphPartIterator iter = nodeset.beginNodes();
-             iter != nodeset.endNodes(); ++iter, ++cpt ) {
+        for ( gum::NodeGraphPartIterator iter = nodeset.beginNodes();
+              iter != nodeset.endNodes(); ++iter, ++cpt ) {
           TS_GUM_ASSERT_THROWS_NOTHING( *iter );
           TS_GUM_ASSERT_THROWS_NOTHING( nodeset.eraseNode( *iter ) );
           TS_ASSERT_THROWS( *iter, gum::UndefinedIteratorValue );
 
-          if( cpt > max_cpt ) {
+          if ( cpt > max_cpt ) {
             // If false : infinite loop spotted
             TS_ASSERT( false );
             break;
@@ -237,11 +237,11 @@ namespace gum_tests {
           gum::NodeGraphPart ngp;
           // direct
 
-          for( gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++ ) {
+          for ( gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++ ) {
             ngp.insertNode();
           }
 
-          for( gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++ ) {
+          for ( gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++ ) {
             ngp.eraseNode( node );
           }
         }
@@ -250,11 +250,11 @@ namespace gum_tests {
           gum::NodeGraphPart ngp;
           //reverse
 
-          for( gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++ ) {
+          for ( gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++ ) {
             ngp.insertNode();
           }
 
-          for( gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++ ) {
+          for ( gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++ ) {
             ngp.eraseNode( NBR_PROFILING_NODES - node );
           }
         }
@@ -264,11 +264,11 @@ namespace gum_tests {
 
           // direct with id
 
-          for( gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++ ) {
+          for ( gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++ ) {
             ngp.insertNode( node );
           }
 
-          for( gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++ ) {
+          for ( gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++ ) {
             ngp.eraseNode( node );
           }
         }
@@ -278,11 +278,11 @@ namespace gum_tests {
 
           // reverse with id
 
-          for( gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++ ) {
+          for ( gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++ ) {
             ngp.insertNode( NBR_PROFILING_NODES - node );
           }
 
-          for( gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++ ) {
+          for ( gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++ ) {
             ngp.eraseNode( 10000 - node );
           }
         }

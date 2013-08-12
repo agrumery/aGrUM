@@ -47,7 +47,7 @@ namespace gum_tests {
 
   class BIFXMLIDWriterTestSuite: public CxxTest::TestSuite {
     private:
-      void fillTopo( gum::InfluenceDiagram<double> &infDiag, gum::List<gum::NodeId> &idList ) {
+      void fillTopo( gum::InfluenceDiagram<double>& infDiag, gum::List<gum::NodeId>& idList ) {
         try {
           idList.insert( infDiag.addDecisionNode( *decisionVar1 ) ); //0
           idList.insert( infDiag.addDecisionNode( *decisionVar2 ) ); //1
@@ -74,13 +74,13 @@ namespace gum_tests {
           infDiag.addArc( idList[8], idList[10] );
           infDiag.addArc( idList[3], idList[10] );
 
-        } catch( gum::Exception &e ) {
+        } catch ( gum::Exception& e ) {
           std::cerr << std::endl << e.content() << std::endl;
           throw ;
         }
       }
 
-      void fill( gum::InfluenceDiagram<double> &infDiag, gum::List<gum::NodeId> &idList ) {
+      void fill( gum::InfluenceDiagram<double>& infDiag, gum::List<gum::NodeId>& idList ) {
         fillTopo( infDiag, idList );
 
         try {
@@ -139,18 +139,18 @@ namespace gum_tests {
             int n = 4; const std::vector<double> v( t, t + n );
             u2.fillWith( v );
           }
-        } catch( gum::Exception &e ) {
+        } catch ( gum::Exception& e ) {
           std::cerr << std::endl << e.content() << std::endl;
           throw ;
         }
       }
 
     public:
-      gum::InfluenceDiagram<double> *id;
+      gum::InfluenceDiagram<double>* id;
       gum::List<gum::NodeId>* idListPtr;
-      gum::LabelizedVariable *decisionVar1, *decisionVar2, *decisionVar3, *decisionVar4;
-      gum::LabelizedVariable *chanceVar1, *chanceVar2, *chanceVar3, *chanceVar4, *chanceVar5;
-      gum::LabelizedVariable *utilityVar1, *utilityVar2;
+      gum::LabelizedVariable* decisionVar1, *decisionVar2, *decisionVar3, *decisionVar4;
+      gum::LabelizedVariable* chanceVar1, *chanceVar2, *chanceVar3, *chanceVar4, *chanceVar5;
+      gum::LabelizedVariable* utilityVar1, *utilityVar2;
 
       void setUp() {
         id = new gum::InfluenceDiagram<double>();
@@ -189,7 +189,7 @@ namespace gum_tests {
       }
 
       void testConstuctor() {
-        gum::BIFXMLIDWriter<double>* writer = NULL;
+        gum::BIFXMLIDWriter<double>* writer = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( writer = new gum::BIFXMLIDWriter<double>() );
         delete writer;
       }
@@ -211,7 +211,7 @@ namespace gum_tests {
         std::string dotfile = GET_PATH_STR( IDToDotWriter.dot );
         std::ofstream output( dotfile.c_str(), std::ios::out | std::ios::trunc );
 
-        if( ! output.good() ) {
+        if ( ! output.good() ) {
           GUM_ERROR( gum::IOError, "Stream states flags are not all unset." );
         }
 
@@ -219,7 +219,7 @@ namespace gum_tests {
         output.flush();
         output.close();
 
-        if( output.fail() ) {
+        if ( output.fail() ) {
           GUM_ERROR( gum::IOError, "Writting in the ostream failed." );
         }
       }

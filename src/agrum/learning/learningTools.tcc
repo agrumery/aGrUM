@@ -40,27 +40,27 @@ namespace gum {
   /* ============================================================================ */
   /* ============================================================================ */
 
-  // ==============================================================================
+
   /// default constructor: creates an empty cache
-  // ==============================================================================
+
   template <typename Score>
   IndepCache<Score>::IndepCache() {
     /// for debugging purposes
     GUM_CONSTRUCTOR( IndepCache );
   }
 
-  // ==============================================================================
+
   /// destructor
-  // ==============================================================================
+
   template <typename Score>
   IndepCache<Score>::~IndepCache() {
     /// for debugging purposes
     GUM_DESTRUCTOR( IndepCache );
   }
 
-  // ==============================================================================
+
   /// creates the tree necessary for the insertion/update of a new test value
-  // ==============================================================================
+
   template <typename Score>
   CacheNode<Score>& IndepCache<Score>::_prepareInsertVal
   ( const Id& node1, const Id& node2, const std::vector<Id>& conditional_set,
@@ -83,7 +83,7 @@ namespace gum {
 
     // now get the cache corresponding to the edge and follow the tree until all
     // the conditioning set has been parsed
-    CacheNode<Score> *tree = &cache[edge];
+    CacheNode<Score>* tree = &cache[edge];
 
     for ( unsigned int i=0; i<conditional_set.size(); ++i ) {
       if ( !tree->children.exists( conditional_set[i] ) )
@@ -95,9 +95,9 @@ namespace gum {
     return *tree;
   }
 
-  // ==============================================================================
+
   /// adds a value into the cache
-  // ==============================================================================
+
   template <typename Score>
   void IndepCache<Score>::insertTestVal
   ( const Id& node1, const Id& node2, const std::vector<Id>& conditional_set,
@@ -116,9 +116,9 @@ namespace gum {
     tree.has_score = true;
   }
 
-  // ==============================================================================
+
   /// updates a value in the cache (or adds it if it does not already exist)
-  // ==============================================================================
+
   template <typename Score>
   void IndepCache<Score>::setTestVal
   ( const Id& node1, const Id& node2, const std::vector<Id>& conditional_set,
@@ -131,9 +131,9 @@ namespace gum {
     tree.has_score = true;
   }
 
-  // ==============================================================================
+
   /// returns a pointer to the value of a given independence test
-  // ==============================================================================
+
   template <typename Score>
   Score* IndepCache<Score>::getPtrTestVal
   ( const Id& node1, const Id& node2,
@@ -156,7 +156,7 @@ namespace gum {
 
     // now get the cache corresponding to the edge and follow the tree until all
     // the conditioning set has been parsed
-    CacheNode<Score> *tree = const_cast<CacheNode<Score>*>( &cache[edge] );
+    CacheNode<Score>* tree = const_cast<CacheNode<Score>*>( &cache[edge] );
 
     for ( unsigned int i=0; i<conditional_set.size(); ++i ) {
       if ( !tree->children.exists( conditional_set[i] ) )
@@ -171,9 +171,9 @@ namespace gum {
       return 0;
   }
 
-  // ==============================================================================
+
   /// returns the value of a given test from the cache
-  // ==============================================================================
+
   template <typename Score> INLINE
   Score& IndepCache<Score>::getTestVal
   ( const Id& node1, const Id& node2, const std::vector<Id>& conditional_set,
@@ -189,28 +189,28 @@ namespace gum {
     return *score;
   }
 
-  // ==============================================================================
+
   /// default constructor
-  // ==============================================================================
+
   template <typename Score>
   CacheNode<Score>::CacheNode() : has_score( false ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( CacheNode );
   }
 
-  // ==============================================================================
+
   /// copy constructor
-  // ==============================================================================
+
   template <typename Score>
   CacheNode<Score>::CacheNode( const CacheNode<Score>& from ) :
-      score( from.score ), has_score( from.has_score ), children( from.children ) {
+    score( from.score ), has_score( from.has_score ), children( from.children ) {
     // for debugging purposes
     GUM_CONS_CPY( CacheNode );
   }
 
-  // ==============================================================================
+
   /// copy operator
-  // ==============================================================================
+
   template <typename Score> INLINE
   CacheNode<Score>&
   CacheNode<Score>::operator= ( const CacheNode<Score>& from ) {
@@ -226,18 +226,18 @@ namespace gum {
     return *this;
   }
 
-  // ==============================================================================
+
   /// destructor
-  // ==============================================================================
+
   template <typename Score>
   CacheNode<Score>::~CacheNode() {
     // for debugging purposes
     GUM_DESTRUCTOR( CacheNode );
   }
 
-  // ==============================================================================
+
   /// operator << for the cache tree
-  // ==============================================================================
+
   template <typename Score>
   std::ostream& operator<< ( std::ostream& stream,
                              const CacheNode<Score>& tree ) {

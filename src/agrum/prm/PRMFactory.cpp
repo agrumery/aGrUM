@@ -22,13 +22,13 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #include <agrum/prm/PRMFactory.h>
-// ============================================================================
+
 #ifdef GUM_NO_INLINE
 #include <agrum/prm/PRMFactory.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 
 namespace gum {
 
@@ -37,7 +37,7 @@ namespace gum {
     void
     PRMFactory::addLabel( const std::string& l, std::string extends ) {
       if ( extends == "" ) {
-        Type* t = static_cast<Type*>( __checkStack( 1, PRMObject::prm_type ) );
+        Type* t = static_cast<Type*>( __checkStack( 1, PRMObject::PRMType::TYPE ) );
         LabelizedVariable* var = dynamic_cast<LabelizedVariable*>( t->__var );
 
         if ( not var ) {
@@ -52,7 +52,7 @@ namespace gum {
           GUM_ERROR( DuplicateElement, "a label with the same value already exists" );
         }
       } else {
-        Type* t = static_cast<Type*>( __checkStack( 1, PRMObject::prm_type ) );
+        Type* t = static_cast<Type*>( __checkStack( 1, PRMObject::PRMType::TYPE ) );
         LabelizedVariable* var = dynamic_cast<LabelizedVariable*>( t->__var );
 
         if ( not var ) {
@@ -125,13 +125,13 @@ namespace gum {
         // }
       }
 
-      if (( extends == "" ) and impl.empty() ) {
+      if ( ( extends == "" ) and impl.empty() ) {
         c = new Class( real_name );
-      } else if (( extends != "" ) and impl.empty() ) {
+      } else if ( ( extends != "" ) and impl.empty() ) {
         c = new Class( real_name, *mother );
-      } else if (( extends == "" ) and( not impl.empty() ) ) {
+      } else if ( ( extends == "" ) and( not impl.empty() ) ) {
         c = new Class( real_name, impl );
-      } else if (( extends != "" ) and( not impl.empty() ) ) {
+      } else if ( ( extends != "" ) and( not impl.empty() ) ) {
         c = new Class( real_name, *mother, impl );
       }
 
@@ -143,7 +143,7 @@ namespace gum {
 
     void
     PRMFactory::endClass() {
-      Class* c = static_cast<Class*>( __checkStack( 1, PRMObject::prm_class ) );
+      Class* c = static_cast<Class*>( __checkStack( 1, PRMObject::PRMType::CLASS ) );
       Interface* i = 0;
       std::string name;
       std::stringstream msg;
@@ -160,42 +160,42 @@ namespace gum {
               switch ( i->get( *node ).elt_type() ) {
                 case ClassElement::prm_aggregate:
                 case ClassElement::prm_attribute: {
-                    if (( c->get( name ).elt_type() == ClassElement::prm_attribute ) or
-                        ( c->get( name ).elt_type() == ClassElement::prm_aggregate ) ) {
-                      if ( not c->get( name ).type().isSubTypeOf( i->get( name ).type() ) ) {
-                        GUM_ERROR( TypeError, msg.str() + i->name() );
-                      }
-                    } else {
+                  if ( ( c->get( name ).elt_type() == ClassElement::prm_attribute ) or
+                       ( c->get( name ).elt_type() == ClassElement::prm_aggregate ) ) {
+                    if ( not c->get( name ).type().isSubTypeOf( i->get( name ).type() ) ) {
                       GUM_ERROR( TypeError, msg.str() + i->name() );
                     }
-
-                    break;
+                  } else {
+                    GUM_ERROR( TypeError, msg.str() + i->name() );
                   }
+
+                  break;
+                }
 
                 case ClassElement::prm_refslot: {
-                    if ( c->get( name ).elt_type() == ClassElement::prm_refslot ) {
-                      const ReferenceSlot& ref_i = static_cast<const ReferenceSlot&>( i->get( name ) );
-                      const ReferenceSlot& ref_this = static_cast<const ReferenceSlot&>( c->get( name ) );
+                  if ( c->get( name ).elt_type() == ClassElement::prm_refslot ) {
+                    const ReferenceSlot& ref_i = static_cast<const ReferenceSlot&>( i->get( name ) );
+                    const ReferenceSlot& ref_this = static_cast<const ReferenceSlot&>( c->get( name ) );
 
-                      if ( not ref_this.slotType().isSubTypeOf( ref_i.slotType() ) ) {
-                        GUM_ERROR( TypeError, msg.str() + i->name() );
-                      }
-                    } else {
+                    if ( not ref_this.slotType().isSubTypeOf( ref_i.slotType() ) ) {
                       GUM_ERROR( TypeError, msg.str() + i->name() );
                     }
-
-                    break;
+                  } else {
+                    GUM_ERROR( TypeError, msg.str() + i->name() );
                   }
+
+                  break;
+                }
 
                 case ClassElement::prm_slotchain: {
-                    // Nothing to check: they are automatically inherited
-                    break;
-                  }
+                  // Nothing to check: they are automatically inherited
+                  break;
+                }
 
                 default: {
-                    std::string msg = "unexpected ClassElement in interface ";
-                    GUM_ERROR( FatalError, msg + i->name() );
-                  }
+                  std::string msg = "unexpected ClassElement in interface ";
+                  GUM_ERROR( FatalError, msg + i->name() );
+                }
               }
             }
           } catch ( NotFound& ) {
@@ -244,7 +244,7 @@ namespace gum {
 
     void
     PRMFactory::addAttribute( Attribute* attr ) {
-      Class* c = static_cast<Class*>( __checkStack( 1, PRMObject::prm_class ) );
+      Class* c = static_cast<Class*>( __checkStack( 1, PRMObject::PRMType::CLASS ) );
       c->add( attr );
       Size count = 0;
       const Sequence<const DiscreteVariable*>& vars = attr->cpf().variablesSequence();
@@ -277,29 +277,29 @@ namespace gum {
 
         switch ( elt.elt_type() ) {
           case ClassElement::prm_refslot: {
-              GUM_ERROR( OperationNotAllowed, "can not add a reference slot as a parent of an attribute" );
-              break;
-            }
+            GUM_ERROR( OperationNotAllowed, "can not add a reference slot as a parent of an attribute" );
+            break;
+          }
 
           case ClassElement::prm_slotchain: {
-              if ( static_cast<SlotChain&>( elt ).isMultiple() ) {
-                GUM_ERROR( OperationNotAllowed, "can not add a multiple slot chain to an attribute" );
-              }
-
-              c->insertArc( name, a->name() );
-
-              break;
+            if ( static_cast<SlotChain&>( elt ).isMultiple() ) {
+              GUM_ERROR( OperationNotAllowed, "can not add a multiple slot chain to an attribute" );
             }
+
+            c->insertArc( name, a->name() );
+
+            break;
+          }
 
           case ClassElement::prm_attribute:
           case ClassElement::prm_aggregate: {
-              c->insertArc( name, a->name() );
-              break;
-            }
+            c->insertArc( name, a->name() );
+            break;
+          }
 
           default: {
-              GUM_ERROR( FatalError, "unknown ClassElement" );
-            }
+            GUM_ERROR( FatalError, "unknown ClassElement" );
+          }
         }
       } catch ( NotFound& ) {
         // Check if name is a slot chain
@@ -363,7 +363,7 @@ namespace gum {
                               const std::vector<prm_float>& values ) {
       Attribute* a = static_cast<Attribute*>( __checkStack( 1, ClassElement::prm_attribute ) );
 
-      if (( parents.size() + 1 ) != a->cpf().variablesSequence().size() ) {
+      if ( ( parents.size() + 1 ) != a->cpf().variablesSequence().size() ) {
         GUM_ERROR( OperationNotAllowed, "wrong number of parents" );
       }
 
@@ -405,7 +405,7 @@ namespace gum {
         }
       }
 
-      inst.chgValIn( jnst );
+      inst.setVals( jnst );
 
       for ( Size i = 0; i < a->type()->domainSize(); ++i ) {
         inst.chgVal( a->type().variable(), i );
@@ -419,7 +419,7 @@ namespace gum {
     void
     PRMFactory::addParameter( const std::string& type, const std::string& name,
                               std::string value ) {
-      Class* c = static_cast<Class*>( __checkStack( 1, PRMObject::prm_class ) );
+      Class* c = static_cast<Class*>( __checkStack( 1, PRMObject::PRMType::CLASS ) );
 
       if ( value == "" ) {
         MultiDimSparse<prm_float>* impl =
@@ -453,7 +453,7 @@ namespace gum {
                                const std::string& agg_type,
                                const std::vector<std::string>& chains,
                                const std::vector<std::string>& params ) {
-      Class* c = static_cast<Class*>( __checkStack( 1, PRMObject::prm_class ) );
+      Class* c = static_cast<Class*>( __checkStack( 1, PRMObject::PRMType::CLASS ) );
       // Checking call legality
 
       if ( chains.size() == 0 ) {
@@ -469,7 +469,7 @@ namespace gum {
       // Checking that all inputs shares the same Type (trivial if inputs.size() == 1)
       if ( inputs.size() > 1 ) {
         for ( std::vector<ClassElement*>::iterator iter = inputs.begin() + 1; iter != inputs.end(); ++iter ) {
-          if (( **( iter - 1 ) ).type() != ( **iter ).type() ) {
+          if ( ( **( iter - 1 ) ).type() != ( **iter ).type() ) {
             GUM_ERROR( WrongType, "found different types" );
           }
         }
@@ -479,52 +479,52 @@ namespace gum {
       Aggregate* agg = 0;
 
       switch ( Aggregate::str2enum( agg_type ) ) {
-        case Aggregate::agg_or:
-        case Aggregate::agg_and: {
-            if ( inputs.front()->type() != *( __retrieveType( "boolean" ) ) ) {
-              GUM_ERROR( WrongType, "expected booleans" );
-            }
+        case Aggregate::AggregateType::OR:
+        case Aggregate::AggregateType::AND: {
+          if ( inputs.front()->type() != *( __retrieveType( "boolean" ) ) ) {
+            GUM_ERROR( WrongType, "expected booleans" );
+          }
+        }
+
+        case Aggregate::AggregateType::MIN:
+        case Aggregate::AggregateType::MAX: {
+          if ( params.size() != 0 ) {
+            GUM_ERROR( OperationNotAllowed, "invalid number of paramaters" );
           }
 
-        case Aggregate::agg_min:
-        case Aggregate::agg_max: {
-            if ( params.size() != 0 ) {
-              GUM_ERROR( OperationNotAllowed, "invalid number of paramaters" );
-            }
+          agg = new Aggregate( name, Aggregate::str2enum( agg_type ), inputs.front()->type() );
 
-            agg = new Aggregate( name, Aggregate::str2enum( agg_type ), inputs.front()->type() );
+          break;
+        }
 
-            break;
+        case Aggregate::AggregateType::EXISTS:
+        case Aggregate::AggregateType::FORALL: {
+          if ( params.size() != 1 ) {
+            GUM_ERROR( OperationNotAllowed, "invalid number of parameters" );
           }
 
-        case Aggregate::agg_exists:
-        case Aggregate::agg_forall: {
-            if ( params.size() != 1 ) {
-              GUM_ERROR( OperationNotAllowed, "invalid number of paramaters" );
+          Idx label_idx = 0;
+
+          while ( label_idx < inputs.front()->type()->domainSize() ) {
+            if ( inputs.front()->type()->label( label_idx ) == params.front() ) {
+              break;
             }
 
-            Idx label_idx = 0;
-
-            while ( label_idx < inputs.front()->type()->domainSize() ) {
-              if ( inputs.front()->type()->label( label_idx ) == params.front() ) {
-                break;
-              }
-
-              ++label_idx;
-            }
-
-            if ( label_idx == inputs.front()->type()->domainSize() ) {
-              GUM_ERROR( NotFound, "could not find label" );
-            }
-
-            // Creating and adding the Aggregate
-            agg = new Aggregate( name, Aggregate::str2enum( agg_type ), *( __retrieveType( "boolean" ) ), label_idx );
-
-            break;
+            ++label_idx;
           }
+
+          if ( label_idx == inputs.front()->type()->domainSize() ) {
+            GUM_ERROR( NotFound, "could not find label" );
+          }
+
+          // Creating and adding the Aggregate
+          agg = new Aggregate( name, Aggregate::str2enum( agg_type ), *( __retrieveType( "boolean" ) ), label_idx );
+
+          break;
+        }
 
         default:
-          { GUM_ERROR( FatalError, "Unknown aggregator." ); }
+        { GUM_ERROR( FatalError, "Unknown aggregator." ); }
       }
 
       std::string safe_name = agg->safeName();
@@ -554,7 +554,7 @@ namespace gum {
       }
 
       for ( std::vector<ClassElement*>::iterator iter = inputs.begin(); iter != inputs.end(); ++iter ) {
-        c->insertArc(( *iter )->safeName(), safe_name );
+        c->insertArc( ( *iter )->safeName(), safe_name );
       }
     }
 
@@ -587,7 +587,7 @@ namespace gum {
     void
     PRMFactory::addArray( const std::string& type,
                           const std::string& name, Size size ) {
-      System* model = static_cast<System*>( __checkStack( 1, PRMObject::prm_system ) );
+      System* model = static_cast<System*>( __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
       Class* c = __retrieveClass( type );
       Instance* inst = 0;
 
@@ -611,7 +611,7 @@ namespace gum {
 
     void
     PRMFactory::incArray( const std::string& l_i, const std::string& r_i ) {
-      System* model = static_cast<System*>( __checkStack( 1, PRMObject::prm_system ) );
+      System* model = static_cast<System*>( __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
 
       if ( model->isArray( l_i ) ) {
         if ( model->isInstance( r_i ) ) {
@@ -630,7 +630,7 @@ namespace gum {
                                   const std::string& r_i ) {
       typedef Sequence<Instance*>::iterator Iter;
       typedef std::vector<Instance*>::iterator Jter;
-      System* model = static_cast<System*>( __checkStack( 1, PRMObject::prm_system ) );
+      System* model = static_cast<System*>( __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
       std::vector<Instance*> lefts;
       std::vector<Instance*> rights;
 
@@ -654,8 +654,8 @@ namespace gum {
 
       for ( Jter l = lefts.begin(); l != lefts.end(); ++l ) {
         for ( Jter r = rights.begin(); r != rights.end(); ++r ) {
-          if (( **l ).type().get( l_ref ).elt_type() == ClassElement::prm_refslot ) {
-            ( **l ).add(( **l ).type().get( l_ref ).id(), **r );
+          if ( ( **l ).type().get( l_ref ).elt_type() == ClassElement::prm_refslot ) {
+            ( **l ).add( ( **l ).type().get( l_ref ).id(), **r );
           } else {
             GUM_ERROR( NotFound, "unfound reference slot" );
           }
@@ -665,7 +665,7 @@ namespace gum {
 
     void
     PRMFactory::setParameter( const std::string& instance, const std::string& param, const std::string& value ) {
-      System* model = static_cast<System*>( __checkStack( 1, PRMObject::prm_system ) );
+      System* model = static_cast<System*>( __checkStack( 1, PRMObject::PRMType::SYSTEM ) );
       Instance* i = 0;
 
       try {
@@ -702,7 +702,7 @@ namespace gum {
       Potential<prm_float> pot;
 
       pot.add( a->type().variable() );
-      pot.fill(( prm_float ) 0 );
+      pot.fill( ( prm_float ) 0 );
       Instantiation inst( pot );
       inst.chgVal( a->type().variable(), label );
       pot.set( inst, ( prm_float ) 1 );
@@ -725,6 +725,7 @@ namespace gum {
               elts.insert( ref );
               current = &( /*const_cast<ClassElementContainer&>*/( ref->slotType() ) );
               break;
+
             case ClassElement::prm_aggregate:
             case ClassElement::prm_attribute:
 
@@ -743,10 +744,10 @@ namespace gum {
       }
 
       GUM_ASSERT( v.size() == elts.size() );
-      
-      GUM_TRACE("new outputnode for "<<current->name());
+
+      GUM_TRACE( "new outputnode for "<<current->name() );
       current->setOutputNode( *( elts.back() ), true );
-      
+
       return new SlotChain( name, elts );
     }
 
@@ -776,7 +777,7 @@ namespace gum {
       std::vector< std::pair<ClassElement*, ClassElement*> > toAdd;
 
       for ( std::vector<ClassElement*>::iterator elt = inputs.begin(); elt != inputs.end(); ++elt ) {
-        if (( **elt ).type() != ( *t ) ) {
+        if ( ( **elt ).type() != ( *t ) ) {
           if ( ClassElement::isSlotChain( **elt ) ) {
             SlotChain* sc = static_cast<SlotChain*>( *elt );
             std::stringstream name;
@@ -811,7 +812,7 @@ namespace gum {
 
       for ( std::vector<ClassElement*>::const_iterator iter = elts.begin(); iter != elts.end(); ++iter )  {
         try {
-          current = &(( **iter ).type() );
+          current = &( ( **iter ).type() );
 
           while ( current != 0 ) {
             // Filling counters
@@ -841,7 +842,7 @@ namespace gum {
       int current_depth = 0;
 
       for ( HashTable<std::string, Size>::iterator iter = counters.begin(); iter != counters.end(); ++iter ) {
-        if (( *iter ) == elts.size() ) {
+        if ( ( *iter ) == elts.size() ) {
           current_depth = __typeDepth( __retrieveType( iter.key() ) );
 
           if ( current_depth > max_depth ) {
@@ -863,7 +864,7 @@ namespace gum {
                                     const std::vector<std::string>& chains,
                                     const std::vector<float>& numbers, float leak,
                                     const std::vector<std::string>& labels ) {
-      if ( currentType() != PRMObject::prm_class ) {
+      if ( currentType() != PRMObject::PRMType::CLASS ) {
         GUM_ERROR( gum::FactoryInvalidState, "invalid state to add a noisy-or" );
       }
 
@@ -931,7 +932,7 @@ namespace gum {
           std::string dot = ".";
 
           for ( Set<std::string>::iterator iter = __namespaces.begin(); iter != __namespaces.end(); ++iter ) {
-            if ( __prm->__typeMap.exists(( *iter ) + dot + name ) ) {
+            if ( __prm->__typeMap.exists( ( *iter ) + dot + name ) ) {
               if ( prefix != "" ) {
                 GUM_ERROR( NotFound, "ambiguous type name, specify full name" );
               }
@@ -960,7 +961,7 @@ namespace gum {
           std::string dot = ".";
 
           for ( Set<std::string>::iterator iter = __namespaces.begin(); iter != __namespaces.end(); ++iter ) {
-            if ( __prm->__classMap.exists(( *iter ) + dot + name ) ) {
+            if ( __prm->__classMap.exists( ( *iter ) + dot + name ) ) {
               if ( prefix != "" ) {
                 GUM_ERROR( NotFound, "ambiguous class name, specify full name" );
               }
@@ -990,7 +991,7 @@ namespace gum {
           std::string dot = ".";
 
           for ( Set<std::string>::iterator iter = __namespaces.begin(); iter != __namespaces.end(); ++iter ) {
-            if ( __prm->__interfaceMap.exists(( *iter ) + dot + name ) ) {
+            if ( __prm->__interfaceMap.exists( ( *iter ) + dot + name ) ) {
               if ( prefix != "" ) {
                 GUM_ERROR( NotFound, "ambiguous class name, specify full name" );
               }
@@ -1008,7 +1009,7 @@ namespace gum {
     }
 
 
-// ============================================================================
+
   } /* namespace prm */
 } /* namespace gum */
 // = ==========================================================================

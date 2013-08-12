@@ -21,29 +21,29 @@
  * @file
  * @brief Headers of PRMFactory.
  *
- * @author Lionel TORTI & PH Wuillemin
+ * @author Lionel TORTI & PH WUILLEMIN
  */
-// ============================================================================
+
 #ifndef GUM_PRM_FACTORY_H
 #define GUM_PRM_FACTORY_H
-// ============================================================================
+
 #include <string>
 #include <sstream>
 #include <vector>
 #include <iostream>
 #include <limits>
-// ============================================================================
+
 #include <agrum/config.h>
-// ============================================================================
+
 #include <agrum/variables/discreteVariable.h>
 #include <agrum/multidim/multiDimSparse.h>
-// ============================================================================
+
 #include <agrum/prm/utils_prm.h>
 #include <agrum/prm/PRMObject.h>
 #include <agrum/prm/system.h>
 #include <agrum/prm/PRM.h>
 #include <agrum/prm/classElementContainer.h>
-// ============================================================================
+
 
 namespace gum {
 
@@ -102,7 +102,7 @@ namespace gum {
          * @return Returns the PRMObject type of the object begin built.
          * @throw NotFound if no type is being built.
          */
-        PRMObject::ObjectType currentType() const;
+        PRMObject::PRMType currentType() const;
 
         /**
          * @return the current PRMObject being built by this factory.
@@ -136,7 +136,7 @@ namespace gum {
          * @return the Class with the given name.
          * @throw NotFound if no Class matches the given name.
          */
-        Class& retrieveClass ( const std::string& name );
+        Class& retrieveClass( const std::string& name );
 
         /**
          * @brief Returns a reference over a Type given its name.
@@ -146,7 +146,7 @@ namespace gum {
          * @return the Type with the given name.
          * @throw NotFound if no Type matches the given name.
          */
-        Type& retrieveType ( const std::string& name );
+        Type& retrieveType( const std::string& name );
 
 
         /* @brief Retrieve the common Type of a vector of ClassElement.
@@ -166,7 +166,7 @@ namespace gum {
          * @throw NotFound Raised if there exists no common super type of all
          *                 ClassElement in elts.
          */
-        Type& retrieveCommonType ( const std::vector<ClassElement*>& elts );
+        Type& retrieveCommonType( const std::vector<ClassElement*>& elts );
 
         ///@}
         // ======================================================================
@@ -182,7 +182,7 @@ namespace gum {
          *
          * @param name The name of the package for all further objects.
          */
-        void pushPackage ( const std::string& name );
+        void pushPackage( const std::string& name );
 
         /**
          * @brief Pop the current package from the package stack.
@@ -206,7 +206,7 @@ namespace gum {
          * @throw DuplicateElement Raised if an object with the same name
          *                         already exists.
          */
-        void startDiscreteType ( const std::string& name, std::string super="" );
+        void startDiscreteType( const std::string& name, std::string super="" );
 
         /**
          * Add a label to the current discrete type.
@@ -221,7 +221,7 @@ namespace gum {
          * @throw NotFound Raised if extends does not match any label in the current
          *                 type's super type.
          */
-        void addLabel ( const std::string& l, std::string extends="" );
+        void addLabel( const std::string& l, std::string extends="" );
 
         /**
          * End the current discrete type declaration.
@@ -249,8 +249,8 @@ namespace gum {
          *
          * @throw OperationNotAllowed Raised if the given operation is illegal.
          */
-        void startClass ( const std::string& c, const std::string& extends="",
-                          const Set<std::string>* implements=0 );
+        void startClass( const std::string& c, const std::string& extends="",
+                         const Set<std::string>* implements=0 );
 
         /**
          * Tells the factory that we finished a class declaration.
@@ -278,13 +278,13 @@ namespace gum {
          * @throw NotFound Raised if extends does not match any declared
          *                 Interface.
          */
-        void startInterface ( const std::string& i, const std::string& extends="" );
+        void startInterface( const std::string& i, const std::string& extends="" );
 
         /**
          * @brief Add an attribute to an interface.
          *
          */
-        void addAttribute ( const std::string& type, const std::string& name );
+        void addAttribute( const std::string& type, const std::string& name );
 
         /**
          * Tells the factory that we finished an interface declaration.
@@ -316,13 +316,13 @@ namespace gum {
          * @throw NotFound Raised if one of the DiscreteVariable in attr CPT does
          *                 not match any ClassElement in this.
          */
-        void addAttribute ( Attribute* attr );
+        void addAttribute( Attribute* attr );
 
         /**
          * Tells the factory that we start an attribute declaration.
          * @throw FatalError Raised if the given operation is illegal.
          */
-        void startAttribute ( const std::string& type, const std::string& name );
+        void startAttribute( const std::string& type, const std::string& name );
 
         /**
          * Tells the factory that we add a parent to the current declared
@@ -332,7 +332,7 @@ namespace gum {
          * reference in it.
          * @throw OperationNotAllowed Raised if the given operation is illegal.
          */
-        void addParent ( const std::string& name );
+        void addParent( const std::string& name );
 
         /**
          * Gives the factory the CPF in its raw form.
@@ -353,7 +353,7 @@ namespace gum {
          *
          * @throw OperationNotAllowed Raised if the given operation is illegal.
          */
-        void setRawCPFByLines ( const std::vector<prm_float>& array );
+        void setRawCPFByLines( const std::vector<prm_float>& array );
 
         /**
          * @brief Not implemented!
@@ -377,7 +377,7 @@ namespace gum {
          *
          * @throw OperationNotAllowed Raised if the given operation is illegal.
          */
-        void setRawCPFByColumns ( const std::vector<prm_float>& array );
+        void setRawCPFByColumns( const std::vector<prm_float>& array );
 
         /**
          * Fills the CPF using a rule.
@@ -391,8 +391,8 @@ namespace gum {
          * @param values The probability values of the current attribute given
          *               the values in parenst.
          */
-        void setCPFByRule ( const std::vector<std::string>& labels,
-                            const std::vector<prm_float>& values );
+        void setCPFByRule( const std::vector<std::string>& labels,
+                           const std::vector<prm_float>& values );
 
         /**
          * Tells the factory that we finished declaring an attribute.
@@ -416,9 +416,9 @@ namespace gum {
          * @param name The name of this parameter.
          * @param value The label used as default value for this parameter.
          */
-        void addParameter ( const std::string& type,
-                            const std::string& name,
-                            std::string value="" );
+        void addParameter( const std::string& type,
+                           const std::string& name,
+                           std::string value="" );
 
         /// @}
         // ======================================================================
@@ -444,10 +444,10 @@ namespace gum {
          * @throw WrongType Raised if the aggregator's type or one or more of the chains
          *                  are not of the good type.
          */
-        void addAggregator ( const std::string& name,
-                             const std::string& agg_type,
-                             const std::vector<std::string>& chains,
-                             const std::vector<std::string>& params );
+        void addAggregator( const std::string& name,
+                            const std::string& agg_type,
+                            const std::vector<std::string>& chains,
+                            const std::vector<std::string>& params );
 
         /**
          * @brief Add a compound noisy-or as an Attribute to the current Class.
@@ -468,11 +468,11 @@ namespace gum {
          * @throw OperationNotAllowed Raised if for some reasons the parameters are
          *                            invalid.
          */
-        void addNoisyOrCompound ( const std::string& name,
-                                  const std::vector<std::string>& chains,
-                                  const std::vector<float>& numbers,
-                                  float leak,
-                                  const std::vector<std::string>& label );
+        void addNoisyOrCompound( const std::string& name,
+                                 const std::vector<std::string>& chains,
+                                 const std::vector<float>& numbers,
+                                 float leak,
+                                 const std::vector<std::string>& label );
         /// @}
         // ======================================================================
         /// @name ReferenceSlot construction methods.
@@ -483,9 +483,9 @@ namespace gum {
          * Tells the factory that we started declaring a slot.
          * @throw OperationNotAllowed Raised if the given operation is illegal.
          */
-        void addReferenceSlot ( const std::string& type,
-                                const std::string& name,
-                                bool isArray );
+        void addReferenceSlot( const std::string& type,
+                               const std::string& name,
+                               bool isArray );
 
         /// @}
         // ======================================================================
@@ -497,7 +497,7 @@ namespace gum {
          * Tells the factory that we started declaring a model.
          * @throw OperationNotAllowed Raised if the given operation is illegal.
          */
-        void startSystem ( const std::string& name );
+        void startSystem( const std::string& name );
 
         /**
          * Tells the factory that we finished declaring a model.
@@ -508,19 +508,19 @@ namespace gum {
         /**
          * Add an instance to the model.
          */
-        void addInstance ( const std::string& type, const std::string& name );
+        void addInstance( const std::string& type, const std::string& name );
 
         /**
          * Creates an array with the given number of instances of the given type.
          * Instance are name using "name" as prefix and adding the suffix "[i]",
          * with "i" being the position of the instance in the array.
          */
-        void addArray ( const std::string& type, const std::string& name, Size size );
+        void addArray( const std::string& type, const std::string& name, Size size );
 
         /**
          * Add an instance to an array.
          */
-        void incArray ( const std::string& l_i, const std::string& r_i );
+        void incArray( const std::string& l_i, const std::string& r_i );
 
         /**
          * @brief Instantiate a reference in the current model.
@@ -536,9 +536,9 @@ namespace gum {
          * @param right_instance The name of an instance or an array of instances
          *                       in the model.
          */
-        void setReferenceSlot ( const std::string& left_instance,
-                                const std::string& left_reference,
-                                const std::string& right_instance );
+        void setReferenceSlot( const std::string& left_instance,
+                               const std::string& left_reference,
+                               const std::string& right_instance );
 
         /**
          * @brief Instantiate a reference in the current model.
@@ -553,7 +553,7 @@ namespace gum {
          *            reference slot.
          * @param r_i The name of an instance or an array of instances in the model.
          */
-        void setReferenceSlot ( const std::string& l_i, const std::string& r_i );
+        void setReferenceSlot( const std::string& l_i, const std::string& r_i );
 
         /**
          * @brief define the value of a parameter.
@@ -564,18 +564,18 @@ namespace gum {
          *
          * @throw NotFound Raised if i, p or v is not found.
          */
-        void setParameter ( const std::string& i, const std::string& p, const std::string& v );
+        void setParameter( const std::string& i, const std::string& p, const std::string& v );
 
         /// @}
       private:
         /// Copy constructor. Don't use it.
-        PRMFactory ( const PRMFactory& from );
+        PRMFactory( const PRMFactory& from );
 
         /// Copy operator. Don't use it.
         PRMFactory& operator= ( const PRMFactory& from );
 
         /// Decompose a string in v using dots ('.') as delimiters.
-        void __fill_sc_in_vector ( std::vector<std::string>& v, const std::string& str );
+        void __fill_sc_in_vector( std::vector<std::string>& v, const std::string& str );
 
         // ======================================================================
         ///  @name Private methods for type checking and exception handling.
@@ -583,20 +583,20 @@ namespace gum {
         /// @{
 
         /// Adds __prefix to str iff __prefix != ""
-        std::string __addPrefix ( const std::string& str ) const;
+        std::string __addPrefix( const std::string& str ) const;
 
         /// Raise a DuplicateElement if the name already exists.
-        void __checkDuplicateName ( const std::string& name );
+        void __checkDuplicateName( const std::string& name );
 
         /// Return a pointer on a PRMObject at __stack.size() - i position after
         /// checking the type of the object given obj_type.
         /// @throw FactoryInvalidState Raised if the stack isn't consistent with the
         //                             current declaration.
-        PRMObject* __checkStack ( Idx i, PRMObject::ObjectType obj_type );
+        PRMObject* __checkStack( Idx i, PRMObject::PRMType obj_type );
 
-        ClassElement* __checkStack ( Idx i, ClassElement::ClassElementType obj_type );
+        ClassElement* __checkStack( Idx i, ClassElement::ClassElementType obj_type );
 
-        ClassElementContainer* __checkStackContainter ( Idx i );
+        ClassElementContainer* __checkStackContainter( Idx i );
 
         /// @}
         // ======================================================================
@@ -619,21 +619,21 @@ namespace gum {
         /// In the case a local name is used multiple time, it's preferable to
         /// use it's full name.
         /// @throw OperationNotAllowed If the type is undeclared.
-        Type* __retrieveType ( const std::string& name ) const;
+        Type* __retrieveType( const std::string& name ) const;
 
         /// Returns a pointer on a class given it's name. Used when building
         /// models, meaning that the class name can either be local (need to
         /// add the current prefix) or global (no prefix needed).
         /// @throw NotFound If no class matching the name is found.
         /// @see PRMFactory::__retrieveType
-        Class* __retrieveClass ( const std::string& name ) const;
+        Class* __retrieveClass( const std::string& name ) const;
 
         /// Returns a pointer on an interface given it's name. Used when building
         /// models, meaning that the interface name can either be local (need to
         /// add the current prefix) or global (no prefix needed).
         /// @throw NotFound If no class matching the name is found.
         /// @see PRMFactory::__retrieveType
-        Interface* __retrieveInterface ( const std::string& name ) const;
+        Interface* __retrieveInterface( const std::string& name ) const;
 
         /// @}
         // ======================================================================
@@ -646,7 +646,7 @@ namespace gum {
         /// @return Return a pointer over a SlotChain or 0 if no SlotChain could
         ///         be built.
         ///
-        SlotChain* __buildSlotChain ( ClassElementContainer* start, const std::string& name );
+        SlotChain* __buildSlotChain( ClassElementContainer* start, const std::string& name );
 
         /// @brief Retrieve inputs for an Aggregate.
         ///
@@ -663,8 +663,8 @@ namespace gum {
         ///
         /// @throw NotFound Raised if a name in chains does not match a legal
         ///                 SlotChain or an existing ClassElement in c.
-        bool __retrieveInputs ( Class* c, const std::vector<std::string>& chains,
-                                std::vector<ClassElement*>& inputs );
+        bool __retrieveInputs( Class* c, const std::vector<std::string>& chains,
+                               std::vector<ClassElement*>& inputs );
 
         /// @brief Retrieve the common Type of a vector of ClassElement.
         ///
@@ -682,7 +682,7 @@ namespace gum {
         ///                          without a Type.
         /// @throw NotFound Raised if there exists no common super type of all
         ///                 ClassElement in elts.
-        Type* __retrieveCommonType ( const std::vector<ClassElement*>& elts );
+        Type* __retrieveCommonType( const std::vector<ClassElement*>& elts );
 
         /// @brief Returns the inheritance depth of a Type.
         ///
@@ -691,7 +691,7 @@ namespace gum {
         ///
         /// @param t The Type for which we compute its depth.
         /// @return Returns the depth of t.
-        int __typeDepth ( const Type* t );
+        int __typeDepth( const Type* t );
 
         /// @}
         // ======================================================================
@@ -701,25 +701,25 @@ namespace gum {
 
         /// Builds all SlotChain<Instance> in the given model.
         /// @throw OperationNotAllowed If reference slots are left un affected
-        void __buildSlotChains ( System* model );
+        void __buildSlotChains( System* model );
 
         /// Builds all Aggregates CPF in the given model.
         /// This must be called after all the slot chains have been generated.
-        void __buildAggregateCPF ( System* model );
+        void __buildAggregateCPF( System* model );
 
         /// Instantiate a slot chain in the given instance
-        void __instantiateSlotChain ( System* model,
-                                      Instance* inst,
-                                      ReferenceSlot* ref,
-                                      SlotChain* sc );
+        void __instantiateSlotChain( System* model,
+                                     Instance* inst,
+                                     ReferenceSlot* ref,
+                                     SlotChain* sc );
 
         /// Fill seq with the sequence of instance build using inst as the
         /// instantiation of sc->__class and seeking each instantiation of
         /// reference in sc.
         /// @¶eturn Returns the name of the corresponding SlotChain.
-        std::string __retrieveInstanceSequence ( Instance* inst,
-            Sequence<Instance*>& seq,
-            SlotChain* sc );
+        std::string __retrieveInstanceSequence( Instance* inst,
+                                                Sequence<Instance*>& seq,
+                                                SlotChain* sc );
 
         /// @}
         // ======================================================================
@@ -745,10 +745,10 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-// ============================================================================
+
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/PRMFactory.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 #endif /* GUM_PRM_FACTORY_H */
-// ============================================================================
+

@@ -50,20 +50,20 @@ namespace gum {
         Min( const Min<GUM_SCALAR>& from );
         virtual ~Min();
 
-      /**
-       * This method creates a clone of this object, withouth its content
-       * (including variable), you must use this method if you want to ensure
-       * that the generated object has the same type than the object containing
-       * the called newFactory()
-       * For example :
-       *   MultiDimArray<double> y;
-       *   MultiDimContainer<double>* x = y.newFactory();
-       * Then x is a MultiDimArray<double>*
-       *
-       * @warning you must desallocate by yourself the memory
-       * @return an empty clone of this object with the same type
-       */
-      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
+        /**
+         * This method creates a clone of this object, withouth its content
+         * (including variable), you must use this method if you want to ensure
+         * that the generated object has the same type than the object containing
+         * the called newFactory()
+         * For example :
+         *   MultiDimArray<double> y;
+         *   MultiDimContainer<double>* x = y.newFactory();
+         * Then x is a MultiDimArray<double>*
+         *
+         * @warning you must desallocate by yourself the memory
+         * @return an empty clone of this object with the same type
+         */
+        virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
 
         virtual std::string aggregatorName( void ) const;

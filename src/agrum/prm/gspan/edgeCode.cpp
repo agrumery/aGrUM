@@ -23,24 +23,24 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #include <agrum/prm/gspan/edgeCode.h>
-// ============================================================================
+
 #ifdef GUM_NO_INLINE
 #include <agrum/prm/gspan/edgeCode.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 namespace gum {
-namespace prm {
-namespace gspan {
+  namespace prm {
+    namespace gspan {
 
-std::ostream& operator<<(std::ostream& out, const EdgeCode& code) {
-  out << "(" << code.i << ", " << code.j << ", " << code.l_i << ", ";
-  out << code.l_ij << ", " << code.l_j << ")";
-  return out;
-}
+      std::ostream& operator<<( std::ostream& out, const EdgeCode& code ) {
+        out << "(" << code.i << ", " << code.j << ", " << code.l_i << ", ";
+        out << code.l_ij << ", " << code.l_j << ")";
+        return out;
+      }
 
-} /* namespace gspan */
-} /* namespace prm */
+    } /* namespace gspan */
+  } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

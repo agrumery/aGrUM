@@ -51,21 +51,25 @@ namespace gum {
 
   class DiscreteVariable : public Variable {
     public:
-      enum Type {Discretized,Labelized,Range};
+      enum class Type : char {
+        Discretized,
+        Labelized,
+        Range
+      };
 
       // ############################################################################
       /// @name Constructors / Destructors
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// Default constructor
-      // ============================================================================
+
       DiscreteVariable( const std::string& aName, const std::string& aDesc );
 
-      // ============================================================================
+
       /// Copy constructor
-      // ============================================================================
+
       /** Copy Constructor.
        *
        * If aDRV haves any listener, it will not be copied.
@@ -74,16 +78,16 @@ namespace gum {
        */
       DiscreteVariable( const DiscreteVariable& aDRV );
 
-      // ============================================================================
+
       /// destructor
-      // ============================================================================
+
       virtual ~DiscreteVariable();
 
-      // ============================================================================
+
       /// Copy Factory.
       /// @return Returns a pointer on a new copy of this.
-      // ============================================================================
-      virtual DiscreteVariable* copyFactory() const = 0;
+
+      virtual DiscreteVariable* clone() const = 0;
 
       /// @}
 
@@ -93,27 +97,27 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// @return true if the domainSize() < 2;
-      // ============================================================================
+
       bool empty() const;
 
-      // ============================================================================
+
       /// @return the number of modalities of the random discrete
-      // ============================================================================
+
       virtual Size domainSize() const = 0;
 
-      // ============================================================================
+
       /// get the indice-th label. This method is pure virtual.
       /** @param indice the index of the label we wish to return
        * @throw OutOfBound
        */
-      // ============================================================================
+
       virtual const std::string label( Idx indice ) const = 0;
 
-      // ============================================================================
+
       /// returns the type of variable
-      // ============================================================================
+
       virtual Type type( void ) const =0;
       /// @}
 
@@ -123,21 +127,21 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// Copy operator
       /** @param aRV to be copied
        * @return a ref to *this */
-      // ============================================================================
+
       DiscreteVariable& operator= ( const DiscreteVariable& aRV );
 
-      // ============================================================================
+
       /// equality operator
-      // ============================================================================
+
       virtual bool operator== ( const DiscreteVariable& aRV ) const ;
 
-      // ============================================================================
+
       /// inequality operator
-      // ============================================================================
+
       virtual bool operator!= ( const DiscreteVariable& aRV ) const ;
 
       /// @}
@@ -157,9 +161,9 @@ namespace gum {
       DiscreteVariable( ) {GUM_CONSTRUCTOR( DiscreteVariable );};
   };
 
-  // ===============================================================================
+
   /// for friendly displaying the content of the variable
-  // ===============================================================================
+
   std::ostream& operator<< ( std::ostream&, const DiscreteVariable& );
 
 } /* namespace gum */
@@ -170,4 +174,4 @@ namespace gum {
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_DISCRETE_VARIABLE_H */
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

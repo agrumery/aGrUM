@@ -23,20 +23,20 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #ifndef GUM_ATTRIBUTE_H
 #define GUM_ATTRIBUTE_H
-// ============================================================================
+
 #include <agrum/multidim/multiDimImplementation.h>
-// ============================================================================
+
 #include <agrum/prm/classElement.h>
-// ============================================================================
+
 namespace gum {
   namespace prm {
-// ============================================================================
+
     class Class;
     class Instance;
-// ============================================================================
+
     /**
      * @class Attribute attribute.h <agrum/prm/attribute.h>
      * @brief Attribute is a member of a Class in a PRM.
@@ -77,8 +77,8 @@ namespace gum {
          * @param impl The MultiDimImplementation used by the internal Potential of this Attribute.
          *             it will be deleted after the call of ~Attribute.
          */
-        Attribute ( const std::string& name, const Type& type,
-                    MultiDimImplementation<prm_float>* impl = new MultiDimArray<prm_float>() );
+        Attribute( const std::string& name, const Type& type,
+                   MultiDimImplementation<prm_float>* impl = new MultiDimArray<prm_float>() );
 
         /**
          * @brief Constructor used by gum::Instance.
@@ -90,7 +90,7 @@ namespace gum {
          *            ~Attribute.
          * @param delete_type If true, the type is deleted with this instance.
          */
-        Attribute ( const std::string& name, Type* type, Potential<prm_float>* cpf, bool delete_type );
+        Attribute( const std::string& name, Type* type, Potential<prm_float>* cpf, bool delete_type );
 
 
         /// Destructor.
@@ -118,10 +118,10 @@ namespace gum {
         virtual const Potential<prm_float>& cpf() const;
 
         /// See gum::ClassElement::_addParent().
-        virtual void addParent ( const ClassElement& elt );
+        virtual void addParent( const ClassElement& elt );
 
         /// See gum::ClassElement::_addChild().
-        virtual void addChild ( const ClassElement& elt );
+        virtual void addChild( const ClassElement& elt );
 
         /**
          * @brief Returns a proper cast descendant of this Attribute.
@@ -164,13 +164,13 @@ namespace gum {
          * @throw TypeError Raised if attr's Type is not a direct descendant of
          *                  this Attribute's Type.
          */
-        void setAsCastDescendant ( Attribute* attr );
+        void setAsCastDescendant( Attribute* attr );
 
         /// @}
       protected:
 
         /// Copy constructor. Don't use it.
-        Attribute ( const Attribute &source );
+        Attribute( const Attribute& source );
 
         /// Copy operator. Don't use it.
         Attribute& operator= ( const Attribute& from );
@@ -192,7 +192,7 @@ namespace gum {
 
         /// @}
     };
-// ============================================================================
+
     /**
      * @class FuncAttribute attribute.h <agrum/prm/attribute.h>
      * @brief This class overload gum::prm::ClassElement::_addParent() and
@@ -214,8 +214,8 @@ namespace gum {
          * @param impl The MultiDimImplementation used by the internal Potential of this FuncAttribute.
          *             it will be deleted after the call of ~FuncAttribute.
          */
-        FuncAttribute ( const std::string& name, const Type& type,
-                        MultiDimImplementation<prm_float>* impl = new MultiDimArray<prm_float>() );
+        FuncAttribute( const std::string& name, const Type& type,
+                       MultiDimImplementation<prm_float>* impl = new MultiDimArray<prm_float>() );
 
         /**
          * @brief Constructor used by gum::Instance.
@@ -228,34 +228,34 @@ namespace gum {
          *            ~FuncAttribute.
          * @param delete_type If true, the type is deleted with this instance.
          */
-        FuncAttribute ( const std::string& name, Type* type, Potential<prm_float>* cpf, bool delete_type );
+        FuncAttribute( const std::string& name, Type* type, Potential<prm_float>* cpf, bool delete_type );
 
         /// Destructor.
         virtual ~FuncAttribute();
 
         /// See gum::ClassElement::_addParent().
-        virtual void addParent ( const ClassElement& elt );
+        virtual void addParent( const ClassElement& elt );
 
         /// See gum::ClassElement::_addChild().
-        virtual void addChild ( const ClassElement& elt );
+        virtual void addChild( const ClassElement& elt );
 
       private:
 
         /// Copy constructor. Don't use it.
-        FuncAttribute ( const FuncAttribute &source );
+        FuncAttribute( const FuncAttribute& source );
 
         /// Copy operator. Don't use it.
         FuncAttribute& operator= ( const FuncAttribute& from );
 
 
     };
-// ============================================================================
+
   } /* namespace prm */
 } // namespace gum
-// ============================================================================
+
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/attribute.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 #endif /* GUM_ATTRIBUTE_H */
-// ============================================================================
+

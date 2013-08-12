@@ -22,21 +22,19 @@
  * @brief This file contains abstract class definitions influence diagrams
  *        inference classes.
  *
- * @author Jean-Christophe Magnan.
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
-// ============================================================================
+
 #ifndef GUM_INFLUENCE_DIAGRAM_INFERENCE_H
 #define GUM_INFLUENCE_DIAGRAM_INFERENCE_H
-// ============================================================================
+
 #include <agrum/config.h>
-// ============================================================================
 #include <agrum/influenceDiagram/influenceDiagram.h>
-// ============================================================================
 
 namespace gum {
   /**
    * @class InfluenceDiagramInference influenceDiagramInference.h <agrum/influenceDiagram/inference/influenceDiagramInference.h>
-   * @brief Abstract class for making inference in influence diagrams.
+   * @brief Abstract base class for inference engines in influence diagrams.
    * @ingroup id_group
    *
    */
@@ -80,7 +78,7 @@ namespace gum {
       /**
        * Returns a constant reference over the InfluenceDiagram on which this class work.
        */
-      const InfluenceDiagram<GUM_SCALAR>& getInfluenceDiagram() const;
+      const InfluenceDiagram<GUM_SCALAR>& influenceDiagram() const;
 
       /**
        * Returns maximum expected utility obtained from inference
@@ -104,12 +102,12 @@ namespace gum {
       const InfluenceDiagram<GUM_SCALAR>& __infDiag;
   };
 
-// ============================================================================
+
 } /* namespace gum */
 
-// ============================================================================
+
 #include <agrum/influenceDiagram/inference/influenceDiagramInference.tcc>
-// ============================================================================
+
 #endif /* GUM_INFUENCE_DIAGRAM_INFERENCE_H */
-// ============================================================================
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

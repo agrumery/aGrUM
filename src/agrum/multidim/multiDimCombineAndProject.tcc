@@ -34,28 +34,28 @@ namespace gum {
 
   /// default constructor
   template< typename GUM_SCALAR, template<typename> class TABLE >
-  MultiDimCombineAndProject<GUM_SCALAR,TABLE>::MultiDimCombineAndProject () {
+  MultiDimCombineAndProject<GUM_SCALAR,TABLE>::MultiDimCombineAndProject() {
     // for debugging purposes
-    GUM_CONSTRUCTOR ( MultiDimCombineAndProject );
+    GUM_CONSTRUCTOR( MultiDimCombineAndProject );
   }
-    
+
 
   /// copy constructor
   template< typename GUM_SCALAR, template<typename> class TABLE >
   MultiDimCombineAndProject<GUM_SCALAR,TABLE>::MultiDimCombineAndProject
   ( const MultiDimCombineAndProject<GUM_SCALAR,TABLE>& ) {
     // for debugging purposes
-    GUM_CONS_CPY ( MultiDimCombineAndProject );
+    GUM_CONS_CPY( MultiDimCombineAndProject );
   }
 
 
   /// destructor
   template< typename GUM_SCALAR, template<typename> class TABLE >
-  MultiDimCombineAndProject<GUM_SCALAR,TABLE>::~MultiDimCombineAndProject () {
+  MultiDimCombineAndProject<GUM_SCALAR,TABLE>::~MultiDimCombineAndProject() {
     // for debugging purposes
-    GUM_DESTRUCTOR ( MultiDimCombineAndProject );
+    GUM_DESTRUCTOR( MultiDimCombineAndProject );
   }
-  
+
 
 } /* namespace gum */
 

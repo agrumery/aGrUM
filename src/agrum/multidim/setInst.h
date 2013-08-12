@@ -46,7 +46,7 @@ namespace gum {
    * @brief Class for assigning/browsing values to tuples of discrete variables.
    * @ingroup multidim_group
    *
-   * SetInst is designed to assign a set of deterministic values to tuples of variables  for contextual pependencies detection
+   * SetInst is designed to assign a set of deterministic values to tuples of variables  for contextual dependencies detection
    *
    * for variable I of possible determinstic instances i1 i2 i3 ... in
    * the expresion of a SET of instantiations is express by the boolean state of each instance transform in an integer
@@ -77,73 +77,73 @@ namespace gum {
       /// @name Constructors / Destructors
       // ############################################################################
       /// @{
-      // ============================================================================
+
       /// Default constructor: creates an empty tuple.
-      // ============================================================================
+
       SetInst();
 
-      // ============================================================================
+
       /**
        * @brief Copy constructor.
        *
        * @param aI the SetInst we copy
        */
       ///@{
-      // ============================================================================
-      SetInst ( const SetInst& aI );
-      SetInst ( const Instantiation& aI );
+
+      SetInst( const SetInst& aI );
+      SetInst( const Instantiation& aI );
 ///@}
-      // ============================================================================
+
       /**
        * @brief Copy operator.
        * @throw OperationNotAllowed
        */
-      // ============================================================================
+
       SetInst& operator= ( const SetInst& aI );
 
-      // ============================================================================
+
       /**
        * @brief Constructor for a SetInst of all the variables of a
        *        MultiDimAdressable.
        *
        * @param aMD the array the variables of which are those of the SetInst
        */
-      // ============================================================================
-      SetInst ( MultiDimAdressable& aMD );
 
-      // ============================================================================
+      SetInst( MultiDimAdressable& aMD );
+
+
       /**
        * @brief Constructor for a SetInst of all the variables of a
        *        MultiDimAdressable.
        *
        * @param aMD the array the variables of which are those of the SetInst
        */
-      // ============================================================================
-      SetInst ( const MultiDimAdressable& aMD );
 
-      // ============================================================================
+      SetInst( const MultiDimAdressable& aMD );
+
+
       /**
        * @brief Constructor for a SetInst of all the variables of a
        *        MultiDimAdressable.
        *
        * @param aMD the array the variables of which are those of the SetInst
        */
-      // ============================================================================
-      SetInst ( MultiDimAdressable* aMD );
 
-      // ============================================================================
+      SetInst( MultiDimAdressable* aMD );
+
+
       /**
        * @brief Constructor for a SetInst of all the variables of a
        *        MultiDimAdressable.
        *
        * @param aMD the array the variables of which are those of the SetInst
        */
-      // ============================================================================
-      SetInst ( const MultiDimAdressable* aMD );
 
-      // ============================================================================
+      SetInst( const MultiDimAdressable* aMD );
+
+
       /// Destructor.
-      // ============================================================================
+
       ~SetInst();
 
       /// @}
@@ -153,12 +153,12 @@ namespace gum {
       // ##############################################################################
       /// @{
 
-      // ============================================================================
+
       /// Returns the number of variables in the SetInst.
-      // ============================================================================
+
       Idx nbrDim() const ;
 
-      // ============================================================================
+
       /**
        * @brief Adds a new variable in the SetInst.
        *
@@ -170,10 +170,10 @@ namespace gum {
        * @throw DuplicateElement
        * @throw OperationNotAllowed
        */
-      // ============================================================================
-      void add ( const DiscreteVariable& v );
 
-      // ============================================================================
+      void add( const DiscreteVariable& v );
+
+
       /**
        * @brief Removes a variable from the SetInst.
        *
@@ -181,8 +181,8 @@ namespace gum {
        * @throw NotFound
        * @throw OperationNotAllowed raised if the SetInst is a slave.
        */
-      // ============================================================================
-      void erase ( const DiscreteVariable& v );
+
+      void erase( const DiscreteVariable& v );
 
       /**
        * @brief Erase all variables from an SetInst
@@ -190,92 +190,92 @@ namespace gum {
        */
       void clear();
 
-      // ============================================================================
+
       /// Returns the product of the variable's domain size in the SetInst.
-      // ============================================================================
+
       Size domainSize() const ;
 
-      // ============================================================================
+
       /**
        * Returns the position of the variable v.
        * @throw NotFound raised if v does not belong to the SetInst.
        */
-      // ============================================================================
-      Idx pos ( const DiscreteVariable& v ) const;
-      // ============================================================================
+
+      Idx pos( const DiscreteVariable& v ) const;
+
       /**
        * Returns the current value of the variable at position i.
        *
        * @param i The index of the variable.
        * @throw NotFound raised if the element cannot be found.
        */
-      // ============================================================================
-      Size vals ( Idx i ) const;
 
-      // ============================================================================
+      Size vals( Idx i ) const;
+
+
       /**
        * Returns the current value of a given variable.
        *
        *  @param var the variable the value of which we wish to know.
        * @throw NotFound raised it var does not belong to the SetInst.
        */
-      // ============================================================================
-      Size vals ( const DiscreteVariable& var ) const;
 
-      // ============================================================================
+      Size vals( const DiscreteVariable& var ) const;
+
+
       /**
        * Returns the current value of a given variable.
        *
        * @param var the variable the value of which we wish to know
        * @throw NotFound raised if var does not belong to the SetInst.
        */
-      // ============================================================================
-      Size vals ( const DiscreteVariable* var ) const;
 
-      // ============================================================================
+      Size vals( const DiscreteVariable* var ) const;
+
+
       /**
        * Returns the current value of the variable at position i.
        *
        * @param var the variable.
        * @throw NotFound raised if the element cannot be found.
        */
-      // ============================================================================
 
-      Idx nbrOccurences ( const DiscreteVariable& var ) const;
 
-      Idx val ( Idx i ) const;
+      Idx nbrOccurences( const DiscreteVariable& var ) const;
 
-      // ============================================================================
+      Idx val( Idx i ) const;
+
+
       /**
        * Returns the current value of a given variable.
        *
        * @param var the variable the value of which we wish to know.
        * @throw NotFound raised it var does not belong to the SetInst.
        */
-      // ============================================================================
-      Idx val ( const DiscreteVariable& var ) const;
 
-      // ============================================================================
+      Idx val( const DiscreteVariable& var ) const;
+
+
       /**
        * Returns the current value of a given variable.
        *
        * @param var the variable the value of which we wish to know
        * @throw NotFound raised if var does not belong to the SetInst.
        */
-      // ============================================================================
-      Idx val ( const DiscreteVariable* var ) const;
 
-      // ============================================================================
+      Idx val( const DiscreteVariable* var ) const;
+
+
       /**
        * Returns the variable at position i in the tuple.
        *
        * @param i the index of the variable
        * @throw NotFound raised if the element cannot be found.
        */
-      // ============================================================================
-      const DiscreteVariable& variable ( Idx i ) const;
 
-      // ============================================================================
+      const DiscreteVariable& variable( Idx i ) const;
+
+
       /**
        * @brief Assign newval to variable v in the SetInst.
        *
@@ -288,10 +288,10 @@ namespace gum {
        * @throw NotFound raised if variable v does not belong to the SetInst.
        * @throw OutOfBound raised if newval is not a possible value for v.
        */
-      // ============================================================================
-      SetInst& chgVal ( const DiscreteVariable& v, Idx newval );
 
-      // ============================================================================
+      SetInst& chgVal( const DiscreteVariable& v, Idx newval );
+
+
       /**
        * @brief Assign newval to variable v in the SetInst.
        *
@@ -304,10 +304,10 @@ namespace gum {
        * @throw NotFound raised if variable v does not belong to the SetInst.
        * @throw OutOfBound raised if newval is not a possible value for v.
        */
-      // ============================================================================
-      SetInst& chgVal ( const DiscreteVariable* v, Idx newval );
 
-      // ============================================================================
+      SetInst& chgVal( const DiscreteVariable* v, Idx newval );
+
+
       /**
        * @brief Assign newval to variable at position varPos in the SetInst.
        *
@@ -323,10 +323,10 @@ namespace gum {
        * @throw OutOfBound raised if newval is not a possible value for
        *        the variable
        */
-      // ============================================================================
-      SetInst& chgVal ( Idx varPos, Idx newval );
 
-      // ============================================================================
+      SetInst& chgVal( Idx varPos, Idx newval );
+
+
       /**
        * @brief Assign newval to variable v in the SetInst.
        *
@@ -339,16 +339,16 @@ namespace gum {
        * @throw NotFound raised if variable v does not belong to the SetInst.
        * @throw OutOfBound raised if newval is not a possible value for v.
        */
-      // ============================================================================
-      SetInst& chgVals ( const DiscreteVariable& v, const Size newval );
-      SetInst& addVal ( const DiscreteVariable& v, Idx newVal );
-      SetInst& addVals ( const DiscreteVariable& v, const Size newVal );
-      SetInst& remVal ( const DiscreteVariable& v, Idx newVal );
-      SetInst& remVals ( const DiscreteVariable& v, const Size newVal );
-      SetInst& interVals ( const DiscreteVariable& v, const Size newVal );
-      SetInst& interVal ( const DiscreteVariable& v, Idx newVal );
 
-      // ============================================================================
+      SetInst& chgVals( const DiscreteVariable& v, const Size newval );
+      SetInst& addVal( const DiscreteVariable& v, Idx newVal );
+      SetInst& addVals( const DiscreteVariable& v, const Size newVal );
+      SetInst& remVal( const DiscreteVariable& v, Idx newVal );
+      SetInst& remVals( const DiscreteVariable& v, const Size newVal );
+      SetInst& interVals( const DiscreteVariable& v, const Size newVal );
+      SetInst& interVal( const DiscreteVariable& v, Idx newVal );
+
+
       /**
        * @brief Assign newval to variable v in the SetInst.
        *
@@ -361,16 +361,16 @@ namespace gum {
        * @throw NotFound raised if variable v does not belong to the SetInst.
        * @throw OutOfBound raised if newval is not a possible value for v.
        */
-      // ============================================================================
-      SetInst& chgVals ( const DiscreteVariable* v, const Size newval );
-      SetInst& addVal ( const DiscreteVariable* v, Idx newVal );
-      SetInst& addVals ( const DiscreteVariable* v, const Size newVal );
-      SetInst& remVal ( const DiscreteVariable* v, Idx newVal );
-      SetInst& remVals ( const DiscreteVariable* v, const Size newVal );
-      SetInst& interVals ( const DiscreteVariable* v, const Size newVal );
-      SetInst& interVal ( const DiscreteVariable* v, Idx newVal );
 
-      // ============================================================================
+      SetInst& chgVals( const DiscreteVariable* v, const Size newval );
+      SetInst& addVal( const DiscreteVariable* v, Idx newVal );
+      SetInst& addVals( const DiscreteVariable* v, const Size newVal );
+      SetInst& remVal( const DiscreteVariable* v, Idx newVal );
+      SetInst& remVals( const DiscreteVariable* v, const Size newVal );
+      SetInst& interVals( const DiscreteVariable* v, const Size newVal );
+      SetInst& interVal( const DiscreteVariable* v, Idx newVal );
+
+
       /**
        * @brief Assign newval to variable at position varPos in the SetInst.
        *
@@ -386,51 +386,51 @@ namespace gum {
        * @throw OutOfBound raised if newval is not a possible value for
        *        the variable
        */
-      // ============================================================================
-      SetInst& chgVals ( Idx varPos, const Size newval );
 
-      SetInst& addVal ( Idx varPos, Idx newVal );
-      SetInst& addVals ( Idx varPos, const Size newVal );
-      SetInst& remVal ( Idx varPos, Idx newVal );
-      SetInst& remVals ( Idx varPos, const Size newVal );
-      SetInst& chgDifVal ( Idx varPos, const Size newVal );
-      SetInst& interVals ( Idx varPos, const Size newVal );
-      SetInst& interVal ( Idx varPos, Idx newVal );
+      SetInst& chgVals( Idx varPos, const Size newval );
 
-      // ============================================================================
+      SetInst& addVal( Idx varPos, Idx newVal );
+      SetInst& addVals( Idx varPos, const Size newVal );
+      SetInst& remVal( Idx varPos, Idx newVal );
+      SetInst& remVals( Idx varPos, const Size newVal );
+      SetInst& chgDifVal( Idx varPos, const Size newVal );
+      SetInst& interVals( Idx varPos, const Size newVal );
+      SetInst& interVal( Idx varPos, Idx newVal );
 
-      // ============================================================================
-      SetInst& chgValIn ( const SetInst& i );
 
-      // ============================================================================
+
+
+      SetInst& chgValIn( const SetInst& i );
+
+
       /**
        * Indicates whether a given variable belongs to the SetInst.
        *
        * @param v The variable for which the test is made.
        * @return Returns true if v is in the SetInst.
        */
-      // ============================================================================
-      bool contains ( const DiscreteVariable& v ) const ;
 
-      // ============================================================================
+      bool contains( const DiscreteVariable& v ) const ;
+
+
       /**
        * Indicates whether a given variable belongs to the SetInst.
        *
        * @param v A pointer on the variable for which the test is made.
        * @return Returns true if *v is in the SetInst.
        */
-      // ============================================================================
-      bool contains ( const DiscreteVariable* v ) const ;
 
-      // ============================================================================
+      bool contains( const DiscreteVariable* v ) const ;
+
+
       /// Returns the sequence of DiscreteVariable of this SetInst.
-      // ============================================================================
-      const Sequence<const DiscreteVariable *>& variablesSequence() const ;
 
-      // ============================================================================
+      const Sequence<const DiscreteVariable*>& variablesSequence() const ;
+
+
       /// Returns true if the SetInst is empty.
-      // ============================================================================
-      virtual bool empty ( void ) const ;
+
+      virtual bool empty( void ) const ;
 
       /// @}
 
@@ -439,7 +439,7 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /**
        * @brief Indicates whether the current value of the tuple is correct or not.
        *
@@ -449,10 +449,10 @@ namespace gum {
        * }
        * @endcode
        */
-      // ============================================================================
+
       bool inOverflow() const ;
 
-      // ============================================================================
+
       /**
        * @brief Removes the flag overflow. See full documentation for details.
        * (Recommended).
@@ -482,18 +482,18 @@ namespace gum {
        * }
        * @endcode
        */
-      // ============================================================================
+
       void unsetOverflow();
 
-      // ============================================================================
+
       /**
        * Alias for unsetOverflow().
        * @see unsetOverflow().
        */
-      // ============================================================================
+
       void unsetEnd();
 
-      // ============================================================================
+
       /**
        * Returns true if the SetInst reached the end.
        *
@@ -504,10 +504,10 @@ namespace gum {
        * }
        * @endcode
        */
-      // ============================================================================
+
       bool end() const ;
 
-      // ============================================================================
+
       /**
        * Returns true if the SetInst reached the rend.
        *
@@ -518,7 +518,7 @@ namespace gum {
        * }
        * @endcode
        */
-      // ============================================================================
+
       bool rend() const ;
 
       /// @}
@@ -527,25 +527,25 @@ namespace gum {
 
 
 
-      // ============================================================================
+
       /// Returns the hamming distance of this SetInst.
-      // ============================================================================
+
       Idx hamming() const ;
 
-      // ============================================================================
+
       /// Give a string version of SetInst.
-      // ============================================================================
+
       std::string toString() const ;
 
-      // ============================================================================
 
-      // ============================================================================
-      void reorder ( const Sequence<const DiscreteVariable*>& v );
 
-      // ============================================================================
 
-      // ============================================================================
-      void reorder ( const SetInst& i );
+      void reorder( const Sequence<const DiscreteVariable*>& v );
+
+
+
+
+      void reorder( const SetInst& i );
 
       /// @}
 
@@ -565,15 +565,15 @@ namespace gum {
        * @throw NotFound raised if a variable in i does not point to a variable in j
        *                 or if a variable in i is missing in bij.
        */
-      static void assign_values ( Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-                                  const SetInst& i, SetInst& j ) {
+      static void assign_values( Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
+                                 const SetInst& i, SetInst& j ) {
         try {
           for ( Sequence<const DiscreteVariable*>::const_iterator iter = i.variablesSequence().begin();
                 iter != i.variablesSequence().end(); ++iter ) {
-            j.chgVal ( bij.second ( *iter ), i.val ( *iter ) );
+            j.chgVal( bij.second( *iter ), i.val( *iter ) );
           }
         } catch ( NotFound& ) {
-          GUM_ERROR ( NotFound, "missing variable in bijection or SetInst" );
+          GUM_ERROR( NotFound, "missing variable in bijection or SetInst" );
         }
       }
 
@@ -582,45 +582,45 @@ namespace gum {
     protected:
 
       /// Replace x by y.
-      virtual void _swap ( const DiscreteVariable* x, const DiscreteVariable* y );
+      virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
 
     private:
 
-      // ============================================================================
+
       /**
        * The master, if any, contains precisely the set of variables to be
        * instantiated.
        */
-      // ============================================================================
+
       //MultiDimAdressable* __master;
 
-      // ============================================================================
+
       /// The tuple of variables to be instantiated.
-      // ============================================================================
+
       Sequence<const DiscreteVariable*> __vars;
 
-      // ============================================================================
+
       /// The current SetInst: the value of the tuple.
-      // ============================================================================
+
       std::vector<Size> __vals;
 
-      // ============================================================================
 
-      // ============================================================================
+
+
       bool __overflow;
 
-      // ============================================================================
+
       /// swap 2 vars in the SetInst
-      // ============================================================================
-      void __swap ( Idx i,Idx j );
 
-      // ============================================================================
+      void __swap( Idx i,Idx j );
 
-      // ============================================================================
-      void __chgVal ( Idx varPos, Idx newVal );
-      void __chgVals ( Idx varPos, const Size newVal );
 
-      // ============================================================================
+
+
+      void __chgVal( Idx varPos, Idx newVal );
+      void __chgVals( Idx varPos, const Size newVal );
+
+
       /**
        *  adds a new var to the sequence of vars
        *  If variable v already belongs to the SetInst tuple of variables,
@@ -637,10 +637,10 @@ namespace gum {
        *  SetInst is removed.
        *  @throw DuplicateElement
        */
-      // ============================================================================
-      void __add ( const DiscreteVariable& v );
 
-      // ============================================================================
+      void __add( const DiscreteVariable& v );
+
+
       /**
        *  removes a variable from the sequence of vars
        *  If variable v does not belong to the SetInst tuple of variables,
@@ -651,10 +651,10 @@ namespace gum {
        *  from its master MultiDimAdressable, if any. To do so, use function
        *  removeDim instead.
        */
-      // ============================================================================
-      void __erase ( const DiscreteVariable& v );
 
-      // ============================================================================
+      void __erase( const DiscreteVariable& v );
+
+
       /**
        *  This function is called by the master (if any) when changes arise in its
        *  vars list.
@@ -662,18 +662,18 @@ namespace gum {
        *
        *  @param v the new vars list
        */
-      // ============================================================================
-      void __notifiedDimChanged ( const Sequence<const DiscreteVariable *>&  v );
 
-      // ============================================================================
+      void __notifiedDimChanged( const Sequence<const DiscreteVariable*>&  v );
+
+
       /// initialisation (same in 4 constructors)
-      // ============================================================================
-      void __init ( MultiDimAdressable* master );
+
+      void __init( MultiDimAdressable* master );
   };
 
-// ============================================================================
+
 /// Print information of the SetInst in the stream.
-// ============================================================================
+
   std::ostream& operator<< ( std::ostream&, const SetInst& );
   gum::SetInst& operator<< ( gum::SetInst& inst, const gum::DiscreteVariable& i );
   gum::SetInst& operator>> ( gum::SetInst& inst, const gum::DiscreteVariable& i );
@@ -681,10 +681,10 @@ namespace gum {
 } /* namespace gum */
 
 
-// ============================================================================
+
 #ifndef GUM_NO_INLINE
 #include <agrum/multidim/setInst.inl>
 #endif /* GUM_NO_INLINE */
-// ============================================================================
+
 #endif /* GUM_SetInst_H */
-// ============================================================================
+
