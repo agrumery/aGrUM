@@ -321,10 +321,8 @@ def proceed(options,RANDOMSEED_FOR_PROFILE="10"):
 
     make_options=make_options+" -j "+options['jobs'].__str__()
 
-    if options['rule']=='test':
-      if options['wrapper']=="":
-        option_profile=" -DGUM_RANDOMSEED_TEST="+(RANDOMSEED_FOR_PROFILE if options['profile'] else "0")
-        cmake_options=cmake_options+option_profile;
+    option_profile=" -DGUM_RANDOMSEED="+(RANDOMSEED_FOR_PROFILE if options['profile'] else "0")
+    cmake_options=cmake_options+option_profile;
 
     [safe_cd(s) for s in folders]
     execute("cmake "+cmake_options)
