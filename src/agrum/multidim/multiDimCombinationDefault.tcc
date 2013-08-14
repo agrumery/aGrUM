@@ -86,7 +86,7 @@ namespace gum {
   template< typename GUM_SCALAR, template<typename> class TABLE >
   INLINE TABLE<GUM_SCALAR>*
   ( * MultiDimCombinationDefault<GUM_SCALAR,TABLE>::combineFunction() )
-  ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) const {
+  ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) {
     return _combine;
   }
 

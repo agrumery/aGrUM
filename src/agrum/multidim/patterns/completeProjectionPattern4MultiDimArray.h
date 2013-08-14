@@ -40,8 +40,8 @@ namespace gum {
   template<typename GUM_SCALAR>
   GUM_SCALAR
   GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
-  ( const MultiDimArray<GUM_SCALAR>* table,
-    Instantiation* instantiation = 0 ) {
+    ( const MultiDimArray<GUM_SCALAR>* table,
+      Instantiation* instantiation ) {
 #endif
 
 
@@ -52,55 +52,55 @@ namespace gum {
     GUM_SCALAR*
     GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME
     ( const MultiDimArray<GUM_SCALAR*>* table,
-      Instantiation* instantiation = 0 ) {
+      Instantiation* instantiation ) {
 #endif
 
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME_F
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE GUM_SCALAR
-      template<typename GUM_SCALAR>
-      GUM_SCALAR
-      GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME_F
-      ( const MultiDimArray<GUM_SCALAR>* table,
-        GUM_SCALAR( *f )( const GUM_SCALAR&, const GUM_SCALAR& ),
-        Instantiation* instantiation = 0 ) {
+  template<typename GUM_SCALAR>
+  GUM_SCALAR
+  GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME_F
+    ( const MultiDimArray<GUM_SCALAR>* table,
+      GUM_SCALAR (*f) ( const GUM_SCALAR&, const GUM_SCALAR&),
+      Instantiation* instantiation ) {
 #endif
 
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME_F
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE GUM_SCALAR*
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
-        template<typename GUM_SCALAR>
-        GUM_SCALAR*
-        GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME_F
-        ( const MultiDimArray<GUM_SCALAR*>* table,
-          GUM_SCALAR* ( *f )( const GUM_SCALAR const*, const GUM_SCALAR const* ),
-          Instantiation* instantiation = 0 ) {
+  template<typename GUM_SCALAR>
+  GUM_SCALAR*
+  GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME_F
+    ( const MultiDimArray<GUM_SCALAR*>* table,
+      GUM_SCALAR* (*f) ( const GUM_SCALAR const*, const GUM_SCALAR const* ),
+      Instantiation* instantiation ) {
 #endif
 
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE GUM_SCALAR
-          template<typename GUM_SCALAR>
-          GUM_SCALAR
-          GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME
-          ( const MultiDimImplementation<GUM_SCALAR>* ttable,
-            Instantiation* instantiation = 0 ) {
-            const MultiDimArray<GUM_SCALAR>* table =
-              reinterpret_cast<const MultiDimArray<GUM_SCALAR>*>( ttable );
+  template<typename GUM_SCALAR>
+  GUM_SCALAR
+  GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME
+    ( const MultiDimImplementation<GUM_SCALAR>* ttable,
+      Instantiation* instantiation ) {
+    const MultiDimArray<GUM_SCALAR>* table =
+      reinterpret_cast<const MultiDimArray<GUM_SCALAR>*> (ttable);
 #endif
 
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE GUM_SCALAR*
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
-            template<typename GUM_SCALAR>
-            GUM_SCALAR*
-            GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME
-            ( const MultiDimImplementation<GUM_SCALAR*>* ttable,
-              Instantiation* instantiation = 0 ) {
-              const MultiDimArray<GUM_SCALAR*>* table =
-                reinterpret_cast<const MultiDimArray<GUM_SCALAR*>*>( ttable );
+  template<typename GUM_SCALAR>
+    GUM_SCALAR*
+  GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME
+    ( const MultiDimImplementation<GUM_SCALAR*>* ttable,
+      Instantiation* instantiation ) {
+    const MultiDimArray<GUM_SCALAR*>* table =
+      reinterpret_cast<const MultiDimArray<GUM_SCALAR*>*> (ttable);
 #endif
 
 

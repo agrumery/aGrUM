@@ -35,13 +35,13 @@
 
 #define GUM_MULTI_DIM_DECORATOR_COMPLETE_PROJ(NAME)                   \
   namespace gum { \
-    template<typename GUM_SCALAR>                                           \
-    GUM_SCALAR                                                              \
-    NAME ( const MultiDimDecorator<GUM_SCALAR>& table,                      \
-           Instantiation* instantiation = 0 ) {                         \
-      const MultiDimImplementation<GUM_SCALAR>* impl = table.content ();    \
-      return NAME ( *impl, instantiation );                             \
-    } \
+  template<typename GUM_SCALAR>                                           \
+  GUM_SCALAR                                                              \
+  NAME ( const MultiDimDecorator<GUM_SCALAR>& table,                      \
+         Instantiation* instantiation ) {                         \
+    const MultiDimImplementation<GUM_SCALAR>* impl = table.content ();    \
+    return NAME ( *impl, instantiation );                             \
+  } \
   }
 
 

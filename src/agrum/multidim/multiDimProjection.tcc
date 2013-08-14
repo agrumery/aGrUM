@@ -109,7 +109,7 @@ namespace gum {
   template< typename GUM_SCALAR, template<typename> class TABLE >
   INLINE TABLE<GUM_SCALAR>*
   ( * MultiDimProjection<GUM_SCALAR,TABLE>::projectFunction() )
-  ( const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& ) const {
+  ( const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& ) {
     return _proj;
   }
 

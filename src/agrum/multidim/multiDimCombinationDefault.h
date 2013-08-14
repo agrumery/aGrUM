@@ -89,55 +89,55 @@ namespace gum {
 
   template< typename GUM_SCALAR, template<typename> class TABLE >
   class MultiDimCombinationDefault : public MultiDimCombination<GUM_SCALAR,TABLE> {
-    public:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
+  public:
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
 
-      /// default constructor
-      /** @param combine a function that takes two tables in input and produces a
-       * new table which is the result of the combination of the two tables
-       * passed in argument. */
-      MultiDimCombinationDefault( TABLE<GUM_SCALAR>* ( *combine )
-                                  ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) );
+    /// default constructor
+    /** @param combine a function that takes two tables in input and produces a
+     * new table which is the result of the combination of the two tables
+     * passed in argument. */
+    MultiDimCombinationDefault ( TABLE<GUM_SCALAR>* (*combine)
+                                 ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) );
 
-      /// copy constructor
-      MultiDimCombinationDefault( const MultiDimCombinationDefault<GUM_SCALAR,TABLE>& );
+    /// copy constructor
+    MultiDimCombinationDefault ( const MultiDimCombinationDefault<GUM_SCALAR,TABLE>& );
+    
+    /// destructor
+    virtual ~MultiDimCombinationDefault ();
 
-      /// destructor
-      virtual ~MultiDimCombinationDefault();
+    /// virtual constructor
+    /** @return a new fresh MultiDimCombinator with the same combination
+     * function. */
+    virtual MultiDimCombinationDefault<GUM_SCALAR,TABLE>* newFactory () const;
 
-      /// virtual constructor
-      /** @return a new fresh MultiDimCombinator with the same combination
-       * function. */
-      virtual MultiDimCombinationDefault<GUM_SCALAR,TABLE>* newFactory() const;
+    /// @}
 
-      /// @}
+    
+    // ############################################################################
+    /// @name Accessors/Modifiers
+    // ############################################################################
+    /// @{
 
+    /// creates and returns the result of the combination of the tables within set 
+    /** @return a new freshly created TABLE which is the result of the combination
+     * of all the TABLES passed in argument
+     * @throws InvalidArgumentsNumber exception is thrown if the set passed in
+     * argument contains less than two elements */
+    virtual TABLE<GUM_SCALAR>* combine ( const Set<const TABLE<GUM_SCALAR>*>& set );
+    virtual void combine ( TABLE<GUM_SCALAR>& container ,
+                           const Set<const TABLE<GUM_SCALAR>*>& set );
 
-      // ############################################################################
-      /// @name Accessors/Modifiers
-      // ############################################################################
-      /// @{
+    /// changes the function used for combining two TABLES
+    virtual void setCombineFunction ( TABLE<GUM_SCALAR>*
+                                      (*combine) ( const TABLE<GUM_SCALAR>&,
+                                                   const TABLE<GUM_SCALAR>& ) );
 
-      /// creates and returns the result of the combination of the tables within set
-      /** @return a new freshly created TABLE which is the result of the combination
-       * of all the TABLES passed in argument
-       * @throws InvalidArgumentsNumber exception is thrown if the set passed in
-       * argument contains less than two elements */
-      virtual TABLE<GUM_SCALAR>* combine( const Set<const TABLE<GUM_SCALAR>*>& set );
-      virtual void combine( TABLE<GUM_SCALAR>& container ,
-                            const Set<const TABLE<GUM_SCALAR>*>& set );
-
-      /// changes the function used for combining two TABLES
-      virtual void setCombineFunction( TABLE<GUM_SCALAR>*
-                                       ( *combine )( const TABLE<GUM_SCALAR>&,
-                                           const TABLE<GUM_SCALAR>& ) );
-
-      /// returns the combination function currently used by the combinator
-      virtual TABLE<GUM_SCALAR>* ( * combineFunction() )
-      ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) const;
+    /// returns the combination function currently used by the combinator
+    virtual TABLE<GUM_SCALAR>* (* combineFunction () )
+      ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& );
 
       /** @brief returns a rough estimate of the number of operations that will be
       * performed to compute the combination */

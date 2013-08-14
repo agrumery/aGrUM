@@ -46,7 +46,7 @@ namespace gum {
     GUM_OP_CPY( Timer );
     _start = from._start;
     _pause = from._pause;
-    _sleeping=_sleeping;
+    _sleeping = from._sleeping;
     return *this;
   }
 } /* namespace gum */
