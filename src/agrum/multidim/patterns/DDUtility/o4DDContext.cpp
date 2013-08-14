@@ -107,3 +107,4 @@ const double O4DDContext::__logPrime[] = {log2 ( 2 ),log2 ( 3 ),log2 ( 5 ),log2 
 #include <agrum/multidim/patterns/DDUtility/o4DDContext.inl>
 #endif
 // ============================================================================
+

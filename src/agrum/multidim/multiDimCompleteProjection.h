@@ -78,7 +78,7 @@ namespace gum {
 
     /// returns the projection function currently used by the projector
     GUM_SCALAR (* projectFunction () )
-    ( const TABLE<GUM_SCALAR>&, Instantiation* ) const;
+    ( const TABLE<GUM_SCALAR>&, Instantiation* );
     
     /// @}
 

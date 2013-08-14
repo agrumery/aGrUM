@@ -126,7 +126,7 @@ namespace gum {
 
     /// returns the projection function currently used by the projector
     TABLE<GUM_SCALAR>* (* projectFunction () )
-      ( const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& ) const;
+      ( const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& );
     
     /** @brief returns a rough estimate of the number of operations that will be
      * performed to compute the projection */

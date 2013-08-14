@@ -104,7 +104,7 @@ namespace gum {
     
     /// returns the current combination function
     virtual TABLE<GUM_SCALAR>* (* combineFunction () )
-      ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) const;
+      ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& );
     
     /// changes the function used for projecting TABLES
     virtual void
@@ -120,7 +120,7 @@ namespace gum {
     
     /// returns the current projection function
     virtual TABLE<GUM_SCALAR>* (* projectFunction () )
-      ( const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& ) const;
+      ( const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& );
     
     /** @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination */

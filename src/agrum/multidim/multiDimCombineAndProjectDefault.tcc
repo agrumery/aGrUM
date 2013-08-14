@@ -337,7 +337,7 @@ namespace gum {
   template< typename GUM_SCALAR, template<typename> class TABLE >
   INLINE TABLE<GUM_SCALAR>*
   ( * MultiDimCombineAndProjectDefault<GUM_SCALAR,TABLE>::combineFunction() )
-  ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) const {
+  ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) {
     return __combination->combineFunction();
   }
 
@@ -366,7 +366,7 @@ namespace gum {
   template< typename GUM_SCALAR, template<typename> class TABLE >
   INLINE TABLE<GUM_SCALAR>*
   ( * MultiDimCombineAndProjectDefault<GUM_SCALAR,TABLE>::projectFunction() )
-  ( const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& ) const {
+  ( const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& ) {
     return __projection->projectFunction();
   }
 

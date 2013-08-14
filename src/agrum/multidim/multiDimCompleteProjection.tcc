@@ -91,7 +91,7 @@ namespace gum {
   template< typename GUM_SCALAR, template<typename> class TABLE >
   INLINE GUM_SCALAR
   ( * MultiDimCompleteProjection<GUM_SCALAR,TABLE>::projectFunction() )
-  ( const TABLE<GUM_SCALAR>&, Instantiation* ) const {
+  ( const TABLE<GUM_SCALAR>&, Instantiation* ) {
     return _proj;
   }
 

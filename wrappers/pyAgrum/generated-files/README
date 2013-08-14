@@ -1,0 +1,2 @@
+2013-08-13
+We have to use svn checkout svn://svn.code.sf.net/p/swig/code/branches/gsoc2009-matevz swig-code as our swig version since this is the only C++11-complieant version for now.

@@ -38,7 +38,7 @@
   template<typename GUM_SCALAR>                                           \
   GUM_SCALAR                                                              \
   NAME ( const MultiDimDecorator<GUM_SCALAR>& table,                      \
-         Instantiation* instantiation = 0 ) {                         \
+         Instantiation* instantiation ) {                         \
     const MultiDimImplementation<GUM_SCALAR>* impl = table.content ();    \
     return NAME ( *impl, instantiation );                             \
   } \

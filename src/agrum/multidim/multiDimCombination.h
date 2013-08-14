@@ -129,7 +129,7 @@ namespace gum {
     
     /// returns the combination function currently used by the combinator
     virtual TABLE<GUM_SCALAR>* (* combineFunction () )
-      ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) const = 0;
+      ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) = 0;
     
     /** @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination */
