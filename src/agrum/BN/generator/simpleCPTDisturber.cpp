@@ -24,7 +24,7 @@
  * @author Pierre-Henri WUILLEMIN and Lionel TORTI
  *
  */
-#include <agrum/BN/generator/defaultCPTDisturber.h>
+#include <agrum/BN/generator/simpleCPTDisturber.h>
 
 
 

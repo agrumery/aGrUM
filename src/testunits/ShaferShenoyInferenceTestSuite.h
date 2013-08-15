@@ -29,7 +29,7 @@
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
-#include <agrum/BN/generator/defaultBayesNetGenerator.h>
+#include <agrum/BN/generator/simpleBayesNetGenerator.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -199,7 +199,7 @@ namespace gum_tests {
         int trial_nb = 5;
 
         for ( int i = 0; i < trial_nb; ++i ) {
-          gum::DefaultBayesNetGenerator<float> bnGen( 10, density[i] );
+          gum::SimpleBayesNetGenerator<float> bnGen( 10, density[i] );
 
           gum::BayesNet<float>* bayesNet = new gum::BayesNet<float>();
           bnGen.generateBN( *bayesNet );

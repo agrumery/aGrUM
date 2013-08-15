@@ -24,8 +24,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include "testsuite_utils.h"
 
-#include <agrum/BN/generator/defaultBayesNetGenerator.h>
-#include <agrum/BN/generator/defaultCPTGenerator.h>
+#include <agrum/BN/generator/simpleBayesNetGenerator.h>
+#include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/core/set.h>
 #include <agrum/core/exceptions.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
@@ -33,7 +33,7 @@
 
 namespace gum_tests {
 
-  class DefaultBayesNetGeneratorTestSuite: public CxxTest::TestSuite {
+  class SimpleBayesNetGeneratorTestSuite: public CxxTest::TestSuite {
     public:
 
       void setUp() {
@@ -43,22 +43,22 @@ namespace gum_tests {
       }
 
       void testCreationDeletion_1() {
-        gum::DefaultBayesNetGenerator<float>* gen = nullptr;
+        gum::SimpleBayesNetGenerator<float>* gen = nullptr;
 
-        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::DefaultBayesNetGenerator<float>( 10, 20 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::SimpleBayesNetGenerator<float>( 10, 20 ) );
         TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
       }
 
       void testCreationDeletion_2() {
-        gum::DefaultBayesNetGenerator<float>* gen = nullptr;
+        gum::SimpleBayesNetGenerator<float>* gen = nullptr;
 
 
-        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::DefaultBayesNetGenerator<float>( 10, 20 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::SimpleBayesNetGenerator<float>( 10, 20 ) );
         TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
       }
 
       void testGenerationFloat_1() {
-        gum::DefaultBayesNetGenerator<float> gen( 10, 20 );
+        gum::SimpleBayesNetGenerator<float> gen( 10, 20 );
         gum::BayesNet<float>* bn = new gum::BayesNet<float>();
 
         TS_GUM_ASSERT_THROWS_NOTHING( gen.generateBN( *bn ) );
@@ -67,7 +67,7 @@ namespace gum_tests {
       }
 
       void testGenerationFloat_2() {
-        gum::DefaultBayesNetGenerator<float> gen( 100, 500 );;
+        gum::SimpleBayesNetGenerator<float> gen( 100, 500 );;
 
         gum::BayesNet<float>* bn = new gum::BayesNet<float>();
         gen.generateBN( *bn );
@@ -86,7 +86,7 @@ namespace gum_tests {
       }
 
       void testGenerationFloat_3() {
-        gum::DefaultBayesNetGenerator<float> gen( 10,45 );
+        gum::SimpleBayesNetGenerator<float> gen( 10,45 );
 
         gum::BayesNet<float>* bn = new gum::BayesNet<float>();
         gen.generateBN( *bn );
@@ -99,7 +99,7 @@ namespace gum_tests {
 
 
       void testGenerationFloat_4() {
-        gum::DefaultBayesNetGenerator<float> gen( 10, 35 );
+        gum::SimpleBayesNetGenerator<float> gen( 10, 35 );
 
         gum::BayesNet<float>* bn = new gum::BayesNet<float>();
         gen.generateBN( *bn );
@@ -111,7 +111,7 @@ namespace gum_tests {
       }
 
       void testGenerationFloat_5() {
-        gum::DefaultBayesNetGenerator<float> gen( 10, 45 );
+        gum::SimpleBayesNetGenerator<float> gen( 10, 45 );
         gum::BayesNet<float>* bn = 0;
 
         TS_GUM_ASSERT_THROWS_NOTHING( bn = new gum::BayesNet<float>(); gen.generateBN( *bn ); gum::LazyPropagation<float> lazyInf( *bn ); lazyInf.makeInference(); delete bn );
@@ -120,7 +120,7 @@ namespace gum_tests {
       }
 
       void testGenerationDouble_1() {
-        gum::DefaultBayesNetGenerator<double> gen( 10, 35 );
+        gum::SimpleBayesNetGenerator<double> gen( 10, 35 );
         gum::BayesNet<double>* bn =  new gum::BayesNet<double>();
 
         TS_GUM_ASSERT_THROWS_NOTHING( gen.generateBN( *bn ) );
@@ -131,7 +131,7 @@ namespace gum_tests {
       void testGenerationDouble_2() {
 
         // Test for cicuits
-        gum::DefaultBayesNetGenerator<double> gen( 10, 45 );
+        gum::SimpleBayesNetGenerator<double> gen( 10, 45 );
         gum::BayesNet<double>* bn =  new gum::BayesNet<double>();
         gen.generateBN( *bn );
 
@@ -147,7 +147,7 @@ namespace gum_tests {
       }
 
       void testGenerationDouble_3() {
-        gum::DefaultBayesNetGenerator<double> gen( 10, 45 );
+        gum::SimpleBayesNetGenerator<double> gen( 10, 45 );
         gum::BayesNet<double>* bn =  new gum::BayesNet<double>();
         gen.generateBN( *bn );
         // Test for inference
@@ -158,7 +158,7 @@ namespace gum_tests {
       }
 
       void testGenerationDouble_4() {
-        gum::DefaultBayesNetGenerator<double> gen( 10, 45 );
+        gum::SimpleBayesNetGenerator<double> gen( 10, 45 );
         gum::BayesNet<double>* bn =  new gum::BayesNet<double>();
         gen.generateBN( *bn );
 

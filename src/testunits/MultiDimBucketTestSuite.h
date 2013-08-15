@@ -22,7 +22,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include "testsuite_utils.h"
 
-#include <agrum/BN/generator/defaultCPTGenerator.h>
+#include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/multidim/multiDimBucket.h>
 #include <agrum/variables/labelizedVariable.h>
@@ -54,7 +54,7 @@ namespace gum_tests {
 
     public:
       void setUp() {
-        gum::DefaultCPTGenerator<double> cptGenerator;
+        gum::SimpleCPTGenerator<double> cptGenerator;
         __variables = new std::vector<gum::LabelizedVariable*>();
 
         for ( gum::Size i = 0; i < 10; ++i ) {

@@ -189,7 +189,7 @@ namespace gum {
     ///@{
 
     /// remove empty constructor
-    ListBucket () = delete;
+    ListBucket() = delete;
     
     /// default constructor
     explicit ListBucket ( const Val& v );

@@ -33,14 +33,14 @@
 namespace gum {
 
 
-  /** @class DefaultCPTGenerator
+  /** @class SimpleCPTGenerator
    * @brief Class for generating Conditional Probability Tables.
    * @ingroup bn_group
    *
    * This class implements a CPTGenerator CPT generation algorithm.
    */
   template <typename GUM_SCALAR>
-  class DefaultCPTGenerator: public AbstractCPTGenerator<GUM_SCALAR> {
+  class SimpleCPTGenerator: public AbstractCPTGenerator<GUM_SCALAR> {
     public:
       // ############################################################################
       /// @name Constructors / Destructor
@@ -49,12 +49,12 @@ namespace gum {
       /**
        * Default constructor.
        */
-      DefaultCPTGenerator();
+      SimpleCPTGenerator();
 
       /**
        * Destructor.
        */
-      virtual ~DefaultCPTGenerator();
+      virtual ~SimpleCPTGenerator();
       /// @}
 
       // ############################################################################
@@ -74,6 +74,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/BN/generator/defaultCPTGenerator.tcc>
+#include <agrum/BN/generator/simpleCPTGenerator.tcc>
 #endif /* GUM_SIMPLE_CPT_GENERATOR_H */
 

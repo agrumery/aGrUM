@@ -23,5 +23,5 @@
  * @author Pierre-Henri WUILLEMIN and Lionel TORTI
  *
  */
-#include <agrum/BN/generator/defaultCPTGenerator.h>
+#include <agrum/BN/generator/simpleCPTGenerator.h>
 

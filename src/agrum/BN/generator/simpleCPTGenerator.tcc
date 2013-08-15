@@ -18,12 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Source implementation of DefaultCPTGenerator.
+ * @brief Source implementation of SimpleCPTGenerator.
  *
  * @author Pierre-Henri WUILLEMIN and Lionel TORTI and Ariele-Paolo MAESANO
  *
  */
-#include <agrum/BN/generator/defaultCPTGenerator.h>
+#include <agrum/BN/generator/simpleCPTGenerator.h>
 
 #include <ctime>
 
@@ -32,15 +32,15 @@ namespace gum {
 
 // Default constructor.
   template <typename GUM_SCALAR> INLINE
-  DefaultCPTGenerator<GUM_SCALAR>::DefaultCPTGenerator() :
+  SimpleCPTGenerator<GUM_SCALAR>::SimpleCPTGenerator() :
     AbstractCPTGenerator<GUM_SCALAR>() {
-    GUM_CONSTRUCTOR( DefaultCPTGenerator );
+    GUM_CONSTRUCTOR( SimpleCPTGenerator );
   }
 
 // Destructor.
   template <typename GUM_SCALAR> INLINE
-  DefaultCPTGenerator<GUM_SCALAR>::~DefaultCPTGenerator() {
-    GUM_DESTRUCTOR( DefaultCPTGenerator );
+  SimpleCPTGenerator<GUM_SCALAR>::~SimpleCPTGenerator() {
+    GUM_DESTRUCTOR( SimpleCPTGenerator );
   }
 
 // Generates a CPT using floats.
@@ -49,7 +49,7 @@ namespace gum {
 
 
   template <typename GUM_SCALAR> void
-  DefaultCPTGenerator<GUM_SCALAR>::generateCPT( const Idx& varId, const Potential<GUM_SCALAR>& cpt ) {
+  SimpleCPTGenerator<GUM_SCALAR>::generateCPT( const Idx& varId, const Potential<GUM_SCALAR>& cpt ) {
     std::vector<GUM_SCALAR> v;
 
     for ( Size i = 0; i < cpt.domainSize();  ++i ) {

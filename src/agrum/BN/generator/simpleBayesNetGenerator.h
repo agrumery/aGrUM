@@ -17,79 +17,78 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-
-/**
- * @file
- * @brief Source implementation of DefaultCPTDisturber.
- * @author Pierre-Henri WUILLEMIN and Ariele-Paolo MAESANO
+/** @file
+ * @brief Class for generating bayesian netwroks.
  *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN and Ariele-Paolo MAESANO
  */
+#ifndef GUM_DEFAULT_BAYES_NET_GENERATOR_H
+#define GUM_DEFAULT_BAYES_NET_GENERATOR_H
 
-#ifndef GUM_DEFAULT_CPT_DISTURBER_H
-#define GUM_DEFAULT_CPT_DISTURBER_H
-
+#include <climits>
+#include <cstdio>
 #include <cstdlib>
+#include <iostream>
+#include <vector>
 
-#include <agrum/BN/generator/abstractCPTDisturber.h>
+
+#include <agrum/BN/generator/abstractBayesNetGenerator.h>
+
 
 
 namespace gum {
 
-
-  /** @class DefaultCPTDisturber
-   * @brief Class for disturbing Conditional Probability Tables.
+  /**
+   * @class SimpleBayesNetGenerator defaultBayesNetGenerator.h <agrum/BN/generator/defaultBayesNetGenerator.h>
+   * @brief Class for generating bayesian networks.
    * @ingroup bn_group
    *
-   * This class implements a CPTGenerator CPT generation algorithm.
+   * This class randomly generates a bayesian network given three parameters:
+   * the number of nodes and the max number of arcs and the number of maximum modality for each nodes.
+   * @warning  Be Careful when entering the parameters, high Values may cause the density of the Bayesian Network to be too high
+   * resulting in the failure of most of the inference Methods.
    */
-  template <typename GUM_SCALAR>
-  class DefaultCPTDisturber: public AbstractCPTDisturber<GUM_SCALAR> {
+  template <typename GUM_SCALAR, template<class> class ICPTGenerator = SimpleCPTGenerator>
+
+  class SimpleBayesNetGenerator : public AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator> {
     public:
       // ############################################################################
       /// @name Constructors / Destructor
       // ############################################################################
       /// @{
+
       /**
-       * Default constructor.
-       */
-      DefaultCPTDisturber();
+      * Constructor.
+      * Use by default the SimpleCPTGenerator for generating the BNs CPT.
+      * @param nbrNodes The number of nodes imposed on the generator.
+      * @param maxArcs The number of maximum arcs imposed on the generator.
+      * @param maxModality Each DRV has from 2 to maxModality modalities
+      */
+      SimpleBayesNetGenerator( Size nbrNodes, Size maxArcs, Size maxModality = 2 );
 
       /**
        * Destructor.
        */
-      virtual ~DefaultCPTDisturber();
+      ~SimpleBayesNetGenerator();
       /// @}
 
       // ############################################################################
-      /// @name CPT disturbing methods
+      /// @name BN generation methods
       // ############################################################################
       /// @{
       /**
-       * Disturb a CPT using GUM_SCALAR.
-       * @param varIdi The variable id parent of the CPT owner.
-       * @param varIdj The variable on the CPT owner.
-       * @param bayesNet tne Bayesian Network.
-       * @param cptCopy copy of the CPT before reduction.
-       * @param marg of the inference before reduction on the node varIdi.
+      * function that generates a bayesian networks.
+       * @param bayesNet Bayesian Network to be completed after initialisation
+       * @return null but modify inputed Bayesian Network
        */
-      virtual void disturbReducCPT( NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet, Potential<GUM_SCALAR>& cptCopy, Potential<GUM_SCALAR>& marg );
+      void generateBN( BayesNet<GUM_SCALAR>& bayesNet );
 
-      /**
-       * Disturb a CPT using GUM_SCALAR.
-       * @param varIdi The variable id parent of the CPT owner.
-       * @param varIdj A reference on the CPT owner.
-       * @param bayesNet the Bayesian Network.
-       * @param cptCopy copy of the CPT before augmentation.
-       * @param variation degree of variation from the initial probability.
-       */
-      virtual void disturbAugmCPT( NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet, Potential<GUM_SCALAR>& cptCopy, GUM_SCALAR variation );
-
-
-  };
-
+      /// @}
+  }; /* class SimpleBayesNetGenerator */
 
 } /* namespace gum */
 
-#include <agrum/BN/generator/defaultCPTDisturber.tcc>
-#endif // SIMPLECPTDISTURBER_H
+#include<agrum/BN/generator/simpleBayesNetGenerator.tcc>
+
+#endif /* GUM_SIMPLE_BAYES_NET_GENERATOR_H */
+
