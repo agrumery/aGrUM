@@ -31,6 +31,9 @@
 // ============================================================================
 #include <agrum/config.h>
 // ============================================================================
+#include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
+#include <agrum/core/list.h>
+// ============================================================================
 #include <agrum/graphs/graphElements.h>
 // ============================================================================
 #include <agrum/multidim/multiDimImplementation.h>
@@ -63,6 +66,76 @@ namespace gum {
     template<GUM_SCALAR> friend class MultiDimDecisionGraphManager;
 
     public:
+
+      // ============================================================================
+      /// The small allocator object used by every decisionGraph to allocate table
+      // ============================================================================
+      static SmallObjectAllocator soa;
+
+      // ############################################################################
+      /// NodeId chained list element
+      // ############################################################################
+      /// @{
+      struct NodeChainElem {
+        // ============================================================================
+        /// NodeId
+        // ============================================================================
+        NodeId elemId;
+
+        NodeChainElem* nextElem;
+      };
+      ///@}
+
+      // ============================================================================
+      /// Since elem chain are handled with soa, here is the operation of adding a node
+      /// to the list.
+      // ============================================================================
+      static void addElem2NodeChain( NodeChainElem* nodeChain, const NodeId& elemId);
+
+      // ============================================================================
+      /// And here the one to remove the elem
+      // ============================================================================
+      static void removeElemFromNodeChain( NodeChainElem* nodeChain, const NodeId& elemId);
+
+      // ############################################################################
+      /// Structure used to represent a node internal structure
+      // ############################################################################
+      /// @{
+      struct InternalNode {
+        // ============================================================================
+        /// Variable associated to such node
+        // ============================================================================
+        const DiscreteVariable* nodeVar;
+
+        // ============================================================================
+        /**
+         * Table of sons of the node.
+         * Each son is bound to a modality of the variable.
+         * So those modalities are used has indexes for that table.
+         * _____________________________
+         * |      |      |      |      |
+         * | son1 | son2 | son3 | son4 |
+         * |______|______|______|______|
+         *    x1     x2     x3     x4
+         */
+        // ============================================================================
+        NodeId* nodeSons;
+
+        // ============================================================================
+        /// When several nodes points to the same son,
+        /// This default son replace them.
+        // ============================================================================
+//        NodeId nodeDefaultSon;
+
+        // ============================================================================
+        /// For fast swap we need to keep a list of parent node.
+        // ============================================================================
+        NodeChainElem* parentList;
+
+      };
+      ///@}
+
+
       // ############################################################################
       /// @name Constructors / Destructors
       // ############################################################################
@@ -154,6 +227,11 @@ namespace gum {
       /// @name Implementation of MultiDimInterface
       // ############################################################################
       /// @{
+
+        // ============================================================================
+        /// See gum::MultiDimInterface::add(const DiscreteVariable& v)
+        // ============================================================================
+        virtual void add (const DiscreteVariable &v);
 
         // ============================================================================
         /// See gum::MultiDimInterface::erase(const DiscreteVariable& v)
@@ -254,12 +332,12 @@ namespace gum {
         // ============================================================================
         /// Indicates if given node is terminal or not
         // ============================================================================
-        MultiDimDecisionGraphManager<GUM_SCALAR>* getManager();
+        MultiDimDecisionGraphManager<GUM_SCALAR>* manager();
 
         // ============================================================================
         /// Returns the id of the root node from the diagram
         // ============================================================================
-        const NodeId& root() const { return __root; };
+        const NodeId& root() const { return __root; }
 
         // ============================================================================
         /// Indicates if given node is terminal or not
@@ -271,49 +349,51 @@ namespace gum {
         /// @throw InvalidNode if node isn't terminal
         // ============================================================================
         const GUM_SCALAR& nodeValue( NodeId n ) const;
-        const GUM_SCALAR& unsafeNodeValue( NodeId n ) const;
+
+        // ============================================================================
+        /// Returns internalNode structure associated to that nodeId
+        /// @throw InvalidNode if node is terminal
+        // ============================================================================
+        const InternalNode* node( NodeId n ) const;
 
         // ============================================================================
         /// Returns associated variable of given node
         /// @throw InvalidNode if Node is terminal
         // ============================================================================
         const DiscreteVariable* nodeVariable( NodeId n ) const;
-        const DiscreteVariable* unsafeNodeVariable( NodeId n ) const;
 
         // ============================================================================
         /// Returns node's sons map
         /// @throw InvalidNode if node is terminal
         // ============================================================================
         const NodeId* nodeSons( NodeId n ) const;
-        const NodeId* unsafeNodeSons( NodeId n ) const;
 
         // ============================================================================
         /// Returns true if node has a default son
         // ============================================================================
-        bool hasNodeDefaultSon( NodeId n ) const;
+//        bool hasNodeDefaultSon( NodeId n ) const;
 
         // ============================================================================
         /// Returns node's default son
         /// @throw InvalidNode if node is terminal
         /// @throw NotFound if node doesn't have a default son
         // ============================================================================
-        const NodeId nodeDefaultSon( NodeId n ) const;
-        const NodeId unsafeNodeDefaultSon( NodeId n ) const;
+//        const NodeId nodeDefaultSon( NodeId n ) const;
 
         // ============================================================================
         /// Returns associated nodes of the variable pointed by the given node
         // ============================================================================
-        const List< NodeId >* variableNodes( const DiscreteVariable* v ) const;
+        const NodeChainElem* variableNodes( const DiscreteVariable* v ) const;
 
         // ============================================================================
         /// Returns associated nodes of the variable pointed by the given node
         // ============================================================================
-        const Idx* variableUsedModalities( const DiscreteVariable* v ) const;
+//        const Idx* variableUsedModalities( const DiscreteVariable* v ) const;
 
         // ============================================================================
         /// Returns true if variable is in diagram
         // ============================================================================
-        bool isInDiagramVariable( const DiscreteVariable* v ) const;
+//        bool isInDiagramVariable( const DiscreteVariable* v ) const;
 
       /// @}
 
@@ -342,12 +422,13 @@ namespace gum {
         // ============================================================================
         GUM_SCALAR &_get (const Instantiation &inst ) const;
 
+
     private:
 
       // ============================================================================
       /// The root node of the decision graph
       // ============================================================================
-      MultiDimDecisionGraphManager* __manager;
+      MultiDimDecisionGraphManager<GUM_SCALAR>* __manager;
 
       // ============================================================================
       /// The root node of the decision graph
@@ -360,45 +441,20 @@ namespace gum {
       Bijection< NodeId, GUM_SCALAR > __valueMap;
 
       // ============================================================================
+      /// Associates each non-terminal node to a variable
+      // ============================================================================
+      HashTable< NodeId, InternalNode* > __internalNodeMap;
+
+      // ============================================================================
       /// Mapping between var and node
       // ============================================================================
-      HashTable< const DiscreteVariable*, List<NodeId>* > __var2NodeIdMap;
+      HashTable< const DiscreteVariable*, NodeChainElem* > __var2NodeIdMap;
 
       // ============================================================================
       /// Mapping between var and node
       // ============================================================================
-      HashTable< const DiscreteVariable*, Idx* > __varUsedModalitiesMap;
+//      HashTable< const DiscreteVariable*, Idx* > __varUsedModalitiesMap;
 
-
-      // ############################################################################
-      /// @name Non Terminal Nodes Data Structure
-      // ############################################################################
-      /// @{
-
-        // ============================================================================
-        /// Associates each non-terminal node to a variable
-        // ============================================================================
-        HashTable< NodeId, const DiscreteVariable* > __variableMap;
-
-        // ============================================================================
-        /**
-         * Each non-terminal node points to a set of son node
-         * (one for each value that asociate variable can have).
-         * A table gathers those links.
-         * Table index : one of the value assume by the variable.
-         * Table value : corresponding son node.
-         */
-        // ============================================================================
-        HashTable< NodeId, NodeId* > __sonsMap;
-
-        // ============================================================================
-        /**
-         * Each non-terminal node has the possibility to designate a specific son.
-         * This one will be the default son.
-         * If for a given value of bound variable, no son exists, this specific son will be chosen.
-         */
-        // ============================================================================
-        HashTable< NodeId, NodeId > __defaultSonMap;
 
       /// @}
   };

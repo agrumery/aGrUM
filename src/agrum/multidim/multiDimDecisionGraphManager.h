@@ -112,29 +112,9 @@ namespace gum{
         // ============================================================================
         ///@{
         const NodeId& addNonTerminalNode ( const DiscreteVariable* var );
-        const NodeId& unsafeAddNonTerminalNode ( const DiscreteVariable* var );
-        ///@}
-
-        // ============================================================================
-        /**
-         * Adds a non-terminal node in the diagram.
-         * NodeId of this node is generated automatically.
-         *
-         * @param var the associated variable
-         * @param sons table containing the nodeids of its sons (There are as many sons
-         * as the number of value assumed by var)
-         * @param defaultSon the default son (optional)
-         * @throw OperationNotAllowed if MultiDimDecisionGraph has no variable yet.
-         * @return the id of that node
-         */
-        // ============================================================================
-        ///@{
-        const NodeId& addNonTerminalNodeWithArcs ( const DiscreteVariable* var,
-                                                   const NodeId* sons,
-                                                   const NodeId& defaultSon = 0 );
-        const NodeId& unsafeAddNonTerminalNodeWithArcs ( const DiscreteVariable* var,
-                                                         const NodeId* sons,
-                                                         const NodeId& defaultSon = 0 );
+        const NodeId& unsafeAddNonTerminalNode ( const DiscreteVariable* var,
+                                                 NodeId* sons = nullptr,
+                                                 const NodeId& defaultSon = 0 );
         ///@}
 
         // ============================================================================
@@ -284,6 +264,13 @@ namespace gum{
         /// The multidimdecisiongraph supposed to be edited.
         // ============================================================================
         MultiDimDecisionGraph<GUM_SCALAR>* __decisionGraph;
+
+        // ============================================================================
+        ///For faster redundancy check
+        // ============================================================================
+        ListConstIterator< NodeId > __var2NodeIdIter;
+
+
 
   };
 } // namespace gum

@@ -29,6 +29,44 @@
 
 namespace gum {
 
+  // ============================================================================
+  // Since elem chain are handled with soa, here is the operation of adding a node
+  // to the list.
+  // ============================================================================
+  template<typename GUM_SCALAR>
+  INLINE
+  void MultiDimDecisionGraph<GUM_SCALAR>::addElem2NodeChain(
+          MultiDimDecisionGraph<GUM_SCALAR>::NodeChainElem* nodeChain, const NodeId& elemId){
+
+    MultiDimDecisionGraph<GUM_SCALAR>::NodeChainElem* newElem =
+            static_cast< MultiDimDecisionGraph<GUM_SCALAR>::NodeChainElem* >
+                   (MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof( MultiDimDecisionGraph<GUM_SCALAR>::NodeChainElem )));
+    newElem->elemId = elemId;
+    newElem->nextElem = nodeChain;
+    nodeChain = newElem;
+  }
+
+  // ============================================================================
+  // And here the one to remove the elem
+  // ============================================================================
+  template<typename GUM_SCALAR>
+  INLINE
+  void MultiDimDecisionGraph<GUM_SCALAR>::removeElemFromNodeChain(
+          MultiDimDecisionGraph<GUM_SCALAR>::NodeChainElem* nodeChain, const NodeId& elemId){
+
+    MultiDimDecisionGraph<GUM_SCALAR>::NodeChainElem* current = nodeChain;
+    MultiDimDecisionGraph<GUM_SCALAR>::NodeChainElem* prev = &nodeChain;
+    while( current != nullptr ){
+      if( currrent->elemId == elemId ){
+        prev = current->nextElem;
+        MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate(current, sizeof( MultiDimDecisionGraph<GUM_SCALAR>::NodeChainElem ));
+        break;
+      }
+      prev = current;
+      current = current->nextElem;
+    }
+  }
+
   // ############################################################################
   /// @name Constructors / Destructors
   // ############################################################################
