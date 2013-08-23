@@ -8,7 +8,6 @@ build
 aGrUM-dev.kdev
 *.kdev4
 src/agrum/config.h
-qtcreator-build
 
 # generated files by testunits
 src/testunits/ressources/BNBIFXMLIO_RO_file.txt

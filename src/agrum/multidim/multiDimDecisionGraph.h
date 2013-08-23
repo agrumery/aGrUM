@@ -66,74 +66,98 @@ namespace gum {
     template<GUM_SCALAR> friend class MultiDimDecisionGraphManager;
 
     public:
-
       // ============================================================================
       /// The small allocator object used by every decisionGraph to allocate table
       // ============================================================================
       static SmallObjectAllocator soa;
 
+    public:
       // ############################################################################
       /// NodeId chained list element
       // ############################################################################
       /// @{
-      struct NodeChainElem {
+        struct NICLElem {
+          // ============================================================================
+          /// NodeId
+          // ============================================================================
+          NodeId elemId;
+
+          NICLElem* nextElem;
+        };
+
+    protected :
         // ============================================================================
-        /// NodeId
+        /// Since elem chain are handled with soa, here is the operation of adding a node
+        /// to the list.
         // ============================================================================
-        NodeId elemId;
+        static void _addElemToNICL( NICLElem* nodeChain, const NodeId& elemId);
 
-        NodeChainElem* nextElem;
-      };
-      ///@}
+        // ============================================================================
+        /// And here the one to remove the elem
+        // ============================================================================
+        static void _removeElemFromNICL( NICLElem* nodeChain, const NodeId& elemId);
 
-      // ============================================================================
-      /// Since elem chain are handled with soa, here is the operation of adding a node
-      /// to the list.
-      // ============================================================================
-      static void addElem2NodeChain( NodeChainElem* nodeChain, const NodeId& elemId);
+        // ============================================================================
+        /// Delete completely the chain
+        // ============================================================================
+        static void _deleteNICL( NICLElem* nodeChain );
+      /// @}
 
-      // ============================================================================
-      /// And here the one to remove the elem
-      // ============================================================================
-      static void removeElemFromNodeChain( NodeChainElem* nodeChain, const NodeId& elemId);
 
+    public :
       // ############################################################################
       /// Structure used to represent a node internal structure
       // ############################################################################
       /// @{
-      struct InternalNode {
-        // ============================================================================
-        /// Variable associated to such node
-        // ============================================================================
-        const DiscreteVariable* nodeVar;
+        struct InternalNode {
+          // ============================================================================
+          /// Variable associated to such node
+          // ============================================================================
+          const DiscreteVariable* nodeVar;
+
+          // ============================================================================
+          /**
+           * Table of sons of the node.
+           * Each son is bound to a modality of the variable.
+           * So those modalities are used has indexes for that table.
+           * _____________________________
+           * |      |      |      |      |
+           * | son1 | son2 | son3 | son4 |
+           * |______|______|______|______|
+           *    x1     x2     x3     x4
+           */
+          // ============================================================================
+          NodeId* nodeSons;
 
         // ============================================================================
-        /**
-         * Table of sons of the node.
-         * Each son is bound to a modality of the variable.
-         * So those modalities are used has indexes for that table.
-         * _____________________________
-         * |      |      |      |      |
-         * | son1 | son2 | son3 | son4 |
-         * |______|______|______|______|
-         *    x1     x2     x3     x4
-         */
-        // ============================================================================
-        NodeId* nodeSons;
-
-        // ============================================================================
-        /// When several nodes points to the same son,
-        /// This default son replace them.
+        // When several nodes points to the same son,
+        // This default son replace them.
         // ============================================================================
 //        NodeId nodeDefaultSon;
 
-        // ============================================================================
-        /// For fast swap we need to keep a list of parent node.
-        // ============================================================================
-        NodeChainElem* parentList;
+          // ============================================================================
+          /// For fast swap we need to keep a list of parent node.
+          // ============================================================================
+          NodeChainElem* nodeParentList;
 
-      };
-      ///@}
+        };
+
+    protected:
+        // ============================================================================
+        /// Create an internal node structure
+        /// @param x :  the associated variable
+        /// size of son vector is the domain size of x.
+        // ============================================================================
+        static InternalNode* _createInternalNode( const DiscreteVariable* x );
+
+        // ============================================================================
+        /// Remove the given internal node structure
+        /// @param deleteParent : if true, parentList will be erase too.
+        /// Typically not wanted in a swap for more efficiency
+        // ============================================================================
+        static void _removeInternalNode(  InternalNode* node, bool deleteParents = true );
+
+      /// @}
 
 
       // ############################################################################
@@ -298,29 +322,44 @@ namespace gum {
       /// @{
         // ============================================================================
         /**
-        * @brief Basic copy src a gum::MultiDimContainer.
-        * This method is virtual because it should be optimized in certain
-        * gum::MultiDimContainer.
-        *
-        * @todo specific versions for decorator and for MultiDimArray
-        *
-        * @param src The gum::MultiDimContainer src which values are copied.
-        * @param p_i Give the order to iterate in this gum::MultiDimContainer during
-        *            the copy (natural order if null).
-        * @throw OperationNotAllowed Raised if src does not have the same domain size
-        *                            than this gum::MultiDimContainer.
-        */
+         * @brief Basic copy src a gum::MultiDimContainer.
+         * This method is virtual because it should be optimized in certain
+         * gum::MultiDimContainer.
+         *
+         * @todo specific versions for decorator and for MultiDimArray
+         *
+         * @param src The gum::MultiDimContainer src which values are copied.
+         * @param p_i Give the order to iterate in this gum::MultiDimContainer during
+         *            the copy (natural order if null).
+         * @throw OperationNotAllowed MultiDimDecisionGraph can't copy other multiDim.
+         */
         // ============================================================================
         void copyFrom ( const MultiDimContainer<GUM_SCALAR>& src,
                         Instantiation *p_i = ( Instantiation * ) 0 ) const;
 
         // ============================================================================
         /**
-        * Removes all variables in this gum::MultiDimContainer and copy the content
-        * of src, variables included.
-        */
+         * Removes all variables in this gum::MultiDimContainer and copy the content
+         * of src, variables included.
+         * @throw OperationNotAllowed MultiDimDecisionGraph can't copy other multiDim.
+         */
         // ============================================================================
         void copy ( const MultiDimContainer<GUM_SCALAR>& src );
+
+        // ============================================================================
+        /**
+         * Removes all variables in this gum::MultiDimDecisionGraph and copy the content
+         * of src, variables included.
+         */
+        // ============================================================================
+        void copy ( const MultiDimDecisionGraph<GUM_SCALAR>& src );
+
+        // ============================================================================
+        /**
+         * Clears the decision graph
+         */
+        // ============================================================================
+        void clear( );
 
       /// @}
 
@@ -356,45 +395,6 @@ namespace gum {
         // ============================================================================
         const InternalNode* node( NodeId n ) const;
 
-        // ============================================================================
-        /// Returns associated variable of given node
-        /// @throw InvalidNode if Node is terminal
-        // ============================================================================
-        const DiscreteVariable* nodeVariable( NodeId n ) const;
-
-        // ============================================================================
-        /// Returns node's sons map
-        /// @throw InvalidNode if node is terminal
-        // ============================================================================
-        const NodeId* nodeSons( NodeId n ) const;
-
-        // ============================================================================
-        /// Returns true if node has a default son
-        // ============================================================================
-//        bool hasNodeDefaultSon( NodeId n ) const;
-
-        // ============================================================================
-        /// Returns node's default son
-        /// @throw InvalidNode if node is terminal
-        /// @throw NotFound if node doesn't have a default son
-        // ============================================================================
-//        const NodeId nodeDefaultSon( NodeId n ) const;
-
-        // ============================================================================
-        /// Returns associated nodes of the variable pointed by the given node
-        // ============================================================================
-        const NodeChainElem* variableNodes( const DiscreteVariable* v ) const;
-
-        // ============================================================================
-        /// Returns associated nodes of the variable pointed by the given node
-        // ============================================================================
-//        const Idx* variableUsedModalities( const DiscreteVariable* v ) const;
-
-        // ============================================================================
-        /// Returns true if variable is in diagram
-        // ============================================================================
-//        bool isInDiagramVariable( const DiscreteVariable* v ) const;
-
       /// @}
 
     protected:
@@ -405,6 +405,14 @@ namespace gum {
         /// to proceed with the changes in this class containers.
         // ============================================================================
         void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
+
+        // ============================================================================
+        /// Swap two adjacent variable.
+        /// Order is important here.
+        /// X must precede Y before the swap (at the end Y will then precede X).
+        /// Not respecting this constraint leads to unattended behaviour.
+        // ============================================================================
+        void _adjacentSwap( const DiscreteVariable* x, const DiscreteVariable* y );
 
         // ============================================================================
         /**
@@ -451,7 +459,7 @@ namespace gum {
       HashTable< const DiscreteVariable*, NodeChainElem* > __var2NodeIdMap;
 
       // ============================================================================
-      /// Mapping between var and node
+      // Mapping between var and node
       // ============================================================================
 //      HashTable< const DiscreteVariable*, Idx* > __varUsedModalitiesMap;
 
