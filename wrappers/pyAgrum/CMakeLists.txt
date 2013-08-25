@@ -2,6 +2,14 @@ project(pyAgrum)
 
 cmake_minimum_required(VERSION 2.6)
 
+#== Initializing aGrUM
+set(AGRUM_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../src")
+include("${AGRUM_SOURCE_DIR}/version.txt")
+
+#== modules path
+list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+list (APPEND CMAKE_MODULE_PATH ${AGRUM_SOURCE_DIR}/cmake)
+
 ## for now, we use a special version of swig compliant with C++11. It is not the current release of SWIG.
 if (EXISTS "$ENV{HOME}/usr/bin/swig")
   set(SWIG_EXECUTABLE "$ENV{HOME}/usr/bin/swig")
@@ -10,33 +18,29 @@ endif (EXISTS "$ENV{HOME}/usr/bin/swig")
 find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
 # modification of SWIG_ADD_MODULE to take outdir into account for generated cpp wrapper.
-include("cmake/GUM-UseSWIG.cmake")
+include("GUM-UseSWIG")
 
 find_package(PythonInterp)
 find_package(PythonLibs ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}.${PYTHON_VERSION_PATCH} EXACT)
 
-#== Initializing aGrUM
-set(AGRUM_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../src")
-include("${AGRUM_SOURCE_DIR}/version.txt")
-include("${AGRUM_SOURCE_DIR}/cmake/Config.agrum.cmake")
+
+include("Config.agrum")
 configure_file("${AGRUM_SOURCE_DIR}/cmake/config.h.in" "${CMAKE_CURRENT_BINARY_DIR}/agrum/config.h")
 
+include(openMP)
+
+find_package (CXX11)
+if (CXX11_FOUND)
+  set (CPLUSPLUSONZE ${CXX11_FLAGS} )
+else ()
+  message(FATAL_ERROR "aGrUM/pyAgrum is now using C++11. Please find a compiler (for instance GCC) C++11 compliant")
+endif ()
 
 execute_process(
   COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}')"
   OUTPUT_VARIABLE PYTHON_INSTALL
   OUTPUT_STRIP_TRAILING_WHITESPACE
 )
-
-# execute_process(
-#   COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print sysconfig.get_python_version()"
-#   OUTPUT_VARIABLE PYTHON_VERSION
-#   OUTPUT_STRIP_TRAILING_WHITESPACE
-#   # why not
-#   # SET(PYTHON_VERSION) "${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}")
-#   # ?
-# )
-
 
 #==
 #== Adding files in build tree
@@ -85,20 +89,10 @@ set(AGRUM_OPTIMIZATION "-O3 -Wall -Wno-uninitialized -DNDEBUG" )
 add_definitions("-Wall")
 add_definitions("-pedantic")
 
-if(MINGW)
-  set(WIN32_STYLE_FLAGS 0)
-  set(UNIX_STYLE_FLAGS  1)
-  set(CPP_ONZE_FLAGS "--std=c++0x")
-endif(MINGW)
-if(UNIX)
-  set(WIN32_STYLE_FLAGS 0)
-  set(UNIX_STYLE_FLAGS  1)
-  set(CPP_ONZE_FLAGS "--std=c++11")
-endif(UNIX)
 
 set(AGRUM_INLINING_POLICY "")
-set(CMAKE_FLAGS_RELEASE "${AGRUM_OPTIMIZATION} ${AGRUM_INLINING_POLICY} -I${AGRUM_SOURCE_DIR} -I${PYTHON_INCLUDE_PATH} -I${CMAKE_CURRENT_SOURCE_DIR}  -I${CMAKE_CURRENT_BINARY_DIR} -fopenmp")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_FLAGS_RELEASE} ${CPP_ONZE_FLAGS}")
+set(CMAKE_FLAGS_RELEASE "${AGRUM_OPTIMIZATION} ${AGRUM_INLINING_POLICY} -I${AGRUM_SOURCE_DIR} -I${PYTHON_INCLUDE_PATH} -I${CMAKE_CURRENT_SOURCE_DIR}  -I${CMAKE_CURRENT_BINARY_DIR}")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_FLAGS_RELEASE} ${CPLUSPLUSONZE}")
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_FLAGS_RELEASE} -g")
 
 foreach(CPP_FILE ${AGRUM_CORE_SOURCES} ${AGRUM_BN_SOURCES} ${AGRUM_GRAPHICALMODEL_SOURCES} ${AGRUM_GRAPHS_SOURCES} ${AGRUM_MULTIDIM_SOURCES} ${AGRUM_VARIABLES_SOURCES} ${AGRUM_CN_SOURCES})
