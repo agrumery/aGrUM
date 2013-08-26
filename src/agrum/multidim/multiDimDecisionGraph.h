@@ -135,11 +135,6 @@ namespace gum {
         // ============================================================================
 //        NodeId nodeDefaultSon;
 
-          // ============================================================================
-          /// For fast swap we need to keep a list of parent node.
-          // ============================================================================
-          NodeChainElem* nodeParentList;
-
         };
 
     protected:
@@ -155,7 +150,7 @@ namespace gum {
         /// @param deleteParent : if true, parentList will be erase too.
         /// Typically not wanted in a swap for more efficiency
         // ============================================================================
-        static void _removeInternalNode(  InternalNode* node, bool deleteParents = true );
+        static void _removeInternalNode(  InternalNode* node );
 
       /// @}
 
