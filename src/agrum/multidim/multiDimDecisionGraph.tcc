@@ -93,7 +93,6 @@ namespace gum {
     InternalNode* newNode = static_cast<InternalNode*>(soa.allocate(sizeof(x->domainSize())));
     newNode->nodeVar = x;
     newNode->nodeSons = static_cast<NodeId*>(soa.allocate(x->domainSize()*sizeof(NodeId)));
-    newNode->nodeParentList = nullptr;
     return newNode;
 
   }
@@ -494,6 +493,30 @@ namespace gum {
     template<typename GUM_SCALAR>
     INLINE
     void MultiDimDecisionGraph<GUM_SCALAR>::_swap( const DiscreteVariable* x, const DiscreteVariable* y ){
+
+      // First we determine the position of both variable
+      // We also determine which one precede the other
+        const DiscreteVariable* firstVar = x;
+        const DiscreteVariable* lastVar = y;
+        Idx firstPos = this->variablesSequence().pos(x);
+        Idx lastPos = this->variablesSequence().pos(y);
+
+
+        if( firstPos > lastPos ){
+            firstPos = firstPos - lastPos;
+            lastPos = lastPos + firstPos;
+            firstPos = lastPos - firstPos;
+            lastVar = x;
+            firstVar = y;
+        }
+
+        Idx currentFirstPos = firstPos;
+        for(; currentFirstPos != lastPos; currentFirstPos++ )
+          _adjacentSwap( this->variablesSequence().atPos(currentFirstPos), this->variablesSequence().atPos(currentFirstPos + 1));
+
+        Idx currentLastPos = lastPos - 1;
+        for(; currentLastPos != firstPos; currentLastPos-- )
+          _adjacentSwap( this->variablesSequence().atPos(currentLastPos - 1), this->variablesSequence().atPos(currentLastPos));
 
     }
 

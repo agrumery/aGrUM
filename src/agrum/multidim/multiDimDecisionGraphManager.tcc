@@ -118,22 +118,20 @@ namespace gum {
     // ============================================================================
     template<typename GUM_SCALAR>
     INLINE
-    const NodeId& MultiDimDecisionGraphManager< GUM_SCALAR>::unsafeAddNonTerminalNode ( const DiscreteVariable* var,
-                                                                                        NodeId* sons,
-                                                                                        const NodeId& defaultSon){
+    const NodeId& MultiDimDecisionGraphManager< GUM_SCALAR>::addNonTerminalNode ( const DiscreteVariable* var,
+                                                                                        NodeId* sons, NodeId& nid){
 
       // Getting a new id for this node
-      NodeId newNode = __model.insertNode();
+      if( nid = 0 )
+          nid = __model.insertNode();
 
       // Getting the structure for this internal node
-      MultiDimDecisionGraph::InternalNode* newNodeStruct =
-          static_cast<MultiDimDecisionGraph::InternalNode*>(
-              MultiDimDecisionGraph::soa.allocate(sizeof(MultiDimDecisionGraph::InternalNode)));
+      MultiDimDecisionGraph< GUM_SCALAR>::InternalNode* newNodeStruct = __decisionGraph->_createInternalNode(var);
 
       // Initializing it
       newNodeStruct->nodeVar = var;
       newNodeStruct->nodeSons = sons;
-      newNodeStruct->nodeDefaultSon = defaultSon;
+//      newNodeStruct->nodeDefaultSon = defaultSon;
 
       // Adding this node to the list of node bound to variable var
       __decisionGraph->__var2NodeIdMap[var]->insert ( newNode );

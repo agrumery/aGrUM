@@ -70,7 +70,7 @@ namespace gum{
         /// This friend methods from is the only way to get an instance of a manager.
         /// See class description for more info.
         // ============================================================================
-        friend MultiDimDecisionGraphManager< GUM_SCALAR >* MultiDimDecisionGraph<GUM_SCALAR>::getManager();
+        friend MultiDimDecisionGraphManager< GUM_SCALAR >* MultiDimDecisionGraph<GUM_SCALAR>::manager();
 
         // ============================================================================
         /**
@@ -110,11 +110,20 @@ namespace gum{
          * @return the id of the added non terminal node.
          */
         // ============================================================================
-        ///@{
         const NodeId& addNonTerminalNode ( const DiscreteVariable* var );
-        const NodeId& unsafeAddNonTerminalNode ( const DiscreteVariable* var,
+
+        // ============================================================================
+        /**
+         * Inserts a new non terminal node in graph.
+         *
+         * @param var Associated variable
+         * @throw OperationNotAllowed if MultiDimDecisionGraph has no variable yet.
+         * @return the id of the added non terminal node.
+         */
+        // ============================================================================
+        const NodeId& addNonTerminalNode ( const DiscreteVariable* var,
                                                  NodeId* sons = nullptr,
-                                                 const NodeId& defaultSon = 0 );
+                                                 NodeId& nid = 0 );
         ///@}
 
         // ============================================================================
@@ -130,7 +139,7 @@ namespace gum{
          * already. Second element is the such node.
          */
         // ============================================================================
-        const std::pair<bool, NodeId>& checkRedundancy ( const DiscreteVariable* var,
+        const NodeId& checkRedundancy ( const DiscreteVariable* var,
                                                          const NodeId* sons,
                                                          const NodeId& defaultSon = 0 );
 
