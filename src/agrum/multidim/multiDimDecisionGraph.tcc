@@ -104,12 +104,7 @@ namespace gum {
   // ============================================================================
   template<typename GUM_SCALAR>
   INLINE
-  void MultiDimDecisionGraph<GUM_SCALAR>::_removeInternalNode(
-          MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* node, bool deleteParents ){
-
-    // Déallocation des chainons parents dans la liste des parents
-    if( deleteParents )
-      _deleteNICL(node->nodeParentList);
+  void MultiDimDecisionGraph<GUM_SCALAR>::_removeInternalNode( MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* node ){
 
     // Déallocation du vecteur fils
     soa.deallocate( node->nodeSons, node->nodeVar->domainSize()*sizeof(NodeId) );
@@ -415,13 +410,6 @@ namespace gum {
             }
           }
 
-          // Recopie des parents
-          NICLElem* iter = currentNode->nodeParentList;
-          while( iter ){
-            _addElemToNICL( newNode->nodeParentList, iter->elemId );
-            iter = iter->nextElem;
-          }
-
           __internalNodeMap.insert( currentNodeId, newNode );
           _addElemToNICL( __var2NodeIdMap[ currentNode->nodeVar ], currentNode );
         }
@@ -529,23 +517,70 @@ namespace gum {
     template<typename GUM_SCALAR>
     INLINE
     void MultiDimDecisionGraph<GUM_SCALAR>::_adjacentSwap( const DiscreteVariable* x, const DiscreteVariable* y ){
-      InternalNode* xNode = __internalNodeMap[xNodeId];
 
-      InternalNode* newyNode = _createInternalNode(y);
-      for( Idx indy = 0; indy < y->domainSize(); ++indy ){
+      NICLElem* oldxNodes = __var2NodeIdMap[ x ];
+      NICLElem* oldyNodes = __var2NodeIdMap[ y ];
 
-        NodeId* xsons = static_cast<NodeId*>( soa.allocate(x->domainSize()*sizeof(NodeId)) );
-        InternalNode* xsonNode = nullptr;
-        for( Idx indx; indx < x->domainSize(); ++indx ){
-          xsonNode = __internalNodeMap[ xNode->nodeSons[indx] ];
-          if( xsonNode->nodeVar == y )
-            xsons[indx] = xsonNode->nodeSons[indy];
-          else
-            xsons[indx] = xNode->nodeSons[indx];
+      __var2NodeIdMap[ x ] = nullptr;
+      __var2NodeIdMap[ y ] = nullptr;
+
+      InternalNode* xNode = nullptr;
+      InternalNode* sonNode = nullptr;
+      NodeId* ysons = nullptr;
+      NodeId* xsons = nullptr;
+      NICLElem* nextn = nullptr;
+
+      while( oldxNodes ){
+
+        // Recuperation de la structure associée au noeud courant
+        xNode = __internalNodeMap[oldxNodes->elemId];
+
+        // Creation de la structure amenee à remplacer la structure courante
+        // et associée par conséquence à y
+        ysons = static_cast<NodeId*>( soa.allocate(y->domainSize()*sizeof(NodeId)) );
+
+        // Maintenant il faut remapper le graphe en insérant un noeud associé à x
+        // Pour chaque valeur de y
+        for( Idx indy = 0; indy < y->domainSize(); ++indy ){
+
+          // Creation du vecteur fils du noeud associe à x qui sera sont descendant pour cette valeur-ci
+          xsons = static_cast<NodeId*>( soa.allocate(x->domainSize()*sizeof(NodeId)) );
+
+          // Iteration sur les différente valeurs de x pour faire le mapping
+          for( Idx indx; indx < x->domainSize(); ++indx ){
+            sonNode = __internalNodeMap[ xNode->nodeSons[indx] ];
+            if( xsonNode->nodeVar == y )
+              xsons[indx] = sonNode->nodeSons[indy];
+            else
+              xsons[indx] = xNode->nodeSons[indx];
+          }
+
+          // Verification que le nouveau noeud x à insérer n'aura pas de doublon
+          ysons[indy] = manager()->checkRedundancy( x, xsons );
+          // Si non, alors on l'insère
+          if( ysons[indy] == 0 )
+            ysons[indy] = manager()->addNonTerminalNode( x, xsons );
         }
-        NodeId newxNodeId = manager()->checkRedundancy(x, xsons);
-        if( newxNodeId == 0 )
-          newxNodeId = manager()->unsafeAddNonTerminalNode(x, xsons);
+
+        // Même opération pour y une fois la creation de ses fils achevée
+        NodeId newyNodeId = manager()->checkRedundancy( y, ysons );
+        if( newyNodeId == 0 )
+          newyNodeId = manager()->addNonTerminalNode( y, ysons, oldxNodes->elemId );
+
+        nextn = oldxNodes->nextElem;
+        _removeInternalNode(xNode);
+        _removeElemFromNICL(oldxNodes, oldxNode->elemId);
+        oldxNodes = nextn;
+      }
+
+      while(oldyNodes){
+
+        nextn = oldyNodes->nextElem;
+        _removeInternalNode(__internalNodeMap[oldyNodes->elemId]);
+        __internalNodeMap.erase(oldyNodes->elemId);
+        manager()->releaseId(oldyNodes->elemId);
+        _removeElemFromNICL(oldyNodes, oldyNode->elemId);
+        oldyNodes = nextx;
       }
     }
 
