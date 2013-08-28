@@ -22,8 +22,8 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_DEFAULT_CPT_GENERATOR_H
-#define GUM_DEFAULT_CPT_GENERATOR_H
+#ifndef GUM_SIMPLE_CPT_GENERATOR_H
+#define GUM_SIMPLE_CPT_GENERATOR_H
 
 #include <cstdlib>
 
@@ -66,7 +66,7 @@ namespace gum {
        * @param varId The variable id of the CPT owner.
        * @param cpt A reference on the CPT to fill.
        */
-      virtual void generateCPT( const Idx& varId, const Potential<GUM_SCALAR>& cpt );
+      virtual void generateCPT ( const Idx& varId, const Potential<GUM_SCALAR>& cpt );
 
 
   };

@@ -22,8 +22,8 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN and Ariele-Paolo MAESANO
  */
-#ifndef GUM_DEFAULT_BAYES_NET_GENERATOR_H
-#define GUM_DEFAULT_BAYES_NET_GENERATOR_H
+#ifndef GUM_SIMPLE_BAYES_NET_GENERATOR_H
+#define GUM_SIMPLE_BAYES_NET_GENERATOR_H
 
 #include <climits>
 #include <cstdio>
@@ -39,7 +39,7 @@
 namespace gum {
 
   /**
-   * @class SimpleBayesNetGenerator defaultBayesNetGenerator.h <agrum/BN/generator/defaultBayesNetGenerator.h>
+   * @class SimpleBayesNetGenerator simpleBayesNetGenerator.h <agrum/BN/generator/simpleBayesNetGenerator.h>
    * @brief Class for generating bayesian networks.
    * @ingroup bn_group
    *

@@ -36,7 +36,7 @@
 namespace gum {
   /**
    * @class AbstractBayesNetFactory
-   * AbstractBayesNetFactory is the non-template abstract version of @ref BayesNetFactory<GUM_SCALAR> : many ways to build a BN do not depend
+   * AbstractBayesNetFactory is the non-template abstract version of @ref BayesNetFactory : many ways to build a BN do not depend
    * on the specification of the GUM_SCALAR template argument (for instance for BN readers).
    */
   class AbstractBayesNetFactory {

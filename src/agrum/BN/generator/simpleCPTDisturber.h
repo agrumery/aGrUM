@@ -26,8 +26,8 @@
  *
  */
 
-#ifndef GUM_DEFAULT_CPT_DISTURBER_H
-#define GUM_DEFAULT_CPT_DISTURBER_H
+#ifndef GUM_SIMPLE_CPT_DISTURBER_H
+#define GUM_SIMPLE_CPT_DISTURBER_H
 
 #include <cstdlib>
 
