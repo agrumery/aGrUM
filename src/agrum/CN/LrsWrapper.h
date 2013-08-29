@@ -200,10 +200,6 @@ namespace gum {
          *
          * Build polyhedron constraints and objective.
          * Rational< GUM_SCALAR >::continuedFrac is the default algorithm used to approximate reals by integer rationals.
-         *
-         * @param P A pointer to a lrs_dic struct with flags set.
-         * @param Q A pointer to a lrs_dat struct with members set.
-         * @param F The function pointer to be used to approximate reals by rationals.
          */
         void __fill() const;
 

@@ -29,11 +29,11 @@ namespace gum {
 
 
   // Default constructor.
-  // Use the DefaultCPTGenerator for generating the IDs CPT.
+  // Use the SimpleCPTGenerator for generating the IDs CPT.
   template <typename GUM_SCALAR>
   InfluenceDiagramGenerator<GUM_SCALAR>::InfluenceDiagramGenerator() {
     GUM_CONSTRUCTOR( InfluenceDiagramGenerator );
-    __cptGenerator = new DefaultCPTGenerator<GUM_SCALAR>();
+    __cptGenerator = new SimpleCPTGenerator<GUM_SCALAR>();
     __utGenerator = new SimpleUTGenerator();
   }
 
@@ -55,7 +55,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   InfluenceDiagramGenerator<GUM_SCALAR>::InfluenceDiagramGenerator( UTGenerator* utGenerator ) {
     GUM_CONSTRUCTOR( InfluenceDiagramGenerator );
-    __cptGenerator = new DefaultCPTGenerator<GUM_SCALAR>();
+    __cptGenerator = new SimpleCPTGenerator<GUM_SCALAR>();
     __utGenerator = utGenerator;
   }
 

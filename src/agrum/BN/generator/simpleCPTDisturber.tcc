@@ -18,12 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Source implementation of DefaultCPTDisturber.
+ * @brief Source implementation of SimpleCPTDisturber.
  *
  * @author Pierre-Henri WUILLEMIN and Ariele-Paolo MAESANO
  *
  */
-#include <agrum/BN/generator/defaultCPTDisturber.h>
+#include <agrum/BN/generator/simpleCPTDisturber.h>
 
 
 
@@ -32,24 +32,24 @@ namespace gum {
 
 // Default constructor.
   template <typename GUM_SCALAR> INLINE
-  DefaultCPTDisturber<GUM_SCALAR>::DefaultCPTDisturber():
+  SimpleCPTDisturber<GUM_SCALAR>::SimpleCPTDisturber():
     AbstractCPTDisturber<GUM_SCALAR>() {
-    GUM_CONSTRUCTOR( DefaultCPTDisturber );
+    GUM_CONSTRUCTOR( SimpleCPTDisturber );
   }
 
 // Destructor.
   template <typename GUM_SCALAR> INLINE
-  DefaultCPTDisturber<GUM_SCALAR>::~DefaultCPTDisturber() {
-    GUM_DESTRUCTOR( DefaultCPTDisturber );
+  SimpleCPTDisturber<GUM_SCALAR>::~SimpleCPTDisturber() {
+    GUM_DESTRUCTOR( SimpleCPTDisturber );
   }
 
-// Generates a CPT using floats.
+// Generates a CPT using GUM_SCALAR.
 // @param varID The variable id of the CPT owner.
 // @param cpt A reference on the CPT to fill.
 
 
   template <typename GUM_SCALAR> void
-  DefaultCPTDisturber<GUM_SCALAR>::disturbReducCPT( NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet, Potential<GUM_SCALAR>& cptCopy, Potential<GUM_SCALAR>& marg ) {
+  SimpleCPTDisturber<GUM_SCALAR>::disturbReducCPT( NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet, Potential<GUM_SCALAR>& cptCopy, Potential<GUM_SCALAR>& marg ) {
     Instantiation i( cptCopy );
     Instantiation iCopy( cptCopy );
     Instantiation imarg( marg );
@@ -72,7 +72,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR> void
-  DefaultCPTDisturber<GUM_SCALAR>::disturbAugmCPT( NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet, Potential<GUM_SCALAR>& cptCopy, GUM_SCALAR variation ) {
+  SimpleCPTDisturber<GUM_SCALAR>::disturbAugmCPT( NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet, Potential<GUM_SCALAR>& cptCopy, GUM_SCALAR variation ) {
     Instantiation i( cptCopy );
     Instantiation iCopy( cptCopy );
     iCopy.forgetMaster();

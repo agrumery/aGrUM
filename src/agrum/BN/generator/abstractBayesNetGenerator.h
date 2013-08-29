@@ -33,7 +33,7 @@
 #include <vector>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/generator/defaultCPTGenerator.h>
+#include <agrum/BN/generator/simpleCPTGenerator.h>
 
 #include <agrum/variables/labelizedVariable.h>
 
@@ -61,7 +61,7 @@ namespace gum {
       /// @{
       /**
        * constructor.
-       * Use by default the DefaultCPTGenerator for generating the BNs CPT.
+       * Use by default the SimpleCPTGenerator for generating the BNs CPT.
        * @param nbrNodes The number of nodes in the generated BN.
        * @param maxArcs The number of maximum number of arcs imposed on the generator
        * @param maxModality Each DRV has from 2 to maxModality modalities

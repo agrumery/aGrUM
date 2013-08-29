@@ -180,6 +180,8 @@ macro(GUM_SWIG_ADD_MODULE name language)
     ${swig_generated_sources}
     ${swig_other_sources})
   string(TOLOWER "${language}" swig_lowercase_language)
+  set_target_properties(${SWIG_MODULE_${name}_REAL_NAME} PROPERTIES COMPILE_FLAGS "-DGUM_RANDOMSEED=${GUM_RANDOMSEED}")
+
   if ("${swig_lowercase_language}" STREQUAL "java")
     if (APPLE)
         # In java you want:

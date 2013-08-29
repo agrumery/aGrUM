@@ -27,7 +27,7 @@
 #include "testsuite_utils.h"
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/generator/defaultBayesNetGenerator.h>
+#include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/variables/discreteVariable.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/variables/labelizedVariable.h>
@@ -623,7 +623,7 @@ namespace gum_tests {
 
       void testCopyAndEqualityOperators() {
         gum::BayesNet<float>* bn_1 = new gum::BayesNet<float>();
-        gum::DefaultBayesNetGenerator<float> generator( 20, 30, 4 );
+        gum::SimpleBayesNetGenerator<float> generator( 20, 30, 4 );
         generator.generateBN( *bn_1 );
 
         gum::BayesNet<float>* bn_2 = new gum::BayesNet<float>();

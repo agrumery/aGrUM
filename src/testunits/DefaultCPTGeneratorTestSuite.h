@@ -24,11 +24,11 @@
 #include "testsuite_utils.h"
 
 #include <agrum/variables/labelizedVariable.h>
-#include <agrum/BN/generator/defaultCPTGenerator.h>
+#include <agrum/BN/generator/simpleCPTGenerator.h>
 
 namespace gum_tests {
 
-  class DefaultCPTGeneratorTestSuite: public CxxTest::TestSuite {
+  class SimpleCPTGeneratorTestSuite: public CxxTest::TestSuite {
     public:
       // Binary variables
       gum::LabelizedVariable* binVar1;
@@ -136,14 +136,14 @@ namespace gum_tests {
       }
 
       void testCreationDeletion() {
-        gum::DefaultCPTGenerator<float>* aCptGen = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING( aCptGen = new gum::DefaultCPTGenerator<float>() );
+        gum::SimpleCPTGenerator<float>* aCptGen = nullptr;
+        TS_GUM_ASSERT_THROWS_NOTHING( aCptGen = new gum::SimpleCPTGenerator<float>() );
         TS_GUM_ASSERT_THROWS_NOTHING( delete aCptGen );
       }
 
       // Test the generator on root variables
       void testRootVariablesFloat() {
-        gum::DefaultCPTGenerator<float> aCPTGen;
+        gum::SimpleCPTGenerator<float> aCPTGen;
         TS_GUM_ASSERT_THROWS_NOTHING( aCPTGen.generateCPT( rootPot1F->pos( *binVar1 ), *rootPot1F ) );
 
         gum::Instantiation inst( *rootPot1F );
@@ -158,7 +158,7 @@ namespace gum_tests {
       }
 
       void testRootVariablesDouble() {
-        gum::DefaultCPTGenerator<double> aCPTGen;
+        gum::SimpleCPTGenerator<double> aCPTGen;
         TS_GUM_ASSERT_THROWS_NOTHING( aCPTGen.generateCPT( rootPot1F->pos( *binVar1 ), *rootPot1D ) );
 
         gum::Instantiation inst( *rootPot1D );
@@ -174,7 +174,7 @@ namespace gum_tests {
 
       // Testing with one parent - float version
       void testBinaryVariableFloat_1() {
-        gum::DefaultCPTGenerator<float> aCPTGen;
+        gum::SimpleCPTGenerator<float> aCPTGen;
         TS_GUM_ASSERT_THROWS_NOTHING( aCPTGen.generateCPT( pot1F->pos( *binVar1 ), *pot1F ) );
 
         gum::Instantiation inst( *pot1F );
@@ -202,7 +202,7 @@ namespace gum_tests {
 
       // Testing with many parents - float version
       void testBinaryVariableFloat_2() {
-        gum::DefaultCPTGenerator<float> aCPTGen;
+        gum::SimpleCPTGenerator<float> aCPTGen;
         TS_GUM_ASSERT_THROWS_NOTHING( aCPTGen.generateCPT( pot2F->pos( *binVar3 ), *pot2F ) );
 
         gum::Instantiation inst( *pot2F );
@@ -230,7 +230,7 @@ namespace gum_tests {
 
       // Testing with one parent - double version
       void testBinaryVariableDouble_1() {
-        gum::DefaultCPTGenerator<double> aCPTGen;
+        gum::SimpleCPTGenerator<double> aCPTGen;
         TS_GUM_ASSERT_THROWS_NOTHING( aCPTGen.generateCPT( pot1D->pos( *binVar1 ), *pot1D ) );
 
         gum::Instantiation inst( *pot1D );
@@ -253,7 +253,7 @@ namespace gum_tests {
 
       // Testing with many parents - double version
       void testBinaryVariableDouble_2() {
-        gum::DefaultCPTGenerator<double> aCPTGen;
+        gum::SimpleCPTGenerator<double> aCPTGen;
         TS_GUM_ASSERT_THROWS_NOTHING( aCPTGen.generateCPT( pot2D->pos( *binVar4 ), *pot2D ) );
 
         gum::Instantiation inst( *pot2D );
@@ -276,7 +276,7 @@ namespace gum_tests {
 
       // Testing with no parents - float version
       void testNAryVariableFloat_1() {
-        gum::DefaultCPTGenerator<float> cptGen;
+        gum::SimpleCPTGenerator<float> cptGen;
 
         for ( int i = 2; i < 100; ++i ) {
           gum::LabelizedVariable aVar( "aVar", "A discrete variable", i );
@@ -297,7 +297,7 @@ namespace gum_tests {
 
       // Testing with 4 parents, with domain size > 2
       void testNAryVariableFloat_2() {
-        gum::DefaultCPTGenerator<float> cptGen;
+        gum::SimpleCPTGenerator<float> cptGen;
         TS_GUM_ASSERT_THROWS_NOTHING( cptGen.generateCPT( pot3F->pos( *nVar3 ), *pot3F ) );
         gum::Instantiation instVar3;
         instVar3.add( *nVar3 );
@@ -318,7 +318,7 @@ namespace gum_tests {
 
       // Testing with no parents - double version
       void testNAryVariableDouble_1() {
-        gum::DefaultCPTGenerator<double> cptGen;
+        gum::SimpleCPTGenerator<double> cptGen;
 
         for ( int i = 2; i < 100; ++i ) {
           gum::LabelizedVariable aVar( "aVar", "A discrete variable", i );
@@ -339,7 +339,7 @@ namespace gum_tests {
 
       // Testing with 4 parents, with domain size > 2
       void testNAryVariableDouble_2() {
-        gum::DefaultCPTGenerator<double> cptGen;
+        gum::SimpleCPTGenerator<double> cptGen;
         TS_GUM_ASSERT_THROWS_NOTHING( cptGen.generateCPT( pot3D->pos( *nVar3 ), *pot3D ) );
 
         gum::Instantiation instVar3;

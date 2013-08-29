@@ -168,8 +168,9 @@ namespace gum {
          *
          * @param id The id of the node to be updated
          * @param vertex A (potential) vertex of the node credal set
+         * @param elimRedund remove redundant vertex (inside a facet)
          */
-        inline void _updateCredalSetsWithFiles( const NodeId& id, const std::vector< GUM_SCALAR >& vertex, const bool& elimRedund = false );
+        GUM_DEPRECATED(inline void _updateCredalSetsWithFiles( const NodeId& id, const std::vector< GUM_SCALAR >& vertex, const bool& elimRedund = false ));
 
         /**
          * Given a node id and one of it's possible vertex, update it's credal set.
@@ -177,6 +178,7 @@ namespace gum {
          *
          * @param id The id of the node to be updated
          * @param vertex A (potential) vertex of the node credal set
+         * @param elimRedund remove redundant vertex (inside a facet)
          */
         inline void _updateCredalSets( const NodeId& id, const std::vector< GUM_SCALAR >& vertex, const bool& elimRedund = false );
 
@@ -245,10 +247,7 @@ namespace gum {
          * @param repetitive \c True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks.
          */
         void setRepetitiveInd( const bool repetitive );
-        /**
-         * @param iter_stop The number of iterations without changes needed to stop some algorithms.
-         */
-        ///void setIterStop ( const int & iter_stop );
+
         /**
          * @param value \c True if vertices are to be stored, false otherwise.
          */

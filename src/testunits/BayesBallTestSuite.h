@@ -24,7 +24,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include "testsuite_utils.h"
 
-#include <agrum/BN/generator/defaultBayesNetGenerator.h>
+#include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/inference/BayesBall.h>
 
 namespace gum_tests {
@@ -47,7 +47,7 @@ namespace gum_tests {
 
       void testRequisiteNodes() {
         gum::BayesBall balls;
-        gum::DefaultBayesNetGenerator<float> gen( 50, 200, 2 );
+        gum::SimpleBayesNetGenerator<float> gen( 50, 200, 2 );
         gum::BayesNet<float>* bn = new  gum::BayesNet<float>();
         gen.generateBN( *bn );
         gum::Set<gum::NodeId> requisite;

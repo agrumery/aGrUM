@@ -26,7 +26,7 @@
 
 #include <agrum/influenceDiagram/influenceDiagram.h>
 #include <agrum/influenceDiagram/generator/influenceDiagramGenerator.h>
-#include <agrum/BN/generator/defaultCPTGenerator.h>
+#include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/influenceDiagram/generator/simpleUTGenerator.h>
 
 namespace gum_tests {
@@ -50,7 +50,7 @@ namespace gum_tests {
       void testCreationDeletion_2() {
         gum::InfluenceDiagramGenerator<float>* gen = nullptr;
 
-        gum::DefaultCPTGenerator<float>* cptGen = new gum::DefaultCPTGenerator<float>();
+        gum::SimpleCPTGenerator<float>* cptGen = new gum::SimpleCPTGenerator<float>();
         TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::InfluenceDiagramGenerator<float>( cptGen ) );
         TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
       }
@@ -66,7 +66,7 @@ namespace gum_tests {
       void testCreationDeletion_4() {
         gum::InfluenceDiagramGenerator<float>* gen = nullptr;
 
-        gum::DefaultCPTGenerator<float>* cptGen = new gum::DefaultCPTGenerator<float>();
+        gum::SimpleCPTGenerator<float>* cptGen = new gum::SimpleCPTGenerator<float>();
         gum::SimpleUTGenerator* utGen = new gum::SimpleUTGenerator();
         TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::InfluenceDiagramGenerator<float>( cptGen, utGen ) );
         TS_GUM_ASSERT_THROWS_NOTHING( delete gen );

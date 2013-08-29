@@ -21,13 +21,13 @@
 
 /**
  * @file
- * @brief Source implementation of DefaultCPTDisturber.
+ * @brief Source implementation of SimpleCPTDisturber.
  * @author Pierre-Henri WUILLEMIN and Ariele-Paolo MAESANO
  *
  */
 
-#ifndef GUM_DEFAULT_CPT_DISTURBER_H
-#define GUM_DEFAULT_CPT_DISTURBER_H
+#ifndef GUM_SIMPLE_CPT_DISTURBER_H
+#define GUM_SIMPLE_CPT_DISTURBER_H
 
 #include <cstdlib>
 
@@ -37,14 +37,14 @@
 namespace gum {
 
 
-  /** @class DefaultCPTDisturber
+  /** @class SimpleCPTDisturber
    * @brief Class for disturbing Conditional Probability Tables.
    * @ingroup bn_group
    *
    * This class implements a CPTGenerator CPT generation algorithm.
    */
   template <typename GUM_SCALAR>
-  class DefaultCPTDisturber: public AbstractCPTDisturber<GUM_SCALAR> {
+  class SimpleCPTDisturber: public AbstractCPTDisturber<GUM_SCALAR> {
     public:
       // ############################################################################
       /// @name Constructors / Destructor
@@ -53,12 +53,12 @@ namespace gum {
       /**
        * Default constructor.
        */
-      DefaultCPTDisturber();
+      SimpleCPTDisturber();
 
       /**
        * Destructor.
        */
-      virtual ~DefaultCPTDisturber();
+      virtual ~SimpleCPTDisturber();
       /// @}
 
       // ############################################################################
@@ -66,17 +66,17 @@ namespace gum {
       // ############################################################################
       /// @{
       /**
-       * Disturb a CPT using GUM_SCALAR.
+       * Disturb a CPT using GUM_SCALAR when removing parent varIdi.
        * @param varIdi The variable id parent of the CPT owner.
        * @param varIdj The variable on the CPT owner.
-       * @param bayesNet tne Bayesian Network.
+       * @param bayesNet the Bayesian Network.
        * @param cptCopy copy of the CPT before reduction.
        * @param marg of the inference before reduction on the node varIdi.
        */
       virtual void disturbReducCPT( NodeId varIdi, NodeId varIdj, BayesNet<GUM_SCALAR>& bayesNet, Potential<GUM_SCALAR>& cptCopy, Potential<GUM_SCALAR>& marg );
 
       /**
-       * Disturb a CPT using GUM_SCALAR.
+       * Disturb a CPT using GUM_SCALAR when inserting a new parent varIdi.
        * @param varIdi The variable id parent of the CPT owner.
        * @param varIdj A reference on the CPT owner.
        * @param bayesNet the Bayesian Network.
@@ -91,5 +91,5 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/BN/generator/defaultCPTDisturber.tcc>
+#include <agrum/BN/generator/simpleCPTDisturber.tcc>
 #endif // SIMPLECPTDISTURBER_H

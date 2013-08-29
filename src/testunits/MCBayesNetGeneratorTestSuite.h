@@ -25,8 +25,8 @@
 #include "testsuite_utils.h"
 
 #include <agrum/BN/generator/MCBayesNetGenerator.h>
-#include <agrum/BN/generator/defaultCPTGenerator.h>
-#include <agrum/BN/generator/defaultCPTDisturber.h>
+#include <agrum/BN/generator/simpleCPTGenerator.h>
+#include <agrum/BN/generator/simpleCPTDisturber.h>
 #include <agrum/core/set.h>
 #include <agrum/core/exceptions.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
