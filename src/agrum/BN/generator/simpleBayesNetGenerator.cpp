@@ -22,4 +22,4 @@
  *
  * @author Pierre-Henri WUILLEMIN and Ariele-Paolo MAESANO
  */
-#include <agrum/BN/generator/defaultBayesNetGenerator.h>
+#include <agrum/BN/generator/simpleBayesNetGenerator.h>

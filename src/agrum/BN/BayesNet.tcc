@@ -35,7 +35,7 @@
 #include <agrum/multidim/CIModels/multiDimNoisyORNet.h>
 #include <agrum/multidim/CIModels/multiDimNoisyORCompound.h>
 
-#include <agrum/BN/generator/defaultCPTGenerator.h>
+#include <agrum/BN/generator/simpleCPTGenerator.h>
 
 
 namespace gum {
@@ -552,7 +552,7 @@ namespace gum {
 
   template<typename GUM_SCALAR>
   void BayesNet<GUM_SCALAR>::generateCPTs() {
-    DefaultCPTGenerator<GUM_SCALAR> generator;
+    SimpleCPTGenerator<GUM_SCALAR> generator;
 
     for ( DAG::NodeIterator iter = this->beginNodes(); iter != this->endNodes(); ++iter ) {
       generator.generateCPT( cpt( *iter ).pos( variable( *iter ) ),  cpt( *iter ) );

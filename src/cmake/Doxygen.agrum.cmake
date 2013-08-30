@@ -1,7 +1,7 @@
 find_package(Doxygen)
 
 IF (DOXYGEN_FOUND)
-	SET(DOXYGEN_INPUT ${AGRUM_BINARY_DIR}/agrum.doxy ${AGRUM_BINARY_DIR}/piedpage_agrum.html ${AGRUM_BINARY_DIR}/agrum.css)
+	SET(DOXYGEN_INPUT ${AGRUM_BINARY_DIR}/agrum.doxy)
 	SET(DOXYGEN_OUTPUT_DIR "${AGRUM_BINARY_DIR}/docs/html")
 	SET(DOXYGEN_OUTPUT "${DOXYGEN_OUTPUT_DIR}/index.html")
 

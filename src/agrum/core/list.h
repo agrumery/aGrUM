@@ -189,7 +189,7 @@ namespace gum {
     ///@{
 
     /// remove empty constructor
-    ListBucket () = delete;
+    ListBucket() = delete;
     
     /// default constructor
     explicit ListBucket ( const Val& v );
@@ -642,6 +642,7 @@ namespace gum {
      * The first element of the list is at pos 0. After the insert, the element
      * is placed precisely at pos if pos is less than the size of the list
      * before insertion, else it is inserted at the end of the list.
+     * @param iter the position in the list
      * @param args the arguments passed to the constructor
      * @return a reference on the copy inserted into the list */
     template <typename... Args>

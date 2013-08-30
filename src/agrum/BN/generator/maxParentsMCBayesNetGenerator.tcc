@@ -30,7 +30,7 @@
 namespace gum {
 
 // Default constructor.
-// Use the DefaultCPTGenerator for generating the BNs CPT.
+// Use the SimpleCPTGenerator for generating the BNs CPT.
   template<typename GUM_SCALAR, template<class> class ICPTGenerator, template<class> class ICPTDisturber> INLINE
   MaxParentsMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::MaxParentsMCBayesNetGenerator( Size nbrNodes, Size maxArcs , Size max_modality, Size maxParents, Idx iteration,  Idx p, Idx q ) :
     MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber> ( nbrNodes, maxArcs, max_modality, iteration , p, q ) {

@@ -31,7 +31,7 @@
 #include <list>
 #include <vector>
 
-#include <agrum/BN/generator/defaultBayesNetGenerator.h>
+#include <agrum/BN/generator/simpleBayesNetGenerator.h>
 
 #include <agrum/prm/PRMFactory.h>
 #include <agrum/prm/generator/PRMGenerator.h>

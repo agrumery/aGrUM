@@ -39,8 +39,8 @@
 
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/generator/defaultCPTGenerator.h>
-#include <agrum/BN/generator/defaultCPTDisturber.h>
+#include <agrum/BN/generator/simpleCPTGenerator.h>
+#include <agrum/BN/generator/simpleCPTDisturber.h>
 #include <agrum/BN/generator/MCBayesNetGenerator.h>
 #include <agrum/variables/labelizedVariable.h>
 
@@ -63,7 +63,7 @@ namespace gum {
    * @warning  Be Careful when entering the parameters, high Values may cause the density of the Bayesian Network to be too high
    * resulting in the failure of most of the inference Methods. \n
    * */
-  template<typename GUM_SCALAR, template<class> class ICPTGenerator = DefaultCPTGenerator, template<class> class ICPTDisturber = DefaultCPTDisturber>
+  template<typename GUM_SCALAR, template<class> class ICPTGenerator = SimpleCPTGenerator, template<class> class ICPTDisturber = SimpleCPTDisturber>
   class MaxParentsMCBayesNetGenerator : public MCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber> {
 
     public:
@@ -75,8 +75,8 @@ namespace gum {
 
       /**
       * Constructor.
-      * Use by default the DefaultCPTGenerator for generating the BNs CPT
-      * and the DefaultCPTDisturber to tweak the CPT when the dimension of the table changes.
+      * Use by default the SimpleCPTGenerator for generating the BNs CPT
+      * and the SimpleCPTDisturber to tweak the CPT when the dimension of the table changes.
       * @param nbrNodes The number of nodes in the generated BN.
       * @param maxArcs The maximum number of Arcs.
       * @param maxModality Each DRV has from 2 to maxModality modalities
@@ -89,8 +89,8 @@ namespace gum {
 
       /**
       * Constructor.
-      * Use by default the DefaultCPTGenerator for generating the BNs CPT
-      * and the DefaultCPTDisturber to tweak the CPT when the dimension of the table changes.
+      * Use by default the SimpleCPTGenerator for generating the BNs CPT
+      * and the SimpleCPTDisturber to tweak the CPT when the dimension of the table changes.
       * @param bayesNet the BayesNet used as reference to fill the parameters nbrNodes, maxArcs and maxModality
       * @param maxParents The number of maximum parents for each node imposed on the generator
       * @param iteration The number of iterations wanted to repeat the algorithm

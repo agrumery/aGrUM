@@ -181,10 +181,10 @@ namespace gum {
       }
       /// @}
 
-      /// stopping criterion on number of iteration
+      /// stopping criterion on number of iterations
+      /// @{
       /// If the criterion was disabled it will be enabled
       /// @param max The maximum number of iterations
-      /// @{
       /// @throw OutOfLowerBound if max<=1
       void setMaxIter( Size max ) {
         if ( max < 1 ) {
@@ -195,6 +195,7 @@ namespace gum {
         __test__max_iter = true;
       };
 
+      /// @return the criterion on number of iterations
       Size maxIter( void ) const {
         return __max_iter;
       };

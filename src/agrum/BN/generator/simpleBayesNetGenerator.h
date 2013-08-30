@@ -18,62 +18,77 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Abstract class for generating Conditional Probability Tables.
+ * @brief Class for generating bayesian netwroks.
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN and Ariele-Paolo MAESANO
  */
-#ifndef GUM_DEFAULT_CPT_GENERATOR_H
-#define GUM_DEFAULT_CPT_GENERATOR_H
+#ifndef GUM_SIMPLE_BAYES_NET_GENERATOR_H
+#define GUM_SIMPLE_BAYES_NET_GENERATOR_H
 
+#include <climits>
+#include <cstdio>
 #include <cstdlib>
+#include <iostream>
+#include <vector>
 
-#include <agrum/BN/generator/abstractCPTGenerator.h>
+
+#include <agrum/BN/generator/abstractBayesNetGenerator.h>
+
 
 
 namespace gum {
 
-
-  /** @class DefaultCPTGenerator
-   * @brief Class for generating Conditional Probability Tables.
+  /**
+   * @class SimpleBayesNetGenerator simpleBayesNetGenerator.h <agrum/BN/generator/simpleBayesNetGenerator.h>
+   * @brief Class for generating bayesian networks.
    * @ingroup bn_group
    *
-   * This class implements a CPTGenerator CPT generation algorithm.
+   * This class randomly generates a bayesian network given three parameters:
+   * the number of nodes and the max number of arcs and the number of maximum modality for each nodes.
+   * @warning  Be Careful when entering the parameters, high Values may cause the density of the Bayesian Network to be too high
+   * resulting in the failure of most of the inference Methods.
    */
-  template <typename GUM_SCALAR>
-  class DefaultCPTGenerator: public AbstractCPTGenerator<GUM_SCALAR> {
+  template <typename GUM_SCALAR, template<class> class ICPTGenerator = SimpleCPTGenerator>
+
+  class SimpleBayesNetGenerator : public AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator> {
     public:
       // ############################################################################
       /// @name Constructors / Destructor
       // ############################################################################
       /// @{
+
       /**
-       * Default constructor.
-       */
-      DefaultCPTGenerator();
+      * Constructor.
+      * Use by default the SimpleCPTGenerator for generating the BNs CPT.
+      * @param nbrNodes The number of nodes imposed on the generator.
+      * @param maxArcs The number of maximum arcs imposed on the generator.
+      * @param maxModality Each DRV has from 2 to maxModality modalities
+      */
+      SimpleBayesNetGenerator( Size nbrNodes, Size maxArcs, Size maxModality = 2 );
 
       /**
        * Destructor.
        */
-      virtual ~DefaultCPTGenerator();
+      ~SimpleBayesNetGenerator();
       /// @}
 
       // ############################################################################
-      /// @name CPT generation methods
+      /// @name BN generation methods
       // ############################################################################
       /// @{
       /**
-       * Generates a CPT using floats.
-       * @param varId The variable id of the CPT owner.
-       * @param cpt A reference on the CPT to fill.
+      * function that generates a bayesian networks.
+       * @param bayesNet Bayesian Network to be completed after initialisation
+       * @return null but modify inputed Bayesian Network
        */
-      virtual void generateCPT( const Idx& varId, const Potential<GUM_SCALAR>& cpt );
+      void generateBN( BayesNet<GUM_SCALAR>& bayesNet );
 
-
-  };
-
+      /// @}
+  }; /* class SimpleBayesNetGenerator */
 
 } /* namespace gum */
 
-#include <agrum/BN/generator/defaultCPTGenerator.tcc>
-#endif /* GUM_SIMPLE_CPT_GENERATOR_H */
+#include<agrum/BN/generator/simpleBayesNetGenerator.tcc>
+
+#endif /* GUM_SIMPLE_BAYES_NET_GENERATOR_H */
 

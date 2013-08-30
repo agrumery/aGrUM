@@ -25,9 +25,9 @@
 
 namespace gum {
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
   namespace __sig__ {
-
 
     template<LIST_DECL_CLASSES>
     class MAKE_NAME ( IConnector ) {
@@ -45,10 +45,8 @@ namespace gum {
     template<LIST_DECL_CLASSES>
     class MAKE_NAME ( BasicSignaler ) : public ISignaler {
     protected:
-      typedef List < MAKE_NAME ( IConnector ) <LIST_CLASSES> * >
-        ConnectorList;
-      typedef ListConstIteratorUnsafe< MAKE_NAME ( IConnector ) <LIST_CLASSES>*>
-        ConnectorIterator;
+      typedef List < MAKE_NAME ( IConnector ) <LIST_CLASSES> * > ConnectorList;
+      typedef ListConstIteratorUnsafe< MAKE_NAME ( IConnector ) <LIST_CLASSES>*> ConnectorIterator;
 
 
       MAKE_NAME ( BasicSignaler ) () {
@@ -238,6 +236,7 @@ namespace gum {
 
   };
 
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 } // namespace gum
 
@@ -248,4 +247,3 @@ namespace gum {
 #undef LIST_DECL_ARGS
 #undef LIST_ARGS
 #undef SIGNALER_PATRON_ACCEPTED
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

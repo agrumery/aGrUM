@@ -31,7 +31,7 @@
 #include <iostream>
 
 #include <agrum/variables/labelizedVariable.h>
-#include <agrum/BN/generator/defaultCPTGenerator.h>
+#include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/generator/abstractCPTGenerator.h>
 #include <agrum/influenceDiagram/influenceDiagram.h>
 #include <agrum/influenceDiagram/generator/UTGenerator.h>
@@ -61,7 +61,7 @@ namespace gum {
       /// @{
       /**
        * Default constructor.
-       * Use the DefaultCPTGenerator for generating the IDs CPT.
+       * Use the SimpleCPTGenerator for generating the IDs CPT.
        * Use the SimpleUTGenerator for generating the IDs UT.
        */
       InfluenceDiagramGenerator();

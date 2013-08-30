@@ -54,7 +54,7 @@ namespace gum {
        *
        * @param iters Number of tests of each type ( numbers lower than 1 and greater than 1 ).
        */
-      static void testRationalAlgorithms( const unsigned int& iters = 10 );
+      static void testRationalAlgorithms ( const unsigned int& iters = 10 );
 
       /// @name Real approximation by rational
       /// @{
@@ -70,7 +70,7 @@ namespace gum {
        * @param den_max The constant highest authorized denominator. 1000000 by default.
        * @param zero The positive value below which a number is considered zero. 1e-6 by default.
        */
-      static void farey( long int& numerator, long int& denominator, const GUM_SCALAR& number, const long int& den_max = 1000000, const double& zero = 1e-6 );
+      static void farey ( long int& numerator, long int& denominator, const GUM_SCALAR& number, const long int& den_max = 1000000, const double& zero = 1e-6 );
 
       /**
        * Find the first best rational approximation ( the one with the smallest denminator such that no other rational with smaller denominator is a better approx ) within precision zero to a given ( decimal ) number ( ANY number ).
@@ -82,11 +82,9 @@ namespace gum {
        * @param numerator The numerator of the rational.
        * @param denominator The denominator of the rational.
        * @param number The constant number we want to approximate using rationals.
-       * @param den_max The constant highest authorized denominator. 1000000 by default.
-       * @param first \c True if the function stops at the first approximation close enough, \c False if the functions stops when \c den_max is met and returns the best approximation found. \c True by default.
        * @param zero The positive value below which a number is considered zero. 1e-6 by default.
        */
-      static void continuedFracFirst( long int& numerator, long int& denominator, const GUM_SCALAR& number, const double& zero = 1e-6 );
+      static void continuedFracFirst ( long int& numerator, long int& denominator, const GUM_SCALAR& number, const double& zero = 1e-6 );
 
       /**
        * Find the best rational approximation -- not the first -- to a given ( decimal ) number ( ANY number ) and whose denominator is not higher than a given integer number.
@@ -97,10 +95,8 @@ namespace gum {
        * @param denominator The denominator of the rational.
        * @param number The constant number we want to approximate using rationals.
        * @param den_max The constant highest authorized denominator. 1000000 by default.
-       * @param first \c True if the function stops at the first approximation close enough, \c False if the functions stops when \c den_max is met and returns the best approximation found. \c True by default.
-       * @param zero The positive value below which a number is considered zero. 1e-6 by default.
        */
-      static void continuedFracBest( long int& numerator, long int& denominator, const GUM_SCALAR& number, const long int& den_max = 1000000 );
+      static void continuedFracBest ( long int& numerator, long int& denominator, const GUM_SCALAR& number, const long int& den_max = 1000000 );
 
       /// @}
 

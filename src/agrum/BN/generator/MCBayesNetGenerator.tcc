@@ -47,7 +47,7 @@ gum::Size getMaxModality( gum::BayesNet<GUM_SCALAR>& bayesNet ) {
 namespace gum {
 
 // Default constructor.
-// Use the DefaultCPTGenerator for generating the BNs CPT.
+// Use the SimpleCPTGenerator for generating the BNs CPT.
   template<typename GUM_SCALAR, template<class> class ICPTGenerator, template <class> class ICPTDisturber >
   MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::MCBayesNetGenerator( Size nbrNodes, Size maxArcs, Idx maxModality, Size iteration , Idx p, Idx q ) :
     AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator> ( nbrNodes, maxArcs , maxModality ), _bayesNettemp(), _hashMarginal() {

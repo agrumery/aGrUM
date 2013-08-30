@@ -30,7 +30,7 @@
 namespace gum {
 
 // Default constructor.
-// Use the DefaultCPTGenerator for generating the BNs CPT.
+// Use the SimpleCPTGenerator for generating the BNs CPT.
   template <typename GUM_SCALAR, template<class> class ICPTGenerator> INLINE
   AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>::AbstractBayesNetGenerator( Size nbrNodes, Size maxArcs , Size maxModality ): _bayesNet() {
     GUM_CONSTRUCTOR( AbstractBayesNetGenerator );

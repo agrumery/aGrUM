@@ -541,8 +541,8 @@ namespace gum {
   void
   InfluenceDiagram<GUM_SCALAR>::insertArc( NodeId tail, NodeId head ) {
     addArc( tail,head );
-
   }
+  
   /*
   * Add an arc in the ID, and update diagram's chance nodes cpt if necessary.
   */

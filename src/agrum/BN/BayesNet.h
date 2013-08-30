@@ -234,7 +234,7 @@ namespace gum {
        * @param head and
        * @param tail as NodeId
        * @throw InvalidEdge If arc.tail and/or arc.head are not in the BN.
-       * @deprecated This function has been deprecated. Please use @ref addArc instead
+       * @deprecated This function is now deprecated. Please use BayesNet::addArc instead
        */
       GUM_DEPRECATED( void insertArc( NodeId tail, NodeId head ) );
 
@@ -283,12 +283,12 @@ namespace gum {
       /// @{
 
       /**
-      * Add a variable, it's associate node and a noisyOR implementation. The id of the new
+      * Add a variable, it's associate node and a gum::noisyOR implementation. The id of the new
       * variable is automatically generated. Since it seems that the 'classical' noisyOR is the Compound noisyOR, we keep
-      * the addNoisyOR as an alias for addNoisyORCompound
+      * the gum::BayesNet::addNoisyOR as an alias for gum::BayesNet::addNoisyORCompound
       *
       * @param variable The variable added by copy.
-      * @param externalWeight @see gum::MultiDimNoisyORNet,gum::MultiDimNoisyORCompound
+      * @param externalWeight see ref gum::MultiDimNoisyORNet,gum::MultiDimNoisyORCompound
       * @return the id of the added variable.
       * @{
       */
@@ -300,16 +300,18 @@ namespace gum {
 
 
       /**
-      * Add a variable, it's associate node and a noisyOR implementation.
+      * Add a variable, its associate node and a noisyOR implementation.
       * Since it seems that the 'classical' noisyOR is the Compound noisyOR, we keep
       * the addNoisyOR as an alias for addNoisyORCompound
       *
       * @param variable The variable added by copy.
-      * @param externalWeight @see gum::MultiDimNoisyORNet,gum::MultiDimNoisyORCompound
+      * @param externalWeight see gum::MultiDimNoisyORNet, gum::MultiDimNoisyORCompound
       * @param id The chosen id
       * @warning give an id should be reserved for rare and specific situations !!!
       * @return the id of the added variable.
-      * @throws DuplicateElement if id is already used @{
+      * @throws DuplicateElement if id is already used 
+      * 
+      * @{
       */
       NodeId addNoisyOR( const DiscreteVariable& variable, GUM_SCALAR externalWeight, NodeId id );
       NodeId addNoisyORNet( const DiscreteVariable& variable, GUM_SCALAR externalWeight, NodeId id );
@@ -317,20 +319,22 @@ namespace gum {
       /** @} */
 
       /**
-      * Add a variable, it's associate node and a noisyAND implementation.
+      * Add a variable, its associate node and a noisyAND implementation.
       *
-      * @param variable The variable added by copy.
-      * @param externalWeight @see gum::MultiDimNoisyAND
+      * @param variable The variable added by copy
+      * @param externalWeight see gum::MultiDimNoisyAND
+      * @param id proposed gum::nodeId for the variable
+      * @warning give an id should be reserved for rare and specific situations !!!
       * @return the id of the added variable.
       */
       NodeId addNoisyAND( const DiscreteVariable& variable, GUM_SCALAR externalWeight, NodeId id );
 
       /**
-      * Add a variable, it's associate node and a noisyAND implementation. The id of the new
+      * Add a variable, its associate node and a noisyAND implementation. The id of the new
       * variable is automatically generated.
       *
       * @param variable The variable added by copy.
-      * @param externalWeight @see gum::MultiDimNoisyAND
+      * @param externalWeight see gum::MultiDimNoisyAND
       * @return the id of the added variable.
       */
       NodeId addNoisyAND( const DiscreteVariable& variable, GUM_SCALAR externalWeight );
@@ -365,11 +369,11 @@ namespace gum {
       *
       * @param head and
       * @param tail as NodeId
-      * @param causalWeight @see gum::MultiDimCIModel
+      * @param causalWeight see gum::MultiDimCIModel
       * @throw InvalidArc If arc.tail and/or arc.head are not in the BN.
       * @throw InvalidArc If variable in arc.head is not a NoisyOR variable.
       *
-      * @deprecated This function has been deprecated. Please use @ref addWeightedArc instead
+      * @deprecated This function is now deprecated. Please use BayesNet::addWeightedArc instead
       */
       GUM_DEPRECATED( void insertWeightedArc( NodeId tail, NodeId head, GUM_SCALAR causalWeight ) );
 
@@ -378,7 +382,7 @@ namespace gum {
       *
       * @param head and
       * @param tail as NodeId
-      * @param causalWeight @see gum::MultiDimCIModel
+      * @param causalWeight see gum::MultiDimCIModel
       * @throw InvalidArc If arc.tail and/or arc.head are not in the BN.
       * @throw InvalidArc If variable in arc.head is not a NoisyOR variable.
       */
@@ -391,18 +395,18 @@ namespace gum {
       /// @{
 
       /**
-       * @deprecated: use add(const DiscreteVariable&).
+       * @deprecated: This function is now deprecated. Please use BayesNet::add instead.
        */
       GUM_DEPRECATED( NodeId addVariable( const DiscreteVariable& variable ) );
 
       /**
-       * @deprecated: use add(const DiscreteVariable&, MultiDimImplementation*)
+       * @deprecated: This function is now deprecated. Please use BayesNet::add(const DiscreteVariable&, MultiDimImplementation*)
        */
       GUM_DEPRECATED( NodeId addVariable( const DiscreteVariable& variable,
                                           MultiDimImplementation<GUM_SCALAR>* aContent ) );
 
       /**
-       * @deprecated: use erase(NodeId) instead.
+       * @deprecated: This function is now deprecated. Please use BayesNet::erase(NodeId) instead.
        */
       GUM_DEPRECATED( void eraseVariable( NodeId id ) );
 

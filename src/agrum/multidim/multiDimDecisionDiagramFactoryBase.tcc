@@ -396,7 +396,6 @@ namespace gum {
 // @throw InvalidNode if head is a terminal node
 // @throw OperationNotAllowed arc doesn't respect variable order property
 // @throw DuplicateElement if another arc linking those nodes already exists
-
   template< typename GUM_SCALAR >
   void
   MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::insertDefaultArc( NodeId from, NodeId to ) {
