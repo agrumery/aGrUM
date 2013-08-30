@@ -88,11 +88,15 @@ namespace gum {
   // ============================================================================
   template<typename GUM_SCALAR>
   INLINE
-  MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* MultiDimDecisionGraph<GUM_SCALAR>::_createInternalNode( const DiscreteVariable* x ){
+  MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* MultiDimDecisionGraph<GUM_SCALAR>::_createInternalNode( const DiscreteVariable* x,
+                                                                                                           bool allocateSons ){
 
     InternalNode* newNode = static_cast<InternalNode*>(soa.allocate(sizeof(x->domainSize())));
     newNode->nodeVar = x;
-    newNode->nodeSons = static_cast<NodeId*>(soa.allocate(x->domainSize()*sizeof(NodeId)));
+    if( allocateSons )
+      newNode->nodeSons = static_cast<NodeId*>(soa.allocate(x->domainSize()*sizeof(NodeId)));
+    else
+      newNode->nodeSons = nullptr;
     return newNode;
 
   }
@@ -104,7 +108,7 @@ namespace gum {
   // ============================================================================
   template<typename GUM_SCALAR>
   INLINE
-  void MultiDimDecisionGraph<GUM_SCALAR>::_removeInternalNode( MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* node ){
+  void MultiDimDecisionGraph<GUM_SCALAR>::_deallocateInternalNode( MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* node ){
 
     // Déallocation du vecteur fils
     soa.deallocate( node->nodeSons, node->nodeVar->domainSize()*sizeof(NodeId) );
@@ -428,7 +432,7 @@ namespace gum {
       // Nettoyage des noeuds
       for( HashTableIterator<NodeId, InternalNode*> nodeIter = __internalNodeMap.begin();
            nodeIter != __internalNodeMap.end(); ++nodeIter )
-        _removeInternalNode(*nodeIter);
+        _deallocateInternalNode(*nodeIter);
 
       // Nettoyage des liste de noeuds par variables
       for( HashTableIterator<const DiscreteVariable*, NICLElem*> varIter = __var2NodeIdMap.begin();
@@ -568,15 +572,14 @@ namespace gum {
           newyNodeId = manager()->addNonTerminalNode( y, ysons, oldxNodes->elemId );
 
         nextn = oldxNodes->nextElem;
-        _removeInternalNode(xNode);
+        _deallocateInternalNode(xNode);
         _removeElemFromNICL(oldxNodes, oldxNode->elemId);
         oldxNodes = nextn;
       }
 
       while(oldyNodes){
-
         nextn = oldyNodes->nextElem;
-        _removeInternalNode(__internalNodeMap[oldyNodes->elemId]);
+        _deallocateInternalNode(__internalNodeMap[oldyNodes->elemId]);
         __internalNodeMap.erase(oldyNodes->elemId);
         manager()->releaseId(oldyNodes->elemId);
         _removeElemFromNICL(oldyNodes, oldyNode->elemId);

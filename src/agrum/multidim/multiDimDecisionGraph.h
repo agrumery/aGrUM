@@ -143,14 +143,14 @@ namespace gum {
         /// @param x :  the associated variable
         /// size of son vector is the domain size of x.
         // ============================================================================
-        static InternalNode* _createInternalNode( const DiscreteVariable* x );
+        static InternalNode* _createInternalNode( const DiscreteVariable* x, bool allocateSons = true );
 
         // ============================================================================
-        /// Remove the given internal node structure
+        /// Deallocates the given internal node structure
         /// @param deleteParent : if true, parentList will be erase too.
         /// Typically not wanted in a swap for more efficiency
         // ============================================================================
-        static void _removeInternalNode(  InternalNode* node );
+        static void _deallocateInternalNode(  InternalNode* node );
 
       /// @}
 
@@ -364,9 +364,9 @@ namespace gum {
       // ############################################################################
       /// @{
         // ============================================================================
-        /// Indicates if given node is terminal or not
+        /// Returns a const reference to the manager of this diagram
         // ============================================================================
-        MultiDimDecisionGraphManager<GUM_SCALAR>* manager();
+        const MultiDimDecisionGraphManager<GUM_SCALAR>* manager(){return __manager;}
 
         // ============================================================================
         /// Returns the id of the root node from the diagram

@@ -114,15 +114,20 @@ namespace gum{
 
         // ============================================================================
         /**
-         * Inserts a new non terminal node in graph.
+         * Inserts a new non terminal node in graph, along with given son vector.
+         * @warning the son vector  will now be handled by the decision graph.
          *
          * @param var Associated variable
+         * @param sons the son vector
+         * @param nid You can specify an id for the so inserted now.
+         * @warning If you do so, and a previous InternalNode was pointed by the nodeid,
+         * it will simply be lost, resulting in a memory leak. Don't use unless you know what you're doing.
          * @throw OperationNotAllowed if MultiDimDecisionGraph has no variable yet.
          * @return the id of the added non terminal node.
          */
         // ============================================================================
         const NodeId& addNonTerminalNode ( const DiscreteVariable* var,
-                                                 NodeId* sons = nullptr,
+                                                 NodeId* sons,
                                                  NodeId& nid = 0 );
         ///@}
 
