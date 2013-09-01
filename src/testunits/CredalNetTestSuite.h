@@ -76,7 +76,7 @@ namespace gum_tests {
         gum::Timer tim;
         unsigned int tmp = 0;
 
-        while ( tim.step() < 10 ) {
+        while( tim.step() < 10 ) {
           gum::credal::lp::LpExpr expr( c1 + c2 + c3 + c4 + c5 + c6 + c7 + c8 );
           lp.addRow( 1 <= expr <= 1 );
           lp.clearRows();
@@ -86,7 +86,7 @@ namespace gum_tests {
         tim.reset(); tmp = 0;
         tim.resume();
 
-        while ( tim.step() < 10 ) {
+        while( tim.step() < 10 ) {
           gum::credal::lp::LpExpr expr( c1 + c2 + c3 + c4 + c5 + c6 + c7 + c8 );
           lp.addRow( 1 <= std::move( expr ) <= 1 );
           lp.clearRows();
@@ -96,7 +96,7 @@ namespace gum_tests {
         tim.reset(); tmp = 0;
         tim.resume();
 
-        while ( tim.step() < 10 ) {
+        while( tim.step() < 10 ) {
           gum::credal::lp::LpExpr expr( c1 + c2 + c3 + c4 + c5 + c6 + c7 + c8 );
           lp.addRow( 1 <= expr );
           lp.addRow( expr <= 1 );
@@ -109,6 +109,7 @@ namespace gum_tests {
       /// network : A --> C <-- B built manually
       void testCredalNetByLP() {
         initCNet();
+
 
         std::vector< gum::NodeId > ids;
 
@@ -146,12 +147,12 @@ namespace gum_tests {
         lps[ 0 ][ 0 ].addSumIsOne();  // positivity constraints are obviously redundant
 
         lps_sols[ 0 ][ 0 ] = {
-          {7./10, 1./5, 1./10},
-          {7./10, 1./10, 1./5},
-          {3./10, 1./10, 3./5},
-          {2./5, 1./2, 1./10},
-          {1./10, 1./2, 2./5},
-          {1./10, 3./10, 3./5}
+          {7. / 10, 1. / 5, 1. / 10},
+          {7. / 10, 1. / 10, 1. / 5},
+          {3. / 10, 1. / 10, 3. / 5},
+          {2. / 5, 1. / 2, 1. / 10},
+          {1. / 10, 1. / 2, 2. / 5},
+          {1. / 10, 3. / 10, 3. / 5}
         }; // A lp solution
 
         /// B : x1 = x2, x0 >= x1
@@ -162,7 +163,7 @@ namespace gum_tests {
         lps[ 1 ][ 0 ].addProba();
 
         lps_sols[ 1 ][ 0 ] = {
-          {1./3, 1./3, 1./3},
+          {1. / 3, 1. / 3, 1. / 3},
           {1, 0, 0}
         }; // B lp solution
 
@@ -175,9 +176,9 @@ namespace gum_tests {
         lps[ 2 ][ 0 ].addProba();
 
         lps_sols[ 2 ][ 0 ] = {
-          {1./4, 1./2, 1./4},
+          {1. / 4, 1. / 2, 1. / 4},
           {0, 0, 1},
-          {0, 1./2, 1./2}
+          {0, 1. / 2, 1. / 2}
         }; // C lp solution A:0 B:0
 
         /// C : ins idx = 1, A:1 B:0
@@ -189,9 +190,9 @@ namespace gum_tests {
         lps[ 2 ][ 1 ].addProba();
 
         lps_sols[ 2 ][ 1 ] = {
-          {0, 1./2, 1./2},
-          {1./5, 1./5, 3./5},
-          {3./10, 0, 7./10},
+          {0, 1. / 2, 1. / 2},
+          {1. / 5, 1. / 5, 3. / 5},
+          {3. / 10, 0, 7. / 10},
           {0, 0, 1}
         }; // C lp solution A:1 B:0
 
@@ -203,8 +204,8 @@ namespace gum_tests {
         lps[ 2 ][ 2 ].addProba();
 
         lps_sols[ 2 ][ 2 ] = {
-          {2./3, 0, 1./3},
-          {0, 2./3, 1./3}
+          {2. / 3, 0, 1. / 3},
+          {0, 2. / 3, 1. / 3}
         }; // C lp solution A:2 B:0
 
         /// C : ins idx = 3, A:0 B:1
@@ -241,8 +242,8 @@ namespace gum_tests {
         lps[ 2 ][ 5 ].addProba();
 
         lps_sols[ 2 ][ 5 ] = {
-          {1./7, 2./7, 4./7},
-          {0, 1./3, 2./3},
+          {1. / 7, 2. / 7, 4. / 7},
+          {0, 1. / 3, 2. / 3},
           {0, 0, 1}
         }; // C lp solution A:2 B:1
 
@@ -254,8 +255,8 @@ namespace gum_tests {
 
         lps_sols[ 2 ][ 6 ] = {
           {1, 0, 0},
-          {1./2, 0, 1./2},
-          {0, 1./2, 1./2},
+          {1. / 2, 0, 1. / 2},
+          {0, 1. / 2, 1. / 2},
           {0, 1, 0}
         }; // C lp solution A:0 B:2
 
@@ -273,46 +274,47 @@ namespace gum_tests {
         /// C : ins idx = 8, A:2 B:2
         /// x2 = 1 / 3 * x0 + 2 / 3 * x1
         A = lps[ 2 ][ 8 ].addCols( 3 );
-        lps[ 2 ][ 8 ].addRow( A[ 2 ] <= 1./3 * A[ 0 ] + 2./3 * A[ 1 ] );
-        lps[ 2 ][ 8 ].addRow( 1./3 * A[ 0 ] + 2./3 * A[ 1 ] <= A[ 2 ] );
+        lps[ 2 ][ 8 ].addRow( A[ 2 ] <= 1. / 3 * A[ 0 ] + 2. / 3 * A[ 1 ] );
+        lps[ 2 ][ 8 ].addRow( 1. / 3 * A[ 0 ] + 2. / 3 * A[ 1 ] <= A[ 2 ] );
         lps[ 2 ][ 8 ].addProba();
 
         lps_sols[ 2 ][ 8 ] = {
-          {3./4, 0, 1./4},
-          {0, 3./5, 2./5}
+          {3. / 4, 0, 1. / 4},
+          {0, 3. / 5, 2. / 5}
         }; // C lp solution A:2 B:2
 
 
         /// compute solutions, check bijection
 
-        for ( const auto & id : ids ) {
+        for( const auto & id : ids ) {
           gum::Instantiation ins( cn->instantiation( id ) );
           ins.setFirst();
 
           unsigned long int entry( 0 );
 
-          while ( ! ins.end() ) {
-
+          while( ! ins.end() ) {
+            GUM_CHECKPOINT;
+            GUM_TRACE_VAR( id << entry );
+            GUM_TRACE_VAR( lps[ id ][ entry ] );
             std::vector< std::vector< double > > vertices( lps[ id ][ entry ].solve() );  // we solve the lp
 
             unsigned int sols_size( lps_sols[ id ][ entry ].size() );
-
             TS_ASSERT_EQUALS( vertices.size() , sols_size );
 
             std::vector< bool > checked( sols_size, false );
 
-            for ( const auto & vertex : vertices ) {
-              for ( unsigned int sol = 0; sol < sols_size; sol++ ) {
+            for( const auto & vertex : vertices ) {
+              for( unsigned int sol = 0; sol < sols_size; sol++ ) {
                 bool eq = true;
 
-                for ( unsigned int i = 0, end = cn->domainSize( id ); i < end; i++ ) {
-                  if ( fabs( vertex[ i ] - lps_sols[ id ][ entry ][ sol ][ i ] ) > 1e-6 ) {
+                for( unsigned int i = 0, end = cn->domainSize( id ); i < end; i++ ) {
+                  if( fabs( vertex[ i ] - lps_sols[ id ][ entry ][ sol ][ i ] ) > 1e-6 ) {
                     eq = false;
                     break;
                   }
                 }
 
-                if ( eq ) {
+                if( eq ) {
                   TS_ASSERT( ! checked[ sol ] );
                   checked[ sol ] = true;
                   break;
@@ -321,9 +323,11 @@ namespace gum_tests {
             }
 
             bool r = true;
-            for ( const auto b : checked ) {
+
+            for( const auto b : checked ) {
               r = r && b;
             }
+
             TS_ASSERT( r );
 
             cn->setCPT( id, ins, vertices );
