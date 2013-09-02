@@ -62,13 +62,13 @@ namespace gum {
           * @brief Default constructor.
           * @param id The id of the variable.
           */
-          explicit LpCol( unsigned int id );
+          explicit LpCol ( unsigned int id );
 
           /**
           * @brief Default copy constructor.
           * @param col The constant reference to the variable to copy.
           */
-          LpCol( const LpCol& col );
+          LpCol ( const LpCol& col );
 
           /** @brief Default destructor. */
           ~LpCol();
@@ -165,7 +165,7 @@ namespace gum {
       * @brief Overload of operator () to compute hash of a variable \c LpCol.
       * @param key The constant reference to the variable whose hash we want to compute.
       */
-      Size operator()( const credal::lp::LpCol& key ) const;
+      Size operator() ( const credal::lp::LpCol& key ) const;
   };
 } // end of namespace gum
 
@@ -193,7 +193,7 @@ namespace gum {
           * @brief Copy constructor.
           * @param expr The constant reference to the expression to copy.
           */
-          LpExpr( const LpExpr& expr );
+          LpExpr ( const LpExpr& expr );
 
           /**
           * @brief Copy constructor. Makes a ( partial ) copy.
@@ -202,7 +202,7 @@ namespace gum {
           * @param copyMiddle \c True if we want to copy middle side of \c expr, \c False otherwise.
           * @param copyRight \c True if we want to copy right side of \c expr, \c False otherwise.
           */
-          LpExpr( const LpExpr& expr, bool copyLeft, bool copyMiddle, bool copyRight );
+          LpExpr ( const LpExpr& expr, bool copyLeft, bool copyMiddle, bool copyRight );
 
           /**
           * @brief Move copy constructor from temporary.
@@ -210,7 +210,7 @@ namespace gum {
           * Swap ressources between the temporary \c expr and the caller instead of copying the temporary.
           * @param expr The temporary expression to move to this.
           */
-          LpExpr( LpExpr && expr );
+          LpExpr ( LpExpr&& expr );
 
           /**
           * @brief Move copy constructor from temporary. Makes ( partial ) moves.
@@ -222,7 +222,7 @@ namespace gum {
           * @param copyMiddle \c True if we want to copy middle side of \c expr, \c False otherwise.
           * @param copyRight \c True if we want to copy right side of \c expr, \c False otherwise.
           */
-          LpExpr( LpExpr && expr, bool copyLeft, bool copyMiddle, bool copyRight );
+          LpExpr ( LpExpr&& expr, bool copyLeft, bool copyMiddle, bool copyRight );
 
           /** @brief Default destructor. */
           ~LpExpr();
@@ -251,7 +251,7 @@ namespace gum {
           * @param rhs the expression to move to this.
           * @return The address of the calling expression.
           */
-          LpExpr& operator= ( LpExpr && rhs );
+          LpExpr& operator= ( LpExpr&& rhs );
 
           /**
           * @brief Assignment operator \c = with a scalar.
@@ -287,7 +287,7 @@ namespace gum {
           * @param rhs the temporary expression to add to the calling expression.
           * @return The reference of the calling expression.
           */
-          LpExpr& operator+= ( LpExpr && rhs );
+          LpExpr& operator+= ( LpExpr&& rhs );
 
           /**
           * @brief Compound assignment operator \c += with a scalar.
@@ -345,8 +345,8 @@ namespace gum {
 
           /// @name Helper static methods for operations
           /// @{
-          template<typename T1, typename T2> static LpExpr lessThan( T1 && lhs, T2 && rhs );
-          template<typename SCALAR> static LpExpr multiply( const SCALAR& lhs, const LpCol& rhs );
+          template<typename T1, typename T2> static LpExpr lessThan ( T1&& lhs, T2&& rhs );
+          template<typename SCALAR> static LpExpr multiply ( const SCALAR& lhs, const LpCol& rhs );
           /// @}
 
         protected:
@@ -380,19 +380,19 @@ namespace gum {
           * @brief %Set the side of the calling expression, from LEFT TO RIGHT : L <= M <= R.
           * @param from the constant reference to the variable ( the side ) to put on the first empty side met, starting at left.
           */
-          inline void __addSide( const LpCol& from );
+          inline void __addSide ( const LpCol& from );
 
           /**
           * @brief Copy an expression to a side of the calling expression, from LEFT TO RIGHT : L <= M <= R.
           * @param from the constant reference to the expression ( the side ) to copy on the first empty side met, starting at left.
           */
-          inline void __addSide( const LpExpr& from );
+          inline void __addSide ( const LpExpr& from );
 
           /**
           * @brief Move an expression to a side of the calling expression, from LEFT TO RIGHT : L <= M <= R.
           * @param from the expression ( the side ) to move on the first empty side met, starting at left.
           */
-          inline void __addSide( LpExpr && from );
+          inline void __addSide ( LpExpr&& from );
 
           /**
           * @brief %Set the side of the calling expression, from LEFT TO RIGHT : L <= M <= R.
@@ -400,7 +400,7 @@ namespace gum {
           * @param from the constant reference to the scalar ( the side ) to put on the first empty side met, starting at left.
           */
           template< typename SCALAR >
-          inline void __addSide( const SCALAR& from );
+          inline void __addSide ( const SCALAR& from );
 
           /// @}
 
@@ -423,26 +423,26 @@ namespace gum {
           * @param expr the constant reference to the expression to convert into rows ( inequalities ).
           * @param cols the constant reference to the vector of variables of the problem.
           */
-          LpRow( const LpExpr& expr, const std::vector< LpCol >& cols );
+          LpRow ( const LpExpr& expr, const std::vector< LpCol >& cols );
 
           /**
           * @brief Move constructor from a temporary expression and the address of the vector of variables of the problem.
           * @param expr the temporary expression to move into rows ( inequalities ).
           * @param cols the constant reference to the vector of variables of the problem.
           */
-          LpRow( LpExpr && expr, const std::vector< LpCol >& cols );
+          LpRow ( LpExpr&& expr, const std::vector< LpCol >& cols );
 
           /**
           * @brief Copy constructor.
           * @param row The constant reference to the row to be copied.
           */
-          LpRow( const LpRow& row );
+          LpRow ( const LpRow& row );
 
           /**
           * @brief Move copy constructor from temporary.
           * @param row The temporary row to be copied.
           */
-          LpRow( LpRow && row );
+          LpRow ( LpRow&& row );
 
           /** @brief Default destructor. */
           ~LpRow();
@@ -461,7 +461,7 @@ namespace gum {
           * @brief
           * @param row The temporary row to be moved to this.
           */
-          LpRow& operator= ( LpRow && row );
+          LpRow& operator= ( LpRow&& row );
 
           /// @}
 
@@ -513,13 +513,13 @@ namespace gum {
           * @brief Copy constructor.
           * @param from The LpInterface to be copied.
           */
-          LpInterface( const LpInterface< GUM_SCALAR >& from );
+          LpInterface ( const LpInterface< GUM_SCALAR >& from );
 
           /**
           * @brief Move copy constructor.
           * @param from The temporary LpInterface to be moved.
           */
-          LpInterface( LpInterface< GUM_SCALAR > && from );
+          LpInterface ( LpInterface< GUM_SCALAR >&& from );
 
           /** @brief Default destructor. */
           ~LpInterface();
@@ -539,7 +539,7 @@ namespace gum {
           * @brief Move coumpound assignment.
           * @param from The temporary LpInterface to be moved.
           */
-          LpInterface< GUM_SCALAR >& operator= ( LpInterface< GUM_SCALAR > && from );
+          LpInterface< GUM_SCALAR >& operator= ( LpInterface< GUM_SCALAR >&& from );
 
           /// @}
 
@@ -563,19 +563,19 @@ namespace gum {
           * @param cols the constant reference to the number of variables we want.
           * @return The copy of the vector of all variables of the problem.
           */
-          std::vector< LpCol > addCols( const unsigned int& cols );
+          std::vector< LpCol > addCols ( const unsigned int& cols );
 
           /**
           * @brief Add rows to the linear program according to a given expression ( which must be at least an inequality ).
           * @param expr the constant reference to the expression to convert to rows.
           */
-          void addRow( const LpExpr& expr );
+          void addRow ( const LpExpr& expr );
 
           /**
           * @brief Add rows to the linear program according to a given expression ( which must be at least an inequality ).
           * @param expr the temporary expression to move to rows.
           */
-          void addRow( LpExpr && expr );
+          void addRow ( LpExpr&& expr );
 
           /**
           * @brief Add positivity constraints for all variables
@@ -650,7 +650,7 @@ namespace gum {
       * @param a the address of the first pointer.
       * @param b the address of the second pointer.
       */
-      inline void swap( HashTable< LpCol, double >*& a, HashTable< LpCol, double >*& b );
+      inline void swap ( HashTable< LpCol, double >*& a, HashTable< LpCol, double >*& b );
 
       /// @name Non-members operators +
       /// @{
@@ -666,7 +666,7 @@ namespace gum {
       * @tparam T2 A scalar type ( integer or float ( any precision ) ) or a \c LpCol or a \c LpExpr.
       * @return An expression which yields the result of \c lhs \c + \c rhs.
       */
-      template <typename T2> LpExpr operator+ ( LpExpr && lhs, const T2& rhs );
+      template <typename T2> LpExpr operator+ ( LpExpr&& lhs, const T2& rhs );
       template <typename T2> LpExpr operator+ ( LpExpr& lhs, const T2& rhs );
 
       /**
@@ -677,7 +677,7 @@ namespace gum {
       *
       * Implements both the copy operator \c + and move operator \c + because operator \c + is implemented on top of operators \c +=.
       * Because of template type deduction \c lhs is a "universal reference", i.e. either an lvalue or an rvalue reference.
-      * To force rvalue reference with template deduction one should use const : const T && lhs : lhs is an rvalue reference and WILL be modified ( not intuitive const ).
+      * To force rvalue reference with template deduction one should use const : const T&& lhs : lhs is an rvalue reference and WILL be modified ( not intuitive const ).
       * Therefor std::forward must be used to forward the type of \c lhs. \c rhs is an rvalue reference and std::move must be used to forward it's type.
       * @param lhs the universal reference to either a scalar, a variable or an expression on the left hand side of the operator.
       * @param rhs the rvalue reference to the temporary expression on the right hand side of the operator.
@@ -685,7 +685,7 @@ namespace gum {
       * @warning T1 can not be LpExpr (to avoid ambiguity with previous functions)
       * @return An expression which yields the result of \c lhs \c + \c rhs.
       */
-      template< typename T1 , forbidden_type<T1, LpExpr> = 0> LpExpr  operator+ ( const T1& lhs, LpExpr && rhs );
+      template< typename T1 , forbidden_type<T1, LpExpr> = 0> LpExpr  operator+ ( const T1& lhs, LpExpr&& rhs );
       template< typename T1 , forbidden_type<T1, LpExpr> = 0> LpExpr operator+ ( const T1& lhs, LpExpr& ths );
 
       /**
@@ -712,7 +712,7 @@ namespace gum {
       * @tparam T2 A scalar type ( integer or float ( any precision ) ) or a \c LpCol or a \c LpExpr.
       * @return An expression which yields the result of \c lhs \c -\c rhs.
       */
-      template <typename T2> LpExpr operator- ( LpExpr && lhs, const T2& rhs );
+      template <typename T2> LpExpr operator- ( LpExpr&& lhs, const T2& rhs );
       template <typename T2> LpExpr operator- ( LpExpr& lhs, const T2& rhs );
 
       /**
@@ -723,7 +723,7 @@ namespace gum {
       *
       * Implements both the copy operator \c - and move operator \c - because operator \c- is implemented on top of operators \c -=.
       * Because of template type deduction \c lhs is a "universal reference", i.e. either an lvalue or an rvalue reference.
-      * To force rvalue reference with template deduction one should use const : const T && lhs : lhs is an rvalue reference and WILL be modified ( not intuitive const ).
+      * To force rvalue reference with template deduction one should use const : const T&& lhs : lhs is an rvalue reference and WILL be modified ( not intuitive const ).
       * Therefor std::forward must be used to forward the type of \c lhs. \c rhs is an rvalue reference and std::move must be used to forward it's type.
       * @param lhs the universal reference to either a scalar, a variable or an expression on the left hand side of the operator.
       * @param rhs the rvalue reference to the temporary expression on the right hand side of the operator.
@@ -731,7 +731,7 @@ namespace gum {
       * @warning T1 can not be LpExpr (to avoid ambiguity with previous functions)
       * @return An expression which yields the result of \c lhs \c - \c rhs.
       */
-      template< typename T1 , forbidden_type<T1, LpExpr> = 0> LpExpr  operator- ( const T1& lhs, LpExpr && rhs );
+      template< typename T1 , forbidden_type<T1, LpExpr> = 0> LpExpr  operator- ( const T1& lhs, LpExpr&& rhs );
       template< typename T1 , forbidden_type<T1, LpExpr> = 0> LpExpr operator- ( const T1& lhs, LpExpr& ths );
 
       /**
@@ -787,14 +787,26 @@ namespace gum {
       * @tparam T2 A scalar type ( integer or float ( any precision ) ) or a \c LpCol or a \c LpExpr.
       * @return An expression which yields the result of \c lhs \c <= \c rhs.
       */
-      /*
-      template< typename T2 > LpExpr operator<= ( const LpExpr & lhs,  T2 && rhs );
-      template< typename T2 > LpExpr operator<= ( const LpCol & lhs,  T2 && rhs );
-      template< typename T1, forbidden_type<T1, LpExpr&> = 0 , forbidden_type<T1, LpCol&> = 0> LpExpr operator<= ( T1 && lhs,  const LpExpr & rhs );
-      template< typename T1, forbidden_type<T1, LpExpr&> = 0 , forbidden_type<T1, LpCol&> = 0> LpExpr operator<= ( T1 && lhs,  const LpCol & rhs );
-      */
-      template<typename T1,typename T2> LpExpr operator<=(T1 && lhs,T2&& rhs);
-      
+
+      template< typename T2 > LpExpr operator<= ( const LpExpr & lhs,  T2&& rhs );
+      template< typename T2 > LpExpr operator<= ( const LpCol & lhs,  T2&& rhs );
+      template< typename T1,
+                forbidden_type<T1, LpExpr&> = 0 ,
+                forbidden_type<T1, LpCol&> = 0> LpExpr operator<= ( T1&& lhs,  const LpExpr & rhs );
+      template< typename T1,
+                forbidden_type<T1, LpExpr&> = 0 ,
+                forbidden_type<T1, LpCol&> = 0> LpExpr operator<= ( T1&& lhs,  const LpCol & rhs );
+
+
+      template< typename T2 > LpExpr operator<= ( LpExpr&& lhs,  T2&& rhs );
+      template< typename T2 > LpExpr operator<= ( LpCol&& lhs,  T2&& rhs );
+      template< typename T1,
+                forbidden_type<T1, LpExpr> = 0,
+                forbidden_type<T1, LpCol> = 0> LpExpr operator<= ( T1&& lhs,   LpExpr&& rhs );
+      template< typename T1,
+                forbidden_type<T1, LpExpr> = 0 ,
+                forbidden_type<T1, LpCol> = 0> LpExpr operator<= ( T1&& lhs,   LpCol&& rhs );
+
       /// @}
 
     } // end of namespace lp
@@ -806,3 +818,5 @@ namespace gum {
 #include <agrum/CN/LpInterface.tcc>
 
 #endif
+
+

@@ -192,7 +192,6 @@ namespace gum {
                 << std::endl;
 
       std::cerr << std::setfill ( ' ' );
-      nb_err = 303;
 
       if ( nb_err == 0 ) {
         std::cerr << "| " << std::setw ( widthColLibelle ) << "NO MEMORY LEAK !"
