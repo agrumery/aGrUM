@@ -31,6 +31,7 @@
 #include <iostream>
 #include <sstream>
 
+#include <agrum/core/utils.h>
 #include <agrum/CN/LrsWrapper.h>
 #include <agrum/core/hashFunc.h>
 #include <agrum/core/hashTable.h>
@@ -61,7 +62,7 @@ namespace gum {
           * @brief Default constructor.
           * @param id The id of the variable.
           */
-          LpCol( unsigned int id );
+          explicit LpCol( unsigned int id );
 
           /**
           * @brief Default copy constructor.
@@ -270,21 +271,21 @@ namespace gum {
           /**
           * @brief Compound assignment operator \c += with a variable.
           * @param rhs the constant reference to the variable to add to the calling expression.
-          * @return The address of the calling expression.
+          * @return The reference of the calling expression.
           */
           LpExpr& operator+= ( const LpCol& rhs );
 
           /**
           * @brief Compound assignment operator \c += with another expression.
           * @param rhs the constant reference to the expression to add to the calling expression.
-          * @return The address of the calling expression.
+          * @return The reference of the calling expression.
           */
           LpExpr& operator+= ( const LpExpr& rhs );
 
           /**
           * @brief Compound assignment operator \c += with another temporary expression.
           * @param rhs the temporary expression to add to the calling expression.
-          * @return The address of the calling expression.
+          * @return The reference of the calling expression.
           */
           LpExpr& operator+= ( LpExpr && rhs );
 
@@ -292,7 +293,7 @@ namespace gum {
           * @brief Compound assignment operator \c += with a scalar.
           * @tparam SCALAR A scalar type ( integer or float ( any precision ) ).
           * @param rhs the constant reference to the scalar to add to the calling expression.
-          * @return The address of the calling expression.
+          * @return The reference of the calling expression.
           */
           template< typename T >
           LpExpr& operator+= ( const T& rhs );
@@ -305,14 +306,14 @@ namespace gum {
           /**
           * @brief Compound assignment operator \c -= with a variable.
           * @param rhs the constant reference to the variable to substract from the calling expression.
-          * @return The address of the calling expression.
+          * @return The reference of the calling expression.
           */
           LpExpr& operator-= ( const LpCol& rhs );
 
           /**
           * @brief Compound assignment operator \c -= with another expression.
           * @param rhs the constant reference to the expression to substract from the calling expression.
-          * @return The address of the calling expression.
+          * @return The reference of the calling expression.
           */
           LpExpr& operator-= ( const LpExpr& rhs );
 
@@ -320,56 +321,13 @@ namespace gum {
           * @brief Compound assignment operator \c -= with a salar.
           * @tparam SCALAR A scalar type ( integer or float ( any precision ) ).
           * @param rhs the constant reference to the scalar to substract from the calling expression.
-          * @return The address of the calling expression.
+          * @return The reference of the calling expression.
           */
           template< typename T >
           LpExpr& operator-= ( const T& rhs );
 
           /// @}
 
-          /// @name Binary operators ( friends )
-          /// @{
-
-          /**
-          * @brief Overload of \c << to use with output streams ( such as std::cout << ).
-          * @param out the reference to the caller, i.e. left side of \c <<.
-          * @param expr the constant reference to the expression whose representation we want.
-          * @return The address of the caller.
-          */
-          friend std::ostream& operator<< ( std::ostream& out, const LpExpr& expr );    // calls expr.toString(), friend is useless but good for documentation purpose
-
-          template< typename SCALAR >
-          friend LpExpr operator* ( const SCALAR& lhs, const LpCol& rhs );
-
-          template< typename T1, typename T2 >
-          friend LpExpr operator<= ( T1 && lhs, T2 && rhs );
-
-
-          // friends below are for documentation purpose but do not need to actually be friends
-          // they are documented ( re-declared ) outside of the class - at the bottom of the file
-
-          template< typename T1 >
-          friend LpExpr operator+ ( T1 && lhs, LpExpr && rhs );
-
-          template< typename T1, typename T2 >
-          friend LpExpr operator+ ( T1 && lhs, T2 && rhs );
-
-          template< typename SCALAR >
-          friend LpExpr operator* ( const LpCol& lhs, const SCALAR& rhs );
-
-          template< typename T2 >
-          friend LpExpr operator- ( LpExpr && lhs, const T2& rhs );
-
-          template< typename T1, typename T2 >
-          friend LpExpr operator- ( const T1& lhs, const T2& rhs );
-
-          /// @}
-
-
-
-          friend inline void swap( HashTable< LpCol, double >*& a, HashTable< LpCol, double >*& b );
-
-          // end of false friends
 
           /** @brief Clear all data of the calling expression as if it was constructed. */
           void clear();
@@ -385,6 +343,11 @@ namespace gum {
           */
           std::string toString() const;
 
+          /// @name Helper static methods for operations
+          /// @{
+          template<typename T1, typename T2> static LpExpr lessThan( T1 && lhs, T2 && rhs );
+          template<typename SCALAR> static LpExpr multiply( const SCALAR& lhs, const LpCol& rhs );
+          /// @}
 
         protected:
 
@@ -410,7 +373,7 @@ namespace gum {
           /** @brief The coefficients of each variable on the right side L : L <= M <= R. If a variable is not present, it's coefficient is 0. */
           HashTable< LpCol, double >* __rCoeffs;
 
-          /// @name Used by operator <=
+          /// @name Used by static method LpExpr::LessThan<T1,T2> and by operator <=
           /// @{
 
           /**
@@ -693,6 +656,20 @@ namespace gum {
       /// @{
 
       /**
+      * @brief Overload of operator \c + between anything ( a scalar, a variable or an expression ) and anything except a temporary expression.
+      *
+      * Implements both the copy operator \c + and move operator \c + because operator \c + is implemented on top of operators \c +=.
+      * Because of template type deduction both \c lhs and \c rhs are "universal references", i.e. either an lvalue or an rvalue reference.
+      * Therefor std::forward must be used to forward the type of \c lhs and \c rhs.
+      * @param lhs the rvalue reference to the temporary expression on the right hand side of the operator.
+      * @param rhs the universal reference to either a scalar, a variable or a lvalue expression on the right hand side of the operator.
+      * @tparam T2 A scalar type ( integer or float ( any precision ) ) or a \c LpCol or a \c LpExpr.
+      * @return An expression which yields the result of \c lhs \c + \c rhs.
+      */
+      template <typename T2> LpExpr operator+ ( LpExpr && lhs, const T2& rhs );
+      template <typename T2> LpExpr operator+ ( LpExpr& lhs, const T2& rhs );
+
+      /**
       * @brief Overload of operator \c + between anything ( a scalar, a variable or an expression ) and a temporary expression.
       *
       * This overload is used because only one side of the operator profit from move operation; the one with a temporary expression.
@@ -700,62 +677,72 @@ namespace gum {
       *
       * Implements both the copy operator \c + and move operator \c + because operator \c + is implemented on top of operators \c +=.
       * Because of template type deduction \c lhs is a "universal reference", i.e. either an lvalue or an rvalue reference.
-      * To force rvalue reference with template deduction one should use const : const T && lhs : lhs is an rvalue reference and WILL be modofied ( not intuitive const ).
+      * To force rvalue reference with template deduction one should use const : const T && lhs : lhs is an rvalue reference and WILL be modified ( not intuitive const ).
       * Therefor std::forward must be used to forward the type of \c lhs. \c rhs is an rvalue reference and std::move must be used to forward it's type.
       * @param lhs the universal reference to either a scalar, a variable or an expression on the left hand side of the operator.
       * @param rhs the rvalue reference to the temporary expression on the right hand side of the operator.
-      * @tparam SCALAR A scalar type ( integer or float ( any precision ) ) or a \c LpCol or a \c LpExpr.
+      * @tparam T1 A scalar type ( integer or float ( any precision ) ) or a \c LpCol or a \c LpExpr.
+      * @warning T1 can not be LpExpr (to avoid ambiguity with previous functions)
       * @return An expression which yields the result of \c lhs \c + \c rhs.
       */
-      template< typename T1 >
-      LpExpr operator+ ( T1 && lhs, LpExpr && rhs );
+      template< typename T1 , forbidden_type<T1, LpExpr> = 0> LpExpr  operator+ ( const T1& lhs, LpExpr && rhs );
+      template< typename T1 , forbidden_type<T1, LpExpr> = 0> LpExpr operator+ ( const T1& lhs, LpExpr& ths );
 
       /**
-      * @brief Overload of operator \c + between anything ( a scalar, a variable or an expression ) and anything except a temporary expression.
-      *
-      * Implements both the copy operator \c + and move operator \c + because operator \c + is implemented on top of operators \c +=.
-      * Because of template type deduction both \c lhs and \c rhs are "universal references", i.e. either an lvalue or an rvalue reference.
-      * Therefor std::forward must be used to forward the type of \c lhs and \c rhs.
-      * @param lhs the universal reference to either a scalar, a variable or an expression on the left hand side of the operator.
-      * @param rhs the universal reference to either a scalar, a variable or a lvalue expression on the right hand side of the operator.
-      * @tparam T1 A scalar type ( integer or float ( any precision ) ) or a \c LpCol or a \c LpExpr.
-      * @tparam T2 A scalar type ( integer or float ( any precision ) ) or a \c LpCol or a \c LpExpr.
-      * @return An expression which yields the result of \c lhs \c + \c rhs.
-      */
-      template< typename T1, typename T2 >
-      LpExpr operator+ ( T1 && lhs, T2 && rhs );
+       * operator+ between LpCol lhs and not LpExpr rhs
+       */
+      template <typename T2, forbidden_type<T2, LpExpr> = 0> LpExpr operator+ ( const LpCol& lhs , const  T2& rhs );
 
+      /**
+       * operator+ between neither LpExpr nor LpCol lhs and LpCol rhs
+       */
+      template <typename T1, forbidden_type<T1, LpExpr> = 0, forbidden_type<T1, LpCol> = 0> LpExpr operator+ ( const T1& lhs, const LpCol& rhs );
       /// @}
 
       /// @name Non-members operators -
       /// @{
-
       /**
-      * @brief Overload of operator \c - between a temporary ( rvalue reference ) expression and anything.
+      * @brief Overload of operator \c - between anything ( a scalar, a variable or an expression ) and anything except a temporary expression.
       *
-      * This overload is used because only one side of the operator profit from move operation; the left side with a temporary expression.
-      * std::move must be used on \c lhs.
-      * @param lhs the rvalue reference to the temporary expression on the left hand side of the operator.
-      * @param rhs the constant reference to the right hand side of the operator.
+      * Implements both the copy operator \c - and move operator \c - because operator \c - is implemented on top of operators \c -=.
+      * Because of template type deduction both \c lhs and \c rhs are "universal references", i.e. either an lvalue or an rvalue reference.
+      * Therefor std::forward must be used to forward the type of \c lhs and \c rhs.
+      * @param lhs the rvalue reference to the temporary expression on the right hand side of the operator.
+      * @param rhs the universal reference to either a scalar, a variable or a lvalue expression on the right hand side of the operator.
       * @tparam T2 A scalar type ( integer or float ( any precision ) ) or a \c LpCol or a \c LpExpr.
-      * @return An expression which yields the result of \c lhs \c - \c rhs.
+      * @return An expression which yields the result of \c lhs \c -\c rhs.
       */
-      template< typename T2 >
-      LpExpr operator- ( LpExpr && lhs, const T2& rhs );
+      template <typename T2> LpExpr operator- ( LpExpr && lhs, const T2& rhs );
+      template <typename T2> LpExpr operator- ( LpExpr& lhs, const T2& rhs );
 
       /**
-      * @brief Overload of operator \c - between anything except a temporary expression and anything.
+      * @brief Overload of operator \c - between anything ( a scalar, a variable or an expression ) and a temporary expression.
       *
-      * No move operations since left side is not a temporary expression.
-      * @param lhs the constant reference to the left hand side of the operator.
-      * @param rhs the constant reference to the right hand side of the operator.
+      * This overload is used because only one side of the operator profit from move operation; the one with a temporary expression.
+      * If the expression if on the right hand side, we always add it first to profit from move operation. Otherwise another overload is used.
+      *
+      * Implements both the copy operator \c - and move operator \c - because operator \c- is implemented on top of operators \c -=.
+      * Because of template type deduction \c lhs is a "universal reference", i.e. either an lvalue or an rvalue reference.
+      * To force rvalue reference with template deduction one should use const : const T && lhs : lhs is an rvalue reference and WILL be modified ( not intuitive const ).
+      * Therefor std::forward must be used to forward the type of \c lhs. \c rhs is an rvalue reference and std::move must be used to forward it's type.
+      * @param lhs the universal reference to either a scalar, a variable or an expression on the left hand side of the operator.
+      * @param rhs the rvalue reference to the temporary expression on the right hand side of the operator.
       * @tparam T1 A scalar type ( integer or float ( any precision ) ) or a \c LpCol or a \c LpExpr.
-      * @tparam T2 A scalar type ( integer or float ( any precision ) ) or a \c LpCol or a \c LpExpr.
+      * @warning T1 can not be LpExpr (to avoid ambiguity with previous functions)
       * @return An expression which yields the result of \c lhs \c - \c rhs.
       */
-      template< typename T1, typename T2 >
-      LpExpr operator- ( const T1& lhs, const T2& rhs );
+      template< typename T1 , forbidden_type<T1, LpExpr> = 0> LpExpr  operator- ( const T1& lhs, LpExpr && rhs );
+      template< typename T1 , forbidden_type<T1, LpExpr> = 0> LpExpr operator- ( const T1& lhs, LpExpr& ths );
 
+      /**
+       * operator- between LpCol lhs and not LpExpr rhs
+       */
+      template <typename T2, forbidden_type<T2, LpExpr> = 0> LpExpr operator- ( const LpCol& lhs , const  T2& rhs );
+
+      /**
+       * operator- between neither LpExpr nor LpCol lhs and LpCol rhs
+       */
+      template <typename T1, forbidden_type<T1, LpExpr> = 0, forbidden_type<T1, LpCol> = 0> LpExpr operator- ( const T1& lhs, const LpCol& rhs );
       /// @}
 
       /// @name Non-members operators *
@@ -800,9 +787,14 @@ namespace gum {
       * @tparam T2 A scalar type ( integer or float ( any precision ) ) or a \c LpCol or a \c LpExpr.
       * @return An expression which yields the result of \c lhs \c <= \c rhs.
       */
-      template< typename T1, typename T2 >
-      LpExpr operator<= ( T1 && lhs, T2 && rhs );
-
+      /*
+      template< typename T2 > LpExpr operator<= ( const LpExpr & lhs,  T2 && rhs );
+      template< typename T2 > LpExpr operator<= ( const LpCol & lhs,  T2 && rhs );
+      template< typename T1, forbidden_type<T1, LpExpr&> = 0 , forbidden_type<T1, LpCol&> = 0> LpExpr operator<= ( T1 && lhs,  const LpExpr & rhs );
+      template< typename T1, forbidden_type<T1, LpExpr&> = 0 , forbidden_type<T1, LpCol&> = 0> LpExpr operator<= ( T1 && lhs,  const LpCol & rhs );
+      */
+      template<typename T1,typename T2> LpExpr operator<=(T1 && lhs,T2&& rhs);
+      
       /// @}
 
     } // end of namespace lp

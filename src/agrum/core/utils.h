@@ -55,6 +55,18 @@ namespace std {
 
 
 namespace gum {
+
+  /** forbidden_type<T1,T2> return the "int" type if T1 and T2 are the same type, else nothing.
+   * Use it as a guard in template specification :
+   *
+   * @code
+   * template<T,forbidden_type<T,int> =0,forbidden_type<T,char> =0> ...
+   * @endcode
+   *
+   * creates a template except if T is int or char !!! cool !!!
+   */
+  template<typename T1, typename T2 > using forbidden_type = typename std::enable_if < ! std::is_same<T1, T2>::value , int >::type;
+
   /// Implements a stream with the same behaviour as /dev/null
   struct NullStream : std::ostream {
     NullStream() : std::ios( 0 ), std::ostream( 0 ) {}
