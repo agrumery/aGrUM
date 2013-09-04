@@ -50,6 +50,8 @@ def showProba(p):
     vx=[var.label(int(i)) for i in ra]
 
     fig=plt.figure()
+    fig.set_figheight(len(var)/4.0)
+    
     ax=fig.add_subplot(111)
 
     ax.barh(ra,p.tolist(),align='center')
