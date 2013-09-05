@@ -31,14 +31,14 @@ namespace gum {
 
     INLINE
     ClassBayesNet::ClassBayesNet( const Class& c ):
-      BayesNet<prm_float>(), __class( &c ) {
+      IBayesNet<prm_float>(), __class( &c ) {
       GUM_CONSTRUCTOR( ClassBayesNet );
       __init( c );
     }
 
     INLINE
     ClassBayesNet::ClassBayesNet( const ClassBayesNet& from ):
-      BayesNet<prm_float>( from ), __class( from.__class ) {
+      IBayesNet<prm_float>( from ), __class( from.__class ) {
       GUM_CONS_CPY( ClassBayesNet );
     }
 
@@ -51,7 +51,7 @@ namespace gum {
     ClassBayesNet&
     ClassBayesNet::operator=( const ClassBayesNet& from ) {
       if ( this != &from ) {
-        BayesNet<prm_float>::operator=( from );
+        IBayesNet<prm_float>::operator=( from );
 
         __class = from.__class;
       }

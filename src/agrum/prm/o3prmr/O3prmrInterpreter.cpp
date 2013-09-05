@@ -35,6 +35,7 @@
 #include <agrum/prm/groundedInference.h>
 #include <agrum/prm/SVE.h>
 #include <agrum/core/utils.h>
+#include <agrum/BN/BayesNet.h>
 
 #include <agrum/prm/o3prmr/cocoR/Parser.h>
 

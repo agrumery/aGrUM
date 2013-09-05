@@ -306,7 +306,7 @@ namespace gum {
 
 
   //=============================================================================
-  Database Database::createFromCSVAndBN( BayesNet<float>* bn,
+  Database Database::createFromCSVAndBN( IBayesNet<float>* bn,
                                          const std::string& filename,
                                          char separator_separator,
                                          char field_delimiter,

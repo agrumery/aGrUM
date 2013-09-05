@@ -21,7 +21,7 @@
 
 /**
  * @file
- * @brief Implementation of the Shafer-Shenoy alogorithm for inference in gum::BayesNet.
+ * @brief Implementation of the Shafer-Shenoy alogorithm for inference in gum::IBayesNet.
  */
 
 #ifndef GUM_SHAFER_SHENOY_INFERENCE_H
@@ -75,7 +75,7 @@ namespace gum {
        * Default constructor.
        * @param bayesNet The Bayesian Network used for the inference.
        */
-      ShaferShenoyInference( const BayesNet<GUM_SCALAR>& bayesNet );
+      ShaferShenoyInference( const IBayesNet<GUM_SCALAR>& bayesNet );
 
       /**
        * Destructor.

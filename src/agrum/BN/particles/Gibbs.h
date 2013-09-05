@@ -27,7 +27,7 @@
 
 #include <vector>
 
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 
 namespace gum {
 
@@ -47,7 +47,7 @@ namespace gum {
         /**
          * Default constructor
          */
-        Gibbs( const BayesNet<GUM_SCALAR>& BN );
+        Gibbs( const IBayesNet<GUM_SCALAR>& BN );
 
         /**
          * Destructor.
@@ -91,7 +91,7 @@ namespace gum {
 
         const Instantiation& particle();
 
-        const BayesNet<GUM_SCALAR>& bn();
+        const IBayesNet<GUM_SCALAR>& bn();
         ///@}
 
       private:
@@ -131,7 +131,7 @@ namespace gum {
         Property<Idx>::onNodes __hard_evidences;
 
         /// The Bayes net we draw particle on
-        const BayesNet<GUM_SCALAR>& __bayesNet;
+        const IBayesNet<GUM_SCALAR>& __bayesNet;
     };
   } // namespace particle
 } //namespace gum

@@ -38,7 +38,7 @@
 #endif //GUM_TRACE_ON
 
 #define GUM_ASSERT(condition) { assert(condition); }
-#define GUM_DEBUG(x) {x}
+#define GUM_DEBUG_ONLY(x) {x}
 
 // FOR EXPANSION OF MACRO IN ARGS OF GUM_CONSTRUCTOR, WE NEED TO USE A 2-LEVEL DEFINITION OF GUM_CONSTRUCTOR
 #define GUM_CONSTRUCTOR_BASIC(x) {  gum::__debug__::__inc_creation (#x,__FILE__,__LINE__, "constructor of",(void *)this,sizeof(x)); }
@@ -66,7 +66,7 @@
 #else //NDEBUG
 /////////////////////////////////////////////////////////////
 #define GUM_ASSERT(condition)
-#define GUM_DEBUG(x)
+#define GUM_DEBUG_ONLY(x)
 #define GUM_CONSTRUCTOR(x)
 #define GUM_DESTRUCTOR(x)
 #define GUM_CONS_CPY(x)
@@ -77,14 +77,13 @@
 #endif //NDEBUG
 
 #ifdef GUM_TRACE_ON
-#define GUM_CHECKPOINT {                                                \
-    std::cerr << __FILE__ << ":" << __LINE__ <<": warning : aGrUM checkpoint"<< std::endl; }
+#define GUM_CHECKPOINT {   \
+    std::cerr << std::endl << __FILE__ << ":" << __LINE__ <<": warning : aGrUM checkpoint"<< std::endl; }
 
-#define GUM_TRACE(x) {                                                  \
-    std::cerr << __FILE__ << ":" << __LINE__ <<": trace : "<<x << std::endl; }
-
-#define GUM_TRACE_VAR(x) {                                              \
-    std::cerr << __FILE__ << ":" << __LINE__ <<": trace "<<#x<<": "<<x << std::endl; }
+#define GUM_TRACE(x) {     \
+    std::cerr << std::endl << __FILE__ << ":" << __LINE__ <<": trace : "<<x << std::endl; }
+#define GUM_TRACE_VAR(x) { \
+    std::cerr << std::endl << __FILE__ << ":" << __LINE__ <<": trace "<<#x<<": "<<x << std::endl; }
 
 #define GUM_TRACE_NEWLINE {std::cerr << std::endl;}
 #else // GUM_TRACE_ON
@@ -100,18 +99,18 @@ namespace gum {
 
   namespace __debug__ {
 
-    std::string __getFile( const char* f );
+    std::string __getFile ( const char* f );
 
 
 /////////////////////////////////////////////////////////////
-    void __show_trace( const char* zeKey, const char* zeFile, long zeLine,
-                       const char* zeMsg, const void* zePtr );
-    void __inc_creation( const char* zeKey, const char* zeFile, long zeLine,
-                         const char* zeMsg, const void* zePtr,int zeSize=-1 );
-    void __inc_deletion( const char* zeKey, const char* zeFile, long zeLine,
-                         const char* zeMsg, const void* zePtr );
-    void __dumpObjects( void );
-    void __atexit( void );
+    void __show_trace ( const char* zeKey, const char* zeFile, long zeLine,
+                        const char* zeMsg, const void* zePtr );
+    void __inc_creation ( const char* zeKey, const char* zeFile, long zeLine,
+                          const char* zeMsg, const void* zePtr,int zeSize=-1 );
+    void __inc_deletion ( const char* zeKey, const char* zeFile, long zeLine,
+                          const char* zeMsg, const void* zePtr );
+    void __dumpObjects ( void );
+    void __atexit ( void );
 
 
 
@@ -126,9 +125,9 @@ namespace gum {
 
   class Debug : public std::string {
     public:
-      Debug( const std::string& str ) : std::string( str ) {}
+      Debug ( const std::string& str ) : std::string ( str ) {}
 
-      Debug( const char* const str ) : std::string( str ) {}
+      Debug ( const char* const str ) : std::string ( str ) {}
   };
 
 } /* namespace gum */

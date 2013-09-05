@@ -295,16 +295,16 @@ namespace gum {
         /// @{
 
         /// @brief Method which ground ReferenceSlot of an Instance and add arcs
-        ///        in the BayesNet.
+        ///        in the IBayesNet.
         /// @param instance The Instance grounded by this method.
-        /// @param factory  The factory used to build the grounded BayesNet.
+        /// @param factory  The factory used to build the grounded IBayesNet.
         void __groundRef( const Instance& instance,
                           BayesNetFactory<prm_float>& factory ) const;
 
         /// @brief Method which ground Atttributes and Aggregators of
         ///        an Instance.
         /// @param instance The Instance grounded by this method.
-        /// @param factory  The factory used to build the grounded BayesNet.
+        /// @param factory  The factory used to build the grounded IBayesNet.
         void __groundAttr( const Instance& instance,
                            BayesNetFactory<prm_float>& factory ) const;
 
@@ -312,15 +312,15 @@ namespace gum {
         ///        Bayesian Network.
         /// @param instance The Instance currently grounded.
         /// @param attr     The Attribute for which the Potential is grounded.
-        /// @param factory  The factory used to build the grounded BayesNet.
+        /// @param factory  The factory used to build the grounded IBayesNet.
         void __groundPotential( const Instance& instance, const Attribute& attr,
                                 BayesNetFactory<prm_float>& factory ) const;
 
         /// @brief Ground an aggregator with the given name in the grounded
-        ///        BayesNet.
+        ///        IBayesNet.
         /// @param elt     The aggregator grounded.
-        /// @param name    The aggregator's name in the grounded BayesNet.
-        /// @param factory The factory used to build the grounded BayesNet.
+        /// @param name    The aggregator's name in the grounded IBayesNet.
+        /// @param factory The factory used to build the grounded IBayesNet.
         void __groundAgg( const ClassElement& elt, const std::string& name,
                           BayesNetFactory<prm_float>& factory ) const;
         /// @}

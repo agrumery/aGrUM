@@ -91,7 +91,7 @@ namespace gum {
       * Constructor.
       * Use by default the SimpleCPTGenerator for generating the BNs CPT
       * and the SimpleCPTDisturber to tweak the CPT when the dimension of the table changes.
-      * @param bayesNet the BayesNet used as reference to fill the parameters nbrNodes, maxArcs and maxModality
+      * @param bayesNet the IBayesNet used as reference to fill the parameters nbrNodes, maxArcs and maxModality
       * @param maxParents The number of maximum parents for each node imposed on the generator
       * @param iteration The number of iterations wanted to repeat the algorithm
       * @param p probability for the change of the state (see \ref probability_p_q "use of p and q" )

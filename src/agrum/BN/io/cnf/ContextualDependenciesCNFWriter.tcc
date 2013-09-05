@@ -49,7 +49,7 @@ namespace gum {
   // @throws Raised if an I/O error occurs.
   template<typename GUM_SCALAR, template <class> class IApproximationPolicy> INLINE
   void
-  ContextualDependenciesCNFWriter<GUM_SCALAR, IApproximationPolicy>::write( std::ostream& output, const BayesNet<GUM_SCALAR>& bn ) {
+  ContextualDependenciesCNFWriter<GUM_SCALAR, IApproximationPolicy>::write( std::ostream& output, const IBayesNet<GUM_SCALAR>& bn ) {
     Instantiation Order;
 
     for ( gum::Sequence<gum::NodeId>::iterator it = bn.topologicalOrder().begin(); it !=bn.topologicalOrder().end(); ++it )
@@ -262,7 +262,7 @@ namespace gum {
   // @throws Raised if an I/O error occurs.
   template<typename GUM_SCALAR, template <class> class IApproximationPolicy> INLINE
   void
-  ContextualDependenciesCNFWriter<GUM_SCALAR, IApproximationPolicy>::write( std::string filePath, const BayesNet<GUM_SCALAR>& bn ) {
+  ContextualDependenciesCNFWriter<GUM_SCALAR, IApproximationPolicy>::write( std::string filePath, const IBayesNet<GUM_SCALAR>& bn ) {
     std::ofstream output( filePath.c_str(), std::ios_base::trunc );
     std::ofstream outputvar( ( filePath+".var" ).c_str(), std::ios_base::trunc );
 

@@ -29,7 +29,7 @@
 namespace gum {
 
   template<typename GUM_SCALAR> INLINE
-  VEWithBB<GUM_SCALAR>::VEWithBB( const BayesNet<GUM_SCALAR>& bn ):
+  VEWithBB<GUM_SCALAR>::VEWithBB( const IBayesNet<GUM_SCALAR>& bn ):
     BayesNetInference<GUM_SCALAR>( bn ), __ve( bn ) {
     GUM_CONSTRUCTOR( VEWithBB );
     __ve.makeInference();

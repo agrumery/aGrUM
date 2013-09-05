@@ -39,7 +39,7 @@
 namespace gum {
 
   /**
-   * @class SimpleBayesNetGenerator simpleBayesNetGenerator.h <agrum/BN/generator/simpleBayesNetGenerator.h>
+   * @class IBayesNetGenerator simpleBayesNetGenerator.h <agrum/BN/generator/simpleBayesNetGenerator.h>
    * @brief Class for generating bayesian networks.
    * @ingroup bn_group
    *
@@ -50,7 +50,7 @@ namespace gum {
    */
   template <typename GUM_SCALAR, template<class> class ICPTGenerator = SimpleCPTGenerator>
 
-  class SimpleBayesNetGenerator : public AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator> {
+  class IBayesNetGenerator : public AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator> {
     public:
       // ############################################################################
       /// @name Constructors / Destructor
@@ -64,12 +64,12 @@ namespace gum {
       * @param maxArcs The number of maximum arcs imposed on the generator.
       * @param maxModality Each DRV has from 2 to maxModality modalities
       */
-      SimpleBayesNetGenerator( Size nbrNodes, Size maxArcs, Size maxModality = 2 );
+      IBayesNetGenerator( Size nbrNodes, Size maxArcs, Size maxModality = 2 );
 
       /**
        * Destructor.
        */
-      ~SimpleBayesNetGenerator();
+      ~IBayesNetGenerator();
       /// @}
 
       // ############################################################################
@@ -84,7 +84,7 @@ namespace gum {
       void generateBN( BayesNet<GUM_SCALAR>& bayesNet );
 
       /// @}
-  }; /* class SimpleBayesNetGenerator */
+  }; /* class IBayesNetGenerator */
 
 } /* namespace gum */
 

@@ -26,7 +26,7 @@
 
 #include <list>
 
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 
 #include <agrum/prm/PRM.h>
 
@@ -40,14 +40,14 @@ namespace gum {
      * @brief This class decorates a gum::prm::Class has an IBaseBayesNet.
      *
      * This class filters Attribute and Aggregate in a way it can be interpreted as
-     * a BayesNet. SlotChains and ReferenceSlot are not represented.
+     * a IBayesNet. SlotChains and ReferenceSlot are not represented.
      *
      * Remember that a ClassBayesNet does not contain input nodes parents and
      * output nodes children. Thus you should be careful when using one of the
      * BayesNetInference over a ClassBayesNet since some variables are missing in
      * the DAG but not in the nodes CPT.
      */
-    class ClassBayesNet: public BayesNet<prm_float> {
+    class ClassBayesNet: public IBayesNet<prm_float> {
       public:
         // ========================================================================
         /// @name Constructors & destructor.
@@ -83,7 +83,7 @@ namespace gum {
          * @return the Potential of varId.
          *
          * @throw NotFound raised if varId does not match any variable in this
-         *                 BayesNet.
+         *                 IBayesNet.
          * @throw OperationNotAllowed raised if varId is an Aggregate.
          */
         virtual const Potential<prm_float>& cpt( NodeId varId ) const;
@@ -111,7 +111,7 @@ namespace gum {
         /// @name Graphical methods
         // ===========================================================================
         /// @{
-        /// @return Returns a dot representation of this BayesNet.
+        /// @return Returns a dot representation of this IBayesNet.
         virtual std::string toDot() const;
 
         /// @}

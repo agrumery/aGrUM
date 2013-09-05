@@ -49,7 +49,7 @@ namespace gum {
   // @throws Raised if an I/O error occurs.
   template<typename GUM_SCALAR, template<class> class IApproximationPolicy > INLINE
   void
-  GeneralizedCNFWriter<GUM_SCALAR, IApproximationPolicy >::write( std::ostream& output, const BayesNet<GUM_SCALAR>& bn ) {
+  GeneralizedCNFWriter<GUM_SCALAR, IApproximationPolicy >::write( std::ostream& output, const IBayesNet<GUM_SCALAR>& bn ) {
     if ( ! output.good() )
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
 
@@ -136,7 +136,7 @@ namespace gum {
   // @throws Raised if an I/O error occurs.
   template<typename GUM_SCALAR, template<class> class IApproximationPolicy > INLINE
   void
-  GeneralizedCNFWriter<GUM_SCALAR, IApproximationPolicy>::write( std::string filePath, const BayesNet<GUM_SCALAR>& bn ) {
+  GeneralizedCNFWriter<GUM_SCALAR, IApproximationPolicy>::write( std::string filePath, const IBayesNet<GUM_SCALAR>& bn ) {
     std::ofstream output( filePath.c_str(), std::ios_base::trunc );
     std::ofstream outputvar( ( filePath+".var" ).c_str(), std::ios_base::trunc );
 
@@ -241,7 +241,7 @@ namespace gum {
   // Returns the header of the BN file.
   template<typename GUM_SCALAR,> INLINE
   std::string
-  CNFWriter<GUM_SCALAR>::__header( const BayesNet<GUM_SCALAR>& ) {
+  CNFWriter<GUM_SCALAR>::__header( const IBayesNet<GUM_SCALAR>& ) {
   std::stringstream str;
   str << "";
   return str.str();

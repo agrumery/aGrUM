@@ -36,10 +36,10 @@ namespace gum {
 
     /**
      * @class MultipleInferenceEngine MultipleInferenceEngine.h <agrum/CN/MultipleInferenceEngine.h>
-     * @brief Class template representing a CredalNet inference engine using one or more BayesNet inference engines such as LazyPropagation. Extends InferenceEngine< GUM_SCALAR >. Used for outer multi-threading such as CNMonteCarloSampling.
+     * @brief Class template representing a CredalNet inference engine using one or more IBayesNet inference engines such as LazyPropagation. Extends InferenceEngine< GUM_SCALAR >. Used for outer multi-threading such as CNMonteCarloSampling.
      * @ingroup cn_group
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
-     * @tparam BNInferenceEngine A BayesNet inference engine such as LazyPropagation.
+     * @tparam BNInferenceEngine A IBayesNet inference engine such as LazyPropagation.
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
      */
     template < typename GUM_SCALAR, class BNInferenceEngine >
@@ -53,7 +53,7 @@ namespace gum {
         typedef typename Property< std::vector< GUM_SCALAR > >::onNodes margi;
         typedef typename Property< GUM_SCALAR >::onNodes expe;
 
-        typedef BayesNet< GUM_SCALAR > bnet;
+        typedef IBayesNet< GUM_SCALAR > bnet;
         typedef std::vector< margi > margis;
         typedef std::vector< expe > expes;
         typedef std::vector< credalSet > credalSets;
@@ -91,16 +91,16 @@ namespace gum {
         /** Threads clusters. */
         clusters _l_clusters;
 
-        /** Threads BayesNet. */
+        /** Threads IBayesNet. */
         typename std::vector< bnet* > _workingSet;
         /** Threads evidence. */
         typename std::vector< List< const Potential< GUM_SCALAR > * > * > _workingSetE;
 
         /** Threads BNInferenceEngine. */
         typename std::vector< BNInferenceEngine* > _l_inferenceEngine;
-        /** Threads optimal BayesNet. */
+        /** Threads optimal IBayesNet. */
         std::vector< VarMod2BNsMap< GUM_SCALAR > * > _l_optimalNet;
-        /** Fusion of threads optimal BayesNet. */
+        /** Fusion of threads optimal IBayesNet. */
         //OptBN< GUM_SCALAR > _threadFusion; // we should use this OptBN if omp is disabled (avoid creating 2 objects when only one is necessary)
         // it should also avoid calling thread fusion operations
 
@@ -112,7 +112,7 @@ namespace gum {
          *
          * @param num_threads The number of threads.
          * @param __storeVertices \c True if vertices should be stored, \c False otherwise.
-         * @param __storeBNOpt \c True if optimal BayesNet should be stored, \c false otherwise.
+         * @param __storeBNOpt \c True if optimal IBayesNet should be stored, \c false otherwise.
          */
         void _initThreadsData( const unsigned int& num_threads, const bool __storeVertices, const bool __storeBNOpt );
 
@@ -122,12 +122,12 @@ namespace gum {
         /// @{
 
         /**
-         * @brief Update thread information (marginals, expectations, BayesNet, vertices) for a given node id.
+         * @brief Update thread information (marginals, expectations, IBayesNet, vertices) for a given node id.
          *
          * @param id The id of the node to be updated.
          * @param vertex The vertex.
          * @param elimRedund \c true if redundancy elimination is to be performed, \c false otherwise and by default.
-         * @return \c True if the BayesNet is kept (for now), \c False otherwise.
+         * @return \c True if the IBayesNet is kept (for now), \c False otherwise.
          */
         inline bool _updateThread( const NodeId& id, const std::vector< GUM_SCALAR >& vertex, const bool& elimRedund = false );
 
@@ -153,7 +153,7 @@ namespace gum {
         /// @name Proptected post-inference methods
         /// @{
 
-        /** Fusion of threads optimal BayesNet. */
+        /** Fusion of threads optimal IBayesNet. */
         void _optFusion();
         /** Fusion of threads expectations. */
         void _expFusion();
@@ -194,7 +194,7 @@ namespace gum {
         /// @name Getters and setters
         /// @{
         /**
-         * Get optimum BayesNet.
+         * Get optimum IBayesNet.
          * @return A pointer to the optimal net object.
          */
         //OptBN< GUM_SCALAR > * getOptBN ();

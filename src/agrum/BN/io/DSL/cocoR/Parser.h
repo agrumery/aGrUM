@@ -37,7 +37,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 #include <agrum/core/cast_unicode.h>
 
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/BayesNetFactory.h>
 
 #undef TRY
@@ -84,13 +84,13 @@ class Parser {
     Token* t;     // last recognized token
     Token* la;      // lookahead token
 
-    gum::AbstractBayesNetFactory* __factory;
+    gum::IBayesNetFactory* __factory;
 
-void setFactory(gum::AbstractBayesNetFactory* f) {
+void setFactory(gum::IBayesNetFactory* f) {
   __factory=f;
 }
 
-gum::AbstractBayesNetFactory& factory(void) {
+gum::IBayesNetFactory& factory(void) {
   if (__factory) return *__factory;
   GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning DSL file...");
 }

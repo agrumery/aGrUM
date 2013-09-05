@@ -42,7 +42,7 @@
 namespace gum {
   /// default constructor
   template <typename GUM_SCALAR>
-  GibbsInference<GUM_SCALAR>::GibbsInference( const BayesNet<GUM_SCALAR>& BN ) :
+  GibbsInference<GUM_SCALAR>::GibbsInference( const IBayesNet<GUM_SCALAR>& BN ) :
     ApproximationScheme(),
     BayesNetInference <GUM_SCALAR> ( BN ),
     particle::Gibbs<GUM_SCALAR> ( BN ) {

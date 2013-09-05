@@ -220,7 +220,7 @@ namespace gum {
         /// @name Getters and setters
         /// @{
         /**
-         * Get optimum BayesNet.
+         * Get optimum IBayesNet.
          * @return A pointer to the optimal net object.
          */
         VarMod2BNsMap<GUM_SCALAR>* getVarMod2BNsMap();

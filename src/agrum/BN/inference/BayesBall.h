@@ -35,7 +35,7 @@
 #include <agrum/core/sequence.h>
 #include <agrum/core/list.h>
 
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 
 namespace gum {
   /**

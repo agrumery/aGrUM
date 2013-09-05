@@ -51,7 +51,7 @@ namespace gum {
    */
   template<typename GUM_SCALAR> INLINE
   void
-  BIFXMLBNWriter<GUM_SCALAR>::write( std::ostream& output, const BayesNet<GUM_SCALAR>& bn ) {
+  BIFXMLBNWriter<GUM_SCALAR>::write( std::ostream& output, const IBayesNet<GUM_SCALAR>& bn ) {
     if ( ! output.good() ) {
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
     }
@@ -90,7 +90,7 @@ namespace gum {
    */
   template<typename GUM_SCALAR> INLINE
   void
-  BIFXMLBNWriter<GUM_SCALAR>::write( std::string filePath, const BayesNet<GUM_SCALAR>& bn ) {
+  BIFXMLBNWriter<GUM_SCALAR>::write( std::string filePath, const IBayesNet<GUM_SCALAR>& bn ) {
     std::ofstream output( filePath.c_str(), std::ios_base::trunc );
 
     write( output, bn );
@@ -179,7 +179,7 @@ namespace gum {
    */
   template<typename GUM_SCALAR> INLINE
   std::string
-  BIFXMLBNWriter<GUM_SCALAR>::__variableDefinition( const NodeId& varNodeId, const BayesNet<GUM_SCALAR>& bn ) {
+  BIFXMLBNWriter<GUM_SCALAR>::__variableDefinition( const NodeId& varNodeId, const IBayesNet<GUM_SCALAR>& bn ) {
     //<DEFINITION>
     //<FOR>var</FOR>
     //<GIVEN>conditional var</GIVEN>

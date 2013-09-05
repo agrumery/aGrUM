@@ -32,7 +32,7 @@ namespace gum {
 
   /**
      * @class DSLWriter
-     * @brief Writes a BayesNet in the DSL format.
+     * @brief Writes a IBayesNet in the DSL format.
      * @ingroup bn_group
      *
      * This class servers to write the content of a Bayesian Network in
@@ -70,7 +70,7 @@ namespace gum {
       * @param bn The Bayesian Network writen in output.
       * @throws IOError Raised if and I/O error occurs.
       */
-      virtual void write( std::ostream& output, const BayesNet<GUM_SCALAR>& bn );
+      virtual void write( std::ostream& output, const IBayesNet<GUM_SCALAR>& bn );
 
       /**
       * Writes a Bayesian Network in the referenced file using the DSL format.
@@ -80,14 +80,14 @@ namespace gum {
       * @param bn The Bayesian Network writed in the file.
       * @throws IOError Raised if and I/O error occurs.
       */
-      virtual void write( std::string filePath, const BayesNet<GUM_SCALAR>& bn );
+      virtual void write( std::string filePath, const IBayesNet<GUM_SCALAR>& bn );
 
 
 
     private:
 
       // Returns a bloc defining a variable in the DSL format.
-      std::string __variableBloc( const BayesNet<GUM_SCALAR>& bn , const DiscreteVariable& var );
+      std::string __variableBloc( const IBayesNet<GUM_SCALAR>& bn , const DiscreteVariable& var );
 
   };
 } /* namespace gum */

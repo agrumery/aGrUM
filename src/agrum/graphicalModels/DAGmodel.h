@@ -67,13 +67,13 @@ namespace gum {
       /// @{
 
       /**
-       * Return the value of the property "name" of this BayesNet.
+       * Return the value of the property "name" of this IBayesNet.
        * @throw NotFound Raised if no "name" property is found.
        */
       const std::string& property( const std::string& name ) const;
 
       /**
-       * Add or change a property of this BayesNet.
+       * Add or change a property of this IBayesNet.
        */
       void setProperty( const std::string& name, const std::string& value );
 
@@ -177,13 +177,6 @@ namespace gum {
       /// @return Returns the log10 domain size of the joint probabilty for the BN
       double log10DomainSize( void ) const;
 
-      /// @return Returns a string representation of this BayesNet.
-      virtual std::string toString( void ) const;
-
-      /// @return Returns a dot representation of this BayesNet.
-      virtual std::string toDot( void ) const=0;
-
-
     protected:
       /**
        * Private copy operator.
@@ -196,11 +189,11 @@ namespace gum {
 
     private:
 
-      /// Returns the moral graph of this BayesNet.
+      /// Returns the moral graph of this IBayesNet.
       /// @warning __mutableMoralGraph is assumed to be valid and empty
       void __moralGraph( ) const;
 
-      /// Returns a topological order of this BayesNet.
+      /// Returns a topological order of this IBayesNet.
       /// @warning __mutableTopologicalOrder is assumed to be valid and empty
       void __topologicalOrder(  ) const;
 

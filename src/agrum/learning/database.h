@@ -33,7 +33,7 @@
 
 #include <agrum/core/list.h>
 #include <agrum/core/hashTable.h>
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 
 
 namespace gum {
@@ -276,7 +276,7 @@ namespace gum {
        * this "?" label.
        * @ throws IOError */
 
-      static Database createFromCSVAndBN( BayesNet<float>* bn,
+      static Database createFromCSVAndBN( IBayesNet<float>* bn,
                                           const std::string& filename,
                                           char separator_separator = ';',
                                           char field_delimiter = '"',

@@ -623,7 +623,7 @@ namespace gum_tests {
 
       void testCopyAndEqualityOperators() {
         gum::BayesNet<float>* bn_1 = new gum::BayesNet<float>();
-        gum::SimpleBayesNetGenerator<float> generator( 20, 30, 4 );
+        gum::IBayesNetGenerator<float> generator( 20, 30, 4 );
         generator.generateBN( *bn_1 );
 
         gum::BayesNet<float>* bn_2 = new gum::BayesNet<float>();

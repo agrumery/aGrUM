@@ -40,7 +40,7 @@ namespace gum {
     try {
       __scanner = new net::Scanner( __streamName.c_str() );
       __parser = new net::Parser( __scanner );
-      __parser->setFactory( ( AbstractBayesNetFactory* ) __factory );
+      __parser->setFactory( ( IBayesNetFactory* ) __factory );
     } catch ( IOError e ) {
       __ioerror = true;
     }

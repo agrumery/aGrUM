@@ -274,8 +274,8 @@ namespace gum {
         /** A pointer to the CredalNet to be used. */
         const CredalNet<GUM_SCALAR>* cn;
 
-        /** A pointer to it's BayesNet used as a DAG. */
-        const BayesNet<GUM_SCALAR>* bnet;
+        /** A pointer to it's IBayesNet used as a DAG. */
+        const IBayesNet<GUM_SCALAR>* bnet;
 
         //typedef const CredalNet< GUM_SCALAR > * (infE::*cnfunc) ();
         //cnfunc getCN = &infE::getCN;

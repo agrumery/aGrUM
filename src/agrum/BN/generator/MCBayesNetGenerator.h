@@ -169,7 +169,7 @@ namespace gum {
       * Constructor.
       * Use by default the SimpleCPTGenerator for generating the BNs CPT
       * and the SimpleCPTDisturber to tweak the CPT when the dimension of the table changes.
-      * @param bayesNet the BayesNet used as reference to fill the parameters nbrNodes, maxArcs and maxModality
+      * @param bayesNet the IBayesNet used as reference to fill the parameters nbrNodes, maxArcs and maxModality
       * @param iteration The number of iterations wanted to repeat the algorithm
       * @param p probability for the change of the state (see \ref probability_p_q )
       * @param q probability for the change of the state (see \ref probability_p_q )
@@ -190,17 +190,17 @@ namespace gum {
       /// @{
       /**
        * Generates a random bayesian network.
-       * @param bayesNet empty BayesNet to generate.
+       * @param bayesNet empty IBayesNet to generate.
        * @return null but modify inputed Bayesian Network
        */
       void generateBN( BayesNet<GUM_SCALAR>& bayesNet );
 
       /**
       * Change randomly the topology of a specific bayesian networks.
-      * @param bayesNetinit BayesNet to be modify
+      * @param bayesNetinit IBayesNet to be modify
       * @param iteration The number of iterations wanted to repeat the algorithm
       * @return null but modify inputed Bayesian Network
-      * @throws OperationNotAllow if the initial state of the BayesNet is not respecting the wanted conditions
+      * @throws OperationNotAllow if the initial state of the IBayesNet is not respecting the wanted conditions
       * if iteration = 0, it is assumed that the number of iteration wanted is the same as the one specified in the constructor
       */
       void disturbBN( BayesNet<GUM_SCALAR>& bayesNetinit, Size iteration = 0 );

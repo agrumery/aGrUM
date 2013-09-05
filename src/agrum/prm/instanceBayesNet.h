@@ -29,7 +29,7 @@
 
 #include <list>
 
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 
 #include <agrum/prm/PRM.h>
 
@@ -46,7 +46,7 @@ namespace gum {
      * the DAG but not in the nodes CPT.
      *
      */
-    class InstanceBayesNet: public BayesNet<prm_float> {
+    class InstanceBayesNet: public IBayesNet<prm_float> {
       public:
         // ========================================================================
         /// @name Constructors & destructor.
@@ -97,7 +97,7 @@ namespace gum {
         /// @name Graphical methods
         // ===========================================================================
         /// @{
-        /// @return Returns a dot representation of this BayesNet.
+        /// @return Returns a dot representation of this IBayesNet.
         virtual std::string toDot( void ) const;
 
         /// @}

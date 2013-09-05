@@ -43,7 +43,7 @@ namespace gum {
         delete *match;
       }
 
-      // typedef HashTable<gspan::Pattern*, BayesNet<prm_float>*>::iterator BNIter;
+      // typedef HashTable<gspan::Pattern*, IBayesNet<prm_float>*>::iterator BNIter;
       // for (BNIter iter = __bn_map.begin(); iter != __bn_map.end(); ++iter) {
       //   delete *iter;
       // }
@@ -113,7 +113,7 @@ namespace gum {
     }
 
 // INLINE
-// BayesNet<prm_float>&
+// IBayesNet<prm_float>&
 // GSpan::baseBN(gspan::Pattern& p) {
 //   return *(__bn_map[&p]);
 // }

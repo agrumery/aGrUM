@@ -27,7 +27,7 @@
 #include <math.h>
 
 #include <agrum/core/hashTable.h>
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 
 #include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
@@ -44,7 +44,7 @@
 namespace gum {
 
   template<typename GUM_SCALAR>
-  GibbsKL<GUM_SCALAR>::GibbsKL( const BayesNet<GUM_SCALAR>& P,const BayesNet<GUM_SCALAR>& Q ) :
+  GibbsKL<GUM_SCALAR>::GibbsKL( const IBayesNet<GUM_SCALAR>& P,const IBayesNet<GUM_SCALAR>& Q ) :
     KL<GUM_SCALAR> ( P,Q ),
     ApproximationScheme( ),
     particle::Gibbs<GUM_SCALAR> ( P ) {

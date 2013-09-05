@@ -29,7 +29,7 @@
 
 #include <vector>
 
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/BN/inference/variableElimination.h>
@@ -39,7 +39,7 @@ namespace gum {
   /**
    * @class VEWithBB VEWithBB.h <agrum/BN/inference/VEWithBB.h>
    * @brief Implementation of the state of the art Value Elimination algorithm
-   *        using the BayesBall algorithm to prune the BayesNet.
+   *        using the BayesBall algorithm to prune the IBayesNet.
    *
    * @ingroup bn_group
    *
@@ -55,7 +55,7 @@ namespace gum {
       /**
        * Default constructor.
        */
-      VEWithBB( const BayesNet<GUM_SCALAR>& bn );
+      VEWithBB( const IBayesNet<GUM_SCALAR>& bn );
 
       /**
        * Destructor.
@@ -75,7 +75,7 @@ namespace gum {
        * some basic initialization.
        *
        * If the current elimination order is smaller than the number of nodes in the
-       * BayesNet, then this method will eliminate all nodes present in the elimination
+       * IBayesNet, then this method will eliminate all nodes present in the elimination
        * order. Thus computing a joint probability over a set of variables.
        *
        * Use the VariableElimination::pool() method to access the set of created potentials.

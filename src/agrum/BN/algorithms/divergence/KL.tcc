@@ -26,12 +26,12 @@
 
 #include <math.h>
 #include <agrum/BN/algorithms/divergence/KL.h>
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 #include <complex>
 
 namespace gum {
   template<typename GUM_SCALAR>
-  KL<GUM_SCALAR>::KL( const BayesNet<GUM_SCALAR>& P,const BayesNet<GUM_SCALAR>& Q ) :
+  KL<GUM_SCALAR>::KL( const IBayesNet<GUM_SCALAR>& P,const IBayesNet<GUM_SCALAR>& Q ) :
     _p( P ),_q( Q ),
     _klPQ( 0.0 ),_klQP( 0.0 ),_errorPQ( false ),_errorQP( false ),
     __difficulty( Complexity::Heavy ),__done( false ) {
@@ -107,13 +107,13 @@ namespace gum {
   }
 
   template<typename GUM_SCALAR> INLINE
-  const BayesNet<GUM_SCALAR>&
+  const IBayesNet<GUM_SCALAR>&
   KL<GUM_SCALAR>::p( void ) const {
     return _p;
   }
 
   template<typename GUM_SCALAR> INLINE
-  const BayesNet<GUM_SCALAR>&
+  const IBayesNet<GUM_SCALAR>&
   KL<GUM_SCALAR>::q( void ) const {
     return _q;
   }

@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 /** @file
- * @brief Source implementation of SimpleBayesNetGenerator
+ * @brief Source implementation of IBayesNetGenerator
  *
  * @author Pierre-Henri WUILLEMIN and Lionel TORTI and Ariele-Paolo MAESANO
  *
@@ -33,9 +33,9 @@ namespace gum {
 
 // Use the SimpleCPTGenerator for generating the BNs CPT.
   template <typename GUM_SCALAR, template<class> class ICPTGenerator> INLINE
-  SimpleBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::SimpleBayesNetGenerator( Size nbrNodes,  Size maxArcs, Size maxModality ) :
+  IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::IBayesNetGenerator( Size nbrNodes,  Size maxArcs, Size maxModality ) :
     AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator> ( nbrNodes, maxArcs, maxModality ) {
-    GUM_CONSTRUCTOR( SimpleBayesNetGenerator );
+    GUM_CONSTRUCTOR( IBayesNetGenerator );
   }
 
 // Use this constructor if you want to use a different policy for generating
@@ -43,15 +43,15 @@ namespace gum {
 // The cptGenerator will be erased when the destructor is called.
 // @param cptGenerator The policy used to generate CPT.
   /*template <typename GUM_SCALAR, template<class> class ICPTGenerator>
-  SimpleBayesNetGenerator<GUM_SCALAR,ICPTGenerator>::SimpleBayesNetGenerator(CPTGenerator* cptGenerator ,Size nbrNodes, float density, Size maxModality):
+  IBayesNetGenerator<GUM_SCALAR,ICPTGenerator>::IBayesNetGenerator(CPTGenerator* cptGenerator ,Size nbrNodes, float density, Size maxModality):
     AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>(cptGenerator ,nbrNodes,density,maxModality) {
-    GUM_CONSTRUCTOR ( SimpleBayesNetGenerator );
+    GUM_CONSTRUCTOR ( IBayesNetGenerator );
   }*/
 
 // Destructor.
   template <typename GUM_SCALAR, template<class> class ICPTGenerator> INLINE
-  SimpleBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::~SimpleBayesNetGenerator() {
-    GUM_DESTRUCTOR( SimpleBayesNetGenerator );
+  IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::~IBayesNetGenerator() {
+    GUM_DESTRUCTOR( IBayesNetGenerator );
 
   }
 
@@ -61,7 +61,7 @@ namespace gum {
 // @return A BNs randomly generated.
 
   template <typename GUM_SCALAR, template<class> class ICPTGenerator>
-  void SimpleBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::generateBN( BayesNet<GUM_SCALAR>& bayesNet ) {
+  void IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::generateBN( BayesNet<GUM_SCALAR>& bayesNet ) {
     AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet = bayesNet;
     HashTable<Size, NodeId> map;
     std::stringstream strBuff;

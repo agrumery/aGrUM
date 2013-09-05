@@ -29,7 +29,7 @@
 
 #include <vector>
 
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 
 #include <agrum/graphs/defaultTriangulation.h>
 
@@ -67,7 +67,7 @@ namespace gum {
       /**
        * Default constructor.
        */
-      VariableElimination( const BayesNet<GUM_SCALAR>& bn );
+      VariableElimination( const IBayesNet<GUM_SCALAR>& bn );
 
       /**
        * Destructor.
@@ -87,7 +87,7 @@ namespace gum {
        * some basic initialization.
        *
        * If the current elimination order is smaller than the number of nodes in the
-       * BayesNet, then this method will eliminate all nodes present in the elimination
+       * IBayesNet, then this method will eliminate all nodes present in the elimination
        * order. Thus computing a joint probability over a set of variables.
        *
        * Use the VariableElimination::pool() method to access the set of created potentials.
@@ -134,7 +134,7 @@ namespace gum {
       /**
        * @brief Eliminate nodes in elim_order using pool as initial potential pool.        potentials.
        * @param elim_order An elimination order, which must be a subset of nodes in
-       *                   the class BayesNet.
+       *                   the class IBayesNet.
        * @param pool Set of Potential used as initial pool for the elimination.
        *             Results are stored in it also.
        * @param trash The Set of Potential to delete after use of those in pool.

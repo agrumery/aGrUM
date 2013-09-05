@@ -31,14 +31,14 @@ namespace gum {
 
     INLINE
     InstanceBayesNet::InstanceBayesNet( const Instance& i ):
-      BayesNet<prm_float>(), __inst( &i ) {
+      IBayesNet<prm_float>(), __inst( &i ) {
       GUM_CONSTRUCTOR( InstanceBayesNet );
       __init( i );
     }
 
     INLINE
     InstanceBayesNet::InstanceBayesNet( const InstanceBayesNet& from ):
-      BayesNet<prm_float>( from ), __varNodeMap( from.__varNodeMap ),
+      IBayesNet<prm_float>( from ), __varNodeMap( from.__varNodeMap ),
       __inst( from.__inst ) {
       GUM_CONS_CPY( InstanceBayesNet );
 
@@ -53,7 +53,7 @@ namespace gum {
     InstanceBayesNet&
     InstanceBayesNet::operator=( const InstanceBayesNet& from ) {
       if ( this != &from ) {
-        BayesNet<prm_float>::operator=( from );
+        IBayesNet<prm_float>::operator=( from );
 
         __varNodeMap = from.__varNodeMap;
       }

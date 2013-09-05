@@ -25,13 +25,13 @@
  */
 
 #include <math.h>
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
 
 namespace gum {
   template<typename GUM_SCALAR>
-  BruteForceKL<GUM_SCALAR>::BruteForceKL( const BayesNet<GUM_SCALAR>& P,const BayesNet<GUM_SCALAR>& Q ) :KL<GUM_SCALAR> ( P,Q ) {
+  BruteForceKL<GUM_SCALAR>::BruteForceKL( const IBayesNet<GUM_SCALAR>& P,const IBayesNet<GUM_SCALAR>& Q ) :KL<GUM_SCALAR> ( P,Q ) {
     GUM_CONSTRUCTOR( BruteForceKL );
   }
 

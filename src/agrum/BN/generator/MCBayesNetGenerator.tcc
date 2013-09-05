@@ -151,7 +151,7 @@ namespace gum {
 
   }
 
-//main algorithme for moving between state of the BayesNet according on the nature of the topology polytree or multi-connected
+//main algorithme for moving between state of the IBayesNet according on the nature of the topology polytree or multi-connected
 
   template<typename GUM_SCALAR, template<class> class ICPTGenerator, template <class> class ICPTDisturber>
   void MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::__PMMx_poly() {

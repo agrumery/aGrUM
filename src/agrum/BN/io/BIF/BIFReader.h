@@ -64,7 +64,7 @@ public:
 #include <string>
 #include <fstream>
 
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/BayesNetFactory.h>
 #include <agrum/BN/io/BNReader.h>
 

@@ -272,7 +272,7 @@ namespace gum {
 //    void generateBN(size_t number);
 //
 //    /// Junk code.
-//    BayesNet<prm_float>& baseBN(gspan::Pattern& p);
+//    IBayesNet<prm_float>& baseBN(gspan::Pattern& p);
 //
 //    /// Junk code.
 //    void infer(size_t number);
@@ -286,10 +286,10 @@ namespace gum {
 //                          const Instance* inst, const Attribute* attr) const;
 //
 //    /// This is junk code and will be erased.
-//    HashTable<gspan::Pattern*, BayesNet<prm_float>*> __bn_map;
+//    HashTable<gspan::Pattern*, IBayesNet<prm_float>*> __bn_map;
 //
 //    /// This is junk code and will be erased.
-//    BayesNet<prm_float>* __generateBNTopology(Sequence<Instance*>& seq);
+//    IBayesNet<prm_float>* __generateBNTopology(Sequence<Instance*>& seq);
 //
 //    /// This is junk code and will be erased.
 //    void __declare_variables(BayesNetFactory<prm_float>& factory,
@@ -300,10 +300,10 @@ namespace gum {
 //                           Sequence<Instance*>& seq);
 //
 //    /// This is junk code and will be erased.
-//    void __fill_inner_nodes(BayesNet<prm_float>& bn, Sequence<Instance*>& seq);
+//    void __fill_inner_nodes(IBayesNet<prm_float>& bn, Sequence<Instance*>& seq);
 //
 //    /// This is junk code and will be erased.
-//    void __fill_input_nodes(BayesNet<prm_float>& bn, Sequence<Instance*>& seq);
+//    void __fill_input_nodes(IBayesNet<prm_float>& bn, Sequence<Instance*>& seq);
 //
 //    /// @}
         // ========================================================================

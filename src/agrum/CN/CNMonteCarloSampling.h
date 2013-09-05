@@ -38,7 +38,7 @@ namespace gum {
      * @brief Inference by basic sampling algorithm (pure random) of bnet in credal networks.
      * @ingroup cn_group
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
-     * @tparam BNInferenceEngine A BayesNet inference engine such as LazyPropagation ( recommanded ).
+     * @tparam BNInferenceEngine A IBayesNet inference engine such as LazyPropagation ( recommanded ).
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
      *
      * @warning p(e) must be available ( by a call to my_BNInferenceEngine.evidenceMarginal() ) !! the vertices are correct if p(e) > 0 for a sample
@@ -60,7 +60,7 @@ namespace gum {
 
         /// @name Private algorithm methods
         /// @{
-        /** Thread samples a BayesNet from the CredalNet. */
+        /** Thread samples a IBayesNet from the CredalNet. */
         inline void __verticesSampling();
 
         /** Insert CredalNet evidence into a thread BNInferenceEngine. */
@@ -69,7 +69,7 @@ namespace gum {
         /** Thread performs an inference using BNInferenceEngine. Calls __verticesSampling and __insertEvidence. */
         inline void __threadInference();
 
-        /** Update thread data after a BayesNet inference. */
+        /** Update thread data after a IBayesNet inference. */
         inline void __threadUpdate();
 
         /**

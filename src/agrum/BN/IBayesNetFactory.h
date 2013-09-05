@@ -19,12 +19,12 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the BayesNetFactory class.
+ * @brief Header of the IBayesNetFactory class.
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_ABSTRACT_BAYESNET_FACTORY_H
-#define GUM_ABSTRACT_BAYESNET_FACTORY_H
+#ifndef GUM_INTERFACE_BAYESNET_FACTORY_H
+#define GUM_INTERFACE_BAYESNET_FACTORY_H
 
 #include <string>
 #include <vector>
@@ -35,11 +35,11 @@
 
 namespace gum {
   /**
-   * @class AbstractBayesNetFactory
-   * AbstractBayesNetFactory is the non-template abstract version of @ref BayesNetFactory : many ways to build a BN do not depend
+   * @class IBayesNetFactory
+   * IBayesNetFactory is the non-template interface for @ref BayesNetFactory : many ways to build a BN do not depend
    * on the specification of the GUM_SCALAR template argument (for instance for BN readers).
    */
-  class AbstractBayesNetFactory {
+  class IBayesNetFactory {
 
     public:
       /**
@@ -62,7 +62,7 @@ namespace gum {
       };
 
 // just to make some compilers happy
-      virtual ~AbstractBayesNetFactory() {};
+      virtual ~IBayesNetFactory() {};
 
       /**
        * @name verbosity control

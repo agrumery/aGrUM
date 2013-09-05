@@ -46,12 +46,12 @@ namespace gum {
 
       /// default constructor
 
-      LazyPropagation( const BayesNet<GUM_SCALAR>& BN );
+      LazyPropagation( const IBayesNet<GUM_SCALAR>& BN );
 
 
       /// constructor with a given elimination sequence
 
-      LazyPropagation( const BayesNet<GUM_SCALAR>& BN,
+      LazyPropagation( const IBayesNet<GUM_SCALAR>& BN,
                        const std::vector<NodeId>& elim_order );
 
 
@@ -244,7 +244,7 @@ namespace gum {
 
       /// initialization function
 
-      void __initialize( const BayesNet<GUM_SCALAR>& BN,
+      void __initialize( const IBayesNet<GUM_SCALAR>& BN,
                          StaticTriangulation& triangulation,
                          const HashTable<NodeId, unsigned int>& modalities );
 

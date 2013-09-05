@@ -20,7 +20,7 @@
 
 /**
  * @file
- * @brief Class used to store optimum BayesNet during some inference algorithms.
+ * @brief Class used to store optimum IBayesNet during some inference algorithms.
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
  */
 
@@ -37,7 +37,7 @@ namespace gum {
 
     /**
      * @class VarMod2BNsMap VarMod2BNsMap.h <agrum/CN/VarMod2BNsMap.h>
-     * @brief Class used to store optimum BayesNet during some inference algorithms.
+     * @brief Class used to store optimum IBayesNet during some inference algorithms.
      * @ingroup cn_group
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
@@ -67,9 +67,9 @@ namespace gum {
         /** Since all samples have the same structure, this will be used as default initialization (copy constructor) for any sample. */
         std::vector< std::vector< std::vector < bool > > > _sampleDef;
 
-        /** The current sampled BayesNet. */
+        /** The current sampled IBayesNet. */
         dBN _currentSample;
-        /** The current sampled BayesNet hash. */
+        /** The current sampled IBayesNet hash. */
         size_t _currentHash;
         /** The hash fuction. Requires c++11/0x. */
         std::hash< std::vector< bool > > _vectHash;
@@ -133,7 +133,7 @@ namespace gum {
 
         /**
          * Get the current sample as a vector of bits without structure.
-         * @return The constant reference to the sampled BayesNet without structure.
+         * @return The constant reference to the sampled IBayesNet without structure.
          */
         const dBN& getCurrentSample();
 
@@ -144,20 +144,20 @@ namespace gum {
         const std::vector< std::vector< std::vector < bool > > >& getSampleDef();
 
         /**
-         * Get optimum BayesNet (s) without structure of the given variable, modality for min or max.
+         * Get optimum IBayesNet (s) without structure of the given variable, modality for min or max.
          * @param key The constant reference to the variable, modality, min or max.
          * @return The constant vector of not yet constant pointers to the nets.
          */
         const std::vector< dBN* > getBNOptsFromKey( const std::vector< unsigned int >& key );
 
         /**
-        * Get optimum BayesNet (s) with structure of the given variable, modality for min or max.
+        * Get optimum IBayesNet (s) with structure of the given variable, modality for min or max.
         * @param key The constant reference to the variable, modality, min or max.
         * @return The vector of not yet constant pointers to the nets.
         */
         std::vector< std::vector< std::vector< std::vector < bool > > > > getFullBNOptsFromKey( const std::vector< unsigned int >& key );
 
-        /** Get the number of BayesNet stored. */
+        /** Get the number of IBayesNet stored. */
         unsigned int getEntrySize() const;
 
         /// @}

@@ -35,7 +35,7 @@ namespace gum {
   namespace particle {
 
     template <typename GUM_SCALAR>
-    Gibbs<GUM_SCALAR>::Gibbs( const BayesNet<GUM_SCALAR>& BN ) :
+    Gibbs<GUM_SCALAR>::Gibbs( const IBayesNet<GUM_SCALAR>& BN ) :
       __nbr_drawn_by_sample( DEFAULT_DRAWN ),
       __bayesNet( BN ) {
       GUM_CONSTRUCTOR( Gibbs );
@@ -98,7 +98,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR> INLINE
-    const BayesNet<GUM_SCALAR>& Gibbs<GUM_SCALAR>::bn( void ) {
+    const IBayesNet<GUM_SCALAR>& Gibbs<GUM_SCALAR>::bn( void ) {
       return __bayesNet;
     }
 

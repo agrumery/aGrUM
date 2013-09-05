@@ -199,7 +199,7 @@ namespace gum_tests {
         int trial_nb = 5;
 
         for ( int i = 0; i < trial_nb; ++i ) {
-          gum::SimpleBayesNetGenerator<float> bnGen( 10, density[i] );
+          gum::IBayesNetGenerator<float> bnGen( 10, density[i] );
 
           gum::BayesNet<float>* bayesNet = new gum::BayesNet<float>();
           bnGen.generateBN( *bayesNet );

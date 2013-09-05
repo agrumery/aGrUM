@@ -23,7 +23,7 @@
 #include <iostream>
 #include <string>
 #include <agrum/config.h>
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/io/BNReader.h>
 
 

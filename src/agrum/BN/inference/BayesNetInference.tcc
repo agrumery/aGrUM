@@ -35,7 +35,7 @@ namespace gum {
 
   // Default Constructor
   template <typename GUM_SCALAR>
-  BayesNetInference<GUM_SCALAR>::BayesNetInference( const BayesNet<GUM_SCALAR>& bn ):
+  BayesNetInference<GUM_SCALAR>::BayesNetInference( const IBayesNet<GUM_SCALAR>& bn ):
     __bayesNet( bn ) {
     GUM_CONSTRUCTOR( BayesNetInference );
   }
@@ -68,7 +68,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  const BayesNet<GUM_SCALAR>& BayesNetInference<GUM_SCALAR>::bn() const {return __bayesNet;}
+  const IBayesNet<GUM_SCALAR>& BayesNetInference<GUM_SCALAR>::bn() const {return __bayesNet;}
 
 
 } /* namespace gum */

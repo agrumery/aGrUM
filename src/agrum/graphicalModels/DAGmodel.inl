@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief  Interface-like class for representing basic functionalities for a BayesNet.
+ * @brief  Interface-like class for representing basic functionalities for a IBayesNet.
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
@@ -99,29 +99,11 @@ namespace gum {
   DAGmodel::log10DomainSize( void ) const {
     double dSize = 0.0;
 
-    for ( DAG::NodeIterator it = beginNodes(); it != endNodes(); ++it ) {
+    for ( auto it = beginNodes(); it != endNodes(); ++it ) {
       dSize += log10( variable( *it ).domainSize() );
     }
 
     return dSize;
-  }
-
-  INLINE
-  std::string
-  DAGmodel::toString( void ) const {
-    double dSize=log10DomainSize();
-
-    std::stringstream s;
-    s << "Directed PGM{nodes: " << size() << ", arcs: " << dag().sizeArcs() << ", ";
-
-    if ( dSize>6 )
-      s<<"domainSize: 10^" << dSize;
-    else
-      s<<"domainSize: " << round( pow( 10.0,dSize ) );
-
-    s<< "}";
-
-    return s.str();
   }
 
   INLINE

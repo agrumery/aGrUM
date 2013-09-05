@@ -72,7 +72,7 @@ namespace gum {
   /* **************************************************************************************************** **/
 
 
-  // Returns the BayesNet created by this factory.
+  // Returns the IBayesNet created by this factory.
 
   template<typename GUM_SCALAR> INLINE
   FactoredMarkovDecisionProcess<GUM_SCALAR>*
@@ -768,7 +768,7 @@ namespace gum {
   }
 
 
-  // Reset the different parts used to constructed the BayesNet.
+  // Reset the different parts used to constructed the IBayesNet.
 
   template<typename GUM_SCALAR> INLINE
   void
