@@ -26,37 +26,10 @@
 
 #include <agrum/prm/classBayesNet.h>
 
-#ifdef GUM_NO_INLINE
-#include <agrum/prm/classBayesNet.inl>
-#endif // GUM_NO_INLINE
-
 namespace gum {
   namespace prm {
 
 
-    template<typename GUM_SCALAR>
-    void ClassBayesNet<GUM_SCALAR>::__init ( const Class& c ) {
-      for ( DAG::NodeIterator node = c.dag().beginNodes(); node != c.dag().endNodes(); ++node ) {
-        try {
-          // Adding the attribute
-          if ( ClassElement::isAttribute ( c.get ( *node ) ) or ClassElement::isAggregate ( c.get ( *node ) ) ) {
-            const ClassElement& elt = c.get ( *node );
-            this->_dag.insertNode ( elt.id() );
-            this->__varNodeMap.insert ( & ( elt.type().variable() ), &elt );
-          }
-        } catch ( NotFound& ) {
-          // Not an attribute
-        }
-      }
-
-      for ( ArcSet::iterator arc = c.dag().beginArcs(); arc != c.dag().endArcs(); ++arc ) {
-        try {
-          this->_dag.insertArc ( arc->tail(), arc->head() );
-        } catch ( InvalidNode& ) {
-          // Not added means not an attribute
-        }
-      }
-    }
 
   } /* namespace prm */
 } /* namespace gum */

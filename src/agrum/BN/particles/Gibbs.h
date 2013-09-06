@@ -113,7 +113,7 @@ namespace gum {
         std::vector<NodeId> __nodes_array;
 
         /// a table of instantiation for each cpt
-        Property<Instantiation*>::onNodes __cpt_idx;
+        NodeProperty<Instantiation*> __cpt_idx;
 
         /// a table of children for each node
         typename Property<std::vector<NodeId>*>::onNodes __node_children;
@@ -125,10 +125,10 @@ namespace gum {
         typename Property<const Potential<GUM_SCALAR>*>::onNodes __evidences;
 
         /// a table of instantiation for direct access on _sampling_nbr
-        Property<Instantiation*>::onNodes __sampling_idx;
+        NodeProperty<Instantiation*> __sampling_idx;
 
         /// a list of hard evidence (not sampled)
-        Property<Idx>::onNodes __hard_evidences;
+        NodeProperty<Idx> __hard_evidences;
 
         /// The Bayes net we draw particle on
         const IBayesNet<GUM_SCALAR>& __bayesNet;

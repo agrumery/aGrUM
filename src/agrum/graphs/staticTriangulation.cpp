@@ -40,7 +40,7 @@ namespace gum {
 
   StaticTriangulation::StaticTriangulation
   ( const UndiGraph* theGraph,
-    const Property<unsigned int>::onNodes* modal,
+    const NodeProperty<unsigned int>* modal,
     const EliminationSequenceStrategy& elimSeq,
     const JunctionTreeStrategy& JTStrategy,
     bool minimality ) :
@@ -158,7 +158,7 @@ namespace gum {
     bool incomplete;
     std::vector<NodeId> adj;
     EdgeSet T_prime;
-    Property<unsigned int>::onNodes R ( __triangulated_graph.size() );
+    NodeProperty<unsigned int> R ( __triangulated_graph.size() );
 
     for ( UndiGraph::NodeIterator iter = __triangulated_graph.beginNodes();
           iter != __triangulated_graph.endNodes(); ++iter )
@@ -403,7 +403,7 @@ namespace gum {
     // complete in the original graph, then the two cliques must be merged.
     // Create a hashtable indicating which clique has been absorbed by some other
     // clique.
-    Property<NodeId>::onNodes T_mpd_cliques ( __junction_tree->size() );
+    NodeProperty<NodeId> T_mpd_cliques ( __junction_tree->size() );
 
     for ( CliqueGraph::NodeIterator iter_clique = __junction_tree->beginNodes();
           iter_clique != __junction_tree->endNodes(); ++iter_clique )
@@ -430,7 +430,7 @@ namespace gum {
     }
 
     // now we can create the max prime junction tree. First, create the cliques
-    for ( Property< NodeId >::onNodes::const_iterator iter_clique =
+    for ( NodeProperty< NodeId >::const_iterator iter_clique =
             T_mpd_cliques.begin();
           iter_clique != T_mpd_cliques.end(); ++iter_clique ) {
       if ( iter_clique.key() == *iter_clique ) {
@@ -441,7 +441,7 @@ namespace gum {
 
     // add to the cliques previously created the nodes of the cliques that were
     // merged into them
-    for ( Property< NodeId >::onNodes::const_iterator  iter =
+    for ( NodeProperty< NodeId >::const_iterator  iter =
             T_mpd_cliques.begin(); iter != T_mpd_cliques.end(); ++iter ) {
       if ( iter.key() != *iter ) {
         const NodeSet& new_clique = __junction_tree->clique ( iter.key() );
@@ -470,10 +470,10 @@ namespace gum {
 
     // compute for each node which clique of the max prime junction tree was
     // created by the elimination of the node
-    const Property<NodeId>::onNodes& node_2_junction_clique =
+    const NodeProperty<NodeId>& node_2_junction_clique =
       _junction_tree_strategy->createdCliques();
 
-    for ( Property< NodeId >::onNodes::const_iterator iter_junction =
+    for ( NodeProperty< NodeId >::const_iterator iter_junction =
             node_2_junction_clique.begin();
           iter_junction != node_2_junction_clique.end(); ++iter_junction )
       __node_2_max_prime_clique.insert ( iter_junction.key(),
@@ -537,7 +537,7 @@ namespace gum {
    */
   void StaticTriangulation::_setGraph
   ( const UndiGraph* gr,
-    const Property<unsigned int>::onNodes* modal ) {
+    const NodeProperty<unsigned int>* modal ) {
     // remove the old graph
     clear();
 

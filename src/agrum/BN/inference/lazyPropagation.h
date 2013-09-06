@@ -191,10 +191,10 @@ namespace gum {
       __PotentialSet __created_potentials;
 
       /// an indicator of whether the collect phase passed through a given clique
-      Property< bool >::onNodes __collected_cliques;
+      NodeProperty< bool > __collected_cliques;
 
       /// an indicator of whether the diffusion phase passed through a given clique
-      Property< bool >::onNodes __diffused_cliques;
+      NodeProperty< bool > __diffused_cliques;
 
       /// the id of the last clique from which we performed a collect
       NodeId __last_collect_clique;

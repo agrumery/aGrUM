@@ -52,7 +52,7 @@ namespace gum {
   BinaryJoinTreeConverterDefault::__markConnectedComponent
   ( const CliqueGraph& JT,
     NodeId root,
-    Property<bool>::onNodes& mark ) const {
+    NodeProperty<bool>& mark ) const {
     // we mark the nodes in a depth first search manner. To avoid a recursive
     // algorithm, use a vector to simulate a stack of nodes to inspect.
     // stack => depth first search
@@ -94,7 +94,7 @@ namespace gum {
   float BinaryJoinTreeConverterDefault::__combinedSize
   ( const NodeSet& nodes1,
     const NodeSet& nodes2,
-    const Property<unsigned int>::onNodes& domain_sizes ) const {
+    const NodeProperty<unsigned int>& domain_sizes ) const {
     float result = 1;
 
     for ( NodeSet::const_iterator iter = nodes1.begin();
@@ -125,7 +125,7 @@ namespace gum {
   ( CliqueGraph& JT,
     NodeId clique,
     NodeId from,
-    const Property<unsigned int>::onNodes& domain_sizes ) const {
+    const NodeProperty<unsigned int>& domain_sizes ) const {
     // get the neighbors of clique. If there are fewer than 3 neighbors,
     // there is nothing to do
     const NodeSet& neighbors = JT.neighbours( clique );
@@ -257,8 +257,8 @@ namespace gum {
   ( CliqueGraph& JT,
     NodeId current_node,
     NodeId from,
-    const Property<unsigned int>::onNodes& domain_sizes,
-    Property<bool>::onNodes& mark ) const {
+    const NodeProperty<unsigned int>& domain_sizes,
+    NodeProperty<bool>& mark ) const {
     // first, indicate that the node has been marked (this avoids looping
     // if JT is not a tree
     mark [ current_node ] = true;
@@ -283,7 +283,7 @@ namespace gum {
   CliqueGraph
   BinaryJoinTreeConverterDefault::convert
   ( const CliqueGraph& JT,
-    const Property<unsigned int>::onNodes& domain_sizes,
+    const NodeProperty<unsigned int>& domain_sizes,
     const NodeSet& specified_roots ) {
     // first, we copy the current clique graph. By default, this is what we
     // will return
@@ -293,7 +293,7 @@ namespace gum {
     // assign an arbitrary root to it
     __roots = specified_roots;
     {
-      Property<bool>::onNodes mark = JT.nodesProperty( false, JT.sizeNodes() );
+      NodeProperty<bool> mark = JT.nodesProperty( false, JT.sizeNodes() );
       // for each specified root, populate its connected component
 
       for ( NodeSet::const_iterator iter = specified_roots.begin();
@@ -311,7 +311,7 @@ namespace gum {
 
       // check that all nodes have been marked. If this is not the case, then
       // this means that we need to add new roots
-      for ( Property<bool>::onNodes::iterator iter = mark.begin();
+      for ( NodeProperty<bool>::iterator iter = mark.begin();
             iter != mark.end(); ++iter ) {
         if ( ! *iter ) {
           __roots << iter.key();
@@ -324,7 +324,7 @@ namespace gum {
     // Now we can apply a recursive collect algorithm starting from root
     // that transforms each clique with more than 3 neighbors into a set of
     // cliques having at most 3 neighbors.
-    Property<bool>::onNodes mark = JT.nodesProperty( false, JT.sizeNodes() );
+    NodeProperty<bool> mark = JT.nodesProperty( false, JT.sizeNodes() );
 
     for ( NodeSet::const_iterator iter = __roots.begin();
           iter != __roots.end(); ++iter ) {

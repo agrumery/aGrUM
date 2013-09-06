@@ -94,7 +94,7 @@ namespace gum {
        * @warning note that, by aGrUM's rule, the graph and the modalities are not
        * copied but only referenced by the elimination sequence algorithm. */
       DefaultEliminationSequenceStrategy( UndiGraph* graph,
-                                          const Property<unsigned int>::onNodes* dom,
+                                          const NodeProperty<unsigned int>* dom,
                                           float ratio = GUM_QUASI_RATIO,
                                           float threshold = GUM_WEIGHT_THRESHOLD );
 
@@ -127,7 +127,7 @@ namespace gum {
        * @warning note that, by aGrUM's rule, the graph and the modalities are not
        * copied but only referenced by the elimination sequence algorithm. */
       void setGraph( UndiGraph* graph,
-                     const Property<unsigned int>::onNodes* dom );
+                     const NodeProperty<unsigned int>* dom );
 
       /// clears the sequence (to prepare, for instance, a new elimination sequence)
       void clear();
@@ -182,13 +182,13 @@ namespace gum {
       UndiGraph* __graph;
 
       /// the modalities of the nodes (domain sizes)
-      const Property<unsigned int>::onNodes* __modalities;
+      const NodeProperty<unsigned int>* __modalities;
 
       /// the log of the modalities of the nodes (domain sizes)
-      Property<float>::onNodes __log_modalities;
+      NodeProperty<float> __log_modalities;
 
       /// for each node, the weight of the clique created by the node's elimination
-      Property<float>::onNodes __log_weights;
+      NodeProperty<float> __log_weights;
 
       /// the simplicial set used for determining the best nodes to eliminate
       SimplicialSet* __simplicial_set;

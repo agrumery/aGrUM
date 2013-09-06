@@ -52,7 +52,7 @@ namespace gum {
   /// constructor for an a priori non empty graph
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy
   ( UndiGraph* graph,
-    const Property<unsigned int>::onNodes* modal,
+    const NodeProperty<unsigned int>* modal,
     float ratio, float threshold ) :
     __graph( 0 ),
     __modalities( 0 ),
@@ -94,7 +94,7 @@ namespace gum {
 
   /// sets a new graph to be triangulated
   void DefaultEliminationSequenceStrategy::setGraph
-  ( UndiGraph* graph, const Property<unsigned int>::onNodes* modal ) {
+  ( UndiGraph* graph, const NodeProperty<unsigned int>* modal ) {
     // check that both the graph and the modalities are different from 0
     // or else that both are equal to 0
     if ( ( ! graph && modal ) || ( graph && ! modal ) ) {
@@ -173,7 +173,7 @@ namespace gum {
       return __simplicial_set->bestQuasiSimplicialNode();
     else {
       // here: select the node through Kjaerulff's heuristic
-      Property< float >::onNodes::const_iterator iter_heuristic =
+      NodeProperty< float >::const_iterator iter_heuristic =
         __log_weights.begin();
 
       if ( iter_heuristic == __log_weights.end() ) {

@@ -38,7 +38,7 @@ namespace gum {
         GUM_DESTRUCTOR( DFSTree );
         typedef HashTable<Pattern*, PatternData*>::iterator Iter;
 
-        for ( Iter iter = __data.begin(); iter != __data.end(); ++iter ) {
+        for( Iter iter = __data.begin(); iter != __data.end(); ++iter ) {
           delete iter.key();
           delete *iter;
         }
@@ -52,14 +52,14 @@ namespace gum {
         HashTable<Pattern*, Sequence<EdgeData*>* > roots_edges;
         const Set<EdgeData*>& edges = __graph->edges( &label );
 
-        for ( Set<EdgeData*>::const_iterator iter = edges.begin(); iter != edges.end(); ++iter ) {
-          bool u_first = ( ( *iter )->l_u->id < ( *iter )->l_v->id ) ?true:false;
-          Idx u_idx = ( u_first ) ? ( *iter )->l_u->id: ( *iter )->l_v->id;
-          Idx v_idx = ( not u_first ) ? ( *iter )->l_u->id: ( *iter )->l_v->id;
+        for( Set<EdgeData*>::const_iterator iter = edges.begin(); iter != edges.end(); ++iter ) {
+          bool u_first = ( ( *iter )->l_u->id < ( *iter )->l_v->id ) ? true : false;
+          Idx u_idx = ( u_first ) ? ( *iter )->l_u->id : ( *iter )->l_v->id;
+          Idx v_idx = ( not u_first ) ? ( *iter )->l_u->id : ( *iter )->l_v->id;
           bool found = false;
 
-          for ( HashTable<Pattern*, std::pair<Idx, Idx> >::iterator root = roots.begin(); root != roots.end(); ++root ) {
-            if ( ( root->first == u_idx ) and ( root->second == v_idx ) ) {
+          for( HashTable<Pattern*, std::pair<Idx, Idx> >::iterator root = roots.begin(); root != roots.end(); ++root ) {
+            if( ( root->first == u_idx ) and ( root->second == v_idx ) ) {
               roots_edges[root.key()]->insert( *iter );
               found = true;
               break;
@@ -67,14 +67,14 @@ namespace gum {
           }
 
           /// Then we create a new pattern
-          if ( not found ) {
+          if( not found ) {
             Pattern* p = new Pattern();
             roots.insert( p, std::make_pair( u_idx, v_idx ) );
             roots_edges.insert( p, new Sequence<EdgeData*>() );
             roots_edges[p]->insert( *iter );
             DFSTree::PatternData* data = new DFSTree::PatternData( p );
-            NodeId u = p->insertNode( ( u_first ) ?* ( ( *iter )->l_u ) :* ( ( *iter )->l_v ) );
-            NodeId v = p->insertNode( ( not u_first ) ?* ( ( *iter )->l_u ) :* ( ( *iter )->l_v ) );
+            NodeId u = p->insertNode( ( u_first ) ? * ( ( *iter )->l_u ) : * ( ( *iter )->l_v ) );
+            NodeId v = p->insertNode( ( not u_first ) ? * ( ( *iter )->l_u ) : * ( ( *iter )->l_v ) );
             p->insertArc( u, v, label );
             __node_map.insert( DiGraph::insertNode(), p );
             __data.insert( p, data );
@@ -83,7 +83,7 @@ namespace gum {
         }
 
         // This is used to compute the max independent set of p->max_indep_set
-        for ( HashTable<Pattern*, Sequence<EdgeData*>*>::iterator root = roots_edges.begin(); root != roots_edges.end(); ++root ) {
+        for( HashTable<Pattern*, Sequence<EdgeData*>*>::iterator root = roots_edges.begin(); root != roots_edges.end(); ++root ) {
           __initialiaze_root( root.key(), **root );
           strategy().accept_root( root.key() );
           delete *root;
@@ -95,22 +95,22 @@ namespace gum {
         DFSTree::PatternData* data = __data[p];
         std::vector<NodeId> degree_list;
 
-        for ( Sequence<EdgeData*>::iterator edge = edge_seq.begin(); edge != edge_seq.end(); ++edge ) {
-          bool u_first = ( ( *edge )->l_u->id < ( *edge )->l_v->id ) ?true:false;
+        for( Sequence<EdgeData*>::iterator edge = edge_seq.begin(); edge != edge_seq.end(); ++edge ) {
+          bool u_first = ( ( *edge )->l_u->id < ( *edge )->l_v->id ) ? true : false;
           Sequence<Instance*>* seq = new Sequence<Instance*>();
           // Creating the multiset of instances matching p
-          seq->insert( ( u_first ) ? ( *edge )->u: ( *edge )->v );
-          seq->insert( ( not u_first ) ? ( *edge )->u: ( *edge )->v );
+          seq->insert( ( u_first ) ? ( *edge )->u : ( *edge )->v );
+          seq->insert( ( not u_first ) ? ( *edge )->u : ( *edge )->v );
           NodeId an_id = data->iso_graph.insertNode();
           data->iso_map.insert( an_id, seq );
           degree_list.push_back( an_id );
           // Adding edges between two isomorphisms of p sharing at least one instance
           typedef Property<Sequence<Instance*>*>::onNodes::iterator IsoIterator;
 
-          for ( IsoIterator iso = data->iso_map.begin(); iso != data->iso_map.end(); ++iso ) {
-            if ( iso.key() != an_id ) {
-              for ( Sequence<Instance*>::iterator inst = ( *iso )->begin(); inst != ( *iso )->end(); ++inst ) {
-                if ( seq->exists( *inst ) ) {
+          for( IsoIterator iso = data->iso_map.begin(); iso != data->iso_map.end(); ++iso ) {
+            if( iso.key() != an_id ) {
+              for( Sequence<Instance*>::iterator inst = ( *iso )->begin(); inst != ( *iso )->end(); ++inst ) {
+                if( seq->exists( *inst ) ) {
                   data->iso_graph.insertEdge( an_id, iso.key() );
                   break;
                 }
@@ -124,13 +124,13 @@ namespace gum {
         std::sort( degree_list.begin(), degree_list.end(), my_operator );
         Set<NodeId> removed;
 
-        for ( std::vector<NodeId>::iterator node = degree_list.begin(); node != degree_list.end(); ++node ) {
-          if ( not removed.exists( *node ) ) {
+        for( std::vector<NodeId>::iterator node = degree_list.begin(); node != degree_list.end(); ++node ) {
+          if( not removed.exists( *node ) ) {
             removed.insert( *node );
             const NodeSet& neighbours = data->iso_graph.neighbours( *node );
 
-            for ( NodeSet::const_iterator neighbor = neighbours.begin();
-                  neighbor != neighbours.end(); ++neighbor ) {
+            for( NodeSet::const_iterator neighbor = neighbours.begin();
+                 neighbor != neighbours.end(); ++neighbor ) {
               removed.insert( *neighbor );
             }
 
@@ -141,20 +141,18 @@ namespace gum {
 
       bool
       DFSTree::__is_new_seq( Sequence<Instance*>& seq,
-                             Property<Sequence<Instance*>*>::onNodes& iso_map ) {
-        typedef Property<Sequence<Instance*>*>::onNodes::iterator Iter;
-
-        for ( Iter iter = iso_map.begin(); iter != iso_map.end(); ++iter ) {
+                             NodeProperty<Sequence<Instance*>*>& iso_map ) {
+        for( auto iter = iso_map.begin(); iter != iso_map.end(); ++iter ) {
           bool found = false;
 
-          for ( Sequence<Instance*>::iterator jter = seq.begin(); jter != seq.end(); ++jter ) {
-            if ( not( *iter )->exists( *jter ) ) {
+          for( auto jter = seq.begin(); jter != seq.end(); ++jter ) {
+            if( not( *iter )->exists( *jter ) ) {
               found = true;
               break;
             }
           }
 
-          if ( not found ) {
+          if( not found ) {
             return false;
           }
         }
@@ -170,19 +168,19 @@ namespace gum {
         // Adding child in p's children list
         std::list<NodeId>& children = __data[&p]->children;
 
-        if ( children.empty() ) {
+        if( children.empty() ) {
           children.push_back( node );
         } else {
           size_t size = children.size();
 
-          for ( std::list<NodeId>::iterator iter = children.begin(); iter != children.end(); ++iter ) {
-            if ( child->code() < pattern( *iter ).code() ) {
+          for( std::list<NodeId>::iterator iter = children.begin(); iter != children.end(); ++iter ) {
+            if( child->code() < pattern( *iter ).code() ) {
               children.insert( iter, node );
               break;
             }
           }
 
-          if ( size == children.size() ) {
+          if( size == children.size() ) {
             children.push_back( node );
           }
         }
@@ -193,7 +191,7 @@ namespace gum {
         NodeId v = edge_growth.v;
 
         // First we check if the edge is legal
-        if ( v == 0 ) {
+        if( v == 0 ) {
           v = child->insertNode( * ( edge_growth.l_v ) );
         }
 
@@ -202,22 +200,22 @@ namespace gum {
         EdgeCode& edge = child->edgeCode( edge_growth.u, v );
 
         // Then we check if the edge we added is valid
-        if ( edge < * ( child->code().codes.front() ) ) {
+        if( edge < * ( child->code().codes.front() ) ) {
           GUM_ERROR( OperationNotAllowed, "added edge code is lesser than the first one in the pattern's DFSCode" );
         }
 
-        if ( edge.isBackward() ) {
+        if( edge.isBackward() ) {
           typedef std::vector<EdgeCode*>::iterator EdgeIter;
 
-          for ( EdgeIter iter = child->code().codes.begin(); ( iter + 1 ) != child->code().codes.end(); ++iter ) {
-            if ( ( ( ( **iter ).i == v ) or ( ( **iter ).j == v ) ) and edge < ( **iter ) ) {
+          for( EdgeIter iter = child->code().codes.begin(); ( iter + 1 ) != child->code().codes.end(); ++iter ) {
+            if( ( ( ( **iter ).i == v ) or ( ( **iter ).j == v ) ) and edge < ( **iter ) ) {
               GUM_ERROR( OperationNotAllowed, "added backward edge is lesser than an existing edge on v" );
             }
           }
         }
 
         // Finally we check if child is minimal.
-        if ( not child->isMinimal() ) {
+        if( not child->isMinimal() ) {
           GUM_ERROR( OperationNotAllowed, "the DFSCode for this growth is not minimal" );
         }
       }
@@ -228,7 +226,7 @@ namespace gum {
 
         try {
           __checkGrowth( p, child, edge_growth );
-        } catch ( OperationNotAllowed& e ) {
+        } catch( OperationNotAllowed& e ) {
           delete child;
           throw ;
         }
@@ -236,25 +234,22 @@ namespace gum {
         // Now we need to build the pattern data about child
         DFSTree::PatternData* data = new DFSTree::PatternData( child );
         std::vector<NodeId> degree_list;
-        typedef Property<Sequence<Instance*>*>::onNodes::iterator IsoMapIter;
-        Property<Sequence<Instance*>*>::onNodes& p_iso_map = __data[&p]->iso_map;
+        NodeProperty<Sequence<Instance*>*>& p_iso_map = __data[&p]->iso_map;
         Property< std::pair<Instance*, Instance*> >::onNodes::iterator match;
         // Using p information to build child's isomorphism graph
         NodeId id = 0;
 
-        for ( IsoMapIter seq = p_iso_map.begin(); seq != p_iso_map.end(); ++seq ) {
-          typedef Property< std::pair<Instance*, Instance*> >::onNodes::iterator MatchIter;
-          MatchIter match = edge_growth.matches.begin();
-
-          for ( ; match != edge_growth.matches.end(); ++match ) {
+        for( auto seq = p_iso_map.begin(); seq != p_iso_map.end(); ++seq ) {
+          auto match = edge_growth.matches.begin();
+          for( ; match != edge_growth.matches.end(); ++match ) {
             // Adding the isomorphism in the iso_graph and building the iso_map.
-            if ( child->code().codes.back()->isForward() ) {
-              if ( ( *seq )->exists( match->first ) and ( not( *seq )->exists( match->second ) ) ) {
+            if( child->code().codes.back()->isForward() ) {
+              if( ( *seq )->exists( match->first ) and ( not( *seq )->exists( match->second ) ) ) {
                 // Let's see if the new match is already matched
                 Sequence<Instance*>* new_seq = new Sequence<Instance*> ( **seq );
                 new_seq->insert( match->second );
 
-                if ( __is_new_seq( *new_seq, data->iso_map ) ) {
+                if( __is_new_seq( *new_seq, data->iso_map ) ) {
                   id = data->iso_graph.insertNode();
                   data->iso_map.insert( id, new_seq );
                 } else {
@@ -264,10 +259,10 @@ namespace gum {
                 break;
               }
             } else {
-              if ( ( *seq )->exists( match->first ) and ( *seq )->exists( match->second ) ) {
+              if( ( *seq )->exists( match->first ) and ( *seq )->exists( match->second ) ) {
                 Sequence<Instance*>* new_seq = new Sequence<Instance*> ( **seq );
 
-                if ( __is_new_seq( *new_seq, data->iso_map ) ) {
+                if( __is_new_seq( *new_seq, data->iso_map ) ) {
                   id = data->iso_graph.insertNode();
                   data->iso_map.insert( id, new_seq );
                 } else {
@@ -279,12 +274,12 @@ namespace gum {
             }
           }
 
-          if ( match != edge_growth.matches.end() ) {
+          if( match != edge_growth.matches.end() ) {
             // Adding edges in the iso_graph
-            for ( UndiGraph::NodeIterator node = data->iso_graph.beginNodes(); node != data->iso_graph.endNodes(); ++node ) {
-              if ( ( *node ) != id ) {
-                for ( Sequence<Instance*>::iterator iter = data->iso_map[id]->begin(); iter != data->iso_map[id]->end(); ++iter ) {
-                  if ( data->iso_map[*node]->exists( *iter ) ) {
+            for( UndiGraph::NodeIterator node = data->iso_graph.beginNodes(); node != data->iso_graph.endNodes(); ++node ) {
+              if( ( *node ) != id ) {
+                for( Sequence<Instance*>::iterator iter = data->iso_map[id]->begin(); iter != data->iso_map[id]->end(); ++iter ) {
+                  if( data->iso_map[*node]->exists( *iter ) ) {
                     data->iso_graph.insertEdge( *node, id );
                     break;
                   }
@@ -297,7 +292,7 @@ namespace gum {
           }
         }
 
-        if ( data->iso_graph.size() < min_freq ) {
+        if( data->iso_graph.size() < min_freq ) {
           delete data;
           delete child;
           GUM_ERROR( OperationNotAllowed, "child is not frequent enough" );
@@ -308,12 +303,12 @@ namespace gum {
         std::sort( degree_list.begin(), degree_list.end(), my_operator );
         Set<NodeId> removed;
 
-        for ( std::vector<NodeId>::iterator node = degree_list.begin(); node != degree_list.end(); ++node ) {
-          if ( not removed.exists( *node ) ) {
+        for( std::vector<NodeId>::iterator node = degree_list.begin(); node != degree_list.end(); ++node ) {
+          if( not removed.exists( *node ) ) {
             removed.insert( *node );
             const NodeSet& neighbours =  data->iso_graph.neighbours( *node );
 
-            for ( NodeSet::const_iterator neighbor = neighbours.begin(); neighbor != neighbours.end(); ++neighbor )
+            for( NodeSet::const_iterator neighbor = neighbours.begin(); neighbor != neighbours.end(); ++neighbor )
               removed.insert( *neighbor );
 
             data->max_indep_set.insert( *node );
@@ -322,7 +317,7 @@ namespace gum {
 
         __data.insert( child, data );
 
-        if ( not __strategy->accept_growth( &p, child, edge_growth ) ) {
+        if( not __strategy->accept_growth( &p, child, edge_growth ) ) {
           __data.erase( child );
           delete data;
           delete child;
@@ -343,9 +338,9 @@ namespace gum {
         degree_list->push_back( id );
         typedef Property< std::pair<Instance*, Instance*> >::onNodes::iterator MatchIterator;
 
-        for ( MatchIterator iter = matches.begin(); iter != matches.end(); ++iter ) {
-          if ( ( iter->first == u ) or ( iter->second == u ) or
-               ( iter->first == v ) or ( iter->second == v ) ) {
+        for( MatchIterator iter = matches.begin(); iter != matches.end(); ++iter ) {
+          if( ( iter->first == u ) or ( iter->second == u ) or
+              ( iter->first == v ) or ( iter->second == v ) ) {
             iso_graph.insertEdge( iter.key(), id );
           }
         }
@@ -397,11 +392,11 @@ namespace gum {
 
       bool
       DFSTree::__test_equality( HashTable<ClassElement*, Size>& x, HashTable<ClassElement*, Size>& y ) {
-        for ( HashTable<ClassElement*, Size>::iterator iter = x.begin(); iter != x.end(); ++iter ) {
+        for( HashTable<ClassElement*, Size>::iterator iter = x.begin(); iter != x.end(); ++iter ) {
           try {
-            if ( y[iter.key()] != ( *iter ) )
+            if( y[iter.key()] != ( *iter ) )
               return false;
-          } catch ( NotFound& ) {
+          } catch( NotFound& ) {
             return false;
           }
         }
@@ -419,7 +414,7 @@ namespace gum {
         GUM_CONS_CPY( DFSTree::PatternData );
         typedef Property<Sequence<Instance*>*>::onNodes::const_iterator Iter;
 
-        for ( Iter iter = from.iso_map.begin(); iter != from.iso_map.end(); ++iter ) {
+        for( Iter iter = from.iso_map.begin(); iter != from.iso_map.end(); ++iter ) {
           iso_map.insert( iter.key(), new Sequence<Instance*> ( **iter ) );
         }
       }
@@ -428,7 +423,7 @@ namespace gum {
         GUM_DESTRUCTOR( DFSTree::PatternData );
         typedef Property<Sequence<Instance*>*>::onNodes::const_iterator Iter;
 
-        for ( Iter iter = iso_map.begin(); iter != iso_map.end(); ++iter ) {
+        for( Iter iter = iso_map.begin(); iter != iso_map.end(); ++iter ) {
           delete *iter;
         }
 

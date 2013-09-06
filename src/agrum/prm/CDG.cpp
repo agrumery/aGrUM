@@ -40,7 +40,7 @@ namespace gum {
         delete *iter;
       }
 
-      typedef Property< EltPair* >::onNodes::iterator EltMapIterator;
+      typedef NodeProperty< EltPair* >::iterator EltMapIterator;
 
       for ( EltMapIterator iter = __elt_map.begin(); iter != __elt_map.end(); ++iter ) {
         delete *iter;

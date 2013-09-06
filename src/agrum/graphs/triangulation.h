@@ -107,7 +107,7 @@ namespace gum {
       /** @brief returns the Ids of the cliques of the junction tree created by the
        * elimination of the nodes */
 
-      virtual const Property<NodeId>::onNodes& createdJunctionTreeCliques() = 0;
+      virtual const NodeProperty<NodeId>& createdJunctionTreeCliques() = 0;
 
 
       /// returns a junction tree of maximal prime subgraphs
@@ -143,11 +143,11 @@ namespace gum {
 
       /// returns the modalities of the variables of the graph to be triangulated
 
-      const Property<unsigned int>::onNodes& modalities() const;
+      const NodeProperty<unsigned int>& modalities() const;
 
     protected:
       /// the modalities of the nodes of the graph
-      Property<unsigned int>::onNodes _modalities;
+      NodeProperty<unsigned int> _modalities;
 
     private:
       /// prevent copy constructor

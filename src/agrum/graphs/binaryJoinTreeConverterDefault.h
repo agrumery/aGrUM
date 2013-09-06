@@ -67,7 +67,7 @@ namespace gum {
        * then for those with unspecified roots, an arbitrary root will be computed
        * and used for the binarization. */
       CliqueGraph convert( const CliqueGraph& JT,
-                           const Property<unsigned int>::onNodes& domain_sizes,
+                           const NodeProperty<unsigned int>& domain_sizes,
                            const NodeSet& roots );
 
       /// returns all the roots considered for all the connected components
@@ -93,28 +93,28 @@ namespace gum {
        * connected component */
       void __markConnectedComponent( const CliqueGraph& JT,
                                      NodeId root,
-                                     Property<bool>::onNodes& mark ) const;
+                                     NodeProperty<bool>& mark ) const;
 
       /// convert a whole connected component into a binary join tree
       void __convertConnectedComponent
       ( CliqueGraph& JT,
         NodeId current_node,
         NodeId from,
-        const Property<unsigned int>::onNodes& domain_sizes,
-        Property<bool>::onNodes& mark ) const;
+        const NodeProperty<unsigned int>& domain_sizes,
+        NodeProperty<bool>& mark ) const;
 
       /// convert a clique and its adjacent cliques into a binary join tree
       void __convertClique
       ( CliqueGraph& JT,
         NodeId clique,
         NodeId from,
-        const Property<unsigned int>::onNodes& domain_sizes ) const;
+        const NodeProperty<unsigned int>& domain_sizes ) const;
 
       /// returns the domain size of the union of two cliques
       float __combinedSize
       ( const NodeSet& nodes1,
         const NodeSet& nodes2,
-        const Property<unsigned int>::onNodes& domain_sizes ) const;
+        const NodeProperty<unsigned int>& domain_sizes ) const;
 
   };
 

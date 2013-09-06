@@ -54,7 +54,7 @@ namespace gum {
         NodeData* u = 0;
         NodeData* v = 0;
 
-        for ( Property<NodeData*>::onNodes::iterator node = __nodes.begin(); node != __nodes.end(); ++node ) {
+        for ( NodeProperty<NodeData*>::iterator node = __nodes.begin(); node != __nodes.end(); ++node ) {
           data = *node;
 
           for ( Set<SlotChain*>::iterator iter = data->n->type().slotChains().begin(); iter != data->n->type().slotChains().end(); ++iter ) {
@@ -90,7 +90,7 @@ namespace gum {
         GUM_DESTRUCTOR( InterfaceGraph );
 
         if ( __erase_flag ) {
-          for ( Property<NodeData*>::onNodes::iterator iter = __nodes.begin();
+          for ( NodeProperty<NodeData*>::iterator iter = __nodes.begin();
                 iter != __nodes.end(); ++iter ) {
             delete *iter;
           }

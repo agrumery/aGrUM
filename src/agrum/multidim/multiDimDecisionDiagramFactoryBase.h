@@ -298,7 +298,7 @@ namespace gum {
       DiGraph _model;
 
       /// Mapping between id and variable
-      typename Property< const DiscreteVariable* >::onNodes _varMap;
+      NodeProperty< const DiscreteVariable* > _varMap;
 
       /// Mapping between terminal nodes and their values
       Bijection< NodeId, GUM_SCALAR > _valueMap;
@@ -307,7 +307,7 @@ namespace gum {
       typename Property< std::vector< NodeId >* >::onNodes _arcMap;
 
       /// Mapping between variable's values and associated node
-      typename Property< NodeId >::onNodes _defaultArcMap;
+      NodeProperty< NodeId > _defaultArcMap;
 
       /// Mapping between variable and nodes tied to this var
       HashTable< const DiscreteVariable*, List<NodeId>* > _var2NodeIdMap;

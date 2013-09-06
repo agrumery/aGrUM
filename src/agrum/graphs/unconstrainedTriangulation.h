@@ -57,7 +57,7 @@ namespace gum {
        * @warning note that, by aGrUM's rule, the graph and the modalities are not
        * copied but only referenced by the elimination sequence algorithm. */
       virtual void setGraph( const UndiGraph* graph,
-                             const Property<unsigned int>::onNodes* dom );
+                             const NodeProperty<unsigned int>* dom );
 
       /** @brief returns a fresh triangulation (over an empty graph) of the same
        * type as the current object
@@ -103,7 +103,7 @@ namespace gum {
        * copied but only referenced by the elimination sequence algorithm. */
       UnconstrainedTriangulation
       ( const UndiGraph* graph,
-        const Property<unsigned int>::onNodes* dom,
+        const NodeProperty<unsigned int>* dom,
         const UnconstrainedEliminationSequenceStrategy& elimSeq,
         const JunctionTreeStrategy& JTStrategy,
         bool minimality = false );

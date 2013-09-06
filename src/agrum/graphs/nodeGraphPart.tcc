@@ -31,13 +31,13 @@
 namespace gum {
 
   template <typename VAL> INLINE
-  typename Property<VAL>::onNodes
+  NodeProperty<VAL>
   NodeGraphPart::nodesProperty( VAL( *f )( const NodeId& ), Size size ) const {
     return nodes().hashMap( f, size );
   }
 
   template <typename VAL> INLINE
-  typename Property<VAL>::onNodes
+  NodeProperty<VAL>
   NodeGraphPart::nodesProperty( const VAL& val, Size size ) const {
     return nodes().hashMap( val, size );
   }
@@ -49,15 +49,14 @@ namespace gum {
 
   template<typename T> void
   NodeGraphPart::populateNodesFromProperty
-  ( const typename Property<T>::onNodes& h ) {
+  ( const NodeProperty<T>& h ) {
     clear();
 
-    for ( typename Property<T>::onNodes::const_iterator iter = h.begin();
-          iter != h.end(); ++iter ) {
+    for( auto iter = h.begin(); iter != h.end(); ++iter ) {
       NodeId new_one = iter.key();
 
-      if ( existsNode( new_one ) ) {
-        GUM_ERROR( DuplicateElement, new_one<<" already exists in the graph" );
+      if( existsNode( new_one ) ) {
+        GUM_ERROR( DuplicateElement, new_one << " already exists in the graph" );
       }
 
       insertNode( new_one );

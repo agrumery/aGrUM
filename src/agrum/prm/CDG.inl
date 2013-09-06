@@ -59,7 +59,7 @@ namespace gum {
     }
 
     INLINE
-    const Property<unsigned int>::onNodes&
+    const NodeProperty<unsigned int>&
     CDG::modalities() const { return __modalitites; }
 
     INLINE

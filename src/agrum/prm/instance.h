@@ -252,8 +252,8 @@ namespace gum {
          * @return Returns a bijection in which first elements are DiscreteVariable
          *         in this->type() and the second are in this.
          */
-        const Bijection<const DiscreteVariable*,
-              const DiscreteVariable*>& bijection() const;
+        const Bijection < const DiscreteVariable*,
+              const DiscreteVariable* > & bijection() const;
 
         /// @}
         // ========================================================================
@@ -329,7 +329,7 @@ namespace gum {
         /// @{
 
         /// Alias to iterate over the gum::prm::Attribute in this Instance.
-        typedef Property<Attribute*>::onNodes::iterator iterator;
+        typedef NodeProperty<Attribute*>::iterator iterator;
 
         /// Returns an iterator at the begining of the list of gum::prm::Attribute in
         /// this Instance.
@@ -340,7 +340,7 @@ namespace gum {
         const iterator& end();
 
         /// Alias to iterate over the gum::prm::Attribute in this Instance.
-        typedef Property<Attribute*>::onNodes::const_iterator const_iterator;
+        typedef NodeProperty<Attribute*>::const_iterator const_iterator;
 
         /// Returns an iterator at the beginning of the list of gum::prm::Attribute in
         /// this Instance.
@@ -531,18 +531,18 @@ namespace gum {
         Class* __type;
 
         /// The gum::prm::Attribute and gum::prm::Aggregate of this Instance.
-        Property<Attribute*>::onNodes __nodeIdMap;
+        NodeProperty<Attribute*> __nodeIdMap;
 
         /// Mapping between the gum::prm::ReferenceSlot and gum::prm::SlotChain in
         /// __type / and the Instance associated with it.
-        Property< Set< Instance* >* >::onNodes __referenceMap;
+        NodeProperty< Set< Instance* >* > __referenceMap;
 
         /// Code alias.
         typedef std::pair<Instance*, std::string> pair;
 
         /// The set of pair (instance, attribute) referring an attribute of
         /// this instance.
-        Property< std::vector<pair>* >::onNodes __referingAttr;
+        NodeProperty< std::vector<pair>* > __referingAttr;
 
         /// The gum::Set of initialised parameters.
         Set<NodeId>* __params;

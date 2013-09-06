@@ -115,12 +115,12 @@
   arcs. Properties are just HashTable in which keys are @ref gum::NodeId, Edge
   or Arc. Unfortunately, due to a lack (or what we find to be lack) of C++, there
   is no way to create templated typedefs... So aGrUM uses (currently)
-  gum::Property<X>::onNodes, gum::Property<X>::onEdges and
+  gum::NodeProperty<X>, gum::Property<X>::onEdges and
   gum::Property<X>::onArcs to add new properties related to nodes, edges and
   arcs respectively.
   @code
   gum::UndiGraph g;
-  gum::Property<bool>::onNodes is_id_odd=g.nodesProperty( false );
+  gum::NodeProperty<bool> is_id_odd=g.nodesProperty( false );
 
   g.insertNode();
   g.insertNode();
@@ -132,7 +132,7 @@
 
   std::cout<<is_id_odd<<std::cout<<std::endl;
 
-  for ( gum::Property<bool>::onNodes::iterator i=is_id_odd.begin();
+  for ( gum::NodeProperty<bool>::iterator i=is_id_odd.begin();
         i!=is_id_odd.end();
         ++i ) {
     std::cout<<i.key()<<" : "<<*i<<std::endl;
@@ -150,11 +150,11 @@
   g.insertNode();
   g.insertNode();
 
-  gum::Property<bool>::onNodes is_id_odd=g.nodesProperty(is_it_odd);
+  gum::NodeProperty<bool> is_id_odd=g.nodesProperty(is_it_odd);
 
   std::cout<<is_id_odd<<std::endl<<std::endl;
 
-  for (gum::Property<bool>::onNodes::iterator i=is_id_odd.begin();
+  for (gum::NodeProperty<bool>::iterator i=is_id_odd.begin();
         i!=is_id_odd.end();
         ++i ) {
     std::cout<<i.key()<<" : "<<*i<<std::endl;
@@ -173,7 +173,7 @@
   gum::List<gum::NodeId> nodeFIFO;
   // mark[node] contains 0 if not visited
   // mark[node]=predecessor if visited
-  gum::Property<gum::NodeId>::onNodes mark=g.nodesProperty((gum::NodeId) 0 );
+  gum::NodeProperty<gum::NodeId> mark=g.nodesProperty((gum::NodeId) 0 );
   gum::NodeId current;
 
   mark[n1]=n1;
@@ -553,42 +553,32 @@ namespace gum {
 
   /** \ingroup graph_group
    * @{
-   * @brief Property
+   * @brief Property on graph elements
    *
-   * ISO C++ does not allow template typdef; so instead of having something like
-   * @code
-   * NodeProperty<TRUC>
-   * @endcode
-   * we have had to create this
-   * @code
-   * Property<TRUC>::onNodes
-   * @endcode
-   *
-   * @warning Note that you have access to iterators by
-   * Property<TRUC>::onNodes::iterator
+   * @{
+   * @deprecated C++11 allows now partial specification of template using "using". The
+   * old definitions Property VAL::onNodes are now obsolete. Please use NodeProperty VAL
    **/
 
-  template<class VAL>
-
-  struct Property {
-    typedef HashTable<NodeId, VAL> onNodes;
-    typedef HashTable<Edge, VAL> onEdges;
+  template<class VAL> struct Property {
+    typedef HashTable<NodeId, VAL> onNodes  __attribute__( ( deprecated ) );
+    typedef HashTable<Edge, VAL> onEdges  __attribute__( ( deprecated ) );
     typedef HashTable<Arc, VAL> onArcs;
-
   };
+  /// @}
+  
+  template<class VAL> using NodeProperty = HashTable<NodeId, VAL>;
+  template<class VAL> using EdgeProperty = HashTable<Edge, VAL>;
+  template<class VAL> using ArcProperty = HashTable<Arc, VAL>;
+
+  /// @}
 
 
-/// @}
-
-
-
-/// to friendly display an edge
-
+  /// to friendly display an edge
   std::ostream& operator<< ( std::ostream& stream, const Edge& edge );
 
 
-/// to friendly display an arc
-
+  /// to friendly display an arc
   std::ostream& operator<< ( std::ostream& stream, const Arc& arc );
 
 
@@ -603,3 +593,4 @@ namespace gum {
 
 #endif // GUM_GRAPHELEMENTS_H
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
+

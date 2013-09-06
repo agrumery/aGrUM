@@ -30,6 +30,30 @@ namespace gum {
   namespace prm {
 
     template<typename GUM_SCALAR>
+    void
+    InstanceBayesNet<GUM_SCALAR>::__init( const Instance& i ) {
+      for( DAG::NodeIterator node = i.type().dag().beginNodes(); node != i.type().dag().endNodes(); ++node ) {
+        try {
+          // Adding the attribute
+          const Attribute& attr = i.get( *node );
+          this->_dag.insertNode( attr.id() );
+          __varNodeMap.insert( &( attr.type().variable() ), &attr );
+        } catch( NotFound& ) {
+          // Not an attribute
+        }
+      }
+
+      for( ArcSet::iterator arc = i.type().dag().beginArcs(); arc != i.type().dag().endArcs(); ++arc ) {
+        try {
+          this->_dag.insertArc( arc->tail(), arc->head() );
+        } catch( InvalidNode& ) {
+          // Not added means not an attribute
+        }
+      }
+    }
+
+
+    template<typename GUM_SCALAR>
     INLINE
     InstanceBayesNet<GUM_SCALAR>::InstanceBayesNet( const Instance& i ):
       IBayesNet<GUM_SCALAR>(), __inst( &i ) {
@@ -56,7 +80,7 @@ namespace gum {
     INLINE
     InstanceBayesNet<GUM_SCALAR>&
     InstanceBayesNet<GUM_SCALAR>::operator=( const InstanceBayesNet& from ) {
-      if ( this != &from ) {
+      if( this != &from ) {
         IBayesNet<GUM_SCALAR>::operator=( from );
 
         __varNodeMap = from.__varNodeMap;
@@ -121,17 +145,17 @@ namespace gum {
     InstanceBayesNet<GUM_SCALAR>::__get( const std::string& name ) const {
       try {
         return __inst->get( name );
-      } catch ( NotFound& ) {
+      } catch( NotFound& ) {
         GUM_ERROR( NotFound, "no element found with that name" );
       }
     }
 
     template<typename GUM_SCALAR>
     INLINE
-    const Property<unsigned int>::onNodes&
+    const NodeProperty<unsigned int>&
     InstanceBayesNet<GUM_SCALAR>::modalities() const {
-      if ( __modalities.empty() ) {
-        for ( DAG::NodeIterator node = this->dag().beginNodes(); node != this->dag().endNodes(); ++node ) {
+      if( __modalities.empty() ) {
+        for( DAG::NodeIterator node = this->dag().beginNodes(); node != this->dag().endNodes(); ++node ) {
           __modalities.insert( *node, ( unsigned int ) variable( *node ).domainSize() );
         }
       }
@@ -148,16 +172,16 @@ namespace gum {
       output << "digraph \"";
       output << __inst->name() << "\" {" << std::endl;
 
-      for ( DAG::NodeIterator node_iter = this->dag().beginNodes(); node_iter != this->dag().endNodes(); ++node_iter ) {
-        if ( this->dag().children( *node_iter ).size() > 0 ) {
+      for( DAG::NodeIterator node_iter = this->dag().beginNodes(); node_iter != this->dag().endNodes(); ++node_iter ) {
+        if( this->dag().children( *node_iter ).size() > 0 ) {
           const NodeSet& children = this->dag().children( *node_iter );
 
-          for ( NodeSetIterator arc_iter = children.begin();
-                arc_iter != children.end(); ++arc_iter ) {
+          for( NodeSetIterator arc_iter = children.begin();
+               arc_iter != children.end(); ++arc_iter ) {
             output << tab << "\"" << variable( *node_iter ).name() << "\" -> ";
             output << "\"" << variable( *arc_iter ).name() << "\";" << std::endl;
           }
-        } else if ( this->dag().parents( *node_iter ).size() == 0 ) {
+        } else if( this->dag().parents( *node_iter ).size() == 0 ) {
           output << tab << "\"" << variable( *node_iter ).name() << "\";" << std::endl;
         }
       }

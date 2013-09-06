@@ -843,10 +843,10 @@ namespace gum {
       typename Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes* __credalNet_bin_cpt = new typename Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes();
 
       // delete old one too
-      typename Property< NodeType >::onNodes* __bin_nodeType = new typename Property< NodeType >::onNodes();
+      NodeProperty< NodeType >* __bin_nodeType = new NodeProperty< NodeType >();
 
       const BayesNet< GUM_SCALAR >* __current_bn;
-      //const typename Property< nodeType >::onNodes *__current_nodeType;
+      //const NodeProperty< nodeType > *__current_nodeType;
       const typename Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes* __credalNet_current_cpt;
 
       if ( this->__current_bn == nullptr )
@@ -1637,7 +1637,7 @@ namespace gum {
 
     template< typename GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::__sort_varType() {
-      typename Property< NodeType >::onNodes* __current_nodeType;
+      NodeProperty< NodeType >* __current_nodeType;
       const typename Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes* __credalNet_current_cpt;
 
       const BayesNet< GUM_SCALAR >* __current_bn;

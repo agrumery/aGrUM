@@ -46,10 +46,10 @@ namespace gum {
     GUM_CONS_CPY( EdgeGraphPart );
 
     // copy the set of neighbours
-    const Property<NodeSet*>::onNodes& neigh = s.__neighbours;
+    const NodeProperty<NodeSet*>& neigh = s.__neighbours;
     __neighbours.resize( neigh.capacity() );
 
-    for ( Property<NodeSet*>::onNodes::const_iterator iter = neigh.begin();
+    for ( NodeProperty<NodeSet*>::const_iterator iter = neigh.begin();
           iter != neigh.end(); ++iter ) {
       NodeSet* newneigh = new NodeSet( **iter );
       __neighbours.insert( iter.key(), newneigh );
@@ -73,7 +73,7 @@ namespace gum {
 
 
   void EdgeGraphPart::clearEdges() {
-    for ( Property<NodeSet*>::onNodes::const_iterator iter = __neighbours.begin();
+    for ( NodeProperty<NodeSet*>::const_iterator iter = __neighbours.begin();
           iter != __neighbours.end(); ++iter ) {
       delete *iter;
     }
@@ -101,10 +101,10 @@ namespace gum {
       __edges = s.__edges;
 
       // copy the set of neighbours
-      const Property<NodeSet*>::onNodes& neigh = s.__neighbours;
+      const NodeProperty<NodeSet*>& neigh = s.__neighbours;
       __neighbours.resize( neigh.capacity() );
 
-      for ( Property<NodeSet*>::onNodes::const_iterator iter = neigh.begin();
+      for ( NodeProperty<NodeSet*>::const_iterator iter = neigh.begin();
             iter != neigh.end(); ++iter ) {
         NodeSet* newneigh = new NodeSet( **iter );
         __neighbours.insert( iter.key(), newneigh );
@@ -150,7 +150,7 @@ namespace gum {
     nodeFIFO.pushBack( n2 );
 
     // mark[node] = predecessor if visited, else mark[node] does not exist
-    Property<NodeId>::onNodes mark;
+    NodeProperty<NodeId> mark;
     mark.insert( n2, n2 );
 
     NodeId current;

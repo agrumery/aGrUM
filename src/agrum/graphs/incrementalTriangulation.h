@@ -69,7 +69,7 @@ namespace gum {
 
       IncrementalTriangulation( const UnconstrainedTriangulation& triang_algo,
                                 const UndiGraph& theGraph,
-                                const Property<unsigned int>::onNodes& modal );
+                                const NodeProperty<unsigned int>& modal );
 
 
       /// default constructor: initialize the triangulation with en empty graph
@@ -175,7 +175,7 @@ namespace gum {
       /** @brief returns the Ids of the cliques of the junction tree created by the
        * elimination of the nodes */
 
-      const Property<NodeId>::onNodes& createdJunctionTreeCliques();
+      const NodeProperty<NodeId>& createdJunctionTreeCliques();
 
 
       /// returns the junction tree of the maximal prime subgraphs
@@ -197,7 +197,7 @@ namespace gum {
       /// changes the current graph
 
       void setGraph( const UndiGraph& theGraph,
-                     const Property<unsigned int>::onNodes& modal );
+                     const NodeProperty<unsigned int>& modal );
 
 
       /// returns the triangulation algorithm (useful for fine tuning it)
@@ -244,10 +244,10 @@ namespace gum {
       Property< std::vector<NodeId> >::onNodes __cliques_of_mps;
 
       /// indicate for each clique the MPS it belongs to
-      Property<NodeId>::onNodes __mps_of_clique;
+      NodeProperty<NodeId> __mps_of_clique;
 
       /// the set of MPS affected by a new triangulation
-      Property<bool>::onNodes __mps_affected;
+      NodeProperty<bool> __mps_affected;
 
       /// the triangulation algorithm that will be used incremantally
       UnconstrainedTriangulation* __triangulation;
@@ -262,13 +262,13 @@ namespace gum {
       std::vector<NodeId> __elimination_order;
 
       /// the elimination order (access by NodeId)
-      Property<unsigned int>::onNodes __reverse_elimination_order;
+      NodeProperty<unsigned int> __reverse_elimination_order;
 
       /// a Boolean indicating whether we should compute the createdJTCliques
       bool __require_created_JT_cliques;
 
       /// For each node, a clique that contains it
-      Property<NodeId>::onNodes __created_JT_cliques;
+      NodeProperty<NodeId> __created_JT_cliques;
 
 
 
@@ -316,27 +316,27 @@ namespace gum {
 
       /// update the junction tree
 
-      void __updateJunctionTree( Property<bool>::onNodes& all_cliques_affected,
+      void __updateJunctionTree( NodeProperty<bool>& all_cliques_affected,
                                  NodeSet& new_nodes_in_junction_tree );
 
 
       /// update the max prime subgraph
 
-      void __updateMaxPrimeSubgraph( Property<bool>::onNodes& cliques_affected,
+      void __updateMaxPrimeSubgraph( NodeProperty<bool>& cliques_affected,
                                      const NodeSet& new_nodes_in_junction_tree );
 
 
       /// a collect algorithm to compute elimination orderings
 
       void __collectEliminationOrder( const NodeId node, const NodeId from,
-                                      Property<bool>::onNodes& examined,
+                                      NodeProperty<bool>& examined,
                                       unsigned int& index );
 
 
       /// a collect algorithm to compute, for each node, one container JT's clique
 
       void __collectJTCliques( const NodeId clique, const NodeId from,
-                               Property<bool>::onNodes& examined );
+                               NodeProperty<bool>& examined );
 
 
       /// checks that the incremental triangulation works properly

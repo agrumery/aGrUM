@@ -36,7 +36,7 @@ namespace gum {
 
   UnconstrainedTriangulation::UnconstrainedTriangulation
   ( const UndiGraph* theGraph,
-    const Property<unsigned int>::onNodes* modal,
+    const NodeProperty<unsigned int>* modal,
     const UnconstrainedEliminationSequenceStrategy& elimSeq,
     const JunctionTreeStrategy& JTStrategy,
     bool minimality ) :
@@ -73,7 +73,7 @@ namespace gum {
 
   void UnconstrainedTriangulation::setGraph
   ( const UndiGraph* theGraph,
-    const Property<unsigned int>::onNodes* modal ) {
+    const NodeProperty<unsigned int>* modal ) {
     StaticTriangulation::_setGraph( theGraph, modal );
   }
 

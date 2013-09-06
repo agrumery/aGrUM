@@ -272,7 +272,7 @@ namespace gum {
 
     // check that no clique requires an additional chain to guarantee the
     // running intersection property
-    for ( Property<NodeSet>::onNodes::const_iterator iter =
+    for ( NodeProperty<NodeSet>::const_iterator iter =
             infos_DFS.cliques_DFS_chain.begin();
           iter != infos_DFS.cliques_DFS_chain.end(); ++iter )
       if ( ! iter->empty() ) return false;
@@ -288,7 +288,7 @@ namespace gum {
     if ( UndiGraph::operator!= ( from ) ) return false;
 
     // check if the __cliques are identical
-    for ( Property<NodeSet>::onNodes::const_iterator iter = __cliques.begin();
+    for ( NodeProperty<NodeSet>::const_iterator iter = __cliques.begin();
           iter != __cliques.end(); ++iter )
       if ( *iter != from.__cliques[iter.key()] ) return false;
 

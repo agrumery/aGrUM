@@ -100,7 +100,7 @@ namespace gum {
             /// The isomorphism graph of the pattern.
             UndiGraph iso_graph;
             /// The instances matching p in the interface graph.
-            Property<Sequence<Instance*>*>::onNodes iso_map;
+            NodeProperty<Sequence<Instance*>*> iso_map;
             /// The maximal independent set of p.
             Set<NodeId> max_indep_set;
             /// The cost of this Pattern
@@ -178,7 +178,7 @@ namespace gum {
               /// Add the pair (u,v) as a match for the current growth.
               void insert( Instance* u, Instance* v );
               /// The mapping between the u and v for each match in the interface graph.
-              Property< std::pair<Instance*, Instance*> >::onNodes matches;
+              NodeProperty< std::pair<Instance*, Instance*> > matches;
               /// Return a string representation of this
               std::string toString();
 
@@ -315,7 +315,8 @@ namespace gum {
           void __addChild( Pattern& p, Pattern* child, EdgeGrowth& edge_growth );
 
           /// Check if an instance match is redundant.
-          bool __is_new_seq( Sequence<Instance*>& seq, Property<Sequence<Instance*>*>::onNodes& iso_map );
+          bool __is_new_seq( Sequence<Instance*>& seq,
+                             NodeProperty<Sequence<Instance*>*>& iso_map );
 
           /// This initialize the DSFTree with a new root.
           /// @param p A Pattern.
@@ -370,7 +371,7 @@ namespace gum {
 
           void setTree( DFSTree* tree );
 
-          virtual bool accept_root( const Pattern* r ) =0;
+          virtual bool accept_root( const Pattern* r ) = 0;
 
           virtual bool accept_growth( const Pattern* parent,
                                       const Pattern* child,
@@ -490,7 +491,7 @@ namespace gum {
             /// A yet to be triangulated undigraph
             UndiGraph graph;
             /// The pattern's variables modalities
-            Property<unsigned int>::onNodes mod;
+            NodeProperty<unsigned int> mod;
             /// A bijection to easily keep track  between graph and attributes, its of the
             /// form instance_name DOT attr_name
             Bijection<NodeId, std::string> node2attr;

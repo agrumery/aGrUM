@@ -49,7 +49,7 @@ namespace gum {
   /// constructor with a given graph
   PartialOrderedTriangulation::PartialOrderedTriangulation
   ( const UndiGraph* theGraph,
-    const Property<unsigned int>::onNodes* dom,
+    const NodeProperty<unsigned int>* dom,
     const List<NodeSet>* partial_order,
     const PartialOrderedEliminationSequenceStrategy& elimSeq,
     const JunctionTreeStrategy& JTStrategy,
@@ -72,7 +72,7 @@ namespace gum {
   /// initialize the triangulation data structures for a new graph
   void PartialOrderedTriangulation::setGraph
   ( const UndiGraph* graph,
-    const Property<unsigned int>::onNodes* modal,
+    const NodeProperty<unsigned int>* modal,
     const List<NodeSet>* partial_order ) {
     // check that the graph, the modalities and the sequence seem OK
     unsigned int nb = 0;

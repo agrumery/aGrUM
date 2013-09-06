@@ -56,7 +56,7 @@ namespace gum {
     GUM_CONSTRUCTOR( DefaultInfluenceDiagramInference );
 
     //Make modalities map
-    typename Property<unsigned int>::onNodes __modalitiesMap;
+    NodeProperty<unsigned int> __modalitiesMap;
 
     // the moral graph does not include utility nodes
     UndiGraph partialMoralGraph( this->influenceDiagram().moralGraph() );

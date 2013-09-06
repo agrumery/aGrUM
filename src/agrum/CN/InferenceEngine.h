@@ -54,7 +54,7 @@ namespace gum {
       private:
         typedef typename Property< std::vector< std::vector< GUM_SCALAR > > >::onNodes credalSet;
         typedef typename Property< std::vector< GUM_SCALAR > >::onNodes margi;
-        typedef typename Property< GUM_SCALAR >::onNodes expe;
+        typedef NodeProperty< GUM_SCALAR > expe;
 
         typedef typename gum::HashTable< std::string, std::vector< GUM_SCALAR > > dynExpe;
 

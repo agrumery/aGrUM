@@ -58,7 +58,7 @@ namespace gum_tests {
       }
 
       static gum::Size simpleDoubleFunction( const gum::NodeId& aNodeId ) {
-        return aNodeId*2;
+        return aNodeId * 2;
       }
 
       static gum::Size simpleEdgeMapFunction( const gum::Edge& anEdge ) {
@@ -70,7 +70,7 @@ namespace gum_tests {
       }
 
       static gum::Size twistedMapFunction( const gum::NodeId& aNode ) {
-        throw ( aNode );
+        throw( aNode );
       }
 
     public:
@@ -198,7 +198,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( edgeCount, ( gum::Size ) 3 );
         TS_ASSERT_EQUALS( arcCount, ( gum::Size ) 3 );
 
-        for ( int i = 0; i < 10; i++ ) {
+        for( int i = 0; i < 10; i++ ) {
           TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseNode( id5 ) );
         }
 
@@ -274,7 +274,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( nodeset.size(), graph.size() );
         gum::Size nodeCount = graph.size();
 
-        for ( gum::NodeSet::iterator iter = nodeset.begin(); iter != nodeset.end(); ++iter ) {
+        for( gum::NodeSet::iterator iter = nodeset.begin(); iter != nodeset.end(); ++iter ) {
           graph.eraseNode( *iter );
         }
 
@@ -290,7 +290,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( arclist.size(), graph.sizeArcs() );
         gum::Size arcCount = graph.sizeArcs();
 
-        for ( gum::ArcSet::iterator iter = arclist.begin(); iter != arclist.end(); ++iter ) {
+        for( gum::ArcSet::iterator iter = arclist.begin(); iter != arclist.end(); ++iter ) {
           graph.eraseArc( *iter );
         }
 
@@ -306,7 +306,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( edgeset.size(), graph.sizeEdges() );
         gum::Size  edgeCount = graph.sizeEdges();
 
-        for ( gum::EdgeSet::iterator iter = edgeset.begin(); iter != edgeset.end(); ++iter ) {
+        for( gum::EdgeSet::iterator iter = edgeset.begin(); iter != edgeset.end(); ++iter ) {
           graph.eraseEdge( *iter );
         }
 
@@ -324,11 +324,11 @@ namespace gum_tests {
 
         gum::Size s = 0;
 
-        for ( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end(); ++iter ) {
+        for( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end(); ++iter ) {
           s += *iter;
         }
 
-        TS_ASSERT_EQUALS( s, 2*( id1 + id2 + id3 + id4 + id5 ) );
+        TS_ASSERT_EQUALS( s, 2 * ( id1 + id2 + id3 + id4 + id5 ) );
       }
 
       void testTwistedNodeListMapNodes() {
@@ -349,18 +349,18 @@ namespace gum_tests {
         gum::Size sk = 0;
         gum::Size sv = 0;
 
-        for ( gum::Property< gum::Size >::onNodes::iterator iter = hashmap.begin(); iter != hashmap.end(); ++iter ) {
+        for( gum::Property< gum::Size >::onNodes::iterator iter = hashmap.begin(); iter != hashmap.end(); ++iter ) {
           sk += iter.key();
           sv += *iter;
         }
 
-        TS_ASSERT_EQUALS( sk*2, sv );
+        TS_ASSERT_EQUALS( sk * 2, sv );
       }
 
       void testTwistedHashMapNodes() {
         gum::MixedGraph graph = buildGraph();
 
-        gum::Property< gum::Size >::onNodes hashmap;
+        gum::NodeProperty< gum::Size > hashmap;
         TS_ASSERT_THROWS_ANYTHING( hashmap = graph.nodesProperty( &twistedMapFunction ) );
 
         TS_ASSERT_EQUALS( hashmap.size(), ( gum::Size )0 );
@@ -374,7 +374,7 @@ namespace gum_tests {
 
         gum::Size s = 0;
 
-        for ( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end(); ++iter ) {
+        for( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end(); ++iter ) {
           s += *iter;
         }
 
@@ -397,7 +397,7 @@ namespace gum_tests {
         gum::Size sk = 0;
         gum::Size sv = 0;
 
-        for (
+        for(
           gum::Property< gum::Size >::onEdges::iterator iter = hashmap.begin();
           iter != hashmap.end();
           ++iter
@@ -417,7 +417,7 @@ namespace gum_tests {
 
         gum::Size s = 0;
 
-        for ( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end(); ++iter ) {
+        for( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end(); ++iter ) {
           s += *iter;
         }
 
@@ -440,7 +440,7 @@ namespace gum_tests {
         gum::Size sk = 0;
         gum::Size sv = 0;
 
-        for (
+        for(
           gum::Property< gum::Size >::onArcs::iterator iter = hashmap.begin();
           iter != hashmap.end();
           ++iter

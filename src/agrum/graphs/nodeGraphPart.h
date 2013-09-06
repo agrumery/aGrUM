@@ -254,7 +254,7 @@ namespace gum {
       /** populateNodes should basically be the preferred way to insert nodes with
        * IDs not selected by the internal idFactory. */
       template<typename T>
-      void populateNodesFromProperty( const typename Property<T>::onNodes& h );
+      void populateNodesFromProperty( const NodeProperty<T>& h );
 
       /** returns a new node id, not yet used by any node
        * @warning a code like @code id=nextId();insertNode(id); @endcode is
@@ -332,7 +332,7 @@ namespace gum {
        * half the number of nodes. If you do not specify this parameter, the method
        * will assign it for you. */
       template <typename VAL>
-      typename Property<VAL>::onNodes
+      NodeProperty<VAL>
       nodesProperty( VAL( *f )( const NodeId& ), Size size = 0 ) const;
 
       /// a method to create a hashMap with key:NodeId and value:VAL
@@ -345,7 +345,7 @@ namespace gum {
        * half the number of nodes. If you do not specify this parameter, the method
        * will assign it for you. */
       template <typename VAL>
-      typename Property<VAL>::onNodes
+      NodeProperty<VAL>
       nodesProperty( const VAL& a, Size size = 0 ) const;
 
       /** @brief a method to create a list of VAL from a set of nodes

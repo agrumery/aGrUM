@@ -39,7 +39,7 @@ namespace gum_tests {
         cliques[1]  << 3 << 4 << 5;
         cliques[2]  << 6 << 7 << 8;
         cliques[3]  << 9 << 10;
-        cliques[4]  << 8 << 11 <<12 << 3;
+        cliques[4]  << 8 << 11 << 12 << 3;
         cliques[5]  << 2 << 3 << 7 << 8 << 10 << 11 << 12;
         cliques[6]  << 10 << 15;
         cliques[7]  << 13 << 17;
@@ -47,25 +47,25 @@ namespace gum_tests {
         cliques[9]  << 7 << 14;
         cliques[10] << 14 << 16;
 
-        for ( unsigned int i = 0; i <= 10; ++i ) {
+        for( unsigned int i = 0; i <= 10; ++i ) {
           graph.insertNode( i, cliques[i] );
         }
 
-        graph.insertEdge( 0,5 );
-        graph.insertEdge( 1,5 );
-        graph.insertEdge( 2,5 );
-        graph.insertEdge( 3,5 );
-        graph.insertEdge( 4,5 );
-        graph.insertEdge( 5,8 );
-        graph.insertEdge( 6,8 );
-        graph.insertEdge( 7,8 );
-        graph.insertEdge( 8,9 );
-        graph.insertEdge( 9,10 );
+        graph.insertEdge( 0, 5 );
+        graph.insertEdge( 1, 5 );
+        graph.insertEdge( 2, 5 );
+        graph.insertEdge( 3, 5 );
+        graph.insertEdge( 4, 5 );
+        graph.insertEdge( 5, 8 );
+        graph.insertEdge( 6, 8 );
+        graph.insertEdge( 7, 8 );
+        graph.insertEdge( 8, 9 );
+        graph.insertEdge( 9, 10 );
 
-        gum::Property<unsigned int>::onNodes domain_sizes;
+        gum::NodeProperty<gum::Size> domain_sizes;
 
-        for ( unsigned int i = 1; i <= 17; ++i ) {
-          domain_sizes.insert( i, 3 );
+        for( gum::Idx i = 1; i <= 17; ++i ) {
+          domain_sizes.insert( i, gum::Size( 3 ) );
         }
 
         gum::BinaryJoinTreeConverterDefault converter;
@@ -74,7 +74,7 @@ namespace gum_tests {
 
         try {
           gum::CliqueGraph binTree = converter.convert( graph, domain_sizes, roots );
-        } catch ( gum::Exception& e ) {
+        } catch( gum::Exception& e ) {
           GUM_SHOWERROR( e );
         }
       }

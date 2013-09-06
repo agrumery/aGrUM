@@ -210,7 +210,7 @@ namespace gum {
         /// @{
 
         /// Iterator over the Instance of this System.
-        typedef Property<Instance*>::onNodes::iterator iterator;
+        typedef NodeProperty<Instance*>::iterator iterator;
 
         /// Returns an iterator over the instances in this system.
         iterator begin();
@@ -220,7 +220,7 @@ namespace gum {
         const iterator& end();
 
         /// Constant Iterator over the Instance of this System.
-        typedef Property<Instance*>::onNodes::const_iterator const_iterator;
+        typedef NodeProperty<Instance*>::const_iterator const_iterator;
 
         /// Returns a constant iterator over the instances in this system.
         const_iterator begin() const;
@@ -273,7 +273,7 @@ namespace gum {
 
         /// The maping between Instance and their NodeId in the relational
         /// skeleton of this System.
-        Property<Instance*>::onNodes __nodeIdMap;
+        NodeProperty<Instance*> __nodeIdMap;
 
         /// The mapping between Instance and their names.
         HashTable<std::string, Instance*> __nameMap;

@@ -75,7 +75,7 @@ namespace gum {
     nodeFIFO.pushBack( n2 );
 
     // mark[node] = successor if visited, else mark[node] does not exist
-    Property<NodeId>::onNodes mark;
+    NodeProperty<NodeId> mark;
     mark.insert( n2,n2 );
 
     NodeId current;
@@ -146,7 +146,7 @@ namespace gum {
     nodeFIFO.pushBack( n2 );
 
     // mark[node] = successor if visited, else mark[node] does not exist
-    Property<NodeId>::onNodes mark;
+    NodeProperty<NodeId> mark;
     mark.insert( n2,n2 );
 
     NodeId current;

@@ -48,7 +48,7 @@ namespace gum {
   /// constructor with a given graph
   OrderedTriangulation::OrderedTriangulation
   ( const UndiGraph* theGraph,
-    const Property<unsigned int>::onNodes* dom,
+    const NodeProperty<unsigned int>* dom,
     const std::vector<NodeId>* sequence,
     const OrderedEliminationSequenceStrategy& elimSeq,
     const JunctionTreeStrategy& JTStrategy,
@@ -70,7 +70,7 @@ namespace gum {
   /// initialize the triangulation data structures for a new graph
   void OrderedTriangulation::setGraph
   ( const UndiGraph* graph,
-    const Property<unsigned int>::onNodes* modal,
+    const NodeProperty<unsigned int>* modal,
     const std::vector<NodeId>* sequence ) {
     // check that the graph, the modalities and the sequence seem OK
     unsigned int nb = 0;

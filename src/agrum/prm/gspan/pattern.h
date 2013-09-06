@@ -214,7 +214,7 @@ namespace gum {
           DFSCode __code;
 
           /// Mapping between nodes in this Pattern and their respective LabelData.
-          Property<LabelData*>::onNodes __node_map;
+          NodeProperty<LabelData*> __node_map;
 
           /// Mapping between edges in this Pattern and their respective LabelData.
           Property<std::pair<LabelData*, EdgeCode*> >::onArcs __arc_map;

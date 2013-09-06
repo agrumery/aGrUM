@@ -441,9 +441,9 @@ namespace gum {
         typename Property< std::vector< NodeId > >::onNodes __var_bits;
 
         /** @brief The NodeType of each node from the ORIGINAL network. */
-        typename Property< NodeType >::onNodes __original_nodeType;
+        NodeProperty< NodeType > __original_nodeType;
         /** @brief The NodeType of each node from the up-to-date network. */
-        typename Property< NodeType >::onNodes* __current_nodeType;// = nullptr;
+        NodeProperty< NodeType >* __current_nodeType;// = nullptr;
 
         /**
          * @brief Used with binary networks to speed-up L2U inference. Store the lower probabilities of each node X over the "true" modality, i.e. \f$ \underline{p}(X = 1 \mid pa(X) = j) \f$.

@@ -55,7 +55,7 @@ namespace gum {
    * (0 = first node eliminated) */
 
   INLINE
-  const Property<unsigned int>::onNodes&
+  const NodeProperty<unsigned int>&
   StaticTriangulation::reverseEliminationOrder( ) {
     if ( !__has_triangulation )  __triangulate();
 
@@ -125,7 +125,7 @@ namespace gum {
    * elimination of the nodes */
 
   INLINE
-  const Property<NodeId>::onNodes&
+  const NodeProperty<NodeId>&
   StaticTriangulation::createdJunctionTreeCliques() {
     return _junction_tree_strategy->createdCliques();
   }

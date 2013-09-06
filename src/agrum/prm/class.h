@@ -320,7 +320,7 @@ namespace gum {
         /// @{
 
         /// Code alias for iterators over ClassElement in this Class.
-        typedef Property<ClassElement*>::onNodes::iterator ClassEltIterator;
+        typedef NodeProperty<ClassElement*>::iterator ClassEltIterator;
 
         /// Returns an iterator at the begin of the node map of the ClassElement
         /// in this Class
@@ -331,7 +331,7 @@ namespace gum {
         const ClassEltIterator& end();
 
         /// Code alias for constant iterators over ClassElement in this Class.
-        typedef Property<ClassElement*>::onNodes::const_iterator const_ClassEltIterator;
+        typedef NodeProperty<ClassElement*>::const_iterator const_ClassEltIterator;
 
         /// Returns a constant iterator at the begin of the node map of
         /// ClassElement in this Class
@@ -374,7 +374,7 @@ namespace gum {
 
         /// Mapping between node's id and their name (being an attribute or a
         /// slot). Used for fast access to a member given it's node id.
-        Property<ClassElement*>::onNodes __nodeIdMap;
+        NodeProperty<ClassElement*> __nodeIdMap;
 
         /// @}
         // ========================================================================

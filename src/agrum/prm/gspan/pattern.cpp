@@ -37,7 +37,7 @@ namespace gum {
       Pattern::Pattern( const Pattern& source ):
         DiGraph(), __last( 0 ) {
         GUM_CONS_CPY( Pattern );
-        Property<NodeId>::onNodes node_map;
+        NodeProperty<NodeId> node_map;
 
         for ( NodeId node = 1; node <= source.size(); ++node ) {
           node_map.insert( node, insertNode( const_cast<LabelData&>( source.label( node ) ) ) );

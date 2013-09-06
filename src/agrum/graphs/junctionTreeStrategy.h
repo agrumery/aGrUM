@@ -90,7 +90,7 @@ namespace gum {
 
       /** @brief returns, for each node, the clique of the junction tree which was
        * created by its deletion */
-      virtual const Property<NodeId>::onNodes& createdCliques() = 0;
+      virtual const NodeProperty<NodeId>& createdCliques() = 0;
 
       /** @brief returns the Id of the clique of the junction tree created by the
        * elimination of a given node during the triangulation process */

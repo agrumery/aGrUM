@@ -280,10 +280,10 @@ namespace gum {
       Set<Arc> __arcs;
 
       /// for each arc, the sets of its parents
-      mutable Property<NodeSet*>::onNodes __parents;
+      mutable NodeProperty<NodeSet*> __parents;
 
       /// for each arc, the set of its children
-      mutable Property<NodeSet*>::onNodes __children;
+      mutable NodeProperty<NodeSet *> __children;
 
 
 

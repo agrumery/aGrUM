@@ -57,7 +57,7 @@ namespace gum {
   IncrementalTriangulation::IncrementalTriangulation
   ( const UnconstrainedTriangulation& triang_algo,
     const UndiGraph& theGraph,
-    const Property<NodeId>::onNodes& modal ) :
+    const NodeProperty<NodeId>& modal ) :
     __triangulation( triang_algo.newFactory() ),
     __require_update( false ),
     __require_elimination_order( false ),
@@ -583,7 +583,7 @@ namespace gum {
 
     // check that all the nodes of the graph belong to the junction tree
     {
-      Property<bool>::onNodes nodes = __graph.nodesProperty<bool>( false );
+      NodeProperty<bool> nodes = __graph.nodesProperty<bool>( false );
 
       for ( CliqueGraph::NodeIterator iter = __junction_tree.beginNodes();
             iter != __junction_tree.endNodes(); ++iter ) {
@@ -642,7 +642,7 @@ namespace gum {
 
     // check that all the nodes of the graph belong to the MPS tree
     {
-      Property<bool>::onNodes nodes = __graph.nodesProperty<bool> ( false );
+      NodeProperty<bool> nodes = __graph.nodesProperty<bool> ( false );
 
       for ( CliqueGraph::NodeIterator iter = __T_mpd.beginNodes();
             iter != __T_mpd.endNodes(); ++iter ) {
@@ -878,7 +878,7 @@ namespace gum {
   /// update the junction tree
 
   void IncrementalTriangulation::__updateJunctionTree
-  ( Property<bool>::onNodes& all_cliques_affected,
+  ( NodeProperty<bool>& all_cliques_affected,
     NodeSet& new_nodes_in_junction_tree ) {
     // a temporary subgraph in which we actually perform the triangulation
     UndiGraph tmp_graph;
@@ -948,7 +948,7 @@ namespace gum {
         // first add the nodes of tmp_junction_tree to __junction_tree
         // to do so, store the translations of the node ids of tmp_junction_tree
         // into the node ids of __junction_tree
-        Property<NodeId>::onNodes
+        NodeProperty<NodeId>
         tmp2global_junction_tree( tmp_junction_tree.size() );
 
         for ( CliqueGraph::NodeIterator iter_jt = tmp_junction_tree.beginNodes();
@@ -1115,7 +1115,7 @@ namespace gum {
   /// update the max prime subgraph
 
   void IncrementalTriangulation::__updateMaxPrimeSubgraph
-  ( Property<bool>::onNodes& all_cliques_affected,
+  ( NodeProperty<bool>& all_cliques_affected,
     const NodeSet& new_nodes_in_junction_tree ) {
     // the maximal prime subgraph join tree is created by aggregation of some
     // cliques. More precisely, when the separator between 2 cliques is not
@@ -1161,7 +1161,7 @@ namespace gum {
 
     // create a map translating the cliques' ids in the junction tree into
     // cliques' id in the _T_mpd tree
-    Property<NodeId>::onNodes clique2MPS( T_mpd_cliques.size() );
+    NodeProperty<NodeId> clique2MPS( T_mpd_cliques.size() );
 
     // First, create the new cliques and create the corresponding
     // cliques_of_mps entries
@@ -1251,7 +1251,7 @@ namespace gum {
 
     // the set of all the cliques that should be affected by the different
     // triangulations we will perform (one by connected component)
-    Property<bool>::onNodes all_cliques_affected( __junction_tree.size() );
+    NodeProperty<bool> all_cliques_affected( __junction_tree.size() );
 
     // we need to keep track of the new node ids that will be inserted
     // into __junction_tree. A priori, these should be equal to the ids
@@ -1307,7 +1307,7 @@ namespace gum {
 
   void IncrementalTriangulation::__collectJTCliques
   ( const NodeId clique, const NodeId from,
-    Property<bool>::onNodes& examined ) {
+    NodeProperty<bool>& examined ) {
     // apply collect to all the neighbours except from
     const NodeSet& neighbours =  __junction_tree.neighbours( clique );
 
@@ -1346,7 +1346,7 @@ namespace gum {
   /** @brief returns the Ids of the cliques of the junction tree created by the
    * elimination of the nodes */
 
-  const Property<NodeId>::onNodes&
+  const NodeProperty<NodeId>&
   IncrementalTriangulation::createdJunctionTreeCliques() {
     // check if we already computed the containing cliques
     if ( ! __require_created_JT_cliques )
@@ -1364,10 +1364,10 @@ namespace gum {
     }
 
     // now we can use a collect algorithm to get the containing cliques
-    Property<bool>::onNodes examined =
+    NodeProperty<bool> examined =
       __junction_tree.nodesProperty<bool>( false );
 
-    for ( Property<bool>::onNodes::iterator iter = examined.begin();
+    for ( NodeProperty<bool>::iterator iter = examined.begin();
           iter != examined.end(); ++iter ) {
       if ( ! *iter ) {
         __collectJTCliques( iter.key(), iter.key(), examined );
@@ -1426,7 +1426,7 @@ namespace gum {
   void
   IncrementalTriangulation::__collectEliminationOrder
   ( const NodeId node, const NodeId from,
-    Property<bool>::onNodes& examined,
+    NodeProperty<bool>& examined,
     unsigned int& index ) {
     // apply collect to all the neighbours except from
     const NodeSet& neighbours =  __junction_tree.neighbours( node );
@@ -1488,10 +1488,10 @@ namespace gum {
     // now we can use a collect algorithm to get the elimination order
     unsigned int index = 0;
 
-    Property<bool>::onNodes examined =
+    NodeProperty<bool> examined =
       __junction_tree.nodesProperty<bool>( false );
 
-    for ( Property<bool>::onNodes::iterator iter = examined.begin();
+    for ( NodeProperty<bool>::iterator iter = examined.begin();
           iter != examined.end(); ++iter ) {
       if ( ! *iter ) {
         __collectEliminationOrder( iter.key(), iter.key(), examined, index );

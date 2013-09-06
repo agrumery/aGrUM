@@ -71,7 +71,7 @@ namespace gum {
 
 
   /// returns, for each node, the clique which was created by its deletion
-  const Property<NodeId>::onNodes&
+  const NodeProperty<NodeId>&
   DefaultJunctionTreeStrategy::createdCliques() {
     // compute the junction tree only if it does not already exist
     if ( !__has_junction_tree ) __computeJunctionTree();
@@ -111,7 +111,7 @@ namespace gum {
     __junction_tree = elim_tree ;
 
     //mark all the edges of the junction tree to false
-    Property< bool >::onEdges mark = __junction_tree.edgesProperty( false );
+    EdgeProperty< bool > mark = __junction_tree.edgesProperty( false );
 
     // create a vector indicating by which clique a given clique has been
     // substituted during the transformation from the elimination tree to the

@@ -55,7 +55,7 @@ namespace gum {
 
     Interface::~Interface() {
       GUM_DESTRUCTOR( Interface );
-      typedef Property<ClassElement*>::onNodes::iterator Iterator;
+      typedef NodeProperty<ClassElement*>::iterator Iterator;
 
       for ( Iterator iter = __nodeIdMap.begin(); iter != __nodeIdMap.end(); ++iter ) {
         delete *iter;

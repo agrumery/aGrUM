@@ -248,10 +248,10 @@ namespace gum {
 
     private:
       /// the set of nodes contained into the cliques
-      Property<NodeSet>::onNodes __cliques;
+      NodeProperty<NodeSet> __cliques;
 
       /// the set of nodes contained into the separators
-      Property< NodeSet >::onEdges __separators;
+      EdgeProperty< NodeSet > __separators;
 
 
       /// function used to update the separators when a clique is modified
@@ -290,7 +290,7 @@ namespace gum {
          * of the clique graph. In such a case, this is a violation of the running
          * intersection property. Hence, for the latter to hold, after completion of
          * all the DFS, \c cliques_DFS_chain must contain only empty sets. */
-        Property<NodeSet>::onNodes cliques_DFS_chain;
+        NodeProperty<NodeSet> cliques_DFS_chain;
       };
 
 

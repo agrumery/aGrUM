@@ -291,7 +291,7 @@ namespace gum {
     }
 
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::insertQuery( const typename Property< std::vector < bool > >::onNodes& query ) {
+    void InferenceEngine< GUM_SCALAR >::insertQuery( const NodeProperty< std::vector < bool > >& query ) {
       if ( ! _query.empty() )
         _query.clear();
 

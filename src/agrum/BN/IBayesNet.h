@@ -46,7 +46,8 @@ namespace gum {
    * @ingroup bn_group
    *
    * This class is used as a base class for different versions of Bayesian Networks. No data (except the dag 
-   * herited from DAGmodel are included in this class.
+   * herited from DAGmodel are included in this class. Many algorithms (inference for instance) may use this 
+   * class when a simple BN is needed.
    */
   template<typename GUM_SCALAR>
   class IBayesNet: public DAGmodel {
