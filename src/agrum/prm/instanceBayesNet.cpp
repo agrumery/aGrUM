@@ -21,7 +21,7 @@
  * @file
  * @brief Implementation of InstanceBayesNet.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/prm/instanceBayesNet.h>
@@ -33,13 +33,14 @@
 namespace gum {
   namespace prm {
 
+    template<typename GUM_SCALAR>
     void
-    InstanceBayesNet::__init( const Instance& i ) {
+    InstanceBayesNet<GUM_SCALAR>::__init( const Instance& i ) {
       for ( DAG::NodeIterator node = i.type().dag().beginNodes(); node != i.type().dag().endNodes(); ++node ) {
         try {
           // Adding the attribute
           const Attribute& attr = i.get( *node );
-          _dag.insertNode( attr.id() );
+          this->_dag.insertNode( attr.id() );
           __varNodeMap.insert( &( attr.type().variable() ), &attr );
         } catch ( NotFound& ) {
           // Not an attribute
@@ -48,7 +49,7 @@ namespace gum {
 
       for ( ArcSet::iterator arc = i.type().dag().beginArcs(); arc != i.type().dag().endArcs(); ++arc ) {
         try {
-          _dag.insertArc( arc->tail(), arc->head() );
+          this->_dag.insertArc( arc->tail(), arc->head() );
         } catch ( InvalidNode& ) {
           // Not added means not an attribute
         }

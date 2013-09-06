@@ -21,7 +21,7 @@
  * @file
  * @brief Inline implementation of O3prmReader.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 

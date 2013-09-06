@@ -21,7 +21,7 @@
  * @file
  * @brief Implementation of StructuredBayesBall.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/prm/structuredBayesBall.h>

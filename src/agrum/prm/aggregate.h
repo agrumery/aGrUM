@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of gum::Aggregate.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_AGGREGATE_H

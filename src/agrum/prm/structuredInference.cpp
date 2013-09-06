@@ -21,7 +21,7 @@
  * @file
  * @brief Implementation of StructuredInference.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/prm/structuredInference.h>

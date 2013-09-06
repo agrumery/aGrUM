@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of LayerGenerator.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <cstdlib>

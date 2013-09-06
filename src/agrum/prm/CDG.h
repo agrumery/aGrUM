@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of CDG.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/prm/PRM.h>

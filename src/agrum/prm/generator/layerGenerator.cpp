@@ -21,7 +21,7 @@
  * @file
  * @brief Implementation of LayerGenerator.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/prm/generator/layerGenerator.h>

@@ -21,7 +21,7 @@
  * @file
  * @brief Inline implementation of System.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
  */
 

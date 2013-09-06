@@ -42,16 +42,11 @@ namespace gum {
 
   /**
    * @class IBayesNet IBayesNet.h <agrum/BN/IBayesNet.h>
-   * @brief Class representing a Bayesian Network.
+   * @brief Class representing the minimal interface for Bayesian Network.
    * @ingroup bn_group
    *
-   * After a variable is added to the BN, if it's domain size changes, then the
-   * data in it's CPT is lost.
-   *
-   * We recommend you to use the gum::IBayesNetFactory class to build a IBayesNet.
-   *
-   * Don't forget that you can print a IBayesNet using
-   * gum::operator<<(std::ostream&, const IBayesNet<GUM_SCALAR>&).
+   * This class is used as a base class for different versions of Bayesian Networks. No data (except the dag 
+   * herited from DAGmodel are included in this class.
    */
   template<typename GUM_SCALAR>
   class IBayesNet: public DAGmodel {

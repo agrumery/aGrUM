@@ -21,7 +21,7 @@
  * @file
  * @brief Implementation of O3prmReader.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/prm/o3prm/O3prmReader.h>

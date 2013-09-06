@@ -62,18 +62,18 @@ namespace gum_tests {
       }
 
       void testCreation() {
-        gum::prm::ClassBayesNet* c = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING( c = new gum::prm::ClassBayesNet( prm->getClass( "SafeComputer" ) ) );
+        gum::prm::ClassBayesNet<float>* c = 0;
+        TS_GUM_ASSERT_THROWS_NOTHING( c = new gum::prm::ClassBayesNet<float>( prm->getClass( "SafeComputer" ) ) );
         TS_GUM_ASSERT_THROWS_NOTHING( delete c );
-        gum::prm::InstanceBayesNet* inst = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING( inst = new gum::prm::InstanceBayesNet( prm->system( "aSys" ).get( "c1" ) ) );
+        gum::prm::InstanceBayesNet<float>* inst = 0;
+        TS_GUM_ASSERT_THROWS_NOTHING( inst = new gum::prm::InstanceBayesNet<float>( prm->system( "aSys" ).get( "c1" ) ) );
         TS_GUM_ASSERT_THROWS_NOTHING( delete inst );
       }
 
       void testClassAccess() {
         gum::prm::Class& c = prm->getClass( "SafeComputer" );
-        gum::prm::ClassBayesNet* bn = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING( bn = new gum::prm::ClassBayesNet( prm->getClass( "SafeComputer" ) ) );
+        gum::prm::ClassBayesNet<float>* bn = 0;
+        TS_GUM_ASSERT_THROWS_NOTHING( bn = new gum::prm::ClassBayesNet<float>( prm->getClass( "SafeComputer" ) ) );
         gum::Size elts = c.attributes().size() + c.aggregates().size();
         TS_ASSERT_EQUALS( bn->size(), elts );
 
@@ -91,9 +91,9 @@ namespace gum_tests {
       }
 
       void testInstanceAccess() {
-        gum::prm::InstanceBayesNet* bn = 0;
+        gum::prm::InstanceBayesNet<float>* bn = 0;
         gum::prm::Instance& i = prm->system( "aSys" ).get( "c1" );
-        TS_GUM_ASSERT_THROWS_NOTHING( bn = new gum::prm::InstanceBayesNet( i ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( bn = new gum::prm::InstanceBayesNet<float>( i ) );
         TS_ASSERT_EQUALS( bn->size(), i.size() );
 
         for ( gum::prm::Instance::iterator attr = i.begin(); attr != i.end(); ++attr ) {

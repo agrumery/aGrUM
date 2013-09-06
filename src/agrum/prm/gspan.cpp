@@ -21,7 +21,7 @@
  * @file
  * @brief Implementation of gspan.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/prm/gspan.h>

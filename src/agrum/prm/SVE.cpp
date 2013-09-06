@@ -21,7 +21,7 @@
  * @file
  * @brief Implementation of SVE.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/prm/SVE.h>
@@ -79,7 +79,7 @@ namespace gum {
       }
 
       // Eliminating all nodes in query instance, except query
-      InstanceBayesNet bn( *query );
+      InstanceBayesNet<prm_float> bn( *query );
       DefaultTriangulation t( &( bn.moralGraph() ), &( bn.modalities() ) );
       std::vector<NodeId> elim_order;
       VariableElimination<prm_float> inf( bn );
@@ -221,7 +221,7 @@ namespace gum {
         }
 
         try {
-          InstanceBayesNet bn( *i );
+          InstanceBayesNet<prm_float> bn( *i );
           VariableElimination<prm_float> inf( bn );
 
           if ( delayedVars ) {
@@ -312,7 +312,7 @@ namespace gum {
           tmp_pool.insert( &( ( **attr ).cpf() ) );
         }
 
-        InstanceBayesNet bn( *i );
+        InstanceBayesNet<prm_float> bn( *i );
         DefaultTriangulation t( &( bn.moralGraph() ), &( bn.modalities() ) );
         const std::vector<NodeId>& full_elim_order = t.eliminationOrder();
         VariableElimination<prm_float> inf( bn );
@@ -349,7 +349,7 @@ namespace gum {
           inf.eliminateNodes( output_elim_order, pool, trash );
         }
       } else {
-        InstanceBayesNet bn( *i );
+        InstanceBayesNet<prm_float> bn( *i );
         VariableElimination<prm_float> inf( bn );
         __insertEvidence( i, pool );
         __insertLiftedNodes( i, pool, trash );
@@ -427,7 +427,7 @@ namespace gum {
       }
 
       // Now we proceed with the elimination of inner attributes
-      ClassBayesNet bn( c );
+      ClassBayesNet<prm_float> bn( c );
       List<NodeSet> partial_ordering;
 
       if ( inners.size() )

@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of PRMGenerator.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <string>

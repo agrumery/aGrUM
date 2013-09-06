@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of System.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_SYSTEM_H

@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of the Pattern class.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/config.h>

@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of gum::prm::ClassElementContainer.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_CLASS_ELEMENT_CONTAINER_H

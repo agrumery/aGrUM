@@ -21,7 +21,7 @@
  * @file
  * @brief Inline implementation of ClassBayesNet.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 #include <agrum/core/inline.h>
 #include <agrum/prm/classBayesNet.h>// to ease IDE parser
@@ -29,29 +29,29 @@
 namespace gum {
   namespace prm {
 
-    INLINE
-    ClassBayesNet::ClassBayesNet( const Class& c ):
-      IBayesNet<prm_float>(), __class( &c ) {
-      GUM_CONSTRUCTOR( ClassBayesNet );
-      __init( c );
+    template<typename GUM_SCALAR> INLINE
+    ClassBayesNet<GUM_SCALAR>::ClassBayesNet ( const Class& c ) :
+      IBayesNet<GUM_SCALAR>(), __class ( &c ) {
+      GUM_CONSTRUCTOR ( ClassBayesNet );
+      __init ( c );
     }
 
-    INLINE
-    ClassBayesNet::ClassBayesNet( const ClassBayesNet& from ):
-      IBayesNet<prm_float>( from ), __class( from.__class ) {
-      GUM_CONS_CPY( ClassBayesNet );
+    template<typename GUM_SCALAR> INLINE
+    ClassBayesNet<GUM_SCALAR>::ClassBayesNet ( const ClassBayesNet& from ) :
+      IBayesNet<GUM_SCALAR> ( from ), __class ( from.__class ) {
+      GUM_CONS_CPY ( ClassBayesNet );
     }
 
-    INLINE
-    ClassBayesNet::~ClassBayesNet() {
-      GUM_DESTRUCTOR( ClassBayesNet );
+    template<typename GUM_SCALAR> INLINE
+    ClassBayesNet<GUM_SCALAR>::~ClassBayesNet() {
+      GUM_DESTRUCTOR ( ClassBayesNet );
     }
 
-    INLINE
-    ClassBayesNet&
-    ClassBayesNet::operator=( const ClassBayesNet& from ) {
+
+    template<typename GUM_SCALAR> INLINE
+    ClassBayesNet<GUM_SCALAR>& ClassBayesNet<GUM_SCALAR>::operator= ( const ClassBayesNet& from ) {
       if ( this != &from ) {
-        IBayesNet<prm_float>::operator=( from );
+        IBayesNet<GUM_SCALAR>::operator= ( from );
 
         __class = from.__class;
       }
@@ -59,95 +59,93 @@ namespace gum {
       return *this;
     }
 
-    INLINE
-    const Potential<prm_float>&
-    ClassBayesNet::cpt( NodeId varId ) const {
-      return __get( varId ).cpf();
-    }
 
-    INLINE
-    const VariableNodeMap&
-    ClassBayesNet::variableNodeMap() const {
-      GUM_ERROR( FatalError, "Sorry no VarMap in a ClassBayesNet." );
+    template<typename GUM_SCALAR> INLINE
+    const Potential<GUM_SCALAR>& ClassBayesNet<GUM_SCALAR>::cpt ( NodeId varId ) const {
+      return __get ( varId ).cpf();
     }
 
 
-    INLINE
-    const DiscreteVariable&
-    ClassBayesNet::variable( NodeId id ) const {
-      return __get( id ).type().variable();
+    template<typename GUM_SCALAR> INLINE
+    const VariableNodeMap& ClassBayesNet<GUM_SCALAR>::variableNodeMap() const {
+      GUM_ERROR ( FatalError, "Sorry no VarMap in a ClassBayesNet." );
     }
 
-    INLINE
-    NodeId
-    ClassBayesNet::nodeId( const DiscreteVariable& var ) const {
+
+
+    template<typename GUM_SCALAR> INLINE
+    const DiscreteVariable& ClassBayesNet<GUM_SCALAR>::variable ( NodeId id ) const {
+      return __get ( id ).type().variable();
+    }
+
+
+    template<typename GUM_SCALAR> INLINE
+    NodeId ClassBayesNet<GUM_SCALAR>::nodeId ( const DiscreteVariable& var ) const {
       return __varNodeMap[&var]->id();
     }
 
-    INLINE
-    NodeId
-    ClassBayesNet::idFromName( const std::string& name ) const {
-      return __get( name ).id();
+
+    template<typename GUM_SCALAR> INLINE
+    NodeId ClassBayesNet<GUM_SCALAR>::idFromName ( const std::string& name ) const {
+      return __get ( name ).id();
     }
 
-    INLINE
-    const DiscreteVariable&
-    ClassBayesNet::variableFromName( const std::string& name ) const {
-      return __get( name ).type().variable();
+    template<typename GUM_SCALAR> INLINE
+    const DiscreteVariable& ClassBayesNet<GUM_SCALAR>::variableFromName ( const std::string& name ) const {
+      return __get ( name ).type().variable();
     }
 
 
-    INLINE
-    const ClassElement&
-    ClassBayesNet::__get( NodeId id ) const {
-      if ( _dag.exists( id ) ) {
-        return __class->get( id );
+
+    template<typename GUM_SCALAR> INLINE
+    const ClassElement& ClassBayesNet<GUM_SCALAR>::__get ( NodeId id ) const {
+      if ( this->_dag.exists ( id ) ) {
+        return __class->get ( id );
       } else {
-        GUM_ERROR( NotFound, "no element found with that id." );
+        GUM_ERROR ( NotFound, "no element found with that id." );
       }
     }
 
-    INLINE
-    const ClassElement&
-    ClassBayesNet::__get( const std::string& name ) const {
+
+    template<typename GUM_SCALAR> INLINE
+    const ClassElement& ClassBayesNet<GUM_SCALAR>::__get ( const std::string& name ) const {
       try {
-        return __class->get( name );
+        return __class->get ( name );
       } catch ( NotFound& ) {
-        GUM_ERROR( NotFound, "no element found with that id." );
+        GUM_ERROR ( NotFound, "no element found with that id." );
       }
     }
 
-    INLINE
-    const Property<unsigned int>::onNodes&
-    ClassBayesNet::modalities() const {
+
+    template<typename GUM_SCALAR> INLINE
+    const Property<unsigned int>::onNodes& ClassBayesNet<GUM_SCALAR>::modalities() const {
       if ( __modalities.empty() ) {
-        for ( DAG::NodeIterator node = dag().beginNodes(); node != dag().endNodes(); ++node ) {
-          __modalities.insert( *node, ( unsigned int ) variable( *node ).domainSize() );
+        for ( DAG::NodeIterator node = this->dag().beginNodes(); node != this->dag().endNodes(); ++node ) {
+          __modalities.insert ( *node, ( unsigned int ) variable ( *node ).domainSize() );
         }
       }
 
       return __modalities;
     }
 
-    INLINE
-    std::string
-    ClassBayesNet::toDot() const {
+    template<typename GUM_SCALAR> INLINE
+    std::string ClassBayesNet<GUM_SCALAR>::toDot() const {
       std::string tab = "  ";
       std::stringstream output;
       output << "digraph \"";
       output << __class->name() << "\" {" << std::endl;
 
-      for ( DAG::NodeIterator node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter ) {
-        if ( dag().children( *node_iter ).size() > 0 ) {
-          const NodeSet& children = dag().children( *node_iter );
+      for ( DAG::NodeIterator node_iter = this->dag().beginNodes(); node_iter != this->dag().endNodes(); ++node_iter ) {
+        if ( this->dag().children ( *node_iter ).size() > 0 ) {
+          const NodeSet& children = this->dag().children ( *node_iter );
 
           for ( NodeSetIterator arc_iter = children.begin();
                 arc_iter != children.end(); ++arc_iter ) {
-            output << tab << "\"" << variable( *node_iter ).name() << "\" -> ";
-            output << "\"" << variable( *arc_iter ).name() << "\";" << std::endl;
+            output << tab << "\"" << variable ( *node_iter ).name() << "\" -> ";
+            output << "\"" << variable ( *arc_iter ).name() << "\";" << std::endl;
           }
-        } else if ( dag().parents( *node_iter ).size() == 0 ) {
-          output << tab << "\"" << variable( *node_iter ).name() << "\";" << std::endl;
+        } else if ( this->dag().parents ( *node_iter ).size() == 0 ) {
+          output << tab << "\"" << variable ( *node_iter ).name() << "\";" << std::endl;
         }
       }
 

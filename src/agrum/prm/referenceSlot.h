@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of gum::ClassElement.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_REFERENCE_SLOT_H

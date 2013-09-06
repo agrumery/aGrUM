@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of InstanceBayesNet.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_INSTANCE_BAYESNET_H
@@ -46,7 +46,8 @@ namespace gum {
      * the DAG but not in the nodes CPT.
      *
      */
-    class InstanceBayesNet: public IBayesNet<prm_float> {
+    template <typename GUM_SCALAR>
+    class InstanceBayesNet: public IBayesNet<GUM_SCALAR> {
       public:
         // ========================================================================
         /// @name Constructors & destructor.
@@ -73,7 +74,7 @@ namespace gum {
         /// @{
 
         /// See gum::IBaseBayesNet::cpt().
-        virtual const Potential<prm_float>& cpt( NodeId varId ) const;
+        virtual const Potential<GUM_SCALAR>& cpt( NodeId varId ) const;
 
         /// See gum::IBaseBayesNet::variableNodeMap().
         virtual const VariableNodeMap& variableNodeMap() const;

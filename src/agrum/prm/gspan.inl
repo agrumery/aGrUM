@@ -21,32 +21,28 @@
  * @file
  * @brief Inline implementation of gspan.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 namespace gum {
   namespace prm {
 
     INLINE
-    GSpan::GSpan( const PRM& prm, const System& sys, gspan::SearchStrategy* strategy ):
-      __graph( new gspan::InterfaceGraph( sys ) ), __tree( *__graph, strategy ),
-      __depth_stop( INT_MAX ) {
-      GUM_CONSTRUCTOR( GSpan );
+    GSpan::GSpan ( const PRM& prm, const System& sys, gspan::SearchStrategy* strategy ) :
+      __graph ( new gspan::InterfaceGraph ( sys ) ), __tree ( *__graph, strategy ),
+      __depth_stop ( INT_MAX ) {
+      GUM_CONSTRUCTOR ( GSpan );
     }
 
     INLINE
     GSpan::~GSpan() {
-      GUM_DESTRUCTOR( GSpan );
+      GUM_DESTRUCTOR ( GSpan );
       typedef HashTable<gspan::Pattern*, GSpan::MatchedInstances* >::iterator HashIterator;
 
       for ( HashIterator match = __matched_instances.begin(); match != __matched_instances.end(); ++match ) {
         delete *match;
       }
 
-      // typedef HashTable<gspan::Pattern*, IBayesNet<prm_float>*>::iterator BNIter;
-      // for (BNIter iter = __bn_map.begin(); iter != __bn_map.end(); ++iter) {
-      //   delete *iter;
-      // }
       delete __graph;
     }
 
@@ -58,7 +54,7 @@ namespace gum {
 
     INLINE
     void
-    GSpan::setMaxDFSDepth( Size depth ) {
+    GSpan::setMaxDFSDepth ( Size depth ) {
       __depth_stop = depth;
     }
 
@@ -72,7 +68,7 @@ namespace gum {
 
     INLINE
     unsigned long
-    GSpan::__cost_func( unsigned int interface, unsigned int frequency ) {
+    GSpan::__cost_func ( unsigned int interface, unsigned int frequency ) {
       return interface * frequency;
     }
 
@@ -90,14 +86,14 @@ namespace gum {
 
     INLINE
     GSpan::MatchedInstances&
-    GSpan::matches( const gspan::Pattern& p ) {
-      return *( __matched_instances[const_cast<gspan::Pattern*>( &p )] );
+    GSpan::matches ( const gspan::Pattern& p ) {
+      return * ( __matched_instances[const_cast<gspan::Pattern*> ( &p )] );
     }
 
     INLINE
     const GSpan::MatchedInstances&
-    GSpan::matches( const gspan::Pattern& p ) const {
-      return *( __matched_instances[const_cast<gspan::Pattern*>( &p )] );
+    GSpan::matches ( const gspan::Pattern& p ) const {
+      return * ( __matched_instances[const_cast<gspan::Pattern*> ( &p )] );
     }
 
     INLINE
@@ -112,46 +108,40 @@ namespace gum {
       return *__graph;
     }
 
-// INLINE
-// IBayesNet<prm_float>&
-// GSpan::baseBN(gspan::Pattern& p) {
-//   return *(__bn_map[&p]);
-// }
-
     INLINE
     bool
-    GSpan::__isEdgeEligible( gspan::EdgeData* e ) {
-      return ( __graph->edges( e->l ).size() >= 2 ) and
-             ( __graph->nodes( e->l_u ).size() >= 2 ) and
-             ( __graph->nodes( e->l_v ).size() >= 2 );
+    GSpan::__isEdgeEligible ( gspan::EdgeData* e ) {
+      return ( __graph->edges ( e->l ).size() >= 2 ) and
+             ( __graph->nodes ( e->l_u ).size() >= 2 ) and
+             ( __graph->nodes ( e->l_v ).size() >= 2 );
     }
 
 
 // LalbeSort
 
     INLINE
-    GSpan::LabelSort::LabelSort( GSpan* my_gspan ):
-      gspan( my_gspan ) {
-      GUM_CONSTRUCTOR( GSpan::LabelSort );
+    GSpan::LabelSort::LabelSort ( GSpan* my_gspan ) :
+      gspan ( my_gspan ) {
+      GUM_CONSTRUCTOR ( GSpan::LabelSort );
     }
 
     INLINE
-    GSpan::LabelSort::LabelSort( const LabelSort& source ):
-      gspan( source.gspan ) {
-      GUM_CONS_CPY( GSpan::LabelSort );
+    GSpan::LabelSort::LabelSort ( const LabelSort& source ) :
+      gspan ( source.gspan ) {
+      GUM_CONS_CPY ( GSpan::LabelSort );
     }
 
     INLINE
     GSpan::LabelSort::~LabelSort() {
-      GUM_DESTRUCTOR( GSpan::LabelSort );
+      GUM_DESTRUCTOR ( GSpan::LabelSort );
     }
 
     INLINE
     bool
-    GSpan::LabelSort::operator()( gspan::LabelData* i, gspan::LabelData* j ) {
+    GSpan::LabelSort::operator() ( gspan::LabelData* i, gspan::LabelData* j ) {
       // We want a descending order
       //return gspan->__cost[i] > gspan->__cost[j];
-      return gspan->__tree.strategy()( i, j );
+      return gspan->__tree.strategy() ( i, j );
     }
 
 
@@ -159,27 +149,27 @@ namespace gum {
 
 
     INLINE
-    GSpan::PatternSort::PatternSort( GSpan* my_gspan ):
-      gspan( my_gspan ) {
-      GUM_CONSTRUCTOR( GSpan::PatternSort );
+    GSpan::PatternSort::PatternSort ( GSpan* my_gspan ) :
+      gspan ( my_gspan ) {
+      GUM_CONSTRUCTOR ( GSpan::PatternSort );
     }
 
     INLINE
-    GSpan::PatternSort::PatternSort( const PatternSort& source ):
-      gspan( source.gspan ) {
-      GUM_CONS_CPY( GSpan::PatternSort );
+    GSpan::PatternSort::PatternSort ( const PatternSort& source ) :
+      gspan ( source.gspan ) {
+      GUM_CONS_CPY ( GSpan::PatternSort );
     }
 
     INLINE
     GSpan::PatternSort::~PatternSort() {
-      GUM_DESTRUCTOR( GSpan::PatternSort );
+      GUM_DESTRUCTOR ( GSpan::PatternSort );
     }
 
     INLINE
     bool
-    GSpan::PatternSort::operator()( gspan::Pattern* i, gspan::Pattern* j ) {
+    GSpan::PatternSort::operator() ( gspan::Pattern* i, gspan::Pattern* j ) {
       // We want a descending order
-      return gspan->tree().strategy().operator()( i,j );
+      return gspan->tree().strategy().operator() ( i,j );
     }
 
   } /* namespace prm */

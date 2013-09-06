@@ -20,7 +20,7 @@
 /** @file
  * @brief Implementation of PRMFactory.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/prm/PRMFactory.h>

@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of ClassBayesNet.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <list>
@@ -47,7 +47,8 @@ namespace gum {
      * BayesNetInference over a ClassBayesNet since some variables are missing in
      * the DAG but not in the nodes CPT.
      */
-    class ClassBayesNet: public IBayesNet<prm_float> {
+    template<typename GUM_SCALAR>
+    class ClassBayesNet: public IBayesNet<GUM_SCALAR> {
       public:
         // ========================================================================
         /// @name Constructors & destructor.
@@ -86,7 +87,7 @@ namespace gum {
          *                 IBayesNet.
          * @throw OperationNotAllowed raised if varId is an Aggregate.
          */
-        virtual const Potential<prm_float>& cpt( NodeId varId ) const;
+        virtual const Potential<GUM_SCALAR>& cpt( NodeId varId ) const;
 
         /// See gum::IBaseBayesNet::variableNodeMap().
         virtual const VariableNodeMap& variableNodeMap() const;

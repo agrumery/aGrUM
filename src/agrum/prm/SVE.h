@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of SVE (Structured Variable Elimination).
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <vector>

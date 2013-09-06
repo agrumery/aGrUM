@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of gum::prm::Instance
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_INSTANCE_H

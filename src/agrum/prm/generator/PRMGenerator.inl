@@ -21,7 +21,7 @@
  * @file
  * @brief Inline implementation of PRMGenerator.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 namespace gum {
