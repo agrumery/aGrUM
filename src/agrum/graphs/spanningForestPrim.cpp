@@ -34,7 +34,7 @@ namespace gum {
 
   /// Default constructor
   SpanningForestPrim::SpanningForestPrim( const UndiGraph* graph,
-                                          const Property<float>::onEdges* cost ) :
+                                          const EdgeProperty<float>* cost ) :
     SpanningForest(),
     __graph( *graph ),
     __costTable( *cost ),

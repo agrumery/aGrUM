@@ -91,7 +91,7 @@ namespace gum {
         /// See gum::IBaseBayesNet::variableFromName().
         virtual const DiscreteVariable& variableFromName( const std::string& name ) const;
 
-        const NodeProperty<unsigned int>& modalities() const;
+        const NodeProperty<Size>& modalities() const;
 
         /// @}
         // ===========================================================================
@@ -115,7 +115,7 @@ namespace gum {
         /// The ClassElementContainer decorated by this.
         const Instance* __inst;
 
-        mutable NodeProperty<unsigned int> __modalities;
+        mutable NodeProperty<Size> __modalities;
 
         void __init( const Instance& i );
     };

@@ -167,7 +167,7 @@ namespace gum {
   void
   VariableElimination<GUM_SCALAR>::__computeEliminationOrder() {
     if ( __eliminationOrder.empty() ) {
-      NodeProperty<unsigned int> modalities;
+      NodeProperty<Size> modalities;
 
       for ( DAG::NodeIterator iter = this->bn().beginNodes(); iter != this->bn().endNodes(); ++iter ) {
         modalities.insert( *iter, this->bn().variable( *iter ).domainSize() );

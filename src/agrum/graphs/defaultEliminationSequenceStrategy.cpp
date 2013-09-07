@@ -38,47 +38,47 @@ namespace gum {
   /// default constructor (uses an empty graph)
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy
   ( float theRatio, float theThreshold ) :
-    __graph( 0 ),
-    __modalities( 0 ),
-    __simplicial_set( 0 ),
-    __simplicial_ratio( theRatio ),
-    __simplicial_threshold( theThreshold ),
-    __provide_fill_ins( false ) {
+    __graph ( 0 ),
+    __modalities ( 0 ),
+    __simplicial_set ( 0 ),
+    __simplicial_ratio ( theRatio ),
+    __simplicial_threshold ( theThreshold ),
+    __provide_fill_ins ( false ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( DefaultEliminationSequenceStrategy );
+    GUM_CONSTRUCTOR ( DefaultEliminationSequenceStrategy );
   }
 
 
   /// constructor for an a priori non empty graph
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy
   ( UndiGraph* graph,
-    const NodeProperty<unsigned int>* modal,
+    const NodeProperty<Size>* modal,
     float ratio, float threshold ) :
-    __graph( 0 ),
-    __modalities( 0 ),
-    __simplicial_set( 0 ),
-    __simplicial_ratio( ratio ),
-    __simplicial_threshold( threshold ),
-    __provide_fill_ins( false ) {
+    __graph ( nullptr ),
+    __modalities ( nullptr ),
+    __simplicial_set ( 0 ),
+    __simplicial_ratio ( ratio ),
+    __simplicial_threshold ( threshold ),
+    __provide_fill_ins ( false ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( DefaultEliminationSequenceStrategy );
-    setGraph( graph,modal );
+    GUM_CONSTRUCTOR ( DefaultEliminationSequenceStrategy );
+    setGraph ( graph, modal );
   }
 
 
   /// copy constructor
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy
   ( const DefaultEliminationSequenceStrategy& from ) :
-    __graph( 0 ),
-    __modalities( 0 ),
-    __simplicial_set( 0 ),
-    __simplicial_ratio( from.__simplicial_ratio ),
-    __simplicial_threshold( from.__simplicial_threshold ),
-    __provide_fill_ins( from.__provide_fill_ins ) {
-    GUM_CONS_CPY( DefaultEliminationSequenceStrategy );
+    __graph ( 0 ),
+    __modalities ( 0 ),
+    __simplicial_set ( 0 ),
+    __simplicial_ratio ( from.__simplicial_ratio ),
+    __simplicial_threshold ( from.__simplicial_threshold ),
+    __provide_fill_ins ( from.__provide_fill_ins ) {
+    GUM_CONS_CPY ( DefaultEliminationSequenceStrategy );
 
     if ( __graph ) {
-      setGraph( from.__graph, from.__modalities );
+      setGraph ( from.__graph, from.__modalities );
     }
   }
 
@@ -86,30 +86,30 @@ namespace gum {
   /// destructor
   DefaultEliminationSequenceStrategy::~DefaultEliminationSequenceStrategy() {
     // for debugging purposes
-    GUM_DESTRUCTOR( DefaultEliminationSequenceStrategy );
+    GUM_DESTRUCTOR ( DefaultEliminationSequenceStrategy );
 
     if ( __simplicial_set ) delete __simplicial_set;
   }
 
 
   /// sets a new graph to be triangulated
-  void DefaultEliminationSequenceStrategy::setGraph
-  ( UndiGraph* graph, const NodeProperty<unsigned int>* modal ) {
+  void DefaultEliminationSequenceStrategy::setGraph ( UndiGraph* graph,
+      const NodeProperty<Size>* modal ) {
     // check that both the graph and the modalities are different from 0
     // or else that both are equal to 0
     if ( ( ! graph && modal ) || ( graph && ! modal ) ) {
-      GUM_ERROR( GraphError,
-                 "DefaultEliminationSequenceStrategy needs valid graphs and "
-                 "domain sizes" );
+      GUM_ERROR ( GraphError,
+                  "DefaultEliminationSequenceStrategy needs valid graphs and "
+                  "domain sizes" );
     }
 
     // check that each node has a domain size
     for ( UndiGraph::NodeIterator iter = graph->beginNodes();
           iter != graph->endNodes(); ++iter ) {
-      if ( ! modal->exists( *iter ) ) {
-        GUM_ERROR( GraphError,
-                   "DefaultEliminationSequenceStrategy needs  "
-                   "domain sizes" );
+      if ( ! modal->exists ( *iter ) ) {
+        GUM_ERROR ( GraphError,
+                    "DefaultEliminationSequenceStrategy needs  "
+                    "domain sizes" );
       }
     }
 
@@ -124,19 +124,19 @@ namespace gum {
 
       if ( graph ) {
         // compute the log of the modalities
-        __log_modalities.resize( __graph->sizeNodes() / 2 );
+        __log_modalities.resize ( __graph->sizeNodes() / 2 );
 
         for ( UndiGraph::NodeIterator iter = graph->beginNodes();
               iter != graph->endNodes(); ++iter ) {
-          __log_modalities.insert( *iter, log( ( *modal )[*iter] ) );
+          __log_modalities.insert ( *iter, log ( ( *modal ) [*iter] ) );
         }
 
         // creation du simplicial set
         __simplicial_set = new
-        SimplicialSet( __graph, &__log_modalities, &__log_weights,
-                       __simplicial_ratio, __simplicial_threshold );
+        SimplicialSet ( __graph, &__log_modalities, &__log_weights,
+                        __simplicial_ratio, __simplicial_threshold );
 
-        __simplicial_set->setFillIns( __provide_fill_ins );
+        __simplicial_set->setFillIns ( __provide_fill_ins );
       }
     }
   }
@@ -159,7 +159,7 @@ namespace gum {
   NodeId DefaultEliminationSequenceStrategy::nextNodeToEliminate() {
     // if there is no simplicial set, send an exception
     if ( ! __graph ) {
-      GUM_ERROR( NotFound, "the graph is empty" );
+      GUM_ERROR ( NotFound, "the graph is empty" );
     }
 
     // select a node to be eliminated: try simplicial nodes, then almost
@@ -177,7 +177,7 @@ namespace gum {
         __log_weights.begin();
 
       if ( iter_heuristic == __log_weights.end() ) {
-        GUM_ERROR( NotFound, "there exists no more node to eliminate" );
+        GUM_ERROR ( NotFound, "there exists no more node to eliminate" );
       }
 
       float min_weight = *iter_heuristic;
@@ -198,11 +198,11 @@ namespace gum {
 
   /** @brief if the elimination sequence is able to compute fill-ins, we indicate
    * whether we want this feature to be activated */
-  void DefaultEliminationSequenceStrategy::askFillIns( bool do_it ) {
+  void DefaultEliminationSequenceStrategy::askFillIns ( bool do_it ) {
     __provide_fill_ins = do_it;
 
     if ( __simplicial_set )
-      __simplicial_set->setFillIns( __provide_fill_ins );
+      __simplicial_set->setFillIns ( __provide_fill_ins );
   }
 
 
@@ -222,10 +222,10 @@ namespace gum {
 
 
   /// performs all the graph/fill-ins updates provided
-  void DefaultEliminationSequenceStrategy::eliminationUpdate( const NodeId id ) {
+  void DefaultEliminationSequenceStrategy::eliminationUpdate ( const NodeId id ) {
     if ( __simplicial_set ) {
-      __simplicial_set->makeClique( id );
-      __simplicial_set->eraseClique( id );
+      __simplicial_set->makeClique ( id );
+      __simplicial_set->eraseClique ( id );
     }
   }
 
@@ -244,7 +244,7 @@ namespace gum {
    * object, but this sequence contains only an empty graph */
   DefaultEliminationSequenceStrategy*
   DefaultEliminationSequenceStrategy::newFactory() const {
-    return new DefaultEliminationSequenceStrategy( __simplicial_ratio,
+    return new DefaultEliminationSequenceStrategy ( __simplicial_ratio,
            __simplicial_threshold );
   }
 

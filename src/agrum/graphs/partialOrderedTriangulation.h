@@ -84,7 +84,7 @@ namespace gum {
        * copied but only referenced by the elimination sequence algorithm. */
       PartialOrderedTriangulation
       ( const UndiGraph* graph,
-        const NodeProperty<unsigned int>* dom,
+        const NodeProperty<Size>* dom,
         const List<NodeSet>* partial_order,
         const PartialOrderedEliminationSequenceStrategy& elimSeq =
           DefaultPartialOrderedEliminationSequenceStrategy(),
@@ -121,7 +121,7 @@ namespace gum {
        * @warning note that, by aGrUM's rule, the graph and the sequence are not
        * copied but only referenced by the elimination sequence algorithm. */
       virtual void setGraph( const UndiGraph* graph,
-                             const NodeProperty<unsigned int>* dom,
+                             const NodeProperty<Size>* dom,
                              const List<NodeSet>* partial_order );
 
       /// @}
@@ -141,7 +141,7 @@ namespace gum {
       void _initTriangulation( UndiGraph& graph );
 
       /// the modalities of the nodes
-      const NodeProperty<unsigned int>* __modalities;
+      const NodeProperty<Size>* __modalities;
 
       /// the partial ordering to apply to eliminate nodes
       const List<NodeSet>* __partial_order;

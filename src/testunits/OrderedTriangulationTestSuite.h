@@ -43,94 +43,94 @@ namespace gum_tests {
         gum::UndiGraph graph;
 
         for ( unsigned int i = 1; i <= 8; ++i )
-          graph.insertNode( 10*i );
+          graph.insertNode ( 10 * i );
 
-        createClique( graph, c1 );
+        createClique ( graph, c1 );
 
-        createClique( graph, c2 );
+        createClique ( graph, c2 );
 
-        createClique( graph, c3 );
+        createClique ( graph, c3 );
 
-        createClique( graph, c4 );
+        createClique ( graph, c4 );
 
-        createClique( graph, c5 );
+        createClique ( graph, c5 );
 
-        gum::Property<unsigned int>::onNodes dom;
+        gum::NodeProperty<gum::Size> dom;
 
         for ( unsigned int i = 1; i <= 8; ++i )
-          dom.insert( 10*i,10 );
+          dom.insert ( 10 * i, 10 );
 
-        std::vector<unsigned int> sequence( 8 );
+        std::vector<unsigned int> sequence ( 8 );
 
         for ( unsigned int i = 0; i < 8; ++i )
           sequence[i] = ( 8 - i ) * 10;
 
         gum::OrderedTriangulation triang;
 
-        triang.setGraph( &graph, &dom, &sequence );
+        triang.setGraph ( &graph, &dom, &sequence );
 
         const gum::UndiGraph& gr2 = triang.triangulatedGraph();
 
-        TS_ASSERT_EQUALS( gr2.sizeNodes(), 8U );
+        TS_ASSERT_EQUALS ( gr2.sizeNodes(), 8U );
 
-        TS_ASSERT_EQUALS( gr2.sizeEdges(), 14U );
+        TS_ASSERT_EQUALS ( gr2.sizeEdges(), 14U );
 
         triang.clear();
 
-        triang.setGraph( &graph, &dom, &sequence );
+        triang.setGraph ( &graph, &dom, &sequence );
 
         const gum::UndiGraph& gr3 = triang.triangulatedGraph();
 
-        TS_ASSERT_EQUALS( gr3.sizeNodes(), 8U );
+        TS_ASSERT_EQUALS ( gr3.sizeNodes(), 8U );
 
-        TS_ASSERT_EQUALS( gr3.sizeEdges(), 14U );
+        TS_ASSERT_EQUALS ( gr3.sizeEdges(), 14U );
 
         triang.clear();
 
         for ( unsigned int i = 0; i < 8; ++i )
           sequence[i] = ( i + 1 ) * 10;
 
-        triang.setGraph( &graph, &dom, &sequence );
+        triang.setGraph ( &graph, &dom, &sequence );
 
         const gum::UndiGraph& gr5 = triang.triangulatedGraph();
 
-        TS_ASSERT_EQUALS( gr5.sizeNodes(), 8U );
+        TS_ASSERT_EQUALS ( gr5.sizeNodes(), 8U );
 
-        TS_ASSERT_EQUALS( gr5.sizeEdges(), 23U );
+        TS_ASSERT_EQUALS ( gr5.sizeEdges(), 23U );
 
         const gum::EdgeSet& edges2 = triang.fillIns();
 
-        TS_ASSERT_EQUALS( edges2.size(), 9U );
+        TS_ASSERT_EQUALS ( edges2.size(), 9U );
 
-        TS_ASSERT_EQUALS( edges2.exists( gum::Edge( 20,80 ) ), true );
+        TS_ASSERT_EQUALS ( edges2.exists ( gum::Edge ( 20, 80 ) ), true );
 
-        TS_ASSERT_EQUALS( edges2.exists( gum::Edge( 40,80 ) ), true );
+        TS_ASSERT_EQUALS ( edges2.exists ( gum::Edge ( 40, 80 ) ), true );
 
-        TS_ASSERT_EQUALS( edges2.exists( gum::Edge( 30,50 ) ), true );
+        TS_ASSERT_EQUALS ( edges2.exists ( gum::Edge ( 30, 50 ) ), true );
 
-        TS_ASSERT_EQUALS( edges2.exists( gum::Edge( 30,70 ) ), true );
+        TS_ASSERT_EQUALS ( edges2.exists ( gum::Edge ( 30, 70 ) ), true );
 
-        TS_ASSERT_EQUALS( edges2.exists( gum::Edge( 40,70 ) ), true );
+        TS_ASSERT_EQUALS ( edges2.exists ( gum::Edge ( 40, 70 ) ), true );
 
-        TS_ASSERT_EQUALS( edges2.exists( gum::Edge( 50,80 ) ), true );
+        TS_ASSERT_EQUALS ( edges2.exists ( gum::Edge ( 50, 80 ) ), true );
 
-        TS_ASSERT_EQUALS( edges2.exists( gum::Edge( 70,80 ) ), true );
+        TS_ASSERT_EQUALS ( edges2.exists ( gum::Edge ( 70, 80 ) ), true );
 
-        TS_ASSERT_EQUALS( edges2.exists( gum::Edge( 60,70 ) ), true );
+        TS_ASSERT_EQUALS ( edges2.exists ( gum::Edge ( 60, 70 ) ), true );
 
-        TS_ASSERT_EQUALS( edges2.exists( gum::Edge( 60,80 ) ), true );
+        TS_ASSERT_EQUALS ( edges2.exists ( gum::Edge ( 60, 80 ) ), true );
 
         const gum::CliqueGraph& JT = triang.junctionTree();
 
-        TS_ASSERT_EQUALS( JT.sizeNodes(), 3U );
+        TS_ASSERT_EQUALS ( JT.sizeNodes(), 3U );
 
-        TS_ASSERT_EQUALS( JT.sizeEdges(), 2U );
+        TS_ASSERT_EQUALS ( JT.sizeEdges(), 2U );
 
-        const gum::NodeSet& clique1 = JT.clique( 0 );
+        const gum::NodeSet& clique1 = JT.clique ( 0 );
 
-        const gum::NodeSet& clique2 = JT.clique( 1 );
+        const gum::NodeSet& clique2 = JT.clique ( 1 );
 
-        const gum::NodeSet& clique3 = JT.clique( 3 );
+        const gum::NodeSet& clique3 = JT.clique ( 3 );
 
         gum::NodeSet cc1, cc2, cc3;
 
@@ -140,30 +140,30 @@ namespace gum_tests {
 
         cc3 << 40 << 50 << 60 << 70 << 80;
 
-        TS_ASSERT_EQUALS( clique1, cc1 );
+        TS_ASSERT_EQUALS ( clique1, cc1 );
 
-        TS_ASSERT_EQUALS( clique2, cc2 );
+        TS_ASSERT_EQUALS ( clique2, cc2 );
 
-        TS_ASSERT_EQUALS( clique3, cc3 );
+        TS_ASSERT_EQUALS ( clique3, cc3 );
 
         for ( unsigned int i = 0; i < 8; ++i )
-          sequence[i] = ( 8 - i )*10;
+          sequence[i] = ( 8 - i ) * 10;
 
-        graph.eraseEdge( gum::Edge( 20,50 ) );
+        graph.eraseEdge ( gum::Edge ( 20, 50 ) );
 
-        triang.setGraph( &graph, &dom, &sequence );
+        triang.setGraph ( &graph, &dom, &sequence );
 
         const gum::UndiGraph& gr4 = triang.triangulatedGraph();
 
-        TS_ASSERT_EQUALS( gr4.sizeNodes(), 8U );
+        TS_ASSERT_EQUALS ( gr4.sizeNodes(), 8U );
 
-        TS_ASSERT_EQUALS( gr4.sizeEdges(), 14U );
+        TS_ASSERT_EQUALS ( gr4.sizeEdges(), 14U );
 
         const gum::EdgeSet& edges = triang.fillIns();
 
-        TS_ASSERT_EQUALS( edges.size(), 1U );
+        TS_ASSERT_EQUALS ( edges.size(), 1U );
 
-        TS_ASSERT_EQUALS( *( edges.begin() ), gum::Edge( 20,50 ) );
+        TS_ASSERT_EQUALS ( * ( edges.begin() ), gum::Edge ( 20, 50 ) );
 
       }
 
@@ -171,50 +171,50 @@ namespace gum_tests {
         gum::UndiGraph graph;
 
         for ( unsigned int i = 1; i <= 8; ++i )
-          graph.insertNode( i );
+          graph.insertNode ( i );
 
-        for ( unsigned int i=1; i <=7; ++i )
-          graph.insertEdge( i, i+1 );
+        for ( unsigned int i = 1; i <= 7; ++i )
+          graph.insertEdge ( i, i + 1 );
 
-        graph.insertEdge( 8,1 );
+        graph.insertEdge ( 8, 1 );
 
-        gum::Property<unsigned int>::onNodes dom;
+        gum::NodeProperty<gum::Size> dom;
 
         for ( unsigned int i = 1; i <= 8; ++i )
-          dom.insert( i,10 );
+          dom.insert ( i, 10 );
 
-        std::vector<unsigned int> sequence( 8 );
+        std::vector<unsigned int> sequence ( 8 );
 
         for ( unsigned int i = 0; i < 8; ++i )
           sequence[i] = 8 - i;
 
         gum::OrderedTriangulation triang;
 
-        triang.setGraph( &graph, &dom, &sequence );
+        triang.setGraph ( &graph, &dom, &sequence );
 
         const gum::CliqueGraph& elim = triang.eliminationTree();
 
-        TS_ASSERT_EQUALS( elim.sizeNodes(), 8U );
+        TS_ASSERT_EQUALS ( elim.sizeNodes(), 8U );
 
-        TS_ASSERT_EQUALS( elim.sizeEdges(), 7U );
+        TS_ASSERT_EQUALS ( elim.sizeEdges(), 7U );
 
         const gum::CliqueGraph& JT = triang.junctionTree();
 
-        TS_ASSERT_EQUALS( JT.sizeNodes(), 6U );
+        TS_ASSERT_EQUALS ( JT.sizeNodes(), 6U );
 
-        TS_ASSERT_EQUALS( JT.sizeEdges(), 5U );
+        TS_ASSERT_EQUALS ( JT.sizeEdges(), 5U );
 
         const gum::UndiGraph& gr = triang.triangulatedGraph();
 
-        TS_ASSERT_EQUALS( gr.sizeNodes(), 8U );
+        TS_ASSERT_EQUALS ( gr.sizeNodes(), 8U );
 
-        TS_ASSERT_EQUALS( gr.sizeEdges(), 13U );
+        TS_ASSERT_EQUALS ( gr.sizeEdges(), 13U );
       }
 
 
     private:
 
-      void createClique( gum::UndiGraph& graph, const gum::NodeSet& clique ) {
+      void createClique ( gum::UndiGraph& graph, const gum::NodeSet& clique ) {
         gum::NodeSetIterator iter2;
 
         for ( gum::NodeSetIterator iter = clique.begin();
@@ -222,8 +222,8 @@ namespace gum_tests {
           iter2 = iter;
 
           for ( ++iter2; iter2 != clique.end(); ++iter2 ) {
-            if ( ! graph.existsEdge( *iter, *iter2 ) )
-              graph.insertEdge( *iter, *iter2 );
+            if ( ! graph.existsEdge ( *iter, *iter2 ) )
+              graph.insertEdge ( *iter, *iter2 );
           }
         }
       }

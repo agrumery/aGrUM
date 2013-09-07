@@ -55,7 +55,7 @@ namespace gum {
   DefaultPartialOrderedEliminationSequenceStrategy::
   DefaultPartialOrderedEliminationSequenceStrategy
   ( UndiGraph* graph,
-    const NodeProperty<unsigned int>* modal,
+    const NodeProperty<Size>* modal,
     const List<NodeSet>* subsets,
     float ratio, float threshold ) :
     __graph( 0 ),
@@ -105,11 +105,11 @@ namespace gum {
   /// sets a new graph to be triangulated
   void DefaultPartialOrderedEliminationSequenceStrategy::setGraph
   ( UndiGraph* graph,
-    const NodeProperty<unsigned int>* modal,
+    const NodeProperty<Size>* modal,
     const List<NodeSet>* subsets ) {
     // check that both the graph, the modalities and the subsets are different
     // from 0 or else that both are equal to 0
-    unsigned int nb = 0;
+    unsigned char nb = 0;
 
     if ( graph ) ++nb;
 

@@ -40,7 +40,7 @@ namespace gum {
 
   StaticTriangulation::StaticTriangulation
   ( const UndiGraph* theGraph,
-    const NodeProperty<unsigned int>* modal,
+    const NodeProperty<Size>* modal,
     const EliminationSequenceStrategy& elimSeq,
     const JunctionTreeStrategy& JTStrategy,
     bool minimality ) :
@@ -537,7 +537,7 @@ namespace gum {
    */
   void StaticTriangulation::_setGraph
   ( const UndiGraph* gr,
-    const NodeProperty<unsigned int>* modal ) {
+    const NodeProperty<Size>* modal ) {
     // remove the old graph
     clear();
 

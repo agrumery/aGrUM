@@ -89,7 +89,7 @@ namespace gum {
        * @warning note that, by aGrUM's rule, the graph and the modalities are not
        * copied but only referenced by the elimination sequence algorithm. */
       virtual void setGraph( UndiGraph* graph,
-                             const NodeProperty<unsigned int>* dom ) = 0;
+                             const NodeProperty<Size>* dom ) = 0;
 
       /// @}
 

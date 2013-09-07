@@ -121,7 +121,7 @@ namespace gum {
           /// The reduced graph.
           UndiGraph reducedGraph;
           /// Mapping between NodeId and modalities.
-          NodeProperty<unsigned int> mods;
+          NodeProperty<Size> mods;
           /// Mapping between DiscreteVariable and NodeId.
           Bijection<const DiscreteVariable*, NodeId> var2node;
           /// The pool of potentials matching the reduced graph
@@ -148,7 +148,7 @@ namespace gum {
             /// A yet to be triangulated undigraph
             UndiGraph graph;
             /// The pattern's variables modalities
-            NodeProperty<unsigned int> mod;
+            NodeProperty<Size> mod;
             /// A bijection to easily keep track  between graph and attributes, its of the
             /// form instance_name DOT attr_name
             Bijection<NodeId, std::string> node2attr;
@@ -194,7 +194,7 @@ namespace gum {
             /// The class moral graph. NodeId matches those in c.
             UndiGraph moral_graph;
             /// The class variables modalities.
-            NodeProperty<unsigned int> mods;
+            NodeProperty<Size> mods;
             /// The partial order used of variable elimination.
             List<NodeSet> partial_order;
             /// The Set of Instances reduces at class level.

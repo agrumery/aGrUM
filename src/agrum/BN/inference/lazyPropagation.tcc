@@ -40,7 +40,7 @@ namespace gum {
   // the function used to combine two tables
   template <typename GUM_SCALAR> INLINE
   static Potential<GUM_SCALAR>*
-  multiPotential ( const Potential<GUM_SCALAR>& t1,const Potential<GUM_SCALAR>& t2 ) {
+  multiPotential ( const Potential<GUM_SCALAR>& t1, const Potential<GUM_SCALAR>& t2 ) {
     return new Potential<GUM_SCALAR> ( t1 * t2 );
   }
 
@@ -60,7 +60,7 @@ namespace gum {
   template <typename GUM_SCALAR> INLINE
   void LazyPropagation<GUM_SCALAR>::__initialize ( const IBayesNet<GUM_SCALAR>& BN,
       StaticTriangulation& triangulation,
-      const HashTable<NodeId, unsigned int>& modalities )  {
+      const NodeProperty<Size>& modalities )  {
     const JunctionTree& triang_jt = triangulation.junctionTree();
     BinaryJoinTreeConverterDefault bon_converter;
     NodeSet emptyset;
@@ -151,7 +151,7 @@ namespace gum {
 
     // set the correspondance between variables and their id and get the variables
     // domain sizes
-    HashTable<NodeId, unsigned int> modalities;
+    NodeProperty<Size> modalities;
     const DAG& dag = this->bn().dag();
     //const NodeSet& nodes = dag.nodes();
 
@@ -484,8 +484,8 @@ namespace gum {
           joint=multiplicateBy( **iter );
           }*/
 
-        if ( pot_to_mult.size() ==1 ) {
-          ListConstIterator<const Potential<GUM_SCALAR>*> iter=pot_to_mult.begin();
+        if ( pot_to_mult.size() == 1 ) {
+          ListConstIterator<const Potential<GUM_SCALAR>*> iter = pot_to_mult.begin();
           joint = const_cast<Potential<GUM_SCALAR>*> ( *iter );
           joint_to_delete = false;
         } else {
@@ -493,10 +493,10 @@ namespace gum {
 
           for ( ListConstIterator<const Potential<GUM_SCALAR>*>iter = pot_to_mult.begin();
                 iter != pot_to_mult.end(); ++iter ) {
-            set<<*iter;
+            set << *iter;
           }
 
-          MultiDimCombinationDefault<GUM_SCALAR,Potential>
+          MultiDimCombinationDefault<GUM_SCALAR, Potential>
 
           fast_combination ( multiPotential );
           joint = fast_combination.combine ( set );
@@ -917,18 +917,18 @@ namespace gum {
       marginal.multiplicateBy( **iter );
     */
 
-    if ( pot_list.size() ==1 ) {
-      __PotentialSetIterator iter=pot_list.begin();
-      marginal=**iter;
+    if ( pot_list.size() == 1 ) {
+      __PotentialSetIterator iter = pot_list.begin();
+      marginal = **iter;
     } else {
       Set<const Potential<GUM_SCALAR>*> set;
 
-      for ( __PotentialSetIterator iter=pot_list.begin(); iter != pot_list.end(); ++iter )
-        set<<*iter;
+      for ( __PotentialSetIterator iter = pot_list.begin(); iter != pot_list.end(); ++iter )
+        set << *iter;
 
-      MultiDimCombinationDefault<GUM_SCALAR,Potential> fast_combination ( multiPotential );
+      MultiDimCombinationDefault<GUM_SCALAR, Potential> fast_combination ( multiPotential );
 
-      fast_combination.combine ( marginal,set );
+      fast_combination.combine ( marginal, set );
     }
   }
 
@@ -1065,18 +1065,18 @@ namespace gum {
       for ( ++iter; iter != pot_list.end(); ++iter )
       marginal.multiplicateBy( **iter );
     */
-    if ( pot_list.size() ==1 ) {
-      __PotentialSetIterator iter=pot_list.begin();
-      marginal=**iter;
+    if ( pot_list.size() == 1 ) {
+      __PotentialSetIterator iter = pot_list.begin();
+      marginal = **iter;
     } else {
       Set<const Potential<GUM_SCALAR>*> set;
 
-      for ( SetIterator<const Potential<GUM_SCALAR>*>iter=pot_list.begin(); iter != pot_list.end(); ++iter )
-        set<<*iter;
+      for ( SetIterator<const Potential<GUM_SCALAR>*>iter = pot_list.begin(); iter != pot_list.end(); ++iter )
+        set << *iter;
 
-      MultiDimCombinationDefault<GUM_SCALAR,Potential> fast_combination ( multiPotential );
+      MultiDimCombinationDefault<GUM_SCALAR, Potential> fast_combination ( multiPotential );
 
-      fast_combination.combine ( marginal,set );
+      fast_combination.combine ( marginal, set );
     }
   }
 
@@ -1148,16 +1148,16 @@ namespace gum {
   template <typename GUM_SCALAR>
   GUM_SCALAR
   LazyPropagation<GUM_SCALAR>::H ( NodeId X ) {
-    const Potential<GUM_SCALAR>& pX=this->marginal ( X );
+    const Potential<GUM_SCALAR>& pX = this->marginal ( X );
 
     Instantiation i ( pX );
-    GUM_SCALAR res= ( GUM_SCALAR ) 0;
+    GUM_SCALAR res = ( GUM_SCALAR ) 0;
 
     for ( i.setFirst(); ! i.end(); ++i ) {
-      GUM_SCALAR a=pX[i];
+      GUM_SCALAR a = pX[i];
 
-      if ( a> ( GUM_SCALAR ) 0 ) {
-        res+=a*log2 ( a );
+      if ( a > ( GUM_SCALAR ) 0 ) {
+        res += a * log2 ( a );
       }
     }
 
@@ -1172,27 +1172,27 @@ namespace gum {
   */
   template <typename GUM_SCALAR>
   GUM_SCALAR
-  LazyPropagation<GUM_SCALAR>::I ( NodeId X,NodeId Y ) {
-    const Potential<GUM_SCALAR>& pX=this->marginal ( X );
-    const Potential<GUM_SCALAR>& pY=this->marginal ( Y );
+  LazyPropagation<GUM_SCALAR>::I ( NodeId X, NodeId Y ) {
+    const Potential<GUM_SCALAR>& pX = this->marginal ( X );
+    const Potential<GUM_SCALAR>& pY = this->marginal ( Y );
 
-    NodeSet XY; XY<<X<<Y;
-    Potential<GUM_SCALAR>& pXY=* ( joint ( XY ) );
+    NodeSet XY; XY << X << Y;
+    Potential<GUM_SCALAR>& pXY = * ( joint ( XY ) );
 
     Instantiation i ( pXY );
-    GUM_SCALAR res= ( GUM_SCALAR ) 0;
+    GUM_SCALAR res = ( GUM_SCALAR ) 0;
 
     for ( i.setFirst(); ! i.end(); ++i ) {
-      GUM_SCALAR vXY=pXY[i];
-      GUM_SCALAR vX=pX[i];
-      GUM_SCALAR vY=pY[i];
+      GUM_SCALAR vXY = pXY[i];
+      GUM_SCALAR vX = pX[i];
+      GUM_SCALAR vY = pY[i];
 
-      if ( vXY> ( GUM_SCALAR ) 0 ) {
-        if ( vX== ( GUM_SCALAR ) 0 || vY== ( GUM_SCALAR ) 0 ) {
-          GUM_ERROR ( OperationNotAllowed,"Mutual Information (X,Y) with P(X)=0 or P(Y)=0 and P(X,Y)>0" );
+      if ( vXY > ( GUM_SCALAR ) 0 ) {
+        if ( vX == ( GUM_SCALAR ) 0 || vY == ( GUM_SCALAR ) 0 ) {
+          GUM_ERROR ( OperationNotAllowed, "Mutual Information (X,Y) with P(X)=0 or P(Y)=0 and P(X,Y)>0" );
         }
 
-        res+=vXY* ( log2 ( vXY )-log2 ( vX )-log2 ( vY ) );
+        res += vXY * ( log2 ( vXY ) - log2 ( vX ) - log2 ( vY ) );
       }
     }
 
@@ -1209,8 +1209,8 @@ namespace gum {
   */
   template <typename GUM_SCALAR> INLINE
   GUM_SCALAR
-  LazyPropagation<GUM_SCALAR>::VI ( NodeId X,NodeId Y ) {
-    return H ( X ) +H ( Y )-2*I ( X,Y );
+  LazyPropagation<GUM_SCALAR>::VI ( NodeId X, NodeId Y ) {
+    return H ( X ) + H ( Y ) - 2 * I ( X, Y );
   }
 } /* namespace gum */
 

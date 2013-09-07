@@ -304,7 +304,7 @@ namespace gum_tests {
       void testHashMapNodes() {
         gum::UndiGraph graph = buildGraph();
 
-        gum::Property<gum::Size>::onNodes hashmap = graph.nodesProperty( &simpleDoubleFunction );
+        gum::NodeProperty<gum::Size> hashmap = graph.nodesProperty( &simpleDoubleFunction );
         TS_ASSERT_EQUALS( hashmap.size(), graph.size() );
 
         gum::Size sk = 0;
@@ -325,7 +325,7 @@ namespace gum_tests {
       void testTwistedHashMapNodes() {
         gum::UndiGraph graph = buildGraph();
 
-        gum::Property<gum::Size>::onNodes hashmap;
+        gum::NodeProperty<gum::Size> hashmap;
         TS_ASSERT_THROWS_ANYTHING( hashmap = graph.nodesProperty( &twistedMapFunction ) );
 
         TS_ASSERT_EQUALS( hashmap.size(), ( gum::Size ) 0 );
@@ -349,7 +349,7 @@ namespace gum_tests {
       void testHashMapEdges() {
         gum::UndiGraph graph = buildGraph();
 
-        gum::Property<gum::Size>::onEdges hashmap = graph.edgesProperty( &simpleEdgeMapFunction );
+        gum::EdgeProperty<gum::Size> hashmap = graph.edgesProperty( &simpleEdgeMapFunction );
         TS_ASSERT_EQUALS( hashmap.size(), graph.sizeEdges() );
 
         gum::Size sk = 0;

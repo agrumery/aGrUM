@@ -105,7 +105,7 @@ namespace gum {
         virtual const DiscreteVariable& variableFromName( const std::string& name ) const;
 
         /// See gum::IBaseBayesNet::modalities().
-        const NodeProperty<unsigned int>& modalities() const;
+        const NodeProperty<Size>& modalities() const;
 
         /// @}
         // ===========================================================================
@@ -133,7 +133,7 @@ namespace gum {
 
 
 
-        mutable NodeProperty<unsigned int> __modalities;
+        mutable NodeProperty<Size> __modalities;
 
 
         void __init( const Class& c );

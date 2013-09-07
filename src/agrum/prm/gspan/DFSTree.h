@@ -491,7 +491,7 @@ namespace gum {
             /// A yet to be triangulated undigraph
             UndiGraph graph;
             /// The pattern's variables modalities
-            NodeProperty<unsigned int> mod;
+            NodeProperty<Size> mod;
             /// A bijection to easily keep track  between graph and attributes, its of the
             /// form instance_name DOT attr_name
             Bijection<NodeId, std::string> node2attr;

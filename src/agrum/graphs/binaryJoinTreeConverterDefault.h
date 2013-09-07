@@ -66,9 +66,9 @@ namespace gum {
        * @warning If you do not pass in argument a root for each connected component,
        * then for those with unspecified roots, an arbitrary root will be computed
        * and used for the binarization. */
-      CliqueGraph convert( const CliqueGraph& JT,
-                           const NodeProperty<unsigned int>& domain_sizes,
-                           const NodeSet& roots );
+      CliqueGraph convert ( const CliqueGraph& JT,
+                            const NodeProperty<Size>& domain_sizes,
+                            const NodeSet& roots );
 
       /// returns all the roots considered for all the connected components
       const NodeSet& roots() const;
@@ -82,7 +82,7 @@ namespace gum {
       NodeSet __roots;
 
       /// forbid copy constructor
-      BinaryJoinTreeConverterDefault( const BinaryJoinTreeConverterDefault& );
+      BinaryJoinTreeConverterDefault ( const BinaryJoinTreeConverterDefault& );
 
       /// forbid copy operator
       BinaryJoinTreeConverterDefault&
@@ -91,16 +91,16 @@ namespace gum {
 
       /** @brief a function used to mark the nodes belonging to a given
        * connected component */
-      void __markConnectedComponent( const CliqueGraph& JT,
-                                     NodeId root,
-                                     NodeProperty<bool>& mark ) const;
+      void __markConnectedComponent ( const CliqueGraph& JT,
+                                      NodeId root,
+                                      NodeProperty<bool>& mark ) const;
 
       /// convert a whole connected component into a binary join tree
       void __convertConnectedComponent
       ( CliqueGraph& JT,
         NodeId current_node,
         NodeId from,
-        const NodeProperty<unsigned int>& domain_sizes,
+        const NodeProperty<Size>& domain_sizes,
         NodeProperty<bool>& mark ) const;
 
       /// convert a clique and its adjacent cliques into a binary join tree
@@ -108,13 +108,13 @@ namespace gum {
       ( CliqueGraph& JT,
         NodeId clique,
         NodeId from,
-        const NodeProperty<unsigned int>& domain_sizes ) const;
+        const NodeProperty<Size>& domain_sizes ) const;
 
       /// returns the domain size of the union of two cliques
       float __combinedSize
       ( const NodeSet& nodes1,
         const NodeSet& nodes2,
-        const NodeProperty<unsigned int>& domain_sizes ) const;
+        const NodeProperty<Size>& domain_sizes ) const;
 
   };
 

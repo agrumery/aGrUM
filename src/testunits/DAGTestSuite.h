@@ -313,7 +313,7 @@ namespace gum_tests {
       void testTwistedHashMapNodes() {
         gum::DAG graph = buildGraph();
 
-        gum::Property<gum::Size>::onNodes hashmap;
+        gum::NodeProperty<gum::Size> hashmap;
         TS_ASSERT_THROWS_ANYTHING( hashmap = graph.nodesProperty( &twistedMapFunction ) );
 
         TS_ASSERT_EQUALS( hashmap.size(), ( gum::Size )0 );

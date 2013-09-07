@@ -69,7 +69,7 @@ namespace gum {
       /** @brief returns the number of a given node in the elimination order
        * (0 = first node eliminated) */
 
-      virtual unsigned int eliminationOrder( const NodeId ) = 0;
+      virtual Idx eliminationOrder( const NodeId ) = 0;
 
 
       /// returns the triangulated graph
@@ -143,11 +143,11 @@ namespace gum {
 
       /// returns the modalities of the variables of the graph to be triangulated
 
-      const NodeProperty<unsigned int>& modalities() const;
+      const NodeProperty<Size>& modalities() const;
 
     protected:
       /// the modalities of the nodes of the graph
-      NodeProperty<unsigned int> _modalities;
+      NodeProperty<Size> _modalities;
 
     private:
       /// prevent copy constructor

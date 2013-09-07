@@ -38,7 +38,7 @@ namespace gum {
     BayesNetInference<GUM_SCALAR>( bayesNet ), __triangulation( 0 ) {
     GUM_CONSTRUCTOR( ShaferShenoyInference );
 
-    NodeProperty<unsigned int> __modalitiesMap;
+    NodeProperty<Size> __modalitiesMap;
 
     for ( DAG::NodeIterator iter = this->bn().beginNodes();
           iter != this->bn().endNodes(); ++iter ) {

@@ -142,7 +142,7 @@ namespace gum {
 
 
     template<typename GUM_SCALAR> INLINE
-    const NodeProperty<unsigned int>& ClassBayesNet<GUM_SCALAR>::modalities() const {
+    const NodeProperty<Size>& ClassBayesNet<GUM_SCALAR>::modalities() const {
       if( __modalities.empty() ) {
         for( DAG::NodeIterator node = this->dag().beginNodes(); node != this->dag().endNodes(); ++node ) {
           __modalities.insert( *node, ( unsigned int ) variable( *node ).domainSize() );

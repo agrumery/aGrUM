@@ -320,7 +320,7 @@ namespace gum {
          * Insert query variables and states from Property.
          * @param query The on nodes Property containing queried variables states.
          */
-        void insertQuery( const typename Property< std::vector< bool > >::onNodes& query );
+        void insertQuery( const NodeProperty< std::vector< bool > >& query );
 
         /// @}
 

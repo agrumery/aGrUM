@@ -83,11 +83,11 @@ namespace gum {
 
       /** @brief returns the number of a given node in the elimination order
        * (0 = first node eliminated) */
-      unsigned int eliminationOrder( const NodeId );
+      Idx eliminationOrder( const NodeId );
 
       /** @brief returns a table indicating, for each node, at which step it was
        * deleted by the triangulation process */
-      const NodeProperty<unsigned int>& reverseEliminationOrder();
+      const NodeProperty<Idx>& reverseEliminationOrder();
 
       /// returns the triangulated graph
       const UndiGraph& triangulatedGraph();
@@ -160,7 +160,7 @@ namespace gum {
        * @warning note that, by aGrUM's rule, the graph and the modalities are not
        * copied but only referenced by the elimination sequence algorithm. */
       StaticTriangulation( const UndiGraph* graph,
-                           const NodeProperty<unsigned int>* dom,
+                           const NodeProperty<Size>* dom,
                            const EliminationSequenceStrategy& elimSeq,
                            const JunctionTreeStrategy& JTStrategy,
                            bool minimality = false );
@@ -180,7 +180,7 @@ namespace gum {
        * @warning note that, by aGrUM's rule, the graph and the modalities are not
        * copied but only referenced by the elimination sequence algorithm. */
       void _setGraph( const UndiGraph* gr,
-                      const NodeProperty<unsigned int>* modal );
+                      const NodeProperty<Size>* modal );
 
       /// the function called to initialize the triangulation process
       /** This function is called when the triangulation process starts and is
@@ -220,7 +220,7 @@ namespace gum {
       std::vector<NodeId> __elim_order;
 
       /// the elimination order (access by NodeId)
-      NodeProperty<unsigned int> __reverse_elim_order;
+      NodeProperty<Idx> __reverse_elim_order;
 
       /// the cliques formed by the elimination of the nodes
       NodeProperty<NodeSet> __elim_cliques;

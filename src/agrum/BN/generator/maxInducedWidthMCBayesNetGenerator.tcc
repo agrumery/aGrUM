@@ -70,7 +70,7 @@ namespace gum {
 
   template<typename GUM_SCALAR, template<class> class ICPTGenerator, template<class> class ICPTDisturber>
   bool MaxInducedWidthMCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber>::__checkConditions() {
-    NodeProperty<unsigned int> __modalitiesMap;
+    NodeProperty<Size> __modalitiesMap;
 
     for ( DAG::NodeIterator iter = AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>::_bayesNet.beginNodes();
           iter != AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>::_bayesNet.endNodes(); ++iter ) {

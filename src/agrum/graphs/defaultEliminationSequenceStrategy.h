@@ -94,7 +94,7 @@ namespace gum {
        * @warning note that, by aGrUM's rule, the graph and the modalities are not
        * copied but only referenced by the elimination sequence algorithm. */
       DefaultEliminationSequenceStrategy( UndiGraph* graph,
-                                          const NodeProperty<unsigned int>* dom,
+                                          const NodeProperty<Size>* dom,
                                           float ratio = GUM_QUASI_RATIO,
                                           float threshold = GUM_WEIGHT_THRESHOLD );
 
@@ -127,7 +127,7 @@ namespace gum {
        * @warning note that, by aGrUM's rule, the graph and the modalities are not
        * copied but only referenced by the elimination sequence algorithm. */
       void setGraph( UndiGraph* graph,
-                     const NodeProperty<unsigned int>* dom );
+                     const NodeProperty<Size>* dom );
 
       /// clears the sequence (to prepare, for instance, a new elimination sequence)
       void clear();
@@ -182,7 +182,7 @@ namespace gum {
       UndiGraph* __graph;
 
       /// the modalities of the nodes (domain sizes)
-      const NodeProperty<unsigned int>* __modalities;
+      const NodeProperty<Size>* __modalities;
 
       /// the log of the modalities of the nodes (domain sizes)
       NodeProperty<float> __log_modalities;

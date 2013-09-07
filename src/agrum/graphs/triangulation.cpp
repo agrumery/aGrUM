@@ -69,7 +69,7 @@ namespace gum {
 
   /// returns the modalities of the variables of the graph to be triangulated
 
-  const NodeProperty<unsigned int>& Triangulation::modalities() const {
+  const NodeProperty<Size>& Triangulation::modalities() const {
     return _modalities;
   }
 

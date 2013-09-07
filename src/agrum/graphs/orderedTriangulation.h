@@ -74,7 +74,7 @@ namespace gum {
        * @warning note that, by aGrUM's rule, the graph and the modalities are not
        * copied but only referenced by the elimination sequence algorithm. */
       OrderedTriangulation( const UndiGraph* graph,
-                            const NodeProperty<unsigned int>* dom,
+                            const NodeProperty<Size>* dom,
                             const std::vector<NodeId>* sequence,
                             const OrderedEliminationSequenceStrategy& elimSeq =
                               OrderedEliminationSequenceStrategy(),
@@ -110,7 +110,7 @@ namespace gum {
        * @warning note that, by aGrUM's rule, the graph and the sequence are not
        * copied but only referenced by the elimination sequence algorithm. */
       virtual void setGraph( const UndiGraph* graph,
-                             const NodeProperty<unsigned int>* dom,
+                             const NodeProperty<Size>* dom,
                              const std::vector<NodeId>* sequence );
 
       /// @}
