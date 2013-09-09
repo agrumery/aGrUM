@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Template implementation of bns/bayesNet.h classes.
+ * @brief Template implementation of BN/BayesNet.h class.
  *
  * @author Pierre-Henri WUILLEMIN and Lionel TORTI
  */
@@ -125,9 +125,9 @@ namespace gum {
   NodeId
   BayesNet<GUM_SCALAR>::add ( const DiscreteVariable& var, MultiDimImplementation<GUM_SCALAR>* aContent ) {
     NodeId proposedId = dag().nextNodeId();
-    NodeId res=0;
+    NodeId res = 0;
 
-    res=add ( var,aContent,proposedId );
+    res = add ( var, aContent, proposedId );
 
     return res;
   }
@@ -348,7 +348,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   void
   BayesNet<GUM_SCALAR>::insertWeightedArc ( NodeId tail, NodeId head, GUM_SCALAR causalWeight ) {
-    addWeightedArc ( tail,head,causalWeight );
+    addWeightedArc ( tail, head, causalWeight );
   }
 
   template<typename GUM_SCALAR>
@@ -381,30 +381,30 @@ namespace gum {
   BayesNet<GUM_SCALAR>::toString ( void ) const {
     Size param = 0;
 
-    double dSize=log10DomainSize();
+    double dSize = log10DomainSize();
 
     for ( auto it = beginNodes(); it != endNodes(); ++it ) {
       param += ( ( const MultiDimImplementation<GUM_SCALAR>& ) cpt ( *it ).getMasterRef() ).realSize();
     }
 
-    double compressionRatio = log10 ( 1.0*param )-dSize;
+    double compressionRatio = log10 ( 1.0 * param ) - dSize;
 
     std::stringstream s;
     s << "BN{nodes: " << size() << ", arcs: " << dag().sizeArcs() << ", ";
 
-    if ( dSize>6 )
-      s<<"domainSize: 10^" << dSize;
+    if ( dSize > 6 )
+      s << "domainSize: 10^" << dSize;
     else
-      s<<"domainSize: " << round ( pow ( 10.0,dSize ) );
+      s << "domainSize: " << round ( pow ( 10.0, dSize ) );
 
-    s<< ", parameters: " << param << ", compression ratio: ";
+    s << ", parameters: " << param << ", compression ratio: ";
 
-    if ( compressionRatio>-3 )
-      s<<trunc ( 100.0-pow ( 10.0,compressionRatio+2.0 ) );
+    if ( compressionRatio > -3 )
+      s << trunc ( 100.0 - pow ( 10.0, compressionRatio + 2.0 ) );
     else
-      s<<"100-10^" << compressionRatio+2.0;
+      s << "100-10^" << compressionRatio + 2.0;
 
-    s<< "% }";
+    s << "% }";
 
     return s.str();
   }
@@ -561,25 +561,25 @@ namespace gum {
 
 
   template<typename GUM_SCALAR>
-  void BayesNet<GUM_SCALAR>::changePotential ( NodeId id,Potential<GUM_SCALAR>* newPot ) {
-    if ( cpt ( id ).nbrDim() !=newPot->nbrDim() ) {
-      GUM_ERROR ( OperationNotAllowed,"cannot exchange potentials with different dimensions for variable with id "<<id );
+  void BayesNet<GUM_SCALAR>::changePotential ( NodeId id, Potential<GUM_SCALAR>* newPot ) {
+    if ( cpt ( id ).nbrDim() != newPot->nbrDim() ) {
+      GUM_ERROR ( OperationNotAllowed, "cannot exchange potentials with different dimensions for variable with id " << id );
     }
 
-    for ( Idx i=0; i<cpt ( id ).nbrDim(); i++ ) {
+    for ( Idx i = 0; i < cpt ( id ).nbrDim(); i++ ) {
       if ( &cpt ( id ).variable ( i ) != & ( newPot->variable ( i ) ) ) {
-        GUM_ERROR ( OperationNotAllowed,"cannot exchange potentails because, for variable with id "<<id<<", dimension "<<i<<" differs. " );
+        GUM_ERROR ( OperationNotAllowed, "cannot exchange potentails because, for variable with id " << id << ", dimension " << i << " differs. " );
       }
     }
 
-    _unsafeChangePotential ( id,newPot );
+    _unsafeChangePotential ( id, newPot );
   }
 
 
   template<typename GUM_SCALAR>
-  void BayesNet<GUM_SCALAR>::_unsafeChangePotential ( NodeId id,Potential<GUM_SCALAR>* newPot ) {
+  void BayesNet<GUM_SCALAR>::_unsafeChangePotential ( NodeId id, Potential<GUM_SCALAR>* newPot ) {
     delete __probaMap[id];
-    __probaMap[id]=newPot;
+    __probaMap[id] = newPot;
   }
 
 

@@ -28,6 +28,8 @@
 #define GUM_BAYES_NET_FRAGMENT_H
 
 #include <agrum/config.h>
+#include <agrum/BN/BayesNet.h>
+#include <agrum/graphs/diGraphListener.h>
 
 namespace gum {
   /**
@@ -38,17 +40,19 @@ namespace gum {
    *
    * This class is a decorator of a BayesNet implementing the IBayesNet interface.
    * CPTs can be shared with the BN or can be specific to the Fragment if different.
+   *
+   * BayesNetFragment is a DiGraphListener in order to be synchronized (especiallay when removing nodes or arcs).
    */
 
   template<typename GUM_SCALAR>
-  class BayesNetFragment : public IBayesNet<GUM_SCALAR> {
+  class BayesNetFragment : public IBayesNet<GUM_SCALAR>, public gum::DiGraphListener  {
     private:
       const BayesNet<GUM_SCALAR>& __bn;
-      
+
       /// Mapping between the variable's id and their CPT specific to this Fragment.
       //Property< Potential< GUM_SCALAR >* >::onNodes __probaMap;
       HashTable<NodeId, Potential<GUM_SCALAR>* > __probaMap;
-      
+
     public:
 
     public:
@@ -56,18 +60,45 @@ namespace gum {
       /// @name Constructors / Destructors
       // ===========================================================================
       /// @{
+      BayesNetFragment ( BayesNet<GUM_SCALAR>& bn );
       /// @}
-      
-      
-      
+
+
+      /// @name signals to listen to
+      /// @{
+
+      /// the action to take when a new node is inserted into the graph
+      /** @param src the object that sent the signal
+       * @param id the id of the new node inserted into the graph */
+      virtual void whenNodeAdded ( const void* src, NodeId id ) = 0;
+
+      /// the action to take when a node has just been removed from the graph
+      /** @param src the object that sent the signal
+       * @param id the id of the node has just been removed from the graph */
+      virtual void whenNodeDeleted ( const void* src, NodeId id ) = 0;
+
+      /// the action to take when a new arc is inserted into the graph
+      /** @param src the object that sent the signal
+       * @param from the id of tail of the new arc inserted into the graph
+       * @param to the id of head of the new arc inserted into the graph */
+      virtual void whenArcAdded ( const void* src, NodeId from, NodeId to ) = 0;
+
+      /// the action to take when an arc has just been removed from the graph
+      /** @param src the object that sent the signal
+       * @param from the id of tail of the arc removed from the graph
+       * @param to the id of head of the arc removed from the graph */
+      /// @}
+      virtual void whenArcDeleted ( const void* src, NodeId from, NodeId to ) = 0;
+
+
     public:
       using IBayesNet<GUM_SCALAR>::dag;
       using IBayesNet<GUM_SCALAR>::size;
       using IBayesNet<GUM_SCALAR>::dim;
-      
+
       using IBayesNet<GUM_SCALAR>::jointProbability;
       using IBayesNet<GUM_SCALAR>::log2JointProbability;
-      
+
       using IBayesNet<GUM_SCALAR>::toDot;
       using IBayesNet<GUM_SCALAR>::toString;
 
@@ -75,7 +106,7 @@ namespace gum {
       using IBayesNet<GUM_SCALAR>::setProperty;
       using IBayesNet<GUM_SCALAR>::nbrArcs;
       using IBayesNet<GUM_SCALAR>::empty;
-      using IBayesNet<GUM_SCALAR>::completeInstantiation;      
+      using IBayesNet<GUM_SCALAR>::completeInstantiation;
       using IBayesNet<GUM_SCALAR>::endNodes;
       using IBayesNet<GUM_SCALAR>::beginNodes;
       using IBayesNet<GUM_SCALAR>::endArcs;
@@ -86,5 +117,7 @@ namespace gum {
   };
 
 }// namespace gum
+
+#include <agrum/BN/BayesNetFragment.tcc>
 
 #endif // GUM_BAYES_NET_FRAGMENT_H
