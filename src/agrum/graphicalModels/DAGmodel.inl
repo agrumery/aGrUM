@@ -130,7 +130,7 @@ namespace gum {
 
   INLINE
   Idx
-  DAGmodel::nbrArcs() const {
+  DAGmodel::sizeArcs() const {
     return _dag.sizeArcs();
   }
 

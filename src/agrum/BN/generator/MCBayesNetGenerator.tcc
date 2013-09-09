@@ -63,7 +63,7 @@ namespace gum {
 
   template<typename GUM_SCALAR, template<class> class ICPTGenerator, template <class> class ICPTDisturber >
   MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::MCBayesNetGenerator( BayesNet<GUM_SCALAR> bayesNet, Size iteration , Idx p, Idx q ) :
-    AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator> ( bayesNet.size(), ( Size )( bayesNet.nbrArcs() * 1.1 ) , getMaxModality( bayesNet ) ), _bayesNettemp(), _hashMarginal() {
+    AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator> ( bayesNet.size(), ( Size )( bayesNet.sizeArcs() * 1.1 ) , getMaxModality( bayesNet ) ), _bayesNettemp(), _hashMarginal() {
 
     _iteration = iteration;
     _p = p;
@@ -468,7 +468,7 @@ namespace gum {
   template<typename GUM_SCALAR, template<class> class ICPTGenerator, template <class> class ICPTDisturber > INLINE
   bool MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::__isPolytree() {
     const DAG __dag = AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.dag();
-    return AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.size() - 1 == AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.nbrArcs();
+    return AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.size() - 1 == AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.sizeArcs();
   }
 
 

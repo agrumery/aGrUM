@@ -450,6 +450,7 @@ namespace gum {
     public:
       using IBayesNet<GUM_SCALAR>::dag;
       using IBayesNet<GUM_SCALAR>::size;
+      using IBayesNet<GUM_SCALAR>::sizeArcs;
       using IBayesNet<GUM_SCALAR>::dim;
       
       using IBayesNet<GUM_SCALAR>::jointProbability;
@@ -460,7 +461,6 @@ namespace gum {
 
       using IBayesNet<GUM_SCALAR>::property;
       using IBayesNet<GUM_SCALAR>::setProperty;
-      using IBayesNet<GUM_SCALAR>::nbrArcs;
       using IBayesNet<GUM_SCALAR>::empty;
       using IBayesNet<GUM_SCALAR>::completeInstantiation;      
       using IBayesNet<GUM_SCALAR>::endNodes;

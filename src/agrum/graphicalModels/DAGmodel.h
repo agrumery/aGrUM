@@ -86,22 +86,22 @@ namespace gum {
        const DAG& dag() const ;
 
       /**
-      * Returns a constant reference to the VariableNodeMap of this BN
+      * Returns a constant reference to the VariableNodeMap of this Directed Graphical Model
       */
       virtual const VariableNodeMap& variableNodeMap() const = 0;
 
       /**
-       * Returns the number of variables in this BN.
+       * Returns the number of variables in this Directed Graphical Model.
        */
       Idx size() const;
 
       /**
-       * Returns the number of arcs in this BN.
+       * Returns the number of arcs in this Directed Graphical Model.
        */
-      Idx nbrArcs() const;
+      Idx sizeArcs() const;
 
       /**
-       * Retursn true if this BN is empty.
+       * Retursn true if this Directed Graphical Model is empty.
        */
       bool empty() const;
 
@@ -174,7 +174,7 @@ namespace gum {
 
       /// @}
 
-      /// @return Returns the log10 domain size of the joint probabilty for the BN
+      /// @return Returns the log10 domain size of the joint probabilty for the Directed Graphical Model
       double log10DomainSize( void ) const;
 
     protected:
@@ -183,7 +183,7 @@ namespace gum {
        */
       DAGmodel& operator=( const DAGmodel& source );
 
-      /// The DAG of this BN.
+      /// The DAG of this Directed Graphical Model.
       DAG _dag;
 
 
@@ -197,17 +197,17 @@ namespace gum {
       /// @warning __mutableTopologicalOrder is assumed to be valid and empty
       void __topologicalOrder(  ) const;
 
-      /// The moral graph of this BN.
+      /// The moral graph of this Directed Graphical Model.
       mutable UndiGraph* __mutableMoralGraph;
 
-      /// The topology sequence of this BN.
+      /// The topology sequence of this Directed Graphical Model.
       mutable Sequence<NodeId>* __mutableTopologicalOrder;
 
-      /// The properties of this BN.
+      /// The properties of this Directed Graphical Model.
       /// Initialized using a lazy instantiation.
       mutable HashTable<std::string, std::string>* __propertiesMap;
 
-      /// Return the properties of this BN and initialize the hash table is
+      /// Return the properties of this Directed Graphical Model and initialize the hash table is
       /// necessary.
       HashTable<std::string, std::string>& __properties() const;
 

@@ -45,8 +45,8 @@ namespace gum {
    * @brief Class representing the minimal interface for Bayesian Network.
    * @ingroup bn_group
    *
-   * This class is used as a base class for different versions of Bayesian Networks. No data (except the dag 
-   * herited from DAGmodel are included in this class. Many algorithms (inference for instance) may use this 
+   * This class is used as a base class for different versions of Bayesian Networks. No data (except the dag
+   * herited from DAGmodel are included in this class. Many algorithms (inference for instance) may use this
    * class when a simple BN is needed.
    */
   template<typename GUM_SCALAR>
@@ -86,9 +86,10 @@ namespace gum {
       /// @{
 
       /**
-       * Returns the CPT of a variable.
-       * @throw NotFound If no variable's id matches varId.
-       */
+      * Returns the CPT of a variable.
+      *
+      * @throw NotFound If no variable's id matches varId.
+      */
       virtual const Potential<GUM_SCALAR>& cpt ( NodeId varId ) const = 0;
 
       /**
@@ -98,18 +99,21 @@ namespace gum {
 
       /**
       * Returns a constant reference over a variabe given it's node id.
+      *
       * @throw NotFound If no variable's id matches varId.
       */
       virtual const DiscreteVariable& variable ( NodeId id ) const = 0;
 
       /**
       * Return id node from discrete var pointer.
+      *
       * @throw NotFound If no variable matches var.
       */
       virtual NodeId nodeId ( const DiscreteVariable& var ) const = 0;
 
       /**
        * Getter by name
+       *
        * @throw NotFound if no such name exists in the graph.
        */
       virtual NodeId idFromName ( const std::string& name ) const = 0;

@@ -55,7 +55,7 @@ namespace gum {
        * @warning Note that, by the aGrUM's constructor parameter's rule, the fact
        * that g is passed as a pointer means that g is not copied, but only
        * referenced by the listener. */
-      DiGraphListener( DiGraph* g );
+      DiGraphListener( const DiGraph* g );
 
       /// destructor
       ~DiGraphListener();

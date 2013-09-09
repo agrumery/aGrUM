@@ -28,8 +28,11 @@
 #define GUM_BAYES_NET_FRAGMENT_H
 
 #include <agrum/config.h>
-#include <agrum/BN/BayesNet.h>
+
+#include <agrum/BN/IBayesNet.h>
 #include <agrum/graphs/diGraphListener.h>
+
+#include <agrum/BN/BayesNet.h>
 
 namespace gum {
   /**
@@ -41,26 +44,39 @@ namespace gum {
    * This class is a decorator of a BayesNet implementing the IBayesNet interface.
    * CPTs can be shared with the BN or can be specific to the Fragment if different.
    *
-   * BayesNetFragment is a DiGraphListener in order to be synchronized (especiallay when removing nodes or arcs).
+   * BayesNetFragment is a DiGraphListener in order to be synchronized (especiallay when
+   * removing nodes or arcs).
+   *
+   * In a BayesNetFragment, one can import or remove nodes. An arc is in the fragment if and only if 
+   * its head and tail are imported in the fragment.
+   * 
+   * A BayesNetFragment can redefine potential for node. The main reason is to be able to
+   * import a node without importing all its parents (and its ascendants). So local Potential to the
+   * fragment can be created. However, it is not done automatically. If a cpt is not locally
+   * defined, the fragment uses the cpt defined in the referred BN. The checkConsistency() method
+   * verifies that, for all imported nodes, either all the parents are imported or a local CPT is
+   * defined.
    */
 
   template<typename GUM_SCALAR>
   class BayesNetFragment : public IBayesNet<GUM_SCALAR>, public gum::DiGraphListener  {
     private:
+      /// The referred BayesNet
       const BayesNet<GUM_SCALAR>& __bn;
 
       /// Mapping between the variable's id and their CPT specific to this Fragment.
       //Property< Potential< GUM_SCALAR >* >::onNodes __probaMap;
       HashTable<NodeId, Potential<GUM_SCALAR>* > __probaMap;
 
-    public:
 
     public:
       // ===========================================================================
       /// @name Constructors / Destructors
       // ===========================================================================
       /// @{
-      BayesNetFragment ( BayesNet<GUM_SCALAR>& bn );
+      BayesNetFragment ( const BayesNet<GUM_SCALAR>& bn );
+
+      virtual ~BayesNetFragment();
       /// @}
 
 
@@ -70,30 +86,75 @@ namespace gum {
       /// the action to take when a new node is inserted into the graph
       /** @param src the object that sent the signal
        * @param id the id of the new node inserted into the graph */
-      virtual void whenNodeAdded ( const void* src, NodeId id ) = 0;
+      virtual void whenNodeAdded ( const void* src, NodeId id );
 
       /// the action to take when a node has just been removed from the graph
       /** @param src the object that sent the signal
        * @param id the id of the node has just been removed from the graph */
-      virtual void whenNodeDeleted ( const void* src, NodeId id ) = 0;
+      virtual void whenNodeDeleted ( const void* src, NodeId id );
 
       /// the action to take when a new arc is inserted into the graph
       /** @param src the object that sent the signal
        * @param from the id of tail of the new arc inserted into the graph
        * @param to the id of head of the new arc inserted into the graph */
-      virtual void whenArcAdded ( const void* src, NodeId from, NodeId to ) = 0;
+      virtual void whenArcAdded ( const void* src, NodeId from, NodeId to );
 
       /// the action to take when an arc has just been removed from the graph
       /** @param src the object that sent the signal
        * @param from the id of tail of the arc removed from the graph
        * @param to the id of head of the arc removed from the graph */
+      virtual void whenArcDeleted ( const void* src, NodeId from, NodeId to );
       /// @}
-      virtual void whenArcDeleted ( const void* src, NodeId from, NodeId to ) = 0;
 
 
+      /// @name IBayesNet interface
+      /// @{
+
+      /**
+      * Returns the CPT of a variable.
+      *
+      * @throw NotFound If no variable's id matches varId.
+      */
+      virtual const Potential<GUM_SCALAR>& cpt ( NodeId varId ) const;
+
+      /**
+      * Returns a constant reference to the VariableNodeMap of this BN
+      */
+      virtual const VariableNodeMap& variableNodeMap() const;
+
+      /**
+      * Returns a constant reference over a variabe given it's node id.
+      *
+      * @throw NotFound If no variable's id matches varId.
+      */
+      virtual const DiscreteVariable& variable ( NodeId id ) const;
+
+      /**
+      * Return id node from discrete var pointer.
+      *
+      * @throw NotFound If no variable matches var.
+      */
+      virtual NodeId nodeId ( const DiscreteVariable& var ) const;
+
+      /**
+       * Getter by name
+       *
+       * @throw NotFound if no such name exists in the graph.
+       */
+      virtual NodeId idFromName ( const std::string& name ) const;
+
+      /**
+       * Getter by name
+       *
+       * @throw NotFound if no such name exists in the graph.
+       */
+      virtual const DiscreteVariable& variableFromName ( const std::string& name ) const;
+
+      /// @}
     public:
       using IBayesNet<GUM_SCALAR>::dag;
       using IBayesNet<GUM_SCALAR>::size;
+      using IBayesNet<GUM_SCALAR>::sizeArcs;
       using IBayesNet<GUM_SCALAR>::dim;
 
       using IBayesNet<GUM_SCALAR>::jointProbability;
@@ -104,7 +165,6 @@ namespace gum {
 
       using IBayesNet<GUM_SCALAR>::property;
       using IBayesNet<GUM_SCALAR>::setProperty;
-      using IBayesNet<GUM_SCALAR>::nbrArcs;
       using IBayesNet<GUM_SCALAR>::empty;
       using IBayesNet<GUM_SCALAR>::completeInstantiation;
       using IBayesNet<GUM_SCALAR>::endNodes;
@@ -114,6 +174,31 @@ namespace gum {
       using IBayesNet<GUM_SCALAR>::moralGraph;
       using IBayesNet<GUM_SCALAR>::topologicalOrder;
       using IBayesNet<GUM_SCALAR>::log10DomainSize;
+
+      /// @specific API for Fragment
+      /// @{
+
+      /**
+       * check if a certain NodeId exists in the fragment
+       */
+      bool isImportedNode ( NodeId id ) const;
+
+      /**
+       * import a node referenced by its nodeId
+       *
+       * @throw NotFound if the node does not exist in the referred BN
+       * @warning nothing happens if the node is already imported
+       */
+      void importNode ( NodeId id );
+
+      /**
+       * import a node and all its ascendants
+       *
+       * @throw NotFound if the node does not exist in the referred BN
+       * @warning nothing happens if the node is already imported
+       */
+      void importAscendants ( NodeId id );
+      /// @}
   };
 
 }// namespace gum

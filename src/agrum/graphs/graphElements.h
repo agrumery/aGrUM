@@ -328,10 +328,10 @@ namespace gum {
       /// constructs a new edge (aN1,aN2)
       /** @param aN1 the ID of the first extremal node
        * @param aN2 the ID of the second extremal node */
-      Edge( NodeId aN1, NodeId aN2 ) ;
+      Edge ( NodeId aN1, NodeId aN2 ) ;
 
       /// copy constructor
-      Edge( const Edge& src ) ;
+      Edge ( const Edge& src ) ;
 
       /// destructor
       ~Edge();
@@ -348,7 +348,7 @@ namespace gum {
       bool isDirected() const ;
 
       /// returns an extremal node of an edge given the ID of the other one
-      NodeId other( NodeId id ) const;
+      NodeId other ( NodeId id ) const;
 
       /// returns one extremal node ID (whichever one it is is unspecified)
       NodeId first() const ;
@@ -435,10 +435,10 @@ namespace gum {
 
       /// basic constructor. Creates tail -> head.
       /** @warning the order in which the nodes are passed is important */
-      Arc( NodeId tail, NodeId head ) ;
+      Arc ( NodeId tail, NodeId head ) ;
 
       /// copy constructor
-      Arc( const Arc& src ) ;
+      Arc ( const Arc& src ) ;
 
       /// destructor
       ~Arc();
@@ -461,7 +461,7 @@ namespace gum {
       bool isDirected() const ;
 
       /// returns an extremal node of an edge given the ID of the other one
-      NodeId other( NodeId id ) const;
+      NodeId other ( NodeId id ) const;
 
       /// returns one extremal node ID (whichever one it is is unspecified)
       NodeId first() const ;
@@ -499,10 +499,10 @@ namespace gum {
 
 
       /// modifies the tail of the arc
-      void __setTail( NodeId id ) ;
+      void __setTail ( NodeId id ) ;
 
       /// modifies the head of the arc
-      void __setHead( NodeId id ) ;
+      void __setHead ( NodeId id ) ;
 
       /// reverses the direction of the arc
       void operator- () ;
@@ -519,7 +519,7 @@ namespace gum {
       /**
        * @throw HashSize
        */
-      Size operator()( const Edge& key ) const ;
+      Size operator() ( const Edge& key ) const ;
     private:
       mutable std::pair<NodeId, NodeId> pair;
   };
@@ -530,7 +530,7 @@ namespace gum {
       /**
        * @throw HashSize
        */
-      Size operator()( const Arc& key ) const ;
+      Size operator() ( const Arc& key ) const ;
     private:
       mutable std::pair<NodeId, NodeId> pair;
   };
@@ -561,12 +561,12 @@ namespace gum {
    **/
 
   template<class VAL> struct Property {
-    typedef HashTable<NodeId, VAL> onNodes  __attribute__( ( deprecated ) );
-    typedef HashTable<Edge, VAL> onEdges  __attribute__( ( deprecated ) );
-    typedef HashTable<Arc, VAL> onArcs;
+    typedef HashTable<NodeId, VAL> onNodes __attribute__ ( ( deprecated ) );
+    typedef HashTable<Edge, VAL> onEdges __attribute__ ( ( deprecated ) );
+    typedef HashTable<Arc, VAL> onArcs __attribute__ ( ( deprecated ) );
   };
   /// @}
-  
+
   template<class VAL> using NodeProperty = HashTable<NodeId, VAL>;
   template<class VAL> using EdgeProperty = HashTable<Edge, VAL>;
   template<class VAL> using ArcProperty = HashTable<Arc, VAL>;

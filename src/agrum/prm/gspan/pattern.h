@@ -217,7 +217,7 @@ namespace gum {
           NodeProperty<LabelData*> __node_map;
 
           /// Mapping between edges in this Pattern and their respective LabelData.
-          Property<std::pair<LabelData*, EdgeCode*> >::onArcs __arc_map;
+          ArcProperty<std::pair<LabelData*, EdgeCode*> > __arc_map;
 
           /// The last LabelData added to this pattern.
           LabelData* __last;

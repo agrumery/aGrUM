@@ -24,10 +24,129 @@
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */
 #include <agrum/BN/BayesNetFragment.h>
+#include <agrum/BN/BayesNet.h>
 
 namespace gum {
   template<typename GUM_SCALAR>
-  BayesNetFragment<GUM_SCALAR>::BayesNetFragment ( BayesNet<GUM_SCALAR>& bn ) : __bn ( bn ), DiGraphListener ( &bn.dag() ) {
+  BayesNetFragment<GUM_SCALAR>::BayesNetFragment ( const BayesNet<GUM_SCALAR>& bn ) :
+    DiGraphListener ( &bn.dag() ),
+    __bn ( bn ) {
+    GUM_CONSTRUCTOR ( BayesNetFragment );
   }
-  
+
+  template<typename GUM_SCALAR>
+  BayesNetFragment<GUM_SCALAR>::~BayesNetFragment() {
+    GUM_DESTRUCTOR ( BayesNetFragment );
+  }
+
+  //============================================================
+  // signals to keep consistency with the referred BayesNet
+  template<typename GUM_SCALAR> INLINE void
+  BayesNetFragment<GUM_SCALAR>::whenNodeAdded ( const void* src, NodeId id ) {
+
+  }
+  template<typename GUM_SCALAR> INLINE void
+  BayesNetFragment<GUM_SCALAR>::whenNodeDeleted ( const void* src, NodeId id ) {
+
+  }
+  template<typename GUM_SCALAR> INLINE void
+  BayesNetFragment<GUM_SCALAR>::whenArcAdded ( const void* src, NodeId from,NodeId to ) {
+
+  }
+  template<typename GUM_SCALAR> INLINE void
+  BayesNetFragment<GUM_SCALAR>::whenArcDeleted ( const void* src, NodeId from,NodeId to ) {
+
+  }
+
+  //============================================================
+  // IBayesNet interface : BayesNetFragment here is a decorator for the bn
+
+  template<typename GUM_SCALAR> INLINE const Potential<GUM_SCALAR>&
+  BayesNetFragment<GUM_SCALAR>::cpt ( NodeId id ) const {
+    if ( ! isImportedNode ( id ) )
+      GUM_ERROR ( NotFound,id<<" is not imported" );
+
+    return __bn.cpt ( id );
+  }
+
+  template<typename GUM_SCALAR>  INLINE const VariableNodeMap&
+  BayesNetFragment<GUM_SCALAR>::variableNodeMap() const {
+    GUM_ERROR ( FatalError,"Not implemented yet. please use referent bayesnet method" );
+  }
+
+  template<typename GUM_SCALAR>  INLINE const DiscreteVariable&
+  BayesNetFragment<GUM_SCALAR>::variable ( NodeId id ) const {
+    if ( ! isImportedNode ( id ) )
+      GUM_ERROR ( NotFound,id<<" is not imported" );
+
+    return __bn.variable ( id );
+  }
+
+  template<typename GUM_SCALAR> INLINE  NodeId
+  BayesNetFragment<GUM_SCALAR>::nodeId ( const DiscreteVariable& var ) const {
+    NodeId id=__bn.nodeId ( var );
+
+    if ( ! isImportedNode ( id ) )
+      GUM_ERROR ( NotFound,"variable "<<var.name() <<" is not imported" );
+
+    return id;
+  }
+
+  template<typename GUM_SCALAR> INLINE NodeId
+  BayesNetFragment<GUM_SCALAR>::idFromName ( const std::string& name ) const {
+    NodeId id=__bn.idFromName ( name );
+
+    if ( ! isImportedNode ( id ) )
+      GUM_ERROR ( NotFound,"variable "<<name<<" is not imported" );
+
+    return id;
+  }
+
+  template<typename GUM_SCALAR> INLINE const DiscreteVariable&
+  BayesNetFragment<GUM_SCALAR>::variableFromName ( const std::string& name ) const {
+    NodeId id=__bn.idFromName ( name );
+
+    if ( ! isImportedNode ( id ) )
+      GUM_ERROR ( NotFound,"variable "<<name<<" is not imported" );
+
+    return __bn.variable ( id );
+  }
+
+
+  //============================================================
+  // specific API for BayesNetFragment
+  template<typename GUM_SCALAR> INLINE bool
+  BayesNetFragment<GUM_SCALAR>::isImportedNode ( NodeId id ) const {
+    return this->_dag.existsNode ( id );
+  }
+
+  template<typename GUM_SCALAR> void
+  BayesNetFragment<GUM_SCALAR>::importNode ( NodeId id ) {
+    if ( ! __bn.dag().existsNode ( id ) )
+      GUM_ERROR ( NotFound,"Node "<<id<<" does not exist in referred BayesNet" );
+
+    if ( !isImportedNode ( id ) ) {
+      this->_dag.insertNode ( id );
+
+      // adding arcs with id as a tail
+      for ( auto pa: this->__bn.dag().parents ( id ) ) {
+        if ( isImportedNode ( pa ) )
+          this->_dag.insertArc ( pa,id );
+      }
+
+      //addin arcs with id as a head
+      for ( auto son : this->__bn.dag().children ( id ) )
+        if ( isImportedNode ( son ) )
+          this->_dag.insertArc ( id,son );
+    }
+  }
+
+  template<typename GUM_SCALAR> void
+  BayesNetFragment<GUM_SCALAR>::importAscendants ( NodeId id ) {
+    importNode ( id );
+
+    // bn is a dag => this will have an end ...
+    for ( auto pa: this->__bn.dag().parents ( id ) )
+      importAscendants ( pa );
+  }
 }// gum
