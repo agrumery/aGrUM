@@ -34,6 +34,8 @@
 //      6   5_/             2 -> 4
 //                          2 -> 5
 //                          3 -> 6
+// all variables are binary except 5 and 6 (ternary)
+
 namespace gum_tests {
 
   class BayesNetFragmentTestSuite: public CxxTest::TestSuite {
@@ -41,27 +43,27 @@ namespace gum_tests {
     private:
       void fillTopo ( gum::BayesNet<float>& bn, gum::List<gum::NodeId>& idList ) {
         try {
-          auto var1 = new gum::LabelizedVariable ( "var1", "1", 2 );
-          auto var2 = new gum::LabelizedVariable ( "var2", "2", 2 );
-          auto var3 = new gum::LabelizedVariable ( "var3", "3", 2 );
-          auto var4 = new gum::LabelizedVariable ( "var4", "4", 2 );
-          auto var5 = new gum::LabelizedVariable ( "var5", "(gum::Size) 3", 3 );
-          auto var6 = new gum::LabelizedVariable ( "var6", "(gum::Size) 3", 3 );
+          auto var1 = gum::LabelizedVariable ( "v1", "1", 2 );
+          auto var2 = gum::LabelizedVariable ( "v2", "2", 2 );
+          auto var3 = gum::LabelizedVariable ( "v3", "3", 2 );
+          auto var4 = gum::LabelizedVariable ( "v4", "4", 2 );
+          auto var5 = gum::LabelizedVariable ( "v5", "(gum::Size) 3", 3 );
+          auto var6 = gum::LabelizedVariable ( "v6", "(gum::Size) 3", 3 );
 
-          idList.insert ( bn.add ( *var1 ) );
-          idList.insert ( bn.add ( *var2 ) );
-          idList.insert ( bn.add ( *var3 ) );
-          idList.insert ( bn.add ( *var4 ) );
-          idList.insert ( bn.add ( *var5 ) );
-          idList.insert ( bn.add ( *var6 ) );
+          bn.add ( var1 );
+          bn.add ( var2 );
+          bn.add ( var3 );
+          bn.add ( var4 );
+          bn.add ( var5 );
+          bn.add ( var6 ) ;
 
-          bn.addArc ( idList[0], idList[2] );
-          bn.addArc ( idList[2], idList[4] );
-          bn.addArc ( idList[1], idList[3] );
-          bn.addArc ( idList[0], idList[3] );
-          bn.addArc ( idList[3], idList[4] );
-          bn.addArc ( idList[1], idList[4] );
-          bn.addArc ( idList[2], idList[5] );
+          bn.addArc ( bn.idFromName ( "v1" ), bn.idFromName ( "v3" ) );
+          bn.addArc ( bn.idFromName ( "v1" ), bn.idFromName ( "v4" ) );
+          bn.addArc ( bn.idFromName ( "v2" ), bn.idFromName ( "v4" ) );
+          bn.addArc ( bn.idFromName ( "v2" ), bn.idFromName ( "v5" ) );
+          bn.addArc ( bn.idFromName ( "v3" ), bn.idFromName ( "v5" ) );
+          bn.addArc ( bn.idFromName ( "v3" ), bn.idFromName ( "v6" ) );
+          bn.addArc ( bn.idFromName ( "v4" ), bn.idFromName ( "v5" ) );
 
         } catch ( gum::Exception& e ) {
           std::cerr << std::endl << e.content() << std::endl;
@@ -72,49 +74,7 @@ namespace gum_tests {
       void fill ( gum::BayesNet<float>& bn ) {
         gum::List<gum::NodeId> idList;
         fillTopo ( bn, idList );
-
-        try {
-
-          bn.cpt ( idList[0] ).fillWith ( std::vector<float> {
-            0.2, 0.8
-          } );
-
-          bn.cpt ( idList[1] ).fillWith ( std::vector<float> {
-            0.3, 0.7
-          } );
-
-          bn.cpt ( idList[2] ).fillWith ( std::vector<float> {
-            0.1, 0.9,
-            0.9, 0.1
-          } );
-
-          bn.cpt ( idList[3] ).fillWith ( std::vector<float> {
-            0.4, 0.6,
-            0.5, 0.5,
-            0.5, 0.5,
-            1.0, 0.0
-          } );
-
-          bn.cpt ( idList[4] ).fillWith ( std::vector<float>  {
-            0.3, 0.6, 0.1,
-            0.5, 0.5, 0.0,
-            0.5, 0.5, 0.0,
-            1.0, 0.0, 0.0,
-            0.4, 0.6, 0.0,
-            0.5, 0.5, 0.0,
-            0.5, 0.5, 0.0,
-            0.0, 0.0, 1.0
-          } );
-
-          bn.cpt ( idList[5] ).fillWith ( std::vector<float> {
-            0.4, 0.5,0.1,
-            0.1,0.4, 0.5
-          } );
-
-        } catch ( gum::Exception& e ) {
-          std::cerr << std::endl << e.content() << std::endl;
-          throw ;
-        }
+        bn.generateCPTs();
       }
 
     public:
@@ -125,25 +85,71 @@ namespace gum_tests {
         gum::BayesNetFragment<float> frag ( bn );
       }
 
-      void testImportNode() {
+      void testInstallNodes() {
         gum::BayesNet<float> bn;
         fill ( bn );
 
         gum::BayesNetFragment<float> frag ( bn );
-        gum::Sequence<gum::NodeId> top=bn.topologicalOrder();
 
-        // import a node
+        // install a node
         TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 0 );
-        TS_GUM_ASSERT_THROWS_NOTHING ( frag.importNode ( top.atPos ( 0 ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( frag.installNode ( bn.idFromName ( "v1" ) ) );
         TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 1 );
 
-        // import twice the same node
-        TS_GUM_ASSERT_THROWS_NOTHING ( frag.importNode ( top.atPos ( 0 ) ) );
+        // install twice the same node
+        TS_GUM_ASSERT_THROWS_NOTHING ( frag.installNode ( bn.idFromName ( "v1" ) ) );
         TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 1 );
+        TS_ASSERT_EQUALS ( frag.sizeArcs(), ( gum::Size ) 0 );
 
-        // import a non-existing node
-        TS_ASSERT_EQUALS ( top.exists ( ( gum::NodeId ) 100 ),false );
-        TS_ASSERT_THROWS ( frag.importNode ( ( gum::NodeId ) 100 ),gum::NotFound );
+        // install a non-existing node
+        TS_ASSERT_EQUALS ( bn.dag().exists ( ( gum::NodeId ) 100 ),false );
+        TS_ASSERT_THROWS ( frag.installNode ( ( gum::NodeId ) 100 ),gum::NotFound );
+        TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 1 );
+        TS_ASSERT_EQUALS ( frag.sizeArcs(), ( gum::Size ) 0 );
+
+        // install a second node (without arc)
+        TS_GUM_ASSERT_THROWS_NOTHING ( frag.installNode ( bn.idFromName ( "v6" ) ) );
+        TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 2 );
+        TS_ASSERT_EQUALS ( frag.sizeArcs(), ( gum::Size ) 0 );
+
+        // install a third node (and 2 arcs)
+        TS_GUM_ASSERT_THROWS_NOTHING ( frag.installNode ( bn.idFromName ( "v3" ) ) );
+        TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 3 );
+        TS_ASSERT_EQUALS ( frag.sizeArcs(), ( gum::Size ) 2 );
+
+        // install ascendants (nothing should happen)
+        TS_GUM_ASSERT_THROWS_NOTHING ( frag.installAscendants ( bn.idFromName ( "v6" ) ) );
+        TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 3 );
+        TS_ASSERT_EQUALS ( frag.sizeArcs(), ( gum::Size ) 2 );
+
+
+        // install ascendants (nothing should happen)
+        TS_GUM_ASSERT_THROWS_NOTHING ( frag.installAscendants ( bn.idFromName ( "v5" ) ) );
+        TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 6 );
+        TS_ASSERT_EQUALS ( frag.sizeArcs(), ( gum::Size ) 7 );
+
+        // another test for ascendants
+        gum::BayesNetFragment<float> frag2 ( bn );
+        TS_GUM_ASSERT_THROWS_NOTHING ( frag2.installAscendants ( bn.idFromName ( "v5" ) ) );
+        TS_ASSERT_EQUALS ( frag2.size(), ( gum::Size ) 5 );
+        TS_ASSERT_EQUALS ( frag2.sizeArcs(), ( gum::Size ) 6 );
+      }
+
+      void testUninstallNode() {
+        gum::BayesNet<float> bn;
+        fill ( bn );
+
+        gum::BayesNetFragment<float> frag ( bn );
+
+        // install ascendants (nothing should happen)
+        TS_GUM_ASSERT_THROWS_NOTHING ( frag.installAscendants ( bn.idFromName ( "v6" ) ) );
+        TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 3 );
+        TS_ASSERT_EQUALS ( frag.sizeArcs(), ( gum::Size ) 2 );
+
+        //uninstall node 3 (in the middle)
+        TS_GUM_ASSERT_THROWS_NOTHING ( frag.uninstallNode ( bn.idFromName ( "v3" ) ) );
+        TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 2 );
+        TS_ASSERT_EQUALS ( frag.sizeArcs(), ( gum::Size ) 0 );
       }
 
       void testIBayetNetMethodsWithoutLocalCPTs() {
@@ -152,14 +158,47 @@ namespace gum_tests {
 
         gum::BayesNetFragment<float> frag ( bn );
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( frag.importNode ( bn.idFromName ( "var1" ) ) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( frag.importNode ( bn.idFromName ( "var6" ) ) );
+        TS_ASSERT ( frag.empty() );
+        TS_GUM_ASSERT_THROWS_NOTHING ( frag.installNode ( bn.idFromName ( "v1" ) ) );
+        TS_ASSERT ( ! frag.empty() );
+        
+        TS_GUM_ASSERT_THROWS_NOTHING ( frag.installNode ( bn.idFromName ( "v6" ) ) );
 
-        TS_ASSERT_EQUALS ( frag.dag().sizeArcs(),gum::Size ( 0 ) );
         TS_ASSERT_EQUALS ( frag.dag().sizeNodes(),gum::Size ( 2 ) );
+        TS_ASSERT_EQUALS ( frag.dag().sizeArcs(),gum::Size ( 0 ) );
         TS_ASSERT_EQUALS ( frag.size(),gum::Size ( 2 ) );
         TS_ASSERT_EQUALS ( frag.dim(),gum::Size ( ( 3-1 ) + ( 2-1 ) ) );
         TS_ASSERT_EQUALS ( pow ( 10,frag.log10DomainSize() ),2*3 );
+
+        TS_GUM_ASSERT_THROWS_NOTHING ( frag.installAscendants ( bn.idFromName ( "v6" ) ) );
+
+        TS_ASSERT_EQUALS ( frag.dag().sizeNodes(),gum::Size ( 3 ) );
+        TS_ASSERT_EQUALS ( frag.dag().sizeArcs(),gum::Size ( 2 ) );
+        TS_ASSERT_EQUALS ( frag.size(),gum::Size ( 3 ) );
+        TS_ASSERT_EQUALS ( frag.dim(),gum::Size (
+                             ( 2* ( 3-1 ) ) +
+                             ( 2* ( 2-1 ) ) +
+                             ( 2-1 ) ) );
+        TS_ASSERT_DELTA ( pow ( 10,frag.log10DomainSize() ),2*2*3 ,1e-5 );
+
+        gum::Instantiation I;
+        frag.completeInstantiation ( I );
+        I.setFirst();
+        TS_ASSERT_EQUALS ( I.toString(),"<v1:0|v3:0|v6:0>" );
+
+        while ( ! I.end() ) {
+          TS_ASSERT_DELTA ( frag.jointProbability ( I ),
+                            bn.cpt ( bn.idFromName ( "v1" ) ) [I]*
+                            bn.cpt ( bn.idFromName ( "v3" ) ) [I]*
+                            bn.cpt ( bn.idFromName ( "v6" ) ) [I] ,
+                            1e-5 );
+          TS_ASSERT_DELTA ( frag.log2JointProbability ( I ),
+                            log2 ( bn.cpt ( bn.idFromName ( "v1" ) ) [I]*
+                                   bn.cpt ( bn.idFromName ( "v3" ) ) [I]*
+                                   bn.cpt ( bn.idFromName ( "v6" ) ) [I] ),
+                            1e-5 );
+          ++I;
+        }
       }
   };
 } // gum_tests

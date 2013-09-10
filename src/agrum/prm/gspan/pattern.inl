@@ -29,42 +29,42 @@ namespace gum {
     namespace gspan {
 
       INLINE
-      Pattern::Pattern():
-        DiGraph(), __last( 0 ) {
-        GUM_CONSTRUCTOR( Pattern );
+      Pattern::Pattern() :
+        DiGraph(), __last ( 0 ) {
+        GUM_CONSTRUCTOR ( Pattern );
       }
 
       INLINE
       Pattern::~Pattern() {
-        GUM_DESTRUCTOR( Pattern );
+        GUM_DESTRUCTOR ( Pattern );
       }
 
       INLINE
       NodeId
-      Pattern::insertNode( LabelData& l ) {
-        DiGraph::insertNode( size() + 1 );
-        __node_map.insert( size(), &l );
+      Pattern::insertNode ( LabelData& l ) {
+        DiGraph::insertNode ( size() + 1 );
+        __node_map.insert ( size(), &l );
         __last = &l;
         return size();
       }
 
       INLINE
       LabelData&
-      Pattern::label( NodeId node ) {
+      Pattern::label ( NodeId node ) {
         try {
-          return *( __node_map[node] );
+          return * ( __node_map[node] );
         } catch ( NotFound& ) {
-          GUM_ERROR( NotFound, "node not found in this Pattern" );
+          GUM_ERROR ( NotFound, "node not found in this Pattern" );
         }
       }
 
       INLINE
       const LabelData&
-      Pattern::label( NodeId node ) const {
+      Pattern::label ( NodeId node ) const {
         try {
-          return *( __node_map[node] );
+          return * ( __node_map[node] );
         } catch ( NotFound& ) {
-          GUM_ERROR( NotFound, "node not found in this Pattern" );
+          GUM_ERROR ( NotFound, "node not found in this Pattern" );
         }
       }
 
@@ -74,7 +74,7 @@ namespace gum {
         if ( __last )
           return *__last;
 
-        GUM_ERROR( OperationNotAllowed, "there are no LabelData yet" );
+        GUM_ERROR ( OperationNotAllowed, "there are no LabelData yet" );
       }
 
       INLINE
@@ -83,79 +83,79 @@ namespace gum {
         if ( __last )
           return *__last;
 
-        GUM_ERROR( OperationNotAllowed, "there are no LabelData yet" );
+        GUM_ERROR ( OperationNotAllowed, "there are no LabelData yet" );
       }
 
       INLINE
       LabelData&
-      Pattern::label( NodeId i, NodeId j ) {
+      Pattern::label ( NodeId i, NodeId j ) {
         try {
-          return *( __arc_map[Arc( i, j )].first );
+          return * ( __arc_map[Arc ( i, j )].first );
         } catch ( NotFound& ) {
-          GUM_ERROR( NotFound, "arc not found in this Pattern" );
+          GUM_ERROR ( NotFound, "arc not found in this Pattern" );
         }
       }
 
       INLINE
       const LabelData&
-      Pattern::label( NodeId i, NodeId j ) const {
+      Pattern::label ( NodeId i, NodeId j ) const {
         try {
-          return *( __arc_map[Arc( i, j )].first );
+          return * ( __arc_map[Arc ( i, j )].first );
         } catch ( NotFound& ) {
-          GUM_ERROR( NotFound, "arc not found in this Pattern" );
+          GUM_ERROR ( NotFound, "arc not found in this Pattern" );
         }
       }
 
       INLINE
       LabelData&
-      Pattern::label( const Arc& arc ) {
+      Pattern::label ( const Arc& arc ) {
         try {
-          return *( __arc_map[arc].first );
+          return * ( __arc_map[arc].first );
         } catch ( NotFound& ) {
-          GUM_ERROR( NotFound, "arc not found in this Pattern" );
+          GUM_ERROR ( NotFound, "arc not found in this Pattern" );
         }
       }
 
       INLINE
       const LabelData&
-      Pattern::label( const Arc& arc ) const {
+      Pattern::label ( const Arc& arc ) const {
         try {
-          return *( __arc_map[arc].first );
+          return * ( __arc_map[arc].first );
         } catch ( NotFound& ) {
-          GUM_ERROR( NotFound, "arc not found in this Pattern" );
+          GUM_ERROR ( NotFound, "arc not found in this Pattern" );
         }
       }
 
       INLINE
       void
-      Pattern::insertArc( NodeId i, NodeId j, LabelData& l ) {
-        if ( not( DiGraph::exists( i ) and DiGraph::exists( j ) ) ) {
-          GUM_ERROR( NotFound, "node not found in this pattern" );
+      Pattern::insertArc ( NodeId i, NodeId j, LabelData& l ) {
+        if ( not ( DiGraph::exists ( i ) and DiGraph::exists ( j ) ) ) {
+          GUM_ERROR ( NotFound, "node not found in this pattern" );
         }
 
-        EdgeCode* edge = new EdgeCode( i, j, __node_map[i]->id, l.id, __node_map[j]->id );
+        EdgeCode* edge = new EdgeCode ( i, j, __node_map[i]->id, l.id, __node_map[j]->id );
 
         if ( ( code().codes.size() == 0 ) or
-             ( DFSCode::validNeighbors( code().codes.back(), edge ) ) ) {
-          DiGraph::insertArc( i, j );
-          __arc_map.insert( Arc( i, j ), std::make_pair( &l, edge ) );
-          code().codes.push_back( edge );
+             ( DFSCode::validNeighbors ( code().codes.back(), edge ) ) ) {
+          DiGraph::insertArc ( i, j );
+          __arc_map.insert ( Arc ( i, j ), std::make_pair ( &l, edge ) );
+          code().codes.push_back ( edge );
         } else {
           delete edge;
-          GUM_ERROR( OperationNotAllowed, "illegal arc considering neighborhood restriction" );
+          GUM_ERROR ( OperationNotAllowed, "illegal arc considering neighborhood restriction" );
         }
       }
 
       INLINE
       bool
-      Pattern::exists( NodeId id ) const {
-        return DiGraph::exists( id );
+      Pattern::exists ( NodeId id ) const {
+        return DiGraph::exists ( id );
       }
 
       INLINE
       bool
-      Pattern::exists( NodeId tail, NodeId head ) const {
-        return DiGraph::existsArc( tail, head );
+      Pattern::exists ( NodeId tail, NodeId head ) const {
+        return DiGraph::existsArc ( tail, head );
       }
 
       INLINE
@@ -168,23 +168,23 @@ namespace gum {
 
       INLINE
       void
-      Pattern::rightmostPath( std::list<NodeId>& r_path ) const {
-        r_path.push_back( size() );
+      Pattern::rightmostPath ( std::list<NodeId>& r_path ) const {
+        r_path.push_back ( size() );
 
         while ( r_path.front() != 1 ) {
-          const NodeSet& parents = DiGraph::parents( r_path.front() );
+          const NodeSet& parents = DiGraph::parents ( r_path.front() );
 
           for ( NodeSetIterator arc = parents.begin();
                 arc != parents.end(); ++arc ) {
             if ( *arc < r_path.front() ) {
-              r_path.push_front( *arc );
+              r_path.push_front ( *arc );
               break;
             }
           }
         }
       }
 
-      INLINE
+      /*INLINE
       Pattern::NodeIterator
       Pattern::beginNodes() const { return DiGraph::beginNodes(); }
 
@@ -199,11 +199,12 @@ namespace gum {
       INLINE
       const Pattern::ArcIterator&
       Pattern::endArcs() const { return DiGraph::endArcs(); }
-
+      */
+      
       INLINE
       NeighborIterator
-      Pattern::beginNeighbors( NodeId node ) const {
-        return NeighborIterator( DiGraph::parents( node ), DiGraph::children( node ) );
+      Pattern::beginNeighbors ( NodeId node ) const {
+        return NeighborIterator ( DiGraph::parents ( node ), DiGraph::children ( node ) );
       }
 
       INLINE
@@ -216,41 +217,41 @@ namespace gum {
 
       INLINE
       EdgeCode&
-      Pattern::edgeCode( NodeId tail, NodeId head ) {
+      Pattern::edgeCode ( NodeId tail, NodeId head ) {
         try {
-          return *( __arc_map[Arc( tail, head )].second );
+          return * ( __arc_map[Arc ( tail, head )].second );
         } catch ( NotFound& ) {
-          GUM_ERROR( NotFound, "arc not found in Pattern" );
+          GUM_ERROR ( NotFound, "arc not found in Pattern" );
         }
       }
 
       INLINE
       EdgeCode&
-      Pattern::edgeCode( const Arc& arc ) {
+      Pattern::edgeCode ( const Arc& arc ) {
         try {
-          return *( __arc_map[arc].second );
+          return * ( __arc_map[arc].second );
         } catch ( NotFound& ) {
-          GUM_ERROR( NotFound, "arc not found in Pattern" );
+          GUM_ERROR ( NotFound, "arc not found in Pattern" );
         }
       }
 
       INLINE
       const EdgeCode&
-      Pattern::edgeCode( NodeId tail, NodeId head ) const {
+      Pattern::edgeCode ( NodeId tail, NodeId head ) const {
         try {
-          return *( __arc_map[Arc( tail, head )].second );
+          return * ( __arc_map[Arc ( tail, head )].second );
         } catch ( NotFound& ) {
-          GUM_ERROR( NotFound, "arc not found in Pattern" );
+          GUM_ERROR ( NotFound, "arc not found in Pattern" );
         }
       }
 
       INLINE
       const EdgeCode&
-      Pattern::edgeCode( const Arc& arc ) const {
+      Pattern::edgeCode ( const Arc& arc ) const {
         try {
-          return *( __arc_map[arc].second );
+          return * ( __arc_map[arc].second );
         } catch ( NotFound& ) {
-          GUM_ERROR( NotFound, "arc not found in Pattern" );
+          GUM_ERROR ( NotFound, "arc not found in Pattern" );
         }
       }
 
@@ -261,13 +262,13 @@ namespace gum {
         __code.codes.pop_back();
 
         if ( edge->isForward() ) {
-          __node_map.erase( edge->j );
-          __arc_map.erase( Arc( edge->i, edge->j ) );
-          DiGraph::eraseArc( Arc( edge->i, edge->j ) );
-          DiGraph::eraseNode( edge->j );
+          __node_map.erase ( edge->j );
+          __arc_map.erase ( Arc ( edge->i, edge->j ) );
+          DiGraph::eraseArc ( Arc ( edge->i, edge->j ) );
+          DiGraph::eraseNode ( edge->j );
         } else {
-          __arc_map.erase( Arc( edge->i, edge->j ) );
-          DiGraph::eraseArc( Arc( edge->i, edge->j ) );
+          __arc_map.erase ( Arc ( edge->i, edge->j ) );
+          DiGraph::eraseArc ( Arc ( edge->i, edge->j ) );
         }
 
         delete edge;
@@ -275,12 +276,12 @@ namespace gum {
 
       INLINE
       void
-      Pattern::remove( NodeId node ) {
-        if ( DiGraph::parents( node ).empty() and DiGraph::children( node ).empty() ) {
-          DiGraph::eraseNode( node );
-          __node_map.erase( node );
+      Pattern::remove ( NodeId node ) {
+        if ( DiGraph::parents ( node ).empty() and DiGraph::children ( node ).empty() ) {
+          DiGraph::eraseNode ( node );
+          __node_map.erase ( node );
         } else {
-          GUM_ERROR( OperationNotAllowed, "the given node has neighbors" );
+          GUM_ERROR ( OperationNotAllowed, "the given node has neighbors" );
         }
       }
 
@@ -289,32 +290,32 @@ namespace gum {
 
 
       INLINE
-      NeighborIterator::NeighborIterator( const NodeSet& parents,
-                                          const NodeSet& children ):
-        __parents( &parents ), __children( &children ),
-        __parent_iterator( __parents->begin() ),
-        __children_iterator( __children->begin() ),
-        __iterator( 0 ), __end_iterator( 0 ) {
-        GUM_CONSTRUCTOR( NeighborIterator );
+      NeighborIterator::NeighborIterator ( const NodeSet& parents,
+                                           const NodeSet& children ) :
+        __parents ( &parents ), __children ( &children ),
+        __parent_iterator ( __parents->begin() ),
+        __children_iterator ( __children->begin() ),
+        __iterator ( 0 ), __end_iterator ( 0 ) {
+        GUM_CONSTRUCTOR ( NeighborIterator );
 
         if ( __parents->empty() ) {
           __iterator = &__children_iterator;
-          __end_iterator = &( __children->end() );
+          __end_iterator = & ( __children->end() );
         } else {
           __iterator = &__parent_iterator;
-          __end_iterator = &( __parents->end() );
+          __end_iterator = & ( __parents->end() );
         }
       }
 
       INLINE
-      NeighborIterator::NeighborIterator( const NeighborIterator& from ):
-        __parents( from.__parents ), __children( from.__children ),
-        __parent_iterator( from.__parent_iterator ),
-        __children_iterator( from.__children_iterator ),
-        __iterator( 0 ), __end_iterator( from.__end_iterator ) {
-        GUM_CONS_CPY( NeighborIterator );
+      NeighborIterator::NeighborIterator ( const NeighborIterator& from ) :
+        __parents ( from.__parents ), __children ( from.__children ),
+        __parent_iterator ( from.__parent_iterator ),
+        __children_iterator ( from.__children_iterator ),
+        __iterator ( 0 ), __end_iterator ( from.__end_iterator ) {
+        GUM_CONS_CPY ( NeighborIterator );
 
-        if ( from.__iterator == &( from.__parent_iterator ) ) {
+        if ( from.__iterator == & ( from.__parent_iterator ) ) {
           __iterator = &__parent_iterator;
         } else {
           __iterator = &__children_iterator;
@@ -323,18 +324,18 @@ namespace gum {
 
       INLINE
       NeighborIterator::~NeighborIterator() {
-        GUM_DESTRUCTOR( NeighborIterator );
+        GUM_DESTRUCTOR ( NeighborIterator );
       }
 
       INLINE
       NeighborIterator&
       NeighborIterator::operator++() {
-        ++( *__iterator );
+        ++ ( *__iterator );
 
         if ( ( __iterator == ( &__parent_iterator ) ) and
              ( *__iterator ) == ( *__end_iterator ) ) {
           __iterator = ( &__children_iterator );
-          __end_iterator = &( __children->end() );
+          __end_iterator = & ( __children->end() );
         }
 
         return *this;
@@ -349,30 +350,30 @@ namespace gum {
 
       INLINE
       bool
-      NeighborIterator::operator!=( const NeighborIterator& from ) const {
-        return ( *__iterator ) != *( from.__iterator );
+      NeighborIterator::operator!= ( const NeighborIterator& from ) const {
+        return ( *__iterator ) != * ( from.__iterator );
       }
 
       INLINE
       bool
-      NeighborIterator::operator==( const NeighborIterator& from ) const {
-        return ( *__iterator ) == *( from.__iterator );
+      NeighborIterator::operator== ( const NeighborIterator& from ) const {
+        return ( *__iterator ) == * ( from.__iterator );
       }
 
       INLINE
       NeighborIterator&
-      NeighborIterator::operator=( const NeighborIterator& from ) {
+      NeighborIterator::operator= ( const NeighborIterator& from ) {
         __parents = from.__parents;
         __children = from.__children;
         __parent_iterator = from.__parent_iterator;
         __children_iterator = from.__children_iterator;
 
-        if ( from.__iterator == &( from.__parent_iterator ) ) {
+        if ( from.__iterator == & ( from.__parent_iterator ) ) {
           __iterator = &__parent_iterator;
-          __end_iterator = &( __parents->end() );
+          __end_iterator = & ( __parents->end() );
         } else {
           __iterator = &__children_iterator;
-          __end_iterator = &( __children->end() );
+          __end_iterator = & ( __children->end() );
         }
 
         return *this;

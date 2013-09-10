@@ -104,9 +104,9 @@ namespace gum {
     }
 
     // check that each node has a domain size
-    for ( UndiGraph::NodeIterator iter = graph->beginNodes();
-          iter != graph->endNodes(); ++iter ) {
-      if ( ! modal->exists ( *iter ) ) {
+    //for ( UndiGraph::NodeIterator iter = graph->beginNodes();iter != graph->endNodes(); ++iter ) {
+    for ( const auto node: graph->nodes() ) {
+      if ( ! modal->exists ( node ) ) {
         GUM_ERROR ( GraphError,
                     "DefaultEliminationSequenceStrategy needs  "
                     "domain sizes" );
@@ -126,9 +126,9 @@ namespace gum {
         // compute the log of the modalities
         __log_modalities.resize ( __graph->sizeNodes() / 2 );
 
-        for ( UndiGraph::NodeIterator iter = graph->beginNodes();
-              iter != graph->endNodes(); ++iter ) {
-          __log_modalities.insert ( *iter, log ( ( *modal ) [*iter] ) );
+        //for ( UndiGraph::NodeIterator iter = graph->beginNodes();iter != graph->endNodes(); ++iter ) {
+        for ( const auto node :graph->nodes() ) {
+          __log_modalities.insert ( node, log ( ( *modal ) [node] ) );
         }
 
         // creation du simplicial set

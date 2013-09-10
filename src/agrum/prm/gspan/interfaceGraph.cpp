@@ -34,20 +34,20 @@ namespace gum {
   namespace prm {
     namespace gspan {
 
-      InterfaceGraph::InterfaceGraph( const System& sys ):
-        __sys( &sys ), __labels( new Bijection<Idx, LabelData*>() ),
-        __counter( 0 ), __erase_flag( true ) {
-        GUM_CONSTRUCTOR( InterfaceGraph );
+      InterfaceGraph::InterfaceGraph ( const System& sys ) :
+        __sys ( &sys ), __labels ( new Bijection<Idx, LabelData*>() ),
+        __counter ( 0 ), __erase_flag ( true ) {
+        GUM_CONSTRUCTOR ( InterfaceGraph );
         HashTable<std::string, LabelData*> label_map;
 
         // We need to add each instance in __graph
         for ( System::const_iterator iter = sys.begin(); iter != sys.end(); ++iter ) {
           NodeData* node = new NodeData();
           node->n = *iter;
-          __label( node, label_map );
-          __graph.insertNode( iter.key() );
-          __idMap.insert( node->n, iter.key() );
-          __nodes.insert( iter.key(), node );
+          __label ( node, label_map );
+          __graph.insertNode ( iter.key() );
+          __idMap.insert ( node->n, iter.key() );
+          __nodes.insert ( iter.key(), node );
         }
 
         NodeData* data = 0;
@@ -58,36 +58,36 @@ namespace gum {
           data = *node;
 
           for ( Set<SlotChain*>::iterator iter = data->n->type().slotChains().begin(); iter != data->n->type().slotChains().end(); ++iter ) {
-            for ( Set<Instance*>::iterator jter = data->n->getInstances( ( **iter ).id() ).begin(); jter != data->n->getInstances( ( **iter ).id() ).end(); ++jter ) {
-              u = ( __nodes[__idMap[*jter]]->l < data->l )?__nodes[__idMap[*jter]]:data;
-              v = ( u != data )?data:__nodes[__idMap[*jter]];
+            for ( Set<Instance*>::iterator jter = data->n->getInstances ( ( **iter ).id() ).begin(); jter != data->n->getInstances ( ( **iter ).id() ).end(); ++jter ) {
+              u = ( __nodes[__idMap[*jter]]->l < data->l ) ?__nodes[__idMap[*jter]]:data;
+              v = ( u != data ) ?data:__nodes[__idMap[*jter]];
 
-              if ( not __graph.existsEdge( __idMap[u->n], __idMap[v->n] ) ) {
+              if ( not __graph.existsEdge ( __idMap[u->n], __idMap[v->n] ) ) {
                 EdgeData* edge = new EdgeData();
                 edge->u = u->n;
                 edge->l_u = u->l;
                 edge->v = v->n;
                 edge->l_v = v->l;
-                __label( edge, label_map );
-                __graph.insertEdge( __idMap[u->n], __idMap[v->n] );
-                __edges.insert( Edge( __idMap[u->n], __idMap[v->n] ), edge );
+                __label ( edge, label_map );
+                __graph.insertEdge ( __idMap[u->n], __idMap[v->n] );
+                __edges.insert ( Edge ( __idMap[u->n], __idMap[v->n] ), edge );
               }
             }
           }
         }
       }
 
-      InterfaceGraph::InterfaceGraph( const InterfaceGraph& source ):
-        __sys( source.__sys ), __graph( source.__graph ), __nodes( source.__nodes ),
-        __idMap( source.__idMap ), __edges( source.__edges ),
-        __labels( new Bijection<Idx, LabelData*>( *( source.__labels ) ) ),
-        __nodeMap( source.__nodeMap ), __edgeMap( source.__edgeMap ),
-        __counter( source.__counter ), __erase_flag( false ) {
-        GUM_CONS_CPY( InterfaceGraph );
+      InterfaceGraph::InterfaceGraph ( const InterfaceGraph& source ) :
+        __sys ( source.__sys ), __graph ( source.__graph ), __nodes ( source.__nodes ),
+        __idMap ( source.__idMap ), __edges ( source.__edges ),
+        __labels ( new Bijection<Idx, LabelData*> ( * ( source.__labels ) ) ),
+        __nodeMap ( source.__nodeMap ), __edgeMap ( source.__edgeMap ),
+        __counter ( source.__counter ), __erase_flag ( false ) {
+        GUM_CONS_CPY ( InterfaceGraph );
       }
 
       InterfaceGraph::~InterfaceGraph() {
-        GUM_DESTRUCTOR( InterfaceGraph );
+        GUM_DESTRUCTOR ( InterfaceGraph );
 
         if ( __erase_flag ) {
           for ( NodeProperty<NodeData*>::iterator iter = __nodes.begin();
@@ -119,12 +119,12 @@ namespace gum {
       }
 
       InterfaceGraph&
-      InterfaceGraph::operator=( const InterfaceGraph& source ) {
-        GUM_ERROR( FatalError, "not implemented" );
+      InterfaceGraph::operator= ( const InterfaceGraph& source ) {
+        GUM_ERROR ( FatalError, "not implemented" );
       }
 
       void
-      InterfaceGraph::__label( NodeData* node, HashTable<std::string, LabelData*>& label_map ) {
+      InterfaceGraph::__label ( NodeData* node, HashTable<std::string, LabelData*>& label_map ) {
         unsigned long size = 1;
         std::stringstream sBuff;
         sBuff << node->n->type().name();
@@ -133,9 +133,9 @@ namespace gum {
         for ( Set<SlotChain*>::iterator iter = node->n->type().slotChains().begin();
               iter != node->n->type().slotChains().end(); ++iter ) {
           if ( ( **iter ).isMultiple() ) {
-            sBuff << "-" << node->n->getInstances( ( **iter ).id() ).size();
+            sBuff << "-" << node->n->getInstances ( ( **iter ).id() ).size();
             sBuff << ( **iter ).name();
-            size *= node->n->getInstances( ( **iter ).id() ).size() *
+            size *= node->n->getInstances ( ( **iter ).id() ).size() *
                     ( **iter ).lastElt().type().variable().domainSize();
           } else {
             size *= ( **iter ).lastElt().type().variable().domainSize();
@@ -143,34 +143,35 @@ namespace gum {
         }
 
         // Second we search for active outputs
-        for ( DAG::NodeIterator iter = node->n->type().dag().beginNodes(); iter != node->n->type().dag().endNodes(); ++iter ) {
-          if ( node->n->type().isOutputNode( node->n->type().get( *iter ) ) ) {
+        //for ( DAG::NodeIterator iter = node->n->type().dag().beginNodes(); iter != node->n->type().dag().endNodes(); ++iter ) {
+        for ( auto nn : node->n->type().dag().nodes() ) {
+          if ( node->n->type().isOutputNode ( node->n->type().get ( nn ) ) ) {
             try {
-              sBuff << "-" << node->n->getRefAttr( *iter ).size() << node->n->get( *iter ).name();
-              size *= node->n->get( *iter ).type().variable().domainSize();
+              sBuff << "-" << node->n->getRefAttr ( nn ).size() << node->n->get ( nn ).name();
+              size *= node->n->get ( nn ).type().variable().domainSize();
             } catch ( NotFound& ) {
-              // (*iter) is an inactive output node
+              // (nn) is an inactive output node
             }
           }
         }
 
         // Label is ready
-        if ( not label_map.exists( sBuff.str() ) ) {
+        if ( not label_map.exists ( sBuff.str() ) ) {
           LabelData* label = new LabelData();
-          label_map.insert( sBuff.str(), label );
+          label_map.insert ( sBuff.str(), label );
           label->id = ++__counter;
           label->tree_width = size;
           label->l = sBuff.str();
-          __labels->insert( label->id, label );
-          __nodeMap.insert( label, new Set<NodeData*>() );
+          __labels->insert ( label->id, label );
+          __nodeMap.insert ( label, new Set<NodeData*>() );
         }
 
         node->l = label_map[sBuff.str()];
-        __nodeMap[node->l]->insert( node );
+        __nodeMap[node->l]->insert ( node );
       }
 
       void
-      InterfaceGraph::__label( EdgeData* edge, HashTable<std::string, LabelData*>& label_map ) {
+      InterfaceGraph::__label ( EdgeData* edge, HashTable<std::string, LabelData*>& label_map ) {
         unsigned long size = 1;
         std::stringstream sBuff;
         sBuff << edge->u->type().name() << "-" << edge->v->type().name();
@@ -178,7 +179,7 @@ namespace gum {
         // First looking for edge->u output nodes in v
         for ( Set<SlotChain*>::iterator iter = edge->u->type().slotChains().begin();
               iter != edge->u->type().slotChains().end(); ++iter ) {
-          if ( edge->u->getInstances( ( **iter ).id() ).exists( edge->v ) ) {
+          if ( edge->u->getInstances ( ( **iter ).id() ).exists ( edge->v ) ) {
             sBuff << "-" << edge->v->type().name() << "." << ( **iter ).lastElt().name();
             size *= ( **iter ).lastElt().type().variable().domainSize();
           }
@@ -187,25 +188,25 @@ namespace gum {
         // Second looking for edge->v output nodes in u
         for ( Set<SlotChain*>::iterator iter = edge->v->type().slotChains().begin();
               iter != edge->v->type().slotChains().end(); ++iter ) {
-          if ( edge->v->getInstances( ( **iter ).id() ).exists( edge->u ) ) {
+          if ( edge->v->getInstances ( ( **iter ).id() ).exists ( edge->u ) ) {
             sBuff << "-" << edge->u->type().name() << "." << ( **iter ).lastElt().name();
             size *= ( **iter ).lastElt().type().variable().domainSize();
           }
         }
 
         // Label is ready
-        if ( not label_map.exists( sBuff.str() ) ) {
+        if ( not label_map.exists ( sBuff.str() ) ) {
           LabelData* label = new LabelData();
-          label_map.insert( sBuff.str(), label );
+          label_map.insert ( sBuff.str(), label );
           label->id = ++__counter;
           label->l = sBuff.str();
           label->tree_width = size;
-          __labels->insert( label->id, label );
-          __edgeMap.insert( label, new Set<EdgeData*>() );
+          __labels->insert ( label->id, label );
+          __edgeMap.insert ( label, new Set<EdgeData*>() );
         }
 
         edge->l = label_map[sBuff.str()];
-        __edgeMap[edge->l]->insert( edge );
+        __edgeMap[edge->l]->insert ( edge );
       }
 
     } /* namespace gspan */

@@ -34,7 +34,7 @@ namespace gum {
   namespace prm {
 
     StructuredBayesBall::~StructuredBayesBall() {
-      GUM_DESTRUCTOR( StructuredBayesBall );
+      GUM_DESTRUCTOR ( StructuredBayesBall );
       typedef HashTable<std::string, std::pair< Set<NodeId>*, Size> >::iterator Iter;
 
       for ( Iter iter = __reqMap.begin(); iter != __reqMap.end(); ++iter ) {
@@ -55,19 +55,19 @@ namespace gum {
     }
 
     bool
-    StructuredBayesBall::__isHardEvidence( const Instance* i, NodeId n ) {
+    StructuredBayesBall::__isHardEvidence ( const Instance* i, NodeId n ) {
       try {
-        PRMInference::Chain chain = std::make_pair( i, &( i->get( n ) ) );
+        PRMInference::Chain chain = std::make_pair ( i, & ( i->get ( n ) ) );
 
-        if ( __inf->hasEvidence( chain ) ) {
-          const Potential<prm_float>* e = __inf->evidence( i )[n];
-          Instantiation inst( e );
+        if ( __inf->hasEvidence ( chain ) ) {
+          const Potential<prm_float>* e = __inf->evidence ( i ) [n];
+          Instantiation inst ( e );
           Size count = 0;
 
           for ( inst.setFirst(); not inst.end(); inst.inc() ) {
-            if ( ( e->get( inst ) == ( prm_float ) 1.0 ) )
+            if ( ( e->get ( inst ) == ( prm_float ) 1.0 ) )
               ++count;
-            else if ( e->get( inst ) != ( prm_float ) 0.0 )
+            else if ( e->get ( inst ) != ( prm_float ) 0.0 )
               return false;
           }
 
@@ -81,13 +81,13 @@ namespace gum {
     }
 
     void
-    StructuredBayesBall::__compute( const Instance* i, NodeId n ) {
+    StructuredBayesBall::__compute ( const Instance* i, NodeId n ) {
       __clean();
       /// Key = instance.ClassElement
       /// pair = <upper mark, lower mark>
       StructuredBayesBall::InstanceMap marks;
-      __fromChild( i, n, marks );
-      __fillMaps( marks );
+      __fromChild ( i, n, marks );
+      __fillMaps ( marks );
       typedef StructuredBayesBall::InstanceMap::iterator Iter;
 
       for ( Iter iter = marks.begin(); iter != marks.end(); ++iter ) {
@@ -96,38 +96,38 @@ namespace gum {
     }
 
     void
-    StructuredBayesBall::__fromChild( const Instance* i, NodeId n, InstanceMap& marks ) {
+    StructuredBayesBall::__fromChild ( const Instance* i, NodeId n, InstanceMap& marks ) {
       // std::stringstream sBuff;
       // sBuff << i->name() << "." << i->type().get(n).safeName();
       // std::string in = "in __fromChild ";
       // GUM_TRACE(in + sBuff.str());
-      if ( not marks.exists( i ) ) {
-        marks.insert( i, new StructuredBayesBall::MarkMap() );
+      if ( not marks.exists ( i ) ) {
+        marks.insert ( i, new StructuredBayesBall::MarkMap() );
       }
 
-      if ( not marks[i]->exists( n ) ) {
-        marks[i]->insert( n, std::pair<bool, bool>( false, false ) );
+      if ( not marks[i]->exists ( n ) ) {
+        marks[i]->insert ( n, std::pair<bool, bool> ( false, false ) );
       }
 
       // Sending message to parents
-      switch ( i->type().get( n ).elt_type() ) {
+      switch ( i->type().get ( n ).elt_type() ) {
         case ClassElement::prm_slotchain: {
-          if ( not __getMark( marks, i, n ).first ) {
-            __getMark( marks, i, n ).first = true;
-            const Set<Instance*>& set = i->getInstances( n );
+          if ( not __getMark ( marks, i, n ).first ) {
+            __getMark ( marks, i, n ).first = true;
+            const Set<Instance*>& set = i->getInstances ( n );
 
             for ( Set<Instance*>::const_iterator iter = set.begin(); iter != set.end(); ++iter ) {
-              NodeId id = ( **iter ).get( __getSC( i,n ).lastElt().safeName() ).id();
-              __fromChild( *iter, id, marks );
+              NodeId id = ( **iter ).get ( __getSC ( i,n ).lastElt().safeName() ).id();
+              __fromChild ( *iter, id, marks );
             }
           }
 
-          if ( not __getMark( marks, i, n ).second ) {
-            __getMark( marks, i, n ).second = true;
-            const NodeSet& children = i->type().dag().children( n );
+          if ( not __getMark ( marks, i, n ).second ) {
+            __getMark ( marks, i, n ).second = true;
+            const NodeSet& children = i->type().dag().children ( n );
 
             for ( NodeSetIterator child = children.begin(); child != children.end(); ++child )
-              __fromParent( i, *child, marks );
+              __fromParent ( i, *child, marks );
           }
 
           break;
@@ -135,31 +135,31 @@ namespace gum {
 
         case ClassElement::prm_aggregate:
         case ClassElement::prm_attribute: {
-          if ( not __getMark( marks, i, n ).first ) {
-            __getMark( marks, i, n ).first = true;
+          if ( not __getMark ( marks, i, n ).first ) {
+            __getMark ( marks, i, n ).first = true;
 
-            if ( not __isHardEvidence( i, n ) ) {
-              const NodeSet& parents = i->type().dag().parents( n );
+            if ( not __isHardEvidence ( i, n ) ) {
+              const NodeSet& parents = i->type().dag().parents ( n );
 
               for ( NodeSetIterator prnt = parents.begin(); prnt != parents.end(); ++prnt )
-                __fromChild( i, *prnt, marks );
+                __fromChild ( i, *prnt, marks );
             }
           }
 
-          if ( not __getMark( marks, i, n ).second ) {
-            __getMark( marks, i, n ).second = true;
+          if ( not __getMark ( marks, i, n ).second ) {
+            __getMark ( marks, i, n ).second = true;
             // In i.
-            const NodeSet& children = i->type().dag().children( n );
+            const NodeSet& children = i->type().dag().children ( n );
 
             for ( NodeSetIterator child = children.begin(); child != children.end(); ++child )
-              __fromParent( i, *child, marks );
+              __fromParent ( i, *child, marks );
 
             // Out of i.
             try {
               typedef std::vector< std::pair<Instance*, std::string> >::const_iterator Iter;
 
-              for ( Iter iter = i->getRefAttr( n ).begin(); iter != i->getRefAttr( n ).end(); ++iter ) {
-                __fromParent( iter->first, iter->first->type().get( iter->second ).id(), marks );
+              for ( Iter iter = i->getRefAttr ( n ).begin(); iter != i->getRefAttr ( n ).end(); ++iter ) {
+                __fromParent ( iter->first, iter->first->type().get ( iter->second ).id(), marks );
               }
             } catch ( NotFound& ) {
               // Not an inverse sc
@@ -171,7 +171,7 @@ namespace gum {
 
         default: {
           // We shouldn't reach any other ClassElement than Attribute or SlotChain.
-          GUM_ERROR( FatalError, "This case is impossible." );
+          GUM_ERROR ( FatalError, "This case is impossible." );
         }
       }
 
@@ -180,40 +180,40 @@ namespace gum {
     }
 
     void
-    StructuredBayesBall::__fromParent( const Instance* i, NodeId n, InstanceMap& marks ) {
+    StructuredBayesBall::__fromParent ( const Instance* i, NodeId n, InstanceMap& marks ) {
       // std::stringstream sBuff;
       // sBuff << i->name() << "." << i->type().get(n).safeName();
       // std::string in = "in __fromParent ";
       // GUM_TRACE(in + sBuff.str());
-      if ( not marks.exists( i ) ) {
-        marks.insert( i, new StructuredBayesBall::MarkMap() );
+      if ( not marks.exists ( i ) ) {
+        marks.insert ( i, new StructuredBayesBall::MarkMap() );
       }
 
-      if ( not marks[i]->exists( n ) ) {
-        marks[i]->insert( n, std::pair<bool, bool>( false, false ) );
+      if ( not marks[i]->exists ( n ) ) {
+        marks[i]->insert ( n, std::pair<bool, bool> ( false, false ) );
       }
 
       // Concerns only Attribute (because of the hard evidence)
-      if ( ( __isHardEvidence( i, n ) ) and ( not __getMark( marks, i, n ).first ) ) {
-        __getMark( marks, i, n ).first = true;
-        const NodeSet& parents = i->type().dag().parents( n );
+      if ( ( __isHardEvidence ( i, n ) ) and ( not __getMark ( marks, i, n ).first ) ) {
+        __getMark ( marks, i, n ).first = true;
+        const NodeSet& parents = i->type().dag().parents ( n );
 
         for ( NodeSetIterator iter = parents.begin(); iter != parents.end(); ++iter )
-          __fromChild( i, *iter, marks );
-      } else if ( not __getMark( marks, i, n ).second ) {
-        __getMark( marks, i, n ).second = true;
+          __fromChild ( i, *iter, marks );
+      } else if ( not __getMark ( marks, i, n ).second ) {
+        __getMark ( marks, i, n ).second = true;
         // In i.
-        const NodeSet& children = i->type().dag().children( n );
+        const NodeSet& children = i->type().dag().children ( n );
 
         for ( NodeSetIterator iter = children.begin(); iter != children.end(); ++iter )
-          __fromParent( i, *iter, marks );
+          __fromParent ( i, *iter, marks );
 
         // Out of i.
         try {
           typedef std::vector< std::pair<Instance*, std::string> >::const_iterator Iter;
 
-          for ( Iter iter = i->getRefAttr( n ).begin(); iter != i->getRefAttr( n ).end(); ++iter )
-            __fromParent( iter->first, iter->first->type().get( iter->second ).id(), marks );
+          for ( Iter iter = i->getRefAttr ( n ).begin(); iter != i->getRefAttr ( n ).end(); ++iter )
+            __fromParent ( iter->first, iter->first->type().get ( iter->second ).id(), marks );
         } catch ( NotFound& ) {
           // Not an inverse sc
         }
@@ -224,7 +224,7 @@ namespace gum {
     }
 
     void
-    StructuredBayesBall::__fillMaps( InstanceMap& marks ) {
+    StructuredBayesBall::__fillMaps ( InstanceMap& marks ) {
       // First find for each instance it's requisite nodes
       HashTable<const Instance*, Set<NodeId>*> req_map;
 
@@ -233,11 +233,11 @@ namespace gum {
 
         for ( StructuredBayesBall::MarkMap::iterator jter = ( **iter ).begin(); jter != ( **iter ).end(); ++jter ) {
           if ( jter->first ) {
-            req_set->insert( jter.key() );
+            req_set->insert ( jter.key() );
           }
         }
 
-        req_map.insert( iter.key(), req_set );
+        req_map.insert ( iter.key(), req_set );
       }
 
       // Remove all instances with 0 requisite nodes
@@ -245,39 +245,40 @@ namespace gum {
 
       for ( HashTable<const Instance*, Set<NodeId>*>::iterator iter = req_map.begin(); iter != req_map.end(); ++iter ) {
         if ( ( **iter ).size() == 0 ) {
-          to_remove.insert( iter.key() );
+          to_remove.insert ( iter.key() );
         }
       }
 
       for ( Set<const Instance*>::iterator iter = to_remove.begin(); iter != to_remove.end(); ++iter ) {
         delete req_map[*iter];
-        req_map.erase( *iter );
+        req_map.erase ( *iter );
       }
 
       // Fill __reqMap and __keyMap
       for ( HashTable<const Instance*, Set<NodeId>*>::iterator iter = req_map.begin(); iter != req_map.end(); ++iter ) {
-        std::string key = __buildHashKey( iter.key(), **iter );
+        std::string key = __buildHashKey ( iter.key(), **iter );
 
-        if ( __reqMap.exists( key ) ) {
-          __keyMap.insert( iter.key(), std::pair<std::string, Set<NodeId>* >( key, __reqMap[key].first ) );
+        if ( __reqMap.exists ( key ) ) {
+          __keyMap.insert ( iter.key(), std::pair<std::string, Set<NodeId>* > ( key, __reqMap[key].first ) );
           __reqMap[key].second += 1;
           delete *iter;
           req_map[iter.key()] = 0;
         } else {
-          __reqMap.insert( key, std::pair< Set<NodeId>*, Size>( *iter, 1 ) );
-          __keyMap.insert( iter.key(), std::pair<std::string, Set<NodeId>* >( key, *iter ) );
+          __reqMap.insert ( key, std::pair< Set<NodeId>*, Size> ( *iter, 1 ) );
+          __keyMap.insert ( iter.key(), std::pair<std::string, Set<NodeId>* > ( key, *iter ) );
         }
       }
     }
 
     std::string
-    StructuredBayesBall::__buildHashKey( const Instance* i, Set<NodeId>& req_nodes ) {
+    StructuredBayesBall::__buildHashKey ( const Instance* i, Set<NodeId>& req_nodes ) {
       std::stringstream sBuff;
       sBuff << i->type().name();
 
-      for ( DAG::NodeIterator node = i->type().dag().beginNodes(); node != i->type().dag().endNodes(); ++node ) {
-        if ( req_nodes.exists( *node ) ) {
-          sBuff << "-" << *node;
+      //for ( DAG::NodeIterator node = i->type().dag().beginNodes(); node != i->type().dag().endNodes(); ++node ) {
+      for ( auto node : i->type().dag().nodes() ) {
+        if ( req_nodes.exists ( node ) ) {
+          sBuff << "-" << node;
         }
       }
 

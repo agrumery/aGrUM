@@ -81,18 +81,18 @@ namespace gum {
       std::string tab = "  ";
       output << "digraph \"" << container.name() << "\" {" << std::endl;
 
-      for ( DAG::NodeIterator node_iter = container.dag().beginNodes();
-            node_iter != container.dag().endNodes(); ++node_iter ) {
-        if ( container.dag().children( *node_iter ).size() > 0 ) {
-          const NodeSet& children = container.dag().children( *node_iter );
+      //for ( DAG::NodeIterator node_iter = container.dag().beginNodes();node_iter != container.dag().endNodes(); ++node_iter ) {
+        for(auto node:container.dag().nodes()) {
+        if ( container.dag().children( node ).size() > 0 ) {
+          const NodeSet& children = container.dag().children( node );
 
           for ( NodeSetIterator child_iter = children.begin();
                 child_iter != children.end(); ++child_iter ) {
-            output << tab << "\"" << container.get( *node_iter ).name() << "\" -> "
+            output << tab << "\"" << container.get( node ).name() << "\" -> "
                    << "\"" << container.get( *child_iter ).name() << "\";" << std::endl;
           }
-        } else if ( container.dag().parents( *node_iter ).size() == 0 ) {
-          output << tab << "\"" << container.get( *node_iter ).name() << "\";" << std::endl;
+        } else if ( container.dag().parents( node ).size() == 0 ) {
+          output << tab << "\"" << container.get( node ).name() << "\";" << std::endl;
         }
       }
 

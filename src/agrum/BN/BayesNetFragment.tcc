@@ -63,8 +63,8 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE const Potential<GUM_SCALAR>&
   BayesNetFragment<GUM_SCALAR>::cpt ( NodeId id ) const {
-    if ( ! isImportedNode ( id ) )
-      GUM_ERROR ( NotFound,id<<" is not imported" );
+    if ( ! isInstalledNode ( id ) )
+      GUM_ERROR ( NotFound,id<<" is not installed" );
 
     return __bn.cpt ( id );
   }
@@ -76,8 +76,8 @@ namespace gum {
 
   template<typename GUM_SCALAR>  INLINE const DiscreteVariable&
   BayesNetFragment<GUM_SCALAR>::variable ( NodeId id ) const {
-    if ( ! isImportedNode ( id ) )
-      GUM_ERROR ( NotFound,id<<" is not imported" );
+    if ( ! isInstalledNode ( id ) )
+      GUM_ERROR ( NotFound,id<<" is not installed" );
 
     return __bn.variable ( id );
   }
@@ -86,8 +86,8 @@ namespace gum {
   BayesNetFragment<GUM_SCALAR>::nodeId ( const DiscreteVariable& var ) const {
     NodeId id=__bn.nodeId ( var );
 
-    if ( ! isImportedNode ( id ) )
-      GUM_ERROR ( NotFound,"variable "<<var.name() <<" is not imported" );
+    if ( ! isInstalledNode ( id ) )
+      GUM_ERROR ( NotFound,"variable "<<var.name() <<" is not installed" );
 
     return id;
   }
@@ -96,8 +96,8 @@ namespace gum {
   BayesNetFragment<GUM_SCALAR>::idFromName ( const std::string& name ) const {
     NodeId id=__bn.idFromName ( name );
 
-    if ( ! isImportedNode ( id ) )
-      GUM_ERROR ( NotFound,"variable "<<name<<" is not imported" );
+    if ( ! isInstalledNode ( id ) )
+      GUM_ERROR ( NotFound,"variable "<<name<<" is not installed" );
 
     return id;
   }
@@ -106,8 +106,8 @@ namespace gum {
   BayesNetFragment<GUM_SCALAR>::variableFromName ( const std::string& name ) const {
     NodeId id=__bn.idFromName ( name );
 
-    if ( ! isImportedNode ( id ) )
-      GUM_ERROR ( NotFound,"variable "<<name<<" is not imported" );
+    if ( ! isInstalledNode ( id ) )
+      GUM_ERROR ( NotFound,"variable "<<name<<" is not installed" );
 
     return __bn.variable ( id );
   }
@@ -116,37 +116,44 @@ namespace gum {
   //============================================================
   // specific API for BayesNetFragment
   template<typename GUM_SCALAR> INLINE bool
-  BayesNetFragment<GUM_SCALAR>::isImportedNode ( NodeId id ) const {
+  BayesNetFragment<GUM_SCALAR>::isInstalledNode ( NodeId id ) const {
     return this->_dag.existsNode ( id );
   }
 
   template<typename GUM_SCALAR> void
-  BayesNetFragment<GUM_SCALAR>::importNode ( NodeId id ) {
+  BayesNetFragment<GUM_SCALAR>::installNode ( NodeId id ) {
     if ( ! __bn.dag().existsNode ( id ) )
       GUM_ERROR ( NotFound,"Node "<<id<<" does not exist in referred BayesNet" );
 
-    if ( !isImportedNode ( id ) ) {
+    if ( !isInstalledNode ( id ) ) {
       this->_dag.insertNode ( id );
 
       // adding arcs with id as a tail
       for ( auto pa: this->__bn.dag().parents ( id ) ) {
-        if ( isImportedNode ( pa ) )
+        if ( isInstalledNode ( pa ) )
           this->_dag.insertArc ( pa,id );
       }
 
       //addin arcs with id as a head
       for ( auto son : this->__bn.dag().children ( id ) )
-        if ( isImportedNode ( son ) )
+        if ( isInstalledNode ( son ) )
           this->_dag.insertArc ( id,son );
     }
   }
 
   template<typename GUM_SCALAR> void
-  BayesNetFragment<GUM_SCALAR>::importAscendants ( NodeId id ) {
-    importNode ( id );
+  BayesNetFragment<GUM_SCALAR>::uninstallNode ( NodeId id ) {
+    if ( isInstalledNode ( id ) ) {
+      this->_dag.eraseNode ( id );
+    }
+  }
+  
+  template<typename GUM_SCALAR> void
+  BayesNetFragment<GUM_SCALAR>::installAscendants ( NodeId id ) {
+    installNode ( id );
 
     // bn is a dag => this will have an end ...
     for ( auto pa: this->__bn.dag().parents ( id ) )
-      importAscendants ( pa );
+      installAscendants ( pa );
   }
 }// gum

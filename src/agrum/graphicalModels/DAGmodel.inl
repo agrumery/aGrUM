@@ -32,22 +32,22 @@ namespace gum {
 
   INLINE
   const std::string&
-  DAGmodel::property( const std::string& name ) const {
+  DAGmodel::property ( const std::string& name ) const {
     try {
       return  __properties() [name];
     } catch ( NotFound& ) {
       std::string msg = "The following property does not exists: ";
-      GUM_ERROR( NotFound, msg + name );
+      GUM_ERROR ( NotFound, msg + name );
     }
   }
 
   INLINE
   void
-  DAGmodel::setProperty( const std::string& name, const std::string& value ) {
+  DAGmodel::setProperty ( const std::string& name, const std::string& value ) {
     try {
       __properties() [name] = value;
     } catch ( NotFound& ) {
-      __properties().insert( name, value );
+      __properties().insert ( name, value );
     }
   }
 
@@ -61,13 +61,13 @@ namespace gum {
   INLINE
   const DAG::NodeIterator
   DAGmodel::beginNodes() const {
-    return dag().beginNodes();
+    return dag().begin();
   }
 
   INLINE
   const DAG::NodeIterator
   DAGmodel::endNodes() const {
-    return dag().endNodes();
+    return dag().end();
   }
 
   INLINE
@@ -96,11 +96,11 @@ namespace gum {
 
   INLINE
   double
-  DAGmodel::log10DomainSize( void ) const {
+  DAGmodel::log10DomainSize ( void ) const {
     double dSize = 0.0;
 
-    for ( auto it = beginNodes(); it != endNodes(); ++it ) {
-      dSize += log10( variable( *it ).domainSize() );
+    for ( auto node : nodes()) {
+      dSize += log10 ( variable ( node ).domainSize() );
     }
 
     return dSize;
@@ -108,11 +108,11 @@ namespace gum {
 
   INLINE
   void
-  DAGmodel::completeInstantiation( Instantiation& I ) const {
+  DAGmodel::completeInstantiation ( Instantiation& I ) const {
     I.clear();
 
-    for ( DAG::NodeIterator node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter )
-      I << variable( *node_iter );
+    for ( DAG::NodeIterator node_iter = dag().begin(); node_iter != dag().end(); ++node_iter )
+      I << variable ( *node_iter );
   }
 
   INLINE
@@ -134,7 +134,15 @@ namespace gum {
     return _dag.sizeArcs();
   }
 
-
+  INLINE const ArcSet&
+  DAGmodel::arcs() const {
+    return _dag.asArcs();
+  }
+  
+  INLINE const NodeGraphPart&
+  DAGmodel::nodes() const {
+    return (NodeGraphPart&)_dag;
+  }
 } /* namespace gum */
 
 

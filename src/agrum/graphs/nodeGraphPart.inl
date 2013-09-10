@@ -150,7 +150,7 @@ namespace gum {
     __clearNodes();
   }
 
-  INLINE NodeGraphPartIterator NodeGraphPart::beginNodes() const {
+  INLINE NodeGraphPartIterator NodeGraphPart::begin() const {
     NodeGraphPartIterator it( this );
     it.__validate(); // stop the iterator at the first not-in-holes
     return it;
@@ -160,7 +160,7 @@ namespace gum {
     __endIterator.__setPos( __bound );
   }
 
-  INLINE const NodeGraphPartIterator& NodeGraphPart::endNodes() const {
+  INLINE const NodeGraphPartIterator& NodeGraphPart::end() const {
     return __endIterator;
   }
 

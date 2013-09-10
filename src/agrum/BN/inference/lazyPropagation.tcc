@@ -80,12 +80,12 @@ namespace gum {
 
     const DAG& dag = BN.dag();
 
-    for ( DAG::NodeIterator iter = dag.beginNodes();
-          iter != dag.endNodes(); ++iter ) {
+    //for ( DAG::NodeIterator iter = dag.beginNodes();iter != dag.endNodes(); ++iter ) {
+    for ( auto node : dag.nodes() ) {
       // get the variables in the potential of iter_node
-      NodeId first_var_eliminated = *iter;
-      unsigned int elim_number = elim_order[*iter];
-      const NodeSet& parents = dag.parents ( *iter );
+      NodeId first_var_eliminated = node;
+      unsigned int elim_number = elim_order[node];
+      const NodeSet& parents = dag.parents ( node );
 
       for ( NodeSetIterator parent = parents.begin();
             parent != parents.end(); ++parent ) {
@@ -100,26 +100,25 @@ namespace gum {
       // first_var_eliminated contains the first var (iter or one of its parents)
       // eliminated => the clique created during its elmination contains iter
       // and all of its parents => it can contain iter's potential
-      __node_to_clique.insert
-      ( *iter,
-        triangulation.createdJunctionTreeClique ( first_var_eliminated ) );
+      __node_to_clique.insert ( node,
+                                triangulation.createdJunctionTreeClique ( first_var_eliminated ) );
     }
 
     // create empty potential lists into the cliques of the joint tree as well
     // as empty lists of evidence
     List <const Potential<GUM_SCALAR>*> empty_list;
 
-    for ( CliqueGraph::NodeIterator iter = __JT->beginNodes();
-          iter != __JT->endNodes(); ++iter ) {
-      __clique_potentials.insert ( *iter, empty_list );
-      __clique_evidence.insert ( *iter, empty_list );
+    //for ( CliqueGraph::NodeIterator iter = __JT->beginNodes();iter != __JT->endNodes(); ++iter ) {
+    for ( auto node : __JT->nodes() ) {
+      __clique_potentials.insert ( node, empty_list );
+      __clique_evidence.insert ( node, empty_list );
     }
 
     // put all the CPT's of the Bayes net nodes into the cliques
-    for ( DAG::NodeIterator iter = dag.beginNodes();
-          iter != dag.endNodes(); ++iter ) {
-      const Potential<GUM_SCALAR>& cpt = BN.cpt ( *iter ) ;
-      __clique_potentials[__node_to_clique[*iter]].insert ( &cpt );
+    //for ( DAG::NodeIterator iter = dag.beginNodes();iter != dag.endNodes(); ++iter ) {
+    for ( auto node : dag.nodes() ) {
+      const Potential<GUM_SCALAR>& cpt = BN.cpt ( node ) ;
+      __clique_potentials[__node_to_clique[node]].insert ( &cpt );
     }
 
     // create empty messages on the separators
@@ -132,10 +131,10 @@ namespace gum {
     }
 
     // indicate that __collect and __diffusion passed through no clique yet
-    for ( CliqueGraph::NodeIterator iter = __JT->beginNodes();
-          iter != __JT->endNodes(); ++iter ) {
-      __collected_cliques.insert ( *iter, false );
-      __diffused_cliques.insert ( *iter, false );
+    //for ( CliqueGraph::NodeIterator iter = __JT->beginNodes();iter != __JT->endNodes(); ++iter ) {
+    for ( auto node : __JT->nodes() ) {
+      __collected_cliques.insert ( node, false );
+      __diffused_cliques.insert ( node, false );
     }
   }
 
@@ -155,9 +154,10 @@ namespace gum {
     const DAG& dag = this->bn().dag();
     //const NodeSet& nodes = dag.nodes();
 
-    for ( auto iter = dag.beginNodes(); iter != dag.endNodes(); ++iter ) {
-      const DiscreteVariable& var = this->bn().variable ( *iter );
-      modalities.insert ( *iter, var.domainSize() );
+    //for ( auto iter = dag.beginNodes(); iter != dag.endNodes(); ++iter ) {
+    for ( auto node:dag.nodes() ) {
+      const DiscreteVariable& var = this->bn().variable ( node );
+      modalities.insert ( node, var.domainSize() );
     }
 
     // initialize the __triangulation algorithm
@@ -184,10 +184,10 @@ namespace gum {
     const DAG& dag = this->bn().dag();
     //const NodeSet& nodes = dag.nodes();
 
-    for ( DAG::NodeIterator iter = dag.beginNodes();
-          iter != dag.endNodes(); ++iter ) {
-      const DiscreteVariable& var = this->bn().variable ( *iter );
-      modalities.insert ( *iter, var.domainSize() );
+    //for ( DAG::NodeIterator iter = dag.beginNodes();iter != dag.endNodes(); ++iter ) {
+    for ( auto node : dag.nodes() ) {
+      const DiscreteVariable& var = this->bn().variable ( node );
+      modalities.insert ( node, var.domainSize() );
     }
 
     // initialize the __triangulation algorithm
@@ -944,15 +944,16 @@ namespace gum {
     NodeId clique_of_ids = 0;
     bool clique_found = false;
 
-    for ( CliqueGraph::NodeIterator iter = __JT->beginNodes();
-          iter != __JT->endNodes(); ++iter ) {
+    //for ( CliqueGraph::NodeIterator iter = __JT->beginNodes();iter != __JT->endNodes(); ++iter )
+    for ( auto node : __JT->nodes() ) {
       // get the nodes contained in the clique
-      const NodeSet& clique = __JT->clique ( *iter );
+      const NodeSet& clique = __JT->clique ( node );
       // check whether the clique actually contains all of ids
       bool clique_ok = true;
 
-      for ( NodeSetIterator iter2 = ids.begin(); iter2 != ids.end(); ++iter2 ) {
-        if ( !clique.contains ( *iter2 ) ) {
+      //for ( NodeSetIterator iter2 = ids.begin(); iter2 != ids.end(); ++iter2 ) {
+      for ( auto node2 : ids ) {
+        if ( !clique.contains ( node2 ) ) {
           clique_ok = false;
           break;
         }
@@ -960,7 +961,7 @@ namespace gum {
 
       // check if we found the clique we wanted
       if ( clique_ok ) {
-        clique_of_ids = *iter;
+        clique_of_ids = node;
         clique_found = true;
         break;
       }
@@ -1217,3 +1218,4 @@ namespace gum {
 
 #endif    // DOXYGEN_SHOULD_SKIP_THIS
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
+

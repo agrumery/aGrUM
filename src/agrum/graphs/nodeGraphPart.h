@@ -314,10 +314,10 @@ namespace gum {
       NodeSet nodes() const;
 
       /// a begin iterator to parse the set of nodes contained in the NodeGraphPart
-      NodeGraphPartIterator beginNodes() const;
+      NodeGraphPartIterator begin() const;
 
       /// the end iterator to parse the set of nodes contained in the NodeGraphPart
-      const NodeGraphPartIterator& endNodes() const;
+      const NodeGraphPartIterator& end() const;
 
       /// a function to display the set of nodes
       std::string toString() const;

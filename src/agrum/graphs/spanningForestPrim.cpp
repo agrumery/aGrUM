@@ -33,40 +33,40 @@ namespace gum {
 
 
   /// Default constructor
-  SpanningForestPrim::SpanningForestPrim( const UndiGraph* graph,
-                                          const EdgeProperty<float>* cost ) :
+  SpanningForestPrim::SpanningForestPrim ( const UndiGraph* graph,
+      const EdgeProperty<float>* cost ) :
     SpanningForest(),
-    __graph( *graph ),
-    __costTable( *cost ),
-    __spanning_tree_cost( 0 ),
-    __require_computation( true ) {
+    __graph ( *graph ),
+    __costTable ( *cost ),
+    __spanning_tree_cost ( 0 ),
+    __require_computation ( true ) {
     if ( ! graph || ! cost ) {
-      GUM_ERROR( GraphError, "invalid null graph or edge cost pointer" );
+      GUM_ERROR ( GraphError, "invalid null graph or edge cost pointer" );
     }
 
     // for debugging purposes
-    GUM_CONSTRUCTOR( SpanningForestPrim );
+    GUM_CONSTRUCTOR ( SpanningForestPrim );
   }
 
 
   // copy constructor
-  SpanningForestPrim::SpanningForestPrim( const SpanningForestPrim& from ) :
+  SpanningForestPrim::SpanningForestPrim ( const SpanningForestPrim& from ) :
     SpanningForest(),
-    __graph( from.__graph ),
-    __costTable( from.__costTable ),
-    __edgesToExplore( from.__edgesToExplore ),
-    __spanning_tree( from.__spanning_tree ),
-    __spanning_tree_cost( from.__spanning_tree_cost ),
-    __require_computation( from.__require_computation ) {
+    __graph ( from.__graph ),
+    __costTable ( from.__costTable ),
+    __edgesToExplore ( from.__edgesToExplore ),
+    __spanning_tree ( from.__spanning_tree ),
+    __spanning_tree_cost ( from.__spanning_tree_cost ),
+    __require_computation ( from.__require_computation ) {
     // for debugging purposes
-    GUM_CONS_CPY( SpanningForestPrim );
+    GUM_CONS_CPY ( SpanningForestPrim );
   }
 
 
   // destructor
   SpanningForestPrim::~SpanningForestPrim() {
     // for debugging purposes
-    GUM_DESTRUCTOR( SpanningForestPrim );
+    GUM_DESTRUCTOR ( SpanningForestPrim );
   }
 
 
@@ -97,10 +97,10 @@ namespace gum {
   /// compute the spanning forest
   void SpanningForestPrim::__compute() {
     // compute a spanning tree in every connected component
-    for ( UndiGraph::NodeIterator iter = __graph.beginNodes();
-          iter != __graph.endNodes(); ++iter ) {
-      if ( ! __spanning_tree.existsNode( *iter ) ) {
-        __computeInAComponent( *iter );
+    //for ( UndiGraph::NodeIterator iter = __graph.beginNodes();iter != __graph.endNodes(); ++iter ) {
+    for ( const auto node : __graph.nodes() ) {
+      if ( ! __spanning_tree.existsNode ( node ) ) {
+        __computeInAComponent ( node );
       }
     }
 
@@ -110,12 +110,12 @@ namespace gum {
 
 
   /// compute a spanning tree
-  void SpanningForestPrim::__computeInAComponent( const NodeId id ) {
+  void SpanningForestPrim::__computeInAComponent ( const NodeId id ) {
     // add the node to the spanning tree
-    __spanning_tree.insertNode( id );
+    __spanning_tree.insertNode ( id );
 
     // explore its neighborhood
-    __exploreNode( id );
+    __exploreNode ( id );
 
     // get the next nodes to link to the current spanning tree nodes
 
@@ -127,38 +127,38 @@ namespace gum {
       // consider only the edges that have one extremal node not in the spanning
       // tree as those that can be added to the tree
 
-      if ( ! __spanning_tree.existsNode( first ) ) {
+      if ( ! __spanning_tree.existsNode ( first ) ) {
         // add the edge to the spanning tree
-        __spanning_tree.insertNode( first );
-        __spanning_tree.insertEdge( first, second );
+        __spanning_tree.insertNode ( first );
+        __spanning_tree.insertEdge ( first, second );
         __spanning_tree_cost += __costTable[edge];
 
         // We must explore the first node's neighborhood
-        __exploreNode( first );
-      } else if ( ! __spanning_tree.existsNode( second ) ) {
+        __exploreNode ( first );
+      } else if ( ! __spanning_tree.existsNode ( second ) ) {
         // add the edge to the spanning tree
-        __spanning_tree.insertNode( second );
-        __spanning_tree.insertEdge( first, second );
+        __spanning_tree.insertNode ( second );
+        __spanning_tree.insertEdge ( first, second );
         __spanning_tree_cost += __costTable[edge];
 
         // We must explore the second node
-        __exploreNode( second );
+        __exploreNode ( second );
       }
     }
   }
 
 
   /// explore the neighborhood of a node belonging to the spanning tree
-  void SpanningForestPrim::__exploreNode( const NodeId id ) {
+  void SpanningForestPrim::__exploreNode ( const NodeId id ) {
     // add its neighbors __edgesToExplore to indicate that they are
     // potential next nodes to explore
-    const NodeSet& neighbours = __graph.neighbours( id );
+    const NodeSet& neighbours = __graph.neighbours ( id );
 
     for ( NodeSet::const_iterator iter = neighbours.begin();
           iter != neighbours.end(); ++iter ) {
-      if ( ! __spanning_tree.existsNode( *iter ) ) {
-        Edge edge( *iter, id );
-        __edgesToExplore.insert( __costTable[edge], edge );
+      if ( ! __spanning_tree.existsNode ( *iter ) ) {
+        Edge edge ( *iter, id );
+        __edgesToExplore.insert ( __costTable[edge], edge );
       }
     }
   }

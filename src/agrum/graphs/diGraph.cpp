@@ -33,21 +33,21 @@
 namespace gum {
 
 
-  DiGraph::DiGraph( Size nodes_size ,
-                    bool nodes_resize_policy,
-                    Size arcs_size ,
-                    bool arcs_resize_policy ) :
-    NodeGraphPart( nodes_size,nodes_resize_policy ),
-    ArcGraphPart( arcs_size,arcs_resize_policy ) {
-    GUM_CONSTRUCTOR( DiGraph );
+  DiGraph::DiGraph ( Size nodes_size ,
+                     bool nodes_resize_policy,
+                     Size arcs_size ,
+                     bool arcs_resize_policy ) :
+    NodeGraphPart ( nodes_size,nodes_resize_policy ),
+    ArcGraphPart ( arcs_size,arcs_resize_policy ) {
+    GUM_CONSTRUCTOR ( DiGraph );
   }
 
-  DiGraph::DiGraph( const DiGraph& g ) : NodeGraphPart( g ),ArcGraphPart( g ) {
-    GUM_CONS_CPY( DiGraph );
+  DiGraph::DiGraph ( const DiGraph& g ) : NodeGraphPart ( g ),ArcGraphPart ( g ) {
+    GUM_CONS_CPY ( DiGraph );
   }
 
   DiGraph::~DiGraph() {
-    GUM_DESTRUCTOR( DiGraph );
+    GUM_DESTRUCTOR ( DiGraph );
   }
 
   const std::string DiGraph::toString() const {
@@ -57,13 +57,14 @@ namespace gum {
     return s;
   }
 
-  const std::string DiGraph::toDot( const std::string& name ) const {
+  const std::string DiGraph::toDot ( const std::string& name ) const {
     std::stringstream strBuff;
     std::string tab = "     ";
     strBuff << "digraph " << name << " {" << std::endl;
 
-    for ( DiGraph::NodeIterator iter = beginNodes(); iter != endNodes(); ++iter ) {
-      strBuff << tab << *iter << ";" << std::endl;
+    //for ( DiGraph::NodeIterator iter = beginNodes(); iter != endNodes(); ++iter ) {
+    for ( const auto node: nodes() ) {
+      strBuff << tab << node<< ";" << std::endl;
     }
 
     strBuff << std::endl;

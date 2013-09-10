@@ -47,14 +47,14 @@ namespace gum {
    * BayesNetFragment is a DiGraphListener in order to be synchronized (especiallay when
    * removing nodes or arcs).
    *
-   * In a BayesNetFragment, one can import or remove nodes. An arc is in the fragment if and only if 
-   * its head and tail are imported in the fragment.
+   * In a BayesNetFragment, one can install or remove nodes. An arc is in the fragment if and only if 
+   * its head and tail are installed in the fragment.
    * 
    * A BayesNetFragment can redefine potential for node. The main reason is to be able to
-   * import a node without importing all its parents (and its ascendants). So local Potential to the
+   * install a node without installing all its parents (and its ascendants). So local Potential to the
    * fragment can be created. However, it is not done automatically. If a cpt is not locally
    * defined, the fragment uses the cpt defined in the referred BN. The checkConsistency() method
-   * verifies that, for all imported nodes, either all the parents are imported or a local CPT is
+   * verifies that, for all installed nodes, either all the parents are installed or a local CPT is
    * defined.
    */
 
@@ -181,23 +181,31 @@ namespace gum {
       /**
        * check if a certain NodeId exists in the fragment
        */
-      bool isImportedNode ( NodeId id ) const;
+      bool isInstalledNode ( NodeId id ) const;
 
       /**
-       * import a node referenced by its nodeId
+       * install a node referenced by its nodeId
        *
        * @throw NotFound if the node does not exist in the referred BN
-       * @warning nothing happens if the node is already imported
+       * @warning nothing happens if the node is already installed
        */
-      void importNode ( NodeId id );
+      void installNode ( NodeId id );
 
       /**
-       * import a node and all its ascendants
+       * install a node and all its ascendants
        *
        * @throw NotFound if the node does not exist in the referred BN
-       * @warning nothing happens if the node is already imported
+       * @warning nothing happens if the node is already installed
        */
-      void importAscendants ( NodeId id );
+      void installAscendants ( NodeId id );
+      
+      
+      /**
+       * uninstall a node referenced by its nodeId
+       *
+       * @warning nothing happens if the node is not installed
+       */
+      void uninstallNode ( NodeId id );
       /// @}
   };
 

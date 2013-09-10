@@ -187,17 +187,18 @@ namespace gum {
       // #parents <= __max_parents
       const Set<NodeId>* parents = 0;
 
-      for ( DAG::NodeIterator node = dag.beginNodes(); node != dag.endNodes(); ++node ) {
-        if ( dag.parents( *node ).size() > getMaxParents() ) {
-          parents = &( dag.parents( *node ) );
+      //for ( DAG::NodeIterator node = dag.beginNodes(); node != dag.endNodes(); ++node ) {
+      for(const auto node : dag.nodes()) {
+        if ( dag.parents( node ).size() > getMaxParents() ) {
+          parents = &( dag.parents( node ) );
           std::vector<NodeId> v;
 
           for ( Set<NodeId>::iterator iter = parents->begin(); iter != parents->end(); ++iter )
             v.push_back( *iter );
 
-          while ( dag.parents( *node ).size() > getMaxParents() ) {
+          while ( dag.parents( node ).size() > getMaxParents() ) {
             size_t idx = std::rand() % v.size();
-            Arc arc( v[idx], *node );
+            Arc arc( v[idx], node );
             GUM_ASSERT( dag.existsArc( arc ) );
             dag.eraseArc( arc );
             v[idx] = v.back();

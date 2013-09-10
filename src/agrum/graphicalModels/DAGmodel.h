@@ -106,14 +106,20 @@ namespace gum {
       bool empty() const;
 
       /**
-       * Shortcut for this->dag().beginNodes().
+       * Shortcut for this->dag().beginNodes()
+       * 
+       * @deprecated use for(auto node:obj.nodes()) instead
        */
-      const DAG::NodeIterator beginNodes() const;
+      GUM_DEPRECATED(const DAG::NodeIterator beginNodes() const);
 
       /**
-       * Shortcut for this->dag().endNodes().
+       * Shortcut for this->dag().endNodes()
+       * 
+       * @deprecated use for(auto node:obj.nodes()) instead
        */
-      const DAG::NodeIterator endNodes() const;
+      GUM_DEPRECATED(const DAG::NodeIterator endNodes() const);
+      
+      const NodeGraphPart& nodes() const;
 
       /**
       * Returns a constant reference over a variabe given it's node id.
@@ -145,14 +151,19 @@ namespace gum {
 
       /**
        * Shortcut for this->dag().beginArcs().
+       * 
+       * @deprecated Use for(auto arc : obj.arcs()) instead
        */
-      const DAG::ArcIterator beginArcs() const;
+      GUM_DEPRECATED(const DAG::ArcIterator beginArcs() const);
 
       /**
        * Shortcut for this->dag().endArcs().
+       * 
+       * @deprecated Use for(auto arc : obj.arcs()) instead
        */
-      const DAG::ArcIterator& endArcs() const;
+      GUM_DEPRECATED(const DAG::ArcIterator& endArcs() const);
 
+      const ArcSet& arcs(void) const;
       /// @}
 
 

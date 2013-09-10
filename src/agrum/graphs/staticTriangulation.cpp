@@ -160,9 +160,9 @@ namespace gum {
     EdgeSet T_prime;
     NodeProperty<unsigned int> R ( __triangulated_graph.size() );
 
-    for ( UndiGraph::NodeIterator iter = __triangulated_graph.beginNodes();
-          iter != __triangulated_graph.endNodes(); ++iter )
-      R.insert ( *iter, 0 );
+    //for ( UndiGraph::NodeIterator iter = __triangulated_graph.beginNodes();iter != __triangulated_graph.endNodes(); ++iter )
+    for ( const auto node : __triangulated_graph.nodes() )
+      R.insert ( node, 0 );
 
     // the FMINT loop
     for ( unsigned int i = __added_fill_ins.size() - 1;
@@ -405,9 +405,9 @@ namespace gum {
     // clique.
     NodeProperty<NodeId> T_mpd_cliques ( __junction_tree->size() );
 
-    for ( CliqueGraph::NodeIterator iter_clique = __junction_tree->beginNodes();
-          iter_clique != __junction_tree->endNodes(); ++iter_clique )
-      T_mpd_cliques.insert ( *iter_clique, *iter_clique );
+    //for ( CliqueGraph::NodeIterator iter_clique = __junction_tree->beginNodes();iter_clique != __junction_tree->endNodes(); ++iter_clique )
+    for ( const auto cliq : __junction_tree->nodes() )
+      T_mpd_cliques.insert ( cliq,cliq );
 
     // parse all the separators of the junction tree and test those that are not
     // complete in the orginal graph
@@ -415,11 +415,10 @@ namespace gum {
 
     NodeSet mark;
 
-    for ( CliqueGraph::NodeIterator iter_clique = __junction_tree->beginNodes();
-          iter_clique != __junction_tree->endNodes(); ++iter_clique )
-      if ( ! mark.contains ( *iter_clique ) )
-        __computeMaxPrimeMergings ( *iter_clique, *iter_clique,
-                                    merged_cliques, mark );
+    //for ( CliqueGraph::NodeIterator iter_clique = __junction_tree->beginNodes();iter_clique != __junction_tree->endNodes(); ++iter_clique )
+    for ( const auto cliq : __junction_tree->nodes() )
+      if ( ! mark.contains ( cliq ) )
+        __computeMaxPrimeMergings ( cliq, cliq,merged_cliques, mark );
 
     // compute the transitive closure of merged_cliques. This one will contain
     // pairs (X,Y) indicating that clique X must be merged with clique Y.
@@ -502,10 +501,10 @@ namespace gum {
       // parse all the cliques of the junction tree
       NodeSetIterator iter_clique2;
 
-      for ( CliqueGraph::NodeIterator iter_node = __junction_tree->beginNodes();
-            iter_node != __junction_tree->endNodes(); ++iter_node ) {
+      //for ( CliqueGraph::NodeIterator iter_node = __junction_tree->beginNodes();iter_node != __junction_tree->endNodes(); ++iter_node ) {
+      for ( const auto node : __junction_tree->nodes() ) {
         // for each clique, add the edges necessary to make it complete
-        const NodeSet& clique = __junction_tree->clique ( *iter_node );
+        const NodeSet& clique = __junction_tree->clique ( node );
         std::vector<NodeId> clique_nodes ( clique.size() );
         unsigned int i = 0;
 
@@ -735,10 +734,10 @@ namespace gum {
       // parse all the cliques of the junction tree
       NodeSetIterator iter_clique2;
 
-      for ( CliqueGraph::NodeIterator iter_node = __junction_tree->beginNodes();
-            iter_node != __junction_tree->endNodes(); ++iter_node ) {
+      //for ( CliqueGraph::NodeIterator iter_node = __junction_tree->beginNodes();iter_node != __junction_tree->endNodes(); ++iter_node ) {
+      for ( const auto node : __junction_tree->nodes() ) {
         // for each clique, add the edges necessary to make it complete
-        const NodeSet& clique = __junction_tree->clique ( *iter_node );
+        const NodeSet& clique = __junction_tree->clique ( node );
         std::vector<NodeId> clique_nodes ( clique.size() );
         unsigned int i = 0;
 
