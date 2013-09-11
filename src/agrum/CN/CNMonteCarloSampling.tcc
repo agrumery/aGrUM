@@ -148,28 +148,6 @@ namespace gum {
 
         } // end of : for all nodes
       } // end of : if ( p(e) > 0 )
-
-      /*
-          if ( infEs::_storeBNOpt && ! keepSample ) {
-            //delete this->_l_optimalNet[tId]->getCurrentSample();
-            //std::cout << " net deleted, no opt found " << std::endl;
-            #pragma omp critical(deleteCpt)
-            {
-              notOptDelete++;
-            }
-          }
-      */
-      // do NOT reset threads marginals ( otherwise we will store vertices and dBN that are NOT optimal )
-      /*const DAG &tDag = this->_workingSet[tId]->dag();
-      unsigned int dSize;
-      for ( DAG::NodeIterator it = tDag.beginNodes(); it != tDag.endNodes(); ++it ) {
-        dSize = this->_l_marginalMin[tId][*it].size();
-        for ( unsigned int i = 0; i < dSize; i++ ) {
-          this->_l_marginalMin[tId][*it][i] = 1;
-          this->_l_marginalMax[tId][*it][i] = 0;
-        }
-      }*/
-
     }
 
     template< typename GUM_SCALAR, class BNInferenceEngine >
@@ -188,11 +166,6 @@ namespace gum {
       /**
        * VERIFIER d/dt(e(t+1)-e(t))
        */
-      //this->setMinEpsilonRate ( std::numeric_limits< GUM_SCALAR >::min() );
-      //this->setBurnIn ( infEs::_iterStop );
-      //this->setPeriodSize ( infEs::_iterStop );
-
-      ///this->setMaxIter ( this->burnIn() + this->periodSize() );
       this->setEpsilon ( 0. );
       this->enableEpsilon();  // to be sure
 

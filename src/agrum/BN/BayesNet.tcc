@@ -486,12 +486,13 @@ namespace gum {
 
     GUM_SCALAR tmp;
 
-    for ( DAG::NodeIterator node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter ) {
-      if ( ( tmp = cpt ( *node_iter ) [i] ) == ( GUM_SCALAR ) 0 ) {
+    //for ( DAG::NodeIterator node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter ) {
+    for ( const auto node_iter : nodes() ) {
+      if ( ( tmp = cpt ( node_iter ) [i] ) == ( GUM_SCALAR ) 0 ) {
         return ( GUM_SCALAR ) ( - std::numeric_limits<double>::infinity( ) );
       }
 
-      value += log2 ( cpt ( *node_iter ) [i] );
+      value += log2 ( cpt ( node_iter ) [i] );
     }
 
     return value;
@@ -500,19 +501,17 @@ namespace gum {
   /// begin Multiple Change for all CPTs
   template<typename GUM_SCALAR>
   void BayesNet<GUM_SCALAR>::beginTopologyTransformation() {
-    for ( DAG::NodeIterator node_iter = dag().beginNodes();
-          node_iter != dag().endNodes(); ++node_iter ) {
-      __probaMap[*node_iter]->beginMultipleChanges();
-    }
+    //for ( DAG::NodeIterator node_iter = dag().beginNodes();node_iter != dag().endNodes(); ++node_iter ) {
+    for ( const auto node_iter : nodes() )
+      __probaMap[node_iter]->beginMultipleChanges();
   }
 
   /// end Multiple Change for all CPTs
   template<typename GUM_SCALAR>
   void BayesNet<GUM_SCALAR>::endTopologyTransformation() {
-    for ( DAG::NodeIterator node_iter = dag().beginNodes();
-          node_iter != dag().endNodes(); ++node_iter ) {
-      __probaMap[*node_iter]->endMultipleChanges();
-    }
+    //for ( DAG::NodeIterator node_iter = dag().beginNodes();node_iter != dag().endNodes(); ++node_iter ) {
+    for ( const auto node_iter : dag().nodes() )
+      __probaMap[node_iter]->endMultipleChanges();
   }
 
   /// clear all potentials
@@ -556,7 +555,7 @@ namespace gum {
     SimpleCPTGenerator<GUM_SCALAR> generator;
 
     //for ( DAG::NodeIterator iter = this->beginNodes(); iter != this->endNodes(); ++iter ) {
-    for(const auto iter : nodes()) {
+    for ( const auto iter : nodes() ) {
       generator.generateCPT ( cpt ( iter ).pos ( variable ( iter ) ),  cpt ( iter ) );
     }
   }
