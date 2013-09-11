@@ -99,7 +99,7 @@ namespace gum {
   DAGmodel::log10DomainSize ( void ) const {
     double dSize = 0.0;
 
-    for ( auto node : nodes()) {
+    for ( auto node : nodes() ) {
       dSize += log10 ( variable ( node ).domainSize() );
     }
 
@@ -116,7 +116,7 @@ namespace gum {
   }
 
   INLINE
-  Idx
+  Size
   DAGmodel::size() const {
     return dag().size();
   }
@@ -129,19 +129,26 @@ namespace gum {
   }
 
   INLINE
-  Idx
+  Size
   DAGmodel::sizeArcs() const {
     return _dag.sizeArcs();
   }
 
+  INLINE
+  Size
+  DAGmodel::nbrArcs() const {
+    return _dag.sizeArcs();
+  }
+
+
   INLINE const ArcSet&
   DAGmodel::arcs() const {
-    return _dag.asArcs();
+    return _dag.arcs();
   }
-  
+
   INLINE const NodeGraphPart&
   DAGmodel::nodes() const {
-    return (NodeGraphPart&)_dag;
+    return ( NodeGraphPart& ) _dag;
   }
 } /* namespace gum */
 

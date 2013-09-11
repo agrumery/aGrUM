@@ -384,8 +384,9 @@ namespace gum {
 
     std::vector<unsigned int> inBN;
 
-    for ( DAG::NodeIterator it = bn->beginNodes(); it != bn->endNodes(); ++it ) {
-      std::string not_exist = ( bn->variable( *it ) ).name();
+    //for ( DAG::NodeIterator it = bn->beginNodes(); it != bn->endNodes(); ++it ) {
+    for(const auto it : bn->nodes()) {
+      std::string not_exist = ( bn->variable( it ) ).name();
       unsigned int i = 0;
 
       for ( i = 0; i < database.__nb_nodes; i++ ) {
@@ -402,10 +403,10 @@ namespace gum {
 
       inBN.push_back( i );
 
-      database.__nb_modalities[i] = ( bn->variable( *it ) ).domainSize();
+      database.__nb_modalities[i] = ( bn->variable( it ) ).domainSize();
 
       for ( unsigned int j = 0 ; j < database.__nb_modalities[i]; j++ )
-        modal_names[i].insert( ( bn->variable( *it ) ).label( j ), j );
+        modal_names[i].insert( ( bn->variable( it ) ).label( j ), j );
     }
 
 

@@ -83,15 +83,16 @@ namespace gum {
   IBayesNet<GUM_SCALAR>::dim() const {
     Idx dim = 0;
 
-    for ( auto node = dag().beginNodes(); node != dag().endNodes(); ++node ) {
+    //for ( auto node = dag().beginNodes(); node != dag().endNodes(); ++node ) {
+    for ( const auto node : nodes() ) {
       Idx q = 1;
-      const NodeSet& s = dag().parents ( *node );
 
-      for ( auto parent = s.begin(); parent != s.end(); ++parent ) {
-        q *= variable ( *parent ).domainSize();
+      //const NodeSet& s = dag().parents ( node );
+      for ( const auto parent : dag().parents ( node ) ) {
+        q *= variable ( parent ).domainSize();
       }
 
-      dim += ( variable ( *node ).domainSize() - 1 ) * q;
+      dim += ( variable ( node ).domainSize() - 1 ) * q;
     }
 
     return dim;
@@ -103,30 +104,31 @@ namespace gum {
   IBayesNet<GUM_SCALAR>::toString ( void ) const {
     Size param = 0;
 
-    double dSize=log10DomainSize();
+    double dSize = log10DomainSize();
 
-    for ( DAG::NodeIterator it = beginNodes(); it != endNodes(); ++it ) {
-      param += ( ( const MultiDimImplementation<GUM_SCALAR>& ) cpt ( *it ).getMasterRef() ).realSize();
+    //for ( DAG::NodeIterator it = beginNodes(); it != endNodes(); ++it ) {
+    for ( const auto it : nodes() ) {
+      param += ( ( const MultiDimImplementation<GUM_SCALAR>& ) cpt ( it ).getMasterRef() ).realSize();
     }
 
-    double compressionRatio = log10 ( 1.0*param )-dSize;
+    double compressionRatio = log10 ( 1.0 * param ) - dSize;
 
     std::stringstream s;
     s << "BN{nodes: " << size() << ", arcs: " << dag().sizeArcs() << ", ";
 
-    if ( dSize>6 )
-      s<<"domainSize: 10^" << dSize;
+    if ( dSize > 6 )
+      s << "domainSize: 10^" << dSize;
     else
-      s<<"domainSize: " << round ( pow ( 10.0,dSize ) );
+      s << "domainSize: " << round ( pow ( 10.0, dSize ) );
 
-    s<< ", parameters: " << param << ", compression ratio: ";
+    s << ", parameters: " << param << ", compression ratio: ";
 
-    if ( compressionRatio>-3 )
-      s<<trunc ( 100.0-pow ( 10.0,compressionRatio+2.0 ) );
+    if ( compressionRatio > -3 )
+      s << trunc ( 100.0 - pow ( 10.0, compressionRatio + 2.0 ) );
     else
-      s<<"100-10^" << compressionRatio+2.0;
+      s << "100-10^" << compressionRatio + 2.0;
 
-    s<< "% }";
+    s << "% }";
 
     return s.str();
   }
@@ -150,26 +152,25 @@ namespace gum {
     output << "  graph [bgcolor=transparent,label=\"" << bn_name << "\"];" << std::endl;
     output << "  node [style=filled fillcolor=\"#ffffaa\"];" << std::endl << std::endl;
 
-    for ( DAG::NodeIterator node_iter = dag().beginNodes();
-          node_iter != dag().endNodes(); ++node_iter ) {
-      output << "\"" << variable ( *node_iter ).name() << "\" [comment=\"" << *node_iter << ":" << variable ( *node_iter ) << "\"];" << std::endl;
+    //for ( DAG::NodeIterator node_iter = dag().beginNodes();node_iter != dag().endNodes(); ++node_iter ) {
+    for ( const auto node_iter : nodes() ) {
+      output << "\"" << variable ( node_iter ).name() << "\" [comment=\"" << node_iter << ":" << variable ( node_iter ) << "\"];" << std::endl;
     }
 
     output << std::endl;
 
     std::string tab = "  ";
 
-    for ( DAG::NodeIterator node_iter = dag().beginNodes();
-          node_iter != dag().endNodes(); ++node_iter ) {
-      if ( dag().children ( *node_iter ).size() > 0 ) {
-        const NodeSet& children =  dag().children ( *node_iter );
+    //for ( DAG::NodeIterator node_iter = dag().beginNodes();node_iter != dag().endNodes(); ++node_iter ) {
+    for ( const auto node_iter : nodes() ) {
+      if ( dag().children ( node_iter ).size() > 0 ) {
+        //const NodeSet& children =  dag().children ( node_iter );
 
-        for ( NodeSetIterator arc_iter = children.begin();
-              arc_iter != children.end(); ++arc_iter ) {
-          output << tab << "\"" << variable ( *node_iter ).name() << "\" -> "
-                 << "\"" << variable ( *arc_iter ).name() << "\";" << std::endl;
+        //for ( NodeSetIterator arc_iter = children.begin();arc_iter != children.end(); ++arc_iter ) {
+        for ( const auto arc_iter : dag().children ( node_iter ) ) {
+          output << tab << "\"" << variable ( node_iter ).name() << "\" -> "
+                 << "\"" << variable ( arc_iter ).name() << "\";" << std::endl;
         }
-
       } else if ( dag().parents ( *node_iter ).size() == 0 ) {
         output << tab << "\"" << variable ( *node_iter ).name() << "\";" << std::endl;
       }
@@ -188,8 +189,9 @@ namespace gum {
 
     GUM_SCALAR tmp;
 
-    for ( auto node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter ) {
-      if ( ( tmp = cpt ( *node_iter ) [i] ) == ( GUM_SCALAR ) 0 ) {
+    //for ( auto node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter ) {
+    for ( const auto node_iter : nodes() ) {
+      if ( ( tmp = cpt ( node_iter ) [i] ) == ( GUM_SCALAR ) 0 ) {
         return ( GUM_SCALAR ) 0;
       }
 
@@ -206,12 +208,13 @@ namespace gum {
 
     GUM_SCALAR tmp;
 
-    for ( auto node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter ) {
-      if ( ( tmp = cpt ( *node_iter ) [i] ) == ( GUM_SCALAR ) 0 ) {
+    //for ( auto node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter ) {
+    for ( const auto node_iter : nodes() ) {
+      if ( ( tmp = cpt ( node_iter ) [i] ) == ( GUM_SCALAR ) 0 ) {
         return ( GUM_SCALAR ) ( - std::numeric_limits<double>::infinity( ) );
       }
 
-      value += log2 ( cpt ( *node_iter ) [i] );
+      value += log2 ( cpt ( node_iter ) [i] );
     }
 
     return value;

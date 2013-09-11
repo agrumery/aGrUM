@@ -201,15 +201,16 @@ namespace gum {
   BayesNet<GUM_SCALAR>::dim() const {
     Idx dim = 0;
 
-    for ( DAG::NodeIterator node = dag().beginNodes(); node != dag().endNodes(); ++node ) {
+    //for ( DAG::NodeIterator node = dag().beginNodes(); node != dag().endNodes(); ++node ) {
+    for ( const auto node : nodes() ) {
       Idx q = 1;
-      Set<NodeId> s = dag().parents ( *node );
+      Set<NodeId> s = dag().parents ( node );
 
       for ( Set<NodeId>::iterator parent = s.begin(); parent != s.end(); ++parent ) {
         q *= variable ( *parent ).domainSize();
       }
 
-      dim += ( variable ( *node ).domainSize() - 1 ) * q;
+      dim += ( variable ( node ).domainSize() - 1 ) * q;
     }
 
     return dim;
@@ -383,8 +384,8 @@ namespace gum {
 
     double dSize = log10DomainSize();
 
-    for ( auto it = beginNodes(); it != endNodes(); ++it ) {
-      param += ( ( const MultiDimImplementation<GUM_SCALAR>& ) cpt ( *it ).getMasterRef() ).realSize();
+    for ( const auto it : nodes() ) {
+      param += ( ( const MultiDimImplementation<GUM_SCALAR>& ) cpt ( it ).getMasterRef() ).realSize();
     }
 
     double compressionRatio = log10 ( 1.0 * param ) - dSize;
@@ -428,28 +429,28 @@ namespace gum {
     output << "  graph [bgcolor=transparent,label=\"" << bn_name << "\"];" << std::endl;
     output << "  node [style=filled fillcolor=\"#ffffaa\"];" << std::endl << std::endl;
 
-    for ( DAG::NodeIterator node_iter = dag().beginNodes();
-          node_iter != dag().endNodes(); ++node_iter ) {
-      output << "\"" << variable ( *node_iter ).name() << "\" [comment=\"" << *node_iter << ":" << variable ( *node_iter ) << "\"];" << std::endl;
+    //for ( DAG::NodeIterator node_iter = dag().beginNodes();node_iter != dag().endNodes(); ++node_iter ) {
+    for ( const auto node_iter : nodes() ) {
+      output << "\"" << variable ( node_iter ).name() << "\" [comment=\"" << node_iter << ":" << variable ( node_iter ) << "\"];" << std::endl;
     }
 
     output << std::endl;
 
     std::string tab = "  ";
 
-    for ( DAG::NodeIterator node_iter = dag().beginNodes();
-          node_iter != dag().endNodes(); ++node_iter ) {
-      if ( dag().children ( *node_iter ).size() > 0 ) {
-        const NodeSet& children =  dag().children ( *node_iter );
+    //for ( DAG::NodeIterator node_iter = dag().beginNodes();node_iter != dag().endNodes(); ++node_iter ) {
+    for ( const auto node_iter : nodes() ) {
+      if ( dag().children ( node_iter ).size() > 0 ) {
+        const NodeSet& children =  dag().children ( node_iter );
 
         for ( NodeSetIterator arc_iter = children.begin();
               arc_iter != children.end(); ++arc_iter ) {
-          output << tab << "\"" << variable ( *node_iter ).name() << "\" -> "
+          output << tab << "\"" << variable ( node_iter ).name() << "\" -> "
                  << "\"" << variable ( *arc_iter ).name() << "\";" << std::endl;
         }
 
-      } else if ( dag().parents ( *node_iter ).size() == 0 ) {
-        output << tab << "\"" << variable ( *node_iter ).name() << "\";" << std::endl;
+      } else if ( dag().parents ( node_iter ).size() == 0 ) {
+        output << tab << "\"" << variable ( node_iter ).name() << "\";" << std::endl;
       }
     }
 
@@ -466,8 +467,9 @@ namespace gum {
 
     GUM_SCALAR tmp;
 
-    for ( DAG::NodeIterator node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter ) {
-      if ( ( tmp = cpt ( *node_iter ) [i] ) == ( GUM_SCALAR ) 0 ) {
+    //for ( DAG::NodeIterator node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter ) {
+    for ( const auto node_iter : nodes() ) {
+      if ( ( tmp = cpt ( node_iter ) [i] ) == ( GUM_SCALAR ) 0 ) {
         return ( GUM_SCALAR ) 0;
       }
 
@@ -553,8 +555,9 @@ namespace gum {
   void BayesNet<GUM_SCALAR>::generateCPTs() {
     SimpleCPTGenerator<GUM_SCALAR> generator;
 
-    for ( DAG::NodeIterator iter = this->beginNodes(); iter != this->endNodes(); ++iter ) {
-      generator.generateCPT ( cpt ( *iter ).pos ( variable ( *iter ) ),  cpt ( *iter ) );
+    //for ( DAG::NodeIterator iter = this->beginNodes(); iter != this->endNodes(); ++iter ) {
+    for(const auto iter : nodes()) {
+      generator.generateCPT ( cpt ( iter ).pos ( variable ( iter ) ),  cpt ( iter ) );
     }
   }
 
@@ -587,20 +590,21 @@ namespace gum {
   bool
   BayesNet<GUM_SCALAR>::operator== ( const BayesNet& from ) const {
     if ( dag() == from.dag() ) {
-      for ( DAG::NodeIterator node = beginNodes(); node != endNodes(); ++node ) {
+      //for ( DAG::NodeIterator node = beginNodes(); node != endNodes(); ++node ) {
+      for ( const auto node : nodes() ) {
         // We don't use Potential::operator== because BN's don't share
         // DiscreteVariable's pointers.
         Bijection<const DiscreteVariable*, const DiscreteVariable*> bijection;
-        bijection.insert ( & ( variable ( *node ) ), & ( from.variable ( *node ) ) );
-        const NodeSet& parents = dag().parents ( *node );
+        bijection.insert ( & ( variable ( node ) ), & ( from.variable ( node ) ) );
+        const NodeSet& parents = dag().parents ( node );
 
         for ( NodeSetIterator arc = parents.begin(); arc != parents.end(); ++arc ) {
           bijection.insert ( & ( variable ( *arc ) ), & ( from.variable ( *arc ) ) );
         }
 
-        Instantiation i ( cpt ( *node ) );
+        Instantiation i ( cpt ( node ) );
 
-        Instantiation j ( from.cpt ( *node ) );
+        Instantiation j ( from.cpt ( node ) );
 
         for ( i.setFirst(); not i.end(); i.inc() ) {
           typedef Bijection<const DiscreteVariable*, const DiscreteVariable*>::iterator BiIter;
@@ -609,7 +613,7 @@ namespace gum {
             j.chgVal ( * ( iter.second() ), i.val ( * ( iter.first() ) ) );
           }
 
-          if ( std::pow ( cpt ( *node ).get ( i ) - from.cpt ( *node ).get ( j ), ( GUM_SCALAR ) 2 ) > ( GUM_SCALAR ) 1e-6 ) {
+          if ( std::pow ( cpt ( node ).get ( i ) - from.cpt ( node ).get ( j ), ( GUM_SCALAR ) 2 ) > ( GUM_SCALAR ) 1e-6 ) {
             return false;
           }
         }

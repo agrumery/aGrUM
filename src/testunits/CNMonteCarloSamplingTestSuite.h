@@ -81,7 +81,7 @@ namespace gum_tests {
 
       // not dynamic (2U network - fast)
       void initCNet() {
-        GUM_DEBUG_ONLY(gum::setNumberOfThreads ( 1 );)
+        GUM_DEBUG_ONLY ( gum::setNumberOfThreads ( 1 ); )
 
         gum::BayesNet<double> monBNa;
         gum::BIFReader< double > readera ( &monBNa, GET_CN_PATH_STR ( 2Umin.bif ) );
@@ -98,8 +98,8 @@ namespace gum_tests {
 
       // dynamic (dynaCheese network - slow)
       void initDCNet() {
-        GUM_DEBUG_ONLY(gum::setNumberOfThreads ( 1 );)
-        
+        GUM_DEBUG_ONLY ( gum::setNumberOfThreads ( 1 ); )
+
         gum::BayesNet<double> monBNa;
         gum::BIFReader< double > readera ( &monBNa, GET_CN_PATH_STR ( bn_c_3.bif ) );
         readera.proceed();
@@ -153,8 +153,9 @@ namespace gum_tests {
         // modalities from map
         // from file with dynamic network, not 2U
         try {
-          for ( gum::DAG::NodeIterator node_idIt = cn->current_bn().beginNodes(); node_idIt != cn->current_bn().endNodes(); ++node_idIt ) {
-            modals[ cn->current_bn().variable ( *node_idIt ).name() ] = binaryModal;
+          //for ( gum::DAG::NodeIterator node_idIt = cn->current_bn().beginNodes(); node_idIt != cn->current_bn().endNodes(); ++node_idIt ) {
+          for ( const auto node_idIt : cn->current_bn().nodes() ) {
+            modals[ cn->current_bn().variable ( node_idIt ).name() ] = binaryModal;
           }
         } catch ( gum::Exception& e ) {
           GUM_SHOWERROR ( e );
@@ -173,11 +174,12 @@ namespace gum_tests {
         }
 
         try {
-          for ( gum::DAG::NodeIterator node_idIt = cn->current_bn().beginNodes(); node_idIt != cn->current_bn().endNodes(); ++node_idIt ) {
-            std::vector< double > inf ( mcs.marginalMin ( *node_idIt ) );
-            std::vector< double > sup ( mcs.marginalMax ( *node_idIt ) );
-            double e_inf = mcs.expectationMin ( *node_idIt );
-            double e_sup = mcs.expectationMax ( *node_idIt );
+          //for ( gum::DAG::NodeIterator node_idIt = cn->current_bn().beginNodes(); node_idIt != cn->current_bn().endNodes(); ++node_idIt ) {
+          for ( const auto node_idIt : cn->current_bn().nodes() ) {
+            std::vector< double > inf ( mcs.marginalMin ( node_idIt ) );
+            std::vector< double > sup ( mcs.marginalMax ( node_idIt ) );
+            double e_inf = mcs.expectationMin ( node_idIt );
+            double e_sup = mcs.expectationMax ( node_idIt );
           }
         } catch ( gum::Exception& e ) {
           GUM_SHOWERROR ( e );
@@ -215,11 +217,12 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.makeInference(); );
 
         try {
-          for ( gum::DAG::NodeIterator node_idIt = cn->current_bn().beginNodes(); node_idIt != cn->current_bn().endNodes(); ++node_idIt ) {
-            exp inf ( mcs.marginalMin ( *node_idIt ) );
-            exp sup ( mcs.marginalMax ( *node_idIt ) );
-            double e_inf = mcs.expectationMin ( *node_idIt );
-            double e_sup = mcs.expectationMax ( *node_idIt );
+          //for ( gum::DAG::NodeIterator node_idIt = cn->current_bn().beginNodes(); node_idIt != cn->current_bn().endNodes(); ++node_idIt ) {
+          for(const auto node_idIt : cn->current_bn().nodes()) {
+            exp inf ( mcs.marginalMin ( node_idIt ) );
+            exp sup ( mcs.marginalMax ( node_idIt ) );
+            double e_inf = mcs.expectationMin ( node_idIt );
+            double e_sup = mcs.expectationMax ( node_idIt );
           }
         } catch ( gum::Exception& e ) {
           GUM_SHOWERROR ( e );
@@ -269,11 +272,12 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.makeInference(); );
 
         try {
-          for ( gum::DAG::NodeIterator node_idIt = cn->current_bn().beginNodes(); node_idIt != cn->current_bn().endNodes(); ++node_idIt ) {
-            exp inf ( mcs.marginalMin ( *node_idIt ) );
-            exp sup ( mcs.marginalMax ( *node_idIt ) );
-            double e_inf = mcs.expectationMin ( *node_idIt );
-            double e_sup = mcs.expectationMax ( *node_idIt );
+          //for ( gum::DAG::NodeIterator node_idIt = cn->current_bn().beginNodes(); node_idIt != cn->current_bn().endNodes(); ++node_idIt ) {
+          for(const auto node_idIt : cn->current_bn().nodes()) {
+            exp inf ( mcs.marginalMin ( node_idIt ) );
+            exp sup ( mcs.marginalMax ( node_idIt ) );
+            double e_inf = mcs.expectationMin ( node_idIt );
+            double e_sup = mcs.expectationMax ( node_idIt );
           }
         } catch ( gum::Exception& e ) {
           GUM_SHOWERROR ( e );

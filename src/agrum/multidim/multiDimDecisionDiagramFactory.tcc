@@ -38,17 +38,17 @@ namespace gum {
 
   template<typename GUM_SCALAR, template <class> class IApproximationPolicy>
   MultiDimDecisionDiagramFactory< GUM_SCALAR, IApproximationPolicy >::MultiDimDecisionDiagramFactory() {
-    GUM_CONSTRUCTOR( MultiDimDecisionDiagramFactory ) ;
+    GUM_CONSTRUCTOR ( MultiDimDecisionDiagramFactory ) ;
   }
 
 
 // clone constructor.
 
   template<typename GUM_SCALAR, template <class> class IApproximationPolicy>
-  MultiDimDecisionDiagramFactory< GUM_SCALAR, IApproximationPolicy >::MultiDimDecisionDiagramFactory( const IApproximationPolicy<GUM_SCALAR>& md ) :
+  MultiDimDecisionDiagramFactory< GUM_SCALAR, IApproximationPolicy >::MultiDimDecisionDiagramFactory ( const IApproximationPolicy<GUM_SCALAR>& md ) :
     MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>(),
     IApproximationPolicy<GUM_SCALAR> ( md ) {
-    GUM_CONSTRUCTOR( MultiDimDecisionDiagramFactory ) ;
+    GUM_CONSTRUCTOR ( MultiDimDecisionDiagramFactory ) ;
   }
 
 // Destructor.
@@ -56,7 +56,7 @@ namespace gum {
 
   template<typename GUM_SCALAR, template <class> class IApproximationPolicy>
   MultiDimDecisionDiagramFactory< GUM_SCALAR, IApproximationPolicy >::~MultiDimDecisionDiagramFactory() {
-    GUM_DESTRUCTOR( MultiDimDecisionDiagramFactory );
+    GUM_DESTRUCTOR ( MultiDimDecisionDiagramFactory );
   }
 
   /* **********************************************************************************************/
@@ -70,7 +70,7 @@ namespace gum {
 
   template<typename GUM_SCALAR, template <class> class IApproximationPolicy>
   MultiDimDecisionDiagramBase<GUM_SCALAR>*
-  MultiDimDecisionDiagramFactory< GUM_SCALAR, IApproximationPolicy >::getMultiDimDecisionDiagram( bool fillWithDefaultArc, GUM_SCALAR defaultValue, bool doCompress ) {
+  MultiDimDecisionDiagramFactory< GUM_SCALAR, IApproximationPolicy >::getMultiDimDecisionDiagram ( bool fillWithDefaultArc, GUM_SCALAR defaultValue, bool doCompress ) {
 
     // **************************************************************************************************************
     // First of all we ensure there's no unused value in our value map
@@ -79,11 +79,11 @@ namespace gum {
     if ( this->_model.size() == 2 && !this->_valueMap.empty() )
       newValueMap = this->_valueMap;
     else
-      for ( BijectionIterator<NodeId,GUM_SCALAR> valueIter = this->_valueMap.begin(); valueIter != this->_valueMap.end(); ++valueIter )
-        if ( this->_model.parents( valueIter.first() ).empty() && valueIter.first() != this->_rootId )
-          this->_model.eraseNode( valueIter.first() );
+      for ( BijectionIterator<NodeId, GUM_SCALAR> valueIter = this->_valueMap.begin(); valueIter != this->_valueMap.end(); ++valueIter )
+        if ( this->_model.parents ( valueIter.first() ).empty() && valueIter.first() != this->_rootId )
+          this->_model.eraseNode ( valueIter.first() );
         else
-          newValueMap.insert( valueIter.first(), valueIter.second() );
+          newValueMap.insert ( valueIter.first(), valueIter.second() );
 
     // **************************************************************************************************************
 
@@ -94,40 +94,41 @@ namespace gum {
       NodeId zeroId = 0;
       bool zeroNotCreated = true;
 
-      for ( DiGraph::NodeIterator iter = this->_model.beginNodes(); iter != this->_model.endNodes(); ++iter ) {
-        if ( *iter != 0 && !newValueMap.existsFirst( *iter ) ) {
+      //for ( DiGraph::NodeIterator iter = this->_model.beginNodes(); iter != this->_model.endNodes(); ++iter ) {
+      for ( const auto iter : this->_model.nodes() ) {
+        if ( iter != 0 && !newValueMap.existsFirst ( iter ) ) {
 
           Idx idxDefault = 0;
           Idx nbDefault = 0;
 
-          for ( std::vector<NodeId>::iterator sonIter = this->_arcMap[*iter]->begin(); sonIter != this->_arcMap[*iter]->end(); ++sonIter )
+          for ( std::vector<NodeId>::iterator sonIter = this->_arcMap[iter]->begin(); sonIter != this->_arcMap[iter]->end(); ++sonIter )
             if ( *sonIter == 0 ) {
-              idxDefault = std::distance( this->_arcMap[*iter]->begin(), sonIter );
+              idxDefault = std::distance ( this->_arcMap[iter]->begin(), sonIter );
               nbDefault++;
             }
 
           if ( nbDefault >= 1 && zeroNotCreated ) {
-            zeroId = this->addTerminalNode( defaultValue );
+            zeroId = this->addTerminalNode ( defaultValue );
 
-            if ( !newValueMap.existsSecond( defaultValue ) )
-              newValueMap.insert( zeroId, defaultValue );
+            if ( !newValueMap.existsSecond ( defaultValue ) )
+              newValueMap.insert ( zeroId, defaultValue );
 
             zeroNotCreated = false;
           }
 
           if ( nbDefault == 1 ) {
 
-            ( *( this->_arcMap[*iter] ) )[ idxDefault ] = zeroId;
-            ( *( this->_varUsedModalitiesMap[ this->_varMap[*iter] ] ) )[ idxDefault ]++;
+            ( * ( this->_arcMap[iter] ) ) [ idxDefault ] = zeroId;
+            ( * ( this->_varUsedModalitiesMap[ this->_varMap[iter] ] ) ) [ idxDefault ]++;
 
-            if ( this->_defaultArcMap.exists( *iter ) )
-              this->_defaultArcMap.erase( *iter );
+            if ( this->_defaultArcMap.exists ( iter ) )
+              this->_defaultArcMap.erase ( iter );
 
             continue;
           }
 
-          if ( nbDefault > 1 && !this->_defaultArcMap.exists( *iter ) ) {
-            this->_defaultArcMap.insert( *iter, zeroId );
+          if ( nbDefault > 1 && !this->_defaultArcMap.exists ( iter ) ) {
+            this->_defaultArcMap.insert ( iter, zeroId );
           }
 
         }
@@ -144,7 +145,7 @@ namespace gum {
       // ************************************************************************************************
       for ( SequenceIterator<const DiscreteVariable*> varIter = this->_varsSeq.rbegin(); varIter != this->_varsSeq.rend(); --varIter ) {
 
-        if ( this->_var2NodeIdMap.exists( *varIter ) )
+        if ( this->_var2NodeIdMap.exists ( *varIter ) )
           for ( ListConstIterator< NodeId > riterNodeList = this->_var2NodeIdMap[ *varIter ]->rbegin(); riterNodeList != this->_var2NodeIdMap[ *varIter ]->rend(); --riterNodeList ) {
 
             bool hasDoublon = false;
@@ -153,10 +154,10 @@ namespace gum {
             for ( ListConstIterator< NodeId > iterNodeList = this->_var2NodeIdMap[ *varIter ]->begin(); iterNodeList != riterNodeList; ++iterNodeList ) {
               bool thesame = true;
 
-              if ( ( !this->_defaultArcMap.exists( *riterNodeList ) && this->_defaultArcMap.exists( *iterNodeList ) )
-                   || ( this->_defaultArcMap.exists( *riterNodeList ) && !this->_defaultArcMap.exists( *iterNodeList ) ) )
+              if ( ( !this->_defaultArcMap.exists ( *riterNodeList ) && this->_defaultArcMap.exists ( *iterNodeList ) )
+                   || ( this->_defaultArcMap.exists ( *riterNodeList ) && !this->_defaultArcMap.exists ( *iterNodeList ) ) )
                 thesame = false;
-              else if ( this->_defaultArcMap.exists( *riterNodeList ) && this->_defaultArcMap[ *iterNodeList ] != this->_defaultArcMap[ *riterNodeList ] )
+              else if ( this->_defaultArcMap.exists ( *riterNodeList ) && this->_defaultArcMap[ *iterNodeList ] != this->_defaultArcMap[ *riterNodeList ] )
                 thesame = false;
 
               if ( thesame )
@@ -176,7 +177,7 @@ namespace gum {
             }
 
             if ( hasDoublon ) {
-              __mergedNode( *riterNodeList, doublon );
+              __mergedNode ( *riterNodeList, doublon );
               continue;
             }
 
@@ -184,7 +185,7 @@ namespace gum {
             NodeId nody = 0;
             std::vector< NodeId >::const_iterator arcIter = this->_arcMap[ *riterNodeList ]->begin();
 
-            if ( this->_defaultArcMap.exists( *riterNodeList ) )
+            if ( this->_defaultArcMap.exists ( *riterNodeList ) )
               nody = this->_defaultArcMap[ *riterNodeList ];
             else if ( arcIter != this->_arcMap[ *riterNodeList ]->end() ) {
               nody = *arcIter;
@@ -198,39 +199,45 @@ namespace gum {
               }
 
             if ( sameArc )
-              __mergedNode( *riterNodeList, nody );
+              __mergedNode ( *riterNodeList, nody );
           }
       }
 
       // ************************************************************************************************
       //  Next we create or displace default arc where needed
       // ************************************************************************************************
-      for ( DiGraph::NodeIterator iter = this->_model.beginNodes(); iter != this->_model.endNodes(); ++iter ) {
-        if ( *iter != 0 && !newValueMap.existsFirst( *iter ) ) {
+      //for ( DiGraph::NodeIterator iter = this->_model.beginNodes(); iter != this->_model.endNodes(); ++iter ) {
+      for ( const auto iter : this->_model.nodes() ) {
+        if ( iter != 0 && !newValueMap.existsFirst ( iter ) ) {
 
           Idx nbDefault = 0;
           NodeId defaultSon = 0;
 
-          if ( this->_defaultArcMap.exists( *iter ) )
-            defaultSon = this->_defaultArcMap[ * iter ];
+          if ( this->_defaultArcMap.exists ( iter ) )
+            defaultSon = this->_defaultArcMap[ iter ];
 
-          HashTable< NodeId, Idx > nodeCount( this->_arcMap[*iter]->size(), false, false );
+          HashTable< NodeId, Idx > nodeCount ( this->_arcMap[iter]->size(), false, false );
 
-          for ( std::vector<NodeId >::iterator iterArcMap = this->_arcMap[*iter]->begin(); iterArcMap != this->_arcMap[*iter]->end(); ++iterArcMap ) {
-            if ( *iterArcMap == 0 )
+          //for ( std::vector<NodeId >::iterator iterArcMap = this->_arcMap[iter]->begin(); iterArcMap != this->_arcMap[iter]->end(); ++iterArcMap ) {
+          Idx dist = 0;
+
+          for ( const auto iterArcMap : * ( this->_arcMap[iter] ) ) {
+            if ( iterArcMap == 0 )
               ++nbDefault;
 
-            if ( *iterArcMap == defaultSon ) {
+            if ( iterArcMap == defaultSon ) {
               ++nbDefault;
-              ( *( this->_arcMap[*iter] ) )[ std::distance( this->_arcMap[*iter]->begin(), iterArcMap ) ] = 0;
-              ( *( this->_varUsedModalitiesMap[ this->_varMap[*iter] ] ) )[  std::distance( this->_arcMap[*iter]->begin(), iterArcMap ) ]--;
+              ( * ( this->_arcMap[iter] ) ) [ dist] = 0; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ] = 0;
+              ( * ( this->_varUsedModalitiesMap[ this->_varMap[iter] ] ) ) [dist]--; //  std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ]--;
             }
 
             try {
-              nodeCount[ *iterArcMap ]++;
+              nodeCount[ iterArcMap ]++;
             } catch ( gum::NotFound n ) {
-              nodeCount.insert( *iterArcMap, 1 );
+              nodeCount.insert ( iterArcMap, 1 );
             }
+
+            dist++;
           }
 
           NodeId maxNodeId = defaultSon;
@@ -243,32 +250,43 @@ namespace gum {
             }
 
           if ( maxCall == 1 ) {
-            for ( std::vector<NodeId >::iterator iterArcMap = this->_arcMap[*iter]->begin(); iterArcMap != this->_arcMap[*iter]->end(); ++iterArcMap )
-              if ( *iterArcMap == 0 ) {
-                ( *( this->_arcMap[*iter] ) )[ std::distance( this->_arcMap[*iter]->begin(), iterArcMap ) ] = defaultSon;
+            dist = 0;
 
-                if ( this->_defaultArcMap.exists( *iter ) )
-                  this->_defaultArcMap.erase( * iter );
+            //for ( std::vector<NodeId >::iterator iterArcMap = this->_arcMap[iter]->begin(); iterArcMap != this->_arcMap[iter]->end(); ++iterArcMap )
+            for ( const auto iterArcMap : * ( this->_arcMap[iter] ) ) {
+              if ( iterArcMap == 0 ) {
+                ( * ( this->_arcMap[iter] ) ) [ dist] = defaultSon; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ] = defaultSon;
 
-                ( *( this->_varUsedModalitiesMap[ this->_varMap[*iter] ] ) )[  std::distance( this->_arcMap[*iter]->begin(), iterArcMap ) ]++;
+                if ( this->_defaultArcMap.exists ( iter ) )
+                  this->_defaultArcMap.erase ( iter );
+
+                ( * ( this->_varUsedModalitiesMap[ this->_varMap[iter] ] ) ) [  dist]++; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ]++;
                 break;
               }
+
+              dist++;
+            }
           } else {
             if ( maxNodeId != defaultSon ) {
-              for ( std::vector<NodeId >::iterator iterArcMap = this->_arcMap[*iter]->begin(); iterArcMap != this->_arcMap[*iter]->end(); ++iterArcMap ) {
-                if ( *iterArcMap == 0 ) {
-                  ( *( this->_arcMap[*iter] ) )[ std::distance( this->_arcMap[*iter]->begin(), iterArcMap ) ] = defaultSon;
-                  ( *( this->_varUsedModalitiesMap[ this->_varMap[*iter] ] ) )[  std::distance( this->_arcMap[*iter]->begin(), iterArcMap ) ]++;
-                } else if ( *iterArcMap == maxNodeId ) {
-                  ( *( this->_arcMap[*iter] ) )[ std::distance( this->_arcMap[*iter]->begin(), iterArcMap ) ] = 0;
-                  ( *( this->_varUsedModalitiesMap[ this->_varMap[*iter] ] ) )[  std::distance( this->_arcMap[*iter]->begin(), iterArcMap ) ]--;
+              dist = 0;
+
+              //for ( std::vector<NodeId >::iterator iterArcMap = this->_arcMap[iter]->begin(); iterArcMap != this->_arcMap[iter]->end(); ++iterArcMap ) {
+              for ( const auto iterArcMap : * ( this->_arcMap[iter] ) ) {
+                if ( iterArcMap == 0 ) {
+                  ( * ( this->_arcMap[iter] ) ) [ dist] = defaultSon; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ] = defaultSon;
+                  ( * ( this->_varUsedModalitiesMap[ this->_varMap[iter] ] ) ) [  dist]++; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ]++;
+                } else if ( iterArcMap == maxNodeId ) {
+                  ( * ( this->_arcMap[iter] ) ) [ dist] = 0; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ] = 0;
+                  ( * ( this->_varUsedModalitiesMap[ this->_varMap[iter] ] ) ) [  dist]--; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ]--;
                 }
+
+                dist++;
               }
 
-              if ( this->_defaultArcMap.exists( *iter ) )
-                this->_defaultArcMap[ * iter ] = maxNodeId;
+              if ( this->_defaultArcMap.exists ( iter ) )
+                this->_defaultArcMap[ iter ] = maxNodeId;
               else
-                this->_defaultArcMap.insert( *iter, maxNodeId );
+                this->_defaultArcMap.insert ( iter, maxNodeId );
             }
           }
         }
@@ -283,31 +301,32 @@ namespace gum {
 
     ret->beginInstantiation();
 
-    ret->setVariableSequence( this->_varsSeq );
+    ret->setVariableSequence ( this->_varsSeq );
 
-    ret->setDiagramNodes( this->_model );
+    ret->setDiagramNodes ( this->_model );
 
-    ret->setVariableMap( this->_varMap );
-    ret->setVar2NodeMap( this->_var2NodeIdMap );
-    ret->setVarUsedModalitiesMap( this->_varUsedModalitiesMap );
-    ret->setValueMap( newValueMap );
-    ret->setDiagramArcs( this->_arcMap, this->_defaultArcMap );
+    ret->setVariableMap ( this->_varMap );
+    ret->setVar2NodeMap ( this->_var2NodeIdMap );
+    ret->setVarUsedModalitiesMap ( this->_varUsedModalitiesMap );
+    ret->setValueMap ( newValueMap );
+    ret->setDiagramArcs ( this->_arcMap, this->_defaultArcMap );
 
     if ( this->_rootId == 0 ) {
-      for ( DiGraph::NodeIterator iter = this->_model.beginNodes(); iter != this->_model.endNodes(); ++iter ) {
-        if ( newValueMap.existsFirst( *iter ) && this->_model.size() == 2 ) {
-          this->_rootId = *iter;
+      //for ( DiGraph::NodeIterator iter = this->_model.beginNodes(); iter != this->_model.endNodes(); ++iter ) {
+      for ( const auto iter : this->_model.nodes() ) {
+        if ( newValueMap.existsFirst ( iter ) && this->_model.size() == 2 ) {
+          this->_rootId = iter;
           break;
         }
 
-        if ( *iter != 0 && !newValueMap.existsFirst( *iter ) && !this->_model.children( *iter ).empty() && this->_model.parents( *iter ).empty() ) {
-          this->_rootId = *iter;
+        if ( iter != 0 && !newValueMap.existsFirst ( iter ) && !this->_model.children ( iter ).empty() && this->_model.parents ( iter ).empty() ) {
+          this->_rootId = iter;
           break;
         }
       }
     }
 
-    ret->setRoot( this->_rootId );
+    ret->setRoot ( this->_rootId );
 
     ret->endInstantiation();
 
@@ -316,23 +335,23 @@ namespace gum {
 
   template<typename GUM_SCALAR, template <class> class IApproximationPolicy>
   void
-  MultiDimDecisionDiagramFactory< GUM_SCALAR, IApproximationPolicy >::__mergedNode( NodeId from, NodeId to ) {
+  MultiDimDecisionDiagramFactory< GUM_SCALAR, IApproximationPolicy >::__mergedNode ( NodeId from, NodeId to ) {
 
-    const NodeSet& parents = this->_model.parents( from );
+    const NodeSet& parents = this->_model.parents ( from );
 
     for ( NodeSetIterator parentIter = parents.begin(); parentIter != parents.end(); ++parentIter ) {
       for ( std::vector< NodeId >::iterator iter = this->_arcMap[*parentIter]->begin(); iter != this->_arcMap[*parentIter]->end(); ++iter )
         if ( *iter == from ) {
-          Idx modality = std::distance( this->_arcMap[*parentIter]->begin(), iter );
-          this->eraseSpecificArc( *parentIter, from, modality );
-          this->addArc( *parentIter, to, modality );
+          Idx modality = std::distance ( this->_arcMap[*parentIter]->begin(), iter );
+          this->eraseSpecificArc ( *parentIter, from, modality );
+          this->addArc ( *parentIter, to, modality );
         }
 
-      if ( this->_defaultArcMap.exists( *parentIter ) && this->_defaultArcMap[*parentIter] == from )
+      if ( this->_defaultArcMap.exists ( *parentIter ) && this->_defaultArcMap[*parentIter] == from )
         this->_defaultArcMap[*parentIter] = to;
     }
 
-    this->eraseNode( from );
+    this->eraseNode ( from );
   }
 } //namespace gum
 

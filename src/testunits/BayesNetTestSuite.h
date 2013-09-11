@@ -150,7 +150,7 @@ namespace gum_tests {
         gum::BayesNet<float>* topology = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING ( topology = new gum::BayesNet<float>() );
         TS_ASSERT_EQUALS ( topology->size(), ( gum::Idx ) 0 );
-        TS_ASSERT_EQUALS ( topology->nbrArcs(), ( gum::Idx ) 0 );
+        TS_ASSERT_EQUALS ( topology->sizeArcs(), ( gum::Idx ) 0 );
         TS_ASSERT_EQUALS ( topology->dim(), ( gum::Idx ) 0 );
 
         TS_ASSERT_THROWS ( topology->addArc ( 1, 2 ), gum::InvalidNode );
@@ -162,7 +162,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS ( topology->toString(), "BN{nodes: 5, arcs: 6, domainSize: 48, parameters: 40, compression ratio: 16% }" );
         TS_ASSERT_EQUALS ( topology->size(), ( gum::Idx ) 5 );
-        TS_ASSERT_EQUALS ( topology->nbrArcs(), ( gum::Idx ) 6 );
+        TS_ASSERT_EQUALS ( topology->sizeArcs(), ( gum::Idx ) 6 );
         TS_ASSERT_EQUALS ( topology->dim(), ( gum::Idx ) 24 );
 
         TS_GUM_ASSERT_THROWS_NOTHING ( delete topology );
@@ -181,13 +181,12 @@ namespace gum_tests {
         //const gum::NodeSet& nodes=source.dag().nodes();
         const gum::DAG dag = source.dag();
 
-        for ( gum::DAG::NodeIterator nodeIter = dag.beginNodes();
-              nodeIter != dag.endNodes();
-              ++nodeIter ) {
-          TS_ASSERT ( copy->dag().exists ( *nodeIter ) );
+        //for ( gum::DAG::NodeIterator nodeIter = dag.beginNodes();nodeIter != dag.endNodes();++nodeIter ) {
+        for ( const auto nodeIter : dag.nodes() ) {
+          TS_ASSERT ( copy->dag().exists ( nodeIter ) );
 
-          const gum::DiscreteVariable& srcVar = source.variable ( *nodeIter );
-          const gum::DiscreteVariable& cpVar = copy->variable ( *nodeIter );
+          const gum::DiscreteVariable& srcVar = source.variable ( nodeIter );
+          const gum::DiscreteVariable& cpVar = copy->variable ( nodeIter );
           TS_ASSERT_EQUALS ( srcVar.name(), cpVar.name() );
 
           if ( srcVar.domainSize() == cpVar.domainSize() ) {
@@ -199,17 +198,17 @@ namespace gum_tests {
             TS_ASSERT ( false );
           }
 
-          const gum::NodeSet& parentList = source.dag().parents ( *nodeIter );
+          const gum::NodeSet& parentList = source.dag().parents ( nodeIter );
 
           for ( gum::NodeSet::iterator arcIter = parentList.begin();
                 arcIter != parentList.end();
                 ++arcIter ) {
-            TS_ASSERT ( copy->dag().existsArc ( gum::Arc ( *arcIter, *nodeIter ) ) );
+            TS_ASSERT ( copy->dag().existsArc ( gum::Arc ( *arcIter, nodeIter ) ) );
           }
 
-          const gum::Potential<float>& srcCPT = source.cpt ( *nodeIter );
+          const gum::Potential<float>& srcCPT = source.cpt ( nodeIter );
 
-          const gum::Potential<float>& cpCPT = copy->cpt ( *nodeIter );
+          const gum::Potential<float>& cpCPT = copy->cpt ( nodeIter );
 
           gum::Instantiation srcInst ( srcCPT );
 
@@ -242,13 +241,12 @@ namespace gum_tests {
         //const gum::NodeSet& nodes=source.dag().nodes();
         const gum::DAG dag = source.dag();
 
-        for ( gum::DAG::NodeIterator nodeIter = dag.beginNodes();
-              nodeIter != dag.endNodes();
-              ++nodeIter ) {
-          TS_ASSERT ( copy.dag().exists ( *nodeIter ) );
+        //for ( gum::DAG::NodeIterator nodeIter = dag.beginNodes();nodeIter != dag.endNodes();++nodeIter ) {
+        for ( const auto nodeIter : dag.nodes() ) {
+          TS_ASSERT ( copy.dag().exists ( nodeIter ) );
 
-          const gum::DiscreteVariable& srcVar = source.variable ( *nodeIter );
-          const gum::DiscreteVariable& cpVar = copy.variable ( *nodeIter );
+          const gum::DiscreteVariable& srcVar = source.variable ( nodeIter );
+          const gum::DiscreteVariable& cpVar = copy.variable ( nodeIter );
           TS_ASSERT_EQUALS ( srcVar.name(), cpVar.name() );
 
           if ( srcVar.domainSize() == cpVar.domainSize() ) {
@@ -260,17 +258,17 @@ namespace gum_tests {
             TS_ASSERT ( false );
           }
 
-          const gum::NodeSet& parentList = source.dag().parents ( *nodeIter );
+          const gum::NodeSet& parentList = source.dag().parents ( nodeIter );
 
           for ( gum::NodeSet::iterator arcIter = parentList.begin();
                 arcIter != parentList.end();
                 ++arcIter ) {
-            TS_ASSERT ( copy.dag().existsArc ( gum::Arc ( *arcIter, *nodeIter ) ) );
+            TS_ASSERT ( copy.dag().existsArc ( gum::Arc ( *arcIter, nodeIter ) ) );
           }
 
-          const gum::Potential<float>& srcCPT = source.cpt ( *nodeIter );
+          const gum::Potential<float>& srcCPT = source.cpt ( nodeIter );
 
-          const gum::Potential<float>& cpCPT = copy.cpt ( *nodeIter );
+          const gum::Potential<float>& cpCPT = copy.cpt ( nodeIter );
 
           gum::Instantiation srcInst ( srcCPT );
 
@@ -287,17 +285,18 @@ namespace gum_tests {
         }
 
 
-        for ( gum::DAG::NodeIterator iter = copy.beginNodes(); iter != copy.endNodes(); ++iter ) {
+        //for ( gum::DAG::NodeIterator iter = copy.beginNodes(); iter != copy.endNodes(); ++iter ) {
+        for ( const auto iter : copy.nodes() ) {
           std::stringstream c_str;
           std::stringstream s_str;
 
-          const gum::Sequence<const gum::DiscreteVariable*>& s_seq = source.cpt ( *iter ).variablesSequence();
+          const gum::Sequence<const gum::DiscreteVariable*>& s_seq = source.cpt ( iter ).variablesSequence();
 
           for ( gum::Sequence<const gum::DiscreteVariable*>::iterator it = s_seq.begin(); it != s_seq.end(); ++it ) {
             s_str << **it << ",";
           }
 
-          const gum::Sequence<const gum::DiscreteVariable*>& c_seq = copy.cpt ( *iter ).variablesSequence();
+          const gum::Sequence<const gum::DiscreteVariable*>& c_seq = copy.cpt ( iter ).variablesSequence();
 
           for ( gum::Sequence<const gum::DiscreteVariable*>::iterator it = c_seq.begin(); it != c_seq.end(); ++it ) {
             c_str << **it << ",";
@@ -469,8 +468,9 @@ namespace gum_tests {
         gum::BayesNet<float> bn;
         gum::List<gum::NodeId> idList;
 
-        for ( gum::DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
-          TS_ASSERT ( idList.exists ( *iter ) );
+        //for ( gum::DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
+        for ( const auto iter : bn.nodes() ) {
+          TS_ASSERT ( idList.exists ( iter ) );
         }
       }
 
@@ -481,12 +481,13 @@ namespace gum_tests {
 
         fill ( bn, idList );
 
-        for ( gum::DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
+        //for ( gum::DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
+        for ( const auto iter : bn.nodes() ) {
           std::stringstream s1, s2;
-          s1 << bn.cpt ( *iter );
+          s1 << bn.cpt ( iter );
 
           bn.generateCPTs();
-          s2 << bn.cpt ( *iter );
+          s2 << bn.cpt ( iter );
           TS_ASSERT_DIFFERS ( s1.str(), s2.str() );
         }
       }
@@ -607,9 +608,10 @@ namespace gum_tests {
 
         fill ( bn, idList );
 
-        for ( gum::DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
-          TS_ASSERT_EQUALS ( bn.idFromName ( bn.variable ( *iter ).name() ), *iter );
-          TS_ASSERT_EQUALS ( &bn.variableFromName ( bn.variable ( *iter ).name() ), &bn.variable ( *iter ) );
+        //for ( gum::DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
+        for ( const auto iter : bn.nodes() ) {
+          TS_ASSERT_EQUALS ( bn.idFromName ( bn.variable ( iter ).name() ), iter );
+          TS_ASSERT_EQUALS ( &bn.variableFromName ( bn.variable ( iter ).name() ), &bn.variable ( iter ) );
         }
 
         TS_ASSERT_THROWS ( bn.idFromName ( "choucroute" ), gum::NotFound );

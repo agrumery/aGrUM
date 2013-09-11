@@ -50,7 +50,7 @@ namespace gum_tests {
         pot2 << * ( vars[0] ) << * ( vars[2] ) << * ( vars[3] ) << * ( vars[4] );
         gum::ScheduleMultiDim<float> f2( pot2 );
 
-        gum::Property<gum::Set<const gum::MultiDimImplementation<float>*> >::onArcs set;
+        gum::ArcProperty<gum::Set<const gum::MultiDimImplementation<float>*>> set;
         TS_ASSERT( set.size() == 0 );
         gum::ScheduleSeparatorStoreMultiDim<float> store1( f1, set, gum::Arc( 3,2 ) );
         gum::ScheduleSeparatorStoreMultiDim<float> store2( f2, set, gum::Arc( 3,2 ) );

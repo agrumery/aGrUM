@@ -45,7 +45,7 @@ namespace gum {
       }
 
       //for ( ArcSet::iterator arc = i.type().dag().beginArcs(); arc != i.type().dag().endArcs(); ++arc ) {
-      for ( auto arc : i.type().dag().asArcs() ) {
+      for ( auto arc : i.type().dag().arcs() ) {
         try {
           this->_dag.insertArc ( arc.tail(), arc.head() );
         } catch ( InvalidNode& ) {
@@ -175,17 +175,18 @@ namespace gum {
       output << "digraph \"";
       output << __inst->name() << "\" {" << std::endl;
 
-      for ( DAG::NodeIterator node_iter = this->dag().beginNodes(); node_iter != this->dag().endNodes(); ++node_iter ) {
-        if ( this->dag().children ( *node_iter ).size() > 0 ) {
-          const NodeSet& children = this->dag().children ( *node_iter );
+      //for ( DAG::NodeIterator node_iter = this->dag().beginNodes(); node_iter != this->dag().endNodes(); ++node_iter ) {
+      for ( const auto node : this->dag().nodes() ) {
+        if ( this->dag().children ( node ).size() > 0 ) {
+          const NodeSet& children = this->dag().children ( node );
 
           for ( NodeSetIterator arc_iter = children.begin();
                 arc_iter != children.end(); ++arc_iter ) {
-            output << tab << "\"" << variable ( *node_iter ).name() << "\" -> ";
+            output << tab << "\"" << variable ( node ).name() << "\" -> ";
             output << "\"" << variable ( *arc_iter ).name() << "\";" << std::endl;
           }
-        } else if ( this->dag().parents ( *node_iter ).size() == 0 ) {
-          output << tab << "\"" << variable ( *node_iter ).name() << "\";" << std::endl;
+        } else if ( this->dag().parents ( node ).size() == 0 ) {
+          output << tab << "\"" << variable ( node ).name() << "\";" << std::endl;
         }
       }
 

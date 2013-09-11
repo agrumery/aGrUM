@@ -249,7 +249,7 @@ namespace gum_tests {
       void testGetArcs() {
         gum::DiGraph graph = buildGraph();
 
-        gum::ArcSet arclist = graph.asArcs();
+        gum::ArcSet arclist = graph.arcs();
         TS_ASSERT_EQUALS ( arclist.size(), graph.sizeArcs() );
         gum::Size arcCount = graph.sizeArcs();
 
@@ -330,7 +330,7 @@ namespace gum_tests {
       void testHashMapArcs() {
         gum::DiGraph graph = buildGraph();
 
-        gum::Property<gum::Size>::onArcs hashmap = graph.arcsProperty ( &simpleArcMapFunction );
+        gum::ArcProperty<gum::Size> hashmap = graph.arcsProperty ( &simpleArcMapFunction );
         TS_ASSERT_EQUALS ( hashmap.size(), graph.sizeArcs() );
 
         gum::Size sk = 0;

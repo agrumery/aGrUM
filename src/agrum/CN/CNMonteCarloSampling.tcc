@@ -130,19 +130,20 @@ namespace gum {
       if ( this->_l_inferenceEngine[tId]->evidenceMarginal() > 0 ) {
         const DAG& tDag = this->_workingSet[tId]->dag();
 
-        for ( auto it = tDag.beginNodes(), theEnd = tDag.endNodes(); it != theEnd; ++it ) {
-          const Potential< GUM_SCALAR >& potential ( this->_l_inferenceEngine[tId]->marginal ( *it ) );
+        //for ( auto it = tDag.beginNodes(), theEnd = tDag.endNodes(); it != theEnd; ++it ) {
+        for(const auto it : tDag.nodes()) {
+          const Potential< GUM_SCALAR >& potential ( this->_l_inferenceEngine[tId]->marginal ( it ) );
           Instantiation ins ( potential );
           std::vector< GUM_SCALAR > vertex;
 
           for ( ins.setFirst(); !ins.end(); ++ins )
             vertex.push_back ( potential[ins] );
 
-          // true for redundancy elimination of node *it credal set
+          // true for redundancy elimination of node it credal set
           // but since global marginals are only updated at the end of each period of approximationScheme, it is "useless" ( and expensive ) to check now
-          this->_updateThread ( *it, vertex, false );
+          this->_updateThread ( it, vertex, false );
 
-          //if ( this->_updateThread ( *it, vertex, false ) )
+          //if ( this->_updateThread ( it, vertex, false ) )
           //keepSample = true;
 
         } // end of : for all nodes

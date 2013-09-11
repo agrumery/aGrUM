@@ -252,7 +252,7 @@ namespace gum_tests {
       void testGetArcs() {
         gum::DAG graph = buildGraph();
 
-        gum::ArcSet arclist = graph.asArcs();
+        gum::ArcSet arclist = graph.arcs();
         TS_ASSERT_EQUALS( arclist.size(), graph.sizeArcs() );
         gum::Size arcCount = graph.sizeArcs();
 

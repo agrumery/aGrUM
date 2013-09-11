@@ -10,19 +10,19 @@ namespace gum {
     }*/
 
     template< typename GUM_SCALAR >
-    InferenceEngine< GUM_SCALAR >::InferenceEngine( const CredalNet< GUM_SCALAR >& credalNet ) : ApproximationScheme() {
+    InferenceEngine< GUM_SCALAR >::InferenceEngine ( const CredalNet< GUM_SCALAR >& credalNet ) : ApproximationScheme() {
       _credalNet = &credalNet;
 
-      _dbnOpt.setCNet( credalNet );
+      _dbnOpt.setCNet ( credalNet );
 
       _initMarginals();
 
-      GUM_CONSTRUCTOR( InferenceEngine );
+      GUM_CONSTRUCTOR ( InferenceEngine );
     }
 
     template< typename GUM_SCALAR >
     InferenceEngine< GUM_SCALAR >::~InferenceEngine() {
-      GUM_DESTRUCTOR( InferenceEngine );
+      GUM_DESTRUCTOR ( InferenceEngine );
     }
 
     template< typename GUM_SCALAR >
@@ -69,12 +69,12 @@ namespace gum {
 
 
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::storeBNOpt( const bool value ) {
+    void InferenceEngine< GUM_SCALAR >::storeBNOpt ( const bool value ) {
       _storeBNOpt = value;
     }
 
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::storeVertices( const bool value ) {
+    void InferenceEngine< GUM_SCALAR >::storeVertices ( const bool value ) {
       _storeVertices = value;
 
       if ( value )
@@ -82,7 +82,7 @@ namespace gum {
     }
 
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::setRepetitiveInd( const bool repetitive ) {
+    void InferenceEngine< GUM_SCALAR >::setRepetitiveInd ( const bool repetitive ) {
       bool oldValue = _repetitiveInd;
       _repetitiveInd = repetitive;
 
@@ -118,11 +118,11 @@ namespace gum {
 
 
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::insertModalsFile( const std::string& path ) {
-      std::ifstream mod_stream( path.c_str(), std::ios::in );
+    void InferenceEngine< GUM_SCALAR >::insertModalsFile ( const std::string& path ) {
+      std::ifstream mod_stream ( path.c_str(), std::ios::in );
 
       if ( ! mod_stream.good() ) {
-        GUM_ERROR( OperationNotAllowed, "void InferenceEngine< GUM_SCALAR >::insertModals(const std::string & path) : could not open input file : " << path );
+        GUM_ERROR ( OperationNotAllowed, "void InferenceEngine< GUM_SCALAR >::insertModals(const std::string & path) : could not open input file : " << path );
       }
 
       if ( ! _modal.empty() )
@@ -132,25 +132,25 @@ namespace gum {
       char* cstr, *p;
 
       while ( mod_stream.good() ) {
-        getline( mod_stream, line );
+        getline ( mod_stream, line );
 
         if ( line.size() == 0 ) continue;
 
         cstr = new char [line.size() + 1];
-        strcpy( cstr, line.c_str() );
+        strcpy ( cstr, line.c_str() );
 
-        p = strtok( cstr, " " );
+        p = strtok ( cstr, " " );
         tmp = p;
 
         std::vector< GUM_SCALAR > values;
-        p = strtok( nullptr, " " );
+        p = strtok ( nullptr, " " );
 
         while ( p != nullptr ) {
-          values.push_back( atof( p ) );
-          p = strtok( nullptr, " " );
+          values.push_back ( atof ( p ) );
+          p = strtok ( nullptr, " " );
         } // end of : line
 
-        _modal.insert( tmp, values );  //[tmp] = values;
+        _modal.insert ( tmp, values ); //[tmp] = values;
 
         delete[] p;
         delete[] cstr;
@@ -162,7 +162,7 @@ namespace gum {
     }
 
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::insertModals( const std::map< std::string, std::vector< GUM_SCALAR > >& modals ) {
+    void InferenceEngine< GUM_SCALAR >::insertModals ( const std::map< std::string, std::vector< GUM_SCALAR > >& modals ) {
       if ( ! _modal.empty() )
         _modal.clear();
 
@@ -171,21 +171,21 @@ namespace gum {
         NodeId id;
 
         try {
-          id = _credalNet->current_bn().idFromName( it->first );
+          id = _credalNet->current_bn().idFromName ( it->first );
         } catch ( NotFound& err ) {
-          GUM_SHOWERROR( err );
+          GUM_SHOWERROR ( err );
           continue;
         }
 
         // check that modals are net compatible
-        auto dSize = _credalNet->current_bn().variable( id ).domainSize();
+        auto dSize = _credalNet->current_bn().variable ( id ).domainSize();
 
         if ( dSize != it->second.size() )
           continue;
 
         //GUM_ERROR(OperationNotAllowed, "void InferenceEngine< GUM_SCALAR >::insertModals( const std::map< std::string, std::vector< GUM_SCALAR > > &modals) : modalities does not respect variable cardinality : " << _credalNet->current_bn().variable( id ).name() << " : " << dSize << " != " << it->second.size());
 
-        _modal.insert( it->first, it->second );  //[ it->first ] = it->second;
+        _modal.insert ( it->first, it->second ); //[ it->first ] = it->second;
       }
 
       //_modal = modals;
@@ -194,7 +194,7 @@ namespace gum {
     }
 
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::insertEvidence( const std::map< std::string, std::vector< GUM_SCALAR > >& eviMap ) {
+    void InferenceEngine< GUM_SCALAR >::insertEvidence ( const std::map< std::string, std::vector< GUM_SCALAR > >& eviMap ) {
       if ( ! _evidence.empty() )
         _evidence.clear();
 
@@ -202,41 +202,41 @@ namespace gum {
         NodeId id;
 
         try {
-          id = _credalNet->current_bn().idFromName( it->first );
+          id = _credalNet->current_bn().idFromName ( it->first );
         } catch ( NotFound& err ) {
-          GUM_SHOWERROR( err );
+          GUM_SHOWERROR ( err );
           continue;
         }
 
-        _evidence.insert( id, it->second );
+        _evidence.insert ( id, it->second );
       }
     }
 
     // check that observed variables DO exists in the network (otherwise Lazy report an error and app crash)
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::insertEvidence( const typename Property< std::vector < GUM_SCALAR > >::onNodes& evidence ) {
+    void InferenceEngine< GUM_SCALAR >::insertEvidence ( const typename Property< std::vector < GUM_SCALAR > >::onNodes& evidence ) {
       if ( ! _evidence.empty() )
         _evidence.clear();
 
       // use cbegin() to get const_iterator when available in aGrUM hashtables
       for ( auto it = evidence.begin(), theEnd = evidence.end(); it != theEnd; ++it ) {
         try {
-          _credalNet->current_bn().variable( it.key() );
+          _credalNet->current_bn().variable ( it.key() );
         } catch ( NotFound& err ) {
-          GUM_SHOWERROR( err );
+          GUM_SHOWERROR ( err );
           continue;
         }
 
-        _evidence.insert( it.key(), *it );
+        _evidence.insert ( it.key(), *it );
       }
     }
 
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::insertEvidenceFile( const std::string& path ) {
-      std::ifstream evi_stream( path.c_str(), std::ios::in );
+    void InferenceEngine< GUM_SCALAR >::insertEvidenceFile ( const std::string& path ) {
+      std::ifstream evi_stream ( path.c_str(), std::ios::in );
 
       if ( !evi_stream.good() ) {
-        GUM_ERROR( IOError, "void InferenceEngine< GUM_SCALAR >::insertEvidence(const std::string & path) : could not open input file : " << path );
+        GUM_ERROR ( IOError, "void InferenceEngine< GUM_SCALAR >::insertEvidence(const std::string & path) : could not open input file : " << path );
       }
 
       if ( ! _evidence.empty() )
@@ -245,43 +245,43 @@ namespace gum {
       std::string line, tmp;
       char* cstr, *p;
 
-      while ( evi_stream.good() && std::strcmp( line.c_str(), "[EVIDENCE]" ) != 0 ) {
-        getline( evi_stream, line );
+      while ( evi_stream.good() && std::strcmp ( line.c_str(), "[EVIDENCE]" ) != 0 ) {
+        getline ( evi_stream, line );
       }
 
       while ( evi_stream.good() ) {
-        getline( evi_stream, line );
+        getline ( evi_stream, line );
 
-        if ( std::strcmp( line.c_str(), "[QUERY]" ) == 0 )
+        if ( std::strcmp ( line.c_str(), "[QUERY]" ) == 0 )
           break;
 
         if ( line.size() == 0 ) continue;
 
         cstr = new char [line.size() + 1];
-        strcpy( cstr, line.c_str() );
+        strcpy ( cstr, line.c_str() );
 
-        p = strtok( cstr, " " );
+        p = strtok ( cstr, " " );
         tmp = p;
 
         // if user input is wrong
         NodeId node = -1;
 
         try {
-          node = _credalNet->current_bn().idFromName( tmp );
+          node = _credalNet->current_bn().idFromName ( tmp );
         } catch ( NotFound& err ) {
-          GUM_SHOWERROR( err );
+          GUM_SHOWERROR ( err );
           continue;
         }
 
         std::vector< GUM_SCALAR > values;
-        p = strtok( nullptr, " " );
+        p = strtok ( nullptr, " " );
 
         while ( p != nullptr ) {
-          values.push_back( atoi( p ) );
-          p = strtok( nullptr, " " );
+          values.push_back ( atoi ( p ) );
+          p = strtok ( nullptr, " " );
         } // end of : line
 
-        _evidence.insert( node, values );
+        _evidence.insert ( node, values );
 
         delete[] p;
         delete[] cstr;
@@ -291,29 +291,29 @@ namespace gum {
     }
 
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::insertQuery( const NodeProperty< std::vector < bool > >& query ) {
+    void InferenceEngine< GUM_SCALAR >::insertQuery ( const NodeProperty< std::vector < bool > >& query ) {
       if ( ! _query.empty() )
         _query.clear();
 
       // use cbegin() when available
       for ( auto it = query.begin(), theEnd = query.end(); it != theEnd; ++it ) {
         try {
-          _credalNet->current_bn().variable( it.key() );
+          _credalNet->current_bn().variable ( it.key() );
         } catch ( NotFound& err ) {
-          GUM_SHOWERROR( err );
+          GUM_SHOWERROR ( err );
           continue;
         }
 
-        _query.insert( it.key(), *it );
+        _query.insert ( it.key(), *it );
       }
     }
 
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::insertQueryFile( const std::string& path ) {
-      std::ifstream evi_stream( path.c_str(), std::ios::in );
+    void InferenceEngine< GUM_SCALAR >::insertQueryFile ( const std::string& path ) {
+      std::ifstream evi_stream ( path.c_str(), std::ios::in );
 
       if ( !evi_stream.good() ) {
-        GUM_ERROR( IOError, "void InferenceEngine< GUM_SCALAR >::insertQuery(const std::string & path) : could not open input file : " << path );
+        GUM_ERROR ( IOError, "void InferenceEngine< GUM_SCALAR >::insertQuery(const std::string & path) : could not open input file : " << path );
       }
 
       if ( ! _query.empty() )
@@ -322,52 +322,52 @@ namespace gum {
       std::string line, tmp;
       char* cstr, *p;
 
-      while ( evi_stream.good() && std::strcmp( line.c_str(), "[QUERY]" ) != 0 ) {
-        getline( evi_stream, line );
+      while ( evi_stream.good() && std::strcmp ( line.c_str(), "[QUERY]" ) != 0 ) {
+        getline ( evi_stream, line );
       }
 
       while ( evi_stream.good() ) {
-        getline( evi_stream, line );
+        getline ( evi_stream, line );
 
-        if ( std::strcmp( line.c_str(), "[EVIDENCE]" ) == 0 )
+        if ( std::strcmp ( line.c_str(), "[EVIDENCE]" ) == 0 )
           break;
 
         if ( line.size() == 0 ) continue;
 
         cstr = new char [line.size() + 1];
-        strcpy( cstr, line.c_str() );
+        strcpy ( cstr, line.c_str() );
 
-        p = strtok( cstr, " " );
+        p = strtok ( cstr, " " );
         tmp = p;
 
         // if user input is wrong
         NodeId node = -1;
 
         try {
-          node = _credalNet->current_bn().idFromName( tmp );
+          node = _credalNet->current_bn().idFromName ( tmp );
         } catch ( NotFound& err ) {
-          GUM_SHOWERROR( err );
+          GUM_SHOWERROR ( err );
           continue;
         }
 
-        auto dSize = _credalNet->current_bn().variable( node ).domainSize();
+        auto dSize = _credalNet->current_bn().variable ( node ).domainSize();
 
-        p = strtok( nullptr, " " );
+        p = strtok ( nullptr, " " );
 
         if ( p == nullptr ) {
-          _query.insert( node, std::vector< bool> ( dSize, true ) );
+          _query.insert ( node, std::vector< bool> ( dSize, true ) );
         } else {
-          std::vector< bool > values( dSize, false );
+          std::vector< bool > values ( dSize, false );
 
           while ( p != nullptr ) {
-            if ( ( Size ) atoi( p ) >= dSize )
-              GUM_ERROR( OutOfBounds, "void InferenceEngine< GUM_SCALAR >::insertQuery(const std::string & path) : query modality is higher or equal to cardinality" );
+            if ( ( Size ) atoi ( p ) >= dSize )
+              GUM_ERROR ( OutOfBounds, "void InferenceEngine< GUM_SCALAR >::insertQuery(const std::string & path) : query modality is higher or equal to cardinality" );
 
-            values[atoi( p )] = true;
-            p = strtok( nullptr, " " );
+            values[atoi ( p )] = true;
+            p = strtok ( nullptr, " " );
           } // end of : line
 
-          _query.insert( node, values );
+          _query.insert ( node, values );
         }
 
         delete[] p;
@@ -379,25 +379,25 @@ namespace gum {
     }
 
     template< typename GUM_SCALAR >
-    const std::vector< GUM_SCALAR >& InferenceEngine< GUM_SCALAR >::marginalMin( const std::string& varName ) const {
+    const std::vector< GUM_SCALAR >& InferenceEngine< GUM_SCALAR >::marginalMin ( const std::string& varName ) const {
       try {
-        return _marginalMin[_credalNet->current_bn().idFromName( varName )];
+        return _marginalMin[_credalNet->current_bn().idFromName ( varName )];
       } catch ( NotFound& err ) {
         throw ( err );
       }
     }
 
     template< typename GUM_SCALAR >
-    const std::vector< GUM_SCALAR >& InferenceEngine< GUM_SCALAR >::marginalMax( const std::string& varName ) const {
+    const std::vector< GUM_SCALAR >& InferenceEngine< GUM_SCALAR >::marginalMax ( const std::string& varName ) const {
       try {
-        return _marginalMax[_credalNet->current_bn().idFromName( varName )];
+        return _marginalMax[_credalNet->current_bn().idFromName ( varName )];
       } catch ( NotFound& err ) {
         throw ( err );
       }
     }
 
     template< typename GUM_SCALAR >
-    const std::vector< GUM_SCALAR >& InferenceEngine< GUM_SCALAR >::marginalMin( const NodeId id ) const {
+    const std::vector< GUM_SCALAR >& InferenceEngine< GUM_SCALAR >::marginalMin ( const NodeId id ) const {
       try {
         return _marginalMin[id];
       } catch ( NotFound& err ) {
@@ -406,7 +406,7 @@ namespace gum {
     }
 
     template< typename GUM_SCALAR >
-    const std::vector< GUM_SCALAR >& InferenceEngine< GUM_SCALAR >::marginalMax( const NodeId id ) const {
+    const std::vector< GUM_SCALAR >& InferenceEngine< GUM_SCALAR >::marginalMax ( const NodeId id ) const {
       try {
         return _marginalMax[id];
       } catch ( NotFound& err ) {
@@ -416,25 +416,25 @@ namespace gum {
     }
 
     template< typename GUM_SCALAR >
-    const GUM_SCALAR& InferenceEngine< GUM_SCALAR >::expectationMin( const std::string& varName ) const {
+    const GUM_SCALAR& InferenceEngine< GUM_SCALAR >::expectationMin ( const std::string& varName ) const {
       try {
-        return _expectationMin[_credalNet->current_bn().idFromName( varName )];
+        return _expectationMin[_credalNet->current_bn().idFromName ( varName )];
       } catch ( NotFound& err ) {
         throw ( err );
       }
     }
 
     template< typename GUM_SCALAR >
-    const GUM_SCALAR& InferenceEngine< GUM_SCALAR >::expectationMax( const std::string& varName ) const {
+    const GUM_SCALAR& InferenceEngine< GUM_SCALAR >::expectationMax ( const std::string& varName ) const {
       try {
-        return _expectationMax[_credalNet->current_bn().idFromName( varName )];
+        return _expectationMax[_credalNet->current_bn().idFromName ( varName )];
       } catch ( NotFound& err ) {
         throw ( err );
       }
     }
 
     template< typename GUM_SCALAR >
-    const GUM_SCALAR& InferenceEngine< GUM_SCALAR >::expectationMin( const NodeId id ) const {
+    const GUM_SCALAR& InferenceEngine< GUM_SCALAR >::expectationMin ( const NodeId id ) const {
       try {
         return _expectationMin[id];
       } catch ( NotFound& err ) {
@@ -443,7 +443,7 @@ namespace gum {
     }
 
     template< typename GUM_SCALAR >
-    const GUM_SCALAR& InferenceEngine< GUM_SCALAR >::expectationMax( const NodeId id ) const {
+    const GUM_SCALAR& InferenceEngine< GUM_SCALAR >::expectationMax ( const NodeId id ) const {
       try {
         return _expectationMax[id];
       } catch ( NotFound& err ) {
@@ -452,51 +452,51 @@ namespace gum {
     }
 
     template< typename GUM_SCALAR >
-    const std::vector< GUM_SCALAR >& InferenceEngine< GUM_SCALAR >::dynamicExpMin( const std::string& varName ) const {
+    const std::vector< GUM_SCALAR >& InferenceEngine< GUM_SCALAR >::dynamicExpMin ( const std::string& varName ) const {
       std::string errTxt = "const std::vector< GUM_SCALAR > & InferenceEngine< GUM_SCALAR >::dynamicExpMin ( const std::string & varName ) const : ";
 
       if ( _dynamicExpMin.empty() )
-        GUM_ERROR( OperationNotAllowed, errTxt + "_dynamicExpectations() needs to be called before" );
+        GUM_ERROR ( OperationNotAllowed, errTxt + "_dynamicExpectations() needs to be called before" );
 
-      if ( ! _dynamicExpMin.exists( varName ) /*_dynamicExpMin.find(varName) == _dynamicExpMin.end()*/ )
-        GUM_ERROR( NotFound, errTxt + "variable name not found : " << varName );
+      if ( ! _dynamicExpMin.exists ( varName ) /*_dynamicExpMin.find(varName) == _dynamicExpMin.end()*/ )
+        GUM_ERROR ( NotFound, errTxt + "variable name not found : " << varName );
 
       return _dynamicExpMin[ varName ];
     }
 
     template< typename GUM_SCALAR >
-    const std::vector< GUM_SCALAR >& InferenceEngine< GUM_SCALAR >::dynamicExpMax( const std::string& varName ) const {
+    const std::vector< GUM_SCALAR >& InferenceEngine< GUM_SCALAR >::dynamicExpMax ( const std::string& varName ) const {
       std::string errTxt = "const std::vector< GUM_SCALAR > & InferenceEngine< GUM_SCALAR >::dynamicExpMax ( const std::string & varName ) const : ";
 
       if ( _dynamicExpMax.empty() )
-        GUM_ERROR( OperationNotAllowed, errTxt + "_dynamicExpectations() needs to be called before" );
+        GUM_ERROR ( OperationNotAllowed, errTxt + "_dynamicExpectations() needs to be called before" );
 
-      if ( ! _dynamicExpMax.exists( varName ) /*_dynamicExpMin.find(varName) == _dynamicExpMin.end()*/ )
-        GUM_ERROR( NotFound, errTxt + "variable name not found : " << varName );
+      if ( ! _dynamicExpMax.exists ( varName ) /*_dynamicExpMin.find(varName) == _dynamicExpMin.end()*/ )
+        GUM_ERROR ( NotFound, errTxt + "variable name not found : " << varName );
 
       return _dynamicExpMax[ varName ];
     }
 
 
     template< typename GUM_SCALAR >
-    const std::vector< std::vector< GUM_SCALAR > >& InferenceEngine< GUM_SCALAR >::vertices( const NodeId id ) const {
+    const std::vector< std::vector< GUM_SCALAR > >& InferenceEngine< GUM_SCALAR >::vertices ( const NodeId id ) const {
       return _marginalSets[id];
     }
 
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::saveMarginals( const std::string& path ) const {
-      std::ofstream m_stream( path.c_str(), std::ios::out | std::ios::trunc );
+    void InferenceEngine< GUM_SCALAR >::saveMarginals ( const std::string& path ) const {
+      std::ofstream m_stream ( path.c_str(), std::ios::out | std::ios::trunc );
 
       if ( ! m_stream.good() ) {
-        GUM_ERROR( IOError, "void InferenceEngine< GUM_SCALAR >::saveMarginals(const std::string & path) const : could not open output file : " << path );
+        GUM_ERROR ( IOError, "void InferenceEngine< GUM_SCALAR >::saveMarginals(const std::string & path) const : could not open output file : " << path );
       }
 
       // use cbegin when available
       for ( auto it = _marginalMin.begin(), theEnd = _marginalMin.end(); it != theEnd; ++it ) {
         auto esize = it->size();
 
-        for ( decltype( esize ) mod = 0; mod < esize; mod++ ) {
-          m_stream << _credalNet->current_bn().variable( it.key() ).name() << " " << mod << " " << ( *it ) [mod] << " " << _marginalMax[it.key()][mod] << std::endl;
+        for ( decltype ( esize ) mod = 0; mod < esize; mod++ ) {
+          m_stream << _credalNet->current_bn().variable ( it.key() ).name() << " " << mod << " " << ( *it ) [mod] << " " << _marginalMax[it.key()][mod] << std::endl;
         }
       }
 
@@ -504,7 +504,7 @@ namespace gum {
     }
 
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::saveExpectations( const std::string& path ) const {
+    void InferenceEngine< GUM_SCALAR >::saveExpectations ( const std::string& path ) const {
       if ( _dynamicExpMin.empty() ) //_modal.empty())
         return;
 
@@ -513,10 +513,10 @@ namespace gum {
       //_dynamicExpectations(); // works with or without a dynamic network
 
 
-      std::ofstream m_stream( path.c_str(), std::ios::out | std::ios::trunc );
+      std::ofstream m_stream ( path.c_str(), std::ios::out | std::ios::trunc );
 
       if ( ! m_stream.good() ) {
-        GUM_ERROR( IOError, "void InferenceEngine< GUM_SCALAR >::saveExpectations(const std::string & path) : could not open output file : " << path );
+        GUM_ERROR ( IOError, "void InferenceEngine< GUM_SCALAR >::saveExpectations(const std::string & path) : could not open output file : " << path );
       }
 
       // use cbegin when available
@@ -554,12 +554,12 @@ namespace gum {
       for ( auto it = _marginalMin.begin(), theEnd = _marginalMin.end(); it != theEnd; ++it ) {
         auto esize = it->size();
 
-        for ( decltype( esize ) mod = 0; mod < esize; mod++ ) {
-          output << "P(" << _credalNet->current_bn().variable( it.key() ).name() << "=" << mod << "|e) = [ ";
+        for ( decltype ( esize ) mod = 0; mod < esize; mod++ ) {
+          output << "P(" << _credalNet->current_bn().variable ( it.key() ).name() << "=" << mod << "|e) = [ ";
           output << _marginalMin[it.key()][mod] << ", " << _marginalMax[it.key()][mod] << " ]";
 
           if ( ! _query.empty() )
-            if ( _query.exists( it.key() ) && _query[it.key()][mod] )
+            if ( _query.exists ( it.key() ) && _query[it.key()][mod] )
               output << " QUERY";
 
           output << "\n";
@@ -572,16 +572,16 @@ namespace gum {
     }
 
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::saveVertices( const std::string& path ) const {
-      std::ofstream m_stream( path.c_str(), std::ios::out | std::ios::trunc );
+    void InferenceEngine< GUM_SCALAR >::saveVertices ( const std::string& path ) const {
+      std::ofstream m_stream ( path.c_str(), std::ios::out | std::ios::trunc );
 
       if ( ! m_stream.good() ) {
-        GUM_ERROR( IOError, "void InferenceEngine< GUM_SCALAR >::saveVertices(const std::string & path) : could not open outpul file : " << path );
+        GUM_ERROR ( IOError, "void InferenceEngine< GUM_SCALAR >::saveVertices(const std::string & path) : could not open outpul file : " << path );
       }
 
       // use cbegin() cend() when available
       for ( auto it = _marginalSets.begin(), theEnd = _marginalSets.end(); it != theEnd; ++it ) {
-        m_stream << _credalNet->current_bn().variable( it.key() ).name() << "\n";
+        m_stream << _credalNet->current_bn().variable ( it.key() ).name() << "\n";
 
         //auto esize = _marginalSets[it.key()].size();
         // iterates over vectors from here
@@ -617,12 +617,12 @@ namespace gum {
       _oldMarginalMax.clear();
 
       for ( auto id = _credalNet->current_bn().beginNodes(), theEnd = _credalNet->current_bn().endNodes(); id != theEnd; ++id ) {
-        auto dSize = _credalNet->current_bn().variable( *id ).domainSize();
-        _marginalMin.insert( *id, std::vector< GUM_SCALAR > ( dSize, 1 ) );
-        _oldMarginalMin.insert( *id, std::vector< GUM_SCALAR > ( dSize, 1 ) );
+        auto dSize = _credalNet->current_bn().variable ( *id ).domainSize();
+        _marginalMin.insert ( *id, std::vector< GUM_SCALAR > ( dSize, 1 ) );
+        _oldMarginalMin.insert ( *id, std::vector< GUM_SCALAR > ( dSize, 1 ) );
 
-        _marginalMax.insert( *id, std::vector< GUM_SCALAR > ( dSize, 0 ) );
-        _oldMarginalMax.insert( *id, std::vector< GUM_SCALAR > ( dSize, 0 ) );
+        _marginalMax.insert ( *id, std::vector< GUM_SCALAR > ( dSize, 0 ) );
+        _oldMarginalMax.insert ( *id, std::vector< GUM_SCALAR > ( dSize, 0 ) );
 
       }
     }
@@ -635,7 +635,7 @@ namespace gum {
         return;
 
       for ( auto id = _credalNet->current_bn().beginNodes(), theEnd = _credalNet->current_bn().endNodes(); id != theEnd; ++id )
-        _marginalSets.insert( *id, std::vector< std::vector< GUM_SCALAR > >() );
+        _marginalSets.insert ( *id, std::vector< std::vector< GUM_SCALAR > >() );
     }
 
 
@@ -652,19 +652,19 @@ namespace gum {
       for ( auto id =  _credalNet->current_bn().beginNodes(), theEnd = _credalNet->current_bn().endNodes(); id != theEnd; ++id ) {
         std::string var_name, time_step;
 
-        var_name = _credalNet->current_bn().variable( *id ).name();
-        auto delim = var_name.find_first_of( "_" );
-        time_step = var_name.substr( delim + 1, var_name.size() );
-        var_name = var_name.substr( 0, delim );
+        var_name = _credalNet->current_bn().variable ( *id ).name();
+        auto delim = var_name.find_first_of ( "_" );
+        time_step = var_name.substr ( delim + 1, var_name.size() );
+        var_name = var_name.substr ( 0, delim );
 
         /*auto it = _modal.find(var_name);
         if(it == _modal.end())
           continue;*/
-        if ( ! _modal.exists( var_name ) )
+        if ( ! _modal.exists ( var_name ) )
           continue;
 
-        _expectationMin.insert( *id, _modal[ var_name ].back() );
-        _expectationMax.insert( *id, _modal[ var_name ].front() );
+        _expectationMin.insert ( *id, _modal[ var_name ].back() );
+        _expectationMax.insert ( *id, _modal[ var_name ].front() );
 
         //_expectationMin.insert ( *id, it->second[it->second.size()-1] );
         //_expectationMax.insert ( *id, it->second[0] );
@@ -703,17 +703,17 @@ namespace gum {
 
         std::string var_name, time_step;
 
-        var_name = _credalNet->current_bn().variable( it.key() ).name();
-        auto delim = var_name.find_first_of( "_" );
-        time_step = var_name.substr( delim + 1, var_name.size() );
-        var_name = var_name.substr( 0, delim );
+        var_name = _credalNet->current_bn().variable ( it.key() ).name();
+        auto delim = var_name.find_first_of ( "_" );
+        time_step = var_name.substr ( delim + 1, var_name.size() );
+        var_name = var_name.substr ( 0, delim );
 
         // to be sure (don't store not monitored variables' expectations) although it should be taken care of before this point
-        if ( ! _modal.exists( var_name ) /*_modal.find(var_name) == _modal.end()*/ )
+        if ( ! _modal.exists ( var_name ) /*_modal.find(var_name) == _modal.end()*/ )
           continue;
 
-        expectationsMin.getWithDefault( var_name, innerMap() ).getWithDefault( atoi( time_step.c_str() ), 0 ) = *it;    // we iterate with min iterators
-        expectationsMax.getWithDefault( var_name, innerMap() ).getWithDefault( atoi( time_step.c_str() ), 0 ) = _expectationMax[ it.key() ];
+        expectationsMin.getWithDefault ( var_name, innerMap() ).getWithDefault ( atoi ( time_step.c_str() ), 0 ) = *it; // we iterate with min iterators
+        expectationsMax.getWithDefault ( var_name, innerMap() ).getWithDefault ( atoi ( time_step.c_str() ), 0 ) = _expectationMax[ it.key() ];
 
         //expectationsMin[var_name][atoi(time_step.c_str())] = _expectationMin[it.key()];
         //expectationsMax[var_name][atoi(time_step.c_str())] = _expectationMax[it.key()];
@@ -721,25 +721,25 @@ namespace gum {
 
       // use cbegin() when available
       for ( auto it = expectationsMin.begin(), theEnd = expectationsMin.end(); it != theEnd; ++it ) {
-        typename std::vector< GUM_SCALAR > dynExp( it->/*second.*/size() );
+        typename std::vector< GUM_SCALAR > dynExp ( it->/*second.*/size() );
 
         for ( auto it2 = it->/*second.*/begin(), theEnd2 = it->/*second.*/end(); it2 != theEnd2; ++it2 ) {
           dynExp[it2.key() /*->first*/] = *it2/*->second*/;
         }
 
-        _dynamicExpMin.insert( it.key(), dynExp );
+        _dynamicExpMin.insert ( it.key(), dynExp );
         //_dynamicExpMin[it->first] = dynExp;
       }
 
       // use cbegin() when available
       for ( auto it = expectationsMax.begin(), theEnd = expectationsMax.end(); it != theEnd; ++it ) {
-        typename std::vector< GUM_SCALAR > dynExp( it->/*second.*/size() );
+        typename std::vector< GUM_SCALAR > dynExp ( it->/*second.*/size() );
 
         for ( auto it2 = it->/*second.*/begin(), theEnd2 = it->/*second.*/end(); it2 != theEnd2; ++it2 ) {
           dynExp[it2.key() /*->first*/] = *it2/*->second*/;
         }
 
-        _dynamicExpMax.insert( it.key(), dynExp );
+        _dynamicExpMax.insert ( it.key(), dynExp );
         //_dynamicExpMax[it->first] = dynExp;
       }
     }
@@ -753,46 +753,48 @@ namespace gum {
       const DAG& dag = _credalNet->current_bn().dag();
 
       // t = 0 vars belongs to _t0 as keys
-      for ( auto id = dag.beginNodes(), theEnd = dag.endNodes(); id != theEnd; ++id ) {
-        std::string var_name = _credalNet->current_bn().variable( *id ).name();
-        auto delim = var_name.find_first_of( "_" );
+      //for ( auto id = dag.beginNodes(), theEnd = dag.endNodes(); id != theEnd; ++id ) {
+      for ( const auto id : dag.nodes() ) {
+        std::string var_name = _credalNet->current_bn().variable ( id ).name();
+        auto delim = var_name.find_first_of ( "_" );
 
         if ( delim > var_name.size() ) {
-          GUM_ERROR( InvalidArgument, "void InferenceEngine< GUM_SCALAR >::_repetitiveInit() : the network does not appear to be dynamic" );
+          GUM_ERROR ( InvalidArgument, "void InferenceEngine< GUM_SCALAR >::_repetitiveInit() : the network does not appear to be dynamic" );
         }
 
-        std::string time_step = var_name.substr( delim + 1, 1 );
+        std::string time_step = var_name.substr ( delim + 1, 1 );
 
-        if ( time_step.compare( "0" ) == 0 )
-          _t0.insert( *id, std::vector< NodeId >() );
+        if ( time_step.compare ( "0" ) == 0 )
+          _t0.insert ( id, std::vector< NodeId >() );
       }
 
       // t = 1 vars belongs to either _t0 as member value or _t1 as keys
-      for ( auto id = dag.beginNodes(), theEnd = dag.endNodes(); id != theEnd; ++id ) {
-        std::string var_name = _credalNet->current_bn().variable( *id ).name();
-        auto delim = var_name.find_first_of( "_" );
-        std::string time_step = var_name.substr( delim + 1, var_name.size() );
-        var_name = var_name.substr( 0, delim );
-        delim = time_step.find_first_of( "_" );
-        time_step = time_step.substr( 0, delim );
+      //for ( auto id = dag.beginNodes(), theEnd = dag.endNodes(); id != theEnd; ++id ) {
+      for ( const auto id : dag.nodes() ) {
+        std::string var_name = _credalNet->current_bn().variable ( id ).name();
+        auto delim = var_name.find_first_of ( "_" );
+        std::string time_step = var_name.substr ( delim + 1, var_name.size() );
+        var_name = var_name.substr ( 0, delim );
+        delim = time_step.find_first_of ( "_" );
+        time_step = time_step.substr ( 0, delim );
 
-        if ( time_step.compare( "1" ) == 0 ) {
+        if ( time_step.compare ( "1" ) == 0 ) {
           bool found = false;
 
           // use cbegin() when available
           for ( auto it = _t0.begin(), t0End = _t0.end(); it != t0End; ++it ) {
-            std::string var_0_name =  _credalNet->current_bn().variable( it.key() ).name();
-            delim = var_0_name.find_first_of( "_" );
-            var_0_name = var_0_name.substr( 0, delim );
+            std::string var_0_name =  _credalNet->current_bn().variable ( it.key() ).name();
+            delim = var_0_name.find_first_of ( "_" );
+            var_0_name = var_0_name.substr ( 0, delim );
 
-            if ( var_name.compare( var_0_name ) == 0 ) {
-              const Potential< GUM_SCALAR >* potential( &_credalNet->current_bn().cpt( *id ) );
-              const Potential< GUM_SCALAR >* potential2( &_credalNet->current_bn().cpt( it.key() ) );
+            if ( var_name.compare ( var_0_name ) == 0 ) {
+              const Potential< GUM_SCALAR >* potential ( &_credalNet->current_bn().cpt ( id ) );
+              const Potential< GUM_SCALAR >* potential2 ( &_credalNet->current_bn().cpt ( it.key() ) );
 
               if ( potential->domainSize() == potential2->domainSize() )
-                _t0[it.key()].push_back( *id );
+                _t0[it.key()].push_back ( id );
               else
-                _t1.insert( *id, std::vector< NodeId >() );
+                _t1.insert ( id, std::vector< NodeId >() );
 
               found = true;
               break;
@@ -800,43 +802,44 @@ namespace gum {
           }
 
           if ( ! found ) {
-            _t1.insert( *id, std::vector< NodeId >() );
+            _t1.insert ( id, std::vector< NodeId >() );
           }
         }
       }
 
       // t > 1 vars belongs to either _t0 or _t1 as member value
       // remember _timeSteps
-      for ( auto id = dag.beginNodes(), theEnd = dag.endNodes(); id != theEnd; ++id ) {
-        std::string var_name = _credalNet->current_bn().variable( *id ).name();
-        auto delim = var_name.find_first_of( "_" );
-        std::string time_step = var_name.substr( delim + 1, var_name.size() );
-        var_name = var_name.substr( 0, delim );
-        delim = time_step.find_first_of( "_" );
-        time_step = time_step.substr( 0, delim );
+      //for ( auto id = dag.beginNodes(), theEnd = dag.endNodes(); id != theEnd; ++id ) {
+      for ( const auto id : dag.nodes() ) {
+        std::string var_name = _credalNet->current_bn().variable ( id ).name();
+        auto delim = var_name.find_first_of ( "_" );
+        std::string time_step = var_name.substr ( delim + 1, var_name.size() );
+        var_name = var_name.substr ( 0, delim );
+        delim = time_step.find_first_of ( "_" );
+        time_step = time_step.substr ( 0, delim );
 
 
 
-        if ( time_step.compare( "0" ) != 0 && time_step.compare( "1" ) != 0 ) {
+        if ( time_step.compare ( "0" ) != 0 && time_step.compare ( "1" ) != 0 ) {
           // keep max time_step
-          if ( atoi( time_step.c_str() ) > _timeSteps )
-            _timeSteps = atoi( time_step.c_str() );
+          if ( atoi ( time_step.c_str() ) > _timeSteps )
+            _timeSteps = atoi ( time_step.c_str() );
 
           std::string var_0_name;
           bool found = false;
 
           // use cbegin()
           for ( auto it = _t0.begin(), t0End = _t0.end(); it != t0End; ++it ) {
-            std::string var_0_name =  _credalNet->current_bn().variable( it.key() ).name();
-            delim = var_0_name.find_first_of( "_" );
-            var_0_name = var_0_name.substr( 0, delim );
+            std::string var_0_name =  _credalNet->current_bn().variable ( it.key() ).name();
+            delim = var_0_name.find_first_of ( "_" );
+            var_0_name = var_0_name.substr ( 0, delim );
 
-            if ( var_name.compare( var_0_name ) == 0 ) {
-              const Potential< GUM_SCALAR >* potential( &_credalNet->current_bn().cpt( *id ) );
-              const Potential< GUM_SCALAR >* potential2( &_credalNet->current_bn().cpt( it.key() ) );
+            if ( var_name.compare ( var_0_name ) == 0 ) {
+              const Potential< GUM_SCALAR >* potential ( &_credalNet->current_bn().cpt ( id ) );
+              const Potential< GUM_SCALAR >* potential2 ( &_credalNet->current_bn().cpt ( it.key() ) );
 
               if ( potential->domainSize() == potential2->domainSize() ) {
-                _t0[it.key()].push_back( *id );
+                _t0[it.key()].push_back ( id );
                 found = true;
                 break;
               }
@@ -846,16 +849,16 @@ namespace gum {
           if ( !found ) {
             // use cbegin()
             for ( auto it = _t1.begin(), t1End = _t1.end(); it != t1End; ++it ) {
-              std::string var_0_name =  _credalNet->current_bn().variable( it.key() ).name();
-              auto delim = var_0_name.find_first_of( "_" );
-              var_0_name = var_0_name.substr( 0, delim );
+              std::string var_0_name =  _credalNet->current_bn().variable ( it.key() ).name();
+              auto delim = var_0_name.find_first_of ( "_" );
+              var_0_name = var_0_name.substr ( 0, delim );
 
-              if ( var_name.compare( var_0_name ) == 0 ) {
-                const Potential< GUM_SCALAR >* potential( &_credalNet->current_bn().cpt( *id ) );
-                const Potential< GUM_SCALAR >* potential2( &_credalNet->current_bn().cpt( it.key() ) );
+              if ( var_name.compare ( var_0_name ) == 0 ) {
+                const Potential< GUM_SCALAR >* potential ( &_credalNet->current_bn().cpt ( id ) );
+                const Potential< GUM_SCALAR >* potential2 ( &_credalNet->current_bn().cpt ( it.key() ) );
 
                 if ( potential->domainSize() == potential2->domainSize() ) {
-                  _t1[it.key()].push_back( *id );
+                  _t1[it.key()].push_back ( id );
                   break;
                 }
               }
@@ -870,17 +873,17 @@ namespace gum {
     }
 
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::_updateExpectations( const NodeId& id, const std::vector< GUM_SCALAR >& vertex ) {
-      std::string var_name = _credalNet->current_bn().variable( id ).name();
-      auto delim = var_name.find_first_of( "_" );
+    void InferenceEngine< GUM_SCALAR >::_updateExpectations ( const NodeId& id, const std::vector< GUM_SCALAR >& vertex ) {
+      std::string var_name = _credalNet->current_bn().variable ( id ).name();
+      auto delim = var_name.find_first_of ( "_" );
       //std::string time_step = var_name.substr ( delim + 1, var_name.size() );
-      var_name = var_name.substr( 0, delim );
+      var_name = var_name.substr ( 0, delim );
 
-      if ( _modal.exists( var_name ) /*_modal.find(var_name) != _modal.end()*/ ) {
+      if ( _modal.exists ( var_name ) /*_modal.find(var_name) != _modal.end()*/ ) {
         GUM_SCALAR exp = 0;
         auto vsize = vertex.size();
 
-        for ( decltype( vsize ) mod = 0; mod < vsize; mod++ )
+        for ( decltype ( vsize ) mod = 0; mod < vsize; mod++ )
           exp += vertex[mod] * _modal[var_name][mod];
 
         if ( exp > _expectationMax[id] )
@@ -893,7 +896,7 @@ namespace gum {
     }
 
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::_updateCredalSetsWithFiles( const NodeId& id, const std::vector< GUM_SCALAR >& vertex, const bool& elimRedund ) {
+    void InferenceEngine< GUM_SCALAR >::_updateCredalSetsWithFiles ( const NodeId& id, const std::vector< GUM_SCALAR >& vertex, const bool& elimRedund ) {
       auto& nodeCredalSet = _marginalSets[ id ];
 
       bool eq = true;
@@ -902,7 +905,7 @@ namespace gum {
         eq = true;
 
         for ( auto end = vertex.size(), i = 0; i < end; i++ ) {
-          if ( fabs( vertex[ i ] - ( *it ) [ i ] ) > 1e-6 ) {
+          if ( fabs ( vertex[ i ] - ( *it ) [ i ] ) > 1e-6 ) {
             eq = false;
             break;
           }
@@ -913,13 +916,13 @@ namespace gum {
       }
 
       if ( ! eq || nodeCredalSet.size() == 0 )
-        nodeCredalSet.push_back( vertex );
+        nodeCredalSet.push_back ( vertex );
       else
         return;
 
       // check that the point and all previously added ones are not inside the actual polytope
-      auto itEnd = std::remove_if( nodeCredalSet.begin(), nodeCredalSet.end(),
-      [&]( const std::vector< GUM_SCALAR >& v ) -> bool {
+      auto itEnd = std::remove_if ( nodeCredalSet.begin(), nodeCredalSet.end(),
+      [&] ( const std::vector< GUM_SCALAR >& v ) -> bool {
         for ( auto jt = v.cbegin(), jtEnd = v.cend(),
         minIt = _marginalMin[ id ].cbegin(), minItEnd = _marginalMin[ id ].cend(),
         maxIt = _marginalMax[ id ].cbegin(), maxItEnd = _marginalMax[ id ].cend();
@@ -930,14 +933,14 @@ namespace gum {
         ++minIt,
         ++maxIt
         ) {
-          if ( ( fabs( *jt - *minIt ) < 1e-6 || fabs( *jt - *maxIt ) < 1e-6 ) && fabs( *minIt - *maxIt ) > 1e-6 )
+          if ( ( fabs ( *jt - *minIt ) < 1e-6 || fabs ( *jt - *maxIt ) < 1e-6 ) && fabs ( *minIt - *maxIt ) > 1e-6 )
             return false;
         }
         return true;
       }
-                                 );
+                                  );
 
-      nodeCredalSet.erase( itEnd, nodeCredalSet.end() );
+      nodeCredalSet.erase ( itEnd, nodeCredalSet.end() );
 
       // we need at least 2 points to make a convex combination
       if ( ! elimRedund || nodeCredalSet.size() <= 2 )
@@ -947,14 +950,14 @@ namespace gum {
 
       std::vector< std::vector< GUM_SCALAR > > outputCSet; // final set
 
-      char* vfile = tmpnam( nullptr );
-      std::string svfile( vfile );
+      char* vfile = tmpnam ( nullptr );
+      std::string svfile ( vfile );
       svfile += ".ext";
 
-      std::ofstream v_file( svfile.c_str(), std::ios::out | std::ios::trunc );
+      std::ofstream v_file ( svfile.c_str(), std::ios::out | std::ios::trunc );
 
       if ( ! v_file.good() )
-        GUM_ERROR( IOError, "could not open lrs input file : " << svfile );
+        GUM_ERROR ( IOError, "could not open lrs input file : " << svfile );
 
       v_file << "V-representation\n";
       v_file << "begin\n";
@@ -966,14 +969,14 @@ namespace gum {
       auto mods = vertex.size();
       v_file << " " << mods + 1 << " rational\n";
 
-      for ( decltype( setSize ) vtex = 0; vtex < setSize; vtex++ ) {
+      for ( decltype ( setSize ) vtex = 0; vtex < setSize; vtex++ ) {
         v_file << " 1  ";
 
-        for ( decltype( mods ) modal = 0; modal < mods; modal++ ) {
+        for ( decltype ( mods ) modal = 0; modal < mods; modal++ ) {
           int64_t num, den;
           GUM_SCALAR pr = nodeCredalSet[ vtex ][ modal ];
 
-          Rational< GUM_SCALAR >::farey( num, den, pr, 1e6, 1e-6 );
+          Rational< GUM_SCALAR >::farey ( num, den, pr, 1e6, 1e-6 );
           v_file << num << '/' << den << ' ';
 
         }
@@ -988,40 +991,40 @@ namespace gum {
       char* args[3];
 
       std::string soft_name = "redund";
-      std::string extfile( vfile );
+      std::string extfile ( vfile );
       extfile += ".r.ext";
 
       args[0] = new char[soft_name.size()];
       args[1] = new char[svfile.size()];
       args[2] = new char[extfile.size()];
 
-      strcpy( args[0], soft_name.c_str() );
-      strcpy( args[1], svfile.c_str() );
-      strcpy( args[2], extfile.c_str() );
+      strcpy ( args[0], soft_name.c_str() );
+      strcpy ( args[1], svfile.c_str() );
+      strcpy ( args[2], extfile.c_str() );
 
       // standard cout to null (avoid lrs flooding)
       int old_cout, new_cout;
-      fflush( stdout );
-      old_cout = dup( 1 );
+      fflush ( stdout );
+      old_cout = dup ( 1 );
 
-      new_cout = open( "/dev/null", O_WRONLY );
-      dup2( new_cout, 1 );
-      close( new_cout );
+      new_cout = open ( "/dev/null", O_WRONLY );
+      dup2 ( new_cout, 1 );
+      close ( new_cout );
 
-      redund_main( 3, args );
+      redund_main ( 3, args );
 
       // restore standard cout
-      fflush( stdout );
-      dup2( old_cout, 1 );
-      close( old_cout );
+      fflush ( stdout );
+      dup2 ( old_cout, 1 );
+      close ( old_cout );
 
       delete[] args[2]; delete[] args[1]; delete[] args[0];
 
       // read V rep file
-      std::ifstream e_file( extfile.c_str() /*extfilename.c_str()*/, std::ios::in );
+      std::ifstream e_file ( extfile.c_str() /*extfilename.c_str()*/, std::ios::in );
 
       if ( ! e_file.good() )
-        GUM_ERROR( IOError, "__H2Vlrs : could not open lrs ouput file : " << extfile );
+        GUM_ERROR ( IOError, "__H2Vlrs : could not open lrs ouput file : " << extfile );
 
       std::string line, tmp;
       char* cstr, * p;
@@ -1033,13 +1036,13 @@ namespace gum {
 
       std::vector< GUM_SCALAR > vtx;
 
-      e_file.ignore( 256, 'l' );
+      e_file.ignore ( 256, 'l' );
 
       while ( e_file.good() && keep_going ) {
-        getline( e_file, line );
+        getline ( e_file, line );
 
         if ( line.size() == 0 ) continue;
-        else if ( line.compare( "end" ) == 0 ) {
+        else if ( line.compare ( "end" ) == 0 ) {
           keep_going = false;
           // this is to get vertices number :
           /*getline ( v_file, line );
@@ -1048,44 +1051,44 @@ namespace gum {
             vertices = atoi ( line.substr ( pos + 9, end_pos - pos - 9 ).c_str() );*/
           break;
         } else if ( line[1] != '1' ) {
-          GUM_ERROR( IOError, "reading something other than a vertex from lrs output file : " << extfile );
+          GUM_ERROR ( IOError, "reading something other than a vertex from lrs output file : " << extfile );
         }
 
-        line = line.substr( 2 );
+        line = line.substr ( 2 );
         cstr = new char[line.size() + 1];
-        strcpy( cstr, line.c_str() );
+        strcpy ( cstr, line.c_str() );
 
-        p = strtok( cstr, " " );
+        p = strtok ( cstr, " " );
 
         while ( p != nullptr ) {
           tmp = p;
 
-          if ( tmp.compare( "1" ) == 0 || tmp.compare( "0" ) == 0 )
-            probability = atof( tmp.c_str() );
+          if ( tmp.compare ( "1" ) == 0 || tmp.compare ( "0" ) == 0 )
+            probability = atof ( tmp.c_str() );
           else {
-            pos = tmp.find( "/" );
-            probability = atof( tmp.substr( 0, pos ).c_str() ) / atof( tmp.substr( pos + 1, tmp.size() ).c_str() );
+            pos = tmp.find ( "/" );
+            probability = atof ( tmp.substr ( 0, pos ).c_str() ) / atof ( tmp.substr ( pos + 1, tmp.size() ).c_str() );
           }
 
-          vtx.push_back( probability );
-          p = strtok( nullptr, " " );
+          vtx.push_back ( probability );
+          p = strtok ( nullptr, " " );
         } // end of : for all tokens
 
         delete[] p;
         delete[] cstr;
 
-        outputCSet.push_back( vtx );
+        outputCSet.push_back ( vtx );
         vtx.clear();
 
       } // end of file
 
       e_file.close();
 
-      if ( std::remove( svfile.c_str() ) != 0 )
-        GUM_ERROR( IOError, "error removing : " << svfile );
+      if ( std::remove ( svfile.c_str() ) != 0 )
+        GUM_ERROR ( IOError, "error removing : " << svfile );
 
-      if ( std::remove( extfile.c_str() ) != 0 )
-        GUM_ERROR( IOError, "error removing : " << extfile );
+      if ( std::remove ( extfile.c_str() ) != 0 )
+        GUM_ERROR ( IOError, "error removing : " << extfile );
 
       _marginalSets[ id ] = outputCSet;
 
@@ -1093,7 +1096,7 @@ namespace gum {
 
 
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::_updateCredalSets( const NodeId& id, const std::vector< GUM_SCALAR >& vertex, const bool& elimRedund ) {
+    void InferenceEngine< GUM_SCALAR >::_updateCredalSets ( const NodeId& id, const std::vector< GUM_SCALAR >& vertex, const bool& elimRedund ) {
       auto& nodeCredalSet = _marginalSets[ id ];
       auto dsize = vertex.size();
 
@@ -1102,8 +1105,8 @@ namespace gum {
       for ( auto it = nodeCredalSet.cbegin(), itEnd = nodeCredalSet.cend(); it != itEnd; ++it ) {
         eq = true;
 
-        for ( decltype( dsize ) i = 0; i < dsize; i++ ) {
-          if ( fabs( vertex[ i ] - ( *it ) [ i ] ) > 1e-6 ) {
+        for ( decltype ( dsize ) i = 0; i < dsize; i++ ) {
+          if ( fabs ( vertex[ i ] - ( *it ) [ i ] ) > 1e-6 ) {
             eq = false;
             break;
           }
@@ -1114,7 +1117,7 @@ namespace gum {
       }
 
       if ( ! eq || nodeCredalSet.size() == 0 ) {
-        nodeCredalSet.push_back( vertex );
+        nodeCredalSet.push_back ( vertex );
         return;
       } else
         return;
@@ -1124,8 +1127,8 @@ namespace gum {
         return;
 
       // check that the point and all previously added ones are not inside the actual polytope
-      auto itEnd = std::remove_if( nodeCredalSet.begin(), nodeCredalSet.end(),
-      [&]( const std::vector< GUM_SCALAR >& v ) -> bool {
+      auto itEnd = std::remove_if ( nodeCredalSet.begin(), nodeCredalSet.end(),
+      [&] ( const std::vector< GUM_SCALAR >& v ) -> bool {
         for ( auto jt = v.cbegin(), jtEnd = v.cend(),
         minIt = _marginalMin[ id ].cbegin(), minItEnd = _marginalMin[ id ].cend(),
         maxIt = _marginalMax[ id ].cbegin(), maxItEnd = _marginalMax[ id ].cend();
@@ -1136,14 +1139,14 @@ namespace gum {
         ++minIt,
         ++maxIt
         ) {
-          if ( ( fabs( *jt - *minIt ) < 1e-6 || fabs( *jt - *maxIt ) < 1e-6 ) && fabs( *minIt - *maxIt ) > 1e-6 )
+          if ( ( fabs ( *jt - *minIt ) < 1e-6 || fabs ( *jt - *maxIt ) < 1e-6 ) && fabs ( *minIt - *maxIt ) > 1e-6 )
             return false;
         }
         return true;
       }
-                                 );
+                                  );
 
-      nodeCredalSet.erase( itEnd, nodeCredalSet.end() );
+      nodeCredalSet.erase ( itEnd, nodeCredalSet.end() );
 
       // we need at least 2 points to make a convex combination
       if ( ! elimRedund || nodeCredalSet.size() <= 2 )
@@ -1153,10 +1156,10 @@ namespace gum {
       auto setSize = nodeCredalSet.size();
 
       LRSWrapper< GUM_SCALAR > lrsWrapper;
-      lrsWrapper.setUpV( dsize, setSize );
+      lrsWrapper.setUpV ( dsize, setSize );
 
       for ( auto & vtx : nodeCredalSet )
-        lrsWrapper.fillV( vtx );
+        lrsWrapper.fillV ( vtx );
 
       lrsWrapper.elimRedundVrep();
 
@@ -1188,10 +1191,10 @@ namespace gum {
 
         #pragma omp for
 
-        for ( decltype( nsize ) i = 0; i < nsize; i++ ) {
+        for ( decltype ( nsize ) i = 0; i < nsize; i++ ) {
           auto dSize = _marginalMin[i].size();
 
-          for ( decltype( dSize ) j = 0; j < dSize; j++ ) {
+          for ( decltype ( dSize ) j = 0; j < dSize; j++ ) {
             // on min
             delta = _marginalMin[i][j] - _oldMarginalMin[i][j];
             delta = ( delta < 0 ) ? ( - delta ) : delta;

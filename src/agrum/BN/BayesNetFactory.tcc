@@ -44,12 +44,13 @@ namespace gum {
     GUM_CONSTRUCTOR ( BayesNetFactory );
     __states.push_back ( factory_state::NONE );
 
-    for ( DAG::NodeIterator iter = bn->beginNodes(); iter != bn->endNodes(); ++iter ) {
-      if ( __varNameMap.exists ( bn->variable ( *iter ).name() ) ) {
-        GUM_ERROR ( DuplicateElement, bn->variable ( *iter ).name() );
+    //for ( DAG::NodeIterator iter = bn->beginNodes(); iter != bn->endNodes(); ++iter ) {
+    for ( const auto node : bn->nodes() ) {
+      if ( __varNameMap.exists ( bn->variable ( node ).name() ) ) {
+        GUM_ERROR ( DuplicateElement, bn->variable ( node ).name() );
       }
 
-      __varNameMap.insert ( bn->variable ( *iter ).name(), *iter );
+      __varNameMap.insert ( bn->variable ( node ).name(), node );
     }
 
     resetVerbose();
@@ -677,7 +678,7 @@ namespace gum {
 //     Checking consistency between values and var.
 
       if ( values.size() != var.domainSize() ) {
-        GUM_ERROR ( OperationNotAllowed, var.name() <<" : invalid number of modalities: found " << values.size() <<" while needed "<<var.domainSize() );
+        GUM_ERROR ( OperationNotAllowed, var.name() << " : invalid number of modalities: found " << values.size() << " while needed " << var.domainSize() );
       }
 
       setVariableValuesUnchecked ( values );
@@ -769,7 +770,7 @@ namespace gum {
         }
 
         // CPT are created when a variable is added.
-        __bn->_unsafeChangePotential ( varId,table );
+        __bn->_unsafeChangePotential ( varId, table );
       }
     }
   }
@@ -881,7 +882,7 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   BayesNetFactory<GUM_SCALAR>::__setCPTAndParents ( const DiscreteVariable& var, Potential<GUM_SCALAR>* table ) {
-    NodeId varId=__varNameMap[var.name()];
+    NodeId varId = __varNameMap[var.name()];
     __bn->_dag.eraseParents ( varId );
 
     for ( Sequence<const DiscreteVariable*>::iterator iter = table->variablesSequence().begin(); iter != table->variablesSequence().end(); ++iter ) {

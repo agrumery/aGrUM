@@ -76,7 +76,7 @@ namespace gum {
     GUM_DESTRUCTOR ( MultiDimDecisionDiagramBase );
 
     //for( NodeGraphPart::NodeIterator iter = __graph.beginNodes(); iter != __graph.endNodes(); ++iter ) {
-    for ( auto node:__graph.nodes() ) {
+    for ( auto node : __graph.nodes() ) {
       if ( node != 0 )
         if ( !__valueMap.existsFirst ( node ) && __arcMap[node] != nullptr )
           delete __arcMap[node];
@@ -355,22 +355,23 @@ namespace gum {
 
     __defaultArcMap.resize ( source->nodesMap().size() );
 
-    for ( NodeGraphPartIterator nodeIter = source->nodesMap().beginNodes(); nodeIter != source->nodesMap().endNodes(); ++nodeIter ) {
+    //for ( NodeGraphPartIterator nodeIter = source->nodesMap().beginNodes(); nodeIter != source->nodesMap().endNodes(); ++nodeIter ) {
+    for ( const auto nodeIter : source->nodesMap() ) {
 
-      if ( *nodeIter != 0 && !source->isTerminalNode ( *nodeIter ) ) {
+      if ( nodeIter != 0 && !source->isTerminalNode ( nodeIter ) ) {
 
-        __variableMap.insert ( *nodeIter, old2new.second ( source->unsafeNodeVariable ( *nodeIter ) ) );
+        __variableMap.insert ( nodeIter, old2new.second ( source->unsafeNodeVariable ( nodeIter ) ) );
 
-        if ( !__var2NodeIdMap.exists ( old2new.second ( source->unsafeNodeVariable ( *nodeIter ) ) ) )
-          __var2NodeIdMap.insert ( old2new.second ( source->unsafeNodeVariable ( *nodeIter ) ), new List< NodeId > ( * ( source->variableNodes ( source->unsafeNodeVariable ( *nodeIter ) ) ) ) );
+        if ( !__var2NodeIdMap.exists ( old2new.second ( source->unsafeNodeVariable ( nodeIter ) ) ) )
+          __var2NodeIdMap.insert ( old2new.second ( source->unsafeNodeVariable ( nodeIter ) ), new List< NodeId > ( * ( source->variableNodes ( source->unsafeNodeVariable ( nodeIter ) ) ) ) );
 
-        if ( !__varUsedModalitiesMap.exists ( old2new.second ( source->unsafeNodeVariable ( *nodeIter ) ) ) )
-          __varUsedModalitiesMap.insert ( old2new.second ( source->unsafeNodeVariable ( *nodeIter ) ), new std::vector<Idx> ( * ( source->variableUsedModalities ( source->unsafeNodeVariable ( *nodeIter ) ) ) ) );
+        if ( !__varUsedModalitiesMap.exists ( old2new.second ( source->unsafeNodeVariable ( nodeIter ) ) ) )
+          __varUsedModalitiesMap.insert ( old2new.second ( source->unsafeNodeVariable ( nodeIter ) ), new std::vector<Idx> ( * ( source->variableUsedModalities ( source->unsafeNodeVariable ( nodeIter ) ) ) ) );
 
-        __arcMap.insert ( *nodeIter, new std::vector< NodeId > ( * ( source->unsafeNodeSons ( *nodeIter ) ) ) );
+        __arcMap.insert ( nodeIter, new std::vector< NodeId > ( * ( source->unsafeNodeSons ( nodeIter ) ) ) );
 
-        if ( source->unsafeHasNodeDefaultSon ( *nodeIter ) )
-          __defaultArcMap.insert ( *nodeIter, source->unsafeNodeDefaultSon ( *nodeIter ) );
+        if ( source->unsafeHasNodeDefaultSon ( nodeIter ) )
+          __defaultArcMap.insert ( nodeIter, source->unsafeNodeDefaultSon ( nodeIter ) );
 
       }
     }
@@ -428,7 +429,7 @@ namespace gum {
     std::string tab = "  ";
 
     //for ( NodeGraphPart::NodeIterator nodeIter = __graph.beginNodes(); nodeIter != __graph.endNodes(); ++nodeIter ) {
-    for(auto node : __graph.nodes()) {
+    for ( auto node : __graph.nodes() ) {
       if ( node != 0 ) {
         if ( isTerminalNode ( node ) ) {
           terminalStream << tab << node << ";" << tab << node  << " [label=\"" << node << "-" << std::setprecision ( 15 ) << this->__valueMap.second ( node ) << "\"]" << ";" << std::endl;
@@ -763,7 +764,7 @@ namespace gum {
         NodeId nody = newValueMap.first ( tempVal );
 
         //for ( NodeGraphPartIterator nodeIter = __graph.beginNodes(); nodeIter != __graph.endNodes(); ++nodeIter )
-        for (auto node : __graph.nodes()) 
+        for ( auto node : __graph.nodes() )
           if ( node != 0 && !isTerminalNode ( node ) ) {
             if ( !__arcMap.exists ( node ) )
               std::cout << "OW! OW! : " << node << std::endl;

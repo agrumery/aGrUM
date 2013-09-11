@@ -40,10 +40,9 @@ namespace gum {
 
     NodeProperty<Size> __modalitiesMap;
 
-    for ( DAG::NodeIterator iter = this->bn().beginNodes();
-          iter != this->bn().endNodes(); ++iter ) {
-      __modalitiesMap.insert ( *iter,  this->bn().variable ( *iter ).domainSize() );
-    }
+    //for ( DAG::NodeIterator iter = this->bn().beginNodes();iter != this->bn().endNodes(); ++iter ) {
+    for ( const auto node : this->bn().nodes() )
+      __modalitiesMap.insert ( node,  this->bn().variable ( node ).domainSize() );
 
     __triangulation = new DefaultTriangulation ( & ( this->bn().moralGraph() ), &__modalitiesMap );
 
@@ -245,7 +244,7 @@ namespace gum {
     // First pass to create the clique's table
 
     //for ( CliqueGraph::NodeIterator iter = __triangulation->junctionTree().beginNodes();iter != __triangulation->junctionTree().endNodes(); ++iter ) {
-    for ( auto node:__triangulation->junctionTree().nodes() ) {
+    for ( auto node : __triangulation->junctionTree().nodes() ) {
       __clique_prop.insert ( node, new CliqueProp<GUM_SCALAR> ( node ) );
       cliquesSet.insert ( node );
 
@@ -403,7 +402,7 @@ namespace gum {
       }
     }
 
-    try { delete __messagesMap[Arc ( tail,head )]; }
+    try { delete __messagesMap[Arc ( tail, head )]; }
     catch ( NotFound& ) { /* Nothing to delete */ }
 
     __messagesMap.insert ( Arc ( tail, head ), message );

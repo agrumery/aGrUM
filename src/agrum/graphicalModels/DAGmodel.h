@@ -93,12 +93,19 @@ namespace gum {
       /**
        * Returns the number of variables in this Directed Graphical Model.
        */
-      Idx size() const;
+      Size size() const;
 
       /**
        * Returns the number of arcs in this Directed Graphical Model.
        */
-      Idx sizeArcs() const;
+      Size sizeArcs() const;
+      
+      /**
+       * Returns the number of arcs in this Directed Graphical Model.
+       * 
+       * @deprecated Please use sizeArcs
+       */
+      GUM_DEPRECATED(Size nbrArcs() const);
 
       /**
        * Retursn true if this Directed Graphical Model is empty.

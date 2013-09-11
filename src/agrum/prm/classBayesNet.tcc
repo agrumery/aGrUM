@@ -46,7 +46,7 @@ namespace gum {
       }
 
       //for( ArcSet::iterator arc = c.dag().beginArcs(); arc != c.dag().endArcs(); ++arc ) {
-      for ( auto arc : c.dag().asArcs() ) {
+      for ( auto arc : c.dag().arcs() ) {
         try {
           this->_dag.insertArc ( arc.tail(), arc.head() );
         } catch ( InvalidNode& ) {
