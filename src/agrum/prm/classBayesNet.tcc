@@ -32,7 +32,7 @@ namespace gum {
     template<typename GUM_SCALAR>
     void ClassBayesNet<GUM_SCALAR>::__init ( const Class& c ) {
       //for( DAG::NodeIterator node = c.dag().beginNodes(); node != c.dag().endNodes(); ++node ) {
-      for ( auto node : c.dag().nodes() ) {
+      for ( const auto node : c.dag().nodes() ) {
         try {
           // Adding the attribute
           if ( ClassElement::isAttribute ( c.get ( node ) ) or ClassElement::isAggregate ( c.get ( node ) ) ) {
@@ -46,7 +46,7 @@ namespace gum {
       }
 
       //for( ArcSet::iterator arc = c.dag().beginArcs(); arc != c.dag().endArcs(); ++arc ) {
-      for ( auto arc : c.dag().arcs() ) {
+      for ( const auto arc : c.dag().arcs() ) {
         try {
           this->_dag.insertArc ( arc.tail(), arc.head() );
         } catch ( InvalidNode& ) {

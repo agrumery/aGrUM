@@ -196,7 +196,7 @@ namespace gum {
 
       //GUM_SCALAR cptSum = 0;
 
-      //for ( auto & p : vertex )
+      //for ( const auto & p : vertex )
       //cptSum += p;
 
       //if ( fabs ( 1 - cptSum ) > 1e-6 )
@@ -204,7 +204,7 @@ namespace gum {
 
       bool eq = true;
 
-      for ( auto & v : __insertedVertices ) {
+      for ( const auto & v : __insertedVertices ) {
         eq = true;
 
         for ( decltype( __card ) mod = 0; mod < __card; mod++ )
@@ -240,7 +240,7 @@ namespace gum {
       // check that we have a credal set and not a precise point probability, i.e. sum of vertex elements is close to one ( floating type precision )
       GUM_SCALAR sum = 0;
 
-      for ( auto  elem : __vertex )
+      for ( const auto  elem : __vertex )
         sum += elem;
 
       if ( fabs( sum - 1 ) < 1e-6 ) {

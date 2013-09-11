@@ -504,7 +504,7 @@ namespace gum {
     std::string tab = "  ";
 
     //for ( NodeGraphPart::NodeIterator nodeIter = _model.beginNodes(); nodeIter != _model.endNodes(); ++nodeIter )
-    for ( auto node : _model.nodes() )
+    for ( const auto node : _model.nodes() )
       if ( node != 0 ) {
         if ( _valueMap.existsFirst ( node ) )
           terminalStream << tab << node << ";" << tab << node  << " [label=\"" << this->_valueMap.second ( node ) << "\"]" << ";" << std::endl;

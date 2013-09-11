@@ -1314,7 +1314,7 @@ namespace gum {
   void List<Val,Alloc>::clear() {
     // first we update all the safe iterators of the list : they should now
     // point to end/rend
-    for ( auto ptr_iter : __safe_iterators ) {
+    for ( const auto ptr_iter : __safe_iterators ) {
       ptr_iter->clear ();
     }
     
@@ -1986,7 +1986,7 @@ namespace gum {
     // perform deletion only if there is a bucket to remove
     if ( bucket != nullptr ) {
       // update the iterators pointing on this element
-      for ( auto ptr_iter : __safe_iterators ) {
+      for ( const auto ptr_iter : __safe_iterators ) {
         if ( ptr_iter->__bucket == bucket ) {
           ptr_iter->__next_current_bucket = bucket->__prev;
           ptr_iter->__prev_current_bucket = bucket->__next;

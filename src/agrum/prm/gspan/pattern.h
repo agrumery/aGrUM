@@ -71,7 +71,7 @@ namespace gum {
           Pattern();
 
           /// Copy constructor.
-          Pattern( const Pattern& source );
+          Pattern ( const Pattern& source );
 
           /// Destructor.
           ~Pattern();
@@ -86,25 +86,25 @@ namespace gum {
            * @brief Insert a node with the given LabelData.
            * @returns The NodeId assigned to the inserted node.
            */
-          NodeId insertNode( LabelData& l );
+          NodeId insertNode ( LabelData& l );
 
           /// Returns the LabelData assigned to node.
-          LabelData& label( NodeId node );
+          LabelData& label ( NodeId node );
 
           /// Returns the LabelData assigned to node.
-          const LabelData& label( NodeId node ) const;
+          const LabelData& label ( NodeId node ) const;
 
           /// Returns the LabelData assigned to arc.
-          LabelData& label( NodeId i, NodeId j );
+          LabelData& label ( NodeId i, NodeId j );
 
           /// Returns the LabelData assigned to arc.
-          const LabelData& label( NodeId i, NodeId j ) const;
+          const LabelData& label ( NodeId i, NodeId j ) const;
 
           /// Returns the LabelData assigned to arc.
-          LabelData& label( const Arc& arc );
+          LabelData& label ( const Arc& arc );
 
           /// Returns the LabelData assigned to arc.
-          const LabelData& label( const Arc& arc ) const;
+          const LabelData& label ( const Arc& arc ) const;
 
           // Returns the last added LabelData.
           LabelData& lastAdded();
@@ -125,13 +125,13 @@ namespace gum {
            * @throw OperationNotAllowed Raised if the neighborhood restriction
            *                            is not respected.
            */
-          void insertArc( NodeId i, NodeId j, LabelData& l );
+          void insertArc ( NodeId i, NodeId j, LabelData& l );
 
           /// Returns true if id is a node in this Pattern.
-          bool exists( NodeId id ) const;
+          bool exists ( NodeId id ) const;
 
           /// Returns true if (tail, head) is an arc in this Pattern.
-          bool exists( NodeId tail, NodeId head ) const;
+          bool exists ( NodeId tail, NodeId head ) const;
 
           /// Returns the number of nodes in this Pattern.
           Size size() const;
@@ -141,39 +141,23 @@ namespace gum {
 
           /// Fill r_path with the rightmost path of this Pattern.
           /// The list is supposed empty.
-          void rightmostPath( std::list<NodeId>& r_path ) const;
+          void rightmostPath ( std::list<NodeId>& r_path ) const;
 
           /// Print the pattern in the DOT syntax.
-          std::string toDot( size_t name ) const;
+          std::string toDot ( size_t name ) const;
 
           /// @}
           // =========================================================================
-          /// @name Iterators.
+          /// @name Access to topology
           // ==========================================================================
           /// @{
-
-          /// Code alias.
-          typedef DiGraph::NodeIterator NodeIterator;
-
-          /// Return an iterator at the beginning of the nodes in this Pattern.
-          NodeIterator beginNodes() const;
-
-          /// Return an iterator at the end of the nodes in this Pattern.
-          const NodeIterator& endNodes() const;
-
-          /// Code alias.
-          typedef DiGraph::ArcIterator ArcIterator;
-
-          /// Return an iterator at the beginning of the arcs in this Pattern.
-          ArcIterator beginArcs() const;
-
-          /// Return an iterator at the end of the arcs in this Pattern.
-          const ArcIterator& endArcs() const;
+          const NodeGraphPart& nodes() const;
+          
+          const ArcSet& arcs() const;
 
           /// Returns an iterator at the beginning of the set of neighbors of node
           /// in this Pattern.
-          NeighborIterator beginNeighbors( NodeId node ) const;
-
+          NeighborIterator beginNeighbors ( NodeId node ) const;
           /// @}
           // =========================================================================
           /// @name DFSCode related methods.
@@ -187,22 +171,22 @@ namespace gum {
           const DFSCode& code() const;
 
           /// Returns the EdgeCode of an edge of this Pattern.
-          EdgeCode& edgeCode( NodeId tail, NodeId head );
+          EdgeCode& edgeCode ( NodeId tail, NodeId head );
 
           /// Returns the EdgeCode of an edge of this Pattern.
-          EdgeCode& edgeCode( const Arc& arc );
+          EdgeCode& edgeCode ( const Arc& arc );
 
           /// Returns the EdgeCode of an edge of this Pattern.
-          const EdgeCode& edgeCode( NodeId tail, NodeId head ) const;
+          const EdgeCode& edgeCode ( NodeId tail, NodeId head ) const;
 
           /// Returns the EdgeCode of an edge of this Pattern.
-          const EdgeCode& edgeCode( const Arc& arc ) const;
+          const EdgeCode& edgeCode ( const Arc& arc ) const;
 
           /// Remove the last EdgeCode of this pattern.
           void pop_back();
 
           /// Remove a node if it has no neighbors, raise an OperationNotAllowed otherwise
-          void remove( NodeId node );
+          void remove ( NodeId node );
 
           bool isMinimal();
 
@@ -228,7 +212,7 @@ namespace gum {
           /// @param v A node in this Pattern.
           /// @returns true if the expand code by adding and edge betwenne u and v is minimal
           ///          with respect to __code.
-          bool __expandCodeIsMinimal( NodeId u, NodeId v );
+          bool __expandCodeIsMinimal ( NodeId u, NodeId v );
 
           /// Recurisve method used by __expandCodeIsMinimal.
           /// @param p A Pattern.
@@ -236,10 +220,10 @@ namespace gum {
           /// @param u A node in this Pattern.
           /// @param v A node in this Pattern.
           /// @return true if the expansion is minimal.
-          bool __rec( Pattern& p, Bijection<NodeId, NodeId>& node_map, NodeId u, NodeId v );
+          bool __rec ( Pattern& p, Bijection<NodeId, NodeId>& node_map, NodeId u, NodeId v );
 
           /// A non recursive bugged version of __rec.
-          bool __not_rec( Pattern& p, Bijection<NodeId, NodeId>& node_map, NodeId u, NodeId v );
+          bool __not_rec ( Pattern& p, Bijection<NodeId, NodeId>& node_map, NodeId u, NodeId v );
       };
 
       /**
@@ -250,9 +234,9 @@ namespace gum {
       class NeighborIterator {
         public:
           /// Constructor.
-          NeighborIterator( const NodeSet& parents, const NodeSet& children );
+          NeighborIterator ( const NodeSet& parents, const NodeSet& children );
           /// Copy constructor.
-          NeighborIterator( const NeighborIterator& from );
+          NeighborIterator ( const NeighborIterator& from );
           /// Destructor.
           ~NeighborIterator();
           /// Points to the next neighbor.

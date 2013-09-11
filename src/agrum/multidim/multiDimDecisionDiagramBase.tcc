@@ -76,7 +76,7 @@ namespace gum {
     GUM_DESTRUCTOR ( MultiDimDecisionDiagramBase );
 
     //for( NodeGraphPart::NodeIterator iter = __graph.beginNodes(); iter != __graph.endNodes(); ++iter ) {
-    for ( auto node : __graph.nodes() ) {
+    for ( const auto node : __graph.nodes() ) {
       if ( node != 0 )
         if ( !__valueMap.existsFirst ( node ) && __arcMap[node] != nullptr )
           delete __arcMap[node];
@@ -282,7 +282,7 @@ namespace gum {
     __defaultArcMap.resize ( source.nodesMap().size() );
 
     //for( NodeGraphPartIterator nodeIter = __graph.beginNodes(); nodeIter != __graph.endNodes(); ++nodeIter ) {
-    for ( auto node : __graph.nodes() ) {
+    for ( const auto node : __graph.nodes() ) {
       if ( node != 0 && !source.isTerminalNode ( node ) ) {
 
         __variableMap.insert ( node, source.nodeVariable ( node ) );
@@ -429,7 +429,7 @@ namespace gum {
     std::string tab = "  ";
 
     //for ( NodeGraphPart::NodeIterator nodeIter = __graph.beginNodes(); nodeIter != __graph.endNodes(); ++nodeIter ) {
-    for ( auto node : __graph.nodes() ) {
+    for ( const auto node : __graph.nodes() ) {
       if ( node != 0 ) {
         if ( isTerminalNode ( node ) ) {
           terminalStream << tab << node << ";" << tab << node  << " [label=\"" << node << "-" << std::setprecision ( 15 ) << this->__valueMap.second ( node ) << "\"]" << ";" << std::endl;
@@ -764,7 +764,7 @@ namespace gum {
         NodeId nody = newValueMap.first ( tempVal );
 
         //for ( NodeGraphPartIterator nodeIter = __graph.beginNodes(); nodeIter != __graph.endNodes(); ++nodeIter )
-        for ( auto node : __graph.nodes() )
+        for ( const auto node : __graph.nodes() )
           if ( node != 0 && !isTerminalNode ( node ) ) {
             if ( !__arcMap.exists ( node ) )
               std::cout << "OW! OW! : " << node << std::endl;

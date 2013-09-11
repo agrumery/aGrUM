@@ -115,7 +115,7 @@ namespace gum {
 
     //for ( CliqueGraph::NodeIterator iter = __triangulation->junctionTree().beginNodes();
     //      iter != __triangulation->junctionTree().endNodes(); ++iter ) {
-    for ( auto node : __triangulation->junctionTree().nodes() ) {
+    for ( const auto node : __triangulation->junctionTree().nodes() ) {
       if ( ( __triangulation->junctionTree().clique ( node ).contains ( id ) ) and
            ( __clique_prop[node]->bucket().domainSize() < __clique_prop[cliqueId]->bucket().domainSize() )
          ) {
@@ -244,7 +244,7 @@ namespace gum {
     // First pass to create the clique's table
 
     //for ( CliqueGraph::NodeIterator iter = __triangulation->junctionTree().beginNodes();iter != __triangulation->junctionTree().endNodes(); ++iter ) {
-    for ( auto node : __triangulation->junctionTree().nodes() ) {
+    for ( const auto node : __triangulation->junctionTree().nodes() ) {
       __clique_prop.insert ( node, new CliqueProp<GUM_SCALAR> ( node ) );
       cliquesSet.insert ( node );
 

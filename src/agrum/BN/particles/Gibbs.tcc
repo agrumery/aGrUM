@@ -47,7 +47,7 @@ namespace gum {
 //    const NodeSet& nodes = dag.nodes();
 
       //for ( DAG::NodeIterator iter = dag.beginNodes(); iter != dag.endNodes(); ++iter ) {
-      for ( auto node : dag.nodes() ) {
+      for ( const auto node : dag.nodes() ) {
         const DiscreteVariable& var = this->bn().variable ( node );
         //         // feed the sample
         //         __particle << var;
@@ -62,7 +62,7 @@ namespace gum {
         
         //const NodeSet& arcs = dag.children ( node );
 
-        for ( auto node2 : dag.children(node) ) {
+        for ( const auto node2 : dag.children(node) ) {
           tmp3->push_back ( node2 );
         }
 

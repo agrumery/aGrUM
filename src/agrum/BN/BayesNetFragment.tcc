@@ -129,13 +129,13 @@ namespace gum {
       this->_dag.insertNode ( id );
 
       // adding arcs with id as a tail
-      for ( auto pa: this->__bn.dag().parents ( id ) ) {
+      for ( const auto pa: this->__bn.dag().parents ( id ) ) {
         if ( isInstalledNode ( pa ) )
           this->_dag.insertArc ( pa,id );
       }
 
       //addin arcs with id as a head
-      for ( auto son : this->__bn.dag().children ( id ) )
+      for ( const auto son : this->__bn.dag().children ( id ) )
         if ( isInstalledNode ( son ) )
           this->_dag.insertArc ( id,son );
     }
@@ -153,7 +153,7 @@ namespace gum {
     installNode ( id );
 
     // bn is a dag => this will have an end ...
-    for ( auto pa: this->__bn.dag().parents ( id ) )
+    for ( const auto pa: this->__bn.dag().parents ( id ) )
       installAscendants ( pa );
   }
 }// gum

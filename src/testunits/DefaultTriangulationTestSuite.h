@@ -103,7 +103,7 @@ namespace gum_tests {
 
         // Builds a hashTable where the keys are the id of the variable,
         // and the values the variable's domain size.
-        //for ( auto iter = topo.beginNodes(); iter != topo.endNodes(); ++iter )
+        //for ( const auto iter = topo.beginNodes(); iter != topo.endNodes(); ++iter )
         for ( const auto iter : topo.nodes() )
           modalities.insert ( iter, topo.variable ( iter ).domainSize() );
 

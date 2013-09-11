@@ -32,14 +32,14 @@ namespace gum {
 // Default constructor.
 // Use the SimpleCPTGenerator for generating the BNs CPT.
   template <typename GUM_SCALAR, template<class> class ICPTGenerator> INLINE
-  AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>::AbstractBayesNetGenerator( Size nbrNodes, Size maxArcs , Size maxModality ): _bayesNet() {
-    GUM_CONSTRUCTOR( AbstractBayesNetGenerator );
+  AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::AbstractBayesNetGenerator ( Size nbrNodes, Size maxArcs , Size maxModality ) : _bayesNet() {
+    GUM_CONSTRUCTOR ( AbstractBayesNetGenerator );
     _nbrNodes = nbrNodes;
 
     if ( maxArcs < nbrNodes - 1 || maxArcs > ( nbrNodes * ( nbrNodes - 1 ) ) / 2 )
-      GUM_ERROR( OperationNotAllowed, " maxArcs value not possible " );
+      GUM_ERROR ( OperationNotAllowed, " maxArcs value not possible " );
 
-    if ( maxModality < 2 )GUM_ERROR( OperationNotAllowed, " maxModality must be at least equal to two " );
+    if ( maxModality < 2 ) GUM_ERROR ( OperationNotAllowed, " maxModality must be at least equal to two " );
 
     _maxArcs = maxArcs;
     _maxModality = maxModality;
@@ -48,54 +48,53 @@ namespace gum {
 
 // Destructor.
   template <typename GUM_SCALAR, template<class> class ICPTGenerator> INLINE
-  AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>::~AbstractBayesNetGenerator() {
-    GUM_DESTRUCTOR( AbstractBayesNetGenerator );
+  AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::~AbstractBayesNetGenerator() {
+    GUM_DESTRUCTOR ( AbstractBayesNetGenerator );
 //    delete _cptGenerator;
   }
 
   template <typename GUM_SCALAR, template<class> class ICPTGenerator>
-  void  AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>::fillCPT() {
-    for ( DAG::NodeIterator iter = _bayesNet.beginNodes(); iter != _bayesNet.endNodes(); ++iter ) {
-//    AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>::_cptGenerator->generateCPT (
-      ICPTGenerator<GUM_SCALAR>::generateCPT( _bayesNet.cpt( *iter ).pos( _bayesNet.variable( *iter ) ),  _bayesNet.cpt( *iter ) ); //TODO ASSERT THE LINE
-    }
+  void  AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::fillCPT() {
+    //for ( DAG::NodeIterator iter = _bayesNet.beginNodes(); iter != _bayesNet.endNodes(); ++iter ) {
+    for ( const auto iter : _bayesNet.nodes() )
+      ICPTGenerator<GUM_SCALAR>::generateCPT ( _bayesNet.cpt ( iter ).pos ( _bayesNet.variable ( iter ) ),  _bayesNet.cpt ( iter ) ); //TODO ASSERT THE LINE
   }
 
   template<typename GUM_SCALAR, template<class> class ICPTGenerator> INLINE
-  Size AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>::maxModality() const {
+  Size AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::maxModality() const {
     return _maxModality;
   }
 
   template<typename GUM_SCALAR, template<class> class ICPTGenerator> INLINE
-  Size AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>::nbrNodes() const {
+  Size AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::nbrNodes() const {
     return _nbrNodes;
   }
 
 
   template<typename GUM_SCALAR, template<class> class ICPTGenerator> INLINE
-  Size AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>::maxArcs() const {
+  Size AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::maxArcs() const {
     return _maxArcs;
   }
 
 
   template<typename GUM_SCALAR, template<class> class ICPTGenerator> INLINE
-  void AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>::setMaxModality( Size maxModality ) {
-    if ( maxModality < 2 )GUM_ERROR( OperationNotAllowed, " maxModality must be at least equal to two " );
+  void AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::setMaxModality ( Size maxModality ) {
+    if ( maxModality < 2 ) GUM_ERROR ( OperationNotAllowed, " maxModality must be at least equal to two " );
 
     _maxModality = maxModality;
   }
   template<typename GUM_SCALAR, template<class> class ICPTGenerator> INLINE
-  void AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>::setNbrNodes( Size nbrNodes ) {
+  void AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::setNbrNodes ( Size nbrNodes ) {
     if ( _maxArcs < nbrNodes - 1 || _maxArcs > ( nbrNodes * ( nbrNodes - 1 ) ) / 2 )
-      GUM_ERROR( OperationNotAllowed, " nbrNodes value not possible " );
+      GUM_ERROR ( OperationNotAllowed, " nbrNodes value not possible " );
 
     _nbrNodes = nbrNodes;
   }
 
   template<typename GUM_SCALAR, template<class> class ICPTGenerator> INLINE
-  void AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>::setMaxArcs( Size maxArcs ) {
+  void AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::setMaxArcs ( Size maxArcs ) {
     if ( maxArcs < _nbrNodes - 1 || maxArcs > ( _nbrNodes * ( _nbrNodes - 1 ) ) / 2 )
-      GUM_ERROR( OperationNotAllowed, " maxArcs value not possible " );
+      GUM_ERROR ( OperationNotAllowed, " maxArcs value not possible " );
 
     _maxArcs = maxArcs;
   }

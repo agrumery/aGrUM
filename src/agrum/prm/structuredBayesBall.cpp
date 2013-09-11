@@ -276,7 +276,7 @@ namespace gum {
       sBuff << i->type().name();
 
       //for ( DAG::NodeIterator node = i->type().dag().beginNodes(); node != i->type().dag().endNodes(); ++node ) {
-      for ( auto node : i->type().dag().nodes() ) {
+      for ( const auto node : i->type().dag().nodes() ) {
         if ( req_nodes.exists ( node ) ) {
           sBuff << "-" << node;
         }

@@ -233,7 +233,7 @@ namespace gum_tests {
       void testGetNodes() {
         gum::DiGraph graph = buildGraph();
 
-        gum::NodeSet nodelist = graph.nodes();
+        gum::NodeSet nodelist = graph.asNodeSet();
         TS_ASSERT_EQUALS ( nodelist.size(), graph.size() );
         gum::Size nodeCount = graph.size();
 

@@ -81,7 +81,7 @@ namespace gum {
     const DAG& dag = BN.dag();
 
     //for ( DAG::NodeIterator iter = dag.beginNodes();iter != dag.endNodes(); ++iter ) {
-    for ( auto node : dag.nodes() ) {
+    for ( const auto node : dag.nodes() ) {
       // get the variables in the potential of iter_node
       NodeId first_var_eliminated = node;
       unsigned int elim_number = elim_order[node];
@@ -109,14 +109,14 @@ namespace gum {
     List <const Potential<GUM_SCALAR>*> empty_list;
 
     //for ( CliqueGraph::NodeIterator iter = __JT->beginNodes();iter != __JT->endNodes(); ++iter ) {
-    for ( auto node : __JT->nodes() ) {
+    for ( const auto node : __JT->nodes() ) {
       __clique_potentials.insert ( node, empty_list );
       __clique_evidence.insert ( node, empty_list );
     }
 
     // put all the CPT's of the Bayes net nodes into the cliques
     //for ( DAG::NodeIterator iter = dag.beginNodes();iter != dag.endNodes(); ++iter ) {
-    for ( auto node : dag.nodes() ) {
+    for ( const auto node : dag.nodes() ) {
       const Potential<GUM_SCALAR>& cpt = BN.cpt ( node ) ;
       __clique_potentials[__node_to_clique[node]].insert ( &cpt );
     }
@@ -132,7 +132,7 @@ namespace gum {
 
     // indicate that __collect and __diffusion passed through no clique yet
     //for ( CliqueGraph::NodeIterator iter = __JT->beginNodes();iter != __JT->endNodes(); ++iter ) {
-    for ( auto node : __JT->nodes() ) {
+    for ( const auto node : __JT->nodes() ) {
       __collected_cliques.insert ( node, false );
       __diffused_cliques.insert ( node, false );
     }
@@ -154,8 +154,8 @@ namespace gum {
     const DAG& dag = this->bn().dag();
     //const NodeSet& nodes = dag.nodes();
 
-    //for ( auto iter = dag.beginNodes(); iter != dag.endNodes(); ++iter ) {
-    for ( auto node:dag.nodes() ) {
+    //for ( const auto iter = dag.beginNodes(); iter != dag.endNodes(); ++iter ) {
+    for ( const auto node:dag.nodes() ) {
       const DiscreteVariable& var = this->bn().variable ( node );
       modalities.insert ( node, var.domainSize() );
     }
@@ -185,7 +185,7 @@ namespace gum {
     //const NodeSet& nodes = dag.nodes();
 
     //for ( DAG::NodeIterator iter = dag.beginNodes();iter != dag.endNodes(); ++iter ) {
-    for ( auto node : dag.nodes() ) {
+    for ( const auto node : dag.nodes() ) {
       const DiscreteVariable& var = this->bn().variable ( node );
       modalities.insert ( node, var.domainSize() );
     }
@@ -945,14 +945,14 @@ namespace gum {
     bool clique_found = false;
 
     //for ( CliqueGraph::NodeIterator iter = __JT->beginNodes();iter != __JT->endNodes(); ++iter )
-    for ( auto node : __JT->nodes() ) {
+    for ( const auto node : __JT->nodes() ) {
       // get the nodes contained in the clique
       const NodeSet& clique = __JT->clique ( node );
       // check whether the clique actually contains all of ids
       bool clique_ok = true;
 
       //for ( NodeSetIterator iter2 = ids.begin(); iter2 != ids.end(); ++iter2 ) {
-      for ( auto node2 : ids ) {
+      for ( const auto node2 : ids ) {
         if ( !clique.contains ( node2 ) ) {
           clique_ok = false;
           break;

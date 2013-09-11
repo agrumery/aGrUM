@@ -83,7 +83,7 @@ namespace gum {
   IBayesNet<GUM_SCALAR>::dim() const {
     Idx dim = 0;
 
-    //for ( auto node = dag().beginNodes(); node != dag().endNodes(); ++node ) {
+    //for ( const auto node = dag().beginNodes(); node != dag().endNodes(); ++node ) {
     for ( const auto node : nodes() ) {
       Idx q = 1;
 
@@ -189,7 +189,7 @@ namespace gum {
 
     GUM_SCALAR tmp;
 
-    //for ( auto node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter ) {
+    //for ( const auto node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter ) {
     for ( const auto node_iter : nodes() ) {
       if ( ( tmp = cpt ( node_iter ) [i] ) == ( GUM_SCALAR ) 0 ) {
         return ( GUM_SCALAR ) 0;
@@ -208,7 +208,7 @@ namespace gum {
 
     GUM_SCALAR tmp;
 
-    //for ( auto node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter ) {
+    //for ( const auto node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter ) {
     for ( const auto node_iter : nodes() ) {
       if ( ( tmp = cpt ( node_iter ) [i] ) == ( GUM_SCALAR ) 0 ) {
         return ( GUM_SCALAR ) ( - std::numeric_limits<double>::infinity( ) );
@@ -224,20 +224,19 @@ namespace gum {
   bool
   IBayesNet<GUM_SCALAR>::operator== ( const IBayesNet& from ) const {
     if ( dag() == from.dag() ) {
-      for ( auto node = beginNodes(); node != endNodes(); ++node ) {
+      //for ( const auto node = beginNodes(); node != endNodes(); ++node ) {
+      for ( const auto node : nodes() ) {
         // We don't use Potential::operator== because BN's don't share
         // DiscreteVariable's pointers.
         Bijection<const DiscreteVariable*, const DiscreteVariable*> bijection;
-        bijection.insert ( & ( variable ( *node ) ), & ( from.variable ( *node ) ) );
-        const NodeSet& parents = dag().parents ( *node );
+        bijection.insert ( & ( variable ( node ) ), & ( from.variable ( node ) ) );
 
-        for ( auto arc = parents.begin(); arc != parents.end(); ++arc ) {
-          bijection.insert ( & ( variable ( *arc ) ), & ( from.variable ( *arc ) ) );
+        for ( const auto arc : dag().parents ( node ) ) {
+          bijection.insert ( & ( variable ( arc ) ), & ( from.variable ( arc ) ) );
         }
 
-        Instantiation i ( cpt ( *node ) );
-
-        Instantiation j ( from.cpt ( *node ) );
+        Instantiation i ( cpt ( node ) );
+        Instantiation j ( from.cpt ( node ) );
 
         for ( i.setFirst(); not i.end(); i.inc() ) {
           for ( auto iter = bijection.begin(); iter != bijection.end(); ++iter ) {

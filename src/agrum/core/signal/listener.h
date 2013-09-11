@@ -81,7 +81,7 @@ namespace gum {
           ( **it )->duplicateTarget( &l, this );
           __senders.pushBack( **it );
         }*/
-        for ( auto el : __senders ) {
+        for ( const auto el : __senders ) {
           el->duplicateTarget( &l,this );
         };
       };
@@ -95,7 +95,7 @@ namespace gum {
                 ( **it )->detachFromTarget( this );
               }*/
 
-        for ( auto el : __senders ) {
+        for ( const auto el : __senders ) {
           el->detachFromTarget( this );
         }
 

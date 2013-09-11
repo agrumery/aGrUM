@@ -781,7 +781,7 @@ namespace gum {
 
       // First step we add Attributes and Aggregators
       //for ( DAG::NodeIterator node = c.dag().beginNodes(); node != c.dag().endNodes(); ++node ) {
-      for ( auto node : c.dag().nodes() ) {
+      for ( const auto node : c.dag().nodes() ) {
         switch ( c.get ( node ).elt_type() ) {
           case ClassElement::prm_attribute: {
             pool.insert ( & ( const_cast<Potential<prm_float>&> ( c.get ( node ).cpf() ) ) );
@@ -802,7 +802,7 @@ namespace gum {
       const ClassElement* prnt = 0;
 
       //for ( UndiGraph::NodeIterator node = moral_graph.beginNodes(); node != moral_graph.endNodes(); ++node ) {
-      for ( auto node : moral_graph.nodes() ) {
+      for ( const auto node : moral_graph.nodes() ) {
         parents = & ( c.dag().parents ( node ) );
 
         // Adding edges and marrying parents

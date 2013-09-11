@@ -819,7 +819,7 @@ namespace gum {
     __nb_triangles = __graph->edgesProperty ( 0U );
     __nb_adjacent_neighbours = __graph->nodesProperty ( 0U );
     __containing_list = __graph->nodesProperty ( __Belong::NO_LIST );
-    __changed_status = __graph->nodes();
+    __changed_status = __graph->asNodeSet();
 
     // set the __nb_triangles and the __nb_adjacent_neighbours: for each triangle,
     // update the __nb_triangles. To count the triangles only once, parse for each

@@ -809,7 +809,7 @@ namespace gum {
 
       template< typename GUM_SCALAR >
       LpInterface< GUM_SCALAR >::~LpInterface() {
-        for ( auto row : __rows )
+        for ( const auto row : __rows )
           delete row;
 
         GUM_DESTRUCTOR ( LpInterface );
@@ -818,7 +818,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       LpInterface< GUM_SCALAR >& LpInterface< GUM_SCALAR >::operator= ( const LpInterface < GUM_SCALAR >& from ) {
         /// faster than clear (), delete only rows
-        for ( auto & row : __rows )
+        for ( const auto & row : __rows )
           delete row;
 
         __rows.clear();
@@ -1057,7 +1057,7 @@ namespace gum {
 
       template< typename GUM_SCALAR >
       void LpInterface< GUM_SCALAR >::clear() {
-        for ( auto & row : __rows )
+        for ( const auto & row : __rows )
           delete row;
 
         __rows.clear();
@@ -1073,7 +1073,7 @@ namespace gum {
 
       template< typename GUM_SCALAR >
       void LpInterface< GUM_SCALAR >::clearRows() {
-        for ( auto & row : __rows )
+        for ( const auto & row : __rows )
           delete row;
 
         __rows.clear();

@@ -45,7 +45,7 @@ namespace gum {
           __subgraph_mining ( graph, p );
 
           //for ( UndiGraph::NodeIterator node = __tree.iso_graph( p ).beginNodes(); node != __tree.iso_graph( p ).endNodes(); ++node ) {
-          for ( auto node : __tree.iso_graph ( p ).nodes() ) {
+          for ( const auto node : __tree.iso_graph ( p ).nodes() ) {
             Instance* u = __tree.iso_map ( p, node ).atPos ( 0 );
             Instance* v = __tree.iso_map ( p, node ).atPos ( 1 );
             graph.graph().eraseEdge ( Edge ( graph.id ( u ), graph.id ( v ) ) );

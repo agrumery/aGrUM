@@ -270,7 +270,7 @@ namespace gum_tests {
       void testGetNodes() {
         gum::MixedGraph graph = buildGraph();
 
-        const gum::NodeSet nodeset = graph.nodes();
+        const gum::NodeSet nodeset = graph.asNodeSet();
         TS_ASSERT_EQUALS ( nodeset.size(), graph.size() );
         gum::Size nodeCount = graph.size();
 

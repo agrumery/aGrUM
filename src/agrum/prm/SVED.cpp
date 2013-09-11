@@ -412,7 +412,7 @@ namespace gum {
       std::list<NodeId> l;
 
       //for ( DAG::NodeIterator node = cdg.dag().beginNodes(); node != cdg.dag().endNodes(); ++node )
-      for ( auto node : cdg.dag().nodes() )
+      for ( const auto node : cdg.dag().nodes() )
         if ( cdg.dag().parents ( node ).empty() ) l.push_back ( node );
 
       Set<NodeId> visited_node;

@@ -662,7 +662,7 @@ namespace gum {
     {
       NodeSetIterator iter3;
       std::pair<NodeId, NodeId> thePair;
-      Property<bool>::onEdges edges = __graph.edgesProperty ( false );
+      EdgeProperty<bool> edges = __graph.edgesProperty ( false );
 
       //for ( CliqueGraph::NodeIterator iter = __T_mpd.beginNodes();iter != __T_mpd.endNodes(); ++iter ) {
       for ( const auto cliq : __T_mpd.nodes() ) {

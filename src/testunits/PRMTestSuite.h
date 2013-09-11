@@ -35,6 +35,7 @@
 
 #include <agrum/prm/o3prm/O3prmReader.h>
 
+#define GET_PATH_STR_O3PRM(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/o3prm/" #x
 namespace gum_tests {
 
   class PRMTestSuite: public CxxTest::TestSuite {
@@ -46,12 +47,12 @@ namespace gum_tests {
       void setUp() {
         {
           gum::prm::o3prm::O3prmReader reader;
-          reader.readFile ( GET_PATH_STR ( o3prm / inference.o3prm ) );
+          reader.readFile ( GET_PATH_STR_O3PRM ( inference.o3prm ) );
           prm = reader.prm();
         }
         {
           gum::prm::o3prm::O3prmReader reader;
-          reader.readFile ( GET_PATH_STR ( o3prm / printers_systems.o3prm ) );
+          reader.readFile ( GET_PATH_STR_O3PRM ( printers_systems.o3prm ) );
           small = reader.prm();
         }
       }
@@ -63,6 +64,7 @@ namespace gum_tests {
 
       void testCreation() {
         gum::prm::ClassBayesNet<float>* c = 0;
+        TS_GUM_ASSERT_THROWS_NOTHING ( prm->getClass ( "SafeComputer" ) );
         TS_GUM_ASSERT_THROWS_NOTHING ( c = new gum::prm::ClassBayesNet<float> ( prm->getClass ( "SafeComputer" ) ) );
         TS_GUM_ASSERT_THROWS_NOTHING ( delete c );
         gum::prm::InstanceBayesNet<float>* inst = 0;
@@ -182,7 +184,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( sys.groundedBN ( bn_factory ) );
 
         //for ( gum::DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node ) {
-        for(const auto node : bn.nodes()) {
+        for ( const auto node : bn.nodes() ) {
           const gum::Potential<gum::prm::prm_float>& cpt = bn.cpt ( node );
           gum::Instantiation i ( cpt ), j;
           j.add ( bn.variable ( node ) );

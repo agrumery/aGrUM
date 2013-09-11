@@ -32,19 +32,19 @@ namespace gum {
 
   template <typename VAL> INLINE
   NodeProperty<VAL>
-  NodeGraphPart::nodesProperty( VAL( *f )( const NodeId& ), Size size ) const {
-    return nodes().hashMap( f, size );
+  NodeGraphPart::nodesProperty ( VAL ( *f ) ( const NodeId& ), Size size ) const {
+    return asNodeSet().hashMap ( f, size );
   }
 
   template <typename VAL> INLINE
   NodeProperty<VAL>
-  NodeGraphPart::nodesProperty( const VAL& val, Size size ) const {
-    return nodes().hashMap( val, size );
+  NodeGraphPart::nodesProperty ( const VAL& val, Size size ) const {
+    return asNodeSet().hashMap ( val, size );
   }
 
   template <typename VAL> INLINE
-  List<VAL> NodeGraphPart::listMapNodes( VAL( *f )( const NodeId& ) ) const {
-    return nodes().listMap( f );
+  List<VAL> NodeGraphPart::listMapNodes ( VAL ( *f ) ( const NodeId& ) ) const {
+    return asNodeSet().listMap ( f );
   }
 
   template<typename T> void
@@ -52,14 +52,14 @@ namespace gum {
   ( const NodeProperty<T>& h ) {
     clear();
 
-    for( auto iter = h.begin(); iter != h.end(); ++iter ) {
+    for ( const auto iter = h.begin(); iter != h.end(); ++iter ) {
       NodeId new_one = iter.key();
 
-      if( existsNode( new_one ) ) {
-        GUM_ERROR( DuplicateElement, new_one << " already exists in the graph" );
+      if ( existsNode ( new_one ) ) {
+        GUM_ERROR ( DuplicateElement, new_one << " already exists in the graph" );
       }
 
-      insertNode( new_one );
+      insertNode ( new_one );
     }
   }
 

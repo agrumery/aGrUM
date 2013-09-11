@@ -30,32 +30,32 @@ namespace gum {
 
 // The SearchStrategy class
       INLINE
-      SearchStrategy::SearchStrategy():
-        _tree( 0 ) {
-        GUM_CONSTRUCTOR( SearchStrategy );
+      SearchStrategy::SearchStrategy() :
+        _tree ( 0 ) {
+        GUM_CONSTRUCTOR ( SearchStrategy );
       }
 
       INLINE
-      SearchStrategy::SearchStrategy( const SearchStrategy& from ):
-        _tree( from._tree ) {
-        GUM_CONS_CPY( SearchStrategy );
+      SearchStrategy::SearchStrategy ( const SearchStrategy& from ) :
+        _tree ( from._tree ) {
+        GUM_CONS_CPY ( SearchStrategy );
       }
 
       INLINE
       SearchStrategy::~SearchStrategy() {
-        GUM_DESTRUCTOR( SearchStrategy );
+        GUM_DESTRUCTOR ( SearchStrategy );
       }
 
       INLINE
       SearchStrategy&
-      SearchStrategy::operator=( const SearchStrategy& from ) {
+      SearchStrategy::operator= ( const SearchStrategy& from ) {
         _tree = from._tree;
         return *this;
       }
 
       INLINE
       void
-      SearchStrategy::setTree( DFSTree* tree ) {
+      SearchStrategy::setTree ( DFSTree* tree ) {
         _tree = tree;
       }
 
@@ -65,54 +65,54 @@ namespace gum {
 
 // The FrequenceSearch class
       INLINE
-      FrequenceSearch::FrequenceSearch( Size freq ):
-        SearchStrategy(), __freq( freq ) {
-        GUM_CONSTRUCTOR( FrequenceSearch );
+      FrequenceSearch::FrequenceSearch ( Size freq ) :
+        SearchStrategy(), __freq ( freq ) {
+        GUM_CONSTRUCTOR ( FrequenceSearch );
       }
 
       INLINE
-      FrequenceSearch::FrequenceSearch( const FrequenceSearch& from ):
-        SearchStrategy( from ), __freq( from.__freq ) {
-        GUM_CONS_CPY( FrequenceSearch );
+      FrequenceSearch::FrequenceSearch ( const FrequenceSearch& from ) :
+        SearchStrategy ( from ), __freq ( from.__freq ) {
+        GUM_CONS_CPY ( FrequenceSearch );
       }
 
       INLINE
       FrequenceSearch::~FrequenceSearch() {
-        GUM_DESTRUCTOR( FrequenceSearch );
+        GUM_DESTRUCTOR ( FrequenceSearch );
       }
 
       INLINE
       FrequenceSearch&
-      FrequenceSearch::operator=( const FrequenceSearch& from ) {
+      FrequenceSearch::operator= ( const FrequenceSearch& from ) {
         __freq = from.__freq;
         return *this;
       }
 
       INLINE
       bool
-      FrequenceSearch::accept_root( const Pattern* r ) {
-        return _tree->frequency( *r ) >= __freq;
+      FrequenceSearch::accept_root ( const Pattern* r ) {
+        return _tree->frequency ( *r ) >= __freq;
       }
 
       INLINE
       bool
-      FrequenceSearch::accept_growth( const Pattern* parent,
-                                      const Pattern* child,
-                                      const DFSTree::EdgeGrowth& growh ) {
-        return _tree->frequency( *child ) >= __freq;
+      FrequenceSearch::accept_growth ( const Pattern* parent,
+                                       const Pattern* child,
+                                       const DFSTree::EdgeGrowth& growh ) {
+        return _tree->frequency ( *child ) >= __freq;
       }
 
       INLINE
       bool
-      FrequenceSearch::operator()( gspan::Pattern* i, gspan::Pattern* j ) {
+      FrequenceSearch::operator() ( gspan::Pattern* i, gspan::Pattern* j ) {
         // We want a descending order
-        return _tree->frequency( *i ) > _tree->frequency( *j );
+        return _tree->frequency ( *i ) > _tree->frequency ( *j );
       }
 
       INLINE
       bool
-      FrequenceSearch::operator()( LabelData* i, LabelData* j ) {
-        return _tree->graph().size( i ) > _tree->graph().size( j );
+      FrequenceSearch::operator() ( LabelData* i, LabelData* j ) {
+        return _tree->graph().size ( i ) > _tree->graph().size ( j );
       }
 
 
@@ -121,33 +121,33 @@ namespace gum {
 
 // The StrictSearch class
       INLINE
-      StrictSearch::StrictSearch( Size freq ):
-        SearchStrategy(), __freq( freq ), __dot( "." ) {
-        GUM_CONSTRUCTOR( StrictSearch );
+      StrictSearch::StrictSearch ( Size freq ) :
+        SearchStrategy(), __freq ( freq ), __dot ( "." ) {
+        GUM_CONSTRUCTOR ( StrictSearch );
       }
 
       INLINE
-      StrictSearch::StrictSearch( const StrictSearch& from ):
-        SearchStrategy( from ), __freq( from.__freq ) {
-        GUM_CONS_CPY( StrictSearch );
+      StrictSearch::StrictSearch ( const StrictSearch& from ) :
+        SearchStrategy ( from ), __freq ( from.__freq ) {
+        GUM_CONS_CPY ( StrictSearch );
       }
 
       INLINE
       StrictSearch::~StrictSearch() {
-        GUM_DESTRUCTOR( StrictSearch );
+        GUM_DESTRUCTOR ( StrictSearch );
       }
 
       INLINE
       StrictSearch&
-      StrictSearch::operator=( const StrictSearch& from ) {
+      StrictSearch::operator= ( const StrictSearch& from ) {
         __freq = from.__freq;
         return *this;
       }
 
       INLINE
       bool
-      StrictSearch::accept_root( const Pattern* r ) {
-        return ( _tree->frequency( *r ) >= __freq );
+      StrictSearch::accept_root ( const Pattern* r ) {
+        return ( _tree->frequency ( *r ) >= __freq );
         // if (_tree->frequency(*r) >= __freq) {
         //   Size tree_width = 0;
         //   for (Pattern::NodeIterator n = r->beginNodes(); n != r->endNodes(); ++n)
@@ -159,74 +159,74 @@ namespace gum {
 
       INLINE
       bool
-      StrictSearch::accept_growth( const Pattern* parent,
-                                   const Pattern* child,
-                                   const DFSTree::EdgeGrowth& growth ) {
-        return __inner_cost( child ) + _tree->frequency( *child ) * __outer_cost( child ) <
-               _tree->frequency( *child ) * __outer_cost( parent );
+      StrictSearch::accept_growth ( const Pattern* parent,
+                                    const Pattern* child,
+                                    const DFSTree::EdgeGrowth& growth ) {
+        return __inner_cost ( child ) + _tree->frequency ( *child ) * __outer_cost ( child ) <
+               _tree->frequency ( *child ) * __outer_cost ( parent );
       }
 
       INLINE
       bool
-      StrictSearch::operator()( gspan::Pattern* i, gspan::Pattern* j ) {
-        return __inner_cost( i ) + _tree->frequency( *i ) * __outer_cost( i ) <
-               __inner_cost( j ) + _tree->frequency( *j ) * __outer_cost( j );
+      StrictSearch::operator() ( gspan::Pattern* i, gspan::Pattern* j ) {
+        return __inner_cost ( i ) + _tree->frequency ( *i ) * __outer_cost ( i ) <
+               __inner_cost ( j ) + _tree->frequency ( *j ) * __outer_cost ( j );
       }
 
       INLINE
       bool
-      StrictSearch::operator()( LabelData* i, LabelData* j ) {
-        return i->tree_width * _tree->graph().size( i ) <
-               j->tree_width * _tree->graph().size( j );
+      StrictSearch::operator() ( LabelData* i, LabelData* j ) {
+        return i->tree_width * _tree->graph().size ( i ) <
+               j->tree_width * _tree->graph().size ( j );
       }
 
       INLINE
       double
 
-      StrictSearch::__inner_cost( const Pattern* p ) try {
+      StrictSearch::__inner_cost ( const Pattern* p ) try {
         return __map[p].first;
       } catch ( NotFound& ) {
-        __compute_costs( p );
+        __compute_costs ( p );
         return __map[p].first;
       }
 
       INLINE
       double
 
-      StrictSearch::__outer_cost( const Pattern* p ) try {
+      StrictSearch::__outer_cost ( const Pattern* p ) try {
         return __map[p].second;
       } catch ( NotFound& ) {
-        __compute_costs( p );
+        __compute_costs ( p );
         return __map[p].second;
       }
 
       INLINE
       std::string
-      StrictSearch::__str( const Instance* i, const Attribute* a ) const {
+      StrictSearch::__str ( const Instance* i, const Attribute* a ) const {
         return i->name() + __dot + a->safeName();
       }
 
       INLINE
       std::string
-      StrictSearch::__str( const Instance* i, const Attribute& a ) const {
+      StrictSearch::__str ( const Instance* i, const Attribute& a ) const {
         return i->name() + __dot + a.safeName();
       }
 
       INLINE
       std::string
-      StrictSearch::__str( const Instance* i, const SlotChain& a ) const {
+      StrictSearch::__str ( const Instance* i, const SlotChain& a ) const {
         return i->name() + __dot + a.lastElt().safeName();
       }
 
       INLINE
       void
-      StrictSearch::__compute_costs( const Pattern* p ) {
+      StrictSearch::__compute_costs ( const Pattern* p ) {
         StrictSearch::PData data;
         Set<Potential<prm_float>*> pool;
-        __buildPatternGraph( data, pool, **( _tree->data( *p ).iso_map.begin() ) );
-        double inner = std::log( __elimination_cost( data, pool ).first );
-        double outer = _computeCost( *p );
-        __map.insert( p, std::make_pair( inner, outer ) );
+        __buildPatternGraph ( data, pool, ** ( _tree->data ( *p ).iso_map.begin() ) );
+        double inner = std::log ( __elimination_cost ( data, pool ).first );
+        double outer = _computeCost ( *p );
+        __map.insert ( p, std::make_pair ( inner, outer ) );
       }
 
 
@@ -234,67 +234,68 @@ namespace gum {
 
 
       INLINE
-      TreeWidthSearch::TreeWidthSearch():
+      TreeWidthSearch::TreeWidthSearch() :
         SearchStrategy() {
-        GUM_CONSTRUCTOR( TreeWidthSearch );
+        GUM_CONSTRUCTOR ( TreeWidthSearch );
       }
 
       INLINE
-      TreeWidthSearch::TreeWidthSearch( const TreeWidthSearch& from ):
-        SearchStrategy( from ) {
-        GUM_CONS_CPY( TreeWidthSearch );
+      TreeWidthSearch::TreeWidthSearch ( const TreeWidthSearch& from ) :
+        SearchStrategy ( from ) {
+        GUM_CONS_CPY ( TreeWidthSearch );
       }
 
       INLINE
       TreeWidthSearch::~TreeWidthSearch() {
-        GUM_DESTRUCTOR( TreeWidthSearch );
+        GUM_DESTRUCTOR ( TreeWidthSearch );
       }
 
       INLINE
       TreeWidthSearch&
-      TreeWidthSearch::operator=( const TreeWidthSearch& from ) {
+      TreeWidthSearch::operator= ( const TreeWidthSearch& from ) {
         return *this;
       }
 
       INLINE
       double
-      TreeWidthSearch::cost( const Pattern& p ) {
+      TreeWidthSearch::cost ( const Pattern& p ) {
         try {
           return __map[&p];
         } catch ( NotFound& ) {
-          __map.insert( &p, _computeCost( p ) );
+          __map.insert ( &p, _computeCost ( p ) );
           return __map[&p];
         }
       }
 
       INLINE
       bool
-      TreeWidthSearch::accept_root( const Pattern* r ) {
+      TreeWidthSearch::accept_root ( const Pattern* r ) {
         Size tree_width = 0;
 
-        for ( Pattern::NodeIterator n = r->beginNodes(); n != r->endNodes(); ++n )
-          tree_width += r->label( *n ).tree_width;
+        //for ( Pattern::NodeIterator n = r->beginNodes(); n != r->endNodes(); ++n )
+        for ( const auto n : r->nodes() )
+          tree_width += r->label ( n ).tree_width;
 
-        return tree_width >= cost( *r );
+        return tree_width >= cost ( *r );
       }
 
       INLINE
       bool
-      TreeWidthSearch::accept_growth( const Pattern* parent,
-                                      const Pattern* child,
-                                      const DFSTree::EdgeGrowth& growth ) {
-        return cost( *parent ) >= cost( *child );
+      TreeWidthSearch::accept_growth ( const Pattern* parent,
+                                       const Pattern* child,
+                                       const DFSTree::EdgeGrowth& growth ) {
+        return cost ( *parent ) >= cost ( *child );
       }
 
       INLINE
       bool
-      TreeWidthSearch::operator()( gspan::Pattern* i, gspan::Pattern* j ) {
-        return cost( *i ) < cost( *j );
+      TreeWidthSearch::operator() ( gspan::Pattern* i, gspan::Pattern* j ) {
+        return cost ( *i ) < cost ( *j );
       }
 
       INLINE
       bool
-      TreeWidthSearch::operator()( LabelData* i, LabelData* j ) {
+      TreeWidthSearch::operator() ( LabelData* i, LabelData* j ) {
         return i->tree_width < j->tree_width;
       }
 

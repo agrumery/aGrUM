@@ -122,7 +122,7 @@ void test_credal() {
   auto cols = llp.addCols( 3 );
 
   for( ; ! ins.end(); ) {
-    for ( auto col : cols )
+    for ( const auto col : cols )
       llp.addRow( rand() / RAND_MAX  <= col );
 
     llp.addRow( cols[ rand() % cols.size() ] <= cols[ rand() % cols.size() ] );

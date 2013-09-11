@@ -184,23 +184,15 @@ namespace gum {
         }
       }
 
-      /*INLINE
-      Pattern::NodeIterator
-      Pattern::beginNodes() const { return DiGraph::beginNodes(); }
+      INLINE const NodeGraphPart& Pattern::nodes() const {
+        return DiGraph::nodes();
+      }
 
-      INLINE
-      const Pattern::NodeIterator&
-      Pattern::endNodes() const { return DiGraph::endNodes(); }
+      INLINE const ArcSet& Pattern::arcs() const {
+        return DiGraph::arcs();
+      }
 
-      INLINE
-      Pattern::ArcIterator
-      Pattern::beginArcs() const { return DiGraph::beginArcs(); }
 
-      INLINE
-      const Pattern::ArcIterator&
-      Pattern::endArcs() const { return DiGraph::endArcs(); }
-      */
-      
       INLINE
       NeighborIterator
       Pattern::beginNeighbors ( NodeId node ) const {

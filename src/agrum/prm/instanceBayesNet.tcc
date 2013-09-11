@@ -33,7 +33,7 @@ namespace gum {
     void
     InstanceBayesNet<GUM_SCALAR>::__init ( const Instance& i ) {
       //for ( DAG::NodeIterator node = i.type().dag().beginNodes(); node != i.type().dag().endNodes(); ++node ) {
-      for ( auto node : i.type().dag().nodes() ) {
+      for ( const auto node : i.type().dag().nodes() ) {
         try {
           // Adding the attribute
           const Attribute& attr = i.get ( node );
@@ -45,7 +45,7 @@ namespace gum {
       }
 
       //for ( ArcSet::iterator arc = i.type().dag().beginArcs(); arc != i.type().dag().endArcs(); ++arc ) {
-      for ( auto arc : i.type().dag().arcs() ) {
+      for ( const auto arc : i.type().dag().arcs() ) {
         try {
           this->_dag.insertArc ( arc.tail(), arc.head() );
         } catch ( InvalidNode& ) {

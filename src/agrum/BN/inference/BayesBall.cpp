@@ -41,7 +41,7 @@ namespace gum {
       __fromChild ( *iter, dag, hardEvidence );
     }
 
-    for ( auto node : dag.nodes() ) {
+    for ( const auto node : dag.nodes() ) {
       try {
         if ( __marks[node].first ) {
           requisite.insert ( node );

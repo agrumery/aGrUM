@@ -190,10 +190,10 @@ namespace gum_tests {
         nodeset.insertNode();
         unsigned int cpt = 0;
 
-        //for ( gum::NodeGraphPartIterator iter = nodeset.beginNodes();iter != nodeset.endNodes(); ++iter ) {
-        for ( const auto iter : nodeset ) {
+        for ( gum::NodeGraphPartIterator iter = nodeset.begin(); iter != nodeset.end(); ++iter ) {
+          //for ( const auto iter : nodeset ) {
           if ( cpt == 0 ) {
-            nodeset.eraseNode ( iter );
+            nodeset.eraseNode ( *iter );
             cpt++;
           } else {
             // If false : infinite loop spotted
@@ -213,17 +213,14 @@ namespace gum_tests {
 
         unsigned int cpt = 0;
 
-        //for ( gum::NodeGraphPartIterator iter = nodeset.beginNodes();iter != nodeset.endNodes(); ++iter, ++cpt ) {
-        for ( const auto iter : nodeset ) {
-          TS_GUM_ASSERT_THROWS_NOTHING ( nodeset.eraseNode ( iter ) );
+        for ( gum::NodeGraphPartIterator iter = nodeset.begin(); iter != nodeset.end(); ++iter, ++cpt ) {
+          TS_GUM_ASSERT_THROWS_NOTHING ( nodeset.eraseNode ( *iter ) );
 
           if ( cpt > max_cpt ) {
             // If false : infinite loop spotted
             TS_ASSERT ( false );
             break;
           }
-
-          cpt++;
         }
 
         TS_ASSERT_EQUALS ( cpt, max_cpt );

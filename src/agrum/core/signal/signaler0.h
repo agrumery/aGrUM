@@ -55,7 +55,7 @@ namespace gum {
         BasicSignaler0( const BasicSignaler0& s ) : ISignaler( s ) {
           GUM_CONS_CPY( BasicSignaler0 );
 
-          for ( auto el:_connectors ) {
+          for ( const auto el:_connectors ) {
             el->target()->attachSignal__( this );
             _connectors.push_back( el->clone() );
           }

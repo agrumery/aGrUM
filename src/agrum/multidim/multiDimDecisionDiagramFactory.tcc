@@ -86,24 +86,19 @@ namespace gum {
           newValueMap.insert ( valueIter.first(), valueIter.second() );
 
     // **************************************************************************************************************
-
-    // **************************************************************************************************************
     // Then if required by caller, we fill diagram with default arcs where needed
     if ( fillWithDefaultArc ) {
-
       NodeId zeroId = 0;
       bool zeroNotCreated = true;
 
-      //for ( DiGraph::NodeIterator iter = this->_model.beginNodes(); iter != this->_model.endNodes(); ++iter ) {
-      for ( const auto iter : this->_model.nodes() ) {
-        if ( iter != 0 && !newValueMap.existsFirst ( iter ) ) {
-
+      for ( auto iter = this->_model.nodes().begin(); iter != this->_model.nodes().end(); ++iter ) {
+        if ( *iter != 0 && !newValueMap.existsFirst ( *iter ) ) {
           Idx idxDefault = 0;
           Idx nbDefault = 0;
 
-          for ( std::vector<NodeId>::iterator sonIter = this->_arcMap[iter]->begin(); sonIter != this->_arcMap[iter]->end(); ++sonIter )
+          for ( auto sonIter = this->_arcMap[*iter]->begin(); sonIter != this->_arcMap[*iter]->end(); ++sonIter )
             if ( *sonIter == 0 ) {
-              idxDefault = std::distance ( this->_arcMap[iter]->begin(), sonIter );
+              idxDefault = std::distance ( this->_arcMap[*iter]->begin(), sonIter );
               nbDefault++;
             }
 
@@ -117,20 +112,18 @@ namespace gum {
           }
 
           if ( nbDefault == 1 ) {
+            ( * ( this->_arcMap[*iter] ) ) [ idxDefault ] = zeroId;
+            ( * ( this->_varUsedModalitiesMap[ this->_varMap[*iter] ] ) ) [ idxDefault ]++;
 
-            ( * ( this->_arcMap[iter] ) ) [ idxDefault ] = zeroId;
-            ( * ( this->_varUsedModalitiesMap[ this->_varMap[iter] ] ) ) [ idxDefault ]++;
-
-            if ( this->_defaultArcMap.exists ( iter ) )
-              this->_defaultArcMap.erase ( iter );
+            if ( this->_defaultArcMap.exists ( *iter ) )
+              this->_defaultArcMap.erase ( *iter );
 
             continue;
           }
 
-          if ( nbDefault > 1 && !this->_defaultArcMap.exists ( iter ) ) {
-            this->_defaultArcMap.insert ( iter, zeroId );
+          if ( nbDefault > 1 && !this->_defaultArcMap.exists ( *iter ) ) {
+            this->_defaultArcMap.insert ( *iter, zeroId );
           }
-
         }
       }
     }

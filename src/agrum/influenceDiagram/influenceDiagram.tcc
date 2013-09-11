@@ -826,7 +826,7 @@ namespace gum {
 
       std::vector< NodeId >* decisionOrder = getDecisionOrder();
 
-      NodeSet nodeList = _dag.nodes();
+      NodeSet nodeList = _dag.asNodeSet();
 
       for ( unsigned int i = 0; i < decisionOrder->size(); i++ ) {
         NodeSet partialOrderedSet ;

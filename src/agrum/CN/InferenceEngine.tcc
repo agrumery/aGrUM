@@ -219,7 +219,7 @@ namespace gum {
         _evidence.clear();
 
       // use cbegin() to get const_iterator when available in aGrUM hashtables
-      for ( auto it = evidence.begin(), theEnd = evidence.end(); it != theEnd; ++it ) {
+      for ( const auto it = evidence.begin(), theEnd = evidence.end(); it != theEnd; ++it ) {
         try {
           _credalNet->current_bn().variable ( it.key() );
         } catch ( NotFound& err ) {
@@ -492,7 +492,7 @@ namespace gum {
       }
 
       // use cbegin when available
-      for ( auto it = _marginalMin.begin(), theEnd = _marginalMin.end(); it != theEnd; ++it ) {
+      for ( const auto it = _marginalMin.begin(), theEnd = _marginalMin.end(); it != theEnd; ++it ) {
         auto esize = it->size();
 
         for ( decltype ( esize ) mod = 0; mod < esize; mod++ ) {
@@ -520,22 +520,22 @@ namespace gum {
       }
 
       // use cbegin when available
-      for ( auto it = _dynamicExpMin.begin(), theEnd = _dynamicExpMin.end(); it != theEnd; ++it ) {
+      for ( const auto it = _dynamicExpMin.begin(), theEnd = _dynamicExpMin.end(); it != theEnd; ++it ) {
         m_stream << it.key();//it->first;
 
         // iterates over a vector
-        for ( auto it2 = it->/*second.*/cbegin(), theEnd2 = it->/*second.*/cend(); it2 != theEnd2; ++it2 ) {
+        for ( const auto it2 = it->/*second.*/cbegin(), theEnd2 = it->/*second.*/cend(); it2 != theEnd2; ++it2 ) {
           m_stream << " " << *it2;
         }
 
         m_stream << "\n";
       }
 
-      for ( auto it = _dynamicExpMax.begin(), theEnd = _dynamicExpMax.end(); it != theEnd; ++it ) {
+      for ( const auto it = _dynamicExpMax.begin(), theEnd = _dynamicExpMax.end(); it != theEnd; ++it ) {
         m_stream << it.key();//->first;
 
         // iterates over a vector
-        for ( auto it2 = it->/*second.*/cbegin(), theEnd2 = it->/*second.*/cend(); it2 != theEnd2; ++it2 ) {
+        for ( const auto it2 = it->/*second.*/cbegin(), theEnd2 = it->/*second.*/cend(); it2 != theEnd2; ++it2 ) {
           m_stream << " " << *it2;
         }
 
@@ -551,7 +551,7 @@ namespace gum {
       output << "\n";
 
       // use cbegin() when available
-      for ( auto it = _marginalMin.begin(), theEnd = _marginalMin.end(); it != theEnd; ++it ) {
+      for ( const auto it = _marginalMin.begin(), theEnd = _marginalMin.end(); it != theEnd; ++it ) {
         auto esize = it->size();
 
         for ( decltype ( esize ) mod = 0; mod < esize; mod++ ) {
@@ -580,20 +580,20 @@ namespace gum {
       }
 
       // use cbegin() cend() when available
-      for ( auto it = _marginalSets.begin(), theEnd = _marginalSets.end(); it != theEnd; ++it ) {
+      for ( const auto it = _marginalSets.begin(), theEnd = _marginalSets.end(); it != theEnd; ++it ) {
         m_stream << _credalNet->current_bn().variable ( it.key() ).name() << "\n";
 
         //auto esize = _marginalSets[it.key()].size();
         // iterates over vectors from here
         //for ( decltype(esize) vertex = 0; vertex < esize; vertex ++ ) {
-        for ( auto jt = it->begin(), jtEnd = it->end(); jt != jtEnd; ++jt ) {
+        for ( const auto jt = it->begin(), jtEnd = it->end(); jt != jtEnd; ++jt ) {
           m_stream << "[";
 
           //auto dSize = _marginalSets[it.key()][vertex].size();
           //for ( decltype(dSize) mod = 0; mod < dSize; mod++ ) {
           bool first = true;
 
-          for ( auto kt = jt->begin(), ktEnd = jt->end(); kt != ktEnd; ++kt ) {
+          for ( const auto kt = jt->begin(), ktEnd = jt->end(); kt != ktEnd; ++kt ) {
             if ( ! first ) {
               m_stream << ",";
               first = false;
@@ -616,14 +616,14 @@ namespace gum {
       _oldMarginalMin.clear();
       _oldMarginalMax.clear();
 
-      for ( auto id = _credalNet->current_bn().beginNodes(), theEnd = _credalNet->current_bn().endNodes(); id != theEnd; ++id ) {
-        auto dSize = _credalNet->current_bn().variable ( *id ).domainSize();
-        _marginalMin.insert ( *id, std::vector< GUM_SCALAR > ( dSize, 1 ) );
-        _oldMarginalMin.insert ( *id, std::vector< GUM_SCALAR > ( dSize, 1 ) );
+      //for ( const auto id = _credalNet->current_bn().beginNodes(), theEnd = _credalNet->current_bn().endNodes(); id != theEnd; ++id ) {
+      for ( const auto id : _credalNet->current_bn().nodes() ) {
+        auto dSize = _credalNet->current_bn().variable ( id ).domainSize();
+        _marginalMin.insert ( id, std::vector< GUM_SCALAR > ( dSize, 1 ) );
+        _oldMarginalMin.insert ( id, std::vector< GUM_SCALAR > ( dSize, 1 ) );
 
-        _marginalMax.insert ( *id, std::vector< GUM_SCALAR > ( dSize, 0 ) );
-        _oldMarginalMax.insert ( *id, std::vector< GUM_SCALAR > ( dSize, 0 ) );
-
+        _marginalMax.insert ( id, std::vector< GUM_SCALAR > ( dSize, 0 ) );
+        _oldMarginalMax.insert ( id, std::vector< GUM_SCALAR > ( dSize, 0 ) );
       }
     }
 
@@ -634,8 +634,9 @@ namespace gum {
       if ( ! _storeVertices )
         return;
 
-      for ( auto id = _credalNet->current_bn().beginNodes(), theEnd = _credalNet->current_bn().endNodes(); id != theEnd; ++id )
-        _marginalSets.insert ( *id, std::vector< std::vector< GUM_SCALAR > >() );
+      //for ( const auto id = _credalNet->current_bn().beginNodes(), theEnd = _credalNet->current_bn().endNodes(); id != theEnd; ++id )
+      for ( const auto id : _credalNet->current_bn().nodes() )
+        _marginalSets.insert ( id, std::vector< std::vector< GUM_SCALAR > >() );
     }
 
 
@@ -649,10 +650,11 @@ namespace gum {
       if ( _modal.empty() )
         return;
 
-      for ( auto id =  _credalNet->current_bn().beginNodes(), theEnd = _credalNet->current_bn().endNodes(); id != theEnd; ++id ) {
+      //for ( const auto id =  _credalNet->current_bn().beginNodes(), theEnd = _credalNet->current_bn().endNodes(); id != theEnd; ++id ) {
+      for ( const auto id : _credalNet->current_bn().nodes() ) {
         std::string var_name, time_step;
 
-        var_name = _credalNet->current_bn().variable ( *id ).name();
+        var_name = _credalNet->current_bn().variable ( id ).name();
         auto delim = var_name.find_first_of ( "_" );
         time_step = var_name.substr ( delim + 1, var_name.size() );
         var_name = var_name.substr ( 0, delim );
@@ -663,11 +665,11 @@ namespace gum {
         if ( ! _modal.exists ( var_name ) )
           continue;
 
-        _expectationMin.insert ( *id, _modal[ var_name ].back() );
-        _expectationMax.insert ( *id, _modal[ var_name ].front() );
+        _expectationMin.insert ( id, _modal[ var_name ].back() );
+        _expectationMax.insert ( id, _modal[ var_name ].front() );
 
-        //_expectationMin.insert ( *id, it->second[it->second.size()-1] );
-        //_expectationMax.insert ( *id, it->second[0] );
+        //_expectationMin.insert ( id, it->second[it->second.size()-1] );
+        //_expectationMax.insert ( id, it->second[0] );
       }
 
     }
@@ -753,7 +755,7 @@ namespace gum {
       const DAG& dag = _credalNet->current_bn().dag();
 
       // t = 0 vars belongs to _t0 as keys
-      //for ( auto id = dag.beginNodes(), theEnd = dag.endNodes(); id != theEnd; ++id ) {
+      //for ( const auto id = dag.beginNodes(), theEnd = dag.endNodes(); id != theEnd; ++id ) {
       for ( const auto id : dag.nodes() ) {
         std::string var_name = _credalNet->current_bn().variable ( id ).name();
         auto delim = var_name.find_first_of ( "_" );
@@ -769,7 +771,7 @@ namespace gum {
       }
 
       // t = 1 vars belongs to either _t0 as member value or _t1 as keys
-      //for ( auto id = dag.beginNodes(), theEnd = dag.endNodes(); id != theEnd; ++id ) {
+      //for ( const auto id = dag.beginNodes(), theEnd = dag.endNodes(); id != theEnd; ++id ) {
       for ( const auto id : dag.nodes() ) {
         std::string var_name = _credalNet->current_bn().variable ( id ).name();
         auto delim = var_name.find_first_of ( "_" );
@@ -809,7 +811,7 @@ namespace gum {
 
       // t > 1 vars belongs to either _t0 or _t1 as member value
       // remember _timeSteps
-      //for ( auto id = dag.beginNodes(), theEnd = dag.endNodes(); id != theEnd; ++id ) {
+      //for ( const auto id = dag.beginNodes(), theEnd = dag.endNodes(); id != theEnd; ++id ) {
       for ( const auto id : dag.nodes() ) {
         std::string var_name = _credalNet->current_bn().variable ( id ).name();
         auto delim = var_name.find_first_of ( "_" );
@@ -901,7 +903,7 @@ namespace gum {
 
       bool eq = true;
 
-      for ( auto it = nodeCredalSet.cbegin(), itEnd = nodeCredalSet.cend(); it != itEnd; ++it ) {
+      for ( const auto it = nodeCredalSet.cbegin(), itEnd = nodeCredalSet.cend(); it != itEnd; ++it ) {
         eq = true;
 
         for ( auto end = vertex.size(), i = 0; i < end; i++ ) {
@@ -923,7 +925,7 @@ namespace gum {
       // check that the point and all previously added ones are not inside the actual polytope
       auto itEnd = std::remove_if ( nodeCredalSet.begin(), nodeCredalSet.end(),
       [&] ( const std::vector< GUM_SCALAR >& v ) -> bool {
-        for ( auto jt = v.cbegin(), jtEnd = v.cend(),
+        for ( const auto jt = v.cbegin(), jtEnd = v.cend(),
         minIt = _marginalMin[ id ].cbegin(), minItEnd = _marginalMin[ id ].cend(),
         maxIt = _marginalMax[ id ].cbegin(), maxItEnd = _marginalMax[ id ].cend();
         jt != jtEnd,
@@ -1127,7 +1129,8 @@ namespace gum {
         return;
 
       // check that the point and all previously added ones are not inside the actual polytope
-      auto itEnd = std::remove_if ( nodeCredalSet.begin(), nodeCredalSet.end(),
+      auto itEnd = std::remove_if ( nodeCredalSet.begin(),
+                                    nodeCredalSet.end(),
       [&] ( const std::vector< GUM_SCALAR >& v ) -> bool {
         for ( auto jt = v.cbegin(), jtEnd = v.cend(),
         minIt = _marginalMin[ id ].cbegin(), minItEnd = _marginalMin[ id ].cend(),
@@ -1158,7 +1161,7 @@ namespace gum {
       LRSWrapper< GUM_SCALAR > lrsWrapper;
       lrsWrapper.setUpV ( dsize, setSize );
 
-      for ( auto & vtx : nodeCredalSet )
+      for ( const auto & vtx : nodeCredalSet )
         lrsWrapper.fillV ( vtx );
 
       lrsWrapper.elimRedundVrep();

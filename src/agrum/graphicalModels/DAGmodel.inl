@@ -99,7 +99,7 @@ namespace gum {
   DAGmodel::log10DomainSize ( void ) const {
     double dSize = 0.0;
 
-    for ( auto node : nodes() ) {
+    for ( const auto node : nodes() ) {
       dSize += log10 ( variable ( node ).domainSize() );
     }
 

@@ -167,10 +167,8 @@ namespace gum {
       using IBayesNet<GUM_SCALAR>::setProperty;
       using IBayesNet<GUM_SCALAR>::empty;
       using IBayesNet<GUM_SCALAR>::completeInstantiation;
-      using IBayesNet<GUM_SCALAR>::endNodes;
-      using IBayesNet<GUM_SCALAR>::beginNodes;
-      using IBayesNet<GUM_SCALAR>::endArcs;
-      using IBayesNet<GUM_SCALAR>::beginArcs;
+      using IBayesNet<GUM_SCALAR>::nodes;
+      using IBayesNet<GUM_SCALAR>::arcs;
       using IBayesNet<GUM_SCALAR>::moralGraph;
       using IBayesNet<GUM_SCALAR>::topologicalOrder;
       using IBayesNet<GUM_SCALAR>::log10DomainSize;
