@@ -81,7 +81,7 @@ namespace gum_tests {
           gum::NodeId node_1 = 0, node_2 = 0;
 
           //for ( gum::DAG::NodeIterator iter = net->dag().beginNodes(); iter != net->dag().endNodes(); ++iter ) {
-          for ( const auto iter : net->dag().nodes() ) {
+          for ( const auto iter : net->nodes() ) {
             if ( net->variable ( iter ).name() == "n1" )
               node_1 = iter;
             else
@@ -133,7 +133,7 @@ namespace gum_tests {
           gum::NodeId node_1 = 0, node_2 = 0;
 
           //for ( gum::DAG::NodeIterator iter = net->dag().beginNodes(); iter != net->dag().endNodes(); ++iter ) {
-          for ( const auto iter : net->dag().nodes() ) {
+          for ( const auto iter : net->nodes() ) {
             if ( net->variable ( iter ).name() == "n1" ) {
               node_1 = iter;
             } else {

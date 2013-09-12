@@ -178,7 +178,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS ( source.dag().size(), copy->dag().size() );
         TS_ASSERT_EQUALS ( source.dag().sizeArcs(), copy->dag().sizeArcs() );
-        //const gum::NodeSet& nodes=source.dag().nodes();
+        //const gum::NodeSet& nodes=source.nodes();
         const gum::DAG dag = source.dag();
 
         //for ( gum::DAG::NodeIterator nodeIter = dag.beginNodes();nodeIter != dag.endNodes();++nodeIter ) {
@@ -238,7 +238,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS ( source.dag().size(), copy.dag().size() );
         TS_ASSERT_EQUALS ( source.dag().sizeArcs(), copy.dag().sizeArcs() );
-        //const gum::NodeSet& nodes=source.dag().nodes();
+        //const gum::NodeSet& nodes=source.nodes();
         const gum::DAG dag = source.dag();
 
         //for ( gum::DAG::NodeIterator nodeIter = dag.beginNodes();nodeIter != dag.endNodes();++nodeIter ) {
@@ -366,6 +366,22 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable* ) &bn.variable ( idList[2] ) ), *var3 );
         TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable* ) &bn.variable ( idList[3] ) ), *var4 );
         TS_ASSERT_EQUALS ( * ( ( gum::LabelizedVariable* ) &bn.variable ( idList[4] ) ), *var5 );
+      }
+
+      void testIterations() {
+        gum::BayesNet<float> bn;
+        gum::List<gum::NodeId> idList;
+        TS_GUM_ASSERT_THROWS_NOTHING ( fill ( bn, idList ) );
+
+        gum::Size cpt=(gum::Size)0;
+        for(const auto node : bn.nodes())
+            cpt++;
+        TS_ASSERT_EQUALS(cpt,bn.size());
+
+        cpt=(gum::Size)0;
+        for(const auto arc : bn.arcs())
+          cpt++;
+        TS_ASSERT_EQUALS(cpt,bn.sizeArcs());
       }
 
       void testArcInsertion() {

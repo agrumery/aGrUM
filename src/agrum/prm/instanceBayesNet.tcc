@@ -158,7 +158,7 @@ namespace gum {
     InstanceBayesNet<GUM_SCALAR>::modalities() const {
       if ( __modalities.empty() ) {
         //for ( DAG::NodeIterator node = this->dag().beginNodes(); node != this->dag().endNodes(); ++node ) {
-        for ( const auto node : this->dag().nodes() ) {
+        for ( const auto node : this->nodes() ) {
           __modalities.insert ( node, variable ( node ).domainSize() );
         }
       }
@@ -176,7 +176,7 @@ namespace gum {
       output << __inst->name() << "\" {" << std::endl;
 
       //for ( DAG::NodeIterator node_iter = this->dag().beginNodes(); node_iter != this->dag().endNodes(); ++node_iter ) {
-      for ( const auto node : this->dag().nodes() ) {
+      for ( const auto node : this->nodes() ) {
         if ( this->dag().children ( node ).size() > 0 ) {
           const NodeSet& children = this->dag().children ( node );
 

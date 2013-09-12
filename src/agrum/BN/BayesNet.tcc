@@ -510,7 +510,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   void BayesNet<GUM_SCALAR>::endTopologyTransformation() {
     //for ( DAG::NodeIterator node_iter = dag().beginNodes();node_iter != dag().endNodes(); ++node_iter ) {
-    for ( const auto node_iter : dag().nodes() )
+    for ( const auto node_iter : nodes() )
       __probaMap[node_iter]->endMultipleChanges();
   }
 

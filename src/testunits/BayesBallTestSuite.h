@@ -56,7 +56,7 @@ namespace gum_tests {
         gum::Sequence<gum::NodeId> nodes_seq;
 
         //for ( gum::DiGraph::NodeIterator iter = bn->dag().beginNodes(); iter != bn->dag().endNodes(); ++iter )
-        for ( const auto node : bn->dag().nodes() )
+        for ( const auto node : bn->nodes() )
           nodes_seq.insert ( node );
 
         for ( gum::Idx i = 0; i < 5; ++i )

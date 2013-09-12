@@ -285,7 +285,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS ( source.dag().size(), copy->dag().size() );
         TS_ASSERT_EQUALS ( source.dag().sizeArcs(), copy->dag().sizeArcs() );
-        //const gum::NodeSet& nodes=source.dag().nodes();
+        //const gum::NodeSet& nodes=source.nodes();
         const gum::DAG dag = source.dag();
 
         //for ( gum::DAG::NodeIterator nodeIter = dag.beginNodes(); nodeIter != dag.endNodes(); ++nodeIter ) {
