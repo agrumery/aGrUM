@@ -85,7 +85,7 @@ namespace gum {
   }
 
 
-  INLINE const ArcGraphPart::ArcIterator ArcGraphPart::beginArcs() const {
+  INLINE ArcGraphPart::ArcIterator ArcGraphPart::beginArcs() const {
     return __arcs.begin();
   }
 

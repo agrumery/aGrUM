@@ -51,21 +51,17 @@ namespace gum {
     void
     CDG::__buildGraph ( const PRM& prm ) {
       // First we add all nodes
-      //for ( Set<Class*>::const_iterator iter = prm.classes().begin(); iter != prm.classes().end(); ++iter ) {
       for ( const auto ci : prm.classes() ) {
         __node_map.insert ( ci, new HashTable<const ClassElement*, NodeId>() );
 
-        //for ( DAG::NodeIterator jter = ( ci )->dag().beginNodes(); jter != ( ci )->dag().endNodes(); ++jter )
         for ( const auto j : ci->dag().nodes() ) {
           __addNode ( ci, ( ci )->get ( j ) );
         }
       }
 
-      //for ( Set<Interface*>::const_iterator iter = prm.interfaces().begin(); iter != prm.interfaces().end(); ++iter ) {
       for ( const auto ii : prm.interfaces() ) {
         __node_map.insert ( ii, new HashTable<const ClassElement*, NodeId>() );
 
-        //for ( DAG::NodeIterator jter = ( ii )->dag().beginNodes(); jter != ( ii )->dag().endNodes(); ++jter )
         for ( const auto j : ii->dag().nodes() ) {
           __addNode ( ii, ( ii )->get ( j ) );
         }

@@ -634,7 +634,6 @@ namespace gum {
       if ( ! _storeVertices )
         return;
 
-      //for ( const auto id = _credalNet->current_bn().beginNodes(), theEnd = _credalNet->current_bn().endNodes(); id != theEnd; ++id )
       for ( const auto id : _credalNet->current_bn().nodes() )
         _marginalSets.insert ( id, std::vector< std::vector< GUM_SCALAR > >() );
     }
@@ -650,7 +649,6 @@ namespace gum {
       if ( _modal.empty() )
         return;
 
-      //for ( const auto id =  _credalNet->current_bn().beginNodes(), theEnd = _credalNet->current_bn().endNodes(); id != theEnd; ++id ) {
       for ( const auto id : _credalNet->current_bn().nodes() ) {
         std::string var_name, time_step;
 
@@ -755,7 +753,6 @@ namespace gum {
       const DAG& dag = _credalNet->current_bn().dag();
 
       // t = 0 vars belongs to _t0 as keys
-      //for ( const auto id = dag.beginNodes(), theEnd = dag.endNodes(); id != theEnd; ++id ) {
       for ( const auto id : dag.nodes() ) {
         std::string var_name = _credalNet->current_bn().variable ( id ).name();
         auto delim = var_name.find_first_of ( "_" );
@@ -771,7 +768,6 @@ namespace gum {
       }
 
       // t = 1 vars belongs to either _t0 as member value or _t1 as keys
-      //for ( const auto id = dag.beginNodes(), theEnd = dag.endNodes(); id != theEnd; ++id ) {
       for ( const auto id : dag.nodes() ) {
         std::string var_name = _credalNet->current_bn().variable ( id ).name();
         auto delim = var_name.find_first_of ( "_" );
@@ -811,7 +807,6 @@ namespace gum {
 
       // t > 1 vars belongs to either _t0 or _t1 as member value
       // remember _timeSteps
-      //for ( const auto id = dag.beginNodes(), theEnd = dag.endNodes(); id != theEnd; ++id ) {
       for ( const auto id : dag.nodes() ) {
         std::string var_name = _credalNet->current_bn().variable ( id ).name();
         auto delim = var_name.find_first_of ( "_" );

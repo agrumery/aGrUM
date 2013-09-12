@@ -40,7 +40,6 @@ namespace gum {
 
     NodeProperty<Size> __modalitiesMap;
 
-    //for ( DAG::NodeIterator iter = this->bn().beginNodes();iter != this->bn().endNodes(); ++iter ) {
     for ( const auto node : this->bn().nodes() )
       __modalitiesMap.insert ( node,  this->bn().variable ( node ).domainSize() );
 
@@ -113,8 +112,6 @@ namespace gum {
     NodeId cliqueId = __triangulation->createdJunctionTreeClique ( id );
     // First we find the smallest clique containing id
 
-    //for ( CliqueGraph::NodeIterator iter = __triangulation->junctionTree().beginNodes();
-    //      iter != __triangulation->junctionTree().endNodes(); ++iter ) {
     for ( const auto node : __triangulation->junctionTree().nodes() ) {
       if ( ( __triangulation->junctionTree().clique ( node ).contains ( id ) ) and
            ( __clique_prop[node]->bucket().domainSize() < __clique_prop[cliqueId]->bucket().domainSize() )
@@ -243,7 +240,6 @@ namespace gum {
     NodeSet cliquesSet;
     // First pass to create the clique's table
 
-    //for ( CliqueGraph::NodeIterator iter = __triangulation->junctionTree().beginNodes();iter != __triangulation->junctionTree().endNodes(); ++iter ) {
     for ( const auto node : __triangulation->junctionTree().nodes() ) {
       __clique_prop.insert ( node, new CliqueProp<GUM_SCALAR> ( node ) );
       cliquesSet.insert ( node );

@@ -60,7 +60,6 @@ namespace gum {
     const DAG& dag = bn().dag();
 //    const NodeSet& nodes = dag.nodes();
 
-    //for ( DAG::NodeIterator iter = dag.beginNodes(); iter != dag.endNodes(); ++iter ) {
     for(auto node : dag.nodes()) {
       const DiscreteVariable& var = bn().variable( node );
       // feed the __sampling

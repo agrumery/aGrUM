@@ -75,7 +75,6 @@ namespace gum {
 
     GUM_DESTRUCTOR ( MultiDimDecisionDiagramBase );
 
-    //for( NodeGraphPart::NodeIterator iter = __graph.beginNodes(); iter != __graph.endNodes(); ++iter ) {
     for ( const auto node : __graph.nodes() ) {
       if ( node != 0 )
         if ( !__valueMap.existsFirst ( node ) && __arcMap[node] != nullptr )
@@ -264,24 +263,15 @@ namespace gum {
       GUM_ERROR ( OperationNotAllowed, "This is a read only" );
 
     this->beginInstantiation();
-
     this->setVariableSequence ( source.variablesSequence() );
-
     this->setDiagramNodes ( source.nodesMap() );
-
     __valueMap = source.valuesMap();
-
     __variableMap.resize ( source.nodesMap().size() );
-
     __var2NodeIdMap.resize ( source.variablesSequence().size() );
-
     __varUsedModalitiesMap.resize ( source.variablesSequence().size() );
-
     __arcMap.resize ( source.nodesMap().size() );
-
     __defaultArcMap.resize ( source.nodesMap().size() );
 
-    //for( NodeGraphPartIterator nodeIter = __graph.beginNodes(); nodeIter != __graph.endNodes(); ++nodeIter ) {
     for ( const auto node : __graph.nodes() ) {
       if ( node != 0 && !source.isTerminalNode ( node ) ) {
 
@@ -355,7 +345,6 @@ namespace gum {
 
     __defaultArcMap.resize ( source->nodesMap().size() );
 
-    //for ( NodeGraphPartIterator nodeIter = source->nodesMap().beginNodes(); nodeIter != source->nodesMap().endNodes(); ++nodeIter ) {
     for ( const auto nodeIter : source->nodesMap() ) {
 
       if ( nodeIter != 0 && !source->isTerminalNode ( nodeIter ) ) {
@@ -428,7 +417,6 @@ namespace gum {
     nonTerminalStream << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
 
-    //for ( NodeGraphPart::NodeIterator nodeIter = __graph.beginNodes(); nodeIter != __graph.endNodes(); ++nodeIter ) {
     for ( const auto node : __graph.nodes() ) {
       if ( node != 0 ) {
         if ( isTerminalNode ( node ) ) {
@@ -763,7 +751,6 @@ namespace gum {
       if ( newValueMap.existsSecond ( tempVal ) ) {
         NodeId nody = newValueMap.first ( tempVal );
 
-        //for ( NodeGraphPartIterator nodeIter = __graph.beginNodes(); nodeIter != __graph.endNodes(); ++nodeIter )
         for ( const auto node : __graph.nodes() )
           if ( node != 0 && !isTerminalNode ( node ) ) {
             if ( !__arcMap.exists ( node ) )

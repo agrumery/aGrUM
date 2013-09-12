@@ -411,7 +411,6 @@ namespace gum {
       __class_elim_order = new Sequence<const ClassElementContainer*>();
       std::list<NodeId> l;
 
-      //for ( DAG::NodeIterator node = cdg.dag().beginNodes(); node != cdg.dag().endNodes(); ++node )
       for ( const auto node : cdg.dag().nodes() )
         if ( cdg.dag().parents ( node ).empty() ) l.push_back ( node );
 

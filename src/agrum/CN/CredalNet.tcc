@@ -334,7 +334,6 @@ namespace gum {
       double epsi_moy = 0;
       double epsi_den = 0;
 
-      //for ( const auto node_idIt = __src_bn.beginNodes(), theEnd = __src_bn.endNodes(); node_idIt != theEnd; ++node_idIt ) {
       for ( const auto node_idIt : src_bn().nodes() ) {
         const Potential< GUM_SCALAR >* const potential ( &__src_bn.cpt ( node_idIt ) );
 
@@ -450,7 +449,6 @@ namespace gum {
 
     template< typename GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::lagrangeNormalization() {
-      //for ( const auto node_idIt = __src_bn.beginNodes(), theEnd = __src_bn.endNodes(); node_idIt != theEnd; ++node_idIt ) {
       for ( const auto node_idIt : __src_bn.nodes() ) {
         const Potential< GUM_SCALAR >* const potential ( &__src_bn.cpt ( node_idIt ) );
 
@@ -501,7 +499,6 @@ namespace gum {
 
     template< typename GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::idmLearning ( const unsigned int s, const bool keepZeroes ) {
-      //for ( const auto node_idIt = __src_bn.beginNodes(), theEnd = __src_bn.endNodes(); node_idIt != theEnd; ++node_idIt ) {
       for ( const auto node_idIt : src_bn.nodes() ) {
         const Potential< GUM_SCALAR >* const potential ( &__src_bn.cpt ( node_idIt ) );
 
@@ -578,7 +575,6 @@ namespace gum {
 
       __credalNet_src_cpt.resize ( __src_bn.size() );
 
-      //for ( const auto node_idIt = __src_bn.beginNodes(), theEnd = __src_bn.endNodes(); node_idIt != theEnd; ++node_idIt ) {
       for ( const auto node_idIt : __src_bn.nodes() ) {
         const Potential< GUM_SCALAR >* const potential_min ( &__src_bn_min.cpt ( node_idIt ) );
         const Potential< GUM_SCALAR >* const potential_max ( &__src_bn_max.cpt ( node_idIt ) );
@@ -673,7 +669,6 @@ namespace gum {
 
       LRSWrapper< GUM_SCALAR > lrsWrapper;
 
-      //for ( const auto node_idIt = __src_bn.beginNodes(), theEnd = __src_bn.endNodes(); node_idIt != theEnd; ++node_idIt ) {
       for ( const auto node_idIt : src_bn().nodes() ) {
         const Potential< GUM_SCALAR >* const potential_min ( &__src_bn_min.cpt ( node_idIt ) );
         const Potential< GUM_SCALAR >* const potential_max ( &__src_bn_max.cpt ( node_idIt ) );
@@ -874,9 +869,10 @@ namespace gum {
 
       __bin_bn->beginTopologyTransformation();
 
-      for ( const auto node_idIt = __current_bn->beginNodes(), theEnd = __current_bn->endNodes(); node_idIt != theEnd; ++node_idIt ) {
+      //for ( const auto node_idIt = __current_bn->beginNodes(), theEnd = __current_bn->endNodes(); node_idIt != theEnd; ++node_idIt ) {
+      for ( const auto node_idIt : __current_bn->nodes() ) {
         Size nb_bits, new_card;
-        auto var_dSize = __current_bn->variable ( *node_idIt ).domainSize();
+        auto var_dSize = __current_bn->variable ( node_idIt ).domainSize();
 
         if ( var_dSize != 2 ) {
           superiorPow ( var_dSize, nb_bits, new_card );
@@ -885,7 +881,7 @@ namespace gum {
           std::vector< NodeId > bits ( nb_bits );
 
           for ( decltype ( nb_bits ) bit = 0; bit < nb_bits; bit++ ) {
-            bit_name = __current_bn->variable ( *node_idIt ).name() + " - bit - ";
+            bit_name = __current_bn->variable ( node_idIt ).name() + " - bit - ";
             std::stringstream ss;
             ss << bit;
             bit_name += ss.str();
@@ -896,39 +892,42 @@ namespace gum {
             bits[bit] = iD;
           } // end of : for each bit
 
-          __var_bits.insert ( *node_idIt, bits );
+          __var_bits.insert ( node_idIt, bits );
 
         } // end of : if variable is not binary
         else {
-          std::string bit_name = __current_bn->variable ( *node_idIt ).name();
+          std::string bit_name = __current_bn->variable ( node_idIt ).name();
           LabelizedVariable var_bit ( bit_name, "node " + bit_name, 2 );
           NodeId iD = __bin_bn->add ( var_bit );
 
-          __var_bits.insert ( *node_idIt, std::vector< NodeId > ( 1, iD ) );
+          __var_bits.insert ( node_idIt, std::vector< NodeId > ( 1, iD ) );
         }
 
       } // end of : for each original variable
 
-      for ( const auto node_idIt = __current_bn->beginNodes(), theEnd = __current_bn->endNodes(); node_idIt != theEnd; ++node_idIt ) {
-        NodeSet parents = __current_bn->dag().parents ( *node_idIt );
+      //for ( const auto node_idIt = __current_bn->beginNodes(), theEnd = __current_bn->endNodes(); node_idIt != theEnd; ++node_idIt ) {
+      for ( const auto node_idIt : __current_bn->nodes() ) {
+        NodeSet parents = __current_bn->dag().parents ( node_idIt );
 
         if ( ! parents.empty() ) {
-          for ( const auto parent_idIt = __current_bn->cpt ( *node_idIt ).begin(), theEnd2 = __current_bn->cpt ( *node_idIt ).end(); parent_idIt != theEnd2; ++parent_idIt ) {
-            if ( __current_bn->nodeId ( **parent_idIt ) != *node_idIt ) {
-              for ( Size parent_bit = 0, spbits = __var_bits[ __current_bn->nodeId ( **parent_idIt ) ].size(); parent_bit < spbits; parent_bit++ )
-                for ( Size var_bit = 0, mbits = __var_bits[ *node_idIt ].size(); var_bit < mbits; var_bit++ )
-                  __bin_bn->addArc ( __var_bits[ __current_bn->nodeId ( **parent_idIt ) ][ parent_bit ], __var_bits[ *node_idIt ][ var_bit ] );
-            }
+          //for ( const auto parent_idIt = __current_bn->cpt ( node_idIt ).begin(), theEnd2 = __current_bn->cpt ( node_idIt ).end(); parent_idIt != theEnd2; ++parent_idIt ) {
+          for ( const auto parent_idIt : __current_bn->dag().parents ( node_idIt ) ) {
+            //if ( __current_bn->nodeId ( parent_idIt ) != node_idIt ) {
+            for ( Size parent_bit = 0, spbits = __var_bits[ parent_idIt  ].size(); parent_bit < spbits; parent_bit++ )
+              for ( Size var_bit = 0, mbits = __var_bits[ node_idIt ].size(); var_bit < mbits; var_bit++ )
+                __bin_bn->addArc ( __var_bits[ parent_idIt ][ parent_bit ], __var_bits[ node_idIt ][ var_bit ] );
+          }
 
-          } // end of : for each parent
-        } // end of : if parents
+        } // end of : for each parent
+
+        //} // end of : if parents
 
         // arcs with one's bits
-        auto bitsize = __var_bits[ *node_idIt ].size();
+        auto bitsize = __var_bits[ node_idIt ].size();
 
         for ( decltype ( bitsize ) bit_c = 1; bit_c < bitsize; bit_c++ )
           for ( decltype ( bit_c ) bit_p = 0; bit_p < bit_c; bit_p++ )
-            __bin_bn->addArc ( __var_bits[ *node_idIt ][ bit_p ], __var_bits[ *node_idIt ][ bit_c ] );
+            __bin_bn->addArc ( __var_bits[ node_idIt ][ bit_p ], __var_bits[ node_idIt ][ bit_c ] );
 
 
       } // end of : for each original variable
@@ -1165,7 +1164,6 @@ namespace gum {
       __binCptMin.resize ( current_bn().size() );
       __binCptMax.resize ( current_bn().size() );
 
-      //for ( const auto node_idIt = current_bn().beginNodes(), theEnd = current_bn().endNodes(); node_idIt != theEnd; ++node_idIt ) {
       for ( const auto node_idIt : current_bn().nodes() ) {
         auto pConf = credalNet_currentCpt() [node_idIt].size();
         std::vector< GUM_SCALAR > min ( pConf );
@@ -1232,7 +1230,6 @@ namespace gum {
       else
         __credalNet_current_cpt = this->__credalNet_current_cpt;
 
-      //for ( const auto node_idIt = __current_bn->beginNodes(), theEnd = __current_bn->endNodes(); node_idIt != theEnd; ++node_idIt ) {
       for ( const auto node_idIt : __current_bn->nodes() ) {
         const Potential< GUM_SCALAR >* potential ( &__current_bn->cpt ( node_idIt ) );
         auto pconfs = potential->domainSize() / __current_bn->variable ( node_idIt ).domainSize();
@@ -1667,7 +1664,6 @@ namespace gum {
       /*if ( ! __current_nodeType->empty() )
         __current_nodeType->clear();*/
 
-      //for ( const auto node_idIt = __current_bn->beginNodes(), theEnd = __current_bn->endNodes(); node_idIt != theEnd; ++node_idIt ) {
       for ( const auto node_idIt : __current_bn->nodes() ) {
         // indicatrices are already present
         if ( __current_nodeType->exists ( node_idIt ) )
@@ -1676,7 +1672,6 @@ namespace gum {
         bool precise = true, vacuous = true;
 
         for ( auto entry = ( *__credalNet_current_cpt ) [node_idIt].cbegin(), theEnd2 = ( *__credalNet_current_cpt ) [node_idIt].cend(); entry != theEnd2; ++entry ) {
-
           auto vertices = entry->size();
           auto var_dSize = ( *entry ) [0].size();
 

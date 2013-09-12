@@ -52,7 +52,6 @@ namespace gum {
 
       bool
       Pattern::isMinimal() {
-        //for ( Pattern::NodeIterator node = beginNodes(); node != endNodes(); ++node ) {
         for ( const auto node : nodes() ) {
           const NodeSet& parents = DiGraph::parents ( node );
 
@@ -108,9 +107,9 @@ namespace gum {
         std::stringstream sBuff;
         sBuff << "digraph " << name << " {\n";
 
-        for ( ArcIterator arc = beginArcs(); arc != endArcs(); ++arc ) {
-          sBuff << label ( arc->tail() ).id << " -> ";
-          sBuff << label ( arc->head() ).id << ";\n";
+        for ( const auto & arc : arcs() ) {
+          sBuff << label ( arc.tail() ).id << " -> ";
+          sBuff << label ( arc.head() ).id << ";\n";
         }
 
         sBuff << "}\n";

@@ -60,13 +60,11 @@ namespace gum {
 
     output << "<!-- Variables -->" << std::endl;
 
-    //for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter )
     for ( const auto iter : bn.nodes() )
       output << __variableBloc ( bn.variable ( iter ) ) << std::endl;
 
     output << "<!-- Probability distributions -->" << std::endl;
 
-    //for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter )
     for ( const auto iter : bn.nodes() )
       output << __variableDefinition ( iter, bn );
 

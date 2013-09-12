@@ -799,7 +799,6 @@ namespace gum {
     __log_tree_width = std::numeric_limits<float>::max();
     __log_weights->clear();
 
-    //for( UndiGraph::NodeIterator iterX = __graph->beginNodes();iterX != __graph->endNodes(); ++iterX ) {
     for ( const auto nodeX : __graph->nodes() ) {
       float log_weight = ( *__log_modalities ) [nodeX];
 
@@ -827,7 +826,6 @@ namespace gum {
     // such that the Id of Y and Z are greater than X.
     NodeSetIterator iterZ;
 
-    //for( UndiGraph::NodeIterator iterX = __graph->beginNodes();iterX != __graph->endNodes(); ++iterX ) {
     for ( const auto nodeX:__graph->nodes() ) {
       unsigned int& nb_adjacent_neighbours_idX = __nb_adjacent_neighbours[nodeX];
 

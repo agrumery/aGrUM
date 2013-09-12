@@ -122,7 +122,6 @@ namespace gum {
   template<typename GUM_SCALAR>
   bool
   KL<GUM_SCALAR>::__checkCompatibility() const {
-    //for ( DAG::NodeIterator it=_p.beginNodes(); it!=_p.endNodes(); ++it ) {
     for ( const auto it : _p.nodes() ) {
       const DiscreteVariable& vp = _p.variable ( it );
 

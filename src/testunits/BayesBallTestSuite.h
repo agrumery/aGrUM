@@ -55,7 +55,6 @@ namespace gum_tests {
         gum::Set<gum::NodeId> query, hardEvidence;
         gum::Sequence<gum::NodeId> nodes_seq;
 
-        //for ( gum::DiGraph::NodeIterator iter = bn->dag().beginNodes(); iter != bn->dag().endNodes(); ++iter )
         for ( const auto node : bn->nodes() )
           nodes_seq.insert ( node );
 

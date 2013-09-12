@@ -74,7 +74,6 @@ namespace gum {
     gum::HashTable<std::string, Idx> protable ;
     gum::HashTable<const gum::DiscreteVariable*, gum::HashTable<std::string, gum::Sequence< gum::Sequence<gum::Instantiation* >* >* >* > cptparamval;
 
-    //for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
     for ( const auto iter : bn.nodes() ) {
       std::stringstream str0 ;
       const DiscreteVariable* var = &bn.variable ( iter );
@@ -290,7 +289,6 @@ namespace gum {
     for ( gum::Sequence<gum::NodeId>::iterator it = bn.topologicalOrder().begin(); it != bn.topologicalOrder().end(); ++it )
       Order.add ( bn.variable ( *it ) );
 
-    //for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
     for ( const auto iter : bn.nodes() ) {
       std::stringstream str0 ;
       const DiscreteVariable* var = &bn.variable ( iter );

@@ -44,7 +44,6 @@ namespace gum {
           gspan::Pattern& p = __tree.pattern ( *root );
           __subgraph_mining ( graph, p );
 
-          //for ( UndiGraph::NodeIterator node = __tree.iso_graph( p ).beginNodes(); node != __tree.iso_graph( p ).endNodes(); ++node ) {
           for ( const auto node : __tree.iso_graph ( p ).nodes() ) {
             Instance* u = __tree.iso_map ( p, node ).atPos ( 0 );
             Instance* v = __tree.iso_map ( p, node ).atPos ( 1 );
@@ -107,7 +106,7 @@ namespace gum {
       Sequence<Instance*>* seq = 0; Instance* current = 0; Instance* neighbor = 0;
       // Neighbor_id is the neighbor's id in the interface graph and neighbor_node
       // is its id in the rightmost path in the case of a backward edge growth
-      NodeId current_id = 0; NodeId neighbor_id = 0; NodeId neighbor_node =0;
+      NodeId current_id = 0; NodeId neighbor_id = 0; NodeId neighbor_node = 0;
       gspan::LabelData* neighbor_label = 0; gspan::EdgeData* edge_data = 0;
       size_t idx;
       const std::list<NodeId>* children = 0;
@@ -129,8 +128,7 @@ namespace gum {
             count_vector.push_back ( new HashTable<std::string, gspan::DFSTree::EdgeGrowth*>() );
 
           // For each subgraph represented by p, we look for a valid edge growth for each instance match of p in its isomorphism graph.
-          //for ( UndiGraph::NodeIterator iso_node = __tree.iso_graph ( *p ).beginNodes(); iso_node != __tree.iso_graph ( *p ).endNodes(); ++iso_node ) {
-          for ( const auto iso_node :__tree.iso_graph ( *p ).nodes() ) {
+          for ( const auto iso_node : __tree.iso_graph ( *p ).nodes() ) {
             seq = & ( __tree.iso_map ( *p, iso_node ) );
             idx = 0;
 
@@ -150,8 +148,8 @@ namespace gum {
                 if ( ( not seq->exists ( neighbor ) ) or ( ( *node ) == r_path.back() ) ) {
                   // Things we need to know: the LabelData data of the neighbour and, if it's a backward edge, its node id in the rightmost path
                   edge_data = & ( ig.edge ( current_id, neighbor_id ) );
-                  neighbor_label = ( neighbor == edge_data->u ) ?edge_data->l_u:edge_data->l_v;
-                  neighbor_node = ( seq->exists ( neighbor ) ) ?seq->pos ( neighbor ) + 1:0;
+                  neighbor_label = ( neighbor == edge_data->u ) ? edge_data->l_u : edge_data->l_v;
+                  neighbor_node = ( seq->exists ( neighbor ) ) ? seq->pos ( neighbor ) + 1 : 0;
                   // Adding the edge growth to the edge_growth hashtable
                   gspan::DFSTree::EdgeGrowth temp_growth ( *node, edge_data->l, neighbor_label, neighbor_node );
 
@@ -250,7 +248,6 @@ namespace gum {
           std::vector<NodeId> degree_list;
           iso_graph = & ( tree().iso_graph ( **p ) );
 
-          //for ( UndiGraph::NodeIterator node = iso_graph->beginNodes(); node != iso_graph->endNodes(); ++node ) {
           for ( const auto node : iso_graph->nodes() ) {
             found = false;
             match = & ( tree().iso_map ( **p, node ) );
@@ -267,7 +264,6 @@ namespace gum {
               // over the remaining matches
               reduced_iso_graph.insertNode ( node );
 
-              //for ( UndiGraph::NodeIterator iso = reduced_iso_graph.beginNodes(); iso != reduced_iso_graph.endNodes(); ++iso ) {
               for ( const auto iso : reduced_iso_graph.nodes() ) {
                 if ( iso_graph->existsEdge ( node, iso ) ) {
                   reduced_iso_graph.insertEdge ( node, iso );

@@ -61,7 +61,6 @@ namespace gum {
     // the moral graph does not include utility nodes
     UndiGraph partialMoralGraph ( this->influenceDiagram().moralGraph() );
 
-    //for ( DAG::NodeIterator iter = this->influenceDiagram().beginNodes(); iter != this->influenceDiagram().endNodes(); ++iter ) {
     for(const auto iter : this->influenceDiagram().nodes()) {
       if ( this->influenceDiagram().isUtilityNode ( iter ) ) {
         partialMoralGraph.eraseNode ( iter );
@@ -305,8 +304,6 @@ namespace gum {
 
     //***********************************************************************************************************************************
     // First pass to create the clique's table
-    //for ( CliqueGraph::NodeIterator cliqueIter = __triangulation->junctionTree().beginNodes();
-    //      cliqueIter != __triangulation->junctionTree().endNodes(); ++cliqueIter ) {
     for ( const auto cli : __triangulation->junctionTree().nodes() ) {
       __cliquePropertiesMap.insert ( cli, new CliqueProperties<GUM_SCALAR>() );
 
@@ -351,7 +348,6 @@ namespace gum {
     //***********************************************************************************************************************************
     // Fourth pass to adress utility table to the good clique
     // We go trought all diagram's nodes in search of utility nodes since they do not appear in elimination order
-    //for ( NodeGraphPartIterator  nodesIter = this->influenceDiagram().dag().beginNodes();nodesIter != this->influenceDiagram().dag().endNodes(); ++nodesIter )
     for(const auto nodesIter : this->influenceDiagram().nodes()) 
       if ( this->influenceDiagram().isUtilityNode ( nodesIter ) ) {
         // Récupération de la bonne clique
@@ -380,7 +376,6 @@ namespace gum {
   DefaultInfluenceDiagramInference<GUM_SCALAR>::__makeStrongJunctionTree() {
 
     // Pour chaque clique
-    //for ( CliqueGraph::NodeIterator cliqueIter = __triangulation->junctionTree().beginNodes(); cliqueIter != __triangulation->junctionTree().endNodes(); ++cliqueIter ) {
     for ( const auto cli : __triangulation->junctionTree().nodes() ) {
 
       Sequence<NodeId> eliminationOrder = __cliquePropertiesMap[ cli]->cliqueEliminationOrder();

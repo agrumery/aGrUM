@@ -97,7 +97,6 @@ namespace gum {
   /// compute the spanning forest
   void SpanningForestPrim::__compute() {
     // compute a spanning tree in every connected component
-    //for ( UndiGraph::NodeIterator iter = __graph.beginNodes();iter != __graph.endNodes(); ++iter ) {
     for ( const auto node : __graph.nodes() ) {
       if ( ! __spanning_tree.existsNode ( node ) ) {
         __computeInAComponent ( node );

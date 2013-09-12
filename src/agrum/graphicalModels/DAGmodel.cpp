@@ -67,7 +67,6 @@ namespace gum {
     DAG dag = this->dag();
     std::vector<NodeId> roots;
 
-    //for ( DAG::NodeIterator n = dag.beginNodes(); n != dag.endNodes(); ++n )
     for ( const auto n : dag.nodes() )
       if ( dag.parents ( n ).empty() )
         roots.push_back ( n );
@@ -95,12 +94,12 @@ namespace gum {
     __mutableMoralGraph->populateNodes ( dag() );
     // transform the arcs into edges
 
-    for ( DAG::ArcIterator iter = dag().beginArcs(); iter != dag().endArcs(); ++iter ) {
-      __mutableMoralGraph->insertEdge ( iter->first(), iter->second() );
-    }
+    for ( const auto & iter : arcs() )
+      __mutableMoralGraph->insertEdge ( iter.first(), iter.second() );
+
+    //}
 
     // marry the parents
-    //for ( DAG::NodeIterator iter = beginNodes(); iter != endNodes(); ++iter ) {
     for ( const auto node : nodes() ) {
       const NodeSet& parents = dag().parents ( node );
 

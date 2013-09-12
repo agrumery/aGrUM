@@ -199,7 +199,6 @@ namespace gum {
       // ************************************************************************************************
       //  Next we create or displace default arc where needed
       // ************************************************************************************************
-      //for ( DiGraph::NodeIterator iter = this->_model.beginNodes(); iter != this->_model.endNodes(); ++iter ) {
       for ( const auto iter : this->_model.nodes() ) {
         if ( iter != 0 && !newValueMap.existsFirst ( iter ) ) {
 
@@ -211,7 +210,6 @@ namespace gum {
 
           HashTable< NodeId, Idx > nodeCount ( this->_arcMap[iter]->size(), false, false );
 
-          //for ( std::vector<NodeId >::iterator iterArcMap = this->_arcMap[iter]->begin(); iterArcMap != this->_arcMap[iter]->end(); ++iterArcMap ) {
           Idx dist = 0;
 
           for ( const auto iterArcMap : * ( this->_arcMap[iter] ) ) {
@@ -245,7 +243,6 @@ namespace gum {
           if ( maxCall == 1 ) {
             dist = 0;
 
-            //for ( std::vector<NodeId >::iterator iterArcMap = this->_arcMap[iter]->begin(); iterArcMap != this->_arcMap[iter]->end(); ++iterArcMap )
             for ( const auto iterArcMap : * ( this->_arcMap[iter] ) ) {
               if ( iterArcMap == 0 ) {
                 ( * ( this->_arcMap[iter] ) ) [ dist] = defaultSon; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ] = defaultSon;
@@ -263,7 +260,6 @@ namespace gum {
             if ( maxNodeId != defaultSon ) {
               dist = 0;
 
-              //for ( std::vector<NodeId >::iterator iterArcMap = this->_arcMap[iter]->begin(); iterArcMap != this->_arcMap[iter]->end(); ++iterArcMap ) {
               for ( const auto iterArcMap : * ( this->_arcMap[iter] ) ) {
                 if ( iterArcMap == 0 ) {
                   ( * ( this->_arcMap[iter] ) ) [ dist] = defaultSon; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ] = defaultSon;
@@ -305,7 +301,6 @@ namespace gum {
     ret->setDiagramArcs ( this->_arcMap, this->_defaultArcMap );
 
     if ( this->_rootId == 0 ) {
-      //for ( DiGraph::NodeIterator iter = this->_model.beginNodes(); iter != this->_model.endNodes(); ++iter ) {
       for ( const auto iter : this->_model.nodes() ) {
         if ( newValueMap.existsFirst ( iter ) && this->_model.size() == 2 ) {
           this->_rootId = iter;

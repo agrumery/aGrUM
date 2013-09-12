@@ -92,7 +92,6 @@ namespace gum {
   */
   template<typename GUM_SCALAR>
   void InfluenceDiagram<GUM_SCALAR>::_removeTables() {
-    //for ( gum::DAG::NodeIterator iter = _dag.beginNodes(); iter != _dag.endNodes(); ++iter ) {
     for ( const auto node : _dag.nodes() ) {
       if ( isChanceNode ( node ) )
         delete &cpt ( node );
@@ -609,13 +608,9 @@ namespace gum {
   template<typename GUM_SCALAR>
   void
   InfluenceDiagram<GUM_SCALAR>::_moralGraph ( UndiGraph& graph ) const {
-    //DAG directGraph( _dag );
-
-    //for ( NodeGraphPartIterator nodeIter = _dag.beginNodes(); nodeIter != _dag.endNodes(); ++nodeIter )
     for ( const auto node : _dag.nodes() )
       if ( !isUtilityNode ( node ) ) graph.insertNode ( node );
 
-    //for ( NodeGraphPartIterator nodeIter = _dag.beginNodes(); nodeIter != _dag.endNodes(); ++nodeIter ) {
     for ( const auto node : _dag.nodes() ) {
       if ( !isDecisionNode ( node ) ) {
         const NodeSet& parents = _dag.parents ( node );
@@ -719,7 +714,6 @@ namespace gum {
   InfluenceDiagram<GUM_SCALAR>::getDecisionGraph() const {
     gum::DAG* temporalGraph = new gum::DAG();
 
-    //for ( NodeGraphPartIterator graphIter = _dag.beginNodes(); graphIter != _dag.endNodes(); ++graphIter ) {
     for ( const auto node : _dag.nodes() ) {
       if ( isDecisionNode ( node ) ) {
         if ( !temporalGraph->existsNode ( node ) )

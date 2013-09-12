@@ -281,7 +281,6 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( g_vebb = new gum::prm::GroundedInference( *prm, prm->system( "aSys" ) ) );
         TS_GUM_ASSERT_THROWS_NOTHING( g_vebb->setBNInference( vebb ) );
 
-        //for ( gum::DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node ) {
         for(const auto node : bn.nodes()) {
           gum::Potential<gum::prm::prm_float> m_ve, m_ss, m_sve, m_sved, m_vebb, m_struct;
 

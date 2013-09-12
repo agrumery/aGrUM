@@ -58,7 +58,6 @@ namespace gum {
     Size num = 0;
     Size numparam = 0;
 
-    //for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
     for ( const auto iter : bn.nodes() )
       numparam +=  bn.variable ( iter ).domainSize();
 
@@ -67,7 +66,6 @@ namespace gum {
     gum::HashTable<std::string, Idx> vartable ; //key name::label val num;
     gum::HashTable<std::string, Idx> protable ;
 
-    //for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
     for(const auto iter : bn.nodes()) {
       for ( Idx i = 0; i <  bn.variable ( iter ).domainSize(); i++ ) {
         std::stringstream str;
@@ -88,7 +86,6 @@ namespace gum {
       }
     }
 
-    //for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
     for(const auto iter : bn.nodes()) {
       std::stringstream str0 , str1, str2, str3;
 
@@ -152,7 +149,6 @@ namespace gum {
     Idx num = 0;
     Idx numparam = 0;
 
-    //for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter )
     for ( const auto iter : bn.nodes() )
       numparam +=  bn.variable ( iter ).domainSize();
 
@@ -161,7 +157,6 @@ namespace gum {
     gum::HashTable<std::string, Idx> vartable ; //key name::label val num;
     gum::HashTable<std::string, Idx> protable ;
 
-    //for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
     for ( const auto iter : bn.nodes() ) {
       for ( Idx i = 0; i <  bn.variable ( iter ).domainSize(); i++ ) {
         std::stringstream str;
@@ -182,7 +177,6 @@ namespace gum {
       }
     }
 
-    //for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
     for ( const auto iter : bn.nodes() ) {
       std::stringstream str0 , str1, str2, str3;
 

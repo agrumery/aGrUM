@@ -277,10 +277,8 @@ namespace gum {
 
           if ( match != edge_growth.matches.end() ) {
             // Adding edges in the iso_graph
-            //for( UndiGraph::NodeIterator node = data->iso_graph.beginNodes(); node != data->iso_graph.endNodes(); ++node ) {
             for ( const auto node : data->iso_graph.nodes() ) {
               if ( ( node ) != id ) {
-                //for( Sequence<Instance*>::iterator iter = data->iso_map[id]->begin(); iter != data->iso_map[id]->end(); ++iter ) {
                 for ( const auto m : *(data->iso_map[id]) ) {
                   if ( data->iso_map[node]->exists ( m) ) {
                     data->iso_graph.insertEdge ( node, id );

@@ -183,10 +183,14 @@ namespace gum {
       void unvirtualizedEraseNeighbours( const NodeId id );
 
       /// returns an iterator to parse the set of edges of the EdgeGraphPart
-      const EdgeGraphPart::EdgeIterator beginEdges() const;
+      /// @deprecated Please use edges().begin() or better :
+      /// @code for(const auto& edge : graph.edges()) @endcode
+      GUM_DEPRECATED(const EdgeGraphPart::EdgeIterator beginEdges() const);
 
       /// returns the end iterator to parse the set of edges
-      const EdgeGraphPart::EdgeIterator& endEdges() const;
+      /// @deprecated Please use edges().end() or better :
+      /// @code for(const auto& edge : graph.edges()) @endcode
+      GUM_DEPRECATED(const EdgeGraphPart::EdgeIterator& endEdges() const);
 
       /// to friendly display the content of the EdgeGraphPart
       const std::string toString() const;

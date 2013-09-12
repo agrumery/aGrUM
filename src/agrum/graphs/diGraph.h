@@ -83,18 +83,16 @@ namespace gum {
    * g2.eraseNode( i2 );
    *
    * // parse a graph
-   * for ( NodeGraphPart::iterator iter = g3.beginNodes();
-   *       iter != g3.endNodes(); ++iter )
-   *   cerr << *iter << endl;
+   * for ( const auto node : g3.nodes() )
+   *   cerr << node<< endl;
    *
-   * for ( ArcGraphPart::iterator iter = g3.beginArcs();
-   *       iter != g3.endArcs(); ++iter )
-   *   cerr << *iter << endl;
+   * for ( const auto & arc : g3.arcs())
+   *   cerr << arc << endl;
    *
    * const ArcSet& a=g3.parents( 3 );
    *
-   * for ( ArcSetIterator iter = a.begin( ); iter != a.end(); ++iter )
-   *   cerr << "  -  "<<*iter;
+   * for ( const auto & par : g3.parents(3))
+   *   cerr << "  -  "<< par;
    *
    * cerr<<endl;
    *
@@ -115,14 +113,14 @@ namespace gum {
        * @param nodes_resize_policy the resizing policy of this hash table
        * @param arcs_size the size of the hash table used to store all the arcs
        * @param arcs_resize_policy the resizing policy of this hash table */
-      explicit DiGraph( Size nodes_size = GUM_HASHTABLE_DEFAULT_SIZE,
-                        bool nodes_resize_policy    = true,
-                        Size arcs_size = GUM_HASHTABLE_DEFAULT_SIZE,
-                        bool arcs_resize_policy    = true );
+      explicit DiGraph ( Size nodes_size = GUM_HASHTABLE_DEFAULT_SIZE,
+                         bool nodes_resize_policy    = true,
+                         Size arcs_size = GUM_HASHTABLE_DEFAULT_SIZE,
+                         bool arcs_resize_policy    = true );
 
       /// copy constructor
       /** @param g the DiGraph to copy */
-      DiGraph( const DiGraph& g );
+      DiGraph ( const DiGraph& g );
 
       /// destructor
       virtual ~DiGraph();
@@ -137,17 +135,17 @@ namespace gum {
 
       /// copy operator
       /** @param g the DiGraph to copy */
-      DiGraph& operator=( const DiGraph& g );
+      DiGraph& operator= ( const DiGraph& g );
 
       /// tests whether two DiGraphs are identical (same nodes, same arcs)
       /** @param g the DiGraph with which "this" is compared */
       // not virtual : it is a feature !!! :)
-      bool operator==( const DiGraph& g ) const;
+      bool operator== ( const DiGraph& g ) const;
 
       /// tests whether two DiGraphs are different
       /** @param g the DiGraph with which "this" is compared */
       // not virtual : it is a feature !!! :)
-      bool operator!=( const DiGraph& g ) const;
+      bool operator!= ( const DiGraph& g ) const;
 
       /// @}
 
@@ -164,13 +162,13 @@ namespace gum {
        * @warning if the arc already exists, nothing is done. In particular, no
        * exception is raised.
        * @throw InvalidNode if head or tail does not belong to the graph nodes */
-      virtual void insertArc( const NodeId tail, const NodeId head );
+      virtual void insertArc ( const NodeId tail, const NodeId head );
 
       /// remove a node and its adjacent arcs from the graph
       /** @param id the id of the node to be removed
        * @warning if the node does not exist, nothing is done. In particular, no
        * exception is raised.*/
-      virtual void eraseNode( const NodeId id );
+      virtual void eraseNode ( const NodeId id );
 
       /// removes all the nodes and arcs from the graph
       virtual void clear();
@@ -181,7 +179,7 @@ namespace gum {
       /// to friendly display the content of the graph in the DOT syntax
       /** @param name The graph name in the dot syntax. Default is G.
        * @return Returns a string describing the graph in the dot syntax */
-      virtual const std::string toDot( const std::string& name="G" ) const;
+      virtual const std::string toDot ( const std::string& name = "G" ) const;
   };
 
 

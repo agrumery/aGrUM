@@ -288,7 +288,6 @@ namespace gum_tests {
         //const gum::NodeSet& nodes=source.nodes();
         const gum::DAG dag = source.dag();
 
-        //for ( gum::DAG::NodeIterator nodeIter = dag.beginNodes(); nodeIter != dag.endNodes(); ++nodeIter ) {
         for ( const auto nodeIter : dag.nodes() ) {
           TS_ASSERT ( copy->dag().exists ( nodeIter ) );
 
@@ -537,7 +536,6 @@ namespace gum_tests {
         gum::InfluenceDiagram<float> id;
         gum::List<gum::NodeId> idList;
 
-        //for ( gum::DAG::NodeIterator iter = id.beginNodes(); iter != id.endNodes(); ++iter ) {
         for(const auto iter : id.nodes()) {
           TS_ASSERT ( idList.exists ( iter ) );
         }
@@ -696,7 +694,6 @@ namespace gum_tests {
 
         fill ( id, idList );
 
-        //for ( gum::DAG::NodeIterator iter = id.beginNodes(); iter != id.endNodes(); ++iter ) {
         for(const auto iter : id.nodes()) {
           TS_ASSERT_EQUALS ( id.idFromName ( id.variable ( iter ).name() ), iter );
           TS_ASSERT_EQUALS ( &id.variableFromName ( id.variable ( iter ).name() ), &id.variable ( iter ) );

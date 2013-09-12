@@ -201,7 +201,6 @@ namespace gum {
   BayesNet<GUM_SCALAR>::dim() const {
     Idx dim = 0;
 
-    //for ( DAG::NodeIterator node = dag().beginNodes(); node != dag().endNodes(); ++node ) {
     for ( const auto node : nodes() ) {
       Idx q = 1;
       Set<NodeId> s = dag().parents ( node );
@@ -429,7 +428,6 @@ namespace gum {
     output << "  graph [bgcolor=transparent,label=\"" << bn_name << "\"];" << std::endl;
     output << "  node [style=filled fillcolor=\"#ffffaa\"];" << std::endl << std::endl;
 
-    //for ( DAG::NodeIterator node_iter = dag().beginNodes();node_iter != dag().endNodes(); ++node_iter ) {
     for ( const auto node_iter : nodes() ) {
       output << "\"" << variable ( node_iter ).name() << "\" [comment=\"" << node_iter << ":" << variable ( node_iter ) << "\"];" << std::endl;
     }
@@ -438,7 +436,6 @@ namespace gum {
 
     std::string tab = "  ";
 
-    //for ( DAG::NodeIterator node_iter = dag().beginNodes();node_iter != dag().endNodes(); ++node_iter ) {
     for ( const auto node_iter : nodes() ) {
       if ( dag().children ( node_iter ).size() > 0 ) {
         const NodeSet& children =  dag().children ( node_iter );
@@ -467,7 +464,6 @@ namespace gum {
 
     GUM_SCALAR tmp;
 
-    //for ( DAG::NodeIterator node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter ) {
     for ( const auto node_iter : nodes() ) {
       if ( ( tmp = cpt ( node_iter ) [i] ) == ( GUM_SCALAR ) 0 ) {
         return ( GUM_SCALAR ) 0;
@@ -486,7 +482,6 @@ namespace gum {
 
     GUM_SCALAR tmp;
 
-    //for ( DAG::NodeIterator node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter ) {
     for ( const auto node_iter : nodes() ) {
       if ( ( tmp = cpt ( node_iter ) [i] ) == ( GUM_SCALAR ) 0 ) {
         return ( GUM_SCALAR ) ( - std::numeric_limits<double>::infinity( ) );
@@ -501,7 +496,6 @@ namespace gum {
   /// begin Multiple Change for all CPTs
   template<typename GUM_SCALAR>
   void BayesNet<GUM_SCALAR>::beginTopologyTransformation() {
-    //for ( DAG::NodeIterator node_iter = dag().beginNodes();node_iter != dag().endNodes(); ++node_iter ) {
     for ( const auto node_iter : nodes() )
       __probaMap[node_iter]->beginMultipleChanges();
   }
@@ -509,7 +503,6 @@ namespace gum {
   /// end Multiple Change for all CPTs
   template<typename GUM_SCALAR>
   void BayesNet<GUM_SCALAR>::endTopologyTransformation() {
-    //for ( DAG::NodeIterator node_iter = dag().beginNodes();node_iter != dag().endNodes(); ++node_iter ) {
     for ( const auto node_iter : nodes() )
       __probaMap[node_iter]->endMultipleChanges();
   }
@@ -554,7 +547,6 @@ namespace gum {
   void BayesNet<GUM_SCALAR>::generateCPTs() {
     SimpleCPTGenerator<GUM_SCALAR> generator;
 
-    //for ( DAG::NodeIterator iter = this->beginNodes(); iter != this->endNodes(); ++iter ) {
     for ( const auto iter : nodes() ) {
       generator.generateCPT ( cpt ( iter ).pos ( variable ( iter ) ),  cpt ( iter ) );
     }
@@ -589,7 +581,6 @@ namespace gum {
   bool
   BayesNet<GUM_SCALAR>::operator== ( const BayesNet& from ) const {
     if ( dag() == from.dag() ) {
-      //for ( DAG::NodeIterator node = beginNodes(); node != endNodes(); ++node ) {
       for ( const auto node : nodes() ) {
         // We don't use Potential::operator== because BN's don't share
         // DiscreteVariable's pointers.

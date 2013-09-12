@@ -126,7 +126,6 @@ namespace gum_tests {
 
         int wount = 0;
 
-        //for ( gum::DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node ) {
         for ( const auto node : bn.nodes() ) {
           wount++;
           std::string var = bn.variable ( node ).name();
@@ -142,11 +141,9 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS ( count, wount );
 
-        //for ( gum::DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node ) {
         for ( const auto node : bn.nodes() ) {
           const gum::DiscreteVariable* var = & ( bn.variable ( node ) );
 
-          //for ( gum::DAG::NodeIterator mode = bn.dag().beginNodes(); mode != bn.dag().endNodes(); ++mode ) {
           for ( const auto mode : bn.nodes() ) {
             if ( node  !=  mode ) {
               TS_ASSERT_DIFFERS ( var, & ( bn.variable ( mode ) ) );
@@ -183,7 +180,6 @@ namespace gum_tests {
         gum::BayesNetFactory<gum::prm::prm_float> bn_factory ( &bn );
         TS_GUM_ASSERT_THROWS_NOTHING ( sys.groundedBN ( bn_factory ) );
 
-        //for ( gum::DAG::NodeIterator node = bn.dag().beginNodes(); node != bn.dag().endNodes(); ++node ) {
         for ( const auto node : bn.nodes() ) {
           const gum::Potential<gum::prm::prm_float>& cpt = bn.cpt ( node );
           gum::Instantiation i ( cpt ), j;

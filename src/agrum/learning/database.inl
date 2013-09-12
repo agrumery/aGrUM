@@ -229,7 +229,6 @@ namespace gum {
   INLINE DatabaseIterator::DatabaseIterator( const DatabaseIterator& from ) :
     __database( from.__database ), __current_case( from.__current_case ),
     __offset( from.__offset ) {
-    //for debugging purposes
     GUM_CONS_CPY( DatabaseIterator );
 
     if ( __database )

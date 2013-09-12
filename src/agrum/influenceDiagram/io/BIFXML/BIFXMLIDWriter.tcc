@@ -57,10 +57,8 @@ namespace gum {
     }
 
     output << __heading() << std::endl;
-
     output << "<!-- Variables -->" << std::endl;
 
-    //for ( DAG::NodeIterator iter = infdiag.beginNodes(); iter != infdiag.endNodes(); ++iter ) {
     for ( const auto iter : infdiag.nodes() ) {
       int nodeType = 1;
 
@@ -74,14 +72,11 @@ namespace gum {
 
     output << "<!-- Probability distributions -->" << std::endl;
 
-    //for ( DAG::NodeIterator iter = infdiag.beginNodes(); iter != infdiag.endNodes(); ++iter )
     for ( const auto iter : infdiag.nodes() )
       output << __variableDefinition ( iter, infdiag );
 
     output << std::endl;
-
     output << __documentend();
-
     output.flush();
 
     if ( output.fail() ) {

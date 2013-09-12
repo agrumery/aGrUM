@@ -185,7 +185,7 @@ namespace gum {
       }
 
       // Eliminating all nodes in current instance
-      __variableElimination ( i, pool, trash, ( delayedVars.empty() ?0:&delayedVars ) );
+      __variableElimination ( i, pool, trash, ( delayedVars.empty() ? 0 : &delayedVars ) );
       eliminated.insert ( i );
 
       // Calling elimination over child's parents
@@ -404,7 +404,6 @@ namespace gum {
       NodeSet inners, outers;
       const Set<NodeId>* parents = 0;
 
-      //for ( DAG::NodeIterator node = c.dag().beginNodes(); node != c.dag().endNodes(); ++node ) {
       for ( const auto node : c.dag().nodes() ) {
         if ( ClassElement::isAttribute ( c.get ( node ) ) ) {
           if ( c.isOutputNode ( c.get ( node ) ) )
@@ -455,7 +454,6 @@ namespace gum {
       __class_elim_order = new Sequence<const ClassElementContainer*>();
       std::list<NodeId> l;
 
-      //for ( DAG::NodeIterator node = cdg.dag().beginNodes(); node != cdg.dag().endNodes(); ++node )
       for ( const auto node : cdg.dag().nodes() )
         if ( cdg.dag().parents ( node ).empty() ) l.push_back ( node );
 
@@ -489,31 +487,6 @@ namespace gum {
         if ( ( **iter ).contains ( elt->type().variable() ) ) {
           m.multiplicateBy ( **iter );
         }
-
-        // if ((**iter).nbrDim() > 1) {
-        //   std::string dot = ".";
-        //   std::string t = "true";
-        //   std::string f = "false";
-        //   std::string none = "NONE";
-        //   GUM_TRACE_VAR((**iter).nbrDim());
-        //   GUM_TRACE(chain.first->name() + dot + chain.second->safeName());
-        //   for (System::const_iterator jter = _sys->begin(); jter != _sys->end(); ++jter) {
-        //     for (Instance::iterator a = (**jter).begin(); a != (**jter).end(); ++a) {
-        //       if ((**iter).contains((**a).type().variable())) {
-        //         GUM_TRACE((**jter).name() + dot + (**a).safeName());
-        //         // try {
-        //         //   std::cerr << "Instance eliminated in:       " << __debug[*jter] << std::endl;
-        //         // } catch (NotFound&) {
-        //         //   std::cerr << "Instance eliminated in:       " << none << std::endl;
-        //         // }
-        //         std::cerr << "Attribute has refered attr:   " << ((**jter).hasRefAttr((**a).id())) << std::endl;
-        //         std::cerr << "Attribute has evidence:       " << (hasEvidence(*jter)) << std::endl;
-        //         std::cerr << "Attribute parents number:     " << ((**jter).type().dag().parents((**a).id()).size()) << std::endl;
-        //         std::cerr << "Attribute children number:    " << ((**jter).type().dag().children((**a).id()).size()) << std::endl;
-        //       }
-        //     }
-        //   }
-        // }
       }
 
       m.normalize();

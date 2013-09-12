@@ -67,7 +67,7 @@ namespace gum {
     __provide_fill_ins ( false ) {
     // for debugging purposes
     GUM_CONSTRUCTOR ( DefaultPartialOrderedEliminationSequenceStrategy );
-    setGraph ( graph,modal,subsets );
+    setGraph ( graph, modal, subsets );
   }
 
 
@@ -124,7 +124,6 @@ namespace gum {
     }
 
     // check that each node has a domain size
-    //for ( UndiGraph::NodeIterator iter = graph->beginNodes();iter != graph->endNodes(); ++iter ) {
     for ( const auto node : graph->nodes() ) {
       if ( ! modal->exists ( node ) ) {
         GUM_ERROR ( GraphError,
@@ -148,7 +147,6 @@ namespace gum {
         // compute the log of the modalities
         __log_modalities.resize ( __graph->sizeNodes() / 2 );
 
-        //for ( UndiGraph::NodeIterator iter = graph->beginNodes();iter != graph->endNodes(); ++iter ) {
         for ( const auto node : graph->nodes() ) {
           __log_modalities.insert ( node, log ( ( *modal ) [node] ) );
         }
@@ -187,7 +185,7 @@ namespace gum {
 
   /// returns the best possible node to be eliminated
   NodeId DefaultPartialOrderedEliminationSequenceStrategy::__nodeToEliminate
-  ( const PriorityQueue<NodeId,float>& possibleNodes ) {
+  ( const PriorityQueue<NodeId, float>& possibleNodes ) {
     bool found = false;
     float min_score = 0;
     NodeId best_node = 0;

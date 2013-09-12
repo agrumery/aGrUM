@@ -49,20 +49,18 @@ namespace gum {
   }
 
   double Triangulation::maxLog10CliqueDomainSize() {
-    double res=0.0;
+    double res = 0.0;
     double dSize;
-    const JunctionTree& jt=junctionTree();
+    const JunctionTree& jt = junctionTree();
 
-    //for ( NodeGraphPartIterator iteClique = jt.beginNodes(); iteClique!= jt.endNodes(); ++iteClique ) {
     for ( const auto cl : jt.nodes() ) {
-      const NodeSet& clique=jt.clique ( cl );
-      dSize=0.0;
+      const NodeSet& clique = jt.clique ( cl );
+      dSize = 0.0;
 
-      //for ( NodeSet::const_iterator iteNode=clique.begin(); iteNode!=clique.end(); ++iteNode )
       for ( const auto nod : clique )
         dSize += log10 ( _modalities[nod] );
 
-      if ( res<dSize ) res=dSize;
+      if ( res < dSize ) res = dSize;
     }
 
     return res;

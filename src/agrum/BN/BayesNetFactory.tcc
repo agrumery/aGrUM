@@ -44,11 +44,9 @@ namespace gum {
     GUM_CONSTRUCTOR ( BayesNetFactory );
     __states.push_back ( factory_state::NONE );
 
-    //for ( DAG::NodeIterator iter = bn->beginNodes(); iter != bn->endNodes(); ++iter ) {
     for ( const auto node : bn->nodes() ) {
-      if ( __varNameMap.exists ( bn->variable ( node ).name() ) ) {
+      if ( __varNameMap.exists ( bn->variable ( node ).name() ) )
         GUM_ERROR ( DuplicateElement, bn->variable ( node ).name() );
-      }
 
       __varNameMap.insert ( bn->variable ( node ).name(), node );
     }

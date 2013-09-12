@@ -154,7 +154,6 @@ namespace gum {
           i = *iter;
 
           try {
-            //for ( DAG::NodeIterator node = i->dag().beginNodes(); node != i->dag().endNodes(); ++node ) {
             for ( const auto node : i->dag(). nodes() ) {
               name = i->get ( node ).name();
 
@@ -250,7 +249,6 @@ namespace gum {
       Size count = 0;
       const Sequence<const DiscreteVariable*>& vars = attr->cpf().variablesSequence();
 
-      //for ( DAG::NodeIterator node = c->dag().beginNodes(); node != c->dag().endNodes(); ++node ) {
       for ( const auto node : c->dag().nodes() ) {
         try {
           if ( vars.exists ( & ( c->get ( node ).type().variable() ) ) ) {
@@ -343,14 +341,14 @@ namespace gum {
 
           for ( size_t idx = pos.size(); idx > 0; --idx ) {
             bool stop = true;
-            ++ ( pos[idx-1] );
+            ++ ( pos[idx - 1] );
 
-            if ( pos[idx-1] == a->cpf().variablesSequence().atPos ( idx-1 )->domainSize() ) {
-              pos[idx-1] = 0;
+            if ( pos[idx - 1] == a->cpf().variablesSequence().atPos ( idx - 1 )->domainSize() ) {
+              pos[idx - 1] = 0;
               stop = false;
             }
 
-            inst.chgVal ( a->cpf().variablesSequence().atPos ( idx-1 ), pos[idx-1] );
+            inst.chgVal ( a->cpf().variablesSequence().atPos ( idx - 1 ), pos[idx - 1] );
 
             if ( stop ) {
               break;
@@ -383,7 +381,7 @@ namespace gum {
       bool found = false;
 
       for ( size_t i = 0; i < parents.size(); ++i ) {
-        var = a->cpf().variablesSequence().atPos ( 1+i );
+        var = a->cpf().variablesSequence().atPos ( 1 + i );
 
         if ( parents[i] == "*" ) {
           knst.add ( *var );
@@ -747,7 +745,7 @@ namespace gum {
 
       GUM_ASSERT ( v.size() == elts.size() );
 
-      GUM_TRACE ( "new outputnode for "<<current->name() );
+      GUM_TRACE ( "new outputnode for " << current->name() );
       current->setOutputNode ( * ( elts.back() ), true );
 
       return new SlotChain ( name, elts );

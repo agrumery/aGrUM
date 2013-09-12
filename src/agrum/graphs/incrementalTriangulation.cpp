@@ -71,15 +71,13 @@ namespace gum {
     // copy the graph passed in argument and update the structures
     // containing the informations useful for the triangulation
 
-    //for ( UndiGraph::NodeIterator iter_node = theGraph.beginNodes();iter_node != theGraph.endNodes(); ++iter_node )
     for ( const auto node : theGraph.nodes() )
       insertNode ( node, modal[node] );
 
     // insert all the edges of the graph into the structure. This will
     // implicitly update the "require_update" field
-    for ( UndiGraph::EdgeIterator iter_edge = theGraph.beginEdges();
-          iter_edge != theGraph.endEdges(); ++iter_edge )
-      insertEdge ( iter_edge->first(), iter_edge->second() );
+    for ( const auto & edge : theGraph.edges() )
+      insertEdge ( edge.first(), edge.second() );
   }
 
 
@@ -585,7 +583,6 @@ namespace gum {
     {
       NodeProperty<bool> nodes = __graph.nodesProperty<bool> ( false );
 
-      //for ( CliqueGraph::NodeIterator iter = __junction_tree.beginNodes();iter != __junction_tree.endNodes(); ++iter ) {
       for ( const auto cliq : __junction_tree.nodes() ) {
         const NodeSet& clique = __junction_tree.clique ( cliq );
 
@@ -609,7 +606,6 @@ namespace gum {
       std::pair<NodeId, NodeId> thePair;
       EdgeProperty<bool> edges = __graph.edgesProperty ( false );
 
-      //for ( CliqueGraph::NodeIterator iter = __junction_tree.beginNodes();iter != __junction_tree.endNodes(); ++iter ) {
       for ( const auto cliq : __junction_tree.nodes() ) {
         const NodeSet& clique = __junction_tree.clique ( cliq );
 
@@ -640,7 +636,6 @@ namespace gum {
     {
       NodeProperty<bool> nodes = __graph.nodesProperty<bool> ( false );
 
-      //for ( CliqueGraph::NodeIterator iter = __T_mpd.beginNodes();iter != __T_mpd.endNodes(); ++iter ) {
       for ( const auto cliq : __T_mpd.nodes() ) {
         const NodeSet& clique = __T_mpd.clique ( cliq );
 
@@ -664,7 +659,6 @@ namespace gum {
       std::pair<NodeId, NodeId> thePair;
       EdgeProperty<bool> edges = __graph.edgesProperty ( false );
 
-      //for ( CliqueGraph::NodeIterator iter = __T_mpd.beginNodes();iter != __T_mpd.endNodes(); ++iter ) {
       for ( const auto cliq : __T_mpd.nodes() ) {
         const NodeSet& clique = __T_mpd.clique ( cliq );
 
@@ -695,11 +689,9 @@ namespace gum {
     {
       HashTable< NodeId, HashTable<NodeId, bool> > chk;
 
-      //for ( UndiGraph::NodeIterator iter = __graph.beginNodes();iter != __graph.endNodes(); ++iter )
       for ( const auto node : __graph.nodes() )
         chk.insert ( node, HashTable<NodeId, bool>() );
 
-      //for ( CliqueGraph::NodeIterator iter = __T_mpd.beginNodes();iter != __T_mpd.endNodes(); ++iter ) {
       for ( const auto cliq : __T_mpd.nodes() ) {
         const NodeSet& clique = __T_mpd.clique ( cliq );
 
@@ -765,7 +757,6 @@ namespace gum {
 
       NodeSet nodes;
 
-      //for ( UndiGraph::NodeIterator iter = __graph.beginNodes();iter != __graph.endNodes(); ++iter ) {
       for ( const auto node : __graph.nodes() ) {
         if ( nodes.exists ( node ) ) {
           std::cerr << "check elimination order" << std::endl
@@ -787,7 +778,6 @@ namespace gum {
         return false;
       }
 
-      //for ( UndiGraph::NodeIterator iter = __graph.beginNodes(); iter != __graph.endNodes(); ++iter ) {
       for ( const auto node : __graph.nodes() ) {
         if ( ! __reverse_elimination_order.exists ( node ) ) {
           std::cerr << "check reverse elimination order" << std::endl
@@ -807,7 +797,6 @@ namespace gum {
         return false;
       }
 
-      //for ( UndiGraph::NodeIterator iter = __graph.beginNodes();iter != __graph.endNodes(); ++iter ) {
       for ( const auto node : __graph.nodes() ) {
         if ( ! __created_JT_cliques.exists ( node ) ||
              ! __junction_tree.existsNode ( __created_JT_cliques[node] ) ) {
@@ -905,10 +894,9 @@ namespace gum {
                                         all_cliques_affected );
 
         // insert the edges in tmp_graph
-        for ( UndiGraph::EdgeIterator iter_edge = __graph.beginEdges();
-              iter_edge != __graph.endEdges(); ++iter_edge ) {
+        for ( const auto & edge : __graph.edges() ) {
           try {
-            tmp_graph.insertEdge ( iter_edge->first(), iter_edge->second() );
+            tmp_graph.insertEdge ( edge.first(), edge.second() );
           } catch ( Exception& ) { } // both extremities must be in tmp_graph
         }
 
@@ -938,7 +926,6 @@ namespace gum {
         NodeProperty<NodeId>
         tmp2global_junction_tree ( tmp_junction_tree.size() );
 
-        //for ( CliqueGraph::NodeIterator iter_jt = tmp_junction_tree.beginNodes();iter_jt != tmp_junction_tree.endNodes(); ++iter_jt ) {
         for ( const auto cliq : tmp_junction_tree.nodes() ) {
           // get new ids for the nodes of tmp_junction_tree. These should be
           // greater than or equal to __junction_tree.bound () so that we can
@@ -950,7 +937,6 @@ namespace gum {
         }
 
         // and add the edges of tmp_junction_tree to __junction_tree
-        //for ( CliqueGraph::EdgeIterator iter_edge = tmp_junction_tree.beginEdges();iter_edge != tmp_junction_tree.endEdges(); ++iter_edge )
         for ( const auto edge : tmp_junction_tree.edges() )
           __junction_tree.insertEdge ( tmp2global_junction_tree[edge.first()], tmp2global_junction_tree[edge.second()] );
 
@@ -1043,7 +1029,7 @@ namespace gum {
 
 
 
-  /// used for computing the junction tree of the maximal prime subgraphs
+/// used for computing the junction tree of the maximal prime subgraphs
 
   void IncrementalTriangulation::__computeMaxPrimeMergings
   ( const NodeId node, const NodeId from,
@@ -1092,7 +1078,7 @@ namespace gum {
 
 
 
-  /// update the max prime subgraph
+/// update the max prime subgraph
 
   void IncrementalTriangulation::__updateMaxPrimeSubgraph
   ( NodeProperty<bool>& all_cliques_affected,
@@ -1107,7 +1093,6 @@ namespace gum {
     HashTable<NodeId, NodeId>
     T_mpd_cliques ( all_cliques_affected.size() );
 
-    //for ( CliqueGraph::NodeIterator iter_clique = __junction_tree.beginNodes();iter_clique != __junction_tree.endNodes(); ++iter_clique )
     for ( const auto cli : __junction_tree.nodes() )
       if ( new_nodes_in_junction_tree.contains ( cli ) )
         T_mpd_cliques.insert ( cli, cli );
@@ -1223,7 +1208,7 @@ namespace gum {
 
 
 
-  /// updates the triangulated graph using the modif list
+/// updates the triangulated graph using the modif list
 
   void IncrementalTriangulation::updateTriangulation() {
     if ( ! __require_update ) return;
@@ -1248,7 +1233,6 @@ namespace gum {
     // reset the MPS that are affected
     __mps_affected.clear();
 
-    //for ( CliqueGraph::NodeIterator iter = __T_mpd.beginNodes();iter != __T_mpd.endNodes(); ++iter )
     for ( const auto node : __T_mpd.nodes() )
       __mps_affected.insert ( node, false );
 
@@ -1260,7 +1244,7 @@ namespace gum {
 
 
 
-  /// sets the graph to the empty graph
+/// sets the graph to the empty graph
 
   void IncrementalTriangulation::clear() {
     __graph.clear();
@@ -1282,7 +1266,7 @@ namespace gum {
 
 
 
-  /// a collect algorithm to compute, for each node, one container JT's clique
+/// a collect algorithm to compute, for each node, one container JT's clique
 
   void IncrementalTriangulation::__collectJTCliques
   ( const NodeId clique, const NodeId from,
@@ -1358,7 +1342,7 @@ namespace gum {
 
 
 
-  /// returns a clique containing a given node of the triangulated graph
+/// returns a clique containing a given node of the triangulated graph
 
   NodeId
   IncrementalTriangulation::createdJunctionTreeClique ( NodeId id ) {
@@ -1378,7 +1362,7 @@ namespace gum {
 
 
 
-  /// changes the current graph
+/// changes the current graph
 
   void IncrementalTriangulation::setGraph
   ( const UndiGraph& theGraph,
@@ -1389,18 +1373,16 @@ namespace gum {
     // copy the graph passed in arent and update the structures
     // containing the informations useful for the triangulation
 
-    //for ( UndiGraph::NodeIterator iter_node = theGraph.beginNodes();iter_node != theGraph.endNodes(); ++iter_node )
     for ( const auto node : theGraph.nodes() )
       insertNode ( node, modal[node] );
 
-    for ( EdgeSetIterator iter_edge = theGraph.beginEdges();
-          iter_edge != theGraph.endEdges(); ++iter_edge )
-      insertEdge ( iter_edge->first(), iter_edge->second() );
+    for ( const auto & edge : theGraph.edges() )
+      insertEdge ( edge.first(), edge.second() );
   }
 
 
 
-  /// a collect algorithm to compute elimination orderings
+/// a collect algorithm to compute elimination orderings
 
   void
   IncrementalTriangulation::__collectEliminationOrder
@@ -1444,7 +1426,7 @@ namespace gum {
 
 
 
-  /// get a possible elimination ordering
+/// get a possible elimination ordering
 
   const std::vector<NodeId>& IncrementalTriangulation::eliminationOrder() {
     // check if we already computed the elimination order

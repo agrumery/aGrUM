@@ -311,7 +311,7 @@ namespace gum {
       f.startClass ( l[lvl].c.back(), "", &i );
 
       if ( lvl )
-        f.addReferenceSlot ( l[lvl-1].i, l[lvl].r, true );
+        f.addReferenceSlot ( l[lvl - 1].i, l[lvl].r, true );
 
       DAG dag;
       Bijection<std::string, NodeId> names;
@@ -321,7 +321,7 @@ namespace gum {
       if ( lvl ) {
         for ( std::vector<std::string>::iterator g = l[lvl].g.begin(); g != l[lvl].g.end(); ++g ) {
           std::stringstream s;
-          s << l[lvl].r << "." << l[lvl-1].a[std::rand() % l[lvl-1].a.size()];
+          s << l[lvl].r << "." << l[lvl - 1].a[std::rand() % l[lvl - 1].a.size()];
           std::vector<std::string> chain ( 1, s.str() ), param ( 1, "1" );
           f.addAggregator ( *g, "exists", chain, param );
         }
@@ -390,7 +390,6 @@ namespace gum {
       // #parents <= __max_parents
       const Set<NodeId>* parents = 0;
 
-      //for ( DAG::NodeIterator node = dag.beginNodes(); node != dag.endNodes(); ++node ) {
       for ( const auto node : dag.nodes() ) {
         if ( dag.parents ( node ).size() > getMaxParents() ) {
           parents = & ( dag.parents ( node ) );
@@ -476,12 +475,12 @@ namespace gum {
             chain << name << "." << l[lvl].r;
             std::vector<std::string> ref2add;
 
-            for ( std::vector<std::string>::iterator iter = o[lvl-1].begin(); iter != o[lvl-1].end(); ++iter )
+            for ( std::vector<std::string>::iterator iter = o[lvl - 1].begin(); iter != o[lvl - 1].end(); ++iter )
               if ( std::rand() <= density )
                 ref2add.push_back ( *iter );
 
             if ( ref2add.empty() )
-              factory.setReferenceSlot ( chain.str(), o[lvl-1][std::rand() % o[lvl-1].size()] );
+              factory.setReferenceSlot ( chain.str(), o[lvl - 1][std::rand() % o[lvl - 1].size()] );
 
             while ( ref2add.size() > getMaxParents() ) {
               idx = std::rand() % ref2add.size();

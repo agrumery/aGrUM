@@ -130,7 +130,6 @@ namespace gum {
       if ( this->_l_inferenceEngine[tId]->evidenceMarginal() > 0 ) {
         const DAG& tDag = this->_workingSet[tId]->dag();
 
-        //for ( const auto it = tDag.beginNodes(), theEnd = tDag.endNodes(); it != theEnd; ++it ) {
         for ( const auto it : tDag.nodes() ) {
           const Potential< GUM_SCALAR >& potential ( this->_l_inferenceEngine[tId]->marginal ( it ) );
           Instantiation ins ( potential );
@@ -326,7 +325,6 @@ namespace gum {
           this->_l_optimalNet[this_thread]->setCurrentSample ( sample );
         }
       } else {
-        //for ( const auto id = working_bn->beginNodes(), theEnd = working_bn->endNodes(); id != theEnd; ++id ) {
         for ( const auto id : working_bn->nodes() ) {
           auto dSize = working_bn->variable ( id ).domainSize();
           Potential< GUM_SCALAR >* potential ( const_cast< Potential< GUM_SCALAR > * > ( &working_bn->cpt ( id ) ) );

@@ -46,12 +46,12 @@ namespace gum {
    * @par exemple de code
    * @code
    * // creating empty graphs
-   * DAG g1,g2;
+   * gum::DAG g1,g2;
    *
    * // adding nodes and arcs to g1
-   * NodeId i1=g1.insertNode();
-   * NodeId i2=g1.insertNode();
-   * NodeId i3=g1.insertNode();
+   * gum::NodeId i1=g1.insertNode();
+   * gum::NodeId i2=g1.insertNode();
+   * gum::NodeId i3=g1.insertNode();
    * g1.insertArc( i1,i2 );
    * g1.insertArc( i1,i3 );
    * g1.insertArc( i2,i3 );
@@ -63,9 +63,9 @@ namespace gum {
    * // g1.insertArc( i3,i1 );
    *
    * // copying graphs
-   * DAG g3 = g1;
+   * gum::DAG g3 = g1;
    * g2 = g1;
-   * DAG g4=g1;
+   * gum::DAG g4=g1;
    *
    * // check if a graph has no node
    * if ( g1.empty() ) cerr << "graph g1 is empty" << endl;
@@ -80,23 +80,19 @@ namespace gum {
    * g2.eraseNode( i2 );
    *
    * // parse a graph
-   * for ( NodeGraphPart::iterator iter = g3.beginNodes();
-   *       iter != g3.endNodes(); ++iter )
-   *   cerr << *iter << endl;
+   * for ( const auto node : g3.nodes() ) // type of node = gum::NodeId
+   *   cerr << node << endl;
    *
-   * for ( ArcGraphPart::iterator iter = g3.beginArcs();
-   *       iter != g3.endArcs(); ++iter )
-   *   cerr << *iter << endl;
+   * for ( const auto& arc= g3.arcs()) // type of arc : gum::Arc&
+   *   cerr << iter << endl;
    *
-   * const NodeSet& a=g3.parents( 3 );
-   *
-   * for ( NodeSetIterator iter = a.begin( ); iter != a.end(); ++iter )
+   * for ( const auto node :g3.parents( gum::NodeId(3) ))
    *   cerr << "  -  "<<*iter;
    *
    * cerr<<endl;
    *
    * // remove all the arcs that are parent of a given node
-   * g3.eraseParents( 2 );
+   * g3.eraseParents( gum::NodeId(2) );
    *
    * @endcode
    */
@@ -159,7 +155,7 @@ namespace gum {
        * @warning Unfortunately, this means that insertArc is not in constant
        * time anymore.
        */
-      virtual void insertArc ( const NodeId tail,const NodeId head );
+      virtual void insertArc ( const NodeId tail, const NodeId head );
 
       /// @}
 

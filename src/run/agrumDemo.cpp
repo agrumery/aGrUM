@@ -76,7 +76,7 @@ void test_credal() {
 
   std::cout << "isOMP () ? : " << gum::isOMP() << std::endl;
   std::cout << "threads : " << gum::getMaxNumberOfThreads() << std::endl;
-  gum::setNumberOfThreads( gum::getNumberOfLogicalProcessors()*2 );
+  gum::setNumberOfThreads ( gum::getNumberOfLogicalProcessors() * 2 );
   std::cout << "new number : " << gum::getMaxNumberOfThreads() << std::endl;
 
   std::cout << "number of procs : " << gum::getNumberOfLogicalProcessors() << std::endl;
@@ -181,21 +181,21 @@ void test_credal() {
 
 
 
-  std::cout << GET_PATH_STR( bn_c.bif ) << std::endl;
+  std::cout << GET_PATH_STR ( bn_c.bif ) << std::endl;
 
   gum::BayesNet<double> monBNa;
-  gum::BIFReader< double > readera( &monBNa, GET_PATH_STR( gl2uERR_dts3_min.bif ) );
+  gum::BIFReader< double > readera ( &monBNa, GET_PATH_STR ( gl2uERR_dts3_min.bif ) );
   //GET_PATH_STR ( bn_c.bif ) );
   readera.proceed();
 
   gum::BayesNet<double> monBNb;
-  gum::BIFReader< double > readerb( &monBNb, GET_PATH_STR( gl2uERR_dts3_max.bif ) );
+  gum::BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( gl2uERR_dts3_max.bif ) );
   //GET_PATH_STR ( den_c.bif ) );
   readerb.proceed();
 
 
   // (G)(L)2U test
-  gum::credal::CredalNet<double> myCNb( monBNa, monBNb );
+  gum::credal::CredalNet<double> myCNb ( monBNa, monBNb );
 
   //myCNb.bnToCredal(0.5);
 
@@ -206,54 +206,57 @@ void test_credal() {
   std::cout << myCNb.toString() << std::endl;
 
   myCNb.computeCPTMinMax();
-  gum::credal::CNLoopyPropagation<double> lp2 = gum::credal::CNLoopyPropagation<double>( myCNb );
+  gum::credal::CNLoopyPropagation<double> lp2 = gum::credal::CNLoopyPropagation<double> ( myCNb );
   lp2.makeInference();
 
-  for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
-    unsigned int dSize = myCNb.src_bn().variable( *id ).domainSize();
+  //for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
+  for ( const auto id : myCNb.src_bn().nodes() ) {
+    unsigned int dSize = myCNb.src_bn().variable ( id ).domainSize();
 
     for ( unsigned int mod = 0; mod < dSize; mod++ ) {
-      std::cout << "l2u p(" << myCNb.src_bn().variable( *id ).name() << " = " << mod  << ") = [ " << lp2.marginalMin( *id )[mod] << ", " << lp2.marginalMax( *id )[mod] << " ] " << std::endl;
+      std::cout << "l2u p(" << myCNb.src_bn().variable ( id ).name() << " = " << mod  << ") = [ " << lp2.marginalMin ( id ) [mod] << ", " << lp2.marginalMax ( id ) [mod] << " ] " << std::endl;
     }
   }
 
-  gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double> > MCE( myCNb );
-  MCE.storeVertices( true );
+  gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double> > MCE ( myCNb );
+  MCE.storeVertices ( true );
   MCE.makeInference();
 
-  for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
-    unsigned int dSize = myCNb.src_bn().variable( *id ).domainSize();
+  //for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
+  for ( const auto id : myCNb.src_bn().nodes() ) {
+    unsigned int dSize = myCNb.src_bn().variable ( id ).domainSize();
 
     for ( unsigned int mod = 0; mod < dSize; mod++ ) {
-      std::cout << "MC p(" << myCNb.src_bn().variable( *id ).name() << " = " << mod  << ") = [ " << MCE.marginalMin( *id )[mod] << ", " << MCE.marginalMax( *id )[mod] << " ] " << std::endl;
+      std::cout << "MC p(" << myCNb.src_bn().variable ( id ).name() << " = " << mod  << ") = [ " << MCE.marginalMin ( id ) [mod] << ", " << MCE.marginalMax ( id ) [mod] << " ] " << std::endl;
     }
 
-    std::cout << "MC vertices of : " << myCNb.src_bn().variable( *id ).name() << std::endl;
-    std::cout << MCE.vertices( *id ) << std::endl;
+    std::cout << "MC vertices of : " << myCNb.src_bn().variable ( id ).name() << std::endl;
+    std::cout << MCE.vertices ( id ) << std::endl;
   }
 
   return;
 
 
 
-  gum::credal::CredalNet< double > cn( GET_PATH_STR( /*gl2u2_*/2Umin.bif ), GET_PATH_STR( /*gl2u2_*/2Umax.bif ) );
+  gum::credal::CredalNet< double > cn ( GET_PATH_STR ( /*gl2u2_*/2Umin.bif ), GET_PATH_STR ( /*gl2u2_*/2Umax.bif ) );
   cn.intervalToCredal();
   std::cout << cn.toString() << std::endl;
 
   ///cn.approximatedBinarization();
 
-  gum::credal::CNMonteCarloSampling< double, gum::LazyPropagation< double > > mc( cn );
+  gum::credal::CNMonteCarloSampling< double, gum::LazyPropagation< double > > mc ( cn );
   //mc.setMaxTime ( 60 * 10 );
   //mc.setPeriodSize ( 4000 );
-  mc.setMaxTime( 1*60 );
-  mc.setPeriodSize( 1000 );
+  mc.setMaxTime ( 1 * 60 );
+  mc.setPeriodSize ( 1000 );
   mc.makeInference();
 
-  for ( gum::DAG::NodeIterator id = cn.current_bn().beginNodes(); id != cn.current_bn().endNodes(); ++id ) {
-    unsigned int dSize = cn.current_bn().variable( *id ).domainSize();
+  //for ( gum::DAG::NodeIterator id = cn.current_bn().beginNodes(); id != cn.current_bn().endNodes(); ++id ) {
+  for ( const auto id : cn.current_bn().nodes() ) {
+    unsigned int dSize = cn.current_bn().variable ( id ).domainSize();
 
     for ( unsigned int mod = 0; mod < dSize; mod++ ) {
-      std::cout << "mc p(" << cn.current_bn().variable( *id ).name() << " = " << mod  << ") = [ " << mc.marginalMin( *id )[mod] << ", " << mc.marginalMax( *id )[mod] << " ] " << std::endl;
+      std::cout << "mc p(" << cn.current_bn().variable ( id ).name() << " = " << mod  << ") = [ " << mc.marginalMin ( id ) [mod] << ", " << mc.marginalMax ( id ) [mod] << " ] " << std::endl;
     }
   }
 
@@ -263,30 +266,31 @@ void test_credal() {
 
   cn.computeCPTMinMax();
 
-  gum::credal::CNLoopyPropagation< double > lp( cn );
+  gum::credal::CNLoopyPropagation< double > lp ( cn );
 
   lp.makeInference();
 
-  for ( gum::DAG::NodeIterator id = cn.current_bn().beginNodes(); id != cn.current_bn().endNodes(); ++id ) {
-    unsigned int dSize = cn.current_bn().variable( *id ).domainSize();
+  //for ( gum::DAG::NodeIterator id = cn.current_bn().beginNodes(); id != cn.current_bn().endNodes(); ++id ) {
+  for(const auto id : cn.current_bn().nodes()) {
+    unsigned int dSize = cn.current_bn().variable ( id ).domainSize();
 
     for ( unsigned int mod = 0; mod < dSize; mod++ ) {
-      std::cout << "l2u p(" << cn.current_bn().variable( *id ).name() << " = " << mod  << ") = [ " << lp.marginalMin( *id )[mod] << ", " << lp.marginalMax( *id )[mod] << " ] " << std::endl;
+      std::cout << "l2u p(" << cn.current_bn().variable ( id ).name() << " = " << mod  << ") = [ " << lp.marginalMin ( id ) [mod] << ", " << lp.marginalMax ( id ) [mod] << " ] " << std::endl;
     }
   }
 }
 
-int main( int argc, char* argv[] ) {
+int main ( int argc, char* argv[] ) {
   try {
     test_credal();
     std::cout.flush();
   } catch ( gum::Exception& e ) {
-    GUM_SHOWERROR( e );
+    GUM_SHOWERROR ( e );
   }
 
   std::cout.clear();
   std::cout << "Press ENTER to continue...";
-  std::cin.ignore( std::numeric_limits<std::streamsize>::max(), '\n' );
+  std::cin.ignore ( std::numeric_limits<std::streamsize>::max(), '\n' );
 
   return EXIT_SUCCESS;
 }

@@ -160,7 +160,6 @@ namespace gum {
     EdgeSet T_prime;
     NodeProperty<unsigned int> R ( __triangulated_graph.size() );
 
-    //for ( UndiGraph::NodeIterator iter = __triangulated_graph.beginNodes();iter != __triangulated_graph.endNodes(); ++iter )
     for ( const auto node : __triangulated_graph.nodes() )
       R.insert ( node, 0 );
 
@@ -405,9 +404,8 @@ namespace gum {
     // clique.
     NodeProperty<NodeId> T_mpd_cliques ( __junction_tree->size() );
 
-    //for ( CliqueGraph::NodeIterator iter_clique = __junction_tree->beginNodes();iter_clique != __junction_tree->endNodes(); ++iter_clique )
     for ( const auto cliq : __junction_tree->nodes() )
-      T_mpd_cliques.insert ( cliq,cliq );
+      T_mpd_cliques.insert ( cliq, cliq );
 
     // parse all the separators of the junction tree and test those that are not
     // complete in the orginal graph
@@ -415,10 +413,9 @@ namespace gum {
 
     NodeSet mark;
 
-    //for ( CliqueGraph::NodeIterator iter_clique = __junction_tree->beginNodes();iter_clique != __junction_tree->endNodes(); ++iter_clique )
     for ( const auto cliq : __junction_tree->nodes() )
       if ( ! mark.contains ( cliq ) )
-        __computeMaxPrimeMergings ( cliq, cliq,merged_cliques, mark );
+        __computeMaxPrimeMergings ( cliq, cliq, merged_cliques, mark );
 
     // compute the transitive closure of merged_cliques. This one will contain
     // pairs (X,Y) indicating that clique X must be merged with clique Y.
@@ -455,10 +452,9 @@ namespace gum {
     }
 
     // add the edges to the graph
-    for ( CliqueGraph::EdgeIterator iter_edge = __junction_tree->beginEdges();
-          iter_edge != __junction_tree->endEdges(); ++iter_edge ) {
-      NodeId node1 = T_mpd_cliques[iter_edge->first()];
-      NodeId node2 = T_mpd_cliques[iter_edge->second()];
+    for ( const auto & edge : __junction_tree->edges() ) {
+      NodeId node1 = T_mpd_cliques[edge.first()];
+      NodeId node2 = T_mpd_cliques[edge.second()];
 
       if ( node1 != node2 ) {
         try {
@@ -501,7 +497,6 @@ namespace gum {
       // parse all the cliques of the junction tree
       NodeSetIterator iter_clique2;
 
-      //for ( CliqueGraph::NodeIterator iter_node = __junction_tree->beginNodes();iter_node != __junction_tree->endNodes(); ++iter_node ) {
       for ( const auto node : __junction_tree->nodes() ) {
         // for each clique, add the edges necessary to make it complete
         const NodeSet& clique = __junction_tree->clique ( node );
@@ -734,7 +729,6 @@ namespace gum {
       // parse all the cliques of the junction tree
       NodeSetIterator iter_clique2;
 
-      //for ( CliqueGraph::NodeIterator iter_node = __junction_tree->beginNodes();iter_node != __junction_tree->endNodes(); ++iter_node ) {
       for ( const auto node : __junction_tree->nodes() ) {
         // for each clique, add the edges necessary to make it complete
         const NodeSet& clique = __junction_tree->clique ( node );

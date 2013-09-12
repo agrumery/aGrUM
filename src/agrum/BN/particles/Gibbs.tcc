@@ -46,7 +46,6 @@ namespace gum {
       const DAG& dag = this->bn().dag();
 //    const NodeSet& nodes = dag.nodes();
 
-      //for ( DAG::NodeIterator iter = dag.beginNodes(); iter != dag.endNodes(); ++iter ) {
       for ( const auto node : dag.nodes() ) {
         const DiscreteVariable& var = this->bn().variable ( node );
         //         // feed the sample
@@ -59,10 +58,10 @@ namespace gum {
         __sampling_idx.insert ( node, tmp_idx );
         // feed the children
         std::vector<NodeId>* tmp3 = new std::vector<NodeId>();
-        
+
         //const NodeSet& arcs = dag.children ( node );
 
-        for ( const auto node2 : dag.children(node) ) {
+        for ( const auto node2 : dag.children ( node ) ) {
           tmp3->push_back ( node2 );
         }
 
@@ -154,7 +153,7 @@ namespace gum {
       for ( I.setFirst(); ! I.end(); I.inc() ) s += proba[I];
 
       if ( s == ( GUM_SCALAR ) 0 ) {
-        GUM_ERROR ( FatalError, "A normalisation factor is 0 in node " << id << " (" << v << ") : "<<proba );
+        GUM_ERROR ( FatalError, "A normalisation factor is 0 in node " << id << " (" << v << ") : " << proba );
       }
 
       // draw value
@@ -198,7 +197,7 @@ namespace gum {
         }
 
         if ( __evidences.exists ( id ) ) {
-          posterior.set ( posterior_idx, posterior[posterior_idx]* ( value = ( * __evidences[id] ) [posterior_idx] ) );
+          posterior.set ( posterior_idx, posterior[posterior_idx] * ( value = ( * __evidences[id] ) [posterior_idx] ) );
 
           if ( value == ( GUM_SCALAR ) 0 ) {
             continue;
@@ -210,7 +209,7 @@ namespace gum {
           tmp = __cpt_idx[*iter];
           tmp->chgVal ( v, current_mod_id );
           //posterior[posterior_idx]*=( value=this->bn().cpt( *iter )[*tmp] );
-          posterior.set ( posterior_idx, posterior[posterior_idx]* ( value = this->bn().cpt ( *iter ) [*tmp] ) );
+          posterior.set ( posterior_idx, posterior[posterior_idx] * ( value = this->bn().cpt ( *iter ) [*tmp] ) );
 
           if ( value == ( GUM_SCALAR ) 0 ) {
             continue;
@@ -294,7 +293,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void Gibbs<GUM_SCALAR>::__MonteCarloSample() {
       // _nodes_array is assumed to be the list of nodes to draw; in a topological-compatible order
-      for ( unsigned int it=0; it<__nodes_array.size(); it++ ) {
+      for ( unsigned int it = 0; it < __nodes_array.size(); it++ ) {
         Idx id = __nodes_array[it];
 
         const Potential<GUM_SCALAR>& cpt = this->bn().cpt ( id );

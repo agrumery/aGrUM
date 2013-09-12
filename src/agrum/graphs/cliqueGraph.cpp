@@ -88,7 +88,7 @@ namespace gum {
     // it may happen that the path contains several nodes containing node1 and
     // node2. Hence we shall remove the superfluous nodes
     while ( ( path.size() >= 2 ) &&
-            ( clique ( path[path.size()-2] ).contains ( node2 ) ) )
+            ( clique ( path[path.size() - 2] ).contains ( node2 ) ) )
       path.pop_back();
 
     while ( ( path.size() >= 2 ) &&
@@ -248,7 +248,6 @@ namespace gum {
     infos_DFS.cliques_DFS_chain = __cliques;
 
     // while there exist unvisited cliques, perform a DFS on them
-    //for ( CliqueGraph::NodeIterator iter_DFS = beginNodes();iter_DFS != endNodes(); ++iter_DFS )
     for ( const auto DFSnode : nodes() )
       if ( ! infos_DFS.visited_cliques.contains ( DFSnode ) ) {
         // no nodes are forbidden a priori in the DFS
@@ -301,7 +300,6 @@ namespace gum {
     std::stringstream stream;
     stream << "list of nodes:" << std::endl;
 
-    //for ( NodeIterator iter_node = beginNodes();iter_node != endNodes(); ++iter_node ) {
     for ( const auto node : nodes() ) {
       stream << " -- node: " << node << std::endl << "    clique:";
 
@@ -316,9 +314,8 @@ namespace gum {
 
     stream << "\n\nlist of edges:\n";
 
-    for ( EdgeIterator iter_edge = beginEdges();
-          iter_edge != endEdges(); ++iter_edge )
-      stream << *iter_edge << "  ";
+    for ( const auto & edge : edges() )
+      stream << edge << "  ";
 
     return stream.str();
   }
@@ -330,7 +327,6 @@ namespace gum {
     stream << "graph {" << std::endl;
     stream << "  edge [fontsize=8 fontcolor=red];" << std::endl << std::endl;
 
-    //for ( NodeIterator iter_node = beginNodes(); iter_node != endNodes();++iter_node ) {
     for ( const auto node : nodes() ) {
       stream << "  " << node << " [ label=\"";
 
@@ -345,11 +341,10 @@ namespace gum {
 
     stream << std::endl;
 
-    for ( EdgeIterator iter_edge = beginEdges();
-          iter_edge != endEdges(); ++iter_edge ) {
-      stream << *iter_edge << " [ label=\"";
+    for ( const auto & edge : edges() ) {
+      stream << edge << " [ label=\"";
 
-      const NodeSet& sep = separator ( *iter_edge );
+      const NodeSet& sep = separator ( edge );
 
       for ( NodeSetIterator iter = sep.begin(); iter != sep.end(); ++iter )
         stream << "  " << *iter;
@@ -364,7 +359,7 @@ namespace gum {
 
 
 
-  /// a << operator for CliqueGraph
+/// a << operator for CliqueGraph
 
   std::ostream& operator<< ( std::ostream& stream,
                              const CliqueGraph& graph ) {

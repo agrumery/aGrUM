@@ -131,7 +131,6 @@ namespace gum {
     System::__groundAttr( const Instance& instance, BayesNetFactory<prm_float>& factory ) const {
       const DAG& dag = instance.type().dag();
 
-      //for ( DAG::NodeIterator node = dag.beginNodes(); node != dag.endNodes(); ++node ) {
       for(auto node : dag.nodes()) {
         // Working a Class level because Aggregate are instantiated as Attribute in an Instance
         switch ( instance.type().get( node ).elt_type() ) {

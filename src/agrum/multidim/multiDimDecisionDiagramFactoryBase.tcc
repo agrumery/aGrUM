@@ -399,7 +399,7 @@ namespace gum {
   template< typename GUM_SCALAR >
   void
   MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::insertDefaultArc ( NodeId from, NodeId to ) {
-    addDefaultArc ( from,to );
+    addDefaultArc ( from, to );
   }
 
   template< typename GUM_SCALAR >
@@ -503,7 +503,6 @@ namespace gum {
     nonTerminalStream << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
 
-    //for ( NodeGraphPart::NodeIterator nodeIter = _model.beginNodes(); nodeIter != _model.endNodes(); ++nodeIter )
     for ( const auto node : _model.nodes() )
       if ( node != 0 ) {
         if ( _valueMap.existsFirst ( node ) )
@@ -548,27 +547,17 @@ namespace gum {
   template< typename GUM_SCALAR > INLINE
   void
   MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::setMultiDimDecisionDiagram ( const MultiDimDecisionDiagramBase<GUM_SCALAR>* source ) {
-
     this->clear();
-
     _varsSeq = source->variablesSequence();
-
     _model.populateNodes ( source->nodesMap() );
-
     _valueMap = source->valuesMap();
-
     _varMap.resize ( source->nodesMap().size() );
-
     _var2NodeIdMap.resize ( source->variablesSequence().size() );
-
     _varUsedModalitiesMap.resize ( source->variablesSequence().size() );
-
     _arcMap.resize ( source->nodesMap().size() );
-
     _defaultArcMap.resize ( source->nodesMap().size() );
 
-    //for ( NodeGraphPartIterator nodeIter = _model.beginNodes(); nodeIter != _model.endNodes(); ++nodeIter ) {
-    for(auto node : _model.nodes()) {
+    for ( auto node : _model.nodes() ) {
 
       if ( node != 0 && !source->isTerminalNode ( node ) ) {
 
@@ -811,17 +800,12 @@ namespace gum {
   template< typename GUM_SCALAR >
   void
   MultiDimDecisionDiagramFactoryBase< GUM_SCALAR >::clear() {
-
     _rootId = 0;
-
     _varsSeq.clear();
-
     _varMap.clear();
-
     _defaultArcMap.clear();
 
-    //for ( NodeGraphPart::NodeIterator iter = _model.beginNodes(); iter != _model.endNodes(); ++iter )
-    for(auto node : _model.nodes()) 
+    for ( auto node : _model.nodes() )
       if ( node != 0 && !_valueMap.existsFirst ( node ) && _arcMap[node] != nullptr )
         delete _arcMap[node];
 

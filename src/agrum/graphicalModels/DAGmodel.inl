@@ -73,13 +73,13 @@ namespace gum {
   INLINE
   const DAG::ArcIterator
   DAGmodel::beginArcs() const {
-    return dag().beginArcs();
+    return dag().arcs().begin();
   }
 
   INLINE
   const DAG::ArcIterator&
   DAGmodel::endArcs() const {
-    return dag().endArcs();
+    return dag().arcs().end();
   }
 
 

@@ -109,7 +109,6 @@ namespace gum {
       LazyPropagation<GUM_SCALAR> inf ( bayesNetinit );
       inf.makeInference();
 
-      //for ( DAG::NodeIterator it = bayesNetinit.beginNodes(); it != bayesNetinit.endNodes(); ++it ) {
       for ( const auto it : bayesNetinit.nodes() ) {
         Potential<GUM_SCALAR>* pottemp = new Potential<GUM_SCALAR>();
         pottemp->copy ( inf.marginal ( it ) );

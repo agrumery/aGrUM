@@ -780,7 +780,6 @@ namespace gum {
       GUM_CONSTRUCTOR ( StructuredInference::CData );
 
       // First step we add Attributes and Aggregators
-      //for ( DAG::NodeIterator node = c.dag().beginNodes(); node != c.dag().endNodes(); ++node ) {
       for ( const auto node : c.dag().nodes() ) {
         switch ( c.get ( node ).elt_type() ) {
           case ClassElement::prm_attribute: {
@@ -801,7 +800,6 @@ namespace gum {
       const NodeSet* parents = 0;
       const ClassElement* prnt = 0;
 
-      //for ( UndiGraph::NodeIterator node = moral_graph.beginNodes(); node != moral_graph.endNodes(); ++node ) {
       for ( const auto node : moral_graph.nodes() ) {
         parents = & ( c.dag().parents ( node ) );
 

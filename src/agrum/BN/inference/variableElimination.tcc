@@ -169,7 +169,6 @@ namespace gum {
     if ( __eliminationOrder.empty() ) {
       NodeProperty<Size> modalities;
 
-      //for ( DAG::NodeIterator iter = this->bn().beginNodes(); iter != this->bn().endNodes(); ++iter ) {
       for ( const auto node : this->bn().nodes() )
         modalities.insert ( node, this->bn().variable ( node ).domainSize() );
 
@@ -183,7 +182,6 @@ namespace gum {
   VariableElimination<GUM_SCALAR>::__createInitialPool() {
     __pool.clear();
 
-    //for ( DAG::NodeIterator iter = this->bn().beginNodes(); iter != this->bn().endNodes(); ++iter ) {
     for ( const auto node : this->bn().nodes() ) {
       __pool.insert ( const_cast< Potential<GUM_SCALAR>* > ( & ( this->bn().cpt ( node ) ) ) );
 

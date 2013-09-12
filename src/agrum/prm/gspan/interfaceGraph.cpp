@@ -59,8 +59,8 @@ namespace gum {
 
           for ( Set<SlotChain*>::iterator iter = data->n->type().slotChains().begin(); iter != data->n->type().slotChains().end(); ++iter ) {
             for ( Set<Instance*>::iterator jter = data->n->getInstances ( ( **iter ).id() ).begin(); jter != data->n->getInstances ( ( **iter ).id() ).end(); ++jter ) {
-              u = ( __nodes[__idMap[*jter]]->l < data->l ) ?__nodes[__idMap[*jter]]:data;
-              v = ( u != data ) ?data:__nodes[__idMap[*jter]];
+              u = ( __nodes[__idMap[*jter]]->l < data->l ) ? __nodes[__idMap[*jter]] : data;
+              v = ( u != data ) ? data : __nodes[__idMap[*jter]];
 
               if ( not __graph.existsEdge ( __idMap[u->n], __idMap[v->n] ) ) {
                 EdgeData* edge = new EdgeData();
@@ -143,7 +143,6 @@ namespace gum {
         }
 
         // Second we search for active outputs
-        //for ( DAG::NodeIterator iter = node->n->type().dag().beginNodes(); iter != node->n->type().dag().endNodes(); ++iter ) {
         for ( const auto nn : node->n->type().dag().nodes() ) {
           if ( node->n->type().isOutputNode ( node->n->type().get ( nn ) ) ) {
             try {

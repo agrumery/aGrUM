@@ -162,7 +162,6 @@ namespace gum_tests {
         // modalities from map
         // from file with dynamic network, not 2U
         try {
-          //for ( gum::DAG::NodeIterator node_idIt = cn->current_bn().beginNodes(); node_idIt != cn->current_bn().endNodes(); ++node_idIt ) {
           for(const auto node_idIt : cn->current_bn().nodes()) {
             modals[ cn->current_bn().variable( node_idIt ).name() ] = binaryModal;
           }
@@ -183,7 +182,6 @@ namespace gum_tests {
         }
 
         try {
-          //for ( gum::DAG::NodeIterator node_idIt = cn->current_bn().beginNodes(); node_idIt != cn->current_bn().endNodes(); ++node_idIt ) {
           for(const auto node_idIt : cn->current_bn().nodes()) {
             std::vector< double > inf( lp.marginalMin( node_idIt ) );
             std::vector< double > sup( lp.marginalMax( node_idIt ) );
@@ -235,7 +233,6 @@ namespace gum_tests {
         }
 
         try {
-          //for ( gum::DAG::NodeIterator node_idIt = cn->current_bn().beginNodes(); node_idIt != cn->current_bn().endNodes(); ++node_idIt ) {
           for(const auto node_idIt : cn->current_bn().nodes()) {
             exp inf( lp.marginalMin( node_idIt ) );
             exp sup( lp.marginalMax( node_idIt ) );

@@ -83,7 +83,6 @@ namespace gum {
   IBayesNet<GUM_SCALAR>::dim() const {
     Idx dim = 0;
 
-    //for ( const auto node = dag().beginNodes(); node != dag().endNodes(); ++node ) {
     for ( const auto node : nodes() ) {
       Idx q = 1;
 
@@ -103,10 +102,8 @@ namespace gum {
   std::string
   IBayesNet<GUM_SCALAR>::toString ( void ) const {
     Size param = 0;
-
     double dSize = log10DomainSize();
 
-    //for ( DAG::NodeIterator it = beginNodes(); it != endNodes(); ++it ) {
     for ( const auto it : nodes() ) {
       param += ( ( const MultiDimImplementation<GUM_SCALAR>& ) cpt ( it ).getMasterRef() ).realSize();
     }
@@ -152,7 +149,6 @@ namespace gum {
     output << "  graph [bgcolor=transparent,label=\"" << bn_name << "\"];" << std::endl;
     output << "  node [style=filled fillcolor=\"#ffffaa\"];" << std::endl << std::endl;
 
-    //for ( DAG::NodeIterator node_iter = dag().beginNodes();node_iter != dag().endNodes(); ++node_iter ) {
     for ( const auto node_iter : nodes() ) {
       output << "\"" << variable ( node_iter ).name() << "\" [comment=\"" << node_iter << ":" << variable ( node_iter ) << "\"];" << std::endl;
     }
@@ -161,12 +157,10 @@ namespace gum {
 
     std::string tab = "  ";
 
-    //for ( DAG::NodeIterator node_iter = dag().beginNodes();node_iter != dag().endNodes(); ++node_iter ) {
     for ( const auto node_iter : nodes() ) {
       if ( dag().children ( node_iter ).size() > 0 ) {
         //const NodeSet& children =  dag().children ( node_iter );
 
-        //for ( NodeSetIterator arc_iter = children.begin();arc_iter != children.end(); ++arc_iter ) {
         for ( const auto arc_iter : dag().children ( node_iter ) ) {
           output << tab << "\"" << variable ( node_iter ).name() << "\" -> "
                  << "\"" << variable ( arc_iter ).name() << "\";" << std::endl;
@@ -189,7 +183,6 @@ namespace gum {
 
     GUM_SCALAR tmp;
 
-    //for ( const auto node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter ) {
     for ( const auto node_iter : nodes() ) {
       if ( ( tmp = cpt ( node_iter ) [i] ) == ( GUM_SCALAR ) 0 ) {
         return ( GUM_SCALAR ) 0;
@@ -208,7 +201,6 @@ namespace gum {
 
     GUM_SCALAR tmp;
 
-    //for ( const auto node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter ) {
     for ( const auto node_iter : nodes() ) {
       if ( ( tmp = cpt ( node_iter ) [i] ) == ( GUM_SCALAR ) 0 ) {
         return ( GUM_SCALAR ) ( - std::numeric_limits<double>::infinity( ) );
@@ -224,7 +216,6 @@ namespace gum {
   bool
   IBayesNet<GUM_SCALAR>::operator== ( const IBayesNet& from ) const {
     if ( dag() == from.dag() ) {
-      //for ( const auto node = beginNodes(); node != endNodes(); ++node ) {
       for ( const auto node : nodes() ) {
         // We don't use Potential::operator== because BN's don't share
         // DiscreteVariable's pointers.

@@ -59,7 +59,6 @@ namespace gum {
     std::pair<NodeId, NodeId> thePair;
     NodeId current, from_current, new_node;
 
-    //for ( UndiGraph::NodeIterator iter = beginNodes();iter != endNodes(); ++iter ) {
     for ( const auto node : nodes() ) {
       // check if the node has already been examined (if this is not the case,
       // this means that we are on a new connected component)
@@ -122,7 +121,6 @@ namespace gum {
     nodeStream << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
 
-    //for ( NodeGraphPartIterator nodeIter = beginNodes(); nodeIter != endNodes(); ++nodeIter ) {
     for ( const auto node : nodes() ) {
       nodeStream << tab << node << ";";
 

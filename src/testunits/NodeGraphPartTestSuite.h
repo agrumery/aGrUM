@@ -191,7 +191,6 @@ namespace gum_tests {
         unsigned int cpt = 0;
 
         for ( gum::NodeGraphPartIterator iter = nodeset.begin(); iter != nodeset.end(); ++iter ) {
-          //for ( const auto iter : nodeset ) {
           if ( cpt == 0 ) {
             nodeset.eraseNode ( *iter );
             cpt++;

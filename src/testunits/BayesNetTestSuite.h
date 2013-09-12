@@ -181,7 +181,6 @@ namespace gum_tests {
         //const gum::NodeSet& nodes=source.nodes();
         const gum::DAG dag = source.dag();
 
-        //for ( gum::DAG::NodeIterator nodeIter = dag.beginNodes();nodeIter != dag.endNodes();++nodeIter ) {
         for ( const auto nodeIter : dag.nodes() ) {
           TS_ASSERT ( copy->dag().exists ( nodeIter ) );
 
@@ -241,7 +240,6 @@ namespace gum_tests {
         //const gum::NodeSet& nodes=source.nodes();
         const gum::DAG dag = source.dag();
 
-        //for ( gum::DAG::NodeIterator nodeIter = dag.beginNodes();nodeIter != dag.endNodes();++nodeIter ) {
         for ( const auto nodeIter : dag.nodes() ) {
           TS_ASSERT ( copy.dag().exists ( nodeIter ) );
 
@@ -285,7 +283,6 @@ namespace gum_tests {
         }
 
 
-        //for ( gum::DAG::NodeIterator iter = copy.beginNodes(); iter != copy.endNodes(); ++iter ) {
         for ( const auto iter : copy.nodes() ) {
           std::stringstream c_str;
           std::stringstream s_str;
@@ -484,7 +481,6 @@ namespace gum_tests {
         gum::BayesNet<float> bn;
         gum::List<gum::NodeId> idList;
 
-        //for ( gum::DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
         for ( const auto iter : bn.nodes() ) {
           TS_ASSERT ( idList.exists ( iter ) );
         }
@@ -497,7 +493,6 @@ namespace gum_tests {
 
         fill ( bn, idList );
 
-        //for ( gum::DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
         for ( const auto iter : bn.nodes() ) {
           std::stringstream s1, s2;
           s1 << bn.cpt ( iter );
@@ -624,7 +619,6 @@ namespace gum_tests {
 
         fill ( bn, idList );
 
-        //for ( gum::DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter ) {
         for ( const auto iter : bn.nodes() ) {
           TS_ASSERT_EQUALS ( bn.idFromName ( bn.variable ( iter ).name() ), iter );
           TS_ASSERT_EQUALS ( &bn.variableFromName ( bn.variable ( iter ).name() ), &bn.variable ( iter ) );

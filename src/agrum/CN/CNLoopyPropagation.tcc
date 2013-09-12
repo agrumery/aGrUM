@@ -600,7 +600,6 @@ namespace gum {
       _InferenceUpToDate = false;
 
       if ( _msg_l_sent.size() > 0 ) {
-        //for ( const auto it = bnet->beginNodes(), theEnd = bnet->endNodes(); it != theEnd; ++it )
         for ( const auto it : bnet->nodes() )
           delete _msg_l_sent[ it ];
       }
@@ -725,7 +724,6 @@ namespace gum {
         _NodesL_min.set ( *it, ( GUM_SCALAR ) 1. );
       }
 
-      //for ( const auto it = bnet->beginArcs(), theEnd = bnet->endArcs(); it != theEnd; ++it ) {
       for ( const auto it : bnet->arcs() ) {
         _ArcsP_min.set ( it, _NodesP_min[ it.tail() ] );
 
@@ -787,7 +785,6 @@ namespace gum {
       std::vector< cArcP > seq;
       seq.reserve ( nbrArcs );
 
-      //for ( const auto it = bnet->beginArcs(), theEnd = bnet->endArcs(); it != theEnd; ++it )
       for ( const auto it : bnet->arcs() )
         seq.push_back ( &it );
 
@@ -829,7 +826,6 @@ namespace gum {
       std::vector< cArcP > seq;
       seq.reserve ( nbrArcs );
 
-      //for ( const auto it = bnet->beginArcs(), theEnd = bnet->endArcs(); it != theEnd; ++it )
       for ( const auto it : bnet->arcs() )
         seq.push_back ( &it );
 
@@ -1247,7 +1243,6 @@ namespace gum {
 
     template<typename GUM_SCALAR>
     void CNLoopyPropagation<GUM_SCALAR>::_refreshLMsPIs ( bool refreshIndic ) {
-      //for ( const auto itX = bnet->beginNodes(), theEnd = bnet->endNodes(); itX != theEnd; ++itX ) {
       for ( const auto itX : bnet->nodes() ) {
         if ( ( ! refreshIndic ) && cn->currentNodeType ( itX ) == CredalNet<GUM_SCALAR>::NodeType::Indic )
           continue;
@@ -1261,7 +1256,6 @@ namespace gum {
           GUM_SCALAR lmax = 1.;
 
           if ( ! children.empty() && ! infE::_evidence.exists ( itX ) ) {
-            //for ( NodeSet::const_iterator it = children.begin(); it != children.end(); ++it ) {
             for ( const auto it : children ) {
               lmin *= _ArcsL_min[ Arc ( itX, it ) ];
 
@@ -1352,7 +1346,6 @@ namespace gum {
 
     template< typename GUM_SCALAR >
     void CNLoopyPropagation<GUM_SCALAR>::_updateMarginals( ) {
-      //for ( const auto it = bnet->beginNodes(), theEnd = bnet->endNodes(); it != theEnd; ++it ) {
       for ( const auto it : bnet->nodes() ) {
         GUM_SCALAR msg_p_min = 1.;
         GUM_SCALAR msg_p_max = 0.;
@@ -1456,7 +1449,6 @@ namespace gum {
 
     template<typename GUM_SCALAR>
     void CNLoopyPropagation<GUM_SCALAR>::_updateIndicatrices( ) {
-      //for ( const auto id = bnet->beginNodes(), end = bnet->endNodes(); id != end; ++id ) {
       for ( const auto id : bnet->nodes() ) {
         if ( cn->currentNodeType ( id ) != CredalNet<GUM_SCALAR>::NodeType::Indic )
           continue;
@@ -1477,7 +1469,6 @@ namespace gum {
 
       std::vector< std::vector< GUM_SCALAR > > vertices ( 2, std::vector< GUM_SCALAR > ( 2 ) );
 
-      //for ( const auto it = bnet->beginNodes(), theEnd = bnet->endNodes(); it != theEnd; ++it ) {
       for ( const auto it : bnet->nodes() ) {
         vertices[ 0 ][ 0 ] = infE::_marginalMin[ it ][ 0 ];
         vertices[ 0 ][ 1 ] = infE::_marginalMax[ it ][ 1 ];
@@ -1509,7 +1500,6 @@ namespace gum {
         GUM_ERROR ( OperationNotAllowed, "CNLoopyPropagation is only available with separately specified nets" );
 
       // test for binary cn
-      //for ( const auto it = cnet.current_bn().beginNodes(), theEnd = cnet.current_bn().endNodes(); it != theEnd; ++it )
       for ( const auto it : cnet.current_bn().nodes() )
         if ( cnet.current_bn().variable ( it ).domainSize() != 2 )
           GUM_ERROR ( OperationNotAllowed, "CNLoopyPropagation is only available with binary credal networks" );
@@ -1534,7 +1524,6 @@ namespace gum {
       _InferenceUpToDate = false;
 
       if ( _msg_l_sent.size() > 0 ) {
-        //for ( DAG::NodeIterator it = bnet->beginNodes(); it != bnet->endNodes(); ++it )
         for ( const auto it : bnet->nodes() )
           delete _msg_l_sent[it];
       }

@@ -272,7 +272,6 @@ namespace gum {
       TreeWidthSearch::accept_root ( const Pattern* r ) {
         Size tree_width = 0;
 
-        //for ( Pattern::NodeIterator n = r->beginNodes(); n != r->endNodes(); ++n )
         for ( const auto n : r->nodes() )
           tree_width += r->label ( n ).tree_width;
 

@@ -389,7 +389,7 @@ namespace gum {
         if ( Vnew != nullptr )
           nbNodeT1 = Vnew->nodesMap().size();
         else
-          nbNodeT1= 0;
+          nbNodeT1 = 0;
 
         nbNodeT2 = ( *VActionsIter )->nodesMap().size();
 
@@ -681,7 +681,7 @@ namespace gum {
     if ( Vnew != nullptr )
       nbNodeT1 = Vnew->nodesMap().size();
     else
-      nbNodeT1= 0;
+      nbNodeT1 = 0;
 
     nbNodeT2 = reward->nodesMap().size();
 
@@ -721,7 +721,7 @@ namespace gum {
 
     if ( sensDirect ) {
       time.reset();
-      MultiDimDecisionDiagramBase< GUM_SCALAR >* Vind =add2MultiDimDecisionDiagrams ( reward, Vnew );
+      MultiDimDecisionDiagramBase< GUM_SCALAR >* Vind = add2MultiDimDecisionDiagrams ( reward, Vnew );
       nbFinalNodeIndirect = Vind->nodesMap().size();
       iterationTimeIndirect = time.step();
       delete Vind;
@@ -761,11 +761,11 @@ namespace gum {
 // Evals how many retrograde variable there will be if we do the operation in that order
 // ===========================================================================
   template<typename GUM_SCALAR>
-  std::pair<Idx,Idx>
+  std::pair<Idx, Idx>
   SPUDDPlanning<GUM_SCALAR>::__evalNbRetrogradeEvaluation ( const MultiDimDecisionDiagramBase<GUM_SCALAR>* dD1, const MultiDimDecisionDiagramBase<GUM_SCALAR>* dD2 ) {
 
 
-    std::pair<Idx,Idx> res;
+    std::pair<Idx, Idx> res;
 
     if ( dD1 == nullptr || dD2 == nullptr ) {
       res.first = 0;
@@ -788,7 +788,7 @@ namespace gum {
         for ( ; iterS2 != dD2VarSeq.end(); ++iterS2 )
           if ( !fusVarSeq.exists ( *iterS2 ) )
             fusVarSeq.insert ( *iterS2 );
-      } else if ( iterS2 ==dD2VarSeq.end() ) {
+      } else if ( iterS2 == dD2VarSeq.end() ) {
         for ( ; iterS1 != dD1VarSeq.end(); ++iterS1 )
           if ( !fusVarSeq.exists ( *iterS1 ) )
             fusVarSeq.insert ( *iterS1 );
@@ -1053,25 +1053,24 @@ namespace gum {
     nonTerminalStream << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
 
-    //for ( NodeGraphPart::NodeIterator nodeIter = op->nodesMap().beginNodes(); nodeIter != op->nodesMap().endNodes(); ++nodeIter ) {
-    for ( const auto node:op->nodesMap().nodes() ) {
+    for ( const auto node : op->nodesMap().nodes() ) {
       if ( node != 0 ) {
 
         if ( op->isTerminalNode ( node ) ) {
 
-          terminalStream << tab << node << ";" << tab << node  << " [label=\"" << __fmdp->actionName ( op->nodeValue ( node ) ) << "\"]"<< ";" << std::endl;
+          terminalStream << tab << node << ";" << tab << node  << " [label=\"" << __fmdp->actionName ( op->nodeValue ( node ) ) << "\"]" << ";" << std::endl;
 
         } else {
-          nonTerminalStream << tab << node << ";" << tab << node  << " [label=\"" << op->nodeVariable ( node )->name() << "\"]"<< ";" << std::endl;
+          nonTerminalStream << tab << node << ";" << tab << node  << " [label=\"" << op->nodeVariable ( node )->name() << "\"]" << ";" << std::endl;
 
           if ( op->nodeSons ( node ) != nullptr ) {
             for ( std::vector<NodeId>::const_iterator sonIter =  op->nodeSons ( node )->begin(); sonIter != op->nodeSons ( node )->end(); ++sonIter )
               if ( *sonIter != 0 )
-                arcstream << tab <<  node << " -> " << *sonIter << " [label=\"" << op->nodeVariable ( node )->label ( std::distance ( op->nodeSons ( node )->begin(), sonIter ) ) << "\",color=\"#0000ff\"]"<< ";" << std::endl;
+                arcstream << tab <<  node << " -> " << *sonIter << " [label=\"" << op->nodeVariable ( node )->label ( std::distance ( op->nodeSons ( node )->begin(), sonIter ) ) << "\",color=\"#0000ff\"]" << ";" << std::endl;
           }
 
           if ( op->hasNodeDefaultSon ( node ) )
-            defaultarcstream << tab <<  node << " -> " << op->nodeDefaultSon ( node ) << " [color=\"#ff0000\"]"<< ";" << std::endl;
+            defaultarcstream << tab <<  node << " -> " << op->nodeDefaultSon ( node ) << " [color=\"#ff0000\"]" << ";" << std::endl;
 
         }
       }
@@ -1145,7 +1144,7 @@ gum::SPUDDPlanning<GUM_SCALAR>::__argMaxOn2MultiDimDecisionDiagrams ( const gum:
 #else
   gum::GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION ( opData, nullptr, "" );
 #endif
-  std::pair< double, long > defaultPair ( 0,0 );
+  std::pair< double, long > defaultPair ( 0, 0 );
   ret = opData.factory->getMultiDimDecisionDiagram ( false, defaultPair );
 
   return ret;
@@ -1214,7 +1213,7 @@ gum::SPUDDPlanning<GUM_SCALAR>::__differenceOnPolicy ( const gum::MultiDimDecisi
   gum::GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION ( opData, nullptr, "" );
 #endif
   //     std::cout << "Fin opération" << std::endl;
-  std::pair< double, long > defaultPair ( 0,0 );
+  std::pair< double, long > defaultPair ( 0, 0 );
   ret = opData.factory->getMultiDimDecisionDiagram ( false, defaultPair );
 
   return ret;

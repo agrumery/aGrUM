@@ -94,18 +94,18 @@
   G gr;
 
   // iterate on nodes
-  for(G::NodeIterator it=gr.beginNodes();it != gr.endNodes() ; ++it) {
-    ... // *it is a gum::NodeId
+  for(const auto node : gr.nodes()) {
+    ... // node is a gum::NodeId
   }
 
   // iterate on edges (if possible)
-  for(G::EdgeIterator it=gr.beginEdges();it != gr.endEdges() ; ++it) {
-    ... // *it is a gum::Edge
+  for(const auto & edge : gr.edges()) {
+    ... // edge is a const gum::Edge&
   }
 
   // iterate on arcs (if possible)
-  for(G::ArcIterator it=gr.beginArcs();it != gr.endArcs() ; ++it) {
-    ... // *it is a gum::Arc
+  for(const auto & arc =gr.arcs()) {
+    ... // arc is a const gum::Arc&
   }
   @endcode
 

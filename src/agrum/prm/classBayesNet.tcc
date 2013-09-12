@@ -31,7 +31,6 @@ namespace gum {
 
     template<typename GUM_SCALAR>
     void ClassBayesNet<GUM_SCALAR>::__init ( const Class& c ) {
-      //for( DAG::NodeIterator node = c.dag().beginNodes(); node != c.dag().endNodes(); ++node ) {
       for ( const auto node : c.dag().nodes() ) {
         try {
           // Adding the attribute
@@ -45,7 +44,6 @@ namespace gum {
         }
       }
 
-      //for( ArcSet::iterator arc = c.dag().beginArcs(); arc != c.dag().endArcs(); ++arc ) {
       for ( const auto arc : c.dag().arcs() ) {
         try {
           this->_dag.insertArc ( arc.tail(), arc.head() );
@@ -146,7 +144,6 @@ namespace gum {
     template<typename GUM_SCALAR> INLINE
     const NodeProperty<Size>& ClassBayesNet<GUM_SCALAR>::modalities() const {
       if ( __modalities.empty() ) {
-        //for ( DAG::NodeIterator node = this->dag().beginNodes(); node != this->dag().endNodes(); ++node ) {
         for ( const auto node : this->nodes() ) {
           __modalities.insert ( node, ( unsigned int ) variable ( node ).domainSize() );
         }
@@ -162,8 +159,7 @@ namespace gum {
       output << "digraph \"";
       output << __class->name() << "\" {" << std::endl;
 
-      //for ( DAG::NodeIterator node_iter = this->dag().beginNodes(); node_iter != this->dag().endNodes(); ++node_iter ) {
-      for ( const auto node: this->nodes() ) {
+      for ( const auto node : this->nodes() ) {
         if ( this->dag().children ( node ).size() > 0 ) {
           const NodeSet& children = this->dag().children ( node );
 

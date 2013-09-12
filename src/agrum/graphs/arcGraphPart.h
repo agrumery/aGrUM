@@ -212,10 +212,12 @@ namespace gum {
       void unvirtualizedEraseChildren ( const NodeId id );
 
       /// returns an iterator to parse the set of arcs contained in the ArcGraphPart
-      const ArcIterator beginArcs() const;
+      /// @deprecated please use arcs().begin()
+      GUM_DEPRECATED ( ArcIterator beginArcs() const );
 
       /// returns the end iterator to parse the set of arcs
-      const ArcIterator& endArcs() const;
+      /// @deprecated please use arcs().end()
+      GUM_DEPRECATED ( const ArcIterator& endArcs() const );
 
       /// to friendly display the content of the ArcGraphPart
       const std::string toString() const;

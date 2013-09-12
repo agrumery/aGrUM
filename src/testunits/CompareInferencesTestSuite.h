@@ -187,7 +187,6 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( inf_gibbs.makeInference() );
 
         {
-          //for ( gum::DAG::NodeIterator it = bn->beginNodes(); it != bn->endNodes(); ++it ) {
           for ( const auto it : bn->nodes() ) {
             gum::NodeId i = it;
             const gum::Potential<double>& marginal_gibbs = inf_gibbs.marginal ( i );
@@ -415,7 +414,6 @@ namespace gum_tests {
           gum::LazyPropagation<float> infShaf ( *net );
           infShaf.makeInference();
 
-          //for ( gum::NodeGraphPart::NodeIterator it=net->beginNodes(); it!=net->endNodes(); ++it ) {
           for ( const auto it : net->nodes() ) {
             gum::Instantiation I;
             I << net->variable ( it );

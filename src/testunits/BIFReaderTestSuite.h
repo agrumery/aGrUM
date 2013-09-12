@@ -93,7 +93,6 @@ namespace gum_tests {
           TS_ASSERT_EQUALS ( net->size(), ( gum::Size ) 2 );
           gum::NodeId node_1 = 0, node_2 = 0;
 
-          //for ( gum::DAG::NodeIterator iter = net->dag().beginNodes(); iter != net->dag().endNodes(); ++iter ) {
           for ( const auto node : net->nodes() ) {
             if ( net->variable ( node ).name() == "n1" )
               node_1 = node;
@@ -221,7 +220,6 @@ namespace gum_tests {
         if ( net != 0 ) {
           gum::HashTable<std::string, gum::Id> idMap;
 
-          //for ( gum::DAG::NodeIterator iter = net->beginNodes(); iter != net->endNodes(); ++iter ) {
           for(const auto iter : net->nodes()) {
             idMap.insert ( net->variable ( iter ).name(), iter );
           }
@@ -576,7 +574,6 @@ namespace gum_tests {
         gum::HashTable<std::string, gum::Id> idMap;
 
 
-        //for ( gum::DAG::NodeIterator iter = net->beginNodes(); iter != net->endNodes(); ++iter ) {
         for(const auto iter : net->nodes()) {
           idMap.insert ( net->variable ( iter ).name(), iter );
         }
