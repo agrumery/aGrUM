@@ -84,12 +84,12 @@ namespace gum {
     return * ( __children[id] );
   }
 
-
+  //deprecated
   INLINE ArcGraphPart::ArcIterator ArcGraphPart::beginArcs() const {
     return __arcs.begin();
   }
 
-
+  //deprecated    
   INLINE const ArcGraphPart::ArcIterator& ArcGraphPart::endArcs() const {
     return __arcs.end();
   }

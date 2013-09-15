@@ -156,7 +156,7 @@ namespace gum {
       Idx dim() const;
 
       /// @return Returns a dot representation of this IBayesNet.
-      std::string toDot ( void ) const;
+      virtual std::string toDot ( void ) const;
 
       /// @return Returns a string representation of this IBayesNet.
       std::string toString ( void ) const;

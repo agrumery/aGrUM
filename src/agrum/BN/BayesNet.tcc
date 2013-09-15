@@ -26,6 +26,7 @@
 
 #include <limits>
 
+#include <agrum/BN/BayesNet.h>
 #include <agrum/BN/IBayesNet.h>
 
 #include <agrum/multidim/aggregators/or.h>
@@ -39,9 +40,6 @@
 
 
 namespace gum {
-
-//                                  BayesNet
-
 
   template<typename GUM_SCALAR> INLINE
   BayesNet<GUM_SCALAR>::BayesNet() :
@@ -194,25 +192,6 @@ namespace gum {
   const VariableNodeMap&
   BayesNet<GUM_SCALAR>::variableNodeMap() const {
     return __varMap;
-  }
-
-  template<typename GUM_SCALAR>
-  Idx
-  BayesNet<GUM_SCALAR>::dim() const {
-    Idx dim = 0;
-
-    for ( const auto node : nodes() ) {
-      Idx q = 1;
-      Set<NodeId> s = dag().parents ( node );
-
-      for ( Set<NodeId>::iterator parent = s.begin(); parent != s.end(); ++parent ) {
-        q *= variable ( *parent ).domainSize();
-      }
-
-      dim += ( variable ( node ).domainSize() - 1 ) * q;
-    }
-
-    return dim;
   }
 
   template<typename GUM_SCALAR> INLINE
@@ -375,40 +354,6 @@ namespace gum {
     return output;
   }
 
-
-  template<typename GUM_SCALAR> INLINE
-  std::string
-  BayesNet<GUM_SCALAR>::toString ( void ) const {
-    Size param = 0;
-
-    double dSize = log10DomainSize();
-
-    for ( const auto it : nodes() ) {
-      param += ( ( const MultiDimImplementation<GUM_SCALAR>& ) cpt ( it ).getMasterRef() ).realSize();
-    }
-
-    double compressionRatio = log10 ( 1.0 * param ) - dSize;
-
-    std::stringstream s;
-    s << "BN{nodes: " << size() << ", arcs: " << dag().sizeArcs() << ", ";
-
-    if ( dSize > 6 )
-      s << "domainSize: 10^" << dSize;
-    else
-      s << "domainSize: " << round ( pow ( 10.0, dSize ) );
-
-    s << ", parameters: " << param << ", compression ratio: ";
-
-    if ( compressionRatio > -3 )
-      s << trunc ( 100.0 - pow ( 10.0, compressionRatio + 2.0 ) );
-    else
-      s << "100-10^" << compressionRatio + 2.0;
-
-    s << "% }";
-
-    return s.str();
-  }
-
   template<typename GUM_SCALAR>
   std::string
   BayesNet<GUM_SCALAR>::toDot ( void ) const {
@@ -454,43 +399,6 @@ namespace gum {
     output << "}" << std::endl;
 
     return output.str();
-  }
-
-
-  /// Compute a parameter of the joint probability for the BN (given an instantiation of the vars)
-  template<typename GUM_SCALAR>
-  GUM_SCALAR BayesNet<GUM_SCALAR>::jointProbability ( const Instantiation& i ) const {
-    GUM_SCALAR value = ( GUM_SCALAR ) 1.0;
-
-    GUM_SCALAR tmp;
-
-    for ( const auto node_iter : nodes() ) {
-      if ( ( tmp = cpt ( node_iter ) [i] ) == ( GUM_SCALAR ) 0 ) {
-        return ( GUM_SCALAR ) 0;
-      }
-
-      value *= tmp;
-    }
-
-    return value;
-  }
-
-  /// Compute a parameter of the joint probability for the BN (given an instantiation of the vars)
-  template<typename GUM_SCALAR>
-  GUM_SCALAR BayesNet<GUM_SCALAR>::logJointProbability ( const Instantiation& i ) const {
-    GUM_SCALAR value = ( GUM_SCALAR ) 0.0;
-
-    GUM_SCALAR tmp;
-
-    for ( const auto node_iter : nodes() ) {
-      if ( ( tmp = cpt ( node_iter ) [i] ) == ( GUM_SCALAR ) 0 ) {
-        return ( GUM_SCALAR ) ( - std::numeric_limits<double>::infinity( ) );
-      }
-
-      value += log2 ( cpt ( node_iter ) [i] );
-    }
-
-    return value;
   }
 
   /// begin Multiple Change for all CPTs
@@ -574,51 +482,6 @@ namespace gum {
   void BayesNet<GUM_SCALAR>::_unsafeChangePotential ( NodeId id, Potential<GUM_SCALAR>* newPot ) {
     delete __probaMap[id];
     __probaMap[id] = newPot;
-  }
-
-
-  template <typename GUM_SCALAR>
-  bool
-  BayesNet<GUM_SCALAR>::operator== ( const BayesNet& from ) const {
-    if ( dag() == from.dag() ) {
-      for ( const auto node : nodes() ) {
-        // We don't use Potential::operator== because BN's don't share
-        // DiscreteVariable's pointers.
-        Bijection<const DiscreteVariable*, const DiscreteVariable*> bijection;
-        bijection.insert ( & ( variable ( node ) ), & ( from.variable ( node ) ) );
-        const NodeSet& parents = dag().parents ( node );
-
-        for ( NodeSetIterator arc = parents.begin(); arc != parents.end(); ++arc ) {
-          bijection.insert ( & ( variable ( *arc ) ), & ( from.variable ( *arc ) ) );
-        }
-
-        Instantiation i ( cpt ( node ) );
-
-        Instantiation j ( from.cpt ( node ) );
-
-        for ( i.setFirst(); not i.end(); i.inc() ) {
-          typedef Bijection<const DiscreteVariable*, const DiscreteVariable*>::iterator BiIter;
-
-          for ( BiIter iter = bijection.begin(); iter != bijection.end(); ++iter ) {
-            j.chgVal ( * ( iter.second() ), i.val ( * ( iter.first() ) ) );
-          }
-
-          if ( std::pow ( cpt ( node ).get ( i ) - from.cpt ( node ).get ( j ), ( GUM_SCALAR ) 2 ) > ( GUM_SCALAR ) 1e-6 ) {
-            return false;
-          }
-        }
-      }
-
-      return true;
-    }
-
-    return false;
-  }
-
-  template <typename GUM_SCALAR>
-  bool
-  BayesNet<GUM_SCALAR>::operator!= ( const BayesNet& from ) const {
-    return not this->operator== ( from );
   }
 
 } /* namespace gum */

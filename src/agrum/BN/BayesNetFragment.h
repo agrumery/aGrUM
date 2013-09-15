@@ -47,11 +47,11 @@ namespace gum {
    * BayesNetFragment is a DiGraphListener in order to be synchronized (especiallay when
    * removing nodes or arcs).
    *
-   * In a BayesNetFragment, one can install or remove nodes. An arc is in the fragment if and only if 
+   * In a BayesNetFragment, one can install or remove nodes. An arc can be in the fragment if and only if
    * its head and tail are installed in the fragment.
-   * 
+   *
    * A BayesNetFragment can redefine potential for node. The main reason is to be able to
-   * install a node without installing all its parents (and its ascendants). So local Potential to the
+   * install a node without installing all its parents (and its ascendants). So local CPT to the
    * fragment can be created. However, it is not done automatically. If a cpt is not locally
    * defined, the fragment uses the cpt defined in the referred BN. The checkConsistency() method
    * verifies that, for all installed nodes, either all the parents are installed or a local CPT is
@@ -65,8 +65,7 @@ namespace gum {
       const BayesNet<GUM_SCALAR>& __bn;
 
       /// Mapping between the variable's id and their CPT specific to this Fragment.
-      //Property< Potential< GUM_SCALAR >* >::onNodes __probaMap;
-      HashTable<NodeId, Potential<GUM_SCALAR>* > __probaMap;
+      NodeProperty<const Potential<GUM_SCALAR> *> __localCPTs;
 
 
     public:
@@ -86,24 +85,24 @@ namespace gum {
       /// the action to take when a new node is inserted into the graph
       /** @param src the object that sent the signal
        * @param id the id of the new node inserted into the graph */
-      virtual void whenNodeAdded ( const void* src, NodeId id );
+      virtual void whenNodeAdded ( const void* src, NodeId id ) noexcept override;
 
       /// the action to take when a node has just been removed from the graph
       /** @param src the object that sent the signal
        * @param id the id of the node has just been removed from the graph */
-      virtual void whenNodeDeleted ( const void* src, NodeId id );
+      virtual void whenNodeDeleted ( const void* src, NodeId id ) noexcept override;
 
       /// the action to take when a new arc is inserted into the graph
       /** @param src the object that sent the signal
        * @param from the id of tail of the new arc inserted into the graph
        * @param to the id of head of the new arc inserted into the graph */
-      virtual void whenArcAdded ( const void* src, NodeId from, NodeId to );
+      virtual void whenArcAdded ( const void* src, NodeId from, NodeId to ) noexcept override;
 
       /// the action to take when an arc has just been removed from the graph
       /** @param src the object that sent the signal
        * @param from the id of tail of the arc removed from the graph
        * @param to the id of head of the arc removed from the graph */
-      virtual void whenArcDeleted ( const void* src, NodeId from, NodeId to );
+      virtual void whenArcDeleted ( const void* src, NodeId from, NodeId to ) noexcept override;
       /// @}
 
 
@@ -115,63 +114,42 @@ namespace gum {
       *
       * @throw NotFound If no variable's id matches varId.
       */
-      virtual const Potential<GUM_SCALAR>& cpt ( NodeId varId ) const;
+      virtual const Potential<GUM_SCALAR>& cpt ( NodeId varId ) const override;
 
       /**
       * Returns a constant reference to the VariableNodeMap of this BN
       */
-      virtual const VariableNodeMap& variableNodeMap() const;
+      virtual const VariableNodeMap& variableNodeMap() const override;
 
       /**
       * Returns a constant reference over a variabe given it's node id.
       *
       * @throw NotFound If no variable's id matches varId.
       */
-      virtual const DiscreteVariable& variable ( NodeId id ) const;
+      virtual const DiscreteVariable& variable ( NodeId id ) const override;
 
       /**
       * Return id node from discrete var pointer.
       *
       * @throw NotFound If no variable matches var.
       */
-      virtual NodeId nodeId ( const DiscreteVariable& var ) const;
+      virtual NodeId nodeId ( const DiscreteVariable& var ) const override;
 
       /**
        * Getter by name
        *
        * @throw NotFound if no such name exists in the graph.
        */
-      virtual NodeId idFromName ( const std::string& name ) const;
+      virtual NodeId idFromName ( const std::string& name ) const override;
 
       /**
        * Getter by name
        *
        * @throw NotFound if no such name exists in the graph.
        */
-      virtual const DiscreteVariable& variableFromName ( const std::string& name ) const;
+      virtual const DiscreteVariable& variableFromName ( const std::string& name ) const override;
 
       /// @}
-    public:
-      using IBayesNet<GUM_SCALAR>::dag;
-      using IBayesNet<GUM_SCALAR>::size;
-      using IBayesNet<GUM_SCALAR>::sizeArcs;
-      using IBayesNet<GUM_SCALAR>::dim;
-
-      using IBayesNet<GUM_SCALAR>::jointProbability;
-      using IBayesNet<GUM_SCALAR>::log2JointProbability;
-
-      using IBayesNet<GUM_SCALAR>::toDot;
-      using IBayesNet<GUM_SCALAR>::toString;
-
-      using IBayesNet<GUM_SCALAR>::property;
-      using IBayesNet<GUM_SCALAR>::setProperty;
-      using IBayesNet<GUM_SCALAR>::empty;
-      using IBayesNet<GUM_SCALAR>::completeInstantiation;
-      using IBayesNet<GUM_SCALAR>::nodes;
-      using IBayesNet<GUM_SCALAR>::arcs;
-      using IBayesNet<GUM_SCALAR>::moralGraph;
-      using IBayesNet<GUM_SCALAR>::topologicalOrder;
-      using IBayesNet<GUM_SCALAR>::log10DomainSize;
 
       /// @specific API for Fragment
       /// @{
@@ -179,7 +157,7 @@ namespace gum {
       /**
        * check if a certain NodeId exists in the fragment
        */
-      bool isInstalledNode ( NodeId id ) const;
+      bool isInstalledNode ( NodeId id ) const noexcept;
 
       /**
        * install a node referenced by its nodeId
@@ -196,15 +174,70 @@ namespace gum {
        * @warning nothing happens if the node is already installed
        */
       void installAscendants ( NodeId id );
-      
-      
+
+
       /**
        * uninstall a node referenced by its nodeId
        *
        * @warning nothing happens if the node is not installed
        */
-      void uninstallNode ( NodeId id );
+      void uninstallNode ( NodeId id ) noexcept;
+
+      /**
+       * install a local marginal for a node into the fragment.
+       * This function will remove all the arcs from the parents to the node.
+       * @param id the nodeId
+       * @param pot the potential
+       * @throw NotFound if the id is not in the fragment
+       * @throw OperationNotAllowed if the potential is not compliant with the variable (or is not a marginal)
+       **/
+      void installMarginal ( NodeId id, const Potential<GUM_SCALAR>* pot );
+
+      /**
+       * install a local cpt for a node into the fragment.
+       * This function will remove change the arcs from the parents to the node in order to be
+       * consistent with the new local potential.
+       * @param id the nodeId
+       * @param pot the potential
+       * @throw NotFound if the id is not in the fragment
+       * @throw OperationNotAllowed if the potential is not compliant with the variable or if a variable
+       * in the CPT is not a parent in the referred bn.
+       **/
+      void installCPT ( NodeId id, const Potential<GUM_SCALAR>* pot );
+
+      /**
+       * uninstall a local CPT. Does nothing if no local CPT for this nodeId
+       * @throw NotFound if id is not in the fragment
+       */
+      void uninstallCPT ( NodeId id );
+
+      /**
+       * returns true if the nodeId's (local or not) cpt is consistent with its parents in the fragment
+       * @throw NotFound if the id is not in the fragment
+       */
+      bool checkConsistency ( NodeId id );
+
+      /**
+       * returns true if all nodes in the fragment are consistent
+       */
+      bool checkConsistency() noexcept;
       /// @}
+
+      using IBayesNet<GUM_SCALAR>::nodes;
+    protected:
+      // remove an arc
+      void _uninstallArc ( NodeId from, NodeId to ) noexcept;
+
+      // install a CPT, create or delete arcs. Checks are made in public methods
+      // In particular, it is assumed that all the variables in the pot are in the fragment
+      void _installCPT ( NodeId id, const Potential<GUM_SCALAR>* pot ) noexcept;
+
+      /**
+       * uninstall a local CPT. Does nothing if no local CPT for this nodeId
+       * No check. Checks are made in public methods.
+       */
+      void _uninstallCPT ( NodeId id ) noexcept;
+
   };
 
 }// namespace gum

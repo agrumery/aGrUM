@@ -64,7 +64,6 @@ namespace gum {
        * Default constructor: creates an empty null dimensional matrix
        * choose a MultiDimArray<> as decorated implementation.
        */
-
       Potential( );
 
 
@@ -72,7 +71,6 @@ namespace gum {
        * Creates an empty null dimensional matrix.
        * @param aContent decorated implementation
        */
-
       explicit Potential( MultiDimImplementation<GUM_SCALAR>* aContent );
 
 
@@ -81,7 +79,6 @@ namespace gum {
        * This copy should create a new decorator for the same content ...
        * Too dangerous.
        */
-
       explicit Potential( const Potential<GUM_SCALAR>& src );
 
 
@@ -93,7 +90,6 @@ namespace gum {
        * @param aContent decorated implementation
        * @param src the multidimensional matrix we copy into this
        */
-
       explicit Potential( MultiDimImplementation<GUM_SCALAR>* aContent,
                           const MultiDimContainer<GUM_SCALAR>& src );
 
@@ -104,7 +100,6 @@ namespace gum {
        * Note that, when the multidimensional array is removed from memory, its
        * variables are not removed as well.
        */
-
       ~Potential();
 
       /// @}

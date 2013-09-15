@@ -86,10 +86,8 @@ namespace gum {
     for ( const auto node : nodes() ) {
       Idx q = 1;
 
-      //const NodeSet& s = dag().parents ( node );
-      for ( const auto parent : dag().parents ( node ) ) {
+      for ( const auto parent : dag().parents ( node ) )
         q *= variable ( parent ).domainSize();
-      }
 
       dim += ( variable ( node ).domainSize() - 1 ) * q;
     }
@@ -161,12 +159,12 @@ namespace gum {
       if ( dag().children ( node_iter ).size() > 0 ) {
         //const NodeSet& children =  dag().children ( node_iter );
 
-        for ( const auto arc_iter : dag().children ( node_iter ) ) {
+        for ( const auto child_iter : dag().children ( node_iter ) ) {
           output << tab << "\"" << variable ( node_iter ).name() << "\" -> "
-                 << "\"" << variable ( arc_iter ).name() << "\";" << std::endl;
+                 << "\"" << variable ( child_iter ).name() << "\";" << std::endl;
         }
-      } else if ( dag().parents ( *node_iter ).size() == 0 ) {
-        output << tab << "\"" << variable ( *node_iter ).name() << "\";" << std::endl;
+      } else if ( dag().parents ( node_iter ).size() == 0 ) {
+        output << tab << "\"" << variable ( node_iter ).name() << "\";" << std::endl;
       }
     }
 

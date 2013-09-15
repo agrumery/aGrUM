@@ -70,6 +70,7 @@
 #define GUM_DEPRECATED(func) func
 #endif
 
+#define GUM_UNUSED(expr) do { (void)(expr); } while (0)
 
 #include <agrum/core/debug.h>
 #include <agrum/core/inline.h>

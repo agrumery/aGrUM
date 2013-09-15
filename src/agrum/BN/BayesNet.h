@@ -95,26 +95,15 @@ namespace gum {
        * Returns the CPT of a variable.
        * @throw NotFound If no variable's id matches varId.
        */
-      virtual const Potential<GUM_SCALAR>& cpt ( NodeId varId ) const;
+      virtual const Potential<GUM_SCALAR>& cpt ( NodeId varId ) const override;
 
       /**
       * Returns a constant reference to the VariableNodeMap of thisBN
       */
-      virtual const VariableNodeMap& variableNodeMap() const;
-
-      /**
-       * Returns the dimension (the number of free parameters) in this bayes net.
-       *
-       * \f$ dim(G)=\sum_{i \in nodes} ((r_i-1)\cdot q_i) \f$ where \f$ r_i \f$ is the number of instantiations of node \f$ i \f$ and \f$ q_i \f$ is the number of instantiations of its parents.
-       */
-      Idx dim() const;
-
+      virtual const VariableNodeMap& variableNodeMap() const  override;
 
       /// @return Returns a dot representation of this BayesNet.
-      std::string toDot ( void ) const;
-
-      /// @return Returns a string representation of this BayesNet.
-      std::string toString ( void ) const;
+      virtual std::string toDot ( void ) const override;
 
       /**
        * Add a variable, it's associate node and it's CPT. The id of the new
@@ -185,7 +174,7 @@ namespace gum {
       * Returns a constant reference over a variabe given it's node id.
       * @throw NotFound If no variable's id matches varId.
       */
-      const DiscreteVariable& variable ( NodeId id ) const;
+      const DiscreteVariable& variable ( NodeId id ) const override;
 
       /** we allow the user to change the name of a variable
       * @throws DuplicateLabel if this name already exists
@@ -197,32 +186,17 @@ namespace gum {
       * Return id node from discrete var pointer.
       * @throw NotFound If no variable matches var.
       */
-      NodeId nodeId ( const DiscreteVariable& var ) const ;
+      NodeId nodeId ( const DiscreteVariable& var ) const override;
 
       /// Getter by name
       /// @throw NotFound if no such name exists in the graph.
-      NodeId idFromName ( const std::string& name ) const;
+      NodeId idFromName ( const std::string& name ) const override;
 
       /// Getter by name
       /// @throw NotFound if no such name exists in the graph.
-      const DiscreteVariable& variableFromName ( const std::string& name ) const;
+      const DiscreteVariable& variableFromName ( const std::string& name ) const override;
       /// @}
 
-      // ===========================================================================
-      /// @name Joint Probability manipulation methods
-      // ===========================================================================
-      /// @{
-
-      /// Compute a parameter of the joint probability for the BN (given an instantiation of the vars)
-      /// @warning a variable not present in the instantiation is assumed to be instantiated to 0.
-      GUM_SCALAR jointProbability ( const Instantiation& i ) const;
-
-      /// Compute a parameter of the log joint probability for the BN (given an instantiation of the vars)
-      /// @warning a variable not present in the instantiation is assumed to be instantiated to 0.
-      GUM_SCALAR logJointProbability ( const Instantiation& i ) const;
-
-      ///
-      /// @}
       // ===========================================================================
       /// @name Arc manipulation methods.
       // ===========================================================================
@@ -245,7 +219,7 @@ namespace gum {
        * @param tail as NodeId
        * @throw InvalidEdge If arc.tail and/or arc.head are not in the BN.
        */
-      void addArc ( NodeId tail,NodeId head );
+      void addArc ( NodeId tail, NodeId head );
 
       /**
        * Removes an arc in the BN, and update head's CTP.
@@ -419,13 +393,8 @@ namespace gum {
       /// change the CPT associated to nodeId to newPot
       /// delete the old CPT associated to nodeId.
       /// @throw NotAllowed if newPot has not the same signature as __probaMap[NodeId]
-      void changePotential ( NodeId id,Potential<GUM_SCALAR>* newPot );
+      void changePotential ( NodeId id, Potential<GUM_SCALAR>* newPot );
 
-      /// @return Returns true if the src and this are equal.
-      bool operator== ( const BayesNet<GUM_SCALAR>& src ) const;
-
-      /// @return Returns false if the src and this are equal.
-      bool operator!= ( const BayesNet<GUM_SCALAR>& src ) const;
     private:
       /// clear all potentials
       void __clearPotentials();
@@ -445,32 +414,13 @@ namespace gum {
       /// delete the old CPT associated to nodeId.
       /// @warning no verification of dimensions are performer
       /// @see changePotential
-      void _unsafeChangePotential ( NodeId id,Potential<GUM_SCALAR>* newPot );
+      void _unsafeChangePotential ( NodeId id, Potential<GUM_SCALAR>* newPot );
 
     public:
       using IBayesNet<GUM_SCALAR>::dag;
       using IBayesNet<GUM_SCALAR>::size;
-      using IBayesNet<GUM_SCALAR>::sizeArcs;
-      using IBayesNet<GUM_SCALAR>::dim;
-      
-      using IBayesNet<GUM_SCALAR>::jointProbability;
-      using IBayesNet<GUM_SCALAR>::log2JointProbability;
-      
-      using IBayesNet<GUM_SCALAR>::toDot;
-      using IBayesNet<GUM_SCALAR>::toString;
-
-      using IBayesNet<GUM_SCALAR>::property;
-      using IBayesNet<GUM_SCALAR>::setProperty;
-      using IBayesNet<GUM_SCALAR>::empty;
-      using IBayesNet<GUM_SCALAR>::completeInstantiation;      
       using IBayesNet<GUM_SCALAR>::nodes;
-      using IBayesNet<GUM_SCALAR>::arcs;
-      using IBayesNet<GUM_SCALAR>::moralGraph;
-      using IBayesNet<GUM_SCALAR>::topologicalOrder;
       using IBayesNet<GUM_SCALAR>::log10DomainSize;
-      
-      /// @deprecated Please use sizeArcs
-      using DAGmodel::nbrArcs;
   };
 
   /// Prints map's DAG in output using the Graphviz-dot format.

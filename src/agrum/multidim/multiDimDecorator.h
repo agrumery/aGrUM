@@ -65,7 +65,7 @@ namespace gum {
 
       /// Constructor.
 
-      MultiDimDecorator( MultiDimImplementation<GUM_SCALAR>* aContent );
+      MultiDimDecorator ( MultiDimImplementation<GUM_SCALAR>* aContent );
 
 
       /// Destructor.
@@ -81,8 +81,7 @@ namespace gum {
       /// @{
 
       /// Get the size of domains - final method.
-
-      Size domainSize() const ;
+      virtual Size domainSize() const final;
 
 
 
@@ -91,18 +90,19 @@ namespace gum {
        * @param v The new var.
        * @throw DuplicateElement
        */
-
-      virtual void add( const DiscreteVariable& v );
-
-
-      /// Give a const ref to the sequence of DiscreteVariable*. final method.
-
-      const Sequence<const DiscreteVariable*>& variablesSequence() const ;
+      virtual void add ( const DiscreteVariable& v );
 
 
-      /// Get the nbr of vars in the sequence. final method.
+      /**
+       * Give a const ref to the sequence of DiscreteVariable*. final method.
+       */
+      virtual const Sequence<const DiscreteVariable*>& variablesSequence() const final;
 
-      Idx nbrDim() const ;
+
+      /**
+       * Get the nbr of vars in the sequence. final method.
+       */
+      virtual Idx nbrDim() const final;
 
 
       /**
@@ -111,58 +111,62 @@ namespace gum {
        *  @throws NotFound Raised if var isn't in this.
        *  @throws OperationNotAllowed Raised if var can't be removed.
        */
-
-      virtual void erase( const DiscreteVariable& var );
+      virtual void erase ( const DiscreteVariable& var );
 
 
       /**
        * Returns the corresponding variable.
        * @throws NotFound Raised if the index doesn't exist.
        */
-
-      virtual const DiscreteVariable& variable( Idx ) const;
+      virtual const DiscreteVariable& variable ( Idx ) const;
 
 
       /**
        *  Returns the index of the given variable.
        *  @throws NotFound Raised if the variable does not belong to this
        */
-
-      virtual Idx pos( const DiscreteVariable& ) const;
-
-
-      /// Returns true if the variable does not belong to this.
-
-      virtual bool contains( const DiscreteVariable& ) const;
+      virtual Idx pos ( const DiscreteVariable& ) const;
 
 
-      /// Returns true if this is empty.
+      /**
+       * Returns true if the variable does not belong to this.
+       */
+      virtual bool contains ( const DiscreteVariable& ) const;
 
+
+      /**
+       * Returns true if this is empty.
+       */
       virtual bool empty() const;
 
 
-      /// Unregister a slave.
-
-      virtual bool unregisterSlave( Instantiation& );
-
-
-      /// Register a slave.
-
-      virtual bool registerSlave( Instantiation& i );
+      /**
+       * Unregister a slave.
+       */
+      virtual bool unregisterSlave ( Instantiation& );
 
 
-      /// Fills this with the content of d.
+      /**
+       * Register a slave.
+       */
+      virtual bool registerSlave ( Instantiation& i );
 
-      virtual void fill( const GUM_SCALAR& d ) const;
+
+      /**
+       * Fills this with the content of d.
+       */
+      virtual void fill ( const GUM_SCALAR& d ) const;
 
 
-      /// Protected access to content.
-
+      /**
+       * Protected access to content.
+       */
       const MultiDimImplementation<GUM_SCALAR>* content() const;
 
 
-      /// Access to content.
-
+      /**
+       * Access to content.
+       */
       MultiDimImplementation<GUM_SCALAR>* content();
 
       /// @}
@@ -180,7 +184,7 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimDecorator<GUM_SCALAR>* newFactory() const =0;
+      virtual MultiDimDecorator<GUM_SCALAR>* newFactory() const = 0;
 
 
       // ############################################################################
@@ -195,62 +199,49 @@ namespace gum {
        * @param oldval the old value
        * @param newval the new value
        */
+      void changeNotification ( Instantiation& i,
+                                const DiscreteVariable* const var,
+                                const Idx& oldval, const Idx& newval );
 
-      void changeNotification( Instantiation& i,
-                               const DiscreteVariable* const var,
-                               const Idx& oldval,const Idx& newval );
 
-
-      /// listen to an assignment of a value in a Instantiation
-
-      void setChangeNotification( Instantiation& i );
+      /**
+       * listen to an assignment of a value in a Instantiation
+       */
+      void setChangeNotification ( Instantiation& i );
 
 
       /**
        * listen to setFirst in each recorded Instantiation. final method.
        * @param i the Instantiation
        */
-
-      void setFirstNotification( Instantiation& i );
+      void setFirstNotification ( Instantiation& i );
 
 
       /**
        * listen to setLast in each recorded Instantiation. final method.
        * @param i the Instantiation
        */
-
-      void setLastNotification( Instantiation& i );
-
-
-      /**
-       * listen to increment in each recorded Instantiation. final method.
-       * @param i the Instantiation
-       */
-
-      void setIncNotification( Instantiation& i );
+      void setLastNotification ( Instantiation& i );
 
 
       /**
        * listen to increment in each recorded Instantiation. final method.
        * @param i the Instantiation
        */
+      void setIncNotification ( Instantiation& i );
 
-      void setDecNotification( Instantiation& i );
+
+      /**
+       * listen to increment in each recorded Instantiation. final method.
+       * @param i the Instantiation
+       */
+      void setDecNotification ( Instantiation& i );
 
 
-      /** @brief notification modification on vars to all Instantiation listeners.
+      /**
+       * @brief notification modification on vars to all Instantiation listeners.
        * final method. */
-
-      virtual void notifyChange() const;
-
-
-      /**
-       * Returns the Master reference of this.
-       * A Instantiation who wants to know his *true* master should ask for
-       * master->getMasterRef()
-       */
-
-      virtual MultiDimImplementation<GUM_SCALAR>& getMasterRef( void );
+      virtual void notifyChange() const final;
 
 
       /**
@@ -258,8 +249,15 @@ namespace gum {
        * A Instantiation who wants to know his *true* master should ask for
        * master->getMasterRef()
        */
+      virtual MultiDimImplementation<GUM_SCALAR>& getMasterRef ( void );
 
-      virtual const MultiDimImplementation<GUM_SCALAR>& getMasterRef( void ) const;
+
+      /**
+       * Returns the Master reference of this.
+       * A Instantiation who wants to know his *true* master should ask for
+       * master->getMasterRef()
+       */
+      virtual const MultiDimImplementation<GUM_SCALAR>& getMasterRef ( void ) const;
 
       /// @}
 
@@ -269,9 +267,9 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      virtual void beginMultipleChanges( void );
-      virtual void endMultipleChanges( void );
-      virtual void endMultipleChanges( const GUM_SCALAR& );
+      virtual void beginMultipleChanges ( void );
+      virtual void endMultipleChanges ( void );
+      virtual void endMultipleChanges ( const GUM_SCALAR& );
 
       /// @}
 
@@ -281,11 +279,14 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      /// string representation of internal data about i in this.
+      /**
+       * string representation of internal data about i in this.
+       */
+      virtual const std::string toString ( const Instantiation* i ) const ;
 
-      virtual const std::string toString( const Instantiation* i ) const ;
-
-      /// string representation of this.
+      /**
+       * string representation of this.
+       */
       virtual const std::string toString( ) const ;
 
 
@@ -294,9 +295,8 @@ namespace gum {
        * @param alpha The ratio.
        * @param mul The chosen mult operation.
        */
-
       virtual void
-      homothetic( GUM_SCALAR alpha,GUM_SCALAR( *mul )( const GUM_SCALAR,const GUM_SCALAR ) );
+      homothetic ( GUM_SCALAR alpha, GUM_SCALAR ( *mul ) ( const GUM_SCALAR, const GUM_SCALAR ) );
 
 
       /**
@@ -304,24 +304,30 @@ namespace gum {
        * @param add The chosen folded operation.
        * @return Returns the sum of values contains in the multiDim.
        */
-
-      virtual GUM_SCALAR fold( GUM_SCALAR( *add )( const GUM_SCALAR,const GUM_SCALAR ) ) const;
+      virtual GUM_SCALAR fold ( GUM_SCALAR ( *add ) ( const GUM_SCALAR, const GUM_SCALAR ) ) const;
 
       /// @}
 
-      /// by default, set just calls _get as a r-value
-      virtual void set( const Instantiation& i,const GUM_SCALAR& value ) const;
+      /**
+       * by default, set just calls _get as a r-value
+       */
+      virtual void set ( const Instantiation& i, const GUM_SCALAR& value ) const;
 
-      /// by default, get just calls _get as a l-value
-      virtual GUM_SCALAR get( const Instantiation& i ) const ;
+      /**
+       * by default, get just calls _get as a l-value
+       */
+      virtual GUM_SCALAR get ( const Instantiation& i ) const ;
     protected:
-      /// protecte method to swap the implementation behind the Potential
-      /// @warning unsafe method for slave Instantiations !
-      void _swapContent( MultiDimImplementation<GUM_SCALAR>* aContent ) const;
+      /**
+       * protecte method to swap the implementation behind the Potential
+       * @warning unsafe method for slave Instantiations !
+       */
+      void _swapContent ( MultiDimImplementation<GUM_SCALAR>* aContent ) const;
 
 
-      /// The true container.
-
+      /**
+       * The true container.
+       */
       mutable MultiDimImplementation<GUM_SCALAR>* _content;
 
 
@@ -332,8 +338,7 @@ namespace gum {
        * @throw NullElement
        * @throw NotFound
        */
-
-      GUM_SCALAR& _get( const Instantiation& i ) const;
+      GUM_SCALAR& _get ( const Instantiation& i ) const;
 
   };
 
