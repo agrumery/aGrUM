@@ -232,7 +232,7 @@ namespace gum {
             j.chgVal ( * ( iter.second() ), i.val ( * ( iter.first() ) ) );
           }
 
-          if ( std::pow ( cpt ( *node ).get ( i ) - from.cpt ( *node ).get ( j ), ( GUM_SCALAR ) 2 ) > ( GUM_SCALAR ) 1e-6 ) {
+          if ( std::pow ( cpt ( node ).get ( i ) - from.cpt ( node ).get ( j ), ( GUM_SCALAR ) 2 ) > ( GUM_SCALAR ) 1e-6 ) {
             return false;
           }
         }

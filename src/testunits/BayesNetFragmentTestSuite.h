@@ -340,7 +340,7 @@ namespace gum_tests {
         TS_ASSERT ( ! frag.checkConsistency() );
 
         frag.installAscendants ( bn.idFromName ( "v5" ) );
-        GUM_TRACE ( frag.cpt ( bn.idFromName ( "v5" ) ) );
+        TS_ASSERT ( frag.checkConsistency() );
 
       }
 
