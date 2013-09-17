@@ -28,6 +28,7 @@
 #include <agrum/BN/BayesNetFragment.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
+
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -259,23 +260,23 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( frag2.size(), ( gum::Size ) 3 );
         TS_ASSERT_EQUALS ( frag2.sizeArcs(), ( gum::Size ) 2 );
 
-        std::string todot2  {frag2.toDot() };
+        std::string tostr2  {frag2.toString() };
 
         bn2.erase ( bn2.idFromName ( "v4" ) );
 
-        TS_ASSERT_EQUALS ( frag2.toDot(), todot2 );
+        TS_ASSERT_EQUALS ( frag2.toString(), tostr2 );
 
         bn2.eraseArc ( gum::Arc ( bn.idFromName ( "v2" ), bn2.idFromName ( "v5" ) ) );
 
-        TS_ASSERT_EQUALS ( frag2.toDot(), todot2 );
+        TS_ASSERT_EQUALS ( frag2.toString(), tostr2 );
 
         bn2.add ( gum::LabelizedVariable ( "v7", "unused var" ) );
 
-        TS_ASSERT_EQUALS ( frag2.toDot(), todot2 );
+        TS_ASSERT_EQUALS ( frag2.toString(), tostr2 );
 
         TS_GUM_ASSERT_THROWS_NOTHING ( bn2.addArc ( bn2.idFromName ( "v6" ), bn2.idFromName ( "v7" ) ) );
 
-        TS_ASSERT_EQUALS ( frag2.toDot(), todot2 );
+        TS_ASSERT_EQUALS ( frag2.toString(), tostr2 );
       }
 
       void testRelevantForRelevantReasonning() {
@@ -339,9 +340,25 @@ namespace gum_tests {
 
         TS_ASSERT ( ! frag.checkConsistency() );
 
-        frag.installAscendants ( bn.idFromName ( "v5" ) );
+        gum::Potential<float>* newV5 = new gum::Potential<float>();
+        ( *newV5 ) << bn.variable ( bn.idFromName ( "v5" ) );
+        newV5->fillWith ( std::vector<float> ( {0.0, 0.0,1.0} ) );
+        frag.installMarginal ( frag.idFromName ( "v5" ), newV5 ); // 1-->3->6 5
         TS_ASSERT ( frag.checkConsistency() );
 
+        frag.installAscendants ( bn.idFromName ( "v4" ) );
+        TS_ASSERT ( ! frag.checkConsistency() ); // V5 has now 2 parents : 4 and 3
+
+        frag.uninstallCPT ( frag.idFromName ( "v5" ) );
+        frag.uninstallNode ( frag.idFromName ( "v4" ) );
+        TS_ASSERT ( ! frag.checkConsistency() ); // V5 got its 3 parents back from the referred BN
+
+        gum::Potential<float>* newV5bis = new gum::Potential<float>();
+        ( *newV5bis ) << bn.variable ( bn.idFromName ( "v5" ) )
+                      << bn.variable ( bn.idFromName ( "v2" ) )
+                      <<bn.variable ( bn.idFromName ( "v3" ) );
+        frag.installCPT ( frag.idFromName ( "v5" ) ,newV5bis );
+        str2file ( "test.dot",frag.toDot() ); //
       }
 
   };

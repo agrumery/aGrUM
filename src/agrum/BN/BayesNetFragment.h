@@ -19,9 +19,9 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Class representing Bayesian networks
+ * @brief Class representing Fragment of Bayesian networks
  *
- * @author Pierre-Henri WUILLEMIN and Lionel TORTI
+ * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  *
  */
 #ifndef GUM_BAYES_NET_FRAGMENT_H
@@ -47,14 +47,17 @@ namespace gum {
    * BayesNetFragment is a DiGraphListener in order to be synchronized (especiallay when
    * removing nodes or arcs).
    *
-   * In a BayesNetFragment, one can install or remove nodes. An arc can be in the fragment if and only if
-   * its head and tail are installed in the fragment.
+   * In a BayesNetFragment, one can install or remove nodes. An arc can be in the fragment if 
+   * and only if its head and tail are installed in the fragment. When installing a node, all 
+   * the arcs that can be added in the fragment are effectively installed (resp. when 
+   * uninstalling a node, etc.). 
    *
    * A BayesNetFragment can redefine potential for node. The main reason is to be able to
    * install a node without installing all its parents (and its ascendants). So local CPT to the
-   * fragment can be created. However, it is not done automatically. If a cpt is not locally
-   * defined, the fragment uses the cpt defined in the referred BN. The checkConsistency() method
-   * verifies that, for all installed nodes, either all the parents are installed or a local CPT is
+   * node can be installed. However, it is not done automatically. 
+   * 
+   * If a cpt is not locally defined, the fragment uses the cpt defined in the referred BN. 
+   * The checkConsistency() method verifies that, for all installed nodes, either all the parents are installed or a local CPT is
    * defined.
    */
 
@@ -149,6 +152,12 @@ namespace gum {
        */
       virtual const DiscreteVariable& variableFromName ( const std::string& name ) const override;
 
+      /**
+       * creates a dot representing the whole referred BN hilighting the fragment.
+       * @return Returns a dot representation of this fragment
+       */
+      virtual std::string toDot ( void ) const;
+
       /// @}
 
       /// @specific API for Fragment
@@ -195,35 +204,39 @@ namespace gum {
 
       /**
        * install a local cpt for a node into the fragment.
-       * This function will remove change the arcs from the parents to the node in order to be
+       * This function will change the arcs from the parents to the node in order to be
        * consistent with the new local potential.
        * @param id the nodeId
        * @param pot the potential
+       * 
        * @throw NotFound if the id is not in the fragment
-       * @throw OperationNotAllowed if the potential is not compliant with the variable or if a variable
-       * in the CPT is not a parent in the referred bn.
+       * @throw OperationNotAllowed if the potential is not compliant with the variable or if 
+       * a variable in the CPT is not a parent in the referred bn.
        **/
       void installCPT ( NodeId id, const Potential<GUM_SCALAR>* pot );
 
       /**
-       * uninstall a local CPT. Does nothing if no local CPT for this nodeId
-       * @throw NotFound if id is not in the fragment
+       * uninstall a local CPT. 
+       * 
+       * @warning  Nothing happens if no local CPT for this nodeId or if the node is not installed.
        */
-      void uninstallCPT ( NodeId id );
+      void uninstallCPT ( NodeId id ) noexcept;
 
       /**
        * returns true if the nodeId's (local or not) cpt is consistent with its parents in the fragment
        * @throw NotFound if the id is not in the fragment
        */
-      bool checkConsistency ( NodeId id );
+      bool checkConsistency ( NodeId id ) const;
 
       /**
        * returns true if all nodes in the fragment are consistent
        */
-      bool checkConsistency() noexcept;
+      bool checkConsistency() const noexcept;
+      
       /// @}
 
       using IBayesNet<GUM_SCALAR>::nodes;
+      using IBayesNet<GUM_SCALAR>::dag;
     protected:
       // remove an arc
       void _uninstallArc ( NodeId from, NodeId to ) noexcept;

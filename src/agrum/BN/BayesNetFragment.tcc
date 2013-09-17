@@ -40,7 +40,7 @@ namespace gum {
     GUM_DESTRUCTOR ( BayesNetFragment );
 
     for ( const auto id : nodes() )
-      _uninstallCPT ( id );
+      uninstallCPT ( id );
   }
 
   //============================================================
@@ -124,7 +124,7 @@ namespace gum {
   // specific API for BayesNetFragment
   template<typename GUM_SCALAR> INLINE bool
   BayesNetFragment<GUM_SCALAR>::isInstalledNode ( NodeId id ) const noexcept {
-    return this->_dag.existsNode ( id );
+    return dag().existsNode ( id );
   }
 
   template<typename GUM_SCALAR> void
@@ -161,23 +161,23 @@ namespace gum {
   BayesNetFragment<GUM_SCALAR>::uninstallNode ( NodeId id ) noexcept {
     if ( isInstalledNode ( id ) ) {
       this->_dag.eraseNode ( id );
-      _uninstallCPT ( id );
+      uninstallCPT ( id );
     }
   }
 
   template<typename GUM_SCALAR> INLINE void
   BayesNetFragment<GUM_SCALAR>::_uninstallArc ( NodeId from, NodeId to ) noexcept {
-    if ( this->_dag.existsArc ( from, to ) ) {
+    if ( dag().existsArc ( from, to ) ) {
       this->_dag.eraseArc ( Arc ( from, to ) );
     }
 
-    _uninstallCPT ( to );
+    uninstallCPT ( to );
   }
 
   template<typename GUM_SCALAR> void
   BayesNetFragment<GUM_SCALAR>::_installCPT ( NodeId id, const Potential<GUM_SCALAR>* pot ) noexcept {
     // topology
-    for ( const auto node : this->_dag.parents ( id ) )
+    for ( const auto node : dag().parents ( id ) )
       this->_dag.eraseArc ( Arc ( node, id ) );
 
     for ( Idx i = 1; i < pot->nbrDim(); i++ ) {
@@ -185,16 +185,40 @@ namespace gum {
     }
 
     //local cpt
-    _uninstallCPT ( id );
+    uninstallCPT ( id );
     __localCPTs.insert ( id, pot );
   }
 
+  template<typename GUM_SCALAR> void
+  BayesNetFragment<GUM_SCALAR>::installCPT ( NodeId id, const Potential<GUM_SCALAR>* pot ) {
+    if ( ! dag().existsNode ( id ) )
+      GUM_ERROR ( NotFound, "Node " << id << " is not installed in the fragment" );
+
+    if ( & ( pot->variable ( 0 ) ) != & ( variable ( id ) ) ) {
+      GUM_ERROR ( OperationNotAllowed,
+                  "The potential is not a marginal for __bn.variable <" <<variable ( id ).name() << ">" );
+    }
+
+    const NodeSet& parents = __bn.dag().parents ( id );
+
+    for ( Idx i=1; i<pot->nbrDim(); i++ ) {
+      if ( ! parents.contains ( __bn.idFromName ( pot->variable ( i ).name() ) ) )
+        GUM_ERROR ( OperationNotAllowed,
+                    "Variable <" << pot->variable ( i ).name() << "> is not in the parents of node "<<id );
+    }
+
+    _installCPT ( id,pot );
+  }
+
   template<typename GUM_SCALAR> INLINE void
-  BayesNetFragment<GUM_SCALAR>::_uninstallCPT ( NodeId id ) noexcept {
+  BayesNetFragment<GUM_SCALAR>::uninstallCPT ( NodeId id ) noexcept {
     if ( __localCPTs.exists ( id ) ) {
       delete __localCPTs[id];
+      __localCPTs.erase ( id );
     }
+
   }
+
 
   template<typename GUM_SCALAR> void
   BayesNetFragment<GUM_SCALAR>::installMarginal ( NodeId id, const Potential<GUM_SCALAR>* pot ) {
@@ -208,36 +232,114 @@ namespace gum {
                   "The potential is not a marginal :" << pot );
     }
 
-    if ( pot->variable ( 0 ).name() != variable ( id ).name() ) {
+    if ( & ( pot->variable ( 0 ) ) != & ( __bn.variable ( id ) ) ) {
       GUM_ERROR ( OperationNotAllowed,
-                  "The potential is not a marginal for variable <" << variable ( id ).name() << ">" );
+                  "The potential is not a marginal for __bn.variable <" << __bn.variable ( id ).name() << ">" );
     }
 
     _installCPT ( id, pot );
   }
 
   template<typename GUM_SCALAR> bool
-  BayesNetFragment<GUM_SCALAR>::checkConsistency ( NodeId id ) {
+  BayesNetFragment<GUM_SCALAR>::checkConsistency ( NodeId id ) const {
     if ( ! isInstalledNode ( id ) )
       GUM_ERROR ( NotFound,
                   "The node " << id << " is not part of this fragment" );
 
-    const auto& parents = this->_dag.parents ( id );
+    const auto& parents = dag().parents ( id );
     const auto& cpt = this->cpt ( id );
     NodeSet cpt_parents;
 
-    for ( Idx i = 1; i < cpt.nbrDim(); i++ )
+    for ( Idx i = 1; i < cpt.nbrDim(); i++ ) {
       cpt_parents.insert ( __bn.idFromName ( cpt.variable ( i ).name() ) );
+    }
 
-    return parents == cpt_parents;
+    return ( parents == cpt_parents );
   }
 
   template<typename GUM_SCALAR> INLINE bool
-  BayesNetFragment<GUM_SCALAR>::checkConsistency () noexcept{
+  BayesNetFragment<GUM_SCALAR>::checkConsistency () const noexcept {
     for ( const auto node : nodes() )
       if ( ! checkConsistency ( node ) ) return false;
 
     return true;
   }
+
+  template<typename GUM_SCALAR>
+  std::string
+  BayesNetFragment<GUM_SCALAR>::toDot ( void ) const {
+    std::stringstream output;
+    output << "digraph \"";
+
+    std::string bn_name;
+
+    static std::string inFragmentStyle   ="fillcolor=\"#ffffaa\","
+                                          "color=\"#000000\","
+                                          "fontcolor=\"#000000\"";
+    static std::string styleWithLocalCPT ="fillcolor=\"#ffddaa\","
+                                          "color=\"#000000\","
+                                          "fontcolor=\"#000000\"";
+    static std::string notConsistantStyle="fillcolor=\"#ff0000\","
+                                          "color=\"#000000\","
+                                          "fontcolor=\"#ffff00\"";
+    static std::string outFragmentStyle  ="fillcolor=\"#f0f0f0\","
+                                          "color=\"#f0f0f0\","
+                                          "fontcolor=\"#000000\"";
+
+    try {
+      bn_name = __bn.property ( "name" );
+    } catch ( NotFound& ) {
+      bn_name = "no_name";
+    }
+
+    bn_name="Fragment of "+bn_name;
+
+
+    output << bn_name << "\" {" << std::endl;
+    output << "  graph [bgcolor=transparent,label=\"" << bn_name << "\"];" << std::endl;
+    output << "  node [style=filled];" << std::endl << std::endl;
+
+    for ( const auto node_iter : __bn.nodes() ) {
+      output << "\"" << __bn.variable ( node_iter ).name() << "\" [comment=\"" << node_iter << ":" << __bn.variable ( node_iter ) <<", \"";
+
+      if ( isInstalledNode ( node_iter ) ) {
+        if ( ! checkConsistency ( node_iter ) ) {
+          output<<notConsistantStyle;
+        } else if ( __localCPTs.exists ( node_iter ) )
+          output<<styleWithLocalCPT;
+        else
+          output<<inFragmentStyle;
+      } else
+        output<<outFragmentStyle;
+
+      output << "];" << std::endl;
+    }
+
+    output << std::endl;
+
+    std::string tab = "  ";
+
+    for ( const auto node_iter : __bn.nodes() ) {
+      if ( __bn.dag().children ( node_iter ).size() > 0 ) {
+        for ( const auto child_iter : __bn.dag().children ( node_iter ) ) {
+          output << tab << "\"" << __bn.variable ( node_iter ).name() << "\" -> "
+                 << "\"" << __bn.variable ( child_iter ).name() << "\" [";
+
+          if ( dag().existsArc ( Arc ( node_iter,child_iter ) ) )
+            output << inFragmentStyle;
+          else
+            output <<outFragmentStyle;
+
+          output  <<"];"<< std::endl;
+        }
+      }
+    }
+
+    output << "}" << std::endl;
+
+    return output.str();
+  }
 }// gum
+
+
 
