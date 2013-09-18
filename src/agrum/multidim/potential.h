@@ -157,6 +157,8 @@ namespace gum {
   };
 
 
+  extern template class Potential<float>;
+  extern template class Potential<double>;
 } /* namespace gum */
 
 

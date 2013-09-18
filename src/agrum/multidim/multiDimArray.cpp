@@ -18,3 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include <agrum/multidim/multiDimArray.h>
+
+template class gum::MultiDimArray<float>;
+template class gum::MultiDimArray<double>;

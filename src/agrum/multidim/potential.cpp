@@ -19,3 +19,6 @@
  ***************************************************************************/
 
 #include <agrum/multidim/potential.h>
+
+template class gum::Potential<float>;
+template class gum::Potential<double>;

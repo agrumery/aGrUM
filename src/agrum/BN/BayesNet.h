@@ -428,6 +428,8 @@ namespace gum {
   std::ostream&
   operator<< ( std::ostream& output, const BayesNet<GUM_SCALAR>& map );
 
+  extern template class BayesNet<float>;
+  extern template class BayesNet<double>;
 } /* namespace gum */
 
 
