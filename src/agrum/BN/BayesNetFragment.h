@@ -240,6 +240,9 @@ namespace gum {
     protected:
       // remove an arc
       void _uninstallArc ( NodeId from, NodeId to ) noexcept;
+      
+      // add an arc
+      void _installArc ( NodeId from, NodeId to ) noexcept;
 
       // install a CPT, create or delete arcs. Checks are made in public methods
       // In particular, it is assumed that all the variables in the pot are in the fragment
@@ -247,7 +250,7 @@ namespace gum {
 
       /**
        * uninstall a local CPT. Does nothing if no local CPT for this nodeId
-       * No check. Checks are made in public methods.
+       * No check. No change in the topology. Checks are made in public methods.
        */
       void _uninstallCPT ( NodeId id ) noexcept;
 

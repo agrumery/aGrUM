@@ -209,11 +209,15 @@ namespace gum {
 
     return value;
   }
+  /*
+    template <typename GUM_SCALAR>
+    bool
+    IBayesNet<GUM_SCALAR>::operator== ( const IBayesNet& from ) const {
+      if ( dag() =! from.dag() ) {
+        GUM_TRACE ( "dag are different" );
+        return false;
+      }
 
-  template <typename GUM_SCALAR>
-  bool
-  IBayesNet<GUM_SCALAR>::operator== ( const IBayesNet& from ) const {
-    if ( dag() == from.dag() ) {
       for ( const auto node : nodes() ) {
         // We don't use Potential::operator== because BN's don't share
         // DiscreteVariable's pointers.
@@ -236,12 +240,67 @@ namespace gum {
             return false;
           }
         }
-      }
 
       return true;
     }
 
     return false;
+  }*/
+
+  template <typename GUM_SCALAR>
+  bool
+  IBayesNet<GUM_SCALAR>::operator== ( const IBayesNet& from ) const {
+    if ( size() !=from.size() ) {
+      return false;
+    }
+
+    if ( sizeArcs() !=from.sizeArcs() ) {
+      return false;
+    }
+
+    // alignment of variables between the 2 BNs
+    Bijection<const DiscreteVariable*, const DiscreteVariable*> alignment;
+
+    for ( const auto node : nodes() ) {
+      try {
+        alignment.insert ( & variable ( node ),
+                           & from.variableFromName ( variable ( node ).name() ) );
+      } catch ( NotFound &e ) {
+        // a name is not found in from
+        return false;
+      }
+    }
+
+    for ( const auto node : nodes() ) {
+      NodeId fromnode=from.idFromName ( variable ( node ).name() );
+
+      if ( cpt ( node ).nbrDim() != from.cpt ( fromnode ).nbrDim() ) {
+        return false;
+      }
+
+      if ( cpt ( node ).domainSize() != from.cpt ( fromnode ).domainSize() ) {
+        return false;
+      }
+
+      Instantiation i ( cpt ( node ) );
+      Instantiation j ( from.cpt ( fromnode ) );
+
+
+      for ( i.setFirst(); not i.end(); i.inc() ) {
+        for ( Idx indice=0; indice<cpt ( node ).nbrDim(); ++indice ) {
+          const DiscreteVariable* p=& ( i.variable ( indice ) );
+          j.chgVal ( * ( alignment.second ( p ) ),i.val ( *p ) );
+        }
+
+        if ( std::pow ( cpt ( node ).get ( i ) - from.cpt ( fromnode ).get ( j ),
+                        ( GUM_SCALAR ) 2 )
+             > ( GUM_SCALAR ) 1e-6 ) {
+          return false;
+        }
+      }
+    }
+
+    return true;
   }
 
   template <typename GUM_SCALAR>
@@ -259,3 +318,4 @@ namespace gum {
   }
 
 } /* namespace gum */
+

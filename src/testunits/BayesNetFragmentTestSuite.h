@@ -25,6 +25,9 @@
 
 #include <agrum/config.h>
 #include <agrum/variables/labelizedVariable.h>
+#include <agrum/multidim/instantiation.h>
+#include <agrum/multidim/potential.h>
+#include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/BayesNetFragment.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
@@ -74,6 +77,53 @@ namespace gum_tests {
         }
 
         bn.generateCPTs();
+      }
+
+      // the same BN but with no 4-->5
+      void fill2 ( gum::BayesNet<float>& bn,const gum::BayesNet<float>&source ) {
+        try {
+          auto var1 = gum::LabelizedVariable ( "v1", "1", 2 );
+          auto var2 = gum::LabelizedVariable ( "v2", "2", 2 );
+          auto var3 = gum::LabelizedVariable ( "v3", "3", 2 );
+          auto var4 = gum::LabelizedVariable ( "v4", "4", 2 );
+          auto var5 = gum::LabelizedVariable ( "v5", "(gum::Size) 3", 3 );
+          auto var6 = gum::LabelizedVariable ( "v6", "(gum::Size) 3", 3 );
+
+          bn.add ( var1 );
+          bn.add ( var2 );
+          bn.add ( var3 );
+          bn.add ( var4 );
+          bn.add ( var5 );
+          bn.add ( var6 ) ;
+
+          bn.addArc ( bn.idFromName ( "v1" ), bn.idFromName ( "v3" ) );
+          bn.addArc ( bn.idFromName ( "v1" ), bn.idFromName ( "v4" ) );
+          bn.addArc ( bn.idFromName ( "v2" ), bn.idFromName ( "v4" ) );
+          bn.addArc ( bn.idFromName ( "v2" ), bn.idFromName ( "v5" ) );
+          bn.addArc ( bn.idFromName ( "v3" ), bn.idFromName ( "v5" ) );
+          bn.addArc ( bn.idFromName ( "v3" ), bn.idFromName ( "v6" ) );
+          //bn.addArc ( bn.idFromName ( "v4" ), bn.idFromName ( "v5" ) );
+
+          // copy the cpt except for var5
+          for ( const auto node : bn.nodes() )
+            if ( node!=bn.idFromName ( "v5" ) ) {
+              const gum::Potential<float>& pot=bn.cpt ( node );
+              const gum::Potential<float>& src=source.cpt ( source.idFromName ( bn.variable ( node ).name() ) );
+              gum::Instantiation I ( pot );
+              gum::Instantiation J ( src );
+
+              for ( I.setFirst(),J.setFirst(); ! I.end() ; ++I,++J ) {
+                bn.cpt ( node ).set ( I,src[J] );
+              }
+            }
+
+          gum::SimpleCPTGenerator<float> generator;
+          generator.generateCPT ( 0,  bn.cpt ( bn.idFromName ( "v5" ) ) );
+        } catch ( gum::Exception& e ) {
+          std::cerr << std::endl << e.content() << std::endl;
+          throw ;
+        }
+
       }
 
     public:
@@ -312,9 +362,10 @@ namespace gum_tests {
 
         // comparison
         gum::Instantiation I ( p1 );
+        gum::Instantiation J ( p2 );
 
-        for ( I.setFirst(); ! I.end(); ++I )
-          TS_ASSERT_DELTA ( p1[I], p2[I], 1e-6 );
+        for ( I.setFirst(),J.setFirst(); ! I.end(); ++I,++J )
+          TS_ASSERT_DELTA ( p1[I], p2[J], 1e-6 );
       }
 
       void testInstallCPTs() {
@@ -343,23 +394,88 @@ namespace gum_tests {
         gum::Potential<float>* newV5 = new gum::Potential<float>();
         ( *newV5 ) << bn.variable ( bn.idFromName ( "v5" ) );
         newV5->fillWith ( std::vector<float> ( {0.0, 0.0,1.0} ) );
-        frag.installMarginal ( frag.idFromName ( "v5" ), newV5 ); // 1-->3->6 5
+        frag.installMarginal ( frag.idFromName ( "v5" ), newV5 ); // 1-->3-->6 5
         TS_ASSERT ( frag.checkConsistency() );
+        TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 4 );
+        TS_ASSERT_EQUALS ( frag.sizeArcs(), ( gum::Size ) 2 );
 
         frag.installAscendants ( bn.idFromName ( "v4" ) );
-        TS_ASSERT ( ! frag.checkConsistency() ); // V5 has now 2 parents : 4 and 3
+        TS_ASSERT ( ! frag.checkConsistency() ); // V5 has now 2 parents : 4 and 2
+        TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 6 );
+        TS_ASSERT_EQUALS ( frag.sizeArcs(), ( gum::Size ) 6 );
 
         frag.uninstallCPT ( frag.idFromName ( "v5" ) );
+        // V5 potential got its 3 parents back from the referred BN
+        // the fragment is the BN
+        TS_ASSERT ( frag.checkConsistency() );
+        TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 6 );
+        TS_ASSERT_EQUALS ( frag.sizeArcs(), ( gum::Size ) 7 );
+
+        // removing 4 make V5 unconsistent
         frag.uninstallNode ( frag.idFromName ( "v4" ) );
-        TS_ASSERT ( ! frag.checkConsistency() ); // V5 got its 3 parents back from the referred BN
+        TS_ASSERT ( ! frag.checkConsistency() );
+        TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 5 );
+        TS_ASSERT_EQUALS ( frag.sizeArcs(), ( gum::Size ) 4 );
 
         gum::Potential<float>* newV5bis = new gum::Potential<float>();
         ( *newV5bis ) << bn.variable ( bn.idFromName ( "v5" ) )
                       << bn.variable ( bn.idFromName ( "v2" ) )
                       <<bn.variable ( bn.idFromName ( "v3" ) );
         frag.installCPT ( frag.idFromName ( "v5" ) ,newV5bis );
-        str2file ( "test.dot",frag.toDot() ); //
+        TS_ASSERT ( frag.checkConsistency() );
+        TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 5 );
+        TS_ASSERT_EQUALS ( frag.sizeArcs(), ( gum::Size ) 4 );
       }
 
+      void testInferenceWithLocalCPTs() {
+        gum::BayesNet<float> bn;
+        fill ( bn );
+        gum::BayesNet<float> bn2;
+        fill2 ( bn2,bn );
+
+        gum::BayesNetFragment<float> frag ( bn );
+
+        for ( const auto node : bn.nodes() )
+          frag.installNode ( node );
+
+        TS_ASSERT ( frag.checkConsistency() );
+        TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 6 );
+        TS_ASSERT_EQUALS ( frag.sizeArcs(), ( gum::Size ) 7 );
+
+        gum::Potential<float>* newV5 = new gum::Potential<float>();
+        ( *newV5 ) << bn.variable ( bn.idFromName ( "v5" ) )
+                   << bn.variable ( bn.idFromName ( "v2" ) )
+                   <<bn.variable ( bn.idFromName ( "v3" ) );
+
+        const gum::Potential<float>& pot2=bn2.cpt ( bn2.idFromName ( "v5" ) );
+        gum::Instantiation I ( pot2 );
+        gum::Instantiation J ( *newV5 );
+
+        for ( I.setFirst(),J.setFirst(); ! I.end(); ++I,++J )
+          newV5->set ( J,pot2[I] );
+
+        frag.installCPT ( frag.idFromName ( "v5" ),newV5 );
+        TS_ASSERT ( frag.checkConsistency() );
+        TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 6 );
+        TS_ASSERT_EQUALS ( frag.sizeArcs(), ( gum::Size ) 6 );
+        str2file ( "test.dot",bn2.toDot() );
+
+        TS_ASSERT ( bn2==frag );
+
+        gum::LazyPropagation<float> ie2 ( bn2 );
+        ie2.makeInference();
+        const gum::Potential<float>& p2 =ie2.marginal ( bn2.idFromName ( "v5" ) ) ;
+
+        gum::LazyPropagation<float> ie ( frag );
+        ie.makeInference();
+        const gum::Potential<float>& p1=ie.marginal ( frag.idFromName ( "v5" ) ) ;
+
+        // comparison
+        gum::Instantiation II ( p1 );
+        gum::Instantiation JJ ( p2 );
+
+        for ( II.setFirst(),JJ.setFirst(); ! II.end(); ++II,++JJ )
+          TS_ASSERT_DELTA ( p1[II], p2[JJ], 1e-6 );
+      }
   };
 } // gum_tests

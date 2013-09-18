@@ -40,7 +40,8 @@ namespace gum {
     GUM_DESTRUCTOR ( BayesNetFragment );
 
     for ( const auto id : nodes() )
-      uninstallCPT ( id );
+      if ( __localCPTs.exists ( id ) )
+        _uninstallCPT ( id );
   }
 
   //============================================================
@@ -59,7 +60,8 @@ namespace gum {
   }
   template<typename GUM_SCALAR> INLINE void
   BayesNetFragment<GUM_SCALAR>::whenArcDeleted ( const void* src, NodeId from, NodeId to ) noexcept {
-    _uninstallArc ( from, to );
+    if ( dag().existsArc ( from, to ) )
+      _uninstallArc ( from, to );
   }
 
   //============================================================
@@ -167,25 +169,31 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE void
   BayesNetFragment<GUM_SCALAR>::_uninstallArc ( NodeId from, NodeId to ) noexcept {
-    if ( dag().existsArc ( from, to ) ) {
-      this->_dag.eraseArc ( Arc ( from, to ) );
-    }
+    this->_dag.eraseArc ( Arc ( from, to ) );
+  }
 
-    uninstallCPT ( to );
+  template<typename GUM_SCALAR> INLINE void
+  BayesNetFragment<GUM_SCALAR>::_installArc ( NodeId from, NodeId to ) noexcept {
+    this->_dag.insertArc ( from, to );
   }
 
   template<typename GUM_SCALAR> void
   BayesNetFragment<GUM_SCALAR>::_installCPT ( NodeId id, const Potential<GUM_SCALAR>* pot ) noexcept {
     // topology
     for ( const auto node : dag().parents ( id ) )
-      this->_dag.eraseArc ( Arc ( node, id ) );
+      _uninstallArc ( node, id ) ;
 
     for ( Idx i = 1; i < pot->nbrDim(); i++ ) {
-      this->_dag.insertArc ( idFromName ( pot->variable ( i ).name() ), id );
+      NodeId parent=__bn.idFromName ( pot->variable ( i ).name() );
+
+      if ( isInstalledNode ( parent ) )
+        _installArc ( parent , id );
     }
 
     //local cpt
-    uninstallCPT ( id );
+    if ( __localCPTs.exists ( id ) )
+      _uninstallCPT ( id );
+
     __localCPTs.insert ( id, pot );
   }
 
@@ -211,10 +219,25 @@ namespace gum {
   }
 
   template<typename GUM_SCALAR> INLINE void
+  BayesNetFragment<GUM_SCALAR>::_uninstallCPT ( NodeId id ) noexcept {
+    delete __localCPTs[id];
+    __localCPTs.erase ( id );
+  }
+
+  template<typename GUM_SCALAR> INLINE void
   BayesNetFragment<GUM_SCALAR>::uninstallCPT ( NodeId id ) noexcept {
     if ( __localCPTs.exists ( id ) ) {
-      delete __localCPTs[id];
-      __localCPTs.erase ( id );
+      _uninstallCPT ( id );
+
+      // re-create arcs from referred potential
+      const Potential<GUM_SCALAR>& pot=cpt ( id );
+
+      for ( Idx i = 1; i < pot.nbrDim(); i++ ) {
+        NodeId parent=__bn.idFromName ( pot.variable ( i ).name() );
+
+        if ( isInstalledNode ( parent ) )
+          _installArc ( parent, id );
+      }
     }
 
   }
@@ -340,6 +363,8 @@ namespace gum {
     return output.str();
   }
 }// gum
+
+
 
 
 

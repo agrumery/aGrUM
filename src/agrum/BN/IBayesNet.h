@@ -142,7 +142,12 @@ namespace gum {
       ///
       /// @}
 
-      /// @return Returns true if the src and this are equal.
+      /**
+       * This operator compares 2 BNs !
+       * @warning To identify nodes between BNs, it is assumed that they share the same name.
+       * 
+       * @return true if the src and this are equal.
+       */
       bool operator== ( const IBayesNet<GUM_SCALAR>& src ) const;
 
       /// @return Returns false if the src and this are equal.
