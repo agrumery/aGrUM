@@ -47,7 +47,7 @@ namespace gum_tests {
 
       void testRequisiteNodes() {
         gum::BayesBall balls;
-        gum::IBayesNetGenerator<float> gen ( 50, 200, 2 );
+        gum::SimpleBayesNetGenerator<float> gen ( 50, 200, 2 );
         gum::BayesNet<float>* bn = new  gum::BayesNet<float>();
         gen.generateBN ( *bn );
         gum::Set<gum::NodeId> requisite;

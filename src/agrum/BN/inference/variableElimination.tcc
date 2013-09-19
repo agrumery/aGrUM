@@ -25,7 +25,7 @@
  */
 
 #include <agrum/BN/inference/variableElimination.h>
-
+#include <agrum/multidim/multiDimCombinationDefault.h>
 namespace gum {
 
   template<typename GUM_SCALAR> INLINE
@@ -38,7 +38,7 @@ namespace gum {
   VariableElimination<GUM_SCALAR>::~VariableElimination() {
     GUM_DESTRUCTOR ( VariableElimination );
   }
-
+/*
   template<typename GUM_SCALAR> INLINE
   VariableElimination<GUM_SCALAR>::VariableElimination ( const VariableElimination<GUM_SCALAR>& source ) {
     GUM_CONS_CPY ( VariableElimination );
@@ -50,7 +50,7 @@ namespace gum {
   VariableElimination<GUM_SCALAR>::operator= ( const VariableElimination& source ) {
     GUM_ERROR ( FatalError, "illegal call to VariableElimination copy operator." );
   }
-
+*/
   template<typename GUM_SCALAR> INLINE
   const std::vector<NodeId>&
   VariableElimination<GUM_SCALAR>::eliminationOrder() const {

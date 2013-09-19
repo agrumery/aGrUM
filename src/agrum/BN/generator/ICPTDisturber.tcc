@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,16 +17,31 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/**
- * @file
- * @brief KL divergence between BNs with GIBBS implementation
+
+/** @file
+ * @brief Abstract class for disturbing Conditional Probability Tables.
  *
- * @author Pierre-Henri WUILLEMIN
+ * @author Pierre-Henri WUILLEMIN and Ariele-Paolo MAESANO
  */
 
-#include <cmath>
-#include <agrum/BN/algorithms/divergence/GibbsKL.h>
+#include<agrum/BN/generator/ICPTDisturber.h>
+
+namespace gum {
 
 
-template class gum::GibbsKL<float>;
-template class gum::GibbsKL<double>;
+  // Default constructor.
+  template < typename GUM_SCALAR>
+  ICPTDisturber<GUM_SCALAR>::ICPTDisturber() {
+    GUM_CONSTRUCTOR( ICPTDisturber );
+  }
+
+  // Destructor.
+  template < typename GUM_SCALAR>
+  ICPTDisturber<GUM_SCALAR>::~ICPTDisturber() {
+    GUM_DESTRUCTOR( ICPTDisturber );
+  }
+
+
+} /* namespace gum */
+
+

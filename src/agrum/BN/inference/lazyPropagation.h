@@ -255,6 +255,8 @@ namespace gum {
       LazyPropagation<GUM_SCALAR>& operator= ( const LazyPropagation<GUM_SCALAR>& );
   };
 
+  extern template class LazyPropagation<float>;
+  extern template class LazyPropagation<double>;
 
 } /* namespace gum */
 

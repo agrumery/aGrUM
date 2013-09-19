@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
  *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,31 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
 /** @file
- * @brief Abstract class for disturbing Conditional Probability Tables.
+ * @brief max aggregator
  *
- * @author Pierre-Henri WUILLEMIN and Ariele-Paolo MAESANO
+* @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
+#include <agrum/multidim/aggregators/max.h>
 
-#include<agrum/BN/generator/abstractCPTDisturber.h>
-
-namespace gum {
-
-
-  // Default constructor.
-  template < typename GUM_SCALAR>
-  AbstractCPTDisturber<GUM_SCALAR>::AbstractCPTDisturber() {
-    GUM_CONSTRUCTOR( AbstractCPTDisturber );
-  }
-
-  // Destructor.
-  template < typename GUM_SCALAR>
-  AbstractCPTDisturber<GUM_SCALAR>::~AbstractCPTDisturber() {
-    GUM_DESTRUCTOR( AbstractCPTDisturber );
-  }
-
-
-} /* namespace gum */
-
-
+template class gum::aggregator::Max<float>;
+template class gum::aggregator::Max<double>;

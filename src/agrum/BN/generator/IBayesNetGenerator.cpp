@@ -18,9 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Source implementation of gumCPTGenerator.
+ * @brief Class for generating bayesian netwroks.
  *
- * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
- *
+ * @author Christophe GONZALES, Pierre-Henri WUILLEMIN, Lionel TORTI and Ariele-Paolo MAESANO
  */
-#include <agrum/BN/generator/abstractCPTGenerator.h>
+#include <agrum/BN/generator/IBayesNetGenerator.h>

@@ -74,7 +74,7 @@ namespace gum {
 
     for ( const auto iter : this->_bayesNet.nodes() )
       __modalitiesMap.insert ( iter,
-                               AbstractBayesNetGenerator < GUM_SCALAR,
+                               IBayesNetGenerator < GUM_SCALAR,
                                ICPTGenerator >::_bayesNet.variable ( iter ).domainSize() );
 
     DefaultTriangulation tri ( & ( this->_bayesNet.moralGraph() ), &__modalitiesMap );

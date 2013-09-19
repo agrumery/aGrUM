@@ -19,12 +19,15 @@
  ***************************************************************************/
 
 /** @file
- * @brief Source implementation of SimpleAbstractCPTDisturber.
+ * @brief Source implementation of SimpleICPTDisturber.
  *
  * @author Pierre-Henri WUILLEMIN and Lionel TORTI
  *
  */
 #include <agrum/BN/generator/simpleCPTDisturber.h>
+
+template class gum::SimpleCPTDisturber<float>;
+template class gum::SimpleCPTDisturber<double>;
 
 
 

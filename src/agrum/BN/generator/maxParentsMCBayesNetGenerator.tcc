@@ -56,10 +56,10 @@ namespace gum {
 
   template<typename GUM_SCALAR, template<class> class ICPTGenerator, template<class> class ICPTDisturber>
   bool MaxParentsMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::__checkConditions() {
-    //DAG::NodeIterator node = AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.beginNodes();
-    //while ( node != AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.endNodes() ) {
-    for ( const auto node : AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.nodes() )
-      if ( AbstractBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.dag().parents ( node ).size() > _maxParents )
+    //DAG::NodeIterator node = this->_bayesNet.beginNodes();
+    //while ( node != this->_bayesNet.endNodes() ) {
+    for ( const auto node : this->_bayesNet.nodes() )
+      if ( this->_bayesNet.dag().parents ( node ).size() > _maxParents )
         return false ;
 
     return MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::__checkConditions();

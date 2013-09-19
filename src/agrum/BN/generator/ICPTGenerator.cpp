@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,16 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/**
- * @file
- * @brief KL divergence between BNs with GIBBS implementation
+/** @file
+ * @brief Source implementation of ICPTGenerator.
  *
- * @author Pierre-Henri WUILLEMIN
+ * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
+ *
  */
+#include <agrum/BN/generator/ICPTGenerator.h>
 
-#include <cmath>
-#include <agrum/BN/algorithms/divergence/GibbsKL.h>
-
-
-template class gum::GibbsKL<float>;
-template class gum::GibbsKL<double>;
+template class gum::ICPTGenerator<float>;
+template class gum::ICPTGenerator<double>;

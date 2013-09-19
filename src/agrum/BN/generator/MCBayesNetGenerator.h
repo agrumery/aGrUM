@@ -37,13 +37,13 @@
 #include <dirent.h>
 #include <sys/time.h>
 
-
+#include <agrum/config.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/generator/simpleCPTDisturber.h>
 #include <agrum/core/hashTable.h>
-#include <agrum/BN/generator/abstractBayesNetGenerator.h>
+#include <agrum/BN/generator/IBayesNetGenerator.h>
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
@@ -144,7 +144,7 @@ namespace gum {
    \enddot
    */
   template <typename GUM_SCALAR, template<class> class ICPTGenerator = SimpleCPTGenerator, template<class> class ICPTDisturber = SimpleCPTDisturber>
-  class MCBayesNetGenerator : public AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>, public  ICPTDisturber<GUM_SCALAR> {
+  class MCBayesNetGenerator : public IBayesNetGenerator<GUM_SCALAR,ICPTGenerator>, public  ICPTDisturber<GUM_SCALAR> {
 
     public:
 
@@ -353,6 +353,9 @@ namespace gum {
 
 
   };
+  
+  extern template class MCBayesNetGenerator<float>;
+  extern template class MCBayesNetGenerator<double>;
 }/*namespace gum*/
 
 #include <agrum/BN/generator/MCBayesNetGenerator.tcc>

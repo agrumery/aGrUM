@@ -19,12 +19,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Class for generating bayesian netwroks.
+ * @brief Interface-like class for generating bayesian networks.
  *
  * @author Christophe GONZALES, Pierre-Henri WUILLEMIN, Lionel TORTI and Ariele-Paolo MAESANO
  */
-#ifndef GUM_ABSTRACT_BAYES_NET_GENERATOR_H
-#define GUM_ABSTRACT_BAYES_NET_GENERATOR_H
+#ifndef GUM_I_BAYES_NET_GENERATOR_H
+#define GUM_I_BAYES_NET_GENERATOR_H
 
 #include <climits>
 #include <cstdio>
@@ -32,6 +32,7 @@
 #include <iostream>
 #include <vector>
 
+#include <agrum/config.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 
@@ -42,7 +43,7 @@
 namespace gum {
 
   /**
-   * @class AbstractBayesNetGenerator abstractBayesNetGenerator.h <agrum/BN/generator/abstractBayesNetGenerator.h>
+   * @class IBayesNetGenerator abstractBayesNetGenerator.h <agrum/BN/generator/abstractBayesNetGenerator.h>
    * @brief Class for generating bayesian networks.
    * @ingroup bn_group
    *
@@ -52,7 +53,7 @@ namespace gum {
    * resulting in the failure of most of the inference Methods.
    */
   template <typename GUM_SCALAR, template<class> class ICPTGenerator>
-  class AbstractBayesNetGenerator : public ICPTGenerator<GUM_SCALAR> {
+  class IBayesNetGenerator : public ICPTGenerator<GUM_SCALAR> {
 
     public:
       // ############################################################################
@@ -67,13 +68,13 @@ namespace gum {
        * @param maxModality Each DRV has from 2 to maxModality modalities
        * @throws OperationNotAllowed if the number of maximum arcs does not allow the generation of a connexe graph maxArcs < nbrNodes -1, is too big maxArcs > nbrNodes *(nbrNodes -1) /2 and if the maximum of modality is lower than 2.
        */
-      AbstractBayesNetGenerator( Size nbrNodes, Size maxArcs, Size maxModality );
+      IBayesNetGenerator ( Size nbrNodes, Size maxArcs, Size maxModality );
 
       /**
        * Destructor.
        */
 
-      ~AbstractBayesNetGenerator();
+      ~IBayesNetGenerator();
       /// @}
 
       // ############################################################################
@@ -88,7 +89,7 @@ namespace gum {
       * @return null but modify inputed empty Bayesian Network
       */
 
-      virtual void generateBN( BayesNet<GUM_SCALAR>& bayesNet ) = 0;
+      virtual void generateBN ( BayesNet<GUM_SCALAR>& bayesNet ) = 0;
 
       /**
        * function that insert random values in the CPT of each nodes according to the @a CPTGenerator.
@@ -110,17 +111,17 @@ namespace gum {
 
 
       /**
-       * Return a constant reference to the number of nodes imposed on the AbstractBayesNetGenerator.
+       * Return a constant reference to the number of nodes imposed on the IBayesNetGenerator.
        */
       Size nbrNodes() const;
 
       /**
-       * Return a constant reference to the maximum number of arcs imposed on the AbstractBayesNetGenerator
+       * Return a constant reference to the maximum number of arcs imposed on the IBayesNetGenerator
        */
       Size maxArcs() const;
 
       /**
-      * Return a constant reference to the maximum modality imposed on the AbstractBayesNetGenerator
+      * Return a constant reference to the maximum modality imposed on the IBayesNetGenerator
       */
       Size maxModality() const;
 
@@ -134,17 +135,17 @@ namespace gum {
       /**
       * Modifies the value of the number of nodes imposed on the BayesGenerator
       */
-      void setNbrNodes( Size nbrNodes );
+      void setNbrNodes ( Size nbrNodes );
 
       /**
       * Modifies the value of the number of nodes imposed on the BayesGenerator
       */
-      void setMaxArcs( Size maxArcs );
+      void setMaxArcs ( Size maxArcs );
 
       /**
       * Modifies the value of the number of nodes imposed on the BayesGenerator
       */
-      void setMaxModality( Size maxModality );
+      void setMaxModality ( Size maxModality );
 
 
       /// @}
@@ -155,14 +156,11 @@ namespace gum {
       Size _maxArcs;
       Size _maxModality;
       BayesNet<GUM_SCALAR>  _bayesNet;
-
-
-
   };
 
 } /* namespace gum */
 
-#include <agrum/BN/generator/abstractBayesNetGenerator.tcc>
+#include <agrum/BN/generator/IBayesNetGenerator.tcc>
 
-#endif /* GUM_BAYES_NET_GENERATOR_H */
+#endif /* GUM_I_BAYES_NET_GENERATOR_H */
 

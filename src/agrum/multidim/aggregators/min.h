@@ -71,6 +71,9 @@ namespace gum {
         virtual Idx _neutralElt( void ) const ;
         virtual Idx _folder( const DiscreteVariable& v,Idx i1,Idx i2 ,bool& stop_iteration ) const;
     };
+    
+    extern template class Min<float>;
+    extern template class Min<double>;
   } // aggregator
 } //gum
 

@@ -27,7 +27,8 @@
 
 #include <cstdlib>
 
-#include <agrum/BN/generator/abstractCPTGenerator.h>
+#include <agrum/config.h>
+#include <agrum/BN/generator/ICPTGenerator.h>
 
 
 namespace gum {
@@ -40,7 +41,7 @@ namespace gum {
    * This class implements a CPTGenerator CPT generation algorithm.
    */
   template <typename GUM_SCALAR>
-  class SimpleCPTGenerator: public AbstractCPTGenerator<GUM_SCALAR> {
+  class SimpleCPTGenerator: public ICPTGenerator<GUM_SCALAR> {
     public:
       // ############################################################################
       /// @name Constructors / Destructor
@@ -67,11 +68,10 @@ namespace gum {
        * @param cpt A reference on the CPT to fill.
        */
       virtual void generateCPT ( const Idx& varId, const Potential<GUM_SCALAR>& cpt );
-
-
   };
-
-
+  
+  extern template class SimpleCPTGenerator<float>;
+  extern template class SimpleCPTGenerator<double>;
 } /* namespace gum */
 
 #include <agrum/BN/generator/simpleCPTGenerator.tcc>

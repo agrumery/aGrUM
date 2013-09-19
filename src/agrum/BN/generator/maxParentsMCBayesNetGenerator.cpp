@@ -25,3 +25,6 @@
  */
 
 #include <agrum/BN/generator/maxParentsMCBayesNetGenerator.h>
+
+template class gum::MaxParentsMCBayesNetGenerator<float>;
+template class gum::MaxParentsMCBayesNetGenerator<double>;

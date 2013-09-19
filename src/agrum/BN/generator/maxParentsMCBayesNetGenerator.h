@@ -37,7 +37,7 @@
 #include <dirent.h>
 #include <sys/time.h>
 
-
+#include <agrum/config.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/generator/simpleCPTDisturber.h>
@@ -134,11 +134,11 @@ namespace gum {
        * @return boolean state that verify the conditions
        */
 
-      bool __checkConditions();
-
-// à virtualiser par la suite si on definit plusieur condition
-
+      virtual bool __checkConditions();
   };
+  
+  extern template class MaxParentsMCBayesNetGenerator<float>;
+  extern template class MaxParentsMCBayesNetGenerator<double>;
 }/*namespace gum*/
 
 #include <agrum/BN/generator/maxParentsMCBayesNetGenerator.tcc>

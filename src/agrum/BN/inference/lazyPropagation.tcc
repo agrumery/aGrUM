@@ -76,6 +76,7 @@ namespace gum {
       elim_order.insert ( JT_elim_order[i], i );
 
     const DAG& dag = BN.dag();
+
     for ( const auto node : dag.nodes() ) {
       // get the variables in the potential of iter_node
       NodeId first_var_eliminated = node;
@@ -102,6 +103,7 @@ namespace gum {
     // create empty potential lists into the cliques of the joint tree as well
     // as empty lists of evidence
     List <const Potential<GUM_SCALAR>*> empty_list;
+
     for ( const auto node : __JT->nodes() ) {
       __clique_potentials.insert ( node, empty_list );
       __clique_evidence.insert ( node, empty_list );
@@ -141,6 +143,7 @@ namespace gum {
     // set the correspondance between variables and their id and get the variables
     // domain sizes
     NodeProperty<Size> modalities;
+
     for ( const auto node : this->bn().dag().nodes() ) {
       const DiscreteVariable& var = this->bn().variable ( node );
       modalities.insert ( node, var.domainSize() );
@@ -166,7 +169,7 @@ namespace gum {
 
     // set the correspondance between variables and their id and get the variables
     // domain sizes
-    HashTable<NodeId, unsigned int> modalities;
+    NodeProperty<Size> modalities;
 
     for ( const auto node : this->bn().dag().nodes() ) {
       const DiscreteVariable& var = this->bn().variable ( node );
@@ -1093,6 +1096,7 @@ namespace gum {
 
     GUM_SCALAR sum = 0;
     Instantiation iter ( *tmp );
+
     for ( iter.setFirst(); !iter.end(); ++iter )
       sum += tmp->get ( iter );
 

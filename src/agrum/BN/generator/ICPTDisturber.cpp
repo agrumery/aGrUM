@@ -17,29 +17,15 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 /** @file
- * @brief Source implementation of gumCPTGenerator.
+ * @brief Source implementation of gumICPTDisturber.
  *
- * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
+ * @author Pierre-Henri WUILLEMIN and Ariele-Paolo Maesano
  *
  */
-#include <agrum/BN/generator/abstractCPTGenerator.h>
+#include <agrum/BN/generator/ICPTDisturber.h>
 
+template class gum::ICPTDisturber<float>;
+template class gum::ICPTDisturber<double>;
 
-namespace gum {
-
-
-  // Default constructor.
-  template < typename GUM_SCALAR>
-  AbstractCPTGenerator<GUM_SCALAR>::AbstractCPTGenerator() {
-    GUM_CONSTRUCTOR( AbstractCPTGenerator );
-  }
-
-  // Destructor.
-  template < typename GUM_SCALAR>
-  AbstractCPTGenerator<GUM_SCALAR>::~AbstractCPTGenerator() {
-    GUM_DESTRUCTOR( AbstractCPTGenerator );
-  }
-
-
-} /* namespace gum */

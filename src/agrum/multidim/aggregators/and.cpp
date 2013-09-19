@@ -17,16 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/**
- * @file
- * @brief KL divergence between BNs with GIBBS implementation
+/** @file
+ * @brief And aggregator
  *
- * @author Pierre-Henri WUILLEMIN
+* @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
+#include <agrum/multidim/aggregators/and.h>
 
-#include <cmath>
-#include <agrum/BN/algorithms/divergence/GibbsKL.h>
-
-
-template class gum::GibbsKL<float>;
-template class gum::GibbsKL<double>;
+template class gum::aggregator::And<float>;
+template class gum::aggregator::And<double>;

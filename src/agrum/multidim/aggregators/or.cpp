@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
  *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,16 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
 /** @file
- * @brief Source implementation of gumAbstractCPTDisturber.
+ * @brief Or aggregator
  *
- * @author Pierre-Henri WUILLEMIN and Ariele-Paolo Maesano
- *
+* @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
+#include <agrum/multidim/aggregators/or.h>
 
-
-#include <agrum/BN/generator/abstractCPTDisturber.h>
-
-
-
+template class gum::aggregator::Or<float>;
+template class gum::aggregator::Or<double>;

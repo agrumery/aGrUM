@@ -125,6 +125,9 @@ namespace gum {
       Complexity __difficulty;
       bool __done;
   };
+  
+  extern template class KL<float>;
+  extern template class KL<double>;
 } //namespace gum
 
 #include <agrum/BN/algorithms/divergence/KL.tcc>

@@ -20,3 +20,6 @@
 
 #include <agrum/BN/inference/lazyPropagation.h>
 
+
+template class gum::LazyPropagation<float>;
+template class gum::LazyPropagation<double>;

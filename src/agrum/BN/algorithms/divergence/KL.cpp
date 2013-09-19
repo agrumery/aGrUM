@@ -24,8 +24,8 @@
  * @author Pierre-Henri WUILLEMIN
  */
 
-#include <math.h>
+#include <cmath>
 #include <agrum/BN/algorithms/divergence/KL.h>
 
-namespace gum {
-}
+template class gum::KL<float>;
+template class gum::KL<double>;

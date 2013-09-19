@@ -116,6 +116,8 @@ namespace gum {
 
   };
 
+  extern template class GibbsInference<float>;
+  extern template class GibbsInference<double>;
 
 } /* namespace gum */
 

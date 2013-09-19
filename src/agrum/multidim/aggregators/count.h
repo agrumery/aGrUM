@@ -77,6 +77,9 @@ namespace gum {
       private:
         Idx __value;
     };
+    
+    extern template class Count<float>;
+    extern template class Count<double>;
   } //aggregator
 } //gum
 

@@ -30,7 +30,6 @@
 #include <vector>
 
 #include <agrum/BN/IBayesNet.h>
-
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/inference/BayesBall.h>
@@ -55,7 +54,10 @@ namespace gum {
       /**
        * Default constructor.
        */
-      VEWithBB( const IBayesNet<GUM_SCALAR>& bn );
+      VEWithBB ( const IBayesNet<GUM_SCALAR>& bn );
+
+      VEWithBB ( const VEWithBB<GUM_SCALAR>& source ) = delete;
+      VEWithBB<GUM_SCALAR>& operator= ( const VEWithBB<GUM_SCALAR>& source ) =delete;
 
       /**
        * Destructor.
@@ -87,12 +89,12 @@ namespace gum {
        * If an evidence already exists over one of the variable in pot_list, then
        * it is replaced by the new evidence in pot_list.
        */
-      virtual void insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list );
+      virtual void insertEvidence ( const List<const Potential<GUM_SCALAR>*>& pot_list );
 
       /**
        * Remove a given evidence from the graph.
        */
-      virtual void eraseEvidence( const Potential<GUM_SCALAR>* e );
+      virtual void eraseEvidence ( const Potential<GUM_SCALAR>* e );
 
       /**
        * Remove all evidence from the graph.
@@ -109,15 +111,9 @@ namespace gum {
        * @param marginal the potential to fill
        * @throw ElementNotFound Raised if no variable matches id.
        */
-      virtual void _fillMarginal( NodeId id, Potential<GUM_SCALAR>& marginal );
+      virtual void _fillMarginal ( NodeId id, Potential<GUM_SCALAR>& marginal );
 
     private:
-
-      /// Private copy constructor.
-      VEWithBB( const VEWithBB<GUM_SCALAR>& source );
-
-      /// Private copy operator.
-      VEWithBB<GUM_SCALAR>& operator=( const VEWithBB<GUM_SCALAR>& source );
 
       /// Mapping between nodes and their evidences.
       typename Property<const Potential<GUM_SCALAR>*>::onNodes __hardEvidence;
@@ -125,9 +121,11 @@ namespace gum {
       /// The VariableElimination algorithm as the inference engine
       VariableElimination<GUM_SCALAR> __ve;
 
-      void __fillRequisiteNode( NodeId id, Set<NodeId>& requisite_nodes );
+      void __fillRequisiteNode ( NodeId id, Set<NodeId>& requisite_nodes );
 
   };
+  extern template class VEWithBB<float>;
+  extern template class VEWithBB<double>;
 } /* namespace gum */
 
 #include <agrum/BN/inference/VEWithBB.tcc>

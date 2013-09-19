@@ -76,7 +76,7 @@ namespace gum {
             p = new Potential<prm_float>( new MultiDimNoisyORCompound<prm_float>( bij, static_cast<const MultiDimNoisyORCompound<prm_float>&>( *impl ) ) );
           } else if ( dynamic_cast< const MultiDimNoisyORNet<prm_float>* >( impl ) ) {
             p = new Potential<prm_float>( new MultiDimNoisyORNet<prm_float>( bij, static_cast<const MultiDimNoisyORNet<prm_float>&>( *impl ) ) );
-          } else if ( dynamic_cast< const MultiDimAggregator<prm_float>* >( impl ) ) {
+          } else if ( dynamic_cast< const aggregator::MultiDimAggregator<prm_float>* >( impl ) ) {
             p = new Potential<prm_float>( static_cast<MultiDimImplementation<prm_float>*>( impl->newFactory() ) );
 
             for ( MultiDimInterface::iterator iter = impl->begin(); iter != impl->end(); ++iter )

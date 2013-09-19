@@ -29,7 +29,6 @@
 #define GUM_INFERENCE_H
 
 #include <agrum/config.h>
-
 #include <agrum/BN/IBayesNet.h>
 
 
@@ -41,7 +40,6 @@ namespace gum {
    *
    */
   template <typename GUM_SCALAR>
-
   class BayesNetInference {
     public:
       /**
@@ -133,6 +131,8 @@ namespace gum {
       const IBayesNet<GUM_SCALAR>& __bayesNet;
   };
 
+  extern template class BayesNetInference<float>;
+  extern template class BayesNetInference<double>;
 
 } /* namespace gum */
 
