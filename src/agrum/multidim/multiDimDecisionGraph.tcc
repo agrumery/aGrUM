@@ -29,18 +29,31 @@
 
 namespace gum {
 
+template<typename GUM_SCALAR>
+  SmallObjectAllocator MultiDimDecisionGraph<GUM_SCALAR>::soa(GUM_DEFAULT_CHUNK_SIZE, GUM_DEFAULT_MAX_OBJECT_SIZE);
+
+  template<typename GUM_SCALAR>
+  Idx MultiDimDecisionGraph<GUM_SCALAR>::aNICLE(0);
+  template<typename GUM_SCALAR>
+  Idx MultiDimDecisionGraph<GUM_SCALAR>::dNICLE(0);
+  template<typename GUM_SCALAR>
+  Idx MultiDimDecisionGraph<GUM_SCALAR>::aIN(0);
+  template<typename GUM_SCALAR>
+ Idx MultiDimDecisionGraph<GUM_SCALAR>:: dIN(0);
+
   // ============================================================================
   // Since elem chain are handled with soa, here is the operation of adding a node
   // to the list.
   // ============================================================================
   template<typename GUM_SCALAR>
   INLINE
-  void MultiDimDecisionGraph<GUM_SCALAR>::_addElemToNICL( NICLElem* nodeChain, const NodeId& elemId){
+  void MultiDimDecisionGraph<GUM_SCALAR>::_addElemToNICL( NICLElem **nodeChain, const NodeId& elemId){
 
     NICLElem* newElem = static_cast< NICLElem* >(soa.allocate(sizeof( NICLElem )));
     newElem->elemId = elemId;
-    newElem->nextElem = nodeChain;
-    nodeChain = newElem;
+    newElem->nextElem = *nodeChain;
+    *nodeChain = newElem;
+    aNICLE++;
   }
 
   // ============================================================================
@@ -48,13 +61,12 @@ namespace gum {
   // ============================================================================
   template<typename GUM_SCALAR>
   INLINE
-  void MultiDimDecisionGraph<GUM_SCALAR>::_removeElemFromNICL(
-          NICLElem* nodeChain, const NodeId& elemId){
+  void MultiDimDecisionGraph<GUM_SCALAR>::_removeElemFromNICL( NICLElem **nodeChain, const NodeId& elemId){
 
-    NICLElem* current = nodeChain;
-    NICLElem** prev = &nodeChain;
+    NICLElem* current = *nodeChain;
+    NICLElem** prev = nodeChain;
     while( current != nullptr ){
-      if( currrent->elemId == elemId ){
+      if( current->elemId == elemId ){
         *prev = current->nextElem;
         soa.deallocate(current, sizeof( NICLElem ));
         break;
@@ -62,6 +74,7 @@ namespace gum {
       prev = &(current->nextElem);
       current = current->nextElem;
     }
+    dNICLE++;
   }
 
   // ============================================================================
@@ -73,10 +86,12 @@ namespace gum {
 
     // Déallocation des chainons parents dans la liste des parents
     NICLElem* currentNode = nodeChain;
+    NICLElem* nextNode = nullptr;
     while( currentNode ){
-      NICLElem* nextNode = currentNode->nextElem;
+      nextNode = currentNode->nextElem;
       soa.deallocate(currentNode, sizeof( NICLElem ));
       currentNode = nextNode;
+      dNICLE++;
     }
     nodeChain = nullptr;
   }
@@ -88,15 +103,26 @@ namespace gum {
   // ============================================================================
   template<typename GUM_SCALAR>
   INLINE
-  MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* MultiDimDecisionGraph<GUM_SCALAR>::_createInternalNode( const DiscreteVariable* x,
-                                                                                                           bool allocateSons ){
+  typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* MultiDimDecisionGraph<GUM_SCALAR>::_allocateInternalNode( const DiscreteVariable* x ){
 
-    InternalNode* newNode = static_cast<InternalNode*>(soa.allocate(sizeof(x->domainSize())));
+    InternalNode* newNode = static_cast<InternalNode*>(soa.allocate(sizeof(InternalNode)));
     newNode->nodeVar = x;
-    if( allocateSons )
-      newNode->nodeSons = static_cast<NodeId*>(soa.allocate(x->domainSize()*sizeof(NodeId)));
-    else
-      newNode->nodeSons = nullptr;
+    newNode->nodeSons = static_cast<NodeId*>(soa.allocate(x->domainSize()*sizeof(NodeId)));
+
+    aIN++;
+    return newNode;
+
+  }
+
+  template<typename GUM_SCALAR>
+  INLINE
+  typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* MultiDimDecisionGraph<GUM_SCALAR>::_allocateInternalNode( const DiscreteVariable* x, NodeId* sons ){
+
+    InternalNode* newNode = static_cast<InternalNode*>(soa.allocate(sizeof(InternalNode)));
+    newNode->nodeVar = x;
+    newNode->nodeSons = sons;
+
+    aIN++;
     return newNode;
 
   }
@@ -108,13 +134,15 @@ namespace gum {
   // ============================================================================
   template<typename GUM_SCALAR>
   INLINE
-  void MultiDimDecisionGraph<GUM_SCALAR>::_deallocateInternalNode( MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* node ){
+  void MultiDimDecisionGraph<GUM_SCALAR>::_deallocateInternalNode( typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* node ){
 
     // Déallocation du vecteur fils
     soa.deallocate( node->nodeSons, node->nodeVar->domainSize()*sizeof(NodeId) );
 
     // Déallocation de la structure
     soa.deallocate( node, sizeof(InternalNode));
+
+    dIN++;
 
   }
 
@@ -127,9 +155,12 @@ namespace gum {
     // ============================================================================
     template<typename GUM_SCALAR>
     INLINE
-    MultiDimDecisionGraph<GUM_SCALAR>::MultiDimDecisionGraph():__internalNodeMap(500,true,false),__var2NodeIdMap(500,true,false),__valueMap(125, true){
-      GUM_CPY( MultiDimDecisionGraph );
+    MultiDimDecisionGraph<GUM_SCALAR>::MultiDimDecisionGraph():
+        __name("MultiDimDecisionGraph"), __model( 500, true ),__valueMap(125, true), __internalNodeMap(500,true,false),__var2NodeIdMap(500,true,false),__getRet(0){
+      GUM_CONSTRUCTOR( MultiDimDecisionGraph );
       __manager = nullptr;
+      // Pop up a first node so that id 0 is unavailable
+      __model.insertNode();
     }
 
     // ============================================================================
@@ -163,6 +194,7 @@ namespace gum {
       GUM_DESTRUCTOR( MultiDimDecisionGraph );
       delete __manager;
       this->clear();
+//      std::cout << "ANICLE = " << aNICLE << " - dNICLE = " << dNICLE << " - AIN = " << aIN << " - dIN = " << dIN << std::endl;
     }
 
   // ============================================================================
@@ -183,6 +215,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   INLINE
   MultiDimContainer<GUM_SCALAR>* MultiDimDecisionGraph<GUM_SCALAR>::newFactory() const{
+      return new MultiDimDecisionGraph<GUM_SCALAR>();
   }
 
 
@@ -196,7 +229,7 @@ namespace gum {
     template<typename GUM_SCALAR>
     INLINE
     const std::string& MultiDimDecisionGraph<GUM_SCALAR>::name() const{
-        return "multidimdecisiongraph";
+        return __name;
     }
 
     // ============================================================================
@@ -245,6 +278,15 @@ namespace gum {
   // ############################################################################
   // Implementation of MultiDimInterface
   // ############################################################################
+    template<typename GUM_SCALAR>
+    INLINE
+    void MultiDimDecisionGraph<GUM_SCALAR>::add (const DiscreteVariable &v){
+      if( ! this->variablesSequence().exists(&v))
+        MultiDimImplementation<GUM_SCALAR>::add(v);
+
+      if( ! this->__var2NodeIdMap.exists(&v))
+        __var2NodeIdMap.insert(&v,nullptr);
+    }
 
     // ============================================================================
     // See gum::MultiDimInterface::erase(const DiscreteVariable& v)
@@ -252,7 +294,16 @@ namespace gum {
     template<typename GUM_SCALAR>
     INLINE
     void MultiDimDecisionGraph<GUM_SCALAR>::erase( const DiscreteVariable& v ){
+      if( this->__var2NodeIdMap.exists(&v)){
+        while(__var2NodeIdMap[&v] != nullptr){
+          manager()->eraseNode(__var2NodeIdMap[&v]->elemId);
+        }
+        _deleteNICL(__var2NodeIdMap[&v]);
+        __var2NodeIdMap.erase(&v);
+      }
 
+      if( this->variablesSequence().exists(&v))
+        MultiDimImplementation<GUM_SCALAR>::erase(v);
     }
 
     // ============================================================================
@@ -333,9 +384,9 @@ namespace gum {
     template<typename GUM_SCALAR>
     INLINE
     const std::string MultiDimDecisionGraph<GUM_SCALAR>::toString( const Instantiation *i ) const{
-        std::stringstream sBuff;
-      //  sBuff << ( *i ) << " = " << get( *i );
-        return sBuff.str();
+      std::stringstream sBuff;
+      sBuff << ( *i ) << " = " << this->get( *i );
+      return sBuff.str();
     }
 
 
@@ -385,24 +436,34 @@ namespace gum {
     // ============================================================================
     template<typename GUM_SCALAR>
     INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::copy ( const MultiDimDecisionGraph<gum::GUM_SCALAR> &src ){
-      clear();
+    void MultiDimDecisionGraph<GUM_SCALAR>::copy ( const MultiDimDecisionGraph<GUM_SCALAR> &src ){
+
+      this->clear();
+
+      // Insertion des nouvelles variables
+      for( SequenceIterator<const DiscreteVariable*> varIter = src.variablesSequence().begin(); varIter != src.variablesSequence().end(); ++varIter)
+        this->add(**varIter);
+
+      // Recopie des Ids utilisées
+      this->__model = src.model();
+
       std::vector<NodeId> lifo;
       lifo.push_back(src.root());
       HashTable< NodeId, bool > prunningTable;
 
       // Parcours en profondeur du diagramme source
       while( !lifo.empty() ){
-        NodeId currentNodeId = lifo.pop_back();
+        NodeId currentNodeId = lifo.back();
+        lifo.pop_back();
 
-        if( src.isTerminalNode(currentNodeId ) )
+        if( src.isTerminalNode(currentNodeId ) ){
           // Si le noeud courant est terminal, sa valeur associée est ajoutée à la table des valeurs
           __valueMap.insert( currentNodeId , src.nodeValue( currentNodeId ) );
-        else {
+        }else {
           // Si le noeud courant n'est pas terminal,
           // il nous faut dupliquer la structure interne dans une nouvelle structure
           const InternalNode* currentNode = src.node( currentNodeId );
-          InternalNode* newNode = _createInternalNode( currentNode->var );
+          InternalNode* newNode = _allocateInternalNode( currentNode->nodeVar );
 
           // Recopie des fils
           for( Idx index = 0; index < newNode->nodeVar->domainSize(); ++index ){
@@ -415,7 +476,7 @@ namespace gum {
           }
 
           __internalNodeMap.insert( currentNodeId, newNode );
-          _addElemToNICL( __var2NodeIdMap[ currentNode->nodeVar ], currentNode );
+          _addElemToNICL( &(__var2NodeIdMap[ currentNode->nodeVar ]), currentNodeId );
         }
       }
     }
@@ -429,25 +490,81 @@ namespace gum {
     INLINE
     void MultiDimDecisionGraph<GUM_SCALAR>::clear( ){
 
+      __model.clear();
+      __valueMap.clear();
+
       // Nettoyage des noeuds
       for( HashTableIterator<NodeId, InternalNode*> nodeIter = __internalNodeMap.begin();
            nodeIter != __internalNodeMap.end(); ++nodeIter )
         _deallocateInternalNode(*nodeIter);
+
+      __internalNodeMap.clear();
 
       // Nettoyage des liste de noeuds par variables
       for( HashTableIterator<const DiscreteVariable*, NICLElem*> varIter = __var2NodeIdMap.begin();
            varIter != __var2NodeIdMap.end(); ++varIter ){
         _deleteNICL(*varIter);
       }
-
-      __internalNodeMap.clear();
       __var2NodeIdMap.clear();
+
+      for( SequenceIterator<const DiscreteVariable*> varIter = this->variablesSequence().rbegin(); varIter != this->variablesSequence().rend(); --varIter){
+        this->erase(**varIter);
+      }
     }
 
 
   // ############################################################################
   // @name Graph Handlers.
   // ############################################################################
+    // =============================================================================
+    template< typename GUM_SCALAR >
+    INLINE
+    std::string MultiDimDecisionGraph< GUM_SCALAR >::toDot() const {
+
+        std::stringstream output;
+        std::stringstream terminalStream;
+        std::stringstream nonTerminalStream;
+        std::stringstream arcstream;
+//        std::stringstream defaultarcstream;
+        output << std::endl << "digraph \"no_name\" {" << std::endl;
+
+        terminalStream << "node [shape = box];" << std::endl;
+        nonTerminalStream << "node [shape = ellipse];" << std::endl;
+        std::string tab = "  ";
+
+        for ( NodeGraphPart::NodeIterator nodeIter = __model.beginNodes(); nodeIter != __model.endNodes(); ++nodeIter )
+          if ( *nodeIter != 0 ) {
+            if ( __valueMap.existsFirst ( *nodeIter ) )
+                terminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\""<< *nodeIter << " - " << __valueMap.second ( *nodeIter ) << "\"]"<< ";" << std::endl;
+            else {
+              nonTerminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\""<< *nodeIter << " - " << __internalNodeMap[ *nodeIter ]->nodeVar->name() << "\"]"<< ";" << std::endl;
+
+//              if ( _arcMap[*nodeIter] != NULL )
+                for ( Idx sonIter = 0; sonIter < __internalNodeMap[ *nodeIter ]->nodeVar->domainSize(); ++sonIter )
+                  if ( __internalNodeMap[ *nodeIter ]->nodeSons[sonIter] != 0 )
+                    arcstream << tab <<  *nodeIter << " -> " << __internalNodeMap[ *nodeIter ]->nodeSons[sonIter]
+                              << " [label=\"" << __internalNodeMap[ *nodeIter ]->nodeVar->label ( sonIter ) << "\",color=\"#0000ff\"]"<< ";" << std::endl;
+
+//              if ( _defaultArcMap.exists ( *nodeIter ) )
+//                defaultarcstream << tab <<  *nodeIter << " -> " << _defaultArcMap[*nodeIter] << " [color=\"#ff0000\"]"<< ";" << std::endl;
+            }
+          }
+
+        output << terminalStream.str() << std::endl << nonTerminalStream.str() << std::endl <<  arcstream.str() << std::endl << "}" << std::endl;
+//        << defaultarcstream.str()
+        return output.str();
+      }
+
+    // ============================================================================
+    // Returns a const reference to the manager of this diagram
+    // ============================================================================
+    template<typename GUM_SCALAR>
+    INLINE
+    MultiDimDecisionGraphManager<GUM_SCALAR>* MultiDimDecisionGraph<GUM_SCALAR>::manager(){
+      if( __manager == nullptr )
+        __manager = new MultiDimDecisionGraphManager<GUM_SCALAR>(this);
+      return __manager;
+    }
 
     // ============================================================================
     // Indicates if given node is terminal or not
@@ -473,118 +590,17 @@ namespace gum {
     // ============================================================================
     template<typename GUM_SCALAR>
     INLINE
-    const MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* MultiDimDecisionGraph<GUM_SCALAR>::nodeVariable( NodeId n ) const{
+    const typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* MultiDimDecisionGraph<GUM_SCALAR>::node( NodeId n ) const{
       return this->__internalNodeMap[ n ];
     }
 
     // ============================================================================
-    // @brief Replace variable x by y.
-    // Technically this should be call by any subclass overloading this method
-    // to proceed with the changes in this class containers.
+    // Not implemented yet
     // ============================================================================
     template<typename GUM_SCALAR>
     INLINE
     void MultiDimDecisionGraph<GUM_SCALAR>::_swap( const DiscreteVariable* x, const DiscreteVariable* y ){
-
-      // First we determine the position of both variable
-      // We also determine which one precede the other
-        const DiscreteVariable* firstVar = x;
-        const DiscreteVariable* lastVar = y;
-        Idx firstPos = this->variablesSequence().pos(x);
-        Idx lastPos = this->variablesSequence().pos(y);
-
-
-        if( firstPos > lastPos ){
-            firstPos = firstPos - lastPos;
-            lastPos = lastPos + firstPos;
-            firstPos = lastPos - firstPos;
-            lastVar = x;
-            firstVar = y;
-        }
-
-        Idx currentFirstPos = firstPos;
-        for(; currentFirstPos != lastPos; currentFirstPos++ )
-          _adjacentSwap( this->variablesSequence().atPos(currentFirstPos), this->variablesSequence().atPos(currentFirstPos + 1));
-
-        Idx currentLastPos = lastPos - 1;
-        for(; currentLastPos != firstPos; currentLastPos-- )
-          _adjacentSwap( this->variablesSequence().atPos(currentLastPos - 1), this->variablesSequence().atPos(currentLastPos));
-
-    }
-
-    // ============================================================================
-    // Swap two adjacent variable.
-    // Order is important here.
-    // X must precede Y before the swap (at the end Y will then precede X).
-    // Not respecting this constraint leads to hasardous behaviour.
-    // ============================================================================
-    template<typename GUM_SCALAR>
-    INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::_adjacentSwap( const DiscreteVariable* x, const DiscreteVariable* y ){
-
-      NICLElem* oldxNodes = __var2NodeIdMap[ x ];
-      NICLElem* oldyNodes = __var2NodeIdMap[ y ];
-
-      __var2NodeIdMap[ x ] = nullptr;
-      __var2NodeIdMap[ y ] = nullptr;
-
-      InternalNode* xNode = nullptr;
-      InternalNode* sonNode = nullptr;
-      NodeId* ysons = nullptr;
-      NodeId* xsons = nullptr;
-      NICLElem* nextn = nullptr;
-
-      while( oldxNodes ){
-
-        // Recuperation de la structure associée au noeud courant
-        xNode = __internalNodeMap[oldxNodes->elemId];
-
-        // Creation de la structure amenee à remplacer la structure courante
-        // et associée par conséquence à y
-        ysons = static_cast<NodeId*>( soa.allocate(y->domainSize()*sizeof(NodeId)) );
-
-        // Maintenant il faut remapper le graphe en insérant un noeud associé à x
-        // Pour chaque valeur de y
-        for( Idx indy = 0; indy < y->domainSize(); ++indy ){
-
-          // Creation du vecteur fils du noeud associe à x qui sera sont descendant pour cette valeur-ci
-          xsons = static_cast<NodeId*>( soa.allocate(x->domainSize()*sizeof(NodeId)) );
-
-          // Iteration sur les différente valeurs de x pour faire le mapping
-          for( Idx indx; indx < x->domainSize(); ++indx ){
-            sonNode = __internalNodeMap[ xNode->nodeSons[indx] ];
-            if( xsonNode->nodeVar == y )
-              xsons[indx] = sonNode->nodeSons[indy];
-            else
-              xsons[indx] = xNode->nodeSons[indx];
-          }
-
-          // Verification que le nouveau noeud x à insérer n'aura pas de doublon
-          ysons[indy] = manager()->checkRedundancy( x, xsons );
-          // Si non, alors on l'insère
-          if( ysons[indy] == 0 )
-            ysons[indy] = manager()->addNonTerminalNode( x, xsons );
-        }
-
-        // Même opération pour y une fois la creation de ses fils achevée
-        NodeId newyNodeId = manager()->checkRedundancy( y, ysons );
-        if( newyNodeId == 0 )
-          newyNodeId = manager()->addNonTerminalNode( y, ysons, oldxNodes->elemId );
-
-        nextn = oldxNodes->nextElem;
-        _deallocateInternalNode(xNode);
-        _removeElemFromNICL(oldxNodes, oldxNode->elemId);
-        oldxNodes = nextn;
-      }
-
-      while(oldyNodes){
-        nextn = oldyNodes->nextElem;
-        _deallocateInternalNode(__internalNodeMap[oldyNodes->elemId]);
-        __internalNodeMap.erase(oldyNodes->elemId);
-        manager()->releaseId(oldyNodes->elemId);
-        _removeElemFromNICL(oldyNodes, oldyNode->elemId);
-        oldyNodes = nextx;
-      }
+        GUM_ERROR( OperationNotAllowed, "Not Implemented Yet")
     }
 
     // ============================================================================
@@ -608,9 +624,10 @@ namespace gum {
         InternalNode* currentNode = nullptr;
         while ( ! isTerminalNode( currentNodeId ) ){
           currentNode = __internalNodeMap[currentNodeId];
-          currentNodeId = currentNode->nodeSons[ inst.val( currentNode->nodeVar ) ];
+          currentNodeId = currentNode->nodeSons[ inst.val( *(currentNode->nodeVar) ) ];
         }
-        return this->__valueMap.second( currentNodeId );
+        __getRet = __valueMap.second( currentNodeId );
+        return __getRet;
     }
 
 } //gum

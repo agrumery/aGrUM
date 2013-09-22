@@ -122,6 +122,9 @@ namespace gum {
       /// The maximal size of an object befor new is called
       // ============================================================================
       std::size_t __maxObjectSize;
+
+      Idx nbAllocation;
+      Idx nbDeallocation;
   };
 } // namespace gum
 

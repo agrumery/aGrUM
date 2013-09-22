@@ -161,7 +161,7 @@ namespace gum_tests {
       // ==============================================================================
       void test_Small_Object_Allocator_Heavy_Death_Comparison() {
 
-        gum::Idx NbTotalSOA = 100000000;
+        gum::Idx NbTotalSOA = 10000000;
         gum::Idx intervalle = 10 - 2;
 
         gum::SmallObjectAllocator* soa = new gum::SmallObjectAllocator(16384, 24*sizeof(gum::Idx));

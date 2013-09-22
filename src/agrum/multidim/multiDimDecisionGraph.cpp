@@ -27,5 +27,3 @@
  */
 
 #include <agrum/multidim/multiDimDecisionGraph.h>
-
-gum::SmallObjectAllocator gum::MultiDimDecisionGraph::soa(GUM_DEFAULT_CHUNK_SIZE, GUM_DEFAULT_MAX_OBJECT_SIZE);

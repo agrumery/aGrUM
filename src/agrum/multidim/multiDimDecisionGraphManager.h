@@ -52,7 +52,7 @@ namespace gum{
    * To get such instance, use MultiDimDecisionGraph::getManager();
    * To do so :@code
        MultiDimDecisionGraph<GUM_SCALAR>* dg = new MultiDimDecisionGraph<GUM_SCALAR>();
-       MultiDimDecisionGraphManager<GUM_SCALAR>* dgm = dg->getManager();
+       MultiDimDecisionGraphManager<GUM_SCALAR>* dgm = dg->manager();
        @endcode
    * This is the only way to get an instance of a MultiDimDecisionGraphManager since the constructor is private.
    *
@@ -110,7 +110,7 @@ namespace gum{
          * @return the id of the added non terminal node.
          */
         // ============================================================================
-        const NodeId& addNonTerminalNode ( const DiscreteVariable* var );
+        NodeId addNonTerminalNode ( const DiscreteVariable* var );
 
         // ============================================================================
         /**
@@ -126,9 +126,7 @@ namespace gum{
          * @return the id of the added non terminal node.
          */
         // ============================================================================
-        const NodeId& addNonTerminalNode ( const DiscreteVariable* var,
-                                                 NodeId* sons,
-                                                 NodeId& nid = 0 );
+        NodeId addNonTerminalNode ( const DiscreteVariable* var, NodeId* sons, NodeId nid = 0 );
         ///@}
 
         // ============================================================================
@@ -144,9 +142,8 @@ namespace gum{
          * already. Second element is the such node.
          */
         // ============================================================================
-        const NodeId& checkRedundancy ( const DiscreteVariable* var,
-                                                         const NodeId* sons,
-                                                         const NodeId& defaultSon = 0 );
+        NodeId checkIsomorphism ( const DiscreteVariable* var, NodeId* sons);/*,
+                                                         const NodeId& defaultSon = 0 );*/
 
         // ============================================================================
         /**
@@ -160,7 +157,7 @@ namespace gum{
          *
          */
         // ============================================================================
-        const NodeId& addTerminalNode ( const GUM_SCALAR& value );
+        NodeId addTerminalNode ( const GUM_SCALAR& value );
 
         // ============================================================================
         /**
@@ -194,7 +191,7 @@ namespace gum{
         // ============================================================================
         ///@{
         void insertArc ( NodeId from, NodeId to, Idx modality );
-        void unsafeInsertArc ( NodeId from, NodeId to, Idx modality );
+//        void unsafeInsertArc ( NodeId from, NodeId to, Idx modality );
         ///@}
 
         // ============================================================================
@@ -210,8 +207,8 @@ namespace gum{
          */
         // ============================================================================
         ///@{
-        void insertDefaultArc ( NodeId from, NodeId to );
-        void unsafeInsertDefaultArc ( NodeId from, NodeId to );
+//        void insertDefaultArc ( NodeId from, NodeId to );
+//        void unsafeInsertDefaultArc ( NodeId from, NodeId to );
         ///@}
 
         // ============================================================================
@@ -255,24 +252,27 @@ namespace gum{
          * If not, function affect defaultSon to the terminal node associated with given value.
          */
         // ============================================================================
-        void fillWithDefaultArc( GUM_SCALAR defaultValue = 0 );
+//        void fillWithDefaultArc( GUM_SCALAR defaultValue = 0 );
 
         // ============================================================================
         /// Ensures that every isomorphic subgraphs are merged together.
         // ============================================================================
-        void reduce();
+        void removeRedundancy();
 
         // ============================================================================
-        /// Resets the MultiDimDecisionGraph, clearing all nodes, values, variables.
+        /// Changes var position in variable sequence
         // ============================================================================
-        void clear();
+        void moveTo( const DiscreteVariable* x, Idx desiredPos );
 
-    private :
+  private :
+
         // ============================================================================
-        /// Destructor. Don't worry, it will be call on the destruction of your
-        /// MultiDimDecisionGraph.
+        /// Swap two adjacent variable.
+        /// Order is important here.
+        /// X must precede Y before the swap (at the end Y will then precede X).
+        /// Not respecting this constraint leads to unattended behaviour.
         // ============================================================================
-        NodeGraphPart __model;
+        void __adjacentSwap( const DiscreteVariable* x, const DiscreteVariable* y );
 
         // ============================================================================
         /// The multidimdecisiongraph supposed to be edited.

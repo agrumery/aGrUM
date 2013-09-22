@@ -63,8 +63,6 @@ namespace gum {
   template<typename GUM_SCALAR>
   class MultiDimDecisionGraph : public MultiDimImplementation< GUM_SCALAR > {
 
-    template<GUM_SCALAR> friend class MultiDimDecisionGraphManager;
-
     public:
       // ============================================================================
       /// The small allocator object used by every decisionGraph to allocate table
@@ -90,12 +88,12 @@ namespace gum {
         /// Since elem chain are handled with soa, here is the operation of adding a node
         /// to the list.
         // ============================================================================
-        static void _addElemToNICL( NICLElem* nodeChain, const NodeId& elemId);
+        static void _addElemToNICL( NICLElem** nodeChain, const NodeId& elemId);
 
         // ============================================================================
         /// And here the one to remove the elem
         // ============================================================================
-        static void _removeElemFromNICL( NICLElem* nodeChain, const NodeId& elemId);
+        static void _removeElemFromNICL( NICLElem** nodeChain, const NodeId& elemId);
 
         // ============================================================================
         /// Delete completely the chain
@@ -143,7 +141,8 @@ namespace gum {
         /// @param x :  the associated variable
         /// size of son vector is the domain size of x.
         // ============================================================================
-        static InternalNode* _createInternalNode( const DiscreteVariable* x, bool allocateSons = true );
+        static InternalNode* _allocateInternalNode( const DiscreteVariable* x );
+        static InternalNode* _allocateInternalNode( const DiscreteVariable* x, NodeId* sons );
 
         // ============================================================================
         /// Deallocates the given internal node structure
@@ -154,7 +153,7 @@ namespace gum {
 
       /// @}
 
-
+    public:
       // ############################################################################
       /// @name Constructors / Destructors
       // ############################################################################
@@ -366,7 +365,17 @@ namespace gum {
         // ============================================================================
         /// Returns a const reference to the manager of this diagram
         // ============================================================================
-        const MultiDimDecisionGraphManager<GUM_SCALAR>* manager(){return __manager;}
+        std::string toDot() const;
+
+        // ============================================================================
+        /// Returns a const reference to the manager of this diagram
+        // ============================================================================
+        const NodeGraphPart& model() const{return __model;}
+
+        // ============================================================================
+        /// Returns a const reference to the manager of this diagram
+        // ============================================================================
+        MultiDimDecisionGraphManager<GUM_SCALAR>* manager();
 
         // ============================================================================
         /// Returns the id of the root node from the diagram
@@ -402,14 +411,6 @@ namespace gum {
         void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
 
         // ============================================================================
-        /// Swap two adjacent variable.
-        /// Order is important here.
-        /// X must precede Y before the swap (at the end Y will then precede X).
-        /// Not respecting this constraint leads to unattended behaviour.
-        // ============================================================================
-        void _adjacentSwap( const DiscreteVariable* x, const DiscreteVariable* y );
-
-        // ============================================================================
         /**
         * @brief Return a data, given a Instantiation.
         *
@@ -427,6 +428,15 @@ namespace gum {
 
 
     private:
+      // ============================================================================
+      /// Indicates available nodeIds
+      // ============================================================================
+      std::string __name;
+
+      // ============================================================================
+      /// Indicates available nodeIds
+      // ============================================================================
+      NodeGraphPart __model;
 
       // ============================================================================
       /// The root node of the decision graph
@@ -439,7 +449,7 @@ namespace gum {
       NodeId __root;
 
       // ============================================================================
-      /// Associate each terminal node to a value
+      /// Associates each terminal node to a value
       // ============================================================================
       Bijection< NodeId, GUM_SCALAR > __valueMap;
 
@@ -451,15 +461,28 @@ namespace gum {
       // ============================================================================
       /// Mapping between var and node
       // ============================================================================
-      HashTable< const DiscreteVariable*, NodeChainElem* > __var2NodeIdMap;
+      HashTable< const DiscreteVariable*, NICLElem* > __var2NodeIdMap;
+
+      // ============================================================================
+      /// So to avoid any difficulites with get
+      // ============================================================================
+      mutable GUM_SCALAR __getRet;
 
       // ============================================================================
       // Mapping between var and node
       // ============================================================================
 //      HashTable< const DiscreteVariable*, Idx* > __varUsedModalitiesMap;
 
+      static Idx aNICLE;
+      static Idx dNICLE;
+      static Idx aIN;
+      static Idx dIN;
+
 
       /// @}
+
+//          template<GUM_SCALAR>
+      friend class MultiDimDecisionGraphManager<GUM_SCALAR>;
   };
 }
 

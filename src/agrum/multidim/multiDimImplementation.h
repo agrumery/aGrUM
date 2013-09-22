@@ -265,6 +265,12 @@ namespace gum {
 
       /// @}
 
+      // ============================================================================
+      /// Inverts variables at position p1 and p2
+      /// Meant for MultiDimDecisionGraph mainly.
+      // ============================================================================
+      virtual void _invert( Idx p1, Idx p2 ){ __vars.swap(p1,p2);}
+
     private:
       // ============================================================================
       // list of discrete variables (dimensions)

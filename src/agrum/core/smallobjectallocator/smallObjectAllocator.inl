@@ -48,6 +48,8 @@ namespace gum {
         __chunkSize(chunkSize), __maxObjectSize(maxObjectSize){
       __pool.setKeyUniquenessPolicy(false);
       GUM_CONSTRUCTOR(SmallObjectAllocator)
+      nbAllocation = 0;
+      nbDeallocation = 0;
     }
 
     // ============================================================================
@@ -57,6 +59,7 @@ namespace gum {
       GUM_DESTRUCTOR(SmallObjectAllocator)
 //      for(__Pool::iterator pit = __pool.begin(); pit != __pool.end(); ++pit)
 //        delete &*pit;
+              std::cout << "Nb Small Allocation : " << nbAllocation  << " -  Nb Small Deallocation : " << nbDeallocation << std::endl;
     }
 
   // ############################################################################
@@ -80,6 +83,7 @@ namespace gum {
         FixedAllocator* newFa = new FixedAllocator(objectSize, numBlocks);
         __pool.set(objectSize, *newFa);
       }
+      nbAllocation++;
       return __pool[objectSize].allocate();
     }
 
@@ -90,6 +94,7 @@ namespace gum {
     // ============================================================================
     INLINE void SmallObjectAllocator::deallocate(void* pDeallocatedObject, const std::size_t &objectSize){
       __pool[objectSize].deallocate(pDeallocatedObject);
+      nbDeallocation++;
     }
 
 } // namespace gum
