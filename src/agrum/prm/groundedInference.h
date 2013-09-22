@@ -23,113 +23,113 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #include <agrum/prm/PRMInference.h>
 #include <agrum/BN/inference/BayesNetInference.h>
-// ============================================================================
+
 #ifndef GUM_GROUNDED_INFERENCE_H
 #define GUM_GROUNDED_INFERENCE_H
-// ============================================================================
+
 
 namespace gum {
-namespace prm {
-/**
- * @class GroundedInference groundedInference.h <agrum/prm/groundedInference.h>
- * @brief This class is used to realise grounded inference in a PRM.
- *
- * The best way to build this class is to use the static creation methods.
- *
- */
-class GroundedInference: public PRMInference {
-  public:
-  // ========================================================================
-  /// @name Constructor & destructor.
-  // ========================================================================
-    /// @{
-
-    /// Default constructor.
-    GroundedInference(const PRM& prm, const System& system);
-
-    /// Destructor.
-    virtual ~GroundedInference();
-
-    /// @}
-  // ========================================================================
-  /// @name Getters & setters.
-  // ========================================================================
-    /// @{
-
+  namespace prm {
     /**
-     * @brief Returns the bayesnet inference engine used by this class.
-     * @return the bayesnet inference engine used by this class.
+     * @class GroundedInference groundedInference.h <agrum/prm/groundedInference.h>
+     * @brief This class is used to realise grounded inference in a PRM.
      *
-     * @throw NotFound Raised if no inference engine have been defined for
-     *                 this class.
-     */
-    BayesNetInference<prm_float>& getBNInference();
-
-    /**
-     * @brief Defines the bayesnet inference engine used by this class.
-     * The inference engine is given to this class, it will be deleted
-     * when ~GroundedInference() is called.
-     * @param bn_inf The bayesnet inference engine used by this class.
+     * The best way to build this class is to use the static creation methods.
      *
-     * @throw OperationNotAllowed If bn_inf does not inference over the
-     *                            SystemBayesNet of this class.
-     * @todo BayesNetInference should have copy constructors.
      */
-    void setBNInference(BayesNetInference<prm_float>* bn_inf);
+    class GroundedInference: public PRMInference {
+      public:
+        // ========================================================================
+        /// @name Constructor & destructor.
+        // ========================================================================
+        /// @{
 
-    virtual std::string name() const;
+        /// Default constructor.
+        GroundedInference( const PRM& prm, const System& system );
 
-    /// @}
-  protected:
-  // ========================================================================
-  /// @name Private evidence handling methods and members.
-  // ========================================================================
-    /// @{
+        /// Destructor.
+        virtual ~GroundedInference();
 
-    /// This method is called whenever an evidence is added, but AFTER
-    /// any processing made by PRMInference.
-    virtual void _evidenceAdded(const Chain& chain);
+        /// @}
+        // ========================================================================
+        /// @name Getters & setters.
+        // ========================================================================
+        /// @{
 
-    /// This method is called whenever an evidence is removed, but BEFORE
-    /// any processing made by PRMInference.
-    virtual void _evidenceRemoved(const Chain& chain);
+        /**
+         * @brief Returns the bayesnet inference engine used by this class.
+         * @return the bayesnet inference engine used by this class.
+         *
+         * @throw NotFound Raised if no inference engine have been defined for
+         *                 this class.
+         */
+        BayesNetInference<prm_float>& getBNInference();
 
-    /// @brief Generic method to compute the marginal of given element.
-    /// @param chain 
-    /// @param m CPF filled with the marginal of elt. It is initialized
-    ///          properly.
-    virtual void _marginal(const Chain& chain, Potential<prm_float>& m);
+        /**
+         * @brief Defines the bayesnet inference engine used by this class.
+         * The inference engine is given to this class, it will be deleted
+         * when ~GroundedInference() is called.
+         * @param bn_inf The bayesnet inference engine used by this class.
+         *
+         * @throw OperationNotAllowed If bn_inf does not inference over the
+         *                            SystemBayesNet of this class.
+         * @todo BayesNetInference should have copy constructors.
+         */
+        void setBNInference( BayesNetInference<prm_float>* bn_inf );
 
-    /// @brief Generic method to compute the marginal of given element.
-    /// @param queries Set of pairs of Instance and Attribute.
-    /// @param j CPF filled with the joint probability of queries. It is
-    ///          initialized properly.
-    virtual void _joint(const std::vector< Chain >& queries, Potential<prm_float>& j);
+        virtual std::string name() const;
 
-    /// @}
-  private:
+        /// @}
+      protected:
+        // ========================================================================
+        /// @name Private evidence handling methods and members.
+        // ========================================================================
+        /// @{
 
-    /// Copy constructor.
-    GroundedInference(const GroundedInference& source);
+        /// This method is called whenever an evidence is added, but AFTER
+        /// any processing made by PRMInference.
+        virtual void _evidenceAdded( const Chain& chain );
 
-    /// Copy operator.
-    GroundedInference& operator=(const GroundedInference& source);
+        /// This method is called whenever an evidence is removed, but BEFORE
+        /// any processing made by PRMInference.
+        virtual void _evidenceRemoved( const Chain& chain );
 
-    /// The bayesnet inference engine used by this class.
-    BayesNetInference<prm_float>* __inf;
+        /// @brief Generic method to compute the marginal of given element.
+        /// @param chain
+        /// @param m CPF filled with the marginal of elt. It is initialized
+        ///          properly.
+        virtual void _marginal( const Chain& chain, Potential<prm_float>& m );
 
-    List< const Potential<prm_float>* > __obs;
-};
+        /// @brief Generic method to compute the marginal of given element.
+        /// @param queries Set of pairs of Instance and Attribute.
+        /// @param j CPF filled with the joint probability of queries. It is
+        ///          initialized properly.
+        virtual void _joint( const std::vector< Chain >& queries, Potential<prm_float>& j );
 
-} /* namespace prm */
+        /// @}
+      private:
+
+        /// Copy constructor.
+        GroundedInference( const GroundedInference& source );
+
+        /// Copy operator.
+        GroundedInference& operator=( const GroundedInference& source );
+
+        /// The bayesnet inference engine used by this class.
+        BayesNetInference<prm_float>* __inf;
+
+        List< const Potential<prm_float>* > __obs;
+    };
+
+  } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/groundedInference.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 #endif /* GUM_GROUNDED_INFERENCE_H */
-// ============================================================================
+

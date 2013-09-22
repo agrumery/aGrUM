@@ -95,7 +95,7 @@ namespace gum {
   GUM_MAKE_ERROR( UndefinedIteratorValue, Exception, "Iterator's value is undefined" )
 /// Exception : iterator does not point to any valid key
   GUM_MAKE_ERROR( UndefinedIteratorKey, Exception, "Iterator's key is undefined" )
-/// Exception : a pointer or a reference on a NULL (0) object
+/// Exception : a pointer or a reference on a nullptr (0) object
   GUM_MAKE_ERROR( NullElement, Exception, "Null Element" )
 /// Exception : a looked-for element could not be found
   GUM_MAKE_ERROR( UndefinedElement, Exception, "could not find the so-called element" )
@@ -160,7 +160,7 @@ namespace gum {
   GUM_MAKE_ERROR( CPTError, Exception, "CPT error" )
 /// Exception : no neighbour to a given node was found
   GUM_MAKE_ERROR( CPTNoSumTo1, CPTError, "CPT does not sum to 1" )
-  
+
 
 /// Exception base for factory error
   GUM_MAKE_ERROR( FactoryError, Exception, "factory error" )

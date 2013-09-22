@@ -27,9 +27,9 @@ namespace gum {
 
 /// how copies should be performed (usual or shallow copies)
 /// @todo default is ?
-  enum CopyType {
-    GUM_DEEP_COPY,
-    GUM_SHALLOW_COPY
+  enum class CopyType : char {
+    DEEP_COPY,
+    SHALLOW_COPY
   };
 
 /// type for indexes
@@ -49,4 +49,4 @@ namespace gum {
 
 
 #endif /* GUM_TYPES_H */
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

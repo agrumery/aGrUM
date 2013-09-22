@@ -41,29 +41,29 @@ namespace gum_tests {
 
   class GeneralizedCNFWriterTestSuite: public CxxTest::TestSuite {
     public:
-      gum::BayesNet<double> *bn;
+      gum::BayesNet<double>* bn;
       gum::Id i1, i2, i3, i4, i5;
 
       void setUp() {
         bn = new gum::BayesNet<double>();
 
-        gum::LabelizedVariable n1 ( "1", "", 2 ), n2 ( "2", "", 2 ),  n3 ( "3", "" , 2 );
-        gum::LabelizedVariable n4 ( "4", "", 2 ), n5 ( "5", "", 2 );
+        gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),  n3( "3", "" , 2 );
+        gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 2 );
 
-        i1 = bn->addVariable ( n1 );
-        i2 = bn->addVariable ( n2 );
-        i3 = bn->addVariable ( n3 );
-        i4 = bn->addVariable ( n4 );
-        i5 = bn->addVariable ( n5 );
+        i1 = bn->add( n1 );
+        i2 = bn->add( n2 );
+        i3 = bn->add( n3 );
+        i4 = bn->add( n4 );
+        i5 = bn->add( n5 );
 
-        bn->insertArc ( i1, i3 );
-        bn->insertArc ( i1, i4 );
-        bn->insertArc ( i3, i5 );
-        bn->insertArc ( i4, i5 );
-        bn->insertArc ( i2, i4 );
-        bn->insertArc ( i2, i5 );
+        bn->addArc( i1, i3 );
+        bn->addArc( i1, i4 );
+        bn->addArc( i3, i5 );
+        bn->addArc( i4, i5 );
+        bn->addArc( i2, i4 );
+        bn->addArc( i2, i5 );
 
-        fill ( *bn );
+        fill( *bn );
       }
 
       void tearDown() {
@@ -71,18 +71,18 @@ namespace gum_tests {
       }
 
       void testConstuctor() {
-        gum::GeneralizedCNFWriter<double>* writer = NULL;
-        TS_GUM_ASSERT_THROWS_NOTHING ( writer = new gum::GeneralizedCNFWriter<double>() );
+        gum::GeneralizedCNFWriter<double>* writer = nullptr;
+        TS_GUM_ASSERT_THROWS_NOTHING( writer = new gum::GeneralizedCNFWriter<double>() );
         delete writer;
       }
 
       void testConstuctor_With_Aproximation() {
         typedef gum::GeneralizedCNFWriter<double,gum::LinearApproximationPolicy> typCNF;
-        typCNF* writer = NULL;
-        TS_GUM_ASSERT_THROWS_NOTHING ( writer = new typCNF() );
-        writer->setEpsilon ( 0.2 );
-        writer->setLowLimit ( 0 );
-        writer->setHighLimit ( 0.5 );
+        typCNF* writer = nullptr;
+        TS_GUM_ASSERT_THROWS_NOTHING( writer = new typCNF() );
+        writer->setEpsilon( 0.2 );
+        writer->setLowLimit( 0 );
+        writer->setHighLimit( 0.5 );
 
         delete writer;
       }
@@ -97,9 +97,9 @@ namespace gum_tests {
       void testWriter_ostream_With_Approximation() {
         typedef gum::GeneralizedCNFWriter<double,gum::LinearApproximationPolicy> typCNF;
         gum::GeneralizedCNFWriter<double,gum::LinearApproximationPolicy> writer;
-        writer.setEpsilon ( 0.2 );
-        writer.setLowLimit ( 0 );
-        writer.setHighLimit ( 1 );
+        writer.setEpsilon( 0.2 );
+        writer.setLowLimit( 0 );
+        writer.setHighLimit( 1 );
 
         // Uncomment this to check the ouput
         // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
@@ -107,79 +107,79 @@ namespace gum_tests {
 
       void testWriter_string() {
         gum::GeneralizedCNFWriter<double> writer;
-        std::string file = GET_PATH_STR ( O2CNFWriter_TestFile.cnf );
-        TS_GUM_ASSERT_THROWS_NOTHING ( writer.write ( file, *bn ) );
+        std::string file = GET_PATH_STR( O2CNFWriter_TestFile.cnf );
+        TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *bn ) );
 
-        file = GET_PATH_STR ( O2CNFWriter_RO_TestFile.cnf );
+        file = GET_PATH_STR( O2CNFWriter_RO_TestFile.cnf );
 
         try {
-          writer.write ( file, *bn );
+          writer.write( file, *bn );
           // TS_ASSERT(false);
         } catch ( gum::IOError& e ) {
-          TS_ASSERT ( true );
+          TS_ASSERT( true );
         }
       }
 
       void testWriter_string_With_Approximation() {
         gum::GeneralizedCNFWriter<double,gum::LinearApproximationPolicy> writer;
-        writer.setEpsilon ( 0.2 );
-        writer.setLowLimit ( 0 );
-        writer.setHighLimit ( 1 );
-        std::string file = GET_PATH_STR ( O2CNFWriter_TestFile_Approximation.cnf );
-        TS_GUM_ASSERT_THROWS_NOTHING ( writer.write ( file, *bn ) );
-        file = GET_PATH_STR ( O2CNFWriter_RO_TestFile_Approximation.cnf );
+        writer.setEpsilon( 0.2 );
+        writer.setLowLimit( 0 );
+        writer.setHighLimit( 1 );
+        std::string file = GET_PATH_STR( O2CNFWriter_TestFile_Approximation.cnf );
+        TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *bn ) );
+        file = GET_PATH_STR( O2CNFWriter_RO_TestFile_Approximation.cnf );
 
         try {
-          writer.write ( file, *bn );
+          writer.write( file, *bn );
           // TS_ASSERT(false);
         } catch ( gum::IOError& e ) {
-          TS_ASSERT ( true );
+          TS_ASSERT( true );
         }
       }
 
     private:
       // Builds a BN to test the inference
-      void fill ( gum::BayesNet<double> &bn ) {
-        const gum::Potential<double>& p1 = bn.cpt ( i1 );
+      void fill( gum::BayesNet<double>& bn ) {
+        const gum::Potential<double>& p1 = bn.cpt( i1 );
         {
           // FILLING PARAMS
           const double t[2] = {0.2, 0.8};
-          int n = 2; const std::vector<double> v ( t, t + n );
-          p1.fillWith ( v );
+          int n = 2; const std::vector<double> v( t, t + n );
+          p1.fillWith( v );
         }
 
-        const gum::Potential<double>& p2 = bn.cpt ( i2 );
+        const gum::Potential<double>& p2 = bn.cpt( i2 );
         {
           // FILLING PARAMS
           const double t[2] = {0.3, 0.7};
-          int n = 2; const std::vector<double> v ( t, t + n );
-          p2.fillWith ( v );
+          int n = 2; const std::vector<double> v( t, t + n );
+          p2.fillWith( v );
         }
 
-        const gum::Potential<double>& p3 = bn.cpt ( i3 );
+        const gum::Potential<double>& p3 = bn.cpt( i3 );
         {
           // FILLING PARAMS
           const double t[4] = {0.1, 0.9, 0.9, 0.1};
-          int n = 4; const std::vector<double> v ( t, t + n );
-          p3.fillWith ( v );
+          int n = 4; const std::vector<double> v( t, t + n );
+          p3.fillWith( v );
         }
 
-        const gum::Potential<double>& p4 = bn.cpt ( i4 );
+        const gum::Potential<double>& p4 = bn.cpt( i4 );
         {
           // FILLING PARAMS
           const double t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
-          int n = 8; const std::vector<double> v ( t, t + n );
-          p4.fillWith ( v );
+          int n = 8; const std::vector<double> v( t, t + n );
+          p4.fillWith( v );
         }
 
-        const gum::Potential<double>& p5 = bn.cpt ( i5 );
+        const gum::Potential<double>& p5 = bn.cpt( i5 );
         {
           // FILLING PARAMS
           const double t[16] = {1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0,
                                 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0
                                };
-          int n = 16; const std::vector<double> v ( t, t + n );
-          p5.fillWith ( v );
+          int n = 16; const std::vector<double> v( t, t + n );
+          p5.fillWith( v );
         }
       }
   };

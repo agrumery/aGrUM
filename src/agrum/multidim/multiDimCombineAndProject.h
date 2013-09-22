@@ -83,7 +83,7 @@ namespace gum {
 
     /// returns the current combination function
     virtual TABLE<GUM_SCALAR>* (* combineFunction () )
-      ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) const = 0;
+      ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) = 0;
     
     /// changes the function used for projecting TABLES
     virtual void
@@ -93,40 +93,25 @@ namespace gum {
     
     /// returns the current projection function
     virtual TABLE<GUM_SCALAR>* (* projectFunction () )
-      ( const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& ) const = 0;
+      ( const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& ) = 0;
     
      /** @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination */
     virtual float
     nbOperations ( const Set<const TABLE<GUM_SCALAR>*>& set,
                    const Set<const DiscreteVariable*>& del_vars ) const = 0;
-    virtual float
-    nbOperations ( const Set<const Sequence<const DiscreteVariable*>*>& set,
+      virtual std::pair<long,long>
+      memoryUsage( const Set<const Sequence<const DiscreteVariable*>*>& set,
                    Set<const DiscreteVariable*> del_vars ) const = 0;
 
-    /// returns the memory consumption used during the combinations and projections
-    /** Actually, this function does not return a precise account of the memory
-     * used by the MultiDimCombineAndProject but a rough estimate based on the size
-     * of the tables involved in the combinations and projections.
-     * @return a pair of memory consumption: the first one is the maximum
-     * amount of memory used during the set of combinations and projections
-     * performed, and the second one is the amount of memory still used at the end
-     * of the function ( the memory used by the resulting tables ) */
-    virtual std::pair<long,long>
-    memoryUsage ( const Set<const TABLE<GUM_SCALAR>*>& set,
-                  const Set<const DiscreteVariable*>& del_vars ) const = 0;
-    virtual std::pair<long,long>
-    memoryUsage ( const Set<const Sequence<const DiscreteVariable*>*>& set,
-                  Set<const DiscreteVariable*> del_vars ) const = 0;
-                  
-    /// @}
+      /// @}
 
 
-  private:
-    /// forbid copy operators
-    MultiDimCombineAndProject<GUM_SCALAR,TABLE>& operator=
-    ( const MultiDimCombineAndProject<GUM_SCALAR,TABLE>& );
-    
+    private:
+      /// forbid copy operators
+      MultiDimCombineAndProject<GUM_SCALAR,TABLE>& operator=
+      ( const MultiDimCombineAndProject<GUM_SCALAR,TABLE>& );
+
   };
 
 

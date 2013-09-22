@@ -21,116 +21,116 @@
  * @file
  * @brief Header of the VEWithBB class.
  *
- * @author Lionel Torti
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
-// ============================================================================
+
 #ifndef GUM_VE_WITH_BB_H
 #define GUM_VE_WITH_BB_H
-// ============================================================================
+
 #include <vector>
-// ============================================================================
+
 #include <agrum/BN/BayesNet.h>
-// ============================================================================
+
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/inference/BayesBall.h>
-// ============================================================================
+
 namespace gum {
-/**
- * @class VEWithBB VEWithBB.h <agrum/BN/inference/VEWithBB.h>
- * @brief Implementation of the state of the art Value Elimination algorithm
- *        using the BayesBall algorithm to prune the BayesNet.
- *
- * @ingroup bn_group
- *
- */
-template<typename GUM_SCALAR>
-class VEWithBB: public BayesNetInference<GUM_SCALAR> {
-public:
-  // ============================================================================
-  /// @name Constructor & destructor
-  // ============================================================================
-  /// @{
-
   /**
-   * Default constructor.
-   */
-  VEWithBB(const AbstractBayesNet<GUM_SCALAR>& bn);
-
-  /**
-   * Destructor.
-   */
-  virtual ~VEWithBB();
-
-  /// @}
-  // ============================================================================
-  /// @name BayesNetInference's methods
-  // ============================================================================
-  /// @{
-
-  /**
-   * @brief Makes the inference
+   * @class VEWithBB VEWithBB.h <agrum/BN/inference/VEWithBB.h>
+   * @brief Implementation of the state of the art Value Elimination algorithm
+   *        using the BayesBall algorithm to prune the BayesNet.
    *
-   * This method only computes the elimination order if needed, and proceed to
-   * some basic initialization.
+   * @ingroup bn_group
    *
-   * If the current elimination order is smaller than the number of nodes in the
-   * BayesNet, then this method will eliminate all nodes present in the elimination
-   * order. Thus computing a joint probability over a set of variables.
-   * 
-   * Use the VariableElimination::pool() method to access the set of created potentials.
    */
-  virtual void makeInference();
+  template<typename GUM_SCALAR>
+  class VEWithBB: public BayesNetInference<GUM_SCALAR> {
+    public:
 
-  /**
-   * @brief Insert new evidence in the graph.
-   * If an evidence already exists over one of the variable in pot_list, then
-   * it is replaced by the new evidence in pot_list.
-   */
-  virtual void insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list );
+      /// @name Constructor & destructor
 
-  /**
-   * Remove a given evidence from the graph.
-   */
-  virtual void eraseEvidence( const Potential<GUM_SCALAR>* e );
+      /// @{
 
-  /**
-   * Remove all evidence from the graph.
-   */
-  virtual void eraseAllEvidence();
+      /**
+       * Default constructor.
+       */
+      VEWithBB( const BayesNet<GUM_SCALAR>& bn );
 
-  /// @}
-protected:
+      /**
+       * Destructor.
+       */
+      virtual ~VEWithBB();
 
-  /**
-   * Returns the probability of the variable.
-   *
-   * @param id The variable's id.
-   * @param marginal the potential to fill
-   * @throw ElementNotFound Raised if no variable matches id.
-   */
-  virtual void _fillMarginal(NodeId id, Potential<GUM_SCALAR>& marginal);
+      /// @}
 
-private:
+      /// @name BayesNetInference's methods
 
-  /// Private copy constructor.
-  VEWithBB(const VEWithBB<GUM_SCALAR>& source);
+      /// @{
 
-  /// Private copy operator.
-  VEWithBB<GUM_SCALAR>& operator=(const VEWithBB<GUM_SCALAR>& source);
+      /**
+       * @brief Makes the inference
+       *
+       * This method only computes the elimination order if needed, and proceed to
+       * some basic initialization.
+       *
+       * If the current elimination order is smaller than the number of nodes in the
+       * BayesNet, then this method will eliminate all nodes present in the elimination
+       * order. Thus computing a joint probability over a set of variables.
+       *
+       * Use the VariableElimination::pool() method to access the set of created potentials.
+       */
+      virtual void makeInference();
 
-  /// Mapping between nodes and their evidences.
-  typename Property<const Potential<GUM_SCALAR>*>::onNodes __hardEvidence;
+      /**
+       * @brief Insert new evidence in the graph.
+       * If an evidence already exists over one of the variable in pot_list, then
+       * it is replaced by the new evidence in pot_list.
+       */
+      virtual void insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list );
 
-  /// The VariableElimination algorithm as the inference engine
-  VariableElimination<GUM_SCALAR> __ve;
+      /**
+       * Remove a given evidence from the graph.
+       */
+      virtual void eraseEvidence( const Potential<GUM_SCALAR>* e );
 
-  void __fillRequisiteNode(NodeId id, Set<NodeId>& requisite_nodes);
+      /**
+       * Remove all evidence from the graph.
+       */
+      virtual void eraseAllEvidence();
 
-};
+      /// @}
+    protected:
+
+      /**
+       * Returns the probability of the variable.
+       *
+       * @param id The variable's id.
+       * @param marginal the potential to fill
+       * @throw ElementNotFound Raised if no variable matches id.
+       */
+      virtual void _fillMarginal( NodeId id, Potential<GUM_SCALAR>& marginal );
+
+    private:
+
+      /// Private copy constructor.
+      VEWithBB( const VEWithBB<GUM_SCALAR>& source );
+
+      /// Private copy operator.
+      VEWithBB<GUM_SCALAR>& operator=( const VEWithBB<GUM_SCALAR>& source );
+
+      /// Mapping between nodes and their evidences.
+      typename Property<const Potential<GUM_SCALAR>*>::onNodes __hardEvidence;
+
+      /// The VariableElimination algorithm as the inference engine
+      VariableElimination<GUM_SCALAR> __ve;
+
+      void __fillRequisiteNode( NodeId id, Set<NodeId>& requisite_nodes );
+
+  };
 } /* namespace gum */
-// ============================================================================
+
 #include <agrum/BN/inference/VEWithBB.tcc>
-// ============================================================================
+
 #endif /* GUM_VE_WITH_BB_H */
-// ============================================================================
+

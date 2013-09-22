@@ -43,7 +43,7 @@ namespace gum_tests {
       }
 
       void generateLayer1( gum::Size nb_class, gum::Size depth, std::vector<gum::prm::LayerGenerator::LayerData>& v ) {
-        for( gum::Size lvl = 0; lvl < depth; ++lvl ) {
+        for ( gum::Size lvl = 0; lvl < depth; ++lvl ) {
           v.push_back( gum::prm::LayerGenerator::LayerData() );
           v[lvl].a = 10;
           v[lvl].g = 2;
@@ -55,7 +55,7 @@ namespace gum_tests {
       }
 
       void generateLayer2( gum::Size nb_class, gum::Size depth, std::vector<gum::prm::LayerGenerator::LayerData>& v ) {
-        for( gum::Size lvl = 0; lvl < depth; ++lvl ) {
+        for ( gum::Size lvl = 0; lvl < depth; ++lvl ) {
           v.push_back( gum::prm::LayerGenerator::LayerData() );
           v[lvl].a = 10;
           v[lvl].g = 2;
@@ -67,7 +67,7 @@ namespace gum_tests {
       }
 
       void generateLayer3( gum::Size nb_class, gum::Size depth, std::vector<gum::prm::LayerGenerator::LayerData>& v ) {
-        for( gum::Size lvl = 0; lvl < depth; ++lvl ) {
+        for ( gum::Size lvl = 0; lvl < depth; ++lvl ) {
           v.push_back( gum::prm::LayerGenerator::LayerData() );
           v[lvl].a = 10;
           v[lvl].g = 2;
@@ -81,7 +81,7 @@ namespace gum_tests {
       const gum::prm::Instance& pickInstance( const gum::prm::System& sys ) {
         gum::Sequence<const gum::prm::Instance*> seq;
 
-        for( gum::prm::System::const_iterator iter = sys.begin(); iter != sys.end(); ++iter )
+        for ( gum::prm::System::const_iterator iter = sys.begin(); iter != sys.end(); ++iter )
           seq.insert( *iter );
 
         return *( seq.atPos( std::rand() % seq.size() ) );
@@ -90,7 +90,7 @@ namespace gum_tests {
       const gum::prm::Attribute& pickAttribute( const gum::prm::Instance& i ) {
         gum::Sequence<const gum::prm::Attribute*> seq;
 
-        for( gum::prm::Instance::const_iterator iter = i.begin(); iter != i.end(); ++iter )
+        for ( gum::prm::Instance::const_iterator iter = i.begin(); iter != i.end(); ++iter )
           seq.insert( *iter );
 
         return *( seq.atPos( std::rand() % seq.size() ) );
@@ -116,7 +116,7 @@ namespace gum_tests {
         gum::prm::prm_float sum = 0.0;
         gum::Instantiation inst( m );
 
-        for( inst.setFirst(); not inst.end(); inst.inc() )
+        for ( inst.setFirst(); not inst.end(); inst.inc() )
           sum += m.get( inst );
 
         TS_ASSERT_DELTA( sum, 1.0, 1e-6 );
@@ -143,7 +143,7 @@ namespace gum_tests {
         gum::prm::prm_float sum = 0.0;
         gum::Instantiation inst( m );
 
-        for( inst.setFirst(); not inst.end(); inst.inc() )
+        for ( inst.setFirst(); not inst.end(); inst.inc() )
           sum += m.get( inst );
 
         TS_ASSERT_DELTA( sum, 1.0, 1e-6 );
@@ -170,7 +170,7 @@ namespace gum_tests {
         gum::prm::prm_float sum = 0.0;
         gum::Instantiation inst( m );
 
-        for( inst.setFirst(); not inst.end(); inst.inc() )
+        for ( inst.setFirst(); not inst.end(); inst.inc() )
           sum += m.get( inst );
 
         TS_ASSERT_DELTA( sum, 1.0, 1e-6 );

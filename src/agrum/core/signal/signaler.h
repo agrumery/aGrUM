@@ -35,7 +35,7 @@ Let's say that <tt>class A</tt> has a method <tt>f(int i,char ch)</tt> and would
 #include <agrum/core/signal/signaler2.h> // Note the '2' because the signal we want will send 2 args (i and ch)
 class A {
  public:
-  gum::signaler2<int,ch> onF; // Note that onF is public !
+  gum::signaler2<int,char> onF; // Note that onF is public !
 
  void f(int i,char ch) {
     //do something
@@ -97,4 +97,4 @@ a.f(5,'y');
 #include <agrum/core/signal/signaler7.h>
 #endif // __SIGNALER_H
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

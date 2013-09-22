@@ -21,7 +21,7 @@
 * @file
 * @brief algorithm for KL divergence between BNs
 *
-* @author Pierre-Henri Wuillemin
+* @author Pierre-Henri WUILLEMIN
 *
 */
 #ifndef GUM_KL_H
@@ -32,43 +32,49 @@
 
 namespace gum {
 
-  namespace complexity {
-    enum difficulty {HEAVY,DIFFICULT,CORRECT};
-  }
-  
+    /**
+     * @brief Complexity allows to characterize the awaited difficulty for an algorithm given a specific instance
+     * Therefore this is not a theoretical characterization but rather a pragmatic rate of that very instance.
+     */
+    enum class Complexity : char {
+      Heavy,
+      Difficult,
+      Correct
+    };
+
   /**
   * @class KL
-  * 
+  *
   * @brief KL is the base class for KL computation betweens 2 BNs.
   *
   * KL is not virtual because it may be instantiated but protected methods throw gum::OperationNotAllow : we do not know here how the computation is done.
-  * Since this computation may be very difficult, KL.difficulty() give an estimation ( KL_HEAVY,KL_DIFFICULT,KL_CORRECT ) of the needed time.
+  * Since this computation may be very difficult, KL.Complexity() give an estimation ( KL_Complexity::Heavy,KL_Complexity::Difficult,KL_Complexity::Correct ) of the needed time.
   * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The computations are made once. The second is for free :)
   *
   * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a case, KL keeps working but trace this error (errorPQ() and errorQP())?
   */
   template<typename GUM_SCALAR> class KL {
-      static const int GAP_heavy_difficult = 12;
-      static const int GAP_difficult_correct = 7;
-
+    // difficulty is chosen w.r.t the log10DomainSize of the BN
+#define GAP_COMPLEXITY_KL_HEAVY_DIFFICULT double(12.0)
+#define GAP_COMPLEXITY_KL_DIFFICULT_CORRECT double(7.0)
     public:
 
       /** constructor must give 2 BNs
        * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or compatible node sets.
        */
-      KL ( const BayesNet<GUM_SCALAR>& P,const BayesNet<GUM_SCALAR>& Q );
+      KL( const BayesNet<GUM_SCALAR>& P,const BayesNet<GUM_SCALAR>& Q );
 
       /** copy constructor
        */
-      KL ( const KL< GUM_SCALAR >& kl );
+      KL( const KL< GUM_SCALAR >& kl );
 
       /** destructor */
       ~KL();
 
       /**
-       * return KL::HEAVY,KL::DIFFICULT,KL::CORRECT depending on the BNs __p and __q
+       * return KL::Complexity::Heavy,KL::Complexity::Difficult,KL::Complexity::Correct depending on the BNs __p and __q
        */
-      complexity::difficulty difficulty() const;
+      Complexity difficulty() const;
 
       /// @name Accessors to results. The first call do the computations. The others do not.
       /// @{
@@ -87,20 +93,20 @@ namespace gum {
 
       /// @return hellinger distance (@see http://en.wikipedia.org/wiki/Hellinger_distance)
       double hellinger();
-      
+
       /// @return Bhattacharya distance (@see http://en.wikipedia.org/wiki/Bhattacharya_distance)
       double bhattacharya();
 
       /// @return p
-      const BayesNet<GUM_SCALAR>& p(void) const;
-      
+      const BayesNet<GUM_SCALAR>& p( void ) const;
+
       /// @return q
-      const BayesNet<GUM_SCALAR>& q(void) const;
+      const BayesNet<GUM_SCALAR>& q( void ) const;
       /// @}
 
     protected:
       // should be pure virtual but using KL directly is a way to delay the choice between different computation scheme (@see BruteForceKL)
-      virtual void _computeKL ( void );
+      virtual void _computeKL( void );
       void _process();
 
       const BayesNet<GUM_SCALAR>& _p;
@@ -116,12 +122,12 @@ namespace gum {
 
     private:
       bool __checkCompatibility() const;
-      complexity::difficulty __difficulty;
+      Complexity __difficulty;
       bool __done;
-    };
+  };
 } //namespace gum
 
 #include <agrum/BN/algorithms/divergence/KL.tcc>
 
 #endif //GUM_KL_H
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+

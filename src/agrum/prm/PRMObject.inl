@@ -17,37 +17,35 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** 
+/**
  * @file
  * @brief Inline implementation of PRMObject.
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 namespace gum {
-namespace prm {
+  namespace prm {
 
 // Returns the name of this object.
-INLINE
-const std::string& 
-PRMObject::name() const { return __name; }
+    INLINE
+    const std::string&
+    PRMObject::name() const { return __name; }
 
 // To PRMObject are equal if they have the same name (which is unique).
-INLINE
-bool 
-PRMObject::operator==(const PRMObject& obj) const 
-{ 
-  return __name == obj.name(); 
-}
+    INLINE
+    bool
+    PRMObject::operator==( const PRMObject& obj ) const {
+      return __name == obj.name();
+    }
 
 // To PRMObject are equal if they have the same name (which is unique).
-INLINE
-bool 
-PRMObject::operator!=(const PRMObject& obj) const
-{
-  return __name != obj.name();
-}
+    INLINE
+    bool
+    PRMObject::operator!=( const PRMObject& obj ) const {
+      return __name != obj.name();
+    }
 
-} /* namespace prm */
+  } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

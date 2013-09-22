@@ -59,7 +59,7 @@ namespace gum {
     if ( first_time ) {
       first_time = false;
       __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
-                             ( void* ) &__multidims );
+                                 ( void* ) &__multidims );
     }
 
 #endif /* NDEBUG */
@@ -81,7 +81,7 @@ namespace gum {
     if ( first_time ) {
       first_time = false;
       __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
-                             ( void* ) &__multidim_ids );
+                                 ( void* ) &__multidim_ids );
     }
 
 #endif /* NDEBUG */
@@ -103,7 +103,7 @@ namespace gum {
     if ( first_time ) {
       first_time = false;
       __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
-                             ( void* ) &__ids );
+                                 ( void* ) &__ids );
     }
 
 #endif /* NDEBUG */
@@ -125,7 +125,7 @@ namespace gum {
     if ( first_time ) {
       first_time = false;
       __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
-                             ( void* ) &__vars );
+                                 ( void* ) &__vars );
     }
 
 #endif /* NDEBUG */
@@ -147,7 +147,7 @@ namespace gum {
     if ( first_time ) {
       first_time = false;
       __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
-                             ( void* ) &__size );
+                                 ( void* ) &__size );
     }
 
 #endif /* NDEBUG */
@@ -237,7 +237,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   ScheduleMultiDim<GUM_SCALAR>::ScheduleMultiDim
   ( const Sequence<const DiscreteVariable*>& vars ) :
-      __id( __newId() )  {
+    __id( __newId() )  {
     // for debugging purposes
     GUM_CONSTRUCTOR( ScheduleMultiDim );
 
@@ -265,7 +265,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   ScheduleMultiDim<GUM_SCALAR>::ScheduleMultiDim
   ( const ScheduleMultiDim<GUM_SCALAR>& from ) :
-      __id( from.__id ) {
+    __id( from.__id ) {
     // for debugging purposes
     GUM_CONS_CPY( ScheduleMultiDim );
 

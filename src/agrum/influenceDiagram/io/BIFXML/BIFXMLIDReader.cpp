@@ -20,7 +20,7 @@
 /** @file
  * @brief Outlined implementation of BIFXMLIDReader
  *
- * @author Jean-Christophe Magnan & Pierre-Henri Wuillemin
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 #include <agrum/influenceDiagram/io/BIFXML/BIFXMLIDReader.h>
 

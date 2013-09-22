@@ -21,7 +21,7 @@
 /**
  * @file
  * @brief Inference by basic sampling algorithm (pure random) of bnet in credal networks.
- * @author Matthieu HOURBRACQ
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
  */
 
 #ifndef __CN_MC_SAMPLING__H__
@@ -39,7 +39,7 @@ namespace gum {
      * @ingroup cn_group
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
      * @tparam BNInferenceEngine A BayesNet inference engine such as LazyPropagation ( recommanded ).
-     * @author Matthieu HOURBRACQ
+     * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
      *
      * @warning p(e) must be available ( by a call to my_BNInferenceEngine.evidenceMarginal() ) !! the vertices are correct if p(e) > 0 for a sample
      * the test is made once
@@ -77,7 +77,7 @@ namespace gum {
          * @param toFill A reference to the bits to fill. Size must be correct before passing argument (i.e. big enough to represent \c value)
          * @param value The constant integer we want to binarize.
          */
-        inline void __binaryRep ( std::vector< bool > &toFill,  const unsigned int value ) const;
+        inline void __binaryRep( std::vector< bool >& toFill,  const unsigned int value ) const;
 
         /// @}
 
@@ -91,7 +91,7 @@ namespace gum {
          * Constructor.
          * @param credalNet The CredalNet to be used by the algorithm.
          */
-        CNMonteCarloSampling ( const CredalNet< GUM_SCALAR > &credalNet );
+        CNMonteCarloSampling( const CredalNet< GUM_SCALAR >& credalNet );
         /** Destructor. */
         virtual ~CNMonteCarloSampling();
         /// @}

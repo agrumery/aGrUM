@@ -24,7 +24,7 @@
  * This class servers to write the content of a Bayesian Network in
  * the BN format.
  *
- * @author Lionel Torti & Pierre-Henri Wuillemin
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_NET_WRITER_H
@@ -76,11 +76,11 @@ namespace gum {
       /**
        * Writes a Bayesian Network in the output stream using the BN format.
        *
-			 * @param output The output stream.
+       * @param output The output stream.
        * @param bn The Bayesian Network writen in output.
        * @throws IOError Raised if and I/O error occurs.
        */
-      virtual void write( std::ostream &output, const BayesNet<GUM_SCALAR>& bn );
+      virtual void write( std::ostream& output, const BayesNet<GUM_SCALAR>& bn );
 
       /**
        * Writes a Bayesian Network in the referenced file using the BN format.
@@ -104,7 +104,7 @@ namespace gum {
       std::string __variableCPT( const Potential<GUM_SCALAR>& cpt );
 
       // Returns the modalities labels of the variables in varsSeq
-      };
+  };
 } /* namespace gum */
 
 #include <agrum/BN/io/net/netWriter.tcc>

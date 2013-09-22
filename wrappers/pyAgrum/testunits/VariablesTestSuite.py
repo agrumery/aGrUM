@@ -24,7 +24,7 @@ class TestDiscreteVar(VariablesTestCase):
     def testLabelizedVarCopy(self):
         self.varL1.addLabel("coucou")
         self.varL1.addLabel("super")
-        self.varD = self.varL1.copyFactory()
+        self.varD = self.varL1.clone()
         self.assertFalse(self.varD.empty())
         self.assertEqual(self.varD.label(3), "super")
 

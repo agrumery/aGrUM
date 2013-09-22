@@ -21,19 +21,19 @@
  * @file
  * @brief Headers of the SPUDDInference class.
  *
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
-// ============================================================================
+
 #ifndef GUM_SPUDD_INEFERENCE_H
 #define GUM_SPUDD_INEFERENCE_H
-// ============================================================================
+
 #include <string>
 #include <vector>
-// ============================================================================
+
 #include <agrum/multidim/multiDimDecisionDiagramBase.h>
-// ============================================================================
+
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
-// ============================================================================
+
 
 namespace gum {
 
@@ -59,7 +59,7 @@ namespace gum {
       /**
        * Default constructor
        */
-      SPUDDInference ( FactoredMarkovDecisionProcess<GUM_SCALAR> *fmdp, GUM_SCALAR epsilon = 0.001 );
+      SPUDDInference( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon = 0.001 );
 
       /**
        * Default destructor
@@ -75,23 +75,23 @@ namespace gum {
       /**
        * Makes a spudd inference on FMDP
        */
-      void makeInference ();
+      void makeInference();
 
       /// @}
 
     private:
 
-      FactoredMarkovDecisionProcess<GUM_SCALAR> *__fmdp;
+      FactoredMarkovDecisionProcess<GUM_SCALAR>* __fmdp;
       HashTable< NodeId, List<Idx>* > __bestPolicy;
       GUM_SCALAR __epsilon;
 
   };
 } /* namespace gum */
 
-// ============================================================================
+
 #include <agrum/FMDP/inference/SPUDDInference.tcc>
-// ============================================================================
+
 #endif // GUM_SPUDD_INEFERENCE_H
-// ============================================================================
+
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
 

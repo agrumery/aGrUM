@@ -23,188 +23,189 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #ifndef GUM_SLOT_CHAIN_H
 #define GUM_SLOT_CHAIN_H
-// ============================================================================
+
 #include <agrum/core/sequence.h>
-// ============================================================================
+
 #include <agrum/multidim/multiDimBijArray.h>
 #include <agrum/multidim/CIModels/multiDimNoisyORNet.h>
 #include <agrum/multidim/CIModels/multiDimNoisyORCompound.h>
-// ============================================================================
+
 #include <agrum/prm/classElement.h>
 #include <agrum/prm/attribute.h>
 #include <agrum/prm/aggregate.h>
 #include <agrum/prm/referenceSlot.h>
-// ============================================================================
+
 namespace gum {
-namespace prm {
-// ============================================================================
-class Class;
-// ============================================================================
+  namespace prm {
 
-/**
- * @class SlotChain slotChain.h <agrum/prm/slotChain.h>
- *
- * @brief A SlotChain represents a sequence of gum::prm::ClassElement where
- *        the n-1 first gum::prm::ClassElement are gum::prm::ReferenceSlot and
- *        the last gum::prm::ClassElement an gum::prm::Attribute or an
- *        gum::prm::Aggregate.
- *
- * A SlotChain behaves as an gum::prm::Attribute or an gum::prm::Aggregate
- * (depending the gum::prm::ClassElement type of it's last element) regarding
- * the following methods: gum::prm::ClassElement::type() and
- * gum::prm::ClassElement::cpf().
- *
- */
-// ==========================================================================
-class SlotChain: public ClassElement
-{
-  public:
-  // ========================================================================
-  /// @name Constructors & destructor
-  // ========================================================================
-    /// @{
+    class Class;
 
-    /** @brief Default constructor.
-     *
-     * Chain's n-1 first elements must be ReferenceSlot and the last element
-     * must either be an Attribute or an Aggregate.
-     *
-     * Warning: the last element in chain is copied !
-     *
-     * @param name The name of this SlotChain.
-     * @param chain The chain of gum::prm::ClassElement in this SlotChain.
-     *
-     * @throw OperationNotAllowed Raised if the chain contains less than two
-     *        ClassElement.
-     * @throw WrongClassElement Raised contains invalid ClassElement.
-     */
-    SlotChain(const std::string& name, const Sequence< ClassElement* >& chain);
-
-    /** @brief Tweak constructor.
-     *
-     * Chain's n-1 first elements must be ReferenceSlot and the last element
-     * must either be an Attribute or an Aggregate.
-     *
-     * Warning: the last element in chain is copied !
-     *
-     * @param name The name of this SlotChain.
-     * @param chain The chain given to this SlotChain, it is deleted
-     *              when SlotChain::~SlotChain() is called.
-     *
-     * @throw OperationNotAllowed Raised if the chain contains less than two
-     *        ClassElement.
-     * @throw WrongClassElement Raised contains invalid ClassElement.
-     */
-    SlotChain(Sequence<ClassElement*>* chain, const std::string& name);
 
     /**
-     * Copy constructor.
+     * @class SlotChain slotChain.h <agrum/prm/slotChain.h>
      *
-     * This creates a copy of the slot chain.
+     * @brief A SlotChain represents a sequence of gum::prm::ClassElement where
+     *        the n-1 first gum::prm::ClassElement are gum::prm::ReferenceSlot and
+     *        the last gum::prm::ClassElement an gum::prm::Attribute or an
+     *        gum::prm::Aggregate.
+     *
+     * A SlotChain behaves as an gum::prm::Attribute or an gum::prm::Aggregate
+     * (depending the gum::prm::ClassElement type of it's last element) regarding
+     * the following methods: gum::prm::ClassElement::type() and
+     * gum::prm::ClassElement::cpf().
+     *
      */
-    SlotChain(const SlotChain& source);
+// ==========================================================================
+    class SlotChain: public ClassElement {
+      public:
+        // ========================================================================
+        /// @name Constructors & destructor
+        // ========================================================================
+        /// @{
 
-    /// Destructor.
-    virtual ~SlotChain();
+        /** @brief Default constructor.
+         *
+         * Chain's n-1 first elements must be ReferenceSlot and the last element
+         * must either be an Attribute or an Aggregate.
+         *
+         * Warning: the last element in chain is copied !
+         *
+         * @param name The name of this SlotChain.
+         * @param chain The chain of gum::prm::ClassElement in this SlotChain.
+         *
+         * @throw OperationNotAllowed Raised if the chain contains less than two
+         *        ClassElement.
+         * @throw WrongClassElement Raised contains invalid ClassElement.
+         */
+        SlotChain( const std::string& name, const Sequence< ClassElement* >& chain );
 
-    /// @}
-  // ========================================================================
-  /// @name Getters & setters
-  // ========================================================================
-    /// @{
+        /** @brief Tweak constructor.
+         *
+         * Chain's n-1 first elements must be ReferenceSlot and the last element
+         * must either be an Attribute or an Aggregate.
+         *
+         * Warning: the last element in chain is copied !
+         *
+         * @param name The name of this SlotChain.
+         * @param chain The chain given to this SlotChain, it is deleted
+         *              when SlotChain::~SlotChain() is called.
+         *
+         * @throw OperationNotAllowed Raised if the chain contains less than two
+         *        ClassElement.
+         * @throw WrongClassElement Raised contains invalid ClassElement.
+         */
+        SlotChain( Sequence<ClassElement*>* chain, const std::string& name );
 
-    /// See gum::ClassElement::elt_type().
-    virtual ClassElementType elt_type() const;
+        /**
+         * Copy constructor.
+         *
+         * This creates a copy of the slot chain.
+         */
+        SlotChain( const SlotChain& source );
 
-    /// This is similar to the following call: this->lastElt().type()
-    virtual Type& type();
+        /// Destructor.
+        virtual ~SlotChain();
 
-    /// This is similar to the following call: this->lastElt().type()
-    virtual const Type& type() const;
+        /// @}
+        // ========================================================================
+        /// @name Getters & setters
+        // ========================================================================
+        /// @{
 
-    /// This is similar to the following call: this->lastElt().cpf()
-    virtual Potential<prm_float>& cpf();
+        /// See gum::ClassElement::elt_type().
+        virtual ClassElementType elt_type() const;
 
-    /// This is similar to the following call: this->lastElt().cpf()
-    virtual const Potential<prm_float>& cpf() const;
+        /// This is similar to the following call: this->lastElt().type()
+        virtual Type& type();
 
-    /// Return true if this slot chain contains at least one multiple
-    /// reference slot.
-    bool isMultiple() const;
+        /// This is similar to the following call: this->lastElt().type()
+        virtual const Type& type() const;
 
-    /// Returns the ClassElementContainer over which this slot chain ends.
-    ClassElementContainer& end();
+        /// This is similar to the following call: this->lastElt().cpf()
+        virtual Potential<prm_float>& cpf();
 
-    /// Returns the ClassElementContainer over which this slot chain ends.
-    const ClassElementContainer& end() const;
+        /// This is similar to the following call: this->lastElt().cpf()
+        virtual const Potential<prm_float>& cpf() const;
 
-    /// Returns the last element of the slot chain, typically this is an
-    /// gum::Attribute or a gum::Aggregate.
-    ClassElement& lastElt();
+        /// Return true if this slot chain contains at least one multiple
+        /// reference slot.
+        bool isMultiple() const;
 
-    /// Returns the last element of the slot chain, typically this is an
-    /// gum::Attribute or a gum::Aggregate.
-    const ClassElement& lastElt() const;
+        /// Returns the ClassElementContainer over which this slot chain ends.
+        ClassElementContainer& end();
 
-    /// Return the sequence representing the chain of elements in this
-    /// SlotChain.
-    Sequence<ClassElement*>& chain();
+        /// Returns the ClassElementContainer over which this slot chain ends.
+        const ClassElementContainer& end() const;
 
-    /// Return the sequence representing the chain of elements in this
-    /// SlotChain.
-    const Sequence<ClassElement*>& chain() const;
+        /// Returns the last element of the slot chain, typically this is an
+        /// gum::Attribute or a gum::Aggregate.
+        ClassElement& lastElt();
 
-    /// See gum::ClassElement::_addParent().
-    virtual void addParent(const ClassElement& elt);
+        /// Returns the last element of the slot chain, typically this is an
+        /// gum::Attribute or a gum::Aggregate.
+        const ClassElement& lastElt() const;
 
-    /// See gum::ClassElement::_addChild().
-    virtual void addChild(const ClassElement& elt);
+        /// Return the sequence representing the chain of elements in this
+        /// SlotChain.
+        Sequence<ClassElement*>& chain();
 
-    virtual std::string cast(const Type& t) {
-      if (lastElt().type().isSubTypeOf(t)) {
-        std::stringstream sBuff;
-        for (Size i = 0; i < chain().size() - 1; ++i) {
-          sBuff << chain().atPos(i) << ".";
+        /// Return the sequence representing the chain of elements in this
+        /// SlotChain.
+        const Sequence<ClassElement*>& chain() const;
+
+        /// See gum::ClassElement::_addParent().
+        virtual void addParent( const ClassElement& elt );
+
+        /// See gum::ClassElement::_addChild().
+        virtual void addChild( const ClassElement& elt );
+
+        virtual std::string cast( const Type& t ) {
+          if ( lastElt().type().isSubTypeOf( t ) ) {
+            std::stringstream sBuff;
+
+            for ( Size i = 0; i < chain().size() - 1; ++i ) {
+              sBuff << chain().atPos( i ) << ".";
+            }
+
+            sBuff << ClassElement::LEFT_CAST() << t.name() << ClassElement::RIGHT_CAST();
+            sBuff << lastElt().name();
+            return sBuff.str();
+          } else {
+            GUM_ERROR( OperationNotAllowed, "no possible safe name for this ClassElement" );
+          }
         }
-        sBuff << ClassElement::LEFT_CAST() << t.name() << ClassElement::RIGHT_CAST();
-        sBuff << lastElt().name();
-        return sBuff.str();
-      } else {
-        GUM_ERROR(OperationNotAllowed, "no possible safe name for this ClassElement");
-      }
-    }
 
-    /// @}
-  private:
+        /// @}
+      private:
 
-    /// Copy operator. Don't use it.
-    SlotChain& operator=(const SlotChain& source);
+        /// Copy operator. Don't use it.
+        SlotChain& operator=( const SlotChain& source );
 
-  // ========================================================================
-  /// @name Private members of SlotChain.
-  // ========================================================================
-    /// @{
+        // ========================================================================
+        /// @name Private members of SlotChain.
+        // ========================================================================
+        /// @{
 
-    /// The sequence of ClassElement composing the slot chain
-    Sequence<ClassElement*>* __chain;
+        /// The sequence of ClassElement composing the slot chain
+        Sequence<ClassElement*>* __chain;
 
-    /// Flag indicating if this slot chain is multiple or not.
-    bool __isMultiple;
+        /// Flag indicating if this slot chain is multiple or not.
+        bool __isMultiple;
 
-    /// Copy the last element, this prevents unwanted DuplicateElement exceptions.
-    void __copyLastElt();
+        /// Copy the last element, this prevents unwanted DuplicateElement exceptions.
+        void __copyLastElt();
 
-    /// @}
-};
-} /* namespace prm */
+        /// @}
+    };
+  } /* namespace prm */
 } // namespace gum
-// ============================================================================
+
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/slotChain.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 #endif /* GUM_SLOT_CHAIN_H */
-// ============================================================================
+

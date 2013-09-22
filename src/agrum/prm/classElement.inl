@@ -23,7 +23,7 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 namespace gum {
   namespace prm {
 
@@ -32,8 +32,8 @@ namespace gum {
     ClassElement::id() const { return __id; }
 
     INLINE
-    PRMObject::ObjectType
-    ClassElement::obj_type() const { return PRMObject::prm_class_elt; }
+    PRMObject::PRMType
+    ClassElement::obj_type() const { return PRMType::CLASS_ELT; }
 
     INLINE
     void
@@ -55,7 +55,7 @@ namespace gum {
       }
     }
 
-// ============================================================================
+
   } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

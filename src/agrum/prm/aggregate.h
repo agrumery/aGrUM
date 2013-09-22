@@ -23,24 +23,24 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #ifndef GUM_AGGREGATE_H
 #define GUM_AGGREGATE_H
-// ============================================================================
+
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/aggregators/multiDimAggregator.h>
 #include <agrum/multidim/aggregators/min.h>
 #include <agrum/multidim/aggregators/max.h>
 #include <agrum/multidim/aggregators/exists.h>
 #include <agrum/multidim/aggregators/forall.h>
-// ============================================================================
+
 #include <agrum/prm/classElement.h>
-// ============================================================================
+
 namespace gum {
   namespace prm {
-// ============================================================================
+
     class Class;
-// ============================================================================
+
     /**
      * @class gum::Aggregate aggregate.h <agrum/prm/aggregate.h>
      * @brief Defines an aggregate in a PRM.
@@ -49,7 +49,7 @@ namespace gum {
      * is applied.
      *
      * The name of an aggregate is always of the form:
-     * agg_type(slot_chain[, param])
+     * AggregateType::type(slot_chain[, param])
      *
      * An aggregate is a member of a class.
      *
@@ -68,9 +68,16 @@ namespace gum {
         /// @{
 
         /// The different type of aggregates we can have.
-        enum AggregateType { agg_min, agg_max, agg_mean, agg_count,
-                             agg_exists, agg_forall, agg_or, agg_and
-                         };
+        enum class AggregateType : char {
+          MIN,
+          MAX,
+          MEAN,
+          COUNT,
+          EXISTS,
+          FORALL,
+          OR,
+          AND
+        };
 
         /**
          * Static method which returns the AggregateType given its string
@@ -82,21 +89,21 @@ namespace gum {
          */
         static AggregateType str2enum( const std::string& str ) {
           if ( str == "min" || str == "MIN" || str == "Min" ) {
-            return agg_min;
+            return AggregateType::MIN;
           } else if ( str == "max" || str == "MAX" || str == "Max" ) {
-            return agg_max;
+            return AggregateType::MAX;
           } else if ( str == "mean" || str == "MEAN" || str == "Mean" ) {
-            return agg_mean;
+            return AggregateType::MEAN;
           } else if ( str == "count" || str == "COUNT" || str == "Count" ) {
-            return agg_count;
+            return AggregateType::COUNT;
           } else if ( str == "exists" || str == "EXISTS" || str == "Exists" ) {
-            return agg_exists;
+            return AggregateType::EXISTS;
           } else if ( str == "or" || str == "OR" || str == "Or" ) {
-            return agg_or;
+            return AggregateType::OR;
           } else if ( str == "and" || str == "AND" || str == "And" ) {
-            return agg_and;
+            return AggregateType::AND;
           } else if ( str =="forall" || str == "FORALL" || str == "ForAll" ) {
-            return agg_forall;
+            return AggregateType::FORALL;
           } else {
             std::string msg = "Unknown aggregate: ";
             msg.append( str );
@@ -216,13 +223,13 @@ namespace gum {
 
         /// @}
     };
-// ============================================================================
+
   } /* namespace prm */
 } // namespace gum
-// ============================================================================
+
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/aggregate.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 #endif /* GUM_CLASS_ELEMENT_H */
-// ============================================================================
+

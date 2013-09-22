@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                                  *
- *   test $Id: $                                                           *
+ *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -23,11 +23,10 @@
 
 #include <sys/time.h>
 
-static long get_clock()
-{
-    struct timeval tv; 
-    gettimeofday(&tv, NULL);
-    return (tv.tv_sec * 1000000) + tv.tv_usec;
+static long get_clock() {
+  struct timeval tv;
+  gettimeofday( &tv, nullptr );
+  return ( tv.tv_sec * 1000000 ) + tv.tv_usec;
 }
 
 namespace gum {
@@ -43,9 +42,9 @@ namespace gum {
   INLINE
   double Timer::step() const {
     if ( _sleeping )
-      return double ( _pause - _start ) / 1000000.0;
+      return double( _pause - _start ) / 1000000.0;
     else
-      return double ( get_clock() - _start ) / 1000000.0;
+      return double( get_clock() - _start ) / 1000000.0;
   }
 
   INLINE

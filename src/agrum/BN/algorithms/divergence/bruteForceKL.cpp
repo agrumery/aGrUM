@@ -21,7 +21,7 @@
  * @file
  * @brief KL divergence between BNs implementation
  *
- * @author Pierre-Henri Wuillemin
+ * @author Pierre-Henri WUILLEMIN
  */
 
 #include <math.h>

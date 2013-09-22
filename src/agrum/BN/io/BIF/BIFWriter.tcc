@@ -49,7 +49,7 @@ namespace gum {
   // @throws Raised if an I/O error occurs.
   template<typename GUM_SCALAR> INLINE
   void
-  BIFWriter<GUM_SCALAR>::write( std::ostream &output, const BayesNet<GUM_SCALAR>& bn ) {
+  BIFWriter<GUM_SCALAR>::write( std::ostream& output, const BayesNet<GUM_SCALAR>& bn ) {
     if ( ! output.good() ) {
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
     }
@@ -201,7 +201,7 @@ namespace gum {
   ( const Sequence<const DiscreteVariable*>& varsSeq,
     const Instantiation& inst ) {
     std::stringstream str;
-    const DiscreteVariable* varPtr = NULL;
+    const DiscreteVariable* varPtr = nullptr;
 
     for ( Idx i = 1; i < varsSeq.size() - 1; i++ ) {
       varPtr = varsSeq[i];
@@ -218,4 +218,4 @@ namespace gum {
 
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 

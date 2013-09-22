@@ -23,63 +23,62 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 namespace gum {
-namespace prm {
+  namespace prm {
 
-INLINE
-CDG::CDG(const PRM& prm)
-{
-  GUM_CONSTRUCTOR( CDG );
-  __buildGraph(prm);
-}
+    INLINE
+    CDG::CDG( const PRM& prm ) {
+      GUM_CONSTRUCTOR( CDG );
+      __buildGraph( prm );
+    }
 
-INLINE
-CDG::CDG(const CDG& source):
-  __graph(source.__graph), __modalitites(source.__modalitites),
-  __elt_map(source.__elt_map)
-{
-  GUM_CONS_CPY( CDG );
-  for (NodeMap::const_iterator iter = source.__node_map.begin(); iter != source.__node_map.end(); ++iter) {
-    __node_map.insert(iter.key(), new HashTable<const ClassElement*, NodeId>(**iter));
-  }
-}
+    INLINE
+    CDG::CDG( const CDG& source ):
+      __graph( source.__graph ), __modalitites( source.__modalitites ),
+      __elt_map( source.__elt_map ) {
+      GUM_CONS_CPY( CDG );
 
-INLINE
-const DAG&
-CDG::dag() const { return __graph; }
+      for ( NodeMap::const_iterator iter = source.__node_map.begin(); iter != source.__node_map.end(); ++iter ) {
+        __node_map.insert( iter.key(), new HashTable<const ClassElement*, NodeId>( **iter ) );
+      }
+    }
 
-INLINE
-const CDG::EltPair&
-CDG::get(NodeId id) const { return *(__elt_map[id]); }
+    INLINE
+    const DAG&
+    CDG::dag() const { return __graph; }
 
-INLINE
-NodeId
-CDG::get(const ClassElementContainer& c, const ClassElement& elt) const {
-  return (*(__node_map[&c]))[&elt];
-}
+    INLINE
+    const CDG::EltPair&
+    CDG::get( NodeId id ) const { return *( __elt_map[id] ); }
 
-INLINE
-const Property<unsigned int>::onNodes&
-CDG::modalities() const { return __modalitites; }
+    INLINE
+    NodeId
+    CDG::get( const ClassElementContainer& c, const ClassElement& elt ) const {
+      return ( *( __node_map[&c] ) )[&elt];
+    }
 
-INLINE
-void
-CDG::__addNode(const ClassElementContainer* c, const ClassElement& elt)
-{
-  switch (elt.elt_type()) {
-    case ClassElement::prm_attribute:
-    case ClassElement::prm_aggregate: {
-                                        NodeId id = __graph.insertNode();
-                                        __elt_map.insert(id, new CDG::EltPair(c, &elt));
-                                        __node_map[c]->insert(&elt, id);
-                                        __modalitites.insert(id, elt.type().variable().domainSize());
-                                        break;
-                                      }
-    default: { /* do nothing */ break; }
-  }
-}
+    INLINE
+    const Property<unsigned int>::onNodes&
+    CDG::modalities() const { return __modalitites; }
 
-} /* namespace prm */
+    INLINE
+    void
+    CDG::__addNode( const ClassElementContainer* c, const ClassElement& elt ) {
+      switch ( elt.elt_type() ) {
+        case ClassElement::prm_attribute:
+        case ClassElement::prm_aggregate: {
+          NodeId id = __graph.insertNode();
+          __elt_map.insert( id, new CDG::EltPair( c, &elt ) );
+          __node_map[c]->insert( &elt, id );
+          __modalitites.insert( id, elt.type().variable().domainSize() );
+          break;
+        }
+
+        default: { /* do nothing */ break; }
+      }
+    }
+
+  } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

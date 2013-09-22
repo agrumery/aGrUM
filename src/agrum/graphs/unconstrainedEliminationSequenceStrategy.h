@@ -58,57 +58,57 @@ namespace gum {
    */
   class UnconstrainedEliminationSequenceStrategy :
     public EliminationSequenceStrategy {
-  public:
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
+    public:
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
 
-    /// destructor
-    virtual ~UnconstrainedEliminationSequenceStrategy ();
+      /// destructor
+      virtual ~UnconstrainedEliminationSequenceStrategy();
 
-    /** @brief creates a new elimination sequence of the same type as the current
-     * object, but this sequence contains only an empty graph
-     * @warning you must deallocate by yourself the object returned
-     * @return an empty clone of the current object with the same type */
-    virtual UnconstrainedEliminationSequenceStrategy* newFactory() const = 0;
-    
-    /// @}
+      /** @brief creates a new elimination sequence of the same type as the current
+       * object, but this sequence contains only an empty graph
+       * @warning you must deallocate by yourself the object returned
+       * @return an empty clone of the current object with the same type */
+      virtual UnconstrainedEliminationSequenceStrategy* newFactory() const = 0;
+
+      /// @}
 
 
-    // ############################################################################
-    /// @name Accessors / Modifiers
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      /// @name Accessors / Modifiers
+      // ############################################################################
+      /// @{
 
-    /// sets a new graph to be triangulated
-    /** The elimination sequence algorithms reinitializes its data to start a new
-     * triangulation with graph Graph
-     * @param graph the new graph to be triangulated
-     * @param dom the modalities of the nodes (i.e., their domain sizes)
-     * @warning note that, by aGrUM's rule, the graph and the modalities are not
-     * copied but only referenced by the elimination sequence algorithm. */
-    virtual void setGraph (UndiGraph* graph,
-                           const Property<unsigned int>::onNodes* dom) = 0;
+      /// sets a new graph to be triangulated
+      /** The elimination sequence algorithms reinitializes its data to start a new
+       * triangulation with graph Graph
+       * @param graph the new graph to be triangulated
+       * @param dom the modalities of the nodes (i.e., their domain sizes)
+       * @warning note that, by aGrUM's rule, the graph and the modalities are not
+       * copied but only referenced by the elimination sequence algorithm. */
+      virtual void setGraph( UndiGraph* graph,
+                             const Property<unsigned int>::onNodes* dom ) = 0;
 
-    /// @}
+      /// @}
 
-    
-  protected:
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
 
-    /// default constructor
-    UnconstrainedEliminationSequenceStrategy ();
+    protected:
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
 
-    /// copy constructor
-    UnconstrainedEliminationSequenceStrategy
-    ( const UnconstrainedEliminationSequenceStrategy& );
+      /// default constructor
+      UnconstrainedEliminationSequenceStrategy();
 
-    /// @}
-    
+      /// copy constructor
+      UnconstrainedEliminationSequenceStrategy
+      ( const UnconstrainedEliminationSequenceStrategy& );
+
+      /// @}
+
   };
 
 

@@ -23,22 +23,22 @@
 //  *
 //  * @author Lionel TORTI
 //  */
-// // ============================================================================
+//
 // #include <agrum/prm/bridges/IbalBridge.h>
-// // ============================================================================
+//
 // #ifdef GUM_NO_INLINE
 // #include <agrum/prm/bridges/IbalBridge.inl>
 // #endif // GUM_NO_INLINE
-// // ============================================================================
+//
 // namespace gum {
 // namespace prm {
-// 
+//
 //   // Default constructor.
 //   IBALBridge::IBALBridge()
 //   {
 //     GUM_CONSTRUCTOR( IBALBridge );
 //   }
-// 
+//
 //   // Destructor.
 //   IBALBridge::~IBALBridge()
 //   {
@@ -50,22 +50,22 @@
 //     }
 //     __paramData.clear();
 //   }
-// 
+//
 //   // Copy constructor is illegal.
 //   IBALBridge::IBALBridge(const IBALBridge& source)
 //   {
 //     GUM_CONS_CPY( IBALBridge );
 //     GUM_ERROR(FatalError, "Illegal copy constructor.");
 //   }
-// 
+//
 //   // Copy operator is illegal.
 //   IBALBridge&
 //   IBALBridge::operator=(const IBALBridge& source)
 //   {
 //     GUM_ERROR(FatalError, "Illegal copy operator.");
 //   }
-// 
-// 
+//
+//
 //   // Prints the given PRM's classes and models in the stream in the IBAL
 //   // formalism.
 //   // @param output The stream in which the result is printed.
@@ -73,9 +73,9 @@
 //   void
 //   IBALBridge::print(std::ostream& output, const PRM& prm)
 //   {
-// 
+//
 //     output << "data List [a] =  Nil | Cons (a, List [a])" << std::endl;
-// 
+//
 //     for (Sequence<Class*>::const_iterator iter = prm.classes().begin();
 //          iter != prm.classes().end(); ++iter) {
 //       __print_class(output, prm, **iter);
@@ -86,7 +86,7 @@
 //     }
 //     output << std::endl << std::flush;
 //   }
-// 
+//
 //   // Prints the given class in the stream in the IBAL formalism.
 //   void
 //   IBALBridge::__print_class(std::ostream& output,
@@ -107,7 +107,7 @@
 //       visit_map.insert(*iter, false);
 //     }
 //     buffer << ") = {" << std::endl;
-// 
+//
 //     typedef HashTable<const ClassElement*, std::string>::const_iterator ParamIter;
 //     for (ParamIter iter = __paramData[&c]->paramName.begin();
 //          iter != __paramData[&c]->paramName.end(); ++iter) {
@@ -115,7 +115,7 @@
 //         buffer << "  " << iter.key()->name() << " = " << *iter << ";" << std::endl;
 //       }
 //     }
-// 
+//
 //     while (not nodes_list.empty()) {
 //       visit_map[nodes_list.front()] = true;
 //       for (DAG::ArcIterator iter = c.dag().children(nodes_list.front()).begin();
@@ -129,7 +129,7 @@
 //       nodes_list.popFront();
 //     }
 //     buffer << "}" << std::endl;
-// 
+//
 //     std::string tmp = toLowerCase(buffer.str());
 //     // Need to restore nil to Nil...
 //     std::string nil = " nil ";
@@ -144,7 +144,7 @@
 //     }
 //     output << tmp << std::endl << std::flush;
 //   }
-// 
+//
 //   // Print a parameter if necessary and add it to the parameter map for future use.
 //   void
 //   IBALBridge::__print_param(std::ostream& output, const PRM& prm,
@@ -179,7 +179,7 @@
 //     }
 //     output << param.str();
 //   }
-// 
+//
 //   // Call the good sub method for the given ClassElement
 //   void
 //   IBALBridge::__print_c_elt(std::ostream& output, const PRM& prm,
@@ -197,7 +197,7 @@
 //       default: { /* Do nothing */ break; }
 //     }
 //   }
-// 
+//
 //   // Prints the given aggregate in the stream in the IBAL formalism.
 //   void
 //   IBALBridge::__print_agg(std::ostream& output, const PRM& prm,
@@ -206,7 +206,7 @@
 //     std::stringstream buffer;
 //     buffer << "  " << agg.name() << "(l) = case l of" << std::endl;
 //     buffer << "    " << "# Nil : ";
-// 
+//
 //     const DiscreteVariable* apply_on = 0;
 //     if (c.dag().parents(agg.id()).size() > 0) {
 //       const ClassElement& parent = c.get(c.dag().parents(agg.id()).begin()->tail());
@@ -214,7 +214,7 @@
 //     } else {
 //       GUM_ERROR(NotFound, "aggregator without any parents");
 //     }
-// 
+//
 //     switch (agg.agg_type()) {
 //       case Aggregate::agg_exists: {
 //                                     buffer << "false" << std::endl;
@@ -239,7 +239,7 @@
 //     }
 //     output << buffer.str();
 //   }
-// 
+//
 //   // Prints the given attribute in the stream in the IBAL formalism.
 //   void
 //   IBALBridge::__print_att(std::ostream& output, const PRM& prm,
@@ -253,7 +253,7 @@
 //       __print_att_lots_of_parents(output, prm, c, attr);
 //     }
 //   }
-// 
+//
 //   // Prints the given attribute with no parent.
 //   void
 //   IBALBridge::__print_att_no_parents(std::ostream& output, const PRM& prm,
@@ -274,7 +274,7 @@
 //     buffer << " ];" << std::endl << std::endl;
 //     output << buffer.str();
 //   }
-// 
+//
 //   // Prints the given attribute with one parents.
 //   void
 //   IBALBridge::__print_att_one_parents(std::ostream& output, const PRM& prm,
@@ -289,12 +289,12 @@
 //     Instantiation inst(attr.cpf());
 //     Instantiation var;
 //     var.add(attr.type().variable());
-// 
+//
 //     //std::string priv_flag = (attr.innerNode())?"private ":"";
 //     std::string priv_flag = (c.isInnerNode(attr.id()))?"":"";
 //     buffer << "  " << priv_flag << attr.name() << " = case " << __print_parents(c, attr);
 //     buffer << " of" << std::endl;
-// 
+//
 //     inst.setFirstOut(var);
 //     while (true) {
 //       buffer << "    # " << __print_label(*(parents.atPos(0)), inst.val(*(parents.atPos(0))));
@@ -308,14 +308,14 @@
 //       }
 //       inst.unsetOverflow();
 //       buffer << " ]";
-// 
+//
 //       inst.incOut(var);
 //       if (inst.end()) { buffer << ";" << std::endl << std::endl; break; }
 //       else            { buffer << std::endl; }
 //     }
 //     output << buffer.str();
 //   }
-// 
+//
 //   // Prints the given attribute with several parents.
 //   void
 //   IBALBridge::__print_att_lots_of_parents(std::ostream& output, const PRM& prm,
@@ -330,10 +330,10 @@
 //     Instantiation inst(attr.cpf());
 //     Instantiation var;
 //     var.add(attr.type().variable());
-// 
+//
 //     buffer << "  " << attr.name() << " = case <" << __print_parents(c, attr);
 //     buffer << "> of" << std::endl;
-// 
+//
 //     inst.setFirstOut(var);
 //     while (true) {
 //       buffer << "    # <";
@@ -354,14 +354,14 @@
 //       }
 //       inst.unsetOverflow();
 //       buffer << " ]";
-// 
+//
 //       inst.incOut(var);
 //       if (inst.end()) { buffer << ";" << std::endl << std::endl; break; }
 //       else            { buffer << std::endl; }
 //     }
 //     output << buffer.str();
 //   }
-// 
+//
 //   // In IBAL dots in names are not welcome, this method replace them with "_".
 //   std::string
 //   IBALBridge::__removeDots(const std::string& str, char replace, char with)
@@ -374,7 +374,7 @@
 //     }
 //     return retVal;
 //   }
-// 
+//
 //   // Print the value of label prefix by a quote if it's not a boolean
 //   std::string
 //   IBALBridge::__print_label(const DiscreteVariable& var, Idx pos)
@@ -386,7 +386,7 @@
 //       return quote + var.label(pos);
 //     }
 //   }
-// 
+//
 //   // Print the parents of the attribute separated by ,
 //   std::string
 //   IBALBridge::__print_parents(const Class& c, const Attribute& attr)
@@ -414,7 +414,7 @@
 //     }
 //     return buffer.str();
 //   }
-// 
+//
 //   // Prints the given model in the stream in the IBAL formalism.
 //   void
 //   IBALBridge::__print_model(std::ostream& output, const PRM& prm, const Model& m)
@@ -431,14 +431,14 @@
 //       }
 //     }
 //   }
-// 
+//
 //   // Prints the given instance in the stream in the IBAL formalism.
 //   void
 //   IBALBridge::__print_instance(std::ostream& output, const PRM& prm,
 //                                const Model& m, const Instance& i)
 //   {
 //     std::stringstream buffer;
-// 
+//
 //     buffer << __cleanInstanceName(i.name()) << " = " << __removeDots(i.type().name());
 //     buffer << "(";
 //     bool first = true;
@@ -462,17 +462,17 @@
 //       }
 //     }
 //     buffer << ");" << std::endl;
-// 
+//
 //     output << toLowerCase(buffer.str());
 //   }
-// 
+//
 //   // Prints the list of parents of a given aggregator in the IBAL formalism.
 //   std::string
 //   IBALBridge::__print_agg_parents_list(const Model& m, const Instance& i, NodeId id)
 //   {
 //     std::stringstream buffer;
 //     buffer << "[ ";
-// 
+//
 //     typedef Set<Instance*>::iterator inst_iter;
 //     bool first = true;
 //     for (DAG::ArcIterator iter = i.type().dag().parents(id).begin(); iter != i.type().dag().parents(id).end(); ++iter) {
@@ -484,19 +484,19 @@
 //         buffer << __cleanInstanceName((*jter)->name()) << "." << attr_name;
 //       }
 //     }
-// 
+//
 //     buffer << " ]";
 //     return toLowerCase(buffer.str());
 //   }
-// 
+//
 //   // Clean instance's name.
 //   std::string
 //   IBALBridge::__cleanInstanceName(const std::string& s)
 //   {
 //     return __removeDots(__removeDots(s, '[', '_'), ']', '_');
 //   }
-// 
-// 
+//
+//
 //   // Transforms 1 and 0 in 1.0 and 0.0
 //   std::string
 //   IBALBridge::__cleanFloatValue(prm_float f)
@@ -509,7 +509,7 @@
 //       return retVal.str();
 //     }
 //   }
-// 
+//
 //   void
 //   IBALBridge::printObservations(std::ostream& output, const PRM& prm,
 //                                 const Model& m, const PRMInference& obs)
@@ -531,7 +531,7 @@
 //       }
 //     }
 //   }
-// 
+//
 //   std::string
 //   IBALBridge::toLowerCase(std::string strToConvert)
 //   {
@@ -540,7 +540,7 @@
 //     }
 //     return strToConvert;
 //   }
-// 
+//
 // } /* namespace prm */
 // } /* namespace gum */
-// // ============================================================================
+//

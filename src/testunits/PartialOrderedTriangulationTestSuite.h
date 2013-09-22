@@ -42,7 +42,7 @@ namespace gum_tests {
 
         gum::UndiGraph graph;
 
-        for( unsigned int i = 1; i <= 8; ++i )
+        for ( unsigned int i = 1; i <= 8; ++i )
           graph.insertNode( 10*i );
 
         createClique( graph, c1 );
@@ -57,12 +57,12 @@ namespace gum_tests {
 
         gum::Property<unsigned int>::onNodes dom;
 
-        for( unsigned int i = 1; i <= 8; ++i )
+        for ( unsigned int i = 1; i <= 8; ++i )
           dom.insert( 10*i, 10 );
 
         gum::List<gum::NodeSet> partial_order;
 
-        for( unsigned int i = 0; i < 8; ++i ) {
+        for ( unsigned int i = 0; i < 8; ++i ) {
           gum::NodeSet nodes;
           nodes << ( 8 - i ) * 10;
           partial_order.pushBack( nodes );
@@ -84,7 +84,7 @@ namespace gum_tests {
         triang.clear();
         partial_order.clear();
 
-        for( unsigned int i = 0; i < 8; ++i ) {
+        for ( unsigned int i = 0; i < 8; ++i ) {
           gum::NodeSet nodes;
           nodes << ( i + 1 ) * 10;
           partial_order.pushBack( nodes );
@@ -122,7 +122,7 @@ namespace gum_tests {
 
         partial_order.clear();
 
-        for( unsigned int i = 0; i < 8; ++i ) {
+        for ( unsigned int i = 0; i < 8; ++i ) {
           gum::NodeSet nodes;
           nodes << ( 8 - i ) * 10;
           partial_order.pushBack( nodes );
@@ -150,7 +150,7 @@ namespace gum_tests {
 
         gum::UndiGraph graph;
 
-        for( unsigned int i = 1; i <= 8; ++i )
+        for ( unsigned int i = 1; i <= 8; ++i )
           graph.insertNode( 10*i );
 
         createClique( graph, c1 );
@@ -165,12 +165,12 @@ namespace gum_tests {
 
         gum::Property<unsigned int>::onNodes dom;
 
-        for( unsigned int i = 1; i <= 8; ++i )
+        for ( unsigned int i = 1; i <= 8; ++i )
           dom.insert( 10*i, 10 );
 
         gum::List<gum::NodeSet> partial_order;
 
-        for( unsigned int i = 0; i < 8; i += 2 ) {
+        for ( unsigned int i = 0; i < 8; i += 2 ) {
           gum::NodeSet nodes;
           nodes << ( 8 - i ) * 10;
           nodes << ( 8 - i - 1 ) * 10;
@@ -188,22 +188,22 @@ namespace gum_tests {
       void testTriangulatedGraph3() {
         gum::UndiGraph graph;
 
-        for( unsigned int i = 1; i <= 8; ++i )
+        for ( unsigned int i = 1; i <= 8; ++i )
           graph.insertNode( i );
 
-        for( unsigned int i = 1; i <= 7; ++i )
+        for ( unsigned int i = 1; i <= 7; ++i )
           graph.insertEdge( i, i + 1 );
 
         graph.insertEdge( 8, 1 );
 
         gum::Property<unsigned int>::onNodes dom;
 
-        for( unsigned int i = 1; i <= 8; ++i )
+        for ( unsigned int i = 1; i <= 8; ++i )
           dom.insert( i, 10 );
 
         gum::List<gum::NodeSet> partial_order;
 
-        for( unsigned int i = 0; i < 8; ++i ) {
+        for ( unsigned int i = 0; i < 8; ++i ) {
           gum::NodeSet nodes;
           nodes << ( 8 - i );
           partial_order.pushBack( nodes );
@@ -231,12 +231,12 @@ namespace gum_tests {
       void createClique( gum::UndiGraph& graph, const gum::NodeSet& clique ) {
         gum::NodeSetIterator iter2;
 
-        for( gum::NodeSetIterator iter = clique.begin();
-             iter != clique.end(); ++iter ) {
+        for ( gum::NodeSetIterator iter = clique.begin();
+              iter != clique.end(); ++iter ) {
           iter2 = iter;
 
-          for( ++iter2; iter2 != clique.end(); ++iter2 ) {
-            if( ! graph.existsEdge( *iter, *iter2 ) )
+          for ( ++iter2; iter2 != clique.end(); ++iter2 ) {
+            if ( ! graph.existsEdge( *iter, *iter2 ) )
               graph.insertEdge( *iter, *iter2 );
           }
         }

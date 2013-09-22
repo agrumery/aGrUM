@@ -27,25 +27,25 @@
 #include<agrum/multidim/aggregators/multiDimAggregator.h>
 
 namespace gum {
-  // ==============================================================================
+
   /// Default constructor
-  // ==============================================================================
+
   template<typename GUM_SCALAR> INLINE
   MultiDimAggregator<GUM_SCALAR>::MultiDimAggregator(): MultiDimReadOnly<GUM_SCALAR>() {
     GUM_CONSTRUCTOR( MultiDimAggregator ) ;
   }
 
-// ==============================================================================
+
 /// Default constructor
-// ==============================================================================
+
   template<typename GUM_SCALAR> INLINE
   MultiDimAggregator<GUM_SCALAR>::MultiDimAggregator( const MultiDimAggregator<GUM_SCALAR>& from ) : MultiDimReadOnly<GUM_SCALAR>( from ) {
     GUM_CONS_CPY( MultiDimAggregator );
   }
 
-// ==============================================================================
+
 /// destructor
-// ==============================================================================
+
   template<typename GUM_SCALAR> INLINE
   MultiDimAggregator<GUM_SCALAR>::~MultiDimAggregator() {
     GUM_DESTRUCTOR( MultiDimAggregator );
@@ -53,7 +53,7 @@ namespace gum {
 
   template<typename GUM_SCALAR>
   GUM_SCALAR MultiDimAggregator<GUM_SCALAR>::get( const Instantiation& i ) const {
-    if( this->nbrDim() < 2 ) {
+    if ( this->nbrDim() < 2 ) {
       GUM_ERROR( OperationNotAllowed, "Not enough variable for an aggregator" );
     }
 
@@ -64,14 +64,14 @@ namespace gum {
 
     bool stop_iteration = false;
 
-    for( Idx j = 1; j < this->nbrDim(); j++ ) {
+    for ( Idx j = 1; j < this->nbrDim(); j++ ) {
       current = _folder( this->variable( j ), i.val( this->variable( j ) ), current , stop_iteration );
 
-      if( stop_iteration ) break;
+      if ( stop_iteration ) break;
     }
 
     // truncate to fit in aggreegator domain size
-    if( current >= agg.domainSize() ) current = agg.domainSize() - 1;
+    if ( current >= agg.domainSize() ) current = agg.domainSize() - 1;
 
     return ( i.val( agg ) == current ) ? ( GUM_SCALAR )1 : ( GUM_SCALAR )0;
   }
@@ -81,8 +81,8 @@ namespace gum {
     std::stringstream s;
     s << MultiDimImplementation<GUM_SCALAR>::variable( 0 ) << "=" << aggregatorName() << "(";
 
-    for( Idx i = 1; i < MultiDimImplementation<GUM_SCALAR>::nbrDim(); i++ ) {
-      if( i > 1 ) s << ",";
+    for ( Idx i = 1; i < MultiDimImplementation<GUM_SCALAR>::nbrDim(); i++ ) {
+      if ( i > 1 ) s << ",";
 
       s << MultiDimImplementation<GUM_SCALAR>::variable( i );
     }
@@ -99,9 +99,9 @@ namespace gum {
     return str;
   }
 
-  // ============================================================================
+
   // For friendly displaying the content of the variable.
-  // ============================================================================
+
   template<typename GUM_SCALAR> INLINE
   std::ostream& operator<<( std::ostream& s, const MultiDimAggregator<GUM_SCALAR>& ag ) {
     return s << ag.toString();

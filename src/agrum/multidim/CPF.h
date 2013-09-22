@@ -57,9 +57,9 @@ namespace gum {
 
   class CPF: public MultiDimDecorator<GUM_SCALAR> {
     public:
-      // ============================================================================
+
       /// @name Constructors & Destructor
-      // ============================================================================
+
       /// @{
       /**
        * Default constructor.
@@ -73,7 +73,7 @@ namespace gum {
        * The content will be deleted with this class.
        * @param content The implementation used for representing the CPF.
        */
-      CPF( MultiDimImplementation<GUM_SCALAR> *content );
+      CPF( MultiDimImplementation<GUM_SCALAR>* content );
 
       /**
        * Copy constructor.
@@ -104,9 +104,9 @@ namespace gum {
 
 
 
-      // ============================================================================
+
       /// Getters & setters
-      // ============================================================================
+
       /// @{
       /**
        * Add a new conditioned variable.
@@ -197,9 +197,9 @@ namespace gum {
       /// @}
 
 
-      // ============================================================================
+
       /// @name Various methods
-      // ============================================================================
+
       /// @{
       /**
        * Used by operator<< for displaying the content of CPF.
@@ -210,7 +210,7 @@ namespace gum {
        *
        * @return Returns a string with the content of this CPF.
        */
-      virtual const std::string toString( const Instantiation *i ) const;
+      virtual const std::string toString( const Instantiation* i ) const;
 
       /// @}
 

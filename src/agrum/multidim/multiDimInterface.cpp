@@ -25,7 +25,7 @@
 
 
 namespace gum {
-  
+
 
   MultiDimInterface& operator<< ( MultiDimInterface& c, const DiscreteVariable& v ) {
     c.add( v );

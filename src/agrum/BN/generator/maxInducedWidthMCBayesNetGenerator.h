@@ -39,8 +39,8 @@
 
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/generator/defaultCPTGenerator.h>
-#include <agrum/BN/generator/defaultCPTDisturber.h>
+#include <agrum/BN/generator/simpleCPTGenerator.h>
+#include <agrum/BN/generator/simpleCPTDisturber.h>
 #include <agrum/BN/generator/MCBayesNetGenerator.h>
 #include <agrum/variables/labelizedVariable.h>
 
@@ -55,7 +55,7 @@ namespace gum {
    * @warning  Be careful when entering the parameters, high Values may cause the density of the Bayesian Network to be too high
    * resulting in the failure of most of the inference Methods.
    * */
-  template<typename GUM_SCALAR, template<class> class ICPTGenerator = DefaultCPTGenerator, template<class> class ICPTDisturber = DefaultCPTDisturber>
+  template<typename GUM_SCALAR, template<class> class ICPTGenerator = SimpleCPTGenerator, template<class> class ICPTDisturber = SimpleCPTDisturber>
   class MaxInducedWidthMCBayesNetGenerator : public MCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber> {
 
     public:
@@ -67,8 +67,8 @@ namespace gum {
 
       /**
       * Constructor.
-      * Use by default the DefaultCPTGenerator for generating the BNs CPT
-      * and the DefaultCPTDisturber to tweak the CPT when the dimension of the table changes.
+      * Use by default the SimpleCPTGenerator for generating the BNs CPT
+      * and the SimpleCPTDisturber to tweak the CPT when the dimension of the table changes.
       * @param nbrNodes The number of nodes in the generated BN.
       * @param maxArcs The maximum number of Arcs.
       * @param maxModality Each DRV has from 2 to maxModality modalities
@@ -77,19 +77,19 @@ namespace gum {
       * @param p probability for the change of the state (see \ref probability_p_q "use of p and q" )
       * @param q probability for the change of the state (see \ref probability_p_q "use of p and q" )
       */
-      MaxInducedWidthMCBayesNetGenerator ( Size nbrNodes,  Size maxArcs, Size maxModality=2, Size maxInducedWidth=3, Idx iteration = 5000,  Idx p=30, Idx q=40 );
+      MaxInducedWidthMCBayesNetGenerator( Size nbrNodes,  Size maxArcs, Size maxModality=2, Size maxInducedWidth=3, Idx iteration = 5000,  Idx p=30, Idx q=40 );
 
       /**
       * Constructor.
-      * Use by default the DefaultCPTGenerator for generating the BNs CPT
-      * and the DefaultCPTDisturber to tweak the CPT when the dimension of the table changes.
+      * Use by default the SimpleCPTGenerator for generating the BNs CPT
+      * and the SimpleCPTDisturber to tweak the CPT when the dimension of the table changes.
       * @param bayesNet the BayesNet used as reference to fill the parameters nbrNodes, maxArcs and maxModality
       * @param maxInducedWidth The number of maximum variable allow in the cliques of the junction tree of the bayesian Network.
       * @param iteration The number of iterations wanted to repeat the algorithm
       * @param p probability for the change of the state (see \ref probability_p_q "use of p and q" )
       * @param q probability for the change of the state (see \ref probability_p_q "use of p and q" )
       */
-      MaxInducedWidthMCBayesNetGenerator ( BayesNet<GUM_SCALAR> bayesNet, Size maxInducedWidth=3, Idx iteration= 5000,  Idx p=30, Idx q=40 );
+      MaxInducedWidthMCBayesNetGenerator( BayesNet<GUM_SCALAR> bayesNet, Size maxInducedWidth=3, Idx iteration= 5000,  Idx p=30, Idx q=40 );
 
       /**
        * Destructor.
@@ -114,7 +114,7 @@ namespace gum {
       /**
       * Modifies the value of the number of maximum parents imposed on the BayesNetGenerator
       */
-      void setMaxlog10InducedWidth ( Size maxlog10InducedWidth );
+      void setMaxlog10InducedWidth( Size maxlog10InducedWidth );
 /// @}
 
     protected:

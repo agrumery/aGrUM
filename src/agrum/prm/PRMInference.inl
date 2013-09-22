@@ -24,13 +24,13 @@
  * @author Lionel TORTI
  *
  */
-// ============================================================================
+
 namespace gum {
   namespace prm {
 
     INLINE
     PRMInference::PRMInference( const PRM& prm, const System& system ):
-        _prm( &prm ), _sys( &system ) {
+      _prm( &prm ), _sys( &system ) {
       GUM_CONSTRUCTOR( PRMInference );
     }
 
@@ -125,10 +125,12 @@ namespace gum {
       if ( m.nbrDim() > 0 ) {
         GUM_ERROR( OperationNotAllowed, "the given Potential is not empty." );
       }
+
       if ( hasEvidence( chain ) ) {
         m.add( chain.second->type().variable() );
         const Potential<prm_float>& e = *( evidence( chain.first )[chain.second->id()] );
         Instantiation i( m ), j( e );
+
         for ( i.setFirst(), j.setFirst(); not i.end(); i.inc(), j.inc() )
           m.set( i, e.get( j ) );
       } else {
@@ -149,12 +151,14 @@ namespace gum {
       if ( j.nbrDim() > 0 ) {
         GUM_ERROR( OperationNotAllowed, "the given Potential is not empty." );
       }
+
       for ( std::vector< PRMInference::Chain >::const_iterator chain = chains.begin(); chain != chains.end(); ++chain ) {
         j.add( chain->second->type().variable() );
       }
+
       _joint( chains, j );
     }
 
   } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

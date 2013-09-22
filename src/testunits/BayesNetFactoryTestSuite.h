@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Lionel Torti                                    *
+ *   (C) 2007-2013 by Christophe GONZALES and Pierre-Henri WUILLEMIN       *
  *   {prenom.nom}@lip6.fr                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,20 +17,20 @@
  *   Free Software Foundation, Inc.,                                       *
  *   (gumSize) 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.   *
  ***************************************************************************/
-// ============================================================================
+
 #include <iostream>
 #include <string>
 #include <vector>
-// ============================================================================
+
 #include <cxxtest/AgrumTestSuite.h>
 #include "testsuite_utils.h"
-// ============================================================================
+
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/BayesNetFactory.h>
-// ============================================================================
+
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/multiDimSparse.h>
-// ============================================================================
+
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -38,7 +38,7 @@
 //         \ / /            4 -> 5
 //          5_/             2 -> 4
 //                          2 -> 5
-// ============================================================================
+
 
 namespace gum_tests {
 
@@ -404,13 +404,13 @@ namespace gum_tests {
         inst_5.chgVal( var_2, 0 );
         inst_5.chgVal( var_4, 0 );
 
-        for( iter.setFirstOut( inst_5 ); ! iter.end(); iter.incOut( inst_5 ) ) {
+        for ( iter.setFirstOut( inst_5 ); ! iter.end(); iter.incOut( inst_5 ) ) {
           cpt_5->set( iter, ( double ) 1 );
         }
 
         inst_5.chgVal( var_5, 1 );
 
-        for( iter.setFirstOut( inst_5 ); ! iter.end(); iter.incOut( inst_5 ) ) {
+        for ( iter.setFirstOut( inst_5 ); ! iter.end(); iter.incOut( inst_5 ) ) {
           cpt_5->set( iter, ( double ) 0 );
         }
 

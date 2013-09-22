@@ -33,9 +33,9 @@
 // /* ============================================================================== */
 // /* ============================================================================== */
 //
-// // ================================================================================
+// ====
 // /// clears the K2 tree structure and compute the score of the child
-// // ================================================================================
+// ====
 // INLINE void gumK2AlgoBase::setChild (unsigned int row) {
 //   // be sure to clear the previous K2 tree
 //   tree.clear ();
@@ -62,9 +62,9 @@
 // }
 //
 //
-// // ================================================================================
+// ====
 // /// returns the row number of the next parent, if any, or throws an exception
-// // ================================================================================
+// ====
 // INLINE unsigned int gumK2AlgoBase::getNextParent () throw (gumElementNotFound) {
 //   // to keep track of the best parent
 //   unsigned int new_best_parent = 0;
@@ -132,9 +132,9 @@
 // }
 //
 //
-// // ================================================================================
+// ====
 // /// computes and return a BN resulting from K2-like algorithm
-// // ================================================================================
+// ====
 // INLINE gumK2AlgoBase::operator gumBayesNetStruct () {
 //   return compute ();
 // }
@@ -151,9 +151,9 @@
 // /* ============================================================================== */
 // /* ============================================================================== */
 //
-// // ================================================================================
+// ====
 // /// compute the score of the K2 tree
-// // ================================================================================
+// ====
 // INLINE float gumK2BICAlgo::computeLog (int n) throw () {
 //   if (!logComputed[n]) {
 //     logVect[n] = log ((float) n);
@@ -163,9 +163,9 @@
 // }
 //
 //
-// // ================================================================================
+// ====
 // /// compute the score of the K2 tree
-// // ================================================================================
+// ====
 // INLINE float gumK2BICAlgo::computeScore () throw () {
 //   float score = 0;
 //
@@ -198,9 +198,9 @@
 // }
 //
 //
-// // ================================================================================
+// ====
 // /// sets the (row of the) node that should be on the left of the conditioning mark
-// // ================================================================================
+// ====
 // INLINE void gumK2BICAlgo::setChild (unsigned int row) {
 //   // initialize the dimension penalty
 //   logDim = (database.nbrModalities (row) - 1) * logM / 2;
@@ -210,9 +210,9 @@
 // }
 //
 //
-// // ==============================================================================
+// ==
 // /// perform the necessary updates after the insertion of a new parent
-// // ==============================================================================
+// ==
 // INLINE void gumK2BICAlgo::updateNewParent (unsigned int row) {
 //   logDim *= database.nbrModalities (row);
 // }

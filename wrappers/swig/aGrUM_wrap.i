@@ -80,7 +80,25 @@
 #include <agrum/CN/CNLoopyPropagation.h>
 %}
 
+
+%typemap(out) std::vector<double> {
+    std::vector<double> vOut = $1;
+    int iLen = vOut.size();
+    $result = PyList_New(iLen);
+    for(unsigned int i = 0; i < iLen; i++) {
+        double fVal = vOut.at(i);
+        PyObject *o = PyFloat_FromDouble((double) fVal);
+        PyList_SetItem($result, i, o);
+    }
+}
+
 %include "std_vector.i"
+
+namespace std {
+%template(Vector_double) vector<double>;
+}
+
+
 %include "std_string.i"
 
 /* DIRECTORS (for cross language polymorphism) */
@@ -118,6 +136,7 @@
 %include <agrum/core/exceptions.h>
 %include <agrum/core/sequence.h>
 %include <agrum/core/set.h>
+%include <agrum/core/utils_random.h>
 
 %include <agrum/core/OMPThreads.h>
 
@@ -152,7 +171,7 @@
 %include <agrum/core/list.h>
 
 %import <agrum/graphicalModels/variableNodeMap.h>
-%import <agrum/BN/abstractBayesNet.h>
+%include <agrum/graphicalModels/DAGmodel.h>
 %include <agrum/BN/BayesNet.h>
 
 %include <agrum/BN/inference/BayesNetInference.h>
@@ -302,110 +321,87 @@
 }
 
 %extend gum::credal::MultipleInferenceEngine {
-  using gum::credal::InferenceEngine<GUM_DATA>::setVerbosity;
-  using gum::credal::InferenceEngine<GUM_DATA>::setEpsilon;
-  using gum::credal::InferenceEngine<GUM_DATA>::setMinEpsilonRate;
-  using gum::credal::InferenceEngine<GUM_DATA>::setMaxIter;
-  using gum::credal::InferenceEngine<GUM_DATA>::setMaxTime;
-  using gum::credal::InferenceEngine<GUM_DATA>::setPeriodSize;
-  using gum::credal::InferenceEngine<GUM_DATA>::setBurnIn;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::setVerbosity;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::setEpsilon;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::setMinEpsilonRate;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::setMaxIter;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::setMaxTime;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::setPeriodSize;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::setBurnIn;
 
-  using gum::credal::InferenceEngine<GUM_DATA>::verbosity;
-  using gum::credal::InferenceEngine<GUM_DATA>::epsilon;
-  using gum::credal::InferenceEngine<GUM_DATA>::minEpsilonRate;
-  using gum::credal::InferenceEngine<GUM_DATA>::maxIter;
-  using gum::credal::InferenceEngine<GUM_DATA>::maxTime;
-  using gum::credal::InferenceEngine<GUM_DATA>::periodSize;
-  using gum::credal::InferenceEngine<GUM_DATA>::burnIn;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::verbosity;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::epsilon;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::minEpsilonRate;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::maxIter;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::maxTime;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::periodSize;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::burnIn;
 
-  using gum::credal::InferenceEngine<GUM_DATA>::nbrIterations;
-  using gum::credal::InferenceEngine<GUM_DATA>::currentTime;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::nbrIterations;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::currentTime;
 
-  using gum::credal::InferenceEngine<GUM_DATA>::messageApproximationScheme;
-  using gum::credal::InferenceEngine<GUM_DATA>::history;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::messageApproximationScheme;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::history;
 }
 
 %extend gum::credal::CNMonteCarloSampling {
-  using gum::credal::MultipleInferenceEngine<GUM_DATA,BNInferenceEngine>::setVerbosity;
-  using gum::credal::MultipleInferenceEngine<GUM_DATA,BNInferenceEngine>::setEpsilon;
-  using gum::credal::MultipleInferenceEngine<GUM_DATA,BNInferenceEngine>::setMinEpsilonRate;
-  using gum::credal::MultipleInferenceEngine<GUM_DATA,BNInferenceEngine>::setMaxIter;
-  using gum::credal::MultipleInferenceEngine<GUM_DATA,BNInferenceEngine>::setMaxTime;
-  using gum::credal::MultipleInferenceEngine<GUM_DATA,BNInferenceEngine>::setPeriodSize;
-  using gum::credal::MultipleInferenceEngine<GUM_DATA,BNInferenceEngine>::setBurnIn;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::setVerbosity;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::setEpsilon;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::setMinEpsilonRate;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::setMaxIter;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::setMaxTime;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::setPeriodSize;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::setBurnIn;
 
-  using gum::credal::MultipleInferenceEngine<GUM_DATA,BNInferenceEngine>::verbosity;
-  using gum::credal::MultipleInferenceEngine<GUM_DATA,BNInferenceEngine>::epsilon;
-  using gum::credal::MultipleInferenceEngine<GUM_DATA,BNInferenceEngine>::minEpsilonRate;
-  using gum::credal::MultipleInferenceEngine<GUM_DATA,BNInferenceEngine>::maxIter;
-  using gum::credal::MultipleInferenceEngine<GUM_DATA,BNInferenceEngine>::maxTime;
-  using gum::credal::MultipleInferenceEngine<GUM_DATA,BNInferenceEngine>::periodSize;
-  using gum::credal::MultipleInferenceEngine<GUM_DATA,BNInferenceEngine>::InferenceEngine::burnIn;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::verbosity;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::epsilon;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::minEpsilonRate;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::maxIter;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::maxTime;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::periodSize;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::InferenceEngine::burnIn;
 
-  using gum::credal::MultipleInferenceEngine<GUM_DATA,BNInferenceEngine>::nbrIterations;
-  using gum::credal::MultipleInferenceEngine<GUM_DATA,BNInferenceEngine>::currentTime;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::nbrIterations;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::currentTime;
 
-  using gum::credal::MultipleInferenceEngine<GUM_DATA,BNInferenceEngine>::messageApproximationScheme;
-  using gum::credal::MultipleInferenceEngine<GUM_DATA,BNInferenceEngine>::history;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::messageApproximationScheme;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::history;
 
-  using gum::credal::MultipleInferenceEngine<GUM_DATA,BNInferenceEngine>::insertEvidenceFile;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::insertEvidenceFile;
 }
 
 %extend gum::credal::CNLoopyPropagation {
-  using gum::credal::InferenceEngine<GUM_DATA>::setVerbosity;
-  using gum::credal::InferenceEngine<GUM_DATA>::setEpsilon;
-  using gum::credal::InferenceEngine<GUM_DATA>::setMinEpsilonRate;
-  using gum::credal::InferenceEngine<GUM_DATA>::setMaxIter;
-  using gum::credal::InferenceEngine<GUM_DATA>::setMaxTime;
-  using gum::credal::InferenceEngine<GUM_DATA>::setPeriodSize;
-  using gum::credal::InferenceEngine<GUM_DATA>::setBurnIn;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::setVerbosity;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::setEpsilon;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::setMinEpsilonRate;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::setMaxIter;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::setMaxTime;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::setPeriodSize;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::setBurnIn;
 
-  using gum::credal::InferenceEngine<GUM_DATA>::verbosity;
-  using gum::credal::InferenceEngine<GUM_DATA>::epsilon;
-  using gum::credal::InferenceEngine<GUM_DATA>::minEpsilonRate;
-  using gum::credal::InferenceEngine<GUM_DATA>::maxIter;
-  using gum::credal::InferenceEngine<GUM_DATA>::maxTime;
-  using gum::credal::InferenceEngine<GUM_DATA>::periodSize;
-  using gum::credal::InferenceEngine<GUM_DATA>::burnIn;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::verbosity;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::epsilon;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::minEpsilonRate;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::maxIter;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::maxTime;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::periodSize;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::burnIn;
 
-  using gum::credal::InferenceEngine<GUM_DATA>::nbrIterations;
-  using gum::credal::InferenceEngine<GUM_DATA>::currentTime;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::nbrIterations;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::currentTime;
 
-  using gum::credal::InferenceEngine<GUM_DATA>::messageApproximationScheme;
-  using gum::credal::InferenceEngine<GUM_DATA>::history;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::messageApproximationScheme;
+  using gum::credal::InferenceEngine<PYGUM_SCALAR>::history;
 }
 
 /* TEMPLATES INSTANTIATIONS */
 
+%template(randomDistribution) gum::randomDistribution<double>;
 %template(Sequence_node) gum::Sequence<gum::NodeId>;
 %template(Sequence_string) gum::Sequence<std::string>;
 
 %template(DiscretizedVar) gum::DiscretizedVariable<float>;
 
-/*
-%template(Vector_float) std::vector<float>;
-
-%template(MultiDimContainer_float) gum::MultiDimContainer<float>;
-%template(MultiDimImplementation_float) gum::MultiDimImplementation<float>;
-%template(MultiDimDecorator_float) gum::MultiDimDecorator<float>;
-%template(MultiDimWithOffset_float) gum::MultiDimWithOffset<float>;
-%template(MultiDimArray_float) gum::MultiDimArray<float>;
-
-%template(Potential_float) gum::Potential<float>;
-%template(BaseListPotentials_float) gum::ListBase< const gum::Potential<float> *>;
-%template(ListPotentials_float) gum::List< const gum::Potential<float> *>;
-
-%template(AbstractBayesNet_float) gum::AbstractBayesNet<float>;
-%template(BayesNet_float) gum::BayesNet<float>;
-
-%template(BayesNetInference_float) gum::BayesNetInference<float>;
-%template(LazyPropagation_float) gum::LazyPropagation<float>;
-%template(GibbsInference_float) gum::GibbsInference<float>;
-%template(BruteForceKL_float) gum::BruteForceKL<float>;
-%template(GibbsKL_float) gum::GibbsKL<float>;
-*/
-
-%template(Vector_double) std::vector<double>;
 
 %template(MultiDimContainer_double) gum::MultiDimContainer<double>;
 %template(MultiDimImplementation_double) gum::MultiDimImplementation<double>;
@@ -413,11 +409,9 @@
 %template(MultiDimWithOffset_double) gum::MultiDimWithOffset<double>;
 %template(MultiDimArray_double) gum::MultiDimArray<double>;
 
-%template(Potential_double) gum::Potential<double>;
-%template(BaseListPotentials_double)  gum::ListBase< const gum::Potential<double> *>;
+%template(Potential_double) gum::Potential<double>
 %template(ListPotentials_double) gum::List< const gum::Potential<double> *>;
 
-%template(AbstractBayesNet_double) gum::AbstractBayesNet<double>;
 %template(BayesNet_double) gum::BayesNet<double>;
 %template(BayesNetInference_double) gum::BayesNetInference<double>;
 %template(LazyPropagation_double) gum::LazyPropagation<double>;

@@ -23,16 +23,16 @@
 //  *
 //  * @author Lionel TORTI
 //  */
-// // ============================================================================
+//
 // #include <cctype>
 // #include <cstdlib>
 // #include <string>
 // #include <sstream>
 // #include <ostream>
-// // ============================================================================
+//
 // #include <agrum/prm/PRM.h>
 // #include <agrum/prm/PRMInference.h>
-// // ============================================================================
+//
 // #ifndef GUM_IBAL_BRIDGE_H
 // #define GUM_IBAL_BRIDGE_H
 // namespace gum {
@@ -196,7 +196,7 @@
 // #ifndef GUM_NO_INLINE
 // #include <agrum/prm/bridges/IbalBridge.inl>
 // #endif // GUM_NO_INLINE
-// // ============================================================================
+//
 // #endif /* GUM_IBAL_BRIDGE_H */
-// // ============================================================================
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+//
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

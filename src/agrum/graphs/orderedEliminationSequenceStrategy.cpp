@@ -35,7 +35,7 @@ namespace gum {
 
   /// default constructor (uses an empty graph)
   OrderedEliminationSequenceStrategy::OrderedEliminationSequenceStrategy() :
-      __graph( 0 ), __sequence( 0 ), __seq_index( 0 ) {
+    __graph( 0 ), __sequence( 0 ), __seq_index( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( OrderedEliminationSequenceStrategy );
   }
@@ -45,9 +45,9 @@ namespace gum {
   OrderedEliminationSequenceStrategy::OrderedEliminationSequenceStrategy
   ( UndiGraph* graph,
     const std::vector<NodeId>* sequence ) :
-      __graph( graph ), __sequence( sequence ), __seq_index( 0 ) {
+    __graph( graph ), __sequence( sequence ), __seq_index( 0 ) {
     // check that the user passed appropriate graphs and sequences
-    if (( ! __graph && __sequence ) || ( __graph && ! __sequence ) )  {
+    if ( ( ! __graph && __sequence ) || ( __graph && ! __sequence ) )  {
       GUM_ERROR( GraphError, "OrderedEliminationSequenceStrategy needs valid "
                  "graph and elimination ordering" );
     }
@@ -59,9 +59,9 @@ namespace gum {
   /// copy constructor
   OrderedEliminationSequenceStrategy::OrderedEliminationSequenceStrategy
   ( const OrderedEliminationSequenceStrategy& from ) :
-      __graph( from.__graph ),
-      __sequence( from.__sequence ),
-      __seq_index( from.__seq_index ) {
+    __graph( from.__graph ),
+    __sequence( from.__sequence ),
+    __seq_index( from.__seq_index ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( OrderedEliminationSequenceStrategy );
   }
@@ -85,7 +85,7 @@ namespace gum {
   OrderedEliminationSequenceStrategy::setGraph( UndiGraph* graph,
       const std::vector<NodeId>* seq ) {
     // check that the graph and the sequence are ok
-    if (( ! graph && seq ) || ( graph && ! seq ) ) {
+    if ( ( ! graph && seq ) || ( graph && ! seq ) ) {
       GUM_ERROR( GraphError, "OrderedEliminationSequenceStrategy needs valid "
                  "graph and elimination ordering" );
     }
@@ -144,8 +144,8 @@ namespace gum {
     // check whether there is somthing to update
     if ( __sequence ) {
       // check that node correspond to the current index
-      if (( __seq_index >= __sequence->size() ) ||
-          (( *__sequence )[__seq_index] != node ) ) {
+      if ( ( __seq_index >= __sequence->size() ) ||
+           ( ( *__sequence )[__seq_index] != node ) ) {
         GUM_ERROR( OutOfBounds, "the orderedEliminationSequence is unable to "
                    "update its data due to the node elimination" );
       }

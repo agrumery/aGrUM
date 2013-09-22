@@ -33,9 +33,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#ifndef NDEBUG
 #include <map>
-#endif // NDEBUG
 
 
 namespace gum {
@@ -43,14 +41,14 @@ namespace gum {
 #ifndef NDEBUG
 
   namespace __debug__ {
-    typedef std::map<std::string,int> DEBUG_MAP;
+    typedef std::map<std::string, int> DEBUG_MAP;
 
 // this static hashtable only on debug mode.
     static DEBUG_MAP& __sizeof() {
 #if defined(_MT) || defined(__MT__) || defined(_PTHREAD)
 #warning "This function is not thread-safe ! (but only in debug mode)"
 #endif
-      static DEBUG_MAP* sizeOf=new DEBUG_MAP();
+      static DEBUG_MAP* sizeOf = new DEBUG_MAP();
       return *sizeOf;
     }
 
@@ -59,7 +57,7 @@ namespace gum {
 #if defined(_MT) || defined(__MT__) || defined(_PTHREAD)
 #warning "This function is not thread-safe ! (but only in debug mode)"
 #endif
-      static DEBUG_MAP* creation=new DEBUG_MAP();
+      static DEBUG_MAP* creation = new DEBUG_MAP();
       return *creation;
     }
 
@@ -67,130 +65,163 @@ namespace gum {
 #if defined(_MT) || defined(__MT__) || defined(_PTHREAD)
 #warning "This function is not thread-safe ! (but only in debug mode)"
 #endif
-      static DEBUG_MAP* deletion=new DEBUG_MAP();
+      static DEBUG_MAP* deletion = new DEBUG_MAP();
       return *deletion;
     }
 
     std::string __getFile ( const char* f ) {
       std::string s ( f );
-      return s.erase ( 0,s.rfind ( "/" ) +1 );
+      return s.erase ( 0, s.rfind ( "/" ) + 1 );
     }
 
-    void __show_trace ( const char *zeKey,const char *zeFile,long zeLine,const char *zeMsg,const void *zePtr ) {
+    void __show_trace ( const char* zeKey, const char* zeFile, long zeLine, const char* zeMsg, const void* zePtr ) {
 #ifdef GUM_DEEP_TRACE_ON
-      std::cerr <<std::setw ( 40 ) <<std::setfill ( ' ' ) <<__getFile ( zeFile ) <<"#"<<std::setfill ( '0' )  <<  std::setw ( 5 ) <<std::dec<<zeLine<<" : "<<zeMsg<<" <"<<zeKey<<"> ["<<std::hex<<zePtr<<"]"<<std::dec<<std::endl;
+      std::cerr << std::setw ( 40 ) << std::setfill ( ' ' ) << __getFile ( zeFile ) << "#" << std::setfill ( '0' )  <<  std::setw ( 5 ) << std::dec << zeLine << " : " << zeMsg << " <" << zeKey << "> [" << std::hex << zePtr << "]" << std::dec << std::endl;
 #endif //TRACE_CONSTRUCTION_ON
     }
 
-    void __inc_creation ( const char *zeKey,const char *zeFile,long zeLine,const char *zeMsg,const void *zePtr,int zeSize ) {
-      __show_trace ( zeKey,zeFile,zeLine,zeMsg,zePtr );
+    void __inc_creation ( const char* zeKey, const char* zeFile, long zeLine, const char* zeMsg, const void* zePtr, int zeSize ) {
+      __show_trace ( zeKey, zeFile, zeLine, zeMsg, zePtr );
 
       __creation() [zeKey]++;
-      __sizeof() [zeKey]=zeSize;
+      __sizeof() [zeKey] = zeSize;
     }
 
 // to handle static element of agrum library
-    void __dec_creation ( const char *zeKey,const char *zeFile,long zeLine,const char *zeMsg,const void *zePtr ) {
-      __show_trace ( zeKey,zeFile,zeLine,zeMsg,zePtr );
+    void __dec_creation ( const char* zeKey, const char* zeFile, long zeLine, const char* zeMsg, const void* zePtr ) {
+      __show_trace ( zeKey, zeFile, zeLine, zeMsg, zePtr );
       __creation() [zeKey]--;
     }
 
-    void __inc_deletion ( const char *zeKey,const char *zeFile,long zeLine,const char *zeMsg,const void *zePtr ) {
-      __show_trace ( zeKey,zeFile,zeLine,zeMsg,zePtr );
+    void __inc_deletion ( const char* zeKey, const char* zeFile, long zeLine, const char* zeMsg, const void* zePtr ) {
+      __show_trace ( zeKey, zeFile, zeLine, zeMsg, zePtr );
       __deletion() [zeKey]++;
     }
 
     void __dumpObjects ( void ) {
-      unsigned int nb_err=0;
-      int total_size=0;
+      unsigned int nb_err = 0;
+      int total_size = 0;
 
-      std::cerr<<std::setfill ( '-' );
-      std::cerr<<"|-"<<std::setw ( 50 ) <<""<<"-|-"<<std::setw ( 7 ) <<""<<"-|-"<<std::setw ( 8 ) <<""<<"-|-"<<std::setw ( 8 ) <<""<<"-|"<<std::endl;
-      std::cerr<<std::setfill ( ' ' );
-      std::cerr<<"| "<<std::setw ( 50 ) <<"   Class Name    "<<" | "<<std::setw ( 7 ) <<"Size"<<" | "<<std::setw ( 8 ) <<"#Const"<<" | "<<std::setw ( 8 ) <<"#Dest"<<" |"<<std::endl;
-      std::cerr<<std::setfill ( '-' );
-      std::cerr<<"|-"<<std::setw ( 50 ) <<""<<"-|-"<<std::setw ( 7 ) <<""<<"-|-"<<std::setw ( 8 ) <<""<<"-|-"<<std::setw ( 8 ) <<""<<"-|"<<std::endl;
-      std::cerr<<std::setfill ( ' ' );
+      char fillChar = '_';
+      int widthColLibelle = 50;
+      int widthColSizeOf = 5;
+      int widthColItemsNumber = 8;
+
+      std::cerr << std::setfill ( '=' )
+                << "|" << std::setw ( widthColLibelle + 2 ) << ""
+                << "|" << std::setw ( widthColSizeOf + 4 ) << ""
+                << "|" << std::setw ( widthColItemsNumber + 2 )  << ""
+                << "|" << std::setw ( widthColItemsNumber + 2 ) << ""
+                << "|" << std::endl;
+      std::cerr << std::setfill ( ' ' )
+                << "| " << std::left << std::setw ( widthColLibelle ) << "Class Name" << std::right
+                << " |   " << std::setw ( widthColSizeOf ) << "Size"
+                << " | " << std::setw ( widthColItemsNumber ) << "#Const"
+                << " | " << std::setw ( widthColItemsNumber ) << "#Dest"
+                << " |" << std::endl;
+      std::cerr << std::setfill ( '-' )
+                << "|" << std::setw ( widthColLibelle + 2 ) << ""
+                << "|" << std::setw ( widthColSizeOf + 4 ) << ""
+                << "|" << std::setw ( widthColItemsNumber + 2 )  << ""
+                << "|" << std::setw ( widthColItemsNumber + 2 ) << ""
+                << "|" << std::endl;
       // list of created objects
-      std::vector<std::string> res;
+      std::map<std::string, std::string> res;
+
 
       for ( DEBUG_MAP::const_iterator xx = __creation().begin(); xx != __creation().end(); ++xx ) {
         std::stringstream stream;
-        int zeCreatedObjs=xx->second;
-        int zeDeletedObjts=-1;
-        int size=__sizeof() [xx->first];
-        stream<<"| "<<std::setw ( 50 ) <<xx->first<<" | "<<std::setw ( 5 ) <<size<<" o | "<<std::setw ( 8 ) <<zeCreatedObjs<<" | ";
+        int zeCreatedObjs = xx->second;
+        int zeDeletedObjts = -1;
+        int size = __sizeof() [xx->first];
 
-        if ( size>0 ) total_size+=zeCreatedObjs*size;
+
+        stream << std::setfill ( fillChar = ( fillChar == '_' ) ? ' ' : '_' )
+               << "| " <<  std::setw ( widthColLibelle ) << std::left  << xx->first
+               << " | "  << std::right <<  std::setw ( widthColSizeOf ) << size
+               << " o | "  << std::setw ( widthColItemsNumber ) << zeCreatedObjs << " | ";
+
+        if ( size > 0 ) total_size += zeCreatedObjs * size;
 
         try {
-          zeDeletedObjts=__deletion() [xx->first];
-          stream<<std::setw ( 8 ) <<zeDeletedObjts;
-        }
-        catch ( NotFound& ) {
-          stream<<std::setw ( 8 ) <<"?????";
-        }
-
-        stream<<" |";;
-
-        if ( zeCreatedObjs!=zeDeletedObjts ) {
-          nb_err+=abs ( zeDeletedObjts-zeCreatedObjs );
-          stream<<"<--- failed";
+          zeDeletedObjts = __deletion() [xx->first];
+          stream << std::setfill ( fillChar ) << std::setw ( widthColItemsNumber ) << zeDeletedObjts;
+        } catch ( NotFound& ) {
+          stream << std::setfill ( fillChar ) << std::setw ( widthColItemsNumber ) << "?????";
         }
 
-        res.push_back ( stream.str() );
+        stream << " |";;
+
+        if ( zeCreatedObjs != zeDeletedObjts ) {
+          nb_err += abs ( zeDeletedObjts - zeCreatedObjs );
+          stream << "<--- failed";
+        }
+
+        res.insert ( make_pair ( xx->first, stream.str() ) );
+        //res.push_back( stream.str() );
       }
 
       // list of deleted objects, but not created (?)
       for ( DEBUG_MAP::const_iterator xx = __deletion().begin(); xx != __deletion().end(); ++xx ) {
         try {
           __creation() [xx->first];
-        }
-        catch ( NotFound& ) {
+        } catch ( NotFound& ) {
           std::stringstream stream;
-          stream<<"| "<<std::setw ( 50 ) <<xx->first<<" | "<<std::setw ( 7 ) <<__sizeof() [xx->first]<<" | "<<std::setw ( 8 ) <<"?????"<<" | "<<std::setw ( 8 ) <<xx->second<<" |<--- failed";
-          res.push_back ( stream.str() );
-          nb_err+=xx->second;
+          fillChar = ( fillChar == '_' ) ? ' ' : '_';
+          stream << std::setfill ( fillChar = ( fillChar == '_' ) ? ' ' : '_' )
+                 << "| " << std::setw ( widthColLibelle ) << std::left << xx->first + " "
+                 << " | " << std::right << std::setw ( widthColSizeOf ) << __sizeof() [xx->first]
+                 << " o | " << std::setw ( widthColItemsNumber ) << "?????"
+                 << " | " << std::setw ( widthColItemsNumber ) << xx->second << " |<--- failed";
+          res.insert ( make_pair ( xx->first, stream.str() ) );
+          //res.push_back( stream.str() );
+          nb_err += xx->second;
         }
       }
 
-      sort ( res.begin(),res.end() );
-
-      for ( std::vector<std::string>::const_iterator iter=res.begin();
-            iter!=res.end();
-            ++iter ) {
-        std::cerr<<*iter<<std::endl;
+      for ( auto iter : res ) {
+        std::cerr << iter.second << std::endl;
       }
 
-      std::cerr<<std::setfill ( '-' );
+      std::cerr << std::setfill ( '-' );
 
-      std::cerr<<"|-"<<std::setw ( 50 ) <<""<<"-|-"<<std::setw ( 7 ) <<""<<"-|-"<<std::setw ( 8 ) <<""<<"-|-"<<std::setw ( 8 ) <<""<<"-|"<<std::endl;
+      std::cerr << "|-"  << std::setw ( widthColLibelle ) << ""
+                << "-|-" << std::setw ( widthColSizeOf + 2 ) << ""
+                << "-|-" << std::setw ( widthColItemsNumber ) << ""
+                << "-|-" << std::setw ( widthColItemsNumber ) << "" << "-|"
+                << std::endl;
 
-      std::cerr<<std::setfill ( ' ' );
+      std::cerr << std::setfill ( ' ' );
 
-      if ( nb_err==0 ) {
-        std::cerr<<"| "<<std::setw ( 50 ) <<"NO MEMORY LEAK !"<<""<<" | "<<std::setw ( 31 ) <<"|"<<std::endl;
+      if ( nb_err == 0 ) {
+        std::cerr << "| " << std::setw ( widthColLibelle ) << "NO MEMORY LEAK !"
+                  << " | " << std::setw ( widthColSizeOf + widthColItemsNumber * 2 + 9 ) << ""
+                  << "|" << std::endl;
+      } else {
+        std::cerr << "| " << std::setw ( widthColLibelle ) << "Memory leaks found " << ""
+                  << " | " << std::setw ( widthColSizeOf + widthColItemsNumber * 2 - 6 ) << nb_err << " object(s)     "
+                  << "|" << std::endl;
       }
-      else {
-        std::cerr<<"| "<<std::setw ( 50 ) <<"Memory leaks found "<<""<<" | "<<std::setw ( 16 ) <<nb_err<<" object(s) "<<std::setw ( 4 ) <<"|"<<std::endl;
-      }
 
-      std::cerr<<"| "<<std::setw ( 50 ) <<"total "<<""<<" | "<<std::setw ( 17 ) <<total_size<<" octet(s) "<<std::setw ( 4 ) <<"|"<<std::endl;
+      std::cerr << "| " << std::setw ( widthColLibelle ) << "total "
+                << " | " << std::setw ( widthColSizeOf + widthColItemsNumber * 2 - 4 ) << total_size << " octet(s)    "
+                << "|" << std::endl;
 
-      std::cerr<<std::setfill ( '-' );
-
-      std::cerr<<"|"<<std::setw ( 85 ) <<"|"<<std::endl;
+      std::cerr << std::setfill ( '=' )
+                << "|" << std::setw ( widthColLibelle + 2 ) << ""
+                << "|" << std::setw ( widthColSizeOf + widthColItemsNumber * 2 + 10 ) << ""
+                << "|" << std::endl;
 
     }
 
 // take into account static objects in agrum (no called destructor before exit())
     void __staticCorrections() {
-      __dec_creation ( "HashTableIterator"  ,"__hash_static_end",0,"static variable correction",0 );
-      __dec_creation ( "SetIterator","__empty_edge_set",0,"static variable correction",0 );
-      __dec_creation ( "BijectionIterator","__empty_bijection",0,"static variable correction",0 );
-      __dec_creation ( "BijectionIterator","__empty_bijection_star",0,"static variable correction",0 );
-      __dec_creation ( "Set","__empty_edge_set",0,"static variable correction",0 );
-      __dec_creation ( "HashTable"  ,"__empty_edge_set",0,"static variable correction",0 );
+      __dec_creation ( "HashTableIterator"  , "__hash_static_end", 0, "static variable correction", 0 );
+      __dec_creation ( "SetIterator", "__empty_edge_set", 0, "static variable correction", 0 );
+      __dec_creation ( "BijectionIterator", "__empty_bijection", 0, "static variable correction", 0 );
+      __dec_creation ( "BijectionIterator", "__empty_bijection_star", 0, "static variable correction", 0 );
+      __dec_creation ( "Set", "__empty_edge_set", 0, "static variable correction", 0 );
+      __dec_creation ( "HashTable"  , "__empty_edge_set", 0, "static variable correction", 0 );
     }
 
     void __atexit ( void ) {

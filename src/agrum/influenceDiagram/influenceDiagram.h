@@ -22,25 +22,24 @@
  * @file
  * @brief Class representing Influence Diagrams
  *
- * @author Jean-Christophe Magnan & Pierre_Henri Wuillemin
+ * @author Jean-Christophe Magnan & Pierre_Henri WUILLEMIN
  *
  */
 #ifndef GUM_INF_DIAG_H
 #define GUM_INF_DIAG_H
-// ============================================================================
+
 #include <utility>
 #include <string>
-// ============================================================================
+
 #include <agrum/config.h>
 
 #include <agrum/core/hashTable.h>
-// ============================================================================
-#include <agrum/graphicalModels/variableNodeMap.h>
-#include <agrum/BN/abstractBayesNet.h>
-// ============================================================================
+
+#include <agrum/graphicalModels/DAGmodel.h>
+
+#include <agrum/multidim/potential.h>
 #include <agrum/multidim/utilityTable.h>
-#include <agrum/graphs/DAG.h>
-// ============================================================================
+
 
 namespace gum {
 
@@ -51,8 +50,7 @@ namespace gum {
    *
    */
   template<typename GUM_SCALAR>
-
-  class InfluenceDiagram : public AbstractBayesNet<GUM_SCALAR> {
+  class InfluenceDiagram : public DAGmodel {
 
       //friend class InfluenceDiagramFactory<GUM_SCALAR>;
 
@@ -88,6 +86,10 @@ namespace gum {
       /// @return Returns a dot representation of this Influence Diagram.
       std::string toDot( void ) const;
 
+
+      /// @return Returns a string representation of this Influence Diagram.
+      std::string toString( void ) const;
+
       // ===========================================================================
       /// @name Variable manipulation methods.
       // ===========================================================================
@@ -104,11 +106,6 @@ namespace gum {
        * @throw NotFound If no variable's id matches varId.
        */
       virtual const UtilityTable<GUM_SCALAR>& utility( NodeId varId ) const;
-
-      /**
-       * Returns a constant reference to the dag of this Influence Diagram.
-       */
-      virtual const DAG& dag() const;
 
       /**
        * Returns a constant reference to the VariableNodeMap of this Influence Diagram
@@ -146,16 +143,6 @@ namespace gum {
       Size decisionNodeSize() const;
 
       /**
-       * Returns the number of variables in this Influence Diagram.
-       */
-      virtual Idx size() const;
-
-      /**
-       * Returns true if this Influence Diagram is empty.
-       */
-      virtual bool empty() const;
-
-      /**
       * Returns a constant reference over a variabe given it's node id.
       * @throw NotFound If no variable's id matches varId.
       */
@@ -165,7 +152,7 @@ namespace gum {
       * Return id node from discrete var pointer.
       * @throw NotFound If no variable matches var.
       */
-      virtual NodeId nodeId( const DiscreteVariable &var ) const;
+      virtual NodeId nodeId( const DiscreteVariable& var ) const;
 
       /// Getter by name
       /// @throw NotFound if no such name exists in the graph.
@@ -241,7 +228,7 @@ namespace gum {
        * @return the id of the added variable.
        * @throws DuplicateElement if id(<>0) is already used
        */
-      NodeId addChanceNode( const DiscreteVariable& variable, MultiDimImplementation<GUM_SCALAR> *aContent, NodeId id = 0 );
+      NodeId addChanceNode( const DiscreteVariable& variable, MultiDimImplementation<GUM_SCALAR>* aContent, NodeId id = 0 );
 
       /**
        * Add a chance variable, it's associate node and it's CPT. The id of the new
@@ -254,7 +241,7 @@ namespace gum {
        * @throw InvalidAgrument If variable has more than one label
        * @throws DuplicateElement if id(<>0) is already used
        */
-      NodeId addUtilityNode( const DiscreteVariable& variable, MultiDimImplementation<GUM_SCALAR> *aContent, NodeId id = 0 );
+      NodeId addUtilityNode( const DiscreteVariable& variable, MultiDimImplementation<GUM_SCALAR>* aContent, NodeId id = 0 );
 
 
       /**
@@ -293,9 +280,21 @@ namespace gum {
        * @param head and
        * @param tail as NodeId
        * @throw InvalidEdge If arc.tail and/or arc.head are not in the ID.
-        * //PH  @throw InvalidEdge if tail is a utility node
+       * @throw InvalidEdge if tail is a utility node
        */
-      void insertArc( NodeId tail, NodeId head );
+      void addArc( NodeId tail, NodeId head );
+
+
+      /**
+       * Add an arc in the ID, and update diagram's potential nodes cpt if necessary.
+       *
+       * @param head and
+       * @param tail as NodeId
+       * @throw InvalidEdge If arc.tail and/or arc.head are not in the ID.
+       * @throw InvalidEdge if tail is a utility node
+       * @deprecated This function has been deprecated. Please use @ref addArc instead
+       */
+      GUM_DEPRECATED( void insertArc( NodeId tail, NodeId head ) );
 
       /**
        * Removes an arc in the ID, and update diagram's potential nodes cpt if necessary.
@@ -315,25 +314,7 @@ namespace gum {
       void eraseArc( NodeId tail, NodeId head );
 
       /// @}
-      // ===========================================================================
-      /// @name Graphical methods
-      // ===========================================================================
-      /// @{
 
-      /**
-       * The node's id are coherent with the variables and nodes of the topology.
-       * @param clear If false returns the previously created moral graph.
-       */
-      virtual const UndiGraph& moralGraph( bool clear = true ) const;
-
-      /**
-       * The topological order stays the same as long as no variable or arcs are
-       * added or erased from the topology.
-       * @param clear If false returns the previously created topology.
-       */
-      virtual const Sequence<NodeId>& topologicalOrder( bool clear = true ) const;
-
-      /// @}
       // ===========================================================================
       /// @name Decisions methods
       // ===========================================================================
@@ -370,6 +351,9 @@ namespace gum {
 
     protected:
 
+      /// Returns the moral graph of this InfluenceDiagram.
+      virtual void _moralGraph( UndiGraph& graph ) const;
+
       /**
        * Removing ancient table
        */
@@ -392,8 +376,6 @@ namespace gum {
 
     private:
 
-      /// The DAG of this bayes net.
-      DAG __dag;
 
       /// Mapping between id and variable
       VariableNodeMap __variableMap;
@@ -403,12 +385,6 @@ namespace gum {
       /// Mapping between utility variable's id and their utility table
       typename Property<UtilityTable<GUM_SCALAR>* >::onNodes __utilityMap;
 
-      /// The topology sequence of this bayes net.
-      mutable Sequence<NodeId>* __topologicalOrder;
-
-      /// The moralGraph
-      mutable UndiGraph __moralGraph;
-
       /// The temporal order
       mutable List<NodeSet> __temporalOrder;
 
@@ -416,10 +392,10 @@ namespace gum {
 
 } /* namespace gum */
 
-// ============================================================================
-#include <agrum/influenceDiagram/influenceDiagram.tcc>
-// ============================================================================
-#endif /* GUM_INF_DIAG_H */
-// ============================================================================
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+#include <agrum/influenceDiagram/influenceDiagram.tcc>
+
+#endif /* GUM_INF_DIAG_H */
+
+
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

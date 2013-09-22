@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Lionel Torti                                    *
+ *   (C) 2007-2013 by Christophe GONZALES and Pierre-Henri WUILLEMIN       *
  *   {prenom.nom}@lip6.fr                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -80,7 +80,7 @@ namespace gum_tests {
         }
 
         gum::BruteForceKL<float> kl( net2,net2 );
-        TS_ASSERT_EQUALS( kl.difficulty(),gum::complexity::CORRECT );
+        TS_ASSERT_EQUALS( kl.difficulty(),gum::Complexity::Correct );
 
         gum::BayesNet<float> net;
         {
@@ -90,7 +90,7 @@ namespace gum_tests {
         }
 
         gum::KL<float> kl2( net,net );
-        TS_ASSERT_EQUALS( kl2.difficulty(),gum::complexity::HEAVY );
+        TS_ASSERT_EQUALS( kl2.difficulty(),gum::Complexity::Heavy );
       }
 
       void testKLComputation() {
@@ -117,7 +117,7 @@ namespace gum_tests {
         }
 
         gum::KL<float> kl( net3,net4 );
-        TS_ASSERT_EQUALS( kl.difficulty(),gum::complexity::CORRECT );
+        TS_ASSERT_EQUALS( kl.difficulty(),gum::Complexity::Correct );
 
         {
           gum::BruteForceKL<float> bfkl( kl );
@@ -150,6 +150,7 @@ namespace gum_tests {
         }
 
         gum::BruteForceKL<float> kl( netP,netQ );
+        TS_GUM_ASSERT_THROWS_NOTHING( kl.klPQ() );
         TS_ASSERT_DELTA( kl.klPQ(),0.241864114,1e-7 );
         TS_ASSERT_DELTA( kl.klQP(),0.399826689,1e-7 );
         TS_ASSERT_EQUALS( kl.errorPQ(),0 );
@@ -182,7 +183,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( kl.errorPQ(),0 );
         TS_ASSERT_EQUALS( kl.errorQP(),0 );
         TS_ASSERT_DELTA( kl.hellinger(),0.321089688,1e-1 );
-        TS_ASSERT( abs( kl.history().size() -(kl.nbrIterations()-kl.burnIn())/kl.periodSize() )<2 );
+        TS_ASSERT( abs( kl.history().size() -( kl.nbrIterations()-kl.burnIn() )/kl.periodSize() )<2 );
         //GUM_TRACE_VAR( kl.history() );
       }
   };

@@ -41,7 +41,7 @@ namespace gum_tests {
 
   class FactorisedValuesCNFWriterTestSuite: public CxxTest::TestSuite {
     public:
-      gum::BayesNet<double> *bn;
+      gum::BayesNet<double>* bn;
       gum::Id i1, i2, i3, i4, i5;
 
       void setUp() {
@@ -50,18 +50,18 @@ namespace gum_tests {
         gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),  n3( "3", "" , 2 );
         gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 3 );
 
-        i1 = bn->addVariable( n1 );
-        i2 = bn->addVariable( n2 );
-        i3 = bn->addVariable( n3 );
-        i4 = bn->addVariable( n4 );
-        i5 = bn->addVariable( n5 );
+        i1 = bn->add( n1 );
+        i2 = bn->add( n2 );
+        i3 = bn->add( n3 );
+        i4 = bn->add( n4 );
+        i5 = bn->add( n5 );
 
-        bn->insertArc( i1, i3 );
-        bn->insertArc( i1, i4 );
-        bn->insertArc( i3, i5 );
-        bn->insertArc( i4, i5 );
-        bn->insertArc( i2, i4 );
-        bn->insertArc( i2, i5 );
+        bn->addArc( i1, i3 );
+        bn->addArc( i1, i4 );
+        bn->addArc( i3, i5 );
+        bn->addArc( i4, i5 );
+        bn->addArc( i2, i4 );
+        bn->addArc( i2, i5 );
 
         fill( *bn );
       }
@@ -71,7 +71,7 @@ namespace gum_tests {
       }
 
       void testConstuctor() {
-        gum::FactorisedValuesCNFWriter<double>* writer = NULL;
+        gum::FactorisedValuesCNFWriter<double>* writer = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( writer = new gum::FactorisedValuesCNFWriter<double>() );
         delete writer;
       }
@@ -102,7 +102,7 @@ namespace gum_tests {
         try {
           writer.write( file, *bn );
           // TS_ASSERT(false);
-        } catch( gum::IOError& e ) {
+        } catch ( gum::IOError& e ) {
           TS_ASSERT( true );
         }
       }
@@ -119,7 +119,7 @@ namespace gum_tests {
         try {
           writer.write( file, *bn );
           // TS_ASSERT(false);
-        } catch( gum::IOError& e ) {
+        } catch ( gum::IOError& e ) {
           TS_ASSERT( true );
         }
       }
@@ -127,7 +127,7 @@ namespace gum_tests {
 
     private:
       // Builds a BN to test the inference
-      void fill( gum::BayesNet<double> &bn ) {
+      void fill( gum::BayesNet<double>& bn ) {
         const gum::Potential<double>& p1 = bn.cpt( i1 );
         {
           // FILLING PARAMS

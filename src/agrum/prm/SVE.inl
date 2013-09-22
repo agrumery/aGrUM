@@ -23,83 +23,85 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 namespace gum {
-namespace prm {
+  namespace prm {
 
-INLINE
-SVE::SVE(const PRM& prm, const System& system):
-  PRMInference(prm, system), __class_elim_order(0)
-{
-  GUM_CONSTRUCTOR(SVE);
-}
+    INLINE
+    SVE::SVE( const PRM& prm, const System& system ):
+      PRMInference( prm, system ), __class_elim_order( 0 ) {
+      GUM_CONSTRUCTOR( SVE );
+    }
 
-INLINE
-void
-SVE::__insertEvidence(const Instance* i, BucketSet& pool) {
-  for (PRMInference::EMapIterator iter = evidence(i).begin(); iter != evidence(i).end(); ++iter) {
-    pool.insert(const_cast<Potential<prm_float>*>(*iter));
-  }
-}
+    INLINE
+    void
+    SVE::__insertEvidence( const Instance* i, BucketSet& pool ) {
+      for ( PRMInference::EMapIterator iter = evidence( i ).begin(); iter != evidence( i ).end(); ++iter ) {
+        pool.insert( const_cast<Potential<prm_float>*>( *iter ) );
+      }
+    }
 
-INLINE
-std::vector<NodeId>&
-SVE::__getElimOrder(const Class& c) {
-  return *(__elim_orders[&c]);
-}
+    INLINE
+    std::vector<NodeId>&
+    SVE::__getElimOrder( const Class& c ) {
+      return *( __elim_orders[&c] );
+    }
 
-INLINE
-bool
-SVE::__checkElimOrder(const Instance* first, const Instance* second) {
-  if (__class_elim_order == 0) {
-    __initElimOrder();
-  }
-  return (__class_elim_order->pos(&(first->type())) <= __class_elim_order->pos(&(second->type())));
-}
+    INLINE
+    bool
+    SVE::__checkElimOrder( const Instance* first, const Instance* second ) {
+      if ( __class_elim_order == 0 ) {
+        __initElimOrder();
+      }
 
-INLINE
-Potential<prm_float>*
-SVE::__getAggPotential(const Instance* i, const Aggregate* agg) {
-  return &(const_cast<Potential<prm_float>&>(i->get(agg->id()).cpf()));
-}
+      return ( __class_elim_order->pos( &( first->type() ) ) <= __class_elim_order->pos( &( second->type() ) ) );
+    }
 
-INLINE
-void
-SVE::_evidenceAdded(const Chain& chain) {
-  // Do nothing
-}
+    INLINE
+    Potential<prm_float>*
+    SVE::__getAggPotential( const Instance* i, const Aggregate* agg ) {
+      return &( const_cast<Potential<prm_float>&>( i->get( agg->id() ).cpf() ) );
+    }
 
-INLINE
-void
-SVE::_evidenceRemoved(const Chain& chain) {
-  // Do nothing
-}
+    INLINE
+    void
+    SVE::_evidenceAdded( const Chain& chain ) {
+      // Do nothing
+    }
 
-INLINE
-void
-SVE::__addDelayedVariable(const Instance* i, const Instance* j, NodeId id) {
-  try {
-    __delayedVariables[i]->insert(&(j->get(id).type().variable()));
-  } catch (NotFound&) {
-    __delayedVariables.insert(i, new Set<const DiscreteVariable*>());
-    __delayedVariables[i]->insert(&(j->get(id).type().variable()));
-  } catch (DuplicateElement&) {
-    // happends if j->get(id) is parent of more than one variable in i
-  }
-  static std::string dot = ".";
-  try {
-    __delayedVariablesCounters[i->name() + dot + i->get(id).safeName()] += 1;
-  } catch (NotFound&) {
-    __delayedVariablesCounters.insert(i->name() + dot + i->get(id).safeName(), 1);
-  }
-}
+    INLINE
+    void
+    SVE::_evidenceRemoved( const Chain& chain ) {
+      // Do nothing
+    }
 
-INLINE
-std::string
-SVE::name() const {
-  return "SVE";
-}
+    INLINE
+    void
+    SVE::__addDelayedVariable( const Instance* i, const Instance* j, NodeId id ) {
+      try {
+        __delayedVariables[i]->insert( &( j->get( id ).type().variable() ) );
+      } catch ( NotFound& ) {
+        __delayedVariables.insert( i, new Set<const DiscreteVariable*>() );
+        __delayedVariables[i]->insert( &( j->get( id ).type().variable() ) );
+      } catch ( DuplicateElement& ) {
+        // happends if j->get(id) is parent of more than one variable in i
+      }
 
-} /* namespace prm */
+      static std::string dot = ".";
+
+      try {
+        __delayedVariablesCounters[i->name() + dot + i->get( id ).safeName()] += 1;
+      } catch ( NotFound& ) {
+        __delayedVariablesCounters.insert( i->name() + dot + i->get( id ).safeName(), 1 );
+      }
+    }
+
+    INLINE
+    std::string
+    SVE::name() const {
+      return "SVE";
+    }
+
+  } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

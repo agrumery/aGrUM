@@ -21,24 +21,24 @@
 /** @file
  * @brief Class for generating bayesian netwroks.
  *
- * @author Christophe GONZALES, Pierre-Henri WUILLEMIN, Lionel Torti and Ariele-Paolo MAESANO
+ * @author Christophe GONZALES, Pierre-Henri WUILLEMIN, Lionel TORTI and Ariele-Paolo MAESANO
  */
 #ifndef GUM_ABSTRACT_BAYES_NET_GENERATOR_H
 #define GUM_ABSTRACT_BAYES_NET_GENERATOR_H
-// ============================================================================
+
 #include <climits>
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
 #include <vector>
-// ============================================================================
+
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/generator/defaultCPTGenerator.h>
-// ============================================================================
+#include <agrum/BN/generator/simpleCPTGenerator.h>
+
 #include <agrum/variables/labelizedVariable.h>
-// ============================================================================
+
 #include <agrum/BN/algorithms/divergence/KL.h>
-// ============================================================================
+
 namespace gum {
 
   /**
@@ -61,13 +61,13 @@ namespace gum {
       /// @{
       /**
        * constructor.
-       * Use by default the DefaultCPTGenerator for generating the BNs CPT.
+       * Use by default the SimpleCPTGenerator for generating the BNs CPT.
        * @param nbrNodes The number of nodes in the generated BN.
        * @param maxArcs The number of maximum number of arcs imposed on the generator
        * @param maxModality Each DRV has from 2 to maxModality modalities
        * @throws OperationNotAllowed if the number of maximum arcs does not allow the generation of a connexe graph maxArcs < nbrNodes -1, is too big maxArcs > nbrNodes *(nbrNodes -1) /2 and if the maximum of modality is lower than 2.
        */
-      AbstractBayesNetGenerator ( Size nbrNodes, Size maxArcs, Size maxModality );
+      AbstractBayesNetGenerator( Size nbrNodes, Size maxArcs, Size maxModality );
 
       /**
        * Destructor.
@@ -88,7 +88,7 @@ namespace gum {
       * @return null but modify inputed empty Bayesian Network
       */
 
-      virtual void generateBN ( BayesNet<GUM_SCALAR>& bayesNet ) = 0;
+      virtual void generateBN( BayesNet<GUM_SCALAR>& bayesNet ) = 0;
 
       /**
        * function that insert random values in the CPT of each nodes according to the @a CPTGenerator.
@@ -134,17 +134,17 @@ namespace gum {
       /**
       * Modifies the value of the number of nodes imposed on the BayesGenerator
       */
-      void setNbrNodes ( Size nbrNodes );
+      void setNbrNodes( Size nbrNodes );
 
       /**
       * Modifies the value of the number of nodes imposed on the BayesGenerator
       */
-      void setMaxArcs ( Size maxArcs );
+      void setMaxArcs( Size maxArcs );
 
       /**
       * Modifies the value of the number of nodes imposed on the BayesGenerator
       */
-      void setMaxModality ( Size maxModality );
+      void setMaxModality( Size maxModality );
 
 
       /// @}
@@ -163,6 +163,6 @@ namespace gum {
 } /* namespace gum */
 
 #include <agrum/BN/generator/abstractBayesNetGenerator.tcc>
-// ============================================================================
+
 #endif /* GUM_BAYES_NET_GENERATOR_H */
-// ============================================================================
+

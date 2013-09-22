@@ -31,7 +31,7 @@
 namespace gum_tests {
 
   class InstantiationTestSuite: public CxxTest::TestSuite {
-      gum::BayesNet<double> *bn;
+      gum::BayesNet<double>* bn;
       gum::Id i1, i2, i3, i4, i5;
 
       void setUp() {
@@ -40,18 +40,18 @@ namespace gum_tests {
         gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),  n3( "3", "" , 2 );
         gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 2 );
 
-        i1 = bn->addVariable( n1 );
-        i2 = bn->addVariable( n2 );
-        i3 = bn->addVariable( n3 );
-        i4 = bn->addVariable( n4 );
-        i5 = bn->addVariable( n5 );
+        i1 = bn->add( n1 );
+        i2 = bn->add( n2 );
+        i3 = bn->add( n3 );
+        i4 = bn->add( n4 );
+        i5 = bn->add( n5 );
 
-        bn->insertArc( i1, i3 );
-        bn->insertArc( i1, i4 );
-        bn->insertArc( i3, i5 );
-        bn->insertArc( i4, i5 );
-        bn->insertArc( i2, i4 );
-        bn->insertArc( i2, i5 );
+        bn->addArc( i1, i3 );
+        bn->addArc( i1, i4 );
+        bn->addArc( i3, i5 );
+        bn->addArc( i4, i5 );
+        bn->addArc( i2, i4 );
+        bn->addArc( i2, i5 );
 
         fill( *bn );
       }
@@ -99,23 +99,23 @@ namespace gum_tests {
         gum::Instantiation j; j << c << b;;
         gum::Size nb;
 
-        for( nb = 0, i.setFirst(); ! i.end(); ++i ) nb++;
+        for ( nb = 0, i.setFirst(); ! i.end(); ++i ) nb++;
 
         TS_ASSERT_EQUALS( nb, i.domainSize() );
 
-        for( nb = 0, i.setFirstNotVar( b ); ! i.end(); i.incNotVar( b ) ) nb++;
+        for ( nb = 0, i.setFirstNotVar( b ); ! i.end(); i.incNotVar( b ) ) nb++;
 
         TS_ASSERT_EQUALS( nb, ( gum::Size )( 2*5 ) );
 
-        for( nb = 0, i.setFirstVar( b ); ! i.end(); i.incVar( b ) ) nb++;
+        for ( nb = 0, i.setFirstVar( b ); ! i.end(); i.incVar( b ) ) nb++;
 
         TS_ASSERT_EQUALS( nb, ( gum::Size ) 4 );
 
-        for( nb = 0, i.setFirstIn( j ); ! i.end() ; i.incIn( j ) ) nb++;
+        for ( nb = 0, i.setFirstIn( j ); ! i.end() ; i.incIn( j ) ) nb++;
 
         TS_ASSERT_EQUALS( nb, ( gum::Size )( 4*5 ) );
 
-        for( nb = 0, i.setFirstOut( j ); ! i.end() ; i.incOut( j ) ) nb++;
+        for ( nb = 0, i.setFirstOut( j ); ! i.end() ; i.incOut( j ) ) nb++;
 
         TS_ASSERT_EQUALS( nb, ( gum::Size ) 2 );
       }
@@ -126,23 +126,23 @@ namespace gum_tests {
         gum::Instantiation j; j << c << b;
         gum::Size nb;
 
-        for( nb = 0, i.setLast(); ! i.rend(); --i ) nb++;
+        for ( nb = 0, i.setLast(); ! i.rend(); --i ) nb++;
 
         TS_ASSERT_EQUALS( nb, i.domainSize() );
 
-        for( nb = 0, i.setLastNotVar( b ); ! i.rend(); i.decNotVar( b ) ) nb++;
+        for ( nb = 0, i.setLastNotVar( b ); ! i.rend(); i.decNotVar( b ) ) nb++;
 
         TS_ASSERT_EQUALS( nb, ( gum::Size )( 2*5 ) );
 
-        for( nb = 0, i.setLastVar( b ); ! i.rend(); i.decVar( b ) ) nb++;
+        for ( nb = 0, i.setLastVar( b ); ! i.rend(); i.decVar( b ) ) nb++;
 
         TS_ASSERT_EQUALS( nb, ( gum::Size ) 4 );
 
-        for( nb = 0, i.setLastIn( j ); ! i.rend() ; i.decIn( j ) ) nb++;
+        for ( nb = 0, i.setLastIn( j ); ! i.rend() ; i.decIn( j ) ) nb++;
 
         TS_ASSERT_EQUALS( nb, ( gum::Size )( 4*5 ) );
 
-        for( nb = 0, i.setLastOut( j ); ! i.rend() ; i.decOut( j ) ) nb++;
+        for ( nb = 0, i.setLastOut( j ); ! i.rend() ; i.decOut( j ) ) nb++;
 
         TS_ASSERT_EQUALS( nb, ( gum::Size ) 2 );
       }
@@ -171,7 +171,7 @@ namespace gum_tests {
 
         gum::Instantiation Order;
 
-        for( gum::Sequence<gum::NodeId>::iterator it = bn->topologicalOrder().begin(); it !=bn->topologicalOrder().end(); ++it )
+        for ( gum::Sequence<gum::NodeId>::iterator it = bn->topologicalOrder().begin(); it !=bn->topologicalOrder().end(); ++it )
           Order.add( bn->variable( *it ) );
 
 
@@ -183,7 +183,7 @@ namespace gum_tests {
 
         inst.forgetMaster();
 
-        for( inst.setFirst(); ! inst.end(); ++inst ) {
+        for ( inst.setFirst(); ! inst.end(); ++inst ) {
           gum::Instantiation instcomp( inst );
 
           instcomp.reorder( Order );
@@ -194,8 +194,8 @@ namespace gum_tests {
         inst2.forgetMaster();
         inst2.reorder( Order );
 
-        for( inst2.setFirst(); ! inst2.end(); ++inst2 ) {
-          inst.chgValIn( inst2 );
+        for ( inst2.setFirst(); ! inst2.end(); ++inst2 ) {
+          inst.setVals( inst2 );
           TS_ASSERT_EQUALS( pot[inst2],pot[inst] );
         }
       }
@@ -242,7 +242,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( i.toString(), "<b:2|c:3|d:1>" );
         TS_ASSERT_EQUALS( j.toString(), "<b:1|a:0|c:1>" );
 
-        j.chgValIn( i );
+        j.setVals( i );
         TS_ASSERT_EQUALS( j.toString(), "<b:2|a:0|c:3>" );
       }
 
@@ -289,7 +289,7 @@ namespace gum_tests {
 
         gum::Instantiation i1( p ), i2( p );
 
-        for( i1.setFirst(); ! i1.end(); ++i1 ) {
+        for ( i1.setFirst(); ! i1.end(); ++i1 ) {
           gum::Size l = p.toOffset( i1 );
           p.fromOffset( i2, l );
           TS_ASSERT_EQUALS( p.toOffset( i1 ), p.toOffset( i2 ) );
@@ -298,7 +298,7 @@ namespace gum_tests {
 
     private:
       // Builds a BN to test the inference
-      void fill( gum::BayesNet<double> &bn ) {
+      void fill( gum::BayesNet<double>& bn ) {
         const gum::Potential<double>& p1 = bn.cpt( i1 );
         {
           // FILLING PARAMS

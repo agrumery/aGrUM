@@ -29,21 +29,21 @@ namespace CxxTest {
 
   class QtGui : public GuiListener {
     public:
-      void enterGui( int &argc, char **argv ) {
+      void enterGui( int& argc, char** argv ) {
         parseCommandLine( argc, argv );
         createApplication( argc, argv );
       }
 
-      void enterWorld( const WorldDescription &wd ) {
+      void enterWorld( const WorldDescription& wd ) {
         createWindow( wd );
         processEvents();
       }
 
-      void guiEnterSuite( const char *suiteName ) {
+      void guiEnterSuite( const char* suiteName ) {
         showSuiteName( suiteName );
       }
 
-      void guiEnterTest( const char *suiteName, const char *testName ) {
+      void guiEnterTest( const char* suiteName, const char* testName ) {
         setCaption( suiteName, testName );
         advanceProgressBar();
         showTestName( testName );
@@ -84,14 +84,14 @@ namespace CxxTest {
       bool _startMinimized, _keep;
       unsigned _numTotalTests;
       QString _strTotalTests;
-      QApplication *_application;
-      QWidget *_mainWindow;
-      QVBoxLayout *_layout;
-      QProgressBar *_progressBar;
-      QStatusBar *_statusBar;
-      QLabel *_suiteName, *_testName, *_testsDone;
+      QApplication* _application;
+      QWidget* _mainWindow;
+      QVBoxLayout* _layout;
+      QProgressBar* _progressBar;
+      QStatusBar* _statusBar;
+      QLabel* _suiteName, *_testName, *_testsDone;
 
-      void parseCommandLine( int argc, char **argv ) {
+      void parseCommandLine( int argc, char** argv ) {
         _startMinimized = _keep = false;
         _title = argv[0];
 
@@ -107,11 +107,11 @@ namespace CxxTest {
         }
       }
 
-      void createApplication( int &argc, char **argv ) {
+      void createApplication( int& argc, char** argv ) {
         _application = new QApplication( argc, argv );
       }
 
-      void createWindow( const WorldDescription &wd ) {
+      void createWindow( const WorldDescription& wd ) {
         getTotalTests( wd );
         createMainWindow();
         createProgressBar();
@@ -128,7 +128,7 @@ namespace CxxTest {
         getTotalTests( tracker().world() );
       }
 
-      void getTotalTests( const WorldDescription &wd ) {
+      void getTotalTests( const WorldDescription& wd ) {
         _numTotalTests = wd.numTotalTests();
         char s[WorldDescription::MAX_STRLEN_TOTAL_TESTS];
         _strTotalTests = wd.strTotalTests( s );
@@ -166,11 +166,11 @@ namespace CxxTest {
         centerWindow();
       }
 
-      void setCaption( const QString &suiteName, const QString &testName ) {
+      void setCaption( const QString& suiteName, const QString& testName ) {
         _mainWindow->setCaption( _title + " - " + suiteName + "::" + testName + "()" );
       }
 
-      void showSuiteName( const QString &suiteName ) {
+      void showSuiteName( const QString& suiteName ) {
         _suiteName->setText( "class " + suiteName );
       }
 
@@ -178,7 +178,7 @@ namespace CxxTest {
         _progressBar->setProgress( _progressBar->progress() + 1 );
       }
 
-      void showTestName( const QString &testName ) {
+      void showTestName( const QString& testName ) {
         _testName->setText( testName + "()" );
       }
 
@@ -209,7 +209,7 @@ namespace CxxTest {
       }
 
       void centerWindow() {
-        QWidget *desktop = QApplication::desktop();
+        QWidget* desktop = QApplication::desktop();
         int xCenter = desktop->x() + ( desktop->width() / 2 );
         int yCenter = desktop->y() + ( desktop->height() / 2 );
 

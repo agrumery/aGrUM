@@ -23,12 +23,12 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #include <string>
-// ============================================================================
+
 #include <agrum/core/hashTable.h>
 #include <agrum/core/sequence.h>
-// ============================================================================
+
 #include <agrum/prm/PRMObject.h>
 #include <agrum/prm/type.h>
 #include <agrum/prm/class.h>
@@ -38,196 +38,196 @@
 #include <agrum/prm/referenceSlot.h>
 #include <agrum/prm/slotChain.h>
 #include <agrum/prm/system.h>
-// ============================================================================
+
 #ifndef GUM_PRM_H
 #define GUM_PRM_H
 namespace gum {
-namespace prm {
+  namespace prm {
 
-class PRM;
-class System;
-
-/**
- * @class PRM PRM.h <agrum/prm/PRM.h>
- * @brief This class represents a Probabilistic Relational System.
- *
- * @ingroup prm_group
- */
-class PRM {
-  public:
-    friend class PRMFactory;
-
-  // ========================================================================
-  /// @name Destructor.
-  // ========================================================================
-    /// @{
+    class PRM;
+    class System;
 
     /**
-     * Default constructor.
+     * @class PRM PRM.h <agrum/prm/PRM.h>
+     * @brief This class represents a Probabilistic Relational System.
+     *
+     * @ingroup prm_group
      */
-    PRM();
+    class PRM {
+      public:
+        friend class PRMFactory;
 
-    /**
-     * Destructor.
-     */
-    ~PRM();
+        // ========================================================================
+        /// @name Destructor.
+        // ========================================================================
+        /// @{
 
-    /// @}
-  // ========================================================================
-  /// @name Getters and setters.
-  // ========================================================================
-    /// @{
+        /**
+         * Default constructor.
+         */
+        PRM();
 
-    /**
-     * @param name The name of a possible Type in this PRM.
-     * @return Returns true if name names a Type in this PRM.
-     */
-    bool isType(const std::string name) const;
+        /**
+         * Destructor.
+         */
+        ~PRM();
 
-    /**
-     * @param name The name of a possible Class in this PRM.
-     * @return Returns true if name names a Class in this PRM.
-     */
-    bool isClass(const std::string name) const;
+        /// @}
+        // ========================================================================
+        /// @name Getters and setters.
+        // ========================================================================
+        /// @{
 
-    /**
-     * @param name The name of a possible Interface in this PRM.
-     * @return Returns true if name names a Interface in this PRM.
-     */
-    bool isInterface(const std::string name) const;
+        /**
+         * @param name The name of a possible Type in this PRM.
+         * @return Returns true if name names a Type in this PRM.
+         */
+        bool isType( const std::string name ) const;
 
-    /**
-     * @param name The name of a possible System in this PRM.
-     * @return Returns true if name names a System in this PRM.
-     */
-    bool isSystem(const std::string name) const;
+        /**
+         * @param name The name of a possible Class in this PRM.
+         * @return Returns true if name names a Class in this PRM.
+         */
+        bool isClass( const std::string name ) const;
 
-    /**
-     * Returns a constant reference on a Type given it's name.
-     * @throw NotFound Raised if no type is found with the given name.
-     */
-    Type& type(const std::string& name);
+        /**
+         * @param name The name of a possible Interface in this PRM.
+         * @return Returns true if name names a Interface in this PRM.
+         */
+        bool isInterface( const std::string name ) const;
 
-    /**
-     * Returns a constant reference on a Type given it's name.
-     * @throw NotFound Raised if no type is found with the given name.
-     */
-    const Type& type(const std::string& name) const;
+        /**
+         * @param name The name of a possible System in this PRM.
+         * @return Returns true if name names a System in this PRM.
+         */
+        bool isSystem( const std::string name ) const;
 
-    /**
-     * Returns the Set of all Type in this PRM.
-     */
-    const Set<Type*>& types() const;
+        /**
+         * Returns a constant reference on a Type given it's name.
+         * @throw NotFound Raised if no type is found with the given name.
+         */
+        Type& type( const std::string& name );
 
-    /**
-     * Returns a constant reference on a Class given it's name.
-     * @throw NotFound Raised if no class is found with the given name.
-     */
-    Class& getClass(const std::string& name);
+        /**
+         * Returns a constant reference on a Type given it's name.
+         * @throw NotFound Raised if no type is found with the given name.
+         */
+        const Type& type( const std::string& name ) const;
 
-    /**
-     * Returns a constant reference on a Class given it's name.
-     * @throw NotFound Raised if no class is found with the given name.
-     */
-    const Class& getClass(const std::string& name) const;
+        /**
+         * Returns the Set of all Type in this PRM.
+         */
+        const Set<Type*>& types() const;
 
-    /**
-     * Returns the Set of all Class in this PRM.
-     */
-    const Set<Class*>& classes() const;
+        /**
+         * Returns a constant reference on a Class given it's name.
+         * @throw NotFound Raised if no class is found with the given name.
+         */
+        Class& getClass( const std::string& name );
 
-    /**
-     * Returns a constant reference on a Class given it's name.
-     * @throw NotFound Raised if no class is found with the given name.
-     */
-    Interface& interface(const std::string& name);
+        /**
+         * Returns a constant reference on a Class given it's name.
+         * @throw NotFound Raised if no class is found with the given name.
+         */
+        const Class& getClass( const std::string& name ) const;
 
-    /**
-     * Returns a constant reference on a Class given it's name.
-     * @throw NotFound Raised if no class is found with the given name.
-     */
-    const Interface& interface(const std::string& name) const;
+        /**
+         * Returns the Set of all Class in this PRM.
+         */
+        const Set<Class*>& classes() const;
 
-    /**
-     * Returns the Set of all Class in this PRM.
-     */
-    const Set<Interface*>& interfaces() const;
+        /**
+         * Returns a constant reference on a Class given it's name.
+         * @throw NotFound Raised if no class is found with the given name.
+         */
+        Interface& interface( const std::string& name );
 
-    /**
-     * Returns a constant reference on a System given it's name.
-     * @throw NotFound Raised if no model is found with the given name.
-     */
-    System& system(const std::string& name);
+        /**
+         * Returns a constant reference on a Class given it's name.
+         * @throw NotFound Raised if no class is found with the given name.
+         */
+        const Interface& interface( const std::string& name ) const;
 
-    /**
-     * Returns a constant reference on a System given it's name.
-     * @throw NotFound Raised if no model is found with the given name.
-     */
-    const System& system(const std::string& name) const;
+        /**
+         * Returns the Set of all Class in this PRM.
+         */
+        const Set<Interface*>& interfaces() const;
 
-    /**
-     * Returns the Set of all Systems in this PRM.
-     */
-    const Set<System*>& systems() const;
+        /**
+         * Returns a constant reference on a System given it's name.
+         * @throw NotFound Raised if no model is found with the given name.
+         */
+        System& system( const std::string& name );
 
-    /// @}
-  private:
-  // ========================================================================
-  /// @name Private methods.
-  // ========================================================================
-    /// @{
+        /**
+         * Returns a constant reference on a System given it's name.
+         * @throw NotFound Raised if no model is found with the given name.
+         */
+        const System& system( const std::string& name ) const;
 
-    /**
-     * Copy constructor. Not Implemented.
-     */
-    PRM(const PRM& source);
+        /**
+         * Returns the Set of all Systems in this PRM.
+         */
+        const Set<System*>& systems() const;
 
-    /**
-     * Copy operator. Not Implemented.
-     */
-    PRM& operator=(const PRM& source);
+        /// @}
+      private:
+        // ========================================================================
+        /// @name Private methods.
+        // ========================================================================
+        /// @{
 
-    /// Add the built-in types in the PRM
-    void __addBuiltInTypes();
+        /**
+         * Copy constructor. Not Implemented.
+         */
+        PRM( const PRM& source );
 
-    /// @}
-  // ========================================================================
-  /// @name Private members.
-  // ========================================================================
-    /// @{
+        /**
+         * Copy operator. Not Implemented.
+         */
+        PRM& operator=( const PRM& source );
 
-    /// Mapping of all Class given their name.
-    HashTable<std::string, Class*> __classMap;
+        /// Add the built-in types in the PRM
+        void __addBuiltInTypes();
 
-    /// Set of all Class in this PRM.
-    Set<Class*> __classes;
+        /// @}
+        // ========================================================================
+        /// @name Private members.
+        // ========================================================================
+        /// @{
 
-    /// Mapping of all Class given their name.
-    HashTable<std::string, Interface*> __interfaceMap;
+        /// Mapping of all Class given their name.
+        HashTable<std::string, Class*> __classMap;
 
-    /// Set of all Class in this PRM.
-    Set<Interface*> __interfaces;
+        /// Set of all Class in this PRM.
+        Set<Class*> __classes;
 
-    /// Mapping of all Type given their name.
-    HashTable<std::string, Type*> __typeMap;
+        /// Mapping of all Class given their name.
+        HashTable<std::string, Interface*> __interfaceMap;
 
-    /// Set of all Type in this PRM.
-    Set<Type*> __types;
+        /// Set of all Class in this PRM.
+        Set<Interface*> __interfaces;
 
-    /// Mapping of all Systems given their name.
-    HashTable<std::string, System*> __systemMap;
+        /// Mapping of all Type given their name.
+        HashTable<std::string, Type*> __typeMap;
 
-    /// Set of all Systems in this PRM.
-    Set<System*> __systems;
+        /// Set of all Type in this PRM.
+        Set<Type*> __types;
 
-    /// @}
-};
+        /// Mapping of all Systems given their name.
+        HashTable<std::string, System*> __systemMap;
 
-} /* namespace prm */
+        /// Set of all Systems in this PRM.
+        Set<System*> __systems;
+
+        /// @}
+    };
+
+  } /* namespace prm */
 } /* namespace gum */
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/PRM.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 #endif /* GUM_PRM_H */
-// ============================================================================
+

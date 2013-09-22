@@ -6,15 +6,20 @@ set(AGRUM_INLINING_POLICY "")#"-fno-inline-small-functions")
 add_definitions("-Wall")
 add_definitions("-pedantic")
 
+find_package (CXX11)
+if (CXX11_FOUND)
+  set (CPLUSPLUSONZE ${CXX11_FLAGS} )
+else ()
+  message(FATAL_ERROR "aGrUM is now using C++11. Please find a compiler (for instance GCC) C++11 compliant")
+endif ()
+
 if(MINGW)
   set(WIN32_STYLE_FLAGS 0)
   set(UNIX_STYLE_FLAGS  1)
-  set(CPLUSPLUSONZE "--std=c++0x")
 endif(MINGW)
 if(UNIX)
   set(WIN32_STYLE_FLAGS 0)
   set(UNIX_STYLE_FLAGS  1)
-  set(CPLUSPLUSONZE "--std=c++11")
 endif(UNIX)
 
 if("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
@@ -48,6 +53,9 @@ if(UNIX)
 endif(UNIX)
 
 if ("${CMAKE_VERBOSE_MAKEFILE}" STREQUAL "ON")
+#trace is ON in DEBUG mode
+  if ("${CMAKE_BUILD_TYPE}" STREQUAL "RELEASE")
     set(GUM_TRACE_ON TRUE)
+  endif ("${CMAKE_BUILD_TYPE}" STREQUAL "RELEASE")
 endif ("${CMAKE_VERBOSE_MAKEFILE}" STREQUAL "ON")
 

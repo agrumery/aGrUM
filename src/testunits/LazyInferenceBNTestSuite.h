@@ -39,9 +39,9 @@ namespace gum_tests {
 
   class LazyInferenceTestSuite: public CxxTest::TestSuite {
     public:
-      gum::BayesNet<float> *bn;
+      gum::BayesNet<float>* bn;
       gum::Id i1, i2, i3, i4, i5;
-      gum::Potential<float> *e_i1, *e_i4;
+      gum::Potential<float>* e_i1, *e_i4;
 
       void setUp() {
         bn = new gum::BayesNet<float>();
@@ -49,18 +49,18 @@ namespace gum_tests {
         gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),  n3( "3", "" , 2 );
         gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 3 );
 
-        i1 = bn->addVariable( n1 );
-        i2 = bn->addVariable( n2 );
-        i3 = bn->addVariable( n3 );
-        i4 = bn->addVariable( n4 );
-        i5 = bn->addVariable( n5 );
+        i1 = bn->add( n1 );
+        i2 = bn->add( n2 );
+        i3 = bn->add( n3 );
+        i4 = bn->add( n4 );
+        i5 = bn->add( n5 );
 
-        bn->insertArc( i1, i3 );
-        bn->insertArc( i1, i4 );
-        bn->insertArc( i3, i5 );
-        bn->insertArc( i4, i5 );
-        bn->insertArc( i2, i4 );
-        bn->insertArc( i2, i5 );
+        bn->addArc( i1, i3 );
+        bn->addArc( i1, i4 );
+        bn->addArc( i3, i5 );
+        bn->addArc( i4, i5 );
+        bn->addArc( i2, i4 );
+        bn->addArc( i2, i5 );
 
         e_i1 = new gum::Potential<float>();
         ( *e_i1 ) << bn->variable( i1 );
@@ -91,7 +91,7 @@ namespace gum_tests {
         TS_ASSERT_THROWS_NOTHING( inf = new gum::LazyPropagation<float> ( *bn ) );
         TS_ASSERT_THROWS_NOTHING( inf->makeInference() );
 
-        if( inf != 0 ) {
+        if ( inf != 0 ) {
           TS_ASSERT_THROWS_NOTHING( delete inf );
         }
       }
@@ -138,7 +138,7 @@ namespace gum_tests {
         gum::Potential<float>* pot = 0;
         TS_ASSERT_THROWS_NOTHING( pot = inf.joint( nodeset ) );
 
-        if( pot ) delete pot;
+        if ( pot ) delete pot;
       }
 
       // testing information methods
@@ -159,7 +159,7 @@ namespace gum_tests {
 
     private:
       // Builds a BN to test the inference
-      void fill( gum::BayesNet<float> &bn ) {
+      void fill( gum::BayesNet<float>& bn ) {
         const gum::Potential<float>& p1 = bn.cpt( i1 );
         {
           // FILLING PARAMS
@@ -205,7 +205,7 @@ namespace gum_tests {
       }
 
       // Uncomment this to have some outputs.
-      void printProba( const gum::Potential<float> & ) {
+      void printProba( const gum::Potential<float>& ) {
         //gum::Instantiation inst(p);
 
         //for (inst.setFirst(); !inst.end(); ++inst)

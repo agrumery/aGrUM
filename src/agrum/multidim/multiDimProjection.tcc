@@ -38,8 +38,8 @@ namespace gum {
   template< typename GUM_SCALAR, template<typename> class TABLE >
   MultiDimProjection<GUM_SCALAR,TABLE>::MultiDimProjection
   ( TABLE<GUM_SCALAR>* ( *proj )( const TABLE<GUM_SCALAR>&,
-                              const Set<const DiscreteVariable*>& ) ) :
-      _proj( proj ) {
+                                  const Set<const DiscreteVariable*>& ) ) :
+    _proj( proj ) {
     /// for debugging purposes
     GUM_CONSTRUCTOR( MultiDimProjection );
   }
@@ -49,7 +49,7 @@ namespace gum {
   template< typename GUM_SCALAR, template<typename> class TABLE >
   MultiDimProjection<GUM_SCALAR,TABLE>::MultiDimProjection
   ( const MultiDimProjection<GUM_SCALAR,TABLE>& from ) :
-      _proj( from._proj ) {
+    _proj( from._proj ) {
     /// for debugging purposes
     GUM_CONS_CPY( MultiDimProjection );
   }
@@ -109,7 +109,7 @@ namespace gum {
   template< typename GUM_SCALAR, template<typename> class TABLE >
   INLINE TABLE<GUM_SCALAR>*
   ( * MultiDimProjection<GUM_SCALAR,TABLE>::projectFunction() )
-  ( const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& ) const {
+  ( const TABLE<GUM_SCALAR>&, const Set<const DiscreteVariable*>& ) {
     return _proj;
   }
 
@@ -131,6 +131,7 @@ namespace gum {
   ( const Sequence<const DiscreteVariable*>& vars,
     const Set<const DiscreteVariable*>& del_vars ) const {
     float res = 1.0f;
+
     for ( typename Sequence<const DiscreteVariable*>::const_iterator
           iter = vars.begin(); iter != vars.end(); ++iter ) {
       res *= ( *iter )->domainSize();
@@ -147,6 +148,7 @@ namespace gum {
   ( const Sequence<const DiscreteVariable*>& vars,
     const Set<const DiscreteVariable*>& del_vars ) const {
     long res = 1;
+
     for ( typename Sequence<const DiscreteVariable*>::const_iterator
           iter = vars.begin(); iter != vars.end(); ++iter ) {
       if ( ! del_vars.contains( *iter ) ) {
@@ -154,6 +156,7 @@ namespace gum {
              ( long )( *iter )->domainSize() < res ) {
           GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
         }
+
         res *= ( *iter )->domainSize();
       }
     }

@@ -23,543 +23,543 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #ifndef GUM_INSTANCE_H
 #define GUM_INSTANCE_H
-// ============================================================================
+
 #include <utility>
 #include <set>
-// ============================================================================
+
 #include <agrum/core/bijection.h>
-// ============================================================================
+
 #include <agrum/prm/classElementContainer.h>
 #include <agrum/prm/class.h>
-// ============================================================================
+
 namespace gum {
-namespace prm {
-// ============================================================================
+  namespace prm {
 
-/**
- * @class Instance instance.h <agrum/prm/instance.h>
- *
- * @brief An Instance is a Bayesian Network fragment defined by a Class and
- *        used in a System.
- *
- * Before using an Instance for inference YOU MUST call
- * Instance::instantiateSlotChains() and Instance::instantiate() on it before,
- * otherwise DiscreteVariable pointers will be inconsistent and inference will
- * be erroneous. Of course, this must be done once you have set all reference
- * in the current system.
- *
- * @see Class PRM ClassElement @ingroup prm_group
- */
-class Instance: public PRMObject {
-
-  public:
-  // ========================================================================
-  /// @name Constructors & private operators.
-  // ========================================================================
-    /// @{
 
     /**
-     * @brief Default constructor of an Instance.
+     * @class Instance instance.h <agrum/prm/instance.h>
      *
-     * When you create an Instance all gum::prm::Attribute in it's type are
-     * added, except for gum::prm::Aggregate and parameters which are
-     * instantiated.
+     * @brief An Instance is a Bayesian Network fragment defined by a Class and
+     *        used in a System.
      *
-     * However neither of their children or parents are updated (i.e.
-     * DiscreteVariable pointers are inconsistent).
+     * Before using an Instance for inference YOU MUST call
+     * Instance::instantiateSlotChains() and Instance::instantiate() on it before,
+     * otherwise DiscreteVariable pointers will be inconsistent and inference will
+     * be erroneous. Of course, this must be done once you have set all reference
+     * in the current system.
+     *
+     * @see Class PRM ClassElement @ingroup prm_group
      */
-    Instance(const std::string& name, Class& type);
-
-    /// Destructor.
-    virtual ~Instance();
-
-    /// @}
-  // ========================================================================
-  /// @name Getters & setters.
-  // ========================================================================
-    /// @{
-
-    /**
-     * Returns the PRM type of this object.
-     */
-    virtual PRMObject::ObjectType obj_type() const;
-
-    /**
-     * Returns the type of this instance
-     */
-    Class& type();
-
-    /**
-     * Returns the type of this instance
-     */
-    const Class& type() const;
-
-    /**
-     * Returns true if id matches an Attribute in this Instance.
-     */
-    bool exists(NodeId id) const;
-
-    /**
-     * Returns true if name matches an Attribute in this Instance.
-     */
-    bool exists(const std::string& name) const;
-
-    /**
-     * @brief Getter on an Attribute of this Instance.
-     *
-     * Recall that Aggregate are instantiated has Attribute
-     * when an Instance is created. Thus any random variable contained
-     * in this Instance is mapped to an Attribute.
-     *
-     * @param id The Attribute id.
-     * @return Returns a constant reference on an Attribute.
-     *
-     * @throw NotFound Raised if no Attribute matches name.
-     */
-    Attribute& get(NodeId id);
-
-    /**
-     * @brief Given a name returns the related Attribute.
-     *
-     * @param name The Attribute's name.
-     * @return Returns a reference over the Attribute.
-     *
-     * @throw NotFound Raised if there is no Attribute named n.
-     */
-    Attribute& get(const std::string& name);
-
-    /**
-     * @brief Getter on an Attribute of this Instance.
-     *
-     * Recall that Aggregate are instantiated has Attribute
-     * when an Instance is created. Thus any random variable contained
-     * in this Instance is mapped to an Attribute.
-     *
-     * @param id The Attribute id.
-     * @return Returns a constant reference on an Attribute.
-     *
-     * @throw NotFound Raised if no Attribute matches name.
-     */
-    const Attribute& get(NodeId id) const;
-
-    /**
-     * @brief Given a name returns the related ClassElement.
-     *
-     * @param name The ClassElement's name.
-     * @return Returns a constant reference over the ClassElement.
-     *
-     * @throw NotFound Raised if there is no ClassElement named n.
-     */
-    const Attribute& get(const std::string& name) const;
-
-    /**
-     * Returns the number of attributes in this Instance.
-     * @return the number of attributes in this Instance.
-     */
-    Size size() const;
-
-    /// @}
-  // ========================================================================
-  /// @name Parameter initialisation methods
-  // ========================================================================
-    /// @{
-
-    /**
-     * @brief Returns true if the given id is a parameter and is properly
-     *        initialized.
-     *
-     * This includes parameters with default value.
-     *
-     * @param id The id of a parameter in this Instance.
-     * @return true If id is initialized.
-     *
-     * @throw NotFound Raised if no gum::prm::Attribute matches id.
-     * @throw WrongClassElement Raised if id is not a parameter.
-     */
-    bool isInitialised(NodeId id) const;
-
-    /**
-     * @brief Set the value of a parameter.
-     *
-     * Parameters are gum::prm::Attribute with no parents and for which a value
-     * (i.e. observation) must be assigned at instantiation if no default
-     * value is defined. Parameters are always instantiated so you do not need
-     * to instantiate them.
-     *
-     * Default values are assigned using the parameter's CPF. If there is
-     * no default values, it's CPF is filled with invasive nan (i.e. Not A
-     * Number).
-     *
-     * The Potential used to assign the value to id must contain one
-     * DiscreteVariable, which must be identical to get(id).type().variable().
-     * it must also contain k-1 0 and one 1, where k is the domain of id's
-     * DiscreteVariable.
-     *
-     * @param name The Attribute's name.
-     * @param value The MultiDim used to assign the value of the parameter.
-     *
-     * @throw NotFound Raised if no gum::prm::Attribute matches id.
-     * @throw WrongClassElement Raised if id is not a parameter.
-     * @throw OperationNotAllowed Raised if value is invalid.
-     */
-    void setParameterValue(const std::string& name, const Potential<prm_float>& value);
-
-    /// @}
-  // ========================================================================
-  /// @name Instantiation methods.
-  // ========================================================================
-    /// @{
-
-    /**
-     * Deprecated: all attribute are now instantiated.
-     * TODO remove this one day.
-     */
-    bool isInstantiated(NodeId) const;
-
-    /**
-     * Deprecated: all attribute are now instantiated.
-     * TODO remove this one day.
-     */
-    void instantiate(NodeId id);
-
-    /**
-     * @brief Instantiate all nodes which requires it.
-     *
-     * All attributes are now instantiated, which means they have
-     * a different DiscreteVariable pointer. This methods however still
-     * connects attributes of different instance together.
-     *
-     * @warning Be aware that this method will delete a large part of
-     *          this instance attribute's CPF. Furthermore, the
-     *          instantiated attribute's type will change (but will not be
-     *          deleted).
-     *
-     *
-     */
-    void instantiate();
-
-    /**
-     * @brief Returns a mapping between DiscreteVariable used in this and the
-     *        ones used in this Instance's Class.
-     *
-     * MultiDims require distinctive DiscreteVariable pointers, thus
-     * interface attributes are always instantiated to prevent multiple
-     * insertion of the same DiscreteVariable pointer in a MultiDim.
-     *
-     * @return Returns a bijection in which first elements are DiscreteVariable
-     *         in this->type() and the second are in this.
-     */
-    const Bijection<const DiscreteVariable*,
-                    const DiscreteVariable*>& bijection() const;
-
-    /// @}
-  // ========================================================================
-  /// @name Reference handling.
-  // ========================================================================
-    /// @{
-
-    /**
-     * @brief Add an Instance to a given ReferenceSlot, SlotChain or
-     *        output node.
-     *
-     * Three type of nodes can be associated with an Instance. When an Instance
-     * is associated with a ReferenceSlot, it represents an arc in the
-     * relational skeleton. For a SlotChain, it is a placeholder of referenced
-     * ClassElement by this Instance. Finally, for an output node it indicates
-     * that an Instance has an ClassElement referring it.
-     *
-     * @param id The NodeId of a ReferenceSlot of this Instance.
-     * @param instance The instance added as references by id in this Instance.
-     *
-     * @throw WrongClassElement Raised if id is not a valid ClassElement.
-     * @throw OutOfUpperBound Raised if no more Instance can be added to id.
-     * @throw TypeError Raised if instance's type isn't compatible with the
-     *                  reference's type.
-     * @throw NotFound If there is no ClassElement given id.
-     */
-    void add(NodeId id, Instance& instance);
-
-    /**
-     * @brief Fast access to the first instance in a ReferenceSlot or SlotChain.
-     *
-     * This is equivalent to **(this->getInstance(id).begin()) and should be use
-     * when dealing with non multiple ReferenceSlot or SlotChain.
-     *
-     * @param id The NodeId of a ReferenceSlot or SlotChain in this Instance.
-     *
-     * @throw NotFound Raised if there is no ClassElement given id.
-     * @throw UndefinedElement Raised if no Instance are referenced by id.
-     */
-    const Instance& getInstance(NodeId id) const;
-
-    /**
-     * @brief Returns the Set of Instance referenced by id.
-     *
-     * @param id The NodeId of a ReferenceSlot or SlotChain in this.
-     * @return Returns the Set of Instance referenced by id.
-     *
-     * @throw NotFound If there is no ClassElement given id.
-     */
-    const Set<Instance*>& getInstances(NodeId id) const;
-
-    /**
-     * Returns true if id has at least one referring Attribute.
-     * @param id A NodeId.
-     * @return returns true if is has at least one referring Attribute.
-     */
-    bool hasRefAttr(NodeId id) const;
-
-    /**
-     * @brief Returns a vector of pairs of refering attributes of id.
-     */
-    std::vector< std::pair<Instance*, std::string> >& getRefAttr(NodeId id);
-
-    /**
-     * @brief Returns a vector of pairs of refering attributes of id.
-     */
-    const std::vector< std::pair<Instance*, std::string> >& getRefAttr(NodeId id) const;
-
-    /// @}
-  // ========================================================================
-  /// @name Iterators
-  // ========================================================================
-    /// @{
-
-    /// Alias to iterate over the gum::prm::Attribute in this Instance.
-    typedef Property<Attribute*>::onNodes::iterator iterator;
-
-    /// Returns an iterator at the begining of the list of gum::prm::Attribute in
-    /// this Instance.
-    iterator begin();
-
-    /// Returns a reference over the iterator at the end of the list of
-    /// gum::prm::Attribute in this Instance.
-    const iterator& end();
-
-    /// Alias to iterate over the gum::prm::Attribute in this Instance.
-    typedef Property<Attribute*>::onNodes::const_iterator const_iterator;
-
-    /// Returns an iterator at the beginning of the list of gum::prm::Attribute in
-    /// this Instance.
-    const_iterator begin() const;
-
-    /// Returns a reference over the iterator at the end of the list of
-    /// gum::prm::Attribute in this Instance.
-    const const_iterator& end() const;
-
-    /**
-     * Nested class to iterate over ReferenceSlot and SlotChain
-     * instantiations.
-     */
-    class RefIterator {
+    class Instance: public PRMObject {
 
       public:
-        RefIterator(Set<Instance*>& set) ;
+        // ========================================================================
+        /// @name Constructors & private operators.
+        // ========================================================================
+        /// @{
 
-        RefIterator( const RefIterator& from ) ;
+        /**
+         * @brief Default constructor of an Instance.
+         *
+         * When you create an Instance all gum::prm::Attribute in it's type are
+         * added, except for gum::prm::Aggregate and parameters which are
+         * instantiated.
+         *
+         * However neither of their children or parents are updated (i.e.
+         * DiscreteVariable pointers are inconsistent).
+         */
+        Instance( const std::string& name, Class& type );
 
-        ~RefIterator() ;
+        /// Destructor.
+        virtual ~Instance();
 
-        RefIterator& operator=( const RefIterator& from ) ;
+        /// @}
+        // ========================================================================
+        /// @name Getters & setters.
+        // ========================================================================
+        /// @{
 
-        RefIterator& operator++() ;
+        /**
+         * Returns the PRM type of this object.
+         */
+        virtual PRMType obj_type() const;
 
-        bool isEnd() const;
+        /**
+         * Returns the type of this instance
+         */
+        Class& type();
 
-        bool operator!=(const RefIterator& from) const;
+        /**
+         * Returns the type of this instance
+         */
+        const Class& type() const;
 
-        bool operator==(const RefIterator& from) const;
+        /**
+         * Returns true if id matches an Attribute in this Instance.
+         */
+        bool exists( NodeId id ) const;
 
-        Instance& operator*() const;
-        Instance* operator->() const;
+        /**
+         * Returns true if name matches an Attribute in this Instance.
+         */
+        bool exists( const std::string& name ) const;
 
+        /**
+         * @brief Getter on an Attribute of this Instance.
+         *
+         * Recall that Aggregate are instantiated has Attribute
+         * when an Instance is created. Thus any random variable contained
+         * in this Instance is mapped to an Attribute.
+         *
+         * @param id The Attribute id.
+         * @return Returns a constant reference on an Attribute.
+         *
+         * @throw NotFound Raised if no Attribute matches name.
+         */
+        Attribute& get( NodeId id );
+
+        /**
+         * @brief Given a name returns the related Attribute.
+         *
+         * @param name The Attribute's name.
+         * @return Returns a reference over the Attribute.
+         *
+         * @throw NotFound Raised if there is no Attribute named n.
+         */
+        Attribute& get( const std::string& name );
+
+        /**
+         * @brief Getter on an Attribute of this Instance.
+         *
+         * Recall that Aggregate are instantiated has Attribute
+         * when an Instance is created. Thus any random variable contained
+         * in this Instance is mapped to an Attribute.
+         *
+         * @param id The Attribute id.
+         * @return Returns a constant reference on an Attribute.
+         *
+         * @throw NotFound Raised if no Attribute matches name.
+         */
+        const Attribute& get( NodeId id ) const;
+
+        /**
+         * @brief Given a name returns the related ClassElement.
+         *
+         * @param name The ClassElement's name.
+         * @return Returns a constant reference over the ClassElement.
+         *
+         * @throw NotFound Raised if there is no ClassElement named n.
+         */
+        const Attribute& get( const std::string& name ) const;
+
+        /**
+         * Returns the number of attributes in this Instance.
+         * @return the number of attributes in this Instance.
+         */
+        Size size() const;
+
+        /// @}
+        // ========================================================================
+        /// @name Parameter initialisation methods
+        // ========================================================================
+        /// @{
+
+        /**
+         * @brief Returns true if the given id is a parameter and is properly
+         *        initialized.
+         *
+         * This includes parameters with default value.
+         *
+         * @param id The id of a parameter in this Instance.
+         * @return true If id is initialized.
+         *
+         * @throw NotFound Raised if no gum::prm::Attribute matches id.
+         * @throw WrongClassElement Raised if id is not a parameter.
+         */
+        bool isInitialised( NodeId id ) const;
+
+        /**
+         * @brief Set the value of a parameter.
+         *
+         * Parameters are gum::prm::Attribute with no parents and for which a value
+         * (i.e. observation) must be assigned at instantiation if no default
+         * value is defined. Parameters are always instantiated so you do not need
+         * to instantiate them.
+         *
+         * Default values are assigned using the parameter's CPF. If there is
+         * no default values, it's CPF is filled with invasive nan (i.e. Not A
+         * Number).
+         *
+         * The Potential used to assign the value to id must contain one
+         * DiscreteVariable, which must be identical to get(id).type().variable().
+         * it must also contain k-1 0 and one 1, where k is the domain of id's
+         * DiscreteVariable.
+         *
+         * @param name The Attribute's name.
+         * @param value The MultiDim used to assign the value of the parameter.
+         *
+         * @throw NotFound Raised if no gum::prm::Attribute matches id.
+         * @throw WrongClassElement Raised if id is not a parameter.
+         * @throw OperationNotAllowed Raised if value is invalid.
+         */
+        void setParameterValue( const std::string& name, const Potential<prm_float>& value );
+
+        /// @}
+        // ========================================================================
+        /// @name Instantiation methods.
+        // ========================================================================
+        /// @{
+
+        /**
+         * Deprecated: all attribute are now instantiated.
+         * TODO remove this one day.
+         */
+        bool isInstantiated( NodeId ) const;
+
+        /**
+         * Deprecated: all attribute are now instantiated.
+         * TODO remove this one day.
+         */
+        void instantiate( NodeId id );
+
+        /**
+         * @brief Instantiate all nodes which requires it.
+         *
+         * All attributes are now instantiated, which means they have
+         * a different DiscreteVariable pointer. This methods however still
+         * connects attributes of different instance together.
+         *
+         * @warning Be aware that this method will delete a large part of
+         *          this instance attribute's CPF. Furthermore, the
+         *          instantiated attribute's type will change (but will not be
+         *          deleted).
+         *
+         *
+         */
+        void instantiate();
+
+        /**
+         * @brief Returns a mapping between DiscreteVariable used in this and the
+         *        ones used in this Instance's Class.
+         *
+         * MultiDims require distinctive DiscreteVariable pointers, thus
+         * interface attributes are always instantiated to prevent multiple
+         * insertion of the same DiscreteVariable pointer in a MultiDim.
+         *
+         * @return Returns a bijection in which first elements are DiscreteVariable
+         *         in this->type() and the second are in this.
+         */
+        const Bijection<const DiscreteVariable*,
+              const DiscreteVariable*>& bijection() const;
+
+        /// @}
+        // ========================================================================
+        /// @name Reference handling.
+        // ========================================================================
+        /// @{
+
+        /**
+         * @brief Add an Instance to a given ReferenceSlot, SlotChain or
+         *        output node.
+         *
+         * Three type of nodes can be associated with an Instance. When an Instance
+         * is associated with a ReferenceSlot, it represents an arc in the
+         * relational skeleton. For a SlotChain, it is a placeholder of referenced
+         * ClassElement by this Instance. Finally, for an output node it indicates
+         * that an Instance has an ClassElement referring it.
+         *
+         * @param id The NodeId of a ReferenceSlot of this Instance.
+         * @param instance The instance added as references by id in this Instance.
+         *
+         * @throw WrongClassElement Raised if id is not a valid ClassElement.
+         * @throw OutOfUpperBound Raised if no more Instance can be added to id.
+         * @throw TypeError Raised if instance's type isn't compatible with the
+         *                  reference's type.
+         * @throw NotFound If there is no ClassElement given id.
+         */
+        void add( NodeId id, Instance& instance );
+
+        /**
+         * @brief Fast access to the first instance in a ReferenceSlot or SlotChain.
+         *
+         * This is equivalent to **(this->getInstance(id).begin()) and should be use
+         * when dealing with non multiple ReferenceSlot or SlotChain.
+         *
+         * @param id The NodeId of a ReferenceSlot or SlotChain in this Instance.
+         *
+         * @throw NotFound Raised if there is no ClassElement given id.
+         * @throw UndefinedElement Raised if no Instance are referenced by id.
+         */
+        const Instance& getInstance( NodeId id ) const;
+
+        /**
+         * @brief Returns the Set of Instance referenced by id.
+         *
+         * @param id The NodeId of a ReferenceSlot or SlotChain in this.
+         * @return Returns the Set of Instance referenced by id.
+         *
+         * @throw NotFound If there is no ClassElement given id.
+         */
+        const Set<Instance*>& getInstances( NodeId id ) const;
+
+        /**
+         * Returns true if id has at least one referring Attribute.
+         * @param id A NodeId.
+         * @return returns true if is has at least one referring Attribute.
+         */
+        bool hasRefAttr( NodeId id ) const;
+
+        /**
+         * @brief Returns a vector of pairs of refering attributes of id.
+         */
+        std::vector< std::pair<Instance*, std::string> >& getRefAttr( NodeId id );
+
+        /**
+         * @brief Returns a vector of pairs of refering attributes of id.
+         */
+        const std::vector< std::pair<Instance*, std::string> >& getRefAttr( NodeId id ) const;
+
+        /// @}
+        // ========================================================================
+        /// @name Iterators
+        // ========================================================================
+        /// @{
+
+        /// Alias to iterate over the gum::prm::Attribute in this Instance.
+        typedef Property<Attribute*>::onNodes::iterator iterator;
+
+        /// Returns an iterator at the begining of the list of gum::prm::Attribute in
+        /// this Instance.
+        iterator begin();
+
+        /// Returns a reference over the iterator at the end of the list of
+        /// gum::prm::Attribute in this Instance.
+        const iterator& end();
+
+        /// Alias to iterate over the gum::prm::Attribute in this Instance.
+        typedef Property<Attribute*>::onNodes::const_iterator const_iterator;
+
+        /// Returns an iterator at the beginning of the list of gum::prm::Attribute in
+        /// this Instance.
+        const_iterator begin() const;
+
+        /// Returns a reference over the iterator at the end of the list of
+        /// gum::prm::Attribute in this Instance.
+        const const_iterator& end() const;
+
+        /**
+         * Nested class to iterate over ReferenceSlot and SlotChain
+         * instantiations.
+         */
+        class RefIterator {
+
+          public:
+            RefIterator( Set<Instance*>& set ) ;
+
+            RefIterator( const RefIterator& from ) ;
+
+            ~RefIterator() ;
+
+            RefIterator& operator=( const RefIterator& from ) ;
+
+            RefIterator& operator++() ;
+
+            bool isEnd() const;
+
+            bool operator!=( const RefIterator& from ) const;
+
+            bool operator==( const RefIterator& from ) const;
+
+            Instance& operator*() const;
+            Instance* operator->() const;
+
+          private:
+            Set<Instance*>& __set;
+            Set<Instance*>::iterator __iter;
+        };
+
+        /**
+         * Returns an iterator at the beginning of the set of Instance associated
+         * to a given gum::prm::ReferenceSlot or gum::prm::SlotChain.
+         *
+         * @param id A gum::prm::ReferenceSlot or gum::prm::SlotChain in this
+         *           Instance type.
+         *
+         * @throw NotFound Raised if no gum::prm::ClassElement in this Instance
+         *                 type matches id.
+         * @throw WrongClassElement Raised if id is neither a ReferenceSlot or
+         *                          SlotChain.
+         */
+        RefIterator begin( NodeId id );
+
+        /**
+         * Nested class to iterate over ReferenceSlot and SlotChain
+         * instantiations.
+         */
+        class RefConstIterator {
+          public:
+            RefConstIterator( const Set<Instance*>& set );
+
+            RefConstIterator( const RefConstIterator& from );
+
+            ~RefConstIterator();
+
+            RefConstIterator& operator=( const RefConstIterator& from );
+
+            RefConstIterator& operator++();
+
+            bool isEnd() const;
+
+            bool operator!=( const RefConstIterator& from ) const;
+
+            bool operator==( const RefConstIterator& from ) const;
+
+            const Instance& operator*() const;
+            const Instance* operator->() const;
+
+          private:
+            const Set<Instance*>& __set;
+            Set<Instance*>::const_iterator __iter;
+        };
+
+        /**
+         * Returns an iterator at the beginning of the set of Instance associated
+         * to a given gum::prm::ReferenceSlot or gum::prm::SlotChain.
+         *
+         * @param id A gum::prm::ReferenceSlot or gum::prm::SlotChain in this
+         *           Instance type.
+         *
+         * @throw NotFound Raised if no gum::prm::ClassElement in this Instance
+         * type matches id.
+         * @throw WrongClassElement Raised if id is neither a ReferenceSlot or
+         * SlotChain.
+         */
+        RefConstIterator begin( NodeId id ) const;
+
+        typedef Property< std::vector< std::pair< Instance*, std::string > >* >::onNodes::iterator InvRefIterator;
+        typedef Property< std::vector< std::pair< Instance*, std::string > >* >::onNodes::const_iterator InvRefConstIterator;
+
+        InvRefIterator beginInvRef();
+        const InvRefIterator& endInvRef();
+
+        InvRefConstIterator beginInvRef() const;
+        const InvRefConstIterator& endInvRef() const;
+
+        /// @}
       private:
-        Set<Instance*>& __set;
-        Set<Instance*>::iterator __iter;
+        /// Copy constructor.
+        Instance( const Instance& source );
+
+        /// Copy operator. Don't use it.
+        Instance& operator=( const Class& from );
+
+        // ========================================================================
+        /// @name Private instantiation methods.
+        // ========================================================================
+        /// @{
+
+        /// Used at construction to instantiate aggregates.
+        void __copyAggregates( Aggregate* source );
+
+        /// Used at construction to instantiate attributes.
+        /// @param source An attribute in __type.
+        void __copyAttribute( Attribute* source );
+
+        /// Used at construction to instantiate parameters.
+        /// @param source A parameter in __type.
+        void __copyParameter( Attribute* source );
+
+        /**
+         * @brief Add i as the inverse instantiation of name.
+         *
+         * @param name Either an inverse ReferenceSlot or an inverse SlotChain.
+         * @param i An inverse Instance added to name.
+         *
+         * @throw NotFound Raised if name does not match any ClassElement in this.
+         * @throw WrongClassElement Raised if name is not a ReferenceSlot nor a
+         *                          SlotChain.
+         * @throw TypeError Raised if i is not a valid subtype for name.
+         */
+        void __addInverse( const std::string& name, Instance* i );
+
+        /**
+         * @brief This method is used to propagate instantiations between Instance
+         *        sharing dependencies.
+         *
+         * @param visited A Set to prevent any unnecessary call to __instantiate().
+         */
+        void __instantiate( Set<Instance*> visited );
+
+        /// This instantiate the corresponding aggregate.
+        void __instantiateAggregate( NodeId id );
+
+        /// This instantiate the corresponding attribute.
+        void __instantiateAttribute( NodeId id );
+
+        /// This instantiate a parent of given node.
+        void __instantiateParent( NodeId child, NodeId parent );
+
+        /// This instantiate a child of given node.
+        void __instantiateChild( NodeId child, NodeId parent );
+
+        /// @brief Retrieve all instances referred by sc.
+        /// @param sc A slot chain of this instance's type.
+        /// @throw NotFound Raised if a reference in sc is not instantiated.
+        void __instantiateSlotChain( SlotChain* sc );
+
+        /// @brief Copy the content of an Attribute from its Class counterpart.
+        /// @param attr An Attribute of this Instance.
+        /// @throw OperationNotAllowed If the MultiDimImplementation is of an unknown type.
+        void __copyAttributeCPF( Attribute* attr );
+
+        /// @brief Add this as a referring instance over the attribute pointed by sc
+        ///        in i.
+        /// @param sc A slot chain pointing over an attribute in i.
+        /// @param i An instance holding an attribute pointed by sc.
+        void __addReferingInstance( SlotChain* sc, Instance* i );
+
+        /// @}
+        // ========================================================================
+        /// @name Private members.
+        // ========================================================================
+        /// @{
+
+        /// The type of this Instance.
+        Class* __type;
+
+        /// The gum::prm::Attribute and gum::prm::Aggregate of this Instance.
+        Property<Attribute*>::onNodes __nodeIdMap;
+
+        /// Mapping between the gum::prm::ReferenceSlot and gum::prm::SlotChain in
+        /// __type / and the Instance associated with it.
+        Property< Set< Instance* >* >::onNodes __referenceMap;
+
+        /// Code alias.
+        typedef std::pair<Instance*, std::string> pair;
+
+        /// The set of pair (instance, attribute) referring an attribute of
+        /// this instance.
+        Property< std::vector<pair>* >::onNodes __referingAttr;
+
+        /// The gum::Set of initialised parameters.
+        Set<NodeId>* __params;
+
+        /// A bijection used for MultiDim handling.
+        Bijection<const DiscreteVariable*, const DiscreteVariable*> __bijection;
+
+        /// @}
     };
 
-    /**
-     * Returns an iterator at the beginning of the set of Instance associated
-     * to a given gum::prm::ReferenceSlot or gum::prm::SlotChain.
-     *
-     * @param id A gum::prm::ReferenceSlot or gum::prm::SlotChain in this
-     *           Instance type.
-     *
-     * @throw NotFound Raised if no gum::prm::ClassElement in this Instance
-     *                 type matches id.
-     * @throw WrongClassElement Raised if id is neither a ReferenceSlot or
-     *                          SlotChain.
-     */
-    RefIterator begin(NodeId id);
 
-    /**
-     * Nested class to iterate over ReferenceSlot and SlotChain
-     * instantiations.
-     */
-    class RefConstIterator {
-      public:
-        RefConstIterator(const Set<Instance*>& set);
-
-        RefConstIterator( const RefConstIterator& from );
-
-        ~RefConstIterator();
-
-        RefConstIterator& operator=( const RefConstIterator& from );
-
-        RefConstIterator& operator++();
-
-        bool isEnd() const;
-
-        bool operator!=(const RefConstIterator& from) const;
-
-        bool operator==(const RefConstIterator& from) const;
-
-        const Instance& operator*() const;
-        const Instance* operator->() const;
-
-      private:
-        const Set<Instance*>& __set;
-        Set<Instance*>::const_iterator __iter;
-    };
-
-    /**
-     * Returns an iterator at the beginning of the set of Instance associated
-     * to a given gum::prm::ReferenceSlot or gum::prm::SlotChain.
-     *
-     * @param id A gum::prm::ReferenceSlot or gum::prm::SlotChain in this
-     *           Instance type.
-     *
-     * @throw NotFound Raised if no gum::prm::ClassElement in this Instance
-     * type matches id.
-     * @throw WrongClassElement Raised if id is neither a ReferenceSlot or
-     * SlotChain.
-     */
-    RefConstIterator begin(NodeId id) const;
-
-    typedef Property< std::vector< std::pair< Instance*, std::string > >* >::onNodes::iterator InvRefIterator;
-    typedef Property< std::vector< std::pair< Instance*, std::string > >* >::onNodes::const_iterator InvRefConstIterator;
-
-    InvRefIterator beginInvRef();
-    const InvRefIterator& endInvRef();
-
-    InvRefConstIterator beginInvRef() const;
-    const InvRefConstIterator& endInvRef() const;
-
-    /// @}
-  private:
-    /// Copy constructor.
-    Instance(const Instance& source);
-
-    /// Copy operator. Don't use it.
-    Instance& operator=(const Class& from);
-
-  // ========================================================================
-  /// @name Private instantiation methods.
-  // ========================================================================
-    /// @{
-
-    /// Used at construction to instantiate aggregates.
-    void __copyAggregates(Aggregate* source);
-
-    /// Used at construction to instantiate attributes.
-    /// @param source An attribute in __type.
-    void __copyAttribute(Attribute* source);
-
-    /// Used at construction to instantiate parameters.
-    /// @param source A parameter in __type.
-    void __copyParameter(Attribute* source);
-
-    /**
-     * @brief Add i as the inverse instantiation of name.
-     *
-     * @param name Either an inverse ReferenceSlot or an inverse SlotChain.
-     * @param i An inverse Instance added to name.
-     *
-     * @throw NotFound Raised if name does not match any ClassElement in this.
-     * @throw WrongClassElement Raised if name is not a ReferenceSlot nor a
-     *                          SlotChain.
-     * @throw TypeError Raised if i is not a valid subtype for name.
-     */
-    void __addInverse(const std::string& name, Instance* i);
-
-    /**
-     * @brief This method is used to propagate instantiations between Instance
-     *        sharing dependencies.
-     *
-     * @param visited A Set to prevent any unnecessary call to __instantiate().
-     */
-    void __instantiate(Set<Instance*> visited);
-
-    /// This instantiate the corresponding aggregate.
-    void __instantiateAggregate(NodeId id);
-
-    /// This instantiate the corresponding attribute.
-    void __instantiateAttribute(NodeId id);
-
-    /// This instantiate a parent of given node.
-    void __instantiateParent(NodeId child, NodeId parent);
-
-    /// This instantiate a child of given node.
-    void __instantiateChild(NodeId child, NodeId parent);
-
-    /// @brief Retrieve all instances referred by sc.
-    /// @param sc A slot chain of this instance's type.
-    /// @throw NotFound Raised if a reference in sc is not instantiated.
-    void __instantiateSlotChain(SlotChain* sc);
-
-    /// @brief Copy the content of an Attribute from its Class counterpart.
-    /// @param attr An Attribute of this Instance.
-    /// @throw OperationNotAllowed If the MultiDimImplementation is of an unknown type.
-    void __copyAttributeCPF(Attribute* attr);
-
-    /// @brief Add this as a referring instance over the attribute pointed by sc
-    ///        in i.
-    /// @param sc A slot chain pointing over an attribute in i.
-    /// @param i An instance holding an attribute pointed by sc.
-    void __addReferingInstance(SlotChain* sc, Instance* i);
-
-    /// @}
-  // ========================================================================
-  /// @name Private members.
-  // ========================================================================
-    /// @{
-
-    /// The type of this Instance.
-    Class* __type;
-
-    /// The gum::prm::Attribute and gum::prm::Aggregate of this Instance.
-    Property<Attribute*>::onNodes __nodeIdMap;
-
-    /// Mapping between the gum::prm::ReferenceSlot and gum::prm::SlotChain in
-    /// __type / and the Instance associated with it.
-    Property< Set< Instance* >* >::onNodes __referenceMap;
-
-    /// Code alias.
-    typedef std::pair<Instance*, std::string> pair;
-
-    /// The set of pair (instance, attribute) referring an attribute of
-    /// this instance.
-    Property< std::vector<pair>* >::onNodes __referingAttr;
-
-    /// The gum::Set of initialised parameters.
-    Set<NodeId>* __params;
-
-    /// A bijection used for MultiDim handling.
-    Bijection<const DiscreteVariable*, const DiscreteVariable*> __bijection;
-
-    /// @}
-};
-
-// ============================================================================
-} /* namespace prm */
+  } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/instance.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 #endif /* GUM_INSTANCE_H */
-// ============================================================================
+

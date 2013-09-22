@@ -132,7 +132,7 @@ namespace gum {
 
     if ( neighbors.size() <= 2 ) return;
 
-    if (( neighbors.size() == 3 ) && ( clique != from ) ) return;
+    if ( ( neighbors.size() == 3 ) && ( clique != from ) ) return;
 
     // here we need to transform the neighbors into a binary tree
 

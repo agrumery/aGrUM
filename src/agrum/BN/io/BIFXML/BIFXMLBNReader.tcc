@@ -58,7 +58,7 @@ namespace gum {
       ticpp::Document xmlDoc( __filePath );
       xmlDoc.LoadFile();
 
-      if( xmlDoc.NoChildren() ) {
+      if ( xmlDoc.NoChildren() ) {
         GUM_ERROR( IOError, ": Loading fail, please check the file for any syntax error." );
       }
 
@@ -94,7 +94,7 @@ namespace gum {
       GUM_EMIT2( onProceed, 100, status );
 
       return 0;
-    } catch( ticpp::Exception tinyexception ) {
+    } catch ( ticpp::Exception tinyexception ) {
       GUM_ERROR( IOError, tinyexception.what() );
       return 1;
     }
@@ -108,14 +108,14 @@ namespace gum {
     int nbVar = 0;
     ticpp::Iterator<ticpp::Element> varIte( "VARIABLE" );
 
-    for( varIte = varIte.begin( parentNetwork ); varIte != varIte.end(); ++varIte )
+    for ( varIte = varIte.begin( parentNetwork ); varIte != varIte.end(); ++varIte )
       nbVar++;
 
 
     // Iterating on variable element
     int nbIte = 0;
 
-    for( varIte = varIte.begin( parentNetwork ); varIte != varIte.end(); ++varIte ) {
+    for ( varIte = varIte.begin( parentNetwork ); varIte != varIte.end(); ++varIte ) {
       ticpp::Element* currentVar = varIte.Get();
 
       //Getting variable name
@@ -132,9 +132,9 @@ namespace gum {
       //Getting variable outcomes
       ticpp::Iterator< ticpp::Element > varOutComesIte( "OUTCOME" );
 
-      for( varOutComesIte = varOutComesIte.begin( currentVar );
-           varOutComesIte != varOutComesIte.end();
-           ++varOutComesIte )
+      for ( varOutComesIte = varOutComesIte.begin( currentVar );
+            varOutComesIte != varOutComesIte.end();
+            ++varOutComesIte )
         newVar->addLabel( varOutComesIte->GetTextOrDefault( "" ) );
 
       //Getting variable type
@@ -160,14 +160,14 @@ namespace gum {
     int nbDef = 0;
     ticpp::Iterator<ticpp::Element> definitionIte( "DEFINITION" );
 
-    for( definitionIte = definitionIte.begin( parentNetwork ); definitionIte != definitionIte.end(); ++definitionIte )
+    for ( definitionIte = definitionIte.begin( parentNetwork ); definitionIte != definitionIte.end(); ++definitionIte )
       nbDef++;
 
 
     //Iterating on definition nodes
     int nbIte = 0;
 
-    for( definitionIte = definitionIte.begin( parentNetwork ); definitionIte != definitionIte.end(); ++definitionIte ) {
+    for ( definitionIte = definitionIte.begin( parentNetwork ); definitionIte != definitionIte.end(); ++definitionIte ) {
       ticpp::Element* currentVar = definitionIte.Get();
 
       // Considered Node
@@ -178,14 +178,14 @@ namespace gum {
       ticpp::Iterator< ticpp::Element > givenIte( "GIVEN" );
       List<NodeId> parentList;
 
-      for( givenIte = givenIte.begin( currentVar ); givenIte != givenIte.end(); ++givenIte ) {
+      for ( givenIte = givenIte.begin( currentVar ); givenIte != givenIte.end(); ++givenIte ) {
         std::string parentNode = givenIte->GetTextOrDefault( "" );
         NodeId parentId = __bn->idFromName( parentNode );
-        parentList.push_back( parentId );
+        parentList.pushBack( parentId );
       }
 
-      for( List< NodeId >::iterator parentListIte = parentList.rbegin(); parentListIte != parentList.rend(); --parentListIte )
-        __bn->insertArc( *parentListIte, currentVarId );
+      for ( List< NodeId >::iterator parentListIte = parentList.rbegin(); parentListIte != parentList.rend(); --parentListIte )
+        __bn->addArc( *parentListIte, currentVarId );
 
       // Recuperating tables values
       ticpp::Element* tableElement = currentVar->FirstChildElement( "TABLE" );
@@ -193,7 +193,7 @@ namespace gum {
       std::list<GUM_SCALAR> tablelist;
       GUM_SCALAR value;
 
-      while( !issTableString.eof() ) {
+      while ( !issTableString.eof() ) {
         issTableString >> value;
         tablelist.push_back( value );
       }

@@ -46,8 +46,8 @@
 #cmakedefine GUM_DOUBLE_SIZE @GUM_DOUBLE_SIZE@
 
 #define GUM_AT_LEAST(x,y,z) (GUM_MAJOR_VERSION>x || (GUM_MAJOR_VERSION>=x && \
-                            (GUM_MINOR_VERSION>y || (GUM_MINOR_VERSION>=y && \
-                            GUM_PATCH_VERSION>=z))))
+                             (GUM_MINOR_VERSION>y || (GUM_MINOR_VERSION>=y && \
+                                 GUM_PATCH_VERSION>=z))))
 
 #ifdef __GNUC__
 #define GNUC_AT_LEAST(x,y) ((__GNUC__==x && __GNUC_MINOR__>=y) || __GNUC__>x)

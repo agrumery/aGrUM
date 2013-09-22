@@ -23,212 +23,216 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 #ifndef GUM_CLASS_ELEMENT_H
 #define GUM_CLASS_ELEMENT_H
-// ============================================================================
+
 #include <sstream>
-// ============================================================================
+
 #include <agrum/graphs/graphElements.h>
-// ============================================================================
+
 #include <agrum/multidim/potential.h>
-// ============================================================================
+
 #include <agrum/prm/utils_prm.h>
 #include <agrum/prm/PRMObject.h>
 #include <agrum/prm/type.h>
-// ============================================================================
+
 namespace gum {
-namespace prm {
-// ============================================================================
-/**
- * @class ClassElement classElementContainer.h <agrum/prm/classElementContainer.h>
- * @brief Abstract class representing an element of PRM class.
- *
- * All class elements are nodes in the class's DAG and a unique name in their
- * class.
- *
- * @ingroup prm_group
- */
-class ClassElement: public PRMObject {
-  public:
-  // ========================================================================
-  /// @name Constructor & Destructor.
-  // ========================================================================
-    /// @{
+  namespace prm {
 
     /**
-     * @brief Default constructor of a ClassElement.
+     * @class ClassElement classElementContainer.h <agrum/prm/classElementContainer.h>
+     * @brief Abstract class representing an element of PRM class.
      *
-     * The ClassElement will automatically add itself to c.
+     * All class elements are nodes in the class's DAG and a unique name in their
+     * class.
      *
-     * @param name The name of this element, must be unique in it's class.
-     * @throw DupplicateElement Raised if c contains already an element with
-     *                          the same name.
+     * @ingroup prm_group
      */
-    ClassElement(const std::string& name);
+    class ClassElement: public PRMObject {
+      public:
+        // ========================================================================
+        /// @name Constructor & Destructor.
+        // ========================================================================
+        /// @{
 
-    /**
-     * Copy constructor.
-     */
-    ClassElement(const ClassElement& source);
+        /**
+         * @brief Default constructor of a ClassElement.
+         *
+         * The ClassElement will automatically add itself to c.
+         *
+         * @param name The name of this element, must be unique in it's class.
+         * @throw DupplicateElement Raised if c contains already an element with
+         *                          the same name.
+         */
+        ClassElement( const std::string& name );
 
-    /**
-     * Destructor of this class.
-     */
-    virtual ~ClassElement();
+        /**
+         * Copy constructor.
+         */
+        ClassElement( const ClassElement& source );
 
-    /// @}
-  // ========================================================================
-  /// @name Built-in type
-  // ========================================================================
-    /// @{
+        /**
+         * Destructor of this class.
+         */
+        virtual ~ClassElement();
 
-    enum ClassElementType { prm_attribute, prm_aggregate, prm_refslot,
-                            prm_slotchain };
+        /// @}
+        // ========================================================================
+        /// @name Built-in type
+        // ========================================================================
+        /// @{
 
-    static std::string LEFT_CAST()  { return "("; }
-    static std::string RIGHT_CAST() { return ")"; }
+        enum ClassElementType { prm_attribute, prm_aggregate, prm_refslot,
+                                prm_slotchain
+                              };
 
-    static std::string enum2str(ClassElementType type)
-    {
-      switch (type) {
-        case prm_attribute:
-          return "prm_attribute";
-        case prm_aggregate:
-          return "prm_aggregate";
-        case prm_refslot:
-          return "prm_refslot";
-        case prm_slotchain:
-          return "prm_slotchain";
-        default:
-          return "unknown";
-      }
-    }
+        static std::string LEFT_CAST()  { return "("; }
+        static std::string RIGHT_CAST() { return ")"; }
 
-    /// Returns true if obj_ptr is of type ReferenceSlot.
-    static INLINE bool isReferenceSlot(const ClassElement& elt) {
-      return elt.elt_type() == prm_refslot;
-    }
+        static std::string enum2str( ClassElementType type ) {
+          switch ( type ) {
+            case prm_attribute:
+              return "prm_attribute";
 
-    /// Returns true if obj_ptr is of type Attribute.
-    static INLINE bool isAttribute(const ClassElement& elt) {
-      return elt.elt_type() == prm_attribute;
-    }
+            case prm_aggregate:
+              return "prm_aggregate";
 
-    /// Return true if obj is of type Aggregate
-    static INLINE bool isAggregate(const ClassElement& elt) {
-      return elt.elt_type() == prm_aggregate;
-    }
+            case prm_refslot:
+              return "prm_refslot";
 
-    /// Return true if obj is of type SlotChain
-    static INLINE bool isSlotChain(const ClassElement& elt) {
-      return elt.elt_type() == prm_slotchain;
-    }
+            case prm_slotchain:
+              return "prm_slotchain";
 
-    /// @}
-  // ========================================================================
-  /// @name Getters & setters
-  // ========================================================================
-    /// @{
+            default:
+              return "unknown";
+          }
+        }
 
-    /// Returns the NodeId of this element in it's class DAG.
-    NodeId id() const;
+        /// Returns true if obj_ptr is of type ReferenceSlot.
+        static INLINE bool isReferenceSlot( const ClassElement& elt ) {
+          return elt.elt_type() == prm_refslot;
+        }
 
-    /// Used to assign the id of this element.
-    virtual void setId(NodeId id);
+        /// Returns true if obj_ptr is of type Attribute.
+        static INLINE bool isAttribute( const ClassElement& elt ) {
+          return elt.elt_type() == prm_attribute;
+        }
 
-    /**
-     * @brief Add a parent to this element.
-     *
-     * This method is called by gum::Class when en parent is added
-     * to this elememnt.
-     */
-    virtual void addParent(const ClassElement& elt) =0;
+        /// Return true if obj is of type Aggregate
+        static INLINE bool isAggregate( const ClassElement& elt ) {
+          return elt.elt_type() == prm_aggregate;
+        }
 
-    /**
-     * @brief Add a child to this element.
-     *
-     * This methos is called by gum::Class when a child is added
-     * to this element.
-     */
-    virtual void addChild(const ClassElement& elt) =0;
+        /// Return true if obj is of type SlotChain
+        static INLINE bool isSlotChain( const ClassElement& elt ) {
+          return elt.elt_type() == prm_slotchain;
+        }
 
-    /// @see gum::PRMObject::obj_type().
-    virtual ObjectType obj_type() const;
+        /// @}
+        // ========================================================================
+        /// @name Getters & setters
+        // ========================================================================
+        /// @{
 
-    /// Return the type of class element this object is.
-    virtual ClassElementType elt_type() const =0;
+        /// Returns the NodeId of this element in it's class DAG.
+        NodeId id() const;
 
-    /// @}
-  // ========================================================================
-  /// @name Fast access to random variable's properties
-  // ========================================================================
-    /// @{
+        /// Used to assign the id of this element.
+        virtual void setId( NodeId id );
 
-    /**
-     * Return a reference over the gum::Type of this class element.
-     * @throw OperationNotAllowed Raised if this class element doesn't have
-     *                            any gum::Potential (like a gum::ReferenceSlot).
-     */
-    virtual Type& type() =0;
+        /**
+         * @brief Add a parent to this element.
+         *
+         * This method is called by gum::Class when en parent is added
+         * to this elememnt.
+         */
+        virtual void addParent( const ClassElement& elt ) =0;
 
-    /**
-     * Return a constant reference over the gum::Type of this class element.
-     * @throw OperationNotAllowed Raised if this class element doesn't have
-     *                            any gum::Potential (like a gum::ReferenceSlot).
-     */
-    virtual const Type& type() const =0;
+        /**
+         * @brief Add a child to this element.
+         *
+         * This methos is called by gum::Class when a child is added
+         * to this element.
+         */
+        virtual void addChild( const ClassElement& elt ) =0;
+
+        /// @see gum::PRMObject::obj_type().
+        virtual PRMType obj_type() const;
+
+        /// Return the type of class element this object is.
+        virtual ClassElementType elt_type() const =0;
+
+        /// @}
+        // ========================================================================
+        /// @name Fast access to random variable's properties
+        // ========================================================================
+        /// @{
+
+        /**
+         * Return a reference over the gum::Type of this class element.
+         * @throw OperationNotAllowed Raised if this class element doesn't have
+         *                            any gum::Potential (like a gum::ReferenceSlot).
+         */
+        virtual Type& type() =0;
+
+        /**
+         * Return a constant reference over the gum::Type of this class element.
+         * @throw OperationNotAllowed Raised if this class element doesn't have
+         *                            any gum::Potential (like a gum::ReferenceSlot).
+         */
+        virtual const Type& type() const =0;
 
 
-    /**
-     * @brief Returns the safe name of this ClassElement, if any.
-     *
-     * This will only work if this ClassElement is an Attribute or an Aggregate.
-     * @return Returns the safe name of this ClassElement.
-     *
-     * @throw NotFound& Raised if this ClassElement does not have any safe name.
-     */
-    const std::string& safeName() const;
+        /**
+         * @brief Returns the safe name of this ClassElement, if any.
+         *
+         * This will only work if this ClassElement is an Attribute or an Aggregate.
+         * @return Returns the safe name of this ClassElement.
+         *
+         * @throw NotFound& Raised if this ClassElement does not have any safe name.
+         */
+        const std::string& safeName() const;
 
-    /**
-     * @brief Returns the name of the cast descendant with Type t of this
-     *        ClassElement.
-     * @param t The type in which we want to cast this ClassElement.
-     * @throw OperationNotAllowed If the cast is impossible.
-     */
-    virtual std::string cast(const Type& t) const;
+        /**
+         * @brief Returns the name of the cast descendant with Type t of this
+         *        ClassElement.
+         * @param t The type in which we want to cast this ClassElement.
+         * @throw OperationNotAllowed If the cast is impossible.
+         */
+        virtual std::string cast( const Type& t ) const;
 
-    /**
-     * Return a reference over the gum::Potential of this class element.
-     * @throw OperationNotAllowed Raised if this class element doesn't have
-     *                            any gum::Potential (like a gum::ReferenceSlot).
-     */
-    virtual Potential<prm_float>& cpf() =0;
+        /**
+         * Return a reference over the gum::Potential of this class element.
+         * @throw OperationNotAllowed Raised if this class element doesn't have
+         *                            any gum::Potential (like a gum::ReferenceSlot).
+         */
+        virtual Potential<prm_float>& cpf() =0;
 
-    /**
-     * Return a constant reference over the gum::Potential of this class element.
-     * @throw OperationNotAllowed Raised if the class element doesn't have
-     *                            any gum::Potential (like a gum::ReferenceSlot).
-     */
-    virtual const Potential<prm_float>& cpf() const =0;
+        /**
+         * Return a constant reference over the gum::Potential of this class element.
+         * @throw OperationNotAllowed Raised if the class element doesn't have
+         *                            any gum::Potential (like a gum::ReferenceSlot).
+         */
+        virtual const Potential<prm_float>& cpf() const =0;
 
-    /// @}
-  protected:
-    /// The safe name of this ClassElement.
-    std::string _safeName;
+        /// @}
+      protected:
+        /// The safe name of this ClassElement.
+        std::string _safeName;
 
-  private:
+      private:
 
-    /// The node's id of this element
-    NodeId __id;
-};
-// ============================================================================
-} /* namespace prm */
+        /// The node's id of this element
+        NodeId __id;
+    };
+
+  } /* namespace prm */
 } // namespace gum
-// ============================================================================
+
 #ifndef GUM_NO_INLINE
 #include <agrum/prm/classElement.inl>
 #endif // GUM_NO_INLINE
-// ============================================================================
+
 #endif /* GUM_CLASS_ELEMENT_H */
-// ============================================================================
+

@@ -23,10 +23,10 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 namespace gum {
   namespace prm {
-// ============================================================================
+
 
     INLINE
     Interface::ClassEltIterator
@@ -109,9 +109,9 @@ namespace gum {
     }
 
     INLINE
-    PRMObject::ObjectType
+    PRMObject::PRMType
     Interface::obj_type() const {
-      return PRMObject::prm_interface;
+      return PRMObject::PRMType::INTERFACE;
     }
 
     INLINE
@@ -186,7 +186,7 @@ namespace gum {
       return __implementations;
     }
 
-// ============================================================================
+
   } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

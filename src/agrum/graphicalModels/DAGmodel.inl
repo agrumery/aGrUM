@@ -1,0 +1,158 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/**
+ * @file
+ * @brief  Interface-like class for representing basic functionalities for a BayesNet.
+ *
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
+ */
+
+#include <math.h>
+
+#include <agrum/graphicalModels/DAGmodel.h>
+
+namespace gum {
+
+  INLINE
+  const std::string&
+  DAGmodel::property( const std::string& name ) const {
+    try {
+      return  __properties() [name];
+    } catch ( NotFound& ) {
+      std::string msg = "The following property does not exists: ";
+      GUM_ERROR( NotFound, msg + name );
+    }
+  }
+
+  INLINE
+  void
+  DAGmodel::setProperty( const std::string& name, const std::string& value ) {
+    try {
+      __properties() [name] = value;
+    } catch ( NotFound& ) {
+      __properties().insert( name, value );
+    }
+  }
+
+  INLINE
+  const DAG&
+  DAGmodel::dag() const {
+    return _dag;
+  }
+
+
+  INLINE
+  const DAG::NodeIterator
+  DAGmodel::beginNodes() const {
+    return dag().beginNodes();
+  }
+
+  INLINE
+  const DAG::NodeIterator
+  DAGmodel::endNodes() const {
+    return dag().endNodes();
+  }
+
+  INLINE
+  const DAG::ArcIterator
+  DAGmodel::beginArcs() const {
+    return dag().beginArcs();
+  }
+
+  INLINE
+  const DAG::ArcIterator&
+  DAGmodel::endArcs() const {
+    return dag().endArcs();
+  }
+
+
+
+  INLINE
+  HashTable<std::string, std::string>&
+  DAGmodel::__properties() const {
+    if ( __propertiesMap == nullptr ) {
+      __propertiesMap = new HashTable<std::string, std::string>();
+    }
+
+    return *__propertiesMap;
+  }
+
+  INLINE
+  double
+  DAGmodel::log10DomainSize( void ) const {
+    double dSize = 0.0;
+
+    for ( DAG::NodeIterator it = beginNodes(); it != endNodes(); ++it ) {
+      dSize += log10( variable( *it ).domainSize() );
+    }
+
+    return dSize;
+  }
+
+  INLINE
+  std::string
+  DAGmodel::toString( void ) const {
+    double dSize=log10DomainSize();
+
+    std::stringstream s;
+    s << "Directed PGM{nodes: " << size() << ", arcs: " << dag().sizeArcs() << ", ";
+
+    if ( dSize>6 )
+      s<<"domainSize: 10^" << dSize;
+    else
+      s<<"domainSize: " << round( pow( 10.0,dSize ) );
+
+    s<< "}";
+
+    return s.str();
+  }
+
+  INLINE
+  void
+  DAGmodel::completeInstantiation( Instantiation& I ) const {
+    I.clear();
+
+    for ( DAG::NodeIterator node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter )
+      I << variable( *node_iter );
+  }
+
+  INLINE
+  Idx
+  DAGmodel::size() const {
+    return dag().size();
+  }
+
+
+  INLINE
+  bool
+  DAGmodel::empty() const {
+    return size() == 0;
+  }
+
+  INLINE
+  Idx
+  DAGmodel::nbrArcs() const {
+    return _dag.sizeArcs();
+  }
+
+
+} /* namespace gum */
+
+

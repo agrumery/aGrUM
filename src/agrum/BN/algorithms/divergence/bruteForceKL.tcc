@@ -21,9 +21,9 @@
  * @file
  * @brief KL divergence between BNs brute force implementation
  *
- * @author Pierre-Henri Wuillemin
+ * @author Pierre-Henri WUILLEMIN
  */
-// ============================================================================
+
 #include <math.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/algorithms/divergence/KL.h>
@@ -50,11 +50,18 @@ namespace gum {
     _klPQ=_klQP=_hellinger=_bhattacharya=( GUM_SCALAR )0.0;
     _errorPQ=_errorQP=( GUM_SCALAR )0;
 
-    gum::Instantiation Ip;_p.completeInstantiation( Ip );
-    gum::Instantiation Iq;_q.completeInstantiation( Iq );
+    gum::Instantiation Ip; _p.completeInstantiation( Ip );
+    gum::Instantiation Iq; _q.completeInstantiation( Iq );
 
-    for ( Ip.setFirst();! Ip.end();++Ip ) {
-      _q.synchroInstantiations( Iq,Ip );
+    // map between _p variables and _q variables (using name of vars)
+    HashTable<const DiscreteVariable*, const DiscreteVariable*> map;
+
+    for ( Idx ite=0; ite<Ip.nbrDim(); ++ite ) {
+      map.insert( &Ip.variable( ite ),&_q.variableFromName( Ip.variable( ite ).name() ) );
+    }
+
+    for ( Ip.setFirst(); ! Ip.end(); ++Ip ) {
+      Iq.setValsFrom( map,Ip );
       GUM_SCALAR pp=_p.jointProbability( Ip );
       GUM_SCALAR pq=_q.jointProbability( Iq );
 
@@ -77,6 +84,7 @@ namespace gum {
         }
       }
     }
+
     _hellinger=sqrt( _hellinger );
     _bhattacharya=-log( _bhattacharya );
   }

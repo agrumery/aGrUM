@@ -20,7 +20,7 @@
 /** @file
  * @brief Outlined implementation of gumBNWriter
  *
- * @author Lionel Torti & Pierre-Henri Wuillemin
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 #include <agrum/BN/io/BNWriter.h>
 

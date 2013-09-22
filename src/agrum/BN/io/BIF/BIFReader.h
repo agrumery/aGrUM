@@ -55,7 +55,7 @@ public:
 
  * @endcode
  *
- * @author Pierre-Henri Wuillemin
+ * @author Pierre-Henri WUILLEMIN
  */
 #ifndef BIF_READER_H
 #define BIF_READER_H
@@ -112,7 +112,7 @@ namespace gum {
 
    * @endcode
    *
-   * @author Pierre-Henri Wuillemin
+   * @author Pierre-Henri WUILLEMIN
    */
   template<typename GUM_SCALAR>
 
@@ -183,4 +183,4 @@ namespace gum {
 
 #endif // BIF_READER_H
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

@@ -23,63 +23,39 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+#include <agrum/core/inline.h>
 #include <agrum/prm/classBayesNet.h>// to ease IDE parser
-// ============================================================================
+
 namespace gum {
   namespace prm {
 
     INLINE
     ClassBayesNet::ClassBayesNet( const Class& c ):
-        AbstractBayesNet<prm_float>(), __class( &c ), __moralGraph( 0 ), __topo( 0 ) {
+      BayesNet<prm_float>(), __class( &c ) {
       GUM_CONSTRUCTOR( ClassBayesNet );
       __init( c );
     }
 
     INLINE
     ClassBayesNet::ClassBayesNet( const ClassBayesNet& from ):
-        AbstractBayesNet<prm_float>( from ), __class( from.__class ), __dag( from.__dag ),
-        __moralGraph( 0 ), __topo( 0 ) {
+      BayesNet<prm_float>( from ), __class( from.__class ) {
       GUM_CONS_CPY( ClassBayesNet );
-      if ( from.__moralGraph != 0 ) {
-        __moralGraph = new UndiGraph( *( from.__moralGraph ) );
-      }
-      if ( from.__topo != 0 ) {
-        __topo = new Sequence<NodeId>( *( from.__topo ) );
-      }
     }
 
     INLINE
     ClassBayesNet::~ClassBayesNet() {
       GUM_DESTRUCTOR( ClassBayesNet );
-      if ( __moralGraph != 0 ) {
-        delete __moralGraph;
-      }
-      if ( __topo != 0 ) {
-        delete __topo;
-      }
     }
 
     INLINE
     ClassBayesNet&
     ClassBayesNet::operator=( const ClassBayesNet& from ) {
       if ( this != &from ) {
-        AbstractBayesNet<prm_float>::operator=( from );
-        if ( __moralGraph != 0 ) {
-          delete __moralGraph;
-        }
-        if ( __topo != 0 ) {
-          delete __topo;
-        }
+        BayesNet<prm_float>::operator=( from );
+
         __class = from.__class;
-        __dag = from.__dag;
-        if ( from.__moralGraph != 0 ) {
-          __moralGraph = new UndiGraph( *( from.__moralGraph ) );
-        }
-        if ( from.__topo != 0 ) {
-          __topo = new Sequence<NodeId>( *( from.__topo ) );
-        }
       }
+
       return *this;
     }
 
@@ -90,28 +66,11 @@ namespace gum {
     }
 
     INLINE
-    const DAG&
-    ClassBayesNet::dag() const {
-      return __dag;
-    }
-
-    INLINE
     const VariableNodeMap&
     ClassBayesNet::variableNodeMap() const {
       GUM_ERROR( FatalError, "Sorry no VarMap in a ClassBayesNet." );
     }
 
-    INLINE
-    Idx
-    ClassBayesNet::size() const {
-      return __dag.size();
-    }
-
-    INLINE
-    bool
-    ClassBayesNet::empty() const {
-      return __dag.empty();
-    }
 
     INLINE
     const DiscreteVariable&
@@ -121,7 +80,7 @@ namespace gum {
 
     INLINE
     NodeId
-    ClassBayesNet::nodeId( const DiscreteVariable &var ) const {
+    ClassBayesNet::nodeId( const DiscreteVariable& var ) const {
       return __varNodeMap[&var]->id();
     }
 
@@ -137,30 +96,11 @@ namespace gum {
       return __get( name ).type().variable();
     }
 
-    INLINE
-    const UndiGraph&
-    ClassBayesNet::moralGraph( bool clear ) const {
-      if ( __moralGraph == 0 ) {
-        __moralGraph = new UndiGraph();
-        AbstractBayesNet<prm_float>::_moralGraph( *__moralGraph );
-      }
-      return *__moralGraph;
-    }
-
-    INLINE
-    const Sequence<NodeId>&
-    ClassBayesNet::topologicalOrder( bool clear ) const {
-      if ( __topo == 0 ) {
-        __topo = new Sequence<NodeId>();
-        AbstractBayesNet<prm_float>::_topologicalOrder( *__topo );
-      }
-      return *__topo;
-    }
 
     INLINE
     const ClassElement&
     ClassBayesNet::__get( NodeId id ) const {
-      if ( __dag.exists( id ) ) {
+      if ( _dag.exists( id ) ) {
         return __class->get( id );
       } else {
         GUM_ERROR( NotFound, "no element found with that id." );
@@ -185,6 +125,7 @@ namespace gum {
           __modalities.insert( *node, ( unsigned int ) variable( *node ).domainSize() );
         }
       }
+
       return __modalities;
     }
 
@@ -195,9 +136,11 @@ namespace gum {
       std::stringstream output;
       output << "digraph \"";
       output << __class->name() << "\" {" << std::endl;
+
       for ( DAG::NodeIterator node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter ) {
         if ( dag().children( *node_iter ).size() > 0 ) {
           const NodeSet& children = dag().children( *node_iter );
+
           for ( NodeSetIterator arc_iter = children.begin();
                 arc_iter != children.end(); ++arc_iter ) {
             output << tab << "\"" << variable( *node_iter ).name() << "\" -> ";
@@ -207,10 +150,11 @@ namespace gum {
           output << tab << "\"" << variable( *node_iter ).name() << "\";" << std::endl;
         }
       }
+
       output << "}" << std::endl;
       return output.str();
     }
 
   } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

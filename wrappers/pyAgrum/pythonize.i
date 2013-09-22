@@ -5,9 +5,8 @@
 %ignore *::operator--;
 %ignore *::operator[];
 
-%ignore gum::Sequence::operator<<;
-%ignore gum::Sequence::operator>>;
-%ignore gum::Sequence::operator[];
+%ignore *::operator<<;
+%ignore *::operator>>;
 
 %rename(append) gum::Sequence::insert( const KEY& k );
 %rename(index) gum::Sequence::pos( const KEY& key ) const ;
@@ -32,8 +31,8 @@
 %rename(pop_front) gum::List::popFront();
 %rename(pop_back) gum::List::popBack();
 
-%rename(__str__) gum::AbstractBayesNet::toString() const;
-%rename(__len__) gum::AbstractBayesNet::size() const;
+%rename(__str__) gum::DAGmodel::toString() const;
+%rename(__len__) gum::DAGmodel::size() const;
 
 %rename(__str__) gum::Instantiation::toString() const;
 %rename(__len__) gum::Instantiation::nbrDim() const;

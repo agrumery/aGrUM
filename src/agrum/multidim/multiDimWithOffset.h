@@ -23,16 +23,16 @@
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
-// ============================================================================
+
 #ifndef GUM_MULTI_DIM_WITH_OFFSET_H
 #define GUM_MULTI_DIM_WITH_OFFSET_H
-// ============================================================================
+
 #include <vector>
-// ============================================================================
+
 #include <agrum/config.h>
-// ============================================================================
+
 #include <agrum/multidim/multiDimImplementation.h>
-// ============================================================================
+
 
 namespace gum {
   /* ============================================================================ */
@@ -129,7 +129,7 @@ namespace gum {
       virtual void fill( const GUM_SCALAR& d ) const = 0;
 
       /// Returns string representating of internal data about i in this.
-      virtual const std::string toString( const Instantiation *i ) const ;
+      virtual const std::string toString( const Instantiation* i ) const ;
 
       /// @}
 
@@ -215,7 +215,7 @@ namespace gum {
        * @param i An instantiation for which the offset is computed.
        * @return The offset of i.
        */
-      Size _getOffs( const Instantiation &i ) const ;
+      Size _getOffs( const Instantiation& i ) const ;
 
       /**
        * @brief The gaps between consecutive values of a given variable.
@@ -225,10 +225,10 @@ namespace gum {
        * the next one is equivalent to incrementing/decrementing by gaps the current
        * offset w.r.t. vector values.
        */
-      HashTable<const DiscreteVariable *,Size> _gaps;
+      HashTable<const DiscreteVariable*,Size> _gaps;
 
       /// The position in the array of each slave Instantiation.
-      HashTable<const Instantiation *,Size> _offsets;
+      HashTable<const Instantiation*,Size> _offsets;
 
       /** @brief For a given index of a value in the vector values, this method
        *         computes the corresponding instantiation.
@@ -248,8 +248,8 @@ namespace gum {
   };
 } /* namespace gum */
 
-// ============================================================================
+
 #include <agrum/multidim/multiDimWithOffset.tcc>
-// ============================================================================
+
 #endif /* GUM_MULTI_DIM_WITH_OFFSET_H */
-// ============================================================================
+

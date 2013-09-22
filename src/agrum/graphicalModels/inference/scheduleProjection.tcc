@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
- *   {prenom.nom}_at_lip6.fr                                               * 
+ *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -35,36 +35,36 @@ namespace gum {
 
   /// default constructor
   template<typename GUM_SCALAR>
-  ScheduleProjection<GUM_SCALAR>::ScheduleProjection () {
+  ScheduleProjection<GUM_SCALAR>::ScheduleProjection() {
     /// for debugging purposes
-    GUM_CONSTRUCTOR ( ScheduleProjection );
+    GUM_CONSTRUCTOR( ScheduleProjection );
   }
-  
+
 
   /// copy constructor
   template<typename GUM_SCALAR>
   ScheduleProjection<GUM_SCALAR>::ScheduleProjection
   ( const ScheduleProjection<GUM_SCALAR>& from ) {
     /// for debugging purposes
-    GUM_CONS_CPY ( ScheduleProjection );
+    GUM_CONS_CPY( ScheduleProjection );
   }
 
-  
+
   /// destructor
   template<typename GUM_SCALAR>
-  ScheduleProjection<GUM_SCALAR>::~ScheduleProjection () {
+  ScheduleProjection<GUM_SCALAR>::~ScheduleProjection() {
     /// for debugging purposes
-    GUM_DESTRUCTOR ( ScheduleProjection );
+    GUM_DESTRUCTOR( ScheduleProjection );
   }
-  
+
 
   /// virtual constructor
   template<typename GUM_SCALAR>
-  ScheduleProjection<GUM_SCALAR>* ScheduleProjection<GUM_SCALAR>::newFactory () const {
+  ScheduleProjection<GUM_SCALAR>* ScheduleProjection<GUM_SCALAR>::newFactory() const {
     return new ScheduleProjection<GUM_SCALAR> ( *this );
   }
 
-  
+
   /// creates and returns the projection of the table over a subset of its vars
   template<typename GUM_SCALAR>
   INLINE ScheduleMultiDim<GUM_SCALAR>
@@ -72,11 +72,11 @@ namespace gum {
   ( const MultiDimImplementation<GUM_SCALAR>& table,
     const Set<const DiscreteVariable*>& del_vars,
     Schedule<GUM_SCALAR>& schedule ) {
-    ScheduleMultiDim<GUM_SCALAR> sched_table ( table );
-    return project ( sched_table, del_vars, schedule );
+    ScheduleMultiDim<GUM_SCALAR> sched_table( table );
+    return project( sched_table, del_vars, schedule );
   }
 
-  
+
   /// creates and returns the projection of the table over a subset of its vars
   template<typename GUM_SCALAR>
   template <template<typename> class TABLE>
@@ -85,11 +85,11 @@ namespace gum {
   ( const TABLE<GUM_SCALAR>& table,
     const Set<const DiscreteVariable*>& del_vars,
     Schedule<GUM_SCALAR>& schedule ) {
-    ScheduleMultiDim<GUM_SCALAR> sched_table ( *( table.content () ) );
-    return project ( sched_table, del_vars, schedule );
+    ScheduleMultiDim<GUM_SCALAR> sched_table( *( table.content() ) );
+    return project( sched_table, del_vars, schedule );
   }
-  
-  
+
+
   /** @brief returns a rough estimate of the number of operations that will be
    * performed to compute the projection */
   template<typename GUM_SCALAR>
@@ -97,8 +97,8 @@ namespace gum {
   ( const MultiDimImplementation<GUM_SCALAR>& table,
     const Set<const DiscreteVariable*>& del_vars,
     const Schedule<GUM_SCALAR>& schedule ) {
-    ScheduleMultiDim<GUM_SCALAR> sched_table ( table );
-    return nbOperations ( sched_table, del_vars, schedule );
+    ScheduleMultiDim<GUM_SCALAR> sched_table( table );
+    return nbOperations( sched_table, del_vars, schedule );
   }
 
 
@@ -110,11 +110,11 @@ namespace gum {
   ( const TABLE<GUM_SCALAR>& table,
     const Set<const DiscreteVariable*>& del_vars,
     const Schedule<GUM_SCALAR>& schedule ) {
-    ScheduleMultiDim<GUM_SCALAR> sched_table ( *( table.content () ) );
-    return nbOperations ( sched_table, del_vars, schedule );
+    ScheduleMultiDim<GUM_SCALAR> sched_table( *( table.content() ) );
+    return nbOperations( sched_table, del_vars, schedule );
   }
 
-  
+
   /// returns the memory consumption used during the projection
   template<typename GUM_SCALAR>
   INLINE std::pair<long,long>
@@ -122,11 +122,11 @@ namespace gum {
   ( const MultiDimImplementation<GUM_SCALAR>& table,
     const Set<const DiscreteVariable*>& del_vars,
     const Schedule<GUM_SCALAR>& schedule ) {
-    ScheduleMultiDim<GUM_SCALAR> sched_table ( table );
-    return memoryUsage ( sched_table, del_vars, schedule );
+    ScheduleMultiDim<GUM_SCALAR> sched_table( table );
+    return memoryUsage( sched_table, del_vars, schedule );
   }
 
-  
+
   /// returns the memory consumption used during the projection
   template<typename GUM_SCALAR>
   template <template<typename> class TABLE>
@@ -135,8 +135,8 @@ namespace gum {
   ( const TABLE<GUM_SCALAR>& table,
     const Set<const DiscreteVariable*>& del_vars,
     const Schedule<GUM_SCALAR>& schedule ) {
-    ScheduleMultiDim<GUM_SCALAR> sched_table ( *( table.content () ) );
-    return memoryUsage ( sched_table, del_vars, schedule );
+    ScheduleMultiDim<GUM_SCALAR> sched_table( *( table.content() ) );
+    return memoryUsage( sched_table, del_vars, schedule );
   }
 
 

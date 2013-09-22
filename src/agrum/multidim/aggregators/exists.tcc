@@ -68,9 +68,9 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     MultiDimContainer<GUM_SCALAR>* Exists<GUM_SCALAR>::newFactory() const {
-      return new Exists<GUM_SCALAR>(__value);
+      return new Exists<GUM_SCALAR>( __value );
     }
 
   } // namespace aggregator
 } // namespace gum
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

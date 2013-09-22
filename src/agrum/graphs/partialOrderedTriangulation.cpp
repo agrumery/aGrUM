@@ -38,9 +38,9 @@ namespace gum {
   ( const PartialOrderedEliminationSequenceStrategy& elimSeq,
     const JunctionTreeStrategy& JTStrategy,
     bool minimality ) :
-      StaticTriangulation( elimSeq, JTStrategy, minimality ),
-      __modalities( 0 ),
-      __partial_order( 0 ) {
+    StaticTriangulation( elimSeq, JTStrategy, minimality ),
+    __modalities( 0 ),
+    __partial_order( 0 ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( PartialOrderedTriangulation );
   }
@@ -54,9 +54,9 @@ namespace gum {
     const PartialOrderedEliminationSequenceStrategy& elimSeq,
     const JunctionTreeStrategy& JTStrategy,
     bool minimality ) :
-      StaticTriangulation( theGraph, dom, elimSeq, JTStrategy, minimality ),
-      __modalities( dom ),
-      __partial_order( partial_order ) {
+    StaticTriangulation( theGraph, dom, elimSeq, JTStrategy, minimality ),
+    __modalities( dom ),
+    __partial_order( partial_order ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( PartialOrderedTriangulation );
   }
@@ -83,7 +83,7 @@ namespace gum {
 
     if ( partial_order ) ++nb;
 
-    if (( nb != 0 ) && ( nb != 3 ) ) {
+    if ( ( nb != 0 ) && ( nb != 3 ) ) {
       GUM_ERROR( GraphError, "PartialOrderedTriangulation requires valid "
                  "graphs, modalities and elimination orderings" );
     }

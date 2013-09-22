@@ -17,26 +17,26 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-// ============================================================================
+
 #include <iostream>
 
 #include <cxxtest/AgrumTestSuite.h>
 #include "testsuite_utils.h"
 
 #include <agrum/prm/gspan/DFSCode.h>
-// ============================================================================
+
 /*
  * Test of gum::prm::gspan::DFSCode and gum::prm::gspan::EdgeCode.
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 
 
 namespace gum_tests {
 
   class DFSCodeTestSuite: public CxxTest::TestSuite {
-// ============================================================================
+
     private:
       gum::prm::gspan::DFSCode* alpha;
       gum::prm::gspan::DFSCode* beta;
@@ -126,38 +126,38 @@ namespace gum_tests {
       }
 
       void testAlphaNeighbors() {
-        for( gum::prm::gspan::DFSCode::iterator iter = alpha->codes.begin() + 1; iter != alpha->codes.end(); ++iter ) {
+        for ( gum::prm::gspan::DFSCode::iterator iter = alpha->codes.begin() + 1; iter != alpha->codes.end(); ++iter ) {
           TS_ASSERT( gum::prm::gspan::DFSCode::validNeighbors( *( iter - 1 ), *iter ) );
         }
       }
 
       void testBetaNeighbors() {
-        for( gum::prm::gspan::DFSCode::iterator iter = beta->codes.begin() + 1; iter != beta->codes.end(); ++iter ) {
+        for ( gum::prm::gspan::DFSCode::iterator iter = beta->codes.begin() + 1; iter != beta->codes.end(); ++iter ) {
           TS_ASSERT( gum::prm::gspan::DFSCode::validNeighbors( *( iter - 1 ), *iter ) );
         }
       }
 
       void testGammaNeighbors() {
-        for( gum::prm::gspan::DFSCode::iterator iter = gamma->codes.begin() + 1; iter != gamma->codes.end(); ++iter ) {
+        for ( gum::prm::gspan::DFSCode::iterator iter = gamma->codes.begin() + 1; iter != gamma->codes.end(); ++iter ) {
           TS_ASSERT( gum::prm::gspan::DFSCode::validNeighbors( *( iter - 1 ), *iter ) );
         }
       }
 
       void testAlphaPrint() {
-        TS_ASSERT_THROWS_NOTHING({std::stringstream ss; ss<< std::endl << (*alpha) << std::endl;});
+        TS_ASSERT_THROWS_NOTHING( {std::stringstream ss; ss<< std::endl << ( *alpha ) << std::endl;} );
       }
 
       void testBetaPrint() {
-        TS_ASSERT_THROWS_NOTHING({std::stringstream ss; ss << std::endl << (*beta) << std::endl;});
+        TS_ASSERT_THROWS_NOTHING( {std::stringstream ss; ss << std::endl << ( *beta ) << std::endl;} );
       }
 
       void testGammaPrint() {
-        TS_ASSERT_THROWS_NOTHING({std::stringstream ss; ss << std::endl << (*gamma) << std::endl;});
+        TS_ASSERT_THROWS_NOTHING( {std::stringstream ss; ss << std::endl << ( *gamma ) << std::endl;} );
       }
 
-// ============================================================================
+
   };
 
-// ============================================================================
+
 }
 

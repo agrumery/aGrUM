@@ -57,13 +57,14 @@ namespace gum {
       LinearApproximationPolicy( GUM_SCALAR low=( GUM_SCALAR )0.0,
                                  GUM_SCALAR high=( GUM_SCALAR )1.0,
                                  GUM_SCALAR eps=( GUM_SCALAR )0.1 ) :
-          ApproximationPolicy<GUM_SCALAR>(  ),
-          _lowLimit( low ),
-          _highLimit( high ),
-          _epsilon( eps ) {
+        ApproximationPolicy<GUM_SCALAR>( ),
+        _lowLimit( low ),
+        _highLimit( high ),
+        _epsilon( eps ) {
         if ( eps<=0 ) {
           GUM_ERROR( OutOfBounds, "Epsilon must be >0" );
         }
+
         _computeNbInterval();
       };
 
@@ -71,9 +72,9 @@ namespace gum {
        * Copy constructor.
        */
       LinearApproximationPolicy( const LinearApproximationPolicy<GUM_SCALAR>* md ) :
-          ApproximationPolicy<GUM_SCALAR>( md ),
-          _epsilon( md._epsilon ),
-          _nbInterval( md._nbInterval ) {
+        ApproximationPolicy<GUM_SCALAR>( md ),
+        _epsilon( md._epsilon ),
+        _nbInterval( md._nbInterval ) {
       };
 
       /// @}
@@ -87,217 +88,235 @@ namespace gum {
       INLINE GUM_SCALAR fromExact( const GUM_SCALAR& value ) const {
         return __decode( encode( value ) );
       };
-      
+
       void combineAdd( const ApproximationPolicy<GUM_SCALAR>* ap ) {
-	
-	try
-        {
-            const LinearApproximationPolicy<GUM_SCALAR>* lap = dynamic_cast< const LinearApproximationPolicy<GUM_SCALAR>* >( ap );
 
-            GUM_SCALAR newHighLimit = _lowLimit + lap->lowLimit();
-            GUM_SCALAR newLowLimit = _lowLimit + lap->lowLimit();
+        try {
+          const LinearApproximationPolicy<GUM_SCALAR>* lap = dynamic_cast< const LinearApproximationPolicy<GUM_SCALAR>* >( ap );
 
-            GUM_SCALAR  newVal = _lowLimit + lap->highLimit( );
-            if ( newHighLimit < newVal )
-                newHighLimit = newVal;
-            if ( newLowLimit > newVal )
-                newLowLimit = newVal;
+          GUM_SCALAR newHighLimit = _lowLimit + lap->lowLimit();
+          GUM_SCALAR newLowLimit = _lowLimit + lap->lowLimit();
 
-            newVal =_highLimit + lap->lowLimit();
-            if ( newHighLimit < newVal )
-                newHighLimit = newVal;
-            if ( newLowLimit > newVal )
-                newLowLimit = newVal;
+          GUM_SCALAR  newVal = _lowLimit + lap->highLimit( );
 
-            newVal = _highLimit + lap->highLimit( );
-            if ( newHighLimit < newVal )
-                newHighLimit = newVal;
-            if ( newLowLimit > newVal )
-                newLowLimit = newVal;
+          if ( newHighLimit < newVal )
+            newHighLimit = newVal;
+
+          if ( newLowLimit > newVal )
+            newLowLimit = newVal;
+
+          newVal =_highLimit + lap->lowLimit();
+
+          if ( newHighLimit < newVal )
+            newHighLimit = newVal;
+
+          if ( newLowLimit > newVal )
+            newLowLimit = newVal;
+
+          newVal = _highLimit + lap->highLimit( );
+
+          if ( newHighLimit < newVal )
+            newHighLimit = newVal;
+
+          if ( newLowLimit > newVal )
+            newLowLimit = newVal;
+        } catch ( const std::bad_cast& e ) {
         }
-        catch (const std::bad_cast& e)
-        {
-        }
-	
+
       };
-      
+
       void combineSub( const ApproximationPolicy<GUM_SCALAR>* ap )  {
-	
-	try
-        {
-            const LinearApproximationPolicy<GUM_SCALAR>* lap = dynamic_cast< const LinearApproximationPolicy<GUM_SCALAR>* >( ap );
 
-            GUM_SCALAR newHighLimit = _lowLimit - lap->lowLimit();
-            GUM_SCALAR newLowLimit = _lowLimit - lap->lowLimit();
+        try {
+          const LinearApproximationPolicy<GUM_SCALAR>* lap = dynamic_cast< const LinearApproximationPolicy<GUM_SCALAR>* >( ap );
 
-            GUM_SCALAR  newVal = _lowLimit - lap->highLimit( );
-            if ( newHighLimit < newVal )
-                newHighLimit = newVal;
-            if ( newLowLimit > newVal )
-                newLowLimit = newVal;
+          GUM_SCALAR newHighLimit = _lowLimit - lap->lowLimit();
+          GUM_SCALAR newLowLimit = _lowLimit - lap->lowLimit();
 
-            newVal =_highLimit - lap->lowLimit();
-            if ( newHighLimit < newVal )
-                newHighLimit = newVal;
-            if ( newLowLimit > newVal )
-                newLowLimit = newVal;
+          GUM_SCALAR  newVal = _lowLimit - lap->highLimit( );
 
-            newVal = _highLimit - lap->highLimit( );
-            if ( newHighLimit < newVal )
-                newHighLimit = newVal;
-            if ( newLowLimit > newVal )
-                newLowLimit = newVal;
+          if ( newHighLimit < newVal )
+            newHighLimit = newVal;
+
+          if ( newLowLimit > newVal )
+            newLowLimit = newVal;
+
+          newVal =_highLimit - lap->lowLimit();
+
+          if ( newHighLimit < newVal )
+            newHighLimit = newVal;
+
+          if ( newLowLimit > newVal )
+            newLowLimit = newVal;
+
+          newVal = _highLimit - lap->highLimit( );
+
+          if ( newHighLimit < newVal )
+            newHighLimit = newVal;
+
+          if ( newLowLimit > newVal )
+            newLowLimit = newVal;
+        } catch ( const std::bad_cast& e ) {
         }
-        catch (const std::bad_cast& e)
-        {
-        }
-	
+
       };
-      
+
       void combineMult( const ApproximationPolicy<GUM_SCALAR>* ap )  {
-	
-	try
-        {
-            const LinearApproximationPolicy<GUM_SCALAR>* lap = dynamic_cast< const LinearApproximationPolicy<GUM_SCALAR>* >( ap );
 
-            GUM_SCALAR newHighLimit = _lowLimit * lap->lowLimit();
-            GUM_SCALAR newLowLimit = _lowLimit * lap->lowLimit();
+        try {
+          const LinearApproximationPolicy<GUM_SCALAR>* lap = dynamic_cast< const LinearApproximationPolicy<GUM_SCALAR>* >( ap );
 
-            GUM_SCALAR  newVal = _lowLimit * lap->highLimit( );
-            if ( newHighLimit < newVal )
-                newHighLimit = newVal;
-            if ( newLowLimit > newVal )
-                newLowLimit = newVal;
+          GUM_SCALAR newHighLimit = _lowLimit * lap->lowLimit();
+          GUM_SCALAR newLowLimit = _lowLimit * lap->lowLimit();
 
-            newVal =_highLimit * lap->lowLimit();
-            if ( newHighLimit < newVal )
-                newHighLimit = newVal;
-            if ( newLowLimit > newVal )
-                newLowLimit = newVal;
+          GUM_SCALAR  newVal = _lowLimit * lap->highLimit( );
 
-            newVal = _highLimit * lap->highLimit( );
-            if ( newHighLimit < newVal )
-                newHighLimit = newVal;
-            if ( newLowLimit > newVal )
-                newLowLimit = newVal;
+          if ( newHighLimit < newVal )
+            newHighLimit = newVal;
+
+          if ( newLowLimit > newVal )
+            newLowLimit = newVal;
+
+          newVal =_highLimit * lap->lowLimit();
+
+          if ( newHighLimit < newVal )
+            newHighLimit = newVal;
+
+          if ( newLowLimit > newVal )
+            newLowLimit = newVal;
+
+          newVal = _highLimit * lap->highLimit( );
+
+          if ( newHighLimit < newVal )
+            newHighLimit = newVal;
+
+          if ( newLowLimit > newVal )
+            newLowLimit = newVal;
+        } catch ( const std::bad_cast& e ) {
         }
-        catch (const std::bad_cast& e)
-        {
-        }
-	
+
       };
-      
+
       void combineDiv( const ApproximationPolicy<GUM_SCALAR>* ap )  {
-	
-	try
-        {
-            const LinearApproximationPolicy<GUM_SCALAR>* lap = dynamic_cast< const LinearApproximationPolicy<GUM_SCALAR>* >( ap );
 
-            GUM_SCALAR newHighLimit = _lowLimit / lap->lowLimit();
-            GUM_SCALAR newLowLimit = _lowLimit / lap->lowLimit();
+        try {
+          const LinearApproximationPolicy<GUM_SCALAR>* lap = dynamic_cast< const LinearApproximationPolicy<GUM_SCALAR>* >( ap );
 
-            GUM_SCALAR  newVal = _lowLimit / lap->highLimit( );
-            if ( newHighLimit < newVal )
-                newHighLimit = newVal;
-            if ( newLowLimit > newVal )
-                newLowLimit = newVal;
+          GUM_SCALAR newHighLimit = _lowLimit / lap->lowLimit();
+          GUM_SCALAR newLowLimit = _lowLimit / lap->lowLimit();
 
-            newVal =_highLimit / lap->lowLimit();
-            if ( newHighLimit < newVal )
-                newHighLimit = newVal;
-            if ( newLowLimit > newVal )
-                newLowLimit = newVal;
+          GUM_SCALAR  newVal = _lowLimit / lap->highLimit( );
 
-            newVal = _highLimit / lap->highLimit( );
-            if ( newHighLimit < newVal )
-                newHighLimit = newVal;
-            if ( newLowLimit > newVal )
-                newLowLimit = newVal;
+          if ( newHighLimit < newVal )
+            newHighLimit = newVal;
+
+          if ( newLowLimit > newVal )
+            newLowLimit = newVal;
+
+          newVal =_highLimit / lap->lowLimit();
+
+          if ( newHighLimit < newVal )
+            newHighLimit = newVal;
+
+          if ( newLowLimit > newVal )
+            newLowLimit = newVal;
+
+          newVal = _highLimit / lap->highLimit( );
+
+          if ( newHighLimit < newVal )
+            newHighLimit = newVal;
+
+          if ( newLowLimit > newVal )
+            newLowLimit = newVal;
+        } catch ( const std::bad_cast& e ) {
         }
-        catch (const std::bad_cast& e)
-        {
-        }
-	
+
       };
-      
-     void combineMax( const ApproximationPolicy<GUM_SCALAR>* ap )  {
-	
-	try
-        {
-            const LinearApproximationPolicy<GUM_SCALAR>* lap = dynamic_cast< const LinearApproximationPolicy<GUM_SCALAR>* >( ap );
 
-            GUM_SCALAR newHighLimit = _lowLimit > lap->lowLimit() ? _lowLimit : lap->lowLimit();
-            GUM_SCALAR newLowLimit = _lowLimit > lap->lowLimit() ? _lowLimit : lap->lowLimit();
+      void combineMax( const ApproximationPolicy<GUM_SCALAR>* ap )  {
 
-            GUM_SCALAR  newVal = _lowLimit > lap->highLimit( ) ? _lowLimit : lap->highLimit( );
-            if ( newHighLimit < newVal )
-                newHighLimit = newVal;
-            if ( newLowLimit > newVal )
-                newLowLimit = newVal;
+        try {
+          const LinearApproximationPolicy<GUM_SCALAR>* lap = dynamic_cast< const LinearApproximationPolicy<GUM_SCALAR>* >( ap );
 
-            newVal =_highLimit > lap->lowLimit() ? _highLimit : lap->lowLimit();
-            if ( newHighLimit < newVal )
-                newHighLimit = newVal;
-            if ( newLowLimit > newVal )
-                newLowLimit = newVal;
+          GUM_SCALAR newHighLimit = _lowLimit > lap->lowLimit() ? _lowLimit : lap->lowLimit();
+          GUM_SCALAR newLowLimit = _lowLimit > lap->lowLimit() ? _lowLimit : lap->lowLimit();
 
-            newVal = _highLimit > lap->highLimit( ) ? _highLimit : lap->highLimit( );
-            if ( newHighLimit < newVal )
-                newHighLimit = newVal;
-            if ( newLowLimit > newVal )
-                newLowLimit = newVal;
+          GUM_SCALAR  newVal = _lowLimit > lap->highLimit( ) ? _lowLimit : lap->highLimit( );
+
+          if ( newHighLimit < newVal )
+            newHighLimit = newVal;
+
+          if ( newLowLimit > newVal )
+            newLowLimit = newVal;
+
+          newVal =_highLimit > lap->lowLimit() ? _highLimit : lap->lowLimit();
+
+          if ( newHighLimit < newVal )
+            newHighLimit = newVal;
+
+          if ( newLowLimit > newVal )
+            newLowLimit = newVal;
+
+          newVal = _highLimit > lap->highLimit( ) ? _highLimit : lap->highLimit( );
+
+          if ( newHighLimit < newVal )
+            newHighLimit = newVal;
+
+          if ( newLowLimit > newVal )
+            newLowLimit = newVal;
+        } catch ( const std::bad_cast& e ) {
         }
-        catch (const std::bad_cast& e)
-        {
-        }
-	
+
       };
-      
+
       void combineMin( const ApproximationPolicy<GUM_SCALAR>* ap )  {
-	
-	try
-        {
-            const LinearApproximationPolicy<GUM_SCALAR>* lap = dynamic_cast< const LinearApproximationPolicy<GUM_SCALAR>* >( ap );
 
-            GUM_SCALAR newHighLimit = _lowLimit < lap->lowLimit() ? _lowLimit : lap->lowLimit();
-            GUM_SCALAR newLowLimit = _lowLimit < lap->lowLimit() ? _lowLimit : lap->lowLimit();
+        try {
+          const LinearApproximationPolicy<GUM_SCALAR>* lap = dynamic_cast< const LinearApproximationPolicy<GUM_SCALAR>* >( ap );
 
-            GUM_SCALAR  newVal = _lowLimit < lap->highLimit( ) ? _lowLimit : lap->highLimit( );
-            if ( newHighLimit < newVal )
-                newHighLimit = newVal;
-            if ( newLowLimit > newVal )
-                newLowLimit = newVal;
+          GUM_SCALAR newHighLimit = _lowLimit < lap->lowLimit() ? _lowLimit : lap->lowLimit();
+          GUM_SCALAR newLowLimit = _lowLimit < lap->lowLimit() ? _lowLimit : lap->lowLimit();
 
-            newVal =_highLimit < lap->lowLimit() ? _highLimit : lap->lowLimit();
-            if ( newHighLimit < newVal )
-                newHighLimit = newVal;
-            if ( newLowLimit > newVal )
-                newLowLimit = newVal;
+          GUM_SCALAR  newVal = _lowLimit < lap->highLimit( ) ? _lowLimit : lap->highLimit( );
 
-            newVal = _highLimit < lap->highLimit( ) ? _highLimit : lap->highLimit( );
-            if ( newHighLimit < newVal )
-                newHighLimit = newVal;
-            if ( newLowLimit > newVal )
-                newLowLimit = newVal;
+          if ( newHighLimit < newVal )
+            newHighLimit = newVal;
+
+          if ( newLowLimit > newVal )
+            newLowLimit = newVal;
+
+          newVal =_highLimit < lap->lowLimit() ? _highLimit : lap->lowLimit();
+
+          if ( newHighLimit < newVal )
+            newHighLimit = newVal;
+
+          if ( newLowLimit > newVal )
+            newLowLimit = newVal;
+
+          newVal = _highLimit < lap->highLimit( ) ? _highLimit : lap->highLimit( );
+
+          if ( newHighLimit < newVal )
+            newHighLimit = newVal;
+
+          if ( newLowLimit > newVal )
+            newLowLimit = newVal;
+        } catch ( const std::bad_cast& e ) {
         }
-        catch (const std::bad_cast& e)
-        {
-        }
-	
+
       };
 
       /// Convert value to his approximation. This method is slower than @ref fromExact since it verifies the bounds
       /// @throw OutOfLowerBound and OutOfUpperBound
-      INLINE GUM_SCALAR safeFromExact( const GUM_SCALAR & value ) {
+      INLINE GUM_SCALAR safeFromExact( const GUM_SCALAR& value ) {
         if ( value > this->_highLimit ) {
           GUM_ERROR( OutOfUpperBound, "Value asked is higher than high limit" );
-	}
+        }
 
         if ( value < this->_lowLimit ) {
           GUM_ERROR( OutOfLowerBound, "Value asked is lower than low limit" );
-	}
+        }
 
-	return fromExact(value);
+        return fromExact( value );
       };
 
 
@@ -315,6 +334,7 @@ namespace gum {
           GUM_TRACE( value<<" not in ("<<this->_lowLimit<<"-"<<this->_highLimit<<")" );
           GUM_ERROR( OutOfLowerBound, "Value asked is lower than low limit" );
         }
+
 #endif //NDEBUG
         return __encode( value );
       };
@@ -341,7 +361,7 @@ namespace gum {
       INLINE virtual void setLimits( const GUM_SCALAR& newLowLimit, const GUM_SCALAR& newHighLimit ) {
         if ( newLowLimit >newHighLimit ) {
           GUM_ERROR( OutOfBounds, "Asked low value is higher than asked high value" );
-	}
+        }
 
         _lowLimit=newLowLimit;
         _highLimit=newHighLimit;
@@ -353,7 +373,7 @@ namespace gum {
       INLINE virtual void setLowLimit( const GUM_SCALAR& newLowLimit ) {
         if ( newLowLimit > this->_highLimit ) {
           GUM_ERROR( OutOfUpperBound, "Value asked is higher than High limit" );
-	}
+        }
 
         _lowLimit = newLowLimit;
 
@@ -391,7 +411,7 @@ namespace gum {
 
       /// Highest value possible
       GUM_SCALAR _highLimit;
-      
+
       /// Approximation factor
       GUM_SCALAR _epsilon;
 
@@ -405,9 +425,9 @@ namespace gum {
         if ( value >= this->_highLimit )
           return _nbInterval;
 
-		//~ std::cout << "Original value : " << value << " - Low Limit : " << this->_lowLimit << " - epsilon : "<< this->_epsilon << " - Encoded Value : " << (( Idx )(( value - this->_lowLimit ) / this->_epsilon ) ) + 1 << std::endl;
+        //~ std::cout << "Original value : " << value << " - Low Limit : " << this->_lowLimit << " - epsilon : "<< this->_epsilon << " - Encoded Value : " << (( Idx )(( value - this->_lowLimit ) / this->_epsilon ) ) + 1 << std::endl;
 
-        return (( Idx )(( value - this->_lowLimit ) / this->_epsilon ) ) + 1;
+        return ( ( Idx )( ( value - this->_lowLimit ) / this->_epsilon ) ) + 1;
 
       };
 
@@ -420,14 +440,14 @@ namespace gum {
         if ( representation == _nbInterval )
           return this->_highLimit;
 
-	//~ std::cout << "Rep value : " << representation << " - Low Limit : " << this->_lowLimit << " - epsilon : "<< this->_epsilon << " - DecodedValue : " << (( representation * this->_epsilon ) - ( this->_epsilon / 2 ) ) + this->_lowLimit << std::endl;
+        //~ std::cout << "Rep value : " << representation << " - Low Limit : " << this->_lowLimit << " - epsilon : "<< this->_epsilon << " - DecodedValue : " << (( representation * this->_epsilon ) - ( this->_epsilon / 2 ) ) + this->_lowLimit << std::endl;
 
-        return (( representation * this->_epsilon ) - ( this->_epsilon / 2 ) ) + this->_lowLimit;
+        return ( ( representation * this->_epsilon ) - ( this->_epsilon / 2 ) ) + this->_lowLimit;
       };
 
       /// get the number of interval
       INLINE void _computeNbInterval() {
-        _nbInterval = (( Idx )( this->_highLimit - this->_lowLimit ) / this->_epsilon ) + 1;
+        _nbInterval = ( ( Idx )( this->_highLimit - this->_lowLimit ) / this->_epsilon ) + 1;
       };
 
       Idx _nbInterval;

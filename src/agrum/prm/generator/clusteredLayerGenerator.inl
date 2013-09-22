@@ -23,98 +23,95 @@
  *
  * @author Lionel TORTI
  */
-// ============================================================================
+
 namespace gum {
-namespace prm {
+  namespace prm {
 
-INLINE
-ClusteredLayerGenerator::ClusteredLayerGenerator():
-  __layers(), __domain_size(2), __max_parents(INT_MAX), __cluster_ratio(0.0)
-{
-  GUM_CONSTRUCTOR(ClusteredLayerGenerator);
-  initRandom();
-}
+    INLINE
+    ClusteredLayerGenerator::ClusteredLayerGenerator():
+      __layers(), __domain_size( 2 ), __max_parents( INT_MAX ), __cluster_ratio( 0.0 ) {
+      GUM_CONSTRUCTOR( ClusteredLayerGenerator );
+    }
 
-INLINE
-ClusteredLayerGenerator::ClusteredLayerGenerator(const ClusteredLayerGenerator& source):
-  __layers(source.__layers), __domain_size(source.__domain_size),
-  __max_parents(source.__max_parents)
-{
-  GUM_CONS_CPY(ClusteredLayerGenerator);
-}
+    INLINE
+    ClusteredLayerGenerator::ClusteredLayerGenerator( const ClusteredLayerGenerator& source ):
+      __layers( source.__layers ), __domain_size( source.__domain_size ),
+      __max_parents( source.__max_parents ) {
+      GUM_CONS_CPY( ClusteredLayerGenerator );
+    }
 
-INLINE
-ClusteredLayerGenerator::~ClusteredLayerGenerator() {
-  GUM_DESTRUCTOR(ClusteredLayerGenerator);
-  // typedef HashTable<std::string, std::vector<std::string>*>::iterator Iter;
-  // for (Iter iter = __cluster_map.begin(); iter != __cluster_map.end(); ++iter) {
-  //   delete *iter;
-  // }
-}
+    INLINE
+    ClusteredLayerGenerator::~ClusteredLayerGenerator() {
+      GUM_DESTRUCTOR( ClusteredLayerGenerator );
+      // typedef HashTable<std::string, std::vector<std::string>*>::iterator Iter;
+      // for (Iter iter = __cluster_map.begin(); iter != __cluster_map.end(); ++iter) {
+      //   delete *iter;
+      // }
+    }
 
-INLINE
-ClusteredLayerGenerator&
-ClusteredLayerGenerator::operator=(const ClusteredLayerGenerator& source) {
-  __layers = source.__layers;
-  __domain_size = source.__domain_size;
-  __max_parents = source.__max_parents;
-  return *this;
-}
+    INLINE
+    ClusteredLayerGenerator&
+    ClusteredLayerGenerator::operator=( const ClusteredLayerGenerator& source ) {
+      __layers = source.__layers;
+      __domain_size = source.__domain_size;
+      __max_parents = source.__max_parents;
+      return *this;
+    }
 
-INLINE
-Size
-ClusteredLayerGenerator::getDomainSize() const {
-  return __domain_size;
-}
+    INLINE
+    Size
+    ClusteredLayerGenerator::getDomainSize() const {
+      return __domain_size;
+    }
 
-INLINE
-void
-ClusteredLayerGenerator::setDomainSize(Size s) {
-  __domain_size = s;
-}
+    INLINE
+    void
+    ClusteredLayerGenerator::setDomainSize( Size s ) {
+      __domain_size = s;
+    }
 
-INLINE
-unsigned int
-ClusteredLayerGenerator::getMaxParents() const {
-  return __max_parents;
-}
+    INLINE
+    unsigned int
+    ClusteredLayerGenerator::getMaxParents() const {
+      return __max_parents;
+    }
 
-INLINE
-void
-ClusteredLayerGenerator::setMaxParents(Size s) {
-  __max_parents = s;
-}
+    INLINE
+    void
+    ClusteredLayerGenerator::setMaxParents( Size s ) {
+      __max_parents = s;
+    }
 
-INLINE
-void
-ClusteredLayerGenerator::setLayers(const std::vector<LayerGenerator::LayerData>& v) {
-  __layers = v;
-}
+    INLINE
+    void
+    ClusteredLayerGenerator::setLayers( const std::vector<LayerGenerator::LayerData>& v ) {
+      __layers = v;
+    }
 
-INLINE
-std::vector<LayerGenerator::LayerData>&
-ClusteredLayerGenerator::getLayer() {
-  return __layers;
-}
+    INLINE
+    std::vector<LayerGenerator::LayerData>&
+    ClusteredLayerGenerator::getLayer() {
+      return __layers;
+    }
 
-INLINE
-const std::vector<LayerGenerator::LayerData>&
-ClusteredLayerGenerator::getLayer() const {
-  return __layers;
-}
+    INLINE
+    const std::vector<LayerGenerator::LayerData>&
+    ClusteredLayerGenerator::getLayer() const {
+      return __layers;
+    }
 
-INLINE
-double
-ClusteredLayerGenerator::getClusterRatio() const {
-  return __cluster_ratio;
-}
+    INLINE
+    double
+    ClusteredLayerGenerator::getClusterRatio() const {
+      return __cluster_ratio;
+    }
 
-INLINE
-void
-ClusteredLayerGenerator::setClusterRatio(double ratio) {
-  __cluster_ratio = ratio;
-}
+    INLINE
+    void
+    ClusteredLayerGenerator::setClusterRatio( double ratio ) {
+      __cluster_ratio = ratio;
+    }
 
-} /* namespace prm */
+  } /* namespace prm */
 } /* namespace gum */
-// ============================================================================
+

@@ -49,18 +49,18 @@ namespace gum {
     GUM_CONSTRUCTOR( MixedGraphListener );
     _graph=g;
 
-    GUM_CONNECT(( *_graph ),onNodeAdded,( *this ),
-                MixedGraphListener::whenNodeAdded );
-    GUM_CONNECT(( *_graph ),onNodeDeleted,( *this ),
-                MixedGraphListener::whenNodeDeleted );
-    GUM_CONNECT(( *_graph ),onArcAdded ,( *this ),
-                MixedGraphListener::whenArcAdded );
-    GUM_CONNECT(( *_graph ),onArcDeleted,( *this ),
-                MixedGraphListener::whenArcDeleted );
-    GUM_CONNECT(( *_graph ),onEdgeAdded ,( *this ),
-                MixedGraphListener::whenEdgeAdded );
-    GUM_CONNECT(( *_graph ),onEdgeDeleted,( *this ),
-                MixedGraphListener::whenEdgeDeleted );
+    GUM_CONNECT( ( *_graph ),onNodeAdded,( *this ),
+                 MixedGraphListener::whenNodeAdded );
+    GUM_CONNECT( ( *_graph ),onNodeDeleted,( *this ),
+                 MixedGraphListener::whenNodeDeleted );
+    GUM_CONNECT( ( *_graph ),onArcAdded ,( *this ),
+                 MixedGraphListener::whenArcAdded );
+    GUM_CONNECT( ( *_graph ),onArcDeleted,( *this ),
+                 MixedGraphListener::whenArcDeleted );
+    GUM_CONNECT( ( *_graph ),onEdgeAdded ,( *this ),
+                 MixedGraphListener::whenEdgeAdded );
+    GUM_CONNECT( ( *_graph ),onEdgeDeleted,( *this ),
+                 MixedGraphListener::whenEdgeDeleted );
   }
 
   MixedGraphListener::~MixedGraphListener() {

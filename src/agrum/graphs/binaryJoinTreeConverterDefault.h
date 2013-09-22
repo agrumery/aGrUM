@@ -30,95 +30,95 @@
 
 
 namespace gum {
-  
+
 
   class BinaryJoinTreeConverterDefault {
-  public:
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
+    public:
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
 
-    /// default constructor
-    BinaryJoinTreeConverterDefault ();
+      /// default constructor
+      BinaryJoinTreeConverterDefault();
 
-    /// destructor
-    virtual ~BinaryJoinTreeConverterDefault ();
+      /// destructor
+      virtual ~BinaryJoinTreeConverterDefault();
 
-    /// @}
-
-
-    
-    // ############################################################################
-    /// @name Accessors/Modifiers
-    // ############################################################################
-    /// @{
-
-    /// returns a binary join tree corresponding to clique graph JT
-    /** This method creates and returns a new binary join tree compatible with
-     * that passed in argument (JT) and optimized for inference. As such, this
-     * requires knowing the join tree to be converted (of course), but also
-     * which roots will be used by the collect/diffusion inference engine and
-     * the domain size of the variables contained in the cliques of JT (to
-     * optimize the combination of the potentials contained in the cliques. 
-     * @throws InvalidNode exception is thrown if some roots do not belong to
-     * JT or if several roots belong to the same connected component.
-     * @warning If you do not pass in argument a root for each connected component,
-     * then for those with unspecified roots, an arbitrary root will be computed 
-     * and used for the binarization. */
-    CliqueGraph convert ( const CliqueGraph& JT,
-                          const Property<unsigned int>::onNodes& domain_sizes,
-                          const NodeSet& roots );
-
-    /// returns all the roots considered for all the connected components
-    const NodeSet& roots () const;
-
-    /// @}
+      /// @}
 
 
-    
-  private:
-    /// the new roots that have been created to compute the last query
-    NodeSet __roots;
 
-    /// forbid copy constructor
-    BinaryJoinTreeConverterDefault ( const BinaryJoinTreeConverterDefault& );
+      // ############################################################################
+      /// @name Accessors/Modifiers
+      // ############################################################################
+      /// @{
 
-    /// forbid copy operator
-    BinaryJoinTreeConverterDefault&
-    operator= ( const BinaryJoinTreeConverterDefault& );
+      /// returns a binary join tree corresponding to clique graph JT
+      /** This method creates and returns a new binary join tree compatible with
+       * that passed in argument (JT) and optimized for inference. As such, this
+       * requires knowing the join tree to be converted (of course), but also
+       * which roots will be used by the collect/diffusion inference engine and
+       * the domain size of the variables contained in the cliques of JT (to
+       * optimize the combination of the potentials contained in the cliques.
+       * @throws InvalidNode exception is thrown if some roots do not belong to
+       * JT or if several roots belong to the same connected component.
+       * @warning If you do not pass in argument a root for each connected component,
+       * then for those with unspecified roots, an arbitrary root will be computed
+       * and used for the binarization. */
+      CliqueGraph convert( const CliqueGraph& JT,
+                           const Property<unsigned int>::onNodes& domain_sizes,
+                           const NodeSet& roots );
+
+      /// returns all the roots considered for all the connected components
+      const NodeSet& roots() const;
+
+      /// @}
 
 
-    /** @brief a function used to mark the nodes belonging to a given
-     * connected component */
-    void __markConnectedComponent ( const CliqueGraph& JT,
-                                    NodeId root, 
-                                    Property<bool>::onNodes& mark ) const;
-    
-    /// convert a whole connected component into a binary join tree
-    void __convertConnectedComponent 
+
+    private:
+      /// the new roots that have been created to compute the last query
+      NodeSet __roots;
+
+      /// forbid copy constructor
+      BinaryJoinTreeConverterDefault( const BinaryJoinTreeConverterDefault& );
+
+      /// forbid copy operator
+      BinaryJoinTreeConverterDefault&
+      operator= ( const BinaryJoinTreeConverterDefault& );
+
+
+      /** @brief a function used to mark the nodes belonging to a given
+       * connected component */
+      void __markConnectedComponent( const CliqueGraph& JT,
+                                     NodeId root,
+                                     Property<bool>::onNodes& mark ) const;
+
+      /// convert a whole connected component into a binary join tree
+      void __convertConnectedComponent
       ( CliqueGraph& JT,
         NodeId current_node,
         NodeId from,
         const Property<unsigned int>::onNodes& domain_sizes,
         Property<bool>::onNodes& mark ) const;
 
-    /// convert a clique and its adjacent cliques into a binary join tree
-    void __convertClique
+      /// convert a clique and its adjacent cliques into a binary join tree
+      void __convertClique
       ( CliqueGraph& JT,
         NodeId clique,
         NodeId from,
         const Property<unsigned int>::onNodes& domain_sizes ) const;
-   
-    /// returns the domain size of the union of two cliques
-    float __combinedSize 
+
+      /// returns the domain size of the union of two cliques
+      float __combinedSize
       ( const NodeSet& nodes1,
         const NodeSet& nodes2,
         const Property<unsigned int>::onNodes& domain_sizes ) const;
 
   };
 
-  
+
 } /* namespace gum */
 
 
