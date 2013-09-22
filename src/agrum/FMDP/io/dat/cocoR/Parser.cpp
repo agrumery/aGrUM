@@ -99,7 +99,7 @@ bool Parser::WeakSeparator(int n, int syFol, int repFol) {
 
 void Parser::MDPDAT() {
 		VARIABLES_DECLARATION();
-		while (la->kind == 10 /* "action" */) {
+		while (la->kind == 10) {
 			ACTION();
 		}
 		REWARD_DECISION_DIAGRAM();
@@ -108,87 +108,87 @@ void Parser::MDPDAT() {
 }
 
 void Parser::VARIABLES_DECLARATION() {
-		Expect(_lpar);
-		Expect(8 /* "variables" */);
-		while (la->kind == _lpar) {
+		Expect(7);
+		Expect(8);
+		while (la->kind == 7) {
 			VARIABLE();
 		}
-		Expect(9 /* ")" */);
+		Expect(9);
 }
 
 void Parser::ACTION() {
 		std::string name_of_action;
 		      float tolerance; 
-		Expect(10 /* "action" */);
+		Expect(10);
 		__factory->startActionDeclaration(); 
-		if (la->kind == _ident) {
+		if (la->kind == 2) {
 			IDENT(name_of_action);
-		} else if (la->kind == _string) {
+		} else if (la->kind == 5) {
 			STRING(name_of_action);
 		} else SynErr(19);
 		TRY( __factory->addAction( name_of_action ) ); 
-		if (la->kind == _integer || la->kind == _number) {
+		if (la->kind == 3 || la->kind == 4) {
 			FLOAT(tolerance);
 		}
-		while (la->kind == _ident) {
+		while (la->kind == 2) {
 			TRANSITION_DECISION_DIAGRAM();
 		}
-		if (la->kind == 12 /* "cost" */) {
+		if (la->kind == 12) {
 			COST_DECISION_DIAGRAM();
 		}
-		Expect(11 /* "endaction" */);
+		Expect(11);
 		TRY( __factory->endActionDeclaration() ); 
 }
 
 void Parser::REWARD_DECISION_DIAGRAM() {
 		std::string name_of_var;
 		                      __factory->startRewardDeclaration(); 
-		Expect(13 /* "reward" */);
-		if (la->kind == _lpar) {
+		Expect(13);
+		if (la->kind == 7) {
 			if (IsFollowedByIdent() ) {
-				Expect(_lpar);
+				Expect(7);
 				SUB_DECISION_DIAGRAM();
-				Expect(9 /* ")" */);
+				Expect(9);
 			} else {
 				Get();
 				LEAF();
-				Expect(9 /* ")" */);
+				Expect(9);
 			}
 			TRY( __factory->addReward( ) );
 			                 __parentModality.clear();
 			                 __parentNode.clear(); 
-		} else if (la->kind == 14 /* "[" */) {
+		} else if (la->kind == 14) {
 			Get();
 			std::string operand_type; 
 			OPERAND(operand_type);
 			__factory->setOperationModeOn( operand_type );
 			if (IsFollowedByIdent() ) {
-				Expect(_lpar);
+				Expect(7);
 				SUB_DECISION_DIAGRAM();
-				Expect(9 /* ")" */);
-			} else if (la->kind == _lpar) {
+				Expect(9);
+			} else if (la->kind == 7) {
 				Get();
 				LEAF();
-				Expect(9 /* ")" */);
+				Expect(9);
 			} else SynErr(20);
 			TRY( __factory->addReward( ) );
 			                   __parentModality.clear();
 			                   __parentNode.clear(); 
-			while (la->kind == _lpar) {
+			while (la->kind == 7) {
 				if (IsFollowedByIdent() ) {
-					Expect(_lpar);
+					Expect(7);
 					SUB_DECISION_DIAGRAM();
-					Expect(9 /* ")" */);
+					Expect(9);
 				} else {
 					Get();
 					LEAF();
-					Expect(9 /* ")" */);
+					Expect(9);
 				}
 				TRY( __factory->addReward( ) );
 				                   __parentModality.clear();
 				                   __parentNode.clear(); 
 			}
-			Expect(15 /* "]" */);
+			Expect(15);
 		} else SynErr(21);
 		__factory->endRewardDeclaration(); 
 }
@@ -196,7 +196,7 @@ void Parser::REWARD_DECISION_DIAGRAM() {
 void Parser::DISCOUNT() {
 		float value;
 		        __factory->startDiscountDeclaration( ); 
-		Expect(16 /* "discount" */);
+		Expect(16);
 		FLOAT(value);
 		__factory->addDiscount( value );
 		          __factory->endDiscountDeclaration( ); 
@@ -204,23 +204,23 @@ void Parser::DISCOUNT() {
 
 void Parser::TOLERANCE() {
 		float value; 
-		Expect(17 /* "tolerance" */);
+		Expect(17);
 		FLOAT(value);
 }
 
 void Parser::VARIABLE() {
 		std::string name_of_var; 
-		Expect(_lpar);
+		Expect(7);
 		__factory->startVariableDeclaration(); 
 		IDENT(name_of_var);
 		TRY( __factory->variableName( name_of_var ) ); 
 		MODALITY_LIST();
-		Expect(9 /* ")" */);
+		Expect(9);
 		TRY( __factory->endVariableDeclaration() ); 
 }
 
 void Parser::IDENT(std::string& name) {
-		Expect(_ident);
+		Expect(2);
 		name=narrow(t->val);  
 }
 
@@ -228,30 +228,30 @@ void Parser::MODALITY_LIST() {
 		std::string label; 
 		IDENT_OR_INTEGER(label);
 		TRY( __factory->addModality( label ) ); 
-		if (la->kind == _ident || la->kind == _integer) {
+		if (la->kind == 2 || la->kind == 3) {
 			MODALITY_LIST();
 		}
 }
 
 void Parser::IDENT_OR_INTEGER(std::string& name) {
-		if (la->kind == _ident) {
+		if (la->kind == 2) {
 			IDENT(name);
-		} else if (la->kind == _integer) {
+		} else if (la->kind == 3) {
 			Get();
 			name=narrow(t->val);  
 		} else SynErr(22);
 }
 
 void Parser::STRING(std::string& str) {
-		Expect(_string);
+		Expect(5);
 		str=narrow(t->val); 
 }
 
 void Parser::FLOAT(float& val) {
-		if (la->kind == _number) {
+		if (la->kind == 4) {
 			Get();
 			val=coco_atof(t->val); 
-		} else if (la->kind == _integer) {
+		} else if (la->kind == 3) {
 			Get();
 			val=coco_atoi(t->val); 
 		} else SynErr(23);
@@ -264,13 +264,13 @@ void Parser::TRANSITION_DECISION_DIAGRAM() {
 		std::string prime_name_of_var = name_of_var + "'";
 		               __currentDecisionDiagramVar = prime_name_of_var; 
 		if (IsFollowedByIdent() ) {
-			Expect(_lpar);
+			Expect(7);
 			SUB_TRANSITION_DECISION_DIAGRAM();
-			Expect(9 /* ")" */);
-		} else if (la->kind == _lpar) {
+			Expect(9);
+		} else if (la->kind == 7) {
 			Get();
 			TRANSITION_LEAF();
-			Expect(9 /* ")" */);
+			Expect(9);
 		} else SynErr(24);
 		TRY( __factory->addTransition( name_of_var ) );
 		__factory->endTransitionDeclaration();
@@ -281,10 +281,10 @@ void Parser::TRANSITION_DECISION_DIAGRAM() {
 void Parser::COST_DECISION_DIAGRAM() {
 		std::string name_of_var;
 		                   __factory->startCostDeclaration(); 
-		Expect(12 /* "cost" */);
-		Expect(_lpar);
+		Expect(12);
+		Expect(7);
 		SUB_DECISION_DIAGRAM();
-		Expect(9 /* ")" */);
+		Expect(9);
 		TRY( __factory->addCost( ) );
 		__factory->endCostDeclaration();
 		__parentModality.clear();
@@ -299,22 +299,22 @@ void Parser::SUB_TRANSITION_DECISION_DIAGRAM() {
 		var_id = __factory->addNonTerminalNode( name_of_var );
 		               if( !__parentNode.empty() )
 		                   __factory->insertArc( __parentNode.back(), var_id, __parentModality.back() ); 
-		while (la->kind == _lpar) {
+		while (la->kind == 7) {
 			Get();
 			IDENT_OR_INTEGER(modality_of_var);
 			__parentNode.push_back( var_id );
 			                        __parentModality.push_back( (* (__factory->variable( name_of_var )))[modality_of_var] ); 
 			if (IsFollowedByIdent() ) {
-				Expect(_lpar);
+				Expect(7);
 				SUB_TRANSITION_DECISION_DIAGRAM();
-				Expect(9 /* ")" */);
-			} else if (la->kind == _lpar) {
+				Expect(9);
+			} else if (la->kind == 7) {
 				Get();
 				TRANSITION_LEAF();
-				Expect(9 /* ")" */);
+				Expect(9);
 			} else SynErr(25);
 			__parentModality.pop_back(); 
-			Expect(9 /* ")" */);
+			Expect(9);
 		}
 		__parentNode.pop_back(); 
 }
@@ -328,7 +328,7 @@ void Parser::TRANSITION_LEAF() {
 		FLOAT(value);
 		NodeId val_id = __factory->addTerminalNode( value );
 		          __factory->insertArc( var_id, val_id, i ); 
-		while (la->kind == _integer || la->kind == _number) {
+		while (la->kind == 3 || la->kind == 4) {
 			FLOAT(value);
 			++i;
 			          val_id = __factory->addTerminalNode( value );
@@ -344,22 +344,22 @@ void Parser::SUB_DECISION_DIAGRAM() {
 		var_id = __factory->addNonTerminalNode( name_of_var );
 		               if( !__parentNode.empty() )
 		                   __factory->insertArc( __parentNode.back(), var_id, __parentModality.back() ); 
-		while (la->kind == _lpar) {
+		while (la->kind == 7) {
 			Get();
 			IDENT_OR_INTEGER(modality_of_var);
 			__parentNode.push_back( var_id );
 			                        __parentModality.push_back( (* (__factory->variable( name_of_var )))[modality_of_var] );  
 			if (IsFollowedByIdent() ) {
-				Expect(_lpar);
+				Expect(7);
 				SUB_DECISION_DIAGRAM();
-				Expect(9 /* ")" */);
-			} else if (la->kind == _lpar) {
+				Expect(9);
+			} else if (la->kind == 7) {
 				Get();
 				LEAF();
-				Expect(9 /* ")" */);
+				Expect(9);
 			} else SynErr(26);
 			__parentModality.pop_back(); 
-			Expect(9 /* ")" */);
+			Expect(9);
 		}
 		__parentNode.pop_back(); 
 }
@@ -369,7 +369,7 @@ void Parser::LEAF() {
 		FLOAT(value);
 		NodeId val_id = __factory->addTerminalNode( value );
 		         __factory->insertArc( __parentNode.back(), val_id, __parentModality.back() ); 
-		while (la->kind == _integer || la->kind == _number) {
+		while (la->kind == 3 || la->kind == 4) {
 			FLOAT(value);
 			NodeId val_id = __factory->addTerminalNode( value );
 			          __factory->insertArc( __parentNode.back(), val_id, __parentModality.back() ); 
@@ -377,7 +377,7 @@ void Parser::LEAF() {
 }
 
 void Parser::OPERAND(std::string& op) {
-		Expect(_operand);
+		Expect(1);
 		op=narrow(t->val); 
 }
 
