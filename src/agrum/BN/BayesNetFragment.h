@@ -256,6 +256,8 @@ namespace gum {
 
   };
 
+  extern template class BayesNetFragment<float>;
+  extern template class BayesNetFragment<double>;
 }// namespace gum
 
 #include <agrum/BN/BayesNetFragment.tcc>

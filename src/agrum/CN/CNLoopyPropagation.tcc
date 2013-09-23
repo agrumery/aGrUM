@@ -32,35 +32,35 @@ namespace gum {
 
       res << "[RESULTATS]" << "\n";
 
-      for ( const auto it = bnet->beginNodes(), theEnd = bnet->endNodes(); it != theEnd; ++it ) {
+      for ( const auto it : bnet->nodes() ) {
         // calcul distri posteriori
         GUM_SCALAR msg_p_min = 1.0;
         GUM_SCALAR msg_p_max = 0.0;
 
         // cas evidence, calcul immediat
-        if ( infE::_evidence.exists ( *it ) ) {
-          if ( infE::_evidence[ *it ][1] == 0. )
+        if ( infE::_evidence.exists ( it ) ) {
+          if ( infE::_evidence[ it ][1] == 0. )
             msg_p_min = 0.;
-          else if ( infE::_evidence[ *it ][1] == 1. )
+          else if ( infE::_evidence[ it ][1] == 1. )
             msg_p_min = 1.;
 
           msg_p_max = msg_p_min;
         }
         // sinon depuis node P et node L
         else {
-          GUM_SCALAR min = _NodesP_min[ *it ];
+          GUM_SCALAR min = _NodesP_min[ it ];
           GUM_SCALAR max;
 
-          if ( _NodesP_max.exists ( *it ) )
-            max = _NodesP_max[ *it ];
+          if ( _NodesP_max.exists ( it ) )
+            max = _NodesP_max[ it ];
           else
             max = min;
 
-          GUM_SCALAR lmin = _NodesL_min[ *it ];
+          GUM_SCALAR lmin = _NodesL_min[ it ];
           GUM_SCALAR lmax;
 
-          if ( _NodesL_max.exists ( *it ) )
-            lmax = _NodesL_max[ *it ];
+          if ( _NodesL_max.exists ( it ) )
+            lmax = _NodesL_max[ it ];
           else
             lmax = lmin;
 
@@ -98,21 +98,21 @@ namespace gum {
           std::cout << "pas de proba calculable (verifier observations)" << std::endl;
         }
 
-        res << "P(" << bnet->variable ( *it ).name() << " | e) = ";
+        res << "P(" << bnet->variable ( it ).name() << " | e) = ";
 
-        if ( infE::_evidence.exists ( *it ) )
+        if ( infE::_evidence.exists ( it ) )
           res << "(observe)" << std::endl;
         else
           res << std::endl;
 
-        res << "\t\t" << bnet->variable ( *it ).label ( 0 ) << "  [ " << ( GUM_SCALAR ) 1. - msg_p_max;
+        res << "\t\t" << bnet->variable ( it ).label ( 0 ) << "  [ " << ( GUM_SCALAR ) 1. - msg_p_max;
 
         if ( msg_p_min != msg_p_max )
           res << ", " << ( GUM_SCALAR ) 1. - msg_p_min << " ] | ";
         else
           res << " ] | ";
 
-        res << bnet->variable ( *it ).label ( 1 ) << "  [ " << msg_p_min;
+        res << bnet->variable ( it ).label ( 1 ) << "  [ " << msg_p_min;
 
         if ( msg_p_min != msg_p_max )
           res << ", " << msg_p_max << " ]" << std::endl;

@@ -25,6 +25,10 @@
 */
 
 #include <math.h>
+#include <fstream>
+
+#include <agrum/core/timer.h>
+#include <agrum/core/exceptions.h>
 
 #include <agrum/multidim/potential.h>
 #include <agrum/multidim/instantiation.h>
@@ -34,9 +38,6 @@
 
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/planning/SPUDDPlanning.h>
-
-#include <fstream>
-#include <agrum/core/timer.h>
 
 namespace gum {
 
@@ -380,8 +381,7 @@ namespace gum {
       __traceAlgoSaveFile.open ( traceFileName.str().c_str(), std::ios::out | std::ios::app );
 
       if ( !__traceAlgoSaveFile ) {
-        std::cerr << "Erreur à l'ouverture !" << std::endl;
-        return;
+        GUM_ERROR ( IOError,"log file"<<traceFileName<<" does not open correctly");
       }
 
       for ( SetIterator< MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ) {
@@ -458,8 +458,8 @@ namespace gum {
         delete *VActionsIter;
 
         __traceAlgoSaveFile << nbNodeT1 << "\t" << nbNodeT2 << "\t" << nbRetroVarDirect << "\t" << tailleEspaceRetrogradeDirect << "\t" << nbFinalNodeDirect << "\t" <<
-                            iterationTimeDirect << "\t" << nbRetroVarIndirect << "\t" << tailleEspaceRetrogradeIndirect << "\t" << nbFinalNodeIndirect << "\t" << iterationTimeIndirect
-                            << "\t" << sensDirect << "\t" << iterationTime << "\t" << totalTime << std::endl;
+        iterationTimeDirect << "\t" << nbRetroVarIndirect << "\t" << tailleEspaceRetrogradeIndirect << "\t" << nbFinalNodeIndirect << "\t" << iterationTimeIndirect
+        << "\t" << sensDirect << "\t" << iterationTime << "\t" << totalTime << std::endl;
       }
 
       __traceAlgoSaveFile.close();

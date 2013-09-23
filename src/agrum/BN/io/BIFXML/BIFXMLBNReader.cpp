@@ -24,6 +24,10 @@
  */
 #include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
 
+
+template class gum::BIFXMLBNReader<float>;
+template class gum::BIFXMLBNReader<double>;
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #endif // DOXYGEN_SHOULD_SKIP_THIS

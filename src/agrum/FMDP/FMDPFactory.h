@@ -36,7 +36,7 @@
 #include <agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
 
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
-#include <agrum/FMDP/abstractFMDPFactory.h>
+#include <agrum/FMDP/IFMDPFactory.h>
 
 
 namespace gum {
@@ -60,7 +60,6 @@ namespace gum {
    */
 
   template<typename GUM_SCALAR>
-
   class FMDPFactory : public AbstractFMDPFactory {
 
     public:
@@ -337,6 +336,9 @@ namespace gum {
       /// Raise an OperationNotAllowed with the message "Illegal state."
       void __illegalStateError( const std::string& s );
   };
+  
+  extern template class FMDPFactory<float>;
+  extern template class FMDPFactory<double>;
 } /* namespace gum */
 
 

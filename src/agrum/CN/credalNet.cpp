@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,9 +17,14 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+/**
+ * @file
+ * @brief Implementation of the BayesNetFactory class.
+ *
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
+ */
 
-#include <agrum/BN/io/cnf/GeneralizedCNFWriter.h>
+#include <agrum/CN/credalNet.h>
 
-template class gum::GeneralizedCNFWriter<float>;
-template class gum::GeneralizedCNFWriter<double>;
-  
+template class gum::credal::CredalNet<float>;
+template class gum::credal::CredalNet<double>;

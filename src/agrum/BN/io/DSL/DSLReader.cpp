@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <agrum/BN/io/cnf/GeneralizedCNFWriter.h>
 
-template class gum::GeneralizedCNFWriter<float>;
-template class gum::GeneralizedCNFWriter<double>;
-  
+#include <agrum/BN/io/DSL/DSLReader.h>
+
+template class gum::DSLReader<float>;
+template class gum::DSLReader<double>;

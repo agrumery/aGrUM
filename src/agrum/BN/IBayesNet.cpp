@@ -19,3 +19,6 @@
  ***************************************************************************/
 
 #include <agrum/BN/IBayesNet.h>
+
+template class gum::IBayesNet<float>;
+template class gum::IBayesNet<double>;

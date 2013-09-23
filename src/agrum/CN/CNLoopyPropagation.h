@@ -27,13 +27,13 @@
 #ifndef __CN_LOOPY_PROPAGATION__H__
 #define __CN_LOOPY_PROPAGATION__H__
 
-#include <agrum/CN/CredalNet.h>
+#include <agrum/CN/credalNet.h>
 #include <agrum/BN/algorithms/approximationScheme.h>
 #include <agrum/core/sequence.h>
 #include <cstdlib>
 #include <ctime>
 #include <limits>
-#include <agrum/CN/InferenceEngine.h>
+#include <agrum/CN/inferenceEngine.h>
 
 #include <agrum/core/pow.h>
 
@@ -282,7 +282,9 @@ namespace gum {
 
 
     };
-
+    
+    extern template class CNLoopyPropagation<float>;
+    extern template class CNLoopyPropagation<double>;
   }
 }
 

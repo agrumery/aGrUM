@@ -24,8 +24,6 @@
 
 namespace gum {
 
-
-
   /// indicates whether a given variable belongs to the Instantiation
 
   INLINE bool Instantiation::contains( const DiscreteVariable& v ) const  {

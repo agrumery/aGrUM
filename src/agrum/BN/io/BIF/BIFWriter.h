@@ -53,7 +53,6 @@ namespace gum {
    *
    */
   template<typename GUM_SCALAR>
-
   class BIFWriter: public BNWriter<GUM_SCALAR> {
     public:
       // ==========================================================================
@@ -107,6 +106,9 @@ namespace gum {
       std::string __variablesLabels( const Sequence<const DiscreteVariable*>& varsSeq,
                                      const Instantiation& inst );
   };
+  
+  extern template class BIFWriter<float>;  
+  extern template class BIFWriter<double>;
 } /* namespace gum */
 
 #include <agrum/BN/io/BIF/BIFWriter.tcc>

@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
- *   {prenom.nom}_at_lip6.fr                                               *
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}@lip6.fr                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <agrum/BN/io/cnf/GeneralizedCNFWriter.h>
+#include <agrum/FMDP/io/dat/FMDPDatReader.h>
 
-template class gum::GeneralizedCNFWriter<float>;
-template class gum::GeneralizedCNFWriter<double>;
-  
+template class gum::FMDPDatReader<float>;
+template class gum::FMDPDatReader<double>;
+

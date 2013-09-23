@@ -28,7 +28,9 @@
 #define __CN_MC_SAMPLING__H__
 
 #include <limits>
-#include <agrum/CN/MultipleInferenceEngine.h>
+#include <agrum/CN/multipleInferenceEngine.h>
+
+#include <agrum/BN/inference/lazyPropagation.h>
 
 namespace gum {
   namespace credal {
@@ -77,7 +79,7 @@ namespace gum {
          * @param toFill A reference to the bits to fill. Size must be correct before passing argument (i.e. big enough to represent \c value)
          * @param value The constant integer we want to binarize.
          */
-        inline void __binaryRep( std::vector< bool >& toFill,  const unsigned int value ) const;
+        inline void __binaryRep ( std::vector< bool >& toFill,  const unsigned int value ) const;
 
         /// @}
 
@@ -91,7 +93,7 @@ namespace gum {
          * Constructor.
          * @param credalNet The CredalNet to be used by the algorithm.
          */
-        CNMonteCarloSampling( const CredalNet< GUM_SCALAR >& credalNet );
+        CNMonteCarloSampling ( const CredalNet< GUM_SCALAR >& credalNet );
         /** Destructor. */
         virtual ~CNMonteCarloSampling();
         /// @}
@@ -115,6 +117,8 @@ namespace gum {
         bool _repetitiveInd;
     };
 
+    extern template class CNMonteCarloSampling<float,LazyPropagation<float>>;
+    extern template class CNMonteCarloSampling<double,LazyPropagation<double>>;
 
   } // namespace cn
 }

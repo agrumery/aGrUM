@@ -92,20 +92,10 @@ namespace gum {
        * @throws IOError Raised if and I/O error occurs.
        */
       virtual void write( std::string filePath, const IBayesNet<GUM_SCALAR>& bn );
-
-
-      /*  private:
-          // Returns the header of the BN file.
-          std::string __header( const IBayesNet<GUM_SCALAR>& bn );
-
-          // Returns a bloc defining a variable in the BN format.
-          std::string __variableBloc( const DiscreteVariable& var );
-
-          // Returns a bloc defining a variable's CPT in the BN format.
-          std::string __variableCPT( const Potential<GUM_SCALAR>& cpt );
-
-          // Returns the modalities labels of the variables in varsSeq*/
   };
+
+  extern template class ContextualDependenciesCNFWriter<float>;
+  extern template class ContextualDependenciesCNFWriter<double>;
 } /* namespace gum */
 
 #include <agrum/BN/io/cnf/ContextualDependenciesCNFWriter.tcc>

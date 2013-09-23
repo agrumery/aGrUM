@@ -1,5 +1,5 @@
-#include "CredalNet.h"
-#include "../core/exceptions.h"
+#include <agrum/CN/credalNet.h>
+#include <agrum/core/exceptions.h>
 
 namespace gum {
   namespace credal {
@@ -499,7 +499,7 @@ namespace gum {
 
     template< typename GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::idmLearning ( const unsigned int s, const bool keepZeroes ) {
-      for ( const auto node_idIt : src_bn.nodes() ) {
+      for ( const auto node_idIt : __src_bn.nodes() ) {
         const Potential< GUM_SCALAR >* const potential ( &__src_bn.cpt ( node_idIt ) );
 
         Potential< GUM_SCALAR >* const potential_min ( const_cast< Potential< GUM_SCALAR > * const > ( &__src_bn_min.cpt ( node_idIt ) ) );
@@ -715,11 +715,11 @@ namespace gum {
 
       __credalNet_src_cpt.resize ( __src_bn.size() );
 
-      for ( const auto node_idIt = __src_bn.beginNodes(), theEnd = __src_bn.endNodes(); node_idIt != theEnd; ++node_idIt ) {
-        const Potential< GUM_SCALAR >* const potential_min ( &__src_bn_min.cpt ( *node_idIt ) );
-        const Potential< GUM_SCALAR >* const potential_max ( &__src_bn_max.cpt ( *node_idIt ) );
+      for ( const auto node_idIt : __src_bn.nodes() ) {
+        const Potential< GUM_SCALAR >* const potential_min ( &__src_bn_min.cpt ( node_idIt ) );
+        const Potential< GUM_SCALAR >* const potential_max ( &__src_bn_max.cpt ( node_idIt ) );
 
-        auto var_dSize = __src_bn.variable ( *node_idIt ).domainSize();
+        auto var_dSize = __src_bn.variable ( node_idIt ).domainSize();
         auto entry_size = potential_min->domainSize() / var_dSize;
 
         std::vector< std::vector< std::vector< GUM_SCALAR > > > var_cpt ( entry_size );
@@ -785,8 +785,8 @@ namespace gum {
 
         } // end of : for each entry
 
-        __credalNet_src_cpt.insert ( *node_idIt, var_cpt );
-        //std::cout << __src_bn.variable(*node_idIt).name() << std::endl;
+        __credalNet_src_cpt.insert ( node_idIt, var_cpt );
+        //std::cout << __src_bn.variable(node_idIt).name() << std::endl;
         //std::cout << var_cpt << std::endl;
 
       } // end of : for each variable (node)
@@ -1351,7 +1351,7 @@ namespace gum {
     int CredalNet< GUM_SCALAR >::__find_dNode_card ( const std::vector< std::vector< std::vector< GUM_SCALAR > > >& var_cpt ) const {
       Size vertices_size = 0;
 
-      for ( const auto entry = var_cpt.cbegin(), theEnd = var_cpt.cend(); entry != theEnd; ++entry ) {
+      for ( auto entry = var_cpt.cbegin(), theEnd = var_cpt.cend(); entry != theEnd; ++entry ) {
         if ( entry->size() > vertices_size )
           vertices_size = entry->size();
       }
@@ -1368,15 +1368,15 @@ namespace gum {
       else
         __current_bn = this->__current_bn;
 
-      for ( const auto node_idIt = __current_bn->beginNodes(), theEnd = __current_bn->endNodes(); node_idIt != theEnd; ++node_idIt )
-        dest.add ( __current_bn->variable ( *node_idIt ) );
+      for ( auto node_idIt : __current_bn->nodes() )
+        dest.add ( __current_bn->variable ( node_idIt ) );
 
       dest.beginTopologyTransformation();
 
-      for ( const auto node_idIt = __current_bn->beginNodes(), theEnd = __current_bn->endNodes(); node_idIt != theEnd; ++node_idIt ) {
-        for ( const auto parent_idIt = __current_bn->cpt ( *node_idIt ).begin(), theEnd2 = __current_bn->cpt ( *node_idIt ).end(); parent_idIt != theEnd2; ++parent_idIt ) {
-          if ( __current_bn->nodeId ( **parent_idIt ) != *node_idIt )
-            dest.addArc ( __current_bn->nodeId ( **parent_idIt ), *node_idIt );
+      for ( const auto node_idIt : __current_bn->nodes() ) {
+        for ( auto parent_idIt = __current_bn->cpt ( node_idIt ).begin(), theEnd2 = __current_bn->cpt ( node_idIt ).end(); parent_idIt != theEnd2; ++parent_idIt ) {
+          if ( __current_bn->nodeId ( **parent_idIt ) != node_idIt )
+            dest.addArc ( __current_bn->nodeId ( **parent_idIt ), node_idIt );
         } // end of : for each parent in order of appearence
       } // end of : for each variable
 
@@ -1452,8 +1452,8 @@ namespace gum {
       h_file << "begin\n";
       h_file << h_rep.size() << ' ' << h_rep[0].size() << " rational\n";
 
-      for ( const auto it = h_rep.cbegin(), theEnd = h_rep.cend(); it != theEnd; ++it ) {
-        for ( const auto it2 = it->cbegin(), theEnd2 = it->cend(); it2 != theEnd2; ++it2 ) {
+      for ( auto it = h_rep.cbegin(), theEnd = h_rep.cend(); it != theEnd; ++it ) {
+        for ( auto it2 = it->cbegin(), theEnd2 = it->cend(); it2 != theEnd2; ++it2 ) {
           // get integer fraction from decimal value
           // smallest numerator & denominator is farley, also
           // best precision
@@ -1600,7 +1600,7 @@ namespace gum {
           auto begin_pos = ( this_thread + 0 ) * v_rep.size() / num_threads;
           auto end_pos = ( this_thread + 1 ) * v_rep.size() / num_threads;
 
-          for ( const auto p = begin_pos; p < end_pos; p++ ) {
+          for ( auto p = begin_pos; p < end_pos; p++ ) {
             #pragma omp flush(is_redund)
 
             if ( is_redund ) break;

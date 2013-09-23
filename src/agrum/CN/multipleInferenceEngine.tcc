@@ -1,5 +1,5 @@
-#include "InferenceEngine.h"
-#include "MultipleInferenceEngine.h"
+#include <agrum/CN/inferenceEngine.h>
+#include <agrum/CN/multipleInferenceEngine.h>
 
 namespace gum {
   namespace credal {

@@ -40,14 +40,13 @@ namespace gum {
      *
      */
     template <typename GUM_SCALAR>
-
     class Gibbs {
 
       public:
         /**
          * Default constructor
          */
-        Gibbs( const IBayesNet<GUM_SCALAR>& BN );
+        Gibbs ( const IBayesNet<GUM_SCALAR>& BN );
 
         /**
          * Destructor.
@@ -63,12 +62,12 @@ namespace gum {
             * @warning if an evidence already w.r.t. a given node and a new
             * evidence w.r.t. this node is onserted, the old evidence is removed.
             */
-        virtual void insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list ) ;
+        virtual void insertEvidence ( const List<const Potential<GUM_SCALAR>*>& pot_list ) ;
 
         /**
          * Remove a given evidence from the graph.
          */
-        virtual void eraseEvidence( const Potential<GUM_SCALAR>* e ) ;
+        virtual void eraseEvidence ( const Potential<GUM_SCALAR>* e ) ;
 
         /**
          * Remove all evidence from the graph.
@@ -86,7 +85,7 @@ namespace gum {
 
         /// getters and setters
         /// @{
-        void setNbrDrawnBySample( Size s );
+        void setNbrDrawnBySample ( Size s );
         Size nbrDrawnBySample( );
 
         const Instantiation& particle();
@@ -95,10 +94,10 @@ namespace gum {
         ///@}
 
       private:
-        void __setValVar( NodeId id, Idx choice );
+        void __setValVar ( NodeId id, Idx choice );
 
-        void __drawVar( NodeId id );
-        void __GibbsSample( NodeId id );
+        void __drawVar ( NodeId id );
+        void __GibbsSample ( NodeId id );
         void __MonteCarloSample();
 
         Size __nbr_drawn_by_sample;
@@ -133,6 +132,9 @@ namespace gum {
         /// The Bayes net we draw particle on
         const IBayesNet<GUM_SCALAR>& __bayesNet;
     };
+
+    extern template class Gibbs<float>;
+    extern template class Gibbs<double>;
   } // namespace particle
 } //namespace gum
 

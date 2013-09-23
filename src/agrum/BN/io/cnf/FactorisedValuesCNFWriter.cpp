@@ -19,3 +19,7 @@
  ***************************************************************************/
 
 #include <agrum/BN/io/cnf/FactorisedValuesCNFWriter.h>
+
+template class gum::FactorisedValuesCNFWriter<float>;
+template class gum::FactorisedValuesCNFWriter<double>;
+

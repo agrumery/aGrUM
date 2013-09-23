@@ -1,4 +1,4 @@
-#include <agrum/CN/InferenceEngine.h>
+#include <agrum/CN/inferenceEngine.h>
 
 namespace gum {
   namespace credal {
@@ -219,7 +219,7 @@ namespace gum {
         _evidence.clear();
 
       // use cbegin() to get const_iterator when available in aGrUM hashtables
-      for ( const auto it = evidence.begin(), theEnd = evidence.end(); it != theEnd; ++it ) {
+      for ( auto it = evidence.begin(), theEnd = evidence.end(); it != theEnd; ++it ) {
         try {
           _credalNet->current_bn().variable ( it.key() );
         } catch ( NotFound& err ) {
@@ -492,7 +492,7 @@ namespace gum {
       }
 
       // use cbegin when available
-      for ( const auto it = _marginalMin.begin(), theEnd = _marginalMin.end(); it != theEnd; ++it ) {
+      for ( auto it = _marginalMin.begin(), theEnd = _marginalMin.end(); it != theEnd; ++it ) {
         auto esize = it->size();
 
         for ( decltype ( esize ) mod = 0; mod < esize; mod++ ) {
@@ -520,22 +520,22 @@ namespace gum {
       }
 
       // use cbegin when available
-      for ( const auto it = _dynamicExpMin.begin(), theEnd = _dynamicExpMin.end(); it != theEnd; ++it ) {
+      for ( auto it = _dynamicExpMin.begin(), theEnd = _dynamicExpMin.end(); it != theEnd; ++it ) {
         m_stream << it.key();//it->first;
 
         // iterates over a vector
-        for ( const auto it2 = it->/*second.*/cbegin(), theEnd2 = it->/*second.*/cend(); it2 != theEnd2; ++it2 ) {
+        for ( auto it2 = it->/*second.*/cbegin(), theEnd2 = it->/*second.*/cend(); it2 != theEnd2; ++it2 ) {
           m_stream << " " << *it2;
         }
 
         m_stream << "\n";
       }
 
-      for ( const auto it = _dynamicExpMax.begin(), theEnd = _dynamicExpMax.end(); it != theEnd; ++it ) {
+      for ( auto it = _dynamicExpMax.begin(), theEnd = _dynamicExpMax.end(); it != theEnd; ++it ) {
         m_stream << it.key();//->first;
 
         // iterates over a vector
-        for ( const auto it2 = it->/*second.*/cbegin(), theEnd2 = it->/*second.*/cend(); it2 != theEnd2; ++it2 ) {
+        for ( auto it2 = it->/*second.*/cbegin(), theEnd2 = it->/*second.*/cend(); it2 != theEnd2; ++it2 ) {
           m_stream << " " << *it2;
         }
 
@@ -551,7 +551,7 @@ namespace gum {
       output << "\n";
 
       // use cbegin() when available
-      for ( const auto it = _marginalMin.begin(), theEnd = _marginalMin.end(); it != theEnd; ++it ) {
+      for ( auto it = _marginalMin.begin(), theEnd = _marginalMin.end(); it != theEnd; ++it ) {
         auto esize = it->size();
 
         for ( decltype ( esize ) mod = 0; mod < esize; mod++ ) {
@@ -580,20 +580,20 @@ namespace gum {
       }
 
       // use cbegin() cend() when available
-      for ( const auto it = _marginalSets.begin(), theEnd = _marginalSets.end(); it != theEnd; ++it ) {
+      for ( auto it = _marginalSets.begin(), theEnd = _marginalSets.end(); it != theEnd; ++it ) {
         m_stream << _credalNet->current_bn().variable ( it.key() ).name() << "\n";
 
         //auto esize = _marginalSets[it.key()].size();
         // iterates over vectors from here
         //for ( decltype(esize) vertex = 0; vertex < esize; vertex ++ ) {
-        for ( const auto jt = it->begin(), jtEnd = it->end(); jt != jtEnd; ++jt ) {
+        for ( auto jt = it->begin(), jtEnd = it->end(); jt != jtEnd; ++jt ) {
           m_stream << "[";
 
           //auto dSize = _marginalSets[it.key()][vertex].size();
           //for ( decltype(dSize) mod = 0; mod < dSize; mod++ ) {
           bool first = true;
 
-          for ( const auto kt = jt->begin(), ktEnd = jt->end(); kt != ktEnd; ++kt ) {
+          for ( auto kt = jt->begin(), ktEnd = jt->end(); kt != ktEnd; ++kt ) {
             if ( ! first ) {
               m_stream << ",";
               first = false;
@@ -898,10 +898,10 @@ namespace gum {
 
       bool eq = true;
 
-      for ( const auto it = nodeCredalSet.cbegin(), itEnd = nodeCredalSet.cend(); it != itEnd; ++it ) {
+      for ( auto it = nodeCredalSet.cbegin(), itEnd = nodeCredalSet.cend(); it != itEnd; ++it ) {
         eq = true;
 
-        for ( auto end = vertex.size(), i = 0; i < end; i++ ) {
+        for ( auto end = vertex.size(), i = ( Size ) 0; i < end; i++ ) {
           if ( fabs ( vertex[ i ] - ( *it ) [ i ] ) > 1e-6 ) {
             eq = false;
             break;
@@ -920,7 +920,7 @@ namespace gum {
       // check that the point and all previously added ones are not inside the actual polytope
       auto itEnd = std::remove_if ( nodeCredalSet.begin(), nodeCredalSet.end(),
       [&] ( const std::vector< GUM_SCALAR >& v ) -> bool {
-        for ( const auto jt = v.cbegin(), jtEnd = v.cend(),
+        for ( auto jt = v.cbegin(), jtEnd = v.cend(),
         minIt = _marginalMin[ id ].cbegin(), minItEnd = _marginalMin[ id ].cend(),
         maxIt = _marginalMax[ id ].cbegin(), maxItEnd = _marginalMax[ id ].cend();
         jt != jtEnd,

@@ -18,8 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <agrum/BN/io/cnf/GeneralizedCNFWriter.h>
+#include <agrum/BN/io/BIF/BIFReader.h>
 
-template class gum::GeneralizedCNFWriter<float>;
-template class gum::GeneralizedCNFWriter<double>;
-  
+template class gum::BIFReader<float>;  
+template class gum::BIFReader<double>;

@@ -19,3 +19,7 @@
  ***************************************************************************/
 
 #include <agrum/BN/io/BIF/BIFWriter.h>
+
+
+template class gum::BIFWriter<float>;
+template class gum::BIFWriter<double>;

@@ -26,7 +26,6 @@
 
 #include <agrum/BN/BayesNetFactory.h>
 
-
 #define VERBOSITY(x) {                                                  \
     if (isVerbose()) \
       std::cerr << "[BN factory] "<<x<< std::endl; \
@@ -61,7 +60,7 @@ namespace gum {
     __parents ( 0 ), __impl ( 0 ), __bn ( 0 ) {
     GUM_CONS_CPY ( BayesNetFactory );
 
-    if ( source.state() != BayesNetFactory<GUM_SCALAR>::NONE ) {
+    if ( source.state() != factory_state::NONE ) {
       GUM_ERROR ( OperationNotAllowed, "Illegal state to proceed make a copy." );
     } else {
       __states = source.__states;

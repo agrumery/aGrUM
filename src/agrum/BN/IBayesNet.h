@@ -145,7 +145,7 @@ namespace gum {
       /**
        * This operator compares 2 BNs !
        * @warning To identify nodes between BNs, it is assumed that they share the same name.
-       * 
+       *
        * @return true if the src and this are equal.
        */
       bool operator== ( const IBayesNet<GUM_SCALAR>& src ) const;
@@ -156,7 +156,8 @@ namespace gum {
       /**
        * Returns the dimension (the number of free parameters) in this bayes net.
        *
-       * \f$ dim(G)=\sum_{i \in nodes} ((r_i-1)\cdot q_i) \f$ where \f$ r_i \f$ is the number of instantiations of node \f$ i \f$ and \f$ q_i \f$ is the number of instantiations of its parents.
+       * \f$ dim(G)=\sum_{i \in nodes} ((r_i-1)\cdot q_i) \f$ where \f$ r_i \f$ is the number of instantiations of node \f$ i \f$ and \f$ q_i \f$ is the number of instantiations of 
+       * its parents.
        */
       Idx dim() const;
 
@@ -166,6 +167,9 @@ namespace gum {
       /// @return Returns a string representation of this IBayesNet.
       std::string toString ( void ) const;
   };
+
+  extern template class IBayesNet<float>;
+  extern template class IBayesNet<double>;
 
   /// Prints map's DAG in output using the Graphviz-dot format.
   template <typename GUM_SCALAR>

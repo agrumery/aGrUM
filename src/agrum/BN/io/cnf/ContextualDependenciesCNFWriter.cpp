@@ -19,3 +19,6 @@
  ***************************************************************************/
 
 #include <agrum/BN/io/cnf/ContextualDependenciesCNFWriter.h>
+
+template class gum::ContextualDependenciesCNFWriter<float>;
+template class gum::ContextualDependenciesCNFWriter<double>;

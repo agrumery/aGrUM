@@ -429,8 +429,10 @@ namespace gum {
       /// Increment a modality counter for the __fillProbaWithValuesTable method.
       bool __increment( std::vector<gum::Idx>& modCounter,
                         List<const DiscreteVariable*>& varList );
-
   };
+  
+  extern template class BayesNetFactory<float>;
+  extern template class BayesNetFactory<double>;
 } /* namespace gum */
 
 
@@ -439,3 +441,4 @@ namespace gum {
 #endif // GUM_BAYESNET_FACTORY_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
+

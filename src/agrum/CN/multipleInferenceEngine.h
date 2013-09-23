@@ -29,7 +29,8 @@
 
 /// @todo virtual for all functions that MAY be one day redefined in any derived class
 
-#include <agrum/CN/InferenceEngine.h>
+#include <agrum/CN/inferenceEngine.h>
+#include <agrum/BN/inference/lazyPropagation.h>
 
 namespace gum {
   namespace credal {
@@ -71,7 +72,7 @@ namespace gum {
          * @param vertex The vertex to add to the credal set.
          * @param elimRedund \c true if redundancy elimination is to be performed, \c false otherwise and by default.
          */
-        inline void __updateThreadCredalSets( const NodeId& id, const std::vector< GUM_SCALAR >& vertex, const bool& elimRedund );
+        inline void __updateThreadCredalSets ( const NodeId& id, const std::vector< GUM_SCALAR >& vertex, const bool& elimRedund );
 
       protected :
         /** Threads lower marginals, one per thread. */
@@ -114,7 +115,7 @@ namespace gum {
          * @param __storeVertices \c True if vertices should be stored, \c False otherwise.
          * @param __storeBNOpt \c True if optimal IBayesNet should be stored, \c false otherwise.
          */
-        void _initThreadsData( const unsigned int& num_threads, const bool __storeVertices, const bool __storeBNOpt );
+        void _initThreadsData ( const unsigned int& num_threads, const bool __storeVertices, const bool __storeBNOpt );
 
         /// @}
 
@@ -129,7 +130,7 @@ namespace gum {
          * @param elimRedund \c true if redundancy elimination is to be performed, \c false otherwise and by default.
          * @return \c True if the IBayesNet is kept (for now), \c False otherwise.
          */
-        inline bool _updateThread( const NodeId& id, const std::vector< GUM_SCALAR >& vertex, const bool& elimRedund = false );
+        inline bool _updateThread ( const NodeId& id, const std::vector< GUM_SCALAR >& vertex, const bool& elimRedund = false );
 
         /**
          * @brief Fusion of threads marginals.
@@ -170,7 +171,7 @@ namespace gum {
          * Constructor.
          * @param credalNet The CredalNet to be used.
          */
-        MultipleInferenceEngine( const CredalNet< GUM_SCALAR >& credalNet );
+        MultipleInferenceEngine ( const CredalNet< GUM_SCALAR >& credalNet );
 
         /** Destructor. */
         virtual ~MultipleInferenceEngine();
@@ -190,22 +191,14 @@ namespace gum {
         /** To be redefined by each credal net algorithm. Starts the inference. */
         virtual void makeInference() = 0;
         /// @}
-
-        /// @name Getters and setters
-        /// @{
-        /**
-         * Get optimum IBayesNet.
-         * @return A pointer to the optimal net object.
-         */
-        //OptBN< GUM_SCALAR > * getOptBN ();
-
-        /// @}
     };
 
+    extern template class MultipleInferenceEngine<double,gum::LazyPropagation<double>>;
+    extern template class MultipleInferenceEngine<float,gum::LazyPropagation<float>>;
   } // end of namespace
 }
 
-#include <agrum/CN/MultipleInferenceEngine.tcc>
+#include <agrum/CN/multipleInferenceEngine.tcc>
 
 #endif
 
