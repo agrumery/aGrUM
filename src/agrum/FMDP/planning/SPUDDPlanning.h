@@ -180,8 +180,8 @@ namespace gum {
       std::ofstream __traceAlgoSaveFile;
   };
   
-//  extern template class SPUDDPlanning<float>;
-//  extern template class SPUDDPlanning<double>;
+  extern template class SPUDDPlanning<float>;
+  extern template class SPUDDPlanning<double>;
 } /* namespace gum */
 
 

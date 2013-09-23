@@ -43,9 +43,9 @@ namespace gum {
 
 
   /* ************************************************************************************************** **/
-  /* **                                                                                                                                                 **/
-  /* **                                                Constructors / Destructors                                                       **/
-  /* **                                                                                                                                                 **/
+  /* **                                                                                                 **/
+  /* **                                Constructors / Destructors                                       **/
+  /* **                                                                                                 **/
   /* ************************************************************************************************** **/
 
 // ===========================================================================
@@ -72,9 +72,9 @@ namespace gum {
 
 
   /* ************************************************************************************************** **/
-  /* **                                                                                                                                                 **/
-  /* **                                                        General Methods                                                              **/
-  /* **                                                                                                                                                 **/
+  /* **                                                                                                 **/
+  /* **                                   General Methods                                               **/
+  /* **                                                                                                 **/
   /* ************************************************************************************************** **/
 
 // ===========================================================================
@@ -295,11 +295,261 @@ namespace gum {
   }
 
 
+  /* ************************************************************************************************** **/
+  /* **                                                                                                 **/
+  /* **                                   Optimal Policy Evaluation Methods                             **/
+  /* **                                                                                                 **/
+  /* ************************************************************************************************** **/
+
+// ===========================================================================
+// Performs one last step of the algorithm to obtain the arg max equivalent
+// of the so far computed value function
+// ===========================================================================
+  template<typename GUM_SCALAR>
+  MultiDimDecisionDiagramBase< std::pair< double, long > >*
+  SPUDDPlanning< GUM_SCALAR >::__argMaxValueFunction ( const MultiDimDecisionDiagramBase< GUM_SCALAR >* V ) {
+
+    // *****************************************************************************************
+    // Loop reset
+    __fmdp->resetActionsIterator();
+    Bijection< Idx, MultiDimDecisionDiagramBase< GUM_SCALAR >* > VactionCollector;
+    MultiDimDecisionDiagramBase< GUM_SCALAR >* Vnew = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*> ( V->newFactory() );
+    Vnew->copyAndReassign ( V, __fmdp->main2prime() );
+    MultiDimDecisionDiagramBase< GUM_SCALAR >* Vtemp;
+
+#ifdef O4DDWITHORDER
+    Sequence< const DiscreteVariable* > elVarSeq;
+#else
+    Sequence< const DiscreteVariable* > elVarSeq = Vnew->variablesSequence();
+#endif
+    __fmdp->resetVariablesIterator();
+
+    while ( __fmdp->hasVariable() ) {
+      const DiscreteVariable* var = __fmdp->variable();
+
+      if ( ! elVarSeq.exists ( var ) ) {
+        elVarSeq << var;
+      }
+
+      __fmdp->nextVariable();
+    }
+
+    // *****************************************************************************************
+    // For each action
+    while ( __fmdp->hasAction() ) {
+
+      MultiDimDecisionDiagramBase< GUM_SCALAR >* Vaction = __evalActionValue ( Vnew, elVarSeq );
+
+      Vtemp = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*> ( Vaction->newFactory() );
+      Vtemp->multiplyByScalar ( Vaction, __fmdp->discount() );
+      delete Vaction;
+      Vaction = Vtemp;
+
+      Vtemp = Vaction;
+      Vaction = add2MultiDimDecisionDiagrams ( reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*> ( __fmdp->reward() ), Vaction );
+      delete Vtemp;
+
+      VactionCollector.insert ( __fmdp->actionIterId(), Vaction );
+      __fmdp->nextAction();
+    }
+
+    delete Vnew;
+    MultiDimDecisionDiagramBase< std::pair< double, long > >* Vamnew = nullptr;
+
+//     for ( BijectionIterator< Idx, MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ) {
+    for ( Idx acta = 1; acta < VactionCollector.size() + 1; acta++ ) {
+//         MultiDimDecisionDiagramBase< std::pair< double, long > >* Vamaction = __createArgMaxCopy( VActionsIter.second(), VActionsIter.first() );
+      MultiDimDecisionDiagramBase< std::pair< double, long > >* Vamaction = __createArgMaxCopy ( VactionCollector.second ( acta ), acta );
+      delete VactionCollector.second ( acta );
+      MultiDimDecisionDiagramBase< std::pair< double, long > >* Vamtemp = Vamnew;
+      Vamnew = __argMaxOn2MultiDimDecisionDiagrams ( Vamnew, Vamaction );
+      delete Vamtemp;
+      delete Vamaction;
+    }
+
+    return Vamnew;
+
+  }
+
+// ===========================================================================
+// Creates a copy of given in parameter decision diagram and replaces leaves
+// of that diagram by a pair containing value of the leaf and action to which
+// is bind this diagram (given in parameter).
+// ===========================================================================
+  template<typename GUM_SCALAR>
+  MultiDimDecisionDiagramBase< std::pair< double, long > >*
+  SPUDDPlanning<GUM_SCALAR>::__createArgMaxCopy ( const MultiDimDecisionDiagramBase<GUM_SCALAR>* Vaction, Idx actionId ) {
+
+    MultiDimDecisionDiagramBase< std::pair< double, long > >* amcpy = new MultiDimDecisionDiagram< std::pair< double, long > >();
+
+    amcpy->beginInstantiation();
+
+    amcpy->setVariableSequence ( Vaction->variablesSequence() );
+
+    amcpy->setDiagramNodes ( Vaction->nodesMap() );
+    Bijection< NodeId, std::pair< double, long > > amvm ( Vaction->valuesMap().size() );
+
+    for ( BijectionIterator< NodeId, GUM_SCALAR > valueIter = Vaction->valuesMap().begin(); valueIter != Vaction->valuesMap().end(); ++valueIter ) {
+      std::pair< double, long >  amv ( ( double ) valueIter.second(), ( long ) actionId );
+      amvm.insert ( valueIter.first(), amv );
+    }
+
+    amcpy->setValueMap ( amvm );
+
+    amcpy->setVariableMap ( Vaction->variableMap() );
+    amcpy->setVar2NodeMap ( Vaction-> var2NodeIdMap() );
+    amcpy->setVarUsedModalitiesMap ( Vaction->varUsedModalitiesMap() );
+    amcpy->setDiagramArcs ( Vaction->arcMap(), Vaction->defaultArcMap() );
+
+    amcpy->setRoot ( Vaction->root() );
+    amcpy->endInstantiation();
+
+    return amcpy;
+  }
+
+
+
+// ===========================================================================
+// Once final V is computed upon arg max on last Vactions, this function
+// creates a diagram where all leaves tied to the same action are merged
+// together.
+// Since this function is a recursive one to ease the merge of all identic
+// nodes to converge toward a cannonical policy, a factory and the current
+// node are needed to build resulting diagram. Also we need an exploration
+// table to avoid exploration of already visited sub-graph part.
+// ===========================================================================
+  template<typename GUM_SCALAR>
+  NodeId
+  SPUDDPlanning<GUM_SCALAR>::__makeOptimalPolicyDecisionDiagram ( const MultiDimDecisionDiagramBase< std::pair< double, long > >* V,
+      const NodeId& currentNode,
+      MultiDimDecisionDiagramFactoryBase<Idx>* factory,
+      HashTable< NodeId, NodeId >& explorationTable ) {
+
+    std::vector<NodeId> sonsMap ( V->unsafeNodeSons ( currentNode )->size(), 0 );
+
+    for ( std::vector<NodeId>::const_iterator sonIter = V->unsafeNodeSons ( currentNode )->begin(); sonIter != V->unsafeNodeSons ( currentNode )->end(); ++ sonIter ) {
+      NodeId sonId = 0;
+
+      if ( *sonIter != 0 ) {
+        if ( explorationTable.exists ( *sonIter ) )
+          sonId = explorationTable[*sonIter];
+        else {
+          if ( V->isTerminalNode ( *sonIter ) )
+            sonId = factory->addTerminalNode ( V->unsafeNodeValue ( *sonIter ).second );
+          else
+            sonId = __makeOptimalPolicyDecisionDiagram ( V, *sonIter, factory, explorationTable );
+
+          explorationTable.insert ( *sonIter, sonId );
+        }
+      }
+
+      sonsMap[ std::distance ( V->unsafeNodeSons ( currentNode )->begin(), sonIter ) ] = sonId;
+    }
+
+    NodeId defaultSonId = 0;
+
+    if ( V->unsafeHasNodeDefaultSon ( currentNode ) ) {
+      NodeId defaultSon = V->unsafeNodeDefaultSon ( currentNode );
+
+      if ( explorationTable.exists ( defaultSon ) )
+        defaultSonId = explorationTable[ defaultSon ];
+      else {
+        if ( V->isTerminalNode ( defaultSon ) )
+          defaultSonId = factory->addTerminalNode ( V->unsafeNodeValue ( defaultSon ).second );
+        else
+          defaultSonId = __makeOptimalPolicyDecisionDiagram ( V, defaultSon, factory, explorationTable );
+
+        explorationTable.insert ( defaultSon, defaultSonId );
+      }
+    }
+
+
+
+    if ( defaultSonId != 0 ) {
+      Idx nbDefault = 0;
+
+      for ( std::vector<NodeId >::iterator iterArcMap = sonsMap.begin(); iterArcMap != sonsMap.end(); ++iterArcMap ) {
+        if ( *iterArcMap == 0 )
+          ++nbDefault;
+
+        if ( *iterArcMap == defaultSonId ) {
+          ++nbDefault;
+          sonsMap[ std::distance ( sonsMap.begin(), iterArcMap ) ] = 0;
+        }
+      }
+
+      if ( nbDefault == 1 )
+        for ( std::vector<NodeId >::iterator iterArcMap = sonsMap.begin(); iterArcMap != sonsMap.end(); ++iterArcMap )
+          if ( *iterArcMap == 0 ) {
+            sonsMap[ std::distance ( sonsMap.begin(), iterArcMap ) ] = defaultSonId;
+            defaultSonId = 0;
+            break;
+          }
+    }
+
+    return factory->unsafeAddNonTerminalNodeWithArcs ( V->unsafeNodeVariable ( currentNode ), sonsMap, defaultSonId );
+
+  }
+
+
+
+// ===========================================================================
+// Displays the optimal computed policy diagram
+// ===========================================================================
+  template<typename GUM_SCALAR>
+  void
+  SPUDDPlanning<GUM_SCALAR>::__displayOptimalPolicy ( MultiDimDecisionDiagramBase< Idx >* op ) {
+
+    // *****************************************************************************************
+    // And eventually we display the result
+    // *****************************************************************************************
+    std::stringstream output;
+    std::stringstream terminalStream;
+    std::stringstream nonTerminalStream;
+    std::stringstream arcstream;
+    std::stringstream defaultarcstream;
+    output << "digraph \"Politique Optimale\" {" << std::endl;
+
+    terminalStream << "node [shape = box];" << std::endl;
+    nonTerminalStream << "node [shape = ellipse];" << std::endl;
+    std::string tab = "  ";
+
+    for ( const auto node : op->nodesMap().nodes() ) {
+      if ( node != 0 ) {
+
+        if ( op->isTerminalNode ( node ) ) {
+
+          terminalStream << tab << node << ";" << tab << node  << " [label=\"" << __fmdp->actionName ( op->nodeValue ( node ) ) << "\"]" << ";" << std::endl;
+
+        } else {
+          nonTerminalStream << tab << node << ";" << tab << node  << " [label=\"" << op->nodeVariable ( node )->name() << "\"]" << ";" << std::endl;
+
+          if ( op->nodeSons ( node ) != nullptr ) {
+            for ( std::vector<NodeId>::const_iterator sonIter =  op->nodeSons ( node )->begin(); sonIter != op->nodeSons ( node )->end(); ++sonIter )
+              if ( *sonIter != 0 )
+                arcstream << tab <<  node << " -> " << *sonIter << " [label=\"" << op->nodeVariable ( node )->label ( std::distance ( op->nodeSons ( node )->begin(), sonIter ) ) << "\",color=\"#0000ff\"]" << ";" << std::endl;
+          }
+
+          if ( op->hasNodeDefaultSon ( node ) )
+            defaultarcstream << tab <<  node << " -> " << op->nodeDefaultSon ( node ) << " [color=\"#ff0000\"]" << ";" << std::endl;
+
+        }
+      }
+    }
+
+    output << terminalStream.str() << std::endl << nonTerminalStream.str() << std::endl <<  arcstream.str() << std::endl << defaultarcstream.str() << std::endl << std::endl << "}" << std::endl;
+
+//     std::cout << std::endl << output.str();
+  }
+
+
+
+
 
   /* ************************************************************************************************** **/
-  /* **                                                                                                                                                 **/
-  /* **                                                        Analyse Methods                                                              **/
-  /* **                                                                                                                                                 **/
+  /* **                                                                                                 **/
+  /* **                                                        Analyse Methods                          **/
+  /* **                                                                                                 **/
   /* ************************************************************************************************** **/
 
 // ===========================================================================
@@ -393,11 +643,11 @@ namespace gum {
 
         nbNodeT2 = ( *VActionsIter )->nodesMap().size();
 
-        std::pair<Idx, Idx> resEvalRetro = __evalNbRetrograde ( Vnew, *VActionsIter );
+        std::pair<Idx, Idx> resEvalRetro = __evalNbRetrogradeEvaluation ( Vnew, *VActionsIter );
         nbRetroVarDirect = resEvalRetro.first;
         tailleEspaceRetrogradeDirect = resEvalRetro.second;
 
-        resEvalRetro = __evalNbRetrograde ( *VActionsIter, Vnew );
+        resEvalRetro = __evalNbRetrogradeEvaluation ( *VActionsIter, Vnew );
         nbRetroVarIndirect = resEvalRetro.first;
         tailleEspaceRetrogradeIndirect = resEvalRetro.second;
 
@@ -550,11 +800,11 @@ namespace gum {
       nbNodeT1 =  Vaction->nodesMap().size();
       nbNodeT2 = cpt->nodesMap().size();
 
-      std::pair<Idx, Idx> resEvalRetro = __evalNbRetrograde ( Vaction, cpt );
+      std::pair<Idx, Idx> resEvalRetro = __evalNbRetrogradeEvaluation ( Vaction, cpt );
       nbRetroVarDirect = resEvalRetro.first;
       tailleEspaceRetrogradeDirect = resEvalRetro.second;
 
-      resEvalRetro = __evalNbRetrograde ( cpt, Vaction );
+      resEvalRetro = __evalNbRetrogradeEvaluation ( cpt, Vaction );
       nbRetroVarIndirect = resEvalRetro.first;
       tailleEspaceRetrogradeIndirect = resEvalRetro.second;
 
@@ -685,11 +935,11 @@ namespace gum {
 
     nbNodeT2 = reward->nodesMap().size();
 
-    std::pair<Idx, Idx> resEvalRetro = __evalNbRetrograde ( Vnew, reward );
+    std::pair<Idx, Idx> resEvalRetro = __evalNbRetrogradeEvaluation ( Vnew, reward );
     nbRetroVarDirect = resEvalRetro.first;
     tailleEspaceRetrogradeDirect = resEvalRetro.second;
 
-    resEvalRetro = __evalNbRetrograde ( reward, Vnew );
+    resEvalRetro = __evalNbRetrogradeEvaluation ( reward, Vnew );
     nbRetroVarIndirect = resEvalRetro.first;
     tailleEspaceRetrogradeIndirect = resEvalRetro.second;
 
@@ -758,7 +1008,8 @@ namespace gum {
 
 
 // ===========================================================================
-// Evals how many retrograde variable there will be if we do the operation in that order
+// Evals how many retrograde variable there will be if we do the operation in
+// that order
 // ===========================================================================
   template<typename GUM_SCALAR>
   std::pair<Idx, Idx>
@@ -837,249 +1088,6 @@ namespace gum {
 
   }
 
-
-
-
-  /* ************************************************************************************************** **/
-  /* **                                                                                                                                                 **/
-  /* **                                   Optimal Policy Evaluation Methods                                                         **/
-  /* **                                                                                                                                                 **/
-  /* ************************************************************************************************** **/
-
-// ===========================================================================
-// Performs one last step of the algorithm to obtain the arg max equivalent of the so far computed value function
-// ===========================================================================
-  template<typename GUM_SCALAR>
-  MultiDimDecisionDiagramBase< std::pair< double, long > >*
-  SPUDDPlanning< GUM_SCALAR >::__argMaxValueFunction ( const MultiDimDecisionDiagramBase< GUM_SCALAR >* V ) {
-
-    // *****************************************************************************************
-    // Loop reset
-    __fmdp->resetActionsIterator();
-    Bijection< Idx, MultiDimDecisionDiagramBase< GUM_SCALAR >* > VactionCollector;
-    MultiDimDecisionDiagramBase< GUM_SCALAR >* Vnew = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*> ( V->newFactory() );
-    Vnew->copyAndReassign ( V, __fmdp->main2prime() );
-    MultiDimDecisionDiagramBase< GUM_SCALAR >* Vtemp;
-
-#ifdef O4DDWITHORDER
-    Sequence< const DiscreteVariable* > elVarSeq;
-#else
-    Sequence< const DiscreteVariable* > elVarSeq = Vnew->variablesSequence();
-#endif
-    __fmdp->resetVariablesIterator();
-
-    while ( __fmdp->hasVariable() ) {
-      const DiscreteVariable* var = __fmdp->variable();
-
-      if ( ! elVarSeq.exists ( var ) ) {
-        elVarSeq << var;
-      }
-
-      __fmdp->nextVariable();
-    }
-
-    // *****************************************************************************************
-    // For each action
-    while ( __fmdp->hasAction() ) {
-
-      MultiDimDecisionDiagramBase< GUM_SCALAR >* Vaction = __evalActionValue ( Vnew, elVarSeq );
-
-      Vtemp = reinterpret_cast<MultiDimDecisionDiagramBase<GUM_SCALAR>*> ( Vaction->newFactory() );
-      Vtemp->multiplyByScalar ( Vaction, __fmdp->discount() );
-      delete Vaction;
-      Vaction = Vtemp;
-
-      Vtemp = Vaction;
-      Vaction = add2MultiDimDecisionDiagrams ( reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*> ( __fmdp->reward() ), Vaction );
-      delete Vtemp;
-
-      VactionCollector.insert ( __fmdp->actionIterId(), Vaction );
-      __fmdp->nextAction();
-    }
-
-    delete Vnew;
-    MultiDimDecisionDiagramBase< std::pair< double, long > >* Vamnew = nullptr;
-
-//     for ( BijectionIterator< Idx, MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ) {
-    for ( Idx acta = 1; acta < VactionCollector.size() + 1; acta++ ) {
-//         MultiDimDecisionDiagramBase< std::pair< double, long > >* Vamaction = __createArgMaxCopy( VActionsIter.second(), VActionsIter.first() );
-      MultiDimDecisionDiagramBase< std::pair< double, long > >* Vamaction = __createArgMaxCopy ( VactionCollector.second ( acta ), acta );
-      delete VactionCollector.second ( acta );
-      MultiDimDecisionDiagramBase< std::pair< double, long > >* Vamtemp = Vamnew;
-      Vamnew = __argMaxOn2MultiDimDecisionDiagrams ( Vamnew, Vamaction );
-      delete Vamtemp;
-      delete Vamaction;
-    }
-
-    return Vamnew;
-
-  }
-
-// ===========================================================================
-// Creates a copy of given in parameter decision diagram and replaces leaves of that diagram by a pair containing value of the leaf and
-// action to which is bind this diagram (given in parameter).
-// ===========================================================================
-  template<typename GUM_SCALAR>
-  MultiDimDecisionDiagramBase< std::pair< double, long > >*
-  SPUDDPlanning<GUM_SCALAR>::__createArgMaxCopy ( const MultiDimDecisionDiagramBase<GUM_SCALAR>* Vaction, Idx actionId ) {
-
-    MultiDimDecisionDiagramBase< std::pair< double, long > >* amcpy = new MultiDimDecisionDiagram< std::pair< double, long > >();
-
-    amcpy->beginInstantiation();
-
-    amcpy->setVariableSequence ( Vaction->variablesSequence() );
-
-    amcpy->setDiagramNodes ( Vaction->nodesMap() );
-    Bijection< NodeId, std::pair< double, long > > amvm ( Vaction->valuesMap().size() );
-
-    for ( BijectionIterator< NodeId, GUM_SCALAR > valueIter = Vaction->valuesMap().begin(); valueIter != Vaction->valuesMap().end(); ++valueIter ) {
-      std::pair< double, long >  amv ( ( double ) valueIter.second(), ( long ) actionId );
-      amvm.insert ( valueIter.first(), amv );
-    }
-
-    amcpy->setValueMap ( amvm );
-
-    amcpy->setVariableMap ( Vaction->variableMap() );
-    amcpy->setVar2NodeMap ( Vaction-> var2NodeIdMap() );
-    amcpy->setVarUsedModalitiesMap ( Vaction->varUsedModalitiesMap() );
-    amcpy->setDiagramArcs ( Vaction->arcMap(), Vaction->defaultArcMap() );
-
-    amcpy->setRoot ( Vaction->root() );
-    amcpy->endInstantiation();
-
-    return amcpy;
-  }
-
-
-
-// ===========================================================================
-// Once final V is computed upon arg max on last Vactions, this function creates a diagram where all leaves tied to the same action are merged together.
-// Since this function is a recursive one to ease the merge of all identic nodes to converge toward a cannonical policy, a factory and the current node are needed to build
-// resulting diagram. Also we need an exploration table to avoid exploration of already visited sub-graph part.
-// ===========================================================================
-  template<typename GUM_SCALAR>
-  NodeId
-  SPUDDPlanning<GUM_SCALAR>::__makeOptimalPolicyDecisionDiagram ( const MultiDimDecisionDiagramBase< std::pair< double, long > >* V,
-      const NodeId& currentNode,
-      MultiDimDecisionDiagramFactoryBase<Idx>* factory,
-      HashTable< NodeId, NodeId >& explorationTable ) {
-
-    std::vector<NodeId> sonsMap ( V->unsafeNodeSons ( currentNode )->size(), 0 );
-
-    for ( std::vector<NodeId>::const_iterator sonIter = V->unsafeNodeSons ( currentNode )->begin(); sonIter != V->unsafeNodeSons ( currentNode )->end(); ++ sonIter ) {
-      NodeId sonId = 0;
-
-      if ( *sonIter != 0 ) {
-        if ( explorationTable.exists ( *sonIter ) )
-          sonId = explorationTable[*sonIter];
-        else {
-          if ( V->isTerminalNode ( *sonIter ) )
-            sonId = factory->addTerminalNode ( V->unsafeNodeValue ( *sonIter ).second );
-          else
-            sonId = __makeOptimalPolicyDecisionDiagram ( V, *sonIter, factory, explorationTable );
-
-          explorationTable.insert ( *sonIter, sonId );
-        }
-      }
-
-      sonsMap[ std::distance ( V->unsafeNodeSons ( currentNode )->begin(), sonIter ) ] = sonId;
-    }
-
-    NodeId defaultSonId = 0;
-
-    if ( V->unsafeHasNodeDefaultSon ( currentNode ) ) {
-      NodeId defaultSon = V->unsafeNodeDefaultSon ( currentNode );
-
-      if ( explorationTable.exists ( defaultSon ) )
-        defaultSonId = explorationTable[ defaultSon ];
-      else {
-        if ( V->isTerminalNode ( defaultSon ) )
-          defaultSonId = factory->addTerminalNode ( V->unsafeNodeValue ( defaultSon ).second );
-        else
-          defaultSonId = __makeOptimalPolicyDecisionDiagram ( V, defaultSon, factory, explorationTable );
-
-        explorationTable.insert ( defaultSon, defaultSonId );
-      }
-    }
-
-
-
-    if ( defaultSonId != 0 ) {
-      Idx nbDefault = 0;
-
-      for ( std::vector<NodeId >::iterator iterArcMap = sonsMap.begin(); iterArcMap != sonsMap.end(); ++iterArcMap ) {
-        if ( *iterArcMap == 0 )
-          ++nbDefault;
-
-        if ( *iterArcMap == defaultSonId ) {
-          ++nbDefault;
-          sonsMap[ std::distance ( sonsMap.begin(), iterArcMap ) ] = 0;
-        }
-      }
-
-      if ( nbDefault == 1 )
-        for ( std::vector<NodeId >::iterator iterArcMap = sonsMap.begin(); iterArcMap != sonsMap.end(); ++iterArcMap )
-          if ( *iterArcMap == 0 ) {
-            sonsMap[ std::distance ( sonsMap.begin(), iterArcMap ) ] = defaultSonId;
-            defaultSonId = 0;
-            break;
-          }
-    }
-
-    return factory->unsafeAddNonTerminalNodeWithArcs ( V->unsafeNodeVariable ( currentNode ), sonsMap, defaultSonId );
-
-  }
-
-
-
-// ===========================================================================
-// Displays the optimal computed policy diagram
-// ===========================================================================
-  template<typename GUM_SCALAR>
-  void
-  SPUDDPlanning<GUM_SCALAR>::__displayOptimalPolicy ( MultiDimDecisionDiagramBase< Idx >* op ) {
-
-    // *****************************************************************************************
-    // And eventually we display the result
-    // *****************************************************************************************
-    std::stringstream output;
-    std::stringstream terminalStream;
-    std::stringstream nonTerminalStream;
-    std::stringstream arcstream;
-    std::stringstream defaultarcstream;
-    output << "digraph \"Politique Optimale\" {" << std::endl;
-
-    terminalStream << "node [shape = box];" << std::endl;
-    nonTerminalStream << "node [shape = ellipse];" << std::endl;
-    std::string tab = "  ";
-
-    for ( const auto node : op->nodesMap().nodes() ) {
-      if ( node != 0 ) {
-
-        if ( op->isTerminalNode ( node ) ) {
-
-          terminalStream << tab << node << ";" << tab << node  << " [label=\"" << __fmdp->actionName ( op->nodeValue ( node ) ) << "\"]" << ";" << std::endl;
-
-        } else {
-          nonTerminalStream << tab << node << ";" << tab << node  << " [label=\"" << op->nodeVariable ( node )->name() << "\"]" << ";" << std::endl;
-
-          if ( op->nodeSons ( node ) != nullptr ) {
-            for ( std::vector<NodeId>::const_iterator sonIter =  op->nodeSons ( node )->begin(); sonIter != op->nodeSons ( node )->end(); ++sonIter )
-              if ( *sonIter != 0 )
-                arcstream << tab <<  node << " -> " << *sonIter << " [label=\"" << op->nodeVariable ( node )->label ( std::distance ( op->nodeSons ( node )->begin(), sonIter ) ) << "\",color=\"#0000ff\"]" << ";" << std::endl;
-          }
-
-          if ( op->hasNodeDefaultSon ( node ) )
-            defaultarcstream << tab <<  node << " -> " << op->nodeDefaultSon ( node ) << " [color=\"#ff0000\"]" << ";" << std::endl;
-
-        }
-      }
-    }
-
-    output << terminalStream.str() << std::endl << nonTerminalStream.str() << std::endl <<  arcstream.str() << std::endl << defaultarcstream.str() << std::endl << std::endl << "}" << std::endl;
-
-//     std::cout << std::endl << output.str();
-  }
 
 }
 

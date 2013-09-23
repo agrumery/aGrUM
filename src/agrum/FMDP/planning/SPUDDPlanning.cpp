@@ -21,5 +21,5 @@
 #include <agrum/FMDP/planning/SPUDDPlanning.h>
 
 
-//template class gum::SPUDDPlanning<float>;
-//template class gum::SPUDDPlanning<double>;
+template class gum::SPUDDPlanning<float>;
+template class gum::SPUDDPlanning<double>;
