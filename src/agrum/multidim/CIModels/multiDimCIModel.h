@@ -133,6 +133,8 @@ namespace gum {
       virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
   };
 
+  extern template class MultiDimCIModel<float>;
+  extern template class MultiDimCIModel<double>;
 } /* namespace gum */
 
 #include <agrum/multidim/CIModels/multiDimCIModel.tcc>

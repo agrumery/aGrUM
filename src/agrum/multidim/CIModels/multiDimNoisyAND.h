@@ -116,12 +116,12 @@ namespace gum {
       /// @}
   };
 
+  extern template class MultiDimNoisyAND<float>;
+  extern template class MultiDimNoisyAND<double>;
 
   /// For friendly displaying the content of the array.
-
   template<typename GUM_SCALAR>
-  std::ostream& operator<< ( std::ostream& s,
-                             const MultiDimNoisyAND<GUM_SCALAR>& ag );
+  std::ostream& operator<< ( std::ostream& s, const MultiDimNoisyAND<GUM_SCALAR>& ag );
 
 
 } /* namespace gum */

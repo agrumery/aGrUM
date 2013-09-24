@@ -55,7 +55,7 @@ namespace gum {
 
       /// Default constructor.
 
-      MultiDimNoisyORNet( GUM_SCALAR external_weight,GUM_SCALAR default_weight=( GUM_SCALAR )1.0 );
+      MultiDimNoisyORNet( GUM_SCALAR external_weight, GUM_SCALAR default_weight = ( GUM_SCALAR )1.0 );
       MultiDimNoisyORNet( const MultiDimNoisyORNet<GUM_SCALAR>& from );
 
 
@@ -113,12 +113,12 @@ namespace gum {
       /// @}
   };
 
+  extern template class MultiDimNoisyORNet<float>;
+  extern template class MultiDimNoisyORNet<double>;
 
   /// For friendly displaying the content of the array.
-
-  template<typename GUM_SCALAR>
-  std::ostream& operator<< ( std::ostream& s,
-                             const MultiDimNoisyORNet<GUM_SCALAR>& ag );
+  template<typename GUM_SCALAR> std::ostream& operator<< ( std::ostream& s,
+      const MultiDimNoisyORNet<GUM_SCALAR>& ag );
 
 
 } /* namespace gum */
