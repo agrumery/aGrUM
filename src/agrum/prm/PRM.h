@@ -44,15 +44,15 @@
 namespace gum {
   namespace prm {
 
-    class PRM;
-    class System;
+    template<typename GUM_SCALAR> class System;
 
     /**
      * @class PRM PRM.h <agrum/prm/PRM.h>
-     * @brief This class represents a Probabilistic Relational System.
+     * @brief This class represents a Probabilistic Relational System<GUM_SCALAR>.
      *
      * @ingroup prm_group
      */
+    template<typename GUM_SCALAR>
     class PRM {
       public:
         friend class PRMFactory;
@@ -82,37 +82,37 @@ namespace gum {
          * @param name The name of a possible Type in this PRM.
          * @return Returns true if name names a Type in this PRM.
          */
-        bool isType( const std::string name ) const;
+        bool isType ( const std::string name ) const;
 
         /**
-         * @param name The name of a possible Class in this PRM.
-         * @return Returns true if name names a Class in this PRM.
+         * @param name The name of a possible Class<GUM_SCALAR> in this PRM.
+         * @return Returns true if name names a Class<GUM_SCALAR> in this PRM.
          */
-        bool isClass( const std::string name ) const;
+        bool isClass ( const std::string name ) const;
 
         /**
-         * @param name The name of a possible Interface in this PRM.
-         * @return Returns true if name names a Interface in this PRM.
+         * @param name The name of a possible Interface<GUM_SCALAR> in this PRM.
+         * @return Returns true if name names a Interface<GUM_SCALAR> in this PRM.
          */
-        bool isInterface( const std::string name ) const;
+        bool isInterface ( const std::string name ) const;
 
         /**
-         * @param name The name of a possible System in this PRM.
-         * @return Returns true if name names a System in this PRM.
+         * @param name The name of a possible System<GUM_SCALAR> in this PRM.
+         * @return Returns true if name names a System<GUM_SCALAR> in this PRM.
          */
-        bool isSystem( const std::string name ) const;
-
-        /**
-         * Returns a constant reference on a Type given it's name.
-         * @throw NotFound Raised if no type is found with the given name.
-         */
-        Type& type( const std::string& name );
+        bool isSystem ( const std::string name ) const;
 
         /**
          * Returns a constant reference on a Type given it's name.
          * @throw NotFound Raised if no type is found with the given name.
          */
-        const Type& type( const std::string& name ) const;
+        Type& type ( const std::string& name );
+
+        /**
+         * Returns a constant reference on a Type given it's name.
+         * @throw NotFound Raised if no type is found with the given name.
+         */
+        const Type& type ( const std::string& name ) const;
 
         /**
          * Returns the Set of all Type in this PRM.
@@ -120,55 +120,55 @@ namespace gum {
         const Set<Type*>& types() const;
 
         /**
-         * Returns a constant reference on a Class given it's name.
+         * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
          * @throw NotFound Raised if no class is found with the given name.
          */
-        Class& getClass( const std::string& name );
+        Class<GUM_SCALAR>& getClass ( const std::string& name );
 
         /**
-         * Returns a constant reference on a Class given it's name.
+         * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
          * @throw NotFound Raised if no class is found with the given name.
          */
-        const Class& getClass( const std::string& name ) const;
+        const Class<GUM_SCALAR>& getClass ( const std::string& name ) const;
 
         /**
-         * Returns the Set of all Class in this PRM.
+         * Returns the Set of all Class<GUM_SCALAR> in this PRM.
          */
-        const Set<Class*>& classes() const;
+        const Set<Class<GUM_SCALAR>*>& classes() const;
 
         /**
-         * Returns a constant reference on a Class given it's name.
+         * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
          * @throw NotFound Raised if no class is found with the given name.
          */
-        Interface& interface( const std::string& name );
+        Interface<GUM_SCALAR>& interface ( const std::string& name );
 
         /**
-         * Returns a constant reference on a Class given it's name.
+         * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
          * @throw NotFound Raised if no class is found with the given name.
          */
-        const Interface& interface( const std::string& name ) const;
+        const Interface<GUM_SCALAR>& interface ( const std::string& name ) const;
 
         /**
-         * Returns the Set of all Class in this PRM.
+         * Returns the Set of all Class<GUM_SCALAR> in this PRM.
          */
-        const Set<Interface*>& interfaces() const;
+        const Set<Interface<GUM_SCALAR>*>& interfaces() const;
 
         /**
-         * Returns a constant reference on a System given it's name.
+         * Returns a constant reference on a System<GUM_SCALAR> given it's name.
          * @throw NotFound Raised if no model is found with the given name.
          */
-        System& system( const std::string& name );
+        System<GUM_SCALAR>& system ( const std::string& name );
 
         /**
-         * Returns a constant reference on a System given it's name.
+         * Returns a constant reference on a System<GUM_SCALAR> given it's name.
          * @throw NotFound Raised if no model is found with the given name.
          */
-        const System& system( const std::string& name ) const;
+        const System<GUM_SCALAR>& system ( const std::string& name ) const;
 
         /**
          * Returns the Set of all Systems in this PRM.
          */
-        const Set<System*>& systems() const;
+        const Set<System<GUM_SCALAR>*>& systems() const;
 
         /// @}
       private:
@@ -180,12 +180,12 @@ namespace gum {
         /**
          * Copy constructor. Not Implemented.
          */
-        PRM( const PRM& source );
+        PRM ( const PRM<GUM_SCALAR>& source );
 
         /**
          * Copy operator. Not Implemented.
          */
-        PRM& operator=( const PRM& source );
+        PRM<GUM_SCALAR>& operator= ( const PRM<GUM_SCALAR>& source );
 
         /// Add the built-in types in the PRM
         void __addBuiltInTypes();
@@ -196,17 +196,17 @@ namespace gum {
         // ========================================================================
         /// @{
 
-        /// Mapping of all Class given their name.
-        HashTable<std::string, Class*> __classMap;
+        /// Mapping of all Class<GUM_SCALAR> given their name.
+        HashTable<std::string, Class<GUM_SCALAR>*> __classMap;
 
-        /// Set of all Class in this PRM.
-        Set<Class*> __classes;
+        /// Set of all Class<GUM_SCALAR> in this PRM.
+        Set<Class<GUM_SCALAR>*> __classes;
 
-        /// Mapping of all Class given their name.
-        HashTable<std::string, Interface*> __interfaceMap;
+        /// Mapping of all Class<GUM_SCALAR> given their name.
+        HashTable<std::string, Interface<GUM_SCALAR>*> __interfaceMap;
 
-        /// Set of all Class in this PRM.
-        Set<Interface*> __interfaces;
+        /// Set of all Class<GUM_SCALAR> in this PRM.
+        Set<Interface<GUM_SCALAR>*> __interfaces;
 
         /// Mapping of all Type given their name.
         HashTable<std::string, Type*> __typeMap;
@@ -215,19 +215,18 @@ namespace gum {
         Set<Type*> __types;
 
         /// Mapping of all Systems given their name.
-        HashTable<std::string, System*> __systemMap;
+        HashTable<std::string, System<GUM_SCALAR>*> __systemMap;
 
         /// Set of all Systems in this PRM.
-        Set<System*> __systems;
+        Set<System<GUM_SCALAR>*> __systems;
 
         /// @}
     };
 
   } /* namespace prm */
 } /* namespace gum */
-#ifndef GUM_NO_INLINE
-#include <agrum/prm/PRM.inl>
-#endif // GUM_NO_INLINE
+
+#include <agrum/prm/PRM.tcc>
 
 #endif /* GUM_PRM_H */
 

@@ -49,6 +49,7 @@ namespace gum {
      *
      * @ingroup prm_group
      */
+    template<typename GUM_SCALAR>
     class ClassElement: public PRMObject {
       public:
         // ========================================================================
@@ -207,14 +208,14 @@ namespace gum {
          * @throw OperationNotAllowed Raised if this class element doesn't have
          *                            any gum::Potential (like a gum::ReferenceSlot).
          */
-        virtual Potential<prm_float>& cpf() =0;
+        virtual Potential<GUM_SCALAR>& cpf() =0;
 
         /**
          * Return a constant reference over the gum::Potential of this class element.
          * @throw OperationNotAllowed Raised if the class element doesn't have
          *                            any gum::Potential (like a gum::ReferenceSlot).
          */
-        virtual const Potential<prm_float>& cpf() const =0;
+        virtual const Potential<GUM_SCALAR>& cpf() const =0;
 
         /// @}
       protected:
@@ -230,9 +231,7 @@ namespace gum {
   } /* namespace prm */
 } // namespace gum
 
-#ifndef GUM_NO_INLINE
-#include <agrum/prm/classElement.inl>
-#endif // GUM_NO_INLINE
+#include <agrum/prm/classElement.tcc>
 
 #endif /* GUM_CLASS_ELEMENT_H */
 

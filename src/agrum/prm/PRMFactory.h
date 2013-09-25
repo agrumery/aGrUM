@@ -96,7 +96,7 @@ namespace gum {
          *
          * @return Returns the PRM created by this factory.
          */
-        PRM* prm() const;
+        PRM<GUM_SCALAR>* prm() const;
 
         /**
          * @return Returns the PRMObject type of the object begin built.
@@ -129,14 +129,14 @@ namespace gum {
         std::string currentPackage() const;
 
         /**
-         * @brief Returns a reference over a Class given its name.
+         * @brief Returns a reference over a Class<GUM_SCALAR> given its name.
          *
          * This methods adds if necessary the current package as a prefix to name.
-         * @param name The name of the Class.
-         * @return the Class with the given name.
-         * @throw NotFound if no Class matches the given name.
+         * @param name The name of the Class<GUM_SCALAR>.
+         * @return the Class<GUM_SCALAR> with the given name.
+         * @throw NotFound if no Class<GUM_SCALAR> matches the given name.
          */
-        Class& retrieveClass( const std::string& name );
+        Class<GUM_SCALAR>& retrieveClass( const std::string& name );
 
         /**
          * @brief Returns a reference over a Type given its name.
@@ -233,7 +233,7 @@ namespace gum {
 
         /// @}
         // ======================================================================
-        /// @name Class construction models.
+        /// @name Class<GUM_SCALAR> construction models.
         // ======================================================================
         /// @{
 
@@ -255,7 +255,7 @@ namespace gum {
         /**
          * Tells the factory that we finished a class declaration.
          *
-         * @throw TypeError Raised if the current Class does not respect one of
+         * @throw TypeError Raised if the current Class<GUM_SCALAR> does not respect one of
          *                  it's Interface.
          */
         void endClass();
@@ -305,7 +305,7 @@ namespace gum {
          * The attribute CPT is checked for parents and arcs will be added using
          * the DiscreteVariable pointers, thus be careful to use those of the
          * attributes, aggregates and slotchains of the current class.
-         * gum::prm::Class::insertArc() will be called for each found parent of
+         * gum::prm::Class<GUM_SCALAR>::insertArc() will be called for each found parent of
          * attr, so you should overload gum::prm::Attribute::addParent() to prevent
          * duplication errors. Such class exists: gum::prm::FuncAttribute .
          *
@@ -432,7 +432,7 @@ namespace gum {
          * If at least one parent of an aggregator is a SlotChain, then all of
          * it's parents must be SlotChain. When an aggregator parents are only
          * composed of Attribute and Aggregate, then it is directly added as an
-         * Attribute to it's Class.
+         * Attribute to it's Class<GUM_SCALAR>.
          *
          * @param name The name of this aggregator.
          * @param agg_type The name of the aggregator type of this aggregator.
@@ -450,7 +450,7 @@ namespace gum {
                             const std::vector<std::string>& params );
 
         /**
-         * @brief Add a compound noisy-or as an Attribute to the current Class.
+         * @brief Add a compound noisy-or as an Attribute to the current Class<GUM_SCALAR>.
          *
          * The type of a noisy-or must be a boolean.
          *
@@ -463,7 +463,7 @@ namespace gum {
          *              string (the noisy-or will behave as if chains are all booleans).
          *
          * @throw NotFound Raised if one of the chains or the label is not found.
-         * @throw FactoryInvalidState Raised if a Class is not the current declared
+         * @throw FactoryInvalidState Raised if a Class<GUM_SCALAR> is not the current declared
          *                            PRMObject.
          * @throw OperationNotAllowed Raised if for some reasons the parameters are
          *                            invalid.
@@ -626,7 +626,7 @@ namespace gum {
         /// add the current prefix) or global (no prefix needed).
         /// @throw NotFound If no class matching the name is found.
         /// @see PRMFactory::__retrieveType
-        Class* __retrieveClass( const std::string& name ) const;
+        Class<GUM_SCALAR>* __retrieveClass( const std::string& name ) const;
 
         /// Returns a pointer on an interface given it's name. Used when building
         /// models, meaning that the interface name can either be local (need to
@@ -637,7 +637,7 @@ namespace gum {
 
         /// @}
         // ======================================================================
-        ///  @name Private methods handling Class and ClassElement creation.
+        ///  @name Private methods handling Class<GUM_SCALAR> and ClassElement creation.
         // ======================================================================
         /// @{
 
@@ -663,7 +663,7 @@ namespace gum {
         ///
         /// @throw NotFound Raised if a name in chains does not match a legal
         ///                 SlotChain or an existing ClassElement in c.
-        bool __retrieveInputs( Class* c, const std::vector<std::string>& chains,
+        bool __retrieveInputs( Class<GUM_SCALAR>* c, const std::vector<std::string>& chains,
                                std::vector<ClassElement*>& inputs );
 
         /// @brief Retrieve the common Type of a vector of ClassElement.

@@ -57,10 +57,10 @@ namespace gum {
 
         /// Default constructor.
         /// @param c The Class decorated by this ClassBayesNet.
-        ClassBayesNet( const Class& c );
+        ClassBayesNet ( const Class& c );
 
         /// Copy constructor.
-        ClassBayesNet( const ClassBayesNet& from );
+        ClassBayesNet ( const ClassBayesNet& from );
 
         /// Copy operator.
         ClassBayesNet& operator= ( const ClassBayesNet& from );
@@ -87,22 +87,22 @@ namespace gum {
          *                 IBayesNet.
          * @throw OperationNotAllowed raised if varId is an Aggregate.
          */
-        virtual const Potential<GUM_SCALAR>& cpt( NodeId varId ) const;
+        virtual const Potential<GUM_SCALAR>& cpt ( NodeId varId ) const;
 
         /// See gum::IBaseBayesNet::variableNodeMap().
         virtual const VariableNodeMap& variableNodeMap() const;
 
         /// See gum::IBaseBayesNet::variable().
-        virtual const DiscreteVariable& variable( NodeId id ) const;
+        virtual const DiscreteVariable& variable ( NodeId id ) const;
 
         /// See gum::IBaseBayesNet::nodeId().
-        virtual NodeId nodeId( const DiscreteVariable& var ) const;
+        virtual NodeId nodeId ( const DiscreteVariable& var ) const;
 
         /// See gum::IBaseBayesNet::idFromName().
-        virtual NodeId idFromName( const std::string& name ) const;
+        virtual NodeId idFromName ( const std::string& name ) const;
 
         /// See gum::IBaseBayesNet::variableFromName().
-        virtual const DiscreteVariable& variableFromName( const std::string& name ) const;
+        virtual const DiscreteVariable& variableFromName ( const std::string& name ) const;
 
         /// See gum::IBaseBayesNet::modalities().
         const NodeProperty<Size>& modalities() const;
@@ -122,11 +122,11 @@ namespace gum {
 
         /// Private getter with type checking in case the id is not a formal Attribute.
         /// @throw NotFound Raised if id is not a formal attribute.
-        const ClassElement& __get( NodeId id ) const;
+        const ClassElement<GUM_SCALAR>& __get ( NodeId id ) const;
 
         /// Private getter with type checking in case the id is not a formal Attribute.
         /// @throw NotFound Raised if id is not a formal attribute.
-        const ClassElement& __get( const std::string& name ) const;
+        const ClassElement& __get ( const std::string& name ) const;
 
         /// The ClassElementContainer decorated by this.
         const Class* __class;
@@ -136,8 +136,11 @@ namespace gum {
         mutable NodeProperty<Size> __modalities;
 
 
-        void __init( const Class& c );
+        void __init ( const Class& c );
     };
+
+    extern template class ClassBayesNet<float>;
+    extern template class ClassBayesNet<double>;
 
   } /* namespace prm */
 } /* namespace gum */

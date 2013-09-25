@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of gum::prm::Instance
+ * @brief Headers of gum::prm::Instance<GUM_SCALAR>
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
@@ -40,19 +40,20 @@ namespace gum {
 
 
     /**
-     * @class Instance instance.h <agrum/prm/instance.h>
+     * @class Instance<GUM_SCALAR> instance.h <agrum/prm/instance.h>
      *
-     * @brief An Instance is a Bayesian Network fragment defined by a Class and
+     * @brief An Instance<GUM_SCALAR> is a Bayesian Network fragment defined by a Class<GUM_SCALAR> and
      *        used in a System.
      *
-     * Before using an Instance for inference YOU MUST call
-     * Instance::instantiateSlotChains() and Instance::instantiate() on it before,
+     * Before using an Instance<GUM_SCALAR> for inference YOU MUST call
+     * Instance<GUM_SCALAR>::instantiateSlotChains() and Instance<GUM_SCALAR>::instantiate() on it before,
      * otherwise DiscreteVariable pointers will be inconsistent and inference will
      * be erroneous. Of course, this must be done once you have set all reference
      * in the current system.
      *
-     * @see Class PRM ClassElement @ingroup prm_group
+     * @see Class<GUM_SCALAR> PRM ClassElement @ingroup prm_group
      */
+    template<typename GUM_SCALAR>
     class Instance: public PRMObject {
 
       public:
@@ -62,19 +63,19 @@ namespace gum {
         /// @{
 
         /**
-         * @brief Default constructor of an Instance.
+         * @brief Default constructor of an Instance<GUM_SCALAR>.
          *
-         * When you create an Instance all gum::prm::Attribute in it's type are
-         * added, except for gum::prm::Aggregate and parameters which are
+         * When you create an Instance<GUM_SCALAR> all gum::prm::Attribute<GUM_SCALAR> in it's type are
+         * added, except for gum::prm::Aggregate<GUM_SCALAR> and parameters which are
          * instantiated.
          *
          * However neither of their children or parents are updated (i.e.
          * DiscreteVariable pointers are inconsistent).
          */
-        Instance( const std::string& name, Class& type );
+        Instance<GUM_SCALAR>( const std::string& name, Class<GUM_SCALAR>& type );
 
         /// Destructor.
-        virtual ~Instance();
+        virtual ~Instance<GUM_SCALAR>();
 
         /// @}
         // ========================================================================
@@ -90,60 +91,60 @@ namespace gum {
         /**
          * Returns the type of this instance
          */
-        Class& type();
+        Class<GUM_SCALAR>& type();
 
         /**
          * Returns the type of this instance
          */
-        const Class& type() const;
+        const Class<GUM_SCALAR>& type() const;
 
         /**
-         * Returns true if id matches an Attribute in this Instance.
+         * Returns true if id matches an Attribute<GUM_SCALAR> in this Instance<GUM_SCALAR>.
          */
         bool exists( NodeId id ) const;
 
         /**
-         * Returns true if name matches an Attribute in this Instance.
+         * Returns true if name matches an Attribute<GUM_SCALAR> in this Instance<GUM_SCALAR>.
          */
         bool exists( const std::string& name ) const;
 
         /**
-         * @brief Getter on an Attribute of this Instance.
+         * @brief Getter on an Attribute<GUM_SCALAR> of this Instance<GUM_SCALAR>.
          *
-         * Recall that Aggregate are instantiated has Attribute
-         * when an Instance is created. Thus any random variable contained
-         * in this Instance is mapped to an Attribute.
+         * Recall that Aggregate<GUM_SCALAR> are instantiated has Attribute<GUM_SCALAR>
+         * when an Instance<GUM_SCALAR> is created. Thus any random variable contained
+         * in this Instance<GUM_SCALAR> is mapped to an Attribute<GUM_SCALAR>.
          *
-         * @param id The Attribute id.
-         * @return Returns a constant reference on an Attribute.
+         * @param id The Attribute<GUM_SCALAR> id.
+         * @return Returns a constant reference on an Attribute<GUM_SCALAR>.
          *
-         * @throw NotFound Raised if no Attribute matches name.
+         * @throw NotFound Raised if no Attribute<GUM_SCALAR> matches name.
          */
-        Attribute& get( NodeId id );
+        Attribute<GUM_SCALAR>& get( NodeId id );
 
         /**
-         * @brief Given a name returns the related Attribute.
+         * @brief Given a name returns the related Attribute<GUM_SCALAR>.
          *
-         * @param name The Attribute's name.
-         * @return Returns a reference over the Attribute.
+         * @param name The Attribute<GUM_SCALAR>'s name.
+         * @return Returns a reference over the Attribute<GUM_SCALAR>.
          *
-         * @throw NotFound Raised if there is no Attribute named n.
+         * @throw NotFound Raised if there is no Attribute<GUM_SCALAR> named n.
          */
-        Attribute& get( const std::string& name );
+        Attribute<GUM_SCALAR>& get( const std::string& name );
 
         /**
-         * @brief Getter on an Attribute of this Instance.
+         * @brief Getter on an Attribute<GUM_SCALAR> of this Instance<GUM_SCALAR>.
          *
-         * Recall that Aggregate are instantiated has Attribute
-         * when an Instance is created. Thus any random variable contained
-         * in this Instance is mapped to an Attribute.
+         * Recall that Aggregate<GUM_SCALAR> are instantiated has Attribute<GUM_SCALAR>
+         * when an Instance<GUM_SCALAR> is created. Thus any random variable contained
+         * in this Instance<GUM_SCALAR> is mapped to an Attribute<GUM_SCALAR>.
          *
-         * @param id The Attribute id.
-         * @return Returns a constant reference on an Attribute.
+         * @param id The Attribute<GUM_SCALAR> id.
+         * @return Returns a constant reference on an Attribute<GUM_SCALAR>.
          *
-         * @throw NotFound Raised if no Attribute matches name.
+         * @throw NotFound Raised if no Attribute<GUM_SCALAR> matches name.
          */
-        const Attribute& get( NodeId id ) const;
+        const Attribute<GUM_SCALAR>& get( NodeId id ) const;
 
         /**
          * @brief Given a name returns the related ClassElement.
@@ -153,11 +154,11 @@ namespace gum {
          *
          * @throw NotFound Raised if there is no ClassElement named n.
          */
-        const Attribute& get( const std::string& name ) const;
+        const Attribute<GUM_SCALAR>& get( const std::string& name ) const;
 
         /**
-         * Returns the number of attributes in this Instance.
-         * @return the number of attributes in this Instance.
+         * Returns the number of attributes in this Instance<GUM_SCALAR>.
+         * @return the number of attributes in this Instance<GUM_SCALAR>.
          */
         Size size() const;
 
@@ -173,10 +174,10 @@ namespace gum {
          *
          * This includes parameters with default value.
          *
-         * @param id The id of a parameter in this Instance.
+         * @param id The id of a parameter in this Instance<GUM_SCALAR>.
          * @return true If id is initialized.
          *
-         * @throw NotFound Raised if no gum::prm::Attribute matches id.
+         * @throw NotFound Raised if no gum::prm::Attribute<GUM_SCALAR> matches id.
          * @throw WrongClassElement Raised if id is not a parameter.
          */
         bool isInitialised( NodeId id ) const;
@@ -184,7 +185,7 @@ namespace gum {
         /**
          * @brief Set the value of a parameter.
          *
-         * Parameters are gum::prm::Attribute with no parents and for which a value
+         * Parameters are gum::prm::Attribute<GUM_SCALAR> with no parents and for which a value
          * (i.e. observation) must be assigned at instantiation if no default
          * value is defined. Parameters are always instantiated so you do not need
          * to instantiate them.
@@ -198,14 +199,14 @@ namespace gum {
          * it must also contain k-1 0 and one 1, where k is the domain of id's
          * DiscreteVariable.
          *
-         * @param name The Attribute's name.
+         * @param name The Attribute<GUM_SCALAR>'s name.
          * @param value The MultiDim used to assign the value of the parameter.
          *
-         * @throw NotFound Raised if no gum::prm::Attribute matches id.
+         * @throw NotFound Raised if no gum::prm::Attribute<GUM_SCALAR> matches id.
          * @throw WrongClassElement Raised if id is not a parameter.
          * @throw OperationNotAllowed Raised if value is invalid.
          */
-        void setParameterValue( const std::string& name, const Potential<prm_float>& value );
+        void setParameterValue( const std::string& name, const Potential<GUM_SCALAR>& value );
 
         /// @}
         // ========================================================================
@@ -243,7 +244,7 @@ namespace gum {
 
         /**
          * @brief Returns a mapping between DiscreteVariable used in this and the
-         *        ones used in this Instance's Class.
+         *        ones used in this Instance<GUM_SCALAR>'s Class<GUM_SCALAR>.
          *
          * MultiDims require distinctive DiscreteVariable pointers, thus
          * interface attributes are always instantiated to prevent multiple
@@ -262,65 +263,65 @@ namespace gum {
         /// @{
 
         /**
-         * @brief Add an Instance to a given ReferenceSlot, SlotChain or
+         * @brief Add an Instance<GUM_SCALAR> to a given ReferenceSlot, SlotChain<GUM_SCALAR> or
          *        output node.
          *
-         * Three type of nodes can be associated with an Instance. When an Instance
+         * Three type of nodes can be associated with an Instance<GUM_SCALAR>. When an Instance<GUM_SCALAR>
          * is associated with a ReferenceSlot, it represents an arc in the
-         * relational skeleton. For a SlotChain, it is a placeholder of referenced
-         * ClassElement by this Instance. Finally, for an output node it indicates
-         * that an Instance has an ClassElement referring it.
+         * relational skeleton. For a SlotChain<GUM_SCALAR>, it is a placeholder of referenced
+         * ClassElement by this Instance<GUM_SCALAR>. Finally, for an output node it indicates
+         * that an Instance<GUM_SCALAR> has an ClassElement referring it.
          *
-         * @param id The NodeId of a ReferenceSlot of this Instance.
-         * @param instance The instance added as references by id in this Instance.
+         * @param id The NodeId of a ReferenceSlot of this Instance<GUM_SCALAR>.
+         * @param instance The instance added as references by id in this Instance<GUM_SCALAR>.
          *
          * @throw WrongClassElement Raised if id is not a valid ClassElement.
-         * @throw OutOfUpperBound Raised if no more Instance can be added to id.
+         * @throw OutOfUpperBound Raised if no more Instance<GUM_SCALAR> can be added to id.
          * @throw TypeError Raised if instance's type isn't compatible with the
          *                  reference's type.
          * @throw NotFound If there is no ClassElement given id.
          */
-        void add( NodeId id, Instance& instance );
+        void add( NodeId id, Instance<GUM_SCALAR>& instance );
 
         /**
-         * @brief Fast access to the first instance in a ReferenceSlot or SlotChain.
+         * @brief Fast access to the first instance in a ReferenceSlot or SlotChain<GUM_SCALAR>.
          *
          * This is equivalent to **(this->getInstance(id).begin()) and should be use
-         * when dealing with non multiple ReferenceSlot or SlotChain.
+         * when dealing with non multiple ReferenceSlot or SlotChain<GUM_SCALAR>.
          *
-         * @param id The NodeId of a ReferenceSlot or SlotChain in this Instance.
+         * @param id The NodeId of a ReferenceSlot or SlotChain<GUM_SCALAR> in this Instance<GUM_SCALAR>.
          *
          * @throw NotFound Raised if there is no ClassElement given id.
-         * @throw UndefinedElement Raised if no Instance are referenced by id.
+         * @throw UndefinedElement Raised if no Instance<GUM_SCALAR> are referenced by id.
          */
-        const Instance& getInstance( NodeId id ) const;
+        const Instance<GUM_SCALAR>& getInstance( NodeId id ) const;
 
         /**
-         * @brief Returns the Set of Instance referenced by id.
+         * @brief Returns the Set of Instance<GUM_SCALAR> referenced by id.
          *
-         * @param id The NodeId of a ReferenceSlot or SlotChain in this.
-         * @return Returns the Set of Instance referenced by id.
+         * @param id The NodeId of a ReferenceSlot or SlotChain<GUM_SCALAR> in this.
+         * @return Returns the Set of Instance<GUM_SCALAR> referenced by id.
          *
          * @throw NotFound If there is no ClassElement given id.
          */
-        const Set<Instance*>& getInstances( NodeId id ) const;
+        const Set<Instance<GUM_SCALAR>*>& getInstances( NodeId id ) const;
 
         /**
-         * Returns true if id has at least one referring Attribute.
+         * Returns true if id has at least one referring Attribute<GUM_SCALAR>.
          * @param id A NodeId.
-         * @return returns true if is has at least one referring Attribute.
+         * @return returns true if is has at least one referring Attribute<GUM_SCALAR>.
          */
         bool hasRefAttr( NodeId id ) const;
 
         /**
          * @brief Returns a vector of pairs of refering attributes of id.
          */
-        std::vector< std::pair<Instance*, std::string> >& getRefAttr( NodeId id );
+        std::vector< std::pair<Instance<GUM_SCALAR>*, std::string> >& getRefAttr( NodeId id );
 
         /**
          * @brief Returns a vector of pairs of refering attributes of id.
          */
-        const std::vector< std::pair<Instance*, std::string> >& getRefAttr( NodeId id ) const;
+        const std::vector< std::pair<Instance<GUM_SCALAR>*, std::string> >& getRefAttr( NodeId id ) const;
 
         /// @}
         // ========================================================================
@@ -328,36 +329,36 @@ namespace gum {
         // ========================================================================
         /// @{
 
-        /// Alias to iterate over the gum::prm::Attribute in this Instance.
-        typedef NodeProperty<Attribute*>::iterator iterator;
+        /// Alias to iterate over the gum::prm::Attribute<GUM_SCALAR> in this Instance<GUM_SCALAR>.
+        typedef typename NodeProperty<Attribute<GUM_SCALAR>*>::iterator iterator;
 
-        /// Returns an iterator at the begining of the list of gum::prm::Attribute in
-        /// this Instance.
+        /// Returns an iterator at the begining of the list of gum::prm::Attribute<GUM_SCALAR> in
+        /// this Instance<GUM_SCALAR>.
         iterator begin();
 
         /// Returns a reference over the iterator at the end of the list of
-        /// gum::prm::Attribute in this Instance.
+        /// gum::prm::Attribute<GUM_SCALAR> in this Instance<GUM_SCALAR>.
         const iterator& end();
 
-        /// Alias to iterate over the gum::prm::Attribute in this Instance.
-        typedef NodeProperty<Attribute*>::const_iterator const_iterator;
+        /// Alias to iterate over the gum::prm::Attribute<GUM_SCALAR> in this Instance<GUM_SCALAR>.
+        typedef typename NodeProperty<Attribute<GUM_SCALAR>*>::const_iterator const_iterator;
 
-        /// Returns an iterator at the beginning of the list of gum::prm::Attribute in
-        /// this Instance.
+        /// Returns an iterator at the beginning of the list of gum::prm::Attribute<GUM_SCALAR> in
+        /// this Instance<GUM_SCALAR>.
         const_iterator begin() const;
 
         /// Returns a reference over the iterator at the end of the list of
-        /// gum::prm::Attribute in this Instance.
+        /// gum::prm::Attribute<GUM_SCALAR> in this Instance<GUM_SCALAR>.
         const const_iterator& end() const;
 
         /**
-         * Nested class to iterate over ReferenceSlot and SlotChain
+         * Nested class to iterate over ReferenceSlot and SlotChain<GUM_SCALAR>
          * instantiations.
          */
         class RefIterator {
 
           public:
-            RefIterator( Set<Instance*>& set ) ;
+            RefIterator( Set<Instance<GUM_SCALAR>*>& set ) ;
 
             RefIterator( const RefIterator& from ) ;
 
@@ -373,35 +374,35 @@ namespace gum {
 
             bool operator==( const RefIterator& from ) const;
 
-            Instance& operator*() const;
-            Instance* operator->() const;
+            Instance<GUM_SCALAR>& operator*() const;
+            Instance<GUM_SCALAR>* operator->() const;
 
           private:
-            Set<Instance*>& __set;
-            Set<Instance*>::iterator __iter;
+            Set<Instance<GUM_SCALAR>*>& __set;
+            typename Set<Instance<GUM_SCALAR>*>::iterator __iter;
         };
 
         /**
-         * Returns an iterator at the beginning of the set of Instance associated
-         * to a given gum::prm::ReferenceSlot or gum::prm::SlotChain.
+         * Returns an iterator at the beginning of the set of Instance<GUM_SCALAR> associated
+         * to a given gum::prm::ReferenceSlot or gum::prm::SlotChain<GUM_SCALAR>.
          *
-         * @param id A gum::prm::ReferenceSlot or gum::prm::SlotChain in this
-         *           Instance type.
+         * @param id A gum::prm::ReferenceSlot or gum::prm::SlotChain<GUM_SCALAR> in this
+         *           Instance<GUM_SCALAR> type.
          *
-         * @throw NotFound Raised if no gum::prm::ClassElement in this Instance
+         * @throw NotFound Raised if no gum::prm::ClassElement in this Instance<GUM_SCALAR>
          *                 type matches id.
          * @throw WrongClassElement Raised if id is neither a ReferenceSlot or
-         *                          SlotChain.
+         *                          SlotChain<GUM_SCALAR>.
          */
         RefIterator begin( NodeId id );
 
         /**
-         * Nested class to iterate over ReferenceSlot and SlotChain
+         * Nested class to iterate over ReferenceSlot and SlotChain<GUM_SCALAR>
          * instantiations.
          */
         class RefConstIterator {
           public:
-            RefConstIterator( const Set<Instance*>& set );
+            RefConstIterator( const Set<Instance<GUM_SCALAR>*>& set );
 
             RefConstIterator( const RefConstIterator& from );
 
@@ -417,30 +418,30 @@ namespace gum {
 
             bool operator==( const RefConstIterator& from ) const;
 
-            const Instance& operator*() const;
-            const Instance* operator->() const;
+            const Instance<GUM_SCALAR>& operator*() const;
+            const Instance<GUM_SCALAR>* operator->() const;
 
           private:
-            const Set<Instance*>& __set;
-            Set<Instance*>::const_iterator __iter;
+            const Set<Instance<GUM_SCALAR>*>& __set;
+            typename Set<Instance<GUM_SCALAR>*>::const_iterator __iter;
         };
 
         /**
-         * Returns an iterator at the beginning of the set of Instance associated
-         * to a given gum::prm::ReferenceSlot or gum::prm::SlotChain.
+         * Returns an iterator at the beginning of the set of Instance<GUM_SCALAR> associated
+         * to a given gum::prm::ReferenceSlot or gum::prm::SlotChain<GUM_SCALAR>.
          *
-         * @param id A gum::prm::ReferenceSlot or gum::prm::SlotChain in this
-         *           Instance type.
+         * @param id A gum::prm::ReferenceSlot or gum::prm::SlotChain<GUM_SCALAR> in this
+         *           Instance<GUM_SCALAR> type.
          *
-         * @throw NotFound Raised if no gum::prm::ClassElement in this Instance
+         * @throw NotFound Raised if no gum::prm::ClassElement in this Instance<GUM_SCALAR>
          * type matches id.
          * @throw WrongClassElement Raised if id is neither a ReferenceSlot or
-         * SlotChain.
+         * SlotChain<GUM_SCALAR>.
          */
         RefConstIterator begin( NodeId id ) const;
 
-        typedef Property< std::vector< std::pair< Instance*, std::string > >* >::onNodes::iterator InvRefIterator;
-        typedef Property< std::vector< std::pair< Instance*, std::string > >* >::onNodes::const_iterator InvRefConstIterator;
+        typedef typename Property< std::vector< std::pair< Instance<GUM_SCALAR>*, std::string > >* >::onNodes::iterator InvRefIterator;
+        typedef typename Property< std::vector< std::pair< Instance<GUM_SCALAR>*, std::string > >* >::onNodes::const_iterator InvRefConstIterator;
 
         InvRefIterator beginInvRef();
         const InvRefIterator& endInvRef();
@@ -451,10 +452,10 @@ namespace gum {
         /// @}
       private:
         /// Copy constructor.
-        Instance( const Instance& source );
+        Instance<GUM_SCALAR>( const Instance<GUM_SCALAR>& source );
 
         /// Copy operator. Don't use it.
-        Instance& operator=( const Class& from );
+        Instance<GUM_SCALAR>& operator=( const Class<GUM_SCALAR>& from );
 
         // ========================================================================
         /// @name Private instantiation methods.
@@ -462,36 +463,36 @@ namespace gum {
         /// @{
 
         /// Used at construction to instantiate aggregates.
-        void __copyAggregates( Aggregate* source );
+        void __copyAggregates( Aggregate<GUM_SCALAR>* source );
 
         /// Used at construction to instantiate attributes.
         /// @param source An attribute in __type.
-        void __copyAttribute( Attribute* source );
+        void __copyAttribute( Attribute<GUM_SCALAR>* source );
 
         /// Used at construction to instantiate parameters.
         /// @param source A parameter in __type.
-        void __copyParameter( Attribute* source );
+        void __copyParameter( Attribute<GUM_SCALAR>* source );
 
         /**
          * @brief Add i as the inverse instantiation of name.
          *
-         * @param name Either an inverse ReferenceSlot or an inverse SlotChain.
-         * @param i An inverse Instance added to name.
+         * @param name Either an inverse ReferenceSlot or an inverse SlotChain<GUM_SCALAR>.
+         * @param i An inverse Instance<GUM_SCALAR> added to name.
          *
          * @throw NotFound Raised if name does not match any ClassElement in this.
          * @throw WrongClassElement Raised if name is not a ReferenceSlot nor a
-         *                          SlotChain.
+         *                          SlotChain<GUM_SCALAR>.
          * @throw TypeError Raised if i is not a valid subtype for name.
          */
-        void __addInverse( const std::string& name, Instance* i );
+        void __addInverse( const std::string& name, Instance<GUM_SCALAR>* i );
 
         /**
-         * @brief This method is used to propagate instantiations between Instance
+         * @brief This method is used to propagate instantiations between Instance<GUM_SCALAR>
          *        sharing dependencies.
          *
          * @param visited A Set to prevent any unnecessary call to __instantiate().
          */
-        void __instantiate( Set<Instance*> visited );
+        void __instantiate( Set<Instance<GUM_SCALAR>*> visited );
 
         /// This instantiate the corresponding aggregate.
         void __instantiateAggregate( NodeId id );
@@ -508,18 +509,18 @@ namespace gum {
         /// @brief Retrieve all instances referred by sc.
         /// @param sc A slot chain of this instance's type.
         /// @throw NotFound Raised if a reference in sc is not instantiated.
-        void __instantiateSlotChain( SlotChain* sc );
+        void __instantiateSlotChain( SlotChain<GUM_SCALAR>* sc );
 
-        /// @brief Copy the content of an Attribute from its Class counterpart.
-        /// @param attr An Attribute of this Instance.
+        /// @brief Copy the content of an Attribute<GUM_SCALAR> from its Class<GUM_SCALAR> counterpart.
+        /// @param attr An Attribute<GUM_SCALAR> of this Instance<GUM_SCALAR>.
         /// @throw OperationNotAllowed If the MultiDimImplementation is of an unknown type.
-        void __copyAttributeCPF( Attribute* attr );
+        void __copyAttributeCPF( Attribute<GUM_SCALAR>* attr );
 
         /// @brief Add this as a referring instance over the attribute pointed by sc
         ///        in i.
         /// @param sc A slot chain pointing over an attribute in i.
         /// @param i An instance holding an attribute pointed by sc.
-        void __addReferingInstance( SlotChain* sc, Instance* i );
+        void __addReferingInstance( SlotChain<GUM_SCALAR>* sc, Instance<GUM_SCALAR>* i );
 
         /// @}
         // ========================================================================
@@ -527,18 +528,18 @@ namespace gum {
         // ========================================================================
         /// @{
 
-        /// The type of this Instance.
-        Class* __type;
+        /// The type of this Instance<GUM_SCALAR>.
+        Class<GUM_SCALAR>* __type;
 
-        /// The gum::prm::Attribute and gum::prm::Aggregate of this Instance.
-        NodeProperty<Attribute*> __nodeIdMap;
+        /// The gum::prm::Attribute<GUM_SCALAR> and gum::prm::Aggregate<GUM_SCALAR> of this Instance<GUM_SCALAR>.
+        NodeProperty<Attribute<GUM_SCALAR>*> __nodeIdMap;
 
-        /// Mapping between the gum::prm::ReferenceSlot and gum::prm::SlotChain in
-        /// __type / and the Instance associated with it.
-        NodeProperty< Set< Instance* >* > __referenceMap;
+        /// Mapping between the gum::prm::ReferenceSlot and gum::prm::SlotChain<GUM_SCALAR> in
+        /// __type / and the Instance<GUM_SCALAR> associated with it.
+        NodeProperty< Set< Instance<GUM_SCALAR>* >* > __referenceMap;
 
         /// Code alias.
-        typedef std::pair<Instance*, std::string> pair;
+        typedef std::pair<Instance<GUM_SCALAR>*, std::string> pair;
 
         /// The set of pair (instance, attribute) referring an attribute of
         /// this instance.
@@ -557,9 +558,7 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#ifndef GUM_NO_INLINE
-#include <agrum/prm/instance.inl>
-#endif // GUM_NO_INLINE
+#include <agrum/prm/instance.tcc>
 
 #endif /* GUM_INSTANCE_H */
 

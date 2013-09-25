@@ -31,8 +31,7 @@
 
 namespace gum {
   namespace prm {
-
-    class ClassElementContainer;
+    template<typename GUM_SCALAR> class ClassElementContainer;
 
     /**
      * @class ReferenceSlot referenceSlot.h <agrum/prm/referenceSlot.h>
@@ -51,7 +50,8 @@ namespace gum {
      * @ingroup prm_group
      */
 // ==========================================================================
-    class ReferenceSlot: public ClassElement {
+    template<typename GUM_SCALAR>
+    class ReferenceSlot: public ClassElement<GUM_SCALAR> {
       public:
         // ========================================================================
         /// @name Protected constructors & destructor.
@@ -65,8 +65,8 @@ namespace gum {
          * @param type The type of this reference slot.
          * @param isArray Determine if this reference slot is multiple or not.
          */
-        ReferenceSlot( const std::string& name, ClassElementContainer& type,
-                       bool isArray=false );
+        ReferenceSlot ( const std::string& name, ClassElementContainer<GUM_SCALAR>& type,
+                        bool isArray=false );
 
         /**
          * Destructor.
@@ -82,19 +82,19 @@ namespace gum {
         /**
          * Implementation of the pure virtual method of PRMObject.
          */
-        virtual ClassElementType elt_type() const;
+        virtual typename ClassElement<GUM_SCALAR>::ClassElementType elt_type() const;
 
         /**
          * Returns the type of this slot, which is a ClassElementContainer
          * (it is not the type of PRMObject).
          */
-        ClassElementContainer& slotType();
+        ClassElementContainer<GUM_SCALAR>& slotType();
 
         /**
          * Returns the type of this slot, which is a ClassElementContainer
          * (it is not the type of PRMObject).
          */
-        const ClassElementContainer& slotType() const;
+        const ClassElementContainer<GUM_SCALAR>& slotType() const;
 
         /**
          * Returns true if this reference slot is an array.
@@ -102,10 +102,10 @@ namespace gum {
         bool isArray() const;
 
         /// See gum::ClassElement::addParent().
-        virtual void addParent( const ClassElement& elt );
+        virtual void addParent ( const ClassElement<GUM_SCALAR>& elt );
 
         /// See gum::ClassElement::addChild().
-        virtual void addChild( const ClassElement& elt );
+        virtual void addChild ( const ClassElement<GUM_SCALAR>& elt );
 
         /// @}
         // ========================================================================
@@ -123,11 +123,11 @@ namespace gum {
 
         /// @brief Raise an OperationNotAllowed.
         /// See gum::ClassElement::cpf().
-        virtual Potential<prm_float>& cpf();
+        virtual Potential<GUM_SCALAR>& cpf();
 
         /// @brief Raise an OperationNotAllowed.
         /// See gum::ClassElement::cpf().
-        virtual const Potential<prm_float>& cpf() const;
+        virtual const Potential<GUM_SCALAR>& cpf() const;
 
         /// @}
       private:
@@ -137,10 +137,10 @@ namespace gum {
         // @{
 
         /// Copy constructor. Don't use it.
-        ReferenceSlot( const ReferenceSlot& source );
+        ReferenceSlot ( const ReferenceSlot& source );
 
         /// Copy operator. Don't use it.
-        ReferenceSlot& operator=( const ReferenceSlot& from );
+        ReferenceSlot& operator= ( const ReferenceSlot& from );
 
         /// @}
         // ========================================================================
@@ -149,7 +149,7 @@ namespace gum {
         // @{
 
         /// The type of this ReferenceSlot.
-        ClassElementContainer& __slotType;
+        ClassElementContainer<GUM_SCALAR>& __slotType;
 
         /// Flag indicating if this slot is an array.
         bool __isArray;
@@ -160,9 +160,7 @@ namespace gum {
   } /* namespace prm */
 } // namespace gum
 
-#ifndef GUM_NO_INLINE
-#include <agrum/prm/referenceSlot.inl>
-#endif // GUM_NO_INLINE
+#include <agrum/prm/referenceSlot.tcc>
 
 #endif /* GUM_CLASS_ELEMENT_H */
 

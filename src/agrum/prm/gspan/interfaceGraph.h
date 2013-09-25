@@ -50,7 +50,7 @@ namespace gum {
         /// Constructor.
         LabelData();
         /// Copy constructor.
-        LabelData( const LabelData& from );
+        LabelData ( const LabelData& from );
         /// Destructor.
         ~LabelData();
         /// An unique identifier for this label.
@@ -60,9 +60,9 @@ namespace gum {
         /// The size in terms of tree width of the given label.
         unsigned long tree_width;
         /// Equality operator.
-        bool operator==( const LabelData& from ) const;
+        bool operator== ( const LabelData& from ) const;
         /// Difference operator.
-        bool operator!=( const LabelData& from ) const;
+        bool operator!= ( const LabelData& from ) const;
       };
 
       /**
@@ -71,27 +71,28 @@ namespace gum {
        * @param data The data printed.
        * @return Returns out.
        */
-      std::ostream& operator<<( std::ostream& out, const LabelData& data );
+      std::ostream& operator<< ( std::ostream& out, const LabelData& data );
 
       /**
        * @struct NodeData interfaceGraph.h <agrum/prm/gspan/interfaceGraph.h>
        * Inner class to handle data about nodes in __graph.
        */
+      template<typename GUM_SCALAR>
       struct NodeData {
         /// Constructor.
         NodeData();
         /// Copy Constructor.
-        NodeData( const NodeData& from );
+        NodeData ( const NodeData& from );
         /// Destructor.
         ~NodeData();
         /// The instance represented by this node.
-        Instance* n;
+        Instance<GUM_SCALAR>* n;
         /// The label of this node.
         LabelData* l;
         /// Equality operator.
-        bool operator==( const NodeData& from ) const;
+        bool operator== ( const NodeData& from ) const;
         /// Difference operator.
-        bool operator!=( const NodeData& from ) const;
+        bool operator!= ( const NodeData& from ) const;
       };
 
       /**
@@ -100,7 +101,8 @@ namespace gum {
        * @param data The data printed.
        * @return Returns out.
        */
-      std::ostream& operator<<( std::ostream& out, const NodeData& data );
+      template<typename GUM_SCALAR>
+      std::ostream& operator<< ( std::ostream& out, const NodeData<GUM_SCALAR>& data );
 
       /**
        * @struct EdgeData interfaceGraph.h <agrum/prm/gspan/interfaceGraph.h>
@@ -110,23 +112,23 @@ namespace gum {
         /// Constructor.
         EdgeData();
         /// Copy constructor.
-        EdgeData( const EdgeData& from );
+        EdgeData ( const EdgeData& from );
         /// Destructor.
         ~EdgeData();
         /// One of the two instance represented by this edge.
-        Instance* u;
+        Instance<GUM_SCALAR>* u;
         /// The label data of u.
         LabelData* l_u;
         /// The other instance represented by thus edge
-        Instance* v;
+        Instance<GUM_SCALAR>* v;
         /// The label data of v.
         LabelData* l_v;
         /// The labal data of this edge.
         LabelData* l;
         /// Equality operator.
-        bool operator==( const EdgeData& from ) const;
+        bool operator== ( const EdgeData& from ) const;
         /// Difference operator.
-        bool operator!=( const EdgeData& from ) const;
+        bool operator!= ( const EdgeData& from ) const;
       };
 
       /**
@@ -135,7 +137,7 @@ namespace gum {
        * @param data The data printed.
        * @return Returns out.
        */
-      std::ostream& operator<<( std::ostream& out, const EdgeData& data );
+      std::ostream& operator<< ( std::ostream& out, const EdgeData& data );
 
       /**
        * @class InterfaceGraph interfaceGraph.h <agrum/prm/gspan/interfaceGraph.h>
@@ -157,13 +159,13 @@ namespace gum {
         public:
 
           /// Default constructor.
-          InterfaceGraph( const System& sys );
+          InterfaceGraph ( const System& sys );
 
           /// Copy constructor, proceeds with a shallow copy so for friends only.
-          InterfaceGraph( const InterfaceGraph& source );
+          InterfaceGraph ( const InterfaceGraph& source );
 
           /// Copy operator.
-          InterfaceGraph& operator=( const InterfaceGraph& source );
+          InterfaceGraph& operator= ( const InterfaceGraph& source );
 
           /// Destructor.
           ~InterfaceGraph();
@@ -181,52 +183,52 @@ namespace gum {
           const Bijection<Idx, LabelData*>& labels() const;
 
           /// Returns the number of node or edges labelled by l.
-          Size size( const LabelData* l ) const;
+          Size size ( const LabelData* l ) const;
 
           /// Returns the set of nodes labelled by l.
-          Set<NodeData*>& nodes( const LabelData* l );
+          Set<NodeData*>& nodes ( const LabelData* l );
 
           /// Returns the set of nodes labelled by l.
-          const Set<NodeData*>& nodes( const LabelData* l ) const;
+          const Set<NodeData*>& nodes ( const LabelData* l ) const;
 
           /// Returns the set of nodes labelled by l.
-          Set<EdgeData*>& edges( const LabelData* l );
+          Set<EdgeData*>& edges ( const LabelData* l );
 
           /// Returns the set of nodes labelled by l.
-          const Set<EdgeData*>& edges( const LabelData* l ) const;
+          const Set<EdgeData*>& edges ( const LabelData* l ) const;
 
           /// Returns a label given its id
-          LabelData* label( Idx id );
+          LabelData* label ( Idx id );
 
           /// Returns the id of i in this interface graph
-          NodeId id( const Instance& i ) const;
+          NodeId id ( const Instance<GUM_SCALAR>& i ) const;
 
           /// Returns the id of i in this interface graph
-          NodeId id( const Instance* i ) const;
+          NodeId id ( const Instance<GUM_SCALAR>* i ) const;
 
           /// Returns data about a node.
           /// @throw NotFound
-          NodeData& node( const Instance* i );
+          NodeData& node ( const Instance<GUM_SCALAR>* i );
 
           /// Returns data about a node.
           /// @throw NotFound
-          const NodeData& node( const Instance* i ) const;
+          const NodeData& node ( const Instance<GUM_SCALAR>* i ) const;
 
           /// Returns data about a node.
           /// @throw NotFound
-          NodeData& node( NodeId id );
+          NodeData& node ( NodeId id );
 
           /// Returns data about a node.
           /// @throw NotFound
-          const NodeData& node( NodeId id ) const;
+          const NodeData& node ( NodeId id ) const;
 
           /// Returns data about an edge.
           /// @throw NotFound
-          EdgeData& edge( NodeId u, NodeId v );
+          EdgeData& edge ( NodeId u, NodeId v );
 
           /// Returns data about an edge.
           /// @throw NotFound
-          const EdgeData& edge( NodeId u, NodeId v ) const;
+          const EdgeData& edge ( NodeId u, NodeId v ) const;
 
         private:
           /// The gum::prm::System represented by this interface graph.
@@ -238,8 +240,8 @@ namespace gum {
           /// Data associated with a node in __graph.
           NodeProperty<NodeData*> __nodes;
 
-          /// Mapping between Instance dans their NodeId in __graph.
-          HashTable<Instance*, NodeId> __idMap;
+          /// Mapping between Instance<GUM_SCALAR> dans their NodeId in __graph.
+          HashTable<Instance<GUM_SCALAR>*, NodeId> __idMap;
 
           /// Data associated with edges in __graph.
           EdgeProperty<EdgeData*> __edges;
@@ -261,11 +263,11 @@ namespace gum {
 
           /// Compute the label of node and add it to __labels if it does not
           /// exists yet. Update node with the correct label's id.
-          void __label( NodeData* node, HashTable<std::string, LabelData*>& label_map );
+          void __label ( NodeData* node, HashTable<std::string, LabelData*>& label_map );
 
           /// Compute the label of edge and add it to __labels if it does not
           /// exists yet. Update edge with the correct label's id.
-          void __label( EdgeData* edge, HashTable<std::string, LabelData*>& label_map );
+          void __label ( EdgeData* edge, HashTable<std::string, LabelData*>& label_map );
 
       };
 

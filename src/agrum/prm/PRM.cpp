@@ -26,57 +26,9 @@
 
 #include <agrum/prm/PRM.h>
 
-#ifdef GUM_NO_INLINE
-#include <agrum/prm/PRM.inl>
-#endif // GUM_NO_INLINE
 
 namespace gum {
   namespace prm {
-
-// Default constructor.
-    PRM::PRM() {
-      GUM_CONSTRUCTOR( PRM );
-      __addBuiltInTypes();
-    }
-
-// Destructor.
-    PRM::~PRM() {
-      GUM_DESTRUCTOR( PRM );
-      __classMap.clear();
-      __typeMap.clear();
-      __systemMap.clear();
-
-      for ( Set<System*>::iterator iter = __systems.begin();
-            iter != __systems.end(); ++iter ) {
-        delete *iter;
-      }
-
-      for ( Set<Class*>::iterator iter = __classes.begin();
-            iter != __classes.end(); ++iter ) {
-        delete *iter;
-      }
-
-      for ( Set<Interface*>::iterator iter = __interfaces.begin();
-            iter != __interfaces.end(); ++iter ) {
-        delete *iter;
-      }
-
-      for ( Set<Type*>::iterator iter = __types.begin();
-            iter != __types.end(); ++iter ) {
-        delete *iter;
-      }
-    }
-
-// Add the built-in types in the PRM
-    void
-    PRM::__addBuiltInTypes() {
-      LabelizedVariable var( "boolean", "built-in type", 0 );
-      var.addLabel( "false" );
-      var.addLabel( "true" );
-      Type* boolean = new Type( var );
-      __types.insert( boolean );
-      __typeMap.insert( "boolean", boolean );
-    }
 
   } /* namespace prm */
 } /* namespace gum */

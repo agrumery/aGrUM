@@ -27,78 +27,8 @@
 
 #include <agrum/prm/classElementContainer.h>
 
-#ifdef GUM_NO_INLINE
-#include <agrum/prm/classElementContainer.inl>
-#endif //GUM_NO_INLINE
-
 namespace gum {
   namespace prm {
-
-
-// NodeId
-// ClassElementContainer::_findNodeId() {
-//   Set<ClassElementContainer*> set;
-//   std::vector<NodeId> candidates;
-//   set.insert(this);
-//   _findAllSubtypes(set);
-//   candidates.push_back(_dag().insertNode());
-//   bool found = false;
-//   for (short count = 0; count < 1000; ++count) {
-//     for (Set<ClassElementContainer*>::iterator iter = set.begin();
-//          iter != set.end(); ++iter) {
-//       if ((**iter).exists(candidates.back())) {
-//         found = true;
-//         break;
-//       }
-//     }
-//     if (found) {
-//       candidates.push_back(_dag().insertNode());
-//       found = false;
-//     } else {
-//       NodeId id = candidates.back();
-//       candidates.pop_back();
-//       for (std::vector<NodeId>::iterator iter = candidates.begin();
-//            iter != candidates.end(); ++iter) {
-//         _dag().eraseNode(*iter);
-//       }
-//       return id;
-//     }
-//   }
-//   GUM_ERROR(FatalError, "could not find a common NodeId");
-// }
-
-    void
-    ClassElementContainer::_copyIOFlags ( const ClassElementContainer& c ) {
-      typedef HashTable< std::string, std::pair<bool, bool> >::const_iterator Iter;
-
-      for ( Iter iter = c.__IOFlags.begin(); iter != c.__IOFlags.end(); ++iter ) {
-        _setIOFlag ( get ( iter.key() ), *iter );
-      }
-    }
-
-    std::ostream&
-    operator<< ( std::ostream& output, const ClassElementContainer& container ) {
-      std::string tab = "  ";
-      output << "digraph \"" << container.name() << "\" {" << std::endl;
-
-      for ( auto node : container.dag().nodes() ) {
-        if ( container.dag().children ( node ).size() > 0 ) {
-          const NodeSet& children = container.dag().children ( node );
-
-          for ( NodeSetIterator child_iter = children.begin();
-                child_iter != children.end(); ++child_iter ) {
-            output << tab << "\"" << container.get ( node ).name() << "\" -> "
-                   << "\"" << container.get ( *child_iter ).name() << "\";" << std::endl;
-          }
-        } else if ( container.dag().parents ( node ).size() == 0 ) {
-          output << tab << "\"" << container.get ( node ).name() << "\";" << std::endl;
-        }
-      }
-
-      output << "}" << std::endl;
-      return output;
-    }
-
 
   } /* namespace prm */
 } /* namespace gum */

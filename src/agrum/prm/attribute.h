@@ -30,12 +30,13 @@
 #include <agrum/multidim/multiDimImplementation.h>
 
 #include <agrum/prm/classElement.h>
+#include <agrum/prm/interface.h>
 
 namespace gum {
   namespace prm {
 
-    class Class;
-    class Instance;
+    template<typename GUM_SCALAR> class Class;
+    template<typename GUM_SCALAR> class Instance;
 
     /**
      * @class Attribute attribute.h <agrum/prm/attribute.h>
@@ -56,11 +57,12 @@ namespace gum {
      * @see PRM PRMFactory Class ClassElement Type Potential
      * @ingroup prm_group
      */
-    class Attribute: public ClassElement {
+    template<typename GUM_SCALAR>
+    class Attribute: public ClassElement<GUM_SCALAR> {
         // ========================================================================
-        friend class Class;
-        friend class Interface;
-        friend class Instance;
+        friend class Class<GUM_SCALAR>;
+        friend class Interface<GUM_SCALAR>;
+        friend class Instance<GUM_SCALAR>;
         // ========================================================================
       public:
         // ========================================================================
@@ -77,8 +79,8 @@ namespace gum {
          * @param impl The MultiDimImplementation used by the internal Potential of this Attribute.
          *             it will be deleted after the call of ~Attribute.
          */
-        Attribute( const std::string& name, const Type& type,
-                   MultiDimImplementation<prm_float>* impl = new MultiDimArray<prm_float>() );
+        Attribute ( const std::string& name, const Type& type,
+                    MultiDimImplementation<GUM_SCALAR>* impl = new MultiDimArray<GUM_SCALAR>() );
 
         /**
          * @brief Constructor used by gum::Instance.
@@ -90,7 +92,7 @@ namespace gum {
          *            ~Attribute.
          * @param delete_type If true, the type is deleted with this instance.
          */
-        Attribute( const std::string& name, Type* type, Potential<prm_float>* cpf, bool delete_type );
+        Attribute ( const std::string& name, Type* type, Potential<GUM_SCALAR>* cpf, bool delete_type );
 
 
         /// Destructor.
@@ -103,7 +105,7 @@ namespace gum {
         /// @{
 
         /// See gum::ClassElement::elt_type().
-        virtual ClassElementType elt_type() const;
+        virtual typename ClassElement<GUM_SCALAR>::ClassElementType elt_type() const;
 
         /// See gum::ClassElement::type().
         virtual Type& type();
@@ -112,16 +114,16 @@ namespace gum {
         virtual const Type& type() const;
 
         /// See gum::ClassElement::cpf().
-        virtual Potential<prm_float>& cpf();
+        virtual Potential<GUM_SCALAR>& cpf();
 
         /// See gum::ClassElement::cpf().
-        virtual const Potential<prm_float>& cpf() const;
+        virtual const Potential<GUM_SCALAR>& cpf() const;
 
         /// See gum::ClassElement::_addParent().
-        virtual void addParent( const ClassElement& elt );
+        virtual void addParent ( const ClassElement<GUM_SCALAR>& elt );
 
         /// See gum::ClassElement::_addChild().
-        virtual void addChild( const ClassElement& elt );
+        virtual void addChild ( const ClassElement<GUM_SCALAR>& elt );
 
         /**
          * @brief Returns a proper cast descendant of this Attribute.
@@ -164,13 +166,13 @@ namespace gum {
          * @throw TypeError Raised if attr's Type is not a direct descendant of
          *                  this Attribute's Type.
          */
-        void setAsCastDescendant( Attribute* attr );
+        void setAsCastDescendant ( Attribute* attr );
 
         /// @}
       protected:
 
         /// Copy constructor. Don't use it.
-        Attribute( const Attribute& source );
+        Attribute ( const Attribute& source );
 
         /// Copy operator. Don't use it.
         Attribute& operator= ( const Attribute& from );
@@ -185,7 +187,7 @@ namespace gum {
         Type* __type;
 
         /// A pointer on the Potential of this attribute
-        Potential<prm_float>* __cpf;
+        Potential<GUM_SCALAR>* __cpf;
 
         /// Flag to know if we can delete type.
         bool __delete_type;
@@ -202,7 +204,8 @@ namespace gum {
      * require special method calls to add parents. See
      * gum::prm::PRMFactory::addAttribute(Attribute*) for more details.
      */
-    class FuncAttribute: public Attribute {
+    template<typename GUM_SCALAR>
+    class FuncAttribute: public Attribute<GUM_SCALAR> {
       public:
         /**
          * @brief Constructor used by gum::Class.
@@ -214,8 +217,8 @@ namespace gum {
          * @param impl The MultiDimImplementation used by the internal Potential of this FuncAttribute.
          *             it will be deleted after the call of ~FuncAttribute.
          */
-        FuncAttribute( const std::string& name, const Type& type,
-                       MultiDimImplementation<prm_float>* impl = new MultiDimArray<prm_float>() );
+        FuncAttribute ( const std::string& name, const Type& type,
+                        MultiDimImplementation<GUM_SCALAR>* impl = new MultiDimArray<GUM_SCALAR>() );
 
         /**
          * @brief Constructor used by gum::Instance.
@@ -228,21 +231,21 @@ namespace gum {
          *            ~FuncAttribute.
          * @param delete_type If true, the type is deleted with this instance.
          */
-        FuncAttribute( const std::string& name, Type* type, Potential<prm_float>* cpf, bool delete_type );
+        FuncAttribute ( const std::string& name, Type* type, Potential<GUM_SCALAR>* cpf, bool delete_type );
 
         /// Destructor.
         virtual ~FuncAttribute();
 
         /// See gum::ClassElement::_addParent().
-        virtual void addParent( const ClassElement& elt );
+        virtual void addParent ( const ClassElement<GUM_SCALAR>& elt );
 
         /// See gum::ClassElement::_addChild().
-        virtual void addChild( const ClassElement& elt );
+        virtual void addChild ( const ClassElement<GUM_SCALAR>& elt );
 
       private:
 
         /// Copy constructor. Don't use it.
-        FuncAttribute( const FuncAttribute& source );
+        FuncAttribute ( const FuncAttribute& source );
 
         /// Copy operator. Don't use it.
         FuncAttribute& operator= ( const FuncAttribute& from );
@@ -253,9 +256,7 @@ namespace gum {
   } /* namespace prm */
 } // namespace gum
 
-#ifndef GUM_NO_INLINE
-#include <agrum/prm/attribute.inl>
-#endif // GUM_NO_INLINE
+#include <agrum/prm/attribute.tcc>
 
 #endif /* GUM_ATTRIBUTE_H */
 

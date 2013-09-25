@@ -34,20 +34,6 @@
 namespace gum {
   namespace prm {
 
-    ClassElement::ClassElement( const std::string& name ):
-      PRMObject( name ) {
-      GUM_CONSTRUCTOR( ClassElement );
-    }
-
-    ClassElement::ClassElement( const ClassElement& source ):
-      PRMObject( source.name() ), __id( source.id() ) {
-      GUM_CONS_CPY( ClassElement );
-    }
-
-    ClassElement::~ClassElement() {
-      GUM_DESTRUCTOR( ClassElement );
-    }
-
 
   } /* namespace prm */
 } /* namespace gum */

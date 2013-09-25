@@ -39,7 +39,7 @@
 namespace gum {
   namespace prm {
 
-    class Class;
+    template<typename GUM_SCALAR> class Class;
 
     /**
      * @class gum::Aggregate aggregate.h <agrum/prm/aggregate.h>
@@ -59,8 +59,9 @@ namespace gum {
      * @see PRM PRMFactory Class SlotChain
      * @ingroup prm_group
      */
-    class Aggregate: public ClassElement {
-        friend class Class;
+    template<typename GUM_SCALAR>
+    class Aggregate: public ClassElement<GUM_SCALAR> {
+        friend class Class<GUM_SCALAR>;
       public:
         // ========================================================================
         /// @name Built-in types.
@@ -87,7 +88,7 @@ namespace gum {
          *
          * @throw Raise NotFound exception if no matches is found.
          */
-        static AggregateType str2enum( const std::string& str ) {
+        static AggregateType str2enum ( const std::string& str ) {
           if ( str == "min" || str == "MIN" || str == "Min" ) {
             return AggregateType::MIN;
           } else if ( str == "max" || str == "MAX" || str == "Max" ) {
@@ -106,8 +107,8 @@ namespace gum {
             return AggregateType::FORALL;
           } else {
             std::string msg = "Unknown aggregate: ";
-            msg.append( str );
-            GUM_ERROR( NotFound, msg );
+            msg.append ( str );
+            GUM_ERROR ( NotFound, msg );
           }
         }
 
@@ -123,7 +124,7 @@ namespace gum {
          * @param aggType The aggregate type of this aggregate.
          * @param rvType The random variable type of this aggregate, which is copied.
          */
-        Aggregate( const std::string& name, AggregateType aggType, const Type& rvType );
+        Aggregate ( const std::string& name, AggregateType aggType, const Type& rvType );
 
         /**
          * Default constructor.
@@ -132,7 +133,7 @@ namespace gum {
          * @param rvType The random variable type of this aggregate, which is copied.
          * @param label The index of the label on which this aggregate applies.
          */
-        Aggregate( const std::string& name, AggregateType aggType, const Type& rvType, Idx label );
+        Aggregate ( const std::string& name, AggregateType aggType, const Type& rvType, Idx label );
 
         /// Destructor.
         virtual ~Aggregate();
@@ -144,7 +145,7 @@ namespace gum {
         /// @{
 
         /// See gum::ClassElement::elt_type().
-        virtual ClassElementType elt_type() const;
+        virtual typename ClassElement<GUM_SCALAR>::ClassElementType elt_type() const;
 
         /// Returns the aggregate of *this.
         AggregateType agg_type() const;
@@ -157,10 +158,10 @@ namespace gum {
         Idx label() const;
 
         /// See gum::ClassElement::_addParent().
-        virtual void addParent( const ClassElement& elt );
+        virtual void addParent ( const ClassElement<GUM_SCALAR>& elt );
 
         /// See gum::ClassElement::_addChild().
-        virtual void addChild( const ClassElement& elt );
+        virtual void addChild ( const ClassElement<GUM_SCALAR>& elt );
 
         /// See gum::ClassElement::type().
         virtual Type& type();
@@ -173,14 +174,14 @@ namespace gum {
          *        so this will raise an OperationNotAllowed exception.
          * See gum::ClassElement::cpf().
          */
-        virtual Potential<prm_float>& cpf();
+        virtual Potential<GUM_SCALAR>& cpf();
 
         /**
          * @brief Aggregates don't have Potential until they are instantiated as Attribute,
          *        so this will raise an OperationNotAllowed exception.
          * See gum::ClassElement::cpf().
          */
-        virtual const Potential<prm_float>& cpf() const;
+        virtual const Potential<GUM_SCALAR>& cpf() const;
 
         /**
          * Returns a pointer over an empty gum::MultiDimImplementation of the good
@@ -188,7 +189,7 @@ namespace gum {
          *
          * This should be use when manipulating instantiations of aggregates.
          */
-        MultiDimImplementation<prm_float>* buildImpl() const;
+        MultiDimImplementation<GUM_SCALAR>* buildImpl() const;
 
         /// @}
       private:
@@ -198,10 +199,10 @@ namespace gum {
         /// @{
 
         /// Copy constructor. Don't use it.
-        Aggregate( const Aggregate& source );
+        Aggregate ( const Aggregate& source );
 
         /// Copy operator. Don't use it.
-        Aggregate& operator=( const Aggregate& source );
+        Aggregate& operator= ( const Aggregate& source );
 
         /// @}
         // ========================================================================
@@ -227,9 +228,8 @@ namespace gum {
   } /* namespace prm */
 } // namespace gum
 
-#ifndef GUM_NO_INLINE
-#include <agrum/prm/aggregate.inl>
-#endif // GUM_NO_INLINE
+#include <agrum/prm/aggregate.tcc>
+
 
 #endif /* GUM_CLASS_ELEMENT_H */
 

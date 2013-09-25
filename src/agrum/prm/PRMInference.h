@@ -46,19 +46,20 @@ namespace gum {
      * The main purpose of this class is to give a common interface between all
      * inference algorithms and to handle evidences.
      */
+    template<typename GUM_SCALAR>
     class PRMInference {
       public:
         /// Code alias.
-        typedef std::pair<const Instance*, const Attribute*> Chain;
+        typedef std::pair<const Instance<GUM_SCALAR>*, const Attribute<GUM_SCALAR>*> Chain;
 
         /// Code alias.
-        typedef NodeProperty<const Potential<prm_float>*> EMap;
+        typedef NodeProperty<const Potential<GUM_SCALAR>*> EMap;
 
         /// Code alias.
-        typedef NodeProperty<const Potential<prm_float>*>::iterator EMapIterator;
+        typedef typename NodeProperty<const Potential<GUM_SCALAR>*>::iterator EMapIterator;
 
         /// Code alias.
-        typedef NodeProperty<const Potential<prm_float>*>::const_iterator EMapConstIterator;
+        typedef typename NodeProperty<const Potential<GUM_SCALAR>*>::const_iterator EMapConstIterator;
 
         // ========================================================================
         /// @name Constructor & destructor.
@@ -66,7 +67,7 @@ namespace gum {
         /// @{
 
         /// Default constructor.
-        PRMInference( const PRM& prm, const System& system );
+        PRMInference( const PRM<GUM_SCALAR>& prm, const System<GUM_SCALAR>& system );
 
         /// Copy constructor.
         PRMInference( const PRMInference& source );
@@ -100,10 +101,10 @@ namespace gum {
          * @param chain A string of the form instance.attribute.
          * @param m An empty CPF which will be filed by the marginal of chain.
          * @throw NotFound Raised if chain is invalid.
-         * @throw WrongType Raised if chain does not point to an Attribute.
+         * @throw WrongType Raised if chain does not point to an Attribute<GUM_SCALAR>.
          * @throw OperationNotAllowed Raise if m is not empty.
          */
-        void marginal( const Chain& chain, Potential<prm_float>& m );
+        void marginal( const Chain& chain, Potential<GUM_SCALAR>& m );
 
         /**
          * Compute the joint probability of the formals attributes pointed by
@@ -116,7 +117,7 @@ namespace gum {
          *                 formal attribute.
          * @throw OperationNotAllowed Raise if m is not empty.
          */
-        void joint( const std::vector< Chain >& chains, Potential<prm_float>& j );
+        void joint( const std::vector< Chain >& chains, Potential<GUM_SCALAR>& j );
 
         /// @}
         // ========================================================================
@@ -126,30 +127,30 @@ namespace gum {
 
         /// Returns EMap of evidences over i.
         /// @throw NotFound if i has no evidence.
-        EMap& evidence( const Instance& i );
+        EMap& evidence( const Instance<GUM_SCALAR>& i );
 
         /// Returns EMap of evidences over i.
         /// @throw NotFound if i has no evidence.
-        EMap& evidence( const Instance* i );
+        EMap& evidence( const Instance<GUM_SCALAR>* i );
 
         /// Returns EMap of evidences over i.
         /// @throw NotFound if i has no evidence.
-        const EMap& evidence( const Instance& i ) const;
+        const EMap& evidence( const Instance<GUM_SCALAR>& i ) const;
 
         /// Returns EMap of evidences over i.
         /// @throw NotFound if i has no evidence.
-        const EMap& evidence( const Instance* i ) const;
+        const EMap& evidence( const Instance<GUM_SCALAR>* i ) const;
 
         /// Returns true if i has evidence.
-        bool hasEvidence( const Instance& i ) const;
+        bool hasEvidence( const Instance<GUM_SCALAR>& i ) const;
 
         /// Returns EMap of evidences over i.
-        bool hasEvidence( const Instance* i ) const;
+        bool hasEvidence( const Instance<GUM_SCALAR>* i ) const;
 
-        /// Returns true if i has evidence on Attribute a.
+        /// Returns true if i has evidence on Attribute<GUM_SCALAR> a.
         bool hasEvidence( const Chain& chain ) const;
 
-        /// Returns true if i has evidence on Attribute a.
+        /// Returns true if i has evidence on Attribute<GUM_SCALAR> a.
         bool hasEvidence() const;
 
         /// Add an evidence to the given instance's elt.
@@ -158,13 +159,13 @@ namespace gum {
         ///
         /// @throw NotFound Raised if elt does not belong to i.
         /// @throw OperationNotAllowed Raised if p is inconsistent with elt.
-        void addEvidence( const Chain& chain, const Potential<prm_float>& p );
+        void addEvidence( const Chain& chain, const Potential<GUM_SCALAR>& p );
 
         /// Remove evidence on the given instance's elt.
         /// @param chain The variable being observed.
         ///
         /// @throw NotFound Raised if the given names are not found.
-        /// @throw WrongType Raised if the elt is not an Attribute.
+        /// @throw WrongType Raised if the elt is not an Attribute<GUM_SCALAR>.
         void removeEvidence( const Chain& chain );
 
         /// Remove all evidences.
@@ -194,19 +195,19 @@ namespace gum {
         /// @param chain
         /// @param m CPF filled with the marginal of elt. It is initialized
         ///          properly.
-        virtual void _marginal( const Chain& chain, Potential<prm_float>& m ) = 0;
+        virtual void _marginal( const Chain& chain, Potential<GUM_SCALAR>& m ) = 0;
 
         /// @brief Generic method to compute the marginal of given element.
-        /// @param queries Set of pairs of Instance and Attribute.
+        /// @param queries Set of pairs of Instance<GUM_SCALAR> and Attribute<GUM_SCALAR>.
         /// @param j CPF filled with the joint probability of queries. It is
         ///          initialized properly.
-        virtual void _joint( const std::vector< Chain >& queries, Potential<prm_float>& j ) = 0;
+        virtual void _joint( const std::vector< Chain >& queries, Potential<GUM_SCALAR>& j ) = 0;
 
         /// The PRM on which inference is done.
         const PRM* _prm;
 
         /// The Model on which inference is done.
-        const System* _sys;
+        const System<GUM_SCALAR>* _sys;
 
         /// @}
 
@@ -218,15 +219,15 @@ namespace gum {
         /// @{
 
         /// Code alias.
-        typedef HashTable<const Instance*, EMap*>::iterator EvidenceIterator;
+        typedef HashTable<const Instance<GUM_SCALAR>*, EMap*>::iterator EvidenceIterator;
         /// Code alias.
-        typedef HashTable<const Instance*, EMap*>::const_iterator EvidenceConstIterator;
+        typedef HashTable<const Instance<GUM_SCALAR>*, EMap*>::const_iterator EvidenceConstIterator;
 
-        /// Mapping of evidence over Instance's nodes.
-        HashTable<const Instance*, EMap*> __evidences;
+        /// Mapping of evidence over Instance<GUM_SCALAR>'s nodes.
+        HashTable<const Instance<GUM_SCALAR>*, EMap*> __evidences;
 
         /// Private getter over __evidences, if necessary creates an EMap for i.
-        EMap& __EMap( const Instance* i );
+        EMap& __EMap( const Instance<GUM_SCALAR>* i );
 
         /// @}
     };
@@ -234,9 +235,7 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#ifndef GUM_NO_INLINE
-#include <agrum/prm/PRMInference.inl>
-#endif // GUM_NO_INLINE
+#include <agrum/prm/PRMInference.tcc>
 
 #endif /* GUM_PRM_INFERENCE_H */
 
