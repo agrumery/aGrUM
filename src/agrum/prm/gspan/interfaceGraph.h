@@ -108,6 +108,7 @@ namespace gum {
        * @struct EdgeData interfaceGraph.h <agrum/prm/gspan/interfaceGraph.h>
        * Inner class to handle data about edges in __graph.
        */
+      template<typename GUM_SCALAR>
       struct EdgeData {
         /// Constructor.
         EdgeData();
@@ -137,14 +138,15 @@ namespace gum {
        * @param data The data printed.
        * @return Returns out.
        */
-      std::ostream& operator<< ( std::ostream& out, const EdgeData& data );
+      template<typename GUM_SCALAR>
+      std::ostream& operator<< ( std::ostream& out, const EdgeData<GUM_SCALAR>& data );
 
       /**
        * @class InterfaceGraph interfaceGraph.h <agrum/prm/gspan/interfaceGraph.h>
        *
-       * @brief This class represent the interface graph of a given gum::prm::System.
+       * @brief This class represent the interface graph of a given gum::prm::System<GUM_SCALAR>.
        *
-       * An interface graph is a labelled graph over the instances of a gum::prm::System,
+       * An interface graph is a labelled graph over the instances of a gum::prm::System<GUM_SCALAR>,
        * where there exists an edge between two instance i and j if and only if their
        * shared interface is nonempty.
        *
@@ -159,7 +161,7 @@ namespace gum {
         public:
 
           /// Default constructor.
-          InterfaceGraph ( const System& sys );
+          InterfaceGraph ( const System<GUM_SCALAR>& sys );
 
           /// Copy constructor, proceeds with a shallow copy so for friends only.
           InterfaceGraph ( const InterfaceGraph& source );
@@ -231,8 +233,8 @@ namespace gum {
           const EdgeData& edge ( NodeId u, NodeId v ) const;
 
         private:
-          /// The gum::prm::System represented by this interface graph.
-          const System* __sys;
+          /// The gum::prm::System<GUM_SCALAR> represented by this interface graph.
+          const System<GUM_SCALAR>* __sys;
 
           /// The interface graph.
           UndiGraph __graph;

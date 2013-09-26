@@ -88,9 +88,6 @@ namespace gum {
                                 prm_slotchain
                               };
 
-        static std::string LEFT_CAST()  { return "("; }
-        static std::string RIGHT_CAST() { return ")"; }
-
         static std::string enum2str( ClassElementType type ) {
           switch ( type ) {
             case prm_attribute:
@@ -175,14 +172,14 @@ namespace gum {
          * @throw OperationNotAllowed Raised if this class element doesn't have
          *                            any gum::Potential (like a gum::ReferenceSlot).
          */
-        virtual Type& type() =0;
+        virtual Type<GUM_SCALAR>& type() =0;
 
         /**
          * Return a constant reference over the gum::Type of this class element.
          * @throw OperationNotAllowed Raised if this class element doesn't have
          *                            any gum::Potential (like a gum::ReferenceSlot).
          */
-        virtual const Type& type() const =0;
+        virtual const Type<GUM_SCALAR>& type() const =0;
 
 
         /**
@@ -201,7 +198,7 @@ namespace gum {
          * @param t The type in which we want to cast this ClassElement.
          * @throw OperationNotAllowed If the cast is impossible.
          */
-        virtual std::string cast( const Type& t ) const;
+        virtual std::string cast( const Type<GUM_SCALAR>& t ) const;
 
         /**
          * Return a reference over the gum::Potential of this class element.

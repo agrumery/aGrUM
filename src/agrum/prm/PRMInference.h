@@ -41,7 +41,7 @@ namespace gum {
     /**
      * @class PRMInference PRMInference.h <agrum/prm/PRMInference.h>
      * @brief This abstract class is used as base class for all inference class
-     *        on PRM.
+     *        on PRM<GUM_SCALAR>.
      *
      * The main purpose of this class is to give a common interface between all
      * inference algorithms and to handle evidences.
@@ -203,8 +203,8 @@ namespace gum {
         ///          initialized properly.
         virtual void _joint( const std::vector< Chain >& queries, Potential<GUM_SCALAR>& j ) = 0;
 
-        /// The PRM on which inference is done.
-        const PRM* _prm;
+        /// The PRM<GUM_SCALAR> on which inference is done.
+        const PRM<GUM_SCALAR>* _prm;
 
         /// The Model on which inference is done.
         const System<GUM_SCALAR>* _sys;
@@ -219,9 +219,9 @@ namespace gum {
         /// @{
 
         /// Code alias.
-        typedef HashTable<const Instance<GUM_SCALAR>*, EMap*>::iterator EvidenceIterator;
+        typedef typename HashTable<const Instance<GUM_SCALAR>*, EMap*>::iterator EvidenceIterator;
         /// Code alias.
-        typedef HashTable<const Instance<GUM_SCALAR>*, EMap*>::const_iterator EvidenceConstIterator;
+        typedef typename HashTable<const Instance<GUM_SCALAR>*, EMap*>::const_iterator EvidenceConstIterator;
 
         /// Mapping of evidence over Instance<GUM_SCALAR>'s nodes.
         HashTable<const Instance<GUM_SCALAR>*, EMap*> __evidences;

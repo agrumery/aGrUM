@@ -405,7 +405,7 @@ namespace gum {
         __nameMap[overloader->safeName()] = overloader;
         __attributes.erase ( overloaded );
         __attributes.insert ( overloader );
-        // Swapping types, ugly but necessary to preserve the Type pointer of overloaded
+        // Swapping types, ugly but necessary to preserve the Type<GUM_SCALAR> pointer of overloaded
         __swap_types ( overloader, overloaded );
       }
     }
@@ -489,14 +489,14 @@ namespace gum {
 
         if ( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_attribute ) {
           Attribute<GUM_SCALAR>* loaded = static_cast<Attribute<GUM_SCALAR>*> ( overloaded );
-          Type* tmp = loader->__type;
+          Type<GUM_SCALAR>* tmp = loader->__type;
           loader->__type = loaded->__type;
           loaded->__type = tmp;
           loader->__cpf->erase ( tmp->variable() );
           loader->__cpf->add ( loader->__type->variable() );
         } else if ( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_aggregate ) {
           Aggregate<GUM_SCALAR>* loaded = static_cast<Aggregate<GUM_SCALAR>*> ( overloaded );
-          Type* tmp = loader->__type;
+          Type<GUM_SCALAR>* tmp = loader->__type;
           loader->__type = loaded->__type;
           loaded->__type = tmp;
         } else {
@@ -507,12 +507,12 @@ namespace gum {
 
         if ( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_attribute ) {
           Attribute<GUM_SCALAR>* loaded = static_cast<Attribute<GUM_SCALAR>*> ( overloaded );
-          Type* tmp = loader->__type;
+          Type<GUM_SCALAR>* tmp = loader->__type;
           loader->__type = loaded->__type;
           loaded->__type = tmp;
         } else if ( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_aggregate ) {
           Aggregate<GUM_SCALAR>* loaded = static_cast<Aggregate<GUM_SCALAR>*> ( overloaded );
-          Type* tmp = loader->__type;
+          Type<GUM_SCALAR>* tmp = loader->__type;
           loader->__type = loaded->__type;
           loaded->__type = tmp;
         } else {
@@ -795,7 +795,7 @@ namespace gum {
 
       if ( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_attribute ) {
         if ( not overloader->type().isSubTypeOf ( overloaded->type() ) ) {
-          GUM_ERROR ( TypeError, "the overloading ClassElement<GUM_SCALAR> Type is illegal" );
+          GUM_ERROR ( TypeError, "the overloading ClassElement<GUM_SCALAR> Type<GUM_SCALAR> is illegal" );
         }
       } else if ( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_refslot ) {
         if ( not static_cast<const ReferenceSlot<GUM_SCALAR>*> ( overloader )->slotType().isSubTypeOf ( static_cast<const ReferenceSlot<GUM_SCALAR>*> ( overloaded )->slotType() ) )

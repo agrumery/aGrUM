@@ -27,31 +27,31 @@
 namespace gum {
   namespace prm {
 
-    INLINE
-    PRMGenerator::PRMGenerator() {
+    template<typename GUM_SCALAR> INLINE
+    PRMGenerator<GUM_SCALAR>::PRMGenerator() {
       GUM_CONSTRUCTOR( PRMGenerator );
     }
 
-    INLINE
-    PRMGenerator::PRMGenerator( const PRMGenerator& source ):
+    template<typename GUM_SCALAR> INLINE
+    PRMGenerator<GUM_SCALAR>::PRMGenerator( const PRMGenerator& source ):
       _name_gen( source._name_gen ) {
       GUM_CONS_CPY( PRMGenerator );
     }
 
-    INLINE
-    PRMGenerator::~PRMGenerator() {
+    template<typename GUM_SCALAR> INLINE
+    PRMGenerator<GUM_SCALAR>::~PRMGenerator() {
       GUM_DESTRUCTOR( PRMGenerator );
     }
 
-    INLINE
+    template<typename GUM_SCALAR> INLINE
     void
-    PRMGenerator::setNameGenerator( const NameGenerator& name_gen ) {
+    PRMGenerator<GUM_SCALAR>::setNameGenerator( const NameGenerator& name_gen ) {
       _name_gen = name_gen;
     }
 
-    INLINE
+    template<typename GUM_SCALAR> INLINE
     const NameGenerator&
-    PRMGenerator::getNameGenerator() const {
+    PRMGenerator<GUM_SCALAR>::getNameGenerator() const {
       return _name_gen;
     }
 

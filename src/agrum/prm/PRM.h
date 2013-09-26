@@ -24,6 +24,9 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
+#ifndef GUM_PRM_H
+#define GUM_PRM_H
+
 #include <string>
 
 #include <agrum/core/hashTable.h>
@@ -39,13 +42,11 @@
 #include <agrum/prm/slotChain.h>
 #include <agrum/prm/system.h>
 
-#ifndef GUM_PRM_H
-#define GUM_PRM_H
 namespace gum {
   namespace prm {
 
     template<typename GUM_SCALAR> class System;
-
+    template<typename GUM_SCALAR> class PRMFactory;
     /**
      * @class PRM PRM.h <agrum/prm/PRM.h>
      * @brief This class represents a Probabilistic Relational System<GUM_SCALAR>.
@@ -55,7 +56,7 @@ namespace gum {
     template<typename GUM_SCALAR>
     class PRM {
       public:
-        friend class PRMFactory;
+        friend class PRMFactory<GUM_SCALAR>;
 
         // ========================================================================
         /// @name Destructor.
@@ -79,8 +80,8 @@ namespace gum {
         /// @{
 
         /**
-         * @param name The name of a possible Type in this PRM.
-         * @return Returns true if name names a Type in this PRM.
+         * @param name The name of a possible Type<GUM_SCALAR> in this PRM.
+         * @return Returns true if name names a Type<GUM_SCALAR> in this PRM.
          */
         bool isType ( const std::string name ) const;
 
@@ -103,21 +104,21 @@ namespace gum {
         bool isSystem ( const std::string name ) const;
 
         /**
-         * Returns a constant reference on a Type given it's name.
+         * Returns a constant reference on a Type<GUM_SCALAR> given it's name.
          * @throw NotFound Raised if no type is found with the given name.
          */
-        Type& type ( const std::string& name );
+        Type<GUM_SCALAR>& type ( const std::string& name );
 
         /**
-         * Returns a constant reference on a Type given it's name.
+         * Returns a constant reference on a Type<GUM_SCALAR> given it's name.
          * @throw NotFound Raised if no type is found with the given name.
          */
-        const Type& type ( const std::string& name ) const;
+        const Type<GUM_SCALAR>& type ( const std::string& name ) const;
 
         /**
-         * Returns the Set of all Type in this PRM.
+         * Returns the Set of all Type<GUM_SCALAR> in this PRM.
          */
-        const Set<Type*>& types() const;
+        const Set<Type<GUM_SCALAR>*>& types() const;
 
         /**
          * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
@@ -208,11 +209,11 @@ namespace gum {
         /// Set of all Class<GUM_SCALAR> in this PRM.
         Set<Interface<GUM_SCALAR>*> __interfaces;
 
-        /// Mapping of all Type given their name.
-        HashTable<std::string, Type*> __typeMap;
+        /// Mapping of all Type<GUM_SCALAR> given their name.
+        HashTable<std::string, Type<GUM_SCALAR>*> __typeMap;
 
-        /// Set of all Type in this PRM.
-        Set<Type*> __types;
+        /// Set of all Type<GUM_SCALAR> in this PRM.
+        Set<Type<GUM_SCALAR>*> __types;
 
         /// Mapping of all Systems given their name.
         HashTable<std::string, System<GUM_SCALAR>*> __systemMap;

@@ -80,6 +80,7 @@ namespace gum {
      *
      * @ingroup prm_group
      */
+    template<typename GUM_SCALAR>
     class PRMGenerator {
       public:
         // ========================================================================
@@ -107,7 +108,7 @@ namespace gum {
         const NameGenerator& getNameGenerator() const;
 
         /// Proceeds with the generation of the PRM.
-        virtual PRM* generate() =0;
+        virtual PRM<GUM_SCALAR>* generate() =0;
 
         /// @}
       protected:
@@ -117,9 +118,8 @@ namespace gum {
 
   } /* namespace prm */
 } /* namespace gum */
-#ifndef GUM_NO_INLINE
-#include <agrum/prm/generator/PRMGenerator.inl>
-#endif // GUM_NO_INLINE
+
+#include <agrum/prm/generator/PRMGenerator.tcc>
 
 #endif /* GUM_PRM_GENERATOR_H */
 

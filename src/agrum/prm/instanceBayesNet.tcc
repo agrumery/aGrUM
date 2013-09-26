@@ -31,11 +31,11 @@ namespace gum {
 
     template<typename GUM_SCALAR>
     void
-    InstanceBayesNet<GUM_SCALAR>::__init ( const Instance& i ) {
+    InstanceBayesNet<GUM_SCALAR>::__init ( const Instance<GUM_SCALAR>& i ) {
       for ( const auto node : i.type().dag().nodes() ) {
         try {
           // Adding the attribute
-          const Attribute& attr = i.get ( node );
+          const Attribute<GUM_SCALAR>& attr = i.get ( node );
           this->_dag.insertNode ( attr.id() );
           __varNodeMap.insert ( & ( attr.type().variable() ), &attr );
         } catch ( NotFound& ) {
@@ -55,7 +55,7 @@ namespace gum {
 
     template<typename GUM_SCALAR>
     INLINE
-    InstanceBayesNet<GUM_SCALAR>::InstanceBayesNet ( const Instance& i ) :
+    InstanceBayesNet<GUM_SCALAR>::InstanceBayesNet ( const Instance<GUM_SCALAR>& i ) :
       IBayesNet<GUM_SCALAR>(), __inst ( &i ) {
       GUM_CONSTRUCTOR ( InstanceBayesNet );
       __init ( i );
@@ -134,14 +134,14 @@ namespace gum {
 
     template<typename GUM_SCALAR>
     INLINE
-    const ClassElement&
+    const ClassElement<GUM_SCALAR>&
     InstanceBayesNet<GUM_SCALAR>::__get ( NodeId id ) const {
       return __inst->get ( id );
     }
 
     template<typename GUM_SCALAR>
     INLINE
-    const ClassElement&
+    const ClassElement<GUM_SCALAR>&
     InstanceBayesNet<GUM_SCALAR>::__get ( const std::string& name ) const {
       try {
         return __inst->get ( name );

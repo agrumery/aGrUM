@@ -121,10 +121,10 @@ namespace gum {
         virtual typename ClassElement<GUM_SCALAR>::ClassElementType elt_type() const;
 
         /// This is similar to the following call: this->lastElt().type()
-        virtual Type& type();
+        virtual Type<GUM_SCALAR>& type();
 
         /// This is similar to the following call: this->lastElt().type()
-        virtual const Type& type() const;
+        virtual const Type<GUM_SCALAR>& type() const;
 
         /// This is similar to the following call: this->lastElt().cpf()
         virtual Potential<GUM_SCALAR>& cpf();
@@ -164,7 +164,7 @@ namespace gum {
         /// See gum::ClassElement<GUM_SCALAR>::_addChild().
         virtual void addChild ( const ClassElement<GUM_SCALAR>& elt );
 
-        virtual std::string cast ( const Type& t ) {
+        virtual std::string cast ( const Type<GUM_SCALAR>& t ) {
           if ( lastElt().type().isSubTypeOf ( t ) ) {
             std::stringstream sBuff;
 
@@ -172,7 +172,7 @@ namespace gum {
               sBuff << chain().atPos ( i ) << ".";
             }
 
-            sBuff << ClassElement<GUM_SCALAR>::LEFT_CAST() << t.name() << ClassElement<GUM_SCALAR>::RIGHT_CAST();
+            sBuff <<PRMObject::LEFT_CAST() << t.name() << PRMObject::RIGHT_CAST();
             sBuff << lastElt().name();
             return sBuff.str();
           } else {

@@ -192,7 +192,7 @@ namespace gum {
         __nameMap[overloader->safeName()] = overloader;
         __attributes.erase ( overloaded );
         __attributes.insert ( overloader );
-        // Swapping types, ugly but necessary to preserve the Type pointer of overloaded
+        // Swapping types, ugly but necessary to preserve the Type<GUM_SCALAR> pointer of overloaded
         __swap_types ( overloader, overloaded );
       }
     }
@@ -219,7 +219,7 @@ namespace gum {
     template<typename GUM_SCALAR>
     void
     Interface<GUM_SCALAR>::__swap_types ( Attribute<GUM_SCALAR>* overloader, Attribute<GUM_SCALAR>* overloaded ) {
-      Type* tmp = overloader->__type;
+      Type<GUM_SCALAR>* tmp = overloader->__type;
       overloader->__type = overloaded->__type;
       overloaded->__type = tmp;
       overloader->__cpf->erase ( tmp->variable() );
@@ -235,7 +235,7 @@ namespace gum {
 
       if ( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_attribute ) {
         if ( not overloader->type().isSubTypeOf ( overloaded->type() ) )
-          GUM_ERROR ( TypeError, "the overloading ClassElement<GUM_SCALAR> Type is illegal" );
+          GUM_ERROR ( TypeError, "the overloading ClassElement<GUM_SCALAR> Type<GUM_SCALAR> is illegal" );
       } else if ( overloaded->elt_type() == ClassElement<GUM_SCALAR>::prm_refslot ) {
         if ( not static_cast<const ReferenceSlot<GUM_SCALAR>*> ( overloader )->slotType().isSubTypeOf ( static_cast<const ReferenceSlot<GUM_SCALAR>*> ( overloaded )->slotType() ) )
           GUM_ERROR ( TypeError, "the overloading ReferenceSlot<GUM_SCALAR> slot type is illegal" );

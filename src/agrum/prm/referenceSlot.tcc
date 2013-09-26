@@ -32,7 +32,7 @@ namespace gum {
       __slotType ( type ),
       __isArray ( isArray ) {
       GUM_CONSTRUCTOR ( ReferenceSlot );
-      this->_safeName = ClassElement<GUM_SCALAR>::LEFT_CAST() + ( ( PRMObject& ) __slotType ).name() + ClassElement<GUM_SCALAR>::RIGHT_CAST() + name;
+      this->_safeName =PRMObject::LEFT_CAST() + ( ( PRMObject& ) __slotType ).name() + PRMObject::RIGHT_CAST() + name;
     }
 
 // Destructor.
@@ -72,13 +72,13 @@ namespace gum {
     ReferenceSlot<GUM_SCALAR>::isArray() const { return __isArray; }
 
     template<typename GUM_SCALAR> INLINE
-    Type&
+    Type<GUM_SCALAR>&
     ReferenceSlot<GUM_SCALAR>::type() {
       GUM_ERROR ( OperationNotAllowed, "This is a ReferenceSlot." );
     }
 
     template<typename GUM_SCALAR> INLINE
-    const Type&
+    const Type<GUM_SCALAR>&
     ReferenceSlot<GUM_SCALAR>::type() const {
       GUM_ERROR ( OperationNotAllowed, "This is a ReferenceSlot." );
     }

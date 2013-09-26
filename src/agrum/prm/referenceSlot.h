@@ -115,11 +115,11 @@ namespace gum {
 
         /// @brief Raise an OperationNotAllowed.
         /// See gum::ClassElement::type().
-        virtual Type& type();
+        virtual Type<GUM_SCALAR>& type();
 
         /// @brief Raise an OperationNotAllowed.
         /// See gum::ClassElement::type().
-        virtual const Type& type() const;
+        virtual const Type<GUM_SCALAR>& type() const;
 
         /// @brief Raise an OperationNotAllowed.
         /// See gum::ClassElement::cpf().

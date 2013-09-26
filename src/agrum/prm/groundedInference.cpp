@@ -27,64 +27,8 @@
 
 #include <agrum/prm/groundedInference.h>
 
-#ifdef GUM_NO_INLINE
-#include <agrum/prm/groundedInference.inl>
-#endif // GUM_NO_INLINE
-
 namespace gum {
   namespace prm {
-
-    GroundedInference::~GroundedInference() {
-      GUM_DESTRUCTOR( GroundedInference );
-
-      if ( __inf != 0 ) {
-        delete __inf;
-      }
-
-      if ( not __obs.empty() ) {
-        for ( List<const Potential<prm_float>* >::iterator iter = __obs.begin(); iter != __obs.end(); ++iter ) {
-          // We used const ptrs only because of BayesNetInference::addEvidence() requires it
-          delete const_cast<Potential<prm_float>*>( *iter );
-        }
-      }
-    }
-
-    void
-    GroundedInference::_evidenceAdded( const Chain& chain ) {
-      Potential<prm_float>* bn_obs = new Potential<prm_float>();
-      // Retrieving the BN's variable
-      std::stringstream var_name;
-      var_name << chain.first->name() << "." << chain.second->safeName();
-      bn_obs->add( __inf->bn().variableFromName( var_name.str() ) );
-      // Retrievin the PRM's evidence and copying it in bn_obs
-      const Potential<prm_float>* prm_obs = evidence( chain.first )[chain.second->id()];
-      Instantiation i( *bn_obs ), j( *prm_obs );
-
-      for ( i.setFirst(), j.setFirst(); not i.end(); i.inc(), j.inc() ) {
-        bn_obs->set( i, prm_obs->get( j ) );
-      }
-
-      __obs.insert( bn_obs );
-    }
-
-    void
-    GroundedInference::_evidenceRemoved( const Chain& chain ) {
-      std::stringstream var_name;
-      var_name << chain.first->name() << "." << chain.second->safeName();
-      const DiscreteVariable& var = __inf->bn().variableFromName( var_name.str() );
-
-      for ( List<const Potential<prm_float>* >::iterator iter = __obs.begin(); iter != __obs.end(); ++iter ) {
-        if ( ( **iter ).contains( var ) ) {
-          __inf->eraseEvidence( *iter );
-          const Potential<prm_float>* e = *iter;
-          __obs.erase( iter );
-          delete e;
-          break;
-        }
-      }
-    }
-
-
 
   } /* namespace prm */
 } /* namespace gum */

@@ -40,7 +40,8 @@
 namespace gum {
   namespace prm {
 
-
+    template<typename GUM_SCALAR> class PRMFactory;
+    
     /**
      * @class Type
      * @brief This is a decoration of the DiscreteVariable class.
@@ -52,6 +53,7 @@ namespace gum {
      * Since MultiDim use pointers to handle DiscreteVariables, it is necessary
      * to create a new instance of a type for each Attribute.
      */
+    template<typename GUM_SCALAR>
     class Type: public PRMObject {
 
       public:
@@ -60,7 +62,7 @@ namespace gum {
         // ==========================================================================
         /// @{
 
-        friend class PRMFactory;
+        friend class PRMFactory<GUM_SCALAR>;
 
         /// @}
         // ==========================================================================
@@ -70,10 +72,10 @@ namespace gum {
 
         /// Returns a pointer on type boolean.
         static Type* boolean() {
-          LabelizedVariable var( "boolean", "Boolean variable", 0 );
-          var.addLabel( "false" );
-          var.addLabel( "true" );
-          return new Type( var );
+          LabelizedVariable var ( "boolean", "Boolean variable", 0 );
+          var.addLabel ( "false" );
+          var.addLabel ( "true" );
+          return new Type ( var );
         }
 
         /// @}
@@ -86,21 +88,21 @@ namespace gum {
          * Default Constructor.
          * A copy is made of var.
          */
-        Type( const DiscreteVariable& var );
+        Type ( const DiscreteVariable& var );
 
         /**
          * Sub type constructor.
          * A copy is made of var.
          * @throw OperationNotAllowed Raised if label_map is invalid.
          */
-        Type( Type& super_type, const std::vector<Idx>& label_map,
-              const DiscreteVariable& var );
+        Type ( Type& super_type, const std::vector<Idx>& label_map,
+               const DiscreteVariable& var );
 
         /**
          * Copy constructor.
          * The DiscreteVariable is copied.
          */
-        Type( const Type& from );
+        Type ( const Type& from );
 
         /**
          * Destructor.
@@ -143,12 +145,12 @@ namespace gum {
         /**
          * Equality operator.
          */
-        bool operator==( const PRMObject& from ) const;
+        bool operator== ( const PRMObject& from ) const;
 
         /**
          * Difference operator.
          */
-        bool operator!=( const PRMObject& from ) const;
+        bool operator!= ( const PRMObject& from ) const;
 
         /// @}
         // ==========================================================================
@@ -174,12 +176,12 @@ namespace gum {
         /**
          * Returns true if this is a subtype of super.
          */
-        bool isSubTypeOf( const Type& super ) const;
+        bool isSubTypeOf ( const Type& super ) const;
 
         /**
          * Returns true if this is a super type of t.
          */
-        bool isSuperTypeOf( const Type& t ) const;
+        bool isSuperTypeOf ( const Type& t ) const;
 
         /**
          * Returns the super type of this type.
@@ -208,7 +210,7 @@ namespace gum {
          * @throw OperationNotAllowed If this Type has no super.
          * @throw TypeError If t is not equal to this Type super.
          */
-        void setSuper( Type& t );
+        void setSuper ( Type& t );
 
         /**
          * Returns the vector in which the i-th element is the Idx of the super
@@ -228,7 +230,7 @@ namespace gum {
         /**
          * Copy operator. Not implemented.
          */
-        Type& operator=( const Type& from );
+        Type& operator= ( const Type& from );
 
         /// @}
         // ==========================================================================
@@ -254,9 +256,7 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#ifndef GUM_NO_INLINE
-#include <agrum/prm/type.inl>
-#endif // GUM_NO_INLINE
+#include <agrum/prm/type.tcc>
 
 #endif /* GUM_CLASS_H */
 

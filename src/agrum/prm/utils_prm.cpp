@@ -33,7 +33,7 @@ namespace gum {
       size_t prev = 0;
       size_t length = 0;
       size_t idx_1 = path.find( "." );
-      size_t idx_2 = path.find( ClassElement::LEFT_CAST() );
+      size_t idx_2 = path.find(PRMObject::LEFT_CAST() );
 
       if ( idx_2 == std::string::npos ) {
         // ignore safe names
@@ -55,9 +55,9 @@ namespace gum {
             prev = idx_1 + 1;
             idx_1 = path.find( ".", prev );
           } else if ( idx_2 < idx_1 ) {
-            tmp = path.find( ClassElement::RIGHT_CAST(), idx_2 );
+            tmp = path.find( PRMObject::RIGHT_CAST(), idx_2 );
             idx_1 = path.find( ".", tmp );
-            idx_2 = path.find( ClassElement::LEFT_CAST(), tmp );
+            idx_2 = path.find(PRMObject::LEFT_CAST(), tmp );
           }
         }
       }

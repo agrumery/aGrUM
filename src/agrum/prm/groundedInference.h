@@ -35,12 +35,13 @@ namespace gum {
   namespace prm {
     /**
      * @class GroundedInference groundedInference.h <agrum/prm/groundedInference.h>
-     * @brief This class is used to realise grounded inference in a PRM.
+     * @brief This class is used to realise grounded inference in a PRM<GUM_SCALAR>.
      *
      * The best way to build this class is to use the static creation methods.
      *
      */
-    class GroundedInference: public PRMInference {
+    template<typename GUM_SCALAR>
+    class GroundedInference: public PRMInference<GUM_SCALAR> {
       public:
         // ========================================================================
         /// @name Constructor & destructor.
@@ -48,7 +49,7 @@ namespace gum {
         /// @{
 
         /// Default constructor.
-        GroundedInference( const PRM& prm, const System& system );
+        GroundedInference( const PRM<GUM_SCALAR>& prm, const System<GUM_SCALAR>& system );
 
         /// Destructor.
         virtual ~GroundedInference();
@@ -66,7 +67,7 @@ namespace gum {
          * @throw NotFound Raised if no inference engine have been defined for
          *                 this class.
          */
-        BayesNetInference<prm_float>& getBNInference();
+        BayesNetInference<GUM_SCALAR>& getBNInference();
 
         /**
          * @brief Defines the bayesnet inference engine used by this class.
@@ -78,7 +79,7 @@ namespace gum {
          *                            SystemBayesNet of this class.
          * @todo BayesNetInference should have copy constructors.
          */
-        void setBNInference( BayesNetInference<prm_float>* bn_inf );
+        void setBNInference( BayesNetInference<GUM_SCALAR>* bn_inf );
 
         virtual std::string name() const;
 
@@ -101,13 +102,13 @@ namespace gum {
         /// @param chain
         /// @param m CPF filled with the marginal of elt. It is initialized
         ///          properly.
-        virtual void _marginal( const Chain& chain, Potential<prm_float>& m );
+        virtual void _marginal( const Chain& chain, Potential<GUM_SCALAR>& m );
 
         /// @brief Generic method to compute the marginal of given element.
         /// @param queries Set of pairs of Instance and Attribute.
         /// @param j CPF filled with the joint probability of queries. It is
         ///          initialized properly.
-        virtual void _joint( const std::vector< Chain >& queries, Potential<prm_float>& j );
+        virtual void _joint( const std::vector< Chain >& queries, Potential<GUM_SCALAR>& j );
 
         /// @}
       private:
@@ -119,17 +120,15 @@ namespace gum {
         GroundedInference& operator=( const GroundedInference& source );
 
         /// The bayesnet inference engine used by this class.
-        BayesNetInference<prm_float>* __inf;
+        BayesNetInference<GUM_SCALAR>* __inf;
 
-        List< const Potential<prm_float>* > __obs;
+        List< const Potential<GUM_SCALAR>* > __obs;
     };
 
   } /* namespace prm */
 } /* namespace gum */
 
-#ifndef GUM_NO_INLINE
-#include <agrum/prm/groundedInference.inl>
-#endif // GUM_NO_INLINE
+#include <agrum/prm/groundedInference.tcc>
 
 #endif /* GUM_GROUNDED_INFERENCE_H */
 

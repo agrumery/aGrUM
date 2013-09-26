@@ -65,9 +65,9 @@ namespace gum {
 
     template<typename GUM_SCALAR>  INLINE
     std::string
-    ClassElement<GUM_SCALAR>::cast ( const Type& t ) const {
+    ClassElement<GUM_SCALAR>::cast ( const Type<GUM_SCALAR>& t ) const {
       if ( type().isSubTypeOf ( t ) ) {
-        return ClassElement<GUM_SCALAR>::LEFT_CAST() + t.name() + ClassElement<GUM_SCALAR>::RIGHT_CAST() + name();
+        return PRMObject::LEFT_CAST() + t.name() + PRMObject::RIGHT_CAST() + name();
       } else {
         GUM_ERROR ( OperationNotAllowed, "illegal cast" );
       }

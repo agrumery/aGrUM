@@ -71,7 +71,7 @@ namespace gum {
       LabelizedVariable var ( "boolean", "built-in type", 0 );
       var.addLabel ( "false" );
       var.addLabel ( "true" );
-      Type* boolean = new Type ( var );
+      Type<GUM_SCALAR>* boolean = new Type<GUM_SCALAR> ( var );
       __types.insert ( boolean );
       __typeMap.insert ( "boolean", boolean );
     }
@@ -93,15 +93,15 @@ namespace gum {
     PRM<GUM_SCALAR>::isSystem ( const std::string name ) const { return __systemMap.exists ( name ); }
 
     template<typename GUM_SCALAR>  INLINE
-    Type&
+    Type<GUM_SCALAR>&
     PRM<GUM_SCALAR>::type ( const std::string& name ) { return * ( __typeMap[name] ); }
 
     template<typename GUM_SCALAR>  INLINE
-    const Type&
+    const Type<GUM_SCALAR>&
     PRM<GUM_SCALAR>::type ( const std::string& name ) const { return * ( __typeMap[name] ); }
 
     template<typename GUM_SCALAR>  INLINE
-    const Set<Type*>&
+    const Set<Type<GUM_SCALAR>*>&
     PRM<GUM_SCALAR>::types() const { return __types; }
 
     template<typename GUM_SCALAR>  INLINE

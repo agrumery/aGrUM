@@ -79,7 +79,7 @@ namespace gum {
       switch ( __chain->back()->elt_type() ) {
         case ClassElement<GUM_SCALAR>::prm_attribute: {
           const Attribute<GUM_SCALAR>* old_attr = static_cast<const Attribute<GUM_SCALAR>*> ( __chain->back() );
-          Type* t = new Type ( old_attr->type() );
+          Type<GUM_SCALAR>* t = new Type<GUM_SCALAR> ( old_attr->type() );
           Bijection<const DiscreteVariable*, const DiscreteVariable*> bij;
           bij.insert ( & ( old_attr->type().variable() ), & ( t->variable() ) );
 
@@ -134,11 +134,11 @@ namespace gum {
     SlotChain<GUM_SCALAR>::elt_type() const { return this->prm_slotchain; }
 
     template<typename GUM_SCALAR> INLINE
-    Type&
+    Type<GUM_SCALAR>&
     SlotChain<GUM_SCALAR>::type() { return __chain->back()->type(); }
 
     template<typename GUM_SCALAR> INLINE
-    const Type&
+    const Type<GUM_SCALAR>&
     SlotChain<GUM_SCALAR>::type() const { return __chain->back()->type(); }
 
     template<typename GUM_SCALAR> INLINE

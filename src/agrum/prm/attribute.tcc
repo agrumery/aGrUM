@@ -29,16 +29,16 @@
 namespace gum {
   namespace prm {
 
-    template<typename GUM_SCALAR> Attribute<GUM_SCALAR>::Attribute ( const std::string& name, const Type& type,
+    template<typename GUM_SCALAR> Attribute<GUM_SCALAR>::Attribute ( const std::string& name, const Type<GUM_SCALAR>& type,
         MultiDimImplementation<GUM_SCALAR>* impl ) :
-      ClassElement<GUM_SCALAR> ( name ), __type ( new Type ( type ) ),
+      ClassElement<GUM_SCALAR> ( name ), __type ( new Type<GUM_SCALAR> ( type ) ),
       __cpf ( new Potential<GUM_SCALAR> ( impl ) ), __delete_type ( true ) {
       GUM_CONSTRUCTOR ( Attribute );
       __cpf->add ( **__type );
-      this->_safeName = ClassElement<GUM_SCALAR>::LEFT_CAST() + __type->name() + ClassElement<GUM_SCALAR>::RIGHT_CAST() + name;
+      this->_safeName =PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
     }
 
-    template<typename GUM_SCALAR> Attribute<GUM_SCALAR>::Attribute ( const std::string& name, Type* type, Potential<GUM_SCALAR>* cpf,
+    template<typename GUM_SCALAR> Attribute<GUM_SCALAR>::Attribute ( const std::string& name, Type<GUM_SCALAR>* type, Potential<GUM_SCALAR>* cpf,
         bool delete_type ) :
       ClassElement<GUM_SCALAR> ( name ), __type ( type ), __cpf ( cpf ), __delete_type ( delete_type ) {
       GUM_CONSTRUCTOR ( Attribute );
@@ -46,11 +46,11 @@ namespace gum {
       if ( not __cpf->variablesSequence().exists ( & ( type->variable() ) ) )
         GUM_ERROR ( OperationNotAllowed, "the given Potential does not contain the type of this Attribute." );
 
-      this->_safeName = ClassElement<GUM_SCALAR>::LEFT_CAST() + __type->name() + ClassElement<GUM_SCALAR>::RIGHT_CAST() + name;
+      this->_safeName =PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
     }
 
     template<typename GUM_SCALAR> Attribute<GUM_SCALAR>::Attribute ( const Attribute<GUM_SCALAR>& source ) :
-      ClassElement<GUM_SCALAR> ( source ), __type ( new Type ( source.type() ) ), __cpf ( 0 ) {
+      ClassElement<GUM_SCALAR> ( source ), __type ( new Type<GUM_SCALAR> ( source.type() ) ), __cpf ( 0 ) {
       GUM_CONS_CPY ( Attribute );
       GUM_ERROR ( FatalError, "Illegal call to the copy constructor of gum::Attribute" );
     }
@@ -102,7 +102,7 @@ namespace gum {
       } catch ( OperationNotAllowed& ) {
         GUM_ERROR ( OperationNotAllowed, "this Attribute can not have cast descendant" );
       } catch ( WrongType& ) {
-        GUM_ERROR ( WrongType, "the cast descendant Type is not a direct subtype of this Attribute super Type" );
+        GUM_ERROR ( WrongType, "the cast descendant Type<GUM_SCALAR> is not a direct subtype of this Attribute super Type<GUM_SCALAR>" );
       }
 
       Potential<GUM_SCALAR>* cpf = new Potential<GUM_SCALAR>();
@@ -128,11 +128,11 @@ namespace gum {
     Attribute<GUM_SCALAR>::elt_type() const { return this->prm_attribute; }
 
     template<typename GUM_SCALAR> INLINE
-    Type&
+    Type<GUM_SCALAR>&
     Attribute<GUM_SCALAR>::type() { return *__type; }
 
     template<typename GUM_SCALAR> INLINE
-    const Type&
+    const Type<GUM_SCALAR>&
     Attribute<GUM_SCALAR>::type() const { return *__type; }
 
     template<typename GUM_SCALAR> INLINE
@@ -166,7 +166,7 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     FuncAttribute<GUM_SCALAR>::FuncAttribute ( const std::string& name,
-        const Type& type,
+        const Type<GUM_SCALAR>& type,
         MultiDimImplementation<GUM_SCALAR>* impl ) :
       Attribute<GUM_SCALAR> ( name, type, impl ) {
       GUM_CONSTRUCTOR ( FuncAttribute );
@@ -174,7 +174,7 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     FuncAttribute<GUM_SCALAR>::FuncAttribute ( const std::string& name,
-        Type* type, Potential<GUM_SCALAR>* cpf,
+        Type<GUM_SCALAR>* type, Potential<GUM_SCALAR>* cpf,
         bool delete_type ) :
       Attribute<GUM_SCALAR> ( name, type, cpf, delete_type ) {
       GUM_CONSTRUCTOR ( FuncAttribute );
