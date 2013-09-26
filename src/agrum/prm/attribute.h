@@ -37,6 +37,7 @@ namespace gum {
 
     template<typename GUM_SCALAR> class Class;
     template<typename GUM_SCALAR> class Instance;
+    template<typename GUM_SCALAR> class Interface;
 
     /**
      * @class Attribute attribute.h <agrum/prm/attribute.h>

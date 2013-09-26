@@ -38,6 +38,7 @@
 #include <agrum/variables/discreteVariable.h>
 #include <agrum/multidim/multiDimSparse.h>
 
+#include <agrum/prm/IPRMFactory.h>
 #include <agrum/prm/utils_prm.h>
 #include <agrum/prm/PRMObject.h>
 #include <agrum/prm/system.h>
@@ -50,10 +51,10 @@ namespace gum {
   namespace prm {
     /**
      * @class PRMFactory
-     * @brief Factory which builds a PRM.
+     * @brief Factory which builds a PRM<GUM_SCALAR>.
      *
-     * The Factory always create one PRM which is not deleted with the factory, so
-     * be very careful to delete the PRM built by this factory.
+     * The Factory always create one PRM<GUM_SCALAR> which is not deleted with the factory, so
+     * be very careful to delete the PRM<GUM_SCALAR> built by this factory.
      *
      * The factory does not allow any sequence of calls, if you call a method when
      * the factory is in an incoherent state it will raise a FactoryInvalidState
@@ -62,12 +63,12 @@ namespace gum {
      * Keep in mind that most methods could raise gum::FatalError if something
      * unexpected happens, since the framework is meant to evolve it is possible.
      *
-     * @see PRM PRMObject
+     * @see PRM<GUM_SCALAR> PRMObject
      * @ingroup prm_group
      */
 // ==========================================================================
     template<typename GUM_SCALAR>
-    class PRMFactory {
+    class PRMFactory : IPRMFactory {
       public:
         // ======================================================================
         /// @name Constructors & destructor
@@ -91,10 +92,10 @@ namespace gum {
         /// @{
 
         /**
-         * Returns a pointer on the PRM created by this factory.
+         * Returns a pointer on the PRM<GUM_SCALAR> created by this factory.
          * This pointer will not be deleted when the factory is destroyed.
          *
-         * @return Returns the PRM created by this factory.
+         * @return Returns the PRM<GUM_SCALAR> created by this factory.
          */
         PRM<GUM_SCALAR>* prm() const;
 
@@ -139,34 +140,34 @@ namespace gum {
         Class<GUM_SCALAR>& retrieveClass ( const std::string& name );
 
         /**
-         * @brief Returns a reference over a Type given its name.
+         * @brief Returns a reference over a Type<GUM_SCALAR> given its name.
          *
          * This methods adds if necessary the current package as a prefix to name.
-         * @param name The name of the Type.
-         * @return the Type with the given name.
-         * @throw NotFound if no Type matches the given name.
+         * @param name The name of the Type<GUM_SCALAR>.
+         * @return the Type<GUM_SCALAR> with the given name.
+         * @throw NotFound if no Type<GUM_SCALAR> matches the given name.
          */
-        Type& retrieveType ( const std::string& name );
+        Type<GUM_SCALAR>& retrieveType ( const std::string& name );
 
 
-        /* @brief Retrieve the common Type of a vector of ClassElement<GUM_SCALAR>.
+        /* @brief Retrieve the common Type<GUM_SCALAR> of a vector of ClassElement<GUM_SCALAR>.
          *
-         * The vector elts must only contains ClassElement<GUM_SCALAR> with a Type, i.e.
-         * Attribute<GUM_SCALAR>, Aggregate and SlotChain. If not, a WrongClassElement is
+         * The vector elts must only contains ClassElement<GUM_SCALAR> with a Type<GUM_SCALAR>, i.e.
+         * Attribute<GUM_SCALAR>, Aggregate and SlotChain<GUM_SCALAR>. If not, a WrongClassElement is
          * raised.
          *
-         * A common Type is Type t such as t.isSuperTypeOf(elts[i]) for
-         * 0 < i < elts.size(), where elts is a Type container.
+         * A common Type<GUM_SCALAR> is Type<GUM_SCALAR> t such as t.isSuperTypeOf(elts[i]) for
+         * 0 < i < elts.size(), where elts is a Type<GUM_SCALAR> container.
          *
          * @param elts A vector of ClassElement<GUM_SCALAR>.
-         * @return the common super Type of all ClassElement<GUM_SCALAR> un elts.
+         * @return the common super Type<GUM_SCALAR> of all ClassElement<GUM_SCALAR> un elts.
          *
          * @throw WrongClassElement Raised if elts contains a ClassElement<GUM_SCALAR>
-         *                          without a Type.
+         *                          without a Type<GUM_SCALAR>.
          * @throw NotFound Raised if there exists no common super type of all
          *                 ClassElement<GUM_SCALAR> in elts.
          */
-        Type& retrieveCommonType ( const std::vector<ClassElement<GUM_SCALAR>*>& elts );
+        Type<GUM_SCALAR>& retrieveCommonType ( const std::vector<ClassElement<GUM_SCALAR>*>& elts );
 
         ///@}
         // ======================================================================
@@ -182,7 +183,7 @@ namespace gum {
          *
          * @param name The name of the package for all further objects.
          */
-        void pushPackage ( const std::string& name );
+        virtual void pushPackage ( const std::string& name );
 
         /**
          * @brief Pop the current package from the package stack.
@@ -193,7 +194,7 @@ namespace gum {
 
         /// @}
         // ======================================================================
-        /// @name Type construction methods.
+        /// @name Type<GUM_SCALAR> construction methods.
         // ======================================================================
         /// @{
 
@@ -230,11 +231,17 @@ namespace gum {
          *                            discrete type.
          */
         void endDiscreteType();
-
         /// @}
-        // ======================================================================
+
+
+        ///@nameseveral checks for parsers
+        /// @{
+        virtual bool isClassOrInferface ( std::string type ) const;
+        virtual bool isArrayInCurrentSystem ( std::string name ) const;
+        /// @}
+
+
         /// @name Class<GUM_SCALAR> construction models.
-        // ======================================================================
         /// @{
 
         /**
@@ -256,13 +263,13 @@ namespace gum {
          * Tells the factory that we finished a class declaration.
          *
          * @throw TypeError Raised if the current Class<GUM_SCALAR> does not respect one of
-         *                  it's Interface.
+         *                  it's Interface<GUM_SCALAR>.
          */
         void endClass();
 
         /// @}
         // ======================================================================
-        /// @name Interface construction models.
+        /// @name Interface<GUM_SCALAR> construction models.
         // ======================================================================
         /// @{
 
@@ -276,7 +283,7 @@ namespace gum {
          * @param extends The name of the super interface of i.
          *
          * @throw NotFound Raised if extends does not match any declared
-         *                 Interface.
+         *                 Interface<GUM_SCALAR>.
          */
         void startInterface ( const std::string& i, const std::string& extends = "" );
 
@@ -339,7 +346,7 @@ namespace gum {
          *
          * The creation of the CPF is left to the factory because we do not know
          * what level of complexity for CPF implementation can be handled by the
-         * PRM implementation.
+         * PRM<GUM_SCALAR> implementation.
          *
          * How to fill a CPT? If you want to fill the CPT of P(A|B,C)
          * with A, B and C boolean variables ( {f, t}, the order is
@@ -353,7 +360,7 @@ namespace gum {
          *
          * @throw OperationNotAllowed Raised if the given operation is illegal.
          */
-        void setRawCPFByLines ( const std::vector<prm_float>& array );
+        void setRawCPFByLines ( const std::vector<GUM_SCALAR>& array );
 
         /**
          * @brief Not implemented!
@@ -362,7 +369,7 @@ namespace gum {
          *
          * The creation of the CPF is left to the factory because we do not know
          * what level of complexity for CPF implementation can be handled by the
-         * PRM implementation.
+         * PRM<GUM_SCALAR> implementation.
          *
          * How to fill a CPT? If you want to fill the CPT of P(A|B,C)
          * with A, B and C boolean variables ( {f, t}, the order is
@@ -377,7 +384,7 @@ namespace gum {
          *
          * @throw OperationNotAllowed Raised if the given operation is illegal.
          */
-        void setRawCPFByColumns ( const std::vector<prm_float>& array );
+        void setRawCPFByColumns ( const std::vector<GUM_SCALAR>& array );
 
         /**
          * Fills the CPF using a rule.
@@ -392,7 +399,7 @@ namespace gum {
          *               the values in parenst.
          */
         void setCPFByRule ( const std::vector<std::string>& labels,
-                            const std::vector<prm_float>& values );
+                            const std::vector<GUM_SCALAR>& values );
 
         /**
          * Tells the factory that we finished declaring an attribute.
@@ -429,8 +436,8 @@ namespace gum {
         /**
          * @brief Add an aggregator in the current declared class.
          *
-         * If at least one parent of an aggregator is a SlotChain, then all of
-         * it's parents must be SlotChain. When an aggregator parents are only
+         * If at least one parent of an aggregator is a SlotChain<GUM_SCALAR>, then all of
+         * it's parents must be SlotChain<GUM_SCALAR>. When an aggregator parents are only
          * composed of Attribute<GUM_SCALAR> and Aggregate, then it is directly added as an
          * Attribute<GUM_SCALAR> to it's Class<GUM_SCALAR>.
          *
@@ -475,7 +482,7 @@ namespace gum {
                                   const std::vector<std::string>& label );
         /// @}
         // ======================================================================
-        /// @name ReferenceSlot construction methods.
+        /// @name ReferenceSlot<GUM_SCALAR> construction methods.
         // ======================================================================
         /// @{
 
@@ -512,7 +519,7 @@ namespace gum {
 
         /**
          * Creates an array with the given number of instances of the given type.
-         * Instance are name using "name" as prefix and adding the suffix "[i]",
+         * Instance<GUM_SCALAR> are name using "name" as prefix and adding the suffix "[i]",
          * with "i" being the position of the instance in the array.
          */
         void addArray ( const std::string& type, const std::string& name, Size size );
@@ -567,6 +574,70 @@ namespace gum {
         void setParameter ( const std::string& i, const std::string& p, const std::string& v );
 
         /// @}
+
+        /// @name float input for parameters
+        /// @{
+
+        /**
+         * Gives the factory the CPF in its raw form.
+         *
+         * The creation of the CPF is left to the factory because we do not know
+         * what level of complexity for CPF implementation can be handled by the
+         * PRM<GUM_SCALAR> implementation.
+         *
+         * How to fill a CPT? If you want to fill the CPT of P(A|B,C)
+         * with A, B and C boolean variables ( {f, t}, the order is
+         * important), then the following array is valid:
+         * @code
+         * [0.20, 0.80, // P(f|f, f) = 0.20 and P(t|f, f) = 0.80
+         *  0.50, 0.50, // P(f|t, f) = 0.50 and P(t|t, f) = 0.50
+         *  0.70, 0.30, // P(f|f, t) = 0.70 and P(t|f, t) = 0.30
+         *  0.01, 0.99] // P(f|t, t) = 0.01 and P(t|t, t) = 0.99
+         * @endcode
+         *
+         * @throw OperationNotAllowed Raised if the given operation is illegal.
+         */
+        void setRawCPFByFloatLines ( const std::vector<float>& array );
+
+        /**
+         * @brief Not implemented!
+         *
+         * Gives the factory the CPF in its raw form.
+         *
+         * The creation of the CPF is left to the factory because we do not know
+         * what level of complexity for CPF implementation can be handled by the
+         * PRM<GUM_SCALAR> implementation.
+         *
+         * How to fill a CPT? If you want to fill the CPT of P(A|B,C)
+         * with A, B and C boolean variables ( {f, t}, the order is
+         * important), then the following array is valid:
+         * @code
+         * //P(A|f,f),P(A|f,t),P(A|t,f),P(A|t,t)
+         * [ 0.2,     0.7,     0.5,     0.01,
+         *   0.8,     0.3,     0.5,     0.99]
+         * @endcode
+         *
+         * See PRMFactory::setRawCPFByLines() for more details.
+         *
+         * @throw OperationNotAllowed Raised if the given operation is illegal.
+         */
+        void setRawCPFByFloatColumns ( const std::vector<float>& array );
+
+        /**
+         * Fills the CPF using a rule.
+         *
+         * The labels vector is filled with one of each parent's labels or
+         * with a wildcard ("*"). If a wildcard is used then all values of the
+         * corresponding parents are used. The sequence of parents must be the
+         * declaration order used when adding the current attribute's parents.
+         *
+         * @param labels The value of each parents.
+         * @param values The probability values of the current attribute given
+         *               the values in parenst.
+         */
+        void setCPFByFloatRule ( const std::vector<std::string>& labels,
+                                 const std::vector<float>& values );
+        /// @}
       private:
         /// Copy constructor. Don't use it.
         PRMFactory ( const PRMFactory& from );
@@ -604,7 +675,7 @@ namespace gum {
         // ======================================================================
         /// @{
 
-        /// Returns a pointer on a Type given it's name. Since the type can
+        /// Returns a pointer on a Type<GUM_SCALAR> given it's name. Since the type can
         /// be given either with it's local name (without the prefix), full name
         /// (with the prefix) or can come from an import unit, or maybe one day
         /// with a using declaration we need some processing to find it.
@@ -619,7 +690,7 @@ namespace gum {
         /// In the case a local name is used multiple time, it's preferable to
         /// use it's full name.
         /// @throw OperationNotAllowed If the type is undeclared.
-        Type* __retrieveType ( const std::string& name ) const;
+        Type<GUM_SCALAR>* __retrieveType ( const std::string& name ) const;
 
         /// Returns a pointer on a class given it's name. Used when building
         /// models, meaning that the class name can either be local (need to
@@ -633,7 +704,7 @@ namespace gum {
         /// add the current prefix) or global (no prefix needed).
         /// @throw NotFound If no class matching the name is found.
         /// @see PRMFactory::__retrieveType
-        Interface* __retrieveInterface ( const std::string& name ) const;
+        Interface<GUM_SCALAR>* __retrieveInterface ( const std::string& name ) const;
 
         /// @}
         // ======================================================================
@@ -641,18 +712,18 @@ namespace gum {
         // ======================================================================
         /// @{
 
-        /// This methods build a SlotChain given a starting element and a string.
+        /// This methods build a SlotChain<GUM_SCALAR> given a starting element and a string.
         ///
-        /// @return Return a pointer over a SlotChain or 0 if no SlotChain could
+        /// @return Return a pointer over a SlotChain<GUM_SCALAR> or 0 if no SlotChain<GUM_SCALAR> could
         ///         be built.
         ///
-        SlotChain* __buildSlotChain ( ClassElementContainer<GUM_SCALAR>* start, const std::string& name );
+        SlotChain<GUM_SCALAR>* __buildSlotChain ( ClassElementContainer<GUM_SCALAR>* start, const std::string& name );
 
         /// @brief Retrieve inputs for an Aggregate.
         ///
         /// The vector chains contains names of the Aggregate inputs. If a name
         /// does not match an existing ClassElement<GUM_SCALAR> in c, then a call to
-        /// PRMFactory::__buildSlotChains() is made. Such created SlotChain are
+        /// PRMFactory::__buildSlotChains() is made. Such created SlotChain<GUM_SCALAR> are
         /// added to c.
         ///
         /// @param c The class in which the Aggregate is defined.
@@ -662,64 +733,64 @@ namespace gum {
         /// @return true if there was at least one slotchain in chains.
         ///
         /// @throw NotFound Raised if a name in chains does not match a legal
-        ///                 SlotChain or an existing ClassElement<GUM_SCALAR> in c.
+        ///                 SlotChain<GUM_SCALAR> or an existing ClassElement<GUM_SCALAR> in c.
         bool __retrieveInputs ( Class<GUM_SCALAR>* c, const std::vector<std::string>& chains,
                                 std::vector<ClassElement<GUM_SCALAR>*>& inputs );
 
-        /// @brief Retrieve the common Type of a vector of ClassElement<GUM_SCALAR>.
+        /// @brief Retrieve the common Type<GUM_SCALAR> of a vector of ClassElement<GUM_SCALAR>.
         ///
-        /// The vector elts must only contains ClassElement<GUM_SCALAR> with a Type, i.e.
-        /// Attribute<GUM_SCALAR>, Aggregate and SlotChain. If not a WrongClassElement is
+        /// The vector elts must only contains ClassElement<GUM_SCALAR> with a Type<GUM_SCALAR>, i.e.
+        /// Attribute<GUM_SCALAR>, Aggregate and SlotChain<GUM_SCALAR>. If not a WrongClassElement is
         /// raised.
         ///
-        /// A common Type is Type t such as t.isSuperTypeOf(elts[i]) for
-        /// 0 < i < elts.size(), where elts is a Type container.
+        /// A common Type<GUM_SCALAR> is Type<GUM_SCALAR> t such as t.isSuperTypeOf(elts[i]) for
+        /// 0 < i < elts.size(), where elts is a Type<GUM_SCALAR> container.
         ///
         /// @param elts A vector of ClassElement<GUM_SCALAR>.
-        /// @return Returns the common super Type of all ClassElement<GUM_SCALAR> un elts.
+        /// @return Returns the common super Type<GUM_SCALAR> of all ClassElement<GUM_SCALAR> un elts.
         //
         /// @throw WrongClassElement Raised if elts contains a ClassElement<GUM_SCALAR>
-        ///                          without a Type.
+        ///                          without a Type<GUM_SCALAR>.
         /// @throw NotFound Raised if there exists no common super type of all
         ///                 ClassElement<GUM_SCALAR> in elts.
-        Type* __retrieveCommonType ( const std::vector<ClassElement<GUM_SCALAR>*>& elts );
+        Type<GUM_SCALAR>* __retrieveCommonType ( const std::vector<ClassElement<GUM_SCALAR>*>& elts );
 
-        /// @brief Returns the inheritance depth of a Type.
+        /// @brief Returns the inheritance depth of a Type<GUM_SCALAR>.
         ///
         /// This used by PRMFactory::__retrieveCommonType.
         /// This returns 0 if t does not have a super type.
         ///
-        /// @param t The Type for which we compute its depth.
+        /// @param t The Type<GUM_SCALAR> for which we compute its depth.
         /// @return Returns the depth of t.
-        int __typeDepth ( const Type* t );
+        int __typeDepth ( const Type<GUM_SCALAR>* t );
 
         /// @}
         // ======================================================================
-        ///  @name Private methods handling System and Instance creation.
+        ///  @name Private methods handling System<GUM_SCALAR> and Instance<GUM_SCALAR> creation.
         // ======================================================================
         /// @{
 
-        /// Builds all SlotChain<Instance> in the given model.
+        /// Builds all SlotChain<GUM_SCALAR><Instance<GUM_SCALAR>> in the given model.
         /// @throw OperationNotAllowed If reference slots are left un affected
-        void __buildSlotChains ( System* model );
+        void __buildSlotChains ( System<GUM_SCALAR>* model );
 
         /// Builds all Aggregates CPF in the given model.
         /// This must be called after all the slot chains have been generated.
-        void __buildAggregateCPF ( System* model );
+        void __buildAggregateCPF ( System<GUM_SCALAR>* model );
 
         /// Instantiate a slot chain in the given instance
-        void __instantiateSlotChain ( System* model,
-                                      Instance* inst,
-                                      ReferenceSlot* ref,
-                                      SlotChain* sc );
+        void __instantiateSlotChain ( System<GUM_SCALAR>* model,
+                                      Instance<GUM_SCALAR>* inst,
+                                      ReferenceSlot<GUM_SCALAR>* ref,
+                                      SlotChain<GUM_SCALAR>* sc );
 
         /// Fill seq with the sequence of instance build using inst as the
         /// instantiation of sc->__class and seeking each instantiation of
         /// reference in sc.
-        /// @¶eturn Returns the name of the corresponding SlotChain.
-        std::string __retrieveInstanceSequence ( Instance* inst,
-            Sequence<Instance*>& seq,
-            SlotChain* sc );
+        /// @¶eturn Returns the name of the corresponding SlotChain<GUM_SCALAR>.
+        std::string __retrieveInstanceSequence ( Instance<GUM_SCALAR>* inst,
+            Sequence<Instance<GUM_SCALAR>*>& seq,
+            SlotChain<GUM_SCALAR>* sc );
 
         /// @}
         // ======================================================================
@@ -734,8 +805,8 @@ namespace gum {
         /// Set of all declared namespaces.
         Set<std::string> __namespaces;
 
-        /// The pointer on the PRM built by this factory.
-        PRM* __prm;
+        /// The pointer on the PRM<GUM_SCALAR> built by this factory.
+        PRM<GUM_SCALAR>* __prm;
 
         /// A stack used to keep track of created PRMObject.
         std::vector<PRMObject*> __stack;

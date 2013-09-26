@@ -42,7 +42,7 @@
 namespace gum {
   namespace prm {
     namespace o3prm {
-
+      template<typename GUM_SCALAR>
       class O3prmReader {
         public:
 
@@ -50,10 +50,10 @@ namespace gum {
 
           ~O3prmReader();
 
-          int readFile( const std::string& file );
+          int readFile ( const std::string& file );
           /// With readString method, you must set the current path
           /// to search from import yourself, using addClassPath.
-          int readString( const std::string& string );
+          int readString ( const std::string& string );
 
           /**
            * @brief This methods defines the list of paths to look for o3prm files.
@@ -61,11 +61,11 @@ namespace gum {
            *
            * @param class_path A semicolon separated list of paths.
            */
-          void setClassPath( const std::string& class_path );
-          void addClassPath( const std::string& class_path );
+          void setClassPath ( const std::string& class_path );
+          void addClassPath ( const std::string& class_path );
 
-          gum::prm::PRM* prm();
-          const gum::prm::PRM* prm() const;
+          gum::prm::PRM<GUM_SCALAR>* prm();
+          const gum::prm::PRM<GUM_SCALAR>* prm() const;
 
           /// @{
           /// publishing Errors API
@@ -79,15 +79,15 @@ namespace gum {
           const ErrorsContainer& errorsContainer() const;
 
           /// line of ith error or warning
-          unsigned int errLine( unsigned int i ) const;
+          unsigned int errLine ( unsigned int i ) const;
           /// col of ith error or warning
-          unsigned int errCol( unsigned int i ) const;
+          unsigned int errCol ( unsigned int i ) const;
           /// filename of ith error or warning
-          std::wstring errFilename( unsigned int i ) const;
+          std::wstring errFilename ( unsigned int i ) const;
           /// type of ith error or warning
-          bool errIsError( unsigned int i ) const;
+          bool errIsError ( unsigned int i ) const;
           /// message of ith error or warning
-          std::string errMsg( unsigned int i ) const;
+          std::string errMsg ( unsigned int i ) const;
 
           /// send on std::cerr the list of errors
           void showElegantErrors() const;
@@ -100,11 +100,11 @@ namespace gum {
           /// @}
 
         private:
-          O3prmReader( const O3prmReader& source );
+          O3prmReader ( const O3prmReader& source );
 
-          O3prmReader& operator=( const O3prmReader& source );
+          O3prmReader& operator= ( const O3prmReader& source );
 
-          gum::prm::PRMFactory __factory;
+          gum::prm::PRMFactory<GUM_SCALAR> __factory;
 
           std::vector<std::string> __class_path;
 
@@ -119,11 +119,7 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#ifndef GUM_NO_INLINE
-#include <agrum/prm/o3prm/O3prmReader.inl>
-#endif // GUM_NO_INLINE
+#include <agrum/prm/o3prm/O3prmReader.tcc>
 
 
 #endif /* GUM_SKOOL_READER_H */
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

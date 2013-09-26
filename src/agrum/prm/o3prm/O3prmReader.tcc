@@ -34,8 +34,36 @@ namespace gum {
 
     namespace o3prm {
 
-      INLINE
-      O3prmReader::O3prmReader() {
+      template<typename GUM_SCALAR>
+      void
+      O3prmReader<GUM_SCALAR>::setClassPath( const std::string& class_path ) {
+        size_t i = 0;
+        size_t j = class_path.find( ';' );
+
+        while ( j != std::string::npos ) {
+          addClassPath( class_path.substr( i, j - i ) );
+          i = j + 1;
+
+          if ( i < class_path.length() )
+            j = class_path.find( ';', i );
+          else
+            j = std::string::npos;
+        }
+
+        if ( i < class_path.length() )
+          addClassPath( class_path.substr( i, std::string::npos ) );
+      }
+
+      template<typename GUM_SCALAR>
+      void O3prmReader<GUM_SCALAR>::addClassPath( const std::string& class_path ) {
+        if ( class_path[class_path.size()-1] == '/' )
+          __class_path.push_back( class_path );
+        else
+          __class_path.push_back( class_path + '/' );
+      }
+
+      template<typename GUM_SCALAR> INLINE
+      O3prmReader<GUM_SCALAR>::O3prmReader() {
         GUM_CONSTRUCTOR( O3prmReader );
         __parseDone = false;
         __prmTake = false;
@@ -43,8 +71,8 @@ namespace gum {
       }
 
 
-      INLINE
-      O3prmReader::~O3prmReader() {
+      template<typename GUM_SCALAR> INLINE
+      O3prmReader<GUM_SCALAR>::~O3prmReader() {
         GUM_DESTRUCTOR( O3prmReader );
 
         if ( __parseDone )
@@ -54,9 +82,9 @@ namespace gum {
           delete __factory.prm();
       }
 
-      INLINE
+      template<typename GUM_SCALAR> INLINE
       int
-      O3prmReader::readFile( const std::string& file ) {
+      O3prmReader<GUM_SCALAR>::readFile( const std::string& file ) {
         size_t lastSlashIndex = file.find_last_of( '/' );
         Directory dir( file.substr( 0, lastSlashIndex+1 ) );
 
@@ -99,9 +127,9 @@ namespace gum {
         return __parser->errors().count();
       }
 
-      INLINE
+      template<typename GUM_SCALAR> INLINE
       int
-      O3prmReader::readString( const std::string& st ) {
+      O3prmReader<GUM_SCALAR>::readString( const std::string& st ) {
         // errors += parser.errors
         try {
           Scanner s( ( unsigned char* ) st.c_str(), ( int )( st.size() ) );
@@ -121,72 +149,72 @@ namespace gum {
       }
 
 
-      INLINE
-      gum::prm::PRM*
-      O3prmReader::prm() {
+      template<typename GUM_SCALAR> INLINE
+      gum::prm::PRM<GUM_SCALAR>*
+      O3prmReader<GUM_SCALAR>::prm() {
         __prmTake = true;
         return __factory.prm();
       }
 
-      INLINE
-      const gum::prm::PRM*
-      O3prmReader::prm() const {
+      template<typename GUM_SCALAR> INLINE
+      const gum::prm::PRM<GUM_SCALAR>*
+      O3prmReader<GUM_SCALAR>::prm() const {
         return __factory.prm();
       }
 
 /// publishing Errors API
-      INLINE
-      unsigned int O3prmReader::errLine( unsigned int i ) const {
+      template<typename GUM_SCALAR> INLINE
+      unsigned int O3prmReader<GUM_SCALAR>::errLine( unsigned int i ) const {
         return __errors.line( i );
       }
 
-      INLINE
-      unsigned int O3prmReader::errCol( unsigned int i ) const {
+      template<typename GUM_SCALAR> INLINE
+      unsigned int O3prmReader<GUM_SCALAR>::errCol( unsigned int i ) const {
         return __errors.col( i );
       }
 
-      INLINE
-      std::wstring O3prmReader::errFilename( unsigned int i ) const {
+      template<typename GUM_SCALAR> INLINE
+      std::wstring O3prmReader<GUM_SCALAR>::errFilename( unsigned int i ) const {
         return __errors.filename( i );
       }
 
-      INLINE
-      bool O3prmReader::errIsError( unsigned int i ) const {
+      template<typename GUM_SCALAR> INLINE
+      bool O3prmReader<GUM_SCALAR>::errIsError( unsigned int i ) const {
         return __errors.is_error( i );
       }
 
-      INLINE
-      std::string O3prmReader::errMsg( unsigned int i ) const {
+      template<typename GUM_SCALAR> INLINE
+      std::string O3prmReader<GUM_SCALAR>::errMsg( unsigned int i ) const {
         return gum::narrow( __errors.msg( i ) );
       }
 
-      INLINE
-      void O3prmReader::showElegantErrors() const {
+      template<typename GUM_SCALAR> INLINE
+      void O3prmReader<GUM_SCALAR>::showElegantErrors() const {
         __errors.showElegantErrors();
       }
 
-      INLINE
-      void O3prmReader::showElegantErrorsAndWarnings() const {
+      template<typename GUM_SCALAR> INLINE
+      void O3prmReader<GUM_SCALAR>::showElegantErrorsAndWarnings() const {
         __errors.showElegantErrorsAndWarnings();
       }
 
-      INLINE
-      void O3prmReader::showErrorCounts() const {
+      template<typename GUM_SCALAR> INLINE
+      void O3prmReader<GUM_SCALAR>::showErrorCounts() const {
         __errors.showSyntheticResults();
       }
 
-      INLINE
-      Size  O3prmReader::errors() const {
+      template<typename GUM_SCALAR> INLINE
+      Size  O3prmReader<GUM_SCALAR>::errors() const {
         return __errors.error_count;
       }
 
-      INLINE
-      Size  O3prmReader::warnings() const {
+      template<typename GUM_SCALAR> INLINE
+      Size  O3prmReader<GUM_SCALAR>::warnings() const {
         return __errors.warning_count;
       }
 
-      INLINE
-      const ErrorsContainer& O3prmReader::errorsContainer() const {
+      template<typename GUM_SCALAR> INLINE
+      const ErrorsContainer& O3prmReader<GUM_SCALAR>::errorsContainer() const {
         return __errors;
       }
 

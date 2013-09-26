@@ -64,6 +64,7 @@ namespace gum {
       /**
        * Permet de manipuler un contexte o3prmr
        * et d'interpréter celui-ci.
+       * O3prmr use the <double> version of the O3PRM templatized ecosystem
        */
       class O3prmrInterpreter {
 
@@ -85,9 +86,9 @@ namespace gum {
           bool interpretLine( const std::string& line );
 
           /// Retrieve prm object.
-          const gum::prm::PRM* prm() const;
+          const gum::prm::PRM<double>* prm() const;
           /// Retrieve inference motor object.
-          const gum::prm::PRMInference* inference() const;
+          const gum::prm::PRMInference<double>* inference() const;
           /// Return a vector of QueryResults.
           /// Each QueryResults is a struct with query command, time and values,
           /// a vector of struct SingleResult, with pair label/value.
@@ -96,8 +97,8 @@ namespace gum {
           ErrorsContainer errorsContainer() const;
 
           /// Getter and setter for the context.
-          O3prmrContext* getContext() const;
-          void setContext( O3prmrContext* context );
+          O3prmrContext<double>* getContext() const;
+          void setContext( O3prmrContext<double>* context );
 
           /// Root paths to search from there packages.
           /// Default are working dir, request file dir if any
@@ -133,34 +134,34 @@ namespace gum {
           void showErrorCounts() const;
 
         private:
-          bool checkSemantic( O3prmrContext* context );
+          bool checkSemantic( O3prmrContext<double>* context );
           bool checkSetEngine( SetEngineCommand* command );
           bool checkSetGndEngine( SetGndEngineCommand* command );
-          bool checkObserve( ObserveCommand* command );
-          bool checkUnobserve( UnobserveCommand* command );
-          bool checkQuery( QueryCommand* command );
+          bool checkObserve( ObserveCommand<double>* command );
+          bool checkUnobserve( UnobserveCommand<double>* command );
+          bool checkQuery( QueryCommand<double>* command );
 
-          bool interpret( O3prmrContext* c );
-          bool import( O3prmrContext* context, std::string import );
-          bool observe( const ObserveCommand* command );
-          bool unobserve( const UnobserveCommand* command );
-          void query( const QueryCommand* command );
+          bool interpret( O3prmrContext<double>* c );
+          bool import( O3prmrContext<double>* context, std::string import );
+          bool observe( const ObserveCommand<double>* command );
+          bool unobserve( const UnobserveCommand<double>* command );
+          void query( const QueryCommand<double>* command );
           void setEngine( const SetEngineCommand* command );
           void setGndEngine( const SetGndEngineCommand* command );
 
           std::string findSystemName( std::string& s );
-          std::string findInstanceName( std::string& s, const gum::prm::System& sys );
-          std::string findAttributeName( const std::string& s, const gum::prm::Instance& instance );
-          const System& system( std::string& ident );
-          void generateInfEngine( const gum::prm::System& sys );
+          std::string findInstanceName( std::string& s, const gum::prm::System<double>& sys );
+          std::string findAttributeName( const std::string& s, const gum::prm::Instance<double>& instance );
+          const System<double>& system( std::string& ident );
+          void generateInfEngine( const gum::prm::System<double>& sys );
 
           void addError( std::string msg );
           void addWarning( std::string msg );
 
-          O3prmrContext* m_context;
-          gum::prm::o3prm::O3prmReader* m_reader;
+          O3prmrContext<double>* m_context;
+          gum::prm::o3prm::O3prmReader<double>* m_reader;
           std::vector<std::string> m_paths;
-          gum::prm::PRMInference* m_inf;
+          gum::prm::PRMInference<double> * m_inf;
           std::string m_engine;
           std::string m_bn_engine;
           std::vector<QueryResult> m_results;

@@ -109,6 +109,7 @@ namespace gum {
       };
 
 ///
+      template<typename GUM_SCALAR>
       class ObserveCommand : public O3prmrCommand {
         public :
           ObserveCommand( int line, const std::string& leftValue, const std::string& rightValue )
@@ -118,9 +119,9 @@ namespace gum {
 
           std::string leftValue;
           std::string rightValue;
-          const System* system;
-          PRMInference::Chain chain;
-          Potential<prm_float> potentiel;
+          const System<GUM_SCALAR>* system;
+          typename PRMInference<GUM_SCALAR>::Chain chain;
+          Potential<GUM_SCALAR> potentiel;
 
           RequestType type() const { return RequestType::Observe; }
           std::string toString() const {
@@ -129,11 +130,12 @@ namespace gum {
       };
 
 ///
+      template<typename GUM_SCALAR>
       class UnobserveCommand : public O3prmrCommand {
         public :
           std::string value;
-          const System* system;
-          PRMInference::Chain chain;
+          const System<GUM_SCALAR>* system;
+          typename PRMInference<GUM_SCALAR>::Chain chain;
 
           UnobserveCommand( int line, const std::string& value )
             : O3prmrCommand( line ), value( value ), system( 0 ) {}
@@ -147,13 +149,14 @@ namespace gum {
       };
 
 ///
+      template<typename GUM_SCALAR>
       class QueryCommand : public O3prmrCommand {
         public :
           QueryCommand( int line, const std::string& value ) : O3prmrCommand( line ) { this->value = value; }
 
           std::string value;
-          const System* system;
-          PRMInference::Chain chain;
+          const System<GUM_SCALAR>* system;
+          typename PRMInference<GUM_SCALAR>::Chain chain;
 
           RequestType type() const { return RequestType::Query; }
           std::string toString() const {
@@ -165,12 +168,13 @@ namespace gum {
        * This class contains a o3prmr session.
        * It have a name and a sequence of commands.
        * */
+      template<typename GUM_SCALAR>
       class O3prmrSession {
           /// The session name;
           std::string m_name;
           /// A sequence of commands.
           std::vector<O3prmrCommand*> m_commands;
-          std::map<const System*,PRMInference*> m_infEngineMap;
+          std::map<const System<GUM_SCALAR>*,PRMInference<GUM_SCALAR>*> m_infEngineMap;
 
         public:
           O3prmrSession( const std::string& name = std::string() );
@@ -197,10 +201,11 @@ namespace gum {
       /**
         Represent a o3prmr context, with an import, and some sequencials commands.
        */
+      template<typename GUM_SCALAR>
       class O3prmrContext {
           std::string m_filename;
           std::string m_package;
-          std::vector<O3prmrSession*> m_sessions;
+          std::vector<O3prmrSession<GUM_SCALAR>*> m_sessions;
           std::vector<ImportCommand*> m_imports;
           ImportCommand* m_mainImport;
 
@@ -226,9 +231,8 @@ namespace gum {
             if ( i.alias == "default" ) m_mainImport = m_imports.back();
           }
 
-          std::vector<O3prmrSession*> sessions() const;
-          void addSession( O3prmrSession* session );
-          void addSession( const O3prmrSession& session );
+          std::vector<O3prmrSession<GUM_SCALAR>*> sessions() const;
+          void addSession( const O3prmrSession<GUM_SCALAR>& session );
 
           virtual std::string toString() const;
           O3prmrContext& operator+=( const O3prmrContext& c );
@@ -238,6 +242,8 @@ namespace gum {
     } // namespace o3prmr
   } // namespace prm
 } // namespace gum
+
+#include <agrum/prm/o3prmr/O3prmrContext.tcc>
 
 #endif //SKOORSYNTAXTREE_H
 

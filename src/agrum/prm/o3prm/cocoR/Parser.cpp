@@ -317,8 +317,7 @@ void Parser::System() {
 			} else if (la->kind == 29 /* "+=" */) {
 				Get();
 				Ident(r1);
-				gum::prm::System * system = static_cast<gum::prm::System*>(factory().getCurrent());
-				if ( system && system->isArray(l1) ) {
+				if ( factory().isArrayInCurrentSystem(l1) ) {
 				   TRY(factory().incArray(l1, r1))
 				} else {
 				   TRY(factory().setReferenceSlot(l1, r1))
@@ -394,7 +393,7 @@ void Parser::Attribute(std::string type, std::string name) {
 				cpt.push_back(f); 
 			}
 			Expect(24 /* "]" */);
-			TRY3(factory().setRawCPFByColumns(cpt), "Problem with CPF of "+name,error) 
+			TRY3(factory().setRawCPFByFloatColumns(cpt), "Problem with CPF of "+name,error) 
 		} else if (la->kind == _word || la->kind == 26 /* "*" */) {
 			CPTRule(error);
 			while (la->kind == _word || la->kind == 26 /* "*" */) {
@@ -456,7 +455,7 @@ void Parser::Parameter(std::string type, std::string name) {
 }
 
 void Parser::CastIdent(std::string& s) {
-		std::string cast, open(gum::prm::ClassElement::LEFT_CAST()), close(gum::prm::ClassElement::RIGHT_CAST()); std::stringstream sBuff; 
+		std::string cast, open(gum::prm::PRMObject::LEFT_CAST()), close(gum::prm::PRMObject::RIGHT_CAST()); std::stringstream sBuff; 
 		if (la->kind == _LEFT_CAST) {
 			Get();
 			Ident(cast);
@@ -509,7 +508,7 @@ void Parser::CPTRule(bool &error) {
 		}
 		while (!(la->kind == _EOF || la->kind == _semicolon)) {SynErr(60); Get();}
 		Expect(_semicolon);
-		TRY3(factory().setCPFByRule(labels, values), std::string("Problem with CPF"), error) 
+		TRY3(factory().setCPFByFloatRule(labels, values), std::string("Problem with CPF"), error) 
 }
 
 void Parser::CPTRuleValue(std::string& s ) {

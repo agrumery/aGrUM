@@ -12,7 +12,7 @@
 #include <fstream>
 
 #include <agrum/core/utils_dir.h>
-#include <agrum/prm/PRMFactory.h>
+#include <agrum/prm/IPRMFactory.h>
 
 #undef TRY
 // Redefine try / catch to add a semantic error when errors are raised.
@@ -29,7 +29,7 @@
 COMPILER O3PRM
 
 private:
-    gum::prm::PRMFactory*       __factory;
+    gum::prm::IPRMFactory*       __factory;
     std::vector<std::string>    __class_path;
     gum::Set<std::string>       __imports;
     std::string                 __package;
@@ -41,10 +41,8 @@ private:
     }
 
     // Return true if type is a class or an interface.
-    bool isClassOrInterface(std::string type) {
-      std::string dot = ".";
-      return factory().prm()->isClass(type) or factory().prm()->isClass(factory().currentPackage() + dot + type) or
-             factory().prm()->isInterface(type) or factory().prm()->isInterface(factory().currentPackage() + dot + type) ;
+    bool isClassOrInterface(std::string type) {      
+      return factory().isClassOrInterface(type);
     }
 
     void importDirID( std::string dirID )
@@ -224,12 +222,12 @@ private:
 
 public:
     // Set the parser factory.
-    void setFactory(gum::prm::PRMFactory* f) {
+    void setFactory(gum::prm::IPRMFactory* f) {
       __factory = f;
     }
 
     // Retrieve the factory.
-    gum::prm::PRMFactory& factory() {
+    gum::prm::IPRMFactory& factory() {
       if (__factory) {
         return *__factory;
       }
@@ -407,7 +405,7 @@ Attribute<std::string type, std::string name> =
       {
         WEAK ',' Number<f>      (. cpt.push_back(f); .)
       }
-      ']'                       (. TRY3(factory().setRawCPFByColumns(cpt), "Problem with CPF of "+name,error) .)
+      ']'                       (. TRY3(factory().setRawCPFByFloatColumns(cpt), "Problem with CPF of "+name,error) .)
     | CPTRule<error>
       { CPTRule<error> }
     ) '}'                       (. TRY3(factory().endAttribute(), "Can not create attribute "+name,error) .)
@@ -488,8 +486,8 @@ System = system word    (. TRY(factory().startSystem(narrow(t->val))) .)
     Ident<l1>
     ( ArrayDecl<l1>
     | word              (. TRY(factory().addInstance(l1, narrow(t->val))) .)
-    | "+=" Ident<r1>    (.  gum::prm::System * system = static_cast<gum::prm::System*>(factory().getCurrent());
-                            if ( system && system->isArray(l1) ) {
+    | "+=" Ident<r1>    (. 
+                            if ( factory().isArrayInCurrentSystem(l1) ) {
                                 TRY(factory().incArray(l1, r1))
                             } else {
                                 TRY(factory().setReferenceSlot(l1, r1))
@@ -536,7 +534,7 @@ Ident<std::string& s> =             (. std::stringstream sBuff; .)
                         }           (. s = sBuff.str(); .)
                         .
 
-CastIdent<std::string& s> = (. std::string cast, open(gum::prm::ClassElement::LEFT_CAST()), close(gum::prm::ClassElement::RIGHT_CAST()); std::stringstream sBuff; .)
+CastIdent<std::string& s> = (. std::string cast, open(gum::prm::PRMObject::LEFT_CAST()), close(gum::prm::PRMObject::RIGHT_CAST()); std::stringstream sBuff; .)
                             [ LEFT_CAST Ident<cast> RIGHT_CAST            (. sBuff << open << cast << close; .)
                             ] word                                        (. sBuff << narrow(t->val); .)
                             {                                             (. cast = ""; .)

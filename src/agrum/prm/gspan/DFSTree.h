@@ -53,7 +53,7 @@ namespace gum {
 
     namespace gspan {
 
-      class SearchStrategy;
+      template<typename GUM_SCALAR> class SearchStrategy;
 
       /**
        * @class DFSTree DFSTree.h <agrum/prm/gspan/DFSTree.h>
@@ -61,7 +61,7 @@ namespace gum {
        * A DFSTree is used by gspan to sort lexicographically patterns discovered
        * in an interface graph.
        */
-
+      template<typename GUM_SCALAR>
       class DFSTree: private DiGraph {
 
         public:
@@ -72,8 +72,8 @@ namespace gum {
           /// @{
 
           /// Default constructor.
-          //DFSTree(InterfaceGraph* graph);
-          DFSTree( const InterfaceGraph& graph, SearchStrategy* strategy = 0 );
+          //DFSTree(InterfaceGraph<GUM_SCALAR>* graph);
+          DFSTree ( const InterfaceGraph<GUM_SCALAR>& graph, SearchStrategy<GUM_SCALAR>* strategy = 0 );
 
           /// Destructor.
           ~DFSTree();
@@ -84,13 +84,13 @@ namespace gum {
           // ==========================================================================
           /// @{
 
-          const InterfaceGraph& graph() const;
+          const InterfaceGraph<GUM_SCALAR>& graph() const;
 
           struct PatternData {
             /// Constructor.
-            PatternData( Pattern* p );
+            PatternData ( Pattern* p );
             /// Copy constructor.
-            PatternData( const PatternData& from );
+            PatternData ( const PatternData& from );
             /// Destructor.
             ~PatternData();
             /// The pattern.
@@ -100,7 +100,7 @@ namespace gum {
             /// The isomorphism graph of the pattern.
             UndiGraph iso_graph;
             /// The instances matching p in the interface graph.
-            NodeProperty<Sequence<Instance*>*> iso_map;
+            NodeProperty<Sequence<Instance<GUM_SCALAR>*>*> iso_map;
             /// The maximal independent set of p.
             Set<NodeId> max_indep_set;
             /// The cost of this Pattern
@@ -108,7 +108,7 @@ namespace gum {
             /// The gain of this Pattern
             Size gain;
             // /// The different sub_patterns of p given the iso_map.
-            // Sequence< HashTable<ClassElement*, Size>* > sub_patterns;
+            // Sequence< HashTable<ClassElement<GUM_SCALAR>*, Size>* > sub_patterns;
             // /// The mapping between an iso_map and the given sub pattern.
             // HashTable<NodeId, Idx> sub_patterns_map;
             // /// The number of each sub pattern
@@ -123,22 +123,22 @@ namespace gum {
           const std::list<NodeId>& roots() const;
 
           /// Returns the parent of p in this DFSTree.
-          Pattern& parent( const Pattern& p );
+          Pattern& parent ( const Pattern& p );
 
           /// Returns the parent of p in this DFSTree.
-          const Pattern& parent( const Pattern& p ) const;
+          const Pattern& parent ( const Pattern& p ) const;
 
           /// Returns the list of p children in this DFSTree.
-          std::list<NodeId>& children( const Pattern& p );
+          std::list<NodeId>& children ( const Pattern& p );
 
           /// Returns the list of p children in this DFSTree.
-          const std::list<NodeId>& children( const Pattern& p ) const;
+          const std::list<NodeId>& children ( const Pattern& p ) const;
 
           /// Returns the pattern represented by id in this DFSTree.
-          Pattern& pattern( NodeId id );
+          Pattern& pattern ( NodeId id );
 
           /// Returns the pattern represented by id in this DFSTree.
-          const Pattern& pattern( NodeId id ) const;
+          const Pattern& pattern ( NodeId id ) const;
 
           /**
            * @brief Add a one edge Pattern in this DFSTree.
@@ -146,7 +146,7 @@ namespace gum {
            * @param data Data over the edge used to create a root of this DFSTree.
            * @return Returns the Pattern added as a root of this DFSTree.
            */
-          void addRoot( LabelData& data );
+          void addRoot ( LabelData& data );
 
           /**
            * @class EdgeGrowth DFSTree.h <agrum/prm/DFSTree.h>
@@ -158,9 +158,9 @@ namespace gum {
 
               friend class DFSTree;
               /// Constructor.
-              EdgeGrowth( NodeId a_u, LabelData* an_edge, LabelData* a_l_v, NodeId a_v = 0 );
+              EdgeGrowth ( NodeId a_u, LabelData* an_edge, LabelData* a_l_v, NodeId a_v = 0 );
               /// Copy constructor.
-              EdgeGrowth( const EdgeGrowth& from );
+              EdgeGrowth ( const EdgeGrowth& from );
               /// Destructor.
               ~EdgeGrowth();
               /// The NodeId of the node from which we grow an edge.
@@ -176,9 +176,9 @@ namespace gum {
               /// otherwise 0 is assigned (recall that subscripts start from 1)
               NodeId v;
               /// Add the pair (u,v) as a match for the current growth.
-              void insert( Instance* u, Instance* v );
+              void insert ( Instance<GUM_SCALAR>* u, Instance<GUM_SCALAR>* v );
               /// The mapping between the u and v for each match in the interface graph.
-              NodeProperty< std::pair<Instance*, Instance*> > matches;
+              NodeProperty< std::pair<Instance<GUM_SCALAR>*, Instance<GUM_SCALAR>*> > matches;
               /// Return a string representation of this
               std::string toString();
 
@@ -205,7 +205,7 @@ namespace gum {
            * @throw FatalError Raised if the grow is an illegal backedge growth.
            * @throw OperationNotAllowed Raised if the grow is found to be not minimal.
            */
-          Pattern& growPattern( Pattern& p, EdgeGrowth& edge_growth, Size min_freq );
+          Pattern& growPattern ( Pattern& p, EdgeGrowth& edge_growth, Size min_freq );
 
           /// @}
           // =========================================================================
@@ -217,7 +217,7 @@ namespace gum {
            * @brief Returns the isomorphism graph of p in the interface graph.
            *
            * The isomorphism graph is a undirected graph in which each node represents
-           * a set of Instance matching p in the interface graph.
+           * a set of Instance<GUM_SCALAR> matching p in the interface graph.
            *
            * If there exists an edge between two nodes in the isomorphism graph, then
            * the two respective set of instances are not disjoint.
@@ -227,7 +227,7 @@ namespace gum {
            *
            * @throw NotFound Raised if p is not a node in this DFSTree.
            */
-          UndiGraph& iso_graph( const Pattern& p );
+          UndiGraph& iso_graph ( const Pattern& p );
 
           /**
            * @brief Given a pattern and a node in its isomorphism graph, this methods
@@ -247,7 +247,7 @@ namespace gum {
            *
            * @throw NotFound Raised if p or node does not exists.
            */
-          Sequence<Instance*>& iso_map( const Pattern& p, NodeId node );
+          Sequence<Instance<GUM_SCALAR>*>& iso_map ( const Pattern& p, NodeId node );
 
           /**
            * @brief Returns the maximal independent set of p isomorphism graph.
@@ -256,35 +256,35 @@ namespace gum {
            *
            * @throw NotFound Raised if p is not a node in this DFSTree.
            */
-          Set<NodeId>& max_indep_set( const Pattern& p );
+          Set<NodeId>& max_indep_set ( const Pattern& p );
 
           /// Returns the frequency of p respecting it's maximal independent set.
           /// @param p The pattern
-          double frequency( const Pattern& p ) const;
+          double frequency ( const Pattern& p ) const;
 
           /// @param p The pattern
-          PatternData& data( const Pattern& p );
+          PatternData& data ( const Pattern& p );
           /// @param p The pattern
-          const PatternData& data( const Pattern& p ) const;
+          const PatternData& data ( const Pattern& p ) const;
 
           /// strategy getter
-          SearchStrategy& strategy();
+          SearchStrategy<GUM_SCALAR>& strategy();
 
           /// strategy getter
-          const SearchStrategy& strategy() const;
+          const SearchStrategy<GUM_SCALAR>& strategy() const;
 
           /// @class NeighborDegreeSort DFSTree.h <agrum/prm/gspan/DFSTree.h>
           /// @brief This is used to generate the max_indep_set of a Pattern.
 
           struct NeighborDegreeSort {
             /// Constructor
-            NeighborDegreeSort( UndiGraph& graph );
+            NeighborDegreeSort ( UndiGraph& graph );
             /// Copy constructor.
-            NeighborDegreeSort( const NeighborDegreeSort& source );
+            NeighborDegreeSort ( const NeighborDegreeSort& source );
             /// Destructor.
             ~NeighborDegreeSort();
             /// The operator used to sort stuff.
-            bool operator()( NodeId i, NodeId j );
+            bool operator() ( NodeId i, NodeId j );
             /// The isomorphism graph.
             UndiGraph& g;
           };
@@ -294,7 +294,7 @@ namespace gum {
         private:
 
           /// The interface graph on which this DFSTree applies.
-          const InterfaceGraph* __graph;
+          const InterfaceGraph<GUM_SCALAR>* __graph;
 
           /// The list of root patterns in this DFSTree.
           std::list<NodeId> __roots;
@@ -306,42 +306,43 @@ namespace gum {
           HashTable<Pattern*, PatternData*> __data;
 
           /// The strategy used to prune the search tree.
-          SearchStrategy* __strategy;
+          SearchStrategy<GUM_SCALAR>* __strategy;
 
           /// Raise different exceptions if child is invalid or illegal
-          void __checkGrowth( Pattern& p, Pattern* child, EdgeGrowth& edge_growth );
+          void __checkGrowth ( Pattern& p, Pattern* child, EdgeGrowth& edge_growth );
 
           /// Add a child to this DFSTree.
-          void __addChild( Pattern& p, Pattern* child, EdgeGrowth& edge_growth );
+          void __addChild ( Pattern& p, Pattern* child, EdgeGrowth& edge_growth );
 
           /// Check if an instance match is redundant.
-          bool __is_new_seq( Sequence<Instance*>& seq,
-                             NodeProperty<Sequence<Instance*>*>& iso_map );
+          bool __is_new_seq ( Sequence<Instance<GUM_SCALAR>*>& seq,
+                              NodeProperty<Sequence<Instance<GUM_SCALAR>*>*>& iso_map );
 
           /// This initialize the DSFTree with a new root.
           /// @param p A Pattern.
-          /// @param seq A sequence of EdgeData.
-          void __initialiaze_root( Pattern* p, Sequence<EdgeData*>& seq );
+          /// @param seq A sequence of EdgeData<GUM_SCALAR>.
+          void __initialiaze_root ( Pattern* p, Sequence<EdgeData<GUM_SCALAR>*>& seq );
 
           /// This can be used to decompose a pattern in sub patter, which could be useful
           /// in some scenarios.
-          void __find_sub_pattern( Pattern& p, NodeId iso_map );
+          void __find_sub_pattern ( Pattern& p, NodeId iso_map );
 
           // Used by __find_sub_pattern.
-          bool __test_equality( HashTable<ClassElement*, Size>& x, HashTable<ClassElement*, Size>& y );
+          bool __test_equality ( HashTable<ClassElement<GUM_SCALAR>*, Size>& x, HashTable<ClassElement<GUM_SCALAR>*, Size>& y );
 
       };
 
-      std::ostream& operator<< ( std::ostream& out, const DFSTree::EdgeGrowth& edge );
+      template<typename GUM_SCALAR>
+      std::ostream& operator<< ( std::ostream& out, const typename DFSTree<GUM_SCALAR>::EdgeGrowth& edge );
 
       /**
-       * @class SearchStrategy DFSTree.h <agrum/prm/gspan/DFSTree.h>
+       * @class SearchStrategy<GUM_SCALAR> DFSTree.h <agrum/prm/gspan/DFSTree.h>
        *
        * This is an abstract class used to tune search strategies in the gspan
        * algorithm. Since GSpan uses a DFS to expand the search tree, this class
        * works as a stack regarding adding and removing informations about the growths.
        */
-
+      template<typename GUM_SCALAR>
       class SearchStrategy {
 
         public:
@@ -352,16 +353,16 @@ namespace gum {
           /// @{
 
           /// Default constructor.
-          SearchStrategy();
+          SearchStrategy<GUM_SCALAR>();
 
           /// Copy constructor.
-          SearchStrategy( const SearchStrategy& from );
+          SearchStrategy<GUM_SCALAR> ( const SearchStrategy<GUM_SCALAR>& from );
 
           /// Destructor.
-          virtual ~SearchStrategy();
+          virtual ~SearchStrategy<GUM_SCALAR>();
 
           /// Copy operator.
-          SearchStrategy& operator= ( const SearchStrategy& from );
+          SearchStrategy<GUM_SCALAR>& operator= ( const SearchStrategy<GUM_SCALAR>& from );
 
           /// @}
           // =========================================================================
@@ -369,21 +370,21 @@ namespace gum {
           // ==========================================================================
           /// @{
 
-          void setTree( DFSTree* tree );
+          void setTree ( DFSTree<GUM_SCALAR>* tree );
 
-          virtual bool accept_root( const Pattern* r ) = 0;
+          virtual bool accept_root ( const Pattern* r ) = 0;
 
-          virtual bool accept_growth( const Pattern* parent,
-                                      const Pattern* child,
-                                      const DFSTree::EdgeGrowth& growth ) = 0;
+          virtual bool accept_growth ( const Pattern* parent,
+                                       const Pattern* child,
+                                       const typename DFSTree<GUM_SCALAR>::EdgeGrowth& growth ) = 0;
 
-          virtual bool operator()( LabelData* i, LabelData* j ) = 0;
-          virtual bool operator()( Pattern* i, Pattern* j ) = 0;
+          virtual bool operator() ( LabelData* i, LabelData* j ) = 0;
+          virtual bool operator() ( Pattern* i, Pattern* j ) = 0;
           /// @}
 
         protected:
-          DFSTree* _tree;
-          double _computeCost( const Pattern& p );
+          DFSTree<GUM_SCALAR>* _tree;
+          double _computeCost ( const Pattern& p );
       };
 
       /**
@@ -392,8 +393,8 @@ namespace gum {
        * This is class is an implementation of a simple serach strategy for the gspan
        * algorithm: it accept a growth if its frequency is above a user defined value.
        */
-
-      class FrequenceSearch : public SearchStrategy {
+      template<typename GUM_SCALAR>
+      class FrequenceSearch : public SearchStrategy<GUM_SCALAR> {
 
         public:
 
@@ -403,10 +404,10 @@ namespace gum {
           /// @{
 
           /// Default constructor.
-          FrequenceSearch( Size freq );
+          FrequenceSearch ( Size freq );
 
           /// Copy constructor.
-          FrequenceSearch( const FrequenceSearch& from );
+          FrequenceSearch ( const FrequenceSearch& from );
 
           /// Destructor.
           virtual ~FrequenceSearch();
@@ -420,14 +421,14 @@ namespace gum {
           // ==========================================================================
           /// @{
 
-          virtual bool accept_root( const Pattern* r );
+          virtual bool accept_root ( const Pattern* r );
 
-          virtual bool accept_growth( const Pattern* parent,
-                                      const Pattern* child,
-                                      const DFSTree::EdgeGrowth& growth );
+          virtual bool accept_growth ( const Pattern* parent,
+                                       const Pattern* child,
+                                       const typename DFSTree<GUM_SCALAR>::EdgeGrowth& growth );
 
-          virtual bool operator()( LabelData* i, LabelData* j );
-          virtual bool operator()( Pattern* i, Pattern* j );
+          virtual bool operator() ( LabelData* i, LabelData* j );
+          virtual bool operator() ( Pattern* i, Pattern* j );
           /// @}
 
         private:
@@ -444,7 +445,8 @@ namespace gum {
        *
        * A new growth is accepted if it is at least better than its predecessor.
        */
-      class StrictSearch : public SearchStrategy {
+      template<typename GUM_SCALAR>
+      class StrictSearch : public SearchStrategy<GUM_SCALAR> {
         public:
 
           // =========================================================================
@@ -453,10 +455,10 @@ namespace gum {
           /// @{
 
           /// Default constructor.
-          StrictSearch( Size freq = 2 );
+          StrictSearch ( Size freq = 2 );
 
           /// Copy constructor.
-          StrictSearch( const StrictSearch& from );
+          StrictSearch ( const StrictSearch& from );
 
           /// Destructor.
           virtual ~StrictSearch();
@@ -470,21 +472,21 @@ namespace gum {
           // ==========================================================================
           /// @{
 
-          virtual bool accept_root( const Pattern* r );
+          virtual bool accept_root ( const Pattern* r );
 
-          virtual bool accept_growth( const Pattern* parent,
-                                      const Pattern* child,
-                                      const DFSTree::EdgeGrowth& growth );
+          virtual bool accept_growth ( const Pattern* parent,
+                                       const Pattern* child,
+                                       const typename DFSTree<GUM_SCALAR>::EdgeGrowth& growth );
 
-          virtual bool operator()( LabelData* i, LabelData* j );
-          virtual bool operator()( Pattern* i, Pattern* j );
+          virtual bool operator() ( LabelData* i, LabelData* j );
+          virtual bool operator() ( Pattern* i, Pattern* j );
           /// @}
 
         private:
           Size __freq;
-          double  __inner_cost( const Pattern* p );
-          double  __outer_cost( const Pattern* p );
-          void __compute_costs( const Pattern* p );
+          double  __inner_cost ( const Pattern* p );
+          double  __outer_cost ( const Pattern* p );
+          void __compute_costs ( const Pattern* p );
           HashTable<const Pattern*, std::pair<double , double > > __map;
           /// Private structure to represent data about a pattern.
           struct PData {
@@ -504,11 +506,11 @@ namespace gum {
             NodeSet outputs;
           };
           std::string __dot;
-          std::string __str( const Instance* i, const Attribute* a ) const;
-          std::string __str( const Instance* i, const Attribute& a ) const;
-          std::string __str( const Instance* i, const SlotChain& a ) const;
-          void __buildPatternGraph( StrictSearch::PData& data, Set<Potential<prm_float>*>& pool, const Sequence<Instance*>& match );
-          std::pair<Size, Size> __elimination_cost( StrictSearch::PData& data, Set<Potential<prm_float>*>& pool );
+          std::string __str ( const Instance<GUM_SCALAR>* i, const Attribute<GUM_SCALAR>* a ) const;
+          std::string __str ( const Instance<GUM_SCALAR>* i, const Attribute<GUM_SCALAR>& a ) const;
+          std::string __str ( const Instance<GUM_SCALAR>* i, const SlotChain<GUM_SCALAR>& a ) const;
+          void __buildPatternGraph ( StrictSearch::PData& data, Set<Potential<GUM_SCALAR>*>& pool, const Sequence<Instance<GUM_SCALAR>*>& match );
+          std::pair<Size, Size> __elimination_cost ( StrictSearch::PData& data, Set<Potential<GUM_SCALAR>*>& pool );
       };
 
       /**
@@ -517,7 +519,8 @@ namespace gum {
        * A growth is accepted if and only if the new growth has a tree width less large
        * or equal than its father.
        */
-      class TreeWidthSearch : public SearchStrategy {
+      template<typename GUM_SCALAR>
+      class TreeWidthSearch : public SearchStrategy<GUM_SCALAR> {
         public:
 
           // =========================================================================
@@ -529,7 +532,7 @@ namespace gum {
           TreeWidthSearch();
 
           /// Copy constructor.
-          TreeWidthSearch( const TreeWidthSearch& from );
+          TreeWidthSearch ( const TreeWidthSearch& from );
 
           /// Destructor.
           virtual ~TreeWidthSearch();
@@ -543,16 +546,16 @@ namespace gum {
           // ==========================================================================
           /// @{
 
-          double cost( const Pattern& p );
+          double cost ( const Pattern& p );
 
-          virtual bool accept_root( const Pattern* r );
+          virtual bool accept_root ( const Pattern* r );
 
-          virtual bool accept_growth( const Pattern* parent,
-                                      const Pattern* child,
-                                      const DFSTree::EdgeGrowth& growth );
+          virtual bool accept_growth ( const Pattern* parent,
+                                       const Pattern* child,
+                                       const typename DFSTree<GUM_SCALAR>::EdgeGrowth& growth );
 
-          virtual bool operator()( LabelData* i, LabelData* j );
-          virtual bool operator()( Pattern* i, Pattern* j );
+          virtual bool operator() ( LabelData* i, LabelData* j );
+          virtual bool operator() ( Pattern* i, Pattern* j );
           /// @}
 
         private:
@@ -563,10 +566,8 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#ifndef GUM_NO_INLINE
-#include <agrum/prm/gspan/DFSTree.inl>
-#include <agrum/prm/gspan/searchStrategy.inl>
-#endif // GUM_NO_INLINE
+#include <agrum/prm/gspan/DFSTree.tcc>
+#include <agrum/prm/gspan/searchStrategy.tcc>
 
 #endif /* GUM_DFS_TREE_H */
 

@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of ClassBayesNet.
+ * @brief Headers of ClassBayesNet<GUM_SCALAR>.
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
@@ -36,15 +36,15 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class ClassBayesNet classBayesNet.h <agrum/prm/classBayesNet.h>
-     * @brief This class decorates a gum::prm::Class has an IBaseBayesNet.
+     * @class ClassBayesNet<GUM_SCALAR> classBayesNet.h <agrum/prm/classBayesNet.h>
+     * @brief This class decorates a gum::prm::Class<GUM_SCALAR> has an IBaseBayesNet.
      *
      * This class filters Attribute and Aggregate in a way it can be interpreted as
      * a IBayesNet. SlotChains and ReferenceSlot are not represented.
      *
-     * Remember that a ClassBayesNet does not contain input nodes parents and
+     * Remember that a ClassBayesNet<GUM_SCALAR> does not contain input nodes parents and
      * output nodes children. Thus you should be careful when using one of the
-     * BayesNetInference over a ClassBayesNet since some variables are missing in
+     * BayesNetInference over a ClassBayesNet<GUM_SCALAR> since some variables are missing in
      * the DAG but not in the nodes CPT.
      */
     template<typename GUM_SCALAR>
@@ -56,17 +56,17 @@ namespace gum {
         /// @{
 
         /// Default constructor.
-        /// @param c The Class decorated by this ClassBayesNet.
-        ClassBayesNet ( const Class& c );
+        /// @param c The Class<GUM_SCALAR> decorated by this ClassBayesNet<GUM_SCALAR>.
+        ClassBayesNet<GUM_SCALAR> ( const Class<GUM_SCALAR>& c );
 
         /// Copy constructor.
-        ClassBayesNet ( const ClassBayesNet& from );
+        ClassBayesNet<GUM_SCALAR> ( const ClassBayesNet<GUM_SCALAR>& from );
 
         /// Copy operator.
-        ClassBayesNet& operator= ( const ClassBayesNet& from );
+        ClassBayesNet<GUM_SCALAR>& operator= ( const ClassBayesNet<GUM_SCALAR>& from );
 
         /// Destructor.
-        virtual ~ClassBayesNet();
+        virtual ~ClassBayesNet<GUM_SCALAR>();
 
         /// @}
         // ===========================================================================
@@ -75,7 +75,7 @@ namespace gum {
         /// @{
 
         /**
-         * @brief Returns the CPT of a node in this ClassBayesNet.
+         * @brief Returns the CPT of a node in this ClassBayesNet<GUM_SCALAR>.
          *
          * If the node is an Aggregate, this will raise an OperationNotAllowed
          * since Aggregate's CPT are define at instantiation only.
@@ -118,7 +118,7 @@ namespace gum {
         /// @}
       private:
         /// Mapping between DiscreteVariable and their NodeId
-        HashTable<const DiscreteVariable*, const ClassElement*> __varNodeMap;
+        HashTable<const DiscreteVariable*, const ClassElement<GUM_SCALAR>*> __varNodeMap;
 
         /// Private getter with type checking in case the id is not a formal Attribute.
         /// @throw NotFound Raised if id is not a formal attribute.
@@ -126,17 +126,17 @@ namespace gum {
 
         /// Private getter with type checking in case the id is not a formal Attribute.
         /// @throw NotFound Raised if id is not a formal attribute.
-        const ClassElement& __get ( const std::string& name ) const;
+        const ClassElement<GUM_SCALAR>& __get ( const std::string& name ) const;
 
         /// The ClassElementContainer decorated by this.
-        const Class* __class;
+        const Class<GUM_SCALAR>* __class;
 
 
 
         mutable NodeProperty<Size> __modalities;
 
 
-        void __init ( const Class& c );
+        void __init ( const Class<GUM_SCALAR>& c );
     };
 
     extern template class ClassBayesNet<float>;

@@ -33,18 +33,21 @@ namespace gum {
 
       /* ******************************************************************* */
 
-      O3prmrContext::O3prmrContext( const std::string& filename ) {
+      template<typename GUM_SCALAR>
+      O3prmrContext<GUM_SCALAR>::O3prmrContext( const std::string& filename ) {
         m_filename = filename;
         m_mainImport = 0;
       }
 
-      O3prmrContext::O3prmrContext( const O3prmrContext& s ) {
+      template<typename GUM_SCALAR>
+      O3prmrContext<GUM_SCALAR>::O3prmrContext( const O3prmrContext& s ) {
         m_filename = s.m_filename;
         m_mainImport = s.m_mainImport;
         *this += s;
       }
 
-      O3prmrContext::~O3prmrContext() {
+      template<typename GUM_SCALAR>
+      O3prmrContext<GUM_SCALAR>::~O3prmrContext() {
         for ( int i = m_imports.size() - 1 ; i >= 0 ; i-- )
           delete m_imports[i];
 
@@ -52,19 +55,23 @@ namespace gum {
           delete m_sessions[i];
       }
 
-      std::string O3prmrContext::filename() const {
+      template<typename GUM_SCALAR>
+      std::string O3prmrContext<GUM_SCALAR>::filename() const {
         return m_filename;
       }
 
-      std::string O3prmrContext::package() const {
+      template<typename GUM_SCALAR>
+      std::string O3prmrContext<GUM_SCALAR>::package() const {
         return m_package;
       }
 
-      void O3prmrContext::setPackage( const std::string& package ) {
+      template<typename GUM_SCALAR>
+      void O3prmrContext<GUM_SCALAR>::setPackage( const std::string& package ) {
         m_package = package;
       }
 
-      std::string O3prmrContext::aliasToImport( const std::string& alias ) {
+      template<typename GUM_SCALAR>
+      std::string O3prmrContext<GUM_SCALAR>::aliasToImport( const std::string& alias ) {
         for ( int i = m_imports.size() - 1 ; i >= 0 ; i-- )
           if ( m_imports[i]->alias == alias )
             return m_imports[i]->value;
@@ -72,37 +79,39 @@ namespace gum {
         return std::string();
       }
 
-      std::vector<ImportCommand*> O3prmrContext::imports() const {
+      template<typename GUM_SCALAR>
+      std::vector<ImportCommand*> O3prmrContext<GUM_SCALAR>::imports() const {
         return m_imports;
       }
 
-      void O3prmrContext::addImport( int line, const std::string& import, const std::string& alias ) {
+      template<typename GUM_SCALAR>
+      void O3prmrContext<GUM_SCALAR>::addImport( int line, const std::string& import, const std::string& alias ) {
         m_imports.push_back( new ImportCommand( line, import, alias ) );
 
         if ( alias == "default" )
           m_mainImport = m_imports.back();
       }
 
-      void O3prmrContext::addImport( int line, const std::string& import, bool ismain ) {
+      template<typename GUM_SCALAR>
+      void O3prmrContext<GUM_SCALAR>::addImport( int line, const std::string& import, bool ismain ) {
         m_imports.push_back( new ImportCommand( line, import, import ) );
 
         if ( ismain )
           m_mainImport = m_imports.back();
       }
 
-      std::vector<O3prmrSession*> O3prmrContext::sessions() const {
+      template<typename GUM_SCALAR>
+      std::vector<O3prmrSession<GUM_SCALAR>*> O3prmrContext<GUM_SCALAR>::sessions() const {
         return m_sessions;
       }
 
-      void O3prmrContext::addSession( O3prmrSession* session ) {
-        m_sessions.push_back( session );
+      template<typename GUM_SCALAR>
+      void O3prmrContext<GUM_SCALAR>::addSession( const O3prmrSession<GUM_SCALAR>& session ) {
+        m_sessions.push_back( new O3prmrSession<GUM_SCALAR>( session ) );
       }
 
-      void O3prmrContext::addSession( const O3prmrSession& session ) {
-        addSession( new O3prmrSession( session ) );
-      }
-
-      std::string O3prmrContext::toString() const {
+      template<typename GUM_SCALAR>
+      std::string O3prmrContext<GUM_SCALAR>::toString() const {
         std::string output;
 
         if ( ! m_package.empty() ) {
@@ -110,29 +119,30 @@ namespace gum {
           output += "\n";
         }
 
-        for ( std::vector<ImportCommand*>::const_iterator i = m_imports.begin() ; i < m_imports.end() ; i++ )
+        for ( auto i = m_imports.begin() ; i < m_imports.end() ; i++ )
           output += ( *i )->toString() + "\n";
 
         output += "\n";
 
-        for ( std::vector<O3prmrSession*>::const_iterator i = m_sessions.begin() ; i < m_sessions.end() ; i++ )
+        for ( auto i = m_sessions.begin() ; i < m_sessions.end() ; i++ )
           output += ( *i )->toString() + "\n";
 
         return output;
       }
 
-      O3prmrContext& O3prmrContext::operator+= ( const O3prmrContext& c ) {
+      template<typename GUM_SCALAR>
+      O3prmrContext<GUM_SCALAR>& O3prmrContext<GUM_SCALAR>::operator+= ( const O3prmrContext& c ) {
         const std::vector<ImportCommand*>& imports = c.imports();
 
         for ( std::vector<ImportCommand*>::const_iterator i = imports.begin() ; i != imports.end() ; i++ )
           addImport( **i ) ;
 
-        const std::vector<O3prmrSession*>& sessions = c.sessions();
+        const std::vector<O3prmrSession<GUM_SCALAR>*>& sessions = c.sessions();
 
         if ( sessions.size() == 1 && sessions.back()->name() == "default" ) {
           * ( this->m_sessions.back() ) += * ( sessions.back() );
         } else
-          for ( std::vector<O3prmrSession*>::const_iterator i = sessions.begin() ; i != sessions.end() ; i++ )
+          for ( auto i = sessions.begin() ; i != sessions.end() ; i++ )
             addSession( **i ) ;
 
         return *this;
@@ -140,55 +150,67 @@ namespace gum {
 
       /* ******************************************************************* */
 
-      O3prmrSession::O3prmrSession( const std::string& name ) {
+      template<typename GUM_SCALAR>
+      O3prmrSession<GUM_SCALAR>::O3prmrSession( const std::string& name ) {
         m_name = name;
       }
 
-      O3prmrSession::O3prmrSession( const O3prmrSession& s ) {
+      template<typename GUM_SCALAR>
+      O3prmrSession<GUM_SCALAR>::O3prmrSession( const O3prmrSession<GUM_SCALAR>& s ) {
         m_name = s.m_name;
         *this += s;
       }
 
-      O3prmrSession::~O3prmrSession() {
+      template<typename GUM_SCALAR>
+      O3prmrSession<GUM_SCALAR>::~O3prmrSession() {
         for ( int i = m_commands.size() - 1 ; i >= 0 ; i-- )
           delete m_commands[i];
 
         m_commands.clear();
       }
 
-      std::string O3prmrSession::name() const {
+      template<typename GUM_SCALAR>
+      std::string O3prmrSession<GUM_SCALAR>::name() const {
         return m_name;
       }
 
-      std::vector<O3prmrCommand*> O3prmrSession::commands() const {
+      template<typename GUM_SCALAR>
+      std::vector<O3prmrCommand*> O3prmrSession<GUM_SCALAR>::commands() const {
         return m_commands;
       }
 
-      void O3prmrSession::addCommand( O3prmrCommand* command ) {
+      template<typename GUM_SCALAR>
+      void O3prmrSession<GUM_SCALAR>::addCommand( O3prmrCommand* command ) {
         m_commands.push_back( command );
       }
 
-      void O3prmrSession::addObserve( int line, const std::string& leftValue, const std::string& rightValue ) {
-        addCommand( new ObserveCommand( line,leftValue, rightValue ) );
+      template<typename GUM_SCALAR>
+      void O3prmrSession<GUM_SCALAR>::addObserve( int line, const std::string& leftValue, const std::string& rightValue ) {
+        addCommand( new ObserveCommand<GUM_SCALAR>( line,leftValue, rightValue ) );
       }
 
-      void O3prmrSession::addUnobserve( int line, const std::string& value ) {
-        addCommand( new UnobserveCommand( line,value ) );
+      template<typename GUM_SCALAR>
+      void O3prmrSession<GUM_SCALAR>::addUnobserve( int line, const std::string& value ) {
+        addCommand( new UnobserveCommand<GUM_SCALAR>( line,value ) );
       }
 
-      void O3prmrSession::addQuery( int line, const std::string& value ) {
-        addCommand( new QueryCommand( line,value ) );
+      template<typename GUM_SCALAR>
+      void O3prmrSession<GUM_SCALAR>::addQuery( int line, const std::string& value ) {
+        addCommand( new QueryCommand<GUM_SCALAR>( line,value ) );
       }
 
-      void O3prmrSession::addSetEngine( int line, const std::string& value ) {
+      template<typename GUM_SCALAR>
+      void O3prmrSession<GUM_SCALAR>::addSetEngine( int line, const std::string& value ) {
         addCommand( new SetEngineCommand( line,value ) );
       }
 
-      void O3prmrSession::addSetGndEngine( int line, const std::string& value ) {
+      template<typename GUM_SCALAR>
+      void O3prmrSession<GUM_SCALAR>::addSetGndEngine( int line, const std::string& value ) {
         addCommand( new SetGndEngineCommand( line,value ) );
       }
 
-      void O3prmrSession::addCommand( const O3prmrCommand* command ) {
+      template<typename GUM_SCALAR>
+      void O3prmrSession<GUM_SCALAR>::addCommand( const O3prmrCommand* command ) {
         switch ( command->type() ) {
           case O3prmrCommand::RequestType::SetEngine :
             m_commands.push_back( new SetEngineCommand( * ( SetEngineCommand* ) command ) );
@@ -199,20 +221,21 @@ namespace gum {
             break;
 
           case O3prmrCommand::RequestType::Observe :
-            m_commands.push_back( new ObserveCommand( * ( ObserveCommand* ) command ) );
+            m_commands.push_back( new ObserveCommand<GUM_SCALAR>( * ( ObserveCommand<GUM_SCALAR>* ) command ) );
             break;
 
           case O3prmrCommand::RequestType::Unobserve :
-            m_commands.push_back( new UnobserveCommand( * ( UnobserveCommand* ) command ) );
+            m_commands.push_back( new UnobserveCommand<GUM_SCALAR>( * ( UnobserveCommand<GUM_SCALAR>* ) command ) );
             break;
 
           case O3prmrCommand::RequestType::Query :
-            m_commands.push_back( new QueryCommand( * ( QueryCommand* ) command ) );
+            m_commands.push_back( new QueryCommand<GUM_SCALAR>( * ( QueryCommand<GUM_SCALAR>* ) command ) );
             break;
         }
       }
 
-      std::string O3prmrSession::toString() const {
+      template<typename GUM_SCALAR>
+      std::string O3prmrSession<GUM_SCALAR>::toString() const {
         std::string output;
 
         output += "request " + m_name + " {\n";
@@ -225,7 +248,8 @@ namespace gum {
         return output;
       }
 
-      O3prmrSession& O3prmrSession::operator+= ( const O3prmrSession& c ) {
+      template<typename GUM_SCALAR>
+      O3prmrSession<GUM_SCALAR>& O3prmrSession<GUM_SCALAR>::operator+= ( const O3prmrSession<GUM_SCALAR>& c ) {
         for ( std::vector<O3prmrCommand*>::const_iterator i = c.m_commands.begin() ; i < c.m_commands.end() ; i++ )
           addCommand( *i );
 
