@@ -386,7 +386,7 @@ namespace gum {
         Set<Potential<GUM_SCALAR>*> pool;
         __buildPatternGraph ( data, pool, ** ( this->_tree->data ( *p ).iso_map.begin() ) );
         double inner = std::log ( __elimination_cost ( data, pool ).first );
-        double outer = _computeCost ( *p );
+        double outer = this->_computeCost ( *p );
         __map.insert ( p, std::make_pair ( inner, outer ) );
       }
 
@@ -395,42 +395,42 @@ namespace gum {
 
 
       template<typename GUM_SCALAR> INLINE
-      TreeWidthSearch::TreeWidthSearch() :
-        SearchStrategy() {
+      TreeWidthSearch<GUM_SCALAR>::TreeWidthSearch() :
+        SearchStrategy<GUM_SCALAR>() {
         GUM_CONSTRUCTOR ( TreeWidthSearch );
       }
 
       template<typename GUM_SCALAR> INLINE
-      TreeWidthSearch::TreeWidthSearch ( const TreeWidthSearch& from ) :
-        SearchStrategy ( from ) {
+      TreeWidthSearch<GUM_SCALAR>::TreeWidthSearch ( const TreeWidthSearch<GUM_SCALAR>& from ) :
+        SearchStrategy<GUM_SCALAR> ( from ) {
         GUM_CONS_CPY ( TreeWidthSearch );
       }
 
       template<typename GUM_SCALAR> INLINE
-      TreeWidthSearch::~TreeWidthSearch() {
+      TreeWidthSearch<GUM_SCALAR>::~TreeWidthSearch() {
         GUM_DESTRUCTOR ( TreeWidthSearch );
       }
 
       template<typename GUM_SCALAR> INLINE
-      TreeWidthSearch&
-      TreeWidthSearch::operator= ( const TreeWidthSearch& from ) {
+      TreeWidthSearch<GUM_SCALAR>&
+      TreeWidthSearch<GUM_SCALAR>::operator= ( const TreeWidthSearch<GUM_SCALAR>& from ) {
         return *this;
       }
 
       template<typename GUM_SCALAR> INLINE
       double
-      TreeWidthSearch::cost ( const Pattern& p ) {
+      TreeWidthSearch<GUM_SCALAR>::cost ( const Pattern& p ) {
         try {
           return __map[&p];
         } catch ( NotFound& ) {
-          __map.insert ( &p, _computeCost ( p ) );
+          __map.insert ( &p, this->_computeCost ( p ) );
           return __map[&p];
         }
       }
 
       template<typename GUM_SCALAR> INLINE
       bool
-      TreeWidthSearch::accept_root ( const Pattern* r ) {
+      TreeWidthSearch<GUM_SCALAR>::accept_root ( const Pattern* r ) {
         Size tree_width = 0;
 
         for ( const auto n : r->nodes() )
@@ -441,21 +441,21 @@ namespace gum {
 
       template<typename GUM_SCALAR> INLINE
       bool
-      TreeWidthSearch::accept_growth ( const Pattern* parent,
-                                       const Pattern* child,
-                                       const DFSTree<GUM_SCALAR>::EdgeGrowth& growth ) {
+      TreeWidthSearch<GUM_SCALAR>::accept_growth ( const Pattern* parent,
+          const Pattern* child,
+          const typename DFSTree<GUM_SCALAR>::EdgeGrowth& growth ) {
         return cost ( *parent ) >= cost ( *child );
       }
 
       template<typename GUM_SCALAR> INLINE
       bool
-      TreeWidthSearch::operator() ( gspan::Pattern* i, gspan::Pattern* j ) {
+      TreeWidthSearch<GUM_SCALAR>::operator() ( gspan::Pattern* i, gspan::Pattern* j ) {
         return cost ( *i ) < cost ( *j );
       }
 
       template<typename GUM_SCALAR> INLINE
       bool
-      TreeWidthSearch::operator() ( LabelData* i, LabelData* j ) {
+      TreeWidthSearch<GUM_SCALAR>::operator() ( LabelData* i, LabelData* j ) {
         return i->tree_width < j->tree_width;
       }
 

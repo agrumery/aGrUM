@@ -104,10 +104,10 @@ namespace gum {
         /// Code alias
         typedef Set< Potential<GUM_SCALAR>* > BucketSet;
         /// Code alias
-        typedef Set< Potential<GUM_SCALAR>* >::iterator BucketSetIterator;
+        typedef typename Set< Potential<GUM_SCALAR>* >::iterator BucketSetIterator;
 
         /// Code alias
-        typedef Set< MultiDimArray<GUM_SCALAR>* >::iterator ArraySetIterator;
+        typedef typename Set< MultiDimArray<GUM_SCALAR>* >::iterator ArraySetIterator;
 
         HashTable<const Class<GUM_SCALAR>*, std::vector<NodeId>*> __elim_orders;
 
