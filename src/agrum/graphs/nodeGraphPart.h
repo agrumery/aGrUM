@@ -68,10 +68,10 @@ namespace gum {
       /** @warning a NodeGraphPartIterator is built with __valid=false : don't forget to
        * @ref __validate it (@see NodeGraphPart::beginNodes() code)
        **/
-      NodeGraphPartIterator( const NodeGraphPart* nodes );
+      NodeGraphPartIterator ( const NodeGraphPart* nodes );
 
       /// copy constructor
-      NodeGraphPartIterator( const NodeGraphPartIterator& it );
+      NodeGraphPartIterator ( const NodeGraphPartIterator& it );
 
       /// destructor
       ~NodeGraphPartIterator();
@@ -112,14 +112,14 @@ namespace gum {
        * @param src the NodeGraphPart
        * @param id id of deleted node
        */
-      void whenNodeDeleted( const void* src, NodeId id );
+      void whenNodeDeleted ( const void* src, NodeId id );
     private:
       /** @brief this function is used by @ref NodeGraphPart to update
        * @ref NodeGraphPart::__endIterator */
-      void __setPos( NodeId id );
+      void __setPos ( NodeId id );
 
       /// ensure that the nodeId is either end() either a valid NodeId
-      void __validate( void );
+      void __validate ( void );
 
       const NodeGraphPart* __nodes;
       NodeId __pos;
@@ -204,12 +204,12 @@ namespace gum {
        * set of holes is most often very small.
        * @param holes_size the size of the hash table used to store all holes
        * @param holes_resize_policy the resizing policy of this hash table**/
-      explicit NodeGraphPart( Size holes_size = GUM_HASHTABLE_DEFAULT_SIZE,
-                              bool holes_resize_policy    = true );
+      explicit NodeGraphPart ( Size holes_size = GUM_HASHTABLE_DEFAULT_SIZE,
+                               bool holes_resize_policy    = true );
 
       /// copy constructor
       /** @param s the NodeGraphPart to be copied */
-      NodeGraphPart( const NodeGraphPart& s );
+      NodeGraphPart ( const NodeGraphPart& s );
 
       /// destructor
       virtual ~NodeGraphPart();
@@ -248,13 +248,13 @@ namespace gum {
       /** populateNodes should basically be the preferred way to insert nodes with
        * IDs not selected by the internal idFactory.
        * @param s the NodeGraphPart to be copied */
-      void populateNodes( const NodeGraphPart& s );
+      void populateNodes ( const NodeGraphPart& s );
 
       /// populateNodesFromProperty clears *this and fills it with the keys of "h"
       /** populateNodes should basically be the preferred way to insert nodes with
        * IDs not selected by the internal idFactory. */
       template<typename T>
-      void populateNodesFromProperty( const typename Property<T>::onNodes& h );
+      void populateNodesFromProperty ( const NodeProperty<T>& h );
 
       /** returns a new node id, not yet used by any node
        * @warning a code like @code id=nextId();insertNode(id); @endcode is
@@ -271,19 +271,19 @@ namespace gum {
        * @ref populateNodes or @ref populateNodesFromProperty when possible
        * @throws DuplicateElement exception if the id already exists
        */
-      virtual void insertNode( const NodeId id );
+      virtual void insertNode ( const NodeId id );
 
       /// erase the node with the given id
       /** If the NodeGraphPart does not contain the nodeId, then nothing is done. In
        * particular, no exception is raised. However, the signal onNodeDeleted is
        * fired only if a node is effectively removed. */
-      virtual void eraseNode( const NodeId id );
+      virtual void eraseNode ( const NodeId id );
 
       /// returns true iff the NodeGraphPart contains the given nodeId
-      bool existsNode( const NodeId id ) const;
+      bool existsNode ( const NodeId id ) const;
 
       /// alias for @ref existsNode
-      bool exists( const NodeId id ) const;
+      bool exists ( const NodeId id ) const;
 
       /// indicates whether there exists nodes in the NodeGraphPart
       bool emptyNodes() const;
@@ -308,16 +308,20 @@ namespace gum {
 
       /// returns a copy of the set of nodes represented by the NodeGraphPart
       /** @warning this function is o(n) where n is the number of nodes. In space and
-       * in time. Usually, when you need parsing the nodes of a NodeGraphPart, prefer
-       * using beginNodes()/endNodes() rather than nodes().begin()/nodes().end() as
-       * this is faster and consumes much less memory. */
-      NodeSet nodes() const;
+       * in time. Usually, when you need to parse the nodes of a NodeGraphPart, prefer
+       * using @code for(const auto n : nodes()) @endcode rather than
+       * @code for(const auto n : asNodeSet()) @endcode as this is faster and
+       * consumes much less memory. */
+      NodeSet asNodeSet() const;
+
+      /// return *this as a NodeGraphPart
+      const NodeGraphPart& nodes() const;
 
       /// a begin iterator to parse the set of nodes contained in the NodeGraphPart
-      NodeGraphPartIterator beginNodes() const;
+      NodeGraphPartIterator begin() const;
 
       /// the end iterator to parse the set of nodes contained in the NodeGraphPart
-      const NodeGraphPartIterator& endNodes() const;
+      const NodeGraphPartIterator& end() const;
 
       /// a function to display the set of nodes
       std::string toString() const;
@@ -332,8 +336,8 @@ namespace gum {
        * half the number of nodes. If you do not specify this parameter, the method
        * will assign it for you. */
       template <typename VAL>
-      typename Property<VAL>::onNodes
-      nodesProperty( VAL( *f )( const NodeId& ), Size size = 0 ) const;
+      NodeProperty<VAL>
+      nodesProperty ( VAL ( *f ) ( const NodeId& ), Size size = 0 ) const;
 
       /// a method to create a hashMap with key:NodeId and value:VAL
       /** for all nodes, the value stored is a. This method is a wrapper of the same
@@ -345,15 +349,15 @@ namespace gum {
        * half the number of nodes. If you do not specify this parameter, the method
        * will assign it for you. */
       template <typename VAL>
-      typename Property<VAL>::onNodes
-      nodesProperty( const VAL& a, Size size = 0 ) const;
+      NodeProperty<VAL>
+      nodesProperty ( const VAL& a, Size size = 0 ) const;
 
       /** @brief a method to create a list of VAL from a set of nodes
        * (using for every nodee, say x, the VAL f(x))
        * @param f a function assigning a VAL to any node */
       template <typename VAL>
       List<VAL>
-      listMapNodes( VAL( *f )( const NodeId& ) ) const;
+      listMapNodes ( VAL ( *f ) ( const NodeId& ) ) const;
 
       /// @}
 
@@ -372,15 +376,15 @@ namespace gum {
       void __updateEndIterator();
 
       /// code for clearing nodes (called twice)
-      void __clearNodes( void );
+      void __clearNodes ( void );
 
       /// to delete hole.
       /// @warning the hole is assumed to be existing.
-      void __eraseHole( NodeId id );
+      void __eraseHole ( NodeId id );
 
       /// to add a hole.
       /// @warning id is assumed not to be already a hole
-      void __addHole( NodeId id );
+      void __addHole ( NodeId id );
 
 
 
@@ -390,7 +394,7 @@ namespace gum {
       /// @{
 
       /// @return true if id is part of __holes
-      bool __inHoles( NodeId id ) const;
+      bool __inHoles ( NodeId id ) const;
 
       /// @return the size of __holes
       Size __sizeHoles() const;

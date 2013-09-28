@@ -67,13 +67,13 @@ namespace gum {
       /// @{
 
       /**
-       * Return the value of the property "name" of this BayesNet.
+       * Return the value of the property "name" of this IBayesNet.
        * @throw NotFound Raised if no "name" property is found.
        */
       const std::string& property( const std::string& name ) const;
 
       /**
-       * Add or change a property of this BayesNet.
+       * Add or change a property of this IBayesNet.
        */
       void setProperty( const std::string& name, const std::string& value );
 
@@ -86,34 +86,47 @@ namespace gum {
        const DAG& dag() const ;
 
       /**
-      * Returns a constant reference to the VariableNodeMap of this BN
+      * Returns a constant reference to the VariableNodeMap of this Directed Graphical Model
       */
       virtual const VariableNodeMap& variableNodeMap() const = 0;
 
       /**
-       * Returns the number of variables in this BN.
+       * Returns the number of variables in this Directed Graphical Model.
        */
-      Idx size() const;
+      Size size() const;
 
       /**
-       * Returns the number of arcs in this BN.
+       * Returns the number of arcs in this Directed Graphical Model.
        */
-      Idx nbrArcs() const;
+      Size sizeArcs() const;
+      
+      /**
+       * Returns the number of arcs in this Directed Graphical Model.
+       * 
+       * @deprecated Please use sizeArcs
+       */
+      GUM_DEPRECATED(Size nbrArcs() const);
 
       /**
-       * Retursn true if this BN is empty.
+       * Retursn true if this Directed Graphical Model is empty.
        */
       bool empty() const;
 
       /**
-       * Shortcut for this->dag().beginNodes().
+       * Shortcut for this->dag().beginNodes()
+       * 
+       * @deprecated use for(auto node:obj.nodes()) instead
        */
-      const DAG::NodeIterator beginNodes() const;
+      GUM_DEPRECATED(const DAG::NodeIterator beginNodes() const);
 
       /**
-       * Shortcut for this->dag().endNodes().
+       * Shortcut for this->dag().endNodes()
+       * 
+       * @deprecated use for(auto node:obj.nodes()) instead
        */
-      const DAG::NodeIterator endNodes() const;
+      GUM_DEPRECATED(const DAG::NodeIterator endNodes() const);
+      
+      const NodeGraphPart& nodes() const;
 
       /**
       * Returns a constant reference over a variabe given it's node id.
@@ -145,14 +158,19 @@ namespace gum {
 
       /**
        * Shortcut for this->dag().beginArcs().
+       * 
+       * @deprecated Use for(auto arc : obj.arcs()) instead
        */
-      const DAG::ArcIterator beginArcs() const;
+      GUM_DEPRECATED(const DAG::ArcIterator beginArcs() const);
 
       /**
        * Shortcut for this->dag().endArcs().
+       * 
+       * @deprecated Use for(auto arc : obj.arcs()) instead
        */
-      const DAG::ArcIterator& endArcs() const;
+      GUM_DEPRECATED(const DAG::ArcIterator& endArcs() const);
 
+      const ArcSet& arcs(void) const;
       /// @}
 
 
@@ -174,15 +192,8 @@ namespace gum {
 
       /// @}
 
-      /// @return Returns the log10 domain size of the joint probabilty for the BN
+      /// @return Returns the log10 domain size of the joint probabilty for the Directed Graphical Model
       double log10DomainSize( void ) const;
-
-      /// @return Returns a string representation of this BayesNet.
-      virtual std::string toString( void ) const;
-
-      /// @return Returns a dot representation of this BayesNet.
-      virtual std::string toDot( void ) const=0;
-
 
     protected:
       /**
@@ -190,31 +201,31 @@ namespace gum {
        */
       DAGmodel& operator=( const DAGmodel& source );
 
-      /// The DAG of this BN.
+      /// The DAG of this Directed Graphical Model.
       DAG _dag;
 
 
     private:
 
-      /// Returns the moral graph of this BayesNet.
+      /// Returns the moral graph of this IBayesNet.
       /// @warning __mutableMoralGraph is assumed to be valid and empty
       void __moralGraph( ) const;
 
-      /// Returns a topological order of this BayesNet.
+      /// Returns a topological order of this IBayesNet.
       /// @warning __mutableTopologicalOrder is assumed to be valid and empty
       void __topologicalOrder(  ) const;
 
-      /// The moral graph of this BN.
+      /// The moral graph of this Directed Graphical Model.
       mutable UndiGraph* __mutableMoralGraph;
 
-      /// The topology sequence of this BN.
+      /// The topology sequence of this Directed Graphical Model.
       mutable Sequence<NodeId>* __mutableTopologicalOrder;
 
-      /// The properties of this BN.
+      /// The properties of this Directed Graphical Model.
       /// Initialized using a lazy instantiation.
       mutable HashTable<std::string, std::string>* __propertiesMap;
 
-      /// Return the properties of this BN and initialize the hash table is
+      /// Return the properties of this Directed Graphical Model and initialize the hash table is
       /// necessary.
       HashTable<std::string, std::string>& __properties() const;
 

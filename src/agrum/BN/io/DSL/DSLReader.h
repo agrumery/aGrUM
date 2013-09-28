@@ -23,7 +23,7 @@
 #include <iostream>
 #include <string>
 #include <agrum/config.h>
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/io/BNReader.h>
 
 
@@ -127,7 +127,8 @@ namespace gum {
 
   };
 
-
+  extern template class DSLReader<float>;
+  extern template class DSLReader<double>;
 } /* namespace gum */
 
 #include "DSLReader.tcc"

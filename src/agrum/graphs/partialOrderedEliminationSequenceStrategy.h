@@ -86,7 +86,7 @@ namespace gum {
        * @warning note that, by aGrUM's rule, the graph and the sequence are not
        * copied but only referenced by the elimination sequence algorithm. */
       virtual void setGraph( UndiGraph* graph,
-                             const Property<unsigned int>::onNodes* dom,
+                             const NodeProperty<Size>* dom,
                              const List<NodeSet>* subsets ) = 0;
 
       /// @}

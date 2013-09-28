@@ -23,3 +23,6 @@
  * @author Pierre-Henri WUILLEMIN and Ariele-Paolo MAESANO
  */
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
+
+template class gum::SimpleBayesNetGenerator<float>;
+template class gum::SimpleBayesNetGenerator<double>;

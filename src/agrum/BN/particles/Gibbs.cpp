@@ -20,3 +20,6 @@
 
 #include <agrum/BN/particles/Gibbs.h>
 
+template class gum::particle::Gibbs<float>;
+template class gum::particle::Gibbs<double>;
+    

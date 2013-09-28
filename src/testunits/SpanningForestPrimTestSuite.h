@@ -62,7 +62,7 @@ namespace gum_tests {
         g.insertEdge( id10, id11 );
         g.insertEdge( id8, id10 );
 
-        gum::Property<float>::onEdges cost;
+        gum::EdgeProperty<float> cost;
         cost.insert( gum::Edge( id1, id2 ), 1 );
         cost.insert( gum::Edge( id1, id3 ), 10 );
         cost.insert( gum::Edge( id1, id6 ), 2 );

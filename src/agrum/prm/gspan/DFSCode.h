@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of a DFSCode.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <ostream>

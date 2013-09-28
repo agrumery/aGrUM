@@ -31,7 +31,7 @@ namespace gum {
    */
   template<typename GUM_SCALAR> INLINE
   BIFXMLBNWriter<GUM_SCALAR>::BIFXMLBNWriter() {
-    GUM_CONSTRUCTOR( BIFXMLBNWriter );
+    GUM_CONSTRUCTOR ( BIFXMLBNWriter );
   }
 
   /*
@@ -39,7 +39,7 @@ namespace gum {
    */
   template<typename GUM_SCALAR> INLINE
   BIFXMLBNWriter<GUM_SCALAR>::~BIFXMLBNWriter() {
-    GUM_DESTRUCTOR( BIFXMLBNWriter );
+    GUM_DESTRUCTOR ( BIFXMLBNWriter );
   }
 
   /*
@@ -51,22 +51,22 @@ namespace gum {
    */
   template<typename GUM_SCALAR> INLINE
   void
-  BIFXMLBNWriter<GUM_SCALAR>::write( std::ostream& output, const BayesNet<GUM_SCALAR>& bn ) {
+  BIFXMLBNWriter<GUM_SCALAR>::write ( std::ostream& output, const IBayesNet<GUM_SCALAR>& bn ) {
     if ( ! output.good() ) {
-      GUM_ERROR( IOError, "Stream states flags are not all unset." );
+      GUM_ERROR ( IOError, "Stream states flags are not all unset." );
     }
 
     output << __heading() << std::endl;
 
     output << "<!-- Variables -->" << std::endl;
 
-    for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter )
-      output << __variableBloc( bn.variable( *iter ) ) << std::endl;
+    for ( const auto iter : bn.nodes() )
+      output << __variableBloc ( bn.variable ( iter ) ) << std::endl;
 
     output << "<!-- Probability distributions -->" << std::endl;
 
-    for ( DAG::NodeIterator iter = bn.beginNodes(); iter != bn.endNodes(); ++iter )
-      output << __variableDefinition( *iter, bn );
+    for ( const auto iter : bn.nodes() )
+      output << __variableDefinition ( iter, bn );
 
     output << std::endl;
 
@@ -75,7 +75,7 @@ namespace gum {
     output.flush();
 
     if ( output.fail() ) {
-      GUM_ERROR( IOError, "Writting in the ostream failed." );
+      GUM_ERROR ( IOError, "Writting in the ostream failed." );
     }
   }
 
@@ -90,15 +90,15 @@ namespace gum {
    */
   template<typename GUM_SCALAR> INLINE
   void
-  BIFXMLBNWriter<GUM_SCALAR>::write( std::string filePath, const BayesNet<GUM_SCALAR>& bn ) {
-    std::ofstream output( filePath.c_str(), std::ios_base::trunc );
+  BIFXMLBNWriter<GUM_SCALAR>::write ( std::string filePath, const IBayesNet<GUM_SCALAR>& bn ) {
+    std::ofstream output ( filePath.c_str(), std::ios_base::trunc );
 
-    write( output, bn );
+    write ( output, bn );
 
     output.close();
 
     if ( output.fail() ) {
-      GUM_ERROR( IOError, "Writting in the ostream failed." );
+      GUM_ERROR ( IOError, "Writting in the ostream failed." );
     }
   }
 
@@ -147,7 +147,7 @@ namespace gum {
    */
   template<typename GUM_SCALAR> INLINE
   std::string
-  BIFXMLBNWriter<GUM_SCALAR>::__variableBloc( const DiscreteVariable& var ) {
+  BIFXMLBNWriter<GUM_SCALAR>::__variableBloc ( const DiscreteVariable& var ) {
     //<VARIABLE TYPE="nature|decision|utility">
     //<NAME>name</NAME>
     //<OUTCOME>outcome1</OUTCOME>
@@ -166,7 +166,7 @@ namespace gum {
 
     //Outcomes
     for ( Idx i = 0; i < var.domainSize(); i++ )
-      str << "\t<OUTCOME>" << var.label( i ) << "</OUTCOME>" << std::endl;
+      str << "\t<OUTCOME>" << var.label ( i ) << "</OUTCOME>" << std::endl;
 
 //     //Closing tag
     str << "</VARIABLE>" << std::endl;
@@ -179,7 +179,7 @@ namespace gum {
    */
   template<typename GUM_SCALAR> INLINE
   std::string
-  BIFXMLBNWriter<GUM_SCALAR>::__variableDefinition( const NodeId& varNodeId, const BayesNet<GUM_SCALAR>& bn ) {
+  BIFXMLBNWriter<GUM_SCALAR>::__variableDefinition ( const NodeId& varNodeId, const IBayesNet<GUM_SCALAR>& bn ) {
     //<DEFINITION>
     //<FOR>var</FOR>
     //<GIVEN>conditional var</GIVEN>
@@ -191,33 +191,33 @@ namespace gum {
     str << "<DEFINITION>" << std::endl;
 
     // Variable
-    str << "\t<FOR>" << bn.variable( varNodeId ).name() << "</FOR>" << std::endl;
+    str << "\t<FOR>" << bn.variable ( varNodeId ).name() << "</FOR>" << std::endl;
 
     // Table
     // For historical reason, the code is not the same betwen bIXML for BN and for ID ...
-    const Potential<GUM_SCALAR>& cpt=bn.cpt( varNodeId );
+    const Potential<GUM_SCALAR>& cpt = bn.cpt ( varNodeId );
 
     // Conditional Parents
-    for ( Idx i=1; i<cpt.nbrDim(); i++ )
-      str << "\t<GIVEN>" <<cpt.variable( i ).name() << "</GIVEN>" << std::endl;
+    for ( Idx i = 1; i < cpt.nbrDim(); i++ )
+      str << "\t<GIVEN>" << cpt.variable ( i ).name() << "</GIVEN>" << std::endl;
 
     Instantiation inst;
-    inst<<cpt.variable( 0 );
+    inst << cpt.variable ( 0 );
 
-    for ( Idx i=cpt.nbrDim()-1; i>0; i-- ) inst<<cpt.variable( i );
+    for ( Idx i = cpt.nbrDim() - 1; i > 0; i-- ) inst << cpt.variable ( i );
 
     str << "\t<TABLE>";
 
     for ( inst.setFirst(); !inst.end(); inst.inc() ) {
-      if ( inst.val( 0 )==0 )
-        str<<std::endl<<"\t\t";
+      if ( inst.val ( 0 ) == 0 )
+        str << std::endl << "\t\t";
       else
         str << " ";
 
-      str<<cpt[inst];//"<!-- "<<inst<<" -->"<<std::endl;
+      str << cpt[inst]; //"<!-- "<<inst<<" -->"<<std::endl;
     }
 
-    str << std::endl<<"\t</TABLE>" << std::endl;
+    str << std::endl << "\t</TABLE>" << std::endl;
 
     // Closing tag
     str << "</DEFINITION>" << std::endl;

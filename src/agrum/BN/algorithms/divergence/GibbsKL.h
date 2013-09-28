@@ -69,11 +69,11 @@ namespace gum {
       /** constructor must give 2 BNs
        * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or compatible node sets.
        */
-      GibbsKL( const BayesNet<GUM_SCALAR>& P,const BayesNet<GUM_SCALAR>& Q );
+      GibbsKL ( const IBayesNet<GUM_SCALAR>& P,const IBayesNet<GUM_SCALAR>& Q );
 
       /** copy constructor
        */
-      GibbsKL( const KL<GUM_SCALAR>& kl );
+      GibbsKL ( const KL<GUM_SCALAR>& kl );
 
 
       /** destructor */
@@ -85,7 +85,7 @@ namespace gum {
       using particle::Gibbs<GUM_SCALAR>::bn;
 
     protected:
-      void _computeKL( void );
+      void _computeKL ( void );
 
       using KL<GUM_SCALAR>::_p;
       using KL<GUM_SCALAR>::_q;
@@ -97,8 +97,10 @@ namespace gum {
 
       using KL<GUM_SCALAR>::_errorPQ;
       using KL<GUM_SCALAR>::_errorQP;
-
   };
+
+  extern template class GibbsKL<float>;
+  extern template class GibbsKL<double>;
 
 } // namespace gum
 

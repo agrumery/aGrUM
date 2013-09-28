@@ -21,41 +21,15 @@
  * @file
  * @brief Implementation of ClassBayesNet.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/prm/classBayesNet.h>
 
-#ifdef GUM_NO_INLINE
-#include <agrum/prm/classBayesNet.inl>
-#endif // GUM_NO_INLINE
-
 namespace gum {
   namespace prm {
 
-    void
-    ClassBayesNet::__init( const Class& c ) {
-      for ( DAG::NodeIterator node = c.dag().beginNodes(); node != c.dag().endNodes(); ++node ) {
-        try {
-          // Adding the attribute
-          if ( ClassElement::isAttribute( c.get( *node ) ) or ClassElement::isAggregate( c.get( *node ) ) ) {
-            const ClassElement& elt = c.get( *node );
-            _dag.insertNode( elt.id() );
-            __varNodeMap.insert( &( elt.type().variable() ), &elt );
-          }
-        } catch ( NotFound& ) {
-          // Not an attribute
-        }
-      }
 
-      for ( ArcSet::iterator arc = c.dag().beginArcs(); arc != c.dag().endArcs(); ++arc ) {
-        try {
-          _dag.insertArc( arc->tail(), arc->head() );
-        } catch ( InvalidNode& ) {
-          // Not added means not an attribute
-        }
-      }
-    }
 
   } /* namespace prm */
 } /* namespace gum */

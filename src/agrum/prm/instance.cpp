@@ -21,7 +21,7 @@
  * @file
  * @brief Source implementation of gum::prm::Instance
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
  */
 
@@ -71,7 +71,7 @@ namespace gum {
 
     Instance::~Instance() {
       GUM_DESTRUCTOR( Instance );
-      typedef Property<Attribute*>::onNodes::iterator AttrIter;
+      typedef NodeProperty<Attribute*>::iterator AttrIter;
 
       for ( AttrIter iter = __nodeIdMap.begin(); iter != __nodeIdMap.end(); ++iter )
         delete *iter;

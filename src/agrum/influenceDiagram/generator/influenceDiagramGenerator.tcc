@@ -42,7 +42,7 @@ namespace gum {
   // The cptGenerator will be erased when the destructor is called.
   // @param cptGenerator The policy used to generate CPT.
   template <typename GUM_SCALAR>
-  InfluenceDiagramGenerator<GUM_SCALAR>::InfluenceDiagramGenerator( AbstractCPTGenerator<GUM_SCALAR>* cptGenerator ) {
+  InfluenceDiagramGenerator<GUM_SCALAR>::InfluenceDiagramGenerator( ICPTGenerator<GUM_SCALAR>* cptGenerator ) {
     GUM_CONSTRUCTOR( InfluenceDiagramGenerator );
     __cptGenerator = cptGenerator;
     __utGenerator = new SimpleUTGenerator();
@@ -65,7 +65,7 @@ namespace gum {
   // @param cptGenerator The policy used to generate CPT.
   // @param utGenerator The policy used to generate UT.
   template <typename GUM_SCALAR>
-  InfluenceDiagramGenerator<GUM_SCALAR>::InfluenceDiagramGenerator( AbstractCPTGenerator<GUM_SCALAR>* cptGenerator, UTGenerator* utGenerator ) {
+  InfluenceDiagramGenerator<GUM_SCALAR>::InfluenceDiagramGenerator( ICPTGenerator<GUM_SCALAR>* cptGenerator, UTGenerator* utGenerator ) {
     GUM_CONSTRUCTOR( InfluenceDiagramGenerator );
     __cptGenerator = cptGenerator;
     __utGenerator = utGenerator;

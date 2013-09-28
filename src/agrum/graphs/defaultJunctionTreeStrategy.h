@@ -88,7 +88,7 @@ namespace gum {
 
       /** @brief returns, for each node, the clique of the junction tree which was
        * created by its deletion */
-      const Property<NodeId>::onNodes& createdCliques();
+      const NodeProperty<NodeId>& createdCliques();
 
       /** @brief returns the Id of the clique of the junction tree created by the
        * elimination of a given node during the triangulation process */
@@ -112,7 +112,7 @@ namespace gum {
 
       /** @brief indicates which clique of the junction tree was created
        * by the elimination of a given node (the key of the table) */
-      Property<NodeId>::onNodes __node_2_junction_clique;
+      NodeProperty<NodeId> __node_2_junction_clique;
 
 
       /// computes a junction tree from an elimination tree

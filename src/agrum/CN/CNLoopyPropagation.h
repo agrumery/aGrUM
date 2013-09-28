@@ -27,13 +27,13 @@
 #ifndef __CN_LOOPY_PROPAGATION__H__
 #define __CN_LOOPY_PROPAGATION__H__
 
-#include <agrum/CN/CredalNet.h>
+#include <agrum/CN/credalNet.h>
 #include <agrum/BN/algorithms/approximationScheme.h>
 #include <agrum/core/sequence.h>
 #include <cstdlib>
 #include <ctime>
 #include <limits>
-#include <agrum/CN/InferenceEngine.h>
+#include <agrum/CN/inferenceEngine.h>
 
 #include <agrum/core/pow.h>
 
@@ -231,9 +231,9 @@ namespace gum {
 
 
         /** Used to keep track of which node needs to update it's information coming from it's parents. */
-        Property<bool>::onNodes _update_p;
+        NodeProperty<bool> _update_p;
         /** Used to keep track of which node needs to update it's information coming from it's children. */
-        Property<bool>::onNodes _update_l;
+        NodeProperty<bool> _update_l;
 
         /** The current node-set to iterate through at this current step. */
         NodeSet active_nodes_set;
@@ -241,25 +241,25 @@ namespace gum {
         NodeSet next_active_nodes_set;
 
         /** Used to keep track of one's messages sent to it's parents. */
-        typename Property< NodeSet* >::onNodes _msg_l_sent;
+        NodeProperty< NodeSet* > _msg_l_sent;
 
         /** "Lower" information \f$ \Lambda \f$ coming from one's children. */
         typename Property<GUM_SCALAR>::onArcs _ArcsL_min;
         /** "Lower" information \f$ \pi \f$ coming from one's parent. */
         typename Property<GUM_SCALAR>::onArcs _ArcsP_min;
         /** "Lower" node information \f$ \Lambda \f$ obtained by combinaison of children messages. */
-        typename Property<GUM_SCALAR>::onNodes _NodesL_min;
+        NodeProperty<GUM_SCALAR> _NodesL_min;
         /** "Lower" node information \f$ \pi \f$ obtained by combinaison of parent's messages. */
-        typename Property<GUM_SCALAR>::onNodes _NodesP_min;
+        NodeProperty<GUM_SCALAR> _NodesP_min;
 
         /** "Upper" information \f$ \Lambda \f$ coming from one's children. */
         typename Property<GUM_SCALAR>::onArcs _ArcsL_max;
         /** "Upper" information \f$ \pi \f$ coming from one's parent. */
         typename Property<GUM_SCALAR>::onArcs _ArcsP_max;
         /** "Upper" node information \f$ \Lambda \f$ obtained by combinaison of children messages. */
-        typename Property<GUM_SCALAR>::onNodes _NodesL_max;
+        NodeProperty<GUM_SCALAR> _NodesL_max;
         /** "Upper" node information \f$ \pi \f$ obtained by combinaison of parent's messages. */
-        typename Property<GUM_SCALAR>::onNodes _NodesP_max;
+        NodeProperty<GUM_SCALAR> _NodesP_max;
 
         /** \c TRUE if inference has already been performed, \c FALSE otherwise. */
         bool _InferenceUpToDate;
@@ -274,15 +274,17 @@ namespace gum {
         /** A pointer to the CredalNet to be used. */
         const CredalNet<GUM_SCALAR>* cn;
 
-        /** A pointer to it's BayesNet used as a DAG. */
-        const BayesNet<GUM_SCALAR>* bnet;
+        /** A pointer to it's IBayesNet used as a DAG. */
+        const IBayesNet<GUM_SCALAR>* bnet;
 
         //typedef const CredalNet< GUM_SCALAR > * (infE::*cnfunc) ();
         //cnfunc getCN = &infE::getCN;
 
 
     };
-
+    
+    extern template class CNLoopyPropagation<float>;
+    extern template class CNLoopyPropagation<double>;
   }
 }
 

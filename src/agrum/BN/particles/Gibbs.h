@@ -27,7 +27,7 @@
 
 #include <vector>
 
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 
 namespace gum {
 
@@ -40,14 +40,13 @@ namespace gum {
      *
      */
     template <typename GUM_SCALAR>
-
     class Gibbs {
 
       public:
         /**
          * Default constructor
          */
-        Gibbs( const BayesNet<GUM_SCALAR>& BN );
+        Gibbs ( const IBayesNet<GUM_SCALAR>& BN );
 
         /**
          * Destructor.
@@ -63,12 +62,12 @@ namespace gum {
             * @warning if an evidence already w.r.t. a given node and a new
             * evidence w.r.t. this node is onserted, the old evidence is removed.
             */
-        virtual void insertEvidence( const List<const Potential<GUM_SCALAR>*>& pot_list ) ;
+        virtual void insertEvidence ( const List<const Potential<GUM_SCALAR>*>& pot_list ) ;
 
         /**
          * Remove a given evidence from the graph.
          */
-        virtual void eraseEvidence( const Potential<GUM_SCALAR>* e ) ;
+        virtual void eraseEvidence ( const Potential<GUM_SCALAR>* e ) ;
 
         /**
          * Remove all evidence from the graph.
@@ -86,19 +85,19 @@ namespace gum {
 
         /// getters and setters
         /// @{
-        void setNbrDrawnBySample( Size s );
+        void setNbrDrawnBySample ( Size s );
         Size nbrDrawnBySample( );
 
         const Instantiation& particle();
 
-        const BayesNet<GUM_SCALAR>& bn();
+        const IBayesNet<GUM_SCALAR>& bn();
         ///@}
 
       private:
-        void __setValVar( NodeId id, Idx choice );
+        void __setValVar ( NodeId id, Idx choice );
 
-        void __drawVar( NodeId id );
-        void __GibbsSample( NodeId id );
+        void __drawVar ( NodeId id );
+        void __GibbsSample ( NodeId id );
         void __MonteCarloSample();
 
         Size __nbr_drawn_by_sample;
@@ -113,7 +112,7 @@ namespace gum {
         std::vector<NodeId> __nodes_array;
 
         /// a table of instantiation for each cpt
-        Property<Instantiation*>::onNodes __cpt_idx;
+        NodeProperty<Instantiation*> __cpt_idx;
 
         /// a table of children for each node
         typename Property<std::vector<NodeId>*>::onNodes __node_children;
@@ -125,14 +124,17 @@ namespace gum {
         typename Property<const Potential<GUM_SCALAR>*>::onNodes __evidences;
 
         /// a table of instantiation for direct access on _sampling_nbr
-        Property<Instantiation*>::onNodes __sampling_idx;
+        NodeProperty<Instantiation*> __sampling_idx;
 
         /// a list of hard evidence (not sampled)
-        Property<Idx>::onNodes __hard_evidences;
+        NodeProperty<Idx> __hard_evidences;
 
         /// The Bayes net we draw particle on
-        const BayesNet<GUM_SCALAR>& __bayesNet;
+        const IBayesNet<GUM_SCALAR>& __bayesNet;
     };
+
+    extern template class Gibbs<float>;
+    extern template class Gibbs<double>;
   } // namespace particle
 } //namespace gum
 

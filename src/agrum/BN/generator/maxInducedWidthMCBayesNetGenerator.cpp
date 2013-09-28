@@ -25,3 +25,6 @@
  */
 
 #include <agrum/BN/generator/maxInducedWidthMCBayesNetGenerator.h>
+
+template class gum::MaxInducedWidthMCBayesNetGenerator<float>;
+template class gum::MaxInducedWidthMCBayesNetGenerator<double>;

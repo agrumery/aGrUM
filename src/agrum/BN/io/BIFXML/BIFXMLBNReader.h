@@ -103,7 +103,7 @@ namespace gum {
        * A reader is created to reading a defined file.
        * Note that an BN as to be created before and given in parameter.
        */
-      BIFXMLBNReader( BayesNet<GUM_SCALAR>* bn, const std::string& filePath );
+      BIFXMLBNReader ( BayesNet<GUM_SCALAR>* bn, const std::string& filePath );
 
       /**
        * Default destructor.
@@ -127,12 +127,12 @@ namespace gum {
       /**
        * Parsing xml element containing data on variables
        */
-      void __parsingVariables( ticpp::Element* parentNetwork );
+      void __parsingVariables ( ticpp::Element* parentNetwork );
 
       /**
        * fill the diagram
        */
-      void __fillingBN( ticpp::Element* parentNetwork );
+      void __fillingBN ( ticpp::Element* parentNetwork );
 
       /**
        * An handle to the bayes net in which will be load the content of the xml filePath
@@ -145,7 +145,8 @@ namespace gum {
       std::string __filePath;
   };
 
-
+  extern template class BIFXMLBNReader<float>;
+  extern template class BIFXMLBNReader<double>;
 } /* namespace gum */
 
 

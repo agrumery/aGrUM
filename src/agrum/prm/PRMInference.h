@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of PRMInference.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <string>
@@ -52,14 +52,13 @@ namespace gum {
         typedef std::pair<const Instance*, const Attribute*> Chain;
 
         /// Code alias.
-        typedef Property<const Potential<prm_float>*>::onNodes EMap;
+        typedef NodeProperty<const Potential<prm_float>*> EMap;
 
         /// Code alias.
-        typedef Property<const Potential<prm_float>*>::onNodes::iterator EMapIterator;
+        typedef NodeProperty<const Potential<prm_float>*>::iterator EMapIterator;
 
         /// Code alias.
-        typedef Property<const Potential<prm_float>*>::onNodes::const_iterator
-        EMapConstIterator;
+        typedef NodeProperty<const Potential<prm_float>*>::const_iterator EMapConstIterator;
 
         // ========================================================================
         /// @name Constructor & destructor.
@@ -85,7 +84,7 @@ namespace gum {
         /// @{
 
         /// Returns the name of the current inference algorithm
-        virtual std::string name() const =0;
+        virtual std::string name() const = 0;
 
         /// @}
         // ========================================================================
@@ -185,23 +184,23 @@ namespace gum {
 
         /// This method is called whenever an evidence is added, but AFTER
         /// any processing made by PRMInference.
-        virtual void _evidenceAdded( const Chain& chain ) =0;
+        virtual void _evidenceAdded( const Chain& chain ) = 0;
 
         /// This method is called whenever an evidence is removed, but BEFORE
         /// any processing made by PRMInference.
-        virtual void _evidenceRemoved( const Chain& chain ) =0;
+        virtual void _evidenceRemoved( const Chain& chain ) = 0;
 
         /// @brief Generic method to compute the marginal of given element.
         /// @param chain
         /// @param m CPF filled with the marginal of elt. It is initialized
         ///          properly.
-        virtual void _marginal( const Chain& chain, Potential<prm_float>& m ) =0;
+        virtual void _marginal( const Chain& chain, Potential<prm_float>& m ) = 0;
 
         /// @brief Generic method to compute the marginal of given element.
         /// @param queries Set of pairs of Instance and Attribute.
         /// @param j CPF filled with the joint probability of queries. It is
         ///          initialized properly.
-        virtual void _joint( const std::vector< Chain >& queries, Potential<prm_float>& j ) =0;
+        virtual void _joint( const std::vector< Chain >& queries, Potential<prm_float>& j ) = 0;
 
         /// The PRM on which inference is done.
         const PRM* _prm;

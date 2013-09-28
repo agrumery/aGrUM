@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of System.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_SYSTEM_H
@@ -210,7 +210,7 @@ namespace gum {
         /// @{
 
         /// Iterator over the Instance of this System.
-        typedef Property<Instance*>::onNodes::iterator iterator;
+        typedef NodeProperty<Instance*>::iterator iterator;
 
         /// Returns an iterator over the instances in this system.
         iterator begin();
@@ -220,7 +220,7 @@ namespace gum {
         const iterator& end();
 
         /// Constant Iterator over the Instance of this System.
-        typedef Property<Instance*>::onNodes::const_iterator const_iterator;
+        typedef NodeProperty<Instance*>::const_iterator const_iterator;
 
         /// Returns a constant iterator over the instances in this system.
         const_iterator begin() const;
@@ -273,7 +273,7 @@ namespace gum {
 
         /// The maping between Instance and their NodeId in the relational
         /// skeleton of this System.
-        Property<Instance*>::onNodes __nodeIdMap;
+        NodeProperty<Instance*> __nodeIdMap;
 
         /// The mapping between Instance and their names.
         HashTable<std::string, Instance*> __nameMap;
@@ -295,16 +295,16 @@ namespace gum {
         /// @{
 
         /// @brief Method which ground ReferenceSlot of an Instance and add arcs
-        ///        in the BayesNet.
+        ///        in the IBayesNet.
         /// @param instance The Instance grounded by this method.
-        /// @param factory  The factory used to build the grounded BayesNet.
+        /// @param factory  The factory used to build the grounded IBayesNet.
         void __groundRef( const Instance& instance,
                           BayesNetFactory<prm_float>& factory ) const;
 
         /// @brief Method which ground Atttributes and Aggregators of
         ///        an Instance.
         /// @param instance The Instance grounded by this method.
-        /// @param factory  The factory used to build the grounded BayesNet.
+        /// @param factory  The factory used to build the grounded IBayesNet.
         void __groundAttr( const Instance& instance,
                            BayesNetFactory<prm_float>& factory ) const;
 
@@ -312,15 +312,15 @@ namespace gum {
         ///        Bayesian Network.
         /// @param instance The Instance currently grounded.
         /// @param attr     The Attribute for which the Potential is grounded.
-        /// @param factory  The factory used to build the grounded BayesNet.
+        /// @param factory  The factory used to build the grounded IBayesNet.
         void __groundPotential( const Instance& instance, const Attribute& attr,
                                 BayesNetFactory<prm_float>& factory ) const;
 
         /// @brief Ground an aggregator with the given name in the grounded
-        ///        BayesNet.
+        ///        IBayesNet.
         /// @param elt     The aggregator grounded.
-        /// @param name    The aggregator's name in the grounded BayesNet.
-        /// @param factory The factory used to build the grounded BayesNet.
+        /// @param name    The aggregator's name in the grounded IBayesNet.
+        /// @param factory The factory used to build the grounded IBayesNet.
         void __groundAgg( const ClassElement& elt, const std::string& name,
                           BayesNetFactory<prm_float>& factory ) const;
         /// @}

@@ -46,7 +46,7 @@ namespace gum {
 
   DefaultTriangulation::DefaultTriangulation
   ( const UndiGraph* theGraph,
-    const Property<unsigned int>::onNodes* modal,
+    const NodeProperty<Size>* modal,
     bool minimality, float theRatio, float theThreshold ) :
     UnconstrainedTriangulation( theGraph, modal,
                                 DefaultEliminationSequenceStrategy(),

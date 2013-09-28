@@ -21,7 +21,7 @@
 //  * @file
 //  * @brief Implementation of IBALBridge.
 //  *
-//  * @author Lionel TORTI
+//  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
 //  */
 //
 // #include <agrum/prm/bridges/IbalBridge.h>
@@ -97,7 +97,7 @@
 //     buffer << __removeDots(c.name()) << " (";
 //     Size counter = 1;
 //     List<NodeId> nodes_list; // Used to parse the graph in width
-//     Property<bool>::onNodes visit_map;
+//     NodeProperty<bool> visit_map;
 //     bool first = true;
 //     for (DAG::NodeIterator iter = c.dag().beginNodes(); iter != c.dag().endNodes(); ++iter) {
 //       __print_param(buffer, prm, c, c.get(*iter), counter, first);

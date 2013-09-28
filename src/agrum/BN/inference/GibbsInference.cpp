@@ -20,3 +20,5 @@
 
 #include <agrum/BN/inference/GibbsInference.h>
 
+template class gum::GibbsInference<float>;
+template class gum::GibbsInference<double>;

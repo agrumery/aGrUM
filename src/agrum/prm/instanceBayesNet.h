@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of InstanceBayesNet.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_INSTANCE_BAYESNET_H
@@ -29,7 +29,7 @@
 
 #include <list>
 
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 
 #include <agrum/prm/PRM.h>
 
@@ -46,7 +46,8 @@ namespace gum {
      * the DAG but not in the nodes CPT.
      *
      */
-    class InstanceBayesNet: public BayesNet<prm_float> {
+    template <typename GUM_SCALAR>
+    class InstanceBayesNet: public IBayesNet<GUM_SCALAR> {
       public:
         // ========================================================================
         /// @name Constructors & destructor.
@@ -73,7 +74,7 @@ namespace gum {
         /// @{
 
         /// See gum::IBaseBayesNet::cpt().
-        virtual const Potential<prm_float>& cpt( NodeId varId ) const;
+        virtual const Potential<GUM_SCALAR>& cpt( NodeId varId ) const;
 
         /// See gum::IBaseBayesNet::variableNodeMap().
         virtual const VariableNodeMap& variableNodeMap() const;
@@ -90,14 +91,14 @@ namespace gum {
         /// See gum::IBaseBayesNet::variableFromName().
         virtual const DiscreteVariable& variableFromName( const std::string& name ) const;
 
-        const Property<unsigned int>::onNodes& modalities() const;
+        const NodeProperty<Size>& modalities() const;
 
         /// @}
         // ===========================================================================
         /// @name Graphical methods
         // ===========================================================================
         /// @{
-        /// @return Returns a dot representation of this BayesNet.
+        /// @return Returns a dot representation of this IBayesNet.
         virtual std::string toDot( void ) const;
 
         /// @}
@@ -114,16 +115,15 @@ namespace gum {
         /// The ClassElementContainer decorated by this.
         const Instance* __inst;
 
-        mutable Property<unsigned int>::onNodes __modalities;
+        mutable NodeProperty<Size> __modalities;
 
         void __init( const Instance& i );
     };
 
   } /* namespace prm */
 } /* namespace gum */
-#ifndef GUM_NO_INLINE
-#include <agrum/prm/instanceBayesNet.inl>
-#endif // GUM_NO_INLINE
+
+#include <agrum/prm/instanceBayesNet.tcc>
 
 #endif /* GUM_INSTANCE_BAYESNET_H */
 

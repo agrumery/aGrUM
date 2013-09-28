@@ -57,7 +57,7 @@ namespace gum {
        * copied but only referenced by the elimination sequence algorithm.
        * @throws GraphError if the grand and/or the cost table are null pointers */
       SpanningForestPrim( const UndiGraph* graph,
-                          const Property<float>::onEdges* costTable );
+                          const EdgeProperty<float>* costTable );
 
       /// Copy constructor
       SpanningForestPrim( const SpanningForestPrim& toCopy );
@@ -93,7 +93,7 @@ namespace gum {
       const UndiGraph& __graph;
 
       /// the costs of the edges
-      const Property<float>::onEdges& __costTable;
+      const EdgeProperty<float>& __costTable;
 
       /// the next edges that may be added to the spanning tree
       PriorityQueue<Edge, float> __edgesToExplore;

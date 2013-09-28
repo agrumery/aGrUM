@@ -83,11 +83,11 @@ namespace gum {
 
       /** @brief returns the number of a given node in the elimination order
        * (0 = first node eliminated) */
-      unsigned int eliminationOrder( const NodeId );
+      Idx eliminationOrder( const NodeId );
 
       /** @brief returns a table indicating, for each node, at which step it was
        * deleted by the triangulation process */
-      const Property<unsigned int>::onNodes& reverseEliminationOrder();
+      const NodeProperty<Idx>& reverseEliminationOrder();
 
       /// returns the triangulated graph
       const UndiGraph& triangulatedGraph();
@@ -104,7 +104,7 @@ namespace gum {
 
       /** @brief returns the Ids of the cliques of the junction tree created by the
        * elimination of the nodes */
-      const Property<NodeId>::onNodes& createdJunctionTreeCliques();
+      const NodeProperty<NodeId>& createdJunctionTreeCliques();
 
       /// returns a junction tree of maximal prime subgraphs
       /** @warning Actually, the cliques of the junction tree are guarranteed to be
@@ -160,7 +160,7 @@ namespace gum {
        * @warning note that, by aGrUM's rule, the graph and the modalities are not
        * copied but only referenced by the elimination sequence algorithm. */
       StaticTriangulation( const UndiGraph* graph,
-                           const Property<unsigned int>::onNodes* dom,
+                           const NodeProperty<Size>* dom,
                            const EliminationSequenceStrategy& elimSeq,
                            const JunctionTreeStrategy& JTStrategy,
                            bool minimality = false );
@@ -180,7 +180,7 @@ namespace gum {
        * @warning note that, by aGrUM's rule, the graph and the modalities are not
        * copied but only referenced by the elimination sequence algorithm. */
       void _setGraph( const UndiGraph* gr,
-                      const Property<unsigned int>::onNodes* modal );
+                      const NodeProperty<Size>* modal );
 
       /// the function called to initialize the triangulation process
       /** This function is called when the triangulation process starts and is
@@ -220,10 +220,10 @@ namespace gum {
       std::vector<NodeId> __elim_order;
 
       /// the elimination order (access by NodeId)
-      Property<unsigned int>::onNodes __reverse_elim_order;
+      NodeProperty<Idx> __reverse_elim_order;
 
       /// the cliques formed by the elimination of the nodes
-      Property<NodeSet>::onNodes __elim_cliques;
+      NodeProperty<NodeSet> __elim_cliques;
 
       /// the elimination tree computed by the algorithm
       CliqueGraph __elim_tree;
@@ -236,7 +236,7 @@ namespace gum {
 
       /** @brief indicates which clique of the max prime junction tree was created
        * by the elmination of a given node (the key of the table) */
-      Property<NodeId>::onNodes __node_2_max_prime_clique;
+      NodeProperty<NodeId> __node_2_max_prime_clique;
 
       /// a boolean indicating whether we have parformed a triangulation
       bool __has_triangulation;

@@ -29,8 +29,7 @@
 #define GUM_INFERENCE_H
 
 #include <agrum/config.h>
-
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 
 
 namespace gum {
@@ -41,13 +40,12 @@ namespace gum {
    *
    */
   template <typename GUM_SCALAR>
-
   class BayesNetInference {
     public:
       /**
        * Default constructor
        */
-      BayesNetInference( const BayesNet<GUM_SCALAR>& bn );
+      BayesNetInference( const IBayesNet<GUM_SCALAR>& bn );
 
       /**
        * Destructor.
@@ -91,9 +89,9 @@ namespace gum {
       virtual void eraseAllEvidence() = 0;
 
       /**
-       * Returns a constant reference over the BayesNet on which this class work.
+       * Returns a constant reference over the IBayesNet on which this class work.
        */
-      const BayesNet<GUM_SCALAR>& bn() const;
+      const IBayesNet<GUM_SCALAR>& bn() const;
 
     protected:
 
@@ -130,9 +128,11 @@ namespace gum {
       /**
        * The Bayes net we wish to perform inference on.
        */
-      const BayesNet<GUM_SCALAR>& __bayesNet;
+      const IBayesNet<GUM_SCALAR>& __bayesNet;
   };
 
+  extern template class BayesNetInference<float>;
+  extern template class BayesNetInference<double>;
 
 } /* namespace gum */
 

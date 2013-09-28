@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of gum::prm::ClassElementContainer.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_CLASS_ELEMENT_CONTAINER_H
@@ -350,14 +350,6 @@ namespace gum {
         /// Returns a non constant reference over this ClassElementContainer's DAG.
         virtual DAG& _dag() =0;
 
-//    /// This method finds an unused NodeId in this ClassElementContainer and all
-//    /// of it's subtypes (returned by ClassElementContainer::_findAllSubtypes()).
-//    /// The NodeId is added to this ClassElementContainer's DAG.
-//    ///
-//    /// @return The NodeId founded and added to this ClassElementContainer's DAG.
-//    ///
-//    /// @throw FatalError If no common NodeId could be found.
-//    NodeId _findNodeId();
 
         /// Fills set with all the subtypes of this Interface, this includes extensions
         /// and implementations.

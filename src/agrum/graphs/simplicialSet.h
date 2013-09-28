@@ -93,8 +93,8 @@ namespace gum {
        * @throws OperationNotAllowed exception is thrown if the graph, the
        * log_modalities or the log_weights are null pointers. */
       explicit SimplicialSet( UndiGraph* graph,
-                              const Property<float>::onNodes* log_modalities,
-                              Property<float>::onNodes* log_weights,
+                              const NodeProperty<float>* log_modalities,
+                              NodeProperty<float>* log_weights,
                               float theRatio = GUM_QUASI_RATIO,
                               float theThreshold = GUM_WEIGHT_THRESHOLD );
 
@@ -132,8 +132,8 @@ namespace gum {
        * different from those stored into simplicial_from */
       SimplicialSet( const SimplicialSet& simplicial_from,
                      UndiGraph* graph,
-                     const Property<float>::onNodes* log_modalities,
-                     Property<float>::onNodes* log_weights,
+                     const NodeProperty<float>* log_modalities,
+                     NodeProperty<float>* log_weights,
                      bool avoid_check = false );
 
       /// destructor
@@ -258,8 +258,8 @@ namespace gum {
        * that an argument is passed as a pointer means that it is not copied within
        * the SimplicialSet, but rather it is only referenced within it. */
       void setGraph( UndiGraph* graph,
-                     const Property<float>::onNodes* log_modalities,
-                     Property<float>::onNodes* log_weights,
+                     const NodeProperty<float>* log_modalities,
+                     NodeProperty<float>* log_weights,
                      float theRatio = GUM_QUASI_RATIO,
                      float theThreshold = GUM_WEIGHT_THRESHOLD );
 
@@ -271,10 +271,10 @@ namespace gum {
       UndiGraph* __graph;
 
       /// the weights of the nodes (i.e., weight of their clique)
-      Property<float>::onNodes* __log_weights;
+      NodeProperty<float>* __log_weights;
 
       /// the log of the modalities of the nodes
-      const Property<float>::onNodes* __log_modalities;
+      const NodeProperty<float>* __log_modalities;
 
       /// a queue of the simplicial nodes ordered by increasing node weight
       PriorityQueue<NodeId,float> __simplicial_nodes;
@@ -293,14 +293,14 @@ namespace gum {
         QUASI_SIMPLICIAL,
         NO_LIST
       };
-      Property<__Belong>::onNodes __containing_list;
+      NodeProperty<__Belong> __containing_list;
 
       /** @brief for each edge, keep track of the number of triangles passing
        * through this egde */
-      Property<unsigned int>::onEdges __nb_triangles;
+      EdgeProperty<unsigned int> __nb_triangles;
 
       /// for each node, the number of pairs of adjacent neighbours
-      Property<unsigned int>::onNodes __nb_adjacent_neighbours;
+      NodeProperty<unsigned int> __nb_adjacent_neighbours;
 
       /// the current (induced) tree width
       /** @warning Note that what we call tree width here is not the classical

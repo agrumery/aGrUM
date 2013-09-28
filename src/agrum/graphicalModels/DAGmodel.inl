@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief  Interface-like class for representing basic functionalities for a BayesNet.
+ * @brief  Interface-like class for representing basic functionalities for a IBayesNet.
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
@@ -32,22 +32,22 @@ namespace gum {
 
   INLINE
   const std::string&
-  DAGmodel::property( const std::string& name ) const {
+  DAGmodel::property ( const std::string& name ) const {
     try {
       return  __properties() [name];
     } catch ( NotFound& ) {
       std::string msg = "The following property does not exists: ";
-      GUM_ERROR( NotFound, msg + name );
+      GUM_ERROR ( NotFound, msg + name );
     }
   }
 
   INLINE
   void
-  DAGmodel::setProperty( const std::string& name, const std::string& value ) {
+  DAGmodel::setProperty ( const std::string& name, const std::string& value ) {
     try {
       __properties() [name] = value;
     } catch ( NotFound& ) {
-      __properties().insert( name, value );
+      __properties().insert ( name, value );
     }
   }
 
@@ -61,25 +61,25 @@ namespace gum {
   INLINE
   const DAG::NodeIterator
   DAGmodel::beginNodes() const {
-    return dag().beginNodes();
+    return dag().begin();
   }
 
   INLINE
   const DAG::NodeIterator
   DAGmodel::endNodes() const {
-    return dag().endNodes();
+    return dag().end();
   }
 
   INLINE
   const DAG::ArcIterator
   DAGmodel::beginArcs() const {
-    return dag().beginArcs();
+    return dag().arcs().begin();
   }
 
   INLINE
   const DAG::ArcIterator&
   DAGmodel::endArcs() const {
-    return dag().endArcs();
+    return dag().arcs().end();
   }
 
 
@@ -96,45 +96,27 @@ namespace gum {
 
   INLINE
   double
-  DAGmodel::log10DomainSize( void ) const {
+  DAGmodel::log10DomainSize ( void ) const {
     double dSize = 0.0;
 
-    for ( DAG::NodeIterator it = beginNodes(); it != endNodes(); ++it ) {
-      dSize += log10( variable( *it ).domainSize() );
+    for ( const auto node : nodes() ) {
+      dSize += log10 ( variable ( node ).domainSize() );
     }
 
     return dSize;
   }
 
   INLINE
-  std::string
-  DAGmodel::toString( void ) const {
-    double dSize=log10DomainSize();
-
-    std::stringstream s;
-    s << "Directed PGM{nodes: " << size() << ", arcs: " << dag().sizeArcs() << ", ";
-
-    if ( dSize>6 )
-      s<<"domainSize: 10^" << dSize;
-    else
-      s<<"domainSize: " << round( pow( 10.0,dSize ) );
-
-    s<< "}";
-
-    return s.str();
-  }
-
-  INLINE
   void
-  DAGmodel::completeInstantiation( Instantiation& I ) const {
+  DAGmodel::completeInstantiation ( Instantiation& I ) const {
     I.clear();
 
-    for ( DAG::NodeIterator node_iter = dag().beginNodes(); node_iter != dag().endNodes(); ++node_iter )
-      I << variable( *node_iter );
+    for ( DAG::NodeIterator node_iter = dag().begin(); node_iter != dag().end(); ++node_iter )
+      I << variable ( *node_iter );
   }
 
   INLINE
-  Idx
+  Size
   DAGmodel::size() const {
     return dag().size();
   }
@@ -147,12 +129,27 @@ namespace gum {
   }
 
   INLINE
-  Idx
+  Size
+  DAGmodel::sizeArcs() const {
+    return _dag.sizeArcs();
+  }
+
+  INLINE
+  Size
   DAGmodel::nbrArcs() const {
     return _dag.sizeArcs();
   }
 
 
+  INLINE const ArcSet&
+  DAGmodel::arcs() const {
+    return _dag.arcs();
+  }
+
+  INLINE const NodeGraphPart&
+  DAGmodel::nodes() const {
+    return ( NodeGraphPart& ) _dag;
+  }
 } /* namespace gum */
 
 

@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of gum::SlotChain.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_SLOT_CHAIN_H

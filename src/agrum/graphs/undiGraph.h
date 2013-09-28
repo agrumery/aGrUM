@@ -83,18 +83,15 @@ namespace gum {
    * g2.eraseNode( i2 );
    *
    * // parse a graph
-   * for ( NodeGraphPart::iterator iter = g3.beginNodes();
-   *       iter != g3.endNodes(); ++iter )
-   *   cerr << *iter << endl;
+   * for ( const auto node : g3.nodes() )
+   *   cerr << node << endl;
    *
-   * for ( EdgeGraphPart::iterator iter = g3.beginEdges();
-   *       iter != g3.endEdges(); ++iter )
-   *   cerr << *iter << endl;
+   * for ( const auto& edge : g3.edges()) 
+   *   cerr << edge << endl;
    *
    * const EdgeSet& a=g3.neighbours( 3 );
-   *
-   * for ( EdgeSetIterator iter = a.begin( ); iter != a.end(); ++iter )
-   *   cerr << "  -  "<<*iter;
+   * for ( const auto& edge : a)
+   *   cerr << "  -  "<<edge;
    *
    * cerr<<endl;
    *

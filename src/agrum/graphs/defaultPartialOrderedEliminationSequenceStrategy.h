@@ -99,7 +99,7 @@ namespace gum {
        * copied but only referenced by the elimination sequence algorithm. */
       DefaultPartialOrderedEliminationSequenceStrategy
       ( UndiGraph* graph,
-        const Property<unsigned int>::onNodes* dom,
+        const NodeProperty<Size>* dom,
         const List<NodeSet>* subsets,
         float ratio = GUM_QUASI_RATIO,
         float threshold = GUM_WEIGHT_THRESHOLD );
@@ -134,7 +134,7 @@ namespace gum {
        * @warning note that, by aGrUM's rule, the graph and the sequence are not
        * copied but only referenced by the elimination sequence algorithm. */
       void setGraph( UndiGraph* graph,
-                     const Property<unsigned int>::onNodes* dom,
+                     const NodeProperty<Size>* dom,
                      const List<NodeSet>* subsets );
 
       /// clears the sequence (to prepare, for instance, a new elimination sequence)
@@ -182,13 +182,13 @@ namespace gum {
       UndiGraph* __graph;
 
       /// the modalities of the nodes (domain sizes)
-      const Property<unsigned int>::onNodes* __modalities;
+      const NodeProperty<Size>* __modalities;
 
       /// the log of the modalities of the nodes (domain sizes)
-      Property<float>::onNodes __log_modalities;
+      NodeProperty<float> __log_modalities;
 
       /// for each node, the weight of the clique created by the node's elimination
-      Property<float>::onNodes __log_weights;
+      NodeProperty<float> __log_weights;
 
       /// the subsets constituting the partial ordering
       const List<NodeSet>* __subsets;

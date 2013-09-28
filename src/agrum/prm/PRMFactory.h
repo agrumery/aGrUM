@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of PRMFactory.
  *
- * @author Lionel TORTI & PH WUILLEMIN
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_PRM_FACTORY_H

@@ -21,7 +21,7 @@
  * @file
  * @brief Inline implementation of gum::prm::Interface
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 namespace gum {

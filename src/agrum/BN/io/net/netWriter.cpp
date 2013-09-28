@@ -19,3 +19,7 @@
  ***************************************************************************/
 
 #include <agrum/BN/io/net/netWriter.h>
+
+template class gum::NetWriter<float>;
+template class gum::NetWriter<double>;
+

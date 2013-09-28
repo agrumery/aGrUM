@@ -42,7 +42,7 @@
 namespace gum {
   /// default constructor
   template <typename GUM_SCALAR>
-  GibbsInference<GUM_SCALAR>::GibbsInference( const BayesNet<GUM_SCALAR>& BN ) :
+  GibbsInference<GUM_SCALAR>::GibbsInference( const IBayesNet<GUM_SCALAR>& BN ) :
     ApproximationScheme(),
     BayesNetInference <GUM_SCALAR> ( BN ),
     particle::Gibbs<GUM_SCALAR> ( BN ) {
@@ -60,12 +60,12 @@ namespace gum {
     const DAG& dag = bn().dag();
 //    const NodeSet& nodes = dag.nodes();
 
-    for ( DAG::NodeIterator iter = dag.beginNodes(); iter != dag.endNodes(); ++iter ) {
-      const DiscreteVariable& var = bn().variable( *iter );
+    for(auto node : dag.nodes()) {
+      const DiscreteVariable& var = bn().variable( node );
       // feed the __sampling
       Potential<GUM_SCALAR>* tmp = new Potential<GUM_SCALAR>();
       ( *tmp ) << var;
-      __sampling_nbr.insert( *iter, tmp );
+      __sampling_nbr.insert( node, tmp );
     }
 
     setRequiredInference();

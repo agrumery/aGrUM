@@ -36,7 +36,7 @@ namespace gum {
 
   Triangulation::Triangulation() {
     // for debugging purposes
-    GUM_CONSTRUCTOR( Triangulation );
+    GUM_CONSTRUCTOR ( Triangulation );
   }
 
 
@@ -45,22 +45,22 @@ namespace gum {
 
   Triangulation::~Triangulation() {
     // for debugging purposes
-    GUM_DESTRUCTOR( Triangulation );
+    GUM_DESTRUCTOR ( Triangulation );
   }
 
   double Triangulation::maxLog10CliqueDomainSize() {
-    double res=0.0;
+    double res = 0.0;
     double dSize;
-    const JunctionTree& jt=junctionTree();
+    const JunctionTree& jt = junctionTree();
 
-    for ( NodeGraphPartIterator iteClique = jt.beginNodes(); iteClique!= jt.endNodes(); ++iteClique ) {
-      const NodeSet& clique=jt.clique( *iteClique );
-      dSize=0.0;
+    for ( const auto cl : jt.nodes() ) {
+      const NodeSet& clique = jt.clique ( cl );
+      dSize = 0.0;
 
-      for ( NodeSet::const_iterator iteNode=clique.begin(); iteNode!=clique.end(); ++iteNode )
-        dSize += log10( _modalities[*iteNode] );
+      for ( const auto nod : clique )
+        dSize += log10 ( _modalities[nod] );
 
-      if ( res<dSize ) res=dSize;
+      if ( res < dSize ) res = dSize;
     }
 
     return res;
@@ -69,7 +69,7 @@ namespace gum {
 
   /// returns the modalities of the variables of the graph to be triangulated
 
-  const Property<unsigned int>::onNodes& Triangulation::modalities() const {
+  const NodeProperty<Size>& Triangulation::modalities() const {
     return _modalities;
   }
 

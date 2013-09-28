@@ -20,7 +20,7 @@
 /** @file
  * @brief Implementation of CDG.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/prm/CDG.h>
@@ -34,13 +34,13 @@ namespace gum {
 
 // Destructor.
     CDG::~CDG() {
-      GUM_DESTRUCTOR( CDG );
+      GUM_DESTRUCTOR ( CDG );
 
       for ( NodeMap::iterator iter = __node_map.begin(); iter != __node_map.end(); ++iter ) {
         delete *iter;
       }
 
-      typedef Property< EltPair* >::onNodes::iterator EltMapIterator;
+      typedef NodeProperty< EltPair* >::iterator EltMapIterator;
 
       for ( EltMapIterator iter = __elt_map.begin(); iter != __elt_map.end(); ++iter ) {
         delete *iter;
@@ -49,49 +49,55 @@ namespace gum {
 
 // Build the class dependency graph.
     void
-    CDG::__buildGraph( const PRM& prm ) {
+    CDG::__buildGraph ( const PRM& prm ) {
       // First we add all nodes
-      for ( Set<Class*>::const_iterator iter = prm.classes().begin(); iter != prm.classes().end(); ++iter ) {
-        __node_map.insert( *iter, new HashTable<const ClassElement*, NodeId>() );
+      for ( const auto ci : prm.classes() ) {
+        __node_map.insert ( ci, new HashTable<const ClassElement*, NodeId>() );
 
-        for ( DAG::NodeIterator jter = ( *iter )->dag().beginNodes(); jter != ( *iter )->dag().endNodes(); ++jter )
-          __addNode( *iter, ( *iter )->get( *jter ) );
+        for ( const auto j : ci->dag().nodes() ) {
+          __addNode ( ci, ( ci )->get ( j ) );
+        }
       }
 
-      for ( Set<Interface*>::const_iterator iter = prm.interfaces().begin(); iter != prm.interfaces().end(); ++iter ) {
-        __node_map.insert( *iter, new HashTable<const ClassElement*, NodeId>() );
+      for ( const auto ii : prm.interfaces() ) {
+        __node_map.insert ( ii, new HashTable<const ClassElement*, NodeId>() );
 
-        for ( DAG::NodeIterator jter = ( *iter )->dag().beginNodes(); jter != ( *iter )->dag().endNodes(); ++jter )
-          __addNode( *iter, ( *iter )->get( *jter ) );
+        for ( const auto j : ii->dag().nodes() ) {
+          __addNode ( ii, ( ii )->get ( j ) );
+        }
       }
 
       // Then we add the arcs
+      /*
       for ( Set<Class*>::const_iterator iter = prm.classes().begin(); iter != prm.classes().end(); ++iter )
         for ( DAG::NodeIterator jter = ( *iter )->dag().beginNodes(); jter != ( *iter )->dag().endNodes(); ++jter )
-          __addArcs( **iter, *jter, *( __node_map[*iter] ) );
+      */
+      for ( const auto cc : prm.classes() )
+        for ( const auto j : cc->dag().nodes() )
+          __addArcs ( *cc, j, * ( __node_map[cc] ) );
     }
 
-// Add arcs in __graph.
+    // Add arcs in __graph.
     void
-    CDG::__addArcs( const ClassElementContainer& c, NodeId node,
-                    HashTable<const ClassElement*, NodeId>& map ) {
-      switch ( c.get( node ).elt_type() ) {
+    CDG::__addArcs ( const ClassElementContainer& c, NodeId node,
+                     HashTable<const ClassElement*, NodeId>& map ) {
+      switch ( c.get ( node ).elt_type() ) {
         case ClassElement::prm_slotchain: {
-          const SlotChain& sc = static_cast<const SlotChain&>( c.get( node ) );
-          const NodeSet& children = c.dag().children( node );
+          const SlotChain& sc = static_cast<const SlotChain&> ( c.get ( node ) );
+          const NodeSet& children = c.dag().children ( node );
 
           for ( NodeSetIterator arc = children.begin(); arc != children.end(); ++arc )
-            __graph.insertArc( ( *( __node_map[&( sc.end() )] ) )[&( sc.end().get( sc.lastElt().safeName() ) )], map[&( c.get( *arc ) )] );
+            __graph.insertArc ( ( * ( __node_map[& ( sc.end() )] ) ) [& ( sc.end().get ( sc.lastElt().safeName() ) )], map[& ( c.get ( *arc ) )] );
 
           break;
         }
 
         case ClassElement::prm_aggregate:
         case ClassElement::prm_attribute: {
-          const NodeSet& children = c.dag().children( node );
+          const NodeSet& children = c.dag().children ( node );
 
           for ( NodeSetIterator arc = children.begin(); arc != children.end(); ++arc )
-            __graph.insertArc( map[&( c.get( node ) )], map[&( c.get( *arc ) )] );
+            __graph.insertArc ( map[& ( c.get ( node ) )], map[& ( c.get ( *arc ) )] );
 
           break;
         }

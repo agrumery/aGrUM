@@ -60,7 +60,7 @@ namespace gum {
 
       /// Default constructor.
 
-      MultiDimNoisyORCompound( GUM_SCALAR external_weight,GUM_SCALAR default_weight=( GUM_SCALAR )1.0 );
+      MultiDimNoisyORCompound( GUM_SCALAR external_weight, GUM_SCALAR default_weight = ( GUM_SCALAR )1.0 );
       MultiDimNoisyORCompound( const MultiDimNoisyORCompound<GUM_SCALAR>& from );
 
 
@@ -119,12 +119,12 @@ namespace gum {
       /// @}
   };
 
+  extern template class MultiDimNoisyORCompound<float>;
+  extern template class MultiDimNoisyORCompound<double>;
 
   /// For friendly displaying the content of the array.
-
-  template<typename GUM_SCALAR>
-  std::ostream& operator<< ( std::ostream& s,
-                             const MultiDimNoisyORCompound<GUM_SCALAR>& ag );
+  template<typename GUM_SCALAR> std::ostream& operator<< ( std::ostream& s,
+      const MultiDimNoisyORCompound<GUM_SCALAR>& ag );
 
 
 } /* namespace gum */

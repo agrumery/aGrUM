@@ -46,20 +46,20 @@ namespace gum {
     GUM_CONS_CPY( ArcGraphPart );
 
     // copy the sets of parents
-    const Property<NodeSet*>::onNodes& pars = s.__parents;
+    const NodeProperty<NodeSet*>& pars = s.__parents;
     __parents.resize( pars.capacity() );
 
-    for ( Property<NodeSet*>::onNodes::const_iterator iter = pars.begin();
+    for ( NodeProperty<NodeSet*>::const_iterator iter = pars.begin();
           iter != pars.end(); ++iter ) {
       NodeSet* newpar = new NodeSet( **iter );
       __parents.insert( iter.key(), newpar );
     }
 
     // copy the sets of children
-    const Property<NodeSet*>::onNodes& children = s.__children;
+    const NodeProperty<NodeSet*>& children = s.__children;
     __children.resize( children.capacity() );
 
-    for ( Property<NodeSet*>::onNodes::const_iterator iter = children.begin();
+    for ( NodeProperty<NodeSet*>::const_iterator iter = children.begin();
           iter != children.end(); ++iter ) {
       NodeSet* newchildren = new NodeSet( **iter );
       __children.insert( iter.key(), newchildren );
@@ -82,14 +82,14 @@ namespace gum {
 
 
   void ArcGraphPart::clearArcs() {
-    for ( Property<NodeSet*>::onNodes::const_iterator iter = __parents.begin();
+    for ( NodeProperty<NodeSet*>::const_iterator iter = __parents.begin();
           iter != __parents.end(); ++iter ) {
       delete *iter;
     }
 
     __parents.clear();
 
-    for ( Property<NodeSet*>::onNodes::const_iterator iter = __children.begin();
+    for ( NodeProperty<NodeSet*>::const_iterator iter = __children.begin();
           iter != __children.end(); ++iter ) {
       delete *iter;
     }
@@ -117,20 +117,20 @@ namespace gum {
       __arcs = s.__arcs;
 
       // copy the sets of parents
-      const Property<NodeSet*>::onNodes& pars = s.__parents;
+      const NodeProperty<NodeSet*>& pars = s.__parents;
       __parents.resize( pars.capacity() );
 
-      for ( Property<NodeSet*>::onNodes::const_iterator iter = pars.begin();
+      for ( NodeProperty<NodeSet*>::const_iterator iter = pars.begin();
             iter != pars.end(); ++iter ) {
         NodeSet* newpar = new NodeSet( **iter );
         __parents.insert( iter.key(), newpar );
       }
 
       // copy the sets of children
-      const Property<NodeSet*>::onNodes& children = s.__children;
+      const NodeProperty<NodeSet*>& children = s.__children;
       __children.resize( children.capacity() );
 
-      for ( Property<NodeSet*>::onNodes::const_iterator iter = children.begin();
+      for ( NodeProperty<NodeSet*>::const_iterator iter = children.begin();
             iter != children.end(); ++iter ) {
         NodeSet* newchildren = new NodeSet( **iter );
         __children.insert( iter.key(), newchildren );
@@ -176,7 +176,7 @@ namespace gum {
     nodeFIFO.pushBack( n2 );
 
     // mark[node] = successor if visited, else mark[node] does not exist
-    Property<NodeId>::onNodes mark;
+    NodeProperty<NodeId> mark;
     mark.insert( n2,n2 );
 
     NodeId current;
@@ -222,7 +222,7 @@ namespace gum {
     nodeFIFO.pushBack( n2 );
 
     // mark[node] = successor if visited, else mark[node] does not exist
-    Property<NodeId>::onNodes mark;
+    NodeProperty<NodeId> mark;
     mark.insert( n2,n2 );
 
     NodeId current;

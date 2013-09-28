@@ -31,20 +31,20 @@
 namespace gum {
 
   void
-  BayesBall::requisiteNodes( const DAG& dag,
-                             const Set<NodeId>& query,
-                             const Set<NodeId>& hardEvidence,
-                             Set<NodeId>& requisite ) {
+  BayesBall::requisiteNodes ( const DAG& dag,
+                              const Set<NodeId>& query,
+                              const Set<NodeId>& hardEvidence,
+                              Set<NodeId>& requisite ) {
     __marks.clear();
 
     for ( Set<NodeId>::iterator iter = query.begin(); iter != query.end(); ++iter ) {
-      __fromChild( *iter, dag, hardEvidence );
+      __fromChild ( *iter, dag, hardEvidence );
     }
 
-    for ( DAG::NodeIterator node = dag.beginNodes(); node != dag.endNodes(); ++node ) {
+    for ( const auto node : dag.nodes() ) {
       try {
-        if ( __marks[*node].first ) {
-          requisite.insert( *node );
+        if ( __marks[node].first ) {
+          requisite.insert ( node );
         }
       } catch ( NotFound& ) {
         // Do nothing
@@ -53,49 +53,49 @@ namespace gum {
   }
 
   void
-  BayesBall::__fromChild( NodeId node, const DAG& dag, const Set<NodeId>& hardEvidence ) {
-    if ( not __marks.exists( node ) ) {
-      __marks.insert( node, std::pair<bool, bool>( false, false ) );
+  BayesBall::__fromChild ( NodeId node, const DAG& dag, const Set<NodeId>& hardEvidence ) {
+    if ( not __marks.exists ( node ) ) {
+      __marks.insert ( node, std::pair<bool, bool> ( false, false ) );
     }
 
-    if ( ( not hardEvidence.exists( node ) ) and ( not __marks[node].first ) ) {
+    if ( ( not hardEvidence.exists ( node ) ) and ( not __marks[node].first ) ) {
       __marks[node].first = true;
-      const NodeSet& parents =  dag.parents( node );
+      const NodeSet& parents =  dag.parents ( node );
 
       for ( NodeSetIterator iter = parents.begin(); iter != parents.end(); ++iter ) {
-        __fromChild( *iter, dag, hardEvidence );
+        __fromChild ( *iter, dag, hardEvidence );
       }
     }
 
     if ( not __marks[node].second ) {
       __marks[node].second = true;
-      const NodeSet& children = dag.children( node );
+      const NodeSet& children = dag.children ( node );
 
       for ( NodeSetIterator iter = children.begin(); iter != children.end(); ++iter ) {
-        __fromParent( *iter, dag, hardEvidence );
+        __fromParent ( *iter, dag, hardEvidence );
       }
     }
   }
 
   void
-  BayesBall::__fromParent( NodeId node, const DAG& dag, const Set<NodeId>& hardEvidence ) {
-    if ( !__marks.exists( node ) ) {
-      __marks.insert( node, std::pair<bool, bool>( false, false ) );
+  BayesBall::__fromParent ( NodeId node, const DAG& dag, const Set<NodeId>& hardEvidence ) {
+    if ( !__marks.exists ( node ) ) {
+      __marks.insert ( node, std::pair<bool, bool> ( false, false ) );
     }
 
-    if ( hardEvidence.exists( node ) and ( not __marks[node].first ) ) {
+    if ( hardEvidence.exists ( node ) and ( not __marks[node].first ) ) {
       __marks[node].first = true;
-      const NodeSet& parents = dag.parents( node );
+      const NodeSet& parents = dag.parents ( node );
 
       for ( NodeSetIterator iter = parents.begin(); iter != parents.end(); ++iter ) {
-        __fromChild( *iter, dag, hardEvidence );
+        __fromChild ( *iter, dag, hardEvidence );
       }
     } else if ( !__marks[node].second ) {
       __marks[node].second = true;
-      const NodeSet& children = dag.children( node );
+      const NodeSet& children = dag.children ( node );
 
       for ( NodeSetIterator iter = children.begin(); iter != children.end(); ++iter ) {
-        __fromParent( *iter, dag, hardEvidence );
+        __fromParent ( *iter, dag, hardEvidence );
       }
     }
   }

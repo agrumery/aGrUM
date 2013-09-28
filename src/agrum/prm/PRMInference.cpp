@@ -21,7 +21,7 @@
  * @file
  * @brief Implementation of PRMInference.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
  */
 

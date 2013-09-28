@@ -27,6 +27,7 @@
  */
 #include<agrum/multidim/multiDimReadOnly.h>
 #include<agrum/multidim/CIModels/multiDimCIModel.h>
+#include<agrum/core/bijection.h>
 
 namespace gum {
 

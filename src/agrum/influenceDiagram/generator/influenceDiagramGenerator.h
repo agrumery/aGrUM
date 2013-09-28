@@ -32,7 +32,6 @@
 
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
-#include <agrum/BN/generator/abstractCPTGenerator.h>
 #include <agrum/influenceDiagram/influenceDiagram.h>
 #include <agrum/influenceDiagram/generator/UTGenerator.h>
 #include <agrum/influenceDiagram/generator/simpleUTGenerator.h>
@@ -72,7 +71,7 @@ namespace gum {
        * The cptGenerator will be erased when the destructor is called.
        * @param cptGenerator The policy used to generate CPT.
        */
-      InfluenceDiagramGenerator( AbstractCPTGenerator<GUM_SCALAR>* cptGenerator );
+      InfluenceDiagramGenerator( ICPTGenerator<GUM_SCALAR>* cptGenerator );
 
       /**
        * Use this constructor if you want to use a different policy for generating
@@ -89,7 +88,7 @@ namespace gum {
        * @param cptGenerator The policy used to generate CPT.
        * @param utGenerator The policy used to generate UT.
        */
-      InfluenceDiagramGenerator( AbstractCPTGenerator<GUM_SCALAR>* cptGenerator, UTGenerator* utGenerator );
+      InfluenceDiagramGenerator( ICPTGenerator<GUM_SCALAR>* cptGenerator, UTGenerator* utGenerator );
 
       /**
        * Destructor.
@@ -118,7 +117,7 @@ namespace gum {
       // Check if a temporal order exists and creates ones if not
       void __checkTemporalOrder( InfluenceDiagram<GUM_SCALAR>* infdiag );
       // The Conditional Probability Table generator
-      AbstractCPTGenerator<GUM_SCALAR>* __cptGenerator;
+      ICPTGenerator<GUM_SCALAR>* __cptGenerator;
       // The Utility Table generator
       UTGenerator* __utGenerator;
   };

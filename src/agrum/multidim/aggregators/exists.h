@@ -77,6 +77,8 @@ namespace gum {
         Idx __value;
     };
 
+    extern template class Exists<float>;
+    extern template class Exists<double>;
   } // aggregator
 } //gum
 

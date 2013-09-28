@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of PRMObject.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_PRM_OBJECT_H

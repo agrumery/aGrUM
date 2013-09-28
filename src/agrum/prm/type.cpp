@@ -21,7 +21,7 @@
  * @file
  * @brief Source implementation of type.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
  */
 

@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of CDG.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/prm/PRM.h>
@@ -82,7 +82,7 @@ namespace gum {
 
         /// Returns a mapping between the CDG's nodes and their
         /// modalities.
-        const Property<unsigned int>::onNodes& modalities() const;
+        const NodeProperty<unsigned int>& modalities() const;
 
         /// @}
       private:
@@ -102,11 +102,11 @@ namespace gum {
 
         /// The modalities map for each node in the CDG. This
         /// is useful when using a Triangulation class over a CDG.
-        Property<unsigned int>::onNodes __modalitites;
+        NodeProperty<unsigned int> __modalitites;
 
         /// Mapping between the nodes in __graph with the ClassElement in the
         /// PRM.
-        Property< EltPair* >::onNodes __elt_map;
+        NodeProperty< EltPair* > __elt_map;
 
         /// Code shortcut.
         typedef HashTable<const ClassElementContainer*, HashTable<const ClassElement*, NodeId>* > NodeMap;

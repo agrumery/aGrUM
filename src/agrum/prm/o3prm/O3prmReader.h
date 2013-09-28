@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of O3prmReader.
  *
- * @author Lionel TORTI & PH WUILLEMIN
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN & PH WUILLEMIN
  */
 
 #ifndef GUM_SKOOL_READER_H

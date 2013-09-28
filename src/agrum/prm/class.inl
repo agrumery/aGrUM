@@ -21,7 +21,7 @@
  * @file
  * @brief Inline implementation of gum::Class
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 //to ease parsing

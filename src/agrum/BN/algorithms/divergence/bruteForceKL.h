@@ -59,18 +59,18 @@ namespace gum {
       /** constructor must give 2 BNs
        * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or compatible node sets.
        */
-      BruteForceKL( const BayesNet<GUM_SCALAR>& P,const BayesNet<GUM_SCALAR>& Q );
+      BruteForceKL ( const IBayesNet<GUM_SCALAR>& P,const IBayesNet<GUM_SCALAR>& Q );
 
       /** copy constructor
        */
-      BruteForceKL( const KL<GUM_SCALAR>& kl );
+      BruteForceKL ( const KL<GUM_SCALAR>& kl );
 
 
       /** destructor */
       virtual ~BruteForceKL();
 
     protected:
-      void _computeKL( void );
+      void _computeKL ( void );
 
       using KL<GUM_SCALAR>::_p;
       using KL<GUM_SCALAR>::_q;
@@ -84,6 +84,8 @@ namespace gum {
       using KL<GUM_SCALAR>::_errorQP;
   };
 
+  extern template class BruteForceKL<float>;
+  extern template class BruteForceKL<double>;
 } // namespace gum
 
 #include <agrum/BN/algorithms/divergence/bruteForceKL.tcc>

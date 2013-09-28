@@ -21,7 +21,7 @@
  * @file
  * @brief Implementation of the EdgeCode class.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/prm/gspan/edgeCode.h>

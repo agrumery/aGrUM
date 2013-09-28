@@ -74,7 +74,7 @@ namespace gum {
 
       explicit
       DefaultTriangulation( const UndiGraph* graph,
-                            const Property<unsigned int>::onNodes* modal,
+                            const NodeProperty<Size>* modal,
                             bool minimality = false,
                             float theRatio = GUM_QUASI_RATIO,
                             float theThreshold = GUM_WEIGHT_THRESHOLD );

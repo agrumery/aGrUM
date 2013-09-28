@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of InterfaceGraph.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <string>
@@ -236,13 +236,13 @@ namespace gum {
           UndiGraph __graph;
 
           /// Data associated with a node in __graph.
-          Property<NodeData*>::onNodes __nodes;
+          NodeProperty<NodeData*> __nodes;
 
           /// Mapping between Instance dans their NodeId in __graph.
           HashTable<Instance*, NodeId> __idMap;
 
           /// Data associated with edges in __graph.
-          Property<EdgeData*>::onEdges __edges;
+          EdgeProperty<EdgeData*> __edges;
 
           /// Bijection between labels and their ids.
           Bijection<Idx, LabelData*>* __labels;

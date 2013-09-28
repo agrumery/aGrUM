@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of the EdgeCode class.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_EDGE_CODE_H
 #define GUM_EDGE_CODE_H

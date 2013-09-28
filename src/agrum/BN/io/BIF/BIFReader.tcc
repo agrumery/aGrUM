@@ -44,7 +44,7 @@ namespace gum {
     try {
       __scanner=new BIF::Scanner( __streamName.c_str() );
       __parser=new BIF::Parser( __scanner );
-      __parser->setFactory( ( AbstractBayesNetFactory* )__factory );
+      __parser->setFactory( ( IBayesNetFactory* )__factory );
     } catch ( IOError e ) {
       __ioerror=true;
     }

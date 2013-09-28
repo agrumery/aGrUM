@@ -32,7 +32,7 @@
 
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/abstractBayesNetFactory.h>
+#include <agrum/BN/IBayesNetFactory.h>
 
 namespace gum {
 
@@ -55,7 +55,7 @@ namespace gum {
    *
    */
   template<typename GUM_SCALAR>
-  class BayesNetFactory : public AbstractBayesNetFactory {
+  class BayesNetFactory : public IBayesNetFactory {
 
     public:
       // ==========================================================================
@@ -326,7 +326,7 @@ namespace gum {
        * The variable is added by copy.
        *
        * @param var The pointer over a DiscreteVariable used to define a new
-       *            varialbe in the built BayesNet.
+       *            variable in the built BayesNet.
        * @throw DuplicateElement Raised if a variable with the same name already
        *                         exists.
        * @throw OperationNotAllowed Raised if redefineParents == false and if table
@@ -429,8 +429,10 @@ namespace gum {
       /// Increment a modality counter for the __fillProbaWithValuesTable method.
       bool __increment( std::vector<gum::Idx>& modCounter,
                         List<const DiscreteVariable*>& varList );
-
   };
+  
+  extern template class BayesNetFactory<float>;
+  extern template class BayesNetFactory<double>;
 } /* namespace gum */
 
 
@@ -439,3 +441,4 @@ namespace gum {
 #endif // GUM_BAYESNET_FACTORY_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
+

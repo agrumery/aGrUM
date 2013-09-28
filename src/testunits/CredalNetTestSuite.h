@@ -26,7 +26,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include "testsuite_utils.h"
 
-#include <agrum/CN/CredalNet.h>
+#include <agrum/CN/credalNet.h>
 #include <agrum/CN/LpInterface.h>
 
 #include <agrum/core/OMPThreads.h>
@@ -293,9 +293,6 @@ namespace gum_tests {
           unsigned long int entry( 0 );
 
           while( ! ins.end() ) {
-            GUM_CHECKPOINT;
-            GUM_TRACE_VAR( id << entry );
-            GUM_TRACE_VAR( lps[ id ][ entry ] );
             std::vector< std::vector< double > > vertices( lps[ id ][ entry ].solve() );  // we solve the lp
 
             unsigned int sols_size( lps_sols[ id ][ entry ].size() );

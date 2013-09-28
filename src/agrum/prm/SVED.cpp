@@ -21,7 +21,7 @@
  * @file
  * @brief Implementation of SVED.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/prm/SVED.h>
@@ -34,7 +34,7 @@ namespace gum {
   namespace prm {
 
     SVED::~SVED() {
-      GUM_DESTRUCTOR( SVED );
+      GUM_DESTRUCTOR ( SVED );
       typedef HashTable<const Class*, std::vector<NodeId>*>::iterator ElimIter;
 
       for ( ElimIter i = __elim_orders.begin(); i != __elim_orders.end(); ++i ) {
@@ -47,12 +47,12 @@ namespace gum {
     }
 
     void
-    SVED::__eliminateNodes( const Instance* query, NodeId node, BucketSet& pool, BucketSet& trash ) {
+    SVED::__eliminateNodes ( const Instance* query, NodeId node, BucketSet& pool, BucketSet& trash ) {
       Set<const Instance*> ignore;
-      ignore.insert( query );
+      ignore.insert ( query );
       // Extracting required attributes and slotchains
-      Set<NodeId>& attr_set = __getAttrSet( query );
-      Set<NodeId>& sc_set = __getSCSet( query );
+      Set<NodeId>& attr_set = __getAttrSet ( query );
+      Set<NodeId>& sc_set = __getSCSet ( query );
       // Downward elimination
       List<const Instance*> elim_list;
 
@@ -60,41 +60,41 @@ namespace gum {
         try {
           typedef std::vector< std::pair<Instance*, std::string> >::const_iterator Iter;
 
-          for ( Iter iter = query->getRefAttr( *attr ).begin(); iter != query->getRefAttr( *attr ).end(); ++iter )
-            if ( ( not ignore.exists( iter->first ) ) and( __bb.exists( iter->first ) ) )
-              __eliminateNodesDownward( query, iter->first, pool, trash, elim_list, ignore );
+          for ( Iter iter = query->getRefAttr ( *attr ).begin(); iter != query->getRefAttr ( *attr ).end(); ++iter )
+            if ( ( not ignore.exists ( iter->first ) ) and ( __bb.exists ( iter->first ) ) )
+              __eliminateNodesDownward ( query, iter->first, pool, trash, elim_list, ignore );
         } catch ( NotFound& ) {
           // Ok
         }
       }
 
       // Eliminating all nodes in query instance, except query
-      InstanceBayesNet bn( *query );
-      DefaultTriangulation t( &( bn.moralGraph() ), &( bn.modalities() ) );
+      InstanceBayesNet<prm_float> bn ( *query );
+      DefaultTriangulation t ( & ( bn.moralGraph() ), & ( bn.modalities() ) );
       std::vector<NodeId> elim_order;
-      VariableElimination<prm_float> inf( bn );
+      VariableElimination<prm_float> inf ( bn );
 
-      if ( hasEvidence( query ) )
-        __insertEvidence( query, pool );
+      if ( hasEvidence ( query ) )
+        __insertEvidence ( query, pool );
 
       for ( Set<NodeId>::iterator attr = attr_set.begin(); attr != attr_set.end(); ++attr )
-        pool.insert( &( const_cast<Potential<prm_float>&>( query->get( *attr ).cpf() ) ) );
+        pool.insert ( & ( const_cast<Potential<prm_float>&> ( query->get ( *attr ).cpf() ) ) );
 
       for ( size_t idx = 0; idx < t.eliminationOrder().size(); ++idx )
-        if ( t.eliminationOrder()[idx] != node )
-          elim_order.push_back( t.eliminationOrder()[idx] );
+        if ( t.eliminationOrder() [idx] != node )
+          elim_order.push_back ( t.eliminationOrder() [idx] );
 
-      inf.eliminateNodes( elim_order, pool, trash );
+      inf.eliminateNodes ( elim_order, pool, trash );
       // Eliminating instance in elim_list
       List<const Instance*> tmp_list;
-      __reduceElimList( query, elim_list, tmp_list, ignore, pool, trash );
+      __reduceElimList ( query, elim_list, tmp_list, ignore, pool, trash );
 
       while ( not elim_list.empty() ) {
-        if ( __checkElimOrder( query, elim_list.front() ) ) {
-          if ( ( not ignore.exists( elim_list.front() ) ) and( __bb.exists( elim_list.front() ) ) )
-            __eliminateNodesDownward( query, elim_list.front(), pool, trash, elim_list, ignore );
-        } else if ( __bb.exists( elim_list.front() ) ) {
-          tmp_list.insert( elim_list.front() );
+        if ( __checkElimOrder ( query, elim_list.front() ) ) {
+          if ( ( not ignore.exists ( elim_list.front() ) ) and ( __bb.exists ( elim_list.front() ) ) )
+            __eliminateNodesDownward ( query, elim_list.front(), pool, trash, elim_list, ignore );
+        } else if ( __bb.exists ( elim_list.front() ) ) {
+          tmp_list.insert ( elim_list.front() );
         }
 
         elim_list.popFront();
@@ -102,20 +102,20 @@ namespace gum {
 
       // Upward elimination
       for ( Set<NodeId>::iterator sc = sc_set.begin(); sc != sc_set.end(); ++sc )
-        for ( Set<Instance*>::iterator parent = query->getInstances( *sc ).begin(); parent != query->getInstances( *sc ).end(); ++parent )
-          if ( ( not ignore.exists( *parent ) ) and( __bb.exists( *parent ) ) )
-            __eliminateNodesUpward( *parent, pool, trash, tmp_list, ignore );
+        for ( Set<Instance*>::iterator parent = query->getInstances ( *sc ).begin(); parent != query->getInstances ( *sc ).end(); ++parent )
+          if ( ( not ignore.exists ( *parent ) ) and ( __bb.exists ( *parent ) ) )
+            __eliminateNodesUpward ( *parent, pool, trash, tmp_list, ignore );
     }
 
     void
-    SVED::__eliminateNodesDownward( const Instance* from, const Instance* i,
-                                    BucketSet& pool, BucketSet& trash,
-                                    List<const Instance*>& elim_list,
-                                    Set<const Instance*>& ignore ) {
-      ignore.insert( i );
+    SVED::__eliminateNodesDownward ( const Instance* from, const Instance* i,
+                                     BucketSet& pool, BucketSet& trash,
+                                     List<const Instance*>& elim_list,
+                                     Set<const Instance*>& ignore ) {
+      ignore.insert ( i );
       // Extracting required attributes and slotchains
-      Set<NodeId>& attr_set = __getAttrSet( i );
-      Set<NodeId>& sc_set   = __getSCSet( i );
+      Set<NodeId>& attr_set = __getAttrSet ( i );
+      Set<NodeId>& sc_set   = __getSCSet ( i );
       // Calling elimination over child instance
       List<const Instance*> my_list;
 
@@ -123,28 +123,28 @@ namespace gum {
         try {
           typedef std::vector< std::pair<Instance*, std::string> >::const_iterator Iter;
 
-          for ( Iter iter = i->getRefAttr( *attr ).begin(); iter != i->getRefAttr( *attr ).end(); ++iter )
-            if ( ( not ignore.exists( iter->first ) ) and( __bb.exists( iter->first ) ) )
-              __eliminateNodesDownward( i, iter->first, pool, trash, my_list, ignore );
+          for ( Iter iter = i->getRefAttr ( *attr ).begin(); iter != i->getRefAttr ( *attr ).end(); ++iter )
+            if ( ( not ignore.exists ( iter->first ) ) and ( __bb.exists ( iter->first ) ) )
+              __eliminateNodesDownward ( i, iter->first, pool, trash, my_list, ignore );
         } catch ( NotFound& ) {
           // Ok
         }
       }
 
       // Eliminating all nodes in current instance
-      if ( hasEvidence( i ) ) {
-        __eliminateNodesWithEvidence( i, pool, trash );
+      if ( hasEvidence ( i ) ) {
+        __eliminateNodesWithEvidence ( i, pool, trash );
       } else {
-        __insertLiftedNodes( i, pool, trash );
+        __insertLiftedNodes ( i, pool, trash );
 
         for ( Set<Aggregate*>::iterator agg = i->type().aggregates().begin(); agg != i->type().aggregates().end(); ++agg )
-          if ( __bb.requisiteNodes( i ).exists( ( **agg ).id() ) )
-            pool.insert( __getAggPotential( i, *agg ) );
+          if ( __bb.requisiteNodes ( i ).exists ( ( **agg ).id() ) )
+            pool.insert ( __getAggPotential ( i, *agg ) );
 
         try {
-          InstanceBayesNet bn( *i );
-          VariableElimination<prm_float> inf( bn );
-          inf.eliminateNodes( __getElimOrder( i->type() ), pool, trash );
+          InstanceBayesNet<prm_float> bn ( *i );
+          VariableElimination<prm_float> inf ( bn );
+          inf.eliminateNodes ( __getElimOrder ( i->type() ), pool, trash );
         } catch ( NotFound& ) {
           // Raised if there is no inner nodes to eliminate
         }
@@ -152,11 +152,11 @@ namespace gum {
 
       // Calling elimination over child's parents
       while ( not my_list.empty() ) {
-        if ( __checkElimOrder( i, my_list.front() ) ) {
-          if ( ( not ignore.exists( my_list.front() ) ) and( __bb.exists( my_list.front() ) ) )
-            __eliminateNodesDownward( i, my_list.front(), pool, trash, my_list, ignore );
-        } else if ( __bb.exists( my_list.front() ) ) {
-          elim_list.insert( my_list.front() );
+        if ( __checkElimOrder ( i, my_list.front() ) ) {
+          if ( ( not ignore.exists ( my_list.front() ) ) and ( __bb.exists ( my_list.front() ) ) )
+            __eliminateNodesDownward ( i, my_list.front(), pool, trash, my_list, ignore );
+        } else if ( __bb.exists ( my_list.front() ) ) {
+          elim_list.insert ( my_list.front() );
         }
 
         my_list.popFront();
@@ -164,48 +164,48 @@ namespace gum {
 
       // Adding parents instance to elim_list
       for ( Set<NodeId>::iterator sc = sc_set.begin(); sc != sc_set.end(); ++sc )
-        for ( Set<Instance*>::iterator parent = i->getInstances( *sc ).begin(); parent != i->getInstances( *sc ).end(); ++parent )
-          if ( ( not ignore.exists( *parent ) ) and __bb.exists( *parent ) and( *parent != from ) )
-            elim_list.insert( *parent );
+        for ( Set<Instance*>::iterator parent = i->getInstances ( *sc ).begin(); parent != i->getInstances ( *sc ).end(); ++parent )
+          if ( ( not ignore.exists ( *parent ) ) and __bb.exists ( *parent ) and ( *parent != from ) )
+            elim_list.insert ( *parent );
     }
 
     void
-    SVED::__eliminateNodesUpward( const Instance* i,
-                                  BucketSet& pool, BucketSet& trash,
-                                  List<const Instance*>& elim_list,
-                                  Set<const Instance*>& ignore ) {
-      ignore.insert( i );
+    SVED::__eliminateNodesUpward ( const Instance* i,
+                                   BucketSet& pool, BucketSet& trash,
+                                   List<const Instance*>& elim_list,
+                                   Set<const Instance*>& ignore ) {
+      ignore.insert ( i );
       // Extracting required attributes and slotchains
-      Set<NodeId>& attr_set = __getAttrSet( i );
-      Set<NodeId>& sc_set   = __getSCSet( i );
+      Set<NodeId>& attr_set = __getAttrSet ( i );
+      Set<NodeId>& sc_set   = __getSCSet ( i );
 
       // Downward elimination
       for ( Set<NodeId>::iterator attr = attr_set.begin(); attr != attr_set.end(); ++attr ) {
         try {
           typedef std::vector< std::pair<Instance*, std::string> >::const_iterator Iter;
 
-          for ( Iter iter = i->getRefAttr( *attr ).begin(); iter != i->getRefAttr( *attr ).end(); ++iter )
-            if ( ( not ignore.exists( iter->first ) ) and( __bb.exists( iter->first ) ) )
-              __eliminateNodesDownward( i, iter->first, pool, trash, elim_list, ignore );
+          for ( Iter iter = i->getRefAttr ( *attr ).begin(); iter != i->getRefAttr ( *attr ).end(); ++iter )
+            if ( ( not ignore.exists ( iter->first ) ) and ( __bb.exists ( iter->first ) ) )
+              __eliminateNodesDownward ( i, iter->first, pool, trash, elim_list, ignore );
         } catch ( NotFound& ) {
           // Ok
         }
       }
 
       // Eliminating all nodes in i instance
-      if ( hasEvidence( i ) ) {
-        __eliminateNodesWithEvidence( i, pool, trash );
+      if ( hasEvidence ( i ) ) {
+        __eliminateNodesWithEvidence ( i, pool, trash );
       } else {
-        __insertLiftedNodes( i, pool, trash );
+        __insertLiftedNodes ( i, pool, trash );
 
         for ( Set<Aggregate*>::iterator agg = i->type().aggregates().begin(); agg != i->type().aggregates().end(); ++agg )
-          if ( __bb.requisiteNodes( i ).exists( ( **agg ).id() ) )
-            pool.insert( __getAggPotential( i, *agg ) );
+          if ( __bb.requisiteNodes ( i ).exists ( ( **agg ).id() ) )
+            pool.insert ( __getAggPotential ( i, *agg ) );
 
         try {
-          InstanceBayesNet bn( *i );
-          VariableElimination<prm_float> inf( bn );
-          inf.eliminateNodes( __getElimOrder( i->type() ), pool, trash );
+          InstanceBayesNet<prm_float> bn ( *i );
+          VariableElimination<prm_float> inf ( bn );
+          inf.eliminateNodes ( __getElimOrder ( i->type() ), pool, trash );
         } catch ( NotFound& ) {
           // Raised if there is no inner nodes to eliminate
         }
@@ -215,11 +215,11 @@ namespace gum {
       List<const Instance*> tmp_list;
 
       while ( not elim_list.empty() ) {
-        if ( __checkElimOrder( i, elim_list.front() ) ) {
-          if ( ( not ignore.exists( elim_list.front() ) ) and( __bb.exists( elim_list.front() ) ) )
-            __eliminateNodesDownward( i, elim_list.front(), pool, trash, elim_list, ignore );
-        } else if ( __bb.exists( elim_list.front() ) ) {
-          ignore.insert( elim_list.front() );
+        if ( __checkElimOrder ( i, elim_list.front() ) ) {
+          if ( ( not ignore.exists ( elim_list.front() ) ) and ( __bb.exists ( elim_list.front() ) ) )
+            __eliminateNodesDownward ( i, elim_list.front(), pool, trash, elim_list, ignore );
+        } else if ( __bb.exists ( elim_list.front() ) ) {
+          ignore.insert ( elim_list.front() );
         }
 
         elim_list.popFront();
@@ -227,46 +227,46 @@ namespace gum {
 
       // Upward elimination
       for ( Set<NodeId>::iterator sc = sc_set.begin(); sc != sc_set.end(); ++sc )
-        for ( Set<Instance*>::iterator parent = i->getInstances( *sc ).begin(); parent != i->getInstances( *sc ).end(); ++parent )
-          if ( ( not ignore.exists( *parent ) ) and( __bb.exists( *parent ) ) )
-            __eliminateNodesUpward( *parent, pool, trash, tmp_list, ignore );
+        for ( Set<Instance*>::iterator parent = i->getInstances ( *sc ).begin(); parent != i->getInstances ( *sc ).end(); ++parent )
+          if ( ( not ignore.exists ( *parent ) ) and ( __bb.exists ( *parent ) ) )
+            __eliminateNodesUpward ( *parent, pool, trash, tmp_list, ignore );
     }
 
     void
-    SVED::__eliminateNodesWithEvidence( const Instance* i, BucketSet& pool, BucketSet& trash ) {
+    SVED::__eliminateNodesWithEvidence ( const Instance* i, BucketSet& pool, BucketSet& trash ) {
       // Adding required evidences
-      for ( EMapIterator e = evidence( i ).begin(); e != evidence( i ).end(); ++e )
-        if ( __bb.requisiteNodes( i ).exists( e.key() ) )
-          pool.insert( const_cast<Potential<prm_float>*>( *e ) );
+      for ( EMapIterator e = evidence ( i ).begin(); e != evidence ( i ).end(); ++e )
+        if ( __bb.requisiteNodes ( i ).exists ( e.key() ) )
+          pool.insert ( const_cast<Potential<prm_float>*> ( *e ) );
 
       // Adding potentials and eliminating the remaining nodes
       for ( Instance::const_iterator a = i->begin(); a != i->end(); ++a )
-        if ( __bb.requisiteNodes( i ).exists( a.key() ) )
-          pool.insert( &( ( **a ).cpf() ) );
+        if ( __bb.requisiteNodes ( i ).exists ( a.key() ) )
+          pool.insert ( & ( ( **a ).cpf() ) );
 
-      InstanceBayesNet bn( *i );
-      DefaultTriangulation t( &( bn.moralGraph() ), &( bn.modalities() ) );
+      InstanceBayesNet<prm_float> bn ( *i );
+      DefaultTriangulation t ( & ( bn.moralGraph() ), & ( bn.modalities() ) );
       const std::vector<NodeId>& full_elim_order = t.eliminationOrder();
 
       for ( std::vector<NodeId>::const_iterator var = full_elim_order.begin(); var != full_elim_order.end(); ++var )
-        eliminateNode( &( i->get( *var ).type().variable() ), pool, trash );
+        eliminateNode ( & ( i->get ( *var ).type().variable() ), pool, trash );
     }
 
     void
-    SVED::__insertLiftedNodes( const Instance* i, BucketSet& pool, BucketSet& trash ) {
+    SVED::__insertLiftedNodes ( const Instance* i, BucketSet& pool, BucketSet& trash ) {
       BucketSet* lifted_pool = 0;
 
       try {
-        lifted_pool = __lifted_pools[&( __bb.requisiteNodes( i ) )];
+        lifted_pool = __lifted_pools[& ( __bb.requisiteNodes ( i ) )];
       } catch ( NotFound& ) {
-        __initLiftedNodes( i, trash );
-        lifted_pool = __lifted_pools[&( __bb.requisiteNodes( i ) )];
+        __initLiftedNodes ( i, trash );
+        lifted_pool = __lifted_pools[& ( __bb.requisiteNodes ( i ) )];
       }
 
       for ( SVED::BucketSet::iterator iter = lifted_pool->begin(); iter != lifted_pool->end(); ++iter ) {
-        Potential<prm_float>* pot = copyPotential( i->bijection(), **iter );
-        pool.insert( pot );
-        trash.insert( pot );
+        Potential<prm_float>* pot = copyPotential ( i->bijection(), **iter );
+        pool.insert ( pot );
+        trash.insert ( pot );
       }
     }
 
@@ -337,35 +337,35 @@ namespace gum {
 //  }
 
     void
-    SVED::__initLiftedNodes( const Instance* i, BucketSet& trash ) {
-      Class& c = const_cast<Class&>( i->type() );
+    SVED::__initLiftedNodes ( const Instance* i, BucketSet& trash ) {
+      Class& c = const_cast<Class&> ( i->type() );
       BucketSet* lifted_pool = new BucketSet();
-      __lifted_pools.insert( &( __bb.requisiteNodes( i ) ), lifted_pool );
+      __lifted_pools.insert ( & ( __bb.requisiteNodes ( i ) ), lifted_pool );
 
-      for ( Set<NodeId>::iterator node = __bb.requisiteNodes( i ).begin(); node != __bb.requisiteNodes( i ).end(); ++node )
-        if ( ClassElement::isAttribute( c.get( *node ) ) )
-          lifted_pool->insert( const_cast<Potential<prm_float>*>( &( c.get( *node ).cpf() ) ) );
+      for ( Set<NodeId>::iterator node = __bb.requisiteNodes ( i ).begin(); node != __bb.requisiteNodes ( i ).end(); ++node )
+        if ( ClassElement::isAttribute ( c.get ( *node ) ) )
+          lifted_pool->insert ( const_cast<Potential<prm_float>*> ( & ( c.get ( *node ).cpf() ) ) );
 
       NodeSet inners, outers, ignore;
       const Set<NodeId>* parents = 0;
 
       for ( Instance::const_iterator node = i->begin(); node != i->end(); ++node ) {
-        if ( __bb.requisiteNodes( *i ).exists( node.key() ) ) {
+        if ( __bb.requisiteNodes ( *i ).exists ( node.key() ) ) {
           //if (ClassElement::isAttribute(c.get(node.key())) and c.isInnerNode(c.get(node.key()))) {
-          if ( ClassElement::isAttribute( c.get( node.key() ) ) ) {
-            if ( c.isOutputNode( c.get( node.key() ) ) )
-              outers.insert( node.key() );
-            else if ( not outers.exists( node.key() ) )
-              inners.insert( node.key() );
-          } else if ( ClassElement::isAggregate( c.get( node.key() ) ) ) {
-            outers.insert( node.key() );
+          if ( ClassElement::isAttribute ( c.get ( node.key() ) ) ) {
+            if ( c.isOutputNode ( c.get ( node.key() ) ) )
+              outers.insert ( node.key() );
+            else if ( not outers.exists ( node.key() ) )
+              inners.insert ( node.key() );
+          } else if ( ClassElement::isAggregate ( c.get ( node.key() ) ) ) {
+            outers.insert ( node.key() );
             // We need to put in the output_elim_order aggregator's parents which are innner nodes
-            parents = &( c.dag().parents( node.key() ) );
+            parents = & ( c.dag().parents ( node.key() ) );
 
             for ( Set<NodeId>::const_iterator prnt = parents->begin(); prnt != parents->end(); ++prnt ) {
-              if ( ClassElement::isAttribute( i->type().get( *prnt ) ) and i->type().isInnerNode( i->type().get( *prnt ) ) and __bb.requisiteNodes( i ).exists( *prnt ) ) {
-                inners.erase( *prnt );
-                outers.insert( *prnt );
+              if ( ClassElement::isAttribute ( i->type().get ( *prnt ) ) and i->type().isInnerNode ( i->type().get ( *prnt ) ) and __bb.requisiteNodes ( i ).exists ( *prnt ) ) {
+                inners.erase ( *prnt );
+                outers.insert ( *prnt );
               }
             }
           }
@@ -375,72 +375,75 @@ namespace gum {
           //   outers.insert(node.key());
           // }
         } else {
-          ignore.insert( node.key() );
+          ignore.insert ( node.key() );
         }
       }
 
       // Now we proceed with the elimination of inner attributes
-      ClassBayesNet bn( c );
+      ClassBayesNet<prm_float> bn ( c );
       List<NodeSet> partial_ordering;
 
       if ( inners.size() )
-        partial_ordering.pushBack( inners );
+        partial_ordering.pushBack ( inners );
+
       if ( outers.size() )
-        partial_ordering.pushBack( outers );
+        partial_ordering.pushBack ( outers );
+
       if ( ignore.size() )
-        partial_ordering.pushBack( ignore );
-      GUM_ASSERT( inners.size() or outers.size() );
-      PartialOrderedTriangulation t( &( bn.moralGraph() ), &( bn.modalities() ), &partial_ordering );
+        partial_ordering.pushBack ( ignore );
+
+      GUM_ASSERT ( inners.size() or outers.size() );
+      PartialOrderedTriangulation t ( & ( bn.moralGraph() ), & ( bn.modalities() ), &partial_ordering );
 
       for ( size_t idx = 0; idx < inners.size(); ++idx )
-        eliminateNode( &( c.get( t.eliminationOrder()[idx] ).type().variable() ), *lifted_pool, trash );
+        eliminateNode ( & ( c.get ( t.eliminationOrder() [idx] ).type().variable() ), *lifted_pool, trash );
 
       // If there is not only inner and input Attributes
       if ( outers.size() ) {
-        __elim_orders.insert( &c,
-                              new std::vector<NodeId>( t.eliminationOrder().begin() + inners.size(), t.eliminationOrder().end() ) );
+        __elim_orders.insert ( &c,
+                               new std::vector<NodeId> ( t.eliminationOrder().begin() + inners.size(), t.eliminationOrder().end() ) );
       }
     }
 
     void
     SVED::__initElimOrder() {
-      CDG cdg( *_prm );
+      CDG cdg ( *_prm );
       __class_elim_order = new Sequence<const ClassElementContainer*>();
       std::list<NodeId> l;
 
-      for ( DAG::NodeIterator node = cdg.dag().beginNodes(); node != cdg.dag().endNodes(); ++node )
-        if ( cdg.dag().parents( *node ).empty() ) l.push_back( *node );
+      for ( const auto node : cdg.dag().nodes() )
+        if ( cdg.dag().parents ( node ).empty() ) l.push_back ( node );
 
       Set<NodeId> visited_node;
 
       while ( not l.empty() ) {
-        visited_node.insert( l.front() );
+        visited_node.insert ( l.front() );
 
-        if ( not __class_elim_order->exists( cdg.get( l.front() ).first ) )
-          __class_elim_order->insert( cdg.get( l.front() ).first );
+        if ( not __class_elim_order->exists ( cdg.get ( l.front() ).first ) )
+          __class_elim_order->insert ( cdg.get ( l.front() ).first );
 
-        const NodeSet& children = cdg.dag().children( l.front() );
+        const NodeSet& children = cdg.dag().children ( l.front() );
 
         for ( NodeSetIterator child = children.begin();
               child != children.end(); ++child )
-          if ( not visited_node.contains( *child ) ) l.push_back( *child );
+          if ( not visited_node.contains ( *child ) ) l.push_back ( *child );
 
         l.pop_front();
       }
     }
 
     void
-    SVED::_marginal( const Chain& chain, Potential<prm_float>& m ) {
+    SVED::_marginal ( const Chain& chain, Potential<prm_float>& m ) {
       const Instance* i = chain.first;
       const Attribute* elt = chain.second;
       SVED::BucketSet pool, trash;
-      __bb.compute( i, elt->id() );
-      __eliminateNodes( i, elt->id(), pool, trash );
-      m.fill( ( prm_float ) 1 );
+      __bb.compute ( i, elt->id() );
+      __eliminateNodes ( i, elt->id(), pool, trash );
+      m.fill ( ( prm_float ) 1 );
 
       for ( SVED::BucketSetIterator iter = pool.begin(); iter != pool.end(); ++iter ) {
-        if ( ( **iter ).contains( *( m.variablesSequence().atPos( 0 ) ) ) ) {
-          m.multiplicateBy( **iter );
+        if ( ( **iter ).contains ( * ( m.variablesSequence().atPos ( 0 ) ) ) ) {
+          m.multiplicateBy ( **iter );
         }
 
         if ( ( **iter ).nbrDim() > 1 ) {
@@ -448,18 +451,18 @@ namespace gum {
           std::string t = "true";
           std::string f = "false";
           std::string none = "NONE";
-          GUM_TRACE_VAR( ( **iter ).nbrDim() );
-          GUM_TRACE( chain.first->name() + dot + chain.second->safeName() );
+          GUM_TRACE_VAR ( ( **iter ).nbrDim() );
+          GUM_TRACE ( chain.first->name() + dot + chain.second->safeName() );
 
           for ( System::const_iterator jter = _sys->begin(); jter != _sys->end(); ++jter ) {
             for ( Instance::iterator a = ( **jter ).begin(); a != ( **jter ).end(); ++a ) {
-              if ( ( **iter ).contains( ( **a ).type().variable() ) ) {
-                GUM_TRACE( ( **jter ).name() + dot + ( **a ).safeName() );
+              if ( ( **iter ).contains ( ( **a ).type().variable() ) ) {
+                GUM_TRACE ( ( **jter ).name() + dot + ( **a ).safeName() );
 
-                if ( __bb.exists( *jter ) ) {
-                  GUM_TRACE( "should be eliminated" );
+                if ( __bb.exists ( *jter ) ) {
+                  GUM_TRACE ( "should be eliminated" );
                 } else {
-                  GUM_TRACE( "should not be here" );
+                  GUM_TRACE ( "should not be here" );
                 }
 
                 // try {
@@ -468,18 +471,18 @@ namespace gum {
                 //   std::cerr << "Instance eliminated in:       " << none << std::endl;
                 // }
                 try {
-                  std::cerr << "Instance has requisite nodes: " << __bb.requisiteNodes( *jter ).size() << std::endl;
+                  std::cerr << "Instance has requisite nodes: " << __bb.requisiteNodes ( *jter ).size() << std::endl;
                 } catch ( NotFound& ) {
                   std::cerr << "Instance has requisite nodes: " << none << std::endl;
                 }
 
-                std::cerr << "Attribute has refered attr:   " << ( ( **jter ).hasRefAttr( ( **a ).id() ) ) << std::endl;
+                std::cerr << "Attribute has refered attr:   " << ( ( **jter ).hasRefAttr ( ( **a ).id() ) ) << std::endl;
 
-                if ( ( **jter ).hasRefAttr( ( **a ).id() ) ) {
+                if ( ( **jter ).hasRefAttr ( ( **a ).id() ) ) {
                   bool foo = false;
 
-                  for ( std::vector<std::pair<Instance*, std::string> >::const_iterator ref = ( **jter ).getRefAttr( ( **a ).id() ).begin(); ref != ( **jter ).getRefAttr( ( **a ).id() ).end(); ++ref ) {
-                    if ( __bb.exists( ref->first ) and __bb.requisiteNodes( ref->first ).exists( ref->first->type().get( ref->second ).id() ) ) {
+                  for ( std::vector<std::pair<Instance*, std::string> >::const_iterator ref = ( **jter ).getRefAttr ( ( **a ).id() ).begin(); ref != ( **jter ).getRefAttr ( ( **a ).id() ).end(); ++ref ) {
+                    if ( __bb.exists ( ref->first ) and __bb.requisiteNodes ( ref->first ).exists ( ref->first->type().get ( ref->second ).id() ) ) {
                       foo = true;
                       break;
                     }
@@ -492,16 +495,16 @@ namespace gum {
                 }
 
                 try {
-                  std::cerr << "Attribute is required:        " << ( __bb.requisiteNodes( *jter ).exists( ( **a ).id() ) );
+                  std::cerr << "Attribute is required:        " << ( __bb.requisiteNodes ( *jter ).exists ( ( **a ).id() ) );
                 } catch ( NotFound& ) {
                   std::cerr << "Attribute is required:        " << none;
                 }
 
                 std::cerr << std::endl;
-                std::cerr << "Attribute has evidence:       " << ( hasEvidence( *jter ) );
+                std::cerr << "Attribute has evidence:       " << ( hasEvidence ( *jter ) );
                 std::cerr << std::endl;
-                std::cerr << "Attribute parents number:     " << ( ( **jter ).type().dag().parents( ( **a ).id() ).size() ) << std::endl;
-                std::cerr << "Attribute children number:    " << ( ( **jter ).type().dag().children( ( **a ).id() ).size() ) << std::endl;
+                std::cerr << "Attribute parents number:     " << ( ( **jter ).type().dag().parents ( ( **a ).id() ).size() ) << std::endl;
+                std::cerr << "Attribute children number:    " << ( ( **jter ).type().dag().children ( ( **a ).id() ).size() ) << std::endl;
               }
             }
           }
@@ -543,36 +546,36 @@ namespace gum {
     }
 
     void
-    SVED::_joint( const std::vector<Chain>& queries, Potential<prm_float>& j ) {
-      GUM_ERROR( FatalError, "Not implemented." );
+    SVED::_joint ( const std::vector<Chain>& queries, Potential<prm_float>& j ) {
+      GUM_ERROR ( FatalError, "Not implemented." );
     }
 
     void
-    SVED::__initReqSets( const Instance* i ) {
+    SVED::__initReqSets ( const Instance* i ) {
       Set<NodeId>* attr_set = new Set<NodeId>();
       Set<NodeId>* sc_set = new Set<NodeId>();
 
-      for ( Set<NodeId>::iterator iter = __bb.requisiteNodes( i ).begin(); iter != __bb.requisiteNodes( i ).end(); ++iter ) {
-        switch ( i->type().get( *iter ).elt_type() ) {
+      for ( Set<NodeId>::iterator iter = __bb.requisiteNodes ( i ).begin(); iter != __bb.requisiteNodes ( i ).end(); ++iter ) {
+        switch ( i->type().get ( *iter ).elt_type() ) {
           case ClassElement::prm_aggregate:
           case ClassElement::prm_attribute: {
-            attr_set->insert( *iter );
+            attr_set->insert ( *iter );
             break;
           }
 
           case ClassElement::prm_slotchain: {
-            sc_set->insert( *iter );
+            sc_set->insert ( *iter );
             break;
           }
 
           default: {
-            GUM_ERROR( FatalError, "There should not be elements other"
-                       " than Attribute and SlotChain." );
+            GUM_ERROR ( FatalError, "There should not be elements other"
+                        " than Attribute and SlotChain." );
           }
         }
       }
 
-      __req_set.insert( &( __bb.requisiteNodes( i ) ), std::pair<Set<NodeId>*, Set<NodeId>*>( attr_set, sc_set ) );
+      __req_set.insert ( & ( __bb.requisiteNodes ( i ) ), std::pair<Set<NodeId>*, Set<NodeId>*> ( attr_set, sc_set ) );
     }
 
   } /* namespace prm */

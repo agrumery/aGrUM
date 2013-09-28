@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of StructuredInference.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <string>
@@ -121,7 +121,7 @@ namespace gum {
           /// The reduced graph.
           UndiGraph reducedGraph;
           /// Mapping between NodeId and modalities.
-          Property<unsigned int>::onNodes mods;
+          NodeProperty<Size> mods;
           /// Mapping between DiscreteVariable and NodeId.
           Bijection<const DiscreteVariable*, NodeId> var2node;
           /// The pool of potentials matching the reduced graph
@@ -148,17 +148,17 @@ namespace gum {
             /// A yet to be triangulated undigraph
             UndiGraph graph;
             /// The pattern's variables modalities
-            Property<unsigned int>::onNodes mod;
+            NodeProperty<Size> mod;
             /// A bijection to easily keep track  between graph and attributes, its of the
             /// form instance_name DOT attr_name
             Bijection<NodeId, std::string> node2attr;
             /// To ease translating potentials from one match to another
-            Property< std::pair<Idx, std::string> >::onNodes map;
+            NodeProperty< std::pair<Idx, std::string> > map;
             /// Bijection between graph's nodes and their corresponding DiscreteVariable, for
             /// inference purpose
             Bijection<NodeId, const DiscreteVariable*> vars;
             /// To handle barren nodes
-            Property< Potential<prm_float>* >::onNodes pots;
+            NodeProperty< Potential<prm_float>* > pots;
             /// Set of barren nodes
             Set<NodeId> barren;
             /// Default constructor.
@@ -194,7 +194,7 @@ namespace gum {
             /// The class moral graph. NodeId matches those in c.
             UndiGraph moral_graph;
             /// The class variables modalities.
-            Property<unsigned int>::onNodes mods;
+            NodeProperty<Size> mods;
             /// The partial order used of variable elimination.
             List<NodeSet> partial_order;
             /// The Set of Instances reduces at class level.

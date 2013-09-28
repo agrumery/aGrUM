@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of gum::prm::Interface
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
  */
 
@@ -55,7 +55,7 @@ namespace gum {
 
     Interface::~Interface() {
       GUM_DESTRUCTOR( Interface );
-      typedef Property<ClassElement*>::onNodes::iterator Iterator;
+      typedef NodeProperty<ClassElement*>::iterator Iterator;
 
       for ( Iterator iter = __nodeIdMap.begin(); iter != __nodeIdMap.end(); ++iter ) {
         delete *iter;

@@ -47,11 +47,11 @@ namespace gum_tests {
       gum::LabelizedVariable* var1, *var2, *var3, *var4, *var5;
 
       void setUp() {
-        var1 = new gum::LabelizedVariable( "var1", "1" );
-        var2 = new gum::LabelizedVariable( "var2", "2" );
-        var3 = new gum::LabelizedVariable( "var3", "3" );
-        var4 = new gum::LabelizedVariable( "var4", "4" );
-        var5 = new gum::LabelizedVariable( "var5", "5" );
+        var1 = new gum::LabelizedVariable ( "var1", "1" );
+        var2 = new gum::LabelizedVariable ( "var2", "2" );
+        var3 = new gum::LabelizedVariable ( "var3", "3" );
+        var4 = new gum::LabelizedVariable ( "var4", "4" );
+        var5 = new gum::LabelizedVariable ( "var5", "5" );
 
       };
 
@@ -68,112 +68,98 @@ namespace gum_tests {
         gum::BayesNet<float> topo;
         gum::List<gum::NodeId> idList;
 
-        fill( topo, idList );
+        fill ( topo, idList );
         const gum::UndiGraph& undiGraph = topo.moralGraph();
-        gum::HashTable<gum::NodeId, gum::Idx> modalities;
+        gum::NodeProperty<gum::Size> modalities;
 
         // Builds a hashTable where the keys are the id of the variable,
         // and the values the variable's domain size.
 
-        for ( gum::DAG::NodeIterator iter = topo.beginNodes();
-              iter != topo.endNodes(); ++iter )
-          modalities.insert( *iter, topo.variable( *iter ).domainSize() );
+        for ( const auto iter : topo.nodes() )
+          modalities.insert ( iter, topo.variable ( iter ).domainSize() );
 
         gum::DefaultTriangulation* triangle = nullptr;
 
-        TS_GUM_ASSERT_THROWS_NOTHING
-        ( triangle = new gum::DefaultTriangulation( &undiGraph, &modalities ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( triangle = new gum::DefaultTriangulation ( &undiGraph, &modalities ) );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( triangle->triangulatedGraph() );
+        TS_GUM_ASSERT_THROWS_NOTHING ( triangle->triangulatedGraph() );
 
-        TS_ASSERT_EQUALS( triangle->maxLog10CliqueDomainSize(),log10( 16 ) ); // clique of 4 binary variables
+        TS_ASSERT_EQUALS ( triangle->maxLog10CliqueDomainSize(), log10 ( 16 ) ); // clique of 4 binary variables
 
-        TS_GUM_ASSERT_THROWS_NOTHING( if ( triangle ) delete triangle );
+        TS_GUM_ASSERT_THROWS_NOTHING ( if ( triangle ) delete triangle );
       };
 
       void testjunctionTree() {
         gum::BayesNet<float> topo;
         gum::List<gum::NodeId> idList;
 
-        fill( topo, idList );
+        fill ( topo, idList );
 
         gum::UndiGraph undiGraph;
+        gum::NodeProperty<gum::Size> modalities;
 
-        try {
-          undiGraph = topo.moralGraph();
-        } catch ( gum::Exception& e ) {GUM_SHOWERROR( e ); exit( 0 );};
-
-
-        gum::HashTable<gum::NodeId, gum::Idx> modalities;
+        TS_GUM_ASSERT_THROWS_NOTHING ( undiGraph = topo.moralGraph() );
 
         // Builds a hashTable where the keys are the id of the variable,
         // and the values the variable's domain size.
-
-        for ( gum::DAG::NodeIterator iter = topo.beginNodes();
-              iter != topo.endNodes(); ++iter )
-          modalities.insert( *iter, topo.variable( *iter ).domainSize() );
+        for ( const auto iter : topo.nodes() )
+          modalities.insert ( iter, topo.variable ( iter ).domainSize() );
 
         gum::DefaultTriangulation* triangle = nullptr;
 
-        TS_GUM_ASSERT_THROWS_NOTHING
-        ( triangle = new gum::DefaultTriangulation( &undiGraph, &modalities ) );
-
-        try {
-          triangle->junctionTree();
-        } catch ( gum::Exception& e ) {GUM_SHOWERROR( e );};
-
-        TS_GUM_ASSERT_THROWS_NOTHING( triangle->junctionTree() );
+        TS_GUM_ASSERT_THROWS_NOTHING ( triangle = new gum::DefaultTriangulation ( &undiGraph, &modalities ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( triangle->junctionTree() );
 
         /// TODO : problem here !!
         //      TS_ASSERT( triangle->junctionTree().hasRunningIntersection() );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( if ( triangle ) delete triangle );
+        TS_GUM_ASSERT_THROWS_NOTHING ( if ( triangle ) delete triangle );
       };
 
 
-      void xxtestBIFtriangulation1( void ) {
+      void xxtestBIFtriangulation1 ( void ) {
         TS_GUM_ASSERT_THROWS_NOTHING
-        ( __triangulate_bif( GET_PATH_STR( Barley.bif ) ) );
+        ( __triangulate_bif ( GET_PATH_STR ( Barley.bif ) ) );
       };
 
-      void xxtestBIFtriangulation1bis( void ) {
-        TS_GUM_ASSERT_THROWS_NOTHING( __triangulate_bif( GET_PATH_STR( alarm.bif ) ) );
+      void xxtestBIFtriangulation1bis ( void ) {
+        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( alarm.bif ) ) );
       };
 
-      void xxtestBIFtriangulation2( void ) {
-        TS_GUM_ASSERT_THROWS_NOTHING( __triangulate_bif( GET_PATH_STR( carpo.bif ) ) );
+      void xxtestBIFtriangulation2 ( void ) {
+        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( carpo.bif ) ) );
       };
 
-      void xxtestBIFtriangulation3( void ) {
-        TS_GUM_ASSERT_THROWS_NOTHING( __triangulate_bif( GET_PATH_STR( Pigs.bif ) ) );
+      void xxtestBIFtriangulation3 ( void ) {
+        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( Pigs.bif ) ) );
       };
 
-      void xxtestBIFtriangulation4( void ) {
-        TS_GUM_ASSERT_THROWS_NOTHING( __triangulate_bif( GET_PATH_STR( Water.bif ) ) );
+      void xxtestBIFtriangulation4 ( void ) {
+        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( Water.bif ) ) );
       };
 
-      void xxtestBIFtriangulation5( void ) {
-        TS_GUM_ASSERT_THROWS_NOTHING( __triangulate_bif( GET_PATH_STR( Link.bif ) ) );
+      void xxtestBIFtriangulation5 ( void ) {
+        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( Link.bif ) ) );
       };
 
-      void xxtestBIFtriangulation6( void ) {
-        TS_GUM_ASSERT_THROWS_NOTHING( __triangulate_bif( GET_PATH_STR( Mildew.bif ) ) );
+      void xxtestBIFtriangulation6 ( void ) {
+        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( Mildew.bif ) ) );
       };
 
-      void xxtestBIFtriangulation7( void ) {
-        TS_GUM_ASSERT_THROWS_NOTHING( __triangulate_bif( GET_PATH_STR( Munin1.bif ) ) );
+      void xxtestBIFtriangulation7 ( void ) {
+        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( Munin1.bif ) ) );
       };
 
-      void xxtestBIFtriangulation8( void ) {
-        TS_GUM_ASSERT_THROWS_NOTHING( __triangulate_bif( GET_PATH_STR( hailfinder.bif ) ) );
+      void xxtestBIFtriangulation8 ( void ) {
+        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( hailfinder.bif ) ) );
       };
 
-      void xxtestBIFtriangulation9( void ) {
-        TS_GUM_ASSERT_THROWS_NOTHING( __triangulate_bif( GET_PATH_STR( Diabetes.bif ) ) );
+      void xxtestBIFtriangulation9 ( void ) {
+        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( Diabetes.bif ) ) );
       };
 
-      void xxtestBIFtriangulation10( void ) {
-        TS_GUM_ASSERT_THROWS_NOTHING( __triangulate_bif( GET_PATH_STR( insurance.bif ) ) );
+      void xxtestBIFtriangulation10 ( void ) {
+        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( insurance.bif ) ) );
       };
 
 
@@ -188,58 +174,54 @@ namespace gum_tests {
         gum::UndiGraph graph;
 
         for ( unsigned int i = 1; i <= 8; ++i )
-          graph.insertNode( i );
+          graph.insertNode ( i );
 
-        createClique( graph, c1 );
+        createClique ( graph, c1 );
+        createClique ( graph, c2 );
+        createClique ( graph, c3 );
+        createClique ( graph, c4 );
+        createClique ( graph, c5 );
 
-        createClique( graph, c2 );
-
-        createClique( graph, c3 );
-
-        createClique( graph, c4 );
-
-        createClique( graph, c5 );
-
-        gum::Property<unsigned int>::onNodes dom;
+        gum::NodeProperty<gum::Size> dom;
 
         for ( unsigned int i = 1; i <= 8; ++i )
-          dom.insert( i, 10 );
+          dom.insert ( i, gum::Size ( 10 ) );
 
         gum::DefaultTriangulation triang;
 
-        triang.setGraph( &graph, &dom );
+        triang.setGraph ( &graph, &dom );
 
         const gum::UndiGraph& gr2 = triang.triangulatedGraph();
 
-        TS_ASSERT_EQUALS( gr2.sizeNodes(), 8U );
+        TS_ASSERT_EQUALS ( gr2.sizeNodes(), 8U );
 
-        TS_ASSERT_EQUALS( gr2.sizeEdges(), 14U );
+        TS_ASSERT_EQUALS ( gr2.sizeEdges(), 14U );
 
         triang.clear();
 
-        triang.setGraph( &graph, &dom );
+        triang.setGraph ( &graph, &dom );
 
         const gum::UndiGraph& gr3 = triang.triangulatedGraph();
 
-        TS_ASSERT_EQUALS( gr3.sizeNodes(), 8U );
+        TS_ASSERT_EQUALS ( gr3.sizeNodes(), 8U );
 
-        TS_ASSERT_EQUALS( gr3.sizeEdges(), 14U );
+        TS_ASSERT_EQUALS ( gr3.sizeEdges(), 14U );
 
-        graph.eraseEdge( gum::Edge( 2, 5 ) );
+        graph.eraseEdge ( gum::Edge ( 2, 5 ) );
 
-        triang.setGraph( &graph, &dom );
+        triang.setGraph ( &graph, &dom );
 
         const gum::UndiGraph& gr4 = triang.triangulatedGraph();
 
-        TS_ASSERT_EQUALS( gr4.sizeNodes(), 8U );
+        TS_ASSERT_EQUALS ( gr4.sizeNodes(), 8U );
 
-        TS_ASSERT_EQUALS( gr4.sizeEdges(), 14U );
+        TS_ASSERT_EQUALS ( gr4.sizeEdges(), 14U );
 
         const gum::EdgeSet& edges = triang.fillIns();
 
-        TS_ASSERT_EQUALS( edges.size(), 1U );
+        TS_ASSERT_EQUALS ( edges.size(), 1U );
 
-        TS_ASSERT_EQUALS( *( edges.begin() ), gum::Edge( 2, 5 ) );
+        TS_ASSERT_EQUALS ( * ( edges.begin() ), gum::Edge ( 2, 5 ) );
 
       }
 
@@ -247,45 +229,45 @@ namespace gum_tests {
         gum::UndiGraph graph;
 
         for ( unsigned int i = 1; i <= 8; ++i )
-          graph.insertNode( i );
+          graph.insertNode ( i );
 
         for ( unsigned int i = 1; i <= 7; ++i )
-          graph.insertEdge( i, i + 1 );
+          graph.insertEdge ( i, i + 1 );
 
-        graph.insertEdge( 8, 1 );
+        graph.insertEdge ( 8, 1 );
 
-        gum::Property<unsigned int>::onNodes dom;
+        gum::NodeProperty<gum::Size> dom;
 
         for ( unsigned int i = 1; i <= 8; ++i )
-          dom.insert( i, 10 );
+          dom.insert ( i, 10 );
 
         gum::DefaultTriangulation triang;
 
-        triang.setGraph( &graph, &dom );
+        triang.setGraph ( &graph, &dom );
 
         const gum::CliqueGraph& elim = triang.eliminationTree();
 
-        TS_ASSERT_EQUALS( elim.sizeNodes(), 8U );
+        TS_ASSERT_EQUALS ( elim.sizeNodes(), 8U );
 
-        TS_ASSERT_EQUALS( elim.sizeEdges(), 7U );
+        TS_ASSERT_EQUALS ( elim.sizeEdges(), 7U );
 
         const gum::CliqueGraph& JT = triang.junctionTree();
 
-        TS_ASSERT_EQUALS( JT.sizeNodes(), 6U );
+        TS_ASSERT_EQUALS ( JT.sizeNodes(), 6U );
 
-        TS_ASSERT_EQUALS( JT.sizeEdges(), 5U );
+        TS_ASSERT_EQUALS ( JT.sizeEdges(), 5U );
 
         const gum::UndiGraph& gr = triang.triangulatedGraph();
 
-        TS_ASSERT_EQUALS( gr.sizeNodes(), 8U );
+        TS_ASSERT_EQUALS ( gr.sizeNodes(), 8U );
 
-        TS_ASSERT_EQUALS( gr.sizeEdges(), 13U );
+        TS_ASSERT_EQUALS ( gr.sizeEdges(), 13U );
       }
 
 
     private:
 
-      void createClique( gum::UndiGraph& graph, const gum::NodeSet& clique ) {
+      void createClique ( gum::UndiGraph& graph, const gum::NodeSet& clique ) {
         gum::NodeSetIterator iter2;
 
         for ( gum::NodeSetIterator iter = clique.begin();
@@ -293,41 +275,41 @@ namespace gum_tests {
           iter2 = iter;
 
           for ( ++iter2; iter2 != clique.end(); ++iter2 ) {
-            if ( ! graph.existsEdge( *iter, *iter2 ) )
-              graph.insertEdge( *iter, *iter2 );
+            if ( ! graph.existsEdge ( *iter, *iter2 ) )
+              graph.insertEdge ( *iter, *iter2 );
           }
         }
       }
 
-      void __triangulate_bif( std::string file ) {
+      void __triangulate_bif ( std::string file ) {
         gum::BayesNet<float>* bn = new gum::BayesNet<float>();
-        gum::BIFReader<float> reader( bn, file );
-        reader.trace( false );
+        gum::BIFReader<float> reader ( bn, file );
+        reader.trace ( false );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
+        TS_GUM_ASSERT_THROWS_NOTHING ( reader.proceed() );
 
-        gum::LazyPropagation<float> inf( *bn );
+        gum::LazyPropagation<float> inf ( *bn );
 
-        if ( bn != 0 ) delete( bn );
+        if ( bn != 0 ) delete ( bn );
       };
 
-      void fill( gum::BayesNet<float>& topo, gum::List<gum::NodeId>& idList ) {
+      void fill ( gum::BayesNet<float>& topo, gum::List<gum::NodeId>& idList ) {
         idList.clear();
-        idList.insert( topo.add( *var1 ) );
-        idList.insert( topo.add( *var2 ) );
-        idList.insert( topo.add( *var3 ) );
-        idList.insert( topo.add( *var4 ) );
-        idList.insert( topo.add( *var5 ) );
+        idList.insert ( topo.add ( *var1 ) );
+        idList.insert ( topo.add ( *var2 ) );
+        idList.insert ( topo.add ( *var3 ) );
+        idList.insert ( topo.add ( *var4 ) );
+        idList.insert ( topo.add ( *var5 ) );
 
-        topo.addArc( idList[0], idList[2] );
-        topo.addArc( idList[2], idList[4] );
-        topo.addArc( idList[1], idList[3] );
-        topo.addArc( idList[0], idList[3] );
-        topo.addArc( idList[3], idList[4] );
-        topo.addArc( idList[1], idList[4] );
+        topo.addArc ( idList[0], idList[2] );
+        topo.addArc ( idList[2], idList[4] );
+        topo.addArc ( idList[1], idList[3] );
+        topo.addArc ( idList[0], idList[3] );
+        topo.addArc ( idList[3], idList[4] );
+        topo.addArc ( idList[1], idList[4] );
       };
 
-      gum::UndiGraph getRealMoralGraph( const gum::List<gum::NodeId>& idList ) {
+      gum::UndiGraph getRealMoralGraph ( const gum::List<gum::NodeId>& idList ) {
         gum::UndiGraph graph;
         /*
           idList.clear();
@@ -337,15 +319,15 @@ namespace gum_tests {
           idList.insert(graph.insertNode());
           idList.insert(graph.insertNode());*/
 
-        graph.insertEdge( idList[0], idList[2] );
-        graph.insertEdge( idList[0], idList[3] );
-        graph.insertEdge( idList[0], idList[1] );
-        graph.insertEdge( idList[2], idList[4] );
-        graph.insertEdge( idList[3], idList[4] );
-        graph.insertEdge( idList[2], idList[3] );
-        graph.insertEdge( idList[1], idList[3] );
-        graph.insertEdge( idList[1], idList[4] );
-        graph.insertEdge( idList[1], idList[2] );
+        graph.insertEdge ( idList[0], idList[2] );
+        graph.insertEdge ( idList[0], idList[3] );
+        graph.insertEdge ( idList[0], idList[1] );
+        graph.insertEdge ( idList[2], idList[4] );
+        graph.insertEdge ( idList[3], idList[4] );
+        graph.insertEdge ( idList[2], idList[3] );
+        graph.insertEdge ( idList[1], idList[3] );
+        graph.insertEdge ( idList[1], idList[4] );
+        graph.insertEdge ( idList[1], idList[2] );
 
         return graph;
       }

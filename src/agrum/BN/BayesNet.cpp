@@ -20,3 +20,5 @@
 
 #include <agrum/BN/BayesNet.h>
 
+template class gum::BayesNet<float>;
+template class gum::BayesNet<double>;

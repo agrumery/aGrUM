@@ -21,7 +21,7 @@
  * @file
  * @brief Implementation of GroundedInference.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
  */
 

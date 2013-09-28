@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of gum::prm::Interface.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_INTERFACE_H
@@ -243,11 +243,11 @@ namespace gum {
         // ========================================================================
         /// @{
 
-        typedef Property<ClassElement*>::onNodes::iterator ClassEltIterator;
+        typedef NodeProperty<ClassElement*>::iterator ClassEltIterator;
         ClassEltIterator begin();
         const ClassEltIterator& end();
 
-        typedef Property<ClassElement*>::onNodes::const_iterator const_ClassEltIterator;
+        typedef NodeProperty<ClassElement*>::const_iterator const_ClassEltIterator;
         const_ClassEltIterator begin() const;
         const const_ClassEltIterator& end() const;
 
@@ -286,7 +286,7 @@ namespace gum {
 
         /// Mapping between node's id and their name (being an attribute or a
         /// slot). Used for fast access to a member given it's node id.
-        Property<ClassElement*>::onNodes __nodeIdMap;
+        NodeProperty<ClassElement*> __nodeIdMap;
 
         /// @}
         // ========================================================================

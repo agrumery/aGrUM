@@ -122,7 +122,7 @@ namespace gum {
 
   INLINE NodeId
   CliqueGraph::container( const NodeId id ) const  {
-    for ( Property<NodeSet>::onNodes::const_iterator iter = __cliques.begin();
+    for ( NodeProperty<NodeSet>::const_iterator iter = __cliques.begin();
           iter != __cliques.end(); ++iter )
       if ( iter->contains( id ) ) return iter.key();
 

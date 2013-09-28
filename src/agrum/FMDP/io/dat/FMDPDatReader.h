@@ -145,6 +145,9 @@ namespace gum {
       // a boolean to throw the ioerror not in the constructor but in the proceed()
       bool __ioerror;
   };
+
+  extern template class FMDPDatReader<float>;
+  extern template class FMDPDatReader<double>;
 } // namespace gum
 
 #include <agrum/FMDP/io/dat/FMDPDatReader.tcc>

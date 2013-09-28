@@ -40,33 +40,33 @@ namespace gum_tests {
 
       void testCreation() {
         gum::BayesBall* balls = 0;
-        TS_ASSERT_THROWS_NOTHING( balls = new gum::BayesBall() );
+        TS_ASSERT_THROWS_NOTHING ( balls = new gum::BayesBall() );
 
-        TS_ASSERT_THROWS_NOTHING( if ( balls != 0 ) delete balls );
+        TS_ASSERT_THROWS_NOTHING ( if ( balls != 0 ) delete balls );
       }
 
       void testRequisiteNodes() {
         gum::BayesBall balls;
-        gum::SimpleBayesNetGenerator<float> gen( 50, 200, 2 );
+        gum::SimpleBayesNetGenerator<float> gen ( 50, 200, 2 );
         gum::BayesNet<float>* bn = new  gum::BayesNet<float>();
-        gen.generateBN( *bn );
+        gen.generateBN ( *bn );
         gum::Set<gum::NodeId> requisite;
 
         gum::Set<gum::NodeId> query, hardEvidence;
         gum::Sequence<gum::NodeId> nodes_seq;
 
-        for ( gum::DiGraph::NodeIterator iter = bn->dag().beginNodes(); iter != bn->dag().endNodes(); ++iter )
-          nodes_seq.insert( *iter );
+        for ( const auto node : bn->nodes() )
+          nodes_seq.insert ( node );
 
         for ( gum::Idx i = 0; i < 5; ++i )
-          hardEvidence.insert( nodes_seq.atPos( i ) );
+          hardEvidence.insert ( nodes_seq.atPos ( i ) );
 
         for ( gum::Idx j = 24; j > 19; --j )
-          query.insert( nodes_seq.atPos( j ) );
+          query.insert ( nodes_seq.atPos ( j ) );
 
-        TS_ASSERT_THROWS_NOTHING( balls.requisiteNodes( bn->dag(), query, hardEvidence, requisite ) );
+        TS_ASSERT_THROWS_NOTHING ( balls.requisiteNodes ( bn->dag(), query, hardEvidence, requisite ) );
 
-        TS_ASSERT( requisite.size() >= 5 );
+        TS_ASSERT ( requisite.size() >= 5 );
 
         if ( bn != 0 ) delete bn;
       }

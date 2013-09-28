@@ -21,7 +21,7 @@
  * @file
  * @brief Source implementation of PRMObject.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
  */
 

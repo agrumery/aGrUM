@@ -28,7 +28,7 @@
 #define GUM_KL_H
 
 #include <agrum/core/sequence.h>
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 
 namespace gum {
 
@@ -62,7 +62,7 @@ namespace gum {
       /** constructor must give 2 BNs
        * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or compatible node sets.
        */
-      KL( const BayesNet<GUM_SCALAR>& P,const BayesNet<GUM_SCALAR>& Q );
+      KL( const IBayesNet<GUM_SCALAR>& P,const IBayesNet<GUM_SCALAR>& Q );
 
       /** copy constructor
        */
@@ -98,10 +98,10 @@ namespace gum {
       double bhattacharya();
 
       /// @return p
-      const BayesNet<GUM_SCALAR>& p( void ) const;
+      const IBayesNet<GUM_SCALAR>& p( void ) const;
 
       /// @return q
-      const BayesNet<GUM_SCALAR>& q( void ) const;
+      const IBayesNet<GUM_SCALAR>& q( void ) const;
       /// @}
 
     protected:
@@ -109,8 +109,8 @@ namespace gum {
       virtual void _computeKL( void );
       void _process();
 
-      const BayesNet<GUM_SCALAR>& _p;
-      const BayesNet<GUM_SCALAR>& _q;
+      const IBayesNet<GUM_SCALAR>& _p;
+      const IBayesNet<GUM_SCALAR>& _q;
 
       GUM_SCALAR _klPQ;
       GUM_SCALAR _klQP;
@@ -125,6 +125,9 @@ namespace gum {
       Complexity __difficulty;
       bool __done;
   };
+  
+  extern template class KL<float>;
+  extern template class KL<double>;
 } //namespace gum
 
 #include <agrum/BN/algorithms/divergence/KL.tcc>

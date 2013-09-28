@@ -35,7 +35,7 @@
 #include <agrum/core/sequence.h>
 #include <agrum/core/list.h>
 
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 
 namespace gum {
   /**
@@ -72,7 +72,7 @@ namespace gum {
 
       /// Top and bottom flags for each nodes.
       //HashTable< NodeId, std::pair<bool, bool> > __marks;
-      Property< std::pair<bool, bool> >::onNodes __marks;
+      NodeProperty< std::pair<bool, bool> > __marks;
 
   };
 } /* namespace gum */

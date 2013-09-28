@@ -21,7 +21,7 @@
  * @file
  * @brief Implementation of System.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
  */
 
@@ -131,14 +131,14 @@ namespace gum {
     System::__groundAttr( const Instance& instance, BayesNetFactory<prm_float>& factory ) const {
       const DAG& dag = instance.type().dag();
 
-      for ( DAG::NodeIterator node = dag.beginNodes(); node != dag.endNodes(); ++node ) {
+      for(auto node : dag.nodes()) {
         // Working a Class level because Aggregate are instantiated as Attribute in an Instance
-        switch ( instance.type().get( *node ).elt_type() ) {
+        switch ( instance.type().get( node ).elt_type() ) {
           case ClassElement::prm_attribute: {
             // TODO: make a special case for noisy-or
             std::stringstream elt_name;
-            elt_name << instance.name() << "." << instance.type().get( *node ).safeName();
-            DiscreteVariable* var = instance.get( *node ).type().variable().clone();
+            elt_name << instance.name() << "." << instance.type().get( node ).safeName();
+            DiscreteVariable* var = instance.get( node ).type().variable().clone();
             var->setName( elt_name.str() );
             factory.setVariable( *var ); // var is copied by the factory
             delete var;
@@ -147,8 +147,8 @@ namespace gum {
 
           case ClassElement::prm_aggregate: {
             std::stringstream elt_name;
-            elt_name << instance.name() << "." << instance.type().get( *node ).safeName();
-            __groundAgg( instance.type().get( *node ), elt_name.str(), factory );
+            elt_name << instance.name() << "." << instance.type().get( node ).safeName();
+            __groundAgg( instance.type().get( node ), elt_name.str(), factory );
             break;
           }
 

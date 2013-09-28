@@ -55,7 +55,7 @@ namespace gum_tests {
 
         createClique( graph, c5 );
 
-        gum::Property<unsigned int>::onNodes dom;
+        gum::NodeProperty<gum::Size> dom;
 
         for ( unsigned int i = 1; i <= 8; ++i )
           dom.insert( 10*i, 10 );
@@ -163,7 +163,7 @@ namespace gum_tests {
 
         createClique( graph, c5 );
 
-        gum::Property<unsigned int>::onNodes dom;
+        gum::NodeProperty<gum::Size> dom;
 
         for ( unsigned int i = 1; i <= 8; ++i )
           dom.insert( 10*i, 10 );
@@ -196,7 +196,7 @@ namespace gum_tests {
 
         graph.insertEdge( 8, 1 );
 
-        gum::Property<unsigned int>::onNodes dom;
+        gum::NodeProperty<gum::Size> dom;
 
         for ( unsigned int i = 1; i <= 8; ++i )
           dom.insert( i, 10 );

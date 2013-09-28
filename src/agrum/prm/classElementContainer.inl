@@ -21,7 +21,7 @@
  * @file
  * @brief Inline implementation of gum::ClassElementContainer
  *
- * @author Lionel TORTI & PH WUILLEMIN
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/prm/classElementContainer.h>

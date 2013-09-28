@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of Class.
  *
- * @author Lionel TORTI
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_RANDOM_VARIABLE_TYPE_H

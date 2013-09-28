@@ -56,7 +56,7 @@ namespace gum {
        * Note that the FMDP has to be built outside the reader. There is no delegation to create/destroy
        * the FMDP from inside the reader.
        */
-      FMDPReader( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, const std::string& filename );
+      FMDPReader ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, const std::string& filename );
 
       /**
        * Default destructor.
@@ -71,6 +71,8 @@ namespace gum {
       virtual int proceed() = 0;
   };
 
+  extern template class FMDPReader<float>;
+  extern template class FMDPReader<double>;
 
 } /* namespace gum */
 

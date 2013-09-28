@@ -179,7 +179,7 @@ namespace gum {
         }
       }
 
-      for ( auto iter : res ) {
+      for ( const auto iter : res ) {
         std::cerr << iter.second << std::endl;
       }
 

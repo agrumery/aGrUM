@@ -24,6 +24,5 @@
  */
 #include <agrum/BN/io/BNReader.h>
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+template class gum::BNReader<float>;
+template class gum::BNReader<double>;

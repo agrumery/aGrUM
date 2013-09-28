@@ -416,7 +416,7 @@ namespace gum {
        * Binds once and for all nodes to variables.
        * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
        */
-      void setVariableMap( const typename Property< const DiscreteVariable* >::onNodes& varMap );
+      void setVariableMap( const NodeProperty< const DiscreteVariable* >& varMap );
 
       /**
        * Binds once and for all terminal nodes to value.
@@ -428,7 +428,9 @@ namespace gum {
        * Links once and for all nodes of the graph.
        * @throw OperationNotAllowed if diagram has already been instanciated or if not in instanciation mode
        */
-      void setDiagramArcs( const typename Property< std::vector<NodeId>* >::onNodes& arcMap, const typename Property< NodeId >::onNodes& defaultArcMap );
+      void setDiagramArcs(
+        const NodeProperty< std::vector<NodeId>* >& arcMap,
+        const NodeProperty< NodeId >& defaultArcMap );
 
       /**
       * Sets once and for all root node.
@@ -483,7 +485,7 @@ namespace gum {
       NodeId __root;
 
       /// Mapping between id and variable
-      typename Property< const DiscreteVariable* >::onNodes __variableMap;
+      NodeProperty< const DiscreteVariable* > __variableMap;
 
       /// Mapping between var and node
       HashTable< const DiscreteVariable*, List<NodeId>* > __var2NodeIdMap;
@@ -495,7 +497,7 @@ namespace gum {
       typename Property< std::vector<NodeId>* >::onNodes __arcMap;
 
       /// Mapping between variable's values and associated node
-      typename Property< NodeId >::onNodes __defaultArcMap;
+      NodeProperty< NodeId > __defaultArcMap;
 
       /// Name of this multiDim
       std::string __name;
