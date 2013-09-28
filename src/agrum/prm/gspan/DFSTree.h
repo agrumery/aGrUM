@@ -24,6 +24,9 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
+#ifndef GUM_DFS_TREE_H
+#define GUM_DFS_TREE_H
+
 #include <utility>
 #include <cmath>
 #include <list>
@@ -41,18 +44,13 @@
 #include <agrum/prm/gspan/interfaceGraph.h>
 #include <agrum/prm/gspan/pattern.h>
 
-#ifndef GUM_DFS_TREE_H
-#define GUM_DFS_TREE_H
-
 
 namespace gum {
-
   namespace prm {
 
-    class GSpan;
+    template<typename GUM_SCALAR> class GSpan;
 
     namespace gspan {
-
       template<typename GUM_SCALAR> class SearchStrategy;
 
       /**

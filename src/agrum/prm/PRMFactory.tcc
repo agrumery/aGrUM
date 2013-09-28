@@ -1341,7 +1341,7 @@ namespace gum {
     }
 
 
-    template<typename GUM_SCALAR> INLINE
+    template<typename GUM_SCALAR> 
     bool PRMFactory<GUM_SCALAR>::isClassOrInferface ( std::string type ) const {
       std::string dot = ".";
       return prm()->isClass ( type ) or
@@ -1350,7 +1350,7 @@ namespace gum {
              prm()->isInterface ( currentPackage() + dot + type ) ;
     };
 
-    template<typename GUM_SCALAR> INLINE
+    template<typename GUM_SCALAR> 
     bool PRMFactory<GUM_SCALAR>::isArrayInCurrentSystem ( std::string name ) const {
       System<GUM_SCALAR>* system = static_cast<System<GUM_SCALAR>*> ( getCurrent() );
       return ( system && system->isArray ( name ) );

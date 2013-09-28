@@ -21,9 +21,6 @@
 
 #include <agrum/prm/utils_prm.h>
 
-#include <agrum/prm/classElement.h>
-
-
 namespace gum {
   namespace prm {
 

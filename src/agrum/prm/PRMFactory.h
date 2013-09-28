@@ -234,9 +234,9 @@ namespace gum {
         /// @}
 
 
-        ///@nameseveral checks for parsers
+        ///@name several checks for parsers
         /// @{
-        virtual bool isClassOrInferface ( std::string type ) const;
+        virtual bool isClassOrInferface ( std::string type ) const;                
         virtual bool isArrayInCurrentSystem ( std::string name ) const;
         /// @}
 

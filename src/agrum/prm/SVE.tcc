@@ -127,25 +127,21 @@ namespace gum {
     void
     SVE<GUM_SCALAR>::__eliminateDelayedVariables ( const Instance<GUM_SCALAR>* i, BucketSet& pool, BucketSet& trash ) {
       Set<Potential<GUM_SCALAR>*> toRemove;
-      typedef Set< const DiscreteVariable* >::iterator DelayedIter;
-
-      for ( DelayedIter iter = __delayedVariables[i]->begin(); iter != __delayedVariables[i]->end(); ++iter ) {
+      for ( auto iter = __delayedVariables[i]->begin(); iter != __delayedVariables[i]->end(); ++iter ) {
         MultiDimBucket<GUM_SCALAR>* bucket = new MultiDimBucket<GUM_SCALAR>();
 
-        for ( SetIterator<Potential<GUM_SCALAR>*> jter = pool.begin(); jter != pool.end(); ++jter ) {
+        for ( auto jter = pool.begin(); jter != pool.end(); ++jter ) {
           if ( ( *jter )->contains ( **iter ) ) {
             bucket->add ( **jter );
             toRemove.insert ( *jter );
           }
         }
 
-        for ( SetIterator< Potential<GUM_SCALAR>* > jter = toRemove.begin(); jter != toRemove.end(); ++jter ) {
+        for ( auto jter = toRemove.begin(); jter != toRemove.end(); ++jter ) {
           pool.erase ( *jter );
         }
 
-        typedef Set<const DiscreteVariable*>::iterator VarIter;
-
-        for ( VarIter jter = bucket->allVariables().begin(); jter != bucket->allVariables().end(); ++jter ) {
+        for ( auto jter = bucket->allVariables().begin(); jter != bucket->allVariables().end(); ++jter ) {
           if ( *jter != *iter ) {
             bucket->add ( **jter );
           }
@@ -446,7 +442,7 @@ namespace gum {
     void
     SVE<GUM_SCALAR>::__initElimOrder() {
       ClassDependencyGraph<GUM_SCALAR> cdg ( *(this->_prm) );
-      __class_elim_order = new Sequence<const ClassElementContainer*>();
+      __class_elim_order = new Sequence<const ClassElementContainer<GUM_SCALAR>*>();
       std::list<NodeId> l;
 
       for ( const auto node : cdg.dag().nodes() )
@@ -474,7 +470,7 @@ namespace gum {
     void
     SVE<GUM_SCALAR>::_marginal ( const Chain& chain, Potential<GUM_SCALAR>& m ) {
       const Instance<GUM_SCALAR>* i = chain.first;
-      const Attribute* elt = chain.second;
+      const Attribute<GUM_SCALAR>* elt = chain.second;
       SVE<GUM_SCALAR>::BucketSet pool, trash;
       __eliminateNodes ( i, elt->id(), pool, trash );
       m.fill ( ( GUM_SCALAR ) 1 );
@@ -499,15 +495,15 @@ namespace gum {
     }
 
     template<typename GUM_SCALAR> INLINE
-    SVE<GUM_SCALAR>::SVE ( const PRM& prm, const System& system ) :
-      PRMInference ( prm, system ), __class_elim_order ( 0 ) {
+    SVE<GUM_SCALAR>::SVE ( const PRM<GUM_SCALAR>& prm, const System<GUM_SCALAR>& system ) :
+      PRMInference<GUM_SCALAR> ( prm, system ), __class_elim_order ( 0 ) {
       GUM_CONSTRUCTOR ( SVE );
     }
 
-    INLIN
+    template<typename GUM_SCALAR> INLINE
     void
     SVE<GUM_SCALAR>::__insertEvidence ( const Instance<GUM_SCALAR>* i, BucketSet& pool ) {
-      for ( PRMInference::EMapIterator iter = evidence ( i ).begin(); iter != evidence ( i ).end(); ++iter ) {
+      for ( auto iter = evidence ( i ).begin(); iter != evidence ( i ).end(); ++iter ) {
         pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( *iter ) );
       }
     }

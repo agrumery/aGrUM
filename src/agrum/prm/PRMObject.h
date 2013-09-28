@@ -31,8 +31,6 @@
 
 #include <agrum/config.h>
 
-#include <agrum/prm/utils_prm.h>
-
 
 namespace gum {
 

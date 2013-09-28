@@ -49,8 +49,8 @@ namespace gum {
 
 /// This constructor create an empty context.
       O3prmrInterpreter::O3prmrInterpreter() :
-        m_context( new O3prmrContext() ),
-        m_reader( new o3prm::O3prmReader() ),
+        m_context( new O3prmrContext<double>() ),
+        m_reader( new o3prm::O3prmReader<double>() ),
         m_inf( 0 ),
         m_syntax_flag( false ),
         m_verbose( false ),

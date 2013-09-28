@@ -24,6 +24,9 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
+#ifndef GUM_GSPAN_H
+#define GUM_GSPAN_H
+
 #include <string>
 #include <ostream>
 #include <vector>
@@ -38,26 +41,24 @@
 #include <agrum/prm/gspan/interfaceGraph.h>
 #include <agrum/prm/gspan/DFSTree.h>
 
-#ifndef GUM_GSPAN_H
-#define GUM_GSPAN_H
-
 namespace gum {
   namespace prm {
 
     /**
      * @class GSpan gspan.h <agrum/prm/gspan.h>
      *
-     * @brief This class discovers pattern in a PRM's System to speed up structured
+     * @brief This class discovers pattern in a PRM<GUM_SCALAR>'s System<GUM_SCALAR> to speed up structured
      *        inference.
      *
-     * This class is not an inference algorithm for PRM, however it can be used to
+     * This class is not an inference algorithm for PRM<GUM_SCALAR>, however it can be used to
      * speed up structured inference as it will discover repeated patterns including
-     * more than one Instance.
+     * more than one Instance<GUM_SCALAR>.
      *
      * This algorithm proceeds in three main steps represented by the private
      * methods GSpan::__sortNodesAndEdges(), GSpan::__subgraph_mining() and
      * GSpan::__sortPatterns().
      */
+    template<typename GUM_SCALAR>
     class GSpan {
 
       public:
@@ -68,12 +69,12 @@ namespace gum {
 
         /**
          * Default constructor.
-         * @param prm The PRM used by this class.
-         * @param sys The System on which this class searches for patterns.
+         * @param prm The PRM<GUM_SCALAR> used by this class.
+         * @param sys The System<GUM_SCALAR> on which this class searches for patterns.
          * @param strategy The search strategy used for pattern mining, the
          *                 default strategy is gspan::FrequenceSearch.
          */
-        GSpan( const PRM& prm, const System& sys, gspan::SearchStrategy* strategy = 0 );
+        GSpan( const PRM<GUM_SCALAR>& prm, const System<GUM_SCALAR>& sys, gspan::SearchStrategy<GUM_SCALAR>* strategy = 0 );
 
         /// Destructor.
         ~GSpan();
@@ -103,25 +104,25 @@ namespace gum {
          * Returns the DFSTree used to discover new patters.
          * @returns the DFSTree used to discover new patters.
          */
-        gspan::DFSTree& tree();
+        gspan::DFSTree<GUM_SCALAR>& tree();
 
         /**
          * Returns the DFSTree used to discover new patters.
          * @returns the DFSTree used to discover new patters.
          */
-        const gspan::DFSTree& tree() const;
+        const gspan::DFSTree<GUM_SCALAR>& tree() const;
 
         /**
          * Returns the InterfaceGraph used by this.
          * @returns the InterfaceGraph used by this.
          */
-        gspan::InterfaceGraph& interfaceGraph();
+        gspan::InterfaceGraph<GUM_SCALAR>& interfaceGraph();
 
         /**
          * Returns the InterfaceGraph used by this.
          * @returns the InterfaceGraph used by this.
          */
-        const gspan::InterfaceGraph& interfaceGraph() const;
+        const gspan::InterfaceGraph<GUM_SCALAR>& interfaceGraph() const;
 
         /// @}
         // ========================================================================
@@ -131,7 +132,7 @@ namespace gum {
 
         /**
          * @brief This will methods will discover repeated patterns in the
-         *        System assigned to this class.
+         *        System<GUM_SCALAR> assigned to this class.
          *
          * The results are saved in a vector of Patterns which can be obtained
          * by calling GSpan::patterns().
@@ -155,7 +156,7 @@ namespace gum {
         const std::vector<gspan::Pattern*>& patterns() const;
 
         /// Code alias.
-        typedef Set< Sequence<Instance*>* > MatchedInstances;
+        typedef Set< Sequence<Instance<GUM_SCALAR>*>* > MatchedInstances;
 
         /**
          * Returns a mapping between patterns and the sequence of instance in the
@@ -198,10 +199,10 @@ namespace gum {
         /// @{
 
         /// The interface graph used by this class.
-        gspan::InterfaceGraph* __graph;
+        gspan::InterfaceGraph<GUM_SCALAR>* __graph;
 
         /// The DFSTree used to discover new patters.
-        gspan::DFSTree __tree;
+        gspan::DFSTree<GUM_SCALAR> __tree;
 
         /// The max depth allowed for the DSF tree
         Size __depth_stop;
@@ -223,7 +224,7 @@ namespace gum {
         HashTable<gspan::Pattern*, MatchedInstances* > __matched_instances;
 
         /// Contains all instance which belongs to a discovered and used pattern.
-        Set<Instance*> __chosen;
+        Set<Instance<GUM_SCALAR>*> __chosen;
 
         /// @}
         // ========================================================================
@@ -237,7 +238,7 @@ namespace gum {
         /// Discovers new patterns by developing p.
         /// @param graph The interface graph used in this discovery process.
         /// @param p The pattern used as a base for discovery.
-        void __subgraph_mining( gspan::InterfaceGraph& graph, gspan::Pattern& p );
+        void __subgraph_mining( gspan::InterfaceGraph<GUM_SCALAR>& graph, gspan::Pattern& p );
 
         /// Returns the cost with respect to an interface size and its frequency.
         /// TODO replace this by a class to enable different cost policies.
@@ -253,15 +254,15 @@ namespace gum {
         // /// Returns the cost of an instance.
         // /// @param i An instance.
         // /// @return the cost of an instance.
-        // double __instance_cost(Instance* i) const;
+        // double __instance_cost(Instance<GUM_SCALAR>* i) const;
 
         /// Print an iso map. For debug purpose.
         void __printIsoMap( gspan::Pattern& p );
 
         /// Returns true if e is an eligible root edge.
-        /// @param e An EdgeData.
+        /// @param e An EdgeData<GUM_SCALAR>.
         /// @return true if e is an eligible root edge.
-        bool __isEdgeEligible( gspan::EdgeData* e );
+        bool __isEdgeEligible( gspan::EdgeData<GUM_SCALAR>* e );
 
         /// @}
 
@@ -344,9 +345,8 @@ namespace gum {
 
   } /* namespace prm */
 } /* namespace gum */
-#ifndef GUM_NO_INLINE
-#include <agrum/prm/gspan.inl>
-#endif // GUM_NO_INLINE
+
+#include <agrum/prm/gspan.tcc>
 
 #endif /* GUM_GSPAN_H */
 

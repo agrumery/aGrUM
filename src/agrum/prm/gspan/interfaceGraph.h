@@ -39,7 +39,8 @@
 
 namespace gum {
   namespace prm {
-    class GSpan;
+    template<typename GUM_SCALAR> class GSpan;
+    
     namespace gspan {
 
       /**
@@ -113,7 +114,7 @@ namespace gum {
         /// Constructor.
         EdgeData();
         /// Copy constructor.
-        EdgeData( const EdgeData<GUM_SCALAR>& from );
+        EdgeData ( const EdgeData<GUM_SCALAR>& from );
         /// Destructor.
         ~EdgeData();
         /// One of the two instance represented by this edge.
@@ -157,7 +158,7 @@ namespace gum {
        */
       template<typename GUM_SCALAR>
       class InterfaceGraph {
-          friend class gum::prm::GSpan;
+          friend class gum::prm::GSpan<GUM_SCALAR>;
 
         public:
 
