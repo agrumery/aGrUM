@@ -27,7 +27,8 @@
 namespace gum {
   namespace prm {
 
-    SVED::~SVED() {
+   template<typename GUM_SCALAR>
+    SVED<GUM_SCALAR>::~SVED() {
       GUM_DESTRUCTOR ( SVED );
       typedef HashTable<const Class*, std::vector<NodeId>*>::iterator ElimIter;
 
@@ -40,8 +41,9 @@ namespace gum {
       }
     }
 
+    template<typename GUM_SCALAR>
     void
-    SVED::__eliminateNodes ( const Instance* query, NodeId node, BucketSet& pool, BucketSet& trash ) {
+    SVED<GUM_SCALAR>::__eliminateNodes ( const Instance* query, NodeId node, BucketSet& pool, BucketSet& trash ) {
       Set<const Instance*> ignore;
       ignore.insert ( query );
       // Extracting required attributes and slotchains
@@ -101,8 +103,9 @@ namespace gum {
             __eliminateNodesUpward ( *parent, pool, trash, tmp_list, ignore );
     }
 
+    template<typename GUM_SCALAR>
     void
-    SVED::__eliminateNodesDownward ( const Instance* from, const Instance* i,
+    SVED<GUM_SCALAR>::__eliminateNodesDownward ( const Instance* from, const Instance* i,
                                      BucketSet& pool, BucketSet& trash,
                                      List<const Instance*>& elim_list,
                                      Set<const Instance*>& ignore ) {
@@ -163,8 +166,9 @@ namespace gum {
             elim_list.insert ( *parent );
     }
 
+    template<typename GUM_SCALAR>
     void
-    SVED::__eliminateNodesUpward ( const Instance* i,
+    SVED<GUM_SCALAR>::__eliminateNodesUpward ( const Instance* i,
                                    BucketSet& pool, BucketSet& trash,
                                    List<const Instance*>& elim_list,
                                    Set<const Instance*>& ignore ) {
@@ -226,8 +230,9 @@ namespace gum {
             __eliminateNodesUpward ( *parent, pool, trash, tmp_list, ignore );
     }
 
+    template<typename GUM_SCALAR>
     void
-    SVED::__eliminateNodesWithEvidence ( const Instance* i, BucketSet& pool, BucketSet& trash ) {
+    SVED<GUM_SCALAR>::__eliminateNodesWithEvidence ( const Instance* i, BucketSet& pool, BucketSet& trash ) {
       // Adding required evidences
       for ( EMapIterator e = evidence ( i ).begin(); e != evidence ( i ).end(); ++e )
         if ( __bb.requisiteNodes ( i ).exists ( e.key() ) )
@@ -247,7 +252,7 @@ namespace gum {
     }
 
     void
-    SVED::__insertLiftedNodes ( const Instance* i, BucketSet& pool, BucketSet& trash ) {
+    SVED<GUM_SCALAR>::__insertLiftedNodes ( const Instance* i, BucketSet& pool, BucketSet& trash ) {
       BucketSet* lifted_pool = 0;
 
       try {
@@ -257,7 +262,7 @@ namespace gum {
         lifted_pool = __lifted_pools[& ( __bb.requisiteNodes ( i ) )];
       }
 
-      for ( SVED::BucketSet::iterator iter = lifted_pool->begin(); iter != lifted_pool->end(); ++iter ) {
+      for ( SVED<GUM_SCALAR>::BucketSet::iterator iter = lifted_pool->begin(); iter != lifted_pool->end(); ++iter ) {
         Potential<prm_float>* pot = copyPotential ( i->bijection(), **iter );
         pool.insert ( pot );
         trash.insert ( pot );
@@ -265,11 +270,11 @@ namespace gum {
     }
 
 //  void
-//  SVED::__initLiftedNodes(const Instance* i, BucketSet& trash)
+//  SVED<GUM_SCALAR>::__initLiftedNodes(const Instance* i, BucketSet& trash)
 //  {
 //    const Class& c = i->type();
 //    BucketSet lifted_pool;
-//    __lifted_pools.insert(&(__bb.requisiteNodes(i)), new SVED::ArraySet());
+//    __lifted_pools.insert(&(__bb.requisiteNodes(i)), new SVED<GUM_SCALAR>::ArraySet());
 //    for (Set<NodeId>::iterator node = __bb.requisiteNodes(i).begin(); node != __bb.requisiteNodes(i).end(); ++node) {
 //      if (c.get(*node).elt_type() == ClassElement::prm_attribute) {
 //        lifted_pool.insert(const_cast<Potential<prm_float>*>(&(c.get(*node).cpf())));
@@ -302,7 +307,7 @@ namespace gum {
 //      inf.eliminateNodes(inner_elim_order, lifted_pool, trash);
 //    }
 //    // Copying buckets in MultiDimArrays
-//    for(SVED::BucketSetIterator iter = lifted_pool.begin(); iter != lifted_pool.end(); ++iter) {
+//    for(SVED<GUM_SCALAR>::BucketSetIterator iter = lifted_pool.begin(); iter != lifted_pool.end(); ++iter) {
 //      const MultiDimBucket<prm_float>* b = 0;
 //      const MultiDimImplementation<prm_float>* impl = const_cast<const Potential<prm_float>&>((**iter)).getContent();
 //      b = dynamic_cast<const MultiDimBucket<prm_float>* >(impl);
@@ -330,8 +335,9 @@ namespace gum {
 //    }
 //  }
 
+    template<typename GUM_SCALAR>
     void
-    SVED::__initLiftedNodes ( const Instance* i, BucketSet& trash ) {
+    SVED<GUM_SCALAR>::__initLiftedNodes ( const Instance* i, BucketSet& trash ) {
       Class& c = const_cast<Class&> ( i->type() );
       BucketSet* lifted_pool = new BucketSet();
       __lifted_pools.insert ( & ( __bb.requisiteNodes ( i ) ), lifted_pool );
@@ -399,8 +405,9 @@ namespace gum {
       }
     }
 
+    template<typename GUM_SCALAR>
     void
-    SVED::__initElimOrder() {
+    SVED<GUM_SCALAR>::__initElimOrder() {
       CDG cdg ( *_prm );
       __class_elim_order = new Sequence<const ClassElementContainer*>();
       std::list<NodeId> l;
@@ -426,16 +433,17 @@ namespace gum {
       }
     }
 
+    template<typename GUM_SCALAR>
     void
-    SVED::_marginal ( const Chain& chain, Potential<prm_float>& m ) {
+    SVED<GUM_SCALAR>::_marginal ( const Chain& chain, Potential<prm_float>& m ) {
       const Instance* i = chain.first;
       const Attribute* elt = chain.second;
-      SVED::BucketSet pool, trash;
+      SVED<GUM_SCALAR>::BucketSet pool, trash;
       __bb.compute ( i, elt->id() );
       __eliminateNodes ( i, elt->id(), pool, trash );
       m.fill ( ( prm_float ) 1 );
 
-      for ( SVED::BucketSetIterator iter = pool.begin(); iter != pool.end(); ++iter ) {
+      for ( SVED<GUM_SCALAR>::BucketSetIterator iter = pool.begin(); iter != pool.end(); ++iter ) {
         if ( ( **iter ).contains ( * ( m.variablesSequence().atPos ( 0 ) ) ) ) {
           m.multiplicateBy ( **iter );
         }
@@ -508,14 +516,14 @@ namespace gum {
       m.normalize();
 
       // cleaning up the mess
-      for ( SVED::BucketSetIterator iter = trash.begin(); iter != trash.end(); ++iter ) {
+      for ( SVED<GUM_SCALAR>::BucketSetIterator iter = trash.begin(); iter != trash.end(); ++iter ) {
         delete *iter;
       }
 
       typedef HashTable<const Set<NodeId>*, BucketSet*>::iterator LiftedIter;
 
       for ( LiftedIter iter = __lifted_pools.begin(); iter != __lifted_pools.end(); ++iter ) {
-        // for (SVED::ArraySetIterator j = (**iter).begin(); j != (**iter).end(); ++j) {
+        // for (SVED<GUM_SCALAR>::ArraySetIterator j = (**iter).begin(); j != (**iter).end(); ++j) {
         //   delete *j;
         // }
         delete *iter;
@@ -539,13 +547,15 @@ namespace gum {
       __elim_orders.clear();
     }
 
+    template<typename GUM_SCALAR>
     void
-    SVED::_joint ( const std::vector<Chain>& queries, Potential<prm_float>& j ) {
+    SVED<GUM_SCALAR>::_joint ( const std::vector<Chain>& queries, Potential<prm_float>& j ) {
       GUM_ERROR ( FatalError, "Not implemented." );
     }
 
+    template<typename GUM_SCALAR>
     void
-    SVED::__initReqSets ( const Instance* i ) {
+    SVED<GUM_SCALAR>::__initReqSets ( const Instance* i ) {
       Set<NodeId>* attr_set = new Set<NodeId>();
       Set<NodeId>* sc_set = new Set<NodeId>();
 
@@ -573,20 +583,20 @@ namespace gum {
     }
 
     INLINE
-    SVED::SVED ( const PRM& prm, const System& model ) :
+    SVED<GUM_SCALAR>::SVED ( const PRM& prm, const System& model ) :
       PRMInference ( prm, model ), __class_elim_order ( 0 ), __bb ( *this ) {
       GUM_CONSTRUCTOR ( SVED );
     }
 
     INLINE
-    SVED::SVED ( const PRM& prm, const std::string& model ) :
+    SVED<GUM_SCALAR>::SVED ( const PRM& prm, const std::string& model ) :
       PRMInference ( prm, model ), __class_elim_order ( 0 ), __bb ( *this ) {
       GUM_CONSTRUCTOR ( SVED );
     }
 
     INLINE
     void
-    SVED::__insertEvidence ( const Instance* i, BucketSet& pool ) {
+    SVED<GUM_SCALAR>::__insertEvidence ( const Instance* i, BucketSet& pool ) {
       for ( PRMInference::EMapIterator iter = evidence ( i ).begin(); iter != evidence ( i ).end(); ++iter ) {
         pool.insert ( const_cast<Potential<prm_float>*> ( *iter ) );
       }
@@ -594,13 +604,13 @@ namespace gum {
 
     INLINE
     std::vector<NodeId>&
-    SVED::__getElimOrder ( const Class& c ) {
+    SVED<GUM_SCALAR>::__getElimOrder ( const Class& c ) {
       return * ( __elim_orders[&c] );
     }
 
     INLINE
     bool
-    SVED::__checkElimOrder ( const Instance* first, const Instance* second ) {
+    SVED<GUM_SCALAR>::__checkElimOrder ( const Instance* first, const Instance* second ) {
       if ( __class_elim_order == 0 ) {
         __initElimOrder();
       }
@@ -610,25 +620,25 @@ namespace gum {
 
     INLINE
     Potential<prm_float>*
-    SVED::__getAggPotential ( const Instance* i, const Aggregate* agg ) {
+    SVED<GUM_SCALAR>::__getAggPotential ( const Instance* i, const Aggregate* agg ) {
       return & ( const_cast<Potential<prm_float>&> ( i->get ( agg->safeName() ).cpf() ) );
     }
 
     INLINE
     void
-    SVED::_evidenceAdded ( const SVED::Chain& chain ) {
+    SVED<GUM_SCALAR>::_evidenceAdded ( const SVED<GUM_SCALAR>::Chain& chain ) {
       // Do nothing
     }
 
     INLINE
     void
-    SVED::_evidenceRemoved ( const SVED::Chain& chain ) {
+    SVED<GUM_SCALAR>::_evidenceRemoved ( const SVED<GUM_SCALAR>::Chain& chain ) {
       // Do nothing
     }
 
     INLINE
     Set<NodeId>&
-    SVED::__getAttrSet ( const Instance* i ) {
+    SVED<GUM_SCALAR>::__getAttrSet ( const Instance* i ) {
       try {
         return * ( __req_set[& ( __bb.requisiteNodes ( i ) )].first );
       } catch ( NotFound& ) {
@@ -639,7 +649,7 @@ namespace gum {
 
     INLINE
     Set<NodeId>&
-    SVED::__getSCSet ( const Instance* i ) {
+    SVED<GUM_SCALAR>::__getSCSet ( const Instance* i ) {
       try {
         return * ( __req_set[& ( __bb.requisiteNodes ( i ) )].second );
       } catch ( NotFound& ) {
@@ -650,7 +660,7 @@ namespace gum {
 
     INLINE
     void
-    SVED::__reduceElimList ( const Instance* i, List<const Instance*>& elim_list,
+    SVED<GUM_SCALAR>::__reduceElimList ( const Instance* i, List<const Instance*>& elim_list,
                              List<const Instance*>& reduced_list, Set<const Instance*>& ignore,
                              BucketSet& pool, BucketSet& trash ) {
       while ( not elim_list.empty() ) {
@@ -668,7 +678,7 @@ namespace gum {
 
     INLINE
     std::string
-    SVED::name() const {
+    SVED<GUM_SCALAR>::name() const {
       return "SVED";
     }
 

@@ -23,6 +23,8 @@
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
+#include <agrum/prm/SVE.h>
+#include <agrum/prm/classDependencyGraph.h>
 
 namespace gum {
   namespace prm {
@@ -50,7 +52,14 @@ namespace gum {
 
     template<typename GUM_SCALAR>
     void
-    SVE<GUM_SCALAR>::__eliminateNodes ( const auto iter = query->beginInvRef(); iter != this->query->endInvRef(); ++iter ) {
+    SVE<GUM_SCALAR>::__eliminateNodes ( const Instance<GUM_SCALAR>* query, NodeId node, BucketSet& pool, BucketSet& trash ) {
+      Set<const Instance<GUM_SCALAR>*> ignore, eliminated;
+      Set<NodeId> delayedVars;
+      // Downward elimination
+      List<const Instance<GUM_SCALAR>*> elim_list;
+      ignore.insert ( query );
+
+      for ( auto iter = query->beginInvRef(); iter != query->endInvRef(); ++iter ) {
         for ( auto child = ( **iter ).begin(); child != ( **iter ).end(); ++child ) {
           if ( not ignore.exists ( child->first ) ) {
             __eliminateNodesDownward ( query, child->first, pool, trash, elim_list, ignore, eliminated );
@@ -71,7 +80,7 @@ namespace gum {
         __insertEvidence ( query, pool );
       }
 
-      for ( Instance<GUM_SCALAR>::const_iterator attr = query->begin(); attr != query->end(); ++attr ) {
+      for ( auto attr = query->begin(); attr != query->end(); ++attr ) {
         pool.insert ( & ( const_cast<Potential<GUM_SCALAR>&> ( ( **attr ).cpf() ) ) );
       }
 
@@ -105,8 +114,8 @@ namespace gum {
       }
 
       // Upward elimination
-      for ( Set<SlotChain*>::iterator sc = query->type().slotChains().begin(); sc != query->type().slotChains().end(); ++sc ) {
-        for ( Set<Instance<GUM_SCALAR>*>::iterator parent = query->getInstances ( ( **sc ).id() ).begin(); parent != query->getInstances ( ( **sc ).id() ).end(); ++parent ) {
+      for ( auto sc = query->type().slotChains().begin(); sc != query->type().slotChains().end(); ++sc ) {
+        for ( auto parent = query->getInstances ( ( **sc ).id() ).begin(); parent != query->getInstances ( ( **sc ).id() ).end(); ++parent ) {
           if ( not ignore.exists ( *parent ) ) {
             __eliminateNodesUpward ( *parent, pool, trash, tmp_list, ignore, eliminated );
           }
@@ -156,10 +165,8 @@ namespace gum {
       // Calling elimination over child instance
       List<const Instance<GUM_SCALAR>*> my_list;
 
-      for ( Instance<GUM_SCALAR>::InvRefConstIterator iter = i->beginInvRef(); iter != i->endInvRef(); ++iter ) {
-        typedef std::vector< std::pair<Instance<GUM_SCALAR>*, std::string> >::const_iterator pair_iter;
-
-        for ( pair_iter child = ( **iter ).begin(); child != ( **iter ).end(); ++child ) {
+      for ( auto iter = i->beginInvRef(); iter != i->endInvRef(); ++iter ) {
+        for ( auto child = ( **iter ).begin(); child != ( **iter ).end(); ++child ) {
           if ( not ignore.exists ( child->first ) ) {
             __eliminateNodesDownward ( i, child->first, pool, trash, my_list, ignore, eliminated );
           } else if ( not eliminated.exists ( child->first ) ) {
@@ -174,7 +181,7 @@ namespace gum {
       eliminated.insert ( i );
 
       // Calling elimination over child's parents
-      for ( List<const Instance<GUM_SCALAR>*>::iterator iter = my_list.begin(); iter != my_list.end(); ++iter ) {
+      for ( auto iter = my_list.begin(); iter != my_list.end(); ++iter ) {
         if ( __checkElimOrder ( i, *iter ) and ( *iter != from ) ) {
           if ( not ignore.exists ( *iter ) ) {
             __eliminateNodesDownward ( i, *iter, pool, trash, elim_list, ignore, eliminated );
@@ -185,8 +192,8 @@ namespace gum {
       }
 
       // Adding parents instance to elim_list
-      for ( Set<SlotChain*>::iterator sc = i->type().slotChains().begin(); sc != i->type().slotChains().end(); ++sc ) {
-        for ( Set<Instance<GUM_SCALAR>*>::iterator iter = i->getInstances ( ( **sc ).id() ).begin(); iter != i->getInstances ( ( **sc ).id() ); ++iter ) {
+      for ( auto sc = i->type().slotChains().begin(); sc != i->type().slotChains().end(); ++sc ) {
+        for ( auto iter = i->getInstances ( ( **sc ).id() ).begin(); iter != i->getInstances ( ( **sc ).id() ); ++iter ) {
           if ( *iter != from ) {
             elim_list.insert ( *iter );
           }
@@ -202,7 +209,7 @@ namespace gum {
       } else {
         __insertLiftedNodes ( i, pool, trash );
 
-        for ( Set<Aggregate*>::iterator agg = i->type().aggregates().begin(); agg != i->type().aggregates().end(); ++agg ) {
+        for ( auto agg = i->type().aggregates().begin(); agg != i->type().aggregates().end(); ++agg ) {
           pool.insert ( __getAggPotential ( i, *agg ) );
         }
 
@@ -213,7 +220,7 @@ namespace gum {
           if ( delayedVars ) {
             std::vector<NodeId> elim;
 
-            for ( std::vector<NodeId>::iterator iter = __getElimOrder ( i->type() ).begin(); iter != __getElimOrder ( i->type() ).end(); ++iter ) {
+            for ( auto iter = __getElimOrder ( i->type() ).begin(); iter != __getElimOrder ( i->type() ).end(); ++iter ) {
               if ( not delayedVars->exists ( *iter ) ) {
                 elim.push_back ( *iter );
               }
@@ -240,10 +247,8 @@ namespace gum {
       // Downward elimination
       ignore.insert ( i );
 
-      for ( Instance<GUM_SCALAR>::InvRefConstIterator iter = i->beginInvRef(); iter != i->endInvRef(); ++iter ) {
-        typedef std::vector< std::pair<Instance<GUM_SCALAR>*, std::string> >::const_iterator pair_iter;
-
-        for ( pair_iter child = ( **iter ).begin(); child != ( **iter ).end(); ++child ) {
+      for ( auto iter = i->beginInvRef(); iter != i->endInvRef(); ++iter ) {
+        for ( auto child = ( **iter ).begin(); child != ( **iter ).end(); ++child ) {
           if ( not ignore.exists ( child->first ) ) {
             __eliminateNodesDownward ( i, child->first, pool, trash, elim_list, ignore, eliminated );
           }
@@ -269,8 +274,8 @@ namespace gum {
       }
 
       // Upward elimination
-      for ( Set<SlotChain*>::iterator sc = i->type().slotChains().begin(); sc != i->type().slotChains().end(); ++sc ) {
-        for ( Set<Instance<GUM_SCALAR>*>::iterator parent = i->getInstances ( ( **sc ).id() ).begin(); parent != i->getInstances ( ( **sc ).id() ).end(); ++parent ) {
+      for ( auto sc = i->type().slotChains().begin(); sc != i->type().slotChains().end(); ++sc ) {
+        for ( auto parent = i->getInstances ( ( **sc ).id() ).begin(); parent != i->getInstances ( ( **sc ).id() ).end(); ++parent ) {
           if ( not ignore.exists ( *parent ) ) {
             __eliminateNodesUpward ( *parent, pool, trash, tmp_list, ignore, eliminated );
           }
@@ -284,7 +289,7 @@ namespace gum {
       // First we check if evidences are on inner nodes
       bool inner = false;
 
-      for ( EMapIterator e = evidence ( i ).begin(); e != evidence ( i ).end(); ++e ) {
+      for ( auto e = evidence ( i ).begin(); e != evidence ( i ).end(); ++e ) {
         inner = i->type().isInputNode ( i->get ( e.key() ) ) or i->type().isInnerNode ( i->get ( e.key() ) );
 
         if ( inner ) { break; }
@@ -296,7 +301,7 @@ namespace gum {
         __insertEvidence ( i, tmp_pool );
 
         // We need a local to not eliminate queried inner nodes of the same class
-        for ( Instance<GUM_SCALAR>::const_iterator attr = i->begin(); attr != i->end(); ++attr ) {
+        for ( auto attr = i->begin(); attr != i->end(); ++attr ) {
           tmp_pool.insert ( & ( ( **attr ).cpf() ) );
         }
 
@@ -342,8 +347,7 @@ namespace gum {
         __insertEvidence ( i, pool );
         __insertLiftedNodes ( i, pool, trash );
 
-        for ( Set<Aggregate*>::iterator agg = i->type().aggregates().begin();
-              agg != i->type().aggregates().end(); ++agg ) {
+        for ( auto agg = i->type().aggregates().begin();agg != i->type().aggregates().end(); ++agg ) {
           pool.insert ( __getAggPotential ( i, *agg ) );
         }
 
@@ -351,7 +355,7 @@ namespace gum {
           if ( delayedVars ) {
             std::vector<NodeId> elim;
 
-            for ( std::vector<NodeId>::iterator iter = __getElimOrder ( i->type() ).begin(); iter != __getElimOrder ( i->type() ).end(); ++iter ) {
+            for ( auto iter = __getElimOrder ( i->type() ).begin(); iter != __getElimOrder ( i->type() ).end(); ++iter ) {
               if ( not delayedVars->exists ( *iter ) ) {
                 elim.push_back ( *iter );
               }
@@ -379,7 +383,7 @@ namespace gum {
         lifted_pool = __lifted_pools[& ( i->type() )];
       }
 
-      for ( SVE<GUM_SCALAR>::BucketSet::iterator iter = lifted_pool->begin(); iter != lifted_pool->end(); ++iter ) {
+      for ( auto iter = lifted_pool->begin(); iter != lifted_pool->end(); ++iter ) {
         Potential<GUM_SCALAR>* pot = copyPotential ( i->bijection(), **iter );
         pool.insert ( pot );
         trash.insert ( pot );
@@ -395,20 +399,20 @@ namespace gum {
       const Set<NodeId>* parents = 0;
 
       for ( const auto node : c.dag().nodes() ) {
-        if ( ClassElement::isAttribute ( c.get ( node ) ) ) {
+        if ( ClassElement<GUM_SCALAR>::isAttribute ( c.get ( node ) ) ) {
           if ( c.isOutputNode ( c.get ( node ) ) )
             outers.insert ( node );
           else if ( not outers.exists ( node ) )
             inners.insert ( node );
 
           lifted_pool->insert ( const_cast<Potential<GUM_SCALAR>*> ( & ( c.get ( node ).cpf() ) ) );
-        } else if ( ClassElement::isAggregate ( c.get ( node ) ) ) {
+        } else if ( ClassElement<GUM_SCALAR>::isAggregate ( c.get ( node ) ) ) {
           outers.insert ( node );
           // We need to put in the output_elim_order aggregator's parents which are innner nodes
           parents = & ( c.dag().parents ( node ) );
 
           for ( Set<NodeId>::const_iterator prnt = parents->begin(); prnt != parents->end(); ++prnt ) {
-            if ( ClassElement::isAttribute ( c.get ( *prnt ) ) and c.isInnerNode ( c.get ( *prnt ) ) ) {
+            if ( ClassElement<GUM_SCALAR>::isAttribute ( c.get ( *prnt ) ) and c.isInnerNode ( c.get ( *prnt ) ) ) {
               inners.erase ( *prnt );
               outers.insert ( *prnt );
             }
@@ -441,7 +445,7 @@ namespace gum {
     template<typename GUM_SCALAR>
     void
     SVE<GUM_SCALAR>::__initElimOrder() {
-      CDG cdg ( *_prm );
+      ClassDependencyGraph<GUM_SCALAR> cdg ( *(this->_prm) );
       __class_elim_order = new Sequence<const ClassElementContainer*>();
       std::list<NodeId> l;
 
@@ -526,7 +530,7 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     Potential<GUM_SCALAR>*
-    SVE<GUM_SCALAR>::__getAggPotential ( const Instance<GUM_SCALAR>* i, const Aggregate* agg ) {
+    SVE<GUM_SCALAR>::__getAggPotential ( const Instance<GUM_SCALAR>* i, const Aggregate<GUM_SCALAR>* agg ) {
       return & ( const_cast<Potential<GUM_SCALAR>&> ( i->get ( agg->id() ).cpf() ) );
     }
 

@@ -112,16 +112,16 @@ namespace gum {
         /// Code alias
         typedef typename Set< MultiDimArray<GUM_SCALAR>* >::iterator ArraySetIterator;
 
-        HashTable<const Class*, std::vector<NodeId>*> __elim_orders;
+        HashTable<const Class<GUM_SCALAR>*, std::vector<NodeId>*> __elim_orders;
 
-        /// The Set<NodeId> returned by StructuredBayesBall is unique for each
+        /// The Set<NodeId> returned by StructuredBayesBall<GUM_SCALAR> is unique for each
         /// family of instances with the same requisite set (thus the same lifted
         /// potentials).
         HashTable<const Set<NodeId>*, BucketSet*> __lifted_pools;
 
         Sequence<const ClassElementContainer<GUM_SCALAR>*>* __class_elim_order;
 
-        StructuredBayesBall __bb;
+        StructuredBayesBall<GUM_SCALAR> __bb;
 
         /// First pair  -> requisite Attributes
         /// Second pair -> requisite SlotChains
@@ -158,10 +158,10 @@ namespace gum {
 
         void __insertEvidence( const Instance<GUM_SCALAR>* i, BucketSet& pool );
 
-        std::vector<NodeId>& __getElimOrder( const Class& c );
+        std::vector<NodeId>& __getElimOrder( const Class<GUM_SCALAR>& c );
 
         Potential<GUM_SCALAR>* __getAggPotential( const Instance<GUM_SCALAR>* i,
-            const Aggregate* agg );
+            const Aggregate<GUM_SCALAR>* agg );
 
         void __initLiftedNodes( const Instance<GUM_SCALAR>* i, BucketSet& trash );
 
