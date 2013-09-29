@@ -80,6 +80,7 @@ namespace gum {
       //virtual void addAttribute ( Attribute<GUM_SCALAR>* attr ) =0;
       virtual void startAttribute ( const std::string& type, const std::string& name ) = 0;
       virtual void addParent ( const std::string& name ) = 0;
+      virtual void setRawCPFByFloatLines ( const std::vector<float>& array ) = 0;
       virtual void setRawCPFByFloatColumns ( const std::vector<float>& array ) = 0;
       virtual void setCPFByFloatRule ( const std::vector<std::string>& labels, const std::vector<float>& values ) = 0;
       virtual void endAttribute() = 0;

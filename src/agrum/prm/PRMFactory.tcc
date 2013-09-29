@@ -319,9 +319,23 @@ namespace gum {
       }
     }
 
+
+    template<typename GUM_SCALAR> INLINE
+    void
+    PRMFactory<GUM_SCALAR>::setRawCPFByFloatLines ( const std::vector<float>& array ) {
+      Attribute<GUM_SCALAR>* a = static_cast<Attribute<GUM_SCALAR>*> ( __checkStack ( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
+      __checkStack ( 2, PRMObject::PRMType::CLASS );
+
+      if ( a->cpf().domainSize() != array.size() )
+        GUM_ERROR ( OperationNotAllowed, "illegal CPF size" );
+
+      std::vector<GUM_SCALAR> array2 ( array.begin(), array.end() );
+      a->cpf().fillWith ( array2 );
+    }
+
     template<typename GUM_SCALAR>
     void
-    PRMFactory<GUM_SCALAR>::setRawCPFByColumns ( const std::vector<GUM_SCALAR>& array ) {
+    PRMFactory<GUM_SCALAR>::setRawCPFByFloatColumns ( const std::vector<float>& array ) {
       Attribute<GUM_SCALAR>* a = static_cast<Attribute<GUM_SCALAR>*> ( __checkStack ( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
 
       if ( a->cpf().domainSize() != array.size() ) {
@@ -331,14 +345,14 @@ namespace gum {
       }
 
       if ( a->cpf().nbrDim() == 1 ) {
-        setRawCPFByLines ( array );
+        setRawCPFByFloatLines ( array );
       } else {
         std::vector<Size> pos ( a->cpf().nbrDim(), 0 );
         Instantiation inst ( a->cpf() );
         inst.setFirst();
 
         for ( auto value = array.begin(); value != array.end(); ++value ) {
-          a->cpf().set ( inst, *value );
+          a->cpf().set ( inst, ( GUM_SCALAR ) *value );
 
           for ( size_t idx = pos.size(); idx > 0; --idx ) {
             bool stop = true;
@@ -361,8 +375,8 @@ namespace gum {
 
     template<typename GUM_SCALAR>
     void
-    PRMFactory<GUM_SCALAR>::setCPFByRule ( const std::vector<std::string>& parents,
-                                           const std::vector<GUM_SCALAR>& values ) {
+    PRMFactory<GUM_SCALAR>::setCPFByFloatRule ( const std::vector<std::string>& parents,
+        const std::vector<float>& values ) {
       Attribute<GUM_SCALAR>* a = static_cast<Attribute<GUM_SCALAR>*> ( __checkStack ( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
 
       if ( ( parents.size() + 1 ) != a->cpf().variablesSequence().size() ) {
@@ -413,7 +427,7 @@ namespace gum {
         inst.chgVal ( a->type().variable(), i );
 
         for ( inst.setFirstIn ( knst ); not inst.end(); inst.incIn ( knst ) ) {
-          a->cpf().set ( inst, values[i] );
+          a->cpf().set ( inst, ( GUM_SCALAR ) values[i] );
         }
       }
     }
@@ -1057,7 +1071,7 @@ namespace gum {
 
       return __stack.back();
     }
-    
+
     template<typename GUM_SCALAR> INLINE
     const PRMObject*
     PRMFactory<GUM_SCALAR>::getCurrentAsConst() const {
@@ -1149,18 +1163,6 @@ namespace gum {
       }
 
       __stack.push_back ( a );
-    }
-
-    template<typename GUM_SCALAR> INLINE
-    void
-    PRMFactory<GUM_SCALAR>::setRawCPFByLines ( const std::vector<GUM_SCALAR>& array ) {
-      Attribute<GUM_SCALAR>* a = static_cast<Attribute<GUM_SCALAR>*> ( __checkStack ( 1, ClassElement<GUM_SCALAR>::prm_attribute ) );
-      __checkStack ( 2, PRMObject::PRMType::CLASS );
-
-      if ( a->cpf().domainSize() != array.size() )
-        GUM_ERROR ( OperationNotAllowed, "illegal CPF size" );
-
-      a->cpf().fillWith ( array );
     }
 
     template<typename GUM_SCALAR> INLINE
