@@ -26,10 +26,6 @@
 
 #include <agrum/prm/gspan.h>
 
-#ifdef GUM_NO_INLINE
-#include <agrum/prm/gspan.inl>
-#endif // GUM_NO_INLINE
-
 namespace gum {
   namespace prm {
 

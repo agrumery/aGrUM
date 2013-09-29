@@ -26,9 +26,6 @@
 
 #include <agrum/prm/generator/clusteredLayerGenerator.h>
 
-#ifdef GUM_NO_INLINE
-#include <agrum/prm/generator/clusteredLayerGenerator.inl>
-#endif // GUM_NO_INLINE
 
 namespace gum {
   namespace prm {

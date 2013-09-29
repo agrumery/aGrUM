@@ -27,10 +27,6 @@
 
 #include <agrum/prm/classElement.h>
 
-#ifdef GUM_NO_INLINE
-#include <agrum/prm/classElement.inl>
-#endif //GUM_NO_INLINE
-
 namespace gum {
   namespace prm {
 

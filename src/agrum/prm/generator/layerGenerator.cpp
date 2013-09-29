@@ -26,10 +26,6 @@
 
 #include <agrum/prm/generator/layerGenerator.h>
 
-#ifdef GUM_NO_INLINE
-#include <agrum/prm/generator/layerGenerator.inl>
-#endif // GUM_NO_INLINE
-
 namespace gum {
   namespace prm {
   } /* namespace prm */
