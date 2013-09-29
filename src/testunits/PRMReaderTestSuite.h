@@ -25,10 +25,10 @@
 
 namespace gum_tests {
 
-  class PRMReaderTestSuite: public CxxTest::TestSuite {
+  class PRM<double>ReaderTestSuite: public CxxTest::TestSuite {
     public:
       void /*test*/BasicRead() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         int res;
         TS_GUM_ASSERT_THROWS_NOTHING( res=reader.readFile( GET_PATH_STR( o3prm/inference.o3prm ) ) );
 
@@ -36,15 +36,15 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS( res,0 );
 
-        gum::prm::PRM* prm;
+        gum::prm::PRM<double>* prm=nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
-        TS_ASSERT( prm!= ( gum::prm::PRM* ) 0 );
+        TS_ASSERT( prm!= nullptr );
 
         delete( prm );
       }
 
       void testRegression1() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         int res;
         TS_GUM_ASSERT_THROWS_NOTHING( res=reader.readFile( GET_PATH_STR( o3prm/withinterfaces.o3prm ) ) );
 
@@ -52,14 +52,14 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS( res,0 );
 
-        gum::prm::PRM* prm;
+        gum::prm::PRM<double>* prm=nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
-        TS_ASSERT( prm!= ( gum::prm::PRM* ) 0 );
+        TS_ASSERT( prm!= nullptr );
         delete( prm );
       }
 
       void /*test*/Regression2() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         int res;
         TS_GUM_ASSERT_THROWS_NOTHING( res=reader.readFile( GET_PATH_STR( o3prm/foo2.o3prm ) ) );
 
@@ -67,9 +67,9 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS( res,0 );
 
-        gum::prm::PRM* prm;
+        gum::prm::PRM<double>* prm=nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
-        TS_ASSERT( prm!= ( gum::prm::PRM* ) 0 );
+        TS_ASSERT( prm!= nullptr );
 
         delete( prm );
       }

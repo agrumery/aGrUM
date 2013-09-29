@@ -68,7 +68,7 @@ namespace gum {
      */
 // ==========================================================================
     template<typename GUM_SCALAR>
-    class PRMFactory : IPRMFactory {
+    class PRMFactory : public IPRMFactory {
       public:
         // ======================================================================
         /// @name Constructors & destructor
@@ -80,10 +80,15 @@ namespace gum {
          */
         PRMFactory();
 
+        /// Copy constructor. Don't use it.
+        PRMFactory ( const PRMFactory& from ) = delete;
+
+        /// Copy operator. Don't use it.
+        PRMFactory& operator= ( const PRMFactory& from ) = delete;
         /**
          * Destructor.
          */
-        ~PRMFactory();
+        virtual ~PRMFactory();
 
         /// @}
         // ========================================================================
@@ -103,13 +108,14 @@ namespace gum {
          * @return Returns the PRMObject type of the object begin built.
          * @throw NotFound if no type is being built.
          */
-        PRMObject::PRMType currentType() const;
+        virtual PRMObject::PRMType currentType() const override;
 
         /**
          * @return the current PRMObject being built by this factory.
          * @throw NotFound if nothing is being built.
          */
-        PRMObject* getCurrent();
+        virtual PRMObject* getCurrent() override;
+        virtual const PRMObject* getCurrentAsConst() const  override;
 
         /**
          * @brief Close current object being built.
@@ -122,12 +128,12 @@ namespace gum {
          * @return Returns the top most object removed in this factory's stack
          *         before. If their is no such object, 0 is returned.
          */
-        PRMObject* closeCurrent();
+        virtual PRMObject* closeCurrent() override;
 
         /**
          * @return Returns the current package name.
          */
-        std::string currentPackage() const;
+        virtual std::string currentPackage() const override;
 
         /**
          * @brief Returns a reference over a Class<GUM_SCALAR> given its name.
@@ -183,14 +189,14 @@ namespace gum {
          *
          * @param name The name of the package for all further objects.
          */
-        virtual void pushPackage ( const std::string& name );
+        virtual void pushPackage ( const std::string& name ) override;
 
         /**
          * @brief Pop the current package from the package stack.
          * @return the popped package or an empty string if there was
          *         nothing to pop.
          */
-        std::string popPackage();
+        virtual std::string popPackage() override;
 
         /// @}
         // ======================================================================
@@ -207,7 +213,7 @@ namespace gum {
          * @throw DuplicateElement Raised if an object with the same name
          *                         already exists.
          */
-        void startDiscreteType ( const std::string& name, std::string super = "" );
+        virtual void startDiscreteType ( const std::string& name, std::string super = "" ) override;
 
         /**
          * Add a label to the current discrete type.
@@ -222,7 +228,7 @@ namespace gum {
          * @throw NotFound Raised if extends does not match any label in the current
          *                 type's super type.
          */
-        void addLabel ( const std::string& l, std::string extends = "" );
+        virtual void addLabel ( const std::string& l, std::string extends = "" ) override;
 
         /**
          * End the current discrete type declaration.
@@ -230,14 +236,14 @@ namespace gum {
          * @throw OperationNotAllowed Raised if the current type is not a valid
          *                            discrete type.
          */
-        void endDiscreteType();
+        virtual void endDiscreteType() override;
         /// @}
 
 
         ///@name several checks for parsers
         /// @{
-        virtual bool isClassOrInferface ( std::string type ) const;                
-        virtual bool isArrayInCurrentSystem ( std::string name ) const;
+        virtual bool isClassOrInterface ( const std::string& type ) const override;
+        virtual bool isArrayInCurrentSystem ( const std::string& name ) const override;
         /// @}
 
 
@@ -256,8 +262,8 @@ namespace gum {
          *
          * @throw OperationNotAllowed Raised if the given operation is illegal.
          */
-        void startClass ( const std::string& c, const std::string& extends = "",
-                          const Set<std::string>* implements = 0 );
+        virtual void startClass ( const std::string& c, const std::string& extends = "",
+                                  const Set<std::string>* implements = nullptr ) override;
 
         /**
          * Tells the factory that we finished a class declaration.
@@ -265,7 +271,7 @@ namespace gum {
          * @throw TypeError Raised if the current Class<GUM_SCALAR> does not respect one of
          *                  it's Interface<GUM_SCALAR>.
          */
-        void endClass();
+        virtual void endClass() override;
 
         /// @}
         // ======================================================================
@@ -285,18 +291,18 @@ namespace gum {
          * @throw NotFound Raised if extends does not match any declared
          *                 Interface<GUM_SCALAR>.
          */
-        void startInterface ( const std::string& i, const std::string& extends = "" );
+        virtual void startInterface ( const std::string& i, const std::string& extends = "" ) override;
 
         /**
          * @brief Add an attribute to an interface.
          *
          */
-        void addAttribute ( const std::string& type, const std::string& name );
+        virtual void addAttribute ( const std::string& type, const std::string& name ) override;
 
         /**
          * Tells the factory that we finished an interface declaration.
          */
-        void endInterface();
+        virtual void endInterface() override;
 
         /// @}
         // ======================================================================
@@ -323,13 +329,13 @@ namespace gum {
          * @throw NotFound Raised if one of the DiscreteVariable in attr CPT does
          *                 not match any ClassElement<GUM_SCALAR> in this.
          */
-        void addAttribute ( Attribute<GUM_SCALAR>* attr );
+        virtual void addAttribute ( Attribute<GUM_SCALAR>* attr );
 
         /**
          * Tells the factory that we start an attribute declaration.
          * @throw FatalError Raised if the given operation is illegal.
          */
-        void startAttribute ( const std::string& type, const std::string& name );
+        virtual void startAttribute ( const std::string& type, const std::string& name ) override;
 
         /**
          * Tells the factory that we add a parent to the current declared
@@ -339,7 +345,7 @@ namespace gum {
          * reference in it.
          * @throw OperationNotAllowed Raised if the given operation is illegal.
          */
-        void addParent ( const std::string& name );
+        virtual void addParent ( const std::string& name ) override;
 
         /**
          * Gives the factory the CPF in its raw form.
@@ -398,14 +404,14 @@ namespace gum {
          * @param values The probability values of the current attribute given
          *               the values in parenst.
          */
-        void setCPFByRule ( const std::vector<std::string>& labels,
-                            const std::vector<GUM_SCALAR>& values );
+        virtual void setCPFByRule ( const std::vector<std::string>& labels,
+                                    const std::vector<GUM_SCALAR>& values );
 
         /**
          * Tells the factory that we finished declaring an attribute.
          * @throw OperationNotAllowed Raised if the given operation is illegal.
          */
-        void endAttribute();
+        virtual void endAttribute() override;
 
         /// @}
         // ======================================================================
@@ -423,9 +429,9 @@ namespace gum {
          * @param name The name of this parameter.
          * @param value The label used as default value for this parameter.
          */
-        void addParameter ( const std::string& type,
-                            const std::string& name,
-                            std::string value = "" );
+        virtual void addParameter ( const std::string& type,
+                                    const std::string& name,
+                                    std::string value = "" ) override;
 
         /// @}
         // ======================================================================
@@ -451,10 +457,10 @@ namespace gum {
          * @throw WrongType Raised if the aggregator's type or one or more of the chains
          *                  are not of the good type.
          */
-        void addAggregator ( const std::string& name,
-                             const std::string& agg_type,
-                             const std::vector<std::string>& chains,
-                             const std::vector<std::string>& params );
+        virtual void addAggregator ( const std::string& name,
+                                     const std::string& agg_type,
+                                     const std::vector<std::string>& chains,
+                                     const std::vector<std::string>& params ) override;
 
         /**
          * @brief Add a compound noisy-or as an Attribute<GUM_SCALAR> to the current Class<GUM_SCALAR>.
@@ -475,11 +481,11 @@ namespace gum {
          * @throw OperationNotAllowed Raised if for some reasons the parameters are
          *                            invalid.
          */
-        void addNoisyOrCompound ( const std::string& name,
-                                  const std::vector<std::string>& chains,
-                                  const std::vector<float>& numbers,
-                                  float leak,
-                                  const std::vector<std::string>& label );
+        virtual void addNoisyOrCompound ( const std::string& name,
+                                          const std::vector<std::string>& chains,
+                                          const std::vector<float>& numbers,
+                                          float leak,
+                                          const std::vector<std::string>& label ) override;
         /// @}
         // ======================================================================
         /// @name ReferenceSlot<GUM_SCALAR> construction methods.
@@ -490,9 +496,9 @@ namespace gum {
          * Tells the factory that we started declaring a slot.
          * @throw OperationNotAllowed Raised if the given operation is illegal.
          */
-        void addReferenceSlot ( const std::string& type,
-                                const std::string& name,
-                                bool isArray );
+        virtual void addReferenceSlot ( const std::string& type,
+                                        const std::string& name,
+                                        bool isArray ) override;
 
         /// @}
         // ======================================================================
@@ -504,30 +510,30 @@ namespace gum {
          * Tells the factory that we started declaring a model.
          * @throw OperationNotAllowed Raised if the given operation is illegal.
          */
-        void startSystem ( const std::string& name );
+        virtual void startSystem ( const std::string& name ) override;
 
         /**
          * Tells the factory that we finished declaring a model.
          * @throw OperationNotAllowed Raised if the given operation is illegal.
          */
-        void endSystem();
+        virtual void endSystem() override;
 
         /**
          * Add an instance to the model.
          */
-        void addInstance ( const std::string& type, const std::string& name );
+        virtual void addInstance ( const std::string& type, const std::string& name ) override;
 
         /**
          * Creates an array with the given number of instances of the given type.
          * Instance<GUM_SCALAR> are name using "name" as prefix and adding the suffix "[i]",
          * with "i" being the position of the instance in the array.
          */
-        void addArray ( const std::string& type, const std::string& name, Size size );
+        virtual void addArray ( const std::string& type, const std::string& name, Size size ) override;
 
         /**
          * Add an instance to an array.
          */
-        void incArray ( const std::string& l_i, const std::string& r_i );
+        virtual void incArray ( const std::string& l_i, const std::string& r_i ) override;
 
         /**
          * @brief Instantiate a reference in the current model.
@@ -543,9 +549,9 @@ namespace gum {
          * @param right_instance The name of an instance or an array of instances
          *                       in the model.
          */
-        void setReferenceSlot ( const std::string& left_instance,
-                                const std::string& left_reference,
-                                const std::string& right_instance );
+        virtual void setReferenceSlot ( const std::string& left_instance,
+                                        const std::string& left_reference,
+                                        const std::string& right_instance ) override;
 
         /**
          * @brief Instantiate a reference in the current model.
@@ -560,7 +566,7 @@ namespace gum {
          *            reference slot.
          * @param r_i The name of an instance or an array of instances in the model.
          */
-        void setReferenceSlot ( const std::string& l_i, const std::string& r_i );
+        virtual void setReferenceSlot ( const std::string& l_i, const std::string& r_i ) override;
 
         /**
          * @brief define the value of a parameter.
@@ -571,7 +577,7 @@ namespace gum {
          *
          * @throw NotFound Raised if i, p or v is not found.
          */
-        void setParameter ( const std::string& i, const std::string& p, const std::string& v );
+        virtual void setParameter ( const std::string& i, const std::string& p, const std::string& v ) override;
 
         /// @}
 
@@ -597,7 +603,7 @@ namespace gum {
          *
          * @throw OperationNotAllowed Raised if the given operation is illegal.
          */
-        void setRawCPFByFloatLines ( const std::vector<float>& array );
+        virtual void setRawCPFByFloatLines ( const std::vector<float>& array ) override;
 
         /**
          * @brief Not implemented!
@@ -621,7 +627,7 @@ namespace gum {
          *
          * @throw OperationNotAllowed Raised if the given operation is illegal.
          */
-        void setRawCPFByFloatColumns ( const std::vector<float>& array );
+        virtual void setRawCPFByFloatColumns ( const std::vector<float>& array ) override;
 
         /**
          * Fills the CPF using a rule.
@@ -635,15 +641,10 @@ namespace gum {
          * @param values The probability values of the current attribute given
          *               the values in parenst.
          */
-        void setCPFByFloatRule ( const std::vector<std::string>& labels,
-                                 const std::vector<float>& values );
+        virtual void setCPFByFloatRule ( const std::vector<std::string>& labels,
+                                         const std::vector<float>& values ) override;
         /// @}
       private:
-        /// Copy constructor. Don't use it.
-        PRMFactory ( const PRMFactory& from );
-
-        /// Copy operator. Don't use it.
-        PRMFactory& operator= ( const PRMFactory& from );
 
         /// Decompose a string in v using dots ('.') as delimiters.
         void __fill_sc_in_vector ( std::vector<std::string>& v, const std::string& str );

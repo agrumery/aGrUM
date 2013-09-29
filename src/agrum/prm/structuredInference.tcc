@@ -111,9 +111,9 @@ namespace gum {
           m.set ( i, chain.second->cpf().get ( i ) );
 
         return;
-      } else if ( hasEvidence ( chain ) ) {
+      } else if ( this->hasEvidence ( chain ) ) {
         Instantiation i ( m );
-        const Potential<GUM_SCALAR>* e = evidence ( __query.first ) [__query.second->id()];
+        const Potential<GUM_SCALAR>* e = this->evidence ( __query.first ) [__query.second->id()];
 
         for ( i.setFirst(); not i.end(); i.inc() )
           m.set ( i, e->get ( i ) );
@@ -314,7 +314,7 @@ namespace gum {
 
       if ( not ( data.outputs().size() and ( data.outputs().exists ( id ) ) ) ) {
         for ( auto m = data.matches.begin(); m != data.matches.end(); ++m ) {
-          if ( hasEvidence ( std::make_pair ( ( **m ) [v.first], & ( ( **m ) [v.first]->get ( v.second ) ) ) ) ) {
+          if ( this->hasEvidence ( std::make_pair ( ( **m ) [v.first], & ( ( **m ) [v.first]->get ( v.second ) ) ) ) ) {
             GUM_ASSERT ( inst->type().name() == ( **m ) [v.first]->type().name() );
             GUM_ASSERT ( inst->get ( v.second ).safeName() == ( **m ) [v.first]->get ( v.second ).safeName() );
             data.obs().insert ( id );
@@ -517,7 +517,7 @@ namespace gum {
 
       for ( Size idx = 0; idx < match.size(); ++idx ) {
         __reducedInstances.insert ( match[idx] );
-        const auto& chains = source[idx]->type().slotchains();
+        const auto& chains = source[idx]->type().slotChains();
 
         for ( auto sc = chains.begin(); sc != chains.end(); ++sc ) {
           GUM_ASSERT ( not ( ( **sc ).isMultiple() ) );
@@ -622,9 +622,12 @@ namespace gum {
                 pool.insert ( & ( ( **attr ).cpf() ) );
 
               // Adding evidences if any
-              if ( hasEvidence ( inst ) )
-                for ( auto  e = evidence ( inst ).begin(); e != evidence ( inst ).end(); ++e )
+              if ( this->hasEvidence ( inst ) ) {
+                const auto& evs = this->evidence ( inst );
+
+                for ( auto  e = evs.begin(); e != evs.end(); ++e )
                   pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( *e ) );
+              }
 
               PartialOrderedTriangulation t ( & ( data->moral_graph ), & ( data->mods ), & ( partial_order ) );
               const std::vector<NodeId>& v = t.eliminationOrder();
@@ -632,14 +635,17 @@ namespace gum {
               if ( partial_order.size() > 1 )
                 for ( size_t idx = 0; idx < partial_order[0].size(); ++idx )
                   eliminateNode ( & ( inst->get ( v[idx] ).type().variable() ), pool, __trash );
-            } else if ( hasEvidence ( inst ) ) {
+            } else if ( this->hasEvidence ( inst ) ) {
               // Second case, the instance has evidences
               // Adding the potentials
               for ( auto attr = inst->begin(); attr != inst->end(); ++attr )
                 pool.insert ( & ( ( **attr ).cpf() ) );
 
               // Adding evidences
-              for ( auto e = evidence ( inst ).begin(); e != evidence ( inst ).end(); ++e )
+
+              const auto& evs = this->evidence ( inst );
+
+              for ( auto e = evs.begin(); e != evs.end(); ++e )
                 pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( *e ) );
 
               PartialOrderedTriangulation t ( & ( data->moral_graph ), & ( data->mods ), & ( partial_order ) );

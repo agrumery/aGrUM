@@ -92,7 +92,7 @@ namespace gum {
     LayerGenerator<GUM_SCALAR>::__generateClasses ( PRMFactory<GUM_SCALAR>& f, const std::string& type, std::vector<LayerGenerator<GUM_SCALAR>::MyData>& l ) {
       const Set<NodeId>* parents = 0;
       Size size = 0;
-      prm_float sum = 0.0;
+      GUM_SCALAR sum = 0.0;
       Set<std::string> i;
 
       for ( Size lvl = 0; lvl < __layers.size(); ++lvl ) {
@@ -130,7 +130,7 @@ namespace gum {
               size *= f.retrieveClass ( l[lvl].c.back() ).get ( names.first ( *prnt ) ).type()->domainSize();
             }
 
-            std::vector<prm_float> cpf ( size ), val ( getDomainSize() );
+            std::vector<GUM_SCALAR> cpf ( size ), val ( getDomainSize() );
 
             for ( size_t norms = 0; norms < size; norms += getDomainSize() ) {
               sum = 0.0;

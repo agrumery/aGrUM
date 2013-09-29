@@ -416,12 +416,6 @@ namespace gum {
         }
       }
 
-      std::ostream&
-      operator<< ( std::ostream& out, const LabelData& data ) {
-        out << data.l;
-        return out;
-      }
-
       template<typename GUM_SCALAR> INLINE
       std::ostream&
       operator<< ( std::ostream& out, const NodeData<GUM_SCALAR>& data ) {

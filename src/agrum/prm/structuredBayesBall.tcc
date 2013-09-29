@@ -60,14 +60,14 @@ namespace gum {
         typename PRMInference<GUM_SCALAR>::Chain chain = std::make_pair ( i, & ( i->get ( n ) ) );
 
         if ( __inf->hasEvidence ( chain ) ) {
-          const Potential<prm_float>* e = __inf->evidence ( i ) [n];
+          const Potential<GUM_SCALAR>* e = __inf->evidence ( i ) [n];
           Instantiation inst ( e );
           Size count = 0;
 
           for ( inst.setFirst(); not inst.end(); inst.inc() ) {
-            if ( ( e->get ( inst ) == ( prm_float ) 1.0 ) )
+            if ( ( e->get ( inst ) == ( GUM_SCALAR ) 1.0 ) )
               ++count;
-            else if ( e->get ( inst ) != ( prm_float ) 0.0 )
+            else if ( e->get ( inst ) != ( GUM_SCALAR ) 0.0 )
               return false;
           }
 
@@ -157,7 +157,7 @@ namespace gum {
 
             // Out of i.
             try {
-              const auto& refs=i->getRefAttr ( n );
+              const auto& refs = i->getRefAttr ( n );
 
               for ( auto iter = refs.begin(); iter != refs.end(); ++iter ) {
                 __fromParent ( iter->first, iter->first->type().get ( iter->second ).id(), marks );

@@ -68,7 +68,7 @@ namespace gum {
       std::vector<NodeId> elim_order;
       VariableElimination<GUM_SCALAR> inf ( bn );
 
-      if ( hasEvidence ( query ) )
+      if ( this->hasEvidence ( query ) )
         __insertEvidence ( query, pool );
 
       for ( auto attr = attr_set.begin(); attr != attr_set.end(); ++attr )
@@ -125,7 +125,7 @@ namespace gum {
       }
 
       // Eliminating all nodes in current instance
-      if ( hasEvidence ( i ) ) {
+      if ( this->hasEvidence ( i ) ) {
         __eliminateNodesWithEvidence ( i, pool, trash );
       } else {
         __insertLiftedNodes ( i, pool, trash );
@@ -185,7 +185,7 @@ namespace gum {
       }
 
       // Eliminating all nodes in i instance
-      if ( hasEvidence ( i ) ) {
+      if ( this->hasEvidence ( i ) ) {
         __eliminateNodesWithEvidence ( i, pool, trash );
       } else {
         __insertLiftedNodes ( i, pool, trash );
@@ -228,7 +228,8 @@ namespace gum {
     void
     SVED<GUM_SCALAR>::__eliminateNodesWithEvidence ( const Instance<GUM_SCALAR>* i, BucketSet& pool, BucketSet& trash ) {
       // Adding required evidences
-      for ( auto e = evidence ( i ).begin(); e != evidence ( i ).end(); ++e )
+      const auto& evs = this->evidence ( i );
+      for ( auto e = evs.begin(); e != evs.end(); ++e )
         if ( __bb.requisiteNodes ( i ).exists ( e.key() ) )
           pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( *e ) );
 
@@ -500,7 +501,7 @@ namespace gum {
                 }
 
                 std::cerr << std::endl;
-                std::cerr << "Attribute<GUM_SCALAR> has evidence:       " << ( hasEvidence ( *jter ) );
+                std::cerr << "Attribute<GUM_SCALAR> has evidence:       " << ( this->hasEvidence ( *jter ) );
                 std::cerr << std::endl;
                 std::cerr << "Attribute<GUM_SCALAR> parents number:     " << ( ( **jter ).type().dag().parents ( ( **a ).id() ).size() ) << std::endl;
                 std::cerr << "Attribute<GUM_SCALAR> children number:    " << ( ( **jter ).type().dag().children ( ( **a ).id() ).size() ) << std::endl;
@@ -590,7 +591,9 @@ namespace gum {
     template<typename GUM_SCALAR> INLINE
     void
     SVED<GUM_SCALAR>::__insertEvidence ( const Instance<GUM_SCALAR>* i, BucketSet& pool ) {
-      for ( auto iter = evidence ( i ).begin(); iter != evidence ( i ).end(); ++iter ) {
+      const auto& evs = this->evidence ( i );
+
+      for ( auto iter = evs.begin(); iter != evs.end(); ++iter ) {
         pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( *iter ) );
       }
     }

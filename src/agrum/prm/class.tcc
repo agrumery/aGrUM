@@ -108,7 +108,7 @@ namespace gum {
 
       for ( auto iter = c.__attributes.begin(); iter != c.__attributes.end(); ++iter ) {
         // using multiDimSparse to prevent unecessary memory allocation for large arrays
-        Attribute<GUM_SCALAR>* attr = new Attribute<GUM_SCALAR> ( ( *iter )->name(), ( *iter )->type(), new MultiDimSparse<prm_float> ( 0.0 ) );
+        Attribute<GUM_SCALAR>* attr = new Attribute<GUM_SCALAR> ( ( *iter )->name(), ( *iter )->type(), new MultiDimSparse<GUM_SCALAR> ( 0.0 ) );
         bij.insert ( & ( ( *iter )->type().variable() ), & ( attr->type().variable() ) );
         attr->setId ( ( *iter )->id() );
         __nodeIdMap.insert ( attr->id(), attr );
@@ -180,7 +180,7 @@ namespace gum {
       }
 
       // Copying the IO flag
-      _copyIOFlags ( c );
+      this->_copyIOFlags ( c );
       // Copying content of CPF
       Attribute<GUM_SCALAR>* a = 0;
 
@@ -262,7 +262,7 @@ namespace gum {
       // Defining input / output nodes
       if ( tail->elt_type() == ClassElement<GUM_SCALAR>::prm_slotchain ) {
         SlotChain<GUM_SCALAR>* sc = static_cast<SlotChain<GUM_SCALAR>*> ( tail );
-        setInputNode ( *head, true );
+        this->setInputNode ( *head, true );
         sc->end().setOutputNode ( sc->end().get ( sc->lastElt().safeName() ), true );
       }
     }
@@ -579,9 +579,9 @@ namespace gum {
         for ( auto iter = __implements->begin(); iter != __implements->end(); ++iter ) {
           if ( ( **iter ).isOutputNode ( *elt ) ) {
             try {
-              _getIOFlag ( *elt ).second = true;
+              this->_getIOFlag ( *elt ).second = true;
             } catch ( NotFound& ) {
-              _setIOFlag ( *elt, std::make_pair ( false, true ) );
+              this->_setIOFlag ( *elt, std::make_pair ( false, true ) );
             }
           }
         }

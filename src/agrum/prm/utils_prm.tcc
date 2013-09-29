@@ -24,83 +24,46 @@
 namespace gum {
   namespace prm {
 
-// Decompose a string in a vector of strings using "." as separators.
-    void
-    decomposePath( const std::string& path, std::vector<std::string>& v ) {
-      size_t prev = 0;
-      size_t length = 0;
-      size_t idx_1 = path.find( "." );
-      size_t idx_2 = path.find(PRMObject::LEFT_CAST() );
-
-      if ( idx_2 == std::string::npos ) {
-        // ignore safe names
-        size_t idx = idx_1;
-
-        while ( idx != std::string::npos ) {
-          length = idx - prev;
-          v.push_back( path.substr( prev, length ) );
-          prev = idx + 1;
-          idx = path.find( ".", prev );
-        }
-      } else {
-        size_t tmp = 0;
-
-        while ( idx_1 != std::string::npos ) {
-          if ( idx_1 < idx_2 ) {
-            length = idx_1 - prev;
-            v.push_back( path.substr( prev, length ) );
-            prev = idx_1 + 1;
-            idx_1 = path.find( ".", prev );
-          } else if ( idx_2 < idx_1 ) {
-            tmp = path.find( PRMObject::RIGHT_CAST(), idx_2 );
-            idx_1 = path.find( ".", tmp );
-            idx_2 = path.find(PRMObject::LEFT_CAST(), tmp );
-          }
-        }
-      }
-
-      v.push_back( path.substr( prev, std::string::npos ) );
-    }
-
-    Potential<prm_float>* copyPotential( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-                                         const Potential<prm_float>& source ) {
-      const MultiDimImplementation<prm_float>* impl = source.content();
-      Potential<prm_float>* p = 0;
+    template<typename GUM_SCALAR>
+    Potential<GUM_SCALAR>* copyPotential ( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
+                                           const Potential<GUM_SCALAR>& source ) {
+      const MultiDimImplementation<GUM_SCALAR>* impl = source.content();
+      Potential<GUM_SCALAR>* p = 0;
 
       try {
-        if ( dynamic_cast< const MultiDimReadOnly<prm_float>* >( impl ) ) {
-          if ( dynamic_cast< const MultiDimNoisyORCompound<prm_float>* >( impl ) ) {
-            p = new Potential<prm_float>( new MultiDimNoisyORCompound<prm_float>( bij, static_cast<const MultiDimNoisyORCompound<prm_float>&>( *impl ) ) );
-          } else if ( dynamic_cast< const MultiDimNoisyORNet<prm_float>* >( impl ) ) {
-            p = new Potential<prm_float>( new MultiDimNoisyORNet<prm_float>( bij, static_cast<const MultiDimNoisyORNet<prm_float>&>( *impl ) ) );
-          } else if ( dynamic_cast< const aggregator::MultiDimAggregator<prm_float>* >( impl ) ) {
-            p = new Potential<prm_float>( static_cast<MultiDimImplementation<prm_float>*>( impl->newFactory() ) );
+        if ( dynamic_cast< const MultiDimReadOnly<GUM_SCALAR>* > ( impl ) ) {
+          if ( dynamic_cast< const MultiDimNoisyORCompound<GUM_SCALAR>* > ( impl ) ) {
+            p = new Potential<GUM_SCALAR> ( new MultiDimNoisyORCompound<GUM_SCALAR> ( bij, static_cast<const MultiDimNoisyORCompound<GUM_SCALAR>&> ( *impl ) ) );
+          } else if ( dynamic_cast< const MultiDimNoisyORNet<GUM_SCALAR>* > ( impl ) ) {
+            p = new Potential<GUM_SCALAR> ( new MultiDimNoisyORNet<GUM_SCALAR> ( bij, static_cast<const MultiDimNoisyORNet<GUM_SCALAR>&> ( *impl ) ) );
+          } else if ( dynamic_cast< const aggregator::MultiDimAggregator<GUM_SCALAR>* > ( impl ) ) {
+            p = new Potential<GUM_SCALAR> ( static_cast<MultiDimImplementation<GUM_SCALAR>*> ( impl->newFactory() ) );
 
             for ( MultiDimInterface::iterator iter = impl->begin(); iter != impl->end(); ++iter )
-              p->add( *( bij.second( *iter ) ) );
-          } else if ( dynamic_cast<const MultiDimBucket<prm_float>*>( impl ) ) {
+              p->add ( * ( bij.second ( *iter ) ) );
+          } else if ( dynamic_cast<const MultiDimBucket<GUM_SCALAR>*> ( impl ) ) {
             // This is necessary just to prevent non initialized arrays
-            const_cast<MultiDimBucket<prm_float>*>( static_cast<const MultiDimBucket<prm_float>*>( impl ) )->compute();
+            const_cast<MultiDimBucket<GUM_SCALAR>*> ( static_cast<const MultiDimBucket<GUM_SCALAR>*> ( impl ) )->compute();
 
             try {
-              p = new Potential<prm_float>( new MultiDimBijArray<prm_float>( bij, static_cast<const MultiDimBucket<prm_float>*>( impl )->bucket() ) );
+              p = new Potential<GUM_SCALAR> ( new MultiDimBijArray<GUM_SCALAR> ( bij, static_cast<const MultiDimBucket<GUM_SCALAR>*> ( impl )->bucket() ) );
             } catch ( OperationNotAllowed& e ) {
               // This is an empty bucket, it happens if all variables were eliminated
-              return new Potential<prm_float>();
+              return new Potential<GUM_SCALAR>();
             }
           } else {
-            GUM_ERROR( FatalError, "encountered an unexpected MultiDim implementation" );
+            GUM_ERROR ( FatalError, "encountered an unexpected MultiDim implementation" );
           }
         } else {
-          if ( dynamic_cast< const MultiDimArray<prm_float>* >( impl ) ) {
-            p = new Potential<prm_float>( new MultiDimBijArray<prm_float>( bij, static_cast< const MultiDimArray<prm_float>& >( *impl ) ) );
-          } else if ( dynamic_cast<const MultiDimBijArray<prm_float>*>( impl ) ) {
-            p = new Potential<prm_float>( new MultiDimBijArray<prm_float>( bij, static_cast<const MultiDimBijArray<prm_float>&>( *impl ) ) );
-          } else if ( dynamic_cast< const MultiDimSparse<prm_float>* >( impl ) ) {
-            GUM_ERROR( FatalError, "There is no MultiDimSparse in PRMs, normally..." );
+          if ( dynamic_cast< const MultiDimArray<GUM_SCALAR>* > ( impl ) ) {
+            p = new Potential<GUM_SCALAR> ( new MultiDimBijArray<GUM_SCALAR> ( bij, static_cast< const MultiDimArray<GUM_SCALAR>& > ( *impl ) ) );
+          } else if ( dynamic_cast<const MultiDimBijArray<GUM_SCALAR>*> ( impl ) ) {
+            p = new Potential<GUM_SCALAR> ( new MultiDimBijArray<GUM_SCALAR> ( bij, static_cast<const MultiDimBijArray<GUM_SCALAR>&> ( *impl ) ) );
+          } else if ( dynamic_cast< const MultiDimSparse<GUM_SCALAR>* > ( impl ) ) {
+            GUM_ERROR ( FatalError, "There is no MultiDimSparse in PRMs, normally..." );
           } else {
             // Just need to make the copy using the bijection but we only use multidim array
-            GUM_ERROR( FatalError, "encountered an unexpected MultiDim implementation" );
+            GUM_ERROR ( FatalError, "encountered an unexpected MultiDim implementation" );
           }
         }
 
@@ -113,90 +76,51 @@ namespace gum {
     }
 
 // the function used to combine two tables
-    Potential<prm_float>* multPotential( const Potential<prm_float>& t1,
-                                         const Potential<prm_float>& t2 ) {
-      return new Potential<prm_float> ( t1 * t2 );
+    template<typename GUM_SCALAR>
+    Potential<GUM_SCALAR>* multPotential ( const Potential<GUM_SCALAR>& t1,
+                                           const Potential<GUM_SCALAR>& t2 ) {
+      return new Potential<GUM_SCALAR> ( t1 * t2 );
     }
 
+    template<typename GUM_SCALAR>
     void
-    eliminateNode( const DiscreteVariable* var,
-                   Set<Potential<prm_float>*>& pool,
-                   Set<Potential<prm_float>*>& trash ) {
-      Potential<prm_float>* pot = 0;
-      Potential<prm_float>* tmp = 0;
+    eliminateNode ( const DiscreteVariable* var,
+                    Set<Potential<GUM_SCALAR>*>& pool,
+                    Set<Potential<GUM_SCALAR>*>& trash ) {
+      Potential<GUM_SCALAR>* pot = 0;
+      Potential<GUM_SCALAR>* tmp = 0;
       Set<const DiscreteVariable*> var_set;
-      var_set.insert( var );
-      Set<const Potential<prm_float>*> pots;
+      var_set.insert ( var );
+      Set<const Potential<GUM_SCALAR>*> pots;
 
-      for ( SetIterator<Potential<prm_float>*> iter = pool.begin(); iter != pool.end(); ++iter )
-        if ( ( *iter )->contains( *var ) )
-          pots.insert( *iter );
+      for ( auto iter = pool.begin(); iter != pool.end(); ++iter )
+        if ( ( *iter )->contains ( *var ) )
+          pots.insert ( *iter );
 
       if ( pots.size() == 0 ) {
         return;
       } else if ( pots.size() == 1 ) {
-        tmp = const_cast<Potential<prm_float>*>( *( pots.begin() ) );
-        pot = new Potential<prm_float>( projectSum( *tmp, var_set ) );
+        tmp = const_cast<Potential<GUM_SCALAR>*> ( * ( pots.begin() ) );
+        pot = new Potential<GUM_SCALAR> ( projectSum ( *tmp, var_set ) );
       } else {
-        MultiDimCombinationDefault<float,Potential> Comb( multPotential );
-        tmp = Comb.combine( pots );
-        pot = new Potential<prm_float>( projectSum( *tmp, var_set ) );
+        MultiDimCombinationDefault<GUM_SCALAR, Potential> Comb ( multPotential );
+        tmp = Comb.combine ( pots );
+        pot = new Potential<GUM_SCALAR> ( projectSum ( *tmp, var_set ) );
         delete tmp;
       }
 
-      for ( Set<const Potential<prm_float>*>::iterator iter = pots.begin(); iter != pots.end(); ++iter ) {
-        pool.erase( const_cast<Potential<prm_float>*>( *iter ) );
+      for ( auto iter = pots.begin(); iter != pots.end(); ++iter ) {
+        pool.erase ( const_cast<Potential<GUM_SCALAR>*> ( *iter ) );
 
-        if ( trash.exists( const_cast<Potential<prm_float>*>( *iter ) ) ) {
-          trash.erase( const_cast<Potential<prm_float>*>( *iter ) );
-          delete const_cast<Potential<prm_float>*>( *iter );
+        if ( trash.exists ( const_cast<Potential<GUM_SCALAR>*> ( *iter ) ) ) {
+          trash.erase ( const_cast<Potential<GUM_SCALAR>*> ( *iter ) );
+          delete const_cast<Potential<GUM_SCALAR>*> ( *iter );
         }
       }
 
-      pool.insert( pot );
-      trash.insert( pot );
+      pool.insert ( pot );
+      trash.insert ( pot );
     }
-
-// void
-// eliminateNode(const DiscreteVariable* var,
-//               Set<Potential<prm_float>*>& pool,
-//               Set<Potential<prm_float>*>& trash)
-// {
-//   MultiDimBucket<prm_float>* bucket = new MultiDimBucket<prm_float>();
-//   Set< Potential<prm_float>* > toRemove;
-//   for (SetIterator<Potential<prm_float>*> iter = pool.begin();
-//        iter != pool.end(); ++iter )
-//   {
-//     if ((*iter)->contains(*var)) {
-//       bucket->add(**iter);
-//       toRemove.insert(*iter);
-//     }
-//   }
-//   if (toRemove.empty()) {
-//     delete bucket;
-//   } else {
-//     for (SetIterator<Potential<prm_float>*> iter = toRemove.begin();
-//          iter != toRemove.end(); ++iter)
-//       pool.erase( *iter );
-//     for (Set<const DiscreteVariable*>::iterator jter =
-//          bucket->allVariables().begin(); jter != bucket->allVariables().end();
-//          ++jter )
-//     {
-//       try {
-//         if ((*jter) != var) bucket->add( **jter );
-//       } catch (NotFound&) {
-//         // This can happen if since some DiscreteVariable are not represented
-//         // as nodes in the undigraph (parents of input nodes)
-//         bucket->add(**jter);
-//       }
-//     }
-//     Potential<prm_float>* bucket_pot = new Potential<prm_float>( bucket );
-//     trash.insert( bucket_pot );
-//     pool.insert( bucket_pot );
-//   }
-//   if (bucket->domainSize() > INT_MAX)
-//     GUM_TRACE_VAR(bucket->domainSize());
-// }
 
   } /* namespace prm */
 }

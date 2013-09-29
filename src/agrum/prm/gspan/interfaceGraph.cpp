@@ -33,6 +33,13 @@
 namespace gum {
   namespace prm {
     namespace gspan {
+
+      std::ostream&
+      operator<< ( std::ostream& out, const LabelData& data ) {
+        out << data.l;
+        return out;
+      }
+
     } /* namespace gspan */
   } /* namespace prm */
 } /* namespace gum */

@@ -30,16 +30,16 @@ namespace gum_tests {
 
   class GSpanTestSuite: public CxxTest::TestSuite {
     private:
-      gum::prm::o3prm::O3prmReader* __driver;
+      gum::prm::o3prm::O3prmReader<double>* __driver;
       std::string dot_dir;
 
-      gum::prm::gspan::InterfaceGraph* ig;
+      gum::prm::gspan::InterfaceGraph<double>* ig;
 
     public:
       void setUp() {
-        __driver  = new gum::prm::o3prm::O3prmReader();
+        __driver  = new gum::prm::o3prm::O3prmReader<double>();
         __driver->readFile( GET_PATH_STR( o3prm/specialprinters.o3prm ) );
-        ig = new gum::prm::gspan::InterfaceGraph( __driver->prm()->system( "m" ) );
+        ig = new gum::prm::gspan::InterfaceGraph<double>( __driver->prm()->system( "m" ) );
       }
 
       void tearDown() {
@@ -56,8 +56,8 @@ namespace gum_tests {
       }
 
       void testTree() {
-        gum::prm::GSpan* gspan = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING( gspan = new gum::prm::GSpan( * ( __driver->prm() ), __driver->prm()->system( "m" ) ) );
+        gum::prm::GSpan<double>* gspan =nullptr;
+        TS_GUM_ASSERT_THROWS_NOTHING( gspan = new gum::prm::GSpan<double>( * ( __driver->prm() ), __driver->prm()->system( "m" ) ) );
 
         if ( gspan != 0 ) {
           TS_GUM_ASSERT_THROWS_NOTHING( gspan->discoverPatterns() );

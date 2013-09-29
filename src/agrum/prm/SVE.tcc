@@ -76,7 +76,7 @@ namespace gum {
       std::vector<NodeId> elim_order;
       VariableElimination<GUM_SCALAR> inf ( bn );
 
-      if ( hasEvidence ( query ) ) {
+      if ( this->hasEvidence ( query ) ) {
         __insertEvidence ( query, pool );
       }
 
@@ -127,6 +127,7 @@ namespace gum {
     void
     SVE<GUM_SCALAR>::__eliminateDelayedVariables ( const Instance<GUM_SCALAR>* i, BucketSet& pool, BucketSet& trash ) {
       Set<Potential<GUM_SCALAR>*> toRemove;
+
       for ( auto iter = __delayedVariables[i]->begin(); iter != __delayedVariables[i]->end(); ++iter ) {
         MultiDimBucket<GUM_SCALAR>* bucket = new MultiDimBucket<GUM_SCALAR>();
 
@@ -200,7 +201,7 @@ namespace gum {
     template<typename GUM_SCALAR>
     void
     SVE<GUM_SCALAR>::__variableElimination ( const Instance<GUM_SCALAR>* i, BucketSet& pool, BucketSet& trash, Set<NodeId>* delayedVars ) {
-      if ( hasEvidence ( i ) ) {
+      if ( this->hasEvidence ( i ) ) {
         __eliminateNodesWithEvidence ( i, pool, trash, delayedVars );
       } else {
         __insertLiftedNodes ( i, pool, trash );
@@ -284,8 +285,9 @@ namespace gum {
     SVE<GUM_SCALAR>::__eliminateNodesWithEvidence ( const Instance<GUM_SCALAR>* i, BucketSet& pool, BucketSet& trash, Set<NodeId>* delayedVars ) {
       // First we check if evidences are on inner nodes
       bool inner = false;
+      const auto& evs = this->evidence ( i );
 
-      for ( auto e = evidence ( i ).begin(); e != evidence ( i ).end(); ++e ) {
+      for ( auto e = evs.begin(); e != evs.end(); ++e ) {
         inner = i->type().isInputNode ( i->get ( e.key() ) ) or i->type().isInnerNode ( i->get ( e.key() ) );
 
         if ( inner ) { break; }
@@ -343,7 +345,7 @@ namespace gum {
         __insertEvidence ( i, pool );
         __insertLiftedNodes ( i, pool, trash );
 
-        for ( auto agg = i->type().aggregates().begin();agg != i->type().aggregates().end(); ++agg ) {
+        for ( auto agg = i->type().aggregates().begin(); agg != i->type().aggregates().end(); ++agg ) {
           pool.insert ( __getAggPotential ( i, *agg ) );
         }
 
@@ -441,7 +443,7 @@ namespace gum {
     template<typename GUM_SCALAR>
     void
     SVE<GUM_SCALAR>::__initElimOrder() {
-      ClassDependencyGraph<GUM_SCALAR> cdg ( *(this->_prm) );
+      ClassDependencyGraph<GUM_SCALAR> cdg ( * ( this->_prm ) );
       __class_elim_order = new Sequence<const ClassElementContainer<GUM_SCALAR>*>();
       std::list<NodeId> l;
 
@@ -503,7 +505,9 @@ namespace gum {
     template<typename GUM_SCALAR> INLINE
     void
     SVE<GUM_SCALAR>::__insertEvidence ( const Instance<GUM_SCALAR>* i, BucketSet& pool ) {
-      for ( auto iter = evidence ( i ).begin(); iter != evidence ( i ).end(); ++iter ) {
+      const auto& evs = this->evidence ( i );
+
+      for ( auto iter = evs.begin(); iter != evs.end(); ++iter ) {
         pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( *iter ) );
       }
     }

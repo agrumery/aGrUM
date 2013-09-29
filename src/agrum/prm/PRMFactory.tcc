@@ -1057,6 +1057,16 @@ namespace gum {
 
       return __stack.back();
     }
+    
+    template<typename GUM_SCALAR> INLINE
+    const PRMObject*
+    PRMFactory<GUM_SCALAR>::getCurrentAsConst() const {
+      if ( __stack.size() == 0 ) {
+        GUM_ERROR ( NotFound, "no object being built" );
+      }
+
+      return __stack.back();
+    }
 
     template<typename GUM_SCALAR> INLINE
     PRMObject*
@@ -1072,7 +1082,7 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     std::string
-    PRMFactory<GUM_SCALAR>::currentPackage() const { return ( __packages.empty() ) ?"":__packages.back(); }
+    PRMFactory<GUM_SCALAR>::currentPackage() const { return ( __packages.empty() ) ? "" : __packages.back(); }
 
     template<typename GUM_SCALAR> INLINE
     void
@@ -1341,20 +1351,20 @@ namespace gum {
     }
 
 
-    template<typename GUM_SCALAR> 
-    bool PRMFactory<GUM_SCALAR>::isClassOrInferface ( std::string type ) const {
+    template<typename GUM_SCALAR>
+    bool PRMFactory<GUM_SCALAR>::isClassOrInterface ( const std::string& type ) const {
       std::string dot = ".";
       return prm()->isClass ( type ) or
              prm()->isClass ( currentPackage() + dot + type ) or
              prm()->isInterface ( type ) or
              prm()->isInterface ( currentPackage() + dot + type ) ;
-    };
+    }
 
-    template<typename GUM_SCALAR> 
-    bool PRMFactory<GUM_SCALAR>::isArrayInCurrentSystem ( std::string name ) const {
-      System<GUM_SCALAR>* system = static_cast<System<GUM_SCALAR>*> ( getCurrent() );
+    template<typename GUM_SCALAR>
+    bool PRMFactory<GUM_SCALAR>::isArrayInCurrentSystem ( const std::string& name ) const {
+      const System<GUM_SCALAR>* system = static_cast<const System<GUM_SCALAR>*> ( getCurrentAsConst() );
       return ( system && system->isArray ( name ) );
-    };
+    }
   } /* namespace prm */
 } /* namespace gum */
 

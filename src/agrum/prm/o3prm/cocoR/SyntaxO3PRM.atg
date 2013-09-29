@@ -417,7 +417,7 @@ CPTRule<bool &error> =          (. std::vector<std::string> labels; std::vector<
     { WEAK ',' CPTRuleValue<s>  (. labels.push_back(s); .)
     } ':' Number<f>             (. values.push_back(f); .)
     { WEAK ',' Number<f>        (. values.push_back(f); .)
-    } SYNC ';'                  (. TRY3(factory().setCPFByRule(labels, values), std::string("Problem with CPF"), error) .)
+    } SYNC ';'                  (. TRY3(factory().setCPFByFloatRule(labels, values), std::string("Problem with CPF"), error) .)
     .
 
 CPTRuleValue<. std::string& s .> =

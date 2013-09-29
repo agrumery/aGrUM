@@ -53,7 +53,7 @@ namespace gum {
       var_name << chain.first->name() << "." << chain.second->safeName();
       bn_obs->add ( __inf->bn().variableFromName ( var_name.str() ) );
       // Retrievin the PRM<GUM_SCALAR>'s evidence and copying it in bn_obs
-      const Potential<GUM_SCALAR>* prm_obs = evidence ( chain.first ) [chain.second->id()];
+      const Potential<GUM_SCALAR>* prm_obs = this->evidence ( chain.first ) [chain.second->id()];
       Instantiation i ( *bn_obs ), j ( *prm_obs );
 
       for ( i.setFirst(), j.setFirst(); not i.end(); i.inc(), j.inc() ) {

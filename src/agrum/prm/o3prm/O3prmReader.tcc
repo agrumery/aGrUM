@@ -24,6 +24,7 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
+#include <string>
 
 //to ease automatic parsing
 #include <agrum/prm/o3prm/O3prmReader.h>
@@ -44,13 +45,13 @@ namespace gum {
           addClassPath( class_path.substr( i, j - i ) );
           i = j + 1;
 
-          if ( i < class_path.length() )
+          if ( i < class_path.size() )
             j = class_path.find( ';', i );
           else
             j = std::string::npos;
         }
 
-        if ( i < class_path.length() )
+        if ( i < class_path.size() )
           addClassPath( class_path.substr( i, std::string::npos ) );
       }
 
