@@ -32,14 +32,15 @@
 #include <agrum/core/hashTable.h>
 #include <agrum/core/sequence.h>
 
-#include <agrum/prm/PRMObject.h>
-#include <agrum/prm/type.h>
-#include <agrum/prm/class.h>
-#include <agrum/prm/instance.h>
-#include <agrum/prm/attribute.h>
-#include <agrum/prm/aggregate.h>
-#include <agrum/prm/referenceSlot.h>
-#include <agrum/prm/slotChain.h>
+#include <agrum/prm/elements/PRMObject.h>
+#include <agrum/prm/elements/type.h>
+#include <agrum/prm/elements/class.h>
+#include <agrum/prm/elements/instance.h>
+#include <agrum/prm/elements/attribute.h>
+#include <agrum/prm/elements/aggregate.h>
+#include <agrum/prm/elements/referenceSlot.h>
+#include <agrum/prm/elements/slotChain.h>
+
 #include <agrum/prm/system.h>
 
 namespace gum {
@@ -224,6 +225,7 @@ namespace gum {
         /// @}
         
     };
+    extern template class Interface<double>;
 
   } /* namespace prm */
 } /* namespace gum */

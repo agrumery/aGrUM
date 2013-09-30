@@ -21,7 +21,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include "testsuite_utils.h"
 
-#include <agrum/prm/gspan.h>
+#include <agrum/prm/inference/gspan.h>
 
 #include <agrum/prm/o3prm/O3prmReader.h>
 

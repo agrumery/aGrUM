@@ -39,11 +39,7 @@
 #include <agrum/multidim/multiDimSparse.h>
 
 #include <agrum/prm/utils_prm.h>
-#include <agrum/prm/PRMObject.h>
-#include <agrum/prm/system.h>
 #include <agrum/prm/PRM.h>
-#include <agrum/prm/classElementContainer.h>
-
 
 namespace gum {
 

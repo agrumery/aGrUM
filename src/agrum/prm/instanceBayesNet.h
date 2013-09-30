@@ -119,6 +119,8 @@ namespace gum {
 
         void __init( const Instance<GUM_SCALAR>& i );
     };
+    
+    extern template class InstanceBayesNet<double>;
 
   } /* namespace prm */
 } /* namespace gum */

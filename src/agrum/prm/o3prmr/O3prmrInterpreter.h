@@ -31,7 +31,8 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 #include <agrum/prm/o3prmr/O3prmrContext.h>
 #include <agrum/prm/o3prm/O3prmReader.h>
-#include <agrum/prm/PRMInference.h>
+#include <agrum/prm/inference/PRMInference.h>
+
 #include <agrum/core/errorsContainer.h>
 #endif //DOXYGEN_SHOULD_SKIP_THIS
 

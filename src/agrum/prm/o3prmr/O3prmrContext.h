@@ -33,7 +33,8 @@
 #include <map>
 
 #include <agrum/prm/system.h>
-#include <agrum/prm/PRMInference.h>
+
+#include <agrum/prm/inference/PRMInference.h>
 
 namespace gum {
   namespace prm {

@@ -23,8 +23,8 @@
 #include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/inference/BayesBall.h>
 
-#include <agrum/prm/SVE.h>
-#include <agrum/prm/structuredBayesBall.h>
+#include <agrum/prm/inference/SVE.h>
+#include <agrum/prm/inference/structuredBayesBall.h>
 
 #include <agrum/prm/o3prm/O3prmReader.h>
 

@@ -24,10 +24,10 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/prm/PRM.h>
-
 #ifndef GUM_ClassDependencyGraph_H
 #define GUM_ClassDependencyGraph_H
+
+#include <agrum/prm/PRM.h>
 
 namespace gum {
   namespace prm {

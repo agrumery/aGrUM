@@ -35,7 +35,7 @@
 #include <agrum/multidim/potential.h>
 #include <agrum/multidim/projections4MultiDim.h>
 
-#include <agrum/prm/PRMObject.h>
+#include <agrum/prm/elements/PRMObject.h>
 
 
 /*!  @ingroup prm_group

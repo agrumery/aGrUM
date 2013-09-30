@@ -27,11 +27,11 @@
 
 #include <agrum/prm/instanceBayesNet.h>
 #include <agrum/prm/classBayesNet.h>
-#include <agrum/prm/groundedInference.h>
-#include <agrum/prm/SVE.h>
-#include <agrum/prm/SVED.h>
-#include <agrum/prm/structuredBayesBall.h>
-#include <agrum/prm/structuredInference.h>
+#include <agrum/prm/inference/groundedInference.h>
+#include <agrum/prm/inference/SVE.h>
+#include <agrum/prm/inference/SVED.h>
+#include <agrum/prm/inference/structuredBayesBall.h>
+#include <agrum/prm/inference/structuredInference.h>
 
 #include <agrum/prm/o3prm/O3prmReader.h>
 

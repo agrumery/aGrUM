@@ -26,6 +26,12 @@
  */
 #include <agrum/prm/system.h>
 
+#include <agrum/prm/elements/instance.h>
+
+#include <agrum/multidim/aggregators/min.h>
+#include <agrum/multidim/aggregators/max.h>
+#include <agrum/multidim/aggregators/exists.h>
+#include <agrum/multidim/aggregators/forall.h>
 
 namespace gum {
   namespace prm {

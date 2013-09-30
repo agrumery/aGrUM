@@ -37,8 +37,7 @@
 
 #include <agrum/BN/BayesNetFactory.h>
 
-#include <agrum/prm/classElementContainer.h>
-#include <agrum/prm/instance.h>
+#include <agrum/prm/elements/PRMObject.h>
 
 namespace gum {
   namespace prm {
@@ -327,6 +326,7 @@ namespace gum {
         /// @}
     };
 
+    extern template class System<double>;
   } /* namespace prm */
 } /* namespace gum */
 

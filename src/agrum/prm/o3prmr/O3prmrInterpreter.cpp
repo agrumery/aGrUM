@@ -26,16 +26,17 @@
 
 #include <agrum/prm/o3prmr/O3prmrInterpreter.h>
 
+#include <agrum/core/utils.h>
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/inference/VEWithBB.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
-#include <agrum/prm/SVED.h>
-#include <agrum/prm/groundedInference.h>
-#include <agrum/prm/SVE.h>
-#include <agrum/core/utils.h>
 #include <agrum/BN/BayesNet.h>
+
+#include <agrum/prm/inference/SVED.h>
+#include <agrum/prm/inference/groundedInference.h>
+#include <agrum/prm/inference/SVE.h>
 
 #include <agrum/prm/o3prmr/cocoR/Parser.h>
 

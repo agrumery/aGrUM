@@ -23,8 +23,8 @@
 
 #include <agrum/BN/inference/VEWithBB.h>
 
-#include <agrum/prm/groundedInference.h>
-#include <agrum/prm/structuredInference.h>
+#include <agrum/prm/inference/groundedInference.h>
+#include <agrum/prm/inference/structuredInference.h>
 
 #include <agrum/prm/generator/layerGenerator.h>
 #include <agrum/prm/generator/clusteredLayerGenerator.h>
