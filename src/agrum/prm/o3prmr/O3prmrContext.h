@@ -32,7 +32,7 @@
 #include <vector>
 #include <map>
 
-#include <agrum/prm/system.h>
+#include <agrum/prm/elements/system.h>
 
 #include <agrum/prm/inference/PRMInference.h>
 

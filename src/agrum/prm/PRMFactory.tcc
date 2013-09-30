@@ -810,7 +810,6 @@ namespace gum {
 
       GUM_ASSERT ( v.size() == elts.size() );
 
-      GUM_TRACE ( "new outputnode for " << current->name() );
       current->setOutputNode ( * ( elts.back() ), true );
 
       return new SlotChain<GUM_SCALAR> ( name, elts );

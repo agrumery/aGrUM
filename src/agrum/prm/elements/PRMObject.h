@@ -193,10 +193,10 @@ namespace gum {
 /// For printing Type easily.
     std::ostream& operator<< ( std::ostream& out, PRMObject::PRMType obj_type );
     
-    // list of decralations of PRMObjects    
+    // list of declarations of PRMObjects    
     template<typename GUM_SCALAR> class Type;
     template<typename GUM_SCALAR> class ClassElement;
-    template<typename GUM_SCALAR> class  ClassElementContainer;
+    template<typename GUM_SCALAR> class ClassElementContainer;
     template<typename GUM_SCALAR> class Aggregate;
     template<typename GUM_SCALAR> class Interface;
     template<typename GUM_SCALAR> class Attribute;
@@ -211,7 +211,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_INLINE
-#include <agrum/prm/PRMObject.inl>
+#include <agrum/prm/elements/PRMObject.inl>
 #endif // GUM_NO_INLINE
 
 #endif /* GUM_PRM_OBJECT_H */

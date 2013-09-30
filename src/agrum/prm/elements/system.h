@@ -330,7 +330,7 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/prm/system.tcc>
+#include <agrum/prm/elements/system.tcc>
 
 #endif // GUM_SYSTEM_H
 

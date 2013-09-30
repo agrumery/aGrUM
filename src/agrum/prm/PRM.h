@@ -41,7 +41,7 @@
 #include <agrum/prm/elements/referenceSlot.h>
 #include <agrum/prm/elements/slotChain.h>
 
-#include <agrum/prm/system.h>
+#include <agrum/prm/elements/system.h>
 
 namespace gum {
   namespace prm {

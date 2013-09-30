@@ -25,7 +25,7 @@
  *
  */
 
-#include <agrum/prm/system.h>
+#include <agrum/prm/elements/system.h>
 
 namespace gum {
   namespace prm {

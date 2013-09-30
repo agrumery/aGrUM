@@ -24,7 +24,7 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  *
  */
-#include <agrum/prm/system.h>
+#include <agrum/prm/elements/system.h>
 
 #include <agrum/prm/elements/instance.h>
 

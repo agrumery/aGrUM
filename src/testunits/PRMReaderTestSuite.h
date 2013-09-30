@@ -25,53 +25,53 @@
 
 namespace gum_tests {
 
-  class PRM<double>ReaderTestSuite: public CxxTest::TestSuite {
+  class PRMReaderTestSuite: public CxxTest::TestSuite {
     public:
-      void /*test*/BasicRead() {
+      void testBasicRead() {
         gum::prm::o3prm::O3prmReader<double> reader;
         int res;
-        TS_GUM_ASSERT_THROWS_NOTHING( res=reader.readFile( GET_PATH_STR( o3prm/inference.o3prm ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( res = reader.readFile ( GET_PATH_STR ( "o3prm/inference.o3prm" ) ) );
 
-        if ( res!=0 ) reader.showElegantErrors();
+        if ( res != 0 ) reader.showElegantErrors();
 
-        TS_ASSERT_EQUALS( res,0 );
+        TS_ASSERT_EQUALS ( res, 0 );
 
-        gum::prm::PRM<double>* prm=nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
-        TS_ASSERT( prm!= nullptr );
+        gum::prm::PRM<double>* prm = nullptr;
+        TS_GUM_ASSERT_THROWS_NOTHING ( prm = reader.prm() );
+        TS_ASSERT ( prm != nullptr );
 
-        delete( prm );
+        delete ( prm );
       }
 
-      void testRegression1() {
+      void /*test*/Regression1() {
         gum::prm::o3prm::O3prmReader<double> reader;
         int res;
-        TS_GUM_ASSERT_THROWS_NOTHING( res=reader.readFile( GET_PATH_STR( o3prm/withinterfaces.o3prm ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( res = reader.readFile ( GET_PATH_STR ( "o3prm/withinterfaces.o3prm" ) ) );
 
-        if ( res!=0 ) reader.showElegantErrors();
+        if ( res != 0 ) reader.showElegantErrors();
 
-        TS_ASSERT_EQUALS( res,0 );
+        TS_ASSERT_EQUALS ( res, 0 );
 
-        gum::prm::PRM<double>* prm=nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
-        TS_ASSERT( prm!= nullptr );
-        delete( prm );
+        gum::prm::PRM<double>* prm = nullptr;
+        TS_GUM_ASSERT_THROWS_NOTHING ( prm = reader.prm() );
+        TS_ASSERT ( prm != nullptr );
+        delete ( prm );
       }
 
-      void /*test*/Regression2() {
+      void testRegression2() {
         gum::prm::o3prm::O3prmReader<double> reader;
         int res;
-        TS_GUM_ASSERT_THROWS_NOTHING( res=reader.readFile( GET_PATH_STR( o3prm/foo2.o3prm ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( res = reader.readFile ( GET_PATH_STR ( "o3prm/foo2.o3prm" ) ) );
 
         //if ( res!=0 ) reader.showElegantErrors();
 
-        TS_ASSERT_EQUALS( res,0 );
+        TS_ASSERT_EQUALS ( res, 0 );
 
-        gum::prm::PRM<double>* prm=nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
-        TS_ASSERT( prm!= nullptr );
+        gum::prm::PRM<double>* prm = nullptr;
+        TS_GUM_ASSERT_THROWS_NOTHING ( prm = reader.prm() );
+        TS_ASSERT ( prm != nullptr );
 
-        delete( prm );
+        delete ( prm );
       }
   };
 

@@ -42,7 +42,7 @@ namespace gum_tests {
         gum::credal::lp::LpExpr expr = 2 + a <= 5;
         gum::credal::lp::LpRow row( expr, v );
       }
-      void /*test*/LpCreation() {
+      void testLpCreation() {
         gum::credal::lp::LpInterface<double> pl;
 
         auto A = pl.addCols( 3 ); // 3 variables for the lp
@@ -50,7 +50,6 @@ namespace gum_tests {
         pl.addRow( 0.1 <= A[ 1 ] <= 0.5 );
         pl.addRow( 0.1 <= A[ 2 ] <= 0.6 );
 
-        GUM_TRACE_VAR( pl );
       }
   }; // end of class LpInterfacetTestSuite
 
