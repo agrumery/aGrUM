@@ -25,7 +25,7 @@
  */
 
 #include <agrum/prm/gspan/DFSTree.h>
-
+#include <agrum/prm/gspan/edgeGrowth.h>
 
 namespace gum {
   namespace prm {
@@ -160,7 +160,7 @@ namespace gum {
 
       template<typename GUM_SCALAR>
       void
-      DFSTree<GUM_SCALAR>::__addChild ( Pattern& p, Pattern* child, EdgeGrowth& edge_growth ) {
+      DFSTree<GUM_SCALAR>::__addChild ( Pattern& p, Pattern* child, EdgeGrowth<GUM_SCALAR>& edge_growth ) {
         // Adding child to the tree
         NodeId node = DiGraph::insertNode();
         __node_map.insert ( node, child );
@@ -187,7 +187,7 @@ namespace gum {
 
       template<typename GUM_SCALAR>
       void
-      DFSTree<GUM_SCALAR>::__checkGrowth ( Pattern& p, Pattern* child, EdgeGrowth& edge_growth ) {
+      DFSTree<GUM_SCALAR>::__checkGrowth ( Pattern& p, Pattern* child, EdgeGrowth<GUM_SCALAR>& edge_growth ) {
         NodeId v = edge_growth.v;
 
         // First we check if the edge is legal
@@ -222,7 +222,7 @@ namespace gum {
 
       template<typename GUM_SCALAR>
       Pattern&
-      DFSTree<GUM_SCALAR>::growPattern ( Pattern& p, EdgeGrowth& edge_growth, Size min_freq ) {
+      DFSTree<GUM_SCALAR>::growPattern ( Pattern& p, EdgeGrowth<GUM_SCALAR>& edge_growth, Size min_freq ) {
         Pattern* child = new Pattern ( p );
 
         try {
@@ -332,23 +332,6 @@ namespace gum {
         //   __find_sub_pattern(*child, *node);
         // }
         return *child;
-      }
-
-      template<typename GUM_SCALAR>
-      void
-      DFSTree<GUM_SCALAR>::EdgeGrowth::insert ( Instance<GUM_SCALAR>* u, Instance<GUM_SCALAR>* v ) {
-        NodeId id = iso_graph.insertNode();
-        degree_list->push_back ( id );
-
-        for ( auto iter = matches.begin(); iter != matches.end(); ++iter ) {
-          if ( ( iter->first == u ) or ( iter->second == u ) or
-               ( iter->first == v ) or ( iter->second == v ) ) {
-            iso_graph.insertEdge ( iter.key(), id );
-          }
-        }
-
-        // The order between u and v is important ! DO NOT INVERSE IT !
-        matches.insert ( id, std::make_pair ( u, v ) );
       }
 
       template<typename GUM_SCALAR>
@@ -566,7 +549,7 @@ namespace gum {
 
       template<typename GUM_SCALAR> INLINE
       std::ostream&
-      operator<< ( std::ostream& out, const typename DFSTree<GUM_SCALAR>::EdgeGrowth& edge ) {
+      operator<< ( std::ostream& out, const EdgeGrowth<GUM_SCALAR>& edge ) {
         out << edge.u << ", " << * ( edge.edge ) << ", " << * ( edge.l_v ) << ", " << edge.v;
         return out;
       }
@@ -584,44 +567,6 @@ namespace gum {
 // }
 
 
-// EdgeGrowth
-
-
-      template<typename GUM_SCALAR> INLINE
-      DFSTree<GUM_SCALAR>::EdgeGrowth::EdgeGrowth ( NodeId a_u, LabelData* an_edge,
-          LabelData* a_l_v, NodeId a_v ) :
-        u ( a_u ), edge ( an_edge ), l_v ( a_l_v ), v ( a_v ),
-        degree_list ( new std::vector<NodeId>() ) {
-        GUM_CONSTRUCTOR ( DFSTree<GUM_SCALAR>::EdgeGrowth );
-      }
-
-      template<typename GUM_SCALAR> INLINE
-      DFSTree<GUM_SCALAR>::EdgeGrowth::EdgeGrowth ( const EdgeGrowth& from ) :
-        u ( from.u ), edge ( from.edge ), v ( from.v ), matches ( from.matches ),
-        iso_graph ( from.iso_graph ), degree_list ( 0 ), max_indep_set ( from.max_indep_set ) {
-        GUM_CONS_CPY ( DFSTree<GUM_SCALAR>::EdgeGrowth );
-
-        if ( from.degree_list != 0 ) {
-          degree_list = new std::vector<NodeId> ( * ( from.degree_list ) );
-        }
-      }
-
-      template<typename GUM_SCALAR> INLINE
-      DFSTree<GUM_SCALAR>::EdgeGrowth::~EdgeGrowth() {
-        GUM_DESTRUCTOR ( DFSTree<GUM_SCALAR>::EdgeGrowth );
-
-        if ( degree_list != 0 ) {
-          delete degree_list;
-        }
-      }
-
-      template<typename GUM_SCALAR> INLINE
-      std::string
-      DFSTree<GUM_SCALAR>::EdgeGrowth::toString() {
-        std::stringstream str;
-        str << u << "-" << edge << "-" << l_v << "-" << v;
-        return str.str();
-      }
 
 //template<typename GUM_SCALAR> INLINE
 //Size

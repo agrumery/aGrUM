@@ -250,10 +250,10 @@ namespace gum {
 
         /// Copy operator. Don't use it.
         FuncAttribute& operator= ( const FuncAttribute& from );
-
-
     };
 
+    extern template class Attribute<double>;
+    extern template class FuncAttribute<double>;
   } /* namespace prm */
 } // namespace gum
 

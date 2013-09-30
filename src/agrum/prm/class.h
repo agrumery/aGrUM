@@ -477,6 +477,7 @@ namespace gum {
         /// @}
     };
 
+    extern template class Class<double>;
   } /* namespace prm */
 } // namespace gum
 

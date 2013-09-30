@@ -24,6 +24,8 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
+#ifndef GUM_LAYER_GENERATOR_H
+#define GUM_LAYER_GENERATOR_H
 #include <cstdlib>
 #include <ctime>
 #include <string>
@@ -35,9 +37,8 @@
 
 #include <agrum/prm/PRMFactory.h>
 #include <agrum/prm/generator/PRMGenerator.h>
+#include <agrum/prm/generator/nameGenerator.h>
 
-#ifndef GUM_LAYER_GENERATOR_H
-#define GUM_LAYER_GENERATOR_H
 namespace gum {
   namespace prm {
 

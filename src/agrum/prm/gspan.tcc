@@ -24,6 +24,7 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 #include <agrum/prm/gspan.h>
+#include <agrum/prm/gspan/edgeGrowth.h>
 
 namespace gum {
   namespace prm {
@@ -97,8 +98,8 @@ namespace gum {
       stack.push_back ( &pat );
       // Pointers used in the following while
       gspan::Pattern* p = 0;
-      HashTable<std::string, typename gspan::DFSTree<GUM_SCALAR>::EdgeGrowth*>* edge_count = 0;
-      typename gspan::DFSTree<GUM_SCALAR>::EdgeGrowth* edge_growth = 0;
+      HashTable<std::string, gspan::EdgeGrowth<GUM_SCALAR>*>* edge_count = 0;
+      gspan::EdgeGrowth<GUM_SCALAR>* edge_growth = 0;
       Sequence<Instance<GUM_SCALAR>*>* seq = 0; Instance<GUM_SCALAR>* current = 0; Instance<GUM_SCALAR>* neighbor = 0;
       // Neighbor_id is the neighbor's id in the interface graph and neighbor_node
       // is its id in the rightmost path in the case of a backward edge growth
@@ -118,10 +119,10 @@ namespace gum {
           p->rightmostPath ( r_path );
           // Mapping used to count each possible child of p, the position in the vector
           // matches the one in the rightmost path
-          std::vector< HashTable<std::string, typename gspan::DFSTree<GUM_SCALAR>::EdgeGrowth*>* > count_vector;
+          std::vector< HashTable<std::string, gspan::EdgeGrowth<GUM_SCALAR>*>* > count_vector;
 
           for ( size_t i = 0; i < r_path.size(); ++i )
-            count_vector.push_back ( new HashTable<std::string, typename gspan::DFSTree<GUM_SCALAR>::EdgeGrowth*>() );
+            count_vector.push_back ( new HashTable<std::string, gspan::EdgeGrowth<GUM_SCALAR>*>() );
 
           // For each subgraph represented by p, we look for a valid edge growth for each instance match of p in its isomorphism graph.
           for ( const auto iso_node : __tree.iso_graph ( *p ).nodes() ) {
@@ -147,13 +148,13 @@ namespace gum {
                   neighbor_label = ( neighbor == edge_data->u ) ? edge_data->l_u : edge_data->l_v;
                   neighbor_node = ( seq->exists ( neighbor ) ) ? seq->pos ( neighbor ) + 1 : 0;
                   // Adding the edge growth to the edge_growth hashtable
-                  typename gspan::DFSTree<GUM_SCALAR>::EdgeGrowth temp_growth ( *node, edge_data->l, neighbor_label, neighbor_node );
+                  gspan::EdgeGrowth<GUM_SCALAR> temp_growth ( *node, edge_data->l, neighbor_label, neighbor_node );
 
                   try {
                     edge_growth = ( *edge_count ) [temp_growth.toString()];
                     edge_growth->insert ( current, neighbor );
                   } catch ( NotFound& ) {
-                    edge_growth = new typename gspan::DFSTree<GUM_SCALAR>::EdgeGrowth ( *node, edge_data->l, neighbor_label, neighbor_node );
+                    edge_growth = new gspan::EdgeGrowth<GUM_SCALAR> ( *node, edge_data->l, neighbor_label, neighbor_node );
                     edge_growth->insert ( current, neighbor );
                     edge_count->insert ( edge_growth->toString(), edge_growth );
                   }

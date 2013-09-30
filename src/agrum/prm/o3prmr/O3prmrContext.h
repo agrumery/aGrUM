@@ -238,7 +238,11 @@ namespace gum {
           O3prmrContext& operator+=( const O3prmrContext& c );
       };
 
-
+extern template class ObserveCommand<double>;
+extern template class UnobserveCommand<double>;
+extern template class QueryCommand<double>;
+extern template class O3prmrSession<double>;
+extern template class O3prmrContext<double>;
     } // namespace o3prmr
   } // namespace prm
 } // namespace gum

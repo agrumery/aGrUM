@@ -1117,7 +1117,7 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     const PRMObject*
-    PRMFactory<GUM_SCALAR>::getCurrentAsConst() const {
+    PRMFactory<GUM_SCALAR>::getCurrent() const {
       if ( __stack.size() == 0 ) {
         GUM_ERROR ( NotFound, "no object being built" );
       }
@@ -1407,7 +1407,7 @@ namespace gum {
 
     template<typename GUM_SCALAR>
     bool PRMFactory<GUM_SCALAR>::isArrayInCurrentSystem ( const std::string& name ) const {
-      const System<GUM_SCALAR>* system = static_cast<const System<GUM_SCALAR>*> ( getCurrentAsConst() );
+      const System<GUM_SCALAR>* system = static_cast<const System<GUM_SCALAR>*> ( getCurrent() );
       return ( system && system->isArray ( name ) );
     }
   } /* namespace prm */

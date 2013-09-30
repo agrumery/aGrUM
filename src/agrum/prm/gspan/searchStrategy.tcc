@@ -23,6 +23,7 @@
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
+#include <agrum/prm/gspan/searchStrategy.h>
 
 namespace gum {
   namespace prm {
@@ -264,7 +265,7 @@ namespace gum {
       bool
       FrequenceSearch<GUM_SCALAR>::accept_growth ( const Pattern* parent,
           const Pattern* child,
-          const typename DFSTree<GUM_SCALAR>::EdgeGrowth& growh ) {
+          const EdgeGrowth<GUM_SCALAR>& growh ) {
         return this->_tree->frequency ( *child ) >= __freq;
       }
 
@@ -278,7 +279,7 @@ namespace gum {
       template<typename GUM_SCALAR> INLINE
       bool
       FrequenceSearch<GUM_SCALAR>::operator() ( LabelData* i, LabelData* j ) {
-        return this->_tree->graph().size ( i ) > this->_tree->graph().size ( j );
+        return ( this->_tree->graph ( ).size ( i ) > this->_tree->graph ( ).size ( j ) );
       }
 
 
@@ -320,7 +321,7 @@ namespace gum {
       bool
       StrictSearch<GUM_SCALAR>::accept_growth ( const Pattern* parent,
           const Pattern* child,
-          const typename DFSTree<GUM_SCALAR>::EdgeGrowth& growth ) {
+          const EdgeGrowth<GUM_SCALAR>& growth ) {
         return __inner_cost ( child ) + this->_tree->frequency ( *child ) * __outer_cost ( child ) <
                this->_tree->frequency ( *child ) * __outer_cost ( parent );
       }
@@ -443,7 +444,7 @@ namespace gum {
       bool
       TreeWidthSearch<GUM_SCALAR>::accept_growth ( const Pattern* parent,
           const Pattern* child,
-          const typename DFSTree<GUM_SCALAR>::EdgeGrowth& growth ) {
+          const EdgeGrowth<GUM_SCALAR>& growth ) {
         return cost ( *parent ) >= cost ( *child );
       }
 

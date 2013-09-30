@@ -30,6 +30,7 @@
 namespace gum {
   namespace prm {
 
+    template class Aggregate<double>;
   } /* namespace prm */
 } /* namespace gum */
 

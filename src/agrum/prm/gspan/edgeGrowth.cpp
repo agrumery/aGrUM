@@ -19,23 +19,17 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Implementation of the DFSTree class.
+ * @brief Implementation of the EdgeGrowth class.
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/prm/gspan/DFSTree.h>
-
+#include <agrum/prm/gspan/edgeGrowth.h>
 
 namespace gum {
   namespace prm {
     namespace gspan {
-
-      template class SearchStrategy<double>;
-      template class FrequenceSearch<double>;
-      template class StrictSearch<double>;
-      template class TreeWidthSearch<double>;
-
+      template class EdgeGrowth<double>;
     } /* namespace gspan */
   } /* namespace prm */
 } /* namespace gum */

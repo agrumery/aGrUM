@@ -139,7 +139,6 @@ namespace gum {
         void __init ( const Class<GUM_SCALAR>& c );
     };
 
-    extern template class ClassBayesNet<float>;
     extern template class ClassBayesNet<double>;
 
   } /* namespace prm */

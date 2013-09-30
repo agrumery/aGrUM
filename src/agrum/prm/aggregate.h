@@ -225,11 +225,12 @@ namespace gum {
         /// @}
     };
 
+    extern template class Aggregate<double>;
   } /* namespace prm */
 } // namespace gum
 
 #include <agrum/prm/aggregate.tcc>
 
 
-#endif /* GUM_CLASS_ELEMENT_H */
+#endif /* GUM_AGGREGATE_H */
 

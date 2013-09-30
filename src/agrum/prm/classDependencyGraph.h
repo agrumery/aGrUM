@@ -117,6 +117,7 @@ namespace gum {
         NodeMap __node_map;
     };
 
+    extern template class ClassDependencyGraph<double>;
   } /* namespace prm */
 } /* namespace gum */
 

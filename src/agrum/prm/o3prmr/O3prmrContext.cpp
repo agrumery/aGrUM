@@ -19,24 +19,24 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Implementation of the DFSTree class.
+ * @brief Implementation of O3prmrContext
  *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN
+ * @author Pierre-Henri WUILLEMIN, Ni NI, Lionel TORTI & Vincent RENAUDINEAU
  */
 
-#include <agrum/prm/gspan/DFSTree.h>
-
+#include <agrum/prm/o3prmr/O3prmrContext.h>
 
 namespace gum {
+
   namespace prm {
-    namespace gspan {
 
-      template class SearchStrategy<double>;
-      template class FrequenceSearch<double>;
-      template class StrictSearch<double>;
-      template class TreeWidthSearch<double>;
+    namespace o3prmr {
 
-    } /* namespace gspan */
-  } /* namespace prm */
-} /* namespace gum */
-
+      template class ObserveCommand<double>;
+      template class UnobserveCommand<double>;
+      template class QueryCommand<double>;
+      template class O3prmrSession<double>;
+      template class O3prmrContext<double>;
+    }
+  }
+}

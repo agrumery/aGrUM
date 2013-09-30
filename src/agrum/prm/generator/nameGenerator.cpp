@@ -19,24 +19,20 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Implementation of the DFSTree class.
+ * @brief Implementation of PRMGenerator.
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/prm/gspan/DFSTree.h>
+#include <agrum/prm/generator/nameGenerator.h>
 
+#ifdef GUM_NO_INLINE
+#include <agrum/prm/generator/nameGenerator.inl>
+#endif 
 
 namespace gum {
   namespace prm {
-    namespace gspan {
 
-      template class SearchStrategy<double>;
-      template class FrequenceSearch<double>;
-      template class StrictSearch<double>;
-      template class TreeWidthSearch<double>;
-
-    } /* namespace gspan */
   } /* namespace prm */
 } /* namespace gum */
 

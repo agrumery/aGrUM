@@ -167,7 +167,7 @@ namespace gum_tests {
                 f += ( **jter ).cpf().get ( i );
               }
 
-              TS_ASSERT_DELTA ( f, 1.0, 1e-9 );
+              TS_ASSERT_DELTA ( f, 1.0, 1e-7 );
               i.unsetOverflow();
             }
           }
@@ -191,7 +191,7 @@ namespace gum_tests {
             for ( i.setFirstIn ( j ); not i.end(); i.incIn ( j ) )
               sum += cpt.get ( i );
 
-            TS_ASSERT_DELTA ( sum, 1.0, 1e-9 );
+            TS_ASSERT_DELTA ( sum, 1.0, 1e-7);
             i.unsetOverflow();
           }
         }

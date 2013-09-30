@@ -40,7 +40,7 @@
 namespace gum {
   namespace prm {
     template<typename GUM_SCALAR> class GSpan;
-    
+
     namespace gspan {
 
       /**
@@ -275,12 +275,15 @@ namespace gum {
 
       };
 
+      extern template class NodeData<double>;
+      extern template class EdgeData<double>;
+      extern template class InterfaceGraph<double>;
+
     } /* namespace gspan */
   } /* namespace prm */
 } /* namespace gum */
-#ifndef GUM_NO_INLINE
+
 #include <agrum/prm/gspan/interfaceGraph.tcc>
-#endif // GUM_NO_INLINE
 
 #endif /* GUM_INTERFACE_GRAPH_H */
 

@@ -115,7 +115,7 @@ namespace gum {
          * @throw NotFound if nothing is being built.
          */
         virtual PRMObject* getCurrent() override;
-        virtual const PRMObject* getCurrentAsConst() const  override;
+        virtual const PRMObject* getCurrent() const  override;
 
         /**
          * @brief Close current object being built.

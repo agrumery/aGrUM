@@ -29,7 +29,7 @@
 namespace gum {
   namespace prm {
     namespace gspan {
-
+      template class DFSTree<double>;
     } /* namespace gspan */
   } /* namespace prm */
 } /* namespace gum */

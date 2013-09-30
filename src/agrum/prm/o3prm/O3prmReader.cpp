@@ -32,9 +32,9 @@ namespace gum {
   namespace prm {
 
     namespace o3prm {
-
+      
+      template class O3prmReader<double>;
+      
     } /* namespace o3prm */
   } /* namespace prm */
 } /* namespace gum */
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

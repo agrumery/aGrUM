@@ -225,6 +225,7 @@ namespace gum {
         NodeId __id;
     };
 
+    extern template class ClassElement<double>;
   } /* namespace prm */
 } // namespace gum
 
