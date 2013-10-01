@@ -138,8 +138,8 @@ void Parser::o3prmr() {
 				RequestBloc();
 			}
 		} else if (StartOf(2)) {
-			__currentSession = new O3prmrSession("default");
-			__context->addSession( __currentSession );
+			__currentSession = new O3prmrSession<double>("default");
+			__context->addSession( *__currentSession );
 			
 			Command();
 		} else SynErr(32);
@@ -160,14 +160,14 @@ void Parser::Ident(std::string& s) {
 void Parser::RequestBloc() {
 		Expect(_request);
 		Expect(_word);
-		__currentSession = new O3prmrSession(gum::narrow(t->val)); 
+		__currentSession = new O3prmrSession<double>(gum::narrow(t->val)); 
 		Expect(16 /* "{" */);
 		while (StartOf(2)) {
 			Command();
 		}
 		while (!(la->kind == _EOF || la->kind == 17 /* "}" */)) {SynErr(33); Get();}
 		Expect(17 /* "}" */);
-		__context->addSession( __currentSession ); __currentSession = 0; 
+		__context->addSession( *__currentSession ); __currentSession = nullptr; 
 }
 
 void Parser::Command() {

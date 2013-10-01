@@ -24,6 +24,9 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
+#ifndef GUM_PATTERN_H
+#define GUM_PATTERN_H
+
 #include <agrum/config.h>
 
 #include <agrum/graphs/diGraph.h>
@@ -31,8 +34,6 @@
 #include <agrum/prm/gspan/DFSCode.h>
 #include <agrum/prm/gspan/interfaceGraph.h>
 
-#ifndef GUM_PATTERN_H
-#define GUM_PATTERN_H
 
 namespace gum {
   namespace prm {

@@ -24,55 +24,17 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
+
+#ifndef GUM_PRM_GENERATOR_H
+#define GUM_PRM_GENERATOR_H
 #include <string>
 #include <sstream>
 
 #include <agrum/prm/PRM.h>
+#include <agrum/prm/generator/nameGenerator.h>
 
-#ifndef GUM_PRM_GENERATOR_H
-#define GUM_PRM_GENERATOR_H
 namespace gum {
   namespace prm {
-
-    /**
-     * @class NameGenerator PRMGenerator.h <agrum/prm/generator/PRMGenerator.h>
-     * @brief This is a name generator for classes, types, systems, instances and
-     *        class elements.
-     *
-     * The generation simply use an unsigned int starting at 1 and increasing for
-     * each new name. Different numbers are used for each different type of
-     * PRMObject.
-     */
-    class NameGenerator {
-      public:
-        // ========================================================================
-        /// @name Constructors and destructor.
-        // ========================================================================
-        /// @{
-
-        /// Default constructor.
-        NameGenerator();
-        /// Copy constructor.
-        NameGenerator( const NameGenerator& source );
-        /// Destructor.
-        virtual ~NameGenerator();
-        /// Affectation operator
-        NameGenerator& operator= ( const NameGenerator& source );
-
-        /// @}
-        // ========================================================================
-        /// Getters and setters.
-        // ========================================================================
-        /// @{
-
-        /// Returns the next name w.r.t. the given Type.
-        std::string nextName( PRMObject::PRMType type );
-
-        /// @}
-      private:
-        /// The vector of counters.
-        std::vector<unsigned int> __counters;
-    };
 
     /**
      * @class PRMGenerator PRMGenerator.h <agrum/prm/generator/PRMGenerator.h>
@@ -80,6 +42,7 @@ namespace gum {
      *
      * @ingroup prm_group
      */
+    template<typename GUM_SCALAR>
     class PRMGenerator {
       public:
         // ========================================================================
@@ -107,7 +70,7 @@ namespace gum {
         const NameGenerator& getNameGenerator() const;
 
         /// Proceeds with the generation of the PRM.
-        virtual PRM* generate() =0;
+        virtual PRM<GUM_SCALAR>* generate() =0;
 
         /// @}
       protected:
@@ -117,9 +80,8 @@ namespace gum {
 
   } /* namespace prm */
 } /* namespace gum */
-#ifndef GUM_NO_INLINE
-#include <agrum/prm/generator/PRMGenerator.inl>
-#endif // GUM_NO_INLINE
+
+#include <agrum/prm/generator/PRMGenerator.tcc>
 
 #endif /* GUM_PRM_GENERATOR_H */
 

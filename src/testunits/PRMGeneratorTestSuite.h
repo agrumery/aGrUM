@@ -27,7 +27,7 @@
 
 namespace gum_tests {
 
-  class PRMGeneratorTestSuite: public CxxTest::TestSuite {
+  class PRM<double>GeneratorTestSuite: public CxxTest::TestSuite {
     private:
 
     public:
@@ -38,14 +38,14 @@ namespace gum_tests {
       void tearDown() { }
 
       void testConstructors() {
-        gum::prm::LayerGenerator* gen = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::prm::LayerGenerator() );
+        gum::prm::LayerGenerator<double>* gen = 0;
+        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::prm::LayerGenerator<double>() );
         TS_GUM_ASSERT_THROWS_NOTHING( delete gen );
       }
 
-      void generateLayerLayer( std::vector<gum::prm::LayerGenerator::LayerData>& v, size_t layer_count ) {
+      void generateLayerLayer( std::vector<gum::prm::LayerGenerator<double>::LayerData>& v, size_t layer_count ) {
         for ( size_t lvl = 0; lvl < layer_count; ++lvl ) {
-          v.push_back( gum::prm::LayerGenerator::LayerData() );
+          v.push_back( gum::prm::LayerGenerator<double>::LayerData() );
           v[lvl].a = 30;
           v[lvl].g = 2;
           v[lvl].c = 1;
@@ -56,21 +56,21 @@ namespace gum_tests {
       }
 
       void testLayerGenerator() {
-        gum::prm::LayerGenerator* gen = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::prm::LayerGenerator() );
+        gum::prm::LayerGenerator<double>* gen = nullptr;
+        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::prm::LayerGenerator<double>() );
         gen->setDomainSize( 6 );
         gen->setMaxParents( 5 );
-        std::vector<gum::prm::LayerGenerator::LayerData> v;
+        std::vector<gum::prm::LayerGenerator<double>::LayerData> v;
         generateLayerLayer( v, 10 );
         gen->setLayers( v );
-        gum::prm::PRM* prm = 0;
+        gum::prm::PRM<double>* prm = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( prm = gen->generate() );
         // testing interfaces
-        const gum::Set<gum::prm::Interface*>& i_set = prm->interfaces();
+        const gum::Set<gum::prm::Interface<double>*>& i_set = prm->interfaces();
         TS_ASSERT_EQUALS( i_set.size(), ( gum::Size ) 10 );
 
-        for ( gum::Set<gum::prm::Interface*>::const_iterator iter = i_set.begin(); iter != i_set.end(); ++iter ) {
-          const gum::prm::Interface& i = **iter;
+        for ( auto iter = i_set.begin(); iter != i_set.end(); ++iter ) {
+          const gum::prm::Interface<double>& i = **iter;
 
           if ( i.referenceSlots().size() ) {
             TS_ASSERT_EQUALS( i.referenceSlots().size(), ( gum::Size ) 1 );
@@ -82,9 +82,9 @@ namespace gum_tests {
 
           gum::Size six = 0;
           gum::Size two = 0;
-          const gum::Set<gum::prm::Attribute*>& attr = i.attributes();
+          const gum::Set<gum::prm::Attribute<double>*>& attr = i.attributes();
 
-          for ( gum::Set<gum::prm::Attribute*>::const_iterator a = attr.begin(); a != attr.end(); ++a ) {
+          for ( gum::Set<gum::prm::Attribute<double>*>::const_iterator a = attr.begin(); a != attr.end(); ++a ) {
             if ( ( **a ).type()->domainSize() == ( gum::Size ) 6 ) {
               ++six;
             } else if ( ( **a ).type()->domainSize() == 2 ) {
@@ -102,18 +102,18 @@ namespace gum_tests {
         }
 
         // testing classes
-        const gum::Set<gum::prm::Class*>& c_set = prm->classes();
+        const gum::Set<gum::prm::Class<double>*>& c_set = prm->classes();
 
-        for ( gum::Set<gum::prm::Class*>::const_iterator c = c_set.begin(); c != c_set.end(); ++c ) {
+        for ( gum::Set<gum::prm::Class<double>*>::const_iterator c = c_set.begin(); c != c_set.end(); ++c ) {
           TS_ASSERT_EQUALS( ( **c ).attributes().size(), ( gum::Size ) 30 );
 
-          for ( gum::Set<gum::prm::Attribute*>::const_iterator a = ( **c ).attributes().begin(); a != ( **c ).attributes().end(); ++a ) {
+          for ( gum::Set<gum::prm::Attribute<double>*>::const_iterator a = ( **c ).attributes().begin(); a != ( **c ).attributes().end(); ++a ) {
             TS_ASSERT( ( **c ).dag().parents( ( **a ).id() ).size() < 6 );
           }
         }
 
         // testing instances
-        const gum::prm::System& sys = ** ( prm->systems().begin() );
+        const gum::prm::System<double>& sys = ** ( prm->systems().begin() );
         TS_ASSERT_EQUALS( sys.size(), ( gum::Size ) 100 );
 
         if ( prm )
@@ -125,22 +125,22 @@ namespace gum_tests {
       }
 
       void testClusterGenerator() {
-        gum::prm::ClusteredLayerGenerator* gen = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::prm::ClusteredLayerGenerator() );
+        gum::prm::ClusteredLayerGenerator<double>* gen = 0;
+        TS_GUM_ASSERT_THROWS_NOTHING( gen = new gum::prm::ClusteredLayerGenerator<double>() );
         gen->setDomainSize( 6 );
         gen->setMaxParents( 5 );
         gen->setClusterRatio( 1.0 );
-        std::vector<gum::prm::LayerGenerator::LayerData> v;
+        std::vector<gum::prm::LayerGenerator<double>::LayerData> v;
         generateLayerLayer( v, 10 );
         gen->setLayers( v );
-        gum::prm::PRM* prm = 0;
+        gum::prm::PRM<double>* prm = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( prm = gen->generate() );
         // testing interfaces
-        const gum::Set<gum::prm::Interface*>& i_set = prm->interfaces();
+        const gum::Set<gum::prm::Interface<double>*>& i_set = prm->interfaces();
         TS_ASSERT_EQUALS( i_set.size(), ( gum::Size ) 10 );
 
-        for ( gum::Set<gum::prm::Interface*>::const_iterator iter = i_set.begin(); iter != i_set.end(); ++iter ) {
-          const gum::prm::Interface& i = **iter;
+        for ( gum::Set<gum::prm::Interface<double>*>::const_iterator iter = i_set.begin(); iter != i_set.end(); ++iter ) {
+          const gum::prm::Interface<double>& i = **iter;
 
           if ( i.referenceSlots().size() ) {
             TS_ASSERT_EQUALS( i.referenceSlots().size(), ( gum::Size ) 1 );
@@ -152,9 +152,9 @@ namespace gum_tests {
 
           gum::Size six = 0;
           gum::Size two = 0;
-          const gum::Set<gum::prm::Attribute*>& attr = i.attributes();
+          const gum::Set<gum::prm::Attribute<double>*>& attr = i.attributes();
 
-          for ( gum::Set<gum::prm::Attribute*>::const_iterator a = attr.begin(); a != attr.end(); ++a ) {
+          for ( gum::Set<gum::prm::Attribute<double>*>::const_iterator a = attr.begin(); a != attr.end(); ++a ) {
             if ( ( **a ).type()->domainSize() == ( gum::Size ) 6 ) {
               ++six;
             } else if ( ( **a ).type()->domainSize() == 2 ) {
@@ -172,18 +172,18 @@ namespace gum_tests {
         }
 
         // testing classes
-        const gum::Set<gum::prm::Class*>& c_set = prm->classes();
+        const gum::Set<gum::prm::Class<double>*>& c_set = prm->classes();
 
-        for ( gum::Set<gum::prm::Class*>::const_iterator c = c_set.begin(); c != c_set.end(); ++c ) {
+        for ( gum::Set<gum::prm::Class<double>*>::const_iterator c = c_set.begin(); c != c_set.end(); ++c ) {
           TS_ASSERT_EQUALS( ( **c ).attributes().size(), ( gum::Size ) 30 );
 
-          for ( gum::Set<gum::prm::Attribute*>::const_iterator a = ( **c ).attributes().begin(); a != ( **c ).attributes().end(); ++a ) {
+          for ( gum::Set<gum::prm::Attribute<double>*>::const_iterator a = ( **c ).attributes().begin(); a != ( **c ).attributes().end(); ++a ) {
             TS_ASSERT( ( **c ).dag().parents( ( **a ).id() ).size() < 6 );
           }
         }
 
         // testing instances
-        const gum::prm::System& sys = ** ( prm->systems().begin() );
+        const gum::prm::System<double>& sys = ** ( prm->systems().begin() );
         TS_ASSERT( sys.size() > ( gum::Size ) 100 );
 
         if ( prm )
@@ -194,9 +194,9 @@ namespace gum_tests {
         }
       }
 
-      void __generateLayer1( std::vector<gum::prm::LayerGenerator::LayerData>& v ) {
+      void __generateLayer1( std::vector<gum::prm::LayerGenerator<double>::LayerData>& v ) {
         for ( size_t lvl = 0; lvl < 5; ++lvl ) {
-          v.push_back( gum::prm::LayerGenerator::LayerData() );
+          v.push_back( gum::prm::LayerGenerator<double>::LayerData() );
           v[lvl].a = 10;
           v[lvl].g = 2;
           v[lvl].c = 1;

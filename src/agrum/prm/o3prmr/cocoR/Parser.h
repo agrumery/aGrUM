@@ -95,14 +95,14 @@ class Parser {
     Token* t;     // last recognized token
     Token* la;      // lookahead token
 
-    gum::prm::o3prmr::O3prmrContext *__context;
-gum::prm::o3prmr::O3prmrSession *__currentSession;
+    gum::prm::o3prmr::O3prmrContext<double> *__context;
+gum::prm::o3prmr::O3prmrSession<double> *__currentSession;
 
 void SemErr(std::string s) {
   SemErr(widen(s).c_str());
 }
 
-void setO3prmrContext(gum::prm::o3prmr::O3prmrContext *c) {
+void setO3prmrContext(gum::prm::o3prmr::O3prmrContext<double> *c) {
   __context=c;
 }
 
