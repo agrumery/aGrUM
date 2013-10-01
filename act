@@ -130,7 +130,9 @@ def writeTestList(l):
 
 ##########################################################################################################################
 def allTests():
-    return sorted([os.path.basename(x) for x in glob.glob('src/testunits/*TestSuite.h')])
+    s=sorted([os.path.relpath(x,"src/testunits") for x in glob.glob('src/testunits/module*/*TestSuite.h')])
+    print s
+    return s
 
 ##########################################################################################################################
 def checkTestListCmake():
