@@ -83,11 +83,11 @@ namespace gum_tests {
       void initCNet() {
         gum::setNumberOfThreads( 1 );
         gum::BayesNet<double> monBNa;
-        gum::BIFReader< double > readera( &monBNa, GET_PATH_STR( /cn/2Umin.bif ) );
+        gum::BIFReader< double > readera( &monBNa, GET_PATH_STR( "cn/2Umin.bif" ) );
         readera.proceed();
 
         gum::BayesNet<double> monBNb;
-        gum::BIFReader< double > readerb( &monBNb, GET_PATH_STR( /cn/2Umax.bif ) );
+        gum::BIFReader< double > readerb( &monBNb, GET_PATH_STR( "cn/2Umax.bif" ) );
         readerb.proceed();
 
         cn = new gum::credal::CredalNet < double > ( monBNa, monBNb );
@@ -100,11 +100,11 @@ namespace gum_tests {
       void initDCNet() {
         gum::setNumberOfThreads( 1 );
         gum::BayesNet<double> monBNa;
-        gum::BIFReader< double > readera( &monBNa, GET_PATH_STR( /cn/dbn_bin_min.bif ) );
+        gum::BIFReader< double > readera( &monBNa, GET_PATH_STR( "cn/dbn_bin_min.bif" ) );
         readera.proceed();
 
         gum::BayesNet<double> monBNb;
-        gum::BIFReader< double > readerb( &monBNb, GET_PATH_STR( /cn/dbn_bin_max.bif ) );
+        gum::BIFReader< double > readerb( &monBNb, GET_PATH_STR( "cn/dbn_bin_max.bif" ) );
         readerb.proceed();
 
         cn = new gum::credal::CredalNet < double > ( monBNa, monBNb );
@@ -125,7 +125,7 @@ namespace gum_tests {
 
         // evidence from file
         try {
-          lp.insertEvidenceFile( GET_PATH_STR( /cn/L2U.evi ) );
+          lp.insertEvidenceFile( GET_PATH_STR( "cn/L2U.evi" ) );
         } catch ( gum::Exception& e ) {
           TS_ASSERT( false );
         }
@@ -214,7 +214,7 @@ namespace gum_tests {
 
         // evidence from file
         try {
-          lp.insertEvidenceFile( GET_PATH_STR( /cn/dbn_bin_evi.evi ) );
+          lp.insertEvidenceFile( GET_PATH_STR( "cn/dbn_bin_evi.evi" ) );
         } catch ( gum::Exception& e ) {
           TS_ASSERT( false );
         }
@@ -278,7 +278,7 @@ namespace gum_tests {
 
         // evidence from file
         try {
-          lp.insertEvidenceFile( GET_PATH_STR( /cn/dbn_bin_evi.evi ) );
+          lp.insertEvidenceFile( GET_PATH_STR( "cn/dbn_bin_evi.evi" ) );
         } catch ( gum::Exception& e ) {
           TS_ASSERT( false );
         }

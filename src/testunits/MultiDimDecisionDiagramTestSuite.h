@@ -734,7 +734,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( container = factory->getMultiDimDecisionDiagram() );
 
         // For comparison with what readers will return
-        std::string dotfile = GET_PATH_STR( DecisionDiagram.dot );
+        std::string dotfile = GET_PATH_STR( "DecisionDiagram.dot" );
         std::ofstream output( dotfile.c_str(), std::ios::out | std::ios::trunc );
 
         if ( ! output.good() ) {

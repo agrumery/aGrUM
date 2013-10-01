@@ -38,7 +38,7 @@ namespace gum_tests {
     public:
       void setUp() {
         __driver  = new gum::prm::o3prm::O3prmReader<double>();
-        __driver->readFile( GET_PATH_STR( o3prm/specialprinters.o3prm ) );
+        __driver->readFile( GET_PATH_STR( "o3prm/specialprinters.o3prm" ) );
         ig = new gum::prm::gspan::InterfaceGraph<double>( __driver->prm()->system( "m" ) );
       }
 

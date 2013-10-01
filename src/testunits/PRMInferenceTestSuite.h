@@ -46,12 +46,12 @@ namespace gum_tests {
       void setUp() {
         {
           gum::prm::o3prm::O3prmReader<double> reader;
-          reader.readFile( GET_PATH_STR( o3prm/inference.o3prm ) );
+          reader.readFile( GET_PATH_STR( "o3prm/inference.o3prm" ) );
           prm = reader.prm();
         }
         {
           gum::prm::o3prm::O3prmReader<double> reader;
-          reader.readFile( GET_PATH_STR( o3prm/printers_systems.o3prm ) );
+          reader.readFile( GET_PATH_STR( "o3prm/printers_systems.o3prm" ) );
           small = reader.prm();
         }
       }

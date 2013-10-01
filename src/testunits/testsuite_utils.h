@@ -7,7 +7,8 @@
 #define xstrfy(s) strfy(s)
 #define strfy(x) #x
 
-#define GET_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/" #x
+#define GET_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/" x
+#define GET_PATH_XSTR(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/" xstrfy(x)
 
 namespace gum_tests {
   void test_waiting ( int s ) {

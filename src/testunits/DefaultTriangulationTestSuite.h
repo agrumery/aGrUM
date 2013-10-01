@@ -119,47 +119,47 @@ namespace gum_tests {
 
       void xxtestBIFtriangulation1 ( void ) {
         TS_GUM_ASSERT_THROWS_NOTHING
-        ( __triangulate_bif ( GET_PATH_STR ( Barley.bif ) ) );
+        ( __triangulate_bif ( GET_PATH_STR ( "Barley.bif" ) ) );
       };
 
       void xxtestBIFtriangulation1bis ( void ) {
-        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( alarm.bif ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( "alarm.bif" ) ) );
       };
 
       void xxtestBIFtriangulation2 ( void ) {
-        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( carpo.bif ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( "carpo.bif" ) ) );
       };
 
       void xxtestBIFtriangulation3 ( void ) {
-        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( Pigs.bif ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( "Pigs.bif" ) ) );
       };
 
       void xxtestBIFtriangulation4 ( void ) {
-        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( Water.bif ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( "Water.bif" ) ) );
       };
 
       void xxtestBIFtriangulation5 ( void ) {
-        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( Link.bif ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( "Link.bif" ) ) );
       };
 
       void xxtestBIFtriangulation6 ( void ) {
-        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( Mildew.bif ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( "Mildew.bif" ) ) );
       };
 
       void xxtestBIFtriangulation7 ( void ) {
-        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( Munin1.bif ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( "Munin1.bif" ) ) );
       };
 
       void xxtestBIFtriangulation8 ( void ) {
-        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( hailfinder.bif ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( "hailfinder.bif" ) ) );
       };
 
       void xxtestBIFtriangulation9 ( void ) {
-        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( Diabetes.bif ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( "Diabetes.bif" ) ) );
       };
 
       void xxtestBIFtriangulation10 ( void ) {
-        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( insurance.bif ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( __triangulate_bif ( GET_PATH_STR ( "insurance.bif" ) ) );
       };
 
 

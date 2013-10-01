@@ -85,10 +85,10 @@ namespace gum_tests {
 
       void testWriter_string() {
         gum::BIFXMLBNWriter<double> writer;
-        std::string file = GET_PATH_STR( BNBIFXMLIO_file.txt );
+        std::string file = GET_PATH_STR( "BNBIFXMLIO_file.txt" );
         TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *bn ) );
 
-        file = GET_PATH_STR( BNBIFXMLIO_RO_file.txt );
+        file = GET_PATH_STR( "BNBIFXMLIO_RO_file.txt" );
 
         TS_ASSERT_EQUALS( chmod( file.c_str(),0444 ),0 );
 
