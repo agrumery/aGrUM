@@ -202,7 +202,7 @@ namespace gum {
 
 
 // always include the implementations
-#include <agrum/multidim/operatorRegister4MultiDim.tcc>
+#include <agrum/multidim/operators/operatorRegister4MultiDim.tcc>
 
 
 #endif /* GUM_OPERATOR_REGISTER_MULTI_DIM_H */

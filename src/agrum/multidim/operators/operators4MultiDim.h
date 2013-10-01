@@ -354,7 +354,7 @@ namespace gum {
 
 
 // always include the templatized implementations
-#include <agrum/multidim/operators4MultiDim.tcc>
+#include <agrum/multidim/operators/operators4MultiDim.tcc>
 
 
 #endif /* GUM_OPERATORS_4_MULTI_DIM_H */

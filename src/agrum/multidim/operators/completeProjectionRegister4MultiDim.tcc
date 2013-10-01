@@ -30,7 +30,7 @@
 
 #include <agrum/config.h>
 
-#include <agrum/multidim/completeProjectionRegister4MultiDim.h>
+#include <agrum/multidim/operators/completeProjectionRegister4MultiDim.h>
 
 
 namespace gum {

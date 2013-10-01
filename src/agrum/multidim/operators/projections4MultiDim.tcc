@@ -28,7 +28,7 @@
 #define GUM_PROJECTION_PATTERN_ALLOWED
 
 
-#include <agrum/multidim/projectionRegister4MultiDim.h>
+#include <agrum/multidim/operators/projectionRegister4MultiDim.h>
 
 
 #define GUM_MULTI_DIM_DECORATOR_PROJ(NAME)                            \

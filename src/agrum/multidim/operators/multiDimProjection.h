@@ -170,7 +170,7 @@ namespace gum {
 
 
 // always include the template implementation
-#include <agrum/multidim/multiDimProjection.tcc>
+#include <agrum/multidim/operators/multiDimProjection.tcc>
 
 
 #endif /* GUM_MULTI_DIM_PROJECTION_H */

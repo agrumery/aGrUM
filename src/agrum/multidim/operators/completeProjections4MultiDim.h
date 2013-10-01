@@ -287,7 +287,7 @@ namespace gum {
 
 
 // always include the templatized implementations
-#include <agrum/multidim/completeProjections4MultiDim.tcc>
+#include <agrum/multidim/operators/completeProjections4MultiDim.tcc>
 
 
 #endif /* GUM_COMPLETE_PROJECTIONS_4_MULTI_DIM_H */

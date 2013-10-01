@@ -20,9 +20,9 @@
 
 
 // include the operators that will be used by the decorators
-#include <agrum/multidim/operators4MultiDim.h>
-#include <agrum/multidim/projections4MultiDim.h>
-#include <agrum/multidim/completeProjections4MultiDim.h>
+#include <agrum/multidim/operators/operators4MultiDim.h>
+#include <agrum/multidim/operators/projections4MultiDim.h>
+#include <agrum/multidim/operators/completeProjections4MultiDim.h>
 #include <agrum/multidim/partialInstantiation4MultiDim.h>
 
 // to ease IDE parsers

@@ -30,7 +30,7 @@
 #define GUM_COMPLETE_PROJECTION_PATTERN_ALLOWED
 
 
-#include <agrum/multidim/completeProjectionRegister4MultiDim.h>
+#include <agrum/multidim/operators/completeProjectionRegister4MultiDim.h>
 
 
 #define GUM_MULTI_DIM_DECORATOR_COMPLETE_PROJ(NAME)                   \

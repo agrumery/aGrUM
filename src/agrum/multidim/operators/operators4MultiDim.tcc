@@ -28,7 +28,7 @@
 #define GUM_OPERATOR_PATTERN_ALLOWED
 
 
-#include <agrum/multidim/operatorRegister4MultiDim.h>
+#include <agrum/multidim/operators/operatorRegister4MultiDim.h>
 
 #define GUM_MULTI_DIM_DECORATOR_OP(NAME,OP)       \
   namespace gum{  \

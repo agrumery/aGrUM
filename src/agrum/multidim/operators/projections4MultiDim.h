@@ -391,7 +391,7 @@ namespace gum {
 
 
 // always include the templatized implementations
-#include <agrum/multidim/projections4MultiDim.tcc>
+#include <agrum/multidim/operators/projections4MultiDim.tcc>
 
 
 #endif /* GUM_PROJECTIONS_4_MULTI_DIM_H */

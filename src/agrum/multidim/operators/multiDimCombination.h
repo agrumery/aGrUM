@@ -169,7 +169,7 @@ namespace gum {
 
 
 // always include the template implementation
-#include <agrum/multidim/multiDimCombination.tcc>
+#include <agrum/multidim/operators/multiDimCombination.tcc>
 
 
 #endif /* GUM_MULTI_DIM_COMBINATION_H */

@@ -22,8 +22,8 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_CPF_H
-#define GUM_CPF_H
+#ifndef GUM_CONDITIONAL_PROBABILITY_FUNCTION_H
+#define GUM_CONDITIONAL_PROBABILITY_FUNCTION_H
 
 #include <ostream>
 #include <string>
@@ -227,8 +227,8 @@ namespace gum {
 } /* namespace gum */
 
 
-#include <agrum/multidim/CPF.tcc>
+#include <agrum/multidim/conditionalProbabilityFunction.tcc>
 
 
-#endif /* GUM_CPF_H */
+#endif /* GUM_CONDITIONAL_PROBABILITY_FUNCTION_H */
 

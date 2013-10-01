@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A container for registering projection functions on multiDimImplementations
+ * @brief A container for registering binary functions on multiDimImplementations
  *
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
@@ -30,79 +30,84 @@
 
 #include <agrum/config.h>
 
-#include <agrum/multidim/projectionRegister4MultiDim.h>
-
+#include <agrum/multidim/operators/operatorRegister4MultiDim.h>
 
 namespace gum {
 
 
   /// adds a new entry into the register
   template<typename GUM_SCALAR>
-  void ProjectionRegister4MultiDim<GUM_SCALAR>::insert
-  ( const std::string& projection_name,
-    const std::string& type_multidim,
-    typename ProjectionRegister4MultiDim<GUM_SCALAR>::ProjectionPtr newFunction ) {
+  void OperatorRegister4MultiDim<GUM_SCALAR>::insert
+  ( const std::string& operation_name,
+    const std::string& type1,
+    const std::string& type2,
+    typename OperatorRegister4MultiDim<GUM_SCALAR>::OperatorPtr newFunction ) {
     // insert the new entry
-    ProjectionSet* theset;
+    OperatorSet* theset;
 
-    if ( ! __set.exists( projection_name ) ) {
-      theset = __set.insert( projection_name, new ProjectionSet );
+    if ( ! __set.exists( operation_name ) ) {
+      theset = __set.insert( operation_name, new OperatorSet );
 #ifndef NDEBUG
       // for debugging purposes, we should inform the aGrUM's debugger that
-      // the hashtable contained within the ProjectionRegister4MultiDim will be
+      // the hashtable contained within the OperatorRegister4MultiDim will be
       // removed at the end of the program's execution.
       __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
                                  ( void* ) theset );
 #endif /* NDEBUG */
     } else {
-      theset = __set[projection_name];
+      theset = __set[operation_name];
     }
 
-    theset->insert( type_multidim, newFunction );
+    std::pair<std::string,std::string> thepair( type1,type2 );
+
+    theset->insert( thepair, newFunction );
   }
 
 
   /// removes a given entry from the register
   template<typename GUM_SCALAR>
-  void ProjectionRegister4MultiDim<GUM_SCALAR>::erase
-  ( const std::string& projection_name,
-    const std::string& type_multidim ) {
-    if ( ! __set.exists( projection_name ) ) return;
+  void OperatorRegister4MultiDim<GUM_SCALAR>::erase
+  ( const std::string& operation_name,
+    const std::string& type1,
+    const std::string& type2 ) {
+    if ( ! __set.exists( operation_name ) ) return;
 
-    ProjectionSet* theset = __set[projection_name];
+    OperatorSet* theset = __set[operation_name];
 
-    theset->erase( type_multidim );
+    theset->erase( std::pair<std::string,std::string>( type1,type2 ) );
   }
 
 
   /// indicates whether a given entry exists in the register
   template<typename GUM_SCALAR> INLINE
-  bool ProjectionRegister4MultiDim<GUM_SCALAR>::exists
-  ( const std::string& projection_name,
-    const std::string& type_multidim ) const {
-    if ( ! __set.exists( projection_name ) ) return false;
+  bool OperatorRegister4MultiDim<GUM_SCALAR>::exists
+  ( const std::string& operation_name,
+    const std::string& type1,
+    const std::string& type2 ) const {
+    if ( ! __set.exists( operation_name ) ) return false;
 
-    return __set[projection_name].exists( type_multidim );
+    return __set[operation_name].exists
+           ( std::pair<std::string,std::string>( type1,type2 ) );
   }
 
 
-  /** @brief returns the specialized operator assigned to a given subtype of
-   * MultiDimImplementation */
+  /** @brief returns the specialized operator assigned to a given pair of
+   * MultiDimImplementations */
   template<typename GUM_SCALAR> INLINE
-  typename ProjectionRegister4MultiDim<GUM_SCALAR>::ProjectionPtr
-  ProjectionRegister4MultiDim<GUM_SCALAR>::get
-  ( const std::string& projection_name,
-    const std::string& type_multidim ) const {
-    ProjectionSet* theset = __set[projection_name];
-    return theset->operator[]( type_multidim );
+  typename OperatorRegister4MultiDim<GUM_SCALAR>::OperatorPtr
+  OperatorRegister4MultiDim<GUM_SCALAR>::get( const std::string& operation_name,
+      const std::string& type1,
+      const std::string& type2 ) const {
+    OperatorSet* theset = __set[operation_name];
+    return ( *theset )[std::pair<std::string,std::string>( type1,type2 )];
   }
 
 
   /// a named constructor that constructs one and only one Register per data type
   template<typename GUM_SCALAR>
-  ProjectionRegister4MultiDim<GUM_SCALAR>&
-  ProjectionRegister4MultiDim<GUM_SCALAR>::Register() {
-    static ProjectionRegister4MultiDim container;
+  OperatorRegister4MultiDim<GUM_SCALAR>&
+  OperatorRegister4MultiDim<GUM_SCALAR>::Register() {
+    static OperatorRegister4MultiDim container;
 
 #ifndef NDEBUG
     static bool first = true;
@@ -110,7 +115,7 @@ namespace gum {
     if ( first ) {
       first = false;
       // for debugging purposes, we should inform the aGrUM's debugger that
-      // the hashtable contained within the ProjectionRegister4MultiDim will be
+      // the hashtable contained within the OperatorRegister4MultiDim will be
       // removed at the end of the program's execution.
       __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
                                  ( void* ) &container.__set );
@@ -124,30 +129,30 @@ namespace gum {
 
   /// Default constructor: creates an empty register
   template<typename GUM_SCALAR>
-  ProjectionRegister4MultiDim<GUM_SCALAR>::ProjectionRegister4MultiDim() {
+  OperatorRegister4MultiDim<GUM_SCALAR>::OperatorRegister4MultiDim() {
   }
 
 
   /// destructor
   template<typename GUM_SCALAR>
-  ProjectionRegister4MultiDim<GUM_SCALAR>::~ProjectionRegister4MultiDim() {
+  OperatorRegister4MultiDim<GUM_SCALAR>::~OperatorRegister4MultiDim() {
     // remove all the sets
-    for ( typename HashTable<std::string, ProjectionSet*>::iterator iter =
+    for ( typename HashTable<std::string, OperatorSet*>::iterator iter =
             __set.begin(); iter != __set.end(); ++iter )
       delete *iter;
   }
 
 
-  /// a function to more easily register new projection functions in MultiDims
+  /// a function to more easily register new operators in MultiDims
   template<typename GUM_SCALAR>
   void
-  registerProjection( const std::string& projection_name,
-                      const std::string& type_multidim,
-                      typename ProjectionRegister4MultiDim<GUM_SCALAR>::ProjectionPtr
-                      function ) {
-    ProjectionRegister4MultiDim<GUM_SCALAR>::Register().insert( projection_name,
-        type_multidim,
-        function );
+  registerOperator( const std::string& operation_name,
+                    const std::string& type1,
+                    const std::string& type2,
+                    typename OperatorRegister4MultiDim<GUM_SCALAR>::OperatorPtr
+                    function ) {
+    OperatorRegister4MultiDim<GUM_SCALAR>::Register().insert( operation_name,
+        type1, type2, function );
   }
 
 

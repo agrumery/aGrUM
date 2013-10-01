@@ -80,7 +80,7 @@
 
 
 #include <agrum/core/sequence.h>
-#include <agrum/multidim/multiDimCombination.h>
+#include <agrum/multidim/operators/multiDimCombination.h>
 #include <agrum/variables/discreteVariable.h>
 
 
@@ -181,7 +181,7 @@ namespace gum {
 
 
 // always include the template implementation
-#include <agrum/multidim/multiDimCombinationDefault.tcc>
+#include <agrum/multidim/operators/multiDimCombinationDefault.tcc>
 
 
 #endif /* GUM_MULTI_DIM_COMBINATION_DEFAULT_H */

@@ -27,9 +27,9 @@
 #define GUM_MULTI_DIM_COMBINE_AND_PROJECT_DEFAULT_H
 
 
-#include <agrum/multidim/multiDimCombinationDefault.h>
-#include <agrum/multidim/multiDimProjection.h>
-#include <agrum/multidim/multiDimCombineAndProject.h>
+#include <agrum/multidim/operators/multiDimCombinationDefault.h>
+#include <agrum/multidim/operators/multiDimProjection.h>
+#include <agrum/multidim/operators/multiDimCombineAndProject.h>
 
 
 namespace gum {
@@ -164,7 +164,7 @@ namespace gum {
 
 
 // always include the template implementation
-#include <agrum/multidim/multiDimCombineAndProjectDefault.tcc>
+#include <agrum/multidim/operators/multiDimCombineAndProjectDefault.tcc>
 
 
 #endif /* GUM_MULTI_DIM_COMBINE_AND_PROJECT_DEFAULT_H */

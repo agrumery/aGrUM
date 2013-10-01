@@ -28,12 +28,12 @@
 #include <agrum/multidim/aggregators/multiDimAggregator.h>
 #include <agrum/multidim/multiDimBijArray.h>
 #include <agrum/multidim/multiDimBucket.h>
-#include <agrum/multidim/multiDimCombinationDefault.h>
+#include <agrum/multidim/operators/multiDimCombinationDefault.h>
 #include <agrum/multidim/CIModels/multiDimNoisyORCompound.h>
 #include <agrum/multidim/CIModels/multiDimNoisyORNet.h>
 #include <agrum/multidim/multiDimSparse.h>
 #include <agrum/multidim/potential.h>
-#include <agrum/multidim/projections4MultiDim.h>
+#include <agrum/multidim/operators/projections4MultiDim.h>
 
 
 /*!  @ingroup prm_group

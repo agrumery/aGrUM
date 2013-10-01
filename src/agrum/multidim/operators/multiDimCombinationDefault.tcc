@@ -30,7 +30,7 @@
 #include <agrum/config.h>
 
 #include <agrum/core/priorityQueue.h>
-#include <agrum/multidim/multiDimCombinationDefault.h>
+#include <agrum/multidim/operators/multiDimCombinationDefault.h>
 
 namespace gum {
 
