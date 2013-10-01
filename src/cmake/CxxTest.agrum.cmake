@@ -51,6 +51,7 @@ IF(PYTHONINTERP_FOUND)
   IF ( EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/testunits/testList.cmake )
     INCLUDE ( testunits/testList.cmake )
   ELSE ()
+# TODO : should be controlled using options (BUILD_...)
     FILE( GLOB AGRUM_TESTS
           RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/testunits/
           ${CMAKE_CURRENT_SOURCE_DIR}/testunits/*TestSuite.h )

@@ -23,7 +23,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
-#include <agrum/prm/o3prmr/O3prmrInterpreter.h>
+#include <agrum/PRM/o3prmr/O3prmrInterpreter.h>
 
 
 

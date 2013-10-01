@@ -22,8 +22,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
-#include <agrum/prm/generator/layerGenerator.h>
-#include <agrum/prm/generator/clusteredLayerGenerator.h>
+#include <agrum/PRM/generator/layerGenerator.h>
+#include <agrum/PRM/generator/clusteredLayerGenerator.h>
 
 namespace gum_tests {
 

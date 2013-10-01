@@ -23,8 +23,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
-#include <agrum/influenceDiagram/influenceDiagram.h>
-#include <agrum/influenceDiagram/generator/influenceDiagramGenerator.h>
+#include <agrum/ID/influenceDiagram.h>
+#include <agrum/ID/generator/influenceDiagramGenerator.h>
 #include <agrum/variables/discreteVariable.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/variables/labelizedVariable.h>

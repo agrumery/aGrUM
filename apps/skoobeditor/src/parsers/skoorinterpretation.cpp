@@ -2,7 +2,7 @@
 
 #include "qsciscintillaextended.h"
 #include "prmtreemodel.h"
-#include <agrum/prm/skoor/SkoorInterpreter.h>
+#include <agrum/PRM/skoor/SkoorInterpreter.h>
 
 #include <QDebug>
 

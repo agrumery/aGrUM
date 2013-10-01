@@ -35,6 +35,8 @@ WARNING = '\033[93m'
 RED = '\033[91m'
 ENDC = '\033[0m'
 
+listOfModules=['BN','CN','FMDP','ID','PRM']
+
 ##########################################################################################################################
 def initParser(current):
     global list_options,list_rules,list_wrappers
@@ -82,10 +84,42 @@ def initParser(current):
                                         help="testlist management : {show|all|test1+test2+test3}",
                                         metavar="TESTS-COMMAND",
                                         dest="testlists",
-                                        default="")
+                                        default=current['testlists'])
+    parser.add_option("-m","--module",
+                                        help="module management : {show|all|module1+module2+module3}",
+                                        metavar="MODULES-COMMAND",
+                                        dest="module",
+                                        default=current['module'])
     return parser
 
 ##########################################################################################################################
+def moduleManagement(cde):
+  global current,listOfModules
+  
+  listM=[x.upper() for x in cde.split('+')]
+  setM=set(listM)
+  
+  if 'ALL' in setM:
+    cde='ALL'
+  else:
+    if not setM.issubset(set(listOfModules)):
+      cde='LIST'
+      
+  if cde=="ALL":
+      current['module']="ALL"
+  elif cde=='LIST':
+    print("""Module is in
+        - ALL
+        - BN (Bayesian Network) 
+        - CN (Credal Network) 
+        - FMDP (Factored Markov Decision Process) 
+        - ID (Influence Diagram) 
+        - PRM (Probabilistic Relational Models)
+        """)
+    sys.exit(0)
+  else:
+    current['module']='+'.join(listM)
+    
 def testManagement(cde):
     global current
     if cde=="all":
@@ -131,7 +165,6 @@ def writeTestList(l):
 ##########################################################################################################################
 def allTests():
     s=sorted([os.path.relpath(x,"src/testunits") for x in glob.glob('src/testunits/module*/*TestSuite.h')])
-    print s
     return s
 
 ##########################################################################################################################
@@ -244,9 +277,9 @@ def checkConstraints(parser,options,args):
         current['option']='release'
     if current['rule']=='' and current['wrapper']!='':
         current['rule']='wrapper'
-    if current['option']=='debug':
-        if current['rule']=='agrum':
-            current['rule']='agrum-dbg'
+    #if current['option']=='debug':
+    #    if current['rule']=='agrum':
+    #        current['rule']='agrum-dbg'
 
     if current['wrapper']!="":
         if (not current['rule'] in ["wrapper", "install","test","uninstall"]):
@@ -267,8 +300,10 @@ def checkConstraints(parser,options,args):
 
 ##########################################################################################################################
 def proceed(options,RANDOMSEED_FOR_PROFILE="10"):
+    global listOfModules
+    
     folders=cmake_options=make_options=run_cde =""
-
+      
     if options['wrapper']!="": # we know rule in ["install","wrapper", "test"]
         # ensure creation of agrum/config.h (as a release version of agrum)
         folders=["build",options['platform'],'release']
@@ -326,6 +361,15 @@ def proceed(options,RANDOMSEED_FOR_PROFILE="10"):
     option_profile=" -DGUM_RANDOMSEED="+(RANDOMSEED_FOR_PROFILE if options['profile'] else "0")
     cmake_options=cmake_options+option_profile;
 
+    # MANAGING MODULES
+    listM=[x.upper() for x in options['module'].split('+')]
+    setM=set(listM)
+    
+    create_build = lambda module: " -DBUILD_"+module+"="+ ("ON" if module in setM else "OFF")
+    cmake_options = cmake_options+create_build("ALL")
+    for module in listOfModules:
+      cmake_options = cmake_options+create_build(module)
+
     [safe_cd(s) for s in folders]
     execute("cmake "+cmake_options)
     if options['rule']!='config':
@@ -357,6 +401,17 @@ def uninstall(options):
         os.system('cd '+install_folder+'/include && rm -rf agrum')
 
 ##########################################################################################################################
+def getInvocation(current):  
+    invocation=WARNING+"invocation"+ENDC+" : "+RED+"act "+OKGREEN+current['rule']+" "+current['option']+' '+current['wrapper']
+    if (current['rule']=='test'):
+      invocation+=' --testlist '+current['testlists']
+    invocation+=' --module '+current['module']
+    if (current['rule']=='install'):
+      invocation+=' --dest'+current['destination']
+    invocation+=ENDC
+    return invocation
+  
+##########################################################################################################################
 default={}
 current={}
 persistent={}
@@ -374,6 +429,8 @@ default['jobs']="5"
 default['verbose']=False
 default['profile']=False
 default['stats']=False
+default['module']='ALL'
+default['testlists']='all'
 
 not_persistent_options=['profile','stats']
 
@@ -394,7 +451,7 @@ for key in default.iterkeys():
         current[key]=default[key]
 
 invocation=" agrum release -d /usr -j 5 -q -p linux"
-numversion="1.5"
+numversion="1.6"
 
 print ENDC+RED+"aGrUM"+ENDC+" compilation tool "+RED+"v"+numversion+ENDC
 print "(c) 2010-13 "+OKGREEN+"aGrUM Team"+ENDC
@@ -410,9 +467,11 @@ checkConstraints(parser,options,args)
 
 if options.testlists!="":
     testManagement(options.testlists)
+
+moduleManagement(options.module)
     
 if len(args)==0:
-    print WARNING+"invocation"+ENDC+" : "+OKGREEN+"act "+current['rule']+" "+current['option']+' '+current['wrapper']+ENDC
+    print(getInvocation(current))
     print
 
 #needed for cmake
@@ -432,7 +491,7 @@ if current['rule']=='uninstall':
     
 if current['rule']=='default':
     current=default
-    print "invocation : act "+current['rule']+" "+current['option']+' '+current['wrapper']
+    print(getInvocation(current))
 
 for key in current:
   if not key in not_persistent_options:

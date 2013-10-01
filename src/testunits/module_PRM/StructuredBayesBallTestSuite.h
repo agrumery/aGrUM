@@ -23,10 +23,10 @@
 #include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/inference/BayesBall.h>
 
-#include <agrum/prm/inference/SVE.h>
-#include <agrum/prm/inference/structuredBayesBall.h>
+#include <agrum/PRM/inference/SVE.h>
+#include <agrum/PRM/inference/structuredBayesBall.h>
 
-#include <agrum/prm/o3prm/O3prmReader.h>
+#include <agrum/PRM/o3prm/O3prmReader.h>
 
 
 namespace gum_tests {

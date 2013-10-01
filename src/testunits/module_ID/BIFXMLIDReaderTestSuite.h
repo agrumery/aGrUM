@@ -28,8 +28,8 @@
 #include <testsuite_utils.h>
 
 #include <agrum/variables/labelizedVariable.h>
-#include <agrum/influenceDiagram/influenceDiagram.h>
-#include <agrum/influenceDiagram/io/BIFXML/BIFXMLIDReader.h>
+#include <agrum/ID/influenceDiagram.h>
+#include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
 
 
 // The graph used for the tests:

@@ -21,9 +21,9 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
-#include <agrum/prm/inference/gspan.h>
+#include <agrum/PRM/inference/gspan.h>
 
-#include <agrum/prm/o3prm/O3prmReader.h>
+#include <agrum/PRM/o3prm/O3prmReader.h>
 
 
 namespace gum_tests {

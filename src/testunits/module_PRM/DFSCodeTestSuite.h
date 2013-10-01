@@ -23,7 +23,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include "testsuite_utils.h"
 
-#include <agrum/prm/gspan/DFSCode.h>
+#include <agrum/PRM/gspan/DFSCode.h>
 
 /*
  * Test of gum::prm::gspan::DFSCode and gum::prm::gspan::EdgeCode.

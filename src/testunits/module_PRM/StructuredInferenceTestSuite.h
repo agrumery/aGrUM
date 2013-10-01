@@ -23,15 +23,15 @@
 
 #include <agrum/BN/inference/VEWithBB.h>
 
-#include <agrum/prm/inference/groundedInference.h>
-#include <agrum/prm/inference/structuredInference.h>
+#include <agrum/PRM/inference/groundedInference.h>
+#include <agrum/PRM/inference/structuredInference.h>
 
-#include <agrum/prm/generator/layerGenerator.h>
-#include <agrum/prm/generator/clusteredLayerGenerator.h>
+#include <agrum/PRM/generator/layerGenerator.h>
+#include <agrum/PRM/generator/clusteredLayerGenerator.h>
 
-#include <agrum/prm/gspan/DFSTree.h>
+#include <agrum/PRM/gspan/DFSTree.h>
 
-#include <agrum/prm/o3prm/O3prmReader.h>
+#include <agrum/PRM/o3prm/O3prmReader.h>
 
 
 namespace gum_tests {

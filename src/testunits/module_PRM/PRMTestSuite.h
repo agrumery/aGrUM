@@ -25,15 +25,15 @@
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/VEWithBB.h>
 
-#include <agrum/prm/instanceBayesNet.h>
-#include <agrum/prm/classBayesNet.h>
-#include <agrum/prm/inference/groundedInference.h>
-#include <agrum/prm/inference/SVE.h>
-#include <agrum/prm/inference/SVED.h>
-#include <agrum/prm/inference/structuredBayesBall.h>
-#include <agrum/prm/inference/structuredInference.h>
+#include <agrum/PRM/instanceBayesNet.h>
+#include <agrum/PRM/classBayesNet.h>
+#include <agrum/PRM/inference/groundedInference.h>
+#include <agrum/PRM/inference/SVE.h>
+#include <agrum/PRM/inference/SVED.h>
+#include <agrum/PRM/inference/structuredBayesBall.h>
+#include <agrum/PRM/inference/structuredInference.h>
 
-#include <agrum/prm/o3prm/O3prmReader.h>
+#include <agrum/PRM/o3prm/O3prmReader.h>
 
 #define GET_PATH_STR_O3PRM(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/o3prm/" #x
 namespace gum_tests {
