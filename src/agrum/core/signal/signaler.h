@@ -84,6 +84,7 @@ a.f(5,'y');
 */
 #ifndef __SIGNALER_H
 #define __SIGNALER_H
+#include <functional>
 
 #include <agrum/core/signal/listener.h>
 

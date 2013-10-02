@@ -970,7 +970,7 @@ namespace gum {
         v_file << " 1  ";
 
         for ( decltype ( mods ) modal = 0; modal < mods; modal++ ) {
-          int64_t num, den;
+          long int num, den;
           GUM_SCALAR pr = nodeCredalSet[ vtex ][ modal ];
 
           Rational< GUM_SCALAR >::farey ( num, den, pr, 1e6, 1e-6 );
