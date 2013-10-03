@@ -345,6 +345,9 @@ def proceed(options,RANDOMSEED_FOR_PROFILE="10"):
             make_options=options['rule']
             run_cde="./"+options['rule']
         else:
+          if (options['rule']=="agrum" and options['option'].upper()=="DEBUG"):
+            make_options="agrum-dbg"
+          else:
             make_options=options['rule']
 
     if (options['platform'] != "windows"):
