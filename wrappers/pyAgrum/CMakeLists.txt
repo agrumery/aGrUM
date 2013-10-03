@@ -2,18 +2,25 @@ project(pyAgrum)
 
 cmake_minimum_required(VERSION 2.6)
 
-## for now, we use a special version of swig compliant with C++11. It is not the current release of SWIG.
-if (EXISTS "$ENV{HOME}/usr/bin/swig")
-  set(SWIG_EXECUTABLE "$ENV{HOME}/usr/bin/swig")
-endif (EXISTS "$ENV{HOME}/usr/bin/swig")
+## if you do not want to use swig
+set(USE_SWIG true)
 
-find_package(SWIG REQUIRED)
-include(${SWIG_USE_FILE})
-# modification of SWIG_ADD_MODULE to take outdir into account for generated cpp wrapper.
-include("cmake/GUM-UseSWIG.cmake")
+if (USE_SWIG)
+  find_package(SWIG)
+  if (SWIG_FOUND)
+    include(${SWIG_USE_FILE})
+    # modification of SWIG_ADD_MODULE to take outdir into account for generated cpp wrapper.
+    include("cmake/GUM-UseSWIG.cmake")
+  else ()
+    message(STATUS "** aGrUM notification : Swig not found : you cannot change *.i files !")
+  endif ()
+else()
+  message(STATUS "** aGrUM notification : Swig not used : you cannot change *.i files !")
+  set(SWIG_FOUND false)
+endif()
 
 find_package(PythonInterp)
-find_package(PythonLibs ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}.${PYTHON_VERSION_PATCH} EXACT)
+find_package(PythonLibs ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} REQUIRED)
 
 #== Initializing aGrUM
 set(AGRUM_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../src")
@@ -111,9 +118,14 @@ endforeach(C_FILE ${AGRUM_C_SOURCES})
 
 set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i PROPERTIES SWIG_FLAGS "-I${SWIG_SOURCE_DIR}")
 
-gum_swig_add_module(pyAgrum python ${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i ${AGRUM_CORE_SOURCES} ${AGRUM_BN_SOURCES} ${AGRUM_GRAPHICALMODEL_SOURCES} ${AGRUM_GRAPHS_SOURCES} ${AGRUM_MULTIDIM_SOURCES} ${AGRUM_VARIABLES_SOURCES} ${AGRUM_CN_SOURCES} ${AGRUM_C_SOURCES})
-#for now we do not take for pyAgrum the ${AGRUM_LEARNING_SOURCES}
-swig_link_libraries(pyAgrum ${PYTHON_LIBRARIES})
+if (SWIG_FOUND)
+  gum_swig_add_module(pyAgrum python ${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i ${AGRUM_CORE_SOURCES} ${AGRUM_BN_SOURCES} ${AGRUM_GRAPHICALMODEL_SOURCES} ${AGRUM_GRAPHS_SOURCES} ${AGRUM_MULTIDIM_SOURCES} ${AGRUM_VARIABLES_SOURCES} ${AGRUM_CN_SOURCES} ${AGRUM_C_SOURCES})
+  #for now we do not take for pyAgrum the ${AGRUM_LEARNING_SOURCES}
+  swig_link_libraries(pyAgrum ${PYTHON_LIBRARIES})
+else (SWIG_FOUND)
+  file(GLOB SWIG_GENERATED_FILES "${CMAKE_CURRENT_SOURCE_DIR}/generated-files/*.cxx")
+  add_library(_pyAgrum  SHARED ${AGRUM_CORE_SOURCES} ${AGRUM_BN_SOURCES} ${AGRUM_GRAPHICALMODEL_SOURCES} ${AGRUM_GRAPHS_SOURCES} ${AGRUM_MULTIDIM_SOURCES} ${AGRUM_VARIABLES_SOURCES} ${AGRUM_CN_SOURCES} ${AGRUM_C_SOURCES} ${SWIG_GENERATED_FILES})
+endif (SWIG_FOUND)
 
 set_target_properties(_pyAgrum PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 set_target_properties(_pyAgrum PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS_RELEASE}")
@@ -121,6 +133,7 @@ set_target_properties(_pyAgrum PROPERTIES LINK_FLAGS "-lgomp")
 
 # for additionnal rule such test pyAgrum
 add_custom_command(TARGET _pyAgrum POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SWIG_OUTDIR}/pyAgrum.py" "${CMAKE_CURRENT_BINARY_DIR}/.")
+set_target_properties(_pyAgrum PROPERTIES PREFIX "")
 
 file(GLOB GUMLIB_FILES "${CMAKE_CURRENT_SOURCE_DIR}/gumLib/*.py")
 file(GLOB GUMLIB_UTILS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/gumLib/utils/*.py")
