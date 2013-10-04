@@ -40,7 +40,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <algorithm>
 #include <fstream>
 
-#include <agrum/core/dir_utils.h>
+#include <agrum/core/utils_dir.h>
 #include <agrum/prm/PRMFactory.h>
 
 #undef TRY

@@ -20,7 +20,14 @@ else()
 endif()
 
 find_package(PythonInterp)
-find_package(PythonLibs ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} REQUIRED)
+
+if (APPLE) # let's assume that PYTHON is there
+  set(PYTHON_LIBRARIES /usr/local/lib/libpython2.7.dylib)
+  set(PYTHON_INCLUDE_PATH /usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/include/python2.7)
+  message(${PYTHON_LIBRARIES})
+else()
+  find_package(PythonLibs ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} REQUIRED)
+endif()
 
 #== Initializing aGrUM
 set(AGRUM_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../src")
@@ -104,7 +111,7 @@ if(UNIX)
 endif(UNIX)
 
 set(AGRUM_INLINING_POLICY "")
-set(CMAKE_FLAGS_RELEASE "${AGRUM_OPTIMIZATION} ${AGRUM_INLINING_POLICY} -I${AGRUM_SOURCE_DIR} -I${PYTHON_INCLUDE_PATH} -I${CMAKE_CURRENT_SOURCE_DIR} -fopenmp")
+set(CMAKE_FLAGS_RELEASE "${AGRUM_OPTIMIZATION} ${AGRUM_INLINING_POLICY} -I${AGRUM_SOURCE_DIR} -I${PYTHON_INCLUDE_PATH} -I${CMAKE_CURRENT_SOURCE_DIR} -I${CMAKE_CURRENT_BINARY_DIR} -fopenmp")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_FLAGS_RELEASE} ${CPP_ONZE_FLAGS}")
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_FLAGS_RELEASE} -g")
 
@@ -125,6 +132,7 @@ if (SWIG_FOUND)
 else (SWIG_FOUND)
   file(GLOB SWIG_GENERATED_FILES "${CMAKE_CURRENT_SOURCE_DIR}/generated-files/*.cxx")
   add_library(_pyAgrum  SHARED ${AGRUM_CORE_SOURCES} ${AGRUM_BN_SOURCES} ${AGRUM_GRAPHICALMODEL_SOURCES} ${AGRUM_GRAPHS_SOURCES} ${AGRUM_MULTIDIM_SOURCES} ${AGRUM_VARIABLES_SOURCES} ${AGRUM_CN_SOURCES} ${AGRUM_C_SOURCES} ${SWIG_GENERATED_FILES})
+  target_link_libraries(_pyAgrum ${PYTHON_LIBRARIES})
 endif (SWIG_FOUND)
 
 set_target_properties(_pyAgrum PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
@@ -134,6 +142,7 @@ set_target_properties(_pyAgrum PROPERTIES LINK_FLAGS "-lgomp")
 # for additionnal rule such test pyAgrum
 add_custom_command(TARGET _pyAgrum POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SWIG_OUTDIR}/pyAgrum.py" "${CMAKE_CURRENT_BINARY_DIR}/.")
 set_target_properties(_pyAgrum PROPERTIES PREFIX "")
+set_target_properties(_pyAgrum PROPERTIES SUFFIX ".so")
 
 file(GLOB GUMLIB_FILES "${CMAKE_CURRENT_SOURCE_DIR}/gumLib/*.py")
 file(GLOB GUMLIB_UTILS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/gumLib/utils/*.py")
