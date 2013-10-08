@@ -532,7 +532,7 @@ template<typename GUM_SCALAR>
         nonTerminalStream << "node [shape = ellipse];" << std::endl;
         std::string tab = "  ";
 
-        for ( NodeGraphPart::NodeIterator nodeIter = __model.beginNodes(); nodeIter != __model.endNodes(); ++nodeIter )
+        for ( NodeGraphPart::NodeIterator nodeIter = __model.begin(); nodeIter != __model.end(); ++nodeIter )
           if ( *nodeIter != 0 ) {
             if ( __valueMap.existsFirst ( *nodeIter ) )
                 terminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\""<< *nodeIter << " - " << __valueMap.second ( *nodeIter ) << "\"]"<< ";" << std::endl;

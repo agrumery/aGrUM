@@ -50,15 +50,6 @@ namespace gum {
    * @class MultiDimDecisionGraph multiDimDecisionGraph.h <agrum/multidim/multiDimDecisionGraph.h>
    *
    * @brief Class implementingting a decision graph
-   * For description of general methods, please refer to multidimdecisiondiagrambase
-   * For specific implementation and use of multidimdecisiondiagram this is the right place :
-   * The idea is that approximation policy is given as a template class to this class ( please
-   * refer to agrum/core/approximationPolicy.h for more details on such classes ). MultiDimDecisionDiagram inherits from
-   * this class.
-   * A default classe exists : Exact Policy whixh commit no approximation on value given. As a default
-   * you just have to declare MultiDimDecisionDiagram<GUM_SCALAR> and play with.
-   * If you want to use a different approximation pattern, just MultiDimDecisionDiagram<GUM_SCALAR, CLASS_DESCRIBING_NEW_PATTERN>.
-   * Therefor, if do operation on MultiDimDecisionDiagram the return type will likely be MultiDimDecisionDiagramBase
    *
    * @ingroup multidim_group
    */
