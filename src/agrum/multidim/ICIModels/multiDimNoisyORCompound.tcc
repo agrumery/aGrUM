@@ -22,45 +22,45 @@
  *
 * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
-#include<agrum/multidim/CIModels/multiDimNoisyORNet.h>
+#include<agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
 
 namespace gum {
 
   /// Default constructor
 
   template<typename GUM_SCALAR> INLINE
-  MultiDimNoisyORNet<GUM_SCALAR>::MultiDimNoisyORNet( GUM_SCALAR external_weight, GUM_SCALAR default_weight ): MultiDimCIModel<GUM_SCALAR>( external_weight, default_weight ) {
-    GUM_CONSTRUCTOR( MultiDimNoisyORNet ) ;
+  MultiDimNoisyORCompound<GUM_SCALAR>::MultiDimNoisyORCompound( GUM_SCALAR external_weight, GUM_SCALAR default_weight ): MultiDimICIModel<GUM_SCALAR>( external_weight , default_weight ) {
+    GUM_CONSTRUCTOR( MultiDimNoisyORCompound ) ;
   }
 
 
 /// Default constructor
 
   template<typename GUM_SCALAR> INLINE
-  MultiDimNoisyORNet<GUM_SCALAR>::MultiDimNoisyORNet( const MultiDimNoisyORNet<GUM_SCALAR>& from ) : MultiDimCIModel<GUM_SCALAR>( from ) {
-    GUM_CONS_CPY( MultiDimNoisyORNet );
+  MultiDimNoisyORCompound<GUM_SCALAR>::MultiDimNoisyORCompound( const MultiDimNoisyORCompound<GUM_SCALAR>& from ) : MultiDimICIModel<GUM_SCALAR>( from ) {
+    GUM_CONS_CPY( MultiDimNoisyORCompound );
   }
 
 
   /// Copy constructor using a bijection to swap variables from source.
 
   template<typename GUM_SCALAR> INLINE
-  MultiDimNoisyORNet<GUM_SCALAR>::MultiDimNoisyORNet( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-      const MultiDimNoisyORNet<GUM_SCALAR>& from ):
-    MultiDimCIModel<GUM_SCALAR>( bij,from ) {
-    GUM_CONSTRUCTOR( MultiDimNoisyORNet );
+  MultiDimNoisyORCompound<GUM_SCALAR>::MultiDimNoisyORCompound( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
+      const MultiDimNoisyORCompound<GUM_SCALAR>& from ):
+    MultiDimICIModel<GUM_SCALAR>( bij,from ) {
+    GUM_CONSTRUCTOR( MultiDimNoisyORCompound );
   }
 
 
 /// destructor
 
   template<typename GUM_SCALAR> INLINE
-  MultiDimNoisyORNet<GUM_SCALAR>::~MultiDimNoisyORNet() {
-    GUM_DESTRUCTOR( MultiDimNoisyORNet );
+  MultiDimNoisyORCompound<GUM_SCALAR>::~MultiDimNoisyORCompound() {
+    GUM_DESTRUCTOR( MultiDimNoisyORCompound );
   }
 
   template<typename GUM_SCALAR>
-  GUM_SCALAR MultiDimNoisyORNet<GUM_SCALAR>::get( const Instantiation& i ) const {
+  GUM_SCALAR MultiDimNoisyORCompound<GUM_SCALAR>::get( const Instantiation& i ) const {
     if ( this->nbrDim() < 1 ) {
       GUM_ERROR( OperationNotAllowed, "Not enough variable for a NoisyOr " );
     }
@@ -78,7 +78,7 @@ namespace gum {
         const DiscreteVariable& v = this->variable( j );
 
         if ( i.val( v ) == 1 ) {
-          GUM_SCALAR pr = ( 1-this->causalWeight( v ) );
+          GUM_SCALAR pr = ( 1-this->causalWeight( v ) )/ratio;
 
           if ( pr == ( GUM_SCALAR )0.0 ) {
             fact = ( GUM_SCALAR )0.0;
@@ -94,9 +94,9 @@ namespace gum {
   }
 
   template<typename GUM_SCALAR>
-  const std::string MultiDimNoisyORNet<GUM_SCALAR>::toString() const {
+  const std::string MultiDimNoisyORCompound<GUM_SCALAR>::toString() const {
     std::stringstream s;
-    s << MultiDimImplementation<GUM_SCALAR>::variable( 0 ) << "=noisyORNet([" << this->externalWeight() << "],";
+    s << MultiDimImplementation<GUM_SCALAR>::variable( 0 ) << "=noisyORCompound([" << this->externalWeight() << "],";
 
     for ( Idx i = 1; i < MultiDimImplementation<GUM_SCALAR>::nbrDim(); i++ ) {
       s << MultiDimImplementation<GUM_SCALAR>::variable( i ) << "[" << this->causalWeight( MultiDimImplementation<GUM_SCALAR>::variable( i ) ) << "]";
@@ -114,26 +114,21 @@ namespace gum {
   // For friendly displaying the content of the variable.
 
   template<typename GUM_SCALAR> INLINE
-  std::ostream& operator<<( std::ostream& s, const MultiDimNoisyORNet<GUM_SCALAR>& ag ) {
+  std::ostream& operator<<( std::ostream& s, const MultiDimNoisyORCompound<GUM_SCALAR>& ag ) {
     return s << ag.toString();
   }
 
   template<typename GUM_SCALAR> INLINE
-  MultiDimContainer<GUM_SCALAR>* MultiDimNoisyORNet<GUM_SCALAR>::newFactory() const {
-    return new MultiDimNoisyORNet<GUM_SCALAR>( this->__external_weight, this->__default_weight );
-    // GUM_ERROR( OperationNotAllowed,
-    //            "This class doesn't contain an empty constructor" );
-    // return 0;
+  MultiDimContainer<GUM_SCALAR>* MultiDimNoisyORCompound<GUM_SCALAR>::newFactory() const {
+    return new MultiDimNoisyORCompound<GUM_SCALAR>( this->__external_weight, this->__default_weight );
   }
 
   // returns the name of the implementation
   template<typename GUM_SCALAR> INLINE
-  const std::string& MultiDimNoisyORNet<GUM_SCALAR>::name() const {
-    static const std::string str = "MultiDimNoisyORNet";
+  const std::string& MultiDimNoisyORCompound<GUM_SCALAR>::name() const {
+    static const std::string str = "MultiDimNoisyORCompound";
     return str;
   }
 
-
 // ==================================================
 } /* namespace gum */
-

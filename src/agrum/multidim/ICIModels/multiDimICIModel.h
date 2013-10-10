@@ -20,14 +20,15 @@
 /** @file
  * @brief Abstract base class for all multi dimensionnal Causal Independency models
  *
- * Causal Independence (CI) is a method of defining a discrete distribution that can dramatically
+ * Independance of Causal Influence (ICI) is a method of defining a discrete distribution that can dramatically
  * reduce the number of prior probabilities necessary to define a distribution.
  * (see "The Noisy-Average Model for Local Probability Distributions", Zagorecki, 2003)
+ * (see also "Canonical Probabilistic Models for Knowledge Engineering", Diez, Druzdzel, 2007)
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
-#ifndef GUM_MULTI_DIM_CI_MODEL_H
-#define GUM_MULTI_DIM_CI_MODEL_H
+#ifndef GUM_MULTI_DIM_ICI_MODEL_H
+#define GUM_MULTI_DIM_ICI_MODEL_H
 
 #include <agrum/multidim/multiDimReadOnly.h>
 
@@ -49,7 +50,7 @@ namespace gum {
    */
   /* =========================================================================== */
   template<typename GUM_SCALAR>
-  class MultiDimCIModel : public MultiDimReadOnly<GUM_SCALAR> {
+  class MultiDimICIModel : public MultiDimReadOnly<GUM_SCALAR> {
     public:
       // ############################################################################
       /// @name Constructors / Destructors
@@ -58,8 +59,8 @@ namespace gum {
 
       /// Default constructor.
 
-      MultiDimCIModel( GUM_SCALAR external_weight,GUM_SCALAR default_weight=( GUM_SCALAR )1.0 );
-      MultiDimCIModel( const MultiDimCIModel<GUM_SCALAR>& from );
+      MultiDimICIModel( GUM_SCALAR external_weight,GUM_SCALAR default_weight=( GUM_SCALAR )1.0 );
+      MultiDimICIModel( const MultiDimICIModel<GUM_SCALAR>& from );
 
 
       /** Copy constructor using a bijection to swap variables from source.
@@ -67,13 +68,13 @@ namespace gum {
       * @param from the copied instance
       */
 
-      MultiDimCIModel( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-                       const MultiDimCIModel<GUM_SCALAR>& from );
+      MultiDimICIModel( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
+                       const MultiDimICIModel<GUM_SCALAR>& from );
 
 
       /// Destructor.
 
-      virtual ~MultiDimCIModel();
+      virtual ~MultiDimICIModel();
 
       /// @}
 
@@ -133,12 +134,12 @@ namespace gum {
       virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
   };
 
-  extern template class MultiDimCIModel<float>;
-  extern template class MultiDimCIModel<double>;
+  extern template class MultiDimICIModel<float>;
+  extern template class MultiDimICIModel<double>;
 } /* namespace gum */
 
-#include <agrum/multidim/CIModels/multiDimCIModel.tcc>
+#include <agrum/multidim/ICIModels/multiDimICIModel.tcc>
 
 
-#endif /* GUM_MULTI_DIM_CI_MODEL_H */
+#endif /* GUM_MULTI_DIM_ICI_MODEL_H */
 

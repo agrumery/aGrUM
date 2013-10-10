@@ -25,7 +25,7 @@
 #ifndef GUM_MULTI_DIM_NOISY_OR_NET_H
 #define GUM_MULTI_DIM_NOISY_OR_NET_H
 
-#include <agrum/multidim/CIModels/multiDimCIModel.h>
+#include <agrum/multidim/ICIModels/multiDimICIModel.h>
 
 
 namespace gum {
@@ -46,7 +46,7 @@ namespace gum {
   /* =========================================================================== */
   template<typename GUM_SCALAR>
 
-  class MultiDimNoisyORNet : public MultiDimCIModel<GUM_SCALAR> {
+  class MultiDimNoisyORNet : public MultiDimICIModel<GUM_SCALAR> {
     public:
       // ############################################################################
       /// @name Constructors / Destructors
@@ -123,7 +123,7 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/multidim/CIModels/multiDimNoisyORNet.tcc>
+#include <agrum/multidim/ICIModels/multiDimNoisyORNet.tcc>
 
 
 #endif /* GUM_MULTI_DIM_NOISY_OR_NET_H */

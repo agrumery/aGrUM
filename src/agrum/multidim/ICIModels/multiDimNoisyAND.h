@@ -18,31 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief class for multiDimNoisyORCompound
+ * @brief class for NoisyAND-net implementation as multiDim
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES <{prenom.nom}_at_lip6.fr>
  */
-#ifndef GUM_MULTI_DIM_NOISY_OR_COMPOUND_H
-#define GUM_MULTI_DIM_NOISY_OR_COMPOUND_H
+#ifndef GUM_MULTI_DIM_NOISY_AND_H
+#define GUM_MULTI_DIM_NOISY_AND_H
 
-#include <agrum/multidim/CIModels/multiDimCIModel.h>
+#include <agrum/multidim/ICIModels/multiDimICIModel.h>
 
 
 namespace gum {
 
-  /* =========================================================================== */
-  /* =========================================================================== */
-  /* ===                       GUM_MULTI_DIM_NOISYOR_COMPOU                  === */
-  /* =========================================================================== */
-  /* =========================================================================== */
-  /** @class MultiDimNoisyORCompound
-   * @brief Noisy OR representation
+  /** @class MultiDimNoisyAND
+   * @brief Noisy AND representation
    * @ingroup multidim_group
    *
-   * Noisy-OR as described by Henrion (UAI-3, 1989, pp161-173)
+   * Noisy-AND as described for instance in (ECAI-14, 2000, Galan and Diez)
    *
    * @warning
-   *   - The first variable is assumed to be the NOISY-OR. The latter are
+   *   - The first variable is assumed to be the NOISY-AND. The latter are
    *     the causes.
    *   - This code give probabilities for BINARY VARIABLES (other values are
    *     assumed to be of probability 0). But for optimization reason, we will
@@ -51,7 +46,7 @@ namespace gum {
   /* =========================================================================== */
   template<typename GUM_SCALAR>
 
-  class MultiDimNoisyORCompound : public MultiDimCIModel<GUM_SCALAR> {
+  class MultiDimNoisyAND : public MultiDimICIModel<GUM_SCALAR> {
     public:
       // ############################################################################
       /// @name Constructors / Destructors
@@ -60,8 +55,11 @@ namespace gum {
 
       /// Default constructor.
 
-      MultiDimNoisyORCompound( GUM_SCALAR external_weight, GUM_SCALAR default_weight = ( GUM_SCALAR )1.0 );
-      MultiDimNoisyORCompound( const MultiDimNoisyORCompound<GUM_SCALAR>& from );
+      ///@throw gum::InvalidArgument if external_weight is null.
+      MultiDimNoisyAND( GUM_SCALAR external_weight, GUM_SCALAR default_weight = ( GUM_SCALAR ) 1.0 );
+
+      ///
+      MultiDimNoisyAND( const MultiDimNoisyAND<GUM_SCALAR>& from );
 
 
       /** Copy constructor using a bijection to swap variables from source.
@@ -69,13 +67,13 @@ namespace gum {
       * @param from the copied instance
       */
 
-      MultiDimNoisyORCompound( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-                               const MultiDimNoisyORCompound<GUM_SCALAR>& from );
+      MultiDimNoisyAND( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
+                        const MultiDimNoisyAND<GUM_SCALAR>& from );
 
 
       /// Destructor.
 
-      virtual ~MultiDimNoisyORCompound();
+      virtual ~MultiDimNoisyAND();
 
       /// @}
 
@@ -101,7 +99,6 @@ namespace gum {
       /// @{
 
     public:
-
       virtual GUM_SCALAR get( const Instantiation& i ) const;
 
       const std::string toString( void ) const;
@@ -119,18 +116,18 @@ namespace gum {
       /// @}
   };
 
-  extern template class MultiDimNoisyORCompound<float>;
-  extern template class MultiDimNoisyORCompound<double>;
+  extern template class MultiDimNoisyAND<float>;
+  extern template class MultiDimNoisyAND<double>;
 
   /// For friendly displaying the content of the array.
-  template<typename GUM_SCALAR> std::ostream& operator<< ( std::ostream& s,
-      const MultiDimNoisyORCompound<GUM_SCALAR>& ag );
+  template<typename GUM_SCALAR>
+  std::ostream& operator<< ( std::ostream& s, const MultiDimNoisyAND<GUM_SCALAR>& ag );
 
 
 } /* namespace gum */
 
-#include <agrum/multidim/CIModels/multiDimNoisyORCompound.tcc>
+#include <agrum/multidim/ICIModels/multiDimNoisyAND.tcc>
 
 
-#endif /* GUM_MULTI_DIM_NOISY_OR_COMPOUND_H */
+#endif /* GUM_MULTI_DIM_NOISY_AND_H */
 

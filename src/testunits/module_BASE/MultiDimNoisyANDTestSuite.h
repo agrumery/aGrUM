@@ -27,7 +27,7 @@
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/variables/rangeVariable.h>
 #include <agrum/multidim/potential.h>
-#include <agrum/multidim/CIModels/multiDimNoisyAND.h>
+#include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/GibbsInference.h>

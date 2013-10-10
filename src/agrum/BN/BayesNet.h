@@ -343,7 +343,7 @@ namespace gum {
       *
       * @param head and
       * @param tail as NodeId
-      * @param causalWeight see gum::MultiDimCIModel
+      * @param causalWeight see gum::MultiDimICIModel
       * @throw InvalidArc If arc.tail and/or arc.head are not in the BN.
       * @throw InvalidArc If variable in arc.head is not a NoisyOR variable.
       *
@@ -356,7 +356,7 @@ namespace gum {
       *
       * @param head and
       * @param tail as NodeId
-      * @param causalWeight see gum::MultiDimCIModel
+      * @param causalWeight see gum::MultiDimICIModel
       * @throw InvalidArc If arc.tail and/or arc.head are not in the BN.
       * @throw InvalidArc If variable in arc.head is not a NoisyOR variable.
       */

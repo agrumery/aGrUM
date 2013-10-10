@@ -17,10 +17,11 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <agrum/multidim/CIModels/multiDimCIModel.h>
+
+#include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
 
 #ifdef GUM_NO_INLINE
 #endif /* GUM_NO_INLINE */
 
-template class gum::MultiDimCIModel<float>;
-template class gum::MultiDimCIModel<double>;
+template class gum::MultiDimNoisyORCompound<float>;
+template class gum::MultiDimNoisyORCompound<double>;
