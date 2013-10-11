@@ -150,7 +150,6 @@ def testManagement(cde):
   else:
     l=checkTestList(cde)
     writeTestList(l)
-    current['rule']='test'
 
 ##########################################################################################################################
 def checkTestList(cde):
