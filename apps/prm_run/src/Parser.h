@@ -14,11 +14,11 @@
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/BN/inference/BayesNetInference.h>
-#include <agrum/prm/PRMInference.h>
-#include <agrum/prm/SVE.h>
-#include <agrum/prm/SVED.h>
-#include <agrum/prm/groundedInference.h>
-#include <agrum/prm/skool/SkoolReader.h>
+#include <agrum/PRM/PRMInference.h>
+#include <agrum/PRM/SVE.h>
+#include <agrum/PRM/SVED.h>
+#include <agrum/PRM/groundedInference.h>
+#include <agrum/PRM/skool/SkoolReader.h>
 
 #include "Scanner.h"
 

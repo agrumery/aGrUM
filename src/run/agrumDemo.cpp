@@ -26,13 +26,13 @@
 //<<<<<<< HEAD
 //#include <agrum/CN/CNMonteCarloSamplingInferenceTestSuite.h>
 //=======
-//#include <agrum/prm/PRMFactory.h>
+//#include <agrum/PRM/PRMFactory.h>
 //#ifndef DOXYGEN_SHOULD_SKIP_THIS
 //including coco-generated PARSER and SCANNER
 
-//#include <agrum/prm/o3prm/cocoR/Parser.h>
+//#include <agrum/PRM/o3prm/cocoR/Parser.h>
 //#endif //DOXYGEN_SHOULD_SKIP_THIS
-//#include <agrum/prm/o3prm/O3prmReader.h>
+//#include <agrum/PRM/o3prm/O3prmReader.h>
 //>>>>>>> Bug found for test -t all : now use of string::size() instead of string::length()
 
 
@@ -43,13 +43,13 @@
 
 #include <agrum/CN/LrsWrapper.h>
 
-//#include <agrum/prm/PRMFactory.h>
+//#include <agrum/PRM/PRMFactory.h>
 //#ifndef DOXYGEN_SHOULD_SKIP_THIS
 //including coco-generated PARSER and SCANNER
 
-//#include <agrum/prm/o3prm/cocoR/Parser.h>
+//#include <agrum/PRM/o3prm/cocoR/Parser.h>
 //#endif //DOXYGEN_SHOULD_SKIP_THIS
-//#include <agrum/prm/o3prm/O3prmReader.h>
+//#include <agrum/PRM/o3prm/O3prmReader.h>
 
 
 //#include <agrum/core/Rational.h> // custom decimal to rational
