@@ -22,29 +22,34 @@
 #***************************************************************************
 
 
-import sys
-import os
+import sys,os,re,glob
 import shelve
 from optparse import OptionParser
 from datetime import datetime
-import glob
 from distutils import sysconfig
 
 numversion="1.6"
-
-listOfModules={'BN':'Bayesian Network',
-               'CN':'Credal Network',
-               'FMDP':'Factored Markov Decision Process',
-               'ID':'Influence Diagram',
-               'PRM':'Probabilistic Relational Model'}
-
+modulestxt="src/modules.txt" # the file to parse to find the modules
 
 OKGREEN = '\033[92m'
 WARNING = '\033[93m'
 RED = '\033[91m'
 ENDC = '\033[0m'
 
-
+##########################################################################################################################
+def parseModulesTxt(filename):
+  modules={}
+  module_line=re.compile(r"^\s*list\s*\(\s*APPEND\s*MODULES\s*\"(.*)\"\s*\)(\s*#\s*(.*))?")
+  with open(filename,"r") as f:
+    for line in f:
+      rep=module_line.search(line)
+      if rep:
+        module=rep.groups(0)[0]
+        descr=rep.groups(0)[2]
+        if descr==0:
+          descr=module
+        modules[module]=descr
+  return modules
 ##########################################################################################################################
 def initParser(current):
     global list_options,list_rules,list_wrappers
@@ -264,7 +269,7 @@ def execute(s,exec_cde=False):
 
 ##########################################################################################################################
 def cleanAll():
-    print "..."+WARNING+" cleaning"+ENDC+" ...",
+    print WARNING+" cleaning"+ENDC+" ...",
     os.system("rm -rf build")
     print OKGREEN+"done"+ENDC
     print
@@ -468,37 +473,40 @@ def getInvocation(current):
     
     invocation+=getCommand(current['rule'])
     
-    if current['rule']=='wrapper':
-      invocation+=getCommand(current['wrapper'])
-    else:
-      invocation+=getCommand(current['option'])
-      
-    invocation+=getValParam('module',current['module'])
-    
-    if (current['rule']=='test'):
-      invocation+=getValParam('testlist',current['testlist'])
-      if current['test_base']:
-        invocation+=getParam("with-test-base")
+    if not current['rule'] in "show clean uninstall default".split():
+      if current['rule']=='wrapper':
+        invocation+=getCommand(current['wrapper'])
       else:
-        invocation+=getParam("without-test-base")
-    
-    if (current['rule']=='install'):
-      invocation+=getValParam('dest',current['destination'])
+        invocation+=getCommand(current['option'])
+        
+      invocation+=getValParam('module',current['module'])
       
-    invocation+=getValParam('platform',current['platform'])
-    
-    if (current['verbose']):
-      invocation+=getParam('verbose')
-    else:
-      invocation+=getParam('quiet')
+      if (current['rule']=='test'):
+        invocation+=getValParam('testlist',current['testlist'])
+        if current['test_base']:
+          invocation+=getParam("with-test-base")
+        else:
+          invocation+=getParam("without-test-base")
       
+      if (current['rule']=='install'):
+        invocation+=getValParam('dest',current['destination'])
+        
+      invocation+=getValParam('platform',current['platform'])
       
-    invocation+=getValParam('jobs',str(current['jobs']))
+      if (current['verbose']):
+        invocation+=getParam('verbose')
+      else:
+        invocation+=getParam('quiet')
+        
+        
+      invocation+=getValParam('jobs',str(current['jobs']))
 
     invocation+=ENDC
     return invocation
   
 ##########################################################################################################################
+listOfModules=parseModulesTxt(modulestxt)
+
 default={}
 current={}
 persistent={}
@@ -515,7 +523,7 @@ default['wrapper']=""
 default['jobs']="5"
 default['test_base']=True
 default['verbose']=False
-default['profile']=False
+default['fixed_seed']=False
 default['stats']=False
 default['module']='ALL'
 default['testlist']='all'
@@ -549,8 +557,9 @@ parser=initParser(current)
 checkConstraints(parser,options,args)
 
 moduleManagement(options.module)
-    
+
 print(getInvocation(current))
+print
 
 if options.testlist!="":
     testManagement(options.testlist)
@@ -602,7 +611,7 @@ else:
   print("Processing profile for "+getInvocation(current))
   print("This will take a certain amount of time ...")
   print("###########################################")
-  import subprocess,re,math
+  import subprocess,math
   time_line=re.compile(r'## Profiling :\s+(.*?)\sms ##')
   stat_line=re.compile(r"Failed (.*?) of (.*?) test")
   

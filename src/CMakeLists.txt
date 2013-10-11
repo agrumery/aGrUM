@@ -3,6 +3,7 @@ project(AGRUM)
 cmake_minimum_required(VERSION 2.8)
 
 include("version.txt")
+include("modules.txt")
 
 list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 set(CMAKE_CURRENT_CMAKE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cmake)

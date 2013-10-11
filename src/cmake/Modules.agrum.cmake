@@ -1,16 +1,8 @@
 # modules are all options (except ALL) + BASE module
-set(MODULES "BASE" ${OPTIONS})
-
-# list of all folders by module
-set(BASE_DIRS "core" "graphicalModels" "graphs" "multidim" "variables")
-set(BN_DIRS "BN" "learning")
-set(CN_DIRS "CN")
-set(FMDP_DIRS "FMDP")
-set(ID_DIRS "ID")
-set(PRM_DIRS "PRM")
+set(LIST_OF_MODULES "BASE" ${MODULES})
 
 # creating the lists of files by module
-foreach(MODULE ${MODULES})
+foreach(MODULE ${LIST_OF_MODULES})
   set(AGRUM_${MODULE}_SOURCES "")
   set(AGRUM_${MODULE}_INCLUDES "")
   set(AGRUM_${MODULE}_INLINES "")
@@ -44,12 +36,12 @@ set(AGRUM_INLINES ${AGRUM_BASE_INLINES})
 set(AGRUM_TEMPLATES ${AGRUM_BASE_TEMPLATES})
 
 if(BUILD_ALL)
-  message(STATUS "building all :")
+  message(STATUS "Building all :")
 else()
-  message(STATUS "building specific modules :")
+  message(STATUS "Building specific modules :")
 endif()
 
-foreach(OPTION ${OPTIONS})
+foreach(OPTION ${MODULES})
   if (BUILD_${OPTION} OR BUILD_ALL)
     message(STATUS "  (*) building ${OPTION}")
     set(AGRUM_SOURCES ${AGRUM_SOURCES} ${AGRUM_${OPTION}_SOURCES})
