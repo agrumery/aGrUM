@@ -38,7 +38,8 @@
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimWithOffset.h>
 #include <agrum/multidim/multiDimReadOnly.h>
-#include <agrum/multidim/CIModels/multiDimNoisyORCompound.h>
+#include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
+#include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
 #include <agrum/graphicalModels/variableNodeMap.h>
 
 #include <agrum/core/sequence.h>
@@ -163,7 +164,8 @@ namespace std {
 %include <agrum/multidim/multiDimImplementation.h>
 %include <agrum/multidim/multiDimWithOffset.h>
 %import <agrum/multidim/multiDimReadOnly.h>
-%include <agrum/multidim/CIModels/multiDimNoisyORCompound.h>
+%include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
+%include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
 %include <agrum/multidim/potential.h>
 %include <agrum/multidim/multiDimArray.h>
 
@@ -187,10 +189,10 @@ namespace std {
 %import <agrum/graphs/diGraphListener.h>
 %import <agrum/BN/io/BIF/BIFReader.h>
 
-%include <agrum/CN/CredalNet.h>
-%include <agrum/CN/VarMod2BNsMap.h>
-%include <agrum/CN/InferenceEngine.h>
-%include <agrum/CN/MultipleInferenceEngine.h>
+%include <agrum/CN/credalNet.h>
+%include <agrum/CN/varMod2BNsMap.h>
+%include <agrum/CN/inferenceEngine.h>
+%include <agrum/CN/multipleInferenceEngine.h>
 %include <agrum/CN/CNMonteCarloSampling.h>
 %include <agrum/CN/CNLoopyPropagation.h>
 
