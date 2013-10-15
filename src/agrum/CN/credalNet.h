@@ -30,7 +30,7 @@
 #include <vector>
 #include <iostream>
 #include <unistd.h>
-#include <sys/wait.h>
+//#include <sys/wait.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <set>

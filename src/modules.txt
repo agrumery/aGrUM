@@ -7,7 +7,7 @@ list(APPEND MODULES "BN") # Bayesian networks
 list(APPEND MODULES "CN") # Credal networks
 list(APPEND MODULES "FMDP") # Factored Markov Decision Process
 list(APPEND MODULES "ID") # Influence diagram
-list(APPEND MODULES "PRM")
+list(APPEND MODULES "PRM") # Probabilistc Relational Model
 
 # list of required modules
 set(BASE_DEPS)

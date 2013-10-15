@@ -12,7 +12,7 @@
 #include <fstream>
 
 #include <agrum/core/utils_dir.h>
-#include <agrum/prm/IPRMFactory.h>
+#include <agrum/PRM/IPRMFactory.h>
 
 #undef TRY
 // Redefine try / catch to add a semantic error when errors are raised.

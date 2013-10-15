@@ -436,7 +436,6 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
 
 ##########################################################################################################################
 def uninstall(options):
-    install_folder=options['destination']
     if options['wrapper']!='':
         install_folder=sysconfig.get_python_lib(1,0,prefix=install_folder)
 
@@ -447,12 +446,10 @@ def uninstall(options):
         print "suppresion de "+RED+install_folder+"/pyAgrum*.egg-info"+ENDC
         os.system('rm -f '+install_folder+"/pyAgrum*.egg-info")
     else:
-        print "suppresion de "+RED+install_folder+"/lib/libagrum*"+ENDC
-        os.system('rm -f '+install_folder+"/lib/libagrum*")
-        print "suppresion récursive de "+RED+install_folder+"/lib/aGrUM"+ENDC
-        os.system('cd '+install_folder+'/lib && rm -rf aGrUM')
-        print "suppresion récursive de "+RED+install_folder+"/include/agrum"+ENDC
-        os.system('cd '+install_folder+'/include && rm -rf agrum')
+        folders=["build",options['platform'],options['option']]
+        [safe_cd(s) for s in folders]
+        execute("make uninstall")
+        [execute("cd ..") for s in folders]
 
 ###################################################################################################################
 def _getParam(name):
@@ -499,6 +496,9 @@ def getInvocation(current):
         
         
       invocation+=getValParam('jobs',str(current['jobs']))
+    else:
+      if current['rule']=="uninstall":
+        invocation+=getCommand(current['option'])
 
     invocation+=ENDC
     return invocation
@@ -568,6 +568,10 @@ checkTestListCmake()
 if not os.path.exists('src/testunits/testList.cmake'):
     writeTestList(allTests())
     
+global sh,sh_no_exec
+sh="";
+sh_no_exec=""
+
 ## SPECIAL RULES
 if current['rule']=='show':
     showAll()
@@ -577,6 +581,13 @@ if current['rule']=='clean':
     sys.exit(0)
 if current['rule']=='uninstall':
     uninstall(current)
+    if (options.verbose):
+      print("")
+      print(sh)
+      print("")
+      print(sh_no_exec)
+      print("")
+    os.system(sh)
     sys.exit(0)
     
 if current['rule']=='default':
@@ -589,9 +600,6 @@ for key in current:
 shlv['persistent']=persistent
 shlv.close()
 
-global sh,sh_no_exec
-sh="";
-sh_no_exec=""
 
 proceed(current,RANDOMSEED_FOR_FIXED_SEED="10")
 

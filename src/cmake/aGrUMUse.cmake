@@ -1,5 +1,5 @@
-include (CMakeImportBuildSettings)
 
-cmake_import_build_settings(${aGrUM_BUILD_SETTINGS_FILE})
-include_directories(${aGrUM_INCLUDE_DIRS})
-link_directories(${aGrUM_LIBRARY_DIRS})
+include_directories(${AGRUM_INCLUDE_DIRS})
+add_definitions(${AGRUM_DEFINITIONS})
+link_directories(${AGRUM_LIBRARY_DIRS})
+
