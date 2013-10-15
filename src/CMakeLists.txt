@@ -42,6 +42,7 @@ include_directories(${AGRUM_SOURCE_DIR})
 link_directories(${AGRUM_BINARY_DIR}/lib)
 set(AGRUM_FILES ${AGRUM_SOURCES} ${AGRUM_C_SOURCES} ${AGRUM_INLINES} ${AGRUM_INCLUDES} ${AGRUM_TEMPLATES})
 
+####################################################################
 ## targat library
 add_library(${LIBAGRUM} SHARED ${AGRUM_FILES})
 if (OPENMP_FOUND)
@@ -49,6 +50,7 @@ if (OPENMP_FOUND)
 endif ()
 set_target_properties(${LIBAGRUM} PROPERTIES VERSION ${AGRUM_VERSION} SOVERSION ${AGRUM_VERSION_MAJOR})
 
+####################################################################
 ## target docs
 include(Doxygen.agrum)
 
@@ -59,8 +61,21 @@ add_executable(run EXCLUDE_FROM_ALL ${RUN_AGRUM_SOURCES})
 set_target_properties(run PROPERTIES COMPILE_FLAGS "-DGUM_RANDOMSEED=${GUM_RANDOMSEED}")
 target_link_libraries(run ${LIBAGRUM})
 
+####################################################################
 ## TARGET test
 include(CxxTest.agrum)
 
 include(Install.agrum)
 include(Pack.agrum)
+
+####################################################################
+# uninstall target
+configure_file (
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
+  IMMEDIATE @ONLY
+)
+
+add_custom_target ( uninstall
+  COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
+)
