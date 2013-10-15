@@ -44,6 +44,9 @@ set(AGRUM_FILES ${AGRUM_SOURCES} ${AGRUM_C_SOURCES} ${AGRUM_INLINES} ${AGRUM_INC
 
 ## targat library
 add_library(${LIBAGRUM} SHARED ${AGRUM_FILES})
+if (OPENMP_FOUND)
+  target_link_libraries(${LIBAGRUM} gomp)
+endif ()
 set_target_properties(${LIBAGRUM} PROPERTIES VERSION ${AGRUM_VERSION} SOVERSION ${AGRUM_VERSION_MAJOR})
 
 ## target docs

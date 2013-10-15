@@ -2,13 +2,14 @@ project(EXAMPLE)
 cmake_minimum_required(VERSION 2.8)
 
 include("${EXAMPLE_SOURCE_DIR}/../config.txt")
-set(aGrUM_DIR "${AGRUM_INSTALLATION_DIRECTORY}/lib/aGrUM/")
+if (NOT DEFINED aGrUM_DIR)
+  set(aGrUM_DIR "${AGRUM_INSTALLATION_DIRECTORY}/lib/aGrUM/")
+endif ()
 
-find_package(aGrUM)
+find_package(aGrUM NO_MODULE)
 
 if (aGrUM_FOUND)
-  include_directories(${AGRUM_INCLUDE_DIR})
-  link_directories(${AGRUM_LIB_DIR})
+  include(${AGRUM_USE_FILE})
 else (aGrUM_FOUND)
   message(FATAL_ERROR "Please install aGrUM")
 endif (aGrUM_FOUND)
@@ -17,7 +18,7 @@ endif (aGrUM_FOUND)
 # or
 # cmake -DCMAKE_BUILD_TYPE=RELEASE 
 #     RELEASE is the default option (thanks to the next 3 lines)
-if( NOT CMAKE_BUILD_TYPE )
+if( NOT DEFINED CMAKE_BUILD_TYPE )
   set( CMAKE_BUILD_TYPE RELEASE)
 endif()
 
@@ -25,11 +26,6 @@ file(GLOB EXAMPLE_SOURCE ${EXAMPLE_SOURCE_DIR}/*.cpp)
 file(GLOB EXAMPLE_INCLUDE ${EXAMPLE_SOURCE_DIR}/*.h)
 
 add_executable (example ${EXAMPLE_SOURCE})
+target_link_libraries(example ${AGRUM_LIBRARIES})
+install (TARGETS example DESTINATION bin)
 
-if (${CMAKE_BUILD_TYPE} STREQUAL "RELEASE") # release : act install release
-  message(STATUS "Release version")
-  target_link_libraries(example agrum)
-else() # debug : act install debug
-  message(STATUS "Debug version")
-  target_link_libraries(example agrum-dbg)
-endif()
