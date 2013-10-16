@@ -1482,9 +1482,9 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    using typename ListConstIterator<Val>::clear;
-    using typename ListConstIterator<Val>::setToEnd;
-    using typename ListConstIterator<Val>::isEnd;
+    using ListConstIterator<Val>::clear;
+    using ListConstIterator<Val>::setToEnd;
+    using ListConstIterator<Val>::isEnd;
 
     /// @}
 
@@ -1527,10 +1527,10 @@ namespace gum {
     /// returns a new iterator
     ListIterator<Val> operator- ( difference_type ) noexcept;
 
-    using typename ListConstIterator<Val>::operator!=;
-    using typename ListConstIterator<Val>::operator==;
-    using typename ListConstIterator<Val>::operator*;
-    using typename ListConstIterator<Val>::operator->;
+    using ListConstIterator<Val>::operator!=;
+    using ListConstIterator<Val>::operator==;
+    using ListConstIterator<Val>::operator*;
+    using ListConstIterator<Val>::operator->;
 
     /// gives access to the content of the iterator
     /** @throw UndefinedIteratorValue */
