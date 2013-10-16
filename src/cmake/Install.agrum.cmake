@@ -1,17 +1,7 @@
 ## installation module for recognize agrum (see documentation "How to use agrum")
-#include(CMakeExportBuildSettings)
-#cmake_export_build_settings(${CMAKE_CURRENT_BINARY_DIR}/aGrUMBuildSettings.cmake)
-set (AGRUM_LIBRARIES ${LIBAGRUM})
-if (OPENMP_FOUND)
-  list(APPEND AGRUM_LIBRARIES gomp)
-endif ()
-
-export_library_dependencies(${CMAKE_CURRENT_BINARY_DIR}/aGrUMLibraryDepends.cmake)
 install(FILES
     ${CMAKE_CURRENT_CMAKE_DIR}/aGrUMUse.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/aGrUMConfig.cmake
-#  ${CMAKE_CURRENT_BINARY_DIR}/aGrUMBuildSettings.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/aGrUMLibraryDepends.cmake
     DESTINATION lib${LIB_SUFFIX}/cmake/aGrUM
     )
 install(FILES

@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 
 include("${EXAMPLE_SOURCE_DIR}/../config.txt")
 if (NOT DEFINED aGrUM_DIR)
-  set(aGrUM_DIR "${AGRUM_INSTALLATION_DIRECTORY}/lib/aGrUM/")
+  set(aGrUM_DIR "${AGRUM_INSTALLATION_DIRECTORY}/lib/cmake/aGrUM/")
 endif ()
 
 find_package(aGrUM NO_MODULE)

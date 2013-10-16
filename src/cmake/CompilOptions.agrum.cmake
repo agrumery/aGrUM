@@ -1,6 +1,5 @@
 
 set(AGRUM_OPTIMIZATION "-O3")
-set (AGRUM_DEFINITIONS)
 
 set(AGRUM_INLINING_POLICY "")#"-fno-inline-small-functions")
 
@@ -9,7 +8,7 @@ add_definitions("-pedantic")
 
 find_package (CXX11)
 if (CXX11_FOUND)
-  set (AGRUM_DEFINITIONS "${CXX11_FLAGS} ${AGRUM_DEFINITIONS}" )
+  set (AGRUM_CXX_FLAGS "${CXX11_FLAGS} ${AGRUM_CXX_FLAGS}" )
 else ()
   message(FATAL_ERROR "aGrUM is now using C++11. Please find a compiler (for instance GCC) C++11 compliant")
 endif ()
@@ -60,5 +59,5 @@ if ("${CMAKE_VERBOSE_MAKEFILE}" STREQUAL "ON")
   endif ("${CMAKE_BUILD_TYPE}" STREQUAL "RELEASE")
 endif ("${CMAKE_VERBOSE_MAKEFILE}" STREQUAL "ON")
 
-add_definitions(${AGRUM_DEFINITIONS})
+set(CMAKE_CXX_FLAGS "${AGRUM_CXX_FLAGS} ${CMAKE_CXX_FLAGS}")
 
