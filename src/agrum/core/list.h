@@ -1155,9 +1155,9 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    using typename ListConstIteratorUnsafe<Val>::clear;
-    using typename ListConstIteratorUnsafe<Val>::setToEnd;
-    using typename ListConstIteratorUnsafe<Val>::isEnd;
+    using ListConstIteratorUnsafe<Val>::clear;
+    using ListConstIteratorUnsafe<Val>::setToEnd;
+    using ListConstIteratorUnsafe<Val>::isEnd;
 
     /// @}
 
@@ -1205,10 +1205,10 @@ namespace gum {
     /// returns a new iterator
     ListIteratorUnsafe<Val> operator- ( difference_type ) noexcept;
 
-    using typename ListConstIteratorUnsafe<Val>::operator==;
-    using typename ListConstIteratorUnsafe<Val>::operator!=;
-    using typename ListConstIteratorUnsafe<Val>::operator*;
-    using typename ListConstIteratorUnsafe<Val>::operator->;
+    using ListConstIteratorUnsafe<Val>::operator==;
+    using ListConstIteratorUnsafe<Val>::operator!=;
+    using ListConstIteratorUnsafe<Val>::operator*;
+    using ListConstIteratorUnsafe<Val>::operator->;
 
     /// gives access to the content of the iterator
     /** @throw UndefinedIteratorValue */
