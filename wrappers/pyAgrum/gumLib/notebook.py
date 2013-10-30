@@ -28,7 +28,6 @@ tools for BN analysis in ipython qtconsole and notebook
 """
 from base64 import encodestring
 import numpy as np
-
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
@@ -37,8 +36,8 @@ import pydot
 
 import IPython.display
 from IPython.core.pylabtools import print_figure
-
 import pyAgrum as gum
+import numpy as np
 
 def getPosterior(bn,ev,target):
     """
@@ -60,7 +59,6 @@ def showProba(p):
 
     fig=plt.figure()
     fig.set_figheight(len(var)/4.0)
-    
     ax=fig.add_subplot(111)
 
     ax.barh(ra,p.tolist(),align='center')
@@ -76,6 +74,18 @@ def showPosterior(bn,ev,target):
     shortcut for showProba(getPosterior(bn,ev,target))
     """
     showProba(getPosterior(bn,ev,target))
+
+def showBN(bn,size="4"):
+    """
+    Shows a graphviz svg representation of the BN using size ("1" ,"2" , ..., "6")
+    """
+    import pydot
+    import IPython.core.display
+
+    p=pydot.graph_from_dot_data(bn.toDot())
+    p.set_size(size)
+    i=IPython.core.display.SVG(p.create_svg())
+    IPython.core.display.display(i)
     
 def animApproximationScheme(apsc):
   """
@@ -365,7 +375,6 @@ def handPlot(ax, mag=1.0,
         ax.set_position([0, 0, 1, 1])
     
     return ax
-
 cdict = {'red': ((0.0, 0.1, 0.3),
                  (1.0, 0.6, 1.0)),
          'green': ((0.0, 0.0, 0.0),
@@ -421,7 +430,7 @@ def getBN(bn,size="4",vals=None,cmap=INFOcmap):
 
 def showBN(bn,size="4",vals=None,cmap=INFOcmap):
   gr=getBN(bn,size,vals,cmap)
-  print(IPython.display.HTML(gr.data))
+  IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))
   
   
 def normalizeVals(vals,hilightExtrema=False):
@@ -447,27 +456,26 @@ def showInference(bn,ie,size="4",cmap=INFOcmap):
   Shows a bn annoted with results from inference : entropy and mutual informations
   """
   vals={bn.variable(n).name():ie.H(n) for n in bn.ids()}
-  gr=getBN(bn,size,normalizeVals(vals,hilightExtrema=True),cmap)
+  gr=getBN(bn,size,normalizeVals(vals,hilightExtrema=False),cmap)
   
   mi=min(vals.values())
+  ma=max(vals.values())
   
   fig = mpl.figure.Figure(figsize=(8,3))
   canvas = fc(fig)
   ax1 = fig.add_axes([0.05, 0.80, 0.9, 0.15])
-  norm = mpl.colors.Normalize(vmin=min(vals.values()), vmax=max(vals.values()))
+  norm = mpl.colors.Normalize(vmin=mi, vmax=ma)
   cb1 = mpl.colorbar.ColorbarBase(ax1, cmap=cmap,
                                    norm=norm,
                                    orientation='horizontal')
   cb1.set_label('Entropy')
   png=print_figure(canvas.figure,"png") # from IPython.core.pylabtools
-  png_legend="<img src='data:image/png;base64,%s'>"%encodestring(png).decode('ascii')
+  png_legend="<img style='vertical-align:middle' src='data:image/png;base64,%s'>"%encodestring(png).decode('ascii')
     
-  return IPython.display.HTML("""
-    <table class='none'>
-      <tr>
-        <td>"""+gr.data+"""</td>
-      </tr><tr>
-        <td>"""+png_legend+"""</td>
-      </tr></table>
-      """)
-  
+  IPython.display.display(IPython.display.HTML("<div align='center'>"+
+                              gr.data+
+                              "</div><div align='center'>"+
+                              "<font color='"+_proba2bgcolor(0.01,cmap)+"'>"+str(mi)+"</font>"
+                              +png_legend+
+                              "<font color='"+_proba2bgcolor(0.99,cmap)+"'>"+str(ma)+"</font>"
+                              "</div>"))
