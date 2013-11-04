@@ -28,6 +28,7 @@ tools for BN analysis in ipython qtconsole and notebook
 """
 from base64 import encodestring
 import numpy as np
+
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
@@ -36,8 +37,8 @@ import pydot
 
 import IPython.display
 from IPython.core.pylabtools import print_figure
+
 import pyAgrum as gum
-import numpy as np
 
 def getPosterior(bn,ev,target):
     """
@@ -59,6 +60,7 @@ def showProba(p):
 
     fig=plt.figure()
     fig.set_figheight(len(var)/4.0)
+    
     ax=fig.add_subplot(111)
 
     ax.barh(ra,p.tolist(),align='center')
@@ -375,6 +377,7 @@ def handPlot(ax, mag=1.0,
         ax.set_position([0, 0, 1, 1])
     
     return ax
+
 cdict = {'red': ((0.0, 0.1, 0.3),
                  (1.0, 0.6, 1.0)),
          'green': ((0.0, 0.0, 0.0),
