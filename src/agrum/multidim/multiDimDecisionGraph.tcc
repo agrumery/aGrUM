@@ -20,7 +20,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Template methods of gum::MultiDimDecisionGraph.
+ * @brief Template methods of MultiDimDecisionGraph.
  *
  * @author Jean-Christophe Magnan
  *
@@ -220,11 +220,11 @@ template<typename GUM_SCALAR>
 
 
   // ############################################################################
-  // Accessors / Modifiers herited from gum::MultiDimImplementation
+  // Accessors / Modifiers herited from MultiDimImplementation
   // ############################################################################
 
     // ============================================================================
-    // see gum::MultiDimImplementation
+    // see MultiDimImplementation
     // ============================================================================
     template<typename GUM_SCALAR>
     INLINE
@@ -234,7 +234,7 @@ template<typename GUM_SCALAR>
 
     // ============================================================================
     //
-    // see gum::MultiDimImplementation::set ( const Instantiation &i, const GUM_SCALAR &value )
+    // see MultiDimImplementation::set ( const Instantiation &i, const GUM_SCALAR &value )
     //
     // @throw OperationNotAllowed. Decision Graph can't be edited so easily.
     // MultiDimDecisionGraphManager provides the framework to editate a Decision Graph.
@@ -248,7 +248,7 @@ template<typename GUM_SCALAR>
 
     // ============================================================================
     //
-    // see gum::MultiDimImplementation::fill( const GUM_SCALAR &d )
+    // see MultiDimImplementation::fill( const GUM_SCALAR &d )
     //
     // @throw OperationNotAllowed. Decision Graph can't be edited so easily.
     // MultiDimDecisionGraphManager provides the framework to editate a Decision Graph.
@@ -262,7 +262,7 @@ template<typename GUM_SCALAR>
 
     // ==============================================================================
     //
-    // see gum::MultiDimImplementation::fillWith ( const std::vector<GUM_SCALAR>& v )
+    // see MultiDimImplementation::fillWith ( const std::vector<GUM_SCALAR>& v )
     //
     // @throw OperationNotAllowed. Decision Graph can't be edited so easily.
     // MultiDimDecisionGraphManager provides the framework to editate a Decision Graph.
@@ -289,7 +289,7 @@ template<typename GUM_SCALAR>
     }
 
     // ============================================================================
-    // See gum::MultiDimInterface::erase(const DiscreteVariable& v)
+    // See MultiDimInterface::erase(const DiscreteVariable& v)
     // ============================================================================
     template<typename GUM_SCALAR>
     INLINE
@@ -307,7 +307,7 @@ template<typename GUM_SCALAR>
     }
 
     // ============================================================================
-    // see gum::MultiDimImplementation::realSize()
+    // see MultiDimImplementation::realSize()
     // ============================================================================
     template<typename GUM_SCALAR>
     INLINE
@@ -320,7 +320,7 @@ template<typename GUM_SCALAR>
   // Slave management and extension due to slave management
   // ############################################################################
     // ============================================================================
-    // see gum::MultiDimImplementation::changeNotification( Instantiation& i,
+    // see MultiDimImplementation::changeNotification( Instantiation& i,
     //                                                       const DiscreteVariable* const var,
     //                                                       const Idx& oldval,const Idx& newval )
     ///
@@ -328,13 +328,13 @@ template<typename GUM_SCALAR>
     template<typename GUM_SCALAR>
     INLINE
     void MultiDimDecisionGraph<GUM_SCALAR>::changeNotification( Instantiation& i,
-                                 const DiscreteVariable* const var,
-                                 const Idx& oldval,const Idx& newval ){
+                                                                const DiscreteVariable* const var,
+                                                                   const Idx& oldval,const Idx& newval ){
 
     }
 
     // ============================================================================
-    // see gum::MultiDimImplementation::setFirstNotification( Instantiation& i )
+    // see MultiDimImplementation::setFirstNotification( Instantiation& i )
     // ============================================================================
     template<typename GUM_SCALAR>
     INLINE
@@ -343,7 +343,7 @@ template<typename GUM_SCALAR>
     }
 
     // ============================================================================
-    // see gum::MultiDimImplementation::setLastNotification( Instantiation& i )
+    // see MultiDimImplementation::setLastNotification( Instantiation& i )
     // ============================================================================
     template<typename GUM_SCALAR>
     INLINE
@@ -352,7 +352,7 @@ template<typename GUM_SCALAR>
     }
 
     // ============================================================================
-    // see gum::MultiDimImplementation::setIncNotification( Instantiation& i )
+    // see MultiDimImplementation::setIncNotification( Instantiation& i )
     // ============================================================================
     template<typename GUM_SCALAR>
     INLINE
@@ -361,7 +361,7 @@ template<typename GUM_SCALAR>
     }
 
     // ============================================================================
-    // see gum::MultiDimImplementation::setDecNotification( Instantiation& i )
+    // see MultiDimImplementation::setDecNotification( Instantiation& i )
     // ============================================================================
     template<typename GUM_SCALAR>
     INLINE
@@ -370,7 +370,7 @@ template<typename GUM_SCALAR>
     }
 
     // ============================================================================
-    // see gum::MultiDimImplementation::setChangeNotification( Instantiation& i )
+    // see MultiDimImplementation::setChangeNotification( Instantiation& i )
     // ===========================================================================
     template<typename GUM_SCALAR>
     INLINE
@@ -379,7 +379,7 @@ template<typename GUM_SCALAR>
     }
 
     // ============================================================================
-    // see gum::MultiDimImplementation::toString( const Instantiation *i )
+    // see MultiDimImplementation::toString( const Instantiation *i )
     // ============================================================================
     template<typename GUM_SCALAR>
     INLINE
@@ -396,17 +396,17 @@ template<typename GUM_SCALAR>
 
     // ============================================================================
     //
-    // @brief Basic copy src a gum::MultiDimContainer.
+    // @brief Basic copy src a MultiDimContainer.
     // This method is virtual because it should be optimized in certain
-    // gum::MultiDimContainer.
+    // MultiDimContainer.
     //
     // @todo specific versions for decorator and for MultiDimArray
     //
-    // @param src The gum::MultiDimContainer src which values are copied.
-    // @param p_i Give the order to iterate in this gum::MultiDimContainer during
+    // @param src The MultiDimContainer src which values are copied.
+    // @param p_i Give the order to iterate in this MultiDimContainer during
     //            the copy (natural order if null).
     // @throw OperationNotAllowed Raised if src does not have the same domain size
-    //                            than this gum::MultiDimContainer.
+    //                            than this MultiDimContainer.
     ///
     // ============================================================================
     template<typename GUM_SCALAR>
@@ -418,7 +418,7 @@ template<typename GUM_SCALAR>
 
     // ============================================================================
     //
-    // Removes all variables in this gum::MultiDimContainer and copy the content
+    // Removes all variables in this MultiDimContainer and copy the content
     // of src, variables included.
     ///
     // ============================================================================
@@ -430,7 +430,7 @@ template<typename GUM_SCALAR>
 
     // ============================================================================
     //
-    // Removes all variables in this gum::MultiDimContainer and copy the content
+    // Removes all variables in this MultiDimContainer and copy the content
     // of src, variables included.
     ///
     // ============================================================================
@@ -495,14 +495,14 @@ template<typename GUM_SCALAR>
 
       // Nettoyage des noeuds
       for( HashTableIterator<NodeId, InternalNode*> nodeIter = __internalNodeMap.begin();
-           nodeIter != __internalNodeMap.end(); ++nodeIter )
+            nodeIter != __internalNodeMap.end(); ++nodeIter )
         _deallocateInternalNode(*nodeIter);
 
       __internalNodeMap.clear();
 
       // Nettoyage des liste de noeuds par variables
       for( HashTableIterator<const DiscreteVariable*, NICLElem*> varIter = __var2NodeIdMap.begin();
-           varIter != __var2NodeIdMap.end(); ++varIter ){
+            varIter != __var2NodeIdMap.end(); ++varIter ){
         _deleteNICL(*varIter);
       }
       __var2NodeIdMap.clear();
@@ -521,34 +521,36 @@ template<typename GUM_SCALAR>
     INLINE
     std::string MultiDimDecisionGraph< GUM_SCALAR >::toDot() const {
 
-        std::stringstream output;
-        std::stringstream terminalStream;
-        std::stringstream nonTerminalStream;
-        std::stringstream arcstream;
-//        std::stringstream defaultarcstream;
-        output << std::endl << "digraph \"no_name\" {" << std::endl;
+      std::stringstream output;
+      std::stringstream terminalStream;
+      std::stringstream nonTerminalStream;
+      std::stringstream arcstream;
+//      std::stringstream defaultarcstream;
+      output << std::endl << "digraph \"no_name\" {" << std::endl;
 
-        terminalStream << "node [shape = box];" << std::endl;
-        nonTerminalStream << "node [shape = ellipse];" << std::endl;
-        std::string tab = "  ";
+      terminalStream << "node [shape = box];" << std::endl;
+      nonTerminalStream << "node [shape = ellipse];" << std::endl;
+      std::string tab = "  ";
 
-        for ( NodeGraphPart::NodeIterator nodeIter = __model.begin(); nodeIter != __model.end(); ++nodeIter )
-          if ( *nodeIter != 0 ) {
-            if ( __valueMap.existsFirst ( *nodeIter ) )
-                terminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\""<< *nodeIter << " - " << __valueMap.second ( *nodeIter ) << "\"]"<< ";" << std::endl;
-            else {
-              nonTerminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\""<< *nodeIter << " - " << __internalNodeMap[ *nodeIter ]->nodeVar->name() << "\"]"<< ";" << std::endl;
+      for ( NodeGraphPart::NodeIterator nodeIter = __model.begin(); nodeIter != __model.end(); ++nodeIter )
+        if ( *nodeIter != 0 ) {
+          if ( __valueMap.existsFirst ( *nodeIter ) )
+            terminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\""<< *nodeIter << " - "
+                           << __valueMap.second ( *nodeIter ) << "\"]"<< ";" << std::endl;
+          else {
+            nonTerminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\""<< *nodeIter << " - "
+                              << __internalNodeMap[ *nodeIter ]->nodeVar->name() << "\"]"<< ";" << std::endl;
 
 //              if ( _arcMap[*nodeIter] != NULL )
-                for ( Idx sonIter = 0; sonIter < __internalNodeMap[ *nodeIter ]->nodeVar->domainSize(); ++sonIter )
-                  if ( __internalNodeMap[ *nodeIter ]->nodeSons[sonIter] != 0 )
-                    arcstream << tab <<  *nodeIter << " -> " << __internalNodeMap[ *nodeIter ]->nodeSons[sonIter]
-                              << " [label=\"" << __internalNodeMap[ *nodeIter ]->nodeVar->label ( sonIter ) << "\",color=\"#0000ff\"]"<< ";" << std::endl;
+            for ( Idx sonIter = 0; sonIter < __internalNodeMap[ *nodeIter ]->nodeVar->domainSize(); ++sonIter )
+              if ( __internalNodeMap[ *nodeIter ]->nodeSons[sonIter] != 0 )
+                arcstream << tab <<  *nodeIter << " -> " << __internalNodeMap[ *nodeIter ]->nodeSons[sonIter]
+                          << " [label=\"" << __internalNodeMap[ *nodeIter ]->nodeVar->label ( sonIter ) << "\",color=\"#0000ff\"]"<< ";" << std::endl;
 
 //              if ( _defaultArcMap.exists ( *nodeIter ) )
 //                defaultarcstream << tab <<  *nodeIter << " -> " << _defaultArcMap[*nodeIter] << " [color=\"#ff0000\"]"<< ";" << std::endl;
-            }
           }
+        }
 
         output << terminalStream.str() << std::endl << nonTerminalStream.str() << std::endl <<  arcstream.str() << std::endl << "}" << std::endl;
 //        << defaultarcstream.str()
@@ -600,7 +602,7 @@ template<typename GUM_SCALAR>
     template<typename GUM_SCALAR>
     INLINE
     void MultiDimDecisionGraph<GUM_SCALAR>::_swap( const DiscreteVariable* x, const DiscreteVariable* y ){
-        GUM_ERROR( OperationNotAllowed, "Not Implemented Yet")
+      GUM_ERROR( OperationNotAllowed, "Not Implemented Yet")
     }
 
     // ============================================================================
@@ -610,7 +612,7 @@ template<typename GUM_SCALAR>
     // Note that get allows to change a value in the container.
     // The method is still tagged as const.
     //
-    // @warning If i variables set is disjoint with this gum::MultiDimContainer
+    // @warning If i variables set is disjoint with this MultiDimContainer
     // then 0 is assumed for dimensions (i.e. variables) not prensent in the
     // instantiation.
     //
@@ -619,15 +621,14 @@ template<typename GUM_SCALAR>
     // ============================================================================
     template<typename GUM_SCALAR>
     INLINE
-    GUM_SCALAR & MultiDimDecisionGraph<GUM_SCALAR>::_get ( const Instantiation &inst ) const{
-        NodeId currentNodeId = __root;
-        InternalNode* currentNode = nullptr;
-        while ( ! isTerminalNode( currentNodeId ) ){
-          currentNode = __internalNodeMap[currentNodeId];
-          currentNodeId = currentNode->nodeSons[ inst.val( *(currentNode->nodeVar) ) ];
-        }
-        __getRet = __valueMap.second( currentNodeId );
-        return __getRet;
+    GUM_SCALAR MultiDimDecisionGraph<GUM_SCALAR>::_get ( const Instantiation &inst ) const{
+      NodeId currentNodeId = __root;
+      InternalNode* currentNode = nullptr;
+      while ( ! isTerminalNode( currentNodeId ) ){
+        currentNode = __internalNodeMap[currentNodeId];
+        currentNodeId = currentNode->nodeSons[ inst.val( *(currentNode->nodeVar) ) ];
+      }
+      return __valueMap.second( currentNodeId );
     }
 
 } //gum

@@ -20,7 +20,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of gum::MultiDimDecisionGraph.
+ * @brief Headers of MultiDimDecisionGraph.
  *
  * @author Jean-Christophe Magnan
  *
@@ -192,18 +192,18 @@ namespace gum {
 
 
       // ############################################################################
-      /// @name Accessors / Modifiers herited from gum::MultiDimImplementation
+      /// @name Accessors / Modifiers herited from MultiDimImplementation
       // ############################################################################
       /// @{
 
         // ============================================================================
-        /// see gum::MultiDimImplementation
+        /// see MultiDimImplementation
         // ============================================================================
         const std::string& name() const;
 
         // ============================================================================
         /**
-        * see gum::MultiDimImplementation::set ( const Instantiation &i, const GUM_SCALAR &value )
+        * see MultiDimImplementation::set ( const Instantiation &i, const GUM_SCALAR &value )
         *
         * @throw OperationNotAllowed. Decision Graph can't be edited so easily.
         * MultiDimDecisionGraphManager provides the framework to editate a Decision Graph.
@@ -213,7 +213,7 @@ namespace gum {
 
         // ============================================================================
         /**
-        * see gum::MultiDimImplementation::fill( const GUM_SCALAR &d )
+        * see MultiDimImplementation::fill( const GUM_SCALAR &d )
         *
         * @throw OperationNotAllowed. Decision Graph can't be edited so easily.
         * MultiDimDecisionGraphManager provides the framework to editate a Decision Graph.
@@ -223,7 +223,7 @@ namespace gum {
 
         // ==============================================================================
         /**
-        * see gum::MultiDimImplementation::fillWith ( const std::vector<GUM_SCALAR>& v )
+        * see MultiDimImplementation::fillWith ( const std::vector<GUM_SCALAR>& v )
         *
         * @throw OperationNotAllowed. Decision Graph can't be edited so easily.
         * MultiDimDecisionGraphManager provides the framework to editate a Decision Graph.
@@ -240,17 +240,17 @@ namespace gum {
       /// @{
 
         // ============================================================================
-        /// See gum::MultiDimInterface::add(const DiscreteVariable& v)
+        /// See MultiDimInterface::add(const DiscreteVariable& v)
         // ============================================================================
         virtual void add (const DiscreteVariable &v);
 
         // ============================================================================
-        /// See gum::MultiDimInterface::erase(const DiscreteVariable& v)
+        /// See MultiDimInterface::erase(const DiscreteVariable& v)
         // ============================================================================
         void erase( const DiscreteVariable& v );
 
         // ============================================================================
-        /// see gum::MultiDimImplementation::realSize()
+        /// see MultiDimImplementation::realSize()
         // ============================================================================
         Size realSize() const;
 
@@ -261,7 +261,7 @@ namespace gum {
       // ############################################################################
       /// @{
         // ============================================================================
-        /** see gum::MultiDimImplementation::changeNotification( Instantiation& i,
+        /** see MultiDimImplementation::changeNotification( Instantiation& i,
         *                                                       const DiscreteVariable* const var,
         *                                                       const Idx& oldval,const Idx& newval )
         */
@@ -271,32 +271,32 @@ namespace gum {
                                  const Idx& oldval,const Idx& newval );
 
         // ============================================================================
-        /// see gum::MultiDimImplementation::setFirstNotification( Instantiation& i )
+        /// see MultiDimImplementation::setFirstNotification( Instantiation& i )
         // ============================================================================
         void setFirstNotification( Instantiation& i );
 
         // ============================================================================
-        /// see gum::MultiDimImplementation::setLastNotification( Instantiation& i )
+        /// see MultiDimImplementation::setLastNotification( Instantiation& i )
         // ============================================================================
         void setLastNotification( Instantiation& i );
 
         // ============================================================================
-        /// see gum::MultiDimImplementation::setIncNotification( Instantiation& i )
+        /// see MultiDimImplementation::setIncNotification( Instantiation& i )
         // ============================================================================
         void setIncNotification( Instantiation& i );
 
         // ============================================================================
-        /// see gum::MultiDimImplementation::setDecNotification( Instantiation& i )
+        /// see MultiDimImplementation::setDecNotification( Instantiation& i )
         // ============================================================================
         void setDecNotification( Instantiation& i );
 
         // ============================================================================
-        /// see gum::MultiDimImplementation::setChangeNotification( Instantiation& i )
+        /// see MultiDimImplementation::setChangeNotification( Instantiation& i )
         // ===========================================================================
         void setChangeNotification( Instantiation& i );
 
         // ============================================================================
-        /// see gum::MultiDimImplementation::toString( const Instantiation *i )
+        /// see MultiDimImplementation::toString( const Instantiation *i )
         // ============================================================================
         const std::string toString( const Instantiation *i ) const;
 
@@ -309,14 +309,14 @@ namespace gum {
       /// @{
         // ============================================================================
         /**
-         * @brief Basic copy src a gum::MultiDimContainer.
+         * @brief Basic copy src a MultiDimContainer.
          * This method is virtual because it should be optimized in certain
-         * gum::MultiDimContainer.
+         * MultiDimContainer.
          *
          * @todo specific versions for decorator and for MultiDimArray
          *
-         * @param src The gum::MultiDimContainer src which values are copied.
-         * @param p_i Give the order to iterate in this gum::MultiDimContainer during
+         * @param src The MultiDimContainer src which values are copied.
+         * @param p_i Give the order to iterate in this MultiDimContainer during
          *            the copy (natural order if null).
          * @throw OperationNotAllowed MultiDimDecisionGraph can't copy other multiDim.
          */
@@ -326,7 +326,7 @@ namespace gum {
 
         // ============================================================================
         /**
-         * Removes all variables in this gum::MultiDimContainer and copy the content
+         * Removes all variables in this MultiDimContainer and copy the content
          * of src, variables included.
          * @throw OperationNotAllowed MultiDimDecisionGraph can't copy other multiDim.
          */
@@ -335,7 +335,7 @@ namespace gum {
 
         // ============================================================================
         /**
-         * Removes all variables in this gum::MultiDimDecisionGraph and copy the content
+         * Removes all variables in this MultiDimDecisionGraph and copy the content
          * of src, variables included.
          */
         // ============================================================================
@@ -410,14 +410,14 @@ namespace gum {
         * Note that get allows to change a value in the container.
         * The method is still tagged as const.
         *
-        * @warning If i variables set is disjoint with this gum::MultiDimContainer
+        * @warning If i variables set is disjoint with this MultiDimContainer
         * then 0 is assumed for dimensions (i.e. variables) not prensent in the
         * instantiation.
         *
         * @param i The instantiation used to find the data.
         */
         // ============================================================================
-        GUM_SCALAR &_get (const Instantiation &inst ) const;
+        GUM_SCALAR _get(const Instantiation &inst ) const;
 
 
     private:
@@ -474,7 +474,6 @@ namespace gum {
 
       /// @}
 
-//          template<GUM_SCALAR>
       friend class MultiDimDecisionGraphManager<GUM_SCALAR>;
   };
 }

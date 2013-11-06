@@ -557,7 +557,7 @@ namespace gum {
     template<typename GUM_SCALAR>
     INLINE
     void
-    MultiDimDecisionGraphManager< GUM_SCALAR>::removeRedundancy(){
+    MultiDimDecisionGraphManager< GUM_SCALAR>::reduce( bool checkRedundancy, bool checkIsomorphism ){
 
       HashTable<NodeId,NodeId> old2NewId(500,true,false);
       typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* currentNodeId = nullptr;
@@ -573,6 +573,7 @@ namespace gum {
 
         while( currentNodeId != nullptr ){
           currentNode = __decisionGraph->__internalNodeMap[currentNodeId->elemId];
+
           theSame = true;
           for( currentInd = 0; currentInd < (*varIter)->domainSize(); currentInd++){
             if( old2NewId.exists(currentNode->nodeSons[currentInd]) )
@@ -580,15 +581,19 @@ namespace gum {
             if( currentNode->nodeSons[currentInd] != currentNode->nodeSons[0])
               theSame = false;
           }
-          nextNodeId = currentNodeId->nextElem;
-          if( theSame == true ){
-            old2NewId.insert(currentNodeId->elemId, currentNode->nodeSons[0] );
-            MultiDimDecisionGraph<GUM_SCALAR>::_deallocateInternalNode(currentNode);
-            __decisionGraph->__internalNodeMap.erase(currentNodeId->elemId);
-            __decisionGraph->__model.eraseNode(currentNodeId->elemId);
-            MultiDimDecisionGraph<GUM_SCALAR>::_removeElemFromNICL( &(__decisionGraph->__var2NodeIdMap[*varIter]), currentNodeId->elemId);
+
+          if( checkRedundancy ){
+              nextNodeId = currentNodeId->nextElem;
+              if( theSame == true ){
+                old2NewId.insert(currentNodeId->elemId, currentNode->nodeSons[0] );
+                MultiDimDecisionGraph<GUM_SCALAR>::_deallocateInternalNode(currentNode);
+                __decisionGraph->__internalNodeMap.erase(currentNodeId->elemId);
+                __decisionGraph->__model.eraseNode(currentNodeId->elemId);
+                MultiDimDecisionGraph<GUM_SCALAR>::_removeElemFromNICL( &(__decisionGraph->__var2NodeIdMap[*varIter]), currentNodeId->elemId);
+              }
+              currentNodeId = nextNodeId;
+
           }
-          currentNodeId = nextNodeId;
         }
       }
     }

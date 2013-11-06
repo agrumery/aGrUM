@@ -19,59 +19,82 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Sources of gum::MultiDimDecisionGraphGenerator.
+ * @brief Sources of MultiDimDecisionGraphGenerator.
  *
  * @author Jean-Christophe Magnan
  *
  */
-
+// ==========================================================================
 #include <agrum/multidim/multiDimDecisionGraphGenerator.h>
+// ==========================================================================
+#include <agrum/core/priorityQueue.h>
+// ==========================================================================
 
 namespace gum{
-// ==========================================================================
-// Constructor
-// ==========================================================================
-MultiDimDecisionGraphGenerator::MultiDimDecisionGraphGenerator(){
+    // ==========================================================================
+    // Constructor
+    // ==========================================================================
+    MultiDimDecisionGraphGenerator::MultiDimDecisionGraphGenerator( Idx maxVar, Idx minVar, Sequence<const DiscreteVariable*> varSeq):
+        __minNbVarInDiagram(minVar), __maxNbVarInDiagram(maxVar), __varSeq(varSeq){
 
-}
-
-// ==========================================================================
-// Destructor
-// ==========================================================================
-MultiDimDecisionGraphGenerator::~MultiDimDecisionGraphGenerator(){
-
-}
-
-MultiDimDecisionGraphGenerator::generate(){
-
-
-    srand( time(NULL) );
-    MultiDimDecisionGraph<double>* generatedDecisionGraph = new MultiDimDecisionGraph<double>();
-
-    for ( SequenceIterator< const DiscreteVariable* > varIter = varList->begin(); varIter != varList->end(); ++varIter )
-          generatedDecisionGraph->add(**varIter);
-
-    while ( ( generatedDecisionGraph->variablesSequence().size() < __minNbVarInDiagram ) || ( generatedDecisionGraph->variablesSequence().size() > __maxNbVarInDiagram ) ) {
-
-      gum::PriorityQueue< gum::NodeId > fifo;
-
-      // L'idée est de d'abord générer un arbre avant de fusionner les sous-graphe isomorphe
-      generatedDecisionGraph->manager()->setRootNode( generatedDecisionGraph->manager()->addNonTerminalNode( varList->atPos(0) ) );
-      fifo.insert(1,generatedDecisionGraph->root());
-
-      while( ! fifo.empty() ){
-          gum::NodeId currentId = fifo.pop();
-          for( gum::Idx modality = 0; modality < generatedDecisionGraph->node(currentId)->nodeVar->domainSize(); ++modality ){
-              const gum::DiscreteVariable* sonVar = varList->atPos( rand() % ( varList->size() ) );
-              gum::NodeId sonId = generatedDecisionGraph->manager()->addNonTerminalNode( sonVar );
-              fifo.insert(sonId);
-              generatedDecisionGraph->manager()->insertArc( currentId, sonId, modality );
-          }
-      }
+        GUM_CONSTRUCTOR(MultiDimDecisionGraphGenerator);
     }
 
-    generatedDecisionGraph->reduce();
+    // ==========================================================================
+    // Destructor
+    // ==========================================================================
+    MultiDimDecisionGraphGenerator::~MultiDimDecisionGraphGenerator(){
 
-    return generatedDecisionGraph;
-}
+        GUM_DESTRUCTOR(MultiDimDecisionGraphGenerator);
+
+    }
+
+    MultiDimDecisionGraph<double>* MultiDimDecisionGraphGenerator::generate(){
+
+
+        srand( time(NULL) );
+        MultiDimDecisionGraph<double>* generatedDecisionGraph = new MultiDimDecisionGraph<double>();
+
+        for ( SequenceIterator< const DiscreteVariable* > varIter = __varSeq.begin(); varIter != __varSeq.end(); ++varIter )
+              generatedDecisionGraph->add(**varIter);
+
+        while ( ( generatedDecisionGraph->variablesSequence().size() < __minNbVarInDiagram ) || ( generatedDecisionGraph->variablesSequence().size() > __maxNbVarInDiagram ) ) {
+
+            PriorityQueue< NodeId > fifo;
+
+            // L'idée est de d'abord générer un arbre avant de fusionner les sous-graphe isomorphe
+            generatedDecisionGraph->manager()->setRootNode( generatedDecisionGraph->manager()->addNonTerminalNode( __varSeq->atPos(0) ) );
+            fifo.insert(1,generatedDecisionGraph->root());
+            Idx nbTotalVar = __varSeq.size();
+
+            while( ! fifo.empty() ){
+
+                NodeId currentId = fifo.pop();
+                Idx currentVarPos = __varSeq.pos( generatedDecisionGraph->node(currentId)->nodeVar );
+                Idx nbRemainingVar = nbTotalVar - currentVarPos - 1;
+
+                for( Idx modality = 0; modality < generatedDecisionGraph->node(currentId)->nodeVar->domainSize(); ++modality ){
+
+                    if( nbRemainingVar != 0 && rand() % 100 <= 75 ){
+
+                        const DiscreteVariable* sonVar = __varSeq.atPos( currentVarPos + ( rand() % (  nbRemainingVar ) ) );
+                        NodeId sonId = generatedDecisionGraph->manager()->addNonTerminalNode( sonVar );
+                        fifo.insert(sonId);
+                        generatedDecisionGraph->manager()->insertArc( currentId, sonId, modality );
+
+                    }else{
+
+                        double sonValue = 10.0d;
+                        NodeId sonId = generatedDecisionGraph->manager()->addTerminalNode( sonValue );
+                        generatedDecisionGraph->manager()->insertArc( currentId, sonId, modality );
+
+                    }
+                }
+            }
+        }
+
+        generatedDecisionGraph->reduce();
+
+        return generatedDecisionGraph;
+    }
 } /* end of namespace */

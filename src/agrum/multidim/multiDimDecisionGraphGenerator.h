@@ -52,7 +52,7 @@ namespace gum {
       // ============================================================================
       /// Default constructor.
       // ============================================================================
-      MultiDimDecisionGraphGenerator();
+      MultiDimDecisionGraphGenerator(Idx maxVar, Idx minVar, Sequence<const DiscreteVariable *> varSeq);
 
       // ============================================================================
       /// destructor.
@@ -62,6 +62,11 @@ namespace gum {
     /// @}
 
       MultiDimDecisionGraph<double>* generate();
+
+    private:
+      Idx __minNbVarInDiagram;
+      Idx __maxNbVarInDiagram;
+      Sequence<const DiscreteVariable*> __varSeq;
   };
 } /* end of namespace */
 #endif /* GUM_MULTI_DIM_DECISION_GRAPH_GENERATOR_H */
