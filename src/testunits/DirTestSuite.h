@@ -40,8 +40,8 @@ namespace gum_tests {
           oldWorkingDir = std::string( oldWD );
 
         // Change working directory
-        if ( chdir( GET_PATH_STR( dir ) ) != 0 ) {
-          GUM_TRACE( "Error : Can not go to "<<GET_PATH_STR( dir ) );
+        if ( chdir( GET_PATH_XSTR( dir ) ) != 0 ) {
+          GUM_TRACE( "Error : Can not go to "<<GET_PATH_XSTR( dir ) );
           TS_ASSERT( false );
         }
       }

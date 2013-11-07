@@ -30,12 +30,12 @@ namespace gum {
   namespace prm {
 
     template<typename GUM_SCALAR>
-    void ClassBayesNet<GUM_SCALAR>::__init ( const Class& c ) {
+    void ClassBayesNet<GUM_SCALAR>::__init ( const Class<GUM_SCALAR>& c ) {
       for ( const auto node : c.dag().nodes() ) {
         try {
           // Adding the attribute
-          if ( ClassElement::isAttribute ( c.get ( node ) ) or ClassElement::isAggregate ( c.get ( node ) ) ) {
-            const ClassElement& elt = c.get ( node );
+          if ( ClassElement<GUM_SCALAR>::isAttribute ( c.get ( node ) ) or ClassElement<GUM_SCALAR>::isAggregate ( c.get ( node ) ) ) {
+            const ClassElement<GUM_SCALAR>& elt = c.get ( node );
             this->_dag.insertNode ( elt.id() );
             this->__varNodeMap.insert ( & ( elt.type().variable() ), &elt );
           }
@@ -54,14 +54,14 @@ namespace gum {
     }
 
     template<typename GUM_SCALAR> INLINE
-    ClassBayesNet<GUM_SCALAR>::ClassBayesNet ( const Class& c ) :
+    ClassBayesNet<GUM_SCALAR>::ClassBayesNet ( const Class<GUM_SCALAR>& c ) :
       IBayesNet<GUM_SCALAR>(), __class ( &c ) {
       GUM_CONSTRUCTOR ( ClassBayesNet );
       __init ( c );
     }
 
     template<typename GUM_SCALAR> INLINE
-    ClassBayesNet<GUM_SCALAR>::ClassBayesNet ( const ClassBayesNet& from ) :
+    ClassBayesNet<GUM_SCALAR>::ClassBayesNet ( const ClassBayesNet<GUM_SCALAR>& from ) :
       IBayesNet<GUM_SCALAR> ( from ), __class ( from.__class ) {
       GUM_CONS_CPY ( ClassBayesNet );
     }
@@ -73,7 +73,7 @@ namespace gum {
 
 
     template<typename GUM_SCALAR> INLINE
-    ClassBayesNet<GUM_SCALAR>& ClassBayesNet<GUM_SCALAR>::operator= ( const ClassBayesNet& from ) {
+    ClassBayesNet<GUM_SCALAR>& ClassBayesNet<GUM_SCALAR>::operator= ( const ClassBayesNet<GUM_SCALAR>& from ) {
       if ( this != &from ) {
         IBayesNet<GUM_SCALAR>::operator= ( from );
 
@@ -122,7 +122,7 @@ namespace gum {
 
 
     template<typename GUM_SCALAR> INLINE
-    const ClassElement& ClassBayesNet<GUM_SCALAR>::__get ( NodeId id ) const {
+    const ClassElement<GUM_SCALAR>& ClassBayesNet<GUM_SCALAR>::__get ( NodeId id ) const {
       if ( this->_dag.exists ( id ) ) {
         return __class->get ( id );
       } else {
@@ -132,7 +132,7 @@ namespace gum {
 
 
     template<typename GUM_SCALAR> INLINE
-    const ClassElement& ClassBayesNet<GUM_SCALAR>::__get ( const std::string& name ) const {
+    const ClassElement<GUM_SCALAR>& ClassBayesNet<GUM_SCALAR>::__get ( const std::string& name ) const {
       try {
         return __class->get ( name );
       } catch ( NotFound& ) {

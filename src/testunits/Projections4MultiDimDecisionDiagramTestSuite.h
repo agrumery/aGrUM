@@ -242,7 +242,7 @@ namespace gum_tests {
       // ************************************************************************************************
       void __saveDiagrams( gum::MultiDimDecisionDiagramBase<double>* a1, gum::MultiDimDecisionDiagramBase<double>* a3, gum::Set<const gum::DiscreteVariable*> delVars ) {
 
-        std::string dotfile = GET_PATH_STR( DecisionDiagramError.log );
+        std::string dotfile = GET_PATH_STR( "DecisionDiagramError.log" );
         std::ofstream output( dotfile.c_str(), std::ios::out );
 
         if ( ! output.good() )

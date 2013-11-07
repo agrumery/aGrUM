@@ -25,7 +25,7 @@
 
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/potential.h>
-#include <agrum/multidim/multiDimCombinationDefault.h>
+#include <agrum/multidim/operators/multiDimCombinationDefault.h>
 #include <agrum/graphicalModels/inference/scheduleCombinationBasic.h>
 
 namespace gum_tests {

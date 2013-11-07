@@ -23,8 +23,8 @@
 
 #include <agrum/BN/inference/VEWithBB.h>
 
-#include <agrum/prm/groundedInference.h>
-#include <agrum/prm/structuredInference.h>
+#include <agrum/prm/inference/groundedInference.h>
+#include <agrum/prm/inference/structuredInference.h>
 
 #include <agrum/prm/generator/layerGenerator.h>
 #include <agrum/prm/generator/clusteredLayerGenerator.h>
@@ -42,9 +42,9 @@ namespace gum_tests {
         //std::cerr << std::endl;
       }
 
-      void generateLayer1( gum::Size nb_class, gum::Size depth, std::vector<gum::prm::LayerGenerator::LayerData>& v ) {
+      void generateLayer1( gum::Size nb_class, gum::Size depth, std::vector<gum::prm::LayerGenerator<double>::LayerData>& v ) {
         for ( gum::Size lvl = 0; lvl < depth; ++lvl ) {
-          v.push_back( gum::prm::LayerGenerator::LayerData() );
+          v.push_back( gum::prm::LayerGenerator<double>::LayerData() );
           v[lvl].a = 10;
           v[lvl].g = 2;
           v[lvl].c = nb_class;
@@ -54,9 +54,9 @@ namespace gum_tests {
         }
       }
 
-      void generateLayer2( gum::Size nb_class, gum::Size depth, std::vector<gum::prm::LayerGenerator::LayerData>& v ) {
+      void generateLayer2( gum::Size nb_class, gum::Size depth, std::vector<gum::prm::LayerGenerator<double>::LayerData>& v ) {
         for ( gum::Size lvl = 0; lvl < depth; ++lvl ) {
-          v.push_back( gum::prm::LayerGenerator::LayerData() );
+          v.push_back( gum::prm::LayerGenerator<double>::LayerData() );
           v[lvl].a = 10;
           v[lvl].g = 2;
           v[lvl].c = nb_class;
@@ -66,9 +66,9 @@ namespace gum_tests {
         }
       }
 
-      void generateLayer3( gum::Size nb_class, gum::Size depth, std::vector<gum::prm::LayerGenerator::LayerData>& v ) {
+      void generateLayer3( gum::Size nb_class, gum::Size depth, std::vector<gum::prm::LayerGenerator<double>::LayerData>& v ) {
         for ( gum::Size lvl = 0; lvl < depth; ++lvl ) {
-          v.push_back( gum::prm::LayerGenerator::LayerData() );
+          v.push_back( gum::prm::LayerGenerator<double>::LayerData() );
           v[lvl].a = 10;
           v[lvl].g = 2;
           v[lvl].c = nb_class;
@@ -78,42 +78,42 @@ namespace gum_tests {
         }
       }
 
-      const gum::prm::Instance& pickInstance( const gum::prm::System& sys ) {
-        gum::Sequence<const gum::prm::Instance*> seq;
+      const gum::prm::Instance<double>& pickInstance( const gum::prm::System<double>& sys ) {
+        gum::Sequence<const gum::prm::Instance<double>*> seq;
 
-        for ( gum::prm::System::const_iterator iter = sys.begin(); iter != sys.end(); ++iter )
+        for ( gum::prm::System<double>::const_iterator iter = sys.begin(); iter != sys.end(); ++iter )
           seq.insert( *iter );
 
         return *( seq.atPos( std::rand() % seq.size() ) );
       }
 
-      const gum::prm::Attribute& pickAttribute( const gum::prm::Instance& i ) {
-        gum::Sequence<const gum::prm::Attribute*> seq;
+      const gum::prm::Attribute<double>& pickAttribute( const gum::prm::Instance<double>& i ) {
+        gum::Sequence<const gum::prm::Attribute<double>*> seq;
 
-        for ( gum::prm::Instance::const_iterator iter = i.begin(); iter != i.end(); ++iter )
+        for ( gum::prm::Instance<double>::const_iterator iter = i.begin(); iter != i.end(); ++iter )
           seq.insert( *iter );
 
         return *( seq.atPos( std::rand() % seq.size() ) );
       }
 
       void testStructuredInference_gen1() {
-        std::vector<gum::prm::LayerGenerator::LayerData> layers;
+        std::vector<gum::prm::LayerGenerator<double>::LayerData> layers;
         generateLayer1( 5, 2, layers );
-        gum::prm::ClusteredLayerGenerator generator;
+        gum::prm::ClusteredLayerGenerator<double> generator;
         generator.setClusterRatio( 1.0 );
         generator.setLayers( layers );
         generator.setDomainSize( 2 );
         generator.setMaxParents( 5 );
-        gum::prm::PRM* prm = generator.generate();
-        gum::prm::System& sys = prm->system( ( **( prm->systems().begin() ) ).name() );
-        gum::prm::StructuredInference inf( *prm, sys );
+        gum::prm::PRM<double>* prm = generator.generate();
+        gum::prm::System<double>& sys = prm->system( ( **( prm->systems().begin() ) ).name() );
+        gum::prm::StructuredInference<double> inf( *prm, sys );
         inf.setPatternMining( false );
-        const gum::prm::Instance& i = pickInstance( sys );
-        const gum::prm::Attribute& a = pickAttribute( i );
-        gum::prm::PRMInference::Chain chain = std::make_pair( &i, &a );
-        gum::Potential<gum::prm::prm_float> m;
+        const gum::prm::Instance<double>& i = pickInstance( sys );
+        const gum::prm::Attribute<double>& a = pickAttribute( i );
+        gum::prm::PRMInference<double>::Chain chain = std::make_pair( &i, &a );
+        gum::Potential<double> m;
         TS_GUM_ASSERT_THROWS_NOTHING( inf.marginal( chain, m ) );
-        gum::prm::prm_float sum = 0.0;
+        double sum = 0.0;
         gum::Instantiation inst( m );
 
         for ( inst.setFirst(); not inst.end(); inst.inc() )
@@ -124,23 +124,23 @@ namespace gum_tests {
       }
 
       void testStructuredInference_gen2() {
-        std::vector<gum::prm::LayerGenerator::LayerData> layers;
+        std::vector<gum::prm::LayerGenerator<double>::LayerData> layers;
         generateLayer2( 5, 2, layers );
-        gum::prm::ClusteredLayerGenerator generator;
+        gum::prm::ClusteredLayerGenerator<double> generator;
         generator.setClusterRatio( 1.0 );
         generator.setLayers( layers );
         generator.setDomainSize( 2 );
         generator.setMaxParents( 5 );
-        gum::prm::PRM* prm = generator.generate();
-        gum::prm::System& sys = prm->system( ( **( prm->systems().begin() ) ).name() );
-        gum::prm::StructuredInference inf( *prm, sys );
+        gum::prm::PRM<double>* prm = generator.generate();
+        gum::prm::System<double>& sys = prm->system( ( **( prm->systems().begin() ) ).name() );
+        gum::prm::StructuredInference<double> inf( *prm, sys );
         inf.setPatternMining( false );
-        const gum::prm::Instance& i = pickInstance( sys );
-        const gum::prm::Attribute& a = pickAttribute( i );
-        gum::prm::PRMInference::Chain chain = std::make_pair( &i, &a );
-        gum::Potential<gum::prm::prm_float> m;
+        const gum::prm::Instance<double>& i = pickInstance( sys );
+        const gum::prm::Attribute<double>& a = pickAttribute( i );
+        gum::prm::PRMInference<double>::Chain chain = std::make_pair( &i, &a );
+        gum::Potential<double> m;
         TS_GUM_ASSERT_THROWS_NOTHING( inf.marginal( chain, m ) );
-        gum::prm::prm_float sum = 0.0;
+        double sum = 0.0;
         gum::Instantiation inst( m );
 
         for ( inst.setFirst(); not inst.end(); inst.inc() )
@@ -151,23 +151,23 @@ namespace gum_tests {
       }
 
       void testStructuredInference_gen3() {
-        std::vector<gum::prm::LayerGenerator::LayerData> layers;
+        std::vector<gum::prm::LayerGenerator<double>::LayerData> layers;
         generateLayer3( 5, 2, layers );
-        gum::prm::ClusteredLayerGenerator generator;
+        gum::prm::ClusteredLayerGenerator<double> generator;
         generator.setClusterRatio( 1.0 );
         generator.setLayers( layers );
         generator.setDomainSize( 2 );
         generator.setMaxParents( 5 );
-        gum::prm::PRM* prm = generator.generate();
-        gum::prm::System& sys = prm->system( ( **( prm->systems().begin() ) ).name() );
-        gum::prm::StructuredInference inf( *prm, sys );
+        gum::prm::PRM<double>* prm = generator.generate();
+        gum::prm::System<double>& sys = prm->system( ( **( prm->systems().begin() ) ).name() );
+        gum::prm::StructuredInference<double> inf( *prm, sys );
         inf.setPatternMining( false );
-        const gum::prm::Instance& i = pickInstance( sys );
-        const gum::prm::Attribute& a = pickAttribute( i );
-        gum::prm::PRMInference::Chain chain = std::make_pair( &i, &a );
-        gum::Potential<gum::prm::prm_float> m;
+        const gum::prm::Instance<double>& i = pickInstance( sys );
+        const gum::prm::Attribute<double>& a = pickAttribute( i );
+        gum::prm::PRMInference<double>::Chain chain = std::make_pair( &i, &a );
+        gum::Potential<double> m;
         TS_GUM_ASSERT_THROWS_NOTHING( inf.marginal( chain, m ) );
-        gum::prm::prm_float sum = 0.0;
+        double sum = 0.0;
         gum::Instantiation inst( m );
 
         for ( inst.setFirst(); not inst.end(); inst.inc() )
@@ -178,23 +178,23 @@ namespace gum_tests {
       }
 
       // void testFrequenceSearch_gen1() {
-      //   std::vector<gum::prm::LayerGenerator::LayerData> layers;
+      //   std::vector<gum::prm::LayerGenerator<double>::LayerData> layers;
       //   generateLayer1(5, 2, layers);
-      //   Clusteredgum::prm::LayerGenerator generator;
+      //   Clusteredgum::prm::LayerGenerator<double> generator;
       //   generator.setClusterRatio(1.0);
       //   generator.setLayers(layers);
       //   generator.setDomainSize(2);
       //   generator.setMaxParents(5);
-      //   gum::prm::PRM* prm = generator.generate();
-      //   gum::prm::System& sys = prm->system((**(prm->systems().begin())).name());
-      //   gum::prm::StructuredInference inf(*prm, sys, new gspan::FrequenceSearch(2));
+      //   gum::prm::PRM<double>* prm = generator.generate();
+      //   gum::prm::System<double>& sys = prm->system((**(prm->systems().begin())).name());
+      //   gum::prm::StructuredInference<double> inf(*prm, sys, new gspan::FrequenceSearch(2));
       //   inf.setPatternMining(true);
-      //   const gum::prm::Instance& i = pickgum::prm::Instance(sys);
-      //   const gum::prm::Attribute& a = pickAttribute(i);
-      //   gum::prm::PRMInference::Chain chain = std::make_pair(&i, &a);
-      //   gum::Potential<gum::prm::prm_float> m;
+      //   const gum::prm::Instance<double>& i = pickgum::prm::Instance<double>(sys);
+      //   const gum::prm::Attribute<double>& a = pickAttribute(i);
+      //   gum::prm::PRMInference<double>::Chain chain = std::make_pair(&i, &a);
+      //   gum::Potential<double> m;
       //   TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
-      //   gum::prm::prm_float sum = 0.0;
+      //   double sum = 0.0;
       //   gum::Instantiation inst(m);
       //   for (inst.setFirst(); not inst.end(); inst.inc())
       //     sum += m.get(inst);
@@ -203,23 +203,23 @@ namespace gum_tests {
       // }
 
       // void testFrequenceSearch_gen2() {
-      //   std::vector<gum::prm::LayerGenerator::LayerData> layers;
+      //   std::vector<gum::prm::LayerGenerator<double>::LayerData> layers;
       //   generateLayer2(5, 2, layers);
-      //   Clusteredgum::prm::LayerGenerator generator;
+      //   Clusteredgum::prm::LayerGenerator<double> generator;
       //   generator.setClusterRatio(1.0);
       //   generator.setLayers(layers);
       //   generator.setDomainSize(2);
       //   generator.setMaxParents(5);
-      //   gum::prm::PRM* prm = generator.generate();
-      //   gum::prm::System& sys = prm->system((**(prm->systems().begin())).name());
-      //   gum::prm::StructuredInference inf(*prm, sys, new gspan::FrequenceSearch(2));
+      //   gum::prm::PRM<double>* prm = generator.generate();
+      //   gum::prm::System<double>& sys = prm->system((**(prm->systems().begin())).name());
+      //   gum::prm::StructuredInference<double> inf(*prm, sys, new gspan::FrequenceSearch(2));
       //   inf.setPatternMining(true);
-      //   const gum::prm::Instance& i = pickgum::prm::Instance(sys);
-      //   const gum::prm::Attribute& a = pickAttribute(i);
-      //   gum::prm::PRMInference::Chain chain = std::make_pair(&i, &a);
-      //   gum::Potential<gum::prm::prm_float> m;
+      //   const gum::prm::Instance<double>& i = pickgum::prm::Instance<double>(sys);
+      //   const gum::prm::Attribute<double>& a = pickAttribute(i);
+      //   gum::prm::PRMInference<double>::Chain chain = std::make_pair(&i, &a);
+      //   gum::Potential<double> m;
       //   TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
-      //   gum::prm::prm_float sum = 0.0;
+      //   double sum = 0.0;
       //   gum::Instantiation inst(m);
       //   for (inst.setFirst(); not inst.end(); inst.inc())
       //     sum += m.get(inst);
@@ -228,23 +228,23 @@ namespace gum_tests {
       // }
 
       // void testFrequenceSearch_gen3() {
-      //   std::vector<gum::prm::LayerGenerator::LayerData> layers;
+      //   std::vector<gum::prm::LayerGenerator<double>::LayerData> layers;
       //   generateLayer3(5, 2, layers);
-      //   Clusteredgum::prm::LayerGenerator generator;
+      //   Clusteredgum::prm::LayerGenerator<double> generator;
       //   generator.setClusterRatio(1.0);
       //   generator.setLayers(layers);
       //   generator.setDomainSize(2);
       //   generator.setMaxParents(5);
-      //   gum::prm::PRM* prm = generator.generate();
-      //   gum::prm::System& sys = prm->system((**(prm->systems().begin())).name());
-      //   gum::prm::StructuredInference inf(*prm, sys, new gspan::FrequenceSearch(2));
+      //   gum::prm::PRM<double>* prm = generator.generate();
+      //   gum::prm::System<double>& sys = prm->system((**(prm->systems().begin())).name());
+      //   gum::prm::StructuredInference<double> inf(*prm, sys, new gspan::FrequenceSearch(2));
       //   inf.setPatternMining(true);
-      //   const gum::prm::Instance& i = pickgum::prm::Instance(sys);
-      //   const gum::prm::Attribute& a = pickAttribute(i);
-      //   gum::prm::PRMInference::Chain chain = std::make_pair(&i, &a);
-      //   gum::Potential<gum::prm::prm_float> m;
+      //   const gum::prm::Instance<double>& i = pickgum::prm::Instance<double>(sys);
+      //   const gum::prm::Attribute<double>& a = pickAttribute(i);
+      //   gum::prm::PRMInference<double>::Chain chain = std::make_pair(&i, &a);
+      //   gum::Potential<double> m;
       //   TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
-      //   gum::prm::prm_float sum = 0.0;
+      //   double sum = 0.0;
       //   gum::Instantiation inst(m);
       //   for (inst.setFirst(); not inst.end(); inst.inc())
       //     sum += m.get(inst);
@@ -253,23 +253,23 @@ namespace gum_tests {
       // }
 
       // void testStrictSearch_gen1() {
-      //   std::vector<gum::prm::LayerGenerator::LayerData> layers;
+      //   std::vector<gum::prm::LayerGenerator<double>::LayerData> layers;
       //   generateLayer1(5, 2, layers);
-      //   Clusteredgum::prm::LayerGenerator generator;
+      //   Clusteredgum::prm::LayerGenerator<double> generator;
       //   generator.setClusterRatio(1.0);
       //   generator.setLayers(layers);
       //   generator.setDomainSize(2);
       //   generator.setMaxParents(5);
-      //   gum::prm::PRM* prm = generator.generate();
-      //   gum::prm::System& sys = prm->system((**(prm->systems().begin())).name());
-      //   gum::prm::StructuredInference inf(*prm, sys, new gspan::StrictSearch(2));
+      //   gum::prm::PRM<double>* prm = generator.generate();
+      //   gum::prm::System<double>& sys = prm->system((**(prm->systems().begin())).name());
+      //   gum::prm::StructuredInference<double> inf(*prm, sys, new gspan::StrictSearch(2));
       //   inf.setPatternMining(true);
-      //   const gum::prm::Instance& i = pickgum::prm::Instance(sys);
-      //   const gum::prm::Attribute& a = pickAttribute(i);
-      //   gum::prm::PRMInference::Chain chain = std::make_pair(&i, &a);
-      //   gum::Potential<gum::prm::prm_float> m;
+      //   const gum::prm::Instance<double>& i = pickgum::prm::Instance<double>(sys);
+      //   const gum::prm::Attribute<double>& a = pickAttribute(i);
+      //   gum::prm::PRMInference<double>::Chain chain = std::make_pair(&i, &a);
+      //   gum::Potential<double> m;
       //   TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
-      //   gum::prm::prm_float sum = 0.0;
+      //   double sum = 0.0;
       //   gum::Instantiation inst(m);
       //   for (inst.setFirst(); not inst.end(); inst.inc())
       //     sum += m.get(inst);
@@ -278,23 +278,23 @@ namespace gum_tests {
       // }
 
       // void testStrictSearch_gen2() {
-      //   std::vector<gum::prm::LayerGenerator::LayerData> layers;
+      //   std::vector<gum::prm::LayerGenerator<double>::LayerData> layers;
       //   generateLayer2(5, 2, layers);
-      //   Clusteredgum::prm::LayerGenerator generator;
+      //   Clusteredgum::prm::LayerGenerator<double> generator;
       //   generator.setClusterRatio(1.0);
       //   generator.setLayers(layers);
       //   generator.setDomainSize(2);
       //   generator.setMaxParents(5);
-      //   gum::prm::PRM* prm = generator.generate();
-      //   gum::prm::System& sys = prm->system((**(prm->systems().begin())).name());
-      //   gum::prm::StructuredInference inf(*prm, sys, new gspan::StrictSearch(2));
+      //   gum::prm::PRM<double>* prm = generator.generate();
+      //   gum::prm::System<double>& sys = prm->system((**(prm->systems().begin())).name());
+      //   gum::prm::StructuredInference<double> inf(*prm, sys, new gspan::StrictSearch(2));
       //   inf.setPatternMining(true);
-      //   const gum::prm::Instance& i = pickgum::prm::Instance(sys);
-      //   const gum::prm::Attribute& a = pickAttribute(i);
-      //   gum::prm::PRMInference::Chain chain = std::make_pair(&i, &a);
-      //   gum::Potential<gum::prm::prm_float> m;
+      //   const gum::prm::Instance<double>& i = pickgum::prm::Instance<double>(sys);
+      //   const gum::prm::Attribute<double>& a = pickAttribute(i);
+      //   gum::prm::PRMInference<double>::Chain chain = std::make_pair(&i, &a);
+      //   gum::Potential<double> m;
       //   TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
-      //   gum::prm::prm_float sum = 0.0;
+      //   double sum = 0.0;
       //   gum::Instantiation inst(m);
       //   for (inst.setFirst(); not inst.end(); inst.inc())
       //     sum += m.get(inst);
@@ -303,23 +303,23 @@ namespace gum_tests {
       // }
 
       // void testStrictStrategy_gen3() {
-      //   std::vector<gum::prm::LayerGenerator::LayerData> layers;
+      //   std::vector<gum::prm::LayerGenerator<double>::LayerData> layers;
       //   generateLayer3(5, 2, layers);
-      //   Clusteredgum::prm::LayerGenerator generator;
+      //   Clusteredgum::prm::LayerGenerator<double> generator;
       //   generator.setClusterRatio(1.0);
       //   generator.setLayers(layers);
       //   generator.setDomainSize(2);
       //   generator.setMaxParents(5);
-      //   gum::prm::PRM* prm = generator.generate();
-      //   gum::prm::System& sys = prm->system((**(prm->systems().begin())).name());
-      //   gum::prm::StructuredInference inf(*prm, sys, new gspan::StrictSearch(2));
+      //   gum::prm::PRM<double>* prm = generator.generate();
+      //   gum::prm::System<double>& sys = prm->system((**(prm->systems().begin())).name());
+      //   gum::prm::StructuredInference<double> inf(*prm, sys, new gspan::StrictSearch(2));
       //   inf.setPatternMining(true);
-      //   const gum::prm::Instance& i = pickgum::prm::Instance(sys);
-      //   const gum::prm::Attribute& a = pickAttribute(i);
-      //   gum::prm::PRMInference::Chain chain = std::make_pair(&i, &a);
-      //   gum::Potential<gum::prm::prm_float> m;
+      //   const gum::prm::Instance<double>& i = pickgum::prm::Instance<double>(sys);
+      //   const gum::prm::Attribute<double>& a = pickAttribute(i);
+      //   gum::prm::PRMInference<double>::Chain chain = std::make_pair(&i, &a);
+      //   gum::Potential<double> m;
       //   TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
-      //   gum::prm::prm_float sum = 0.0;
+      //   double sum = 0.0;
       //   gum::Instantiation inst(m);
       //   for (inst.setFirst(); not inst.end(); inst.inc())
       //     sum += m.get(inst);
@@ -328,23 +328,23 @@ namespace gum_tests {
       // }
 
       // void testTreeWidthSearch_gen1() {
-      //   std::vector<gum::prm::LayerGenerator::LayerData> layers;
+      //   std::vector<gum::prm::LayerGenerator<double>::LayerData> layers;
       //   generateLayer1(5, 2, layers);
-      //   Clusteredgum::prm::LayerGenerator generator;
+      //   Clusteredgum::prm::LayerGenerator<double> generator;
       //   generator.setClusterRatio(1.0);
       //   generator.setLayers(layers);
       //   generator.setDomainSize(2);
       //   generator.setMaxParents(5);
-      //   gum::prm::PRM* prm = generator.generate();
-      //   gum::prm::System& sys = prm->system((**(prm->systems().begin())).name());
-      //   gum::prm::StructuredInference inf(*prm, sys, new gspan::TreeWidthSearch());
+      //   gum::prm::PRM<double>* prm = generator.generate();
+      //   gum::prm::System<double>& sys = prm->system((**(prm->systems().begin())).name());
+      //   gum::prm::StructuredInference<double> inf(*prm, sys, new gspan::TreeWidthSearch());
       //   inf.setPatternMining(true);
-      //   const gum::prm::Instance& i = pickgum::prm::Instance(sys);
-      //   const gum::prm::Attribute& a = pickAttribute(i);
-      //   gum::prm::PRMInference::Chain chain = std::make_pair(&i, &a);
-      //   gum::Potential<gum::prm::prm_float> m;
+      //   const gum::prm::Instance<double>& i = pickgum::prm::Instance<double>(sys);
+      //   const gum::prm::Attribute<double>& a = pickAttribute(i);
+      //   gum::prm::PRMInference<double>::Chain chain = std::make_pair(&i, &a);
+      //   gum::Potential<double> m;
       //   TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
-      //   gum::prm::prm_float sum = 0.0;
+      //   double sum = 0.0;
       //   gum::Instantiation inst(m);
       //   for (inst.setFirst(); not inst.end(); inst.inc())
       //     sum += m.get(inst);
@@ -353,23 +353,23 @@ namespace gum_tests {
       // }
 
       // void testTreeWidthSearch_gen2() {
-      //   std::vector<gum::prm::LayerGenerator::LayerData> layers;
+      //   std::vector<gum::prm::LayerGenerator<double>::LayerData> layers;
       //   generateLayer2(5, 2, layers);
-      //   Clusteredgum::prm::LayerGenerator generator;
+      //   Clusteredgum::prm::LayerGenerator<double> generator;
       //   generator.setClusterRatio(1.0);
       //   generator.setLayers(layers);
       //   generator.setDomainSize(2);
       //   generator.setMaxParents(5);
-      //   gum::prm::PRM* prm = generator.generate();
-      //   gum::prm::System& sys = prm->system((**(prm->systems().begin())).name());
-      //   gum::prm::StructuredInference inf(*prm, sys, new gspan::TreeWidthSearch());
+      //   gum::prm::PRM<double>* prm = generator.generate();
+      //   gum::prm::System<double>& sys = prm->system((**(prm->systems().begin())).name());
+      //   gum::prm::StructuredInference<double> inf(*prm, sys, new gspan::TreeWidthSearch());
       //   inf.setPatternMining(true);
-      //   const gum::prm::Instance& i = pickgum::prm::Instance(sys);
-      //   const gum::prm::Attribute& a = pickAttribute(i);
-      //   gum::prm::PRMInference::Chain chain = std::make_pair(&i, &a);
-      //   gum::Potential<gum::prm::prm_float> m;
+      //   const gum::prm::Instance<double>& i = pickgum::prm::Instance<double>(sys);
+      //   const gum::prm::Attribute<double>& a = pickAttribute(i);
+      //   gum::prm::PRMInference<double>::Chain chain = std::make_pair(&i, &a);
+      //   gum::Potential<double> m;
       //   TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
-      //   gum::prm::prm_float sum = 0.0;
+      //   double sum = 0.0;
       //   gum::Instantiation inst(m);
       //   for (inst.setFirst(); not inst.end(); inst.inc())
       //     sum += m.get(inst);
@@ -378,23 +378,23 @@ namespace gum_tests {
       // }
 
       // void testTreeWidthSearch_gen3() {
-      //   std::vector<gum::prm::LayerGenerator::LayerData> layers;
+      //   std::vector<gum::prm::LayerGenerator<double>::LayerData> layers;
       //   generateLayer3(5, 2, layers);
-      //   Clusteredgum::prm::LayerGenerator generator;
+      //   Clusteredgum::prm::LayerGenerator<double> generator;
       //   generator.setClusterRatio(1.0);
       //   generator.setLayers(layers);
       //   generator.setDomainSize(2);
       //   generator.setMaxParents(5);
-      //   gum::prm::PRM* prm = generator.generate();
-      //   gum::prm::System& sys = prm->system((**(prm->systems().begin())).name());
-      //   gum::prm::StructuredInference inf(*prm, sys, new gspan::TreeWidthSearch());
+      //   gum::prm::PRM<double>* prm = generator.generate();
+      //   gum::prm::System<double>& sys = prm->system((**(prm->systems().begin())).name());
+      //   gum::prm::StructuredInference<double> inf(*prm, sys, new gspan::TreeWidthSearch());
       //   inf.setPatternMining(true);
-      //   const gum::prm::Instance& i = pickgum::prm::Instance(sys);
-      //   const gum::prm::Attribute& a = pickAttribute(i);
-      //   gum::prm::PRMInference::Chain chain = std::make_pair(&i, &a);
-      //   gum::Potential<gum::prm::prm_float> m;
+      //   const gum::prm::Instance<double>& i = pickgum::prm::Instance<double>(sys);
+      //   const gum::prm::Attribute<double>& a = pickAttribute(i);
+      //   gum::prm::PRMInference<double>::Chain chain = std::make_pair(&i, &a);
+      //   gum::Potential<double> m;
       //   TS_GUM_ASSERT_THROWS_NOTHING(inf.marginal(chain, m));
-      //   gum::prm::prm_float sum = 0.0;
+      //   double sum = 0.0;
       //   gum::Instantiation inst(m);
       //   for (inst.setFirst(); not inst.end(); inst.inc())
       //     sum += m.get(inst);

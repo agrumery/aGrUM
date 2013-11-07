@@ -257,7 +257,7 @@ namespace gum_tests {
         fill ( id, idList );
 
         // For comparison with what readers will return
-        std::string dotfile = GET_PATH_STR ( IDToDotWriter.dot );
+        std::string dotfile = GET_PATH_STR ( "IDToDotWriter.dot" );
         std::ofstream output ( dotfile.c_str(), std::ios::out | std::ios::trunc );
 
         if ( ! output.good() ) {
@@ -813,7 +813,7 @@ namespace gum_tests {
         TS_ASSERT_THROWS_NOTHING ( moralGraph = id.moralGraph ( true ) );
 
         // For comparison with what readers will return
-        std::string dotfile = GET_PATH_STR ( IDBeforeMoralisation.dot );
+        std::string dotfile = GET_PATH_STR ( "IDBeforeMoralisation.dot" );
         std::ofstream idOutput ( dotfile.c_str(), std::ios::out | std::ios::trunc );
 
         if ( ! idOutput.good() ) {
@@ -831,7 +831,7 @@ namespace gum_tests {
         }
 
         // For comparison with what readers will return
-        dotfile = GET_PATH_STR ( IDAfterMoralisation.dot );
+        dotfile = GET_PATH_STR ( "IDAfterMoralisation.dot" );
 
         std::ofstream moralOutput ( dotfile.c_str(), std::ios::out | std::ios::trunc );
 

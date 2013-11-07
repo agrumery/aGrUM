@@ -82,10 +82,10 @@ namespace gum_tests {
 
       void testWriter_string() {
         gum::DSLWriter<double> writer;
-        std::string file = GET_PATH_STR( DSLWriter_TestFile.txt );
+        std::string file = GET_PATH_STR( "DSLWriter_TestFile.txt" );
         TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *bn ) );
 
-        file = GET_PATH_STR( DSLWriter_RO_TestFile.txt );
+        file = GET_PATH_STR( "DSLWriter_RO_TestFile.txt" );
 
         try {
           writer.write( file, *bn );

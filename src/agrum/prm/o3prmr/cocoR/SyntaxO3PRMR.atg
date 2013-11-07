@@ -10,14 +10,14 @@
 
 COMPILER o3prmr
 
-gum::prm::o3prmr::O3prmrContext *__context;
-gum::prm::o3prmr::O3prmrSession *__currentSession;
+gum::prm::o3prmr::O3prmrContext<double> *__context;
+gum::prm::o3prmr::O3prmrSession<double> *__currentSession;
 
 void SemErr(std::string s) {
   SemErr(widen(s).c_str());
 }
 
-void setO3prmrContext(gum::prm::o3prmr::O3prmrContext *c) {
+void setO3prmrContext(gum::prm::o3prmr::O3prmrContext<double> *c) {
   __context=c;
 }
 
@@ -71,16 +71,16 @@ o3prmr =                 (. std::string s, alias; __currentSession = 0; .)
     }
     { RequestBloc }
   |                     (. 
-                            __currentSession = new O3prmrSession("default");
-                            __context->addSession( __currentSession );
+                            __currentSession = new O3prmrSession<double>("default");
+                            __context->addSession( *__currentSession );
                         .)
     Command
   ).
 
-RequestBloc = request word  (. __currentSession = new O3prmrSession(gum::narrow(t->val)); .)
+RequestBloc = request word  (. __currentSession = new O3prmrSession<double>(gum::narrow(t->val)); .)
               '{' {
                     Command
-              } SYNC '}'         (. __context->addSession( __currentSession ); __currentSession = 0; .)
+              } SYNC '}'         (. __context->addSession( *__currentSession ); __currentSession = nullptr; .)
               .
 
 Command = ( Observe |

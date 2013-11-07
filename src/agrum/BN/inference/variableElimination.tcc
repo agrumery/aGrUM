@@ -25,7 +25,7 @@
  */
 
 #include <agrum/BN/inference/variableElimination.h>
-#include <agrum/multidim/multiDimCombinationDefault.h>
+#include <agrum/multidim/operators/multiDimCombinationDefault.h>
 namespace gum {
 
   template<typename GUM_SCALAR> INLINE

@@ -37,11 +37,11 @@ namespace gum_tests {
       }
 
       void testTypes() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/types.o3prm" ) );
         TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
         TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 );
-        gum::prm::PRM* prm = reader.prm();
+        gum::prm::PRM<double>* prm = reader.prm();
         TS_ASSERT_EQUALS( prm->type( "t_state" ).variable().domainSize(), ( gum::Size ) 2 );
         TS_ASSERT_EQUALS( prm->type( "t_ink" ).variable().domainSize(), ( gum::Size ) 2 );
         TS_ASSERT_EQUALS( prm->type( "t_degraded" ).variable().domainSize(), ( gum::Size ) 3 );
@@ -51,9 +51,9 @@ namespace gum_tests {
       }
 
       void testSubTypes() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/types.o3prm" ) );
-        gum::prm::PRM* prm = reader.prm();
+        gum::prm::PRM<double>* prm = reader.prm();
         TS_ASSERT( prm->type( "t_state" ).isSubType() );
         TS_ASSERT( prm->type( "t_state" ).isSubTypeOf( prm->type( "boolean" ) ) );
         TS_ASSERT( prm->type( "t_ink" ).isSubType() );
@@ -78,12 +78,12 @@ namespace gum_tests {
       }
 
       void testClasses() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         //reader.readFile("../../../src/testunits/ressources/o3prm/printers.o3prm");
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/printers.o3prm" ) );
         TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
         TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 );
-        gum::prm::PRM* prm = reader.prm();
+        gum::prm::PRM<double>* prm = reader.prm();
         TS_ASSERT_EQUALS( prm->classes().size(), ( gum::Size ) 5 );
         TS_GUM_ASSERT_THROWS_NOTHING( prm->getClass( "PowerSupply" ) );
         TS_GUM_ASSERT_THROWS_NOTHING( prm->getClass( "Room" ) );
@@ -94,11 +94,11 @@ namespace gum_tests {
       }
 
       void testPrintersPowerSupply() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/printers.o3prm" ) );
-        gum::prm::PRM* prm = reader.prm();
+        gum::prm::PRM<double>* prm = reader.prm();
         TS_GUM_ASSERT_THROWS_NOTHING( prm->getClass( "PowerSupply" ) );
-        gum::prm::Class& c = prm->getClass( "PowerSupply" );
+        gum::prm::Class<double>& c = prm->getClass( "PowerSupply" );
         TS_ASSERT_EQUALS( c.attributes().size(), ( gum::Size ) 1 );
         TS_ASSERT_EQUALS( c.referenceSlots().size(), ( gum::Size ) 0 );
         TS_ASSERT_EQUALS( c.aggregates().size(), ( gum::Size ) 0 );
@@ -107,11 +107,11 @@ namespace gum_tests {
       }
 
       void testPrintersRoom() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/printers.o3prm" ) );
-        gum::prm::PRM* prm = reader.prm();
+        gum::prm::PRM<double>* prm = reader.prm();
         TS_GUM_ASSERT_THROWS_NOTHING( prm->getClass( "Room" ) );
-        gum::prm::Class& c = prm->getClass( "Room" );
+        gum::prm::Class<double>& c = prm->getClass( "Room" );
         TS_ASSERT_EQUALS( c.attributes().size(), ( gum::Size ) 0 );
         TS_ASSERT_EQUALS( c.referenceSlots().size(), ( gum::Size ) 1 );
         TS_ASSERT_EQUALS( c.aggregates().size(), ( gum::Size ) 0 );
@@ -120,11 +120,11 @@ namespace gum_tests {
       }
 
       void testPrintersEquipment() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/printers.o3prm" ) );
-        gum::prm::PRM* prm = reader.prm();
+        gum::prm::PRM<double>* prm = reader.prm();
         TS_GUM_ASSERT_THROWS_NOTHING( prm->getClass( "Equipment" ) );
-        gum::prm::Class& c = prm->getClass( "Equipment" );
+        gum::prm::Class<double>& c = prm->getClass( "Equipment" );
         TS_ASSERT_EQUALS( c.attributes().size(), ( gum::Size ) 1 );
         TS_ASSERT_EQUALS( c.referenceSlots().size(), ( gum::Size ) 1 );
         TS_ASSERT_EQUALS( c.aggregates().size(), ( gum::Size ) 0 );
@@ -133,11 +133,11 @@ namespace gum_tests {
       }
 
       void testPrintersPrinter() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/printers.o3prm" ) );
-        gum::prm::PRM* prm = reader.prm();
+        gum::prm::PRM<double>* prm = reader.prm();
         TS_GUM_ASSERT_THROWS_NOTHING( prm->getClass( "Printer" ) );
-        gum::prm::Class& c = prm->getClass( "Printer" );
+        gum::prm::Class<double>& c = prm->getClass( "Printer" );
         TS_ASSERT_EQUALS( c.attributes().size(), ( gum::Size ) 3 );
         TS_ASSERT_EQUALS( c.referenceSlots().size(), ( gum::Size ) 1 );
         TS_ASSERT_EQUALS( c.aggregates().size(), ( gum::Size ) 0 );
@@ -146,11 +146,11 @@ namespace gum_tests {
       }
 
       void testPrintersComputer() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/printers.o3prm" ) );
-        gum::prm::PRM* prm = reader.prm();
+        gum::prm::PRM<double>* prm = reader.prm();
         TS_GUM_ASSERT_THROWS_NOTHING( prm->getClass( "Computer" ) );
-        gum::prm::Class& c = prm->getClass( "Computer" );
+        gum::prm::Class<double>& c = prm->getClass( "Computer" );
         TS_ASSERT_EQUALS( c.attributes().size(), ( gum::Size ) 2 );
         TS_ASSERT_EQUALS( c.referenceSlots().size(), ( gum::Size ) 2 );
         TS_ASSERT_EQUALS( c.aggregates().size(), ( gum::Size ) 1 );
@@ -160,11 +160,11 @@ namespace gum_tests {
 
       /// Testing classes and interfaces
       void testComplexPrinters_1() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/complexprinters.o3prm" ) );
         TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
         TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 );
-        gum::prm::PRM* prm = reader.prm();
+        gum::prm::PRM<double>* prm = reader.prm();
         TS_ASSERT_EQUALS( prm->classes().size(), ( gum::Size ) 6 );
         TS_GUM_ASSERT_THROWS_NOTHING( prm->getClass( "PowerSupply" ) );
         TS_GUM_ASSERT_THROWS_NOTHING( prm->getClass( "Room" ) );
@@ -179,18 +179,18 @@ namespace gum_tests {
 
       /// Testing classes and interfaces inheritance with subtypes methods
       void testComplexPrinters_2() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/complexprinters.o3prm" ) );
-        gum::prm::PRM* prm = reader.prm();
+        gum::prm::PRM<double>* prm = reader.prm();
         // Classes
-        gum::prm::Class& PowerSupply = prm->getClass( "PowerSupply" );
-        gum::prm::Class& Room = prm->getClass( "Room" );
-        gum::prm::Class& BWPrinter = prm->getClass( "BWPrinter" );
-        gum::prm::Class& ColorPrinter = prm->getClass( "ColorPrinter" );
-        gum::prm::Class& Computer = prm->getClass( "Computer" );
+        gum::prm::Class<double>& PowerSupply = prm->getClass( "PowerSupply" );
+        gum::prm::Class<double>& Room = prm->getClass( "Room" );
+        gum::prm::Class<double>& BWPrinter = prm->getClass( "BWPrinter" );
+        gum::prm::Class<double>& ColorPrinter = prm->getClass( "ColorPrinter" );
+        gum::prm::Class<double>& Computer = prm->getClass( "Computer" );
         // Interfaces
-        gum::prm::Interface& Equipment = prm->interface( "Equipment" );
-        gum::prm::Interface& Printer = prm->interface( "Printer" );
+        gum::prm::Interface<double>& Equipment = prm->interface( "Equipment" );
+        gum::prm::Interface<double>& Printer = prm->interface( "Printer" );
         // Testing PowerSupply
         TS_ASSERT( PowerSupply.isSubTypeOf( PowerSupply ) );
         TS_ASSERT( not PowerSupply.isSubTypeOf( Room ) );
@@ -252,18 +252,18 @@ namespace gum_tests {
 
       /// Testing classes and interfaces inheritance with supertypes methods
       void testComplexPrinters_3() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/complexprinters.o3prm" ) );
-        gum::prm::PRM* prm = reader.prm();
+        gum::prm::PRM<double>* prm = reader.prm();
         // Classes
-        gum::prm::Class& PowerSupply = prm->getClass( "PowerSupply" );
-        gum::prm::Class& Room = prm->getClass( "Room" );
-        gum::prm::Class& BWPrinter = prm->getClass( "BWPrinter" );
-        gum::prm::Class& ColorPrinter = prm->getClass( "ColorPrinter" );
-        gum::prm::Class& Computer = prm->getClass( "Computer" );
+        gum::prm::Class<double>& PowerSupply = prm->getClass( "PowerSupply" );
+        gum::prm::Class<double>& Room = prm->getClass( "Room" );
+        gum::prm::Class<double>& BWPrinter = prm->getClass( "BWPrinter" );
+        gum::prm::Class<double>& ColorPrinter = prm->getClass( "ColorPrinter" );
+        gum::prm::Class<double>& Computer = prm->getClass( "Computer" );
         // Interfaces
-        gum::prm::Interface& Equipment = prm->interface( "Equipment" );
-        gum::prm::Interface& Printer = prm->interface( "Printer" );
+        gum::prm::Interface<double>& Equipment = prm->interface( "Equipment" );
+        gum::prm::Interface<double>& Printer = prm->interface( "Printer" );
         // Testing PowerSupply
         TS_ASSERT( PowerSupply.isSuperTypeOf( PowerSupply ) );
         TS_ASSERT( not PowerSupply.isSuperTypeOf( Room ) );
@@ -325,11 +325,11 @@ namespace gum_tests {
 
       // Testing class PowerSupply
       void testComplexPrinters_4() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/complexprinters.o3prm" ) );
-        gum::prm::PRM* prm = reader.prm();
+        gum::prm::PRM<double>* prm = reader.prm();
         // Classes
-        gum::prm::Class& PowerSupply = prm->getClass( "PowerSupply" );
+        gum::prm::Class<double>& PowerSupply = prm->getClass( "PowerSupply" );
         TS_ASSERT_EQUALS( PowerSupply.attributes().size(), ( gum::Size ) 2 );
         TS_ASSERT_EQUALS( PowerSupply.dag().sizeArcs(), ( gum::Size ) 1 );
         TS_GUM_ASSERT_THROWS_NOTHING( PowerSupply["(boolean)state"] );
@@ -361,10 +361,10 @@ namespace gum_tests {
 
       // Testing class Room
       void testComplexPrinters_5() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/complexprinters.o3prm" ) );
-        gum::prm::PRM* prm = reader.prm();
-        gum::prm::Class& Room = prm->getClass( "Room" );
+        gum::prm::PRM<double>* prm = reader.prm();
+        gum::prm::Class<double>& Room = prm->getClass( "Room" );
         TS_ASSERT_EQUALS( Room.attributes().size(), ( gum::Size ) 0 );
         TS_ASSERT_EQUALS( Room.referenceSlots().size(), ( gum::Size ) 1 );
         TS_ASSERT_EQUALS( Room.aggregates().size(), ( gum::Size ) 0 );
@@ -374,10 +374,10 @@ namespace gum_tests {
 
       // Testing interface Equipment
       void testComplexPrinters_6() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/complexprinters.o3prm" ) );
-        gum::prm::PRM* prm = reader.prm();
-        gum::prm::Interface& Equipment = prm->interface( "Equipment" );
+        gum::prm::PRM<double>* prm = reader.prm();
+        gum::prm::Interface<double>& Equipment = prm->interface( "Equipment" );
         TS_ASSERT_EQUALS( Equipment.referenceSlots().size(), ( gum::Size ) 1 );
         TS_ASSERT_EQUALS( Equipment.attributes().size(), ( gum::Size ) 3 );
         TS_GUM_ASSERT_THROWS_NOTHING( Equipment["equipState"] );
@@ -412,11 +412,11 @@ namespace gum_tests {
 
       // Testing interface Printer
       void testComplexPrinters_7() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/complexprinters.o3prm" ) );
-        gum::prm::PRM* prm = reader.prm();
+        gum::prm::PRM<double>* prm = reader.prm();
         TS_GUM_ASSERT_THROWS_NOTHING( prm->interface( "Printer" ) );
-        gum::prm::Interface& Printer = prm->interface( "Printer" );
+        gum::prm::Interface<double>& Printer = prm->interface( "Printer" );
         TS_ASSERT_EQUALS( Printer.referenceSlots().size(), ( gum::Size ) 1 );
         TS_ASSERT_EQUALS( Printer.attributes().size(), ( gum::Size ) 5 );
         TS_GUM_ASSERT_THROWS_NOTHING( Printer["room"] );
@@ -466,11 +466,11 @@ namespace gum_tests {
 
       // Testing class BWPrinter
       void testComplexPrinters_8() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/complexprinters.o3prm" ) );
-        gum::prm::PRM* prm = reader.prm();
+        gum::prm::PRM<double>* prm = reader.prm();
         TS_GUM_ASSERT_THROWS_NOTHING( prm->getClass( "BWPrinter" ) );
-        gum::prm::Class& BWPrinter = prm->getClass( "BWPrinter" );
+        gum::prm::Class<double>& BWPrinter = prm->getClass( "BWPrinter" );
         TS_ASSERT_EQUALS( BWPrinter.referenceSlots().size(), ( gum::Size ) 1 );
         TS_ASSERT_EQUALS( BWPrinter.attributes().size(), ( gum::Size ) 9 );
         TS_ASSERT_EQUALS( BWPrinter.slotChains().size(), ( gum::Size ) 1 );
@@ -544,11 +544,11 @@ namespace gum_tests {
 
       // Testing class ColorPrinter
       void testComplexPrinters_9() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/complexprinters.o3prm" ) );
-        gum::prm::PRM* prm = reader.prm();
+        gum::prm::PRM<double>* prm = reader.prm();
         TS_GUM_ASSERT_THROWS_NOTHING( prm->getClass( "ColorPrinter" ) );
-        gum::prm::Class& ColorPrinter = prm->getClass( "ColorPrinter" );
+        gum::prm::Class<double>& ColorPrinter = prm->getClass( "ColorPrinter" );
         TS_ASSERT_EQUALS( ColorPrinter.referenceSlots().size(), ( gum::Size ) 1 );
         TS_ASSERT_EQUALS( ColorPrinter.attributes().size(), ( gum::Size ) 19 );
         TS_ASSERT_EQUALS( ColorPrinter.aggregates().size(), ( gum::Size ) 0 );
@@ -711,10 +711,10 @@ namespace gum_tests {
 
       // Testing class Computer
       void testComplexPrinters_10() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/complexprinters.o3prm" ) );
-        gum::prm::PRM* prm = reader.prm();
-        gum::prm::Class& Computer = prm->getClass( "Computer" );
+        gum::prm::PRM<double>* prm = reader.prm();
+        gum::prm::Class<double>& Computer = prm->getClass( "Computer" );
         TS_ASSERT_EQUALS( Computer.attributes().size(), ( gum::Size ) 5 );
         TS_ASSERT_EQUALS( Computer.referenceSlots().size(), ( gum::Size ) 2 );
         TS_ASSERT_EQUALS( Computer.aggregates().size(), ( gum::Size ) 2 );
@@ -738,10 +738,10 @@ namespace gum_tests {
 
       // Testing class Computer
       void testComplexPrinters_11() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/complexprinters.o3prm" ) );
-        gum::prm::PRM* prm = reader.prm();
-        gum::prm::Class& SafeComputer = prm->getClass( "SafeComputer" );
+        gum::prm::PRM<double>* prm = reader.prm();
+        gum::prm::Class<double>& SafeComputer = prm->getClass( "SafeComputer" );
         TS_ASSERT_EQUALS( SafeComputer.attributes().size(), ( gum::Size ) 5 );
         TS_ASSERT_EQUALS( SafeComputer.referenceSlots().size(), ( gum::Size ) 2 );
         TS_ASSERT_EQUALS( SafeComputer.aggregates().size(), ( gum::Size ) 2 );
@@ -765,11 +765,11 @@ namespace gum_tests {
       }
 
       void testPrintersSystems1() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/printers_systems.o3prm" ) );
         TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
         TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 );
-        gum::prm::PRM* prm = 0;
+        gum::prm::PRM<double>* prm = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
 
         if ( prm ) {
@@ -778,19 +778,19 @@ namespace gum_tests {
       }
 
       void testComplexPrintersSystems1() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/complexprinters_system.o3prm" ) );
         TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
         TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 );
-        gum::prm::PRM* prm = 0;
+        gum::prm::PRM<double>* prm = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
-        gum::prm::System* sys = 0;
+        gum::prm::System<double>* sys = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( sys = & ( prm->system( "aSys" ) ) );
-        gum::prm::Class& power = prm->getClass( "PowerSupply" );
-        gum::prm::Class& room = prm->getClass( "Room" );
-        gum::prm::Class& BWPrinter = prm->getClass( "BWPrinter" );
-        gum::prm::Class& ColorPrinter = prm->getClass( "ColorPrinter" );
-        gum::prm::Class& Computer = prm->getClass( "Computer" );
+        gum::prm::Class<double>& power = prm->getClass( "PowerSupply" );
+        gum::prm::Class<double>& room = prm->getClass( "Room" );
+        gum::prm::Class<double>& BWPrinter = prm->getClass( "BWPrinter" );
+        gum::prm::Class<double>& ColorPrinter = prm->getClass( "ColorPrinter" );
+        gum::prm::Class<double>& Computer = prm->getClass( "Computer" );
         TS_ASSERT_EQUALS( sys->get( power ).size(), ( gum::Size ) 1 );
         TS_ASSERT_EQUALS( sys->get( room ).size(), ( gum::Size ) 1 );
         TS_ASSERT_EQUALS( sys->get( BWPrinter ).size(), ( gum::Size ) 10 );
@@ -798,17 +798,17 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( sys->get( Computer ).size(), ( gum::Size ) 2 );
         int count = 0;
 
-        for ( gum::prm::System::iterator iter = sys->begin(); iter != sys->end(); ++iter ) {
+        for ( auto iter = sys->begin(); iter != sys->end(); ++iter ) {
           ++count;
 
-          for ( gum::prm::Instance::iterator jter = ( **iter ).begin(); jter != ( **iter ).end(); ++jter ) {
+          for ( auto jter = ( **iter ).begin(); jter != ( **iter ).end(); ++jter ) {
             if ( ( **jter ).cpf().nbrDim() == 0 ) {
               std::stringstream sBuff;
               sBuff << ( **iter ).name() << "." << ( **jter ).safeName();
               GUM_TRACE( sBuff.str() );
             }
 
-            if ( gum::prm::ClassElement::isAggregate( ( **iter ).type().get( ( **jter ).id() ) ) ) {
+            if ( gum::prm::ClassElement<double>::isAggregate( ( **iter ).type().get( ( **jter ).id() ) ) ) {
               if ( ( **jter ).cpf().nbrDim() == 1 ) {
                 std::stringstream sBuff;
                 sBuff << ( **iter ).name() << "." << ( **jter ).safeName();
@@ -826,17 +826,17 @@ namespace gum_tests {
       }
 
       void testParameters() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/complexprinters_system.o3prm" ) );
-        gum::prm::PRM* prm = 0;
+        gum::prm::PRM<double>* prm = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
-        gum::prm::System* sys = 0;
+        gum::prm::System<double>* sys = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( sys = & ( prm->system( "aSys" ) ) );
-        gum::prm::Class& param_class = prm->getClass( "ParamClass" );
-        gum::prm::Instance& param = sys->get( "param" );
+        gum::prm::Class<double>& param_class = prm->getClass( "ParamClass" );
+        gum::prm::Instance<double>& param = sys->get( "param" );
         std::string attr = "(boolean)aBoolParam";
-        gum::prm::Attribute* class_attr = & ( static_cast<gum::prm::Attribute&>( param_class.get( attr ) ) );
-        gum::prm::Attribute* inst_attr = & ( param.get( attr ) );
+        gum::prm::Attribute<double>* class_attr = & ( static_cast<gum::prm::Attribute<double>&>( param_class.get( attr ) ) );
+        gum::prm::Attribute<double>* inst_attr = & ( param.get( attr ) );
         {
           TS_ASSERT_EQUALS( class_attr->cpf().nbrDim(), inst_attr->cpf().nbrDim() );
           TS_ASSERT_EQUALS( class_attr->cpf().domainSize(), inst_attr->cpf().domainSize() );
@@ -847,7 +847,7 @@ namespace gum_tests {
           }
         }
         attr = "(t_state)aParameter";
-        class_attr = & ( static_cast<gum::prm::Attribute&>( param_class.get( attr ) ) );
+        class_attr = & ( static_cast<gum::prm::Attribute<double>&>( param_class.get( attr ) ) );
         inst_attr = & ( param.get( attr ) );
         {
           TS_ASSERT_EQUALS( class_attr->cpf().nbrDim(), inst_attr->cpf().nbrDim() );
@@ -859,7 +859,7 @@ namespace gum_tests {
           }
         }
         attr = "(boolean)aBoolParamWithDefault";
-        class_attr = & ( static_cast<gum::prm::Attribute&>( param_class.get( attr ) ) );
+        class_attr = & ( static_cast<gum::prm::Attribute<double>&>( param_class.get( attr ) ) );
         inst_attr = & ( param.get( attr ) );
         {
           TS_ASSERT_EQUALS( class_attr->cpf().nbrDim(), inst_attr->cpf().nbrDim() );
@@ -871,7 +871,7 @@ namespace gum_tests {
           }
         }
         attr = "(t_state)anotherParameter";
-        class_attr = & ( static_cast<gum::prm::Attribute&>( param_class.get( attr ) ) );
+        class_attr = & ( static_cast<gum::prm::Attribute<double>&>( param_class.get( attr ) ) );
         inst_attr = & ( param.get( attr ) );
         {
           TS_ASSERT_EQUALS( class_attr->cpf().nbrDim(), inst_attr->cpf().nbrDim() );
@@ -889,17 +889,17 @@ namespace gum_tests {
       }
 
       void testCPF() {
-        gum::prm::o3prm::O3prmReader reader;
+        gum::prm::o3prm::O3prmReader<double> reader;
         TS_GUM_ASSERT_THROWS_NOTHING( reader.readFile( "../../../src/testunits/ressources/o3prm/inference.o3prm" ) );
         TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
         TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 );
-        gum::prm::PRM* prm = 0;
+        gum::prm::PRM<double>* prm = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( prm = reader.prm() );
-        gum::prm::System* sys = 0;
+        gum::prm::System<double>* sys = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( sys = & ( prm->system( "aSys" ) ) );
 
-        for ( gum::prm::System::iterator iter = sys->begin(); iter != sys->end(); ++iter ) {
-          for ( gum::prm::Instance::iterator jter = ( **iter ).begin(); jter != ( **iter ).end(); ++jter ) {
+        for ( gum::prm::System<double>::iterator iter = sys->begin(); iter != sys->end(); ++iter ) {
+          for ( gum::prm::Instance<double>::iterator jter = ( **iter ).begin(); jter != ( **iter ).end(); ++jter ) {
             gum::Instantiation i( ( **jter ).cpf() ), var;
             var.add( ( **jter ).type().variable() );
 
@@ -921,15 +921,15 @@ namespace gum_tests {
       }
 
       // void testEasyWriting() {
-      //   gum::prm::o3prm::O3prmReader reader;
+      //   gum::prm::o3prm::O3prmReader<double> reader;
       //   reader.addClassPath("../../../src/testunits/ressources/o3prm/First");
       //   TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/o3prm/First/systems/MyKickAssSystem.o3prm"));
-      //   gum::prm::PRM* prm = 0;
+      //   gum::prm::PRM<double>* prm = 0;
       //   TS_GUM_ASSERT_THROWS_NOTHING(prm = reader.prm());
       //   gum::Size plop = prm->classes().size();
       //   plop += prm->interfaces().size();
       //   TS_ASSERT_EQUALS(plop, (gum::Size) 8);
-      //   gum::prm::System* sys = 0;
+      //   gum::prm::System<double>* sys = 0;
       //   TS_GUM_ASSERT_THROWS_NOTHING(sys = &(prm->system("systems.MyKickAssSystem")));
       //   TS_ASSERT_EQUALS(sys->size(), (gum::Size) 13);
       //   if (prm)
@@ -940,7 +940,7 @@ namespace gum_tests {
       // (it dumps a lot of stuff)
 
       //void testErrorsAndWarnings() {
-      //  gum::prm::o3prm::O3prmReader reader;
+      //  gum::prm::o3prm::O3prmReader<double> reader;
       //  TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile("../../../src/testunits/ressources/o3prm/Printer_with_errors.o3prm"));
       //  TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
       //  TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 4 );
@@ -959,9 +959,9 @@ namespace gum_tests {
       //    buffer += "\n";
       //  }
       //  stream.close();
-      //  gum::prm::o3prm::O3prmReader reader;
+      //  gum::prm::o3prm::O3prmReader<double> reader;
       //  TS_GUM_ASSERT_THROWS_NOTHING(reader.readString(buffer));
-      //  gum::prm::PRM* prm = reader.prm();
+      //  gum::prm::PRM<double>* prm = reader.prm();
       //  TS_ASSERT_EQUALS(prm->type("t_state").variable().domainSize(), (gum::Size)2);
       //  TS_ASSERT_EQUALS(prm->type("t_ink").variable().domainSize(), (gum::Size)2);
       //  TS_ASSERT_EQUALS(prm->type("t_degraded").variable().domainSize(), (gum::Size)3);
@@ -981,7 +981,7 @@ namespace gum_tests {
       //    buffer += "\n";
       //  }
       //  stream.close();
-      //  gum::prm::o3prm::O3prmReader reader;
+      //  gum::prm::o3prm::O3prmReader<double> reader;
       //  TS_GUM_ASSERT_THROWS_NOTHING(reader.readString(buffer));
       //  TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
       //  TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 4 );

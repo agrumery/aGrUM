@@ -26,45 +26,15 @@
 
 #include <agrum/prm/o3prm/O3prmReader.h>
 
-#ifdef GUM_NO_INLINE
-#include <agrum/prm/o3prm/O3prmReader.inl>
-#endif // GUM_NO_INLINE
-
 
 namespace gum {
 
   namespace prm {
 
     namespace o3prm {
-
-      void
-      O3prmReader::setClassPath( const std::string& class_path ) {
-        size_t i = 0;
-        size_t j = class_path.find( ';' );
-
-        while ( j != std::string::npos ) {
-          addClassPath( class_path.substr( i, j - i ) );
-          i = j + 1;
-
-          if ( i < class_path.length() )
-            j = class_path.find( ';', i );
-          else
-            j = std::string::npos;
-        }
-
-        if ( i < class_path.length() )
-          addClassPath( class_path.substr( i, std::string::npos ) );
-      }
-
-      void O3prmReader::addClassPath( const std::string& class_path ) {
-        if ( class_path[class_path.size()-1] == '/' )
-          __class_path.push_back( class_path );
-        else
-          __class_path.push_back( class_path + '/' );
-      }
-
+      
+      template class O3prmReader<double>;
+      
     } /* namespace o3prm */
   } /* namespace prm */
 } /* namespace gum */
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

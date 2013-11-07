@@ -26,7 +26,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 #include <agrum/multidim/instantiation.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/multidim/multiDimCombinationDefault.h>
+#include <agrum/multidim/operators/multiDimCombinationDefault.h>
 #include <agrum/graphs/binaryJoinTreeConverterDefault.h>
 #include <agrum/graphs/orderedTriangulation.h>
 

@@ -42,7 +42,7 @@ namespace gum_tests {
 
     public:
       void testConstuctor() {
-        std::string file = GET_PATH_STR( test1.net );
+        std::string file = GET_PATH_STR( "test1.net" );
 
         gum::BayesNet<float> net;
 
@@ -55,7 +55,7 @@ namespace gum_tests {
       }
 
       void testRead_not_existing_file() {
-        std::string file = GET_PATH_STR( test.net );
+        std::string file = GET_PATH_STR( "test.net" );
 
         gum::BayesNet<float>* net = new gum::BayesNet<float>();
 
@@ -83,7 +83,7 @@ namespace gum_tests {
       }
 
       void testRead_file1() {
-        std::string file = GET_PATH_STR( test1.net );
+        std::string file = GET_PATH_STR( "test1.net" );
 
         gum::BayesNet<float>* net = new gum::BayesNet<float>();
 
@@ -114,7 +114,7 @@ namespace gum_tests {
 
 
       void testRead_file2() {
-        std::string file = GET_PATH_STR( test2.net );
+        std::string file = GET_PATH_STR( "test2.net" );
 
         gum::BayesNet<float>* net = new gum::BayesNet<float>();
 
@@ -144,7 +144,7 @@ namespace gum_tests {
       }
 
       void testRead_file3() {
-        std::string file = GET_PATH_STR( test3.net );
+        std::string file = GET_PATH_STR( "test3.net" );
 
         gum::BayesNet<float>* net = new gum::BayesNet<float>();
 
@@ -171,7 +171,7 @@ namespace gum_tests {
       }
 
       void testRead_file_with_xp() {
-        std::string file = GET_PATH_STR( bn_with_xp.net );
+        std::string file = GET_PATH_STR( "bn_with_xp.net" );
 
         gum::BayesNet<float>* net = new gum::BayesNet<float>();
 

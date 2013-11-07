@@ -31,8 +31,8 @@
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/potential.h>
-#include <agrum/multidim/projections4MultiDim.h>
-#include <agrum/multidim/multiDimProjection.h>
+#include <agrum/multidim/operators/projections4MultiDim.h>
+#include <agrum/multidim/operators/multiDimProjection.h>
 
 namespace gum_tests {
 

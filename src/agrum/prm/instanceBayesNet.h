@@ -38,7 +38,7 @@ namespace gum {
 
     /**
      * @class InstanceBayesNet instanceBayesNet.h <agrum/prm/instanceBayesNet.h>
-     * @brief This class decorates an Instance as an IBaseBayesNet.
+     * @brief This class decorates an Instance<GUM_SCALAR> as an IBaseBayesNet.
      *
      * Remember that an InstanceBayesNet does not contain input nodes parents and
      * output nodes children. Thus you should be careful when using one of the
@@ -55,8 +55,8 @@ namespace gum {
         /// @{
 
         /// Default constructor.
-        /// @param i The Instance decorated by this InstanceBayesNet.
-        InstanceBayesNet( const Instance& i );
+        /// @param i The Instance<GUM_SCALAR> decorated by this InstanceBayesNet.
+        InstanceBayesNet( const Instance<GUM_SCALAR>& i );
 
         /// Copy constructor.
         InstanceBayesNet( const InstanceBayesNet& from );
@@ -104,21 +104,23 @@ namespace gum {
         /// @}
       private:
         /// Mapping between DiscreteVariable and their NodeId
-        HashTable<const DiscreteVariable*, const Attribute*> __varNodeMap;
+        HashTable<const DiscreteVariable*, const Attribute<GUM_SCALAR>*> __varNodeMap;
 
-        /// Private getter with type checking in case the id is not a formal Attribute.
+        /// Private getter with type checking in case the id is not a formal Attribute<GUM_SCALAR>.
         /// @throw NotFound Raised if id is not a formal attribute.
-        const ClassElement& __get( NodeId id ) const;
+        const ClassElement<GUM_SCALAR>& __get( NodeId id ) const;
 
-        const ClassElement& __get( const std::string& name ) const;
+        const ClassElement<GUM_SCALAR>& __get( const std::string& name ) const;
 
         /// The ClassElementContainer decorated by this.
-        const Instance* __inst;
+        const Instance<GUM_SCALAR>* __inst;
 
         mutable NodeProperty<Size> __modalities;
 
-        void __init( const Instance& i );
+        void __init( const Instance<GUM_SCALAR>& i );
     };
+    
+    extern template class InstanceBayesNet<double>;
 
   } /* namespace prm */
 } /* namespace gum */

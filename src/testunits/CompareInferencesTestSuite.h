@@ -389,7 +389,7 @@ namespace gum_tests {
       // compare only Lazy and ShaferShenoy on alarm BN
       void testAlarmInference() {
 
-        std::string file = GET_PATH_STR ( alarm.bif );
+        std::string file = GET_PATH_STR ( "alarm.bif" );
 
         gum::BayesNet<float>* net = new gum::BayesNet<float>();
 

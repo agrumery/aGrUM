@@ -41,7 +41,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <fstream>
 
 #include <agrum/core/utils_dir.h>
-#include <agrum/prm/PRMFactory.h>
+#include <agrum/prm/IPRMFactory.h>
 
 #undef TRY
 // Redefine try / catch to add a semantic error when errors are raised.
@@ -106,7 +106,7 @@ class Parser {
     Token* la;      // lookahead token
 
     private:
-    gum::prm::PRMFactory*       __factory;
+    gum::prm::IPRMFactory*       __factory;
     std::vector<std::string>    __class_path;
     gum::Set<std::string>       __imports;
     std::string                 __package;
@@ -118,10 +118,8 @@ class Parser {
     }
 
     // Return true if type is a class or an interface.
-    bool isClassOrInterface(std::string type) {
-      std::string dot = ".";
-      return factory().prm()->isClass(type) or factory().prm()->isClass(factory().currentPackage() + dot + type) or
-             factory().prm()->isInterface(type) or factory().prm()->isInterface(factory().currentPackage() + dot + type) ;
+    bool isClassOrInterface(std::string type) {      
+      return factory().isClassOrInterface(type);
     }
 
     void importDirID( std::string dirID )
@@ -301,12 +299,12 @@ class Parser {
 
 public:
     // Set the parser factory.
-    void setFactory(gum::prm::PRMFactory* f) {
+    void setFactory(gum::prm::IPRMFactory* f) {
       __factory = f;
     }
 
     // Retrieve the factory.
-    gum::prm::PRMFactory& factory() {
+    gum::prm::IPRMFactory& factory() {
       if (__factory) {
         return *__factory;
       }

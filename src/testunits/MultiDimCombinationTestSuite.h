@@ -29,7 +29,7 @@
 
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/potential.h>
-#include <agrum/multidim/multiDimCombinationDefault.h>
+#include <agrum/multidim/operators/multiDimCombinationDefault.h>
 
 namespace gum_tests {
 
