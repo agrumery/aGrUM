@@ -62,6 +62,7 @@ src/testunits/ressources/cn/den_c_8.bif
 apps/pyAgrum/notebooks/*.png
 apps/pyAgrum/notebooks/WaterSprinkler.net
 apps/pyAgrum/notebooks/*.csv
+apps/pyAgrum/notebooks/*.html
 
 apps/pyAgrum/samples/actuel.png
 apps/pyAgrum/samples/alarm.csv
