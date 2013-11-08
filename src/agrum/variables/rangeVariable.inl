@@ -89,7 +89,7 @@ namespace gum {
 
   INLINE
   Idx
-  RangeVariable::min() const {
+  RangeVariable::minVal() const {
     return __minBound;
   }
 
@@ -98,7 +98,7 @@ namespace gum {
 
   INLINE
   void
-  RangeVariable::setMin( Idx minVal ) {
+  RangeVariable::setMinVal( Idx minVal ) {
     __minBound = minVal;
   }
 
@@ -107,7 +107,7 @@ namespace gum {
 
   INLINE
   Idx
-  RangeVariable::max() const {
+  RangeVariable::maxVal() const {
     return __maxBound;
   }
 
@@ -116,7 +116,7 @@ namespace gum {
 
   INLINE
   void
-  RangeVariable::setMax( Idx maxVal ) {
+  RangeVariable::setMaxVal( Idx maxVal ) {
     __maxBound = maxVal;
   }
 
@@ -142,8 +142,8 @@ namespace gum {
     return *this;
   }
 
-  INLINE DiscreteVariable::Type RangeVariable::type( void ) const {
-    return Type::Range;
+  INLINE DiscreteVariable::VarType RangeVariable::varType( void ) const {
+    return VarType::Range;
   }
 
 } /* namespace gum */

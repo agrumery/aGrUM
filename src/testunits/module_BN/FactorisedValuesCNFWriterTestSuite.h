@@ -82,7 +82,6 @@ namespace gum_tests {
         // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
       }
       void testWriter_ostream_With_Approximation() {
-        typedef gum::FactorisedValuesCNFWriter<double,gum::LinearApproximationPolicy> typCNF;
         gum::FactorisedValuesCNFWriter<double,gum::LinearApproximationPolicy> writer;
         writer.setEpsilon( 0.2 );
         writer.setLowLimit( 0 );

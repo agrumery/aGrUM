@@ -31,43 +31,44 @@
 namespace gum {
   namespace prm {
     template<typename GUM_SCALAR>
-    Instance<GUM_SCALAR>::Instance( const std::string& name, Class<GUM_SCALAR>& type ):
-      PRMObject( name ), __type( &type ), __params( 0 ) {
-      GUM_CONSTRUCTOR( Instance );
+    Instance<GUM_SCALAR>::Instance ( const std::string& name, Class<GUM_SCALAR>& type ) :
+      PRMObject ( name ), __type ( &type ), __params ( 0 ) {
+      GUM_CONSTRUCTOR ( Instance );
 
       // First we create attributes for each aggregate in type
       for ( auto agg = __type->aggregates().begin(); agg != __type->aggregates().end(); ++agg )
-        __copyAggregates( *agg );
+        __copyAggregates ( *agg );
 
       // We add attributes in type by reference for inner ones and by copy for output ones
       for ( auto attr = __type->attributes().begin(); attr != __type->attributes().end(); ++attr )
-        __copyAttribute( *attr );
+        __copyAttribute ( *attr );
 
       // Then we instantiate each parameters in type
       if ( __type->parameters().size() )
         __params = new Set<NodeId>();
 
       for ( auto iter = __type->parameters().begin(); iter != __type->parameters().end(); ++iter )
-        __copyParameter( *iter );
+        __copyParameter ( *iter );
     }
 
     template<typename GUM_SCALAR>
     void
-    Instance<GUM_SCALAR>::__copyParameter( Attribute<GUM_SCALAR>* source ) {
-      Attribute<GUM_SCALAR>* attr = new Attribute<GUM_SCALAR>( source->name(), source->type() );
-      Instantiation i( attr->cpf() ), j( source->cpf() );
+    Instance<GUM_SCALAR>::__copyParameter ( Attribute<GUM_SCALAR>* source ) {
+      Attribute<GUM_SCALAR>* attr = new Attribute<GUM_SCALAR> ( source->name(), source->type() );
+      Instantiation i ( attr->cpf() ), j ( source->cpf() );
 
-      for ( i.setFirst(), j.setFirst(); not( i.end() or j.end() ); i.inc(), j.inc() )
-        attr->cpf().set( i, source->cpf().get( j ) );
+      for ( i.setFirst(), j.setFirst(); not ( i.end() or j.end() ); i.inc(), j.inc() )
+        attr->cpf().set ( i, source->cpf().get ( j ) );
 
-      attr->setId( source->id() );
-      __nodeIdMap.insert( attr->id(), attr );
-      __bijection.insert( &( source->type().variable() ), &( attr->type().variable() ) );
+      attr->setId ( source->id() );
+      __nodeIdMap.insert ( attr->id(), attr );
+      __bijection.insert ( & ( source->type().variable() ), & ( attr->type().variable() ) );
     }
 
     template<typename GUM_SCALAR>
     Instance<GUM_SCALAR>::~Instance() {
-      GUM_DESTRUCTOR( Instance );
+      GUM_DESTRUCTOR ( Instance );
+
       for ( auto iter = __nodeIdMap.begin(); iter != __nodeIdMap.end(); ++iter )
         delete *iter;
 
@@ -85,28 +86,28 @@ namespace gum {
     Instance<GUM_SCALAR>::instantiate() {
       // First retrieving any referenced instance
       for ( auto chain = type().slotChains().begin(); chain != type().slotChains().end(); ++chain )
-        __instantiateSlotChain( *chain );
+        __instantiateSlotChain ( *chain );
 
       // Now we need to add referred instance to each input node
       // For Attributes we first add parents, then we initialize CPF
       for ( auto iter = type().attributes().begin(); iter != type().attributes().end(); ++iter )
-        if ( not type().isParameter( **iter ) )
-          __copyAttributeCPF( __nodeIdMap[( **iter ).id()] );
+        if ( not type().isParameter ( **iter ) )
+          __copyAttributeCPF ( __nodeIdMap[ ( **iter ).id()] );
 
       // For Aggregate<GUM_SCALAR> we add parents
       for ( auto iter = type().aggregates().begin(); iter != type().aggregates().end(); ++iter ) {
-        const NodeSet& parents = type().dag().parents( ( *iter )->id() );
-        Attribute<GUM_SCALAR>& attr = get( ( **iter ).safeName() );
+        const NodeSet& parents = type().dag().parents ( ( *iter )->id() );
+        Attribute<GUM_SCALAR>& attr = get ( ( **iter ).safeName() );
 
         for ( NodeSet::const_iterator arc = parents.begin(); arc != parents.end(); ++arc ) {
           try {
-            attr.addParent( get( *arc ) );
+            attr.addParent ( get ( *arc ) );
           } catch ( NotFound& ) {
-            SlotChain<GUM_SCALAR>& sc = static_cast<SlotChain<GUM_SCALAR>&>( type().get( *arc ) );
-            const Set<Instance<GUM_SCALAR>*>& instances = getInstances( sc.id() );
+            SlotChain<GUM_SCALAR>& sc = static_cast<SlotChain<GUM_SCALAR>&> ( type().get ( *arc ) );
+            const Set<Instance<GUM_SCALAR>*>& instances = getInstances ( sc.id() );
 
             for ( auto i = instances.begin(); i != instances.end(); ++i ) {
-              attr.addParent( ( *i )->get( sc.lastElt().safeName() ) );
+              attr.addParent ( ( *i )->get ( sc.lastElt().safeName() ) );
             }
           }
         }
@@ -115,11 +116,11 @@ namespace gum {
 
     template<typename GUM_SCALAR>
     void
-    Instance<GUM_SCALAR>::__instantiateSlotChain( SlotChain<GUM_SCALAR>* sc ) {
-      __referenceMap.insert( sc->id(), new Set<Instance<GUM_SCALAR>*>() );
+    Instance<GUM_SCALAR>::__instantiateSlotChain ( SlotChain<GUM_SCALAR>* sc ) {
+      __referenceMap.insert ( sc->id(), new Set<Instance<GUM_SCALAR>*>() );
       // An instantiated slot chain is a tree, to find all leaves we proceed with a deep run
       std::vector< std::pair<Instance<GUM_SCALAR>*, Size> > stack;
-      stack.push_back( std::pair<Instance<GUM_SCALAR>*, Size>( this, 0 ) );
+      stack.push_back ( std::pair<Instance<GUM_SCALAR>*, Size> ( this, 0 ) );
       Set<Instance<GUM_SCALAR>*> visited;
       // Last element is an attribute, and we only want the instance containing it
       Size depth_stop = sc->chain().size() -1;
@@ -130,27 +131,27 @@ namespace gum {
         Size depth = stack.back().second;
         stack.pop_back();
 
-        if ( not visited.exists( current ) ) {
-          visited.insert( current );
+        if ( not visited.exists ( current ) ) {
+          visited.insert ( current );
 
           if ( depth < depth_stop ) {
             try {
-              NodeId refId = sc->chain().atPos( depth )->id();
+              NodeId refId = sc->chain().atPos ( depth )->id();
               Set<Instance<GUM_SCALAR>*>* instances = current->__referenceMap[refId];
 
               for ( auto iter = instances->begin(); iter != instances->end(); ++iter )
-                stack.push_back( std::make_pair( *iter, depth + 1 ) );
+                stack.push_back ( std::make_pair ( *iter, depth + 1 ) );
             } catch ( NotFound& ) {
-              GUM_ERROR( NotFound, "found an uninstantiated reference" );
+              GUM_ERROR ( NotFound, "found an uninstantiated reference" );
             }
           } else {
-            __referenceMap[sc->id()]->insert( current );
-            __addReferingInstance( sc, current );
+            __referenceMap[sc->id()]->insert ( current );
+            __addReferingInstance ( sc, current );
 
             // If slot chain is single, it could be used by an attribute so we add the corresponding DiscreteVariable
             // to __bijection for CPF initialisation
             if ( not sc->isMultiple() ) {
-              __bijection.insert( &( sc->type().variable() ), &( current->get( sc->lastElt().safeName() ).type().variable() ) );
+              __bijection.insert ( & ( sc->type().variable() ), & ( current->get ( sc->lastElt().safeName() ).type().variable() ) );
             }
           }
         }
@@ -159,50 +160,50 @@ namespace gum {
 
     template<typename GUM_SCALAR>
     void
-    Instance<GUM_SCALAR>::add( NodeId id, Instance<GUM_SCALAR>& instance ) {
+    Instance<GUM_SCALAR>::add ( NodeId id, Instance<GUM_SCALAR>& instance ) {
       ClassElement<GUM_SCALAR>* elt = 0;
 
       try {
-        elt = &( type().get( id ) );
+        elt = & ( type().get ( id ) );
       } catch ( NotFound& ) {
-        GUM_ERROR( NotFound, "no ClassElement<GUM_SCALAR> matches the given id" );
+        GUM_ERROR ( NotFound, "no ClassElement<GUM_SCALAR> matches the given id" );
       }
 
       switch ( elt->elt_type() ) {
         case ClassElement<GUM_SCALAR>::prm_refslot: {
-          ReferenceSlot<GUM_SCALAR>* ref = static_cast<ReferenceSlot<GUM_SCALAR>*>( elt );
+          ReferenceSlot<GUM_SCALAR>* ref = static_cast<ReferenceSlot<GUM_SCALAR>*> ( elt );
 
           // Checking if instance's type is legal
-          if ( not instance.type().isSubTypeOf( ref->slotType() ) ) {
-            GUM_ERROR( TypeError, "given Instance type is not a proper "
-                       "subclass of the ReferenceSlot<GUM_SCALAR> slot type" );
+          if ( not instance.type().isSubTypeOf ( ref->slotType() ) ) {
+            GUM_ERROR ( TypeError, "given Instance type is not a proper "
+                        "subclass of the ReferenceSlot<GUM_SCALAR> slot type" );
           }
 
           // Checking the reference's size limit
-          if ( __referenceMap.exists( id ) and
-               ( not static_cast<ReferenceSlot<GUM_SCALAR>&>( type().get( id ) ).isArray() ) and
+          if ( __referenceMap.exists ( id ) and
+               ( not static_cast<ReferenceSlot<GUM_SCALAR>&> ( type().get ( id ) ).isArray() ) and
                ( __referenceMap[id]->size() == 1 ) ) {
-            GUM_ERROR( OutOfUpperBound, "ReferenceSlot<GUM_SCALAR> size limit reached" );
+            GUM_ERROR ( OutOfUpperBound, "ReferenceSlot<GUM_SCALAR> size limit reached" );
           }
 
           break;
         }
 
         case ClassElement<GUM_SCALAR>::prm_slotchain: {
-          SlotChain<GUM_SCALAR>& sc = static_cast<SlotChain<GUM_SCALAR>&>( type().get( id ) );
+          SlotChain<GUM_SCALAR>& sc = static_cast<SlotChain<GUM_SCALAR>&> ( type().get ( id ) );
 
           // Checking if instance's type is legal
-          if ( not instance.type().isSubTypeOf( sc.end() ) ) {
-            GUM_ERROR( TypeError, "given Instance type is not a proper "
-                       "subclass of the ClassElementContainer pointed"
-                       " by the SlotChain<GUM_SCALAR>" );
+          if ( not instance.type().isSubTypeOf ( sc.end() ) ) {
+            GUM_ERROR ( TypeError, "given Instance type is not a proper "
+                        "subclass of the ClassElementContainer pointed"
+                        " by the SlotChain<GUM_SCALAR>" );
           }
 
           // Checking the reference's size limit
-          if ( __referenceMap.exists( id ) and
-               ( not static_cast<SlotChain<GUM_SCALAR>&>( type().get( id ) ).isMultiple() ) and
+          if ( __referenceMap.exists ( id ) and
+               ( not static_cast<SlotChain<GUM_SCALAR>&> ( type().get ( id ) ).isMultiple() ) and
                ( __referenceMap[id]->size() == 1 ) ) {
-            GUM_ERROR( OutOfUpperBound, "SlotChain<GUM_SCALAR> size limit reached" );
+            GUM_ERROR ( OutOfUpperBound, "SlotChain<GUM_SCALAR> size limit reached" );
           }
 
           // We need to plug this to the referred instance.
@@ -211,17 +212,17 @@ namespace gum {
         }
 
         default: {
-          if ( not type().isOutputNode( *elt ) ) {
-            GUM_ERROR( WrongClassElement, "given ClassElement<GUM_SCALAR> is not an output node" );
+          if ( not type().isOutputNode ( *elt ) ) {
+            GUM_ERROR ( WrongClassElement, "given ClassElement<GUM_SCALAR> is not an output node" );
           }
         }
       }
 
-      if ( not __referenceMap.exists( id ) ) {
-        __referenceMap.insert( id, new Set<Instance<GUM_SCALAR>*>() );
+      if ( not __referenceMap.exists ( id ) ) {
+        __referenceMap.insert ( id, new Set<Instance<GUM_SCALAR>*>() );
       }
 
-      __referenceMap[id]->insert( &instance );
+      __referenceMap[id]->insert ( &instance );
     }
 
 
@@ -233,36 +234,36 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     void
-    Instance<GUM_SCALAR>::__copyAggregates( Aggregate<GUM_SCALAR>* source ) {
-      Attribute<GUM_SCALAR>* attr = new Attribute<GUM_SCALAR>( source->name(), source->type(), source->buildImpl() );
-      GUM_ASSERT( &( attr->type().variable() ) != &( source->type().variable() ) );
-      attr->setId( source->id() );
-      __nodeIdMap.insert( attr->id(), attr );
-      __bijection.insert( &( source->type().variable() ), &( attr->type().variable() ) );
+    Instance<GUM_SCALAR>::__copyAggregates ( Aggregate<GUM_SCALAR>* source ) {
+      Attribute<GUM_SCALAR>* attr = new Attribute<GUM_SCALAR> ( source->name(), source->type(), source->buildImpl() );
+      GUM_ASSERT ( & ( attr->type().variable() ) != & ( source->type().variable() ) );
+      attr->setId ( source->id() );
+      __nodeIdMap.insert ( attr->id(), attr );
+      __bijection.insert ( & ( source->type().variable() ), & ( attr->type().variable() ) );
     }
 
     template<typename GUM_SCALAR> INLINE
     void
-    Instance<GUM_SCALAR>::__copyAttribute( Attribute<GUM_SCALAR>* source ) {
-      Attribute<GUM_SCALAR>* attr = new Attribute<GUM_SCALAR>( source->name(), source->type() );
+    Instance<GUM_SCALAR>::__copyAttribute ( Attribute<GUM_SCALAR>* source ) {
+      Attribute<GUM_SCALAR>* attr = new Attribute<GUM_SCALAR> ( source->name(), source->type() );
       // The potential is copied when instantiate() is called
-      attr->cpf().fill( ( GUM_SCALAR ) 0 );
-      attr->setId( source->id() );
-      __bijection.insert( &( source->type().variable() ), &( attr->type().variable() ) );
-      __nodeIdMap.insert( attr->id(), attr );
+      attr->cpf().fill ( ( GUM_SCALAR ) 0 );
+      attr->setId ( source->id() );
+      __bijection.insert ( & ( source->type().variable() ), & ( attr->type().variable() ) );
+      __nodeIdMap.insert ( attr->id(), attr );
     }
 
     template<typename GUM_SCALAR> INLINE
-    Instance<GUM_SCALAR>::Instance( const Instance<GUM_SCALAR>& source ):
-      PRMObject( source ), __type( source.__type ), __params( 0 ) {
-      GUM_CONS_CPY( Instance );
-      GUM_ERROR( FatalError, "do not copy Instance" );
+    Instance<GUM_SCALAR>::Instance ( const Instance<GUM_SCALAR>& source ) :
+      PRMObject ( source ), __type ( source.__type ), __params ( 0 ) {
+      GUM_CONS_CPY ( Instance );
+      GUM_ERROR ( FatalError, "do not copy Instance" );
     }
 
     template<typename GUM_SCALAR> INLINE
     Instance<GUM_SCALAR>&/**/
-    Instance<GUM_SCALAR>::operator=( const Class<GUM_SCALAR>& from ) {
-      GUM_ERROR( FatalError, "do not copy Instance" );
+    Instance<GUM_SCALAR>::operator= ( const Class<GUM_SCALAR>& from ) {
+      GUM_ERROR ( FatalError, "do not copy Instance" );
     }
 
     template<typename GUM_SCALAR> INLINE
@@ -279,121 +280,121 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     bool
-    Instance<GUM_SCALAR>::exists( NodeId id ) const {
-      return __nodeIdMap.exists( id );
+    Instance<GUM_SCALAR>::exists ( NodeId id ) const {
+      return __nodeIdMap.exists ( id );
     }
 
     template<typename GUM_SCALAR> INLINE
     bool
-    Instance<GUM_SCALAR>::exists( const std::string& name ) const {
-      return __type->exists( name ) and exists( __type->get( name ).id() );
+    Instance<GUM_SCALAR>::exists ( const std::string& name ) const {
+      return __type->exists ( name ) and exists ( __type->get ( name ).id() );
     }
 
     template<typename GUM_SCALAR> INLINE
     Attribute<GUM_SCALAR>&
-    Instance<GUM_SCALAR>::get( NodeId id ) {
+    Instance<GUM_SCALAR>::get ( NodeId id ) {
       try {
-        return *( __nodeIdMap[id] );
+        return * ( __nodeIdMap[id] );
       } catch ( NotFound& ) {
-        GUM_ERROR( NotFound, "no Attribute<GUM_SCALAR> with the given NodeId" );
+        GUM_ERROR ( NotFound, "no Attribute<GUM_SCALAR> with the given NodeId" );
       }
     }
 
     template<typename GUM_SCALAR> INLINE
     const Attribute<GUM_SCALAR>&
-    Instance<GUM_SCALAR>::get( NodeId id ) const {
+    Instance<GUM_SCALAR>::get ( NodeId id ) const {
       try {
-        return *( __nodeIdMap[id] );
+        return * ( __nodeIdMap[id] );
       } catch ( NotFound& ) {
-        GUM_ERROR( NotFound, "no Attribute<GUM_SCALAR> with the given NodeId" );
+        GUM_ERROR ( NotFound, "no Attribute<GUM_SCALAR> with the given NodeId" );
       }
     }
 
     template<typename GUM_SCALAR> INLINE
     Attribute<GUM_SCALAR>&
-    Instance<GUM_SCALAR>::get( const std::string& name ) {
+    Instance<GUM_SCALAR>::get ( const std::string& name ) {
       try {
-        return *( __nodeIdMap[type().get( name ).id()] );
+        return * ( __nodeIdMap[type().get ( name ).id()] );
       } catch ( NotFound& ) {
-        GUM_ERROR( NotFound, "no Attribute<GUM_SCALAR> with the given name" );
+        GUM_ERROR ( NotFound, "no Attribute<GUM_SCALAR> with the given name" );
       }
     }
 
     template<typename GUM_SCALAR> INLINE
     const Attribute<GUM_SCALAR>&
-    Instance<GUM_SCALAR>::get( const std::string& name ) const {
+    Instance<GUM_SCALAR>::get ( const std::string& name ) const {
       try {
-        return *( __nodeIdMap[type().get( name ).id()] );
+        return * ( __nodeIdMap[type().get ( name ).id()] );
       } catch ( NotFound& ) {
-        GUM_ERROR( NotFound, "no Attribute<GUM_SCALAR> with the given name" );
+        GUM_ERROR ( NotFound, "no Attribute<GUM_SCALAR> with the given name" );
       }
     }
 
     template<typename GUM_SCALAR> INLINE
     bool
-    Instance<GUM_SCALAR>::isInitialised( NodeId id ) const {
-      return ( __params )?__params->exists( id ):false;
+    Instance<GUM_SCALAR>::isInitialised ( NodeId id ) const {
+      return ( __params ) ?__params->exists ( id ) :false;
     }
 
     template<typename GUM_SCALAR> INLINE
     void
-    Instance<GUM_SCALAR>::setParameterValue( const std::string& name, const Potential<GUM_SCALAR>& value ) {
+    Instance<GUM_SCALAR>::setParameterValue ( const std::string& name, const Potential<GUM_SCALAR>& value ) {
       Attribute<GUM_SCALAR>* attr = 0;
 
       try {
-        attr = &( get( name ) );
+        attr = & ( get ( name ) );
       } catch ( NotFound& ) {
-        GUM_ERROR( NotFound, "the given ClassElement<GUM_SCALAR> is not in this Instance" );
+        GUM_ERROR ( NotFound, "the given ClassElement<GUM_SCALAR> is not in this Instance" );
       }
 
-      if ( not __type->isParameter( *attr ) ) {
-        GUM_ERROR( WrongClassElement, "the given NodeId is not a parameter" );
+      if ( not __type->isParameter ( *attr ) ) {
+        GUM_ERROR ( WrongClassElement, "the given NodeId is not a parameter" );
       }
 
       if ( attr->cpf().nbrDim() > 1 ) {
-        GUM_ERROR( FatalError, "found a parameter's potential with more than one dimension" );
+        GUM_ERROR ( FatalError, "found a parameter's potential with more than one dimension" );
       }
 
-      if ( not value.contains( attr->type().variable() ) ) {
-        GUM_ERROR( OperationNotAllowed, "the given value is invalid for this parameter" );
+      if ( not value.contains ( attr->type().variable() ) ) {
+        GUM_ERROR ( OperationNotAllowed, "the given value is invalid for this parameter" );
       }
 
       // Assigning value
-      attr->cpf().copy( value );
+      attr->cpf().copy ( value );
 
       if ( not __params ) {
         __params = new Set<NodeId>();
       }
 
-      __params->insert( attr->id() );
+      __params->insert ( attr->id() );
     }
 
     template<typename GUM_SCALAR> INLINE
     bool
-    Instance<GUM_SCALAR>::isInstantiated( NodeId id ) const {
-      return __nodeIdMap.exists( id );
+    Instance<GUM_SCALAR>::isInstantiated ( NodeId id ) const {
+      return __nodeIdMap.exists ( id );
     }
 
     template<typename GUM_SCALAR> INLINE
     void
-    Instance<GUM_SCALAR>::__addReferingInstance( SlotChain<GUM_SCALAR>* sc, Instance<GUM_SCALAR>* i ) {
-      NodeId id = i->get( sc->lastElt().safeName() ).id();
+    Instance<GUM_SCALAR>::__addReferingInstance ( SlotChain<GUM_SCALAR>* sc, Instance<GUM_SCALAR>* i ) {
+      NodeId id = i->get ( sc->lastElt().safeName() ).id();
       std::string name = sc->lastElt().safeName();
 
       try {
-        i->__referenceMap[id]->insert( this );
-        i->__referingAttr[id]->push_back( std::make_pair( this, sc->lastElt().safeName() ) );
+        i->__referenceMap[id]->insert ( this );
+        i->__referingAttr[id]->push_back ( std::make_pair ( this, sc->lastElt().safeName() ) );
       } catch ( NotFound& ) {
-        i->__referenceMap.insert( id, new Set< Instance<GUM_SCALAR>* >() );
-        i->__referenceMap[id]->insert( this );
-        i->__referingAttr.insert( id, new std::vector<pair>() );
-        i->__referingAttr[id]->push_back( std::make_pair( this, sc->lastElt().safeName() ) );
+        i->__referenceMap.insert ( id, new Set< Instance<GUM_SCALAR>* >() );
+        i->__referenceMap[id]->insert ( this );
+        i->__referingAttr.insert ( id, new std::vector<pair>() );
+        i->__referingAttr[id]->push_back ( std::make_pair ( this, sc->lastElt().safeName() ) );
       }
     }
 
     template<typename GUM_SCALAR> INLINE
     void
-    Instance<GUM_SCALAR>::instantiate( NodeId id ) {
+    Instance<GUM_SCALAR>::instantiate ( NodeId id ) {
       // Do nothing
     }
 
@@ -405,25 +406,25 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     const Instance<GUM_SCALAR>&
-    Instance<GUM_SCALAR>::getInstance( NodeId id ) const {
+    Instance<GUM_SCALAR>::getInstance ( NodeId id ) const {
       try {
         if ( __referenceMap[id]->size() > 0 ) {
-          return **( __referenceMap[id]->begin() );
+          return ** ( __referenceMap[id]->begin() );
         } else {
-          GUM_ERROR( UndefinedElement, "no Instance associated with the given NodeId" );
+          GUM_ERROR ( UndefinedElement, "no Instance associated with the given NodeId" );
         }
       } catch ( NotFound& ) {
-        GUM_ERROR( NotFound, "no ReferenceSlot<GUM_SCALAR> or SlotChain<GUM_SCALAR> matches the given NodeId" );
+        GUM_ERROR ( NotFound, "no ReferenceSlot<GUM_SCALAR> or SlotChain<GUM_SCALAR> matches the given NodeId" );
       }
     }
 
     template<typename GUM_SCALAR> INLINE
     const Set<Instance<GUM_SCALAR>*>&
-    Instance<GUM_SCALAR>::getInstances( NodeId id ) const {
+    Instance<GUM_SCALAR>::getInstances ( NodeId id ) const {
       try {
-        return *( __referenceMap[id] );
+        return * ( __referenceMap[id] );
       } catch ( NotFound& ) {
-        GUM_ERROR( NotFound, "no ReferenceSlot<GUM_SCALAR> or SlotChain<GUM_SCALAR> matches the given NodeId" );
+        GUM_ERROR ( NotFound, "no ReferenceSlot<GUM_SCALAR> or SlotChain<GUM_SCALAR> matches the given NodeId" );
       }
     }
 
@@ -445,44 +446,44 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     typename Instance<GUM_SCALAR>::RefIterator
-    Instance<GUM_SCALAR>::begin( NodeId id ) {
+    Instance<GUM_SCALAR>::begin ( NodeId id ) {
       try {
-        return Instance<GUM_SCALAR>::RefIterator( *( __referenceMap[id] ) );
+        return Instance<GUM_SCALAR>::RefIterator ( * ( __referenceMap[id] ) );
       } catch ( NotFound& ) {
-        GUM_ERROR( NotFound, "no referred instances from this NodeId" );
+        GUM_ERROR ( NotFound, "no referred instances from this NodeId" );
       }
     }
 
     template<typename GUM_SCALAR> INLINE
     typename Instance<GUM_SCALAR>::RefConstIterator
-    Instance<GUM_SCALAR>::begin( NodeId id ) const {
+    Instance<GUM_SCALAR>::begin ( NodeId id ) const {
       try {
-        return Instance<GUM_SCALAR>::RefConstIterator( *( __referenceMap[id] ) );
+        return Instance<GUM_SCALAR>::RefConstIterator ( * ( __referenceMap[id] ) );
       } catch ( NotFound& ) {
-        GUM_ERROR( NotFound, "no referred instances from this NodeId" );
+        GUM_ERROR ( NotFound, "no referred instances from this NodeId" );
       }
     }
 
     template<typename GUM_SCALAR> INLINE
-    Instance<GUM_SCALAR>::RefIterator::RefIterator( Set<Instance<GUM_SCALAR>*>& set ):
-      __set( set ), __iter( set.begin() ) {
-      GUM_CONSTRUCTOR( Instance<GUM_SCALAR>::RefIterator );
+    Instance<GUM_SCALAR>::RefIterator::RefIterator ( Set<Instance<GUM_SCALAR>*>& set ) :
+      __set ( set ), __iter ( set.begin() ) {
+      GUM_CONSTRUCTOR ( Instance<GUM_SCALAR>::RefIterator );
     }
 
     template<typename GUM_SCALAR> INLINE
-    Instance<GUM_SCALAR>::RefIterator::RefIterator( const RefIterator& from ):
-      __set( const_cast< Set<Instance<GUM_SCALAR>*>& >( from.__set ) ), __iter( from.__iter ) {
-      GUM_CONS_CPY( Instance<GUM_SCALAR>::RefIterator );
+    Instance<GUM_SCALAR>::RefIterator::RefIterator ( const RefIterator& from ) :
+      __set ( const_cast< Set<Instance<GUM_SCALAR>*>& > ( from.__set ) ), __iter ( from.__iter ) {
+      GUM_CONS_CPY ( Instance<GUM_SCALAR>::RefIterator );
     }
 
     template<typename GUM_SCALAR> INLINE
     Instance<GUM_SCALAR>::RefIterator::~RefIterator() {
-      GUM_DESTRUCTOR( Instance<GUM_SCALAR>::RefIterator );
+      GUM_DESTRUCTOR ( Instance<GUM_SCALAR>::RefIterator );
     }
 
     template<typename GUM_SCALAR> INLINE
     typename Instance<GUM_SCALAR>::RefIterator&
-    Instance<GUM_SCALAR>::RefIterator::operator=( const RefIterator& from ) {
+    Instance<GUM_SCALAR>::RefIterator::operator= ( const RefIterator& from ) {
       __iter = from.__iter;
       return *this;
     }
@@ -502,13 +503,13 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     bool
-    Instance<GUM_SCALAR>::RefIterator::operator!=( const RefIterator& from ) const {
+    Instance<GUM_SCALAR>::RefIterator::operator!= ( const RefIterator& from ) const {
       return __iter != from.__iter;
     }
 
     template<typename GUM_SCALAR> INLINE
     bool
-    Instance<GUM_SCALAR>::RefIterator::operator==( const RefIterator& from ) const {
+    Instance<GUM_SCALAR>::RefIterator::operator== ( const RefIterator& from ) const {
       return __iter == from.__iter;
     }
 
@@ -525,25 +526,25 @@ namespace gum {
     }
 
     template<typename GUM_SCALAR> INLINE
-    Instance<GUM_SCALAR>::RefConstIterator::RefConstIterator( const Set<Instance<GUM_SCALAR>*>& set ):
-      __set( set ), __iter( set.begin() ) {
-      GUM_CONSTRUCTOR( Instance<GUM_SCALAR>::RefConstIterator );
+    Instance<GUM_SCALAR>::RefConstIterator::RefConstIterator ( const Set<Instance<GUM_SCALAR>*>& set ) :
+      __set ( set ), __iter ( set.begin() ) {
+      GUM_CONSTRUCTOR ( Instance<GUM_SCALAR>::RefConstIterator );
     }
 
     template<typename GUM_SCALAR> INLINE
-    Instance<GUM_SCALAR>::RefConstIterator::RefConstIterator( const RefConstIterator& from ):
-      __set( from.__set ), __iter( from.__iter ) {
-      GUM_CONS_CPY( Instance<GUM_SCALAR>::RefConstIterator );
+    Instance<GUM_SCALAR>::RefConstIterator::RefConstIterator ( const RefConstIterator& from ) :
+      __set ( from.__set ), __iter ( from.__iter ) {
+      GUM_CONS_CPY ( Instance<GUM_SCALAR>::RefConstIterator );
     }
 
     template<typename GUM_SCALAR> INLINE
     Instance<GUM_SCALAR>::RefConstIterator::~RefConstIterator() {
-      GUM_DESTRUCTOR( Instance<GUM_SCALAR>::RefConstIterator );
+      GUM_DESTRUCTOR ( Instance<GUM_SCALAR>::RefConstIterator );
     }
 
     template<typename GUM_SCALAR> INLINE
     typename Instance<GUM_SCALAR>::RefConstIterator&
-    Instance<GUM_SCALAR>::RefConstIterator::operator=( const RefConstIterator& from ) {
+    Instance<GUM_SCALAR>::RefConstIterator::operator= ( const RefConstIterator& from ) {
       __iter = from.__iter;
       return *this;
     }
@@ -563,13 +564,13 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     bool
-    Instance<GUM_SCALAR>::RefConstIterator::operator!=( const RefConstIterator& from ) const {
+    Instance<GUM_SCALAR>::RefConstIterator::operator!= ( const RefConstIterator& from ) const {
       return __iter != from.__iter;
     }
 
     template<typename GUM_SCALAR> INLINE
     bool
-    Instance<GUM_SCALAR>::RefConstIterator::operator==( const RefConstIterator& from ) const {
+    Instance<GUM_SCALAR>::RefConstIterator::operator== ( const RefConstIterator& from ) const {
       return __iter == from.__iter;
     }
 
@@ -611,42 +612,42 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     std::vector< std::pair<Instance<GUM_SCALAR>*, std::string> >&
-    Instance<GUM_SCALAR>::getRefAttr( NodeId id ) {
-      return *( __referingAttr[id] );
+    Instance<GUM_SCALAR>::getRefAttr ( NodeId id ) {
+      return * ( __referingAttr[id] );
     }
 
     template<typename GUM_SCALAR> INLINE
     const std::vector< std::pair<Instance<GUM_SCALAR>*, std::string> >&
-    Instance<GUM_SCALAR>::getRefAttr( NodeId id ) const {
-      return *( __referingAttr[id] );
+    Instance<GUM_SCALAR>::getRefAttr ( NodeId id ) const {
+      return * ( __referingAttr[id] );
     }
 
     template<typename GUM_SCALAR> INLINE
     bool
-    Instance<GUM_SCALAR>::hasRefAttr( NodeId id ) const {
-      return __referingAttr.exists( id ) and( not __referingAttr[id]->empty() );
+    Instance<GUM_SCALAR>::hasRefAttr ( NodeId id ) const {
+      return __referingAttr.exists ( id ) and ( not __referingAttr[id]->empty() );
     }
 
     template<typename GUM_SCALAR> INLINE
     void
-    Instance<GUM_SCALAR>::__copyAttributeCPF( Attribute<GUM_SCALAR>* attr ) {
+    Instance<GUM_SCALAR>::__copyAttributeCPF ( Attribute<GUM_SCALAR>* attr ) {
       // try {
       try {
-        Potential<GUM_SCALAR>* p = copyPotential( bijection(), type().get( attr->safeName() ).cpf() );
-        delete( attr->__cpf );
+        Potential<GUM_SCALAR>* p = copyPotential ( bijection(), type().get ( attr->safeName() ).cpf() );
+        delete ( attr->__cpf );
         attr->__cpf = p;
       } catch ( Exception& e ) {
-        GUM_TRACE_VAR( name() );
-        GUM_TRACE_VAR( attr->safeName() );
-        const NodeSet& parents = type().dag().parents( attr->id() );
+        GUM_TRACE_VAR ( name() );
+        GUM_TRACE_VAR ( attr->safeName() );
+        const NodeSet& parents = type().dag().parents ( attr->id() );
 
         for ( NodeSet::const_iterator node = parents.begin(); node != parents.end(); ++node ) {
-          GUM_TRACE_VAR( type().get( *node ).safeName() );
+          GUM_TRACE_VAR ( type().get ( *node ).safeName() );
         }
 
-        std::cerr << e.content() << std::endl;
-        std::cerr << e.callStack() << std::endl;
-        std::exit( 0 );
+        std::cerr << e.errorContent() << std::endl;
+        std::cerr << e.errorCallStack() << std::endl;
+        std::exit ( 0 );
       }
 
       // } catch (NotFound& e) {

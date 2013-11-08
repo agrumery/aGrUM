@@ -158,8 +158,8 @@ namespace gum {
     return __labels.size();
   }
 
-  INLINE DiscreteVariable::Type LabelizedVariable::type( void ) const {
-    return Type::Labelized;
+  INLINE DiscreteVariable::VarType LabelizedVariable::varType( void ) const {
+    return VarType::Labelized;
   }
 
 } /* namespace gum */

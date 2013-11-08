@@ -122,7 +122,7 @@ namespace gum {
           __errors += __parser->errors();
         } catch ( gum::Exception& e ) {
           GUM_SHOWERROR( e );
-          __errors.addException( e.content(), file );
+          __errors.addException( e.errorContent(), file );
         }
 
         return __parser->errors().count();
@@ -143,7 +143,7 @@ namespace gum {
           __errors += __parser->errors();
         } catch ( gum::Exception& e ) {
           GUM_SHOWERROR( e );
-          __errors.addException( e.content(), "" );
+          __errors.addException( e.errorContent(), "" );
         }
 
         return __parser->errors().count();

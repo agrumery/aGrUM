@@ -72,7 +72,7 @@ namespace gum_tests {
           bn.addArc ( bn.idFromName ( "v4" ), bn.idFromName ( "v5" ) );
 
         } catch ( gum::Exception& e ) {
-          std::cerr << std::endl << e.content() << std::endl;
+          std::cerr << std::endl << e.errorContent() << std::endl;
           throw ;
         }
 
@@ -120,7 +120,7 @@ namespace gum_tests {
           gum::SimpleCPTGenerator<float> generator;
           generator.generateCPT ( 0,  bn.cpt ( bn.idFromName ( "v5" ) ) );
         } catch ( gum::Exception& e ) {
-          std::cerr << std::endl << e.content() << std::endl;
+          std::cerr << std::endl << e.errorContent() << std::endl;
           throw ;
         }
 

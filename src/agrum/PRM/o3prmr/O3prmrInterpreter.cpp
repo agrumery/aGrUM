@@ -265,7 +265,7 @@ namespace gum {
                   break;
               }
             } catch ( Exception& err ) {
-              result = false; addError ( err.content() );
+              result = false; addError ( err.errorContent() );
             } catch ( std::string& err ) { result = false; addError ( err ); }
 
             // If there was a problem, skip the rest of this session,
@@ -370,7 +370,7 @@ namespace gum {
                   result = false;
               }
             } catch ( Exception& err ) {
-              result = false; addError ( err.content() );
+              result = false; addError ( err.errorContent() );
             } catch ( std::string& err ) { result = false; addError ( err ); }
 
             // If there was a problem, skip the rest of this session,
@@ -447,7 +447,7 @@ namespace gum {
           return found;
 
         } catch ( Exception& err ) {
-          addError ( err.content() );
+          addError ( err.errorContent() );
         } catch ( std::string& err ) { addError ( err ); }
 
         return false;
@@ -469,7 +469,7 @@ namespace gum {
           return true;
 
         } catch ( Exception& err ) {
-          addError ( err.content() );
+          addError ( err.errorContent() );
         } catch ( std::string& err ) { addError ( err ); }
 
         return false;
@@ -491,7 +491,7 @@ namespace gum {
           return true;
 
         } catch ( Exception& err ) {
-          addError ( err.content() );
+          addError ( err.errorContent() );
         } catch ( std::string& err ) { addError ( err ); }
 
         return false;
@@ -615,7 +615,7 @@ namespace gum {
         } catch ( const IOError& err ) {
           if ( m_verbose ) m_log << "Finished with errors." << std::endl;
 
-          addError ( err.content() );
+          addError ( err.errorContent() );
         }
 
         // Add o3prm errors and warnings to o3prmr errors
@@ -627,7 +627,7 @@ namespace gum {
       } catch ( const Exception& err ) {
         if ( m_verbose ) m_log << "Finished with exceptions." << std::endl;
 
-        addError ( err.content() );
+        addError ( err.errorContent() );
         return false;
       }
 
@@ -714,7 +714,7 @@ namespace gum {
 
       } catch ( OperationNotAllowed& ex ) {
         addError ( "someting went wrong when adding evidence " + command->rightValue +
-                   " over " + command->leftValue + " : " + ex.content() );
+                   " over " + command->leftValue + " : " + ex.errorContent() );
         return false;
 
       } catch ( const std::string& msg ) {
@@ -798,7 +798,7 @@ namespace gum {
         if ( m_verbose ) m_log << std::endl;
 
       } catch ( Exception& e ) {
-        throw "something went wrong while infering: " + e.content();
+        throw "something went wrong while infering: " + e.errorContent();
 
       } catch ( const std::string& msg ) {
         addError ( msg );

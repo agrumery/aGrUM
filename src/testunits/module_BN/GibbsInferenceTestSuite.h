@@ -217,7 +217,7 @@ namespace gum_tests {
           const gum::Potential<float>& marginal = inf.marginal( i2 );
           printPotential( marginal );
         } catch ( gum::Exception e ) {
-          std::cerr << e.content() << std::endl;
+          std::cerr << e.errorContent() << std::endl;
           TS_ASSERT( false );
         }
 
@@ -256,7 +256,7 @@ namespace gum_tests {
         try {
           inf.insertEvidence( e_list );
         } catch ( gum::Exception e ) {
-          std::cerr << std::endl << e.content() << std::endl;
+          std::cerr << std::endl << e.errorContent() << std::endl;
           TS_ASSERT( false );
         }
 

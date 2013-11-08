@@ -95,7 +95,6 @@ namespace gum_tests {
       }
 
       void testWriter_ostream_With_Approximation() {
-        typedef gum::GeneralizedCNFWriter<double,gum::LinearApproximationPolicy> typCNF;
         gum::GeneralizedCNFWriter<double,gum::LinearApproximationPolicy> writer;
         writer.setEpsilon( 0.2 );
         writer.setLowLimit( 0 );

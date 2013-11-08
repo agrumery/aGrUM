@@ -64,7 +64,7 @@ namespace gum {
 
   const std::string RangeVariable::toString() const {
     std::stringstream s;
-    s << name() << "[" << min() << "-" << max() << "]";
+    s << name() << "[" << minVal() << "-" << maxVal() << "]";
     return s.str();
   }
 } /* namespace gum */

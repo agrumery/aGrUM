@@ -4,7 +4,7 @@
 #include <agrum/FMDP/IFMDPFactory.h>
 // =====================================================================
 #undef TRY
-#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.type());}
+#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.errorType());}
 // =====================================================================
 
 

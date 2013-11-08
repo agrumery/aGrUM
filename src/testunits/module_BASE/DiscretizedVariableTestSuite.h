@@ -47,7 +47,7 @@ namespace gum_tests {
         v.setDescription( "toto" );
         TS_ASSERT_EQUALS( v.description(), "toto" );
 
-        TS_ASSERT_EQUALS( v.type(),gum::DiscreteVariable::Type::Discretized );
+        TS_ASSERT_EQUALS( v.varType(),gum::DiscreteVariable::VarType::Discretized );
 
         const gum::DiscretizedVariable<int>&  w = v;
         w.setDescription( "Lol" );  // change description does not change a variable

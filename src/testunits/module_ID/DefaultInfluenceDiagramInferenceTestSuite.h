@@ -69,7 +69,7 @@ namespace gum_tests {
           id.addArc( idList[3], idList[5] );
 
         } catch ( gum::Exception& e ) {
-          std::cerr << std::endl << e.content() << std::endl;
+          std::cerr << std::endl << e.errorContent() << std::endl;
           throw ;
         }
       }
@@ -115,7 +115,7 @@ namespace gum_tests {
           }
 
         } catch ( gum::Exception& e ) {
-          std::cerr << std::endl << e.content() << std::endl;
+          std::cerr << std::endl << e.errorContent() << std::endl;
           throw ;
         }
       }
@@ -159,7 +159,7 @@ namespace gum_tests {
           id.addArc( idList[9], idList[8] );
 
         } catch ( gum::Exception& e ) {
-          std::cerr << std::endl << e.content() << std::endl;
+          std::cerr << std::endl << e.errorCallStack() << std::endl;
           throw ;
         }
       }
@@ -259,7 +259,7 @@ namespace gum_tests {
           }
 
         } catch ( gum::Exception& e ) {
-          std::cerr << std::endl << e.content() << std::endl;
+          std::cerr << std::endl << e.errorContent() << std::endl;
           throw ;
         }
       }

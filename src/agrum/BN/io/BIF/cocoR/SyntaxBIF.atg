@@ -4,7 +4,7 @@
 #include <agrum/BN/BayesNetFactory.h>
 
 #undef TRY
-#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.type());}
+#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.errorType());}
 COMPILER BIF
 
 
@@ -135,7 +135,7 @@ PROBA =
                 bool error_on_variable=false;
                .)
   '(' IDENT<var> (.
-                try { factory().variableId(var); } catch (gum::Exception& e) { error_on_variable=true;SemErr(e.type());}
+                try { factory().variableId(var); } catch (gum::Exception& e) { error_on_variable=true;SemErr(e.errorType());}
                 TRY(factory().startParentsDeclaration(var));
                .)
   [ '|' LISTE_PARENTS<parents> ]

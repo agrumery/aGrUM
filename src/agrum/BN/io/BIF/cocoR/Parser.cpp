@@ -172,7 +172,7 @@ void Parser::PROBA() {
 		
 		Expect(17 /* "(" */);
 		IDENT(var);
-		try { factory().variableId(var); } catch (gum::Exception& e) { error_on_variable=true;SemErr(e.type());}
+		try { factory().variableId(var); } catch (gum::Exception& e) { error_on_variable=true;SemErr(e.errorType());}
 		TRY(factory().startParentsDeclaration(var));
 		
 		if (la->kind == 18 /* "|" */) {

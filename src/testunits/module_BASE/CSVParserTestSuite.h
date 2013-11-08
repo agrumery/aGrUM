@@ -162,7 +162,7 @@ namespace gum_tests {
           count=testParseString( "1,\"fjk,dls2,3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
           TS_FAIL( "gum::FatalError should have been thrown" );
         } catch ( gum::SyntaxError& f ) {
-          TS_ASSERT_DIFFERS( f.content().find( "String quote missing",0 ), std::string::npos );
+          TS_ASSERT_DIFFERS( f.errorContent().find( "String quote missing",0 ), std::string::npos );
           TS_ASSERT_EQUALS( f.col(),( gum::Size )2 );
           TS_ASSERT_EQUALS( f.line(),( gum::Size )1 );
         }
@@ -175,7 +175,7 @@ namespace gum_tests {
           count=testParseString( "1,\"fjkdls2\" nothing should be here,3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",res );
           TS_FAIL( "gum::FatalError should have been thrown" );
         } catch ( gum::SyntaxError& f ) {
-          TS_ASSERT_DIFFERS( f.content().find( "Delimiter missing",0 ), std::string::npos );
+          TS_ASSERT_DIFFERS( f.errorContent().find( "Delimiter missing",0 ), std::string::npos );
           TS_ASSERT_EQUALS( f.col(),( gum::Size )12 );
           TS_ASSERT_EQUALS( f.line(),( gum::Size )1 );
         }

@@ -51,7 +51,7 @@ namespace gum {
 
   class DiscreteVariable : public Variable {
     public:
-      enum class Type : char {
+      enum class VarType : char {
         Discretized,
         Labelized,
         Range
@@ -116,9 +116,9 @@ namespace gum {
       virtual const std::string label( Idx indice ) const = 0;
 
 
-      /// returns the type of variable
+      /// returns the varType of variable
 
-      virtual Type type( void ) const =0;
+      virtual VarType varType( void ) const =0;
       /// @}
 
 

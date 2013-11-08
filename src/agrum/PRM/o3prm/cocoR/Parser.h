@@ -45,9 +45,9 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 #undef TRY
 // Redefine try / catch to add a semantic error when errors are raised.
-#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.content()); }
-#define  TRY2(inst,msg) try { inst; } catch (gum::Exception& e) { SemErr(msg+" ("+e.content()+")."); }
-#define  TRY3(inst,msg,error) try { if (!error) {inst;} } catch (gum::Exception& e) { SemErr(msg+" ("+e.content()+")."); error=true; }
+#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.errorContent()); }
+#define  TRY2(inst,msg) try { inst; } catch (gum::Exception& e) { SemErr(msg+" ("+e.errorContent()+")."); }
+#define  TRY3(inst,msg,error) try { if (!error) {inst;} } catch (gum::Exception& e) { SemErr(msg+" ("+e.errorContent()+")."); error=true; }
 
 #include <iostream>
 #include <string>
