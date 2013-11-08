@@ -265,13 +265,13 @@ public:
 //
 //##############################################################################
 
-//=====================
+//________________________
 CHARACTERS
   letter = 'A'..'Z' + 'a'..'z'+ '_' .
   digit  = '0'..'9'.
   eol    = '\n'.
 
-//=====================
+//________________________
 TOKENS
   integer    = ['+'|'-'] digit {digit}.
   float      = ['+'|'-'] digit {digit} '.' digit {digit} [ ('E'|'e') ['+'|'-'] digit {digit} ].
@@ -293,7 +293,7 @@ TOKENS
   LEFT_CAST  = "(".
   RIGHT_CAST = ")".
 
-//=====================
+//________________________
 COMMENTS FROM "/*" TO "*/" NESTED
 COMMENTS FROM "//" TO eol
 
@@ -309,23 +309,23 @@ $checkEOF=false // disable the end of file check
 
 PRODUCTIONS
 
-//=====================
+//________________________
 O3PRM = [Package] {SYNC Import} {SYNC Unit} (. factory().popPackage(); .) .
 
-//=====================
+//________________________
 Package = (. std::string name; .)
     SYNC "package" Ident<name> (. factory().pushPackage(name); __package = name; .)
     SYNC ';' .
 
-//=====================
+//________________________
 Import  =                              (. std::string fileID; .)
     SYNC "import" ImportIdent<fileID>  (. import(fileID); .)
     SYNC ';' .
 
-//=====================
+//________________________
 Unit = Type | Interface | Class | System.
 
-//=====================
+//________________________
 Type = SYNC type word                           (. std::string name, extends, l, s; name = narrow(t->val); .)
        [ extends Ident<extends> ]               (. TRY2(factory().startDiscreteType(name, extends), "Can not create type "+name) .)
        Label<l> [ ':' Label<s> ]                (. TRY2(factory().addLabel(l, s), "Can not add label "+l) .)
@@ -335,7 +335,7 @@ Type = SYNC type word                           (. std::string name, extends, l,
        SYNC ';'                                 (. TRY2(factory().endDiscreteType(), "Can not create type "+name) .)
        .
 
-//=====================
+//________________________
 Interface = SYNC interface word          (. std::string interface, extends; interface = narrow(t->val); .)
     [ extends Ident<extends> ]
     SYNC '{'                             (. TRY2(factory().startInterface(interface, extends), "Can not create interface "+interface) .)
@@ -353,7 +353,7 @@ Interface = SYNC interface word          (. std::string interface, extends; inte
     SYNC '}'                             (. TRY2(factory().endInterface(), "Can not create interface "+interface) .)
     .
 
-//=====================
+//________________________
 Class = class word                             (. std::string c, super; c = narrow(t->val); .)
         [ extends Ident<super> ]               (. gum::Set<std::string> set; .)
         [                                      (. std::string i; .)
@@ -378,7 +378,7 @@ Class = class word                             (. std::string c, super; c = narr
         SYNC '}'                               (. TRY2(factory().endClass(), "Can not create class "+c) .)
         .
 
-//=====================
+//________________________
 RefOrParam<std::string type, std::string name, bool array> =
     IF(isClassOrInterface(type))
         Reference<type, name, array>
@@ -392,7 +392,7 @@ Parameter<std::string type, std::string name> =
     [ default Label<l> ]    (. TRY2(factory().addParameter(type, name, l), "Can not add parameter "+name) .)
     ';'.
 
-//=====================
+//________________________
 Attribute<std::string type, std::string name> =
                                 (. std::string p; bool error = false; .)
                                 (. TRY3(factory().startAttribute(type, name), "Can not create attribute "+name,error) .)
@@ -479,7 +479,7 @@ NumberList<. std::vector<float>& numbers .> =
       } ']'
     ).
 
-//=====================
+//________________________
 System = system word    (. TRY(factory().startSystem(narrow(t->val))) .)
     '{'
     {                   (. std::string l1, r1; .)
@@ -519,7 +519,7 @@ ArrayDecl<std::string l1> = (. std::string r1; std::stringstream sBuff; sBuff <<
         )
     ) .
 
-//=====================
+//________________________
 ImportIdent<std::string& s> =               (. std::stringstream sBuff; .)
                         word                (. sBuff << narrow(t->val); .)
                         {
