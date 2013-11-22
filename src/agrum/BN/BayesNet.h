@@ -253,7 +253,9 @@ namespace gum {
     /** This method uses Shachter's 1986 algorithm for reversing an arc in
      * the Bayes net while preserving the same joint distribution. By
      * performing this reversal, we also add new arcs (required to not alter
-     * the joint distribution) */
+     * the joint distribution)
+     * @throws InvalidArc exception if the arc does not exist or if its reversal
+     * would induce a directed cycle. */
     /// @{
     void reverseArc ( NodeId tail, NodeId head );
     void reverseArc ( const Arc& arc );
