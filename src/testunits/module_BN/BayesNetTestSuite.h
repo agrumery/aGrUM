@@ -734,6 +734,33 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS ( a, b );
       }
+
+    void testArcReversal () {
+      gum::BayesNet<float> bn;
+      gum::List<gum::NodeId> idList;
+      fill ( bn, idList );
+
+      std::vector<float> joint;
+      joint.reserve ( 2 * bn.dim () );
+      gum::Instantiation i;
+      bn.completeInstantiation ( i );
+      for ( i.setFirst (); ! i.end (); i.inc () ) {
+        joint.push_back ( bn.jointProbability ( i ) );
+      }
+ 
+      bn.reverseArc ( 0, 2 );
+      bn.reverseArc ( gum::Arc ( 3, 4 ) );
+      TS_ASSERT_THROWS ( bn.reverseArc ( gum::Arc ( 3, 4 ) ), gum::InvalidArc );
+      TS_ASSERT_THROWS ( bn.reverseArc ( gum::Arc ( 3, 5 ) ), gum::InvalidArc );
+      TS_ASSERT_THROWS ( bn.reverseArc ( gum::Arc ( 2, 4 ) ), gum::InvalidArc );
+      
+      float epsilon = 1e-5;
+      unsigned int j;
+      for ( j=0, i.setFirst (); ! i.end (); i.inc (), ++j ) {
+        TS_ASSERT ( fabs ( bn.jointProbability ( i ) - joint[j] ) <= epsilon );
+      }
+      
+    }
   };
 
 } //tests
