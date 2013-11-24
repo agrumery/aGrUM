@@ -19,10 +19,12 @@
  ***************************************************************************/
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
-#include <list>
+#include "ressources/myalloc.h"
 
+#include <list>
 #include <algorithm>
 #include <vector>
+
 #include <agrum/core/list.h>
 
 
@@ -453,6 +455,31 @@ namespace gum_tests {
       int d12 = iter14 - iter13;
       TS_ASSERT_EQUALS ( d12, 4 );
 
+    }
+
+    void testAllocator () {
+      {
+        gum::List<int, MyAlloc<int> > xlist { 1, 2, 3, 4, 5, 6, 7, 8 };
+      }
+
+      TS_ASSERT ( MyAllocCount::hasMeroryLeak () == false );
+
+      gum::List<int, MyAlloc<int> > xlist { 1, 2, 3, 4, 5, 6, 7, 8 };
+      gum::ListIterator<int> iter = xlist.begin ();
+      gum::ListIterator<int> iter1 ( xlist );
+      gum::ListConstIterator<int> iter2 ( xlist );
+      gum::ListIteratorUnsafe<int> iter3 ( xlist );
+      gum::ListConstIteratorUnsafe<int> iter4 ( xlist );
+
+      unsigned int i;
+      for ( i = 0; iter1 != xlist.end (); ++iter1, ++i ) {}
+      TS_ASSERT ( i == xlist.size () );
+      for ( i = 0; iter2 != xlist.cend (); ++iter2, ++i ) {}
+      TS_ASSERT ( i == xlist.size () );
+      for ( i = 0; iter3 != xlist.endUnsafe (); ++iter3, ++i ) {}
+      TS_ASSERT ( i == xlist.size () );
+      for ( i = 0; iter4 != xlist.cendUnsafe (); ++iter4, ++i ) {}
+      TS_ASSERT ( i == xlist.size () );
     }
 
   private:

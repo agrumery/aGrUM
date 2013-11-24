@@ -971,7 +971,8 @@ namespace gum {
     ListConstIteratorUnsafe() noexcept;
 
     /// constructor for a begin
-    ListConstIteratorUnsafe ( const List<Val>& theList ) noexcept;
+    template<typename Alloc>
+    ListConstIteratorUnsafe ( const List<Val,Alloc>& theList ) noexcept;
 
     /// copy constructor
     /// @{
@@ -1129,7 +1130,8 @@ namespace gum {
     ListIteratorUnsafe() noexcept;
     
     /// constructor for a begin
-    ListIteratorUnsafe ( const List<Val>& theList ) noexcept;
+    template<typename Alloc>
+    ListIteratorUnsafe ( const List<Val,Alloc>& theList ) noexcept;
 
     /// copy constructor
     /// @{
@@ -1250,13 +1252,15 @@ namespace gum {
     ListConstIterator() noexcept;
      
     /// constructor for a begin
-    ListConstIterator ( const List<Val>& theList );
+    template<typename Alloc>
+    ListConstIterator ( const List<Val,Alloc>& theList );
      
     /// copy constructor
     ListConstIterator ( const ListConstIterator<Val>& src );
 
     /// Constructor for an iterator pointing to the \e ind_eltth element of a List
-    ListConstIterator ( const List<Val>& theList, unsigned int ind_elt );
+    template<typename Alloc>
+    ListConstIterator ( const List<Val,Alloc>& theList, unsigned int ind_elt );
 
     /// move constructor
     ListConstIterator ( ListConstIterator<Val>&& src );
@@ -1356,7 +1360,7 @@ namespace gum {
     friend class ListConstIteratorUnsafe<Val>;
 
     /// the list the iterator is pointing to
-    const List<Val> *__list {nullptr};
+    const List< Val,std::allocator<Val> > *__list {nullptr};
 
     /// the bucket in the chained list pointed to by the iterator
     ListBucket<Val> *__bucket {nullptr};
@@ -1460,13 +1464,15 @@ namespace gum {
     ListIterator() noexcept;
 
     /// constructor for a begin
-    ListIterator ( const List<Val>& theList );
+    template<typename Alloc>
+    ListIterator ( const List<Val,Alloc>& theList );
 
     /// copy constructor
     ListIterator ( const ListIterator<Val>& src );
 
     /// Constructor for an iterator pointing to the \e ind_eltth element of a List
-    ListIterator ( const List<Val>& theList, unsigned int ind_elt );
+    template<typename Alloc>
+    ListIterator ( const List<Val,Alloc>& theList, unsigned int ind_elt );
 
     /// move constructor
     ListIterator ( ListIterator<Val>&& src );
@@ -1561,12 +1567,14 @@ namespace gum {
 #include <agrum/core/list.tcc>
 
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 // to optimize compile-link time, provide the usual lists
 namespace gum {
   extern template class List<bool>;
   extern template class List<int>;
   extern template class List<unsigned int>;
 } /* namespace gum */
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 
 #endif  /* GUM_LIST_H */
