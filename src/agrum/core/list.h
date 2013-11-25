@@ -301,17 +301,7 @@ namespace gum {
    * ListIterator are as efficient as their STL counterparts. However, this
    * guarrantee can hold only if List is aware of all of the iterators pointing
    * to it: thus, when List erases one element, it can parse the list of its
-   * iterators and update those that point toward the now deleted element. Making
-   * each List have its own list of iterators would be very inefficient in some
-   * cases because it would consume too much memory. For instance, in ArcList, to
-   * each node is associated a list of parents and a list of children. For a 1000
-   * nodes graph, this would require 2000 List iterators lists. Now, it is
-   * certainly the case that no more than 10 to 20 iterators will be used at the
-   * same time on a given ArcList. Hence, most of the List iterators lists would be
-   * empty (but even an empty list requires a few bytes). In this case, a more
-   * efficient approach would be that several List share the same iterator's list.
-   * This is precisely what is done in aGrUM. This explains why some constructors
-   * enable the user to specify which iterator's list will be used by the List.
+   * iterators and update those that point toward the now deleted element.
    *
    * @par Usage example:
    * @code
@@ -362,9 +352,24 @@ namespace gum {
    * for (List<int>::iterator iter = list2.rbegin(); iter != list2.rend(); --iter)
    *   cerr << *iter << endl;
    *
+   * for (List<int>::const_iterator iter = list2.cbegin(); iter != list2.cend(); ++iter)
+   *   cerr << *iter << endl;
+   * for (List<int>::const_iterator iter = list2.crbegin(); iter != list2.crend(); --iter)
+   *   cerr << *iter << endl;
+   * for (List<int>::iterator_unsafe iter = list2.beginUnsafe(); iter != list2.endUnsafe(); ++iter)
+   *   cerr << *iter << endl;
+   * for (List<int>::iterator_unsafe iter = list2.rbeginUnsafe(); iter != list2.rendUnsafe(); --iter)
+   *   cerr << *iter << endl;
+   * for (List<int>::const_iterator_unsafe iter = list2.cbeginUnsafe(); iter != list2.cendUnsafe(); ++iter)
+   *   cerr << *iter << endl;
+   * for (List<int>::const_iterator_unsafe iter = list2.crbeginUnsafe(); iter != list2.crendUnsafe(); --iter)
+   *   cerr << *iter << endl;
+   *
    * // use an iterator to point the element we wish to erase
    * List<int>::iterator iter = list2.begin();
    * List2.erase ( iter );
+   * List<int>::iterator iter2 = list2.begin() + 4; // 5th element of the list
+   * iter2 = iter + 4;
    *
    * // map a list into another list (assuming function f is defined as
    * // float f (int x) { return (2.5 * x); } )
