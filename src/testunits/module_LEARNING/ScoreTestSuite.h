@@ -20,10 +20,10 @@
 
 #include <iostream>
 #include <cxxtest/AgrumTestSuite.h>
+#include <testsuite_utils.h>
+
 #include <agrum/learning/database.h>
 #include <agrum/learning/scoreBIC.h>
-
-#include "testsuite_utils.h"
 
 namespace gum_tests {
 
@@ -31,7 +31,7 @@ namespace gum_tests {
   public:
     void test_unlimited () {
       gum::Database database =
-        gum::Database::createFromCSV ( GET_PATH_STR( asia.csv ), ',' );
+        gum::Database::createFromCSV ( GET_PATH_STR( "asia.csv" ), ',' );
       gum::learning::ScoreBIC score ( database );
 
       std::vector<unsigned int> db_conditioning_ids;
@@ -44,7 +44,6 @@ namespace gum_tests {
 
       TS_ASSERT ( fabs ( score.score ( 3 ) + 994.953  ) <= 0.01 );
       TS_ASSERT ( fabs ( score.score ( 1 ) + 3029.892 ) <= 0.01 );
-
 
       db_single_target_ids[0] = 0;
       db_single_target_ids[1] = 2;
@@ -231,7 +230,6 @@ namespace gum_tests {
       TS_ASSERT ( fabs ( score.score ( p23 ) + 1001.338 ) <= 0.01 );
       TS_ASSERT ( fabs ( score.score ( p32 ) + 9942.504 ) <= 0.01 );
       TS_ASSERT ( fabs ( score.score ( p01 ) + 2691.927 ) <= 0.01 );
-
     }
 
 

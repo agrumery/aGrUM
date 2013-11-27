@@ -20,10 +20,11 @@
 
 #include <iostream>
 #include <cxxtest/AgrumTestSuite.h>
+#include <testsuite_utils.h>
+
 #include <agrum/learning/database.h>
 #include <agrum/learning/countingTree.h>
 
-#include "testsuite_utils.h"
 
 
 namespace gum_tests {
@@ -34,7 +35,7 @@ namespace gum_tests {
     void test_unconditional () {
       // read the database and create an empty tree
       gum::Database database =
-        gum::Database::createFromCSV ( GET_PATH_STR( asia.csv ), ',' );
+        gum::Database::createFromCSV ( GET_PATH_STR( "asia.csv" ), ',' );
       gum::learning::CountingTree tree ( database );
 
       std::vector<unsigned int> db_conditioning_ids;
@@ -53,7 +54,7 @@ namespace gum_tests {
       TS_ASSERT ( tree.targetIndex ( 1 ) == 1 );
 
       // check the records
-      const gum::ListBase<gum::learning::CountingTreeTargetSetBox*>&
+      const gum::List<gum::learning::CountingTreeTargetSetBox*>&
         rec1 = tree.nbRecords ();
       TS_ASSERT ( rec1.size () == 1 );
       gum::learning::CountingTreeTargetSetBox* boxset1 = rec1.front ();
@@ -85,7 +86,7 @@ namespace gum_tests {
       TS_ASSERT ( tree.targetIndex ( 2 ) == 1 );
 
       // check the records
-      const gum::ListBase<gum::learning::CountingTreeTargetSetBox*>&
+      const gum::List<gum::learning::CountingTreeTargetSetBox*>&
         rec2 = tree.nbRecords ();
       TS_ASSERT ( rec2.size () == 1 );
       gum::learning::CountingTreeTargetSetBox* boxset2 = rec2.front ();
@@ -124,7 +125,7 @@ namespace gum_tests {
       TS_ASSERT ( tree.targetIndex ( 2 ) == 4 );
 
       // check the records
-      const gum::ListBase<gum::learning::CountingTreeTargetSetBox*>&
+      const gum::List<gum::learning::CountingTreeTargetSetBox*>&
         rec3 = tree.nbRecords ();
       TS_ASSERT ( rec3.size () == 1 );
       gum::learning::CountingTreeTargetSetBox* boxset3 = rec3.front ();
@@ -183,7 +184,7 @@ namespace gum_tests {
       TS_ASSERT ( tree.targetIndex ( 2 ) == 4 );
 
       // check the records
-      const gum::ListBase<gum::learning::CountingTreeTargetSetBox*>&
+      const gum::List<gum::learning::CountingTreeTargetSetBox*>&
         recc3 = tree.nbRecords ();
       TS_ASSERT ( recc3.size () == 1 );
       gum::learning::CountingTreeTargetSetBox* boxsetc3 = recc3.front ();
@@ -237,7 +238,7 @@ namespace gum_tests {
    void test_conditional () {
       // read the database and create an empty tree
       gum::Database database =
-        gum::Database::createFromCSV ( GET_PATH_STR( asia.csv ), ',' );
+        gum::Database::createFromCSV ( GET_PATH_STR( "asia.csv" ), ',' );
       gum::learning::CountingTree tree ( database );
 
       std::vector<unsigned int> db_conditioning_ids;
@@ -257,7 +258,7 @@ namespace gum_tests {
       TS_ASSERT ( tree.targetIndex ( 1 ) == 1 );
 
       // check the records
-      const gum::ListBase<gum::learning::CountingTreeTargetSetBox*>&
+      const gum::List<gum::learning::CountingTreeTargetSetBox*>&
         rec1 = tree.nbRecords ();
       TS_ASSERT ( rec1.size () == 2 );
       gum::learning::CountingTreeTargetSetBox* boxset1 = rec1[0];
@@ -305,7 +306,7 @@ namespace gum_tests {
       TS_ASSERT ( tree.targetIndex ( 1 ) == 1 );
 
       // check the records
-      const gum::ListBase<gum::learning::CountingTreeTargetSetBox*>&
+      const gum::List<gum::learning::CountingTreeTargetSetBox*>&
         recq2 = tree.nbRecords ();
       TS_ASSERT ( recq2.size () == 2 );
       boxset1 = recq2[0];
@@ -361,7 +362,7 @@ namespace gum_tests {
       TS_ASSERT ( tree.targetIndex ( 1 ) == 4 );
 
       // check the records
-      const gum::ListBase<gum::learning::CountingTreeTargetSetBox*>&
+      const gum::List<gum::learning::CountingTreeTargetSetBox*>&
         prec3 = tree.nbRecords ();
       TS_ASSERT ( prec3.size () == 2 );
       boxset1 = prec3[0];
@@ -421,7 +422,7 @@ namespace gum_tests {
       TS_ASSERT ( tree.targetIndex ( 1 ) == 4 );
 
       // check the records
-      const gum::ListBase<gum::learning::CountingTreeTargetSetBox*>&
+      const gum::List<gum::learning::CountingTreeTargetSetBox*>&
         pprec3 = tree.nbRecords ();
       TS_ASSERT ( pprec3.size () == 2 );
       boxset1 = pprec3[0];
@@ -482,7 +483,7 @@ namespace gum_tests {
       TS_ASSERT ( tree.targetIndex ( 1 ) == 4 );
 
       // check the records
-      const gum::ListBase<gum::learning::CountingTreeTargetSetBox*>&
+      const gum::List<gum::learning::CountingTreeTargetSetBox*>&
         ppprec3 = tree.nbRecords ();
       TS_ASSERT ( ppprec3.size () == 2 );
       boxset1 = ppprec3[0];
@@ -536,7 +537,7 @@ namespace gum_tests {
    void test_conditional2 () {
       // read the database and create an empty tree
       gum::Database database =
-        gum::Database::createFromCSV ( GET_PATH_STR( asia.csv ), ',' );
+        gum::Database::createFromCSV ( GET_PATH_STR( "asia.csv" ), ',' );
       gum::learning::CountingTree tree ( database );
 
       std::vector<unsigned int> db_conditioning_ids;
@@ -556,7 +557,7 @@ namespace gum_tests {
       TS_ASSERT ( tree.targetIndex ( 1 ) == 1 );
 
       // check the records
-      const gum::ListBase<gum::learning::CountingTreeTargetSetBox*>&
+      const gum::List<gum::learning::CountingTreeTargetSetBox*>&
         rec1 = tree.nbRecords ();
       TS_ASSERT ( rec1.size () == 2 );
       gum::learning::CountingTreeTargetSetBox* boxset1 = rec1[0];
@@ -610,7 +611,7 @@ namespace gum_tests {
       TS_ASSERT ( tree.targetIndex ( 0 ) == 0 );
 
       // check the records
-      const gum::ListBase<gum::learning::CountingTreeTargetSetBox*>&
+      const gum::List<gum::learning::CountingTreeTargetSetBox*>&
         recq2 = tree.nbRecords ();
       TS_ASSERT ( recq2.size () == 4 );
       boxset1 = recq2[0];
@@ -671,7 +672,7 @@ namespace gum_tests {
       TS_ASSERT ( tree.targetIndex ( 4 ) == 4 );
 
       // check the records
-      const gum::ListBase<gum::learning::CountingTreeTargetSetBox*>&
+      const gum::List<gum::learning::CountingTreeTargetSetBox*>&
         hrec3 = tree.nbRecords ();
       TS_ASSERT ( hrec3.size () == 4 );
       boxset1 = hrec3[0];
@@ -867,7 +868,7 @@ namespace gum_tests {
       TS_ASSERT ( tree.targetIndex ( 4 ) == 4 );
 
       // check the records
-      const gum::ListBase<gum::learning::CountingTreeTargetSetBox*>&
+      const gum::List<gum::learning::CountingTreeTargetSetBox*>&
         chrec3 = tree.nbRecords ();
       TS_ASSERT ( chrec3.size () == 4 );
       boxset1 = chrec3[0];
