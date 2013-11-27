@@ -208,7 +208,7 @@ namespace gum {
       bool __final_level;
       
       /// the pool of boxes used for the creations/deletions of boxes
-      static gum::ListBase<CountingTreeConditioningBox*> __pool;
+      static gum::List<CountingTreeConditioningBox*> __pool;
 
       /// the maximal size of the pool (number of boxes)
       static unsigned int __pool_max_size;
@@ -430,7 +430,7 @@ namespace gum {
       unsigned int __nb_parent_records;
 
       /// the pool of boxes
-      static gum::ListBase<CountingTreeTargetSetBox*> __pool;
+      static gum::List<CountingTreeTargetSetBox*> __pool;
 
       /// the maximal size of the pool
       static unsigned int __pool_max_size;
@@ -579,7 +579,7 @@ namespace gum {
       std::vector<unsigned int> __nb_records;
       
       /// the pool of boxes
-      static gum::ListBase<CountingTreeTargetBox*> __pool;
+      static gum::List<CountingTreeTargetBox*> __pool;
 
       /// the maximal size of the pool
       static unsigned int __pool_max_size;

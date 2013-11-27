@@ -47,12 +47,9 @@ namespace gum {
 
     
     /// the pools of boxes
-    gum::ListBase<CountingTreeConditioningBox*>
-    CountingTreeConditioningBox::__pool;
-    gum::ListBase<CountingTreeTargetSetBox*>
-    CountingTreeTargetSetBox::__pool;
-    gum::ListBase<CountingTreeTargetBox*>
-    CountingTreeTargetBox::__pool;
+    gum::List<CountingTreeConditioningBox*> CountingTreeConditioningBox::__pool;
+    gum::List<CountingTreeTargetSetBox*> CountingTreeTargetSetBox::__pool;
+    gum::List<CountingTreeTargetBox*> CountingTreeTargetBox::__pool;
 
 
     /// the maximal size of the pools
