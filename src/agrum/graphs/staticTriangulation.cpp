@@ -35,12 +35,12 @@
 namespace gum {
 
 
-  // ==============================================================================
+
   /// default constructor
-  // ==============================================================================
+
   StaticTriangulation::StaticTriangulation
   ( const UndiGraph* theGraph,
-    const Property<unsigned int>::onNodes* modal,
+    const NodeProperty<Size>* modal,
     const EliminationSequenceStrategy& elimSeq,
     const JunctionTreeStrategy& JTStrategy,
     bool minimality ) :
@@ -59,7 +59,7 @@ namespace gum {
     // for debugging purposes
     GUM_CONSTRUCTOR ( StaticTriangulation );
 
-    _modalities= *modal ;
+    _modalities = *modal ;
 
     // if the graph is not empty, resize several structures in order to speed-up
     // their fillings.
@@ -76,9 +76,9 @@ namespace gum {
   }
 
 
-  // ==============================================================================
+
   /// default constructor
-  // ==============================================================================
+
   StaticTriangulation::StaticTriangulation
   ( const EliminationSequenceStrategy& elimSeq,
     const JunctionTreeStrategy& JTStrategy,
@@ -103,9 +103,9 @@ namespace gum {
   }
 
 
-  // ==============================================================================
+
   /// destructor
-  // ==============================================================================
+
   StaticTriangulation::~StaticTriangulation() {
     // for debugging purposes
     GUM_DESTRUCTOR ( StaticTriangulation );
@@ -114,19 +114,19 @@ namespace gum {
   }
 
 
-  // ==============================================================================
+
   /// reinitialize the graph to be triangulated to an empty graph
-  // ==============================================================================
+
   void StaticTriangulation::clear() {
     // clear the factories
-    _elimination_sequence_strategy->clear ();
-    _junction_tree_strategy->clear ();
+    _elimination_sequence_strategy->clear();
+    _junction_tree_strategy->clear();
 
     // remove the current graphs
     __original_graph = 0;
     _modalities.clear();
     __junction_tree = 0;
-    __triangulated_graph.clear ();
+    __triangulated_graph.clear();
     __elim_tree.clear();
     __max_prime_junction_tree.clear();
     __elim_cliques.clear();
@@ -148,9 +148,9 @@ namespace gum {
   }
 
 
-  // ==============================================================================
+
   /// removes redondant fill-ins and compute proper elimination cliques and order
-  // ==============================================================================
+
   void StaticTriangulation::__computeRecursiveThinning() {
     // apply recursive thinning (fmint, see Kjaerulff (90), "triangulation of
     // graphs - algorithms giving small total state space")
@@ -158,11 +158,10 @@ namespace gum {
     bool incomplete;
     std::vector<NodeId> adj;
     EdgeSet T_prime;
-    Property<unsigned int>::onNodes R ( __triangulated_graph.size() );
+    NodeProperty<unsigned int> R ( __triangulated_graph.size() );
 
-    for ( UndiGraph::NodeIterator iter = __triangulated_graph.beginNodes();
-          iter != __triangulated_graph.endNodes(); ++iter )
-      R.insert ( *iter, 0 );
+    for ( const auto node : __triangulated_graph.nodes() )
+      R.insert ( node, 0 );
 
     // the FMINT loop
     for ( unsigned int i = __added_fill_ins.size() - 1;
@@ -212,7 +211,7 @@ namespace gum {
 
             for ( NodeSetIterator iter_adj = nei.begin();
                   iter_adj != nei.end(); ++iter_adj ) {
-              if ( __triangulated_graph.existsEdge ( node2,*iter_adj ) )
+              if ( __triangulated_graph.existsEdge ( node2, *iter_adj ) )
                 adj.push_back ( *iter_adj );
             }
 
@@ -304,9 +303,9 @@ namespace gum {
   }
 
 
-  // ==============================================================================
+
   /// returns an elimination tree from a triangulated graph
-  // ==============================================================================
+
   void StaticTriangulation::__computeEliminationTree() {
     // if there already exists an elimination tree, no need to compute it again
     if ( __has_elimination_tree ) return;
@@ -346,9 +345,9 @@ namespace gum {
   }
 
 
-  // ==============================================================================
+
   /// used for computing the junction tree of the maximal prime subgraphs
-  // ==============================================================================
+
   void StaticTriangulation::__computeMaxPrimeMergings
   ( const NodeId node, const NodeId from,
     std::vector<Arc>& merged_cliques,
@@ -388,9 +387,9 @@ namespace gum {
     }
   }
 
-  // ==============================================================================
+
   /// computes the junction tree of the maximal prime subgraphs
-  // ==============================================================================
+
   void StaticTriangulation::__computeMaxPrimeJunctionTree() {
     // if there already exists a max prime junction tree, no need to recompute it
     if ( __has_max_prime_junction_tree ) return;
@@ -403,11 +402,10 @@ namespace gum {
     // complete in the original graph, then the two cliques must be merged.
     // Create a hashtable indicating which clique has been absorbed by some other
     // clique.
-    Property<NodeId>::onNodes T_mpd_cliques ( __junction_tree->size() );
+    NodeProperty<NodeId> T_mpd_cliques ( __junction_tree->size() );
 
-    for ( CliqueGraph::NodeIterator iter_clique = __junction_tree->beginNodes();
-          iter_clique != __junction_tree->endNodes(); ++iter_clique )
-      T_mpd_cliques.insert ( *iter_clique, *iter_clique );
+    for ( const auto cliq : __junction_tree->nodes() )
+      T_mpd_cliques.insert ( cliq, cliq );
 
     // parse all the separators of the junction tree and test those that are not
     // complete in the orginal graph
@@ -415,11 +413,9 @@ namespace gum {
 
     NodeSet mark;
 
-    for ( CliqueGraph::NodeIterator iter_clique = __junction_tree->beginNodes();
-          iter_clique != __junction_tree->endNodes(); ++iter_clique )
-      if ( ! mark.contains ( *iter_clique ) )
-        __computeMaxPrimeMergings ( *iter_clique, *iter_clique,
-                                    merged_cliques, mark );
+    for ( const auto cliq : __junction_tree->nodes() )
+      if ( ! mark.contains ( cliq ) )
+        __computeMaxPrimeMergings ( cliq, cliq, merged_cliques, mark );
 
     // compute the transitive closure of merged_cliques. This one will contain
     // pairs (X,Y) indicating that clique X must be merged with clique Y.
@@ -430,7 +426,7 @@ namespace gum {
     }
 
     // now we can create the max prime junction tree. First, create the cliques
-    for ( Property< NodeId >::onNodes::const_iterator iter_clique =
+    for ( NodeProperty< NodeId >::const_iterator iter_clique =
             T_mpd_cliques.begin();
           iter_clique != T_mpd_cliques.end(); ++iter_clique ) {
       if ( iter_clique.key() == *iter_clique ) {
@@ -441,7 +437,7 @@ namespace gum {
 
     // add to the cliques previously created the nodes of the cliques that were
     // merged into them
-    for ( Property< NodeId >::onNodes::const_iterator  iter =
+    for ( NodeProperty< NodeId >::const_iterator  iter =
             T_mpd_cliques.begin(); iter != T_mpd_cliques.end(); ++iter ) {
       if ( iter.key() != *iter ) {
         const NodeSet& new_clique = __junction_tree->clique ( iter.key() );
@@ -456,10 +452,9 @@ namespace gum {
     }
 
     // add the edges to the graph
-    for ( CliqueGraph::EdgeIterator iter_edge = __junction_tree->beginEdges();
-          iter_edge != __junction_tree->endEdges(); ++iter_edge ) {
-      NodeId node1 = T_mpd_cliques[iter_edge->first()];
-      NodeId node2 = T_mpd_cliques[iter_edge->second()];
+    for ( const auto & edge : __junction_tree->edges() ) {
+      NodeId node1 = T_mpd_cliques[edge.first()];
+      NodeId node2 = T_mpd_cliques[edge.second()];
 
       if ( node1 != node2 ) {
         try {
@@ -470,10 +465,10 @@ namespace gum {
 
     // compute for each node which clique of the max prime junction tree was
     // created by the elimination of the node
-    const Property<NodeId>::onNodes& node_2_junction_clique =
-      _junction_tree_strategy->createdCliques ();
+    const NodeProperty<NodeId>& node_2_junction_clique =
+      _junction_tree_strategy->createdCliques();
 
-    for ( Property< NodeId >::onNodes::const_iterator iter_junction =
+    for ( NodeProperty< NodeId >::const_iterator iter_junction =
             node_2_junction_clique.begin();
           iter_junction != node_2_junction_clique.end(); ++iter_junction )
       __node_2_max_prime_clique.insert ( iter_junction.key(),
@@ -483,9 +478,9 @@ namespace gum {
   }
 
 
-  // ==============================================================================
+
   /// returns the triangulated graph
-  // ==============================================================================
+
   const UndiGraph&
   StaticTriangulation::triangulatedGraph() {
     if ( !__has_triangulation )  __triangulate();
@@ -502,10 +497,9 @@ namespace gum {
       // parse all the cliques of the junction tree
       NodeSetIterator iter_clique2;
 
-      for ( CliqueGraph::NodeIterator iter_node = __junction_tree->beginNodes();
-            iter_node != __junction_tree->endNodes(); ++iter_node ) {
+      for ( const auto node : __junction_tree->nodes() ) {
         // for each clique, add the edges necessary to make it complete
-        const NodeSet& clique = __junction_tree->clique ( *iter_node );
+        const NodeSet& clique = __junction_tree->clique ( node );
         std::vector<NodeId> clique_nodes ( clique.size() );
         unsigned int i = 0;
 
@@ -514,7 +508,7 @@ namespace gum {
           clique_nodes[i] = *iter_clique;
 
         for ( i = 0; i < clique_nodes.size(); ++i ) {
-          for ( unsigned int j = i+1; j < clique_nodes.size(); ++j ) {
+          for ( unsigned int j = i + 1; j < clique_nodes.size(); ++j ) {
             try {
               __triangulated_graph.insertEdge ( clique_nodes[i],
                                                 clique_nodes[j] );
@@ -530,15 +524,14 @@ namespace gum {
   }
 
 
-  // ==============================================================================
-  /** initialize the triangulation algorithm for a new graph
-   * @param gt the new @ref UndiGraph 
-   * @param modat the @ref Property giving the number of modalities for each node in the graph
+
+  /* initialize the triangulation algorithm for a new graph
+   * @param gr the new @ref UndiGraph
+   * @param modal the @ref Property giving the number of modalities for each node in the graph
    */
-  // ==============================================================================
   void StaticTriangulation::_setGraph
   ( const UndiGraph* gr,
-    const Property<unsigned int>::onNodes* modal ) {
+    const NodeProperty<Size>* modal ) {
     // remove the old graph
     clear();
 
@@ -564,9 +557,9 @@ namespace gum {
     __has_fill_ins = false;
   }
 
-  // ==============================================================================
+
   /// the function that performs the triangulation
-  // ==============================================================================
+
   void StaticTriangulation::__triangulate() {
     // if the graph is already triangulated, no need to triangulate it again
     if ( __has_triangulation ) return;
@@ -590,7 +583,7 @@ namespace gum {
     NodeId removable_node = 0;
 
     for ( unsigned int nb_elim = 0; tmp_graph.size() != 0; ++nb_elim ) {
-      removable_node = _elimination_sequence_strategy->nextNodeToEliminate ();
+      removable_node = _elimination_sequence_strategy->nextNodeToEliminate();
 
       // when minimality is not required, i.e., we won't apply recursive thinning,
       // the cliques sets can be computed
@@ -633,7 +626,7 @@ namespace gum {
       // if we want fill-ins but the elimination sequence strategy does not
       // compute them, we shall compute them here
       if ( __we_want_fill_ins &&
-           ! _elimination_sequence_strategy->providesFillIns () ) {
+           ! _elimination_sequence_strategy->providesFillIns() ) {
         NodeSetIterator iter_edges2;
         NodeId node1, node2;
 
@@ -665,7 +658,7 @@ namespace gum {
       // the nodes in the graph)
       _elimination_sequence_strategy->eliminationUpdate ( removable_node );
 
-      if ( ! _elimination_sequence_strategy->providesGraphUpdate () ) {
+      if ( ! _elimination_sequence_strategy->providesGraphUpdate() ) {
         NodeSetIterator iter_edges2;
         NodeId node1, node2;
 
@@ -705,9 +698,9 @@ namespace gum {
   }
 
 
-  // ==============================================================================
+
   /// returns the fill-ins added by the triangulation algorithm
-  // ==============================================================================
+
   const EdgeSet& StaticTriangulation::fillIns() {
     // if we did not compute the triangulation yet, do it and commpute
     // the fill-ins at the same time
@@ -736,10 +729,9 @@ namespace gum {
       // parse all the cliques of the junction tree
       NodeSetIterator iter_clique2;
 
-      for ( CliqueGraph::NodeIterator iter_node = __junction_tree->beginNodes();
-            iter_node != __junction_tree->endNodes(); ++iter_node ) {
+      for ( const auto node : __junction_tree->nodes() ) {
         // for each clique, add the edges necessary to make it complete
-        const NodeSet& clique = __junction_tree->clique ( *iter_node );
+        const NodeSet& clique = __junction_tree->clique ( node );
         std::vector<NodeId> clique_nodes ( clique.size() );
         unsigned int i = 0;
 
@@ -748,8 +740,8 @@ namespace gum {
           clique_nodes[i] = *iter_clique;
 
         for ( i = 0; i < clique_nodes.size(); ++i ) {
-          for ( unsigned int j = i+1; j < clique_nodes.size(); ++j ) {
-            Edge edge ( clique_nodes[i],clique_nodes[j] );
+          for ( unsigned int j = i + 1; j < clique_nodes.size(); ++j ) {
+            Edge edge ( clique_nodes[i], clique_nodes[j] );
 
             if ( ! __original_graph->existsEdge ( edge ) ) {
               try { __fill_ins.insert ( edge ); }

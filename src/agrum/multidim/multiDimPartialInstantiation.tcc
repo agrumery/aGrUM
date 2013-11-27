@@ -34,7 +34,7 @@ namespace gum {
 
   /// constructor
   template< typename GUM_SCALAR, template<typename> class TABLE >
-  MultiDimPartialInstantiation<GUM_SCALAR,TABLE>::MultiDimPartialInstantiation () {
+  MultiDimPartialInstantiation<GUM_SCALAR,TABLE>::MultiDimPartialInstantiation() {
     /// for debugging purposes
     GUM_CONSTRUCTOR( MultiDimPartialInstantiation );
   }
@@ -64,7 +64,7 @@ namespace gum {
     return new MultiDimPartialInstantiation<GUM_SCALAR,TABLE> ( *this );
   }
 
-  
+
   /// copy operator
   template< typename GUM_SCALAR, template<typename> class TABLE >
   MultiDimPartialInstantiation<GUM_SCALAR,TABLE>&
@@ -79,9 +79,9 @@ namespace gum {
   TABLE<GUM_SCALAR>*
   MultiDimPartialInstantiation<GUM_SCALAR,TABLE>::instantiate
   ( const TABLE<GUM_SCALAR>& table,
-    const HashTable<const DiscreteVariable *,Idx>& inst_vars ) {
+    const HashTable<const DiscreteVariable*,Idx>& inst_vars ) {
     MultiDimImplementation<GUM_SCALAR>* new_impl =
-      partialInstantiation ( table, inst_vars );
+      partialInstantiation( table, inst_vars );
     return new TABLE<GUM_SCALAR> ( new_impl );
   }
 
@@ -91,9 +91,9 @@ namespace gum {
   MultiDimPartialInstantiation<GUM_SCALAR,TABLE>::instantiate
   ( TABLE<GUM_SCALAR>& container,
     const TABLE<GUM_SCALAR>& table,
-    const HashTable<const DiscreteVariable *,Idx>& inst_vars ) {
+    const HashTable<const DiscreteVariable*,Idx>& inst_vars ) {
     MultiDimImplementation<GUM_SCALAR>* new_impl =
-      partialInstantiation ( table, inst_vars );
+      partialInstantiation( table, inst_vars );
     container = *new_impl;
     delete new_impl;
   }

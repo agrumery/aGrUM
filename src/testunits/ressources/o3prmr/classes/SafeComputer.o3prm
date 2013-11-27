@@ -27,20 +27,20 @@ package classes;
 import classes.Printer;
 
 class SafeComputer implements Equipment {
-  Room room;
-  Printer[] printers;
-  boolean functional_printer = exists(printers.(classes.t_state)equipState, OK);
-  boolean degraded_printer = exists(printers.(classes.t_degraded)equipState, Degraded);
-  boolean working_printer = exists([functional_printer, degraded_printer], true);
-  t_degraded equipState dependson room.power.(classes.t_state)state {
-    OK:  0.90, 0.09, 0.01;
-    NOK: 0.00, 1.00, 0.00;
-  };
-  boolean can_print dependson equipState, working_printer {
-    // working_printer |              false                 | |              true             |
-    // equipState           | OK | Dysfunctional | Degraded | | OK | Dysfunctional | Degraded |
-    /* false */        [1.00,    1.00,         1.00,      1.00,     0.00,         0.00,
-    /* true  */         0.00,    0.00,         0.00,      0.00,     1.00,         1.00]
-  };
+    Room room;
+    Printer[] printers;
+    boolean functional_printer = exists( printers.( classes.t_state )equipState, OK );
+    boolean degraded_printer = exists( printers.( classes.t_degraded )equipState, Degraded );
+    boolean working_printer = exists( [functional_printer, degraded_printer], true );
+    t_degraded equipState dependson room.power.( classes.t_state )state {
+      OK:  0.90, 0.09, 0.01;
+      NOK: 0.00, 1.00, 0.00;
+    };
+    boolean can_print dependson equipState, working_printer {
+      // working_printer |              false                 | |              true             |
+      // equipState           | OK | Dysfunctional | Degraded | | OK | Dysfunctional | Degraded |
+      /* false */        [1.00,    1.00,         1.00,      1.00,     0.00,         0.00,
+      /* true  */         0.00,    0.00,         0.00,      0.00,     1.00,         1.00]
+    };
 }
 

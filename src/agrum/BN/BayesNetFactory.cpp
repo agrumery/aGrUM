@@ -21,8 +21,10 @@
  * @file
  * @brief Implementation of the BayesNetFactory class.
  *
- * @author Lionel Torti
+ * @author Lionel TORTI  and Pierre-Henri WUILLEMIN
  */
-// ============================================================================
+
 #include <agrum/BN/BayesNetFactory.h>
-// ============================================================================
+
+template class gum::BayesNetFactory<float>;
+template class gum::BayesNetFactory<double>;

@@ -27,90 +27,92 @@
 #include<agrum/multidim/aggregators/multiDimAggregator.h>
 
 namespace gum {
-  // ==============================================================================
-  /// Default constructor
-  // ==============================================================================
-  template<typename GUM_SCALAR> INLINE
-  MultiDimAggregator<GUM_SCALAR>::MultiDimAggregator(): MultiDimReadOnly<GUM_SCALAR>() {
-    GUM_CONSTRUCTOR( MultiDimAggregator ) ;
-  }
+  namespace aggregator {
+    /// Default constructor
 
-// ==============================================================================
+    template<typename GUM_SCALAR> INLINE
+    MultiDimAggregator<GUM_SCALAR>::MultiDimAggregator() : MultiDimReadOnly<GUM_SCALAR>() {
+      GUM_CONSTRUCTOR ( MultiDimAggregator ) ;
+    }
+
+
 /// Default constructor
-// ==============================================================================
-  template<typename GUM_SCALAR> INLINE
-  MultiDimAggregator<GUM_SCALAR>::MultiDimAggregator( const MultiDimAggregator<GUM_SCALAR>& from ) : MultiDimReadOnly<GUM_SCALAR>( from ) {
-    GUM_CONS_CPY( MultiDimAggregator );
-  }
 
-// ==============================================================================
+    template<typename GUM_SCALAR> INLINE
+    MultiDimAggregator<GUM_SCALAR>::MultiDimAggregator ( const MultiDimAggregator<GUM_SCALAR>& from ) : MultiDimReadOnly<GUM_SCALAR> ( from ) {
+      GUM_CONS_CPY ( MultiDimAggregator );
+    }
+
+
 /// destructor
-// ==============================================================================
-  template<typename GUM_SCALAR> INLINE
-  MultiDimAggregator<GUM_SCALAR>::~MultiDimAggregator() {
-    GUM_DESTRUCTOR( MultiDimAggregator );
-  }
 
-  template<typename GUM_SCALAR>
-  GUM_SCALAR MultiDimAggregator<GUM_SCALAR>::get( const Instantiation& i ) const {
-    if( this->nbrDim() < 2 ) {
-      GUM_ERROR( OperationNotAllowed, "Not enough variable for an aggregator" );
+    template<typename GUM_SCALAR> INLINE
+    MultiDimAggregator<GUM_SCALAR>::~MultiDimAggregator() {
+      GUM_DESTRUCTOR ( MultiDimAggregator );
     }
 
-    const DiscreteVariable& agg = this->variable( ( Idx )0 );
+    template<typename GUM_SCALAR>
+    GUM_SCALAR MultiDimAggregator<GUM_SCALAR>::get ( const Instantiation& i ) const {
+      if ( this->nbrDim() < 2 ) {
+        GUM_ERROR ( OperationNotAllowed, "Not enough variable for an aggregator" );
+      }
 
-    //is i equal to f(f(f(f...(j_,,neutral_elt))))
-    Idx current = _neutralElt();
+      const DiscreteVariable& agg = this->variable ( ( Idx ) 0 );
 
-    bool stop_iteration = false;
+      //is i equal to f(f(f(f...(j_,,neutral_elt))))
+      Idx current = _neutralElt();
 
-    for( Idx j = 1; j < this->nbrDim(); j++ ) {
-      current = _folder( this->variable( j ), i.val( this->variable( j ) ), current , stop_iteration );
+      bool stop_iteration = false;
 
-      if( stop_iteration ) break;
+      for ( Idx j = 1; j < this->nbrDim(); j++ ) {
+        current = _folder ( this->variable ( j ), i.val ( this->variable ( j ) ), current , stop_iteration );
+
+        if ( stop_iteration ) break;
+      }
+
+      // truncate to fit in aggreegator domain size
+      if ( current >= agg.domainSize() ) current = agg.domainSize() - 1;
+
+      return ( i.val ( agg ) == current ) ? ( GUM_SCALAR ) 1 : ( GUM_SCALAR ) 0;
     }
 
-    // truncate to fit in aggreegator domain size
-    if( current >= agg.domainSize() ) current = agg.domainSize() - 1;
+    template<typename GUM_SCALAR>
+    const std::string MultiDimAggregator<GUM_SCALAR>::toString() const {
+      std::stringstream s;
+      s << MultiDimImplementation<GUM_SCALAR>::variable ( 0 ) << "=" << aggregatorName() << "(";
 
-    return ( i.val( agg ) == current ) ? ( GUM_SCALAR )1 : ( GUM_SCALAR )0;
-  }
+      for ( Idx i = 1; i < MultiDimImplementation<GUM_SCALAR>::nbrDim(); i++ ) {
+        if ( i > 1 ) s << ",";
 
-  template<typename GUM_SCALAR>
-  const std::string MultiDimAggregator<GUM_SCALAR>::toString() const {
-    std::stringstream s;
-    s << MultiDimImplementation<GUM_SCALAR>::variable( 0 ) << "=" << aggregatorName() << "(";
+        s << MultiDimImplementation<GUM_SCALAR>::variable ( i );
+      }
 
-    for( Idx i = 1; i < MultiDimImplementation<GUM_SCALAR>::nbrDim(); i++ ) {
-      if( i > 1 ) s << ",";
+      s << ")";
 
-      s << MultiDimImplementation<GUM_SCALAR>::variable( i );
+      return s.str();
     }
 
-    s << ")";
+    // returns the name of the implementation
+    template<typename GUM_SCALAR>
+    const std::string& MultiDimAggregator<GUM_SCALAR>::name() const {
+      static const std::string str = "MultiDimAggregator";
+      return str;
+    }
 
-    return s.str();
-  }
 
-  // returns the name of the implementation
-  template<typename GUM_SCALAR>
-  const std::string& MultiDimAggregator<GUM_SCALAR>::name() const {
-    static const std::string str = "MultiDimAggregator";
-    return str;
-  }
+    // For friendly displaying the content of the variable.
 
-  // ============================================================================
-  // For friendly displaying the content of the variable.
-  // ============================================================================
-  template<typename GUM_SCALAR> INLINE
-  std::ostream& operator<<( std::ostream& s, const MultiDimAggregator<GUM_SCALAR>& ag ) {
-    return s << ag.toString();
-  }
+    template<typename GUM_SCALAR> INLINE
+    std::ostream& operator<< ( std::ostream& s, const MultiDimAggregator<GUM_SCALAR>& ag ) {
+      return s << ag.toString();
+    }
 
-  template<typename GUM_SCALAR> INLINE
-  void MultiDimAggregator<GUM_SCALAR>::_swap( const DiscreteVariable* x, const DiscreteVariable* y ) {
-    MultiDimImplementation<GUM_SCALAR>::_swap( x,y );
-  }
+    template<typename GUM_SCALAR> INLINE
+    void MultiDimAggregator<GUM_SCALAR>::_swap ( const DiscreteVariable* x, const DiscreteVariable* y ) {
+      MultiDimImplementation<GUM_SCALAR>::_swap ( x,y );
+    }
 
 // ==================================================
+
+  } /* namespace aggregator */
 } /* namespace gum */

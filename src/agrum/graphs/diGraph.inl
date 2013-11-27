@@ -34,9 +34,11 @@ namespace gum {
     if ( ! exists( head ) ) {
       GUM_ERROR( InvalidNode,"head node" );
     }
+
     if ( ! exists( tail ) ) {
       GUM_ERROR( InvalidNode,"tail node" );
     }
+
     ArcGraphPart::insertArc( tail, head );
   }
 
@@ -52,6 +54,7 @@ namespace gum {
       NodeGraphPart::operator=( g );
       ArcGraphPart::operator=( g );
     }
+
     return *this;
   }
 

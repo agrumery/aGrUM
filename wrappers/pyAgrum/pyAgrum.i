@@ -10,6 +10,10 @@ to OpenBayes, a free Bayesian Network library for Python."
 
 %{
 #define SWIG_FILE_WITH_INIT
+
+// this should be removed at some point with a new version of SWIG
+
+using namespace std;
 %}
 
 %pythoncode %{

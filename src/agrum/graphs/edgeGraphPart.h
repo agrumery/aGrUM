@@ -75,8 +75,8 @@ namespace gum {
     public:
       typedef EdgeSetIterator EdgeIterator;
 
-      Signaler2<NodeId,NodeId> onEdgeAdded;
-      Signaler2<NodeId,NodeId> onEdgeDeleted;
+      Signaler2<NodeId, NodeId> onEdgeAdded;
+      Signaler2<NodeId, NodeId> onEdgeDeleted;
 
       // ############################################################################
       /// @name Constructors / Destructors
@@ -131,7 +131,7 @@ namespace gum {
        * @param n2 the id of the other extremity of the new edge to be inserted
        * @warning if the edge already exists, nothing is done. In particular, no
        * exception is raised. */
-      virtual void insertEdge( const NodeId n1,const NodeId n2 );
+      virtual void insertEdge( const NodeId n1, const NodeId n2 );
 
       /// removes an edge from the EdgeGraphPart
       /** @param edge the edge to be removed
@@ -150,7 +150,7 @@ namespace gum {
        * the EdgeGraphPart
        * @param n2 the id of the other extremity of the edge we test the existence
        * in the EdgeGraphPart */
-      bool existsEdge( const NodeId n1,const NodeId n2 ) const;
+      bool existsEdge( const NodeId n1, const NodeId n2 ) const;
 
       /// indicates wether the EdgeGraphPart contains any edge
       bool emptyEdges() const;
@@ -183,10 +183,14 @@ namespace gum {
       void unvirtualizedEraseNeighbours( const NodeId id );
 
       /// returns an iterator to parse the set of edges of the EdgeGraphPart
-      const EdgeGraphPart::EdgeIterator beginEdges() const;
+      /// @deprecated Please use edges().begin() or better :
+      /// @code for(const auto& edge : graph.edges()) @endcode
+      GUM_DEPRECATED(const EdgeGraphPart::EdgeIterator beginEdges() const);
 
       /// returns the end iterator to parse the set of edges
-      const EdgeGraphPart::EdgeIterator& endEdges() const;
+      /// @deprecated Please use edges().end() or better :
+      /// @code for(const auto& edge : graph.edges()) @endcode
+      GUM_DEPRECATED(const EdgeGraphPart::EdgeIterator& endEdges() const);
 
       /// to friendly display the content of the EdgeGraphPart
       const std::string toString() const;
@@ -236,7 +240,7 @@ namespace gum {
       EdgeSet __edges;
 
       /// for each node, the set of its adjacent edges
-      mutable Property<NodeSet*>::onNodes __neighbours;
+      mutable NodeProperty<NodeSet*> __neighbours;
 
 
       /** @brief when the EdgeGraphPart contains no edge adjacent to a given node,

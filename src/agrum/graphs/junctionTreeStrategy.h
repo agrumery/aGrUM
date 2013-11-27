@@ -49,69 +49,69 @@ namespace gum {
    */
   /* =========================================================================== */
   class JunctionTreeStrategy {
-  public:
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
+    public:
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
 
-    /// destructor
-    virtual ~JunctionTreeStrategy ();
+      /// destructor
+      virtual ~JunctionTreeStrategy();
 
-    /// virtual copy constructor
-    virtual JunctionTreeStrategy* newFactory () const = 0;
+      /// virtual copy constructor
+      virtual JunctionTreeStrategy* newFactory() const = 0;
 
-    /// @}
-
-
-    // ############################################################################
-    /// @name Accessors / Modifiers
-    // ############################################################################
-    /// @{
-
-    /// indicates whether the junction tree strategy needs fill-ins to work properly
-    /** If the junctionTreeStrategy needs fill-ins to work properly, its assigned
-     * triangulation instance (see method setTriangulation) will be commited to
-     * compute them. */
-    virtual bool requiresFillIns () const = 0;
-
-    /// returns the junction tree computed
-    /** The idea behind this method is that the JunctionTreeStrategy asks its
-     * assigned triangulation (see method setTriangulation) all the data it
-     * needs to compute correctly the junction tree. For instance, it may asks
-     * for a triangulated graph or an elimination tree, or even the order of
-     * elimination of the nodes, etc. All these data are available from the
-     * triangulation class. Knowing these data, the junctionTreeStrategy computes
-     * and returns a junction tree corresponding to the triangulated graph. */
-    virtual const CliqueGraph& junctionTree() = 0;
-
-    /// assign the triangulation to the junction tree strategy
-    virtual void setTriangulation ( StaticTriangulation* triangulation ) = 0;
-
-    /** @brief returns, for each node, the clique of the junction tree which was
-     * created by its deletion */
-    virtual const Property<NodeId>::onNodes& createdCliques () = 0;
-
-    /** @brief returns the Id of the clique of the junction tree created by the
-     * elimination of a given node during the triangulation process */
-    virtual NodeId createdClique( const NodeId id ) = 0;
-
-    /// resets the current junction tree strategy data structures
-    virtual void clear () = 0;
-
-    /// @}
+      /// @}
 
 
-  protected:
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      /// @name Accessors / Modifiers
+      // ############################################################################
+      /// @{
 
-    /// default constructor
-    JunctionTreeStrategy ();
+      /// indicates whether the junction tree strategy needs fill-ins to work properly
+      /** If the junctionTreeStrategy needs fill-ins to work properly, its assigned
+       * triangulation instance (see method setTriangulation) will be commited to
+       * compute them. */
+      virtual bool requiresFillIns() const = 0;
 
-    /// @}
+      /// returns the junction tree computed
+      /** The idea behind this method is that the JunctionTreeStrategy asks its
+       * assigned triangulation (see method setTriangulation) all the data it
+       * needs to compute correctly the junction tree. For instance, it may asks
+       * for a triangulated graph or an elimination tree, or even the order of
+       * elimination of the nodes, etc. All these data are available from the
+       * triangulation class. Knowing these data, the junctionTreeStrategy computes
+       * and returns a junction tree corresponding to the triangulated graph. */
+      virtual const CliqueGraph& junctionTree() = 0;
+
+      /// assign the triangulation to the junction tree strategy
+      virtual void setTriangulation( StaticTriangulation* triangulation ) = 0;
+
+      /** @brief returns, for each node, the clique of the junction tree which was
+       * created by its deletion */
+      virtual const NodeProperty<NodeId>& createdCliques() = 0;
+
+      /** @brief returns the Id of the clique of the junction tree created by the
+       * elimination of a given node during the triangulation process */
+      virtual NodeId createdClique( const NodeId id ) = 0;
+
+      /// resets the current junction tree strategy data structures
+      virtual void clear() = 0;
+
+      /// @}
+
+
+    protected:
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
+
+      /// default constructor
+      JunctionTreeStrategy();
+
+      /// @}
 
   };
 

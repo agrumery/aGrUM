@@ -37,13 +37,13 @@
 #include <dirent.h>
 #include <sys/time.h>
 
-
+#include <agrum/config.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/multidim/potential.h>
-#include <agrum/BN/generator/defaultCPTGenerator.h>
-#include <agrum/BN/generator/defaultCPTDisturber.h>
+#include <agrum/BN/generator/simpleCPTGenerator.h>
+#include <agrum/BN/generator/simpleCPTDisturber.h>
 #include <agrum/core/hashTable.h>
-#include <agrum/BN/generator/abstractBayesNetGenerator.h>
+#include <agrum/BN/generator/IBayesNetGenerator.h>
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
@@ -143,8 +143,8 @@ namespace gum {
   }
    \enddot
    */
-  template <typename GUM_SCALAR, template<class> class ICPTGenerator = DefaultCPTGenerator, template<class> class ICPTDisturber = DefaultCPTDisturber>
-  class MCBayesNetGenerator : public AbstractBayesNetGenerator<GUM_SCALAR,ICPTGenerator>, public  ICPTDisturber<GUM_SCALAR> {
+  template <typename GUM_SCALAR, template<class> class ICPTGenerator = SimpleCPTGenerator, template<class> class ICPTDisturber = SimpleCPTDisturber>
+  class MCBayesNetGenerator : public IBayesNetGenerator<GUM_SCALAR,ICPTGenerator>, public  ICPTDisturber<GUM_SCALAR> {
 
     public:
 
@@ -154,8 +154,8 @@ namespace gum {
       /// @{
       /**
        * Constructor.
-       * Use by default the DefaultCPTGenerator for generating the BNs CPT
-       * and the DefaultCPTDisturber to tweak the CPT when the dimension of the table changes.
+       * Use by default the SimpleCPTGenerator for generating the BNs CPT
+       * and the SimpleCPTDisturber to tweak the CPT when the dimension of the table changes.
        * @param nbrNodes The number of nodes in the generated BN.
        * @param maxArcs The maximum number of Arcs.
        * @param maxModality Each DRV has from 2 to maxModality modalities
@@ -163,20 +163,18 @@ namespace gum {
        * @param p probability for the change of the state (see \ref probability_p_q "use of p and q" )
        * @param q probability for the change of the state (see \ref probability_p_q "use of p and q" )
        */
-
-      MCBayesNetGenerator ( Size nbrNodes, Size maxArcs, Idx maxModality=2 , Size iteration=5000, Idx p=30, Idx q=40 );
+      MCBayesNetGenerator( Size nbrNodes, Size maxArcs, Idx maxModality=2 , Size iteration=5000, Idx p=30, Idx q=40 );
 
       /**
       * Constructor.
-      * Use by default the DefaultCPTGenerator for generating the BNs CPT
-      * and the DefaultCPTDisturber to tweak the CPT when the dimension of the table changes.
-      * @param bayesNet the BayesNet used as reference to fill the parameters nbrNodes, maxArcs and maxModality
+      * Use by default the SimpleCPTGenerator for generating the BNs CPT
+      * and the SimpleCPTDisturber to tweak the CPT when the dimension of the table changes.
+      * @param bayesNet the IBayesNet used as reference to fill the parameters nbrNodes, maxArcs and maxModality
       * @param iteration The number of iterations wanted to repeat the algorithm
       * @param p probability for the change of the state (see \ref probability_p_q )
       * @param q probability for the change of the state (see \ref probability_p_q )
       */
-
-      MCBayesNetGenerator ( BayesNet<GUM_SCALAR> bayesNet , Size iteration=5000, Idx p=30, Idx q=40 );
+      MCBayesNetGenerator( BayesNet<GUM_SCALAR> bayesNet , Size iteration=5000, Idx p=30, Idx q=40 );
 
       /**
       * Destructor.
@@ -192,20 +190,20 @@ namespace gum {
       /// @{
       /**
        * Generates a random bayesian network.
-       * @param bayesNet empty BayesNet to generate.
+       * @param bayesNet empty IBayesNet to generate.
        * @return null but modify inputed Bayesian Network
        */
-      void generateBN ( BayesNet<GUM_SCALAR> & bayesNet );
+      void generateBN( BayesNet<GUM_SCALAR>& bayesNet );
 
       /**
       * Change randomly the topology of a specific bayesian networks.
-      * @param bayesNetinit BayesNet to be modify
+      * @param bayesNetinit IBayesNet to be modify
       * @param iteration The number of iterations wanted to repeat the algorithm
       * @return null but modify inputed Bayesian Network
-      * @throws OperationNotAllow if the initial state of the BayesNet is not respecting the wanted conditions
+      * @throws OperationNotAllow if the initial state of the IBayesNet is not respecting the wanted conditions
       * if iteration = 0, it is assumed that the number of iteration wanted is the same as the one specified in the constructor
       */
-      void disturbBN ( BayesNet<GUM_SCALAR> & bayesNetinit, Size iteration = 0 );
+      void disturbBN( BayesNet<GUM_SCALAR>& bayesNetinit, Size iteration = 0 );
 
       ///@}
 
@@ -234,22 +232,20 @@ namespace gum {
       /**
       * Modifies the value of the number of iterations impose on the BayesNetGenerator
       */
-      void setIteration ( Size iteration );
+      void setIteration( Size iteration );
       /**
       * Modifies the value of the probability p imposed on the BayesNetGenerator
       */
-      void setP ( Idx p );
+      void setP( Idx p );
       /**
       * Modifies the value of the probability q imposed on the BayesNetGenerator
       */
-      void setQ ( Idx q );
+      void setQ( Idx q );
 
 
 
       /// @}
     protected:
-
-      Idx _c;// counter for modifying the seed
       Size _iteration;
       Idx _p, _q ;
       bool _disturbing ;
@@ -264,19 +260,19 @@ namespace gum {
       /**
        * The function that verify if node i and j are connected.
        **/
-      bool __connect ( const NodeId i, const NodeId j );
+      bool __connect( const NodeId i, const NodeId j );
       /**
        * The function that verify if there is a oriented path from node i to node j.
        **/
-      bool __directedPath ( const NodeId i, const NodeId j );
+      bool __directedPath( const NodeId i, const NodeId j );
       /**
        * The function that will insert an arc between node i to node j, but only if there isn't any cycle created.
        **/
-      void __insertArc ( NodeId i, NodeId j );
+      void __insertArc( NodeId i, NodeId j );
       /**
        * The function that will remove the arc between node i and node j. If the boolean parameter mustbeconnex is true, the function will assert that the graph remain connected and will restore the arc otherwise.
        **/
-      void __eraseArc ( NodeId i, NodeId j, bool mustbeconnex = true );
+      void __eraseArc( NodeId i, NodeId j, bool mustbeconnex = true );
 
       /**
       * In the case that the graph is a polytree, the function will, according to the probability p and q, choose which change of state must occure( AorR or AR or jump) then will assert that the imposed constraint are respected and if not, will return to the previous topology.
@@ -312,51 +308,54 @@ namespace gum {
        **/
       virtual bool __checkConditions();
 
-      void __createDAG ( Size BNSize, Size iniRoot );
+      void __createDAG( Size BNSize, Size iniRoot );
 
-      std::vector<Idx> * __createPartDAG ( Size BNSize, Size iniRoot );
+      std::vector<Idx>* __createPartDAG( Size BNSize, Size iniRoot );
 
       /**
        * The internal function used by the previous __connect. It asserts the existence of an unoriented path between node i and node j avoiding passing through nodes listed in excluded.
        **/
 
-      bool __connect ( const NodeId i, const NodeId j, NodeSet &excluded );
+      bool __connect( const NodeId i, const NodeId j, NodeSet& excluded );
 
       /**
        * The internal function used by the previous __directedPath. It asserts the existence of an oriented path between node i and node j avoiding passing through nodes listed in excluded.
        **/
-      bool __directedPath ( const NodeId tail, const NodeId head, NodeSet &excluded );
+      bool __directedPath( const NodeId tail, const NodeId head, NodeSet& excluded );
 
       /**
        * The function that randomly choose two nodes of the graph.
        **/
 
-      void __chooseNodes ( NodeId &i,NodeId &j );
+      void __chooseNodes( NodeId& i,NodeId& j );
 
       /**
        * The function that randomly choose two neighbours nodes of the graph.
        **/
-      void __chooseCloseNodes ( NodeId &i,NodeId &j );
+      void __chooseCloseNodes( NodeId& i,NodeId& j );
 
       /**
        * The function that randomly change the simple tree into a polytree.
        **/
 
-      void __transformPoly ( Idx nbiter );
+      void __transformPoly( Idx nbiter );
 
       /**
        * The function that randomly generate a simple tree.
        **/
-      void __createTree ( Size BNSize ) ;
+      void __createTree( Size BNSize ) ;
 
       /**
        * The internal function used by __createTree that randomly generate a simple tree.
        * n : id number for node label
        **/
-      NodeId __createPartTree ( Size BNSize , Idx& n ) ;
+      NodeId __createPartTree( Size BNSize , Idx& n ) ;
 
 
   };
+  
+  extern template class MCBayesNetGenerator<float>;
+  extern template class MCBayesNetGenerator<double>;
 }/*namespace gum*/
 
 #include <agrum/BN/generator/MCBayesNetGenerator.tcc>

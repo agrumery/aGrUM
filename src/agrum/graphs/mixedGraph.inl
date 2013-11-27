@@ -29,17 +29,18 @@ namespace gum {
 
   INLINE MixedGraph& MixedGraph::operator=( const MixedGraph& g ) {
     // avoid self assigment
-    if (this!=&g) {
+    if ( this!=&g ) {
       // remove the old graph properly
       EdgeGraphPart::clearEdges();
       ArcGraphPart::clearArcs();
       NodeGraphPart::clearNodes();
 
       // fill the new graph
-      NodeGraphPart::operator=(g);
-      EdgeGraphPart::operator=(g);
-      ArcGraphPart::operator=(g);
+      NodeGraphPart::operator=( g );
+      EdgeGraphPart::operator=( g );
+      ArcGraphPart::operator=( g );
     }
+
     return *this;
   }
 
@@ -58,8 +59,8 @@ namespace gum {
 
   INLINE bool MixedGraph::operator==( const MixedGraph& p ) const {
     return ArcGraphPart::operator==( p ) &&
-      EdgeGraphPart::operator==( p ) &&
-      NodeGraphPart::operator==( p );
+           EdgeGraphPart::operator==( p ) &&
+           NodeGraphPart::operator==( p );
   }
 
   INLINE bool MixedGraph::operator!=( const MixedGraph& p ) const {

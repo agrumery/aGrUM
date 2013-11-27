@@ -21,8 +21,12 @@
  * @file
  * @brief KL divergence between BNs implementation
  *
- * @author Pierre-Henri Wuillemin
+ * @author Pierre-Henri WUILLEMIN
  */
 
-#include <math.h>
+#include <cmath>
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
+
+
+template class gum::BruteForceKL<float>;
+template class gum::BruteForceKL<double>;

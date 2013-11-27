@@ -17,14 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-// ============================================================================
+
 /** @file
  * @brief Outlined implementation of BIFXMLBNReader
  *
- * @author Jean-Christophe Magnan & Pierre-Henri Wuillemin
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 #include <agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+template class gum::BIFXMLBNWriter<float>;
+template class gum::BIFXMLBNWriter<double>;

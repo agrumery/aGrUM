@@ -4,7 +4,7 @@ namespace gum {
   namespace credal {
 
     template<typename GUM_SCALAR>
-    void CNLoopyPropagation<GUM_SCALAR>::saveInference ( const std::string &path ) {
+    void CNLoopyPropagation<GUM_SCALAR>::saveInference ( const std::string& path ) {
       std::string path_name = path.substr ( 0, path.size() - 4 );
       path_name = path_name + ".res";
 
@@ -32,35 +32,35 @@ namespace gum {
 
       res << "[RESULTATS]" << "\n";
 
-      for ( auto it = bnet->beginNodes(), theEnd = bnet->endNodes(); it != theEnd; ++it ) {
+      for ( const auto it : bnet->nodes() ) {
         // calcul distri posteriori
         GUM_SCALAR msg_p_min = 1.0;
         GUM_SCALAR msg_p_max = 0.0;
 
         // cas evidence, calcul immediat
-        if ( infE::_evidence.exists ( *it ) ) {
-          if ( infE::_evidence[ *it ][1] == 0. )
+        if ( infE::_evidence.exists ( it ) ) {
+          if ( infE::_evidence[ it ][1] == 0. )
             msg_p_min = 0.;
-          else if ( infE::_evidence[ *it ][1] == 1. )
+          else if ( infE::_evidence[ it ][1] == 1. )
             msg_p_min = 1.;
 
           msg_p_max = msg_p_min;
         }
         // sinon depuis node P et node L
         else {
-          GUM_SCALAR min = _NodesP_min[ *it ];
+          GUM_SCALAR min = _NodesP_min[ it ];
           GUM_SCALAR max;
 
-          if ( _NodesP_max.exists ( *it ) )
-            max = _NodesP_max[ *it ];
+          if ( _NodesP_max.exists ( it ) )
+            max = _NodesP_max[ it ];
           else
             max = min;
 
-          GUM_SCALAR lmin = _NodesL_min[ *it ];
+          GUM_SCALAR lmin = _NodesL_min[ it ];
           GUM_SCALAR lmax;
 
-          if ( _NodesL_max.exists ( *it ) )
-            lmax = _NodesL_max[ *it ];
+          if ( _NodesL_max.exists ( it ) )
+            lmax = _NodesL_max[ it ];
           else
             lmax = lmin;
 
@@ -98,21 +98,21 @@ namespace gum {
           std::cout << "pas de proba calculable (verifier observations)" << std::endl;
         }
 
-        res << "P(" << bnet->variable ( *it ).name() << " | e) = ";
+        res << "P(" << bnet->variable ( it ).name() << " | e) = ";
 
-        if ( infE::_evidence.exists ( *it ) )
+        if ( infE::_evidence.exists ( it ) )
           res << "(observe)" << std::endl;
         else
           res << std::endl;
 
-        res << "\t\t" << bnet->variable ( *it ).label ( 0 ) << "  [ " << ( GUM_SCALAR ) 1. - msg_p_max;
+        res << "\t\t" << bnet->variable ( it ).label ( 0 ) << "  [ " << ( GUM_SCALAR ) 1. - msg_p_max;
 
         if ( msg_p_min != msg_p_max )
           res << ", " << ( GUM_SCALAR ) 1. - msg_p_min << " ] | ";
         else
           res << " ] | ";
 
-        res << bnet->variable ( *it ).label ( 1 ) << "  [ " << msg_p_min;
+        res << bnet->variable ( it ).label ( 1 ) << "  [ " << msg_p_min;
 
         if ( msg_p_min != msg_p_max )
           res << ", " << msg_p_max << " ]" << std::endl;
@@ -134,13 +134,13 @@ namespace gum {
      */
     template<typename GUM_SCALAR>
     void CNLoopyPropagation<GUM_SCALAR>::_compute_ext (
-      GUM_SCALAR &msg_l_min,
-      GUM_SCALAR &msg_l_max,
-      std::vector<GUM_SCALAR> &lx,
-      GUM_SCALAR &num_min,
-      GUM_SCALAR &num_max,
-      GUM_SCALAR &den_min,
-      GUM_SCALAR &den_max
+      GUM_SCALAR& msg_l_min,
+      GUM_SCALAR& msg_l_max,
+      std::vector<GUM_SCALAR>& lx,
+      GUM_SCALAR& num_min,
+      GUM_SCALAR& num_max,
+      GUM_SCALAR& den_min,
+      GUM_SCALAR& den_max
     ) {
       GUM_SCALAR old_msg_min = msg_l_min;
       GUM_SCALAR old_msg_max = msg_l_max;
@@ -230,12 +230,12 @@ namespace gum {
      */
     template<typename GUM_SCALAR>
     void CNLoopyPropagation<GUM_SCALAR>::_compute_ext (
-      std::vector< std::vector<GUM_SCALAR> > &combi_msg_p,
-      const NodeId &id,
-      GUM_SCALAR &msg_l_min,
-      GUM_SCALAR &msg_l_max,
-      std::vector<GUM_SCALAR> &lx,
-      const Idx &pos
+      std::vector< std::vector<GUM_SCALAR> >& combi_msg_p,
+      const NodeId& id,
+      GUM_SCALAR& msg_l_min,
+      GUM_SCALAR& msg_l_max,
+      std::vector<GUM_SCALAR>& lx,
+      const Idx& pos
     ) {
       GUM_SCALAR num_min = 0.;
       GUM_SCALAR num_max = 0.;
@@ -297,10 +297,10 @@ namespace gum {
      */
     template<typename GUM_SCALAR>
     void CNLoopyPropagation<GUM_SCALAR>::_compute_ext (
-      std::vector< std::vector<GUM_SCALAR> > &combi_msg_p,
-      const NodeId &id,
-      GUM_SCALAR &msg_p_min,
-      GUM_SCALAR &msg_p_max
+      std::vector< std::vector<GUM_SCALAR> >& combi_msg_p,
+      const NodeId& id,
+      GUM_SCALAR& msg_p_min,
+      GUM_SCALAR& msg_p_max
     ) {
       GUM_SCALAR min = 0.;
       GUM_SCALAR max = 0.;
@@ -347,10 +347,10 @@ namespace gum {
      */
     template<typename GUM_SCALAR>
     void CNLoopyPropagation<GUM_SCALAR>::_enum_combi (
-      std::vector< std::vector< std::vector<GUM_SCALAR> > > &msgs_p,
-      const NodeId &id,
-      GUM_SCALAR &msg_p_min,
-      GUM_SCALAR &msg_p_max
+      std::vector< std::vector< std::vector<GUM_SCALAR> > >& msgs_p,
+      const NodeId& id,
+      GUM_SCALAR& msg_p_min,
+      GUM_SCALAR& msg_p_max
     ) {
       auto taille = msgs_p.size();
 
@@ -451,12 +451,12 @@ namespace gum {
      */
     template<typename GUM_SCALAR>
     void CNLoopyPropagation<GUM_SCALAR>::_enum_combi (
-      std::vector< std::vector< std::vector<GUM_SCALAR> > > &msgs_p,
-      const NodeId &id,
-      GUM_SCALAR &msg_l_min,
-      GUM_SCALAR &msg_l_max,
-      std::vector<GUM_SCALAR> &lx,
-      const Idx &pos
+      std::vector< std::vector< std::vector<GUM_SCALAR> > >& msgs_p,
+      const NodeId& id,
+      GUM_SCALAR& msg_l_min,
+      GUM_SCALAR& msg_l_max,
+      std::vector<GUM_SCALAR>& lx,
+      const Idx& pos
     ) {
       auto taille = msgs_p.size();
 
@@ -558,7 +558,7 @@ namespace gum {
     }
 
     template<typename GUM_SCALAR>
-    void CNLoopyPropagation<GUM_SCALAR>::makeInference ( ) {
+    void CNLoopyPropagation<GUM_SCALAR>::makeInference( ) {
       if ( _InferenceUpToDate )
         return;
 
@@ -567,15 +567,15 @@ namespace gum {
       infE::initApproximationScheme();
 
       switch ( __inferenceType ) {
-        case nodeToNeighbours:
+        case InferenceType::nodeToNeighbours:
           _makeInferenceNodeToNeighbours();
           break;
 
-        case ordered:
+        case InferenceType::ordered:
           _makeInferenceByOrderedArcs();
           break;
 
-        case randomOrder:
+        case InferenceType::randomOrder:
           _makeInferenceByRandomOrder();
           break;
       }
@@ -589,7 +589,7 @@ namespace gum {
     }
 
     template<typename GUM_SCALAR>
-    void CNLoopyPropagation<GUM_SCALAR>::eraseAllEvidence ( ) {
+    void CNLoopyPropagation<GUM_SCALAR>::eraseAllEvidence( ) {
       infE::eraseAllEvidence();
 
       _ArcsL_min.clear(); _ArcsL_max.clear();
@@ -600,8 +600,8 @@ namespace gum {
       _InferenceUpToDate = false;
 
       if ( _msg_l_sent.size() > 0 ) {
-        for ( auto it = bnet->beginNodes(), theEnd = bnet->endNodes(); it != theEnd; ++it )
-          delete _msg_l_sent[ *it ];
+        for ( const auto it : bnet->nodes() )
+          delete _msg_l_sent[ it ];
       }
 
       _msg_l_sent.clear();
@@ -613,17 +613,17 @@ namespace gum {
     }
 
     template<typename GUM_SCALAR>
-    void CNLoopyPropagation<GUM_SCALAR>::_initialize ( ) {
+    void CNLoopyPropagation<GUM_SCALAR>::_initialize( ) {
       DAG graphe = bnet->dag();
 
-      const Sequence<NodeId> &topoNodes = bnet->topologicalOrder();
+      const Sequence<NodeId>& topoNodes = bnet->topologicalOrder();
 
       // use const iterators with cbegin when available
       for ( auto it = topoNodes.begin(), theEnd = topoNodes.end(); it != theEnd; ++it ) {
         _update_p.set ( *it, false );
         _update_l.set ( *it, false );
 
-        NodeSet *_parents = new NodeSet();
+        NodeSet* _parents = new NodeSet();
         _msg_l_sent.set ( *it , _parents );
 
         // accelerer init pour evidences
@@ -669,7 +669,7 @@ namespace gum {
          * messages and so parents need to be read in order of appearance
          * use potentials instead of dag
          */
-        const Potential<GUM_SCALAR> *parents = & bnet->cpt ( *it );
+        const Potential<GUM_SCALAR>* parents = & bnet->cpt ( *it );
 
         std::vector< std::vector< std::vector<GUM_SCALAR> > > msgs_p;
         std::vector< std::vector<GUM_SCALAR> > msg_p;
@@ -696,7 +696,7 @@ namespace gum {
         GUM_SCALAR msg_p_min = 1.;
         GUM_SCALAR msg_p_max = 0.;
 
-        if ( cn->getCurrentNodeType ( *it ) != cn->INDIC )
+        if ( cn->currentNodeType ( *it ) != CredalNet<GUM_SCALAR>::NodeType::Indic )
           _enum_combi ( msgs_p, *it, msg_p_min, msg_p_max );
 
         if ( msg_p_min <= ( GUM_SCALAR ) 0. )
@@ -724,20 +724,20 @@ namespace gum {
         _NodesL_min.set ( *it, ( GUM_SCALAR ) 1. );
       }
 
-      for ( auto it = bnet->beginArcs(), theEnd = bnet->endArcs(); it != theEnd; ++it ) {
-        _ArcsP_min.set ( *it, _NodesP_min[ it->tail() ] );
+      for ( const auto it : bnet->arcs() ) {
+        _ArcsP_min.set ( it, _NodesP_min[ it.tail() ] );
 
-        if ( _NodesP_max.exists ( it->tail() ) )
-          _ArcsP_max.set ( *it, _NodesP_max[ it->tail() ] );
+        if ( _NodesP_max.exists ( it.tail() ) )
+          _ArcsP_max.set ( it, _NodesP_max[ it.tail() ] );
 
-        _ArcsL_min.set ( *it, _NodesL_min[ it->tail() ] );
+        _ArcsL_min.set ( it, _NodesL_min[ it.tail() ] );
       }
 
     }
 
 
     template<typename GUM_SCALAR>
-    void CNLoopyPropagation<GUM_SCALAR>::_makeInferenceNodeToNeighbours ( ) {
+    void CNLoopyPropagation<GUM_SCALAR>::_makeInferenceNodeToNeighbours( ) {
       DAG graphe = bnet->dag();
 
       GUM_SCALAR eps;
@@ -749,7 +749,7 @@ namespace gum {
           NodeSet _enfants = graphe.children ( *it );
 
           for ( auto jt = _enfants.begin(), theEnd2 = _enfants.end(); jt != theEnd2; ++jt ) {
-            if ( cn->getCurrentNodeType ( *jt ) == cn->INDIC )
+            if ( cn->currentNodeType ( *jt ) == CredalNet<GUM_SCALAR>::NodeType::Indic )
               continue;
 
             _msgP ( *it, *jt );
@@ -758,7 +758,7 @@ namespace gum {
           NodeSet _parents = graphe.parents ( *it );
 
           for ( auto kt = _parents.begin(), theEnd2 = _parents.end(); kt != theEnd2; ++kt ) {
-            if ( cn->getCurrentNodeType ( *it ) == cn->INDIC )
+            if ( cn->currentNodeType ( *it ) == CredalNet<GUM_SCALAR>::NodeType::Indic )
               continue;
 
             _msgL ( *it, *kt );
@@ -779,21 +779,21 @@ namespace gum {
 
 
     template<typename GUM_SCALAR>
-    void CNLoopyPropagation<GUM_SCALAR>::_makeInferenceByRandomOrder ( ) {
-      auto nbrArcs = bnet->dag().sizeArcs();
+    void CNLoopyPropagation<GUM_SCALAR>::_makeInferenceByRandomOrder( ) {
+      Size nbrArcs = bnet->dag().sizeArcs();
 
       std::vector< cArcP > seq;
       seq.reserve ( nbrArcs );
 
-      for ( auto it = bnet->beginArcs(), theEnd = bnet->endArcs(); it != theEnd; ++it )
-        seq.push_back ( & ( *it ) );
+      for ( const auto it : bnet->arcs() )
+        seq.push_back ( &it );
 
       GUM_SCALAR eps;
       // validate TestSuite
       infE::continueApproximationScheme ( 1. );
 
       do {
-        for ( decltype ( nbrArcs ) j = 0, theEnd = nbrArcs / 2; j < theEnd; j++ ) {
+        for ( Size j = 0, theEnd = nbrArcs / 2; j < theEnd; j++ ) {
           auto w1 = rand() % nbrArcs, w2 = rand() % nbrArcs;
 
           if ( w1 == w2 ) continue;
@@ -801,12 +801,13 @@ namespace gum {
           std::swap ( seq[ w1 ], seq[ w2 ] );
         }
 
-        for ( auto it = seq.begin(), theEnd = seq.end(); it != theEnd; ++it ) {
-          if ( cn->getCurrentNodeType ( ( *it )->tail() ) == cn->INDIC || cn->getCurrentNodeType ( ( *it )->head() ) == cn->INDIC )
+        for ( const auto it : seq ) {
+          if ( cn->currentNodeType ( it->tail() ) == CredalNet<GUM_SCALAR>::NodeType::Indic ||
+               cn->currentNodeType ( it->head() ) == CredalNet<GUM_SCALAR>::NodeType::Indic )
             continue;
 
-          _msgP ( ( *it )->tail(), ( *it )->head() );
-          _msgL ( ( *it )->head(), ( *it )->tail() );
+          _msgP ( it->tail(), it->head() );
+          _msgL ( it->head(), it->tail() );
         }
 
         eps = _calculateEpsilon();
@@ -819,26 +820,27 @@ namespace gum {
 
     // gives slightly worse results for some variable/modalities than other inference types (node D on 2U network loose 0.03 precision)
     template<typename GUM_SCALAR>
-    void CNLoopyPropagation<GUM_SCALAR>::_makeInferenceByOrderedArcs ( ) {
-      auto nbrArcs = bnet->dag().sizeArcs();
+    void CNLoopyPropagation<GUM_SCALAR>::_makeInferenceByOrderedArcs( ) {
+      Size nbrArcs = bnet->dag().sizeArcs();
 
       std::vector< cArcP > seq;
       seq.reserve ( nbrArcs );
 
-      for ( auto it = bnet->beginArcs(), theEnd = bnet->endArcs(); it != theEnd; ++it )
-        seq.push_back ( & ( *it ) );
+      for ( const auto it : bnet->arcs() )
+        seq.push_back ( &it );
 
       GUM_SCALAR eps;
       // validate TestSuite
       infE::continueApproximationScheme ( 1. );
 
       do {
-        for ( auto it = seq.begin(), theEnd = seq.end(); it != theEnd; ++it ) {
-          if ( cn->getCurrentNodeType ( ( *it )->tail() ) == cn->INDIC || cn->getCurrentNodeType ( ( *it )->head() ) == cn->INDIC )
+        for ( const auto it : seq ) {
+          if ( cn->currentNodeType ( it->tail() ) == CredalNet<GUM_SCALAR>::NodeType::Indic ||
+               cn->currentNodeType ( it->head() ) == CredalNet<GUM_SCALAR>::NodeType::Indic )
             continue;
 
-          _msgP ( ( *it )->tail(), ( *it )->head() );
-          _msgL ( ( *it )->head(), ( *it )->tail() );
+          _msgP ( it->tail(), it->head() );
+          _msgL ( it->head(), it->tail() );
         }
 
         eps = _calculateEpsilon();
@@ -852,10 +854,10 @@ namespace gum {
 
     template<typename GUM_SCALAR>
     void CNLoopyPropagation<GUM_SCALAR>::_msgL ( const NodeId Y, const NodeId X ) {
-      NodeSet const &children = bnet->dag().children ( Y );
-      NodeSet const &_parents = bnet->dag().parents ( Y );
+      NodeSet const& children = bnet->dag().children ( Y );
+      NodeSet const& _parents = bnet->dag().parents ( Y );
 
-      const Potential<GUM_SCALAR> *parents = &bnet->cpt ( Y );
+      const Potential<GUM_SCALAR>* parents = &bnet->cpt ( Y );
 
 
       if ( ( ( children.size() + parents->nbrDim() - 1 ) == 1 ) && ( ! infE::_evidence.exists ( Y ) ) )
@@ -1037,9 +1039,9 @@ namespace gum {
 
     template<typename GUM_SCALAR>
     void CNLoopyPropagation<GUM_SCALAR>::_msgP ( const NodeId X, const NodeId demanding_child ) {
-      NodeSet const &children = bnet->dag().children ( X );
+      NodeSet const& children = bnet->dag().children ( X );
 
-      const Potential<GUM_SCALAR> *parents = &bnet->cpt ( X );
+      const Potential<GUM_SCALAR>* parents = &bnet->cpt ( X );
 
       if ( ( ( children.size() + parents->nbrDim() - 1 ) == 1 ) && ( ! infE::_evidence.exists ( X ) ) )
         return;
@@ -1241,27 +1243,26 @@ namespace gum {
 
     template<typename GUM_SCALAR>
     void CNLoopyPropagation<GUM_SCALAR>::_refreshLMsPIs ( bool refreshIndic ) {
-      for ( auto itX = bnet->beginNodes(), theEnd = bnet->endNodes(); itX != theEnd; ++itX ) {
-
-        if ( ( ! refreshIndic ) && cn->getCurrentNodeType ( *itX ) == cn->INDIC )
+      for ( const auto itX : bnet->nodes() ) {
+        if ( ( ! refreshIndic ) && cn->currentNodeType ( itX ) == CredalNet<GUM_SCALAR>::NodeType::Indic )
           continue;
 
-        NodeSet const &children = bnet->dag().children ( *itX );
+        NodeSet const& children = bnet->dag().children ( itX );
 
-        const Potential<GUM_SCALAR> *parents = &bnet->cpt ( *itX );
+        const Potential<GUM_SCALAR>* parents = &bnet->cpt ( itX );
 
-        if ( _update_l[ *itX ] ) {
+        if ( _update_l[ itX ] ) {
           GUM_SCALAR lmin = 1.;
           GUM_SCALAR lmax = 1.;
 
-          if ( ! children.empty() && ! infE::_evidence.exists ( *itX ) ) {
-            for ( NodeSet::const_iterator it = children.begin(); it != children.end(); ++it ) {
-              lmin *= _ArcsL_min[ Arc ( *itX, *it ) ];
+          if ( ! children.empty() && ! infE::_evidence.exists ( itX ) ) {
+            for ( const auto it : children ) {
+              lmin *= _ArcsL_min[ Arc ( itX, it ) ];
 
-              if ( _ArcsL_max.exists ( Arc ( *itX, *it ) ) )
-                lmax *= _ArcsL_max[ Arc ( *itX, *it ) ];
+              if ( _ArcsL_max.exists ( Arc ( itX, it ) ) )
+                lmax *= _ArcsL_max[ Arc ( itX, it ) ];
               else
-                lmax *= _ArcsL_min[ Arc ( *itX, *it ) ];
+                lmax *= _ArcsL_min[ Arc ( itX, it ) ];
             }
 
             if ( lmin != lmin && lmax == lmax )
@@ -1281,19 +1282,19 @@ namespace gum {
             if ( lmax < 0. )
               lmax = 0.;
 
-            _NodesL_min[ *itX ] = lmin;
+            _NodesL_min[ itX ] = lmin;
 
             if ( lmin != lmax )
-              _NodesL_max.set ( *itX, lmax );
-            else if ( _NodesL_max.exists ( *itX ) )
-              _NodesL_max.erase ( *itX );
+              _NodesL_max.set ( itX, lmax );
+            else if ( _NodesL_max.exists ( itX ) )
+              _NodesL_max.erase ( itX );
           }
 
         } // end of : update_l
 
 
-        if ( _update_p[ *itX ] ) {
-          if ( ( parents->nbrDim() - 1 ) > 0  && ! infE::_evidence.exists ( *itX ) ) {
+        if ( _update_p[ itX ] ) {
+          if ( ( parents->nbrDim() - 1 ) > 0  && ! infE::_evidence.exists ( itX ) ) {
             std::vector< std::vector< std::vector<GUM_SCALAR> > > msgs_p;
             std::vector< std::vector<GUM_SCALAR> > msg_p;
             std::vector<GUM_SCALAR> distri ( 2 );
@@ -1302,12 +1303,12 @@ namespace gum {
             // cbegin
             for ( auto jt = ++parents->begin(), theEnd = parents->end(); jt != theEnd; ++jt ) {
               // compute probability distribution to avoid doing it multiple times (at each combination of messages)
-              distri[ 1 ] = _ArcsP_min[ Arc ( bnet->nodeId ( **jt ), *itX ) ];
+              distri[ 1 ] = _ArcsP_min[ Arc ( bnet->nodeId ( **jt ), itX ) ];
               distri[ 0 ] = 1. - distri[ 1 ];
               msg_p.push_back ( distri );
 
-              if ( _ArcsP_max.exists ( Arc ( bnet->nodeId ( **jt ), *itX ) ) ) {
-                distri[ 1 ] = _ArcsP_max[ Arc ( bnet->nodeId ( **jt ), *itX ) ];
+              if ( _ArcsP_max.exists ( Arc ( bnet->nodeId ( **jt ), itX ) ) ) {
+                distri[ 1 ] = _ArcsP_max[ Arc ( bnet->nodeId ( **jt ), itX ) ];
                 distri[ 0 ] = 1. - distri[ 1 ];
                 msg_p.push_back ( distri );
               }
@@ -1319,7 +1320,7 @@ namespace gum {
             GUM_SCALAR min = _INF;
             GUM_SCALAR max = 0.;
 
-            _enum_combi ( msgs_p, *itX, min, max );
+            _enum_combi ( msgs_p, itX, min, max );
 
 
             if ( min < 0. )
@@ -1328,14 +1329,14 @@ namespace gum {
             if ( max < 0. )
               max = 0.;
 
-            _NodesP_min[ *itX ] = min;
+            _NodesP_min[ itX ] = min;
 
             if ( min != max )
-              _NodesP_max.set ( *itX, max );
-            else if ( _NodesP_max.exists ( *itX ) )
-              _NodesP_max.erase ( *itX );
+              _NodesP_max.set ( itX, max );
+            else if ( _NodesP_max.exists ( itX ) )
+              _NodesP_max.erase ( itX );
 
-            _update_p[ *itX ] = false;
+            _update_p[ itX ] = false;
           }
         } // end of update_p
 
@@ -1344,32 +1345,32 @@ namespace gum {
     }
 
     template< typename GUM_SCALAR >
-    void CNLoopyPropagation<GUM_SCALAR>::_updateMarginals ( ) {
-      for ( auto it = bnet->beginNodes(), theEnd = bnet->endNodes(); it != theEnd; ++it ) {
+    void CNLoopyPropagation<GUM_SCALAR>::_updateMarginals( ) {
+      for ( const auto it : bnet->nodes() ) {
         GUM_SCALAR msg_p_min = 1.;
         GUM_SCALAR msg_p_max = 0.;
 
-        if ( infE::_evidence.exists ( *it ) ) {
-          if ( infE::_evidence[ *it ][ 1 ] == 0. )
+        if ( infE::_evidence.exists ( it ) ) {
+          if ( infE::_evidence[ it ][ 1 ] == 0. )
             msg_p_min = ( GUM_SCALAR ) 0.;
-          else if ( infE::_evidence[ *it ][ 1 ] == 1. )
+          else if ( infE::_evidence[ it ][ 1 ] == 1. )
             msg_p_min = 1.;
 
           msg_p_max = msg_p_min;
         } else {
-          GUM_SCALAR min = _NodesP_min[ *it ];
+          GUM_SCALAR min = _NodesP_min[ it ];
           GUM_SCALAR max;
 
-          if ( _NodesP_max.exists ( *it ) )
-            max = _NodesP_max[ *it ];
+          if ( _NodesP_max.exists ( it ) )
+            max = _NodesP_max[ it ];
           else
             max = min;
 
-          GUM_SCALAR lmin = _NodesL_min[ *it ];
+          GUM_SCALAR lmin = _NodesL_min[ it ];
           GUM_SCALAR lmax;
 
-          if ( _NodesL_max.exists ( *it ) )
-            lmax = _NodesL_max[ *it ];
+          if ( _NodesL_max.exists ( it ) )
+            lmax = _NodesL_max[ it ];
           else
             lmax = lmin;
 
@@ -1418,7 +1419,7 @@ namespace gum {
 
         if ( msg_p_max != msg_p_max && msg_p_min != msg_p_min ) {
           std::cout << std::endl;
-          std::cout << "pas de proba calculable (verifier observations)" << std::endl;
+          std::cout << "Please check the observations (no proba can be computed)" << std::endl;
           return;
         }
 
@@ -1428,87 +1429,85 @@ namespace gum {
         if ( msg_p_max < 0. )
           msg_p_max = 0.;
 
-        infE::_marginalMin[ *it ][ 0 ] = 1 - msg_p_max;
-        infE::_marginalMax[ *it ][ 0 ] = 1 - msg_p_min;
-        infE::_marginalMin[ *it ][ 1 ] = msg_p_min;
-        infE::_marginalMax[ *it ][ 1 ] = msg_p_max;
+        infE::_marginalMin[ it ][ 0 ] = 1 - msg_p_max;
+        infE::_marginalMax[ it ][ 0 ] = 1 - msg_p_min;
+        infE::_marginalMin[ it ][ 1 ] = msg_p_min;
+        infE::_marginalMax[ it ][ 1 ] = msg_p_max;
 
       }
     }
 
 
     template<typename GUM_SCALAR>
-    GUM_SCALAR CNLoopyPropagation<GUM_SCALAR>::_calculateEpsilon ( ) {
-      _refreshLMsPIs ();
-      _updateMarginals ();
+    GUM_SCALAR CNLoopyPropagation<GUM_SCALAR>::_calculateEpsilon( ) {
+      _refreshLMsPIs();
+      _updateMarginals();
 
-      return infE::_computeEpsilon ();
+      return infE::_computeEpsilon();
     }
 
 
     template<typename GUM_SCALAR>
-    void CNLoopyPropagation<GUM_SCALAR>::_updateIndicatrices ( ) {
-      for ( auto id = bnet->beginNodes(), end = bnet->endNodes(); id != end; ++id ) {
-        if ( cn->getCurrentNodeType ( *id ) != cn->INDIC )
+    void CNLoopyPropagation<GUM_SCALAR>::_updateIndicatrices( ) {
+      for ( const auto id : bnet->nodes() ) {
+        if ( cn->currentNodeType ( id ) != CredalNet<GUM_SCALAR>::NodeType::Indic )
           continue;
 
-        auto parents = bnet->dag ( ).parents ( *id );
-
-        for ( auto & pid : parents )
-          _msgP ( pid, *id );
+        for ( const auto pid : bnet->dag( ).parents ( id ) )
+          _msgP ( pid, id );
       }
 
       _refreshLMsPIs ( true );
-      _updateMarginals ();
+      _updateMarginals();
     }
 
 
     template<typename GUM_SCALAR>
-    void CNLoopyPropagation<GUM_SCALAR>::_computeExpectations ( ) {
+    void CNLoopyPropagation<GUM_SCALAR>::_computeExpectations( ) {
       if ( infE::_modal.empty() )
         return;
 
       std::vector< std::vector< GUM_SCALAR > > vertices ( 2, std::vector< GUM_SCALAR > ( 2 ) );
 
-      for ( auto it = bnet->beginNodes(), theEnd = bnet->endNodes(); it != theEnd; ++it ) {
-        vertices[ 0 ][ 0 ] = infE::_marginalMin[ *it ][ 0 ];
-        vertices[ 0 ][ 1 ] = infE::_marginalMax[ *it ][ 1 ];
+      for ( const auto it : bnet->nodes() ) {
+        vertices[ 0 ][ 0 ] = infE::_marginalMin[ it ][ 0 ];
+        vertices[ 0 ][ 1 ] = infE::_marginalMax[ it ][ 1 ];
 
-        vertices[ 1 ][ 0 ] = infE::_marginalMax[ *it ][ 0 ];
-        vertices[ 1 ][ 1 ] = infE::_marginalMin[ *it ][ 1 ];
+        vertices[ 1 ][ 0 ] = infE::_marginalMax[ it ][ 0 ];
+        vertices[ 1 ][ 1 ] = infE::_marginalMin[ it ][ 1 ];
 
         for ( auto vertex = 0, vend = 2; vertex != vend; vertex++ ) {
-          infE::_updateExpectations ( *it, vertices[ vertex ] );
+          infE::_updateExpectations ( it, vertices[ vertex ] );
           // test credal sets vertices elim
           // remove with L2U since variables are binary
           // but does the user know that ?
-          infE::_updateCredalSets ( *it, vertices[ vertex ] ); // no redundancy elimination with 2 vertices
+          infE::_updateCredalSets ( it, vertices[ vertex ] ); // no redundancy elimination with 2 vertices
         }
 
         // add a convex combination to test elim
         /*std::vector< GUM_SCALAR > redund(2);
         redund[0] = 0.5 * ( vertices[ 0 ][ 0 ] + vertices[ 1 ][ 0 ] );
         redund[1] = 0.5 * ( vertices[ 0 ][ 1 ] + vertices[ 1 ][ 1 ] );
-        infE::_updateCredalSets( *it, redund );*/
+        infE::_updateCredalSets( it, redund );*/
 
       }
     }
 
 
     template<typename GUM_SCALAR>
-    CNLoopyPropagation<GUM_SCALAR>::CNLoopyPropagation ( const CredalNet<GUM_SCALAR> &cnet ) : InferenceEngine< GUM_SCALAR >::InferenceEngine ( cnet ) {
+    CNLoopyPropagation<GUM_SCALAR>::CNLoopyPropagation ( const CredalNet<GUM_SCALAR>& cnet ) : InferenceEngine< GUM_SCALAR >::InferenceEngine ( cnet ) {
       if ( ! cnet.isSeparatelySpecified() )
         GUM_ERROR ( OperationNotAllowed, "CNLoopyPropagation is only available with separately specified nets" );
 
       // test for binary cn
-      for ( auto it = cnet.current_bn().beginNodes(), theEnd = cnet.current_bn().endNodes(); it != theEnd; ++it )
-        if ( cnet.current_bn().variable ( *it ).domainSize() != 2 )
+      for ( const auto it : cnet.current_bn().nodes() )
+        if ( cnet.current_bn().variable ( it ).domainSize() != 2 )
           GUM_ERROR ( OperationNotAllowed, "CNLoopyPropagation is only available with binary credal networks" );
 
       cn = &cnet;
       bnet = &cnet.current_bn();
 
-      __inferenceType = nodeToNeighbours;
+      __inferenceType = InferenceType::nodeToNeighbours;
       _InferenceUpToDate = false;
 
       GUM_CONSTRUCTOR ( CNLoopyPropagation );
@@ -1516,7 +1515,7 @@ namespace gum {
 
 
     template<typename GUM_SCALAR>
-    CNLoopyPropagation<GUM_SCALAR>::~CNLoopyPropagation ( ) {
+    CNLoopyPropagation<GUM_SCALAR>::~CNLoopyPropagation( ) {
       /*_ArcsL_min.clear(); _ArcsL_max.clear();
       _ArcsP_min.clear(); _ArcsP_max.clear();
       _NodesL_min.clear(); _NodesL_max.clear();
@@ -1525,8 +1524,8 @@ namespace gum {
       _InferenceUpToDate = false;
 
       if ( _msg_l_sent.size() > 0 ) {
-        for ( DAG::NodeIterator it = bnet->beginNodes(); it != bnet->endNodes(); ++it )
-          delete _msg_l_sent[*it];
+        for ( const auto it : bnet->nodes() )
+          delete _msg_l_sent[it];
       }
 
       //_msg_l_sent.clear();
@@ -1542,7 +1541,7 @@ namespace gum {
     }
 
     template<typename GUM_SCALAR>
-    typename CNLoopyPropagation<GUM_SCALAR>::InferenceType CNLoopyPropagation<GUM_SCALAR>::inferenceType ( ) {
+    typename CNLoopyPropagation<GUM_SCALAR>::InferenceType CNLoopyPropagation<GUM_SCALAR>::inferenceType( ) {
       return __inferenceType;
     }
 

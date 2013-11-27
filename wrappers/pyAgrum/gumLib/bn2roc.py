@@ -189,6 +189,7 @@ def drawROC(points,zeTitle,zeFilename,visible,show_fig,save_fig=True,
     pylab.grid(color='#aaaaaa', linestyle='-', linewidth=1,alpha=0.5)
 
     pylab.plot([x[0] for x in points], [y[1] for y in points], '-', linewidth=3,color="#000088",zorder=3)
+    pylab.fill_between([x[0] for x in points], [y[1] for y in points],0,color='0.9')
     pylab.plot([0.0,1.0], [0.0, 1.0], '-',color="#AAAAAA")
 
     pylab.ylim((-0.01,1.01))

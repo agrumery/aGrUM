@@ -40,18 +40,19 @@ namespace gum {
     GUM_CONSTRUCTOR( EdgeGraphPart );
   }
 
-  
+
   EdgeGraphPart::EdgeGraphPart( const EdgeGraphPart& s ):
     __edges( s.__edges ) {
     GUM_CONS_CPY( EdgeGraphPart );
 
     // copy the set of neighbours
-    const Property<NodeSet*>::onNodes& neigh = s.__neighbours;
-    __neighbours.resize ( neigh.capacity () );
-    for ( Property<NodeSet*>::onNodes::const_iterator iter = neigh.begin();
+    const NodeProperty<NodeSet*>& neigh = s.__neighbours;
+    __neighbours.resize( neigh.capacity() );
+
+    for ( NodeProperty<NodeSet*>::const_iterator iter = neigh.begin();
           iter != neigh.end(); ++iter ) {
-      NodeSet* newneigh = new NodeSet ( **iter );
-      __neighbours.insert ( iter.key (), newneigh );
+      NodeSet* newneigh = new NodeSet( **iter );
+      __neighbours.insert( iter.key(), newneigh );
     }
 
     // send signals to indicate that there are new edges
@@ -62,20 +63,21 @@ namespace gum {
       }
     }
   }
-  
+
 
   EdgeGraphPart::~EdgeGraphPart() {
     GUM_DESTRUCTOR( EdgeGraphPart );
     // be sure to deallocate all the neighbours sets
-    clearEdges ();
+    clearEdges();
   }
 
-  
+
   void EdgeGraphPart::clearEdges() {
-    for ( Property<NodeSet*>::onNodes::const_iterator iter = __neighbours.begin();
+    for ( NodeProperty<NodeSet*>::const_iterator iter = __neighbours.begin();
           iter != __neighbours.end(); ++iter ) {
       delete *iter;
     }
+
     __neighbours.clear();
 
     if ( onEdgeDeleted.hasListener() ) {
@@ -83,29 +85,29 @@ namespace gum {
 
       __edges.clear();
 
-      for ( EdgeSetIterator iter = tmp.begin();iter != tmp.end();++iter )
+      for ( EdgeSetIterator iter = tmp.begin(); iter != tmp.end(); ++iter )
         GUM_EMIT2( onEdgeDeleted, iter->first(), iter->second() );
-    }
-    else {
+    } else {
       __edges.clear();
     }
   }
-  
+
 
   EdgeGraphPart& EdgeGraphPart::operator=( const EdgeGraphPart& s ) {
     // avoid self assignment
     if ( this != &s ) {
-      clearEdges ();
-      
+      clearEdges();
+
       __edges = s.__edges;
-      
+
       // copy the set of neighbours
-      const Property<NodeSet*>::onNodes& neigh = s.__neighbours;
-      __neighbours.resize ( neigh.capacity () );
-      for ( Property<NodeSet*>::onNodes::const_iterator iter = neigh.begin();
+      const NodeProperty<NodeSet*>& neigh = s.__neighbours;
+      __neighbours.resize( neigh.capacity() );
+
+      for ( NodeProperty<NodeSet*>::const_iterator iter = neigh.begin();
             iter != neigh.end(); ++iter ) {
-        NodeSet* newneigh = new NodeSet ( **iter );
-        __neighbours.insert ( iter.key (), newneigh );
+        NodeSet* newneigh = new NodeSet( **iter );
+        __neighbours.insert( iter.key(), newneigh );
       }
 
       if ( onEdgeAdded.hasListener() ) {
@@ -119,17 +121,16 @@ namespace gum {
     return *this;
   }
 
-  
+
   const std::string EdgeGraphPart::toString() const {
     std::stringstream s;
     bool first = true;
     s << "{";
 
-    for ( EdgeSetIterator it = __edges.begin();it != __edges.end();++it ) {
+    for ( EdgeSetIterator it = __edges.begin(); it != __edges.end(); ++it ) {
       if ( first ) {
         first = false;
-      }
-      else {
+      } else {
         s << ",";
       }
 
@@ -149,7 +150,7 @@ namespace gum {
     nodeFIFO.pushBack( n2 );
 
     // mark[node] = predecessor if visited, else mark[node] does not exist
-    Property<NodeId>::onNodes mark;
+    NodeProperty<NodeId> mark;
     mark.insert( n2, n2 );
 
     NodeId current;
@@ -161,7 +162,7 @@ namespace gum {
       // check the neighbour //////////////////////////////////////////////
       const NodeSet& set = neighbours( current );
 
-      for ( NodeSetIterator ite = set.begin();ite != set.end();++ite ) {
+      for ( NodeSetIterator ite = set.begin(); ite != set.end(); ++ite ) {
         NodeId new_one = *ite;
 
         if ( mark.exists( new_one ) ) // if this node is already marked, stop
@@ -187,7 +188,7 @@ namespace gum {
     GUM_ERROR( NotFound, "no path found" );
 
   }
-  
+
 
   std::ostream& operator<< ( std::ostream& stream, const EdgeGraphPart& set ) {
     stream << set.toString();
@@ -198,4 +199,4 @@ namespace gum {
 } /* namespace gum */
 
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

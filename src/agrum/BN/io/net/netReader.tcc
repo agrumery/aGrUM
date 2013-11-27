@@ -40,7 +40,7 @@ namespace gum {
     try {
       __scanner = new net::Scanner( __streamName.c_str() );
       __parser = new net::Parser( __scanner );
-      __parser->setFactory(( AbstractBayesNetFactory* ) __factory );
+      __parser->setFactory( ( IBayesNetFactory* ) __factory );
     } catch ( IOError e ) {
       __ioerror = true;
     }
@@ -103,7 +103,7 @@ namespace gum {
     if ( !__parseDone ) {
       try {
         __parser->Parse();
-      } catch ( gum::Exception &e ) {
+      } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         return 1 + __parser->errors().error_count;
       }
@@ -204,4 +204,4 @@ namespace gum {
 
 #endif //DOXYGEN_SHOULD_SKIP_THIS
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 

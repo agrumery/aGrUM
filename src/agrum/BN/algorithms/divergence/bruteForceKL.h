@@ -21,7 +21,7 @@
 * @file
 * @brief algorithm for exact computation KL divergence between BNs
 *
-* @author Pierre-Henri Wuillemin
+* @author Pierre-Henri WUILLEMIN
 *
 */
 #ifndef GUM_BRUTE_FORCE_KL_H
@@ -59,7 +59,7 @@ namespace gum {
       /** constructor must give 2 BNs
        * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or compatible node sets.
        */
-      BruteForceKL ( const BayesNet<GUM_SCALAR>& P,const BayesNet<GUM_SCALAR>& Q );
+      BruteForceKL ( const IBayesNet<GUM_SCALAR>& P,const IBayesNet<GUM_SCALAR>& Q );
 
       /** copy constructor
        */
@@ -84,6 +84,8 @@ namespace gum {
       using KL<GUM_SCALAR>::_errorQP;
   };
 
+  extern template class BruteForceKL<float>;
+  extern template class BruteForceKL<double>;
 } // namespace gum
 
 #include <agrum/BN/algorithms/divergence/bruteForceKL.tcc>

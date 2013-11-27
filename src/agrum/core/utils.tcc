@@ -20,6 +20,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+#include <vector>
+#include <numeric>
 
 namespace std {
 
@@ -32,12 +34,12 @@ namespace std {
     for ( typename vector<T>::const_iterator iter = val.begin();
           iter != val.end(); ++iter, deja=true ) {
       if ( deja ) stream << " , ";
-    
+
       stream << *iter;
     }
-  
+
     stream << "]";
-    
+
     return stream;
   }
 
@@ -50,6 +52,4 @@ namespace std {
 
 } /* namespace std */
 
-
-  
 #endif  // DOXYGEN_SHOULD_SKIP_THIS

@@ -1,0 +1,138 @@
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include <fstream>
+
+#include<dirent.h>
+
+#include <agrum/PRM/o3prmr/O3prmrContext.h>
+
+
+COMPILER o3prmr
+
+gum::prm::o3prmr::O3prmrContext<double> *__context;
+gum::prm::o3prmr::O3prmrSession<double> *__currentSession;
+
+void SemErr(std::string s) {
+  SemErr(widen(s).c_str());
+}
+
+void setO3prmrContext(gum::prm::o3prmr::O3prmrContext<double> *c) {
+  __context=c;
+}
+
+//=====================
+CHARACTERS
+  letter = 'A'..'Z' + 'a'..'z'+ '_'.
+  digit  = '0'..'9'.
+  eol    = '\n'.
+  dot    = '.'.
+
+//=====================
+TOKENS
+  integer     = ['+'|'-'] digit {digit}.
+  float       = ['+'|'-'] digit {digit} '.' digit {digit} [ ('E'|'e') ['+'|'-'] digit {digit} ].
+  word        = letter { ( letter | digit ) }.
+  eol         = '\n'.
+  package     = "package".
+  import      = "import".
+  request     = "request".
+  query       = '?'.
+  unobserve   = "unobserve".
+  engine      = "engine".
+  grd_engine  = "grd_engine".
+  as          = "as".
+  default     = "default".
+  and         = "&".
+
+//=====================
+COMMENTS FROM "/*" TO "*/" NESTED
+COMMENTS FROM "//" TO eol
+
+IGNORE '\r' + eol + '\t' + ' '
+
+$checkEOF=false // disable the end of file check
+
+//=====================
+PRODUCTIONS
+
+//=====================
+o3prmr =                 (. std::string s, alias; __currentSession = 0; .)
+  (
+    [ package Ident<s>  (. __context->setPackage( s ); .) 
+    SYNC ';' ]
+    { 
+      import Ident<s>   (. alias = ""; .)
+      [ as (
+        default         (. alias = "default"; .) 
+      | word            (. alias = gum::narrow(t->val); .) 
+      ) ]               (. __context->addImport( t->line, s, alias ); .) 
+      SYNC ';' 
+    }
+    { RequestBloc }
+  |                     (. 
+                            __currentSession = new O3prmrSession<double>("default");
+                            __context->addSession( *__currentSession );
+                        .)
+    Command
+  ).
+
+RequestBloc = request word  (. __currentSession = new O3prmrSession<double>(gum::narrow(t->val)); .)
+              '{' {
+                    Command
+              } SYNC '}'         (. __context->addSession( *__currentSession ); __currentSession = nullptr; .)
+              .
+
+Command = ( Observe |
+            Unobserve |
+            Query |
+            SetEngine |
+            SetGrdEngine ) .
+
+//=====================
+Observe =   (. std::string left_value, right_value; .)
+          IdentArray<left_value> '=' word (. right_value = gum::narrow(t->val); .)
+          ';' (. __currentSession->addObserve(t->line, left_value, right_value); .) .
+
+//=====================
+Unobserve = unobserve (. std::string s; .)
+            IdentArray<s> (. __currentSession->addUnobserve( t->line, s ); .)
+            ';'
+            .
+
+//=====================
+Query = '?'       (. std::string s; .)
+        IdentArray<s>  (. __currentSession->addQuery( t->line, s ); .)
+        { and
+        IdentArray<s>  (. __currentSession->addQuery( t->line, s ); .)
+        }
+        ';'
+        .
+
+//=====================
+SetEngine = engine ( "SVED" | "SVE" | "GND" ) (. __currentSession->addSetEngine( t->line, gum::narrow(t->val) ); .) ';'.
+
+//=====================
+SetGrdEngine = grd_engine ( "VE" | "VEBB" | "lazy" ) (. __currentSession->addSetGndEngine( t->line, gum::narrow(t->val) ); .) ';'.
+
+//=====================
+Ident<std::string& s> =             (. std::stringstream sBuff; .)
+                        word        (. sBuff << narrow(t->val); .)
+                        {
+                          '.' word  (. sBuff << "." << narrow(t->val); .)
+                        }           (. s = sBuff.str(); .)
+                        .
+
+IdentArray<std::string& s> = (. std::stringstream sBuff; .)
+        word                 (. sBuff << narrow(t->val); .)
+        [ '[' integer        (. sBuff << '[' << narrow(t->val) << ']'; .) 
+        ']' ]
+        {
+          '.' word           (. sBuff << "." << narrow(t->val); .)
+          [ '[' integer      (. sBuff << '[' << narrow(t->val) << ']'; .)
+          ']' ]
+        }                    (. s = sBuff.str(); .)
+        .
+        
+END o3prmr.
+

@@ -46,8 +46,8 @@
 #cmakedefine GUM_DOUBLE_SIZE @GUM_DOUBLE_SIZE@
 
 #define GUM_AT_LEAST(x,y,z) (GUM_MAJOR_VERSION>x || (GUM_MAJOR_VERSION>=x && \
-                            (GUM_MINOR_VERSION>y || (GUM_MINOR_VERSION>=y && \
-                            GUM_PATCH_VERSION>=z))))
+                             (GUM_MINOR_VERSION>y || (GUM_MINOR_VERSION>=y && \
+                                 GUM_PATCH_VERSION>=z))))
 
 #ifdef __GNUC__
 #define GNUC_AT_LEAST(x,y) ((__GNUC__==x && __GNUC_MINOR__>=y) || __GNUC__>x)
@@ -70,6 +70,7 @@
 #define GUM_DEPRECATED(func) func
 #endif
 
+#define GUM_UNUSED(expr) do { (void)(expr); } while (0)
 
 #include <agrum/core/debug.h>
 #include <agrum/core/inline.h>

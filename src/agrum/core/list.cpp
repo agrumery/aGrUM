@@ -26,10 +26,6 @@
 
 #include <agrum/core/list.h>
 
-/// include the inlined functions if necessary
-#ifdef GUM_NO_INLINE
-#include <agrum/core/list.inl>
-#endif /* GUM_NO_INLINE */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -54,28 +50,52 @@ namespace gum {
 # define GCC_DIAG_ON(x)
 #endif
 
-//GCC_DIAG_OFF(strict-aliasing)
-//GCC_DIAG_ON(strict-aliasing)
+  //GCC_DIAG_OFF(strict-aliasing)
+  //GCC_DIAG_ON(strict-aliasing)
 
-  // ==============================================================================
+
+  
   /// Destructor for end/rend
-  // ==============================================================================
-  template <> ListConstIterator<Debug>::~ListConstIterator()  {
+  template <> ListConstIterator<Debug>::~ListConstIterator() {
   }
 
-  // ==============================================================================
+  
   /// constructor for end/rend
-  // ==============================================================================
-  template <> ListConstIterator<Debug>::ListConstIterator()  :
-      __list( 0 ), __bucket( 0 ),
-      __next_current_bucket( 0 ), __prev_current_bucket( 0 ),
-      __null_pointing( false ), __container( 0 ) {
+  template <> ListConstIterator<Debug>::ListConstIterator() noexcept {
   }
+
+
+  /// Destructor for end/rend
+  template <> ListConstIteratorUnsafe<Debug>::~ListConstIteratorUnsafe() noexcept {
+  }
+
+  
+  /// constructor for end/rend
+  template <> ListConstIteratorUnsafe<Debug>::ListConstIteratorUnsafe() noexcept {
+  }
+
 
   // an iterator that represents both end and rend for all the Lists
   // (whatever their type). This is mainly what stroustrup suggests
   // in his C++ programming language, third edition, page 854
-  const ListConstIterator<Debug> __list_end;
+  static const ListConstIterator<Debug>       __static_list_end;
+  static const ListConstIteratorUnsafe<Debug> __static_list_end_unsafe;
+
+  static constexpr const void* __get_list_end () {
+    return &__static_list_end;
+  }
+  static constexpr const void* __get_list_end_unsafe () {
+    return &__static_list_end_unsafe;
+  }
+
+  const void *const __list_end = __get_list_end ();
+  const void *const __list_end_unsafe = __get_list_end_unsafe ();
+
+  
+  // to optimize compile-link time, provide the usual lists
+  template class List<bool>;
+  template class List<int>;
+  template class List<unsigned int>;
 
 
 } /* namespace gum */

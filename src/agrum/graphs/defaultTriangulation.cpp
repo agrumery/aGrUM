@@ -41,17 +41,17 @@ namespace gum {
   /* =========================================================================== */
   /* =========================================================================== */
 
-  // ==============================================================================
+
   /// basic constructor. initialize the triangulation
-  // ==============================================================================
+
   DefaultTriangulation::DefaultTriangulation
   ( const UndiGraph* theGraph,
-    const Property<unsigned int>::onNodes* modal,
+    const NodeProperty<Size>* modal,
     bool minimality, float theRatio, float theThreshold ) :
-    UnconstrainedTriangulation ( theGraph, modal,
-                                 DefaultEliminationSequenceStrategy(),
-                                 DefaultJunctionTreeStrategy(),
-                                 minimality ),
+    UnconstrainedTriangulation( theGraph, modal,
+                                DefaultEliminationSequenceStrategy(),
+                                DefaultJunctionTreeStrategy(),
+                                minimality ),
     __quasi_ratio( theRatio ),
     __threshold( theThreshold ) {
     // for debugging purposes
@@ -59,12 +59,12 @@ namespace gum {
   }
 
 
-  // ==============================================================================
+
   /// default constructor: initialize the triangulation for an empty graph
-  // ==============================================================================
-  DefaultTriangulation::DefaultTriangulation ( bool minimality,
-                                               double theRatio,
-                                               double theThreshold ) :
+
+  DefaultTriangulation::DefaultTriangulation( bool minimality,
+      double theRatio,
+      double theThreshold ) :
     UnconstrainedTriangulation( DefaultEliminationSequenceStrategy(),
                                 DefaultJunctionTreeStrategy(),
                                 minimality ),
@@ -76,12 +76,12 @@ namespace gum {
 
 
   /*
-  // ==============================================================================
+
   /// copy constructor
-  // ==============================================================================
+
   DefaultTriangulation::DefaultTriangulation
   ( const DefaultTriangulation& from ) :
-    UnconstrainedTriangulation ( 
+    UnconstrainedTriangulation (
 
 
     static_cast<const UnconstrainedEliminationSequenceStrategy&>(*(from._elimination_sequence_strategy)) ),
@@ -109,20 +109,20 @@ namespace gum {
     GUM_CONS_CPY( DefaultTriangulation );
   }
   */
-  
 
-  // ==============================================================================
+
+
   /// destructor
-  // ==============================================================================
+
   DefaultTriangulation::~DefaultTriangulation() {
     // for debugging purposes
     GUM_DESTRUCTOR( DefaultTriangulation );
   }
 
 
-  // ==============================================================================
+
   /// virtual copy constructor
-  // ==============================================================================
+
   DefaultTriangulation* DefaultTriangulation::newFactory() const {
     return new DefaultTriangulation;
   }

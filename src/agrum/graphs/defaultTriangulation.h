@@ -64,81 +64,81 @@ namespace gum {
    */
   /* =========================================================================== */
   class DefaultTriangulation : public UnconstrainedTriangulation {
-  public:
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
-    // ============================================================================
-    /// basic constructor. initialize the triangulation
-    // ============================================================================
-    explicit
-    DefaultTriangulation ( const UndiGraph* graph,
-                           const Property<unsigned int>::onNodes* modal,
-                           bool minimality = false,
-                           float theRatio = GUM_QUASI_RATIO,
-                           float theThreshold = GUM_WEIGHT_THRESHOLD );
+    public:
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
 
-    
-    // ============================================================================
-    /// default constructor: initialize the triangulation for an empty graph
-    // ============================================================================
-    explicit
-    DefaultTriangulation ( bool minimality = false,
-                           double theRatio = GUM_QUASI_RATIO,
-                           double theThreshold = GUM_WEIGHT_THRESHOLD );
-    
-    // ============================================================================
-    /// copy constructor
-    // ============================================================================
-    // DefaultTriangulation( const DefaultTriangulation& from );
+      /// basic constructor. initialize the triangulation
 
-    // ============================================================================
-    /// destructor
-    // ============================================================================
-    ~DefaultTriangulation();
-
-    // ============================================================================
-    /// virtual copy constructor
-    /** returns a fresh triangulation (over an empty graph) of the same
-     * type as the current object
-     *
-     * note that we return a pointer as it enables subclasses to return
-     * pointers to their types, not Triangulation pointers. See item 25 of the
-     * more effective C++.*/
-    // ============================================================================
-    virtual DefaultTriangulation* newFactory () const;
-
-    /// @}
-    
-
-    // ############################################################################
-    /// @name Accessors / Modifiers
-    // ############################################################################
-    /// @{
-
-    /// @}
+      explicit
+      DefaultTriangulation( const UndiGraph* graph,
+                            const NodeProperty<Size>* modal,
+                            bool minimality = false,
+                            float theRatio = GUM_QUASI_RATIO,
+                            float theThreshold = GUM_WEIGHT_THRESHOLD );
 
 
-    // ############################################################################
-    /// @name Operators
-    // ############################################################################
-    /// @{
-    // ============================================================================
-    /// copy operator
-    // ============================================================================
-    DefaultTriangulation& operator= ( const DefaultTriangulation& );
-    
-    /// @}
+
+      /// default constructor: initialize the triangulation for an empty graph
+
+      explicit
+      DefaultTriangulation( bool minimality = false,
+                            double theRatio = GUM_QUASI_RATIO,
+                            double theThreshold = GUM_WEIGHT_THRESHOLD );
 
 
-  private:
-    /// the ratio above which we consider nodes to be quasi simplicial
-    float __quasi_ratio;
+      /// copy constructor
 
-    /** @brief threshold under which almost and quasi simplicial nodes can be
-     * chosen to be eliminated */
-    float __threshold;
+      // DefaultTriangulation( const DefaultTriangulation& from );
+
+
+      /// destructor
+
+      ~DefaultTriangulation();
+
+
+      /// virtual copy constructor
+      /** returns a fresh triangulation (over an empty graph) of the same
+       * type as the current object
+       *
+       * note that we return a pointer as it enables subclasses to return
+       * pointers to their types, not Triangulation pointers. See item 25 of the
+       * more effective C++.*/
+
+      virtual DefaultTriangulation* newFactory() const;
+
+      /// @}
+
+
+      // ############################################################################
+      /// @name Accessors / Modifiers
+      // ############################################################################
+      /// @{
+
+      /// @}
+
+
+      // ############################################################################
+      /// @name Operators
+      // ############################################################################
+      /// @{
+
+      /// copy operator
+
+      DefaultTriangulation& operator= ( const DefaultTriangulation& );
+
+      /// @}
+
+
+    private:
+      /// the ratio above which we consider nodes to be quasi simplicial
+      float __quasi_ratio;
+
+      /** @brief threshold under which almost and quasi simplicial nodes can be
+       * chosen to be eliminated */
+      float __threshold;
 
   };
 

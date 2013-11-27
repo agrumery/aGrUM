@@ -206,7 +206,8 @@ namespace gum {
       virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
   };
 
-
+  extern template class MultiDimArray<float>;
+  extern template class MultiDimArray<double>;
 } /* namespace gum */
 
 

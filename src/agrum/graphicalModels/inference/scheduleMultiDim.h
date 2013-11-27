@@ -102,124 +102,124 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   class ScheduleMultiDim {
-  public:
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
+    public:
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
 
-    /// constructs a ScheduleMultiDim containing an already built implementation
-    ScheduleMultiDim ( const MultiDimImplementation<GUM_SCALAR>& );
+      /// constructs a ScheduleMultiDim containing an already built implementation
+      ScheduleMultiDim( const MultiDimImplementation<GUM_SCALAR>& );
 
-    /// constructs a ScheduleMultiDim containing an already built implementation
-    ScheduleMultiDim ( const MultiDimDecorator<GUM_SCALAR>& );
+      /// constructs a ScheduleMultiDim containing an already built implementation
+      ScheduleMultiDim( const MultiDimDecorator<GUM_SCALAR>& );
 
-    /// construct a ScheduleMultiDim for an implementation yet to be built
-    /** The ScheduleMultiDim created is abstract, i.e., it does not contain a
-     * proper MultiDimImplementation yet. However, the variables of the latter
-     * need be known to optimize inference processes
-     * @warning the sequence of variables is copied into the wrapper. */
-    ScheduleMultiDim ( const Sequence<const DiscreteVariable*>& vars );
+      /// construct a ScheduleMultiDim for an implementation yet to be built
+      /** The ScheduleMultiDim created is abstract, i.e., it does not contain a
+       * proper MultiDimImplementation yet. However, the variables of the latter
+       * need be known to optimize inference processes
+       * @warning the sequence of variables is copied into the wrapper. */
+      ScheduleMultiDim( const Sequence<const DiscreteVariable*>& vars );
 
-    /// copy constructor
-    ScheduleMultiDim ( const ScheduleMultiDim<GUM_SCALAR>& );
+      /// copy constructor
+      ScheduleMultiDim( const ScheduleMultiDim<GUM_SCALAR>& );
 
-    /// destructor
-    ~ScheduleMultiDim ();
+      /// destructor
+      ~ScheduleMultiDim();
 
-    /// @}
-
-
-
-    // ############################################################################
-    /// @name Operators
-    // ############################################################################
-
-    /// @{
-
-    /// copy operator
-    ScheduleMultiDim<GUM_SCALAR>& operator= ( const ScheduleMultiDim<GUM_SCALAR>& );
-
-    /// checks whether two ScheduleMultiDim are related to the same table
-    bool operator== ( const ScheduleMultiDim<GUM_SCALAR>& ) const;
-
-    /// checks whether two ScheduleMultiDim are related to different tables
-    bool operator!= ( const ScheduleMultiDim<GUM_SCALAR>& ) const;
-
-    /// @}
+      /// @}
 
 
 
-    // ############################################################################
-    /// @name Accessors/Modifiers
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      /// @name Operators
+      // ############################################################################
 
-    /// returns whether the ScheduleMultiDim contains a real multiDimImplementation
-    /** @returns true if the ScheduleMultiDim is abstract, i.e., it is does not
-     * actually contains a real MultiDimImplementation but rather a ID indicating
-     * that the real multiDimImplementation is yet to be created as a result of an
-     * operation on other multiDimImplementations. */
-    bool isAbstract () const;
+      /// @{
 
-    /** @brief returns the multiDimImplementation actually contained in the
-     * ScheduleMultiDim
-     *
-     * @throws NotFound exception is thrown if the multidimImplementation does not
-     * exist yet (because it has not been computed yet) */
-    const MultiDimImplementation<GUM_SCALAR>& multiDim () const;
+      /// copy operator
+      ScheduleMultiDim<GUM_SCALAR>& operator= ( const ScheduleMultiDim<GUM_SCALAR>& );
 
-    /// returns the id of the ScheduleMultiDim
-    Id id () const;
+      /// checks whether two ScheduleMultiDim are related to the same table
+      bool operator== ( const ScheduleMultiDim<GUM_SCALAR>& ) const;
 
-    /// returns the set of variables involved in the multidim
-    const Sequence<const DiscreteVariable*>& variablesSequence () const;
+      /// checks whether two ScheduleMultiDim are related to different tables
+      bool operator!= ( const ScheduleMultiDim<GUM_SCALAR>& ) const;
 
-    /// returns the domain size of the multidim
-    Size domainSize () const;
-
-    /// sets a new multiDimImplementation inside the wrapper
-    /** @throws DuplicateElement exception is thrown if the MultiDimImplementation
-     * has already been wrapped in a ScheduleMultiDim with another id */
-    void setMultiDim ( const MultiDimImplementation<GUM_SCALAR>& );
-
-    /// sets a new multiDimDecorator inside the wrapper
-    /** @throws DuplicateElement exception is thrown if the MultiDimDecorator
-     * has already been wrapped in a ScheduleMultiDim with another id */
-    void setMultiDim ( const MultiDimDecorator<GUM_SCALAR>& );
-
-    /// displays the content of the multidim
-    std::string toString () const;
-
-    /// @}
+      /// @}
 
 
-  private:
-    /// grant accesses to ScheduleDeleteMultiDim
-    friend class ScheduleDeleteMultiDim<GUM_SCALAR>;
 
-    /// the unique Id of the ScheduleMultiDim
-    Id __id;
+      // ############################################################################
+      /// @name Accessors/Modifiers
+      // ############################################################################
+      /// @{
 
-    /// returns a new distinct ID for each abtract scheduleMultiDim
-    static Id __newId ();
+      /// returns whether the ScheduleMultiDim contains a real multiDimImplementation
+      /** @returns true if the ScheduleMultiDim is abstract, i.e., it is does not
+       * actually contains a real MultiDimImplementation but rather a ID indicating
+       * that the real multiDimImplementation is yet to be created as a result of an
+       * operation on other multiDimImplementations. */
+      bool isAbstract() const;
 
-    /// returns a mapping from id to multidimImplementations
-    static HashTable<Id,const MultiDimImplementation<GUM_SCALAR>*>& __id2multidim ();
+      /** @brief returns the multiDimImplementation actually contained in the
+       * ScheduleMultiDim
+       *
+       * @throws NotFound exception is thrown if the multidimImplementation does not
+       * exist yet (because it has not been computed yet) */
+      const MultiDimImplementation<GUM_SCALAR>& multiDim() const;
 
-    /// returns the id corresponding to a given multidim
-    /** useful to assign the same id every time a given MultiDimImplementation
-     * is wrapped into a ScheduleMultiDim */
-    static HashTable<const MultiDimImplementation<GUM_SCALAR>*,Id>& __multidim2id ();
+      /// returns the id of the ScheduleMultiDim
+      Id id() const;
 
-    /// returns a table indicating how many ScheduleMultiDim have the same id
-    static HashTable<Id,unsigned int>& __id2refs ();
+      /// returns the set of variables involved in the multidim
+      const Sequence<const DiscreteVariable*>& variablesSequence() const;
 
-    /// returns a table with the variables of the table corresponding to id
-    static HashTable<Id,const Sequence<const DiscreteVariable*>*>& __id2vars ();
+      /// returns the domain size of the multidim
+      Size domainSize() const;
 
-    /// returns a table with the domain size of the table corresponding to id
-    static HashTable<Id,Size>& __id2size ();
+      /// sets a new multiDimImplementation inside the wrapper
+      /** @throws DuplicateElement exception is thrown if the MultiDimImplementation
+       * has already been wrapped in a ScheduleMultiDim with another id */
+      void setMultiDim( const MultiDimImplementation<GUM_SCALAR>& );
+
+      /// sets a new multiDimDecorator inside the wrapper
+      /** @throws DuplicateElement exception is thrown if the MultiDimDecorator
+       * has already been wrapped in a ScheduleMultiDim with another id */
+      void setMultiDim( const MultiDimDecorator<GUM_SCALAR>& );
+
+      /// displays the content of the multidim
+      std::string toString() const;
+
+      /// @}
+
+
+    private:
+      /// grant accesses to ScheduleDeleteMultiDim
+      friend class ScheduleDeleteMultiDim<GUM_SCALAR>;
+
+      /// the unique Id of the ScheduleMultiDim
+      Id __id;
+
+      /// returns a new distinct ID for each abtract scheduleMultiDim
+      static Id __newId();
+
+      /// returns a mapping from id to multidimImplementations
+      static HashTable<Id,const MultiDimImplementation<GUM_SCALAR>*>& __id2multidim();
+
+      /// returns the id corresponding to a given multidim
+      /** useful to assign the same id every time a given MultiDimImplementation
+       * is wrapped into a ScheduleMultiDim */
+      static HashTable<const MultiDimImplementation<GUM_SCALAR>*,Id>& __multidim2id();
+
+      /// returns a table indicating how many ScheduleMultiDim have the same id
+      static HashTable<Id,unsigned int>& __id2refs();
+
+      /// returns a table with the variables of the table corresponding to id
+      static HashTable<Id,const Sequence<const DiscreteVariable*>*>& __id2vars();
+
+      /// returns a table with the domain size of the table corresponding to id
+      static HashTable<Id,Size>& __id2size();
 
   };
 

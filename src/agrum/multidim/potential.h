@@ -59,32 +59,29 @@ namespace gum {
       /// @name Constructors / Destructors
       // ############################################################################
       /// @{
-      // ============================================================================
+
       /**
        * Default constructor: creates an empty null dimensional matrix
        * choose a MultiDimArray<> as decorated implementation.
        */
-      // ============================================================================
       Potential( );
 
-      // ============================================================================
+
       /**
        * Creates an empty null dimensional matrix.
        * @param aContent decorated implementation
        */
-      // ============================================================================
-      explicit Potential( MultiDimImplementation<GUM_SCALAR> *aContent );
+      explicit Potential( MultiDimImplementation<GUM_SCALAR>* aContent );
 
-      // ============================================================================
+
       /**
        * Copy constructor.
        * This copy should create a new decorator for the same content ...
        * Too dangerous.
        */
-      // ============================================================================
       explicit Potential( const Potential<GUM_SCALAR>& src );
 
-      // ============================================================================
+
       /**
        * Copy constructor.
        *
@@ -93,18 +90,16 @@ namespace gum {
        * @param aContent decorated implementation
        * @param src the multidimensional matrix we copy into this
        */
-      // ============================================================================
-      explicit Potential( MultiDimImplementation<GUM_SCALAR> *aContent,
+      explicit Potential( MultiDimImplementation<GUM_SCALAR>* aContent,
                           const MultiDimContainer<GUM_SCALAR>& src );
 
-      // ============================================================================
+
       /**
        * Destructor.
        *
        * Note that, when the multidimensional array is removed from memory, its
        * variables are not removed as well.
        */
-      // ============================================================================
       ~Potential();
 
       /// @}
@@ -152,7 +147,7 @@ namespace gum {
 
     protected:
       /// perform the marginalization p over the vars on *this.
-      void _marginalize( const Potential& p,const Set<const DiscreteVariable *>& del_vars ) const;
+      void _marginalize( const Potential& p,const Set<const DiscreteVariable*>& del_vars ) const;
 
       /// perform the multiplication of args.
       void _multiplicate( const Potential& p1, const Potential& p2 ) ;
@@ -162,6 +157,8 @@ namespace gum {
   };
 
 
+  extern template class Potential<float>;
+  extern template class Potential<double>;
 } /* namespace gum */
 
 
@@ -170,4 +167,4 @@ namespace gum {
 
 #endif /* GUM_POTENTIAL_H */
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

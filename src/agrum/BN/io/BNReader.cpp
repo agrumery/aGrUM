@@ -20,10 +20,9 @@
 /** @file
  * @brief Outlined implementation of gumBNReader
  *
- * @author Lionel Torti & Pierre-Henri Wuillemin
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 #include <agrum/BN/io/BNReader.h>
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+template class gum::BNReader<float>;
+template class gum::BNReader<double>;

@@ -23,37 +23,37 @@
 // ============================================================================
 
 type t_state extends boolean
-  OK: true,
-  NOK: false;
+OK: true,
+    NOK: false;
 
 type t_ink extends t_state
-  NotEmpty: OK,
-  Empty:    NOK;
+NotEmpty: OK,
+          Empty:    NOK;
 
 type t_paper extends t_state
-  Ready:    OK,
-  Jammed:   NOK,
-  Empty:    NOK;
+Ready:    OK,
+          Jammed:   NOK,
+          Empty:    NOK;
 
 
 type t_degraded extends t_state
-  OK: OK,
-  Dysfunctional: NOK,
-  Degraded: NOK;
+OK: OK,
+    Dysfunctional: NOK,
+    Degraded: NOK;
 
 // The state of a black & white printer
 type t_bw_p extends t_degraded
-  CanPrint:   OK,
-  PaperJam:   Dysfunctional,
-  NoInk:      Dysfunctional,
-  CantPrint:  Dysfunctional;
+CanPrint:   OK,
+            PaperJam:   Dysfunctional,
+            NoInk:      Dysfunctional,
+            CantPrint:  Dysfunctional;
 
 // The state of color printer
 type t_color_p extends t_degraded
-  CanPrint:   OK,
-  PaperJam:   Dysfunctional,
-  NoInk:      Dysfunctional,
-  // One of the four inks is depleted (black, magenta, cyan or yellow)
-  MissingInk: Degraded,
-  CantPrint:  Dysfunctional;
+CanPrint:   OK,
+            PaperJam:   Dysfunctional,
+            NoInk:      Dysfunctional,
+            // One of the four inks is depleted (black, magenta, cyan or yellow)
+            MissingInk: Degraded,
+            CantPrint:  Dysfunctional;
 

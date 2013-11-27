@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}@lip6.fr                                                  *
- *   test $Id: $                                                           *
+ *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -21,7 +21,7 @@
  * @file
  * @brief Outlined implementation VariableNodeMap
  *
- * @author Lionel Torti
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -39,21 +39,21 @@ namespace gum {
 
   // Default constructor.
   VariableNodeMap::VariableNodeMap() {
-    GUM_CONSTRUCTOR ( VariableNodeMap );
+    GUM_CONSTRUCTOR( VariableNodeMap );
   }
 
 
   // Copy constructor.
-  VariableNodeMap::VariableNodeMap ( const VariableNodeMap& source ) {
-    GUM_CONS_CPY ( VariableNodeMap );
+  VariableNodeMap::VariableNodeMap( const VariableNodeMap& source ) {
+    GUM_CONS_CPY( VariableNodeMap );
 
-    __copy ( source );
+    __copy( source );
   }
 
 
   // Destructor
   VariableNodeMap::~VariableNodeMap() {
-    GUM_DESTRUCTOR ( VariableNodeMap );
+    GUM_DESTRUCTOR( VariableNodeMap );
 
     clear();
   }
@@ -63,12 +63,12 @@ namespace gum {
   VariableNodeMap&
   VariableNodeMap::operator= ( const VariableNodeMap& source ) {
     clear();
-    __copy ( source );
+    __copy( source );
 
     return *this;
   }
 
-  void VariableNodeMap::clear ( void ) {
+  void VariableNodeMap::clear( void ) {
     for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter =
             __nodes2vars.begin(); iter != __nodes2vars.end(); ++iter ) {
       delete iter.second();
@@ -91,20 +91,20 @@ namespace gum {
   }
 
   /// do the copy
-  void VariableNodeMap::__copy ( const VariableNodeMap& source ) {
+  void VariableNodeMap::__copy( const VariableNodeMap& source ) {
     for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter =
             source.__nodes2vars.begin();
           iter != source.__nodes2vars.end(); ++iter ) {
-      __nodes2vars.insert ( iter.first(), iter.second()->copyFactory() );
+      __nodes2vars.insert( iter.first(), iter.second()->clone() );
       // copy factory is used inside insert
     }
 
     __names2nodes = source.__names2nodes;
   }
 
-  // ============================================================================
+
   /// for friendly displaying the content of clique graphs
-  // ============================================================================
+
   std::ostream& operator<< ( std::ostream& stream, const VariableNodeMap& v ) {
     stream << v.toString();
     return stream;

@@ -35,11 +35,11 @@
 #ifdef NDEBUG
 #define GUM_ERROR_IN_EXPR(type,msg) throw(type(msg))
 #define GUM_ERROR(type,msg) {std::ostringstream __error__str;__error__str<<msg;throw(type(__error__str.str()));}
-#define GUM_SHOWERROR(e) {std::cerr << (e).content() << std::endl;}
+#define GUM_SHOWERROR(e) {std::cerr << __FILE__ << ":" << __LINE__ << " " << (e).errorType()<< " - "<< (e).errorContent() << std::endl;}
 #else
 #define GUM_ERROR_IN_EXPR(type,msg) throw(type(msg))
 #define GUM_ERROR(type,msg) {std::ostringstream __error__str;__error__str<<msg;throw(type(gum::__createMsg(__FILE__,__FUNCTION__,__LINE__,__error__str.str())));}
-#define GUM_SHOWERROR(e) {std::cerr << __FILE__ << ":" << __LINE__ << ": Exception " << (e).content() << std::endl;std::cerr<<(e).callStack()<<std::endl;}
+#define GUM_SHOWERROR(e) {std::cerr << __FILE__ << ":" << __LINE__ << " " << (e).errorType()<< " - "<< (e).errorContent() << std::endl;std::cerr<<(e).errorCallStack()<<std::endl;}
 #endif //NDEBUG
 
 #define GUM_MAKE_ERROR(TYPE,SUPERCLASS,MSG)                             \
@@ -74,15 +74,15 @@ namespace gum {
       /**
        * @return return the message content
        */
-      const std::string content() const {
+      const std::string errorContent() const {
         return _type + " : " + _msg;
       }
 
-      const std::string type() const {
+      const std::string errorType() const {
         return _type;
       }
 
-      const std::string callStack() const {
+      const std::string errorCallStack() const {
         return _callstack;
       }
   };
@@ -95,7 +95,7 @@ namespace gum {
   GUM_MAKE_ERROR( UndefinedIteratorValue, Exception, "Iterator's value is undefined" )
 /// Exception : iterator does not point to any valid key
   GUM_MAKE_ERROR( UndefinedIteratorKey, Exception, "Iterator's key is undefined" )
-/// Exception : a pointer or a reference on a NULL (0) object
+/// Exception : a pointer or a reference on a nullptr (0) object
   GUM_MAKE_ERROR( NullElement, Exception, "Null Element" )
 /// Exception : a looked-for element could not be found
   GUM_MAKE_ERROR( UndefinedElement, Exception, "could not find the so-called element" )
@@ -160,7 +160,7 @@ namespace gum {
   GUM_MAKE_ERROR( CPTError, Exception, "CPT error" )
 /// Exception : no neighbour to a given node was found
   GUM_MAKE_ERROR( CPTNoSumTo1, CPTError, "CPT does not sum to 1" )
-  
+
 
 /// Exception base for factory error
   GUM_MAKE_ERROR( FactoryError, Exception, "factory error" )

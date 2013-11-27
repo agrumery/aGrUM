@@ -1,6 +1,6 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
-    Copyright (C) 2012  Pierre-Henri Wuillemin <pierre-henri.wuillemin@lip6.fr>
+    Copyright (C) 2012  Pierre-Henri WUILLEMIN <pierre-henri.wuillemin@lip6.fr>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,14 +20,14 @@ s
 #include <agrum/BN/algorithms/approximationSchemeListener.h>
 
 namespace gum {
-  ApproximationSchemeListener::ApproximationSchemeListener(ApproximationScheme& sch):__sch(sch) {
+  ApproximationSchemeListener::ApproximationSchemeListener( ApproximationScheme& sch ):__sch( sch ) {
     GUM_CONSTRUCTOR( ApproximationSchemeListener );
-    
-    GUM_CONNECT(( __sch ),onProgress,( *this ),ApproximationSchemeListener::whenProgress );
-    GUM_CONNECT(( __sch ),onStop,( *this ),ApproximationSchemeListener::whenStop);
+
+    GUM_CONNECT( ( __sch ),onProgress,( *this ),ApproximationSchemeListener::whenProgress );
+    GUM_CONNECT( ( __sch ),onStop,( *this ),ApproximationSchemeListener::whenStop );
   }
 
-  ApproximationSchemeListener::ApproximationSchemeListener( const ApproximationSchemeListener& other ) :__sch(other.__sch){
+  ApproximationSchemeListener::ApproximationSchemeListener( const ApproximationSchemeListener& other ) :__sch( other.__sch ) {
     GUM_CONS_CPY( ApproximationSchemeListener );
     GUM_ERROR( OperationNotAllowed,"No copy constructor for ApproximationSchemeListener" );
 

@@ -29,121 +29,127 @@
 namespace gum {
 
 
-  // ==============================================================================
+
   /// returns an elimination ordering compatible with the triangulated graph
-  // ==============================================================================
+
   INLINE
   const std::vector<NodeId>& StaticTriangulation::eliminationOrder() {
     if ( !__has_triangulation )  __triangulate();
+
     return __elim_order;
   }
 
-  // ==============================================================================
+
   /** @brief returns the number of a given node in the elimination order
    * (0 = first node eliminated) */
-  // ==============================================================================
+
   INLINE
   unsigned int StaticTriangulation::eliminationOrder( const NodeId id ) {
     if ( !__has_triangulation )  __triangulate();
+
     return __reverse_elim_order[id];
   }
 
-  // ==============================================================================
+
   /** @brief returns the number of a given node in the elimination order
    * (0 = first node eliminated) */
-  // ==============================================================================
+
   INLINE
-  const Property<unsigned int>::onNodes&
+  const NodeProperty<unsigned int>&
   StaticTriangulation::reverseEliminationOrder( ) {
     if ( !__has_triangulation )  __triangulate();
+
     return __reverse_elim_order;
   }
 
-  // ==============================================================================
+
   /// returns the elimination tree of a compatible ordering
-  // ==============================================================================
+
   INLINE
   const CliqueGraph&
   StaticTriangulation::eliminationTree() {
     if ( !__has_elimination_tree )  __computeEliminationTree();
+
     return __elim_tree;
   }
 
-  // ==============================================================================
+
   /// returns a compatible junction tree
-  // ==============================================================================
+
   INLINE
   const CliqueGraph&
   StaticTriangulation::junctionTree() {
     // checks if junctionTree already exists
     if ( !__has_junction_tree ) {
-      __junction_tree = &(_junction_tree_strategy->junctionTree ());
+      __junction_tree = &( _junction_tree_strategy->junctionTree() );
       __has_junction_tree = true;
     }
 
     return *__junction_tree;
   }
 
-  // ==============================================================================
+
   /// returns a junction tree of maximal prime subgraphs
-  // ==============================================================================
+
   INLINE
   const CliqueGraph&
   StaticTriangulation::maxPrimeSubgraphTree() {
     if ( !__has_max_prime_junction_tree )  __computeMaxPrimeJunctionTree();
+
     return __max_prime_junction_tree;
   }
 
-  // ==============================================================================
+
   /** @brief returns the Id of the maximal prime subgraph created by the
    * elimination of a given node during the triangulation process */
-  // ============================================================================
+
   INLINE
   NodeId StaticTriangulation::createdMaxPrimeSubgraph( const NodeId id ) {
     if ( !__has_max_prime_junction_tree )  __computeMaxPrimeJunctionTree();
+
     return __node_2_max_prime_clique[id];
   }
 
-  // ==============================================================================
+
   /** @brief returns the Id of the clique created by the
    * elimination of a given node during the triangulation process */
-  // ==============================================================================
+
   INLINE
   NodeId StaticTriangulation::createdJunctionTreeClique( const NodeId id ) {
-    return _junction_tree_strategy->createdClique ( id );
+    return _junction_tree_strategy->createdClique( id );
   }
 
 
-  // ==============================================================================
+
   /** @brief returns the Ids of the cliques of the junction tree created by the
    * elimination of the nodes */
-  // ==============================================================================
-  INLINE
-  const Property<NodeId>::onNodes&
-  StaticTriangulation::createdJunctionTreeCliques () {
-    return _junction_tree_strategy->createdCliques ();
-  }
-  
 
-  // ==============================================================================
+  INLINE
+  const NodeProperty<NodeId>&
+  StaticTriangulation::createdJunctionTreeCliques() {
+    return _junction_tree_strategy->createdCliques();
+  }
+
+
+
   /// sets/unset the fill-ins storage in the standard triangulation procedure
-  // ==============================================================================
+
   INLINE
   void StaticTriangulation::setFillIns( bool b ) {
     __we_want_fill_ins = b;
-    _elimination_sequence_strategy->askFillIns ( b );
+    _elimination_sequence_strategy->askFillIns( b );
   }
 
-  
-  // ==============================================================================
+
+
   /// returns the graph to be triangulated
-  // ==============================================================================
+
   INLINE
-  const UndiGraph* StaticTriangulation::originalGraph () const {
+  const UndiGraph* StaticTriangulation::originalGraph() const {
     return __original_graph;
   }
 
-  
+
 
 
 } /* namespace gum */

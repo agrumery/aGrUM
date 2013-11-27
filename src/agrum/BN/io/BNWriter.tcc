@@ -20,7 +20,7 @@
 /** @file
  * @brief Templates implementation of bns/io/gumBNWriter.h classes.
  *
- * @author Lionel Torti & Pierre-Henri Wuillemin
+ * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -44,5 +44,5 @@ namespace gum {
 
 } /* namespace gum */
 
-  
+
 #endif  // DOXYGEN_SHOULD_SKIP_THIS

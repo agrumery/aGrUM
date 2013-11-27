@@ -73,11 +73,11 @@ namespace gum {
     // not recursive version => use a FIFO for simulating the recursion
     List<NodeId> nodeFIFO;
     nodeFIFO.pushBack( n2 );
-    
+
     // mark[node] = successor if visited, else mark[node] does not exist
-    Property<NodeId>::onNodes mark;
-    mark.insert ( n2,n2 );
-   
+    NodeProperty<NodeId> mark;
+    mark.insert( n2,n2 );
+
     NodeId current;
 
     while ( ! nodeFIFO.empty() ) {
@@ -88,10 +88,10 @@ namespace gum {
       const NodeSet& set_neighbour = neighbours( current );
 
       for ( NodeSetIterator ite=set_neighbour.begin();
-            ite!=set_neighbour.end();++ite ) {
+            ite!=set_neighbour.end(); ++ite ) {
         NodeId new_one = *ite;
-        
-        if ( mark.exists ( new_one ) ) // if the node has already been visited
+
+        if ( mark.exists( new_one ) )  // if the node has already been visited
           continue;                    // do not check it again
 
         mark.insert( new_one, current );
@@ -101,8 +101,9 @@ namespace gum {
 
           for ( current=n1; current!=n2; current=mark[current] )
             v.push_back( current );
+
           v.push_back( n2 );
-          
+
           return v;
         }
 
@@ -111,24 +112,26 @@ namespace gum {
 
       // check the parents  //////////////////////////////////////////////
       const NodeSet& set = parents( current );
-      for ( NodeSetIterator ite=set.begin();ite!=set.end();++ite ) {
+
+      for ( NodeSetIterator ite=set.begin(); ite!=set.end(); ++ite ) {
         NodeId new_one = *ite;
 
-        if ( mark.exists(new_one) ) // if this node is already marked, do not
+        if ( mark.exists( new_one ) ) // if this node is already marked, do not
           continue;                 // check it again
 
-        mark.insert(new_one, current);
+        mark.insert( new_one, current );
 
         if ( new_one == n1 ) {
           std::vector<NodeId> v;
 
           for ( current = n1; current != n2; current = mark[current] )
             v.push_back( current );
+
           v.push_back( n2 );
 
           return v;
         }
-  
+
         nodeFIFO.pushBack( new_one );
       }
     }
@@ -143,8 +146,8 @@ namespace gum {
     nodeFIFO.pushBack( n2 );
 
     // mark[node] = successor if visited, else mark[node] does not exist
-    Property<NodeId>::onNodes mark;
-    mark.insert ( n2,n2 );
+    NodeProperty<NodeId> mark;
+    mark.insert( n2,n2 );
 
     NodeId current;
 
@@ -154,11 +157,12 @@ namespace gum {
 
       // check the neighbours //////////////////////////////////////////////
       const NodeSet& set_neighbour=neighbours( current );
+
       for ( NodeSetIterator ite=set_neighbour.begin();
-            ite!=set_neighbour.end();++ite ) {
+            ite!=set_neighbour.end(); ++ite ) {
         NodeId new_one = *ite;
 
-        if ( mark.exists ( new_one ) ) // if the node has already been visited
+        if ( mark.exists( new_one ) )  // if the node has already been visited
           continue;                    // do not check it again
 
         mark.insert( new_one, current );
@@ -168,8 +172,9 @@ namespace gum {
 
           for ( current=n1; current!=n2; current=mark[current] )
             v.push_back( current );
+
           v.push_back( n2 );
-          
+
           return v;
         }
 
@@ -179,11 +184,11 @@ namespace gum {
       // check the parents //////////////////////////////////////////////
       const NodeSet& set_parent = parents( current );
 
-      for ( NodeSetIterator ite=set_parent.begin();ite!=set_parent.end();++ite ) {
+      for ( NodeSetIterator ite=set_parent.begin(); ite!=set_parent.end(); ++ite ) {
         NodeId new_one = *ite;
 
-        if ( mark.exists ( new_one ) ) // the node has already been visited
-          continue; 
+        if ( mark.exists( new_one ) )  // the node has already been visited
+          continue;
 
         mark.insert( new_one, current );
 
@@ -192,6 +197,7 @@ namespace gum {
 
           for ( current=n1; current!=n2; current=mark[current] )
             v.push_back( current );
+
           v.push_back( n2 );
 
           return v;
@@ -204,11 +210,11 @@ namespace gum {
       const NodeSet& set_children = children( current );
 
       for ( NodeSetIterator ite=set_children.begin();
-            ite!=set_children.end();++ite ) {
+            ite!=set_children.end(); ++ite ) {
         NodeId new_one = *ite;
 
-        if ( mark.exists ( new_one ) ) // the node has already been visited
-          continue; 
+        if ( mark.exists( new_one ) )  // the node has already been visited
+          continue;
 
         mark.insert( new_one, current );
 
@@ -217,6 +223,7 @@ namespace gum {
 
           for ( current=n1; current!=n2; current=mark[current] )
             v.push_back( current );
+
           v.push_back( n2 );
 
           return v;
@@ -236,7 +243,7 @@ namespace gum {
     stream<<g.toString();
     return stream;
   }
-  
+
 
 } /* namespace gum */
 

@@ -36,6 +36,12 @@
 #define GUM_CAST static_cast
 #endif
 
+#include <agrum/config.h>
+
+#include <agrum/core/utils_dir.h>
+#include <agrum/core/utils_string.h>
+#include <agrum/core/utils_random.h>
+
 namespace std {
 
   // used ,e.g., for hashtables
@@ -49,29 +55,33 @@ namespace std {
 
 
 namespace gum {
-  /// Implements a stream with the same behaviour as /dev/null
 
+  /** forbidden_type<T1,T2> return the "int" type if T1 and T2 are the same type, else nothing.
+   * Use it as a guard in template specification :
+   *
+   * @code
+   * template<T,forbidden_type<T,int> =0,forbidden_type<T,char> =0> ...
+   * @endcode
+   *
+   * creates a template except if T is int or char !!! cool !!!
+   */
+  template<typename T1, typename T2 > using forbidden_type = typename std::enable_if < ! std::is_same<T1, T2>::value , int >::type;
+
+  /// Implements a stream with the same behaviour as /dev/null
   struct NullStream : std::ostream {
     NullStream() : std::ios( 0 ), std::ostream( 0 ) {}
   };
 
   /// cross-platform replacement for memcmp. returns true if OK
-  bool Memcmp( const void * const _in,
-               const void * const _out,
+  bool Memcmp( const void* const _in,
+               const void* const _out,
                unsigned long size );
 
   /// for debug purpose
   void __atexit( void );
 
-  /// returns a random number between 0 and 1 included (i.e. a proba)
-  double getRandomProba();
-
-  /// initialize random generator seed
-  void initRandom();
-
   /// indicate whether two elements are (almost) different or not
   template <typename T>
-
   struct AlmostDifferent {
     bool operator()( const T& t1, const T& t2 ) {
       return ( ( t1 > t2 + ( T ) 0.000001 ) ||
@@ -80,7 +90,6 @@ namespace gum {
   };
 
   template <typename T>
-
   struct AlmostDifferent<T*> {
     bool operator()( const T* t1, const T* t2 ) {
       return ( t1 != t2 );
@@ -89,11 +98,6 @@ namespace gum {
 
 
 } /* namespace gum */
-
-
-#ifndef GUM_NO_INLINE
-#include <agrum/core/utils.inl>
-#endif // GUM_NO_INLINE
 
 
 #include <agrum/core/utils.tcc>

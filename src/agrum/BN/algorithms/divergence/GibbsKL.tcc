@@ -21,12 +21,14 @@
  * @file
  * @brief KL divergence between BNs brute force implementation
  *
- * @author Pierre-Henri Wuillemin
+ * @author Pierre-Henri WUILLEMIN
  */
-// ============================================================================
+
 #include <math.h>
 
-#include <agrum/BN/BayesNet.h>
+#include <agrum/core/hashTable.h>
+#include <agrum/BN/IBayesNet.h>
+
 #include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
 #include <agrum/BN/particles/Gibbs.h>
@@ -42,7 +44,7 @@
 namespace gum {
 
   template<typename GUM_SCALAR>
-  GibbsKL<GUM_SCALAR>::GibbsKL( const BayesNet<GUM_SCALAR>& P,const BayesNet<GUM_SCALAR>& Q ) :
+  GibbsKL<GUM_SCALAR>::GibbsKL( const IBayesNet<GUM_SCALAR>& P,const IBayesNet<GUM_SCALAR>& Q ) :
     KL<GUM_SCALAR> ( P,Q ),
     ApproximationScheme( ),
     particle::Gibbs<GUM_SCALAR> ( P ) {
@@ -79,14 +81,21 @@ namespace gum {
   template<typename GUM_SCALAR>
   void GibbsKL<GUM_SCALAR>::_computeKL() {
 
-    gum::Instantiation Iq; _q.completeInstantiation( Iq );
-    gum::Instantiation Ip; _p.completeInstantiation( Ip );
+    gum::Instantiation Iq;
+    _q.completeInstantiation( Iq );
 
     initParticle();
     initApproximationScheme();
 
+    // map between particle() variables and _q variables (using name of vars)
+    HashTable<const DiscreteVariable*, const DiscreteVariable*> map;
+
+    for ( Idx ite=0; ite<particle().nbrDim(); ++ite ) {
+      map.insert( &particle().variable( ite ),&_q.variableFromName( particle().variable( ite ).name() ) );
+    }
+
     //BURN IN
-    for( Idx i = 0; i < burnIn(); i++ ) nextParticle( );
+    for ( Idx i = 0; i < burnIn(); i++ ) nextParticle( );
 
     // SAMPLING
     _klPQ=_klQP=_hellinger=( GUM_SCALAR )0.0;
@@ -104,15 +113,15 @@ namespace gum {
       updateApproximationScheme();
 
       //_p.synchroInstantiations( Ip,particle() );
-      _q.synchroInstantiations( Iq,particle() );
+      Iq.setValsFrom( map,particle() );
 
       pp=_p.jointProbability( particle() );
       pq=_q.jointProbability( Iq );
 
-      if( pp!=( GUM_SCALAR )0.0 ) {
+      if ( pp!=( GUM_SCALAR )0.0 ) {
         _hellinger+=pow( sqrt( pp )-sqrt( pq ),2 ) /pp;
 
-        if( pq!=( GUM_SCALAR )0.0 ) {
+        if ( pq!=( GUM_SCALAR )0.0 ) {
           _bhattacharya+=sqrt( pq/pp ); // sqrt(pp*pq)/pp
           ///check_rate=true;
           this->enableMinEpsilonRate(); // replace check_rate=true;
@@ -124,8 +133,8 @@ namespace gum {
         }
       }
 
-      if( pq!=( GUM_SCALAR )0.0 ) {
-        if( pp!=( GUM_SCALAR )0.0 ) {
+      if ( pq!=( GUM_SCALAR )0.0 ) {
+        if ( pp!=( GUM_SCALAR )0.0 ) {
           // if we are here, it is certain that delta and ratio have been computed
           // further lines above. (for now #112-113)
           _klQP+= ( GUM_SCALAR )( -delta*ratio );
@@ -134,13 +143,13 @@ namespace gum {
         }
       }
 
-      if( this->testMinEpsilonRate() /* replace check_rate */ ) {
+      if ( this->testMinEpsilonRate() /* replace check_rate */ ) {
         // delta is used as a temporary variable
         delta=_klPQ/nbrIterations();
         error=( double )fabs( delta-oldPQ );
         oldPQ=delta;
       }
-    } while( continueApproximationScheme( error /*,check_rate*/ ) );
+    } while ( continueApproximationScheme( error /*,check_rate*/ ) );
 
     _klPQ=-_klPQ/( nbrIterations() );
     _klQP=-_klQP/( nbrIterations() );
@@ -149,4 +158,4 @@ namespace gum {
   }
 
 } // namespace gum
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

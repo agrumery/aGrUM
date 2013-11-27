@@ -1,6 +1,6 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
-    Copyright (C) 2012  Pierre-Henri Wuillemin <pierre-henri.wuillemin@lip6.fr>
+    Copyright (C) 2012  Pierre-Henri WUILLEMIN <pierre-henri.wuillemin@lip6.fr>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ namespace gum {
   class ApproximationSchemeListener : public Listener {
 
     public:
-      ApproximationSchemeListener( ApproximationScheme& sch);
+      ApproximationSchemeListener( ApproximationScheme& sch );
       virtual ~ApproximationSchemeListener();
 
       virtual void whenProgress( const void* src,Size pourcent,double error, double time ) =0;
@@ -38,7 +38,7 @@ namespace gum {
     private:
       ApproximationSchemeListener( const ApproximationSchemeListener& other );
       ApproximationSchemeListener& operator=( const ApproximationSchemeListener& other );
-      
+
       ApproximationScheme& __sch;
   };
 }

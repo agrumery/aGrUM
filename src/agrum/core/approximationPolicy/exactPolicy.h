@@ -65,17 +65,17 @@ namespace gum {
       INLINE GUM_SCALAR fromExact( const GUM_SCALAR& value ) const {
         return value;
       };
-      
+
       void combineAdd( const ApproximationPolicy<GUM_SCALAR>* ap ) {};
-      
+
       void combineSub( const ApproximationPolicy<GUM_SCALAR>* ap ) {};
-      
+
       void combineMult( const ApproximationPolicy<GUM_SCALAR>* ap ) {};
-      
+
       void combineDiv( const ApproximationPolicy<GUM_SCALAR>* ap ) {};
-      
+
       void combineMax( const ApproximationPolicy<GUM_SCALAR>* ap ) {};
-      
+
       void combineMin( const ApproximationPolicy<GUM_SCALAR>* ap ) {};
 
       /// @}

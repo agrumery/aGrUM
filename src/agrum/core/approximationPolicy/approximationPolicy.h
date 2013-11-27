@@ -53,7 +53,7 @@ namespace gum {
       /**
        * Default constructor.
        */
-      ApproximationPolicy(  ) {  };
+      ApproximationPolicy( ) {  };
 
       /**
        * copy constructor.
@@ -69,19 +69,19 @@ namespace gum {
 
       /// Convert value to his approximation. This method (at least in release mode, should not verify the limits
       virtual GUM_SCALAR fromExact( const GUM_SCALAR& value ) const = 0;
-      
+
       virtual void combineAdd( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
-      
+
       virtual void combineSub( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
-      
+
       virtual void combineMult( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
-      
+
       virtual void combineDiv( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
-      
+
       virtual void combineMax( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
-      
+
       virtual void combineMin( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
-      
+
       /// @}
   };
 

@@ -33,94 +33,94 @@ namespace gum {
 
   void SetInst::__init( MultiDimAdressable* master ) {
     // for speed issues
-    const Sequence<const DiscreteVariable *>& v = master->variablesSequence();
+    const Sequence<const DiscreteVariable*>& v = master->variablesSequence();
     __vars.resize( v.size() );
     __vals.reserve( v.size() );
     // fill the SetInst
 
-    for ( Sequence<const DiscreteVariable *>::iterator iter = v.begin();
-        iter != v.end();++iter ) {
+    for ( Sequence<const DiscreteVariable*>::iterator iter = v.begin();
+          iter != v.end(); ++iter ) {
       __add( **iter );
     }
 
     //if ( master ) actAsSlave( master->getMasterRef() );
   }
 
-  // ==============================================================================
+
   /// constructor for a SetInst contained into a MultiDimInterface
-  // ==============================================================================
+
   SetInst::SetInst( MultiDimAdressable& d ) :
-    /*__master( 0 ),*/ __overflow( false ) {
-      // for debugging purposes
-      GUM_CONSTRUCTOR( SetInst );
-      __init( &d );
-    }
+/*__master( 0 ),*/ __overflow( false ) {
+    // for debugging purposes
+    GUM_CONSTRUCTOR( SetInst );
+    __init( &d );
+  }
 
   SetInst::SetInst( const MultiDimAdressable& d ) :
-    /*__master( 0 ),*/ __overflow( false ) {
-      // for debugging purposes
-      GUM_CONSTRUCTOR( SetInst );
-      __init( const_cast<MultiDimAdressable *>( &d ) );
-    }
+/*__master( 0 ),*/ __overflow( false ) {
+    // for debugging purposes
+    GUM_CONSTRUCTOR( SetInst );
+    __init( const_cast<MultiDimAdressable*>( &d ) );
+  }
 
-  // ==============================================================================
+
   /// constructor for a SetInst contained into a MultiDimInterface
-  // ==============================================================================
+
   SetInst::SetInst( MultiDimAdressable* d ) :
-    /*__master( 0 ),*/ __overflow( false ) {
-      // for debugging purposes
-      GUM_CONSTRUCTOR( SetInst );
+/*__master( 0 ),*/ __overflow( false ) {
+    // for debugging purposes
+    GUM_CONSTRUCTOR( SetInst );
 
-      if ( d ) __init( d );
-    }
+    if ( d ) __init( d );
+  }
 
-  // ==============================================================================
+
   /// constructor for a SetInst contained into a MultiDimInterface
   /** this constructor is needed in order to allow creation of SetInst(this)
    * in MultiDimAdressable and below */
-  // ==============================================================================
+
   SetInst::SetInst( const MultiDimAdressable* const_d ) :
-    /*__master( 0 ),*/ __overflow( false ) {
-      // for debugging purposes
-      GUM_CONSTRUCTOR( SetInst );
+/*__master( 0 ),*/ __overflow( false ) {
+    // for debugging purposes
+    GUM_CONSTRUCTOR( SetInst );
 
-      if ( const_d ) __init( const_cast<MultiDimAdressable *>( const_d ) );
-    }
+    if ( const_d ) __init( const_cast<MultiDimAdressable*>( const_d ) );
+  }
 
-  // ==============================================================================
+
   /// copy constructor
-  // ==============================================================================
-  SetInst::SetInst( const SetInst& aI) :
-   /* MultiDimInterface(), __master( 0 ),*/ __overflow( false ) {
-      // for debugging purposes
-      GUM_CONS_CPY( SetInst );
-      // copy the content of aI
-      __vars = aI.__vars;
-      __vals = aI.__vals;
-      __overflow = aI.__overflow;
 
+  SetInst::SetInst( const SetInst& aI ) :
+/* MultiDimInterface(), __master( 0 ),*/ __overflow( false ) {
+    // for debugging purposes
+    GUM_CONS_CPY( SetInst );
+    // copy the content of aI
+    __vars = aI.__vars;
+    __vals = aI.__vals;
+    __overflow = aI.__overflow;
+
+    //if ( aI.__master && notifyMaster ) actAsSlave( *aI.__master );
+  }
+
+
+  SetInst::SetInst( const Instantiation& aI ) :
+/* MultiDimInterface(), __master( 0 ),*/ __overflow( false ) {
+    // for debugging purposes
+    GUM_CONS_CPY( SetInst );
+    const Sequence<const DiscreteVariable*>& v = aI.variablesSequence();
+    __vars.resize( v.size() );
+    //__vals.reserve( v.size() );
+    // fill the SetInst
+
+    for ( Sequence<const DiscreteVariable*>::iterator iter = v.begin();
+          iter != v.end(); ++iter ) {
+      __add( **iter );
+      __vals[__vars[*iter]] =( 1 << ( aI.val( **iter ) ) );
+
+      // copy the content of aI
       //if ( aI.__master && notifyMaster ) actAsSlave( *aI.__master );
     }
-
-
-  SetInst::SetInst(  const Instantiation& aI) :
-    /* MultiDimInterface(), __master( 0 ),*/ __overflow( false ) {
-      // for debugging purposes
-      GUM_CONS_CPY( SetInst );
-      const Sequence<const DiscreteVariable *>& v = aI.variablesSequence();
-      __vars.resize( v.size() );
-      //__vals.reserve( v.size() );
-      // fill the SetInst
-
-      for ( Sequence<const DiscreteVariable *>::iterator iter = v.begin();
-          iter != v.end();++iter ) {
-        __add( **iter );
-        __vals[__vars[*iter]] =(1 << (aI.val(**iter)));
-
-        // copy the content of aI
-        //if ( aI.__master && notifyMaster ) actAsSlave( *aI.__master );
-      }
-      }
+  }
 
 
   // operator=
@@ -148,9 +148,9 @@ namespace gum {
     return *this;
   }
 
-  // ==============================================================================
+
   /// function is called by the master (if any) when changes arise in its vars list
-  // ==============================================================================
+
   /*
      void SetInst::changeDimCommand
      (const Sequence<const DiscreteVariable *>& v) {
@@ -185,36 +185,41 @@ namespace gum {
 
     sstr << "<";
 
-    Sequence<const DiscreteVariable *>::iterator iter = __vars.begin();
+    Sequence<const DiscreteVariable*>::iterator iter = __vars.begin();
 
     if ( iter != __vars.end() ) {
       std::stringstream sstr2;
-      sstr2.str("");
-      Size si =variable(iter.pos()).domainSize();
+      sstr2.str( "" );
+      Size si =variable( iter.pos() ).domainSize();
       Size valb=  vals( iter.pos() );
 
-      while (si-- != 0){
+      while ( si-- != 0 ) {
         std::stringstream  sstr4;
-        sstr4<<(valb & 1? "1":"0")<< sstr2.str();
+        sstr4<<( valb & 1? "1":"0" )<< sstr2.str();
         valb>>=1;
-        sstr2.str("");;
+        sstr2.str( "" );;
         sstr2 << sstr4.str();
       }
+
       sstr << variable( iter.pos() ).name() << ":"<<sstr2.str();
       ++iter;
-      while ( iter != __vars.end() ) {std::stringstream sstr3;
+
+      while ( iter != __vars.end() ) {
+        std::stringstream sstr3;
         sstr3 <<"";
-        si = variable(iter.pos()).domainSize();
+        si = variable( iter.pos() ).domainSize();
 
         valb=  vals( iter.pos() );
-        while (si-- != 0){
+
+        while ( si-- != 0 ) {
           std::stringstream  sstr4;
 
-          sstr4<<  (valb & 1? "1":"0") << sstr3.str();
+          sstr4<< ( valb & 1? "1":"0" ) << sstr3.str();
           valb>>=1;
-          sstr3.str("");
+          sstr3.str( "" );
           sstr3 << sstr4.str();
         }
+
         sstr << "|" << variable( iter.pos() ).name() << ":" <<sstr3.str();
         ++iter;
       }
@@ -237,22 +242,22 @@ namespace gum {
       return res;
       }*/
 
-  // ==============================================================================
+
   /// an operator for user-friendly displaying the content of a SetInst
-  // ==============================================================================
+
   std::ostream& operator<< ( std::ostream& aStream,
-      const SetInst& i ) {
+                             const SetInst& i ) {
     aStream<<i.toString();
     return aStream;
   }
   gum::SetInst& operator<< ( gum::SetInst& inst,
-      const gum::DiscreteVariable& i ) {
-    inst.add(i);
+                             const gum::DiscreteVariable& i ) {
+    inst.add( i );
     return inst;
   }
   gum::SetInst& operator>> ( gum::SetInst& inst,
-      const gum::DiscreteVariable& i ) {
-    inst.erase(i);
+                             const gum::DiscreteVariable& i ) {
+    inst.erase( i );
     return inst;
   }
 

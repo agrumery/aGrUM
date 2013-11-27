@@ -35,10 +35,10 @@ namespace gum {
     std::stringstream s;
     s<<name()<<"<";
 
-    if( domainSize()>0 ) {
+    if ( domainSize()>0 ) {
       s<<label( 0 );
 
-      for( Idx i=1; i<domainSize(); ++i ) {
+      for ( Idx i=1; i<domainSize(); ++i ) {
         s<<",";
         s<<label( i );
       }
@@ -49,9 +49,9 @@ namespace gum {
     return s.str();
   }
 
-  // ===============================================================================
+
   /// for friendly displaying the content of the variable
-  // ===============================================================================
+
   std::ostream& operator<< ( std::ostream& s, const DiscreteVariable& DRV ) {
     s << DRV.toString();
     return s;

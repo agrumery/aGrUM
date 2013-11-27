@@ -33,7 +33,7 @@
 
 #include <agrum/core/list.h>
 #include <agrum/core/hashTable.h>
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 
 
 namespace gum {
@@ -73,24 +73,24 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// creates an iterator pointing toward nothing
-      // ============================================================================
+
       DatabaseIterator();
 
-      // ============================================================================
+
       /// basic constructor points toward the nb_caseth case of the database
-      // ============================================================================
+
       DatabaseIterator( const Database& data, unsigned int nb_case );
 
-      // ============================================================================
+
       /// copy constructor
-      // ============================================================================
+
       DatabaseIterator( const DatabaseIterator& from );
 
-      // ============================================================================
+
       /// destructor
-      // ============================================================================
+
       ~DatabaseIterator();
 
       /// @}
@@ -101,26 +101,26 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// detach the iterator from the database it points to
-      // ============================================================================
+
       void clear();
 
-      // ============================================================================
+
       /// makes the iterator point toward the next case (safe, \sa operator++)
       /** @throws OutOfBound is thrown when we are already at the end of the
        * database or when the database is empty. */
-      // ============================================================================
+
       DatabaseIterator& nextCase();
 
-      // ============================================================================
+
       /// makes the iterator point toward the preceding case (safe, \sa operator--)
       /** @throws OutOfBound is thrown when we are already at the beginning of the
        * database or when the database is empty. */
-      // ============================================================================
+
       DatabaseIterator& prevCase();
 
-      // ============================================================================
+
       /** @brief returns the value of the ith node in the current case
        * (safe, \sa operator[])
        *
@@ -130,7 +130,7 @@ namespace gum {
        * variable of the database of the case pointed to by the DatabaseIterator.
        * @throws NotFound exception is raised if the database is empty or if i is
        * greater than or equal to the number of cases in the database. */
-      // ============================================================================
+
       unsigned int at( unsigned int i ) const;
 
       /// @}
@@ -141,32 +141,32 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// copy operator
-      // ============================================================================
+
       DatabaseIterator& operator= ( const DatabaseIterator& from );
 
-      // ============================================================================
+
       /// makes the iterator point toward the next case (fast but unsafe)
-      // ============================================================================
+
       DatabaseIterator& operator++ ();
 
-      // ============================================================================
+
       /// makes the iterator point toward the previous case (fast but unsafe)
-      // ============================================================================
+
       DatabaseIterator& operator-- ();
 
-      // ============================================================================
+
       /// check whether two iterators point toward the same case
-      // ============================================================================
+
       bool operator== ( const DatabaseIterator& ) const ;
 
-      // ============================================================================
+
       /// check whether two iterators point toward different cases
-      // ============================================================================
+
       bool operator!= ( const DatabaseIterator& ) const ;
 
-      // ============================================================================
+
       /** @brief returns the value of the ith node/index in the current case
        * (fast but unsafe)
        *
@@ -174,7 +174,7 @@ namespace gum {
        * integers: 0 for the first value, 1 for the second and so on. Operator[]
        * returns the index (the integer) corresponding to the value of the ith
        * variable of the database of the case pointed to by the DatabaseIterator. */
-      // ============================================================================
+
       unsigned int operator[]( unsigned int i ) const;
 
       /// @}
@@ -182,18 +182,18 @@ namespace gum {
 
     private:
       /// type used to create the begin/rbegin/end/rend iterators
-      enum IteratorLocation {
-        GUM_DATABASE_ITER_BEGIN,
-        GUM_DATABASE_ITER_RBEGIN,
-        GUM_DATABASE_ITER_END,
-        GUM_DATABASE_ITER_REND
+      enum class Location: char {
+        BEGIN,
+        RBEGIN,
+        END,
+        REND
       };
 
       /// the database the iterator points to
-      const Database *__database;
+      const Database* __database;
 
       /// a pointer to the case the iterator points to
-      const unsigned int *__current_case;
+      const unsigned int* __current_case;
 
       /// the offset by which we ++ or -- in the database cases vector
       unsigned int __offset;
@@ -202,10 +202,10 @@ namespace gum {
 
       friend class Database;
 
-      // ============================================================================
+
       /// initializers used for begin/rbegin/end/rend
-      // ============================================================================
-      void __initializeIterator( const Database& data, enum IteratorLocation );
+
+      void __initializeIterator( const Database& data, Location );
   };
 
 
@@ -233,22 +233,22 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// copy constructor
-      // ============================================================================
+
       Database( const Database& from );
 
-      // ============================================================================
+
       /// copy operator
-      // ============================================================================
+
       Database& operator= ( const Database& from );
 
-      // ============================================================================
+
       /// destructor
-      // ============================================================================
+
       ~Database();
 
-      // ============================================================================
+
       /// creates a new database from a pure CSV file
       /** The assumed format of the CSV file is the following: the first line
        * contains the names of the nodes/fields, and the following lines contain the
@@ -258,13 +258,13 @@ namespace gum {
        * @warning Missing values are represented internally by a label "?". Thus,
        * if there are missing values, the number of modalities take into account this
        * "?" label. */
-      // ============================================================================
+
       static Database createFromCSV( const std::string& filename,
                                      char field_separator = ';',
                                      char field_delimiter = '"',
                                      char escape_char = '\\' );
 
-      // ============================================================================
+
       /// creates a new database by using a BN to find variables and labels.
       /** The assumed format of the CSV file is the following: the first line
        * contains the names of the nodes/fields, and the following lines contain the
@@ -275,14 +275,14 @@ namespace gum {
        * if there are missing values, the number of modalities take into account
        * this "?" label.
        * @ throws IOError */
-      // ============================================================================
-      static Database createFromCSVAndBN( BayesNet<float> *bn,
+
+      static Database createFromCSVAndBN( IBayesNet<float>* bn,
                                           const std::string& filename,
                                           char separator_separator = ';',
                                           char field_delimiter = '"',
                                           char escape_char = '\\' );
 
-      // ============================================================================
+
       /// creates a new database from a mixed XML/CSV file
       /** The format of the file is the following:
        * - the whole file is enclosed in tags <*DATABASE*><* /DATABASE*>
@@ -323,7 +323,7 @@ namespace gum {
        *   value is "b" and variable "zzz"'s value is "cc".
        *
        *   Missing value are represented by "?"   */
-      // ============================================================================
+
       static Database createFromXmlCSV( const std::string& filename );
 
       /// @}
@@ -334,64 +334,64 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// get the ncaseth case in the database
       /** the first case is in position 0. A case is encoded as an array of
        * nbrNodes() integers. These correspond to the values of the nodes/fields
        * of the database.
        * @throw NotFound exception is thrown if the case cannot be found
        * (ncase is too big). */
-      // ============================================================================
+
       const unsigned int* line( unsigned int ncase ) const;
 
-      // ============================================================================
+
       /// get the value of the ith node in the nth case of the database
       /** the first case is in position 0.
        * @throw NotFound exception is thrown if the value cannot be found,
        * i.e., if n and/or i is/are too big. */
-      // ============================================================================
+
       unsigned int value( unsigned int n, unsigned int i )
       const ;
 
-      // ============================================================================
+
       /// returns the name of the kth node in the database
-      // ============================================================================
+
       const std::string& nodeName( unsigned int k ) const ;
 
-      // ============================================================================
+
       /// returns the names of all the nodes
-      // ============================================================================
+
       const std::vector<std::string>& nodeNames() const;
 
-      // ============================================================================
+
       /// returns the names of all the modalities of a given node
-      // ============================================================================
+
       const std::vector<std::string>& modalitiesNames( unsigned int k )const ;
 
-      // ============================================================================
+
       /// returns the kth modality name of the ith node
-      // ============================================================================
+
       const std::string& modalityName( unsigned int k, unsigned int i )const ;
 
-      // ============================================================================
+
       /// get the number of modalities of the kth node
       /// @warning : including "?" label if there are missing values
-      // ============================================================================
+
       unsigned int nbrModalities( unsigned int k ) const ;
 
-      // ============================================================================
+
       /// get the number of modalities of all the nodes
-      // ============================================================================
+
       const std::vector<unsigned int>& nbrModalities() const ;
 
-      // ============================================================================
+
       /// get the number of cases in the database
-      // ============================================================================
+
       unsigned int nbrLines() const ;
 
-      // ============================================================================
+
       /// get the number of nodes in the database
-      // ============================================================================
+
       unsigned int nbrNodes() const ;
 
       /// is there any missing value in the database
@@ -411,35 +411,35 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// returns an iterator pointing to the beginning of the database
-      // ============================================================================
+
       const DatabaseIterator& begin() const ;
 
-      // ============================================================================
+
       /// returns an iterator pointing just after the last element of the database
-      // ============================================================================
+
       const DatabaseIterator& end() const ;
 
-      // ============================================================================
+
       /// returns an iterator pointing to the last element of the database
-      // ============================================================================
+
       const DatabaseIterator& rbegin() const ;
 
-      // ============================================================================
+
       /// returns an iterator pointing just before the first element of the database
-      // ============================================================================
+
       const DatabaseIterator& rend() const ;
 
       /// @}
 
 
     protected:
-      // ============================================================================
+
       /// basic constructor
       /** the idea is not to use this constructor but rather the "named constructors"
        * who know about the formats of the input data */
-      // ============================================================================
+
       Database();
 
 
@@ -468,7 +468,7 @@ namespace gum {
 
       /** @brief the cases stored into the database. They are stored in the order
        * the values are read */
-      unsigned int *__cases;
+      unsigned int* __cases;
 
       /// pseudo iterators used to speed-up parsings
       DatabaseIterator __iter_begin;

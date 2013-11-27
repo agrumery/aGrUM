@@ -65,7 +65,7 @@ namespace gum {
       /// @{
 
       /// default constructor
-      /** @warning a NodeGraphPartIterator is built with __valid=false : don't forget to 
+      /** @warning a NodeGraphPartIterator is built with __valid=false : don't forget to
        * @ref __validate it (@see NodeGraphPart::beginNodes() code)
        **/
       NodeGraphPartIterator ( const NodeGraphPart* nodes );
@@ -136,7 +136,7 @@ namespace gum {
    * @brief Class for node sets in graph
    *
    * @ingroup graph_group
-   * 
+   *
    * NodeGraphPart represents the set of nodes of all the graphs. It is built to
    * be as light as possible and it implements its own NodeId factory.
    * The set of NodeId is 0 ... (__bound-1) minus the NodeIds in
@@ -254,7 +254,7 @@ namespace gum {
       /** populateNodes should basically be the preferred way to insert nodes with
        * IDs not selected by the internal idFactory. */
       template<typename T>
-      void populateNodesFromProperty ( const typename Property<T>::onNodes& h );
+      void populateNodesFromProperty ( const NodeProperty<T>& h );
 
       /** returns a new node id, not yet used by any node
        * @warning a code like @code id=nextId();insertNode(id); @endcode is
@@ -308,16 +308,20 @@ namespace gum {
 
       /// returns a copy of the set of nodes represented by the NodeGraphPart
       /** @warning this function is o(n) where n is the number of nodes. In space and
-       * in time. Usually, when you need parsing the nodes of a NodeGraphPart, prefer
-       * using beginNodes()/endNodes() rather than nodes().begin()/nodes().end() as
-       * this is faster and consumes much less memory. */
-      NodeSet nodes() const;
+       * in time. Usually, when you need to parse the nodes of a NodeGraphPart, prefer
+       * using @code for(const auto n : nodes()) @endcode rather than
+       * @code for(const auto n : asNodeSet()) @endcode as this is faster and
+       * consumes much less memory. */
+      NodeSet asNodeSet() const;
+
+      /// return *this as a NodeGraphPart
+      const NodeGraphPart& nodes() const;
 
       /// a begin iterator to parse the set of nodes contained in the NodeGraphPart
-      NodeGraphPartIterator beginNodes() const;
+      NodeGraphPartIterator begin() const;
 
       /// the end iterator to parse the set of nodes contained in the NodeGraphPart
-      const NodeGraphPartIterator& endNodes() const;
+      const NodeGraphPartIterator& end() const;
 
       /// a function to display the set of nodes
       std::string toString() const;
@@ -332,7 +336,7 @@ namespace gum {
        * half the number of nodes. If you do not specify this parameter, the method
        * will assign it for you. */
       template <typename VAL>
-      typename Property<VAL>::onNodes
+      NodeProperty<VAL>
       nodesProperty ( VAL ( *f ) ( const NodeId& ), Size size = 0 ) const;
 
       /// a method to create a hashMap with key:NodeId and value:VAL
@@ -345,7 +349,7 @@ namespace gum {
        * half the number of nodes. If you do not specify this parameter, the method
        * will assign it for you. */
       template <typename VAL>
-      typename Property<VAL>::onNodes
+      NodeProperty<VAL>
       nodesProperty ( const VAL& a, Size size = 0 ) const;
 
       /** @brief a method to create a list of VAL from a set of nodes
@@ -400,7 +404,7 @@ namespace gum {
 
       /** @brief the set of nodes not contained in the NodeGraphPart in the
        * interval 1..__max
-       * @warning __holes may be NULL. */
+       * @warning __holes may be nullptr. */
       NodeSet* __holes;
 
       /// value for __holes configuration
@@ -432,4 +436,4 @@ namespace gum {
 
 #endif // GUM_NODE_GRAPH_PART_H
 
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

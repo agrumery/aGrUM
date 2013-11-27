@@ -45,71 +45,71 @@ namespace gum {
    *  - void whenEdgeDeleted( const void *,gum::NodeId,gum::NodeId )
    */
   class UndiGraphListener : public Listener {
-  public:
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
+    public:
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
 
-    /// default constructor
-    /** @param g the graph to listen to
-     * @warning Note that, by the aGrUM's constructor parameter's rule, the fact
-     * that g is passed as a pointer means that g is not copied, but only
-     * referenced by the listener. */
-    UndiGraphListener(UndiGraph* g);
+      /// default constructor
+      /** @param g the graph to listen to
+       * @warning Note that, by the aGrUM's constructor parameter's rule, the fact
+       * that g is passed as a pointer means that g is not copied, but only
+       * referenced by the listener. */
+      UndiGraphListener( UndiGraph* g );
 
-    /// destructor
-    ~UndiGraphListener();
-    
-    /// @}
+      /// destructor
+      ~UndiGraphListener();
 
-
-    // ############################################################################
-    /// @name signals to listen to
-    // ############################################################################
-    /// @{
-
-    /// the action to take when a new node is inserted into the graph
-    /** @param src the object that sent the signal
-     * @param id the id of the new node inserted into the graph */
-    virtual void whenNodeAdded( const void *src,NodeId id)=0;
-
-    /// the action to take when a node has just been removed from the graph
-    /** @param src the object that sent the signal
-     * @param id the id of the node has just been removed from the graph */    
-    virtual void whenNodeDeleted( const void *src,NodeId id)=0;
-
-    /// the action to take when a new edge is inserted into the graph
-    /** @param src the object that sent the signal
-     * @param id1 the id of one node of the edge inserted into the graph
-     * @param id2 the id of the other node of the edge inserted into the graph */
-    virtual void whenEdgeAdded( const void *src,NodeId id1,NodeId id2)=0;
-
-    /// the action to take when an edge has just been removed from the graph
-    /** @param src the object that sent the signal
-     * @param from the id of one node of the edge removed from the graph
-     * @param to the id of the other node of the edge removed from the graph */
-    virtual void whenEdgeDeleted( const void *src,NodeId from,NodeId to)=0;
-
-    /// @}
-
-    
-  protected:
-    /// the graph to listen to
-    UndiGraph* _graph;
+      /// @}
 
 
-  private:
-    /// copy constructor (for the moment, this operation is forbidden)
-    /** @param d the UndiGraphListener to copy */
-    UndiGraphListener(const UndiGraphListener& d);
-    
-    /// copy operator (for the moment, this operation is forbidden)
-    /** @param d the UndiGraphListener to copy */
-    UndiGraphListener& operator=(const UndiGraphListener& d);
+      // ############################################################################
+      /// @name signals to listen to
+      // ############################################################################
+      /// @{
+
+      /// the action to take when a new node is inserted into the graph
+      /** @param src the object that sent the signal
+       * @param id the id of the new node inserted into the graph */
+      virtual void whenNodeAdded( const void* src,NodeId id )=0;
+
+      /// the action to take when a node has just been removed from the graph
+      /** @param src the object that sent the signal
+       * @param id the id of the node has just been removed from the graph */
+      virtual void whenNodeDeleted( const void* src,NodeId id )=0;
+
+      /// the action to take when a new edge is inserted into the graph
+      /** @param src the object that sent the signal
+       * @param id1 the id of one node of the edge inserted into the graph
+       * @param id2 the id of the other node of the edge inserted into the graph */
+      virtual void whenEdgeAdded( const void* src,NodeId id1,NodeId id2 )=0;
+
+      /// the action to take when an edge has just been removed from the graph
+      /** @param src the object that sent the signal
+       * @param from the id of one node of the edge removed from the graph
+       * @param to the id of the other node of the edge removed from the graph */
+      virtual void whenEdgeDeleted( const void* src,NodeId from,NodeId to )=0;
+
+      /// @}
+
+
+    protected:
+      /// the graph to listen to
+      UndiGraph* _graph;
+
+
+    private:
+      /// copy constructor (for the moment, this operation is forbidden)
+      /** @param d the UndiGraphListener to copy */
+      UndiGraphListener( const UndiGraphListener& d );
+
+      /// copy operator (for the moment, this operation is forbidden)
+      /** @param d the UndiGraphListener to copy */
+      UndiGraphListener& operator=( const UndiGraphListener& d );
 
   };
-  
+
 } // namespace gum
 
 #ifndef GUM_NO_INLINE

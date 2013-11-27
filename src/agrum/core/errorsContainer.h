@@ -40,9 +40,9 @@ namespace gum {
    */
   class ParseError {
     public:
-      ParseError(bool is_error, const std::string& msg, int line);
-      ParseError(bool is_error, const std::string& msg, const std::string& filename, int line, int col = 0);
-      ParseError(bool is_error, const std::string& msg, const std::string& filename, const std::string& code, int line, int col = 0);
+      ParseError( bool is_error, const std::string& msg, int line );
+      ParseError( bool is_error, const std::string& msg, const std::string& filename, int line, int col = 0 );
+      ParseError( bool is_error, const std::string& msg, const std::string& filename, const std::string& code, int line, int col = 0 );
 
       bool is_error;
       int line;
@@ -66,7 +66,7 @@ namespace gum {
       int warning_count; // number of warnings detected
 
       ErrorsContainer();
-      ErrorsContainer( const ErrorsContainer & cont );
+      ErrorsContainer( const ErrorsContainer& cont );
 
       /// Add an error object to container.
       void add( ParseError error );
@@ -77,14 +77,14 @@ namespace gum {
       ParseError last() const;
 
       /// Add an error.
-      void addError ( const std::string& msg, const std::string& filename, int line, int col );
+      void addError( const std::string& msg, const std::string& filename, int line, int col );
       /// Add a warning.
-      void addWarning ( const std::string& msg, const std::string& filename, int line, int col );
+      void addWarning( const std::string& msg, const std::string& filename, int line, int col );
       /// Add an exception.
-      void addException ( const std::string& msg, const std::string& filename );
+      void addException( const std::string& msg, const std::string& filename );
 
       /// Return the number of errors and warnings
-      int count ( void ) const;
+      int count( void ) const;
 
       /// Print errors on standart error output.
       void showSyntheticResults() const;
@@ -94,9 +94,9 @@ namespace gum {
       void showElegantErrorsAndWarnings() const;
 
       // Use by coco/R
-      void Error ( const std::wstring& filename, int line, int col, const wchar_t *msg );
-      void Warning ( const std::wstring& filename, int line, int col, const wchar_t *msg );
-      void Exception ( const std::wstring& filename, const wchar_t *msg );
+      void Error( const std::wstring& filename, int line, int col, const wchar_t* msg );
+      void Warning( const std::wstring& filename, int line, int col, const wchar_t* msg );
+      void Exception( const std::wstring& filename, const wchar_t* msg );
 
       // Deprecated.
       // Use error(i)->method().
@@ -106,9 +106,9 @@ namespace gum {
       std::wstring msg( int i ) const;
       std::wstring filename( int i ) const;
 
-      ErrorsContainer operator+( const ErrorsContainer & cont ) const;
-      ErrorsContainer operator=( const ErrorsContainer & cont );
-      ErrorsContainer operator+=( const ErrorsContainer & cont );
+      ErrorsContainer operator+( const ErrorsContainer& cont ) const;
+      ErrorsContainer operator=( const ErrorsContainer& cont );
+      ErrorsContainer operator+=( const ErrorsContainer& cont );
 
   }; // ErrorsContainer
 
@@ -120,4 +120,4 @@ namespace gum {
 #endif /* GUM_NO_INLINE */
 
 #endif //GUM_ERRORS_CONTAINERS_H
-// kate: indent-mode cstyle; indent-width 1; replace-tabs on; ;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

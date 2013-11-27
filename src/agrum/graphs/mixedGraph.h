@@ -87,22 +87,19 @@ namespace gum {
    * g2.eraseNode( i2 );
    *
    * // parse a graph
-   * for ( NodeGraphPart::iterator iter = g3.beginNodes();
-   *       iter != g3.endNodes(); ++iter )
-   *   cerr << *iter << endl;
+   * for ( const auto nod : g3.nodes() )
+   *   cerr << nod << endl;
    *
-   * for ( ArcGraphPart::iterator iter = g3.beginArcs();
-   *       iter != g3.endArcs(); ++iter )
-   *   cerr << *iter << endl;
+   * for ( const auto arc : g3.arcs() )
+   *   cerr << arc << endl;
    *
-   * for ( EdgeGraphPart::iterator iter = g3.beginEdges();
-   *       iter != g3.endEdges(); ++iter )
-   *   cerr << *iter << endl;
+   * for ( const auto edg : g3.edges()) )
+   *   cerr << edg << endl;
    *
    * const NodeSet& a=g3.parents( 3 );
    *
-   * for ( NodeSetIterator iter = a.begin( ); iter != a.end(); ++iter )
-   *   cerr << "  -  "<<*iter;
+   * for ( const auto iter : a)
+   *   cerr << "  -  "<<iter;
    *
    * cerr<<endl;
    *
@@ -122,7 +119,7 @@ namespace gum {
    */
   /* =========================================================================== */
 
-  class MixedGraph : public virtual UndiGraph,public virtual DiGraph {
+  class MixedGraph : public virtual UndiGraph, public virtual DiGraph {
     public:
       // ############################################################################
       /// @name Constructors / Destructors
@@ -136,17 +133,17 @@ namespace gum {
        * @param arcs_resize_policy the resizing policy of this hash table
        * @param edges_size the size of the hash table used to store all the edges
        * @param edges_resize_policy the resizing policy of this hash table */
-      explicit MixedGraph( Size nodes_size = GUM_HASHTABLE_DEFAULT_SIZE,
-                           bool nodes_resize_policy    = true,
-                           Size arcs_size = GUM_HASHTABLE_DEFAULT_SIZE,
-                           bool arcs_resize_policy    = true,
-                           Size edges_size = GUM_HASHTABLE_DEFAULT_SIZE,
-                           bool edges_resize_policy    = true );
+      explicit MixedGraph ( Size nodes_size = GUM_HASHTABLE_DEFAULT_SIZE,
+                            bool nodes_resize_policy    = true,
+                            Size arcs_size = GUM_HASHTABLE_DEFAULT_SIZE,
+                            bool arcs_resize_policy    = true,
+                            Size edges_size = GUM_HASHTABLE_DEFAULT_SIZE,
+                            bool edges_resize_policy    = true );
 
 
       /// copy constructor
       /** @param g the MixedGraph to copy */
-      MixedGraph( const MixedGraph& g );
+      MixedGraph ( const MixedGraph& g );
 
       /// destructor
       virtual ~MixedGraph();
@@ -161,17 +158,17 @@ namespace gum {
 
       /// copy operator
       /** @param g the MixedGraph to copy */
-      MixedGraph& operator=( const MixedGraph& g );
+      MixedGraph& operator= ( const MixedGraph& g );
 
       /// tests whether two MixedGraphs are identical (same nodes, arcs and edges)
       /** @param g the MixedGraph with which "this" is compared */
       // not virtual : it is a feature !!! :)
-      bool operator==( const MixedGraph& g ) const;
+      bool operator== ( const MixedGraph& g ) const;
 
       /// tests whether two MixedGraphs are different
       /** @param g the MixedGraph with which "this" is compared */
       // not virtual : it is a feature !!! :)
-      bool operator!=( const MixedGraph& g ) const;
+      bool operator!= ( const MixedGraph& g ) const;
 
       /// @}
 
@@ -186,7 +183,7 @@ namespace gum {
       /** @param id the id of the node to be removed
        * @warning if the node does not exist, nothing is done. In particular, no
        * exception is raised.*/
-      virtual void eraseNode( const NodeId id );
+      virtual void eraseNode ( const NodeId id );
 
       /// removes all the nodes, arcs and edges from the graph
       virtual void clear();
@@ -201,7 +198,7 @@ namespace gum {
        * @throw NotFound exception is raised if no path can be found between the
        * two nodes */
       const std::vector<NodeId>
-      mixedOrientedPath( const NodeId node1, const NodeId node2 ) const;
+      mixedOrientedPath ( const NodeId node1, const NodeId node2 ) const;
 
       /// returns a mixed/directed path from node1 to node2 in the arc/edge set
       /** This function returns, if any, a path from node1 to node2, using edges
@@ -211,7 +208,7 @@ namespace gum {
        * @throw NotFound exception is raised if no path can be found between the
        * two nodes */
       const std::vector<NodeId>
-      mixedUnorientedPath( const NodeId node1, const NodeId node2 ) const;
+      mixedUnorientedPath ( const NodeId node1, const NodeId node2 ) const;
 
       /// to friendly display the content of the MixedGraph
       virtual const std::string toString() const;

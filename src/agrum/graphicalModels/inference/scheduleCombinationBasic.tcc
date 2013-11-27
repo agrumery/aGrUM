@@ -41,8 +41,8 @@ namespace gum {
   ( MultiDimImplementation<GUM_SCALAR>* ( *combine )
     ( const MultiDimImplementation<GUM_SCALAR>&,
       const MultiDimImplementation<GUM_SCALAR>& ) ) :
-      ScheduleCombination<GUM_SCALAR> (),
-      _combine( combine ) {
+    ScheduleCombination<GUM_SCALAR> (),
+    _combine( combine ) {
     /// for debugging purposes
     GUM_CONSTRUCTOR( ScheduleCombinationBasic );
   }
@@ -52,8 +52,8 @@ namespace gum {
   template<typename GUM_SCALAR>
   ScheduleCombinationBasic<GUM_SCALAR>::ScheduleCombinationBasic
   ( const ScheduleCombinationBasic<GUM_SCALAR>& from ) :
-      ScheduleCombination<GUM_SCALAR> ( from ),
-      _combine( from._combine ) {
+    ScheduleCombination<GUM_SCALAR> ( from ),
+    _combine( from._combine ) {
     /// for debugging purposes
     GUM_CONS_CPY( ScheduleCombinationBasic );
   }
@@ -99,18 +99,18 @@ namespace gum {
   /// variables in seq1 and seq2
   template<typename GUM_SCALAR>
   Size ScheduleCombinationBasic<GUM_SCALAR>::_combinedSize
-  ( const Sequence<const DiscreteVariable *>& seq1,
-    const Sequence<const DiscreteVariable *>& seq2 ) const {
+  ( const Sequence<const DiscreteVariable*>& seq1,
+    const Sequence<const DiscreteVariable*>& seq2 ) const {
     if ( seq1.empty() && seq2.empty() ) return 0;
 
     Size size = 1;
 
-    for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+    for ( Sequence<const DiscreteVariable*>::const_iterator iter =
             seq1.begin(); iter != seq1.end(); ++iter ) {
       size *= ( *iter )->domainSize();
     }
 
-    for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+    for ( Sequence<const DiscreteVariable*>::const_iterator iter =
             seq2.begin(); iter != seq2.end(); ++iter ) {
       if ( ! seq1.exists( *iter ) )
         size *= ( *iter )->domainSize();
@@ -160,7 +160,7 @@ namespace gum {
 
     for ( unsigned int i = 0; i < tables.size(); ++i ) {
       pair.first = i;
-      const Sequence<const DiscreteVariable *>& seq1 =
+      const Sequence<const DiscreteVariable*>& seq1 =
         tables[i]->variablesSequence();
 
       for ( unsigned int j = i+1; j < tables.size(); ++j ) {
@@ -229,7 +229,7 @@ namespace gum {
 
       // update the "combinated" size of all the pairs involving "result"
       {
-        const Sequence<const DiscreteVariable *>& seq1 =
+        const Sequence<const DiscreteVariable*>& seq1 =
           tables[ti]->variablesSequence();
         pair.second = ti;
         Size newsize;
@@ -296,14 +296,14 @@ namespace gum {
     float result = 0.0f;
 
     // create a vector with all the tables to combine
-    std::vector< const Sequence<const DiscreteVariable *>* > tables( set.size() );
+    std::vector< const Sequence<const DiscreteVariable*>* > tables( set.size() );
 
     {
       unsigned int i = 0;
 
       for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator iter =
               set.begin(); iter != set.end(); ++iter, ++i ) {
-        tables[i] = &(( *iter )->variablesSequence() );
+        tables[i] = &( ( *iter )->variablesSequence() );
       }
     }
 
@@ -341,20 +341,20 @@ namespace gum {
       unsigned int tj = pair.second;
 
       // compute the result
-      Sequence<const DiscreteVariable *>* new_seq =
-        new Sequence<const DiscreteVariable *>;
-      const Sequence<const DiscreteVariable *>& seq1 = *( tables[ti] );
-      const Sequence<const DiscreteVariable *>& seq2 = *( tables[tj] );
+      Sequence<const DiscreteVariable*>* new_seq =
+        new Sequence<const DiscreteVariable*>;
+      const Sequence<const DiscreteVariable*>& seq1 = *( tables[ti] );
+      const Sequence<const DiscreteVariable*>& seq2 = *( tables[tj] );
 
       Size new_size = 1;
 
-      for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+      for ( Sequence<const DiscreteVariable*>::const_iterator iter =
               seq1.begin(); iter != seq1.end(); ++iter ) {
         new_size *= ( *iter )->domainSize();
         new_seq->insert( *iter );
       }
 
-      for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+      for ( Sequence<const DiscreteVariable*>::const_iterator iter =
               seq2.begin(); iter != seq2.end(); ++iter ) {
         if ( ! seq1.exists( *iter ) ) {
           new_size *= ( *iter )->domainSize();
@@ -462,7 +462,7 @@ namespace gum {
     long current_memory = 0;
 
     // create a vector with all the tables to combine
-    std::vector< const Sequence<const DiscreteVariable *>* > tables( set.size() );
+    std::vector< const Sequence<const DiscreteVariable*>* > tables( set.size() );
 
     std::vector< Size > table_size( set.size() );
 
@@ -472,7 +472,7 @@ namespace gum {
       for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator iter =
               set.begin(); iter != set.end(); ++iter, ++i ) {
         const Sequence<const DiscreteVariable*>* vars =
-          &(( *iter )->variablesSequence() );
+          &( ( *iter )->variablesSequence() );
         tables[i] = vars;
 
         Size size = 0;
@@ -520,14 +520,14 @@ namespace gum {
       unsigned int tj = pair.second;
 
       // compute the result
-      Sequence<const DiscreteVariable *>* new_seq =
-        new Sequence<const DiscreteVariable *>;
-      const Sequence<const DiscreteVariable *>& seq1 = *( tables[ti] );
-      const Sequence<const DiscreteVariable *>& seq2 = *( tables[tj] );
+      Sequence<const DiscreteVariable*>* new_seq =
+        new Sequence<const DiscreteVariable*>;
+      const Sequence<const DiscreteVariable*>& seq1 = *( tables[ti] );
+      const Sequence<const DiscreteVariable*>& seq2 = *( tables[tj] );
 
       long new_size = 1;
 
-      for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+      for ( Sequence<const DiscreteVariable*>::const_iterator iter =
               seq1.begin(); iter != seq1.end(); ++iter ) {
         if ( std::numeric_limits<long>::max() /
              ( long )( *iter )->domainSize() < new_size ) {
@@ -539,7 +539,7 @@ namespace gum {
         new_seq->insert( *iter );
       }
 
-      for ( Sequence<const DiscreteVariable *>::const_iterator iter =
+      for ( Sequence<const DiscreteVariable*>::const_iterator iter =
               seq2.begin(); iter != seq2.end(); ++iter ) {
         if ( ! seq1.exists( *iter ) ) {
           if ( std::numeric_limits<long>::max() /

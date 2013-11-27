@@ -61,29 +61,29 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// constructor
       /** Note that, in the graph passed in argument, the type of the edges may
        * differ from Edge. However, the junction trees and triangulated graphs
        * produced by the triangulation algorithm will all have edges of type Edge. */
-      // ============================================================================
-      IncrementalTriangulation( const UnconstrainedTriangulation& triang_algo,
-                                const UndiGraph& theGraph,
-                                const Property<unsigned int>::onNodes& modal );
 
-      // ============================================================================
+      IncrementalTriangulation ( const UnconstrainedTriangulation& triang_algo,
+                                 const UndiGraph& theGraph,
+                                 const NodeProperty<Size>& modal );
+
+
       /// default constructor: initialize the triangulation with en empty graph
-      // ============================================================================
-      IncrementalTriangulation( const UnconstrainedTriangulation& triangAlgo );
 
-      // ============================================================================
+      IncrementalTriangulation ( const UnconstrainedTriangulation& triangAlgo );
+
+
       /// copy operator
-      // ============================================================================
-      IncrementalTriangulation( const IncrementalTriangulation& from );
 
-      // ============================================================================
+      IncrementalTriangulation ( const IncrementalTriangulation& from );
+
+
       /// destructor
-      // ============================================================================
+
       ~IncrementalTriangulation();
 
       /// @}
@@ -95,113 +95,113 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// updates the triangulated graph using the modif list
-      // ============================================================================
+
       void updateTriangulation();
 
-      // ============================================================================
-      /// adds a new node to the graph
-      // ============================================================================
-      void insertNode( const NodeId node, unsigned int modal );
 
-      // ============================================================================
+      /// adds a new node to the graph
+
+      void insertNode ( const NodeId node, Size modal );
+
+
       /** @brief removes a node from the graph (the join tree may need a
        * triangulation update) */
-      // ============================================================================
-      void eraseNode( const NodeId node );
 
-      // ============================================================================
+      void eraseNode ( const NodeId node );
+
+
       /** @brief adds a new edge to the graph (the join tree may need a
        * triangulation update) */
-      // ============================================================================
-      void insertEdge( const NodeId X, const NodeId Y );
 
-      // ============================================================================
+      void insertEdge ( const NodeId X, const NodeId Y );
+
+
       /// removes an edge from the graph (the join tree may need a retriangulation)
-      // ============================================================================
-      void eraseEdge( const Edge& edge );
 
-      // ============================================================================
+      void eraseEdge ( const Edge& edge );
+
+
       /// returns the fill-ins added by the triangulation algorithm
-      // ============================================================================
+
       const EdgeSet& fillIns() {
-        GUM_ERROR( OperationNotAllowed, "Not implemented yet" );
+        GUM_ERROR ( OperationNotAllowed, "Not implemented yet" );
       };
 
-      // ============================================================================
+
       /// returns an elimination ordering compatible with the triangulated graph
       /// @todo : whu not a Sequence ?
-      // ============================================================================
+
       const std::vector<NodeId>& eliminationOrder();
 
-      // ============================================================================
+
       /** @brief returns the number of a given node in the elimination order
        * (0 = first node eliminated) */
-      // ============================================================================
-      unsigned int eliminationOrder( const NodeId );
 
-      // ============================================================================
+      Idx eliminationOrder ( const NodeId );
+
+
       /// returns the triangulated graph
-      // ============================================================================
+
       const UndiGraph& triangulatedGraph() {
-        GUM_ERROR( OperationNotAllowed, "Not implemented yet" );
+        GUM_ERROR ( OperationNotAllowed, "Not implemented yet" );
       };
 
-      // ============================================================================
+
       /// returns the current graph (that which is incrementally triangulated)
-      // ============================================================================
+
       const UndiGraph& graph() const;
 
-      // ============================================================================
+
       /// returns the elimination tree of a compatible ordering
-      // ============================================================================
+
       const CliqueGraph& eliminationTree() {
-        GUM_ERROR( OperationNotAllowed, "Not implemented yet" );
+        GUM_ERROR ( OperationNotAllowed, "Not implemented yet" );
       };
 
-      // ============================================================================
+
       /// returns a junction tree corresponding to the current graph
-      // ============================================================================
+
       const CliqueGraph& junctionTree();
 
-      // ============================================================================
+
       /** @brief returns the Id of the clique created by the
        * elimination of a given node during the triangulation process */
-      // ============================================================================
-      NodeId createdJunctionTreeClique( const NodeId id );
 
-      // ============================================================================
+      NodeId createdJunctionTreeClique ( const NodeId id );
+
+
       /** @brief returns the Ids of the cliques of the junction tree created by the
        * elimination of the nodes */
-      // ============================================================================
-      const Property<NodeId>::onNodes& createdJunctionTreeCliques();
 
-      // ============================================================================
+      const NodeProperty<NodeId>& createdJunctionTreeCliques();
+
+
       /// returns the junction tree of the maximal prime subgraphs
-      // ============================================================================
+
       const CliqueGraph& maxPrimeSubgraphTree();
 
-      // ============================================================================
+
       /** @brief returns the Id of the maximal prime subgraph created by the
        * elimination of a given node during the triangulation process */
-      // ============================================================================
-      NodeId createdMaxPrimeSubgraph( const NodeId id );
 
-      // ============================================================================
+      NodeId createdMaxPrimeSubgraph ( const NodeId id );
+
+
       /// sets the graph to the empty graph
-      // ============================================================================
+
       void clear();
 
-      // ============================================================================
-      /// changes the current graph
-      // ============================================================================
-      void setGraph( const UndiGraph& theGraph,
-                     const Property<unsigned int>::onNodes& modal );
 
-      // ============================================================================
+      /// changes the current graph
+
+      void setGraph ( const UndiGraph& theGraph,
+                      const NodeProperty<Size>& modal );
+
+
       /// returns the triangulation algorithm (useful for fine tuning it)
-      // ============================================================================
+
       const UnconstrainedTriangulation& triangulationAlgo() const ;
 
       /// @}
@@ -213,14 +213,14 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      // ============================================================================
+
       /// copy operator
-      // ============================================================================
+
       IncrementalTriangulation& operator= ( const IncrementalTriangulation& from );
 
-      // ============================================================================
+
       /// virtual copy constructor
-      // ============================================================================
+
       IncrementalTriangulation* newFactory() const;
 
       /// @}
@@ -238,16 +238,16 @@ namespace gum {
       CliqueGraph __T_mpd;
 
       /// for each node in graph, store the MPS containing the node
-      Property< List<NodeId> >::onNodes __mps_of_node;
+      NodeProperty< List<NodeId>> __mps_of_node;
 
       /// indicate for each MPS its set of cliques in the junction tree
-      Property< std::vector<NodeId> >::onNodes __cliques_of_mps;
+      NodeProperty< std::vector<NodeId>> __cliques_of_mps;
 
       /// indicate for each clique the MPS it belongs to
-      Property<NodeId>::onNodes __mps_of_clique;
+      NodeProperty<NodeId> __mps_of_clique;
 
       /// the set of MPS affected by a new triangulation
-      Property<bool>::onNodes __mps_affected;
+      NodeProperty<bool> __mps_affected;
 
       /// the triangulation algorithm that will be used incremantally
       UnconstrainedTriangulation* __triangulation;
@@ -262,85 +262,85 @@ namespace gum {
       std::vector<NodeId> __elimination_order;
 
       /// the elimination order (access by NodeId)
-      Property<unsigned int>::onNodes __reverse_elimination_order;
+      NodeProperty<Idx> __reverse_elimination_order;
 
       /// a Boolean indicating whether we should compute the createdJTCliques
       bool __require_created_JT_cliques;
 
       /// For each node, a clique that contains it
-      Property<NodeId>::onNodes __created_JT_cliques;
+      NodeProperty<NodeId> __created_JT_cliques;
 
 
-      // ============================================================================
+
       /// mark the mps affected by the deletion of a given edge
-      // ============================================================================
-      void __markAffectedMPSsByRemoveLink( const NodeId My, const NodeId Mz,
-                                           const Edge& edge );
 
-      // ============================================================================
+      void __markAffectedMPSsByRemoveLink ( const NodeId My, const NodeId Mz,
+                                            const Edge& edge );
+
+
       /// mark the mps affected by the insertion of a new edge
-      // ============================================================================
-      int __markAffectedMPSsByAddLink( const NodeId My, const NodeId Mz,
-                                       const NodeId X, const NodeId Y );
 
-      // ============================================================================
+      int __markAffectedMPSsByAddLink ( const NodeId My, const NodeId Mz,
+                                        const NodeId X, const NodeId Y );
+
+
       /// remove a given node from the T_mpd structure
-      // ============================================================================
-      void __performRemoveNode( const NodeId node,
-                                const NodeId My, const NodeId Mz );
 
-      // ============================================================================
+      void __performRemoveNode ( const NodeId node,
+                                 const NodeId My, const NodeId Mz );
+
+
       /// adds a new node to T_mpd, the graph and the clique graph
-      // ============================================================================
-      void __performAddNode( const NodeId node );
 
-      // ============================================================================
+      void __performAddNode ( const NodeId node );
+
+
       /// set-up the connected subgraph that needs be retriangulated
-      // ============================================================================
+
       void __setUpConnectedTriangulation
       ( NodeId Mx, NodeId Mfrom,
         UndiGraph& theGraph,
         std::vector<Edge>& notAffectedneighborClique,
         HashTable<NodeId, bool>& cliques_affected );
 
-      // ============================================================================
+
       /// used for computing the junction tree of the maximal prime subgraphs
-      // ============================================================================
+
       void __computeMaxPrimeMergings
       ( const NodeId node, const NodeId from,
         std::vector<std::pair<NodeId, NodeId> >& merged_cliques,
-        HashTable<NodeId, bool>& mark,
+        NodeProperty<bool>& mark,
         const NodeSet& new_nodes_in_junction_tree ) const;
 
 
-      // ============================================================================
+
       /// update the junction tree
-      // ============================================================================
-      void __updateJunctionTree( Property<bool>::onNodes& all_cliques_affected,
-                                 NodeSet& new_nodes_in_junction_tree );
 
-      // ============================================================================
+      void __updateJunctionTree ( NodeProperty<bool>& all_cliques_affected,
+                                  NodeSet& new_nodes_in_junction_tree );
+
+
       /// update the max prime subgraph
-      // ============================================================================
-      void __updateMaxPrimeSubgraph( Property<bool>::onNodes& cliques_affected,
-                                     const NodeSet& new_nodes_in_junction_tree );
 
-      // ============================================================================
+      void __updateMaxPrimeSubgraph ( NodeProperty<bool>& cliques_affected,
+                                      const NodeSet& new_nodes_in_junction_tree );
+
+
       /// a collect algorithm to compute elimination orderings
-      // ============================================================================
-      void __collectEliminationOrder( const NodeId node, const NodeId from,
-                                      Property<bool>::onNodes& examined,
-                                      unsigned int& index );
 
-      // ============================================================================
+      void __collectEliminationOrder ( const NodeId node, const NodeId from,
+                                       NodeProperty<bool>& examined,
+                                       Idx& index );
+
+
       /// a collect algorithm to compute, for each node, one container JT's clique
-      // ============================================================================
-      void __collectJTCliques( const NodeId clique, const NodeId from,
-                               Property<bool>::onNodes& examined );
 
-      // ============================================================================
+      void __collectJTCliques ( const NodeId clique, const NodeId from,
+                                NodeProperty<bool>& examined );
+
+
       /// checks that the incremental triangulation works properly
-      // ============================================================================
+
       bool __check();
 
       /// to enable testunits to use __check
