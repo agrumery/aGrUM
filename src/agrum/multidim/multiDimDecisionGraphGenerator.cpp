@@ -63,7 +63,7 @@ namespace gum{
             PriorityQueue< NodeId > fifo;
 
             // L'idée est de d'abord générer un arbre avant de fusionner les sous-graphe isomorphe
-            generatedDecisionGraph->manager()->setRootNode( generatedDecisionGraph->manager()->addNonTerminalNode( __varSeq->atPos(0) ) );
+            generatedDecisionGraph->manager()->setRootNode( generatedDecisionGraph->manager()->addNonTerminalNode( __varSeq.atPos(0) ) );
             fifo.insert(1,generatedDecisionGraph->root());
             Idx nbTotalVar = __varSeq.size();
 
@@ -79,7 +79,7 @@ namespace gum{
 
                         const DiscreteVariable* sonVar = __varSeq.atPos( currentVarPos + ( rand() % (  nbRemainingVar ) ) );
                         NodeId sonId = generatedDecisionGraph->manager()->addNonTerminalNode( sonVar );
-                        fifo.insert(sonId);
+                        fifo.insert(1,sonId);
                         generatedDecisionGraph->manager()->insertArc( currentId, sonId, modality );
 
                     }else{
@@ -93,7 +93,7 @@ namespace gum{
             }
         }
 
-        generatedDecisionGraph->reduce();
+//        generatedDecisionGraph->reduce();
 
         return generatedDecisionGraph;
     }

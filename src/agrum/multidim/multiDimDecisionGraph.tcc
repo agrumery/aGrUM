@@ -621,14 +621,15 @@ template<typename GUM_SCALAR>
     // ============================================================================
     template<typename GUM_SCALAR>
     INLINE
-    GUM_SCALAR MultiDimDecisionGraph<GUM_SCALAR>::_get ( const Instantiation &inst ) const{
+    GUM_SCALAR& MultiDimDecisionGraph<GUM_SCALAR>::_get ( const Instantiation &inst ) const{
       NodeId currentNodeId = __root;
       InternalNode* currentNode = nullptr;
       while ( ! isTerminalNode( currentNodeId ) ){
         currentNode = __internalNodeMap[currentNodeId];
         currentNodeId = currentNode->nodeSons[ inst.val( *(currentNode->nodeVar) ) ];
       }
-      return __valueMap.second( currentNodeId );
+      __getRet = __valueMap.second( currentNodeId );
+      return __getRet;
     }
 
 } //gum

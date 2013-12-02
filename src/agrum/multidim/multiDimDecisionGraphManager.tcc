@@ -554,48 +554,48 @@ namespace gum {
     // ============================================================================
     // Ensures that every isomorphic subgraphs are merged together.
     // ============================================================================
-    template<typename GUM_SCALAR>
-    INLINE
-    void
-    MultiDimDecisionGraphManager< GUM_SCALAR>::reduce( bool checkRedundancy, bool checkIsomorphism ){
+//    template<typename GUM_SCALAR>
+//    INLINE
+//    void
+//    MultiDimDecisionGraphManager< GUM_SCALAR>::reduce( bool checkRedundancy, bool checkIsomorphism ){
 
-      HashTable<NodeId,NodeId> old2NewId(500,true,false);
-      typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* currentNodeId = nullptr;
-      typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* nextNodeId = nullptr;
-      typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* currentNode = nullptr;
-      bool theSame = true;
-      Idx currentInd;
+//      HashTable<NodeId,NodeId> old2NewId(500,true,false);
+//      typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* currentNodeId = nullptr;
+//      typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* nextNodeId = nullptr;
+//      typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* currentNode = nullptr;
+//      bool theSame = true;
+//      Idx currentInd;
 
-      for( SequenceIterator<const DiscreteVariable*> varIter = __decisionGraph->variablesSequence().rbegin();
-             varIter != __decisionGraph->variablesSequence().rend(); --varIter ){
+//      for( SequenceIterator<const DiscreteVariable*> varIter = __decisionGraph->variablesSequence().rbegin();
+//             varIter != __decisionGraph->variablesSequence().rend(); --varIter ){
 
-        currentNodeId = __decisionGraph->__var2NodeIdMap[*varIter];
+//        currentNodeId = __decisionGraph->__var2NodeIdMap[*varIter];
 
-        while( currentNodeId != nullptr ){
-          currentNode = __decisionGraph->__internalNodeMap[currentNodeId->elemId];
+//        while( currentNodeId != nullptr ){
+//          currentNode = __decisionGraph->__internalNodeMap[currentNodeId->elemId];
 
-          theSame = true;
-          for( currentInd = 0; currentInd < (*varIter)->domainSize(); currentInd++){
-            if( old2NewId.exists(currentNode->nodeSons[currentInd]) )
-              currentNode->nodeSons[currentInd] = old2NewId[currentNode->nodeSons[currentInd]];
-            if( currentNode->nodeSons[currentInd] != currentNode->nodeSons[0])
-              theSame = false;
-          }
+//          theSame = true;
+//          for( currentInd = 0; currentInd < (*varIter)->domainSize(); currentInd++){
+//            if( old2NewId.exists(currentNode->nodeSons[currentInd]) )
+//              currentNode->nodeSons[currentInd] = old2NewId[currentNode->nodeSons[currentInd]];
+//            if( currentNode->nodeSons[currentInd] != currentNode->nodeSons[0])
+//              theSame = false;
+//          }
 
-          if( checkRedundancy ){
-              nextNodeId = currentNodeId->nextElem;
-              if( theSame == true ){
-                old2NewId.insert(currentNodeId->elemId, currentNode->nodeSons[0] );
-                MultiDimDecisionGraph<GUM_SCALAR>::_deallocateInternalNode(currentNode);
-                __decisionGraph->__internalNodeMap.erase(currentNodeId->elemId);
-                __decisionGraph->__model.eraseNode(currentNodeId->elemId);
-                MultiDimDecisionGraph<GUM_SCALAR>::_removeElemFromNICL( &(__decisionGraph->__var2NodeIdMap[*varIter]), currentNodeId->elemId);
-              }
-              currentNodeId = nextNodeId;
+//          if( checkRedundancy ){
+//              nextNodeId = currentNodeId->nextElem;
+//              if( theSame == true ){
+//                old2NewId.insert(currentNodeId->elemId, currentNode->nodeSons[0] );
+//                MultiDimDecisionGraph<GUM_SCALAR>::_deallocateInternalNode(currentNode);
+//                __decisionGraph->__internalNodeMap.erase(currentNodeId->elemId);
+//                __decisionGraph->__model.eraseNode(currentNodeId->elemId);
+//                MultiDimDecisionGraph<GUM_SCALAR>::_removeElemFromNICL( &(__decisionGraph->__var2NodeIdMap[*varIter]), currentNodeId->elemId);
+//              }
+//              currentNodeId = nextNodeId;
 
-          }
-        }
-      }
-    }
+//          }
+//        }
+//      }
+//    }
 
 } // namespace gum

@@ -417,7 +417,7 @@ namespace gum {
         * @param i The instantiation used to find the data.
         */
         // ============================================================================
-        GUM_SCALAR _get(const Instantiation &inst ) const;
+        GUM_SCALAR& _get(const Instantiation &inst ) const;
 
 
     private:
