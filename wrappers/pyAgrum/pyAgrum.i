@@ -12,9 +12,10 @@ to OpenBayes, a free Bayesian Network library for Python."
 #define SWIG_FILE_WITH_INIT
 
 // this should be removed at some point with a new version of SWIG
-
 using namespace std;
 %}
+
+%include "includes.i"
 
 %pythoncode %{
   import numpy
@@ -24,6 +25,7 @@ using namespace std;
 %include "exceptions.i"
 
 /* declaration of code enhancers for pyAgrum */
+
 %include "core.i"
 %include "variables.i"
 %include "potential.i"
@@ -35,7 +37,7 @@ using namespace std;
 %include "kl.i"
 
 %include "credalnet.i"
-
+ 
 %include "aGrUM_wrap.i"
 
 %pythoncode %{

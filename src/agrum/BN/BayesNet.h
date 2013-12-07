@@ -95,15 +95,15 @@ namespace gum {
      * Returns the CPT of a variable.
      * @throw NotFound If no variable's id matches varId.
      */
-    virtual const Potential<GUM_SCALAR>& cpt ( NodeId varId ) const override;
+    virtual const Potential<GUM_SCALAR>& cpt ( NodeId varId ) const /* override*/;
 
     /**
      * Returns a constant reference to the VariableNodeMap of thisBN
      */
-    virtual const VariableNodeMap& variableNodeMap() const  override;
+    virtual const VariableNodeMap& variableNodeMap() const  /* override */;
 
     /// @return Returns a dot representation of this BayesNet.
-    virtual std::string toDot ( void ) const override;
+    virtual std::string toDot ( void ) const /* override */;
 
     /**
      * Add a variable, it's associate node and it's CPT. The id of the new
@@ -174,7 +174,7 @@ namespace gum {
      * Returns a constant reference over a variabe given it's node id.
      * @throw NotFound If no variable's id matches varId.
      */
-    const DiscreteVariable& variable ( NodeId id ) const override;
+    const DiscreteVariable& variable ( NodeId id ) const /*override*/;
 
     /** we allow the user to change the name of a variable
      * @throws DuplicateLabel if this name already exists
@@ -186,15 +186,15 @@ namespace gum {
      * Return id node from discrete var pointer.
      * @throw NotFound If no variable matches var.
      */
-    NodeId nodeId ( const DiscreteVariable& var ) const override;
+    NodeId nodeId ( const DiscreteVariable& var ) const /*override*/;
 
     /// Getter by name
     /// @throw NotFound if no such name exists in the graph.
-    NodeId idFromName ( const std::string& name ) const override;
+    NodeId idFromName ( const std::string& name ) const /*override*/;
 
     /// Getter by name
     /// @throw NotFound if no such name exists in the graph.
-    const DiscreteVariable& variableFromName ( const std::string& name ) const override;
+    const DiscreteVariable& variableFromName ( const std::string& name ) const /*override*/;
     /// @}
 
     // ===========================================================================

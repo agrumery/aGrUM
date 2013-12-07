@@ -10,27 +10,31 @@ include("${AGRUM_SOURCE_DIR}/version.txt")
 list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 list (APPEND CMAKE_MODULE_PATH ${AGRUM_SOURCE_DIR}/cmake)
 
-## for now, we use a special version of swig compliant with C++11. It is not the current release of SWIG.
-if (EXISTS "$ENV{HOME}/usr/bin/swig")
-  set(SWIG_EXECUTABLE "$ENV{HOME}/usr/bin/swig")
-endif (EXISTS "$ENV{HOME}/usr/bin/swig")
 
 ## if you do not want to use swig
 set(USE_SWIG true)
 
 if (USE_SWIG)
+  if (EXISTS "$ENV{HOME}/usr/bin/swig")
+    set(SWIG_EXECUTABLE "$ENV{HOME}/usr/bin/swig")
+    message(STATUS "** aGrUM : ${SWIG_EXECUTABLE} will be used")
+  endif (EXISTS "$ENV{HOME}/usr/bin/swig")
   find_package(SWIG)
   if (SWIG_FOUND)
-    include(${SWIG_USE_FILE})
-    # modification of SWIG_ADD_MODULE to take outdir into account for generated cpp wrapper.
-    include("cmake/GUM-UseSWIG.cmake")
-  else ()
+    message(STATUS "** aGrUM notification : Swig found")
+  else ()  
     message(STATUS "** aGrUM notification : Swig not found : you cannot change *.i files !")
-  endif ()
+   endif (SWIG_FOUND)
 else()
   message(STATUS "** aGrUM notification : Swig not used : you cannot change *.i files !")
   set(SWIG_FOUND false)
 endif()
+
+if (SWIG_FOUND)
+  include(${SWIG_USE_FILE})
+  # modification of SWIG_ADD_MODULE to take outdir into account for generated cpp wrapper.
+  include("cmake/GUM-UseSWIG.cmake")
+endif(SWIG_FOUND)
 
 find_package(PythonInterp)
 

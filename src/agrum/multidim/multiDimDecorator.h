@@ -81,7 +81,7 @@ namespace gum {
       /// @{
 
       /// Get the size of domains - final method.
-      virtual Size domainSize() const final;
+      virtual Size domainSize() const/* final */;
 
 
 
@@ -96,13 +96,13 @@ namespace gum {
       /**
        * Give a const ref to the sequence of DiscreteVariable*. final method.
        */
-      virtual const Sequence<const DiscreteVariable*>& variablesSequence() const final;
+      virtual const Sequence<const DiscreteVariable*>& variablesSequence() const/* final */;
 
 
       /**
        * Get the nbr of vars in the sequence. final method.
        */
-      virtual Idx nbrDim() const final;
+      virtual Idx nbrDim() const/* final */;
 
 
       /**
@@ -241,7 +241,7 @@ namespace gum {
       /**
        * @brief notification modification on vars to all Instantiation listeners.
        * final method. */
-      virtual void notifyChange() const final;
+      virtual void notifyChange() const/* final */;
 
 
       /**

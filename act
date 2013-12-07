@@ -493,6 +493,12 @@ def getInvocation(current):
         invocation+=getParam('verbose')
       else:
         invocation+=getParam('quiet')
+
+      if (current['stats']):
+        invocation+=getParam('stats')
+
+      if (current['fixed_seed']):
+        invocation+=getParam('fixed_seed')
         
         
       invocation+=getValParam('jobs',str(current['jobs']))

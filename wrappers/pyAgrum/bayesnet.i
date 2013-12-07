@@ -41,7 +41,7 @@
       PyObject* q=PyList_New(0);
 
       const gum::DAG& dag=self->dag();
-      for ( gum::ArcGraphPart::ArcIterator  arc_iter = dag.arcs().begin();arc_iter != dag.Arcs().end(); ++arc_iter ) {
+      for ( auto arc_iter = dag.arcs().begin();arc_iter != dag.arcs().end(); ++arc_iter ) {
         PyList_Append(q,Py_BuildValue("(i,i)", arc_iter->tail(), arc_iter->head()));
       }
 
