@@ -304,7 +304,7 @@ namespace gum {
       Bijection< NodeId, GUM_SCALAR > _valueMap;
 
       /// Mapping between variable's values and associated node
-      typename Property< std::vector< NodeId >* >::onNodes _arcMap;
+      NodeProperty< std::vector< NodeId >* > _arcMap;
 
       /// Mapping between variable's values and associated node
       NodeProperty< NodeId > _defaultArcMap;

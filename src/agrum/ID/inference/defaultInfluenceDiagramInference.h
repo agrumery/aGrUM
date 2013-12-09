@@ -157,7 +157,7 @@ namespace gum {
       /// Mapping of the nodes with the clique used to put their CPT
       NodeProperty<NodeId> __nodeToCliqueMap;
 
-      typename Property< CliqueProperties<GUM_SCALAR>* >::onNodes __cliquePropertiesMap;
+      NodeProperty< CliqueProperties<GUM_SCALAR>* > __cliquePropertiesMap;
 
       HashTable< size_t, NodeId > __cliqueEliminationMap;
 

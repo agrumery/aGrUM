@@ -36,17 +36,16 @@ namespace gum {
   template <typename GUM_SCALAR>
   ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::ScheduleSeparatorStoreMultiDim
   ( const ScheduleMultiDim<GUM_SCALAR>& table,
-    typename Property<Set<const MultiDimImplementation<GUM_SCALAR>*> >::onArcs&
-    separator_tables,
+    ArcProperty<Set<const MultiDimImplementation<GUM_SCALAR>*> >&separator_tables,
     Arc separator ) :
     ScheduleOperation<GUM_SCALAR>
     ( ScheduleOperation<GUM_SCALAR>::Type::SEPARATOR_STORE_MULTIDIM ),
-    __table( table ),
-    __tableSet( &separator_tables ),
-    __separator( separator ),
-    __args( 0 ) {
+    __table ( table ),
+    __tableSet ( &separator_tables ),
+    __separator ( separator ),
+    __args ( 0 ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( ScheduleSeparatorStoreMultiDim );
+    GUM_CONSTRUCTOR ( ScheduleSeparatorStoreMultiDim );
   }
 
 
@@ -55,12 +54,12 @@ namespace gum {
   ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::ScheduleSeparatorStoreMultiDim
   ( const ScheduleSeparatorStoreMultiDim<GUM_SCALAR>& from ) :
     ScheduleOperation<GUM_SCALAR> ( from ),
-    __table( from.__table ),
-    __tableSet( from.__tableSet ),
-    __separator( from.__separator ),
-    __args( 0 ) {
+    __table ( from.__table ),
+    __tableSet ( from.__tableSet ),
+    __separator ( from.__separator ),
+    __args ( 0 ) {
     // for debugging purposes
-    GUM_CONS_CPY( ScheduleSeparatorStoreMultiDim );
+    GUM_CONS_CPY ( ScheduleSeparatorStoreMultiDim );
   }
 
 
@@ -76,7 +75,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::~ScheduleSeparatorStoreMultiDim() {
     // for debugging purposes
-    GUM_DESTRUCTOR( ScheduleSeparatorStoreMultiDim );
+    GUM_DESTRUCTOR ( ScheduleSeparatorStoreMultiDim );
 
     if ( __args ) delete __args;
   }
@@ -96,7 +95,7 @@ namespace gum {
 
       if ( __args ) {
         __args->clear();
-        __args->insert( &__table );
+        __args->insert ( &__table );
       }
     }
 
@@ -111,7 +110,7 @@ namespace gum {
     if ( this->type() != op.type() ) return false;
 
     const ScheduleSeparatorStoreMultiDim<GUM_SCALAR>& real_op =
-      static_cast<const ScheduleSeparatorStoreMultiDim<GUM_SCALAR>&>( op );
+      static_cast<const ScheduleSeparatorStoreMultiDim<GUM_SCALAR>&> ( op );
     return ( ( __table == real_op.__table ) &&
              ( __tableSet == real_op.__tableSet ) &&
              ( __separator == real_op.__separator ) );
@@ -125,7 +124,7 @@ namespace gum {
     if ( this->type() != op.type() ) return true;
 
     const ScheduleSeparatorStoreMultiDim<GUM_SCALAR>& real_op =
-      static_cast<const ScheduleSeparatorStoreMultiDim<GUM_SCALAR>&>( op );
+      static_cast<const ScheduleSeparatorStoreMultiDim<GUM_SCALAR>&> ( op );
     return ( ( __table != real_op.__table ) ||
              ( __tableSet != real_op.__tableSet ) ||
              ( __separator != real_op.__separator ) );
@@ -137,12 +136,12 @@ namespace gum {
   void ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::execute() {
     const MultiDimImplementation<GUM_SCALAR>& multidim = __table.multiDim();
 
-    if ( ! __tableSet->exists( __separator ) ) {
-      __tableSet->insert( __separator,
-                          Set<const MultiDimImplementation<GUM_SCALAR>*>() );
+    if ( ! __tableSet->exists ( __separator ) ) {
+      __tableSet->insert ( __separator,
+                           Set<const MultiDimImplementation<GUM_SCALAR>*>() );
     }
 
-    __tableSet->operator[]( __separator ).insert( &multidim );
+    __tableSet->operator[] ( __separator ).insert ( &multidim );
   }
 
 
@@ -168,7 +167,7 @@ namespace gum {
   ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::multiDimArgs() const {
     if ( ! __args ) {
       __args = new Sequence<const ScheduleMultiDim<GUM_SCALAR>*>;
-      __args->insert( &__table );
+      __args->insert ( &__table );
     }
 
     return *__args;
@@ -188,8 +187,8 @@ namespace gum {
 
     if ( first_time ) {
       first_time = false;
-      __debug__::__inc_deletion( "Sequence", __FILE__, __LINE__, "destructor of",
-                                 ( void* ) &empty_seq );
+      __debug__::__inc_deletion ( "Sequence", __FILE__, __LINE__, "destructor of",
+                                  ( void* ) &empty_seq );
     }
 
 #endif /* NDEBUG */

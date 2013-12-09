@@ -37,17 +37,16 @@ namespace gum {
   template <typename GUM_SCALAR>
   ScheduleCliqueStoreMultiDim<GUM_SCALAR>::ScheduleCliqueStoreMultiDim
   ( const ScheduleMultiDim<GUM_SCALAR>& table,
-    typename Property<Set<const MultiDimImplementation<GUM_SCALAR>*> >::onNodes&
-    clique_tables,
+    NodeProperty<Set<const MultiDimImplementation<GUM_SCALAR>*> >&clique_tables,
     NodeId clique ) :
     ScheduleOperation<GUM_SCALAR>
     ( ScheduleOperation<GUM_SCALAR>::Type::CLIQUE_STORE_MULTIDIM ),
-    __table( table ),
-    __tableSet( &clique_tables ),
-    __clique( clique ),
-    __args( 0 ) {
+    __table ( table ),
+    __tableSet ( &clique_tables ),
+    __clique ( clique ),
+    __args ( 0 ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( ScheduleCliqueStoreMultiDim );
+    GUM_CONSTRUCTOR ( ScheduleCliqueStoreMultiDim );
   }
 
 
@@ -56,12 +55,12 @@ namespace gum {
   ScheduleCliqueStoreMultiDim<GUM_SCALAR>::ScheduleCliqueStoreMultiDim
   ( const ScheduleCliqueStoreMultiDim<GUM_SCALAR>& from ) :
     ScheduleOperation<GUM_SCALAR> ( from ),
-    __table( from.__table ),
-    __tableSet( from.__tableSet ),
-    __clique( from.__clique ),
-    __args( 0 ) {
+    __table ( from.__table ),
+    __tableSet ( from.__tableSet ),
+    __clique ( from.__clique ),
+    __args ( 0 ) {
     // for debugging purposes
-    GUM_CONS_CPY( ScheduleCliqueStoreMultiDim );
+    GUM_CONS_CPY ( ScheduleCliqueStoreMultiDim );
   }
 
 
@@ -77,7 +76,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   ScheduleCliqueStoreMultiDim<GUM_SCALAR>::~ScheduleCliqueStoreMultiDim() {
     // for debugging purposes
-    GUM_DESTRUCTOR( ScheduleCliqueStoreMultiDim );
+    GUM_DESTRUCTOR ( ScheduleCliqueStoreMultiDim );
 
     if ( __args ) delete __args;
   }
@@ -97,7 +96,7 @@ namespace gum {
 
       if ( __args ) {
         __args->clear();
-        __args->insert( &__table );
+        __args->insert ( &__table );
       }
     }
 
@@ -112,7 +111,7 @@ namespace gum {
     if ( this->type() != op.type() ) return false;
 
     const ScheduleCliqueStoreMultiDim<GUM_SCALAR>& real_op =
-      static_cast<const ScheduleCliqueStoreMultiDim<GUM_SCALAR>&>( op );
+      static_cast<const ScheduleCliqueStoreMultiDim<GUM_SCALAR>&> ( op );
     return ( ( __table == real_op.__table ) &&
              ( __tableSet == real_op.__tableSet ) &&
              ( __clique == real_op.__clique ) );
@@ -126,7 +125,7 @@ namespace gum {
     if ( this->type() != op.type() ) return true;
 
     const ScheduleCliqueStoreMultiDim<GUM_SCALAR>& real_op =
-      static_cast<const ScheduleCliqueStoreMultiDim<GUM_SCALAR>&>( op );
+      static_cast<const ScheduleCliqueStoreMultiDim<GUM_SCALAR>&> ( op );
     return ( ( __table != real_op.__table ) ||
              ( __tableSet != real_op.__tableSet ) ||
              ( __clique != real_op.__clique ) );
@@ -138,12 +137,12 @@ namespace gum {
   void ScheduleCliqueStoreMultiDim<GUM_SCALAR>::execute() {
     const MultiDimImplementation<GUM_SCALAR>& multidim = __table.multiDim();
 
-    if ( ! __tableSet->exists( __clique ) ) {
-      __tableSet->insert( __clique,
-                          Set<const MultiDimImplementation<GUM_SCALAR>*>() );
+    if ( ! __tableSet->exists ( __clique ) ) {
+      __tableSet->insert ( __clique,
+                           Set<const MultiDimImplementation<GUM_SCALAR>*>() );
     }
 
-    __tableSet->operator[]( __clique ).insert( &multidim );
+    __tableSet->operator[] ( __clique ).insert ( &multidim );
   }
 
 
@@ -169,7 +168,7 @@ namespace gum {
   ScheduleCliqueStoreMultiDim<GUM_SCALAR>::multiDimArgs() const {
     if ( ! __args ) {
       __args = new Sequence<const ScheduleMultiDim<GUM_SCALAR>*>;
-      __args->insert( &__table );
+      __args->insert ( &__table );
     }
 
     return *__args;
@@ -189,8 +188,8 @@ namespace gum {
 
     if ( first_time ) {
       first_time = false;
-      __debug__::__inc_deletion( "Sequence", __FILE__, __LINE__, "destructor of",
-                                 ( void* ) &empty_seq );
+      __debug__::__inc_deletion ( "Sequence", __FILE__, __LINE__, "destructor of",
+                                  ( void* ) &empty_seq );
     }
 
 #endif /* NDEBUG */

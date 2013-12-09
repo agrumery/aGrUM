@@ -381,9 +381,9 @@ namespace gum {
       VariableNodeMap __variableMap;
 
       /// Mapping between potential variable's id and their CPT
-      typename Property< Potential<GUM_SCALAR>* >::onNodes __potentialMap;
+      NodeProperty< Potential<GUM_SCALAR>* > __potentialMap;
       /// Mapping between utility variable's id and their utility table
-      typename Property<UtilityTable<GUM_SCALAR>* >::onNodes __utilityMap;
+      NodeProperty<UtilityTable<GUM_SCALAR>* > __utilityMap;
 
       /// The temporal order
       mutable List<NodeSet> __temporalOrder;

@@ -419,7 +419,7 @@ namespace gum {
     VariableNodeMap __varMap;
 
     /// Mapping between the variable's id and their CPT.
-    typename Property< Potential< GUM_SCALAR >* >::onNodes __probaMap;
+    NodeProperty<Potential< GUM_SCALAR >* > __probaMap;
     //HashTable<NodeId, Potential<GUM_SCALAR>* > __probaMap;
 
     /// change the CPT associated to nodeId to newPot

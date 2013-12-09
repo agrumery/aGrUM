@@ -244,18 +244,18 @@ namespace gum {
         NodeProperty< NodeSet* > _msg_l_sent;
 
         /** "Lower" information \f$ \Lambda \f$ coming from one's children. */
-        typename Property<GUM_SCALAR>::onArcs _ArcsL_min;
+        ArcProperty<GUM_SCALAR> _ArcsL_min;
         /** "Lower" information \f$ \pi \f$ coming from one's parent. */
-        typename Property<GUM_SCALAR>::onArcs _ArcsP_min;
+        ArcProperty<GUM_SCALAR> _ArcsP_min;
         /** "Lower" node information \f$ \Lambda \f$ obtained by combinaison of children messages. */
         NodeProperty<GUM_SCALAR> _NodesL_min;
         /** "Lower" node information \f$ \pi \f$ obtained by combinaison of parent's messages. */
         NodeProperty<GUM_SCALAR> _NodesP_min;
 
         /** "Upper" information \f$ \Lambda \f$ coming from one's children. */
-        typename Property<GUM_SCALAR>::onArcs _ArcsL_max;
+        ArcProperty<GUM_SCALAR> _ArcsL_max;
         /** "Upper" information \f$ \pi \f$ coming from one's parent. */
-        typename Property<GUM_SCALAR>::onArcs _ArcsP_max;
+        ArcProperty<GUM_SCALAR> _ArcsP_max;
         /** "Upper" node information \f$ \Lambda \f$ obtained by combinaison of children messages. */
         NodeProperty<GUM_SCALAR> _NodesL_max;
         /** "Upper" node information \f$ \pi \f$ obtained by combinaison of parent's messages. */

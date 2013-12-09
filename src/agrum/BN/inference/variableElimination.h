@@ -158,7 +158,7 @@ namespace gum {
     private:
 
       /// Mapping between nodes and their evidences.
-      typename Property< const Potential<GUM_SCALAR>* >::onNodes __evidences;
+      NodeProperty< const Potential<GUM_SCALAR>* > __evidences;
 
       /// The elimination order used by this algorithm.
       std::vector<NodeId> __eliminationOrder;

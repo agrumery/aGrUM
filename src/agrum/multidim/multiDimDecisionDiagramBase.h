@@ -494,7 +494,7 @@ namespace gum {
       HashTable< const DiscreteVariable*, std::vector<Idx>* > __varUsedModalitiesMap;
 
       /// Mapping between variable's values and associated node
-      typename Property< std::vector<NodeId>* >::onNodes __arcMap;
+      NodeProperty< std::vector<NodeId>* > __arcMap;
 
       /// Mapping between variable's values and associated node
       NodeProperty< NodeId > __defaultArcMap;

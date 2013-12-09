@@ -122,7 +122,7 @@ namespace gum {
       /**
        * Mapping between marginals and __bayesNet's nodes.
        */
-      typename Property<Potential<GUM_SCALAR>*>::onNodes _marginals;
+      NodeProperty<Potential<GUM_SCALAR>*> _marginals;
 
     private:
       /**

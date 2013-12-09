@@ -440,8 +440,8 @@ namespace gum {
          */
         RefConstIterator begin ( NodeId id ) const;
 
-        typedef typename Property< std::vector< std::pair< Instance<GUM_SCALAR>*, std::string > >* >::onNodes::iterator InvRefIterator;
-        typedef typename Property< std::vector< std::pair< Instance<GUM_SCALAR>*, std::string > >* >::onNodes::const_iterator InvRefConstIterator;
+        typedef typename NodeProperty< std::vector< std::pair< Instance<GUM_SCALAR>*, std::string > >* >::iterator InvRefIterator;
+        typedef typename NodeProperty< std::vector< std::pair< Instance<GUM_SCALAR>*, std::string > >* >::const_iterator InvRefConstIterator;
 
         InvRefIterator beginInvRef();
         const InvRefIterator& endInvRef();

@@ -113,11 +113,7 @@
 
   Properties are the way to put (dynamic) informations within nodes, edges and
   arcs. Properties are just HashTable in which keys are @ref gum::NodeId, Edge
-  or Arc. Unfortunately, due to a lack (or what we find to be lack) of C++, there
-  is no way to create templated typedefs... So aGrUM uses (currently)
-  gum::NodeProperty<X>, gum::Property<X>::onEdges and
-  gum::Property<X>::onArcs to add new properties related to nodes, edges and
-  arcs respectively.
+  or Arc. NodeProperty, ArcProperty and EdgeProperty are the names of these classes.
   @code
   gum::UndiGraph g;
   gum::NodeProperty<bool> is_id_odd=g.nodesProperty( false );
@@ -126,13 +122,13 @@
   g.insertNode();
   g.insertNode();
 
-  for ( gum::UndiGraph::NodeIterator i=g.beginNodes(); i!=g.endNodes(); ++i ) {
+  for ( auto i=g.nodes().begin(); i!=g.nodes().end(); ++i ) {
     is_id_odd.set( *i, *i % 2 == 0 );
   }
 
   std::cout<<is_id_odd<<std::cout<<std::endl;
 
-  for ( gum::NodeProperty<bool>::iterator i=is_id_odd.begin();
+  for ( auto i=is_id_odd.begin();
         i!=is_id_odd.end();
         ++i ) {
     std::cout<<i.key()<<" : "<<*i<<std::endl;
@@ -561,9 +557,9 @@ namespace gum {
    **/
 
   template<class VAL> struct Property {
-    typedef HashTable<NodeId, VAL> GUM_DEPRECATED(onNodes);
-    typedef HashTable<Edge, VAL> GUM_DEPRECATED(onEdges);
-    typedef HashTable<Arc, VAL> GUM_DEPRECATED(onArcs);
+    typedef HashTable<NodeId, VAL> GUM_DEPRECATED ( onNodes );
+    typedef HashTable<Edge, VAL> GUM_DEPRECATED ( onEdges );
+    typedef HashTable<Arc, VAL> GUM_DEPRECATED ( onArcs );
   };
   /// @}
 
@@ -592,5 +588,3 @@ namespace gum {
 #endif /* GUM_NO_INLINE */
 
 #endif // GUM_GRAPHELEMENTS_H
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
-

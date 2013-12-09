@@ -2201,6 +2201,9 @@ class DAGmodel(_object):
 
     def nbrArcs(self):
         """nbrArcs(DAGmodel self) -> gum::Size"""
+        print("WARNING : pyAgrum.DAGmodel.nbrArcs is deprecated. Please use pyAgrum.BayesNet.sizeArcs")
+
+
         return _pyAgrum.DAGmodel_nbrArcs(self)
 
     def empty(self):
@@ -3466,7 +3469,7 @@ class BayesNetInference_double(_object):
         return _pyAgrum.BayesNetInference_double_eraseAllEvidence(self)
 
     def bn(self):
-        """bn(BayesNetInference_double self) -> IBayesNet< double > const &"""
+        """bn(BayesNetInference_double self) -> gum::IBayesNet< double > const &"""
         return _pyAgrum.BayesNetInference_double_bn(self)
 
     def setEvidence(self, evidces):
@@ -3540,8 +3543,8 @@ class LazyPropagation_double(BayesNetInference_double):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(gum::LazyPropagation<(double)> self, IBayesNet< double > const & BN) -> LazyPropagation_double
-        __init__(gum::LazyPropagation<(double)> self, IBayesNet< double > const & BN, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & elim_order) -> LazyPropagation_double
+        __init__(gum::LazyPropagation<(double)> self, gum::IBayesNet< double > const & BN) -> LazyPropagation_double
+        __init__(gum::LazyPropagation<(double)> self, gum::IBayesNet< double > const & BN, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & elim_order) -> LazyPropagation_double
         """
         if self.__class__ == LazyPropagation_double:
             _self = None
@@ -3637,7 +3640,7 @@ class GibbsInference_double(BayesNetInference_double):
     __getattr__ = lambda self, name: _swig_getattr(self, GibbsInference_double, name)
     __repr__ = _swig_repr
     def __init__(self, *args): 
-        """__init__(gum::GibbsInference<(double)> self, IBayesNet< double > const & BN) -> GibbsInference_double"""
+        """__init__(gum::GibbsInference<(double)> self, gum::IBayesNet< double > const & BN) -> GibbsInference_double"""
         if self.__class__ == GibbsInference_double:
             _self = None
         else:
@@ -3767,7 +3770,7 @@ class BruteForceKL_double(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(gum::BruteForceKL<(double)> self, IBayesNet< double > const & P, IBayesNet< double > const & Q) -> BruteForceKL_double
+        __init__(gum::BruteForceKL<(double)> self, gum::IBayesNet< double > const & P, gum::IBayesNet< double > const & Q) -> BruteForceKL_double
         __init__(gum::BruteForceKL<(double)> self, gum::KL< double > const & kl) -> BruteForceKL_double
         """
         this = _pyAgrum.new_BruteForceKL_double(*args)
@@ -3791,7 +3794,7 @@ class GibbsKL_double(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(gum::GibbsKL<(double)> self, IBayesNet< double > const & P, IBayesNet< double > const & Q) -> GibbsKL_double
+        __init__(gum::GibbsKL<(double)> self, gum::IBayesNet< double > const & P, gum::IBayesNet< double > const & Q) -> GibbsKL_double
         __init__(gum::GibbsKL<(double)> self, gum::KL< double > const & kl) -> GibbsKL_double
         """
         this = _pyAgrum.new_GibbsKL_double(*args)

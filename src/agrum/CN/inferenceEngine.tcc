@@ -214,7 +214,7 @@ namespace gum {
 
     // check that observed variables DO exists in the network (otherwise Lazy report an error and app crash)
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::insertEvidence ( const typename Property< std::vector < GUM_SCALAR > >::onNodes& evidence ) {
+    void InferenceEngine< GUM_SCALAR >::insertEvidence ( const NodeProperty< std::vector < GUM_SCALAR > >& evidence ) {
       if ( ! _evidence.empty() )
         _evidence.clear();
 

@@ -53,8 +53,7 @@ namespace gum {
       /// default constructor
       ScheduleSeparatorStoreMultiDim
       ( const ScheduleMultiDim<GUM_SCALAR>& table,
-        typename Property<Set<const MultiDimImplementation<GUM_SCALAR>*> >::onArcs&
-        separator_tables,
+        ArcProperty<Set<const MultiDimImplementation<GUM_SCALAR>*> >&separator_tables,
         Arc separator );
 
       /// copy constructor
@@ -132,8 +131,7 @@ namespace gum {
       ScheduleMultiDim<GUM_SCALAR> __table;
 
       // a mapping assigning to each clique a set of tables
-      typename Property<Set<const MultiDimImplementation<GUM_SCALAR>*> >::onArcs*
-      __tableSet;
+      ArcProperty<Set<const MultiDimImplementation<GUM_SCALAR>*> >*__tableSet;
 
       // the separator into which the table will be stored
       Arc __separator;

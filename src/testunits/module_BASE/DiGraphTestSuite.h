@@ -336,11 +336,7 @@ namespace gum_tests {
         gum::Size sk = 0;
         gum::Size sv = 0;
 
-        for (
-          gum::Property<gum::Size>::onArcs::iterator iter = hashmap.begin();
-          iter != hashmap.end();
-          ++iter
-        ) {
+        for ( auto iter = hashmap.begin(); iter != hashmap.end(); ++iter ) {
           sv += *iter;
           sk += iter.key().head() + iter.key().tail();
         }

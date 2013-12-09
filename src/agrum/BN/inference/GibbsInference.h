@@ -106,7 +106,7 @@ namespace gum {
 
 
       /// the actual number of sampling for each modality by node
-      typename Property<Potential<GUM_SCALAR>*>::onNodes __sampling_nbr;
+      NodeProperty<Potential<GUM_SCALAR>*> __sampling_nbr;
 
 
       void __unsetRequiredInference();

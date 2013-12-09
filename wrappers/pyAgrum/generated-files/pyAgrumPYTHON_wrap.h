@@ -217,8 +217,8 @@ private:
 class SwigDirector_LazyPropagation_double : public gum::LazyPropagation< double >, public Swig::Director {
 
 public:
-    SwigDirector_LazyPropagation_double(PyObject *self, IBayesNet< double > const &BN);
-    SwigDirector_LazyPropagation_double(PyObject *self, IBayesNet< double > const &BN, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &elim_order);
+    SwigDirector_LazyPropagation_double(PyObject *self, gum::IBayesNet< double > const &BN);
+    SwigDirector_LazyPropagation_double(PyObject *self, gum::IBayesNet< double > const &BN, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &elim_order);
     virtual ~SwigDirector_LazyPropagation_double();
     virtual void makeInference();
     virtual gum::Potential< double > const &marginal(gum::NodeId id);
@@ -271,7 +271,7 @@ private:
 class SwigDirector_GibbsInference_double : public gum::GibbsInference< double >, public Swig::Director {
 
 public:
-    SwigDirector_GibbsInference_double(PyObject *self, IBayesNet< double > const &BN);
+    SwigDirector_GibbsInference_double(PyObject *self, gum::IBayesNet< double > const &BN);
     virtual ~SwigDirector_GibbsInference_double();
     virtual void makeInference();
     virtual gum::Potential< double > const &marginal(gum::NodeId id);

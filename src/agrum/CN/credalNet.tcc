@@ -1127,7 +1127,7 @@ namespace gum {
 
 
     template< typename GUM_SCALAR >
-    const typename Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes& CredalNet< GUM_SCALAR >::credalNet_currentCpt() const {
+    const NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >& CredalNet< GUM_SCALAR >::credalNet_currentCpt() const {
       if ( __credalNet_current_cpt != nullptr )
         return *__credalNet_current_cpt;
 
@@ -1135,7 +1135,7 @@ namespace gum {
     }
 
     template< typename GUM_SCALAR >
-    const typename Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes& CredalNet< GUM_SCALAR >::credalNet_srcCpt() const {
+    const NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >& CredalNet< GUM_SCALAR >::credalNet_srcCpt() const {
       return __credalNet_src_cpt;
     }
 
