@@ -62,7 +62,7 @@ namespace gum {
     for ( size_t i = 0, j = key.size(); i < j; ++i )
       h = 19 * h + key[i];
 
-    return ( ( h * GUM_HASHTABLE_INT_GOLD ) & _hash_mask );
+    return ( ( h * HashFuncConst::gold ) & _hash_mask );
   }
 
 
@@ -84,7 +84,7 @@ namespace gum {
     for ( size_t i = 0, j = s2.size(); i < j; ++i )
       h = 19 * h + s2[i];
 
-    return ( ( h * GUM_HASHTABLE_INT_GOLD ) & _hash_mask );
+    return ( ( h * HashFuncConst::gold ) & _hash_mask );
   }
 
 
@@ -100,7 +100,7 @@ namespace gum {
     for ( size_t i = 0; i < key.size(); ++i )
       h += i*key[i];
 
-    return ( ( h * GUM_HASHTABLE_INT_GOLD ) & _hash_mask );
+    return ( ( h * HashFuncConst::gold ) & _hash_mask );
   }
 
 
@@ -115,7 +115,7 @@ namespace gum {
     for ( size_t i = 0, j = key.size(); i < j; ++i )
       h = 19 * h + key[i];
 
-    return ( ( h * GUM_HASHTABLE_INT_GOLD ) & _hash_mask );
+    return ( ( h * HashFuncConst::gold ) & _hash_mask );
   }
 
 } /* namespace gum */

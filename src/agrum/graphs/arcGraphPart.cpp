@@ -51,7 +51,7 @@ namespace gum {
 
     for ( NodeProperty<NodeSet*>::const_iterator iter = pars.begin();
           iter != pars.end(); ++iter ) {
-      NodeSet* newpar = new NodeSet( **iter );
+      NodeSet* newpar = new NodeSet( *( iter.val () ) );
       __parents.insert( iter.key(), newpar );
     }
 
@@ -61,7 +61,7 @@ namespace gum {
 
     for ( NodeProperty<NodeSet*>::const_iterator iter = children.begin();
           iter != children.end(); ++iter ) {
-      NodeSet* newchildren = new NodeSet( **iter );
+      NodeSet* newchildren = new NodeSet( *( iter.val () ) );
       __children.insert( iter.key(), newchildren );
     }
 
@@ -84,14 +84,14 @@ namespace gum {
   void ArcGraphPart::clearArcs() {
     for ( NodeProperty<NodeSet*>::const_iterator iter = __parents.begin();
           iter != __parents.end(); ++iter ) {
-      delete *iter;
+      delete iter.val ();
     }
 
     __parents.clear();
 
     for ( NodeProperty<NodeSet*>::const_iterator iter = __children.begin();
           iter != __children.end(); ++iter ) {
-      delete *iter;
+      delete iter.val ();
     }
 
     __children.clear();
@@ -122,7 +122,7 @@ namespace gum {
 
       for ( NodeProperty<NodeSet*>::const_iterator iter = pars.begin();
             iter != pars.end(); ++iter ) {
-        NodeSet* newpar = new NodeSet( **iter );
+        NodeSet* newpar = new NodeSet( *( iter.val () ) );
         __parents.insert( iter.key(), newpar );
       }
 
@@ -132,7 +132,7 @@ namespace gum {
 
       for ( NodeProperty<NodeSet*>::const_iterator iter = children.begin();
             iter != children.end(); ++iter ) {
-        NodeSet* newchildren = new NodeSet( **iter );
+        NodeSet* newchildren = new NodeSet( *( iter.val () ) );
         __children.insert( iter.key(), newchildren );
       }
 

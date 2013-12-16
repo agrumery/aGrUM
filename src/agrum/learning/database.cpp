@@ -281,7 +281,7 @@ namespace gum {
 
       for ( HashTableConstIterator<std::string, unsigned int>
             iter = modals.begin(); iter != modals.end(); ++iter ) {
-        database.__modalities_names[i][*iter] = iter.key();
+        database.__modalities_names[i][iter.val ()] = iter.key();
       }
 
       database.__missing_value[i] = modals.exists ( "?" );
@@ -437,7 +437,7 @@ namespace gum {
 
       for ( HashTableConstIterator<std::string, unsigned int>
             iter = modals.begin(); iter != modals.end(); ++iter ) {
-        database.__modalities_names[i][*iter] = iter.key();
+        database.__modalities_names[i][iter.val ()] = iter.key();
       }
 
       database.__missing_value[i] = modals.exists ( "?" );

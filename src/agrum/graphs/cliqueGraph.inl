@@ -124,7 +124,7 @@ namespace gum {
   CliqueGraph::container( const NodeId id ) const  {
     for ( NodeProperty<NodeSet>::const_iterator iter = __cliques.begin();
           iter != __cliques.end(); ++iter )
-      if ( iter->contains( id ) ) return iter.key();
+      if ( iter.val().contains( id ) ) return iter.key();
 
     GUM_ERROR( NotFound, "This node belongs to no clique" );
   }

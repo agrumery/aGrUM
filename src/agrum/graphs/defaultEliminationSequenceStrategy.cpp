@@ -178,15 +178,15 @@ namespace gum {
         GUM_ERROR ( NotFound, "there exists no more node to eliminate" );
       }
 
-      float min_weight = *iter_heuristic;
+      float min_weight = iter_heuristic.val ();
 
       NodeId removable_node = iter_heuristic.key();
 
       for ( ++iter_heuristic; iter_heuristic != __log_weights.end();
             ++iter_heuristic )
-        if ( *iter_heuristic < min_weight ) {
+        if ( iter_heuristic.val () < min_weight ) {
           removable_node = iter_heuristic.key();
-          min_weight = *iter_heuristic;
+          min_weight = iter_heuristic.val ();
         }
 
       return removable_node;

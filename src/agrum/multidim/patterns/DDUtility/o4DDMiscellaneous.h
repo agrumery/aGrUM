@@ -170,13 +170,13 @@ namespace gum {
 #endif
 
         for ( HashTableIterator< NodeId, Set< const DiscreteVariable* >* > retroVarIter = retrogradeVarTable->begin(); retroVarIter != retrogradeVarTable->end(); ++retroVarIter )
-          if ( *retroVarIter != nullptr && !( *retroVarIter )->empty() ) {
+          if ( retroVarIter.val () != nullptr && !( retroVarIter.val() )->empty() ) {
 
 #ifdef O4DDDEBUG
             GUM_TRACE( "\tNode : " << retroVarIter.key() );
 #endif
 
-            for ( SetIterator< const DiscreteVariable* > iter = ( *retroVarIter )->begin(); iter != ( *retroVarIter )->end(); ++iter ) {
+            for ( SetIterator< const DiscreteVariable* > iter = ( retroVarIter.val () )->begin(); iter != ( retroVarIter.val () )->end(); ++iter ) {
 
 #ifdef O4DDDEBUG
               GUM_TRACE( "\t\tVariable : " << ( *iter )->name() );
@@ -190,7 +190,7 @@ namespace gum {
 
       ~NonOrderedOperatorData() {
         for ( HashTableIterator< NodeId, Set< const DiscreteVariable* >* > iterH = retrogradeVarTable->begin(); iterH != retrogradeVarTable->end(); ++iterH )
-          delete *iterH;
+          delete iterH.val ();
 
         delete retrogradeVarTable;
       };
@@ -341,8 +341,8 @@ namespace gum {
       NodeId maxNode = 0;
 
       while ( ctIter != countTable.end() ) {
-        if ( *ctIter > max ) {
-          max = *ctIter;
+        if ( ctIter.val () > max ) {
+          max = ctIter.val ();
           maxNode = ctIter.key();
         }
 

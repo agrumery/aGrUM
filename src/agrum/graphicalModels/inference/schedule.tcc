@@ -55,7 +55,7 @@ namespace gum {
 
     for ( typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes::const_iterator
           iter = ops.begin(); iter != ops.end(); ++iter ) {
-      __node2operation.insert( iter.key(), ( *iter )->newFactory() );
+      __node2operation.insert( iter.key(), ( iter.val () )->newFactory() );
     }
 
     // update the set of operations involved with each multidim table
@@ -63,7 +63,7 @@ namespace gum {
 
     for ( typename HashTable<MultiDimId,NodeSet*>::const_iterator
           iter = inv.begin(); iter != inv.end(); ++iter ) {
-      __multidim2operations.insert( iter.key(), new NodeSet( **iter ) );
+      __multidim2operations.insert( iter.key(), new NodeSet( *( iter.val () ) ) );
     }
   }
 
@@ -79,14 +79,14 @@ namespace gum {
     for ( typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes::const_iterator
           iter = __node2operation.begin(); iter != __node2operation.end();
           ++iter ) {
-      delete *iter;
+      delete iter.val ();
     }
 
     // remove the sets of operations involved with each multidim table
     for ( typename HashTable<MultiDimId,NodeSet*>::const_iterator
           iter = __multidim2operations.begin();
           iter != __multidim2operations.end(); ++iter ) {
-      delete *iter;
+      delete iter.val ();
     }
   }
 
@@ -128,7 +128,7 @@ namespace gum {
 
       for ( typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes::const_iterator
             iter = ops.begin(); iter != ops.end(); ++iter ) {
-        __node2operation.insert( iter.key(), ( *iter )->newFactory() );
+        __node2operation.insert( iter.key(), ( iter.val () )->newFactory() );
       }
 
       // update the set of operations involved with each multidim table
@@ -138,7 +138,7 @@ namespace gum {
 
       for ( typename HashTable<MultiDimId,NodeSet*>::const_iterator
             iter = inv.begin(); iter != inv.end(); ++iter ) {
-        __multidim2operations.insert( iter.key(), new NodeSet( **iter ) );
+        __multidim2operations.insert( iter.key(), new NodeSet( *( iter.val () ) ) );
       }
     }
 
@@ -205,7 +205,7 @@ namespace gum {
       }
 
       if ( ! __multidim2operations.exists( table_id ) ) {
-        involved_ops = __multidim2operations.insert( table_id, new NodeSet );
+        involved_ops = __multidim2operations.insert( table_id, new NodeSet ).second;
       } else {
         involved_ops = __multidim2operations[table_id];
       }
@@ -220,7 +220,7 @@ namespace gum {
       MultiDimId table_id = ( *iter )->id();
 
       if ( ! __multidim2operations.exists( table_id ) ) {
-        involved_ops = __multidim2operations.insert( table_id, new NodeSet );
+        involved_ops = __multidim2operations.insert( table_id, new NodeSet ).second;
       } else {
         involved_ops = __multidim2operations[table_id];
       }

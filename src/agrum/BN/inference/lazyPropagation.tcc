@@ -267,7 +267,7 @@ namespace gum {
     for ( HashTableIterator< NodeId, List <const Potential<GUM_SCALAR>*> >
           iter = __clique_evidence.begin();
           iter != __clique_evidence.end(); ++iter ) {
-      iter->eraseByVal ( pot );
+      iter.val().eraseByVal ( pot );
     }
 
     // remove the potential from the list of evidence
@@ -293,13 +293,13 @@ namespace gum {
     for ( HashTableIterator<NodeId, List<const Potential<GUM_SCALAR>*> >
           iter = __clique_evidence.begin();
           iter != __clique_evidence.end(); ++iter )
-      iter->clear();
+      iter.val().clear();
 
     // remove the messages sent during a previous propagation
     for ( typename Property< __PotentialSet >::onArcs::iterator iter =
             __sep_potentials.begin();
           iter != __sep_potentials.end(); ++iter )
-      iter->clear();
+      iter.val().clear();
 
     // remove actually all the evidence taken into account
     __evidences.clear();
@@ -314,11 +314,11 @@ namespace gum {
     // indicate that, now, new inference is required
     for ( HashTableIterator<NodeId, bool> iter = __collected_cliques.begin();
           iter != __collected_cliques.end(); ++iter )
-      *iter = false;
+      iter.val () = false;
 
     for ( HashTableIterator<NodeId, bool> iter = __diffused_cliques.begin();
           iter != __diffused_cliques.end(); ++iter )
-      *iter = false;
+      iter.val () = false;
   }
 
 
@@ -425,7 +425,7 @@ namespace gum {
           iter = pot_vars_per_var.begin();
           iter != pot_vars_per_var.end(); ++iter ) {
       double size = 1.0;
-      HashTable<const DiscreteVariable*, unsigned int>& vars = *iter;
+      HashTable<const DiscreteVariable*, unsigned int>& vars = iter.val ();
 
       if ( vars.size() ) {
         for ( HashTableIterator<const DiscreteVariable*, unsigned int>
@@ -763,7 +763,7 @@ namespace gum {
       for ( typename Property< __PotentialSet >::onArcs::iterator
             iter = __sep_potentials.begin();
             iter != __sep_potentials.end(); ++iter )
-        iter->clear();
+        iter.val().clear();
 
       for ( __PotentialSetIterator iter = __created_potentials.begin();
             iter != __created_potentials.end(); ++iter )
@@ -774,17 +774,17 @@ namespace gum {
       // indicate that __collect and __diffusion passed through no clique yet
       for ( HashTableIterator<NodeId, bool> iter = __collected_cliques.begin();
             iter != __collected_cliques.end(); ++iter )
-        *iter = false;
+        iter.val () = false;
 
       for ( HashTableIterator<NodeId, bool> iter = __diffused_cliques.begin();
             iter != __diffused_cliques.end(); ++iter )
-        *iter = false;
+        iter.val () = false;
     }
 
     // perform the __collect in all connected components of the junction tree
     for ( HashTableIterator<NodeId, bool> iter = __collected_cliques.begin();
           iter != __collected_cliques.end(); ++iter ) {
-      if ( *iter == false )
+      if ( iter.val () == false )
         __collect ( iter.key(), iter.key() );
     }
 
@@ -798,7 +798,7 @@ namespace gum {
     // perform the __diffusion in all connected components of the junction tree
     for ( HashTableIterator<NodeId, bool> iter = __diffused_cliques.begin();
           iter != __diffused_cliques.end(); ++iter ) {
-      if ( *iter == false )
+      if ( iter.val () == false )
         __diffusion ( iter.key(), iter.key() );
     }
 

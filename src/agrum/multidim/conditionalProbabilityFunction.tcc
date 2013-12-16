@@ -155,7 +155,7 @@ namespace gum {
             __condMap->begin();
           iter != __condMap->end();
           ++iter ) {
-      if ( ! *iter ) inst.add( *( iter.key() ) );
+      if ( ! iter.val () ) inst.add( *( iter.key() ) );
     }
 
     return inst;
@@ -174,7 +174,7 @@ namespace gum {
     for ( HashTableIterator<const DiscreteVariable*, bool> iter = __condMap->begin();
           iter != __condMap->end();
           ++iter ) {
-      if ( ! *iter ) inst.add( *( iter.key() ) );
+      if ( ! iter.val () ) inst.add( *( iter.key() ) );
     }
 
     return inst;

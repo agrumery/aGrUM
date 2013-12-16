@@ -235,8 +235,8 @@ namespace gum {
           Idx maxCall = nbDefault;
 
           for ( HashTableIterator< NodeId, Idx > hIter = nodeCount.begin(); hIter != nodeCount.end(); ++hIter )
-            if ( *hIter > maxCall ) {
-              maxCall = *hIter;
+            if ( hIter.val () > maxCall ) {
+              maxCall = hIter.val ();
               maxNodeId = hIter.key();
             }
 

@@ -302,8 +302,8 @@ namespace gum_tests {
           iter != hashmap.end();
           ++iter
         ) {
-          sk += iter.key();
-          sv += *iter;
+          sk += iter.key ();
+          sv += iter.val ();
         }
 
         TS_ASSERT_EQUALS ( sk * 2, sv );
@@ -346,7 +346,7 @@ namespace gum_tests {
           iter != hashmap.end();
           ++iter
         ) {
-          sv += *iter;
+          sv += iter.val ();
           sk += iter.key().head() + iter.key().tail();
         }
 

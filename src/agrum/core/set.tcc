@@ -303,7 +303,7 @@ namespace gum {
   template<typename KEY> INLINE
   void Set<KEY>::erase( const SetIterator<KEY>& iter ) {
     // erase the element
-    __inside.erase( iter.__ht_iter );
+    __inside.erase( iter.__ht_iter.key () );
 
     // Note that actually there is no need to update the end iterator as this one
     // is not affected by changes within hashtables (adding/deleting elements).

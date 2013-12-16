@@ -224,7 +224,7 @@ namespace gum_tests {
           }
 
           for ( gum::HashTableIterator< const gum::DiscreteVariable*, gum::List<gum::NodeId>* > ht  = var2NodeIdMap.begin(); ht != var2NodeIdMap.end(); ++ht )
-            delete *ht;
+            delete ht.val ();
 
           ret  = f->getMultiDimDecisionDiagram();
         }

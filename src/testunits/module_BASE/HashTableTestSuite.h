@@ -118,7 +118,7 @@ namespace gum_tests {
         fill( table );
         TS_ASSERT_EQUALS( table.size(), ( gum::Size )6 );
 
-        gum::HashTable<int, std::string>::iterator iter = table.begin();
+        gum::HashTable<int, std::string>::iterator_safe iter = table.beginSafe ();
 
         TS_GUM_ASSERT_THROWS_NOTHING( table.erase( iter ) );
         TS_ASSERT_EQUALS( table.size(), ( gum::Size )5 );
@@ -128,15 +128,15 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( table.erase( iter ) );
         TS_ASSERT_EQUALS( table.size(), ( gum::Size )4 );
 
-        iter = table.begin();
+        iter = table.beginSafe ();
         TS_GUM_ASSERT_THROWS_NOTHING( table.erase( iter ) );
         TS_ASSERT_EQUALS( table.size(), ( gum::Size )3 );
 
-        iter = table.end();
+        iter = table.endSafe ();
         TS_GUM_ASSERT_THROWS_NOTHING( table.erase( iter ) );
         TS_ASSERT_EQUALS( table.size(), ( gum::Size )3 );
 
-        iter = table.end();
+        iter = table.endSafe ();
         TS_GUM_ASSERT_THROWS_NOTHING( table.erase( iter ) );
         TS_ASSERT_EQUALS( table.size(), ( gum::Size )3 );
       }
@@ -411,7 +411,7 @@ namespace gum_tests {
         for ( gum::HashTable<int, std::string>::iterator iter = t1.begin();
               iter != t1.end();
               ++ iter ) {
-          obtained.insert( *iter );
+          obtained.insert( iter.val () );
         }
 
         TS_ASSERT_EQUALS( expected.size(), obtained.size() );
@@ -433,7 +433,7 @@ namespace gum_tests {
 
         for ( gum::HashTable<int, std::string>::iterator iter = t1.begin();
               iter != t1.end(); ++iter ) {
-          obtained.insert( *iter );
+          obtained.insert( iter.val () );
         }
 
         TS_ASSERT_EQUALS( expected.size(), obtained.size() );

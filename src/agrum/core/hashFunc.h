@@ -28,13 +28,17 @@
 // utility provides the std::pair <> template
 #include <string>
 #include <utility>
+#include <type_traits>
 
 #include <agrum/config.h>
-
 #include <agrum/core/refPtr.h>
+
 
 namespace gum {
 
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+  
   /** in aGrUM, the sizes of hash tables (number of slots) are powers of 2. This
    * is not actually compulsory for the hash function we use. However, as it
    * speeds up the computations of hashed values, we chose to impose
@@ -43,31 +47,33 @@ namespace gum {
    * equal nb. */
   unsigned int __hashTableLog2( const Size& nb );
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-  extern const Size               GUM_HASHTABLE_INT_GOLD;
-  extern const Size               GUM_HASHTABLE_INT_PI;
-  extern const Size               GUM_HASHTABLE_MASK;
-  extern const size_t             GUM_HASHTABLE_OFFSET;
+  
+  /* Hash functions are of the form [M * ((k * A) mod 1)], where [] stands for the
+   * integer part, M is equal to the number of slots in the hashtable, k is the key
+   * to be hashed, and mod 1 retrieves the decimal part of (k * A). A is an
+   * irrational number (currently either the gold number or pi/4). To speed up
+   * computations, the hash function is implemented using only unsigned longs.
+   * Therefore pi/4 and the gold number are encoded as X * 2^{-n} where n is the
+   * number of bits in an unsigned long. Consequently, we should adapt X's
+   * definition to 32 and 64 bits architectures. */
+  struct HashFuncConst {
+#if ULONG_MAX == 4294967295UL // unsigned long = 32 bits
+    static constexpr unsigned long gold   = 2654435769UL;
+    static constexpr unsigned long pi     = 3373259426UL;
+    static constexpr unsigned long mask   = 4294967295UL;
+    static constexpr size_t        offset = 32;
+#else // unsigned long = 64 bits
+    static constexpr unsigned long gold   = 11400714819323198486UL;
+    static constexpr unsigned long pi     = 14488038916154245684UL;
+    static constexpr unsigned long mask   = 18446744073709551615UL;
+    static constexpr size_t        offset = 64;
+#endif /* unsigned long = 32 bits */
+  };
+  
 
-  //for pedantic  extern const unsigned long long GUM_HASHTABLE_LONG_GOLD;
-  //for pedantic  extern const unsigned long long GUM_HASHTABLE_LONG_PI;
-
-
-  // the hash function class
-
-  template <typename Key> class HashFunc;
-
-  template <typename Key> class HashFuncSmallKey;
-
-  template <typename Key> class HashFuncBigKey;
-
-  template <typename Key1, typename Key2> class HashFuncSmallKeyPair;
-
-  template <typename Key1, typename Key2> class HashFuncBigKeyPair;
-
-  template <typename Key, typename Val> class HashTable;
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
+  
 
   /* =========================================================================== */
   /* ===             BASE CLASS SHARED BY ALL THE HASH FUNCTIONS             === */
@@ -116,35 +122,35 @@ namespace gum {
   /* =========================================================================== */
 
   template <typename Key> class HashFuncBase {
-    public:
-      /// update the hash function to take into account a resize of the hash table
-      /**
-       * @param s the hashtable's size wished by the user. Actually, a hashtable
-       * of size n is an array of n lists. When the user wishes to resize the
-       * hashtable so that the array is of size s, the hashtable resizes itself to
-       * the smallest power of 2 greater than or equal to s. This new size is
-       * precisely what is computed by function resize. Hence s should be the size
-       * of the array of lists, not the number of elements stored into the hashtable.
-       * @throw HashSize
-       */
-      virtual void resize( Size s );
+  public:
+    /// update the hash function to take into account a resize of the hash table
+    /**
+     * @param s the hashtable's size wished by the user. Actually, a hashtable
+     * of size n is an array of n lists. When the user wishes to resize the
+     * hashtable so that the array is of size s, the hashtable resizes itself to
+     * the smallest power of 2 greater than or equal to s. This new size is
+     * precisely what is computed by function resize. Hence s should be the size
+     * of the array of lists, not the number of elements stored into the hashtable.
+     * @throw HashSize
+     */
+    virtual void resize( Size s );
 
-      /// computes the hashed value of a key
-      virtual Size operator()( const Key& ) const = 0;
+    /// computes the hashed value of a key
+    virtual Size operator()( const Key& ) const = 0;
 
-      /// returns the hash table size as known by the hash function
-      Size size() const;
+    /// returns the hash table size as known by the hash function
+    Size size() const noexcept;
 
-    protected:
-      /// the size of the hash table
-      Size _hash_size;
+  protected:
+    /// the size of the hash table
+    Size _hash_size {0};
 
-      /// log of the size of the hash table in base 2
-      unsigned int _hash_log2_size;
+    /// log of the size of the hash table in base 2
+    unsigned int _hash_log2_size {0};
 
-      /** @brief when you use this mask, you are guarranteed that hashed keys belong
-       * to the set of indices of the hash table */
-      Size _hash_mask;
+    /** @brief when you use this mask, you are guarranteed that hashed keys belong
+     * to the set of indices of the hash table */
+    Size _hash_mask {0};
 
       /** @brief constructors and destructors are protected so as to
        * guarrantee that user-defined HashFunc inherit from HashFuncBase */
@@ -170,82 +176,86 @@ namespace gum {
   /* ===                  GENERIC MULTIPURPOSE HASH FUNCTIONS                === */
   /* =========================================================================== */
   /* =========================================================================== */
-  /** generic hash functions for keys smaller than long integer */
+
+  /// generic hash functions for keys smaller than or equal to long integers
   template <typename Key> class HashFuncSmallKey :
-    public HashFuncBase<Key> {
-    public:
-      /// update the hash function to take into account a resize of the hash table
-      /** @throw HashSize */
-      void resize( Size );
+    private HashFuncBase<Key> {
+  public:
+    /// update the hash function to take into account a resize of the hash table
+    /** @throw HashSize */
+    void resize( Size );
 
-      /// computes the hashed value of a key
-      Size operator()( const Key& ) const;
+    /// computes the hashed value of a key
+    Size operator()( const Key& ) const;
 
-    protected:
-      // the number of right shift to perform to get correct hashed values
-      unsigned int _right_shift;
+    using HashFuncBase<Key>::size;
+
+  protected:
+    // the number of right shift to perform to get correct hashed values
+    unsigned int _right_shift;
   };
 
 
   /** generic hash functions for keys castable as unsigned longs and whose size
    * is precisely that of unsigned longs */
   template <typename Key> class HashFuncMediumCastKey :
-    public HashFuncBase<Key> {
-    public:
-      /// update the hash function to take into account a resize of the hash table
-      /** @throw HashSize */
-      void resize( Size );
+    private HashFuncBase<Key> {
+  public:
+    /// update the hash function to take into account a resize of the hash table
+    /** @throw HashSize */
+    void resize( Size );
 
-      /// computes the hashed value of a key
-      Size operator()( const Key& ) const;
+    /// computes the hashed value of a key
+    Size operator()( const Key& ) const;
 
-    protected:
-      // the number of right shift to perform to get correct hashed values
-      unsigned int _right_shift;
+    using HashFuncBase<Key>::size;
+    
+  protected:
+    // the number of right shift to perform to get correct hashed values
+    unsigned int _right_shift;
   };
 
 
   /** generic hash functions for keys castable as unsigned longs and whose size
    * is smaller than that of unsigned longs */
   template <typename Key> class HashFuncSmallCastKey :
-    public HashFuncBase<Key> {
-    public:
-      /// basic constructor
-      HashFuncSmallCastKey();
+    private HashFuncBase<Key> {
+  public:
+    /// basic constructor
+    HashFuncSmallCastKey();
 
-      /// update the hash function to take into account a resize of the hash table
-      /** @throw HashSize */
-      void resize( Size );
+    /// update the hash function to take into account a resize of the hash table
+    /** @throw HashSize */
+    void resize( Size );
 
-      /// computes the hashed value of a key
-      Size operator()( const Key& ) const;
+    /// computes the hashed value of a key
+    Size operator()( const Key& ) const;
 
-    protected:
-      // the number of right shift to perform to get correct hashed values
-      unsigned int _right_shift;
+  protected:
+    // the number of right shift to perform to get correct hashed values
+    unsigned int _right_shift;
 
-      // an additional mask to ensure that keys with fewer bits than unsigned longs
-      // are cast correctly
-      unsigned long _small_key_mask;
+    // an additional mask to ensure that keys with fewer bits than unsigned longs
+    // are cast correctly
+    unsigned long _small_key_mask;
   };
 
 
 
   /** generic hash functions for pairs of at most long integer keys */
-
   template <typename Key1, typename Key2> class HashFuncSmallKeyPair :
     public HashFuncBase< std::pair<Key1,Key2> > {
-    public:
-      /// update the hash function to take into account a resize of the hash table
-      /** @throw HashSize */
-      void resize( Size );
+  public:
+    /// update the hash function to take into account a resize of the hash table
+    /** @throw HashSize */
+    void resize( Size );
 
-      /// computes the hashed value of a key
-      Size operator()( const std::pair<Key1,Key2>& ) const ;
+    /// computes the hashed value of a key
+    Size operator()( const std::pair<Key1,Key2>& ) const ;
 
-    protected:
-      // the number of right shift to perform to get correct hashed values
-      unsigned int _right_shift;
+  protected:
+    // the number of right shift to perform to get correct hashed values
+    unsigned int _right_shift;
   };
 
 
@@ -253,42 +263,42 @@ namespace gum {
    * of unsigned longs and which can be cast into unsigned longs */
   template <typename Key1, typename Key2> class HashFuncMediumCastKeyPair :
     public HashFuncBase< std::pair<Key1,Key2> > {
-    public:
-      /// update the hash function to take into account a resize of the hash table
-      /** @throw HashSize */
-      void resize( Size );
+  public:
+    /// update the hash function to take into account a resize of the hash table
+    /** @throw HashSize */
+    void resize( Size );
 
-      /// computes the hashed value of a key
-      Size operator()( const std::pair<Key1,Key2>& ) const ;
+    /// computes the hashed value of a key
+    Size operator()( const std::pair<Key1,Key2>& ) const ;
 
-    protected:
-      // the number of right shift to perform to get correct hashed values
-      unsigned int _right_shift;
+  protected:
+    // the number of right shift to perform to get correct hashed values
+    unsigned int _right_shift;
   };
 
 
   /** generic hash functions for pairs of at most long integer keys */
   template <typename Key1, typename Key2> class HashFuncSmallCastKeyPair :
     public HashFuncBase< std::pair<Key1,Key2> > {
-    public:
-      /// basic constructor
-      HashFuncSmallCastKeyPair();
+  public:
+    /// basic constructor
+    HashFuncSmallCastKeyPair();
 
-      /// update the hash function to take into account a resize of the hash table
-      /** @throw HashSize */
-      void resize( Size );
+    /// update the hash function to take into account a resize of the hash table
+    /** @throw HashSize */
+    void resize( Size );
 
-      /// computes the hashed value of a key
-      Size operator()( const std::pair<Key1,Key2>& ) const ;
+    /// computes the hashed value of a key
+    Size operator()( const std::pair<Key1,Key2>& ) const ;
 
-    protected:
-      // the number of right shift to perform to get correct hashed values
-      unsigned int _right_shift;
+  protected:
+    // the number of right shift to perform to get correct hashed values
+    unsigned int _right_shift;
 
-      // some masks used to ensure that keys with fewer bits than unsigned longs
-      // are cast correctly
-      unsigned long _small_key_mask1;
-      unsigned long _small_key_mask2;
+    // some masks used to ensure that keys with fewer bits than unsigned longs
+    // are cast correctly
+    unsigned long _small_key_mask1;
+    unsigned long _small_key_mask2;
   };
 
 
@@ -341,6 +351,9 @@ namespace gum {
 
   template <typename key> class HashFunc {};
 
+  template <> class HashFunc<bool> :
+    public HashFuncSmallKey<bool> {};
+  
   template <> class HashFunc<int> :
     public HashFuncSmallKey<int> {};
 
@@ -354,25 +367,14 @@ namespace gum {
     public HashFuncSmallKey<unsigned long> {};
 
   template <> class HashFunc<float> :
-#if GUM_FLOAT_SIZE >= GUM_LONG_SIZE
-    public HashFuncMediumCastKey<float> {};
-#else
-    public HashFuncSmallCastKey<float> {};
-#endif
+    public std::conditional< sizeof(float) >= sizeof(long),
+                             HashFuncMediumCastKey<float>,
+                             HashFuncSmallCastKey<float> >::type {};
 
   template <> class HashFunc<double> :
-#if GUM_DOUBLE_SIZE >= GUM_LONG_SIZE
-    public HashFuncMediumCastKey<double> {};
-#else
-    public HashFuncSmallCastKey<double> {};
-#endif
-
-
-  //for pedantic    template <> class HashFunc<long long> :
-  //for pedantic  public HashFuncBigKey<long long> {};
-
-  //for pedantic  template<> class HashFunc<unsigned long long> :
-  //for pedantic  public HashFuncBigKey<unsigned long long> {};
+    public std::conditional< sizeof(double) >= sizeof(long),
+                             HashFuncMediumCastKey<double>,
+                             HashFuncSmallCastKey<double> >::type {};
 
   template <> class HashFunc< std::pair<int, int> > :
     public HashFuncSmallKeyPair<int, int> {};
@@ -387,18 +389,14 @@ namespace gum {
     public HashFuncSmallKeyPair<unsigned long, unsigned long> {};
 
   template <> class HashFunc< std::pair<float,float> > :
-#if GUM_FLOAT_SIZE >= GUM_LONG_SIZE
-    public HashFuncMediumCastKeyPair<float,float> {};
-#else
-    public HashFuncSmallCastKeyPair<float,float> {};
-#endif
+    public std::conditional< sizeof(float) >= sizeof(long),
+                             HashFuncMediumCastKeyPair<float,float>,
+                             HashFuncSmallCastKeyPair<float,float> >::type {};
 
   template <> class HashFunc< std::pair<double,double> > :
-#if GUM_DOUBLE_SIZE >= GUM_LONG_SIZE
-    public HashFuncMediumCastKeyPair<double,double> {};
-#else
-    public HashFuncSmallCastKeyPair<double,double> {};
-#endif
+    public std::conditional< sizeof(double) >= sizeof(long),
+                             HashFuncMediumCastKeyPair<double,double>,
+                             HashFuncSmallCastKeyPair<double,double> >::type {};
 
   template <> class HashFunc< std::pair<double, long unsigned int> > :
     public HashFuncMediumCastKeyPair<double, long unsigned int> {
@@ -408,56 +406,50 @@ namespace gum {
     public HashFuncMediumCastKeyPair<double, long int> {
   };
 
-  /* removed for pedantic reasons
-     template <> class HashFunc< std::pair<long long, long long> > :
-     public HashFuncBigKeyPair<long long, long long> {};
-
-     template <>
-     class HashFunc< std::pair<unsigned long long, unsigned long long> > :
-     public HashFuncBigKeyPair<unsigned long long, unsigned long long> {};
-  */
-
   template <typename Type> class HashFunc<Type*> :
     public HashFunc<unsigned long> {
-    public:
-      /// computes the hashed value of a key
-      Size operator()( Type* const& key ) const ;
+  public:
+    /// computes the hashed value of a key
+    Size operator()( Type* const& key ) const ;
   };
 
   template <typename Type> class HashFunc< RefPtr<Type> > :
     public HashFunc<unsigned int*> {
-    public:
-      /// computes the hashed value of a key
-      Size operator()( const RefPtr<Type>& key ) const ;
+  public:
+    /// computes the hashed value of a key
+    Size operator()( const RefPtr<Type>& key ) const ;
   };
 
-  template <> class HashFunc<std::string> : public HashFuncBase<std::string> {
-    public:
-      /// computes the hashed value of a key
-      Size operator()( const std::string& key ) const ;
+  template <> class HashFunc<std::string> :
+    public HashFuncBase<std::string> {
+  public:
+    /// computes the hashed value of a key
+    Size operator()( const std::string& key ) const ;
   };
 
   template <> class HashFunc< std::pair<std::string, std::string> > :
     public HashFuncBase< std::pair<std::string, std::string> > {
-    public:
-      /// computes the hashed value of a key
-      Size operator()( const std::pair<std::string, std::string>& key ) const ;
+  public:
+    /// computes the hashed value of a key
+    Size operator()( const std::pair<std::string, std::string>& key ) const ;
   };
 
   template <> class HashFunc< std::vector<Idx> > :
     public HashFuncBase< std::vector< Idx > > {
-    public:
-      /// computes the hashed value of a key
-      Size operator()( const std::vector< Idx >& key ) const ;
+  public:
+    /// computes the hashed value of a key
+    Size operator()( const std::vector< Idx >& key ) const ;
   };
 
-  template <> class HashFunc<Debug> : public HashFuncBase<Debug> {
-    public:
-      /// computes the hashed value of a key
-      Size operator()( const Debug& key ) const ;
+  template <> class HashFunc<Debug> :
+    public HashFuncBase<Debug> {
+  public:
+    /// computes the hashed value of a key
+    Size operator()( const Debug& key ) const ;
   };
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
 
 } /* namespace gum */
 

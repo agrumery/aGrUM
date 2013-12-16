@@ -41,6 +41,7 @@ namespace gum {
 
 
   template <typename T1, typename T2> class BijectionIterator;
+  template <typename T1, typename T2> class Bijection;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -189,8 +190,8 @@ namespace gum {
 
       /// Default constructor: creates a bijection without any association
 
-      Bijection( Size size = GUM_HASHTABLE_DEFAULT_SIZE,
-                 bool resize_policy = GUM_HASHTABLE_DEFAULT_RESIZE_POLICY );
+      Bijection( Size size = HashTableConst::default_size,
+                 bool resize_policy = HashTableConst::default_resize_policy );
 
 
       /// Copy constructor
@@ -421,7 +422,7 @@ namespace gum {
 
       /// inserts a new association in the bijection
 
-      HashTableBucket<T1,T2*>* __insert( const T1& first, const T2& second );
+    typename HashTable<T1,T2*>::Bucket* __insert( const T1& first, const T2& second );
 
   };
 
@@ -587,8 +588,8 @@ namespace gum {
 
       /// Default constructor: creates a bijection without association
 
-      Bijection( Size size = GUM_HASHTABLE_DEFAULT_SIZE,
-                 bool resize_policy = GUM_HASHTABLE_DEFAULT_RESIZE_POLICY );
+      Bijection( Size size = HashTableConst::default_size,
+                 bool resize_policy = HashTableConst::default_resize_policy );
 
 
       /// Copy constructor
