@@ -1,7 +1,7 @@
 # -*- encoding: UTF-8 -*-
 
 import unittest
-from pyAgrum import Sequence_node, Sequence_string, DuplicateElement
+from pyAgrum import NodeSequence, StringSequence, DuplicateElement
 from pyAgrumTestSuite import pyAgrumTestCase
 
 
@@ -24,18 +24,18 @@ class SequenceTestCase(pyAgrumTestCase):
 class TestConstructors(SequenceTestCase):
 
     def testConstructor(self):
-        seq = Sequence_node()
+        seq = NodeSequence()
         self.fill_d(seq)
-        seq = Sequence_string()
+        seq = StringSequence()
         self.fill_s(seq)
 
 
     def testCopyConstructor(self):
-        seq1 = Sequence_node()
-        seq2 = Sequence_node(seq1)
+        seq1 = NodeSequence()
+        seq2 = NodeSequence(seq1)
         self.fill_d(seq2)
-        seq1 = Sequence_string()
-        seq2 = Sequence_string(seq1)
+        seq1 = StringSequence()
+        seq2 = StringSequence(seq1)
         self.fill_s(seq2)
 
 
@@ -43,13 +43,13 @@ class TestConstructors(SequenceTestCase):
 class TestFeatures(SequenceTestCase):
 
     def testEquality(self):
-        seq1 = Sequence_node()
-        seq2 = Sequence_node()
+        seq1 = NodeSequence()
+        seq2 = NodeSequence()
         self.fill_d(seq1)
         self.fill_d(seq2)
         self.assertEqual(seq1, seq2)
 
-        seq3 = Sequence_node()
+        seq3 = NodeSequence()
         self.assertNotEqual(seq1, seq3)
         seq3.append(1)
         self.assertNotEqual(seq1, seq3)
@@ -61,7 +61,7 @@ class TestFeatures(SequenceTestCase):
 
 
     def testGettersAndSetters(self):
-        seq = Sequence_string()
+        seq = StringSequence()
         self.fill_s(seq)
         seq.append("qlementine")
 

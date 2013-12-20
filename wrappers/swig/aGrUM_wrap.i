@@ -99,7 +99,7 @@
 %include "std_vector.i"
 
 namespace std {
-%template(Vector_double) vector<double>;
+%template(Vector) vector<double>;
 }
 
 
@@ -402,7 +402,7 @@ namespace std {
 
 /* TEMPLATES INSTANTIATIONS */
 
-%template(RandomDistribution) gum::randomDistribution<double>;
+%template(RandomDistribution_double) gum::randomDistribution<double>;
 %template(NodeSequence) gum::Sequence<gum::NodeId>;
 %template(StringSequence) gum::Sequence<std::string>;
 
@@ -415,7 +415,7 @@ namespace std {
 %template(MultiDimArray_double) gum::MultiDimArray<double>;
 
 %template(Potential_double) gum::Potential<double>;
-/*%template(ListPotentials_double) gum::List< const gum::Potential<double> *>;*/
+%template(ListPotentials_double) gum::List< const gum::Potential<double> *>;
 
 %template(BayesNet_double) gum::BayesNet<double>;
 %template(BayesNetInference_double) gum::BayesNetInference<double>;

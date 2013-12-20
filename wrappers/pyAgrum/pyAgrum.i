@@ -13,13 +13,15 @@ to OpenBayes, a free Bayesian Network library for Python."
 
 // this should be removed at some point with a new version of SWIG
 using namespace std;
+using namespace gum;
 %}
-
-%include "includes.i"
 
 %pythoncode %{
   import numpy
 %}
+ 
+%include "aGrUM_wrap.i"
+
 /* declaration of code modifiers for 'pythonification' of aGrUM */
 %include "pythonize.i"
 %include "exceptions.i"
@@ -37,23 +39,5 @@ using namespace std;
 %include "kl.i"
 
 %include "credalnet.i"
- 
-%include "aGrUM_wrap.i"
 
-%pythoncode %{
-Potential = Potential_double
-ListPotentials = ListPotentials_double
-
-BayesNet = BayesNet_double
-LazyPropagation = LazyPropagation_double
-GibbsInference = GibbsInference_double
-
-BruteForceKL = BruteForceKL_double
-GibbsKL = GibbsKL_double
-
-CredalNet = CredalNet_double
-CNMonteCarloSampling = CNMonteCarloSampling_double
-CNLoopyPropagation = CNLoopyPropagation_double
-
-%}
 
