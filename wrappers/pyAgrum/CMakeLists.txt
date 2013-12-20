@@ -39,9 +39,10 @@ endif(SWIG_FOUND)
 find_package(PythonInterp)
 
 if (APPLE) # let's assume that PYTHON is there
-  set(PYTHON_LIBRARIES /usr/local/lib/libpython2.7.dylib)
-  set(PYTHON_INCLUDE_PATH /usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/include/python2.7)
-  message(${PYTHON_LIBRARIES})
+  #set(PYTHON_LIBRARIES /usr/local/lib/libpython2.7.dylib)
+  #set(PYTHON_INCLUDE_PATH /usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/include/python2.7)
+  #message(${PYTHON_LIBRARIES})
+  find_package(PythonLibs ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} REQUIRED)
 else()
   find_package(PythonLibs ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} REQUIRED)
 endif()
