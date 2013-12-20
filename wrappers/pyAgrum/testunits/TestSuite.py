@@ -9,7 +9,6 @@ import VariablesTestSuite
 import BayesNetTestSuite
 import PythonBNListenerTestSuite
 import PotentialTestSuite
-import ListTestSuite
 import LazyPropagationTestSuite
 import GibbsTestSuite
 
@@ -19,7 +18,7 @@ import sys
 tests = unittest.TestSuite([SequenceTestSuite.ts, VariablesTestSuite.ts,
                             BayesNetTestSuite.ts,
                             PythonBNListenerTestSuite.ts,
-                            PotentialTestSuite.ts, ListTestSuite.ts,
+                            PotentialTestSuite.ts,
                             LazyPropagationTestSuite.ts, GibbsTestSuite.ts
                             ])
 
