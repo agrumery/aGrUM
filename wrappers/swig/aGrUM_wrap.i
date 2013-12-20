@@ -99,7 +99,7 @@
 %include "std_vector.i"
 
 namespace std {
-%template(Vector) vector<double>;
+%template(Vector_double) vector<double>;
 }
 
 
@@ -415,12 +415,12 @@ namespace std {
 %template(MultiDimArray_double) gum::MultiDimArray<double>;
 
 %template(Potential_double) gum::Potential<double>;
-%template(ListPotentials_double) gum::List< const gum::Potential<double> *>;
 
 %template(BayesNet_double) gum::BayesNet<double>;
 %template(BayesNetInference_double) gum::BayesNetInference<double>;
 %template(LazyPropagation_double) gum::LazyPropagation<double>;
 %template(GibbsInference_double) gum::GibbsInference<double>;
+
 %template(BruteForceKL_double) gum::BruteForceKL<double>;
 %template(GibbsKL_double) gum::GibbsKL<double>;
 

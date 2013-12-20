@@ -2,7 +2,7 @@
 
 import unittest
 from pyAgrum import BayesNet, LabelizedVar, RangeVar, DiscretizedVar, Potential
-from pyAgrum import ListPotentials, LazyPropagation
+from pyAgrum import LazyPropagation
 from pyAgrumTestSuite import pyAgrumTestCase
 
 

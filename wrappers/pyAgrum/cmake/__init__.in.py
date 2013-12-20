@@ -36,7 +36,7 @@ from pyAgrum import GUM_MAJOR_VERSION,GUM_MINOR_VERSION,GUM_PATCH_VERSION,GUM_VE
 from pyAgrum import Arc,Edge,BayesNet,DiGraph,Vector_double
 from pyAgrum import Sequence_node,Sequence_string,
 from pyAgrum import DiscreteVar,DiscretizedVar,Instantiation,LabelizedVar,RangeVar,Variable
-from pyAgrum import ListPotentials,Potential
+from pyAgrum import Potential
 from pyAgrum import BruteForceKL,GibbsInference,GibbsKL,LazyPropagation
 from pyAgrum import PythonApproximationListener,PythonBNListener,PythonLoadListener
 from pyAgrum import generateBN

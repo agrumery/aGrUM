@@ -15,13 +15,13 @@
 #include <string>
 
 
-class SwigDirector_LabelizedVariable : public gum::LabelizedVariable, public Swig::Director {
+class SwigDirector_LabelizedVar : public gum::LabelizedVariable, public Swig::Director {
 
 public:
-    SwigDirector_LabelizedVariable(PyObject *self, std::string const &aName, std::string const &aDesc = "", int const nbrLabel = 2);
-    SwigDirector_LabelizedVariable(PyObject *self, gum::LabelizedVariable const &aLDRV);
-    SwigDirector_LabelizedVariable(PyObject *self);
-    virtual ~SwigDirector_LabelizedVariable();
+    SwigDirector_LabelizedVar(PyObject *self, std::string const &aName, std::string const &aDesc = "", int const nbrLabel = 2);
+    SwigDirector_LabelizedVar(PyObject *self, gum::LabelizedVariable const &aLDRV);
+    SwigDirector_LabelizedVar(PyObject *self);
+    virtual ~SwigDirector_LabelizedVar();
     virtual gum::DiscreteVariable *clone() const;
     virtual bool operator ==(gum::Variable const &aRV) const;
     virtual bool operator !=(gum::Variable const &aRV) const;
@@ -56,7 +56,7 @@ private:
         swig::SwigVar_PyObject name = SWIG_Python_str_FromChar(method_name);
         method = PyObject_GetAttr(swig_get_self(), name);
         if (!method) {
-          std::string msg = "Method in class LabelizedVariable doesn't exist, undefined ";
+          std::string msg = "Method in class LabelizedVar doesn't exist, undefined ";
           msg += method_name;
           Swig::DirectorMethodException::raise(msg.c_str());
         }
@@ -65,7 +65,7 @@ private:
       return method;
     }
 private:
-    mutable swig::SwigVar_PyObject vtable[9];
+    mutable swig::SwigVar_PyObject vtable[10];
 #endif
 
 };
