@@ -82,7 +82,7 @@ namespace gum {
     HashTableIteratorStaticEnd::end4Statics();
 
   
-  /// create the unsafe safe end iterator for all hash tables
+  /// create the safe end iterator for all hash tables
   const HashTableIteratorSafe<int,int>*
   HashTableIteratorStaticEnd::__HashTableIterEndSafe =
     HashTableIteratorStaticEnd::endSafe4Statics();

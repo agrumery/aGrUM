@@ -43,7 +43,7 @@
  * changed, set.tcc should be updated accordingly
  * agrum/core/bijection.tcc: same as set.tcc but, in addition, bijections assume
  * that once a pair (key,val) has been created in the hashtable, its location in
- * memory will never changed, even if the hashtable is resized.
+ * memory will never change, even if the hashtable is resized.
  * agrum/core/sequence.tcc: same as bijection.tcc
  * agrum/core/priorityQueue.tcc: same as bijection.tcc
  * agrum/core/heap.tcc: same as bijection.tcc
@@ -1254,16 +1254,6 @@ namespace gum {
   }
 
 
-  // generalized copy constructor
-  template <typename Key, typename Val, typename Alloc>
-  template <typename OtherAlloc> INLINE
-  HashTableList<Key,Val,Alloc>::HashTableList
-  ( const HashTableList<Key,Val,OtherAlloc>& from ) {
-    __copy ( from );
-    // BEWARE to not forget assigning an allocator to the HashTableList!
-  }
-
-
   // move constructor
   template <typename Key, typename Val, typename Alloc> INLINE
   HashTableList<Key,Val,Alloc>::HashTableList
@@ -1296,7 +1286,7 @@ namespace gum {
     }
 
     __nb_elements = 0;
-    __deb_list = 0;
+    __deb_list = nullptr;
   }
 
 
@@ -1322,7 +1312,8 @@ namespace gum {
   HashTableList<Key,Val,Alloc>::operator=
   ( const HashTableList<Key,Val,OtherAlloc>& from ) {
     // avoid self assignment
-    if ( this != reinterpret_cast<const HashTableList<Key,Val,Alloc>*> ( &from ) ) {
+    if ( this !=
+         reinterpret_cast<const HashTableList<Key,Val,Alloc>*> ( &from ) ) {
       clear ();
       __copy( from );
     }
@@ -1431,7 +1422,7 @@ namespace gum {
   // insertion of a new element in the chained list
   template <typename Key, typename Val, typename Alloc> INLINE
   void HashTableList<Key,Val,Alloc>::insert
-  ( typename HashTableList<Key,Val,Alloc>::Bucket* new_elt ) {
+  ( typename HashTableList<Key,Val,Alloc>::Bucket* new_elt ) noexcept {
     // place the bucket at the beginning of the list
     new_elt->next = __deb_list;
     __deb_list = new_elt;
@@ -1490,7 +1481,7 @@ namespace gum {
   template <typename Key, typename Val, typename Alloc> INLINE
   const typename HashTable<Key,Val,Alloc>::const_iterator&
   HashTable<Key,Val,Alloc>::constEnd4Statics() {
-    return *( reinterpret_cast<const iterator*>
+    return *( reinterpret_cast<const const_iterator*>
               ( HashTableIteratorStaticEnd::constEnd4Statics() ) );
   }
 
@@ -1678,7 +1669,7 @@ namespace gum {
       // new array with the correct size
       if ( __size != from.__size ) {
         __nodes.resize ( from.__size );
-        for ( Size i = __size; i < from.__size; ++i ) {
+        for ( Size i = 0; i < from.__size; ++i ) {
           __nodes[i].setAllocator ( __alloc );
         }
         __size = from.__size;
@@ -1719,7 +1710,7 @@ namespace gum {
       // new array with the correct size
       if ( __size != from.__size ) {
         __nodes.resize ( from.__size );
-        for ( Size i = __size; i < from.__size; ++i ) {
+        for ( Size i = 0; i < from.__size; ++i ) {
           __nodes[i].setAllocator ( __alloc );
         }
         __size = from.__size;
@@ -1923,7 +1914,6 @@ namespace gum {
 
 
   /// returns the size of the __nodes vector of the hashtable
-
   template <typename Key, typename Val, typename Alloc> INLINE
   Size HashTable<Key,Val,Alloc>::capacity () const noexcept {
     return __size;
@@ -1953,7 +1943,6 @@ namespace gum {
 
   /** @brief enables the user to change dynamically the policy for checking
    * whether there can exist several elements in the table having identical keys */
-
   template <typename Key, typename Val, typename Alloc> INLINE
   void HashTable<Key,Val,Alloc>::setKeyUniquenessPolicy
   ( const bool new_policy ) noexcept {
@@ -2112,7 +2101,7 @@ namespace gum {
     Bucket* bucket = __alloc.allocate ( 1 );
     try {
       __alloc.construct
-        ( bucket, std::move ( reinterpret_cast<const value_type&> ( elt ) ) );
+        ( bucket, std::move ( reinterpret_cast<value_type&> ( elt ) ) );
     }
     catch ( ... ) { __alloc.deallocate ( bucket, 1 ); }
     __insert ( bucket );
@@ -2259,7 +2248,7 @@ namespace gum {
   /// return the (first) key of a given value
   template <typename Key, typename Val, typename Alloc> INLINE
   const Key& HashTable<Key,Val,Alloc>::keyByVal( const Val& val ) const {
-    for ( const_iterator iter = begin(); iter != cend(); ++iter ) {
+    for ( const_iterator iter = cbegin(); iter != cend(); ++iter ) {
       if ( iter.__bucket->val () == val )
         return iter.key ();
     }
@@ -2413,7 +2402,7 @@ namespace gum {
   template <typename OtherAlloc>
   bool HashTable<Key,Val,Alloc>::operator==
   ( const HashTable<Key,Val,OtherAlloc>& from ) const {
-    // checks whether the two hashtable contain the same number of elements
+    // checks whether the two hashtables contain the same number of elements
     if ( from.__nb_elements != __nb_elements ) return false;
 
     // parse this and check that each element also belongs to from

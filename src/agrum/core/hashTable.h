@@ -46,7 +46,7 @@
  * a deleted element usually results in a mess (most probably a segfault).
  *
  * @warning HashTables @b guarantee that any element stored within them will have
- * the @b same @b location in memory until they are removed from the hashtable
+ * the @b same @b location in memory until it is removed from the hashtable
  * (and this holds whatever operation is performed on the hashtable like new
  * insertions, deletions, resizing, etc.).
  *
@@ -98,14 +98,13 @@
  * for (HashTable<int,string>::const_iterator iter = table1.cbegin();
  *       iter != table1.cend(); ++iter)
  *   cerr << *iter;
+ * HashTable<int,string>::iterator iter = table1.begin();
+ * iter += 2;
+ * cerr << iter.key () << " " << iter.val ();
  *
  * // use an iterator to point the element we wish to erase
- * HashTable<int,string>::iterator iter = table1.begin();
  * HashTable<int,string>::iterator_safe iterS = table1.beginSafe ();
- * table1.erase ( iter );
- * table1.erase ( table1.begin() + 4 );
- * iter += 2;
- * table1.erase ( iter );  // warning: this is unsafe to do that
+ * table1.erase ( table1.beginSafe () + 4 );
  * table1.erase ( iterS ); // this is safe because the iterator is safe 
  *
  * // check for iterator's safety
@@ -140,7 +139,7 @@
  * changed, set.tcc should be updated accordingly
  * agrum/core/bijection.tcc: same as set.tcc but, in addition, bijections assume
  * that once a pair (key,val) has been created in the hashtable, its location in
- * memory will never changed, even if the hashtable is resized.
+ * memory will never change, even if the hashtable is resized.
  * agrum/core/sequence.tcc: same as bijection.tcc
  * agrum/core/priorityQueue.tcc: same as bijection.tcc
  * agrum/core/heap.tcc: same as bijection.tcc
@@ -290,15 +289,9 @@ namespace gum {
     /** copy constructor. The new list and that which is copied do not share the
      * elements: the new list contains new instances of the keys and of values
      * stored in the list to be copied. Of course if these values are pointers,
-     * the new values point toward the same elements. */
+     * the new values point toward the same elements.
+     * @warning both from and this will share the same allocator. */
     HashTableList ( const HashTableList<Key,Val,Alloc>& from );
-
-     /** copy constructor. The new list and that which is copied do not share the
-     * elements: the new list contains new instances of the keys and of values
-     * stored in the list to be copied. Of course if these values are pointers,
-     * the new values point toward the same elements. */
-    template <typename OtherAlloc>
-    HashTableList ( const HashTableList<Key,Val,OtherAlloc>& from );
 
     /// move constructor
     HashTableList ( HashTableList<Key,Val,Alloc>&& from ) noexcept;
@@ -321,7 +314,8 @@ namespace gum {
      * occurs or if the copy of the Val elements cannot be performed properly,
      * exceptions may be raised. In this case, the function guarantees that no
      * memory leak occurs and that the list is kept in a coherent state (that of
-     * an empty list) */
+     * an empty list).
+     * @warning operator= does not change the current allocator of *this */
     HashTableList<Key,Val,Alloc>&
     operator= ( const HashTableList<Key,Val,Alloc>& from );
 
@@ -332,12 +326,14 @@ namespace gum {
      * occurs or if the copy of the Val elements cannot be performed properly,
      * exceptions may be raised. In this case, the function guarantees that no
      * memory leak occurs and that the list is kept in a coherent state (that of
-     * an empty list) */
+     * an empty list)
+     * @warning operator= does not change the current allocator of *this */
     template <typename OtherAlloc>
     HashTableList<Key,Val,Alloc>&
     operator= ( const HashTableList<Key,Val,OtherAlloc>& from );
 
-   /// move operator
+    /// move operator
+    /** @warning operator= does not change the current allocator of *this */
     HashTableList<Key,Val,Alloc>&
     operator= ( HashTableList<Key,Val,Alloc>&& from ) noexcept;
 
@@ -376,7 +372,7 @@ namespace gum {
     
     /** inserts a new element in the chained list. The element is inserted
      * at the beginning of the list. */
-    void insert( Bucket* new_elt );
+    void insert( Bucket* new_elt ) noexcept;
 
     /* function erase suppresses an element from a chained list. */
     void erase( Bucket* prev,
@@ -479,7 +475,7 @@ namespace gum {
    * a deleted element usually results in a mess (most probably a segfault).
    *
    * @warning HashTables @b guarantee that any element stored within them will have
-   * the @b same @b location in memory until they are removed from the hashtable
+   * the @b same @b location in memory until it is removed from the hashtable
    * (and this holds whatever operation is performed on the hashtable like new
    * insertions, deletions, resizing, etc.).
    *
@@ -531,14 +527,13 @@ namespace gum {
    * for (HashTable<int,string>::const_iterator iter = table1.cbegin();
    *       iter != table1.cend(); ++iter)
    *   cerr << *iter;
+   * HashTable<int,string>::iterator iter = table1.begin();
+   * iter += 2;
+   * cerr << iter.key () << " " << iter.val ();
    *
    * // use an iterator to point the element we wish to erase
-   * HashTable<int,string>::iterator iter = table1.begin();
    * HashTable<int,string>::iterator_safe iterS = table1.beginSafe ();
-   * table1.erase ( iter );
-   * table1.erase ( table1.begin() + 4 );
-   * iter += 2;
-   * table1.erase ( iter );  // warning: this is unsafe to do that
+   * table1.erase ( table1.beginSafe () + 4 );
    * table1.erase ( iterS ); // this is safe because the iterator is safe 
    *
    * // check for iterator's safety
@@ -738,7 +733,7 @@ namespace gum {
      * before initializing HashTable::end, then Set::end will be in an incoherent
      * state. Unfortunately, we cannot know for sure in which order static members
      * will be initialized (the order is a compiler's decision). Hence, we shall
-     * enfore the fact that HashTable::end is initialized before Set::end. Using
+     * enforce the fact that HashTable::end is initialized before Set::end. Using
      * method HashTable::end4Statics will ensure this fact: it uses the C++
      * "construct on first use" idiom (see the C++ FAQ) that ensures that the
      * order fiasco is avoided. More precisely, end4Statics initializes a global
@@ -770,7 +765,7 @@ namespace gum {
      * before initializing HashTable::end, then Set::end will be in an incoherent
      * state. Unfortunately, we cannot know for sure in which order static members
      * will be initialized (the order is a compiler's decision). Hence, we shall
-     * enfore the fact that HashTable::end is initialized before Set::end. Using
+     * enforce the fact that HashTable::end is initialized before Set::end. Using
      * method HashTable::end4Statics will ensure this fact: it uses the C++
      * "construct on first use" idiom (see the C++ FAQ) that ensures that the
      * order fiasco is avoided. More precisely, end4Statics initializes a global
@@ -802,7 +797,7 @@ namespace gum {
      * before initializing HashTable::end, then Set::end will be in an incoherent
      * state. Unfortunately, we cannot know for sure in which order static members
      * will be initialized (the order is a compiler's decision). Hence, we shall
-     * enfore the fact that HashTable::end is initialized before Set::end. Using
+     * enforce the fact that HashTable::end is initialized before Set::end. Using
      * method HashTable::end4Statics will ensure this fact: it uses the C++
      * "construct on first use" idiom (see the C++ FAQ) that ensures that the
      * order fiasco is avoided. More precisely, end4Statics initializes a global
@@ -834,7 +829,7 @@ namespace gum {
      * before initializing HashTable::end, then Set::end will be in an incoherent
      * state. Unfortunately, we cannot know for sure in which order static members
      * will be initialized (the order is a compiler's decision). Hence, we shall
-     * enfore the fact that HashTable::end is initialized before Set::end. Using
+     * enforce the fact that HashTable::end is initialized before Set::end. Using
      * method HashTable::end4Statics will ensure this fact: it uses the C++
      * "construct on first use" idiom (see the C++ FAQ) that ensures that the
      * order fiasco is avoided. More precisely, end4Statics initializes a global
@@ -901,7 +896,7 @@ namespace gum {
 
     /// checks whether two hashtables contain different sets of elements
     /** Two hashtables are considered different if they contain different pairs
-     * (key,val). Two pairs are different if heir keys have different hashed
+     * (key,val). Two pairs are different if their keys have different hashed
      * values, or if they are different in the sense of !=, or if their val's are
      * different in the sense of !=. */
     template <typename OtherAlloc>
@@ -923,7 +918,7 @@ namespace gum {
     /** Usually, method resize enables the user to resize manually the hashtable.
      * When in automatic resize mode, the function will actually resize the table
      * only if resizing policy is compatible with the new size, i.e., the new size
-     * is not so small that there would be too many elements by slot in the table
+     * is not so small that there would be too many elements per slot in the table
      * (this would lead to a significant loss in performance). However, the
      * resizing policy may be changed by using method setResizePolicy.
      * The method runs in linear time in the size of the hashtable.
@@ -1233,7 +1228,7 @@ namespace gum {
 
   private:
     // friends
-    /// to optimize the access to data, iterators mut be friends
+    /// to optimize the access to data, iterators must be friends
     template <typename K, typename V, typename A> friend class HashTable;
     friend class HashTableIterator<Key,Val>;
     friend class HashTableConstIterator<Key,Val>;
@@ -1279,7 +1274,7 @@ namespace gum {
     mutable std::vector<HashTableConstIteratorSafe<Key,Val>*> __safe_iterators;
 
     /// the allocator for the buckets
-    /** @warning the allocator filed should compulsorily be the last of
+    /** @warning the allocator field should compulsorily be the last of
      * field of the class. As such, for K and V fixed, all hashTable<K,V,A>
      * are the same (up to the allocator) for all allocators A. This feature
      * proves useful to avoid passing the allocator as a template parameter
