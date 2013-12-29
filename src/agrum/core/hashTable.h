@@ -1330,6 +1330,7 @@ namespace gum {
   /* =========================================================================== */
   /** @class HashTableConstIteratorSafe
    * @brief Safe Const Iterators for hashtables
+   * @ingroup basicstruct_group
    *
    * HashTableConstIteratorSafe provides a safe way to parse HashTables. They are
    * safe because they are kept informed by the hashtable they belong to of the
@@ -1351,15 +1352,13 @@ namespace gum {
    * for (HashTable<int,string>::const_iterator_safe iter = table.beginSafe ();
    *        iter != table.endSafe (); ++iter) {
    *   // display the values
-   *   cerr << "at " << iter.key () << " value = " << *iter << endl;
-   *   // make the string pointed to by the iterator use method append
-   *   iter->append ("yyy");
+   *   cerr << "at " << iter.key () << " value = " << iter.val () << endl;
    * }
    *
    * // check whether two iterators point toward the same element
    * HashTable<int,string>::const_iterator_safe iter1 = table1.beginSafe ();
    * HashTable<int,string>::const_iterator_safe iter2 = table1.endSafe ();
-   * if (iter1 != iter) cerr << "iter1 and iter2 point toward different elements
+   * if (iter1 != iter) cerr << "iter1 and iter2 point toward different elements";
    *
    * // make iter1 point toward nothing
    * iter1.clear ();
@@ -1536,6 +1535,7 @@ namespace gum {
   /* =========================================================================== */
   /** @class HashTableIteratorSafe
    * @brief Safe Iterators for hashtables
+   * @ingroup basicstruct_group
    *
    * HashTableIteratorSafe provides a safe way to parse HashTables. They are safe
    * because they are kept informed by the hashtable they belong to of the
@@ -1557,15 +1557,13 @@ namespace gum {
    * for (HashTable<int,string>::iterator_safe iter = table.beginSafe ();
    *        iter != table.endSafe (); ++iter) {
    *   // display the values
-   *   cerr << "at " << iter.key() << " value = " << *iter << endl;
-   *   // make the string pointed to by the iterator use method append
-   *   iter->append ("yyy");
+   *   cerr << "at " << iter.key() << " value = " << iter.val () << endl;
    * }
    *
    * // check whether two iterators point toward the same element
    * HashTable<int,string>::iterator_safe iter1 = table1.beginSafe ();
    * HashTable<int,string>::iterator_safe iter2 = table1.endSafe ();
-   * if (iter1 != iter) cerr << "iter1 and iter2 point toward different elements
+   * if (iter1 != iter) cerr << "iter1 and iter2 point toward different elements";
    *
    * // make iter1 point toward nothing
    * iter1.clear ();
@@ -1695,12 +1693,13 @@ namespace gum {
   /* =========================================================================== */
   /** @class HashTableConstIterator
    * @brief Unsafe Const Iterators for hashtables
+   * @ingroup basicstruct_group
    *
    * HashTableConstIterator provides a fast but unsafe way to parse HashTables.
    * They should @b only be used when parsing hashtables in which no element is
    * removed from the hashtable. Removing an element where the iterator points to
    * will mess the iterator as it will most certainly point to an unallocated
-   * memory. So, this kind of allocator should only be used when parsing "(key)
+   * memory. So, this kind of iterator should only be used when parsing "(key)
    * constant" hash tables, e.g., when we wish to display the content of a hash
    * table or when we wish to update the mapped values of some elements of the
    * hash table without ever modifying their keys.
@@ -1718,15 +1717,13 @@ namespace gum {
    * for (HashTable<int,string>::const_iterator iter = table.cbegin ();
    *        iter != table.cend (); ++iter) {
    *   // display the values
-   *   cerr << "at " << iter.key() << " value = " << *iter << endl;
-   *   // make the string pointed to by the iterator use method append
-   *   iter->append ("yyy");
+   *   cerr << "at " << iter.key() << " value = " << iter.val () << endl;
    * }
    *
    * // check whether two iterators point toward the same element
    * HashTable<int,string>::const_iterator iter1 = table1.cbegin();
    * HashTable<int,string>::const_iterator iter2 = table1.cend();
-   * if (iter1 != iter) cerr << "iter1 and iter2 point toward different elements
+   * if (iter1 != iter) cerr << "iter1 and iter2 point toward different elements";
    *
    * // make iter1 point toward nothing
    * iter1.clear ();
@@ -1791,22 +1788,19 @@ namespace gum {
     /// @{
 
     /// returns the key corresponding to the value pointed to by the iterator
-    /** @throws UndefinedIteratorValue exception is thrown when the iterator does
-     * not point to a valid hash table element
-     * @throw UndefinedIteratorValue */
+    /** @warning using this method on an iterator that points to an element that
+     * has been deleted will most certainly result in a segfault. If unsure, use
+     * a safe iterator instead of an unsafe one. */
     const key_type& key() const;
 
     /// returns the mapped value pointed to by the iterator
-    /** @throws UndefinedIteratorValue exception is thrown when the iterator does
-     * not point to a valid hash table element
-     * @throw UndefinedIteratorValue */
+    /** @warning using this method on an iterator that points to an element that
+     * has been deleted will most certainly result in a segfault. If unsure, use
+     * a safe iterator instead of an unsafe one. */
     const mapped_type& val () const;
 
     /** @brief makes the iterator point toward nothing (in particular, it is not
-     * related anymore to its current hash table)
-     *
-     * It is mainly used by the hashtable when the latter is deleted while the
-     * iterator is still alive. */
+     * related anymore to its current hash table) */
     void clear() noexcept;
 
     /// @}
@@ -1846,9 +1840,9 @@ namespace gum {
     bool operator== ( const HashTableConstIterator<Key,Val>& from ) const noexcept;
 
     /// returns the value pointed to by the iterator
-    /** @throws UndefinedIteratorValue exception is thrown when the iterator does
-     * not point to a valid hash table element
-     * @throw UndefinedIteratorValue */
+    /** @warning using this method on an iterator that points to an element that
+     * has been deleted will most certainly result in a segfault. If unsure, use
+     * a safe iterator instead of an unsafe one. */
     const value_type& operator*() const;
 
     /// @}
@@ -1890,12 +1884,13 @@ namespace gum {
   /* =========================================================================== */
   /** @class HashTableIterator
    * @brief Unsafe Iterators for hashtables
+   * @ingroup basicstruct_group
    *
    * HashTableIterator provides a fast but unsafe way to parse HashTables.
    * They should @b only be used when parsing hashtables in which no element is
    * removed from the hashtable. Removing an element where the iterator points to
    * will mess the iterator as it will most certainly point to an unallocated
-   * memory. So, this kind of allocator should only be used when parsing "(key)
+   * memory. So, this kind of iterator should only be used when parsing "(key)
    * constant" hash tables, e.g., when we wish to display the content of a hash
    * table or when we wish to update the mapped values of some elements of the
    * hash table without ever modifying their keys.
@@ -1913,15 +1908,13 @@ namespace gum {
    * for (HashTable<int,string>::iterator iter = table.begin ();
    *        iter != table.end (); ++iter) {
    *   // display the values
-   *   cerr << "at " << iter.key() << " value = " << *iter << endl;
-   *   // make the string pointed to by the iterator use method append
-   *   iter->append ("yyy");
+   *   cerr << "at " << iter.key() << " value = " << iter.val () << endl;
    * }
    *
    * // check whether two iterators point toward the same element
    * HashTable<int,string>::iterator iter1 = table1.begin();
    * HashTable<int,string>::iterator iter2 = table1.end();
-   * if (iter1 != iter) cerr << "iter1 and iter2 point toward different elements
+   * if (iter1 != iter) cerr << "iter1 and iter2 point toward different elements";
    *
    * // make iter1 point toward nothing
    * iter1.clear ();
@@ -1989,9 +1982,9 @@ namespace gum {
     using HashTableConstIterator<Key,Val>::clear;
 
     /// returns the mapped value pointed to by the iterator
-    /** @throws UndefinedIteratorValue exception is thrown when the iterator does
-     * not point to a valid hash table element
-     * @throw UndefinedIteratorValue */
+    /** @warning using this method on an iterator that points to an element that
+     * has been deleted will most certainly result in a segfault. If unsure, use
+     * a safe iterator instead of an unsafe one. */
     mapped_type& val ();
  
     /// @}
@@ -2031,31 +2024,20 @@ namespace gum {
     bool operator== ( const HashTableIterator<Key,Val>& from ) const noexcept;
 
     /// returns the value pointed to by the iterator
-    /** @throws UndefinedIteratorValue exception is thrown when the iterator does
-     * not point to a valid hash table element
-     * @throw UndefinedIteratorValue */
+    /** @warning using this method on an iterator that points to an element that
+     * has been deleted will most certainly result in a segfault. If unsure, use
+     * a safe iterator instead of an unsafe one. */
     value_type& operator*();
 
     /// returns the value pointed to by the iterator
-    /** @throws UndefinedIteratorValue exception is thrown when the iterator does
-     * not point to a valid hash table element
-     * @throw UndefinedIteratorValue */
+    /** @warning using this method on an iterator that points to an element that
+     * has been deleted will most certainly result in a segfault. If unsure, use
+     * a safe iterator instead of an unsafe one. */
     const value_type& operator*() const;
 
     /// @}
 
   };
-
-
-
-
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-  /// the end iterator for all hash tables
-  extern const HashTableIterator<int,int>* HashTableIterEnd;
-
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 
 } /* namespace gum */

@@ -132,11 +132,8 @@ namespace gum {
     __table { reinterpret_cast<const HashTable<Key,Val>*> ( &tab ) } {
     Size i;
     GUM_CONSTRUCTOR ( HashTableConstIteratorSafe );
-    
-    // make the hashtable keep track of this iterator
-    __insertIntoSafeList ();
-
-    // check if we are looking for a begin() and wr know for surte its index
+ 
+    // check if we are looking for a begin() and we know for sure its index
     if ( ( ind_elt == 0 ) &&
          ( __table->__begin_index != std::numeric_limits<Size>::max() ) ) {
       __index  = __table->__begin_index;
@@ -165,6 +162,7 @@ namespace gum {
         // ind_elt = the index of the element we should point to
         // check if the index passed as parameter is valid
         if ( ind_elt >= __table->__nb_elements ) {
+          __table = nullptr;
           GUM_ERROR( UndefinedIteratorValue,
                      "Not enough elements in the hashtable" );
         }
@@ -185,6 +183,9 @@ namespace gum {
         }
       }
     }
+       
+    // make the hashtable keep track of this iterator
+    __insertIntoSafeList ();
   }
 
   
@@ -232,7 +233,7 @@ namespace gum {
 
 
   /// destructor
-  template <typename Key, typename Val>
+  template <typename Key, typename Val> INLINE
   HashTableConstIteratorSafe<Key,Val>::~HashTableConstIteratorSafe () noexcept {
     // for debugging purposes
     GUM_DESTRUCTOR ( HashTableConstIteratorSafe );
@@ -256,13 +257,13 @@ namespace gum {
     if ( __table != from.__table ) {
       // remove the iterator from its hashtable iterator's list'
       __removeFromSafeList ();
-
-      // add to the new table
-      if ( from.__table ) {
-        __insertIntoSafeList ();
-      }
       
       __table = from.__table;
+
+      // add to the new table
+      if ( __table ) {
+        __insertIntoSafeList ();
+      }
     }
 
     __index  = from.__index;
@@ -560,7 +561,7 @@ namespace gum {
 
   
   /// destructor
-  template <typename Key, typename Val>
+  template <typename Key, typename Val> INLINE
   HashTableIteratorSafe<Key,Val>::~HashTableIteratorSafe () noexcept {
     GUM_DESTRUCTOR( HashTableIteratorSafe );
   }
@@ -710,7 +711,7 @@ namespace gum {
     Size i;
     GUM_CONSTRUCTOR ( HashTableConstIterator );
     
-    // check if we are looking for a begin() and wr know for surte its index
+    // check if we are looking for a begin() and we know for sure its index
     if ( ( ind_elt == 0 ) &&
          ( __table->__begin_index != std::numeric_limits<Size>::max() ) ) {
       __index  = __table->__begin_index;
@@ -785,7 +786,7 @@ namespace gum {
 
 
   /// destructor
-  template <typename Key, typename Val>
+  template <typename Key, typename Val> INLINE
   HashTableConstIterator<Key,Val>::~HashTableConstIterator () noexcept {
     // for debugging purposes
     GUM_DESTRUCTOR ( HashTableConstIterator );
@@ -793,7 +794,7 @@ namespace gum {
 
 
   /// copy operator
-  template <typename Key, typename Val>
+  template <typename Key, typename Val> INLINE
   HashTableConstIterator<Key,Val>&
   HashTableConstIterator<Key,Val>::operator=
   ( const HashTableConstIterator<Key,Val>& from ) noexcept {
@@ -862,7 +863,7 @@ namespace gum {
   template <typename Key, typename Val>
   HashTableConstIterator<Key,Val>&
   HashTableConstIterator<Key,Val>::operator++ () noexcept {
-    // if __bucket != nullptr then we are at the end of th hashtable
+    // if __bucket == nullptr then we are at the end of the hashtable
     if ( __bucket == nullptr ) return *this;
     
       
@@ -888,7 +889,7 @@ namespace gum {
       else {
         // arrived here, we need to parse the hash table until we find a new
         // bucket because we are pointing on a chained list with no more element
-        // to the left of the current element
+        // to the right of the current element
         for ( Size i = __index - 1UL; i; --i ) {
           if ( __table->__nodes[i].__nb_elements ) {
             __index = i;
@@ -957,7 +958,7 @@ namespace gum {
   template <typename Key, typename Val> INLINE
   bool HashTableConstIterator<Key,Val>::operator!=
   ( const HashTableConstIterator<Key, Val>& from ) const noexcept {
-    return ( ( __bucket != from.__bucket ) || ( __index != from.__index ) );
+    return ( __bucket != from.__bucket );
   }
 
 
@@ -965,7 +966,7 @@ namespace gum {
   template <typename Key, typename Val> INLINE
   bool HashTableConstIterator<Key,Val>::operator==
   ( const HashTableConstIterator<Key, Val>& from ) const noexcept {
-    return ( ( __bucket == from.__bucket ) && ( __index == from.__index ) );
+    return ( __bucket == from.__bucket );
   }
 
 
@@ -1015,7 +1016,7 @@ namespace gum {
   template <typename Alloc> INLINE
   HashTableIterator<Key,Val>::HashTableIterator
   ( const HashTable<Key,Val,Alloc>& tab ) noexcept :
-    HashTableConstIterator<Key,Val> ( tab ) {
+    HashTableConstIterator<Key,Val> { tab } {
     GUM_CONSTRUCTOR( HashTableIterator );
   }
 
@@ -1049,7 +1050,7 @@ namespace gum {
 
   
   /// destructor
-  template <typename Key, typename Val>
+  template <typename Key, typename Val> INLINE
   HashTableIterator<Key,Val>::~HashTableIterator () noexcept {
     GUM_DESTRUCTOR( HashTableIterator );
   }
