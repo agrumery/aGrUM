@@ -92,7 +92,7 @@ namespace gum {
 
     for ( typename Property< CliqueProperties<GUM_SCALAR>* >::onNodes::iterator cliquePropertyIter = __cliquePropertiesMap.begin();
           cliquePropertyIter != __cliquePropertiesMap.end(); ++cliquePropertyIter )
-      delete *cliquePropertyIter;
+      delete cliquePropertyIter.val ();
 
     for ( SetIterator< Potential<GUM_SCALAR>* > potentialDummiesIter = __potentialDummies.begin();
           potentialDummiesIter != __potentialDummies.end(); ++potentialDummiesIter )
@@ -181,7 +181,7 @@ namespace gum {
     stream << "Choix maximisant l'espérance d'utilité : " << std::endl << std::flush;
 
     for ( HashTableConstIterator< NodeId, Idx > utilityIter = __utakenDecisionMap.begin(); utilityIter != __utakenDecisionMap.end(); ++utilityIter )
-      stream << "Decision " << this->influenceDiagram().variable ( utilityIter.key() ) << " : " << this->influenceDiagram().variable ( utilityIter.key() ).label ( *utilityIter ) << std::endl;
+      stream << "Decision " << this->influenceDiagram().variable ( utilityIter.key() ) << " : " << this->influenceDiagram().variable ( utilityIter.key() ).label ( utilityIter.val() ) << std::endl;
 
   }
 
@@ -225,7 +225,7 @@ namespace gum {
   DefaultInfluenceDiagramInference<GUM_SCALAR>::eraseAllEvidence() {
 
     for ( typename Property< CliqueProperties<GUM_SCALAR>* >::onNodes::iterator nodeIter = __cliquePropertiesMap.begin(); nodeIter != __cliquePropertiesMap.end(); ++nodeIter )
-      ( *nodeIter )->removeAllEvidence();
+      ( nodeIter.val() )->removeAllEvidence();
 
   }
 
@@ -465,7 +465,7 @@ namespace gum {
 
     for ( HashTableConstIterator< size_t, NodeId > strongJunctionTreeIter = __cliqueEliminationMap.begin();
           strongJunctionTreeIter != __cliqueEliminationMap.end(); ++strongJunctionTreeIter )
-      stream << "Clique  : " << __triangulation->junctionTree().clique ( *strongJunctionTreeIter ) << " - Index : " << strongJunctionTreeIter.key() << std::endl;
+      stream << "Clique  : " << __triangulation->junctionTree().clique ( strongJunctionTreeIter.val() ) << " - Index : " << strongJunctionTreeIter.key() << std::endl;
   }
 
 
@@ -488,7 +488,7 @@ namespace gum {
 
     for ( typename Property< CliqueProperties<GUM_SCALAR>* >::onNodes::iterator cliquePropertyIter = __cliquePropertiesMap.begin();
           cliquePropertyIter != __cliquePropertiesMap.end(); ++cliquePropertyIter )
-      ( * cliquePropertyIter )->cleanFromInference();
+      ( cliquePropertyIter.val() )->cleanFromInference();
 
     __utakenDecisionMap.clear();
 
@@ -626,8 +626,8 @@ namespace gum {
               // If there's no ancient potential it means that we haven't yet compute him
               for ( HashTableConstIterator<const Potential<GUM_SCALAR>*, Instantiation*> potentialIter = absorbedClique->potentialBucket().begin();
                     potentialIter != absorbedClique->potentialBucket().end(); ++potentialIter ) {
-                ( *potentialIter )->setVals ( cliqueInstance );
-                currentPotential *= potentialIter.key()->get ( **potentialIter );
+                ( potentialIter.val() )->setVals ( cliqueInstance );
+                currentPotential *= potentialIter.key()->get ( *(potentialIter.val()) );
               }
             } else {
               Instantiation potentialMarginalInst ( potentialMarginal );
@@ -645,8 +645,8 @@ namespace gum {
             if ( utilityMarginal == 0 ) {
               for ( HashTableConstIterator<const UtilityTable<GUM_SCALAR>*, Instantiation*> utilityIter = absorbedClique->utilityBucket().begin();
                     utilityIter != absorbedClique->utilityBucket().end(); ++utilityIter ) {
-                ( *utilityIter )->setVals ( cliqueInstance );
-                currentUtility += utilityIter.key()->get ( **utilityIter );
+                ( utilityIter.val() )->setVals ( cliqueInstance );
+                currentUtility += utilityIter.key()->get ( *(utilityIter.val()) );
               }
 
               currentUtility *= currentPotential;
@@ -767,11 +767,11 @@ namespace gum {
 
     for ( HashTableIterator<const Potential<GUM_SCALAR>*, Instantiation*> potentialIter = __potentialBucket.begin();
           potentialIter != __potentialBucket.end(); ++potentialIter )
-      delete *potentialIter;
+      delete potentialIter.val ();
 
     for ( HashTableIterator<const UtilityTable<GUM_SCALAR>*, Instantiation*> utilityIter = __utilityBucket.begin();
           utilityIter != __utilityBucket.end(); ++utilityIter )
-      delete *utilityIter;
+      delete utilityIter.val();
   }
 
 

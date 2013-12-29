@@ -120,7 +120,7 @@ namespace gum {
         ( *potentialCpy ) << variable ( *arcIter );
 
       // Filling up of the table
-      Instantiation srcInst ( **potentialIter );
+      Instantiation srcInst ( *(potentialIter.val()) );
 
       Instantiation cpyInst ( *potentialCpy );
 
@@ -130,7 +130,7 @@ namespace gum {
           srcInst.chgVal ( IDsource.variable ( id ), cpyInst.val ( i ) );
         }
 
-        potentialCpy->set ( cpyInst, ( **potentialIter ) [srcInst] );
+        potentialCpy->set ( cpyInst, ( *(potentialIter.val()) ) [srcInst] );
       }
 
       // Adding cpt to cpt map
@@ -152,7 +152,7 @@ namespace gum {
         ( *utilityCpy ) << variable ( *arcIter );
 
       // Filling up of the table
-      Instantiation srcInst ( **utilityIter );
+      Instantiation srcInst ( *(utilityIter.val()) );
 
       Instantiation cpyInst ( *utilityCpy );
 
@@ -162,7 +162,7 @@ namespace gum {
           srcInst.chgVal ( IDsource.variable ( id ), cpyInst.val ( i ) );
         }
 
-        utilityCpy->set ( cpyInst, ( **utilityIter ) [srcInst] );
+        utilityCpy->set ( cpyInst, ( *(utilityIter.val()) ) [srcInst] );
       }
 
       // Adding cpt to cpt map
