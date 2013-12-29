@@ -63,18 +63,18 @@ namespace gum {
     /// Table which give for each action a table containing variables transition cpt
     for ( HashTableIterator< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* >* > iterA = __actionTransitionTable.begin();
           iterA != __actionTransitionTable.end(); ++iterA ) {
-      for ( HashTableIterator<  const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* > iterH = ( *iterA )->begin();
-            iterH != ( *iterA )->end(); ++iterH )
-        delete *iterH;
+      for ( HashTableIterator<  const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* > iterH = ( iterA.val() )->begin();
+            iterH != ( iterA.val() )->end(); ++iterH )
+        delete iterH.val();
 
-      delete *iterA;
+      delete iterA.val ();
     }
 
     if ( __defaultCostTable )
       delete __defaultCostTable;
 
     for ( HashTableIterator< Idx, const MultiDimImplementation< GUM_SCALAR >* > iterA = __actionCostTable.begin(); iterA != __actionCostTable.end(); ++iterA )
-      delete *iterA;
+      delete iterA.val();
 
     for ( BijectionIterator< Idx, const std::string* > iterId = __actionMap.begin(); iterId != __actionMap.end(); ++iterId )
       delete iterId.second();
@@ -84,8 +84,8 @@ namespace gum {
 
     for ( HashTableIterator< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* > iter = __defaultTransitionTable.begin();
           iter != __defaultTransitionTable.end(); ++iter ) {
-      if ( *iter != nullptr )
-        delete *iter;
+      if ( iter.val() != nullptr )
+        delete iter.val();
 
       delete iter.key();
     }
@@ -379,9 +379,9 @@ namespace gum {
   FactoredMarkovDecisionProcess<GUM_SCALAR>::transition() const {
 
 //       if( (*__actionIter)->exists( __varIter.key() ) )
-    if ( ( *__actionIter )->exists( *__varIter ) )
+    if ( ( __actionIter.val() )->exists( *__varIter ) )
 //  return (*(*__actionIter))[ __varIter.key() ];
-      return ( *( *__actionIter ) )[ *__varIter ];
+      return ( *( __actionIter.val() ) )[ *__varIter ];
     else
 //  return *__varIter;
       return __defaultTransitionTable[ *__varIter ];
@@ -394,8 +394,8 @@ namespace gum {
   const MultiDimImplementation< GUM_SCALAR >*
   FactoredMarkovDecisionProcess<GUM_SCALAR>::transition( const DiscreteVariable* v ) const {
 
-    if ( ( *__actionIter )->exists( v ) )
-      return ( *( *__actionIter ) )[ v ];
+    if ( ( __actionIter.val() )->exists( v ) )
+      return ( *( __actionIter.val() ) )[ v ];
     else
       return __defaultTransitionTable[ v ];
   }
@@ -426,10 +426,10 @@ namespace gum {
     std::stringstream fmdpCore;
 
     for ( HashTableConstIterator< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* >* > actionIter = __actionTransitionTable.begin(); actionIter != __actionTransitionTable.end(); ++actionIter ) {
-      for ( HashTableConstIterator< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* > tableIter = ( *actionIter )->begin(); tableIter != ( *actionIter )->end(); ++tableIter ) {
+      for ( HashTableConstIterator< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* > tableIter = ( actionIter.val() )->begin(); tableIter != ( actionIter.val() )->end(); ++tableIter ) {
         std::stringstream graphName;
         graphName << " ACTION : " << actionName( actionIter.key() ) << " VARIABLE : " << tableIter.key()->name();
-        fmdpCore << std::endl << reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>( *tableIter )->toDot( graphName.str() );
+        fmdpCore << std::endl << reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*>( tableIter.val() )->toDot( graphName.str() );
       }
     }
 
