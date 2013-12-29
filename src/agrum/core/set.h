@@ -436,7 +436,7 @@ namespace gum {
     friend class Set<KEY>;
 
     /// the underlying iterator for the set's hashtable containing the data
-    HashTableConstIterator<KEY,bool> __ht_iter;
+    HashTableConstIteratorSafe<KEY,bool> __ht_iter;
 
   };
 

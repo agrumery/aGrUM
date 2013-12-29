@@ -44,7 +44,7 @@ namespace gum {
   template<typename KEY> INLINE
   SetIterator<KEY>::SetIterator( const Set<KEY>& set, Position pos ) :
     __ht_iter( pos == GUM_SET_ITERATOR_END ?
-               set.__inside.end() : set.__inside.begin() ) {
+               set.__inside.cendSafe () : set.__inside.cbeginSafe () ) {
     GUM_CONSTRUCTOR( SetIterator );
   }
 
@@ -303,7 +303,7 @@ namespace gum {
   template<typename KEY> INLINE
   void Set<KEY>::erase( const SetIterator<KEY>& iter ) {
     // erase the element
-    __inside.erase( iter.__ht_iter.key () );
+    __inside.erase( iter.__ht_iter );
 
     // Note that actually there is no need to update the end iterator as this one
     // is not affected by changes within hashtables (adding/deleting elements).

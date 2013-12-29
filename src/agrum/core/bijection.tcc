@@ -50,8 +50,8 @@ namespace gum {
   template <typename T1, typename T2> INLINE
   BijectionIterator<T1,T2>::BijectionIterator
   ( const Bijection<T1,T2>& biject, BijectionIterator<T1,T2>::Position pos ) :
-    __iter( pos == Position::BIJECTION_BEGIN ? biject.__firstToSecond.begin() :
-            biject.__firstToSecond.end() ) {
+    __iter( pos == Position::BIJECTION_BEGIN ? biject.__firstToSecond.cbeginSafe() :
+            biject.__firstToSecond.cendSafe() ) {
     GUM_CONSTRUCTOR( BijectionIterator );
   }
 
@@ -483,8 +483,8 @@ namespace gum {
   template <typename T1, typename T2> INLINE
   BijectionIterator<T1*,T2*>::BijectionIterator
   ( const Bijection<T1*,T2*>& biject, BijectionIterator<T1*,T2*>::Position pos ) :
-    __iter( pos == Position::BIJECTION_BEGIN ? biject.__firstToSecond.begin() :
-            biject.__firstToSecond.end() ) {
+    __iter( pos == Position::BIJECTION_BEGIN ? biject.__firstToSecond.cbeginSafe () :
+            biject.__firstToSecond.cendSafe () ) {
     GUM_CONSTRUCTOR( BijectionIterator );
   }
 
@@ -629,8 +629,8 @@ namespace gum {
   template <typename T1, typename T2> INLINE
   void Bijection<T1*,T2*>::__copy( const HashTable<T1*,T2*>& f2s ) {
     // parse f2s and perform copies
-    for ( HashTableConstIterator<T1*,T2*> iter = f2s.begin();
-          iter != f2s.end(); ++iter ) {
+    for ( HashTableConstIterator<T1*,T2*> iter = f2s.cbegin();
+          iter != f2s.cend(); ++iter ) {
       __firstToSecond.insert ( iter.key(), iter.val () );
 
       try { __secondToFirst.insert( iter.val (), iter.key() ); }

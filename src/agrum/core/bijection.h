@@ -154,7 +154,7 @@ namespace gum {
 
     private:
       /// the hashTable iterator that actually does all the job
-      typename HashTable<T1,T2*>::const_iterator __iter;
+      typename HashTable<T1,T2*>::const_iterator_safe __iter;
 
   };
 
@@ -533,7 +533,7 @@ namespace gum {
 
     private:
       /// the hashTable iterator that actually does all the job
-      typename HashTable<T1*,T2*>::const_iterator __iter;
+      typename HashTable<T1*,T2*>::const_iterator_safe __iter;
 
   };
 
