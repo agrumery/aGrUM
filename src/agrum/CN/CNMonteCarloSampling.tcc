@@ -281,13 +281,13 @@ namespace gum {
 
           potential->fillWith ( var_cpt );
 
-          auto t0esize = it->size();
+          auto t0esize = it.val().size();
 
           for ( decltype ( t0esize ) pos = 0; pos < t0esize; pos++ ) {
             if ( infEs::_storeBNOpt )
-              ( sample ) [ ( *it ) [pos]] = ( sample ) [it.key()];
+              ( sample ) [ ( it.val() ) [pos]] = ( sample ) [it.key()];
 
-            Potential< GUM_SCALAR >* potential2 ( const_cast< Potential< GUM_SCALAR > * > ( &working_bn->cpt ( ( *it ) [pos] ) ) );
+            Potential< GUM_SCALAR >* potential2 ( const_cast< Potential< GUM_SCALAR > * > ( &working_bn->cpt ( ( it.val() ) [pos] ) ) );
             potential2->fillWith ( var_cpt );
           }
         }
@@ -310,13 +310,13 @@ namespace gum {
 
           potential->fillWith ( var_cpt );
 
-          auto t1esize = it->size();
+          auto t1esize = it.val().size();
 
           for ( decltype ( t1esize ) pos = 0; pos < t1esize; pos++ ) {
             if ( infEs::_storeBNOpt )
-              ( sample ) [ ( *it ) [pos]] = ( sample ) [it.key()];
+              ( sample ) [ ( it.val() ) [pos]] = ( sample ) [it.key()];
 
-            Potential< GUM_SCALAR >* potential2 ( const_cast< Potential< GUM_SCALAR > * > ( &working_bn->cpt ( ( *it ) [pos] ) ) );
+            Potential< GUM_SCALAR >* potential2 ( const_cast< Potential< GUM_SCALAR > * > ( &working_bn->cpt ( ( it.val() ) [pos] ) ) );
             potential2->fillWith ( var_cpt );
           }
         }
@@ -378,7 +378,7 @@ namespace gum {
         ( *p ) << working_bn->variable ( it.key() );
 
         try {
-          p->fillWith ( *it );
+          p->fillWith ( it.val() );
         } catch ( Exception& err ) {
           std::cout << "Error while inserting evidence : " << std::endl;
           GUM_SHOWERROR ( err );

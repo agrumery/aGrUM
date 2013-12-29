@@ -59,7 +59,7 @@ namespace gum {
 
   INLINE Size
   HashFunc< credal::lp::LpCol >::operator() ( const credal::lp::LpCol& key ) const {
-    return ( ( ( Size ) key.id() ) * GUM_HASHTABLE_INT_GOLD ) & _hash_mask;
+    return ( ( ( Size ) key.id() ) * HashFuncConst::gold ) & _hash_mask;
   }
 
   namespace credal {
@@ -254,7 +254,7 @@ namespace gum {
         if ( ! __imiddle )
           __imiddle = true;
 
-        __mCoeffs->getWithDefault ( rhs, 0. ) += 1.;
+        __mCoeffs->getWithDefault ( rhs, 0. ).second += 1.;
 
         return *this;
       }
@@ -267,7 +267,7 @@ namespace gum {
           __imiddle = true;
 
         for ( auto it = rhs.__mCoeffs->begin(), end = rhs.__mCoeffs->end(); it != end; ++it )
-          __mCoeffs->getWithDefault ( it.key(), 0. ) += *it;
+          __mCoeffs->getWithDefault ( it.key(), 0. ).second += it.val();
 
         __mValue += rhs.__mValue;
 
@@ -289,7 +289,7 @@ namespace gum {
         }
 
         for ( auto it = rhs.__mCoeffs->begin(), end = rhs.__mCoeffs->end(); it != end; ++it )
-          __mCoeffs->getWithDefault ( it.key(), 0. ) += *it;
+          __mCoeffs->getWithDefault ( it.key(), 0. ).second += it.val();
 
         __mValue += rhs.__mValue;
 
@@ -316,7 +316,7 @@ namespace gum {
         if ( ! __imiddle )
           __imiddle = true;
 
-        __mCoeffs->getWithDefault ( rhs, 0. ) -= 1.;
+        __mCoeffs->getWithDefault ( rhs, 0. ).second -= 1.;
 
         return *this;
       }
@@ -329,7 +329,7 @@ namespace gum {
           __imiddle = true;
 
         for ( auto it = rhs.__mCoeffs->begin(), end = rhs.__mCoeffs->end(); it != end; ++it )
-          __mCoeffs->getWithDefault ( it.key(), 0. ) -= *it;
+          __mCoeffs->getWithDefault ( it.key(), 0. ).second -= it.val();
 
         __mValue -= rhs.__mValue;
 
@@ -561,7 +561,7 @@ namespace gum {
 
         if ( __lCoeffs != nullptr )
           for ( auto it = __lCoeffs->begin(), end = __lCoeffs->end(); it != end; ++it )
-            std::cout << it.key().toString() << " " << *it << " | ";
+            std::cout << it.key().toString() << " " << it.val() << " | ";
 
         std::cout << std::endl;
 
@@ -569,7 +569,7 @@ namespace gum {
 
         if ( __mCoeffs != nullptr )
           for ( auto it = __mCoeffs->begin(), end = __mCoeffs->end(); it != end; ++it )
-            std::cout << it.key().toString() << " " << *it << " | ";
+            std::cout << it.key().toString() << " " << it.val() << " | ";
 
         std::cout << std::endl;
 
@@ -577,7 +577,7 @@ namespace gum {
 
         if ( __rCoeffs != nullptr )
           for ( auto it = __rCoeffs->begin(), end = __rCoeffs->end(); it != end; ++it )
-            std::cout << it.key().toString() << " " << *it << " | ";
+            std::cout << it.key().toString() << " " << it.val() << " | ";
 
         std::cout << std::endl;
 
@@ -595,7 +595,7 @@ namespace gum {
 
         if ( __lCoeffs != nullptr )
           for ( auto it = __lCoeffs->begin(), end = __lCoeffs->end(); it != end; ++it )
-            s << it.key().toString() << " " << *it << " | ";
+            s << it.key().toString() << " " << it.val() << " | ";
 
         s << "\n";
 
@@ -603,7 +603,7 @@ namespace gum {
 
         if ( __mCoeffs != nullptr )
           for ( auto it = __mCoeffs->begin(), end = __mCoeffs->end(); it != end; ++it )
-            s << it.key().toString() << " " << *it << " | ";
+            s << it.key().toString() << " " << it.val() << " | ";
 
         s << "\n";
 
@@ -611,7 +611,7 @@ namespace gum {
 
         if ( __rCoeffs != nullptr )
           for ( auto it = __rCoeffs->begin(), end = __rCoeffs->end(); it != end; ++it )
-            s << it.key().toString() << " " << *it << " | ";
+            s << it.key().toString() << " " << it.val() << " | ";
 
         s << "\n";
 
@@ -641,7 +641,7 @@ namespace gum {
             if ( expr.__lCoeffs->exists ( col ) )
               col_coeff = expr.__lCoeffs->operator[] ( col );
 
-            __coeffs->getWithDefault ( col, 0. ) -= col_coeff;
+            __coeffs->getWithDefault ( col, 0. ).second -= col_coeff;
           }
 
           __cste = expr.__mValue - expr.__lValue;
@@ -655,7 +655,7 @@ namespace gum {
             if ( expr.__mCoeffs->exists ( col ) )
               col_coeff = expr.__mCoeffs->operator[] ( col );
 
-            __coeffs->getWithDefault ( col, 0. ) -= col_coeff;
+            __coeffs->getWithDefault ( col, 0. ).second -= col_coeff;
           }
 
           __cste = expr.__rValue - expr.__mValue;
@@ -679,7 +679,7 @@ namespace gum {
             if ( expr.__lCoeffs->exists ( col ) )
               col_coeff = expr.__lCoeffs->operator[] ( col );
 
-            __coeffs->getWithDefault ( col, 0. ) -= col_coeff;
+            __coeffs->getWithDefault ( col, 0. ).second -= col_coeff;
           }
 
           __cste = expr.__mValue - expr.__lValue;
@@ -692,7 +692,7 @@ namespace gum {
             if ( expr.__mCoeffs->exists ( col ) )
               col_coeff = expr.__mCoeffs->operator[] ( col );
 
-            __coeffs->getWithDefault ( col, 0. ) -= col_coeff;
+            __coeffs->getWithDefault ( col, 0. ).second -= col_coeff;
           }
 
           __cste = expr.__rValue - expr.__mValue;
@@ -757,15 +757,15 @@ namespace gum {
 
         if ( __coeffs != nullptr )
           for ( auto it = __coeffs->begin(), end = __coeffs->end(); it != end; ++it )
-            if ( *it > 0 ) {
-              if ( *it != 1 ) {
-                s << " +" << *it << "*" << it.key().toString();
+            if ( it.val () > 0 ) {
+              if ( it.val() != 1 ) {
+                s << " +" << it.val() << "*" << it.key().toString();
               } else {
                 s << " +" << it.key().toString();
               }
-            } else if ( *it < 0 ) {
-              if ( *it != -1 ) {
-                s << " " << *it << "*" << it.key().toString();
+            } else if ( it.val() < 0 ) {
+              if ( it.val() != -1 ) {
+                s << " " << it.val() << "*" << it.key().toString();
               } else {
                 s << " -" << it.key().toString();
               }
@@ -996,7 +996,7 @@ namespace gum {
           expandedRow [ 0 ] = row->__cste;
 
           for ( auto it = row->__coeffs->begin(), end = row->__coeffs->end(); it != end; ++it )
-            expandedRow [ it.key().id() + 1 ] = *it;
+            expandedRow [ it.key().id() + 1 ] = it.val();
 
           lrsMatrix.push_back ( expandedRow );
         }

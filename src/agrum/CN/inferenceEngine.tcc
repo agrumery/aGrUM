@@ -227,7 +227,7 @@ namespace gum {
           continue;
         }
 
-        _evidence.insert ( it.key(), *it );
+        _evidence.insert ( it.key(), it.val() );
       }
     }
 
@@ -304,7 +304,7 @@ namespace gum {
           continue;
         }
 
-        _query.insert ( it.key(), *it );
+        _query.insert ( it.key(), it.val () );
       }
     }
 
@@ -493,10 +493,10 @@ namespace gum {
 
       // use cbegin when available
       for ( auto it = _marginalMin.begin(), theEnd = _marginalMin.end(); it != theEnd; ++it ) {
-        auto esize = it->size();
+        auto esize = it.val().size();
 
         for ( decltype ( esize ) mod = 0; mod < esize; mod++ ) {
-          m_stream << _credalNet->current_bn().variable ( it.key() ).name() << " " << mod << " " << ( *it ) [mod] << " " << _marginalMax[it.key()][mod] << std::endl;
+          m_stream << _credalNet->current_bn().variable ( it.key() ).name() << " " << mod << " " << ( it.val() ) [mod] << " " << _marginalMax[it.key()][mod] << std::endl;
         }
       }
 
@@ -524,7 +524,7 @@ namespace gum {
         m_stream << it.key();//it->first;
 
         // iterates over a vector
-        for ( auto it2 = it->/*second.*/cbegin(), theEnd2 = it->/*second.*/cend(); it2 != theEnd2; ++it2 ) {
+        for ( auto it2 = it.val()./*second.*/cbegin(), theEnd2 = it.val()./*second.*/cend(); it2 != theEnd2; ++it2 ) {
           m_stream << " " << *it2;
         }
 
@@ -535,7 +535,7 @@ namespace gum {
         m_stream << it.key();//->first;
 
         // iterates over a vector
-        for ( auto it2 = it->/*second.*/cbegin(), theEnd2 = it->/*second.*/cend(); it2 != theEnd2; ++it2 ) {
+        for ( auto it2 = it.val()./*second.*/cbegin(), theEnd2 = it.val()./*second.*/cend(); it2 != theEnd2; ++it2 ) {
           m_stream << " " << *it2;
         }
 
@@ -552,7 +552,7 @@ namespace gum {
 
       // use cbegin() when available
       for ( auto it = _marginalMin.begin(), theEnd = _marginalMin.end(); it != theEnd; ++it ) {
-        auto esize = it->size();
+        auto esize = it.val().size();
 
         for ( decltype ( esize ) mod = 0; mod < esize; mod++ ) {
           output << "P(" << _credalNet->current_bn().variable ( it.key() ).name() << "=" << mod << "|e) = [ ";
@@ -586,7 +586,7 @@ namespace gum {
         //auto esize = _marginalSets[it.key()].size();
         // iterates over vectors from here
         //for ( decltype(esize) vertex = 0; vertex < esize; vertex ++ ) {
-        for ( auto jt = it->begin(), jtEnd = it->end(); jt != jtEnd; ++jt ) {
+        for ( auto jt = it.val().begin(), jtEnd = it.val().end(); jt != jtEnd; ++jt ) {
           m_stream << "[";
 
           //auto dSize = _marginalSets[it.key()][vertex].size();
@@ -712,8 +712,8 @@ namespace gum {
         if ( ! _modal.exists ( var_name ) /*_modal.find(var_name) == _modal.end()*/ )
           continue;
 
-        expectationsMin.getWithDefault ( var_name, innerMap() ).getWithDefault ( atoi ( time_step.c_str() ), 0 ) = *it; // we iterate with min iterators
-        expectationsMax.getWithDefault ( var_name, innerMap() ).getWithDefault ( atoi ( time_step.c_str() ), 0 ) = _expectationMax[ it.key() ];
+        expectationsMin.getWithDefault ( var_name, innerMap() ).second.getWithDefault ( atoi ( time_step.c_str() ), 0 ).second = it.val(); // we iterate with min iterators
+        expectationsMax.getWithDefault ( var_name, innerMap() ).second.getWithDefault ( atoi ( time_step.c_str() ), 0 ).second = _expectationMax[ it.key() ];
 
         //expectationsMin[var_name][atoi(time_step.c_str())] = _expectationMin[it.key()];
         //expectationsMax[var_name][atoi(time_step.c_str())] = _expectationMax[it.key()];
@@ -721,10 +721,10 @@ namespace gum {
 
       // use cbegin() when available
       for ( auto it = expectationsMin.begin(), theEnd = expectationsMin.end(); it != theEnd; ++it ) {
-        typename std::vector< GUM_SCALAR > dynExp ( it->/*second.*/size() );
+        typename std::vector< GUM_SCALAR > dynExp ( it.val()./*second.*/size() );
 
-        for ( auto it2 = it->/*second.*/begin(), theEnd2 = it->/*second.*/end(); it2 != theEnd2; ++it2 ) {
-          dynExp[it2.key() /*->first*/] = *it2/*->second*/;
+        for ( auto it2 = it.val()./*second.*/begin(), theEnd2 = it.val()./*second.*/end(); it2 != theEnd2; ++it2 ) {
+          dynExp[it2.key() /*->first*/] = it2.val()/*->second*/;
         }
 
         _dynamicExpMin.insert ( it.key(), dynExp );
@@ -733,10 +733,10 @@ namespace gum {
 
       // use cbegin() when available
       for ( auto it = expectationsMax.begin(), theEnd = expectationsMax.end(); it != theEnd; ++it ) {
-        typename std::vector< GUM_SCALAR > dynExp ( it->/*second.*/size() );
+        typename std::vector< GUM_SCALAR > dynExp ( it.val()./*second.*/size() );
 
-        for ( auto it2 = it->/*second.*/begin(), theEnd2 = it->/*second.*/end(); it2 != theEnd2; ++it2 ) {
-          dynExp[it2.key() /*->first*/] = *it2/*->second*/;
+        for ( auto it2 = it.val()./*second.*/begin(), theEnd2 = it.val()./*second.*/end(); it2 != theEnd2; ++it2 ) {
+          dynExp[it2.key() /*->first*/] = it2.val()/*->second*/;
         }
 
         _dynamicExpMax.insert ( it.key(), dynExp );

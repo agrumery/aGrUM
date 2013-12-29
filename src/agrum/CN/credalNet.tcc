@@ -99,7 +99,7 @@ namespace gum {
       }
 
       // !! auto does NOT use adress (if available) unless explicitly asked !!
-      auto& node_cpt = __credalNet_src_cpt.getWithDefault ( id, std::vector< std::vector< std::vector< GUM_SCALAR > > > ( entry_size ) );
+      auto& node_cpt = __credalNet_src_cpt.getWithDefault ( id, std::vector< std::vector< std::vector< GUM_SCALAR > > > ( entry_size ) ).second;
 
       if ( node_cpt[ entry ].size() != 0 )
         GUM_ERROR ( DuplicateElement, "setCPT : vertices of entry id " << entry << " already set to : " << node_cpt[ entry ] << ", cannot insert : " << cpt );
@@ -164,7 +164,7 @@ namespace gum {
           GUM_ERROR ( CPTNoSumTo1, "setCPT : a vertex coordinates does not sum to one for node id : " << id << " at entry " << entry << " with vertex " << vertex );
       }
 
-      auto& node_cpt = __credalNet_src_cpt.getWithDefault ( id, std::vector< std::vector< std::vector< GUM_SCALAR > > > ( entry_size ) );
+      auto& node_cpt = __credalNet_src_cpt.getWithDefault ( id, std::vector< std::vector< std::vector< GUM_SCALAR > > > ( entry_size ) ).second;
 
       if ( node_cpt[ entry ].size() != 0 )
         GUM_ERROR ( DuplicateElement, "setCPT : vertices of entry : " << ins << " id " << entry << " already set to : " << node_cpt[ entry ] << ", cannot insert : " << cpt );
