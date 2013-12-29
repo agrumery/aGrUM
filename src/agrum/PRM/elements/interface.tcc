@@ -58,7 +58,7 @@ namespace gum {
       GUM_DESTRUCTOR ( Interface );
 
       for ( auto iter = __nodeIdMap.begin(); iter != __nodeIdMap.end(); ++iter ) {
-        delete *iter;
+        delete iter.val ();
       }
     }
 

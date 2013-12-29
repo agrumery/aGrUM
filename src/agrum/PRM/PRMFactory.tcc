@@ -908,7 +908,7 @@ namespace gum {
       int current_depth = 0;
 
       for ( HashTable<std::string, Size>::iterator iter = counters.begin(); iter != counters.end(); ++iter ) {
-        if ( ( *iter ) == elts.size() ) {
+        if ( ( iter.val () ) == elts.size() ) {
           current_depth = __typeDepth ( __retrieveType ( iter.key() ) );
 
           if ( current_depth > max_depth ) {

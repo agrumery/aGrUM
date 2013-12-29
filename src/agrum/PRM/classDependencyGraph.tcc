@@ -34,11 +34,11 @@ namespace gum {
       GUM_DESTRUCTOR ( ClassDependencyGraph );
 
       for ( auto iter = __node_map.begin(); iter != __node_map.end(); ++iter ) {
-        delete *iter;
+        delete iter.val();
       }
 
       for ( auto iter = __elt_map.begin(); iter != __elt_map.end(); ++iter ) {
-        delete *iter;
+        delete iter.val();
       }
     }
 
@@ -116,7 +116,7 @@ namespace gum {
       GUM_CONS_CPY ( ClassDependencyGraph );
 
       for ( auto iter = source.__node_map.begin(); iter != source.__node_map.end(); ++iter ) {
-        __node_map.insert ( iter.key(), new HashTable<const ClassElement<GUM_SCALAR>*, NodeId> ( **iter ) );
+        __node_map.insert ( iter.key(), new HashTable<const ClassElement<GUM_SCALAR>*, NodeId> ( *(iter.val()) ) );
       }
     }
 

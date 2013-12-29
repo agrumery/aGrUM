@@ -70,13 +70,13 @@ namespace gum {
       GUM_DESTRUCTOR ( Instance );
 
       for ( auto iter = __nodeIdMap.begin(); iter != __nodeIdMap.end(); ++iter )
-        delete *iter;
+        delete iter.val ();
 
       for ( auto iter = __referenceMap.begin(); iter != __referenceMap.end(); ++iter )
-        delete *iter;
+        delete iter.val ();
 
       for ( auto iter = __referingAttr.begin(); iter != __referingAttr.end(); ++iter )
-        delete *iter;
+        delete iter.val ();
 
       if ( __params ) delete __params;
     }
