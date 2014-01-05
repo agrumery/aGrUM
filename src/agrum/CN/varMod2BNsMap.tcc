@@ -46,7 +46,7 @@ namespace gum {
     template< typename GUM_SCALAR >
     bool VarMod2BNsMap< GUM_SCALAR >::insert( const std::vector< bool >& bn, const std::vector< unsigned int >& key ) {
       _currentHash = _vectHash( bn );
-      std::list< size_t >& nets = _myVarHashs.getWithDefault( key, std::list< size_t >() ).second;   //[ key ];
+      std::list< size_t >& nets = _myVarHashs.getWithDefault( key, std::list< size_t >() );   //[ key ];
 
       for ( std::list< size_t >::iterator it = nets.begin(); it != nets.end(); ++it ) {
         if ( *it == _currentHash )
@@ -58,7 +58,7 @@ namespace gum {
       // insert net hash in our key net list
       nets.push_back( _currentHash );
       // insert out key in the hash key list
-      _myHashVars.getWithDefault( _currentHash, std::list< varKey >() ) /*[_currentHash]*/.second.push_back( key );
+      _myHashVars.getWithDefault( _currentHash, std::list< varKey >() ) /*[_currentHash]*/.push_back( key );
       return true;
     }
 
@@ -67,12 +67,12 @@ namespace gum {
     bool VarMod2BNsMap< GUM_SCALAR >::insert( const std::vector< unsigned int >& key, const bool isBetter ) {
       if ( isBetter ) {
         // get all nets of this key (maybe entry does not exists)
-        std::list< size_t >& old_nets = _myVarHashs.getWithDefault( key, std::list< size_t >() ).second;   //[ key ];
+        std::list< size_t >& old_nets = _myVarHashs.getWithDefault( key, std::list< size_t >() );   //[ key ];
 
         // for each one
         for ( std::list< size_t >::iterator it = old_nets.begin(); it != old_nets.end(); ++it ) {
           // get all keys associated to this net
-          std::list< varKey >& netKeys = _myHashVars.getWithDefault( *it, std::list< varKey >() ).second;   //[ *it ];
+          std::list< varKey >& netKeys = _myHashVars.getWithDefault( *it, std::list< varKey >() );   //[ *it ];
 
           // if we are the sole user, delete the net entry
           if ( netKeys.size() == 1 ) {
@@ -96,14 +96,14 @@ namespace gum {
         // insert net hash in our key net list
         old_nets.push_back( _currentHash );
         // insert out key in the hash key list
-        _myHashVars.getWithDefault( _currentHash, std::list< varKey >() ) /*[_currentHash]*/.second.push_back( key );
+        _myHashVars.getWithDefault( _currentHash, std::list< varKey >() ) /*[_currentHash]*/.push_back( key );
         return true;
 
       } // end of isBetter
       // another opt net
       else {
         // check that we didn't add it for this key
-        std::list< size_t >& nets = _myVarHashs.getWithDefault( key, std::list< size_t >() ).second;   //[ key ];
+        std::list< size_t >& nets = _myVarHashs.getWithDefault( key, std::list< size_t >() );   //[ key ];
 
         for ( std::list< size_t >::iterator it = nets.begin(); it != nets.end(); ++it ) {
           if ( *it == _currentHash )
@@ -115,7 +115,7 @@ namespace gum {
         // insert net hash in our key net list
         nets.push_back( _currentHash );
         // insert out key in the hash key list
-        _myHashVars.getWithDefault( _currentHash, std::list< varKey >() ).second.push_back( key );
+        _myHashVars.getWithDefault( _currentHash, std::list< varKey >() ).push_back( key );
 
         /*
               // add it

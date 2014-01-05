@@ -56,14 +56,14 @@ namespace gum {
 
     delete __triangulation;
 
-    for ( typename Property< MultiDimBucket<GUM_SCALAR>* >::onArcs::iterator
-          iter = __messagesMap.begin(); iter != __messagesMap.end(); ++iter ) {
-      delete iter.val ();
+    for ( typename Property< MultiDimBucket<GUM_SCALAR>* >::onArcs::iterator_safe
+          iter = __messagesMap.beginSafe(); iter != __messagesMap.endSafe(); ++iter ) {
+      delete *iter;
     }
 
-    for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator
-          iter = __clique_prop.begin(); iter != __clique_prop.end(); ++iter ) {
-      delete iter.val ();
+    for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator_safe
+          iter = __clique_prop.beginSafe(); iter != __clique_prop.endSafe(); ++iter ) {
+      delete *iter;
     }
 
     for ( SetIterator< Potential<GUM_SCALAR>* > iter = __dummies.begin();
@@ -87,14 +87,14 @@ namespace gum {
     this->_invalidateMarginals();
 
     // Setting all collect flags at false
-    for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator
-          iter = __clique_prop.begin(); iter != __clique_prop.end(); ++iter ) {
-      ( iter.val() )->isCollected = false;
+    for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator_safe
+          iter = __clique_prop.beginSafe(); iter != __clique_prop.endSafe(); ++iter ) {
+      ( *iter )->isCollected = false;
     }
 
-    for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator
-          iter = __clique_prop.begin(); iter != __clique_prop.end(); ++iter ) {
-      if ( not ( iter.val() )->isCollected ) {
+    for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator_safe
+          iter = __clique_prop.beginSafe(); iter != __clique_prop.endSafe(); ++iter ) {
+      if ( not ( *iter )->isCollected ) {
         __collectFromClique ( iter.key() );
         __diffuseFromClique ( iter.key() );
       }
@@ -184,10 +184,10 @@ namespace gum {
   template <typename GUM_SCALAR>
   void
   ShaferShenoyInference<GUM_SCALAR>::eraseAllEvidence() {
-    for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator
-          iter = __clique_prop.begin(); iter != __clique_prop.end(); ++iter ) {
+    for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator_safe
+          iter = __clique_prop.beginSafe(); iter != __clique_prop.endSafe(); ++iter ) {
       __removeDiffusedMessages ( iter.key() );
-      ( iter.val () )->removeAllEvidence();
+      ( *iter )->removeAllEvidence();
     }
   }
 

@@ -32,10 +32,10 @@ namespace gum {
   namespace prm {
     template<typename GUM_SCALAR> void
     ClassElementContainer<GUM_SCALAR>::_copyIOFlags ( const ClassElementContainer<GUM_SCALAR>& c ) {
-      typedef HashTable< std::string, std::pair<bool, bool> >::const_iterator Iter;
+      typedef HashTable< std::string, std::pair<bool, bool> >::const_iterator_safe Iter;
 
-      for ( Iter iter = c.__IOFlags.begin(); iter != c.__IOFlags.end(); ++iter ) {
-        _setIOFlag ( get ( iter.key() ), iter.val () );
+      for ( Iter iter = c.__IOFlags.beginSafe(); iter != c.__IOFlags.endSafe(); ++iter ) {
+        _setIOFlag ( get ( iter.key() ), *iter );
       }
     }
 

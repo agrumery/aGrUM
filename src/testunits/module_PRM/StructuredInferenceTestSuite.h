@@ -82,7 +82,7 @@ namespace gum_tests {
         gum::Sequence<const gum::prm::Instance<double>*> seq;
 
         for ( gum::prm::System<double>::const_iterator iter = sys.begin(); iter != sys.end(); ++iter )
-          seq.insert( iter.val() );
+          seq.insert( *iter );
 
         return *( seq.atPos( std::rand() % seq.size() ) );
       }
@@ -91,7 +91,7 @@ namespace gum_tests {
         gum::Sequence<const gum::prm::Attribute<double>*> seq;
 
         for ( gum::prm::Instance<double>::const_iterator iter = i.begin(); iter != i.end(); ++iter )
-          seq.insert( iter.val () );
+          seq.insert( *iter );
 
         return *( seq.atPos( std::rand() % seq.size() ) );
       }

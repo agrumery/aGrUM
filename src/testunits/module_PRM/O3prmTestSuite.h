@@ -801,17 +801,17 @@ namespace gum_tests {
         for ( auto iter = sys->begin(); iter != sys->end(); ++iter ) {
           ++count;
 
-          for ( auto jter = ( *(iter.val()) ).begin(); jter != ( *(iter.val()) ).end(); ++jter ) {
-            if ( ( *(jter.val()) ).cpf().nbrDim() == 0 ) {
+          for ( auto jter = ( **iter ).begin(); jter != ( **iter ).end(); ++jter ) {
+            if ( ( **jter ).cpf().nbrDim() == 0 ) {
               std::stringstream sBuff;
-              sBuff << ( *(iter.val()) ).name() << "." << ( *(jter.val()) ).safeName();
+              sBuff << ( **iter ).name() << "." << ( **jter ).safeName();
               GUM_TRACE( sBuff.str() );
             }
 
-            if ( gum::prm::ClassElement<double>::isAggregate( ( *(iter.val()) ).type().get( ( *(jter.val()) ).id() ) ) ) {
-              if ( ( *(jter.val()) ).cpf().nbrDim() == 1 ) {
+            if ( gum::prm::ClassElement<double>::isAggregate( ( **iter ).type().get( ( **jter ).id() ) ) ) {
+              if ( ( **jter ).cpf().nbrDim() == 1 ) {
                 std::stringstream sBuff;
-                sBuff << ( *(iter.val()) ).name() << "." << ( *(jter.val()) ).safeName();
+                sBuff << ( **iter ).name() << "." << ( **jter ).safeName();
                 GUM_TRACE( sBuff.str() );
               }
             }
@@ -899,15 +899,15 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( sys = & ( prm->system( "aSys" ) ) );
 
         for ( gum::prm::System<double>::iterator iter = sys->begin(); iter != sys->end(); ++iter ) {
-          for ( gum::prm::Instance<double>::iterator jter = ( *(iter.val()) ).begin(); jter != ( *(iter.val()) ).end(); ++jter ) {
-            gum::Instantiation i( ( *(jter.val()) ).cpf() ), var;
-            var.add( ( *(jter.val()) ).type().variable() );
+          for ( gum::prm::Instance<double>::iterator jter = ( **iter ).begin(); jter != ( **iter ).end(); ++jter ) {
+            gum::Instantiation i( ( **jter ).cpf() ), var;
+            var.add( ( **jter ).type().variable() );
 
             for ( i.setFirstOut( var ); not i.end(); i.incOut( var ) ) {
               gum::prm::prm_float f = 0.0;
 
               for ( i.setFirstIn( var ); not i.end(); i.incIn( var ) ) {
-                f += ( *(jter.val()) ).cpf().get( i );
+                f += ( **jter ).cpf().get( i );
               }
 
               TS_ASSERT_DELTA( f, 1.0, 1e-9 );

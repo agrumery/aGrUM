@@ -60,12 +60,12 @@ namespace gum {
     GUM_CONS_CPY( PriorityQueue );
 
     // fill the heap structure
-    HashTableConstIterator< Val,std::vector<Size> > iter;
+    HashTableConstIteratorSafe< Val,std::vector<Size> > iter;
     typename std::vector<Size>::const_iterator iter_index;
 
     try {
-      for ( iter = __indices.begin(); iter != __indices.end(); ++iter ) {
-        for ( iter_index = iter.val().begin(); iter_index != iter.val().end();
+      for ( iter = __indices.beginSafe(); iter != __indices.endSafe(); ++iter ) {
+        for ( iter_index = iter->begin(); iter_index != iter->end();
               ++iter_index ) {
           const std::pair<Priority,Val*>& from_pair = *from.__heap[*iter_index];
           __heap[*iter_index] =
@@ -74,15 +74,14 @@ namespace gum {
         }
       }
     } catch ( ... ) { // if there was a problem, deallocate everything
-      for ( HashTableConstIterator< Val,std::vector<Size> >
-            iter2 = __indices.begin(); iter2!=iter; ++iter2 )
+      for ( HashTableConstIteratorSafe< Val,std::vector<Size> >
+            iter2 = __indices.beginSafe(); iter2!=iter; ++iter2 )
         for ( typename std::vector<Size>::const_iterator
-                iter_index2 = iter2.val().begin();
-              iter_index2 != iter2.val().end(); ++iter_index2 )
+              iter_index2 = iter2->begin();
+              iter_index2 != iter2->end(); ++iter_index2 )
           delete __heap[*iter_index2];
 
-      for ( typename std::vector<Size>::const_iterator
-              iter_index2 = iter.val().begin();
+      for ( typename std::vector<Size>::const_iterator iter_index2 = iter->begin();
             iter_index2 != iter_index; ++iter_index2 )
         delete __heap[*iter_index2];
 
@@ -130,12 +129,12 @@ namespace gum {
       }
 
       // fill properly the heap structure
-      HashTableConstIterator< Val,std::vector<Size> > iter;
+      HashTableConstIteratorSafe< Val,std::vector<Size> > iter;
       typename std::vector<Size>::const_iterator iter_index;
 
       try {
-        for ( iter = __indices.begin(); iter != __indices.end(); ++iter )
-          for ( iter_index = iter.val().begin(); iter_index != iter.val().end();
+        for ( iter = __indices.beginSafe(); iter != __indices.endSafe(); ++iter )
+          for ( iter_index = iter->begin(); iter_index != iter->end();
                 ++iter_index ) {
             const std::pair<Priority, Val*>& from_pair = *from.__heap[*iter_index];
 
@@ -149,18 +148,18 @@ namespace gum {
 
         __nb_elements = from.__nb_elements;
       } catch ( ... ) { // in case something went wrong, clear the queue
-        HashTableConstIterator< Val,std::vector<Size> > iter2;
+        HashTableConstIteratorSafe< Val,std::vector<Size> > iter2;
         typename std::vector<Size>::const_iterator iter_index2;
 
-        for ( iter2 = __indices.begin(); iter2 != iter; ++iter2 ) {
-          for ( iter_index2=iter2.val().begin(); iter_index2!=iter2.val().end();
+        for ( iter2 = __indices.beginSafe(); iter2 != iter; ++iter2 ) {
+          for ( iter_index2=iter2->begin(); iter_index2!=iter2->end();
                 ++iter_index2 ) {
             delete __heap[*iter_index2];
             __heap[*iter_index2] = 0;
           }
         }
 
-        for ( iter_index2 = iter.val().begin(); iter_index2 != iter_index;
+        for ( iter_index2 = iter->begin(); iter_index2 != iter_index;
               ++iter_index2 ) {
           delete __heap[*iter_index2];
           __heap[*iter_index2] = 0;

@@ -76,234 +76,234 @@ namespace gum {
    */
 
   class ArcGraphPart {
-  public:
-    typedef ArcSetIterator ArcIterator;
+    public:
+      typedef ArcSetIterator ArcIterator;
 
-    Signaler2<NodeId, NodeId> onArcAdded; // onArcAdded(tail,head)
-    Signaler2<NodeId, NodeId> onArcDeleted; // onArcDeleted(tail,head)
+      Signaler2<NodeId, NodeId> onArcAdded; // onArcAdded(tail,head)
+      Signaler2<NodeId, NodeId> onArcDeleted; // onArcDeleted(tail,head)
 
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
 
-    /// default constructor
-    /** @param arcs_size the size of the hash table used to store all the arcs
-     * @param arcs_resize_policy the resizing policy of this hash table*/
-    explicit ArcGraphPart ( Size arcs_size = HashTableConst::default_size,
-                            bool arcs_resize_policy    = true );
+      /// default constructor
+      /** @param arcs_size the size of the hash table used to store all the arcs
+       * @param arcs_resize_policy the resizing policy of this hash table*/
+      explicit ArcGraphPart ( Size arcs_size = GUM_HASHTABLE_DEFAULT_SIZE,
+                              bool arcs_resize_policy    = true );
 
-    /// copy constructor
-    /** @param s the ArcGraphPart to copy */
-    ArcGraphPart ( const ArcGraphPart& s );
+      /// copy constructor
+      /** @param s the ArcGraphPart to copy */
+      ArcGraphPart ( const ArcGraphPart& s );
 
-    /// destructor
-    virtual ~ArcGraphPart();
+      /// destructor
+      virtual ~ArcGraphPart();
 
-    /// @}
-
-
-
-    // ############################################################################
-    /// @name Operators
-    // ############################################################################
-    /// @{
-
-    /// copy operator
-    /** @param s the ArcGraphPart to copy */
-    ArcGraphPart& operator= ( const ArcGraphPart& s );
-
-    /// tests whether two ArcGraphParts contain the same arcs
-    /** @param p the ArcGraphPart that we compare with this */
-    bool operator== ( const ArcGraphPart& p ) const;
-
-    ///  tests whether two ArcGraphParts contain different arcs
-    /** @param p the ArcGraphPart that we compare with this */
-    bool operator!= ( const ArcGraphPart& p ) const;
-
-    /// @}
+      /// @}
 
 
 
-    // ############################################################################
-    /// @name Accessors/Modifiers
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      /// @name Operators
+      // ############################################################################
+      /// @{
 
-    /// insert a new arc into the ArcGraphPart
-    /** @param tail the id of the tail of the new arc to be inserted
-     * @param head the id of the head of the new arc to be inserted
-     * @warning if the arc already exists, nothing is done. In particular, no
-     * exception is raised. */
-    virtual void insertArc ( const NodeId tail, const NodeId head );
+      /// copy operator
+      /** @param s the ArcGraphPart to copy */
+      ArcGraphPart& operator= ( const ArcGraphPart& s );
 
-    /// removes an arc from the ArcGraphPart
-    /** @param arc the arc to be removed
-     * @warning if the arc does not exist, nothing is done. In particular, no
-     * exception is thrown. However, the signal onArcDeleted is fired
-     * only if a node is effectively removed. */
-    virtual void eraseArc ( const Arc& arc );
+      /// tests whether two ArcGraphParts contain the same arcs
+      /** @param p the ArcGraphPart that we compare with this */
+      bool operator== ( const ArcGraphPart& p ) const;
 
-    /// indicates whether a given arc exists
-    /** @param arc the arc we test whether or not it belongs to the ArcGraphPart */
-    bool existsArc ( const Arc& arc ) const;
+      ///  tests whether two ArcGraphParts contain different arcs
+      /** @param p the ArcGraphPart that we compare with this */
+      bool operator!= ( const ArcGraphPart& p ) const;
 
-    /// indicates whether a given arc exists
-    /** @param tail the tail of the arc we test the existence in the ArcGraphPart
-     * @param head the head of the arc we test the existence in the ArcGraphPart */
-    bool existsArc ( const NodeId tail, const NodeId head ) const;
-
-    /// indicates wether the ArcGraphPart contains any arc
-    bool emptyArcs() const;
-
-    /// removes all the arcs from the ArcGraphPart
-    void clearArcs();
-
-    /// indicates the number of arcs stored within the ArcGraphPart
-    /**
-     * @deprecated Please use sizeArcs
-     */
-    GUM_DEPRECATED ( Size nbrArcs() const );
-
-    /// indicates the number of arcs stored within the ArcGraphPart
-    Size sizeArcs() const;
-
-    /// returns the set of arcs stored within the ArcGraphPart
-    const ArcSet& arcs() const;
-
-    /// returns the set of nodes with arc ingoing to a given node
-    /** Note that the set of arcs returned may be empty if no arc within the
-     * ArcGraphPart is ingoing into the given node.
-     * @param id the node toward which the arcs returned are pointing */
-    const NodeSet& parents ( const NodeId id ) const;
-
-    /// returns the set of nodes with arc outgoing from a given node
-    /** Note that the set of arcs returned may be empty if no arc within the
-     * ArcGraphPart is outgoing from the given node.
-     * @param id the node which is the tail of the arcs returned */
-    const NodeSet& children ( const NodeId id ) const;
-
-    /// erase all the parents of a given node
-    /** @param id the node all the parents of which will be removed
-     * @warning although this method is not virtual, it calls method
-     * eraseArc( const Arc& arc ) and, as such, has a "virtual" behaviour. If
-     * you do not wish it to have this "virtual" behaviour, call instead
-     * method @ref unvirtualizedEraseParents
-     * @warning if no arc is a parent of id, nothing is done. In particular, no
-     * exception is thrown. */
-    void eraseParents ( const NodeId id );
-
-    /// same function as eraseParents but without any virtual call to an erase
-    /** @param id the node whose ingoing arcs will be removed */
-    void unvirtualizedEraseParents ( const NodeId id );
-
-    /// removes all the children of a given node
-    /** @param id the node all the children of which will be removed
-     * @warning although this method is not virtual, it calls method
-     * eraseArc( const Arc& arc ) and, as such, has a "virtual" behaviour. If
-     * you do not wish it to have this "virtual" behaviour, call instead
-     * method @ref unvirtualizedEraseChildren
-     * @warning if no arc is a parent of id, nothing is done. In particular, no
-     * exception is thrown. */
-    void eraseChildren ( const NodeId id );
-
-    /// same function as eraseChildren but without any virtual call to an erase
-    /** @param id the node whose outgoing arcs will be removed */
-    void unvirtualizedEraseChildren ( const NodeId id );
-
-    /// returns an iterator to parse the set of arcs contained in the ArcGraphPart
-    /// @deprecated please use arcs().begin()
-    GUM_DEPRECATED ( ArcIterator beginArcs() const );
-
-    /// returns the end iterator to parse the set of arcs
-    /// @deprecated please use arcs().end()
-    GUM_DEPRECATED ( const ArcIterator& endArcs() const );
-
-    /// to friendly display the content of the ArcGraphPart
-    const std::string toString() const;
-
-    /** @brief a method to create a hashMap of VAL from a set of arcs
-     * (using for every arc, say x, the VAL f(x))
-     * @param f a function assigning a VAL to any arc
-     * @param size an optional parameter enabling to fine-tune the returned
-     * Property. Roughly speaking, it is a good practice to have a size equal to
-     * half the number of arcs. If you do not specify this parameter, the method
-     * will assign it for you. */
-    template <typename VAL>
-    typename Property< VAL >::onArcs
-    arcsProperty ( VAL ( *f ) ( const Arc& ), Size size = 0 ) const;
-
-    /** @brief a method to create a hashMap of VAL from a set of arcs
-     * (using for every arc, say x, the VAL a)
-     * @param a the default value assigned to each arc in the returned Property
-     * @param size an optional parameter enabling to fine-tune the returned
-     * Property. Roughly speaking, it is a good practice to have a size equal to
-     * half the number of arcs. If you do not specify this parameter, the method
-     * will assign it for you. */
-    template <typename VAL>
-    typename Property< VAL >::onArcs
-    arcsProperty ( const VAL& a, Size size = 0 ) const;
-
-    /** @brief a method to create a list of VAL from a set of arcs
-     * (using for every arc, say x, the VAL f(x))
-     * @param f a function assigning a VAL to any arc */
-    template <typename VAL> List<VAL>
-    listMapArcs ( VAL ( *f ) ( const Arc& ) ) const;
-
-    /// returns a directed path from node1 to node2 belonging to the set of arcs
-    /** @param node1 the id from which the path begins
-     * @param node2 the id to which the path ends
-     * @throw NotFound exception is raised if no path can be found between the
-     * two nodes */
-    const std::vector<NodeId>
-    directedPath ( const NodeId node1, const NodeId node2 ) const;
-
-    /// returns an unoriented (directed) path from node1 to node2 in the arc set
-    /** @param node1 the id from which the path begins
-     * @param node2 the id to which the path ends
-     * @throw NotFound exception is raised if no path can be found between the
-     * two nodes */
-    const std::vector<NodeId>
-    directedUnorientedPath ( const NodeId node1, const NodeId node2 ) const;
-
-    /// @}
-
-
-  protected:
-    /// a (virtualized) function to remove a given set of arcs
-    /** @warning this function uses eraseArc, which is a virtual function. Hence
-     * the behaviour of this function is that of a virtual function */
-    void _eraseSetOfArcs ( const ArcSet& set );
-
-    /// similar to @ref _eraseSetOfArcs except that it is unvirtualized
-    /** @warning this function uses ArcGraphPart::eraseArc, hence, as compared
-     * with _eraseSetOfArcs, it removes the arcs without calling a virtual
-     * eraseArc */
-    void _unvirtualizedEraseSetOfArcs ( const ArcSet& set );
+      /// @}
 
 
 
-  private:
-    /// the set of all the arcs contained within the ArcGraphPart
-    Set<Arc> __arcs;
+      // ############################################################################
+      /// @name Accessors/Modifiers
+      // ############################################################################
+      /// @{
 
-    /// for each arc, the sets of its parents
-    mutable NodeProperty<NodeSet*> __parents;
+      /// insert a new arc into the ArcGraphPart
+      /** @param tail the id of the tail of the new arc to be inserted
+       * @param head the id of the head of the new arc to be inserted
+       * @warning if the arc already exists, nothing is done. In particular, no
+       * exception is raised. */
+      virtual void insertArc ( const NodeId tail, const NodeId head );
 
-    /// for each arc, the set of its children
-    mutable NodeProperty<NodeSet*> __children;
+      /// removes an arc from the ArcGraphPart
+      /** @param arc the arc to be removed
+       * @warning if the arc does not exist, nothing is done. In particular, no
+       * exception is thrown. However, the signal onArcDeleted is fired
+       * only if a node is effectively removed. */
+      virtual void eraseArc ( const Arc& arc );
+
+      /// indicates whether a given arc exists
+      /** @param arc the arc we test whether or not it belongs to the ArcGraphPart */
+      bool existsArc ( const Arc& arc ) const;
+
+      /// indicates whether a given arc exists
+      /** @param tail the tail of the arc we test the existence in the ArcGraphPart
+       * @param head the head of the arc we test the existence in the ArcGraphPart */
+      bool existsArc ( const NodeId tail, const NodeId head ) const;
+
+      /// indicates wether the ArcGraphPart contains any arc
+      bool emptyArcs() const;
+
+      /// removes all the arcs from the ArcGraphPart
+      void clearArcs();
+
+      /// indicates the number of arcs stored within the ArcGraphPart
+      /**
+       * @deprecated Please use sizeArcs
+       */
+      GUM_DEPRECATED ( Size nbrArcs() const );
+
+      /// indicates the number of arcs stored within the ArcGraphPart
+      Size sizeArcs() const;
+
+      /// returns the set of arcs stored within the ArcGraphPart
+      const ArcSet& arcs() const;
+
+      /// returns the set of nodes with arc ingoing to a given node
+      /** Note that the set of arcs returned may be empty if no arc within the
+       * ArcGraphPart is ingoing into the given node.
+       * @param id the node toward which the arcs returned are pointing */
+      const NodeSet& parents ( const NodeId id ) const;
+
+      /// returns the set of nodes with arc outgoing from a given node
+      /** Note that the set of arcs returned may be empty if no arc within the
+       * ArcGraphPart is outgoing from the given node.
+       * @param id the node which is the tail of the arcs returned */
+      const NodeSet& children ( const NodeId id ) const;
+
+      /// erase all the parents of a given node
+      /** @param id the node all the parents of which will be removed
+       * @warning although this method is not virtual, it calls method
+       * eraseArc( const Arc& arc ) and, as such, has a "virtual" behaviour. If
+       * you do not wish it to have this "virtual" behaviour, call instead
+       * method @ref unvirtualizedEraseParents
+       * @warning if no arc is a parent of id, nothing is done. In particular, no
+       * exception is thrown. */
+      void eraseParents ( const NodeId id );
+
+      /// same function as eraseParents but without any virtual call to an erase
+      /** @param id the node whose ingoing arcs will be removed */
+      void unvirtualizedEraseParents ( const NodeId id );
+
+      /// removes all the children of a given node
+      /** @param id the node all the children of which will be removed
+       * @warning although this method is not virtual, it calls method
+       * eraseArc( const Arc& arc ) and, as such, has a "virtual" behaviour. If
+       * you do not wish it to have this "virtual" behaviour, call instead
+       * method @ref unvirtualizedEraseChildren
+       * @warning if no arc is a parent of id, nothing is done. In particular, no
+       * exception is thrown. */
+      void eraseChildren ( const NodeId id );
+
+      /// same function as eraseChildren but without any virtual call to an erase
+      /** @param id the node whose outgoing arcs will be removed */
+      void unvirtualizedEraseChildren ( const NodeId id );
+
+      /// returns an iterator to parse the set of arcs contained in the ArcGraphPart
+      /// @deprecated please use arcs().begin()
+      GUM_DEPRECATED ( ArcIterator beginArcs() const );
+
+      /// returns the end iterator to parse the set of arcs
+      /// @deprecated please use arcs().end()
+      GUM_DEPRECATED ( const ArcIterator& endArcs() const );
+
+      /// to friendly display the content of the ArcGraphPart
+      const std::string toString() const;
+
+      /** @brief a method to create a hashMap of VAL from a set of arcs
+       * (using for every arc, say x, the VAL f(x))
+       * @param f a function assigning a VAL to any arc
+       * @param size an optional parameter enabling to fine-tune the returned
+       * Property. Roughly speaking, it is a good practice to have a size equal to
+       * half the number of arcs. If you do not specify this parameter, the method
+       * will assign it for you. */
+      template <typename VAL>
+      typename Property< VAL >::onArcs
+      arcsProperty ( VAL ( *f ) ( const Arc& ), Size size = 0 ) const;
+
+      /** @brief a method to create a hashMap of VAL from a set of arcs
+       * (using for every arc, say x, the VAL a)
+       * @param a the default value assigned to each arc in the returned Property
+       * @param size an optional parameter enabling to fine-tune the returned
+       * Property. Roughly speaking, it is a good practice to have a size equal to
+       * half the number of arcs. If you do not specify this parameter, the method
+       * will assign it for you. */
+      template <typename VAL>
+      typename Property< VAL >::onArcs
+      arcsProperty ( const VAL& a, Size size = 0 ) const;
+
+      /** @brief a method to create a list of VAL from a set of arcs
+       * (using for every arc, say x, the VAL f(x))
+       * @param f a function assigning a VAL to any arc */
+      template <typename VAL> List<VAL>
+      listMapArcs ( VAL ( *f ) ( const Arc& ) ) const;
+
+      /// returns a directed path from node1 to node2 belonging to the set of arcs
+      /** @param node1 the id from which the path begins
+       * @param node2 the id to which the path ends
+       * @throw NotFound exception is raised if no path can be found between the
+       * two nodes */
+      const std::vector<NodeId>
+      directedPath ( const NodeId node1, const NodeId node2 ) const;
+
+      /// returns an unoriented (directed) path from node1 to node2 in the arc set
+      /** @param node1 the id from which the path begins
+       * @param node2 the id to which the path ends
+       * @throw NotFound exception is raised if no path can be found between the
+       * two nodes */
+      const std::vector<NodeId>
+      directedUnorientedPath ( const NodeId node1, const NodeId node2 ) const;
+
+      /// @}
+
+
+    protected:
+      /// a (virtualized) function to remove a given set of arcs
+      /** @warning this function uses eraseArc, which is a virtual function. Hence
+       * the behaviour of this function is that of a virtual function */
+      void _eraseSetOfArcs ( const ArcSet& set );
+
+      /// similar to @ref _eraseSetOfArcs except that it is unvirtualized
+      /** @warning this function uses ArcGraphPart::eraseArc, hence, as compared
+       * with _eraseSetOfArcs, it removes the arcs without calling a virtual
+       * eraseArc */
+      void _unvirtualizedEraseSetOfArcs ( const ArcSet& set );
 
 
 
-    /** @brief when the ArcGraphPart contains no arc ingoing into a given node,
-     * this function adds an empty set entry to __parents[id]
-     * @param id the node whose __parents[id] is checked */
-    void __checkParents ( const NodeId id ) const;
+    private:
+      /// the set of all the arcs contained within the ArcGraphPart
+      Set<Arc> __arcs;
 
-    /** @brief when the ArcGraphPart contains no arc outgoing from a given node,
-     * this function adds an empty set entry to __children[id]
-     * @param id the node whose __children[id] is checked */
-    void __checkChildren ( const NodeId id ) const;
+      /// for each arc, the sets of its parents
+      mutable NodeProperty<NodeSet*> __parents;
+
+      /// for each arc, the set of its children
+      mutable NodeProperty<NodeSet*> __children;
+
+
+
+      /** @brief when the ArcGraphPart contains no arc ingoing into a given node,
+       * this function adds an empty set entry to __parents[id]
+       * @param id the node whose __parents[id] is checked */
+      void __checkParents ( const NodeId id ) const;
+
+      /** @brief when the ArcGraphPart contains no arc outgoing from a given node,
+       * this function adds an empty set entry to __children[id]
+       * @param id the node whose __children[id] is checked */
+      void __checkChildren ( const NodeId id ) const;
   };
 
 

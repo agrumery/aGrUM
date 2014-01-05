@@ -210,7 +210,7 @@ namespace gum {
         /// @{
 
         /// Iterator over the Instance of this System.
-        typedef typename NodeProperty<Instance<GUM_SCALAR>*>::iterator iterator;
+        typedef typename NodeProperty<Instance<GUM_SCALAR>*>::iterator_safe iterator;
 
         /// Returns an iterator over the instances in this system.
         iterator begin();
@@ -220,7 +220,7 @@ namespace gum {
         const iterator& end();
 
         /// Constant Iterator over the Instance of this System.
-        typedef typename NodeProperty<Instance<GUM_SCALAR>*>::const_iterator const_iterator;
+        typedef typename NodeProperty<Instance<GUM_SCALAR>*>::const_iterator_safe const_iterator;
 
         /// Returns a constant iterator over the instances in this system.
         const_iterator begin() const;

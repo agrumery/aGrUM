@@ -215,9 +215,9 @@ namespace gum_tests {
 
         t_out->endMultipleChanges();
 
-        for ( gum::HashTable<const gum::DiscreteVariable*,gum::Idx>::const_iterator
-              iter = inst_vars.begin(); iter != inst_vars.end(); ++iter ) {
-          partial_inst.chgVal( iter.key(), iter.val () );
+        for ( gum::HashTable<const gum::DiscreteVariable*,gum::Idx>::const_iterator_safe
+              iter = inst_vars.beginSafe (); iter != inst_vars.endSafe (); ++iter ) {
+          partial_inst.chgVal( iter.key(), *iter );
         }
 
         // fill the table
@@ -262,9 +262,9 @@ namespace gum_tests {
 
         t_out->endMultipleChanges();
 
-        for ( gum::HashTable<const gum::DiscreteVariable*,gum::Idx>::const_iterator
-              iter = inst_vars.begin(); iter != inst_vars.end(); ++iter ) {
-          partial_inst.chgVal( iter.key(), iter.val () );
+        for ( gum::HashTable<const gum::DiscreteVariable*,gum::Idx>::const_iterator_safe
+              iter = inst_vars.beginSafe(); iter != inst_vars.endSafe(); ++iter ) {
+          partial_inst.chgVal( iter.key(), *iter );
         }
 
         // fill the table
@@ -309,9 +309,9 @@ namespace gum_tests {
 
         t_out->endMultipleChanges();
 
-        for ( gum::HashTable<const gum::DiscreteVariable*,gum::Idx>::const_iterator
-              iter = inst_vars.begin(); iter != inst_vars.end(); ++iter ) {
-          partial_inst.chgVal( iter.key(), iter.val () );
+        for ( gum::HashTable<const gum::DiscreteVariable*,gum::Idx>::const_iterator_safe
+              iter = inst_vars.beginSafe(); iter != inst_vars.endSafe(); ++iter ) {
+          partial_inst.chgVal( iter.key(), *iter );
         }
 
         // fill the table
@@ -356,9 +356,9 @@ namespace gum_tests {
 
         t_out->endMultipleChanges();
 
-        for ( gum::HashTable<const gum::DiscreteVariable*,gum::Idx>::const_iterator
-              iter = inst_vars.begin(); iter != inst_vars.end(); ++iter ) {
-          partial_inst.chgVal( iter.key(), iter.val () );
+        for ( gum::HashTable<const gum::DiscreteVariable*,gum::Idx>::const_iterator_safe
+              iter = inst_vars.beginSafe(); iter != inst_vars.endSafe(); ++iter ) {
+          partial_inst.chgVal( iter.key(), *iter );
         }
 
         // fill the table

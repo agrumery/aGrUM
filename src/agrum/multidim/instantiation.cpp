@@ -196,8 +196,8 @@ namespace gum {
   }
 
   void Instantiation::setValsFrom( const HashTable<const DiscreteVariable*, const DiscreteVariable*>& map, const Instantiation& external ) {
-    for ( HashTable<const DiscreteVariable*, const DiscreteVariable*>::const_iterator iter = map.begin(); iter != map.end(); ++iter ) {
-      const DiscreteVariable& var=*( iter.val () );
+    for ( HashTable<const DiscreteVariable*, const DiscreteVariable*>::const_iterator_safe iter = map.beginSafe(); iter != map.endSafe(); ++iter ) {
+      const DiscreteVariable& var=**iter;
 
       try {
         Idx val=external.val( *( iter.key() ) );

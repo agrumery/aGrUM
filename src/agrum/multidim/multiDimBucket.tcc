@@ -57,9 +57,9 @@ namespace gum {
       delete __bucket;
     }
 
-    for ( HashTableIterator<const MultiDimContainer<GUM_SCALAR>*, Instantiation* > iter =
-            __multiDims.begin(); iter != __multiDims.end(); ++iter ) {
-      delete iter.val ();
+    for ( HashTableIteratorSafe<const MultiDimContainer<GUM_SCALAR>*, Instantiation* > iter =
+            __multiDims.beginSafe (); iter != __multiDims.endSafe (); ++iter ) {
+      delete *iter;
     }
   }
 
@@ -413,8 +413,8 @@ namespace gum {
       __allVarsInst.erase( **( __allVarsInst.variablesSequence().begin() ) );
     }
 
-    for ( HashTableIterator<const MultiDimContainer<GUM_SCALAR>*, Instantiation*> iter =
-            __multiDims.begin(); iter != __multiDims.end(); ++iter ) {
+    for ( HashTableIteratorSafe<const MultiDimContainer<GUM_SCALAR>*, Instantiation*> iter =
+            __multiDims.beginSafe(); iter != __multiDims.endSafe(); ++iter ) {
       for ( MultiDimInterface::iterator jter = iter.key()->begin();
             jter != iter.key()->end(); ++jter ) {
         __addVariable( *jter );
@@ -446,8 +446,8 @@ namespace gum {
   MultiDimBucket<GUM_SCALAR>::__eraseVariable( const DiscreteVariable* var ) {
     bool found = false;
 
-    for ( HashTableIterator<const MultiDimContainer<GUM_SCALAR>*, Instantiation*> iter =
-            __multiDims.begin(); iter != __multiDims.end(); ++iter ) {
+    for ( HashTableIteratorSafe<const MultiDimContainer<GUM_SCALAR>*, Instantiation*> iter =
+            __multiDims.beginSafe(); iter != __multiDims.endSafe(); ++iter ) {
       if ( iter.key()->contains( *var ) ) {
         found = true;
         break;
@@ -520,10 +520,10 @@ namespace gum {
             __allVarsInst.incOut( value ) ) {
         current = ( GUM_SCALAR ) 1;
 
-        for ( HashTableIterator<const MultiDimContainer<GUM_SCALAR>*, Instantiation*> iter =
-                __multiDims.begin(); iter != __multiDims.end(); ++iter ) {
-          ( iter.val() )->setVals( __allVarsInst );
-          current *= iter.key()->get( *( iter.val () ) );
+        for ( HashTableIteratorSafe<const MultiDimContainer<GUM_SCALAR>*, Instantiation*> iter =
+                __multiDims.beginSafe(); iter != __multiDims.endSafe(); ++iter ) {
+          ( *iter )->setVals( __allVarsInst );
+          current *= iter.key()->get( **iter );
         }
 
         sum += current;

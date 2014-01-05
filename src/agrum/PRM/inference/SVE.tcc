@@ -33,12 +33,12 @@ namespace gum {
     SVE<GUM_SCALAR>::~SVE() {
       GUM_DESTRUCTOR ( SVE );
 
-      for ( auto iter = __elim_orders.begin(); iter != __elim_orders.end(); ++iter ) {
-        delete iter.val();
+      for ( auto iter = __elim_orders.beginSafe(); iter != __elim_orders.endSafe(); ++iter ) {
+        delete *iter;
       }
 
-      for ( auto iter = __lifted_pools.begin(); iter != __lifted_pools.end(); ++iter ) {
-        delete iter.val();
+      for ( auto iter = __lifted_pools.beginSafe(); iter != __lifted_pools.endSafe(); ++iter ) {
+        delete *iter;
       }
 
       if ( __class_elim_order != 0 ) {
@@ -60,7 +60,7 @@ namespace gum {
       ignore.insert ( query );
 
       for ( auto iter = query->beginInvRef(); iter != query->endInvRef(); ++iter ) {
-        for ( auto child = ( *(iter.val()) ).begin(); child != ( *(iter.val()) ).end(); ++child ) {
+        for ( auto child = ( **iter ).begin(); child != ( **iter ).end(); ++child ) {
           if ( not ignore.exists ( child->first ) ) {
             __eliminateNodesDownward ( query, child->first, pool, trash, elim_list, ignore, eliminated );
           } else if ( not eliminated.exists ( child->first ) ) {
@@ -81,7 +81,7 @@ namespace gum {
       }
 
       for ( auto attr = query->begin(); attr != query->end(); ++attr ) {
-        pool.insert ( & ( const_cast<Potential<GUM_SCALAR>&> ( ( *(attr.val()) ).cpf() ) ) );
+        pool.insert ( & ( const_cast<Potential<GUM_SCALAR>&> ( ( **attr ).cpf() ) ) );
       }
 
       for ( size_t idx = 0; idx < t.eliminationOrder().size(); ++idx ) {
@@ -163,7 +163,7 @@ namespace gum {
       List<const Instance<GUM_SCALAR>*> my_list;
 
       for ( auto iter = i->beginInvRef(); iter != i->endInvRef(); ++iter ) {
-        for ( auto child = ( *(iter.val()) ).begin(); child != ( *(iter.val()) ).end(); ++child ) {
+        for ( auto child = ( **iter ).begin(); child != ( **iter ).end(); ++child ) {
           if ( not ignore.exists ( child->first ) ) {
             __eliminateNodesDownward ( i, child->first, pool, trash, my_list, ignore, eliminated );
           } else if ( not eliminated.exists ( child->first ) ) {
@@ -245,7 +245,7 @@ namespace gum {
       ignore.insert ( i );
 
       for ( auto iter = i->beginInvRef(); iter != i->endInvRef(); ++iter ) {
-        for ( auto child = ( *(iter.val()) ).begin(); child != ( *(iter.val()) ).end(); ++child ) {
+        for ( auto child = ( **iter ).begin(); child != ( **iter ).end(); ++child ) {
           if ( not ignore.exists ( child->first ) ) {
             __eliminateNodesDownward ( i, child->first, pool, trash, elim_list, ignore, eliminated );
           }
@@ -287,7 +287,7 @@ namespace gum {
       bool inner = false;
       const auto& evs = this->evidence ( i );
 
-      for ( auto e = evs.begin(); e != evs.end(); ++e ) {
+      for ( auto e = evs.beginSafe(); e != evs.endSafe(); ++e ) {
         inner = i->type().isInputNode ( i->get ( e.key() ) ) or i->type().isInnerNode ( i->get ( e.key() ) );
 
         if ( inner ) { break; }
@@ -300,7 +300,7 @@ namespace gum {
 
         // We need a local to not eliminate queried inner nodes of the same class
         for ( auto attr = i->begin(); attr != i->end(); ++attr ) {
-          tmp_pool.insert ( & ( ( *(attr.val()) ).cpf() ) );
+          tmp_pool.insert ( & ( ( **attr ).cpf() ) );
         }
 
         InstanceBayesNet<GUM_SCALAR> bn ( *i );
@@ -507,8 +507,8 @@ namespace gum {
     SVE<GUM_SCALAR>::__insertEvidence ( const Instance<GUM_SCALAR>* i, BucketSet& pool ) {
       const auto& evs = this->evidence ( i );
 
-      for ( auto iter = evs.begin(); iter != evs.end(); ++iter ) {
-        pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( iter.val() ) );
+      for ( auto iter = evs.beginSafe(); iter != evs.endSafe(); ++iter ) {
+        pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( *iter ) );
       }
     }
 

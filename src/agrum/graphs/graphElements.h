@@ -132,7 +132,7 @@
 
   std::cout<<is_id_odd<<std::cout<<std::endl;
 
-  for ( gum::NodeProperty<bool>::iterator i=is_id_odd.begin();
+  for ( gum::NodeProperty<bool>::iterator_safe i=is_id_odd.begin();
         i!=is_id_odd.end();
         ++i ) {
     std::cout<<i.key()<<" : "<<*i<<std::endl;
@@ -154,7 +154,7 @@
 
   std::cout<<is_id_odd<<std::endl<<std::endl;
 
-  for (gum::NodeProperty<bool>::iterator i=is_id_odd.begin();
+  for (gum::NodeProperty<bool>::iterator_safe i=is_id_odd.begin();
         i!=is_id_odd.end();
         ++i ) {
     std::cout<<i.key()<<" : "<<*i<<std::endl;

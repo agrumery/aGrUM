@@ -257,10 +257,10 @@ namespace gum {
       Idx __nextActionId;
 
       /// Iterator on actions
-      HashTableConstIterator< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* >* > __actionIter;
+      HashTableConstIteratorSafe< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* >* > __actionIter;
 
 //       /// Iterator on variable
-//       HashTableConstIterator< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* > __varIter;
+//       HashTableConstIteratorSafe< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* > __varIter;
   };
 } /* namespace gum */
 

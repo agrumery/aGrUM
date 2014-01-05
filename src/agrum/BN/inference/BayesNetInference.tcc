@@ -49,9 +49,9 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   void BayesNetInference<GUM_SCALAR>::_invalidateMarginals() {
-    for ( typename Property< Potential<GUM_SCALAR> * >::onNodes::iterator it =
-            _marginals.begin(); it != _marginals.end(); ++it ) {
-      if ( it.val () ) delete( it.val () );
+    for ( typename Property< Potential<GUM_SCALAR> * >::onNodes::iterator_safe it =
+            _marginals.beginSafe(); it != _marginals.endSafe(); ++it ) {
+      if ( *it )delete( *it );
     }
 
     _marginals.clear();

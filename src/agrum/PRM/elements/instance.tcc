@@ -69,14 +69,14 @@ namespace gum {
     Instance<GUM_SCALAR>::~Instance() {
       GUM_DESTRUCTOR ( Instance );
 
-      for ( auto iter = __nodeIdMap.begin(); iter != __nodeIdMap.end(); ++iter )
-        delete iter.val ();
+      for ( auto iter = __nodeIdMap.beginSafe(); iter != __nodeIdMap.endSafe(); ++iter )
+        delete *iter;
 
-      for ( auto iter = __referenceMap.begin(); iter != __referenceMap.end(); ++iter )
-        delete iter.val ();
+      for ( auto iter = __referenceMap.beginSafe(); iter != __referenceMap.endSafe(); ++iter )
+        delete *iter;
 
-      for ( auto iter = __referingAttr.begin(); iter != __referingAttr.end(); ++iter )
-        delete iter.val ();
+      for ( auto iter = __referingAttr.beginSafe(); iter != __referingAttr.endSafe(); ++iter )
+        delete *iter;
 
       if ( __params ) delete __params;
     }
@@ -430,19 +430,19 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     typename Instance<GUM_SCALAR>::iterator
-    Instance<GUM_SCALAR>::begin() { return __nodeIdMap.begin(); }
+    Instance<GUM_SCALAR>::begin() { return __nodeIdMap.beginSafe(); }
 
     template<typename GUM_SCALAR> INLINE
     const typename Instance<GUM_SCALAR>::iterator&
-    Instance<GUM_SCALAR>::end() { return __nodeIdMap.end(); }
+    Instance<GUM_SCALAR>::end() { return __nodeIdMap.endSafe(); }
 
     template<typename GUM_SCALAR> INLINE
     typename Instance<GUM_SCALAR>::const_iterator
-    Instance<GUM_SCALAR>::begin() const { return __nodeIdMap.begin(); }
+    Instance<GUM_SCALAR>::begin() const { return __nodeIdMap.beginSafe(); }
 
     template<typename GUM_SCALAR> INLINE
     const typename Instance<GUM_SCALAR>::const_iterator&
-    Instance<GUM_SCALAR>::end() const { return __nodeIdMap.end(); }
+    Instance<GUM_SCALAR>::end() const { return __nodeIdMap.endSafe(); }
 
     template<typename GUM_SCALAR> INLINE
     typename Instance<GUM_SCALAR>::RefIterator
@@ -589,25 +589,25 @@ namespace gum {
     template<typename GUM_SCALAR> INLINE
     typename Instance<GUM_SCALAR>::InvRefIterator
     Instance<GUM_SCALAR>::beginInvRef() {
-      return __referingAttr.begin();
+      return __referingAttr.beginSafe();
     }
 
     template<typename GUM_SCALAR> INLINE
     const typename Instance<GUM_SCALAR>::InvRefIterator&
     Instance<GUM_SCALAR>::endInvRef() {
-      return __referingAttr.end();
+      return __referingAttr.endSafe();
     }
 
     template<typename GUM_SCALAR> INLINE
     typename Instance<GUM_SCALAR>::InvRefConstIterator
     Instance<GUM_SCALAR>::beginInvRef() const {
-      return __referingAttr.begin();
+      return __referingAttr.beginSafe();
     }
 
     template<typename GUM_SCALAR> INLINE
     const typename Instance<GUM_SCALAR>::InvRefConstIterator&
     Instance<GUM_SCALAR>::endInvRef() const {
-      return __referingAttr.end();
+      return __referingAttr.endSafe();
     }
 
     template<typename GUM_SCALAR> INLINE

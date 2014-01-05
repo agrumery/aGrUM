@@ -72,181 +72,181 @@ namespace gum {
    */
 
   class EdgeGraphPart {
-  public:
-    typedef EdgeSetIterator EdgeIterator;
+    public:
+      typedef EdgeSetIterator EdgeIterator;
 
-    Signaler2<NodeId, NodeId> onEdgeAdded;
-    Signaler2<NodeId, NodeId> onEdgeDeleted;
+      Signaler2<NodeId, NodeId> onEdgeAdded;
+      Signaler2<NodeId, NodeId> onEdgeDeleted;
 
-    // ############################################################################
-    /// @name Constructors / Destructors
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      /// @name Constructors / Destructors
+      // ############################################################################
+      /// @{
 
-    /// default constructor
-    /** @param edges_size the size of the hash table used to store all the edges
-     * @param edges_resize_policy the resizing policy of this hash table */
-    explicit EdgeGraphPart( Size edges_size = HashTableConst::default_size,
-                            bool edges_resize_policy = true );
+      /// default constructor
+      /** @param edges_size the size of the hash table used to store all the edges
+       * @param edges_resize_policy the resizing policy of this hash table */
+      explicit EdgeGraphPart( Size edges_size = GUM_HASHTABLE_DEFAULT_SIZE,
+                              bool edges_resize_policy = true );
 
-    /// copy constructor
-    /** @param s the EdgeGraphPart to copy */
-    EdgeGraphPart( const EdgeGraphPart& s );
+      /// copy constructor
+      /** @param s the EdgeGraphPart to copy */
+      EdgeGraphPart( const EdgeGraphPart& s );
 
-    /// destructor
-    virtual ~EdgeGraphPart();
+      /// destructor
+      virtual ~EdgeGraphPart();
 
-    /// @}
-
-
-
-    // ############################################################################
-    /// @name Operators
-    // ############################################################################
-    /// @{
-
-    /// copy operator
-    /** @param s the EdgeGraphPart to copy */
-    EdgeGraphPart& operator=( const EdgeGraphPart& s );
-
-    /// tests whether two EdgeGraphParts contain the same edges
-    /** @param p the EdgeGraphPart that we compare with this */
-    bool operator==( const EdgeGraphPart& p ) const;
-
-    ///  tests whether two EdgeGraphParts contain different edges
-    /** @param p the EdgeGraphPart that we compare with this */
-    bool operator!=( const EdgeGraphPart& p ) const;
-
-    /// @}
+      /// @}
 
 
 
-    // ############################################################################
-    /// @name Accessors/Modifiers
-    // ############################################################################
-    /// @{
+      // ############################################################################
+      /// @name Operators
+      // ############################################################################
+      /// @{
 
-    /// insert a new edge into the EdgeGraphPart
-    /** @param n1 the id of one extremity of the new edge to be inserted
-     * @param n2 the id of the other extremity of the new edge to be inserted
-     * @warning if the edge already exists, nothing is done. In particular, no
-     * exception is raised. */
-    virtual void insertEdge( const NodeId n1, const NodeId n2 );
+      /// copy operator
+      /** @param s the EdgeGraphPart to copy */
+      EdgeGraphPart& operator=( const EdgeGraphPart& s );
 
-    /// removes an edge from the EdgeGraphPart
-    /** @param edge the edge to be removed
-     * @warning if the edge does not exist, nothing is done. In particular, no
-     * exception is thrown. However, the signal onEdgeDeleted is fired
-     * only if a node is effectively removed. */
-    virtual void eraseEdge( const Edge& edge );
+      /// tests whether two EdgeGraphParts contain the same edges
+      /** @param p the EdgeGraphPart that we compare with this */
+      bool operator==( const EdgeGraphPart& p ) const;
 
-    /// indicates whether a given edge exists
-    /** @param edge the edge we test whether or not it belongs to the
-     * EdgeGraphPart */
-    bool existsEdge( const Edge& edge ) const;
+      ///  tests whether two EdgeGraphParts contain different edges
+      /** @param p the EdgeGraphPart that we compare with this */
+      bool operator!=( const EdgeGraphPart& p ) const;
 
-    /// indicates whether a given edge exists
-    /** @param n1 the id of one extremity of the edge we test the existence in
-     * the EdgeGraphPart
-     * @param n2 the id of the other extremity of the edge we test the existence
-     * in the EdgeGraphPart */
-    bool existsEdge( const NodeId n1, const NodeId n2 ) const;
-
-    /// indicates wether the EdgeGraphPart contains any edge
-    bool emptyEdges() const;
-
-    /// removes all the edges from the EdgeGraphPart
-    virtual void clearEdges();
-
-    /// indicates the number of edges stored within the EdgeGraphPart
-    Size sizeEdges() const;
-
-    /// returns the set of edges stored within the EdgeGraphPart
-    const EdgeSet& edges() const;
-
-    /// returns the set of edges adjacent to a given node
-    /** Note that the set of edges returned may be empty if no edge within the
-     * EdgeGraphPart is adjacent the given node.
-     * @param id the node to which the edges are adjacent */
-    const NodeSet& neighbours( const NodeId id ) const;
-
-    /// erase all the edges adjacent to a given node
-    /** @param id the node the adjacent edges of which will be removed
-     * @warning if no edge is adjacent to id, nothing is done. In particular, no
-     * exception is thrown.
-     * @warning although this method is not virtual, it calls method
-     * eraseEdge( const Edge& edge ) and, as such, has a "virtual" behaviour */
-    void eraseNeighbours( const NodeId id );
-
-    /// same function as eraseNeighbours but without any virtual call to an erase
-    /** @param id the node whose ingoing arcs will be removed */
-    void unvirtualizedEraseNeighbours( const NodeId id );
-
-    /// returns an iterator to parse the set of edges of the EdgeGraphPart
-    /// @deprecated Please use edges().begin() or better :
-    /// @code for(const auto& edge : graph.edges()) @endcode
-    GUM_DEPRECATED(const EdgeGraphPart::EdgeIterator beginEdges() const);
-
-    /// returns the end iterator to parse the set of edges
-    /// @deprecated Please use edges().end() or better :
-    /// @code for(const auto& edge : graph.edges()) @endcode
-    GUM_DEPRECATED(const EdgeGraphPart::EdgeIterator& endEdges() const);
-
-    /// to friendly display the content of the EdgeGraphPart
-    const std::string toString() const;
-
-    /** @brief a method to create a hashMap of VAL from a set of edges
-     * (using for every edge, say x, the VAL f(x))
-     * @param f a function assigning a VAL to any edge
-     * @param size an optional parameter enabling to fine-tune the returned
-     * Property. Roughly speaking, it is a good practice to have a size equal to
-     * half the number of edges. If you do not specify this parameter, the method
-     * will assign it for you. */
-    template <typename VAL>
-    typename Property< VAL >::onEdges
-    edgesProperty( VAL( *f )( const Edge& ), Size size = 0 ) const;
-
-    /** @brief a method to create a hashMap of VAL from a set of edges
-     * (using for every edge, say x, the VAL a)
-     * @param a the default value assigned to each edge in the returned Property
-     * @param size an optional parameter enabling to fine-tune the returned
-     * Property. Roughly speaking, it is a good practice to have a size equal to
-     * half the number of edges. If you do not specify this parameter, the method
-     * will assign it for you. */
-    template <typename VAL>
-    typename Property< VAL >::onEdges
-    edgesProperty( const VAL& a, Size size = 0 ) const;
-
-    /** @brief a method to create a list of VAL from a set of edges
-     * (using for every edge, say x, the VAL f(x))
-     * @param f a function assigning a VAL to any edge */
-    template <typename VAL> List<VAL>
-    listMapEdges( VAL( *f )( const Edge& ) ) const;
-
-    /// returns a possible path from node1 to node2 in the edge set
-    /** @param node1 the id from which the path begins
-     * @param node2 the id to which the path ends
-     * @throw NotFound exception is raised if no path can be found between the
-     * two nodes */
-    const std::vector<NodeId>
-    undirectedPath( const NodeId node1, const NodeId node2 ) const;
-
-    /// @}
+      /// @}
 
 
 
-  private:
-    /// the set of all the edges contained within the EdgeGraphPart
-    EdgeSet __edges;
+      // ############################################################################
+      /// @name Accessors/Modifiers
+      // ############################################################################
+      /// @{
 
-    /// for each node, the set of its adjacent edges
-    mutable NodeProperty<NodeSet*> __neighbours;
+      /// insert a new edge into the EdgeGraphPart
+      /** @param n1 the id of one extremity of the new edge to be inserted
+       * @param n2 the id of the other extremity of the new edge to be inserted
+       * @warning if the edge already exists, nothing is done. In particular, no
+       * exception is raised. */
+      virtual void insertEdge( const NodeId n1, const NodeId n2 );
+
+      /// removes an edge from the EdgeGraphPart
+      /** @param edge the edge to be removed
+       * @warning if the edge does not exist, nothing is done. In particular, no
+       * exception is thrown. However, the signal onEdgeDeleted is fired
+       * only if a node is effectively removed. */
+      virtual void eraseEdge( const Edge& edge );
+
+      /// indicates whether a given edge exists
+      /** @param edge the edge we test whether or not it belongs to the
+       * EdgeGraphPart */
+      bool existsEdge( const Edge& edge ) const;
+
+      /// indicates whether a given edge exists
+      /** @param n1 the id of one extremity of the edge we test the existence in
+       * the EdgeGraphPart
+       * @param n2 the id of the other extremity of the edge we test the existence
+       * in the EdgeGraphPart */
+      bool existsEdge( const NodeId n1, const NodeId n2 ) const;
+
+      /// indicates wether the EdgeGraphPart contains any edge
+      bool emptyEdges() const;
+
+      /// removes all the edges from the EdgeGraphPart
+      virtual void clearEdges();
+
+      /// indicates the number of edges stored within the EdgeGraphPart
+      Size sizeEdges() const;
+
+      /// returns the set of edges stored within the EdgeGraphPart
+      const EdgeSet& edges() const;
+
+      /// returns the set of edges adjacent to a given node
+      /** Note that the set of edges returned may be empty if no edge within the
+       * EdgeGraphPart is adjacent the given node.
+       * @param id the node to which the edges are adjacent */
+      const NodeSet& neighbours( const NodeId id ) const;
+
+      /// erase all the edges adjacent to a given node
+      /** @param id the node the adjacent edges of which will be removed
+       * @warning if no edge is adjacent to id, nothing is done. In particular, no
+       * exception is thrown.
+       * @warning although this method is not virtual, it calls method
+       * eraseEdge( const Edge& edge ) and, as such, has a "virtual" behaviour */
+      void eraseNeighbours( const NodeId id );
+
+      /// same function as eraseNeighbours but without any virtual call to an erase
+      /** @param id the node whose ingoing arcs will be removed */
+      void unvirtualizedEraseNeighbours( const NodeId id );
+
+      /// returns an iterator to parse the set of edges of the EdgeGraphPart
+      /// @deprecated Please use edges().begin() or better :
+      /// @code for(const auto& edge : graph.edges()) @endcode
+      GUM_DEPRECATED(const EdgeGraphPart::EdgeIterator beginEdges() const);
+
+      /// returns the end iterator to parse the set of edges
+      /// @deprecated Please use edges().end() or better :
+      /// @code for(const auto& edge : graph.edges()) @endcode
+      GUM_DEPRECATED(const EdgeGraphPart::EdgeIterator& endEdges() const);
+
+      /// to friendly display the content of the EdgeGraphPart
+      const std::string toString() const;
+
+      /** @brief a method to create a hashMap of VAL from a set of edges
+       * (using for every edge, say x, the VAL f(x))
+       * @param f a function assigning a VAL to any edge
+       * @param size an optional parameter enabling to fine-tune the returned
+       * Property. Roughly speaking, it is a good practice to have a size equal to
+       * half the number of edges. If you do not specify this parameter, the method
+       * will assign it for you. */
+      template <typename VAL>
+      typename Property< VAL >::onEdges
+      edgesProperty( VAL( *f )( const Edge& ), Size size = 0 ) const;
+
+      /** @brief a method to create a hashMap of VAL from a set of edges
+       * (using for every edge, say x, the VAL a)
+       * @param a the default value assigned to each edge in the returned Property
+       * @param size an optional parameter enabling to fine-tune the returned
+       * Property. Roughly speaking, it is a good practice to have a size equal to
+       * half the number of edges. If you do not specify this parameter, the method
+       * will assign it for you. */
+      template <typename VAL>
+      typename Property< VAL >::onEdges
+      edgesProperty( const VAL& a, Size size = 0 ) const;
+
+      /** @brief a method to create a list of VAL from a set of edges
+       * (using for every edge, say x, the VAL f(x))
+       * @param f a function assigning a VAL to any edge */
+      template <typename VAL> List<VAL>
+      listMapEdges( VAL( *f )( const Edge& ) ) const;
+
+      /// returns a possible path from node1 to node2 in the edge set
+      /** @param node1 the id from which the path begins
+       * @param node2 the id to which the path ends
+       * @throw NotFound exception is raised if no path can be found between the
+       * two nodes */
+      const std::vector<NodeId>
+      undirectedPath( const NodeId node1, const NodeId node2 ) const;
+
+      /// @}
 
 
-    /** @brief when the EdgeGraphPart contains no edge adjacent to a given node,
-     * this function adds an empty set entry to __neighbours[id]
-     * @param id the node whose __neighbours[id] is checked */
-    void __checkNeighbours( const NodeId id )const;
+
+    private:
+      /// the set of all the edges contained within the EdgeGraphPart
+      EdgeSet __edges;
+
+      /// for each node, the set of its adjacent edges
+      mutable NodeProperty<NodeSet*> __neighbours;
+
+
+      /** @brief when the EdgeGraphPart contains no edge adjacent to a given node,
+       * this function adds an empty set entry to __neighbours[id]
+       * @param id the node whose __neighbours[id] is checked */
+      void __checkNeighbours( const NodeId id )const;
   };
 
 

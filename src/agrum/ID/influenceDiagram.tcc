@@ -108,7 +108,7 @@ namespace gum {
     // Copying potentials
     Potential<GUM_SCALAR>* potentialCpy = nullptr;
 
-    for ( typename Property<Potential<GUM_SCALAR>*>::onNodes::const_iterator potentialIter = IDsource.__potentialMap.begin(); potentialIter != IDsource.__potentialMap.end(); ++potentialIter ) {
+    for ( typename Property<Potential<GUM_SCALAR>*>::onNodes::const_iterator_safe potentialIter = IDsource.__potentialMap.beginSafe(); potentialIter != IDsource.__potentialMap.endSafe(); ++potentialIter ) {
       // Instanciation of the node's CPT
       potentialCpy = new Potential<GUM_SCALAR>;
       ( *potentialCpy ) << variable ( potentialIter.key() );
@@ -120,7 +120,7 @@ namespace gum {
         ( *potentialCpy ) << variable ( *arcIter );
 
       // Filling up of the table
-      Instantiation srcInst ( *(potentialIter.val()) );
+      Instantiation srcInst ( **potentialIter );
 
       Instantiation cpyInst ( *potentialCpy );
 
@@ -130,7 +130,7 @@ namespace gum {
           srcInst.chgVal ( IDsource.variable ( id ), cpyInst.val ( i ) );
         }
 
-        potentialCpy->set ( cpyInst, ( *(potentialIter.val()) ) [srcInst] );
+        potentialCpy->set ( cpyInst, ( **potentialIter ) [srcInst] );
       }
 
       // Adding cpt to cpt map
@@ -140,7 +140,7 @@ namespace gum {
     // Copying Utilities
     UtilityTable<GUM_SCALAR>* utilityCpy;
 
-    for ( typename Property<UtilityTable<GUM_SCALAR>*>::onNodes::const_iterator utilityIter = IDsource.__utilityMap.begin(); utilityIter != IDsource.__utilityMap.end(); ++utilityIter ) {
+    for ( typename Property<UtilityTable<GUM_SCALAR>*>::onNodes::const_iterator_safe utilityIter = IDsource.__utilityMap.beginSafe(); utilityIter != IDsource.__utilityMap.endSafe(); ++utilityIter ) {
       // Instanciation of the node's CPT
       utilityCpy = new UtilityTable<GUM_SCALAR>;
       ( *utilityCpy ) << variable ( utilityIter.key() );
@@ -152,7 +152,7 @@ namespace gum {
         ( *utilityCpy ) << variable ( *arcIter );
 
       // Filling up of the table
-      Instantiation srcInst ( *(utilityIter.val()) );
+      Instantiation srcInst ( **utilityIter );
 
       Instantiation cpyInst ( *utilityCpy );
 
@@ -162,7 +162,7 @@ namespace gum {
           srcInst.chgVal ( IDsource.variable ( id ), cpyInst.val ( i ) );
         }
 
-        utilityCpy->set ( cpyInst, ( *(utilityIter.val()) ) [srcInst] );
+        utilityCpy->set ( cpyInst, ( **utilityIter ) [srcInst] );
       }
 
       // Adding cpt to cpt map

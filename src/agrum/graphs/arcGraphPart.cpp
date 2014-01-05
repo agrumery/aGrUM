@@ -49,9 +49,9 @@ namespace gum {
     const NodeProperty<NodeSet*>& pars = s.__parents;
     __parents.resize( pars.capacity() );
 
-    for ( NodeProperty<NodeSet*>::const_iterator iter = pars.begin();
-          iter != pars.end(); ++iter ) {
-      NodeSet* newpar = new NodeSet( *( iter.val () ) );
+    for ( NodeProperty<NodeSet*>::const_iterator_safe iter = pars.beginSafe();
+          iter != pars.endSafe(); ++iter ) {
+      NodeSet* newpar = new NodeSet( **iter );
       __parents.insert( iter.key(), newpar );
     }
 
@@ -59,9 +59,9 @@ namespace gum {
     const NodeProperty<NodeSet*>& children = s.__children;
     __children.resize( children.capacity() );
 
-    for ( NodeProperty<NodeSet*>::const_iterator iter = children.begin();
-          iter != children.end(); ++iter ) {
-      NodeSet* newchildren = new NodeSet( *( iter.val () ) );
+    for ( NodeProperty<NodeSet*>::const_iterator_safe iter = children.beginSafe();
+          iter != children.endSafe(); ++iter ) {
+      NodeSet* newchildren = new NodeSet( **iter );
       __children.insert( iter.key(), newchildren );
     }
 
@@ -82,16 +82,16 @@ namespace gum {
 
 
   void ArcGraphPart::clearArcs() {
-    for ( NodeProperty<NodeSet*>::const_iterator iter = __parents.begin();
-          iter != __parents.end(); ++iter ) {
-      delete iter.val ();
+    for ( NodeProperty<NodeSet*>::const_iterator_safe iter = __parents.beginSafe();
+          iter != __parents.endSafe(); ++iter ) {
+      delete *iter;
     }
 
     __parents.clear();
 
-    for ( NodeProperty<NodeSet*>::const_iterator iter = __children.begin();
-          iter != __children.end(); ++iter ) {
-      delete iter.val ();
+    for ( NodeProperty<NodeSet*>::const_iterator_safe iter = __children.beginSafe();
+          iter != __children.endSafe(); ++iter ) {
+      delete *iter;
     }
 
     __children.clear();
@@ -120,9 +120,9 @@ namespace gum {
       const NodeProperty<NodeSet*>& pars = s.__parents;
       __parents.resize( pars.capacity() );
 
-      for ( NodeProperty<NodeSet*>::const_iterator iter = pars.begin();
-            iter != pars.end(); ++iter ) {
-        NodeSet* newpar = new NodeSet( *( iter.val () ) );
+      for ( NodeProperty<NodeSet*>::const_iterator_safe iter = pars.beginSafe();
+            iter != pars.endSafe(); ++iter ) {
+        NodeSet* newpar = new NodeSet( **iter );
         __parents.insert( iter.key(), newpar );
       }
 
@@ -130,9 +130,9 @@ namespace gum {
       const NodeProperty<NodeSet*>& children = s.__children;
       __children.resize( children.capacity() );
 
-      for ( NodeProperty<NodeSet*>::const_iterator iter = children.begin();
-            iter != children.end(); ++iter ) {
-        NodeSet* newchildren = new NodeSet( *( iter.val () ) );
+      for ( NodeProperty<NodeSet*>::const_iterator_safe iter = children.beginSafe();
+            iter != children.endSafe(); ++iter ) {
+        NodeSet* newchildren = new NodeSet( **iter );
         __children.insert( iter.key(), newchildren );
       }
 

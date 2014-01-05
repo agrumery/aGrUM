@@ -57,8 +57,8 @@ namespace gum {
     Interface<GUM_SCALAR>::~Interface() {
       GUM_DESTRUCTOR ( Interface );
 
-      for ( auto iter = __nodeIdMap.begin(); iter != __nodeIdMap.end(); ++iter ) {
-        delete iter.val ();
+      for ( auto iter = __nodeIdMap.beginSafe(); iter != __nodeIdMap.endSafe(); ++iter ) {
+        delete *iter;
       }
     }
 
@@ -298,25 +298,25 @@ namespace gum {
     template<typename GUM_SCALAR> INLINE
     typename Interface<GUM_SCALAR>::ClassEltIterator
     Interface<GUM_SCALAR>::begin() {
-      return __nodeIdMap.begin();
+      return __nodeIdMap.beginSafe();
     }
 
     template<typename GUM_SCALAR> INLINE
     const typename Interface<GUM_SCALAR>::ClassEltIterator&
     Interface<GUM_SCALAR>::end() {
-      return __nodeIdMap.end();
+      return __nodeIdMap.endSafe();
     }
 
     template<typename GUM_SCALAR> INLINE
     typename Interface<GUM_SCALAR>::const_ClassEltIterator
     Interface<GUM_SCALAR>::begin() const {
-      return __nodeIdMap.begin();
+      return __nodeIdMap.beginSafe();
     }
 
     template<typename GUM_SCALAR> INLINE
     const typename Interface<GUM_SCALAR>::const_ClassEltIterator&
     Interface<GUM_SCALAR>::end() const {
-      return __nodeIdMap.end();
+      return __nodeIdMap.endSafe();
     }
 
     template<typename GUM_SCALAR> INLINE

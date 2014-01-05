@@ -80,10 +80,10 @@ namespace gum {
   BayesNet<GUM_SCALAR>::~BayesNet() {
     GUM_DESTRUCTOR ( BayesNet );
 
-    for ( HashTableConstIterator<NodeId, Potential<GUM_SCALAR>*> iter = __probaMap.begin();
-          iter != __probaMap.end();
+    for ( HashTableConstIteratorSafe<NodeId, Potential<GUM_SCALAR>*> iter = __probaMap.beginSafe();
+          iter != __probaMap.endSafe();
           ++iter ) {
-      delete iter.val ();
+      delete *iter;
     }
   }
 
@@ -490,8 +490,8 @@ namespace gum {
   template<typename GUM_SCALAR>
   void BayesNet<GUM_SCALAR>::__clearPotentials() {
     // Removing previous potentials
-    for ( HashTableConstIterator< NodeId, Potential<GUM_SCALAR>* > iter = __probaMap.begin(); iter != __probaMap.end(); ++iter ) {
-      delete iter.val ();
+    for ( HashTableConstIteratorSafe< NodeId, Potential<GUM_SCALAR>* > iter = __probaMap.beginSafe(); iter != __probaMap.endSafe(); ++iter ) {
+      delete *iter;
     }
 
     __probaMap.clear();
@@ -502,19 +502,19 @@ namespace gum {
   template<typename GUM_SCALAR>
   void BayesNet<GUM_SCALAR>::__copyPotentials ( const BayesNet<GUM_SCALAR>& source ) {
     // Copying potentials
-    typedef HashTableConstIterator<NodeId, Potential<GUM_SCALAR>*> PotIterator;
+    typedef HashTableConstIteratorSafe<NodeId, Potential<GUM_SCALAR>*> PotIterator;
     Potential<GUM_SCALAR>* copy_array = 0;
 
-    for ( PotIterator srcIter = source.__probaMap.begin(); srcIter != source.__probaMap.end(); ++srcIter ) {
+    for ( PotIterator srcIter = source.__probaMap.beginSafe(); srcIter != source.__probaMap.endSafe(); ++srcIter ) {
       // First we build the node's CPT
       copy_array = new Potential<GUM_SCALAR>();
 
-      for ( gum::Idx i = 0; i < ( srcIter.val () )->nbrDim(); i++ ) {
-        ( *copy_array ) << variableFromName ( ( srcIter.val () )->variable ( i ).name() );
+      for ( gum::Idx i = 0; i < ( *srcIter )->nbrDim(); i++ ) {
+        ( *copy_array ) << variableFromName ( ( *srcIter )->variable ( i ).name() );
       }
 
 
-      copy_array->copyFrom ( *( srcIter.val () ) );
+      copy_array->copyFrom ( **srcIter );
 
       // We add the CPT to the CPT's hashmap
       __probaMap.insert ( srcIter.key(), copy_array );

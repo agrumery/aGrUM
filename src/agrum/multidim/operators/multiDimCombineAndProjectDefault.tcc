@@ -165,16 +165,16 @@ namespace gum {
     // initialize properly product_size
 
     for ( typename HashTable< const DiscreteVariable*,
-          HashTable<const DiscreteVariable*, unsigned int> >::const_iterator
-          iter = tables_vars_per_var.begin();
-          iter != tables_vars_per_var.end(); ++iter ) {
+          HashTable<const DiscreteVariable*, unsigned int> >::const_iterator_safe
+          iter = tables_vars_per_var.beginSafe ();
+          iter != tables_vars_per_var.endSafe (); ++iter ) {
       float size = 1.0f;
-      const HashTable<const DiscreteVariable*, unsigned int>& vars = iter.val ();
+      const HashTable<const DiscreteVariable*, unsigned int>& vars = *iter;
 
       if ( vars.size() ) {
         for ( typename HashTable<const DiscreteVariable*,
-              unsigned int>::const_iterator iter2 = vars.begin();
-              iter2 != vars.end(); ++iter2 ) {
+              unsigned int>::const_iterator_safe iter2 = vars.beginSafe();
+              iter2 != vars.endSafe(); ++iter2 ) {
           size *= iter2.key()->domainSize();
         }
 
@@ -466,16 +466,16 @@ namespace gum {
     // initialize properly product_size
 
     for ( typename HashTable< const DiscreteVariable*,
-          HashTable<const DiscreteVariable*, unsigned int> >::const_iterator
-          iter = tables_vars_per_var.begin();
-          iter != tables_vars_per_var.end(); ++iter ) {
+          HashTable<const DiscreteVariable*, unsigned int> >::const_iterator_safe
+          iter = tables_vars_per_var.beginSafe ();
+          iter != tables_vars_per_var.endSafe (); ++iter ) {
       float size = 1.0f;
-      const HashTable<const DiscreteVariable*, unsigned int>& vars = iter.val ();
+      const HashTable<const DiscreteVariable*, unsigned int>& vars = *iter;
 
       if ( vars.size() ) {
         for ( typename HashTable<const DiscreteVariable*,
-              unsigned int>::const_iterator iter2 = vars.begin();
-              iter2 != vars.end(); ++iter2 ) {
+              unsigned int>::const_iterator_safe iter2 = vars.beginSafe ();
+              iter2 != vars.endSafe (); ++iter2 ) {
           size *= iter2.key()->domainSize();
         }
 
@@ -755,16 +755,16 @@ namespace gum {
     // initialize properly product_size
 
     for ( typename HashTable< const DiscreteVariable*,
-          HashTable<const DiscreteVariable*, unsigned int> >::const_iterator
-          iter = tables_vars_per_var.begin();
-          iter != tables_vars_per_var.end(); ++iter ) {
+          HashTable<const DiscreteVariable*, unsigned int> >::const_iterator_safe
+          iter = tables_vars_per_var.beginSafe ();
+          iter != tables_vars_per_var.endSafe (); ++iter ) {
       float size = 1.0f;
-      const HashTable<const DiscreteVariable*, unsigned int>& vars = iter.val ();
+      const HashTable<const DiscreteVariable*, unsigned int>& vars = *iter;
 
       if ( vars.size() ) {
         for ( typename HashTable<const DiscreteVariable*,
-              unsigned int>::const_iterator iter2 = vars.begin();
-              iter2 != vars.end(); ++iter2 ) {
+              unsigned int>::const_iterator_safe iter2 = vars.beginSafe ();
+              iter2 != vars.endSafe (); ++iter2 ) {
           size *= iter2.key()->domainSize();
         }
 

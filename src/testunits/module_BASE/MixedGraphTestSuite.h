@@ -349,9 +349,9 @@ namespace gum_tests {
         gum::Size sk = 0;
         gum::Size sv = 0;
 
-        for ( auto iter = hashmap.begin(); iter != hashmap.end(); ++iter ) {
-          sk += iter.key ();
-          sv += iter.val ();
+        for ( auto iter = hashmap.beginSafe(); iter != hashmap.endSafe(); ++iter ) {
+          sk += iter.key();
+          sv += *iter;
         }
 
         TS_ASSERT_EQUALS ( sk * 2, sv );
@@ -397,8 +397,8 @@ namespace gum_tests {
         gum::Size sk = 0;
         gum::Size sv = 0;
 
-        for ( auto iter = hashmap.begin(); iter != hashmap.end(); ++iter ) {
-          sv += iter.val ();
+        for ( auto iter = hashmap.beginSafe(); iter != hashmap.endSafe(); ++iter ) {
+          sv += *iter;
           sk += iter.key().first() + iter.key().second();
         }
 
@@ -437,11 +437,11 @@ namespace gum_tests {
         gum::Size sv = 0;
 
         for (
-          gum::Property< gum::Size >::onArcs::iterator iter = hashmap.begin();
-          iter != hashmap.end();
+          gum::Property< gum::Size >::onArcs::iterator_safe iter = hashmap.beginSafe();
+          iter != hashmap.endSafe();
           ++iter
         ) {
-          sv += iter.val ();
+          sv += *iter;
           sk += iter.key().head() + iter.key().tail();
         }
 

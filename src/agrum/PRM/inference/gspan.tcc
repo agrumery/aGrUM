@@ -167,14 +167,14 @@ namespace gum {
           for ( size_t node = 0; node < count_vector.size(); ++node ) {
             edge_count = count_vector[node];
 
-            for ( auto growth = edge_count->begin(); growth != edge_count->end(); ++growth ) {
+            for ( auto growth = edge_count->beginSafe(); growth != edge_count->endSafe(); ++growth ) {
               try {
-                __tree.growPattern ( *p, *(growth.val()), 2 );
+                __tree.growPattern ( *p, **growth, 2 );
               } catch ( OperationNotAllowed& e ) {
                 // The child was not minimal or was not worth considering
               }
 
-              delete growth.val();
+              delete *growth;
             }
 
             delete edge_count;
@@ -328,8 +328,8 @@ namespace gum {
     template<typename GUM_SCALAR> INLINE
     GSpan<GUM_SCALAR>::~GSpan() {
       GUM_DESTRUCTOR ( GSpan );
-      for ( auto match = __matched_instances.begin(); match != __matched_instances.end(); ++match ) {
-        delete match.val();
+      for ( auto match = __matched_instances.beginSafe(); match != __matched_instances.endSafe(); ++match ) {
+        delete *match;
       }
 
       delete __graph;

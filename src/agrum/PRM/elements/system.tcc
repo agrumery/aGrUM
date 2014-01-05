@@ -46,16 +46,16 @@ namespace gum {
       GUM_DESTRUCTOR ( System );
 
       for ( auto iter = begin(); iter != end(); ++iter ) {
-        delete iter.val ();
+        delete *iter;
       }
 
-      for ( auto iter = __instanceMap.begin();
-            iter != __instanceMap.end(); ++iter ) {
-        delete iter.val ();
+      for ( auto iter = __instanceMap.beginSafe();
+            iter != __instanceMap.endSafe(); ++iter ) {
+        delete *iter;
       }
 
-      for ( auto iter = __arrayMap.begin(); iter != __arrayMap.end(); ++iter ) {
-        delete iter.val().second;
+      for ( auto iter = __arrayMap.beginSafe(); iter != __arrayMap.endSafe(); ++iter ) {
+        delete iter->second;
       }
     }
 
@@ -120,12 +120,12 @@ namespace gum {
 
       // Adding nodes
       for ( System<GUM_SCALAR>::const_iterator iter = begin(); iter != end(); ++iter ) {
-        __groundAttr ( *(iter.val()), factory );
+        __groundAttr ( **iter, factory );
       }
 
       // Adding arcs and filling CPTs
       for ( System<GUM_SCALAR>::const_iterator iter = begin(); iter != end(); ++iter ) {
-        __groundRef ( *(iter.val()), factory );
+        __groundRef ( **iter, factory );
       }
     }
 
@@ -203,9 +203,9 @@ namespace gum {
     System<GUM_SCALAR>::__groundRef ( const Instance<GUM_SCALAR>& instance, BayesNetFactory<GUM_SCALAR>& factory ) const {
       for ( auto iter = instance.begin(); iter != instance.end(); ++iter ) {
         std::stringstream elt_name;
-        elt_name << instance.name() << "." << ( iter.val() )->safeName();
+        elt_name << instance.name() << "." << ( *iter )->safeName();
         factory.startParentsDeclaration ( elt_name.str() );
-        const NodeSet& parents = instance.type().dag().parents ( ( *(iter.val()) ).id() );
+        const NodeSet& parents = instance.type().dag().parents ( ( **iter ).id() );
 
         for ( NodeSetIterator arc = parents.begin(); arc != parents.end(); ++arc ) {
           switch ( instance.type().get ( *arc ).elt_type() ) {
@@ -239,8 +239,8 @@ namespace gum {
 
         // Checking if we need to ground the Potential (only for class level attributes since
         // aggregates Potentials are generated)
-        if ( ClassElement<GUM_SCALAR>::isAttribute ( instance.type().get ( ( *(iter.val()) ).safeName() ) ) ) {
-          __groundPotential ( instance, *(iter.val()), factory );
+        if ( ClassElement<GUM_SCALAR>::isAttribute ( instance.type().get ( ( **iter ).safeName() ) ) ) {
+          __groundPotential ( instance, **iter, factory );
         }
       }
     }
@@ -348,7 +348,7 @@ namespace gum {
     void
     System<GUM_SCALAR>::instantiate() {
       for ( auto iter = begin(); iter != end(); ++iter ) {
-        ( *(iter.val()) ).instantiate();
+        ( **iter ).instantiate();
       }
     }
 
@@ -440,19 +440,19 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     typename System<GUM_SCALAR>::iterator
-    System<GUM_SCALAR>::begin() { return __nodeIdMap.begin(); }
+    System<GUM_SCALAR>::begin() { return __nodeIdMap.beginSafe(); }
 
     template<typename GUM_SCALAR> INLINE
     const typename System<GUM_SCALAR>::iterator&
-    System<GUM_SCALAR>::end() { return __nodeIdMap.end(); }
+    System<GUM_SCALAR>::end() { return __nodeIdMap.endSafe(); }
 
     template<typename GUM_SCALAR> INLINE
     typename System<GUM_SCALAR>::const_iterator
-    System<GUM_SCALAR>::begin() const { return __nodeIdMap.begin(); }
+    System<GUM_SCALAR>::begin() const { return __nodeIdMap.beginSafe(); }
 
     template<typename GUM_SCALAR> INLINE
     const typename System<GUM_SCALAR>::const_iterator&
-    System<GUM_SCALAR>::end() const { return __nodeIdMap.end(); }
+    System<GUM_SCALAR>::end() const { return __nodeIdMap.endSafe(); }
 
     template<typename GUM_SCALAR> INLINE
     typename System<GUM_SCALAR>::array_iterator

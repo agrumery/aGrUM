@@ -111,7 +111,7 @@ namespace gum {
         // We need to add each instance in __graph
         for ( auto iter = sys.begin(); iter != sys.end(); ++iter ) {
           NodeData<GUM_SCALAR>* node = new NodeData<GUM_SCALAR>();
-          node->n = iter.val();
+          node->n = *iter;
           __label ( node, label_map );
           __graph.insertNode ( iter.key() );
           __idMap.insert ( node->n, iter.key() );
@@ -122,8 +122,8 @@ namespace gum {
         NodeData<GUM_SCALAR>* u = nullptr;
         NodeData<GUM_SCALAR>* v = nullptr;
 
-        for ( auto node = __nodes.begin(); node != __nodes.end(); ++node ) {
-          data = node.val();
+        for ( auto node = __nodes.beginSafe(); node != __nodes.endSafe(); ++node ) {
+          data = *node;
 
           for ( auto iter = data->n->type().slotChains().begin(); iter != data->n->type().slotChains().end(); ++iter ) {
             for ( auto jter = data->n->getInstances ( ( **iter ).id() ).begin(); jter != data->n->getInstances ( ( **iter ).id() ).end(); ++jter ) {
@@ -160,21 +160,21 @@ namespace gum {
         GUM_DESTRUCTOR ( InterfaceGraph );
 
         if ( __erase_flag ) {
-          for ( auto iter = __nodes.begin(); iter != __nodes.end(); ++iter ) {
-            delete iter.val ();
+          for ( auto iter = __nodes.beginSafe(); iter != __nodes.endSafe(); ++iter ) {
+            delete *iter;
           }
 
-          for ( auto iter = __edges.begin(); iter != __edges.end(); ++iter ) {
-            delete iter.val ();
+          for ( auto iter = __edges.beginSafe(); iter != __edges.endSafe(); ++iter ) {
+            delete *iter;
           }
 
-          for ( auto iter = __nodeMap.begin(); iter != __nodeMap.end(); ++iter ) {
-            delete iter.val ();
+          for ( auto iter = __nodeMap.beginSafe(); iter != __nodeMap.endSafe(); ++iter ) {
+            delete *iter;
             delete iter.key();
           }
 
-          for ( auto iter = __edgeMap.begin(); iter != __edgeMap.end(); ++iter ) {
-            delete iter.val();
+          for ( auto iter = __edgeMap.beginSafe(); iter != __edgeMap.endSafe(); ++iter ) {
+            delete *iter;
             delete iter.key();
           }
         }

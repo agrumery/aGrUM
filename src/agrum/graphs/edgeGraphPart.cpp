@@ -49,9 +49,9 @@ namespace gum {
     const NodeProperty<NodeSet*>& neigh = s.__neighbours;
     __neighbours.resize( neigh.capacity() );
 
-    for ( NodeProperty<NodeSet*>::const_iterator iter = neigh.begin();
-          iter != neigh.end(); ++iter ) {
-      NodeSet* newneigh = new NodeSet( *( iter.val () ) );
+    for ( NodeProperty<NodeSet*>::const_iterator_safe iter = neigh.beginSafe();
+          iter != neigh.endSafe(); ++iter ) {
+      NodeSet* newneigh = new NodeSet( **iter );
       __neighbours.insert( iter.key(), newneigh );
     }
 
@@ -73,9 +73,9 @@ namespace gum {
 
 
   void EdgeGraphPart::clearEdges() {
-    for ( NodeProperty<NodeSet*>::const_iterator iter = __neighbours.begin();
-          iter != __neighbours.end(); ++iter ) {
-      delete iter.val ();
+    for ( NodeProperty<NodeSet*>::const_iterator_safe iter = __neighbours.beginSafe();
+          iter != __neighbours.endSafe(); ++iter ) {
+      delete *iter;
     }
 
     __neighbours.clear();
@@ -104,9 +104,9 @@ namespace gum {
       const NodeProperty<NodeSet*>& neigh = s.__neighbours;
       __neighbours.resize( neigh.capacity() );
 
-      for ( NodeProperty<NodeSet*>::const_iterator iter = neigh.begin();
-            iter != neigh.end(); ++iter ) {
-        NodeSet* newneigh = new NodeSet( *( iter.val () ) );
+      for ( NodeProperty<NodeSet*>::const_iterator_safe iter = neigh.beginSafe();
+            iter != neigh.endSafe(); ++iter ) {
+        NodeSet* newneigh = new NodeSet( **iter );
         __neighbours.insert( iter.key(), newneigh );
       }
 

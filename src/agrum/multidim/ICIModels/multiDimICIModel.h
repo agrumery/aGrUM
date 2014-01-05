@@ -30,8 +30,8 @@
 #ifndef GUM_MULTI_DIM_ICI_MODEL_H
 #define GUM_MULTI_DIM_ICI_MODEL_H
 
-#include <agrum/core/bijection.h>
 #include <agrum/multidim/multiDimReadOnly.h>
+
 
 namespace gum {
 
@@ -134,20 +134,11 @@ namespace gum {
       virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
   };
 
-} /* namespace gum */
-
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-#include <agrum/multidim/ICIModels/multiDimICIModel.tcc>
-
-// to optimize compile-link time, provide the usual lists
-namespace gum {
   extern template class MultiDimICIModel<float>;
   extern template class MultiDimICIModel<double>;
 } /* namespace gum */
 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+#include <agrum/multidim/ICIModels/multiDimICIModel.tcc>
 
 
 #endif /* GUM_MULTI_DIM_ICI_MODEL_H */

@@ -169,14 +169,14 @@ namespace gum {
         GUM_TRACE( "RETRO VAR TABLE : " );
 #endif
 
-        for ( HashTableIterator< NodeId, Set< const DiscreteVariable* >* > retroVarIter = retrogradeVarTable->begin(); retroVarIter != retrogradeVarTable->end(); ++retroVarIter )
-          if ( retroVarIter.val () != nullptr && !( retroVarIter.val() )->empty() ) {
+        for ( HashTableIteratorSafe< NodeId, Set< const DiscreteVariable* >* > retroVarIter = retrogradeVarTable->beginSafe(); retroVarIter != retrogradeVarTable->endSafe(); ++retroVarIter )
+          if ( *retroVarIter != nullptr && !( *retroVarIter )->empty() ) {
 
 #ifdef O4DDDEBUG
             GUM_TRACE( "\tNode : " << retroVarIter.key() );
 #endif
 
-            for ( SetIterator< const DiscreteVariable* > iter = ( retroVarIter.val () )->begin(); iter != ( retroVarIter.val () )->end(); ++iter ) {
+            for ( SetIterator< const DiscreteVariable* > iter = ( *retroVarIter )->begin(); iter != ( *retroVarIter )->end(); ++iter ) {
 
 #ifdef O4DDDEBUG
               GUM_TRACE( "\t\tVariable : " << ( *iter )->name() );
@@ -189,8 +189,8 @@ namespace gum {
       }
 
       ~NonOrderedOperatorData() {
-        for ( HashTableIterator< NodeId, Set< const DiscreteVariable* >* > iterH = retrogradeVarTable->begin(); iterH != retrogradeVarTable->end(); ++iterH )
-          delete iterH.val ();
+        for ( HashTableIteratorSafe< NodeId, Set< const DiscreteVariable* >* > iterH = retrogradeVarTable->beginSafe(); iterH != retrogradeVarTable->endSafe(); ++iterH )
+          delete *iterH;
 
         delete retrogradeVarTable;
       };
@@ -304,7 +304,7 @@ namespace gum {
   NodeId
   insertNonTerminalNode( OperatorData<T>& opData, const DiscreteVariable* associatedVariable, std::vector< NodeId >& sonsMap, NodeId defaultSon , const HashTable< NodeId, Idx >& countTable ) {
 
-    HashTableConstIterator< NodeId, Idx > ctIter = countTable.begin();
+    HashTableConstIteratorSafe< NodeId, Idx > ctIter = countTable.beginSafe();
 
     if ( countTable.size() == 1 && ( defaultSon == 0 || ctIter.key() == defaultSon ) )
       return  ctIter.key();
@@ -340,9 +340,9 @@ namespace gum {
       Idx max = 0;
       NodeId maxNode = 0;
 
-      while ( ctIter != countTable.end() ) {
-        if ( ctIter.val () > max ) {
-          max = ctIter.val ();
+      while ( ctIter != countTable.endSafe() ) {
+        if ( *ctIter > max ) {
+          max = *ctIter;
           maxNode = ctIter.key();
         }
 

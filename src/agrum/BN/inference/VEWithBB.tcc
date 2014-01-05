@@ -116,8 +116,8 @@ namespace gum {
     query.insert ( id );
     Set<NodeId> hardEvidence;
 
-    for ( typename Property<const Potential<GUM_SCALAR>*>::onNodes::iterator iter = __hardEvidence.begin();
-          iter != __hardEvidence.end(); ++iter ) {
+    for ( typename Property<const Potential<GUM_SCALAR>*>::onNodes::iterator_safe iter = __hardEvidence.beginSafe ();
+          iter != __hardEvidence.endSafe (); ++iter ) {
       hardEvidence.insert ( iter.key() );
     }
 

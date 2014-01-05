@@ -113,8 +113,8 @@ namespace gum {
   CPF<GUM_SCALAR>::conditionedVars() {
     Instantiation inst;
 
-    for ( HashTable<const DiscreteVariable*, bool>::iterator iter =
-            __condMap->begin(); iter != __condMap->end(); ++iter ) {
+    for ( HashTable<const DiscreteVariable*, bool>::iterator_safe iter =
+            __condMap->beginSafe(); iter != __condMap->endSafe(); ++iter ) {
       if ( *iter ) inst.add( *( iter.key() ) );
     }
 
@@ -131,9 +131,9 @@ namespace gum {
   CPF<GUM_SCALAR>::conditionedVars() const {
     Instantiation inst;
 
-    for ( HashTable<const DiscreteVariable*, bool>::iterator iter =
-            __condMap->begin();
-          iter != __condMap->end();
+    for ( HashTable<const DiscreteVariable*, bool>::iterator_safe iter =
+            __condMap->beginSafe();
+          iter != __condMap->endSafe();
           ++iter ) {
       if ( *iter ) inst.add( *( iter.key() ) );
     }
@@ -151,11 +151,11 @@ namespace gum {
   CPF<GUM_SCALAR>::conditioningVars() {
     Instantiation inst;
 
-    for ( HashTable<const DiscreteVariable*, bool>::iterator iter =
-            __condMap->begin();
-          iter != __condMap->end();
+    for ( HashTable<const DiscreteVariable*, bool>::iterator_safe iter =
+            __condMap->beginSafe();
+          iter != __condMap->endSafe();
           ++iter ) {
-      if ( ! iter.val () ) inst.add( *( iter.key() ) );
+      if ( ! *iter ) inst.add( *( iter.key() ) );
     }
 
     return inst;
@@ -171,10 +171,10 @@ namespace gum {
   CPF<GUM_SCALAR>::conditioningVars() const {
     Instantiation inst;
 
-    for ( HashTableIterator<const DiscreteVariable*, bool> iter = __condMap->begin();
-          iter != __condMap->end();
+    for ( HashTableIteratorSafe<const DiscreteVariable*, bool> iter = __condMap->beginSafe();
+          iter != __condMap->endSafe();
           ++iter ) {
-      if ( ! iter.val () ) inst.add( *( iter.key() ) );
+      if ( ! *iter ) inst.add( *( iter.key() ) );
     }
 
     return inst;
@@ -197,9 +197,9 @@ namespace gum {
     std::stringstream left;
     std::stringstream right;
 
-    for ( HashTable<const DiscreteVariable*, bool>::iterator iter =
-            __condMap->begin();
-          iter != __condMap->end();
+    for ( HashTable<const DiscreteVariable*, bool>::iterator_safe iter =
+            __condMap->beginSafe();
+          iter != __condMap->endSafe();
           ++iter ) {
       if ( *iter ) {
         left << i->val( *( iter.key() ) ) << " ";

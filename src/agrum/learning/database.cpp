@@ -279,9 +279,9 @@ namespace gum {
       database.__modalities_names[i].resize ( database.__nb_modalities[i] );
       const HashTable<std::string, unsigned int>& modals = modal_names[i];
 
-      for ( HashTableConstIterator<std::string, unsigned int>
-            iter = modals.begin(); iter != modals.end(); ++iter ) {
-        database.__modalities_names[i][iter.val ()] = iter.key();
+      for ( HashTableConstIteratorSafe<std::string, unsigned int>
+            iter = modals.beginSafe(); iter != modals.endSafe(); ++iter ) {
+        database.__modalities_names[i][*iter] = iter.key();
       }
 
       database.__missing_value[i] = modals.exists ( "?" );
@@ -435,9 +435,9 @@ namespace gum {
       database.__modalities_names[i].resize ( database.__nb_modalities[i] );
       const HashTable<std::string, unsigned int>& modals = modal_names[i];
 
-      for ( HashTableConstIterator<std::string, unsigned int>
-            iter = modals.begin(); iter != modals.end(); ++iter ) {
-        database.__modalities_names[i][iter.val ()] = iter.key();
+      for ( HashTableConstIteratorSafe<std::string, unsigned int>
+            iter = modals.beginSafe(); iter != modals.endSafe(); ++iter ) {
+        database.__modalities_names[i][*iter] = iter.key();
       }
 
       database.__missing_value[i] = modals.exists ( "?" );

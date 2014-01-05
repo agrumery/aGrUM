@@ -206,9 +206,9 @@ namespace gum {
   Size MultiDimWithOffset<GUM_SCALAR>::_getOffs( const Instantiation& i ) const {
     Idx off = 0;
 
-    for ( HashTableConstIterator<const DiscreteVariable*,Size> iter=_gaps.begin();
-          iter != _gaps.end(); ++iter )
-      if ( i.contains( iter.key() ) ) off += iter.val () * i.valFromPtr( iter.key() );
+    for ( HashTableConstIteratorSafe<const DiscreteVariable*,Size> iter=_gaps.beginSafe();
+          iter != _gaps.endSafe(); ++iter )
+      if ( i.contains( iter.key() ) ) off += *iter * i.valFromPtr( iter.key() );
 
     return off;
   }

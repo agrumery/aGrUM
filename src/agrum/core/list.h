@@ -398,15 +398,17 @@ namespace gum {
 
 
     /// type of the allocator for ListBuckets
+    /// @{
     using BucketAllocator =
       typename Alloc::template rebind<ListBucket<Val>>::other;
- 
+    /// @}
+
     
     /// locations around iterators where insertions of new elements can take place
     enum class location {
       BEFORE,
-      AFTER
-    };
+        AFTER
+        };
       
 
     // ############################################################################

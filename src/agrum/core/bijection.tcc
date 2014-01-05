@@ -50,8 +50,8 @@ namespace gum {
   template <typename T1, typename T2> INLINE
   BijectionIterator<T1,T2>::BijectionIterator
   ( const Bijection<T1,T2>& biject, BijectionIterator<T1,T2>::Position pos ) :
-    __iter( pos == Position::BIJECTION_BEGIN ? biject.__firstToSecond.cbeginSafe() :
-            biject.__firstToSecond.cendSafe() ) {
+    __iter( pos == Position::BIJECTION_BEGIN ? biject.__firstToSecond.beginSafe () :
+            biject.__firstToSecond.endSafe () ) {
     GUM_CONSTRUCTOR( BijectionIterator );
   }
 
@@ -96,7 +96,7 @@ namespace gum {
 
   template <typename T1, typename T2> INLINE
   const T2& BijectionIterator<T1,T2>::second() const {
-    return *( __iter.val () );
+    return **__iter;
   }
 
 
@@ -176,7 +176,7 @@ namespace gum {
 
   template <typename T1, typename T2> INLINE
   typename Bijection<T1,T2>::iterator
-  Bijection<T1,T2>::begin () const {
+  Bijection<T1,T2>::begin() const {
     return BijectionIterator<T1,T2>( *this );
   }
 
@@ -196,21 +196,17 @@ namespace gum {
   template <typename T1, typename T2> INLINE
   void Bijection<T1,T2>::__copy( const HashTable<T1,T2*>& f2s ) {
     // parse f2s and perform copies
-    for ( HashTableConstIterator<T1,T2*> iter = f2s.begin();
-          iter != f2s.end(); ++iter ) {
-      typename HashTable<T1,T2*>::Bucket* bucket1 =
-        new typename HashTable<T1,T2*>::Bucket ( iter.key(), nullptr );
-      try {
-        __firstToSecond.__insert ( bucket1 );
-      }
-      catch ( ... ) { delete bucket1; throw; }
-      typename HashTable<T2,T1*>::Bucket* bucket2 = 
-        new typename HashTable<T2,T1*>::Bucket (*( iter.val ()), nullptr ); 
-      try { __secondToFirst.__insert ( bucket2 ); }
-      catch ( ... ) { __firstToSecond.erase( iter.key() ); delete bucket2; throw; }
+    for ( HashTableConstIteratorSafe<T1,T2*> iter = f2s.beginSafe ();
+          iter != f2s.endSafe (); ++iter ) {
+      HashTableBucket<T1,T2*>* bucket1 =
+        __firstToSecond.__insertAndGetBucket( iter.key(), 0 );
+      HashTableBucket<T2,T1*>* bucket2;
 
-      bucket1->val () = &( bucket2->key () );
-      bucket2->val () = &( bucket1->key () );
+      try { bucket2 = __secondToFirst.__insertAndGetBucket( **iter, 0 ); }
+      catch ( ... ) { __firstToSecond.erase( iter.key() ); throw; }
+
+      bucket1->val = &( bucket2->key );
+      bucket2->val = &( bucket1->key );
     }
 
     // note that __iter_end is actually a constant, whatever we add/remove
@@ -297,7 +293,7 @@ namespace gum {
   /// inserts a new association in the bijection
 
   template <typename T1, typename T2> INLINE
-  typename HashTable<T1,T2*>::Bucket*
+  HashTableBucket<T1,T2*>*
   Bijection<T1,T2>::__insert( const T1& first, const T2& second ) {
     // check the uniqueness property
     if ( existsFirst( first ) || existsSecond( second ) ) {
@@ -306,17 +302,15 @@ namespace gum {
     }
 
     // insert copies of first and second
-    typename HashTable<T1,T2*>::Bucket* bucket1 =
-      new typename HashTable<T1,T2*>::Bucket (first, nullptr );
-    __firstToSecond.__insert ( bucket1 );
-    typename HashTable<T2,T1*>::Bucket* bucket2 =
-      new typename HashTable<T2,T1*>::Bucket ( second, nullptr );
+    HashTableBucket<T1,T2*>* bucket1 =
+      __firstToSecond.__insertAndGetBucket( first, 0 );
+    HashTableBucket<T2,T1*>* bucket2;
 
-    try { __secondToFirst.__insert (bucket2 ); }
-    catch ( ... ) { __firstToSecond.erase( first ); delete bucket2; throw; }
+    try { bucket2 = __secondToFirst.__insertAndGetBucket( second, 0 ); }
+    catch ( ... ) { __firstToSecond.erase( first ); throw; }
 
-    bucket1->pair.second = const_cast<T2*> ( &( bucket2->pair.first ) );
-    bucket2->pair.second = const_cast<T1*> ( &( bucket1->pair.first ) );
+    bucket1->val = &( bucket2->key );
+    bucket2->val = &( bucket1->key );
 
     return bucket1;
   }
@@ -337,7 +331,7 @@ namespace gum {
   const T1&
   Bijection<T1,T2>::firstWithDefault( const T2& second, const T1& val ) const {
     try { return first( second ); }
-    catch ( NotFound& ) { return __insert( val, second )->key (); }
+    catch ( NotFound& ) { return __insert( val, second )->key; }
   }
 
 
@@ -348,7 +342,7 @@ namespace gum {
   const T2&
   Bijection<T1,T2>::secondWithDefault( const T1& first, const T2& val ) const {
     try { return second( first ); }
-    catch ( NotFound& ) { return *( __insert( first,val )->val () ); }
+    catch ( NotFound& ) { return *( __insert( first,val )->val ); }
   }
 
 
@@ -483,8 +477,8 @@ namespace gum {
   template <typename T1, typename T2> INLINE
   BijectionIterator<T1*,T2*>::BijectionIterator
   ( const Bijection<T1*,T2*>& biject, BijectionIterator<T1*,T2*>::Position pos ) :
-    __iter( pos == Position::BIJECTION_BEGIN ? biject.__firstToSecond.cbeginSafe () :
-            biject.__firstToSecond.cendSafe () ) {
+    __iter( pos == Position::BIJECTION_BEGIN ? biject.__firstToSecond.beginSafe() :
+            biject.__firstToSecond.endSafe() ) {
     GUM_CONSTRUCTOR( BijectionIterator );
   }
 
@@ -529,7 +523,7 @@ namespace gum {
 
   template <typename T1, typename T2> INLINE
   T2* const BijectionIterator<T1*,T2*>::second() const {
-    return __iter.val ();
+    return *__iter;
   }
 
 
@@ -629,11 +623,11 @@ namespace gum {
   template <typename T1, typename T2> INLINE
   void Bijection<T1*,T2*>::__copy( const HashTable<T1*,T2*>& f2s ) {
     // parse f2s and perform copies
-    for ( HashTableConstIterator<T1*,T2*> iter = f2s.cbegin();
-          iter != f2s.cend(); ++iter ) {
-      __firstToSecond.insert ( iter.key(), iter.val () );
+    for ( HashTableConstIteratorSafe<T1*,T2*> iter = f2s.beginSafe();
+          iter != f2s.endSafe(); ++iter ) {
+      __firstToSecond.__insertAndGetBucket( iter.key(), *iter );
 
-      try { __secondToFirst.insert( iter.val (), iter.key() ); }
+      try { __secondToFirst.__insertAndGetBucket( *iter, iter.key() ); }
       catch ( ... ) { __firstToSecond.erase( iter.key() ); throw; }
     }
 
@@ -728,9 +722,9 @@ namespace gum {
     }
 
     // insert copies of first and second
-    __firstToSecond.insert ( first, second );
+    __firstToSecond.__insertAndGetBucket( first, second );
 
-    try { __secondToFirst.insert ( second, first ); }
+    try { __secondToFirst.__insertAndGetBucket( second, first ); }
     catch ( ... ) { __firstToSecond.erase( first ); throw; }
   }
 

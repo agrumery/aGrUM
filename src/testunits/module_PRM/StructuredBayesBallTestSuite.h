@@ -80,16 +80,16 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( bb = new gum::prm::StructuredBayesBall<double>( *prm_inf ) );
 
         for ( auto i = sys->begin(); i != sys->end(); ++i ) {
-          for ( auto a = ( *(i.val()) ).begin(); a != ( *(i.val()) ).end(); ++a ) {
-            if ( ( *(i.val()) ).type().dag().parents( ( *(a.val()) ).id() ).empty() ) {
-              TS_GUM_ASSERT_THROWS_NOTHING( bb->compute( i.val(), ( *(a.val()) ).id() ) );
+          for ( auto a = ( **i ).begin(); a != ( **i ).end(); ++a ) {
+            if ( ( **i ).type().dag().parents( ( **a ).id() ).empty() ) {
+              TS_GUM_ASSERT_THROWS_NOTHING( bb->compute( *i, ( **a ).id() ) );
 
               for ( auto j = sys->begin(); j != sys->end(); ++j ) {
-                if ( ( j.val() ) != ( i.val() ) ) {
-                  TS_ASSERT( not bb->exists( j.val() ) );
-                } else if ( bb->exists( j.val() ) ) {
-                  TS_ASSERT_EQUALS( bb->requisiteNodes( j.val() ).size(), ( gum::Size ) 1 );
-                  TS_ASSERT( bb->requisiteNodes( j.val() ).contains( ( *(a.val()) ).id() ) );
+                if ( ( *j ) != ( *i ) ) {
+                  TS_ASSERT( not bb->exists( *j ) );
+                } else if ( bb->exists( *j ) ) {
+                  TS_ASSERT_EQUALS( bb->requisiteNodes( *j ).size(), ( gum::Size ) 1 );
+                  TS_ASSERT( bb->requisiteNodes( *j ).contains( ( **a ).id() ) );
                 } else {
                   TS_ASSERT( false );
                 }
@@ -108,16 +108,16 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( bb = new gum::prm::StructuredBayesBall<double>( *small_inf ) );
 
         for ( auto i = small_sys->begin(); i != small_sys->end(); ++i ) {
-          for ( auto a = ( *(i.val()) ).begin(); a != ( *(i.val()) ).end(); ++a ) {
-            if ( ( *(i.val()) ).type().dag().parents( ( *(a.val()) ).id() ).empty() ) {
-              TS_GUM_ASSERT_THROWS_NOTHING( bb->compute( i.val(), ( *(a.val()) ).id() ) );
+          for ( auto a = ( **i ).begin(); a != ( **i ).end(); ++a ) {
+            if ( ( **i ).type().dag().parents( ( **a ).id() ).empty() ) {
+              TS_GUM_ASSERT_THROWS_NOTHING( bb->compute( *i, ( **a ).id() ) );
 
               for ( gum::prm::System<double>::iterator j = small_sys->begin(); j != small_sys->end(); ++j ) {
-                if ( ( j.val() ) != ( i.val() ) ) {
-                  TS_ASSERT( not bb->exists( j.val() ) );
-                } else if ( bb->exists( j.val() ) ) {
-                  TS_ASSERT_EQUALS( bb->requisiteNodes( j.val() ).size(), ( gum::Size ) 1 );
-                  TS_ASSERT( bb->requisiteNodes( j.val() ).contains( ( *(a.val()) ).id() ) );
+                if ( ( *j ) != ( *i ) ) {
+                  TS_ASSERT( not bb->exists( *j ) );
+                } else if ( bb->exists( *j ) ) {
+                  TS_ASSERT_EQUALS( bb->requisiteNodes( *j ).size(), ( gum::Size ) 1 );
+                  TS_ASSERT( bb->requisiteNodes( *j ).contains( ( **a ).id() ) );
                 } else {
                   TS_ASSERT( false );
                 }

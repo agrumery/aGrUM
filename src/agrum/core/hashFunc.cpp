@@ -31,3 +31,38 @@
 #include <agrum/core/hashFunc.inl>
 #endif /* GUM_NO_INLINE */
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+namespace gum {
+
+  /* Hash functions are of the form [M * ((k * A) mod 1)], where [] stands for the
+   * integer part, M is equal to the number of slots in the hashtable, k is the key
+   * to be hashed, and mod 1 retrieves the decimal part of (k * A). A is an
+   * irrational number (currently either the gold number or pi/4). To speed up
+   * computations, the hash function is implemented using only unsigned longs.
+   * Therefore pi/4 and the gold number are encoded as X * 2^{-n} where n is the
+   * number of bits in an unsigned long. Consequently, we should adapt X's
+   * definition to 32 and 64 bits architectures. */
+#if ULONG_MAX == 4294967295UL // unsigned long = 32 bits
+  const Size   GUM_HASHTABLE_INT_GOLD  = 2654435769UL;
+  const Size   GUM_HASHTABLE_INT_PI    = 3373259426UL;
+  const Size   GUM_HASHTABLE_MASK      = 4294967295UL;
+  const size_t GUM_HASHTABLE_OFFSET    = 32;
+  /* for pedantic reasons, we remove these two lines:
+  const unsigned long long GUM_HASHTABLE_LONG_GOLD = 11400714819323198486ULL;
+  const unsigned long long GUM_HASHTABLE_LONG_PI   = 14488038916154245684ULL;
+  */
+#else // unsigned long = 64 bits
+  const Size   GUM_HASHTABLE_INT_GOLD  = 11400714819323198486UL;
+  const Size   GUM_HASHTABLE_INT_PI    = 14488038916154245684UL;
+  const Size   GUM_HASHTABLE_MASK      = 18446744073709551615UL;
+  const size_t GUM_HASHTABLE_OFFSET    = 64;
+  /* for pedantic reasons, we remove these two lines:
+  const unsigned long long GUM_HASHTABLE_LONG_GOLD = 11400714819323198486ULL;
+  const unsigned long long GUM_HASHTABLE_LONG_PI   = 14488038916154245684ULL;
+  */
+#endif /* unsigned long = 32 bits */
+
+} /* namespace gum */
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

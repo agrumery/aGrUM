@@ -311,9 +311,9 @@ namespace gum {
 
       // check that all nodes have been marked. If this is not the case, then
       // this means that we need to add new roots
-      for ( NodeProperty<bool>::iterator iter = mark.begin();
-            iter != mark.end(); ++iter ) {
-        if ( ! iter.val () ) {
+      for ( NodeProperty<bool>::iterator_safe iter = mark.beginSafe ();
+            iter != mark.endSafe (); ++iter ) {
+        if ( ! *iter ) {
           __roots << iter.key();
           __markConnectedComponent ( JT, iter.key(), mark );
         }

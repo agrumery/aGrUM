@@ -33,20 +33,20 @@ namespace gum {
     template<typename GUM_SCALAR>
     StructuredBayesBall<GUM_SCALAR>::~StructuredBayesBall() {
       GUM_DESTRUCTOR ( StructuredBayesBall );
-      typedef HashTable<std::string, std::pair< Set<NodeId>*, Size> >::iterator Iter;
+      typedef HashTable<std::string, std::pair< Set<NodeId>*, Size> >::iterator_safe Iter;
 
-      for ( Iter iter = __reqMap.begin(); iter != __reqMap.end(); ++iter ) {
-        delete iter.val().first;
+      for ( Iter iter = __reqMap.beginSafe(); iter != __reqMap.endSafe(); ++iter ) {
+        delete iter->first;
       }
     }
 
     template<typename GUM_SCALAR>
     void
     StructuredBayesBall<GUM_SCALAR>::__clean() {
-      typedef HashTable<std::string, std::pair< Set<NodeId>*, Size> >::iterator Iter;
+      typedef HashTable<std::string, std::pair< Set<NodeId>*, Size> >::iterator_safe Iter;
 
-      for ( Iter iter = __reqMap.begin(); iter != __reqMap.end(); ++iter ) {
-        delete iter.val().first;
+      for ( Iter iter = __reqMap.beginSafe(); iter != __reqMap.endSafe(); ++iter ) {
+        delete iter->first;
       }
 
       __keyMap.clear();
@@ -90,8 +90,8 @@ namespace gum {
       __fromChild ( i, n, marks );
       __fillMaps ( marks );
 
-      for ( auto iter = marks.begin(); iter != marks.end(); ++iter ) {
-        delete iter.val ();
+      for ( auto iter = marks.beginSafe(); iter != marks.endSafe(); ++iter ) {
+        delete *iter;
       }
     }
 
@@ -229,11 +229,11 @@ namespace gum {
       // First find for each instance it's requisite nodes
       HashTable<const Instance<GUM_SCALAR>*, Set<NodeId>*> req_map;
 
-      for ( auto iter = marks.begin(); iter != marks.end(); ++iter ) {
+      for ( auto iter = marks.beginSafe(); iter != marks.endSafe(); ++iter ) {
         Set<NodeId>* req_set = new Set<NodeId>();
 
-        for ( auto jter = ( *(iter.val()) ).begin(); jter != ( *(iter.val()) ).end(); ++jter ) {
-          if ( jter.val().first ) {
+        for ( auto jter = ( **iter ).beginSafe(); jter != ( **iter ).endSafe(); ++jter ) {
+          if ( jter->first ) {
             req_set->insert ( jter.key() );
           }
         }
@@ -244,8 +244,8 @@ namespace gum {
       // Remove all instances with 0 requisite nodes
       Set<const Instance<GUM_SCALAR>*> to_remove;
 
-      for ( auto iter = req_map.begin(); iter != req_map.end(); ++iter ) {
-        if ( ( *(iter.val()) ).size() == 0 ) {
+      for ( auto iter = req_map.beginSafe(); iter != req_map.endSafe(); ++iter ) {
+        if ( ( **iter ).size() == 0 ) {
           to_remove.insert ( iter.key() );
         }
       }
@@ -256,17 +256,17 @@ namespace gum {
       }
 
       // Fill __reqMap and __keyMap
-      for ( auto iter = req_map.begin(); iter != req_map.end(); ++iter ) {
-        std::string key = __buildHashKey ( iter.key(), *(iter.val()) );
+      for ( auto iter = req_map.beginSafe(); iter != req_map.endSafe(); ++iter ) {
+        std::string key = __buildHashKey ( iter.key(), **iter );
 
         if ( __reqMap.exists ( key ) ) {
           __keyMap.insert ( iter.key(), std::pair<std::string, Set<NodeId>* > ( key, __reqMap[key].first ) );
           __reqMap[key].second += 1;
-          delete iter.val ();
+          delete *iter;
           req_map[iter.key()] = 0;
         } else {
-          __reqMap.insert ( key, std::pair< Set<NodeId>*, Size> ( iter.val(), 1 ) );
-          __keyMap.insert ( iter.key(), std::pair<std::string, Set<NodeId>* > ( key, iter.val() ) );
+          __reqMap.insert ( key, std::pair< Set<NodeId>*, Size> ( *iter, 1 ) );
+          __keyMap.insert ( iter.key(), std::pair<std::string, Set<NodeId>* > ( key, *iter ) );
         }
       }
     }

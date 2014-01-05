@@ -102,9 +102,9 @@ namespace gum {
   const DiscreteVariable*
   FMDPFactory<GUM_SCALAR>::variable( const std::string& name ) const {
 
-    for ( HashTableConstIterator< std::string, const DiscreteVariable* > iterM = __varNameMap.begin(); iterM != __varNameMap.end(); ++iterM )
+    for ( HashTableConstIteratorSafe< std::string, const DiscreteVariable* > iterM = __varNameMap.beginSafe(); iterM != __varNameMap.endSafe(); ++iterM )
       if ( iterM.key().compare( name ) == 0 )
-        return iterM.val ();
+        return *iterM;
 
 
     GUM_TRACE( __varNameMap );

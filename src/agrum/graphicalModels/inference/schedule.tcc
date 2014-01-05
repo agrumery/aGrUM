@@ -53,17 +53,17 @@ namespace gum {
     const typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes&
     ops = from.__node2operation;
 
-    for ( typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes::const_iterator
-          iter = ops.begin(); iter != ops.end(); ++iter ) {
-      __node2operation.insert( iter.key(), ( iter.val () )->newFactory() );
+    for ( typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes::const_iterator_safe
+          iter = ops.beginSafe(); iter != ops.endSafe(); ++iter ) {
+      __node2operation.insert( iter.key(), ( *iter )->newFactory() );
     }
 
     // update the set of operations involved with each multidim table
     const HashTable<MultiDimId,NodeSet*>& inv = from.__multidim2operations;
 
-    for ( typename HashTable<MultiDimId,NodeSet*>::const_iterator
-          iter = inv.begin(); iter != inv.end(); ++iter ) {
-      __multidim2operations.insert( iter.key(), new NodeSet( *( iter.val () ) ) );
+    for ( typename HashTable<MultiDimId,NodeSet*>::const_iterator_safe
+          iter = inv.beginSafe (); iter != inv.endSafe (); ++iter ) {
+      __multidim2operations.insert( iter.key(), new NodeSet( **iter ) );
     }
   }
 
@@ -76,17 +76,17 @@ namespace gum {
 
     // remove all the operations that were stored
 
-    for ( typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes::const_iterator
-          iter = __node2operation.begin(); iter != __node2operation.end();
+    for ( typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes::const_iterator_safe
+          iter = __node2operation.beginSafe(); iter != __node2operation.endSafe();
           ++iter ) {
-      delete iter.val ();
+      delete *iter;
     }
 
     // remove the sets of operations involved with each multidim table
-    for ( typename HashTable<MultiDimId,NodeSet*>::const_iterator
-          iter = __multidim2operations.begin();
-          iter != __multidim2operations.end(); ++iter ) {
-      delete iter.val ();
+    for ( typename HashTable<MultiDimId,NodeSet*>::const_iterator_safe
+          iter = __multidim2operations.beginSafe ();
+          iter != __multidim2operations.endSafe (); ++iter ) {
+      delete *iter;
     }
   }
 
@@ -97,16 +97,16 @@ namespace gum {
     // avoid self assignment
     if ( this != &from ) {
       // remove all the operations that were stored
-      for ( typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes::const_iterator
+      for ( typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes::const_iterator_safe
             iter = __node2operation.begin(); iter != __node2operation.end();
             ++iter ) {
         delete *iter;
       }
 
       // remove the sets of operations involved with each multidim table
-      for ( typename HashTable<MultiDimId,Set<NodeId>*>::const_iterator
-            iter = __multidim2operations.begin();
-            iter != __multidim2operations.end(); ++iter ) {
+      for ( typename HashTable<MultiDimId,Set<NodeId>*>::const_iterator_safe
+            iter = __multidim2operations.beginSafe ();
+            iter != __multidim2operations.endSafe (); ++iter ) {
         delete *iter;
       }
 
@@ -126,9 +126,9 @@ namespace gum {
       const typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes&
       ops = from.__node2operation;
 
-      for ( typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes::const_iterator
+      for ( typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes::const_iterator_safe
             iter = ops.begin(); iter != ops.end(); ++iter ) {
-        __node2operation.insert( iter.key(), ( iter.val () )->newFactory() );
+        __node2operation.insert( iter.key(), ( *iter )->newFactory() );
       }
 
       // update the set of operations involved with each multidim table
@@ -136,9 +136,9 @@ namespace gum {
 
       const HashTable<MultiDimId,NodeSet*>& inv = from.__multidim2operations;
 
-      for ( typename HashTable<MultiDimId,NodeSet*>::const_iterator
-            iter = inv.begin(); iter != inv.end(); ++iter ) {
-        __multidim2operations.insert( iter.key(), new NodeSet( *( iter.val () ) ) );
+      for ( typename HashTable<MultiDimId,NodeSet*>::const_iterator_safe
+            iter = inv.beginSafe(); iter != inv.endSafe(); ++iter ) {
+        __multidim2operations.insert( iter.key(), new NodeSet( **iter ) );
       }
     }
 
@@ -205,7 +205,7 @@ namespace gum {
       }
 
       if ( ! __multidim2operations.exists( table_id ) ) {
-        involved_ops = __multidim2operations.insert( table_id, new NodeSet ).second;
+        involved_ops = __multidim2operations.insert( table_id, new NodeSet );
       } else {
         involved_ops = __multidim2operations[table_id];
       }
@@ -220,7 +220,7 @@ namespace gum {
       MultiDimId table_id = ( *iter )->id();
 
       if ( ! __multidim2operations.exists( table_id ) ) {
-        involved_ops = __multidim2operations.insert( table_id, new NodeSet ).second;
+        involved_ops = __multidim2operations.insert( table_id, new NodeSet );
       } else {
         involved_ops = __multidim2operations[table_id];
       }

@@ -78,23 +78,23 @@ namespace gum {
     Gibbs<GUM_SCALAR>::~Gibbs() {
       GUM_DESTRUCTOR ( Gibbs );
 
-      for ( HashTableIterator<NodeId, Instantiation*> iter = __sampling_idx.begin();
-            iter != __sampling_idx.end(); ++iter )
-        delete ( iter.val () );
+      for ( HashTableIteratorSafe<NodeId, Instantiation*> iter = __sampling_idx.beginSafe();
+            iter != __sampling_idx.endSafe(); ++iter )
+        delete ( *iter );
 
-      for ( HashTableIterator<NodeId, Potential<GUM_SCALAR>*> iter =
-              __sampling_posterior.begin();
-            iter != __sampling_posterior.end(); ++iter )
-        delete ( iter.val () );
+      for ( HashTableIteratorSafe<NodeId, Potential<GUM_SCALAR>*> iter =
+              __sampling_posterior.beginSafe();
+            iter != __sampling_posterior.endSafe(); ++iter )
+        delete ( *iter );
 
-      for ( HashTableIterator<NodeId, std::vector<NodeId>*> iter =
-              __node_children.begin();
-            iter != __node_children.end(); ++iter )
-        delete ( iter.val () );
+      for ( HashTableIteratorSafe<NodeId, std::vector<NodeId>*> iter =
+              __node_children.beginSafe();
+            iter != __node_children.endSafe(); ++iter )
+        delete ( *iter );
 
-      for ( HashTableIterator<NodeId, Instantiation*> iter = __cpt_idx.begin();
-            iter != __cpt_idx.end(); ++iter )
-        delete ( iter.val () );
+      for ( HashTableIteratorSafe<NodeId, Instantiation*> iter = __cpt_idx.beginSafe();
+            iter != __cpt_idx.endSafe(); ++iter )
+        delete ( *iter );
     }
 
     template <typename GUM_SCALAR> INLINE

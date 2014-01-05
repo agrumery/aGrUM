@@ -44,7 +44,7 @@ namespace gum {
   template<typename KEY> INLINE
   SetIterator<KEY>::SetIterator( const Set<KEY>& set, Position pos ) :
     __ht_iter( pos == GUM_SET_ITERATOR_END ?
-               set.__inside.cendSafe () : set.__inside.cbeginSafe () ) {
+               set.__inside.endSafe() : set.__inside.beginSafe() ) {
     GUM_CONSTRUCTOR( SetIterator );
   }
 
@@ -351,8 +351,8 @@ namespace gum {
     if ( size() != h2.size() ) return false;
 
     // check the content of the sets
-    for ( HashTableConstIterator<KEY, bool> iter = __inside.begin();
-          iter != __inside.end(); ++iter ) {
+    for ( HashTableConstIteratorSafe<KEY, bool> iter = __inside.beginSafe();
+          iter != __inside.endSafe(); ++iter ) {
       if ( ! h2.exists( iter.key() ) )
         return false;
     }
@@ -376,14 +376,14 @@ namespace gum {
     HashTable<KEY, bool>& h_r = res.__inside;
 
     if ( size() < h2.size() ) {
-      for ( HashTableConstIterator<KEY, bool> iter = __inside.begin();
-            iter != __inside.end(); ++iter ) {
+      for ( HashTableConstIteratorSafe<KEY, bool> iter = __inside.beginSafe();
+            iter != __inside.endSafe(); ++iter ) {
         if ( h2.exists( iter.key() ) )
           h_r.insert( iter.key(), true );
       }
     } else {
-      for ( HashTableConstIterator<KEY, bool> iter = h2.begin();
-            iter != h2.end(); ++iter ) {
+      for ( HashTableConstIteratorSafe<KEY, bool> iter = h2.beginSafe();
+            iter != h2.endSafe(); ++iter ) {
         if ( __inside.exists( iter.key() ) )
           h_r.insert( iter.key(), true );
       }
@@ -400,8 +400,8 @@ namespace gum {
     const HashTable<KEY, bool>& h2 = s2.__inside;
     HashTable<KEY, bool>& h_r = res.__inside;
 
-    for ( HashTableConstIterator<KEY, bool> iter = h2.begin();
-          iter != h2.end(); ++iter ) {
+    for ( HashTableConstIteratorSafe<KEY, bool> iter = h2.beginSafe ();
+          iter != h2.endSafe (); ++iter ) {
       if ( ! h_r.exists( iter.key() ) )
         h_r.insert( iter.key(), true );
     }
@@ -417,8 +417,8 @@ namespace gum {
     const HashTable<KEY, bool>& h2 = s2.__inside;
     HashTable<KEY, bool>& h_r = res.__inside;
 
-    for ( HashTableConstIterator<KEY, bool> iter = __inside.begin();
-          iter != __inside.end(); ++iter )
+    for ( HashTableConstIteratorSafe<KEY, bool> iter = __inside.beginSafe();
+          iter != __inside.endSafe(); ++iter )
       if ( ! h2.exists( iter.key() ) )
         h_r.insert( iter.key(), true );
 
@@ -510,8 +510,8 @@ namespace gum {
     HashTable<KEY, NEWKEY> table( size );
 
     // fill the new hash table
-    for ( HashTableConstIterator<KEY, bool > iter = __inside.begin();
-          iter != __inside.end(); ++iter ) {
+    for ( HashTableConstIteratorSafe<KEY, bool > iter = __inside.beginSafe();
+          iter != __inside.endSafe(); ++iter ) {
       table.insert( iter.key(), f( iter.key() ) );
     }
 
@@ -533,8 +533,8 @@ namespace gum {
     HashTable<KEY, NEWKEY> table( size );
 
     // fill the new hash table
-    for ( HashTableConstIterator<KEY, bool > iter = __inside.begin();
-          iter != __inside.end(); ++iter ) {
+    for ( HashTableConstIteratorSafe<KEY, bool > iter = __inside.beginSafe ();
+          iter != __inside.endSafe(); ++iter ) {
       table.insert( iter.key(), val );
     }
 
@@ -551,8 +551,8 @@ namespace gum {
 
     // fill the new list
 
-    for ( HashTableConstIterator<KEY, bool > iter = __inside.begin();
-          iter != __inside.end(); ++iter ) {
+    for ( HashTableConstIteratorSafe<KEY, bool > iter = __inside.beginSafe();
+          iter != __inside.endSafe(); ++iter ) {
       list.pushBack( f( iter.key() ) );
     }
 

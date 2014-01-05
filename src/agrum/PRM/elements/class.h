@@ -314,7 +314,7 @@ namespace gum {
         /// @{
 
         /// Code alias for iterators over ClassElement<GUM_SCALAR> in this Class<GUM_SCALAR>.
-        typedef typename NodeProperty<ClassElement<GUM_SCALAR>*>::iterator ClassEltIterator;
+        typedef typename NodeProperty<ClassElement<GUM_SCALAR>*>::iterator_safe ClassEltIterator;
 
         /// Returns an iterator at the begin of the node map of the ClassElement<GUM_SCALAR>
         /// in this Class<GUM_SCALAR>
@@ -325,7 +325,7 @@ namespace gum {
         const ClassEltIterator& end();
 
         /// Code alias for constant iterators over ClassElement<GUM_SCALAR> in this Class<GUM_SCALAR>.
-        typedef typename NodeProperty<ClassElement<GUM_SCALAR>*>::const_iterator const_ClassEltIterator;
+        typedef typename NodeProperty<ClassElement<GUM_SCALAR>*>::const_iterator_safe const_ClassEltIterator;
 
         /// Returns a constant iterator at the begin of the node map of
         /// ClassElement<GUM_SCALAR> in this Class<GUM_SCALAR>

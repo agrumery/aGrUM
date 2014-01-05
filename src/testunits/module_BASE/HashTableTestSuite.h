@@ -118,7 +118,7 @@ namespace gum_tests {
         fill( table );
         TS_ASSERT_EQUALS( table.size(), ( gum::Size )6 );
 
-        gum::HashTable<int, std::string>::iterator_safe iter = table.beginSafe ();
+        gum::HashTable<int, std::string>::iterator_safe iter = table.beginSafe();
 
         TS_GUM_ASSERT_THROWS_NOTHING( table.erase( iter ) );
         TS_ASSERT_EQUALS( table.size(), ( gum::Size )5 );
@@ -128,15 +128,15 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( table.erase( iter ) );
         TS_ASSERT_EQUALS( table.size(), ( gum::Size )4 );
 
-        iter = table.beginSafe ();
+        iter = table.beginSafe();
         TS_GUM_ASSERT_THROWS_NOTHING( table.erase( iter ) );
         TS_ASSERT_EQUALS( table.size(), ( gum::Size )3 );
 
-        iter = table.endSafe ();
+        iter = table.endSafe();
         TS_GUM_ASSERT_THROWS_NOTHING( table.erase( iter ) );
         TS_ASSERT_EQUALS( table.size(), ( gum::Size )3 );
 
-        iter = table.endSafe ();
+        iter = table.endSafe();
         TS_GUM_ASSERT_THROWS_NOTHING( table.erase( iter ) );
         TS_ASSERT_EQUALS( table.size(), ( gum::Size )3 );
       }
@@ -408,10 +408,10 @@ namespace gum_tests {
           expected.insert( t1[i] );
         }
 
-        for ( gum::HashTable<int, std::string>::iterator iter = t1.begin();
-              iter != t1.end();
+        for ( gum::HashTable<int, std::string>::iterator_safe iter = t1.beginSafe();
+              iter != t1.endSafe();
               ++ iter ) {
-          obtained.insert( iter.val () );
+          obtained.insert( *iter );
         }
 
         TS_ASSERT_EQUALS( expected.size(), obtained.size() );
@@ -431,9 +431,9 @@ namespace gum_tests {
           expected.insert( t1[i] );
         }
 
-        for ( gum::HashTable<int, std::string>::iterator iter = t1.begin();
-              iter != t1.end(); ++iter ) {
-          obtained.insert( iter.val () );
+        for ( gum::HashTable<int, std::string>::iterator_safe iter = t1.beginSafe();
+              iter != t1.endSafe(); ++iter ) {
+          obtained.insert( *iter );
         }
 
         TS_ASSERT_EQUALS( expected.size(), obtained.size() );

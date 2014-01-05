@@ -171,22 +171,22 @@ namespace gum {
       return __simplicial_set->bestQuasiSimplicialNode();
     else {
       // here: select the node through Kjaerulff's heuristic
-      NodeProperty< float >::const_iterator iter_heuristic =
-        __log_weights.begin();
+      NodeProperty< float >::const_iterator_safe iter_heuristic =
+        __log_weights.beginSafe();
 
-      if ( iter_heuristic == __log_weights.end() ) {
+      if ( iter_heuristic == __log_weights.endSafe() ) {
         GUM_ERROR ( NotFound, "there exists no more node to eliminate" );
       }
 
-      float min_weight = iter_heuristic.val ();
+      float min_weight = *iter_heuristic;
 
       NodeId removable_node = iter_heuristic.key();
 
-      for ( ++iter_heuristic; iter_heuristic != __log_weights.end();
+      for ( ++iter_heuristic; iter_heuristic != __log_weights.endSafe();
             ++iter_heuristic )
-        if ( iter_heuristic.val () < min_weight ) {
+        if ( *iter_heuristic < min_weight ) {
           removable_node = iter_heuristic.key();
-          min_weight = iter_heuristic.val ();
+          min_weight = *iter_heuristic;
         }
 
       return removable_node;
