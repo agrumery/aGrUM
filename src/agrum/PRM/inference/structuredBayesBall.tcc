@@ -36,7 +36,7 @@ namespace gum {
       typedef HashTable<std::string, std::pair< Set<NodeId>*, Size> >::iterator_safe Iter;
 
       for ( Iter iter = __reqMap.beginSafe(); iter != __reqMap.endSafe(); ++iter ) {
-        delete iter->first;
+        delete iter.val().first;
       }
     }
 
@@ -46,7 +46,7 @@ namespace gum {
       typedef HashTable<std::string, std::pair< Set<NodeId>*, Size> >::iterator_safe Iter;
 
       for ( Iter iter = __reqMap.beginSafe(); iter != __reqMap.endSafe(); ++iter ) {
-        delete iter->first;
+        delete iter.val().first;
       }
 
       __keyMap.clear();
@@ -91,7 +91,7 @@ namespace gum {
       __fillMaps ( marks );
 
       for ( auto iter = marks.beginSafe(); iter != marks.endSafe(); ++iter ) {
-        delete *iter;
+        delete iter.val();
       }
     }
 
@@ -232,8 +232,8 @@ namespace gum {
       for ( auto iter = marks.beginSafe(); iter != marks.endSafe(); ++iter ) {
         Set<NodeId>* req_set = new Set<NodeId>();
 
-        for ( auto jter = ( **iter ).beginSafe(); jter != ( **iter ).endSafe(); ++jter ) {
-          if ( jter->first ) {
+        for ( auto jter = ( *( iter.val() ) ).beginSafe(); jter != ( *( iter.val() ) ).endSafe(); ++jter ) {
+          if ( jter.val().first ) {
             req_set->insert ( jter.key() );
           }
         }
@@ -245,7 +245,7 @@ namespace gum {
       Set<const Instance<GUM_SCALAR>*> to_remove;
 
       for ( auto iter = req_map.beginSafe(); iter != req_map.endSafe(); ++iter ) {
-        if ( ( **iter ).size() == 0 ) {
+        if ( ( *( iter.val() ) ).size() == 0 ) {
           to_remove.insert ( iter.key() );
         }
       }
@@ -257,16 +257,16 @@ namespace gum {
 
       // Fill __reqMap and __keyMap
       for ( auto iter = req_map.beginSafe(); iter != req_map.endSafe(); ++iter ) {
-        std::string key = __buildHashKey ( iter.key(), **iter );
+        std::string key = __buildHashKey ( iter.key(), *( iter.val() ) );
 
         if ( __reqMap.exists ( key ) ) {
           __keyMap.insert ( iter.key(), std::pair<std::string, Set<NodeId>* > ( key, __reqMap[key].first ) );
           __reqMap[key].second += 1;
-          delete *iter;
+          delete iter.val ();
           req_map[iter.key()] = 0;
         } else {
-          __reqMap.insert ( key, std::pair< Set<NodeId>*, Size> ( *iter, 1 ) );
-          __keyMap.insert ( iter.key(), std::pair<std::string, Set<NodeId>* > ( key, *iter ) );
+          __reqMap.insert ( key, std::pair< Set<NodeId>*, Size> ( iter.val(), 1 ) );
+          __keyMap.insert ( iter.key(), std::pair<std::string, Set<NodeId>* > ( key, iter.val() ) );
         }
       }
     }

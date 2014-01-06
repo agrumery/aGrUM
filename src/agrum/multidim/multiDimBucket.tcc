@@ -59,7 +59,7 @@ namespace gum {
 
     for ( HashTableIteratorSafe<const MultiDimContainer<GUM_SCALAR>*, Instantiation* > iter =
             __multiDims.beginSafe (); iter != __multiDims.endSafe (); ++iter ) {
-      delete *iter;
+      delete iter.val();
     }
   }
 
@@ -522,8 +522,8 @@ namespace gum {
 
         for ( HashTableIteratorSafe<const MultiDimContainer<GUM_SCALAR>*, Instantiation*> iter =
                 __multiDims.beginSafe(); iter != __multiDims.endSafe(); ++iter ) {
-          ( *iter )->setVals( __allVarsInst );
-          current *= iter.key()->get( **iter );
+          ( iter.val() )->setVals( __allVarsInst );
+          current *= iter.key()->get( *( iter.val() ) );
         }
 
         sum += current;

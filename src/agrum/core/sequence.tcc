@@ -214,7 +214,7 @@ namespace gum {
     }
 
     // k will be added at the end. Insert the new key into the hashtable
-    KEY& new_key = const_cast<KEY&>( __h.insertAndGetKey( k, __h.size() ) );
+    KEY& new_key = const_cast<KEY&>( __h.insert( k, __h.size() ).first );
 
     __v.push_back( &new_key );
   }
@@ -397,7 +397,7 @@ namespace gum {
     }
 
     __h.erase( * ( __v[i] ) );
-    KEY& new_key = const_cast<KEY&>( __h.insertAndGetKey( newKey,i ) );
+    KEY& new_key = const_cast<KEY&>( __h.insert( newKey,i ).first );
     __v[i] = &new_key;
   }
 

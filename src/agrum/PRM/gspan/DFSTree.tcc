@@ -36,7 +36,7 @@ namespace gum {
 
         for ( auto iter = __data.beginSafe(); iter != __data.endSafe(); ++iter ) {
           delete iter.key();
-          delete *iter;
+          delete iter.val();
         }
 
         delete __strategy;
@@ -56,7 +56,7 @@ namespace gum {
           bool found = false;
 
           for ( auto root = roots.beginSafe(); root != roots.endSafe(); ++root ) {
-            if ( ( root->first == u_idx ) and ( root->second == v_idx ) ) {
+            if ( ( root.val().first == u_idx ) and ( root.val().second == v_idx ) ) {
               roots_edges[root.key()]->insert ( *iter );
               found = true;
               break;
@@ -81,9 +81,9 @@ namespace gum {
 
         // This is used to compute the max independent set of p->max_indep_set
         for ( auto root = roots_edges.beginSafe(); root != roots_edges.endSafe(); ++root ) {
-          __initialiaze_root ( root.key(), **root );
+          __initialiaze_root ( root.key(), *( root.val() ) );
           strategy().accept_root ( root.key() );
-          delete *root;
+          delete root.val();
         }
       }
 
@@ -106,7 +106,7 @@ namespace gum {
           // Adding edges between two isomorphisms of p sharing at least one instance
           for ( auto iso = data->iso_map.beginSafe(); iso != data->iso_map.endSafe(); ++iso ) {
             if ( iso.key() != an_id ) {
-              for ( auto inst = ( *iso )->begin(); inst != ( *iso )->end(); ++inst ) {
+              for ( auto inst = ( iso.val() )->begin(); inst != ( iso.val() )->end(); ++inst ) {
                 if ( seq->exists ( *inst ) ) {
                   data->iso_graph.insertEdge ( an_id, iso.key() );
                   break;
@@ -144,7 +144,7 @@ namespace gum {
           bool found = false;
 
           for ( auto jter = seq.begin(); jter != seq.end(); ++jter ) {
-            if ( not ( *iter )->exists ( *jter ) ) {
+            if ( not ( iter.val() )->exists ( *jter ) ) {
               found = true;
               break;
             }
@@ -246,10 +246,10 @@ namespace gum {
           for ( ; match != edge_growth.matches.endSafe(); ++match ) {
             // Adding the isomorphism in the iso_graph and building the iso_map.
             if ( child->code().codes.back()->isForward() ) {
-              if ( ( *seq )->exists ( match->first ) and ( not ( *seq )->exists ( match->second ) ) ) {
+              if ( ( seq.val() )->exists ( match.val().first ) and ( not ( seq.val() )->exists ( match.val().second ) ) ) {
                 // Let's see if the new match is already matched
-                Sequence<Instance<GUM_SCALAR>*>* new_seq = new Sequence<Instance<GUM_SCALAR>*> ( **seq );
-                new_seq->insert ( match->second );
+                Sequence<Instance<GUM_SCALAR>*>* new_seq = new Sequence<Instance<GUM_SCALAR>*> ( *( seq.val() ) );
+                new_seq->insert ( match.val().second );
 
                 if ( __is_new_seq ( *new_seq, data->iso_map ) ) {
                   id = data->iso_graph.insertNode();
@@ -261,8 +261,8 @@ namespace gum {
                 break;
               }
             } else {
-              if ( ( *seq )->exists ( match->first ) and ( *seq )->exists ( match->second ) ) {
-                Sequence<Instance<GUM_SCALAR>*>* new_seq = new Sequence<Instance<GUM_SCALAR>*> ( **seq );
+              if ( ( seq.val() )->exists ( match.val().first ) and ( seq.val() )->exists ( match.val().second ) ) {
+                Sequence<Instance<GUM_SCALAR>*>* new_seq = new Sequence<Instance<GUM_SCALAR>*> ( *( seq.val() ) );
 
                 if ( __is_new_seq ( *new_seq, data->iso_map ) ) {
                   id = data->iso_graph.insertNode();
@@ -381,7 +381,7 @@ namespace gum {
       DFSTree<GUM_SCALAR>::__test_equality ( HashTable<ClassElement<GUM_SCALAR>*, Size>& x, HashTable<ClassElement<GUM_SCALAR>*, Size>& y ) {
         for ( auto iter = x.beginSafe(); iter != x.endSafe(); ++iter ) {
           try {
-            if ( y[iter.key()] != ( *iter ) )
+            if ( y[iter.key()] != ( iter.val() ) )
               return false;
           } catch ( NotFound& ) {
             return false;
@@ -402,7 +402,7 @@ namespace gum {
         GUM_CONS_CPY ( DFSTree<GUM_SCALAR>::PatternData );
 
         for ( auto iter = from.iso_map.beginSafe(); iter != from.iso_map.endSafe(); ++iter ) {
-          iso_map.insert ( iter.key(), new Sequence<Instance<GUM_SCALAR>*> ( **iter ) );
+          iso_map.insert ( iter.key(), new Sequence<Instance<GUM_SCALAR>*> ( *( iter.val() ) ) );
         }
       }
 
@@ -411,7 +411,7 @@ namespace gum {
         GUM_DESTRUCTOR ( DFSTree<GUM_SCALAR>::PatternData );
 
         for ( auto iter = iso_map.beginSafe(); iter != iso_map.endSafe(); ++iter ) {
-          delete *iter;
+          delete iter.val();
         }
 
         // for (auto iter = sub_patterns.begin(); iter != sub_patterns.end(); ++iter) {

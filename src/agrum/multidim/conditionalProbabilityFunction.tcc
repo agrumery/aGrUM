@@ -115,7 +115,7 @@ namespace gum {
 
     for ( HashTable<const DiscreteVariable*, bool>::iterator_safe iter =
             __condMap->beginSafe(); iter != __condMap->endSafe(); ++iter ) {
-      if ( *iter ) inst.add( *( iter.key() ) );
+      if ( iter.val () ) inst.add( *( iter.key() ) );
     }
 
     return inst;
@@ -135,7 +135,7 @@ namespace gum {
             __condMap->beginSafe();
           iter != __condMap->endSafe();
           ++iter ) {
-      if ( *iter ) inst.add( *( iter.key() ) );
+      if ( iter.val () ) inst.add( *( iter.key() ) );
     }
 
     return inst;
@@ -155,7 +155,7 @@ namespace gum {
             __condMap->beginSafe();
           iter != __condMap->endSafe();
           ++iter ) {
-      if ( ! *iter ) inst.add( *( iter.key() ) );
+      if ( ! iter.val() ) inst.add( *( iter.key() ) );
     }
 
     return inst;
@@ -174,7 +174,7 @@ namespace gum {
     for ( HashTableIteratorSafe<const DiscreteVariable*, bool> iter = __condMap->beginSafe();
           iter != __condMap->endSafe();
           ++iter ) {
-      if ( ! *iter ) inst.add( *( iter.key() ) );
+      if ( ! iter.val() ) inst.add( *( iter.key() ) );
     }
 
     return inst;
@@ -201,7 +201,7 @@ namespace gum {
             __condMap->beginSafe();
           iter != __condMap->endSafe();
           ++iter ) {
-      if ( *iter ) {
+      if ( iter.val () ) {
         left << i->val( *( iter.key() ) ) << " ";
       } else {
         right << " " << i->val( *( iter.key() ) );

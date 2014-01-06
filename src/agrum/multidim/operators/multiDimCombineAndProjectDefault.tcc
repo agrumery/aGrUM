@@ -169,7 +169,7 @@ namespace gum {
           iter = tables_vars_per_var.beginSafe ();
           iter != tables_vars_per_var.endSafe (); ++iter ) {
       float size = 1.0f;
-      const HashTable<const DiscreteVariable*, unsigned int>& vars = *iter;
+      const HashTable<const DiscreteVariable*, unsigned int>& vars = iter.val();
 
       if ( vars.size() ) {
         for ( typename HashTable<const DiscreteVariable*,
@@ -470,7 +470,7 @@ namespace gum {
           iter = tables_vars_per_var.beginSafe ();
           iter != tables_vars_per_var.endSafe (); ++iter ) {
       float size = 1.0f;
-      const HashTable<const DiscreteVariable*, unsigned int>& vars = *iter;
+      const HashTable<const DiscreteVariable*, unsigned int>& vars = iter.val();
 
       if ( vars.size() ) {
         for ( typename HashTable<const DiscreteVariable*,
@@ -759,7 +759,7 @@ namespace gum {
           iter = tables_vars_per_var.beginSafe ();
           iter != tables_vars_per_var.endSafe (); ++iter ) {
       float size = 1.0f;
-      const HashTable<const DiscreteVariable*, unsigned int>& vars = *iter;
+      const HashTable<const DiscreteVariable*, unsigned int>& vars = iter.val();
 
       if ( vars.size() ) {
         for ( typename HashTable<const DiscreteVariable*,

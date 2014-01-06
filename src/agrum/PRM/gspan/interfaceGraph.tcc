@@ -111,7 +111,7 @@ namespace gum {
         // We need to add each instance in __graph
         for ( auto iter = sys.begin(); iter != sys.end(); ++iter ) {
           NodeData<GUM_SCALAR>* node = new NodeData<GUM_SCALAR>();
-          node->n = *iter;
+          node->n = iter.val ();
           __label ( node, label_map );
           __graph.insertNode ( iter.key() );
           __idMap.insert ( node->n, iter.key() );
@@ -123,7 +123,7 @@ namespace gum {
         NodeData<GUM_SCALAR>* v = nullptr;
 
         for ( auto node = __nodes.beginSafe(); node != __nodes.endSafe(); ++node ) {
-          data = *node;
+          data = node.val ();
 
           for ( auto iter = data->n->type().slotChains().begin(); iter != data->n->type().slotChains().end(); ++iter ) {
             for ( auto jter = data->n->getInstances ( ( **iter ).id() ).begin(); jter != data->n->getInstances ( ( **iter ).id() ).end(); ++jter ) {
@@ -161,20 +161,20 @@ namespace gum {
 
         if ( __erase_flag ) {
           for ( auto iter = __nodes.beginSafe(); iter != __nodes.endSafe(); ++iter ) {
-            delete *iter;
+            delete iter.val ();
           }
 
           for ( auto iter = __edges.beginSafe(); iter != __edges.endSafe(); ++iter ) {
-            delete *iter;
+            delete iter.val();
           }
 
           for ( auto iter = __nodeMap.beginSafe(); iter != __nodeMap.endSafe(); ++iter ) {
-            delete *iter;
+            delete iter.val();
             delete iter.key();
           }
 
           for ( auto iter = __edgeMap.beginSafe(); iter != __edgeMap.endSafe(); ++iter ) {
-            delete *iter;
+            delete iter.val();
             delete iter.key();
           }
         }

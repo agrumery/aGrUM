@@ -82,10 +82,10 @@ namespace gum {
     }
 
     for ( HashTableIteratorSafe< const DiscreteVariable*, List<NodeId>* > iter = __var2NodeIdMap.beginSafe(); iter != __var2NodeIdMap.endSafe(); ++iter )
-      delete *iter;
+      delete iter.val();
 
     for ( HashTableIteratorSafe< const DiscreteVariable*, std::vector<Idx>* > iter = __varUsedModalitiesMap.beginSafe(); iter != __varUsedModalitiesMap.endSafe(); ++iter )
-      delete *iter;
+      delete iter.val();
 
   }
 
@@ -466,7 +466,7 @@ namespace gum {
       HashTableConstIteratorSafe< NodeId, const DiscreteVariable* > ite2 = __variableMap.beginSafe();
 
       while ( ite2 != __variableMap.endSafe() ) {
-        if ( **ite1 == **ite2 ) {
+        if ( **ite1 == *( ite2.val () ) ) {
           isin = true;
           break;
         }
@@ -688,11 +688,11 @@ namespace gum {
 
 
     for ( HashTableIteratorSafe< NodeId, Set< const DiscreteVariable* >* > iterH = retrogradeVariablesTable->beginSafe(); iterH != retrogradeVariablesTable->endSafe(); ++iterH ) {
-      Set< const DiscreteVariable* > finalSet = **iterH;
+      Set< const DiscreteVariable* > finalSet = *( iterH.val () );
 
       for ( SetIterator< const DiscreteVariable* > iterS = finalSet.begin(); iterS != finalSet.end(); ++iterS )
         if ( varsSeq->pos ( *iterS ) >= varsSeq->pos ( this->nodeVariable ( iterH.key() ) ) )
-          ( *iterH )->erase ( *iterS );
+          ( iterH.val() )->erase ( *iterS );
     }
 
 //~ std::stringstream varString;
@@ -725,7 +725,7 @@ namespace gum {
 //~ GUM_TRACE( retorgradeVarLog.str() );
 
     for ( HashTableIteratorSafe< NodeId, Set< const DiscreteVariable* >* > iterH = preceedingVariablesTable->beginSafe(); iterH != preceedingVariablesTable->endSafe(); ++iterH )
-      delete *iterH;
+      delete iterH.val();
 
     delete preceedingVariablesTable;
 
@@ -868,7 +868,7 @@ namespace gum {
     }
 
     for ( HashTableConstIteratorSafe< const DiscreteVariable*, List<NodeId>* > varIter = var2NodeMap.beginSafe(); varIter != var2NodeMap.endSafe(); ++varIter )
-      __var2NodeIdMap.insert ( varIter.key(), new List< NodeId > ( **varIter ) );
+      __var2NodeIdMap.insert ( varIter.key(), new List< NodeId > ( *( varIter.val() ) ) );
 
   }
 
@@ -885,7 +885,7 @@ namespace gum {
     }
 
     for ( HashTableConstIteratorSafe< const DiscreteVariable*, std::vector<Idx>* > varIter = varUsedModalitiesMap.beginSafe(); varIter != varUsedModalitiesMap.endSafe(); ++varIter )
-      __varUsedModalitiesMap.insert ( varIter.key(), new std::vector<Idx> ( **varIter ) );
+      __varUsedModalitiesMap.insert ( varIter.key(), new std::vector<Idx> ( *( varIter.val () ) ) );
   }
 
 
@@ -921,7 +921,7 @@ namespace gum {
     __defaultArcMap = defaultArcMap;
 
     for ( HashTableConstIteratorSafe< NodeId, std::vector< NodeId >* > arcIter = arcMap.beginSafe(); arcIter != arcMap.endSafe(); ++arcIter )
-      __arcMap.insert ( arcIter.key(), new std::vector< NodeId > ( **arcIter ) );
+      __arcMap.insert ( arcIter.key(), new std::vector< NodeId > ( *( arcIter.val () ) ) );
 
   }
 

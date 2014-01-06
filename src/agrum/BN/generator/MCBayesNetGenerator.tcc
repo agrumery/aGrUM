@@ -124,7 +124,7 @@ namespace gum {
       bayesNetinit = ( IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet );
 
       while ( _hashMarginal.size() ) {
-        delete ( * ( _hashMarginal.beginSafe() ) );
+        delete ( _hashMarginal.beginSafe().val() );
         _hashMarginal.erase ( _hashMarginal.beginSafe() );
 
       }

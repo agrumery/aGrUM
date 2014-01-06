@@ -287,7 +287,7 @@ namespace gum {
 
     // here the elimination order is ok. We now need to update the __elim_cliques
     for ( unsigned int i = 0; i < __elim_order.size(); ++i ) {
-      NodeSet& cliques = __elim_cliques.insert ( __elim_order[i], NodeSet() );
+      NodeSet& cliques = __elim_cliques.insert ( __elim_order[i], NodeSet() ).second;
       cliques << __elim_order[i] ;
 
       const NodeSet& nei = __triangulated_graph.neighbours ( __elim_order[i] );
@@ -429,9 +429,9 @@ namespace gum {
     for ( NodeProperty< NodeId >::const_iterator_safe iter_clique =
             T_mpd_cliques.beginSafe();
           iter_clique != T_mpd_cliques.endSafe(); ++iter_clique ) {
-      if ( iter_clique.key() == *iter_clique ) {
+      if ( iter_clique.key() == iter_clique.val () ) {
         __max_prime_junction_tree.insertNode
-        ( *iter_clique, __junction_tree->clique ( *iter_clique ) );
+        ( iter_clique.val (), __junction_tree->clique ( iter_clique.val () ) );
       }
     }
 
@@ -439,13 +439,13 @@ namespace gum {
     // merged into them
     for ( NodeProperty< NodeId >::const_iterator_safe  iter =
             T_mpd_cliques.beginSafe(); iter != T_mpd_cliques.endSafe(); ++iter ) {
-      if ( iter.key() != *iter ) {
+      if ( iter.key() != iter.val () ) {
         const NodeSet& new_clique = __junction_tree->clique ( iter.key() );
 
         for ( NodeSetIterator iter_node = new_clique.begin();
               iter_node != new_clique.end(); ++iter_node ) {
           try {
-            __max_prime_junction_tree.addToClique ( *iter, *iter_node );
+            __max_prime_junction_tree.addToClique ( iter.val (), *iter_node );
           } catch ( DuplicateElement& ) { }
         }
       }
@@ -472,7 +472,7 @@ namespace gum {
             node_2_junction_clique.beginSafe();
           iter_junction != node_2_junction_clique.endSafe(); ++iter_junction )
       __node_2_max_prime_clique.insert ( iter_junction.key(),
-                                         T_mpd_cliques[*iter_junction] );
+                                         T_mpd_cliques[iter_junction.val()] );
 
     __has_max_prime_junction_tree = true;
   }
@@ -589,7 +589,7 @@ namespace gum {
       // the cliques sets can be computed
       if ( !__minimality_required ) {
         const NodeSet& nei = tmp_graph.neighbours ( removable_node );
-        NodeSet& cliques = __elim_cliques.insert ( removable_node, NodeSet() );
+        NodeSet& cliques = __elim_cliques.insert ( removable_node, NodeSet() ).second;
         cliques.resize ( nei.size() / 2 );
         cliques << removable_node;
 

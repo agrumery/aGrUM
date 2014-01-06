@@ -80,7 +80,7 @@ namespace gum {
     for ( HashTableIteratorSafe<NodeId, Potential<GUM_SCALAR>*> iter =
             __sampling_nbr.beginSafe ();
           iter != __sampling_nbr.endSafe (); ++iter )
-      delete( *iter );
+      delete( iter.val() );
   }
 
   /// setter/getter for __inference_is_required
@@ -107,7 +107,7 @@ namespace gum {
     for ( HashTableIteratorSafe<NodeId, Potential<GUM_SCALAR>*> iter =
             __sampling_nbr.beginSafe();
           iter != __sampling_nbr.endSafe(); ++iter ) {
-      ( *iter )->fill( ( GUM_SCALAR ) 0 );
+      ( iter.val() )->fill( ( GUM_SCALAR ) 0 );
     }
   }
 
@@ -133,8 +133,8 @@ namespace gum {
       //GUM_SCALAR n_v = ( *iter )->get( *__sampling_idx[id] ) + 1;
       //( *iter )->set( *__sampling_idx[id], n_v );
 
-      GUM_SCALAR n_v=1+ ( *iter )->get( particle() );
-      ( *iter )->set( particle(),n_v );
+      GUM_SCALAR n_v=1+ ( iter.val() )->get( particle() );
+      ( iter.val() )->set( particle(),n_v );
 
       if ( n_v == ( GUM_SCALAR ) 1 ) sum_entropy += 100;
       else sum_entropy += n_v * log( n_v / ( n_v - 1 ) );
@@ -153,7 +153,7 @@ namespace gum {
       //const DiscreteVariable& v = bn().variable( id );
       //__sampling_idx[id]->chgVal( v, __current_sample.val( v ) );
       //( *iter )->set( *__sampling_idx[id], ( *iter )->get( *__sampling_idx[id] ) + 1 );
-      ( *iter )->set( particle(), ( *iter )->get( particle() ) +1 );
+      ( iter.val() )->set( particle(), ( iter.val() )->get( particle() ) +1 );
     }
   }
 

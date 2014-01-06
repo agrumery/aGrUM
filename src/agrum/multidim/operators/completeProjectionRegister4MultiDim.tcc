@@ -47,7 +47,7 @@ namespace gum {
     CompleteProjectionSet* theset;
 
     if ( ! __set.exists( projection_name ) ) {
-      theset = __set.insert( projection_name, new CompleteProjectionSet );
+      theset = __set.insert( projection_name, new CompleteProjectionSet ).second;
 #ifndef NDEBUG
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the CompleteProjectionRegister4MultiDim
@@ -135,7 +135,7 @@ namespace gum {
     // remove all the sets
     for ( typename HashTable<std::string, CompleteProjectionSet*>::iterator_safe iter =
             __set.beginSafe(); iter != __set.endSafe(); ++iter )
-      delete *iter;
+      delete iter.val();
   }
 
 

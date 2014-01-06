@@ -104,7 +104,7 @@ namespace gum {
 
     for ( HashTableConstIteratorSafe< std::string, const DiscreteVariable* > iterM = __varNameMap.beginSafe(); iterM != __varNameMap.endSafe(); ++iterM )
       if ( iterM.key().compare( name ) == 0 )
-        return *iterM;
+        return iterM.val();
 
 
     GUM_TRACE( __varNameMap );

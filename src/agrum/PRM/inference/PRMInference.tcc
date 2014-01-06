@@ -34,11 +34,11 @@ namespace gum {
     void
     PRMInference<GUM_SCALAR>::clearEvidence() {
       for ( EvidenceIterator iter = __evidences.beginSafe(); iter != __evidences.endSafe(); ++iter ) {
-        for ( PRMInference<GUM_SCALAR>::EMapIterator jter = ( *iter )->beginSafe(); jter != ( *iter )->endSafe(); ++jter ) {
-          delete *jter;
+        for ( PRMInference<GUM_SCALAR>::EMapIterator jter = ( iter.val() )->beginSafe(); jter != ( iter.val () )->endSafe(); ++jter ) {
+          delete jter.val();
         }
 
-        delete *iter;
+        delete iter.val ();
       }
 
       __evidences.clear();
@@ -52,13 +52,13 @@ namespace gum {
       for ( PRMInference<GUM_SCALAR>::EvidenceConstIterator iter = source.__evidences.beginSafe(); iter != source.__evidences.endSafe(); ++iter ) {
         __evidences.insert ( iter.key(), new PRMInference<GUM_SCALAR>::EMap() );
 
-        for ( PRMInference<GUM_SCALAR>::EMapIterator jter = ( *iter )->beginSafe(); jter != ( *iter )->endSafe(); ++jter ) {
+        for ( PRMInference<GUM_SCALAR>::EMapIterator jter = ( iter.val() )->beginSafe(); jter != ( iter.val() )->endSafe(); ++jter ) {
           Potential<GUM_SCALAR>* e = new Potential<GUM_SCALAR>();
-          e->add ( * ( ( **jter ).variablesSequence().front() ) );
+          e->add ( * ( ( *( jter.val() ) ).variablesSequence().front() ) );
           Instantiation i ( *e );
 
           for ( i.setFirst(); not i.end(); i.inc() ) {
-            e->set ( i, ( **jter ).get ( i ) );
+            e->set ( i, ( *( jter.val() ) ).get ( i ) );
           }
 
           __evidences[iter.key()]->insert ( jter.key(), e );
@@ -76,13 +76,13 @@ namespace gum {
       for ( PRMInference<GUM_SCALAR>::EvidenceConstIterator iter = source.__evidences.beginSafe(); iter != source.__evidences.endSafe(); ++iter ) {
         __evidences.insert ( iter.key(), new PRMInference<GUM_SCALAR>::EMap() );
 
-        for ( PRMInference<GUM_SCALAR>::EMapIterator jter = ( *iter )->beginSafe(); jter != ( *iter )->endSafe(); ++jter ) {
+        for ( PRMInference<GUM_SCALAR>::EMapIterator jter = ( iter.val () )->beginSafe(); jter != ( iter.val () )->endSafe(); ++jter ) {
           Potential<GUM_SCALAR>* e = new Potential<GUM_SCALAR>();
-          e->add ( * ( ( **jter ).variablesSequence().front() ) );
+          e->add ( * ( ( *( jter.val() ) ).variablesSequence().front() ) );
           Instantiation i ( *e );
 
           for ( i.setFirst(); not i.end(); i.inc() ) {
-            e->set ( i, ( **jter ).get ( i ) );
+            e->set ( i, ( *( jter.val() ) ).get ( i ) );
           }
 
           __evidences[iter.key()]->insert ( jter.key(), e );

@@ -313,7 +313,7 @@ namespace gum {
       // this means that we need to add new roots
       for ( NodeProperty<bool>::iterator_safe iter = mark.beginSafe ();
             iter != mark.endSafe (); ++iter ) {
-        if ( ! *iter ) {
+        if ( ! iter.val () ) {
           __roots << iter.key();
           __markConnectedComponent ( JT, iter.key(), mark );
         }

@@ -32,7 +32,7 @@ namespace gum {
     public:
       /// computes the hashed value of a key
       Size operator()( const gum::Set<int>& key ) const  {
-        return ( ( key.size() * GUM_HASHTABLE_INT_GOLD ) & _hash_mask );
+        return ( ( key.size() * gum::HashFuncConst::gold ) & _hash_mask );
       }
   };
 }

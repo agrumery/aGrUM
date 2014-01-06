@@ -65,7 +65,7 @@ namespace gum {
 
     try {
       for ( iter = __indices.beginSafe(); iter != __indices.endSafe(); ++iter ) {
-        for ( iter_index = iter->begin(); iter_index != iter->end();
+        for ( iter_index = iter.val().begin(); iter_index != iter.val().end();
               ++iter_index ) {
           const std::pair<Priority,Val*>& from_pair = *from.__heap[*iter_index];
           __heap[*iter_index] =
@@ -77,11 +77,11 @@ namespace gum {
       for ( HashTableConstIteratorSafe< Val,std::vector<Size> >
             iter2 = __indices.beginSafe(); iter2!=iter; ++iter2 )
         for ( typename std::vector<Size>::const_iterator
-              iter_index2 = iter2->begin();
-              iter_index2 != iter2->end(); ++iter_index2 )
+              iter_index2 = iter2.val().begin();
+              iter_index2 != iter2.val().end(); ++iter_index2 )
           delete __heap[*iter_index2];
 
-      for ( typename std::vector<Size>::const_iterator iter_index2 = iter->begin();
+      for ( typename std::vector<Size>::const_iterator iter_index2 = iter.val().begin();
             iter_index2 != iter_index; ++iter_index2 )
         delete __heap[*iter_index2];
 
@@ -134,7 +134,7 @@ namespace gum {
 
       try {
         for ( iter = __indices.beginSafe(); iter != __indices.endSafe(); ++iter )
-          for ( iter_index = iter->begin(); iter_index != iter->end();
+          for ( iter_index = iter.val().begin(); iter_index != iter.val().end();
                 ++iter_index ) {
             const std::pair<Priority, Val*>& from_pair = *from.__heap[*iter_index];
 
@@ -152,14 +152,14 @@ namespace gum {
         typename std::vector<Size>::const_iterator iter_index2;
 
         for ( iter2 = __indices.beginSafe(); iter2 != iter; ++iter2 ) {
-          for ( iter_index2=iter2->begin(); iter_index2!=iter2->end();
+          for ( iter_index2=iter2.val().begin(); iter_index2!=iter2.val().end();
                 ++iter_index2 ) {
             delete __heap[*iter_index2];
             __heap[*iter_index2] = 0;
           }
         }
 
-        for ( iter_index2 = iter->begin(); iter_index2 != iter_index;
+        for ( iter_index2 = iter.val().begin(); iter_index2 != iter_index;
               ++iter_index2 ) {
           delete __heap[*iter_index2];
           __heap[*iter_index2] = 0;

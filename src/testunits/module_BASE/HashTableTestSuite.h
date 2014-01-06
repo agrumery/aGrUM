@@ -411,7 +411,7 @@ namespace gum_tests {
         for ( gum::HashTable<int, std::string>::iterator_safe iter = t1.beginSafe();
               iter != t1.endSafe();
               ++ iter ) {
-          obtained.insert( *iter );
+          obtained.insert( iter.val() );
         }
 
         TS_ASSERT_EQUALS( expected.size(), obtained.size() );
@@ -433,7 +433,7 @@ namespace gum_tests {
 
         for ( gum::HashTable<int, std::string>::iterator_safe iter = t1.beginSafe();
               iter != t1.endSafe(); ++iter ) {
-          obtained.insert( *iter );
+          obtained.insert( iter.val() );
         }
 
         TS_ASSERT_EQUALS( expected.size(), obtained.size() );

@@ -169,12 +169,12 @@ namespace gum {
 
             for ( auto growth = edge_count->beginSafe(); growth != edge_count->endSafe(); ++growth ) {
               try {
-                __tree.growPattern ( *p, **growth, 2 );
+                __tree.growPattern ( *p, *( growth.val() ), 2 );
               } catch ( OperationNotAllowed& e ) {
                 // The child was not minimal or was not worth considering
               }
 
-              delete *growth;
+              delete growth.val ();
             }
 
             delete edge_count;
@@ -329,7 +329,7 @@ namespace gum {
     GSpan<GUM_SCALAR>::~GSpan() {
       GUM_DESTRUCTOR ( GSpan );
       for ( auto match = __matched_instances.beginSafe(); match != __matched_instances.endSafe(); ++match ) {
-        delete *match;
+        delete match.val();
       }
 
       delete __graph;

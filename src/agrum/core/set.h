@@ -116,7 +116,7 @@ namespace gum {
        * @param resize_policy enables the hashtable to resize itself automatically
        * when its number of elements is sufficiently high that it induces slow
        * retrievals of elements */
-      Set( Size capacity = GUM_HASHTABLE_DEFAULT_SIZE,  bool resize_policy = true );
+      Set( Size capacity = HashTableConst::default_size,  bool resize_policy = true );
 
       /// copy constructor
       Set( const Set<KEY>& aHT );

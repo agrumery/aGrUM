@@ -35,7 +35,7 @@ namespace gum {
       typedef HashTable< std::string, std::pair<bool, bool> >::const_iterator_safe Iter;
 
       for ( Iter iter = c.__IOFlags.beginSafe(); iter != c.__IOFlags.endSafe(); ++iter ) {
-        _setIOFlag ( get ( iter.key() ), *iter );
+        _setIOFlag ( get ( iter.key() ), iter.val() );
       }
     }
 

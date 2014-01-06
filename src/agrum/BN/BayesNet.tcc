@@ -83,7 +83,7 @@ namespace gum {
     for ( HashTableConstIteratorSafe<NodeId, Potential<GUM_SCALAR>*> iter = __probaMap.beginSafe();
           iter != __probaMap.endSafe();
           ++iter ) {
-      delete *iter;
+      delete iter.val ();
     }
   }
 
@@ -491,7 +491,7 @@ namespace gum {
   void BayesNet<GUM_SCALAR>::__clearPotentials() {
     // Removing previous potentials
     for ( HashTableConstIteratorSafe< NodeId, Potential<GUM_SCALAR>* > iter = __probaMap.beginSafe(); iter != __probaMap.endSafe(); ++iter ) {
-      delete *iter;
+      delete iter.val();
     }
 
     __probaMap.clear();
@@ -509,12 +509,12 @@ namespace gum {
       // First we build the node's CPT
       copy_array = new Potential<GUM_SCALAR>();
 
-      for ( gum::Idx i = 0; i < ( *srcIter )->nbrDim(); i++ ) {
-        ( *copy_array ) << variableFromName ( ( *srcIter )->variable ( i ).name() );
+      for ( gum::Idx i = 0; i < ( srcIter.val() )->nbrDim(); i++ ) {
+        ( *copy_array ) << variableFromName ( ( srcIter.val() )->variable ( i ).name() );
       }
 
 
-      copy_array->copyFrom ( **srcIter );
+      copy_array->copyFrom ( *( srcIter.val() ) );
 
       // We add the CPT to the CPT's hashmap
       __probaMap.insert ( srcIter.key(), copy_array );

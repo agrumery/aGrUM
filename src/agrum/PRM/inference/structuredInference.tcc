@@ -57,16 +57,16 @@ namespace gum {
       delete this->__gspan;
 
       for ( auto iter = __elim_map.beginSafe(); iter != __elim_map.endSafe(); ++iter )
-        delete ( *iter );
+        delete ( iter.val() );
 
       for ( auto iter = __cdata_map.beginSafe(); iter != __cdata_map.endSafe(); ++iter )
-        delete *iter;
+        delete iter.val();
 
       for ( auto iter = __trash.begin(); iter != __trash.end(); ++iter )
         delete ( *iter );
 
       for ( auto iter = __outputs.beginSafe(); iter != __outputs.endSafe(); ++iter )
-        delete *iter;
+        delete iter.val();
 
       if ( __pdata )
         delete __pdata;
@@ -338,12 +338,12 @@ namespace gum {
       for ( auto inst = match.begin(); inst != match.end(); ++inst ) {
         for ( auto attr = ( **inst ).begin(); attr != ( **inst ).end(); ++attr ) {
           NodeId id = data.graph.insertNode();
-          v = std::make_pair ( inst.pos(), ( **attr ).safeName() );
+          v = std::make_pair ( inst.pos(), ( *( attr.val() ) ).safeName() );
           data.map.insert ( id, v );
-          data.node2attr.insert ( id, __str ( *inst, *attr ) );
-          data.mod.insert ( id, ( **attr ).type()->domainSize() );
-          data.vars.insert ( id, & ( ( **attr ).type().variable() ) );
-          pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( & ( ( **attr ).cpf() ) ) );
+          data.node2attr.insert ( id, __str ( *inst, attr.val() ) );
+          data.mod.insert ( id, ( *( attr.val() ) ).type()->domainSize() );
+          data.vars.insert ( id, & ( ( *( attr.val() ) ).type().variable() ) );
+          pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( & ( ( *( attr.val() ) ).cpf() ) ) );
           pot = & ( ( **inst ).get ( v.second ).cpf() );
 
           for ( auto var = pot->variablesSequence().begin();
@@ -354,9 +354,9 @@ namespace gum {
             } catch ( DuplicateElement& ) { } catch ( NotFound& ) { }
           }
 
-          __insertNodeInElimLists ( data, match, *inst, *attr, id, v );
+          __insertNodeInElimLists ( data, match, *inst, attr.val(), id, v );
 
-          if ( data.inners().exists ( id ) and ( ( **inst ).type().dag().children ( ( **attr ).id() ).size() == 0 ) and __allInstanceNoRefAttr ( data, v ) )
+          if ( data.inners().exists ( id ) and ( ( **inst ).type().dag().children ( ( *( attr.val() ) ).id() ).size() == 0 ) and __allInstanceNoRefAttr ( data, v ) )
             data.barren.insert ( id );
         }
       }
@@ -573,7 +573,7 @@ namespace gum {
       Instance<GUM_SCALAR>* inst = nullptr;
 
       for ( auto i = this->_sys->begin(); i != this->_sys->end(); ++i ) {
-        inst = *i;
+        inst = i.val();
 
         if ( not __reducedInstances.exists ( inst ) ) {
           // Checking if its not an empty class
@@ -619,14 +619,14 @@ namespace gum {
 
               // Adding the potentials
               for ( auto attr = inst->begin(); attr != inst->end(); ++attr )
-                pool.insert ( & ( ( **attr ).cpf() ) );
+                pool.insert ( & ( ( *( attr.val() ) ).cpf() ) );
 
               // Adding evidences if any
               if ( this->hasEvidence ( inst ) ) {
                 const auto& evs = this->evidence ( inst );
 
                 for ( auto  e = evs.beginSafe(); e != evs.endSafe(); ++e )
-                  pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( *e ) );
+                  pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( e.val() ) );
               }
 
               PartialOrderedTriangulation t ( & ( data->moral_graph ), & ( data->mods ), & ( partial_order ) );
@@ -639,14 +639,14 @@ namespace gum {
               // Second case, the instance has evidences
               // Adding the potentials
               for ( auto attr = inst->begin(); attr != inst->end(); ++attr )
-                pool.insert ( & ( ( **attr ).cpf() ) );
+                pool.insert ( & ( ( *( attr.val() ) ).cpf() ) );
 
               // Adding evidences
 
               const auto& evs = this->evidence ( inst );
 
               for ( auto e = evs.beginSafe(); e != evs.endSafe(); ++e )
-                pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( *e ) );
+                pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( e.val() ) );
 
               PartialOrderedTriangulation t ( & ( data->moral_graph ), & ( data->mods ), & ( partial_order ) );
 
@@ -719,7 +719,7 @@ namespace gum {
       Set<Potential<GUM_SCALAR>*>* pool = 0;
 
       for ( auto iter = __elim_map.beginSafe(); iter != __elim_map.endSafe(); ++iter ) {
-        pool = *iter;
+        pool = iter.val();
 
         // We add edges between variables in the same reduced patterns
         for ( auto jter = pool->begin(); jter != pool->end(); ++jter ) {
@@ -907,8 +907,8 @@ namespace gum {
     template<typename GUM_SCALAR>
     void
     StructuredInference<GUM_SCALAR>::searchPatterns() {
-      const Instance<GUM_SCALAR>* i = * ( this->_sys->begin() );
-      __query = std::make_pair ( i, * ( i->begin() ) );
+      const Instance<GUM_SCALAR>* i = ( this->_sys->begin() ).val();
+      __query = std::make_pair ( i, i->begin().val() );
       __found_query = false;
       StructuredInference<GUM_SCALAR>::RGData data;
       __buildReduceGraph ( data );

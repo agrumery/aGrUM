@@ -817,12 +817,12 @@ namespace gum {
     _model.insertNode();
 
     for ( HashTableIteratorSafe< const DiscreteVariable*, List<NodeId>* > iter = _var2NodeIdMap.beginSafe(); iter != _var2NodeIdMap.endSafe(); ++iter )
-      delete *iter;
+      delete iter.val();
 
     _var2NodeIdMap.clear();
 
     for ( HashTableIteratorSafe< const DiscreteVariable*, std::vector<Idx>* > iter = _varUsedModalitiesMap.beginSafe(); iter != _varUsedModalitiesMap.endSafe(); ++iter )
-      delete *iter;
+      delete iter.val();
 
     _varUsedModalitiesMap.clear();
   }

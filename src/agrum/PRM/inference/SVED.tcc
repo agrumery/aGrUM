@@ -33,7 +33,7 @@ namespace gum {
       GUM_DESTRUCTOR ( SVED );
 
       for ( auto i = __elim_orders.beginSafe(); i != __elim_orders.endSafe(); ++i ) {
-        delete *i;
+        delete i.val();
       }
 
       if ( __class_elim_order != 0 ) {
@@ -232,12 +232,12 @@ namespace gum {
 
       for ( auto e = evs.beginSafe(); e != evs.endSafe(); ++e )
         if ( __bb.requisiteNodes ( i ).exists ( e.key() ) )
-          pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( *e ) );
+          pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( e.val() ) );
 
       // Adding potentials and eliminating the remaining nodes
       for ( auto a = i->begin(); a != i->end(); ++a )
         if ( __bb.requisiteNodes ( i ).exists ( a.key() ) )
-          pool.insert ( & ( ( **a ).cpf() ) );
+          pool.insert ( & ( ( *( a.val() ) ).cpf() ) );
 
       InstanceBayesNet<GUM_SCALAR> bn ( *i );
       DefaultTriangulation t ( & ( bn.moralGraph() ), & ( bn.modalities() ) );
@@ -454,11 +454,11 @@ namespace gum {
           GUM_TRACE ( chain.first->name() + dot + chain.second->safeName() );
 
           for ( auto jter = this->_sys->begin(); jter != this->_sys->end(); ++jter ) {
-            for ( auto a = ( **jter ).begin(); a != ( **jter ).end(); ++a ) {
-              if ( ( **iter ).contains ( ( **a ).type().variable() ) ) {
-                GUM_TRACE ( ( **jter ).name() + dot + ( **a ).safeName() );
+            for ( auto a = ( *( jter.val() ) ).begin(); a != ( *( jter.val() ) ).end(); ++a ) {
+              if ( ( **iter ).contains ( ( *( a.val() ) ).type().variable() ) ) {
+                GUM_TRACE ( ( *( jter.val() ) ).name() + dot + ( *( a.val() ) ).safeName() );
 
-                if ( __bb.exists ( *jter ) ) {
+                if ( __bb.exists ( jter.val() ) ) {
                   GUM_TRACE ( "should be eliminated" );
                 } else {
                   GUM_TRACE ( "should not be here" );
@@ -470,17 +470,17 @@ namespace gum {
                 //   std::cerr << "Instance<GUM_SCALAR> eliminated in:       " << none << std::endl;
                 // }
                 try {
-                  std::cerr << "Instance<GUM_SCALAR> has requisite nodes: " << __bb.requisiteNodes ( *jter ).size() << std::endl;
+                  std::cerr << "Instance<GUM_SCALAR> has requisite nodes: " << __bb.requisiteNodes ( jter.val() ).size() << std::endl;
                 } catch ( NotFound& ) {
                   std::cerr << "Instance<GUM_SCALAR> has requisite nodes: " << none << std::endl;
                 }
 
-                std::cerr << "Attribute<GUM_SCALAR> has refered attr:   " << ( ( **jter ).hasRefAttr ( ( **a ).id() ) ) << std::endl;
+                std::cerr << "Attribute<GUM_SCALAR> has refered attr:   " << ( ( *(jter.val()) ).hasRefAttr ( ( *(a.val()) ).id() ) ) << std::endl;
 
-                if ( ( **jter ).hasRefAttr ( ( **a ).id() ) ) {
+                if ( ( *(jter.val()) ).hasRefAttr ( ( *( a.val()) ).id() ) ) {
                   bool foo = false;
 
-                  const auto& refs = ( **jter ).getRefAttr ( ( **a ).id() );
+                  const auto& refs = ( *( jter.val() ) ).getRefAttr ( ( *( a.val() ) ).id() );
 
                   for ( auto ref = refs.begin(); ref != refs.end(); ++ref ) {
                     if ( __bb.exists ( ref->first ) and __bb.requisiteNodes ( ref->first ).exists ( ref->first->type().get ( ref->second ).id() ) ) {
@@ -496,16 +496,16 @@ namespace gum {
                 }
 
                 try {
-                  std::cerr << "Attribute<GUM_SCALAR> is required:        " << ( __bb.requisiteNodes ( *jter ).exists ( ( **a ).id() ) );
+                  std::cerr << "Attribute<GUM_SCALAR> is required:        " << ( __bb.requisiteNodes ( jter.val() ).exists ( ( *( a.val() ) ).id() ) );
                 } catch ( NotFound& ) {
                   std::cerr << "Attribute<GUM_SCALAR> is required:        " << none;
                 }
 
                 std::cerr << std::endl;
-                std::cerr << "Attribute<GUM_SCALAR> has evidence:       " << ( this->hasEvidence ( *jter ) );
+                std::cerr << "Attribute<GUM_SCALAR> has evidence:       " << ( this->hasEvidence ( jter.val () ) );
                 std::cerr << std::endl;
-                std::cerr << "Attribute<GUM_SCALAR> parents number:     " << ( ( **jter ).type().dag().parents ( ( **a ).id() ).size() ) << std::endl;
-                std::cerr << "Attribute<GUM_SCALAR> children number:    " << ( ( **jter ).type().dag().children ( ( **a ).id() ).size() ) << std::endl;
+                std::cerr << "Attribute<GUM_SCALAR> parents number:     " << ( ( *( jter.val() ) ).type().dag().parents ( ( *( a.val() ) ).id() ).size() ) << std::endl;
+                std::cerr << "Attribute<GUM_SCALAR> children number:    " << ( ( *( jter.val() ) ).type().dag().children ( ( *( a.val () ) ).id() ).size() ) << std::endl;
               }
             }
           }
@@ -523,20 +523,20 @@ namespace gum {
         // for (SVED<GUM_SCALAR>::ArraySetIterator j = (**iter).begin(); j != (**iter).end(); ++j) {
         //   delete *j;
         // }
-        delete *iter;
+        delete iter.val ();
       }
 
       __lifted_pools.clear();
 
       for ( auto iter = __req_set.beginSafe(); iter != __req_set.endSafe(); ++iter ) {
-        delete iter->first;
-        delete iter->second;
+        delete iter.val().first;
+        delete iter.val().second;
       }
 
       __req_set.clear();
 
       for ( auto iter = __elim_orders.beginSafe(); iter != __elim_orders.endSafe(); ++iter ) {
-        delete *iter;
+        delete iter.val ();
       }
 
       __elim_orders.clear();
@@ -595,7 +595,7 @@ namespace gum {
       const auto& evs = this->evidence ( i );
 
       for ( auto iter = evs.beginSafe(); iter != evs.endSafe(); ++iter ) {
-        pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( *iter ) );
+        pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( iter.val () ) );
       }
     }
 

@@ -274,7 +274,7 @@ namespace gum {
     for ( NodeProperty<NodeSet>::const_iterator_safe iter =
             infos_DFS.cliques_DFS_chain.beginSafe();
           iter != infos_DFS.cliques_DFS_chain.endSafe(); ++iter )
-      if ( ! iter->empty() ) return false;
+      if ( ! iter.val().empty() ) return false;
 
     return true;
   }
@@ -289,7 +289,7 @@ namespace gum {
     // check if the __cliques are identical
     for ( NodeProperty<NodeSet>::const_iterator_safe iter = __cliques.beginSafe();
           iter != __cliques.endSafe(); ++iter )
-      if ( *iter != from.__cliques[iter.key()] ) return false;
+      if ( iter.val () != from.__cliques[iter.key()] ) return false;
 
     return true;
   }

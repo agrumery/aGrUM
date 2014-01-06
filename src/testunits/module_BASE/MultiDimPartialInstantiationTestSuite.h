@@ -217,7 +217,7 @@ namespace gum_tests {
 
         for ( gum::HashTable<const gum::DiscreteVariable*,gum::Idx>::const_iterator_safe
               iter = inst_vars.beginSafe (); iter != inst_vars.endSafe (); ++iter ) {
-          partial_inst.chgVal( iter.key(), *iter );
+          partial_inst.chgVal( iter.key(), iter.val() );
         }
 
         // fill the table
@@ -264,7 +264,7 @@ namespace gum_tests {
 
         for ( gum::HashTable<const gum::DiscreteVariable*,gum::Idx>::const_iterator_safe
               iter = inst_vars.beginSafe(); iter != inst_vars.endSafe(); ++iter ) {
-          partial_inst.chgVal( iter.key(), *iter );
+          partial_inst.chgVal( iter.key(), iter.val() );
         }
 
         // fill the table
@@ -311,7 +311,7 @@ namespace gum_tests {
 
         for ( gum::HashTable<const gum::DiscreteVariable*,gum::Idx>::const_iterator_safe
               iter = inst_vars.beginSafe(); iter != inst_vars.endSafe(); ++iter ) {
-          partial_inst.chgVal( iter.key(), *iter );
+          partial_inst.chgVal( iter.key(), iter.val() );
         }
 
         // fill the table
@@ -358,7 +358,7 @@ namespace gum_tests {
 
         for ( gum::HashTable<const gum::DiscreteVariable*,gum::Idx>::const_iterator_safe
               iter = inst_vars.beginSafe(); iter != inst_vars.endSafe(); ++iter ) {
-          partial_inst.chgVal( iter.key(), *iter );
+          partial_inst.chgVal( iter.key(), iter.val() );
         }
 
         // fill the table

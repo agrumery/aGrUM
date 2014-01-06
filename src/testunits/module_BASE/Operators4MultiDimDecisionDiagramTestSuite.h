@@ -290,7 +290,7 @@ namespace gum_tests {
           }
 
           for ( gum::HashTableIteratorSafe< const gum::DiscreteVariable*, gum::List<gum::NodeId>* > ht = var2NodeIdMap.beginSafe (); ht != var2NodeIdMap.endSafe(); ++ht )
-            delete *ht;
+            delete ht.val();
           
           ret = f->getMultiDimDecisionDiagram ( true, 0, true );
         }

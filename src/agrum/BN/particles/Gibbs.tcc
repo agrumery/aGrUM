@@ -80,21 +80,21 @@ namespace gum {
 
       for ( HashTableIteratorSafe<NodeId, Instantiation*> iter = __sampling_idx.beginSafe();
             iter != __sampling_idx.endSafe(); ++iter )
-        delete ( *iter );
+        delete ( iter.val () );
 
       for ( HashTableIteratorSafe<NodeId, Potential<GUM_SCALAR>*> iter =
               __sampling_posterior.beginSafe();
             iter != __sampling_posterior.endSafe(); ++iter )
-        delete ( *iter );
+        delete ( iter.val() );
 
       for ( HashTableIteratorSafe<NodeId, std::vector<NodeId>*> iter =
               __node_children.beginSafe();
             iter != __node_children.endSafe(); ++iter )
-        delete ( *iter );
+        delete ( iter.val() );
 
       for ( HashTableIteratorSafe<NodeId, Instantiation*> iter = __cpt_idx.beginSafe();
             iter != __cpt_idx.endSafe(); ++iter )
-        delete ( *iter );
+        delete ( iter.val () );
     }
 
     template <typename GUM_SCALAR> INLINE

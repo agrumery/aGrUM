@@ -58,12 +58,12 @@ namespace gum {
 
     for ( typename Property< MultiDimBucket<GUM_SCALAR>* >::onArcs::iterator_safe
           iter = __messagesMap.beginSafe(); iter != __messagesMap.endSafe(); ++iter ) {
-      delete *iter;
+      delete iter.val();
     }
 
     for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator_safe
           iter = __clique_prop.beginSafe(); iter != __clique_prop.endSafe(); ++iter ) {
-      delete *iter;
+      delete iter.val();
     }
 
     for ( SetIterator< Potential<GUM_SCALAR>* > iter = __dummies.begin();
@@ -89,12 +89,12 @@ namespace gum {
     // Setting all collect flags at false
     for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator_safe
           iter = __clique_prop.beginSafe(); iter != __clique_prop.endSafe(); ++iter ) {
-      ( *iter )->isCollected = false;
+      ( iter.val() )->isCollected = false;
     }
 
     for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator_safe
           iter = __clique_prop.beginSafe(); iter != __clique_prop.endSafe(); ++iter ) {
-      if ( not ( *iter )->isCollected ) {
+      if ( not ( iter.val() )->isCollected ) {
         __collectFromClique ( iter.key() );
         __diffuseFromClique ( iter.key() );
       }
@@ -187,7 +187,7 @@ namespace gum {
     for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator_safe
           iter = __clique_prop.beginSafe(); iter != __clique_prop.endSafe(); ++iter ) {
       __removeDiffusedMessages ( iter.key() );
-      ( *iter )->removeAllEvidence();
+      ( iter.val() )->removeAllEvidence();
     }
   }
 

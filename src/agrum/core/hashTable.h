@@ -24,17 +24,32 @@
  *
  * This file provides class HashTable. This class is both efficient and flexible:
  * efficient because the access to elements is usually computed using a small
- * amount of processor instructions, and flexible because several methods allow
- * fine tuning the behavior of each hash table. For instance, a hashtable can
+ * amount of processor instructions, and flexible because several methods allow to
+ * fine tune the behavior of each hash table. For instance, a hashtable can
  * allow or forbid different elements to have the same key. This behavior can be
  * modified at any time during the execution of the program. Functions for hashing
  * keys are defined in file HashFunc.h. Here again, these functions are quite
  * flexible as they can be overloaded by the user to support new kind of keys. In
- * addition to HashTable, the current file provides class HashTableIterator that
- * allows safe parsing of the hash tables. By safe, we mean that whenever the
- * element pointed to by an iterator is removed from the hashtable, accessing it
- * through the iterator (*iter) does not result in a segmentation fault but rather
- * in an exception being thrown. This safety is ensured at a very low cost.
+ * addition to HashTable, the current file provides classes HashTableIteratorSafe
+ * and HashTableConstIteratorSafe (a.k.a.  HashTable<>::iterator_safe and
+ * HashTable<>::const_iterator_safe) that allow safe parsing of the hash tables.
+ * By safe, we mean that whenever the element pointed to by such an iterator is
+ * removed from the hashtable, accessing it through the iterator (*iter) does not
+ * result in a segmentation fault but rather in an exception being thrown. This
+ * safety is ensured at a very low cost (actually, our experiments show that our
+ * HashTables and HashTable's safe iterators significantly outperform the standard
+ * library unordered_maps). Of course, if there is no possibility for an iterator
+ * to point to a delete element, the user can use "unsafe" iterators
+ * HashTableIterator and HashTableConstIterator (a.k.a. HashTable<>::iterator and
+ * HashTable<>::const_iterator). Those iterators are slightly faster than their
+ * safe counterparts. However, as in the standard library, accessing through them
+ * a deleted element usually results in a mess (most probably a segfault).
+ *
+ * @warning HashTables @b guarantee that any element stored within them will have
+ * the @b same @b location in memory until it is removed from the hashtable
+ * (and this holds whatever operation is performed on the hashtable like new
+ * insertions, deletions, resizing, etc.).
+ *
  * @par Usage example:
  * @code
  * // creation of an empty hash table
@@ -43,6 +58,9 @@
  * // insert two elements into the hash table
  * table1.insert (10,"xxx");
  * table1.insert (20,"yyy");
+ *
+ * // creation of a nonempty hashtable (using initializer lists
+ * HashTable<int,bool> table { std::make_pair (3,true), std::make_pair(2,false) };
  *
  * // display the content of the hash table
  * cerr << table1;
@@ -62,11 +80,11 @@
  *
  * // transform the hashtable of string into a hashtable of int assuming f is
  * // defined as: int f (const string& str) { return str.size (); }
- * HashTable<int,char*> table = table1.map (f);
+ * HashTable<int,int> table = table1.map (f);
  *
  * // remove two elements from table1 and table2
- * table1.erase (10);
- * table1.eraseByVal ("yyy");
+ * table1.erase (10);         // key = 10
+ * table1.eraseByVal ("yyy"); // val = "yyy"
  * table2.clear ();
  *
  * // check whether the hash table is empty
@@ -76,19 +94,23 @@
  * if ((table1 == table2) && (table1 != table3))
  *   cerr << "check for equality/inequality" << endl;
  *
- * // parse the content of a hashtable
- * for (HashTable<int,string>::iterator iter = table1.begin();
- *       iter != table1.end(); ++iter)
+ * // parse the content of a hashtable using an unsafe iterator
+ * for (HashTable<int,string>::const_iterator iter = table1.cbegin();
+ *       iter != table1.cend(); ++iter)
  *   cerr << *iter;
+ * HashTable<int,string>::iterator iter = table1.begin();
+ * iter += 2;
+ * cerr << iter.key () << " " << iter.val ();
  *
  * // use an iterator to point the element we wish to erase
- * HashTable<int,string>::iterator iter = table1.begin();
- * table1.erase ( iter );
+ * HashTable<int,string>::iterator_safe iterS = table1.beginSafe ();
+ * table1.erase ( table1.beginSafe () + 4 );
+ * table1.erase ( iterS ); // this is safe because the iterator is safe 
  *
  * // check for iterator's safety
- * for (HashTable<int,string>::iterator iter = table1.begin();
- *       iter != table1.end(); ++iter)
- *   table1.eraseByVal (*iter);
+ * for (HashTable<int,string>::iterator_safe iter = table1.beginSafe ();
+ *       iter != table1.endSafe (); ++iter )
+ *   table1.eraseByVal ( *iter );
  * @endcode
  */
 
@@ -96,20 +118,62 @@
 #define GUM_HASH_TABLE_H
 
 #include <iostream>
+#include <utility>
+#include <cstddef>
+#include <string>
+#include <vector>
+#include <initializer_list>
 
 #include <agrum/config.h>
 
 #include <agrum/core/hashFunc.h>
 
+
+/* ############################################################################# */
+/* #                           WARNING:  DEPENDENCIES                          # */
+/* ############################################################################# */
+/*
+ * agrum/core/set.tcc: to speed-up accessors in sets, we rely on the fact (which
+ * holds currently) that hashTable's iterators end are never modified by
+ * insertions or deletions of elements in hash tables. If this property were to be
+ * changed, set.tcc should be updated accordingly
+ * agrum/core/bijection.tcc: same as set.tcc but, in addition, bijections assume
+ * that once a pair (key,val) has been created in the hashtable, its location in
+ * memory will never change, even if the hashtable is resized.
+ * agrum/core/sequence.tcc: same as bijection.tcc
+ * agrum/core/priorityQueue.tcc: same as bijection.tcc
+ * agrum/core/heap.tcc: same as bijection.tcc
+ */
+/* ############################################################################# */
+
+
 namespace gum {
 
+  
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
   // parameters specifying the default behavior of the hashtables
-  extern const Size         GUM_HASHTABLE_DEFAULT_SIZE;
-  extern const unsigned int GUM_HASHTABLE_DEFAULT_MEAN_VAL_BY_SLOT;
-  extern const bool         GUM_HASHTABLE_DEFAULT_RESIZE_POLICY;
-  extern const bool         GUM_HASHTABLE_DEFAULT_UNIQUENESS_POLICY;
+  struct HashTableConst {
+    // The default number of slots in hashtables. By default, hashtables can store
+    // up to thrice the number of slots elements before their size is increased
+    // To each slot corresponds a chained list of elements with the same hashed key
+    static constexpr Size default_size {4};
+
+    // the average number of elements admissible by slots. Once this number is
+    // reached, the size of the hashtable is automatically doubled if we are in 
+    // automatic resize mode
+    static constexpr unsigned int default_mean_val_by_slot {3};
+
+    // a Boolean indicating whether inserting too many values into the hashtable
+    // makes it resize itself automatically. true = automatic, false = manual
+    static constexpr bool default_resize_policy {true};
+
+    // a Boolean indicating the default behavior when trying to insert more than
+    // once elements with identical keys. true = do not insert the elements but the
+    // first one and throw an exception after the first insertion; false = insert
+    // the elements without complaining
+    static constexpr bool default_uniqueness_policy {true};
+  };
 
   template <typename Key, typename Val> class HashTableList;
   template <typename Key, typename Val> class HashTable;
@@ -184,21 +248,23 @@ namespace gum {
    * begin/end iterators. */
   /* =========================================================================== */
   template <typename Key, typename Val> struct HashTableBucket {
-    HashTableBucket<Key, Val>* prev;
-    HashTableBucket<Key, Val>* next;
-    Key key;
-    Val val;
+    std::pair<const Key,Val> pair;
+    HashTableBucket<Key, Val>* prev { nullptr };
+    HashTableBucket<Key, Val>* next { nullptr };
 
-
-    HashTableBucket() : prev( 0 ), next( 0 ) {}
-
-    HashTableBucket( const HashTableBucket<Key,Val>& from ) :
-      prev( 0 ), next( 0 ), key( from.key ), val( from.val ) {}
-
-    HashTableBucket( const Key& k, const Val& v ) :
-      prev( 0 ), next( 0 ), key( k ), val( v ) {}
+    HashTableBucket() {}
+    HashTableBucket( const HashTableBucket<Key,Val>& from ) : pair { from.pair } {}
+    HashTableBucket( const Key& k, const Val& v ) : pair ( std::move ( k ), std::move ( v ) ) {}
+    HashTableBucket( Key&& k, Val&& v ) : pair ( k, v ) {}
+    ~HashTableBucket() {}
+ 
+    std::pair<const Key,Val>& elt () { return pair; }
+    Key& key () { return const_cast<Key&> ( pair.first ); }
+    Val& val () { return pair.second; }
   };
+ 
 
+    
 
 
   /* =========================================================================== */
@@ -206,6 +272,18 @@ namespace gum {
   /* =========================================================================== */
   template <typename Key, typename Val> class HashTableList {
     public:
+    /// types for STL compliance
+    /// @{
+    using key_type        = Key;
+    using mapped_type     = Val;
+    using value_type      = std::pair<const Key,Val>;
+    using reference       = value_type&;
+    using const_reference = const value_type&;
+    using pointer         = value_type*;
+    using const_pointer   = const value_type*;
+    using size_type       = std::size_t;
+    //using allocator_type  = Alloc;
+    /// @}
 
       /* basic constructor that creates an empty list. This is what is used
        * basically by hash tables */
@@ -264,7 +342,7 @@ namespace gum {
        * at the beginning of the list. When allocation cannot be performed, the
        * function raises a bad_alloc exception. */
 
-      Val& insert( const Key& key, const Val& val );
+      value_type& insert( const Key& key, const Val& val );
 
 
       /** inserts a new element in the chained list. The element is inserted
@@ -430,10 +508,24 @@ namespace gum {
   /* =========================================================================== */
   template <typename Key, typename Val> class HashTable {
     public:
-      /// iterators for hash tables (to be used with HashTable<X,Y>::iterator)
-      typedef HashTableIteratorSafe<Key, Val> iterator_safe;
-      typedef HashTableConstIteratorSafe<Key, Val> const_iterator_safe;
-
+ 
+     /// types for STL compliance
+    /// @{
+    using key_type        = Key;
+    using mapped_type     = Val;
+    using value_type      = std::pair<const Key,Val>;
+    using reference       = value_type&;
+    using const_reference = const value_type&;
+    using pointer         = value_type*;
+    using const_pointer   = const value_type*;
+    using size_type       = std::size_t;
+    using difference_type = std::ptrdiff_t;
+    //using allocator_type  = Alloc;
+    //using iterator            = HashTableIterator<Key,Val>;
+    //using const_iterator      = HashTableConstIterator<Key,Val>;
+    using iterator_safe       = HashTableIteratorSafe<Key,Val>;
+    using const_iterator_safe = HashTableConstIteratorSafe<Key,Val>;
+    /// @}
 
       // ############################################################################
       /// @name Constructors / Destructors
@@ -459,9 +551,9 @@ namespace gum {
        * the same key more than once in the table? */
 
       explicit
-      HashTable( Size size_param = GUM_HASHTABLE_DEFAULT_SIZE,
-                 bool resize_pol = GUM_HASHTABLE_DEFAULT_RESIZE_POLICY,
-                 bool key_uniqueness_pol = GUM_HASHTABLE_DEFAULT_UNIQUENESS_POLICY );
+      HashTable( Size size_param = HashTableConst::default_size,
+                 bool resize_pol = HashTableConst::default_resize_policy,
+                 bool key_uniqueness_pol = HashTableConst::default_uniqueness_policy );
 
 
       /// copy constructor
@@ -704,7 +796,7 @@ namespace gum {
        * In this case, the new element is of course not added to the hash table.
        * However, the latter is guaranteed to stay in a coherent state. */
 
-      Val& insert( const Key& key, const Val& val );
+      value_type& insert( const Key& key, const Val& val );
 
 
       /// adds a new element (actually a copy of this element) in the hash table
@@ -817,16 +909,16 @@ namespace gum {
 
       template <typename Mount> HashTable<Key,Mount>
       map( Mount( *f )( Val ), Size size = 0,
-           bool resize_pol = GUM_HASHTABLE_DEFAULT_RESIZE_POLICY,
-           bool key_uniqueness_pol = GUM_HASHTABLE_DEFAULT_UNIQUENESS_POLICY ) const;
+           bool resize_pol = HashTableConst::default_resize_policy,
+           bool key_uniqueness_pol = HashTableConst::default_uniqueness_policy ) const;
       template <typename Mount> HashTable<Key,Mount>
       map( Mount( *f )( Val& ), Size size = 0,
-           bool resize_pol = GUM_HASHTABLE_DEFAULT_RESIZE_POLICY,
-           bool key_uniqueness_pol = GUM_HASHTABLE_DEFAULT_UNIQUENESS_POLICY ) const;
+           bool resize_pol = HashTableConst::default_resize_policy,
+           bool key_uniqueness_pol = HashTableConst::default_uniqueness_policy ) const;
       template <typename Mount> HashTable<Key,Mount>
       map( Mount( *f )( const Val& ), Size size = 0,
-           bool resize_pol = GUM_HASHTABLE_DEFAULT_RESIZE_POLICY,
-           bool key_uniqueness_pol = GUM_HASHTABLE_DEFAULT_UNIQUENESS_POLICY ) const;
+           bool resize_pol = HashTableConst::default_resize_policy,
+           bool key_uniqueness_pol = HashTableConst::default_uniqueness_policy ) const;
 
 
       /// creates a hashtable of mounts with a given value from a hashtable of vals
@@ -846,8 +938,8 @@ namespace gum {
 
       template <typename Mount> HashTable<Key,Mount>
       map( const Mount& val, Size size = 0,
-           bool resize_pol = GUM_HASHTABLE_DEFAULT_RESIZE_POLICY,
-           bool key_uniqueness_pol = GUM_HASHTABLE_DEFAULT_UNIQUENESS_POLICY ) const;
+           bool resize_pol = HashTableConst::default_resize_policy,
+           bool key_uniqueness_pol = HashTableConst::default_uniqueness_policy ) const;
 
       /// @}
 
@@ -1090,15 +1182,16 @@ namespace gum {
        * not point to a valid hash table element
        * @throw UndefinedIteratorValue */
 
-      const Val& operator*() const;
-
+      //const Val& operator*() const;
+  const Val& val () const;
+     
 
       /// dereferences the value pointed to by the iterator
       /** This operator allows developers to write code like @c iterator->member()
        * to run the member() method of the Val pointed to by the iterator
        * @throw UndefinedIteratorValue */
 
-      const Val* operator-> () const;
+      //const Val* operator-> () const;
 
       /// @}
 
@@ -1274,17 +1367,19 @@ namespace gum {
        * not point to a valid hash table element
        * @throw UndefinedIteratorValue */
 
-      Val& operator*() ;
-      const Val& operator*() const;
+      //Val& operator*() ;
+      //const Val& operator*() const;
 
+      Val& val ();
+      const Val& val () const;
 
       /// dereferences the value pointed to by the iterator
       /** This operator allows developers to write code like @c iterator->member()
        * to run the member() method of the Val pointed to by the iterator
        * @throw UndefinedIteratorValue */
 
-      Val* operator-> ();
-      const Val* operator-> () const;
+      //Val* operator-> ();
+      //const Val* operator-> () const;
 
       /// @}
 
