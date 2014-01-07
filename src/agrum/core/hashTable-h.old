@@ -277,7 +277,6 @@ namespace gum {
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
-
     /// @{
 
     /* basic constructor that creates an empty list. This is what is used
@@ -286,7 +285,8 @@ namespace gum {
      * method setAllocator after the creation */
     HashTableList ( BucketAllocator* allocator = nullptr ) noexcept;
 
-    /** copy constructor. The new list and that which is copied do not share the
+    /// copy constructor.
+    /** The new list and that which is copied do not share the
      * elements: the new list contains new instances of the keys and of values
      * stored in the list to be copied. Of course if these values are pointers,
      * the new values point toward the same elements.
@@ -307,7 +307,8 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /** assignment operator. The new list and that which is copied do not share the
+    /// assignment operator.
+    /** The new list and that which is copied do not share the
      * elements: the new list contains new instances of the keys and of values
      * stored in the list to be copied. Of course if these values are pointers,
      * the new values point toward the same elements. If some allocation problem
@@ -568,12 +569,9 @@ namespace gum {
     using Bucket = typename HashTableList<Key,Val,Alloc>::Bucket;
 
     /// the Bucket allocator
-    using BucketAllocator = typename Alloc::template
-      rebind<Bucket>::other;
+    using BucketAllocator = typename Alloc::template rebind<Bucket>::other;
 
-    
 
-    
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -595,10 +593,9 @@ namespace gum {
      * @param key_uniqueness_pol uniqueness policy : should we prevent inserting
      * the same key more than once in the table? */
     explicit
-    HashTable ( Size size_param = HashTableConst::default_size,
-                bool resize_pol = HashTableConst::default_resize_policy,
-                bool key_uniqueness_pol =
-                HashTableConst::default_uniqueness_policy );
+    HashTable( Size size_param = HashTableConst::default_size,
+               bool resize_pol = HashTableConst::default_resize_policy,
+               bool key_uniqueness_pol = HashTableConst::default_uniqueness_policy );
 
     /// initializer list constructor
     explicit
