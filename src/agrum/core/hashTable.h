@@ -397,7 +397,7 @@ namespace gum {
     bool empty() const noexcept;
 
     /* function erase suppresses an element from a chained list. */
-    void erase( const HashTableBucket<Key,Val>* ptr );
+    void erase( HashTableBucket<Key,Val>* ptr );
 
     // a method to get the bucket corresponding to a given key. This enables
     // efficient removals of buckets

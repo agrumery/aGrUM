@@ -129,7 +129,7 @@ namespace gum {
   // suppresses an element from a chained list
   template <typename Key, typename Val, typename Alloc> INLINE
   void HashTableList<Key,Val,Alloc>::erase
-  ( const HashTableBucket<Key,Val>* ptr ) {
+  ( HashTableBucket<Key,Val>* ptr ) {
     // check that the pointer is not nullptr
     if ( ptr == nullptr ) {
       GUM_ERROR( NullElement, "trying to erase a nullptr bucket" );
@@ -442,8 +442,6 @@ namespace gum {
 
     // make the hashtable keep track of this iterator
     __insertIntoSafeList ();
-    
-    Size i;
     
     if ( __table->__nb_elements ) {
       if ( __table->__know_begin_index ) {
@@ -1360,7 +1358,7 @@ namespace gum {
   HashTableConstIteratorSafe<Key,Val>
   HashTable<Key,Val,Alloc>::beginSafe () const {
     // if the table is empty, make the begin and end point to the same element
-    if ( __nb_elements == 0 ) return const_iterator_safe { cendSafe () };
+    if ( __nb_elements == 0 ) return const_iterator_safe { endSafe () };
     else return const_iterator_safe { *this };
   }
 
@@ -1628,7 +1626,7 @@ namespace gum {
   Val& HashTable<Key,Val,Alloc>::getWithDefault( const Key& key,
                                                  const Val& default_value ) {
     HashTableBucket<Key, Val>* bucket =
-      __nodes[ __hash_func( key )].__getBucket( key );
+      __nodes[ __hash_func( key )].bucket( key );
 
     if ( bucket == nullptr ) return insert( key, default_value ).second;
     else return bucket->val ();
@@ -1637,13 +1635,13 @@ namespace gum {
 
   /// returns a reference on the value the key of which is passed in argument
   template <typename Key, typename Val, typename Alloc> INLINE
-  typename HashTable<Key,Val,Alloc>::value_type&
+  typename HashTable<Key,Val,Alloc>::mapped_type&
   HashTable<Key,Val,Alloc>::getWithDefault( Key&& key,
                                             Val&& default_value ) {
     Bucket* bucket = __nodes[ __hash_func( key )].bucket( key );
     if ( bucket == nullptr ) return insert( std::move ( key ),
-                                            std::move ( default_value ) );
-    else return bucket->elt ();
+                                            std::move ( default_value ) ).second;
+    else return bucket->val ();
   }
 
 
@@ -1651,7 +1649,7 @@ namespace gum {
   template <typename Key, typename Val, typename Alloc> INLINE
   void HashTable<Key,Val,Alloc>::set( const Key& key,const Val& value ) {
     HashTableBucket<Key, Val>* bucket =
-      __nodes[ __hash_func( key )].__getBucket( key );
+      __nodes[ __hash_func( key )].bucket( key );
 
     if ( bucket == nullptr ) insert( key,value );
     else bucket->val () = value;
@@ -1680,7 +1678,7 @@ namespace gum {
     }
 
     // remove the element from the __nodes vector
-    __nodes[index].__erase( bucket );
+    __nodes[index].erase( bucket );
 
     --__nb_elements;
     if ( ( index == __begin_index ) && __nodes[index].empty () ) {
@@ -1696,7 +1694,7 @@ namespace gum {
     Size hash = __hash_func( key );
 
     // get the bucket containing the element to erase
-    HashTableBucket<Key, Val>* bucket = __nodes[hash].__getBucket( key );
+    HashTableBucket<Key, Val>* bucket = __nodes[hash].bucket( key );
     __erase( bucket, hash );
   }
 
@@ -1751,7 +1749,7 @@ namespace gum {
   const Key& HashTable<Key,Val,Alloc>::key( const Key& key ) const {
     // get the bucket corresponding to the key
     HashTableBucket<Key, Val>* bucket =
-      __nodes[__hash_func( key )].__getBucket( key );
+      __nodes[__hash_func( key )].bucket( key );
 
     if ( bucket == nullptr ) {
       GUM_ERROR( NotFound, "key does not belong to the hashtable" );
