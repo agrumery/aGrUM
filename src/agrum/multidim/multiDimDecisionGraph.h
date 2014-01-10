@@ -100,11 +100,11 @@ namespace gum {
       /// Structure used to represent a node internal structure
       // ############################################################################
       /// @{
-        struct InternalNode {
+        class InternalNode {
           // ============================================================================
           /// Variable associated to such node
           // ============================================================================
-          const DiscreteVariable* nodeVar;
+          const DiscreteVariable* __nodeVar;
 
           // ============================================================================
           /**
@@ -118,31 +118,51 @@ namespace gum {
            *    x1     x2     x3     x4
            */
           // ============================================================================
-          NodeId* nodeSons;
+          NodeId* __nodeSons;
 
-        // ============================================================================
-        // When several nodes points to the same son,
-        // This default son replace them.
-        // ============================================================================
-//        NodeId nodeDefaultSon;
+          public :
+            // ============================================================================
+            /// Constructors
+            // ============================================================================
+            InternalNode();
+            InternalNode(const DiscreteVariable* v);
+
+            // ============================================================================
+            /// Destructors
+            // ============================================================================
+            ~InternalNode();
+
+            // ============================================================================
+            /// Allocators and Deallocators redefinition
+            // ============================================================================
+            void* operator new(size_t);
+            void operator delete(void*);
+
+            // ============================================================================
+            /// Var handlers
+            // ============================================================================
+            void setNodeVar(const DiscreteVariable* v){ __nodeVar = v;}
+            const DiscreteVariable* nodeVar() const { return __nodeVar;}
+
+            // ============================================================================
+            /// Sons handlers
+            // ============================================================================
+            void setSon(Idx modality, NodeId son){__nodeSons[modality] = son;}
+            Idx nbSons() const {return __nodeVar->domainSize();}
+            NodeId son(Idx modality) const {return __nodeSons[modality];}
+
+          protected:
+            // ============================================================================
+            /// Allocates a table of nodeid of the size given in parameter
+            // ============================================================================
+            void _allocateNodeSons();
+
+            // ============================================================================
+            /// Deallocates a NodeSons table
+            // ============================================================================
+            void _deallocateNodeSons();
 
         };
-
-    protected:
-        // ============================================================================
-        /// Create an internal node structure
-        /// @param x :  the associated variable
-        /// size of son vector is the domain size of x.
-        // ============================================================================
-        static InternalNode* _allocateInternalNode( const DiscreteVariable* x );
-        static InternalNode* _allocateInternalNode( const DiscreteVariable* x, NodeId* sons );
-
-        // ============================================================================
-        /// Deallocates the given internal node structure
-        /// @param deleteParent : if true, parentList will be erase too.
-        /// Typically not wanted in a swap for more efficiency
-        // ============================================================================
-        static void _deallocateInternalNode(  InternalNode* node );
 
       /// @}
 
@@ -461,10 +481,6 @@ namespace gum {
       // ============================================================================
       mutable GUM_SCALAR __getRet;
 
-      // ============================================================================
-      // Mapping between var and node
-      // ============================================================================
-//      HashTable< const DiscreteVariable*, Idx* > __varUsedModalitiesMap;
 
       static Idx aNICLE;
       static Idx dNICLE;

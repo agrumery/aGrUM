@@ -96,55 +96,69 @@ template<typename GUM_SCALAR>
     nodeChain = nullptr;
   }
 
-  // ============================================================================
-  // Create an internal node structure
-  // @param x :  the associated variable
-  // size of son vector is the domain size of x.
-  // ============================================================================
-  template<typename GUM_SCALAR>
-  INLINE
-  typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* MultiDimDecisionGraph<GUM_SCALAR>::_allocateInternalNode( const DiscreteVariable* x ){
+  // ############################################################################
+  // Internal Nodes methods
+  // ############################################################################
+      // ============================================================================
+      /// Constructors
+      // ============================================================================
+      template<typename GUM_SCALAR>
+      INLINE
+      MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::InternalNode(){
+      }
 
-    InternalNode* newNode = static_cast<InternalNode*>(soa.allocate(sizeof(InternalNode)));
-    newNode->nodeVar = x;
-    newNode->nodeSons = static_cast<NodeId*>(soa.allocate(x->domainSize()*sizeof(NodeId)));
+      template<typename GUM_SCALAR>
+      INLINE
+      MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::InternalNode(const DiscreteVariable* v){
+        setNodeVar(v);
+      }
 
-    aIN++;
-    return newNode;
+      // ============================================================================
+      /// Destructors
+      // ============================================================================
+      template<typename GUM_SCALAR>
+      INLINE
+      MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::~InternalNode(){
+        _deallocateNodeSons();
+      }
 
-  }
+      // ============================================================================
+      /// Allocators and Deallocators redefinition
+      // ============================================================================
+      template<typename GUM_SCALAR>
+      INLINE
+      void* MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::operator new(size_t t){
+        return soa.allocate(sizeof(InternalNode));
+      }
 
-  template<typename GUM_SCALAR>
-  INLINE
-  typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* MultiDimDecisionGraph<GUM_SCALAR>::_allocateInternalNode( const DiscreteVariable* x, NodeId* sons ){
+      template<typename GUM_SCALAR>
+      INLINE
+      void MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::operator delete(void* in){
+        soa.deallocate(in, sizeof(InternalNode));
+      }
 
-    InternalNode* newNode = static_cast<InternalNode*>(soa.allocate(sizeof(InternalNode)));
-    newNode->nodeVar = x;
-    newNode->nodeSons = sons;
+      // ============================================================================
+      /// Allocates a table of nodeid of the size given in parameter
+      // ============================================================================
+      template<typename GUM_SCALAR>
+      INLINE
+      void MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::_allocateNodeSons(){
+        __nodeSons = soa.allocate( sizeof(NodeId)*__nodeVar->domainSize() );
+        for( gum::Idx i = 0; i < __nodeVar->domainSize(); ++i)
+          __nodeSons[i] = 0;
+      }
 
-    aIN++;
-    return newNode;
+      // ============================================================================
+      /// Deallocates a NodeSons table
+      // ============================================================================
+      template<typename GUM_SCALAR>
+      INLINE
+      void MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::_deallocateNodeSons(){
+        if( __nodeVar != nullptr )
+          soa.deallocate(__nodeSons, sizeof(NodeId)*__nodeVar->domainSize());
+      }
 
-  }
 
-  // ============================================================================
-  // Remove the given internal node structure
-  // @param deleteParent : if true, parentList will be erase too.
-  // Typically not wanted in a swap for more efficiency
-  // ============================================================================
-  template<typename GUM_SCALAR>
-  INLINE
-  void MultiDimDecisionGraph<GUM_SCALAR>::_deallocateInternalNode( typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* node ){
-
-    // Déallocation du vecteur fils
-    soa.deallocate( node->nodeSons, node->nodeVar->domainSize()*sizeof(NodeId) );
-
-    // Déallocation de la structure
-    soa.deallocate( node, sizeof(InternalNode));
-
-    dIN++;
-
-  }
 
   // ############################################################################
   // Constructors / Destructors
@@ -463,20 +477,20 @@ template<typename GUM_SCALAR>
           // Si le noeud courant n'est pas terminal,
           // il nous faut dupliquer la structure interne dans une nouvelle structure
           const InternalNode* currentNode = src.node( currentNodeId );
-          InternalNode* newNode = _allocateInternalNode( currentNode->nodeVar );
+          InternalNode* newNode = new InternalNode( currentNode->nodeVar() );
 
           // Recopie des fils
-          for( Idx index = 0; index < newNode->nodeVar->domainSize(); ++index ){
-            newNode->nodeSons[index] = currentNode->nodeSons[index];
+          for( Idx index = 0; index < currentNode->nbSons(); ++index ){
+            newNode->setSon(index, currentNode->son(index));
             // Accesoirement on profite du parcours des fils pour mettre la lifo à jour
-            if( !prunningTable.exists(newNode->nodeSons[index]) ){
-              lifo.push_back(newNode->nodeSons[index]);
-              prunningTable.insert( newNode->nodeSons[index], true );
+            if( !prunningTable.exists(newNode->son(index) ) ){
+              lifo.push_back(newNode->son(index));
+              prunningTable.insert( newNode->son(index), true );
             }
           }
 
           __internalNodeMap.insert( currentNodeId, newNode );
-          _addElemToNICL( &(__var2NodeIdMap[ currentNode->nodeVar ]), currentNodeId );
+          _addElemToNICL( &(__var2NodeIdMap[ currentNode->nodeVar() ]), currentNodeId );
         }
       }
     }
@@ -496,7 +510,7 @@ template<typename GUM_SCALAR>
       // Nettoyage des noeuds
       for( HashTableIterator<NodeId, InternalNode*> nodeIter = __internalNodeMap.begin();
             nodeIter != __internalNodeMap.end(); ++nodeIter )
-        _deallocateInternalNode(*nodeIter);
+        delete(*nodeIter);
 
       __internalNodeMap.clear();
 
@@ -538,14 +552,15 @@ template<typename GUM_SCALAR>
             terminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\""<< *nodeIter << " - "
                            << __valueMap.second ( *nodeIter ) << "\"]"<< ";" << std::endl;
           else {
+            InternalNode* currentNode = __internalNodeMap[ *nodeIter ];
             nonTerminalStream << tab << *nodeIter << ";" << tab << *nodeIter  << " [label=\""<< *nodeIter << " - "
-                              << __internalNodeMap[ *nodeIter ]->nodeVar->name() << "\"]"<< ";" << std::endl;
+                              << currentNode->nodeVar()->name() << "\"]"<< ";" << std::endl;
 
 //              if ( _arcMap[*nodeIter] != NULL )
-            for ( Idx sonIter = 0; sonIter < __internalNodeMap[ *nodeIter ]->nodeVar->domainSize(); ++sonIter )
-              if ( __internalNodeMap[ *nodeIter ]->nodeSons[sonIter] != 0 )
-                arcstream << tab <<  *nodeIter << " -> " << __internalNodeMap[ *nodeIter ]->nodeSons[sonIter]
-                          << " [label=\"" << __internalNodeMap[ *nodeIter ]->nodeVar->label ( sonIter ) << "\",color=\"#0000ff\"]"<< ";" << std::endl;
+            for ( Idx sonIter = 0; sonIter < currentNode->nbSons(); ++sonIter )
+              if ( currentNode->son(sonIter) != 0 )
+                arcstream << tab <<  *nodeIter << " -> " << currentNode->son(sonIter)
+                          << " [label=\"" << currentNode->nodeVar()->label ( sonIter ) << "\",color=\"#0000ff\"]"<< ";" << std::endl;
 
 //              if ( _defaultArcMap.exists ( *nodeIter ) )
 //                defaultarcstream << tab <<  *nodeIter << " -> " << _defaultArcMap[*nodeIter] << " [color=\"#ff0000\"]"<< ";" << std::endl;
@@ -626,7 +641,7 @@ template<typename GUM_SCALAR>
       InternalNode* currentNode = nullptr;
       while ( ! isTerminalNode( currentNodeId ) ){
         currentNode = __internalNodeMap[currentNodeId];
-        currentNodeId = currentNode->nodeSons[ inst.val( *(currentNode->nodeVar) ) ];
+        currentNodeId = currentNode->son( inst.val( *(currentNode->nodeVar()) ) );
       }
       __getRet = __valueMap.second( currentNodeId );
       return __getRet;

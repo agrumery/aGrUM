@@ -74,6 +74,34 @@ namespace gum {
     // Inserts a new non terminal node in graph.
     // NodeId of this node is generated automatically.
     //
+    // @return the id of the added non terminal node.
+    // ============================================================================
+    template<typename GUM_SCALAR>
+    INLINE
+    NodeId MultiDimDecisionGraphManager< GUM_SCALAR>::addNonTerminalNode ( NodeId nid ){
+
+
+        // Getting the structure for this internal node
+        typename MultiDimDecisionGraph< GUM_SCALAR>::InternalNode* newNodeStruct =
+                new typename MultiDimDecisionGraph< GUM_SCALAR>::InternalNode();
+
+        // Getting a new id for this node
+        if( nid == 0 )
+          nid = __decisionGraph->__model.insertNode();
+
+        if( !__decisionGraph->__internalNodeMap.exists(nid) ){
+           __decisionGraph->__internalNodeMap.insert( nid, newNodeStruct );
+        }else{
+           __decisionGraph->__internalNodeMap[nid] = newNodeStruct;
+        }
+
+        return nid;
+    }
+
+    // ============================================================================
+    // Inserts a new non terminal node in graph.
+    // NodeId of this node is generated automatically.
+    //
     // @param var Associated variable
     // @throw OperationNotAllowed if MultiDimDecisionGraph has no variables yet.
     // @throw OperationNotAllowed if MultiDimDecisionGraph has no this variable yet.
@@ -81,7 +109,7 @@ namespace gum {
     // ============================================================================
     template<typename GUM_SCALAR>
     INLINE
-    NodeId MultiDimDecisionGraphManager< GUM_SCALAR>::addNonTerminalNode ( const DiscreteVariable* var ){
+    NodeId MultiDimDecisionGraphManager< GUM_SCALAR>::addNonTerminalNode ( const DiscreteVariable* var, NodeId nid ){
 
       // *******************************************************************************************
       // Verification
@@ -95,98 +123,11 @@ namespace gum {
         }
       }
 
-      // *********************************************************************************************      
-      // Instanciation du noeud
-      NodeId newNodeId = __decisionGraph->__model.insertNode();
+      NodeId rnid = addNonTerminalNode(nid);
+      __decisionGraph->__internalNodeMap[rnid]->setNodeVar(var);
+      MultiDimDecisionGraph< GUM_SCALAR>::_addElemToNICL( &(__decisionGraph->__var2NodeIdMap[var]), rnid );
 
-      // Getting the structure for this internal node
-      typename MultiDimDecisionGraph< GUM_SCALAR>::InternalNode* newNodeStruct = MultiDimDecisionGraph< GUM_SCALAR>::_allocateInternalNode(var);
-      newNodeStruct->nodeVar = var;
-
-      // *********************************************************************************************
-      // Initialisation du vecteur fils.
-      for( gum::Idx i = 0; i < var->domainSize(); ++i){
-        newNodeStruct->nodeSons[i] = 0;
-      }
-
-      // *********************************************************************************************
-      // Insertion du noeud
-      __decisionGraph->__internalNodeMap.insert(newNodeId, newNodeStruct);
-      MultiDimDecisionGraph< GUM_SCALAR>::_addElemToNICL( &(__decisionGraph->__var2NodeIdMap[var]), newNodeId );
-
-      return newNodeId;
-    }
-
-
-    // ============================================================================
-    //
-    // ============================================================================
-    template<typename GUM_SCALAR>
-    INLINE
-    NodeId MultiDimDecisionGraphManager< GUM_SCALAR>::addNonTerminalNode ( const DiscreteVariable* var,
-                                                                                        NodeId* sons, NodeId nid){
-
-
-      // Getting the structure for this internal node
-      typename MultiDimDecisionGraph< GUM_SCALAR>::InternalNode* newNodeStruct = MultiDimDecisionGraph< GUM_SCALAR>::_allocateInternalNode(var, sons);
-
-      // Initializing it
-      newNodeStruct->nodeVar = var;
-//      newNodeStruct->nodeSons = sons;
-//      newNodeStruct->nodeDefaultSon = defaultSon;
-
-      // Adding this node to the list of node bound to variable var
-      // Getting a new id for this node
-      if( nid == 0 ){
-        nid = __decisionGraph->__model.insertNode();
-        __decisionGraph->__internalNodeMap.insert(nid, newNodeStruct);
-      }else
-          __decisionGraph->__internalNodeMap[nid] = newNodeStruct;
-      MultiDimDecisionGraph< GUM_SCALAR>::_addElemToNICL( &(__decisionGraph->__var2NodeIdMap[var]), nid );
-
-      // Returning the result.
-      return nid;
-    }
-
-
-    // ============================================================================
-    //
-    // ============================================================================
-    template<typename GUM_SCALAR>
-    INLINE
-    NodeId
-    MultiDimDecisionGraphManager< GUM_SCALAR>::checkIsomorphism ( const DiscreteVariable* var,
-                                                                 NodeId* sons){/*,
-                                                                 const NodeId& defaultSon){*/
-
-      const typename MultiDimDecisionGraph< GUM_SCALAR>::InternalNode* nody = nullptr;
-      Idx i = 0;
-
-      // ************************************************************************
-      // Check abscence of identical node
-      typename MultiDimDecisionGraph< GUM_SCALAR>::NICLElem* currentElem = __decisionGraph->__var2NodeIdMap[var];
-      while( currentElem != nullptr ){
-
-        nody = __decisionGraph->__internalNodeMap[currentElem->elemId];
-//        // Check on default son node
-//        if(defaultSon != nody->nodeDefaultSon)
-//          continue;
-
-        // Check on the other sons
-        for(i = 0; i < var->domainSize(); ++i ) {
-          if( sons[i] != nody->nodeSons[i] )// &&
-//              ( sons[i] != 0 || defaultSon != nody->nodeSons[i] ) &&
-//              ( nody->nodeSons[i] != 0 || sons[i] != nody->nodeDefaultSon ))
-            break;
-          if(i == var->domainSize() - 1){
-            MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( sons, var->domainSize()*sizeof(NodeId) );
-            return currentElem->elemId;
-          }
-        }
-
-        currentElem = currentElem->nextElem;
-      }
-      return 0;
+      return rnid;
     }
 
     // ============================================================================
@@ -219,7 +160,6 @@ namespace gum {
     //
     // ============================================================================
     template<typename GUM_SCALAR>
-    INLINE
     void
     MultiDimDecisionGraphManager< GUM_SCALAR>::eraseNode ( NodeId n ){
 
@@ -227,22 +167,18 @@ namespace gum {
         GUM_ERROR ( NotFound, "Node " <<  n << " does not exist in diagram." );
       }
 
-      for(typename HashTable<const DiscreteVariable*, typename MultiDimDecisionGraph< GUM_SCALAR>::NICLElem*>::const_iterator iterVar = __decisionGraph->__var2NodeIdMap.begin();
-          iterVar != __decisionGraph->__var2NodeIdMap.end(); ++iterVar){
+      for(SequenceIterator< const DiscreteVariable*> iterVar = __decisionGraph->variablesSequence().begin();
+          iterVar != __decisionGraph->variablesSequence().end(); ++iterVar){
 
         if( !__decisionGraph->isTerminalNode(n) &&
-            __decisionGraph->variablesSequence().pos(iterVar.key()) >= __decisionGraph->variablesSequence().pos(__decisionGraph->__internalNodeMap[n]->nodeVar))
+            __decisionGraph->variablesSequence().pos(*iterVar) >= __decisionGraph->variablesSequence().pos(__decisionGraph->__internalNodeMap[n]->nodeVar()))
           continue;
 
-        typename MultiDimDecisionGraph< GUM_SCALAR>::NICLElem* currentElem = *iterVar;
+        typename MultiDimDecisionGraph< GUM_SCALAR>::NICLElem* currentElem = __decisionGraph->__var2NodeIdMap[*iterVar];
         while( currentElem != nullptr ){
-//        for(List<NodeId>::const_iterator iterNode = (*iterVar)->begin(); iterNode != (iterVar)->end(); ++ iterNode){
-          for( Idx iterSon = 0; iterSon < iterVar.key()->domainSize(); ++iterSon)
-            if( __decisionGraph->__internalNodeMap[currentElem->elemId]->nodeSons[iterSon] == n )
-              __decisionGraph->__internalNodeMap[currentElem->elemId]->nodeSons[iterSon] = 0;
-
-//          if( __decisionGraph->__defaultSonMap.exists( *iterNode ) && _defaultArcMap[*iterNode] == n )
-//            __decisionGraph->__defaultSonMap.erase( *iterNode );
+          for( Idx iterSon = 0; iterSon < (*iterVar)->domainSize(); ++iterSon)
+            if( __decisionGraph->__internalNodeMap[currentElem->elemId]->son(iterSon) == n )
+              __decisionGraph->__internalNodeMap[currentElem->elemId]->son(iterSon) = 0;
 
           currentElem = currentElem->nextElem;
         }
@@ -251,13 +187,8 @@ namespace gum {
       if ( __decisionGraph->isTerminalNode(n) )
         __decisionGraph->__valueMap.eraseFirst(n);
       else {
-////        __decisionGraph->__variableMap.erase(n);
-////        delete __decisionGraph->__sonsMap[n];
-////        __decisionGraph->__sonsMap.erase (n);
-////        if(__decisionGraph->__defaultSonMap.exists(n))
-////          __decisionGraph->__defaultSonMap.erase(n);
-          MultiDimDecisionGraph<GUM_SCALAR>::_removeElemFromNICL( &(__decisionGraph->__var2NodeIdMap[__decisionGraph->__internalNodeMap[n]->nodeVar]), n);
-          MultiDimDecisionGraph<GUM_SCALAR>::_deallocateInternalNode( __decisionGraph->__internalNodeMap[n]);
+          MultiDimDecisionGraph<GUM_SCALAR>::_removeElemFromNICL( &(__decisionGraph->__var2NodeIdMap[__decisionGraph->__internalNodeMap[n]->nodeVar()]), n);
+          delete __decisionGraph->__internalNodeMap[n];
           __decisionGraph->__internalNodeMap.erase(n);
       }
 
@@ -284,7 +215,6 @@ namespace gum {
     // @throw DuplicateElement if another arc linking those nodes already exists
     // ============================================================================
     template<typename GUM_SCALAR>
-    INLINE
     void
     MultiDimDecisionGraphManager< GUM_SCALAR>::insertArc ( NodeId from, NodeId to, Idx modality ){
 
@@ -296,8 +226,8 @@ namespace gum {
           GUM_ERROR ( InvalidNode, " Origin node " <<  from << " is a terminal Node. No arcs can start from a terminal node" );
         }
 
-        if(__decisionGraph->__internalNodeMap[ from ]->nodeVar->domainSize() <= modality){
-          GUM_ERROR ( InvalidArgument, " modality " << modality << " is too high for variable " << __decisionGraph->__internalNodeMap[ from ]->nodeVar->name() << "." )
+        if(__decisionGraph->__internalNodeMap[ from ]->nbSons() <= modality){
+          GUM_ERROR ( InvalidArgument, " modality " << modality << " is too high for variable " << __decisionGraph->__internalNodeMap[ from ]->nodeVar()->name() << "." )
         }
 
         if(!__decisionGraph->__model.exists(to)){
@@ -305,55 +235,22 @@ namespace gum {
         }
 
         if ( !__decisionGraph->__valueMap.existsFirst ( to ) ) {
-          if ( __decisionGraph->variablesSequence().pos ( __decisionGraph->__internalNodeMap[ from ]->nodeVar )
-               >= __decisionGraph->variablesSequence().pos ( __decisionGraph->__internalNodeMap[ to ]->nodeVar ) ) {
-            GUM_ERROR ( OperationNotAllowed, " This arc does not respect the variable order property. Variable " <<  __decisionGraph->__internalNodeMap[ from ]->nodeVar->name()
-                << " tied to node " << from << " is after Variable " << __decisionGraph->__internalNodeMap[ to ]->nodeVar->name() << " tied to node "
+          if ( __decisionGraph->variablesSequence().pos ( __decisionGraph->__internalNodeMap[ from ]->nodeVar() )
+               >= __decisionGraph->variablesSequence().pos ( __decisionGraph->__internalNodeMap[ to ]->nodeVar() ) ) {
+            GUM_ERROR ( OperationNotAllowed, " This arc does not respect the variable order property. Variable " <<  __decisionGraph->__internalNodeMap[ from ]->nodeVar()->name()
+                << " tied to node " << from << " is after Variable " << __decisionGraph->__internalNodeMap[ to ]->nodeVar()->name() << " tied to node "
                 << to << " in variable order." );
           }
         }
 
-        for ( Idx i = 0; i < __decisionGraph->__internalNodeMap[ from ]->nodeVar->domainSize(); i++ )
-          if ( __decisionGraph->__internalNodeMap[ from ]->nodeSons[i] == to && i == modality ) {
+        for ( Idx i = 0; i < __decisionGraph->__internalNodeMap[ from ]->nbSons(); i++ )
+          if ( __decisionGraph->__internalNodeMap[ from ]->son(i) == to && i == modality ) {
             GUM_ERROR ( DuplicateElement, " A same (meaning with same value " <<  modality << " ) arc linking those two nodes " << from << " -> " << to << " already exist." );
             break;
           }
 
-//        if ( _defaultArcMap.exists ( from ) && _defaultArcMap[from] == to )
-//          return;
-
-//        _model.insertArc ( from, to );
-
-        __decisionGraph->__internalNodeMap[ from ]->nodeSons[modality] =  to;
-//        ( *_varUsedModalitiesMap[ _varMap[from] ] ) [value]++;
+        __decisionGraph->__internalNodeMap[ from ]->setSon(modality, to);
     }
-
-    // ============================================================================
-    /*
-     * Adds a default arc in the DD
-     *
-     * @param from and
-     * @param to as NodeId
-     * @throw NotFound If from and/or tail are not in the DD.
-     * @throw InvalidNode if head is a terminal node
-     * @throw OperationNotAllowed if arc doesn't respect variable order property
-     * @throw DuplicateElement if another arc linking those nodes already exists
-     */
-    // ============================================================================
-    ///@{
-//    template<typename GUM_SCALAR>
-//    INLINE
-//    void
-//    MultiDimDecisionGraphManager< GUM_SCALAR>::insertDefaultArc ( NodeId from, NodeId to ){
-//        return 0;
-//      }
-//    template<typename GUM_SCALAR>
-//    INLINE
-//    void
-//    MultiDimDecisionGraphManager< GUM_SCALAR>::unsafeInsertDefaultArc ( NodeId from, NodeId to ){
-//        return 0;
-//      }
-    ///@}
 
     // ============================================================================
     // Erases arcs in the DD
@@ -366,7 +263,6 @@ namespace gum {
     // If you want to erase a specific one, use eraseSpecificArc
     // ============================================================================
     template<typename GUM_SCALAR>
-    INLINE
     void
     MultiDimDecisionGraphManager< GUM_SCALAR>::eraseArc ( NodeId from, NodeId to ){
 
@@ -381,15 +277,15 @@ namespace gum {
       if ( __decisionGraph->__valueMap.existsFirst ( from ) ) {
         GUM_ERROR ( InvalidNode, " Origin node " <<  from << " is a terminal Node. No arcs can start from a terminal node" );
       } else if ( !__decisionGraph->__valueMap.existsFirst ( to ) ) {
-        if ( __decisionGraph->variablesSequence().pos ( __decisionGraph->__internalNodeMap[ from ]->nodeVar )
-             >= __decisionGraph->variablesSequence().pos ( __decisionGraph->__internalNodeMap[ to ]->nodeVar ) ) {
+        if ( __decisionGraph->variablesSequence().pos ( __decisionGraph->__internalNodeMap[ from ]->nodeVar() )
+             >= __decisionGraph->variablesSequence().pos ( __decisionGraph->__internalNodeMap[ to ]->nodeVar() ) ) {
             GUM_ERROR ( InvalidArc, " This(those) arc(s) " << from << " - " << to <<" cannot exist since it(they) violate(s) variable order." );
         }
       }
 
-      for(Idx i = 0; i < __decisionGraph->__internalNodeMap[from]->nodeVar->domainSize(); i++)
-        if( __decisionGraph->__internalNodeMap[from]->nodeSons[i] == to )
-          __decisionGraph->__internalNodeMap[from]->nodeSons[i] = 0;
+      for(Idx i = 0; i < __decisionGraph->__internalNodeMap[from]->nbSons(); i++)
+        if( __decisionGraph->__internalNodeMap[from]->son(i) == to )
+            __decisionGraph->__internalNodeMap[from]->setSon(i, 0);
     }
 
     // ============================================================================
@@ -401,7 +297,6 @@ namespace gum {
     // @throw InvalidArc If arc does not exist
     // ============================================================================
     template<typename GUM_SCALAR>
-    INLINE
     void
     MultiDimDecisionGraphManager< GUM_SCALAR>::eraseSpecificArc ( NodeId from, NodeId to, Idx modality ){
 
@@ -413,47 +308,29 @@ namespace gum {
         GUM_ERROR ( NotFound, " Destination node " <<  to << " does not exist." )
       }
 
-      if(__decisionGraph->__internalNodeMap[ from ]->nodeVar->domainSize() <= modality){
-        GUM_ERROR ( gum::InvalidArgument, " modality " << modality << " is too high for variable " << __decisionGraph->__internalNodeMap[ from ]->nodeVar->name() << "." )
+      if(__decisionGraph->__internalNodeMap[ from ]->nbSons() <= modality){
+        GUM_ERROR ( gum::InvalidArgument, " modality " << modality << " is too high for variable " << __decisionGraph->__internalNodeMap[ from ]->nodeVar()->name() << "." )
       }
 
       if ( __decisionGraph->__valueMap.existsFirst ( from ) ) {
         GUM_ERROR ( InvalidNode, " Origin node " <<  from << " is a terminal Node. No arcs can start from a terminal node" );
       } else if ( !__decisionGraph->__valueMap.existsFirst ( to ) ) {
         // GUM_TRACE( "From : " << _varMap[from]->toString() << " - To : " << _varMap[ to ]->toString() << std::endl );
-        if ( __decisionGraph->variablesSequence().pos ( __decisionGraph->__internalNodeMap[ from ]->nodeVar )
-             >= __decisionGraph->variablesSequence().pos ( __decisionGraph->__internalNodeMap[ to ]->nodeVar ) ) {
-          GUM_ERROR ( OperationNotAllowed, " This arc does not respect the variable order property. Variable " <<  __decisionGraph->__internalNodeMap[ from ]->nodeVar->name()
-              << " tied to node " << from << " is after Variable " << __decisionGraph->__internalNodeMap[ to ]->nodeVar->name() << " tied to node "
+        if ( __decisionGraph->variablesSequence().pos ( __decisionGraph->__internalNodeMap[ from ]->nodeVar() )
+             >= __decisionGraph->variablesSequence().pos ( __decisionGraph->__internalNodeMap[ to ]->nodeVar() ) ) {
+          GUM_ERROR ( OperationNotAllowed, " This arc does not respect the variable order property. Variable " <<  __decisionGraph->__internalNodeMap[ from ]->nodeVar()->name()
+              << " tied to node " << from << " is after Variable " << __decisionGraph->__internalNodeMap[ to ]->nodeVar()->name() << " tied to node "
               << to << " in variable order." );
         }
       }
 
-      __decisionGraph->__internalNodeMap[from]->nodeSons[modality] = 0;
+      __decisionGraph->__internalNodeMap[from]->setSon(modality, 0);
     }
-
-  // ############################################################################
-  // Miscelleanous methods.
-  // ############################################################################
-
-    // ============================================================================
-    // For each non terminal node, this function first checks if node has a son
-    // for each value of associated variable.
-    // If not, function checks if defaultSon is already specified.
-    // If not, function affect defaultSon to the terminal node associated with given value.
-    // ============================================================================
-//    template<typename GUM_SCALAR>
-//    INLINE
-//    void
-//    MultiDimDecisionGraphManager< GUM_SCALAR>::fillWithDefaultArc( GUM_SCALAR defaultValue ){
-//        return 0;
-//      }
 
     // ============================================================================
     // Changes var position in variable sequence
     // ============================================================================
     template<typename GUM_SCALAR>
-    INLINE
     void MultiDimDecisionGraphManager<GUM_SCALAR>::moveTo( const DiscreteVariable* x, Idx desiredPos ){
 
       // First we determine the position of both variable
@@ -469,7 +346,6 @@ namespace gum {
           __decisionGraph->_invert( currentPos, currentPos + 1 );
         }
 
-      removeRedundancy();
     }
 
     // ============================================================================
@@ -479,7 +355,6 @@ namespace gum {
     // Not respecting this constraint leads to hasardous behaviour.
     // ============================================================================
     template<typename GUM_SCALAR>
-    INLINE
     void MultiDimDecisionGraphManager<GUM_SCALAR>::__adjacentSwap( const DiscreteVariable* x, const DiscreteVariable* y ){
 
       typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* oldxNodes = __decisionGraph->__var2NodeIdMap[ x ];
@@ -489,9 +364,10 @@ namespace gum {
 
 
       typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* currentOldXNode = nullptr;
-      typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* currentSonNode = nullptr;
-      NodeId* newYSons = nullptr;
-      NodeId* newXSons = nullptr;
+      typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* currentOldXSonNode = nullptr;
+      typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* currentNewXNode = nullptr;
+      NodeId* currentNewXNodeId = 0;
+      typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* currentNewYNode = nullptr;
       typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* nextn = nullptr;
       Idx indy = 0;
       Idx indx = 0;
@@ -503,47 +379,43 @@ namespace gum {
 
         // Creation de la structure amenee à remplacer la structure courante
         // et associée par conséquence à y
-        newYSons = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(y->domainSize()*sizeof(NodeId)) );
+        currentNewYNode = __decisionGraph->__internalNodeMap[addNonTerminalNode(y,oldxNodes->elemId)];
+//        newYSons = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(y->domainSize()*sizeof(NodeId)) );
 
         // Maintenant il faut remapper le graphe en insérant un noeud associé à x
         // Pour chaque valeur de y
         for( indy = 0; indy < y->domainSize(); ++indy ){
 
           // Creation du vecteur fils du noeud associe à x qui sera sont descendant pour cette valeur-ci
-          newXSons = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(x->domainSize()*sizeof(NodeId)) );
+          currentNewXNodeId = addNonTerminalNode(x);
+          currentNewXNode = __decisionGraph->__internalNodeMap[currentNewXNodeId];
 
           // Iteration sur les différente valeurs de x pour faire le mapping
           for( indx = 0; indx < x->domainSize(); ++indx ){
-            if( __decisionGraph->isTerminalNode(currentOldXNode->nodeSons[indx]))
-              newXSons[indx] = currentOldXNode->nodeSons[indx];
+            if( __decisionGraph->isTerminalNode( currentOldXNode->son( indx ) ) )
+              currentNewXNode->setSon( indx, currentOldXNode->son( indx ) );
             else {
-              currentSonNode = __decisionGraph->__internalNodeMap[ currentOldXNode->nodeSons[indx] ];
-              if( currentSonNode->nodeVar == y )
-                newXSons[indx] = currentSonNode->nodeSons[indy];
+              currentOldXSonNode = __decisionGraph->__internalNodeMap[ currentOldXNode->son( indx ) ];
+              if( currentOldXSonNode->nodeVar() == y )
+                currentNewXNode->setSon( indx, currentOldXSonNode->son(indy));
               else
-                newXSons[indx] = currentOldXNode->nodeSons[indx];
+                currentNewXNode->setSon( indx, currentOldXNode->son(indx));
             }
           }
 
           // Insertion du nouveau noeud x
-          newYSons[indy] = checkIsomorphism( x, newXSons );
-          // Si non, alors on l'insère
-          if( newYSons[indy] == 0 )
-            newYSons[indy] = addNonTerminalNode( x, newXSons );
+          currentNewYNode->setSon( indy, currentNewXNodeId);
         }
 
-        // Même opération pour y une fois la creation de ses fils achevée
-        addNonTerminalNode( y, newYSons, oldxNodes->elemId );
-
         nextn = oldxNodes->nextElem;
-        MultiDimDecisionGraph<GUM_SCALAR>::_deallocateInternalNode(currentOldXNode);
+        delete currentOldXNode;
         MultiDimDecisionGraph<GUM_SCALAR>::_removeElemFromNICL(&oldxNodes, oldxNodes->elemId);
         oldxNodes = nextn;
       }
 
       while(oldyNodes){
         nextn = oldyNodes->nextElem;
-        MultiDimDecisionGraph<GUM_SCALAR>::_deallocateInternalNode(__decisionGraph->__internalNodeMap[oldyNodes->elemId]);
+        delete __decisionGraph->__internalNodeMap[oldyNodes->elemId];
         __decisionGraph->__internalNodeMap.erase(oldyNodes->elemId);
         __decisionGraph->__model.eraseNode(oldyNodes->elemId);
         MultiDimDecisionGraph<GUM_SCALAR>::_removeElemFromNICL(&oldyNodes, oldyNodes->elemId);
@@ -551,51 +423,84 @@ namespace gum {
       }
     }
 
+
     // ============================================================================
-    // Ensures that every isomorphic subgraphs are merged together.
+    //
     // ============================================================================
 //    template<typename GUM_SCALAR>
 //    INLINE
-//    void
-//    MultiDimDecisionGraphManager< GUM_SCALAR>::reduce( bool checkRedundancy, bool checkIsomorphism ){
+//    NodeId
+//    MultiDimDecisionGraphManager< GUM_SCALAR>::checkIsomorphism ( const DiscreteVariable* var,
+//                                                                 NodeId* sons){/*,
+//                                                                 const NodeId& defaultSon){*/
 
-//      HashTable<NodeId,NodeId> old2NewId(500,true,false);
-//      typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* currentNodeId = nullptr;
-//      typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* nextNodeId = nullptr;
-//      typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* currentNode = nullptr;
-//      bool theSame = true;
-//      Idx currentInd;
+//      const typename MultiDimDecisionGraph< GUM_SCALAR>::InternalNode* nody = nullptr;
+//      Idx i = 0;
 
-//      for( SequenceIterator<const DiscreteVariable*> varIter = __decisionGraph->variablesSequence().rbegin();
-//             varIter != __decisionGraph->variablesSequence().rend(); --varIter ){
+//      // ************************************************************************
+//      // Check abscence of identical node
+//      typename MultiDimDecisionGraph< GUM_SCALAR>::NICLElem* currentElem = __decisionGraph->__var2NodeIdMap[var];
+//      while( currentElem != nullptr ){
 
-//        currentNodeId = __decisionGraph->__var2NodeIdMap[*varIter];
+//        nody = __decisionGraph->__internalNodeMap[currentElem->elemId];
 
-//        while( currentNodeId != nullptr ){
-//          currentNode = __decisionGraph->__internalNodeMap[currentNodeId->elemId];
-
-//          theSame = true;
-//          for( currentInd = 0; currentInd < (*varIter)->domainSize(); currentInd++){
-//            if( old2NewId.exists(currentNode->nodeSons[currentInd]) )
-//              currentNode->nodeSons[currentInd] = old2NewId[currentNode->nodeSons[currentInd]];
-//            if( currentNode->nodeSons[currentInd] != currentNode->nodeSons[0])
-//              theSame = false;
-//          }
-
-//          if( checkRedundancy ){
-//              nextNodeId = currentNodeId->nextElem;
-//              if( theSame == true ){
-//                old2NewId.insert(currentNodeId->elemId, currentNode->nodeSons[0] );
-//                MultiDimDecisionGraph<GUM_SCALAR>::_deallocateInternalNode(currentNode);
-//                __decisionGraph->__internalNodeMap.erase(currentNodeId->elemId);
-//                __decisionGraph->__model.eraseNode(currentNodeId->elemId);
-//                MultiDimDecisionGraph<GUM_SCALAR>::_removeElemFromNICL( &(__decisionGraph->__var2NodeIdMap[*varIter]), currentNodeId->elemId);
-//              }
-//              currentNodeId = nextNodeId;
-
+//        // Check on the other sons
+//        for(i = 0; i < var->domainSize(); ++i ) {
+//          if( sons[i] != nody->nodeSons[i] )
+//            break;
+//          if(i == var->domainSize() - 1){
+//            MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( sons, var->domainSize()*sizeof(NodeId) );
+//            return currentElem->elemId;
 //          }
 //        }
+
+//        currentElem = currentElem->nextElem;
 //      }
+//      return 0;
 //    }
+
+    // ============================================================================
+    // Ensures that every isomorphic subgraphs are merged together.
+    // ============================================================================
+    template<typename GUM_SCALAR>
+    INLINE
+    void
+    MultiDimDecisionGraphManager< GUM_SCALAR>::reduce( ){
+
+      HashTable<NodeId,NodeId> old2NewId(__decisionGraph->realSize(),true,false);
+      typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* currentNodeId = nullptr;
+      typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* nextNodeId = nullptr;
+      typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* currentNode = nullptr;
+      bool theSame = true;
+      Idx currentInd;
+
+      for( SequenceIterator<const DiscreteVariable*> varIter = __decisionGraph->variablesSequence().rbegin();
+             varIter != __decisionGraph->variablesSequence().rend(); --varIter ){
+
+        currentNodeId = __decisionGraph->__var2NodeIdMap[*varIter];
+
+        while( currentNodeId != nullptr ){
+          currentNode = __decisionGraph->__internalNodeMap[currentNodeId->elemId];
+
+          theSame = true;
+          for( currentInd = 0; currentInd < (*varIter)->domainSize(); currentInd++){
+            if( old2NewId.exists(currentNode->son(currentInd)) )
+              currentNode->setSon( currentInd, old2NewId[currentNode->son(currentInd)] );
+            if( currentNode->son(currentInd) != currentNode->son(0))
+              theSame = false;
+          }
+
+          nextNodeId = currentNodeId->nextElem;
+          if( theSame == true ){
+            old2NewId.insert(currentNodeId->elemId, currentNode->son(0) );
+            delete currentNode;
+            __decisionGraph->__internalNodeMap.erase(currentNodeId->elemId);
+            __decisionGraph->__model.eraseNode(currentNodeId->elemId);
+            MultiDimDecisionGraph<GUM_SCALAR>::_removeElemFromNICL( &(__decisionGraph->__var2NodeIdMap[*varIter]), currentNodeId->elemId);
+          }
+          currentNodeId = nextNodeId;
+        }
+      }
+    }
 
 } // namespace gum

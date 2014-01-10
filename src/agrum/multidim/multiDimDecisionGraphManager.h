@@ -100,6 +100,17 @@ namespace gum{
         // ============================================================================
         void setRootNode ( const NodeId& root );
 
+
+        // ============================================================================
+        /**
+         * Inserts a new non terminal node in graph.
+         * NodeId of this node is generated automatically.
+         *
+         * @return the id of the added non terminal node.
+         */
+        // ============================================================================
+        NodeId addNonTerminalNode ( NodeId nid = 0 );
+
         // ============================================================================
         /**
          * Inserts a new non terminal node in graph.
@@ -110,40 +121,7 @@ namespace gum{
          * @return the id of the added non terminal node.
          */
         // ============================================================================
-        NodeId addNonTerminalNode ( const DiscreteVariable* var );
-
-        // ============================================================================
-        /**
-         * Inserts a new non terminal node in graph, along with given son vector.
-         * @warning the son vector  will now be handled by the decision graph.
-         *
-         * @param var Associated variable
-         * @param sons the son vector
-         * @param nid You can specify an id for the so inserted now.
-         * @warning If you do so, and a previous InternalNode was pointed by the nodeid,
-         * it will simply be lost, resulting in a memory leak. Don't use unless you know what you're doing.
-         * @throw OperationNotAllowed if MultiDimDecisionGraph has no variable yet.
-         * @return the id of the added non terminal node.
-         */
-        // ============================================================================
-        NodeId addNonTerminalNode ( const DiscreteVariable* var, NodeId* sons, NodeId nid = 0 );
-        ///@}
-
-        // ============================================================================
-        /**
-         * Checks if a node with same variable, same sons and same default son does not
-         * already exists in diagram
-         *
-         * @param var the associated variable
-         * @param sons table containing the nodeids of its sons (There are as many sons
-         * as the number of value assumed by var)
-         * @param defaultSon the default son (optional)
-         * @return a pair. First element is boolean indicating if such duplicate exists
-         * already. Second element is the such node.
-         */
-        // ============================================================================
-        NodeId checkIsomorphism ( const DiscreteVariable* var, NodeId* sons);/*,
-                                                         const NodeId& defaultSon = 0 );*/
+        NodeId addNonTerminalNode ( const DiscreteVariable* var, NodeId nid = 0  );
 
         // ============================================================================
         /**
@@ -189,27 +167,7 @@ namespace gum{
          * @throw DuplicateElement if another arc linking those nodes already exists
          */
         // ============================================================================
-        ///@{
         void insertArc ( NodeId from, NodeId to, Idx modality );
-//        void unsafeInsertArc ( NodeId from, NodeId to, Idx modality );
-        ///@}
-
-        // ============================================================================
-        /**
-         * Adds a default arc in the DD
-         *
-         * @param from and
-         * @param to as NodeId
-         * @throw NotFound If from and/or tail are not in the DD.
-         * @throw InvalidNode if head is a terminal node
-         * @throw OperationNotAllowed if arc doesn't respect variable order property
-         * @throw DuplicateElement if another arc linking those nodes already exists
-         */
-        // ============================================================================
-        ///@{
-//        void insertDefaultArc ( NodeId from, NodeId to );
-//        void unsafeInsertDefaultArc ( NodeId from, NodeId to );
-        ///@}
 
         // ============================================================================
         /**
@@ -245,19 +203,9 @@ namespace gum{
       /// @{
 
         // ============================================================================
-        /**
-         * For each non terminal node, this function first checks if node has a son
-         * for each value of associated variable.
-         * If not, function checks if defaultSon is already specified.
-         * If not, function affect defaultSon to the terminal node associated with given value.
-         */
-        // ============================================================================
-//        void fillWithDefaultArc( GUM_SCALAR defaultValue = 0 );
-
-        // ============================================================================
         /// Ensures that every isomorphic subgraphs are merged together.
         // ============================================================================
-        void removeRedundancy();
+        void reduce();
 
         // ============================================================================
         /// Changes var position in variable sequence

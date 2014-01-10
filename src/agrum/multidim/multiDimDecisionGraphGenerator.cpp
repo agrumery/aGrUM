@@ -52,49 +52,50 @@ namespace gum{
     MultiDimDecisionGraph<double>* MultiDimDecisionGraphGenerator::generate(){
 
 
-        srand( time(NULL) );
-        MultiDimDecisionGraph<double>* generatedDecisionGraph = new MultiDimDecisionGraph<double>();
+//        srand( time(NULL) );
+//        MultiDimDecisionGraph<double>* generatedDecisionGraph = new MultiDimDecisionGraph<double>();
 
-        for ( SequenceIterator< const DiscreteVariable* > varIter = __varSeq.begin(); varIter != __varSeq.end(); ++varIter )
-              generatedDecisionGraph->add(**varIter);
+//        for ( SequenceIterator< const DiscreteVariable* > varIter = __varSeq.begin(); varIter != __varSeq.end(); ++varIter )
+//              generatedDecisionGraph->add(**varIter);
 
-        while ( ( generatedDecisionGraph->variablesSequence().size() < __minNbVarInDiagram ) || ( generatedDecisionGraph->variablesSequence().size() > __maxNbVarInDiagram ) ) {
+//        while ( ( generatedDecisionGraph->variablesSequence().size() < __minNbVarInDiagram ) || ( generatedDecisionGraph->variablesSequence().size() > __maxNbVarInDiagram ) ) {
 
-            PriorityQueue< NodeId > fifo;
+//            PriorityQueue< NodeId > fifo;
 
-            // L'idée est de d'abord générer un arbre avant de fusionner les sous-graphe isomorphe
-            generatedDecisionGraph->manager()->setRootNode( generatedDecisionGraph->manager()->addNonTerminalNode( __varSeq.atPos(0) ) );
-            fifo.insert(1,generatedDecisionGraph->root());
-            Idx nbTotalVar = __varSeq.size();
+//            // L'idée est de d'abord générer un arbre avant de fusionner les sous-graphe isomorphe
+//            generatedDecisionGraph->manager()->setRootNode( generatedDecisionGraph->manager()->addNonTerminalNode( __varSeq.atPos(0) ) );
+//            fifo.insert(1,generatedDecisionGraph->root());
+//            Idx nbTotalVar = __varSeq.size();
 
-            while( ! fifo.empty() ){
+//            while( ! fifo.empty() ){
 
-                NodeId currentId = fifo.pop();
-                Idx currentVarPos = __varSeq.pos( generatedDecisionGraph->node(currentId)->nodeVar );
-                Idx nbRemainingVar = nbTotalVar - currentVarPos - 1;
+//                NodeId currentId = fifo.pop();
+//                Idx currentVarPos = __varSeq.pos( generatedDecisionGraph->node(currentId)->nodeVar );
+//                Idx nbRemainingVar = nbTotalVar - currentVarPos - 1;
 
-                for( Idx modality = 0; modality < generatedDecisionGraph->node(currentId)->nodeVar->domainSize(); ++modality ){
+//                for( Idx modality = 0; modality < generatedDecisionGraph->node(currentId)->nodeVar->domainSize(); ++modality ){
 
-                    if( nbRemainingVar != 0 && rand() % 100 <= 75 ){
+//                    if( nbRemainingVar != 0 && rand() % 100 <= 75 ){
 
-                        const DiscreteVariable* sonVar = __varSeq.atPos( currentVarPos + ( rand() % (  nbRemainingVar ) ) );
-                        NodeId sonId = generatedDecisionGraph->manager()->addNonTerminalNode( sonVar );
-                        fifo.insert(1,sonId);
-                        generatedDecisionGraph->manager()->insertArc( currentId, sonId, modality );
+//                        const DiscreteVariable* sonVar = __varSeq.atPos( currentVarPos + ( rand() % (  nbRemainingVar ) ) );
+//                        NodeId sonId = generatedDecisionGraph->manager()->addNonTerminalNode( sonVar );
+//                        fifo.insert(1,sonId);
+//                        generatedDecisionGraph->manager()->insertArc( currentId, sonId, modality );
 
-                    }else{
+//                    }else{
 
-                        double sonValue = 10.0d;
-                        NodeId sonId = generatedDecisionGraph->manager()->addTerminalNode( sonValue );
-                        generatedDecisionGraph->manager()->insertArc( currentId, sonId, modality );
+//                        double sonValue = 10.0d;
+//                        NodeId sonId = generatedDecisionGraph->manager()->addTerminalNode( sonValue );
+//                        generatedDecisionGraph->manager()->insertArc( currentId, sonId, modality );
 
-                    }
-                }
-            }
-        }
+//                    }
+//                }
+//            }
+//        }
 
-//        generatedDecisionGraph->reduce();
+////        generatedDecisionGraph->reduce();
 
-        return generatedDecisionGraph;
+//        return generatedDecisionGraph;
+        return nullptr;
     }
 } /* end of namespace */
