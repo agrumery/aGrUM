@@ -20,7 +20,7 @@
       PyObject* q=PyList_New(0);
 
       const gum::DAG& dag=self->dag();
-      for ( gum::NodeGraphPartIterator node_iter = dag.beginNodes();node_iter != dag.endNodes(); ++node_iter ) {
+      for ( gum::NodeGraphPartIterator node_iter = dag.nodes().begin();node_iter != dag.nodes().end(); ++node_iter ) {
         PyList_Append(q,PyString_FromString(self->variable(*node_iter).name().c_str()));
       }
       return q;
@@ -30,7 +30,7 @@
       PyObject* q=PyList_New(0);
 
       const gum::DAG& dag=self->dag();
-      for ( gum::NodeGraphPartIterator  node_iter = dag.beginNodes();node_iter != dag.endNodes(); ++node_iter ) {
+      for ( gum::NodeGraphPartIterator  node_iter = dag.nodes().begin();node_iter != dag.nodes().end(); ++node_iter ) {
         PyList_Append(q,PyInt_FromLong(*node_iter));
       }
 
@@ -41,7 +41,7 @@
       PyObject* q=PyList_New(0);
 
       const gum::DAG& dag=self->dag();
-      for ( gum::ArcGraphPart::ArcIterator  arc_iter = dag.beginArcs();arc_iter != dag.endArcs(); ++arc_iter ) {
+      for ( gum::ArcGraphPart::ArcIterator  arc_iter = dag.arcs().begin();arc_iter != dag.Arcs().end(); ++arc_iter ) {
         PyList_Append(q,Py_BuildValue("(i,i)", arc_iter->tail(), arc_iter->head()));
       }
 

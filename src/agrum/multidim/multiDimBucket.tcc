@@ -531,7 +531,7 @@ namespace gum {
 
       return sum;
     } catch ( NotFound& e ) {
-      std::cerr << std::endl << e.content() << std::endl;
+      std::cerr << std::endl << e.errorContent() << std::endl;
       // This happens if the bucket is empty.
       GUM_ERROR( SizeError, "This MultiDimBucket is empty." );
     }

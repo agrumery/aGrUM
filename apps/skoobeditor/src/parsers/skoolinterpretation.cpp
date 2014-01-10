@@ -2,7 +2,7 @@
 
 #include "qsciscintillaextended.h"
 #include "prmtreemodel.h"
-#include <agrum/prm/skool/SkoolReader.h>
+#include <agrum/PRM/skool/SkoolReader.h>
 
 #include <QDebug>
 

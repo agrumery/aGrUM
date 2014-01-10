@@ -1,0 +1,4 @@
+#ifndef O4DGFUNCTIONS_H
+#define O4DGFUNCTIONS_H
+
+#endif // O4DGFUNCTIONS_H

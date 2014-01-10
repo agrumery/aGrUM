@@ -12,7 +12,7 @@
 #include "parsers/skoorinterpretation.h"
 
 #include <agrum/core/errorsContainer.h>
-#include <agrum/prm/skoor/SkoorInterpreter.h>
+#include <agrum/PRM/skoor/SkoorInterpreter.h>
 
 using namespace gum::prm::skool;
 

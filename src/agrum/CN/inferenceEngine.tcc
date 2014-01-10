@@ -901,7 +901,7 @@ namespace gum {
       for ( auto it = nodeCredalSet.cbegin(), itEnd = nodeCredalSet.cend(); it != itEnd; ++it ) {
         eq = true;
 
-        for ( auto end = vertex.size(), i = ( Size ) 0; i < end; i++ ) {
+        for ( auto end = ( Size ) vertex.size(), i = ( Size ) 0; i < end; i++ ) {
           if ( fabs ( vertex[ i ] - ( *it ) [ i ] ) > 1e-6 ) {
             eq = false;
             break;

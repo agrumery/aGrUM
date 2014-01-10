@@ -32,9 +32,9 @@
 #include <agrum/multidim/aggregators/or.h>
 #include <agrum/multidim/aggregators/and.h>
 
-#include <agrum/multidim/CIModels/multiDimNoisyAND.h>
-#include <agrum/multidim/CIModels/multiDimNoisyORNet.h>
-#include <agrum/multidim/CIModels/multiDimNoisyORCompound.h>
+#include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
+#include <agrum/multidim/ICIModels/multiDimNoisyORNet.h>
+#include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
 
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 
@@ -258,6 +258,77 @@ namespace gum {
   }
 
 
+  template<typename GUM_SCALAR>
+  void
+  BayesNet<GUM_SCALAR>::reverseArc ( const Arc& arc ) {
+    // check that the arc exsists
+    if ( ! __varMap.exists ( arc.tail() ) || ! __varMap.exists ( arc.head() )
+         || ! dag().existsArc ( arc ) ) {
+      GUM_ERROR ( InvalidArc, "a nonexisting arc cannot be reversed" );
+    }
+    NodeId tail = arc.tail (), head = arc.head ();
+
+    // check that the reversal does not induce a cycle
+    try {
+      DAG d = dag ();
+      d.eraseArc ( arc );
+      d.insertArc ( head, tail );
+    }
+    catch ( Exception& e ) {
+      GUM_ERROR ( InvalidArc, "this arc reversal would induce a directed cycle" );
+    }
+    
+    // with the same notations as Shachter (1986), "evaluating influence diagrams",
+    // p.878, we shall first compute the product of probabilities:
+    // pi_j^old (x_j | x_c^old(j) ) * pi_i^old (x_i | x_c^old(i) )
+    Potential<GUM_SCALAR> prod { cpt ( tail ) * cpt ( head ) };
+
+    // modify the topology of the graph: add to tail all the parents of head
+    // and add to head all the parents of tail
+    beginTopologyTransformation ();
+    NodeSet new_parents = dag().parents ( tail ) + dag().parents ( head );
+    // remove arc (head, tail)
+    eraseArc ( arc );
+    // add the necessary arcs to the tail
+    for ( NodeSet::const_iterator iter = new_parents.begin ();
+          iter != new_parents.end (); ++iter ) {
+      if ( ( *iter != tail ) && ! dag().existsArc ( *iter, tail ) ) {
+        addArc ( *iter, tail );
+      }
+    }
+    addArc ( head, tail );
+    // add the necessary arcs to the head
+    new_parents.erase ( tail );
+     for ( NodeSet::const_iterator iter = new_parents.begin ();
+          iter != new_parents.end (); ++iter ) {
+      if ( ( *iter != head ) && ! dag().existsArc ( *iter, head ) ) {
+        addArc ( *iter, head );
+      }
+    }
+    endTopologyTransformation ();
+
+    // update the conditional distributions of head and tail
+    Set<const DiscreteVariable*> del_vars;
+    del_vars << &(variable (tail));
+    Potential<GUM_SCALAR> new_cpt_head { projectSum ( prod, del_vars ) };
+    Potential<GUM_SCALAR>& cpt_head =
+      const_cast<Potential<GUM_SCALAR>&> ( cpt ( head ) );
+    cpt_head = new_cpt_head;
+
+    Potential<GUM_SCALAR> new_cpt_tail { prod / cpt_head };
+    Potential<GUM_SCALAR>& cpt_tail =
+      const_cast<Potential<GUM_SCALAR>&> ( cpt ( tail ) );
+    cpt_tail = new_cpt_tail;
+  }
+  
+
+  template<typename GUM_SCALAR> INLINE
+  void
+  BayesNet<GUM_SCALAR>::reverseArc ( NodeId tail, NodeId head ) {
+    reverseArc ( Arc ( tail, head ) );
+  }
+  
+  
   template<typename GUM_SCALAR> INLINE
   NodeId
   BayesNet<GUM_SCALAR>::addOR ( const DiscreteVariable& var ) {
@@ -335,7 +406,7 @@ namespace gum {
   BayesNet<GUM_SCALAR>::addWeightedArc ( NodeId tail, NodeId head, GUM_SCALAR causalWeight ) {
     const MultiDimAdressable& content = cpt ( head ).getMasterRef();
 
-    const MultiDimCIModel<GUM_SCALAR>* CImodel = dynamic_cast<const MultiDimCIModel<GUM_SCALAR>*> ( &content );
+    const MultiDimICIModel<GUM_SCALAR>* CImodel = dynamic_cast<const MultiDimICIModel<GUM_SCALAR>*> ( &content );
 
     if ( CImodel != 0 ) {
       // or is OK

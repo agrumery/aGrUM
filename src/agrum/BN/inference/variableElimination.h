@@ -33,7 +33,7 @@
 #include <agrum/graphs/defaultTriangulation.h>
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/multidim/multiDimBucket.h>
-//#include <agrum/prm/utils_prm.h>
+//#include <agrum/PRM/utils_prm.h>
 
 namespace gum {
 

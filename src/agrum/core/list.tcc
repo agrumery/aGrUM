@@ -155,9 +155,10 @@ namespace gum {
 
 
   /// default constructor
-  template <typename Val> INLINE
+  template <typename Val>
+  template<typename Alloc> INLINE
   ListConstIteratorUnsafe<Val>::ListConstIteratorUnsafe
-  ( const List<Val>& theList ) noexcept :
+  ( const List<Val,Alloc>& theList ) noexcept :
     __bucket { theList.__deb_list } {
     // for debugging purposes
     GUM_CONSTRUCTOR( ListConstIteratorUnsafe );
@@ -447,9 +448,10 @@ namespace gum {
 
 
   /// constructor for a begin
-  template <typename Val> INLINE
+  template <typename Val>
+  template<typename Alloc> INLINE
   ListIteratorUnsafe<Val>::ListIteratorUnsafe
-  ( const List<Val>& theList ) noexcept :
+  ( const List<Val,Alloc>& theList ) noexcept :
     ListConstIteratorUnsafe<Val> { theList } {
     GUM_CONSTRUCTOR( ListIteratorUnsafe );
   }
@@ -616,9 +618,11 @@ namespace gum {
 
 
   /// Constructor for a begin
-  template <typename Val> INLINE
-  ListConstIterator<Val>::ListConstIterator( const List<Val>& theList ) :
-    __list { &theList },
+  template <typename Val>
+  template<typename Alloc> INLINE
+  ListConstIterator<Val>::ListConstIterator( const List<Val,Alloc>& theList ) :
+    __list { reinterpret_cast<const List< Val,std::allocator<Val> >*>
+      ( &theList ) },
     __bucket { theList.__deb_list } {
     // for debugging purposes
     GUM_CONSTRUCTOR( ListConstIterator );
@@ -646,9 +650,11 @@ namespace gum {
 
   /// Constructor for an iterator pointing to the \e ind_eltth element of a List.
   template <typename Val>
-  ListConstIterator<Val>::ListConstIterator ( const List<Val>& theList,
+  template<typename Alloc>
+  ListConstIterator<Val>::ListConstIterator ( const List<Val,Alloc>& theList,
                                               unsigned int ind_elt ) :
-    __list { &theList } {
+    __list { reinterpret_cast<const List< Val,std::allocator<Val> >*>
+      ( &theList ) } {
     // for debugging purposes
     GUM_CONSTRUCTOR( ListConstIterator );
 
@@ -1125,8 +1131,9 @@ namespace gum {
 
   
   /// constructor for a begin
-  template <typename Val> INLINE
-  ListIterator<Val>::ListIterator ( const List<Val>& theList ) :
+  template <typename Val>
+  template<typename Alloc> INLINE
+  ListIterator<Val>::ListIterator ( const List<Val,Alloc>& theList ) :
     ListConstIterator<Val> { theList } {
     GUM_CONSTRUCTOR( ListIterator );
   }
@@ -1141,8 +1148,9 @@ namespace gum {
 
   
   /// Constructor for an iterator pointing to the \e ind_eltth element of a List.
-  template <typename Val> INLINE
-  ListIterator<Val>::ListIterator( const List<Val>& theList,
+  template <typename Val>
+  template<typename Alloc> INLINE
+  ListIterator<Val>::ListIterator( const List<Val,Alloc>& theList,
                                    unsigned int ind_elt ) :
     ListConstIterator<Val> { theList, ind_elt } {
     GUM_CONSTRUCTOR( ListIterator );

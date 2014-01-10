@@ -31,9 +31,9 @@
 #include <agrum/multidim/aggregators/or.h>
 #include <agrum/multidim/aggregators/and.h>
 
-#include <agrum/multidim/CIModels/multiDimNoisyAND.h>
-#include <agrum/multidim/CIModels/multiDimNoisyORNet.h>
-#include <agrum/multidim/CIModels/multiDimNoisyORCompound.h>
+#include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
+#include <agrum/multidim/ICIModels/multiDimNoisyORNet.h>
+#include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
 
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/multidim/potential.h>

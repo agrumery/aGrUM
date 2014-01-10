@@ -26,10 +26,19 @@ tools for BN analysis in ipython qtconsole and notebook
 
 (but can be used every where)
 """
+from base64 import encodestring
+import numpy as np
+
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
+
+import pydot
+
+import IPython.display
+from IPython.core.pylabtools import print_figure
+
 import pyAgrum as gum
-import numpy as np
 
 def getPosterior(bn,ev,target):
     """
@@ -368,3 +377,108 @@ def handPlot(ax, mag=1.0,
         ax.set_position([0, 0, 1, 1])
     
     return ax
+
+cdict = {'red': ((0.0, 0.1, 0.3),
+                 (1.0, 0.6, 1.0)),
+         'green': ((0.0, 0.0, 0.0),
+                   (1.0, 0.6, 0.8)),
+         'blue': ((0.0, 0.0, 0.0),
+                  (1.0, 1, 0.8))}
+INFOcmap = mpl.colors.LinearSegmentedColormap('my_colormap',cdict,256)
+
+def _proba2rgb(p=0.99,cmap=INFOcmap):
+    if p==0.0:
+        r,g,b="FF","33","33"
+    elif p==1.0:
+        r,g,b="AA","FF","FF"
+    else:
+      (r,g,b,_)=cmap(p)
+      r="%02x"%(r*256)
+      g="%02x"%(g*256)
+      b="%02x"%(b*256)
+
+    return r,g,b
+
+def _proba2bgcolor(p,cmap=INFOcmap):
+    r,g,b=_proba2rgb(p,cmap)
+    return "#"+r+g+b
+
+def _proba2fgcolor(p,cmap=INFOcmap):
+    if max([eval("0x"+s[0]) for s in _proba2rgb(p,cmap)])<=12:
+        return "#FFFFFF"
+    else:
+        return "#000000"
+
+def getBN(bn,size="4",vals=None,cmap=INFOcmap):
+    """
+    Shows a graphviz svg representation of the BN using size ("1" ,"2" , ...)
+    vals is a dictionnary name:value of value in [0,1] for each node 
+    (with special color for 0 and 1)
+    """    
+    graph=pydot.Dot(graph_type='digraph')
+    for n in bn.names():
+        if vals is None: 
+          bgcol="#666666"
+          fgcol="#FFFFFF"
+        else:
+          bgcol=_proba2bgcolor(vals[n],cmap)
+          fgcol=_proba2fgcolor(vals[n],cmap)
+        node=pydot.Node(n,style="filled",fillcolor=bgcol,fontcolor=fgcol)
+        graph.add_node(node)
+    for a in bn.arcs():
+        edge=pydot.Edge(bn.variable(a[0]).name(),bn.variable(a[1]).name())
+        graph.add_edge(edge)
+    graph.set_size(size)
+    return IPython.display.SVG(graph.create_svg())
+
+def showBN(bn,size="4",vals=None,cmap=INFOcmap):
+  gr=getBN(bn,size,vals,cmap)
+  IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))
+  
+  
+def normalizeVals(vals,hilightExtrema=False):
+    """
+    normalisation if vals is not a proba (max>1)
+    """
+    ma=float(max(vals.values()))
+    mi=float(min(vals.values()))
+    if ma==mi:
+      return None
+    else:
+      if not hilightExtrema:
+        vmi=0.01
+        vma=0.99
+      else:
+        vmi=0
+        vma=1
+    
+      return {name:vmi+(val-mi)*(vma-vmi)/(ma-mi) for name,val in vals.iteritems()}
+  
+def showInference(bn,ie,size="4",cmap=INFOcmap):
+  """
+  Shows a bn annoted with results from inference : entropy and mutual informations
+  """
+  vals={bn.variable(n).name():ie.H(n) for n in bn.ids()}
+  gr=getBN(bn,size,normalizeVals(vals,hilightExtrema=False),cmap)
+  
+  mi=min(vals.values())
+  ma=max(vals.values())
+  
+  fig = mpl.figure.Figure(figsize=(8,3))
+  canvas = fc(fig)
+  ax1 = fig.add_axes([0.05, 0.80, 0.9, 0.15])
+  norm = mpl.colors.Normalize(vmin=mi, vmax=ma)
+  cb1 = mpl.colorbar.ColorbarBase(ax1, cmap=cmap,
+                                   norm=norm,
+                                   orientation='horizontal')
+  cb1.set_label('Entropy')
+  png=print_figure(canvas.figure,"png") # from IPython.core.pylabtools
+  png_legend="<img style='vertical-align:middle' src='data:image/png;base64,%s'>"%encodestring(png).decode('ascii')
+    
+  IPython.display.display(IPython.display.HTML("<div align='center'>"+
+                              gr.data+
+                              "</div><div align='center'>"+
+                              "<font color='"+_proba2bgcolor(0.01,cmap)+"'>"+str(mi)+"</font>"
+                              +png_legend+
+                              "<font color='"+_proba2bgcolor(0.99,cmap)+"'>"+str(ma)+"</font>"
+                              "</div>"))

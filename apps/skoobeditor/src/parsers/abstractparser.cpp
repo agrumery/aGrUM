@@ -4,7 +4,7 @@
 #include "prmtreemodel.h"
 
 #include <agrum/core/errorsContainer.h>
-#include <agrum/prm/PRM.h>
+#include <agrum/PRM/PRM.h>
 
 #include <QFile>
 #include <QFileInfo>

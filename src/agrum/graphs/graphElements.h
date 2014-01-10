@@ -561,9 +561,9 @@ namespace gum {
    **/
 
   template<class VAL> struct Property {
-    typedef HashTable<NodeId, VAL> onNodes __attribute__ ( ( deprecated ) );
-    typedef HashTable<Edge, VAL> onEdges __attribute__ ( ( deprecated ) );
-    typedef HashTable<Arc, VAL> onArcs __attribute__ ( ( deprecated ) );
+    typedef HashTable<NodeId, VAL> GUM_DEPRECATED(onNodes);
+    typedef HashTable<Edge, VAL> GUM_DEPRECATED(onEdges);
+    typedef HashTable<Arc, VAL> GUM_DEPRECATED(onArcs);
   };
   /// @}
 

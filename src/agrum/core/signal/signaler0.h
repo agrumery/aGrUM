@@ -20,7 +20,7 @@
 
 #ifndef SIGNALER0_H__
 #define SIGNALER0_H__
-
+#include <functional>
 
 #include "signaler.h"
 #include <agrum/core/list.h>
@@ -128,7 +128,7 @@ namespace gum {
           return [=]( IConnector0* el )->bool {
             return el->target() ==l;
           };
-        };
+        }
     };
 
 
