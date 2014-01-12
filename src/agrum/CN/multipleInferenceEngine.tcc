@@ -565,7 +565,7 @@ namespace gum {
             delete _l_optimalNet[bn];
 
         if ( this->_workingSetE[bn] != nullptr ) {
-          for ( auto it = _workingSetE[bn]->begin(), theEnd = _workingSetE[bn]->end(); it != theEnd; ++it )
+          for ( auto it = _workingSetE[bn]->beginSafe(), theEnd = _workingSetE[bn]->endSafe(); it != theEnd; ++it )
             delete *it;
 
           delete _workingSetE[bn];

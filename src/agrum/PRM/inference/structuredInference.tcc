@@ -786,7 +786,7 @@ namespace gum {
       if ( not __real_order ) {
         __real_order = new List<NodeSet>();
 
-        for ( auto set = __partial_order.begin(); set != __partial_order.end(); ++set )
+        for ( auto set = __partial_order.beginSafe(); set != __partial_order.endSafe(); ++set )
           if ( set->size() ) __real_order->insert ( *set );
       }
 

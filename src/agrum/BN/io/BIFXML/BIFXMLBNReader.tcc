@@ -184,7 +184,7 @@ namespace gum {
         parentList.pushBack( parentId );
       }
 
-      for ( List< NodeId >::iterator parentListIte = parentList.rbegin(); parentListIte != parentList.rend(); --parentListIte )
+      for ( List< NodeId >::iterator_safe parentListIte = parentList.rbeginSafe(); parentListIte != parentList.rendSafe(); --parentListIte )
         __bn->addArc( *parentListIte, currentVarId );
 
       // Recuperating tables values

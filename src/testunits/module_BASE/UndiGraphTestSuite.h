@@ -285,7 +285,7 @@ namespace gum_tests {
 
         gum::Size s = 0;
 
-        for ( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end(); ++iter ) {
+        for ( gum::List<gum::Size>::iterator_unsafe iter = list.beginUnsafe(); iter != list.endUnsafe(); ++iter ) {
           s += *iter;
         }
 
@@ -339,7 +339,7 @@ namespace gum_tests {
 
         gum::Size s = 0;
 
-        for ( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end(); ++iter ) {
+        for ( gum::List<gum::Size>::iterator_unsafe iter = list.beginUnsafe(); iter != list.endUnsafe(); ++iter ) {
           s += *iter;
         }
 

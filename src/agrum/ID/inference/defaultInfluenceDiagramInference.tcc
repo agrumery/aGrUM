@@ -200,7 +200,7 @@ namespace gum {
   void
   DefaultInfluenceDiagramInference<GUM_SCALAR>::insertEvidence ( const List<const Potential<GUM_SCALAR>*>& evidenceList ) {
 
-    for ( ListConstIterator<const Potential<GUM_SCALAR>*> evidenceListIter = evidenceList.cbegin(); evidenceListIter != evidenceList.cend(); ++evidenceListIter )
+    for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> evidenceListIter = evidenceList.cbeginSafe(); evidenceListIter != evidenceList.cendSafe(); ++evidenceListIter )
       __cliquePropertiesMap[ __nodeToCliqueMap[ this->influenceDiagram().nodeId ( ( *evidenceListIter )->variable ( 0 ) ) ] ]->addEvidence ( **evidenceListIter );
 
   }
@@ -885,14 +885,14 @@ namespace gum {
   CliqueProperties<GUM_SCALAR>::cleanFromInference() {
 
     // Removed added variables during inference (normally, the __removableVarList is empty, but we never know )
-    for ( ListIterator<const DiscreteVariable*> removedVarIter =  __removableVarList.begin(); removedVarIter !=  __removableVarList.end(); ++removedVarIter ) {
+    for ( ListIteratorSafe<const DiscreteVariable*> removedVarIter =  __removableVarList.beginSafe(); removedVarIter !=  __removableVarList.endSafe(); ++removedVarIter ) {
       __allVarsInst.erase ( **removedVarIter );
       __removableVarList.erase ( removedVarIter );
     }
 
     // Removed added potentials during inference
-    for ( ListIterator<const Potential<GUM_SCALAR>* > removedPotIter =  __removablePotentialList.begin();
-          removedPotIter !=  __removablePotentialList.end(); ++removedPotIter ) {
+    for ( ListIteratorSafe<const Potential<GUM_SCALAR>* > removedPotIter =  __removablePotentialList.beginSafe();
+          removedPotIter !=  __removablePotentialList.endSafe(); ++removedPotIter ) {
       delete __potentialBucket[ *removedPotIter ];
       __potentialBucket.erase ( *removedPotIter );
       delete *removedPotIter;
@@ -901,8 +901,8 @@ namespace gum {
     __removablePotentialList.clear();
 
     // Removed added utility tables during inference
-    for ( ListIterator<const UtilityTable<GUM_SCALAR>* > removedUtIter =  __removableUtilityList.begin();
-          removedUtIter !=  __removableUtilityList.end(); ++removedUtIter ) {
+    for ( ListIteratorSafe<const UtilityTable<GUM_SCALAR>* > removedUtIter =  __removableUtilityList.beginSafe();
+          removedUtIter !=  __removableUtilityList.endSafe(); ++removedUtIter ) {
       delete __utilityBucket[ *removedUtIter ];
       __utilityBucket.erase ( *removedUtIter );
       delete *removedUtIter;

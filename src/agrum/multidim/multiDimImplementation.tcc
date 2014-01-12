@@ -60,8 +60,8 @@ namespace gum {
     GUM_DESTRUCTOR( MultiDimImplementation );
     // unregister all remaining slave instantiations
 
-    for ( List<Instantiation*>::iterator iter = __slaveInstantiations.begin();
-          iter != __slaveInstantiations.end(); ++iter )
+    for ( List<Instantiation*>::iterator_safe iter = __slaveInstantiations.beginSafe();
+          iter != __slaveInstantiations.endSafe(); ++iter )
       ( *iter )->forgetMaster();
   }
 
@@ -81,8 +81,8 @@ namespace gum {
     __vars.insert( &v );
 
     // informs all the slaves that they have to update themselves
-    for ( List<Instantiation*>::iterator iter = __slaveInstantiations.begin();
-          iter != __slaveInstantiations.end(); ++iter ) {
+    for ( List<Instantiation*>::iterator_safe iter = __slaveInstantiations.beginSafe();
+          iter != __slaveInstantiations.endSafe(); ++iter ) {
       ( *iter )->addWithMaster( this, v );
     }
 
@@ -104,8 +104,8 @@ namespace gum {
     __vars.erase( &v );
 
     // informs all the slaves that they have to update themselves
-    for ( List<Instantiation*>::iterator iter = __slaveInstantiations.begin();
-          iter != __slaveInstantiations.end(); ++iter ) {
+    for ( List<Instantiation*>::iterator_safe iter = __slaveInstantiations.beginSafe();
+          iter != __slaveInstantiations.endSafe(); ++iter ) {
       ( *iter )->eraseWithMaster( this, v );
     }
 
@@ -284,7 +284,7 @@ namespace gum {
       const DiscreteVariable* y ) {
     __vars.setAtPos( __vars.pos( x ), y );
 
-    for ( List<Instantiation*>::iterator iter = __slaveInstantiations.begin(); iter != __slaveInstantiations.end(); ++iter ) {
+    for ( List<Instantiation*>::iterator_safe iter = __slaveInstantiations.beginSafe(); iter != __slaveInstantiations.endSafe(); ++iter ) {
       ( **iter ).swap( *x, *y );
     }
   }

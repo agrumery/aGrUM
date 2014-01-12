@@ -153,8 +153,8 @@ namespace gum {
   void
   ShaferShenoyInference<GUM_SCALAR>::insertEvidence (
     const List<const Potential<GUM_SCALAR>*>& pot_list ) {
-    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = pot_list.cbegin();
-          iter != pot_list.cend(); ++iter ) {
+    for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter = pot_list.cbeginSafe();
+          iter != pot_list.cendSafe(); ++iter ) {
       __clique_prop[__node2CliqueMap[
                       this->bn().nodeId ( ( *iter )->variable ( 0 ) )]
                    ]->addEvidence ( **iter );

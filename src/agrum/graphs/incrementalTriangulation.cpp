@@ -271,16 +271,16 @@ namespace gum {
     NodeId Mx = mps1[0];
 
     if ( mps1.size() <= mps2.size() ) {
-      for ( ListConstIterator<NodeId> iter = mps1.cbegin();
-            iter != mps1.cend(); ++iter ) {
+      for ( ListConstIteratorSafe<NodeId> iter = mps1.cbeginSafe();
+            iter != mps1.cendSafe(); ++iter ) {
         if ( __T_mpd.clique ( *iter ).contains ( Y ) ) {
           Mx = *iter;
           break;
         }
       }
     } else {
-      for ( ListConstIterator<NodeId> iter = mps2.cbegin();
-            iter != mps2.cend(); ++iter ) {
+      for ( ListConstIteratorSafe<NodeId> iter = mps2.cbeginSafe();
+            iter != mps2.cendSafe(); ++iter ) {
         if ( __T_mpd.clique ( *iter ).contains ( X ) ) {
           Mx = *iter;
           break;
@@ -322,8 +322,8 @@ namespace gum {
     // remove X from the MPS containing X
     List<NodeId>& MPS_of_X = __mps_of_node[X];
 
-    for ( ListIterator<NodeId> iter = MPS_of_X.begin();
-          iter != MPS_of_X.end(); ++iter ) {
+    for ( ListIteratorSafe<NodeId> iter = MPS_of_X.beginSafe();
+          iter != MPS_of_X.endSafe(); ++iter ) {
       __T_mpd.eraseFromClique ( *iter, X );
 
       // if the intersection between *iter and one of its neighbour is empty,
@@ -341,8 +341,8 @@ namespace gum {
 
 
     // remove X from the cliques containing X
-    for ( ListIterator<NodeId> iter = MPS_of_X.begin();
-          iter != MPS_of_X.end(); ++iter ) {
+    for ( ListIteratorSafe<NodeId> iter = MPS_of_X.beginSafe();
+          iter != MPS_of_X.endSafe(); ++iter ) {
       const std::vector<NodeId>& cliques_of_X = __cliques_of_mps[*iter];
 
       for ( unsigned int i = 0; i < cliques_of_X.size(); ++i ) {
@@ -703,7 +703,7 @@ namespace gum {
         const List<NodeId>& liste = iter.val ();
         HashTable<NodeId, bool>& hash = chk[iter.key()];
 
-        for ( ListConstIterator<NodeId> iter2 = liste.cbegin(); iter2 != liste.cend(); ++iter2 ) {
+        for ( ListConstIteratorUnsafe<NodeId> iter2 = liste.cbeginUnsafe(); iter2 != liste.cendUnsafe(); ++iter2 ) {
           if ( !hash.exists ( *iter2 ) ) {
             std::cerr << "check mps of nodes" << std::endl
                       << __T_mpd << std::endl << __mps_of_node << std::endl;

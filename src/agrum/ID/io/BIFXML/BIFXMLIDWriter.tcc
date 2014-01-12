@@ -227,8 +227,8 @@ namespace gum {
       for ( NodeSet::const_iterator_safe parentIter = parentArcs.beginSafe(); parentIter !=  parentArcs.endSafe(); ++ parentIter )
         parentList.pushBack ( infdiag.variable ( *parentIter ).name() );
 
-      for ( List< std::string >::iterator parentListIte = parentList.rbegin();
-            parentListIte != parentList.rend();
+      for ( List< std::string >::iterator_safe parentListIte = parentList.rbeginSafe();
+            parentListIte != parentList.rendSafe();
             --parentListIte )
         str << "\t<GIVEN>" << ( *parentListIte ) << "</GIVEN>" << std::endl;
 

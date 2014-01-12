@@ -250,8 +250,8 @@ namespace gum {
     ( const List<const Potential<GUM_SCALAR>*>& pot_list ) {
       eraseAllEvidence();
 
-      for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = pot_list.cbegin();
-            iter != pot_list.cend(); ++iter ) {
+      for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter = pot_list.cbeginSafe();
+            iter != pot_list.cendSafe(); ++iter ) {
         // check that the evidence is given w.r.t.only one random variable
         const Potential<GUM_SCALAR>& pot = **iter;
         const Sequence<const DiscreteVariable*>& vars = pot.variablesSequence();

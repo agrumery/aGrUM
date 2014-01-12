@@ -189,8 +189,8 @@ namespace gum {
   template <typename GUM_SCALAR>
   UtilityTable<GUM_SCALAR> UtilityTable<GUM_SCALAR>::reduceBy( const List<const DiscreteVariable*>& varList ) const {
     UtilityTable<GUM_SCALAR> result( new MultiDimArray<GUM_SCALAR> );
-    for ( List<const DiscreteVariable*>::const_iterator iter = varList.cbegin();
-          iter != varList.cend(); ++iter ) {
+    for ( List<const DiscreteVariable*>::const_iterator_safe iter = varList.cbeginSafe();
+          iter != varList.cendSafe(); ++iter ) {
       const DiscreteVariable& var = **iter;
 
       if ( this->contains( var ) ) {

@@ -274,8 +274,8 @@ namespace gum_tests {
 
         gum::Size s = 0;
 
-        for ( const auto iter : list )
-          s += iter;
+        for ( auto iter = list.beginUnsafe(); iter != list.endUnsafe(); ++iter )
+          s += *iter;
 
         TS_ASSERT_EQUALS ( s, 2 * ( id1 + id2 + id3 + id4 + id5 ) );
       }
@@ -327,8 +327,8 @@ namespace gum_tests {
 
         gum::Size s = 0;
 
-        for ( const auto iter : list )
-          s += iter;
+        for ( auto iter = list.beginUnsafe(); iter != list.endUnsafe (); ++iter )
+          s += *iter;
 
         TS_ASSERT_EQUALS ( s, ( gum::Size ) ( 0 + 0 + 2 + 3 + 1 + 4 + 2 + 3 + 4 + 4 + 3 + 1 ) );
       }

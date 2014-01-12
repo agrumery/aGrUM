@@ -420,8 +420,8 @@ namespace gum_tests {
 
         bn.erase ( idList[0] );
 
-        for ( gum::List<gum::NodeId>::iterator iter = idList.begin();
-              iter != idList.end();
+        for ( gum::List<gum::NodeId>::iterator_safe iter = idList.beginSafe();
+              iter != idList.endSafe();
               ++iter ) {
           bn.erase ( *iter );
         }

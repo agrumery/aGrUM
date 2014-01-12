@@ -139,12 +139,12 @@ namespace gum {
       for ( SequenceIterator<const DiscreteVariable*> varIter = this->_varsSeq.rbegin(); varIter != this->_varsSeq.rend(); --varIter ) {
 
         if ( this->_var2NodeIdMap.exists ( *varIter ) )
-          for ( ListConstIterator< NodeId > riterNodeList = this->_var2NodeIdMap[ *varIter ]->rbegin(); riterNodeList != this->_var2NodeIdMap[ *varIter ]->rend(); --riterNodeList ) {
+          for ( ListConstIteratorSafe< NodeId > riterNodeList = this->_var2NodeIdMap[ *varIter ]->rbeginSafe(); riterNodeList != this->_var2NodeIdMap[ *varIter ]->rendSafe(); --riterNodeList ) {
 
             bool hasDoublon = false;
             NodeId  doublon = 0;
 
-            for ( ListConstIterator< NodeId > iterNodeList = this->_var2NodeIdMap[ *varIter ]->begin(); iterNodeList != riterNodeList; ++iterNodeList ) {
+            for ( ListConstIteratorSafe< NodeId > iterNodeList = this->_var2NodeIdMap[ *varIter ]->beginSafe(); iterNodeList != riterNodeList; ++iterNodeList ) {
               bool thesame = true;
 
               if ( ( !this->_defaultArcMap.exists ( *riterNodeList ) && this->_defaultArcMap.exists ( *iterNodeList ) )

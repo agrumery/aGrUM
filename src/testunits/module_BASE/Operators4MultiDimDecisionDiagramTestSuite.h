@@ -249,8 +249,8 @@ namespace gum_tests {
             // else
             if ( !var2NodeIdMap[ ( *varList ) [ numVar ] ]->empty() ) {
               // for each node associated to that var
-              for ( gum::ListIterator<gum::NodeId> numNode = var2NodeIdMap[ ( *varList ) [ numVar ] ]->begin();
-                    numNode != var2NodeIdMap[ ( *varList ) [ numVar ] ]->end();
+              for ( gum::ListIteratorSafe<gum::NodeId> numNode = var2NodeIdMap[ ( *varList ) [ numVar ] ]->beginSafe();
+                    numNode != var2NodeIdMap[ ( *varList ) [ numVar ] ]->endSafe();
                     ++numNode ) {
 
                 // we determine a random number of arc starting from that node

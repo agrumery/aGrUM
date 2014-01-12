@@ -178,7 +178,7 @@ namespace gum {
       eliminated.insert ( i );
 
       // Calling elimination over child's parents
-      for ( auto iter = my_list.begin(); iter != my_list.end(); ++iter ) {
+      for ( auto iter = my_list.beginSafe(); iter != my_list.endSafe(); ++iter ) {
         if ( __checkElimOrder ( i, *iter ) and ( *iter != from ) ) {
           if ( not ignore.exists ( *iter ) ) {
             __eliminateNodesDownward ( i, *iter, pool, trash, elim_list, ignore, eliminated );

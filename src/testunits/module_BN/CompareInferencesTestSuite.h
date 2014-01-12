@@ -377,7 +377,7 @@ namespace gum_tests {
           }
         }
 
-        for ( gum::List< gum::Potential< float > const* >::iterator it = list_pot.begin(); it != list_pot.end(); ++it ) {
+        for ( gum::List< gum::Potential< float > const* >::iterator_safe it = list_pot.beginSafe(); it != list_pot.endSafe(); ++it ) {
           delete *it;
         }
 

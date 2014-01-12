@@ -330,8 +330,8 @@ namespace gum {
     this->_invalidateMarginals();
     List <const Potential<GUM_SCALAR>*> empty_list;
 
-    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = pot_list.cbegin();
-          iter != pot_list.cend(); ++iter ) {
+    for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter = pot_list.cbeginSafe();
+          iter != pot_list.cendSafe(); ++iter ) {
       // check that the evidence is given w.r.t.only one random variable
       const Sequence<const DiscreteVariable*>& vars = ( *iter )->variablesSequence();
 
@@ -463,7 +463,7 @@ namespace gum {
         joint_to_delete = false;
       } else {
         /*
-          ListConstIterator<const Potential<GUM_SCALAR>*> iter = pot_to_mult.begin();
+          ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter = pot_to_mult.begin();
           joint = **iter;
 
           for ( ++iter; iter != pot_to_mult.end(); ++iter ) {
@@ -471,14 +471,14 @@ namespace gum {
           }*/
 
         if ( pot_to_mult.size() == 1 ) {
-          ListConstIterator<const Potential<GUM_SCALAR>*> iter = pot_to_mult.begin();
+          ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter = pot_to_mult.beginSafe();
           joint = const_cast<Potential<GUM_SCALAR>*> ( *iter );
           joint_to_delete = false;
         } else {
           Set<const Potential<GUM_SCALAR>*> set;
 
-          for ( ListConstIterator<const Potential<GUM_SCALAR>*>iter = pot_to_mult.begin();
-                iter != pot_to_mult.end(); ++iter ) {
+          for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*>iter = pot_to_mult.beginSafe();
+                iter != pot_to_mult.endSafe(); ++iter ) {
             set << *iter;
           }
 
@@ -517,8 +517,8 @@ namespace gum {
       // update accordingly product_size : when a variable is no more used by
       // any potential, divide product_size by its domain size
 
-      for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = pot_to_mult.begin();
-            iter != pot_to_mult.end(); ++iter ) {
+      for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter = pot_to_mult.beginSafe();
+            iter != pot_to_mult.endSafe(); ++iter ) {
         const Sequence<const DiscreteVariable*>& pot_vars =
           ( *iter )->variablesSequence();
 
@@ -611,16 +611,16 @@ namespace gum {
     const List <const Potential<GUM_SCALAR>*>& clique_pot = __clique_potentials[from_id];
     __PotentialSet pot_list ( clique_pot.size() );
 
-    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = clique_pot.cbegin();
-          iter != clique_pot.cend(); ++iter )
+    for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter = clique_pot.cbeginSafe();
+          iter != clique_pot.cendSafe(); ++iter )
       pot_list.insert ( *iter );
 
     // add the evidence to the clique potentials
     const List <const Potential<GUM_SCALAR>*>& evidence_list =
       __clique_evidence[from_id];
 
-    for ( ListConstIterator <const Potential<GUM_SCALAR>*> iter =
-            evidence_list.cbegin(); iter != evidence_list.cend(); ++iter )
+    for ( ListConstIteratorSafe <const Potential<GUM_SCALAR>*> iter =
+            evidence_list.cbeginSafe(); iter != evidence_list.cendSafe(); ++iter )
       pot_list.insert ( *iter );
 
     // add the messages sent by adjacent nodes to from_id
@@ -853,16 +853,16 @@ namespace gum {
     __PotentialSet pot_list ( clique_pot.size() +
                               __clique_evidence[myclique].size() );
 
-    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = clique_pot.cbegin();
-          iter != clique_pot.cend(); ++iter )
+    for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter = clique_pot.cbeginSafe();
+          iter != clique_pot.cendSafe(); ++iter )
       pot_list.insert ( *iter );
 
     // add the evidence to the clique potentials
     const List <const Potential<GUM_SCALAR>*>& evidence_list =
       __clique_evidence[myclique];
 
-    for ( ListConstIterator <const Potential<GUM_SCALAR>*> iter = evidence_list.cbegin();
-          iter != evidence_list.cend(); ++iter )
+    for ( ListConstIteratorSafe <const Potential<GUM_SCALAR>*> iter = evidence_list.cbeginSafe();
+          iter != evidence_list.cendSafe(); ++iter )
       pot_list.insert ( *iter );
 
     // add the messages sent by adjacent nodes to myclique
@@ -1001,16 +1001,16 @@ namespace gum {
     __PotentialSet pot_list ( clique_pot.size() +
                               __clique_evidence[myclique].size() );
 
-    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = clique_pot.cbegin();
-          iter != clique_pot.cend(); ++iter )
+    for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter = clique_pot.cbeginSafe();
+          iter != clique_pot.cendSafe(); ++iter )
       pot_list.insert ( *iter );
 
     // add the evidence to the clique potentials
     const List <const Potential<GUM_SCALAR>*>& evidence_list =
       __clique_evidence[myclique];
 
-    for ( ListConstIterator <const Potential<GUM_SCALAR>*> iter = evidence_list.cbegin();
-          iter != evidence_list.cend(); ++iter )
+    for ( ListConstIteratorSafe <const Potential<GUM_SCALAR>*> iter = evidence_list.cbeginSafe();
+          iter != evidence_list.cendSafe(); ++iter )
       pot_list.insert ( *iter );
 
     // add the messages sent by adjacent nodes to myclique

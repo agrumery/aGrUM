@@ -100,8 +100,8 @@ namespace gum {
       if ( __cases ) delete[] __cases;
 
       // detach the __iterators pointing to this
-      for ( ListIterator<DatabaseIterator*> iter = __iterators.begin();
-            iter != __iterators.end(); ++iter )
+      for ( ListIteratorSafe<DatabaseIterator*> iter = __iterators.beginSafe();
+            iter != __iterators.endSafe(); ++iter )
         ( *iter )->clear();
 
       // set the new content
@@ -149,8 +149,8 @@ namespace gum {
     if ( __cases ) delete[] __cases;
 
     // detach the __iterators
-    for ( ListIterator<DatabaseIterator*> iter = __iterators.begin();
-          iter != __iterators.end(); ++iter )
+    for ( ListIteratorSafe<DatabaseIterator*> iter = __iterators.beginSafe();
+          iter != __iterators.endSafe(); ++iter )
       ( *iter )->clear();
   }
 

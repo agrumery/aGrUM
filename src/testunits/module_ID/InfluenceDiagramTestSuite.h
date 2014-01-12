@@ -459,8 +459,8 @@ namespace gum_tests {
 
         id.erase ( idList[0] );
 
-        for ( gum::List<gum::NodeId>::iterator iter = idList.begin();
-              iter != idList.end();
+        for ( gum::List<gum::NodeId>::iterator_safe iter = idList.beginSafe();
+              iter != idList.endSafe();
               ++iter ) {
           id.erase ( *iter );
         }
@@ -726,7 +726,7 @@ namespace gum_tests {
         gum::Size resultat[7][3] = {{8, 6, 4}, {3}, {7}, {1}, {2}, {5}, {0}};
         int i = 0;
 
-        for ( gum::List< gum::NodeSet >::iterator seqIter = partialTemporalOrder.begin(); seqIter != partialTemporalOrder.end(); ++seqIter, ++i ) {
+        for ( gum::List< gum::NodeSet >::iterator_safe seqIter = partialTemporalOrder.beginSafe(); seqIter != partialTemporalOrder.endSafe(); ++seqIter, ++i ) {
           int j = 0;
 
           for ( gum::NodeSet::const_iterator_safe it = seqIter->beginSafe(); it != seqIter->endSafe(); ++it, ++j ) {
