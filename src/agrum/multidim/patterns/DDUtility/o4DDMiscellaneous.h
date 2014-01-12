@@ -176,7 +176,7 @@ namespace gum {
             GUM_TRACE( "\tNode : " << retroVarIter.key() );
 #endif
 
-            for ( SetIterator< const DiscreteVariable* > iter = ( retroVarIter.val() )->begin(); iter != ( retroVarIter.val() )->end(); ++iter ) {
+            for ( SetIteratorSafe< const DiscreteVariable* > iter = ( retroVarIter.val() )->beginSafe(); iter != ( retroVarIter.val() )->endSafe(); ++iter ) {
 
 #ifdef O4DDDEBUG
               GUM_TRACE( "\t\tVariable : " << ( *iter )->name() );

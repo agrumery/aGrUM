@@ -125,8 +125,8 @@ namespace gum {
         for ( auto node = __nodes.beginSafe(); node != __nodes.endSafe(); ++node ) {
           data = node.val ();
 
-          for ( auto iter = data->n->type().slotChains().begin(); iter != data->n->type().slotChains().end(); ++iter ) {
-            for ( auto jter = data->n->getInstances ( ( **iter ).id() ).begin(); jter != data->n->getInstances ( ( **iter ).id() ).end(); ++jter ) {
+          for ( auto iter = data->n->type().slotChains().beginSafe(); iter != data->n->type().slotChains().endSafe(); ++iter ) {
+            for ( auto jter = data->n->getInstances ( ( **iter ).id() ).beginSafe(); jter != data->n->getInstances ( ( **iter ).id() ).endSafe(); ++jter ) {
               u = ( __nodes[__idMap[*jter]]->l < data->l ) ? __nodes[__idMap[*jter]] : data;
               v = ( u != data ) ? data : __nodes[__idMap[*jter]];
 
@@ -198,7 +198,7 @@ namespace gum {
         // First we search for multiple inputs
         auto& chains=node->n->type().slotChains();
 
-        for ( auto iter = chains.begin(); iter != chains.end(); ++iter ) {
+        for ( auto iter = chains.beginSafe(); iter != chains.endSafe(); ++iter ) {
           if ( ( **iter ).isMultiple() ) {
             sBuff << "-" << node->n->getInstances ( ( **iter ).id() ).size();
             sBuff << ( **iter ).name();
@@ -246,7 +246,7 @@ namespace gum {
         // First looking for edge->u output nodes in v
         const auto& chains_u=edge->u->type().slotChains();
 
-        for ( auto iter=chains_u.begin(); iter != chains_u.end(); ++iter ) {
+        for ( auto iter=chains_u.beginSafe(); iter != chains_u.endSafe(); ++iter ) {
           if ( edge->u->getInstances ( ( **iter ).id() ).exists ( edge->v ) ) {
             sBuff << "-" << edge->v->type().name() << "." << ( **iter ).lastElt().name();
             size *= ( **iter ).lastElt().type().variable().domainSize();
@@ -256,7 +256,7 @@ namespace gum {
         // Second looking for edge->v output nodes in u
         const auto& chains_v=edge->v->type().slotChains();
 
-        for ( auto iter = chains_v.begin(); iter != chains_v.end(); ++iter ) {
+        for ( auto iter = chains_v.beginSafe(); iter != chains_v.endSafe(); ++iter ) {
           if ( edge->v->getInstances ( ( **iter ).id() ).exists ( edge->u ) ) {
             sBuff << "-" << edge->u->type().name() << "." << ( **iter ).lastElt().name();
             size *= ( **iter ).lastElt().type().variable().domainSize();

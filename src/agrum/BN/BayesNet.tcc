@@ -213,8 +213,8 @@ namespace gum {
       // Reduce the variable child's CPT
       const NodeSet& children = dag().children ( varId );
 
-      for ( NodeSetIterator iter = children.begin();
-            iter != children.end(); ++iter ) {
+      for ( NodeSetIterator iter = children.beginSafe ();
+            iter != children.endSafe (); ++iter ) {
         __probaMap[ *iter ]->erase ( variable ( varId ) );
       }
 
@@ -290,8 +290,8 @@ namespace gum {
     // remove arc (head, tail)
     eraseArc ( arc );
     // add the necessary arcs to the tail
-    for ( NodeSet::const_iterator iter = new_parents.begin ();
-          iter != new_parents.end (); ++iter ) {
+    for ( NodeSet::const_iterator_safe iter = new_parents.beginSafe ();
+          iter != new_parents.endSafe (); ++iter ) {
       if ( ( *iter != tail ) && ! dag().existsArc ( *iter, tail ) ) {
         addArc ( *iter, tail );
       }
@@ -299,8 +299,8 @@ namespace gum {
     addArc ( head, tail );
     // add the necessary arcs to the head
     new_parents.erase ( tail );
-     for ( NodeSet::const_iterator iter = new_parents.begin ();
-          iter != new_parents.end (); ++iter ) {
+     for ( NodeSet::const_iterator_safe iter = new_parents.beginSafe ();
+          iter != new_parents.endSafe (); ++iter ) {
       if ( ( *iter != head ) && ! dag().existsArc ( *iter, head ) ) {
         addArc ( *iter, head );
       }
@@ -456,8 +456,8 @@ namespace gum {
       if ( dag().children ( node_iter ).size() > 0 ) {
         const NodeSet& children =  dag().children ( node_iter );
 
-        for ( NodeSetIterator arc_iter = children.begin();
-              arc_iter != children.end(); ++arc_iter ) {
+        for ( NodeSetIterator arc_iter = children.beginSafe ();
+              arc_iter != children.endSafe (); ++arc_iter ) {
           output << tab << "\"" << variable ( node_iter ).name() << "\" -> "
                  << "\"" << variable ( *arc_iter ).name() << "\";" << std::endl;
         }

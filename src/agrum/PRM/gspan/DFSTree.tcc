@@ -49,7 +49,7 @@ namespace gum {
         HashTable<Pattern*, Sequence<EdgeData<GUM_SCALAR>*>* > roots_edges;
         const Set<EdgeData<GUM_SCALAR>*>& edges = __graph->edges ( &label );
 
-        for ( auto iter = edges.begin(); iter != edges.end(); ++iter ) {
+        for ( auto iter = edges.beginSafe(); iter != edges.endSafe(); ++iter ) {
           bool u_first = ( ( *iter )->l_u->id < ( *iter )->l_v->id ) ? true : false;
           Idx u_idx = ( u_first ) ? ( *iter )->l_u->id : ( *iter )->l_v->id;
           Idx v_idx = ( not u_first ) ? ( *iter )->l_u->id : ( *iter )->l_v->id;
@@ -126,8 +126,8 @@ namespace gum {
             removed.insert ( *node );
             const NodeSet& neighbours = data->iso_graph.neighbours ( *node );
 
-            for ( NodeSet::const_iterator neighbor = neighbours.begin();
-                  neighbor != neighbours.end(); ++neighbor ) {
+            for ( NodeSet::const_iterator_safe neighbor = neighbours.beginSafe();
+                  neighbor != neighbours.endSafe(); ++neighbor ) {
               removed.insert ( *neighbor );
             }
 
@@ -310,7 +310,7 @@ namespace gum {
             removed.insert ( *node );
             const NodeSet& neighbours =  data->iso_graph.neighbours ( *node );
 
-            for ( NodeSet::const_iterator neighbor = neighbours.begin(); neighbor != neighbours.end(); ++neighbor )
+            for ( NodeSet::const_iterator_safe neighbor = neighbours.beginSafe(); neighbor != neighbours.endSafe(); ++neighbor )
               removed.insert ( *neighbor );
 
             data->max_indep_set.insert ( *node );
@@ -443,7 +443,7 @@ namespace gum {
       Pattern&
       DFSTree<GUM_SCALAR>::parent ( const Pattern& p ) {
         try {
-          return * ( __node_map.second ( * ( DiGraph::parents ( __node_map.first ( const_cast<Pattern*> ( &p ) ) ).begin() ) ) );
+          return * ( __node_map.second ( * ( DiGraph::parents ( __node_map.first ( const_cast<Pattern*> ( &p ) ) ).beginSafe() ) ) );
         } catch ( NotFound& ) {
           if ( __node_map.existsSecond ( const_cast<Pattern*> ( &p ) ) ) {
             GUM_ERROR ( NotFound, "the given pattern is a root node" );
@@ -457,7 +457,7 @@ namespace gum {
       const Pattern&
       DFSTree<GUM_SCALAR>::parent ( const Pattern& p ) const {
         try {
-          return * ( __node_map.second ( * ( DiGraph::parents ( __node_map.first ( const_cast<Pattern*> ( &p ) ) ).begin() ) ) );
+          return * ( __node_map.second ( * ( DiGraph::parents ( __node_map.first ( const_cast<Pattern*> ( &p ) ) ).beginSafe() ) ) );
         } catch ( NotFound& ) {
           if ( __node_map.existsSecond ( const_cast<Pattern*> ( &p ) ) ) {
             GUM_ERROR ( NotFound, "the given pattern is a root node" );

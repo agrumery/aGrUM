@@ -207,7 +207,7 @@ namespace gum {
         factory.startParentsDeclaration ( elt_name.str() );
         const NodeSet& parents = instance.type().dag().parents ( ( *( iter.val() ) ).id() );
 
-        for ( NodeSetIterator arc = parents.begin(); arc != parents.end(); ++arc ) {
+        for ( NodeSetIterator arc = parents.beginSafe(); arc != parents.endSafe(); ++arc ) {
           switch ( instance.type().get ( *arc ).elt_type() ) {
             case ClassElement<GUM_SCALAR>::prm_aggregate:
             case ClassElement<GUM_SCALAR>::prm_attribute: {
@@ -222,7 +222,7 @@ namespace gum {
                 static_cast<const SlotChain<GUM_SCALAR>&> ( instance.type().get ( *arc ) ).lastElt().safeName();
               const Set<Instance<GUM_SCALAR>*>& refs = instance.getInstances ( *arc );
 
-              for ( auto iter = refs.begin(); iter != refs.end(); ++iter ) {
+              for ( auto iter = refs.beginSafe(); iter != refs.endSafe(); ++iter ) {
                 std::stringstream sBuff;
                 sBuff << ( *iter )->name() << "." << parent_name;
                 factory.addParent ( sBuff.str() );
@@ -255,7 +255,7 @@ namespace gum {
       const DAG& dag = instance.type().dag();
       const NodeSet& parents = dag.parents ( attr.id() );
 
-      for ( NodeSetIterator parent = parents.begin(); parent != parents.end(); ++parent ) {
+      for ( NodeSetIterator parent = parents.beginSafe(); parent != parents.endSafe(); ++parent ) {
         switch ( instance.type().get ( *parent ).elt_type() ) {
           case ClassElement<GUM_SCALAR>::prm_aggregate:
           case ClassElement<GUM_SCALAR>::prm_attribute: {

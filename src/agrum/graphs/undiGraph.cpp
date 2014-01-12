@@ -30,6 +30,7 @@
 #endif //GUM_NOINLINE
 #include <cstdio>
 #include <iostream>
+#include "graphElements.h"
 
 
 namespace gum {
@@ -82,7 +83,7 @@ namespace gum {
           // check the neighbours
           const NodeSet& set = neighbours ( current );
 
-          for ( NodeSetIterator iter_neigh = set.begin(); iter_neigh != set.end(); ++iter_neigh ) {
+          for ( NodeSetIterator iter_neigh = set.beginSafe(); iter_neigh != set.endSafe(); ++iter_neigh ) {
             new_node = *iter_neigh;
 
             // avoid to check the node we are coming from
@@ -127,7 +128,7 @@ namespace gum {
       if ( neighbours ( node ).size() > 0 ) {
         const NodeSet& neighbs = neighbours ( node );
 
-        for ( NodeSet::const_iterator edgeIter = neighbs.begin(); edgeIter != neighbs.end(); ++edgeIter )
+        for ( NodeSet::const_iterator_safe edgeIter = neighbs.beginSafe(); edgeIter != neighbs.endSafe(); ++edgeIter )
           if ( !treatedNodes.exists ( *edgeIter ) ) edgeStream << tab <<  node << " -> " <<  *edgeIter << ";" << std::endl;
       }
 
@@ -143,11 +144,11 @@ namespace gum {
   UndiGraph UndiGraph::partialUndiGraph ( NodeSet nodesSet ) {
     UndiGraph partialGraph;
 
-    for ( NodeSetIterator nodeIter = nodesSet.begin(); nodeIter != nodesSet.end(); ++nodeIter ) {
+    for ( NodeSetIterator nodeIter = nodesSet.beginSafe(); nodeIter != nodesSet.endSafe(); ++nodeIter ) {
       partialGraph.insertNode ( *nodeIter );
       const NodeSet& nodeNeighbours = neighbours ( *nodeIter );
 
-      for ( NodeSet::const_iterator neighboursIter = nodeNeighbours.begin(); neighboursIter != nodeNeighbours.end() ; ++neighboursIter )
+      for ( NodeSet::const_iterator_safe neighboursIter = nodeNeighbours.beginSafe(); neighboursIter != nodeNeighbours.endSafe() ; ++neighboursIter )
         if ( nodesSet.contains ( *neighboursIter ) && partialGraph.existsNode ( *neighboursIter ) )
           partialGraph.insertEdge ( *nodeIter , *neighboursIter );
     }

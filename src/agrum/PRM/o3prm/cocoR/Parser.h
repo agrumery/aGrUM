@@ -53,6 +53,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <string>
 #include <fstream>
 #include "Scanner.h"
+#include "../../../core/set.h"
 
 namespace gum {
 namespace prm {
@@ -211,7 +212,7 @@ class Parser {
 
         // We add file imported in p to file imported here.
         gum::Set<std::string> parserImports = p.getImports();
-        for (gum::Set<std::string>::iterator iter = parserImports.begin(); iter != parserImports.end(); ++iter)
+        for (gum::Set<std::string>::iterator_safe iter = parserImports.beginSafe(); iter != parserImports.endSafe(); ++iter)
             if (not __imports.exists(*iter))
             __imports.insert(*iter);
 
@@ -290,7 +291,7 @@ class Parser {
 
     // Add these import to this parser.
     void addImports(const gum::Set<std::string>& imports) {
-      for (gum::Set<std::string>::iterator iter = imports.begin(); iter != imports.end(); ++iter) {
+      for (gum::Set<std::string>::iterator_safe iter = imports.beginSafe(); iter != imports.endSafe(); ++iter) {
         if (not __imports.exists(*iter)) {
           __imports.insert(*iter);
         }

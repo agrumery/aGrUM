@@ -270,7 +270,7 @@ namespace gum_tests {
 
         output << std::endl;
 
-        for ( gum::SetIterator< const gum::DiscreteVariable*> ite = delVars.begin(); ite != delVars.end(); ++ite )
+        for ( gum::SetIteratorSafe< const gum::DiscreteVariable*> ite = delVars.beginSafe(); ite != delVars.endSafe(); ++ite )
           output << ( *ite )->toString() << " - ";
 
         output << std::endl;

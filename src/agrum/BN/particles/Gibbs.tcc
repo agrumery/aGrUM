@@ -61,8 +61,8 @@ namespace gum {
 
         //const NodeSet& arcs = dag.children ( node );
 
-        for ( const auto node2 : dag.children ( node ) ) {
-          tmp3->push_back ( node2 );
+        for ( auto node2 = dag.children ( node ).beginSafe(); node2 != dag.children ( node ).endSafe(); ++node2 ) {
+          tmp3->push_back ( *node2 );
         }
 
         __node_children.insert ( node, tmp3 );

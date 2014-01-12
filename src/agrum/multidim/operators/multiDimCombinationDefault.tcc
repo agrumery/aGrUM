@@ -147,8 +147,8 @@ namespace gum {
     {
       unsigned int i = 0;
 
-      for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator iter =
-              set.begin(); iter != set.end(); ++iter, ++i ) {
+      for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator_safe iter =
+              set.beginSafe(); iter != set.endSafe(); ++iter, ++i ) {
         tables[i] = *iter;
       }
     }
@@ -271,8 +271,8 @@ namespace gum {
     {
       unsigned int i = 0;
 
-      for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator
-            iter = set.begin(); iter != set.end(); ++iter, ++i ) {
+      for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator_safe
+            iter = set.beginSafe(); iter != set.endSafe(); ++iter, ++i ) {
         tables[i] = *iter;
       }
     }
@@ -409,8 +409,8 @@ namespace gum {
     // create the set of sets of discrete variables involved in the tables
     Set<const Sequence<const DiscreteVariable*>*> var_set( set.size() );
 
-    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator iter =
-            set.begin(); iter != set.end(); ++iter ) {
+    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator_safe iter =
+            set.beginSafe(); iter != set.endSafe(); ++iter ) {
       var_set << &( ( *iter )->variablesSequence() );
     }
 
@@ -438,8 +438,8 @@ namespace gum {
     {
       unsigned int i = 0;
 
-      for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator
-            iter = set.begin(); iter != set.end(); ++iter, ++i ) {
+      for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator_safe
+            iter = set.beginSafe(); iter != set.endSafe(); ++iter, ++i ) {
         const Sequence<const DiscreteVariable*>* vars = *iter;
         tables[i] = vars;
 
@@ -615,8 +615,8 @@ namespace gum {
     // create the set of sets of discrete variables involved in the tables
     Set<const Sequence<const DiscreteVariable*>*> var_set( set.size() );
 
-    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator iter =
-            set.begin(); iter != set.end(); ++iter ) {
+    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator_safe iter =
+            set.beginSafe(); iter != set.endSafe(); ++iter ) {
       var_set << &( ( *iter )->variablesSequence() );
     }
 

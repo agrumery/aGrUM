@@ -154,7 +154,7 @@ namespace gum {
             size = getDomainSize();
             parents = & ( dag.parents ( names.second ( *a ) ) );
 
-            for ( Set<NodeId>::const_iterator prnt = parents->begin(); prnt != parents->end(); ++prnt ) {
+            for ( Set<NodeId>::const_iterator_safe prnt = parents->beginSafe(); prnt != parents->endSafe(); ++prnt ) {
               f.addParent ( names.first ( *prnt ) );
               size *= f.retrieveClass ( l[lvl].c.back() ).get ( names.first ( *prnt ) ).type()->domainSize();
             }
@@ -212,7 +212,7 @@ namespace gum {
               size = getDomainSize();
               parents = & ( dag.parents ( names.second ( *a ) ) );
 
-              for ( Set<NodeId>::const_iterator prnt = parents->begin(); prnt != parents->end(); ++prnt ) {
+              for ( Set<NodeId>::const_iterator_safe prnt = parents->beginSafe(); prnt != parents->endSafe(); ++prnt ) {
                 f.addParent ( names.first ( *prnt ) );
                 size *= f.retrieveClass ( l[lvl].c.back() ).get ( names.first ( *prnt ) ).type()->domainSize();
               }
@@ -261,7 +261,7 @@ namespace gum {
               size = getDomainSize();
               parents = & ( dag.parents ( names.second ( *a ) ) );
 
-              for ( Set<NodeId>::const_iterator prnt = parents->begin(); prnt != parents->end(); ++prnt ) {
+              for ( Set<NodeId>::const_iterator_safe prnt = parents->beginSafe(); prnt != parents->endSafe(); ++prnt ) {
                 f.addParent ( names.first ( *prnt ) );
                 size *= f.retrieveClass ( l[lvl].c.back() ).get ( names.first ( *prnt ) ).type()->domainSize();
               }
@@ -333,7 +333,7 @@ namespace gum {
         size = getDomainSize();
         parents = & ( dag.parents ( names.second ( *a ) ) );
 
-        for ( Set<NodeId>::const_iterator prnt = parents->begin(); prnt != parents->end(); ++prnt ) {
+        for ( Set<NodeId>::const_iterator_safe prnt = parents->beginSafe(); prnt != parents->endSafe(); ++prnt ) {
           f.addParent ( names.first ( *prnt ) );
           size *= f.retrieveClass ( l[lvl].c.back() ).get ( names.first ( *prnt ) ).type()->domainSize();
         }
@@ -396,7 +396,7 @@ namespace gum {
           parents = & ( dag.parents ( node ) );
           std::vector<NodeId> v;
 
-          for ( Set<NodeId>::iterator iter = parents->begin(); iter != parents->end(); ++iter )
+          for ( Set<NodeId>::iterator_safe iter = parents->beginSafe(); iter != parents->endSafe(); ++iter )
             v.push_back ( *iter );
 
           while ( dag.parents ( node ).size() > getMaxParents() ) {

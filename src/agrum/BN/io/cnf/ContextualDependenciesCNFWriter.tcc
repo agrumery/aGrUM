@@ -173,7 +173,7 @@ namespace gum {
 
                 if ( !added ) {
                   added = true;
-                  newSeq->insert ( new gum::Instantiation ( * ( ( **itpv ) [ ( * ( ( it2.val() )->first->begin() ) )] ) , false ) );
+                  newSeq->insert ( new gum::Instantiation ( * ( ( **itpv ) [ ( * ( ( it2.val() )->first->beginSafe() ) )] ) , false ) );
                   newSeq->back()->erase ( * ( it2.key() ) );
                 }
 

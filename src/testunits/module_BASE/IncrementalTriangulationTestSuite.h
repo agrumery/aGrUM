@@ -357,11 +357,11 @@ namespace gum_tests {
                          const gum::NodeSet& clique ) {
         gum::NodeSetIterator iter2;
 
-        for ( gum::NodeSetIterator iter = clique.begin();
-              iter != clique.end(); ++iter ) {
+        for ( gum::NodeSetIterator iter = clique.beginSafe();
+              iter != clique.endSafe(); ++iter ) {
           iter2 = iter;
 
-          for ( ++iter2; iter2 != clique.end(); ++iter2 ) {
+          for ( ++iter2; iter2 != clique.endSafe(); ++iter2 ) {
             try { triang.insertEdge( *iter, *iter2 ); }
             catch ( gum::DuplicateElement& ) {}
           }

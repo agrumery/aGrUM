@@ -93,8 +93,8 @@ namespace gum {
   INLINE
   void SimplicialSet::__updateAllNodes() {
     // check if a node can enter the simplicial list
-    for ( NodeSetIterator iter = __changed_status.begin();
-          iter != __changed_status.end(); ++iter ) {
+    for ( NodeSetIterator iter = __changed_status.beginSafe();
+          iter != __changed_status.endSafe(); ++iter ) {
       __updateList( *iter );
     }
   }

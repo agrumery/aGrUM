@@ -105,7 +105,7 @@ namespace gum_tests {
         generator.setDomainSize( 2 );
         generator.setMaxParents( 5 );
         gum::prm::PRM<double>* prm = generator.generate();
-        gum::prm::System<double>& sys = prm->system( ( **( prm->systems().begin() ) ).name() );
+        gum::prm::System<double>& sys = prm->system( ( **( prm->systems().beginSafe() ) ).name() );
         gum::prm::StructuredInference<double> inf( *prm, sys );
         inf.setPatternMining( false );
         const gum::prm::Instance<double>& i = pickInstance( sys );
@@ -132,7 +132,7 @@ namespace gum_tests {
         generator.setDomainSize( 2 );
         generator.setMaxParents( 5 );
         gum::prm::PRM<double>* prm = generator.generate();
-        gum::prm::System<double>& sys = prm->system( ( **( prm->systems().begin() ) ).name() );
+        gum::prm::System<double>& sys = prm->system( ( **( prm->systems().beginSafe() ) ).name() );
         gum::prm::StructuredInference<double> inf( *prm, sys );
         inf.setPatternMining( false );
         const gum::prm::Instance<double>& i = pickInstance( sys );
@@ -159,7 +159,7 @@ namespace gum_tests {
         generator.setDomainSize( 2 );
         generator.setMaxParents( 5 );
         gum::prm::PRM<double>* prm = generator.generate();
-        gum::prm::System<double>& sys = prm->system( ( **( prm->systems().begin() ) ).name() );
+        gum::prm::System<double>& sys = prm->system( ( **( prm->systems().beginSafe() ) ).name() );
         gum::prm::StructuredInference<double> inf( *prm, sys );
         inf.setPatternMining( false );
         const gum::prm::Instance<double>& i = pickInstance( sys );

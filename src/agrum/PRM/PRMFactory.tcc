@@ -90,8 +90,8 @@ namespace gum {
       Set<Interface<GUM_SCALAR>*> impl;
 
       if ( implements != 0 ) {
-        for ( Set<std::string>::iterator iter = implements->begin();
-              iter != implements->end(); ++iter ) {
+        for ( Set<std::string>::iterator_safe iter = implements->beginSafe();
+              iter != implements->endSafe(); ++iter ) {
           impl.insert ( __retrieveInterface ( *iter ) );
           // try {
           //   impl.insert(__prm->__interfaceMap[*iter]);
@@ -147,7 +147,7 @@ namespace gum {
       msg << "class " << c->name() << " does not respect interface ";
 
       try {
-        for ( auto iter = c->implements().begin(); iter != c->implements().end(); ++iter ) {
+        for ( auto iter = c->implements().beginSafe(); iter != c->implements().endSafe(); ++iter ) {
           i = *iter;
 
           try {
@@ -999,7 +999,7 @@ namespace gum {
           std::string prefix;
           std::string dot = ".";
 
-          for ( Set<std::string>::iterator iter = __namespaces.begin(); iter != __namespaces.end(); ++iter ) {
+          for ( Set<std::string>::iterator_safe iter = __namespaces.beginSafe(); iter != __namespaces.endSafe(); ++iter ) {
             if ( __prm->__typeMap.exists ( ( *iter ) + dot + name ) ) {
               if ( prefix != "" ) {
                 GUM_ERROR ( NotFound, "ambiguous type name, specify full name" );
@@ -1029,7 +1029,7 @@ namespace gum {
           std::string prefix;
           std::string dot = ".";
 
-          for ( Set<std::string>::iterator iter = __namespaces.begin(); iter != __namespaces.end(); ++iter ) {
+          for ( Set<std::string>::iterator_safe iter = __namespaces.beginSafe(); iter != __namespaces.endSafe(); ++iter ) {
             if ( __prm->__classMap.exists ( ( *iter ) + dot + name ) ) {
               if ( prefix != "" ) {
                 GUM_ERROR ( NotFound, "ambiguous class name, specify full name" );
@@ -1060,7 +1060,7 @@ namespace gum {
           std::string prefix;
           std::string dot = ".";
 
-          for ( Set<std::string>::iterator iter = __namespaces.begin(); iter != __namespaces.end(); ++iter ) {
+          for ( Set<std::string>::iterator_safe iter = __namespaces.beginSafe(); iter != __namespaces.endSafe(); ++iter ) {
             if ( __prm->__interfaceMap.exists ( ( *iter ) + dot + name ) ) {
               if ( prefix != "" ) {
                 GUM_ERROR ( NotFound, "ambiguous class name, specify full name" );

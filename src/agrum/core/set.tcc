@@ -35,52 +35,52 @@ namespace gum {
 
   /// default constructor: the iterator points toward nothing
   template<typename KEY> INLINE
-  SetIterator<KEY>::SetIterator( ) : __ht_iter() {
-    GUM_CONSTRUCTOR( SetIterator );
+  SetIteratorSafe<KEY>::SetIteratorSafe( ) : __ht_iter() {
+    GUM_CONSTRUCTOR( SetIteratorSafe );
   }
 
 
   /// creates an iterator for a given set
   template<typename KEY> INLINE
-  SetIterator<KEY>::SetIterator( const Set<KEY>& set, Position pos ) :
+  SetIteratorSafe<KEY>::SetIteratorSafe( const Set<KEY>& set, Position pos ) :
     __ht_iter( pos == GUM_SET_ITERATOR_END ?
                set.__inside.endSafe() : set.__inside.beginSafe() ) {
-    GUM_CONSTRUCTOR( SetIterator );
+    GUM_CONSTRUCTOR( SetIteratorSafe );
   }
 
 
   /// copy constructor
   template<typename KEY> INLINE
-  SetIterator<KEY>::SetIterator( const SetIterator<KEY>& iter ) :
+  SetIteratorSafe<KEY>::SetIteratorSafe( const SetIteratorSafe<KEY>& iter ) :
     __ht_iter( iter.__ht_iter ) {
-    GUM_CONS_CPY( SetIterator );
+    GUM_CONS_CPY( SetIteratorSafe );
   }
 
 
   /// destructor
   template<typename KEY> INLINE
-  SetIterator<KEY>::~SetIterator() {
-    GUM_DESTRUCTOR( SetIterator );
+  SetIteratorSafe<KEY>::~SetIteratorSafe() {
+    GUM_DESTRUCTOR( SetIteratorSafe );
   }
 
 
   /// indicates whether two iterators point to different elements or sets
   template<typename KEY> INLINE
-  bool SetIterator<KEY>::operator!= ( const SetIterator<KEY>& from ) const {
+  bool SetIteratorSafe<KEY>::operator!= ( const SetIteratorSafe<KEY>& from ) const {
     return __ht_iter != from.__ht_iter;
   }
 
 
   /// indicates whether two iterators point toward the same element of a same set
   template<typename KEY> INLINE
-  bool SetIterator<KEY>::operator== ( const SetIterator<KEY>& from ) const {
+  bool SetIteratorSafe<KEY>::operator== ( const SetIteratorSafe<KEY>& from ) const {
     return __ht_iter == from.__ht_iter;
   }
 
 
   /// assignment operator
   template<typename KEY> INLINE
-  SetIterator<KEY>& SetIterator<KEY>::operator= ( const SetIterator<KEY>& from ) {
+  SetIteratorSafe<KEY>& SetIteratorSafe<KEY>::operator= ( const SetIteratorSafe<KEY>& from ) {
     __ht_iter = from.__ht_iter;
     return *this;
   }
@@ -88,7 +88,7 @@ namespace gum {
 
   /// returns the element pointed to by the iterator
   template<typename KEY> INLINE
-  const KEY& SetIterator<KEY>::operator*() const {
+  const KEY& SetIteratorSafe<KEY>::operator*() const {
     // note that, if the hashtable's iterator points toward nothing, it will
     // raise an UndefinedIteratorValue exception
     return __ht_iter.key();
@@ -97,7 +97,7 @@ namespace gum {
 
   /// returns aointer to the element pointed to by the iterator
   template<typename KEY> INLINE
-  const KEY* SetIterator<KEY>::operator->() const {
+  const KEY* SetIteratorSafe<KEY>::operator->() const {
     // note that, if the hashtable's iterator points toward nothing, it will
     // raise an UndefinedIteratorValue exception
     return & ( __ht_iter.key() );
@@ -106,7 +106,7 @@ namespace gum {
 
   /// increments the iterator
   template<typename KEY> INLINE
-  SetIterator<KEY>& SetIterator<KEY>::operator++() {
+  SetIteratorSafe<KEY>& SetIteratorSafe<KEY>::operator++() {
     // note that, if the hashtable's iterator points toward nothing, the
     // hashtable's iterator incrementation will do nothing. In particular, it
     // will not segfault.
@@ -128,16 +128,16 @@ namespace gum {
 
   // returns the end iterator for other classes' statics
   template <typename KEY>
-  const SetIterator<KEY>& Set<KEY>::end4Statics() {
-    return * ( reinterpret_cast<const SetIterator<KEY>*>
-               ( SetIteratorStaticEnd::end4Statics() ) );
+  const SetIteratorSafe<KEY>& Set<KEY>::endSafe4Statics() {
+    return * ( reinterpret_cast<const SetIteratorSafe<KEY>*>
+               ( SetIteratorStaticEnd::endSafe4Statics() ) );
   }
 
   // returns the end iterator for other classes' statics
   template <typename KEY>
-  const SetIterator<KEY>& Set<KEY>::constEnd4Statics() {
-    return * ( reinterpret_cast<const SetIterator<KEY>*>
-               ( SetIteratorStaticEnd::constEnd4Statics() ) );
+  const SetIteratorSafe<KEY>& Set<KEY>::constEndSafe4Statics() {
+    return * ( reinterpret_cast<const SetIteratorSafe<KEY>*>
+               ( SetIteratorStaticEnd::constEndSafe4Statics() ) );
   }
 
   /// default constructor
@@ -149,7 +149,7 @@ namespace gum {
     GUM_CONSTRUCTOR( Set );
 
     // make sure the end() iterator is constructed properly
-    end4Statics();
+    endSafe4Statics();
   }
 
 
@@ -163,7 +163,7 @@ namespace gum {
     __inside.setKeyUniquenessPolicy( false );
 
     // make sure the end() iterator is constructed properly
-    end4Statics();
+    endSafe4Statics();
   }
 
 
@@ -174,7 +174,7 @@ namespace gum {
     GUM_CONS_CPY( Set );
 
     // make sure the end() iterator is constructed properly
-    end4Statics();
+    endSafe4Statics();
   }
 
 
@@ -187,31 +187,31 @@ namespace gum {
 
   /// the usual begin iterator to parse the set
   template<typename KEY> INLINE
-  typename Set<KEY>::const_iterator Set<KEY>::begin() const {
-    return SetIterator<KEY> ( *this );
+  typename Set<KEY>::const_iterator_safe Set<KEY>::beginSafe() const {
+    return SetIteratorSafe<KEY> ( *this );
   }
 
 
   /// the usual begin iterator to parse the set
   template<typename KEY> INLINE
-  SetIterator<KEY> Set<KEY>::begin() {
-    return SetIterator<KEY> ( *this );
+  SetIteratorSafe<KEY> Set<KEY>::beginSafe() {
+    return SetIteratorSafe<KEY> ( *this );
   }
 
 
   /// the usual end iterator to parse the set
   template<typename KEY> INLINE
-  const typename Set<KEY>::const_iterator& Set<KEY>::end() const {
-    return * ( reinterpret_cast<const SetIterator<KEY>*>
-               ( SetIteratorStaticEnd::__SetIterEnd ) );
+  const typename Set<KEY>::const_iterator_safe& Set<KEY>::endSafe () const {
+    return * ( reinterpret_cast<const SetIteratorSafe<KEY>*>
+               ( SetIteratorStaticEnd::__SetIterEndSafe ) );
   }
 
 
   /// the usual end iterator to parse the set
   template<typename KEY> INLINE
-  const SetIterator<KEY>& Set<KEY>::end() {
-    return * ( reinterpret_cast<const SetIterator<KEY>*>
-               ( SetIteratorStaticEnd::__SetIterEnd ) );
+  const SetIteratorSafe<KEY>& Set<KEY>::endSafe () {
+    return * ( reinterpret_cast<const SetIteratorSafe<KEY>*>
+               ( SetIteratorStaticEnd::__SetIterEndSafe ) );
   }
 
 
@@ -221,7 +221,7 @@ namespace gum {
     // first we remove all the elements from the hashtable actually containing
     // the elements of the set. Note that, doing so, all the hashtable iterators
     // will be updated as well. In turn, this will imply that, whenever an
-    // operation will be performed on a SetIterator, this will raise an exception.
+    // operation will be performed on a SetIteratorSafe, this will raise an exception.
     __inside.clear();
 
     // Note that actually there is no need to update the end iterator as this one
@@ -238,7 +238,7 @@ namespace gum {
       // remove the old content of the set. Actually, we remove all the elements
       // from the underlying hashtable. Note that, doing so, all the hashtable
       // iterators will be updated as well. In turn, this will imply that, whenever
-      // an operation will be performed on a SetIterator, this will raise an
+      // an operation will be performed on a SetIteratorSafe, this will raise an
       // exception.
       clear();
 
@@ -301,7 +301,7 @@ namespace gum {
 
   /// erases an element from the set
   template<typename KEY> INLINE
-  void Set<KEY>::erase( const SetIterator<KEY>& iter ) {
+  void Set<KEY>::erase( const SetIteratorSafe<KEY>& iter ) {
     // erase the element
     __inside.erase( iter.__ht_iter );
 
@@ -433,7 +433,7 @@ namespace gum {
     bool first = true;
     out << "{";
 
-    for ( iterator iter = begin(); iter != end(); ++iter ) {
+    for ( iterator_safe iter = beginSafe(); iter != endSafe(); ++iter ) {
       if ( first ) {
         out << *iter;
         first = false;

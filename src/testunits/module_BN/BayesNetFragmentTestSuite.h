@@ -255,7 +255,7 @@ namespace gum_tests {
 
         count = 0;
 
-        for ( const auto & arc : frag.arcs() ) {
+        for ( auto arc = frag.arcs().beginSafe(); arc != frag.arcs().endSafe(); ++arc ) {
           GUM_UNUSED ( arc );
           count++;
         }

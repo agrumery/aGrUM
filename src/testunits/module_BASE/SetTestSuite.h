@@ -117,7 +117,7 @@ namespace gum_tests {
         fill( set );
         TS_ASSERT_EQUALS( set.size(), ( gum::Size )6 );
 
-        gum::Set<int>::iterator iter = set.begin();
+        gum::Set<int>::iterator_safe iter = set.beginSafe();
         TS_GUM_ASSERT_THROWS_NOTHING( set.erase( iter ) );
         TS_ASSERT_EQUALS( set.size(), ( gum::Size )5 );
 
@@ -125,11 +125,11 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( set.erase( iter ) );
         TS_ASSERT_EQUALS( set.size(), ( gum::Size )4 );
 
-        iter = set.begin();
+        iter = set.beginSafe();
         TS_GUM_ASSERT_THROWS_NOTHING( set.erase( iter ) );
         TS_ASSERT_EQUALS( set.size(), ( gum::Size )3 );
 
-        iter = set.end();
+        iter = set.endSafe();
         TS_GUM_ASSERT_THROWS_NOTHING( set.erase( iter ) );
         TS_ASSERT_EQUALS( set.size(), ( gum::Size )3 );
 
@@ -342,8 +342,8 @@ namespace gum_tests {
 
         gum::Set<int> obtained;
 
-        for ( gum::Set<int>::iterator iter = t1.begin();
-              iter != t1.end();
+        for ( gum::Set<int>::iterator_safe iter = t1.beginSafe();
+              iter != t1.endSafe();
               ++ iter ) {
           obtained.insert( *iter );
         }

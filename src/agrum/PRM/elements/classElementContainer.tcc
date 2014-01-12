@@ -225,8 +225,8 @@ operator<< ( std::ostream& output, const gum::prm::ClassElementContainer<GUM_SCA
     if ( container.dag().children ( node ).size() > 0 ) {
       const gum::NodeSet& children = container.dag().children ( node );
 
-      for ( gum::NodeSetIterator child_iter = children.begin();
-            child_iter != children.end(); ++child_iter ) {
+      for ( gum::NodeSetIterator child_iter = children.beginSafe();
+            child_iter != children.endSafe(); ++child_iter ) {
         output << tab << "\"" << container.get ( node ).name() << "\" -> "
                << "\"" << container.get ( *child_iter ).name() << "\";" << std::endl;
       }

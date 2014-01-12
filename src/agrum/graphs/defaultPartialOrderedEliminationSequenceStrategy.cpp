@@ -190,8 +190,8 @@ namespace gum {
     float min_score = 0;
     NodeId best_node = 0;
 
-    for ( NodeSetIterator iter = __nodeset.begin();
-          iter != __nodeset.end(); ++iter ) {
+    for ( NodeSetIterator iter = __nodeset.beginSafe();
+          iter != __nodeset.endSafe(); ++iter ) {
       try {
         float score = possibleNodes.priorityByVal ( *iter );
 
@@ -237,13 +237,13 @@ namespace gum {
     } catch ( NotFound& ) { }
 
     // here: select the node through Kjaerulff's heuristic
-    NodeSetIterator iter = __nodeset.begin();
+    NodeSetIterator iter = __nodeset.beginSafe();
 
     float min_score = __log_weights[ *iter ];
 
     NodeId best_node = *iter;
 
-    for ( ++iter; iter != __nodeset.end(); ++iter ) {
+    for ( ++iter; iter != __nodeset.endSafe(); ++iter ) {
       float score = __log_weights[ *iter ];
 
       if ( score < min_score ) {

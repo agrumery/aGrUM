@@ -117,7 +117,7 @@ namespace gum {
     // update the __separators adjacent to clique 'id'
     const NodeSet& set = neighbours ( clique_id );
 
-    for ( NodeSetIterator ite = set.begin(); ite != set.end(); ++ite ) {
+    for ( NodeSetIterator ite = set.beginSafe(); ite != set.endSafe(); ++ite ) {
       if ( __cliques[*ite].contains ( node_id ) )
         __separators[Edge ( *ite, clique_id )].insert ( node_id );
     }
@@ -138,7 +138,7 @@ namespace gum {
       // update the __separators adjacent to __clique 'id'
       const NodeSet& set = neighbours ( clique_id );
 
-      for ( NodeSetIterator ite = set.begin(); ite != set.end(); ++ite ) {
+      for ( NodeSetIterator ite = set.beginSafe(); ite != set.endSafe(); ++ite ) {
         Edge edge ( *ite, clique_id );
 
         if ( __separators[edge].contains ( node_id ) )
@@ -157,15 +157,15 @@ namespace gum {
     // other connected components of the cliqueGraph
     const NodeSet& nodes_clique = __cliques[clique];
 
-    for ( NodeSetIterator iter = nodes_clique.begin();
-          iter != nodes_clique.end(); ++iter )
+    for ( NodeSetIterator iter = nodes_clique.beginSafe();
+          iter != nodes_clique.endSafe(); ++iter )
       if ( infos_DFS.nodes_other_components.contains ( *iter ) )
         return false;
 
     // update the structure that keeps track of the cliques that still require
     // chains to access some of their nodes
-    for ( NodeSetIterator iter = nodes_clique.begin();
-          iter != nodes_clique.end(); ++iter ) {
+    for ( NodeSetIterator iter = nodes_clique.beginSafe();
+          iter != nodes_clique.endSafe(); ++iter ) {
       if ( !infos_DFS.nodes_DFS_forbidden.contains ( *iter ) )
         infos_DFS.cliques_DFS_chain[clique].erase ( *iter );
     }
@@ -176,8 +176,8 @@ namespace gum {
       return true;
 
     // update the list of nodes visited during the DFS
-    for ( NodeSetIterator iter = nodes_clique.begin();
-          iter != nodes_clique.end(); ++iter ) {
+    for ( NodeSetIterator iter = nodes_clique.beginSafe();
+          iter != nodes_clique.endSafe(); ++iter ) {
       if ( !infos_DFS.nodes_DFS_seen.contains ( *iter ) )
         infos_DFS.nodes_DFS_seen.insert ( *iter );
     }
@@ -189,8 +189,8 @@ namespace gum {
     // been visited yet
     const NodeSet& neighbour = neighbours ( clique );
 
-    for ( NodeSetIterator iter = neighbour.begin();
-          iter != neighbour.end(); ++iter ) {
+    for ( NodeSetIterator iter = neighbour.beginSafe();
+          iter != neighbour.endSafe(); ++iter ) {
       const NodeId otherID = *iter;
 
       if ( otherID != from ) {
@@ -199,8 +199,8 @@ namespace gum {
         const Edge edge ( otherID, clique );
         const NodeSet& from_separ = __separators[edge];
 
-        for ( NodeSetIterator iter_clique = nodes_clique.begin();
-              iter_clique != nodes_clique.end(); ++iter_clique ) {
+        for ( NodeSetIterator iter_clique = nodes_clique.beginSafe();
+              iter_clique != nodes_clique.endSafe(); ++iter_clique ) {
           if ( !from_separ.contains ( *iter_clique ) )
             infos_DFS.nodes_DFS_forbidden.insert ( *iter_clique );
         }
@@ -210,15 +210,15 @@ namespace gum {
           return false;
 
         // remove from the forbidden list the nodes that belong to clique
-        for ( NodeSetIterator iter_clique = nodes_clique.begin();
-              iter_clique != nodes_clique.end(); ++iter_clique )
+        for ( NodeSetIterator iter_clique = nodes_clique.beginSafe();
+              iter_clique != nodes_clique.endSafe(); ++iter_clique )
           infos_DFS.nodes_DFS_forbidden.erase ( *iter_clique );
 
         // check again the structure that keeps track of the cliques that still
         // require chains to access some of their nodes: the chain may be
         // the neighbour we just encountered
-        for ( NodeSetIterator iter = nodes_clique.begin();
-              iter != nodes_clique.end(); ++iter ) {
+        for ( NodeSetIterator iter = nodes_clique.beginSafe();
+              iter != nodes_clique.endSafe(); ++iter ) {
           if ( !infos_DFS.nodes_DFS_forbidden.contains ( *iter ) )
             infos_DFS.cliques_DFS_chain[clique].erase ( *iter );
         }
@@ -230,8 +230,8 @@ namespace gum {
     // cliques to contain the same node while this one does not belong to any
     // separator
     if ( neighbours ( clique ).size() <= 1 )
-      for ( NodeSetIterator iter_clique = nodes_clique.begin();
-            iter_clique != nodes_clique.end(); ++iter_clique )
+      for ( NodeSetIterator iter_clique = nodes_clique.beginSafe();
+            iter_clique != nodes_clique.endSafe(); ++iter_clique )
         if ( !infos_DFS.nodes_DFS_forbidden.contains ( *iter_clique ) )
           infos_DFS.nodes_DFS_forbidden.insert ( *iter_clique );
 
@@ -263,8 +263,8 @@ namespace gum {
 
         // the nodes that were seen during the DFS belong to a connected component
         // that is different from the connected components of the subsequent DFS
-        for ( NodeSetIterator iter_seen = infos_DFS.nodes_DFS_seen.begin();
-              iter_seen != infos_DFS.nodes_DFS_seen.end(); ++iter_seen )
+        for ( NodeSetIterator iter_seen = infos_DFS.nodes_DFS_seen.beginSafe();
+              iter_seen != infos_DFS.nodes_DFS_seen.endSafe(); ++iter_seen )
           if ( ! infos_DFS.nodes_other_components.contains ( *iter_seen ) )
             infos_DFS.nodes_other_components.insert ( *iter_seen );
       }
@@ -306,16 +306,16 @@ namespace gum {
       /*const NodeSet& cl = clique( node );
 
       for ( NodeSetIterator iter = cl.begin(); iter != cl.end(); ++iter )*/
-      for ( const auto cliq : clique ( node ) )
-        stream << "  " << cliq;
+      for ( auto cliq = clique ( node ).beginSafe (); cliq != clique(node).endSafe (); ++cliq )
+        stream << "  " << *cliq;
 
       stream << std::endl;
     }
 
     stream << "\n\nlist of edges:\n";
 
-    for ( const auto & edge : edges() )
-      stream << edge << "  ";
+    for ( auto edge = edges().beginSafe (); edge != edges().endSafe (); ++edge )
+      stream << *edge << "  ";
 
     return stream.str();
   }
@@ -333,20 +333,20 @@ namespace gum {
       /*const NodeSet& cl = clique ( node );
 
       for ( NodeSetIterator iter = cl.begin(); iter != cl.end(); ++iter )*/
-      for ( const auto cliq : clique ( node ) )
-        stream << "  " << cliq;
+      for ( auto cliq = clique(node).beginSafe (); cliq != clique(node).endSafe(); ++cliq )
+        stream << "  " << *cliq;
 
       stream << "\"];" << std::endl;
     }
 
     stream << std::endl;
 
-    for ( const auto & edge : edges() ) {
-      stream << edge << " [ label=\"";
+    for ( auto edge = edges().beginSafe(); edge != edges().endSafe(); ++edge ) {
+      stream << *edge << " [ label=\"";
 
-      const NodeSet& sep = separator ( edge );
+      const NodeSet& sep = separator ( *edge );
 
-      for ( NodeSetIterator iter = sep.begin(); iter != sep.end(); ++iter )
+      for ( NodeSetIterator iter = sep.beginSafe(); iter != sep.endSafe(); ++iter )
         stream << "  " << *iter;
 
       stream << "\"];" << std::endl;

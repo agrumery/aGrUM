@@ -36,7 +36,7 @@ namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-  template<typename KEY> class SetIterator;
+  template<typename KEY> class SetIteratorSafe;
   template<typename KEY> class Set;
 
   // a class used to create the static iterator used by Sets. The aim of
@@ -45,13 +45,13 @@ namespace gum {
   class SetIteratorStaticEnd {
     private:
       // the iterator used by everyone
-      static const SetIterator<int>* __SetIterEnd;
+      static const SetIteratorSafe<int>* __SetIterEndSafe;
 
       // creates (if needed) and returns the iterator __SetIterEnd
-      static const SetIterator<int>* end4Statics();
+      static const SetIteratorSafe<int>* endSafe4Statics();
 
       // creates (if needed) and returns the iterator __SetIterEnd
-      static const SetIterator<int>* constEnd4Statics();
+      static const SetIteratorSafe<int>* constEndSafe4Statics();
 
       // friends that have access to the iterator
       template<typename KEY> friend class Set;
@@ -99,8 +99,8 @@ namespace gum {
    */
   class Set : private SetIteratorStaticEnd {
     public:
-      typedef SetIterator<KEY> iterator;
-      typedef SetIterator<KEY> const_iterator;
+      typedef SetIteratorSafe<KEY> iterator_safe;
+      typedef SetIteratorSafe<KEY> const_iterator_safe;
 
 
       // ############################################################################
@@ -183,7 +183,7 @@ namespace gum {
       /// erases an element from the set
       /** @warning if the set does not contain the element, nothing is done.
        * In particular, no exception is thrown. */
-      void erase( const iterator& k );
+      void erase( const iterator_safe& k );
 
       /// removes all the elements, if any, from the set
       void clear();
@@ -212,12 +212,12 @@ namespace gum {
       /// @{
 
       /// the usual begin iterator to parse the set
-      iterator begin();
-      const_iterator begin() const;
+      iterator_safe beginSafe ();
+      const_iterator_safe beginSafe () const;
 
       /// the usual end iterator to parse the set
-      const iterator& end();
-      const const_iterator& end() const;
+      const iterator_safe& endSafe ();
+      const const_iterator_safe& endSafe () const;
 
       /** @brief returns the end iterator for other classes' statics (read the
        * detailed description of this method)
@@ -248,8 +248,8 @@ namespace gum {
        *
        * So, to summarize: when initializing static members, use end4Statics() rather
        * than end(). In all the other cases, use simply the usual method end(). */
-      static const iterator& end4Statics();
-      static const const_iterator& constEnd4Statics();
+      static const iterator_safe& endSafe4Statics();
+      static const const_iterator_safe& constEndSafe4Statics();
 
       /// @}
 
@@ -323,7 +323,7 @@ namespace gum {
 
     private:
       // friends
-      friend class SetIterator<KEY>;
+      friend class SetIteratorSafe<KEY>;
 
       /// a set of X's is actually a hashtable whose keys are the X's
       HashTable<KEY,bool> __inside;
@@ -339,10 +339,10 @@ namespace gum {
   /* =========================================================================== */
   /* ===                             SET ITERATORS                           === */
   /* =========================================================================== */
-  /** @class SetIterator
+  /** @class SetIteratorSafe
    * @brief Iterators for the Set class
    **
-   * Developers may consider using Set<x>::iterator instead of SetIterator<x>.
+   * Developers may consider using Set<x>::iterator_safe instead of SetIteratorSafe<x>.
    * @par Usage example:
    * @code
    * // creation of a set with 10 elements
@@ -366,7 +366,7 @@ namespace gum {
    * @endcode
    */
   /* =========================================================================== */
-  template <typename KEY> class SetIterator {
+  template <typename KEY> class SetIteratorSafe {
     public:
       /** @brief an enumeration to position the iterator at the beginning or the end
        * of the set */
@@ -381,19 +381,19 @@ namespace gum {
       /// @{
 
       /// default constructor: the iterator points toward nothing
-      SetIterator( );
+      SetIteratorSafe( );
 
       /// creates an iterator for a given set
       /** By default, the iterator points to the beginning of the set, but, using
        * optional argument pos, you can make it point to end() */
-      SetIterator( const Set<KEY>& from,
+      SetIteratorSafe( const Set<KEY>& from,
                    Position pos = GUM_SET_ITERATOR_BEGIN );
 
       /// copy constructor
-      SetIterator( const SetIterator<KEY>& from );
+      SetIteratorSafe( const SetIteratorSafe<KEY>& from );
 
       /// destructor
-      ~SetIterator();
+      ~SetIteratorSafe();
 
       /// @}
 
@@ -404,16 +404,16 @@ namespace gum {
       /// @{
 
       /// increments the iterator
-      SetIterator<KEY>& operator++();
+      SetIteratorSafe<KEY>& operator++();
 
       /// indicates whether two iterators point to different elements or sets
-      bool operator!= ( const SetIterator<KEY>& from ) const;
+      bool operator!= ( const SetIteratorSafe<KEY>& from ) const;
 
       /// indicates whether two iterators point toward the same element of a same set
-      bool operator== ( const SetIterator<KEY>& from ) const;
+      bool operator== ( const SetIteratorSafe<KEY>& from ) const;
 
       /// assignment operator
-      SetIterator<KEY>& operator= ( const SetIterator<KEY>& from );
+      SetIteratorSafe<KEY>& operator= ( const SetIteratorSafe<KEY>& from );
 
       /// returns the element pointed to by the iterator
       /** @throws UndefinedIteratorValue exception if the iterator does not point

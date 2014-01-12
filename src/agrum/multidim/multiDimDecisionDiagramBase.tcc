@@ -690,7 +690,7 @@ namespace gum {
     for ( HashTableIteratorSafe< NodeId, Set< const DiscreteVariable* >* > iterH = retrogradeVariablesTable->beginSafe(); iterH != retrogradeVariablesTable->endSafe(); ++iterH ) {
       Set< const DiscreteVariable* > finalSet = *( iterH.val () );
 
-      for ( SetIterator< const DiscreteVariable* > iterS = finalSet.begin(); iterS != finalSet.end(); ++iterS )
+      for ( SetIteratorSafe< const DiscreteVariable* > iterS = finalSet.beginSafe(); iterS != finalSet.endSafe(); ++iterS )
         if ( varsSeq->pos ( *iterS ) >= varsSeq->pos ( this->nodeVariable ( iterH.key() ) ) )
           ( iterH.val() )->erase ( *iterS );
     }
@@ -708,7 +708,7 @@ namespace gum {
 //~ preceedingVarLog << std::endl << " Preceeding variable Table : ";
 //~ for( HashTableConstIteratorSafe< NodeId, Set< const DiscreteVariable* >* > iterH = preceedingVariablesTable->begin(); iterH != preceedingVariablesTable->end(); ++iterH ){
 //~ preceedingVarLog << std::endl << "Noeud : " << iterH.key() << " - Variable : " << this->nodeVariable( iterH.key() )->toString() << " - Preceeding Variable : ";
-//~ for( SetIterator< const DiscreteVariable* > iterS = (*iterH)->begin(); iterS != (*iterH)->end(); ++iterS )
+//~ for( SetIteratorSafe< const DiscreteVariable* > iterS = (*iterH)->beginSafe(); iterS != (*iterH)->endSafe(); ++iterS )
 //~ preceedingVarLog << (*iterS)->name() << " - ";
 //~ preceedingVarLog << std::endl;
 //~ }
@@ -1071,8 +1071,8 @@ namespace gum {
     retrogradeVarTable->erase ( currentNode );
     retrogradeVarTable->insert ( currentNode , currentVarSet );
 
-    for ( SetIterator< const DiscreteVariable* > nodeParentsVarIter = ( *preceedingVariablesTable ) [currentNode]->begin();
-          nodeParentsVarIter != ( *preceedingVariablesTable ) [currentNode]->end(); ++nodeParentsVarIter )
+    for ( SetIteratorSafe< const DiscreteVariable* > nodeParentsVarIter = ( *preceedingVariablesTable ) [currentNode]->beginSafe();
+          nodeParentsVarIter != ( *preceedingVariablesTable ) [currentNode]->endSafe(); ++nodeParentsVarIter )
       if ( varsSeq->pos ( *nodeParentsVarIter ) > varsSeq->pos ( this->nodeVariable ( currentNode ) ) ) {
         currentVarSet->insert ( this->nodeVariable ( currentNode ) );
         break;

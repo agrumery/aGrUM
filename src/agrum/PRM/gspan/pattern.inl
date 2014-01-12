@@ -174,8 +174,8 @@ namespace gum {
         while ( r_path.front() != 1 ) {
           const NodeSet& parents = DiGraph::parents ( r_path.front() );
 
-          for ( NodeSetIterator arc = parents.begin();
-                arc != parents.end(); ++arc ) {
+          for ( NodeSetIterator arc = parents.beginSafe();
+                arc != parents.endSafe(); ++arc ) {
             if ( *arc < r_path.front() ) {
               r_path.push_front ( *arc );
               break;
@@ -285,17 +285,17 @@ namespace gum {
       NeighborIterator::NeighborIterator ( const NodeSet& parents,
                                            const NodeSet& children ) :
         __parents ( &parents ), __children ( &children ),
-        __parent_iterator ( __parents->begin() ),
-        __children_iterator ( __children->begin() ),
+        __parent_iterator ( __parents->beginSafe() ),
+        __children_iterator ( __children->beginSafe() ),
         __iterator ( 0 ), __end_iterator ( 0 ) {
         GUM_CONSTRUCTOR ( NeighborIterator );
 
         if ( __parents->empty() ) {
           __iterator = &__children_iterator;
-          __end_iterator = & ( __children->end() );
+          __end_iterator = & ( __children->endSafe() );
         } else {
           __iterator = &__parent_iterator;
-          __end_iterator = & ( __parents->end() );
+          __end_iterator = & ( __parents->endSafe() );
         }
       }
 
@@ -327,7 +327,7 @@ namespace gum {
         if ( ( __iterator == ( &__parent_iterator ) ) and
              ( *__iterator ) == ( *__end_iterator ) ) {
           __iterator = ( &__children_iterator );
-          __end_iterator = & ( __children->end() );
+          __end_iterator = & ( __children->endSafe() );
         }
 
         return *this;
@@ -337,7 +337,7 @@ namespace gum {
       bool
       NeighborIterator::isEnd() const {
         return ( __iterator == ( &__children_iterator ) ) and
-               ( __children_iterator == __children->end() );
+               ( __children_iterator == __children->endSafe() );
       }
 
       INLINE
@@ -362,10 +362,10 @@ namespace gum {
 
         if ( from.__iterator == & ( from.__parent_iterator ) ) {
           __iterator = &__parent_iterator;
-          __end_iterator = & ( __parents->end() );
+          __end_iterator = & ( __parents->endSafe() );
         } else {
           __iterator = &__children_iterator;
-          __end_iterator = & ( __children->end() );
+          __end_iterator = & ( __children->endSafe() );
         }
 
         return *this;

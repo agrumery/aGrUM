@@ -53,8 +53,8 @@ namespace gum {
     // compute the variables that shall belong to the result of the projection
     Sequence<const DiscreteVariable*> vars = __table.variablesSequence();
 
-    for ( typename Set<const DiscreteVariable*>::const_iterator
-          iter = del_vars.begin(); iter != del_vars.end(); ++iter ) {
+    for ( typename Set<const DiscreteVariable*>::const_iterator_safe
+          iter = del_vars.beginSafe(); iter != del_vars.endSafe(); ++iter ) {
       vars.erase( *iter );
     }
 

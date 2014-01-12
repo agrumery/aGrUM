@@ -237,7 +237,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( nodelist.size(), graph.size() );
         gum::Size nodeCount = graph.size();
 
-        for ( gum::NodeSet::iterator iter = nodelist.begin(); iter != nodelist.end(); ++iter ) {
+        for ( gum::NodeSet::iterator_safe iter = nodelist.beginSafe(); iter != nodelist.endSafe(); ++iter ) {
           graph.eraseNode ( *iter );
         }
 
@@ -253,7 +253,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( arclist.size(), graph.sizeArcs() );
         gum::Size arcCount = graph.sizeArcs();
 
-        for ( gum::ArcSet::iterator iter = arclist.begin(); iter != arclist.end(); ++iter ) {
+        for ( gum::ArcSet::iterator_safe iter = arclist.beginSafe(); iter != arclist.endSafe(); ++iter ) {
           graph.eraseArc ( *iter );
         }
 

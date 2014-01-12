@@ -303,8 +303,8 @@ namespace gum_tests {
 
           const gum::NodeSet& parentList = source.dag().parents ( nodeIter );
 
-          for ( gum::NodeSet::const_iterator arcIter = parentList.begin();
-                arcIter != parentList.end();
+          for ( gum::NodeSet::const_iterator_safe arcIter = parentList.beginSafe();
+                arcIter != parentList.endSafe();
                 ++arcIter ) {
             TS_ASSERT ( copy->dag().existsArc ( *arcIter, nodeIter ) );
           }
@@ -729,7 +729,7 @@ namespace gum_tests {
         for ( gum::List< gum::NodeSet >::iterator seqIter = partialTemporalOrder.begin(); seqIter != partialTemporalOrder.end(); ++seqIter, ++i ) {
           int j = 0;
 
-          for ( gum::NodeSet::const_iterator it = seqIter->begin(); it != seqIter->end(); ++it, ++j ) {
+          for ( gum::NodeSet::const_iterator_safe it = seqIter->beginSafe(); it != seqIter->endSafe(); ++it, ++j ) {
             TS_ASSERT_EQUALS ( *it, resultat[i][j] );
           }
         }

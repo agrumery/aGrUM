@@ -28,6 +28,7 @@
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/arcGraphPart.inl>
 #endif //GUM_NOINLINE
+#include "graphElements.h"
 
 
 namespace gum {
@@ -67,7 +68,7 @@ namespace gum {
 
     // send signals to indicate that there are new arcs
     if ( onArcAdded.hasListener() ) {
-      for ( ArcSetIterator iter = __arcs.begin(); iter != __arcs.end(); ++iter ) {
+      for ( ArcSetIterator iter = __arcs.beginSafe(); iter != __arcs.endSafe(); ++iter ) {
         GUM_EMIT2( onArcAdded, iter->tail(), iter->head() );
       }
     }
@@ -101,7 +102,7 @@ namespace gum {
       ArcSet tmp = __arcs;
       __arcs.clear();
 
-      for ( ArcSetIterator iter = tmp.begin(); iter != tmp.end(); ++iter )
+      for ( ArcSetIterator iter = tmp.beginSafe(); iter != tmp.endSafe(); ++iter )
         GUM_EMIT2( onArcDeleted, iter->tail(), iter->head() );
     } else {
       __arcs.clear();
@@ -137,8 +138,8 @@ namespace gum {
       }
 
       if ( onArcAdded.hasListener() ) {
-        for ( ArcSetIterator iter = __arcs.begin();
-              iter != __arcs.end(); ++iter ) {
+        for ( ArcSetIterator iter = __arcs.beginSafe();
+              iter != __arcs.endSafe(); ++iter ) {
           GUM_EMIT2( onArcAdded, iter->tail(), iter->head() );
         }
       }
@@ -153,7 +154,7 @@ namespace gum {
     bool first=true;
     s<<"{";
 
-    for ( ArcSetIterator it=__arcs.begin(); it!=__arcs.end(); ++it ) {
+    for ( ArcSetIterator it=__arcs.beginSafe(); it!=__arcs.endSafe(); ++it ) {
       if ( first ) {
         first=false;
       } else {
@@ -188,7 +189,7 @@ namespace gum {
       // check the parents  //////////////////////////////////////////////
       const NodeSet& set = parents( current );
 
-      for ( NodeSetIterator ite=set.begin(); ite!=set.end(); ++ite ) {
+      for ( NodeSetIterator ite=set.beginSafe(); ite!=set.endSafe(); ++ite ) {
         NodeId new_one = *ite;
 
         if ( mark.exists( new_one ) ) // if this node is already marked, do not
@@ -234,7 +235,7 @@ namespace gum {
       // check the parents //////////////////////////////////////////////
       const NodeSet& set_parent = parents( current );
 
-      for ( NodeSetIterator ite=set_parent.begin(); ite!=set_parent.end(); ++ite ) {
+      for ( NodeSetIterator ite=set_parent.beginSafe(); ite!=set_parent.endSafe(); ++ite ) {
         NodeId new_one = *ite;
 
         if ( mark.exists( new_one ) )  // the node has already been visited
@@ -259,8 +260,8 @@ namespace gum {
       // check the children //////////////////////////////////////////////
       const NodeSet& set_children = children( current );
 
-      for ( NodeSetIterator ite=set_children.begin();
-            ite!=set_children.end(); ++ite ) {
+      for ( NodeSetIterator ite=set_children.beginSafe();
+            ite!=set_children.endSafe(); ++ite ) {
         NodeId new_one = *ite;
 
         if ( mark.exists( new_one ) )  // the node has already been visited

@@ -139,8 +139,8 @@ namespace gum {
     {
       unsigned int i = 0;
 
-      for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator iter =
-              set.begin(); iter != set.end(); ++iter, ++i ) {
+      for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe iter =
+              set.beginSafe(); iter != set.endSafe(); ++iter, ++i ) {
         tables[i] = *iter;
       }
     }
@@ -301,8 +301,8 @@ namespace gum {
     {
       unsigned int i = 0;
 
-      for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator iter =
-              set.begin(); iter != set.end(); ++iter, ++i ) {
+      for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe iter =
+              set.beginSafe(); iter != set.endSafe(); ++iter, ++i ) {
         tables[i] = &( ( *iter )->variablesSequence() );
       }
     }
@@ -469,8 +469,8 @@ namespace gum {
     {
       unsigned int i = 0;
 
-      for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator iter =
-              set.begin(); iter != set.end(); ++iter, ++i ) {
+      for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe iter =
+              set.beginSafe(); iter != set.endSafe(); ++iter, ++i ) {
         const Sequence<const DiscreteVariable*>* vars =
           &( ( *iter )->variablesSequence() );
         tables[i] = vars;

@@ -269,7 +269,7 @@ namespace gum {
       }
 
 
-      for ( NodeSetIterator it = __dag.parents ( j ).begin(); it != __dag.parents ( j ).end(); ++it ) {
+      for ( NodeSetIterator it = __dag.parents ( j ).beginSafe(); it != __dag.parents ( j ).endSafe(); ++it ) {
         NodeSet excluded;
         excluded.insert ( j );
 
@@ -280,7 +280,7 @@ namespace gum {
         }
       }
 
-      for ( NodeSetIterator it = __dag.children ( j ).begin(); it != __dag.children ( j ).end(); ++it ) {
+      for ( NodeSetIterator it = __dag.children ( j ).beginSafe(); it != __dag.children ( j ).endSafe(); ++it ) {
         NodeSet excluded;
         excluded.insert ( j );
 
@@ -382,7 +382,7 @@ namespace gum {
 
     if ( IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.dag().parents ( temp ).size() ) {
       j = temp;
-      NodeSetIterator it = IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.dag().parents ( j ).begin();
+      NodeSetIterator it = IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.dag().parents ( j ).beginSafe();
       co = rand() % IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.dag().parents ( j ).size();
 
       while ( co-- ) {
@@ -392,7 +392,7 @@ namespace gum {
       i = *it;
     } else if ( IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.dag().children ( temp ).size() ) {
       i = temp;
-      NodeSetIterator it = IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.dag().children ( i ).begin();
+      NodeSetIterator it = IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.dag().children ( i ).beginSafe();
       co = rand() % IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet.dag().children ( i ).size();
 
       while ( co-- ) {
@@ -479,14 +479,14 @@ namespace gum {
       excluded.insert ( i );
       const NodeSet set_parent = __dag.parents ( i );
 
-      for ( NodeSetIterator par = set_parent.begin(); par != set_parent.end(); ++par ) {
+      for ( NodeSetIterator par = set_parent.beginSafe(); par != set_parent.endSafe(); ++par ) {
         if ( !excluded.exists ( *par ) && __connect ( *par, j, excluded ) )
           return true;
       }
 
       const NodeSet  set_children = __dag.children ( i );
 
-      for ( NodeSetIterator par = set_children.begin(); par != set_children.end(); ++par ) {
+      for ( NodeSetIterator par = set_children.beginSafe(); par != set_children.endSafe(); ++par ) {
         if ( !excluded.exists ( *par ) && __connect ( *par, j, excluded ) )
           return true;
       }
@@ -507,14 +507,14 @@ namespace gum {
       excluded.insert ( i );
       const NodeSet set_parent = __dag.parents ( i );
 
-      for ( NodeSetIterator par = set_parent.begin(); par != set_parent.end(); ++par ) {
+      for ( NodeSetIterator par = set_parent.beginSafe(); par != set_parent.endSafe(); ++par ) {
         if ( !excluded.exists ( *par ) && __connect ( *par, j, excluded ) )
           return true;
       }
 
       const NodeSet  set_children = __dag.children ( i );
 
-      for ( NodeSetIterator par = set_children.begin(); par != set_children.end(); ++par ) {
+      for ( NodeSetIterator par = set_children.beginSafe(); par != set_children.endSafe(); ++par ) {
         if ( !excluded.exists ( *par ) && __connect ( *par, j, excluded ) )
           return true;
       }
@@ -535,7 +535,7 @@ namespace gum {
       excluded.insert ( tail );
       const NodeSet  set_children = __dag.children ( tail );
 
-      for ( NodeSetIterator node = set_children.begin(); node != set_children.end(); ++node ) {
+      for ( NodeSetIterator node = set_children.beginSafe(); node != set_children.endSafe(); ++node ) {
         if ( __directedPath ( *node, head, excluded ) )
           return true;
       }
@@ -555,7 +555,7 @@ namespace gum {
       const NodeSet  set_children = __dag.children ( tail );
       excluded.insert ( tail );
 
-      for ( NodeSetIterator node = set_children.begin(); node != set_children.end(); ++node ) {
+      for ( NodeSetIterator node = set_children.beginSafe(); node != set_children.endSafe(); ++node ) {
         if ( !excluded.exists ( *node ) && __directedPath ( *node, head, excluded ) )
           return true;
       }

@@ -379,7 +379,7 @@ namespace gum {
 
           private:
             Set<Instance<GUM_SCALAR>*>& __set;
-            typename Set<Instance<GUM_SCALAR>*>::iterator __iter;
+            typename Set<Instance<GUM_SCALAR>*>::iterator_safe __iter;
         };
 
         /**
@@ -423,7 +423,7 @@ namespace gum {
 
           private:
             const Set<Instance<GUM_SCALAR>*>& __set;
-            typename Set<Instance<GUM_SCALAR>*>::const_iterator __iter;
+            typename Set<Instance<GUM_SCALAR>*>::const_iterator_safe __iter;
         };
 
         /**

@@ -163,7 +163,7 @@ namespace gum {
 
     private:
       typedef Set<const Potential<GUM_SCALAR>*> __PotentialSet;
-      typedef SetIterator<const Potential<GUM_SCALAR>*> __PotentialSetIterator;
+      typedef SetIteratorSafe<const Potential<GUM_SCALAR>*> __PotentialSetIterator;
 
       /// the triangulation class creating the junction tree used for inference
       DefaultTriangulation __triangulation;

@@ -97,7 +97,7 @@ namespace gum {
 
         GUM_TRACE( tabu << "Preneeded Variable : " );
 
-        for ( SetIterator< const DiscreteVariable* > iterS = ( *opData.retrogradeVarTable )[ opData.conti.getDD2Node() ]->begin(); iterS != ( *opData.retrogradeVarTable )[ opData.conti.getDD2Node() ]->end(); ++iterS )
+        for ( SetIteratorSafe< const DiscreteVariable* > iterS = ( *opData.retrogradeVarTable )[ opData.conti.getDD2Node() ]->beginSafe(); iterS != ( *opData.retrogradeVarTable )[ opData.conti.getDD2Node() ]->endSafe(); ++iterS )
           GUM_TRACE( tabu << ( *iterS )->toString() << " | " );
 
 

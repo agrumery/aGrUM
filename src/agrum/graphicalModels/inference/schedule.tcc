@@ -236,9 +236,9 @@ namespace gum {
   template <typename GUM_SCALAR>
   void Schedule<GUM_SCALAR>::__updateWrongParents() const {
     // parse all the nodes whose parents sets are incorrect
-    for ( typename NodeSet::const_iterator
-          iter = __operations_with_wrong_parents.begin();
-          iter != __operations_with_wrong_parents.end(); ++iter ) {
+    for ( typename NodeSet::const_iterator_safe
+          iter = __operations_with_wrong_parents.beginSafe();
+          iter != __operations_with_wrong_parents.endSafe(); ++iter ) {
       // get the arguments passed to *iter and check that those that are abstract
       // multidims belong to the schedule
       const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>& args =
@@ -309,8 +309,8 @@ namespace gum {
   template <typename GUM_SCALAR>
   void Schedule<GUM_SCALAR>::forceAfter( NodeId op_to_force,
                                          const NodeSet& ops_before ) {
-    for ( typename NodeSet::const_iterator iter = ops_before.begin();
-          iter != ops_before.end(); ++iter ) {
+    for ( typename NodeSet::const_iterator_safe iter = ops_before.beginSafe();
+          iter != ops_before.endSafe(); ++iter ) {
       if ( *iter != op_to_force ) {
         forceAfter( op_to_force, *iter );
       }
@@ -324,8 +324,8 @@ namespace gum {
   void Schedule<GUM_SCALAR>::forceAfter
   ( const ScheduleOperation<GUM_SCALAR>& op_to_force,
     const Set<const ScheduleOperation<GUM_SCALAR>*>& ops_before ) {
-    for ( typename Set<const ScheduleOperation<GUM_SCALAR>*>::const_iterator
-          iter = ops_before.begin(); iter != ops_before.end(); ++iter ) {
+    for ( typename Set<const ScheduleOperation<GUM_SCALAR>*>::const_iterator_safe
+          iter = ops_before.beginSafe(); iter != ops_before.endSafe(); ++iter ) {
       if ( **iter != op_to_force ) {
         forceAfter( op_to_force, **iter );
       }
@@ -362,8 +362,8 @@ namespace gum {
   template <typename GUM_SCALAR>
   void
   Schedule<GUM_SCALAR>::forceBefore( NodeId op_to_force, const NodeSet& ops_after ) {
-    for ( typename NodeSet::const_iterator iter = ops_after.begin();
-          iter != ops_after.end(); ++iter ) {
+    for ( typename NodeSet::const_iterator_safe iter = ops_after.beginSafe();
+          iter != ops_after.endSafe(); ++iter ) {
       if ( *iter != op_to_force ) {
         forceBefore( op_to_force, *iter );
       }
@@ -469,8 +469,8 @@ namespace gum {
     // if and only if it has only one parent
     const NodeSet& children = __dag.children( id );
 
-    for ( NodeSet::const_iterator iter = children.begin();
-          iter != children.end(); ++iter ) {
+    for ( NodeSet::const_iterator_safe iter = children.beginSafe();
+          iter != children.endSafe(); ++iter ) {
       NodeId child = *iter;
 
       if ( __dag.parents( child ).size() == 1 ) {

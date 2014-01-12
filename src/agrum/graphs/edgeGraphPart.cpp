@@ -28,6 +28,7 @@
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/edgeGraphPart.inl>
 #endif //GUM_NOINLINE
+#include "graphElements.h"
 
 
 namespace gum {
@@ -57,8 +58,8 @@ namespace gum {
 
     // send signals to indicate that there are new edges
     if ( onEdgeAdded.hasListener() ) {
-      for ( EdgeSetIterator iter = __edges.begin();
-            iter != __edges.end(); ++iter ) {
+      for ( EdgeSetIterator iter = __edges.beginSafe();
+            iter != __edges.endSafe(); ++iter ) {
         GUM_EMIT2( onEdgeAdded, iter->first(), iter->second() );
       }
     }
@@ -85,7 +86,7 @@ namespace gum {
 
       __edges.clear();
 
-      for ( EdgeSetIterator iter = tmp.begin(); iter != tmp.end(); ++iter )
+      for ( EdgeSetIterator iter = tmp.beginSafe(); iter != tmp.endSafe(); ++iter )
         GUM_EMIT2( onEdgeDeleted, iter->first(), iter->second() );
     } else {
       __edges.clear();
@@ -111,8 +112,8 @@ namespace gum {
       }
 
       if ( onEdgeAdded.hasListener() ) {
-        for ( EdgeSetIterator iter = __edges.begin();
-              iter != __edges.end(); ++iter ) {
+        for ( EdgeSetIterator iter = __edges.beginSafe();
+              iter != __edges.endSafe(); ++iter ) {
           GUM_EMIT2( onEdgeAdded, iter->first(), iter->second() );
         }
       }
@@ -127,7 +128,7 @@ namespace gum {
     bool first = true;
     s << "{";
 
-    for ( EdgeSetIterator it = __edges.begin(); it != __edges.end(); ++it ) {
+    for ( EdgeSetIterator it = __edges.beginSafe(); it != __edges.endSafe(); ++it ) {
       if ( first ) {
         first = false;
       } else {
@@ -162,7 +163,7 @@ namespace gum {
       // check the neighbour //////////////////////////////////////////////
       const NodeSet& set = neighbours( current );
 
-      for ( NodeSetIterator ite = set.begin(); ite != set.end(); ++ite ) {
+      for ( NodeSetIterator ite = set.beginSafe(); ite != set.endSafe(); ++ite ) {
         NodeId new_one = *ite;
 
         if ( mark.exists( new_one ) ) // if this node is already marked, stop

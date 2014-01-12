@@ -93,14 +93,14 @@ namespace gum {
       var_set.insert ( var );
       Set<const Potential<GUM_SCALAR>*> pots;
 
-      for ( auto iter = pool.begin(); iter != pool.end(); ++iter )
+      for ( auto iter = pool.beginSafe(); iter != pool.endSafe(); ++iter )
         if ( ( *iter )->contains ( *var ) )
           pots.insert ( *iter );
 
       if ( pots.size() == 0 ) {
         return;
       } else if ( pots.size() == 1 ) {
-        tmp = const_cast<Potential<GUM_SCALAR>*> ( * ( pots.begin() ) );
+        tmp = const_cast<Potential<GUM_SCALAR>*> ( * ( pots.beginSafe() ) );
         pot = new Potential<GUM_SCALAR> ( projectSum ( *tmp, var_set ) );
       } else {
         MultiDimCombinationDefault<GUM_SCALAR, Potential> Comb ( multPotential );
@@ -109,7 +109,7 @@ namespace gum {
         delete tmp;
       }
 
-      for ( auto iter = pots.begin(); iter != pots.end(); ++iter ) {
+      for ( auto iter = pots.beginSafe(); iter != pots.endSafe(); ++iter ) {
         pool.erase ( const_cast<Potential<GUM_SCALAR>*> ( *iter ) );
 
         if ( trash.exists ( const_cast<Potential<GUM_SCALAR>*> ( *iter ) ) ) {

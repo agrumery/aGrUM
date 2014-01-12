@@ -47,19 +47,19 @@ namespace gum {
     void
     ClassDependencyGraph<GUM_SCALAR>::__buildGraph ( const PRM<GUM_SCALAR>& prm ) {
       // First we add all nodes
-      for ( const auto ci : prm.classes() ) {
-        __node_map.insert ( ci, new HashTable<const ClassElement<GUM_SCALAR>*, NodeId>() );
+      for ( auto ci = prm.classes().beginSafe(); ci != prm.classes().endSafe(); ++ci ) {
+        __node_map.insert ( *ci, new HashTable<const ClassElement<GUM_SCALAR>*, NodeId>() );
 
-        for ( const auto j : ci->dag().nodes() ) {
-          __addNode ( ci, ( ci )->get ( j ) );
+        for ( const auto j : (*ci)->dag().nodes() ) {
+          __addNode ( *ci, ( *ci )->get ( j ) );
         }
       }
 
-      for ( const auto ii : prm.interfaces() ) {
-        __node_map.insert ( ii, new HashTable<const ClassElement<GUM_SCALAR>*, NodeId>() );
+      for ( auto ii = prm.interfaces().beginSafe(); ii != prm.interfaces().endSafe(); ++ii ) {
+        __node_map.insert ( *ii, new HashTable<const ClassElement<GUM_SCALAR>*, NodeId>() );
 
-        for ( const auto j : ii->dag().nodes() ) {
-          __addNode ( ii, ( ii )->get ( j ) );
+        for ( const auto j : (*ii)->dag().nodes() ) {
+          __addNode ( *ii, ( *ii )->get ( j ) );
         }
       }
 
@@ -68,9 +68,9 @@ namespace gum {
       for ( Set<Class*>::const_iterator iter = prm.classes().begin(); iter != prm.classes().end(); ++iter )
         for ( DAG::NodeIterator jter = ( *iter )->dag().beginNodes(); jter != ( *iter )->dag().endNodes(); ++jter )
       */
-      for ( const auto cc : prm.classes() )
-        for ( const auto j : cc->dag().nodes() )
-          __addArcs ( *cc, j, * ( __node_map[cc] ) );
+      for ( auto cc = prm.classes().beginSafe (); cc != prm.classes().endSafe(); ++cc )
+        for ( const auto j : (*cc)->dag().nodes() )
+          __addArcs ( **cc, j, * ( __node_map[*cc] ) );
     }
 
     // Add arcs in __graph.
@@ -83,7 +83,7 @@ namespace gum {
           const SlotChain<GUM_SCALAR>& sc = static_cast<const SlotChain<GUM_SCALAR>&> ( c.get ( node ) );
           const NodeSet& children = c.dag().children ( node );
 
-          for ( NodeSetIterator arc = children.begin(); arc != children.end(); ++arc )
+          for ( NodeSetIterator arc = children.beginSafe(); arc != children.endSafe(); ++arc )
             __graph.insertArc ( ( * ( __node_map[& ( sc.end() )] ) ) [& ( sc.end().get ( sc.lastElt().safeName() ) )], map[& ( c.get ( *arc ) )] );
 
           break;
@@ -93,7 +93,7 @@ namespace gum {
         case ClassElement<GUM_SCALAR>::prm_attribute: {
           const NodeSet& children = c.dag().children ( node );
 
-          for ( NodeSetIterator arc = children.begin(); arc != children.end(); ++arc )
+          for ( NodeSetIterator arc = children.beginSafe(); arc != children.endSafe(); ++arc )
             __graph.insertArc ( map[& ( c.get ( node ) )], map[& ( c.get ( *arc ) )] );
 
           break;

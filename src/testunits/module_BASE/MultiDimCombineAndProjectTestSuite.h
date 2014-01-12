@@ -24,6 +24,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include "../../agrum/core/set.h"
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
@@ -86,7 +87,7 @@ namespace gum_tests {
         TS_ASSERT( nb_ops == 416 );
         TS_ASSERT( res.size() == 3 );
 
-        gum::Set<const gum::Potential<float>*>::const_iterator iter = res.begin();
+        gum::Set<const gum::Potential<float>*>::const_iterator_safe iter = res.beginSafe();
         const gum::Potential<float>* res1 = *iter; ++iter;
         const gum::Potential<float>* res2 = *iter; ++iter;
         const gum::Potential<float>* res3 = *iter;
@@ -130,8 +131,8 @@ namespace gum_tests {
 
         delete projcomb3;
 
-        for ( gum::Set<const gum::Potential<float>*>::const_iterator
-              iter = res.begin(); iter != res.end(); ++iter ) {
+        for ( gum::Set<const gum::Potential<float>*>::const_iterator_safe
+              iter = res.beginSafe(); iter != res.endSafe(); ++iter ) {
           delete *iter;
         }
 

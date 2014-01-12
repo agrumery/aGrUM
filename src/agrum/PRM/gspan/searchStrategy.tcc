@@ -41,10 +41,10 @@ namespace gum {
         for ( auto iter = seq.begin(); iter != seq.end(); ++iter ) {
           chains = & ( ( **iter ).type().slotChains() );
 
-          for ( auto input = chains->begin(); input != chains->end(); ++input ) {
+          for ( auto input = chains->beginSafe(); input != chains->endSafe(); ++input ) {
             instances = & ( ( **iter ).getInstances ( ( **input ).id() ) );
 
-            for ( auto jter = instances->begin(); jter != instances->end(); ++jter ) {
+            for ( auto jter = instances->beginSafe(); jter != instances->endSafe(); ++jter ) {
               if ( ( not seq.exists ( *jter ) ) and ( not input_set.exists ( & ( ( *jter )->get ( ( *input )->lastElt().safeName() ) ) ) ) ) {
                 cost += std::log ( ( *input )->type().variable().domainSize() );
                 input_set.insert ( & ( ( *jter )->get ( ( *input )->lastElt().safeName() ) ) );
@@ -87,7 +87,7 @@ namespace gum {
             // Children existing in the instance type's DAG
             const NodeSet& chldrn = ( **inst ).type().dag().children ( ( *( attr.val() ) ).id() );
 
-            for ( NodeSetIterator chld = chldrn.begin(); chld != chldrn.end(); ++chld ) {
+            for ( NodeSetIterator chld = chldrn.beginSafe(); chld != chldrn.endSafe(); ++chld ) {
               data.graph.insertEdge ( node,
                                       data.node2attr.first ( __str ( *inst, ( **inst ).get ( *chld ) ) ) );
             }
@@ -95,7 +95,7 @@ namespace gum {
             // Parents existing in the instance type's DAG
             const NodeSet& prnts  = ( **inst ).type().dag().parents ( ( *( attr.val() ) ).id() );
 
-            for ( auto prnt = prnts.begin(); prnt != prnts.end(); ++prnt ) {
+            for ( auto prnt = prnts.beginSafe(); prnt != prnts.endSafe(); ++prnt ) {
               switch ( ( **inst ).type().get ( *prnt ).elt_type() ) {
                 case ClassElement<GUM_SCALAR>::prm_attribute:
                 case ClassElement<GUM_SCALAR>::prm_aggregate: {
@@ -106,7 +106,7 @@ namespace gum {
                 case ClassElement<GUM_SCALAR>::prm_slotchain: {
                   const Set<Instance<GUM_SCALAR>*>& ref = ( **inst ).getInstances ( *prnt );
 
-                  for ( auto jnst = ref.begin(); jnst != ref.end(); ++jnst )
+                  for ( auto jnst = ref.beginSafe(); jnst != ref.endSafe(); ++jnst )
                     if ( match.exists ( *jnst ) )
                       data.graph.insertEdge ( node, data.node2attr.first ( __str ( *jnst, static_cast<const SlotChain<GUM_SCALAR>&> ( ( **inst ).type().get ( *prnt ) ) ) ) );
 
@@ -126,7 +126,7 @@ namespace gum {
                   NodeId id = pair->first->type().get ( pair->second ).id();
                   const NodeSet& children = pair->first->type().dag().children ( id );
 
-                  for ( NodeSet::const_iterator child = children.begin(); child != children.end(); ++child )
+                  for ( NodeSet::const_iterator_safe child = children.beginSafe(); child != children.endSafe(); ++child )
                     data.graph.insertEdge ( node, data.node2attr.first ( __str ( pair->first, pair->first->get ( *child ) ) ) );
                 } else {
                   found = true;
@@ -163,7 +163,7 @@ namespace gum {
           trash.insert ( pot );
           Set<Potential<GUM_SCALAR>*> toRemove;
 
-          for ( auto p = pool.begin(); p != pool.end(); ++p ) {
+          for ( auto p = pool.beginSafe(); p != pool.endSafe(); ++p ) {
             if ( ( **p ).contains ( * ( data.vars.second ( elim_order[idx] ) ) ) ) {
               for ( auto var = ( **p ).variablesSequence().begin();
                     var != ( **p ).variablesSequence().end(); ++var ) {
@@ -183,13 +183,13 @@ namespace gum {
             ++max_count;
           }
 
-          for ( auto p = toRemove.begin(); p != toRemove.end(); ++p )
+          for ( auto p = toRemove.beginSafe(); p != toRemove.endSafe(); ++p )
             pool.erase ( *p );
 
           pot->erase ( * ( data.vars.second ( elim_order[idx] ) ) );
         }
 
-        for ( auto pot = trash.begin(); pot != trash.end(); ++pot )
+        for ( auto pot = trash.beginSafe(); pot != trash.endSafe(); ++pot )
           delete *pot;
 
         return std::make_pair ( max, max_count );

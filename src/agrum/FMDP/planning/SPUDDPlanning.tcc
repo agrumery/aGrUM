@@ -152,7 +152,7 @@ namespace gum {
       delete Vnew;
       Vnew = nullptr;
 
-//         for ( SetIterator< MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ) {
+//         for ( SetIteratorSafe< MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.beginSafe(); VActionsIter != VactionCollector.endSafe(); ++VActionsIter ) {
       for ( Idx acta = 1; acta < VactionCollector.size() + 1; acta++ ) {
         Vtemp = Vnew;
 //             Vnew = maximize2MultiDimDecisionDiagrams( Vnew, *VActionsIter );
@@ -634,7 +634,7 @@ namespace gum {
         GUM_ERROR ( IOError,"log file"<<traceFileName<<" does not open correctly");
       }
 
-      for ( SetIterator< MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ) {
+      for ( SetIteratorSafe< MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.beginSafe(); VActionsIter != VactionCollector.endSafe(); ++VActionsIter ) {
 
         if ( Vnew != nullptr )
           nbNodeT1 = Vnew->nodesMap().size();

@@ -116,7 +116,7 @@ namespace gum {
       // Addition of the parents
       const NodeSet& parentArcs = _dag.parents ( potentialIter.key() );
 
-      for ( NodeSet::const_iterator arcIter = parentArcs.begin(); arcIter != parentArcs.end(); ++arcIter )
+      for ( NodeSet::const_iterator_safe arcIter = parentArcs.beginSafe(); arcIter != parentArcs.endSafe(); ++arcIter )
         ( *potentialCpy ) << variable ( *arcIter );
 
       // Filling up of the table
@@ -148,7 +148,7 @@ namespace gum {
       // Addition of the parents
       const NodeSet& parentArcs = _dag.parents ( utilityIter.key() );
 
-      for ( NodeSet::const_iterator arcIter = parentArcs.begin(); arcIter != parentArcs.end(); ++arcIter )
+      for ( NodeSet::const_iterator_safe arcIter = parentArcs.beginSafe(); arcIter != parentArcs.endSafe(); ++arcIter )
         ( *utilityCpy ) << variable ( *arcIter );
 
       // Filling up of the table
@@ -204,7 +204,7 @@ namespace gum {
       if ( _dag.children ( node ).size() > 0 ) {
         const NodeSet& children = _dag.children ( node );
 
-        for ( NodeSetIterator arc_iter = children.begin(); arc_iter != children.end(); ++arc_iter )
+        for ( NodeSetIterator arc_iter = children.beginSafe(); arc_iter != children.endSafe(); ++arc_iter )
           arcstream << tab <<  variable ( node ).name() << " -> " << variable ( *arc_iter ).name() << ";" << std::endl;
       }
     }
@@ -492,7 +492,7 @@ namespace gum {
       // Reduce the variable child's CPT or Utility Table if necessary
       const NodeSet& childrenArcs = _dag.children ( varId );
 
-      for ( NodeSetIterator iter = childrenArcs.begin(); iter != childrenArcs.end(); ++iter ) {
+      for ( NodeSetIterator iter = childrenArcs.beginSafe(); iter != childrenArcs.endSafe(); ++iter ) {
         if ( isChanceNode ( *iter ) )
           __potentialMap[*iter ]->erase ( variable ( varId ) );
         else if ( isUtilityNode ( *iter ) )
@@ -615,10 +615,10 @@ namespace gum {
       if ( !isDecisionNode ( node ) ) {
         const NodeSet& parents = _dag.parents ( node );
 
-        for ( NodeSetIterator arcIter = parents.begin(); arcIter != parents.end(); ++arcIter ) {
+        for ( NodeSetIterator arcIter = parents.beginSafe(); arcIter != parents.endSafe(); ++arcIter ) {
           if ( isChanceNode ( node ) ) graph.insertEdge ( node, *arcIter );
 
-          for ( NodeSetIterator arcIterPrime = arcIter; arcIterPrime != parents.end(); ++arcIterPrime )
+          for ( NodeSetIterator arcIterPrime = arcIter; arcIterPrime != parents.endSafe(); ++arcIterPrime )
             if ( *arcIter != *arcIterPrime ) graph.insertEdge ( *arcIter, *arcIterPrime );
         }
       }
@@ -687,7 +687,7 @@ namespace gum {
 
       const NodeSet& child = _dag.children ( current );
 
-      for ( NodeSet::const_iterator ite = child.begin(); ite != child.end(); ++ite ) {
+      for ( NodeSet::const_iterator_safe ite = child.beginSafe(); ite != child.endSafe(); ++ite ) {
         NodeId new_one = *ite;
 
         if ( mark[new_one] != -1 ) continue; // if this node is already marked, continue
@@ -763,7 +763,7 @@ namespace gum {
 
       const ArcSet& set = _dag.children ( current );
 
-      for ( ArcSet::const_iterator childIte = set.begin(); childIte != set.end(); ++childIte ) {
+      for ( ArcSet::const_iterator_safe childIte = set.beginSafe(); childIte != set.endSafe(); ++childIte ) {
         NodeId new_one = childIte->head();
 
         if ( mark[new_one] ) continue; // if this node is already marked, continue
@@ -827,7 +827,7 @@ namespace gum {
 
         const NodeSet& parentArcs = _dag.parents ( decisionOrder->at ( i ) );
 
-        for ( NodeSetIterator arcIter = parentArcs.begin(); arcIter != parentArcs.end(); ++arcIter ) {
+        for ( NodeSetIterator arcIter = parentArcs.beginSafe(); arcIter != parentArcs.endSafe(); ++arcIter ) {
           if ( nodeList.contains ( *arcIter ) && isChanceNode ( *arcIter ) ) {
             partialOrderedSet.insert ( *arcIter );
             nodeList.erase ( *arcIter );
@@ -846,7 +846,7 @@ namespace gum {
 
       NodeSet lastSet ;//= new gum::NodeSet();
 
-      for ( NodeSetIterator nodeIter = nodeList.begin(); nodeIter != nodeList.end(); ++nodeIter )
+      for ( NodeSetIterator nodeIter = nodeList.beginSafe(); nodeIter != nodeList.endSafe(); ++nodeIter )
         if ( isChanceNode ( *nodeIter ) )
           lastSet.insert ( *nodeIter );
 

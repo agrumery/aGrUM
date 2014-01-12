@@ -34,27 +34,27 @@ namespace gum {
 
 
   // creates (if needed) and returns the iterator __SetIterEnd
-  const SetIterator<int>* SetIteratorStaticEnd::end4Statics() {
+  const SetIteratorSafe<int>* SetIteratorStaticEnd::endSafe4Statics() {
     static bool first_time = true;
 
     if ( first_time ) {
       first_time = false;
-      __SetIterEnd = new SetIterator<int>;
+      __SetIterEndSafe = new SetIteratorSafe<int>;
     }
 
-    return __SetIterEnd;
+    return __SetIterEndSafe;
   }
 
 
   // creates (if needed) and returns the iterator __SetIterEnd
-  const SetIterator<int>* SetIteratorStaticEnd::constEnd4Statics() {
-    return end4Statics();
+  const SetIteratorSafe<int>* SetIteratorStaticEnd::constEndSafe4Statics() {
+    return endSafe4Statics();
   }
 
 
   // create the end iterator for all Sets
-  const SetIterator<int>* SetIteratorStaticEnd::__SetIterEnd =
-    SetIteratorStaticEnd::end4Statics();
+  const SetIteratorSafe<int>* SetIteratorStaticEnd::__SetIterEndSafe =
+    SetIteratorStaticEnd::endSafe4Statics();
 
 
 } /* namespace gum */

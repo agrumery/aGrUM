@@ -63,7 +63,7 @@ namespace gum {
           }
         } catch ( NotFound& ) {
           // It's a label over edges
-          if ( __isEdgeEligible ( * ( __graph->edges ( iter.second() ).begin() ) ) ) {
+          if ( __isEdgeEligible ( * ( __graph->edges ( iter.second() ).beginSafe() ) ) ) {
             __cost.insert ( iter.second(), __cost_func ( iter.second()->tree_width, __graph->edges ( iter.second() ).size() ) );
             __edges.push_back ( iter.second() );
           }
@@ -137,7 +137,7 @@ namespace gum {
               // Checking for edges not in p
               const NodeSet& neighbours = ig.graph().neighbours ( current_id );
 
-              for ( auto edge = neighbours.begin(); edge != neighbours.end(); ++edge ) {
+              for ( auto edge = neighbours.beginSafe(); edge != neighbours.endSafe(); ++edge ) {
                 neighbor_id = *edge;
                 neighbor = ig.node ( neighbor_id ).n;
 
@@ -223,7 +223,7 @@ namespace gum {
         Set<NodeId>& max_indep_set = tree().max_indep_set ( * ( __patterns.front() ) );
         Sequence<Instance<GUM_SCALAR>*>* match = 0;
 
-        for ( auto node = max_indep_set.begin(); node != max_indep_set.end(); ++node ) {
+        for ( auto node = max_indep_set.beginSafe(); node != max_indep_set.endSafe(); ++node ) {
           match = & ( tree().iso_map ( * ( __patterns.front() ), *node ) );
 
           for ( auto i = match->begin(); i != match->end(); ++i ) {
@@ -283,7 +283,7 @@ namespace gum {
               removed.insert ( *node );
               neighbours = & ( reduced_iso_graph.neighbours ( *node ) );
 
-              for ( NodeSet::const_iterator neighbor = neighbours->begin(); neighbor != neighbours->end(); ++neighbor ) {
+              for ( NodeSet::const_iterator_safe neighbor = neighbours->beginSafe(); neighbor != neighbours->endSafe(); ++neighbor ) {
                 removed.insert ( *neighbor );
               }
 

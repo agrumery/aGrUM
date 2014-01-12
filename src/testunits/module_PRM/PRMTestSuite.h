@@ -79,7 +79,7 @@ namespace gum_tests {
         gum::Size elts = c.attributes().size() + c.aggregates().size();
         TS_ASSERT_EQUALS ( bn->size(), elts );
 
-        for ( auto attr = c.attributes().begin(); attr != c.attributes().end(); ++attr ) {
+        for ( auto attr = c.attributes().beginSafe(); attr != c.attributes().endSafe(); ++attr ) {
           gum::NodeId id = 0;
           TS_GUM_ASSERT_THROWS_NOTHING ( ( **attr ).cpf() );
           TS_GUM_ASSERT_THROWS_NOTHING ( id = bn->idFromName ( ( **attr ).safeName() ) );

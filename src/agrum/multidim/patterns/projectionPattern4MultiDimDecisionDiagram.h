@@ -91,14 +91,14 @@ namespace gum {
       MultiDimDecisionDiagramBase< GUM_MULTI_DIM_PROJECTION_TYPE >* ret = factory->getMultiDimDecisionDiagram();
       factory->clear();
 
-      for ( SetIterator< const DiscreteVariable* > delVarsIter = delVars.begin(); delVarsIter != delVars.end(); ++delVarsIter )
+      for ( SetIteratorSafe< const DiscreteVariable* > delVarsIter = delVars.beginSafe(); delVarsIter != delVars.endSafe(); ++delVarsIter )
         varSeq.erase( *delVarsIter );
 
       factory->setVariablesSequence( varSeq );
       HashTable< NodeId, NodeId > explorationTable;
       Idx nbOperation = 1;
 
-      for ( SetIterator< const DiscreteVariable* > delVarsIter = delVars.begin(); delVarsIter != delVars.end(); ++delVarsIter )
+      for ( SetIteratorSafe< const DiscreteVariable* > delVarsIter = delVars.beginSafe(); delVarsIter != delVars.endSafe(); ++delVarsIter )
         nbOperation *= ( *delVarsIter )->domainSize();
 
 #ifdef P4DDDEBUG

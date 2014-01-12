@@ -90,7 +90,7 @@ namespace gum {
       delete iter.key();
     }
 
-    for ( SetIterator< const DiscreteVariable* > primedIter = __primedVariablesSet.begin(); primedIter != __primedVariablesSet.end(); ++primedIter )
+    for ( SetIteratorSafe< const DiscreteVariable* > primedIter = __primedVariablesSet.beginSafe(); primedIter != __primedVariablesSet.endSafe(); ++primedIter )
       delete *primedIter;
   }
 

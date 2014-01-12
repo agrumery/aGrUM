@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <iostream>
+#include "../../agrum/graphs/graphElements.h"
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
@@ -240,7 +241,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( nodelist.size(), graph.size() );
         gum::Size nodeCount = graph.size();
 
-        for ( auto iter = nodelist.begin(); iter != nodelist.end(); ++iter ) {
+        for ( auto iter = nodelist.beginSafe(); iter != nodelist.endSafe(); ++iter ) {
           graph.eraseNode ( *iter );
         }
 
@@ -256,8 +257,8 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( arclist.size(), graph.sizeArcs() );
         gum::Size arcCount = graph.sizeArcs();
 
-        for ( const auto iter : arclist ) {
-          graph.eraseArc ( iter );
+        for ( auto iter = arclist.beginSafe(); iter != arclist.endSafe(); ++iter ) {
+          graph.eraseArc ( *iter );
         }
 
         TS_ASSERT ( graph.emptyArcs() );
