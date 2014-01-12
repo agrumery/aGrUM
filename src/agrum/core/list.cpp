@@ -66,30 +66,30 @@ namespace gum {
 
 
   /// Destructor for end/rend
-  template <> ListConstIteratorUnsafe<Debug>::~ListConstIteratorUnsafe() noexcept {
+  template <> ListConstIterator<Debug>::~ListConstIterator() noexcept {
   }
 
   
   /// constructor for end/rend
-  template <> ListConstIteratorUnsafe<Debug>::ListConstIteratorUnsafe() noexcept {
+  template <> ListConstIterator<Debug>::ListConstIterator() noexcept {
   }
 
 
   // an iterator that represents both end and rend for all the Lists
   // (whatever their type). This is mainly what stroustrup suggests
   // in his C++ programming language, third edition, page 854
-  static const ListConstIteratorSafe<Debug>   __static_list_end_safe;
-  static const ListConstIteratorUnsafe<Debug> __static_list_end_unsafe;
+  static const ListConstIteratorSafe<Debug> __static_list_end_safe;
+  static const ListConstIterator<Debug>     __static_list_end;
 
   static constexpr const void* __get_list_end_safe () {
     return &__static_list_end_safe;
   }
-  static constexpr const void* __get_list_end_unsafe () {
-    return &__static_list_end_unsafe;
+  static constexpr const void* __get_list_end () {
+    return &__static_list_end;
   }
 
   const void *const __list_end_safe = __get_list_end_safe ();
-  const void *const __list_end_unsafe = __get_list_end_unsafe ();
+  const void *const __list_end = __get_list_end ();
 
   
   // to optimize compile-link time, provide the usual lists

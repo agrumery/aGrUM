@@ -148,70 +148,70 @@ namespace gum {
 
   /// default constructor
   template <typename Val> INLINE
-  ListConstIteratorUnsafe<Val>::ListConstIteratorUnsafe () noexcept {
+  ListConstIterator<Val>::ListConstIterator () noexcept {
     // for debugging purposes
-    GUM_CONSTRUCTOR( ListConstIteratorUnsafe );
+    GUM_CONSTRUCTOR( ListConstIterator );
   }
 
 
   /// default constructor
   template <typename Val>
   template<typename Alloc> INLINE
-  ListConstIteratorUnsafe<Val>::ListConstIteratorUnsafe
+  ListConstIterator<Val>::ListConstIterator
   ( const List<Val,Alloc>& theList ) noexcept :
     __bucket { theList.__deb_list } {
     // for debugging purposes
-    GUM_CONSTRUCTOR( ListConstIteratorUnsafe );
+    GUM_CONSTRUCTOR( ListConstIterator );
   }
   
 
   /// copy constructor
   template <typename Val> INLINE
-  ListConstIteratorUnsafe<Val>::ListConstIteratorUnsafe
-  ( const ListConstIteratorUnsafe<Val>& src ) noexcept :
+  ListConstIterator<Val>::ListConstIterator
+  ( const ListConstIterator<Val>& src ) noexcept :
     __bucket { src.__bucket } {
     // for debugging purposes
-    GUM_CONS_CPY( ListConstIteratorUnsafe );
+    GUM_CONS_CPY( ListConstIterator );
   }
 
   
   /// copy constructor
   template <typename Val> INLINE
-  ListConstIteratorUnsafe<Val>::ListConstIteratorUnsafe
+  ListConstIterator<Val>::ListConstIterator
   ( const ListConstIteratorSafe<Val>& src ) noexcept :
     __bucket { src.__bucket } {
     // for debugging purposes
-    GUM_CONS_CPY( ListConstIteratorUnsafe );
+    GUM_CONS_CPY( ListConstIterator );
   }
 
   
   /// copy constructor
   template <typename Val> INLINE
-  ListConstIteratorUnsafe<Val>::ListConstIteratorUnsafe
+  ListConstIterator<Val>::ListConstIterator
   ( const ListIteratorSafe<Val>& src ) noexcept :
     __bucket { src.__bucket } {
     // for debugging purposes
-    GUM_CONS_CPY( ListConstIteratorUnsafe );
+    GUM_CONS_CPY( ListConstIterator );
   }
 
   
   /// move constructor
   template <typename Val> INLINE
-  ListConstIteratorUnsafe<Val>::ListConstIteratorUnsafe
-  ( ListConstIteratorUnsafe<Val>&& src ) noexcept :
+  ListConstIterator<Val>::ListConstIterator
+  ( ListConstIterator<Val>&& src ) noexcept :
     __bucket { std::move ( src.__bucket ) } {
     // for debugging purposes
-    GUM_CONS_MOV( ListConstIteratorUnsafe );
+    GUM_CONS_MOV( ListConstIterator );
   }
 
 
   /// Constructor for an iterator pointing to the \e ind_eltth element of a List.
   template <typename Val> INLINE
-  ListConstIteratorUnsafe<Val>::ListConstIteratorUnsafe
+  ListConstIterator<Val>::ListConstIterator
   ( const List<Val>& theList,
     unsigned int ind_elt ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( ListConstIteratorUnsafe );
+    GUM_CONSTRUCTOR( ListConstIterator );
 
     // check if the index ind_elt passed as parameter is valid
     if ( ind_elt >= theList.__nb_elements ) {
@@ -236,18 +236,18 @@ namespace gum {
   
   /// Destructor
   template <typename Val> INLINE
-  ListConstIteratorUnsafe<Val>::~ListConstIteratorUnsafe() noexcept {
+  ListConstIterator<Val>::~ListConstIterator() noexcept {
     // for debugging purposes
-    GUM_DESTRUCTOR( ListConstIteratorUnsafe );
+    GUM_DESTRUCTOR( ListConstIterator );
   }
 
 
   /// Copy operator
   template <typename Val> INLINE
-  ListConstIteratorUnsafe<Val>& ListConstIteratorUnsafe<Val>::operator=
-  ( const ListConstIteratorUnsafe<Val>& src ) noexcept {
+  ListConstIterator<Val>& ListConstIterator<Val>::operator=
+  ( const ListConstIterator<Val>& src ) noexcept {
     // for debugging purposes
-    GUM_OP_CPY( ListConstIteratorUnsafe );
+    GUM_OP_CPY( ListConstIterator );
 
     __bucket = src.__bucket;
     return *this;
@@ -256,10 +256,10 @@ namespace gum {
   
   /// Copy operator
   template <typename Val> INLINE
-  ListConstIteratorUnsafe<Val>& ListConstIteratorUnsafe<Val>::operator=
+  ListConstIterator<Val>& ListConstIterator<Val>::operator=
   ( const ListConstIteratorSafe<Val>& src ) noexcept {
     // for debugging purposes
-    GUM_OP_CPY( ListConstIteratorUnsafe );
+    GUM_OP_CPY( ListConstIterator );
 
     __bucket = src.__bucket;
     return *this;
@@ -268,11 +268,11 @@ namespace gum {
 
   /// move operator
   template <typename Val> INLINE
-  ListConstIteratorUnsafe<Val>&
-  ListConstIteratorUnsafe<Val>::operator=
-  ( ListConstIteratorUnsafe<Val>&& src ) noexcept {
+  ListConstIterator<Val>&
+  ListConstIterator<Val>::operator=
+  ( ListConstIterator<Val>&& src ) noexcept {
     // for debugging purposes
-    GUM_OP_MOV( ListConstIteratorUnsafe );
+    GUM_OP_MOV( ListConstIterator );
     __bucket = src.__bucket;
     return *this;
   }
@@ -280,36 +280,36 @@ namespace gum {
 
   /// returns the bucket the iterator is pointing to
   template <typename Val> INLINE
-  ListBucket<Val>* ListConstIteratorUnsafe<Val>::__getBucket() const noexcept {
+  ListBucket<Val>* ListConstIterator<Val>::__getBucket() const noexcept {
     return __bucket;
   }
 
 
   /// Makes the iterator point toward nothing
   template <typename Val> INLINE
-  void ListConstIteratorUnsafe<Val>::clear () noexcept {
+  void ListConstIterator<Val>::clear () noexcept {
     __bucket = nullptr;
   }
 
 
   /// positions the iterator to the end of the list
   template <typename Val> INLINE
-  void ListConstIteratorUnsafe<Val>::setToEnd() noexcept {
+  void ListConstIterator<Val>::setToEnd() noexcept {
     __bucket = nullptr;
   }
 
 
   /// returns a bool indicating whether the iterator points to the end of the list
   template <typename Val> INLINE
-  bool ListConstIteratorUnsafe<Val>::isEnd() const noexcept {
+  bool ListConstIterator<Val>::isEnd() const noexcept {
     return ( __bucket == nullptr );
   }
 
 
   /// makes the iterator point to the next element in the List
   template <typename Val> INLINE
-  ListConstIteratorUnsafe<Val>&
-  ListConstIteratorUnsafe<Val>::operator++() noexcept {
+  ListConstIterator<Val>&
+  ListConstIterator<Val>::operator++() noexcept {
     // if we are pointing to an element of the chained list, just
     // point on the next bucket in this list
     if ( __bucket != nullptr ) {
@@ -322,9 +322,9 @@ namespace gum {
   
   /// makes the iterator point to the next element in the List
   template <typename Val> INLINE
-  ListConstIteratorUnsafe<Val>&
-  ListConstIteratorUnsafe<Val>::operator+=
-  ( typename ListConstIteratorUnsafe<Val>::difference_type i ) noexcept {
+  ListConstIterator<Val>&
+  ListConstIterator<Val>::operator+=
+  ( typename ListConstIterator<Val>::difference_type i ) noexcept {
     if ( i >= 0 ) {
       for ( ; i && ( __bucket != nullptr ) ; --i, __bucket = __bucket->__next ) {}
     }
@@ -337,8 +337,8 @@ namespace gum {
 
   /// makes the iterator point to the preceding element in the List
   template <typename Val> INLINE
-  ListConstIteratorUnsafe<Val>&
-  ListConstIteratorUnsafe<Val>::operator--() noexcept {
+  ListConstIterator<Val>&
+  ListConstIterator<Val>::operator--() noexcept {
     // if we are pointing to an element of the chained list, just
     // point on the preceding bucket in this list
     if ( __bucket != nullptr ) {
@@ -351,9 +351,9 @@ namespace gum {
 
   /// makes the iterator point to i elements before in the list
   template <typename Val> INLINE
-  ListConstIteratorUnsafe<Val>&
-  ListConstIteratorUnsafe<Val>::operator-=
-  ( typename ListConstIteratorUnsafe<Val>::difference_type i ) noexcept {
+  ListConstIterator<Val>&
+  ListConstIterator<Val>::operator-=
+  ( typename ListConstIterator<Val>::difference_type i ) noexcept {
     if ( i >= 0 ) {
       for ( ; i && ( __bucket != nullptr ) ; --i, __bucket = __bucket->__prev ) {}
     }
@@ -366,41 +366,41 @@ namespace gum {
   
   /// returns a new iterator
   template <typename Val> INLINE
-  ListConstIteratorUnsafe<Val>
-  ListConstIteratorUnsafe<Val>::operator+
-  ( typename ListConstIteratorUnsafe<Val>::difference_type i ) noexcept {
-    return ListConstIteratorUnsafe<Val> ( *this ) += i;
+  ListConstIterator<Val>
+  ListConstIterator<Val>::operator+
+  ( typename ListConstIterator<Val>::difference_type i ) noexcept {
+    return ListConstIterator<Val> ( *this ) += i;
   }
 
   
   /// returns a new iterator
   template <typename Val> INLINE
-  ListConstIteratorUnsafe<Val>
-  ListConstIteratorUnsafe<Val>::operator-
-  ( typename ListConstIteratorUnsafe<Val>::difference_type i ) noexcept {
-    return ListConstIteratorUnsafe<Val> ( *this ) -= i;
+  ListConstIterator<Val>
+  ListConstIterator<Val>::operator-
+  ( typename ListConstIterator<Val>::difference_type i ) noexcept {
+    return ListConstIterator<Val> ( *this ) -= i;
   }
 
 
   /// checks whether two iterators point toward different elements
   template <typename Val> INLINE
-  bool ListConstIteratorUnsafe<Val>::operator!=
-  ( const ListConstIteratorUnsafe<Val> &src ) const noexcept {
+  bool ListConstIterator<Val>::operator!=
+  ( const ListConstIterator<Val> &src ) const noexcept {
     return ( __bucket != src.__bucket );
   }
 
 
   /// checks whether two iterators point toward the same elements.
   template <typename Val> INLINE
-  bool ListConstIteratorUnsafe<Val>::operator==
-  ( const ListConstIteratorUnsafe<Val> &src ) const noexcept {
+  bool ListConstIterator<Val>::operator==
+  ( const ListConstIterator<Val> &src ) const noexcept {
     return ( __bucket == src.__bucket );
   }
 
   
   /// dereferences the value pointed to by the iterator
   template <typename Val> INLINE
-  const Val* ListConstIteratorUnsafe<Val>::operator->() const  {
+  const Val* ListConstIterator<Val>::operator->() const  {
     if ( __bucket != nullptr )
       return &( __bucket->__val );
     else {
@@ -410,7 +410,7 @@ namespace gum {
 
   /// gives access to the content of the iterator
   template <typename Val> INLINE
-  const Val& ListConstIteratorUnsafe<Val>::operator*() const {
+  const Val& ListConstIterator<Val>::operator*() const {
     if ( __bucket != nullptr )
       return __bucket->__val;
     else {
@@ -421,11 +421,11 @@ namespace gum {
   
   /// for STL compliance, a distance operator
   template <typename Val> INLINE
-  typename ListConstIteratorUnsafe<Val>::difference_type
-  operator- ( const ListConstIteratorUnsafe<Val>& iter1,
-              const ListConstIteratorUnsafe<Val>& iter2 ) {
-    typename ListConstIteratorUnsafe<Val>::difference_type res = 0;
-    for ( ListConstIteratorUnsafe<Val> iter3 = iter2; iter1 != iter3;
+  typename ListConstIterator<Val>::difference_type
+  operator- ( const ListConstIterator<Val>& iter1,
+              const ListConstIterator<Val>& iter2 ) {
+    typename ListConstIterator<Val>::difference_type res = 0;
+    for ( ListConstIterator<Val> iter3 = iter2; iter1 != iter3;
           ++iter3, ++res ) {}
     return res;
   }
@@ -441,161 +441,161 @@ namespace gum {
 
   /// basic constructor
   template <typename Val> INLINE
-  ListIteratorUnsafe<Val>::ListIteratorUnsafe() noexcept :
-    ListConstIteratorUnsafe<Val> {} {
-    GUM_CONSTRUCTOR( ListIteratorUnsafe );
+  ListIterator<Val>::ListIterator() noexcept :
+    ListConstIterator<Val> {} {
+    GUM_CONSTRUCTOR( ListIterator );
   }
 
 
   /// constructor for a begin
   template <typename Val>
   template<typename Alloc> INLINE
-  ListIteratorUnsafe<Val>::ListIteratorUnsafe
+  ListIterator<Val>::ListIterator
   ( const List<Val,Alloc>& theList ) noexcept :
-    ListConstIteratorUnsafe<Val> { theList } {
-    GUM_CONSTRUCTOR( ListIteratorUnsafe );
+    ListConstIterator<Val> { theList } {
+    GUM_CONSTRUCTOR( ListIterator );
   }
 
 
   /// copy constructor
   template <typename Val> INLINE
-  ListIteratorUnsafe<Val>::ListIteratorUnsafe
-  ( const ListIteratorUnsafe<Val>& src ) noexcept :
-    ListConstIteratorUnsafe<Val> { src } {
-    GUM_CONS_CPY( ListIteratorUnsafe );
+  ListIterator<Val>::ListIterator
+  ( const ListIterator<Val>& src ) noexcept :
+    ListConstIterator<Val> { src } {
+    GUM_CONS_CPY( ListIterator );
   }
 
   
   /// copy constructor
   template <typename Val> INLINE
-  ListIteratorUnsafe<Val>::ListIteratorUnsafe
+  ListIterator<Val>::ListIterator
   ( const ListIteratorSafe<Val>& src ) noexcept :
-    ListConstIteratorUnsafe<Val> { src } {
-    GUM_CONS_CPY( ListIteratorUnsafe );
+    ListConstIterator<Val> { src } {
+    GUM_CONS_CPY( ListIterator );
   }
 
 
   /// move constructor
   template <typename Val> INLINE
-  ListIteratorUnsafe<Val>::ListIteratorUnsafe
-    ( ListIteratorUnsafe<Val>&& src ) noexcept :
-    ListConstIteratorUnsafe<Val> ( std::move ( src ) ) {
-      GUM_CONS_MOV ( ListIteratorUnsafe );
+  ListIterator<Val>::ListIterator
+    ( ListIterator<Val>&& src ) noexcept :
+    ListConstIterator<Val> ( std::move ( src ) ) {
+      GUM_CONS_MOV ( ListIterator );
   }
 
  
   /// Constructor for an iterator pointing to the \e ind_eltth element of a List.
   template <typename Val> INLINE
-  ListIteratorUnsafe<Val>::ListIteratorUnsafe
+  ListIterator<Val>::ListIterator
   ( const List<Val>& theList,
     unsigned int ind_elt ) :
-    ListConstIteratorUnsafe<Val> { theList, ind_elt } {
-    GUM_CONSTRUCTOR( ListIteratorUnsafe );
+    ListConstIterator<Val> { theList, ind_elt } {
+    GUM_CONSTRUCTOR( ListIterator );
   }
 
 
   /// Copy operator
   template <typename Val> INLINE
-  ListIteratorUnsafe<Val>& ListIteratorUnsafe<Val>::operator=
-  ( const ListIteratorUnsafe<Val>& src ) noexcept {
-    GUM_OP_CPY ( ListIteratorUnsafe );
-    ListConstIteratorUnsafe<Val>::operator= ( src );
+  ListIterator<Val>& ListIterator<Val>::operator=
+  ( const ListIterator<Val>& src ) noexcept {
+    GUM_OP_CPY ( ListIterator );
+    ListConstIterator<Val>::operator= ( src );
     return *this;
   }
 
 
   /// Copy operator
   template <typename Val> INLINE
-  ListIteratorUnsafe<Val>& ListIteratorUnsafe<Val>::operator=
+  ListIterator<Val>& ListIterator<Val>::operator=
   ( const ListIteratorSafe<Val>& src ) noexcept {
-    GUM_OP_CPY ( ListIteratorUnsafe );
-    ListConstIteratorUnsafe<Val>::operator= ( src );
+    GUM_OP_CPY ( ListIterator );
+    ListConstIterator<Val>::operator= ( src );
     return *this;
   }
 
   
   /// move operator
   template <typename Val> INLINE
-  ListIteratorUnsafe<Val>& ListIteratorUnsafe<Val>::operator=
-  ( ListIteratorUnsafe<Val>&& src ) noexcept {
-    GUM_OP_MOV ( ListIteratorUnsafe );
-    ListConstIteratorUnsafe<Val>::operator= ( std::move ( src ) );
+  ListIterator<Val>& ListIterator<Val>::operator=
+  ( ListIterator<Val>&& src ) noexcept {
+    GUM_OP_MOV ( ListIterator );
+    ListConstIterator<Val>::operator= ( std::move ( src ) );
     return *this;
   }
 
 
   /// Destructor
   template <typename Val> INLINE
-  ListIteratorUnsafe<Val>::~ListIteratorUnsafe() noexcept {
-    GUM_DESTRUCTOR( ListIteratorUnsafe );
+  ListIterator<Val>::~ListIterator() noexcept {
+    GUM_DESTRUCTOR( ListIterator );
   }
 
 
   /// makes the iterator point to the next element in the List
   template <typename Val> INLINE
-  ListIteratorUnsafe<Val>& ListIteratorUnsafe<Val>::operator++() noexcept {
-    ListConstIteratorUnsafe<Val>::operator++();
+  ListIterator<Val>& ListIterator<Val>::operator++() noexcept {
+    ListConstIterator<Val>::operator++();
     return *this;
   }
 
   
   /// makes the iterator point to i elements further in the List
   template <typename Val> INLINE
-  ListIteratorUnsafe<Val>&
-  ListIteratorUnsafe<Val>::operator+=
-  ( typename ListIteratorUnsafe<Val>::difference_type i ) noexcept {
-    ListConstIteratorUnsafe<Val>::operator+= ( i );
+  ListIterator<Val>&
+  ListIterator<Val>::operator+=
+  ( typename ListIterator<Val>::difference_type i ) noexcept {
+    ListConstIterator<Val>::operator+= ( i );
     return *this;
   }
  
 
   /// makes the iterator point to the preceding element in the List
   template <typename Val> INLINE
-  ListIteratorUnsafe<Val>& ListIteratorUnsafe<Val>::operator--() noexcept {
-    ListConstIteratorUnsafe<Val>::operator--();
+  ListIterator<Val>& ListIterator<Val>::operator--() noexcept {
+    ListConstIterator<Val>::operator--();
     return *this;
   }
 
 
   /// makes the iterator point to i elements before in the List
   template <typename Val> INLINE
-  ListIteratorUnsafe<Val>&
-  ListIteratorUnsafe<Val>::operator-=
-  ( typename ListIteratorUnsafe<Val>::difference_type i ) noexcept {
-    ListConstIteratorUnsafe<Val>::operator-= ( i );
+  ListIterator<Val>&
+  ListIterator<Val>::operator-=
+  ( typename ListIterator<Val>::difference_type i ) noexcept {
+    ListConstIterator<Val>::operator-= ( i );
     return *this;
   }
   
 
   /// returns a new iterator
   template <typename Val> INLINE
-  ListIteratorUnsafe<Val>
-  ListIteratorUnsafe<Val>::operator+
-  ( typename ListIteratorUnsafe<Val>::difference_type i ) noexcept {
-    return ListIteratorUnsafe<Val> ( *this ) += i;
+  ListIterator<Val>
+  ListIterator<Val>::operator+
+  ( typename ListIterator<Val>::difference_type i ) noexcept {
+    return ListIterator<Val> ( *this ) += i;
   }
 
   
   /// returns a new iterator
   template <typename Val> INLINE
-  ListIteratorUnsafe<Val>
-  ListIteratorUnsafe<Val>::operator-
-  ( typename ListIteratorUnsafe<Val>::difference_type i ) noexcept {
-    return ListIteratorUnsafe<Val> ( *this ) -= i;
+  ListIterator<Val>
+  ListIterator<Val>::operator-
+  ( typename ListIterator<Val>::difference_type i ) noexcept {
+    return ListIterator<Val> ( *this ) -= i;
   }
 
 
   /// dereferences the value pointed to by the iterator
   template <typename Val> INLINE
-  Val* ListIteratorUnsafe<Val>::operator->() {
-    return const_cast<Val*>( ListConstIteratorUnsafe<Val>::operator->() );
+  Val* ListIterator<Val>::operator->() {
+    return const_cast<Val*>( ListConstIterator<Val>::operator->() );
   }
 
 
   /// gives access to the content of the iterator
   template <typename Val> INLINE
-  Val& ListIteratorUnsafe<Val>::operator*() {
-    return const_cast<Val&>( ListConstIteratorUnsafe<Val>::operator*() );
+  Val& ListIterator<Val>::operator*() {
+    return const_cast<Val&>( ListConstIterator<Val>::operator*() );
   }
 
 
@@ -1107,7 +1107,7 @@ namespace gum {
   operator- ( const ListConstIteratorSafe<Val>& iter1,
               const ListConstIteratorSafe<Val>& iter2 ) {
     typename ListConstIteratorSafe<Val>::difference_type res = 0;
-    ListConstIteratorUnsafe<Val> iter3 {iter2}, iter4 {iter1};
+    ListConstIterator<Val> iter3 {iter2}, iter4 {iter1};
     for ( ; iter4 != iter3; ++iter3, ++res ) {}
     return res;
   }
@@ -1474,17 +1474,17 @@ namespace gum {
 
   /// the iterator pointing to the end of the List
   template <typename Val, typename Alloc> INLINE
-  const ListConstIteratorUnsafe<Val>& List<Val,Alloc>::cendUnsafe() const  {
-    return *( reinterpret_cast<const ListConstIteratorUnsafe<Val>* >
-              ( __list_end_unsafe ) );
+  const ListConstIterator<Val>& List<Val,Alloc>::cend() const  {
+    return *( reinterpret_cast<const ListConstIterator<Val>* >
+              ( __list_end ) );
   }
 
 
   /// the iterator pointing to the end of the List
   template <typename Val, typename Alloc> INLINE
-  const ListIteratorUnsafe<Val>& List<Val,Alloc>::endUnsafe() {
-    return *( reinterpret_cast<const ListIteratorUnsafe<Val>* >
-              ( __list_end_unsafe ) );
+  const ListIterator<Val>& List<Val,Alloc>::end() {
+    return *( reinterpret_cast<const ListIterator<Val>* >
+              ( __list_end ) );
   }
 
 
@@ -1504,17 +1504,17 @@ namespace gum {
   
   /// the iterator pointing to the rend (just before the beginning) of the List
   template <typename Val, typename Alloc> INLINE
-  const ListConstIteratorUnsafe<Val>& List<Val,Alloc>::crendUnsafe() const  {
-    return *( reinterpret_cast<const ListConstIteratorUnsafe<Val>* >
-              ( __list_end_unsafe ) );
+  const ListConstIterator<Val>& List<Val,Alloc>::crend() const  {
+    return *( reinterpret_cast<const ListConstIterator<Val>* >
+              ( __list_end ) );
   }
 
 
   /// the iterator pointing to the rend (just before the beginning) of the List
   template <typename Val, typename Alloc> INLINE
-  const ListIteratorUnsafe<Val>& List<Val,Alloc>::rendUnsafe() {
-    return *( reinterpret_cast<const ListIteratorUnsafe<Val>* >
-              ( __list_end_unsafe ) );
+  const ListIterator<Val>& List<Val,Alloc>::rend() {
+    return *( reinterpret_cast<const ListIterator<Val>* >
+              ( __list_end ) );
   }
 
 
@@ -1534,15 +1534,15 @@ namespace gum {
 
   /// the iterator pointing to the beginning of the List
   template <typename Val, typename Alloc> INLINE
-  ListConstIteratorUnsafe<Val> List<Val,Alloc>::cbeginUnsafe() const {
-    return ListConstIteratorUnsafe<Val> { *this };
+  ListConstIterator<Val> List<Val,Alloc>::cbegin() const {
+    return ListConstIterator<Val> { *this };
   }
 
 
   /// the iterator pointing to the beginning of the List
   template <typename Val, typename Alloc> INLINE
-  ListIteratorUnsafe<Val> List<Val,Alloc>::beginUnsafe() {
-    return ListIteratorUnsafe<Val> { *this };
+  ListIterator<Val> List<Val,Alloc>::begin() {
+    return ListIterator<Val> { *this };
   }
 
   
@@ -1568,21 +1568,21 @@ namespace gum {
 
   /// the iterator pointing to the rbegin (the last element) of the List
   template <typename Val, typename Alloc> INLINE
-  ListConstIteratorUnsafe<Val> List<Val,Alloc>::crbeginUnsafe() const {
+  ListConstIterator<Val> List<Val,Alloc>::crbegin() const {
     if ( __nb_elements )
-      return ListConstIteratorUnsafe<Val> { *this, __nb_elements - 1 };
+      return ListConstIterator<Val> { *this, __nb_elements - 1 };
     else
-      return ListConstIteratorUnsafe<Val> {};
+      return ListConstIterator<Val> {};
   }
 
 
   /// the iterator pointing to the rbegin (the last element) of the List
   template <typename Val, typename Alloc> INLINE
-  ListIteratorUnsafe<Val> List<Val,Alloc>::rbeginUnsafe() {
+  ListIterator<Val> List<Val,Alloc>::rbegin() {
     if ( __nb_elements )
-      return ListIteratorUnsafe<Val> { *this, __nb_elements-1 };
+      return ListIterator<Val> { *this, __nb_elements-1 };
     else
-      return ListIteratorUnsafe<Val> {};
+      return ListIterator<Val> {};
   }
 
 
@@ -1865,7 +1865,7 @@ namespace gum {
 
   /// inserts a new bucket before or after the location pointed to by an iterator
   template <typename Val, typename Alloc> INLINE
-  Val& List<Val,Alloc>::__insert ( const const_iterator_unsafe& iter,
+  Val& List<Val,Alloc>::__insert ( const const_iterator& iter,
                                    ListBucket<Val>* new_elt,
                                    location place ) {
     // find the location around which the new element should be inserted
@@ -1923,7 +1923,7 @@ namespace gum {
   
   /// inserts a new element before or after the location pointed to by an iterator
   template <typename Val, typename Alloc> INLINE
-  Val& List<Val,Alloc>::insert ( const const_iterator_unsafe& iter,
+  Val& List<Val,Alloc>::insert ( const const_iterator& iter,
                                  const Val& val,
                                  location place ) {
     return __insert ( iter, __createBucket ( val ), place );
@@ -1932,7 +1932,7 @@ namespace gum {
   
   /// inserts a new element before or after the location pointed to by an iterator
   template <typename Val, typename Alloc> INLINE
-  Val& List<Val,Alloc>::insert ( const const_iterator_unsafe& iter,
+  Val& List<Val,Alloc>::insert ( const const_iterator& iter,
                                  Val&& val,
                                  location place ) {
     return __insert ( iter, __createBucket ( std::move ( val ) ), place );
@@ -1942,7 +1942,7 @@ namespace gum {
   /// emplace a new element before a given iterator
   template <typename Val, typename Alloc> 
   template <typename... Args> INLINE
-  Val& List<Val,Alloc>::emplace ( const const_iterator_unsafe& iter,
+  Val& List<Val,Alloc>::emplace ( const const_iterator& iter,
                                   Args&&... args ) {
     return __insert ( iter, __createEmplaceBucket ( std::forward<Args>(args)... ),
                       location::BEFORE );
@@ -2054,14 +2054,14 @@ namespace gum {
   
   /// erases the element of the List pointed to by the iterator
   template <typename Val, typename Alloc> INLINE
-  void List<Val,Alloc>::erase( const iterator_unsafe& iter ) {
+  void List<Val,Alloc>::erase( const iterator& iter ) {
     __erase( iter.__getBucket() );
   }
 
 
   /// erases the element of the List pointed to by the iterator
   template <typename Val, typename Alloc> INLINE
-  void List<Val,Alloc>::erase( const const_iterator_unsafe& iter ) {
+  void List<Val,Alloc>::erase( const const_iterator& iter ) {
     __erase( iter.__getBucket() );
   }
 
@@ -2145,7 +2145,7 @@ namespace gum {
     List<Mount> list;
 
     // fill the new list
-    for ( const_iterator_unsafe iter = beginUnsafe (); iter != endUnsafe (); ++iter ) {
+    for ( const_iterator iter = begin (); iter != end (); ++iter ) {
       list.pushBack( f( *iter ) );
     }
 
@@ -2161,7 +2161,7 @@ namespace gum {
     List<Mount> list;
 
     // fill the new list
-    for ( const_iterator_unsafe iter = beginUnsafe(); iter != endUnsafe(); ++iter ) {
+    for ( const_iterator iter = begin(); iter != end(); ++iter ) {
       list.pushBack( f( *iter ) );
     }
 
@@ -2177,7 +2177,7 @@ namespace gum {
     List<Mount> list;
 
     // fill the new list
-    for ( const_iterator_unsafe iter = beginUnsafe(); iter != endUnsafe(); ++iter ) {
+    for ( const_iterator iter = begin(); iter != end(); ++iter ) {
       list.pushBack( f( *iter ) );
     }
 

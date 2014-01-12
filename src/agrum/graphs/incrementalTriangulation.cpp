@@ -703,7 +703,7 @@ namespace gum {
         const List<NodeId>& liste = iter.val ();
         HashTable<NodeId, bool>& hash = chk[iter.key()];
 
-        for ( ListConstIteratorUnsafe<NodeId> iter2 = liste.cbeginUnsafe(); iter2 != liste.cendUnsafe(); ++iter2 ) {
+        for ( ListConstIterator<NodeId> iter2 = liste.cbegin(); iter2 != liste.cend(); ++iter2 ) {
           if ( !hash.exists ( *iter2 ) ) {
             std::cerr << "check mps of nodes" << std::endl
                       << __T_mpd << std::endl << __mps_of_node << std::endl;

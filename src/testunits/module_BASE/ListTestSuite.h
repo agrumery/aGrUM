@@ -169,12 +169,12 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( list4, list1 );
 
       list1.pushBack ( 6 );
-      gum::List<int>::iterator_unsafe iter3 = list2.rbeginUnsafe ();
+      gum::List<int>::iterator iter3 = list2.rbegin ();
       list2.insert ( iter3, 6, gum::List<int>::location::AFTER );
       TS_ASSERT_EQUALS( list2, list1 );
 
       gum::List<int> list5 { 1, 2, 3, 4, 6 };     
-      gum::List<int>::iterator_unsafe iter4 = list5.rbeginUnsafe ();
+      gum::List<int>::iterator iter4 = list5.rbegin ();
       list5.insert ( iter4, 5 );
       TS_ASSERT_EQUALS( list5, list1 );
 
@@ -183,7 +183,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( list5, list1 );
       list1.pushBack ( 8 );
       gum::List<int> list6 { 1, 2, 3, 4, 5, 6, 8 };     
-      iter4 = list6.rbeginUnsafe ();
+      iter4 = list6.rbegin ();
       list6.emplace ( iter4, 7 );
       TS_ASSERT_EQUALS( list6, list1 );
    }
@@ -292,27 +292,27 @@ namespace gum_tests {
       for( int i = 0; i < 6; i++ )
         list.insert( i );
 
-      gum::List<int>::iterator_unsafe iter = list.beginUnsafe ();
+      gum::List<int>::iterator iter = list.begin ();
       list.erase( iter );
       TS_ASSERT_EQUALS( list.size(), ( gum::Size ) 5 );
 
-      iter = list.rbeginUnsafe ();
+      iter = list.rbegin ();
       list.erase( iter );
       TS_ASSERT_EQUALS( list.size(), ( gum::Size ) 4 );
 
-      gum::List<int>::const_iterator_unsafe iter2 = list.cbeginUnsafe ();
+      gum::List<int>::const_iterator iter2 = list.cbegin ();
       list.erase( iter2 );
       TS_ASSERT_EQUALS( list.size(), ( gum::Size ) 3 );
 
-      iter2 = list.crbeginUnsafe ();
+      iter2 = list.crbegin ();
       list.erase( iter2 );
       TS_ASSERT_EQUALS( list.size(), ( gum::Size ) 2 );
 
-      iter2 = list.beginUnsafe ();
+      iter2 = list.begin ();
       list.erase( iter2 );
       TS_ASSERT_EQUALS( list.size(), ( gum::Size ) 1 );
 
-      iter2 = list.crbeginUnsafe ();
+      iter2 = list.crbegin ();
       list.erase( iter2 );
       TS_ASSERT_EQUALS( list.size(), ( gum::Size ) 0 );
     }
@@ -320,27 +320,27 @@ namespace gum_tests {
 
     void testIteratorStep () {
       gum::List<int> list { 1, 2, 3, 4, 5, 6 };
-      gum::List<int>::iterator_unsafe iter = list.beginUnsafe ();
+      gum::List<int>::iterator iter = list.begin ();
       list.erase( iter );
       TS_ASSERT_EQUALS( list.size(), ( gum::Size ) 5 );
 
-      iter = list.rbeginUnsafe ();
+      iter = list.rbegin ();
       list.erase( iter );
       TS_ASSERT_EQUALS( list.size(), ( gum::Size ) 4 );
 
-      gum::List<int>::const_iterator_unsafe iter2 = list.cbeginUnsafe ();
+      gum::List<int>::const_iterator iter2 = list.cbegin ();
       list.erase( iter2 );
       TS_ASSERT_EQUALS( list.size(), ( gum::Size ) 3 );
 
-      iter2 = list.crbeginUnsafe ();
+      iter2 = list.crbegin ();
       list.erase( iter2 );
       TS_ASSERT_EQUALS( list.size(), ( gum::Size ) 2 );
 
-      iter2 = list.beginUnsafe ();
+      iter2 = list.begin ();
       list.erase( iter2 );
       TS_ASSERT_EQUALS( list.size(), ( gum::Size ) 1 );
 
-      iter2 = list.crbeginUnsafe ();
+      iter2 = list.crbegin ();
       list.erase( iter2 );
       TS_ASSERT_EQUALS( list.size(), ( gum::Size ) 0 );
     }
@@ -358,7 +358,7 @@ namespace gum_tests {
       iter -= 10;
       TS_ASSERT_EQUALS ( iter, xlist.endSafe () );
 
-      gum::List<int>::iterator_unsafe iter2 = xlist.beginUnsafe ();
+      gum::List<int>::iterator iter2 = xlist.begin ();
       iter2 += 4;
       TS_ASSERT_EQUALS( *iter2, 5 );
       iter2 += 1;
@@ -366,14 +366,14 @@ namespace gum_tests {
       iter2 -= 1;
       TS_ASSERT_EQUALS( *iter2, 5 );
       iter2 -= 10;
-      TS_ASSERT_EQUALS ( iter2, xlist.endUnsafe () );
+      TS_ASSERT_EQUALS ( iter2, xlist.end () );
 
       {
-        gum::List<int>::const_iterator_unsafe iter3 = xlist.cbeginUnsafe () + 4;
+        gum::List<int>::const_iterator iter3 = xlist.cbegin () + 4;
         TS_ASSERT_EQUALS( *iter3, 5 );
-        gum::List<int>::const_iterator_unsafe iter4 = xlist.beginUnsafe () + 4;
+        gum::List<int>::const_iterator iter4 = xlist.begin () + 4;
         TS_ASSERT_EQUALS( *iter4, 5 );
-        gum::List<int>::iterator_unsafe iter5 = xlist.beginUnsafe () + 4;
+        gum::List<int>::iterator iter5 = xlist.begin () + 4;
         TS_ASSERT_EQUALS( *iter5, 5 );
         
         gum::List<int>::const_iterator_safe iter13 = xlist.cbeginSafe () + 4;
@@ -385,11 +385,11 @@ namespace gum_tests {
       }
 
       {
-        gum::List<int>::const_iterator_unsafe iter3 = xlist.crbeginUnsafe () - 3;
+        gum::List<int>::const_iterator iter3 = xlist.crbegin () - 3;
         TS_ASSERT_EQUALS( *iter3, 5 );
-        gum::List<int>::const_iterator_unsafe iter4 = xlist.rbeginUnsafe () - 3;
+        gum::List<int>::const_iterator iter4 = xlist.rbegin () - 3;
         TS_ASSERT_EQUALS( *iter4, 5 );
-        gum::List<int>::iterator_unsafe iter5 = xlist.rbeginUnsafe () - 3;
+        gum::List<int>::iterator iter5 = xlist.rbegin () - 3;
         TS_ASSERT_EQUALS( *iter5, 5 );
         
         gum::List<int>::const_iterator_safe iter13 = xlist.crbeginSafe () - 3;
@@ -435,13 +435,13 @@ namespace gum_tests {
       TS_ASSERT_EQUALS ( list2, xlist );
 
       gum::List<int> list3 { 2, 1, 8, 5, 3, 6, 4, 7 };
-      gum::List<int>::const_iterator_unsafe iter1 = list3.cbeginUnsafe ();
-      gum::List<int>::const_iterator_unsafe iter2 = list3.cbeginUnsafe () + 4;
+      gum::List<int>::const_iterator iter1 = list3.cbegin ();
+      gum::List<int>::const_iterator iter2 = list3.cbegin () + 4;
       int d1 = iter2 - iter1;
       TS_ASSERT_EQUALS ( d1, 4 );
 
-      gum::List<int>::iterator_unsafe iter3 = list3.beginUnsafe ();
-      gum::List<int>::iterator_unsafe iter4 = list3.beginUnsafe () + 4;
+      gum::List<int>::iterator iter3 = list3.begin ();
+      gum::List<int>::iterator iter4 = list3.begin () + 4;
       int d2 = iter4 - iter3;
       TS_ASSERT_EQUALS ( d2, 4 );
 
@@ -468,17 +468,17 @@ namespace gum_tests {
       gum::ListIteratorSafe<int> iter = xlist.beginSafe ();
       gum::ListIteratorSafe<int> iter1 ( xlist );
       gum::ListConstIteratorSafe<int> iter2 ( xlist );
-      gum::ListIteratorUnsafe<int> iter3 ( xlist );
-      gum::ListConstIteratorUnsafe<int> iter4 ( xlist );
+      gum::ListIterator<int> iter3 ( xlist );
+      gum::ListConstIterator<int> iter4 ( xlist );
 
       unsigned int i;
       for ( i = 0; iter1 != xlist.endSafe (); ++iter1, ++i ) {}
       TS_ASSERT ( i == xlist.size () );
       for ( i = 0; iter2 != xlist.cendSafe (); ++iter2, ++i ) {}
       TS_ASSERT ( i == xlist.size () );
-      for ( i = 0; iter3 != xlist.endUnsafe (); ++iter3, ++i ) {}
+      for ( i = 0; iter3 != xlist.end (); ++iter3, ++i ) {}
       TS_ASSERT ( i == xlist.size () );
-      for ( i = 0; iter4 != xlist.cendUnsafe (); ++iter4, ++i ) {}
+      for ( i = 0; iter4 != xlist.cend (); ++iter4, ++i ) {}
       TS_ASSERT ( i == xlist.size () );
     }
 
