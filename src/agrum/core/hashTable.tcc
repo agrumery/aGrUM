@@ -2053,9 +2053,12 @@ namespace gum {
   HashTable<Key,Val,Alloc>::__insert ( HashTableBucket<Key,Val>* bucket ) {
     Size hash_key = __hash_func( bucket->key () );
 
+    // check that there does not already exist an element with the same key
     if ( __key_uniqueness_policy &&
          __nodes[hash_key].exists ( bucket->key () ) ) {
-      // check that there does not already exist an element with the same key
+      // remove the bucket from memory
+      __alloc.destroy ( bucket );
+      __alloc.deallocate ( bucket, 1 );
       GUM_ERROR( DuplicateElement,
                  "the hashtable contains an element with the same key" );
     }
@@ -2143,7 +2146,15 @@ namespace gum {
   template <typename... Args> INLINE
   typename HashTable<Key,Val,Alloc>::value_type&
   HashTable<Key,Val,Alloc>::emplace ( Args&&... args ) {
-    return insert( std::make_pair ( std::forward<Args> ( args )... ) );
+    Bucket* bucket = __alloc.allocate ( 1 );
+    try {
+      __alloc.construct
+        ( bucket, HashTableBucket<Key,Val>::Emplace::EMPLACE,
+          std::forward<Args>(args)... );
+    }
+    catch ( ... ) { __alloc.deallocate ( bucket, 1 ); throw; }
+    __insert ( bucket );
+    return bucket->elt ();
   }
 
 

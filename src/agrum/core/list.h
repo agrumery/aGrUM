@@ -450,14 +450,14 @@ namespace gum {
      * when the element they point to are erased. As such, in this case, they
      * can throw an exception when we try to derefence them and they are
      * able to perform a valid ++ or -- step */
-    const const_iterator_safe& cendSafe () const;
+    const const_iterator_safe& cendSafe () const noexcept;
 
     /// returns a safe iterator pointing to the end of the List
     /** Safe iterators are iterators whose state is updated by the list
      * when the element they point to are erased. As such, in this case, they
      * can throw an exception when we try to derefence them and they are
      * able to perform a valid ++ or -- step */
-    const iterator_safe& endSafe ();
+    const iterator_safe& endSafe () noexcept;
 
     /// returns an unsafe const iterator pointing to the end of the List
     /** Unsafe const iterators are a little bit faster than safe const iterators
@@ -466,7 +466,7 @@ namespace gum {
      * probably a segfault. You should use them only when performance is an
      * issue and if you are sure that they will never point to an
      * element erased. */
-    const const_iterator& cend () const;
+    const const_iterator& cend () const noexcept;
 
     /// returns an unsafe iterator pointing to the end of the List
     /** Unsafe iterators are a little bit faster than safe iterators and
@@ -475,21 +475,21 @@ namespace gum {
      * probably a segfault. You should use them only when performance is an
      * issue and if you are sure that they will never point to an
      * element erased. */
-    const iterator& end ();
+    const iterator& end () noexcept;
     
     /// returns a const iterator pointing just before the beginning of the List
     /** Safe const iterators are const iterators whose state is updated by the list
      * when the element they point to are erased. As such, in this case, they
      * can throw an exception when we try to derefence them and they are
      * able to perform a valid ++ or -- step */
-    const const_iterator_safe& crendSafe () const;
+    const const_iterator_safe& crendSafe () const noexcept;
 
     /// returns a safe iterator pointing just before the beginning of the List
     /** Safe iterators are iterators whose state is updated by the list
      * when the element they point to are erased. As such, in this case, they
      * can throw an exception when we try to derefence them and they are
      * able to perform a valid ++ or -- step */
-    const iterator_safe& rendSafe();
+    const iterator_safe& rendSafe() noexcept;
 
     /** @brief returns an unsafe const iterator pointing just before the
      * beginning of the List
@@ -500,7 +500,7 @@ namespace gum {
      * probably a segfault. You should use them only when performance is an
      * issue and if you are sure that they will never point to an
      * element erased. */
-    const const_iterator& crend () const;
+    const const_iterator& crend () const noexcept;
 
     /// returns an unsafe iterator pointing just before the beginning of the List
     /** Unsafe iterators are a little bit faster than safe iterators and
@@ -509,7 +509,7 @@ namespace gum {
      * probably a segfault. You should use them only when performance is an
      * issue and if you are sure that they will never point to an
      * element erased. */
-    const iterator& rend ();
+    const iterator& rend () noexcept;
     
     /// returns a safe const iterator pointing to the beginning of the List
     /** Safe const iterators are const iterators whose state is updated by the list

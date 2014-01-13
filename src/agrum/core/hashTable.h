@@ -39,9 +39,9 @@
  * safety is ensured at a very low cost (actually, our experiments show that our
  * HashTables and HashTable's safe iterators significantly outperform the standard
  * library unordered_maps). Of course, if there is no possibility for an iterator
- * to point to a delete element, the user can use "unsafe" iterators
+ * to point to a deleted element, the user can use the "unsafe" iterators
  * HashTableIterator and HashTableConstIterator (a.k.a. HashTable<>::iterator and
- * HashTable<>::const_iterator). Those iterators are slightly faster than their
+ * HashTable<>::const_iterator). These iterators are slightly faster than their
  * safe counterparts. However, as in the standard library, accessing through them
  * a deleted element usually results in a mess (most probably a segfault).
  *
@@ -58,8 +58,9 @@
  * // insert two elements into the hash table
  * table1.insert (10,"xxx");
  * table1.insert (20,"yyy");
+ * table1.emplace (30,"zzz");
  *
- * // creation of a nonempty hashtable (using initializer lists
+ * // creation of a nonempty hashtable using initializer lists
  * HashTable<int,bool> table { std::make_pair (3,true), std::make_pair(2,false) };
  *
  * // display the content of the hash table
@@ -75,7 +76,7 @@
  * // get the element whose key is 10
  * cerr << table1[10] << " = xxx" << endl;
  *
- * // checks whether there exists an element with key 20
+ * // check whether there exists an element with key 20
  * if (table1.exists (20)) cerr << "element found" << endl;
  *
  * // transform the hashtable of string into a hashtable of int assuming f is
@@ -90,7 +91,7 @@
  * // check whether the hash table is empty
  * if (!table1.empty ()) cerr << "table not empty" << endl;
  *
- * // checks wether hashtables contain the same elements
+ * // check wether hashtables contain the same elements
  * if ((table1 == table2) && (table1 != table3))
  *   cerr << "check for equality/inequality" << endl;
  *
@@ -242,12 +243,16 @@ namespace gum {
   /* in aGrUM, hashtables are vectors of chained lists. Each list corresponds to
    * the pairs (key,val) the keys of which have the same hashed value. Each box of
    * the list is called a bucket. Lists are doubly linked so as to enable efficient
-   * begin/end iterators. */
+   * begin/end iterators and efficient insert/erase operations. */
   /* =========================================================================== */
   template <typename Key, typename Val> struct HashTableBucket {
     std::pair<const Key,Val> pair;
     HashTableBucket<Key,Val>* prev { nullptr };
     HashTableBucket<Key,Val>* next { nullptr };
+
+    // a dummy type for the emplace constructor
+    /* this type is used to prevent the Bucket emplace (int,...) to compile */
+    enum class Emplace { EMPLACE };
 
     HashTableBucket() {}
     HashTableBucket( const HashTableBucket<Key,Val>& from ) :
@@ -260,6 +265,9 @@ namespace gum {
       pair ( p ) {}
     HashTableBucket( std::pair<const Key,Val>&& p ) :
       pair ( std::move ( p ) ) {}
+    template <typename... Args>
+    HashTableBucket ( Emplace, Args&&... args) : // emplace (universal) constructor
+      pair ( std::forward<Args>(args)... ) {}
     ~HashTableBucket() {}
  
     std::pair<const Key,Val>& elt () { return pair; }
@@ -329,7 +337,7 @@ namespace gum {
     /// @{
 
     /// assignment operator.
-    /** The new list and that which is copied do not share the
+    /** The new list and that which is copied do not share their
      * elements: the new list contains new instances of the keys and of values
      * stored in the list to be copied. Of course if these values are pointers,
      * the new values point toward the same elements. If some allocation problem
@@ -341,14 +349,14 @@ namespace gum {
     HashTableList<Key,Val,Alloc>&
     operator= ( const HashTableList<Key,Val,Alloc>& from );
 
-    /** assignment operator. The new list and that which is copied do not share the
-     * elements: the new list contains new instances of the keys and of values
-     * stored in the list to be copied. Of course if these values are pointers,
-     * the new values point toward the same elements. If some allocation problem
-     * occurs or if the copy of the Val elements cannot be performed properly,
-     * exceptions may be raised. In this case, the function guarantees that no
-     * memory leak occurs and that the list is kept in a coherent state (that of
-     * an empty list)
+    /** assignment operator. The new list and that which is copied do not share
+     * their elements: the new list contains new instances of the keys and of
+     * values stored in the list to be copied. Of course if these values are
+     * pointers, the new values point toward the same elements. If some allocation
+     * problem occurs or if the copy of the Val elements cannot be performed
+     * properly, exceptions may be raised. In this case, the function guarantees
+     * that no memory leak occurs and that the list is kept in a coherent state
+     * (that of an empty list)
      * @warning operator= does not change the current allocator of *this */
     template <typename OtherAlloc>
     HashTableList<Key,Val,Alloc>&
@@ -396,7 +404,7 @@ namespace gum {
      * at the beginning of the list. */
     void insert( Bucket* new_elt ) noexcept;
 
-    /* function erase suppresses an element from a chained list. */
+    /// function erase removes an element from a chained list.
     void erase( Bucket* ptr );
 
     /// function for deleting all the elements of a chained list
@@ -467,15 +475,15 @@ namespace gum {
    * @brief The class for generic Hash Tables
    * @ingroup basicstruct_group
    *
-   * In aGrUM, a hashtable is a vector of chained lists (fix collision problems by
-   * chaining). Each slot of the vector contains a list of elements sharing the
-   * same hashed value. To be computationally efficient, the hash table should not
-   * contain too many elements as compared to its number of slots. Therefore, it
-   * is sometimes useful to resize the chained lists vector. aGrUM's hash tables
-   * are designed to automatically double their size when there is in average more
-   * than 3 nodes per slot. However, when memory consumption is a concern, this
-   * feature can be turned off either by passing false as an optional resize_pol
-   * argument to the constructor of the hash table or by using method
+   * In aGrUM, a hashtable is a vector of chained lists (collision problems are
+   * fixed by chaining). Each slot of the vector contains a list of elements
+   * sharing the same hashed value. To be computationally efficient, the hash table
+   * should not contain too many elements as compared to its number of slots.
+   * Therefore, it is sometimes useful to resize the chained lists vector. aGrUM's
+   * hash tables are designed to automatically double their size when there is in
+   * average more than 3 elements per slot. However, when memory consumption is a
+   * concern, this feature can be turned off either by passing false as an optional
+   * resize_pol argument to the constructor of the hash table or by using method
    * setResizePolicy when the instance of the class has already been constructed.
    * Similarly, the default number of slots of the hash table may be parameterized
    * as an optional argument of the constructor (size_param). Beware: when
@@ -492,9 +500,9 @@ namespace gum {
    * very low cost (actually, our experiments show that our HashTables and
    * HashTable's safe iterators significantly outperform the standard library
    * unordered_maps). Of course, if there is no possibility for an iterator to
-   * point to a delete element, the user can use "unsafe" iterators
+   * point to a deleted element, the user can use "unsafe" iterators
    * HashTableIterator and HashTableConstIterator (a.k.a. HashTable<>::iterator and
-   * HashTable<>::const_iterator). Those iterators are slightly faster than their
+   * HashTable<>::const_iterator). These iterators are slightly faster than their
    * safe counterparts. However, as in the standard library, accessing through them
    * a deleted element usually results in a mess (most probably a segfault).
    *
@@ -511,8 +519,9 @@ namespace gum {
    * // insert two elements into the hash table
    * table1.insert (10,"xxx");
    * table1.insert (20,"yyy");
+   * table1.emplace (30,"zzz");
    *
-   * // creation of a nonempty hashtable (using initializer lists
+   * // creation of a nonempty hashtable using initializer lists
    * HashTable<int,bool> table { std::make_pair(3,true), std::make_pair(2,false) };
    *
    * // display the content of the hash table
@@ -528,7 +537,7 @@ namespace gum {
    * // get the element whose key is 10
    * cerr << table1[10] << " = xxx" << endl;
    *
-   * // checks whether there exists an element with key 20
+   * // check whether there exists an element with key 20
    * if (table1.exists (20)) cerr << "element found" << endl;
    *
    * // transform the hashtable of string into a hashtable of int assuming f is
@@ -543,7 +552,7 @@ namespace gum {
    * // check whether the hash table is empty
    * if (!table1.empty ()) cerr << "table not empty" << endl;
    *
-   * // checks wether hashtables contain the same elements
+   * // check wether hashtables contain the same elements
    * if ((table1 == table2) && (table1 != table3))
    *   cerr << "check for equality/inequality" << endl;
    *
@@ -601,9 +610,8 @@ namespace gum {
 
     /// @{
 
-    /** @brief Default constructor
-     *
-     * The true capacity (vector's size) of the hashtable will be the
+    /// Default constructor
+    /** The true capacity (vector's size) of the hashtable will be the
      * lowest number greater than or equal to size_param that is also a power of 2.
      * The second optional argument is the resizing policy. By default, each time
      * there is an average of 3 elements by node, the size of the hashtable is
@@ -621,7 +629,7 @@ namespace gum {
                bool key_uniqueness_pol =
                HashTableConst::default_uniqueness_policy );
     
-	/// initializer list constructor
+    /// initializer list constructor
     explicit
     HashTable ( std::initializer_list< std::pair<Key,Val> > list );
 
@@ -630,7 +638,7 @@ namespace gum {
      * similar to that of the table passed in argument. Beware: similar does not
      * mean that both tables share the same objects, but rather that the objects
      * stored in the newly created table are copies of those of the table passed
-     * in argument. In particular, the new hash tables inherit the parameters
+     * in argument. In particular, the new hash table inherits the parameters
      * (resize policy, uniqueness policy) of table 'table' */
     HashTable ( const HashTable<Key,Val,Alloc>& table );
 
@@ -639,7 +647,7 @@ namespace gum {
      * similar to that of the table passed in argument. Beware: similar does not
      * mean that both tables share the same objects, but rather that the objects
      * stored in the newly created table are copies of those of the table passed
-     * in argument. In particular, the new hash tables inherit the parameters
+     * in argument. In particular, the new hash table inherits the parameters
      * (resize policy, uniqueness policy) of table 'table' */
     template <typename OtherAlloc>
     HashTable ( const HashTable<Key,Val,OtherAlloc>& table );
@@ -665,14 +673,14 @@ namespace gum {
      * prefer using the safe iterators (those are only slightly slower). */
     const iterator& end () noexcept;
 
-    /// returns the unsafe iterator pointing to the end of the hashtable
+    /// returns the unsafe const_iterator pointing to the end of the hashtable
     /** unsafe iterators are slightly faster than safe iterators. However,
      * BE CAREFUL when using them: they should ONLY be used when you have the
      * guarantee that they will never point to a deleted element. If unsure,
      * prefer using the safe iterators (those are only slightly slower). */
     const const_iterator& end () const noexcept;
 
-    /// returns the unsafe iterator pointing to the end of the hashtable
+    /// returns the unsafe const_iterator pointing to the end of the hashtable
     /** unsafe iterators are slightly faster than safe iterators. However,
      * BE CAREFUL when using them: they should ONLY be used when you have the
      * guarantee that they will never point to a deleted element. If unsure,
@@ -686,14 +694,14 @@ namespace gum {
      * prefer using the safe iterators (those are only slightly slower). */
     iterator begin ();
 
-    /// returns an unsafe iterator pointing to the beginning of the hashtable
+    /// returns an unsafe const_iterator pointing to the beginning of the hashtable
     /** unsafe iterators are slightly faster than safe iterators. However,
      * BE CAREFUL when using them: they should ONLY be used when you have the
      * guarantee that they will never point to a deleted element. If unsure,
      * prefer using the safe iterators (those are only slightly slower). */    
     const_iterator begin () const;
 
-    /// returns an unsafe iterator pointing to the beginning of the hashtable
+    /// returns an unsafe const_iterator pointing to the beginning of the hashtable
     /** unsafe iterators are slightly faster than safe iterators. However,
      * BE CAREFUL when using them: they should ONLY be used when you have the
      * guarantee that they will never point to a deleted element. If unsure,
@@ -706,13 +714,13 @@ namespace gum {
      * element or if they try a ++ operation from a deleted element. */
     const iterator_safe& endSafe () noexcept;
 
-    /// returns the safe iterator pointing to the end of the hashtable
+    /// returns the safe const_iterator pointing to the end of the hashtable
     /** Safe iterators are slightly slower than unsafe ones but they guarantee
      * that you will never get a segfault if they try to access to a deleted
      * element or if they try a ++ operation from a deleted element. */
     const const_iterator_safe& endSafe () const noexcept;
 
-    /// returns the safe iterator pointing to the end of the hashtable
+    /// returns the safe const_iterator pointing to the end of the hashtable
     /** Safe iterators are slightly slower than unsafe ones but they guarantee
      * that you will never get a segfault if they try to access to a deleted
      * element or if they try a ++ operation from a deleted element. */
@@ -724,13 +732,13 @@ namespace gum {
      * element or if they try a ++ operation from a deleted element. */
     iterator_safe beginSafe ();
 
-    /// returns the safe iterator pointing to the beginning of the hashtable
+    /// returns the safe const_iterator pointing to the beginning of the hashtable
     /** Safe iterators are slightly slower than unsafe ones but they guarantee
      * that you will never get a segfault if they try to access to a deleted
      * element or if they try a ++ operation from a deleted element. */
     const_iterator_safe beginSafe () const;
 
-    /// returns the safe iterator pointing to the beginning of the hashtable
+    /// returns the safe const_iterator pointing to the beginning of the hashtable
     /** Safe iterators are slightly slower than unsafe ones but they guarantee
      * that you will never get a segfault if they try to access to a deleted
      * element or if they try a ++ operation from a deleted element. */
@@ -796,8 +804,9 @@ namespace gum {
      * function end4Statics has already been called once (which is always the case)
      * when a hashtable has been created.
      *
-     * So, to summarize: when initializing static members, use end4Statics() rather
-     * than end(). In all the other cases, use simply the usual method end(). */
+     * So, to summarize: when initializing static members, use constEnd4Statics()
+     * rather than cend(). In all the other cases, use simply the usual method
+     * cend(). */
     static const const_iterator& constEnd4Statics();
 
     /** @brief returns the end iterator for other classes' statics (read the
@@ -828,8 +837,9 @@ namespace gum {
      * function end4Statics has already been called once (which is always the case)
      * when a hashtable has been created.
      *
-     * So, to summarize: when initializing static members, use end4Statics() rather
-     * than end(). In all the other cases, use simply the usual method end(). */
+     * So, to summarize: when initializing static members, use endSafe4Statics()
+     * rather than endSafe(). In all the other cases, use simply the usual method
+     * endSafe(). */
     static const iterator_safe& endSafe4Statics();
     
     /** @brief returns the end iterator for other classes' statics (read the
@@ -860,9 +870,10 @@ namespace gum {
      * function end4Statics has already been called once (which is always the case)
      * when a hashtable has been created.
      *
-     * So, to summarize: when initializing static members, use end4Statics() rather
-     * than end(). In all the other cases, use simply the usual method end(). */
-   static const const_iterator_safe& constEndSafe4Statics();
+     * So, to summarize: when initializing static members, use
+     * constEndSafe4Statics() rather than cendSafe(). In all the other cases, use
+     * simply the usual method cendSafe(). */
+    static const const_iterator_safe& constEndSafe4Statics();
 
     /// @}
 
@@ -876,7 +887,7 @@ namespace gum {
     /** the copy operators ensures that whenever a memory allocation problem
      * occurs, no memory leak occurs as well and it also guarantees that in this
      * case the hashtable returned is in a coherent state (it is an empty
-     * hashtable). note that the copy not only involves copying pairs (key,value)
+     * hashtable). Note that the copy not only involves copying pairs (key,value)
      * but also the copy of the resize and key uniqueness policies. */
     HashTable<Key,Val,Alloc>& operator= ( const HashTable<Key,Val,Alloc>& from );
 
@@ -884,7 +895,7 @@ namespace gum {
     /** the copy operators ensures that whenever a memory allocation problem
      * occurs, no memory leak occurs as well and it also guarantees that in this
      * case the hashtable returned is in a coherent state (it is an empty
-     * hashtable). note that the copy not only involves copying pairs (key,value)
+     * hashtable). Note that the copy not only involves copying pairs (key,value)
      * but also the copy of the resize and key uniqueness policies. */
     template <typename OtherAlloc>
     HashTable<Key,Val,Alloc>&
@@ -994,7 +1005,7 @@ namespace gum {
      * is set. */
     bool exists( const Key& key ) const;
 
-    /// adds a new element (actually a copy of this element) in the hash table
+    /// adds a new element (actually a copy of this element) into the hash table
     /** If there already exists an element with the same key in the table and the
      * uniqueness policy prevents multiple identical keys to belong to the same
      * hashtable, an exception DuplicateElement is thrown. If the uniqueness policy
@@ -1021,7 +1032,7 @@ namespace gum {
      * when the hash table's uniqueness policy is set. */
     value_type& insert( Key&& key, Val&& val );
 
-    /// adds a new element (actually a copy of this element) in the hash table
+    /// adds a new element (actually a copy of this element) into the hash table
     /** If there already exists an element with the same key in the table and the
      * uniqueness policy prevents multiple identical keys to belong to the same
      * hashtable, an exception DuplicateElement is thrown. If the uniqueness policy
@@ -1068,7 +1079,7 @@ namespace gum {
      * In case of not found key, (key,default_value) is inserted in *this. */
     mapped_type& getWithDefault( const Key& key, const Val& default_value );
     
-    /// returns a reference on the value the key of which is passed in argument
+    /// returns a reference on the element the key of which is passed in argument
     /** In case of multiple identical keys in the hash table, the first value
      * encountered is returned. The method runs in constant time.
      * In case of not found key, (key,default_value) is inserted in *this. */
@@ -1076,7 +1087,7 @@ namespace gum {
   
     /// add a new property or modify it if it already existed
     /** When used as a "dynamic property list", it may be convenient to use this
-     * functions. Function set inserts a new pair (key,val) if the key does not
+     * function. Function set inserts a new pair (key,val) if the key does not
      * already exists, or it changes the value associated with key if a pair
      * (key,val) already exists in the hash table. */
     void set( const Key& key, const Val& default_value );
@@ -1268,17 +1279,17 @@ namespace gum {
     template <typename T1, typename T2> friend class Bijection;
 
 
-    /** @brief the hash table is represented as a vector of chained lists. 'nodes'
-     * is this very vector. */
+    /** @brief the hash table is represented as a vector of chained lists.
+     * '__nodes' is this very vector. */
     std::vector< HashTableList<Key,Val,Alloc> > __nodes;
 
-    /// the number of nodes in vector 'nodes'
+    /// the number of nodes in vector '__nodes'
     Size __size;
 
     /// number of elements of type Val stored in the hash table
     Size __nb_elements { 0 };
 
-    /// the function used to hash keys  (may change when the table is resized)
+    /// the function used to hash keys (may change when the table is resized)
     HashFunc<Key> __hash_func;
 
     /// is resizing performed automatically?
@@ -1290,7 +1301,12 @@ namespace gum {
     /// the __index begin() should have
     /** Beware: the beginning of a HashTable is the end of its __nodes vector,
      * i.e., the Bucket at the highest index in __nodes. This enables
-     * a slightly faster parsing than if it were the lowest index. */
+     * a slightly faster parsing than if it were the lowest index.
+     * @warning std::numeric_limits<Size>::max() means that we do not know where
+     * the beginning of the table really is (this can mean either that there is
+     * not yet any element in the hash table or that an erase operation has been
+     * performed and that we lost track of the element that should correspond to
+     * the begin(). */
     mutable Size __begin_index { std::numeric_limits<Size>::max() };
 
     /// the list of safe iterators pointing to the hash table
@@ -1307,11 +1323,8 @@ namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-
     /// erases a given bucket
-
     void __erase( HashTableBucket<Key,Val>* bucket, Size index );
-
 
     /** a function used to perform copies of HashTables. This code is
      * shared by the copy constructor and the copy operator. The function ensures
@@ -1319,7 +1332,7 @@ namespace gum {
      * - no memory leak occurs
      * - the hashtable returned is empty but in a coherent state
      * - an exception is thrown
-     * The function assumes that both this and table have arrays 'nodes' of the
+     * The function assumes that both this and table have arrays '__nodes' of the
      * same size. */
     template <typename OtherAlloc>
     void __copy( const HashTable<Key,Val,OtherAlloc>& table );
@@ -1362,7 +1375,7 @@ namespace gum {
    * HashTableConstIteratorSafe provides a safe way to parse HashTables. They are
    * safe because they are kept informed by the hashtable they belong to of the
    * elements deleted by the user. Hence, even if the user removes an element
-   * pointed to by a HashTableConstIterator, using the latter to access this
+   * pointed to by a HashTableConstIteratorSafe, using the latter to access this
    * element will never crash the application. Instead it will properly throw a
    * UndefinedIteratorValue exception.
    *
@@ -1376,15 +1389,15 @@ namespace gum {
    *   table.insert (i,"xxx" + string (i,'x'));
    *
    * // parse the hash table
-   * for (HashTable<int,string>::const_iterator_safe iter = table.beginSafe ();
-   *        iter != table.endSafe (); ++iter) {
+   * for (HashTable<int,string>::const_iterator_safe iter = table.cbeginSafe ();
+   *        iter != table.cendSafe (); ++iter) {
    *   // display the values
    *   cerr << "at " << iter.key () << " value = " << iter.val () << endl;
    * }
    *
    * // check whether two iterators point toward the same element
-   * HashTable<int,string>::const_iterator_safe iter1 = table1.beginSafe ();
-   * HashTable<int,string>::const_iterator_safe iter2 = table1.endSafe ();
+   * HashTable<int,string>::const_iterator_safe iter1 = table1.cbeginSafe ();
+   * HashTable<int,string>::const_iterator_safe iter2 = table1.cendSafe ();
    * if (iter1 != iter) cerr << "iter1 and iter2 point toward different elements";
    *
    * // make iter1 point toward nothing

@@ -1460,21 +1460,23 @@ namespace gum {
 
   /// the iterator pointing to the end of the List
   template <typename Val, typename Alloc> INLINE
-  const ListConstIteratorSafe<Val>& List<Val,Alloc>::cendSafe () const  {
-    return *( reinterpret_cast<const ListConstIteratorSafe<Val>* > ( __list_end_safe ) );
+  const ListConstIteratorSafe<Val>& List<Val,Alloc>::cendSafe () const noexcept {
+    return *( reinterpret_cast<const ListConstIteratorSafe<Val>* >
+              ( __list_end_safe ) );
   }
 
 
   /// the iterator pointing to the end of the List
   template <typename Val, typename Alloc> INLINE
-  const ListIteratorSafe<Val>& List<Val,Alloc>::endSafe () {
-    return *( reinterpret_cast<const ListIteratorSafe<Val>* > ( __list_end_safe ) );
+  const ListIteratorSafe<Val>& List<Val,Alloc>::endSafe () noexcept {
+    return *( reinterpret_cast<const ListIteratorSafe<Val>* >
+              ( __list_end_safe ) );
   }
 
 
   /// the iterator pointing to the end of the List
   template <typename Val, typename Alloc> INLINE
-  const ListConstIterator<Val>& List<Val,Alloc>::cend() const  {
+  const ListConstIterator<Val>& List<Val,Alloc>::cend() const noexcept {
     return *( reinterpret_cast<const ListConstIterator<Val>* >
               ( __list_end ) );
   }
@@ -1482,7 +1484,7 @@ namespace gum {
 
   /// the iterator pointing to the end of the List
   template <typename Val, typename Alloc> INLINE
-  const ListIterator<Val>& List<Val,Alloc>::end() {
+  const ListIterator<Val>& List<Val,Alloc>::end() noexcept {
     return *( reinterpret_cast<const ListIterator<Val>* >
               ( __list_end ) );
   }
@@ -1490,21 +1492,23 @@ namespace gum {
 
   /// the iterator pointing to the rend (just before the beginning) of the List
   template <typename Val, typename Alloc> INLINE
-  const ListConstIteratorSafe<Val>& List<Val,Alloc>::crendSafe () const  {
-    return *( reinterpret_cast<const ListConstIteratorSafe<Val>* > ( __list_end_safe ) );
+  const ListConstIteratorSafe<Val>& List<Val,Alloc>::crendSafe () const noexcept {
+    return *( reinterpret_cast<const ListConstIteratorSafe<Val>* >
+              ( __list_end_safe ) );
   }
 
 
   /// the iterator pointing to the rend (just before the beginning) of the List
   template <typename Val, typename Alloc> INLINE
-  const ListIteratorSafe<Val>& List<Val,Alloc>::rendSafe() {
-    return *( reinterpret_cast<const ListIteratorSafe<Val>* > ( __list_end_safe ) );
+  const ListIteratorSafe<Val>& List<Val,Alloc>::rendSafe() noexcept {
+    return *( reinterpret_cast<const ListIteratorSafe<Val>* >
+              ( __list_end_safe ) );
   }
 
   
   /// the iterator pointing to the rend (just before the beginning) of the List
   template <typename Val, typename Alloc> INLINE
-  const ListConstIterator<Val>& List<Val,Alloc>::crend() const  {
+  const ListConstIterator<Val>& List<Val,Alloc>::crend() const noexcept {
     return *( reinterpret_cast<const ListConstIterator<Val>* >
               ( __list_end ) );
   }
@@ -1512,7 +1516,7 @@ namespace gum {
 
   /// the iterator pointing to the rend (just before the beginning) of the List
   template <typename Val, typename Alloc> INLINE
-  const ListIterator<Val>& List<Val,Alloc>::rend() {
+  const ListIterator<Val>& List<Val,Alloc>::rend() noexcept {
     return *( reinterpret_cast<const ListIterator<Val>* >
               ( __list_end ) );
   }
