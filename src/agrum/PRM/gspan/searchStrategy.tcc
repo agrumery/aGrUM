@@ -38,7 +38,7 @@ namespace gum {
         const Set<Instance<GUM_SCALAR>*>* instances = 0;
         Sequence<ClassElement<GUM_SCALAR>*> input_set;
 
-        for ( auto iter = seq.begin(); iter != seq.end(); ++iter ) {
+        for ( auto iter = seq.beginSafe(); iter != seq.endSafe(); ++iter ) {
           chains = & ( ( **iter ).type().slotChains() );
 
           for ( auto input = chains->beginSafe(); input != chains->endSafe(); ++input ) {
@@ -68,7 +68,7 @@ namespace gum {
       template<typename GUM_SCALAR>
       void
       StrictSearch<GUM_SCALAR>::__buildPatternGraph ( StrictSearch<GUM_SCALAR>::PData& data, Set<Potential<GUM_SCALAR>*>& pool, const Sequence<Instance<GUM_SCALAR>*>& match ) {
-        for ( auto inst = match.begin(); inst != match.end(); ++inst ) {
+        for ( auto inst = match.beginSafe(); inst != match.endSafe(); ++inst ) {
           for ( auto attr = ( **inst ).begin(); attr != ( **inst ).end(); ++attr ) {
             // Adding the node
             NodeId id = data.graph.insertNode();
@@ -80,7 +80,7 @@ namespace gum {
         }
 
         // Second we add edges and nodes to inners or outputs
-        for ( auto inst = match.begin(); inst != match.end(); ++inst ) {
+        for ( auto inst = match.beginSafe(); inst != match.endSafe(); ++inst ) {
           for ( auto attr = ( **inst ).begin(); attr != ( **inst ).end(); ++attr ) {
             NodeId node = data.node2attr.first ( __str ( *inst, attr.val() ) );
             bool found = false; // If this is set at true, then node is an outer node
@@ -165,8 +165,8 @@ namespace gum {
 
           for ( auto p = pool.beginSafe(); p != pool.endSafe(); ++p ) {
             if ( ( **p ).contains ( * ( data.vars.second ( elim_order[idx] ) ) ) ) {
-              for ( auto var = ( **p ).variablesSequence().begin();
-                    var != ( **p ).variablesSequence().end(); ++var ) {
+              for ( auto var = ( **p ).variablesSequence().beginSafe();
+                    var != ( **p ).variablesSequence().endSafe(); ++var ) {
                 try {
                   pot->add ( **var );
                 } catch ( DuplicateElement& ) { }

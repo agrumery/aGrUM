@@ -636,12 +636,12 @@ namespace gum {
     Sequence<NodeId> order = topologicalOrder ( true );
 
     //Finding first decision node
-    Sequence<NodeId>::const_iterator orderIter = order.begin();
+    Sequence<NodeId>::const_iterator_safe orderIter = order.beginSafe();
 
-    while ( ( orderIter != order.end() ) && ( !isDecisionNode ( *orderIter ) ) )
+    while ( ( orderIter != order.endSafe() ) && ( !isDecisionNode ( *orderIter ) ) )
       ++orderIter;
 
-    if ( orderIter == order.end() )
+    if ( orderIter == order.endSafe() )
       return true;
 
     NodeId parentDecision = ( *orderIter );
@@ -649,7 +649,7 @@ namespace gum {
     ++orderIter;
 
     // Checking path between decisions nodes
-    while ( orderIter != order.end() ) {
+    while ( orderIter != order.endSafe() ) {
       if ( isDecisionNode ( *orderIter ) ) {
         if ( ! existsPathBetween ( parentDecision, *orderIter ) )
           return false;
@@ -721,8 +721,8 @@ namespace gum {
 
         Sequence<NodeId>* childrenSequence = _getChildrenDecision ( node );
 
-        for ( Sequence<NodeId>::const_iterator childrenSeqIter = childrenSequence->begin();
-              childrenSeqIter != childrenSequence->end(); ++childrenSeqIter ) {
+        for ( Sequence<NodeId>::const_iterator_safe childrenSeqIter = childrenSequence->beginSafe();
+              childrenSeqIter != childrenSequence->endSafe(); ++childrenSeqIter ) {
           if ( !temporalGraph->existsNode ( *childrenSeqIter ) )
             temporalGraph->insertNode ( *childrenSeqIter );
 
@@ -796,7 +796,7 @@ namespace gum {
 
     std::vector<NodeId>*  decisionSequence = new std::vector<NodeId>();
 
-    for ( Sequence<NodeId>::const_iterator orderIter = order.begin(); orderIter != order.end(); ++orderIter )
+    for ( Sequence<NodeId>::const_iterator_safe orderIter = order.beginSafe(); orderIter != order.endSafe(); ++orderIter )
       if ( isDecisionNode ( *orderIter ) )
         decisionSequence->push_back ( *orderIter );
 

@@ -180,8 +180,8 @@ namespace gum {
     long size = 1;
     const Sequence<const DiscreteVariable*>& seq = __table.variablesSequence();
 
-    for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-            seq.begin(); iter != seq.end(); ++iter ) {
+    for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+            seq.beginSafe(); iter != seq.endSafe(); ++iter ) {
       if ( ! __del_vars.contains( *iter ) ) {
         if ( std::numeric_limits<long>::max() /
              ( long )( *iter )->domainSize() < size ) {

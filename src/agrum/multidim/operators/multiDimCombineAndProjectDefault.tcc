@@ -104,8 +104,8 @@ namespace gum {
         const Sequence<const DiscreteVariable*>& iter_vars =
           ( *iter )->variablesSequence();
 
-        for ( typename Sequence<const DiscreteVariable*>::const_iterator
-              it = iter_vars.begin(); it != iter_vars.end(); ++it ) {
+        for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
+              it = iter_vars.beginSafe(); it != iter_vars.endSafe(); ++it ) {
           all_vars.insert( *it );
         }
       }
@@ -406,8 +406,8 @@ namespace gum {
             iter = table_set.beginSafe(); iter != table_set.endSafe(); ++iter ) {
         const Sequence<const DiscreteVariable*>& iter_vars = **iter;
 
-        for ( typename Sequence<const DiscreteVariable*>::const_iterator
-              it = iter_vars.begin(); it != iter_vars.end(); ++it ) {
+        for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
+              it = iter_vars.beginSafe(); it != iter_vars.endSafe(); ++it ) {
           all_vars.insert( *it );
         }
       }
@@ -528,8 +528,8 @@ namespace gum {
               iter != tables_to_combine.endSafe(); ++iter ) {
           const Sequence<const DiscreteVariable*>& vars = **iter;
 
-          for ( typename Sequence<const DiscreteVariable*>::const_iterator
-                iter2 = vars.begin(); iter2 != vars.end(); ++iter2 ) {
+          for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
+                iter2 = vars.beginSafe(); iter2 != vars.endSafe(); ++iter2 ) {
             if ( ! joint->exists( *iter2 ) ) {
               joint->insert( *iter2 );
             }
@@ -695,8 +695,8 @@ namespace gum {
             iter = table_set.beginSafe(); iter != table_set.endSafe(); ++iter ) {
         const Sequence<const DiscreteVariable*>& iter_vars = **iter;
 
-        for ( typename Sequence<const DiscreteVariable*>::const_iterator
-              it = iter_vars.begin(); it != iter_vars.end(); ++it ) {
+        for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
+              it = iter_vars.beginSafe(); it != iter_vars.endSafe(); ++it ) {
           all_vars.insert( *it );
         }
       }
@@ -819,8 +819,8 @@ namespace gum {
               iter != tables_to_combine.endSafe(); ++iter ) {
           const Sequence<const DiscreteVariable*>& vars = **iter;
 
-          for ( typename Sequence<const DiscreteVariable*>::const_iterator
-                iter2 = vars.begin(); iter2 != vars.end(); ++iter2 ) {
+          for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
+                iter2 = vars.beginSafe(); iter2 != vars.endSafe(); ++iter2 ) {
             if ( ! joint->exists( *iter2 ) ) {
               joint->insert( *iter2 );
             }
@@ -922,8 +922,8 @@ namespace gum {
           long del_size = 1;
           const Sequence<const DiscreteVariable*>& del = **iter;
 
-          for ( typename Sequence<const DiscreteVariable*>::const_iterator
-                iter_del = del.begin(); iter_del != del.end(); ++iter_del ) {
+          for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
+                iter_del = del.beginSafe(); iter_del != del.endSafe(); ++iter_del ) {
             del_size *= ( *iter_del )->domainSize();
           }
 

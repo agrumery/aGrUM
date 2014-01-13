@@ -245,7 +245,7 @@ namespace gum {
     // To evaluate action value function, we multiply old main value function by transition table
     // of each variable
 //     while ( __fmdp->hasVariable() ) {
-    for ( SequenceIteratorSafe<const DiscreteVariable*> varIter = elVarSeq.rbegin(); varIter != elVarSeq.rend(); --varIter ) {
+    for ( SequenceIteratorSafe<const DiscreteVariable*> varIter = elVarSeq.rbeginSafe(); varIter != elVarSeq.rendSafe(); --varIter ) {
       // ***************************************************************************************
       // Multiplication of Vaction by current variable's CPT
       Vtemp = Vaction;
@@ -1031,16 +1031,16 @@ namespace gum {
     Sequence< const DiscreteVariable* > dD2VarSeq = dD2->variablesSequence();
     Sequence< const DiscreteVariable* > fusVarSeq;
 
-    SequenceIteratorSafe< const DiscreteVariable* > iterS1 = dD1VarSeq.begin();
-    SequenceIteratorSafe< const DiscreteVariable* > iterS2 = dD2VarSeq.begin();
+    SequenceIteratorSafe< const DiscreteVariable* > iterS1 = dD1VarSeq.beginSafe();
+    SequenceIteratorSafe< const DiscreteVariable* > iterS2 = dD2VarSeq.beginSafe();
 
-    while ( iterS1 != dD1VarSeq.end() || iterS2 != dD2VarSeq.end() ) {
-      if ( iterS1 == dD1VarSeq.end() ) {
-        for ( ; iterS2 != dD2VarSeq.end(); ++iterS2 )
+    while ( iterS1 != dD1VarSeq.endSafe() || iterS2 != dD2VarSeq.endSafe() ) {
+      if ( iterS1 == dD1VarSeq.endSafe() ) {
+        for ( ; iterS2 != dD2VarSeq.endSafe(); ++iterS2 )
           if ( !fusVarSeq.exists ( *iterS2 ) )
             fusVarSeq.insert ( *iterS2 );
-      } else if ( iterS2 == dD2VarSeq.end() ) {
-        for ( ; iterS1 != dD1VarSeq.end(); ++iterS1 )
+      } else if ( iterS2 == dD2VarSeq.endSafe() ) {
+        for ( ; iterS1 != dD1VarSeq.endSafe(); ++iterS1 )
           if ( !fusVarSeq.exists ( *iterS1 ) )
             fusVarSeq.insert ( *iterS1 );
       } else {
@@ -1074,8 +1074,8 @@ namespace gum {
     Idx sizeRetro = 1;
     Idx nbRetroVar = 0;
 
-    for ( iterS2 = dD2VarSeq.begin(); iterS2 != dD2VarSeq.end(); ++iterS2 )
-      for ( iterS1 = iterS2; iterS1 != dD2VarSeq.rend(); --iterS1 )
+    for ( iterS2 = dD2VarSeq.beginSafe(); iterS2 != dD2VarSeq.endSafe(); ++iterS2 )
+      for ( iterS1 = iterS2; iterS1 != dD2VarSeq.rendSafe(); --iterS1 )
         if ( fusVarSeq.pos ( *iterS1 ) > fusVarSeq.pos ( *iterS2 ) ) {
           nbRetroVar++;
           sizeRetro *= ( *iterS2 )->domainSize();

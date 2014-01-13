@@ -153,16 +153,16 @@ namespace gum_tests {
 
         n=0;
 
-        for ( gum::Sequence<int>::iterator it = seq.begin();
-              it != seq.end(); ++it ) n++;
+        for ( gum::Sequence<int>::iterator_safe it = seq.beginSafe();
+              it != seq.endSafe(); ++it ) n++;
 
         TS_ASSERT_EQUALS( n,0 );
 
 
         n=0;
 
-        for ( gum::Sequence<int>::iterator it = seq.rbegin();
-              it != seq.rend(); --it ) n++;
+        for ( gum::Sequence<int>::iterator_safe it = seq.rbeginSafe();
+              it != seq.rendSafe(); --it ) n++;
 
         TS_ASSERT_EQUALS( n,0 );
 
@@ -170,7 +170,7 @@ namespace gum_tests {
 
         n=0;
 
-        for ( gum::Sequence<int>::iterator it=seq.begin(); it!=seq.end(); ++it ) {
+        for ( gum::Sequence<int>::iterator_safe it=seq.beginSafe(); it!=seq.endSafe(); ++it ) {
           n*=10; n+=*it;
         }
 
@@ -178,7 +178,7 @@ namespace gum_tests {
 
         n=0;
 
-        for ( gum::Sequence<int>::iterator it=seq.rbegin(); it!=seq.rend(); --it ) {
+        for ( gum::Sequence<int>::iterator_safe it=seq.rbeginSafe(); it!=seq.rendSafe(); --it ) {
           n*=10; n+=*it;
         }
 
@@ -192,8 +192,8 @@ namespace gum_tests {
 
         int n = 0;
 
-        for ( gum::Sequence<gum::Idx>::iterator it=seq.rbegin();
-              it!=seq.rend(); --it ) {
+        for ( gum::Sequence<gum::Idx>::iterator_safe it=seq.rbeginSafe();
+              it!=seq.rendSafe(); --it ) {
           n*=10; n+=*it;
         }
 
@@ -212,8 +212,8 @@ namespace gum_tests {
 
         seq<<a<<b;
 
-        for ( gum::Sequence<int*>::iterator it=seq.rbegin();
-              it!=seq.rend(); --it ) {
+        for ( gum::Sequence<int*>::iterator_safe it=seq.rbeginSafe();
+              it!=seq.rendSafe(); --it ) {
           *it; //TODO do not see the reason of this line ... ???
         }
 

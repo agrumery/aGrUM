@@ -226,7 +226,7 @@ namespace gum {
         for ( auto node = max_indep_set.beginSafe(); node != max_indep_set.endSafe(); ++node ) {
           match = & ( tree().iso_map ( * ( __patterns.front() ), *node ) );
 
-          for ( auto i = match->begin(); i != match->end(); ++i ) {
+          for ( auto i = match->beginSafe(); i != match->endSafe(); ++i ) {
             __chosen.insert ( *i );
           }
 
@@ -248,7 +248,7 @@ namespace gum {
             found = false;
             match = & ( tree().iso_map ( **p, node ) );
 
-            for ( auto i = match->begin(); i != match->end(); ++i ) {
+            for ( auto i = match->beginSafe(); i != match->endSafe(); ++i ) {
               if ( __chosen.exists ( *i ) ) {
                 found = true;
                 break;
@@ -291,7 +291,7 @@ namespace gum {
               match = & ( tree().iso_map ( **p, *node ) );
               matches->insert ( match );
 
-              for ( auto iter = match->begin(); iter != match->end(); ++iter ) {
+              for ( auto iter = match->beginSafe(); iter != match->endSafe(); ++iter ) {
                 __chosen.insert ( *iter );
               }
             }

@@ -143,8 +143,8 @@ namespace gum {
     const Sequence<const DiscreteVariable*>& vars = table.variablesSequence();
     float res = 1;
 
-    for ( typename Sequence<const DiscreteVariable*>::const_iterator
-          iter = vars.begin(); iter != vars.end(); ++iter ) {
+    for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
+          iter = vars.beginSafe(); iter != vars.endSafe(); ++iter ) {
       res *= ( *iter )->domainSize();
     }
 
@@ -185,8 +185,8 @@ namespace gum {
     const Sequence<const DiscreteVariable*>& vars = table.variablesSequence();
     long res = 1;
 
-    for ( typename Sequence<const DiscreteVariable*>::const_iterator
-          iter = vars.begin(); iter != vars.end(); ++iter ) {
+    for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
+          iter = vars.beginSafe(); iter != vars.endSafe(); ++iter ) {
       if ( ! del_vars.contains( *iter ) ) {
         if ( std::numeric_limits<long>::max() /
              ( long )( *iter )->domainSize() < res ) {

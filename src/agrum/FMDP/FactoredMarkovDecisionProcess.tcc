@@ -336,7 +336,7 @@ namespace gum {
   void
   FactoredMarkovDecisionProcess<GUM_SCALAR>::resetVariablesIterator() {
 //       __varIter = __defaultTransitionTable.begin();
-    __varIter = __varSeq.begin();
+    __varIter = __varSeq.beginSafe();
   }
 
 // ===========================================================================
@@ -346,7 +346,7 @@ namespace gum {
   bool
   FactoredMarkovDecisionProcess<GUM_SCALAR>::hasVariable() const {
 //       return __varIter != __defaultTransitionTable.end();
-    return __varIter != __varSeq.end();
+    return __varIter != __varSeq.endSafe();
   }
 
 // ===========================================================================

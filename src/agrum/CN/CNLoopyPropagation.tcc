@@ -619,7 +619,7 @@ namespace gum {
       const Sequence<NodeId>& topoNodes = bnet->topologicalOrder();
 
       // use const iterators with cbegin when available
-      for ( auto it = topoNodes.begin(), theEnd = topoNodes.end(); it != theEnd; ++it ) {
+      for ( auto it = topoNodes.beginSafe(), theEnd = topoNodes.endSafe(); it != theEnd; ++it ) {
         _update_p.set ( *it, false );
         _update_l.set ( *it, false );
 

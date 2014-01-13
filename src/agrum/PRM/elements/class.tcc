@@ -432,10 +432,10 @@ namespace gum {
         // names to it's safename version: ref.attr is replaced by ref.(type)attr.
         if ( ( ( **iter ).chain().atPos ( 0 ) == overloaded ) ) {
           Sequence<ClassElement<GUM_SCALAR>*> seq;
-          auto elt = ++ ( ( **iter ).chain().begin() );
+          auto elt = ++ ( ( **iter ).chain().beginSafe() );
           seq.insert ( overloader );
 
-          while ( elt != ( **iter ).chain().end() ) {
+          while ( elt != ( **iter ).chain().endSafe() ) {
             ref = static_cast<ReferenceSlot<GUM_SCALAR>*> ( seq.back() );
             next = & ( ref->slotType().get ( ( **elt ).name() ) );
             seq.insert ( next );

@@ -249,7 +249,7 @@ namespace gum {
       typename GSpan<GUM_SCALAR>::MatchedInstances fake_patterns;
       typename GSpan<GUM_SCALAR>::MatchedInstances::const_iterator_safe iter = data.matches.beginSafe();
 
-      for ( auto jter = ( **iter ).begin(); jter != ( **iter ).end(); ++jter )
+      for ( auto jter = ( **iter ).beginSafe(); jter != ( **iter ).endSafe(); ++jter )
         __reducedInstances.insert ( *jter );
 
       if ( data.obs().size() )
@@ -278,7 +278,7 @@ namespace gum {
       }
 
       for ( auto iter = fake_patterns.beginSafe(); iter != fake_patterns.endSafe(); ++iter ) {
-        for ( auto jter = ( **iter ).begin(); jter != ( **iter ).end(); ++jter )
+        for ( auto jter = ( **iter ).beginSafe(); jter != ( **iter ).endSafe(); ++jter )
           __reducedInstances.erase ( *jter );
 
         data.matches.erase ( *iter );
@@ -335,7 +335,7 @@ namespace gum {
       std::pair<Idx, std::string> v;
       Potential<GUM_SCALAR>* pot = 0;
 
-      for ( auto inst = match.begin(); inst != match.end(); ++inst ) {
+      for ( auto inst = match.beginSafe(); inst != match.endSafe(); ++inst ) {
         for ( auto attr = ( **inst ).begin(); attr != ( **inst ).end(); ++attr ) {
           NodeId id = data.graph.insertNode();
           v = std::make_pair ( inst.pos(), ( *( attr.val() ) ).safeName() );
@@ -346,8 +346,8 @@ namespace gum {
           pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( & ( ( *( attr.val() ) ).cpf() ) ) );
           pot = & ( ( **inst ).get ( v.second ).cpf() );
 
-          for ( auto var = pot->variablesSequence().begin();
-                var != pot->variablesSequence().end(); ++var ) {
+          for ( auto var = pot->variablesSequence().beginSafe();
+                var != pot->variablesSequence().endSafe(); ++var ) {
             try {
               if ( id != data.vars.first ( *var ) )
                 data.graph.insertEdge ( id, data.vars.first ( *var ) );

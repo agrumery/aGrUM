@@ -250,7 +250,7 @@ namespace gum_tests {
 
         output << std::endl;
 
-        for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite = a1->variablesSequence().begin(); ite != a1->variablesSequence().end(); ++ite )
+        for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite = a1->variablesSequence().beginSafe(); ite != a1->variablesSequence().endSafe(); ++ite )
           output << ( *ite )->toString() << " - ";
 
         output << std::endl;
@@ -260,7 +260,7 @@ namespace gum_tests {
         if ( a3 != nullptr ) {
           output << std::endl;
 
-          for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite = a3->variablesSequence().begin(); ite != a3->variablesSequence().end(); ++ite )
+          for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite = a3->variablesSequence().beginSafe(); ite != a3->variablesSequence().endSafe(); ++ite )
             output << ( *ite )->toString() << " - ";
 
           output << std::endl;
@@ -453,7 +453,7 @@ namespace gum_tests {
 
         del_vars.clear();
 
-        for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite  = varList->begin(); ite != varList->end(); ++ite )
+        for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite  = varList->beginSafe(); ite != varList->endSafe(); ++ite )
           delete *ite;
 
         delete varList;
@@ -491,7 +491,7 @@ namespace gum_tests {
 
           del_vars.clear();
 
-          for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite  = varList->begin(); ite != varList->end(); ++ite )
+          for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite  = varList->beginSafe(); ite != varList->endSafe(); ++ite )
             delete *ite;
 
           delete varList;
@@ -702,7 +702,7 @@ namespace gum_tests {
         delete a1;
         del_vars.clear();
 
-        for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite  = varList->begin(); ite != varList->end(); ++ite )
+        for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite  = varList->beginSafe(); ite != varList->endSafe(); ++ite )
           delete *ite;
 
         delete varList;

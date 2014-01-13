@@ -458,7 +458,7 @@ namespace gum {
     typename System<GUM_SCALAR>::array_iterator
     System<GUM_SCALAR>::begin ( const std::string& a ) {
       try {
-        return __arrayMap[a].second->begin();
+        return __arrayMap[a].second->beginSafe();
       } catch ( NotFound& ) {
         GUM_ERROR ( NotFound, "found no array matching the given name" );
       }
@@ -468,7 +468,7 @@ namespace gum {
     const typename System<GUM_SCALAR>::array_iterator&
     System<GUM_SCALAR>::end ( const std::string& a ) {
       try {
-        return __arrayMap[a].second->end();
+        return __arrayMap[a].second->endSafe();
       } catch ( NotFound& ) {
         GUM_ERROR ( NotFound, "found no array matching the given name" );
       }
@@ -478,7 +478,7 @@ namespace gum {
     typename System<GUM_SCALAR>::const_array_iterator
     System<GUM_SCALAR>::begin ( const std::string& a ) const {
       try {
-        return __arrayMap[a].second->begin();
+        return __arrayMap[a].second->beginSafe();
       } catch ( NotFound& ) {
         GUM_ERROR ( NotFound, "found no array matching the given name" );
       }
@@ -488,7 +488,7 @@ namespace gum {
     const typename System<GUM_SCALAR>::const_array_iterator&
     System<GUM_SCALAR>::end ( const std::string& a ) const {
       try {
-        return __arrayMap[a].second->end();
+        return __arrayMap[a].second->endSafe();
       } catch ( NotFound& ) {
         GUM_ERROR ( NotFound, "found no array matching the given name" );
       }

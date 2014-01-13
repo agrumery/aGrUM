@@ -700,7 +700,7 @@ namespace gum {
       if ( model->isInstance ( l_i ) ) {
         lefts.push_back ( & ( model->get ( l_i ) ) );
       } else if ( model->isArray ( l_i ) ) {
-        for ( auto iter = model->getArray ( l_i ).begin(); iter != model->getArray ( l_i ).end(); ++iter )
+        for ( auto iter = model->getArray ( l_i ).beginSafe(); iter != model->getArray ( l_i ).endSafe(); ++iter )
           lefts.push_back ( *iter );
       } else {
         GUM_ERROR ( NotFound, "left value does not name an instance or an array" );
@@ -709,7 +709,7 @@ namespace gum {
       if ( model->isInstance ( r_i ) ) {
         rights.push_back ( & ( model->get ( r_i ) ) );
       } else if ( model->isArray ( r_i ) ) {
-        for ( auto iter = model->getArray ( r_i ).begin(); iter != model->getArray ( r_i ).end(); ++iter )
+        for ( auto iter = model->getArray ( r_i ).beginSafe(); iter != model->getArray ( r_i ).endSafe(); ++iter )
           rights.push_back ( *iter );
       } else {
         GUM_ERROR ( NotFound, "left value does not name an instance or an array" );

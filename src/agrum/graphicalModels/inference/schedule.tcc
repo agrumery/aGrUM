@@ -168,8 +168,8 @@ namespace gum {
     const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
     parents = operation->multiDimArgs();
 
-    for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
-          iter = parents.begin(); iter != parents.end(); ++iter ) {
+    for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
+          iter = parents.beginSafe(); iter != parents.endSafe(); ++iter ) {
       if ( ( *iter )->isAbstract() ) {
         // here we shall have a parent in the graph
         operation_available = false;
@@ -196,8 +196,8 @@ namespace gum {
     const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
     created_tables = operation->multiDimResults();
 
-    for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
-          iter = created_tables.begin(); iter != created_tables.end(); ++iter ) {
+    for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
+          iter = created_tables.beginSafe(); iter != created_tables.endSafe(); ++iter ) {
       MultiDimId table_id = ( *iter )->id();
 
       if ( ( *iter )->isAbstract() ) {
@@ -215,8 +215,8 @@ namespace gum {
 
     // update __multidim2operations with the arguments passed to the newly
     // added operation
-    for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
-          iter = parents.begin(); iter != parents.end(); ++iter ) {
+    for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
+          iter = parents.beginSafe(); iter != parents.endSafe(); ++iter ) {
       MultiDimId table_id = ( *iter )->id();
 
       if ( ! __multidim2operations.exists( table_id ) ) {
@@ -245,8 +245,8 @@ namespace gum {
         __node2operation[*iter]->multiDimArgs();
       bool still_wrong = false;
 
-      for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
-            iter_args = args.begin(); iter_args != args.end(); ++iter_args ) {
+      for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
+            iter_args = args.beginSafe(); iter_args != args.endSafe(); ++iter_args ) {
         if ( ( *iter_args )->isAbstract() &&
              ! __created_multidims.exists( ( *iter_args )->id() ) ) {
           still_wrong = true;
@@ -261,8 +261,8 @@ namespace gum {
       if ( ! still_wrong ) {
         unsigned int nb_parents = 0;
 
-        for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
-              iter_args = args.begin(); iter_args != args.end(); ++iter_args ) {
+        for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
+              iter_args = args.beginSafe(); iter_args != args.endSafe(); ++iter_args ) {
           if ( ( *iter_args )->isAbstract() ) {
             __dag.insertArc( __created_multidims[( *iter_args )->id()], *iter );
             ++nb_parents;

@@ -442,7 +442,7 @@ namespace gum {
           gum::Sequence<gum::Sequence<gum::Instantiation*>*>::iterator_safe   itpv = ( itpvall.val() )->beginSafe();
 
           while ( ! ( *itpv )->empty() ) {
-            gum::Sequence<gum::Instantiation*>::iterator   itseqv = ( *itpv )->begin();
+            gum::Sequence<gum::Instantiation*>::iterator_safe   itseqv = ( *itpv )->beginSafe();
 
             for ( Idx i = 0; i < ( *itseqv )->nbrDim() ; i++ ) {
               std::stringstream str;

@@ -93,7 +93,7 @@ namespace gum {
         DFSTree<GUM_SCALAR>::PatternData* data = __data[p];
         std::vector<NodeId> degree_list;
 
-        for ( auto edge = edge_seq.begin(); edge != edge_seq.end(); ++edge ) {
+        for ( auto edge = edge_seq.beginSafe(); edge != edge_seq.endSafe(); ++edge ) {
           bool u_first = ( ( *edge )->l_u->id < ( *edge )->l_v->id ) ? true : false;
           Sequence<Instance<GUM_SCALAR>*>* seq = new Sequence<Instance<GUM_SCALAR>*>();
           // Creating the multiset of instances matching p
@@ -106,7 +106,7 @@ namespace gum {
           // Adding edges between two isomorphisms of p sharing at least one instance
           for ( auto iso = data->iso_map.beginSafe(); iso != data->iso_map.endSafe(); ++iso ) {
             if ( iso.key() != an_id ) {
-              for ( auto inst = ( iso.val() )->begin(); inst != ( iso.val() )->end(); ++inst ) {
+              for ( auto inst = ( iso.val() )->beginSafe(); inst != ( iso.val() )->endSafe(); ++inst ) {
                 if ( seq->exists ( *inst ) ) {
                   data->iso_graph.insertEdge ( an_id, iso.key() );
                   break;
@@ -143,7 +143,7 @@ namespace gum {
         for ( auto iter = iso_map.beginSafe(); iter != iso_map.endSafe(); ++iter ) {
           bool found = false;
 
-          for ( auto jter = seq.begin(); jter != seq.end(); ++jter ) {
+          for ( auto jter = seq.beginSafe(); jter != seq.endSafe(); ++jter ) {
             if ( not ( iter.val() )->exists ( *jter ) ) {
               found = true;
               break;
@@ -280,8 +280,8 @@ namespace gum {
             // Adding edges in the iso_graph
             for ( const auto node : data->iso_graph.nodes() ) {
               if ( ( node ) != id ) {
-                for ( const auto m : * ( data->iso_map[id] ) ) {
-                  if ( data->iso_map[node]->exists ( m ) ) {
+                for ( auto m = (* ( data->iso_map[id] ) ).beginSafe(); m != (* ( data->iso_map[id] ) ).endSafe(); ++m ) {
+                  if ( data->iso_map[node]->exists ( *m ) ) {
                     data->iso_graph.insertEdge ( node, id );
                     break;
                   }

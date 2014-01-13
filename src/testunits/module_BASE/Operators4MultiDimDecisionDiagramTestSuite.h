@@ -26,6 +26,7 @@
 #include <string>
 #include <sstream>
 #include <time.h>
+#include "../../agrum/core/sequence.h"
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
@@ -316,7 +317,7 @@ namespace gum_tests {
 
         output << std::endl;
 
-        for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite = a1->variablesSequence().begin(); ite != a1->variablesSequence().end(); ++ite )
+        for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite = a1->variablesSequence().beginSafe(); ite != a1->variablesSequence().endSafe(); ++ite )
           output << ( *ite )->toString() << " - ";
 
         output << std::endl;
@@ -325,7 +326,7 @@ namespace gum_tests {
 
         output << std::endl;
 
-        for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite = a2->variablesSequence().begin(); ite != a2->variablesSequence().end(); ++ite )
+        for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite = a2->variablesSequence().beginSafe(); ite != a2->variablesSequence().endSafe(); ++ite )
           output << ( *ite )->toString() << " - ";
 
         output << std::endl;
@@ -335,7 +336,7 @@ namespace gum_tests {
         if ( a3 != nullptr ) {
           output << std::endl;
 
-          for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite = a3->variablesSequence().begin(); ite != a3->variablesSequence().end(); ++ite )
+          for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite = a3->variablesSequence().beginSafe(); ite != a3->variablesSequence().endSafe(); ++ite )
             output << ( *ite )->toString() << " - ";
 
           output << std::endl;
@@ -557,7 +558,7 @@ namespace gum_tests {
           delete a1;
           delete a2;
 
-          for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite = varList->begin(); ite != varList->end(); ++ite )
+          for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite = varList->beginSafe(); ite != varList->endSafe(); ++ite )
             delete *ite;
 
           delete varList;

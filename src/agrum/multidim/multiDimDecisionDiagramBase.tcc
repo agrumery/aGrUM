@@ -323,7 +323,7 @@ namespace gum {
 #ifndef O4DDWITHORDER
     Sequence<const DiscreteVariable*> primeVarSeq;
 
-    for ( SequenceIteratorSafe<const DiscreteVariable*> seqIter = source->variablesSequence().begin(); seqIter != source->variablesSequence().end(); ++seqIter )
+    for ( SequenceIteratorSafe<const DiscreteVariable*> seqIter = source->variablesSequence().beginSafe(); seqIter != source->variablesSequence().endSafe(); ++seqIter )
       primeVarSeq.insert ( old2new.second ( *seqIter ) );
 
     this->setVariableSequence ( primeVarSeq );

@@ -379,20 +379,20 @@ namespace gum {
     for ( const auto cli : __triangulation->junctionTree().nodes() ) {
 
       Sequence<NodeId> eliminationOrder = __cliquePropertiesMap[ cli]->cliqueEliminationOrder();
-      SequenceIteratorSafe<NodeId> cliqueNodesIter =  eliminationOrder.begin();
+      SequenceIteratorSafe<NodeId> cliqueNodesIter =  eliminationOrder.beginSafe();
       bool validIndex = false;
 
       // On parcours chaque noeud de la clique par ordre d'élimination, ...
-      while ( cliqueNodesIter != eliminationOrder.end() && !validIndex ) {
+      while ( cliqueNodesIter != eliminationOrder.endSafe() && !validIndex ) {
 
         SequenceIteratorSafe<NodeId> cliqueRemainingNodesIter = cliqueNodesIter;
         ++ cliqueRemainingNodesIter;
 
-        if ( cliqueRemainingNodesIter  != eliminationOrder.end() ) {
+        if ( cliqueRemainingNodesIter  != eliminationOrder.endSafe() ) {
 
           NodeSet suspectedNodes ( __triangulation->triangulatedGraph().neighbours ( *cliqueRemainingNodesIter ) );
 
-          while ( cliqueRemainingNodesIter != eliminationOrder.end() && ! suspectedNodes.empty() ) {
+          while ( cliqueRemainingNodesIter != eliminationOrder.endSafe() && ! suspectedNodes.empty() ) {
             NodeSet possiblesNodes ( suspectedNodes );
 
             for ( NodeSetIterator possibleNodesIter = possiblesNodes.beginSafe(); possibleNodesIter != possiblesNodes.endSafe(); ++possibleNodesIter )
@@ -572,8 +572,8 @@ namespace gum {
     Sequence< const DiscreteVariable* > cliqueRemainVarList ( cliqueInstance.variablesSequence() );
 
     // So for each variable of that clique ...
-    for ( SequenceIteratorSafe<NodeId> eliminationOrderIter = absorbedClique->cliqueEliminationOrder().begin();
-          eliminationOrderIter != absorbedClique->cliqueEliminationOrder().end(); ++eliminationOrderIter ) {
+    for ( SequenceIteratorSafe<NodeId> eliminationOrderIter = absorbedClique->cliqueEliminationOrder().beginSafe();
+          eliminationOrderIter != absorbedClique->cliqueEliminationOrder().endSafe(); ++eliminationOrderIter ) {
 
       // if it's not on separtor with its parent
       if ( ! separator.contains ( *eliminationOrderIter ) ) {
@@ -588,8 +588,8 @@ namespace gum {
         // Then we need to add all not yet eliminated variables of the clique in ours new table
         cliqueRemainVarList .erase ( & ( this->influenceDiagram().variable ( *eliminationOrderIter ) ) );
 
-        for ( SequenceIteratorSafe<const DiscreteVariable*> cliqueVarListIter = cliqueRemainVarList.begin();
-              cliqueVarListIter != cliqueRemainVarList.end(); ++cliqueVarListIter ) {
+        for ( SequenceIteratorSafe<const DiscreteVariable*> cliqueVarListIter = cliqueRemainVarList.beginSafe();
+              cliqueVarListIter != cliqueRemainVarList.endSafe(); ++cliqueVarListIter ) {
           newPotential->add ( **cliqueVarListIter );
           newUtility->add ( **cliqueVarListIter );
         }
@@ -820,7 +820,7 @@ namespace gum {
 
     if ( removable ) __removablePotentialList.insert ( &cpt );
 
-    for ( Sequence< const DiscreteVariable* >::iterator iter = cpt.begin(); iter != cpt.end(); ++iter ) {
+    for ( Sequence< const DiscreteVariable* >::iterator_safe iter = cpt.begin (); iter != cpt.end (); ++iter ) {
       if ( removable && !__allVarsInst.contains ( **iter ) )
         try {
           __removableVarList.insert ( *iter );
@@ -853,7 +853,7 @@ namespace gum {
 
     if ( removable ) __removableUtilityList.insert ( &ut );
 
-    for ( Sequence< const DiscreteVariable* >::iterator iter = ut.begin(); iter != ut.end(); ++iter ) {
+    for ( Sequence< const DiscreteVariable* >::iterator_safe iter = ut.begin (); iter != ut.end (); ++iter ) {
       if ( removable && !__allVarsInst.contains ( **iter ) )
         try {
           __removableVarList.insert ( *iter );

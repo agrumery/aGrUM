@@ -289,13 +289,13 @@ namespace gum_tests {
 
           const gum::Sequence<const gum::DiscreteVariable*>& s_seq = source.cpt ( iter ).variablesSequence();
 
-          for ( gum::Sequence<const gum::DiscreteVariable*>::iterator it = s_seq.begin(); it != s_seq.end(); ++it ) {
+          for ( gum::Sequence<const gum::DiscreteVariable*>::iterator_safe it = s_seq.beginSafe(); it != s_seq.endSafe(); ++it ) {
             s_str << **it << ",";
           }
 
           const gum::Sequence<const gum::DiscreteVariable*>& c_seq = copy.cpt ( iter ).variablesSequence();
 
-          for ( gum::Sequence<const gum::DiscreteVariable*>::iterator it = c_seq.begin(); it != c_seq.end(); ++it ) {
+          for ( gum::Sequence<const gum::DiscreteVariable*>::iterator_safe it = c_seq.beginSafe(); it != c_seq.endSafe(); ++it ) {
             c_str << **it << ",";
           }
 
