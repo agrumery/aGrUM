@@ -589,8 +589,8 @@ namespace gum {
     // @todo enhance the cplxity with a member domainSize ?
     Size s = 1;
 
-    for ( Sequence<const DiscreteVariable*>::iterator i = __vars.begin();
-          i != __vars.end(); ++i ) {//std::cout <<( *i )->domainSize() << std::endl;
+    for ( Sequence<const DiscreteVariable*>::iterator_safe i = __vars.beginSafe();
+          i != __vars.endSafe(); ++i ) {//std::cout <<( *i )->domainSize() << std::endl;
       s *= ( *i )->domainSize();
     }
 

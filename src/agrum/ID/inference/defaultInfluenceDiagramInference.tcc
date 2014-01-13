@@ -379,13 +379,13 @@ namespace gum {
     for ( const auto cli : __triangulation->junctionTree().nodes() ) {
 
       Sequence<NodeId> eliminationOrder = __cliquePropertiesMap[ cli]->cliqueEliminationOrder();
-      SequenceIterator<NodeId> cliqueNodesIter =  eliminationOrder.begin();
+      SequenceIteratorSafe<NodeId> cliqueNodesIter =  eliminationOrder.begin();
       bool validIndex = false;
 
       // On parcours chaque noeud de la clique par ordre d'élimination, ...
       while ( cliqueNodesIter != eliminationOrder.end() && !validIndex ) {
 
-        SequenceIterator<NodeId> cliqueRemainingNodesIter = cliqueNodesIter;
+        SequenceIteratorSafe<NodeId> cliqueRemainingNodesIter = cliqueNodesIter;
         ++ cliqueRemainingNodesIter;
 
         if ( cliqueRemainingNodesIter  != eliminationOrder.end() ) {
@@ -572,7 +572,7 @@ namespace gum {
     Sequence< const DiscreteVariable* > cliqueRemainVarList ( cliqueInstance.variablesSequence() );
 
     // So for each variable of that clique ...
-    for ( SequenceIterator<NodeId> eliminationOrderIter = absorbedClique->cliqueEliminationOrder().begin();
+    for ( SequenceIteratorSafe<NodeId> eliminationOrderIter = absorbedClique->cliqueEliminationOrder().begin();
           eliminationOrderIter != absorbedClique->cliqueEliminationOrder().end(); ++eliminationOrderIter ) {
 
       // if it's not on separtor with its parent
@@ -588,7 +588,7 @@ namespace gum {
         // Then we need to add all not yet eliminated variables of the clique in ours new table
         cliqueRemainVarList .erase ( & ( this->influenceDiagram().variable ( *eliminationOrderIter ) ) );
 
-        for ( SequenceIterator<const DiscreteVariable*> cliqueVarListIter = cliqueRemainVarList.begin();
+        for ( SequenceIteratorSafe<const DiscreteVariable*> cliqueVarListIter = cliqueRemainVarList.begin();
               cliqueVarListIter != cliqueRemainVarList.end(); ++cliqueVarListIter ) {
           newPotential->add ( **cliqueVarListIter );
           newUtility->add ( **cliqueVarListIter );

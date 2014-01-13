@@ -305,8 +305,8 @@ namespace gum {
 
         Sequence<const DiscreteVariable*> seq = I.variablesSequence();
 
-        for ( Sequence<const DiscreteVariable*>::iterator it = seq.begin();
-              it != seq.end(); ++it ) {
+        for ( Sequence<const DiscreteVariable*>::iterator_safe it = seq.beginSafe();
+              it != seq.endSafe(); ++it ) {
           I.chgVal ( it.pos() , __particle.valFromPtr ( *it ) );
         }
 
@@ -332,7 +332,7 @@ namespace gum {
       __nodes_array.clear();
       // nodes to be drawn : not the ones with hard evidence
 
-      for ( Sequence<NodeId>::iterator iter = topo.begin() ; iter != topo.end(); ++iter ) {
+      for ( Sequence<NodeId>::iterator_safe iter = topo.beginSafe() ; iter != topo.endSafe(); ++iter ) {
         if ( ! __hard_evidences.exists ( *iter ) ) {
           __nodes_array.push_back ( *iter );
         } else {

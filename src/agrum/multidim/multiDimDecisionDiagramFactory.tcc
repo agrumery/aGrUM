@@ -136,7 +136,7 @@ namespace gum {
       // ************************************************************************************************
       // First we remove any redundant nodes
       // ************************************************************************************************
-      for ( SequenceIterator<const DiscreteVariable*> varIter = this->_varsSeq.rbegin(); varIter != this->_varsSeq.rend(); --varIter ) {
+      for ( SequenceIteratorSafe<const DiscreteVariable*> varIter = this->_varsSeq.rbegin(); varIter != this->_varsSeq.rend(); --varIter ) {
 
         if ( this->_var2NodeIdMap.exists ( *varIter ) )
           for ( ListConstIteratorSafe< NodeId > riterNodeList = this->_var2NodeIdMap[ *varIter ]->rbeginSafe(); riterNodeList != this->_var2NodeIdMap[ *varIter ]->rendSafe(); --riterNodeList ) {

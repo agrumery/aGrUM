@@ -38,8 +38,8 @@ namespace gum {
     __vals.reserve( v.size() );
     // fill the SetInst
 
-    for ( Sequence<const DiscreteVariable*>::iterator iter = v.begin();
-          iter != v.end(); ++iter ) {
+    for ( Sequence<const DiscreteVariable*>::iterator_safe iter = v.beginSafe();
+          iter != v.endSafe(); ++iter ) {
       __add( **iter );
     }
 
@@ -112,8 +112,8 @@ namespace gum {
     //__vals.reserve( v.size() );
     // fill the SetInst
 
-    for ( Sequence<const DiscreteVariable*>::iterator iter = v.begin();
-          iter != v.end(); ++iter ) {
+    for ( Sequence<const DiscreteVariable*>::iterator_safe iter = v.beginSafe();
+          iter != v.endSafe(); ++iter ) {
       __add( **iter );
       __vals[__vars[*iter]] =( 1 << ( aI.val( **iter ) ) );
 
@@ -185,9 +185,9 @@ namespace gum {
 
     sstr << "<";
 
-    Sequence<const DiscreteVariable*>::iterator iter = __vars.begin();
+    Sequence<const DiscreteVariable*>::iterator_safe iter = __vars.beginSafe();
 
-    if ( iter != __vars.end() ) {
+    if ( iter != __vars.endSafe() ) {
       std::stringstream sstr2;
       sstr2.str( "" );
       Size si =variable( iter.pos() ).domainSize();
@@ -204,7 +204,7 @@ namespace gum {
       sstr << variable( iter.pos() ).name() << ":"<<sstr2.str();
       ++iter;
 
-      while ( iter != __vars.end() ) {
+      while ( iter != __vars.endSafe() ) {
         std::stringstream sstr3;
         sstr3 <<"";
         si = variable( iter.pos() ).domainSize();

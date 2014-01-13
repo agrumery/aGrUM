@@ -43,7 +43,7 @@
 namespace gum {
 
 
-  template<typename KEY> class SequenceIterator;
+  template<typename KEY> class SequenceIteratorSafe;
 
 
   /* =========================================================================== */
@@ -66,11 +66,11 @@ namespace gum {
 
   class Sequence {
 
-      friend class SequenceIterator<KEY>;
+      friend class SequenceIteratorSafe<KEY>;
 
     public:
-      typedef SequenceIterator<KEY> iterator;
-      typedef SequenceIterator<KEY> const_iterator;
+      typedef SequenceIteratorSafe<KEY> iterator_safe;
+      typedef SequenceIteratorSafe<KEY> const_iterator_safe;
 
 
       // ############################################################################
@@ -107,22 +107,22 @@ namespace gum {
 
       /// begin iterator
 
-      iterator begin() const;
+      iterator_safe beginSafe() const;
 
 
       /// rbegin iterator
 
-      iterator rbegin() const;
+      iterator_safe rbeginSafe() const;
 
 
       /// end iterator
 
-      const iterator& end() const;
+      const iterator_safe& endSafe() const;
 
 
       /// rend iterator
 
-      const iterator& rend() const;
+      const iterator_safe& rendSafe() const;
 
       /// @}
 
@@ -239,7 +239,7 @@ namespace gum {
        * of at most the n elements)
        * @param k */
 
-      void erase( const iterator& k );
+      void erase( const iterator_safe& k );
 
 
       /// returns the object at the pos i
@@ -318,10 +318,10 @@ namespace gum {
       // sequences without having memory overhead
 
       /// stores the end iterator for fast access
-      SequenceIterator<KEY> __end;
+      SequenceIteratorSafe<KEY> __end;
 
       /// stores the rend iterator for fast access
-      SequenceIterator<KEY> __rend;
+      SequenceIteratorSafe<KEY> __rend;
 
 
 
@@ -348,7 +348,7 @@ namespace gum {
 
 
 
-  /// @class SequenceIterator
+  /// @class SequenceIteratorSafe
   /**@brief iterator for Sequence.
    *
    * This iterator is a wrapper to the Idx __iterator. Internally,
@@ -357,7 +357,7 @@ namespace gum {
    **/
   template<typename KEY>
 
-  class SequenceIterator {
+  class SequenceIteratorSafe {
 
       friend class Sequence<KEY>;
 
@@ -375,17 +375,17 @@ namespace gum {
        * @warning if pos is greater than the size of the sequence, the iterator
        * is made pointing to end() */
 
-      SequenceIterator( const Sequence<KEY>& seq, Idx pos=0 );
+      SequenceIteratorSafe( const Sequence<KEY>& seq, Idx pos=0 );
 
 
       /// copy constructor
 
-      SequenceIterator( const SequenceIterator<KEY>& source );
+      SequenceIteratorSafe( const SequenceIteratorSafe<KEY>& source );
 
 
       /// destructor
 
-      ~SequenceIterator();
+      ~SequenceIteratorSafe();
 
       ///@}
 
@@ -397,27 +397,27 @@ namespace gum {
 
       /// copy operator
 
-      SequenceIterator<KEY>& operator= ( const SequenceIterator& source );
+      SequenceIteratorSafe<KEY>& operator= ( const SequenceIteratorSafe& source );
 
 
       /// point the iterator to the next value in the sequence
 
-      SequenceIterator<KEY>& operator++();
+      SequenceIteratorSafe<KEY>& operator++();
 
 
       /// point the iterator to the preceding value in the sequence
 
-      SequenceIterator<KEY>& operator--();
+      SequenceIteratorSafe<KEY>& operator--();
 
 
       /// checks whether two iterators are pointing toward different elements
 
-      bool operator!= ( const SequenceIterator<KEY>& source ) const;
+      bool operator!= ( const SequenceIteratorSafe<KEY>& source ) const;
 
 
       /// checks whether two iterators are pointing toward the same element
 
-      bool operator== ( const SequenceIterator<KEY>& source ) const;
+      bool operator== ( const SequenceIteratorSafe<KEY>& source ) const;
 
 
       /// returns the value pointed to by the iterator
@@ -503,7 +503,7 @@ namespace gum {
   /* ===             GUM_SEQUENCE_ITERATOR OPTIMIZED FOR POINTERS            === */
   /* =========================================================================== */
   /* =========================================================================== */
-  /// @class SequenceIterator
+  /// @class SequenceIteratorSafe
   /**@brief iterator for Sequence.
    *
    * This iterator is a wrapper to the Idx __iterator. Internally,
@@ -512,7 +512,7 @@ namespace gum {
    **/
   template<typename KEY>
 
-  class SequenceIterator<KEY*> {
+  class SequenceIteratorSafe<KEY*> {
 
       friend class Sequence<KEY*>;
 
@@ -528,17 +528,17 @@ namespace gum {
        * @warning if pos is greater than the size of the sequence, the iterator
        * is made pointing to end() */
 
-      SequenceIterator( const Sequence<KEY*>& seq, Idx pos=0 );
+      SequenceIteratorSafe( const Sequence<KEY*>& seq, Idx pos=0 );
 
 
       /// copy constructor
 
-      SequenceIterator( const SequenceIterator<KEY*>& source );
+      SequenceIteratorSafe( const SequenceIteratorSafe<KEY*>& source );
 
 
       /// destructor
 
-      ~SequenceIterator();
+      ~SequenceIteratorSafe();
 
       ///@}
 
@@ -550,27 +550,27 @@ namespace gum {
 
       /// copy operator
 
-      SequenceIterator<KEY*>& operator= ( const SequenceIterator& source );
+      SequenceIteratorSafe<KEY*>& operator= ( const SequenceIteratorSafe& source );
 
 
       /// point the iterator to the next value in the sequence
 
-      SequenceIterator<KEY*>& operator++();
+      SequenceIteratorSafe<KEY*>& operator++();
 
 
       /// point the iterator to the preceding value in the sequence
 
-      SequenceIterator<KEY*>& operator--();
+      SequenceIteratorSafe<KEY*>& operator--();
 
 
       /// checks whether two iterators are pointing toward different elements
 
-      bool operator!= ( const SequenceIterator<KEY*>& source ) const;
+      bool operator!= ( const SequenceIteratorSafe<KEY*>& source ) const;
 
 
       /// checks whether two iterators are pointing toward the same element
 
-      bool operator== ( const SequenceIterator<KEY*>& source ) const;
+      bool operator== ( const SequenceIteratorSafe<KEY*>& source ) const;
 
 
       /// returns the value pointed to by the iterator
@@ -640,11 +640,11 @@ namespace gum {
 
   class Sequence<KEY*> {
 
-      friend class SequenceIterator<KEY*>;
+      friend class SequenceIteratorSafe<KEY*>;
 
     public:
-      typedef SequenceIterator<KEY*> iterator;
-      typedef SequenceIterator<KEY*> const_iterator;
+      typedef SequenceIteratorSafe<KEY*> iterator_safe;
+      typedef SequenceIteratorSafe<KEY*> const_iterator_safe;
 
 
       // ############################################################################
@@ -681,22 +681,22 @@ namespace gum {
 
       /// begin iterator
 
-      iterator begin() const;
+      iterator_safe beginSafe() const;
 
 
       /// rbegin iterator
 
-      iterator rbegin() const;
+      iterator_safe rbeginSafe() const;
 
 
       /// end iterator
 
-      const iterator& end() const;
+      const iterator_safe& endSafe() const;
 
 
       /// rend iterator
 
-      const iterator& rend() const;
+      const iterator_safe& rendSafe() const;
 
       /// @}
 
@@ -813,7 +813,7 @@ namespace gum {
        * of at most the n elements)
        * @param k */
 
-      void erase( const iterator& );
+      void erase( const iterator_safe& );
 
 
       /// returns the object at the pos i
@@ -892,10 +892,10 @@ namespace gum {
       // sequences without having memory overhead
 
       /// stores the end iterator for fast access
-      SequenceIterator<KEY*> __end;
+      SequenceIteratorSafe<KEY*> __end;
 
       /// stores the rend iterator for fast access
-      SequenceIterator<KEY*> __rend;
+      SequenceIteratorSafe<KEY*> __rend;
 
 
 

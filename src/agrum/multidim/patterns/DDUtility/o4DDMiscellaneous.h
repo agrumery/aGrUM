@@ -82,7 +82,7 @@ namespace gum {
 #ifdef O4DDDEBUG
         GUM_TRACE( " Mixed Sequence variable : " );
 
-        for ( SequenceIterator< const DiscreteVariable* > iter = leadingOrder.begin(); iter != leadingOrder.end(); ++iter )
+        for ( SequenceIteratorSafe< const DiscreteVariable* > iter = leadingOrder.begin(); iter != leadingOrder.end(); ++iter )
           GUM_TRACE( ( *iter )->toString() << " - " );
 
         GUM_TRACE( std::endl );
@@ -233,16 +233,16 @@ namespace gum {
        ** ********************************************************************************************** **/
       void  __makeMergedVariableSequence( const Sequence< const DiscreteVariable* >& dD1VarSeq, const Sequence< const DiscreteVariable* >& dD2VarSeq, Sequence< const DiscreteVariable* >& mergedVarSeq ) {
 
-        SequenceIterator< const DiscreteVariable* > iterS1 = dD1VarSeq.begin();
-        SequenceIterator< const DiscreteVariable* > iterS2 = dD2VarSeq.begin();
+        SequenceIteratorSafe< const DiscreteVariable* > iterS1 = dD1VarSeq.beginSafe();
+        SequenceIteratorSafe< const DiscreteVariable* > iterS2 = dD2VarSeq.beginSafe();
 
-        while ( iterS1 != dD1VarSeq.end() || iterS2 != dD2VarSeq.end() ) {
-          if ( iterS1 == dD1VarSeq.end() ) {
-            for ( ; iterS2 != dD2VarSeq.end(); ++iterS2 )
+        while ( iterS1 != dD1VarSeq.endSafe() || iterS2 != dD2VarSeq.endSafe() ) {
+          if ( iterS1 == dD1VarSeq.endSafe() ) {
+            for ( ; iterS2 != dD2VarSeq.endSafe(); ++iterS2 )
               if ( !mergedVarSeq.exists( *iterS2 ) )
                 mergedVarSeq.insert( *iterS2 );
-          } else if ( iterS2 == dD2VarSeq.end() ) {
-            for ( ; iterS1 != dD1VarSeq.end(); ++iterS1 )
+          } else if ( iterS2 == dD2VarSeq.endSafe() ) {
+            for ( ; iterS1 != dD1VarSeq.endSafe(); ++iterS1 )
               if ( !mergedVarSeq.exists( *iterS1 ) )
                 mergedVarSeq.insert( *iterS1 );
           } else {
@@ -280,14 +280,14 @@ namespace gum {
         ** ********************************************************************************************** **/
       Idx __evalRetrogradeVarSpaceSize( const Sequence< const DiscreteVariable* >& leadingVarSeq, const Sequence< const DiscreteVariable* >& followingVarSeq ) {
 
-        SequenceIterator< const DiscreteVariable* > iterSfin = followingVarSeq.begin(), iterSfol = followingVarSeq.begin();
+        SequenceIteratorSafe< const DiscreteVariable* > iterSfin = followingVarSeq.beginSafe(), iterSfol = followingVarSeq.beginSafe();
 
         // ******************************************************************************
         // Then we search in second diagram for possible preneeded variable
         Idx sizeRetro = 1;
 
-        for ( iterSfol = followingVarSeq.begin(); iterSfol != followingVarSeq.end(); ++iterSfol )
-          for ( iterSfin = iterSfol; iterSfin != followingVarSeq.rend(); --iterSfin )
+        for ( iterSfol = followingVarSeq.beginSafe(); iterSfol != followingVarSeq.endSafe(); ++iterSfol )
+          for ( iterSfin = iterSfol; iterSfin != followingVarSeq.rendSafe(); --iterSfin )
             if ( leadingVarSeq.pos( *iterSfin ) > leadingVarSeq.pos( *iterSfol ) )
               sizeRetro *= ( *iterSfol )->domainSize();
 

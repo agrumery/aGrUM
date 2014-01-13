@@ -62,18 +62,18 @@ namespace gum {
       Sequence< const DiscreteVariable* > varSeq = table->variablesSequence();
 
 
-      SequenceIterator< const DiscreteVariable* > endSeqIter = varSeq.rbegin();
+      SequenceIteratorSafe< const DiscreteVariable* > endSeqIter = varSeq.rbeginSafe();
       bool modified = true;
 
-      while ( modified && endSeqIter != varSeq.rend() ) {
-        SequenceIterator< const DiscreteVariable* > varIter = varSeq.begin();
-        SequenceIterator< const DiscreteVariable* > nextVarIter = varIter;
+      while ( modified && endSeqIter != varSeq.rendSafe() ) {
+        SequenceIteratorSafe< const DiscreteVariable* > varIter = varSeq.beginSafe();
+        SequenceIteratorSafe< const DiscreteVariable* > nextVarIter = varIter;
         modified = false;
 
         while ( varIter != endSeqIter ) {
           ++nextVarIter;
 
-          if ( nextVarIter != varSeq.end() ) {
+          if ( nextVarIter != varSeq.endSafe() ) {
             if ( delVars.exists( *varIter ) && !delVars.exists( *nextVarIter ) ) {
               factory->swap( *varIter, *nextVarIter );
               varSeq.swap( varSeq.pos( *varIter ), varSeq.pos( *nextVarIter ) );

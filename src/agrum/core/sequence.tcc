@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
- *   {prenom.nom}_at_lip6.fr   *
+ *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -33,7 +33,7 @@ namespace gum {
 
 
 
-  // SequenceIterator
+  // SequenceIteratorSafe
 
 
 
@@ -52,9 +52,9 @@ namespace gum {
 
 
   template <typename KEY> INLINE
-  SequenceIterator<KEY>::SequenceIterator( const Sequence<KEY>& seq,
+  SequenceIteratorSafe<KEY>::SequenceIteratorSafe( const Sequence<KEY>& seq,
       Idx pos ) : __seq( &seq ) {
-    GUM_CONSTRUCTOR( SequenceIterator );
+    GUM_CONSTRUCTOR( SequenceIteratorSafe );
 
     if ( pos > __seq->size() )
       __iterator = __seq->size(); // make the iterator point to end
@@ -64,21 +64,21 @@ namespace gum {
 
 
   template <typename KEY> INLINE
-  SequenceIterator<KEY>::SequenceIterator( const SequenceIterator<KEY>& source ) :
+  SequenceIteratorSafe<KEY>::SequenceIteratorSafe( const SequenceIteratorSafe<KEY>& source ) :
     __iterator( source.__iterator ),__seq( source.__seq ) {
-    GUM_CONS_CPY( SequenceIterator );
+    GUM_CONS_CPY( SequenceIteratorSafe );
   }
 
 
   template <typename KEY> INLINE
-  SequenceIterator<KEY>::~SequenceIterator() {
-    GUM_DESTRUCTOR( SequenceIterator );
+  SequenceIteratorSafe<KEY>::~SequenceIteratorSafe() {
+    GUM_DESTRUCTOR( SequenceIteratorSafe );
   }
 
 
   template <typename KEY> INLINE
-  SequenceIterator<KEY>& SequenceIterator<KEY>::operator=
-  ( const SequenceIterator<KEY>& source ) {
+  SequenceIteratorSafe<KEY>& SequenceIteratorSafe<KEY>::operator=
+  ( const SequenceIteratorSafe<KEY>& source ) {
     __iterator = source.__iterator;
     __seq = source.__seq;
     return *this;
@@ -86,7 +86,7 @@ namespace gum {
 
 
   template <typename KEY> INLINE
-  SequenceIterator<KEY>& SequenceIterator<KEY>::operator++( ) {
+  SequenceIteratorSafe<KEY>& SequenceIteratorSafe<KEY>::operator++( ) {
     if ( __iterator < __seq->size() )
       ++__iterator;
     else
@@ -97,7 +97,7 @@ namespace gum {
 
 
   template <typename KEY> INLINE
-  SequenceIterator<KEY>& SequenceIterator<KEY>::operator--( ) {
+  SequenceIteratorSafe<KEY>& SequenceIteratorSafe<KEY>::operator--( ) {
     if ( __iterator != std::numeric_limits<Idx>::max() )
       --__iterator;
     else
@@ -108,8 +108,8 @@ namespace gum {
 
 
   template <typename KEY> INLINE
-  bool SequenceIterator<KEY>::operator==
-  ( const SequenceIterator<KEY>& source ) const {
+  bool SequenceIteratorSafe<KEY>::operator==
+  ( const SequenceIteratorSafe<KEY>& source ) const {
     if ( __seq->empty() )
       return true; // all iterators are the same if seq is empty
 
@@ -122,14 +122,14 @@ namespace gum {
 
 
   template <typename KEY> INLINE
-  bool SequenceIterator<KEY>::operator!=
-  ( const SequenceIterator<KEY>& source ) const {
+  bool SequenceIteratorSafe<KEY>::operator!=
+  ( const SequenceIteratorSafe<KEY>& source ) const {
     return ! operator== ( source );
   }
 
 
   template <typename KEY> INLINE
-  Idx SequenceIterator<KEY>::pos() const {
+  Idx SequenceIteratorSafe<KEY>::pos() const {
     if ( __iterator == std::numeric_limits<Idx>::max() ) {
       GUM_ERROR( UndefinedIteratorValue, "iterator is rend()" );
     }
@@ -143,31 +143,31 @@ namespace gum {
 
 
   template <typename KEY> INLINE
-  const KEY& SequenceIterator<KEY>::operator*() const {
+  const KEY& SequenceIteratorSafe<KEY>::operator*() const {
     return * ( __seq->__v[ pos()] );
   }
 
   template <typename KEY> INLINE
-  const KEY* SequenceIterator<KEY>::operator->() const {
+  const KEY* SequenceIteratorSafe<KEY>::operator->() const {
     return  __seq->__v[ pos()];
   }
 
 
   template <typename KEY> INLINE
-  void SequenceIterator<KEY>::__setPos( Idx pos ) {
+  void SequenceIteratorSafe<KEY>::__setPos( Idx pos ) {
     if ( pos > __seq->size() ) __iterator = __seq->size();
     else __iterator = pos;
   }
 
 
   template <typename KEY> INLINE
-  void SequenceIterator<KEY>::__setAtRend( ) {
+  void SequenceIteratorSafe<KEY>::__setAtRend( ) {
     __iterator = std::numeric_limits<Idx>::max();
   }
 
 
   template <typename KEY> INLINE
-  void SequenceIterator<KEY>::__setAtEnd( ) {
+  void SequenceIteratorSafe<KEY>::__setAtEnd( ) {
     __iterator = __seq->size();
   }
 
@@ -180,7 +180,7 @@ namespace gum {
 
 
 
-  // SequenceIterator
+  // SequenceIteratorSafe
 
 
 
@@ -358,7 +358,7 @@ namespace gum {
   /// remove from the sequence the element pointed to by the iterator
 
   template <typename KEY> INLINE
-  void Sequence<KEY>::erase( const iterator& iter ) {
+  void Sequence<KEY>::erase( const iterator_safe& iter ) {
     if ( iter.pos() >= size() ) return;
 
     // erase the element
@@ -507,15 +507,15 @@ namespace gum {
   /// returns a value to 0
 
   template <typename KEY> INLINE
-  SequenceIterator<KEY> Sequence<KEY>::begin() const {
-    return SequenceIterator<KEY> ( *this );
+  SequenceIteratorSafe<KEY> Sequence<KEY>::beginSafe () const {
+    return SequenceIteratorSafe<KEY> ( *this );
   }
 
 
   /// return a value to end=size()
 
   template <typename KEY> INLINE
-  const SequenceIterator<KEY>& Sequence<KEY>::end() const  {
+  const SequenceIteratorSafe<KEY>& Sequence<KEY>::endSafe () const  {
     return __end;
   }
 
@@ -523,8 +523,8 @@ namespace gum {
   /// return a value to terminal =size()-1
 
   template <typename KEY> INLINE
-  SequenceIterator<KEY> Sequence<KEY>::rbegin() const {
-    SequenceIterator<KEY> it( *this );
+  SequenceIteratorSafe<KEY> Sequence<KEY>::rbeginSafe () const {
+    SequenceIteratorSafe<KEY> it( *this );
     it.__setPos( size()-1 );
     return it;
   }
@@ -533,7 +533,7 @@ namespace gum {
   /// returns a value to 0
 
   template <typename KEY> INLINE
-  const SequenceIterator<KEY>& Sequence<KEY>::rend() const  {
+  const SequenceIteratorSafe<KEY>& Sequence<KEY>::rendSafe () const  {
     return __rend;
   }
 
@@ -579,7 +579,7 @@ namespace gum {
 
 
 
-  // SequenceIterator optimized for pointers
+  // SequenceIteratorSafe optimized for pointers
 
 
 
@@ -596,9 +596,9 @@ namespace gum {
   }
 
   template <typename KEY> INLINE
-  SequenceIterator<KEY*>::SequenceIterator( const Sequence<KEY*>& seq,
+  SequenceIteratorSafe<KEY*>::SequenceIteratorSafe( const Sequence<KEY*>& seq,
       Idx pos ) : __seq( &seq ) {
-    GUM_CONSTRUCTOR( SequenceIterator );
+    GUM_CONSTRUCTOR( SequenceIteratorSafe );
 
     if ( pos > __seq->size() )
       __iterator = __seq->size(); // make the iterator point to end
@@ -608,21 +608,21 @@ namespace gum {
 
 
   template <typename KEY> INLINE
-  SequenceIterator<KEY*>::SequenceIterator( const SequenceIterator<KEY*>& source ) :
+  SequenceIteratorSafe<KEY*>::SequenceIteratorSafe( const SequenceIteratorSafe<KEY*>& source ) :
     __iterator( source.__iterator ),__seq( source.__seq ) {
-    GUM_CONS_CPY( SequenceIterator );
+    GUM_CONS_CPY( SequenceIteratorSafe );
   }
 
 
   template <typename KEY> INLINE
-  SequenceIterator<KEY*>::~SequenceIterator() {
-    GUM_DESTRUCTOR( SequenceIterator );
+  SequenceIteratorSafe<KEY*>::~SequenceIteratorSafe() {
+    GUM_DESTRUCTOR( SequenceIteratorSafe );
   }
 
 
   template <typename KEY> INLINE
-  SequenceIterator<KEY*>& SequenceIterator<KEY*>::operator=
-  ( const SequenceIterator<KEY*>& source ) {
+  SequenceIteratorSafe<KEY*>& SequenceIteratorSafe<KEY*>::operator=
+  ( const SequenceIteratorSafe<KEY*>& source ) {
     __iterator = source.__iterator;
     __seq = source.__seq;
     return *this;
@@ -630,7 +630,7 @@ namespace gum {
 
 
   template <typename KEY> INLINE
-  SequenceIterator<KEY*>& SequenceIterator<KEY*>::operator++( ) {
+  SequenceIteratorSafe<KEY*>& SequenceIteratorSafe<KEY*>::operator++( ) {
     if ( __iterator < __seq->size() )
       ++__iterator;
     else
@@ -641,7 +641,7 @@ namespace gum {
 
 
   template <typename KEY> INLINE
-  SequenceIterator<KEY*>& SequenceIterator<KEY*>::operator--( ) {
+  SequenceIteratorSafe<KEY*>& SequenceIteratorSafe<KEY*>::operator--( ) {
     if ( __iterator != std::numeric_limits<Idx>::max() )
       --__iterator;
     else
@@ -652,8 +652,8 @@ namespace gum {
 
 
   template <typename KEY> INLINE
-  bool SequenceIterator<KEY*>::operator==
-  ( const SequenceIterator<KEY*>& source ) const {
+  bool SequenceIteratorSafe<KEY*>::operator==
+  ( const SequenceIteratorSafe<KEY*>& source ) const {
     if ( __seq->empty() )
       return true; // all iterators are the same if seq is empty
 
@@ -666,14 +666,14 @@ namespace gum {
 
 
   template <typename KEY> INLINE
-  bool SequenceIterator<KEY*>::operator!=
-  ( const SequenceIterator<KEY*>& source ) const {
+  bool SequenceIteratorSafe<KEY*>::operator!=
+  ( const SequenceIteratorSafe<KEY*>& source ) const {
     return ! operator== ( source );
   }
 
 
   template <typename KEY> INLINE
-  Idx SequenceIterator<KEY*>::pos() const {
+  Idx SequenceIteratorSafe<KEY*>::pos() const {
     if ( __iterator == std::numeric_limits<Idx>::max() ) {
       GUM_ERROR( UndefinedIteratorValue, "iterator is rend()" );
     }
@@ -687,25 +687,25 @@ namespace gum {
 
 
   template <typename KEY> INLINE
-  KEY* const SequenceIterator<KEY*>::operator*() const {
+  KEY* const SequenceIteratorSafe<KEY*>::operator*() const {
     return __seq->__v[ pos()];
   }
 
   template <typename KEY> INLINE
-  void SequenceIterator<KEY*>::__setPos( Idx pos ) {
+  void SequenceIteratorSafe<KEY*>::__setPos( Idx pos ) {
     if ( pos > __seq->size() ) __iterator = __seq->size();
     else __iterator = pos;
   }
 
 
   template <typename KEY> INLINE
-  void SequenceIterator<KEY*>::__setAtRend( ) {
+  void SequenceIteratorSafe<KEY*>::__setAtRend( ) {
     __iterator = std::numeric_limits<Idx>::max();
   }
 
 
   template <typename KEY> INLINE
-  void SequenceIterator<KEY*>::__setAtEnd( ) {
+  void SequenceIteratorSafe<KEY*>::__setAtEnd( ) {
     __iterator = __seq->size();
   }
 
@@ -890,7 +890,7 @@ namespace gum {
   /// remove from the sequence the element pointed to by the iterator
 
   template <typename KEY> INLINE
-  void Sequence<KEY*>::erase( const iterator& iter ) {
+  void Sequence<KEY*>::erase( const iterator_safe& iter ) {
     if ( iter.pos() >= size() ) return;
 
     // erase the element
@@ -1031,15 +1031,15 @@ namespace gum {
   /// returns a value to 0
 
   template <typename KEY> INLINE
-  SequenceIterator<KEY*> Sequence<KEY*>::begin() const {
-    return SequenceIterator<KEY*> ( *this );
+  SequenceIteratorSafe<KEY*> Sequence<KEY*>::beginSafe() const {
+    return SequenceIteratorSafe<KEY*> ( *this );
   }
 
 
   /// return a value to end=size()
 
   template <typename KEY> INLINE
-  const SequenceIterator<KEY*>& Sequence<KEY*>::end() const  {
+  const SequenceIteratorSafe<KEY*>& Sequence<KEY*>::endSafe() const  {
     return __end;
   }
 
@@ -1047,8 +1047,8 @@ namespace gum {
   /// return a value to terminal =size()-1
 
   template <typename KEY> INLINE
-  SequenceIterator<KEY*> Sequence<KEY*>::rbegin() const {
-    SequenceIterator<KEY*> it( *this );
+  SequenceIteratorSafe<KEY*> Sequence<KEY*>::rbeginSafe() const {
+    SequenceIteratorSafe<KEY*> it( *this );
     it.__setPos( size()-1 );
     return it;
   }
@@ -1057,7 +1057,7 @@ namespace gum {
   /// returns a value to 0
 
   template <typename KEY> INLINE
-  const SequenceIterator<KEY*>& Sequence<KEY*>::rend() const  {
+  const SequenceIteratorSafe<KEY*>& Sequence<KEY*>::rendSafe() const  {
     return __rend;
   }
 
@@ -1078,7 +1078,7 @@ namespace gum {
   Set<KEY*> Sequence<KEY*>::diffSet( const Sequence<KEY*>& seq ) const {
     Set<KEY*> res;
 
-    for ( typename Sequence<KEY*>::iterator iter = seq.begin(); iter != seq.end(); ++iter ) {
+    for ( typename Sequence<KEY*>::iterator_safe iter = seq.beginSafe(); iter != seq.endSafe(); ++iter ) {
       if ( ! this->exists( *iter ) ) res<<*iter;
     }
 

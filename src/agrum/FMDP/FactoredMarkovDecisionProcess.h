@@ -227,7 +227,7 @@ namespace gum {
 
       /// Sequence de variables and its iterator
       Sequence< const DiscreteVariable* > __varSeq;
-      SequenceIterator< const DiscreteVariable* > __varIter;
+      SequenceIteratorSafe< const DiscreteVariable* > __varIter;
 
       /// Variable default transition cpt table
       HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* > __defaultTransitionTable;

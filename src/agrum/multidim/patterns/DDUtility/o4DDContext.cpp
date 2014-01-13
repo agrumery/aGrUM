@@ -96,7 +96,7 @@ namespace gum {
     std::stringstream ret;
     ret << " DD1 Current Node : " << __DD1ExploredNode << " - Log " << __DD1PrimeLog << " | DD2 Current Node : " << __DD2ExploredNode << " - Log " << __DD2PrimeLog  << " | ";
 
-    for ( SequenceIterator<const DiscreteVariable*> varIter = __varSeq.begin(); varIter != __varSeq.end(); ++varIter )
+    for ( SequenceIteratorSafe<const DiscreteVariable*> varIter = __varSeq.beginSafe(); varIter != __varSeq.endSafe(); ++varIter )
       ret << "\t Variable retrograde : " << ( *varIter )->name() << " -> Current Modality : " << __retrogradeVarInstantiation[ __varSeq.pos( *varIter ) ] << " | ";
 
     return ret.str();

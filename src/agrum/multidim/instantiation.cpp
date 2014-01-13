@@ -34,8 +34,8 @@ namespace gum {
     __vals.reserve( v.size() );
     // fill the instantiation
 
-    for ( Sequence<const DiscreteVariable*>::iterator iter = v.begin();
-          iter != v.end(); ++iter ) {
+    for ( Sequence<const DiscreteVariable*>::iterator_safe iter = v.beginSafe();
+          iter != v.endSafe(); ++iter ) {
       __add( **iter );
     }
 
@@ -165,13 +165,13 @@ namespace gum {
 
     sstr << "<";
 
-    Sequence<const DiscreteVariable*>::iterator iter = __vars.begin();
+    Sequence<const DiscreteVariable*>::iterator_safe iter = __vars.beginSafe();
 
-    if ( iter != __vars.end() ) {
+    if ( iter != __vars.endSafe() ) {
       sstr << variable( iter.pos() ).name() << ":" << val( iter.pos() );
       ++iter;
 
-      while ( iter != __vars.end() ) {
+      while ( iter != __vars.endSafe() ) {
         sstr << "|" << variable( iter.pos() ).name() << ":" << val( iter.pos() );
         ++iter;
       }
@@ -184,13 +184,13 @@ namespace gum {
 
   /// give a Id value for Hamming distance
   Idx Instantiation::hamming() const  {
-    Sequence<const DiscreteVariable*>::iterator iter = __vars.begin();
+    Sequence<const DiscreteVariable*>::iterator_safe iter = __vars.beginSafe();
     Idx res = 0;
 
     do
       res += val( iter.pos() );
 
-    while ( ++iter != __vars.end() );
+    while ( ++iter != __vars.endSafe() );
 
     return res;
   }

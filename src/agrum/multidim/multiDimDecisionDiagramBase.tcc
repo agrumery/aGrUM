@@ -323,7 +323,7 @@ namespace gum {
 #ifndef O4DDWITHORDER
     Sequence<const DiscreteVariable*> primeVarSeq;
 
-    for ( SequenceIterator<const DiscreteVariable*> seqIter = source->variablesSequence().begin(); seqIter != source->variablesSequence().end(); ++seqIter )
+    for ( SequenceIteratorSafe<const DiscreteVariable*> seqIter = source->variablesSequence().begin(); seqIter != source->variablesSequence().end(); ++seqIter )
       primeVarSeq.insert ( old2new.second ( *seqIter ) );
 
     this->setVariableSequence ( primeVarSeq );
@@ -461,7 +461,7 @@ namespace gum {
 
     Sequence< const DiscreteVariable* > varTopo = this->variablesSequence();
 
-    for ( SequenceIterator< const DiscreteVariable* > ite1 = varTopo.begin(); ite1 != varTopo.end(); ) {
+    for ( SequenceIteratorSafe< const DiscreteVariable* > ite1 = varTopo.beginSafe(); ite1 != varTopo.endSafe(); ) {
       bool isin = false;
       HashTableConstIteratorSafe< NodeId, const DiscreteVariable* > ite2 = __variableMap.beginSafe();
 
@@ -697,7 +697,7 @@ namespace gum {
 
 //~ std::stringstream varString;
 //~ varString << std::endl << " Sequence variable : ";
-//~ for( SequenceIterator< const DiscreteVariable* > iter = varsSeq->begin(); iter != varsSeq->end(); ++iter )
+//~ for( SequenceIteratorSafe< const DiscreteVariable* > iter = varsSeq->begin(); iter != varsSeq->end(); ++iter )
 //~ varString << (*iter)->name() << " - ";
 //~ varString << std::endl;
 //~ GUM_TRACE( varString.str() );
@@ -818,7 +818,7 @@ namespace gum {
       GUM_ERROR ( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
     }
 
-    for ( Sequence< const DiscreteVariable* >::iterator iter = varList.begin(); iter != varList.end(); ++iter )
+    for ( Sequence< const DiscreteVariable* >::iterator_safe iter = varList.beginSafe(); iter != varList.endSafe(); ++iter )
       MultiDimImplementation<GUM_SCALAR>::add ( **iter );
 
   }

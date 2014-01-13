@@ -869,7 +869,7 @@ namespace gum {
 
       // ***************************************************************
       // Pour chaque variable
-      for ( Sequence< const DiscreteVariable* >::iterator varIter = _varsSeq.begin(); varIter != _varsSeq.end(); ++varIter ) {
+      for ( Sequence< const DiscreteVariable* >::iterator_safe varIter = _varsSeq.beginSafe(); varIter != _varsSeq.endSafe(); ++varIter ) {
 
         // ***************************************************************
         // Si elle est déjà dans la liste, on passe

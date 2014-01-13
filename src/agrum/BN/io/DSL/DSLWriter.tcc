@@ -61,7 +61,7 @@ namespace gum {
 
     output << "net Unnamed\n{\n";
 
-    for ( SequenceIterator<NodeId> iter = bn.topologicalOrder().begin(); iter != bn.topologicalOrder().end(); ++iter ) {
+    for ( SequenceIteratorSafe<NodeId> iter = bn.topologicalOrder().begin(); iter != bn.topologicalOrder().end(); ++iter ) {
       output << __variableBloc( bn, bn.variable( *iter ) );
     }
 

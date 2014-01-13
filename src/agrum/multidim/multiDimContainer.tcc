@@ -108,10 +108,10 @@ namespace gum {
   bool
   MultiDimContainer<GUM_SCALAR>::operator== ( const MultiDimContainer<GUM_SCALAR>& p ) const {
     if ( ( nbrDim() == p.nbrDim() ) && ( domainSize() == p.domainSize() ) ) {
-      typedef Sequence< const DiscreteVariable* >::const_iterator var_iterator;
+      typedef Sequence< const DiscreteVariable* >::const_iterator_safe var_iterator;
 
-      for ( var_iterator iter = variablesSequence().begin();
-            iter != variablesSequence().end(); ++iter ) {
+      for ( var_iterator iter = variablesSequence().beginSafe();
+            iter != variablesSequence().endSafe(); ++iter ) {
         if ( ! p.variablesSequence().exists( *iter ) ) {
           return false;
         }

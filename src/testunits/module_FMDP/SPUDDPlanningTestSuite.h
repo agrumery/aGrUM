@@ -203,8 +203,8 @@ namespace gum_tests {
 //         //           TS_GUM_ASSERT_THROWS_NOTHING( infPrime.makePlanning(  ) );
 //
 //                   gum::Bijection< const DiscreteVariable*, const DiscreteVariable* > reassignement;
-//                   for( gum::SequenceIterator< const DiscreteVariable* > varIter = res->variablesSequence().begin(); varIter != res->variablesSequence().end(); ++varIter ){
-//                       for( gum::SequenceIterator< const DiscreteVariable* > varPrimeIter = resPrime->variablesSequence().begin(); varPrimeIter != resPrime->variablesSequence().end(); ++varPrimeIter){
+//                   for( gum::SequenceIteratorSafe< const DiscreteVariable* > varIter = res->variablesSequence().begin(); varIter != res->variablesSequence().end(); ++varIter ){
+//                       for( gum::SequenceIteratorSafe< const DiscreteVariable* > varPrimeIter = resPrime->variablesSequence().begin(); varPrimeIter != resPrime->variablesSequence().end(); ++varPrimeIter){
 //                             if( **varIter == **varPrimeIter ){
 //                                 reassignement.insert( *varPrimeIter, *varIter );
 //                                 break;

@@ -245,7 +245,7 @@ namespace gum {
     // To evaluate action value function, we multiply old main value function by transition table
     // of each variable
 //     while ( __fmdp->hasVariable() ) {
-    for ( SequenceIterator<const DiscreteVariable*> varIter = elVarSeq.rbegin(); varIter != elVarSeq.rend(); --varIter ) {
+    for ( SequenceIteratorSafe<const DiscreteVariable*> varIter = elVarSeq.rbegin(); varIter != elVarSeq.rend(); --varIter ) {
       // ***************************************************************************************
       // Multiplication of Vaction by current variable's CPT
       Vtemp = Vaction;
@@ -1031,8 +1031,8 @@ namespace gum {
     Sequence< const DiscreteVariable* > dD2VarSeq = dD2->variablesSequence();
     Sequence< const DiscreteVariable* > fusVarSeq;
 
-    SequenceIterator< const DiscreteVariable* > iterS1 = dD1VarSeq.begin();
-    SequenceIterator< const DiscreteVariable* > iterS2 = dD2VarSeq.begin();
+    SequenceIteratorSafe< const DiscreteVariable* > iterS1 = dD1VarSeq.begin();
+    SequenceIteratorSafe< const DiscreteVariable* > iterS2 = dD2VarSeq.begin();
 
     while ( iterS1 != dD1VarSeq.end() || iterS2 != dD2VarSeq.end() ) {
       if ( iterS1 == dD1VarSeq.end() ) {

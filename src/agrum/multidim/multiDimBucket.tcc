@@ -410,7 +410,7 @@ namespace gum {
     __allVariables.clear();
 
     while ( not __allVarsInst.empty() ) {
-      __allVarsInst.erase( **( __allVarsInst.variablesSequence().begin() ) );
+      __allVarsInst.erase( **( __allVarsInst.variablesSequence().beginSafe() ) );
     }
 
     for ( HashTableIteratorSafe<const MultiDimContainer<GUM_SCALAR>*, Instantiation*> iter =

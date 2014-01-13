@@ -183,9 +183,9 @@ namespace gum {
                                  ( void* ) &empty_seq );
       __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
                                  ( void* ) &empty_seq );
-      __debug__::__inc_deletion( "SequenceIterator", __FILE__, __LINE__,
+      __debug__::__inc_deletion( "SequenceIteratorSafe", __FILE__, __LINE__,
                                  "destructor of", ( void* ) &empty_seq );
-      __debug__::__inc_deletion( "SequenceIterator", __FILE__, __LINE__,
+      __debug__::__inc_deletion( "SequenceIteratorSafe", __FILE__, __LINE__,
                                  "destructor of", ( void* ) &empty_seq );
     }
 

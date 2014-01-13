@@ -45,9 +45,9 @@ namespace gum {
     const Sequence<const DiscreteVariable*>& varSeq =
       toCopy.variablesSequence();
 
-    for ( Sequence<const DiscreteVariable*>::iterator iter =
-            varSeq.begin();
-          iter != varSeq.end(); ++iter ) {
+    for ( Sequence<const DiscreteVariable*>::iterator_safe iter =
+            varSeq.beginSafe();
+          iter != varSeq.endSafe(); ++iter ) {
       this->add( **iter );
     }
 
@@ -82,24 +82,24 @@ namespace gum {
     // remove vars in this : WARNING -- THIS IS A COPY OF SEQ !!!!
     const Sequence<const DiscreteVariable*> seq0=this->variablesSequence() ;
 
-    for ( Sequence<const DiscreteVariable*>::iterator iter = seq0.begin();
-          iter!=seq0.end(); ++iter ) {
+    for ( Sequence<const DiscreteVariable*>::iterator_safe iter = seq0.beginSafe();
+          iter!=seq0.endSafe(); ++iter ) {
       this->erase( **iter );
     }
 
     // adding vars in p1
     const Sequence<const DiscreteVariable*>& seq1=p1.variablesSequence() ;
 
-    for ( Sequence<const DiscreteVariable*>::iterator iter = seq1.begin();
-          iter!=seq1.end(); ++iter ) {
+    for ( Sequence<const DiscreteVariable*>::iterator_safe iter = seq1.beginSafe();
+          iter!=seq1.endSafe(); ++iter ) {
       this->add( **iter );
     }
 
     // adding vars in p2 not already there
     const Sequence<const DiscreteVariable*>& seq2=p2.variablesSequence() ;
 
-    for ( Sequence<const DiscreteVariable*>::iterator iter = seq2.begin();
-          iter!=seq2.end(); ++iter ) {
+    for ( Sequence<const DiscreteVariable*>::iterator_safe iter = seq2.beginSafe();
+          iter!=seq2.endSafe(); ++iter ) {
       if ( ! this->contains( **iter ) ) {
         this->add( **iter );
       }
@@ -134,8 +134,8 @@ namespace gum {
             iter != utilitiesList.cend(); ++iter ) {
         const Sequence<const DiscreteVariable*>& varSeq = ( *iter )->variablesSequence();
 
-        for ( typename Sequence<const DiscreteVariable*>::iterator varIter = varSeq.begin();
-              varIter != varSeq.end(); ++varIter ) {
+        for ( typename Sequence<const DiscreteVariable*>::iterator_safe varIter = varSeq.beginSafe();
+              varIter != varSeq.endSafe(); ++varIter ) {
           try {
             partialInst.add( **varIter );
           } catch ( DuplicateElement& ) {

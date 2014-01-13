@@ -132,8 +132,8 @@ namespace gum {
     if ( i.nbrDim() != __vars.size() )
       return false;
 
-    for ( Sequence<const DiscreteVariable*>::iterator iter = __vars.begin();
-          iter != __vars.end(); ++iter )
+    for ( Sequence<const DiscreteVariable*>::iterator_safe iter = __vars.beginSafe();
+          iter != __vars.endSafe(); ++iter )
       if ( ! i.contains( *iter ) )
         return false;
 

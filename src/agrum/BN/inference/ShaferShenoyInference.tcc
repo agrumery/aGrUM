@@ -524,7 +524,7 @@ namespace gum {
       __varsPotential = __potential;
       __potential = new MultiDimBucket<GUM_SCALAR>();
 
-      for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator iter = __varsPotential->variablesSequence().begin(); iter != __varsPotential->variablesSequence().end(); ++iter ) {
+      for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter = __varsPotential->variablesSequence().beginSafe(); iter != __varsPotential->variablesSequence().endSafe(); ++iter ) {
         __potential->add ( **iter );
       }
 

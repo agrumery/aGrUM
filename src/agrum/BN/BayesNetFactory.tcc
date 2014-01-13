@@ -882,7 +882,7 @@ namespace gum {
     NodeId varId = __varNameMap[var.name()];
     __bn->_dag.eraseParents ( varId );
 
-    for ( Sequence<const DiscreteVariable*>::iterator iter = table->variablesSequence().begin(); iter != table->variablesSequence().end(); ++iter ) {
+    for ( Sequence<const DiscreteVariable*>::iterator_safe iter = table->variablesSequence().beginSafe(); iter != table->variablesSequence().endSafe(); ++iter ) {
       if ( ( *iter ) != ( &var ) ) {
         __checkVariableName ( ( *iter )->name() );
         __bn->_dag.insertArc ( __varNameMap[ ( *iter )->name()], varId );
