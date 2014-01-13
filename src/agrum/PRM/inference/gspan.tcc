@@ -55,7 +55,7 @@ namespace gum {
     template<typename GUM_SCALAR>
     void
     GSpan<GUM_SCALAR>::__sortNodesAndEdges() {
-      for ( auto iter = __graph->labels().begin(); iter != __graph->labels().end(); ++iter ) {
+      for ( auto iter = __graph->labels().beginSafe(); iter != __graph->labels().endSafe(); ++iter ) {
         try {
           if ( __graph->nodes ( iter.second() ).size() >= 2 ) {
             __cost.insert ( iter.second(), __cost_func ( iter.second()->tree_width, __graph->nodes ( iter.second() ).size() ) );

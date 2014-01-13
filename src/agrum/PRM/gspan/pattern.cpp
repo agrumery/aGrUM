@@ -235,7 +235,7 @@ namespace gum {
           GUM_TRACE_VAR ( node_map.size() );
           std::stringstream sBuff;
 
-          for ( Bijection<NodeId, NodeId>::iterator iter = node_map.begin(); iter != node_map.end(); ++iter ) {
+          for ( Bijection<NodeId, NodeId>::iterator_safe iter = node_map.beginSafe(); iter != node_map.endSafe(); ++iter ) {
             sBuff << "(" << iter.first() << ", " << iter.second() << ") ";
           }
 

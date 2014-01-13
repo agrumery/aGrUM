@@ -139,13 +139,13 @@ namespace gum_tests {
         bijection.insert( 9, 7 );
         bijection.insert( 2, 1 );
 
-        gum::Bijection<int, int>::iterator iter1 = bijection.begin();
-        gum::Bijection<int, int>::iterator iter2 = bijection.end();
+        gum::Bijection<int, int>::iterator_safe iter1 = bijection.beginSafe();
+        gum::Bijection<int, int>::iterator_safe iter2 = bijection.endSafe();
 
         unsigned int nb = 0;
 
-        for ( gum::Bijection<int, int>::iterator iter = bijection.begin();
-              iter != bijection.end(); ++iter, ++nb ) { }
+        for ( gum::Bijection<int, int>::iterator_safe iter = bijection.beginSafe();
+              iter != bijection.endSafe(); ++iter, ++nb ) { }
 
         TS_ASSERT( nb == 8 );
 
@@ -161,13 +161,13 @@ namespace gum_tests {
         TS_ASSERT( nb == 4 );
 
         nb = 0;
-        gum::Bijection<int, int>::iterator iter = iter2;
+        gum::Bijection<int, int>::iterator_safe iter = iter2;
 
-        for ( iter = bijection.begin(); iter != iter2; ++iter, ++nb ) { }
+        for ( iter = bijection.beginSafe(); iter != iter2; ++iter, ++nb ) { }
 
         TS_ASSERT( nb == 4 );
 
-        iter = bijection.begin();
+        iter = bijection.beginSafe();
         nb = iter.first();
         nb = iter.second();
 
@@ -279,13 +279,13 @@ namespace gum_tests {
         bijection.insert( ( int* )9, ( int* )7 );
         bijection.insert( ( int* )2, ( int* )1 );
 
-        gum::Bijection<int*, int*>::iterator iter1 = bijection.begin();
-        gum::Bijection<int*, int*>::iterator iter2 = bijection.end();
+        gum::Bijection<int*, int*>::iterator_safe iter1 = bijection.beginSafe();
+        gum::Bijection<int*, int*>::iterator_safe iter2 = bijection.endSafe();
 
         unsigned int nb = 0;
 
-        for ( gum::Bijection<int*, int*>::iterator iter = bijection.begin();
-              iter != bijection.end(); ++iter, ++nb ) { }
+        for ( gum::Bijection<int*, int*>::iterator_safe iter = bijection.beginSafe();
+              iter != bijection.endSafe(); ++iter, ++nb ) { }
 
         TS_ASSERT( nb == 8 );
 
@@ -301,13 +301,13 @@ namespace gum_tests {
         TS_ASSERT( nb == 4 );
 
         nb = 0;
-        gum::Bijection<int*, int*>::iterator iter = iter2;
+        gum::Bijection<int*, int*>::iterator_safe iter = iter2;
 
-        for ( iter = bijection.begin(); iter != iter2; ++iter, ++nb ) { }
+        for ( iter = bijection.beginSafe(); iter != iter2; ++iter, ++nb ) { }
 
         TS_ASSERT( nb == 4 );
 
-        iter = bijection.begin();
+        iter = bijection.beginSafe();
         iter.first();
         iter.second();
 
@@ -323,8 +323,8 @@ namespace gum_tests {
 
         gum::Bijection<gum::NodeId, const gum::LabelizedVariable*> copy( b );
 
-        for ( gum::Bijection<gum::NodeId, const gum::LabelizedVariable*>::iterator iter = b.begin();
-              iter != b.end(); ++iter ) {
+        for ( gum::Bijection<gum::NodeId, const gum::LabelizedVariable*>::iterator_safe iter = b.beginSafe();
+              iter != b.endSafe(); ++iter ) {
           delete iter.second();
         }
       }

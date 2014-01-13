@@ -217,7 +217,7 @@ namespace gum_tests {
 //
 //                   gum::MultiDimDecisionDiagramBase<double>* comparisonPrime = gum::subtract2MultiDimDecisionDiagrams( res,  comparableResPrime );
 //                     double gapPrime = 0;
-//                     for( gum::BijectionIterator< NodeId, double > valIter = comparisonPrime->valuesMap().begin(); valIter != comparisonPrime->valuesMap().end(); ++valIter )
+//                     for( gum::BijectionIteratorSafe< NodeId, double > valIter = comparisonPrime->valuesMap().begin(); valIter != comparisonPrime->valuesMap().end(); ++valIter )
 //                         if( gapPrime < fabs( valIter.second() ) )
 //                             gapPrime = fabs( valIter.second() );
 //                   std::cout << " ------------------------------- Resultat : " << gapPrime  << std::endl ;

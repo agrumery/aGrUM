@@ -76,7 +76,7 @@ namespace gum {
     for ( HashTableIteratorSafe< Idx, const MultiDimImplementation< GUM_SCALAR >* > iterA = __actionCostTable.beginSafe(); iterA != __actionCostTable.endSafe(); ++iterA )
       delete iterA.val();
 
-    for ( BijectionIterator< Idx, const std::string* > iterId = __actionMap.begin(); iterId != __actionMap.end(); ++iterId )
+    for ( BijectionIteratorSafe< Idx, const std::string* > iterId = __actionMap.beginSafe(); iterId != __actionMap.endSafe(); ++iterId )
       delete iterId.second();
 
     if ( __defaultRewardTable )
@@ -143,7 +143,7 @@ namespace gum {
   void
   FactoredMarkovDecisionProcess<GUM_SCALAR>::addAction( const std::string& action ) {
 
-    for ( BijectionIterator< Idx, const std::string* > actIter = __actionMap.begin(); actIter != __actionMap.end(); ++actIter )
+    for ( BijectionIteratorSafe< Idx, const std::string* > actIter = __actionMap.beginSafe(); actIter != __actionMap.endSafe(); ++actIter )
       if ( *( actIter.second() ) == action ) {
         GUM_ERROR( DuplicateElement, " Action " << action << " has already been inserted in FMDP." );
       }
@@ -452,7 +452,7 @@ namespace gum {
   const Idx&
   FactoredMarkovDecisionProcess<GUM_SCALAR>::__actionId( const std::string& action ) const {
 
-    for ( BijectionIterator< Idx, const std::string* > actIter = __actionMap.begin(); actIter != __actionMap.end(); ++actIter )
+    for ( BijectionIteratorSafe< Idx, const std::string* > actIter = __actionMap.beginSafe(); actIter != __actionMap.endSafe(); ++actIter )
       if ( *( actIter.second() ) == action ) {
         return actIter.first();
       }

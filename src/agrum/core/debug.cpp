@@ -221,8 +221,8 @@ namespace gum {
       __dec_creation ( "HashTableConstIteratorSafe"  , "__hash_static_end", 0, "static variable correction", 0 );
       __dec_creation ( "HashTableIteratorSafe"  , "__hash_static_end", 0, "static variable correction", 0 );
       __dec_creation ( "SetIteratorSafe", "__empty_edge_set", 0, "static variable correction", 0 );
-      __dec_creation ( "BijectionIterator", "__empty_bijection", 0, "static variable correction", 0 );
-      __dec_creation ( "BijectionIterator", "__empty_bijection_star", 0, "static variable correction", 0 );
+      __dec_creation ( "BijectionIteratorSafe", "__empty_bijection", 0, "static variable correction", 0 );
+      __dec_creation ( "BijectionIteratorSafe", "__empty_bijection_star", 0, "static variable correction", 0 );
       __dec_creation ( "Set", "__empty_edge_set", 0, "static variable correction", 0 );
       __dec_creation ( "HashTable"  , "__empty_edge_set", 0, "static variable correction", 0 );
     }

@@ -745,7 +745,7 @@ namespace gum {
 
     Bijection< NodeId, GUM_SCALAR > newValueMap;
 
-    for ( BijectionIterator< NodeId, GUM_SCALAR > valueIter = __valueMap.begin(); valueIter != __valueMap.end(); ++valueIter ) {
+    for ( BijectionIteratorSafe< NodeId, GUM_SCALAR > valueIter = __valueMap.beginSafe(); valueIter != __valueMap.endSafe(); ++valueIter ) {
       GUM_SCALAR tempVal = valueIter.second() * factor;
 
       if ( newValueMap.existsSecond ( tempVal ) ) {

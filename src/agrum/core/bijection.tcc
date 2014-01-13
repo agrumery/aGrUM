@@ -40,45 +40,45 @@ namespace gum {
   /// Default constructor
 
   template <typename T1, typename T2> INLINE
-  BijectionIterator<T1,T2>::BijectionIterator() : __iter() {
-    GUM_CONSTRUCTOR( BijectionIterator );
+  BijectionIteratorSafe<T1,T2>::BijectionIteratorSafe() : __iter() {
+    GUM_CONSTRUCTOR( BijectionIteratorSafe );
   }
 
 
   /// Constructor
 
   template <typename T1, typename T2> INLINE
-  BijectionIterator<T1,T2>::BijectionIterator
-  ( const Bijection<T1,T2>& biject, BijectionIterator<T1,T2>::Position pos ) :
+  BijectionIteratorSafe<T1,T2>::BijectionIteratorSafe
+  ( const Bijection<T1,T2>& biject, BijectionIteratorSafe<T1,T2>::Position pos ) :
     __iter( pos == Position::BIJECTION_BEGIN ? biject.__firstToSecond.beginSafe () :
             biject.__firstToSecond.endSafe () ) {
-    GUM_CONSTRUCTOR( BijectionIterator );
+    GUM_CONSTRUCTOR( BijectionIteratorSafe );
   }
 
 
   /// Destructor
 
   template <typename T1, typename T2> INLINE
-  BijectionIterator<T1,T2>::~BijectionIterator() {
-    GUM_DESTRUCTOR( BijectionIterator );
+  BijectionIteratorSafe<T1,T2>::~BijectionIteratorSafe() {
+    GUM_DESTRUCTOR( BijectionIteratorSafe );
   }
 
 
   /// Copy constructor
 
   template <typename T1, typename T2> INLINE
-  BijectionIterator<T1,T2>::BijectionIterator
-  ( const BijectionIterator<T1,T2>& toCopy ) :
+  BijectionIteratorSafe<T1,T2>::BijectionIteratorSafe
+  ( const BijectionIteratorSafe<T1,T2>& toCopy ) :
     __iter( toCopy.__iter ) {
-    GUM_CONS_CPY( BijectionIterator );
+    GUM_CONS_CPY( BijectionIteratorSafe );
   }
 
 
   /// Copy operator
 
   template <typename T1, typename T2> INLINE
-  BijectionIterator<T1,T2>&
-  BijectionIterator<T1,T2>::operator=( const BijectionIterator<T1,T2>& toCopy ) {
+  BijectionIteratorSafe<T1,T2>&
+  BijectionIteratorSafe<T1,T2>::operator=( const BijectionIteratorSafe<T1,T2>& toCopy ) {
     __iter = toCopy.__iter;
     return *this;
   }
@@ -87,7 +87,7 @@ namespace gum {
   /// return the first element of the current association
 
   template <typename T1, typename T2> INLINE
-  const T1& BijectionIterator<T1,T2>::first() const {
+  const T1& BijectionIteratorSafe<T1,T2>::first() const {
     return __iter.key();
   }
 
@@ -95,7 +95,7 @@ namespace gum {
   /// return the second element of the current association
 
   template <typename T1, typename T2> INLINE
-  const T2& BijectionIterator<T1,T2>::second() const {
+  const T2& BijectionIteratorSafe<T1,T2>::second() const {
     return *( __iter.val() );
   }
 
@@ -103,7 +103,7 @@ namespace gum {
   /// Go to the next association (if exists)
 
   template <typename T1, typename T2> INLINE
-  BijectionIterator<T1,T2>& BijectionIterator<T1,T2>::operator++() {
+  BijectionIteratorSafe<T1,T2>& BijectionIteratorSafe<T1,T2>::operator++() {
     ++__iter;
     return *this;
   }
@@ -112,8 +112,8 @@ namespace gum {
   /// Comparison of iterators
 
   template <typename T1, typename T2> INLINE
-  bool BijectionIterator<T1,T2>::operator!=
-  ( const BijectionIterator<T1,T2>& toCompare ) const {
+  bool BijectionIteratorSafe<T1,T2>::operator!=
+  ( const BijectionIteratorSafe<T1,T2>& toCompare ) const {
     return __iter != toCompare.__iter;
   }
 
@@ -121,8 +121,8 @@ namespace gum {
   /// Comparison of iterators
 
   template <typename T1, typename T2> INLINE
-  bool BijectionIterator<T1,T2>::operator==
-  ( const BijectionIterator<T1,T2>& toCompare ) const {
+  bool BijectionIteratorSafe<T1,T2>::operator==
+  ( const BijectionIteratorSafe<T1,T2>& toCompare ) const {
     return __iter == toCompare.__iter;
   }
 
@@ -141,9 +141,9 @@ namespace gum {
   // returns the end iterator for other classes' statics
 
   template <typename T1, typename T2>
-  const BijectionIterator<T1,T2>& Bijection<T1,T2>::end4Statics() {
-    return *( reinterpret_cast<const BijectionIterator<T1,T2>*>
-              ( BijectionIteratorStaticEnd::end4Statics() ) );
+  const BijectionIteratorSafe<T1,T2>& Bijection<T1,T2>::endSafe4Statics() {
+    return *( reinterpret_cast<const BijectionIteratorSafe<T1,T2>*>
+              ( BijectionIteratorSafeStaticEnd::endSafe4Statics() ) );
   }
 
 
@@ -160,7 +160,7 @@ namespace gum {
     GUM_CONSTRUCTOR( Bijection );
 
     // make sure the end() iterator is constructed properly
-    end4Statics();
+    endSafe4Statics();
   }
 
 
@@ -175,19 +175,19 @@ namespace gum {
   /// returns the iterator at the beginning of the bijection
 
   template <typename T1, typename T2> INLINE
-  typename Bijection<T1,T2>::iterator
-  Bijection<T1,T2>::begin() const {
-    return BijectionIterator<T1,T2>( *this );
+  typename Bijection<T1,T2>::iterator_safe
+  Bijection<T1,T2>::beginSafe() const {
+    return BijectionIteratorSafe<T1,T2>( *this );
   }
 
 
   /// returns the iterator to the end of the bijection
 
   template <typename T1, typename T2> INLINE
-  const BijectionIterator<T1,T2>&
-  Bijection<T1,T2>::end() const {
-    return *( reinterpret_cast<const BijectionIterator<T1,T2>*>
-              ( BijectionIteratorStaticEnd::__BijectionIterEnd ) );
+  const BijectionIteratorSafe<T1,T2>&
+  Bijection<T1,T2>::endSafe() const {
+    return *( reinterpret_cast<const BijectionIteratorSafe<T1,T2>*>
+              ( BijectionIteratorSafeStaticEnd::__BijectionIterEndSafe ) );
   }
 
 
@@ -224,7 +224,7 @@ namespace gum {
     __copy( toCopy.__firstToSecond );
 
     // make sure the end() iterator is constructed properly
-    end4Statics();
+    endSafe4Statics();
   }
 
 
@@ -429,7 +429,7 @@ namespace gum {
     stream << "{ ";
     bool first = true;
 
-    for ( iterator iter = begin(); iter != end(); ++iter ) {
+    for ( iterator_safe iter = beginSafe(); iter != endSafe(); ++iter ) {
       if ( ! first ) stream << ", ";
       else first = false;
 
@@ -467,45 +467,45 @@ namespace gum {
   /// Default constructor
 
   template <typename T1, typename T2> INLINE
-  BijectionIterator<T1*,T2*>::BijectionIterator() : __iter() {
-    GUM_CONSTRUCTOR( BijectionIterator );
+  BijectionIteratorSafe<T1*,T2*>::BijectionIteratorSafe() : __iter() {
+    GUM_CONSTRUCTOR( BijectionIteratorSafe );
   }
 
 
   /// Constructor
 
   template <typename T1, typename T2> INLINE
-  BijectionIterator<T1*,T2*>::BijectionIterator
-  ( const Bijection<T1*,T2*>& biject, BijectionIterator<T1*,T2*>::Position pos ) :
+  BijectionIteratorSafe<T1*,T2*>::BijectionIteratorSafe
+  ( const Bijection<T1*,T2*>& biject, BijectionIteratorSafe<T1*,T2*>::Position pos ) :
     __iter( pos == Position::BIJECTION_BEGIN ? biject.__firstToSecond.beginSafe() :
             biject.__firstToSecond.endSafe() ) {
-    GUM_CONSTRUCTOR( BijectionIterator );
+    GUM_CONSTRUCTOR( BijectionIteratorSafe );
   }
 
 
   /// Destructor
 
   template <typename T1, typename T2> INLINE
-  BijectionIterator<T1*,T2*>::~BijectionIterator() {
-    GUM_DESTRUCTOR( BijectionIterator );
+  BijectionIteratorSafe<T1*,T2*>::~BijectionIteratorSafe() {
+    GUM_DESTRUCTOR( BijectionIteratorSafe );
   }
 
 
   /// Copy constructor
 
   template <typename T1, typename T2> INLINE
-  BijectionIterator<T1*,T2*>::BijectionIterator
-  ( const BijectionIterator<T1*,T2*>& toCopy ) :
+  BijectionIteratorSafe<T1*,T2*>::BijectionIteratorSafe
+  ( const BijectionIteratorSafe<T1*,T2*>& toCopy ) :
     __iter( toCopy.__iter ) {
-    GUM_CONS_CPY( BijectionIterator );
+    GUM_CONS_CPY( BijectionIteratorSafe );
   }
 
 
   /// Copy operator
 
   template <typename T1, typename T2> INLINE
-  BijectionIterator<T1*,T2*>&
-  BijectionIterator<T1*,T2*>::operator=( const BijectionIterator<T1*,T2*>& toCopy ) {
+  BijectionIteratorSafe<T1*,T2*>&
+  BijectionIteratorSafe<T1*,T2*>::operator=( const BijectionIteratorSafe<T1*,T2*>& toCopy ) {
     __iter = toCopy.__iter;
     return *this;
   }
@@ -514,7 +514,7 @@ namespace gum {
   /// return the first element of the current association
 
   template <typename T1, typename T2> INLINE
-  T1* const BijectionIterator<T1*,T2*>::first() const {
+  T1* const BijectionIteratorSafe<T1*,T2*>::first() const {
     return __iter.key();
   }
 
@@ -522,7 +522,7 @@ namespace gum {
   /// return the second element of the current association
 
   template <typename T1, typename T2> INLINE
-  T2* const BijectionIterator<T1*,T2*>::second() const {
+  T2* const BijectionIteratorSafe<T1*,T2*>::second() const {
     return __iter.val();
   }
 
@@ -530,7 +530,7 @@ namespace gum {
   /// Go to the next association (if exists)
 
   template <typename T1, typename T2> INLINE
-  BijectionIterator<T1*,T2*>& BijectionIterator<T1*,T2*>::operator++() {
+  BijectionIteratorSafe<T1*,T2*>& BijectionIteratorSafe<T1*,T2*>::operator++() {
     ++__iter;
     return *this;
   }
@@ -539,8 +539,8 @@ namespace gum {
   /// Comparison of iterators
 
   template <typename T1, typename T2> INLINE
-  bool BijectionIterator<T1*,T2*>::operator!=
-  ( const BijectionIterator<T1*,T2*>& toCompare ) const {
+  bool BijectionIteratorSafe<T1*,T2*>::operator!=
+  ( const BijectionIteratorSafe<T1*,T2*>& toCompare ) const {
     return __iter != toCompare.__iter;
   }
 
@@ -548,8 +548,8 @@ namespace gum {
   /// Comparison of iterators
 
   template <typename T1, typename T2> INLINE
-  bool BijectionIterator<T1*,T2*>::operator==
-  ( const BijectionIterator<T1*,T2*>& toCompare ) const {
+  bool BijectionIteratorSafe<T1*,T2*>::operator==
+  ( const BijectionIteratorSafe<T1*,T2*>& toCompare ) const {
     return __iter == toCompare.__iter;
   }
 
@@ -568,9 +568,9 @@ namespace gum {
   // returns the end iterator for other classes' statics
 
   template <typename T1, typename T2>
-  const BijectionIterator<T1*,T2*>& Bijection<T1*,T2*>::end4Statics() {
-    return *( reinterpret_cast<const BijectionIterator<T1*,T2*>*>
-              ( BijectionStarIteratorStaticEnd::end4Statics() ) );
+  const BijectionIteratorSafe<T1*,T2*>& Bijection<T1*,T2*>::endSafe4Statics() {
+    return *( reinterpret_cast<const BijectionIteratorSafe<T1*,T2*>*>
+              ( BijectionStarIteratorStaticEnd::endSafe4Statics() ) );
   }
 
 
@@ -587,7 +587,7 @@ namespace gum {
     GUM_CONSTRUCTOR( Bijection );
 
     // make sure the end() iterator is constructed properly
-    end4Statics();
+    endSafe4Statics();
   }
 
 
@@ -602,19 +602,19 @@ namespace gum {
   /// returns the iterator at the beginning of the bijection
 
   template <typename T1, typename T2> INLINE
-  typename Bijection<T1*,T2*>::iterator
-  Bijection<T1*,T2*>::begin() const {
-    return BijectionIterator<T1*,T2*>( *this );
+  typename Bijection<T1*,T2*>::iterator_safe
+  Bijection<T1*,T2*>::beginSafe() const {
+    return BijectionIteratorSafe<T1*,T2*>( *this );
   }
 
 
   /// returns the iterator to the end of the bijection
 
   template <typename T1, typename T2> INLINE
-  const BijectionIterator<T1*,T2*>&
-  Bijection<T1*,T2*>::end() const {
-    return *( reinterpret_cast<const BijectionIterator<T1*,T2*>*>
-              ( BijectionStarIteratorStaticEnd::__BijectionStarIterEnd ) );
+  const BijectionIteratorSafe<T1*,T2*>&
+  Bijection<T1*,T2*>::endSafe() const {
+    return *( reinterpret_cast<const BijectionIteratorSafe<T1*,T2*>*>
+              ( BijectionStarIteratorStaticEnd::__BijectionStarIterEndSafe ) );
   }
 
 
@@ -645,7 +645,7 @@ namespace gum {
     __copy( toCopy.__firstToSecond );
 
     // make sure the end() iterator is constructed properly
-    end4Statics();
+    endSafe4Statics();
   }
 
 
@@ -848,7 +848,7 @@ namespace gum {
     stream << "{ ";
     bool first = true;
 
-    for ( iterator iter = begin(); iter != end(); ++iter ) {
+    for ( iterator_safe iter = beginSafe(); iter != endSafe(); ++iter ) {
       if ( ! first ) stream << ", ";
       else first = false;
 

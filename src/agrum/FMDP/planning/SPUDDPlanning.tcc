@@ -175,7 +175,7 @@ namespace gum {
       MultiDimDecisionDiagramBase< GUM_SCALAR >* deltaV = subtract2MultiDimDecisionDiagrams ( Vnew, Vold );
       gap = 0;
 
-      for ( BijectionIterator< NodeId, GUM_SCALAR > valIter = deltaV->valuesMap().begin(); valIter != deltaV->valuesMap().end(); ++valIter )
+      for ( BijectionIteratorSafe< NodeId, GUM_SCALAR > valIter = deltaV->valuesMap().beginSafe(); valIter != deltaV->valuesMap().endSafe(); ++valIter )
         if ( gap < fabs ( valIter.second() ) )
           gap = fabs ( valIter.second() );
 
@@ -356,7 +356,7 @@ namespace gum {
     delete Vnew;
     MultiDimDecisionDiagramBase< std::pair< double, long > >* Vamnew = nullptr;
 
-//     for ( BijectionIterator< Idx, MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ) {
+//     for ( BijectionIteratorSafe< Idx, MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ) {
     for ( Idx acta = 1; acta < VactionCollector.size() + 1; acta++ ) {
 //         MultiDimDecisionDiagramBase< std::pair< double, long > >* Vamaction = __createArgMaxCopy( VActionsIter.second(), VActionsIter.first() );
       MultiDimDecisionDiagramBase< std::pair< double, long > >* Vamaction = __createArgMaxCopy ( VactionCollector.second ( acta ), acta );
@@ -389,7 +389,7 @@ namespace gum {
     amcpy->setDiagramNodes ( Vaction->nodesMap() );
     Bijection< NodeId, std::pair< double, long > > amvm ( Vaction->valuesMap().size() );
 
-    for ( BijectionIterator< NodeId, GUM_SCALAR > valueIter = Vaction->valuesMap().begin(); valueIter != Vaction->valuesMap().end(); ++valueIter ) {
+    for ( BijectionIteratorSafe< NodeId, GUM_SCALAR > valueIter = Vaction->valuesMap().beginSafe(); valueIter != Vaction->valuesMap().endSafe(); ++valueIter ) {
       std::pair< double, long >  amv ( ( double ) valueIter.second(), ( long ) actionId );
       amvm.insert ( valueIter.first(), amv );
     }
@@ -730,7 +730,7 @@ namespace gum {
       MultiDimDecisionDiagramBase< GUM_SCALAR >* deltaV = subtract2MultiDimDecisionDiagrams ( Vnew, Vold );
       gap = 0;
 
-      for ( BijectionIterator< NodeId, GUM_SCALAR > valIter = deltaV->valuesMap().begin(); valIter != deltaV->valuesMap().end(); ++valIter )
+      for ( BijectionIteratorSafe< NodeId, GUM_SCALAR > valIter = deltaV->valuesMap().beginSafe(); valIter != deltaV->valuesMap().endSafe(); ++valIter )
         if ( gap < fabs ( valIter.second() ) )
           gap = fabs ( valIter.second() );
 

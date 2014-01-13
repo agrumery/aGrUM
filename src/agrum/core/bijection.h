@@ -40,7 +40,7 @@
 namespace gum {
 
 
-  template <typename T1, typename T2> class BijectionIterator;
+  template <typename T1, typename T2> class BijectionIteratorSafe;
   template <typename T1, typename T2> class Bijection;
 
 
@@ -49,13 +49,13 @@ namespace gum {
   // a class used to create the static iterator used by Bijections. The aim of
   // using this class rather than just creating __BijectionIterEnd as a global
   // variable is to prevent other classes to access and modify __BijectionIterEnd
-  class BijectionIteratorStaticEnd {
+  class BijectionIteratorSafeStaticEnd {
     private:
       // the iterator used by everyone
-      static const BijectionIterator<int,int>* __BijectionIterEnd;
+      static const BijectionIteratorSafe<int,int>* __BijectionIterEndSafe;
 
       // creates (if needed) and returns the iterator __BijectionIterEnd
-      static const BijectionIterator<int,int>* end4Statics();
+      static const BijectionIteratorSafe<int,int>* endSafe4Statics();
 
       // friends that have access to the iterator
       template<typename T1, typename T2> friend class Bijection;
@@ -71,7 +71,7 @@ namespace gum {
 
 
   template <typename T1, typename T2>
-  class BijectionIterator {
+  class BijectionIteratorSafe {
     public:
 
       /// the possible positions for the iterators
@@ -88,24 +88,24 @@ namespace gum {
 
       /// Default constructor
 
-      BijectionIterator();
+      BijectionIteratorSafe();
 
 
       /// Constructor
       /** By default, the iterator points to the starting point of the bijection */
 
-      BijectionIterator( const Bijection<T1,T2>& bijection,
+      BijectionIteratorSafe( const Bijection<T1,T2>& bijection,
                          Position pos = Position::BIJECTION_BEGIN );
 
 
       /// Copy constructor
 
-      BijectionIterator( const BijectionIterator<T1,T2>& toCopy );
+      BijectionIteratorSafe( const BijectionIteratorSafe<T1,T2>& toCopy );
 
 
       /// Destructor
 
-      ~BijectionIterator();
+      ~BijectionIteratorSafe();
 
       /// @}
 
@@ -117,19 +117,19 @@ namespace gum {
 
       /// Copy operator
 
-      BijectionIterator<T1,T2>&
-      operator=( const BijectionIterator<T1,T2>& toCopy );
+      BijectionIteratorSafe<T1,T2>&
+      operator=( const BijectionIteratorSafe<T1,T2>& toCopy );
 
 
       /// Go to the next association (if it exists)
 
-      BijectionIterator<T1,T2>& operator++();
+      BijectionIteratorSafe<T1,T2>& operator++();
 
 
       /// Comparison of iterators
 
-      bool operator!=( const BijectionIterator<T1,T2>& toCompare ) const;
-      bool operator==( const BijectionIterator<T1,T2>& toCompare ) const;
+      bool operator!=( const BijectionIteratorSafe<T1,T2>& toCompare ) const;
+      bool operator==( const BijectionIteratorSafe<T1,T2>& toCompare ) const;
 
       /// @}
 
@@ -178,8 +178,8 @@ namespace gum {
   template <typename T1, typename T2>
   class Bijection {
     public:
-      typedef BijectionIterator<T1,T2> iterator;
-      typedef BijectionIterator<T1,T2> const_iterator;
+      typedef BijectionIteratorSafe<T1,T2> iterator_safe;
+      typedef BijectionIteratorSafe<T1,T2> const_iterator_safe;
 
 
       // ############################################################################
@@ -233,7 +233,7 @@ namespace gum {
        * for(iterator iter = begin(); iter != end; ++iter) loops will parse all the
        * associations */
 
-      iterator begin() const;
+      iterator_safe beginSafe() const;
 
 
       /// returns the iterator to the end of the bijection
@@ -242,7 +242,7 @@ namespace gum {
        * for(iterator iter = begin(); iter != end; ++iter) loops will parse all the
        * associations */
 
-      const iterator& end() const;
+      const iterator_safe& endSafe() const;
 
 
       /** @brief returns the end iterator for other classes' statics (read the
@@ -276,7 +276,7 @@ namespace gum {
        * So, to summarize: when initializing static members, use end4Statics() rather
        * than end(). In all the other cases, use simply the usual method end(). */
 
-      static const iterator& end4Statics();
+      static const iterator_safe& endSafe4Statics();
 
       /// @}
 
@@ -398,7 +398,7 @@ namespace gum {
 
     private:
       /// a friend to speed-up accesses
-      friend class BijectionIterator<T1,T2>;
+      friend class BijectionIteratorSafe<T1,T2>;
 
       // below, we create the two hashtables used by the bijection. Note that
       // the values of these hashtables are actually pointers. This enables to
@@ -450,7 +450,7 @@ namespace gum {
 
 
   template <typename T1, typename T2>
-  class BijectionIterator<T1*,T2*> {
+  class BijectionIteratorSafe<T1*,T2*> {
     public:
 
       /// the possible positions for the iterators
@@ -467,24 +467,24 @@ namespace gum {
 
       /// Default constructor
 
-      BijectionIterator();
+      BijectionIteratorSafe();
 
 
       /// Constructor
       /** By default, the iterator points to the starting point of the bijection */
 
-      BijectionIterator( const Bijection<T1*,T2*>& bijection,
+      BijectionIteratorSafe( const Bijection<T1*,T2*>& bijection,
                          Position pos = Position::BIJECTION_BEGIN );
 
 
       /// Copy constructor
 
-      BijectionIterator( const BijectionIterator<T1*,T2*>& toCopy );
+      BijectionIteratorSafe( const BijectionIteratorSafe<T1*,T2*>& toCopy );
 
 
       /// Destructor
 
-      ~BijectionIterator();
+      ~BijectionIteratorSafe();
 
       /// @}
 
@@ -496,19 +496,19 @@ namespace gum {
 
       /// Copy operator
 
-      BijectionIterator<T1*,T2*>&
-      operator=( const BijectionIterator<T1*,T2*>& toCopy );
+      BijectionIteratorSafe<T1*,T2*>&
+      operator=( const BijectionIteratorSafe<T1*,T2*>& toCopy );
 
 
       /// Go to the next association (if it exists)
 
-      BijectionIterator<T1*,T2*>& operator++();
+      BijectionIteratorSafe<T1*,T2*>& operator++();
 
 
       /// Comparison of iterators
 
-      bool operator!=( const BijectionIterator<T1*,T2*>& toCompare ) const;
-      bool operator==( const BijectionIterator<T1*,T2*>& toCompare ) const;
+      bool operator!=( const BijectionIteratorSafe<T1*,T2*>& toCompare ) const;
+      bool operator==( const BijectionIteratorSafe<T1*,T2*>& toCompare ) const;
 
       /// @}
 
@@ -548,10 +548,10 @@ namespace gum {
   class BijectionStarIteratorStaticEnd {
     private:
       // the iterator used by everyone
-      static const BijectionIterator<int*,int*>* __BijectionStarIterEnd;
+      static const BijectionIteratorSafe<int*,int*>* __BijectionStarIterEndSafe;
 
       // creates (if needed) and returns the iterator __BijectionStarIterEnd
-      static const BijectionIterator<int*,int*>* end4Statics();
+      static const BijectionIteratorSafe<int*,int*>* endSafe4Statics();
 
       // friends that have access to the iterator
       template<typename T1, typename T2> friend class Bijection;
@@ -577,8 +577,8 @@ namespace gum {
   template <typename T1, typename T2>
   class Bijection<T1*,T2*> {
     public:
-      typedef BijectionIterator<T1*,T2*> iterator;
-      typedef BijectionIterator<T1*,T2*> const_iterator;
+      typedef BijectionIteratorSafe<T1*,T2*> iterator_safe;
+      typedef BijectionIteratorSafe<T1*,T2*> const_iterator_safe;
 
       // ############################################################################
       /// @name Constructors/destructors
@@ -631,7 +631,7 @@ namespace gum {
        * for(iterator iter = begin(); iter != end; ++iter) loops will parse all the
        * associations */
 
-      iterator begin() const;
+      iterator_safe beginSafe() const;
 
 
       /// returns the iterator to the end of the bijection
@@ -640,7 +640,7 @@ namespace gum {
        * for(iterator iter = begin(); iter != end; ++iter) loops will parse all the
        * associations */
 
-      const iterator& end() const;
+      const iterator_safe& endSafe() const;
 
 
       /** @brief returns the end iterator for other classes' statics (read the
@@ -674,7 +674,7 @@ namespace gum {
        * So, to summarize: when initializing static members, use end4Statics() rather
        * than end(). In all the other cases, use simply the usual method end(). */
 
-      static const iterator& end4Statics();
+      static const iterator_safe& endSafe4Statics();
 
       /// @}
 
@@ -794,7 +794,7 @@ namespace gum {
 
     private:
       /// a friend to speed-up accesses
-      friend class BijectionIterator<T1*,T2*>;
+      friend class BijectionIteratorSafe<T1*,T2*>;
 
       /// hashtable associating T2* objects to T1* objects
       HashTable<T1*,T2*> __firstToSecond;

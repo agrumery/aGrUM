@@ -79,7 +79,7 @@ namespace gum {
     if ( this->_model.size() == 2 && !this->_valueMap.empty() )
       newValueMap = this->_valueMap;
     else
-      for ( BijectionIterator<NodeId, GUM_SCALAR> valueIter = this->_valueMap.begin(); valueIter != this->_valueMap.end(); ++valueIter )
+      for ( BijectionIteratorSafe<NodeId, GUM_SCALAR> valueIter = this->_valueMap.beginSafe(); valueIter != this->_valueMap.endSafe(); ++valueIter )
         if ( this->_model.parents ( valueIter.first() ).empty() && valueIter.first() != this->_rootId )
           this->_model.eraseNode ( valueIter.first() );
         else

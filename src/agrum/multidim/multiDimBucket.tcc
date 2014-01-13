@@ -47,9 +47,9 @@ namespace gum {
   template<typename GUM_SCALAR>
   MultiDimBucket<GUM_SCALAR>::~MultiDimBucket() {
     GUM_DESTRUCTOR( MultiDimBucket );
-    typedef Bijection<Instantiation*, Instantiation*>::iterator BiIter;
+    typedef Bijection<Instantiation*, Instantiation*>::iterator_safe BiIter;
 
-    for ( BiIter iter = __instantiations.begin(); iter != __instantiations.end(); ++iter ) {
+    for ( BiIter iter = __instantiations.beginSafe(); iter != __instantiations.endSafe(); ++iter ) {
       delete iter.second();
     }
 
@@ -465,9 +465,9 @@ namespace gum {
   void
   MultiDimBucket<GUM_SCALAR>::__initializeBuffer() {
     if ( __bucket ) {
-      typedef Bijection<Instantiation*, Instantiation*>::iterator BiIter;
+      typedef Bijection<Instantiation*, Instantiation*>::iterator_safe BiIter;
 
-      for ( BiIter iter = __instantiations.begin(); iter != __instantiations.end(); ++iter ) {
+      for ( BiIter iter = __instantiations.beginSafe(); iter != __instantiations.endSafe(); ++iter ) {
         delete iter.second();
       }
 
@@ -496,9 +496,9 @@ namespace gum {
   void
   MultiDimBucket<GUM_SCALAR>::__eraseBuffer() {
     if ( __bucket ) {
-      typedef Bijection<Instantiation*, Instantiation*>::iterator BiIter;
+      typedef Bijection<Instantiation*, Instantiation*>::iterator_safe BiIter;
 
-      for ( BiIter iter = __instantiations.begin(); iter != __instantiations.end(); ++iter ) {
+      for ( BiIter iter = __instantiations.beginSafe(); iter != __instantiations.endSafe(); ++iter ) {
         delete iter.second();
       }
 
@@ -557,9 +557,9 @@ namespace gum {
   void
   MultiDimBucket<GUM_SCALAR>::_swap( const DiscreteVariable* x, const DiscreteVariable* y ) {
     MultiDimImplementation<GUM_SCALAR>::_swap( x, y );
-    typedef Bijection<Instantiation*, Instantiation*>::iterator Iter;
+    typedef Bijection<Instantiation*, Instantiation*>::iterator_safe Iter;
 
-    for ( Iter iter = __instantiations.begin(); iter != __instantiations.end(); ++iter ) {
+    for ( Iter iter = __instantiations.beginSafe(); iter != __instantiations.endSafe(); ++iter ) {
       iter.first()->swap( *x, *y );
       iter.second()->swap( *x, *y );
     }
