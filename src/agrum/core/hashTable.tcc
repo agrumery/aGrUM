@@ -208,6 +208,23 @@ namespace gum {
     // for debugging purposes
     GUM_CONS_CPY ( HashTableConstIteratorSafe );
   }
+  
+
+  /// copy constructor
+  template <typename Key, typename Val> INLINE
+  HashTableConstIteratorSafe<Key,Val>::HashTableConstIteratorSafe
+  ( const HashTableConstIterator<Key, Val>& from )  :
+    __table  { from.__table },
+    __index  { from.__index },
+    __bucket { from.__bucket } {
+    // make the hashtable keep track of this iterator
+    if ( __table != nullptr ) {
+    __insertIntoSafeList ();
+    }
+    
+    // for debugging purposes
+    GUM_CONS_CPY ( HashTableConstIteratorSafe );
+  }
 
   
   /// move constructor
@@ -273,6 +290,37 @@ namespace gum {
     __index = from.__index;
     __bucket = from.__bucket;
     __next_bucket = from.__next_bucket;
+
+    return *this;
+  }
+
+  
+  /// copy operator
+  template <typename Key, typename Val>
+  HashTableConstIteratorSafe<Key,Val>&
+  HashTableConstIteratorSafe<Key,Val>::operator=
+  ( const HashTableConstIterator<Key,Val>& from ) {
+    // here, no need to avoid self assignment: this would slow down normal
+    // assignments and, in any case, this would not result in an iterator in
+    // an incoherent state
+    // check if the current hashtable is different from that of "from". In such
+    // a case, we shall remove the iterator from its current hashtable iterator's
+    // list and add it to the new hashtable iterator's list
+    if ( __table != from.__table ) {
+      // remove the iterator from its hashtable iterator's list'
+      __removeFromSafeList ();
+
+      __table = from.__table;
+
+      // add to the new table
+      if ( __table ) {
+        __insertIntoSafeList ();
+      }
+    }
+
+    __index = from.__index;
+    __bucket = from.__bucket;
+    __next_bucket = nullptr;
 
     return *this;
   }
@@ -550,7 +598,16 @@ namespace gum {
   /// copy constructor
   template <typename Key, typename Val> INLINE
   HashTableIteratorSafe<Key,Val>::HashTableIteratorSafe
-  ( const HashTableIteratorSafe<Key, Val>& from ) :
+  ( const HashTableIteratorSafe<Key,Val>& from ) :
+    HashTableConstIteratorSafe<Key,Val> ( from ) {
+    GUM_CONS_CPY( HashTableIteratorSafe );
+  }
+
+  
+  /// copy constructor
+  template <typename Key, typename Val> INLINE
+  HashTableIteratorSafe<Key,Val>::HashTableIteratorSafe
+  ( const HashTableIterator<Key,Val>& from ) :
     HashTableConstIteratorSafe<Key,Val> ( from ) {
     GUM_CONS_CPY( HashTableIteratorSafe );
   }
@@ -584,6 +641,16 @@ namespace gum {
   template <typename Key, typename Val> INLINE
   HashTableIteratorSafe<Key,Val>& HashTableIteratorSafe<Key,Val>::operator=
   ( const HashTableIteratorSafe<Key,Val>& from )  {
+    GUM_OP_CPY( HashTableIteratorSafe );
+    HashTableConstIteratorSafe<Key,Val>::operator= ( from );
+    return *this;
+  }
+
+  
+  /// copy operator
+  template <typename Key, typename Val> INLINE
+  HashTableIteratorSafe<Key,Val>& HashTableIteratorSafe<Key,Val>::operator=
+  ( const HashTableIterator<Key,Val>& from )  {
     GUM_OP_CPY( HashTableIteratorSafe );
     HashTableConstIteratorSafe<Key,Val>::operator= ( from );
     return *this;
@@ -810,7 +877,7 @@ namespace gum {
 
     return *this;
   }
-
+  
 
   /// move operator
   template <typename Key, typename Val> INLINE

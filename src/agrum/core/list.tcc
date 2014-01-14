@@ -173,27 +173,7 @@ namespace gum {
     // for debugging purposes
     GUM_CONS_CPY( ListConstIterator );
   }
-
   
-  /// copy constructor
-  template <typename Val> INLINE
-  ListConstIterator<Val>::ListConstIterator
-  ( const ListConstIteratorSafe<Val>& src ) noexcept :
-    __bucket { src.__bucket } {
-    // for debugging purposes
-    GUM_CONS_CPY( ListConstIterator );
-  }
-
-  
-  /// copy constructor
-  template <typename Val> INLINE
-  ListConstIterator<Val>::ListConstIterator
-  ( const ListIteratorSafe<Val>& src ) noexcept :
-    __bucket { src.__bucket } {
-    // for debugging purposes
-    GUM_CONS_CPY( ListConstIterator );
-  }
-
   
   /// move constructor
   template <typename Val> INLINE
@@ -253,18 +233,6 @@ namespace gum {
     return *this;
   }
 
-  
-  /// Copy operator
-  template <typename Val> INLINE
-  ListConstIterator<Val>& ListConstIterator<Val>::operator=
-  ( const ListConstIteratorSafe<Val>& src ) noexcept {
-    // for debugging purposes
-    GUM_OP_CPY( ListConstIterator );
-
-    __bucket = src.__bucket;
-    return *this;
-  }
-  
 
   /// move operator
   template <typename Val> INLINE
@@ -466,15 +434,6 @@ namespace gum {
   }
 
   
-  /// copy constructor
-  template <typename Val> INLINE
-  ListIterator<Val>::ListIterator
-  ( const ListIteratorSafe<Val>& src ) noexcept :
-    ListConstIterator<Val> { src } {
-    GUM_CONS_CPY( ListIterator );
-  }
-
-
   /// move constructor
   template <typename Val> INLINE
   ListIterator<Val>::ListIterator
@@ -498,16 +457,6 @@ namespace gum {
   template <typename Val> INLINE
   ListIterator<Val>& ListIterator<Val>::operator=
   ( const ListIterator<Val>& src ) noexcept {
-    GUM_OP_CPY ( ListIterator );
-    ListConstIterator<Val>::operator= ( src );
-    return *this;
-  }
-
-
-  /// Copy operator
-  template <typename Val> INLINE
-  ListIterator<Val>& ListIterator<Val>::operator=
-  ( const ListIteratorSafe<Val>& src ) noexcept {
     GUM_OP_CPY ( ListIterator );
     ListConstIterator<Val>::operator= ( src );
     return *this;
@@ -604,10 +553,9 @@ namespace gum {
   
   /* =========================================================================== */
   /* =========================================================================== */
-  /* ===                  LIST CONST ITERATOR IMPLEMENTATION                 === */
+  /* ===               SAFE LIST CONST ITERATOR IMPLEMENTATION               === */
   /* =========================================================================== */
   /* =========================================================================== */
-
 
   /// basic constructor
   template <typename Val> INLINE
@@ -620,7 +568,8 @@ namespace gum {
   /// Constructor for a begin
   template <typename Val>
   template<typename Alloc> INLINE
-  ListConstIteratorSafe<Val>::ListConstIteratorSafe( const List<Val,Alloc>& theList ) :
+  ListConstIteratorSafe<Val>::ListConstIteratorSafe
+  ( const List<Val,Alloc>& theList ) :
     __list { reinterpret_cast<const List< Val,std::allocator<Val> >*>
       ( &theList ) },
     __bucket { theList.__deb_list } {
@@ -634,7 +583,8 @@ namespace gum {
 
   /// copy constructor
   template <typename Val> INLINE
-  ListConstIteratorSafe<Val>::ListConstIteratorSafe( const ListConstIteratorSafe<Val>& src ) :
+  ListConstIteratorSafe<Val>::ListConstIteratorSafe
+  ( const ListConstIteratorSafe<Val>& src ) :
     __list                { src.__list },
     __bucket              { src.__bucket },
     __next_current_bucket { src.__next_current_bucket },
@@ -683,7 +633,8 @@ namespace gum {
 
   /// move constructor
   template <typename Val> INLINE
-  ListConstIteratorSafe<Val>::ListConstIteratorSafe ( ListConstIteratorSafe<Val>&& src ) :
+  ListConstIteratorSafe<Val>::ListConstIteratorSafe
+  ( ListConstIteratorSafe<Val>&& src ) :
     __list                { src.__list },
     __bucket              { src.__bucket },
     __next_current_bucket { src.__next_current_bucket },
@@ -781,7 +732,8 @@ namespace gum {
 
       // now if src points to a list, put this at its location
       if ( ( src.__list != nullptr ) ) {        
-        std::vector<ListConstIteratorSafe<Val>*>& vect = src.__list->__safe_iterators;
+        std::vector<ListConstIteratorSafe<Val>*>&
+          vect = src.__list->__safe_iterators;
         int index_src = vect.size () - 1;
         for ( ; ; --index_src ) {
           if ( vect[index_src] == &src ) {
@@ -1107,8 +1059,8 @@ namespace gum {
   operator- ( const ListConstIteratorSafe<Val>& iter1,
               const ListConstIteratorSafe<Val>& iter2 ) {
     typename ListConstIteratorSafe<Val>::difference_type res = 0;
-    ListConstIterator<Val> iter3 {iter2}, iter4 {iter1};
-    for ( ; iter4 != iter3; ++iter3, ++res ) {}
+    ListConstIteratorSafe<Val> iter3 {iter2};
+    for ( ; iter1 != iter3; ++iter3, ++res ) {}
     return res;
   }
   
@@ -1270,7 +1222,8 @@ namespace gum {
 
   /// a function used to perform copies of elements of Lists
   template <typename Val, typename Alloc>
-  void List<Val,Alloc>::__copy_elements( const List<Val,Alloc> &src ) {
+  template <typename OtherAlloc>
+  void List<Val,Alloc>::__copy_elements( const List<Val,OtherAlloc> &src ) {
     ListBucket<Val> *ptr;
     ListBucket<Val> *old_ptr = nullptr;
     ListBucket<Val> *new_elt = nullptr;
@@ -1365,6 +1318,21 @@ namespace gum {
   }
 
   
+  /// generalized copy constructor 
+  template <typename Val, typename Alloc>
+  template <typename OtherAlloc> INLINE
+  List<Val,Alloc>::List( const List<Val,OtherAlloc>& src ) {
+    // for debugging purposes
+    GUM_CONS_CPY( List );
+
+    // copy the elements
+    __copy_elements ( src );
+
+    // reserve space for only the default number of iterators
+    __safe_iterators.reserve ( GUM_DEFAULT_ITERATOR_NUMBER );
+  }
+
+  
   /// move constructor 
   template <typename Val, typename Alloc> INLINE
   List<Val,Alloc>::List( List<Val,Alloc>&& src ) :
@@ -1414,6 +1382,25 @@ namespace gum {
   /// Copy operator. The List iterator's list is not shared with that of \e src.
   template <typename Val, typename Alloc> INLINE
   List<Val,Alloc>& List<Val,Alloc>::operator= ( const List<Val,Alloc>& src ) {
+    // avoid self assignment
+    if ( this != &src ) {
+      // for debugging purposes
+      GUM_OP_CPY( List );
+
+      // remove the old content of 'this' and update accordingly the iterators
+      clear();
+
+      // perform the copy
+      __copy_elements ( src );
+    }
+
+    return *this;
+  }
+
+  /// Generalized copy operator.
+  template <typename Val, typename Alloc>
+  template <typename OtherAlloc> INLINE
+  List<Val,Alloc>& List<Val,Alloc>::operator= ( const List<Val,OtherAlloc>& src ) {
     // avoid self assignment
     if ( this != &src ) {
       // for debugging purposes
@@ -1953,6 +1940,16 @@ namespace gum {
   }
 
 
+  /// emplace a new element before a given iterator
+  template <typename Val, typename Alloc> 
+  template <typename... Args> INLINE
+  Val& List<Val,Alloc>::emplace ( const const_iterator_safe& iter,
+                                  Args&&... args ) {
+    return __insert ( iter, __createEmplaceBucket ( std::forward<Args>(args)... ),
+                      location::BEFORE );
+  }
+
+
   /// returns a reference to first element of a list
   template <typename Val, typename Alloc> INLINE
   Val& List<Val,Alloc>::front() const  {
@@ -2055,20 +2052,6 @@ namespace gum {
     __erase( iter.__getBucket() );
   }
 
-  
-  /// erases the element of the List pointed to by the iterator
-  template <typename Val, typename Alloc> INLINE
-  void List<Val,Alloc>::erase( const iterator& iter ) {
-    __erase( iter.__getBucket() );
-  }
-
-
-  /// erases the element of the List pointed to by the iterator
-  template <typename Val, typename Alloc> INLINE
-  void List<Val,Alloc>::erase( const const_iterator& iter ) {
-    __erase( iter.__getBucket() );
-  }
-
 
   /// returns the bucket corresponding to a given value.
   template <typename Val, typename Alloc> INLINE
@@ -2143,10 +2126,10 @@ namespace gum {
 
   /// creates a list of mountains src a list of val
   template <typename Val, typename Alloc>
-  template <typename Mount>
-  List<Mount> List<Val,Alloc>::map( Mount( *f )( Val ) ) const {
+  template <typename Mount, typename OtherAlloc>
+  List<Mount,OtherAlloc> List<Val,Alloc>::map( Mount( *f )( Val ) ) const {
     // create a new empty list
-    List<Mount> list;
+    List<Mount,OtherAlloc> list;
 
     // fill the new list
     for ( const_iterator iter = begin (); iter != end (); ++iter ) {
@@ -2159,10 +2142,11 @@ namespace gum {
 
   /// creates a list of mountains src a list of val
   template <typename Val, typename Alloc>
-  template <typename Mount>
-  List<Mount> List<Val,Alloc>::map( Mount( *f )( Val& ) ) const {
+  template <typename Mount, typename OtherAlloc>
+  List<Mount,OtherAlloc>
+  List<Val,Alloc>::map( Mount( *f )( Val& ) ) const {
     // create a new empty list
-    List<Mount> list;
+    List<Mount,OtherAlloc> list;
 
     // fill the new list
     for ( const_iterator iter = begin(); iter != end(); ++iter ) {
@@ -2175,10 +2159,11 @@ namespace gum {
 
   /// creates a list of mountains src a list of val
   template <typename Val, typename Alloc>
-  template <typename Mount>
-  List<Mount> List<Val,Alloc>::map( Mount( *f )( const Val& ) ) const {
+  template <typename Mount, typename OtherAlloc>
+  List<Mount,OtherAlloc>
+  List<Val,Alloc>::map( Mount( *f )( const Val& ) ) const {
     // create a new empty list
-    List<Mount> list;
+    List<Mount,OtherAlloc> list;
 
     // fill the new list
     for ( const_iterator iter = begin(); iter != end(); ++iter ) {
@@ -2191,10 +2176,11 @@ namespace gum {
 
   /// creates a list of mountains with a given value src a list of val
   template <typename Val, typename Alloc>
-  template <typename Mount>
-  List<Mount> List<Val,Alloc>::map( const Mount& mount ) const {
+  template <typename Mount, typename OtherAlloc>
+  List<Mount,OtherAlloc>
+  List<Val,Alloc>::map( const Mount& mount ) const {
     // create a new empty list
-    List<Mount> list;
+    List<Mount,OtherAlloc> list;
 
     // fill the new list
     for ( unsigned int i = 0; i < __nb_elements; ++i )
@@ -2219,8 +2205,9 @@ namespace gum {
 
 
   /// checks whether two lists are identical (same elements in the same order)
-  template <typename Val, typename Alloc> INLINE
-  bool List<Val,Alloc>::operator== ( const List<Val,Alloc>& src ) const {
+  template <typename Val, typename Alloc>
+  template <typename OtherAlloc> INLINE
+  bool List<Val,Alloc>::operator== ( const List<Val,OtherAlloc>& src ) const {
     // check if the two lists have at least the same number of elements
     if ( __nb_elements != src.__nb_elements ) return false;
 
@@ -2234,8 +2221,9 @@ namespace gum {
   
 
   /// checks whether two lists are different (different elements or orders)
-  template <typename Val, typename Alloc> INLINE
-  bool List<Val,Alloc>::operator!= ( const List<Val,Alloc>& src ) const {
+  template <typename Val, typename Alloc>
+  template <typename OtherAlloc> INLINE
+  bool List<Val,Alloc>::operator!= ( const List<Val,OtherAlloc>& src ) const {
     return ! operator== ( src );
   }
   

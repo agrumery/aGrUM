@@ -1393,6 +1393,8 @@ namespace gum {
    *        iter != table.cendSafe (); ++iter) {
    *   // display the values
    *   cerr << "at " << iter.key () << " value = " << iter.val () << endl;
+   *   const HashTable<int,string>::value_type& elt = *iter;
+   *   const std::pair<const int, string>& xelt = *iter;
    * }
    *
    * // check whether two iterators point toward the same element
@@ -1447,6 +1449,10 @@ namespace gum {
     /// copy constructor
     HashTableConstIteratorSafe ( const HashTableConstIteratorSafe<Key,Val>& from );
 
+    /// copy constructor
+    explicit
+    HashTableConstIteratorSafe ( const HashTableConstIterator<Key,Val>& from );
+
     /// move constructor
     HashTableConstIteratorSafe ( HashTableConstIteratorSafe<Key,Val>&& from );
 
@@ -1492,6 +1498,10 @@ namespace gum {
     HashTableConstIteratorSafe<Key,Val>& operator=
     ( const HashTableConstIteratorSafe<Key,Val>& from ) ;
 
+    /// copy operator
+    HashTableConstIteratorSafe<Key,Val>& operator=
+    ( const HashTableConstIterator<Key,Val>& from ) ;
+
     /// move operator
     HashTableConstIteratorSafe<Key,Val>& operator=
     ( HashTableConstIteratorSafe<Key,Val>&& from ) noexcept;
@@ -1517,7 +1527,7 @@ namespace gum {
     bool
     operator== ( const HashTableConstIteratorSafe<Key,Val>& from ) const noexcept;
 
-    /// returns the value pointed to by the iterator
+    /// returns the element pointed to by the iterator
     /** @throws UndefinedIteratorValue exception is thrown when the iterator does
      * not point to a valid hash table element
      * @throw UndefinedIteratorValue */
@@ -1528,7 +1538,7 @@ namespace gum {
 
   protected:
     /** class HashTable must be a friend because it stores iterator end
-     * and those can be properly initialized only when the hashtable has been
+     * and this can be properly initialized only when the hashtable has been
      * fully allocated. Thus, proper initialization can only take place within
      * the constructor's code of the hashtable. */
     template <typename K, typename V, typename A> 
@@ -1537,18 +1547,18 @@ namespace gum {
     /// the hash table the iterator is pointing to
     const HashTable<Key,Val>* __table { nullptr };
 
-    /** @brief the index of the chained list pointed by the iterator in the
-     * array of nodes of the hash table */
+    /** @brief the index of the chained list pointed to by the iterator in the
+     * array __nodes of the hash table */
     Size __index { 0 };
 
     /// the bucket in the chained list pointed to by the iterator
     HashTableBucket<Key,Val>* __bucket { nullptr };
 
     /** @brief the bucket we should start from when we decide to do a ++. Usually
-     * it should be equal to bucket. However, if the user has deleted the object
+     * it should be equal to nullptr. However, if the user has deleted the object
      * pointed to by bucket, this will point to another bucket. When it is equal to
-     * 0, it means that the bucket reached after a ++ belongs to another slot of
-     * the hash table's 'node' vector. */
+     * nullptr, it means that the bucket reached after a ++ belongs to another
+     * slot of the hash table's '__node' vector. */
     HashTableBucket<Key,Val>* __next_bucket { nullptr };
 
 
@@ -1558,10 +1568,10 @@ namespace gum {
     /// returns the index in the hashtable's node vector pointed to by the iterator
     Size __getIndex() const noexcept;
 
-    /// remove the iterator for its hashtable' safe iterators list
+    /// remove the iterator from its hashtable' safe iterators list
     void __removeFromSafeList () const noexcept;
 
-    /// insert in the hashtable's list of safe iterators
+    /// insert the iterator into the hashtable's list of safe iterators
     void __insertIntoSafeList () const;
 
   };
@@ -1580,7 +1590,7 @@ namespace gum {
    * because they are kept informed by the hashtable they belong to of the
    * elements deleted by the user. Hence, even if the user removes an element
    * pointed to by a HashTableIteratorSafe, using the latter to access this element
-   * will never crash the application. Instead it will properly throw a
+   * will never crash the application. Instead it will properly throw an
    * UndefinedIteratorValue exception.
    *
    * Developers may consider using HashTable<x,y>::iterator_safe instead of
@@ -1597,6 +1607,8 @@ namespace gum {
    *        iter != table.endSafe (); ++iter) {
    *   // display the values
    *   cerr << "at " << iter.key() << " value = " << iter.val () << endl;
+   *   HashTable<int,string>::value_type& elt = *iter;
+   *   std::pair<const int, string>& xelt = *iter;
    * }
    *
    * // check whether two iterators point toward the same element
@@ -1650,6 +1662,10 @@ namespace gum {
     /// copy constructor
     HashTableIteratorSafe ( const HashTableIteratorSafe<Key,Val>& from );
 
+    /// copy constructor
+    explicit
+    HashTableIteratorSafe ( const HashTableIterator<Key,Val>& from );
+
     /// move constructor
     HashTableIteratorSafe ( HashTableIteratorSafe<Key,Val>&& from ) noexcept;
 
@@ -1685,6 +1701,10 @@ namespace gum {
     /// copy operator
     HashTableIteratorSafe<Key,Val>& operator=
     ( const HashTableIteratorSafe<Key,Val>& from );
+
+    /// copy operator
+    HashTableIteratorSafe<Key,Val>& operator=
+    ( const HashTableIterator<Key,Val>& from );
 
     /// move operator
     HashTableIteratorSafe<Key,Val>& operator=
@@ -1758,6 +1778,8 @@ namespace gum {
    *        iter != table.cend (); ++iter) {
    *   // display the values
    *   cerr << "at " << iter.key() << " value = " << iter.val () << endl;
+   *   const HashTable<int,string>::value_type& elt = *iter;
+   *   const std::pair<const int, string>& xelt = *iter;
    * }
    *
    * // check whether two iterators point toward the same element
@@ -1827,7 +1849,7 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /// returns the key corresponding to the value pointed to by the iterator
+    /// returns the key corresponding to the element pointed to by the iterator
     /** @warning using this method on an iterator that points to an element that
      * has been deleted will most certainly result in a segfault. If unsure, use
      * a safe iterator instead of an unsafe one. */
@@ -1890,11 +1912,15 @@ namespace gum {
 
   protected:
     /** class HashTable must be a friend because it stores iterator end
-     * and those can be properly initialized only when the hashtable has been
+     * and this one can be properly initialized only when the hashtable has been
      * fully allocated. Thus, proper initialization can only take place within
      * the constructor's code of the hashtable. */
     template <typename K, typename V, typename A> 
     friend class HashTable;
+
+    /// for the safe copy constructor and operator
+    friend class HashTableConstIteratorSafe<Key,Val>;
+    
 
     /// the hash table the iterator is pointing to
     const HashTable<Key,Val>* __table { nullptr };
@@ -1905,7 +1931,6 @@ namespace gum {
 
     /// the bucket in the chained list pointed to by the iterator
     typename HashTable<Key,Val>::Bucket* __bucket { nullptr };
-
 
 
     /// returns the current iterator's bucket
@@ -1949,6 +1974,8 @@ namespace gum {
    *        iter != table.end (); ++iter) {
    *   // display the values
    *   cerr << "at " << iter.key() << " value = " << iter.val () << endl;
+   *   HashTable<int,string>::value_type& elt = *iter;
+   *   std::pair<const int, string>& xelt = *iter;
    * }
    *
    * // check whether two iterators point toward the same element
