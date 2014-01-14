@@ -1787,7 +1787,7 @@ namespace gum {
   HashTable<Key,Val,Alloc>& HashTable<Key,Val,Alloc>::operator=
   ( const HashTable<Key,Val,OtherAlloc>& from ) {
     // avoid self assignment
-    if ( this != &from ) {
+    if ( this != reinterpret_cast<const HashTable<Key,Val,Alloc>*> ( &from ) ) {
       // for debugging purposes
       GUM_OP_CPY( HashTable );
 
