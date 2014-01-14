@@ -1402,7 +1402,7 @@ namespace gum {
   template <typename OtherAlloc> INLINE
   List<Val,Alloc>& List<Val,Alloc>::operator= ( const List<Val,OtherAlloc>& src ) {
     // avoid self assignment
-    if ( this != &src ) {
+    if ( this != reinterpret_cast<List<Val,Alloc>*> ( &src ) ) {
       // for debugging purposes
       GUM_OP_CPY( List );
 
