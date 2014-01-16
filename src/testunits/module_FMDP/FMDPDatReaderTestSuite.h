@@ -36,38 +36,38 @@ namespace gum_tests {
   class FMDPDatReaderTestSuite: public CxxTest::TestSuite {
     public:
       void testConstuctor() {
-        std::string file = GET_PATH_STR( "FMDP/coffee/coffee.dat" );
+        std::string file = GET_PATH_STR ( "FMDP/coffee/coffee.dat" );
 
         gum::FactoredMarkovDecisionProcess<float> fmdp;
         gum::MultiDimDecisionDiagramFactory<float> ddf;
 
         gum::FMDPDatReader<float>* reader = 0;
 
-        TS_GUM_ASSERT_THROWS_NOTHING( reader = new gum::FMDPDatReader<float> ( &fmdp, file, &ddf ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( reader = new gum::FMDPDatReader<float> ( &fmdp, file, &ddf ) );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( delete reader );
+        TS_GUM_ASSERT_THROWS_NOTHING ( delete reader );
 
       }
 
       void testRead_file1() {
-        std::string file = GET_PATH_STR( "FMDP/factory/factoryB.dat" );
+        std::string file = GET_PATH_STR ( "FMDP/factory/factoryB.dat" );
 
         gum::FactoredMarkovDecisionProcess<float> fmdp;
         gum::MultiDimDecisionDiagramFactory<float> ddf;
 
-        gum::FMDPDatReader<float> reader( &fmdp, file, &ddf );
+        gum::FMDPDatReader<float> reader ( &fmdp, file, &ddf );
 
-        reader.trace( false );
+        reader.trace ( false );
 
 
         int nbrErr = 0;
 
-        TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
+        TS_GUM_ASSERT_THROWS_NOTHING ( nbrErr = reader.proceed() );
 
 
-        TS_ASSERT( nbrErr==0 );
-        TS_ASSERT_EQUALS( reader.warnings(), ( gum::Size ) 0 );
-        TS_ASSERT_EQUALS( reader.errors(), ( gum::Size ) 0 );
+        TS_ASSERT ( nbrErr == 0 );
+        TS_ASSERT_EQUALS ( reader.warnings(), ( gum::Size ) 0 );
+        TS_ASSERT_EQUALS ( reader.errors(), ( gum::Size ) 0 );
         reader.showElegantErrorsAndWarnings();
       }
 
@@ -154,7 +154,7 @@ namespace gum_tests {
       //~ }
 
     private:
-      float abs( float d ) {
+      float abs ( float d ) {
         if ( d < 0 )
           return ( d * ( float ) - 1 );
 

@@ -47,32 +47,32 @@ namespace gum_tests {
 
   class BIFXMLIDWriterTestSuite: public CxxTest::TestSuite {
     private:
-      void fillTopo( gum::InfluenceDiagram<double>& infDiag, gum::List<gum::NodeId>& idList ) {
+      void fillTopo ( gum::InfluenceDiagram<double>& infDiag, gum::List<gum::NodeId>& idList ) {
         try {
-          idList.insert( infDiag.addDecisionNode( *decisionVar1 ) ); //0
-          idList.insert( infDiag.addDecisionNode( *decisionVar2 ) ); //1
-          idList.insert( infDiag.addDecisionNode( *decisionVar3 ) ); //2
-          idList.insert( infDiag.addDecisionNode( *decisionVar4 ) ); //3
-          idList.insert( infDiag.addChanceNode( *chanceVar1 ) ); //4
-          idList.insert( infDiag.addChanceNode( *chanceVar2 ) ); //5
-          idList.insert( infDiag.addChanceNode( *chanceVar3 ) ); //6
-          idList.insert( infDiag.addChanceNode( *chanceVar4 ) ); //7
-          idList.insert( infDiag.addChanceNode( *chanceVar5 ) ); //8
-          idList.insert( infDiag.addUtilityNode( *utilityVar1 ) ); //9
-          idList.insert( infDiag.addUtilityNode( *utilityVar2 ) ); //10
+          idList.insert ( infDiag.addDecisionNode ( *decisionVar1 ) ); //0
+          idList.insert ( infDiag.addDecisionNode ( *decisionVar2 ) ); //1
+          idList.insert ( infDiag.addDecisionNode ( *decisionVar3 ) ); //2
+          idList.insert ( infDiag.addDecisionNode ( *decisionVar4 ) ); //3
+          idList.insert ( infDiag.addChanceNode ( *chanceVar1 ) ); //4
+          idList.insert ( infDiag.addChanceNode ( *chanceVar2 ) ); //5
+          idList.insert ( infDiag.addChanceNode ( *chanceVar3 ) ); //6
+          idList.insert ( infDiag.addChanceNode ( *chanceVar4 ) ); //7
+          idList.insert ( infDiag.addChanceNode ( *chanceVar5 ) ); //8
+          idList.insert ( infDiag.addUtilityNode ( *utilityVar1 ) ); //9
+          idList.insert ( infDiag.addUtilityNode ( *utilityVar2 ) ); //10
 
-          infDiag.addArc( idList[0], idList[4] );
-          infDiag.addArc( idList[4], idList[9] );
-          infDiag.addArc( idList[4], idList[5] );
-          infDiag.addArc( idList[5], idList[1] );
-          infDiag.addArc( idList[5], idList[2] );
-          infDiag.addArc( idList[1], idList[9] );
-          infDiag.addArc( idList[1], idList[7] );
-          infDiag.addArc( idList[2], idList[6] );
-          infDiag.addArc( idList[6], idList[8] );
-          infDiag.addArc( idList[7], idList[8] );
-          infDiag.addArc( idList[8], idList[10] );
-          infDiag.addArc( idList[3], idList[10] );
+          infDiag.addArc ( idList[0], idList[4] );
+          infDiag.addArc ( idList[4], idList[9] );
+          infDiag.addArc ( idList[4], idList[5] );
+          infDiag.addArc ( idList[5], idList[1] );
+          infDiag.addArc ( idList[5], idList[2] );
+          infDiag.addArc ( idList[1], idList[9] );
+          infDiag.addArc ( idList[1], idList[7] );
+          infDiag.addArc ( idList[2], idList[6] );
+          infDiag.addArc ( idList[6], idList[8] );
+          infDiag.addArc ( idList[7], idList[8] );
+          infDiag.addArc ( idList[8], idList[10] );
+          infDiag.addArc ( idList[3], idList[10] );
 
         } catch ( gum::Exception& e ) {
           std::cerr << std::endl << e.errorContent() << std::endl;
@@ -80,64 +80,64 @@ namespace gum_tests {
         }
       }
 
-      void fill( gum::InfluenceDiagram<double>& infDiag, gum::List<gum::NodeId>& idList ) {
-        fillTopo( infDiag, idList );
+      void fill ( gum::InfluenceDiagram<double>& infDiag, gum::List<gum::NodeId>& idList ) {
+        fillTopo ( infDiag, idList );
 
         try {
-          const gum::Potential<double>& p1 = infDiag.cpt( idList[4] );
+          const gum::Potential<double>& p1 = infDiag.cpt ( idList[4] );
           {
             // FILLING PARAMS
             const double t[4] = {0.2, 0.8, 0.5, 0.5};
-            int n = 4; const std::vector<double> v( t, t + n );
-            p1.fillWith( v );
+            int n = 4; const std::vector<double> v ( t, t + n );
+            p1.fillWith ( v );
           }
 
-          const gum::Potential<double>& p2 = infDiag.cpt( idList[5] );
+          const gum::Potential<double>& p2 = infDiag.cpt ( idList[5] );
           {
             // FILLING PARAMS
             const double t[4] = {0.1, 0.9, 0.9, 0.1};
-            int n = 4; const std::vector<double> v( t, t + n );
-            p2.fillWith( v );
+            int n = 4; const std::vector<double> v ( t, t + n );
+            p2.fillWith ( v );
           }
 
-          const gum::Potential<double>& p3 = infDiag.cpt( idList[6] );
+          const gum::Potential<double>& p3 = infDiag.cpt ( idList[6] );
           {
             // FILLING PARAMS
             const double t[4] = {0.35, 0.65, 0.19, 0.81};
-            int n = 4; const std::vector<double> v( t, t + n );
-            p3.fillWith( v );
+            int n = 4; const std::vector<double> v ( t, t + n );
+            p3.fillWith ( v );
           }
 
-          const gum::Potential<double>& p4 = infDiag.cpt( idList[7] );
+          const gum::Potential<double>& p4 = infDiag.cpt ( idList[7] );
           {
             // FILLING PARAMS
             const double t[4] = {0.4, 0.6, 0.5, 0.5};
-            int n = 4; const std::vector<double> v( t, t + n );
-            p4.fillWith( v );
+            int n = 4; const std::vector<double> v ( t, t + n );
+            p4.fillWith ( v );
           }
 
-          const gum::Potential<double>& p5 = infDiag.cpt( idList[8] );
+          const gum::Potential<double>& p5 = infDiag.cpt ( idList[8] );
           {
             // FILLING PARAMS
             const double t[8] = {0.4, 0.6, 0.8, 0.2, 0.4, 0.6, 0.3, 0.7};
-            int n = 8; const std::vector<double> v( t, t + n );
-            p5.fillWith( v );
+            int n = 8; const std::vector<double> v ( t, t + n );
+            p5.fillWith ( v );
           }
 
-          const gum::UtilityTable<double>& u1 = infDiag.utility( idList[9] );
+          const gum::UtilityTable<double>& u1 = infDiag.utility ( idList[9] );
           {
             // FILLING PARAMS
             const double t[4] = { 42, 69, 666, 84};
-            int n = 4; const std::vector<double> v( t, t + n );
-            u1.fillWith( v );
+            int n = 4; const std::vector<double> v ( t, t + n );
+            u1.fillWith ( v );
           }
 
-          const gum::UtilityTable<double>& u2 = infDiag.utility( idList[10] );
+          const gum::UtilityTable<double>& u2 = infDiag.utility ( idList[10] );
           {
             // FILLING PARAMS
             const double t[4] = {42, -69, 666, 84};
-            int n = 4; const std::vector<double> v( t, t + n );
-            u2.fillWith( v );
+            int n = 4; const std::vector<double> v ( t, t + n );
+            u2.fillWith ( v );
           }
         } catch ( gum::Exception& e ) {
           std::cerr << std::endl << e.errorContent() << std::endl;
@@ -156,19 +156,19 @@ namespace gum_tests {
         id = new gum::InfluenceDiagram<double>();
         idListPtr = new gum::List<gum::NodeId>();
 
-        decisionVar1 = new gum::LabelizedVariable( "decisionVar1", "D1", 2 );
-        decisionVar2 = new gum::LabelizedVariable( "decisionVar2", "D2", 2 );
-        decisionVar3 = new gum::LabelizedVariable( "decisionVar3", "D3", 2 );
-        decisionVar4 = new gum::LabelizedVariable( "decisionVar4", "D4", 2 );
-        chanceVar1 = new gum::LabelizedVariable( "chanceVar1", "C1", 2 );
-        chanceVar2 = new gum::LabelizedVariable( "chanceVar2", "C2", 2 );
-        chanceVar3 = new gum::LabelizedVariable( "chanceVar3", "C3", 2 );
-        chanceVar4 = new gum::LabelizedVariable( "chanceVar4", "C4", 2 );
-        chanceVar5 = new gum::LabelizedVariable( "chanceVar5", "C5", 2 );
-        utilityVar1 = new gum::LabelizedVariable( "utilityVar1", "U1", 1 );
-        utilityVar2 = new gum::LabelizedVariable( "utilityVar2", "U2", 1 );
+        decisionVar1 = new gum::LabelizedVariable ( "decisionVar1", "D1", 2 );
+        decisionVar2 = new gum::LabelizedVariable ( "decisionVar2", "D2", 2 );
+        decisionVar3 = new gum::LabelizedVariable ( "decisionVar3", "D3", 2 );
+        decisionVar4 = new gum::LabelizedVariable ( "decisionVar4", "D4", 2 );
+        chanceVar1 = new gum::LabelizedVariable ( "chanceVar1", "C1", 2 );
+        chanceVar2 = new gum::LabelizedVariable ( "chanceVar2", "C2", 2 );
+        chanceVar3 = new gum::LabelizedVariable ( "chanceVar3", "C3", 2 );
+        chanceVar4 = new gum::LabelizedVariable ( "chanceVar4", "C4", 2 );
+        chanceVar5 = new gum::LabelizedVariable ( "chanceVar5", "C5", 2 );
+        utilityVar1 = new gum::LabelizedVariable ( "utilityVar1", "U1", 1 );
+        utilityVar2 = new gum::LabelizedVariable ( "utilityVar2", "U2", 1 );
 
-        fill( *id, *idListPtr );
+        fill ( *id, *idListPtr );
       }
 
       void tearDown() {
@@ -190,7 +190,7 @@ namespace gum_tests {
 
       void testConstuctor() {
         gum::BIFXMLIDWriter<double>* writer = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING( writer = new gum::BIFXMLIDWriter<double>() );
+        TS_GUM_ASSERT_THROWS_NOTHING ( writer = new gum::BIFXMLIDWriter<double>() );
         delete writer;
       }
 
@@ -199,20 +199,20 @@ namespace gum_tests {
         std::stringstream s;
 
         // Uncomment this to check the ouput
-        TS_GUM_ASSERT_THROWS_NOTHING( writer.write( s/*cerr*/, *id ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( writer.write ( s/*cerr*/, *id ) );
       }
 
       void testWriter_file() {
         gum::BIFXMLIDWriter<double> writer;
-        std::string file = GET_PATH_STR( "IDBIFXMLIO_file.xml" );
-        TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *id ) );
+        std::string file = GET_PATH_STR ( "IDBIFXMLIO_file.xml" );
+        TS_GUM_ASSERT_THROWS_NOTHING ( writer.write ( file, *id ) );
 
         // For comparison with what readers will return
-        std::string dotfile = GET_PATH_STR( "IDToDotWriter.dot" );
-        std::ofstream output( dotfile.c_str(), std::ios::out | std::ios::trunc );
+        std::string dotfile = GET_PATH_STR ( "IDToDotWriter.dot" );
+        std::ofstream output ( dotfile.c_str(), std::ios::out | std::ios::trunc );
 
         if ( ! output.good() ) {
-          GUM_ERROR( gum::IOError, "Stream states flags are not all unset." );
+          GUM_ERROR ( gum::IOError, "Stream states flags are not all unset." );
         }
 
         output << id->toDot();
@@ -220,7 +220,7 @@ namespace gum_tests {
         output.close();
 
         if ( output.fail() ) {
-          GUM_ERROR( gum::IOError, "Writting in the ostream failed." );
+          GUM_ERROR ( gum::IOError, "Writting in the ostream failed." );
         }
       }
   };

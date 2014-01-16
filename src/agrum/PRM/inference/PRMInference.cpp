@@ -29,7 +29,7 @@
 
 namespace gum {
   namespace prm {
-    
+
     template class PRMInference<double>;
 
   } /* namespace prm */

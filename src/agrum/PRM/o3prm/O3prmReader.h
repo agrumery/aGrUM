@@ -113,7 +113,7 @@ namespace gum {
           // Needed when file can't be parse (can not open it for exemple)
           ErrorsContainer __errors;
       };
-      
+
       extern template class O3prmReader<double>;
     } /* namespace o3prm */
   } /* namespace prm */

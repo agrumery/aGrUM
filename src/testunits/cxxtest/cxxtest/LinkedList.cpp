@@ -60,7 +60,7 @@ namespace CxxTest {
     return count;
   }
 
-  Link* List::nth( unsigned n ) {
+  Link* List::nth ( unsigned n ) {
     Link* l = head();
 
     while ( n -- )
@@ -71,19 +71,19 @@ namespace CxxTest {
 
   void List::activateAll() {
     for ( Link* l = _head; l != 0; l = l->justNext() )
-      l->setActive( true );
+      l->setActive ( true );
   }
 
-  void List::leaveOnly( const Link& link ) {
+  void List::leaveOnly ( const Link& link ) {
     for ( Link* l = head(); l != 0; l = l->next() )
       if ( l != &link )
-        l->setActive( false );
+        l->setActive ( false );
   }
 
   Link::Link() :
-    _next( 0 ),
-    _prev( 0 ),
-    _active( true ) {
+    _next ( 0 ),
+    _prev ( 0 ),
+    _active ( true ) {
   }
 
   Link::~Link() {
@@ -93,7 +93,7 @@ namespace CxxTest {
     return _active;
   }
 
-  void Link::setActive( bool value ) {
+  void Link::setActive ( bool value ) {
     _active = value;
   }
 
@@ -141,7 +141,7 @@ namespace CxxTest {
     return l;
   }
 
-  void Link::attach( List& l ) {
+  void Link::attach ( List& l ) {
     if ( l._tail )
       l._tail->_next = this;
 
@@ -154,7 +154,7 @@ namespace CxxTest {
     l._tail = this;
   }
 
-  void Link::detach( List& l ) {
+  void Link::detach ( List& l ) {
     if ( _prev )
       _prev->_next = _next;
     else

@@ -619,7 +619,7 @@ namespace gum {
       const Sequence<NodeId>& topoNodes = bnet->topologicalOrder();
 
       // use const iterators with cbegin when available
-      for ( auto it = topoNodes.begin(), theEnd = topoNodes.end(); it != theEnd; ++it ) {
+      for ( auto it = topoNodes.beginSafe(), theEnd = topoNodes.endSafe(); it != theEnd; ++it ) {
         _update_p.set ( *it, false );
         _update_l.set ( *it, false );
 
@@ -724,13 +724,13 @@ namespace gum {
         _NodesL_min.set ( *it, ( GUM_SCALAR ) 1. );
       }
 
-      for ( const auto it : bnet->arcs() ) {
-        _ArcsP_min.set ( it, _NodesP_min[ it.tail() ] );
+      for ( auto it = bnet->arcs().beginSafe(); it != bnet->arcs().endSafe(); ++it ) {
+        _ArcsP_min.set ( *it, _NodesP_min[ it->tail() ] );
 
-        if ( _NodesP_max.exists ( it.tail() ) )
-          _ArcsP_max.set ( it, _NodesP_max[ it.tail() ] );
+        if ( _NodesP_max.exists ( it->tail() ) )
+          _ArcsP_max.set ( *it, _NodesP_max[ it->tail() ] );
 
-        _ArcsL_min.set ( it, _NodesL_min[ it.tail() ] );
+        _ArcsL_min.set ( *it, _NodesL_min[ it->tail() ] );
       }
 
     }
@@ -745,10 +745,10 @@ namespace gum {
       infE::continueApproximationScheme ( 1. );
 
       do {
-        for ( auto it = active_nodes_set.begin(), theEnd = active_nodes_set.end(); it != theEnd; ++it ) {
+        for ( auto it = active_nodes_set.beginSafe(), theEnd = active_nodes_set.endSafe(); it != theEnd; ++it ) {
           NodeSet _enfants = graphe.children ( *it );
 
-          for ( auto jt = _enfants.begin(), theEnd2 = _enfants.end(); jt != theEnd2; ++jt ) {
+          for ( auto jt = _enfants.beginSafe(), theEnd2 = _enfants.endSafe(); jt != theEnd2; ++jt ) {
             if ( cn->currentNodeType ( *jt ) == CredalNet<GUM_SCALAR>::NodeType::Indic )
               continue;
 
@@ -757,7 +757,7 @@ namespace gum {
 
           NodeSet _parents = graphe.parents ( *it );
 
-          for ( auto kt = _parents.begin(), theEnd2 = _parents.end(); kt != theEnd2; ++kt ) {
+          for ( auto kt = _parents.beginSafe(), theEnd2 = _parents.endSafe(); kt != theEnd2; ++kt ) {
             if ( cn->currentNodeType ( *it ) == CredalNet<GUM_SCALAR>::NodeType::Indic )
               continue;
 
@@ -785,8 +785,8 @@ namespace gum {
       std::vector< cArcP > seq;
       seq.reserve ( nbrArcs );
 
-      for ( const auto it : bnet->arcs() )
-        seq.push_back ( &it );
+      for ( auto it = bnet->arcs().beginSafe (); it != bnet->arcs().endSafe(); ++it )
+        seq.push_back ( & ( *it ) );
 
       GUM_SCALAR eps;
       // validate TestSuite
@@ -826,8 +826,8 @@ namespace gum {
       std::vector< cArcP > seq;
       seq.reserve ( nbrArcs );
 
-      for ( const auto it : bnet->arcs() )
-        seq.push_back ( &it );
+      for ( auto it = bnet->arcs().beginSafe(); it != bnet->arcs().endSafe(); ++it )
+        seq.push_back ( & ( *it ) );
 
       GUM_SCALAR eps;
       // validate TestSuite
@@ -883,7 +883,7 @@ namespace gum {
           GUM_SCALAR lmin = 1.;
           GUM_SCALAR lmax = 1.;
 
-          for ( auto it = children.begin(), theEnd = children.end(); it != theEnd; ++it ) {
+          for ( auto it = children.beginSafe(), theEnd = children.endSafe(); it != theEnd; ++it ) {
             lmin *= _ArcsL_min[ Arc ( Y, *it ) ];
 
             if ( _ArcsL_max.exists ( Arc ( Y, *it ) ) )
@@ -1068,7 +1068,7 @@ namespace gum {
       GUM_SCALAR lmax = 1.;
 
       // use cbegin if available
-      for ( auto it = children.begin(), theEnd = children.end(); it != theEnd; ++it ) {
+      for ( auto it = children.beginSafe(), theEnd = children.endSafe(); it != theEnd; ++it ) {
         if ( *it == demanding_child ) continue;
 
         lmin *= _ArcsL_min[ Arc ( X, *it ) ];
@@ -1256,13 +1256,13 @@ namespace gum {
           GUM_SCALAR lmax = 1.;
 
           if ( ! children.empty() && ! infE::_evidence.exists ( itX ) ) {
-            for ( const auto it : children ) {
-              lmin *= _ArcsL_min[ Arc ( itX, it ) ];
+            for ( auto it = children.beginSafe(); it != children.endSafe (); ++it ) {
+              lmin *= _ArcsL_min[ Arc ( itX, *it ) ];
 
-              if ( _ArcsL_max.exists ( Arc ( itX, it ) ) )
-                lmax *= _ArcsL_max[ Arc ( itX, it ) ];
+              if ( _ArcsL_max.exists ( Arc ( itX, *it ) ) )
+                lmax *= _ArcsL_max[ Arc ( itX, *it ) ];
               else
-                lmax *= _ArcsL_min[ Arc ( itX, it ) ];
+                lmax *= _ArcsL_min[ Arc ( itX, *it ) ];
             }
 
             if ( lmin != lmin && lmax == lmax )
@@ -1453,8 +1453,8 @@ namespace gum {
         if ( cn->currentNodeType ( id ) != CredalNet<GUM_SCALAR>::NodeType::Indic )
           continue;
 
-        for ( const auto pid : bnet->dag( ).parents ( id ) )
-          _msgP ( pid, id );
+        for ( auto pid = bnet->dag( ).parents ( id ).beginSafe(); pid != bnet->dag( ).parents ( id ).endSafe(); ++pid )
+          _msgP ( *pid, id );
       }
 
       _refreshLMsPIs ( true );

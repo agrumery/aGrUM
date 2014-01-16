@@ -238,11 +238,11 @@ namespace gum {
         // ========================================================================
         /// @{
 
-        typedef typename NodeProperty<ClassElement<GUM_SCALAR>*>::iterator ClassEltIterator;
+        typedef typename NodeProperty<ClassElement<GUM_SCALAR>*>::iterator_safe ClassEltIterator;
         ClassEltIterator begin();
         const ClassEltIterator& end();
 
-        typedef typename NodeProperty<ClassElement<GUM_SCALAR>*>::const_iterator const_ClassEltIterator;
+        typedef typename NodeProperty<ClassElement<GUM_SCALAR>*>::const_iterator_safe const_ClassEltIterator;
         const_ClassEltIterator begin() const;
         const const_ClassEltIterator& end() const;
 
@@ -333,7 +333,7 @@ namespace gum {
 
         /// @}
     };
-    
+
     extern template class Interface<double>;
 
   } /* namespace prm */

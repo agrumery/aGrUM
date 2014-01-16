@@ -45,7 +45,7 @@ namespace gum {
       /**
        * Default constructor
        */
-      InfluenceDiagramInference( const InfluenceDiagram<GUM_SCALAR>& infDiag );
+      InfluenceDiagramInference ( const InfluenceDiagram<GUM_SCALAR>& infDiag );
 
       /**
        * Destructor.
@@ -63,12 +63,12 @@ namespace gum {
        * evidence w.r.t. this node is onserted, the old evidence is removed.
        * @throw OperationNotAllowed Raised if an evidence is over more than one variable.
        */
-      virtual void insertEvidence( const List<const Potential<GUM_SCALAR>*>& evidenceList ) = 0;
+      virtual void insertEvidence ( const List<const Potential<GUM_SCALAR>*>& evidenceList ) = 0;
 
       /**
        * Remove a given evidence from the graph.
        */
-      virtual void eraseEvidence( const Potential<GUM_SCALAR>* evidence ) = 0;
+      virtual void eraseEvidence ( const Potential<GUM_SCALAR>* evidence ) = 0;
 
       /**
        * Remove all evidence from the graph.
@@ -92,7 +92,7 @@ namespace gum {
        * @throw OperationNotAllowed if no inference have yet been made
        * @throw InvalidNode if node given in parmaeter is not a decision node
        */
-      virtual Idx getBestDecisionChoice( NodeId decisionId ) = 0;
+      virtual Idx getBestDecisionChoice ( NodeId decisionId ) = 0;
 
     protected:
 

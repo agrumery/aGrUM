@@ -32,10 +32,10 @@ namespace gum {
   namespace prm {
     template<typename GUM_SCALAR> void
     ClassElementContainer<GUM_SCALAR>::_copyIOFlags ( const ClassElementContainer<GUM_SCALAR>& c ) {
-      typedef HashTable< std::string, std::pair<bool, bool> >::const_iterator Iter;
+      typedef HashTable< std::string, std::pair<bool, bool> >::const_iterator_safe Iter;
 
-      for ( Iter iter = c.__IOFlags.begin(); iter != c.__IOFlags.end(); ++iter ) {
-        _setIOFlag ( get ( iter.key() ), *iter );
+      for ( Iter iter = c.__IOFlags.beginSafe(); iter != c.__IOFlags.endSafe(); ++iter ) {
+        _setIOFlag ( get ( iter.key() ), iter.val() );
       }
     }
 
@@ -86,7 +86,7 @@ namespace gum {
     void
     ClassElementContainer<GUM_SCALAR>::setInputNode ( const ClassElement<GUM_SCALAR>& elt, bool b ) {
       if ( not exists ( elt.safeName() ) ) {
-        GUM_ERROR ( NotFound, ": <"+elt.safeName() +"> is not in <"+name() +">" );
+        GUM_ERROR ( NotFound, ": <" + elt.safeName() + "> is not in <" + name() + ">" );
       } else if ( ClassElement<GUM_SCALAR>::isAttribute ( elt ) or ClassElement<GUM_SCALAR>::isAggregate ( elt ) ) {
         try {
           _getIOFlag ( elt ).second = b;
@@ -114,7 +114,7 @@ namespace gum {
       GUM_TRACE_VAR ( name() );
 
       if ( not exists ( elt.safeName() ) ) {
-        GUM_ERROR ( NotFound, "<"+elt.safeName() +"> is not in <"+name() +">" );
+        GUM_ERROR ( NotFound, "<" + elt.safeName() + "> is not in <" + name() + ">" );
       } else if ( ClassElement<GUM_SCALAR>::isAttribute ( elt ) or ClassElement<GUM_SCALAR>::isAggregate ( elt ) ) {
         try {
           _getIOFlag ( elt ).second = b;
@@ -225,8 +225,8 @@ operator<< ( std::ostream& output, const gum::prm::ClassElementContainer<GUM_SCA
     if ( container.dag().children ( node ).size() > 0 ) {
       const gum::NodeSet& children = container.dag().children ( node );
 
-      for ( gum::NodeSetIterator child_iter = children.begin();
-            child_iter != children.end(); ++child_iter ) {
+      for ( gum::NodeSetIterator child_iter = children.beginSafe();
+            child_iter != children.endSafe(); ++child_iter ) {
         output << tab << "\"" << container.get ( node ).name() << "\" -> "
                << "\"" << container.get ( *child_iter ).name() << "\";" << std::endl;
       }

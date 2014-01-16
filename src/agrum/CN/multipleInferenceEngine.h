@@ -193,8 +193,8 @@ namespace gum {
         /// @}
     };
 
-    extern template class MultipleInferenceEngine<double,gum::LazyPropagation<double>>;
-    extern template class MultipleInferenceEngine<float,gum::LazyPropagation<float>>;
+    extern template class MultipleInferenceEngine<double, gum::LazyPropagation<double>>;
+    extern template class MultipleInferenceEngine<float, gum::LazyPropagation<float>>;
   } // end of namespace
 }
 

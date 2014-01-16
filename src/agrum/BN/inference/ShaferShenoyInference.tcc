@@ -56,18 +56,18 @@ namespace gum {
 
     delete __triangulation;
 
-    for ( typename Property< MultiDimBucket<GUM_SCALAR>* >::onArcs::iterator
-          iter = __messagesMap.begin(); iter != __messagesMap.end(); ++iter ) {
-      delete *iter;
+    for ( typename Property< MultiDimBucket<GUM_SCALAR>* >::onArcs::iterator_safe
+          iter = __messagesMap.beginSafe(); iter != __messagesMap.endSafe(); ++iter ) {
+      delete iter.val();
     }
 
-    for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator
-          iter = __clique_prop.begin(); iter != __clique_prop.end(); ++iter ) {
-      delete *iter;
+    for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator_safe
+          iter = __clique_prop.beginSafe(); iter != __clique_prop.endSafe(); ++iter ) {
+      delete iter.val();
     }
 
-    for ( SetIterator< Potential<GUM_SCALAR>* > iter = __dummies.begin();
-          iter != __dummies.end(); ++iter ) {
+    for ( SetIteratorSafe< Potential<GUM_SCALAR>* > iter = __dummies.beginSafe();
+          iter != __dummies.endSafe(); ++iter ) {
       delete *iter;
     }
 
@@ -87,14 +87,14 @@ namespace gum {
     this->_invalidateMarginals();
 
     // Setting all collect flags at false
-    for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator
-          iter = __clique_prop.begin(); iter != __clique_prop.end(); ++iter ) {
-      ( *iter )->isCollected = false;
+    for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator_safe
+          iter = __clique_prop.beginSafe(); iter != __clique_prop.endSafe(); ++iter ) {
+      ( iter.val() )->isCollected = false;
     }
 
-    for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator
-          iter = __clique_prop.begin(); iter != __clique_prop.end(); ++iter ) {
-      if ( not ( *iter )->isCollected ) {
+    for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator_safe
+          iter = __clique_prop.beginSafe(); iter != __clique_prop.endSafe(); ++iter ) {
+      if ( not ( iter.val() )->isCollected ) {
         __collectFromClique ( iter.key() );
         __diffuseFromClique ( iter.key() );
       }
@@ -132,8 +132,8 @@ namespace gum {
 
     const NodeSet& neighbours = __getNeighbours ( cliqueId );
 
-    for ( NodeSetIterator iter = neighbours.begin();
-          iter != neighbours.end(); ++iter ) {
+    for ( NodeSetIterator iter = neighbours.beginSafe ();
+          iter != neighbours.endSafe (); ++iter ) {
       bucket.add ( __messagesMap[Arc ( *iter, cliqueId )] );
     }
 
@@ -153,8 +153,8 @@ namespace gum {
   void
   ShaferShenoyInference<GUM_SCALAR>::insertEvidence (
     const List<const Potential<GUM_SCALAR>*>& pot_list ) {
-    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = pot_list.cbegin();
-          iter != pot_list.cend(); ++iter ) {
+    for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter = pot_list.cbeginSafe();
+          iter != pot_list.cendSafe(); ++iter ) {
       __clique_prop[__node2CliqueMap[
                       this->bn().nodeId ( ( *iter )->variable ( 0 ) )]
                    ]->addEvidence ( **iter );
@@ -184,10 +184,10 @@ namespace gum {
   template <typename GUM_SCALAR>
   void
   ShaferShenoyInference<GUM_SCALAR>::eraseAllEvidence() {
-    for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator
-          iter = __clique_prop.begin(); iter != __clique_prop.end(); ++iter ) {
+    for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator_safe
+          iter = __clique_prop.beginSafe(); iter != __clique_prop.endSafe(); ++iter ) {
       __removeDiffusedMessages ( iter.key() );
-      ( *iter )->removeAllEvidence();
+      ( iter.val() )->removeAllEvidence();
     }
   }
 
@@ -215,7 +215,7 @@ namespace gum {
 
     const NodeSet& parents = this->bn().dag().parents ( id );
 
-    for ( NodeSetIterator iter = parents.begin(); iter != parents.end(); ++iter ) {
+    for ( NodeSetIterator iter = parents.beginSafe (); iter != parents.endSafe (); ++iter ) {
       idSet.insert ( *iter );
     }
 
@@ -244,8 +244,8 @@ namespace gum {
       __clique_prop.insert ( node, new CliqueProp<GUM_SCALAR> ( node ) );
       cliquesSet.insert ( node );
 
-      for ( NodeSetIterator jter = __triangulation->junctionTree().clique ( node ).begin();
-            jter != __triangulation->junctionTree().clique ( node ).end(); ++jter ) {
+      for ( NodeSetIterator jter = __triangulation->junctionTree().clique ( node ).beginSafe();
+            jter != __triangulation->junctionTree().clique ( node ).endSafe(); ++jter ) {
         __clique_prop[node]->addVariable ( this->bn().variable ( *jter ) );
       }
     }
@@ -259,7 +259,7 @@ namespace gum {
     }
 
     // Second pass to fill empty cliques with "one" matrices.
-    for ( NodeSetIterator iter = cliquesSet.begin(); iter != cliquesSet.end(); ++iter ) {
+    for ( NodeSetIterator iter = cliquesSet.beginSafe(); iter != cliquesSet.endSafe(); ++iter ) {
       __clique_prop[*iter]->addPotential ( *__makeDummyPotential ( *iter ) );
     }
   }
@@ -273,8 +273,8 @@ namespace gum {
     try {
       const NodeSet& neighbours =  __getNeighbours ( source );
 
-      for ( NodeSetIterator iter = neighbours.begin();
-            iter != neighbours.end(); ++iter ) {
+      for ( NodeSetIterator iter = neighbours.beginSafe();
+            iter != neighbours.endSafe(); ++iter ) {
         __collect ( source, *iter );
       }
     } catch ( NotFound& ) {
@@ -291,8 +291,8 @@ namespace gum {
 
     const NodeSet& neighbours = __getNeighbours ( current );
 
-    for ( NodeSetIterator iter = neighbours.begin();
-          iter != neighbours.end(); ++iter ) {
+    for ( NodeSetIterator iter = neighbours.beginSafe();
+          iter != neighbours.endSafe(); ++iter ) {
       if ( *iter != source ) {
         bool retVal = __collect ( current, *iter );
         newMsg = newMsg or retVal;
@@ -322,8 +322,8 @@ namespace gum {
     try {
       const NodeSet& neighbours = __getNeighbours ( source );
 
-      for ( NodeSetIterator iter = neighbours.begin();
-            iter != neighbours.end(); ++iter ) {
+      for ( NodeSetIterator iter = neighbours.beginSafe();
+            iter != neighbours.endSafe(); ++iter ) {
         if ( __messageExists ( source, *iter ) ) {
           // No new evidence and msg already computed
           __diffuse ( source, *iter, false );
@@ -345,8 +345,8 @@ namespace gum {
       bool recompute ) {
     const NodeSet& neighbours =  __getNeighbours ( current );
 
-    for ( NodeSetIterator iter = neighbours.begin();
-          iter != __getNeighbours ( current ).end(); ++iter ) {
+    for ( NodeSetIterator iter = neighbours.beginSafe();
+          iter != __getNeighbours ( current ).endSafe(); ++iter ) {
       if ( *iter != source ) {
         if ( recompute or ( not __messageExists ( current, *iter ) ) ) {
           // New evidence or first call
@@ -368,8 +368,8 @@ namespace gum {
     // Building the message's table held by the separator
     MultiDimBucket<GUM_SCALAR>* message = new MultiDimBucket<GUM_SCALAR>();
 
-    for ( NodeSet::iterator iter = __getSeparator ( tail, head ).begin();
-          iter != __getSeparator ( tail, head ).end(); ++iter ) {
+    for ( NodeSet::iterator_safe iter = __getSeparator ( tail, head ).beginSafe();
+          iter != __getSeparator ( tail, head ).endSafe(); ++iter ) {
       message->add ( this->bn().variable ( *iter ) );
     }
 
@@ -384,8 +384,8 @@ namespace gum {
     // Second, add message from tail's neighbours
     const NodeSet& neighbours = __getNeighbours ( tail );
 
-    for ( NodeSetIterator iter = neighbours.begin();
-          iter != __getNeighbours ( tail ).end(); ++iter ) {
+    for ( NodeSetIterator iter = neighbours.beginSafe();
+          iter != __getNeighbours ( tail ).endSafe(); ++iter ) {
       if ( *iter != head ) {
         try {
           message->add ( __messagesMap[Arc ( *iter, tail )] );
@@ -415,8 +415,8 @@ namespace gum {
   ShaferShenoyInference<GUM_SCALAR>::__removeDiffusedMessages ( NodeId cliqueId ) {
     const NodeSet& neighbours = __getNeighbours ( cliqueId );
 
-    for ( NodeSetIterator iter = neighbours.begin();
-          iter != neighbours.end(); ++iter ) {
+    for ( NodeSetIterator iter = neighbours.beginSafe();
+          iter != neighbours.endSafe(); ++iter ) {
       if ( __messagesMap.exists ( Arc ( cliqueId, *iter ) ) ) {
         delete __messagesMap[Arc ( cliqueId, *iter )];
         __messagesMap.erase ( Arc ( cliqueId, *iter ) );
@@ -432,8 +432,8 @@ namespace gum {
     Potential<GUM_SCALAR>* pot = new Potential<GUM_SCALAR> ( new MultiDimSparse<GUM_SCALAR> ( ( GUM_SCALAR ) 1 ) );
     __dummies.insert ( pot );
 
-    for ( Set<NodeId>::const_iterator iter = __triangulation->junctionTree().clique ( cliqueId ).begin();
-          iter != __triangulation->junctionTree().clique ( cliqueId ).end(); ++iter ) {
+    for ( Set<NodeId>::const_iterator_safe iter = __triangulation->junctionTree().clique ( cliqueId ).beginSafe();
+          iter != __triangulation->junctionTree().clique ( cliqueId ).endSafe(); ++iter ) {
       pot->add ( this->bn().variable ( *iter ) );
     }
 
@@ -524,7 +524,7 @@ namespace gum {
       __varsPotential = __potential;
       __potential = new MultiDimBucket<GUM_SCALAR>();
 
-      for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator iter = __varsPotential->variablesSequence().begin(); iter != __varsPotential->variablesSequence().end(); ++iter ) {
+      for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter = __varsPotential->variablesSequence().beginSafe(); iter != __varsPotential->variablesSequence().endSafe(); ++iter ) {
         __potential->add ( **iter );
       }
 

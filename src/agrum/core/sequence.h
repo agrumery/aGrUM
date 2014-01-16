@@ -43,7 +43,7 @@
 namespace gum {
 
 
-  template<typename KEY> class SequenceIterator;
+  template<typename KEY> class SequenceIteratorSafe;
 
 
   /* =========================================================================== */
@@ -66,11 +66,11 @@ namespace gum {
 
   class Sequence {
 
-      friend class SequenceIterator<KEY>;
+      friend class SequenceIteratorSafe<KEY>;
 
     public:
-      typedef SequenceIterator<KEY> iterator;
-      typedef SequenceIterator<KEY> const_iterator;
+      typedef SequenceIteratorSafe<KEY> iterator_safe;
+      typedef SequenceIteratorSafe<KEY> const_iterator_safe;
 
 
       // ############################################################################
@@ -89,7 +89,7 @@ namespace gum {
        * @warning The elements of the newly constructed sequence are copies of those
        * in aSeq */
 
-      Sequence( const Sequence<KEY>& aSeq );
+      Sequence ( const Sequence<KEY>& aSeq );
 
 
       /// destructor
@@ -107,22 +107,22 @@ namespace gum {
 
       /// begin iterator
 
-      iterator begin() const;
+      iterator_safe beginSafe() const;
 
 
       /// rbegin iterator
 
-      iterator rbegin() const;
+      iterator_safe rbeginSafe() const;
 
 
       /// end iterator
 
-      const iterator& end() const;
+      const iterator_safe& endSafe() const;
 
 
       /// rend iterator
 
-      const iterator& rend() const;
+      const iterator_safe& rendSafe() const;
 
       /// @}
 
@@ -161,14 +161,14 @@ namespace gum {
       /** @param k the key the index of which we wish to find
        * @throw NotFound is thrown if k cannot be found in the sequence */
 
-      Idx operator[]( const KEY& k ) const ;
+      Idx operator[] ( const KEY& k ) const ;
 
 
       /// returns the element at position i (synonym for atPos)
       /** @param i
        * @throw NotFound is thrown if the element does not exist */
 
-      const KEY& operator[]( Idx i ) const ;
+      const KEY& operator[] ( Idx i ) const ;
 
 
       /// returns true if the content of k equals that of *this
@@ -213,7 +213,7 @@ namespace gum {
       /// check the existence of k in the sequence
       /** complexity : \f$o(1)\f$ */
 
-      bool exists( const KEY& k ) const ;
+      bool exists ( const KEY& k ) const ;
 
 
       /// insert an element at the end of the sequence
@@ -221,7 +221,7 @@ namespace gum {
        * @param k
        * @throw DuplicateElement is thrown if the sequence contains already k */
 
-      void insert( const KEY& k );
+      void insert ( const KEY& k );
 
 
       /// remove an element from the sequence
@@ -230,7 +230,7 @@ namespace gum {
        * of at most the n elements)
        * @param k */
 
-      void erase( const KEY& k );
+      void erase ( const KEY& k );
 
 
       /// remove from the sequence the element pointed to by the iterator
@@ -239,34 +239,34 @@ namespace gum {
        * of at most the n elements)
        * @param k */
 
-      void erase( const iterator& k );
+      void erase ( const iterator_safe& k );
 
 
       /// returns the object at the pos i
       /** @param i
        * @throw NotFound is thrown if the element does not exist */
 
-      const KEY& atPos( Idx i ) const ;
+      const KEY& atPos ( Idx i ) const ;
 
 
       /// returns the position of the object passed in argument (if it exists)
       /** @throw NotFound is thrown if the element does not exist */
 
-      Idx  pos( const KEY& key ) const ;
+      Idx  pos ( const KEY& key ) const ;
 
       /// change the value
       /** @param i
        * @param newKey
        * @throw NotFound is thrown if the element does not exist
        * @throw DuplicateElement if newKey alreay exists */
-      void setAtPos( Idx i,const KEY& newKey );
+      void setAtPos ( Idx i, const KEY& newKey );
 
       /// swap index
       /**
        * @param i
        * @param j
        */
-      void swap( Idx i,Idx j );
+      void swap ( Idx i, Idx j );
 
 
       /// returns the first element
@@ -296,20 +296,20 @@ namespace gum {
        * that is smaller than the number of elements of the sequence, the function
        * will not modify anything. */
 
-      void resize( unsigned int new_size );
+      void resize ( unsigned int new_size );
 
       /// difference between to sequence as a Set<KEY>
       /**
        * This function gives the set difference : *this \ seq
        */
-      Set<KEY> diffSet( const Sequence<KEY>& seq ) const;
+      Set<KEY> diffSet ( const Sequence<KEY>& seq ) const;
 
 
       /// @}
 
     private:
       /// keep track of the position of the element in v (for fast retrieval)
-      HashTable<KEY,Idx> __h;
+      HashTable<KEY, Idx> __h;
 
       /// the set of the elements stored into the sequence
       std::vector<KEY*> __v;
@@ -318,10 +318,10 @@ namespace gum {
       // sequences without having memory overhead
 
       /// stores the end iterator for fast access
-      SequenceIterator<KEY> __end;
+      SequenceIteratorSafe<KEY> __end;
 
       /// stores the rend iterator for fast access
-      SequenceIterator<KEY> __rend;
+      SequenceIteratorSafe<KEY> __rend;
 
 
 
@@ -332,13 +332,13 @@ namespace gum {
 
       /// clears the current sequence and fill it with copies the element of aSeq
 
-      void __copy( const Sequence<KEY>& aSeq );
+      void __copy ( const Sequence<KEY>& aSeq );
 
 
       /** @brief insert an element at the end of the sequence. private version
        * for internal use */
 
-      void __insert( const KEY& k );
+      void __insert ( const KEY& k );
   };
 
 
@@ -348,7 +348,7 @@ namespace gum {
 
 
 
-  /// @class SequenceIterator
+  /// @class SequenceIteratorSafe
   /**@brief iterator for Sequence.
    *
    * This iterator is a wrapper to the Idx __iterator. Internally,
@@ -357,7 +357,7 @@ namespace gum {
    **/
   template<typename KEY>
 
-  class SequenceIterator {
+  class SequenceIteratorSafe {
 
       friend class Sequence<KEY>;
 
@@ -375,17 +375,17 @@ namespace gum {
        * @warning if pos is greater than the size of the sequence, the iterator
        * is made pointing to end() */
 
-      SequenceIterator( const Sequence<KEY>& seq, Idx pos=0 );
+      SequenceIteratorSafe ( const Sequence<KEY>& seq, Idx pos = 0 );
 
 
       /// copy constructor
 
-      SequenceIterator( const SequenceIterator<KEY>& source );
+      SequenceIteratorSafe ( const SequenceIteratorSafe<KEY>& source );
 
 
       /// destructor
 
-      ~SequenceIterator();
+      ~SequenceIteratorSafe();
 
       ///@}
 
@@ -397,27 +397,27 @@ namespace gum {
 
       /// copy operator
 
-      SequenceIterator<KEY>& operator= ( const SequenceIterator& source );
+      SequenceIteratorSafe<KEY>& operator= ( const SequenceIteratorSafe& source );
 
 
       /// point the iterator to the next value in the sequence
 
-      SequenceIterator<KEY>& operator++();
+      SequenceIteratorSafe<KEY>& operator++();
 
 
       /// point the iterator to the preceding value in the sequence
 
-      SequenceIterator<KEY>& operator--();
+      SequenceIteratorSafe<KEY>& operator--();
 
 
       /// checks whether two iterators are pointing toward different elements
 
-      bool operator!= ( const SequenceIterator<KEY>& source ) const;
+      bool operator!= ( const SequenceIteratorSafe<KEY>& source ) const;
 
 
       /// checks whether two iterators are pointing toward the same element
 
-      bool operator== ( const SequenceIterator<KEY>& source ) const;
+      bool operator== ( const SequenceIteratorSafe<KEY>& source ) const;
 
 
       /// returns the value pointed to by the iterator
@@ -456,7 +456,7 @@ namespace gum {
 
       /// the iterator points to the posth element (0 = beginning of the sequence).
 
-      void __setPos( Idx pos );
+      void __setPos ( Idx pos );
 
 
       /// the iterator points to rend
@@ -503,7 +503,7 @@ namespace gum {
   /* ===             GUM_SEQUENCE_ITERATOR OPTIMIZED FOR POINTERS            === */
   /* =========================================================================== */
   /* =========================================================================== */
-  /// @class SequenceIterator
+  /// @class SequenceIteratorSafe
   /**@brief iterator for Sequence.
    *
    * This iterator is a wrapper to the Idx __iterator. Internally,
@@ -512,7 +512,7 @@ namespace gum {
    **/
   template<typename KEY>
 
-  class SequenceIterator<KEY*> {
+  class SequenceIteratorSafe<KEY*> {
 
       friend class Sequence<KEY*>;
 
@@ -528,17 +528,17 @@ namespace gum {
        * @warning if pos is greater than the size of the sequence, the iterator
        * is made pointing to end() */
 
-      SequenceIterator( const Sequence<KEY*>& seq, Idx pos=0 );
+      SequenceIteratorSafe ( const Sequence<KEY*>& seq, Idx pos = 0 );
 
 
       /// copy constructor
 
-      SequenceIterator( const SequenceIterator<KEY*>& source );
+      SequenceIteratorSafe ( const SequenceIteratorSafe<KEY*>& source );
 
 
       /// destructor
 
-      ~SequenceIterator();
+      ~SequenceIteratorSafe();
 
       ///@}
 
@@ -550,27 +550,27 @@ namespace gum {
 
       /// copy operator
 
-      SequenceIterator<KEY*>& operator= ( const SequenceIterator& source );
+      SequenceIteratorSafe<KEY*>& operator= ( const SequenceIteratorSafe& source );
 
 
       /// point the iterator to the next value in the sequence
 
-      SequenceIterator<KEY*>& operator++();
+      SequenceIteratorSafe<KEY*>& operator++();
 
 
       /// point the iterator to the preceding value in the sequence
 
-      SequenceIterator<KEY*>& operator--();
+      SequenceIteratorSafe<KEY*>& operator--();
 
 
       /// checks whether two iterators are pointing toward different elements
 
-      bool operator!= ( const SequenceIterator<KEY*>& source ) const;
+      bool operator!= ( const SequenceIteratorSafe<KEY*>& source ) const;
 
 
       /// checks whether two iterators are pointing toward the same element
 
-      bool operator== ( const SequenceIterator<KEY*>& source ) const;
+      bool operator== ( const SequenceIteratorSafe<KEY*>& source ) const;
 
 
       /// returns the value pointed to by the iterator
@@ -604,7 +604,7 @@ namespace gum {
 
       /// the iterator points to the posth element (0 = beginning of the sequence).
 
-      void __setPos( Idx pos );
+      void __setPos ( Idx pos );
 
 
       /// the iterator points to rend
@@ -640,11 +640,11 @@ namespace gum {
 
   class Sequence<KEY*> {
 
-      friend class SequenceIterator<KEY*>;
+      friend class SequenceIteratorSafe<KEY*>;
 
     public:
-      typedef SequenceIterator<KEY*> iterator;
-      typedef SequenceIterator<KEY*> const_iterator;
+      typedef SequenceIteratorSafe<KEY*> iterator_safe;
+      typedef SequenceIteratorSafe<KEY*> const_iterator_safe;
 
 
       // ############################################################################
@@ -663,7 +663,7 @@ namespace gum {
        * @warning The elements of the newly constructed sequence are copies of those
        * in aSeq */
 
-      Sequence( const Sequence<KEY*>& aSeq );
+      Sequence ( const Sequence<KEY*>& aSeq );
 
 
       /// destructor
@@ -681,22 +681,22 @@ namespace gum {
 
       /// begin iterator
 
-      iterator begin() const;
+      iterator_safe beginSafe() const;
 
 
       /// rbegin iterator
 
-      iterator rbegin() const;
+      iterator_safe rbeginSafe() const;
 
 
       /// end iterator
 
-      const iterator& end() const;
+      const iterator_safe& endSafe() const;
 
 
       /// rend iterator
 
-      const iterator& rend() const;
+      const iterator_safe& rendSafe() const;
 
       /// @}
 
@@ -735,14 +735,14 @@ namespace gum {
       /** @param k the key the index of which we wish to find
        * @throw NotFound is thrown if k cannot be found in the sequence */
 
-      Idx operator[]( KEY* const k ) const ;
+      Idx operator[] ( KEY* const k ) const ;
 
 
       /// returns the element at position i (synonym for atPos)
       /** @param i
        * @throw NotFound is thrown if the element does not exist */
 
-      KEY* const operator[]( Idx i ) const ;
+      KEY* const operator[] ( Idx i ) const ;
 
 
       /// returns true if the content of k equals that of *this
@@ -787,7 +787,7 @@ namespace gum {
       /// check the existence of k in the sequence
       /** complexity : \f$o(1)\f$ */
 
-      bool exists( KEY* const k ) const ;
+      bool exists ( KEY* const k ) const ;
 
 
       /// insert an element at the end of the sequence
@@ -795,7 +795,7 @@ namespace gum {
        * @param k
        * @throw DuplicateElement is thrown if the sequence contains already k */
 
-      void insert( KEY* const k );
+      void insert ( KEY* const k );
 
 
       /// remove an element from the sequence
@@ -804,7 +804,7 @@ namespace gum {
        * of at most the n elements)
        * @param k */
 
-      void erase( KEY* const k );
+      void erase ( KEY* const k );
 
 
       /// remove from the sequence the element pointed to by the iterator
@@ -813,34 +813,34 @@ namespace gum {
        * of at most the n elements)
        * @param k */
 
-      void erase( const iterator& );
+      void erase ( const iterator_safe& );
 
 
       /// returns the object at the pos i
       /** @param i
        * @throw NotFound is thrown if the element does not exist */
 
-      KEY* const atPos( Idx i ) const ;
+      KEY* const atPos ( Idx i ) const ;
 
 
       /// returns the position of the object passed in argument (if it exists)
       /** @throw NotFound is thrown if the element does not exist */
 
-      Idx  pos( KEY* const key ) const ;
+      Idx  pos ( KEY* const key ) const ;
 
       /// change the value
       /** @param i
        * @param newKey
        * @throw NotFound is thrown if the element does not exist
        * @throw DuplicateElement if newKey alreay exists */
-      void setAtPos( Idx i, KEY* const newKey );
+      void setAtPos ( Idx i, KEY* const newKey );
 
       /// swap index
       /**
        * @param i
        * @param j
        */
-      void swap( Idx i,Idx j );
+      void swap ( Idx i, Idx j );
 
 
       /// returns the first element
@@ -870,20 +870,20 @@ namespace gum {
        * that is smaller than the number of elements of the sequence, the function
        * will not modify anything. */
 
-      void resize( unsigned int new_size );
+      void resize ( unsigned int new_size );
 
       /// difference between to sequence as a Set<KEY>
       /**
        * This function gives the set difference : *this \ seq
        */
-      Set<KEY*> diffSet( const Sequence<KEY*>& seq ) const;
+      Set<KEY*> diffSet ( const Sequence<KEY*>& seq ) const;
 
       /// @}
 
 
     private:
       /// keep track of the position of the element in v (for fast retrieval)
-      HashTable<KEY*,Idx> __h;
+      HashTable<KEY*, Idx> __h;
 
       /// the set of the elements stored into the sequence
       std::vector<KEY*> __v;
@@ -892,10 +892,10 @@ namespace gum {
       // sequences without having memory overhead
 
       /// stores the end iterator for fast access
-      SequenceIterator<KEY*> __end;
+      SequenceIteratorSafe<KEY*> __end;
 
       /// stores the rend iterator for fast access
-      SequenceIterator<KEY*> __rend;
+      SequenceIteratorSafe<KEY*> __rend;
 
 
 
@@ -906,13 +906,13 @@ namespace gum {
 
       /// clears the current sequence and fill it with copies the element of aSeq
 
-      void __copy( const Sequence<KEY*>& aSeq );
+      void __copy ( const Sequence<KEY*>& aSeq );
 
 
       /** @brief insert an element at the end of the sequence. private version
        * for internal use */
 
-      void __insert( KEY* const k );
+      void __insert ( KEY* const k );
   };
 
 

@@ -33,19 +33,19 @@ namespace gum {
     SVE<GUM_SCALAR>::~SVE() {
       GUM_DESTRUCTOR ( SVE );
 
-      for ( auto iter = __elim_orders.begin(); iter != __elim_orders.end(); ++iter ) {
-        delete *iter;
+      for ( auto iter = __elim_orders.beginSafe(); iter != __elim_orders.endSafe(); ++iter ) {
+        delete iter.val();
       }
 
-      for ( auto iter = __lifted_pools.begin(); iter != __lifted_pools.end(); ++iter ) {
-        delete *iter;
+      for ( auto iter = __lifted_pools.beginSafe(); iter != __lifted_pools.endSafe(); ++iter ) {
+        delete iter.val();
       }
 
       if ( __class_elim_order != 0 ) {
         delete __class_elim_order;
       }
 
-      for ( auto iter = __lifted_trash.begin(); iter != __lifted_trash.end(); ++iter ) {
+      for ( auto iter = __lifted_trash.beginSafe(); iter != __lifted_trash.endSafe(); ++iter ) {
         delete *iter;
       }
     }
@@ -60,7 +60,7 @@ namespace gum {
       ignore.insert ( query );
 
       for ( auto iter = query->beginInvRef(); iter != query->endInvRef(); ++iter ) {
-        for ( auto child = ( **iter ).begin(); child != ( **iter ).end(); ++child ) {
+        for ( auto child = ( * ( iter.val() ) ).begin(); child != ( * ( iter.val() ) ).end(); ++child ) {
           if ( not ignore.exists ( child->first ) ) {
             __eliminateNodesDownward ( query, child->first, pool, trash, elim_list, ignore, eliminated );
           } else if ( not eliminated.exists ( child->first ) ) {
@@ -81,7 +81,7 @@ namespace gum {
       }
 
       for ( auto attr = query->begin(); attr != query->end(); ++attr ) {
-        pool.insert ( & ( const_cast<Potential<GUM_SCALAR>&> ( ( **attr ).cpf() ) ) );
+        pool.insert ( & ( const_cast<Potential<GUM_SCALAR>&> ( ( * ( attr.val () ) ).cpf() ) ) );
       }
 
       for ( size_t idx = 0; idx < t.eliminationOrder().size(); ++idx ) {
@@ -114,8 +114,8 @@ namespace gum {
       }
 
       // Upward elimination
-      for ( auto sc = query->type().slotChains().begin(); sc != query->type().slotChains().end(); ++sc ) {
-        for ( auto parent = query->getInstances ( ( **sc ).id() ).begin(); parent != query->getInstances ( ( **sc ).id() ).end(); ++parent ) {
+      for ( auto sc = query->type().slotChains().beginSafe(); sc != query->type().slotChains().endSafe(); ++sc ) {
+        for ( auto parent = query->getInstances ( ( **sc ).id() ).beginSafe(); parent != query->getInstances ( ( **sc ).id() ).endSafe(); ++parent ) {
           if ( not ignore.exists ( *parent ) ) {
             __eliminateNodesUpward ( *parent, pool, trash, tmp_list, ignore, eliminated );
           }
@@ -128,21 +128,21 @@ namespace gum {
     SVE<GUM_SCALAR>::__eliminateDelayedVariables ( const Instance<GUM_SCALAR>* i, BucketSet& pool, BucketSet& trash ) {
       Set<Potential<GUM_SCALAR>*> toRemove;
 
-      for ( auto iter = __delayedVariables[i]->begin(); iter != __delayedVariables[i]->end(); ++iter ) {
+      for ( auto iter = __delayedVariables[i]->beginSafe(); iter != __delayedVariables[i]->endSafe(); ++iter ) {
         MultiDimBucket<GUM_SCALAR>* bucket = new MultiDimBucket<GUM_SCALAR>();
 
-        for ( auto jter = pool.begin(); jter != pool.end(); ++jter ) {
+        for ( auto jter = pool.beginSafe(); jter != pool.endSafe(); ++jter ) {
           if ( ( *jter )->contains ( **iter ) ) {
             bucket->add ( **jter );
             toRemove.insert ( *jter );
           }
         }
 
-        for ( auto jter = toRemove.begin(); jter != toRemove.end(); ++jter ) {
+        for ( auto jter = toRemove.beginSafe(); jter != toRemove.endSafe(); ++jter ) {
           pool.erase ( *jter );
         }
 
-        for ( auto jter = bucket->allVariables().begin(); jter != bucket->allVariables().end(); ++jter ) {
+        for ( auto jter = bucket->allVariables().beginSafe(); jter != bucket->allVariables().endSafe(); ++jter ) {
           if ( *jter != *iter ) {
             bucket->add ( **jter );
           }
@@ -163,7 +163,7 @@ namespace gum {
       List<const Instance<GUM_SCALAR>*> my_list;
 
       for ( auto iter = i->beginInvRef(); iter != i->endInvRef(); ++iter ) {
-        for ( auto child = ( **iter ).begin(); child != ( **iter ).end(); ++child ) {
+        for ( auto child = ( * ( iter.val() ) ).begin(); child != ( * ( iter.val() ) ).end(); ++child ) {
           if ( not ignore.exists ( child->first ) ) {
             __eliminateNodesDownward ( i, child->first, pool, trash, my_list, ignore, eliminated );
           } else if ( not eliminated.exists ( child->first ) ) {
@@ -178,7 +178,7 @@ namespace gum {
       eliminated.insert ( i );
 
       // Calling elimination over child's parents
-      for ( auto iter = my_list.begin(); iter != my_list.end(); ++iter ) {
+      for ( auto iter = my_list.beginSafe(); iter != my_list.endSafe(); ++iter ) {
         if ( __checkElimOrder ( i, *iter ) and ( *iter != from ) ) {
           if ( not ignore.exists ( *iter ) ) {
             __eliminateNodesDownward ( i, *iter, pool, trash, elim_list, ignore, eliminated );
@@ -189,8 +189,8 @@ namespace gum {
       }
 
       // Adding parents instance to elim_list
-      for ( auto sc = i->type().slotChains().begin(); sc != i->type().slotChains().end(); ++sc ) {
-        for ( auto iter = i->getInstances ( ( **sc ).id() ).begin(); iter != i->getInstances ( ( **sc ).id() ); ++iter ) {
+      for ( auto sc = i->type().slotChains().beginSafe(); sc != i->type().slotChains().endSafe(); ++sc ) {
+        for ( auto iter = i->getInstances ( ( **sc ).id() ).beginSafe(); iter != i->getInstances ( ( **sc ).id() ); ++iter ) {
           if ( *iter != from ) {
             elim_list.insert ( *iter );
           }
@@ -206,7 +206,7 @@ namespace gum {
       } else {
         __insertLiftedNodes ( i, pool, trash );
 
-        for ( auto agg = i->type().aggregates().begin(); agg != i->type().aggregates().end(); ++agg ) {
+        for ( auto agg = i->type().aggregates().beginSafe(); agg != i->type().aggregates().endSafe(); ++agg ) {
           pool.insert ( __getAggPotential ( i, *agg ) );
         }
 
@@ -245,7 +245,7 @@ namespace gum {
       ignore.insert ( i );
 
       for ( auto iter = i->beginInvRef(); iter != i->endInvRef(); ++iter ) {
-        for ( auto child = ( **iter ).begin(); child != ( **iter ).end(); ++child ) {
+        for ( auto child = ( * ( iter.val() ) ).begin(); child != ( * ( iter.val() ) ).end(); ++child ) {
           if ( not ignore.exists ( child->first ) ) {
             __eliminateNodesDownward ( i, child->first, pool, trash, elim_list, ignore, eliminated );
           }
@@ -271,8 +271,8 @@ namespace gum {
       }
 
       // Upward elimination
-      for ( auto sc = i->type().slotChains().begin(); sc != i->type().slotChains().end(); ++sc ) {
-        for ( auto parent = i->getInstances ( ( **sc ).id() ).begin(); parent != i->getInstances ( ( **sc ).id() ).end(); ++parent ) {
+      for ( auto sc = i->type().slotChains().beginSafe(); sc != i->type().slotChains().endSafe(); ++sc ) {
+        for ( auto parent = i->getInstances ( ( **sc ).id() ).beginSafe(); parent != i->getInstances ( ( **sc ).id() ).endSafe(); ++parent ) {
           if ( not ignore.exists ( *parent ) ) {
             __eliminateNodesUpward ( *parent, pool, trash, tmp_list, ignore, eliminated );
           }
@@ -287,7 +287,7 @@ namespace gum {
       bool inner = false;
       const auto& evs = this->evidence ( i );
 
-      for ( auto e = evs.begin(); e != evs.end(); ++e ) {
+      for ( auto e = evs.beginSafe(); e != evs.endSafe(); ++e ) {
         inner = i->type().isInputNode ( i->get ( e.key() ) ) or i->type().isInnerNode ( i->get ( e.key() ) );
 
         if ( inner ) { break; }
@@ -300,7 +300,7 @@ namespace gum {
 
         // We need a local to not eliminate queried inner nodes of the same class
         for ( auto attr = i->begin(); attr != i->end(); ++attr ) {
-          tmp_pool.insert ( & ( ( **attr ).cpf() ) );
+          tmp_pool.insert ( & ( ( * ( attr.val() ) ).cpf() ) );
         }
 
         InstanceBayesNet<GUM_SCALAR> bn ( *i );
@@ -332,7 +332,7 @@ namespace gum {
         inf.eliminateNodes ( inner_elim_order, tmp_pool, trash );
 
         // Now we add the new potentials in pool and eliminate output nodes
-        for ( BucketSetIterator iter = tmp_pool.begin(); iter != tmp_pool.end(); ++iter ) {
+        for ( BucketSetIterator iter = tmp_pool.beginSafe(); iter != tmp_pool.endSafe(); ++iter ) {
           pool.insert ( *iter );
         }
 
@@ -345,7 +345,7 @@ namespace gum {
         __insertEvidence ( i, pool );
         __insertLiftedNodes ( i, pool, trash );
 
-        for ( auto agg = i->type().aggregates().begin(); agg != i->type().aggregates().end(); ++agg ) {
+        for ( auto agg = i->type().aggregates().beginSafe(); agg != i->type().aggregates().endSafe(); ++agg ) {
           pool.insert ( __getAggPotential ( i, *agg ) );
         }
 
@@ -381,7 +381,7 @@ namespace gum {
         lifted_pool = __lifted_pools[& ( i->type() )];
       }
 
-      for ( auto iter = lifted_pool->begin(); iter != lifted_pool->end(); ++iter ) {
+      for ( auto iter = lifted_pool->beginSafe(); iter != lifted_pool->endSafe(); ++iter ) {
         Potential<GUM_SCALAR>* pot = copyPotential ( i->bijection(), **iter );
         pool.insert ( pot );
         trash.insert ( pot );
@@ -409,7 +409,7 @@ namespace gum {
           // We need to put in the output_elim_order aggregator's parents which are innner nodes
           parents = & ( c.dag().parents ( node ) );
 
-          for ( Set<NodeId>::const_iterator prnt = parents->begin(); prnt != parents->end(); ++prnt ) {
+          for ( Set<NodeId>::const_iterator_safe prnt = parents->beginSafe(); prnt != parents->endSafe(); ++prnt ) {
             if ( ClassElement<GUM_SCALAR>::isAttribute ( c.get ( *prnt ) ) and c.isInnerNode ( c.get ( *prnt ) ) ) {
               inners.erase ( *prnt );
               outers.insert ( *prnt );
@@ -460,8 +460,8 @@ namespace gum {
 
         const NodeSet& children = cdg.dag().children ( l.front() );
 
-        for ( NodeSetIterator child = children.begin();
-              child != children.end(); ++child )
+        for ( NodeSetIterator child = children.beginSafe();
+              child != children.endSafe(); ++child )
           if ( not visited_node.contains ( *child ) ) l.push_back ( *child );
 
         l.pop_front();
@@ -477,7 +477,7 @@ namespace gum {
       __eliminateNodes ( i, elt->id(), pool, trash );
       m.fill ( ( GUM_SCALAR ) 1 );
 
-      for ( SVE<GUM_SCALAR>::BucketSetIterator iter = pool.begin(); iter != pool.end(); ++iter ) {
+      for ( SVE<GUM_SCALAR>::BucketSetIterator iter = pool.beginSafe(); iter != pool.endSafe(); ++iter ) {
         if ( ( **iter ).contains ( elt->type().variable() ) ) {
           m.multiplicateBy ( **iter );
         }
@@ -485,7 +485,7 @@ namespace gum {
 
       m.normalize();
 
-      for ( SVE<GUM_SCALAR>::BucketSetIterator iter = trash.begin(); iter != trash.end(); ++iter ) {
+      for ( SVE<GUM_SCALAR>::BucketSetIterator iter = trash.beginSafe(); iter != trash.endSafe(); ++iter ) {
         delete *iter;
       }
     }
@@ -507,8 +507,8 @@ namespace gum {
     SVE<GUM_SCALAR>::__insertEvidence ( const Instance<GUM_SCALAR>* i, BucketSet& pool ) {
       const auto& evs = this->evidence ( i );
 
-      for ( auto iter = evs.begin(); iter != evs.end(); ++iter ) {
-        pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( *iter ) );
+      for ( auto iter = evs.beginSafe(); iter != evs.endSafe(); ++iter ) {
+        pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( iter.val () ) );
       }
     }
 

@@ -39,21 +39,21 @@ namespace gum {
 
   // Default constructor.
   VariableNodeMap::VariableNodeMap() {
-    GUM_CONSTRUCTOR( VariableNodeMap );
+    GUM_CONSTRUCTOR ( VariableNodeMap );
   }
 
 
   // Copy constructor.
-  VariableNodeMap::VariableNodeMap( const VariableNodeMap& source ) {
-    GUM_CONS_CPY( VariableNodeMap );
+  VariableNodeMap::VariableNodeMap ( const VariableNodeMap& source ) {
+    GUM_CONS_CPY ( VariableNodeMap );
 
-    __copy( source );
+    __copy ( source );
   }
 
 
   // Destructor
   VariableNodeMap::~VariableNodeMap() {
-    GUM_DESTRUCTOR( VariableNodeMap );
+    GUM_DESTRUCTOR ( VariableNodeMap );
 
     clear();
   }
@@ -63,14 +63,14 @@ namespace gum {
   VariableNodeMap&
   VariableNodeMap::operator= ( const VariableNodeMap& source ) {
     clear();
-    __copy( source );
+    __copy ( source );
 
     return *this;
   }
 
-  void VariableNodeMap::clear( void ) {
-    for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter =
-            __nodes2vars.begin(); iter != __nodes2vars.end(); ++iter ) {
+  void VariableNodeMap::clear ( void ) {
+    for ( Bijection<NodeId, const DiscreteVariable*>::iterator_safe iter =
+            __nodes2vars.beginSafe(); iter != __nodes2vars.endSafe(); ++iter ) {
       delete iter.second();
     }
 
@@ -91,11 +91,11 @@ namespace gum {
   }
 
   /// do the copy
-  void VariableNodeMap::__copy( const VariableNodeMap& source ) {
-    for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter =
-            source.__nodes2vars.begin();
-          iter != source.__nodes2vars.end(); ++iter ) {
-      __nodes2vars.insert( iter.first(), iter.second()->clone() );
+  void VariableNodeMap::__copy ( const VariableNodeMap& source ) {
+    for ( Bijection<NodeId, const DiscreteVariable*>::iterator_safe iter =
+            source.__nodes2vars.beginSafe();
+          iter != source.__nodes2vars.endSafe(); ++iter ) {
+      __nodes2vars.insert ( iter.first(), iter.second()->clone() );
       // copy factory is used inside insert
     }
 

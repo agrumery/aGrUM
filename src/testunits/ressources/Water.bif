@@ -358,42 +358,42 @@ variable CNON_12_45 {
   };
 }
 
-probability( C_NI_12_00 ) {
+probability ( C_NI_12_00 ) {
   table 0.25, 0.25, 0.25, 0.25;
 }
-probability( CKNI_12_00 ) {
+probability ( CKNI_12_00 ) {
   table 0.333333, 0.333333, 0.333333;
 }
-probability( CBODD_12_00 ) {
+probability ( CBODD_12_00 ) {
   table 0, 1, 0, 0;
 }
-probability( CKND_12_00 ) {
+probability ( CKND_12_00 ) {
   table 0, 1, 0;
 }
-probability( CNOD_12_00 ) {
+probability ( CNOD_12_00 ) {
   table 0, 1, 0, 0;
 }
-probability( CBODN_12_00 ) {
+probability ( CBODN_12_00 ) {
   table 0, 1, 0, 0;
 }
-probability( CKNN_12_00 ) {
+probability ( CKNN_12_00 ) {
   table 0, 1, 0;
 }
-probability( CNON_12_00 ) {
+probability ( CNON_12_00 ) {
   table 0, 1, 0, 0;
 }
-probability( C_NI_12_15 | C_NI_12_00 ) {
+probability ( C_NI_12_15 | C_NI_12_00 ) {
   ( 3 ) 0.5, 0.4, 0.1, 0;
   ( 4 ) 0.2, 0.55, 0.2, 0.05;
   ( 5 ) 0.1, 0.3, 0.5, 0.1;
   ( 6 ) 0, 0.15, 0.25, 0.6;
 }
-probability( CKNI_12_15 | CKNI_12_00 ) {
+probability ( CKNI_12_15 | CKNI_12_00 ) {
   ( 20_MG_L ) 0.48, 0.48, 0.04;
   ( 30_MG_L ) 0.2, 0.6, 0.2;
   ( 40_MG_L ) 0.04, 0.48, 0.48;
 }
-probability( CBODD_12_15 | C_NI_12_00, CKNI_12_00, CBODD_12_00, CNOD_12_00, CBODN_12_00 ) {
+probability ( CBODD_12_15 | C_NI_12_00, CKNI_12_00, CBODD_12_00, CNOD_12_00, CBODN_12_00 ) {
   ( 3, 20_MG_L, 15_MG_L, 0_5_MG_L, 5_MG_L ) 1, 0, 0, 0;
   ( 3, 20_MG_L, 15_MG_L, 0_5_MG_L, 10_MG_L ) 1, 0, 0, 0;
   ( 3, 20_MG_L, 15_MG_L, 0_5_MG_L, 15_MG_L ) 0.9791, 0.0209, 0, 0;
@@ -1163,7 +1163,7 @@ probability( CBODD_12_15 | C_NI_12_00, CKNI_12_00, CBODD_12_00, CNOD_12_00, CBOD
   ( 6, 40_MG_L, 30_MG_L, 4_MG_L, 15_MG_L ) 0, 0, 0, 1;
   ( 6, 40_MG_L, 30_MG_L, 4_MG_L, 20_MG_L ) 0, 0, 0, 1;
 }
-probability( CKND_12_15 | CKNI_12_00, CKND_12_00, CKNN_12_00 ) {
+probability ( CKND_12_15 | CKNI_12_00, CKND_12_00, CKNN_12_00 ) {
   ( 20_MG_L, 2_MG_L, 0_5_MG_L ) 0.9524, 0.0476, 0;
   ( 20_MG_L, 2_MG_L, 1_MG_L ) 0.9444, 0.0556, 0;
   ( 20_MG_L, 2_MG_L, 2_MG_L ) 0.9286, 0.0714, 0;
@@ -1192,7 +1192,7 @@ probability( CKND_12_15 | CKNI_12_00, CKND_12_00, CKNN_12_00 ) {
   ( 40_MG_L, 6_MG_L, 1_MG_L ) 0, 0, 1;
   ( 40_MG_L, 6_MG_L, 2_MG_L ) 0, 0, 1;
 }
-probability( CNOD_12_15 | CBODD_12_00, CNOD_12_00, CNON_12_00 ) {
+probability ( CNOD_12_15 | CBODD_12_00, CNOD_12_00, CNON_12_00 ) {
   ( 15_MG_L, 0_5_MG_L, 2_MG_L ) 1, 0, 0, 0;
   ( 15_MG_L, 0_5_MG_L, 4_MG_L ) 1, 0, 0, 0;
   ( 15_MG_L, 0_5_MG_L, 6_MG_L ) 0.8893, 0.1107, 0, 0;
@@ -1258,7 +1258,7 @@ probability( CNOD_12_15 | CBODD_12_00, CNOD_12_00, CNON_12_00 ) {
   ( 30_MG_L, 4_MG_L, 6_MG_L ) 0, 0, 0.2478, 0.7522;
   ( 30_MG_L, 4_MG_L, 10_MG_L ) 0, 0, 0.1843, 0.8157;
 }
-probability( CBODN_12_15 | CBODD_12_00, CBODN_12_00, CNON_12_00 ) {
+probability ( CBODN_12_15 | CBODD_12_00, CBODN_12_00, CNON_12_00 ) {
   ( 15_MG_L, 5_MG_L, 2_MG_L ) 0.9557, 0.0443, 0, 0;
   ( 15_MG_L, 5_MG_L, 4_MG_L ) 0.9561, 0.0439, 0, 0;
   ( 15_MG_L, 5_MG_L, 6_MG_L ) 0.9562, 0.0438, 0, 0;
@@ -1324,7 +1324,7 @@ probability( CBODN_12_15 | CBODD_12_00, CBODN_12_00, CNON_12_00 ) {
   ( 30_MG_L, 20_MG_L, 6_MG_L ) 0, 0, 0.0377, 0.9623;
   ( 30_MG_L, 20_MG_L, 10_MG_L ) 0, 0, 0.038, 0.962;
 }
-probability( CKNN_12_15 | CKND_12_00, CKNN_12_00 ) {
+probability ( CKNN_12_15 | CKND_12_00, CKNN_12_00 ) {
   ( 2_MG_L, 0_5_MG_L ) 1, 0, 0;
   ( 2_MG_L, 1_MG_L ) 0.4459, 0.5541, 0;
   ( 2_MG_L, 2_MG_L ) 0, 0.3627, 0.6373;
@@ -1335,7 +1335,7 @@ probability( CKNN_12_15 | CKND_12_00, CKNN_12_00 ) {
   ( 6_MG_L, 1_MG_L ) 0.0538, 0.9462, 0;
   ( 6_MG_L, 2_MG_L ) 0, 0.1666, 0.8334;
 }
-probability( CNON_12_15 | CNOD_12_00, CBODN_12_00, CKNN_12_00, CNON_12_00 ) {
+probability ( CNON_12_15 | CNOD_12_00, CBODN_12_00, CKNN_12_00, CNON_12_00 ) {
   ( 0_5_MG_L, 5_MG_L, 0_5_MG_L, 2_MG_L ) 0.9555, 0.0445, 0, 0;
   ( 0_5_MG_L, 5_MG_L, 0_5_MG_L, 4_MG_L ) 0.0056, 0.9944, 0, 0;
   ( 0_5_MG_L, 5_MG_L, 0_5_MG_L, 6_MG_L ) 0, 0.055, 0.945, 0;
@@ -1529,18 +1529,18 @@ probability( CNON_12_15 | CNOD_12_00, CBODN_12_00, CKNN_12_00, CNON_12_00 ) {
   ( 4_MG_L, 20_MG_L, 2_MG_L, 6_MG_L ) 0, 0, 0.9474, 0.0526;
   ( 4_MG_L, 20_MG_L, 2_MG_L, 10_MG_L ) 0, 0, 0, 1;
 }
-probability( C_NI_12_30 | C_NI_12_15 ) {
+probability ( C_NI_12_30 | C_NI_12_15 ) {
   ( 3 ) 0.5, 0.4, 0.1, 0;
   ( 4 ) 0.2, 0.55, 0.2, 0.05;
   ( 5 ) 0.1, 0.3, 0.5, 0.1;
   ( 6 ) 0, 0.15, 0.25, 0.6;
 }
-probability( CKNI_12_30 | CKNI_12_15 ) {
+probability ( CKNI_12_30 | CKNI_12_15 ) {
   ( 20_MG_L ) 0.48, 0.48, 0.04;
   ( 30_MG_L ) 0.2, 0.6, 0.2;
   ( 40_MG_L ) 0.04, 0.48, 0.48;
 }
-probability( CBODD_12_30 | C_NI_12_15, CKNI_12_15, CBODD_12_15, CNOD_12_15, CBODN_12_15 ) {
+probability ( CBODD_12_30 | C_NI_12_15, CKNI_12_15, CBODD_12_15, CNOD_12_15, CBODN_12_15 ) {
   ( 3, 20_MG_L, 15_MG_L, 0_5_MG_L, 5_MG_L ) 1, 0, 0, 0;
   ( 3, 20_MG_L, 15_MG_L, 0_5_MG_L, 10_MG_L ) 1, 0, 0, 0;
   ( 3, 20_MG_L, 15_MG_L, 0_5_MG_L, 15_MG_L ) 0.9791, 0.0209, 0, 0;
@@ -2310,7 +2310,7 @@ probability( CBODD_12_30 | C_NI_12_15, CKNI_12_15, CBODD_12_15, CNOD_12_15, CBOD
   ( 6, 40_MG_L, 30_MG_L, 4_MG_L, 15_MG_L ) 0, 0, 0, 1;
   ( 6, 40_MG_L, 30_MG_L, 4_MG_L, 20_MG_L ) 0, 0, 0, 1;
 }
-probability( CKND_12_30 | CKNI_12_15, CKND_12_15, CKNN_12_15 ) {
+probability ( CKND_12_30 | CKNI_12_15, CKND_12_15, CKNN_12_15 ) {
   ( 20_MG_L, 2_MG_L, 0_5_MG_L ) 0.9524, 0.0476, 0;
   ( 20_MG_L, 2_MG_L, 1_MG_L ) 0.9444, 0.0556, 0;
   ( 20_MG_L, 2_MG_L, 2_MG_L ) 0.9286, 0.0714, 0;
@@ -2339,7 +2339,7 @@ probability( CKND_12_30 | CKNI_12_15, CKND_12_15, CKNN_12_15 ) {
   ( 40_MG_L, 6_MG_L, 1_MG_L ) 0, 0, 1;
   ( 40_MG_L, 6_MG_L, 2_MG_L ) 0, 0, 1;
 }
-probability( CNOD_12_30 | CBODD_12_15, CNOD_12_15, CNON_12_15 ) {
+probability ( CNOD_12_30 | CBODD_12_15, CNOD_12_15, CNON_12_15 ) {
   ( 15_MG_L, 0_5_MG_L, 2_MG_L ) 1, 0, 0, 0;
   ( 15_MG_L, 0_5_MG_L, 4_MG_L ) 1, 0, 0, 0;
   ( 15_MG_L, 0_5_MG_L, 6_MG_L ) 0.8893, 0.1107, 0, 0;
@@ -2405,7 +2405,7 @@ probability( CNOD_12_30 | CBODD_12_15, CNOD_12_15, CNON_12_15 ) {
   ( 30_MG_L, 4_MG_L, 6_MG_L ) 0, 0, 0.2478, 0.7522;
   ( 30_MG_L, 4_MG_L, 10_MG_L ) 0, 0, 0.1843, 0.8157;
 }
-probability( CBODN_12_30 | CBODD_12_15, CBODN_12_15, CNON_12_15 ) {
+probability ( CBODN_12_30 | CBODD_12_15, CBODN_12_15, CNON_12_15 ) {
   ( 15_MG_L, 5_MG_L, 2_MG_L ) 0.9557, 0.0443, 0, 0;
   ( 15_MG_L, 5_MG_L, 4_MG_L ) 0.9561, 0.0439, 0, 0;
   ( 15_MG_L, 5_MG_L, 6_MG_L ) 0.9562, 0.0438, 0, 0;
@@ -2471,7 +2471,7 @@ probability( CBODN_12_30 | CBODD_12_15, CBODN_12_15, CNON_12_15 ) {
   ( 30_MG_L, 20_MG_L, 6_MG_L ) 0, 0, 0.0377, 0.9623;
   ( 30_MG_L, 20_MG_L, 10_MG_L ) 0, 0, 0.038, 0.962;
 }
-probability( CKNN_12_30 | CKND_12_15, CKNN_12_15 ) {
+probability ( CKNN_12_30 | CKND_12_15, CKNN_12_15 ) {
   ( 2_MG_L, 0_5_MG_L ) 1, 0, 0;
   ( 2_MG_L, 1_MG_L ) 0.4459, 0.5541, 0;
   ( 2_MG_L, 2_MG_L ) 0, 0.3627, 0.6373;
@@ -2482,7 +2482,7 @@ probability( CKNN_12_30 | CKND_12_15, CKNN_12_15 ) {
   ( 6_MG_L, 1_MG_L ) 0.0538, 0.9462, 0;
   ( 6_MG_L, 2_MG_L ) 0, 0.1666, 0.8334;
 }
-probability( CNON_12_30 | CNOD_12_15, CBODN_12_15, CKNN_12_15, CNON_12_15 ) {
+probability ( CNON_12_30 | CNOD_12_15, CBODN_12_15, CKNN_12_15, CNON_12_15 ) {
   ( 0_5_MG_L, 5_MG_L, 0_5_MG_L, 2_MG_L ) 0.9555, 0.0445, 0, 0;
   ( 0_5_MG_L, 5_MG_L, 0_5_MG_L, 4_MG_L ) 0.0056, 0.9944, 0, 0;
   ( 0_5_MG_L, 5_MG_L, 0_5_MG_L, 6_MG_L ) 0, 0.055, 0.945, 0;
@@ -2676,18 +2676,18 @@ probability( CNON_12_30 | CNOD_12_15, CBODN_12_15, CKNN_12_15, CNON_12_15 ) {
   ( 4_MG_L, 20_MG_L, 2_MG_L, 6_MG_L ) 0, 0, 0.9474, 0.0526;
   ( 4_MG_L, 20_MG_L, 2_MG_L, 10_MG_L ) 0, 0, 0, 1;
 }
-probability( C_NI_12_45 | C_NI_12_30 ) {
+probability ( C_NI_12_45 | C_NI_12_30 ) {
   ( 3 ) 0.5, 0.4, 0.1, 0;
   ( 4 ) 0.2, 0.55, 0.2, 0.05;
   ( 5 ) 0.1, 0.3, 0.5, 0.1;
   ( 6 ) 0, 0.15, 0.25, 0.6;
 }
-probability( CKNI_12_45 | CKNI_12_30 ) {
+probability ( CKNI_12_45 | CKNI_12_30 ) {
   ( 20_MG_L ) 0.48, 0.48, 0.04;
   ( 30_MG_L ) 0.2, 0.6, 0.2;
   ( 40_MG_L ) 0.04, 0.48, 0.48;
 }
-probability( CBODD_12_45 | C_NI_12_30, CKNI_12_30, CBODD_12_30, CNOD_12_30, CBODN_12_30 ) {
+probability ( CBODD_12_45 | C_NI_12_30, CKNI_12_30, CBODD_12_30, CNOD_12_30, CBODN_12_30 ) {
   ( 3, 20_MG_L, 15_MG_L, 0_5_MG_L, 5_MG_L ) 1, 0, 0, 0;
   ( 3, 20_MG_L, 15_MG_L, 0_5_MG_L, 10_MG_L ) 1, 0, 0, 0;
   ( 3, 20_MG_L, 15_MG_L, 0_5_MG_L, 15_MG_L ) 0.9791, 0.0209, 0, 0;
@@ -3457,7 +3457,7 @@ probability( CBODD_12_45 | C_NI_12_30, CKNI_12_30, CBODD_12_30, CNOD_12_30, CBOD
   ( 6, 40_MG_L, 30_MG_L, 4_MG_L, 15_MG_L ) 0, 0, 0, 1;
   ( 6, 40_MG_L, 30_MG_L, 4_MG_L, 20_MG_L ) 0, 0, 0, 1;
 }
-probability( CKND_12_45 | CKNI_12_30, CKND_12_30, CKNN_12_30 ) {
+probability ( CKND_12_45 | CKNI_12_30, CKND_12_30, CKNN_12_30 ) {
   ( 20_MG_L, 2_MG_L, 0_5_MG_L ) 0.9524, 0.0476, 0;
   ( 20_MG_L, 2_MG_L, 1_MG_L ) 0.9444, 0.0556, 0;
   ( 20_MG_L, 2_MG_L, 2_MG_L ) 0.9286, 0.0714, 0;
@@ -3486,7 +3486,7 @@ probability( CKND_12_45 | CKNI_12_30, CKND_12_30, CKNN_12_30 ) {
   ( 40_MG_L, 6_MG_L, 1_MG_L ) 0, 0, 1;
   ( 40_MG_L, 6_MG_L, 2_MG_L ) 0, 0, 1;
 }
-probability( CNOD_12_45 | CBODD_12_30, CNOD_12_30, CNON_12_30 ) {
+probability ( CNOD_12_45 | CBODD_12_30, CNOD_12_30, CNON_12_30 ) {
   ( 15_MG_L, 0_5_MG_L, 2_MG_L ) 1, 0, 0, 0;
   ( 15_MG_L, 0_5_MG_L, 4_MG_L ) 1, 0, 0, 0;
   ( 15_MG_L, 0_5_MG_L, 6_MG_L ) 0.8893, 0.1107, 0, 0;
@@ -3552,7 +3552,7 @@ probability( CNOD_12_45 | CBODD_12_30, CNOD_12_30, CNON_12_30 ) {
   ( 30_MG_L, 4_MG_L, 6_MG_L ) 0, 0, 0.2478, 0.7522;
   ( 30_MG_L, 4_MG_L, 10_MG_L ) 0, 0, 0.1843, 0.8157;
 }
-probability( CBODN_12_45 | CBODD_12_30, CBODN_12_30, CNON_12_30 ) {
+probability ( CBODN_12_45 | CBODD_12_30, CBODN_12_30, CNON_12_30 ) {
   ( 15_MG_L, 5_MG_L, 2_MG_L ) 0.9557, 0.0443, 0, 0;
   ( 15_MG_L, 5_MG_L, 4_MG_L ) 0.9561, 0.0439, 0, 0;
   ( 15_MG_L, 5_MG_L, 6_MG_L ) 0.9562, 0.0438, 0, 0;
@@ -3618,7 +3618,7 @@ probability( CBODN_12_45 | CBODD_12_30, CBODN_12_30, CNON_12_30 ) {
   ( 30_MG_L, 20_MG_L, 6_MG_L ) 0, 0, 0.0377, 0.9623;
   ( 30_MG_L, 20_MG_L, 10_MG_L ) 0, 0, 0.038, 0.962;
 }
-probability( CKNN_12_45 | CKND_12_30, CKNN_12_30 ) {
+probability ( CKNN_12_45 | CKND_12_30, CKNN_12_30 ) {
   ( 2_MG_L, 0_5_MG_L ) 1, 0, 0;
   ( 2_MG_L, 1_MG_L ) 0.4459, 0.5541, 0;
   ( 2_MG_L, 2_MG_L ) 0, 0.3627, 0.6373;
@@ -3629,7 +3629,7 @@ probability( CKNN_12_45 | CKND_12_30, CKNN_12_30 ) {
   ( 6_MG_L, 1_MG_L ) 0.0538, 0.9462, 0;
   ( 6_MG_L, 2_MG_L ) 0, 0.1666, 0.8334;
 }
-probability( CNON_12_45 | CNOD_12_30, CBODN_12_30, CKNN_12_30, CNON_12_30 ) {
+probability ( CNON_12_45 | CNOD_12_30, CBODN_12_30, CKNN_12_30, CNON_12_30 ) {
   ( 0_5_MG_L, 5_MG_L, 0_5_MG_L, 2_MG_L ) 0.9555, 0.0445, 0, 0;
   ( 0_5_MG_L, 5_MG_L, 0_5_MG_L, 4_MG_L ) 0.0056, 0.9944, 0, 0;
   ( 0_5_MG_L, 5_MG_L, 0_5_MG_L, 6_MG_L ) 0, 0.055, 0.945, 0;

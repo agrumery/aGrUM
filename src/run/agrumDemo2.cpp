@@ -26,7 +26,7 @@ void test_credal2() {
 
   std::cout << "isOMP () ? : " << gum::isOMP() << std::endl;
   std::cout << "threads : " << gum::getMaxNumberOfThreads() << std::endl;
-  gum::setNumberOfThreads( gum::getNumberOfLogicalProcessors()*2 );
+  gum::setNumberOfThreads ( gum::getNumberOfLogicalProcessors() * 2 );
   std::cout << "new number : " << gum::getMaxNumberOfThreads() << std::endl;
 
   std::cout << "number of procs : " << gum::getNumberOfLogicalProcessors() << std::endl;
@@ -199,21 +199,21 @@ void test_credal2() {
 
 
 //////////////////////////////////////////////////
-  std::cout << GET_PATH_STR( bn_c.bif ) << std::endl;
+  std::cout << GET_PATH_STR ( bn_c.bif ) << std::endl;
 
   gum::BayesNet<double> monBNa;
-  gum::BIFReader< double > readera( &monBNa, GET_PATH_STR( gl2uERR_dts3_min.bif/*gl2uERR_min.bif*/ ) );
+  gum::BIFReader< double > readera ( &monBNa, GET_PATH_STR ( gl2uERR_dts3_min.bif/*gl2uERR_min.bif*/ ) );
 //GET_PATH_STR ( bn_c.bif ) );
   readera.proceed();
 
   gum::BayesNet<double> monBNb;
-  gum::BIFReader< double > readerb( &monBNb, GET_PATH_STR( gl2uERR_dts3_max.bif/*gl2uERR_max.bif*/ ) );
+  gum::BIFReader< double > readerb ( &monBNb, GET_PATH_STR ( gl2uERR_dts3_max.bif/*gl2uERR_max.bif*/ ) );
 //GET_PATH_STR ( den_c.bif ) );
   readerb.proceed();
 
 
   // (G)(L)2U test
-  gum::credal::CredalNet<double> myCNb( monBNa, monBNb );
+  gum::credal::CredalNet<double> myCNb ( monBNa, monBNb );
 
   /*
     myCNb.testFrac();
@@ -229,19 +229,19 @@ void test_credal2() {
   std::cout << myCNb.toString() << std::endl;
 
   myCNb.computeCPTMinMax();
-  gum::credal::CNLoopyPropagation<double> lp = gum::credal::CNLoopyPropagation<double>( myCNb );
+  gum::credal::CNLoopyPropagation<double> lp = gum::credal::CNLoopyPropagation<double> ( myCNb );
   lp.makeInference();
 
   for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
-    unsigned int dSize = myCNb.src_bn().variable( *id ).domainSize();
+    unsigned int dSize = myCNb.src_bn().variable ( *id ).domainSize();
 
     for ( unsigned int mod = 0; mod < dSize; mod++ ) {
-      std::cout << "l2u p(" << myCNb.src_bn().variable( *id ).name() << " = " << mod  << ") = [ " << lp.marginalMin( *id )[mod] << ", " << lp.marginalMax( *id )[mod] << " ] " << std::endl;
+      std::cout << "l2u p(" << myCNb.src_bn().variable ( *id ).name() << " = " << mod  << ") = [ " << lp.marginalMin ( *id ) [mod] << ", " << lp.marginalMax ( *id ) [mod] << " ] " << std::endl;
     }
   }
 
-  gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double> > MCE( myCNb );
-  MCE.storeVertices( true );
+  gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double> > MCE ( myCNb );
+  MCE.storeVertices ( true );
   MCE.makeInference();
 
   for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
@@ -249,8 +249,8 @@ void test_credal2() {
     for( unsigned int mod = 0; mod < dSize; mod++ ) {
       std::cout << "MC p(" << myCNb.src_bn().variable(*id).name() << " = " << mod  << ") = [ " << MCE.marginalMin(*id)[mod] << ", " << MCE.marginalMax(*id)[mod] << " ] " << std::endl;
     }*/
-    std::cout << "MC vertices of : " << myCNb.src_bn().variable( *id ).name() << std::endl;
-    std::cout << MCE.vertices( *id ) << std::endl;
+    std::cout << "MC vertices of : " << myCNb.src_bn().variable ( *id ).name() << std::endl;
+    std::cout << MCE.vertices ( *id ) << std::endl;
   }
 
   return;
@@ -319,9 +319,9 @@ void test_credal2() {
 
   // dynacheese modalities
   std::map< std::string, std::vector< double > > modals;
-  typename std::vector< double > km( 5 );
-  typename std::vector< double > lo( 8 );
-  typename std::vector< double > Temp( 3 );
+  typename std::vector< double > km ( 5 );
+  typename std::vector< double > lo ( 8 );
+  typename std::vector< double > Temp ( 3 );
 
   for ( double k = 5.5, p = 0; k <= 7.5; k = k + 0.5, p = p + 1 )
     km[p] = k;
@@ -339,7 +339,7 @@ void test_credal2() {
 
   // not dynamic network test (expectations) with 2U network
   std::map< std::string, std::vector< double > > modals2;
-  std::vector< double > L( 2 );
+  std::vector< double > L ( 2 );
   L[0] = 0;
   L[1] = 1;
   modals2["A"] = L;
@@ -382,8 +382,8 @@ void test_credal2() {
       //MCE->insertModalsFile( GET_PATH_STR ( modalities.modal ) ); //dyna cheese
       //MCE->insertModals(modals); //dyna cheese
 
-      MCE->setRepetitiveInd( false );
-      MCE->setMaxTime( 60 );
+      MCE->setRepetitiveInd ( false );
+      MCE->setMaxTime ( 60 );
 
       //MCE->storeBNOpt ( true );
 
@@ -536,17 +536,17 @@ void test_credal2() {
       std::cout << MCE->nbrIterations() << std::endl;
 
       for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
-        unsigned int dSize = myCNb.src_bn().variable( *id ).domainSize();
+        unsigned int dSize = myCNb.src_bn().variable ( *id ).domainSize();
 
         for ( unsigned int mod = 0; mod < dSize; mod++ ) {
-          std::cout << "MCS p(" << myCNb.src_bn().variable( *id ).name() << " = " << mod  << ") = [ " << MCE->marginalMin( *id )[mod] << ", " << MCE->marginalMax( *id )[mod] << " ] " << std::endl;
+          std::cout << "MCS p(" << myCNb.src_bn().variable ( *id ).name() << " = " << mod  << ") = [ " << MCE->marginalMin ( *id ) [mod] << ", " << MCE->marginalMax ( *id ) [mod] << " ] " << std::endl;
         }
       }
 
 //std::cout << "MCS p(A) = [ " << MCE->marginalMin(0)[1] << ", " << MCE->marginalMax(0)[1] << " ] " << std::endl;
 
 
-      std::vector< unsigned int > key( 3 );
+      std::vector< unsigned int > key ( 3 );
 //key[0] = 0; key[1] = 1; key[2] = 0;
 //const std::vector< unsigned int > key(key1);
 
@@ -557,20 +557,20 @@ void test_credal2() {
       gum::credal::VarMod2BNsMap<double>* opt = MCE->getVarMod2BNsMap();  // & replaced by * to be sure
 
       for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
-        std::cout << myCNb.src_bn().variable( *id ).name() << "\t";
+        std::cout << myCNb.src_bn().variable ( *id ).name() << "\t";
       }
 
       std::cout << std::endl;
 
       for ( gum::DAG::NodeIterator id = myCNb.src_bn().beginNodes(); id != myCNb.src_bn().endNodes(); ++id ) {
-        unsigned int dSize = myCNb.src_bn().variable( *id ).domainSize();
-        std::cout << "bn opts de : " << myCNb.src_bn().variable( *id ).name() << std::endl;
+        unsigned int dSize = myCNb.src_bn().variable ( *id ).domainSize();
+        std::cout << "bn opts de : " << myCNb.src_bn().variable ( *id ).name() << std::endl;
 
         for ( unsigned int mod = 0; mod < dSize; mod++ ) {
           key[0] = *id;
           key[1] = mod;
           key[2] = 0; // min
-          std::vector< std::vector< std::vector< std::vector< bool > > > > tOpts = opt->getFullBNOptsFromKey( key );
+          std::vector< std::vector< std::vector< std::vector< bool > > > > tOpts = opt->getFullBNOptsFromKey ( key );
 
           std::cout << "min sur : " << mod << std::endl;
           unsigned int bnSet = tOpts.size();
@@ -585,7 +585,7 @@ void test_credal2() {
           }
 
           key[2] = 1; // max
-          const std::vector< std::vector< std::vector< std::vector< bool > > > >& tOpts2 = opt->getFullBNOptsFromKey( key );
+          const std::vector< std::vector< std::vector< std::vector< bool > > > >& tOpts2 = opt->getFullBNOptsFromKey ( key );
           bnSet = tOpts2.size();
 
           std::cout << "max sur : " << mod << std::endl;
@@ -625,22 +625,22 @@ void test_credal2() {
 
       if ( i == 0 && j == 0 ) {
         //MCE->saveMarginals("./MCr_0.6c_f.mar");
-        MCE->saveExpectations( "./MCs_0.6c_f.exp" );
+        MCE->saveExpectations ( "./MCs_0.6c_f.exp" );
       } else if ( i == 1 && j == 0 ) {
         //MCE->saveMarginals("./MCr_0.7c_f.mar");
-        MCE->saveExpectations( "./MCs_0.7c_f.exp" );
+        MCE->saveExpectations ( "./MCs_0.7c_f.exp" );
       } else if ( i == 2 && j == 0 ) {
         //MCE->saveMarginals("./MCr_0.8c_f.mar");
-        MCE->saveExpectations( "./MCs_0.95c_f.exp" );
+        MCE->saveExpectations ( "./MCs_0.95c_f.exp" );
       } else if ( i == 0 && j == 1 ) {
-        MCE->saveMarginals( GET_PATH_STR( MCr_0.95c_fb.mar ) );
-        MCE->saveExpectations( GET_PATH_STR( MCs_0.95c_fb.exp ) );
+        MCE->saveMarginals ( GET_PATH_STR ( MCr_0.95c_fb.mar ) );
+        MCE->saveExpectations ( GET_PATH_STR ( MCs_0.95c_fb.exp ) );
       } else if ( i == 1 && j == 1 ) {
         //MCE->saveMarginals("./MCs_0.95c_fb.mar");
-        MCE->saveExpectations( "./MCs_0.95c_fb.exp" );
+        MCE->saveExpectations ( "./MCs_0.95c_fb.exp" );
       } else if ( i == 2 && j == 1 ) {
         //MCE->saveMarginals("./MCs_0.8_fb.mar");
-        MCE->saveExpectations( "./MCs_0.8c_fb.exp" );
+        MCE->saveExpectations ( "./MCs_0.8c_fb.exp" );
       }
 
       //MCE.saveVertices("./SMCVr.res");
@@ -724,15 +724,15 @@ void test_credal2() {
   */
 }
 
-int main2( int argc, char* argv[] ) {
+int main2 ( int argc, char* argv[] ) {
   try {
     test_credal2();
   } catch ( gum::Exception& e ) {
-    GUM_SHOWERROR( e );
+    GUM_SHOWERROR ( e );
   }
 
   std::cout << "Press ENTER to continue...";
-  std::cin.ignore( std::numeric_limits<std::streamsize>::max(), '\n' );
+  std::cin.ignore ( std::numeric_limits<std::streamsize>::max(), '\n' );
 
   return EXIT_SUCCESS;
 }

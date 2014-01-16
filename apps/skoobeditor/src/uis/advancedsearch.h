@@ -14,7 +14,7 @@ class AdvancedSearch : public QDialog {
   public:
     enum Filter {All, Skool, Skoor};
 
-    explicit AdvancedSearch( QWidget *parent = 0 );
+    explicit AdvancedSearch ( QWidget* parent = 0 );
     ~AdvancedSearch();
 
     bool isSearch() const;
@@ -33,26 +33,26 @@ class AdvancedSearch : public QDialog {
     void setDocumentSearch();
     void setProjectSearch();
     void setOpenFilesSearch();
-    void setCaseSensitive( bool checked );
-    void setRegex( bool checked );
-    void setWholeWord( bool checked );
-    void setFilter( Filter filter );
-    void setSearchText( const QString & text );
-    void setReplaceText( const QString & text );
-    void setProjectSearchEnabled( bool enabled );
+    void setCaseSensitive ( bool checked );
+    void setRegex ( bool checked );
+    void setWholeWord ( bool checked );
+    void setFilter ( Filter filter );
+    void setSearchText ( const QString& text );
+    void setReplaceText ( const QString& text );
+    void setProjectSearchEnabled ( bool enabled );
 
   protected slots:
     void on_cancelButton_clicked();
     void on_searchButton_clicked();
     void on_replaceAllButton_clicked();
 
-    void on_documentRadio_toggled( bool checked );
+    void on_documentRadio_toggled ( bool checked );
 
   protected:
-    void closeEvent( QCloseEvent * event );
+    void closeEvent ( QCloseEvent* event );
 
   private:
-    Ui::AdvancedSearch *ui;
+    Ui::AdvancedSearch* ui;
 
     bool m_isSearch, m_isReplaceAll;
 };

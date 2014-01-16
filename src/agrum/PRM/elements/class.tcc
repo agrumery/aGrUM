@@ -54,7 +54,7 @@ namespace gum {
       __implements ( new Set<Interface<GUM_SCALAR>*> ( set ) ) {
       GUM_CONSTRUCTOR ( Class );
 
-      for ( auto iter = __implements->begin(); iter != __implements->end(); ++iter ) {
+      for ( auto iter = __implements->beginSafe(); iter != __implements->endSafe(); ++iter ) {
         ( **iter ).__addImplementation ( this );
       }
     }
@@ -71,12 +71,12 @@ namespace gum {
       if ( not __implements ) {
         __implements = new Set<Interface<GUM_SCALAR>*> ( set );
       } else {
-        for ( auto iter = set.begin(); iter != set.end(); ++iter ) {
+        for ( auto iter = set.beginSafe(); iter != set.endSafe(); ++iter ) {
           __implements->insert ( *iter );
         }
       }
 
-      for ( auto iter = __implements->begin(); iter != __implements->end(); ++iter ) {
+      for ( auto iter = __implements->beginSafe(); iter != __implements->endSafe(); ++iter ) {
         ( **iter ).__addImplementation ( this );
       }
     }
@@ -93,8 +93,8 @@ namespace gum {
     Class<GUM_SCALAR>::~Class() {
       GUM_DESTRUCTOR ( Class );
 
-      for ( auto iter = __nodeIdMap.begin(); iter != __nodeIdMap.end(); ++iter )
-        delete *iter;
+      for ( auto iter = __nodeIdMap.beginSafe(); iter != __nodeIdMap.endSafe(); ++iter )
+        delete iter.val();
 
       if ( __implements )
         delete __implements;
@@ -109,7 +109,7 @@ namespace gum {
       // in c.
       Bijection<const DiscreteVariable*, const DiscreteVariable*> bij;
 
-      for ( auto iter = c.__attributes.begin(); iter != c.__attributes.end(); ++iter ) {
+      for ( auto iter = c.__attributes.beginSafe(); iter != c.__attributes.endSafe(); ++iter ) {
         // using multiDimSparse to prevent unecessary memory allocation for large arrays
         Attribute<GUM_SCALAR>* attr = new Attribute<GUM_SCALAR> ( ( *iter )->name(), ( *iter )->type(), new MultiDimSparse<GUM_SCALAR> ( 0.0 ) );
         bij.insert ( & ( ( *iter )->type().variable() ), & ( attr->type().variable() ) );
@@ -129,7 +129,7 @@ namespace gum {
       }
 
       // Copying aggregates
-      for ( auto iter = c.__aggregates.begin(); iter != c.__aggregates.end(); ++iter ) {
+      for ( auto iter = c.__aggregates.beginSafe(); iter != c.__aggregates.endSafe(); ++iter ) {
         Aggregate<GUM_SCALAR>* agg = nullptr;
 
         try {
@@ -150,7 +150,7 @@ namespace gum {
       }
 
       // Copying reference slots
-      for ( auto iter = c.__referenceSlots.begin(); iter != c.__referenceSlots.end(); ++iter ) {
+      for ( auto iter = c.__referenceSlots.beginSafe(); iter != c.__referenceSlots.endSafe(); ++iter ) {
         ReferenceSlot<GUM_SCALAR>* ref = new ReferenceSlot<GUM_SCALAR> ( ( *iter )->name(), const_cast<ClassElementContainer<GUM_SCALAR>&> ( ( *iter )->slotType() ), ( *iter )->isArray() );
         ref->setId ( ( *iter )->id() );
         __nodeIdMap.insert ( ref->id(), ref );
@@ -163,7 +163,7 @@ namespace gum {
       }
 
       // Copying slot chains
-      for ( auto iter = c.__slotChains.begin(); iter != c.__slotChains.end(); ++iter ) {
+      for ( auto iter = c.__slotChains.beginSafe(); iter != c.__slotChains.endSafe(); ++iter ) {
         // We just need to change the first ReferenceSlot<GUM_SCALAR> in the chain
         Sequence<ClassElement<GUM_SCALAR>*> chain ( ( *iter )->chain() );
         chain.setAtPos ( 0, __nameMap[ ( *iter )->chain().front()->name()] );
@@ -177,9 +177,9 @@ namespace gum {
       }
 
       // Copying dependencies yield by arcs
-      for ( const auto & arc : c.dag().arcs() ) {
-        __nodeIdMap[arc.tail()]->addChild ( * ( __nodeIdMap[arc.head()] ) );
-        __nodeIdMap[arc.head()]->addParent ( * ( __nodeIdMap[arc.tail()] ) );
+      for ( auto arc = c.dag().arcs().beginSafe(); arc != c.dag().arcs().endSafe(); ++arc ) {
+        __nodeIdMap[arc->tail()]->addChild ( * ( __nodeIdMap[arc->head()] ) );
+        __nodeIdMap[arc->head()]->addParent ( * ( __nodeIdMap[arc->tail()] ) );
       }
 
       // Copying the IO flag
@@ -187,7 +187,7 @@ namespace gum {
       // Copying content of CPF
       Attribute<GUM_SCALAR>* a = 0;
 
-      for ( auto iter = c.__attributes.begin(); iter != c.__attributes.end(); ++iter ) {
+      for ( auto iter = c.__attributes.beginSafe(); iter != c.__attributes.endSafe(); ++iter ) {
         a = static_cast<Attribute<GUM_SCALAR>*> ( __nameMap[ ( **iter ).safeName()] );
         delete a->__cpf;
         a->__cpf = copyPotential ( bij, ( **iter ).cpf() );
@@ -217,7 +217,7 @@ namespace gum {
             if ( __implements->exists ( const_cast<Interface<GUM_SCALAR>*> ( &i ) ) )
               return true;
 
-            for ( auto iter = __implements->begin(); iter != __implements->end(); ++iter )
+            for ( auto iter = __implements->beginSafe(); iter != __implements->endSafe(); ++iter )
               if ( ( *iter )->isSubTypeOf ( i ) )
                 return true;
           }
@@ -427,15 +427,15 @@ namespace gum {
       std::vector<SlotChain<GUM_SCALAR>*> toRemove, toAdd;
 
       // Updating SlotChain<GUM_SCALAR> which started with overloaded
-      for ( auto iter = __slotChains.begin(); iter != __slotChains.end(); ++iter ) {
+      for ( auto iter = __slotChains.beginSafe(); iter != __slotChains.endSafe(); ++iter ) {
         // If the attribute pointed by this slotchain is overloaded, we need to change the slotchain
         // names to it's safename version: ref.attr is replaced by ref.(type)attr.
         if ( ( ( **iter ).chain().atPos ( 0 ) == overloaded ) ) {
           Sequence<ClassElement<GUM_SCALAR>*> seq;
-          auto elt = ++ ( ( **iter ).chain().begin() );
+          auto elt = ++ ( ( **iter ).chain().beginSafe() );
           seq.insert ( overloader );
 
-          while ( elt != ( **iter ).chain().end() ) {
+          while ( elt != ( **iter ).chain().endSafe() ) {
             ref = static_cast<ReferenceSlot<GUM_SCALAR>*> ( seq.back() );
             next = & ( ref->slotType().get ( ( **elt ).name() ) );
             seq.insert ( next );
@@ -455,7 +455,7 @@ namespace gum {
             sc = new SlotChain<GUM_SCALAR> ( sc_name, seq );
             sc->setId ( ( **iter ).id() );
 
-            for ( auto child = this->dag().children ( sc->id() ).begin(), zeEnd=this->dag().children ( sc->id() ).end(); child != zeEnd; ++child )
+            for ( auto child = this->dag().children ( sc->id() ).beginSafe(), zeEnd = this->dag().children ( sc->id() ).endSafe(); child != zeEnd; ++child )
               get ( *child ).cpf().swap ( ( **iter ).lastElt().type().variable(), sc->lastElt().type().variable() );
 
             toAdd.push_back ( sc );
@@ -552,8 +552,8 @@ namespace gum {
     template<typename GUM_SCALAR>
     void
     Class<GUM_SCALAR>::_findAllSubtypes ( Set<ClassElementContainer<GUM_SCALAR>*>& set ) {
-      for ( auto iter = __extensions.begin();
-            iter != __extensions.end(); ++iter ) {
+      for ( auto iter = __extensions.beginSafe();
+            iter != __extensions.endSafe(); ++iter ) {
         set.insert ( *iter );
         ( **iter )._findAllSubtypes ( set );
       }
@@ -563,7 +563,7 @@ namespace gum {
     void
     Class<GUM_SCALAR>::__addIOInterfaceFlags ( ClassElement<GUM_SCALAR>* elt ) {
       if ( __implements != 0 ) {
-        for ( auto iter = __implements->begin(); iter != __implements->end(); ++iter ) {
+        for ( auto iter = __implements->beginSafe(); iter != __implements->endSafe(); ++iter ) {
           if ( ( **iter ).isOutputNode ( *elt ) ) {
             try {
               this->_getIOFlag ( *elt ).second = true;
@@ -578,7 +578,7 @@ namespace gum {
     template<typename GUM_SCALAR>
     void
     Class<GUM_SCALAR>::_updateDescendants ( const ClassElement<GUM_SCALAR>& elt ) {
-      for ( auto iter = __extensions.begin(); iter != __extensions.end(); ++iter ) {
+      for ( auto iter = __extensions.beginSafe(); iter != __extensions.endSafe(); ++iter ) {
         // We test to prevent unnecessary recursive call from iter
         if ( not ( **iter ).isOutputNode ( elt ) ) {
           ( *iter )->setOutputNode ( elt, true );
@@ -589,25 +589,25 @@ namespace gum {
     template<typename GUM_SCALAR> INLINE
     typename Class<GUM_SCALAR>::ClassEltIterator
     Class<GUM_SCALAR>::begin() {
-      return __nodeIdMap.begin();
+      return __nodeIdMap.beginSafe();
     }
 
     template<typename GUM_SCALAR> INLINE
     const typename Class<GUM_SCALAR>::ClassEltIterator&
     Class<GUM_SCALAR>::end() {
-      return __nodeIdMap.end();
+      return __nodeIdMap.endSafe();
     }
 
     template<typename GUM_SCALAR> INLINE
     typename Class<GUM_SCALAR>::const_ClassEltIterator
     Class<GUM_SCALAR>::begin() const {
-      return __nodeIdMap.begin();
+      return __nodeIdMap.beginSafe();
     }
 
     template<typename GUM_SCALAR> INLINE
     const typename Class<GUM_SCALAR>::const_ClassEltIterator&
     Class<GUM_SCALAR>::end() const {
-      return __nodeIdMap.end();
+      return __nodeIdMap.endSafe();
     }
 
     template<typename GUM_SCALAR> INLINE

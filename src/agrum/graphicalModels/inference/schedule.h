@@ -182,8 +182,8 @@ namespace gum {
        * amount of memory used during the ScheduleOperation and the second one is the
        * amount of memory still used at the end of the operation ( the memory used by
        * the resulting table ) */
-      std::pair<long,long> memoryUsage ( NodeId ) const;
-      std::pair<long,long> memoryUsage ( ScheduleOperation<GUM_SCALAR>& ) const;
+      std::pair<long, long> memoryUsage ( NodeId ) const;
+      std::pair<long, long> memoryUsage ( ScheduleOperation<GUM_SCALAR>& ) const;
 
       /// @}
 
@@ -200,11 +200,11 @@ namespace gum {
       NodeProperty<ScheduleOperation<GUM_SCALAR>*> __node2operation;
 
       /// a hashtable assigning to each operation id a node id in the DAG
-      HashTable<OperationId,NodeId> __operation2node;
+      HashTable<OperationId, NodeId> __operation2node;
 
       /** @brief a hashtable assigning to each ScheduleMultiDim resulting from a
        * computation the MultiDimOperation node id that created it */
-      HashTable<MultiDimId,NodeId> __created_multidims;
+      HashTable<MultiDimId, NodeId> __created_multidims;
 
       /// a list of operations whose parents are not properly set
       /** when entering operations to be performed in a "wrong" order, it may
@@ -220,7 +220,7 @@ namespace gum {
       mutable NodeSet __operations_available;
 
       /// for each multidim, store the set of operations involving it
-      HashTable<MultiDimId,NodeSet*> __multidim2operations;
+      HashTable<MultiDimId, NodeSet*> __multidim2operations;
 
 
       /** @brief updates the set of parents for the nodes whoses parents are not

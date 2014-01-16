@@ -40,230 +40,255 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 
 namespace gum {
-namespace prm {
-namespace o3prmr {
+  namespace prm {
+    namespace o3prmr {
 
 
-void Parser::SynErr( int n ) {
-  if ( errDist >= minErrDist ) SynErr( scanner->filename(),la->line, la->col, n );
+      void Parser::SynErr ( int n ) {
+        if ( errDist >= minErrDist ) SynErr ( scanner->filename(), la->line, la->col, n );
 
-  errDist = 0;
-}
+        errDist = 0;
+      }
 
 
-const ErrorsContainer& Parser::errors( void ) const {
-  return __errors;
-}
+      const ErrorsContainer& Parser::errors ( void ) const {
+        return __errors;
+      }
 
-void Parser::Get() {
-  for ( ;; ) {
-    t = la;
-    la = scanner->Scan();
+      void Parser::Get() {
+        for ( ;; ) {
+          t = la;
+          la = scanner->Scan();
 
-    if ( la->kind <= maxT ) { ++errDist; break; }
+          if ( la->kind <= maxT ) { ++errDist; break; }
 
-    
 
-    if ( dummyToken != t ) {
-      dummyToken->kind = t->kind;
-      dummyToken->pos = t->pos;
-      dummyToken->col = t->col;
-      dummyToken->line = t->line;
-      dummyToken->next = NULL;
-      coco_string_delete( dummyToken->val );
-      dummyToken->val = coco_string_create( t->val );
-      t = dummyToken;
-    }
 
-    la = t;
-  }
-}
+          if ( dummyToken != t ) {
+            dummyToken->kind = t->kind;
+            dummyToken->pos = t->pos;
+            dummyToken->col = t->col;
+            dummyToken->line = t->line;
+            dummyToken->next = NULL;
+            coco_string_delete ( dummyToken->val );
+            dummyToken->val = coco_string_create ( t->val );
+            t = dummyToken;
+          }
 
-void Parser::Expect( int n ) {
-  if ( la->kind==n ) Get(); else { SynErr( n ); }
-}
+          la = t;
+        }
+      }
 
-void Parser::ExpectWeak( int n, int follow ) {
-  if ( la->kind == n ) Get();
-  else {
-    SynErr( n );
+      void Parser::Expect ( int n ) {
+        if ( la->kind == n ) Get(); else { SynErr ( n ); }
+      }
 
-    while ( !StartOf( follow ) ) Get();
-  }
-}
+      void Parser::ExpectWeak ( int n, int follow ) {
+        if ( la->kind == n ) Get();
+        else {
+          SynErr ( n );
 
-bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
-  if ( la->kind == n ) {Get(); return true;}
-  else if ( StartOf( repFol ) ) {return false;}
-  else {
-    SynErr( n );
+          while ( !StartOf ( follow ) ) Get();
+        }
+      }
 
-    while ( !( StartOf( syFol ) || StartOf( repFol ) || StartOf( 0 ) ) ) {
-      Get();
-    }
+      bool Parser::WeakSeparator ( int n, int syFol, int repFol ) {
+        if ( la->kind == n ) {Get(); return true;}
+        else if ( StartOf ( repFol ) ) {return false;}
+        else {
+          SynErr ( n );
 
-    return StartOf( syFol );
-  }
-}
+          while ( ! ( StartOf ( syFol ) || StartOf ( repFol ) || StartOf ( 0 ) ) ) {
+            Get();
+          }
 
-void Parser::o3prmr() {
-		std::string s, alias; __currentSession = 0; 
-		if (StartOf(1)) {
-			if (la->kind == _package) {
-				Get();
-				Ident(s);
-				__context->setPackage( s ); 
-				while (!(la->kind == _EOF || la->kind == 15 /* ";" */)) {SynErr(29); Get();}
-				Expect(15 /* ";" */);
-			}
-			while (la->kind == _import) {
-				Get();
-				Ident(s);
-				alias = ""; 
-				if (la->kind == _as) {
-					Get();
-					if (la->kind == _default) {
-						Get();
-						alias = "default"; 
-					} else if (la->kind == _word) {
-						Get();
-						alias = gum::narrow(t->val); 
-					} else SynErr(30);
-				}
-				__context->addImport( t->line, s, alias ); 
-				while (!(la->kind == _EOF || la->kind == 15 /* ";" */)) {SynErr(31); Get();}
-				Expect(15 /* ";" */);
-			}
-			while (la->kind == _request) {
-				RequestBloc();
-			}
-		} else if (StartOf(2)) {
-			__currentSession = new O3prmrSession<double>("default");
-			__context->addSession( *__currentSession );
-			
-			Command();
-		} else SynErr(32);
-}
+          return StartOf ( syFol );
+        }
+      }
 
-void Parser::Ident(std::string& s) {
-		std::stringstream sBuff; 
-		Expect(_word);
-		sBuff << narrow(t->val); 
-		while (la->kind == 25 /* "." */) {
-			Get();
-			Expect(_word);
-			sBuff << "." << narrow(t->val); 
-		}
-		s = sBuff.str(); 
-}
+      void Parser::o3prmr() {
+        std::string s, alias; __currentSession = 0;
 
-void Parser::RequestBloc() {
-		Expect(_request);
-		Expect(_word);
-		__currentSession = new O3prmrSession<double>(gum::narrow(t->val)); 
-		Expect(16 /* "{" */);
-		while (StartOf(2)) {
-			Command();
-		}
-		while (!(la->kind == _EOF || la->kind == 17 /* "}" */)) {SynErr(33); Get();}
-		Expect(17 /* "}" */);
-		__context->addSession( *__currentSession ); __currentSession = nullptr; 
-}
+        if ( StartOf ( 1 ) ) {
+          if ( la->kind == _package ) {
+            Get();
+            Ident ( s );
+            __context->setPackage ( s );
 
-void Parser::Command() {
-		if (la->kind == _word) {
-			Observe();
-		} else if (la->kind == _unobserve) {
-			Unobserve();
-		} else if (la->kind == _query) {
-			Query();
-		} else if (la->kind == _engine) {
-			SetEngine();
-		} else if (la->kind == _grd_engine) {
-			SetGrdEngine();
-		} else SynErr(34);
-}
+            while ( ! ( la->kind == _EOF || la->kind == 15 /* ";" */ ) ) {SynErr ( 29 ); Get();}
 
-void Parser::Observe() {
-		std::string left_value, right_value; 
-		IdentArray(left_value);
-		Expect(18 /* "=" */);
-		Expect(_word);
-		right_value = gum::narrow(t->val); 
-		Expect(15 /* ";" */);
-		__currentSession->addObserve(t->line, left_value, right_value); 
-}
+            Expect ( 15 /* ";" */ );
+          }
 
-void Parser::Unobserve() {
-		Expect(_unobserve);
-		std::string s; 
-		IdentArray(s);
-		__currentSession->addUnobserve( t->line, s ); 
-		Expect(15 /* ";" */);
-}
+          while ( la->kind == _import ) {
+            Get();
+            Ident ( s );
+            alias = "";
 
-void Parser::Query() {
-		Expect(_query);
-		std::string s; 
-		IdentArray(s);
-		__currentSession->addQuery( t->line, s ); 
-		while (la->kind == _and) {
-			Get();
-			IdentArray(s);
-			__currentSession->addQuery( t->line, s ); 
-		}
-		Expect(15 /* ";" */);
-}
+            if ( la->kind == _as ) {
+              Get();
 
-void Parser::SetEngine() {
-		Expect(_engine);
-		if (la->kind == 19 /* "SVED" */) {
-			Get();
-		} else if (la->kind == 20 /* "SVE" */) {
-			Get();
-		} else if (la->kind == 21 /* "GND" */) {
-			Get();
-		} else SynErr(35);
-		__currentSession->addSetEngine( t->line, gum::narrow(t->val) ); 
-		Expect(15 /* ";" */);
-}
+              if ( la->kind == _default ) {
+                Get();
+                alias = "default";
+              } else if ( la->kind == _word ) {
+                Get();
+                alias = gum::narrow ( t->val );
+              } else SynErr ( 30 );
+            }
 
-void Parser::SetGrdEngine() {
-		Expect(_grd_engine);
-		if (la->kind == 22 /* "VE" */) {
-			Get();
-		} else if (la->kind == 23 /* "VEBB" */) {
-			Get();
-		} else if (la->kind == 24 /* "lazy" */) {
-			Get();
-		} else SynErr(36);
-		__currentSession->addSetGndEngine( t->line, gum::narrow(t->val) ); 
-		Expect(15 /* ";" */);
-}
+            __context->addImport ( t->line, s, alias );
 
-void Parser::IdentArray(std::string& s) {
-		std::stringstream sBuff; 
-		Expect(_word);
-		sBuff << narrow(t->val); 
-		if (la->kind == 26 /* "[" */) {
-			Get();
-			Expect(_integer);
-			sBuff << '[' << narrow(t->val) << ']'; 
-			Expect(27 /* "]" */);
-		}
-		while (la->kind == 25 /* "." */) {
-			Get();
-			Expect(_word);
-			sBuff << "." << narrow(t->val); 
-			if (la->kind == 26 /* "[" */) {
-				Get();
-				Expect(_integer);
-				sBuff << '[' << narrow(t->val) << ']'; 
-				Expect(27 /* "]" */);
-			}
-		}
-		s = sBuff.str(); 
-}
+            while ( ! ( la->kind == _EOF || la->kind == 15 /* ";" */ ) ) {SynErr ( 31 ); Get();}
+
+            Expect ( 15 /* ";" */ );
+          }
+
+          while ( la->kind == _request ) {
+            RequestBloc();
+          }
+        } else if ( StartOf ( 2 ) ) {
+          __currentSession = new O3prmrSession<double> ( "default" );
+          __context->addSession ( *__currentSession );
+
+          Command();
+        } else SynErr ( 32 );
+      }
+
+      void Parser::Ident ( std::string& s ) {
+        std::stringstream sBuff;
+        Expect ( _word );
+        sBuff << narrow ( t->val );
+
+        while ( la->kind == 25 /* "." */ ) {
+          Get();
+          Expect ( _word );
+          sBuff << "." << narrow ( t->val );
+        }
+
+        s = sBuff.str();
+      }
+
+      void Parser::RequestBloc() {
+        Expect ( _request );
+        Expect ( _word );
+        __currentSession = new O3prmrSession<double> ( gum::narrow ( t->val ) );
+        Expect ( 16 /* "{" */ );
+
+        while ( StartOf ( 2 ) ) {
+          Command();
+        }
+
+        while ( ! ( la->kind == _EOF || la->kind == 17 /* "}" */ ) ) {SynErr ( 33 ); Get();}
+
+        Expect ( 17 /* "}" */ );
+        __context->addSession ( *__currentSession ); __currentSession = nullptr;
+      }
+
+      void Parser::Command() {
+        if ( la->kind == _word ) {
+          Observe();
+        } else if ( la->kind == _unobserve ) {
+          Unobserve();
+        } else if ( la->kind == _query ) {
+          Query();
+        } else if ( la->kind == _engine ) {
+          SetEngine();
+        } else if ( la->kind == _grd_engine ) {
+          SetGrdEngine();
+        } else SynErr ( 34 );
+      }
+
+      void Parser::Observe() {
+        std::string left_value, right_value;
+        IdentArray ( left_value );
+        Expect ( 18 /* "=" */ );
+        Expect ( _word );
+        right_value = gum::narrow ( t->val );
+        Expect ( 15 /* ";" */ );
+        __currentSession->addObserve ( t->line, left_value, right_value );
+      }
+
+      void Parser::Unobserve() {
+        Expect ( _unobserve );
+        std::string s;
+        IdentArray ( s );
+        __currentSession->addUnobserve ( t->line, s );
+        Expect ( 15 /* ";" */ );
+      }
+
+      void Parser::Query() {
+        Expect ( _query );
+        std::string s;
+        IdentArray ( s );
+        __currentSession->addQuery ( t->line, s );
+
+        while ( la->kind == _and ) {
+          Get();
+          IdentArray ( s );
+          __currentSession->addQuery ( t->line, s );
+        }
+
+        Expect ( 15 /* ";" */ );
+      }
+
+      void Parser::SetEngine() {
+        Expect ( _engine );
+
+        if ( la->kind == 19 /* "SVED" */ ) {
+          Get();
+        } else if ( la->kind == 20 /* "SVE" */ ) {
+          Get();
+        } else if ( la->kind == 21 /* "GND" */ ) {
+          Get();
+        } else SynErr ( 35 );
+
+        __currentSession->addSetEngine ( t->line, gum::narrow ( t->val ) );
+        Expect ( 15 /* ";" */ );
+      }
+
+      void Parser::SetGrdEngine() {
+        Expect ( _grd_engine );
+
+        if ( la->kind == 22 /* "VE" */ ) {
+          Get();
+        } else if ( la->kind == 23 /* "VEBB" */ ) {
+          Get();
+        } else if ( la->kind == 24 /* "lazy" */ ) {
+          Get();
+        } else SynErr ( 36 );
+
+        __currentSession->addSetGndEngine ( t->line, gum::narrow ( t->val ) );
+        Expect ( 15 /* ";" */ );
+      }
+
+      void Parser::IdentArray ( std::string& s ) {
+        std::stringstream sBuff;
+        Expect ( _word );
+        sBuff << narrow ( t->val );
+
+        if ( la->kind == 26 /* "[" */ ) {
+          Get();
+          Expect ( _integer );
+          sBuff << '[' << narrow ( t->val ) << ']';
+          Expect ( 27 /* "]" */ );
+        }
+
+        while ( la->kind == 25 /* "." */ ) {
+          Get();
+          Expect ( _word );
+          sBuff << "." << narrow ( t->val );
+
+          if ( la->kind == 26 /* "[" */ ) {
+            Get();
+            Expect ( _integer );
+            sBuff << '[' << narrow ( t->val ) << ']';
+            Expect ( 27 /* "]" */ );
+          }
+        }
+
+        s = sBuff.str();
+      }
 
 
 
@@ -273,195 +298,231 @@ void Parser::IdentArray(std::string& s) {
 // The following templates are used to recognize if the user declared
 // the methods Init and Destroy.
 
-template<typename T>
-struct ParserInitExistsRecognizer {
-  template<typename U, void ( U::* )() = &U::Init>
-  struct ExistsIfInitIsDefinedMarker {};
+      template<typename T>
+      struct ParserInitExistsRecognizer {
+        template<typename U, void ( U::* ) () = &U::Init>
+        struct ExistsIfInitIsDefinedMarker {};
 
-  struct InitIsMissingType {
-    char dummy1;
-  };
+        struct InitIsMissingType {
+          char dummy1;
+        };
 
-  struct InitExistsType {
-    char dummy1; char dummy2;
-  };
+        struct InitExistsType {
+          char dummy1; char dummy2;
+        };
 
-  // exists always
-  template<typename U>
-  static InitIsMissingType is_here( ... );
+        // exists always
+        template<typename U>
+        static InitIsMissingType is_here ( ... );
 
-  // exist only if ExistsIfInitIsDefinedMarker is defined
-  template<typename U>
-  static InitExistsType is_here( ExistsIfInitIsDefinedMarker<U>* );
+        // exist only if ExistsIfInitIsDefinedMarker is defined
+        template<typename U>
+        static InitExistsType is_here ( ExistsIfInitIsDefinedMarker<U>* );
 
-  enum { InitExists = ( sizeof( is_here<T>( NULL ) ) == sizeof( InitExistsType ) ) };
-};
+        enum { InitExists = ( sizeof ( is_here<T> ( NULL ) ) == sizeof ( InitExistsType ) ) };
+      };
 
-template<typename T>
-struct ParserDestroyExistsRecognizer {
-  template<typename U, void ( U::* )() = &U::Destroy>
-  struct ExistsIfDestroyIsDefinedMarker {};
+      template<typename T>
+      struct ParserDestroyExistsRecognizer {
+        template<typename U, void ( U::* ) () = &U::Destroy>
+        struct ExistsIfDestroyIsDefinedMarker {};
 
-  struct DestroyIsMissingType {
-    char dummy1;
-  };
+        struct DestroyIsMissingType {
+          char dummy1;
+        };
 
-  struct DestroyExistsType {
-    char dummy1; char dummy2;
-  };
+        struct DestroyExistsType {
+          char dummy1; char dummy2;
+        };
 
-  // exists always
-  template<typename U>
-  static DestroyIsMissingType is_here( ... );
+        // exists always
+        template<typename U>
+        static DestroyIsMissingType is_here ( ... );
 
-  // exist only if ExistsIfDestroyIsDefinedMarker is defined
-  template<typename U>
-  static DestroyExistsType is_here( ExistsIfDestroyIsDefinedMarker<U>* );
+        // exist only if ExistsIfDestroyIsDefinedMarker is defined
+        template<typename U>
+        static DestroyExistsType is_here ( ExistsIfDestroyIsDefinedMarker<U>* );
 
-  enum { DestroyExists = ( sizeof( is_here<T>( NULL ) ) == sizeof( DestroyExistsType ) ) };
-};
+        enum { DestroyExists = ( sizeof ( is_here<T> ( NULL ) ) == sizeof ( DestroyExistsType ) ) };
+      };
 
 // The folloing templates are used to call the Init and Destroy methods if they exist.
 
 // Generic case of the ParserInitCaller, gets used if the Init method is missing
-template<typename T, bool = ParserInitExistsRecognizer<T>::InitExists>
-struct ParserInitCaller {
-  static void CallInit( T* t ) {
-    // nothing to do
-  }
-};
+      template<typename T, bool = ParserInitExistsRecognizer<T>::InitExists>
+      struct ParserInitCaller {
+        static void CallInit ( T* t ) {
+          // nothing to do
+        }
+      };
 
 // True case of the ParserInitCaller, gets used if the Init method exists
-template<typename T>
-struct ParserInitCaller<T, true> {
-  static void CallInit( T* t ) {
-    t->Init();
-  }
-};
+      template<typename T>
+      struct ParserInitCaller<T, true> {
+        static void CallInit ( T* t ) {
+          t->Init();
+        }
+      };
 
 // Generic case of the ParserDestroyCaller, gets used if the Destroy method is missing
-template<typename T, bool = ParserDestroyExistsRecognizer<T>::DestroyExists>
-struct ParserDestroyCaller {
-  static void CallDestroy( T* t ) {
-    // nothing to do
-  }
-};
+      template<typename T, bool = ParserDestroyExistsRecognizer<T>::DestroyExists>
+      struct ParserDestroyCaller {
+        static void CallDestroy ( T* t ) {
+          // nothing to do
+        }
+      };
 
 // True case of the ParserDestroyCaller, gets used if the Destroy method exists
-template<typename T>
-struct ParserDestroyCaller<T, true> {
-  static void CallDestroy( T* t ) {
-    t->Destroy();
-  }
-};
-void Parser::Parse() {
-  t = NULL;
-  la = dummyToken = new Token();
-  la->val = coco_string_create( L"Dummy Token" );
-  Get();
-  	o3prmr();
+      template<typename T>
+      struct ParserDestroyCaller<T, true> {
+        static void CallDestroy ( T* t ) {
+          t->Destroy();
+        }
+      };
+      void Parser::Parse() {
+        t = NULL;
+        la = dummyToken = new Token();
+        la->val = coco_string_create ( L"Dummy Token" );
+        Get();
+        o3prmr();
 
-}
+      }
 
-Parser::Parser( Scanner* scanner ) {
-  	maxT = 28;
+      Parser::Parser ( Scanner* scanner ) {
+        maxT = 28;
 
-  ParserInitCaller<Parser>::CallInit( this );
-  dummyToken = NULL;
-  t = la = NULL;
-  minErrDist = 2;
-  errDist = minErrDist;
-  this->scanner = scanner;
-}
+        ParserInitCaller<Parser>::CallInit ( this );
+        dummyToken = NULL;
+        t = la = NULL;
+        minErrDist = 2;
+        errDist = minErrDist;
+        this->scanner = scanner;
+      }
 
-bool Parser::StartOf( int s ) {
-  const bool T = true;
-  const bool x = false;
+      bool Parser::StartOf ( int s ) {
+        const bool T = true;
+        const bool x = false;
 
-  	static bool set[3][30] = {
-		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,T, x,T,x,x, x,x,x,x, x,x,x,x, x,x},
-		{T,x,x,x, x,T,T,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x},
-		{x,x,x,T, x,x,x,x, T,T,T,T, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x}
-	};
-
-
-
-  return set[s][la->kind];
-}
-
-Parser::~Parser() {
-  ParserDestroyCaller<Parser>::CallDestroy( this );
-  delete dummyToken;
-}
-void Parser::SemErr( const wchar_t* msg ) {
-  if ( errDist >= minErrDist ) __errors.Error( scanner->filename(),t->line, t->col, msg );
-
-  errDist = 0;
-}
-
-void Parser::Warning( const wchar_t* msg ) {
-  __errors.Warning( scanner->filename(),t->line, t->col, msg );
-}
-
-void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
-  wchar_t* s;
-
-  switch ( n ) {
-      			case 0: s = coco_string_create(L"EOF expected"); break;
-			case 1: s = coco_string_create(L"integer expected"); break;
-			case 2: s = coco_string_create(L"float expected"); break;
-			case 3: s = coco_string_create(L"word expected"); break;
-			case 4: s = coco_string_create(L"eol expected"); break;
-			case 5: s = coco_string_create(L"package expected"); break;
-			case 6: s = coco_string_create(L"import expected"); break;
-			case 7: s = coco_string_create(L"request expected"); break;
-			case 8: s = coco_string_create(L"query expected"); break;
-			case 9: s = coco_string_create(L"unobserve expected"); break;
-			case 10: s = coco_string_create(L"engine expected"); break;
-			case 11: s = coco_string_create(L"grd_engine expected"); break;
-			case 12: s = coco_string_create(L"as expected"); break;
-			case 13: s = coco_string_create(L"default expected"); break;
-			case 14: s = coco_string_create(L"and expected"); break;
-			case 15: s = coco_string_create(L"\";\" expected"); break;
-			case 16: s = coco_string_create(L"\"{\" expected"); break;
-			case 17: s = coco_string_create(L"\"}\" expected"); break;
-			case 18: s = coco_string_create(L"\"=\" expected"); break;
-			case 19: s = coco_string_create(L"\"SVED\" expected"); break;
-			case 20: s = coco_string_create(L"\"SVE\" expected"); break;
-			case 21: s = coco_string_create(L"\"GND\" expected"); break;
-			case 22: s = coco_string_create(L"\"VE\" expected"); break;
-			case 23: s = coco_string_create(L"\"VEBB\" expected"); break;
-			case 24: s = coco_string_create(L"\"lazy\" expected"); break;
-			case 25: s = coco_string_create(L"\".\" expected"); break;
-			case 26: s = coco_string_create(L"\"[\" expected"); break;
-			case 27: s = coco_string_create(L"\"]\" expected"); break;
-			case 28: s = coco_string_create(L"??? expected"); break;
-			case 29: s = coco_string_create(L"this symbol not expected in o3prmr"); break;
-			case 30: s = coco_string_create(L"invalid o3prmr"); break;
-			case 31: s = coco_string_create(L"this symbol not expected in o3prmr"); break;
-			case 32: s = coco_string_create(L"invalid o3prmr"); break;
-			case 33: s = coco_string_create(L"this symbol not expected in RequestBloc"); break;
-			case 34: s = coco_string_create(L"invalid Command"); break;
-			case 35: s = coco_string_create(L"invalid SetEngine"); break;
-			case 36: s = coco_string_create(L"invalid SetGrdEngine"); break;
+        static bool set[3][30] = {
+          {T, x, x, x, x, x, x, x, x, x, x, x, x, x, x, T, x, T, x, x, x, x, x, x, x, x, x, x, x, x},
+          {T, x, x, x, x, T, T, T, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x},
+          {x, x, x, T, x, x, x, x, T, T, T, T, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x}
+        };
 
 
-    default: {
-      wchar_t format[20];
-      coco_swprintf( format, 20, L"error %d", n );
-      s = coco_string_create( format );
-    }
-    break;
-  }
 
-  //wprintf(L"-- line %d col %d: %ls\n", line, col, s);
-  std::wstring ss=L"Syntax error : "+std::wstring( s );
-  __errors.Error( filename,line,col,ss.c_str() );
-  coco_string_delete( s );
-}
+        return set[s][la->kind];
+      }
 
-} // namespace
-} // namespace
+      Parser::~Parser() {
+        ParserDestroyCaller<Parser>::CallDestroy ( this );
+        delete dummyToken;
+      }
+      void Parser::SemErr ( const wchar_t* msg ) {
+        if ( errDist >= minErrDist ) __errors.Error ( scanner->filename(), t->line, t->col, msg );
+
+        errDist = 0;
+      }
+
+      void Parser::Warning ( const wchar_t* msg ) {
+        __errors.Warning ( scanner->filename(), t->line, t->col, msg );
+      }
+
+      void Parser::SynErr ( const std::wstring& filename, int line, int col, int n ) {
+        wchar_t* s;
+
+        switch ( n ) {
+          case 0: s = coco_string_create ( L"EOF expected" ); break;
+
+          case 1: s = coco_string_create ( L"integer expected" ); break;
+
+          case 2: s = coco_string_create ( L"float expected" ); break;
+
+          case 3: s = coco_string_create ( L"word expected" ); break;
+
+          case 4: s = coco_string_create ( L"eol expected" ); break;
+
+          case 5: s = coco_string_create ( L"package expected" ); break;
+
+          case 6: s = coco_string_create ( L"import expected" ); break;
+
+          case 7: s = coco_string_create ( L"request expected" ); break;
+
+          case 8: s = coco_string_create ( L"query expected" ); break;
+
+          case 9: s = coco_string_create ( L"unobserve expected" ); break;
+
+          case 10: s = coco_string_create ( L"engine expected" ); break;
+
+          case 11: s = coco_string_create ( L"grd_engine expected" ); break;
+
+          case 12: s = coco_string_create ( L"as expected" ); break;
+
+          case 13: s = coco_string_create ( L"default expected" ); break;
+
+          case 14: s = coco_string_create ( L"and expected" ); break;
+
+          case 15: s = coco_string_create ( L"\";\" expected" ); break;
+
+          case 16: s = coco_string_create ( L"\"{\" expected" ); break;
+
+          case 17: s = coco_string_create ( L"\"}\" expected" ); break;
+
+          case 18: s = coco_string_create ( L"\"=\" expected" ); break;
+
+          case 19: s = coco_string_create ( L"\"SVED\" expected" ); break;
+
+          case 20: s = coco_string_create ( L"\"SVE\" expected" ); break;
+
+          case 21: s = coco_string_create ( L"\"GND\" expected" ); break;
+
+          case 22: s = coco_string_create ( L"\"VE\" expected" ); break;
+
+          case 23: s = coco_string_create ( L"\"VEBB\" expected" ); break;
+
+          case 24: s = coco_string_create ( L"\"lazy\" expected" ); break;
+
+          case 25: s = coco_string_create ( L"\".\" expected" ); break;
+
+          case 26: s = coco_string_create ( L"\"[\" expected" ); break;
+
+          case 27: s = coco_string_create ( L"\"]\" expected" ); break;
+
+          case 28: s = coco_string_create ( L"??? expected" ); break;
+
+          case 29: s = coco_string_create ( L"this symbol not expected in o3prmr" ); break;
+
+          case 30: s = coco_string_create ( L"invalid o3prmr" ); break;
+
+          case 31: s = coco_string_create ( L"this symbol not expected in o3prmr" ); break;
+
+          case 32: s = coco_string_create ( L"invalid o3prmr" ); break;
+
+          case 33: s = coco_string_create ( L"this symbol not expected in RequestBloc" ); break;
+
+          case 34: s = coco_string_create ( L"invalid Command" ); break;
+
+          case 35: s = coco_string_create ( L"invalid SetEngine" ); break;
+
+          case 36: s = coco_string_create ( L"invalid SetGrdEngine" ); break;
+
+
+          default: {
+            wchar_t format[20];
+            coco_swprintf ( format, 20, L"error %d", n );
+            s = coco_string_create ( format );
+          }
+          break;
+        }
+
+        //wprintf(L"-- line %d col %d: %ls\n", line, col, s);
+        std::wstring ss = L"Syntax error : " + std::wstring ( s );
+        __errors.Error ( filename, line, col, ss.c_str() );
+        coco_string_delete ( s );
+      }
+
+    } // namespace
+  } // namespace
 } // namespace
 
 

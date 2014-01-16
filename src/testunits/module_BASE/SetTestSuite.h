@@ -34,286 +34,286 @@ namespace gum_tests {
 
       void testConstructor() {
         gum::Set<int>* set = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING( set = new gum::Set< int>() );
-        TS_GUM_ASSERT_THROWS_NOTHING( delete set );
+        TS_GUM_ASSERT_THROWS_NOTHING ( set = new gum::Set< int>() );
+        TS_GUM_ASSERT_THROWS_NOTHING ( delete set );
       }
 
       void testInsert() {
         gum::Set<std::string> set;
-        TS_GUM_ASSERT_THROWS_NOTHING( set.insert( "a" ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( set.insert( "b" ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( set.insert( "c" ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( set.insert( "d" ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( set.insert( "e" ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( set.insert( "f" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.insert ( "a" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.insert ( "b" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.insert ( "c" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.insert ( "d" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.insert ( "e" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.insert ( "f" ) );
       }
 
       void testEquality() {
         gum::Set<int> t1, t2, t3;
-        fill( t1 );
-        fill( t2 );
-        fill( t3 );
+        fill ( t1 );
+        fill ( t2 );
+        fill ( t3 );
 
-        TS_ASSERT( t1 == t1 );
-        TS_ASSERT( t2 == t2 );
-        TS_ASSERT( t3 == t3 );
+        TS_ASSERT ( t1 == t1 );
+        TS_ASSERT ( t2 == t2 );
+        TS_ASSERT ( t3 == t3 );
 
-        TS_ASSERT( t1 == t2 );
-        TS_ASSERT( t2 == t1 );
-        TS_ASSERT( t1 == t3 );
-        TS_ASSERT( t3 == t1 );
-        TS_ASSERT( t2 == t3 );
-        TS_ASSERT( t3 == t2 );
+        TS_ASSERT ( t1 == t2 );
+        TS_ASSERT ( t2 == t1 );
+        TS_ASSERT ( t1 == t3 );
+        TS_ASSERT ( t3 == t1 );
+        TS_ASSERT ( t2 == t3 );
+        TS_ASSERT ( t3 == t2 );
 
-        t2.erase( 1 );
-        t2.erase( 3 );
-        t2.erase( 5 );
+        t2.erase ( 1 );
+        t2.erase ( 3 );
+        t2.erase ( 5 );
 
-        t3.erase( 2 );
-        t3.erase( 4 );
-        t3.erase( 6 );
+        t3.erase ( 2 );
+        t3.erase ( 4 );
+        t3.erase ( 6 );
 
-        TS_ASSERT( t1 != t2 );
-        TS_ASSERT( t2 != t1 );
-        TS_ASSERT( t1 != t3 );
-        TS_ASSERT( t3 != t1 );
-        TS_ASSERT( t2 != t3 );
-        TS_ASSERT( t3 != t2 );
+        TS_ASSERT ( t1 != t2 );
+        TS_ASSERT ( t2 != t1 );
+        TS_ASSERT ( t1 != t3 );
+        TS_ASSERT ( t3 != t1 );
+        TS_ASSERT ( t2 != t3 );
+        TS_ASSERT ( t3 != t2 );
       }
 
       void testSize() {
         gum::Set<int> set;
 
-        TS_ASSERT_EQUALS( set.size(), ( gum::Size )0 );
-        fill( set );
-        TS_ASSERT_EQUALS( set.size(), ( gum::Size )6 );
+        TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 0 );
+        fill ( set );
+        TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 6 );
       }
 
       void testErase() {
         gum::Set<int> set;
-        fill( set );
+        fill ( set );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( set.erase( 4 ) );
-        TS_ASSERT_EQUALS( set.size(), ( gum::Size )5 );
-        TS_GUM_ASSERT_THROWS_NOTHING( set.erase( 6 ) );
-        TS_ASSERT_EQUALS( set.size(), ( gum::Size )4 );
-        TS_GUM_ASSERT_THROWS_NOTHING( set.erase( 1 ) );
-        TS_ASSERT_EQUALS( set.size(), ( gum::Size )3 );
-        TS_GUM_ASSERT_THROWS_NOTHING( set.erase( 3 ) );
-        TS_ASSERT_EQUALS( set.size(), ( gum::Size )2 );
-        TS_GUM_ASSERT_THROWS_NOTHING( set.erase( 5 ) );
-        TS_ASSERT_EQUALS( set.size(), ( gum::Size )1 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.erase ( 4 ) );
+        TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 5 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.erase ( 6 ) );
+        TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 4 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.erase ( 1 ) );
+        TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 3 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.erase ( 3 ) );
+        TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 2 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.erase ( 5 ) );
+        TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 1 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( set.erase( 4 ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( set.erase( -23 ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( set.erase( 10000 ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( set.erase( 42 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.erase ( 4 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.erase ( -23 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.erase ( 10000 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.erase ( 42 ) );
 
-        TS_ASSERT_EQUALS( set.size(), ( gum::Size )1 );
+        TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 1 );
       }
 
       void testEraseIterator() {
         gum::Set<int> set;
-        fill( set );
-        TS_ASSERT_EQUALS( set.size(), ( gum::Size )6 );
+        fill ( set );
+        TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 6 );
 
-        gum::Set<int>::iterator iter = set.begin();
-        TS_GUM_ASSERT_THROWS_NOTHING( set.erase( iter ) );
-        TS_ASSERT_EQUALS( set.size(), ( gum::Size )5 );
+        gum::Set<int>::iterator_safe iter = set.beginSafe();
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.erase ( iter ) );
+        TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 5 );
 
         ++iter; ++iter;
-        TS_GUM_ASSERT_THROWS_NOTHING( set.erase( iter ) );
-        TS_ASSERT_EQUALS( set.size(), ( gum::Size )4 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.erase ( iter ) );
+        TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 4 );
 
-        iter = set.begin();
-        TS_GUM_ASSERT_THROWS_NOTHING( set.erase( iter ) );
-        TS_ASSERT_EQUALS( set.size(), ( gum::Size )3 );
+        iter = set.beginSafe();
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.erase ( iter ) );
+        TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 3 );
 
-        iter = set.end();
-        TS_GUM_ASSERT_THROWS_NOTHING( set.erase( iter ) );
-        TS_ASSERT_EQUALS( set.size(), ( gum::Size )3 );
+        iter = set.endSafe();
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.erase ( iter ) );
+        TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 3 );
 
       }
 
       void testClear() {
         gum::Set<int> set;
 
-        TS_ASSERT_EQUALS( set.size(), ( gum::Size )0 );
-        TS_GUM_ASSERT_THROWS_NOTHING( set.clear() );
-        TS_ASSERT_EQUALS( set.size(), ( gum::Size )0 );
+        TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 0 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.clear() );
+        TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 0 );
 
-        fill( set );
-        TS_ASSERT_EQUALS( set.size(), ( gum::Size )6 );
-        TS_GUM_ASSERT_THROWS_NOTHING( set.clear() );
-        TS_ASSERT_EQUALS( set.size(), ( gum::Size )0 );
+        fill ( set );
+        TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 6 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.clear() );
+        TS_ASSERT_EQUALS ( set.size(), ( gum::Size ) 0 );
       }
 
       void testIsEmpty() {
         gum::Set<int> set;
 
-        TS_ASSERT( set.empty() );
-        fill( set );
-        TS_ASSERT( ! set.empty() );
-        TS_GUM_ASSERT_THROWS_NOTHING( set.clear() );
-        TS_ASSERT( set.empty() );
+        TS_ASSERT ( set.empty() );
+        fill ( set );
+        TS_ASSERT ( ! set.empty() );
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.clear() );
+        TS_ASSERT ( set.empty() );
       }
 
       void testExist() {
         gum::Set<int> set;
 
-        TS_ASSERT( ! set.contains( 1 ) );
-        TS_ASSERT( ! set.contains( 42 ) );
+        TS_ASSERT ( ! set.contains ( 1 ) );
+        TS_ASSERT ( ! set.contains ( 42 ) );
 
-        fill( set );
+        fill ( set );
 
-        TS_ASSERT( set.contains( 1 ) );
-        TS_ASSERT( set.contains( 2 ) );
-        TS_ASSERT( set.contains( 3 ) );
-        TS_ASSERT( set.contains( 4 ) );
-        TS_ASSERT( set.contains( 5 ) );
-        TS_ASSERT( set.contains( 6 ) );
+        TS_ASSERT ( set.contains ( 1 ) );
+        TS_ASSERT ( set.contains ( 2 ) );
+        TS_ASSERT ( set.contains ( 3 ) );
+        TS_ASSERT ( set.contains ( 4 ) );
+        TS_ASSERT ( set.contains ( 5 ) );
+        TS_ASSERT ( set.contains ( 6 ) );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( set.erase( 4 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( set.erase ( 4 ) );
 
-        TS_ASSERT( set.contains( 1 ) );
-        TS_ASSERT( set.contains( 2 ) );
-        TS_ASSERT( set.contains( 3 ) );
-        TS_ASSERT( ! set.contains( 4 ) );
-        TS_ASSERT( set.contains( 5 ) );
-        TS_ASSERT( set.contains( 6 ) );
+        TS_ASSERT ( set.contains ( 1 ) );
+        TS_ASSERT ( set.contains ( 2 ) );
+        TS_ASSERT ( set.contains ( 3 ) );
+        TS_ASSERT ( ! set.contains ( 4 ) );
+        TS_ASSERT ( set.contains ( 5 ) );
+        TS_ASSERT ( set.contains ( 6 ) );
       }
 
       void testCopyOperator() {
         gum::Set<int> t1, t2, t3;
-        fill( t1 );
+        fill ( t1 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( t2 = t1 );
-        TS_GUM_ASSERT_THROWS_NOTHING( t3 = t2 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( t2 = t1 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( t3 = t2 );
 
-        TS_ASSERT_EQUALS( t1, t2 );
-        TS_ASSERT_EQUALS( t3, t2 );
-        TS_ASSERT_EQUALS( t1, t3 );
+        TS_ASSERT_EQUALS ( t1, t2 );
+        TS_ASSERT_EQUALS ( t3, t2 );
+        TS_ASSERT_EQUALS ( t1, t3 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( t2.clear() );
+        TS_GUM_ASSERT_THROWS_NOTHING ( t2.clear() );
 
-        TS_ASSERT_DIFFERS( t1, t2 );
-        TS_ASSERT_DIFFERS( t2, t3 );
-        TS_ASSERT_EQUALS( t1, t3 );
+        TS_ASSERT_DIFFERS ( t1, t2 );
+        TS_ASSERT_DIFFERS ( t2, t3 );
+        TS_ASSERT_EQUALS ( t1, t3 );
       }
 
       void testIntersectionOperator() {
         gum::Set<int> t1, t2, t3, empty, inter;
         gum::Set<int> fakeInter;
-        fill( t1 );
-        fillEven( t2 );
-        fillOdd( t3 );
+        fill ( t1 );
+        fillEven ( t2 );
+        fillOdd ( t3 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( fakeInter = t1 * t2 );
-        inter = getIntersection( fakeInter );
-        TS_ASSERT_EQUALS( inter, t2 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( fakeInter = t1 * t2 );
+        inter = getIntersection ( fakeInter );
+        TS_ASSERT_EQUALS ( inter, t2 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( fakeInter = t1 * t3 );
-        inter = getIntersection( fakeInter );
-        TS_ASSERT_EQUALS( inter, t3 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( fakeInter = t1 * t3 );
+        inter = getIntersection ( fakeInter );
+        TS_ASSERT_EQUALS ( inter, t3 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( fakeInter = t1 * t1 );
-        inter = getIntersection( fakeInter );
-        TS_ASSERT_EQUALS( inter, t1 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( fakeInter = t1 * t1 );
+        inter = getIntersection ( fakeInter );
+        TS_ASSERT_EQUALS ( inter, t1 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( fakeInter = t2 * t2 );
-        inter = getIntersection( fakeInter );
-        TS_ASSERT_EQUALS( inter, t2 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( fakeInter = t2 * t2 );
+        inter = getIntersection ( fakeInter );
+        TS_ASSERT_EQUALS ( inter, t2 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( fakeInter = t3 * t3 );
-        inter = getIntersection( fakeInter );
-        TS_ASSERT_EQUALS( inter, t3 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( fakeInter = t3 * t3 );
+        inter = getIntersection ( fakeInter );
+        TS_ASSERT_EQUALS ( inter, t3 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( fakeInter = t2 * t3 );
-        inter = getIntersection( fakeInter );
-        TS_ASSERT_EQUALS( inter, empty );
+        TS_GUM_ASSERT_THROWS_NOTHING ( fakeInter = t2 * t3 );
+        inter = getIntersection ( fakeInter );
+        TS_ASSERT_EQUALS ( inter, empty );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( fakeInter = t3 * t2 );
-        inter = getIntersection( fakeInter );
-        TS_ASSERT_EQUALS( inter, empty );
+        TS_GUM_ASSERT_THROWS_NOTHING ( fakeInter = t3 * t2 );
+        inter = getIntersection ( fakeInter );
+        TS_ASSERT_EQUALS ( inter, empty );
       }
 
       void testUnionOperator() {
         gum::Set<int> t1, t2, t3, empty, unionSet;
         gum::Set<int> fakeUnion;
-        fill( t1 );
-        fillEven( t2 );
-        fillOdd( t3 );
+        fill ( t1 );
+        fillEven ( t2 );
+        fillOdd ( t3 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( fakeUnion = empty + t2 );
-        unionSet = getUnion( fakeUnion );
-        TS_ASSERT_EQUALS( unionSet, t2 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( fakeUnion = empty + t2 );
+        unionSet = getUnion ( fakeUnion );
+        TS_ASSERT_EQUALS ( unionSet, t2 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( fakeUnion = empty + t3 );
-        unionSet = getUnion( fakeUnion );
-        TS_ASSERT_EQUALS( unionSet, t3 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( fakeUnion = empty + t3 );
+        unionSet = getUnion ( fakeUnion );
+        TS_ASSERT_EQUALS ( unionSet, t3 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( fakeUnion = t1 + t1 );
-        unionSet = getUnion( fakeUnion );
-        TS_ASSERT_EQUALS( unionSet, t1 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( fakeUnion = t1 + t1 );
+        unionSet = getUnion ( fakeUnion );
+        TS_ASSERT_EQUALS ( unionSet, t1 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( fakeUnion = t2 + t2 );
-        unionSet = getUnion( fakeUnion );
-        TS_ASSERT_EQUALS( unionSet, t2 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( fakeUnion = t2 + t2 );
+        unionSet = getUnion ( fakeUnion );
+        TS_ASSERT_EQUALS ( unionSet, t2 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( fakeUnion = t3 + t3 );
-        unionSet = getUnion( fakeUnion );
-        TS_ASSERT_EQUALS( unionSet, t3 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( fakeUnion = t3 + t3 );
+        unionSet = getUnion ( fakeUnion );
+        TS_ASSERT_EQUALS ( unionSet, t3 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( fakeUnion = t2 + t3 );
-        unionSet = getUnion( fakeUnion );
-        TS_ASSERT_EQUALS( unionSet, t1 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( fakeUnion = t2 + t3 );
+        unionSet = getUnion ( fakeUnion );
+        TS_ASSERT_EQUALS ( unionSet, t1 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( fakeUnion = t3 + t2 );
-        unionSet = getUnion( fakeUnion );
-        TS_ASSERT_EQUALS( unionSet, t1 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( fakeUnion = t3 + t2 );
+        unionSet = getUnion ( fakeUnion );
+        TS_ASSERT_EQUALS ( unionSet, t1 );
       }
 
       void testDisjunctionOperator() {
         gum::Set<int> t1, t2, t3, empty, disjunction;
-        fill( t1 );
-        fillEven( t2 );
-        fillOdd( t3 );
+        fill ( t1 );
+        fillEven ( t2 );
+        fillOdd ( t3 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( disjunction = t1 - t2 );
-        TS_ASSERT_EQUALS( disjunction, t3 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( disjunction = t1 - t2 );
+        TS_ASSERT_EQUALS ( disjunction, t3 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( disjunction = t1 - t3 );
-        TS_ASSERT_EQUALS( disjunction, t2 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( disjunction = t1 - t3 );
+        TS_ASSERT_EQUALS ( disjunction, t2 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( disjunction = t1 - t1 );
-        TS_ASSERT_EQUALS( disjunction, empty );
+        TS_GUM_ASSERT_THROWS_NOTHING ( disjunction = t1 - t1 );
+        TS_ASSERT_EQUALS ( disjunction, empty );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( disjunction = t2 - t2 );
-        TS_ASSERT_EQUALS( disjunction, empty );
+        TS_GUM_ASSERT_THROWS_NOTHING ( disjunction = t2 - t2 );
+        TS_ASSERT_EQUALS ( disjunction, empty );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( disjunction = t3 - t3 );
-        TS_ASSERT_EQUALS( disjunction, empty );
+        TS_GUM_ASSERT_THROWS_NOTHING ( disjunction = t3 - t3 );
+        TS_ASSERT_EQUALS ( disjunction, empty );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( disjunction = t2 - t3 );
-        TS_ASSERT_EQUALS( disjunction, t2 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( disjunction = t2 - t3 );
+        TS_ASSERT_EQUALS ( disjunction, t2 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( disjunction = t2 - empty );
-        TS_ASSERT_EQUALS( disjunction, t2 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( disjunction = t2 - empty );
+        TS_ASSERT_EQUALS ( disjunction, t2 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( disjunction = t3 - t2 );
-        TS_ASSERT_EQUALS( disjunction, t3 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( disjunction = t3 - t2 );
+        TS_ASSERT_EQUALS ( disjunction, t3 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( disjunction = t3 - empty );
-        TS_ASSERT_EQUALS( disjunction, t3 );
+        TS_GUM_ASSERT_THROWS_NOTHING ( disjunction = t3 - empty );
+        TS_ASSERT_EQUALS ( disjunction, t3 );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( disjunction = empty - t1 );
-        TS_ASSERT_EQUALS( disjunction, empty );
+        TS_GUM_ASSERT_THROWS_NOTHING ( disjunction = empty - t1 );
+        TS_ASSERT_EQUALS ( disjunction, empty );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( disjunction = empty - t2 );
-        TS_ASSERT_EQUALS( disjunction, empty );
+        TS_GUM_ASSERT_THROWS_NOTHING ( disjunction = empty - t2 );
+        TS_ASSERT_EQUALS ( disjunction, empty );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( disjunction = empty - t3 );
-        TS_ASSERT_EQUALS( disjunction, empty );
+        TS_GUM_ASSERT_THROWS_NOTHING ( disjunction = empty - t3 );
+        TS_ASSERT_EQUALS ( disjunction, empty );
       }
 
       void testMap() {
@@ -338,79 +338,79 @@ namespace gum_tests {
 
       void testIterator_1() {
         gum::Set<int> t1;
-        fill( t1 );
+        fill ( t1 );
 
         gum::Set<int> obtained;
 
-        for ( gum::Set<int>::iterator iter = t1.begin();
-              iter != t1.end();
+        for ( gum::Set<int>::iterator_safe iter = t1.beginSafe();
+              iter != t1.endSafe();
               ++ iter ) {
-          obtained.insert( *iter );
+          obtained.insert ( *iter );
         }
 
-        TS_ASSERT( t1 == obtained );
+        TS_ASSERT ( t1 == obtained );
       }
 
 
     private:
-      void fill( gum::Set<int>& set ) {
-        set.insert( 1 );
-        set.insert( 2 );
-        set.insert( 3 );
-        set.insert( 4 );
-        set.insert( 5 );
-        set.insert( 6 );
+      void fill ( gum::Set<int>& set ) {
+        set.insert ( 1 );
+        set.insert ( 2 );
+        set.insert ( 3 );
+        set.insert ( 4 );
+        set.insert ( 5 );
+        set.insert ( 6 );
       }
 
-      void fillEven( gum::Set<int>& set ) {
-        set.insert( 2 );
-        set.insert( 4 );
-        set.insert( 6 );
+      void fillEven ( gum::Set<int>& set ) {
+        set.insert ( 2 );
+        set.insert ( 4 );
+        set.insert ( 6 );
       }
 
-      void fillOdd( gum::Set<int>& set ) {
-        set.insert( 1 );
-        set.insert( 3 );
-        set.insert( 5 );
+      void fillOdd ( gum::Set<int>& set ) {
+        set.insert ( 1 );
+        set.insert ( 3 );
+        set.insert ( 5 );
       }
 
-      gum::Set<int> getIntersection( gum::Set<int>& set ) {
+      gum::Set<int> getIntersection ( gum::Set<int>& set ) {
         gum::Set<int> full;
-        fill( full );
+        fill ( full );
         gum::Set<int> inter;
 
         for ( int i = 1; i < 7; i++ ) {
-          if ( set.contains( i ) ) {
-            inter.insert( i );
+          if ( set.contains ( i ) ) {
+            inter.insert ( i );
           }
         }
 
         return inter;
       }
 
-      gum::Set<int> getUnion( gum::Set<int>& set ) {
+      gum::Set<int> getUnion ( gum::Set<int>& set ) {
         gum::Set<int> full;
-        fill( full );
+        fill ( full );
         gum::Set<int> unionSet;
 
         for ( int i = 1; i < 7; i++ ) {
-          if ( set.contains( i ) ) {
-            unionSet.insert( i );
+          if ( set.contains ( i ) ) {
+            unionSet.insert ( i );
           }
         }
 
         return unionSet;
       }
 
-      static std::string mappingTestFunc_1( const std::string& s ) {
+      static std::string mappingTestFunc_1 ( const std::string& s ) {
         return s + ".foo";
       }
 
-      static std::string mappingTestFunc_2( std::string& s ) {
+      static std::string mappingTestFunc_2 ( std::string& s ) {
         return s + ".bar";
       }
 
-      static std::string mappingTestFunc_3( std::string s ) {
+      static std::string mappingTestFunc_3 ( std::string s ) {
         return s + ".42";
       }
 

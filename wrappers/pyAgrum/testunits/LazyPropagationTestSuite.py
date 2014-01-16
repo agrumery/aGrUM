@@ -81,11 +81,18 @@ class LazyPropagationTestCase(pyAgrumTestCase):
 class TestDictFeature(LazyPropagationTestCase):
 
     def testDictOfSequences(self):
+        print("ti")
         ie = LazyPropagation(self.bn)
-        ie.setEvidence({self.s: [0, 1], self.w: (1, 0)})
         ie.makeInference()
+        
+        ie = LazyPropagation(self.bn)
+        print("to")
+        ie.setEvidence({self.s: [0, 1], self.w: (1, 0)})
+        print("ti")
+        ie.makeInference()
+        print("ti")
         result = ie.marginal(self.r)
-
+        print("ti")
         ie = LazyPropagation(self.bn)
         list_pot = ListPotentials()
         pot = Potential()
@@ -105,7 +112,7 @@ class TestDictFeature(LazyPropagationTestCase):
         self.assertListsAlmostEqual(result.tolist(), result2.tolist())
 
     def testDictOfSequencesWithId(self):
-
+        print("to")
         ie = LazyPropagation(self.bn)
         ie.setEvidence({'s': [0, 1], 'w': (1, 0)})
         ie.makeInference()

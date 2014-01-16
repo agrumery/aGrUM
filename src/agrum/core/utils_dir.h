@@ -42,14 +42,14 @@ namespace gum {
 
     public:
       //! Return true if \a directory is a valid directory, false otherwise.
-      static bool isDir( const std::string& directory );
+      static bool isDir ( const std::string& directory );
 
       //! Contructor
       Directory();
       //! Contructor
-      Directory( const std::string& directory );
+      Directory ( const std::string& directory );
       //! Contructor
-      Directory( const Directory& dir );
+      Directory ( const Directory& dir );
       //! Destructor
       ~Directory();
 
@@ -64,7 +64,7 @@ namespace gum {
       //! Return directory absolute path.
       std::string absolutePath() const;
 
-      Directory& operator=( const Directory& d );
+      Directory& operator= ( const Directory& d );
 
     private:
       std::string m_dirName;

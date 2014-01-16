@@ -111,9 +111,9 @@ namespace gum {
        * @param arcs_size the size of the hash table used to store all the arcs
        * @param arcs_resize_policy the resizing policy of this hash table
        */
-      explicit DAG ( Size nodes_size = GUM_HASHTABLE_DEFAULT_SIZE,
+      explicit DAG ( Size nodes_size = HashTableConst::default_size,
                      bool nodes_resize_policy    = true,
-                     Size arcs_size = GUM_HASHTABLE_DEFAULT_SIZE,
+                     Size arcs_size = HashTableConst::default_size,
                      bool arcs_resize_policy    = true );
 
       /// copy constructor

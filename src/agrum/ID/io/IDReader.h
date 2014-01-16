@@ -54,7 +54,7 @@ namespace gum {
        * A reader is created to reading a defined file.
        * Note that an ID as to be created before and given in parameter.
        */
-      IDReader( InfluenceDiagram<GUM_SCALAR>* infdiag, const std::string& filePath );
+      IDReader ( InfluenceDiagram<GUM_SCALAR>* infdiag, const std::string& filePath );
 
       /**
        * Default destructor.
@@ -65,7 +65,7 @@ namespace gum {
        * Reads the influence diagram from the file referenced by filePath  given at the creation of class
        * @return Returns the number of error during the parsing (0 if none).
        */
-      virtual void proceed() =0;
+      virtual void proceed() = 0;
   };
 
 

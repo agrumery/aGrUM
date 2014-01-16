@@ -48,82 +48,83 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include "Scanner.h"
 
 namespace gum {
-namespace MDPDAT {
+  namespace MDPDAT {
 
 
 
-class Parser {
-  private:
-    	enum {
-		_EOF=0,
-		_operand=1,
-		_ident=2,
-		_integer=3,
-		_number=4,
-		_string=5,
-		_largestring=6,
-		_lpar=7
-	};
-	int maxT;
+    class Parser {
+      private:
+        enum {
+          _EOF = 0,
+          _operand = 1,
+          _ident = 2,
+          _integer = 3,
+          _number = 4,
+          _string = 5,
+          _largestring = 6,
+          _lpar = 7
+        };
+        int maxT;
 
-    Token* dummyToken;
-    int errDist;
-    int minErrDist;
+        Token* dummyToken;
+        int errDist;
+        int minErrDist;
 
-    void SynErr( int n );
-    void Get();
-    void Expect( int n );
-    bool StartOf( int s );
-    void ExpectWeak( int n, int follow );
-    bool WeakSeparator( int n, int syFol, int repFol );
+        void SynErr ( int n );
+        void Get();
+        void Expect ( int n );
+        bool StartOf ( int s );
+        void ExpectWeak ( int n, int follow );
+        bool WeakSeparator ( int n, int syFol, int repFol );
 
-    ErrorsContainer  __errors;
+        ErrorsContainer  __errors;
 
-  public:
-    Scanner* scanner;
+      public:
+        Scanner* scanner;
 
-    Token* t;     // last recognized token
-    Token* la;      // lookahead token
+        Token* t;     // last recognized token
+        Token* la;      // lookahead token
 
-    gum::AbstractFMDPFactory* __factory;
-                
-                /// for each transition diagram, we need to know the associated variable
-                std::string __currentDecisionDiagramVar;
-                
-                /// for building the diagram, we need to keep track of var parents
-                std::vector< gum::NodeId > __parentNode;
-                
-                /// and current modality
-                std::vector< gum::Idx > __parentModality;
-                
+        gum::AbstractFMDPFactory* __factory;
+
+        /// for each transition diagram, we need to know the associated variable
+        std::string __currentDecisionDiagramVar;
+
+        /// for building the diagram, we need to keep track of var parents
+        std::vector< gum::NodeId > __parentNode;
+
+        /// and current modality
+        std::vector< gum::Idx > __parentModality;
+
 
         // *************************************************************************************
         // Getters and Setters on those attributes
         // *************************************************************************************
-        
-                /// Sets the main factory
-                void setFactory( gum::AbstractFMDPFactory* f ) {
-                        __factory = f;
-                }
 
-                gum::AbstractFMDPFactory& factory(void) {
-                  if (__factory) 
-                        return *__factory;
-                  GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning BIF file...");
-                }
-                
-                bool IsFollowedByIdent() {
-                        Token* next = scanner->Peek();
-                        return la->kind == _lpar && next->kind == _ident;
-                }
+        /// Sets the main factory
+        void setFactory ( gum::AbstractFMDPFactory* f ) {
+          __factory = f;
+        }
 
-                void SemErr(std::string s) {
-                  SemErr(widen(s).c_str());
-                }
+        gum::AbstractFMDPFactory& factory ( void ) {
+          if ( __factory )
+            return *__factory;
 
-                void Warning(std::string s) {
-                  Warning(widen("Warning : "+s).c_str());
-                }
+          GUM_ERROR ( gum::OperationNotAllowed, "Please set a factory for scanning BIF file..." );
+        }
+
+        bool IsFollowedByIdent() {
+          Token* next = scanner->Peek();
+          return la->kind == _lpar && next->kind == _ident;
+        }
+
+        void SemErr ( std::string s ) {
+          SemErr ( widen ( s ).c_str() );
+        }
+
+        void Warning ( std::string s ) {
+          Warning ( widen ( "Warning : " + s ).c_str() );
+        }
 
 
 
@@ -131,38 +132,38 @@ class Parser {
 // CHARACTERS DEFINITION
 // ===================================================================================================
 
-    Parser( Scanner* scanner );
-    ~Parser();
-    void SemErr( const wchar_t* msg );
-    void SynErr( const std::wstring& filename,int line, int col, int n );
-    void Warning( const wchar_t* msg );
-    const ErrorsContainer& errors() const;
+        Parser ( Scanner* scanner );
+        ~Parser();
+        void SemErr ( const wchar_t* msg );
+        void SynErr ( const std::wstring& filename, int line, int col, int n );
+        void Warning ( const wchar_t* msg );
+        const ErrorsContainer& errors() const;
 
-    	void MDPDAT();
-	void VARIABLES_DECLARATION();
-	void ACTION();
-	void REWARD_DECISION_DIAGRAM();
-	void DISCOUNT();
-	void TOLERANCE();
-	void VARIABLE();
-	void IDENT(std::string& name);
-	void MODALITY_LIST();
-	void IDENT_OR_INTEGER(std::string& name);
-	void STRING(std::string& str);
-	void FLOAT(float& val);
-	void TRANSITION_DECISION_DIAGRAM();
-	void COST_DECISION_DIAGRAM();
-	void SUB_TRANSITION_DECISION_DIAGRAM();
-	void TRANSITION_LEAF();
-	void SUB_DECISION_DIAGRAM();
-	void LEAF();
-	void OPERAND(std::string& op);
+        void MDPDAT();
+        void VARIABLES_DECLARATION();
+        void ACTION();
+        void REWARD_DECISION_DIAGRAM();
+        void DISCOUNT();
+        void TOLERANCE();
+        void VARIABLE();
+        void IDENT ( std::string& name );
+        void MODALITY_LIST();
+        void IDENT_OR_INTEGER ( std::string& name );
+        void STRING ( std::string& str );
+        void FLOAT ( float& val );
+        void TRANSITION_DECISION_DIAGRAM();
+        void COST_DECISION_DIAGRAM();
+        void SUB_TRANSITION_DECISION_DIAGRAM();
+        void TRANSITION_LEAF();
+        void SUB_DECISION_DIAGRAM();
+        void LEAF();
+        void OPERAND ( std::string& op );
 
-    void Parse();
+        void Parse();
 
-}; // end Parser
+    }; // end Parser
 
-} // namespace
+  } // namespace
 } // namespace
 
 

@@ -61,7 +61,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   void
   VEWithBB<GUM_SCALAR>::insertEvidence ( const List<const Potential<GUM_SCALAR>*>& pot_list ) {
-    for ( ListConstIterator< const Potential<GUM_SCALAR>* > iter = pot_list.cbegin(); iter != pot_list.cend(); ++iter ) {
+    for ( ListConstIteratorSafe< const Potential<GUM_SCALAR>* > iter = pot_list.cbeginSafe(); iter != pot_list.cendSafe(); ++iter ) {
       if ( ( *iter )->nbrDim() != 1 ) {
         GUM_ERROR ( OperationNotAllowed, "Evidence can only be giben w.r.t. one random variable" );
       }
@@ -116,8 +116,8 @@ namespace gum {
     query.insert ( id );
     Set<NodeId> hardEvidence;
 
-    for ( typename Property<const Potential<GUM_SCALAR>*>::onNodes::iterator iter = __hardEvidence.begin();
-          iter != __hardEvidence.end(); ++iter ) {
+    for ( typename Property<const Potential<GUM_SCALAR>*>::onNodes::iterator_safe iter = __hardEvidence.beginSafe ();
+          iter != __hardEvidence.endSafe (); ++iter ) {
       hardEvidence.insert ( iter.key() );
     }
 
@@ -133,13 +133,13 @@ namespace gum {
     Set<Potential<GUM_SCALAR>*> pool;
     Set<NodeId> elim_set;
 
-    for ( Set<NodeId>::iterator node = requisite_nodes.begin(); node != requisite_nodes.end(); ++node ) {
+    for ( Set<NodeId>::iterator_safe node = requisite_nodes.beginSafe(); node != requisite_nodes.endSafe(); ++node ) {
       pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( & ( this->bn().cpt ( *node ) ) ) );
       elim_set.insert ( *node );
       const NodeSet& parents = this->bn().dag().parents ( *node );
 
-      for ( NodeSetIterator parent = parents.begin();
-            parent != parents.end(); ++parent ) {
+      for ( NodeSetIterator parent = parents.beginSafe();
+            parent != parents.endSafe(); ++parent ) {
         if ( __hardEvidence.exists ( *parent ) ) {
           elim_set.insert ( *parent );
         }
@@ -168,7 +168,7 @@ namespace gum {
 
     MultiDimBucket<GUM_SCALAR> bucket;
 
-    for ( SetIterator<Potential<GUM_SCALAR>*> iter = pool.begin(); iter != pool.end(); ++iter ) {
+    for ( SetIteratorSafe<Potential<GUM_SCALAR>*> iter = pool.beginSafe(); iter != pool.endSafe(); ++iter ) {
       bucket.add ( **iter );
     }
 
@@ -182,8 +182,8 @@ namespace gum {
 
     marginal.normalize();
 
-    for ( SetIterator<Potential<GUM_SCALAR>*> iter = trash.begin();
-          iter != trash.end(); ++iter ) {
+    for ( SetIteratorSafe<Potential<GUM_SCALAR>*> iter = trash.beginSafe();
+          iter != trash.endSafe(); ++iter ) {
       delete *iter;
     }
   }

@@ -911,11 +911,12 @@ namespace gum {
 
         if ( ! parents.empty() ) {
           //for ( const auto parent_idIt = __current_bn->cpt ( node_idIt ).begin(), theEnd2 = __current_bn->cpt ( node_idIt ).end(); parent_idIt != theEnd2; ++parent_idIt ) {
-          for ( const auto parent_idIt : __current_bn->dag().parents ( node_idIt ) ) {
+          for ( auto parent_idIt = __current_bn->dag().parents ( node_idIt ).beginSafe ();
+                parent_idIt != __current_bn->dag().parents ( node_idIt ).endSafe(); ++parent_idIt ) {
             //if ( __current_bn->nodeId ( parent_idIt ) != node_idIt ) {
-            for ( Size parent_bit = 0, spbits = __var_bits[ parent_idIt  ].size(); parent_bit < spbits; parent_bit++ )
+            for ( Size parent_bit = 0, spbits = __var_bits[ *parent_idIt  ].size(); parent_bit < spbits; parent_bit++ )
               for ( Size var_bit = 0, mbits = __var_bits[ node_idIt ].size(); var_bit < mbits; var_bit++ )
-                __bin_bn->addArc ( __var_bits[ parent_idIt ][ parent_bit ], __var_bits[ node_idIt ][ var_bit ] );
+                __bin_bn->addArc ( __var_bits[ *parent_idIt ][ parent_bit ], __var_bits[ node_idIt ][ var_bit ] );
           }
 
         } // end of : for each parent

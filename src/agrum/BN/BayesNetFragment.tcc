@@ -138,15 +138,15 @@ namespace gum {
       this->_dag.insertNode ( id );
 
       // adding arcs with id as a tail
-      for ( const auto pa : this->__bn.dag().parents ( id ) ) {
-        if ( isInstalledNode ( pa ) )
-          this->_dag.insertArc ( pa, id );
+      for ( auto pa = this->__bn.dag().parents ( id ).beginSafe(); pa != this->__bn.dag().parents ( id ).endSafe(); ++pa ) {
+        if ( isInstalledNode ( *pa ) )
+          this->_dag.insertArc ( *pa, id );
       }
 
       //addin arcs with id as a head
-      for ( const auto son : this->__bn.dag().children ( id ) )
-        if ( isInstalledNode ( son ) )
-          this->_dag.insertArc ( id, son );
+      for ( auto son = this->__bn.dag().children ( id ).beginSafe(); son != this->__bn.dag().children ( id ).endSafe(); ++son )
+        if ( isInstalledNode ( *son ) )
+          this->_dag.insertArc ( id, *son );
     }
   }
 
@@ -155,8 +155,8 @@ namespace gum {
     installNode ( id );
 
     // bn is a dag => this will have an end ...
-    for ( const auto pa : this->__bn.dag().parents ( id ) )
-      installAscendants ( pa );
+    for ( auto pa = this->__bn.dag().parents ( id ).beginSafe(); pa != this->__bn.dag().parents ( id ).endSafe(); ++pa )
+      installAscendants ( *pa );
   }
 
   template<typename GUM_SCALAR> INLINE void
@@ -180,11 +180,11 @@ namespace gum {
   template<typename GUM_SCALAR> void
   BayesNetFragment<GUM_SCALAR>::_installCPT ( NodeId id, const Potential<GUM_SCALAR>* pot ) noexcept {
     // topology
-    for ( const auto node : dag().parents ( id ) )
-      _uninstallArc ( node, id ) ;
+    for ( auto node = dag().parents ( id ).beginSafe(); node != dag().parents ( id ).endSafe(); ++node )
+      _uninstallArc ( *node, id ) ;
 
     for ( Idx i = 1; i < pot->nbrDim(); i++ ) {
-      NodeId parent=__bn.idFromName ( pot->variable ( i ).name() );
+      NodeId parent = __bn.idFromName ( pot->variable ( i ).name() );
 
       if ( isInstalledNode ( parent ) )
         _installArc ( parent , id );
@@ -204,18 +204,18 @@ namespace gum {
 
     if ( & ( pot->variable ( 0 ) ) != & ( variable ( id ) ) ) {
       GUM_ERROR ( OperationNotAllowed,
-                  "The potential is not a marginal for __bn.variable <" <<variable ( id ).name() << ">" );
+                  "The potential is not a marginal for __bn.variable <" << variable ( id ).name() << ">" );
     }
 
     const NodeSet& parents = __bn.dag().parents ( id );
 
-    for ( Idx i=1; i<pot->nbrDim(); i++ ) {
+    for ( Idx i = 1; i < pot->nbrDim(); i++ ) {
       if ( ! parents.contains ( __bn.idFromName ( pot->variable ( i ).name() ) ) )
         GUM_ERROR ( OperationNotAllowed,
-                    "Variable <" << pot->variable ( i ).name() << "> is not in the parents of node "<<id );
+                    "Variable <" << pot->variable ( i ).name() << "> is not in the parents of node " << id );
     }
 
-    _installCPT ( id,pot );
+    _installCPT ( id, pot );
   }
 
   template<typename GUM_SCALAR> INLINE void
@@ -230,10 +230,10 @@ namespace gum {
       _uninstallCPT ( id );
 
       // re-create arcs from referred potential
-      const Potential<GUM_SCALAR>& pot=cpt ( id );
+      const Potential<GUM_SCALAR>& pot = cpt ( id );
 
       for ( Idx i = 1; i < pot.nbrDim(); i++ ) {
-        NodeId parent=__bn.idFromName ( pot.variable ( i ).name() );
+        NodeId parent = __bn.idFromName ( pot.variable ( i ).name() );
 
         if ( isInstalledNode ( parent ) )
           _installArc ( parent, id );
@@ -296,18 +296,18 @@ namespace gum {
 
     std::string bn_name;
 
-    static std::string inFragmentStyle   ="fillcolor=\"#ffffaa\","
-                                          "color=\"#000000\","
-                                          "fontcolor=\"#000000\"";
-    static std::string styleWithLocalCPT ="fillcolor=\"#ffddaa\","
-                                          "color=\"#000000\","
-                                          "fontcolor=\"#000000\"";
-    static std::string notConsistantStyle="fillcolor=\"#ff0000\","
-                                          "color=\"#000000\","
-                                          "fontcolor=\"#ffff00\"";
-    static std::string outFragmentStyle  ="fillcolor=\"#f0f0f0\","
-                                          "color=\"#f0f0f0\","
-                                          "fontcolor=\"#000000\"";
+    static std::string inFragmentStyle   = "fillcolor=\"#ffffaa\","
+                                           "color=\"#000000\","
+                                           "fontcolor=\"#000000\"";
+    static std::string styleWithLocalCPT = "fillcolor=\"#ffddaa\","
+                                           "color=\"#000000\","
+                                           "fontcolor=\"#000000\"";
+    static std::string notConsistantStyle = "fillcolor=\"#ff0000\","
+                                            "color=\"#000000\","
+                                            "fontcolor=\"#ffff00\"";
+    static std::string outFragmentStyle  = "fillcolor=\"#f0f0f0\","
+                                           "color=\"#f0f0f0\","
+                                           "fontcolor=\"#000000\"";
 
     try {
       bn_name = __bn.property ( "name" );
@@ -315,7 +315,7 @@ namespace gum {
       bn_name = "no_name";
     }
 
-    bn_name="Fragment of "+bn_name;
+    bn_name = "Fragment of " + bn_name;
 
 
     output << bn_name << "\" {" << std::endl;
@@ -323,17 +323,17 @@ namespace gum {
     output << "  node [style=filled];" << std::endl << std::endl;
 
     for ( const auto node_iter : __bn.nodes() ) {
-      output << "\"" << __bn.variable ( node_iter ).name() << "\" [comment=\"" << node_iter << ":" << __bn.variable ( node_iter ) <<", \"";
+      output << "\"" << __bn.variable ( node_iter ).name() << "\" [comment=\"" << node_iter << ":" << __bn.variable ( node_iter ) << ", \"";
 
       if ( isInstalledNode ( node_iter ) ) {
         if ( ! checkConsistency ( node_iter ) ) {
-          output<<notConsistantStyle;
+          output << notConsistantStyle;
         } else if ( __localCPTs.exists ( node_iter ) )
-          output<<styleWithLocalCPT;
+          output << styleWithLocalCPT;
         else
-          output<<inFragmentStyle;
+          output << inFragmentStyle;
       } else
-        output<<outFragmentStyle;
+        output << outFragmentStyle;
 
       output << "];" << std::endl;
     }
@@ -344,16 +344,16 @@ namespace gum {
 
     for ( const auto node_iter : __bn.nodes() ) {
       if ( __bn.dag().children ( node_iter ).size() > 0 ) {
-        for ( const auto child_iter : __bn.dag().children ( node_iter ) ) {
+        for ( auto child_iter = __bn.dag().children ( node_iter ).beginSafe(); child_iter != __bn.dag().children ( node_iter ).endSafe(); ++child_iter ) {
           output << tab << "\"" << __bn.variable ( node_iter ).name() << "\" -> "
-                 << "\"" << __bn.variable ( child_iter ).name() << "\" [";
+                 << "\"" << __bn.variable ( *child_iter ).name() << "\" [";
 
-          if ( dag().existsArc ( Arc ( node_iter,child_iter ) ) )
+          if ( dag().existsArc ( Arc ( node_iter, *child_iter ) ) )
             output << inFragmentStyle;
           else
-            output <<outFragmentStyle;
+            output << outFragmentStyle;
 
-          output  <<"];"<< std::endl;
+          output  << "];" << std::endl;
         }
       }
     }

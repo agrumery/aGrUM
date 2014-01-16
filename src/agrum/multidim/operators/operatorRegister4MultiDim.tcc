@@ -45,22 +45,22 @@ namespace gum {
     // insert the new entry
     OperatorSet* theset;
 
-    if ( ! __set.exists( operation_name ) ) {
-      theset = __set.insert( operation_name, new OperatorSet );
+    if ( ! __set.exists ( operation_name ) ) {
+      theset = __set.insert ( operation_name, new OperatorSet ).second;
 #ifndef NDEBUG
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the OperatorRegister4MultiDim will be
       // removed at the end of the program's execution.
-      __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
-                                 ( void* ) theset );
+      __debug__::__inc_deletion ( "HashTable", __FILE__, __LINE__, "destructor of",
+                                  ( void* ) theset );
 #endif /* NDEBUG */
     } else {
       theset = __set[operation_name];
     }
 
-    std::pair<std::string,std::string> thepair( type1,type2 );
+    std::pair<std::string, std::string> thepair ( type1, type2 );
 
-    theset->insert( thepair, newFunction );
+    theset->insert ( thepair, newFunction );
   }
 
 
@@ -70,11 +70,11 @@ namespace gum {
   ( const std::string& operation_name,
     const std::string& type1,
     const std::string& type2 ) {
-    if ( ! __set.exists( operation_name ) ) return;
+    if ( ! __set.exists ( operation_name ) ) return;
 
     OperatorSet* theset = __set[operation_name];
 
-    theset->erase( std::pair<std::string,std::string>( type1,type2 ) );
+    theset->erase ( std::pair<std::string, std::string> ( type1, type2 ) );
   }
 
 
@@ -84,10 +84,10 @@ namespace gum {
   ( const std::string& operation_name,
     const std::string& type1,
     const std::string& type2 ) const {
-    if ( ! __set.exists( operation_name ) ) return false;
+    if ( ! __set.exists ( operation_name ) ) return false;
 
     return __set[operation_name].exists
-           ( std::pair<std::string,std::string>( type1,type2 ) );
+           ( std::pair<std::string, std::string> ( type1, type2 ) );
   }
 
 
@@ -95,11 +95,11 @@ namespace gum {
    * MultiDimImplementations */
   template<typename GUM_SCALAR> INLINE
   typename OperatorRegister4MultiDim<GUM_SCALAR>::OperatorPtr
-  OperatorRegister4MultiDim<GUM_SCALAR>::get( const std::string& operation_name,
+  OperatorRegister4MultiDim<GUM_SCALAR>::get ( const std::string& operation_name,
       const std::string& type1,
       const std::string& type2 ) const {
     OperatorSet* theset = __set[operation_name];
-    return ( *theset )[std::pair<std::string,std::string>( type1,type2 )];
+    return ( *theset ) [std::pair<std::string, std::string> ( type1, type2 )];
   }
 
 
@@ -117,8 +117,8 @@ namespace gum {
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the OperatorRegister4MultiDim will be
       // removed at the end of the program's execution.
-      __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
-                                 ( void* ) &container.__set );
+      __debug__::__inc_deletion ( "HashTable", __FILE__, __LINE__, "destructor of",
+                                  ( void* ) &container.__set );
 
     }
 
@@ -137,21 +137,21 @@ namespace gum {
   template<typename GUM_SCALAR>
   OperatorRegister4MultiDim<GUM_SCALAR>::~OperatorRegister4MultiDim() {
     // remove all the sets
-    for ( typename HashTable<std::string, OperatorSet*>::iterator iter =
-            __set.begin(); iter != __set.end(); ++iter )
-      delete *iter;
+    for ( typename HashTable<std::string, OperatorSet*>::iterator_safe iter =
+            __set.beginSafe(); iter != __set.endSafe(); ++iter )
+      delete iter.val();
   }
 
 
   /// a function to more easily register new operators in MultiDims
   template<typename GUM_SCALAR>
   void
-  registerOperator( const std::string& operation_name,
-                    const std::string& type1,
-                    const std::string& type2,
-                    typename OperatorRegister4MultiDim<GUM_SCALAR>::OperatorPtr
-                    function ) {
-    OperatorRegister4MultiDim<GUM_SCALAR>::Register().insert( operation_name,
+  registerOperator ( const std::string& operation_name,
+                     const std::string& type1,
+                     const std::string& type2,
+                     typename OperatorRegister4MultiDim<GUM_SCALAR>::OperatorPtr
+                     function ) {
+    OperatorRegister4MultiDim<GUM_SCALAR>::Register().insert ( operation_name,
         type1, type2, function );
   }
 

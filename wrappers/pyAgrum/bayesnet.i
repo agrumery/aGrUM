@@ -1,7 +1,9 @@
 %ignore gum::BayesNet::addVariable;
 %ignore gum::BayesNet::eraseVariable;
-%ignore gum::BayesNet::beginNodes;
-%ignore gum::BayesNet::endNodes;
+%ignore *::beginNodes;
+%ignore *::endNodes;
+%ignore *::beginArcs;
+%ignore *::endArcs;
 
 %pythonprepend gum::BayesNet::insertArc %{
   print("WARNING : pyAgrum.BayesNet.insertArc is deprecated. Please use pyAgrum.BayesNet.addArc")

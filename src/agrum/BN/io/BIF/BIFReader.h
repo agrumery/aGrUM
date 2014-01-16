@@ -176,8 +176,8 @@ namespace gum {
       // a boolean to throw the ioerror not in the constructor but in the proceed()
       bool __ioerror;
   };
-  
-  extern template class BIFReader<float>;  
+
+  extern template class BIFReader<float>;
   extern template class BIFReader<double>;
 } // namespace gum
 

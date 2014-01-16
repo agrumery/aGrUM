@@ -43,23 +43,23 @@ namespace gum {
       __typeMap.clear();
       __systemMap.clear();
 
-      for ( auto iter = __systems.begin();
-            iter != __systems.end(); ++iter ) {
+      for ( auto iter = __systems.beginSafe();
+            iter != __systems.endSafe(); ++iter ) {
         delete *iter;
       }
 
-      for ( auto iter = __classes.begin();
-            iter != __classes.end(); ++iter ) {
+      for ( auto iter = __classes.beginSafe();
+            iter != __classes.endSafe(); ++iter ) {
         delete *iter;
       }
 
-      for ( auto iter = __interfaces.begin();
-            iter != __interfaces.end(); ++iter ) {
+      for ( auto iter = __interfaces.beginSafe();
+            iter != __interfaces.endSafe(); ++iter ) {
         delete *iter;
       }
 
-      for ( auto iter = __types.begin();
-            iter != __types.end(); ++iter ) {
+      for ( auto iter = __types.beginSafe();
+            iter != __types.endSafe(); ++iter ) {
         delete *iter;
       }
     }

@@ -74,7 +74,7 @@ class ColorPrinter implements Printer {
     t_ink magenta { [0.8, 0.2] };
     t_ink yellow  { [0.8, 0.2] };
     t_ink cyan    { [0.8, 0.2] };
-    boolean hasInk = forall( [black, magenta, yellow, cyan], NotEmpty );
+    boolean hasInk = forall ( [black, magenta, yellow, cyan], NotEmpty );
     t_paper hasPaper { [0.7, 0.2, 0.1] };
     t_degraded equipState dependson room.power.state, hasPaper, hasInk, black {
       *, *, *, *:             0.00, 1.00, 0.00;
@@ -86,8 +86,8 @@ class ColorPrinter implements Printer {
 class Computer implements Equipment {
     Room room;
     Printer[] printers;
-    boolean functional_printer = exists( printers.equipState, OK );
-    boolean degraded_printer = exists( printers.equipState, Degraded );
+    boolean functional_printer = exists ( printers.equipState, OK );
+    boolean degraded_printer = exists ( printers.equipState, Degraded );
     //boolean working_printer = exists([functional_printer, degraded_printer], true);
     boolean working_printer dependson functional_printer, degraded_printer {
       *, *: 0.0, 1.0;
@@ -108,10 +108,10 @@ class Computer implements Equipment {
 class SafeComputer implements Equipment {
     Room room;
     Printer[] printers;
-    boolean functional_printer = exists( printers.( t_state )equipState, OK );
-    boolean degraded_printer = exists( printers.( t_degraded )equipState, Degraded );
-    boolean working_printer = exists( [functional_printer, degraded_printer], true );
-    t_degraded equipState dependson room.power.( t_state )state {
+    boolean functional_printer = exists ( printers. ( t_state ) equipState, OK );
+    boolean degraded_printer = exists ( printers. ( t_degraded ) equipState, Degraded );
+    boolean working_printer = exists ( [functional_printer, degraded_printer], true );
+    t_degraded equipState dependson room.power. ( t_state ) state {
       OK:  0.90, 0.09, 0.01;
       NOK: 0.00, 1.00, 0.00;
     };

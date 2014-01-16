@@ -1382,23 +1382,6 @@ class SyntaxError(IOError):
 SyntaxError_swigregister = _pyAgrum.SyntaxError_swigregister
 SyntaxError_swigregister(SyntaxError)
 
-class SetIteratorStaticEnd(_object):
-    """Proxy of C++ gum::SetIteratorStaticEnd class"""
-    __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, SetIteratorStaticEnd, name, value)
-    __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, SetIteratorStaticEnd, name)
-    __repr__ = _swig_repr
-    def __init__(self): 
-        """__init__(gum::SetIteratorStaticEnd self) -> SetIteratorStaticEnd"""
-        this = _pyAgrum.new_SetIteratorStaticEnd()
-        try: self.this.append(this)
-        except: self.this = this
-    __swig_destroy__ = _pyAgrum.delete_SetIteratorStaticEnd
-    __del__ = lambda self : None;
-SetIteratorStaticEnd_swigregister = _pyAgrum.SetIteratorStaticEnd_swigregister
-SetIteratorStaticEnd_swigregister(SetIteratorStaticEnd)
-
 
 def randomProba():
   """randomProba() -> double"""
@@ -1801,11 +1784,12 @@ class DiGraph(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(gum::DiGraph self, gum::Size nodes_size=GUM_HASHTABLE_DEFAULT_SIZE, bool nodes_resize_policy=True, gum::Size arcs_size=GUM_HASHTABLE_DEFAULT_SIZE, 
-            bool arcs_resize_policy=True) -> DiGraph
-        __init__(gum::DiGraph self, gum::Size nodes_size=GUM_HASHTABLE_DEFAULT_SIZE, bool nodes_resize_policy=True, gum::Size arcs_size=GUM_HASHTABLE_DEFAULT_SIZE) -> DiGraph
-        __init__(gum::DiGraph self, gum::Size nodes_size=GUM_HASHTABLE_DEFAULT_SIZE, bool nodes_resize_policy=True) -> DiGraph
-        __init__(gum::DiGraph self, gum::Size nodes_size=GUM_HASHTABLE_DEFAULT_SIZE) -> DiGraph
+        __init__(gum::DiGraph self, gum::Size nodes_size=HashTableConst::default_size, bool nodes_resize_policy=True, 
+            gum::Size arcs_size=HashTableConst::default_size, bool arcs_resize_policy=True) -> DiGraph
+        __init__(gum::DiGraph self, gum::Size nodes_size=HashTableConst::default_size, bool nodes_resize_policy=True, 
+            gum::Size arcs_size=HashTableConst::default_size) -> DiGraph
+        __init__(gum::DiGraph self, gum::Size nodes_size=HashTableConst::default_size, bool nodes_resize_policy=True) -> DiGraph
+        __init__(gum::DiGraph self, gum::Size nodes_size=HashTableConst::default_size) -> DiGraph
         __init__(gum::DiGraph self) -> DiGraph
         __init__(gum::DiGraph self, DiGraph g) -> DiGraph
         """
@@ -2210,14 +2194,6 @@ class DAGmodel(_object):
         """empty(DAGmodel self) -> bool"""
         return _pyAgrum.DAGmodel_empty(self)
 
-    def beginNodes(self):
-        """beginNodes(DAGmodel self) -> NodeGraphPartIterator"""
-        return _pyAgrum.DAGmodel_beginNodes(self)
-
-    def endNodes(self):
-        """endNodes(DAGmodel self) -> NodeGraphPartIterator"""
-        return _pyAgrum.DAGmodel_endNodes(self)
-
     def nodes(self):
         """nodes(DAGmodel self) -> NodeGraphPart"""
         return _pyAgrum.DAGmodel_nodes(self)
@@ -2241,14 +2217,6 @@ class DAGmodel(_object):
     def completeInstantiation(self, *args):
         """completeInstantiation(DAGmodel self, Instantiation I)"""
         return _pyAgrum.DAGmodel_completeInstantiation(self, *args)
-
-    def beginArcs(self):
-        """beginArcs(DAGmodel self) -> gum::DAG::ArcIterator const"""
-        return _pyAgrum.DAGmodel_beginArcs(self)
-
-    def endArcs(self):
-        """endArcs(DAGmodel self) -> gum::DAG::ArcIterator const &"""
-        return _pyAgrum.DAGmodel_endArcs(self)
 
     def arcs(self):
         """arcs(DAGmodel self) -> gum::ArcSet const &"""
@@ -2275,8 +2243,8 @@ class DAGmodel(_object):
 DAGmodel_swigregister = _pyAgrum.DAGmodel_swigregister
 DAGmodel_swigregister(DAGmodel)
 cvar = _pyAgrum.cvar
+__list_end_safe = cvar.__list_end_safe
 __list_end = cvar.__list_end
-__list_end_unsafe = cvar.__list_end_unsafe
 
 
 def RandomDistribution_double(*args):
@@ -2299,21 +2267,21 @@ class NodeSequence(_object):
         except: self.this = this
     __swig_destroy__ = _pyAgrum.delete_NodeSequence
     __del__ = lambda self : None;
-    def begin(self):
-        """begin(NodeSequence self) -> gum::Sequence< unsigned int >::iterator"""
-        return _pyAgrum.NodeSequence_begin(self)
+    def beginSafe(self):
+        """beginSafe(NodeSequence self) -> gum::Sequence< unsigned int >::iterator_safe"""
+        return _pyAgrum.NodeSequence_beginSafe(self)
 
-    def rbegin(self):
-        """rbegin(NodeSequence self) -> gum::Sequence< unsigned int >::iterator"""
-        return _pyAgrum.NodeSequence_rbegin(self)
+    def rbeginSafe(self):
+        """rbeginSafe(NodeSequence self) -> gum::Sequence< unsigned int >::iterator_safe"""
+        return _pyAgrum.NodeSequence_rbeginSafe(self)
 
-    def end(self):
-        """end(NodeSequence self) -> gum::Sequence< unsigned int >::iterator const &"""
-        return _pyAgrum.NodeSequence_end(self)
+    def endSafe(self):
+        """endSafe(NodeSequence self) -> gum::Sequence< unsigned int >::iterator_safe const &"""
+        return _pyAgrum.NodeSequence_endSafe(self)
 
-    def rend(self):
-        """rend(NodeSequence self) -> gum::Sequence< unsigned int >::iterator const &"""
-        return _pyAgrum.NodeSequence_rend(self)
+    def rendSafe(self):
+        """rendSafe(NodeSequence self) -> gum::Sequence< unsigned int >::iterator_safe const &"""
+        return _pyAgrum.NodeSequence_rendSafe(self)
 
     def __eq__(self, *args):
         """__eq__(NodeSequence self, NodeSequence k) -> bool"""
@@ -2348,7 +2316,7 @@ class NodeSequence(_object):
         return _pyAgrum.NodeSequence_remove(self, *args)
 
     def erase(self, *args):
-        """erase(NodeSequence self, gum::Sequence< unsigned int >::iterator const & k)"""
+        """erase(NodeSequence self, gum::Sequence< unsigned int >::iterator_safe const & k)"""
         return _pyAgrum.NodeSequence_erase(self, *args)
 
     def __getitem__(self, *args):
@@ -2383,10 +2351,6 @@ class NodeSequence(_object):
         """resize(NodeSequence self, unsigned int new_size)"""
         return _pyAgrum.NodeSequence_resize(self, *args)
 
-    def diffSet(self, *args):
-        """diffSet(NodeSequence self, NodeSequence seq) -> gum::Set< unsigned int >"""
-        return _pyAgrum.NodeSequence_diffSet(self, *args)
-
 NodeSequence_swigregister = _pyAgrum.NodeSequence_swigregister
 NodeSequence_swigregister(NodeSequence)
 
@@ -2407,21 +2371,21 @@ class StringSequence(_object):
         except: self.this = this
     __swig_destroy__ = _pyAgrum.delete_StringSequence
     __del__ = lambda self : None;
-    def begin(self):
-        """begin(StringSequence self) -> gum::Sequence< std::string >::iterator"""
-        return _pyAgrum.StringSequence_begin(self)
+    def beginSafe(self):
+        """beginSafe(StringSequence self) -> gum::Sequence< std::string >::iterator_safe"""
+        return _pyAgrum.StringSequence_beginSafe(self)
 
-    def rbegin(self):
-        """rbegin(StringSequence self) -> gum::Sequence< std::string >::iterator"""
-        return _pyAgrum.StringSequence_rbegin(self)
+    def rbeginSafe(self):
+        """rbeginSafe(StringSequence self) -> gum::Sequence< std::string >::iterator_safe"""
+        return _pyAgrum.StringSequence_rbeginSafe(self)
 
-    def end(self):
-        """end(StringSequence self) -> gum::Sequence< std::string >::iterator const &"""
-        return _pyAgrum.StringSequence_end(self)
+    def endSafe(self):
+        """endSafe(StringSequence self) -> gum::Sequence< std::string >::iterator_safe const &"""
+        return _pyAgrum.StringSequence_endSafe(self)
 
-    def rend(self):
-        """rend(StringSequence self) -> gum::Sequence< std::string >::iterator const &"""
-        return _pyAgrum.StringSequence_rend(self)
+    def rendSafe(self):
+        """rendSafe(StringSequence self) -> gum::Sequence< std::string >::iterator_safe const &"""
+        return _pyAgrum.StringSequence_rendSafe(self)
 
     def __eq__(self, *args):
         """__eq__(StringSequence self, StringSequence k) -> bool"""
@@ -2456,7 +2420,7 @@ class StringSequence(_object):
         return _pyAgrum.StringSequence_remove(self, *args)
 
     def erase(self, *args):
-        """erase(StringSequence self, gum::Sequence< std::string >::iterator const & k)"""
+        """erase(StringSequence self, gum::Sequence< std::string >::iterator_safe const & k)"""
         return _pyAgrum.StringSequence_erase(self, *args)
 
     def __getitem__(self, *args):
@@ -2490,10 +2454,6 @@ class StringSequence(_object):
     def resize(self, *args):
         """resize(StringSequence self, unsigned int new_size)"""
         return _pyAgrum.StringSequence_resize(self, *args)
-
-    def diffSet(self, *args):
-        """diffSet(StringSequence self, StringSequence seq) -> gum::Set< std::string >"""
-        return _pyAgrum.StringSequence_diffSet(self, *args)
 
 StringSequence_swigregister = _pyAgrum.StringSequence_swigregister
 StringSequence_swigregister(StringSequence)
@@ -3209,11 +3169,80 @@ class Potential_double(MultiDimDecorator_double):
 Potential_double_swigregister = _pyAgrum.Potential_double_swigregister
 Potential_double_swigregister(Potential_double)
 
-class BayesNet_double(_object):
+class IBayesNet_double(DAGmodel):
+    """Proxy of C++ gum::IBayesNet<(double)> class"""
+    __swig_setmethods__ = {}
+    for _s in [DAGmodel]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, IBayesNet_double, name, value)
+    __swig_getmethods__ = {}
+    for _s in [DAGmodel]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, IBayesNet_double, name)
+    def __init__(self, *args, **kwargs): raise AttributeError("No constructor defined - class is abstract")
+    __repr__ = _swig_repr
+    __swig_destroy__ = _pyAgrum.delete_IBayesNet_double
+    __del__ = lambda self : None;
+    def cpt(self, *args):
+        """cpt(IBayesNet_double self, gum::NodeId varId) -> Potential_double"""
+        return _pyAgrum.IBayesNet_double_cpt(self, *args)
+
+    def variableNodeMap(self):
+        """variableNodeMap(IBayesNet_double self) -> VariableNodeMap"""
+        return _pyAgrum.IBayesNet_double_variableNodeMap(self)
+
+    def variable(self, *args):
+        """variable(IBayesNet_double self, gum::NodeId id) -> DiscreteVar"""
+        return _pyAgrum.IBayesNet_double_variable(self, *args)
+
+    def nodeId(self, *args):
+        """nodeId(IBayesNet_double self, DiscreteVar var) -> gum::NodeId"""
+        return _pyAgrum.IBayesNet_double_nodeId(self, *args)
+
+    def idFromName(self, *args):
+        """idFromName(IBayesNet_double self, std::string const & name) -> gum::NodeId"""
+        return _pyAgrum.IBayesNet_double_idFromName(self, *args)
+
+    def variableFromName(self, *args):
+        """variableFromName(IBayesNet_double self, std::string const & name) -> DiscreteVar"""
+        return _pyAgrum.IBayesNet_double_variableFromName(self, *args)
+
+    def jointProbability(self, *args):
+        """jointProbability(IBayesNet_double self, Instantiation i) -> double"""
+        return _pyAgrum.IBayesNet_double_jointProbability(self, *args)
+
+    def log2JointProbability(self, *args):
+        """log2JointProbability(IBayesNet_double self, Instantiation i) -> double"""
+        return _pyAgrum.IBayesNet_double_log2JointProbability(self, *args)
+
+    def __eq__(self, *args):
+        """__eq__(IBayesNet_double self, IBayesNet_double src) -> bool"""
+        return _pyAgrum.IBayesNet_double___eq__(self, *args)
+
+    def __ne__(self, *args):
+        """__ne__(IBayesNet_double self, IBayesNet_double src) -> bool"""
+        return _pyAgrum.IBayesNet_double___ne__(self, *args)
+
+    def dim(self):
+        """dim(IBayesNet_double self) -> gum::Idx"""
+        return _pyAgrum.IBayesNet_double_dim(self)
+
+    def toDot(self):
+        """toDot(IBayesNet_double self) -> std::string"""
+        return _pyAgrum.IBayesNet_double_toDot(self)
+
+    def __str__(self):
+        """__str__(IBayesNet_double self) -> std::string"""
+        return _pyAgrum.IBayesNet_double___str__(self)
+
+IBayesNet_double_swigregister = _pyAgrum.IBayesNet_double_swigregister
+IBayesNet_double_swigregister(IBayesNet_double)
+
+class BayesNet_double(IBayesNet_double):
     """Proxy of C++ gum::BayesNet<(double)> class"""
     __swig_setmethods__ = {}
+    for _s in [IBayesNet_double]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
     __setattr__ = lambda self, name, value: _swig_setattr(self, BayesNet_double, name, value)
     __swig_getmethods__ = {}
+    for _s in [IBayesNet_double]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
     __getattr__ = lambda self, name: _swig_getattr(self, BayesNet_double, name)
     __repr__ = _swig_repr
     __swig_destroy__ = _pyAgrum.delete_BayesNet_double
@@ -3367,6 +3396,18 @@ class BayesNet_double(_object):
         """changePotential(BayesNet_double self, gum::NodeId id, Potential_double newPot)"""
         return _pyAgrum.BayesNet_double_changePotential(self, *args)
 
+    def dag(self):
+        """dag(BayesNet_double self) -> DAG"""
+        return _pyAgrum.BayesNet_double_dag(self)
+
+    def nodes(self):
+        """nodes(BayesNet_double self) -> NodeGraphPart"""
+        return _pyAgrum.BayesNet_double_nodes(self)
+
+    def log10DomainSize(self):
+        """log10DomainSize(BayesNet_double self) -> double"""
+        return _pyAgrum.BayesNet_double_log10DomainSize(self)
+
     def names(self):
         """names(BayesNet_double self) -> PyObject *"""
         return _pyAgrum.BayesNet_double_names(self)
@@ -3469,7 +3510,7 @@ class BayesNetInference_double(_object):
         return _pyAgrum.BayesNetInference_double_eraseAllEvidence(self)
 
     def bn(self):
-        """bn(BayesNetInference_double self) -> gum::IBayesNet< double > const &"""
+        """bn(BayesNetInference_double self) -> IBayesNet_double"""
         return _pyAgrum.BayesNetInference_double_bn(self)
 
     def setEvidence(self, evidces):
@@ -3547,8 +3588,8 @@ class LazyPropagation_double(BayesNetInference_double):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(gum::LazyPropagation<(double)> self, gum::IBayesNet< double > const & BN) -> LazyPropagation_double
-        __init__(gum::LazyPropagation<(double)> self, gum::IBayesNet< double > const & BN, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & elim_order) -> LazyPropagation_double
+        __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN) -> LazyPropagation_double
+        __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & elim_order) -> LazyPropagation_double
         """
         if self.__class__ == LazyPropagation_double:
             _self = None
@@ -3644,7 +3685,7 @@ class GibbsInference_double(BayesNetInference_double):
     __getattr__ = lambda self, name: _swig_getattr(self, GibbsInference_double, name)
     __repr__ = _swig_repr
     def __init__(self, *args): 
-        """__init__(gum::GibbsInference<(double)> self, gum::IBayesNet< double > const & BN) -> GibbsInference_double"""
+        """__init__(gum::GibbsInference<(double)> self, IBayesNet_double BN) -> GibbsInference_double"""
         if self.__class__ == GibbsInference_double:
             _self = None
         else:
@@ -3774,7 +3815,7 @@ class BruteForceKL_double(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(gum::BruteForceKL<(double)> self, gum::IBayesNet< double > const & P, gum::IBayesNet< double > const & Q) -> BruteForceKL_double
+        __init__(gum::BruteForceKL<(double)> self, IBayesNet_double P, IBayesNet_double Q) -> BruteForceKL_double
         __init__(gum::BruteForceKL<(double)> self, gum::KL< double > const & kl) -> BruteForceKL_double
         """
         this = _pyAgrum.new_BruteForceKL_double(*args)
@@ -3798,7 +3839,7 @@ class GibbsKL_double(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(gum::GibbsKL<(double)> self, gum::IBayesNet< double > const & P, gum::IBayesNet< double > const & Q) -> GibbsKL_double
+        __init__(gum::GibbsKL<(double)> self, IBayesNet_double P, IBayesNet_double Q) -> GibbsKL_double
         __init__(gum::GibbsKL<(double)> self, gum::KL< double > const & kl) -> GibbsKL_double
         """
         this = _pyAgrum.new_GibbsKL_double(*args)
@@ -4352,6 +4393,7 @@ CNLoopyPropagation_double_swigregister(CNLoopyPropagation_double)
 
 Potential = Potential_double
 
+SimpleBayesNet = IBayesNet_double
 BayesNet = BayesNet_double
 LazyPropagation = LazyPropagation_double
 GibbsInference = GibbsInference_double

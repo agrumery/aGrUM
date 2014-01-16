@@ -33,20 +33,17 @@ public:
     virtual gum::Idx operator [](std::string const &aLabel) const;
     virtual std::string const toString() const;
 
-
-/* Internal Director utilities */
+/* Internal director utilities */
 public:
-    bool swig_get_inner(const char* swig_protected_method_name) const {
+    bool swig_get_inner(const char *swig_protected_method_name) const {
       std::map<std::string, bool>::const_iterator iv = swig_inner.find(swig_protected_method_name);
       return (iv != swig_inner.end() ? iv->second : false);
     }
-
-    void swig_set_inner(const char* swig_protected_method_name, bool val) const
-    { swig_inner[swig_protected_method_name] = val;}
-
+    void swig_set_inner(const char *swig_protected_method_name, bool val) const {
+      swig_inner[swig_protected_method_name] = val;
+    }
 private:
     mutable std::map<std::string, bool> swig_inner;
-
 
 #if defined(SWIG_PYTHON_DIRECTOR_VTABLE)
 /* VTable implementation */
@@ -88,20 +85,17 @@ public:
     virtual gum::Idx operator [](std::string const &label) const;
     virtual std::string const toString() const;
 
-
-/* Internal Director utilities */
+/* Internal director utilities */
 public:
-    bool swig_get_inner(const char* swig_protected_method_name) const {
+    bool swig_get_inner(const char *swig_protected_method_name) const {
       std::map<std::string, bool>::const_iterator iv = swig_inner.find(swig_protected_method_name);
       return (iv != swig_inner.end() ? iv->second : false);
     }
-
-    void swig_set_inner(const char* swig_protected_method_name, bool val) const
-    { swig_inner[swig_protected_method_name] = val;}
-
+    void swig_set_inner(const char *swig_protected_method_name, bool val) const {
+      swig_inner[swig_protected_method_name] = val;
+    }
 private:
     mutable std::map<std::string, bool> swig_inner;
-
 
 #if defined(SWIG_PYTHON_DIRECTOR_VTABLE)
 /* VTable implementation */
@@ -176,20 +170,17 @@ public:
     virtual void homothetic(double alpha, double (*mul)(double const,double const));
     virtual double fold(double (*add)(double const,double const)) const;
 
-
-/* Internal Director utilities */
+/* Internal director utilities */
 public:
-    bool swig_get_inner(const char* swig_protected_method_name) const {
+    bool swig_get_inner(const char *swig_protected_method_name) const {
       std::map<std::string, bool>::const_iterator iv = swig_inner.find(swig_protected_method_name);
       return (iv != swig_inner.end() ? iv->second : false);
     }
-
-    void swig_set_inner(const char* swig_protected_method_name, bool val) const
-    { swig_inner[swig_protected_method_name] = val;}
-
+    void swig_set_inner(const char *swig_protected_method_name, bool val) const {
+      swig_inner[swig_protected_method_name] = val;
+    }
 private:
     mutable std::map<std::string, bool> swig_inner;
-
 
 #if defined(SWIG_PYTHON_DIRECTOR_VTABLE)
 /* VTable implementation */
@@ -230,20 +221,17 @@ public:
       gum::LazyPropagation< double >::_fillMarginal(id,marginal);
     }
 
-
-/* Internal Director utilities */
+/* Internal director utilities */
 public:
-    bool swig_get_inner(const char* swig_protected_method_name) const {
+    bool swig_get_inner(const char *swig_protected_method_name) const {
       std::map<std::string, bool>::const_iterator iv = swig_inner.find(swig_protected_method_name);
       return (iv != swig_inner.end() ? iv->second : false);
     }
-
-    void swig_set_inner(const char* swig_protected_method_name, bool val) const
-    { swig_inner[swig_protected_method_name] = val;}
-
+    void swig_set_inner(const char *swig_protected_method_name, bool val) const {
+      swig_inner[swig_protected_method_name] = val;
+    }
 private:
     mutable std::map<std::string, bool> swig_inner;
-
 
 #if defined(SWIG_PYTHON_DIRECTOR_VTABLE)
 /* VTable implementation */
@@ -283,20 +271,17 @@ public:
       gum::GibbsInference< double >::_fillMarginal(id,marginal);
     }
 
-
-/* Internal Director utilities */
+/* Internal director utilities */
 public:
-    bool swig_get_inner(const char* swig_protected_method_name) const {
+    bool swig_get_inner(const char *swig_protected_method_name) const {
       std::map<std::string, bool>::const_iterator iv = swig_inner.find(swig_protected_method_name);
       return (iv != swig_inner.end() ? iv->second : false);
     }
-
-    void swig_set_inner(const char* swig_protected_method_name, bool val) const
-    { swig_inner[swig_protected_method_name] = val;}
-
+    void swig_set_inner(const char *swig_protected_method_name, bool val) const {
+      swig_inner[swig_protected_method_name] = val;
+    }
 private:
     mutable std::map<std::string, bool> swig_inner;
-
 
 #if defined(SWIG_PYTHON_DIRECTOR_VTABLE)
 /* VTable implementation */

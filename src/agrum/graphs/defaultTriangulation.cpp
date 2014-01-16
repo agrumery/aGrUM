@@ -48,30 +48,30 @@ namespace gum {
   ( const UndiGraph* theGraph,
     const NodeProperty<Size>* modal,
     bool minimality, float theRatio, float theThreshold ) :
-    UnconstrainedTriangulation( theGraph, modal,
-                                DefaultEliminationSequenceStrategy(),
-                                DefaultJunctionTreeStrategy(),
-                                minimality ),
-    __quasi_ratio( theRatio ),
-    __threshold( theThreshold ) {
+    UnconstrainedTriangulation ( theGraph, modal,
+                                 DefaultEliminationSequenceStrategy(),
+                                 DefaultJunctionTreeStrategy(),
+                                 minimality ),
+    __quasi_ratio ( theRatio ),
+    __threshold ( theThreshold ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( DefaultTriangulation );
+    GUM_CONSTRUCTOR ( DefaultTriangulation );
   }
 
 
 
   /// default constructor: initialize the triangulation for an empty graph
 
-  DefaultTriangulation::DefaultTriangulation( bool minimality,
+  DefaultTriangulation::DefaultTriangulation ( bool minimality,
       double theRatio,
       double theThreshold ) :
-    UnconstrainedTriangulation( DefaultEliminationSequenceStrategy(),
-                                DefaultJunctionTreeStrategy(),
-                                minimality ),
-    __quasi_ratio( theRatio ),
-    __threshold( theThreshold ) {
+    UnconstrainedTriangulation ( DefaultEliminationSequenceStrategy(),
+                                 DefaultJunctionTreeStrategy(),
+                                 minimality ),
+    __quasi_ratio ( theRatio ),
+    __threshold ( theThreshold ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( DefaultTriangulation );
+    GUM_CONSTRUCTOR ( DefaultTriangulation );
   }
 
 
@@ -116,7 +116,7 @@ namespace gum {
 
   DefaultTriangulation::~DefaultTriangulation() {
     // for debugging purposes
-    GUM_DESTRUCTOR( DefaultTriangulation );
+    GUM_DESTRUCTOR ( DefaultTriangulation );
   }
 
 

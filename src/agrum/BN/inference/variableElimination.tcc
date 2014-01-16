@@ -38,19 +38,19 @@ namespace gum {
   VariableElimination<GUM_SCALAR>::~VariableElimination() {
     GUM_DESTRUCTOR ( VariableElimination );
   }
-/*
-  template<typename GUM_SCALAR> INLINE
-  VariableElimination<GUM_SCALAR>::VariableElimination ( const VariableElimination<GUM_SCALAR>& source ) {
-    GUM_CONS_CPY ( VariableElimination );
-    GUM_ERROR ( FatalError, "illegal call to VariableElimination copy constructor." );
-  }
+  /*
+    template<typename GUM_SCALAR> INLINE
+    VariableElimination<GUM_SCALAR>::VariableElimination ( const VariableElimination<GUM_SCALAR>& source ) {
+      GUM_CONS_CPY ( VariableElimination );
+      GUM_ERROR ( FatalError, "illegal call to VariableElimination copy constructor." );
+    }
 
-  template<typename GUM_SCALAR> INLINE
-  VariableElimination<GUM_SCALAR>&
-  VariableElimination<GUM_SCALAR>::operator= ( const VariableElimination& source ) {
-    GUM_ERROR ( FatalError, "illegal call to VariableElimination copy operator." );
-  }
-*/
+    template<typename GUM_SCALAR> INLINE
+    VariableElimination<GUM_SCALAR>&
+    VariableElimination<GUM_SCALAR>::operator= ( const VariableElimination& source ) {
+      GUM_ERROR ( FatalError, "illegal call to VariableElimination copy operator." );
+    }
+  */
   template<typename GUM_SCALAR> INLINE
   const std::vector<NodeId>&
   VariableElimination<GUM_SCALAR>::eliminationOrder() const {
@@ -77,7 +77,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   void
   VariableElimination<GUM_SCALAR>::insertEvidence ( const List<const Potential<GUM_SCALAR>*>& pot_list ) {
-    for ( ListConstIterator< const Potential<GUM_SCALAR>* > iter = pot_list.cbegin(); iter != pot_list.cend(); ++iter ) {
+    for ( ListConstIteratorSafe< const Potential<GUM_SCALAR>* > iter = pot_list.cbeginSafe(); iter != pot_list.cendSafe(); ++iter ) {
       if ( ( *iter )->nbrDim() != 1 ) {
         GUM_ERROR ( OperationNotAllowed, "Evidence can only be giben w.r.t. one random variable" );
       }
@@ -147,7 +147,7 @@ namespace gum {
     marginal.add ( this->bn().variable ( id ) );
     marginal.fill ( ( GUM_SCALAR ) 1 );
 
-    for ( SetIterator< Potential<GUM_SCALAR>* > iter = pool.begin(); iter != pool.end(); ++iter ) {
+    for ( SetIteratorSafe< Potential<GUM_SCALAR>* > iter = pool.beginSafe(); iter != pool.endSafe(); ++iter ) {
       if ( ( **iter ).nbrDim() > 0 ) {
         marginal.multiplicateBy ( **iter );
       }
@@ -156,7 +156,7 @@ namespace gum {
     marginal.normalize();
 
     // Cleaning up the mess
-    for ( SetIterator< Potential<GUM_SCALAR>* > iter = __trash.begin(); iter != __trash.end(); ++iter ) {
+    for ( SetIteratorSafe< Potential<GUM_SCALAR>* > iter = __trash.beginSafe(); iter != __trash.endSafe(); ++iter ) {
       delete *iter;
     }
 
@@ -211,14 +211,14 @@ namespace gum {
       var_set.insert ( var );
       Set<const Potential<GUM_SCALAR>*> pots;
 
-      for ( SetIterator<Potential<GUM_SCALAR>*> iter = pool.begin(); iter != pool.end(); ++iter )
+      for ( SetIteratorSafe<Potential<GUM_SCALAR>*> iter = pool.beginSafe(); iter != pool.endSafe(); ++iter )
         if ( ( *iter )->contains ( *var ) )
           pots.insert ( *iter );
 
       if ( pots.size() == 0 ) {
         return;
       } else if ( pots.size() == 1 ) {
-        tmp = const_cast<Potential<GUM_SCALAR>*> ( * ( pots.begin() ) );
+        tmp = const_cast<Potential<GUM_SCALAR>*> ( * ( pots.beginSafe() ) );
         pot = new Potential<GUM_SCALAR> ( projectSum ( *tmp, var_set ) );
       } else {
         MultiDimCombinationDefault<GUM_SCALAR, Potential> Comb ( multPotential );
@@ -227,7 +227,7 @@ namespace gum {
         delete tmp;
       }
 
-      for ( typename Set<const Potential<GUM_SCALAR>*>::iterator iter = pots.begin(); iter != pots.end(); ++iter ) {
+      for ( typename Set<const Potential<GUM_SCALAR>*>::iterator_safe iter = pots.beginSafe(); iter != pots.endSafe(); ++iter ) {
         pool.erase ( const_cast<Potential<GUM_SCALAR>*> ( *iter ) );
 
         if ( trash.exists ( const_cast<Potential<GUM_SCALAR>*> ( *iter ) ) ) {

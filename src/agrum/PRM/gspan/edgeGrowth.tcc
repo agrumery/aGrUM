@@ -32,7 +32,7 @@ namespace gum {
 
       template<typename GUM_SCALAR> INLINE
       EdgeGrowth<GUM_SCALAR>::EdgeGrowth ( NodeId a_u, LabelData* an_edge,
-                               LabelData* a_l_v, NodeId a_v ) :
+                                           LabelData* a_l_v, NodeId a_v ) :
         u ( a_u ), edge ( an_edge ), l_v ( a_l_v ), v ( a_v ),
         degree_list ( new std::vector<NodeId>() ) {
         GUM_CONSTRUCTOR ( EdgeGrowth );
@@ -72,9 +72,9 @@ namespace gum {
         NodeId id = iso_graph.insertNode();
         degree_list->push_back ( id );
 
-        for ( auto iter = matches.begin(); iter != matches.end(); ++iter ) {
-          if ( ( iter->first == u ) or ( iter->second == u ) or
-               ( iter->first == v ) or ( iter->second == v ) ) {
+        for ( auto iter = matches.beginSafe(); iter != matches.endSafe(); ++iter ) {
+          if ( ( iter.val().first == u ) or ( iter.val().second == u ) or
+               ( iter.val().first == v ) or ( iter.val().second == v ) ) {
             iso_graph.insertEdge ( iter.key(), id );
           }
         }

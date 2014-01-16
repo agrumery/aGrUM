@@ -79,8 +79,8 @@ namespace gum {
         // put the neighbors onto the stack
         const NodeSet& neighbors = JT.neighbours ( current_node );
 
-        for ( NodeSet::const_iterator neigh = neighbors.begin();
-              neigh != neighbors.end(); ++ neigh ) {
+        for ( NodeSet::const_iterator_safe neigh = neighbors.beginSafe ();
+              neigh != neighbors.endSafe (); ++ neigh ) {
           if ( ! mark[ *neigh ] ) {
             nodes_to_inspect.push_back ( *neigh );
           }
@@ -97,13 +97,13 @@ namespace gum {
     const NodeProperty<Size>& domain_sizes ) const {
     float result = 1;
 
-    for ( NodeSet::const_iterator iter = nodes1.begin();
-          iter != nodes1.end(); ++iter ) {
+    for ( NodeSet::const_iterator_safe iter = nodes1.beginSafe ();
+          iter != nodes1.endSafe (); ++iter ) {
       result *= domain_sizes[*iter];
     }
 
-    for ( NodeSet::const_iterator iter = nodes2.begin();
-          iter != nodes2.end(); ++iter ) {
+    for ( NodeSet::const_iterator_safe iter = nodes2.beginSafe ();
+          iter != nodes2.endSafe (); ++iter ) {
       if ( ! nodes1.exists ( *iter ) ) {
         result *= domain_sizes[*iter];
       }
@@ -142,8 +142,8 @@ namespace gum {
     cliques.reserve ( neighbors.size() );
 
     {
-      for ( NodeSet::const_iterator iter = neighbors.begin();
-            iter != neighbors.end(); ++iter ) {
+      for ( NodeSet::const_iterator_safe iter = neighbors.beginSafe();
+            iter != neighbors.endSafe(); ++iter ) {
         if ( *iter != from ) {
           cliques.push_back ( *iter );
         }
@@ -266,8 +266,8 @@ namespace gum {
     // parse all the neighbors except nodes already converted and convert them
     const NodeSet& neighbors = JT.neighbours ( current_node );
 
-    for ( NodeSet::const_iterator neigh = neighbors.begin();
-          neigh != neighbors.end(); ++ neigh ) {
+    for ( NodeSet::const_iterator_safe neigh = neighbors.beginSafe();
+          neigh != neighbors.endSafe(); ++ neigh ) {
       if ( ! mark [ *neigh ] ) {
         __convertConnectedComponent ( JT, *neigh, current_node,
                                       domain_sizes, mark );
@@ -296,8 +296,8 @@ namespace gum {
       NodeProperty<bool> mark = JT.nodesProperty ( false, JT.sizeNodes() );
       // for each specified root, populate its connected component
 
-      for ( NodeSet::const_iterator iter = specified_roots.begin();
-            iter != specified_roots.end(); ++iter ) {
+      for ( NodeSet::const_iterator_safe iter = specified_roots.beginSafe();
+            iter != specified_roots.endSafe(); ++iter ) {
         // check that the root has not already been marked
         // in this case, this means that more than one root has been specified
         // for a given connected component
@@ -311,9 +311,9 @@ namespace gum {
 
       // check that all nodes have been marked. If this is not the case, then
       // this means that we need to add new roots
-      for ( NodeProperty<bool>::iterator iter = mark.begin();
-            iter != mark.end(); ++iter ) {
-        if ( ! *iter ) {
+      for ( NodeProperty<bool>::iterator_safe iter = mark.beginSafe ();
+            iter != mark.endSafe (); ++iter ) {
+        if ( ! iter.val () ) {
           __roots << iter.key();
           __markConnectedComponent ( JT, iter.key(), mark );
         }
@@ -326,8 +326,8 @@ namespace gum {
     // cliques having at most 3 neighbors.
     NodeProperty<bool> mark = JT.nodesProperty ( false, JT.sizeNodes() );
 
-    for ( NodeSet::const_iterator iter = __roots.begin();
-          iter != __roots.end(); ++iter ) {
+    for ( NodeSet::const_iterator_safe iter = __roots.beginSafe();
+          iter != __roots.endSafe(); ++iter ) {
       __convertConnectedComponent ( binJT, *iter, *iter, domain_sizes, mark );
     }
 

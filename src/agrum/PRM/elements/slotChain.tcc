@@ -35,7 +35,7 @@ namespace gum {
     SlotChain<GUM_SCALAR>::SlotChain ( const std::string& name, const Sequence< ClassElement<GUM_SCALAR>* >& chain ) :
       ClassElement<GUM_SCALAR> ( name ), __chain ( new Sequence<ClassElement<GUM_SCALAR>*> ( chain ) ), __isMultiple ( false ) {
       GUM_CONSTRUCTOR ( SlotChain );
-      this->_safeName= name;
+      this->_safeName = name;
 
       if ( __chain->size() < 2 ) {
         GUM_ERROR ( OperationNotAllowed, "chain must contain at least two ClassElement" );
@@ -57,7 +57,7 @@ namespace gum {
     SlotChain<GUM_SCALAR>::SlotChain ( Sequence<ClassElement<GUM_SCALAR>*>* chain, const std::string& name ) :
       ClassElement<GUM_SCALAR> ( name ), __chain ( chain ), __isMultiple ( false ) {
       GUM_CONSTRUCTOR ( SlotChain );
-      this->_safeName= name;
+      this->_safeName = name;
 
       if ( __chain->size() < 2 ) {
         GUM_ERROR ( OperationNotAllowed, "chain must containt at least two ClassElement" );

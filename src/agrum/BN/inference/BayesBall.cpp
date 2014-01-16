@@ -37,7 +37,7 @@ namespace gum {
                               Set<NodeId>& requisite ) {
     __marks.clear();
 
-    for ( Set<NodeId>::iterator iter = query.begin(); iter != query.end(); ++iter ) {
+    for ( Set<NodeId>::iterator_safe iter = query.beginSafe(); iter != query.endSafe(); ++iter ) {
       __fromChild ( *iter, dag, hardEvidence );
     }
 
@@ -62,7 +62,7 @@ namespace gum {
       __marks[node].first = true;
       const NodeSet& parents =  dag.parents ( node );
 
-      for ( NodeSetIterator iter = parents.begin(); iter != parents.end(); ++iter ) {
+      for ( NodeSetIterator iter = parents.beginSafe(); iter != parents.endSafe(); ++iter ) {
         __fromChild ( *iter, dag, hardEvidence );
       }
     }
@@ -71,7 +71,7 @@ namespace gum {
       __marks[node].second = true;
       const NodeSet& children = dag.children ( node );
 
-      for ( NodeSetIterator iter = children.begin(); iter != children.end(); ++iter ) {
+      for ( NodeSetIterator iter = children.beginSafe(); iter != children.endSafe(); ++iter ) {
         __fromParent ( *iter, dag, hardEvidence );
       }
     }
@@ -87,14 +87,14 @@ namespace gum {
       __marks[node].first = true;
       const NodeSet& parents = dag.parents ( node );
 
-      for ( NodeSetIterator iter = parents.begin(); iter != parents.end(); ++iter ) {
+      for ( NodeSetIterator iter = parents.beginSafe(); iter != parents.endSafe(); ++iter ) {
         __fromChild ( *iter, dag, hardEvidence );
       }
     } else if ( !__marks[node].second ) {
       __marks[node].second = true;
       const NodeSet& children = dag.children ( node );
 
-      for ( NodeSetIterator iter = children.begin(); iter != children.end(); ++iter ) {
+      for ( NodeSetIterator iter = children.beginSafe(); iter != children.endSafe(); ++iter ) {
         __fromParent ( *iter, dag, hardEvidence );
       }
     }

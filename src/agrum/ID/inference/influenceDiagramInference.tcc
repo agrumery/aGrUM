@@ -35,15 +35,15 @@ namespace gum {
 
 // Default Constructor
   template <typename GUM_SCALAR>
-  InfluenceDiagramInference<GUM_SCALAR>::InfluenceDiagramInference( const InfluenceDiagram<GUM_SCALAR>& infDiag ):
-    __infDiag( infDiag ) {
-    GUM_CONSTRUCTOR( InfluenceDiagramInference );
+  InfluenceDiagramInference<GUM_SCALAR>::InfluenceDiagramInference ( const InfluenceDiagram<GUM_SCALAR>& infDiag ) :
+    __infDiag ( infDiag ) {
+    GUM_CONSTRUCTOR ( InfluenceDiagramInference );
   }
 
 // Destructor
   template <typename GUM_SCALAR>
   InfluenceDiagramInference<GUM_SCALAR>::~InfluenceDiagramInference() {
-    GUM_DESTRUCTOR( InfluenceDiagramInference );
+    GUM_DESTRUCTOR ( InfluenceDiagramInference );
     //_invalidateMarginals();
   }
   /*
@@ -51,7 +51,7 @@ namespace gum {
   void
   InfluenceDiagramInference<GUM_SCALAR>::_invalidateMarginals()
   {
-          for ( typename Property< Potential<GUM_SCALAR> * >::onNodes::iterator it = _marginals.begin();
+          for ( typename Property< Potential<GUM_SCALAR> * >::onNodes::iterator_safe it = _marginals.begin();
               it != _marginals.end(); ++it )
                   if( __infDiag.isChanceNode( it->key() ) )
                             if ( *it )

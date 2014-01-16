@@ -56,7 +56,7 @@ namespace gum {
    * resulting in the failure of most of the inference Methods.
    * */
   template<typename GUM_SCALAR, template<class> class ICPTGenerator = SimpleCPTGenerator, template<class> class ICPTDisturber = SimpleCPTDisturber>
-  class MaxInducedWidthMCBayesNetGenerator : public MCBayesNetGenerator<GUM_SCALAR,ICPTGenerator,ICPTDisturber> {
+  class MaxInducedWidthMCBayesNetGenerator : public MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber> {
 
     public:
 
@@ -77,7 +77,7 @@ namespace gum {
       * @param p probability for the change of the state (see \ref probability_p_q "use of p and q" )
       * @param q probability for the change of the state (see \ref probability_p_q "use of p and q" )
       */
-      MaxInducedWidthMCBayesNetGenerator ( Size nbrNodes,  Size maxArcs, Size maxModality=2, Size maxInducedWidth=3, Idx iteration = 5000,  Idx p=30, Idx q=40 );
+      MaxInducedWidthMCBayesNetGenerator ( Size nbrNodes,  Size maxArcs, Size maxModality = 2, Size maxInducedWidth = 3, Idx iteration = 5000,  Idx p = 30, Idx q = 40 );
 
       /**
       * Constructor.
@@ -89,7 +89,7 @@ namespace gum {
       * @param p probability for the change of the state (see \ref probability_p_q "use of p and q" )
       * @param q probability for the change of the state (see \ref probability_p_q "use of p and q" )
       */
-      MaxInducedWidthMCBayesNetGenerator ( BayesNet<GUM_SCALAR> bayesNet, Size maxInducedWidth=3, Idx iteration= 5000,  Idx p=30, Idx q=40 );
+      MaxInducedWidthMCBayesNetGenerator ( BayesNet<GUM_SCALAR> bayesNet, Size maxInducedWidth = 3, Idx iteration = 5000,  Idx p = 30, Idx q = 40 );
 
       /**
        * Destructor.
@@ -127,7 +127,7 @@ namespace gum {
        */
 
       virtual bool __checkConditions();
-  };  
+  };
 
   extern template class MaxInducedWidthMCBayesNetGenerator<float>;
   extern template class MaxInducedWidthMCBayesNetGenerator<double>;

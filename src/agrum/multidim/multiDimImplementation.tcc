@@ -32,7 +32,7 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   MultiDimImplementation<GUM_SCALAR>::MultiDimImplementation() :
     MultiDimContainer<GUM_SCALAR>(), __vars(), __slaveInstantiations() {
-    GUM_CONSTRUCTOR( MultiDimImplementation );
+    GUM_CONSTRUCTOR ( MultiDimImplementation );
     __internalChangeMethod = __InternalChangeMethod::DIRECT_CHANGE;
     __internalChangeState = __InternalChangeState::NO_CHANGE;
     __domainSize = 1;
@@ -44,12 +44,12 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   MultiDimImplementation<GUM_SCALAR>::MultiDimImplementation
   ( const MultiDimImplementation<GUM_SCALAR>& from ) :
-    MultiDimContainer<GUM_SCALAR> ( from ), __vars( from.__vars ),
-    __internalChangeMethod( from.__internalChangeMethod ),
-    __internalChangeState( from.__internalChangeState ),
-    __domainSize( from.__domainSize ) {
-    GUM_CONS_CPY( MultiDimImplementation );
-    GUM_ASSERT( ! this->_isCommitNeeded() );
+    MultiDimContainer<GUM_SCALAR> ( from ), __vars ( from.__vars ),
+    __internalChangeMethod ( from.__internalChangeMethod ),
+    __internalChangeState ( from.__internalChangeState ),
+    __domainSize ( from.__domainSize ) {
+    GUM_CONS_CPY ( MultiDimImplementation );
+    GUM_ASSERT ( ! this->_isCommitNeeded() );
   }
 
 
@@ -57,11 +57,11 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   MultiDimImplementation<GUM_SCALAR>::~MultiDimImplementation() {
-    GUM_DESTRUCTOR( MultiDimImplementation );
+    GUM_DESTRUCTOR ( MultiDimImplementation );
     // unregister all remaining slave instantiations
 
-    for ( List<Instantiation*>::iterator iter = __slaveInstantiations.begin();
-          iter != __slaveInstantiations.end(); ++iter )
+    for ( List<Instantiation*>::iterator_safe iter = __slaveInstantiations.beginSafe();
+          iter != __slaveInstantiations.endSafe(); ++iter )
       ( *iter )->forgetMaster();
   }
 
@@ -69,21 +69,21 @@ namespace gum {
   /// add a new var to the sequence of __vars.
 
   template<typename GUM_SCALAR> INLINE
-  void MultiDimImplementation<GUM_SCALAR>::add( const DiscreteVariable& v ) {
+  void MultiDimImplementation<GUM_SCALAR>::add ( const DiscreteVariable& v ) {
     // check if the variable already belongs to the tuple of variables
     // of the Instantiation
-    if ( __vars.exists( &v ) ) {
-      GUM_ERROR( DuplicateElement, "Var already exists in this implementation" );
+    if ( __vars.exists ( &v ) ) {
+      GUM_ERROR ( DuplicateElement, "Var already exists in this implementation" );
     }
 
     __domainSize *= v.domainSize();
 
-    __vars.insert( &v );
+    __vars.insert ( &v );
 
     // informs all the slaves that they have to update themselves
-    for ( List<Instantiation*>::iterator iter = __slaveInstantiations.begin();
-          iter != __slaveInstantiations.end(); ++iter ) {
-      ( *iter )->addWithMaster( this, v );
+    for ( List<Instantiation*>::iterator_safe iter = __slaveInstantiations.beginSafe();
+          iter != __slaveInstantiations.endSafe(); ++iter ) {
+      ( *iter )->addWithMaster ( this, v );
     }
 
     if ( _isInMultipleChangeMethod() ) __setNotCommitedChange();
@@ -93,20 +93,20 @@ namespace gum {
   /// removes a var from the variables of the multidimensional matrix
 
   template<typename GUM_SCALAR> INLINE
-  void MultiDimImplementation<GUM_SCALAR>::erase( const DiscreteVariable& v ) {
+  void MultiDimImplementation<GUM_SCALAR>::erase ( const DiscreteVariable& v ) {
     // check that the variable does actually belong to the MultiDimImplementation
-    if ( ! __vars.exists( &v ) ) {
-      GUM_ERROR( NotFound, "Var does not exist in this implementation" );
+    if ( ! __vars.exists ( &v ) ) {
+      GUM_ERROR ( NotFound, "Var does not exist in this implementation" );
     }
 
     __domainSize /= v.domainSize();
 
-    __vars.erase( &v );
+    __vars.erase ( &v );
 
     // informs all the slaves that they have to update themselves
-    for ( List<Instantiation*>::iterator iter = __slaveInstantiations.begin();
-          iter != __slaveInstantiations.end(); ++iter ) {
-      ( *iter )->eraseWithMaster( this, v );
+    for ( List<Instantiation*>::iterator_safe iter = __slaveInstantiations.beginSafe();
+          iter != __slaveInstantiations.endSafe(); ++iter ) {
+      ( *iter )->eraseWithMaster ( this, v );
     }
 
     if ( _isInMultipleChangeMethod() ) __setNotCommitedChange();
@@ -119,7 +119,7 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   MultiDimImplementation<GUM_SCALAR>& operator<< ( MultiDimImplementation<GUM_SCALAR>& array,
       const DiscreteVariable& v ) {
-    array.add( v );
+    array.add ( v );
     return array;
   }
 
@@ -127,17 +127,17 @@ namespace gum {
   /// add a Instantiation to the list of slave instantiations
 
   template<typename GUM_SCALAR> INLINE
-  bool MultiDimImplementation<GUM_SCALAR>::registerSlave( Instantiation& i ) {
+  bool MultiDimImplementation<GUM_SCALAR>::registerSlave ( Instantiation& i ) {
     // check that the Instantiation has the same variables as this
     if ( i.nbrDim() != __vars.size() )
       return false;
 
-    for ( Sequence<const DiscreteVariable*>::iterator iter = __vars.begin();
-          iter != __vars.end(); ++iter )
-      if ( ! i.contains( *iter ) )
+    for ( Sequence<const DiscreteVariable*>::iterator_safe iter = __vars.beginSafe();
+          iter != __vars.endSafe(); ++iter )
+      if ( ! i.contains ( *iter ) )
         return false;
 
-    i.synchronizeWithMaster( this );
+    i.synchronizeWithMaster ( this );
 
     __slaveInstantiations += ( &i );
 
@@ -148,8 +148,8 @@ namespace gum {
   /// removes a Instantiation from the list of slave instantiations
 
   template<typename GUM_SCALAR> INLINE
-  bool MultiDimImplementation<GUM_SCALAR>::unregisterSlave( Instantiation& slave ) {
-    __slaveInstantiations.eraseByVal( &slave );
+  bool MultiDimImplementation<GUM_SCALAR>::unregisterSlave ( Instantiation& slave ) {
+    __slaveInstantiations.eraseByVal ( &slave );
     // TODO This method should return true? Why not use a void instead?
     return true;
   }
@@ -166,18 +166,18 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   const DiscreteVariable&
-  MultiDimImplementation<GUM_SCALAR>::variable( Idx i ) const  {
-    return * ( __vars.atPos( i ) );
+  MultiDimImplementation<GUM_SCALAR>::variable ( Idx i ) const  {
+    return * ( __vars.atPos ( i ) );
   }
 
   template<typename GUM_SCALAR> INLINE
-  Idx MultiDimImplementation<GUM_SCALAR>::pos( const DiscreteVariable& v ) const {
+  Idx MultiDimImplementation<GUM_SCALAR>::pos ( const DiscreteVariable& v ) const {
     return __vars[&v];
   }
 
   template<typename GUM_SCALAR> INLINE
-  bool MultiDimImplementation<GUM_SCALAR>::contains( const DiscreteVariable& v ) const {
-    return __vars.exists( &v );
+  bool MultiDimImplementation<GUM_SCALAR>::contains ( const DiscreteVariable& v ) const {
+    return __vars.exists ( &v );
   }
 
 
@@ -185,14 +185,14 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   const Sequence<const DiscreteVariable*>&
-  MultiDimImplementation<GUM_SCALAR>::variablesSequence( void ) const  {
+  MultiDimImplementation<GUM_SCALAR>::variablesSequence ( void ) const  {
     return __vars;
   }
 
   /// is this empty ?
   template<typename GUM_SCALAR> INLINE
   bool MultiDimImplementation<GUM_SCALAR>::empty() const  {
-    GUM_ASSERT( ! this->_isCommitNeeded() );
+    GUM_ASSERT ( ! this->_isCommitNeeded() );
     return __vars.empty();
   }
 
@@ -207,12 +207,12 @@ namespace gum {
   }
 
   template<typename GUM_SCALAR> INLINE
-  void MultiDimImplementation<GUM_SCALAR>::beginMultipleChanges( void ) {
+  void MultiDimImplementation<GUM_SCALAR>::beginMultipleChanges ( void ) {
     __internalChangeMethod = __InternalChangeMethod::MULTIPLE_CHANGE;
   }
 
   template<typename GUM_SCALAR> INLINE
-  void MultiDimImplementation<GUM_SCALAR>::endMultipleChanges( void ) {
+  void MultiDimImplementation<GUM_SCALAR>::endMultipleChanges ( void ) {
     if ( __internalChangeState == __InternalChangeState::NOT_COMMITTED_CHANGE ) {
       _commitMultipleChanges();
       __internalChangeState = __InternalChangeState::NO_CHANGE;
@@ -222,9 +222,9 @@ namespace gum {
   }
 
   template<typename GUM_SCALAR> INLINE
-  void MultiDimImplementation<GUM_SCALAR>::endMultipleChanges( const GUM_SCALAR& x ) {
+  void MultiDimImplementation<GUM_SCALAR>::endMultipleChanges ( const GUM_SCALAR& x ) {
     if ( __internalChangeState == __InternalChangeState::NOT_COMMITTED_CHANGE ) {
-      _commitMultipleChanges( x );
+      _commitMultipleChanges ( x );
       __internalChangeState = __InternalChangeState::NO_CHANGE;
     }
 
@@ -232,12 +232,12 @@ namespace gum {
   }
 
   template<typename GUM_SCALAR> INLINE
-  void MultiDimImplementation<GUM_SCALAR>::_commitMultipleChanges( void ) {
+  void MultiDimImplementation<GUM_SCALAR>::_commitMultipleChanges ( void ) {
     // empty!
   }
 
   template<typename GUM_SCALAR> INLINE
-  void MultiDimImplementation<GUM_SCALAR>::_commitMultipleChanges( const GUM_SCALAR& ) {
+  void MultiDimImplementation<GUM_SCALAR>::_commitMultipleChanges ( const GUM_SCALAR& ) {
     // empty!
   }
 
@@ -280,12 +280,12 @@ namespace gum {
   }
 
   template<typename GUM_SCALAR> INLINE
-  void MultiDimImplementation<GUM_SCALAR>::_swap( const DiscreteVariable* x,
+  void MultiDimImplementation<GUM_SCALAR>::_swap ( const DiscreteVariable* x,
       const DiscreteVariable* y ) {
-    __vars.setAtPos( __vars.pos( x ), y );
+    __vars.setAtPos ( __vars.pos ( x ), y );
 
-    for ( List<Instantiation*>::iterator iter = __slaveInstantiations.begin(); iter != __slaveInstantiations.end(); ++iter ) {
-      ( **iter ).swap( *x, *y );
+    for ( List<Instantiation*>::iterator_safe iter = __slaveInstantiations.beginSafe(); iter != __slaveInstantiations.endSafe(); ++iter ) {
+      ( **iter ).swap ( *x, *y );
     }
   }
 
@@ -295,7 +295,7 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   std::ostream& operator<< ( std::ostream& out,
                              const MultiDimImplementation<GUM_SCALAR>& array ) {
-    return out << static_cast<const MultiDimContainer<GUM_SCALAR>&>( array );
+    return out << static_cast<const MultiDimContainer<GUM_SCALAR>&> ( array );
   }
 
 } /* namespace gum */

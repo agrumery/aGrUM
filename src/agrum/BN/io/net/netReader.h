@@ -58,7 +58,7 @@ namespace gum {
       * Note that the BN has to be built outside the reader. There is no delegation to create/destroy
       * the BN from inside the reader.
        */
-      NetReader( BayesNet<GUM_SCALAR>* bn,const std::string& filename );
+      NetReader ( BayesNet<GUM_SCALAR>* bn, const std::string& filename );
 
       /**
        * Default destructor.
@@ -74,13 +74,13 @@ namespace gum {
       const std::string& streamName() const;
 
       /// accessor to trace function (just write the number of parser line)
-      bool trace( void ) const;
-      void trace( bool b );
+      bool trace ( void ) const;
+      void trace ( bool b );
 
       /// parse.
       /// @return the number of detected errors
       /// @throws IOError if file not exists
-      int proceed( void );
+      int proceed ( void );
 
       /// @{
       /// publishing Errors API
@@ -91,13 +91,13 @@ namespace gum {
       Size warnings();
 
       /// line of ith error or warning
-      unsigned int errLine( unsigned int i );
+      unsigned int errLine ( unsigned int i );
       /// col of ith error or warning
-      unsigned int errCol( unsigned int i );
+      unsigned int errCol ( unsigned int i );
       /// type of ith error or warning
-      bool errIsError( unsigned int i );
+      bool errIsError ( unsigned int i );
       /// message of ith error or warning
-      std::string errMsg( unsigned int i );
+      std::string errMsg ( unsigned int i );
 
       /// send on std::cerr the list of errorswith contents
       void showElegantErrors();

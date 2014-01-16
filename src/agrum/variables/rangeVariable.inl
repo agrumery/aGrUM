@@ -37,7 +37,7 @@ namespace gum {
   INLINE
   DiscreteVariable*
   RangeVariable::clone() const {
-    return new RangeVariable( *this );
+    return new RangeVariable ( *this );
   }
 
 
@@ -47,7 +47,7 @@ namespace gum {
   INLINE
   Size
   RangeVariable::domainSize() const {
-    return ( __maxBound<=__minBound ) ?0: ( __maxBound - __minBound + 1 );
+    return ( __maxBound <= __minBound ) ? 0 : ( __maxBound - __minBound + 1 );
   }
 
 
@@ -57,31 +57,31 @@ namespace gum {
 
   INLINE
   const std::string
-  RangeVariable::label( Idx indice ) const {
-    if ( belongs( indice  + __minBound ) ) {
+  RangeVariable::label ( Idx indice ) const {
+    if ( belongs ( indice  + __minBound ) ) {
       std::stringstream strBuff;
-      strBuff << indice+__minBound;
+      strBuff << indice + __minBound;
       return strBuff.str();
     } else {
-      GUM_ERROR( OutOfBounds,"Indice out of bounds." );
+      GUM_ERROR ( OutOfBounds, "Indice out of bounds." );
     }
   }
 
   INLINE
   Idx
-  RangeVariable::operator[]( const std::string& l ) const {
-    std::istringstream i( l );
+  RangeVariable::operator[] ( const std::string& l ) const {
+    std::istringstream i ( l );
     Idx res;
 
-    if ( !( i>>res ) ) {
-      GUM_ERROR( NotFound,"Bad label" );
+    if ( ! ( i >> res ) ) {
+      GUM_ERROR ( NotFound, "Bad label" );
     }
 
-    if ( ! belongs( res ) ) {
-      GUM_ERROR( NotFound,"Bad label" );
+    if ( ! belongs ( res ) ) {
+      GUM_ERROR ( NotFound, "Bad label" );
     }
 
-    return res-__minBound;
+    return res - __minBound;
   }
 
 
@@ -98,7 +98,7 @@ namespace gum {
 
   INLINE
   void
-  RangeVariable::setMinVal( Idx minVal ) {
+  RangeVariable::setMinVal ( Idx minVal ) {
     __minBound = minVal;
   }
 
@@ -116,7 +116,7 @@ namespace gum {
 
   INLINE
   void
-  RangeVariable::setMaxVal( Idx maxVal ) {
+  RangeVariable::setMaxVal ( Idx maxVal ) {
     __maxBound = maxVal;
   }
 
@@ -125,7 +125,7 @@ namespace gum {
 
   INLINE
   bool
-  RangeVariable::belongs( Idx indice ) const {
+  RangeVariable::belongs ( Idx indice ) const {
     return ( ( __minBound <= indice ) && ( indice <= __maxBound ) );
   }
 
@@ -142,7 +142,7 @@ namespace gum {
     return *this;
   }
 
-  INLINE DiscreteVariable::VarType RangeVariable::varType( void ) const {
+  INLINE DiscreteVariable::VarType RangeVariable::varType ( void ) const {
     return VarType::Range;
   }
 

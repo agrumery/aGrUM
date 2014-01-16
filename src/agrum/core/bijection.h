@@ -40,7 +40,8 @@
 namespace gum {
 
 
-  template <typename T1, typename T2> class BijectionIterator;
+  template <typename T1, typename T2> class BijectionIteratorSafe;
+  template <typename T1, typename T2> class Bijection;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -48,13 +49,13 @@ namespace gum {
   // a class used to create the static iterator used by Bijections. The aim of
   // using this class rather than just creating __BijectionIterEnd as a global
   // variable is to prevent other classes to access and modify __BijectionIterEnd
-  class BijectionIteratorStaticEnd {
+  class BijectionIteratorSafeStaticEnd {
     private:
       // the iterator used by everyone
-      static const BijectionIterator<int,int>* __BijectionIterEnd;
+      static const BijectionIteratorSafe<int, int>* __BijectionIterEndSafe;
 
       // creates (if needed) and returns the iterator __BijectionIterEnd
-      static const BijectionIterator<int,int>* end4Statics();
+      static const BijectionIteratorSafe<int, int>* endSafe4Statics();
 
       // friends that have access to the iterator
       template<typename T1, typename T2> friend class Bijection;
@@ -70,7 +71,7 @@ namespace gum {
 
 
   template <typename T1, typename T2>
-  class BijectionIterator {
+  class BijectionIteratorSafe {
     public:
 
       /// the possible positions for the iterators
@@ -87,24 +88,24 @@ namespace gum {
 
       /// Default constructor
 
-      BijectionIterator();
+      BijectionIteratorSafe();
 
 
       /// Constructor
       /** By default, the iterator points to the starting point of the bijection */
 
-      BijectionIterator( const Bijection<T1,T2>& bijection,
-                         Position pos = Position::BIJECTION_BEGIN );
+      BijectionIteratorSafe ( const Bijection<T1, T2>& bijection,
+                              Position pos = Position::BIJECTION_BEGIN );
 
 
       /// Copy constructor
 
-      BijectionIterator( const BijectionIterator<T1,T2>& toCopy );
+      BijectionIteratorSafe ( const BijectionIteratorSafe<T1, T2>& toCopy );
 
 
       /// Destructor
 
-      ~BijectionIterator();
+      ~BijectionIteratorSafe();
 
       /// @}
 
@@ -116,19 +117,19 @@ namespace gum {
 
       /// Copy operator
 
-      BijectionIterator<T1,T2>&
-      operator=( const BijectionIterator<T1,T2>& toCopy );
+      BijectionIteratorSafe<T1, T2>&
+      operator= ( const BijectionIteratorSafe<T1, T2>& toCopy );
 
 
       /// Go to the next association (if it exists)
 
-      BijectionIterator<T1,T2>& operator++();
+      BijectionIteratorSafe<T1, T2>& operator++();
 
 
       /// Comparison of iterators
 
-      bool operator!=( const BijectionIterator<T1,T2>& toCompare ) const;
-      bool operator==( const BijectionIterator<T1,T2>& toCompare ) const;
+      bool operator!= ( const BijectionIteratorSafe<T1, T2>& toCompare ) const;
+      bool operator== ( const BijectionIteratorSafe<T1, T2>& toCompare ) const;
 
       /// @}
 
@@ -153,7 +154,7 @@ namespace gum {
 
     private:
       /// the hashTable iterator that actually does all the job
-      typename HashTable<T1,T2*>::const_iterator __iter;
+      typename HashTable<T1, T2*>::const_iterator_safe __iter;
 
   };
 
@@ -177,8 +178,8 @@ namespace gum {
   template <typename T1, typename T2>
   class Bijection {
     public:
-      typedef BijectionIterator<T1,T2> iterator;
-      typedef BijectionIterator<T1,T2> const_iterator;
+      typedef BijectionIteratorSafe<T1, T2> iterator_safe;
+      typedef BijectionIteratorSafe<T1, T2> const_iterator_safe;
 
 
       // ############################################################################
@@ -189,14 +190,14 @@ namespace gum {
 
       /// Default constructor: creates a bijection without any association
 
-      Bijection( Size size = GUM_HASHTABLE_DEFAULT_SIZE,
-                 bool resize_policy = GUM_HASHTABLE_DEFAULT_RESIZE_POLICY );
+      Bijection ( Size size = HashTableConst::default_size,
+                  bool resize_policy = HashTableConst::default_resize_policy );
 
 
       /// Copy constructor
       /** @param toCopy Bijection to copy */
 
-      Bijection( const Bijection<T1,T2>& toCopy );
+      Bijection ( const Bijection<T1, T2>& toCopy );
 
 
       /// destructor
@@ -215,7 +216,7 @@ namespace gum {
       /// Copy operator
       /** @param toCopy Bijection to copy */
 
-      Bijection<T1,T2>& operator=( const Bijection<T1,T2>& toCopy );
+      Bijection<T1, T2>& operator= ( const Bijection<T1, T2>& toCopy );
 
       /// @}
 
@@ -232,7 +233,7 @@ namespace gum {
        * for(iterator iter = begin(); iter != end; ++iter) loops will parse all the
        * associations */
 
-      iterator begin() const;
+      iterator_safe beginSafe() const;
 
 
       /// returns the iterator to the end of the bijection
@@ -241,7 +242,7 @@ namespace gum {
        * for(iterator iter = begin(); iter != end; ++iter) loops will parse all the
        * associations */
 
-      const iterator& end() const;
+      const iterator_safe& endSafe() const;
 
 
       /** @brief returns the end iterator for other classes' statics (read the
@@ -275,7 +276,7 @@ namespace gum {
        * So, to summarize: when initializing static members, use end4Statics() rather
        * than end(). In all the other cases, use simply the usual method end(). */
 
-      static const iterator& end4Statics();
+      static const iterator_safe& endSafe4Statics();
 
       /// @}
 
@@ -290,35 +291,35 @@ namespace gum {
       /// returns the value associated to the element passed in argument
       /** @throws NotFound exception is thrown if the element cannot be found. */
 
-      const T1& first( const T2& second ) const;
+      const T1& first ( const T2& second ) const;
 
 
       /** @brief Same method as first, but if the value is not found, a default
        * value is inserted into the bijection */
 
-      const T1& firstWithDefault( const T2& second, const T1& default_val ) const;
+      const T1& firstWithDefault ( const T2& second, const T1& default_val ) const;
 
 
       /// returns the value associated to the element passed in argument
       /** @throws NotFound exception is thrown if the element cannot be found. */
 
-      const T2& second( const T1& first ) const;
+      const T2& second ( const T1& first ) const;
 
 
       /** @brief Same method as second, but if the value is not found, a default
        * value is inserted into the bijection */
 
-      const T2& secondWithDefault( const T1& first, const T2& default_val ) const;
+      const T2& secondWithDefault ( const T1& first, const T2& default_val ) const;
 
 
       /// Test whether the bijection contains the "first" value
 
-      bool existsFirst( const T1& first ) const;
+      bool existsFirst ( const T1& first ) const;
 
 
       /// Test whether the bijection contains the "second" value
 
-      bool existsSecond( const T2& second ) const;
+      bool existsSecond ( const T2& second ) const;
 
 
       /// inserts a new association in the bijection
@@ -327,7 +328,7 @@ namespace gum {
        * @throws DuplicateElement exception is thrown if the association
        * already exists */
 
-      void insert( const T1& first, const T2& second );
+      void insert ( const T1& first, const T2& second );
 
 
       /// removes all the associations from the bijection
@@ -349,14 +350,14 @@ namespace gum {
       /** If the element cannot be found, nothing is done. In particular, no
        * exception is raised. */
 
-      void eraseFirst( const T1& first );
+      void eraseFirst ( const T1& first );
 
 
       /// erase an association containing the given second element
       /** If the element cannot be found, nothing is done. In particular, no
        * exception is raised. */
 
-      void eraseSecond( const T2& second );
+      void eraseSecond ( const T2& second );
 
 
       /// friendly displays the content of the CliqueGraph
@@ -378,13 +379,13 @@ namespace gum {
 
       /// similar to the hashtable's resize
 
-      void resize( Size new_size );
+      void resize ( Size new_size );
 
 
       /// enables the user to change dynamically the resizing policy
       /** @sa HashTable's setResizePolicy */
 
-      void setResizePolicy( const bool new_policy ) ;
+      void setResizePolicy ( const bool new_policy ) ;
 
 
       /// returns the current resizing policy
@@ -397,7 +398,7 @@ namespace gum {
 
     private:
       /// a friend to speed-up accesses
-      friend class BijectionIterator<T1,T2>;
+      friend class BijectionIteratorSafe<T1, T2>;
 
       // below, we create the two hashtables used by the bijection. Note that
       // the values of these hashtables are actually pointers. This enables to
@@ -405,10 +406,10 @@ namespace gum {
       // size objects, this feature is of particular interest
 
       /// hashtable associating T2 objects to T1 objects
-      HashTable<T1,T2*> __firstToSecond;
+      HashTable<T1, T2*> __firstToSecond;
 
       /// hashtable associating T1 objects to T2 objects
-      HashTable<T2,T1*> __secondToFirst;
+      HashTable<T2, T1*> __secondToFirst;
 
 
 
@@ -416,12 +417,12 @@ namespace gum {
       /** @warning this function assumes that "this" is an empty bijection. If this
        * is not the case, use function clear() before calling __copy. */
 
-      void __copy( const HashTable<T1,T2*>& f2s );
+      void __copy ( const HashTable<T1, T2*>& f2s );
 
 
       /// inserts a new association in the bijection
 
-      HashTableBucket<T1,T2*>* __insert( const T1& first, const T2& second );
+      typename HashTable<T1, T2*>::value_type* __insert ( const T1& first, const T2& second );
 
   };
 
@@ -449,7 +450,7 @@ namespace gum {
 
 
   template <typename T1, typename T2>
-  class BijectionIterator<T1*,T2*> {
+  class BijectionIteratorSafe<T1*, T2*> {
     public:
 
       /// the possible positions for the iterators
@@ -466,24 +467,24 @@ namespace gum {
 
       /// Default constructor
 
-      BijectionIterator();
+      BijectionIteratorSafe();
 
 
       /// Constructor
       /** By default, the iterator points to the starting point of the bijection */
 
-      BijectionIterator( const Bijection<T1*,T2*>& bijection,
-                         Position pos = Position::BIJECTION_BEGIN );
+      BijectionIteratorSafe ( const Bijection<T1*, T2*>& bijection,
+                              Position pos = Position::BIJECTION_BEGIN );
 
 
       /// Copy constructor
 
-      BijectionIterator( const BijectionIterator<T1*,T2*>& toCopy );
+      BijectionIteratorSafe ( const BijectionIteratorSafe<T1*, T2*>& toCopy );
 
 
       /// Destructor
 
-      ~BijectionIterator();
+      ~BijectionIteratorSafe();
 
       /// @}
 
@@ -495,19 +496,19 @@ namespace gum {
 
       /// Copy operator
 
-      BijectionIterator<T1*,T2*>&
-      operator=( const BijectionIterator<T1*,T2*>& toCopy );
+      BijectionIteratorSafe<T1*, T2*>&
+      operator= ( const BijectionIteratorSafe<T1*, T2*>& toCopy );
 
 
       /// Go to the next association (if it exists)
 
-      BijectionIterator<T1*,T2*>& operator++();
+      BijectionIteratorSafe<T1*, T2*>& operator++();
 
 
       /// Comparison of iterators
 
-      bool operator!=( const BijectionIterator<T1*,T2*>& toCompare ) const;
-      bool operator==( const BijectionIterator<T1*,T2*>& toCompare ) const;
+      bool operator!= ( const BijectionIteratorSafe<T1*, T2*>& toCompare ) const;
+      bool operator== ( const BijectionIteratorSafe<T1*, T2*>& toCompare ) const;
 
       /// @}
 
@@ -532,7 +533,7 @@ namespace gum {
 
     private:
       /// the hashTable iterator that actually does all the job
-      typename HashTable<T1*,T2*>::const_iterator __iter;
+      typename HashTable<T1*, T2*>::const_iterator_safe __iter;
 
   };
 
@@ -547,10 +548,10 @@ namespace gum {
   class BijectionStarIteratorStaticEnd {
     private:
       // the iterator used by everyone
-      static const BijectionIterator<int*,int*>* __BijectionStarIterEnd;
+      static const BijectionIteratorSafe<int*, int*>* __BijectionStarIterEndSafe;
 
       // creates (if needed) and returns the iterator __BijectionStarIterEnd
-      static const BijectionIterator<int*,int*>* end4Statics();
+      static const BijectionIteratorSafe<int*, int*>* endSafe4Statics();
 
       // friends that have access to the iterator
       template<typename T1, typename T2> friend class Bijection;
@@ -574,10 +575,10 @@ namespace gum {
 
 
   template <typename T1, typename T2>
-  class Bijection<T1*,T2*> {
+  class Bijection<T1*, T2*> {
     public:
-      typedef BijectionIterator<T1*,T2*> iterator;
-      typedef BijectionIterator<T1*,T2*> const_iterator;
+      typedef BijectionIteratorSafe<T1*, T2*> iterator_safe;
+      typedef BijectionIteratorSafe<T1*, T2*> const_iterator_safe;
 
       // ############################################################################
       /// @name Constructors/destructors
@@ -587,14 +588,14 @@ namespace gum {
 
       /// Default constructor: creates a bijection without association
 
-      Bijection( Size size = GUM_HASHTABLE_DEFAULT_SIZE,
-                 bool resize_policy = GUM_HASHTABLE_DEFAULT_RESIZE_POLICY );
+      Bijection ( Size size = HashTableConst::default_size,
+                  bool resize_policy = HashTableConst::default_resize_policy );
 
 
       /// Copy constructor
       /** @param toCopy Bijection to copy */
 
-      Bijection( const Bijection<T1*,T2*>& toCopy );
+      Bijection ( const Bijection<T1*, T2*>& toCopy );
 
 
       /// destructor
@@ -613,7 +614,7 @@ namespace gum {
       /// Copy operator
       /** @param toCopy Bijection to copy */
 
-      Bijection<T1*,T2*>& operator=( const Bijection<T1*,T2*>& toCopy );
+      Bijection<T1*, T2*>& operator= ( const Bijection<T1*, T2*>& toCopy );
 
       /// @}
 
@@ -630,7 +631,7 @@ namespace gum {
        * for(iterator iter = begin(); iter != end; ++iter) loops will parse all the
        * associations */
 
-      iterator begin() const;
+      iterator_safe beginSafe() const;
 
 
       /// returns the iterator to the end of the bijection
@@ -639,7 +640,7 @@ namespace gum {
        * for(iterator iter = begin(); iter != end; ++iter) loops will parse all the
        * associations */
 
-      const iterator& end() const;
+      const iterator_safe& endSafe() const;
 
 
       /** @brief returns the end iterator for other classes' statics (read the
@@ -673,7 +674,7 @@ namespace gum {
        * So, to summarize: when initializing static members, use end4Statics() rather
        * than end(). In all the other cases, use simply the usual method end(). */
 
-      static const iterator& end4Statics();
+      static const iterator_safe& endSafe4Statics();
 
       /// @}
 
@@ -688,42 +689,42 @@ namespace gum {
       /// returns the value associated to the element passed in argument
       /** @throws NotFound exception is thrown if the element cannot be found. */
 
-      T1* const first( T2* const second ) const;
+      T1* const first ( T2* const second ) const;
 
 
       /** @brief Same method as first, but if the value is not found, a default
        * value is inserted into the bijection */
 
-      T1* const firstWithDefault( T2* const second, T1* const default_val ) const;
+      T1* const firstWithDefault ( T2* const second, T1* const default_val ) const;
 
 
       /// returns the value associated to the element passed in argument
       /** @throws NotFound exception is thrown if the element cannot be found. */
 
-      T2* const second( T1* const first ) const;
+      T2* const second ( T1* const first ) const;
 
 
       /** @brief Same method as second, but if the value is not found, a default
        * value is inserted into the bijection */
 
-      T2* const secondWithDefault( T1* const first, T2* const default_val ) const;
+      T2* const secondWithDefault ( T1* const first, T2* const default_val ) const;
 
 
       /// Test whether the bijection contains the "first" value
 
-      bool existsFirst( T1* const first ) const;
+      bool existsFirst ( T1* const first ) const;
 
 
       /// Test whether the bijection contains the "second" value
 
-      bool existsSecond( T2* const second ) const;
+      bool existsSecond ( T2* const second ) const;
 
 
       /// inserts a new association in the bijection
       /**@throws DuplicateElement exception is thrown if the association
        * already exists */
 
-      void insert( T1* const first, T2* const second );
+      void insert ( T1* const first, T2* const second );
 
 
       /// removes all the associations from the bijection
@@ -745,14 +746,14 @@ namespace gum {
       /** If the element cannot be found, nothing is done. In particular, no
        * exception is raised. */
 
-      void eraseFirst( T1* const first );
+      void eraseFirst ( T1* const first );
 
 
       /// erase an association containing the given second element
       /** If the element cannot be found, nothing is done. In particular, no
        * exception is raised. */
 
-      void eraseSecond( T2* const second );
+      void eraseSecond ( T2* const second );
 
 
       /// friendly displays the content of the bijection
@@ -774,13 +775,13 @@ namespace gum {
 
       /// similar to the hashtable's resize
 
-      void resize( Size new_size );
+      void resize ( Size new_size );
 
 
       /// enables the user to change dynamically the resizing policy
       /** @sa HashTable's setResizePolicy */
 
-      void setResizePolicy( const bool new_policy ) ;
+      void setResizePolicy ( const bool new_policy ) ;
 
 
       /// returns the current resizing policy
@@ -793,13 +794,13 @@ namespace gum {
 
     private:
       /// a friend to speed-up accesses
-      friend class BijectionIterator<T1*,T2*>;
+      friend class BijectionIteratorSafe<T1*, T2*>;
 
       /// hashtable associating T2* objects to T1* objects
-      HashTable<T1*,T2*> __firstToSecond;
+      HashTable<T1*, T2*> __firstToSecond;
 
       /// hashtable associating T1* objects to T2* objects
-      HashTable<T2*,T1*> __secondToFirst;
+      HashTable<T2*, T1*> __secondToFirst;
 
 
 
@@ -808,12 +809,12 @@ namespace gum {
       /** @warning this function assumes that "this" is an empty bijection. If this
        * is not the case, use function clear() before calling __copy. */
 
-      void __copy( const HashTable<T1*,T2*>& f2s );
+      void __copy ( const HashTable<T1*, T2*>& f2s );
 
 
       /// inserts a new association in the bijection
 
-      void __insert( T1* const first, T2* const second );
+      void __insert ( T1* const first, T2* const second );
 
   };
 
@@ -825,7 +826,7 @@ namespace gum {
   /// for friendly displaying the content of bijections
 
   template <typename T1, typename T2>
-  std::ostream& operator<< ( std::ostream&, const Bijection<T1,T2>& );
+  std::ostream& operator<< ( std::ostream&, const Bijection<T1, T2>& );
 
 
 } /* namespace gum */

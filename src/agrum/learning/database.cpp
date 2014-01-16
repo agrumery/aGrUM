@@ -100,8 +100,8 @@ namespace gum {
       if ( __cases ) delete[] __cases;
 
       // detach the __iterators pointing to this
-      for ( ListIterator<DatabaseIterator*> iter = __iterators.begin();
-            iter != __iterators.end(); ++iter )
+      for ( ListIteratorSafe<DatabaseIterator*> iter = __iterators.beginSafe();
+            iter != __iterators.endSafe(); ++iter )
         ( *iter )->clear();
 
       // set the new content
@@ -149,8 +149,8 @@ namespace gum {
     if ( __cases ) delete[] __cases;
 
     // detach the __iterators
-    for ( ListIterator<DatabaseIterator*> iter = __iterators.begin();
-          iter != __iterators.end(); ++iter )
+    for ( ListIteratorSafe<DatabaseIterator*> iter = __iterators.beginSafe();
+          iter != __iterators.endSafe(); ++iter )
       ( *iter )->clear();
   }
 
@@ -279,9 +279,9 @@ namespace gum {
       database.__modalities_names[i].resize ( database.__nb_modalities[i] );
       const HashTable<std::string, unsigned int>& modals = modal_names[i];
 
-      for ( HashTableConstIterator<std::string, unsigned int>
-            iter = modals.begin(); iter != modals.end(); ++iter ) {
-        database.__modalities_names[i][*iter] = iter.key();
+      for ( HashTableConstIteratorSafe<std::string, unsigned int>
+            iter = modals.beginSafe(); iter != modals.endSafe(); ++iter ) {
+        database.__modalities_names[i][iter.val()] = iter.key();
       }
 
       database.__missing_value[i] = modals.exists ( "?" );
@@ -435,9 +435,9 @@ namespace gum {
       database.__modalities_names[i].resize ( database.__nb_modalities[i] );
       const HashTable<std::string, unsigned int>& modals = modal_names[i];
 
-      for ( HashTableConstIterator<std::string, unsigned int>
-            iter = modals.begin(); iter != modals.end(); ++iter ) {
-        database.__modalities_names[i][*iter] = iter.key();
+      for ( HashTableConstIteratorSafe<std::string, unsigned int>
+            iter = modals.beginSafe(); iter != modals.endSafe(); ++iter ) {
+        database.__modalities_names[i][iter.val()] = iter.key();
       }
 
       database.__missing_value[i] = modals.exists ( "?" );

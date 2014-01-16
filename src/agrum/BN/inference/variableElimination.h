@@ -65,8 +65,8 @@ namespace gum {
        */
       VariableElimination ( const IBayesNet<GUM_SCALAR>& bn );
 
-      VariableElimination ( const VariableElimination<GUM_SCALAR>& source ) =delete;
-      VariableElimination& operator= ( const VariableElimination<GUM_SCALAR>& source ) =delete;
+      VariableElimination ( const VariableElimination<GUM_SCALAR>& source ) = delete;
+      VariableElimination& operator= ( const VariableElimination<GUM_SCALAR>& source ) = delete;
 
       /**
        * Destructor.

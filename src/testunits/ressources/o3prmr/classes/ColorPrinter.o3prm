@@ -32,7 +32,7 @@ class ColorPrinter implements Printer {
     t_ink magenta { [0.8, 0.2] };
     t_ink yellow  { [0.8, 0.2] };
     t_ink cyan    { [0.8, 0.2] };
-    boolean hasInk = forall( [black, magenta, yellow, cyan], NotEmpty );
+    boolean hasInk = forall ( [black, magenta, yellow, cyan], NotEmpty );
     t_paper hasPaper { [0.7, 0.2, 0.1] };
     t_degraded equipState dependson room.power.state, hasPaper, hasInk, black {
       *, *, *, *:             0.00, 1.00, 0.00;

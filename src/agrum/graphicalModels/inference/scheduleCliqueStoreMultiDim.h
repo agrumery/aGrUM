@@ -110,7 +110,7 @@ namespace gum {
        * amount of memory used during the operation and the second one is the
        * amount of memory still used at the end of the function ( the memory used by
        * the resulting table ) */
-      std::pair<long,long> memoryUsage() const;
+      std::pair<long, long> memoryUsage() const;
 
       /// returns the set of multidims passed in argument to the operation
       const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>& multiDimArgs() const;
@@ -130,7 +130,7 @@ namespace gum {
       ScheduleMultiDim<GUM_SCALAR> __table;
 
       // a mapping assigning to each clique a set of tables
-      NodeProperty<Set<const MultiDimImplementation<GUM_SCALAR>*> >*__tableSet;
+      NodeProperty<Set<const MultiDimImplementation<GUM_SCALAR>*> >* __tableSet;
 
       // the clique into which the table will be stored
       NodeId __clique;

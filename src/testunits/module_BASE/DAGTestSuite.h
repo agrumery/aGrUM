@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <iostream>
+#include "../../agrum/graphs/graphElements.h"
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
@@ -240,7 +241,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( nodelist.size(), graph.size() );
         gum::Size nodeCount = graph.size();
 
-        for ( auto iter = nodelist.begin(); iter != nodelist.end(); ++iter ) {
+        for ( auto iter = nodelist.beginSafe(); iter != nodelist.endSafe(); ++iter ) {
           graph.eraseNode ( *iter );
         }
 
@@ -256,8 +257,8 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( arclist.size(), graph.sizeArcs() );
         gum::Size arcCount = graph.sizeArcs();
 
-        for ( const auto iter : arclist ) {
-          graph.eraseArc ( iter );
+        for ( auto iter = arclist.beginSafe(); iter != arclist.endSafe(); ++iter ) {
+          graph.eraseArc ( *iter );
         }
 
         TS_ASSERT ( graph.emptyArcs() );
@@ -273,8 +274,8 @@ namespace gum_tests {
 
         gum::Size s = 0;
 
-        for ( const auto iter : list )
-          s += iter;
+        for ( auto iter = list.begin (); iter != list.end (); ++iter )
+          s += *iter;
 
         TS_ASSERT_EQUALS ( s, 2 * ( id1 + id2 + id3 + id4 + id5 ) );
       }
@@ -298,12 +299,12 @@ namespace gum_tests {
         gum::Size sv = 0;
 
         for (
-          auto iter = hashmap.begin();
-          iter != hashmap.end();
+          auto iter = hashmap.beginSafe ();
+          iter != hashmap.endSafe ();
           ++iter
         ) {
           sk += iter.key();
-          sv += *iter;
+          sv += iter.val();
         }
 
         TS_ASSERT_EQUALS ( sk * 2, sv );
@@ -326,8 +327,8 @@ namespace gum_tests {
 
         gum::Size s = 0;
 
-        for ( const auto iter : list )
-          s += iter;
+        for ( auto iter = list.begin(); iter != list.end (); ++iter )
+          s += *iter;
 
         TS_ASSERT_EQUALS ( s, ( gum::Size ) ( 0 + 0 + 2 + 3 + 1 + 4 + 2 + 3 + 4 + 4 + 3 + 1 ) );
       }
@@ -342,11 +343,11 @@ namespace gum_tests {
         gum::Size sv = 0;
 
         for (
-          auto iter = hashmap.begin();
-          iter != hashmap.end();
+          auto iter = hashmap.beginSafe();
+          iter != hashmap.endSafe();
           ++iter
         ) {
-          sv += *iter;
+          sv += iter.val();
           sk += iter.key().head() + iter.key().tail();
         }
 

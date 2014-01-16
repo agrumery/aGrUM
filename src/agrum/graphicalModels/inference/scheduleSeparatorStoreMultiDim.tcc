@@ -36,7 +36,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::ScheduleSeparatorStoreMultiDim
   ( const ScheduleMultiDim<GUM_SCALAR>& table,
-    ArcProperty<Set<const MultiDimImplementation<GUM_SCALAR>*> >&separator_tables,
+    ArcProperty<Set<const MultiDimImplementation<GUM_SCALAR>*> >& separator_tables,
     Arc separator ) :
     ScheduleOperation<GUM_SCALAR>
     ( ScheduleOperation<GUM_SCALAR>::Type::SEPARATOR_STORE_MULTIDIM ),
@@ -155,9 +155,9 @@ namespace gum {
 
   /// returns the memory consumption used during the operation
   template <typename GUM_SCALAR>
-  INLINE std::pair<long,long>
+  INLINE std::pair<long, long>
   ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::memoryUsage() const {
-    return std::pair<long,long> ( 0,0 );
+    return std::pair<long, long> ( 0, 0 );
   }
 
 

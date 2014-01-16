@@ -54,7 +54,7 @@ namespace gum {
         /// Default constructor.
         NameGenerator();
         /// Copy constructor.
-        NameGenerator( const NameGenerator& source );
+        NameGenerator ( const NameGenerator& source );
         /// Destructor.
         virtual ~NameGenerator();
         /// Affectation operator
@@ -67,7 +67,7 @@ namespace gum {
         /// @{
 
         /// Returns the next name w.r.t. the given Type.
-        std::string nextName( PRMObject::PRMType type );
+        std::string nextName ( PRMObject::PRMType type );
 
         /// @}
       private:
@@ -80,7 +80,7 @@ namespace gum {
 
 #ifndef GUM_NO_INLINE
 #include <agrum/PRM/generator/nameGenerator.inl>
-#endif 
+#endif
 
 #endif /* GUM_NAME_GENERATOR_H */
 

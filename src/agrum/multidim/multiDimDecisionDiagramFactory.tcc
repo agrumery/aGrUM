@@ -79,7 +79,7 @@ namespace gum {
     if ( this->_model.size() == 2 && !this->_valueMap.empty() )
       newValueMap = this->_valueMap;
     else
-      for ( BijectionIterator<NodeId, GUM_SCALAR> valueIter = this->_valueMap.begin(); valueIter != this->_valueMap.end(); ++valueIter )
+      for ( BijectionIteratorSafe<NodeId, GUM_SCALAR> valueIter = this->_valueMap.beginSafe(); valueIter != this->_valueMap.endSafe(); ++valueIter )
         if ( this->_model.parents ( valueIter.first() ).empty() && valueIter.first() != this->_rootId )
           this->_model.eraseNode ( valueIter.first() );
         else
@@ -136,15 +136,15 @@ namespace gum {
       // ************************************************************************************************
       // First we remove any redundant nodes
       // ************************************************************************************************
-      for ( SequenceIterator<const DiscreteVariable*> varIter = this->_varsSeq.rbegin(); varIter != this->_varsSeq.rend(); --varIter ) {
+      for ( SequenceIteratorSafe<const DiscreteVariable*> varIter = this->_varsSeq.rbeginSafe(); varIter != this->_varsSeq.rendSafe(); --varIter ) {
 
         if ( this->_var2NodeIdMap.exists ( *varIter ) )
-          for ( ListConstIterator< NodeId > riterNodeList = this->_var2NodeIdMap[ *varIter ]->rbegin(); riterNodeList != this->_var2NodeIdMap[ *varIter ]->rend(); --riterNodeList ) {
+          for ( ListConstIteratorSafe< NodeId > riterNodeList = this->_var2NodeIdMap[ *varIter ]->rbeginSafe(); riterNodeList != this->_var2NodeIdMap[ *varIter ]->rendSafe(); --riterNodeList ) {
 
             bool hasDoublon = false;
             NodeId  doublon = 0;
 
-            for ( ListConstIterator< NodeId > iterNodeList = this->_var2NodeIdMap[ *varIter ]->begin(); iterNodeList != riterNodeList; ++iterNodeList ) {
+            for ( ListConstIteratorSafe< NodeId > iterNodeList = this->_var2NodeIdMap[ *varIter ]->beginSafe(); iterNodeList != riterNodeList; ++iterNodeList ) {
               bool thesame = true;
 
               if ( ( !this->_defaultArcMap.exists ( *riterNodeList ) && this->_defaultArcMap.exists ( *iterNodeList ) )
@@ -234,9 +234,9 @@ namespace gum {
           NodeId maxNodeId = defaultSon;
           Idx maxCall = nbDefault;
 
-          for ( HashTableIterator< NodeId, Idx > hIter = nodeCount.begin(); hIter != nodeCount.end(); ++hIter )
-            if ( *hIter > maxCall ) {
-              maxCall = *hIter;
+          for ( HashTableIteratorSafe< NodeId, Idx > hIter = nodeCount.beginSafe(); hIter != nodeCount.endSafe(); ++hIter )
+            if ( hIter.val () > maxCall ) {
+              maxCall = hIter.val ();
               maxNodeId = hIter.key();
             }
 
@@ -327,7 +327,7 @@ namespace gum {
 
     const NodeSet& parents = this->_model.parents ( from );
 
-    for ( NodeSetIterator parentIter = parents.begin(); parentIter != parents.end(); ++parentIter ) {
+    for ( NodeSetIterator parentIter = parents.beginSafe(); parentIter != parents.endSafe(); ++parentIter ) {
       for ( std::vector< NodeId >::iterator iter = this->_arcMap[*parentIter]->begin(); iter != this->_arcMap[*parentIter]->end(); ++iter )
         if ( *iter == from ) {
           Idx modality = std::distance ( this->_arcMap[*parentIter]->begin(), iter );

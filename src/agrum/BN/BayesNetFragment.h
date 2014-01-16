@@ -47,16 +47,16 @@ namespace gum {
    * BayesNetFragment is a DiGraphListener in order to be synchronized (especiallay when
    * removing nodes or arcs).
    *
-   * In a BayesNetFragment, one can install or remove nodes. An arc can be in the fragment if 
-   * and only if its head and tail are installed in the fragment. When installing a node, all 
-   * the arcs that can be added in the fragment are effectively installed (resp. when 
-   * uninstalling a node, etc.). 
+   * In a BayesNetFragment, one can install or remove nodes. An arc can be in the fragment if
+   * and only if its head and tail are installed in the fragment. When installing a node, all
+   * the arcs that can be added in the fragment are effectively installed (resp. when
+   * uninstalling a node, etc.).
    *
    * A BayesNetFragment can redefine potential for node. The main reason is to be able to
    * install a node without installing all its parents (and its ascendants). So local CPT to the
-   * node can be installed. However, it is not done automatically. 
-   * 
-   * If a cpt is not locally defined, the fragment uses the cpt defined in the referred BN. 
+   * node can be installed. However, it is not done automatically.
+   *
+   * If a cpt is not locally defined, the fragment uses the cpt defined in the referred BN.
    * The checkConsistency() method verifies that, for all installed nodes, either all the parents are installed or a local CPT is
    * defined.
    */
@@ -208,16 +208,16 @@ namespace gum {
        * consistent with the new local potential.
        * @param id the nodeId
        * @param pot the potential
-       * 
+       *
        * @throw NotFound if the id is not in the fragment
-       * @throw OperationNotAllowed if the potential is not compliant with the variable or if 
+       * @throw OperationNotAllowed if the potential is not compliant with the variable or if
        * a variable in the CPT is not a parent in the referred bn.
        **/
       void installCPT ( NodeId id, const Potential<GUM_SCALAR>* pot );
 
       /**
-       * uninstall a local CPT. 
-       * 
+       * uninstall a local CPT.
+       *
        * @warning  Nothing happens if no local CPT for this nodeId or if the node is not installed.
        */
       void uninstallCPT ( NodeId id ) noexcept;
@@ -232,7 +232,7 @@ namespace gum {
        * returns true if all nodes in the fragment are consistent
        */
       bool checkConsistency() const noexcept;
-      
+
       /// @}
 
       using IBayesNet<GUM_SCALAR>::nodes;
@@ -240,7 +240,7 @@ namespace gum {
     protected:
       // remove an arc
       void _uninstallArc ( NodeId from, NodeId to ) noexcept;
-      
+
       // add an arc
       void _installArc ( NodeId from, NodeId to ) noexcept;
 

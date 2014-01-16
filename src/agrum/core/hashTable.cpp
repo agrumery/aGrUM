@@ -32,34 +32,14 @@
 
 namespace gum {
 
-  /** The default number of slots in hashtables. By default, hashtables can store
-   * up to thrice the number of slots elements before their size is increased. */
-  const Size GUM_HASHTABLE_DEFAULT_SIZE = 4;
-
-  /** the mean number of values admissible by slots. Once this number
-   * is reached, the size of the hashtable is automatically doubled
-   * if we are in automatic resize mode. */
-  const unsigned int GUM_HASHTABLE_DEFAULT_MEAN_VAL_BY_SLOT = 3;
-
-  /** a boolean indicating whether inserting too many values into the hashtable
-   * makes it resize itself automatically. true = automatic, false = manual */
-  const bool GUM_HASHTABLE_DEFAULT_RESIZE_POLICY = true;
-
-  /** a boolean indicating the default behavior when trying to insert more than
-   * once elements with identical keys. true = do not insert the elements but the
-   * first one and throw an exception after the first insertion; false = insert
-   * the elements without complaining */
-  const bool GUM_HASHTABLE_DEFAULT_UNIQUENESS_POLICY = true;
-
-
 
   // creates (if needed) and returns the iterator __HashTableIterEnd
-  const HashTableIterator<int,int>* HashTableIteratorStaticEnd::end4Statics() {
+  const HashTableIterator<int, int>* HashTableIteratorStaticEnd::end4Statics() {
     static bool first_time = true;
 
     if ( first_time ) {
       first_time = false;
-      __HashTableIterEnd = new HashTableIterator<int,int>;
+      __HashTableIterEnd = new HashTableIterator<int, int>;
     }
 
     return __HashTableIterEnd;
@@ -67,17 +47,46 @@ namespace gum {
 
 
   // creates (if needed) and returns the iterator __HashTableIterEnd
-  const HashTableConstIterator<int,int>*
+  const HashTableConstIterator<int, int>*
   HashTableIteratorStaticEnd::constEnd4Statics() {
     return
-      reinterpret_cast<const HashTableConstIterator<int,int>*>( end4Statics() );
+      reinterpret_cast<const HashTableConstIterator<int, int>*> ( end4Statics() );
+  }
+
+
+  // creates (if needed) and returns the iterator __HashTableIterEndSafe
+  const HashTableIteratorSafe<int, int>*
+  HashTableIteratorStaticEnd::endSafe4Statics() {
+    static bool first_time = true;
+
+    if ( first_time ) {
+      first_time = false;
+      __HashTableIterEndSafe = new HashTableIteratorSafe<int, int>;
+    }
+
+    return __HashTableIterEndSafe;
+  }
+
+
+  // creates (if needed) and returns the iterator __HashTableIterEndSafe
+  const HashTableConstIteratorSafe<int, int>*
+  HashTableIteratorStaticEnd::constEndSafe4Statics() {
+    return
+      reinterpret_cast<const HashTableConstIteratorSafe<int, int>*>
+      ( endSafe4Statics() );
   }
 
 
   /// create the end iterator for all hash tables
-  const HashTableIterator<int,int>*
+  const HashTableIterator<int, int>*
   HashTableIteratorStaticEnd::__HashTableIterEnd =
     HashTableIteratorStaticEnd::end4Statics();
+
+
+  /// create the end iterator for all hash tables
+  const HashTableIteratorSafe<int, int>*
+  HashTableIteratorStaticEnd::__HashTableIterEndSafe =
+    HashTableIteratorStaticEnd::endSafe4Statics();
 
 
 } /* namespace gum */

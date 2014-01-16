@@ -68,7 +68,6 @@ def setEvidence(self, evidces):
 %extend gum::BayesNetInference<double> {
     void setEvidence(PyObject *evidces) {}
 
-
     // evidences is a python list of potentials*
     void _setEvidence(PyObject *evidences) {
       if (PySequence_Check(evidences)==0) {

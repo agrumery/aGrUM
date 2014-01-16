@@ -36,7 +36,7 @@ namespace gum {
       __cpf ( new Potential<GUM_SCALAR> ( impl ) ), __delete_type ( true ) {
       GUM_CONSTRUCTOR ( Attribute );
       __cpf->add ( **__type );
-      this->_safeName =PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
+      this->_safeName = PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
     }
 
     template<typename GUM_SCALAR> Attribute<GUM_SCALAR>::Attribute ( const std::string& name, Type<GUM_SCALAR>* type, Potential<GUM_SCALAR>* cpf,
@@ -47,7 +47,7 @@ namespace gum {
       if ( not __cpf->variablesSequence().exists ( & ( type->variable() ) ) )
         GUM_ERROR ( OperationNotAllowed, "the given Potential does not contain the type of this Attribute." );
 
-      this->_safeName =PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
+      this->_safeName = PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
     }
 
     template<typename GUM_SCALAR> Attribute<GUM_SCALAR>::Attribute ( const Attribute<GUM_SCALAR>& source ) :

@@ -134,8 +134,8 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( topo.dag().size(), ( gum::Size ) 5 );
         TS_ASSERT_EQUALS ( topo.dag().sizeArcs(), ( gum::Size ) 6 );
 
-        for ( gum::List<gum::Id>::iterator iter = idList.begin();
-              iter != idList.end();
+        for ( gum::List<gum::Id>::iterator_safe iter = idList.beginSafe();
+              iter != idList.endSafe();
               ++iter ) {
           topo.erase ( *iter );
         }

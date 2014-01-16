@@ -35,7 +35,7 @@ namespace gum {
   INLINE
   MultiDimInterface::iterator
   MultiDimInterface::begin() const {
-    return variablesSequence().begin();
+    return variablesSequence().beginSafe();
   }
 
 
@@ -43,7 +43,7 @@ namespace gum {
   INLINE
   MultiDimInterface::iterator
   MultiDimInterface::rbegin() const {
-    return variablesSequence().rbegin();
+    return variablesSequence().rbeginSafe();
   }
 
   // Constant reference on the iterator pointing at the end of the Sequence
@@ -51,7 +51,7 @@ namespace gum {
   INLINE
   const MultiDimInterface::iterator&
   MultiDimInterface::end() const {
-    return variablesSequence().end();
+    return variablesSequence().endSafe();
   }
 
   // Constant reference on the iterator pointing at the rend of the Sequence
@@ -59,26 +59,26 @@ namespace gum {
   INLINE
   const MultiDimInterface::iterator&
   MultiDimInterface::rend() const {
-    return variablesSequence().rend();
+    return variablesSequence().rendSafe();
   }
 
   // Swap two variables in this multidim.
   INLINE
-  void MultiDimInterface::swap( const DiscreteVariable& x,
-                                const DiscreteVariable& y ) {
-    if ( not contains( x ) ) {
-      GUM_ERROR( NotFound, "could not find the variable" );
+  void MultiDimInterface::swap ( const DiscreteVariable& x,
+                                 const DiscreteVariable& y ) {
+    if ( not contains ( x ) ) {
+      GUM_ERROR ( NotFound, "could not find the variable" );
     }
 
-    if ( contains( y ) ) {
-      GUM_ERROR( DuplicateElement, "variable already in MultiDim" );
+    if ( contains ( y ) ) {
+      GUM_ERROR ( DuplicateElement, "variable already in MultiDim" );
     }
 
     if ( x.domainSize() != y.domainSize() ) {
-      GUM_ERROR( OperationNotAllowed, "incompatible variables" );
+      GUM_ERROR ( OperationNotAllowed, "incompatible variables" );
     }
 
-    _swap( &x, &y );
+    _swap ( &x, &y );
   }
 
 

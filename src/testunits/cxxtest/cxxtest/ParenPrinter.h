@@ -12,7 +12,7 @@
 namespace CxxTest {
   class ParenPrinter : public ErrorPrinter {
     public:
-      ParenPrinter( CXXTEST_STD( ostream ) &o = CXXTEST_STD( cerr ) ) : ErrorPrinter( o, "(", ")" ) {}
+      ParenPrinter ( CXXTEST_STD ( ostream ) &o = CXXTEST_STD ( cerr ) ) : ErrorPrinter ( o, "(", ")" ) {}
   };
 }
 

@@ -46,7 +46,7 @@ namespace gum {
   template <typename Score>
   IndepCache<Score>::IndepCache() {
     /// for debugging purposes
-    GUM_CONSTRUCTOR( IndepCache );
+    GUM_CONSTRUCTOR ( IndepCache );
   }
 
 
@@ -55,7 +55,7 @@ namespace gum {
   template <typename Score>
   IndepCache<Score>::~IndepCache() {
     /// for debugging purposes
-    GUM_DESTRUCTOR( IndepCache );
+    GUM_DESTRUCTOR ( IndepCache );
   }
 
 
@@ -68,28 +68,28 @@ namespace gum {
     // in safe mode, check that the ids in the conditional set are
     // sorted in increasing order
     if ( safe_mode ) {
-      for ( unsigned int i=1; i<conditional_set.size(); ++i )
-        if ( conditional_set[i] < conditional_set[i-1] ) {
-          GUM_ERROR( FatalError, "the conditional set is not sorted properly" );
+      for ( unsigned int i = 1; i < conditional_set.size(); ++i )
+        if ( conditional_set[i] < conditional_set[i - 1] ) {
+          GUM_ERROR ( FatalError, "the conditional set is not sorted properly" );
         }
     }
 
-    std::pair<Id,Id> edge( std::min( node1,node2 ),std::max( node1,node2 ) );
+    std::pair<Id, Id> edge ( std::min ( node1, node2 ), std::max ( node1, node2 ) );
 
     // check if the edge node1 - node2 has not a cache yet. In this case, add one
 
-    if ( !cache.exists( edge ) )
-      cache.insert( edge, CacheNode<Score>() );
+    if ( !cache.exists ( edge ) )
+      cache.insert ( edge, CacheNode<Score>() );
 
     // now get the cache corresponding to the edge and follow the tree until all
     // the conditioning set has been parsed
     CacheNode<Score>* tree = &cache[edge];
 
-    for ( unsigned int i=0; i<conditional_set.size(); ++i ) {
-      if ( !tree->children.exists( conditional_set[i] ) )
-        tree = &( tree->children.insert( conditional_set[i], CacheNode<Score>() ) );
+    for ( unsigned int i = 0; i < conditional_set.size(); ++i ) {
+      if ( !tree->children.exists ( conditional_set[i] ) )
+        tree = & ( tree->children.insert ( conditional_set[i], CacheNode<Score>() ) );
       else
-        tree = &( tree->children[conditional_set[i]] );
+        tree = & ( tree->children[conditional_set[i]] );
     }
 
     return *tree;
@@ -104,11 +104,11 @@ namespace gum {
     const Score& val, bool safe_mode ) {
     // create the tree appropriate for storing the value of the independence test
     CacheNode<Score>& tree =
-      _prepareInsertVal( node1,node2,conditional_set,val,safe_mode );
+      _prepareInsertVal ( node1, node2, conditional_set, val, safe_mode );
     // check if tree is pointing to an already computed test
 
     if ( tree.has_score ) {
-      GUM_ERROR( DuplicateElement, "the cache contains already the score" );
+      GUM_ERROR ( DuplicateElement, "the cache contains already the score" );
     }
 
     tree.score = val;
@@ -125,7 +125,7 @@ namespace gum {
     const Score& val, bool safe_mode ) {
     // create the tree appropriate for storing the value of the independence test
     CacheNode<Score>& tree =
-      _prepareInsertVal( node1,node2,conditional_set,val,safe_mode );
+      _prepareInsertVal ( node1, node2, conditional_set, val, safe_mode );
     // update the value of the independence test
     tree.score = val;
     tree.has_score = true;
@@ -141,32 +141,32 @@ namespace gum {
     // in safe mode, check that the ids in the conditional set are
     // sorted in increasing order
     if ( safe_mode ) {
-      for ( unsigned int i=1; i<conditional_set.size(); ++i )
-        if ( conditional_set[i] < conditional_set[i-1] ) {
-          GUM_ERROR( FatalError, "the conditional set is not sorted properly" );
+      for ( unsigned int i = 1; i < conditional_set.size(); ++i )
+        if ( conditional_set[i] < conditional_set[i - 1] ) {
+          GUM_ERROR ( FatalError, "the conditional set is not sorted properly" );
         }
     }
 
-    std::pair<Id,Id> edge( std::min( node1,node2 ),std::max( node1,node2 ) );
+    std::pair<Id, Id> edge ( std::min ( node1, node2 ), std::max ( node1, node2 ) );
 
     // check if the edge node1 - node2 has not a cache yet. In this case, add one
 
-    if ( !cache.exists( edge ) )
+    if ( !cache.exists ( edge ) )
       return 0;
 
     // now get the cache corresponding to the edge and follow the tree until all
     // the conditioning set has been parsed
-    CacheNode<Score>* tree = const_cast<CacheNode<Score>*>( &cache[edge] );
+    CacheNode<Score>* tree = const_cast<CacheNode<Score>*> ( &cache[edge] );
 
-    for ( unsigned int i=0; i<conditional_set.size(); ++i ) {
-      if ( !tree->children.exists( conditional_set[i] ) )
+    for ( unsigned int i = 0; i < conditional_set.size(); ++i ) {
+      if ( !tree->children.exists ( conditional_set[i] ) )
         return 0;
 
-      tree = &( tree->children[conditional_set[i]] );
+      tree = & ( tree->children[conditional_set[i]] );
     }
 
     if ( tree->has_score )
-      return &( tree->score );
+      return & ( tree->score );
     else
       return 0;
   }
@@ -179,11 +179,11 @@ namespace gum {
   ( const Id& node1, const Id& node2, const std::vector<Id>& conditional_set,
     bool safe_mode ) const {
     // get a pointer on the score
-    Score* score = getPtrTestVal( node1, node2, conditional_set, safe_mode );
+    Score* score = getPtrTestVal ( node1, node2, conditional_set, safe_mode );
     // check if the pointer is different from 0 before returning it
 
     if ( !score ) {
-      GUM_ERROR( NotFound, "the value is not in the cache" );
+      GUM_ERROR ( NotFound, "the value is not in the cache" );
     }
 
     return *score;
@@ -193,19 +193,19 @@ namespace gum {
   /// default constructor
 
   template <typename Score>
-  CacheNode<Score>::CacheNode() : has_score( false ) {
+  CacheNode<Score>::CacheNode() : has_score ( false ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( CacheNode );
+    GUM_CONSTRUCTOR ( CacheNode );
   }
 
 
   /// copy constructor
 
   template <typename Score>
-  CacheNode<Score>::CacheNode( const CacheNode<Score>& from ) :
-    score( from.score ), has_score( from.has_score ), children( from.children ) {
+  CacheNode<Score>::CacheNode ( const CacheNode<Score>& from ) :
+    score ( from.score ), has_score ( from.has_score ), children ( from.children ) {
     // for debugging purposes
-    GUM_CONS_CPY( CacheNode );
+    GUM_CONS_CPY ( CacheNode );
   }
 
 
@@ -217,7 +217,7 @@ namespace gum {
     // avoid self assignment
     if ( this != &from ) {
       // for debugging purposes
-      GUM_OP_CPY( CacheNode );
+      GUM_OP_CPY ( CacheNode );
       score = from.score;
       has_score = from.has_score;
       children = from.children;
@@ -232,7 +232,7 @@ namespace gum {
   template <typename Score>
   CacheNode<Score>::~CacheNode() {
     // for debugging purposes
-    GUM_DESTRUCTOR( CacheNode );
+    GUM_DESTRUCTOR ( CacheNode );
   }
 
 

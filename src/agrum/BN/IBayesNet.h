@@ -156,7 +156,7 @@ namespace gum {
       /**
        * Returns the dimension (the number of free parameters) in this bayes net.
        *
-       * \f$ dim(G)=\sum_{i \in nodes} ((r_i-1)\cdot q_i) \f$ where \f$ r_i \f$ is the number of instantiations of node \f$ i \f$ and \f$ q_i \f$ is the number of instantiations of 
+       * \f$ dim(G)=\sum_{i \in nodes} ((r_i-1)\cdot q_i) \f$ where \f$ r_i \f$ is the number of instantiations of node \f$ i \f$ and \f$ q_i \f$ is the number of instantiations of
        * its parents.
        */
       Idx dim() const;

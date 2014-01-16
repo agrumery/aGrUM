@@ -66,7 +66,7 @@ namespace gum {
     gum::HashTable<std::string, Idx> vartable ; //key name::label val num;
     gum::HashTable<std::string, Idx> protable ;
 
-    for(const auto iter : bn.nodes()) {
+    for ( const auto iter : bn.nodes() ) {
       for ( Idx i = 0; i <  bn.variable ( iter ).domainSize(); i++ ) {
         std::stringstream str;
         str << bn.variable ( iter ).name() << "_" << bn.variable ( iter ).label ( i ) ;
@@ -86,7 +86,7 @@ namespace gum {
       }
     }
 
-    for(const auto iter : bn.nodes()) {
+    for ( const auto iter : bn.nodes() ) {
       std::stringstream str0 , str1, str2, str3;
 
       for ( Idx i = 0; i < bn.variable ( iter ).domainSize(); i++ ) {

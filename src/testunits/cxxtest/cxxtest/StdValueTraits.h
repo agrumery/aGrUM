@@ -31,25 +31,25 @@ namespace CxxTest {
   //
   class StdTraitsBase {
     public:
-      StdTraitsBase& operator<<( const CXXTEST_STD( string ) &s ) { _s += s; return *this; }
+      StdTraitsBase& operator<< ( const CXXTEST_STD ( string ) &s ) { _s += s; return *this; }
       const char* asString() const { return _s.c_str(); }
 
     private:
-      CXXTEST_STD( string ) _s;
+      CXXTEST_STD ( string ) _s;
   };
 
   //
   // std::string
   //
   CXXTEST_TEMPLATE_INSTANTIATION
-  class ValueTraits<const CXXTEST_STD( string )> : public StdTraitsBase {
+  class ValueTraits<const CXXTEST_STD ( string ) > : public StdTraitsBase {
     public:
-      ValueTraits( const CXXTEST_STD( string ) &s ) {
+      ValueTraits ( const CXXTEST_STD ( string ) &s ) {
         *this << "\"";
 
         for ( unsigned i = 0; i < s.length(); ++ i ) {
-          char c[sizeof( "\\xXX" )];
-          charToString( s[i], c );
+          char c[sizeof ( "\\xXX" )];
+          charToString ( s[i], c );
           *this << c;
         }
 
@@ -57,21 +57,21 @@ namespace CxxTest {
       }
   };
 
-  CXXTEST_COPY_CONST_TRAITS( CXXTEST_STD( string ) );
+  CXXTEST_COPY_CONST_TRAITS ( CXXTEST_STD ( string ) );
 
 #ifndef _CXXTEST_OLD_STD
   //
   // std::wstring
   //
   CXXTEST_TEMPLATE_INSTANTIATION
-  class ValueTraits<const CXXTEST_STD( basic_string<wchar_t> )> : public StdTraitsBase {
+  class ValueTraits<const CXXTEST_STD ( basic_string<wchar_t> ) > : public StdTraitsBase {
     public:
-      ValueTraits( const CXXTEST_STD( basic_string<wchar_t> ) &s ) {
+      ValueTraits ( const CXXTEST_STD ( basic_string<wchar_t> ) &s ) {
         *this << "L\"";
 
         for ( unsigned i = 0; i < s.length(); ++ i ) {
-          char c[sizeof( "\\x12345678" )];
-          charToString( ( unsigned long )s[i], c );
+          char c[sizeof ( "\\x12345678" )];
+          charToString ( ( unsigned long ) s[i], c );
           *this << c;
         }
 
@@ -79,7 +79,7 @@ namespace CxxTest {
       }
   };
 
-  CXXTEST_COPY_CONST_TRAITS( CXXTEST_STD( basic_string<wchar_t> ) );
+  CXXTEST_COPY_CONST_TRAITS ( CXXTEST_STD ( basic_string<wchar_t> ) );
 #endif // _CXXTEST_OLD_STD
 
   //
@@ -87,11 +87,11 @@ namespace CxxTest {
   // This is useful for almost all STL containers
   //
   template<class Stream, class Iterator>
-  void dumpRange( Stream& s, Iterator first, Iterator last ) {
+  void dumpRange ( Stream& s, Iterator first, Iterator last ) {
     s << "{ ";
 
     while ( first != last ) {
-      s << TS_AS_STRING( *first );
+      s << TS_AS_STRING ( *first );
       ++ first;
       s << ( ( first == last ) ? " }" : ", " );
     }
@@ -102,10 +102,10 @@ namespace CxxTest {
   // std::pair
   //
   template<class First, class Second>
-  class ValueTraits< CXXTEST_STD( pair )<First, Second> > : public StdTraitsBase {
+  class ValueTraits< CXXTEST_STD ( pair ) <First, Second> > : public StdTraitsBase {
     public:
-      ValueTraits( const CXXTEST_STD( pair )<First, Second>& p ) {
-        *this << "<" << TS_AS_STRING( p.first ) << ", " << TS_AS_STRING( p.second ) << ">";
+      ValueTraits ( const CXXTEST_STD ( pair ) <First, Second>& p ) {
+        *this << "<" << TS_AS_STRING ( p.first ) << ", " << TS_AS_STRING ( p.second ) << ">";
       }
   };
 
@@ -113,10 +113,10 @@ namespace CxxTest {
   // std::vector
   //
   template<class Element>
-  class ValueTraits< CXXTEST_STD( vector )<Element> > : public StdTraitsBase {
+  class ValueTraits< CXXTEST_STD ( vector ) <Element> > : public StdTraitsBase {
     public:
-      ValueTraits( const CXXTEST_STD( vector )<Element>& v ) {
-        dumpRange( *this, v.begin(), v.end() );
+      ValueTraits ( const CXXTEST_STD ( vector ) <Element>& v ) {
+        dumpRange ( *this, v.begin(), v.end() );
       }
   };
 
@@ -124,10 +124,10 @@ namespace CxxTest {
   // std::list
   //
   template<class Element>
-  class ValueTraits< CXXTEST_STD( list )<Element> > : public StdTraitsBase {
+  class ValueTraits< CXXTEST_STD ( list ) <Element> > : public StdTraitsBase {
     public:
-      ValueTraits( const CXXTEST_STD( list )<Element>& l ) {
-        dumpRange( *this, l.begin(), l.end() );
+      ValueTraits ( const CXXTEST_STD ( list ) <Element>& l ) {
+        dumpRange ( *this, l.begin(), l.end() );
       }
   };
 
@@ -135,10 +135,10 @@ namespace CxxTest {
   // std::set
   //
   template<class Element>
-  class ValueTraits< CXXTEST_STD( set )<Element> > : public StdTraitsBase {
+  class ValueTraits< CXXTEST_STD ( set ) <Element> > : public StdTraitsBase {
     public:
-      ValueTraits( const CXXTEST_STD( set )<Element>& s ) {
-        dumpRange( *this, s.begin(), s.end() );
+      ValueTraits ( const CXXTEST_STD ( set ) <Element>& s ) {
+        dumpRange ( *this, s.begin(), s.end() );
       }
   };
 
@@ -146,10 +146,10 @@ namespace CxxTest {
   // std::map
   //
   template<class Key, class Value>
-  class ValueTraits< CXXTEST_STD( map )<Key, Value> > : public StdTraitsBase {
+  class ValueTraits< CXXTEST_STD ( map ) <Key, Value> > : public StdTraitsBase {
     public:
-      ValueTraits( const CXXTEST_STD( map )<Key, Value>& m ) {
-        dumpRange( *this, m.begin(), m.end() );
+      ValueTraits ( const CXXTEST_STD ( map ) <Key, Value>& m ) {
+        dumpRange ( *this, m.begin(), m.end() );
       }
   };
 
@@ -157,10 +157,10 @@ namespace CxxTest {
   // std::deque
   //
   template<class Element>
-  class ValueTraits< CXXTEST_STD( deque )<Element> > : public StdTraitsBase {
+  class ValueTraits< CXXTEST_STD ( deque ) <Element> > : public StdTraitsBase {
     public:
-      ValueTraits( const CXXTEST_STD( deque )<Element>& d ) {
-        dumpRange( *this, d.begin(), d.end() );
+      ValueTraits ( const CXXTEST_STD ( deque ) <Element>& d ) {
+        dumpRange ( *this, d.begin(), d.end() );
       }
   };
 
@@ -168,10 +168,10 @@ namespace CxxTest {
   // std::multiset
   //
   template<class Element>
-  class ValueTraits< CXXTEST_STD( multiset )<Element> > : public StdTraitsBase {
+  class ValueTraits< CXXTEST_STD ( multiset ) <Element> > : public StdTraitsBase {
     public:
-      ValueTraits( const CXXTEST_STD( multiset )<Element>& ms ) {
-        dumpRange( *this, ms.begin(), ms.end() );
+      ValueTraits ( const CXXTEST_STD ( multiset ) <Element>& ms ) {
+        dumpRange ( *this, ms.begin(), ms.end() );
       }
   };
 
@@ -179,10 +179,10 @@ namespace CxxTest {
   // std::multimap
   //
   template<class Key, class Value>
-  class ValueTraits< CXXTEST_STD( multimap )<Key, Value> > : public StdTraitsBase {
+  class ValueTraits< CXXTEST_STD ( multimap ) <Key, Value> > : public StdTraitsBase {
     public:
-      ValueTraits( const CXXTEST_STD( multimap )<Key, Value>& mm ) {
-        dumpRange( *this, mm.begin(), mm.end() );
+      ValueTraits ( const CXXTEST_STD ( multimap ) <Key, Value>& mm ) {
+        dumpRange ( *this, mm.begin(), mm.end() );
       }
   };
 
@@ -190,15 +190,15 @@ namespace CxxTest {
   // std::complex
   //
   template<class Number>
-  class ValueTraits< CXXTEST_STD( complex )<Number> > : public StdTraitsBase {
+  class ValueTraits< CXXTEST_STD ( complex ) <Number> > : public StdTraitsBase {
     public:
-      ValueTraits( const CXXTEST_STD( complex )<Number>& c ) {
+      ValueTraits ( const CXXTEST_STD ( complex ) <Number>& c ) {
         if ( !c.imag() )
-          *this << TS_AS_STRING( c.real() );
+          *this << TS_AS_STRING ( c.real() );
         else if ( !c.real() )
-          *this << "(" << TS_AS_STRING( c.imag() ) << " * i)";
+          *this << "(" << TS_AS_STRING ( c.imag() ) << " * i)";
         else
-          *this << "(" << TS_AS_STRING( c.real() ) << " + " << TS_AS_STRING( c.imag() ) << " * i)";
+          *this << "(" << TS_AS_STRING ( c.real() ) << " + " << TS_AS_STRING ( c.imag() ) << " * i)";
       }
   };
 #endif // _CXXTEST_PARTIAL_TEMPLATE_SPECIALIZATION

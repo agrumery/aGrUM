@@ -26,58 +26,58 @@
 class PythonApproximationListener: public gum::ApproximationSchemeListener {
   private:
 
-    PyObject *__pyWhenProgress;
-    PyObject *__pyWhenStop;
+    PyObject* __pyWhenProgress;
+    PyObject* __pyWhenStop;
 
-    void __checkCallable( PyObject *pyfunc ) {
-      if( !PyCallable_Check( pyfunc ) ) {
-        PyErr_SetString( PyExc_TypeError, "Need a callable object!" );
+    void __checkCallable ( PyObject* pyfunc ) {
+      if ( !PyCallable_Check ( pyfunc ) ) {
+        PyErr_SetString ( PyExc_TypeError, "Need a callable object!" );
       }
     };
 
   public:
-    PythonApproximationListener( gum::ApproximationScheme& algo ):gum::ApproximationSchemeListener(algo) {
-      __pyWhenProgress = __pyWhenStop = ( PyObject * )0;
+    PythonApproximationListener ( gum::ApproximationScheme& algo ) : gum::ApproximationSchemeListener ( algo ) {
+      __pyWhenProgress = __pyWhenStop = ( PyObject* ) 0;
     };
 
     ~PythonApproximationListener() {
-      if( __pyWhenProgress ) Py_DECREF( __pyWhenProgress );
+      if ( __pyWhenProgress ) Py_DECREF ( __pyWhenProgress );
 
-      if( __pyWhenStop ) Py_DECREF( __pyWhenStop );
+      if ( __pyWhenStop ) Py_DECREF ( __pyWhenStop );
     };
 
-    void whenProgress( const void* src,gum::Size step,double error,double duration ) {
-      if( __pyWhenProgress ) {
-        PyObject *arglist = Py_BuildValue( "(ldd)", step,error,duration );
-        PyEval_CallObject( __pyWhenProgress,arglist );
-        Py_DECREF( arglist );
+    void whenProgress ( const void* src, gum::Size step, double error, double duration ) {
+      if ( __pyWhenProgress ) {
+        PyObject* arglist = Py_BuildValue ( "(ldd)", step, error, duration );
+        PyEval_CallObject ( __pyWhenProgress, arglist );
+        Py_DECREF ( arglist );
       }
     };
 
-    void whenStop( const void* src, std::string message ) {
-      if( __pyWhenStop ) {
-        PyObject *arglist = Py_BuildValue( "(s)", message.c_str() );
-        PyEval_CallObject( __pyWhenStop,arglist );
-        Py_DECREF( arglist );
+    void whenStop ( const void* src, std::string message ) {
+      if ( __pyWhenStop ) {
+        PyObject* arglist = Py_BuildValue ( "(s)", message.c_str() );
+        PyEval_CallObject ( __pyWhenStop, arglist );
+        Py_DECREF ( arglist );
       }
     };
 
-    void setWhenProgress( PyObject *pyfunc ) {
-      __checkCallable( pyfunc );
+    void setWhenProgress ( PyObject* pyfunc ) {
+      __checkCallable ( pyfunc );
 
-      if( __pyWhenProgress ) Py_DECREF( __pyWhenProgress );
+      if ( __pyWhenProgress ) Py_DECREF ( __pyWhenProgress );
 
-      __pyWhenProgress=pyfunc;
-      Py_INCREF( pyfunc );
+      __pyWhenProgress = pyfunc;
+      Py_INCREF ( pyfunc );
     };
 
-    void setWhenStop( PyObject *pyfunc ) {
-      __checkCallable( pyfunc );
+    void setWhenStop ( PyObject* pyfunc ) {
+      __checkCallable ( pyfunc );
 
-      if( __pyWhenStop ) Py_DECREF( __pyWhenStop );
+      if ( __pyWhenStop ) Py_DECREF ( __pyWhenStop );
 
-      __pyWhenStop=pyfunc;
-      Py_INCREF( pyfunc );
+      __pyWhenStop = pyfunc;
+      Py_INCREF ( pyfunc );
     };
 };
 

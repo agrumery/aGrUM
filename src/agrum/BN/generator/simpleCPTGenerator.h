@@ -69,7 +69,7 @@ namespace gum {
        */
       virtual void generateCPT ( const Idx& varId, const Potential<GUM_SCALAR>& cpt );
   };
-  
+
   extern template class SimpleCPTGenerator<float>;
   extern template class SimpleCPTGenerator<double>;
 } /* namespace gum */

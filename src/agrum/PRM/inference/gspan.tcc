@@ -55,7 +55,7 @@ namespace gum {
     template<typename GUM_SCALAR>
     void
     GSpan<GUM_SCALAR>::__sortNodesAndEdges() {
-      for ( auto iter = __graph->labels().begin(); iter != __graph->labels().end(); ++iter ) {
+      for ( auto iter = __graph->labels().beginSafe(); iter != __graph->labels().endSafe(); ++iter ) {
         try {
           if ( __graph->nodes ( iter.second() ).size() >= 2 ) {
             __cost.insert ( iter.second(), __cost_func ( iter.second()->tree_width, __graph->nodes ( iter.second() ).size() ) );
@@ -63,7 +63,7 @@ namespace gum {
           }
         } catch ( NotFound& ) {
           // It's a label over edges
-          if ( __isEdgeEligible ( * ( __graph->edges ( iter.second() ).begin() ) ) ) {
+          if ( __isEdgeEligible ( * ( __graph->edges ( iter.second() ).beginSafe() ) ) ) {
             __cost.insert ( iter.second(), __cost_func ( iter.second()->tree_width, __graph->edges ( iter.second() ).size() ) );
             __edges.push_back ( iter.second() );
           }
@@ -137,7 +137,7 @@ namespace gum {
               // Checking for edges not in p
               const NodeSet& neighbours = ig.graph().neighbours ( current_id );
 
-              for ( auto edge = neighbours.begin(); edge != neighbours.end(); ++edge ) {
+              for ( auto edge = neighbours.beginSafe(); edge != neighbours.endSafe(); ++edge ) {
                 neighbor_id = *edge;
                 neighbor = ig.node ( neighbor_id ).n;
 
@@ -167,14 +167,14 @@ namespace gum {
           for ( size_t node = 0; node < count_vector.size(); ++node ) {
             edge_count = count_vector[node];
 
-            for ( auto growth = edge_count->begin(); growth != edge_count->end(); ++growth ) {
+            for ( auto growth = edge_count->beginSafe(); growth != edge_count->endSafe(); ++growth ) {
               try {
-                __tree.growPattern ( *p, **growth, 2 );
+                __tree.growPattern ( *p, * ( growth.val() ), 2 );
               } catch ( OperationNotAllowed& e ) {
                 // The child was not minimal or was not worth considering
               }
 
-              delete *growth;
+              delete growth.val ();
             }
 
             delete edge_count;
@@ -223,10 +223,10 @@ namespace gum {
         Set<NodeId>& max_indep_set = tree().max_indep_set ( * ( __patterns.front() ) );
         Sequence<Instance<GUM_SCALAR>*>* match = 0;
 
-        for ( auto node = max_indep_set.begin(); node != max_indep_set.end(); ++node ) {
+        for ( auto node = max_indep_set.beginSafe(); node != max_indep_set.endSafe(); ++node ) {
           match = & ( tree().iso_map ( * ( __patterns.front() ), *node ) );
 
-          for ( auto i = match->begin(); i != match->end(); ++i ) {
+          for ( auto i = match->beginSafe(); i != match->endSafe(); ++i ) {
             __chosen.insert ( *i );
           }
 
@@ -248,7 +248,7 @@ namespace gum {
             found = false;
             match = & ( tree().iso_map ( **p, node ) );
 
-            for ( auto i = match->begin(); i != match->end(); ++i ) {
+            for ( auto i = match->beginSafe(); i != match->endSafe(); ++i ) {
               if ( __chosen.exists ( *i ) ) {
                 found = true;
                 break;
@@ -283,7 +283,7 @@ namespace gum {
               removed.insert ( *node );
               neighbours = & ( reduced_iso_graph.neighbours ( *node ) );
 
-              for ( NodeSet::const_iterator neighbor = neighbours->begin(); neighbor != neighbours->end(); ++neighbor ) {
+              for ( NodeSet::const_iterator_safe neighbor = neighbours->beginSafe(); neighbor != neighbours->endSafe(); ++neighbor ) {
                 removed.insert ( *neighbor );
               }
 
@@ -291,7 +291,7 @@ namespace gum {
               match = & ( tree().iso_map ( **p, *node ) );
               matches->insert ( match );
 
-              for ( auto iter = match->begin(); iter != match->end(); ++iter ) {
+              for ( auto iter = match->beginSafe(); iter != match->endSafe(); ++iter ) {
                 __chosen.insert ( *iter );
               }
             }
@@ -328,8 +328,9 @@ namespace gum {
     template<typename GUM_SCALAR> INLINE
     GSpan<GUM_SCALAR>::~GSpan() {
       GUM_DESTRUCTOR ( GSpan );
-      for ( auto match = __matched_instances.begin(); match != __matched_instances.end(); ++match ) {
-        delete *match;
+
+      for ( auto match = __matched_instances.beginSafe(); match != __matched_instances.endSafe(); ++match ) {
+        delete match.val();
       }
 
       delete __graph;

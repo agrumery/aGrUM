@@ -81,7 +81,7 @@ namespace gum {
          * %Set the inference type.
          * @param inft The choosen \c InferenceType.
          */
-        void inferenceType( InferenceType inft );
+        void inferenceType ( InferenceType inft );
 
         /**
          * Get the inference type.
@@ -105,7 +105,7 @@ namespace gum {
          * This one is easier to read but harder for scripts to parse.
          * @param path The path to the file to save marginals.
          */
-        void saveInference( const std::string& path );
+        void saveInference ( const std::string& path );
 
         /// @}
 
@@ -115,7 +115,7 @@ namespace gum {
          * Constructor.
          * @param cnet The CredalNet to be used with this algorithm.
          */
-        CNLoopyPropagation( const CredalNet<GUM_SCALAR>& cnet );
+        CNLoopyPropagation ( const CredalNet<GUM_SCALAR>& cnet );
         /** Destructor. */
         virtual ~CNLoopyPropagation();
         /// @}
@@ -146,7 +146,7 @@ namespace gum {
          * @param X The constant node id of the node sending the message.
          * @param demanding_parent The constant node id of the node receiving the message.
          */
-        void _msgL( const NodeId X, const NodeId demanding_parent );  //allways sent from X to demanding_X
+        void _msgL ( const NodeId X, const NodeId demanding_parent ); //allways sent from X to demanding_X
 
         /**
          * Used by _msgL. Compute the final message for the given parent's message and likelihood (children's messages), numerators & denominators.
@@ -158,7 +158,7 @@ namespace gum {
          * @param den_min The reference to the previously computed lower denominator.
          * @param den_max The reference to the previously computed upper denominator.
          */
-        void _compute_ext( GUM_SCALAR& msg_l_min, GUM_SCALAR& msg_l_max, std::vector<GUM_SCALAR>& lx, GUM_SCALAR& num_min, GUM_SCALAR& num_max, GUM_SCALAR& den_min, GUM_SCALAR& den_max );
+        void _compute_ext ( GUM_SCALAR& msg_l_min, GUM_SCALAR& msg_l_max, std::vector<GUM_SCALAR>& lx, GUM_SCALAR& num_min, GUM_SCALAR& num_max, GUM_SCALAR& den_min, GUM_SCALAR& den_max );
 
         /**
          * Used by _msgL. Compute the numerators & denominators for the given parent's message and likelihood (children's messages). Marginalisation.
@@ -169,7 +169,7 @@ namespace gum {
          * @param lx The lower and upper likelihood.
          * @param pos The position of the parent node to receive the message in the CPT of the one sending the message ( first parent, second ... ).
          */
-        void _compute_ext( std::vector< std::vector<GUM_SCALAR> >& combi_msg_p, const NodeId& id, GUM_SCALAR& msg_l_min, GUM_SCALAR& msg_l_max, std::vector<GUM_SCALAR>& lx, const Idx& pos );
+        void _compute_ext ( std::vector< std::vector<GUM_SCALAR> >& combi_msg_p, const NodeId& id, GUM_SCALAR& msg_l_min, GUM_SCALAR& msg_l_max, std::vector<GUM_SCALAR>& lx, const Idx& pos );
 
         /**
          * Used by _msgL. Enumerate parent's messages.
@@ -180,14 +180,14 @@ namespace gum {
          * @param lx The lower and upper likelihood.
          * @param pos The position of the parent node to receive the message in the CPT of the one sending the message ( first parent, second ... ).
          */
-        void _enum_combi( std::vector< std::vector< std::vector<GUM_SCALAR> > >& msgs_p, const NodeId& id, GUM_SCALAR& msg_l_min, GUM_SCALAR& msg_l_max, std::vector<GUM_SCALAR>& lx, const Idx& pos );
+        void _enum_combi ( std::vector< std::vector< std::vector<GUM_SCALAR> > >& msgs_p, const NodeId& id, GUM_SCALAR& msg_l_min, GUM_SCALAR& msg_l_max, std::vector<GUM_SCALAR>& lx, const Idx& pos );
 
         /**
          * Sends a message to one's child, i.e. X is sending a message to a demanding_child.
          * @param X The constant node id of the node sending the message.
          * @param demanding_child The constant node id of the node receiving the message.
          */
-        void _msgP( const NodeId X, const NodeId demanding_child );
+        void _msgP ( const NodeId X, const NodeId demanding_child );
 
         /**
          * Used by _msgP. Enumerate parent's messages.
@@ -196,7 +196,7 @@ namespace gum {
          * @param msg_p_min The reference to the current lower value of the message to be sent.
          * @param msg_p_max The reference to the current upper value of the message to be sent.
          */
-        void _enum_combi( std::vector< std::vector< std::vector<GUM_SCALAR> > >& msgs_p, const NodeId& id, GUM_SCALAR& msg_p_min, GUM_SCALAR& msg_p_max );
+        void _enum_combi ( std::vector< std::vector< std::vector<GUM_SCALAR> > >& msgs_p, const NodeId& id, GUM_SCALAR& msg_p_min, GUM_SCALAR& msg_p_max );
 
         /**
          * Used by _msgP. Marginalisation.
@@ -205,10 +205,10 @@ namespace gum {
          * @param msg_p_min The reference to the current lower value of the message to be sent.
          * @param msg_p_max The reference to the current upper value of the message to be sent.
          */
-        void _compute_ext( std::vector< std::vector<GUM_SCALAR> >& combi_msg_p, const NodeId& id, GUM_SCALAR& msg_p_min, GUM_SCALAR& msg_p_max );
+        void _compute_ext ( std::vector< std::vector<GUM_SCALAR> >& combi_msg_p, const NodeId& id, GUM_SCALAR& msg_p_min, GUM_SCALAR& msg_p_max );
 
         /** Get the last messages from one's parents and children. */
-        void _refreshLMsPIs( bool refreshIndic = false );
+        void _refreshLMsPIs ( bool refreshIndic = false );
 
         /**
          * Compute epsilon.
@@ -282,7 +282,7 @@ namespace gum {
 
 
     };
-    
+
     extern template class CNLoopyPropagation<float>;
     extern template class CNLoopyPropagation<double>;
   }

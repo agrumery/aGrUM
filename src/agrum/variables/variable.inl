@@ -26,28 +26,28 @@ namespace gum {
 
   /// protected copy
 
-  INLINE void Variable::_copy( const Variable& aRV ) {
-    __name=aRV.__name;
-    __description=aRV.__description;
+  INLINE void Variable::_copy ( const Variable& aRV ) {
+    __name = aRV.__name;
+    __description = aRV.__description;
   }
 
 
   /// constructor
 
-  INLINE Variable::Variable( const std::string& aName,
-                             const std::string& aDesc ) :
-    __name( aName ), __description( aDesc ) {
+  INLINE Variable::Variable ( const std::string& aName,
+                              const std::string& aDesc ) :
+    __name ( aName ), __description ( aDesc ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( Variable );
+    GUM_CONSTRUCTOR ( Variable );
   }
 
 
   /// copy constructor
 
-  INLINE Variable::Variable( const Variable& aRV ):
-    __name( aRV.__name ),__description( aRV.__description ) {
+  INLINE Variable::Variable ( const Variable& aRV ) :
+    __name ( aRV.__name ), __description ( aRV.__description ) {
     // for debugging purposes
-    GUM_CONS_CPY( Variable );
+    GUM_CONS_CPY ( Variable );
   }
 
 
@@ -55,7 +55,7 @@ namespace gum {
 
   INLINE Variable::~Variable() {
     // for debugging purposes
-    GUM_DESTRUCTOR( Variable );
+    GUM_DESTRUCTOR ( Variable );
   }
 
 
@@ -64,7 +64,7 @@ namespace gum {
   INLINE Variable& Variable::operator= ( const Variable& aRV ) {
     // avoid self assignment
     if ( this != &aRV )
-      _copy( aRV );
+      _copy ( aRV );
 
     return *this;
   }
@@ -72,7 +72,7 @@ namespace gum {
 
   /// sets the __name of the variable
 
-  INLINE void Variable::setName( const std::string& theValue ) {
+  INLINE void Variable::setName ( const std::string& theValue ) {
     __name = theValue;
   }
 
@@ -86,7 +86,7 @@ namespace gum {
 
   /// sets the __description of the variable
 
-  INLINE void Variable::setDescription( const std::string& theValue ) const {
+  INLINE void Variable::setDescription ( const std::string& theValue ) const {
     __description = theValue;
   }
 
@@ -108,7 +108,7 @@ namespace gum {
   /// inequality operator
 
   INLINE bool Variable::operator!= ( const Variable& aRV ) const  {
-    return ( ! operator==( aRV ) );
+    return ( ! operator== ( aRV ) );
   }
 
 

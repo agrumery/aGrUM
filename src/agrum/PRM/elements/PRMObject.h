@@ -192,8 +192,8 @@ namespace gum {
 
 /// For printing Type easily.
     std::ostream& operator<< ( std::ostream& out, PRMObject::PRMType obj_type );
-    
-    // list of declarations of PRMObjects    
+
+    // list of declarations of PRMObjects
     template<typename GUM_SCALAR> class Type;
     template<typename GUM_SCALAR> class ClassElement;
     template<typename GUM_SCALAR> class ClassElementContainer;
@@ -205,7 +205,7 @@ namespace gum {
     template<typename GUM_SCALAR> class Class;
     template<typename GUM_SCALAR> class Instance;
     template<typename GUM_SCALAR> class System;
-    
+
   } /* namespace prm */
 } /* namespace gum */
 

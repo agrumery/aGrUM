@@ -204,7 +204,7 @@ namespace gum {
        * set of holes is most often very small.
        * @param holes_size the size of the hash table used to store all holes
        * @param holes_resize_policy the resizing policy of this hash table**/
-      explicit NodeGraphPart ( Size holes_size = GUM_HASHTABLE_DEFAULT_SIZE,
+      explicit NodeGraphPart ( Size holes_size = HashTableConst::default_size,
                                bool holes_resize_policy    = true );
 
       /// copy constructor

@@ -37,7 +37,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   ScheduleCliqueStoreMultiDim<GUM_SCALAR>::ScheduleCliqueStoreMultiDim
   ( const ScheduleMultiDim<GUM_SCALAR>& table,
-    NodeProperty<Set<const MultiDimImplementation<GUM_SCALAR>*> >&clique_tables,
+    NodeProperty<Set<const MultiDimImplementation<GUM_SCALAR>*> >& clique_tables,
     NodeId clique ) :
     ScheduleOperation<GUM_SCALAR>
     ( ScheduleOperation<GUM_SCALAR>::Type::CLIQUE_STORE_MULTIDIM ),
@@ -156,9 +156,9 @@ namespace gum {
 
   /// returns the memory consumption used during the operation
   template <typename GUM_SCALAR>
-  INLINE std::pair<long,long>
+  INLINE std::pair<long, long>
   ScheduleCliqueStoreMultiDim<GUM_SCALAR>::memoryUsage() const {
-    return std::pair<long,long> ( 0,0 );
+    return std::pair<long, long> ( 0, 0 );
   }
 
 

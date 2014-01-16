@@ -30,10 +30,12 @@
 #ifndef GUM_MULTI_DIM_ICI_MODEL_H
 #define GUM_MULTI_DIM_ICI_MODEL_H
 
+#include <agrum/core/bijection.h>
 #include <agrum/multidim/multiDimReadOnly.h>
 
 
 namespace gum {
+
 
   /* =========================================================================== */
   /* =========================================================================== */
@@ -59,8 +61,8 @@ namespace gum {
 
       /// Default constructor.
 
-      MultiDimICIModel( GUM_SCALAR external_weight,GUM_SCALAR default_weight=( GUM_SCALAR )1.0 );
-      MultiDimICIModel( const MultiDimICIModel<GUM_SCALAR>& from );
+      MultiDimICIModel ( GUM_SCALAR external_weight, GUM_SCALAR default_weight = ( GUM_SCALAR ) 1.0 );
+      MultiDimICIModel ( const MultiDimICIModel<GUM_SCALAR>& from );
 
 
       /** Copy constructor using a bijection to swap variables from source.
@@ -68,8 +70,8 @@ namespace gum {
       * @param from the copied instance
       */
 
-      MultiDimICIModel( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-                       const MultiDimICIModel<GUM_SCALAR>& from );
+      MultiDimICIModel ( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
+                         const MultiDimICIModel<GUM_SCALAR>& from );
 
 
       /// Destructor.
@@ -84,30 +86,30 @@ namespace gum {
       /// @{
 
     public:
-      const std::string toString( void ) const;
+      const std::string toString ( void ) const;
 
       // @todo : optimisation with a always up-to-date value associated to each instantiation
-      virtual void changeNotification( gum::Instantiation&, const gum::DiscreteVariable*, const gum::Idx&, const gum::Idx& ) {};
+      virtual void changeNotification ( gum::Instantiation&, const gum::DiscreteVariable*, const gum::Idx&, const gum::Idx& ) {};
 
-      virtual void setFirstNotification( gum::Instantiation& ) {};
+      virtual void setFirstNotification ( gum::Instantiation& ) {};
 
-      virtual void setLastNotification( gum::Instantiation& ) {};
+      virtual void setLastNotification ( gum::Instantiation& ) {};
 
-      virtual void setIncNotification( gum::Instantiation& ) {};
+      virtual void setIncNotification ( gum::Instantiation& ) {};
 
-      virtual void setDecNotification( gum::Instantiation& ) {};
+      virtual void setDecNotification ( gum::Instantiation& ) {};
 
-      virtual void setChangeNotification( gum::Instantiation& ) {};
+      virtual void setChangeNotification ( gum::Instantiation& ) {};
 
-      const std::string toString( const gum::Instantiation* i ) const {return i->toString();};
+      const std::string toString ( const gum::Instantiation* i ) const {return i->toString();};
 
       /// @return the real number of parameters used for this table. This function is used for compute @see compressionRatio()
       virtual Size realSize() const {return this->nbrDim();};
 
-      GUM_SCALAR causalWeight( const DiscreteVariable& v ) const;
-      void causalWeight( const DiscreteVariable& v,GUM_SCALAR w ) const;
+      GUM_SCALAR causalWeight ( const DiscreteVariable& v ) const;
+      void causalWeight ( const DiscreteVariable& v, GUM_SCALAR w ) const;
       GUM_SCALAR externalWeight() const;
-      void externalWeight( GUM_SCALAR w ) const;
+      void externalWeight ( GUM_SCALAR w ) const;
 
       /// returns the real name of the multiDimArray
       /** In aGrUM, all the types of multi-dimensional arrays/functionals have a
@@ -128,10 +130,10 @@ namespace gum {
       /// \f$ P(e | c_i) \f$ in Henrion (89) in a hashtable with a default_value.
       /// @{
       GUM_SCALAR __default_weight;
-      mutable HashTable<const DiscreteVariable*,GUM_SCALAR> __causal_weights;
+      mutable HashTable<const DiscreteVariable*, GUM_SCALAR> __causal_weights;
       /// @}
 
-      virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
+      virtual void _swap ( const DiscreteVariable* x, const DiscreteVariable* y );
   };
 
   extern template class MultiDimICIModel<float>;

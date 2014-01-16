@@ -68,8 +68,8 @@ namespace gum {
 
     strBuff << std::endl;
 
-    for ( const auto & arc : arcs() )
-      strBuff << tab << arc.tail() << " -> " << arc.head() << ";" << std::endl;
+    for ( auto arc = arcs().beginSafe (); arc != arcs().endSafe(); ++arc )
+      strBuff << tab << arc->tail() << " -> " << arc->head() << ";" << std::endl;
 
     strBuff << "}" << std::endl << std::endl;
     return strBuff.str();

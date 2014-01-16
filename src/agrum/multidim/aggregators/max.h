@@ -49,7 +49,7 @@ namespace gum {
     template<typename GUM_SCALAR> class Max : public MultiDimAggregator<GUM_SCALAR> {
       public:
         Max();
-        Max( const Max<GUM_SCALAR>& from );
+        Max ( const Max<GUM_SCALAR>& from );
         virtual ~Max();
 
         /**
@@ -68,12 +68,12 @@ namespace gum {
         virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
 
-        virtual std::string aggregatorName( void ) const;
+        virtual std::string aggregatorName ( void ) const;
       protected:
-        virtual Idx _neutralElt( void ) const ;
-        virtual Idx _folder( const DiscreteVariable& v,Idx i1,Idx i2 ,bool& stop_iteration ) const;
+        virtual Idx _neutralElt ( void ) const ;
+        virtual Idx _folder ( const DiscreteVariable& v, Idx i1, Idx i2 , bool& stop_iteration ) const;
     };
-    
+
     extern template class Max<float>;
     extern template class Max<double>;
   } // aggregator

@@ -36,15 +36,15 @@ namespace gum {
   template<typename GUM_SCALAR>
   Scheduler<GUM_SCALAR>::Scheduler() {
     // for debugging purposes
-    GUM_CONSTRUCTOR( Scheduler );
+    GUM_CONSTRUCTOR ( Scheduler );
   }
 
 
   /// copy constructor
   template<typename GUM_SCALAR>
-  Scheduler<GUM_SCALAR>::Scheduler( const Scheduler<GUM_SCALAR>& from ) {
+  Scheduler<GUM_SCALAR>::Scheduler ( const Scheduler<GUM_SCALAR>& from ) {
     // for debugging purposes
-    GUM_CONS_CPY( Scheduler );
+    GUM_CONS_CPY ( Scheduler );
   }
 
 
@@ -52,7 +52,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   Scheduler<GUM_SCALAR>::~Scheduler() {
     // for debugging purposes
-    GUM_DESTRUCTOR( Scheduler );
+    GUM_DESTRUCTOR ( Scheduler );
   }
 
 

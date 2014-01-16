@@ -28,21 +28,21 @@ namespace gum {
 
 /// indicates whether a given variable belongs to the SetInst
 
-  INLINE bool SetInst::contains( const DiscreteVariable& v ) const  {
-    return __vars.exists( &v );
+  INLINE bool SetInst::contains ( const DiscreteVariable& v ) const  {
+    return __vars.exists ( &v );
   }
 
 
 /// indicates whether a given variable belongs to the SetInst
 
-  INLINE bool SetInst::contains( const DiscreteVariable* v ) const  {
-    return __vars.exists( v );
+  INLINE bool SetInst::contains ( const DiscreteVariable* v ) const  {
+    return __vars.exists ( v );
   }
 
 
 /// modifies internally the value of a given variable of the sequence
 
-  INLINE void SetInst::__chgVal( Idx varPos, Idx newVal ) {
+  INLINE void SetInst::__chgVal ( Idx varPos, Idx newVal ) {
 
     //  Size oldVal = __vals[varPos];
     __vals[varPos] = 1 << newVal;
@@ -54,66 +54,66 @@ namespace gum {
 
 /// modifies the value of a given variable of the sequence (external function)
 
-  INLINE SetInst& SetInst::chgVal( const DiscreteVariable& v,
-                                   Idx newVal ) {
+  INLINE SetInst& SetInst::chgVal ( const DiscreteVariable& v,
+                                    Idx newVal ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
       Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
 
       if ( newVal >= v.domainSize() )
-        GUM_ERROR( OutOfBounds, "" );
+        GUM_ERROR ( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
 
-      __chgVal( varPos, newVal );
+      __chgVal ( varPos, newVal );
 
       return *this;
     } catch ( NotFound& ) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
-      GUM_ERROR( NotFound, name + v.name() );
+      GUM_ERROR ( NotFound, name + v.name() );
     }
   }
 
-  INLINE SetInst& SetInst::chgVal( const DiscreteVariable* v,
-                                   Idx newVal ) {
+  INLINE SetInst& SetInst::chgVal ( const DiscreteVariable* v,
+                                    Idx newVal ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
       Idx varPos = __vars[v]; // throws NotFound if v doesn't belong to this
 
       if ( newVal >= v->domainSize() )
-        GUM_ERROR( OutOfBounds, "" );
+        GUM_ERROR ( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
 
-      __chgVal( varPos, newVal );
+      __chgVal ( varPos, newVal );
 
       return *this;
     } catch ( NotFound& ) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
-      GUM_ERROR( NotFound, name + v->name() );
+      GUM_ERROR ( NotFound, name + v->name() );
     }
   }
 
 
 /// modifies the value of a given variable of the sequence (external function)
 
-  INLINE SetInst& SetInst::chgVal( Idx varPos, Idx newVal ) {
+  INLINE SetInst& SetInst::chgVal ( Idx varPos, Idx newVal ) {
     // check that the variable does belong to the SetInst and that the new
     // value is possible.
     if ( __vals.size() <= varPos )
-      GUM_ERROR( NotFound, "" );
+      GUM_ERROR ( NotFound, "" );
 
     if ( newVal >= __vars[varPos]->domainSize() )
-      GUM_ERROR( OutOfBounds, "" );
+      GUM_ERROR ( OutOfBounds, "" );
 
     // if we were in overflow, indicate that we are not anymore
     __overflow = false;
 
-    __chgVal( varPos, newVal );
+    __chgVal ( varPos, newVal );
 
     return *this;
   }
@@ -121,7 +121,7 @@ namespace gum {
 
 /// modifies internally the value of a given variable of the sequence
 
-  INLINE void SetInst::__chgVals( Idx varPos, const Size newVals ) {
+  INLINE void SetInst::__chgVals ( Idx varPos, const Size newVals ) {
 
     //   Size oldVal = __vals[varPos];
     __vals[varPos] = 0;
@@ -134,447 +134,447 @@ namespace gum {
 
 /// modifies the value of a given variable of the sequence (external function)
 
-  INLINE SetInst& SetInst::chgVals( const DiscreteVariable& v,
-                                    const Size newVals ) {
+  INLINE SetInst& SetInst::chgVals ( const DiscreteVariable& v,
+                                     const Size newVals ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
       Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
 
       if ( newVals >= ( Size ) 1 << v.domainSize() )
-        GUM_ERROR( OutOfBounds, "" );
+        GUM_ERROR ( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
 
-      __chgVals( varPos, newVals );
+      __chgVals ( varPos, newVals );
 
       return *this;
     } catch ( NotFound& ) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
-      GUM_ERROR( NotFound, name + v.name() );
+      GUM_ERROR ( NotFound, name + v.name() );
     }
   }
 
-  INLINE SetInst& SetInst::chgVals( const DiscreteVariable* v,
-                                    const Size newVals ) {
+  INLINE SetInst& SetInst::chgVals ( const DiscreteVariable* v,
+                                     const Size newVals ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
       Idx varPos = __vars[v]; // throws NotFound if v doesn't belong to this
 
       if ( newVals >= ( Size ) 1 << v->domainSize() )
-        GUM_ERROR( OutOfBounds, "" );
+        GUM_ERROR ( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
 
-      __chgVals( varPos, newVals );
+      __chgVals ( varPos, newVals );
 
       return *this;
     } catch ( NotFound& ) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
-      GUM_ERROR( NotFound, name + v->name() );
+      GUM_ERROR ( NotFound, name + v->name() );
     }
   }
 
 
 /// modifies the value of a given variable of the sequence (external function)
 
-  INLINE SetInst& SetInst::chgVals( Idx varPos, const Size newVal ) {
+  INLINE SetInst& SetInst::chgVals ( Idx varPos, const Size newVal ) {
     // check that the variable does belong to the SetInst and that the new
     // value is possible.
     if ( __vals.size() <= varPos )
-      GUM_ERROR( NotFound, "" );
+      GUM_ERROR ( NotFound, "" );
 
     if ( newVal >= ( Size ) 1 << __vars[varPos]->domainSize() )
 
-      GUM_ERROR( OutOfBounds, "" );
+      GUM_ERROR ( OutOfBounds, "" );
 
     // if we were in overflow, indicate that we are not anymore
     __overflow = false;
 
-    __chgVals( varPos, newVal );
+    __chgVals ( varPos, newVal );
 
     return *this;
   }
 
-  INLINE SetInst& SetInst::addVal( Idx varPos, Idx newVal )  {
+  INLINE SetInst& SetInst::addVal ( Idx varPos, Idx newVal )  {
     if ( __vals.size() <= varPos )
-      GUM_ERROR( NotFound, "" );
+      GUM_ERROR ( NotFound, "" );
 
     if ( newVal >= __vars[varPos]->domainSize() )
-      GUM_ERROR( OutOfBounds, "" );
+      GUM_ERROR ( OutOfBounds, "" );
 
-    __chgVals( varPos, ( 1 << newVal ) | __vals[varPos] );
+    __chgVals ( varPos, ( 1 << newVal ) | __vals[varPos] );
     return *this;
 
   }
 
-  INLINE SetInst& SetInst::addVal( const DiscreteVariable* v,
-                                   Idx newVal ) {
+  INLINE SetInst& SetInst::addVal ( const DiscreteVariable* v,
+                                    Idx newVal ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
       Idx varPos = __vars[v]; // throws NotFound if v doesn't belong to this
 
       if ( newVal >= v->domainSize() )
-        GUM_ERROR( OutOfBounds, "" );
+        GUM_ERROR ( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
 
-      addVal( varPos, newVal );
+      addVal ( varPos, newVal );
 
       return *this;
     } catch ( NotFound& ) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
-      GUM_ERROR( NotFound, name + v->name() );
+      GUM_ERROR ( NotFound, name + v->name() );
     }
   }
 
-  INLINE SetInst& SetInst::addVal( const DiscreteVariable& v,
-                                   Idx newVal ) {
+  INLINE SetInst& SetInst::addVal ( const DiscreteVariable& v,
+                                    Idx newVal ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
       Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
 
       if ( newVal >= v.domainSize() )
-        GUM_ERROR( OutOfBounds, "" );
+        GUM_ERROR ( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
 
-      addVal( varPos, newVal );
+      addVal ( varPos, newVal );
 
       return *this;
     } catch ( NotFound& ) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
-      GUM_ERROR( NotFound, name + v.name() );
+      GUM_ERROR ( NotFound, name + v.name() );
     }
   }
 
-  INLINE SetInst& SetInst::addVals( Idx varPos, const Size newVal )  {
+  INLINE SetInst& SetInst::addVals ( Idx varPos, const Size newVal )  {
     if ( __vals.size() <= varPos )
-      GUM_ERROR( NotFound, "" );
+      GUM_ERROR ( NotFound, "" );
 
-    if ( newVal >= ( 1UL <<__vars[varPos]->domainSize() ) )
-      GUM_ERROR( OutOfBounds, "" );
+    if ( newVal >= ( 1UL << __vars[varPos]->domainSize() ) )
+      GUM_ERROR ( OutOfBounds, "" );
 
-    __chgVals( varPos, newVal | __vals[varPos] );
+    __chgVals ( varPos, newVal | __vals[varPos] );
     return *this;
   }
 
-  INLINE SetInst& SetInst::addVals( const DiscreteVariable* v,
-                                    const Size newVal ) {
+  INLINE SetInst& SetInst::addVals ( const DiscreteVariable* v,
+                                     const Size newVal ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
       Idx varPos = __vars[v]; // throws NotFound if v doesn't belong to this
 
-      if ( newVal >= ( 1UL <<__vars[varPos]->domainSize() ) )
+      if ( newVal >= ( 1UL << __vars[varPos]->domainSize() ) )
 
-        GUM_ERROR( OutOfBounds, "" );
+        GUM_ERROR ( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
 
-      addVals( varPos,newVal );
+      addVals ( varPos, newVal );
 
       return *this;
     } catch ( NotFound& ) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
-      GUM_ERROR( NotFound, name + v->name() );
+      GUM_ERROR ( NotFound, name + v->name() );
     }
   }
 
-  INLINE SetInst& SetInst::addVals( const DiscreteVariable& v,
-                                    const Size newVal ) {
+  INLINE SetInst& SetInst::addVals ( const DiscreteVariable& v,
+                                     const Size newVal ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
       Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
 
-      if ( newVal >= ( 1UL <<__vars[varPos]->domainSize() ) )
+      if ( newVal >= ( 1UL << __vars[varPos]->domainSize() ) )
 
-        GUM_ERROR( OutOfBounds, "" );
+        GUM_ERROR ( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
 
-      addVals( varPos, newVal );
+      addVals ( varPos, newVal );
 
       return *this;
     } catch ( NotFound& ) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
-      GUM_ERROR( NotFound, name + v.name() );
+      GUM_ERROR ( NotFound, name + v.name() );
     }
   }
 
-  INLINE SetInst& SetInst::remVal( Idx varPos, Idx newVal )  {
+  INLINE SetInst& SetInst::remVal ( Idx varPos, Idx newVal )  {
     if ( __vals.size() <= varPos )
-      GUM_ERROR( NotFound, "" );
+      GUM_ERROR ( NotFound, "" );
 
     if ( newVal >= __vars[varPos]->domainSize() )
-      GUM_ERROR( OutOfBounds, "" );
+      GUM_ERROR ( OutOfBounds, "" );
 
-    __chgVals( varPos, ~( 1 << newVal ) & __vals[varPos] );
+    __chgVals ( varPos, ~ ( 1 << newVal ) & __vals[varPos] );
     return *this;
   }
 
-  INLINE SetInst& SetInst::remVal( const DiscreteVariable* v,
-                                   Idx newVal ) {
+  INLINE SetInst& SetInst::remVal ( const DiscreteVariable* v,
+                                    Idx newVal ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
       Idx varPos = __vars[v]; // throws NotFound if v doesn't belong to this
 
       if ( newVal >= v->domainSize() )
-        GUM_ERROR( OutOfBounds, "" );
+        GUM_ERROR ( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
 
-      remVal( varPos,newVal );
+      remVal ( varPos, newVal );
 
       return *this;
     } catch ( NotFound& ) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
-      GUM_ERROR( NotFound, name + v->name() );
+      GUM_ERROR ( NotFound, name + v->name() );
     }
   }
 
-  INLINE SetInst& SetInst::remVal( const DiscreteVariable& v,
-                                   Idx newVal ) {
+  INLINE SetInst& SetInst::remVal ( const DiscreteVariable& v,
+                                    Idx newVal ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
       Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
 
       if ( newVal >= v.domainSize() )
-        GUM_ERROR( OutOfBounds, "" );
+        GUM_ERROR ( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
 
-      remVal( varPos, newVal );
+      remVal ( varPos, newVal );
 
       return *this;
     } catch ( NotFound& ) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
-      GUM_ERROR( NotFound, name + v.name() );
+      GUM_ERROR ( NotFound, name + v.name() );
     }
   }
 
-  INLINE SetInst& SetInst::remVals( Idx varPos, const Size newVal )  {
+  INLINE SetInst& SetInst::remVals ( Idx varPos, const Size newVal )  {
     if ( __vals.size() <= varPos )
-      GUM_ERROR( NotFound, "" );
+      GUM_ERROR ( NotFound, "" );
 
-    if ( newVal >= ( 1UL <<__vars[varPos]->domainSize() ) )
-      GUM_ERROR( OutOfBounds, "" );
+    if ( newVal >= ( 1UL << __vars[varPos]->domainSize() ) )
+      GUM_ERROR ( OutOfBounds, "" );
 
-    __chgVals( varPos, ~newVal & __vals[varPos] );
+    __chgVals ( varPos, ~newVal & __vals[varPos] );
     return *this;
   }
 
-  INLINE SetInst& SetInst::remVals( const DiscreteVariable* v,
-                                    const Size newVal ) {
+  INLINE SetInst& SetInst::remVals ( const DiscreteVariable* v,
+                                     const Size newVal ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
       Idx varPos = __vars[v]; // throws NotFound if v doesn't belong to this
 
-      if ( newVal >= ( 1UL <<__vars[varPos]->domainSize() ) )
+      if ( newVal >= ( 1UL << __vars[varPos]->domainSize() ) )
 
-        GUM_ERROR( OutOfBounds, "" );
+        GUM_ERROR ( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
 
-      remVals( varPos,newVal );
+      remVals ( varPos, newVal );
 
       return *this;
     } catch ( NotFound& ) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
-      GUM_ERROR( NotFound, name + v->name() );
+      GUM_ERROR ( NotFound, name + v->name() );
     }
   }
 
-  INLINE SetInst& SetInst::remVals( const DiscreteVariable& v,
-                                    const Size newVal ) {
+  INLINE SetInst& SetInst::remVals ( const DiscreteVariable& v,
+                                     const Size newVal ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
       Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
 
-      if ( newVal >= ( 1UL <<__vars[varPos]->domainSize() ) )
+      if ( newVal >= ( 1UL << __vars[varPos]->domainSize() ) )
 
-        GUM_ERROR( OutOfBounds, "" );
+        GUM_ERROR ( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
 
-      remVals( varPos, newVal );
+      remVals ( varPos, newVal );
 
       return *this;
     } catch ( NotFound& ) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
-      GUM_ERROR( NotFound, name + v.name() );
+      GUM_ERROR ( NotFound, name + v.name() );
     }
   }
 
-  INLINE SetInst& SetInst::chgDifVal( Idx varPos, const Size newVal )  {
+  INLINE SetInst& SetInst::chgDifVal ( Idx varPos, const Size newVal )  {
     if ( __vals.size() <= varPos )
-      GUM_ERROR( NotFound, "" );
+      GUM_ERROR ( NotFound, "" );
 
     if ( newVal >= __vars[varPos]->domainSize() )
-      GUM_ERROR( OutOfBounds, "" );
+      GUM_ERROR ( OutOfBounds, "" );
 
-    __chgVals( varPos, newVal ^ __vals[varPos] );
+    __chgVals ( varPos, newVal ^ __vals[varPos] );
     return *this;
   }
 
-  INLINE SetInst& SetInst::interVals( Idx varPos, const Size newVal )  {
+  INLINE SetInst& SetInst::interVals ( Idx varPos, const Size newVal )  {
     if ( __vals.size() <= varPos )
-      GUM_ERROR( NotFound, "" );
+      GUM_ERROR ( NotFound, "" );
 
-    if ( newVal >= ( 1UL <<__vars[varPos]->domainSize() ) )
-      GUM_ERROR( OutOfBounds, "" );
+    if ( newVal >= ( 1UL << __vars[varPos]->domainSize() ) )
+      GUM_ERROR ( OutOfBounds, "" );
 
-    __chgVals( varPos, newVal & __vals[varPos] );
+    __chgVals ( varPos, newVal & __vals[varPos] );
     return *this;
   }
 
-  INLINE SetInst& SetInst::interVals( const DiscreteVariable* v,
-                                      const Size newVal ) {
+  INLINE SetInst& SetInst::interVals ( const DiscreteVariable* v,
+                                       const Size newVal ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
       Idx varPos = __vars[v]; // throws NotFound if v doesn't belong to this
 
-      if ( newVal >= ( 1UL <<__vars[varPos]->domainSize() ) )
+      if ( newVal >= ( 1UL << __vars[varPos]->domainSize() ) )
 
-        GUM_ERROR( OutOfBounds, "" );
+        GUM_ERROR ( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
 
-      interVals( varPos,newVal );
+      interVals ( varPos, newVal );
 
       return *this;
     } catch ( NotFound& ) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
-      GUM_ERROR( NotFound, name + v->name() );
+      GUM_ERROR ( NotFound, name + v->name() );
     }
   }
 
-  INLINE SetInst& SetInst::interVals( const DiscreteVariable& v,
-                                      const Size newVal ) {
+  INLINE SetInst& SetInst::interVals ( const DiscreteVariable& v,
+                                       const Size newVal ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
       Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
 
-      if ( newVal >= ( 1UL <<__vars[varPos]->domainSize() ) )
+      if ( newVal >= ( 1UL << __vars[varPos]->domainSize() ) )
 
-        GUM_ERROR( OutOfBounds, "" );
+        GUM_ERROR ( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
 
-      interVals( varPos, newVal );
+      interVals ( varPos, newVal );
 
       return *this;
     } catch ( NotFound& ) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
-      GUM_ERROR( NotFound, name + v.name() );
+      GUM_ERROR ( NotFound, name + v.name() );
     }
   }
 
-  INLINE SetInst& SetInst::interVal( Idx varPos, Idx newVal )  {
+  INLINE SetInst& SetInst::interVal ( Idx varPos, Idx newVal )  {
     if ( __vals.size() <= varPos )
-      GUM_ERROR( NotFound, "" );
+      GUM_ERROR ( NotFound, "" );
 
     if ( newVal >= __vars[varPos]->domainSize() )
-      GUM_ERROR( OutOfBounds, "" );
+      GUM_ERROR ( OutOfBounds, "" );
 
-    __chgVals( varPos, ( 1 << newVal ) & __vals[varPos] );
+    __chgVals ( varPos, ( 1 << newVal ) & __vals[varPos] );
     return *this;
   }
 
-  INLINE SetInst& SetInst::interVal( const DiscreteVariable* v,
-                                     Idx newVal ) {
+  INLINE SetInst& SetInst::interVal ( const DiscreteVariable* v,
+                                      Idx newVal ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
       Idx varPos = __vars[v]; // throws NotFound if v doesn't belong to this
 
       if ( newVal >= v->domainSize() )
-        GUM_ERROR( OutOfBounds, "" );
+        GUM_ERROR ( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
 
-      interVal( varPos,newVal );
+      interVal ( varPos, newVal );
 
       return *this;
     } catch ( NotFound& ) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
-      GUM_ERROR( NotFound, name + v->name() );
+      GUM_ERROR ( NotFound, name + v->name() );
     }
   }
 
-  INLINE SetInst& SetInst::interVal( const DiscreteVariable& v,
-                                     Idx newVal ) {
+  INLINE SetInst& SetInst::interVal ( const DiscreteVariable& v,
+                                      Idx newVal ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
       Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
 
       if ( newVal >= v.domainSize() )
-        GUM_ERROR( OutOfBounds, "" );
+        GUM_ERROR ( OutOfBounds, "" );
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
 
-      interVal( varPos, newVal );
+      interVal ( varPos, newVal );
 
       return *this;
     } catch ( NotFound& ) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
-      GUM_ERROR( NotFound, name + v.name() );
+      GUM_ERROR ( NotFound, name + v.name() );
     }
   }
 
 
 /// adds a new var to the sequence of vars
 
-  INLINE void SetInst::add( const DiscreteVariable& v )  {
+  INLINE void SetInst::add ( const DiscreteVariable& v )  {
     // if __master : not allowed
     //if ( __master ) GUM_ERROR( OperationNotAllowed, "in slave SetInst" );
 
     // check if the variable already belongs to the tuple of variables
     // of the SetInst
-    if ( __vars.exists( &v ) )
-      GUM_ERROR( DuplicateElement, "Var already exists in this SetInst" );
+    if ( __vars.exists ( &v ) )
+      GUM_ERROR ( DuplicateElement, "Var already exists in this SetInst" );
 
     // actually add the new dimension
-    __add( v );
+    __add ( v );
   }
 
 
 /// removes a variable from the sequence of vars
 
-  INLINE void SetInst::erase( const DiscreteVariable& v ) {
+  INLINE void SetInst::erase ( const DiscreteVariable& v ) {
     // if __master : not allowed
     // if ( __master ) GUM_ERROR( OperationNotAllowed, "in slave SetInst" );
 
     // check that the variable does actually belong to the SetInst
-    if ( ! __vars.exists( &v ) )
-      GUM_ERROR( NotFound, "Var does not exist in this SetInst" );
+    if ( ! __vars.exists ( &v ) )
+      GUM_ERROR ( NotFound, "Var does not exist in this SetInst" );
 
     // actually delete the dimension
-    __erase( v );
+    __erase ( v );
   }
 
 /// removes everything
-  INLINE void SetInst::clear( void ) {
+  INLINE void SetInst::clear ( void ) {
     // if ( __master ) GUM_ERROR( OperationNotAllowed, "in slave SetInst" );
 
     __vars.clear();
@@ -589,8 +589,8 @@ namespace gum {
     // @todo enhance the cplxity with a member domainSize ?
     Size s = 1;
 
-    for ( Sequence<const DiscreteVariable*>::iterator i = __vars.begin();
-          i != __vars.end(); ++i ) {//std::cout <<( *i )->domainSize() << std::endl;
+    for ( Sequence<const DiscreteVariable*>::iterator_safe i = __vars.beginSafe();
+          i != __vars.endSafe(); ++i ) {//std::cout <<( *i )->domainSize() << std::endl;
       s *= ( *i )->domainSize();
     }
 
@@ -600,7 +600,7 @@ namespace gum {
 
 /// returns the index of a var
 
-  INLINE Idx SetInst::pos( const DiscreteVariable& k ) const {
+  INLINE Idx SetInst::pos ( const DiscreteVariable& k ) const {
     return __vars[&k];
   }
 
@@ -608,15 +608,15 @@ namespace gum {
 /// Default constructor
 
   INLINE SetInst::SetInst() :
-/*__master( 0 ),*/ __overflow( false ) {
-    GUM_CONSTRUCTOR( SetInst );
+/*__master( 0 ),*/ __overflow ( false ) {
+    GUM_CONSTRUCTOR ( SetInst );
   }
 
 
 /// destructor
 
   INLINE SetInst::~SetInst() {
-    GUM_DESTRUCTOR( SetInst );
+    GUM_DESTRUCTOR ( SetInst );
     // unregister the SetInst from its __master
 
     //if ( __master )  __master->unregisterSlave( *this );
@@ -632,9 +632,9 @@ namespace gum {
 
 /// returns the current value of a given variable
 
-  INLINE Size SetInst::vals( Idx i ) const {
+  INLINE Size SetInst::vals ( Idx i ) const {
     if ( i >= __vals.size() )
-      GUM_ERROR( NotFound, "" );
+      GUM_ERROR ( NotFound, "" );
 
     return __vals[i];
   }
@@ -643,55 +643,55 @@ namespace gum {
 /// returns the current value of a given variable
 /// need to create functions TODO
 
-  INLINE Size SetInst::vals( const DiscreteVariable& var ) const {
+  INLINE Size SetInst::vals ( const DiscreteVariable& var ) const {
     return __vals[__vars[&var]];
   }
 
 
 /// returns the current value of a given variable
 
-  INLINE Size SetInst::vals( const DiscreteVariable* var ) const {
+  INLINE Size SetInst::vals ( const DiscreteVariable* var ) const {
     return __vals[__vars[var]];
   }
 
-  INLINE Idx SetInst::val( const DiscreteVariable* var ) const {
+  INLINE Idx SetInst::val ( const DiscreteVariable* var ) const {
     Idx n = 0;
     Size value = __vals[__vars[var]];
 
-    if ( !__vals[__vars[var]]%2 ) {
+    if ( !__vals[__vars[var]] % 2 ) {
       while ( value & 1 ) {
         n++;
         value >>= 1;
       }
 
       return n;
-    } else GUM_ERROR( NotFound,"There is more than one value " );
+    } else GUM_ERROR ( NotFound, "There is more than one value " );
   }
 
-  INLINE Idx SetInst::nbrOccurences( const DiscreteVariable& var ) const {
+  INLINE Idx SetInst::nbrOccurences ( const DiscreteVariable& var ) const {
     Idx n = 0;
     Size val =  __vals[__vars[&var]];
 
     while ( val ) {
-      n+=( val & 1 );
-      val>>=1;
+      n += ( val & 1 );
+      val >>= 1;
     }
 
     return n;
   }
 
-  INLINE Idx SetInst::val( const DiscreteVariable& var ) const {
+  INLINE Idx SetInst::val ( const DiscreteVariable& var ) const {
     Idx n = 0;
     Size value = __vals[__vars[&var]];
 
-    if ( nbrOccurences( var ) ==1 ) {
+    if ( nbrOccurences ( var ) == 1 ) {
       while ( value > 1 ) {
         n++;
-        value>>=1;
+        value >>= 1;
       }
 
       return n;
-    } else GUM_ERROR( NotFound,"There is more than one value " );
+    } else GUM_ERROR ( NotFound, "There is more than one value " );
   }
 
 
@@ -699,8 +699,8 @@ namespace gum {
 
 /// returns the variable at position i in the tuple
 
-  INLINE const DiscreteVariable& SetInst::variable( Idx i ) const  {
-    return *( __vars.atPos( i ) );
+  INLINE const DiscreteVariable& SetInst::variable ( Idx i ) const  {
+    return * ( __vars.atPos ( i ) );
   }
 
 
@@ -739,21 +739,21 @@ namespace gum {
   }
 
 /// reorder vars in *this
-  INLINE void SetInst::reorder( const SetInst& i ) {
-    reorder( i.variablesSequence() );
+  INLINE void SetInst::reorder ( const SetInst& i ) {
+    reorder ( i.variablesSequence() );
   }
 
 
 /// change values with those in i
 
-  INLINE SetInst& SetInst::chgValIn( const SetInst& i )   {
+  INLINE SetInst& SetInst::chgValIn ( const SetInst& i )   {
     __overflow = false;
     Idx s = i.nbrDim();
 
     for ( Size p = 0; p < s; ++p )
-      if ( contains( i.variable( p ) ) )
+      if ( contains ( i.variable ( p ) ) )
         //__vals[pos( i.variable( p ) )] = i.val( p );
-        __chgVals( pos( i.variable( p ) ), i.vals( i.variable( p ) ) );
+        __chgVals ( pos ( i.variable ( p ) ), i.vals ( i.variable ( p ) ) );
 
     return *this;
   }
@@ -769,10 +769,10 @@ namespace gum {
 
 /// swap 2 vars in the SetInst
 
-  INLINE void SetInst::__swap( Idx i, Idx j ) {
+  INLINE void SetInst::__swap ( Idx i, Idx j ) {
     if ( i == j ) return;
 
-    __vars.swap( i, j );
+    __vars.swap ( i, j );
 
     Size v;
 
@@ -792,12 +792,12 @@ namespace gum {
     Idx position = 0;
 
     for ( Idx i = 0; i < max; ++i ) {
-      const DiscreteVariable* pv = original.atPos( i );
+      const DiscreteVariable* pv = original.atPos ( i );
 
-      if ( contains( pv ) ) {
-        GUM_ASSERT( pos( *pv ) >= position ); // this var should not be
+      if ( contains ( pv ) ) {
+        GUM_ASSERT ( pos ( *pv ) >= position ); // this var should not be
         // already placed.
-        __swap( position, pos( *pv ) );
+        __swap ( position, pos ( *pv ) );
         position++;
       }
     }
@@ -807,20 +807,20 @@ namespace gum {
 
 /// adds a new var to the sequence of vars
 
-  INLINE void SetInst::__add( const DiscreteVariable& v ) {
-    __vars.insert( &v );
-    __vals.push_back( 1 );
+  INLINE void SetInst::__add ( const DiscreteVariable& v ) {
+    __vars.insert ( &v );
+    __vals.push_back ( 1 );
     __overflow = false;
   }
 
 
 /// removes a variable from the sequence of vars
 
-  INLINE void SetInst::__erase( const DiscreteVariable& v ) {
+  INLINE void SetInst::__erase ( const DiscreteVariable& v ) {
     // get the position of the variable
     Idx pos = __vars[&v];
-    __vars.erase( &v );
-    __vals.erase( __vals.begin() + pos );
+    __vars.erase ( &v );
+    __vals.erase ( __vals.begin() + pos );
 
   }
 
@@ -830,9 +830,9 @@ namespace gum {
   }
 
 /// Replace x by y.
-  INLINE void SetInst::_swap( const DiscreteVariable* x,
-                              const DiscreteVariable* y ) {
-    __vars.setAtPos( __vars.pos( x ), y );
+  INLINE void SetInst::_swap ( const DiscreteVariable* x,
+                               const DiscreteVariable* y ) {
+    __vars.setAtPos ( __vars.pos ( x ), y );
   }
 } /* namespace gum */
 

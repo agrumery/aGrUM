@@ -31,16 +31,16 @@
 namespace gum {
 
 
-  void SetInst::__init( MultiDimAdressable* master ) {
+  void SetInst::__init ( MultiDimAdressable* master ) {
     // for speed issues
     const Sequence<const DiscreteVariable*>& v = master->variablesSequence();
-    __vars.resize( v.size() );
-    __vals.reserve( v.size() );
+    __vars.resize ( v.size() );
+    __vals.reserve ( v.size() );
     // fill the SetInst
 
-    for ( Sequence<const DiscreteVariable*>::iterator iter = v.begin();
-          iter != v.end(); ++iter ) {
-      __add( **iter );
+    for ( Sequence<const DiscreteVariable*>::iterator_safe iter = v.beginSafe();
+          iter != v.endSafe(); ++iter ) {
+      __add ( **iter );
     }
 
     //if ( master ) actAsSlave( master->getMasterRef() );
@@ -49,29 +49,29 @@ namespace gum {
 
   /// constructor for a SetInst contained into a MultiDimInterface
 
-  SetInst::SetInst( MultiDimAdressable& d ) :
-/*__master( 0 ),*/ __overflow( false ) {
+  SetInst::SetInst ( MultiDimAdressable& d ) :
+/*__master( 0 ),*/ __overflow ( false ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( SetInst );
-    __init( &d );
+    GUM_CONSTRUCTOR ( SetInst );
+    __init ( &d );
   }
 
-  SetInst::SetInst( const MultiDimAdressable& d ) :
-/*__master( 0 ),*/ __overflow( false ) {
+  SetInst::SetInst ( const MultiDimAdressable& d ) :
+/*__master( 0 ),*/ __overflow ( false ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( SetInst );
-    __init( const_cast<MultiDimAdressable*>( &d ) );
+    GUM_CONSTRUCTOR ( SetInst );
+    __init ( const_cast<MultiDimAdressable*> ( &d ) );
   }
 
 
   /// constructor for a SetInst contained into a MultiDimInterface
 
-  SetInst::SetInst( MultiDimAdressable* d ) :
-/*__master( 0 ),*/ __overflow( false ) {
+  SetInst::SetInst ( MultiDimAdressable* d ) :
+/*__master( 0 ),*/ __overflow ( false ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( SetInst );
+    GUM_CONSTRUCTOR ( SetInst );
 
-    if ( d ) __init( d );
+    if ( d ) __init ( d );
   }
 
 
@@ -79,21 +79,21 @@ namespace gum {
   /** this constructor is needed in order to allow creation of SetInst(this)
    * in MultiDimAdressable and below */
 
-  SetInst::SetInst( const MultiDimAdressable* const_d ) :
-/*__master( 0 ),*/ __overflow( false ) {
+  SetInst::SetInst ( const MultiDimAdressable* const_d ) :
+/*__master( 0 ),*/ __overflow ( false ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( SetInst );
+    GUM_CONSTRUCTOR ( SetInst );
 
-    if ( const_d ) __init( const_cast<MultiDimAdressable*>( const_d ) );
+    if ( const_d ) __init ( const_cast<MultiDimAdressable*> ( const_d ) );
   }
 
 
   /// copy constructor
 
-  SetInst::SetInst( const SetInst& aI ) :
-/* MultiDimInterface(), __master( 0 ),*/ __overflow( false ) {
+  SetInst::SetInst ( const SetInst& aI ) :
+/* MultiDimInterface(), __master( 0 ),*/ __overflow ( false ) {
     // for debugging purposes
-    GUM_CONS_CPY( SetInst );
+    GUM_CONS_CPY ( SetInst );
     // copy the content of aI
     __vars = aI.__vars;
     __vals = aI.__vals;
@@ -103,19 +103,19 @@ namespace gum {
   }
 
 
-  SetInst::SetInst( const Instantiation& aI ) :
-/* MultiDimInterface(), __master( 0 ),*/ __overflow( false ) {
+  SetInst::SetInst ( const Instantiation& aI ) :
+/* MultiDimInterface(), __master( 0 ),*/ __overflow ( false ) {
     // for debugging purposes
-    GUM_CONS_CPY( SetInst );
+    GUM_CONS_CPY ( SetInst );
     const Sequence<const DiscreteVariable*>& v = aI.variablesSequence();
-    __vars.resize( v.size() );
+    __vars.resize ( v.size() );
     //__vals.reserve( v.size() );
     // fill the SetInst
 
-    for ( Sequence<const DiscreteVariable*>::iterator iter = v.begin();
-          iter != v.end(); ++iter ) {
-      __add( **iter );
-      __vals[__vars[*iter]] =( 1 << ( aI.val( **iter ) ) );
+    for ( Sequence<const DiscreteVariable*>::iterator_safe iter = v.beginSafe();
+          iter != v.endSafe(); ++iter ) {
+      __add ( **iter );
+      __vals[__vars[*iter]] = ( 1 << ( aI.val ( **iter ) ) );
 
       // copy the content of aI
       //if ( aI.__master && notifyMaster ) actAsSlave( *aI.__master );
@@ -124,7 +124,7 @@ namespace gum {
 
 
   // operator=
-  SetInst& SetInst::operator=( const SetInst& aI ) {
+  SetInst& SetInst::operator= ( const SetInst& aI ) {
     /* if ( __master ) {
        if ( ! aI.isMaster( __master ) ) { // aI as the same master.
        if ( nbrDim()!=aI.nbrDim() ) GUM_ERROR( OperationNotAllowed, "in slave SetInst" );
@@ -185,42 +185,42 @@ namespace gum {
 
     sstr << "<";
 
-    Sequence<const DiscreteVariable*>::iterator iter = __vars.begin();
+    Sequence<const DiscreteVariable*>::iterator_safe iter = __vars.beginSafe();
 
-    if ( iter != __vars.end() ) {
+    if ( iter != __vars.endSafe() ) {
       std::stringstream sstr2;
-      sstr2.str( "" );
-      Size si =variable( iter.pos() ).domainSize();
-      Size valb=  vals( iter.pos() );
+      sstr2.str ( "" );
+      Size si = variable ( iter.pos() ).domainSize();
+      Size valb =  vals ( iter.pos() );
 
       while ( si-- != 0 ) {
         std::stringstream  sstr4;
-        sstr4<<( valb & 1? "1":"0" )<< sstr2.str();
-        valb>>=1;
-        sstr2.str( "" );;
+        sstr4 << ( valb & 1 ? "1" : "0" ) << sstr2.str();
+        valb >>= 1;
+        sstr2.str ( "" );;
         sstr2 << sstr4.str();
       }
 
-      sstr << variable( iter.pos() ).name() << ":"<<sstr2.str();
+      sstr << variable ( iter.pos() ).name() << ":" << sstr2.str();
       ++iter;
 
-      while ( iter != __vars.end() ) {
+      while ( iter != __vars.endSafe() ) {
         std::stringstream sstr3;
-        sstr3 <<"";
-        si = variable( iter.pos() ).domainSize();
+        sstr3 << "";
+        si = variable ( iter.pos() ).domainSize();
 
-        valb=  vals( iter.pos() );
+        valb =  vals ( iter.pos() );
 
         while ( si-- != 0 ) {
           std::stringstream  sstr4;
 
-          sstr4<< ( valb & 1? "1":"0" ) << sstr3.str();
-          valb>>=1;
-          sstr3.str( "" );
+          sstr4 << ( valb & 1 ? "1" : "0" ) << sstr3.str();
+          valb >>= 1;
+          sstr3.str ( "" );
           sstr3 << sstr4.str();
         }
 
-        sstr << "|" << variable( iter.pos() ).name() << ":" <<sstr3.str();
+        sstr << "|" << variable ( iter.pos() ).name() << ":" << sstr3.str();
         ++iter;
       }
     }
@@ -247,17 +247,17 @@ namespace gum {
 
   std::ostream& operator<< ( std::ostream& aStream,
                              const SetInst& i ) {
-    aStream<<i.toString();
+    aStream << i.toString();
     return aStream;
   }
   gum::SetInst& operator<< ( gum::SetInst& inst,
                              const gum::DiscreteVariable& i ) {
-    inst.add( i );
+    inst.add ( i );
     return inst;
   }
   gum::SetInst& operator>> ( gum::SetInst& inst,
                              const gum::DiscreteVariable& i ) {
-    inst.erase( i );
+    inst.erase ( i );
     return inst;
   }
 

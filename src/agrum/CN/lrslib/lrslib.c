@@ -49,19 +49,19 @@ static void lrs_dump_state();
  *************************************/
 
 /* allocate lrs_mp_vector for n+1 lrs_mp numbers */
-lrs_mp_vector lrs_alloc_mp_vector_wrapper( long n ) {
-  return lrs_alloc_mp_vector( n );
+lrs_mp_vector lrs_alloc_mp_vector_wrapper ( long n ) {
+  return lrs_alloc_mp_vector ( n );
 }
 /* allocate lrs_mp_matrix for m+1 x n+1 lrs_mp   */
-lrs_mp_matrix lrs_alloc_mp_matrix_wrapper( long m, long n ) {
-  return lrs_alloc_mp_matrix( m, n );
+lrs_mp_matrix lrs_alloc_mp_matrix_wrapper ( long m, long n ) {
+  return lrs_alloc_mp_matrix ( m, n );
 }
 
-void lrs_clear_mp_vector_wrapper( lrs_mp_vector a, long n ) {
-  lrs_clear_mp_vector( a, n );
+void lrs_clear_mp_vector_wrapper ( lrs_mp_vector a, long n ) {
+  lrs_clear_mp_vector ( a, n );
 }
-void lrs_clear_mp_matrix_wrapper( lrs_mp_matrix a, long m, long n ) {
-  lrs_clear_mp_matrix( a, m, n );
+void lrs_clear_mp_matrix_wrapper ( lrs_mp_matrix a, long m, long n ) {
+  lrs_clear_mp_matrix ( a, m, n );
 }
 
 /*******************************/
@@ -73,7 +73,7 @@ void lrs_clear_mp_matrix_wrapper( lrs_mp_matrix a, long m, long n ) {
 /* showing function calls intended for public use      */
 /*******************************************************/
 long
-lrs_main( int argc, char* argv[] )
+lrs_main ( int argc, char* argv[] )
 
 {
 
@@ -97,32 +97,32 @@ lrs_main( int argc, char* argv[] )
 
   ***************************************************/
 
-  if ( !lrs_init( "\n*lrs:" ) )
+  if ( !lrs_init ( "\n*lrs:" ) )
     return 1;
 
-  printf( AUTHOR );
+  printf ( AUTHOR );
 
   /*********************************************************************************/
   /* Step 1: Allocate lrs_dat, lrs_dic and set up the problem                      */
   /*********************************************************************************/
 
-  Q = lrs_alloc_dat( "LRS globals" ); /* allocate and init structure for static problem data */
+  Q = lrs_alloc_dat ( "LRS globals" ); /* allocate and init structure for static problem data */
 
   if ( Q == NULL )
     return 1;
 
-  if ( !lrs_read_dat( Q, argc, argv ) ) /* read first part of problem data to get dimensions   */
+  if ( !lrs_read_dat ( Q, argc, argv ) ) /* read first part of problem data to get dimensions   */
     return 1;                     /* and problem type: H- or V- input representation     */
 
-  P = lrs_alloc_dic( Q ); /* allocate and initialize lrs_dic                     */
+  P = lrs_alloc_dic ( Q ); /* allocate and initialize lrs_dic                     */
 
   if ( P == NULL )
     return 1;
 
-  if ( !lrs_read_dic( P, Q ) ) /* read remainder of input to setup P and Q            */
+  if ( !lrs_read_dic ( P, Q ) ) /* read remainder of input to setup P and Q            */
     return 1;
 
-  output = lrs_alloc_mp_vector( Q->n ); /* output holds one line of output from dictionary     */
+  output = lrs_alloc_mp_vector ( Q->n ); /* output holds one line of output from dictionary     */
 
 
   /*********************************************************************************/
@@ -132,7 +132,7 @@ lrs_main( int argc, char* argv[] )
   /*         Print linearity space if any, and retrieve output from first dict.    */
   /*********************************************************************************/
 
-  if ( !lrs_getfirstbasis( &P, Q, &Lin, FALSE ) )
+  if ( !lrs_getfirstbasis ( &P, Q, &Lin, FALSE ) )
     return 1;
 
   /* Pivot to a starting dictionary                      */
@@ -147,7 +147,7 @@ lrs_main( int argc, char* argv[] )
     startcol++;     /* col zero not treated as redundant   */
 
   for ( col = startcol; col < Q->nredundcol; col++ ) /* print linearity space               */
-    lrs_printoutput( Q, Lin[col] ); /* Array Lin[][] holds the coeffs.     */
+    lrs_printoutput ( Q, Lin[col] ); /* Array Lin[][] holds the coeffs.     */
 
 
 
@@ -164,25 +164,25 @@ lrs_main( int argc, char* argv[] )
   /* vertex/ray/facet from the lrs_mp_vector output         */
   /* prune is TRUE if tree should be pruned at current node */
   do {
-    prune=lrs_checkbound( P,Q );
+    prune = lrs_checkbound ( P, Q );
 
     if ( !prune )
       for ( col = 0; col <= P->d; col++ )
-        if ( lrs_getsolution( P, Q, output, col ) )
-          lrs_printoutput( Q, output );
-  } while ( !Q->lponly && lrs_getnextbasis( &P, Q, prune ) );
+        if ( lrs_getsolution ( P, Q, output, col ) )
+          lrs_printoutput ( Q, output );
+  } while ( !Q->lponly && lrs_getnextbasis ( &P, Q, prune ) );
 
   if ( Q->lponly )
-    lrs_lpoutput( P,Q,output );
+    lrs_lpoutput ( P, Q, output );
   else
-    lrs_printtotals( P, Q ); /* print final totals, including estimates       */
+    lrs_printtotals ( P, Q ); /* print final totals, including estimates       */
 
-  lrs_clear_mp_vector( output, Q->n );
-  lrs_free_dic( P,Q );          /* deallocate lrs_dic */
+  lrs_clear_mp_vector ( output, Q->n );
+  lrs_free_dic ( P, Q );        /* deallocate lrs_dic */
 
-  lrs_free_dat( Q );            /* deallocate lrs_dat */
+  lrs_free_dat ( Q );           /* deallocate lrs_dat */
 
-  lrs_close( "lrs:" );
+  lrs_close ( "lrs:" );
 
   return 0;
 }
@@ -196,7 +196,7 @@ lrs_main( int argc, char* argv[] )
 /* showing function calls intended for public use      */
 /*******************************************************/
 long
-redund_main( int argc, char* argv[] )
+redund_main ( int argc, char* argv[] )
 
 {
   lrs_mp_matrix Ain;    /* holds a copy of the input matrix to output at the end */
@@ -229,29 +229,29 @@ redund_main( int argc, char* argv[] )
 
   ***************************************************/
 
-  if ( !lrs_init( "\n*redund:" ) )
+  if ( !lrs_init ( "\n*redund:" ) )
     return 1;
 
-  printf( AUTHOR );
+  printf ( AUTHOR );
 
   /*********************************************************************************/
   /* Step 1: Allocate lrs_dat, lrs_dic and set up the problem                      */
   /*********************************************************************************/
 
-  Q = lrs_alloc_dat( "LRS globals" ); /* allocate and init structure for static problem data */
+  Q = lrs_alloc_dat ( "LRS globals" ); /* allocate and init structure for static problem data */
 
   if ( Q == NULL )
     return 1;
 
-  if ( !lrs_read_dat( Q, argc, argv ) ) /* read first part of problem data to get dimensions   */
+  if ( !lrs_read_dat ( Q, argc, argv ) ) /* read first part of problem data to get dimensions   */
     return 1;                           /* and problem type: H- or V- input representation     */
 
-  P = lrs_alloc_dic( Q ); /* allocate and initialize lrs_dic                     */
+  P = lrs_alloc_dic ( Q ); /* allocate and initialize lrs_dic                     */
 
   if ( P == NULL )
     return 1;
 
-  if ( !lrs_read_dic( P, Q ) ) /* read remainder of input to setup P and Q            */
+  if ( !lrs_read_dic ( P, Q ) ) /* read remainder of input to setup P and Q            */
     return 1;
 
   /* if non-negative flag is set, non-negative constraints are not input */
@@ -261,15 +261,15 @@ redund_main( int argc, char* argv[] )
   d = P->d;
   debug = Q->debug;
 
-  redineq = calloc( ( m + 1 ), sizeof( long ) );
-  Ain = lrs_alloc_mp_matrix( m, d ); /* make a copy of A matrix for output later            */
+  redineq = calloc ( ( m + 1 ), sizeof ( long ) );
+  Ain = lrs_alloc_mp_matrix ( m, d ); /* make a copy of A matrix for output later            */
 
   for ( i = 1; i <= m; i++ ) {
     for ( j = 0; j <= d; j++ )
-      copy( Ain[i][j], P->A[i][j] );
+      copy ( Ain[i][j], P->A[i][j] );
 
     if ( debug )
-      lrs_printrow( "*", Q, Ain[i], d );
+      lrs_printrow ( "*", Q, Ain[i], d );
   }
 
   /*********************************************************************************/
@@ -277,7 +277,7 @@ redund_main( int argc, char* argv[] )
   /*         Lin is created if necessary to hold linearity space                   */
   /*********************************************************************************/
 
-  if ( !lrs_getfirstbasis( &P, Q, &Lin, TRUE ) )
+  if ( !lrs_getfirstbasis ( &P, Q, &Lin, TRUE ) )
     return 1;
 
   /* Pivot to a starting dictionary                      */
@@ -298,7 +298,7 @@ redund_main( int argc, char* argv[] )
   lastdv = Q->lastdv;
 
   if ( debug )
-    fprintf( lrs_ofp, "\ncheckindex m=%ld, n=%ld, nlinearity=%ld lastdv=%ld", m,d,nlinearity,lastdv );
+    fprintf ( lrs_ofp, "\ncheckindex m=%ld, n=%ld, nlinearity=%ld lastdv=%ld", m, d, nlinearity, lastdv );
 
   /* linearities are not considered for redundancy */
 
@@ -311,37 +311,37 @@ redund_main( int argc, char* argv[] )
   for ( index = lastdv + 1; index <= m + d; index++ ) {
     ineq = Q->inequality[index - lastdv]; /* the input inequality number corr. to this index */
 
-    redineq[ineq] = checkindex( P, Q, index );
+    redineq[ineq] = checkindex ( P, Q, index );
 
     if ( debug )
-      fprintf( lrs_ofp, "\ncheck index=%ld, inequality=%ld, redineq=%ld", index, ineq, redineq[ineq] );
+      fprintf ( lrs_ofp, "\ncheck index=%ld, inequality=%ld, redineq=%ld", index, ineq, redineq[ineq] );
 
     if ( redineq[ineq] == ONE ) {
-      fprintf( lrs_ofp, "\n*row %ld was redundant and removed", ineq );
-      fflush( lrs_ofp );
+      fprintf ( lrs_ofp, "\n*row %ld was redundant and removed", ineq );
+      fflush ( lrs_ofp );
     }
 
   }       /* end for index ..... */
 
   if ( debug ) {
-    fprintf( lrs_ofp, "\n*redineq:" );
+    fprintf ( lrs_ofp, "\n*redineq:" );
 
     for ( i = 1; i <= m; i++ )
-      fprintf( lrs_ofp, " %ld", redineq[i] );
+      fprintf ( lrs_ofp, " %ld", redineq[i] );
   }
 
   if ( !Q->hull )
-    fprintf( lrs_ofp, "\nH-representation" );
+    fprintf ( lrs_ofp, "\nH-representation" );
   else
-    fprintf( lrs_ofp, "\nV-representation" );
+    fprintf ( lrs_ofp, "\nV-representation" );
 
   /* linearities will be printed first in output */
 
   if ( nlinearity > 0 ) {
-    fprintf( lrs_ofp, "\nlinearity %ld", nlinearity );
+    fprintf ( lrs_ofp, "\nlinearity %ld", nlinearity );
 
     for ( i = 1; i <= nlinearity; i++ )
-      fprintf( lrs_ofp, " %ld", i );
+      fprintf ( lrs_ofp, " %ld", i );
 
   }
 
@@ -351,26 +351,26 @@ redund_main( int argc, char* argv[] )
     if ( redineq[i] == 0 )
       nredund++;
 
-  fprintf( lrs_ofp, "\nbegin" );
-  fprintf( lrs_ofp, "\n%ld %ld rational", nredund, Q->n );
+  fprintf ( lrs_ofp, "\nbegin" );
+  fprintf ( lrs_ofp, "\n%ld %ld rational", nredund, Q->n );
 
   /* print the linearities first */
 
   for ( i = 0; i < nlinearity; i++ )
-    lrs_printrow( "", Q, Ain[Q->linearity[i]], Q->inputd );
+    lrs_printrow ( "", Q, Ain[Q->linearity[i]], Q->inputd );
 
   for ( i = 1; i <= m; i++ )
     if ( redineq[i] == 0 )
-      lrs_printrow( "", Q, Ain[i], Q->inputd );
+      lrs_printrow ( "", Q, Ain[i], Q->inputd );
 
-  fprintf( lrs_ofp, "\nend" );
-  fprintf( lrs_ofp, "\n*Input had %ld rows and %ld columns", m, Q->n );
-  fprintf( lrs_ofp, ": %ld row(s) redundant", m - nredund );
+  fprintf ( lrs_ofp, "\nend" );
+  fprintf ( lrs_ofp, "\n*Input had %ld rows and %ld columns", m, Q->n );
+  fprintf ( lrs_ofp, ": %ld row(s) redundant", m - nredund );
 
-  lrs_free_dic( P,Q );          /* deallocate lrs_dic */
-  lrs_free_dat( Q );            /* deallocate lrs_dat */
+  lrs_free_dic ( P, Q );        /* deallocate lrs_dic */
+  lrs_free_dat ( Q );           /* deallocate lrs_dat */
 
-  lrs_close( "redund:" );
+  lrs_close ( "redund:" );
 
   return 0;
 }
@@ -381,24 +381,24 @@ redund_main( int argc, char* argv[] )
 /* lrs_printoutput */
 /*******************/
 void
-lrs_printoutput( lrs_dat* Q, lrs_mp_vector output ) {
+lrs_printoutput ( lrs_dat* Q, lrs_mp_vector output ) {
   long i;
 
-  fprintf( lrs_ofp, "\n" );
+  fprintf ( lrs_ofp, "\n" );
 
-  if ( Q->hull || zero( output[0] ) ) { /*non vertex */
+  if ( Q->hull || zero ( output[0] ) ) { /*non vertex */
     for ( i = 0; i < Q->n; i++ )
-      pmp( "", output[i] );
+      pmp ( "", output[i] );
 
   } else {
     /* vertex   */
-    fprintf( lrs_ofp, " 1 " );
+    fprintf ( lrs_ofp, " 1 " );
 
     for ( i = 1; i < Q->n; i++ )
-      prat( "", output[i], output[0] );
+      prat ( "", output[i], output[0] );
   }
 
-  fflush( lrs_ofp );
+  fflush ( lrs_ofp );
 
 }
 /**************************/
@@ -408,50 +408,50 @@ lrs_printoutput( lrs_dat* Q, lrs_mp_vector output ) {
 /****************/
 /* lrs_lpoutput */
 /****************/
-void lrs_lpoutput( lrs_dic* P,lrs_dat* Q, lrs_mp_vector output ) {
+void lrs_lpoutput ( lrs_dic* P, lrs_dat* Q, lrs_mp_vector output ) {
 
 
 #ifndef LRS_QUIET
   lrs_mp Temp1, Temp2;
   long i;
 
-  lrs_alloc_mp( Temp1 );
-  lrs_alloc_mp( Temp2 );
+  lrs_alloc_mp ( Temp1 );
+  lrs_alloc_mp ( Temp2 );
 
-  fprintf( lrs_ofp, "\n*LP solution only requested" );
-  prat( "\n\n*Objective function has value ", P->objnum, P->objden );
+  fprintf ( lrs_ofp, "\n*LP solution only requested" );
+  prat ( "\n\n*Objective function has value ", P->objnum, P->objden );
 
-  fprintf( lrs_ofp, "\n\n*Primal: " );
+  fprintf ( lrs_ofp, "\n\n*Primal: " );
 
   for ( i = 1; i < Q->n; i++ ) {
-    fprintf( lrs_ofp,"x_%ld=",i );
-    prat( "", output[i], output[0] );
+    fprintf ( lrs_ofp, "x_%ld=", i );
+    prat ( "", output[i], output[0] );
   }
 
   if ( Q->nlinearity > 0 )
-    fprintf( lrs_ofp, "\n\n*Linearities in input file - partial dual solution only" );
+    fprintf ( lrs_ofp, "\n\n*Linearities in input file - partial dual solution only" );
 
-  fprintf( lrs_ofp, "\n\n*Dual: " );
+  fprintf ( lrs_ofp, "\n\n*Dual: " );
 
   for ( i = 0; i < P->d; i++ ) {
-    fprintf( lrs_ofp,"y_%ld=",Q->inequality[P->C[i]-Q->lastdv] );
-    changesign( P->A[0][P->Col[i]] );
-    mulint( Q->Lcm[P->Col[i]],P->A[0][P->Col[i]],Temp1 );
-    mulint( Q->Gcd[P->Col[i]],P->det,Temp2 );
-    prat( "",Temp1,Temp2 );
-    changesign( P->A[0][P->Col[i]] );
+    fprintf ( lrs_ofp, "y_%ld=", Q->inequality[P->C[i] - Q->lastdv] );
+    changesign ( P->A[0][P->Col[i]] );
+    mulint ( Q->Lcm[P->Col[i]], P->A[0][P->Col[i]], Temp1 );
+    mulint ( Q->Gcd[P->Col[i]], P->det, Temp2 );
+    prat ( "", Temp1, Temp2 );
+    changesign ( P->A[0][P->Col[i]] );
   }
 
-  fprintf( lrs_ofp, "\n" );
-  lrs_clear_mp( Temp1 );
-  lrs_clear_mp( Temp2 );
+  fprintf ( lrs_ofp, "\n" );
+  lrs_clear_mp ( Temp1 );
+  lrs_clear_mp ( Temp2 );
 #endif
 }
 /***********************/
 /* end of lrs_lpoutput */
 /***********************/
 void
-lrs_printrow( char name[], lrs_dat* Q, lrs_mp_vector output, long rowd )
+lrs_printrow ( char name[], lrs_dat* Q, lrs_mp_vector output, long rowd )
 /* print a row of A matrix in output in "original" form  */
 /* rowd+1 is the dimension of output vector                */
 /* if input is H-rep. output[0] contains the RHS      */
@@ -459,30 +459,30 @@ lrs_printrow( char name[], lrs_dat* Q, lrs_mp_vector output, long rowd )
 {
   long i;
 
-  fprintf( lrs_ofp, "\n%s", name );
+  fprintf ( lrs_ofp, "\n%s", name );
 
   if ( !Q->hull )   /* input was inequalities, print directly */
 
   {
 
     for ( i = 0; i <= rowd; i++ )
-      pmp( "", output[i] );
+      pmp ( "", output[i] );
 
     return;
   }
 
   /* input was vertex/ray */
 
-  if ( zero( output[1] ) ) { /*non-vertex */
+  if ( zero ( output[1] ) ) { /*non-vertex */
     for ( i = 1; i <= rowd; i++ )
-      pmp( "", output[i] );
+      pmp ( "", output[i] );
 
   } else {
     /* vertex */
-    fprintf( lrs_ofp, " 1 " );
+    fprintf ( lrs_ofp, " 1 " );
 
     for ( i = 2; i <= rowd; i++ )
-      prat( "", output[i], output[1] );
+      prat ( "", output[i], output[1] );
   }
 
   return;
@@ -490,7 +490,7 @@ lrs_printrow( char name[], lrs_dat* Q, lrs_mp_vector output, long rowd )
 }       /* end of lrs_printrow */
 
 long
-lrs_getsolution( lrs_dic* P, lrs_dat* Q, lrs_mp_vector output, long col )
+lrs_getsolution ( lrs_dic* P, lrs_dat* Q, lrs_mp_vector output, long col )
 /* check if column indexed by col in this dictionary */
 /* contains output                                   */
 /* col=0 for vertex 1....d for ray/facet             */
@@ -501,31 +501,31 @@ lrs_getsolution( lrs_dic* P, lrs_dat* Q, lrs_mp_vector output, long col )
   long* Row = P->Row;
 
   if ( col == ZERO )  /* check for lexmin vertex */
-    return lrs_getvertex( P, Q, output );
+    return lrs_getvertex ( P, Q, output );
 
   /*  check for rays: negative in row 0 , positive if lponly */
 
   if ( Q->lponly ) {
-    if ( !positive( A[0][col] ) )
+    if ( !positive ( A[0][col] ) )
       return FALSE;
   }
 
-  else if ( !negative( A[0][col] ) )
+  else if ( !negative ( A[0][col] ) )
     return FALSE;
 
   /*  and non-negative for all basic non decision variables */
 
   j = Q->lastdv + 1;
 
-  while ( j <= P->m && !negative( A[Row[j]][col] ) )
+  while ( j <= P->m && !negative ( A[Row[j]][col] ) )
     j++;
 
   if ( j <= P->m )
     return FALSE;
 
-  if ( Q->geometric || Q->allbases || lexmin( P, Q, col ) || Q->lponly )
+  if ( Q->geometric || Q->allbases || lexmin ( P, Q, col ) || Q->lponly )
 
-    return lrs_getray( P, Q, col, Q->n, output );
+    return lrs_getray ( P, Q, col, Q->n, output );
 
   return FALSE;     /* no more output in this dictionary */
 
@@ -533,19 +533,19 @@ lrs_getsolution( lrs_dic* P, lrs_dat* Q, lrs_mp_vector output, long col )
 
 
 long
-lrs_init( char* name ) {    /* returns TRUE if successful, else FALSE */
-  printf( "%s", name );
-  printf( TITLE );
-  printf( VERSION );
-  printf( "(" );
-  printf( BIT );
-  printf( "," );
-  printf( ARITH );
+lrs_init ( char* name ) {   /* returns TRUE if successful, else FALSE */
+  printf ( "%s", name );
+  printf ( TITLE );
+  printf ( VERSION );
+  printf ( "(" );
+  printf ( BIT );
+  printf ( "," );
+  printf ( ARITH );
 
-  if ( !lrs_mp_init( ZERO, stdin, stdout ) ) /* initialize arithmetic */
+  if ( !lrs_mp_init ( ZERO, stdin, stdout ) ) /* initialize arithmetic */
     return FALSE;
 
-  printf( ")" );
+  printf ( ")" );
 
 
   lrs_global_count = 0;
@@ -557,49 +557,49 @@ lrs_init( char* name ) {    /* returns TRUE if successful, else FALSE */
 }
 
 void
-lrs_close( char* name ) {
+lrs_close ( char* name ) {
 
-  fprintf( lrs_ofp, "\n*%s", name );
-  fprintf( lrs_ofp, TITLE );
-  fprintf( lrs_ofp, VERSION );
-  fprintf( lrs_ofp, "(" );
-  fprintf( lrs_ofp, BIT );
-  fprintf( lrs_ofp, "," );
-  fprintf( lrs_ofp, ARITH );
-  fprintf( lrs_ofp, ")" );
+  fprintf ( lrs_ofp, "\n*%s", name );
+  fprintf ( lrs_ofp, TITLE );
+  fprintf ( lrs_ofp, VERSION );
+  fprintf ( lrs_ofp, "(" );
+  fprintf ( lrs_ofp, BIT );
+  fprintf ( lrs_ofp, "," );
+  fprintf ( lrs_ofp, ARITH );
+  fprintf ( lrs_ofp, ")" );
 
 #ifdef MP
-  fprintf( lrs_ofp, " max digits=%ld/%ld", DIG2DEC( lrs_record_digits ), DIG2DEC( lrs_digits ) );
+  fprintf ( lrs_ofp, " max digits=%ld/%ld", DIG2DEC ( lrs_record_digits ), DIG2DEC ( lrs_digits ) );
 #endif
 
 #ifdef TIMES
   ptimes();
 #endif
 
-  fprintf( lrs_ofp, "\n" );
-  fclose( lrs_ifp );
+  fprintf ( lrs_ofp, "\n" );
+  fclose ( lrs_ifp );
 
   if ( lrs_ofp != stdout )
-    fclose( lrs_ofp );
+    fclose ( lrs_ofp );
 }
 
 /***********************************/
 /* allocate and initialize lrs_dat */
 /***********************************/
 lrs_dat*
-lrs_alloc_dat( char* name ) {
+lrs_alloc_dat ( char* name ) {
   lrs_dat* Q;
   long i;
 
 
   if ( lrs_global_count >= MAX_LRS_GLOBALS ) {
-    fprintf( stderr,
-             "Fatal: Attempt to allocate more than %ld global data blocks\n", MAX_LRS_GLOBALS );
-    exit( 1 );
+    fprintf ( stderr,
+              "Fatal: Attempt to allocate more than %ld global data blocks\n", MAX_LRS_GLOBALS );
+    exit ( 1 );
 
   }
 
-  Q = ( lrs_dat* ) malloc( sizeof( lrs_dat ) );
+  Q = ( lrs_dat* ) malloc ( sizeof ( lrs_dat ) );
 
   if ( Q == NULL )
     return Q;     /* failure to allocate */
@@ -607,8 +607,8 @@ lrs_alloc_dat( char* name ) {
   lrs_global_list[lrs_global_count] = Q;
   Q->id = lrs_global_count;
   lrs_global_count++;
-  Q->name=( char* ) CALLOC( ( unsigned ) strlen( name )+1, sizeof( char ) );
-  strcpy( Q->name,name );
+  Q->name = ( char* ) CALLOC ( ( unsigned ) strlen ( name ) + 1, sizeof ( char ) );
+  strcpy ( Q->name, name );
 
   /* initialize variables */
   Q->m = 0L;
@@ -648,7 +648,7 @@ lrs_alloc_dat( char* name ) {
   Q->printcobasis = FALSE;
   Q->printslack = FALSE;
   Q->truncate = FALSE;          /* truncate tree when moving from opt vertex        */
-  Q->verbose=FALSE;
+  Q->verbose = FALSE;
   Q->voronoi = FALSE;
   Q->maximize = FALSE;    /*flag for LP maximization                          */
   Q->minimize = FALSE;    /*flag for LP minimization                          */
@@ -658,15 +658,15 @@ lrs_alloc_dat( char* name ) {
   Q->etrace = -1L;    /* turn off debug at basis # etrace */
 
   Q->saved_flag = 0;    /* no cobasis saved initially, db */
-  lrs_alloc_mp( Q->Nvolume );
-  lrs_alloc_mp( Q->Dvolume );
-  lrs_alloc_mp( Q->sumdet );
-  lrs_alloc_mp( Q->saved_det );
-  lrs_alloc_mp( Q->boundn );
-  lrs_alloc_mp( Q->boundd );
-  itomp( ZERO, Q->Nvolume );
-  itomp( ONE, Q->Dvolume );
-  itomp( ZERO, Q->sumdet );
+  lrs_alloc_mp ( Q->Nvolume );
+  lrs_alloc_mp ( Q->Dvolume );
+  lrs_alloc_mp ( Q->sumdet );
+  lrs_alloc_mp ( Q->saved_det );
+  lrs_alloc_mp ( Q->boundn );
+  lrs_alloc_mp ( Q->boundd );
+  itomp ( ZERO, Q->Nvolume );
+  itomp ( ONE, Q->Dvolume );
+  itomp ( ZERO, Q->sumdet );
   /* 2012.6.1 */
   Q->unbounded = FALSE;
 
@@ -677,103 +677,103 @@ lrs_alloc_dat( char* name ) {
 /*  lrs_read_dat               */
 /*******************************/
 long
-lrs_read_dat( lrs_dat* Q, int argc, char* argv[] ) {
+lrs_read_dat ( lrs_dat* Q, int argc, char* argv[] ) {
   char name[100];
   long dec_digits = 0;
-  long infile=0;                /*input file number to open if any        */
+  long infile = 0;              /*input file number to open if any        */
   long firstline = TRUE;  /*flag for picking off name at line 1     */
 
   int c;      /* for fgetc */
 
 
   if ( argc > 1 )
-    infile=1;
+    infile = 1;
 
   if ( Q->nash && argc == 2 )     /* open second nash input file */
-    infile=2;
+    infile = 2;
 
   if ( infile > 0 ) { /* command line argument overides stdin   */
-    if ( ( lrs_ifp = fopen( argv[infile], "r" ) ) == NULL ) {
-      printf( "\nBad input file name\n" );
+    if ( ( lrs_ifp = fopen ( argv[infile], "r" ) ) == NULL ) {
+      printf ( "\nBad input file name\n" );
       return ( FALSE );
     } else {
-      if ( infile==1 )
-        printf( "\n*Input taken from file %s", argv[infile] );
+      if ( infile == 1 )
+        printf ( "\n*Input taken from file %s", argv[infile] );
     }
   }
 
   /* command line argument overides stdout   */
   if ( ( !Q->nash && argc == 3 ) || ( Q->nash && argc == 4 ) ) {
-    if ( ( lrs_ofp = fopen( argv[argc-1], "w" ) ) == NULL ) {
-      printf( "\nBad output file name\n" );
+    if ( ( lrs_ofp = fopen ( argv[argc - 1], "w" ) ) == NULL ) {
+      printf ( "\nBad output file name\n" );
       return ( FALSE );
     } else
-      printf( "\n*Output sent to file %s\n", argv[argc-1] );
+      printf ( "\n*Output sent to file %s\n", argv[argc - 1] );
   }
 
 
   /* process input file */
-  if ( fscanf( lrs_ifp, "%s", name ) == EOF ) {
-    fprintf( lrs_ofp, "\nNo begin line" );
+  if ( fscanf ( lrs_ifp, "%s", name ) == EOF ) {
+    fprintf ( lrs_ofp, "\nNo begin line" );
     return ( FALSE );
   }
 
-  while ( strcmp( name, "begin" ) != 0 ) { /*skip until "begin" found processing options */
-    if ( strncmp( name, "*", 1 ) == 0 ) { /* skip any line beginning with * */
+  while ( strcmp ( name, "begin" ) != 0 ) { /*skip until "begin" found processing options */
+    if ( strncmp ( name, "*", 1 ) == 0 ) { /* skip any line beginning with * */
       c = name[0];
 
       while ( c != EOF && c != '\n' )
-        c = fgetc( lrs_ifp );
+        c = fgetc ( lrs_ifp );
     }
 
-    else if ( strcmp( name, "H-representation" ) == 0 )
+    else if ( strcmp ( name, "H-representation" ) == 0 )
       Q->hull = FALSE;
-    else if ( ( strcmp( name, "hull" ) == 0 ) || ( strcmp( name, "V-representation" ) == 0 ) ) {
+    else if ( ( strcmp ( name, "hull" ) == 0 ) || ( strcmp ( name, "V-representation" ) == 0 ) ) {
       Q->hull = TRUE;
       Q->polytope = TRUE;    /* will be updated as input read */
-    } else if ( strcmp( name, "digits" ) == 0 ) {
-      if ( fscanf( lrs_ifp, "%ld", &dec_digits ) == EOF ) {
-        fprintf( lrs_ofp, "\nNo begin line" );
+    } else if ( strcmp ( name, "digits" ) == 0 ) {
+      if ( fscanf ( lrs_ifp, "%ld", &dec_digits ) == EOF ) {
+        fprintf ( lrs_ofp, "\nNo begin line" );
         return ( FALSE );
       }
 
-      if ( !lrs_set_digits( dec_digits ) )
+      if ( !lrs_set_digits ( dec_digits ) )
         return ( FALSE );
-    } else if ( strcmp( name, "linearity" ) == 0 ) {
-      if ( !readlinearity( Q ) )
+    } else if ( strcmp ( name, "linearity" ) == 0 ) {
+      if ( !readlinearity ( Q ) )
         return FALSE;
-    } else if ( strcmp( name, "nonnegative" ) == 0 ) {
+    } else if ( strcmp ( name, "nonnegative" ) == 0 ) {
       if ( Q->nash )
-        fprintf( lrs_ofp, "\nNash incompatibile with nonnegative option - skipped" );
+        fprintf ( lrs_ofp, "\nNash incompatibile with nonnegative option - skipped" );
       else
         Q->nonnegative = TRUE;
     } else if ( firstline ) {
-      stringcpy( Q->fname, name );
-      fprintf( lrs_ofp, "\n%s", Q->fname );
+      stringcpy ( Q->fname, name );
+      fprintf ( lrs_ofp, "\n%s", Q->fname );
       firstline = FALSE;
     }
 
-    if ( fscanf( lrs_ifp, "%s", name ) == EOF ) {
-      fprintf( lrs_ofp, "\nNo begin line" );
+    if ( fscanf ( lrs_ifp, "%s", name ) == EOF ) {
+      fprintf ( lrs_ofp, "\nNo begin line" );
       return ( FALSE );
     }
 
   }       /* end of while */
 
 
-  if ( fscanf( lrs_ifp, "%ld %ld %s", &Q->m, &Q->n, name ) == EOF ) {
-    fprintf( lrs_ofp, "\nNo data in file" );
+  if ( fscanf ( lrs_ifp, "%ld %ld %s", &Q->m, &Q->n, name ) == EOF ) {
+    fprintf ( lrs_ofp, "\nNo data in file" );
     return ( FALSE );
   }
 
-  if ( strcmp( name, "integer" ) != 0 && strcmp( name, "rational" ) != 0 ) {
-    fprintf( lrs_ofp, "\nData type must be integer of rational" );
+  if ( strcmp ( name, "integer" ) != 0 && strcmp ( name, "rational" ) != 0 ) {
+    fprintf ( lrs_ofp, "\nData type must be integer of rational" );
     return ( FALSE );
   }
 
 
   if ( Q->m == 0 ) {
-    fprintf( lrs_ofp, "\nNo input given" ); /* program dies ungracefully */
+    fprintf ( lrs_ofp, "\nNo input given" ); /* program dies ungracefully */
     return ( FALSE );
   }
 
@@ -788,11 +788,11 @@ lrs_read_dat( lrs_dat* Q, int argc, char* argv[] ) {
 /* set up lrs_dic structure */
 /****************************/
 long
-lrs_read_dic( lrs_dic* P, lrs_dat* Q )
+lrs_read_dic ( lrs_dic* P, lrs_dat* Q )
 /* read constraint matrix and set up problem and dictionary  */
 
 {
-  lrs_mp Temp,Tempn,Tempd, mpone, mpten;
+  lrs_mp Temp, Tempn, Tempd, mpone, mpten;
   lrs_mp_vector oD;   /* Denom for objective function */
 
   long i, j;
@@ -805,86 +805,86 @@ lrs_read_dic( lrs_dic* P, lrs_dat* Q )
   lrs_mp_vector Gcd, Lcm;
   long hull = Q->hull;
   long m, d;
-  long dualperturb=FALSE;    /* dualperturb=TRUE: objective function perturbed */
+  long dualperturb = FALSE;  /* dualperturb=TRUE: objective function perturbed */
 
-  lrs_alloc_mp( Temp ); lrs_alloc_mp( mpone );
-  lrs_alloc_mp( Tempn ); lrs_alloc_mp( Tempd ); lrs_alloc_mp( mpten );
+  lrs_alloc_mp ( Temp ); lrs_alloc_mp ( mpone );
+  lrs_alloc_mp ( Tempn ); lrs_alloc_mp ( Tempd ); lrs_alloc_mp ( mpten );
   A = P->A;
   m = Q->m;
   d = Q->inputd;
   Gcd = Q->Gcd;
   Lcm = Q->Lcm;
 
-  oD = lrs_alloc_mp_vector( d );
+  oD = lrs_alloc_mp_vector ( d );
 
 
-  itomp( ONE, mpone );
-  itomp( ONE, A[0][0] );
-  itomp( ONE, Lcm[0] );
-  itomp( ONE, Gcd[0] );
+  itomp ( ONE, mpone );
+  itomp ( ONE, A[0][0] );
+  itomp ( ONE, Lcm[0] );
+  itomp ( ONE, Gcd[0] );
 
   for ( i = 1; i <= m; i++ ) { /* read in input matrix row by row                 */
-    itomp( ONE, Lcm[i] ); /* Lcm of denominators */
-    itomp( ZERO, Gcd[i] ); /* Gcd of numerators */
+    itomp ( ONE, Lcm[i] ); /* Lcm of denominators */
+    itomp ( ZERO, Gcd[i] ); /* Gcd of numerators */
 
     for ( j = hull; j <= d; j++ ) { /* hull data copied to cols 1..d */
-      if ( readrat( A[i][j], A[0][j] ) )
-        lcm( Lcm[i], A[0][j] ); /* update lcm of denominators */
+      if ( readrat ( A[i][j], A[0][j] ) )
+        lcm ( Lcm[i], A[0][j] ); /* update lcm of denominators */
 
-      copy( Temp, A[i][j] );
-      gcd( Gcd[i], Temp ); /* update gcd of numerators   */
+      copy ( Temp, A[i][j] );
+      gcd ( Gcd[i], Temp ); /* update gcd of numerators   */
     }
 
     if ( hull ) {
-      itomp( ZERO, A[i][0] ); /*for hull, we have to append an extra column of zeroes */
+      itomp ( ZERO, A[i][0] ); /*for hull, we have to append an extra column of zeroes */
 
-      if ( !one( A[i][1] ) || !one( A[0][1] ) ) /* all rows must have a one in column one */
+      if ( !one ( A[i][1] ) || !one ( A[0][1] ) ) /* all rows must have a one in column one */
         Q->polytope = FALSE;
     }
 
-    if ( !zero( A[i][hull] ) ) /* for H-rep, are zero in column 0     */
+    if ( !zero ( A[i][hull] ) ) /* for H-rep, are zero in column 0     */
       Q->homogeneous = FALSE; /* for V-rep, all zero in column 1     */
 
 
-    storesign( Gcd[i], POS );
-    storesign( Lcm[i], POS );
+    storesign ( Gcd[i], POS );
+    storesign ( Lcm[i], POS );
 
-    if ( greater( Gcd[i], mpone ) || greater( Lcm[i], mpone ) )
+    if ( greater ( Gcd[i], mpone ) || greater ( Lcm[i], mpone ) )
       for ( j = 0; j <= d; j++ ) {
-        exactdivint( A[i][j], Gcd[i], Temp ); /*reduce numerators by Gcd  */
-        mulint( Lcm[i], Temp, Temp ); /*remove denominators */
-        exactdivint( Temp, A[0][j], A[i][j] ); /*reduce by former denominator */
+        exactdivint ( A[i][j], Gcd[i], Temp ); /*reduce numerators by Gcd  */
+        mulint ( Lcm[i], Temp, Temp ); /*remove denominators */
+        exactdivint ( Temp, A[0][j], A[i][j] ); /*reduce by former denominator */
       }
 
   }       /* end of for i=       */
 
   /* 2010.4.26 patch */
   if ( Q->nonnegative ) /* set up Gcd and Lcm for nonexistent nongative inequalities */
-    for ( i=m+1; i<=m+d; i++ ) {
-      itomp( ONE, Lcm[i] );
-      itomp( ONE, Gcd[i] );
+    for ( i = m + 1; i <= m + d; i++ ) {
+      itomp ( ONE, Lcm[i] );
+      itomp ( ONE, Gcd[i] );
     }
 
   if ( Q->homogeneous && Q->verbose ) {
-    fprintf( lrs_ofp, "\n*Input is homogeneous, column 1 not treated as redundant" );
+    fprintf ( lrs_ofp, "\n*Input is homogeneous, column 1 not treated as redundant" );
   }
 
 
   /* read in flags */
-  while ( fscanf( lrs_ifp, "%s", name ) != EOF ) {
-    if ( strncmp( name, "*", 1 ) == 0 ) { /* skip any line beginning with * */
+  while ( fscanf ( lrs_ifp, "%s", name ) != EOF ) {
+    if ( strncmp ( name, "*", 1 ) == 0 ) { /* skip any line beginning with * */
       c = name[0];
 
       while ( c != EOF && c != '\n' )
-        c = fgetc( lrs_ifp );
+        c = fgetc ( lrs_ifp );
     }
 
 
-    if ( strcmp( name, "checkpoint" ) == 0 ) {
+    if ( strcmp ( name, "checkpoint" ) == 0 ) {
       long seconds;
 
-      if ( fscanf( lrs_ifp, "%ld", &seconds ) == EOF ) {
-        fprintf( lrs_ofp, "\nInvalid checkpoint option" );
+      if ( fscanf ( lrs_ifp, "%ld", &seconds ) == EOF ) {
+        fprintf ( lrs_ofp, "\nInvalid checkpoint option" );
         return ( FALSE );
       }
 
@@ -892,64 +892,64 @@ lrs_read_dic( lrs_dic* P, lrs_dat* Q )
 
       if ( seconds > 0 ) {
         lrs_checkpoint_seconds = seconds;
-        errcheck( "signal", signal( SIGALRM, timecheck ) );
-        alarm( lrs_checkpoint_seconds );
+        errcheck ( "signal", signal ( SIGALRM, timecheck ) );
+        alarm ( lrs_checkpoint_seconds );
       }
 
 #endif
     }
 
-    if ( strcmp( name, "debug" ) == 0 ) {
-      Q->etrace =0;
+    if ( strcmp ( name, "debug" ) == 0 ) {
+      Q->etrace = 0;
 
-      if ( fscanf( lrs_ifp, "%ld %ld", &Q->strace, &Q->etrace )==EOF )
-        Q->strace =0;
+      if ( fscanf ( lrs_ifp, "%ld %ld", &Q->strace, &Q->etrace ) == EOF )
+        Q->strace = 0;
 
-      fprintf( lrs_ofp, "\n*%s from B#%ld to B#%ld", name, Q->strace, Q->etrace );
-      Q->verbose=TRUE;
+      fprintf ( lrs_ofp, "\n*%s from B#%ld to B#%ld", name, Q->strace, Q->etrace );
+      Q->verbose = TRUE;
 
       if ( Q->strace <= 1 )
         Q->debug = TRUE;
     }
 
-    if ( strcmp( name, "startingcobasis" ) == 0 ) {
+    if ( strcmp ( name, "startingcobasis" ) == 0 ) {
       if ( Q->nonnegative )
-        fprintf( lrs_ofp, "\n*startingcobasis incompatible with nonnegative option:skipped" );
+        fprintf ( lrs_ofp, "\n*startingcobasis incompatible with nonnegative option:skipped" );
       else {
-        fprintf( lrs_ofp, "\n*startingcobasis" );
+        fprintf ( lrs_ofp, "\n*startingcobasis" );
         Q->givenstart = TRUE;
 
-        if ( !readfacets( Q, Q->inequality ) )
+        if ( !readfacets ( Q, Q->inequality ) )
           return FALSE;
       }
     }
 
-    if ( strcmp( name, "restart" ) == 0 ) {
+    if ( strcmp ( name, "restart" ) == 0 ) {
       Q->restart = TRUE;
 
       if ( Q->voronoi ) {
-        if ( fscanf( lrs_ifp, "%ld %ld %ld %ld", &Q->count[1], &Q->count[0], &Q->count[2], &P->depth )==EOF )
+        if ( fscanf ( lrs_ifp, "%ld %ld %ld %ld", &Q->count[1], &Q->count[0], &Q->count[2], &P->depth ) == EOF )
           return FALSE;
 
-        fprintf( lrs_ofp, "\n*%s V#%ld R#%ld B#%ld h=%ld data points", name, Q->count[1], Q->count[0], Q->count[2], P->depth );
+        fprintf ( lrs_ofp, "\n*%s V#%ld R#%ld B#%ld h=%ld data points", name, Q->count[1], Q->count[0], Q->count[2], P->depth );
       } else if ( hull ) {
-        if ( fscanf( lrs_ifp, "%ld %ld %ld", &Q->count[0], &Q->count[2], &P->depth )==EOF )
-          fprintf( lrs_ofp, "\n*%s F#%ld B#%ld h=%ld vertices/rays", name, Q->count[0], Q->count[2], P->depth );
+        if ( fscanf ( lrs_ifp, "%ld %ld %ld", &Q->count[0], &Q->count[2], &P->depth ) == EOF )
+          fprintf ( lrs_ofp, "\n*%s F#%ld B#%ld h=%ld vertices/rays", name, Q->count[0], Q->count[2], P->depth );
       } else {
-        if ( fscanf( lrs_ifp, "%ld %ld %ld %ld", &Q->count[1], &Q->count[0], &Q->count[2], &P->depth )==EOF )
+        if ( fscanf ( lrs_ifp, "%ld %ld %ld %ld", &Q->count[1], &Q->count[0], &Q->count[2], &P->depth ) == EOF )
           return FALSE;
 
-        fprintf( lrs_ofp, "\n*%s V#%ld R#%ld B#%ld h=%ld facets", name, Q->count[1], Q->count[0], Q->count[2], P->depth );
+        fprintf ( lrs_ofp, "\n*%s V#%ld R#%ld B#%ld h=%ld facets", name, Q->count[1], Q->count[0], Q->count[2], P->depth );
       }
 
-      if ( !readfacets( Q, Q->facet ) )
+      if ( !readfacets ( Q, Q->facet ) )
         return FALSE;
     }     /* end of restart */
 
     /* The next flag request a LP solution only */
-    if ( strcmp( name, "lponly" ) == 0 ) {
+    if ( strcmp ( name, "lponly" ) == 0 ) {
       if ( Q->hull )
-        fprintf( lrs_ofp, "\n*lponly  option not valid for V-representation-skipped" );
+        fprintf ( lrs_ofp, "\n*lponly  option not valid for V-representation-skipped" );
       else
         Q->lponly = TRUE;
     }
@@ -957,191 +957,191 @@ lrs_read_dic( lrs_dic* P, lrs_dat* Q )
 
     /* The LP will be solved after initialization to get starting vertex   */
     /* Used also with lponly flag                                          */
-    if ( strcmp( name, "maximize" ) == 0 || strcmp( name, "minimize" ) == 0 ) {
+    if ( strcmp ( name, "maximize" ) == 0 || strcmp ( name, "minimize" ) == 0 ) {
       if ( Q->hull )
-        fprintf( lrs_ofp, "\n*%s option not valid for V-representation-skipped", name );
+        fprintf ( lrs_ofp, "\n*%s option not valid for V-representation-skipped", name );
       else {
         {
-          if ( strcmp( name, "maximize" ) == 0 )
+          if ( strcmp ( name, "maximize" ) == 0 )
             Q->maximize = TRUE;
           else
             Q->minimize = TRUE;
         }
-        fprintf( lrs_ofp,"\n*%s", name );
+        fprintf ( lrs_ofp, "\n*%s", name );
 
         if ( dualperturb ) { /* apply a perturbation to objective function */
-          fprintf( lrs_ofp, " - Objective function perturbed" );
-          itomp( 10L,mpten );
-          copy( Temp,mpten );
+          fprintf ( lrs_ofp, " - Objective function perturbed" );
+          itomp ( 10L, mpten );
+          copy ( Temp, mpten );
 
           for ( j = 0; j <= 10; j++ )
-            mulint( mpten,Temp,Temp );
+            mulint ( mpten, Temp, Temp );
         }
 
-        fprintf( lrs_ofp, ":  " );
+        fprintf ( lrs_ofp, ":  " );
 
         for ( j = 0; j <= d; j++ ) {
-          if ( readrat( A[0][j], oD[j] ) || dualperturb ) {
+          if ( readrat ( A[0][j], oD[j] ) || dualperturb ) {
             if ( dualperturb && j > 0 && j < d ) {
               if ( Q->maximize )
-                linrat( A[0][j], oD[j],ONE,mpone,Temp,ONE,Tempn,Tempd );
+                linrat ( A[0][j], oD[j], ONE, mpone, Temp, ONE, Tempn, Tempd );
               else
-                linrat( A[0][j], oD[j],ONE,mpone,Temp,-1L,Tempn,Tempd );
+                linrat ( A[0][j], oD[j], ONE, mpone, Temp, -1L, Tempn, Tempd );
 
-              copy( A[0][j],Tempn );
-              copy( oD[j],Tempd );
-              mulint( mpten,Temp,Temp );
+              copy ( A[0][j], Tempn );
+              copy ( oD[j], Tempd );
+              mulint ( mpten, Temp, Temp );
             }
 
-            reduce( A[0][j], oD[j] );
-            lcm( Q->Lcm[0], oD[j] ); /* update lcm of denominators */
+            reduce ( A[0][j], oD[j] );
+            lcm ( Q->Lcm[0], oD[j] ); /* update lcm of denominators */
           }
 
-          prat( "", A[0][j], oD[j] );
+          prat ( "", A[0][j], oD[j] );
 
           if ( !Q->maximize )
-            changesign( A[0][j] );
+            changesign ( A[0][j] );
         }
 
-        storesign( Q->Lcm[0], POS );
+        storesign ( Q->Lcm[0], POS );
 
-        if ( greater( Q->Lcm[0], mpone ) )
+        if ( greater ( Q->Lcm[0], mpone ) )
           for ( j = 0; j <= d; j++ ) {
-            mulint( Q->Lcm[0], A[0][j], A[0][j] ); /*remove denominators */
-            copy( Temp, A[0][j] );
-            exactdivint( Temp, oD[j], A[0][j] );
+            mulint ( Q->Lcm[0], A[0][j], A[0][j] ); /*remove denominators */
+            copy ( Temp, A[0][j] );
+            exactdivint ( Temp, oD[j], A[0][j] );
           }
 
         if ( Q->debug )
-          printA( P, Q );
+          printA ( P, Q );
       }
     }     /* end of LP setup */
 
-    if ( strcmp( name, "volume" ) == 0 ) {
-      fprintf( lrs_ofp, "\n*%s", name );
+    if ( strcmp ( name, "volume" ) == 0 ) {
+      fprintf ( lrs_ofp, "\n*%s", name );
       Q->getvolume = TRUE;
     }
 
-    if ( strcmp( name, "geometric" ) == 0 ) {
-      fprintf( lrs_ofp, "\n*%s", name );
+    if ( strcmp ( name, "geometric" ) == 0 ) {
+      fprintf ( lrs_ofp, "\n*%s", name );
 
       if ( hull & !Q->voronoi )
-        fprintf( lrs_ofp, " - option for H-representation or voronoi only, skipped" );
+        fprintf ( lrs_ofp, " - option for H-representation or voronoi only, skipped" );
       else
         Q->geometric = TRUE;
     }
 
-    if ( strcmp( name, "allbases" ) == 0 ) {
-      fprintf( lrs_ofp, "\n*%s", name );
+    if ( strcmp ( name, "allbases" ) == 0 ) {
+      fprintf ( lrs_ofp, "\n*%s", name );
       Q->allbases = TRUE;
     }
 
-    if ( strcmp( name, "dualperturb" ) == 0 ) {
+    if ( strcmp ( name, "dualperturb" ) == 0 ) {
       dualperturb = TRUE;
     }
 
-    if ( strcmp( name, "incidence" ) == 0 ) {
-      fprintf( lrs_ofp, "\n*%s", name );
+    if ( strcmp ( name, "incidence" ) == 0 ) {
+      fprintf ( lrs_ofp, "\n*%s", name );
       Q->incidence = TRUE;
     }
 
-    if ( strcmp( name, "#incidence" ) == 0 ) { /* number of incident inequalities only */
+    if ( strcmp ( name, "#incidence" ) == 0 ) { /* number of incident inequalities only */
       Q->printcobasis = TRUE;
     }
 
-    if ( strcmp( name, "printcobasis" ) == 0 ) {
-      if ( fscanf( lrs_ifp, "%ld", &Q->frequency )==EOF )
+    if ( strcmp ( name, "printcobasis" ) == 0 ) {
+      if ( fscanf ( lrs_ifp, "%ld", &Q->frequency ) == EOF )
         /*2010.7.7  set default to zero = print only when outputting vertex/ray/facet */
-        Q->frequency=0;
+        Q->frequency = 0;
 
-      fprintf( lrs_ofp, "\n*%s", name );
+      fprintf ( lrs_ofp, "\n*%s", name );
 
       if ( Q->frequency > 0 )
-        fprintf( lrs_ofp," %ld", Q->frequency );
+        fprintf ( lrs_ofp, " %ld", Q->frequency );
 
       Q->printcobasis = TRUE;
     }
 
-    if ( strcmp( name, "printslack" ) == 0 ) {
+    if ( strcmp ( name, "printslack" ) == 0 ) {
       Q->printslack = TRUE;
     }
 
-    if ( strcmp( name, "cache" ) == 0 ) {
-      if ( fscanf( lrs_ifp, "%ld", &dict_limit )==EOF )
-        dict_limit=1;
+    if ( strcmp ( name, "cache" ) == 0 ) {
+      if ( fscanf ( lrs_ifp, "%ld", &dict_limit ) == EOF )
+        dict_limit = 1;
 
-      fprintf( lrs_ofp, "\n*cache %ld", dict_limit );
+      fprintf ( lrs_ofp, "\n*cache %ld", dict_limit );
 
       if ( dict_limit < 1 )
         dict_limit = 1;
     }
 
-    if ( strcmp( name, "linearity" ) == 0 ) {
-      if ( !readlinearity( Q ) )
+    if ( strcmp ( name, "linearity" ) == 0 ) {
+      if ( !readlinearity ( Q ) )
         return FALSE;
     }
 
-    if ( strcmp( name, "maxdepth" ) == 0 ) {
-      if ( fscanf( lrs_ifp, "%ld", &Q->maxdepth )==EOF )
-        Q->maxdepth=1;
+    if ( strcmp ( name, "maxdepth" ) == 0 ) {
+      if ( fscanf ( lrs_ifp, "%ld", &Q->maxdepth ) == EOF )
+        Q->maxdepth = 1;
 
-      fprintf( lrs_ofp, "\n*%s  %ld", name, Q->maxdepth );
+      fprintf ( lrs_ofp, "\n*%s  %ld", name, Q->maxdepth );
     }
 
-    if ( strcmp( name, "maxoutput" ) == 0 ) {
-      if ( fscanf( lrs_ifp, "%ld", &Q->maxoutput )==EOF )
+    if ( strcmp ( name, "maxoutput" ) == 0 ) {
+      if ( fscanf ( lrs_ifp, "%ld", &Q->maxoutput ) == EOF )
         Q->maxoutput = 100;
 
-      fprintf( lrs_ofp, "\n*%s  %ld", name, Q->maxoutput );
+      fprintf ( lrs_ofp, "\n*%s  %ld", name, Q->maxoutput );
     }
 
-    if ( strcmp( name, "mindepth" ) == 0 ) {
-      if ( fscanf( lrs_ifp, "%ld", &Q->mindepth )==EOF )
+    if ( strcmp ( name, "mindepth" ) == 0 ) {
+      if ( fscanf ( lrs_ifp, "%ld", &Q->mindepth ) == EOF )
         Q->mindepth = 0;
 
-      fprintf( lrs_ofp, "\n*%s  %ld", name, Q->mindepth );
+      fprintf ( lrs_ofp, "\n*%s  %ld", name, Q->mindepth );
     }
 
-    if ( strcmp( name, "truncate" ) == 0 ) {
-      fprintf( lrs_ofp, "\n*%s", name );
+    if ( strcmp ( name, "truncate" ) == 0 ) {
+      fprintf ( lrs_ofp, "\n*%s", name );
 
       if ( !hull )
         Q->truncate = TRUE;
       else
-        fprintf( lrs_ofp, " - option for H-representation only, skipped" );
+        fprintf ( lrs_ofp, " - option for H-representation only, skipped" );
     }
 
 
-    if ( strcmp( name, "verbose" ) == 0 )
+    if ( strcmp ( name, "verbose" ) == 0 )
       Q->verbose = TRUE;
 
-    if ( strcmp( name, "bound" ) == 0 ) {
-      readrat( Q->boundn,Q->boundd );
+    if ( strcmp ( name, "bound" ) == 0 ) {
+      readrat ( Q->boundn, Q->boundd );
       Q->bound = TRUE;
     }
 
-    if ( strcmp( name, "nonnegative" ) == 0 ) {
-      fprintf( lrs_ofp, "\n*%s", name );
-      fprintf( lrs_ofp, " - option must come before begin line - skipped" );
+    if ( strcmp ( name, "nonnegative" ) == 0 ) {
+      fprintf ( lrs_ofp, "\n*%s", name );
+      fprintf ( lrs_ofp, " - option must come before begin line - skipped" );
     }
 
-    if ( strcmp( name, "seed" ) == 0 ) {
-      if ( fscanf( lrs_ifp, "%ld", &Q->seed )==EOF )
+    if ( strcmp ( name, "seed" ) == 0 ) {
+      if ( fscanf ( lrs_ifp, "%ld", &Q->seed ) == EOF )
         Q->seed = 3142;
 
-      fprintf( lrs_ofp, "\n*seed= %ld ", Q->seed );
+      fprintf ( lrs_ofp, "\n*seed= %ld ", Q->seed );
     }
 
-    if ( strcmp( name, "estimates" ) == 0 ) {
-      if ( fscanf( lrs_ifp, "%ld", &Q->runs )==EOF )
-        Q->runs=1;
+    if ( strcmp ( name, "estimates" ) == 0 ) {
+      if ( fscanf ( lrs_ifp, "%ld", &Q->runs ) == EOF )
+        Q->runs = 1;
 
-      fprintf( lrs_ofp, "\n*%ld %s", Q->runs, name );
+      fprintf ( lrs_ofp, "\n*%ld %s", Q->runs, name );
     }
 
-    if ( ( strcmp( name, "voronoi" ) == 0 ) || ( strcmp( name, "Voronoi" ) == 0 ) ) {
+    if ( ( strcmp ( name, "voronoi" ) == 0 ) || ( strcmp ( name, "Voronoi" ) == 0 ) ) {
       if ( !hull )
-        fprintf( lrs_ofp, "\n*voronoi requires V-representation - option skipped" );
+        fprintf ( lrs_ofp, "\n*voronoi requires V-representation - option skipped" );
       else {
         Q->voronoi = TRUE;
         Q->polytope = FALSE;
@@ -1154,10 +1154,10 @@ lrs_read_dic( lrs_dic* P, lrs_dat* Q )
     Q->getvolume = TRUE;  /* might as well get volume, it doesn't cost much */
 
   if ( Q->bound && Q->maximize )
-    prat( "\n*Lower bound on objective function:",Q->boundn,Q->boundd );
+    prat ( "\n*Lower bound on objective function:", Q->boundn, Q->boundd );
 
   if ( Q->bound && Q->minimize )
-    prat( "\n*Upper bound on objective function:",Q->boundn,Q->boundd );
+    prat ( "\n*Upper bound on objective function:", Q->boundn, Q->boundd );
 
   /* Certain options are incompatible, this is fixed here */
 
@@ -1171,13 +1171,13 @@ lrs_read_dic( lrs_dic* P, lrs_dat* Q )
   }
 
   if ( Q->debug ) {
-    printA( P, Q );
-    fprintf( lrs_ofp, "\nexiting lrs_read_dic" );
+    printA ( P, Q );
+    fprintf ( lrs_ofp, "\nexiting lrs_read_dic" );
   }
 
-  lrs_clear_mp( Temp ); lrs_clear_mp( mpone );
-  lrs_clear_mp( Tempn ); lrs_clear_mp( Tempd ); lrs_clear_mp( mpten );
-  lrs_clear_mp_vector( oD,d );
+  lrs_clear_mp ( Temp ); lrs_clear_mp ( mpone );
+  lrs_clear_mp ( Tempn ); lrs_clear_mp ( Tempd ); lrs_clear_mp ( mpten );
+  lrs_clear_mp_vector ( oD, d );
   return TRUE;
 
 }
@@ -1189,7 +1189,7 @@ lrs_read_dic( lrs_dic* P, lrs_dat* Q )
 #define D (*D_p)
 
 long
-lrs_getfirstbasis( lrs_dic** D_p, lrs_dat* Q, lrs_mp_matrix* Lin, long no_output )
+lrs_getfirstbasis ( lrs_dic** D_p, lrs_dat* Q, lrs_mp_matrix* Lin, long no_output )
 /* gets first basis, FALSE if none              */
 /* P may get changed if lin. space Lin found    */
 /* no_output is TRUE supresses output headers   */
@@ -1207,9 +1207,9 @@ lrs_getfirstbasis( lrs_dic** D_p, lrs_dat* Q, lrs_mp_matrix* Lin, long no_output
   long hull = Q->hull;
   long m, d, lastdv, nlinearity, nredundcol;
 
-  static long ocount=0;
+  static long ocount = 0;
 
-  lrs_alloc_mp( Temp ); lrs_alloc_mp( scale );
+  lrs_alloc_mp ( Temp ); lrs_alloc_mp ( scale );
 
   if ( Q->lponly )
     no_output = TRUE;
@@ -1231,22 +1231,22 @@ lrs_getfirstbasis( lrs_dic** D_p, lrs_dat* Q, lrs_mp_matrix* Lin, long no_output
 
 
   if ( Q->nlinearity > 0 && Q->nonnegative ) {
-    fprintf( lrs_ofp, "\n*linearity and nonnegative options incompatible" );
-    fprintf( lrs_ofp, " - all linearities are skipped" );
-    fprintf( lrs_ofp, "\n*add nonnegative constraints explicitly and " );
-    fprintf( lrs_ofp, " remove nonnegative option" );
+    fprintf ( lrs_ofp, "\n*linearity and nonnegative options incompatible" );
+    fprintf ( lrs_ofp, " - all linearities are skipped" );
+    fprintf ( lrs_ofp, "\n*add nonnegative constraints explicitly and " );
+    fprintf ( lrs_ofp, " remove nonnegative option" );
   }
 
   if ( Q->nlinearity && Q->voronoi )
-    fprintf( lrs_ofp, "\n*linearity and Voronoi options set - results unpredictable" );
+    fprintf ( lrs_ofp, "\n*linearity and Voronoi options set - results unpredictable" );
 
   if ( Q->lponly && !Q->maximize && !Q->minimize )
-    fprintf( lrs_ofp, "\n*LP has no objective function given - assuming all zero" );
+    fprintf ( lrs_ofp, "\n*LP has no objective function given - assuming all zero" );
 
 
   if ( Q->runs > 0 ) { /* arrays for estimator */
-    Q->isave = ( long* ) CALLOC( ( unsigned )( m * d ), sizeof( long ) );
-    Q->jsave = ( long* ) CALLOC( ( unsigned )( m * d ), sizeof( long ) );
+    Q->isave = ( long* ) CALLOC ( ( unsigned ) ( m * d ), sizeof ( long ) );
+    Q->jsave = ( long* ) CALLOC ( ( unsigned ) ( m * d ), sizeof ( long ) );
   }
 
   /* default is to look for starting cobasis using linearies first, then     */
@@ -1275,10 +1275,10 @@ lrs_getfirstbasis( lrs_dic** D_p, lrs_dat* Q, lrs_mp_matrix* Lin, long no_output
   }
 
   if ( Q->debug ) {
-    fprintf( lrs_ofp, "\n*Starting cobasis uses input row order" );
+    fprintf ( lrs_ofp, "\n*Starting cobasis uses input row order" );
 
     for ( i = 0; i < m; i++ )
-      fprintf( lrs_ofp, " %ld", inequality[i] );
+      fprintf ( lrs_ofp, " %ld", inequality[i] );
   }
 
   /* for voronoi convert to h-description using the transform                  */
@@ -1286,40 +1286,40 @@ lrs_getfirstbasis( lrs_dic** D_p, lrs_dat* Q, lrs_mp_matrix* Lin, long no_output
   /* note constant term is stored in column d, and column d-1 is all ones      */
   /* the other coefficients are multiplied by -2 and shifted one to the right  */
   if ( Q->debug )
-    printA( D, Q );
+    printA ( D, Q );
 
   if ( Q->voronoi ) {
     Q->hull = FALSE;
     hull = FALSE;
 
     for ( i = 1; i <= m; i++ ) {
-      if ( zero( A[i][1] ) ) {
-        fprintf( lrs_ofp, "\nWith voronoi option column one must be all one" );
+      if ( zero ( A[i][1] ) ) {
+        fprintf ( lrs_ofp, "\nWith voronoi option column one must be all one" );
         return ( FALSE );
       }
 
-      copy( scale, A[i][1] ); /*adjust for scaling to integers of rationals */
-      itomp( ZERO, A[i][0] );
+      copy ( scale, A[i][1] ); /*adjust for scaling to integers of rationals */
+      itomp ( ZERO, A[i][0] );
 
       for ( j = 2; j <= d; j++ ) { /* transform each input row */
-        copy( Temp, A[i][j] );
-        mulint( A[i][j], Temp, Temp );
-        linint( A[i][0], ONE, Temp, ONE );
-        linint( A[i][j - 1], ZERO, A[i][j], -TWO );
-        mulint( scale, A[i][j - 1], A[i][j - 1] );
+        copy ( Temp, A[i][j] );
+        mulint ( A[i][j], Temp, Temp );
+        linint ( A[i][0], ONE, Temp, ONE );
+        linint ( A[i][j - 1], ZERO, A[i][j], -TWO );
+        mulint ( scale, A[i][j - 1], A[i][j - 1] );
       }     /* end of for (j=1;..) */
 
-      copy( A[i][d], scale );
-      mulint( scale, A[i][d], A[i][d] );
+      copy ( A[i][d], scale );
+      mulint ( scale, A[i][d], A[i][d] );
     }     /* end of for (i=1;..) */
 
     if ( Q->debug )
-      printA( D, Q );
+      printA ( D, Q );
   }       /* end of if(voronoi)     */
 
   if ( !Q->maximize && !Q->minimize )
     for ( j = 0; j <= d; j++ )
-      itomp( ZERO, A[0][j] );
+      itomp ( ZERO, A[0][j] );
 
   /* Now we pivot to standard form, and then find a primal feasible basis       */
   /* Note these steps MUST be done, even if restarting, in order to get         */
@@ -1332,16 +1332,16 @@ lrs_getfirstbasis( lrs_dic** D_p, lrs_dat* Q, lrs_mp_matrix* Lin, long no_output
     Q->lastdv = d;
     Q->nredundcol = 0;
   } else {
-    if ( !getabasis( D, Q, inequality ) )
+    if ( !getabasis ( D, Q, inequality ) )
       return FALSE;
 
     /* bug fix 2009.12.2 */
-    nlinearity=Q->nlinearity;   /*may have been reset if some lins are redundant*/
+    nlinearity = Q->nlinearity; /*may have been reset if some lins are redundant*/
   }
 
   if ( Q->debug ) {
-    fprintf( lrs_ofp,"\nafter getabasis" );
-    printA( D, Q );
+    fprintf ( lrs_ofp, "\nafter getabasis" );
+    printA ( D, Q );
   }
 
   nredundcol = Q->nredundcol;
@@ -1353,12 +1353,12 @@ lrs_getfirstbasis( lrs_dic** D_p, lrs_dat* Q, lrs_mp_matrix* Lin, long no_output
   /********************************************************************/
   if ( !no_output || Q->debug ) {
     if ( Q->voronoi )
-      fprintf( lrs_ofp, "\n*Voronoi Diagram: Voronoi vertices and rays are output" );
+      fprintf ( lrs_ofp, "\n*Voronoi Diagram: Voronoi vertices and rays are output" );
 
     if ( hull )
-      fprintf( lrs_ofp, "\nH-representation" );
+      fprintf ( lrs_ofp, "\nH-representation" );
     else
-      fprintf( lrs_ofp, "\nV-representation" );
+      fprintf ( lrs_ofp, "\nV-representation" );
 
     /* Print linearity space                 */
     /* Don't print linearity if first column zero in hull computation */
@@ -1369,14 +1369,14 @@ lrs_getfirstbasis( lrs_dic** D_p, lrs_dat* Q, lrs_mp_matrix* Lin, long no_output
       k = 0;
 
     if ( nredundcol > k ) {
-      fprintf( lrs_ofp, "\nlinearity %ld ", nredundcol - k ); /*adjust nredundcol for homog. */
+      fprintf ( lrs_ofp, "\nlinearity %ld ", nredundcol - k ); /*adjust nredundcol for homog. */
 
       for ( i = 1; i <= nredundcol - k; i++ )
-        fprintf( lrs_ofp, " %ld", i );
+        fprintf ( lrs_ofp, " %ld", i );
     }     /* end print of linearity space */
 
-    fprintf( lrs_ofp, "\nbegin" );
-    fprintf( lrs_ofp, "\n***** %ld rational", Q->n );
+    fprintf ( lrs_ofp, "\nbegin" );
+    fprintf ( lrs_ofp, "\n***** %ld rational", Q->n );
 
   }       /* end of if !no_output .......   */
 
@@ -1403,44 +1403,44 @@ lrs_getfirstbasis( lrs_dic** D_p, lrs_dat* Q, lrs_mp_matrix* Lin, long no_output
   }       /* end if linearity */
 
   if ( Q->debug ) {
-    fprintf( lrs_ofp, "\ninequality array initialization:" );
+    fprintf ( lrs_ofp, "\ninequality array initialization:" );
 
     for ( i = 1; i <= m - nlinearity; i++ )
-      fprintf( lrs_ofp, " %ld", inequality[i] );
+      fprintf ( lrs_ofp, " %ld", inequality[i] );
   }
 
   if ( nredundcol > 0 ) {
-    *Lin = lrs_alloc_mp_matrix( nredundcol, Q->n );
+    *Lin = lrs_alloc_mp_matrix ( nredundcol, Q->n );
 
     for ( i = 0; i < nredundcol; i++ ) {
-      if ( !( Q->homogeneous && Q->hull && i == 0 ) ) { /* skip redund col 1 for homog. hull */
-        lrs_getray( D, Q, Col[0], D->C[0] + i - hull, ( *Lin )[i] ); /* adjust index for deletions */
+      if ( ! ( Q->homogeneous && Q->hull && i == 0 ) ) { /* skip redund col 1 for homog. hull */
+        lrs_getray ( D, Q, Col[0], D->C[0] + i - hull, ( *Lin ) [i] ); /* adjust index for deletions */
       }
 
-      if ( !removecobasicindex( D, Q, 0L ) )
+      if ( !removecobasicindex ( D, Q, 0L ) )
         return FALSE;
     }
   }       /* end if nredundcol > 0 */
 
   if ( Q->lponly || Q->nash )
     if ( Q->verbose ) {
-      fprintf( lrs_ofp, "\nNumber of pivots for starting dictionary: %ld",Q->count[3] );
-      ocount=Q->count[3];
+      fprintf ( lrs_ofp, "\nNumber of pivots for starting dictionary: %ld", Q->count[3] );
+      ocount = Q->count[3];
 
       if ( Q->lponly )
-        printA( D, Q );
+        printA ( D, Q );
     }
 
   /* Do dual pivots to get primal feasibility */
-  if ( !primalfeasible( D, Q ) ) {
+  if ( !primalfeasible ( D, Q ) ) {
 #ifndef LRS_QUIET
-    fprintf( lrs_ofp, "\nNo feasible solution" );
+    fprintf ( lrs_ofp, "\nNo feasible solution" );
 #endif
 
     if ( Q->nash && Q->verbose ) {
-      fprintf( lrs_ofp, "\nNumber of pivots for feasible solution: %ld",Q->count[3] );
-      fprintf( lrs_ofp, " - No feasible solution" );
-      ocount=Q->count[3];
+      fprintf ( lrs_ofp, "\nNumber of pivots for feasible solution: %ld", Q->count[3] );
+      fprintf ( lrs_ofp, " - No feasible solution" );
+      ocount = Q->count[3];
     }
 
     return FALSE;
@@ -1448,34 +1448,34 @@ lrs_getfirstbasis( lrs_dic** D_p, lrs_dat* Q, lrs_mp_matrix* Lin, long no_output
 
   if ( Q->lponly || Q->nash )
     if ( Q->verbose ) {
-      fprintf( lrs_ofp, "\nNumber of pivots for feasible solution: %ld",Q->count[3] );
-      ocount=Q->count[3];
+      fprintf ( lrs_ofp, "\nNumber of pivots for feasible solution: %ld", Q->count[3] );
+      ocount = Q->count[3];
 
       if ( Q->lponly )
-        printA( D, Q );
+        printA ( D, Q );
     }
 
 
   /* Now solve LP if objective function was given */
   if ( Q->maximize || Q->minimize ) {
-    Q->unbounded = !lrs_solvelp( D, Q, Q->maximize );
+    Q->unbounded = !lrs_solvelp ( D, Q, Q->maximize );
 
     if ( Q->lponly ) {
 
       if ( Q->verbose ) {
-        fprintf( lrs_ofp, "\nNumber of pivots for optimum solution: %ld",Q->count[3] );
-        printA( D, Q );
-        ocount=Q->count[3];
+        fprintf ( lrs_ofp, "\nNumber of pivots for optimum solution: %ld", Q->count[3] );
+        printA ( D, Q );
+        ocount = Q->count[3];
       }
 
-      lrs_clear_mp( Temp ); lrs_clear_mp( scale );
+      lrs_clear_mp ( Temp ); lrs_clear_mp ( scale );
       return TRUE;
     }
 
     else {                       /* check to see if objective is dual degenerate */
       j = 1;
 
-      while ( j <= d && !zero( A[0][j] ) )
+      while ( j <= d && !zero ( A[0][j] ) )
         j++;
 
       if ( j <= d )
@@ -1485,18 +1485,18 @@ lrs_getfirstbasis( lrs_dic** D_p, lrs_dat* Q, lrs_mp_matrix* Lin, long no_output
     /* re-initialize cost row to -det */
   {
     for ( j = 1; j <= d; j++ ) {
-      copy( A[0][j], D->det );
-      storesign( A[0][j], NEG );
+      copy ( A[0][j], D->det );
+      storesign ( A[0][j], NEG );
     }
 
-    itomp( ZERO, A[0][0] ); /* zero optimum objective value */
+    itomp ( ZERO, A[0][0] ); /* zero optimum objective value */
   }
 
 
   /* reindex basis to 0..m if necessary */
   /* we use the fact that cobases are sorted by index value */
   if ( Q->debug )
-    printA( D, Q );
+    printA ( D, Q );
 
   while ( C[0] <= m ) {
     i = C[0];
@@ -1505,38 +1505,38 @@ lrs_getfirstbasis( lrs_dic** D_p, lrs_dat* Q, lrs_mp_matrix* Lin, long no_output
     inequality[C[0] - lastdv] = j;
     C[0] = B[i];
     B[i] = i;
-    reorder1( C, Col, ZERO, d );
+    reorder1 ( C, Col, ZERO, d );
   }
 
   if ( Q->debug ) {
-    fprintf( lrs_ofp, "\n*Inequality numbers for indices %ld .. %ld : ", lastdv + 1, m + d );
+    fprintf ( lrs_ofp, "\n*Inequality numbers for indices %ld .. %ld : ", lastdv + 1, m + d );
 
     for ( i = 1; i <= m - nlinearity; i++ )
-      fprintf( lrs_ofp, " %ld ", inequality[i] );
+      fprintf ( lrs_ofp, " %ld ", inequality[i] );
 
-    printA( D, Q );
+    printA ( D, Q );
   }
 
 
 
   if ( Q->restart ) {
     if ( Q->debug )
-      fprintf( lrs_ofp, "\nPivoting to restart co-basis" );
+      fprintf ( lrs_ofp, "\nPivoting to restart co-basis" );
 
-    if ( !restartpivots( D, Q ) )
+    if ( !restartpivots ( D, Q ) )
       return FALSE;
 
-    D->lexflag = lexmin( D, Q, ZERO );  /* see if lexmin basis */
+    D->lexflag = lexmin ( D, Q, ZERO ); /* see if lexmin basis */
 
     if ( Q->debug )
-      printA( D, Q );
+      printA ( D, Q );
   }
 
   /* Check to see if necessary to resize */
   if ( Q->inputd > D->d )
-    *D_p = resize( D, Q );
+    *D_p = resize ( D, Q );
 
-  lrs_clear_mp( Temp ); lrs_clear_mp( scale );
+  lrs_clear_mp ( Temp ); lrs_clear_mp ( scale );
   return TRUE;
 }
 /********* end of lrs_getfirstbasis  ***************/
@@ -1548,7 +1548,7 @@ lrs_getfirstbasis( lrs_dic** D_p, lrs_dat* Q, lrs_mp_matrix* Lin, long no_output
 
 
 long
-lrs_getnextbasis( lrs_dic** D_p, lrs_dat* Q, long backtrack )
+lrs_getnextbasis ( lrs_dic** D_p, lrs_dat* Q, long backtrack )
 /* gets next reverse search tree basis, FALSE if none  */
 /* switches to estimator if maxdepth set               */
 /* backtrack TRUE means backtrack from here            */
@@ -1564,7 +1564,7 @@ lrs_getnextbasis( lrs_dic** D_p, lrs_dat* Q, long backtrack )
   if ( backtrack && D->depth == 0 )
     return FALSE;                       /* cannot backtrack from root      */
 
-  if ( Q->maxoutput > 0 && Q->count[0]+Q->count[1]-Q->hull >= Q->maxoutput )
+  if ( Q->maxoutput > 0 && Q->count[0] + Q->count[1] - Q->hull >= Q->maxoutput )
     return FALSE;                      /* output limit reached            */
 
   while ( ( j < d ) || ( D->B[m] != m ) ) { /*main while loop for getnextbasis */
@@ -1572,7 +1572,7 @@ lrs_getnextbasis( lrs_dic** D_p, lrs_dat* Q, long backtrack )
       backtrack = TRUE;
 
       if ( Q->runs > 0 ) /*get an estimate of remaining tree */
-        lrs_estimate( D, Q );
+        lrs_estimate ( D, Q );
 
       if ( Q->maxdepth == 0 ) /* estimate only */
         return FALSE; /* no nextbasis  */
@@ -1584,19 +1584,19 @@ lrs_getnextbasis( lrs_dic** D_p, lrs_dat* Q, long backtrack )
     if ( backtrack ) { /* go back to prev. dictionary, restore i,j */
       backtrack = FALSE;
 
-      if ( check_cache( D_p, Q, &i, &j ) ) {
+      if ( check_cache ( D_p, Q, &i, &j ) ) {
         if ( Q->debug )
-          fprintf( lrs_ofp, "\n Cached Dict. restored to depth %ld\n", D->depth );
+          fprintf ( lrs_ofp, "\n Cached Dict. restored to depth %ld\n", D->depth );
       } else {
         D->depth--;
-        selectpivot( D, Q, &i, &j );
-        pivot( D, Q, i, j );
-        update( D, Q, &i, &j ); /*Update B,C,i,j */
+        selectpivot ( D, Q, &i, &j );
+        pivot ( D, Q, i, j );
+        update ( D, Q, &i, &j ); /*Update B,C,i,j */
       }
 
       if ( Q->debug ) {
-        fprintf( lrs_ofp, "\n Backtrack Pivot: indices i=%ld j=%ld depth=%ld", i, j, D->depth );
-        printA( D, Q );
+        fprintf ( lrs_ofp, "\n Backtrack Pivot: indices i=%ld j=%ld depth=%ld", i, j, D->depth );
+        printA ( D, Q );
       };
 
       j++;      /* go to next column */
@@ -1608,7 +1608,7 @@ lrs_getnextbasis( lrs_dic** D_p, lrs_dat* Q, long backtrack )
     /* try to go down tree */
 
     /* 2011.7.14 patch */
-    while ( ( j < d ) && ( !reverse( D, Q, &i, j ) || ( Q->truncate && Q->minratio[D->m]==1 ) ) )
+    while ( ( j < d ) && ( !reverse ( D, Q, &i, j ) || ( Q->truncate && Q->minratio[D->m] == 1 ) ) )
       j++;
 
     if ( j == d )
@@ -1616,7 +1616,7 @@ lrs_getnextbasis( lrs_dic** D_p, lrs_dat* Q, long backtrack )
     else
       /*reverse pivot found */
     {
-      cache_dict( D_p, Q, i, j );
+      cache_dict ( D_p, Q, i, j );
       /* Note that the next two lines must come _after_ the
          call to cache_dict */
 
@@ -1625,14 +1625,14 @@ lrs_getnextbasis( lrs_dic** D_p, lrs_dat* Q, long backtrack )
       if ( D->depth > Q->deepest )
         Q->deepest++;
 
-      pivot( D, Q, i, j );
-      update( D, Q, &i, &j ); /*Update B,C,i,j */
+      pivot ( D, Q, i, j );
+      update ( D, Q, &i, &j ); /*Update B,C,i,j */
 
-      D->lexflag = lexmin( D, Q, ZERO ); /* see if lexmin basis */
+      D->lexflag = lexmin ( D, Q, ZERO ); /* see if lexmin basis */
       Q->count[2]++;
       Q->totalnodes++;
 
-      save_basis( *D_p, Q );
+      save_basis ( *D_p, Q );
 
       if ( Q->strace == Q->count[2] )
         Q->debug = TRUE;
@@ -1653,7 +1653,7 @@ lrs_getnextbasis( lrs_dic** D_p, lrs_dat* Q, long backtrack )
 /* print out one line of output file */
 /*************************************/
 long
-lrs_getvertex( lrs_dic* P, lrs_dat* Q, lrs_mp_vector output )
+lrs_getvertex ( lrs_dic* P, lrs_dat* Q, lrs_mp_vector output )
 /*Print out current vertex if it is lexmin and return it in output */
 /* return FALSE if no output generated  */
 {
@@ -1680,18 +1680,18 @@ lrs_getvertex( lrs_dic* P, lrs_dat* Q, lrs_mp_vector output )
   lexflag = P->lexflag;
 
   if ( lexflag || Q->allbases )
-    ++( Q->count[1] );
+    ++ ( Q->count[1] );
 
   if ( Q->debug )
-    printA( P, Q );
+    printA ( P, Q );
 
-  linint( Q->sumdet, 1, P->det, 1 );
+  linint ( Q->sumdet, 1, P->det, 1 );
 
   if ( Q->getvolume ) {
-    updatevolume( P, Q );
+    updatevolume ( P, Q );
 
     if ( Q->verbose ) /* this will print out a triangulation */
-      lrs_printcobasis( P,Q,ZERO );
+      lrs_printcobasis ( P, Q, ZERO );
   }
 
 
@@ -1700,7 +1700,7 @@ lrs_getvertex( lrs_dic* P, lrs_dat* Q, lrs_mp_vector output )
 
   if ( Q->printcobasis )
     if ( ( lexflag && !hull )  || ( ( Q->frequency > 0 ) && ( count[2] == ( count[2] / Q->frequency ) * Q->frequency ) ) )
-      lrs_printcobasis( P, Q, ZERO );
+      lrs_printcobasis ( P, Q, ZERO );
 
   if ( hull )
     return FALSE;   /* skip printing the origin */
@@ -1713,25 +1713,25 @@ lrs_getvertex( lrs_dic* P, lrs_dat* Q, lrs_mp_vector output )
 
   i = 1;
   ired = 0;
-  copy( output[0], P->det );
+  copy ( output[0], P->det );
 
   for ( ind = 1; ind < Q->n; ind++ ) /* extract solution */
 
     if ( ( ired < Q->nredundcol ) && ( redundcol[ired] == ind ) )
       /* column was deleted as redundant */
     {
-      itomp( ZERO, output[ind] );
+      itomp ( ZERO, output[ind] );
       ired++;
     } else
       /* column not deleted as redundant */
     {
-      getnextoutput( P, Q, i, ZERO, output[ind] );
+      getnextoutput ( P, Q, i, ZERO, output[ind] );
       i++;
     }
 
-  reducearray( output, Q->n );
+  reducearray ( output, Q->n );
 
-  if ( lexflag && one( output[0] ) )
+  if ( lexflag && one ( output[0] ) )
     ++Q->count[4];               /* integer vertex */
 
 
@@ -1748,11 +1748,11 @@ lrs_getvertex( lrs_dic* P, lrs_dat* Q, lrs_mp_vector output )
   /* printslack inequality indices  */
 
   if ( Q->printslack ) {
-    fprintf( lrs_ofp,"\nslack ineq:" );
+    fprintf ( lrs_ofp, "\nslack ineq:" );
 
-    for ( i=lastdv+1; i<=P->m; i++ ) {
-      if ( !zero( A[Row[i]][0] ) )
-        fprintf( lrs_ofp," %ld ", Q->inequality[B[i]-lastdv] );
+    for ( i = lastdv + 1; i <= P->m; i++ ) {
+      if ( !zero ( A[Row[i]][0] ) )
+        fprintf ( lrs_ofp, " %ld ", Q->inequality[B[i] - lastdv] );
     }
   }
 
@@ -1760,7 +1760,7 @@ lrs_getvertex( lrs_dic* P, lrs_dat* Q, lrs_mp_vector output )
 }       /* end of lrs_getvertex */
 
 long
-lrs_getray( lrs_dic* P, lrs_dat* Q, long col, long redcol, lrs_mp_vector output )
+lrs_getray ( lrs_dic* P, lrs_dat* Q, long col, long redcol, lrs_mp_vector output )
 /*Print out solution in col and return it in output   */
 /*redcol =n for ray/facet 0..n-1 for linearity column */
 /*hull=1 implies facets will be recovered             */
@@ -1780,19 +1780,19 @@ lrs_getray( lrs_dic* P, lrs_dat* Q, long col, long redcol, lrs_mp_vector output 
   long lastdv = Q->lastdv;
 
   if ( Q->debug ) {
-    printA( P, Q );
+    printA ( P, Q );
 
     for ( i = 0; i < Q->nredundcol; i++ )
-      fprintf( lrs_ofp, " %ld", redundcol[i] );
+      fprintf ( lrs_ofp, " %ld", redundcol[i] );
 
-    fflush( lrs_ofp );
+    fflush ( lrs_ofp );
   }
 
   if ( redcol == n ) {
     ++count[0];
 
     if ( Q->printcobasis )
-      lrs_printcobasis( P, Q, col );
+      lrs_printcobasis ( P, Q, col );
   }
 
   i = 1;
@@ -1800,37 +1800,37 @@ lrs_getray( lrs_dic* P, lrs_dat* Q, long col, long redcol, lrs_mp_vector output 
 
   for ( ind = 0; ind < n; ind++ ) { /* print solution */
     if ( ind == 0 && !hull ) /* must have a ray, set first column to zero */
-      itomp( ZERO, output[0] );
+      itomp ( ZERO, output[0] );
 
     else if ( ( ired < Q->nredundcol ) && ( redundcol[ired] == ind ) )
       /* column was deleted as redundant */
     {
       if ( redcol == ind ) /* true for linearity on this cobasic index */
         /* we print reduced determinant instead of zero */
-        copy( output[ind], P->det );
+        copy ( output[ind], P->det );
       else
-        itomp( ZERO, output[ind] );
+        itomp ( ZERO, output[ind] );
 
       ired++;
     } else
       /* column not deleted as redundant */
     {
-      getnextoutput( P, Q, i, col, output[ind] );
+      getnextoutput ( P, Q, i, col, output[ind] );
       i++;
     }
 
   }
 
-  reducearray( output, n );
+  reducearray ( output, n );
   /* printslack for rays: 2006.10.10 */
   /* printslack inequality indices  */
 
   if ( Q->printslack ) {
-    fprintf( lrs_ofp,"\nslack ineq:" );
+    fprintf ( lrs_ofp, "\nslack ineq:" );
 
-    for ( i=lastdv+1; i<=P->m; i++ ) {
-      if ( !zero( P->A[Row[i]][col] ) )
-        fprintf( lrs_ofp," %ld ", Q->inequality[B[i]-lastdv] );
+    for ( i = lastdv + 1; i <= P->m; i++ ) {
+      if ( !zero ( P->A[Row[i]][col] ) )
+        fprintf ( lrs_ofp, " %ld ", Q->inequality[B[i] - lastdv] );
     }
   }
 
@@ -1840,7 +1840,7 @@ lrs_getray( lrs_dic* P, lrs_dat* Q, long col, long redcol, lrs_mp_vector output 
 
 
 void
-getnextoutput( lrs_dic* P, lrs_dat* Q, long i, long col, lrs_mp out )
+getnextoutput ( lrs_dic* P, lrs_dat* Q, long i, long col, lrs_mp out )
 /* get A[B[i][col] and copy to out */
 {
   long row;
@@ -1863,26 +1863,26 @@ getnextoutput( lrs_dic* P, lrs_dat* Q, long i, long col, lrs_mp out )
     /* otherwise the value of x_i is zero, except for a ray    */
     /* when it is one (det/det) for the actual column it is in */
   {
-    for ( j = lastdv+ 1; j <= m; j++ ) {
-      if ( Q->inequality[B[j]-lastdv] == m-d+i ) {
-        copy( out, A[Row[j]][col] );
+    for ( j = lastdv + 1; j <= m; j++ ) {
+      if ( Q->inequality[B[j] - lastdv] == m - d + i ) {
+        copy ( out, A[Row[j]][col] );
         return;
       }
     }
 
     /* did not find inequality m-d+i in basis */
     if ( i == col )
-      copy( out,P->det );
+      copy ( out, P->det );
     else
-      itomp( ZERO,out );
+      itomp ( ZERO, out );
 
   } else
-    copy( out, A[row][col] );
+    copy ( out, A[row][col] );
 
 }       /* end of getnextoutput */
 
 void
-lrs_printcobasis( lrs_dic* P, lrs_dat* Q, long col )
+lrs_printcobasis ( lrs_dic* P, lrs_dat* Q, long col )
 /* col is output column being printed */
 {
   long i;
@@ -1900,18 +1900,18 @@ lrs_printcobasis( lrs_dic* P, lrs_dat* Q, long col )
   long hull = Q->hull;
   long d = P->d;
   long lastdv = Q->lastdv;
-  long m=P->m;
-  long firstime=TRUE;
+  long m = P->m;
+  long firstime = TRUE;
   long nincidence;       /* count number of tight inequalities */
 
-  lrs_alloc_mp( Nvol ); lrs_alloc_mp( Dvol );
+  lrs_alloc_mp ( Nvol ); lrs_alloc_mp ( Dvol );
 
   if ( hull )
-    fprintf( lrs_ofp, "\nF#%ld B#%ld h=%ld vertices/rays ", count[0], count[2], P->depth );
+    fprintf ( lrs_ofp, "\nF#%ld B#%ld h=%ld vertices/rays ", count[0], count[2], P->depth );
   else if ( Q->voronoi )
-    fprintf( lrs_ofp, "\nV#%ld R#%ld B#%ld h=%ld data points ", count[1], count[0], count[2], P->depth );
+    fprintf ( lrs_ofp, "\nV#%ld R#%ld B#%ld h=%ld data points ", count[1], count[0], count[2], P->depth );
   else
-    fprintf( lrs_ofp, "\nV#%ld R#%ld B#%ld h=%ld facets ", count[1], count[0], count[2], P->depth );
+    fprintf ( lrs_ofp, "\nV#%ld R#%ld B#%ld h=%ld facets ", count[1], count[0], count[2], P->depth );
 
   rflag = ( -1 );
 
@@ -1923,13 +1923,13 @@ lrs_printcobasis( lrs_dic* P, lrs_dat* Q, long col )
   }
 
   for ( i = 0; i < d; i++ )
-    reorder( temparray, d );
+    reorder ( temparray, d );
 
   for ( i = 0; i < d; i++ ) {
-    fprintf( lrs_ofp, " %ld", temparray[i] );
+    fprintf ( lrs_ofp, " %ld", temparray[i] );
 
-    if ( !( col == ZERO ) && ( rflag == temparray[i] ) ) /* missing cobasis element for ray */
-      fprintf( lrs_ofp, "*" );
+    if ( ! ( col == ZERO ) && ( rflag == temparray[i] ) ) /* missing cobasis element for ray */
+      fprintf ( lrs_ofp, "*" );
 
   }
 
@@ -1937,30 +1937,30 @@ lrs_printcobasis( lrs_dic* P, lrs_dat* Q, long col )
   if ( col == 0 )
     nincidence = d;
   else
-    nincidence = d-1;
+    nincidence = d - 1;
 
-  for ( i=lastdv+1; i<=m; i++ )
-    if ( zero( A[Row[i]][0] ) )
-      if ( ( col == ZERO ) || zero( A[Row[i]] [col] ) ) {
+  for ( i = lastdv + 1; i <= m; i++ )
+    if ( zero ( A[Row[i]][0] ) )
+      if ( ( col == ZERO ) || zero ( A[Row[i]] [col] ) ) {
         nincidence++;
 
         if ( Q->incidence ) {
           if ( firstime ) {
-            fprintf( lrs_ofp," :" );
+            fprintf ( lrs_ofp, " :" );
             firstime = FALSE;
           }
 
-          fprintf( lrs_ofp," %ld",inequality[B[i] - lastdv ] );
+          fprintf ( lrs_ofp, " %ld", inequality[B[i] - lastdv ] );
         }
       }
 
-  fprintf( lrs_ofp," I#%ld",nincidence );
+  fprintf ( lrs_ofp, " I#%ld", nincidence );
 
-  pmp( " det=", P->det );
-  fflush( lrs_ofp );
-  rescaledet( P, Q, Nvol, Dvol ); /* scales determinant in case input rational */
-  prat( " in_det=",Nvol,Dvol );
-  lrs_clear_mp( Nvol ); lrs_clear_mp( Dvol );
+  pmp ( " det=", P->det );
+  fflush ( lrs_ofp );
+  rescaledet ( P, Q, Nvol, Dvol ); /* scales determinant in case input rational */
+  prat ( " in_det=", Nvol, Dvol );
+  lrs_clear_mp ( Nvol ); lrs_clear_mp ( Dvol );
 
 
 }       /* end of lrs_printcobasis */
@@ -1969,7 +1969,7 @@ lrs_printcobasis( lrs_dic* P, lrs_dat* Q, long col )
 /* print final totals */
 /*********************/
 void
-lrs_printtotals( lrs_dic* P, lrs_dat* Q ) {
+lrs_printtotals ( lrs_dic* P, lrs_dat* Q ) {
   long i;
   double x;
   /* local assignments */
@@ -1990,45 +1990,45 @@ lrs_printtotals( lrs_dic* P, lrs_dat* Q ) {
   d = P->d;
   lastdv = Q->lastdv;
 
-  fprintf( lrs_ofp, "\nend" );
+  fprintf ( lrs_ofp, "\nend" );
 
   if ( Q->dualdeg ) {
-    fprintf( lrs_ofp, "\n*Warning: Starting dictionary is dual degenerate" );
-    fprintf( lrs_ofp, "\n*Complete enumeration may not have been produced" );
+    fprintf ( lrs_ofp, "\n*Warning: Starting dictionary is dual degenerate" );
+    fprintf ( lrs_ofp, "\n*Complete enumeration may not have been produced" );
 
     if ( Q->maximize )
-      fprintf( lrs_ofp,"\n*Recommendation: Add dualperturb option before maximize in input file\n" );
+      fprintf ( lrs_ofp, "\n*Recommendation: Add dualperturb option before maximize in input file\n" );
     else
-      fprintf( lrs_ofp,"\n*Recommendation: Add dualperturb option before minimize in input file\n" );
+      fprintf ( lrs_ofp, "\n*Recommendation: Add dualperturb option before minimize in input file\n" );
   }
 
   if ( Q->unbounded ) {
-    fprintf( lrs_ofp, "\n*Warning: Starting dictionary contains rays" );
-    fprintf( lrs_ofp, "\n*Complete enumeration may not have been produced" );
+    fprintf ( lrs_ofp, "\n*Warning: Starting dictionary contains rays" );
+    fprintf ( lrs_ofp, "\n*Complete enumeration may not have been produced" );
 
     if ( Q->maximize )
-      fprintf( lrs_ofp,"\n*Recommendation: Change or remove maximize option or add bounds\n" );
+      fprintf ( lrs_ofp, "\n*Recommendation: Change or remove maximize option or add bounds\n" );
     else
-      fprintf( lrs_ofp,"\n*Recommendation: Change or remove minimize option or add bounds\n" );
+      fprintf ( lrs_ofp, "\n*Recommendation: Change or remove minimize option or add bounds\n" );
   }
 
   if ( Q->truncate )
-    fprintf( lrs_ofp,"\n*Tree truncated at each new vertex" );
+    fprintf ( lrs_ofp, "\n*Tree truncated at each new vertex" );
 
   if ( Q->maxdepth < MAXD )
-    fprintf( lrs_ofp, "\n*Tree truncated at depth %ld", Q->maxdepth );
+    fprintf ( lrs_ofp, "\n*Tree truncated at depth %ld", Q->maxdepth );
 
   if ( Q->maxoutput > 0L )
-    fprintf( lrs_ofp, "\n*Maximum number of output lines = %ld", Q->maxoutput );
+    fprintf ( lrs_ofp, "\n*Maximum number of output lines = %ld", Q->maxoutput );
 
 
 #ifdef LONG
-  fprintf( lrs_ofp, "\n*Caution: no overflow checking with long integer arithemtic" );
+  fprintf ( lrs_ofp, "\n*Caution: no overflow checking with long integer arithemtic" );
 #else
 
   if ( Q->verbose ) {
-    fprintf( lrs_ofp, "\n*Sum of det(B)=" );
-    pmp( "", Q->sumdet );
+    fprintf ( lrs_ofp, "\n*Sum of det(B)=" );
+    pmp ( "", Q->sumdet );
   }
 
 #endif
@@ -2036,38 +2036,38 @@ lrs_printtotals( lrs_dic* P, lrs_dat* Q ) {
   /* next block with volume rescaling must come before estimates are printed */
 
   if ( Q->getvolume ) {
-    rescalevolume( P, Q, Q->Nvolume, Q->Dvolume );
+    rescalevolume ( P, Q, Q->Nvolume, Q->Dvolume );
 
     if ( Q->polytope )
-      prat( "\n*Volume=", Q->Nvolume, Q->Dvolume );
+      prat ( "\n*Volume=", Q->Nvolume, Q->Dvolume );
     else
-      prat( "\n*Pseudovolume=", Q->Nvolume, Q->Dvolume );
+      prat ( "\n*Pseudovolume=", Q->Nvolume, Q->Dvolume );
   }
 
   if ( hull ) { /* output things that are specific to hull computation */
-    fprintf( lrs_ofp, "\n*Totals: facets=%ld bases=%ld", count[0], count[2] );
+    fprintf ( lrs_ofp, "\n*Totals: facets=%ld bases=%ld", count[0], count[2] );
 
     if ( nredundcol > homogeneous ) { /* don't count column 1 as redundant if homogeneous */
-      fprintf( lrs_ofp, " linearities=%ld", nredundcol - homogeneous );
-      fprintf( lrs_ofp, " facets+linearities=%ld",nredundcol-homogeneous+count[0] );
+      fprintf ( lrs_ofp, " linearities=%ld", nredundcol - homogeneous );
+      fprintf ( lrs_ofp, " facets+linearities=%ld", nredundcol - homogeneous + count[0] );
     }
 
 
     if ( ( cest[2] > 0 ) || ( cest[0] > 0 ) ) {
-      fprintf( lrs_ofp, "\n*Estimates: facets=%.0f bases=%.0f", count[0] + cest[0], count[2] + cest[2] );
+      fprintf ( lrs_ofp, "\n*Estimates: facets=%.0f bases=%.0f", count[0] + cest[0], count[2] + cest[2] );
 
       if ( Q->getvolume ) {
-        rattodouble( Q->Nvolume, Q->Dvolume, &x );
+        rattodouble ( Q->Nvolume, Q->Dvolume, &x );
 
         for ( i = 2; i < d; i++ )
           cest[3] = cest[3] / i;  /*adjust for dimension */
 
-        fprintf( lrs_ofp, " volume=%g", cest[3] + x );
+        fprintf ( lrs_ofp, " volume=%g", cest[3] + x );
       }
 
-      fprintf( lrs_ofp, "\n*Total number of tree nodes evaluated: %ld", Q->totalnodes );
+      fprintf ( lrs_ofp, "\n*Total number of tree nodes evaluated: %ld", Q->totalnodes );
 #ifdef TIMES
-      fprintf( lrs_ofp, "\n*Estimated total running time=%.1f secs ",( count[2]+cest[2] )/Q->totalnodes*get_time() );
+      fprintf ( lrs_ofp, "\n*Estimated total running time=%.1f secs ", ( count[2] + cest[2] ) / Q->totalnodes * get_time() );
 #endif
 
     }
@@ -2079,45 +2079,45 @@ lrs_printtotals( lrs_dic* P, lrs_dat* Q ) {
     */
 
   } else {     /* output things specific to vertex/ray computation */
-    fprintf( lrs_ofp, "\n*Totals: vertices=%ld rays=%ld bases=%ld", count[1], count[0], count[2] );
-    fprintf( lrs_ofp, " integer_vertices=%ld ",count[4] );
+    fprintf ( lrs_ofp, "\n*Totals: vertices=%ld rays=%ld bases=%ld", count[1], count[0], count[2] );
+    fprintf ( lrs_ofp, " integer_vertices=%ld ", count[4] );
 
     if ( nredundcol > 0 )
-      fprintf( lrs_ofp, " linearities=%ld", nredundcol );
+      fprintf ( lrs_ofp, " linearities=%ld", nredundcol );
 
     if ( count[0] + nredundcol > 0 ) {
-      fprintf( lrs_ofp, " vertices+rays" );
+      fprintf ( lrs_ofp, " vertices+rays" );
 
       if ( nredundcol > 0 )
-        fprintf( lrs_ofp, "+linearities" );
+        fprintf ( lrs_ofp, "+linearities" );
 
-      fprintf( lrs_ofp, "=%ld",nredundcol+count[0]+count[1] );
+      fprintf ( lrs_ofp, "=%ld", nredundcol + count[0] + count[1] );
     }
 
     if ( ( cest[2] > 0 ) || ( cest[0] > 0 ) ) {
-      fprintf( lrs_ofp, "\n*Estimates: vertices=%.0f rays=%.0f", count[1]+cest[1], count[0]+cest[0] );
-      fprintf( lrs_ofp, " bases=%.0f integer_vertices=%.0f ",count[2]+cest[2], count[4]+cest[4] );
+      fprintf ( lrs_ofp, "\n*Estimates: vertices=%.0f rays=%.0f", count[1] + cest[1], count[0] + cest[0] );
+      fprintf ( lrs_ofp, " bases=%.0f integer_vertices=%.0f ", count[2] + cest[2], count[4] + cest[4] );
 
       if ( Q->getvolume ) {
-        rattodouble( Q->Nvolume, Q->Dvolume, &x );
+        rattodouble ( Q->Nvolume, Q->Dvolume, &x );
 
-        for ( i = 2; i <= d-homogeneous; i++ )
+        for ( i = 2; i <= d - homogeneous; i++ )
           cest[3] = cest[3] / i; /*adjust for dimension */
 
-        fprintf( lrs_ofp, " pseudovolume=%g", cest[3] + x );
+        fprintf ( lrs_ofp, " pseudovolume=%g", cest[3] + x );
       }
 
-      fprintf( lrs_ofp, "\n*Total number of tree nodes evaluated: %ld", Q->totalnodes );
+      fprintf ( lrs_ofp, "\n*Total number of tree nodes evaluated: %ld", Q->totalnodes );
 #ifdef TIMES
-      fprintf( lrs_ofp, "\n*Estimated total running time=%.1f secs ",( count[2]+cest[2] )/Q->totalnodes*get_time() );
+      fprintf ( lrs_ofp, "\n*Estimated total running time=%.1f secs ", ( count[2] + cest[2] ) / Q->totalnodes * get_time() );
 #endif
     }
 
     if ( Q->restart || Q->allbases )      /* print warning  */
-      fprintf( lrs_ofp, "\n*Note! Duplicate vertices/rays may be present" );
+      fprintf ( lrs_ofp, "\n*Note! Duplicate vertices/rays may be present" );
 
     else if ( ( count[0] > 1 && !Q->homogeneous ) )
-      fprintf( lrs_ofp, "\n*Note! Duplicate rays may be present" );
+      fprintf ( lrs_ofp, "\n*Note! Duplicate rays may be present" );
 
   }       /* end of output for vertices/rays */
 
@@ -2125,14 +2125,14 @@ lrs_printtotals( lrs_dic* P, lrs_dat* Q ) {
   if ( !Q->verbose )
     return;
 
-  fprintf( lrs_ofp, "\n*Input size m=%ld rows n=%ld columns", P->m, Q->n );
+  fprintf ( lrs_ofp, "\n*Input size m=%ld rows n=%ld columns", P->m, Q->n );
 
   if ( hull )
-    fprintf( lrs_ofp, " working dimension=%ld", d - 1 + homogeneous );
+    fprintf ( lrs_ofp, " working dimension=%ld", d - 1 + homogeneous );
   else
-    fprintf( lrs_ofp, " working dimension=%ld", d );
+    fprintf ( lrs_ofp, " working dimension=%ld", d );
 
-  fprintf( lrs_ofp, "\n*Starting cobasis defined by input rows" );
+  fprintf ( lrs_ofp, "\n*Starting cobasis defined by input rows" );
 
   for ( i = 0; i < nlinearity; i++ )
     temparray[i] = linearity[i];
@@ -2141,12 +2141,12 @@ lrs_printtotals( lrs_dic* P, lrs_dat* Q ) {
     temparray[i] = inequality[C[i - nlinearity] - lastdv];
 
   for ( i = 0; i < lastdv; i++ )
-    reorder( temparray, lastdv );
+    reorder ( temparray, lastdv );
 
   for ( i = 0; i < lastdv; i++ )
-    fprintf( lrs_ofp, " %ld", temparray[i] );
+    fprintf ( lrs_ofp, " %ld", temparray[i] );
 
-  fprintf( lrs_ofp, "\n*Dictionary Cache: max size= %ld misses= %ld/%ld   Tree Depth= %ld", dict_count, cache_misses, cache_tries, Q->deepest );
+  fprintf ( lrs_ofp, "\n*Dictionary Cache: max size= %ld misses= %ld/%ld   Tree Depth= %ld", dict_count, cache_misses, cache_tries, Q->deepest );
 
 
 }       /* end of lrs_printtotals */
@@ -2154,7 +2154,7 @@ lrs_printtotals( lrs_dic* P, lrs_dat* Q ) {
 /*  Estimation function */
 /************************/
 void
-lrs_estimate( lrs_dic* P, lrs_dat* Q )
+lrs_estimate ( lrs_dic* P, lrs_dat* Q )
 /*get estimate of tree size from current node    */
 /*current node is not counted.                   */
 /*cest[0]rays [1]vertices [2]bases [3]volume     */
@@ -2177,10 +2177,10 @@ lrs_estimate( lrs_dic* P, lrs_dat* Q )
   long* jsave = Q->jsave;
   double* cest = Q->cest;
   long d = P->d;
-  lrs_alloc_mp( Nvol ); lrs_alloc_mp( Dvol );
+  lrs_alloc_mp ( Nvol ); lrs_alloc_mp ( Dvol );
   /* Main Loop of Estimator */
 
-  output = lrs_alloc_mp_vector( Q->n ); /* output holds one line of output from dictionary     */
+  output = lrs_alloc_mp_vector ( Q->n ); /* output holds one line of output from dictionary     */
 
   for ( runcount = 1; runcount <= Q->runs; runcount++ ) {
     /* runcount counts number of random probes */
@@ -2191,14 +2191,14 @@ lrs_estimate( lrs_dic* P, lrs_dat* Q )
     nbases = 0.0;
     nrays = 0.0;
     nvol = 0.0;
-    nivertices =0.0;
+    nivertices = 0.0;
 
     while ( nchild != 0 ) { /* while not finished yet */
 
       nchild = 0;
 
       while ( j < d ) {
-        if ( reverse( P, Q, &i, j ) ) {
+        if ( reverse ( P, Q, &i, j ) ) {
           isave[nchild] = i;
           jsave[nchild] = j;
           nchild++;
@@ -2209,7 +2209,7 @@ lrs_estimate( lrs_dic* P, lrs_dat* Q )
 
       if ( estdepth == 0 && nchild == 0 ) {
         cest[0] = cest[0] + rays;   /* may be some rays here */
-        lrs_clear_mp( Nvol ); lrs_clear_mp( Dvol );
+        lrs_clear_mp ( Nvol ); lrs_clear_mp ( Dvol );
         return;   /*subtree is a leaf */
       }
 
@@ -2217,35 +2217,35 @@ lrs_estimate( lrs_dic* P, lrs_dat* Q )
       nbases = nbases + prod;
 
       if ( Q->debug ) {
-        fprintf( lrs_ofp, "   degree= %ld ", nchild );
-        fprintf( lrs_ofp, "\nPossible reverse pivots: i,j=" );
+        fprintf ( lrs_ofp, "   degree= %ld ", nchild );
+        fprintf ( lrs_ofp, "\nPossible reverse pivots: i,j=" );
 
         for ( k = 0; k < nchild; k++ )
-          fprintf( lrs_ofp, "%ld,%ld ", isave[k], jsave[k] );
+          fprintf ( lrs_ofp, "%ld,%ld ", isave[k], jsave[k] );
       }
 
       if ( nchild > 0 ) { /*reverse pivot found choose random child */
-        k = myrandom( Q->seed, nchild );
-        Q->seed = myrandom( Q->seed, 977L );
+        k = myrandom ( Q->seed, nchild );
+        Q->seed = myrandom ( Q->seed, 977L );
         i = isave[k];
         j = jsave[k];
 
         if ( Q->debug )
-          fprintf( lrs_ofp, "  selected pivot k=%ld seed=%ld ", k, Q->seed );
+          fprintf ( lrs_ofp, "  selected pivot k=%ld seed=%ld ", k, Q->seed );
 
         estdepth++;
         Q->totalnodes++;  /* calculate total number of nodes evaluated */
-        pivot( P, Q, i, j );
-        update( P, Q, &i, &j ); /*Update B,C,i,j */
+        pivot ( P, Q, i, j );
+        update ( P, Q, &i, &j ); /*Update B,C,i,j */
 
-        if ( lexmin( P, Q, ZERO ) ) { /* see if lexmin basis for vertex */
+        if ( lexmin ( P, Q, ZERO ) ) { /* see if lexmin basis for vertex */
           nvertices = nvertices + prod;
 
           /* integer vertex estimate */
-          if ( lrs_getvertex( P,Q,output ) ) {
+          if ( lrs_getvertex ( P, Q, output ) ) {
             --Q->count[1];
 
-            if ( one( output[0] ) ) {
+            if ( one ( output[0] ) ) {
               --Q->count[4];
               nivertices = nivertices + prod;
             }
@@ -2255,14 +2255,14 @@ lrs_estimate( lrs_dic* P, lrs_dat* Q )
         rays = 0;
 
         for ( col = 1; col <= d; col++ )
-          if ( negative( A[0][col] ) && ( ratio( P, Q, col ) == 0 ) && lexmin( P, Q, col ) )
+          if ( negative ( A[0][col] ) && ( ratio ( P, Q, col ) == 0 ) && lexmin ( P, Q, col ) )
             rays++;
 
         nrays = nrays + prod * rays;  /* update ray info */
 
         if ( Q->getvolume ) {
-          rescaledet( P, Q, Nvol, Dvol ); /* scales determinant in case input rational */
-          rattodouble( Nvol, Dvol, &newvol );
+          rescaledet ( P, Q, Nvol, Dvol ); /* scales determinant in case input rational */
+          rattodouble ( Nvol, Dvol, &newvol );
           nvol = nvol + newvol * prod;  /* adjusts volume for degree              */
         }
 
@@ -2280,14 +2280,14 @@ lrs_estimate( lrs_dic* P, lrs_dat* Q )
 
     while ( estdepth > 0 ) {
       estdepth = estdepth - 1;
-      selectpivot( P, Q, &i, &j );
-      pivot( P, Q, i, j );
-      update( P, Q, &i, &j ); /*Update B,C,i,j */
+      selectpivot ( P, Q, &i, &j );
+      pivot ( P, Q, i, j );
+      update ( P, Q, &i, &j ); /*Update B,C,i,j */
 
       /*fprintf(lrs_ofp,"\n0  +++"); */
       if ( Q->debug ) {
-        fprintf( lrs_ofp, "\n Backtrack Pivot: indices i,j %ld %ld ", i, j );
-        printA( P, Q );
+        fprintf ( lrs_ofp, "\n Backtrack Pivot: indices i,j %ld %ld ", i, j );
+        printA ( P, Q );
       }
 
       j++;
@@ -2298,8 +2298,8 @@ lrs_estimate( lrs_dic* P, lrs_dat* Q )
   for ( i = 0; i < 5; i++ )
     cest[i] = cave[i] / Q->runs + cest[i];
 
-  lrs_clear_mp( Nvol ); lrs_clear_mp( Dvol );
-  lrs_clear_mp_vector( output, Q->n );
+  lrs_clear_mp ( Nvol ); lrs_clear_mp ( Dvol );
+  lrs_clear_mp_vector ( output, Q->n );
 }       /* end of lrs_estimate  */
 
 
@@ -2310,7 +2310,7 @@ lrs_estimate( lrs_dic* P, lrs_dat* Q )
 /******************************* */
 
 long
-reverse( lrs_dic* P, lrs_dat* Q, long* r, long s )
+reverse ( lrs_dic* P, lrs_dat* Q, long* r, long s )
 /*  find reverse indices  */
 /* TRUE if B[*r] C[s] is a reverse lexicographic pivot */
 {
@@ -2328,25 +2328,25 @@ reverse( lrs_dic* P, lrs_dat* Q, long* r, long s )
   col = Col[s];
 
   if ( Q->debug ) {
-    fprintf( lrs_ofp, "\n+reverse: col index %ld C %ld Col %ld ", s, enter, col );
-    fflush( lrs_ofp );
+    fprintf ( lrs_ofp, "\n+reverse: col index %ld C %ld Col %ld ", s, enter, col );
+    fflush ( lrs_ofp );
   }
 
-  if ( !negative( A[0][col] ) ) {
+  if ( !negative ( A[0][col] ) ) {
     if ( Q->debug )
-      fprintf( lrs_ofp, " Pos/Zero Cost Coeff" );
+      fprintf ( lrs_ofp, " Pos/Zero Cost Coeff" );
 
-    Q->minratio[P->m]=0;  /* 2011.7.14 */
+    Q->minratio[P->m] = 0; /* 2011.7.14 */
     return ( FALSE );
   }
 
-  *r = ratio( P, Q, col );
+  *r = ratio ( P, Q, col );
 
   if ( *r == 0 ) {  /* we have a ray */
     if ( Q->debug )
-      fprintf( lrs_ofp, " Pivot col non-negative:  ray found" );
+      fprintf ( lrs_ofp, " Pivot col non-negative:  ray found" );
 
-    Q->minratio[P->m]=0;  /* 2011.7.14 */
+    Q->minratio[P->m] = 0; /* 2011.7.14 */
     return ( FALSE );
   }
 
@@ -2360,31 +2360,31 @@ reverse( lrs_dic* P, lrs_dat* Q, long* r, long s )
     if ( i != s ) {
       j = Col[i];
 
-      if ( positive( A[0][j] ) || negative( A[row][j] ) ) /*or else sign test fails trivially */
-        if ( ( !negative( A[0][j] ) && !positive( A[row][j] ) ) ||
-             comprod( A[0][j], A[row][col], A[0][col], A[row][j] ) == -1 ) {
+      if ( positive ( A[0][j] ) || negative ( A[row][j] ) ) /*or else sign test fails trivially */
+        if ( ( !negative ( A[0][j] ) && !positive ( A[row][j] ) ) ||
+             comprod ( A[0][j], A[row][col], A[0][col], A[row][j] ) == -1 ) {
           /*+ve cost found */
           if ( Q->debug ) {
-            fprintf( lrs_ofp, "\nPositive cost found: index %ld C %ld Col %ld", i, C[i], j );
-            fflush( lrs_ofp );
+            fprintf ( lrs_ofp, "\nPositive cost found: index %ld C %ld Col %ld", i, C[i], j );
+            fflush ( lrs_ofp );
           }
 
-          Q->minratio[P->m]=0;  /* 2011.7.14 */
+          Q->minratio[P->m] = 0; /* 2011.7.14 */
 
           return ( FALSE );
         }
     }
 
   if ( Q->debug ) {
-    fprintf( lrs_ofp, "\n+end of reverse : indices r %ld s %ld \n", *r, s );
-    fflush( stdout );
+    fprintf ( lrs_ofp, "\n+end of reverse : indices r %ld s %ld \n", *r, s );
+    fflush ( stdout );
   }
 
   return ( TRUE );
 }       /* end of reverse */
 
 long
-selectpivot( lrs_dic* P, lrs_dat* Q, long* r, long* s )
+selectpivot ( lrs_dic* P, lrs_dat* Q, long* r, long* s )
 /* select pivot indices using lexicographic rule   */
 /* returns TRUE if pivot found else FALSE          */
 /* pivot variables are B[*r] C[*s] in locations Row[*r] Col[*s] */
@@ -2400,7 +2400,7 @@ selectpivot( lrs_dic* P, lrs_dat* Q, long* r, long* s )
   j = 0;
 
   /*find positive cost coef */
-  while ( ( j < d ) && ( !positive( A[0][Col[j]] ) ) )
+  while ( ( j < d ) && ( !positive ( A[0][Col[j]] ) ) )
     j++;
 
   if ( j < d ) {  /* pivot column found! */
@@ -2408,7 +2408,7 @@ selectpivot( lrs_dic* P, lrs_dat* Q, long* r, long* s )
     col = Col[j];
 
     /*find min index ratio */
-    *r = ratio( P, Q, col );
+    *r = ratio ( P, Q, col );
 
     if ( *r != 0 )
       return ( TRUE );  /* unbounded */
@@ -2419,7 +2419,7 @@ selectpivot( lrs_dic* P, lrs_dat* Q, long* r, long* s )
 /******************************************************* */
 
 void
-pivot( lrs_dic* P, lrs_dat* Q, long bas, long cob )
+pivot ( lrs_dic* P, lrs_dat* Q, long bas, long cob )
 /* Qpivot routine for array A              */
 /* indices bas, cob are for Basis B and CoBasis C    */
 /* corresponding to row Row[bas] and column       */
@@ -2437,7 +2437,7 @@ pivot( lrs_dic* P, lrs_dat* Q, long bas, long cob )
   long* Col = P->Col;
   long m, d, m_A;
 
-  lrs_alloc_mp( Ns ); lrs_alloc_mp( Nt ); lrs_alloc_mp( Ars );
+  lrs_alloc_mp ( Ns ); lrs_alloc_mp ( Nt ); lrs_alloc_mp ( Ars );
 
   m = P->m;
   d = P->d;
@@ -2449,13 +2449,13 @@ pivot( lrs_dic* P, lrs_dat* Q, long bas, long cob )
 
   /* Ars=A[r][s]    */
   if ( Q->debug ) {
-    fprintf( lrs_ofp, "\n pivot  B[%ld]=%ld  C[%ld]=%ld ", bas, B[bas], cob, C[cob] );
-    printA( P,Q );
-    fflush( stdout );
+    fprintf ( lrs_ofp, "\n pivot  B[%ld]=%ld  C[%ld]=%ld ", bas, B[bas], cob, C[cob] );
+    printA ( P, Q );
+    fflush ( stdout );
   }
 
-  copy( Ars, A[r][s] );
-  storesign( P->det, sign( Ars ) ); /*adjust determinant to new sign */
+  copy ( Ars, A[r][s] );
+  storesign ( P->det, sign ( Ars ) ); /*adjust determinant to new sign */
 
 
   for ( i = 0; i <= m_A; i++ )
@@ -2464,56 +2464,56 @@ pivot( lrs_dic* P, lrs_dat* Q, long bas, long cob )
         if ( j != s ) {
           /*          A[i][j]=(A[i][j]*Ars-A[i][s]*A[r][j])/P->det; */
 
-          mulint( A[i][j], Ars, Nt );
-          mulint( A[i][s], A[r][j], Ns );
-          decint( Nt, Ns );
-          exactdivint( Nt, P->det, A[i][j] );
+          mulint ( A[i][j], Ars, Nt );
+          mulint ( A[i][s], A[r][j], Ns );
+          decint ( Nt, Ns );
+          exactdivint ( Nt, P->det, A[i][j] );
         }     /* end if j ....  */
 
-  if ( sign( Ars ) == POS ) {
+  if ( sign ( Ars ) == POS ) {
     for ( j = 0; j <= d; j++ ) /* no need to change sign if Ars neg */
 
       /*   A[r][j]=-A[r][j];              */
-      if ( !zero( A[r][j] ) )
-        changesign( A[r][j] );
+      if ( !zero ( A[r][j] ) )
+        changesign ( A[r][j] );
   }       /* watch out for above "if" when removing this "}" ! */
   else
     for ( i = 0; i <= m_A; i++ )
-      if ( !zero( A[i][s] ) )
-        changesign( A[i][s] );
+      if ( !zero ( A[i][s] ) )
+        changesign ( A[i][s] );
 
   /*  A[r][s]=P->det;                  */
 
-  copy( A[r][s], P->det );  /* restore old determinant */
-  copy( P->det, Ars );
-  storesign( P->det, POS );   /* always keep positive determinant */
+  copy ( A[r][s], P->det ); /* restore old determinant */
+  copy ( P->det, Ars );
+  storesign ( P->det, POS );  /* always keep positive determinant */
 
 
   if ( Q->debug ) {
-    fprintf( lrs_ofp, " depth=%ld ", P->depth );
-    pmp( "det=", P->det );
-    fflush( stdout );
+    fprintf ( lrs_ofp, " depth=%ld ", P->depth );
+    pmp ( "det=", P->det );
+    fflush ( stdout );
   }
 
   /* set the new rescaled objective function value */
 
-  mulint( P->det, Q->Lcm[0], P->objden );
-  mulint( Q->Gcd[0], A[0][0], P->objnum );
+  mulint ( P->det, Q->Lcm[0], P->objden );
+  mulint ( Q->Gcd[0], A[0][0], P->objnum );
 
   if ( !Q->maximize )
-    changesign( P->objnum );
+    changesign ( P->objnum );
 
-  if ( zero( P->objnum ) )
-    storesign( P->objnum, POS );
+  if ( zero ( P->objnum ) )
+    storesign ( P->objnum, POS );
   else
-    reduce( P->objnum,P->objden );
+    reduce ( P->objnum, P->objden );
 
 
-  lrs_clear_mp( Ns ); lrs_clear_mp( Nt ); lrs_clear_mp( Ars );
+  lrs_clear_mp ( Ns ); lrs_clear_mp ( Nt ); lrs_clear_mp ( Ars );
 }       /* end of pivot */
 
 long
-primalfeasible( lrs_dic* P, lrs_dat* Q )
+primalfeasible ( lrs_dic* P, lrs_dat* Q )
 /* Do dual pivots to get primal feasibility */
 /* Note that cost row is all zero, so no ratio test needed for Dual Bland's rule */
 {
@@ -2531,22 +2531,22 @@ primalfeasible( lrs_dic* P, lrs_dat* Q )
   /*temporary: try to get new start after linearity */
 
   while ( primalinfeasible ) {
-    i=lastdv+1;
+    i = lastdv + 1;
 
-    while ( i <= m && !negative( A[Row[i]][0] ) )
+    while ( i <= m && !negative ( A[Row[i]][0] ) )
       i++;
 
     if ( i <= m ) {
       j = 0;    /*find a positive entry for in row */
 
-      while ( j < d && !positive( A[Row[i]][Col[j]] ) )
+      while ( j < d && !positive ( A[Row[i]][Col[j]] ) )
         j++;
 
       if ( j >= d )
         return ( FALSE ); /* no positive entry */
 
-      pivot( P, Q, i, j );
-      update( P, Q, &i, &j );
+      pivot ( P, Q, i, j );
+      update ( P, Q, &i, &j );
     } else
       primalinfeasible = FALSE;
   }       /* end of while primalinfeasibile */
@@ -2556,7 +2556,7 @@ primalfeasible( lrs_dic* P, lrs_dat* Q )
 
 
 long
-lrs_solvelp( lrs_dic* P, lrs_dat* Q, long maximize )
+lrs_solvelp ( lrs_dic* P, lrs_dat* Q, long maximize )
 /* Solve primal feasible lp by Dantzig`s rule and lexicographic ratio test */
 /* return TRUE if bounded, FALSE if unbounded                              */
 {
@@ -2564,20 +2564,20 @@ lrs_solvelp( lrs_dic* P, lrs_dat* Q, long maximize )
   /* assign local variables to structures */
   long d = P->d;
 
-  while ( dan_selectpivot( P, Q, &i, &j ) ) {
+  while ( dan_selectpivot ( P, Q, &i, &j ) ) {
     Q->count[3]++;
-    pivot( P, Q, i, j );
-    update( P, Q, &i, &j ); /*Update B,C,i,j */
+    pivot ( P, Q, i, j );
+    update ( P, Q, &i, &j ); /*Update B,C,i,j */
   }
 
   if ( Q->debug )
-    printA( P, Q );
+    printA ( P, Q );
 
   if ( j < d && i == 0 ) { /* selectpivot gives information on unbounded solution */
 #ifndef LRS_QUIET
 
     if ( Q->lponly )
-      fprintf( lrs_ofp, "\n*Unbounded solution" );
+      fprintf ( lrs_ofp, "\n*Unbounded solution" );
 
 #endif
     return FALSE;
@@ -2587,7 +2587,7 @@ lrs_solvelp( lrs_dic* P, lrs_dat* Q, long maximize )
 }       /* end of lrs_solvelp  */
 
 long
-getabasis( lrs_dic* P, lrs_dat* Q, long order[] )
+getabasis ( lrs_dic* P, lrs_dat* Q, long order[] )
 
 /* Pivot Ax<=b to standard form */
 /*Try to find a starting basis by pivoting in the variables x[1]..x[d]        */
@@ -2615,10 +2615,10 @@ getabasis( lrs_dic* P, lrs_dat* Q, long order[] )
   nlinearity = Q->nlinearity;
 
   if ( Q->debug ) {
-    fprintf( lrs_ofp, "\ngetabasis from inequalities given in order" );
+    fprintf ( lrs_ofp, "\ngetabasis from inequalities given in order" );
 
     for ( i = 0; i < m; i++ )
-      fprintf( lrs_ofp, " %ld", order[i] );
+      fprintf ( lrs_ofp, " %ld", order[i] );
   }
 
   for ( j = 0; j < m; j++ ) {
@@ -2629,10 +2629,10 @@ getabasis( lrs_dic* P, lrs_dat* Q, long order[] )
 
     if ( j < nlinearity && i > m ) { /* cannot pivot linearity to cobasis */
       if ( Q->debug )
-        printA( P, Q );
+        printA ( P, Q );
 
 #ifndef LRS_QUIET
-      fprintf( lrs_ofp, "\nCannot find linearity in the basis" );
+      fprintf ( lrs_ofp, "\nCannot find linearity in the basis" );
 #endif
       return FALSE;
     }
@@ -2641,26 +2641,26 @@ getabasis( lrs_dic* P, lrs_dat* Q, long order[] )
       /* try to do a pivot */
       k = 0;
 
-      while ( C[k] <= d && zero( A[Row[i]][Col[k]] ) )
+      while ( C[k] <= d && zero ( A[Row[i]][Col[k]] ) )
         k++;
 
       if ( C[k] <= d ) {
-        pivot( P, Q, i, k );
-        update( P, Q, &i, &k );
+        pivot ( P, Q, i, k );
+        update ( P, Q, &i, &k );
       } else if ( j < nlinearity ) {
         /* cannot pivot linearity to cobasis */
-        if ( zero( A[Row[i]][0] ) ) {
+        if ( zero ( A[Row[i]][0] ) ) {
 #ifndef LRS_QUIET
-          fprintf( lrs_ofp, "\n*Input linearity in row %ld is redundant--converted to inequality", order[j] );
+          fprintf ( lrs_ofp, "\n*Input linearity in row %ld is redundant--converted to inequality", order[j] );
 #endif
-          linearity[j]=0;
+          linearity[j] = 0;
         } else {
           if ( Q->debug )
-            printA( P, Q );
+            printA ( P, Q );
 
 #ifndef LRS_QUIET
-          fprintf( lrs_ofp, "\n*Input linearity in row %ld is inconsistent with earlier linearities", order[j] );
-          fprintf( lrs_ofp, "\n*No feasible solution" );
+          fprintf ( lrs_ofp, "\n*Input linearity in row %ld is inconsistent with earlier linearities", order[j] );
+          fprintf ( lrs_ofp, "\n*No feasible solution" );
 #endif
           return FALSE;
         }
@@ -2700,14 +2700,14 @@ getabasis( lrs_dic* P, lrs_dat* Q, long order[] )
   Q->lastdv = d - nredundcol;
 
   if ( Q->debug ) {
-    fprintf( lrs_ofp, "\nend of first phase of getabasis: " );
-    fprintf( lrs_ofp, "lastdv=%ld nredundcol=%ld", Q->lastdv, Q->nredundcol );
-    fprintf( lrs_ofp, "\nredundant cobases:" );
+    fprintf ( lrs_ofp, "\nend of first phase of getabasis: " );
+    fprintf ( lrs_ofp, "lastdv=%ld nredundcol=%ld", Q->lastdv, Q->nredundcol );
+    fprintf ( lrs_ofp, "\nredundant cobases:" );
 
     for ( i = 0; i < nredundcol; i++ )
-      fprintf( lrs_ofp, " %ld", redundcol[i] );
+      fprintf ( lrs_ofp, " %ld", redundcol[i] );
 
-    printA( P, Q );
+    printA ( P, Q );
   }
 
   /* Remove linearities from cobasis for rest of computation */
@@ -2721,18 +2721,18 @@ getabasis( lrs_dic* P, lrs_dat* Q, long order[] )
       k++;
 
     if ( k >= d ) {
-      fprintf( lrs_ofp, "\nError removing linearity" );
+      fprintf ( lrs_ofp, "\nError removing linearity" );
       return FALSE;
     }
 
-    if ( !removecobasicindex( P, Q, k ) )
+    if ( !removecobasicindex ( P, Q, k ) )
       return FALSE;
 
     d = P->d;
   }
 
   if ( Q->debug && nlinearity > 0 )
-    printA( P, Q );
+    printA ( P, Q );
 
   /* set index value for first slack variable */
 
@@ -2740,18 +2740,18 @@ getabasis( lrs_dic* P, lrs_dat* Q, long order[] )
   if ( Q->givenstart ) {
     i = Q->lastdv + 1;
 
-    while ( i <= m && !negative( A[Row[i]][0] ) )
+    while ( i <= m && !negative ( A[Row[i]][0] ) )
       i++;
 
     if ( i <= m )
-      fprintf( lrs_ofp, "\n*Infeasible startingcobasis - will be modified" );
+      fprintf ( lrs_ofp, "\n*Infeasible startingcobasis - will be modified" );
   }
 
   return TRUE;
 }       /*  end of getabasis */
 
 long
-removecobasicindex( lrs_dic* P, lrs_dat* Q, long k )
+removecobasicindex ( lrs_dic* P, lrs_dat* Q, long k )
 /* remove the variable C[k] from the problem */
 /* used after detecting column dependency    */
 {
@@ -2766,7 +2766,7 @@ removecobasicindex( lrs_dic* P, lrs_dat* Q, long k )
   d = P->d;
 
   if ( Q->debug )
-    fprintf( lrs_ofp, "\nremoving cobasic index k=%ld C[k]=%ld", k, C[k] );
+    fprintf ( lrs_ofp, "\nremoving cobasic index k=%ld C[k]=%ld", k, C[k] );
 
   cindex = C[k];    /* cobasic index to remove              */
   deloc = Col[k];   /* matrix column location to remove     */
@@ -2783,7 +2783,7 @@ removecobasicindex( lrs_dic* P, lrs_dat* Q, long k )
   if ( deloc != d ) {
     /* copy col d to deloc */
     for ( i = 0; i <= m; i++ )
-      copy( A[i][deloc], A[i][d] );
+      copy ( A[i][deloc], A[i][d] );
 
     /* reassign location for moved column */
     j = 0;
@@ -2797,13 +2797,13 @@ removecobasicindex( lrs_dic* P, lrs_dat* Q, long k )
   P->d--;
 
   if ( Q->debug )
-    printA( P, Q );
+    printA ( P, Q );
 
   return TRUE;
 }       /* end of removecobasicindex */
 
 lrs_dic*
-resize( lrs_dic* P, lrs_dat* Q )
+resize ( lrs_dic* P, lrs_dat* Q )
 /* resize the dictionary after some columns are deleted, ie. inputd>d */
 /* a new lrs_dic record is created with reduced size, and items copied over */
 {
@@ -2819,7 +2819,7 @@ resize( lrs_dic* P, lrs_dat* Q )
 
   /* get new dictionary record */
 
-  P1 = new_lrs_dic( m, d, m_A );
+  P1 = new_lrs_dic ( m, d, m_A );
 
   /* copy data from P to P1    */
   P1->i = P->i;
@@ -2829,9 +2829,9 @@ resize( lrs_dic* P, lrs_dat* Q )
   P1->d = P1->d_orig = d;
   P1->lexflag = P->lexflag;
   P1->m_A = P->m_A;
-  copy( P1->det, P->det );
-  copy( P1->objnum, P->objnum );
-  copy( P1->objden, P->objden );
+  copy ( P1->det, P->det );
+  copy ( P1->objnum, P->objnum );
+  copy ( P1->objden, P->objden );
 
   for ( i = 0; i <= m; i++ ) {
     P1->B[i] = P->B[i];
@@ -2840,7 +2840,7 @@ resize( lrs_dic* P, lrs_dat* Q )
 
   for ( i = 0; i <= m_A; i++ ) {
     for ( j = 0; j <= d; j++ )
-      copy( P1->A[i][j], P->A[i][j] );
+      copy ( P1->A[i][j], P->A[i][j] );
   }
 
 
@@ -2850,11 +2850,11 @@ resize( lrs_dic* P, lrs_dat* Q )
   }
 
   if ( Q->debug ) {
-    fprintf( lrs_ofp, "\nDictionary resized from d=%ld to d=%ld", Q->inputd, P->d );
-    printA( P1, Q );
+    fprintf ( lrs_ofp, "\nDictionary resized from d=%ld to d=%ld", Q->inputd, P->d );
+    printA ( P1, Q );
   }
 
-  lrs_free_dic( P,Q );
+  lrs_free_dic ( P, Q );
 
   /* Reassign cache pointers */
 
@@ -2870,7 +2870,7 @@ resize( lrs_dic* P, lrs_dat* Q )
 
 
 long
-restartpivots( lrs_dic* P, lrs_dat* Q )
+restartpivots ( lrs_dic* P, lrs_dat* Q )
 /* facet contains a list of the inequalities in the cobasis for the restart */
 /* inequality contains the relabelled inequalities after initialization     */
 {
@@ -2890,10 +2890,10 @@ restartpivots( lrs_dic* P, lrs_dat* Q )
   d = P->d;
   lastdv = Q->lastdv;
 
-  Cobasic = ( long* ) CALLOC( ( unsigned ) m + d + 2, sizeof( long ) );
+  Cobasic = ( long* ) CALLOC ( ( unsigned ) m + d + 2, sizeof ( long ) );
 
   if ( Q->debug )
-    fprintf( lrs_ofp,"\nCobasic flags in restartpivots" );
+    fprintf ( lrs_ofp, "\nCobasic flags in restartpivots" );
 
   /* set Cobasic flags */
   for ( i = 0; i < m + d + 1; i++ )
@@ -2908,7 +2908,7 @@ restartpivots( lrs_dic* P, lrs_dat* Q )
     Cobasic[j + lastdv] = 1;
 
     if ( Q->debug )
-      fprintf( lrs_ofp," %ld %ld;",facet[i+nlinearity],j+lastdv );
+      fprintf ( lrs_ofp, " %ld %ld;", facet[i + nlinearity], j + lastdv );
   }
 
   /* Note that the order of doing the pivots is important, as */
@@ -2940,13 +2940,13 @@ restartpivots( lrs_dic* P, lrs_dat* Q )
   /*end of code that was replaced */
 
   /* Suggested new code from db starts */
-  i=m;
+  i = m;
 
-  while ( i>d ) {
+  while ( i > d ) {
     while ( Cobasic[B[i]] ) {
       k = d - 1;
 
-      while ( ( k >= 0 ) && ( zero( A[Row[i]][Col[k]] ) || Cobasic[C[k]] ) ) {
+      while ( ( k >= 0 ) && ( zero ( A[Row[i]][Col[k]] ) || Cobasic[C[k]] ) ) {
         k--;
       }
 
@@ -2955,12 +2955,12 @@ restartpivots( lrs_dic* P, lrs_dat* Q )
         /*da replies: modifying i only makes is larger, and so      */
         /*the second while loop will put it back where it was       */
         /*faster (and safer) as done below                          */
-        long  ii=i;
-        pivot( P, Q, ii, k );
-        update( P, Q, &ii, &k );
+        long  ii = i;
+        pivot ( P, Q, ii, k );
+        update ( P, Q, &ii, &k );
       } else {
-        fprintf( lrs_ofp, "\nInvalid Co-basis - does not have correct rank" );
-        free( Cobasic );
+        fprintf ( lrs_ofp, "\nInvalid Co-basis - does not have correct rank" );
+        free ( Cobasic );
         return FALSE;
       }
     }
@@ -2970,25 +2970,25 @@ restartpivots( lrs_dic* P, lrs_dat* Q )
 
   /* Suggested new code from db ends */
 
-  if ( lexmin( P, Q, ZERO ) )
+  if ( lexmin ( P, Q, ZERO ) )
     --Q->count[1];    /* decrement vertex count if lexmin */
 
   /* check restarting from a primal feasible dictionary               */
   for ( i = lastdv + 1; i <= m; i++ )
-    if ( negative( A[Row[i]][0] ) ) {
-      fprintf( lrs_ofp, "\nTrying to restart from infeasible dictionary" );
-      free( Cobasic );
+    if ( negative ( A[Row[i]][0] ) ) {
+      fprintf ( lrs_ofp, "\nTrying to restart from infeasible dictionary" );
+      free ( Cobasic );
       return FALSE;
     }
 
-  free( Cobasic );
+  free ( Cobasic );
   return TRUE;
 
 }       /* end of restartpivots */
 
 
 long
-ratio( lrs_dic* P, lrs_dat* Q, long col )   /*find lex min. ratio */
+ratio ( lrs_dic* P, lrs_dat* Q, long col )  /*find lex min. ratio */
 /* find min index ratio -aig/ais, ais<0 */
 /* if multiple, checks successive basis columns */
 /* recoded Dec 1997                     */
@@ -3010,33 +3010,33 @@ ratio( lrs_dic* P, lrs_dat* Q, long col )   /*find lex min. ratio */
   lastdv = Q->lastdv;
 
 
-  nstart=0;
-  ndegencount=0;
+  nstart = 0;
+  ndegencount = 0;
   degencount = 0;
-  minratio[P->m]=1;   /*2011.7.14 non-degenerate pivot flag */
+  minratio[P->m] = 1; /*2011.7.14 non-degenerate pivot flag */
 
   for ( j = lastdv + 1; j <= m; j++ ) {
     /* search rows with negative coefficient in dictionary */
     /*  minratio contains indices of min ratio cols        */
-    if ( negative( A[Row[j]][col] ) ) {
+    if ( negative ( A[Row[j]][col] ) ) {
       minratio[degencount++] = j;
 
-      if ( zero( A[Row[j]][0] ) )
-        minratio[P->m]=0;   /*2011.7.14 degenerate pivot flag */
+      if ( zero ( A[Row[j]][0] ) )
+        minratio[P->m] = 0; /*2011.7.14 degenerate pivot flag */
     }
   }       /* end of for loop */
 
   if ( Q->debug ) {
-    fprintf( lrs_ofp, "  Min ratios: " );
+    fprintf ( lrs_ofp, "  Min ratios: " );
 
     for ( i = 0; i < degencount; i++ )
-      fprintf( lrs_ofp, " %ld ", B[minratio[i]] );
+      fprintf ( lrs_ofp, " %ld ", B[minratio[i]] );
   }
 
   if ( degencount == 0 )
     return ( degencount ); /* non-negative pivot column */
 
-  lrs_alloc_mp( Nmin ); lrs_alloc_mp( Dmin );
+  lrs_alloc_mp ( Nmin ); lrs_alloc_mp ( Dmin );
   ratiocol = 0;     /* column being checked, initially rhs */
   start = 0;      /* starting location in minratio array */
   bindex = d + 1;   /* index of next basic variable to consider */
@@ -3069,14 +3069,14 @@ ratio( lrs_dic* P, lrs_dat* Q, long col )   /*find lex min. ratio */
         if ( firstime )
           firstime = FALSE; /*force new min ratio on first time */
         else {
-          if ( positive( Nmin ) || negative( A[i][ratiocol] ) ) {
-            if ( negative( Nmin ) || positive( A[i][ratiocol] ) )
-              comp = comprod( Nmin, A[i][col], A[i][ratiocol], Dmin );
+          if ( positive ( Nmin ) || negative ( A[i][ratiocol] ) ) {
+            if ( negative ( Nmin ) || positive ( A[i][ratiocol] ) )
+              comp = comprod ( Nmin, A[i][col], A[i][ratiocol], Dmin );
             else
               comp = -1;
           }
 
-          else if ( zero( Nmin ) && zero( A[i][ratiocol] ) )
+          else if ( zero ( Nmin ) && zero ( A[i][ratiocol] ) )
             comp = 0;
 
           if ( ratiocol == ZERO )
@@ -3086,8 +3086,8 @@ ratio( lrs_dic* P, lrs_dat* Q, long col )   /*find lex min. ratio */
         if ( comp == 1 ) {
           /*new minimum ratio */
           nstart = j;
-          copy( Nmin, A[i][ratiocol] );
-          copy( Dmin, A[i][col] );
+          copy ( Nmin, A[i][ratiocol] );
+          copy ( Dmin, A[i][col] );
           ndegencount = 1;
         } else if ( comp == 0 ) /* repeated minimum */
           minratio[nstart + ndegencount++] = minratio[j];
@@ -3101,22 +3101,22 @@ ratio( lrs_dic* P, lrs_dat* Q, long col )   /*find lex min. ratio */
     basicindex++;   /* increment column of basis inverse to check next */
 
     if ( Q->debug ) {
-      fprintf( lrs_ofp, " ratiocol=%ld degencount=%ld ", ratiocol, degencount );
-      fprintf( lrs_ofp, "  Min ratios: " );
+      fprintf ( lrs_ofp, " ratiocol=%ld degencount=%ld ", ratiocol, degencount );
+      fprintf ( lrs_ofp, "  Min ratios: " );
 
       for ( i = start; i < start + degencount; i++ )
-        fprintf( lrs_ofp, " %ld ", B[minratio[i]] );
+        fprintf ( lrs_ofp, " %ld ", B[minratio[i]] );
     }
   }       /*end of while loop */
 
-  lrs_clear_mp( Nmin ); lrs_clear_mp( Dmin );
+  lrs_clear_mp ( Nmin ); lrs_clear_mp ( Dmin );
   return ( minratio[start] );
 }       /* end of ratio */
 
 
 
 long
-lexmin( lrs_dic* P, lrs_dat* Q, long col )
+lexmin ( lrs_dic* P, lrs_dat* Q, long col )
 /*test if basis is lex-min for vertex or ray, if so TRUE */
 /* FALSE if a_r,g=0, a_rs !=0, r > s          */
 {
@@ -3134,15 +3134,15 @@ lexmin( lrs_dic* P, lrs_dat* Q, long col )
   for ( i = Q->lastdv + 1; i <= m; i++ ) {
     r = Row[i];
 
-    if ( zero( A[r][col] ) ) /* necessary for lexmin to fail */
+    if ( zero ( A[r][col] ) ) /* necessary for lexmin to fail */
       for ( j = 0; j < d; j++ ) {
         s = Col[j];
 
         if ( B[i] > C[j] ) { /* possible pivot to reduce basis */
-          if ( zero( A[r][0] ) ) { /* no need for ratio test, any pivot feasible */
-            if ( !zero( A[r][s] ) )
+          if ( zero ( A[r][0] ) ) { /* no need for ratio test, any pivot feasible */
+            if ( !zero ( A[r][s] ) )
               return ( FALSE );
-          } else if ( negative( A[r][s] ) && ismin( P, Q, r, s ) ) {
+          } else if ( negative ( A[r][s] ) && ismin ( P, Q, r, s ) ) {
             return ( FALSE );
           }
         }     /* end of if B[i] ... */
@@ -3150,15 +3150,15 @@ lexmin( lrs_dic* P, lrs_dat* Q, long col )
   }
 
   if ( ( col != ZERO ) && Q->debug ) {
-    fprintf( lrs_ofp, "\n lexmin ray in col=%ld ", col );
-    printA( P, Q );
+    fprintf ( lrs_ofp, "\n lexmin ray in col=%ld ", col );
+    printA ( P, Q );
   }
 
   return ( TRUE );
 }       /* end of lexmin */
 
 long
-ismin( lrs_dic* P, lrs_dat* Q, long r, long s )
+ismin ( lrs_dic* P, lrs_dat* Q, long r, long s )
 /*test if A[r][s] is a min ratio for col s */
 {
   long i;
@@ -3168,7 +3168,7 @@ ismin( lrs_dic* P, lrs_dat* Q, long r, long s )
 
   for ( i = 1; i <= m_A; i++ )
     if ( ( i != r ) &&
-         negative( A[i][s] ) && comprod( A[i][0], A[r][s], A[i][s], A[r][0] ) ) {
+         negative ( A[i][s] ) && comprod ( A[i][0], A[r][s], A[i][s], A[r][0] ) ) {
       return ( FALSE );
     }
 
@@ -3176,7 +3176,7 @@ ismin( lrs_dic* P, lrs_dat* Q, long r, long s )
 }
 
 void
-update( lrs_dic* P, lrs_dat* Q, long* i, long* j )
+update ( lrs_dic* P, lrs_dat* Q, long* i, long* j )
 /*update the B,C arrays after a pivot */
 /*   involving B[bas] and C[cob]           */
 {
@@ -3193,18 +3193,18 @@ update( lrs_dic* P, lrs_dat* Q, long* i, long* j )
   leave = B[*i];
   enter = C[*j];
   B[*i] = enter;
-  reorder1( B, Row, *i, m + 1 );
+  reorder1 ( B, Row, *i, m + 1 );
   C[*j] = leave;
-  reorder1( C, Col, *j, d );
+  reorder1 ( C, Col, *j, d );
 
   /* restore i and j to new positions in basis */
-  for ( *i = 1; B[*i] != enter; ( *i )++ ); /*Find basis index */
+  for ( *i = 1; B[*i] != enter; ( *i ) ++ ); /*Find basis index */
 
-  for ( *j = 0; C[*j] != leave; ( *j )++ ); /*Find co-basis index */
+  for ( *j = 0; C[*j] != leave; ( *j ) ++ ); /*Find co-basis index */
 }       /* end of update */
 
 long
-lrs_degenerate( lrs_dic* P, lrs_dat* Q )
+lrs_degenerate ( lrs_dic* P, lrs_dat* Q )
 /* TRUE if the current dictionary is primal degenerate */
 /* not thoroughly tested   2000/02/15                  */
 {
@@ -3219,7 +3219,7 @@ lrs_degenerate( lrs_dic* P, lrs_dat* Q )
   Row = P->Row;
 
   for ( i = d + 1; i <= m; i++ )
-    if ( zero( A[Row[i]][0] ) )
+    if ( zero ( A[Row[i]][0] ) )
       return TRUE;
 
   return FALSE;
@@ -3231,7 +3231,7 @@ lrs_degenerate( lrs_dic* P, lrs_dat* Q )
 /******************************************************* */
 
 void
-reorder( long a[], long range )
+reorder ( long a[], long range )
 /*reorder array in increasing order with one misplaced element */
 {
   long i, temp;
@@ -3253,7 +3253,7 @@ reorder( long a[], long range )
 }       /* end of reorder */
 
 void
-reorder1( long a[], long b[], long newone, long range )
+reorder1 ( long a[], long b[], long newone, long range )
 /*reorder array a in increasing order with one misplaced element at index newone */
 /*elements of array b are updated to stay aligned with a */
 {
@@ -3280,7 +3280,7 @@ reorder1( long a[], long b[], long newone, long range )
 
 
 void
-rescaledet( lrs_dic* P, lrs_dat* Q, lrs_mp Vnum, lrs_mp Vden )
+rescaledet ( lrs_dic* P, lrs_dat* Q, lrs_mp Vnum, lrs_mp Vden )
 /* rescale determinant to get its volume */
 /* Vnum/Vden is volume of current basis  */
 {
@@ -3291,66 +3291,66 @@ rescaledet( lrs_dic* P, lrs_dat* Q, lrs_mp Vnum, lrs_mp Vden )
   long* C = P->C;
   long m, d, lastdv;
 
-  lrs_alloc_mp( gcdprod );
+  lrs_alloc_mp ( gcdprod );
   m = P->m;
   d = P->d;
   lastdv = Q->lastdv;
 
-  itomp( ONE, gcdprod );
-  itomp( ONE, Vden );
+  itomp ( ONE, gcdprod );
+  itomp ( ONE, Vden );
 
   for ( i = 0; i < d; i++ )
     if ( B[i] <= m ) {
-      mulint( Q->Gcd[Q->inequality[C[i] - lastdv]], gcdprod, gcdprod );
-      mulint( Q->Lcm[Q->inequality[C[i] - lastdv]], Vden, Vden );
+      mulint ( Q->Gcd[Q->inequality[C[i] - lastdv]], gcdprod, gcdprod );
+      mulint ( Q->Lcm[Q->inequality[C[i] - lastdv]], Vden, Vden );
     }
 
-  mulint( P->det, gcdprod, Vnum );
-  reduce( Vnum, Vden );
-  lrs_clear_mp( gcdprod );
+  mulint ( P->det, gcdprod, Vnum );
+  reduce ( Vnum, Vden );
+  lrs_clear_mp ( gcdprod );
 }       /* end rescaledet */
 
 void
-rescalevolume( lrs_dic* P, lrs_dat* Q, lrs_mp Vnum, lrs_mp Vden )
+rescalevolume ( lrs_dic* P, lrs_dat* Q, lrs_mp Vnum, lrs_mp Vden )
 /* adjust volume for dimension */
 {
   lrs_mp temp, dfactorial;
   /* assign local variables to structures */
   long lastdv = Q->lastdv;
 
-  lrs_alloc_mp( temp ); lrs_alloc_mp( dfactorial );
+  lrs_alloc_mp ( temp ); lrs_alloc_mp ( dfactorial );
 
   /*reduce Vnum by d factorial  */
-  getfactorial( dfactorial, lastdv );
-  mulint( dfactorial, Vden, Vden );
+  getfactorial ( dfactorial, lastdv );
+  mulint ( dfactorial, Vden, Vden );
 
   if ( Q->hull && !Q->homogeneous ) {
     /* For hull option multiply by d to correct for lifting */
-    itomp( lastdv, temp );
-    mulint( temp, Vnum, Vnum );
+    itomp ( lastdv, temp );
+    mulint ( temp, Vnum, Vnum );
   }
 
-  reduce( Vnum, Vden );
-  lrs_clear_mp( temp ); lrs_clear_mp( dfactorial );
+  reduce ( Vnum, Vden );
+  lrs_clear_mp ( temp ); lrs_clear_mp ( dfactorial );
 }
 
 
 void
-updatevolume( lrs_dic* P, lrs_dat* Q ) {  /* rescale determinant and update the volume */
+updatevolume ( lrs_dic* P, lrs_dat* Q ) { /* rescale determinant and update the volume */
   lrs_mp tN, tD, Vnum, Vden;
-  lrs_alloc_mp( tN ); lrs_alloc_mp( tD ); lrs_alloc_mp( Vnum ); lrs_alloc_mp( Vden );
-  rescaledet( P, Q, Vnum, Vden );
-  copy( tN, Q->Nvolume );
-  copy( tD, Q->Dvolume );
-  linrat( tN, tD, ONE, Vnum, Vden, ONE, Q->Nvolume, Q->Dvolume );
+  lrs_alloc_mp ( tN ); lrs_alloc_mp ( tD ); lrs_alloc_mp ( Vnum ); lrs_alloc_mp ( Vden );
+  rescaledet ( P, Q, Vnum, Vden );
+  copy ( tN, Q->Nvolume );
+  copy ( tD, Q->Dvolume );
+  linrat ( tN, tD, ONE, Vnum, Vden, ONE, Q->Nvolume, Q->Dvolume );
 
   if ( Q->debug ) {
-    prat( "\n*Volume=", Q->Nvolume, Q->Dvolume );
-    pmp( " Vnum=", Vnum );
-    pmp( " Vden=", Vden );
+    prat ( "\n*Volume=", Q->Nvolume, Q->Dvolume );
+    pmp ( " Vnum=", Vnum );
+    pmp ( " Vden=", Vden );
   }
 
-  lrs_clear_mp( tN ); lrs_clear_mp( tD ); lrs_clear_mp( Vnum ); lrs_clear_mp( Vden );
+  lrs_clear_mp ( tN ); lrs_clear_mp ( tD ); lrs_clear_mp ( Vnum ); lrs_clear_mp ( Vden );
 
 }       /* end of updatevolume */
 
@@ -3361,7 +3361,7 @@ updatevolume( lrs_dic* P, lrs_dat* Q ) {  /* rescale determinant and update the 
 /***************************************************/
 
 long
-checkredund( lrs_dic* P, lrs_dat* Q )
+checkredund ( lrs_dic* P, lrs_dat* Q )
 /* Solve primal feasible lp by least subscript and lex min basis method */
 /* to check redundancy of a row in objective function                   */
 /* returns TRUE if redundant, else FALSE                                */
@@ -3375,13 +3375,13 @@ checkredund( lrs_dic* P, lrs_dat* Q )
   long* B, *C, *Row, *Col;
   long d = P->d;
 
-  lrs_alloc_mp( Ns ); lrs_alloc_mp( Nt );
+  lrs_alloc_mp ( Ns ); lrs_alloc_mp ( Nt );
   B = P->B;
   C = P->C;
   Row = P->Row;
   Col = P->Col;
 
-  while ( selectpivot( P, Q, &i, &j ) ) {
+  while ( selectpivot ( P, Q, &i, &j ) ) {
     Q->count[2]++;
 
     /* sign of new value of A[0][0]            */
@@ -3390,28 +3390,28 @@ checkredund( lrs_dic* P, lrs_dat* Q )
     r = Row[i];
     s = Col[j];
 
-    mulint( A[0][s], A[r][0], Ns );
-    mulint( A[0][0], A[r][s], Nt );
+    mulint ( A[0][s], A[r][0], Ns );
+    mulint ( A[0][0], A[r][s], Nt );
 
-    if ( greater( Ns, Nt ) ) {
-      lrs_clear_mp( Ns ); lrs_clear_mp( Nt );
+    if ( greater ( Ns, Nt ) ) {
+      lrs_clear_mp ( Ns ); lrs_clear_mp ( Nt );
       return FALSE;   /* non-redundant */
     }
 
-    pivot( P, Q, i, j );
-    update( P, Q, &i, &j ); /*Update B,C,i,j */
+    pivot ( P, Q, i, j );
+    update ( P, Q, &i, &j ); /*Update B,C,i,j */
 
   }
 
-  lrs_clear_mp( Ns ); lrs_clear_mp( Nt );
+  lrs_clear_mp ( Ns ); lrs_clear_mp ( Nt );
 
-  return !( j < d && i == 0 ); /* unbounded is also non-redundant */
+  return ! ( j < d && i == 0 ); /* unbounded is also non-redundant */
 
 
 }       /* end of checkredund  */
 
 long
-checkcobasic( lrs_dic* P, lrs_dat* Q, long index )
+checkcobasic ( lrs_dic* P, lrs_dat* Q, long index )
 /* TRUE if index is cobasic and nonredundant                         */
 /* FALSE if basic, or degen. cobasic, where it will get pivoted out  */
 
@@ -3444,7 +3444,7 @@ checkcobasic( lrs_dic* P, lrs_dat* Q, long index )
   /* index is cobasic */
 
   if ( debug )
-    fprintf( lrs_ofp, "\nindex=%ld cobasic", index );
+    fprintf ( lrs_ofp, "\nindex=%ld cobasic", index );
 
   /* not debugged for new LOC
      s=LOC[index];
@@ -3453,28 +3453,28 @@ checkcobasic( lrs_dic* P, lrs_dat* Q, long index )
   i = Q->lastdv + 1;
 
   while ( ( i <= m ) &&
-          ( zero( A[Row[i]][s] ) || !zero( A[Row[i]][0] ) ) )
+          ( zero ( A[Row[i]][s] ) || !zero ( A[Row[i]][0] ) ) )
     i++;
 
   if ( i > m ) {
     if ( debug )
-      fprintf( lrs_ofp, " is non-redundant" );
+      fprintf ( lrs_ofp, " is non-redundant" );
 
     return TRUE;
   }
 
   if ( debug )
-    fprintf( lrs_ofp, " is degenerate B[i]=%ld", B[i] );
+    fprintf ( lrs_ofp, " is degenerate B[i]=%ld", B[i] );
 
-  pivot( P, Q, i, j );
-  update( P, Q, &i, &j ); /*Update B,C,i,j */
+  pivot ( P, Q, i, j );
+  update ( P, Q, &i, &j ); /*Update B,C,i,j */
 
   return FALSE;     /*index is no longer cobasic */
 
 }       /* end of checkcobasic */
 
 long
-checkindex( lrs_dic* P, lrs_dat* Q, long index )
+checkindex ( lrs_dic* P, lrs_dat* Q, long index )
 /* 0 if index is non-redundant inequality */
 /* 1 if index is redundant     inequality */
 /* 2 if index is input linearity          */
@@ -3489,13 +3489,13 @@ checkindex( lrs_dic* P, lrs_dat* Q, long index )
   long m = P->m;
 
   if ( Q->debug )
-    printA( P, Q );
+    printA ( P, Q );
 
   /* each slack index must be checked for redundancy */
   /* if in cobasis, it is pivoted out if degenerate */
   /* else it is non-redundant                       */
 
-  if ( checkcobasic( P, Q, index ) )
+  if ( checkcobasic ( P, Q, index ) )
     return ZERO;
 
   /* index is basic   */
@@ -3512,20 +3512,20 @@ checkindex( lrs_dic* P, lrs_dat* Q, long index )
   /* copy row i to cost row, and set it to zero */
 
   for ( j = 0; j <= d; j++ ) {
-    copy( A[0][j], A[i][j] );
-    changesign( A[0][j] );
-    itomp( ZERO, A[i][j] );
+    copy ( A[0][j], A[i][j] );
+    changesign ( A[0][j] );
+    itomp ( ZERO, A[i][j] );
   }
 
 
-  if ( checkredund( P, Q ) )
+  if ( checkredund ( P, Q ) )
     return ONE;
 
   /* non-redundant, copy back and change sign */
 
   for ( j = 0; j <= d; j++ ) {
-    copy( A[i][j], A[0][j] );
-    changesign( A[i][j] );
+    copy ( A[i][j], A[0][j] );
+    changesign ( A[i][j] );
   }
 
   return ZERO;
@@ -3539,93 +3539,93 @@ checkindex( lrs_dic* P, lrs_dat* Q, long index )
 /***************************************************************/
 
 void
-lprat( const char* name, long Nt, long Dt )
+lprat ( const char* name, long Nt, long Dt )
 /*print the long precision rational Nt/Dt without reducing  */
 {
   if ( Nt > 0 )
-    fprintf( lrs_ofp, " " );
+    fprintf ( lrs_ofp, " " );
 
-  fprintf( lrs_ofp, "%s%ld", name, Nt );
+  fprintf ( lrs_ofp, "%s%ld", name, Nt );
 
   if ( Dt != 1 )
-    fprintf( lrs_ofp, "/%ld", Dt );
+    fprintf ( lrs_ofp, "/%ld", Dt );
 
-  fprintf( lrs_ofp, " " );
+  fprintf ( lrs_ofp, " " );
 }                               /* lprat */
 
 long
-lreadrat( long* Num, long* Den )
+lreadrat ( long* Num, long* Den )
 /* read a rational string and convert to long    */
 /* returns true if denominator is not one        */
 {
   char in[MAXINPUT], num[MAXINPUT], den[MAXINPUT];
 
-  if ( fscanf( lrs_ifp, "%s", in ) == EOF )
+  if ( fscanf ( lrs_ifp, "%s", in ) == EOF )
     return ( FALSE );
 
-  atoaa( in, num, den );        /*convert rational to num/dem strings */
-  *Num = atol( num );
+  atoaa ( in, num, den );       /*convert rational to num/dem strings */
+  *Num = atol ( num );
 
   if ( den[0] == '\0' ) {
     *Den = 1L;
     return ( FALSE );
   }
 
-  *Den = atol( den );
+  *Den = atol ( den );
   return ( TRUE );
 }
 
 void
-lrs_getinput( lrs_dic* P,lrs_dat* Q,long* num,long* den, long m, long d )
+lrs_getinput ( lrs_dic* P, lrs_dat* Q, long* num, long* den, long m, long d )
 /* code for reading data matrix in lrs/cdd format */
 {
-  long j,row;
+  long j, row;
 
-  printf( "\nEnter each row: b_i  a_ij j=1..%ld",d );
+  printf ( "\nEnter each row: b_i  a_ij j=1..%ld", d );
 
-  for ( row=1; row<=m; row++ ) {
-    printf( "\nEnter row %ld: ",row );
+  for ( row = 1; row <= m; row++ ) {
+    printf ( "\nEnter row %ld: ", row );
 
-    for ( j=0; j<=d; j++ ) {
-      lreadrat( &num[j],&den[j] );
-      lprat( " ",num[j],den[j] );
+    for ( j = 0; j <= d; j++ ) {
+      lreadrat ( &num[j], &den[j] );
+      lprat ( " ", num[j], den[j] );
     }
 
-    lrs_set_row( P,Q,row,num,den,GE );
+    lrs_set_row ( P, Q, row, num, den, GE );
   }
 
-  printf( "\nEnter objective row c_j j=1..%ld: ",d );
-  num[0]=0; den[0]=1;
+  printf ( "\nEnter objective row c_j j=1..%ld: ", d );
+  num[0] = 0; den[0] = 1;
 
-  for ( j=1; j<=d; j++ ) {
-    lreadrat( &num[j],&den[j] );
-    lprat( " ",num[j],den[j] );
+  for ( j = 1; j <= d; j++ ) {
+    lreadrat ( &num[j], &den[j] );
+    lprat ( " ", num[j], den[j] );
   }
 
-  lrs_set_obj( P,Q,num,den,MAXIMIZE );
+  lrs_set_obj ( P, Q, num, den, MAXIMIZE );
 }
 
 
 long
-readlinearity( lrs_dat* Q ) { /* read in and check linearity list */
+readlinearity ( lrs_dat* Q ) { /* read in and check linearity list */
   long i, j;
   long nlinearity;
 
-  if ( fscanf( lrs_ifp, "%ld", &nlinearity )==EOF ) {
-    fprintf( lrs_ofp, "\nLinearity option invalid, no indices " );
+  if ( fscanf ( lrs_ifp, "%ld", &nlinearity ) == EOF ) {
+    fprintf ( lrs_ofp, "\nLinearity option invalid, no indices " );
     return ( FALSE );
   }
 
   if ( nlinearity < 1 ) {
-    fprintf( lrs_ofp, "\nLinearity option invalid, indices must be positive" );
+    fprintf ( lrs_ofp, "\nLinearity option invalid, indices must be positive" );
     return ( FALSE );
   }
 
-  Q->linearity  = CALLOC( ( nlinearity + 1 ), sizeof( long ) );
+  Q->linearity  = CALLOC ( ( nlinearity + 1 ), sizeof ( long ) );
 
   for ( i = 0; i < nlinearity; i++ ) {
-    if ( fscanf( lrs_ifp, "%ld", &j )==EOF ) {
-      fprintf( lrs_ofp, "\nLinearity option invalid, missing indices" );
+    if ( fscanf ( lrs_ifp, "%ld", &j ) == EOF ) {
+      fprintf ( lrs_ofp, "\nLinearity option invalid, missing indices" );
       return ( FALSE );
     }
 
@@ -3634,7 +3634,7 @@ readlinearity( lrs_dat* Q ) { /* read in and check linearity list */
   }
 
   for ( i = 1; i < nlinearity; i++ ) /*sort in order */
-    reorder( Q->linearity, nlinearity );
+    reorder ( Q->linearity, nlinearity );
 
   Q->nlinearity = nlinearity;
   Q->polytope = FALSE;
@@ -3643,7 +3643,7 @@ readlinearity( lrs_dat* Q ) { /* read in and check linearity list */
 
 
 long
-readfacets( lrs_dat* Q, long facet[] )
+readfacets ( lrs_dat* Q, long facet[] )
 /* read and check facet list for obvious errors during start/restart */
 /* this must be done after linearity option is processed!! */
 {
@@ -3655,30 +3655,30 @@ readfacets( lrs_dat* Q, long facet[] )
   d = Q->inputd;
 
   for ( j = Q->nlinearity; j < d; j++ ) { /* note we place these after the linearity indices */
-    if ( fscanf( lrs_ifp, "%ld", &facet[j] )==EOF ) {
-      fprintf( lrs_ofp, "\nrestart: facet list missing indices" );
+    if ( fscanf ( lrs_ifp, "%ld", &facet[j] ) == EOF ) {
+      fprintf ( lrs_ofp, "\nrestart: facet list missing indices" );
       return ( FALSE );
     }
 
 
-    fprintf( lrs_ofp, " %ld", facet[j] );
+    fprintf ( lrs_ofp, " %ld", facet[j] );
 
     /* 2010.4.26 nonnegative option needs larger range of indices */
     if ( Q->nonnegative )
-      if ( facet[j] < 1 || facet[j] > m+d ) {
-        fprintf( lrs_ofp, "\n Start/Restart cobasic indices must be in range 1 .. %ld ", m+d );
+      if ( facet[j] < 1 || facet[j] > m + d ) {
+        fprintf ( lrs_ofp, "\n Start/Restart cobasic indices must be in range 1 .. %ld ", m + d );
         return FALSE;
       }
 
     if ( !Q->nonnegative )
       if ( facet[j] < 1 || facet[j] > m ) {
-        fprintf( lrs_ofp, "\n Start/Restart cobasic indices must be in range 1 .. %ld ", m );
+        fprintf ( lrs_ofp, "\n Start/Restart cobasic indices must be in range 1 .. %ld ", m );
         return FALSE;
       }
 
     for ( i = 0; i < Q->nlinearity; i++ )
       if ( linearity[i] == facet[j] ) {
-        fprintf( lrs_ofp, "\n Start/Restart cobasic indices should not include linearities" );
+        fprintf ( lrs_ofp, "\n Start/Restart cobasic indices should not include linearities" );
         return FALSE;
       }
 
@@ -3688,7 +3688,7 @@ readfacets( lrs_dat* Q, long facet[] )
       /* end bug fix 2011.8.1 */
 
       if ( facet[i] == facet[j] ) {
-        fprintf( lrs_ofp, "\n  Start/Restart cobasic indices must be distinct" );
+        fprintf ( lrs_ofp, "\n  Start/Restart cobasic indices must be distinct" );
         return FALSE;
       }
   }
@@ -3697,7 +3697,7 @@ readfacets( lrs_dat* Q, long facet[] )
 }       /* end of readfacets */
 
 void
-printA( lrs_dic* P, lrs_dat* Q ) /* print the integer m by n array A
+printA ( lrs_dic* P, lrs_dat* Q ) /* print the integer m by n array A
              with B,C,Row,Col vectors         */
 {
   long i, j;
@@ -3712,60 +3712,60 @@ printA( lrs_dic* P, lrs_dat* Q ) /* print the integer m by n array A
   d = P->d;
   lastdv = Q->lastdv;
 
-  fprintf( lrs_ofp, "\n Basis    " );
+  fprintf ( lrs_ofp, "\n Basis    " );
 
   for ( i = 0; i <= m; i++ )
-    fprintf( lrs_ofp, "%ld ", B[i] );
+    fprintf ( lrs_ofp, "%ld ", B[i] );
 
-  fprintf( lrs_ofp, " Row " );
+  fprintf ( lrs_ofp, " Row " );
 
   for ( i = 0; i <= m; i++ )
-    fprintf( lrs_ofp, "%ld ", Row[i] );
+    fprintf ( lrs_ofp, "%ld ", Row[i] );
 
-  fprintf( lrs_ofp, "\n Co-Basis " );
-
-  for ( i = 0; i <= d; i++ )
-    fprintf( lrs_ofp, "%ld ", C[i] );
-
-  fprintf( lrs_ofp, " Column " );
+  fprintf ( lrs_ofp, "\n Co-Basis " );
 
   for ( i = 0; i <= d; i++ )
-    fprintf( lrs_ofp, "%ld ", Col[i] );
+    fprintf ( lrs_ofp, "%ld ", C[i] );
 
-  pmp( " det=", P->det );
-  fprintf( lrs_ofp, "\n" );
-  i=0;
+  fprintf ( lrs_ofp, " Column " );
 
-  while ( i<= m ) {
+  for ( i = 0; i <= d; i++ )
+    fprintf ( lrs_ofp, "%ld ", Col[i] );
+
+  pmp ( " det=", P->det );
+  fprintf ( lrs_ofp, "\n" );
+  i = 0;
+
+  while ( i <= m ) {
     for ( j = 0; j <= d; j++ )
-      pimat( P, i, j, A[Row[i]][Col[j]], "A" );
+      pimat ( P, i, j, A[Row[i]][Col[j]], "A" );
 
-    fprintf( lrs_ofp, "\n" );
+    fprintf ( lrs_ofp, "\n" );
 
-    if ( i==0 && Q->nonnegative ) /* skip basic rows - don't exist! */
-      i=d;
+    if ( i == 0 && Q->nonnegative ) /* skip basic rows - don't exist! */
+      i = d;
 
     i++;
-    fflush( stdout );
+    fflush ( stdout );
   }
 
-  fflush( stdout );
+  fflush ( stdout );
 }
 
 
 void
-pimat( lrs_dic* P, long r, long s, lrs_mp Nt, char name[] )
+pimat ( lrs_dic* P, long r, long s, lrs_mp Nt, char name[] )
 /*print the long precision integer in row r col s of matrix A */
 {
   long* B = P->B;
   long* C = P->C;
 
   if ( s == 0 )
-    fprintf( lrs_ofp, "%s[%ld][%ld]=", name, B[r], C[s] );
+    fprintf ( lrs_ofp, "%s[%ld][%ld]=", name, B[r], C[s] );
   else
-    fprintf( lrs_ofp, "[%ld]=", C[s] );
+    fprintf ( lrs_ofp, "[%ld]=", C[s] );
 
-  pmp( "", Nt );
+  pmp ( "", Nt );
 
 }
 
@@ -3778,7 +3778,7 @@ pimat( lrs_dic* P, long r, long s, lrs_mp Nt, char name[] )
 /* From here mostly Bremner's handiwork */
 
 void
-cache_dict( lrs_dic** D_p, lrs_dat* global, long i, long j ) {
+cache_dict ( lrs_dic** D_p, lrs_dat* global, long i, long j ) {
 
   if ( dict_limit > 1 ) {
     /* save row, column indicies */
@@ -3787,9 +3787,9 @@ cache_dict( lrs_dic** D_p, lrs_dat* global, long i, long j ) {
 
     /* Make a new, blank spot at the end of the queue to copy into */
 
-    pushQ( global, ( *D_p )->m, ( *D_p )->d, ( *D_p )->m_A );
+    pushQ ( global, ( *D_p )->m, ( *D_p )->d, ( *D_p )->m_A );
 
-    copy_dict( global, global->Qtail, *D_p ); /* Copy current dictionary */
+    copy_dict ( global, global->Qtail, *D_p ); /* Copy current dictionary */
   }
 
   *D_p = global->Qtail;
@@ -3797,17 +3797,17 @@ cache_dict( lrs_dic** D_p, lrs_dat* global, long i, long j ) {
 }
 
 void
-copy_dict( lrs_dat* global, lrs_dic* dest, lrs_dic* src ) {
+copy_dict ( lrs_dat* global, lrs_dic* dest, lrs_dic* src ) {
   long m = src->m;
   long m_A = src->m_A;        /* number of rows in A */
   long d = src->d;
-  long r,s;
+  long r, s;
 
 #ifdef GMP
 
-  for ( r=0; r<=m_A; r++ )
-    for ( s=0; s<=d; s++ )
-      copy( dest->A[r][s],src->A[r][s] );
+  for ( r = 0; r <= m_A; r++ )
+    for ( s = 0; s <= d; s++ )
+      copy ( dest->A[r][s], src->A[r][s] );
 
 #else            /* fast copy for MP and LONG arithmetic */
 
@@ -3816,12 +3816,12 @@ copy_dict( lrs_dat* global, lrs_dic* dest, lrs_dic* src ) {
   */
   /* I wish I understood the above remark. For the time being, do it the easy way for Nash */
   if ( global->nash ) {
-    for ( r=0; r<=m_A; r++ )
-      for ( s=0; s<=d; s++ )
-        copy( dest->A[r][s],src->A[r][s] );
+    for ( r = 0; r <= m_A; r++ )
+      for ( s = 0; s <= d; s++ )
+        copy ( dest->A[r][s], src->A[r][s] );
   } else
-    memcpy( dest->A[0][0], ( global->Qtail->prev )->A[0][0],
-            ( d + 1 ) * ( lrs_digits + 1 ) * ( m_A + 1 ) * sizeof( long ) );
+    memcpy ( dest->A[0][0], ( global->Qtail->prev )->A[0][0],
+             ( d + 1 ) * ( lrs_digits + 1 ) * ( m_A + 1 ) * sizeof ( long ) );
 
 #endif
 
@@ -3834,17 +3834,17 @@ copy_dict( lrs_dat* global, lrs_dic* dest, lrs_dic* src ) {
   dest->depth = src->depth;
   dest->lexflag = src->lexflag;
 
-  copy( dest->det, src->det );
-  copy( dest->objnum, src->objnum );
-  copy( dest->objden, src->objden );
+  copy ( dest->det, src->det );
+  copy ( dest->objnum, src->objnum );
+  copy ( dest->objden, src->objden );
 
   if ( global->debug )
-    fprintf( lrs_ofp, "\nSaving dict at depth %ld\n", src->depth );
+    fprintf ( lrs_ofp, "\nSaving dict at depth %ld\n", src->depth );
 
-  memcpy( dest->B, src->B, ( m + 1 ) * sizeof( long ) );
-  memcpy( dest->C, src->C, ( d + 1 ) * sizeof( long ) );
-  memcpy( dest->Row, src->Row, ( m + 1 ) * sizeof( long ) );
-  memcpy( dest->Col, src->Col, ( d + 1 ) * sizeof( long ) );
+  memcpy ( dest->B, src->B, ( m + 1 ) * sizeof ( long ) );
+  memcpy ( dest->C, src->C, ( d + 1 ) * sizeof ( long ) );
+  memcpy ( dest->Row, src->Row, ( m + 1 ) * sizeof ( long ) );
+  memcpy ( dest->Col, src->Col, ( d + 1 ) * sizeof ( long ) );
 }
 
 /*
@@ -3862,7 +3862,7 @@ copy_dict( lrs_dat* global, lrs_dic* dest, lrs_dic* src ) {
 #endif
 
 void
-pushQ( lrs_dat* global, long m, long d ,long m_A ) {
+pushQ ( lrs_dat* global, long m, long d , long m_A ) {
 
   if ( ( global->Qtail->next ) == global->Qhead ) {
     /* the Queue is full */
@@ -3870,7 +3870,7 @@ pushQ( lrs_dat* global, long m, long d ,long m_A ) {
       /* but we are allowed to create more */
       lrs_dic* p;
 
-      p = new_lrs_dic( m, d, m_A );
+      p = new_lrs_dic ( m, d, m_A );
 
       if ( p ) {
 
@@ -3884,14 +3884,14 @@ pushQ( lrs_dat* global, long m, long d ,long m_A ) {
         dict_count++;
         global->Qtail = p;
 
-        TRACE( "Added new record to Q" );
+        TRACE ( "Added new record to Q" );
 
       } else {
         /* virtual memory exhausted. bummer */
         global->Qhead = global->Qhead->next;
         global->Qtail = global->Qtail->next;
 
-        TRACE( "VM exhausted" );
+        TRACE ( "VM exhausted" );
       }
     } else {
       /*
@@ -3900,19 +3900,19 @@ pushQ( lrs_dat* global, long m, long d ,long m_A ) {
        */
       global->Qhead = global->Qhead->next;
       global->Qtail = global->Qtail->next;
-      TRACE( "User  limit" );
+      TRACE ( "User  limit" );
 
     }
   }
 
   else {
     global->Qtail = global->Qtail->next;
-    TRACE( "Reusing" );
+    TRACE ( "Reusing" );
   }
 }
 
 lrs_dic*
-lrs_getdic( lrs_dat* Q )
+lrs_getdic ( lrs_dat* Q )
 /* create another dictionary for Q without copying any values */
 /* derived from lrs_alloc_dic,  used by nash.c                */
 {
@@ -3927,9 +3927,9 @@ lrs_getdic( lrs_dat* Q )
 
 
   if ( Q->nonnegative )
-    m = m+Q->inputd;
+    m = m + Q->inputd;
 
-  p = new_lrs_dic( m, Q->inputd, Q->m );
+  p = new_lrs_dic ( m, Q->inputd, Q->m );
 
   if ( !p )
     return NULL;
@@ -3946,34 +3946,34 @@ lrs_getdic( lrs_dat* Q )
 #define NULLRETURN(e) if (!(e)) return NULL;
 
 lrs_dic*
-new_lrs_dic( long m, long d, long m_A ) {
+new_lrs_dic ( long m, long d, long m_A ) {
   lrs_dic* p;
 
-  NULLRETURN( p = ( lrs_dic* ) malloc( sizeof( lrs_dic ) ) );
+  NULLRETURN ( p = ( lrs_dic* ) malloc ( sizeof ( lrs_dic ) ) );
 
 
-  NULLRETURN( p->B = calloc( ( m + 1 ), sizeof( long ) ) );
-  NULLRETURN( p->Row = calloc( ( m + 1 ), sizeof( long ) ) );
+  NULLRETURN ( p->B = calloc ( ( m + 1 ), sizeof ( long ) ) );
+  NULLRETURN ( p->Row = calloc ( ( m + 1 ), sizeof ( long ) ) );
 
-  NULLRETURN( p->C = calloc( ( d + 1 ), sizeof( long ) ) );
-  NULLRETURN( p->Col = calloc( ( d + 1 ), sizeof( long ) ) );
+  NULLRETURN ( p->C = calloc ( ( d + 1 ), sizeof ( long ) ) );
+  NULLRETURN ( p->Col = calloc ( ( d + 1 ), sizeof ( long ) ) );
 
 #ifdef GMP
-  lrs_alloc_mp( p->det );
-  lrs_alloc_mp( p->objnum );
-  lrs_alloc_mp( p->objden );
+  lrs_alloc_mp ( p->det );
+  lrs_alloc_mp ( p->objnum );
+  lrs_alloc_mp ( p->objden );
 #endif
 
-  p->d_orig=d;
+  p->d_orig = d;
 
-  p->A=lrs_alloc_mp_matrix( m_A,d );
+  p->A = lrs_alloc_mp_matrix ( m_A, d );
 
 
   return p;
 }
 
 void
-lrs_free_dic( lrs_dic* P, lrs_dat* Q ) {
+lrs_free_dic ( lrs_dic* P, lrs_dat* Q ) {
   /* do the same steps as for allocation, but backwards */
   /* gmp variables cannot be cleared using free: use lrs_clear_mp* */
   lrs_dic* P1;
@@ -3987,24 +3987,24 @@ lrs_free_dic( lrs_dic* P, lrs_dat* Q ) {
     long d = P->d_orig;
     long m_A = P->m_A;
 
-    lrs_clear_mp_matrix( P->A,m_A,d );
+    lrs_clear_mp_matrix ( P->A, m_A, d );
 
     /* "it is a ghastly error to free something not assigned my malloc" KR167 */
     /* so don't try: free (P->det);                                           */
 
-    lrs_clear_mp( P->det );
-    lrs_clear_mp( P->objnum );
-    lrs_clear_mp( P->objden );
+    lrs_clear_mp ( P->det );
+    lrs_clear_mp ( P->objnum );
+    lrs_clear_mp ( P->objden );
 
-    free( P->Row );
-    free( P->Col );
-    free( P->C );
-    free( P->B );
+    free ( P->Row );
+    free ( P->Col );
+    free ( P->C );
+    free ( P->B );
 
     /* go to next record in cache if any */
-    P1 =P->next;
-    free( P );
-    P=P1;
+    P1 = P->next;
+    free ( P );
+    P = P1;
 
   }  while ( Q->Qhead != P );
 
@@ -4012,39 +4012,39 @@ lrs_free_dic( lrs_dic* P, lrs_dat* Q ) {
 }
 
 void
-lrs_free_dat( lrs_dat* Q ) {
-  long m=Q->m;
+lrs_free_dat ( lrs_dat* Q ) {
+  long m = Q->m;
 
   /* most of these items were allocated in lrs_alloc_dic */
 
-  lrs_clear_mp_vector( Q->Gcd,m );
-  lrs_clear_mp_vector( Q->Lcm,m );
+  lrs_clear_mp_vector ( Q->Gcd, m );
+  lrs_clear_mp_vector ( Q->Lcm, m );
 
-  lrs_clear_mp( Q->sumdet );
-  lrs_clear_mp( Q->Nvolume );
-  lrs_clear_mp( Q->Dvolume );
-  lrs_clear_mp( Q->saved_det );
-  lrs_clear_mp( Q->boundd );
-  lrs_clear_mp( Q->boundn );
+  lrs_clear_mp ( Q->sumdet );
+  lrs_clear_mp ( Q->Nvolume );
+  lrs_clear_mp ( Q->Dvolume );
+  lrs_clear_mp ( Q->saved_det );
+  lrs_clear_mp ( Q->boundd );
+  lrs_clear_mp ( Q->boundn );
 
-  free( Q->inequality );
-  free( Q->facet );
-  free( Q->redundcol );
-  free( Q->linearity );
-  free( Q->minratio );
-  free( Q->temparray );
+  free ( Q->inequality );
+  free ( Q->facet );
+  free ( Q->redundcol );
+  free ( Q->linearity );
+  free ( Q->minratio );
+  free ( Q->temparray );
 
-  free( Q->name );
-  free( Q->saved_C );
+  free ( Q->name );
+  free ( Q->saved_C );
 
   lrs_global_count--;
 
-  free( Q );
+  free ( Q );
 }
 
 
 long
-check_cache( lrs_dic** D_p, lrs_dat* global, long* i_p, long* j_p ) {
+check_cache ( lrs_dic** D_p, lrs_dat* global, long* i_p, long* j_p ) {
   /* assign local variables to structures */
 
 
@@ -4052,7 +4052,7 @@ check_cache( lrs_dic** D_p, lrs_dat* global, long* i_p, long* j_p ) {
   cache_tries++;
 
   if ( global->Qtail == global->Qhead ) {
-    TRACE( "cache miss" );
+    TRACE ( "cache miss" );
     /* Q has only one element */
     cache_misses++;
     return 0;
@@ -4065,14 +4065,14 @@ check_cache( lrs_dic** D_p, lrs_dat* global, long* i_p, long* j_p ) {
     *i_p = global->Qtail->i;
     *j_p = global->Qtail->j;
 
-    TRACE( "restoring dict" );
+    TRACE ( "restoring dict" );
     return 1;
   }
 }
 
 
 lrs_dic*
-lrs_alloc_dic( lrs_dat* Q )
+lrs_alloc_dic ( lrs_dat* Q )
 /* allocate and initialize lrs_dic */
 {
 
@@ -4093,9 +4093,9 @@ lrs_alloc_dic( lrs_dat* Q )
   /* since nonnegative constraints are not kept explicitly          */
 
   if ( Q->nonnegative )
-    m = m+d;
+    m = m + d;
 
-  p = new_lrs_dic( m, d, m_A );
+  p = new_lrs_dic ( m, d, m_A );
 
   if ( !p )
     return NULL;
@@ -4118,31 +4118,31 @@ lrs_alloc_dic( lrs_dat* Q )
   p->m_A  = m_A;
   p->depth = 0L;
   p->lexflag = TRUE;
-  itomp( ONE, p->det );
-  itomp( ZERO, p->objnum );
-  itomp( ONE, p->objden );
+  itomp ( ONE, p->det );
+  itomp ( ZERO, p->objnum );
+  itomp ( ONE, p->objden );
 
   /*m+d+1 is the number of variables, labelled 0,1,2,...,m+d  */
   /*  initialize array to zero   */
   for ( i = 0; i <= m_A; i++ )
     for ( j = 0; j <= d; j++ )
-      itomp( ZERO, p->A[i][j] );
+      itomp ( ZERO, p->A[i][j] );
 
-  Q->inequality = CALLOC( ( m + 1 ), sizeof( long ) );
+  Q->inequality = CALLOC ( ( m + 1 ), sizeof ( long ) );
 
   if ( Q->nlinearity == ZERO ) /* linearity may already be allocated */
-    Q->linearity  = CALLOC( ( m + 1 ), sizeof( long ) );
+    Q->linearity  = CALLOC ( ( m + 1 ), sizeof ( long ) );
 
-  Q->facet = ( long* ) CALLOC( ( unsigned ) d + 1, sizeof( long ) );
-  Q->redundcol = CALLOC( ( d + 1 ), sizeof( long ) );
-  Q->minratio = CALLOC( ( m + 1 ), sizeof( long ) );
+  Q->facet = ( long* ) CALLOC ( ( unsigned ) d + 1, sizeof ( long ) );
+  Q->redundcol = CALLOC ( ( d + 1 ), sizeof ( long ) );
+  Q->minratio = CALLOC ( ( m + 1 ), sizeof ( long ) );
   /*  2011.7.14  minratio[m]=0 for degen =1 for nondegen pivot*/
-  Q->temparray = CALLOC( ( unsigned ) d + 1, sizeof( long ) );
+  Q->temparray = CALLOC ( ( unsigned ) d + 1, sizeof ( long ) );
 
   Q->inequality[0] = 2L;
-  Q->Gcd = lrs_alloc_mp_vector( m );
-  Q->Lcm = lrs_alloc_mp_vector( m );
-  Q->saved_C = CALLOC( d + 1, sizeof( long ) );
+  Q->Gcd = lrs_alloc_mp_vector ( m );
+  Q->Lcm = lrs_alloc_mp_vector ( m );
+  Q->saved_C = CALLOC ( d + 1, sizeof ( long ) );
 
   Q->lastdv = d;      /* last decision variable may be decreased */
   /* if there are redundant columns          */
@@ -4155,14 +4155,14 @@ lrs_alloc_dic( lrs_dat* Q )
       p->B[i] = i;
 
       if ( i <= d )
-        p->Row[i]=0; /* no row for decision variables */
+        p->Row[i] = 0; /* no row for decision variables */
       else
-        p->Row[i]=i-d;
+        p->Row[i] = i - d;
     }
   else
     for ( i = 0; i <= m; i++ ) {
       if ( i == 0 )
-        p->B[0]=0;
+        p->B[0] = 0;
       else
         p->B[i] = d + i;
 
@@ -4171,7 +4171,7 @@ lrs_alloc_dic( lrs_dat* Q )
 
   for ( j = 0; j < d; j++ ) {
     if ( Q->nonnegative )
-      p->C[j] = m+j+1;
+      p->C[j] = m + j + 1;
     else
       p->C[j] = j + 1;
 
@@ -4195,7 +4195,7 @@ lrs_alloc_dic( lrs_dat* Q )
    have a valid cobasis to restart from.
  */
 void
-save_basis( lrs_dic* P, lrs_dat* Q ) {
+save_basis ( lrs_dic* P, lrs_dat* Q ) {
   int i;
   /* assign local variables to structures */
   long* C = P->C;
@@ -4203,12 +4203,12 @@ save_basis( lrs_dic* P, lrs_dat* Q ) {
 
 #ifdef SIGNALS
   sigset_t oset, blockset;
-  sigemptyset( &blockset );
-  sigaddset( &blockset, SIGTERM );
-  sigaddset( &blockset, SIGHUP );
-  sigaddset( &blockset, SIGUSR1 );
+  sigemptyset ( &blockset );
+  sigaddset ( &blockset, SIGTERM );
+  sigaddset ( &blockset, SIGHUP );
+  sigaddset ( &blockset, SIGUSR1 );
 
-  errcheck( "sigprocmask", sigprocmask( SIG_BLOCK, &blockset, &oset ) );
+  errcheck ( "sigprocmask", sigprocmask ( SIG_BLOCK, &blockset, &oset ) );
 #endif
   d = P->d;
 
@@ -4220,13 +4220,13 @@ save_basis( lrs_dic* P, lrs_dat* Q ) {
   for ( i = 0; i < d + 1; i++ )
     Q->saved_C[i] = C[i];
 
-  copy( Q->saved_det, P->det );
+  copy ( Q->saved_det, P->det );
 
   Q->saved_d = P->d;
   Q->saved_depth = P->depth;
 
 #ifdef SIGNALS
-  errcheck( "sigprocmask", sigprocmask( SIG_SETMASK, &oset, 0 ) );
+  errcheck ( "sigprocmask", sigprocmask ( SIG_SETMASK, &oset, 0 ) );
 #endif
 }
 
@@ -4234,59 +4234,59 @@ save_basis( lrs_dic* P, lrs_dat* Q ) {
 
 void
 digits_overflow() {
-  fprintf( lrs_ofp, "\nOverflow at digits=%ld", DIG2DEC( lrs_digits ) );
-  fprintf( lrs_ofp, "\nRerun with option: digits n, where n > %ld\n", DIG2DEC( lrs_digits ) );
+  fprintf ( lrs_ofp, "\nOverflow at digits=%ld", DIG2DEC ( lrs_digits ) );
+  fprintf ( lrs_ofp, "\nRerun with option: digits n, where n > %ld\n", DIG2DEC ( lrs_digits ) );
   lrs_dump_state();
 
-  notimpl( "" );
+  notimpl ( "" );
 }
 
 static void
 lrs_dump_state() {
   long i;
 
-  fprintf( stderr, "\n\nlrs_lib: checkpointing:\n" );
+  fprintf ( stderr, "\n\nlrs_lib: checkpointing:\n" );
 
-  fprintf( stderr, "lrs_lib: Current digits at %ld out of %ld\n",
-           DIG2DEC( lrs_record_digits ),
-           DIG2DEC( lrs_digits ) );
+  fprintf ( stderr, "lrs_lib: Current digits at %ld out of %ld\n",
+            DIG2DEC ( lrs_record_digits ),
+            DIG2DEC ( lrs_digits ) );
 
   for ( i = 0; i < lrs_global_count; i++ ) {
-    print_basis( stderr, lrs_global_list[i] );
+    print_basis ( stderr, lrs_global_list[i] );
   }
 
-  fprintf( stderr, "lrs_lib: checkpoint finished\n" );
+  fprintf ( stderr, "lrs_lib: checkpoint finished\n" );
 }
 
 
 /* print out the saved copy of the basis */
 void
-print_basis( FILE* fp, lrs_dat* global ) {
+print_basis ( FILE* fp, lrs_dat* global ) {
   int i;
   /* assign local variables to structures */
-  fprintf( fp, "lrs_lib: State #%ld: (%s)\t", global->id, global->name );
+  fprintf ( fp, "lrs_lib: State #%ld: (%s)\t", global->id, global->name );
 
   if ( global->saved_flag ) {
 
-    fprintf( fp, "V#%ld R#%ld B#%ld h=%ld facets ",
-             global->saved_count[1],
-             global->saved_count[0],
-             global->saved_count[2],
-             global->saved_depth );
+    fprintf ( fp, "V#%ld R#%ld B#%ld h=%ld facets ",
+              global->saved_count[1],
+              global->saved_count[0],
+              global->saved_count[2],
+              global->saved_depth );
 
     for ( i = 0; i < global->saved_d; i++ )
-      fprintf( fp, "%ld ",
-               global->inequality[global->saved_C[i] - global->lastdv] );
+      fprintf ( fp, "%ld ",
+                global->inequality[global->saved_C[i] - global->lastdv] );
 
-    pmp( " det=", global->saved_det );
-    fprintf( fp, "\n" );
+    pmp ( " det=", global->saved_det );
+    fprintf ( fp, "\n" );
 
   } else {
-    fprintf( fp, "lrs_lib: Computing initial basis\n" );
+    fprintf ( fp, "lrs_lib: Computing initial basis\n" );
   }
 
 
-  fflush( fp );
+  fflush ( fp );
 }
 
 #ifdef SIGNALS
@@ -4300,31 +4300,31 @@ print_basis( FILE* fp, lrs_dat* global ) {
  */
 void
 setup_signals() {
-  errcheck( "signal", signal( SIGTERM, die_gracefully ) );
-  errcheck( "signal", signal( SIGALRM, timecheck ) );
-  errcheck( "signal", signal( SIGHUP, die_gracefully ) );
-  errcheck( "signal", signal( SIGINT, die_gracefully ) );
-  errcheck( "signal", signal( SIGUSR1, checkpoint ) );
+  errcheck ( "signal", signal ( SIGTERM, die_gracefully ) );
+  errcheck ( "signal", signal ( SIGALRM, timecheck ) );
+  errcheck ( "signal", signal ( SIGHUP, die_gracefully ) );
+  errcheck ( "signal", signal ( SIGINT, die_gracefully ) );
+  errcheck ( "signal", signal ( SIGUSR1, checkpoint ) );
 }
 
 void
 timecheck() {
   lrs_dump_state();
-  errcheck( "signal", signal( SIGALRM, timecheck ) );
-  alarm( lrs_checkpoint_seconds );
+  errcheck ( "signal", signal ( SIGALRM, timecheck ) );
+  alarm ( lrs_checkpoint_seconds );
 }
 
 void
 checkpoint() {
   lrs_dump_state();
-  errcheck( "signal", signal( SIGUSR1, checkpoint ) );
+  errcheck ( "signal", signal ( SIGUSR1, checkpoint ) );
 }
 
 void
 die_gracefully() {
   lrs_dump_state();
 
-  exit( 1 );
+  exit ( 1 );
 }
 
 #endif
@@ -4340,19 +4340,19 @@ die_gracefully() {
 void
 ptimes() {
   struct rusage rusage;
-  getrusage( RUSAGE_SELF, &rusage );
-  fprintf( lrs_ofp, "\n*%0.3fu %0.3fs %ldKb %ld flts %ld swaps %ld blks-in %ld blks-out \n",
-           double_time( rusage.ru_utime ),
-           double_time( rusage.ru_stime ),
-           rusage.ru_maxrss, rusage.ru_majflt, rusage.ru_nswap,
-           rusage.ru_inblock, rusage.ru_oublock );
+  getrusage ( RUSAGE_SELF, &rusage );
+  fprintf ( lrs_ofp, "\n*%0.3fu %0.3fs %ldKb %ld flts %ld swaps %ld blks-in %ld blks-out \n",
+            double_time ( rusage.ru_utime ),
+            double_time ( rusage.ru_stime ),
+            rusage.ru_maxrss, rusage.ru_majflt, rusage.ru_nswap,
+            rusage.ru_inblock, rusage.ru_oublock );
 
 }
 
 double get_time() {
   struct rusage rusage;
-  getrusage( RUSAGE_SELF, &rusage );
-  return ( double_time( rusage.ru_utime ) );
+  getrusage ( RUSAGE_SELF, &rusage );
+  return ( double_time ( rusage.ru_utime ) );
 
 }
 
@@ -4361,33 +4361,33 @@ double get_time() {
 /* Routines based on lp_solve */
 
 void
-lrs_set_row( lrs_dic* P, lrs_dat* Q, long row, long num[], long den[], long ineq )
+lrs_set_row ( lrs_dic* P, lrs_dat* Q, long row, long num[], long den[], long ineq )
 /* convert to lrs_mp then call lrs_set_row */
 {
   lrs_mp_vector Num, Den;
-  long m,d;
+  long m, d;
   long j;
 
   m = P->m;
   d = P->d;
 
-  Num=lrs_alloc_mp_vector( d+1 );
-  Den=lrs_alloc_mp_vector( d+1 );
+  Num = lrs_alloc_mp_vector ( d + 1 );
+  Den = lrs_alloc_mp_vector ( d + 1 );
 
-  for ( j=0; j<=d; j++ ) {
-    itomp( num[j],Num[j] );
-    itomp( den[j],Den[j] );
+  for ( j = 0; j <= d; j++ ) {
+    itomp ( num[j], Num[j] );
+    itomp ( den[j], Den[j] );
   }
 
-  lrs_set_row_mp( P,Q,row,Num,Den,ineq );
+  lrs_set_row_mp ( P, Q, row, Num, Den, ineq );
 
-  lrs_clear_mp_vector( Num,d+1 );
-  lrs_clear_mp_vector( Den,d+1 );
+  lrs_clear_mp_vector ( Num, d + 1 );
+  lrs_clear_mp_vector ( Den, d + 1 );
 
 }
 
 void
-lrs_set_row_mp( lrs_dic* P, lrs_dat* Q, long row, lrs_mp_vector num, lrs_mp_vector den, long ineq )
+lrs_set_row_mp ( lrs_dic* P, lrs_dat* Q, long row, lrs_mp_vector num, lrs_mp_vector den, long ineq )
 /* set row of dictionary using num and den arrays for rational input */
 /* ineq = 1 (GE)   - ordinary row  */
 /*      = 0 (EQ)   - linearity     */
@@ -4403,7 +4403,7 @@ lrs_set_row_mp( lrs_dic* P, lrs_dat* Q, long row, lrs_mp_vector num, lrs_mp_vect
   lrs_mp_vector Gcd, Lcm;
   long hull;
   long m, d;
-  lrs_alloc_mp( Temp ); lrs_alloc_mp( mpone );
+  lrs_alloc_mp ( Temp ); lrs_alloc_mp ( mpone );
   hull = Q->hull;
   A = P->A;
   m = P->m;
@@ -4411,99 +4411,99 @@ lrs_set_row_mp( lrs_dic* P, lrs_dat* Q, long row, lrs_mp_vector num, lrs_mp_vect
   Gcd = Q->Gcd;
   Lcm = Q->Lcm;
 
-  oD = lrs_alloc_mp_vector( d );
-  itomp( ONE, mpone );
-  itomp( ONE, oD[0] );
+  oD = lrs_alloc_mp_vector ( d );
+  itomp ( ONE, mpone );
+  itomp ( ONE, oD[0] );
 
-  i=row;
-  itomp( ONE, Lcm[i] );     /* Lcm of denominators */
-  itomp( ZERO, Gcd[i] );    /* Gcd of numerators */
+  i = row;
+  itomp ( ONE, Lcm[i] );    /* Lcm of denominators */
+  itomp ( ZERO, Gcd[i] );   /* Gcd of numerators */
 
   for ( j = hull; j <= d; j++ ) {   /* hull data copied to cols 1..d */
-    copy( A[i][j],num[j-hull] );
-    copy( oD[j],den[j-hull] );
+    copy ( A[i][j], num[j - hull] );
+    copy ( oD[j], den[j - hull] );
 
-    if ( !one( oD[j] ) )
-      lcm( Lcm[i], oD[j] );     /* update lcm of denominators */
+    if ( !one ( oD[j] ) )
+      lcm ( Lcm[i], oD[j] );    /* update lcm of denominators */
 
-    copy( Temp, A[i][j] );
-    gcd( Gcd[i], Temp );  /* update gcd of numerators   */
+    copy ( Temp, A[i][j] );
+    gcd ( Gcd[i], Temp ); /* update gcd of numerators   */
   }
 
   if ( hull ) {
-    itomp( ZERO, A[i][0] );       /*for hull, we have to append an extra column of zeroes */
+    itomp ( ZERO, A[i][0] );      /*for hull, we have to append an extra column of zeroes */
 
-    if ( !one( A[i][1] ) || !one( oD[1] ) )     /* all rows must have a one in column one */
+    if ( !one ( A[i][1] ) || !one ( oD[1] ) )   /* all rows must have a one in column one */
       Q->polytope = FALSE;
   }
 
-  if ( !zero( A[i][hull] ) ) /* for H-rep, are zero in column 0     */
+  if ( !zero ( A[i][hull] ) ) /* for H-rep, are zero in column 0     */
     Q->homogeneous = FALSE; /* for V-rep, all zero in column 1     */
 
-  storesign( Gcd[i], POS );
-  storesign( Lcm[i], POS );
+  storesign ( Gcd[i], POS );
+  storesign ( Lcm[i], POS );
 
-  if ( greater( Gcd[i], mpone ) || greater( Lcm[i], mpone ) )
+  if ( greater ( Gcd[i], mpone ) || greater ( Lcm[i], mpone ) )
     for ( j = 0; j <= d; j++ ) {
-      exactdivint( A[i][j], Gcd[i], Temp );       /*reduce numerators by Gcd  */
-      mulint( Lcm[i], Temp, Temp );       /*remove denominators */
-      exactdivint( Temp, oD[j], A[i][j] );      /*reduce by former denominator */
+      exactdivint ( A[i][j], Gcd[i], Temp );      /*reduce numerators by Gcd  */
+      mulint ( Lcm[i], Temp, Temp );      /*remove denominators */
+      exactdivint ( Temp, oD[j], A[i][j] );     /*reduce by former denominator */
     }
 
   if ( ineq == EQ ) {      /* input is linearity */
-    Q->linearity[Q->nlinearity]=row;
+    Q->linearity[Q->nlinearity] = row;
     Q->nlinearity++;
   }
 
   /* 2010.4.26   Set Gcd and Lcm for the non-existant rows when nonnegative set */
 
 
-  if ( Q->nonnegative && row==m )
-    for ( j=1; j<=d; j++ ) {
-      itomp( ONE, Lcm[m+j] );
-      itomp( ONE, Gcd[m+j] );
+  if ( Q->nonnegative && row == m )
+    for ( j = 1; j <= d; j++ ) {
+      itomp ( ONE, Lcm[m + j] );
+      itomp ( ONE, Gcd[m + j] );
     }
 
 
-  lrs_clear_mp_vector( oD,d );
-  lrs_clear_mp( Temp ); lrs_clear_mp( mpone );
+  lrs_clear_mp_vector ( oD, d );
+  lrs_clear_mp ( Temp ); lrs_clear_mp ( mpone );
 }          /* end of lrs_set_row_mp */
 
 void
-lrs_set_obj( lrs_dic* P, lrs_dat* Q, long num[], long den[], long max ) {
+lrs_set_obj ( lrs_dic* P, lrs_dat* Q, long num[], long den[], long max ) {
   long i;
 
   if ( max == MAXIMIZE )
-    Q->maximize=TRUE;
+    Q->maximize = TRUE;
   else {
-    Q->minimize=TRUE;
+    Q->minimize = TRUE;
 
-    for ( i=0; i<=P->d; i++ )
-      num[i]=-num[i];
+    for ( i = 0; i <= P->d; i++ )
+      num[i] = -num[i];
   }
 
-  lrs_set_row( P,Q,0L,num,den,GE );
+  lrs_set_row ( P, Q, 0L, num, den, GE );
 }
 
 void
-lrs_set_obj_mp( lrs_dic* P, lrs_dat* Q, lrs_mp_vector num, lrs_mp_vector den, long max ) {
+lrs_set_obj_mp ( lrs_dic* P, lrs_dat* Q, lrs_mp_vector num, lrs_mp_vector den, long max ) {
   long i;
 
   if ( max == MAXIMIZE )
-    Q->maximize=TRUE;
+    Q->maximize = TRUE;
   else {
-    Q->minimize=TRUE;
+    Q->minimize = TRUE;
 
-    for ( i=0; i<=P->d; i++ )
-      changesign( num[i] );
+    for ( i = 0; i <= P->d; i++ )
+      changesign ( num[i] );
   }
 
-  lrs_set_row_mp( P,Q,0L,num,den,GE );
+  lrs_set_row_mp ( P, Q, 0L, num, den, GE );
 }
 
 
 long
-lrs_solve_lp( lrs_dic* P, lrs_dat* Q )
+lrs_solve_lp ( lrs_dic* P, lrs_dat* Q )
 /* user callable function to solve lp only */
 {
   lrs_mp_matrix Lin;    /* holds input linearities if any are found             */
@@ -4511,7 +4511,7 @@ lrs_solve_lp( lrs_dic* P, lrs_dat* Q )
 
   Q->lponly = TRUE;
 
-  if ( !lrs_getfirstbasis( &P, Q, &Lin, FALSE ) )
+  if ( !lrs_getfirstbasis ( &P, Q, &Lin, FALSE ) )
     return FALSE;
 
   /* There may have been column redundancy                */
@@ -4520,65 +4520,65 @@ lrs_solve_lp( lrs_dic* P, lrs_dat* Q )
   /* from lrs_mp_matrix Lin dimensions nredundcol x d+1   */
 
   for ( col = 0; col < Q->nredundcol; col++ ) /* print linearity space               */
-    lrs_printoutput( Q, Lin[col] );           /* Array Lin[][] holds the coeffs.     */
+    lrs_printoutput ( Q, Lin[col] );          /* Array Lin[][] holds the coeffs.     */
 
   return TRUE;
 } /* end of lrs_solve_lp */
 
 
 long
-dan_selectpivot( lrs_dic* P, lrs_dat* Q, long* r, long* s )
+dan_selectpivot ( lrs_dic* P, lrs_dat* Q, long* r, long* s )
 /* select pivot indices using dantzig simplex method             */
 /* largest coefficient with lexicographic rule to avoid cycling  */
 /* Bohdan Kaluzny's handiwork                                    */
 /* returns TRUE if pivot found else FALSE                        */
 /* pivot variables are B[*r] C[*s] in locations Row[*r] Col[*s]  */
 {
-  long j,k,col;
+  long j, k, col;
   lrs_mp coeff;
   /* assign local variables to structures */
   lrs_mp_matrix A = P->A;
   long* Col = P->Col;
   long d = P->d;
 
-  lrs_alloc_mp( coeff );
+  lrs_alloc_mp ( coeff );
   *r = 0;
   *s = d;
   j = 0;
   k = 0;
 
-  itomp( 0,coeff );
+  itomp ( 0, coeff );
 
   /*find positive cost coef */
   while ( k < d ) {
-    if ( greater( A[0][Col[k]],coeff ) ) {
+    if ( greater ( A[0][Col[k]], coeff ) ) {
       j = k;
-      copy( coeff,A[0][Col[j]] );
+      copy ( coeff, A[0][Col[j]] );
     }
 
     k++;
   }
 
-  if ( positive( coeff ) ) { /* pivot column found! */
+  if ( positive ( coeff ) ) { /* pivot column found! */
     *s = j;
     col = Col[j];
 
     /*find min index ratio */
-    *r = ratio( P, Q, col );
+    *r = ratio ( P, Q, col );
 
     if ( *r != 0 ) {
-      lrs_clear_mp( coeff );
+      lrs_clear_mp ( coeff );
       return ( TRUE );  /* unbounded */
     }
   }
 
-  lrs_clear_mp( coeff );
+  lrs_clear_mp ( coeff );
   return ( FALSE );
 }       /* end of dan_selectpivot        */
 
 
 long
-phaseone( lrs_dic* P, lrs_dat* Q )
+phaseone ( lrs_dic* P, lrs_dat* Q )
 /* Do a dual pivot to get primal feasibility (pivot in X_0)*/
 /* Bohdan Kaluzny's handiwork                                    */
 {
@@ -4589,59 +4589,59 @@ phaseone( lrs_dic* P, lrs_dat* Q )
   long* Col = P->Col;
   long m, d;
   lrs_mp b_vector;
-  lrs_alloc_mp( b_vector );
+  lrs_alloc_mp ( b_vector );
   m = P->m;
   d = P->d;
   i = 0;
-  k = d+1;
+  k = d + 1;
 
-  itomp( 0,b_vector );
+  itomp ( 0, b_vector );
 
-  fprintf( lrs_ofp, "\nLP: Phase One: Dual pivot on artificial variable" );
+  fprintf ( lrs_ofp, "\nLP: Phase One: Dual pivot on artificial variable" );
 
   /*find most negative b vector */
   while ( k <= m ) {
-    if ( greater( b_vector,A[Row[k]][0] ) ) {
+    if ( greater ( b_vector, A[Row[k]][0] ) ) {
       i = k;
-      copy( b_vector,A[Row[i]][0] );
+      copy ( b_vector, A[Row[i]][0] );
     }
 
     k++;
   }
 
-  if ( negative( b_vector ) ) {                 /* pivot row found! */
+  if ( negative ( b_vector ) ) {                /* pivot row found! */
     j = 0;            /*find a positive entry for in row */
 
-    while ( j < d && !positive( A[Row[i]][Col[j]] ) )
+    while ( j < d && !positive ( A[Row[i]][Col[j]] ) )
       j++;
 
     if ( j >= d ) {
-      lrs_clear_mp( b_vector );
+      lrs_clear_mp ( b_vector );
       return ( FALSE );     /* no positive entry */
     }
 
-    pivot( P, Q, i, j );
-    update( P, Q, &i, &j );
+    pivot ( P, Q, i, j );
+    update ( P, Q, &i, &j );
   }
 
-  lrs_clear_mp( b_vector );
+  lrs_clear_mp ( b_vector );
   return ( TRUE );
 }
 
 
 long
-lrs_set_digits( long dec_digits ) {
+lrs_set_digits ( long dec_digits ) {
   /* convert user specified decimal digits to mp digits */
 
-  fprintf( lrs_ofp, "\n*digits %ld", dec_digits );
+  fprintf ( lrs_ofp, "\n*digits %ld", dec_digits );
 
   if ( dec_digits > 0 )
-    lrs_digits = DEC2DIG( dec_digits );
+    lrs_digits = DEC2DIG ( dec_digits );
 
   if ( lrs_digits > MAX_DIGITS ) {
-    fprintf( lrs_ofp, "\nDigits must be at most %ld\nChange MAX_DIGITS and recompile",
-             DIG2DEC( MAX_DIGITS ) );
-    fflush( stdout );
+    fprintf ( lrs_ofp, "\nDigits must be at most %ld\nChange MAX_DIGITS and recompile",
+              DIG2DEC ( MAX_DIGITS ) );
+    fflush ( stdout );
     return ( FALSE );
   }
 
@@ -4649,25 +4649,25 @@ lrs_set_digits( long dec_digits ) {
 }
 
 long
-lrs_checkbound( lrs_dic* P, lrs_dat* Q ) {
+lrs_checkbound ( lrs_dic* P, lrs_dat* Q ) {
   /* check bound on objective and return TRUE if exceeded */
 
   if ( !Q->bound )
     return FALSE;
 
-  if ( Q->maximize && comprod( Q->boundn,P->objden,P->objnum,Q->boundd ) == 1 ) {
+  if ( Q->maximize && comprod ( Q->boundn, P->objden, P->objnum, Q->boundd ) == 1 ) {
     if ( Q->verbose ) {
-      prat( " \nObj value: ",P->objnum,P->objden );
-      fprintf( lrs_ofp," Pruning " );
+      prat ( " \nObj value: ", P->objnum, P->objden );
+      fprintf ( lrs_ofp, " Pruning " );
     }
 
     return TRUE;
   }
 
-  if ( Q->minimize && comprod( Q->boundn,P->objden,P->objnum,Q->boundd ) == -1 ) {
+  if ( Q->minimize && comprod ( Q->boundn, P->objden, P->objnum, Q->boundd ) == -1 ) {
     if ( Q->verbose ) {
-      prat( " \nObj value: ",P->objnum,P->objden );
-      fprintf( lrs_ofp," Pruning " );
+      prat ( " \nObj value: ", P->objnum, P->objden );
+      fprintf ( lrs_ofp, " Pruning " );
     }
 
     return TRUE;

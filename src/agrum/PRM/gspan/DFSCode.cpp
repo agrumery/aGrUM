@@ -34,7 +34,7 @@ namespace gum {
   namespace prm {
     namespace gspan {
 
-      std::ostream& operator<<( std::ostream& out, const DFSCode& code ) {
+      std::ostream& operator<< ( std::ostream& out, const DFSCode& code ) {
         out << "[ ";
 
         for ( DFSCode::const_iterator iter = code.codes.begin();

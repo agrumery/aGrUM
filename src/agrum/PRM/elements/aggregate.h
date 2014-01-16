@@ -101,7 +101,7 @@ namespace gum {
             return AggregateType::OR;
           } else if ( str == "and" || str == "AND" || str == "And" ) {
             return AggregateType::AND;
-          } else if ( str =="forall" || str == "FORALL" || str == "ForAll" ) {
+          } else if ( str == "forall" || str == "FORALL" || str == "ForAll" ) {
             return AggregateType::FORALL;
           } else {
             std::string msg = "Unknown aggregate: ";

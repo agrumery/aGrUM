@@ -21,29 +21,29 @@ class QsciLexerSkool2 : public QsciLexerCustom {
       Error
     };
 
-    static bool isComment( int style ) {
+    static bool isComment ( int style ) {
       return style == CommentLine || style == CommentLineDoc || style == CommentBlock || style == CommentBlockDoc;
     }
 
-    QsciLexerSkool2( QObject * parent = 0 );
+    QsciLexerSkool2 ( QObject* parent = 0 );
     ~QsciLexerSkool2();
 
-    virtual const char *language() const;
-    virtual QString description( int ) const;
-    virtual QColor defaultColor( int ) const;
-    virtual QFont  defaultFont( int ) const;
-    virtual QColor defaultPaper( int ) const;
-    virtual const char *keywords( int set ) const;
+    virtual const char* language() const;
+    virtual QString description ( int ) const;
+    virtual QColor defaultColor ( int ) const;
+    virtual QFont  defaultFont ( int ) const;
+    virtual QColor defaultPaper ( int ) const;
+    virtual const char* keywords ( int set ) const;
 
-    virtual void styleText( int start, int end );
+    virtual void styleText ( int start, int end );
 
   protected:
-    void addToApi( const QString & entry );
+    void addToApi ( const QString& entry );
 
   private:
 
     struct PrivateData;
-    PrivateData * d;
+    PrivateData* d;
 };
 
 #endif // QSCILEXERSKOOL2_H

@@ -41,7 +41,7 @@ namespace gum_tests {
 
     private:
       static gum::Size simpleDoubleFunction ( const gum::NodeId& aNodeId ) {
-        return aNodeId*2;
+        return aNodeId * 2;
       }
 
       static gum::Size simpleEdgeMapFunction ( const gum::Edge& anEdge ) {
@@ -251,7 +251,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( nodeset.size(), graph.size() );
         gum::Size nodeCount = graph.size();
 
-        for ( gum::NodeSet::iterator iter = nodeset.begin(); iter != nodeset.end(); ++iter ) {
+        for ( gum::NodeSet::iterator_safe iter = nodeset.beginSafe(); iter != nodeset.endSafe(); ++iter ) {
           graph.eraseNode ( *iter );
         }
 
@@ -267,7 +267,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( edgeset.size(), graph.sizeEdges() );
         gum::Size edgeCount = graph.sizeEdges();
 
-        for ( gum::EdgeSet::iterator iter = edgeset.begin(); iter != edgeset.end(); ++iter ) {
+        for ( gum::EdgeSet::iterator_safe iter = edgeset.beginSafe(); iter != edgeset.endSafe(); ++iter ) {
           graph.eraseEdge ( *iter );
         }
 
@@ -289,7 +289,7 @@ namespace gum_tests {
           s += *iter;
         }
 
-        TS_ASSERT_EQUALS ( s, 2* ( id1 + id2 + id3 + id4 + id5 ) );
+        TS_ASSERT_EQUALS ( s, 2 * ( id1 + id2 + id3 + id4 + id5 ) );
       }
 
       void testTwistedNodeListMapNodes() {
@@ -310,12 +310,16 @@ namespace gum_tests {
         gum::Size sk = 0;
         gum::Size sv = 0;
 
-        for ( auto iter = hashmap.begin(); iter != hashmap.end(); ++iter ) {
+        for (
+          gum::Property<gum::Size>::onNodes::iterator_safe iter = hashmap.beginSafe();
+          iter != hashmap.endSafe();
+          ++iter
+        ) {
           sk += iter.key();
-          sv += *iter;
+          sv += iter.val();
         }
 
-        TS_ASSERT_EQUALS ( sk*2, sv );
+        TS_ASSERT_EQUALS ( sk * 2, sv );
       }
 
       void testTwistedHashMapNodes() {
@@ -351,8 +355,12 @@ namespace gum_tests {
         gum::Size sk = 0;
         gum::Size sv = 0;
 
-        for ( auto iter = hashmap.begin(); iter != hashmap.end(); ++iter ) {
-          sv += *iter;
+        for (
+          gum::Property<gum::Size>::onEdges::iterator_safe iter = hashmap.beginSafe();
+          iter != hashmap.endSafe();
+          ++iter
+        ) {
+          sv += iter.val();
           sk += iter.key().first() + iter.key().second();
         }
 

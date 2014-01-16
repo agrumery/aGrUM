@@ -61,7 +61,7 @@ namespace gum {
     // the moral graph does not include utility nodes
     UndiGraph partialMoralGraph ( this->influenceDiagram().moralGraph() );
 
-    for(const auto iter : this->influenceDiagram().nodes()) {
+    for ( const auto iter : this->influenceDiagram().nodes() ) {
       if ( this->influenceDiagram().isUtilityNode ( iter ) ) {
         partialMoralGraph.eraseNode ( iter );
       } else {
@@ -90,16 +90,16 @@ namespace gum {
 
     __cleanUp();
 
-    for ( typename Property< CliqueProperties<GUM_SCALAR>* >::onNodes::iterator cliquePropertyIter = __cliquePropertiesMap.begin();
-          cliquePropertyIter != __cliquePropertiesMap.end(); ++cliquePropertyIter )
-      delete *cliquePropertyIter;
+    for ( typename Property< CliqueProperties<GUM_SCALAR>* >::onNodes::iterator_safe cliquePropertyIter = __cliquePropertiesMap.beginSafe();
+          cliquePropertyIter != __cliquePropertiesMap.endSafe(); ++cliquePropertyIter )
+      delete cliquePropertyIter.val();
 
-    for ( SetIterator< Potential<GUM_SCALAR>* > potentialDummiesIter = __potentialDummies.begin();
-          potentialDummiesIter != __potentialDummies.end(); ++potentialDummiesIter )
+    for ( SetIteratorSafe< Potential<GUM_SCALAR>* > potentialDummiesIter = __potentialDummies.beginSafe();
+          potentialDummiesIter != __potentialDummies.endSafe(); ++potentialDummiesIter )
       delete *potentialDummiesIter;
 
-    for ( SetIterator< UtilityTable<GUM_SCALAR>* > utilityDummiesIter = __utilityDummies.begin();
-          utilityDummiesIter != __utilityDummies.end(); ++utilityDummiesIter )
+    for ( SetIteratorSafe< UtilityTable<GUM_SCALAR>* > utilityDummiesIter = __utilityDummies.beginSafe();
+          utilityDummiesIter != __utilityDummies.endSafe(); ++utilityDummiesIter )
       delete *utilityDummiesIter;
   }
 
@@ -123,7 +123,7 @@ namespace gum {
     NodeId rootClique = __cliqueEliminationMap[0];
     const NodeSet& neighbours = __triangulation->junctionTree().neighbours ( rootClique );
 
-    for ( NodeSetIterator childIterator = neighbours.begin(); childIterator != neighbours.end(); ++childIterator )
+    for ( NodeSetIterator childIterator = neighbours.beginSafe(); childIterator != neighbours.endSafe(); ++childIterator )
       __collectChild ( rootClique, *childIterator );
 
     NodeSet separator;
@@ -180,8 +180,8 @@ namespace gum {
 
     stream << "Choix maximisant l'espérance d'utilité : " << std::endl << std::flush;
 
-    for ( HashTableConstIterator< NodeId, Idx > utilityIter = __utakenDecisionMap.begin(); utilityIter != __utakenDecisionMap.end(); ++utilityIter )
-      stream << "Decision " << this->influenceDiagram().variable ( utilityIter.key() ) << " : " << this->influenceDiagram().variable ( utilityIter.key() ).label ( *utilityIter ) << std::endl;
+    for ( HashTableConstIteratorSafe< NodeId, Idx > utilityIter = __utakenDecisionMap.beginSafe(); utilityIter != __utakenDecisionMap.endSafe(); ++utilityIter )
+      stream << "Decision " << this->influenceDiagram().variable ( utilityIter.key() ) << " : " << this->influenceDiagram().variable ( utilityIter.key() ).label ( utilityIter.val() ) << std::endl;
 
   }
 
@@ -200,7 +200,7 @@ namespace gum {
   void
   DefaultInfluenceDiagramInference<GUM_SCALAR>::insertEvidence ( const List<const Potential<GUM_SCALAR>*>& evidenceList ) {
 
-    for ( ListConstIterator<const Potential<GUM_SCALAR>*> evidenceListIter = evidenceList.cbegin(); evidenceListIter != evidenceList.cend(); ++evidenceListIter )
+    for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> evidenceListIter = evidenceList.cbeginSafe(); evidenceListIter != evidenceList.cendSafe(); ++evidenceListIter )
       __cliquePropertiesMap[ __nodeToCliqueMap[ this->influenceDiagram().nodeId ( ( *evidenceListIter )->variable ( 0 ) ) ] ]->addEvidence ( **evidenceListIter );
 
   }
@@ -224,8 +224,8 @@ namespace gum {
   void
   DefaultInfluenceDiagramInference<GUM_SCALAR>::eraseAllEvidence() {
 
-    for ( typename Property< CliqueProperties<GUM_SCALAR>* >::onNodes::iterator nodeIter = __cliquePropertiesMap.begin(); nodeIter != __cliquePropertiesMap.end(); ++nodeIter )
-      ( *nodeIter )->removeAllEvidence();
+    for ( typename Property< CliqueProperties<GUM_SCALAR>* >::onNodes::iterator_safe nodeIter = __cliquePropertiesMap.beginSafe(); nodeIter != __cliquePropertiesMap.endSafe(); ++nodeIter )
+      ( nodeIter.val() )->removeAllEvidence();
 
   }
 
@@ -274,7 +274,7 @@ namespace gum {
 
     const NodeSet& parents = this->influenceDiagram().dag().parents ( id );
 
-    for ( NodeSet::const_iterator parentsIter = parents.begin(); parentsIter != parents.end(); ++parentsIter )
+    for ( NodeSet::const_iterator_safe parentsIter = parents.beginSafe(); parentsIter != parents.endSafe(); ++parentsIter )
       idSet.insert ( *parentsIter );
 
     //***********************************************************************************************************************************
@@ -311,8 +311,8 @@ namespace gum {
       utilitiesCliqueSet.insert ( cli );
 
       // Insertion in clique properties of the variables contains in the clique
-      for ( NodeSetIterator cliqueNodesIter = __triangulation->junctionTree().clique ( cli ).begin();
-            cliqueNodesIter != __triangulation->junctionTree().clique ( cli ).end(); ++cliqueNodesIter )
+      for ( NodeSetIterator cliqueNodesIter = __triangulation->junctionTree().clique ( cli ).beginSafe();
+            cliqueNodesIter != __triangulation->junctionTree().clique ( cli ).endSafe(); ++cliqueNodesIter )
         __cliquePropertiesMap[cli]->addVariable ( this->influenceDiagram().variable ( *cliqueNodesIter ) );
 
       // Creation of clique own elimination order (based on the general one)
@@ -340,7 +340,7 @@ namespace gum {
 
     //***********************************************************************************************************************************
     // Third pass to fill empty cliques with "one" matrices for potentials and "zero" matrices for utilities.
-    for ( NodeSetIterator potentialCliqueIter = potentialsCliquesSet.begin(); potentialCliqueIter != potentialsCliquesSet.end(); ++potentialCliqueIter )
+    for ( NodeSetIterator potentialCliqueIter = potentialsCliquesSet.beginSafe(); potentialCliqueIter != potentialsCliquesSet.endSafe(); ++potentialCliqueIter )
       __cliquePropertiesMap[ *potentialCliqueIter ]->addPotential ( *__makeDummyPotential ( *potentialCliqueIter ) );
 
     //***********************************************************************************************************************************
@@ -348,7 +348,7 @@ namespace gum {
     //***********************************************************************************************************************************
     // Fourth pass to adress utility table to the good clique
     // We go trought all diagram's nodes in search of utility nodes since they do not appear in elimination order
-    for(const auto nodesIter : this->influenceDiagram().nodes()) 
+    for ( const auto nodesIter : this->influenceDiagram().nodes() )
       if ( this->influenceDiagram().isUtilityNode ( nodesIter ) ) {
         // Récupération de la bonne clique
         NodeId cliqueId = __getClique ( elim, nodesIter );
@@ -360,7 +360,7 @@ namespace gum {
 
     //***********************************************************************************************************************************
     // Fifth pass to fill empty cliques with "zero" matrices for utilities.
-    for ( NodeSetIterator utilityCliqueIter = utilitiesCliqueSet.begin(); utilityCliqueIter != utilitiesCliqueSet.end(); ++utilityCliqueIter )
+    for ( NodeSetIterator utilityCliqueIter = utilitiesCliqueSet.beginSafe(); utilityCliqueIter != utilitiesCliqueSet.endSafe(); ++utilityCliqueIter )
       __cliquePropertiesMap[ *utilityCliqueIter ]->addUtility ( *__makeDummyUtility ( *utilityCliqueIter ) );
 
     //***********************************************************************************************************************************
@@ -379,23 +379,23 @@ namespace gum {
     for ( const auto cli : __triangulation->junctionTree().nodes() ) {
 
       Sequence<NodeId> eliminationOrder = __cliquePropertiesMap[ cli]->cliqueEliminationOrder();
-      SequenceIterator<NodeId> cliqueNodesIter =  eliminationOrder.begin();
+      SequenceIteratorSafe<NodeId> cliqueNodesIter =  eliminationOrder.beginSafe();
       bool validIndex = false;
 
       // On parcours chaque noeud de la clique par ordre d'élimination, ...
-      while ( cliqueNodesIter != eliminationOrder.end() && !validIndex ) {
+      while ( cliqueNodesIter != eliminationOrder.endSafe() && !validIndex ) {
 
-        SequenceIterator<NodeId> cliqueRemainingNodesIter = cliqueNodesIter;
+        SequenceIteratorSafe<NodeId> cliqueRemainingNodesIter = cliqueNodesIter;
         ++ cliqueRemainingNodesIter;
 
-        if ( cliqueRemainingNodesIter  != eliminationOrder.end() ) {
+        if ( cliqueRemainingNodesIter  != eliminationOrder.endSafe() ) {
 
           NodeSet suspectedNodes ( __triangulation->triangulatedGraph().neighbours ( *cliqueRemainingNodesIter ) );
 
-          while ( cliqueRemainingNodesIter != eliminationOrder.end() && ! suspectedNodes.empty() ) {
+          while ( cliqueRemainingNodesIter != eliminationOrder.endSafe() && ! suspectedNodes.empty() ) {
             NodeSet possiblesNodes ( suspectedNodes );
 
-            for ( NodeSetIterator possibleNodesIter = possiblesNodes.begin(); possibleNodesIter != possiblesNodes.end(); ++possibleNodesIter )
+            for ( NodeSetIterator possibleNodesIter = possiblesNodes.beginSafe(); possibleNodesIter != possiblesNodes.endSafe(); ++possibleNodesIter )
               if ( !__triangulation->triangulatedGraph().neighbours ( *cliqueRemainingNodesIter ).exists ( *possibleNodesIter ) )
                 suspectedNodes.erase ( *possibleNodesIter );
 
@@ -403,7 +403,7 @@ namespace gum {
           }
 
           if ( ! suspectedNodes.empty() )
-            for ( NodeSetIterator suspectedNodesIter = suspectedNodes.begin(); suspectedNodesIter != suspectedNodes.end(); ++suspectedNodesIter )
+            for ( NodeSetIterator suspectedNodesIter = suspectedNodes.beginSafe(); suspectedNodesIter != suspectedNodes.endSafe(); ++suspectedNodesIter )
               if ( ! eliminationOrder.exists ( *suspectedNodesIter ) && __IsEliminatedAfter ( *suspectedNodesIter, *cliqueNodesIter ) ) {
                 validIndex = true;
                 break;
@@ -463,9 +463,9 @@ namespace gum {
   DefaultInfluenceDiagramInference<GUM_SCALAR>::displayStrongJunctionTree ( std::ostream& stream ) {
     stream << std::endl << "Strong junction tree map : " << std::endl;
 
-    for ( HashTableConstIterator< size_t, NodeId > strongJunctionTreeIter = __cliqueEliminationMap.begin();
-          strongJunctionTreeIter != __cliqueEliminationMap.end(); ++strongJunctionTreeIter )
-      stream << "Clique  : " << __triangulation->junctionTree().clique ( *strongJunctionTreeIter ) << " - Index : " << strongJunctionTreeIter.key() << std::endl;
+    for ( HashTableConstIteratorSafe< size_t, NodeId > strongJunctionTreeIter = __cliqueEliminationMap.beginSafe();
+          strongJunctionTreeIter != __cliqueEliminationMap.endSafe(); ++strongJunctionTreeIter )
+      stream << "Clique  : " << __triangulation->junctionTree().clique ( strongJunctionTreeIter.val() ) << " - Index : " << strongJunctionTreeIter.key() << std::endl;
   }
 
 
@@ -486,9 +486,9 @@ namespace gum {
       __inferenceUtility = 0;
     }
 
-    for ( typename Property< CliqueProperties<GUM_SCALAR>* >::onNodes::iterator cliquePropertyIter = __cliquePropertiesMap.begin();
-          cliquePropertyIter != __cliquePropertiesMap.end(); ++cliquePropertyIter )
-      ( * cliquePropertyIter )->cleanFromInference();
+    for ( typename Property< CliqueProperties<GUM_SCALAR>* >::onNodes::iterator_safe cliquePropertyIter = __cliquePropertiesMap.beginSafe();
+          cliquePropertyIter != __cliquePropertiesMap.endSafe(); ++cliquePropertyIter )
+      ( cliquePropertyIter.val() )->cleanFromInference();
 
     __utakenDecisionMap.clear();
 
@@ -506,7 +506,7 @@ namespace gum {
 
     const NodeSet& neighbours = __triangulation->junctionTree().neighbours ( child );
 
-    for ( NodeSetIterator childIterator = neighbours.begin(); childIterator != neighbours.end(); ++childIterator )
+    for ( NodeSetIterator childIterator = neighbours.beginSafe(); childIterator != neighbours.endSafe(); ++childIterator )
       if ( *childIterator != parent )
         __collectChild ( child, *childIterator );
 
@@ -572,8 +572,8 @@ namespace gum {
     Sequence< const DiscreteVariable* > cliqueRemainVarList ( cliqueInstance.variablesSequence() );
 
     // So for each variable of that clique ...
-    for ( SequenceIterator<NodeId> eliminationOrderIter = absorbedClique->cliqueEliminationOrder().begin();
-          eliminationOrderIter != absorbedClique->cliqueEliminationOrder().end(); ++eliminationOrderIter ) {
+    for ( SequenceIteratorSafe<NodeId> eliminationOrderIter = absorbedClique->cliqueEliminationOrder().beginSafe();
+          eliminationOrderIter != absorbedClique->cliqueEliminationOrder().endSafe(); ++eliminationOrderIter ) {
 
       // if it's not on separtor with its parent
       if ( ! separator.contains ( *eliminationOrderIter ) ) {
@@ -588,8 +588,8 @@ namespace gum {
         // Then we need to add all not yet eliminated variables of the clique in ours new table
         cliqueRemainVarList .erase ( & ( this->influenceDiagram().variable ( *eliminationOrderIter ) ) );
 
-        for ( SequenceIterator<const DiscreteVariable*> cliqueVarListIter = cliqueRemainVarList.begin();
-              cliqueVarListIter != cliqueRemainVarList.end(); ++cliqueVarListIter ) {
+        for ( SequenceIteratorSafe<const DiscreteVariable*> cliqueVarListIter = cliqueRemainVarList.beginSafe();
+              cliqueVarListIter != cliqueRemainVarList.endSafe(); ++cliqueVarListIter ) {
           newPotential->add ( **cliqueVarListIter );
           newUtility->add ( **cliqueVarListIter );
         }
@@ -624,10 +624,10 @@ namespace gum {
 
             if ( potentialMarginal == 0 ) {
               // If there's no ancient potential it means that we haven't yet compute him
-              for ( HashTableConstIterator<const Potential<GUM_SCALAR>*, Instantiation*> potentialIter = absorbedClique->potentialBucket().begin();
-                    potentialIter != absorbedClique->potentialBucket().end(); ++potentialIter ) {
-                ( *potentialIter )->setVals ( cliqueInstance );
-                currentPotential *= potentialIter.key()->get ( **potentialIter );
+              for ( HashTableConstIteratorSafe<const Potential<GUM_SCALAR>*, Instantiation*> potentialIter = absorbedClique->potentialBucket().beginSafe();
+                    potentialIter != absorbedClique->potentialBucket().endSafe(); ++potentialIter ) {
+                ( potentialIter.val() )->setVals ( cliqueInstance );
+                currentPotential *= potentialIter.key()->get ( * ( potentialIter.val() ) );
               }
             } else {
               Instantiation potentialMarginalInst ( potentialMarginal );
@@ -643,10 +643,10 @@ namespace gum {
             GUM_SCALAR currentUtility = ( GUM_SCALAR ) 0;
 
             if ( utilityMarginal == 0 ) {
-              for ( HashTableConstIterator<const UtilityTable<GUM_SCALAR>*, Instantiation*> utilityIter = absorbedClique->utilityBucket().begin();
-                    utilityIter != absorbedClique->utilityBucket().end(); ++utilityIter ) {
-                ( *utilityIter )->setVals ( cliqueInstance );
-                currentUtility += utilityIter.key()->get ( **utilityIter );
+              for ( HashTableConstIteratorSafe<const UtilityTable<GUM_SCALAR>*, Instantiation*> utilityIter = absorbedClique->utilityBucket().beginSafe();
+                    utilityIter != absorbedClique->utilityBucket().endSafe(); ++utilityIter ) {
+                ( utilityIter.val() )->setVals ( cliqueInstance );
+                currentUtility += utilityIter.key()->get ( * ( utilityIter.val() ) );
               }
 
               currentUtility *= currentPotential;
@@ -718,8 +718,8 @@ namespace gum {
     Potential<GUM_SCALAR>* pot = new Potential<GUM_SCALAR> ( new MultiDimSparse<GUM_SCALAR> ( ( GUM_SCALAR ) 1 ) );
     __potentialDummies.insert ( pot );
 
-    for ( NodeSet::const_iterator cliqueNodesIter = __triangulation->junctionTree().clique ( cliqueId ).begin();
-          cliqueNodesIter != __triangulation->junctionTree().clique ( cliqueId ).end(); ++cliqueNodesIter )
+    for ( NodeSet::const_iterator_safe cliqueNodesIter = __triangulation->junctionTree().clique ( cliqueId ).beginSafe();
+          cliqueNodesIter != __triangulation->junctionTree().clique ( cliqueId ).endSafe(); ++cliqueNodesIter )
       pot->add ( this->influenceDiagram().variable ( *cliqueNodesIter ) );
 
     pot->normalize();
@@ -735,8 +735,8 @@ namespace gum {
     UtilityTable<GUM_SCALAR>* ut = new UtilityTable<GUM_SCALAR> ( new MultiDimSparse<GUM_SCALAR> ( ( GUM_SCALAR ) 0 ) );
     __utilityDummies.insert ( ut );
 
-    for ( NodeSet::const_iterator cliqueNodesIter = __triangulation->junctionTree().clique ( cliqueId ).begin();
-          cliqueNodesIter != __triangulation->junctionTree().clique ( cliqueId ).end(); ++cliqueNodesIter )
+    for ( NodeSet::const_iterator_safe cliqueNodesIter = __triangulation->junctionTree().clique ( cliqueId ).beginSafe();
+          cliqueNodesIter != __triangulation->junctionTree().clique ( cliqueId ).endSafe(); ++cliqueNodesIter )
       ut->add ( this->influenceDiagram().variable ( *cliqueNodesIter ) );
 
     return ut;
@@ -765,13 +765,13 @@ namespace gum {
 
     removeAllEvidence();
 
-    for ( HashTableIterator<const Potential<GUM_SCALAR>*, Instantiation*> potentialIter = __potentialBucket.begin();
-          potentialIter != __potentialBucket.end(); ++potentialIter )
-      delete *potentialIter;
+    for ( HashTableIteratorSafe<const Potential<GUM_SCALAR>*, Instantiation*> potentialIter = __potentialBucket.beginSafe();
+          potentialIter != __potentialBucket.endSafe(); ++potentialIter )
+      delete potentialIter.val();
 
-    for ( HashTableIterator<const UtilityTable<GUM_SCALAR>*, Instantiation*> utilityIter = __utilityBucket.begin();
-          utilityIter != __utilityBucket.end(); ++utilityIter )
-      delete *utilityIter;
+    for ( HashTableIteratorSafe<const UtilityTable<GUM_SCALAR>*, Instantiation*> utilityIter = __utilityBucket.beginSafe();
+          utilityIter != __utilityBucket.endSafe(); ++utilityIter )
+      delete utilityIter.val();
   }
 
 
@@ -820,7 +820,7 @@ namespace gum {
 
     if ( removable ) __removablePotentialList.insert ( &cpt );
 
-    for ( Sequence< const DiscreteVariable* >::iterator iter = cpt.begin(); iter != cpt.end(); ++iter ) {
+    for ( Sequence< const DiscreteVariable* >::iterator_safe iter = cpt.begin (); iter != cpt.end (); ++iter ) {
       if ( removable && !__allVarsInst.contains ( **iter ) )
         try {
           __removableVarList.insert ( *iter );
@@ -853,7 +853,7 @@ namespace gum {
 
     if ( removable ) __removableUtilityList.insert ( &ut );
 
-    for ( Sequence< const DiscreteVariable* >::iterator iter = ut.begin(); iter != ut.end(); ++iter ) {
+    for ( Sequence< const DiscreteVariable* >::iterator_safe iter = ut.begin (); iter != ut.end (); ++iter ) {
       if ( removable && !__allVarsInst.contains ( **iter ) )
         try {
           __removableVarList.insert ( *iter );
@@ -885,14 +885,14 @@ namespace gum {
   CliqueProperties<GUM_SCALAR>::cleanFromInference() {
 
     // Removed added variables during inference (normally, the __removableVarList is empty, but we never know )
-    for ( ListIterator<const DiscreteVariable*> removedVarIter =  __removableVarList.begin(); removedVarIter !=  __removableVarList.end(); ++removedVarIter ) {
+    for ( ListIteratorSafe<const DiscreteVariable*> removedVarIter =  __removableVarList.beginSafe(); removedVarIter !=  __removableVarList.endSafe(); ++removedVarIter ) {
       __allVarsInst.erase ( **removedVarIter );
       __removableVarList.erase ( removedVarIter );
     }
 
     // Removed added potentials during inference
-    for ( ListIterator<const Potential<GUM_SCALAR>* > removedPotIter =  __removablePotentialList.begin();
-          removedPotIter !=  __removablePotentialList.end(); ++removedPotIter ) {
+    for ( ListIteratorSafe<const Potential<GUM_SCALAR>* > removedPotIter =  __removablePotentialList.beginSafe();
+          removedPotIter !=  __removablePotentialList.endSafe(); ++removedPotIter ) {
       delete __potentialBucket[ *removedPotIter ];
       __potentialBucket.erase ( *removedPotIter );
       delete *removedPotIter;
@@ -901,8 +901,8 @@ namespace gum {
     __removablePotentialList.clear();
 
     // Removed added utility tables during inference
-    for ( ListIterator<const UtilityTable<GUM_SCALAR>* > removedUtIter =  __removableUtilityList.begin();
-          removedUtIter !=  __removableUtilityList.end(); ++removedUtIter ) {
+    for ( ListIteratorSafe<const UtilityTable<GUM_SCALAR>* > removedUtIter =  __removableUtilityList.beginSafe();
+          removedUtIter !=  __removableUtilityList.endSafe(); ++removedUtIter ) {
       delete __utilityBucket[ *removedUtIter ];
       __utilityBucket.erase ( *removedUtIter );
       delete *removedUtIter;
@@ -993,8 +993,8 @@ namespace gum {
   template <typename GUM_SCALAR> INLINE
   void
   CliqueProperties<GUM_SCALAR>::removeAllEvidence() {
-    for ( HashTableIterator< const DiscreteVariable*, const Potential<GUM_SCALAR>*  > evidencesIter = __evidences.begin();
-          evidencesIter != __evidences.end(); )
+    for ( HashTableIteratorSafe< const DiscreteVariable*, const Potential<GUM_SCALAR>*  > evidencesIter = __evidences.beginSafe();
+          evidencesIter != __evidences.endSafe(); )
       removeEvidence ( * ( evidencesIter.key() ) );
 
     __evidences.clear();

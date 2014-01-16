@@ -83,8 +83,8 @@ namespace gum {
            * If any errors occured, return true.
            * Requests results can be retrieve be results() methods.
            * */
-          bool interpretFile( const std::string& filename );
-          bool interpretLine( const std::string& line );
+          bool interpretFile ( const std::string& filename );
+          bool interpretLine ( const std::string& line );
 
           /// Retrieve prm object.
           const gum::prm::PRM<double>* prm() const;
@@ -99,22 +99,22 @@ namespace gum {
 
           /// Getter and setter for the context.
           O3prmrContext<double>* getContext() const;
-          void setContext( O3prmrContext<double>* context );
+          void setContext ( O3prmrContext<double>* context );
 
           /// Root paths to search from there packages.
           /// Default are working dir, request file dir if any
           /// and one is calculate from package if any.
           std::vector<std::string> getPaths() const;
-          void addPath( const std::string& path );
+          void addPath ( const std::string& path );
           void clearPaths();
 
           /// syntax mode don't process anything, just check syntax. Default is false.
           bool isInSyntaxMode() const;
-          void setSyntaxMode( bool f );
+          void setSyntaxMode ( bool f );
 
           /// verbose mode show more details on the program execution. Default is false.
           bool isVerboseMode() const;
-          void setVerboseMode( bool f );
+          void setVerboseMode ( bool f );
 
           /**
            * En cas d'échec, l'API de gestion d'erreurs est présente.
@@ -126,7 +126,7 @@ namespace gum {
           /// # of warnings
           int warnings() const;
           /// throw a string error if i >= count
-          ParseError error( int i ) const;
+          ParseError error ( int i ) const;
           /// send on std::cerr the list of errors
           void showElegantErrors() const;
           /// send on std::cerr the list of errors or warnings
@@ -135,34 +135,34 @@ namespace gum {
           void showErrorCounts() const;
 
         private:
-          bool checkSemantic( O3prmrContext<double>* context );
-          bool checkSetEngine( SetEngineCommand* command );
-          bool checkSetGndEngine( SetGndEngineCommand* command );
-          bool checkObserve( ObserveCommand<double>* command );
-          bool checkUnobserve( UnobserveCommand<double>* command );
-          bool checkQuery( QueryCommand<double>* command );
+          bool checkSemantic ( O3prmrContext<double>* context );
+          bool checkSetEngine ( SetEngineCommand* command );
+          bool checkSetGndEngine ( SetGndEngineCommand* command );
+          bool checkObserve ( ObserveCommand<double>* command );
+          bool checkUnobserve ( UnobserveCommand<double>* command );
+          bool checkQuery ( QueryCommand<double>* command );
 
-          bool interpret( O3prmrContext<double>* c );
-          bool import( O3prmrContext<double>* context, std::string import );
-          bool observe( const ObserveCommand<double>* command );
-          bool unobserve( const UnobserveCommand<double>* command );
-          void query( const QueryCommand<double>* command );
-          void setEngine( const SetEngineCommand* command );
-          void setGndEngine( const SetGndEngineCommand* command );
+          bool interpret ( O3prmrContext<double>* c );
+          bool import ( O3prmrContext<double>* context, std::string import );
+          bool observe ( const ObserveCommand<double>* command );
+          bool unobserve ( const UnobserveCommand<double>* command );
+          void query ( const QueryCommand<double>* command );
+          void setEngine ( const SetEngineCommand* command );
+          void setGndEngine ( const SetGndEngineCommand* command );
 
-          std::string findSystemName( std::string& s );
-          std::string findInstanceName( std::string& s, const gum::prm::System<double>& sys );
-          std::string findAttributeName( const std::string& s, const gum::prm::Instance<double>& instance );
-          const System<double>& system( std::string& ident );
-          void generateInfEngine( const gum::prm::System<double>& sys );
+          std::string findSystemName ( std::string& s );
+          std::string findInstanceName ( std::string& s, const gum::prm::System<double>& sys );
+          std::string findAttributeName ( const std::string& s, const gum::prm::Instance<double>& instance );
+          const System<double>& system ( std::string& ident );
+          void generateInfEngine ( const gum::prm::System<double>& sys );
 
-          void addError( std::string msg );
-          void addWarning( std::string msg );
+          void addError ( std::string msg );
+          void addWarning ( std::string msg );
 
           O3prmrContext<double>* m_context;
           gum::prm::o3prm::O3prmReader<double>* m_reader;
           std::vector<std::string> m_paths;
-          gum::prm::PRMInference<double> * m_inf;
+          gum::prm::PRMInference<double>* m_inf;
           std::string m_engine;
           std::string m_bn_engine;
           std::vector<QueryResult> m_results;

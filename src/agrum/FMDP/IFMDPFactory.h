@@ -47,7 +47,7 @@ namespace gum {
    * There is an exception for the delegated CPT definition methods which do
    * not changes the state of the factory.
    */
-  enum class FMDPfactory_state :char {
+  enum class FMDPfactory_state : char {
     NONE,
     PROPERTY,
     VARIABLE,

@@ -13,50 +13,51 @@
 // ===================================================================================================
 COMPILER MDPDAT
 
-        // *************************************************************************************
-        // Needed attributes
-        // *************************************************************************************
-        
-                /// the FMDP factory to build it
-                gum::AbstractFMDPFactory* __factory;
-                
-                /// for each transition diagram, we need to know the associated variable
-                std::string __currentDecisionDiagramVar;
-                
-                /// for building the diagram, we need to keep track of var parents
-                std::vector< gum::NodeId > __parentNode;
-                
-                /// and current modality
-                std::vector< gum::Idx > __parentModality;
-                
+// *************************************************************************************
+// Needed attributes
+// *************************************************************************************
 
-        // *************************************************************************************
-        // Getters and Setters on those attributes
-        // *************************************************************************************
-        
-                /// Sets the main factory
-                void setFactory( gum::AbstractFMDPFactory* f ) {
-                        __factory = f;
-                }
+/// the FMDP factory to build it
+gum::AbstractFMDPFactory* __factory;
 
-                gum::AbstractFMDPFactory& factory(void) {
-                  if (__factory) 
-                        return *__factory;
-                  GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning BIF file...");
-                }
-                
-                bool IsFollowedByIdent() {
-                        Token* next = scanner->Peek();
-                        return la->kind == _lpar && next->kind == _ident;
-                }
+/// for each transition diagram, we need to know the associated variable
+std::string __currentDecisionDiagramVar;
 
-                void SemErr(std::string s) {
-                  SemErr(widen(s).c_str());
-                }
+/// for building the diagram, we need to keep track of var parents
+std::vector< gum::NodeId > __parentNode;
 
-                void Warning(std::string s) {
-                  Warning(widen("Warning : "+s).c_str());
-                }
+/// and current modality
+std::vector< gum::Idx > __parentModality;
+
+
+// *************************************************************************************
+// Getters and Setters on those attributes
+// *************************************************************************************
+
+/// Sets the main factory
+void setFactory ( gum::AbstractFMDPFactory* f ) {
+  __factory = f;
+}
+
+gum::AbstractFMDPFactory& factory ( void ) {
+  if ( __factory )
+    return *__factory;
+
+  GUM_ERROR ( gum::OperationNotAllowed, "Please set a factory for scanning BIF file..." );
+}
+
+bool IsFollowedByIdent() {
+  Token* next = scanner->Peek();
+  return la->kind == _lpar && next->kind == _ident;
+}
+
+void SemErr ( std::string s ) {
+  SemErr ( widen ( s ).c_str() );
+}
+
+void Warning ( std::string s ) {
+  Warning ( widen ( "Warning : " + s ).c_str() );
+}
 
 
 
@@ -64,287 +65,290 @@ COMPILER MDPDAT
 // CHARACTERS DEFINITION
 // ===================================================================================================
 CHARACTERS
-        letter = 'A'..'Z' + 'a'..'z'+ '_' .
-        odd_letter = letter - 'e' - 'E'.
-        nextletter = letter + '.' + '?' + '-'+'%'.
-        digit  = '0'..'9'.
+letter = 'A'..'Z' + 'a'..'z' + '_' .
+         odd_letter = letter - 'e' - 'E'.
+                      nextletter = letter + '.' + '?' + '-' + '%'.
+                                   digit  = '0'..'9'.
 
-        eol = '\n'.
-        inString   = ANY - '"'. /* set of all easy characters within a string */
-        nocomma = ANY - ";".
+                                       eol = '\n'.
+                                           inString   = ANY - '"'. /* set of all easy characters within a string */
+                                               nocomma = ANY - ";".
 
 
 // ===================================================================================================
 // TOKENS DEFINITION
 // ===================================================================================================
-TOKENS
-        operand = "+" | "-" | "*" | "/" .
-        
-        ident  =        ( letter {nextletter | digit} )
-                                |
-                                ( digit {digit} odd_letter {nextletter | digit} ).
+                                                   TOKENS
+                                                   operand = "+" | "-" | "*" | "/" .
 
-        integer = [ "+" | "-" ] digit { digit }.              /* integer part */
+                                                       ident  = ( letter {nextletter | digit} )
+                                                           |
+                                                           ( digit {digit} odd_letter {nextletter | digit} ).
 
-        number =         (
-                                [ "+" | "-" ] digit { digit }"." digit { digit }              /* digits after the mandatory point */
-                                [ ( "E" | "e" ) [ "+" | "-" ] digit { digit } ]                 /* optional exponent part */
-                                |
-                                [ "+" | "-" ] digit { digit }                 /* integer part */
-                                ( "E" | "e" ) [ "+" | "-" ] digit { digit }   /* mandatory exponent part */
-                                )
-        .
+                                                           integer = [ "+" | "-" ] digit { digit } .             /* integer part */
 
-        string = '"' {inString } '"'.
+                                                               number = (
+                                                                   [ "+" | "-" ] digit { digit }"." digit { digit }              /* digits after the mandatory point */
+                                                                   [ ( "E" | "e" ) [ "+" | "-" ] digit { digit } ]                 /* optional exponent part */
+                                                                   |
+                                                                   [ "+" | "-" ] digit { digit }                 /* integer part */
+                                                                   ( "E" | "e" ) [ "+" | "-" ] digit { digit }   /* mandatory exponent part */
+                                                                   )
+                                                                   .
 
-        largestring = '=' {nocomma} ';'.
-        
-        lpar = '('.
-        
+                                                                   string = '"' {inString } '"'.
+
+                                                                       largestring = '=' {nocomma} ';'.
+
+                                                                           lpar = '('.
+
 
 
 
 // ===================================================================================================
 // MISCELLEANOUS DEFINITION
 // ===================================================================================================
-COMMENTS FROM "/*" TO "*/" NESTED
-COMMENTS FROM "//" TO eol
+                                                                               COMMENTS FROM "/*" TO "*/" NESTED
+                                                                               COMMENTS FROM "//" TO eol
 
-IGNORE '\r' + eol + '\t'
+                                                                               IGNORE '\r' + eol + '\t'
 
 
 // ===================================================================================================
 // PRODUCTION RULES
 // ===================================================================================================
-PRODUCTIONS
+                                                                               PRODUCTIONS
 
-        /// *************************************************************************************
-        /// Main rule
-        /// *************************************************************************************
-        MDPDAT = 
-                        VARIABLES_DECLARATION 
-                        { ACTION }
-                        REWARD_DECISION_DIAGRAM
-                        DISCOUNT
-                        TOLERANCE
-                        .
-        
-
-        /// *************************************************************************************
-        /// Variables declaration rule
-        /// *************************************************************************************
-        VARIABLES_DECLARATION = '(' "variables" { VARIABLE } ')'.
-        
-
-        /// *************************************************************************************
-        /// Variable rule
-        /// *************************************************************************************
-        VARIABLE =                                  (. std::string name_of_var; .)
-                '('                                         (. __factory->startVariableDeclaration(); .)
-                IDENT<name_of_var>          (. TRY( __factory->variableName( name_of_var ) ); .) 
-                MODALITY_LIST
-                ')'                                         (. TRY( __factory->endVariableDeclaration() ); .)
-                .
-  
-        /// *************************************************************************************
-        /// Modality List rule
-        /// *************************************************************************************
-        MODALITY_LIST =                                 (. std::string label; .)
-                IDENT_OR_INTEGER<label>         (. TRY( __factory->addModality( label ) ); .)
-                [ MODALITY_LIST ]
-                .
+                                                                               /// *************************************************************************************
+                                                                               /// Main rule
+                                                                               /// *************************************************************************************
+                                                                               MDPDAT =
+                                                                                   VARIABLES_DECLARATION
+{ ACTION }
+REWARD_DECISION_DIAGRAM
+DISCOUNT
+TOLERANCE
+.
 
 
-        /// *************************************************************************************
-        /// Action declaration rule
-        /// *************************************************************************************
-        ACTION =                                                                                      (. std::string name_of_action;
-                                                                                                                float tolerance; .)
-                "action"                                                                                (. __factory->startActionDeclaration(); .)
-                (IDENT<name_of_action> | STRING<name_of_action>)        (. TRY( __factory->addAction( name_of_action ) ); .)
-                [ FLOAT<tolerance> ]
-                { TRANSITION_DECISION_DIAGRAM } 
-                [ COST_DECISION_DIAGRAM ]
-                "endaction"                                                                          (. TRY( __factory->endActionDeclaration() ); .)
-                .
-  
-        /// *************************************************************************************
-        /// Transition Decision Diagram main rule
-        /// *************************************************************************************
-        TRANSITION_DECISION_DIAGRAM =             (. std::string name_of_var;
-                                                                             __factory->startTransitionDeclaration(); .)
-                IDENT<name_of_var>                        (. std::string prime_name_of_var = name_of_var + "'";
-                                                                             __currentDecisionDiagramVar = prime_name_of_var; .)
-                ( IF( IsFollowedByIdent() ) 
-                '(' SUB_TRANSITION_DECISION_DIAGRAM ')' |  '(' TRANSITION_LEAF ')' )
-                                                                         (. TRY( __factory->addTransition( name_of_var ) );
-                                                                            __factory->endTransitionDeclaration();
-                                                                            __parentModality.clear();
-                                                                            __parentNode.clear(); .)
-                .
-        
-        /// *************************************************************************************
-        /// Transition Decision Diagram recursion rule
-        /// *************************************************************************************
-        SUB_TRANSITION_DECISION_DIAGRAM =                         (. std::string name_of_var;
-                                                                                                std::string modality_of_var;
-                                                                                                NodeId var_id; .)
-                IDENT<name_of_var>                                           (. var_id = __factory->addNonTerminalNode( name_of_var );
-                                                                                                if( !__parentNode.empty() )
-                                                                                                    __factory->insertArc( __parentNode.back(), var_id, __parentModality.back() ); .)
-                {'('
-                IDENT_OR_INTEGER<modality_of_var>                  (. __parentNode.push_back( var_id );
-                                                                                               __parentModality.push_back( (* (__factory->variable( name_of_var )))[modality_of_var] ); .)
-                ( IF( IsFollowedByIdent() ) 
-                '(' SUB_TRANSITION_DECISION_DIAGRAM ')' |  '(' TRANSITION_LEAF ')' )
-                                                                                            (. __parentModality.pop_back(); .)
-                ')'}                                                                       (. __parentNode.pop_back(); .)
-                .
-                
-        /// *************************************************************************************
-        /// Transition diagram leaf rule
-        /// *************************************************************************************
-        TRANSITION_LEAF =                 (. float value;
-                                                          gum::Idx i = 0;
-                                                          NodeId var_id = __factory->addNonTerminalNode( __currentDecisionDiagramVar );
-                                                          if( !__parentNode.empty() )
-                                                              __factory->insertArc( __parentNode.back(), var_id, __parentModality.back() ); .)
-                FLOAT<value>                (. NodeId val_id = __factory->addTerminalNode( value );
-                                                          __factory->insertArc( var_id, val_id, i ); .)
-                { 
-                FLOAT<value>                 (. ++i;
-                                                           val_id = __factory->addTerminalNode( value );
-                                                          __factory->insertArc( var_id, val_id, i ); .)
-                }
-                .
-  
-        /// *************************************************************************************
-        /// Cost Decision Diagram main rule
-        /// *************************************************************************************
-        COST_DECISION_DIAGRAM =         (. std::string name_of_var;
-                                                               __factory->startCostDeclaration(); .)
-                "cost"
-                '('        
-                SUB_DECISION_DIAGRAM
-                ')'                                        (. TRY( __factory->addCost( ) );
-                                                              __factory->endCostDeclaration();
-                                                              __parentModality.clear();
-                                                              __parentNode.clear(); .)
-                .
-  
-        /// *************************************************************************************
-        /// Reward Decision Diagram main rule
-        /// *************************************************************************************
-        REWARD_DECISION_DIAGRAM =                               (. std::string name_of_var;
-                                                                                          __factory->startRewardDeclaration(); .)
-                "reward"
-		(
-                ( IF( IsFollowedByIdent() )
-                '(' SUB_DECISION_DIAGRAM ')' |  '(' LEAF ')' )    (.  TRY( __factory->addReward( ) );
-                                                                                        __parentModality.clear();
-                                                                                        __parentNode.clear(); .)
-		|                   
-		'['                                                                   (. std::string operand_type; .)
-		OPERAND<operand_type>                            (.  __factory->setOperationModeOn( operand_type );.)
-                ( IF( IsFollowedByIdent() )
-                '(' SUB_DECISION_DIAGRAM ')' |  '(' LEAF ')' )   (. TRY( __factory->addReward( ) );
-                                                                                        __parentModality.clear();
-                                                                                        __parentNode.clear(); .)
-		{
-                ( IF( IsFollowedByIdent() )
-                '(' SUB_DECISION_DIAGRAM ')' |  '(' LEAF ')' )   (. TRY( __factory->addReward( ) );
-                                                                                        __parentModality.clear();
-                                                                                        __parentNode.clear(); .)
-		}
-		']'   
-		)                                                                   (. __factory->endRewardDeclaration(); .) 
-		.
-        
-        /// *************************************************************************************
-        /// Decision Diagram recursion rule
-        /// *************************************************************************************
-        SUB_DECISION_DIAGRAM =                                         (. std::string name_of_var;
-                                                                                             std::string modality_of_var;
-                                                                                             NodeId var_id;.)
-                IDENT<name_of_var>                                        (. var_id = __factory->addNonTerminalNode( name_of_var );
-                                                                                             if( !__parentNode.empty() )
-                                                                                                 __factory->insertArc( __parentNode.back(), var_id, __parentModality.back() ); .)
-                {'('
-                IDENT_OR_INTEGER<modality_of_var>                (. __parentNode.push_back( var_id );
-                                                                                             __parentModality.push_back( (* (__factory->variable( name_of_var )))[modality_of_var] );  .)
-                ( IF( IsFollowedByIdent() )
-                '(' SUB_DECISION_DIAGRAM ')' |  '(' LEAF ')' )
-                                                                                          (. __parentModality.pop_back(); .)
-                ')'}                                                                     (. __parentNode.pop_back(); .)
-                .
+/// *************************************************************************************
+/// Variables declaration rule
+/// *************************************************************************************
+VARIABLES_DECLARATION = '(' "variables" { VARIABLE } ')'.
 
-        /// *************************************************************************************
-        /// Diagram leaf rule
-        /// *************************************************************************************
-        LEAF =                            (. float value; .)
-                FLOAT<value>         (. NodeId val_id = __factory->addTerminalNode( value );
-                                                  __factory->insertArc( __parentNode.back(), val_id, __parentModality.back() ); .)
-                        { 
-                FLOAT<value>         (. NodeId val_id = __factory->addTerminalNode( value );
-                                                   __factory->insertArc( __parentNode.back(), val_id, __parentModality.back() ); .)
-                }
-                .
 
-        /// *************************************************************************************
-        /// Diagram leaf rule
-        /// *************************************************************************************
-        DISCOUNT =                         (. float value;
-                                                       __factory->startDiscountDeclaration( ); .)
-                        "discount"
-                        FLOAT<value>     (. __factory->addDiscount( value );
-                                                       __factory->endDiscountDeclaration( ); .)
+                        /// *************************************************************************************
+                        /// Variable rule
+                        /// *************************************************************************************
+                        VARIABLE = ( . std::string name_of_var; . )
+                                   '(' ( . __factory->startVariableDeclaration(); . )
+                                   IDENT<name_of_var> ( . TRY ( __factory->variableName ( name_of_var ) ); . )
+                                   MODALITY_LIST
+                                   ')' ( . TRY ( __factory->endVariableDeclaration() ); . )
+                                   .
+
+                                   /// *************************************************************************************
+                                   /// Modality List rule
+                                   /// *************************************************************************************
+                                   MODALITY_LIST = ( . std::string label; . )
+                                       IDENT_OR_INTEGER<label> ( . TRY ( __factory->addModality ( label ) ); . )
+                                       [ MODALITY_LIST ]
+                                       .
+
+
+                                       /// *************************************************************************************
+                                       /// Action declaration rule
+                                       /// *************************************************************************************
+                                       ACTION = ( . std::string name_of_action;
+                                           float tolerance; . )
+                                           "action" ( . __factory->startActionDeclaration(); . )
+                                           ( IDENT<name_of_action> | STRING<name_of_action> ) ( . TRY ( __factory->addAction ( name_of_action ) ); . )
+                                           [ FLOAT<tolerance> ]
+{ TRANSITION_DECISION_DIAGRAM }
+[ COST_DECISION_DIAGRAM ]
+"endaction" ( . TRY ( __factory->endActionDeclaration() ); . )
+.
+
+/// *************************************************************************************
+/// Transition Decision Diagram main rule
+/// *************************************************************************************
+TRANSITION_DECISION_DIAGRAM = ( . std::string name_of_var;
+                                __factory->startTransitionDeclaration(); . )
+                              IDENT<name_of_var> ( . std::string prime_name_of_var = name_of_var + "'";
+                                  __currentDecisionDiagramVar = prime_name_of_var; . )
+                              ( IF ( IsFollowedByIdent() )
+                                '(' SUB_TRANSITION_DECISION_DIAGRAM ')' |  '(' TRANSITION_LEAF ')' )
+                              ( . TRY ( __factory->addTransition ( name_of_var ) );
+                                __factory->endTransitionDeclaration();
+                                __parentModality.clear();
+                                __parentNode.clear(); . )
+                              .
+
+                              /// *************************************************************************************
+                              /// Transition Decision Diagram recursion rule
+                              /// *************************************************************************************
+                              SUB_TRANSITION_DECISION_DIAGRAM = ( . std::string name_of_var;
+                                  std::string modality_of_var;
+                                  NodeId var_id; . )
+                                  IDENT<name_of_var> ( . var_id = __factory->addNonTerminalNode ( name_of_var );
+
+                                      if ( !__parentNode.empty() )
+__factory->insertArc ( __parentNode.back(), var_id, __parentModality.back() ); . ) {'('
+  IDENT_OR_INTEGER<modality_of_var> ( . __parentNode.push_back ( var_id );
+                                      __parentModality.push_back ( ( * ( __factory->variable ( name_of_var ) ) ) [modality_of_var] ); . )
+  ( IF ( IsFollowedByIdent() )
+    '(' SUB_TRANSITION_DECISION_DIAGRAM ')' |  '(' TRANSITION_LEAF ')' )
+  ( . __parentModality.pop_back(); . )
+  ')'
+} ( . __parentNode.pop_back(); . )
+
+.
+
+/// *************************************************************************************
+/// Transition diagram leaf rule
+/// *************************************************************************************
+TRANSITION_LEAF = ( . float value;
+                    gum::Idx i = 0;
+                    NodeId var_id = __factory->addNonTerminalNode ( __currentDecisionDiagramVar );
+
+                    if ( !__parentNode.empty() )
+                    __factory->insertArc ( __parentNode.back(), var_id, __parentModality.back() ); . )
+                    FLOAT<value> ( . NodeId val_id = __factory->addTerminalNode ( value );
+  __factory->insertArc ( var_id, val_id, i ); . ) {
+  FLOAT<value> ( . ++i;
+                 val_id = __factory->addTerminalNode ( value );
+                 __factory->insertArc ( var_id, val_id, i ); . )
+}
+
+.
+
+/// *************************************************************************************
+/// Cost Decision Diagram main rule
+/// *************************************************************************************
+COST_DECISION_DIAGRAM = ( . std::string name_of_var;
+                          __factory->startCostDeclaration(); . )
+                        "cost"
+                        '('
+                        SUB_DECISION_DIAGRAM
+                        ')' ( . TRY ( __factory->addCost( ) );
+                              __factory->endCostDeclaration();
+                              __parentModality.clear();
+                              __parentNode.clear(); . )
                         .
 
-        /// *************************************************************************************
-        /// Diagram leaf rule
-        /// *************************************************************************************
-        TOLERANCE =                         (. float value; .)
-                        "tolerance"
-                        FLOAT<value>
-                        .
+                        /// *************************************************************************************
+                        /// Reward Decision Diagram main rule
+                        /// *************************************************************************************
+                        REWARD_DECISION_DIAGRAM = ( . std::string name_of_var;
+                            __factory->startRewardDeclaration(); . )
+                            "reward"
+                            (
+                              ( IF ( IsFollowedByIdent() )
+                                '(' SUB_DECISION_DIAGRAM ')' |  '(' LEAF ')' ) ( .  TRY ( __factory->addReward( ) );
+                                    __parentModality.clear();
+                                    __parentNode.clear(); . )
+                              |
+                              '[' ( . std::string operand_type; . )
+                              OPERAND<operand_type> ( .  __factory->setOperationModeOn ( operand_type ); . )
+                              ( IF ( IsFollowedByIdent() )
+                                '(' SUB_DECISION_DIAGRAM ')' |  '(' LEAF ')' ) ( . TRY ( __factory->addReward( ) );
+                                    __parentModality.clear();
+__parentNode.clear(); . ) {
+  ( IF ( IsFollowedByIdent() )
+    '(' SUB_DECISION_DIAGRAM ')' |  '(' LEAF ')' ) ( . TRY ( __factory->addReward( ) );
+        __parentModality.clear();
+        __parentNode.clear(); . )
+}
+']'
+                            ) ( . __factory->endRewardDeclaration(); . )
+                            .
 
-        /// *************************************************************************************
-        /// String rule
-        /// *************************************************************************************
-        STRING<std::string& str> = 
-                        string        (. str=narrow(t->val); .).
+                            /// *************************************************************************************
+                            /// Decision Diagram recursion rule
+                            /// *************************************************************************************
+                            SUB_DECISION_DIAGRAM = ( . std::string name_of_var;
+                                std::string modality_of_var;
+                                NodeId var_id; . )
+                                IDENT<name_of_var> ( . var_id = __factory->addNonTerminalNode ( name_of_var );
 
-        /// *************************************************************************************
-        /// Identifier rule
-        /// *************************************************************************************
-        IDENT<std::string& name> = 
-                        ident        (. name=narrow(t->val);  .).
+                                    if ( !__parentNode.empty() )
+__factory->insertArc ( __parentNode.back(), var_id, __parentModality.back() ); . ) {'('
+  IDENT_OR_INTEGER<modality_of_var> ( . __parentNode.push_back ( var_id );
+                                      __parentModality.push_back ( ( * ( __factory->variable ( name_of_var ) ) ) [modality_of_var] );  . )
+  ( IF ( IsFollowedByIdent() )
+    '(' SUB_DECISION_DIAGRAM ')' |  '(' LEAF ')' )
+  ( . __parentModality.pop_back(); . )
+  ')'
+} ( . __parentNode.pop_back(); . )
 
-        /// *************************************************************************************
-        /// Identifier or integer rule
-        /// *************************************************************************************
-        IDENT_OR_INTEGER<std::string& name> =
-                        IDENT<name>
-                        |
-                        integer                (. name=narrow(t->val);  .)
-                        .
+.
 
-        /// *************************************************************************************
-        /// Float rule
-        /// *************************************************************************************
-        FLOAT<float& val> =
-                        number        (. val=coco_atof(t->val); .)
-                        |
-                        integer        (. val=coco_atoi(t->val); .)
-                        .
+/// *************************************************************************************
+/// Diagram leaf rule
+/// *************************************************************************************
+LEAF = ( . float value; . )
+       FLOAT<value> ( . NodeId val_id = __factory->addTerminalNode ( value );
+__factory->insertArc ( __parentNode.back(), val_id, __parentModality.back() ); . ) {
+  FLOAT<value> ( . NodeId val_id = __factory->addTerminalNode ( value );
+                 __factory->insertArc ( __parentNode.back(), val_id, __parentModality.back() ); . )
+}
+.
 
-        /// *************************************************************************************
-        /// Float rule
-        /// *************************************************************************************
-        OPERAND<std::string& op> =
-                        operand        (. op=narrow(t->val); .)
-                        .
+/// *************************************************************************************
+/// Diagram leaf rule
+/// *************************************************************************************
+DISCOUNT = ( . float value;
+             __factory->startDiscountDeclaration( ); . )
+           "discount"
+           FLOAT<value> ( . __factory->addDiscount ( value );
+                          __factory->endDiscountDeclaration( ); . )
+           .
+
+           /// *************************************************************************************
+           /// Diagram leaf rule
+           /// *************************************************************************************
+           TOLERANCE = ( . float value; . )
+                       "tolerance"
+                       FLOAT<value>
+                       .
+
+                       /// *************************************************************************************
+                       /// String rule
+                       /// *************************************************************************************
+                       STRING<std::string& str> =
+                         string ( . str = narrow ( t->val ); . ).
+
+                         /// *************************************************************************************
+                         /// Identifier rule
+                         /// *************************************************************************************
+                         IDENT<std::string& name> =
+                           ident ( . name = narrow ( t->val );  . ).
+
+                           /// *************************************************************************************
+                           /// Identifier or integer rule
+                           /// *************************************************************************************
+                           IDENT_OR_INTEGER<std::string& name> =
+                             IDENT<name>
+                             |
+                             integer ( . name = narrow ( t->val );  . )
+                             .
+
+                             /// *************************************************************************************
+                             /// Float rule
+                             /// *************************************************************************************
+                             FLOAT<float& val> =
+                               number ( . val = coco_atof ( t->val ); . )
+                               |
+                               integer ( . val = coco_atoi ( t->val ); . )
+                               .
+
+                               /// *************************************************************************************
+                               /// Float rule
+                               /// *************************************************************************************
+                               OPERAND<std::string& op> =
+                                 operand ( . op = narrow ( t->val ); . )
+                                 .
 
 
-END MDPDAT.
+                                 END MDPDAT.
 

@@ -81,11 +81,11 @@ namespace gum {
           delete __arcMap[node];
     }
 
-    for ( HashTableIterator< const DiscreteVariable*, List<NodeId>* > iter = __var2NodeIdMap.begin(); iter != __var2NodeIdMap.end(); ++iter )
-      delete *iter;
+    for ( HashTableIteratorSafe< const DiscreteVariable*, List<NodeId>* > iter = __var2NodeIdMap.beginSafe(); iter != __var2NodeIdMap.endSafe(); ++iter )
+      delete iter.val();
 
-    for ( HashTableIterator< const DiscreteVariable*, std::vector<Idx>* > iter = __varUsedModalitiesMap.begin(); iter != __varUsedModalitiesMap.end(); ++iter )
-      delete *iter;
+    for ( HashTableIteratorSafe< const DiscreteVariable*, std::vector<Idx>* > iter = __varUsedModalitiesMap.beginSafe(); iter != __varUsedModalitiesMap.endSafe(); ++iter )
+      delete iter.val();
 
   }
 
@@ -323,7 +323,7 @@ namespace gum {
 #ifndef O4DDWITHORDER
     Sequence<const DiscreteVariable*> primeVarSeq;
 
-    for ( SequenceIterator<const DiscreteVariable*> seqIter = source->variablesSequence().begin(); seqIter != source->variablesSequence().end(); ++seqIter )
+    for ( SequenceIteratorSafe<const DiscreteVariable*> seqIter = source->variablesSequence().beginSafe(); seqIter != source->variablesSequence().endSafe(); ++seqIter )
       primeVarSeq.insert ( old2new.second ( *seqIter ) );
 
     this->setVariableSequence ( primeVarSeq );
@@ -440,7 +440,7 @@ namespace gum {
 
 // std::stringstream usedModalities;
 // usedModalities << " Used Modalities Tables : " << std::endl;
-// for( HashTableConstIterator< const DiscreteVariable*, std::vector<bool>* > varIter = __varUsedModalitiesMap.begin(); varIter != __varUsedModalitiesMap.end(); ++varIter ){
+// for( HashTableConstIteratorSafe< const DiscreteVariable*, std::vector<bool>* > varIter = __varUsedModalitiesMap.beginSafe(); varIter != __varUsedModalitiesMap.endSafe(); ++varIter ){
 // usedModalities << varIter.key()->name();
 // for( std::vector<bool>::iterator modalityIter = (*varIter)->begin(); modalityIter != (*varIter)->end(); ++modalityIter )
 //       usedModalities << " Modality : " << std::distance( (*varIter)->begin(), modalityIter ) << " - used : " << *modalityIter << "|";
@@ -461,12 +461,12 @@ namespace gum {
 
     Sequence< const DiscreteVariable* > varTopo = this->variablesSequence();
 
-    for ( SequenceIterator< const DiscreteVariable* > ite1 = varTopo.begin(); ite1 != varTopo.end(); ) {
+    for ( SequenceIteratorSafe< const DiscreteVariable* > ite1 = varTopo.beginSafe(); ite1 != varTopo.endSafe(); ) {
       bool isin = false;
-      HashTableConstIterator< NodeId, const DiscreteVariable* > ite2 = __variableMap.begin();
+      HashTableConstIteratorSafe< NodeId, const DiscreteVariable* > ite2 = __variableMap.beginSafe();
 
-      while ( ite2 != __variableMap.end() ) {
-        if ( **ite1 == **ite2 ) {
+      while ( ite2 != __variableMap.endSafe() ) {
+        if ( **ite1 == * ( ite2.val () ) ) {
           isin = true;
           break;
         }
@@ -687,17 +687,17 @@ namespace gum {
     delete visitedNodes;
 
 
-    for ( HashTableIterator< NodeId, Set< const DiscreteVariable* >* > iterH = retrogradeVariablesTable->begin(); iterH != retrogradeVariablesTable->end(); ++iterH ) {
-      Set< const DiscreteVariable* > finalSet = **iterH;
+    for ( HashTableIteratorSafe< NodeId, Set< const DiscreteVariable* >* > iterH = retrogradeVariablesTable->beginSafe(); iterH != retrogradeVariablesTable->endSafe(); ++iterH ) {
+      Set< const DiscreteVariable* > finalSet = * ( iterH.val () );
 
-      for ( SetIterator< const DiscreteVariable* > iterS = finalSet.begin(); iterS != finalSet.end(); ++iterS )
+      for ( SetIteratorSafe< const DiscreteVariable* > iterS = finalSet.beginSafe(); iterS != finalSet.endSafe(); ++iterS )
         if ( varsSeq->pos ( *iterS ) >= varsSeq->pos ( this->nodeVariable ( iterH.key() ) ) )
-          ( *iterH )->erase ( *iterS );
+          ( iterH.val() )->erase ( *iterS );
     }
 
 //~ std::stringstream varString;
 //~ varString << std::endl << " Sequence variable : ";
-//~ for( SequenceIterator< const DiscreteVariable* > iter = varsSeq->begin(); iter != varsSeq->end(); ++iter )
+//~ for( SequenceIteratorSafe< const DiscreteVariable* > iter = varsSeq->begin(); iter != varsSeq->end(); ++iter )
 //~ varString << (*iter)->name() << " - ";
 //~ varString << std::endl;
 //~ GUM_TRACE( varString.str() );
@@ -706,9 +706,9 @@ namespace gum {
 //~
 //~ std::stringstream preceedingVarLog;
 //~ preceedingVarLog << std::endl << " Preceeding variable Table : ";
-//~ for( HashTableConstIterator< NodeId, Set< const DiscreteVariable* >* > iterH = preceedingVariablesTable->begin(); iterH != preceedingVariablesTable->end(); ++iterH ){
+//~ for( HashTableConstIteratorSafe< NodeId, Set< const DiscreteVariable* >* > iterH = preceedingVariablesTable->begin(); iterH != preceedingVariablesTable->end(); ++iterH ){
 //~ preceedingVarLog << std::endl << "Noeud : " << iterH.key() << " - Variable : " << this->nodeVariable( iterH.key() )->toString() << " - Preceeding Variable : ";
-//~ for( SetIterator< const DiscreteVariable* > iterS = (*iterH)->begin(); iterS != (*iterH)->end(); ++iterS )
+//~ for( SetIteratorSafe< const DiscreteVariable* > iterS = (*iterH)->beginSafe(); iterS != (*iterH)->endSafe(); ++iterS )
 //~ preceedingVarLog << (*iterS)->name() << " - ";
 //~ preceedingVarLog << std::endl;
 //~ }
@@ -716,7 +716,7 @@ namespace gum {
 //~
 //~ std::stringstream retorgradeVarLog;
 //~ retorgradeVarLog << std::endl << " Retrograde variable Table : ";
-//~ for( HashTableConstIterator< NodeId, Set< const DiscreteVariable* >* > iterH = retrogradeVariablesTable->begin(); iterH != retrogradeVariablesTable->end(); ++iterH ){
+//~ for( HashTableConstIteratorSafe< NodeId, Set< const DiscreteVariable* >* > iterH = retrogradeVariablesTable->begin(); iterH != retrogradeVariablesTable->end(); ++iterH ){
 //~ retorgradeVarLog << std::endl << "Noeud : " << iterH.key() << " - Variable : " << this->nodeVariable( iterH.key() )->toString() << " - Preceeding Variable : ";
 //~ for( SetIterator< const DiscreteVariable* > iterS = (*iterH)->begin(); iterS != (*iterH)->end(); ++iterS )
 //~ retorgradeVarLog << (*iterS)->name() << " - ";
@@ -724,8 +724,8 @@ namespace gum {
 //~ }
 //~ GUM_TRACE( retorgradeVarLog.str() );
 
-    for ( HashTableIterator< NodeId, Set< const DiscreteVariable* >* > iterH = preceedingVariablesTable->begin(); iterH != preceedingVariablesTable->end(); ++iterH )
-      delete *iterH;
+    for ( HashTableIteratorSafe< NodeId, Set< const DiscreteVariable* >* > iterH = preceedingVariablesTable->beginSafe(); iterH != preceedingVariablesTable->endSafe(); ++iterH )
+      delete iterH.val();
 
     delete preceedingVariablesTable;
 
@@ -745,7 +745,7 @@ namespace gum {
 
     Bijection< NodeId, GUM_SCALAR > newValueMap;
 
-    for ( BijectionIterator< NodeId, GUM_SCALAR > valueIter = __valueMap.begin(); valueIter != __valueMap.end(); ++valueIter ) {
+    for ( BijectionIteratorSafe< NodeId, GUM_SCALAR > valueIter = __valueMap.beginSafe(); valueIter != __valueMap.endSafe(); ++valueIter ) {
       GUM_SCALAR tempVal = valueIter.second() * factor;
 
       if ( newValueMap.existsSecond ( tempVal ) ) {
@@ -818,7 +818,7 @@ namespace gum {
       GUM_ERROR ( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
     }
 
-    for ( Sequence< const DiscreteVariable* >::iterator iter = varList.begin(); iter != varList.end(); ++iter )
+    for ( Sequence< const DiscreteVariable* >::iterator_safe iter = varList.beginSafe(); iter != varList.endSafe(); ++iter )
       MultiDimImplementation<GUM_SCALAR>::add ( **iter );
 
   }
@@ -867,8 +867,8 @@ namespace gum {
       GUM_ERROR ( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
     }
 
-    for ( HashTableConstIterator< const DiscreteVariable*, List<NodeId>* > varIter = var2NodeMap.begin(); varIter != var2NodeMap.end(); ++varIter )
-      __var2NodeIdMap.insert ( varIter.key(), new List< NodeId > ( **varIter ) );
+    for ( HashTableConstIteratorSafe< const DiscreteVariable*, List<NodeId>* > varIter = var2NodeMap.beginSafe(); varIter != var2NodeMap.endSafe(); ++varIter )
+      __var2NodeIdMap.insert ( varIter.key(), new List< NodeId > ( * ( varIter.val() ) ) );
 
   }
 
@@ -884,8 +884,8 @@ namespace gum {
       GUM_ERROR ( OperationNotAllowed, "Must first be in instanciation mode to do such thing" );
     }
 
-    for ( HashTableConstIterator< const DiscreteVariable*, std::vector<Idx>* > varIter = varUsedModalitiesMap.begin(); varIter != varUsedModalitiesMap.end(); ++varIter )
-      __varUsedModalitiesMap.insert ( varIter.key(), new std::vector<Idx> ( **varIter ) );
+    for ( HashTableConstIteratorSafe< const DiscreteVariable*, std::vector<Idx>* > varIter = varUsedModalitiesMap.beginSafe(); varIter != varUsedModalitiesMap.endSafe(); ++varIter )
+      __varUsedModalitiesMap.insert ( varIter.key(), new std::vector<Idx> ( * ( varIter.val () ) ) );
   }
 
 
@@ -920,8 +920,8 @@ namespace gum {
 
     __defaultArcMap = defaultArcMap;
 
-    for ( HashTableConstIterator< NodeId, std::vector< NodeId >* > arcIter = arcMap.begin(); arcIter != arcMap.end(); ++arcIter )
-      __arcMap.insert ( arcIter.key(), new std::vector< NodeId > ( **arcIter ) );
+    for ( HashTableConstIteratorSafe< NodeId, std::vector< NodeId >* > arcIter = arcMap.beginSafe(); arcIter != arcMap.endSafe(); ++arcIter )
+      __arcMap.insert ( arcIter.key(), new std::vector< NodeId > ( * ( arcIter.val () ) ) );
 
   }
 
@@ -1071,8 +1071,8 @@ namespace gum {
     retrogradeVarTable->erase ( currentNode );
     retrogradeVarTable->insert ( currentNode , currentVarSet );
 
-    for ( SetIterator< const DiscreteVariable* > nodeParentsVarIter = ( *preceedingVariablesTable ) [currentNode]->begin();
-          nodeParentsVarIter != ( *preceedingVariablesTable ) [currentNode]->end(); ++nodeParentsVarIter )
+    for ( SetIteratorSafe< const DiscreteVariable* > nodeParentsVarIter = ( *preceedingVariablesTable ) [currentNode]->beginSafe();
+          nodeParentsVarIter != ( *preceedingVariablesTable ) [currentNode]->endSafe(); ++nodeParentsVarIter )
       if ( varsSeq->pos ( *nodeParentsVarIter ) > varsSeq->pos ( this->nodeVariable ( currentNode ) ) ) {
         currentVarSet->insert ( this->nodeVariable ( currentNode ) );
         break;
