@@ -1,3 +1,4 @@
+%ignore gum::*::insertEvidence;
 
 %pythonappend gum::BayesNetInference::marginal %{
         val.__fill_distrib__()
@@ -13,7 +14,7 @@ def setEvidence(self, evidces):
     bn = self.bn()
 
     # set evidences
-    list_pot = []
+    self.list_pot = []
     for var_name, evidce in evidces.iteritems():
         pot = Potential_double()
 
@@ -58,9 +59,9 @@ def setEvidence(self, evidces):
             pot[:] = evidce
         else:
             raise TypeError('dict values must be number, string or sequence')
-        list_pot.append(pot)
+        self.list_pot.append(pot)
 
-    self._setEvidence(list_pot)
+    self._setEvidence(self.list_pot)
 %}
 
 
