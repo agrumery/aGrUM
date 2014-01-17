@@ -3,7 +3,7 @@
 //% a data base from S�ren Andersen (Danske Slagterier, Axeltorv Copenhagen).
 //% The pedigree is used for diagnosing the PSE disease.
 //%
-network Pig - Network {
+network Pig-Network {
 }
 
 variable p630400490 {

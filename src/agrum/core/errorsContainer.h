@@ -86,7 +86,7 @@ namespace gum {
       /// Return the number of errors and warnings
       int count ( void ) const;
 
-      /// Print errors on standart error output.
+      /// Print errors on standard error output.
       void showSyntheticResults() const;
       void showErrors() const;
       void showErrorsAndWarnings() const;

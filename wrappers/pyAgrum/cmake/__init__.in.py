@@ -62,16 +62,19 @@ def loadBN(s,listeners=None):
 
     extension=s.split('.')[-1].upper()
     if extension=="BIF":
-        bn.loadBIF(s,listeners)
+        res=bn.loadBIF(s,listeners)
     elif extension=="BIFXML":
-        bn.loadBIFXML(s,listeners)
+        res=bn.loadBIFXML(s,listeners)
     elif extension=="DSL":
-        bn.loadDSL(s,listeners)
+        res=bn.loadDSL(s,listeners)
     elif extension=="NET":
-        bn.loadNET(s,listeners)
+        res=bn.loadNET(s,listeners)
     else:
         raise Exception("extension "+s.split('.')[-1]+" unknown. Please use "+availableBNExts())
 
+    if not res:
+      raise Exception("Error(s) in "+s)
+    
     bn.setProperty("name",s)
     return bn
 

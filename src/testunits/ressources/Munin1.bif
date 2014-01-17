@@ -1,4 +1,4 @@
-//%%%%%%%%%%%%%%%%%%%%%%%  M U N I N 1  %%%%%%%%%%%%%%%%%%%%%%%%%
+//%%%%%%%%%%%%%%%%%%%%%%%  M U N I N 1 %%%%%%%%%%%%%%%%%%%%%%%%%
 //% Subset of the Munin network.
 //%
 //% @InCollection{andreassen:jensen:andersen:etal:89,
@@ -13,7 +13,7 @@
 //%   editor =  "John E. Desmedt",
 //%   chapter =      21
 //% }
-network r.lnlw.med_r.lnlbe.med_diffn__r.med - apb_r.medd2 {
+network r.lnlw.med_r.lnlbe.med_diffn__r.med-apb_r.medd2 {
 }
 
 variable R_LNLT1_APB_DENERV {
@@ -1750,9 +1750,9 @@ variable R_APB_QUAN_MUPPOLY {
   property label = "R.APB.QUAN.MUPPOLY";
   property position = ( 1810, 150 );
   type discrete[3] {
-    __12 % , // "<12%"
-    12_24 % , // "12-24%"
-    __24 % // ">24%"
+    __12% , // "<12%"
+    12_24% , // "12-24%"
+    __24% // ">24%"
   };
 }
 
@@ -5494,9 +5494,9 @@ probability ( R_APB_QUAN_MUPPOLY | R_APB_DE_REGEN, R_APB_EFFMUS ) {
   ( YES, OTHER ) 0.015, 0.261, 0.724;
 }
 probability ( R_APB_QUAL_MUPPOLY | R_APB_QUAN_MUPPOLY ) {
-  ( __12 % ) 0.95, 0.05;
-  ( 12_24 % ) 0.3, 0.7;
-  ( __24 % ) 0.05, 0.95;
+  ( __12% ) 0.95, 0.05;
+  ( 12_24% ) 0.3, 0.7;
+  ( __24% ) 0.05, 0.95;
 }
 probability ( R_APB_QUAL_MUPDUR | R_APB_MUPDUR ) {
   ( V_SMALL ) 0.8309, 0.1677, 0.0014;
