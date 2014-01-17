@@ -311,7 +311,7 @@ namespace gum_tests {
         gum::Size sv = 0;
 
         for (
-          gum::Property<gum::Size>::onNodes::iterator_safe iter = hashmap.beginSafe();
+          gum::NodeProperty<gum::Size>::iterator_safe iter = hashmap.beginSafe();
           iter != hashmap.endSafe();
           ++iter
         ) {

@@ -28,7 +28,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 /*----------------------------------------------------------------------
 Scanner.h Specification
 -----------------------------------------------------------------------*/
--- > begin
+-->begin
 
 #if !defined(-->prefixCOCO_SCANNER_H__)
 #define -->prefixCOCO_SCANNER_H__
@@ -43,7 +43,7 @@ Scanner.h Specification
 #include <agrum/core/cocoR/common.h>
 #include <agrum/core/errorsContainer.h>
 
--- > namespace_open
+-->namespace_open
 
 class Token {
   public:
@@ -79,26 +79,26 @@ class Buffer {
     bool CanSeek();     // true if stream can be seeked otherwise false
 
   public:
-    int GetPercent ( void );
+    int GetPercent( void );
 
     static const int EoF = COCO_WCHAR_MAX + 1;
 
-    Buffer ( FILE* s, bool isUserStream );
-    Buffer ( const unsigned char* buf, int len );
-    Buffer ( Buffer* b );
+    Buffer( FILE* s, bool isUserStream );
+    Buffer( const unsigned char* buf, int len );
+    Buffer( Buffer* b );
     virtual ~Buffer();
 
     virtual void Close();
     virtual int Read();
     virtual int Peek();
-    virtual wchar_t* GetString ( int beg, int end );
+    virtual wchar_t* GetString( int beg, int end );
     virtual int GetPos();
-    virtual void SetPos ( int value );
+    virtual void SetPos( int value );
 };
 
 class UTF8Buffer : public Buffer {
   public:
-    UTF8Buffer ( Buffer* b ) : Buffer ( b ) {};
+    UTF8Buffer( Buffer* b ) : Buffer( b ) {};
     virtual int Read();
 };
 
@@ -111,13 +111,13 @@ class StartStates {
       public:
         int key, val;
         Elem* next;
-        Elem ( int key, int val ) { this->key = key; this->val = val; next = NULL; }
+        Elem( int key, int val ) { this->key = key; this->val = val; next = NULL; }
     };
 
     Elem** tab;
 
   public:
-    StartStates() { tab = new Elem*[128]; memset ( tab, 0, 128 * sizeof ( Elem* ) ); }
+    StartStates() { tab = new Elem*[128]; memset( tab, 0, 128 * sizeof( Elem* ) ); }
     virtual ~StartStates() {
       for ( int i = 0; i < 128; ++i ) {
         Elem* e = tab[i];
@@ -132,14 +132,14 @@ class StartStates {
       delete [] tab;
     }
 
-    void set ( int key, int val ) {
-      Elem* e = new Elem ( key, val );
+    void set( int key, int val ) {
+      Elem* e = new Elem( key, val );
       int k = ( ( unsigned int ) key ) % 128;
       e->next = tab[k]; tab[k] = e;
     }
 
-    int state ( int key ) {
-      Elem* e = tab[ ( ( unsigned int ) key ) % 128];
+    int state( int key ) {
+      Elem* e = tab[( ( unsigned int ) key ) % 128];
 
       while ( e != NULL && e->key != key ) e = e->next;
 
@@ -157,14 +157,14 @@ class KeywordMap {
         wchar_t* key;
         int val;
         Elem* next;
-        Elem ( const wchar_t* key, int val ) { this->key = coco_string_create ( key ); this->val = val; next = NULL; }
-        virtual ~Elem() { coco_string_delete ( key ); }
+        Elem( const wchar_t* key, int val ) { this->key = coco_string_create( key ); this->val = val; next = NULL; }
+        virtual ~Elem() { coco_string_delete( key ); }
     };
 
     Elem** tab;
 
   public:
-    KeywordMap() { tab = new Elem*[128]; memset ( tab, 0, 128 * sizeof ( Elem* ) ); }
+    KeywordMap() { tab = new Elem*[128]; memset( tab, 0, 128 * sizeof( Elem* ) ); }
     virtual ~KeywordMap() {
       for ( int i = 0; i < 128; ++i ) {
         Elem* e = tab[i];
@@ -179,16 +179,16 @@ class KeywordMap {
       delete [] tab;
     }
 
-    void set ( const wchar_t* key, int val ) {
-      Elem* e = new Elem ( key, val );
-      int k = coco_string_hash ( key ) % 128;
+    void set( const wchar_t* key, int val ) {
+      Elem* e = new Elem( key, val );
+      int k = coco_string_hash( key ) % 128;
       e->next = tab[k]; tab[k] = e;
     }
 
-    int get ( const wchar_t* key, int defaultVal ) {
-      Elem* e = tab[coco_string_hash ( key ) % 128];
+    int get( const wchar_t* key, int defaultVal ) {
+      Elem* e = tab[coco_string_hash( key ) % 128];
 
-      while ( e != NULL && !coco_string_equal ( e->key, key ) ) e = e->next;
+      while ( e != NULL && !coco_string_equal( e->key, key ) ) e = e->next;
 
       return e == NULL ? defaultVal : e->val;
     }
@@ -222,7 +222,7 @@ class Scanner {
     Token* pt;        // current peek token
 
     int ch;           // current input character
-    -- > casing0
+    -->casing0
     int pos;          // byte position of current character
     int charPos;      // position by unicode characters starting with 0
     int line;         // line number of current character
@@ -231,13 +231,13 @@ class Scanner {
 
     void CreateHeapBlock();
     Token* CreateToken();
-    void AppendVal ( Token* t );
+    void AppendVal( Token* t );
     void SetScannerBehindT();
 
     void Init();
     void NextCh();
     void AddCh();
-    -- > commentsheader
+    -->commentsheader
     Token* NextToken();
 
   public:
@@ -245,15 +245,15 @@ class Scanner {
 
     Buffer* buffer;   // scanner buffer
 
-    Scanner ( const unsigned char* buf, int len, bool trace = false );
-    Scanner ( const char* fileName, bool trace = false );
-    Scanner ( const wchar_t* fileName, bool trace = false );
-    Scanner ( FILE* s, bool trace = false );
+    Scanner( const unsigned char* buf, int len,bool trace=false );
+    Scanner( const char* fileName,bool trace=false );
+    Scanner( const wchar_t* fileName,bool trace=false );
+    Scanner( FILE* s,bool trace=false );
     ~Scanner();
 
-    void setTrace ( bool b ) { __trace = b;}
+    void setTrace( bool b ) { __trace=b;}
 
-    void Load ( const wchar_t* fileName );
+    void Load( const wchar_t* fileName );
     Token* Scan();
     Token* Peek();
     void ResetPeek();
@@ -263,22 +263,22 @@ class Scanner {
 
 }; // end Scanner
 
--- > namespace_close
+-->namespace_close
 
 #endif // !defined(COCO_SCANNER_H__)
 
--- > implementation
+-->implementation
 /*----------------------------------------------------------------------
 Scanner.cpp Specification
 -----------------------------------------------------------------------*/
--- > begin
+-->begin
 
 #include <memory.h>
 #include <string.h>
 #include "Scanner.h"
 #include <agrum/core/cocoR/common.h>
 
--- > namespace_open
+-->namespace_open
 
 Token::Token() {
   kind = 0;
@@ -290,36 +290,36 @@ Token::Token() {
 }
 
 Token::~Token() {
-  coco_string_delete ( val );
+  coco_string_delete( val );
 }
 
-Buffer::Buffer ( FILE* s, bool isUserStream ) {
+Buffer::Buffer( FILE* s, bool isUserStream ) {
 // ensure binary read on windows
 #if _MSC_VER >= 1300
-  _setmode ( _fileno ( s ), _O_BINARY );
+  _setmode( _fileno( s ), _O_BINARY );
 #endif
   stream = s; this->isUserStream = isUserStream;
 
   if ( CanSeek() ) {
-    fseek ( s, 0, SEEK_END );
-    fileLen = ftell ( s );
-    fseek ( s, 0, SEEK_SET );
+    fseek( s, 0, SEEK_END );
+    fileLen = ftell( s );
+    fseek( s, 0, SEEK_SET );
     bufLen = ( fileLen < MAX_BUFFER_LENGTH ) ? fileLen : MAX_BUFFER_LENGTH;
     bufStart = INT_MAX; // nothing in the buffer so far
   } else {
     fileLen = bufLen = bufStart = 0;
   }
 
-  bufCapacity = ( bufLen > 0 ) ? bufLen : MIN_BUFFER_LENGTH;
+  bufCapacity = ( bufLen>0 ) ? bufLen : MIN_BUFFER_LENGTH;
   buf = new unsigned char[bufCapacity];
 
-  if ( fileLen > 0 ) SetPos ( 0 );     // setup  buffer to position 0 (start)
+  if ( fileLen > 0 ) SetPos( 0 );      // setup  buffer to position 0 (start)
   else bufPos = 0; // index 0 is already after the file, thus Pos = 0 is invalid
 
   if ( bufLen == fileLen && CanSeek() ) Close();
 }
 
-Buffer::Buffer ( Buffer* b ) {
+Buffer::Buffer( Buffer* b ) {
   buf = b->buf;
   bufCapacity = b->bufCapacity;
   b->buf = NULL;
@@ -332,9 +332,9 @@ Buffer::Buffer ( Buffer* b ) {
   isUserStream = b->isUserStream;
 }
 
-Buffer::Buffer ( const unsigned char* buf, int len ) {
+Buffer::Buffer( const unsigned char* buf, int len ) {
   this->buf = new unsigned char[len];
-  memcpy ( this->buf, buf, len * sizeof ( unsigned char ) );
+  memcpy( this->buf, buf, len*sizeof( unsigned char ) );
   bufStart = 0;
   bufCapacity = bufLen = len;
   fileLen = len;
@@ -353,13 +353,13 @@ Buffer::~Buffer() {
 
 void Buffer::Close() {
   if ( !isUserStream && stream != NULL ) {
-    fclose ( stream );
+    fclose( stream );
     stream = NULL;
   }
 }
 
 int Buffer::GetPercent() {
-  return ( int ) ( ( 100.0 * GetPos() ) / fileLen );
+  return ( int )( ( 100.0*GetPos() )/fileLen );
 }
 
 int Buffer::Read() {
@@ -367,7 +367,7 @@ int Buffer::Read() {
     return buf[bufPos++];
   } else if ( GetPos() < fileLen ) {
 
-    SetPos ( GetPos() ); // shift buffer start to Pos
+    SetPos( GetPos() ); // shift buffer start to Pos
     return buf[bufPos++];
   } else if ( ( stream != NULL ) && !CanSeek() && ( ReadNextStreamChunk() > 0 ) ) {
     return buf[bufPos++];
@@ -379,23 +379,23 @@ int Buffer::Read() {
 int Buffer::Peek() {
   int curPos = GetPos();
   int ch = Read();
-  SetPos ( curPos );
+  SetPos( curPos );
   return ch;
 }
 
 // beg .. begin, zero-based, inclusive, in byte
 // end .. end, zero-based, exclusive, in byte
-wchar_t* Buffer::GetString ( int beg, int end ) {
+wchar_t* Buffer::GetString( int beg, int end ) {
   int len = 0;
   wchar_t* buf = new wchar_t[end - beg];
   int oldPos = GetPos();
-  SetPos ( beg );
+  SetPos( beg );
 
   while ( GetPos() < end ) buf[len++] = ( wchar_t ) Read();
 
-  SetPos ( oldPos );
-  wchar_t* res = coco_string_create ( buf, 0, len );
-  coco_string_delete ( buf );
+  SetPos( oldPos );
+  wchar_t* res = coco_string_create( buf, 0, len );
+  coco_string_delete( buf );
   return res;
 }
 
@@ -403,7 +403,7 @@ int Buffer::GetPos() {
   return bufPos + bufStart;
 }
 
-void Buffer::SetPos ( int value ) {
+void Buffer::SetPos( int value ) {
   if ( ( value >= fileLen ) && ( stream != NULL ) && !CanSeek() ) {
     // Wanted position is after buffer and the stream
     // is not seek-able e.g. network or console,
@@ -413,15 +413,15 @@ void Buffer::SetPos ( int value ) {
   }
 
   if ( ( value < 0 ) || ( value > fileLen ) ) {
-    wprintf ( L"--- buffer out of bounds access, position: %d\n", value );
-    exit ( 1 );
+    wprintf( L"--- buffer out of bounds access, position: %d\n", value );
+    exit( 1 );
   }
 
   if ( ( value >= bufStart ) && ( value < ( bufStart + bufLen ) ) ) { // already in buffer
     bufPos = value - bufStart;
   } else if ( stream != NULL ) { // must be swapped in
-    fseek ( stream, value, SEEK_SET );
-    bufLen = fread ( buf, sizeof ( unsigned char ), bufCapacity, stream );
+    fseek( stream, value, SEEK_SET );
+    bufLen = fread( buf, sizeof( unsigned char ), bufCapacity, stream );
     bufStart = value; bufPos = 0;
   } else {
     bufPos = fileLen - bufStart; // make Pos return fileLen
@@ -441,13 +441,13 @@ int Buffer::ReadNextStreamChunk() {
     // the buffer size on demand.
     bufCapacity = bufLen * 2;
     unsigned char* newBuf = new unsigned char[bufCapacity];
-    memcpy ( newBuf, buf, bufLen * sizeof ( unsigned char ) );
+    memcpy( newBuf, buf, bufLen*sizeof( unsigned char ) );
     delete [] buf;
     buf = newBuf;
     free = bufLen;
   }
 
-  int read = fread ( buf + bufLen, sizeof ( unsigned char ), free, stream );
+  int read = fread( buf + bufLen, sizeof( unsigned char ), free, stream );
 
   if ( read > 0 ) {
     fileLen = bufLen = ( bufLen + read );
@@ -459,7 +459,7 @@ int Buffer::ReadNextStreamChunk() {
 }
 
 bool Buffer::CanSeek() {
-  return ( stream != NULL ) && ( ftell ( stream ) != -1 );
+  return ( stream != NULL ) && ( ftell( stream ) != -1 );
 }
 
 int UTF8Buffer::Read() {
@@ -496,51 +496,51 @@ int UTF8Buffer::Read() {
   return ch;
 }
 
-Scanner::Scanner ( const unsigned char* buf, int len, bool trace ) {
-  buffer = new Buffer ( buf, len );
-  __filenamne = L"anonymous buffer";
-  __trace = trace;
+Scanner::Scanner( const unsigned char* buf, int len,bool trace ) {
+  buffer = new Buffer( buf, len );
+  __filenamne=L"anonymous buffer";
+  __trace=trace;
   Init();
 }
 
-Scanner::Scanner ( const char* fileName, bool trace ) {
-  Load ( widen ( std::string ( fileName ) ).c_str() );
-  __trace = trace;
+Scanner::Scanner( const char* fileName,bool trace ) {
+  Load( widen( std::string( fileName ) ).c_str() );
+  __trace=trace;
 }
 
-Scanner::Scanner ( const wchar_t* fileName, bool trace ) {
-  Load ( fileName );
-  __trace = trace;
+Scanner::Scanner( const wchar_t* fileName,bool trace ) {
+  Load( fileName );
+  __trace=trace;
 }
 
-void Scanner::Load ( const wchar_t* fileName ) {
+void Scanner::Load( const wchar_t* fileName ) {
   FILE* stream;
-  char* chFileName = coco_string_create_char ( fileName );
+  char* chFileName = coco_string_create_char( fileName );
 
-  if ( ( stream = fopen ( chFileName, "rb" ) ) == NULL ) {
-    std::string s ( "No such file : " ); s += chFileName;
-    GUM_ERROR ( gum::IOError, s );
+  if ( ( stream = fopen( chFileName, "rb" ) ) == NULL ) {
+    std::string s( "No such file : " ); s+=chFileName;
+    GUM_ERROR( gum::IOError,s );
   }
 
-  coco_string_delete ( chFileName );
-  buffer = new Buffer ( stream, false );
-  __filenamne = std::wstring ( fileName );
+  coco_string_delete( chFileName );
+  buffer = new Buffer( stream, false );
+  __filenamne=std::wstring( fileName );
   Init();
 }
 
-Scanner::Scanner ( FILE* s, bool trace ) {
-  buffer = new Buffer ( s, true );
-  __filenamne = L"FILE";
+Scanner::Scanner( FILE* s,bool trace ) {
+  buffer = new Buffer( s, true );
+  __filenamne=L"FILE";
   Init();
-  __trace = trace;
+  __trace=trace;
 }
 
 Scanner::~Scanner() {
   char* cur = ( char* ) firstHeap;
 
   while ( cur != NULL ) {
-    cur = * ( char** ) ( cur + HEAP_BLOCK_SIZE );
-    free ( firstHeap );
+    cur = *( char** )( cur + HEAP_BLOCK_SIZE );
+    free( firstHeap );
     firstHeap = cur;
   }
 
@@ -550,24 +550,24 @@ Scanner::~Scanner() {
 }
 
 void Scanner::Init() {
-  percent = -1;
+  percent=-1;
   EOL    = '\n';
   eofSym = 0;
-  -- > declarations
+  -->declarations
 
   tvalLength = 128;
   tval = new wchar_t[tvalLength]; // text of current token
 
   // HEAP_BLOCK_SIZE byte heap + pointer to next heap block
-  heap = malloc ( HEAP_BLOCK_SIZE + sizeof ( void* ) );
+  heap = malloc( HEAP_BLOCK_SIZE + sizeof( void* ) );
   firstHeap = heap;
-  heapEnd = ( void** ) ( ( ( char* ) heap ) + HEAP_BLOCK_SIZE );
+  heapEnd = ( void** )( ( ( char* ) heap ) + HEAP_BLOCK_SIZE );
   *heapEnd = 0;
   heapTop = heap;
 
-  if ( sizeof ( Token ) > HEAP_BLOCK_SIZE ) {
-    wprintf ( L"--- Too small HEAP_BLOCK_SIZE\n" );
-    exit ( 1 );
+  if ( sizeof( Token ) > HEAP_BLOCK_SIZE ) {
+    wprintf( L"--- Too small HEAP_BLOCK_SIZE\n" );
+    exit( 1 );
   }
 
   pos = -1; line = 1; col = 0; charPos = -1;
@@ -579,17 +579,17 @@ void Scanner::Init() {
     NextCh(); int ch2 = ch;
 
     if ( ch1 != 0xBB || ch2 != 0xBF ) {
-      wprintf ( L"Illegal byte order mark at start of file" );
-      exit ( 1 );
+      wprintf( L"Illegal byte order mark at start of file" );
+      exit( 1 );
     }
 
     Buffer* oldBuf = buffer;
-    buffer = new UTF8Buffer ( buffer ); col = 0; charPos = -1;
+    buffer = new UTF8Buffer( buffer ); col = 0; charPos = -1;
     delete oldBuf; oldBuf = NULL;
     NextCh();
   }
 
-  -- > initialization
+  -->initialization
   pt = tokens = CreateToken(); // first token is a dummy
 }
 
@@ -598,14 +598,14 @@ void Scanner::NextCh() {
   else {
     pos = buffer->GetPos();
     ch = buffer->Read();
-    int p = buffer->GetPercent();
+    int p=buffer->GetPercent();
 
-    if ( ch == Buffer::EoF ) {
-      GUM_EMIT1 ( onLoad, 200 );
+    if ( ch==Buffer::EoF ) {
+      GUM_EMIT1( onLoad,200 );
     } else {
-      if ( percent < p ) {
-        percent = p;
-        GUM_EMIT1 ( onLoad, percent );
+      if ( percent<p ) {
+        percent=p;
+        GUM_EMIT1( onLoad,percent );
       }
     }
 
@@ -618,40 +618,40 @@ void Scanner::NextCh() {
     if ( ch == EOL ) { /*if (__trace) std::cout<<line<<std::endl;*/ line++; col = 0; }
   }
 
-  -- > casing1
+  -->casing1
 }
 
 void Scanner::AddCh() {
   if ( tlen >= tvalLength ) {
     tvalLength *= 2;
     wchar_t* newBuf = new wchar_t[tvalLength];
-    memcpy ( newBuf, tval, tlen * sizeof ( wchar_t ) );
+    memcpy( newBuf, tval, tlen*sizeof( wchar_t ) );
     delete [] tval;
     tval = newBuf;
   }
 
   if ( ch != Buffer::EoF ) {
-    -- > casing2
+    -->casing2
     NextCh();
   }
 }
 
--- > comments
+-->comments
 
 void Scanner::CreateHeapBlock() {
   void* newHeap;
   char* cur = ( char* ) firstHeap;
 
   while ( ( ( char* ) tokens < cur ) || ( ( char* ) tokens > ( cur + HEAP_BLOCK_SIZE ) ) ) {
-    cur = * ( ( char** ) ( cur + HEAP_BLOCK_SIZE ) );
-    free ( firstHeap );
+    cur = *( ( char** )( cur + HEAP_BLOCK_SIZE ) );
+    free( firstHeap );
     firstHeap = cur;
   }
 
   // HEAP_BLOCK_SIZE byte heap + pointer to next heap block
-  newHeap = malloc ( HEAP_BLOCK_SIZE + sizeof ( void* ) );
+  newHeap = malloc( HEAP_BLOCK_SIZE + sizeof( void* ) );
   *heapEnd = newHeap;
-  heapEnd = ( void** ) ( ( ( char* ) newHeap ) + HEAP_BLOCK_SIZE );
+  heapEnd = ( void** )( ( ( char* ) newHeap ) + HEAP_BLOCK_SIZE );
   *heapEnd = 0;
   heap = newHeap;
   heapTop = heap;
@@ -660,54 +660,54 @@ void Scanner::CreateHeapBlock() {
 Token* Scanner::CreateToken() {
   Token* t;
 
-  if ( ( ( char* ) heapTop + ( int ) sizeof ( Token ) ) >= ( char* ) heapEnd ) {
+  if ( ( ( char* ) heapTop + ( int ) sizeof( Token ) ) >= ( char* ) heapEnd ) {
     CreateHeapBlock();
   }
 
   t = ( Token* ) heapTop;
-  heapTop = ( void* ) ( ( char* ) heapTop + sizeof ( Token ) );
+  heapTop = ( void* )( ( char* ) heapTop + sizeof( Token ) );
   t->val = NULL;
   t->next = NULL;
   return t;
 }
 
-void Scanner::AppendVal ( Token* t ) {
-  int reqMem = ( tlen + 1 ) * sizeof ( wchar_t );
+void Scanner::AppendVal( Token* t ) {
+  int reqMem = ( tlen + 1 ) * sizeof( wchar_t );
 
   if ( ( ( char* ) heapTop + reqMem ) >= ( char* ) heapEnd ) {
     if ( reqMem > HEAP_BLOCK_SIZE ) {
-      wprintf ( L"--- Too long token value\n" );
-      exit ( 1 );
+      wprintf( L"--- Too long token value\n" );
+      exit( 1 );
     }
 
     CreateHeapBlock();
   }
 
   t->val = ( wchar_t* ) heapTop;
-  heapTop = ( void* ) ( ( char* ) heapTop + reqMem );
+  heapTop = ( void* )( ( char* ) heapTop + reqMem );
 
-  wcsncpy ( t->val, tval, tlen );
+  wcsncpy( t->val, tval, tlen );
   t->val[tlen] = L'\0';
 }
 
 Token* Scanner::NextToken() {
   while ( ch == ' ' ||
-          -- > scan1
+          -->scan1
         ) NextCh();
 
-  -- > scan2
+  -->scan2
   int recKind = noSym;
   int recEnd = pos;
   t = CreateToken();
   t->pos = pos; t->col = col; t->line = line; t->charPos = charPos;
-  int state = start.state ( ch );
+  int state = start.state( ch );
   tlen = 0; AddCh();
 
   switch ( state ) {
     case -1: { t->kind = eofSym; break; } // NextCh already done
 
     case 0: {
-    case_0:
+case_0:
 
       if ( recKind != noSym ) {
         tlen = recEnd - t->pos;
@@ -717,15 +717,15 @@ Token* Scanner::NextToken() {
       t->kind = recKind; break;
     } // NextCh already done
 
-    -- > scan3
+    -->scan3
   }
 
-  AppendVal ( t );
+  AppendVal( t );
   return t;
 }
 
 void Scanner::SetScannerBehindT() {
-  buffer->SetPos ( t->pos );
+  buffer->SetPos( t->pos );
   NextCh();
   line = t->line; col = t->col; charPos = t->charPos;
 
@@ -760,4 +760,4 @@ void Scanner::ResetPeek() {
   pt = tokens;
 }
 
--- > namespace_close
+-->namespace_close

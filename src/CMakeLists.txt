@@ -26,6 +26,7 @@ endif(BISON_FLEX_EXECUTABLE STREQUAL "ok")
 ### CONDITIONAL RULES (if COCO/R has been found, we add rules) ####
 include(CocoR.agrum)
 if(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
+     message(STATUS "** aGrUM notification : Coco/R found (${COCOR_EXECUTABLE}).  ")
      CocoRTarget(BN/io/BIF/cocoR SyntaxBIF gum:BIF BN)
      CocoRTarget(BN/io/DSL/cocoR SyntaxDSL gum:DSL BN)
      CocoRTarget(BN/io/net/cocoR SyntaxNet gum:net BN)
@@ -44,6 +45,8 @@ set(AGRUM_FILES ${AGRUM_SOURCES} ${AGRUM_C_SOURCES} ${AGRUM_INLINES} ${AGRUM_INC
 
 ####################################################################
 ## targat library
+BuildAgrumFilesLists()
+
 add_library(${LIBAGRUM} SHARED ${AGRUM_FILES})
 if (OPENMP_FOUND)
   target_link_libraries(${LIBAGRUM} gomp)
