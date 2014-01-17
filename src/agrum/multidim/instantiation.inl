@@ -56,7 +56,7 @@ namespace gum {
     try {
       // check that the variable does belong to the instantiation and that the new
       // value is possible.
-      Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos ( &v ); // throws NotFound if v doesn't belong to this
 
       if ( newVal >= v.domainSize() ) {
         GUM_ERROR( OutOfBounds, "" );
@@ -79,7 +79,7 @@ namespace gum {
     try {
       // check that the variable does belong to the instantiation and that the new
       // value is possible.
-      Idx varPos = __vars[v]; // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos ( v ); // throws NotFound if v doesn't belong to this
 
       if ( newVal >= v->domainSize() ) {
         GUM_ERROR( OutOfBounds, "" );
@@ -186,7 +186,7 @@ namespace gum {
   /// returns the index of a var
 
   INLINE Idx Instantiation::pos( const DiscreteVariable& k ) const {
-    return __vars[&k];
+    return __vars.pos ( &k );
   }
 
 
@@ -229,14 +229,14 @@ namespace gum {
   /// returns the current value of a given variable
 
   INLINE Idx Instantiation::val( const DiscreteVariable& var ) const {
-    return __vals[__vars[&var]];
+    return __vals[__vars.pos ( &var )];
   }
 
 
   /// returns the current value of a given variable
 
   INLINE Idx Instantiation::valFromPtr( const DiscreteVariable* pvar ) const {
-    return __vals[__vars[pvar]];
+    return __vals[__vars.pos ( pvar )];
   }
 
 
@@ -754,7 +754,7 @@ namespace gum {
 
   INLINE void Instantiation::incVar( const DiscreteVariable& v )  {
     // get the position of the variable
-    Idx cpt = __vars[&v];
+    Idx cpt = __vars.pos ( &v );
     // if we are in overflow, do nothing
 
     if ( __overflow ) return;
@@ -774,7 +774,7 @@ namespace gum {
 
   INLINE void Instantiation::decVar( const DiscreteVariable& v )  {
     // get the position of the variable
-    Idx cpt = __vars[&v];
+    Idx cpt = __vars.pos ( &v );
     // if we are in overflow, do nothing
 
     if ( __overflow ) return;
@@ -794,7 +794,7 @@ namespace gum {
 
   INLINE void Instantiation::setFirstVar( const DiscreteVariable& v )  {
     __overflow = false;
-    __chgVal( __vars[&v], 0 );
+    __chgVal( __vars.pos ( &v ), 0 );
   }
 
 
@@ -802,7 +802,7 @@ namespace gum {
 
   INLINE void Instantiation::setLastVar( const DiscreteVariable& v )  {
     __overflow = false;
-    __chgVal( __vars[&v], v.domainSize() - 1 );
+    __chgVal( __vars.pos ( &v ), v.domainSize() - 1 );
   }
 
 
@@ -951,7 +951,7 @@ namespace gum {
 
   INLINE void Instantiation::__erase( const DiscreteVariable& v ) {
     // get the position of the variable
-    Idx pos = __vars[&v];
+    Idx pos = __vars.pos ( &v );
     __vars.erase( &v );
     __vals.erase( __vals.begin() + pos );
 

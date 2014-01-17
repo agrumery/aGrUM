@@ -100,13 +100,13 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( seq.toString(),"[0:aaaa - 1:b - 2:cc - 3:ddd]" );
 
         TS_ASSERT_EQUALS( seq[1],"b" );
-        TS_ASSERT_EQUALS( seq["ddd"], ( gum::Idx ) 3 );
+        TS_ASSERT_EQUALS( seq.pos ( "ddd" ), ( gum::Idx ) 3 );
 
         TS_ASSERT( seq.exists( "b" ) );
         TS_ASSERT( ! seq.exists( "bb" ) );
 
         TS_ASSERT_THROWS( seq[15],gum::NotFound );
-        TS_ASSERT_THROWS( seq["aaaaaaa"],gum::NotFound );
+        TS_ASSERT_THROWS( seq.pos ( "aaaaaaa" ),gum::NotFound );
 
         TS_ASSERT_EQUALS( seq.toString(),"[0:aaaa - 1:b - 2:cc - 3:ddd]" );
         TS_GUM_ASSERT_THROWS_NOTHING( seq.setAtPos( 1,"boom" ) );

@@ -59,7 +59,7 @@ namespace gum {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos ( &v ); // throws NotFound if v doesn't belong to this
 
       if ( newVal >= v.domainSize() )
         GUM_ERROR( OutOfBounds, "" );
@@ -81,7 +81,7 @@ namespace gum {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos = __vars[v]; // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos ( v ); // throws NotFound if v doesn't belong to this
 
       if ( newVal >= v->domainSize() )
         GUM_ERROR( OutOfBounds, "" );
@@ -139,7 +139,7 @@ namespace gum {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos ( &v ); // throws NotFound if v doesn't belong to this
 
       if ( newVals >= ( Size ) 1 << v.domainSize() )
         GUM_ERROR( OutOfBounds, "" );
@@ -161,7 +161,7 @@ namespace gum {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos = __vars[v]; // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos ( v ); // throws NotFound if v doesn't belong to this
 
       if ( newVals >= ( Size ) 1 << v->domainSize() )
         GUM_ERROR( OutOfBounds, "" );
@@ -216,7 +216,7 @@ namespace gum {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos = __vars[v]; // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos ( v ); // throws NotFound if v doesn't belong to this
 
       if ( newVal >= v->domainSize() )
         GUM_ERROR( OutOfBounds, "" );
@@ -238,7 +238,7 @@ namespace gum {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos ( &v ); // throws NotFound if v doesn't belong to this
 
       if ( newVal >= v.domainSize() )
         GUM_ERROR( OutOfBounds, "" );
@@ -271,7 +271,7 @@ namespace gum {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos = __vars[v]; // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos ( v ); // throws NotFound if v doesn't belong to this
 
       if ( newVal >= ( 1UL <<__vars[varPos]->domainSize() ) )
 
@@ -293,7 +293,7 @@ namespace gum {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos ( &v ); // throws NotFound if v doesn't belong to this
 
       if ( newVal >= ( 1UL <<__vars[varPos]->domainSize() ) )
 
@@ -327,7 +327,7 @@ namespace gum {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos = __vars[v]; // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos ( v ); // throws NotFound if v doesn't belong to this
 
       if ( newVal >= v->domainSize() )
         GUM_ERROR( OutOfBounds, "" );
@@ -348,7 +348,7 @@ namespace gum {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos ( &v ); // throws NotFound if v doesn't belong to this
 
       if ( newVal >= v.domainSize() )
         GUM_ERROR( OutOfBounds, "" );
@@ -381,7 +381,7 @@ namespace gum {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos = __vars[v]; // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos ( v ); // throws NotFound if v doesn't belong to this
 
       if ( newVal >= ( 1UL <<__vars[varPos]->domainSize() ) )
 
@@ -403,7 +403,7 @@ namespace gum {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos ( &v ); // throws NotFound if v doesn't belong to this
 
       if ( newVal >= ( 1UL <<__vars[varPos]->domainSize() ) )
 
@@ -448,7 +448,7 @@ namespace gum {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos = __vars[v]; // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos ( v ); // throws NotFound if v doesn't belong to this
 
       if ( newVal >= ( 1UL <<__vars[varPos]->domainSize() ) )
 
@@ -470,7 +470,7 @@ namespace gum {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos ( &v ); // throws NotFound if v doesn't belong to this
 
       if ( newVal >= ( 1UL <<__vars[varPos]->domainSize() ) )
 
@@ -504,7 +504,7 @@ namespace gum {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos = __vars[v]; // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos ( v ); // throws NotFound if v doesn't belong to this
 
       if ( newVal >= v->domainSize() )
         GUM_ERROR( OutOfBounds, "" );
@@ -525,7 +525,7 @@ namespace gum {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos = __vars[&v]; // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos ( &v ); // throws NotFound if v doesn't belong to this
 
       if ( newVal >= v.domainSize() )
         GUM_ERROR( OutOfBounds, "" );
@@ -601,7 +601,7 @@ namespace gum {
 /// returns the index of a var
 
   INLINE Idx SetInst::pos( const DiscreteVariable& k ) const {
-    return __vars[&k];
+    return __vars.pos ( &k );
   }
 
 
@@ -644,21 +644,21 @@ namespace gum {
 /// need to create functions TODO
 
   INLINE Size SetInst::vals( const DiscreteVariable& var ) const {
-    return __vals[__vars[&var]];
+    return __vals[__vars.pos ( &var )];
   }
 
 
 /// returns the current value of a given variable
 
   INLINE Size SetInst::vals( const DiscreteVariable* var ) const {
-    return __vals[__vars[var]];
+    return __vals[__vars.pos ( var )];
   }
 
   INLINE Idx SetInst::val( const DiscreteVariable* var ) const {
     Idx n = 0;
-    Size value = __vals[__vars[var]];
+    Size value = __vals[__vars.pos ( var )];
 
-    if ( !__vals[__vars[var]]%2 ) {
+    if ( !__vals[__vars.pos ( var )]%2 ) {
       while ( value & 1 ) {
         n++;
         value >>= 1;
@@ -670,7 +670,7 @@ namespace gum {
 
   INLINE Idx SetInst::nbrOccurences( const DiscreteVariable& var ) const {
     Idx n = 0;
-    Size val =  __vals[__vars[&var]];
+    Size val =  __vals[__vars.pos ( &var )];
 
     while ( val ) {
       n+=( val & 1 );
@@ -682,7 +682,7 @@ namespace gum {
 
   INLINE Idx SetInst::val( const DiscreteVariable& var ) const {
     Idx n = 0;
-    Size value = __vals[__vars[&var]];
+    Size value = __vals[__vars.pos ( &var )];
 
     if ( nbrOccurences( var ) ==1 ) {
       while ( value > 1 ) {
@@ -818,7 +818,7 @@ namespace gum {
 
   INLINE void SetInst::__erase( const DiscreteVariable& v ) {
     // get the position of the variable
-    Idx pos = __vars[&v];
+    Idx pos = __vars.pos ( &v );
     __vars.erase( &v );
     __vals.erase( __vals.begin() + pos );
 

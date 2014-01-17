@@ -116,7 +116,8 @@ namespace gum {
       }
     }
 
-    this->_swapContent( projectSum( p.getMasterRef(),seq.diffSet( p.variablesSequence() ) ) );
+    this->_swapContent( projectSum( p.getMasterRef(),
+                                    p.variablesSequence().diffSet( seq ) ) );
 
     // a const method should return a const ref BUT WE NEED t return a non const ref
     return const_cast<Potential<GUM_SCALAR>&>( *this );
