@@ -447,31 +447,21 @@ namespace gum {
   /// insert an element at the end of the sequence
   template <typename Key, typename Alloc, bool Gen> INLINE
   void SequenceImplementation<Key,Alloc,Gen>::insert( const Key& k ) {
-    try {
-      // k will be added at the end. Insert the new key into the hashtable
-      Key& new_key = const_cast<Key&>( __h.insert( k, __h.size() ).first );
-      __v.push_back( &new_key );
-      __update_end();
-    }
-    catch ( DuplicateElement& e ) {
-      GUM_ERROR( DuplicateElement, "Key already in sequence" );
-    }
+    // k will be added at the end. Insert the new key into the hashtable
+    Key& new_key = const_cast<Key&>( __h.insert( k, __h.size() ).first );
+    __v.push_back( &new_key );
+    __update_end();
   }
 
   
   /// insert an element at the end of the sequence
   template <typename Key, typename Alloc, bool Gen> INLINE
   void SequenceImplementation<Key,Alloc,Gen>::insert( Key&& k ) {
-    try{
-      // k will be added at the end. Insert the new key into the hashtable
-      Key& new_key =
-        const_cast<Key&>( __h.insert( std::move ( k ), __h.size() ).first );
-      __v.push_back( &new_key );
-      __update_end();
-    }
-    catch ( DuplicateElement& e ) {
-      GUM_ERROR( DuplicateElement, "Key already in sequence" );
-    }
+    // k will be added at the end. Insert the new key into the hashtable
+    Key& new_key =
+      const_cast<Key&>( __h.insert( std::move ( k ), __h.size() ).first );
+    __v.push_back( &new_key );
+    __update_end();
   }
 
 
@@ -711,6 +701,40 @@ namespace gum {
   }
 
 
+  /// returns the unsafe begin iterator
+  template <typename Key, typename Alloc, bool Gen> INLINE
+  SequenceIterator<Key>
+  SequenceImplementation<Key,Alloc,Gen>::begin () const {
+    return SequenceIterator<Key> { *this };
+  }
+
+
+  /// returns the unsafe end iterator
+  template <typename Key, typename Alloc, bool Gen> INLINE
+  const SequenceIterator<Key>&
+  SequenceImplementation<Key,Alloc,Gen>::end () const noexcept {
+    return __end_safe;
+  }
+
+
+  /// return an iterator pointing to the last element
+  template <typename Key, typename Alloc, bool Gen> INLINE
+  SequenceIterator<Key>
+  SequenceImplementation<Key,Alloc,Gen>::rbegin () const {
+    SequenceIterator<Key> it { *this };
+    it.__setPos( size()-1 );
+    return it;
+  }
+
+
+  /// returns an iterator pointing just before the first element
+  template <typename Key, typename Alloc, bool Gen> INLINE
+  const SequenceIterator<Key>&
+  SequenceImplementation<Key,Alloc,Gen>::rend () const noexcept {
+    return __rend_safe;
+  }
+
+
   /// modifies the size of the internal structures of the sequence
   template <typename Key, typename Alloc, bool Gen> INLINE
   void SequenceImplementation<Key,Alloc,Gen>::resize( unsigned int new_size ) {
@@ -891,15 +915,10 @@ namespace gum {
   /// insert an element at the end of the sequence
   template <typename Key, typename Alloc> INLINE
   void SequenceImplementation<Key,Alloc,true>::insert ( Key k ) {
-    try {
-      // k will be added at the end. Insert the new key into the hashtable
-      __h.insert( k, __h.size() );
-      __v.push_back( k );
-      __update_end();
-    }
-    catch ( DuplicateElement& e ) {
-      GUM_ERROR( DuplicateElement, "Key already in sequence" );
-    }
+    // k will be added at the end. Insert the new key into the hashtable
+    __h.insert( k, __h.size() );
+    __v.push_back( k );
+    __update_end();
   }
 
 
@@ -1118,6 +1137,40 @@ namespace gum {
   }
 
 
+  /// returns the unsafe begin iterator
+  template <typename Key, typename Alloc> INLINE
+  SequenceIterator<Key>
+  SequenceImplementation<Key,Alloc,true>::begin () const {
+    return SequenceIterator<Key> { *this };
+  }
+
+
+  /// return the unsafe end iterator
+  template <typename Key, typename Alloc> INLINE
+  const SequenceIterator<Key>&
+  SequenceImplementation<Key,Alloc,true>::end () const noexcept {
+    return __end_safe;
+  }
+
+
+  /// return an unsafe iterator pointing to the last element
+  template <typename Key, typename Alloc> INLINE
+  SequenceIterator<Key>
+  SequenceImplementation<Key,Alloc,true>::rbegin () const {
+    SequenceIterator <Key> it { *this };
+    it.__setPos( size()-1 );
+    return it;
+  }
+
+
+  /// returns an unsafe iterator pointing just before the first element
+  template <typename Key, typename Alloc> INLINE
+  const SequenceIterator<Key>&
+  SequenceImplementation<Key,Alloc,true>::rend () const noexcept {
+    return __rend_safe;
+  }
+
+
   /// modifies the size of the internal structures of the sequence
   template <typename Key, typename Alloc> INLINE
   void SequenceImplementation<Key,Alloc,true>::resize( unsigned int new_size ) {
@@ -1225,8 +1278,7 @@ namespace gum {
   Sequence<Key,Alloc>::diffSet ( const Sequence<Key,OtherAlloc>& seq ) const {
     Set<Key,Alloc> res;
 
-    for ( iterator_safe iter = this->beginSafe ();
-          iter != this->endSafe(); ++iter ) {
+    for ( iterator iter = this->begin (); iter != this->end (); ++iter ) {
       if ( ! seq.exists( *iter ) ) res << *iter;
     }
 

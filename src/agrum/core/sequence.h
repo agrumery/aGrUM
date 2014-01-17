@@ -47,8 +47,8 @@ namespace gum {
 
   template<typename Key, typename Alloc, bool> class SequenceImplementation;
   template<typename Key, typename Alloc> class Sequence;
-  template<typename Key> class SequenceIterator;
   template<typename Key> class SequenceIteratorSafe;
+  template<typename Key> using SequenceIterator = SequenceIteratorSafe<Key>;
 
 
 
@@ -97,6 +97,8 @@ namespace gum {
     using size_type       = std::size_t;
     using difference_type = std::ptrdiff_t;
     using allocator_type  = Alloc;
+    using iterator        = SequenceIterator<Key>;
+    using const_iterator  = SequenceIterator<Key>;
     using iterator_safe       = SequenceIteratorSafe<Key>;
     using const_iterator_safe = SequenceIteratorSafe<Key>;
     /// @}
@@ -153,6 +155,18 @@ namespace gum {
 
     /// returns the safe rend iterator
     const iterator_safe& rendSafe () const noexcept;
+
+    /// returns an unsafe begin iterator
+    iterator begin () const;
+
+    /// returns an unsafe rbegin iterator
+    iterator rbegin () const;
+
+    /// returns the unsafe end iterator
+    const iterator& end () const noexcept;
+
+    /// returns the unsafe rend iterator
+    const iterator& rend () const noexcept;
 
     /// @}
 
@@ -382,6 +396,8 @@ namespace gum {
     using size_type       = std::size_t;
     using difference_type = std::ptrdiff_t;
     using allocator_type  = Alloc;
+    using iterator        = SequenceIterator<Key>;
+    using const_iterator  = SequenceIterator<Key>;
     using iterator_safe       = SequenceIteratorSafe<Key>;
     using const_iterator_safe = SequenceIteratorSafe<Key>;
     /// @}
@@ -437,6 +453,18 @@ namespace gum {
 
     /// returns the safe rend iterator
     const iterator_safe& rendSafe () const noexcept;
+
+    /// returns an unsafe begin iterator
+    iterator begin () const;
+
+    /// returns an unsafe rbegin iterator
+    iterator rbegin () const;
+
+    /// returns the unsafe end iterator
+    const iterator& end () const noexcept;
+
+    /// returns the unsafe rend iterator
+    const iterator& rend () const noexcept;
 
     /// @}
 
@@ -672,6 +700,8 @@ namespace gum {
     using size_type       = std::size_t;
     using difference_type = std::ptrdiff_t;
     using allocator_type  = Alloc;
+    using iterator        = SequenceIterator<Key>;
+    using const_iterator  = SequenceIterator<Key>;
     using iterator_safe       = SequenceIteratorSafe<Key>;
     using const_iterator_safe = SequenceIteratorSafe<Key>;
     /// @}
@@ -734,7 +764,7 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /// difference between to sequence as a Set<Key>
+    /// difference between two sequences as a Set<Key> = this \ seq
     /**
      * This function gives the set difference : *this \ seq
      */
