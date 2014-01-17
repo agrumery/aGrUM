@@ -117,7 +117,7 @@ namespace gum {
     SequenceImplementation ( const SequenceImplementation<Key,Alloc,Gen>& aSeq );
 
     /// generalized copy constructor
-    template <typename Otheralloc>
+    template <typename OtherAlloc>
     SequenceImplementation
     ( const SequenceImplementation<Key,OtherAlloc,Gen>& aSeq );
     
@@ -317,14 +317,6 @@ namespace gum {
      * will not modify anything. */
     void resize( unsigned int new_size );
 
-    /// difference between to sequence as a Set<Key>
-    /**
-     * This function gives the set difference : *this \ seq
-     */
-    template <typename OtherAlloc>
-    Set<Key,Alloc> diffSet
-    ( const SequenceImplementation<Key,OtherAlloc,Gen>& seq ) const;
-
     /// @}
 
 
@@ -390,8 +382,8 @@ namespace gum {
     using size_type       = std::size_t;
     using difference_type = std::ptrdiff_t;
     using allocator_type  = Alloc;
-    using iterator        = SequenceIterator<Key>;
-    using const_iterator  = SequenceIterator<Key>;
+    using iterator_safe       = SequenceIteratorSafe<Key>;
+    using const_iterator_safe = SequenceIteratorSafe<Key>;
     /// @}
 
   
@@ -590,14 +582,6 @@ namespace gum {
      * will not modify anything. */
     void resize( unsigned int new_size );
 
-    /// difference between to sequence as a Set<Key>
-    /**
-     * This function gives the set difference : *this \ seq
-     */
-    template <typename OtherAlloc>
-    Set<Key,Alloc,true> diffSet
-    ( const SequenceImplementation<Key,OtherAlloc,true>& seq ) const;
-
     /// @}
 
 
@@ -609,10 +593,10 @@ namespace gum {
     std::vector<Key,Alloc> __v;
 
     /// stores the end iterator for fast access
-    SequenceIteratorSafe<Key> __end;
+    SequenceIteratorSafe<Key> __end_safe;
 
     /// stores the rend iterator for fast access
-    SequenceIteratorSafe<Key> __rend;
+    SequenceIteratorSafe<Key> __rend_safe;
 
 
 
@@ -743,10 +727,49 @@ namespace gum {
     Sequence<Key,Alloc>& operator= ( Sequence<Key,Alloc>&& aSeq );
 
     /// @}
+
     
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
+    /// @{
+
+    /// difference between to sequence as a Set<Key>
+    /**
+     * This function gives the set difference : *this \ seq
+     */
+    template <typename OtherAlloc>
+    Set<Key,Alloc> diffSet ( const Sequence<Key,OtherAlloc>& seq ) const;
+
+    /// @}
+   
   };
 
+
   
+  
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+  // dummy classes that will enable discriminate without overhead between
+  // scalars and non-scalars operators * and ->
+  template <bool gen> struct SequenceIteratorGet {
+    template<typename Key> INLINE
+    const Key& op_star ( Key* x ) { return *x; }
+    template<typename Key> INLINE
+    const Key* op_arrow ( Key* x ) { return x; }
+  };
+
+  template <> struct SequenceIteratorGet<true> {
+    template<typename Key> INLINE
+    const Key& op_star ( Key& x ) { return x; }
+    template<typename Key> INLINE
+    const Key* op_arrow ( Key& x ) { return &x; }
+  };
+  
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
+
   
 
   /* =========================================================================== */
@@ -784,7 +807,7 @@ namespace gum {
    * @endcode
    */
   template<typename Key>
-  class SequenceIteratorSafe {
+  class SequenceIteratorSafe : private SequenceIteratorGet<std::is_scalar<Key>::value> {
 
     template <typename K, typename A, bool>
     friend class SequenceImplementation;
@@ -820,6 +843,17 @@ namespace gum {
     /// @name constructors / destructors
     // ############################################################################
     ///@{
+    
+    /// constructor: always give a valid iterator (even if pos too large)
+    /**
+     * @param seq the sequence
+     * @param pos indicates to which position of the sequence the iterator should
+     * be pointing. By default, the iterator points to begin()
+     * @warning if pos is greater than the size of the sequence, the iterator
+     * is made pointing to end() */
+    template <typename Alloc>
+    SequenceIteratorSafe ( const Sequence<Key,Alloc>& seq,
+                           Idx pos = 0 ) noexcept;
     
     /// copy constructor
     SequenceIteratorSafe ( const SequenceIteratorSafe<Key>& source ) noexcept;
@@ -859,26 +893,26 @@ namespace gum {
      * @warning if moving the iterator nb would make it point outside the
      * Sequence, then iterator is moved to end or rend, depending on the
      * sign of nb */
-    SequenceIteratorSafe<Key>& operator+= ( difference_type nb ) noexcept;
+    SequenceIteratorSafe<Key>& operator+= ( unsigned int nb ) noexcept;
 
     /// makes the iterator point to i elements further in the sequence
     /** @param nb the number of steps to move the iterator
      * @warning if moving the iterator nb would make it point outside the
      * Sequence, then iterator is moved to end or rend, depending on the
      * sign of nb */
-    SequenceIteratoSafer<Key>& operator-= ( difference_type nb ) noexcept;
+    SequenceIteratorSafe<Key>& operator-= ( unsigned int nb ) noexcept;
 
     /// returns a new iterator
     /** @param nb the number of steps the created iterator is ahead of this
      * @warning the created iterator should point outside the Sequence, then it
      * is set either to end or rend, depending on the sign of nb */
-    SequenceIteratorSafe<Key> operator+ ( difference_type nb ) noexcept;
+    SequenceIteratorSafe<Key> operator+ ( unsigned int nb ) noexcept;
     
     /// returns a new iterator
     /** @param nb the number of steps the created iterator is behind of this
      * @warning the created iterator should point outside the Sequence, then it
      * is set either to end or rend, depending on the sign of nb */
-    SequenceIteratorSafe<Key> operator- ( difference_type nb ) noexcept;
+    SequenceIteratorSafe<Key> operator- ( unsigned int nb ) noexcept;
     
     /// checks whether two iterators are pointing to different elements
     bool operator!= ( const SequenceIteratorSafe<Key>& source ) const noexcept;
@@ -914,24 +948,10 @@ namespace gum {
     Idx __iterator;
 
     /// the sequence pointed to by the iterator (by default, key is a scalar)
-    const SequenceImplementation<Key,std::allocator<Key>,true>* __seq;
+    const SequenceImplementation<Key,std::allocator<Key>,
+                                 std::is_scalar<Key>::value>* __seq;
 
     
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-    /// a dummy class to select appropriately the operator* implementation
-    class Scalar {};
-
-    /// a dummy class to select appropriately the operator* implementation
-    class NonScalar {};
-
-    /// the operator* implementation for scalars Keys
-    const Key& __op_star ( const Scalar ) const;
-
-    /// the operator* implementation for non-scalars Keys
-    const Key& __op_star ( const NonScalar ) const;
-
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
     /// the iterator points to the posth element (0 = beginning of the sequence).
     void __setPos( Idx pos ) noexcept;
