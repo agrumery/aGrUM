@@ -394,7 +394,7 @@ namespace std {
 
 /* TEMPLATES INSTANTIATIONS */
 
-%template ( RandomDistribution_double ) gum::randomDistribution<double>;
+%template ( randomDistribution_double ) gum::randomDistribution<double>;
 %template ( NodeSequence ) gum::Sequence<gum::NodeId>;
 %template ( StringSequence ) gum::Sequence<std::string>;
 

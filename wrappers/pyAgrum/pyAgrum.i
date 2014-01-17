@@ -40,6 +40,7 @@ using namespace std;
 
 %pythoncode %{
 Potential = Potential_double
+randomDistribution = randomDistribution_double
 
 SimpleBayesNet = IBayesNet_double
 BayesNet = BayesNet_double

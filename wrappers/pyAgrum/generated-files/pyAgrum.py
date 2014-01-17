@@ -2247,9 +2247,9 @@ __list_end_safe = cvar.__list_end_safe
 __list_end = cvar.__list_end
 
 
-def RandomDistribution_double(*args):
-  """RandomDistribution_double(gum::Size n) -> Vector_double"""
-  return _pyAgrum.RandomDistribution_double(*args)
+def randomDistribution_double(*args):
+  """randomDistribution_double(gum::Size n) -> Vector_double"""
+  return _pyAgrum.randomDistribution_double(*args)
 class NodeSequence(_object):
     """Proxy of C++ gum::Sequence<(gum::NodeId)> class"""
     __swig_setmethods__ = {}
@@ -4392,6 +4392,7 @@ CNLoopyPropagation_double_swigregister = _pyAgrum.CNLoopyPropagation_double_swig
 CNLoopyPropagation_double_swigregister(CNLoopyPropagation_double)
 
 Potential = Potential_double
+randomDistribution = randomDistribution_double
 
 SimpleBayesNet = IBayesNet_double
 BayesNet = BayesNet_double

@@ -82,5 +82,4 @@
 #include <agrum/CN/multipleInferenceEngine.h>
 #include <agrum/CN/CNMonteCarloSampling.h>
 #include <agrum/CN/CNLoopyPropagation.h>
-  %
-}
+%}

@@ -34,7 +34,7 @@ __project_url__ = 'http://forge.lip6.fr/projects/pyagrum'
 # selection of imports extracted from dir(pyAgrum)
 from pyAgrum import GUM_MAJOR_VERSION,GUM_MINOR_VERSION,GUM_PATCH_VERSION,GUM_VERSION
 from pyAgrum import Arc,Edge,BayesNet,DiGraph,Vector_double
-from pyAgrum import Sequence_node,Sequence_string,
+from pyAgrum import NodeSequence,StringSequence
 from pyAgrum import DiscreteVar,DiscretizedVar,Instantiation,LabelizedVar,RangeVar,Variable
 from pyAgrum import Potential
 from pyAgrum import BruteForceKL,GibbsInference,GibbsKL,LazyPropagation
