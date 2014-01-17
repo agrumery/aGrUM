@@ -372,7 +372,7 @@ namespace gum {
   template <typename Key,typename Alloc>
   class SequenceImplementation<Key,Alloc,true> {
 
-    friend class SequenceIterator<Key>;
+    friend class SequenceIteratorSafe<Key>;
     friend class Sequence<Key,Alloc>;
 
   public:
@@ -754,16 +754,16 @@ namespace gum {
   // scalars and non-scalars operators * and ->
   template <bool gen> struct SequenceIteratorGet {
     template<typename Key> INLINE
-    const Key& op_star ( Key* x ) { return *x; }
+    static const Key& op_star ( const Key* x ) { return *x; }
     template<typename Key> INLINE
-    const Key* op_arrow ( Key* x ) { return x; }
+    static const Key* op_arrow ( const Key* x ) { return x; }
   };
 
   template <> struct SequenceIteratorGet<true> {
     template<typename Key> INLINE
-    const Key& op_star ( Key& x ) { return x; }
+    static const Key& op_star ( const Key& x ) { return x; }
     template<typename Key> INLINE
-    const Key* op_arrow ( Key& x ) { return &x; }
+    static const Key* op_arrow ( const Key& x ) { return &x; }
   };
   
 
@@ -807,7 +807,7 @@ namespace gum {
    * @endcode
    */
   template<typename Key>
-  class SequenceIteratorSafe : private SequenceIteratorGet<std::is_scalar<Key>::value> {
+  class SequenceIteratorSafe {
 
     template <typename K, typename A, bool>
     friend class SequenceImplementation;
@@ -826,6 +826,9 @@ namespace gum {
     
 
   private:
+
+    using Getter = SequenceIteratorGet<std::is_scalar<Key>::value>;
+    
 
     /// constructor: always give a valid iterator (even if pos too large)
     /**

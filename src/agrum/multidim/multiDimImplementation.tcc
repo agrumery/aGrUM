@@ -172,7 +172,7 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   Idx MultiDimImplementation<GUM_SCALAR>::pos( const DiscreteVariable& v ) const {
-    return __vars[&v];
+    return __vars.pos ( &v );
   }
 
   template<typename GUM_SCALAR> INLINE

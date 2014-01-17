@@ -145,7 +145,7 @@ namespace gum {
 
   INLINE Idx LabelizedVariable::operator[]( const std::string& aLabel ) const {
     try {
-      return __labels[aLabel];
+      return __labels.pos ( aLabel );
     } catch ( ... ) {
       GUM_ERROR( OutOfBounds, "label unknown : "<<this->toString()<<" with "<<aLabel );
     }
