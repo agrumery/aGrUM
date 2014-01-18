@@ -75,7 +75,7 @@ namespace gum {
     static const T& op_second ( const T* x ) { return *x; }
   };
 
-  template <> struct SequenceIteratorGet<true> {
+  template <> struct BijectionIteratorGet<true> {
     template<typename T> INLINE
     static const T& op_second ( const T& x ) { return x; }
   };

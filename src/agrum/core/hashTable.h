@@ -184,7 +184,7 @@ namespace gum {
   template <typename Key, typename Val> class HashTableConstIterator;
   template <typename Key, typename Val> class HashTableIteratorSafe;
   template <typename Key, typename Val> class HashTableConstIteratorSafe;
-  template <typename T1,  typename T2>  class Bijection;
+  template <typename T1,  typename T2, typename Alloc>  class Bijection;
 
 
   /// a << operator for HashTableList
@@ -1276,7 +1276,7 @@ namespace gum {
                                          const HashTable<Key*,Val,Alloc>& );
 
     /// for bijections to quickly access data
-    template <typename T1, typename T2> friend class Bijection;
+    template <typename T1, typename T2, typename A> friend class Bijection;
 
 
     /** @brief the hash table is represented as a vector of chained lists.
