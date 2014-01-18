@@ -23,6 +23,7 @@
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
+#include <ressources/myalloc.h>
 
 #include <agrum/core/list.h>
 #include <agrum/core/hashTable.h>
@@ -47,6 +48,23 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( table.insert( 4, "d" ) );
         TS_GUM_ASSERT_THROWS_NOTHING( table.insert( 5, "e" ) );
         TS_GUM_ASSERT_THROWS_NOTHING( table.insert( 6, "f" ) );
+
+        int nb = 7;
+        std::string str = "kkk";
+        TS_GUM_ASSERT_THROWS_NOTHING( table.insert( nb, str ) );
+        TS_ASSERT ( table.exists ( 1 ) );
+        TS_ASSERT ( table.exists ( 7 ) );
+
+        std::pair<int,std::string> p ( 8, "toto" );
+        TS_GUM_ASSERT_THROWS_NOTHING( table.insert( p ) );
+        TS_ASSERT ( table.exists ( 8 ) );
+
+        TS_GUM_ASSERT_THROWS_NOTHING( table.insert( std::pair<int,std::string> (9,"l" ) ) );
+        TS_ASSERT ( table.exists ( 9 ) );
+
+        TS_GUM_ASSERT_THROWS_NOTHING( table.emplace ( 10, "m" ) );
+        TS_ASSERT ( table.exists ( 10 ) );
+        TS_ASSERT ( ! table.exists ( 11 ) );
       }
 
       void testEquality() {
@@ -241,25 +259,24 @@ namespace gum_tests {
       void testkey() {
         gum::HashTable<int, std::string> table;
         fill( table );
+        int val;
+ 
+        TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(1));
+        TS_ASSERT_EQUALS(val, 1);
+        TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(2));
+        TS_ASSERT_EQUALS(val, 2);
+        TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(3));
+        TS_ASSERT_EQUALS(val, 3);
+        TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(4));
+        TS_ASSERT_EQUALS(val, 4);
+        TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(5));
+        TS_ASSERT_EQUALS(val, 5);
+        TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(6));
+        TS_ASSERT_EQUALS(val, 6);
 
-        /*
-          TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(1));
-          TS_ASSERT_EQUALS(val, "a");
-          TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(2));
-          TS_ASSERT_EQUALS(val, "b");
-          TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(3));
-          TS_ASSERT_EQUALS(val, "c");
-          TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(4));
-          TS_ASSERT_EQUALS(val, "d");
-          TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(5));
-          TS_ASSERT_EQUALS(val, "e");
-          TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(6));
-          TS_ASSERT_EQUALS(val, "f");
-
-          TS_ASSERT_THROWS_ANYTHING(table.key(42));
-          TS_GUM_ASSERT_THROWS_NOTHING(table.erase(6));
-          TS_ASSERT_THROWS_ANYTHING(table.key(6));
-        */
+        TS_ASSERT_THROWS_ANYTHING(table.key(42));
+        TS_GUM_ASSERT_THROWS_NOTHING(table.erase(6));
+        TS_ASSERT_THROWS_ANYTHING(table.key(6));
       }
 
       void testkeyByVal() {
@@ -303,6 +320,27 @@ namespace gum_tests {
         TS_ASSERT_DIFFERS( t2, t3 );
         TS_ASSERT_EQUALS( t1, t3 );
       }
+
+
+    void testGenCopyOperator() {
+      gum::HashTable<int, std::string, MyAlloc<std::pair<int,std::string> > > t2;
+      gum::HashTable<int, std::string> t1, t3;
+      fill( t1 );
+
+        TS_GUM_ASSERT_THROWS_NOTHING( t2 = t1 );
+        TS_GUM_ASSERT_THROWS_NOTHING( t3 = t2 );
+
+        TS_ASSERT_EQUALS( t1, t2 );
+        TS_ASSERT_EQUALS( t3, t2 );
+        TS_ASSERT_EQUALS( t1, t3 );
+
+        TS_GUM_ASSERT_THROWS_NOTHING( t2.clear() );
+
+        TS_ASSERT_DIFFERS( t1, t2 );
+        TS_ASSERT_DIFFERS( t2, t3 );
+        TS_ASSERT_EQUALS( t1, t3 );
+      }
+
 
       void testGetOperator() {
         gum::HashTable<int, std::string> t1;
@@ -398,6 +436,28 @@ namespace gum_tests {
         }
       }
 
+
+      void testMapAlloc() {
+        gum::HashTable<int, std::string> t1, map1, map2, map4;
+        gum::HashTable<int, int> map3, map5;
+        fill( t1 );
+
+        TS_GUM_ASSERT_THROWS_NOTHING( map1 = t1.map( &mappingTestFunc_1 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( map2 = t1.map( &mappingTestFunc_2 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( map3 = t1.map( &mappingTestFunc_4 ) );
+        std::string str = "Space, the final frontiere.";
+        TS_GUM_ASSERT_THROWS_NOTHING( map4 = t1.map( str ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( map5 = t1.map( 12 ) );
+
+        for ( int i = 1; i < 7; i++ ) {
+          TS_ASSERT_EQUALS( map1[i], t1[i] + ".foo" );
+          TS_ASSERT_EQUALS( map2[i], t1[i] + ".bar" );
+          TS_ASSERT_EQUALS( map3[i], 2 );
+          TS_ASSERT_EQUALS( map4[i], str );
+        }
+      }
+
+    
       void testIterator_1() {
         gum::HashTable<int, std::string> t1;
         fill( t1 );
@@ -598,6 +658,11 @@ namespace gum_tests {
       static std::string mappingTestFunc_3( std::string s ) {
         return s + ".42";
       }
+
+    static int mappingTestFunc_4( std::string s ) {
+        return 2;
+      }
+
 
 
   };
