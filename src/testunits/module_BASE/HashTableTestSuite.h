@@ -594,9 +594,119 @@ namespace gum_tests {
       }
 
 
+    void testAllocator () {
+      {
+        gum::HashTable<int, std::string, MyAlloc<std::string> > table;
+        table.insert( 1, "a" );
+        table.insert( 2, "b" );
+        table.insert( 3, "c" );
+        table.insert( 4, "d" );
+        table.insert( 5, "e" );
+        table.insert( 6, "f" );
+      }
+      
+      TS_ASSERT ( MyAllocCount::hasMeroryLeak () == false );
+
+      {
+        gum::HashTable<int, std::string, MyAlloc<std::string> > table;
+        table.insert( 1, "a" );
+        table.insert( 2, "b" );
+        table.insert( 3, "c" );
+        table.insert( 4, "d" );
+        table.insert( 5, "e" );
+        table.insert( 6, "f" );
+        table.erase ( 2 );
+        table.eraseByVal ( "a" );
+        table.erase ( 4 );
+        table.eraseAllVal ( "c" );
+      }
+
+      TS_ASSERT ( MyAllocCount::hasMeroryLeak () == false );
+       
+      {
+        gum::HashTable<int, std::string, MyAlloc<std::string> > table;
+        table.insert( 1, "a" );
+        table.insert( 2, "b" );
+        table.insert( 3, "c" );
+        table.insert( 4, "d" );
+        table.insert( 5, "e" );
+        table.insert( 6, "f" );
+        
+        std::string s;
+        int k = 0;
+        for ( auto iter = table.cbeginSafe (); iter != table.cendSafe (); ++iter ) {
+          s = iter.val ();
+          k += iter.key ();
+        }
+        
+        TS_ASSERT ( k == 21 );
+
+        k = 0;
+        for ( auto iter = table.beginSafe (); iter != table.endSafe (); ++iter ) {
+          s = iter.val ();
+          k += iter.key ();
+        }
+        
+        TS_ASSERT ( k == 21 );
+
+        k = 0;
+        for ( auto iter = table.begin (); iter != table.end (); ++iter ) {
+          s = iter.val ();
+          k += iter.key ();
+        }
+        
+        TS_ASSERT ( k == 21 );
+
+        k = 0;
+        for ( auto iter = table.cbegin (); iter != table.cend (); ++iter ) {
+          s = iter.val ();
+          k += iter.key ();
+        }
+        
+        TS_ASSERT ( k == 21 );
+
+
+        gum::HashTableConstIterator<int, std::string>
+          iter1 = table.cbegin ();
+        gum::HashTableIterator<int, std::string>
+          iter2 = table.begin ();
+        gum::HashTableConstIteratorSafe<int, std::string>
+          iter3 = table.cbeginSafe ();
+        gum::HashTableIteratorSafe<int, std::string>
+          iter4 = table.beginSafe ();
+        
+         
+        //TS_ASSERT ( *iter1 == *iter2 );
+        //TS_ASSERT ( *iter3 == *iter4 );
+        
+      }
+    
+      TS_ASSERT ( MyAllocCount::hasMeroryLeak () == false ); 
+
+    
+      // gum::HashTable<int, int> t2 { 10, false, false };
+      // gum::HashTable<int, int> t3 ( t2 );
+      // gum::HashTable<int, int> t4 ( gum::HashTable<int, int> { 10 } );
+    }
+ 
+
+   void testInitializer_list () {
+     gum::HashTable<unsigned int, std::string, MyAlloc<std::string> > table {
+       std::make_pair ( 3U, "a" ),
+       std::make_pair ( 2U, "b" )
+     };
+
+     TS_ASSERT ( table.size () == gum::Size (2) );
+     TS_ASSERT ( table.exists ( 3U ) == true );
+     TS_ASSERT ( table.exists ( 2U ) == true );
+   }
 
 
 
+
+
+
+    
     private:
       void fill( gum::HashTable<int, std::string>& table ) {
         table.insert( 1, "a" );
