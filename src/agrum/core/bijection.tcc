@@ -47,7 +47,7 @@ namespace gum {
   template <typename Alloc, bool Gen> INLINE
   BijectionIteratorSafe<T1,T2>::BijectionIteratorSafe
   ( const BijectionImplementation<T1,T2,Alloc,Gen>& bijection ) :
-    __iter { bijection.__firstToSecond.beginSafe () } {
+    __iter { bijection.__firstToSecond.cbeginSafe () } {
     GUM_CONSTRUCTOR( BijectionIteratorSafe );
   }
 
@@ -57,7 +57,7 @@ namespace gum {
   template <typename Alloc> INLINE
   BijectionIteratorSafe<T1,T2>::BijectionIteratorSafe
   ( const Bijection<T1,T2,Alloc>& bijection ) :
-    __iter { bijection.__firstToSecond.beginSafe () } {
+    __iter { bijection.__firstToSecond.cbeginSafe () } {
     GUM_CONSTRUCTOR( BijectionIteratorSafe );
   }
 
@@ -164,6 +164,142 @@ namespace gum {
   }
 
 
+
+
+
+  /* =========================================================================== */
+  /* ===                     BIJECTION UNSAFE ITERATORS                      === */
+  /* =========================================================================== */
+
+  /// Default constructor
+  template <typename T1, typename T2> INLINE
+  BijectionIterator<T1,T2>::BijectionIterator() noexcept {
+    GUM_CONSTRUCTOR( BijectionIterator );
+  }
+
+
+  /// Constructor
+  template <typename T1, typename T2>
+  template <typename Alloc, bool Gen> INLINE
+  BijectionIterator<T1,T2>::BijectionIterator
+  ( const BijectionImplementation<T1,T2,Alloc,Gen>& bijection ) :
+    __iter { bijection.__firstToSecond.cbegin () } {
+    GUM_CONSTRUCTOR( BijectionIterator );
+  }
+
+  
+  /// Constructor
+  template <typename T1, typename T2>
+  template <typename Alloc> INLINE
+  BijectionIterator<T1,T2>::BijectionIterator
+  ( const Bijection<T1,T2,Alloc>& bijection ) :
+    __iter { bijection.__firstToSecond.cbegin () } {
+    GUM_CONSTRUCTOR( BijectionIterator );
+  }
+
+  
+  /// Copy constructor
+  template <typename T1, typename T2> INLINE
+  BijectionIterator<T1,T2>::BijectionIterator
+  ( const BijectionIterator<T1,T2>& toCopy ) :
+    __iter { toCopy.__iter } {
+    GUM_CONS_CPY( BijectionIterator );
+  }
+
+  
+  /// move constructor
+  template <typename T1, typename T2> INLINE
+  BijectionIterator<T1,T2>::BijectionIterator
+  ( BijectionIterator<T1,T2>&& from ) noexcept :
+    __iter { std::move ( from.__iter ) } {
+    GUM_CONS_MOV( BijectionIterator );
+  }
+  
+
+  /// Destructor
+  template <typename T1, typename T2> INLINE
+    BijectionIterator<T1,T2>::~BijectionIterator() noexcept {
+    GUM_DESTRUCTOR( BijectionIterator );
+  }
+
+
+  /// Copy operator
+  template <typename T1, typename T2> INLINE
+  BijectionIterator<T1,T2>&
+  BijectionIterator<T1,T2>::operator=
+  ( const BijectionIterator<T1,T2>& toCopy ) {
+    __iter = toCopy.__iter;
+    return *this;
+  }
+
+  
+  /// move operator
+  template <typename T1, typename T2> INLINE
+  BijectionIterator<T1,T2>&
+  BijectionIterator<T1,T2>::operator=
+  ( BijectionIterator<T1,T2>&& toCopy ) noexcept {
+    __iter = std::move ( toCopy.__iter );
+    return *this;
+  }
+
+  
+  /// Go to the next association (if exists)
+  template <typename T1, typename T2> INLINE
+  BijectionIterator<T1,T2>&
+  BijectionIterator<T1,T2>::operator++ () noexcept {
+    ++__iter;
+    return *this;
+  }
+
+  
+  /// moves the iterator by nb elements 
+  template <typename T1, typename T2> INLINE
+  BijectionIterator<T1,T2>&
+  BijectionIterator<T1,T2>::operator+=( unsigned int nb ) noexcept {
+    __iter += nb;
+    return *this;
+  }
+
+  
+  /// returns a new iterator
+  template <typename T1, typename T2> INLINE
+  BijectionIterator<T1,T2>
+  BijectionIterator<T1,T2>::operator+ ( unsigned int nb ) noexcept {
+    return BijectionIterator<T1,T2> { *this } += nb;
+  }
+
+  
+  /// Comparison of iterators
+  template <typename T1, typename T2> INLINE
+  bool BijectionIterator<T1,T2>::operator!=
+  ( const BijectionIterator<T1,T2>& toCompare ) const noexcept {
+    return __iter != toCompare.__iter;
+  }
+
+
+  /// Comparison of iterators
+  template <typename T1, typename T2> INLINE
+  bool BijectionIterator<T1,T2>::operator==
+  ( const BijectionIterator<T1,T2>& toCompare ) const noexcept {
+    return __iter == toCompare.__iter;
+  }
+
+
+
+  /// return the first element of the current association
+  template <typename T1, typename T2> INLINE
+  const T1& BijectionIterator<T1,T2>::first() const {
+    return __iter.key ();
+  }
+
+
+  /// return the second element of the current association
+  template <typename T1, typename T2> INLINE
+  const T2& BijectionIterator<T1,T2>::second() const {
+    return Getter::op_second ( __iter.val() );
+  }
+
+
   
 
 
@@ -177,6 +313,15 @@ namespace gum {
   BijectionImplementation<T1,T2,Alloc,Gen>::endSafe4Statics() {
     return *( reinterpret_cast<const BijectionIteratorSafe<T1,T2>*>
               ( BijectionIteratorStaticEnd::endSafe4Statics() ) );
+  }
+
+  
+  // returns the end iterator for other classes' statics
+  template <typename T1, typename T2, typename Alloc, bool Gen>
+  const BijectionIterator<T1,T2>&
+  BijectionImplementation<T1,T2,Alloc,Gen>::end4Statics() {
+    return *( reinterpret_cast<const BijectionIterator<T1,T2>*>
+              ( BijectionIteratorStaticEnd::end4Statics() ) );
   }
 
   
@@ -217,6 +362,7 @@ namespace gum {
     GUM_CONSTRUCTOR( BijectionImplementation );
 
     // make sure the end() iterator is constructed properly
+    end4Statics();
     endSafe4Statics();
   }
 
@@ -230,10 +376,11 @@ namespace gum {
     GUM_CONSTRUCTOR( BijectionImplementation );
 
     for ( const auto& elt : list ) {
-      insert ( elt );
+      insert ( elt.first, elt.second );
     }
 
     // make sure the end() iterator is constructed properly
+    end4Statics();
     endSafe4Statics();
   }
   
@@ -332,6 +479,40 @@ namespace gum {
 
   /// returns the iterator at the beginning of the bijection
   template <typename T1, typename T2, typename Alloc, bool Gen> INLINE
+  typename BijectionImplementation<T1,T2,Alloc,Gen>::iterator
+  BijectionImplementation<T1,T2,Alloc,Gen>::begin() const {
+    return BijectionIterator<T1,T2> { *this };
+  }
+
+  
+  /// returns the iterator at the beginning of the bijection
+  template <typename T1, typename T2, typename Alloc, bool Gen> INLINE
+  typename BijectionImplementation<T1,T2,Alloc,Gen>::const_iterator
+  BijectionImplementation<T1,T2,Alloc,Gen>::cbegin() const {
+    return BijectionIterator<T1,T2> { *this };
+  }
+
+
+  /// returns the iterator to the end of the bijection
+  template <typename T1, typename T2, typename Alloc, bool Gen> INLINE
+  const typename BijectionImplementation<T1,T2,Alloc,Gen>::iterator&
+  BijectionImplementation<T1,T2,Alloc,Gen>::end() const noexcept {
+    return *( reinterpret_cast<const BijectionIterator<T1,T2>*>
+              ( BijectionIteratorStaticEnd::__BijectionIterEnd ) );
+  }
+  
+
+  /// returns the iterator to the end of the bijection
+  template <typename T1, typename T2, typename Alloc, bool Gen> INLINE
+  const typename BijectionImplementation<T1,T2,Alloc,Gen>::const_iterator&
+  BijectionImplementation<T1,T2,Alloc,Gen>::cend() const noexcept {
+    return *( reinterpret_cast<const BijectionIterator<T1,T2>*>
+              ( BijectionIteratorStaticEnd::__BijectionIterEnd ) );
+  }
+
+
+  /// returns the iterator at the beginning of the bijection
+  template <typename T1, typename T2, typename Alloc, bool Gen> INLINE
   typename BijectionImplementation<T1,T2,Alloc,Gen>::iterator_safe
   BijectionImplementation<T1,T2,Alloc,Gen>::beginSafe() const {
     return BijectionIteratorSafe<T1,T2> { *this };
@@ -362,7 +543,7 @@ namespace gum {
     return *( reinterpret_cast<const BijectionIteratorSafe<T1,T2>*>
               ( BijectionIteratorStaticEnd::__BijectionIterEndSafe ) );
   }
-
+  
 
   /// returns the value associated to the element passed in argument
   template <typename T1, typename T2, typename Alloc, bool Gen> INLINE
@@ -589,6 +770,15 @@ namespace gum {
               ( BijectionIteratorStaticEnd::endSafe4Statics() ) );
   }
 
+  
+  // returns the end iterator for other classes' statics
+  template <typename T1, typename T2, typename Alloc>
+  const BijectionIterator<T1,T2>&
+  BijectionImplementation<T1,T2,Alloc,true>::end4Statics() {
+    return *( reinterpret_cast<const BijectionIterator<T1,T2>*>
+              ( BijectionIteratorStaticEnd::end4Statics() ) );
+  }
+
 
   /// Default constructor: creates a bijection without association
   template <typename T1, typename T2, typename Alloc> INLINE
@@ -603,9 +793,28 @@ namespace gum {
     GUM_CONSTRUCTOR( BijectionImplementation );
 
     // make sure the end() iterator is constructed properly
+    end4Statics();
     endSafe4Statics();
   }
 
+  
+  /// initializer list constructor
+  template <typename T1, typename T2, typename Alloc> INLINE
+  BijectionImplementation<T1,T2,Alloc,true>::BijectionImplementation
+  ( std::initializer_list< std::pair<T1,T2> > list ) :  
+    __firstToSecond ( list.size () / 2, true, false ),
+    __secondToFirst ( list.size () / 2, true, false ) {
+    GUM_CONSTRUCTOR( BijectionImplementation );
+
+    for ( const auto& elt : list ) {
+      insert ( elt.first, elt.second );
+    }
+
+    // make sure the end() iterator is constructed properly
+    end4Statics();
+    endSafe4Statics();
+  }
+  
 
   /// a function that performs a complete copy of another bijection
   template <typename T1, typename T2, typename Alloc>
@@ -664,6 +873,40 @@ namespace gum {
   template <typename T1, typename T2, typename Alloc> INLINE
   BijectionImplementation<T1,T2,Alloc,true>::~BijectionImplementation() {
     GUM_DESTRUCTOR( BijectionImplementation );
+  }
+
+
+  /// returns the iterator at the beginning of the bijection
+  template <typename T1, typename T2, typename Alloc> INLINE
+  typename BijectionImplementation<T1,T2,Alloc,true>::iterator
+  BijectionImplementation<T1,T2,Alloc,true>::begin () const {
+    return BijectionIterator<T1,T2> { *this };
+  }
+
+
+  /// returns the iterator at the beginning of the bijection
+  template <typename T1, typename T2, typename Alloc> INLINE
+  typename BijectionImplementation<T1,T2,Alloc,true>::const_iterator
+  BijectionImplementation<T1,T2,Alloc,true>::cbegin () const {
+    return BijectionIterator<T1,T2> { *this };
+  }
+
+
+  /// returns the iterator to the end of the bijection
+  template <typename T1, typename T2, typename Alloc> INLINE
+  const typename BijectionImplementation<T1,T2,Alloc,true>::iterator&
+  BijectionImplementation<T1,T2,Alloc,true>::end () const noexcept {
+    return *( reinterpret_cast<const BijectionIterator<T1,T2>*>
+              ( BijectionIteratorStaticEnd::__BijectionIterEnd ) );
+  }
+
+
+  /// returns the iterator to the end of the bijection
+  template <typename T1, typename T2, typename Alloc> INLINE
+  const typename BijectionImplementation<T1,T2,Alloc,true>::const_iterator&
+  BijectionImplementation<T1,T2,Alloc,true>::cend () const noexcept {
+    return *( reinterpret_cast<const BijectionIterator<T1,T2>*>
+              ( BijectionIteratorStaticEnd::__BijectionIterEnd ) );
   }
 
 

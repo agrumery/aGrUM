@@ -46,6 +46,8 @@ namespace gum {
   
   template <typename T1, typename T2>
   class BijectionIteratorSafe;
+  template <typename T1, typename T2>
+  class BijectionIterator;
   template<typename T1, typename T2, typename Alloc, bool>
   class BijectionImplementation;
   template<typename T1, typename T2, typename Alloc>
@@ -56,11 +58,17 @@ namespace gum {
   // variable is to prevent other classes to access and modify __BijectionIterEnd
   class BijectionIteratorStaticEnd {
   private:
-    // the iterator used by everyone
+    // the safe iterator used by everyone
     static const BijectionIteratorSafe<int,int>* __BijectionIterEndSafe;
 
     // creates (if needed) and returns the iterator __BijectionIterEnd
     static const BijectionIteratorSafe<int,int>* endSafe4Statics();
+
+    // the unsafe iterator used by everyone
+    static const BijectionIterator<int,int>* __BijectionIterEnd;
+
+    // creates (if needed) and returns the iterator __BijectionIterEnd
+    static const BijectionIterator<int,int>* end4Statics();
 
     // friends that have access to the iterator
     template<typename T1, typename T2, typename Alloc, bool>
@@ -235,6 +243,152 @@ namespace gum {
 
 
 
+  /* =========================================================================== */
+  /* ===                     BIJECTION UNSAFE ITERATORS                      === */
+  /* =========================================================================== */
+  /** @class BijectionIterator
+   * @brief Unsafe iterators for bijection
+   * @ingroup basicstruct_group
+   */
+  template <typename T1, typename T2>
+  class BijectionIterator {
+
+    template <typename TT1, typename TT2, typename Alloc, bool>
+    friend class BijectionImplementation;
+
+  public:
+
+    /// types for STL compliance
+    /// @{
+    using iterator_category     = std::forward_iterator_tag;
+    using type1_type            = T1;
+    using type1_reference       = T1&;
+    using type1_const_reference = const T1&;
+    using type1_pointer         = T1*;
+    using type1_const_pointer   = const T1*;    
+    using type2_type            = T2;
+    using type2_reference       = T2&;
+    using type2_const_reference = const T2&;
+    using type2_pointer         = T2*;
+    using type2_const_pointer   = const T2*;
+    using difference_type       = std::ptrdiff_t;
+    /// @}
+
+
+  private:
+
+    // dummy classes that will enable discriminate without overhead between
+    // scalars and non-scalars functions second in iterators
+    using Getter = BijectionIteratorGet<std::is_scalar<T1>::value &&
+                                        std::is_scalar<T2>::value>;
+
+  
+    /// begin constructor
+    /** By default, the iterator points to the starting point of the bijection */
+    template <typename Alloc, bool Gen>
+    BijectionIterator
+    ( const BijectionImplementation<T1,T2,Alloc,Gen>& bijection );
+
+
+  public:
+    // ############################################################################
+    /// @name Constructors/destructors
+    // ############################################################################
+    /// @{
+
+    /// Default constructor
+    BijectionIterator() noexcept;
+
+    /// Default constructor
+    template <typename Alloc>
+    BijectionIterator( const Bijection<T1,T2,Alloc>& bijection );
+
+    /// Copy constructor
+    BijectionIterator( const BijectionIterator<T1,T2>& from );
+
+    /// move constructor
+    BijectionIterator( BijectionIterator<T1,T2>&& from ) noexcept;
+
+    /// Destructor
+    ~BijectionIterator () noexcept;
+
+    /// @}
+
+
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
+
+    /// Copy operator
+    BijectionIterator<T1,T2>&
+    operator=( const BijectionIterator<T1,T2>& toCopy );
+
+    /// move operator
+    BijectionIterator<T1,T2>&
+    operator=( BijectionIterator<T1,T2>&& toCopy ) noexcept;
+
+    /// Go to the next association (if it exists)
+    /** @warning if the iterator points to end(), nothing is done */
+    BijectionIterator<T1,T2>& operator++() noexcept;
+
+    /// moves the iterator by nb elements 
+    /** @warning if the iterator points to end(), nothing is done. If there are
+     * nb or fewer elements to parse to reach the end of the bijection, then
+     * this method makes the iterator point to end () */
+    BijectionIterator<T1,T2>& operator+=( unsigned int nb ) noexcept;
+
+    /// returns a new iterator
+    /** @warning if the iterator points to end(), the resulting iterator also
+     * points to end (). If there are nb or fewer elements to parse to reach the
+     * end of the bijection, then the resulting iterator points to end () */
+    BijectionIterator<T1,T2> operator+ ( unsigned int nb ) noexcept;
+    
+    /// Comparison of iterators
+    bool operator!=
+    ( const BijectionIterator<T1,T2>& toCompare ) const noexcept;
+
+    /// Comparison of iterators
+    bool operator==
+    ( const BijectionIterator<T1,T2>& toCompare ) const noexcept;
+
+    /// @}
+
+
+    // ############################################################################
+    /// @name Accessors/Modifiers
+    // ############################################################################
+    /// @{
+
+    /// returns the first element of the current association
+    /** @throws UndefinedIteratorValue exception is thrown when the iterator does
+     * not point to a valid element of the bijection */
+    const T1& first() const;
+
+    /// returns the second element of the current association
+    /** @throws UndefinedIteratorValue exception is thrown when the iterator does
+     * not point to a valid element of the bijection */
+    const T2& second() const;
+
+    /// @}
+
+
+  private:
+    using HashTable12 =
+      typename std::conditional<std::is_scalar<T1>::value &&
+                                std::is_scalar<T2>::value,
+                                HashTable< T1,T2, std::allocator<T2> >,
+                                HashTable< T1,T2*,std::allocator<T2*> > >::type;
+    using HashIter = typename HashTable12::const_iterator_safe;
+
+    /// the hashTable iterator that actually does all the job
+    HashIter __iter;
+    
+  };
+
+  
+
+
 
   /* =========================================================================== */
   /* ===                NON SCALAR BIJECTION IMPLEMENTATION                  === */
@@ -268,6 +422,8 @@ namespace gum {
     using allocator_type        = Alloc;
     using allocator1_type       = typename Alloc::template rebind<T1*>::other;
     using allocator2_type       = typename Alloc::template rebind<T2*>::other;
+    using iterator              = BijectionIterator<T1,T2>;
+    using const_iterator        = BijectionIterator<T1,T2>;
     using iterator_safe         = BijectionIteratorSafe<T1,T2>;
     using const_iterator_safe   = BijectionIteratorSafe<T1,T2>;
     /// @}
@@ -330,36 +486,157 @@ namespace gum {
     /// @name Iterators
     // ############################################################################
     /// @{
-
-    /// returns the iterator at the beginning of the bijection
-    /** Note that the notion of a beginning/end of a bijection is rather fuzzy.
+    
+    /// returns the unsafe iterator at the beginning of the bijection
+    /** Unsafe iterators are a little bit faster than safe ones. But this speed
+     * is at the expense of safety: if you point to an element that is deleted,
+     * then try to access it or trying to operate a ++ will most certainly
+     * result in a segfault. So, Unsafe iterators should only be used to parse
+     * bijections where no element is ever deleted. If unsure, prefer using
+     * safe iterators.
+     *
+     * Note that the notion of a beginning/end of a bijection is rather fuzzy.
      * What is important here is that
      * for(iterator iter = begin(); iter != end; ++iter) loops will parse all the
      * associations */
+    iterator begin () const;
+
+    /// returns the unsafe iterator at the beginning of the bijection
+    /** Unsafe iterators are a little bit faster than safe ones. But this speed
+     * is at the expense of safety: if you point to an element that is deleted,
+     * then try to access it or trying to operate a ++ will most certainly
+     * result in a segfault. So, Unsafe iterators should only be used to parse
+     * bijections where no element is ever deleted. If unsure, prefer using
+     * safe iterators.
+     *
+     * Note that the notion of a beginning/end of a bijection is rather fuzzy.
+     * What is important here is that
+     * for(iterator iter = begin(); iter != end; ++iter) loops will parse all the
+     * associations */
+    const_iterator cbegin () const;
+
+    /// returns the unsafe iterator to the end of the bijection
+    /** Unsafe iterators are a little bit faster than safe ones. But this speed
+     * is at the expense of safety: if you point to an element that is deleted,
+     * then try to access it or trying to operate a ++ will most certainly
+     * result in a segfault. So, Unsafe iterators should only be used to parse
+     * bijections where no element is ever deleted. If unsure, prefer using
+     * safe iterators.
+     *
+     * Note that the notion of a beginning/end of a bijection is rather fuzzy.
+     * What is important here is that
+     * for(iterator iter = begin(); iter != end; ++iter) loops will parse all the
+     * associations */
+    const iterator& end () const noexcept;
+
+    /// returns the iterator to the end of the bijection
+    /** Unsafe iterators are a little bit faster than safe ones. But this speed
+     * is at the expense of safety: if you point to an element that is deleted,
+     * then try to access it or trying to operate a ++ will most certainly
+     * result in a segfault. So, Unsafe iterators should only be used to parse
+     * bijections where no element is ever deleted. If unsure, prefer using
+     * safe iterators.
+     *
+     * Note that the notion of a beginning/end of a bijection is rather fuzzy.
+     * What is important here is that
+     * for(iterator iter = begin(); iter != end; ++iter) loops will parse all the
+     * associations */
+    const const_iterator& cend () const noexcept;
+
+    /// returns the safe iterator at the beginning of the bijection
+    /** Safe iterators are slightly slower than unsafe iterators. However, they
+     * guarantee that no segmentation fault can ever occur when trying to access
+     * the element they point to or when applying a ++ operator. When no element
+     * of the bijection is to be deleted during the parsing of the bijection
+     * (as for instance when you parse the bijection to display its content),
+     * prefer using the unsafe iterators, which are a little bit faster and cannot,
+     * in this case, produce segfaults.
+     *
+     * Note that the notion of a beginning/end of a bijection is rather fuzzy.
+     * What is important here is that
+     * for(iterator iter = beginSafe (); iter != endSafe (); ++iter) loops will
+     * parse all the associations */
     iterator_safe beginSafe () const;
 
     /// returns the iterator at the beginning of the bijection
-    /** Note that the notion of a beginning/end of a bijection is rather fuzzy.
+    /** Safe iterators are slightly slower than unsafe iterators. However, they
+     * guarantee that no segmentation fault can ever occur when trying to access
+     * the element they point to or when applying a ++ operator. When no element
+     * of the bijection is to be deleted during the parsing of the bijection
+     * (as for instance when you parse the bijection to display its content),
+     * prefer using the unsafe iterators, which are a little bit faster and cannot,
+     * in this case, produce segfaults.
+     *
+     * Note that the notion of a beginning/end of a bijection is rather fuzzy.
      * What is important here is that
-     * for(iterator iter = begin(); iter != end; ++iter) loops will parse all the
-     * associations */
+     * for(iterator iter = beginSafe (); iter != endSafe (); ++iter) loops will
+     * parse all the associations */
     const_iterator_safe cbeginSafe () const;
 
-    /// returns the iterator to the end of the bijection
-    /** Note that the notion of a beginning/end of a bijection is rather fuzzy.
+    /// returns the safe iterator to the end of the bijection
+    /** Safe iterators are slightly slower than unsafe iterators. However, they
+     * guarantee that no segmentation fault can ever occur when trying to access
+     * the element they point to or when applying a ++ operator. When no element
+     * of the bijection is to be deleted during the parsing of the bijection
+     * (as for instance when you parse the bijection to display its content),
+     * prefer using the unsafe iterators, which are a little bit faster and cannot,
+     * in this case, produce segfaults.
+     *
+     * Note that the notion of a beginning/end of a bijection is rather fuzzy.
      * What is important here is that
      * for(iterator iter = begin(); iter != end; ++iter) loops will parse all the
      * associations */
     const iterator_safe& endSafe () const noexcept;
 
-    /// returns the iterator to the end of the bijection
-    /** Note that the notion of a beginning/end of a bijection is rather fuzzy.
+    /// returns the safe iterator to the end of the bijection
+    /** Safe iterators are slightly slower than unsafe iterators. However, they
+     * guarantee that no segmentation fault can ever occur when trying to access
+     * the element they point to or when applying a ++ operator. When no element
+     * of the bijection is to be deleted during the parsing of the bijection
+     * (as for instance when you parse the bijection to display its content),
+     * prefer using the unsafe iterators, which are a little bit faster and cannot,
+     * in this case, produce segfaults.
+     *
+     * Note that the notion of a beginning/end of a bijection is rather fuzzy.
      * What is important here is that
      * for(iterator iter = begin(); iter != end; ++iter) loops will parse all the
      * associations */
     const const_iterator_safe& cendSafe () const noexcept;
 
-    /** @brief returns the end iterator for other classes' statics (read the
+    /** @brief returns the safe end iterator for other classes' statics (read the
+     * detailed description of this method)
+     *
+     * To reduce the Bijections memory consumption (which are heavily used in
+     * aGrUM) while allowing fast for(iter=begin(); iter!=end();++iter) loops, end
+     * iterators are created just once as a static member of a non-template
+     * Bijection. While this scheme is efficient and it works quite effectively
+     * when manipulating bijections, it has a drawback: other classes with static
+     * members using the Bijection's end() iterator may fail to work due to the
+     * well known "static initialization order fiasco" (see Marshall Cline's C++
+     * FAQ for more details about this C++ feature). OK, so what is the problem?
+     * Consider a class, say X, containing a Bijection that stores all its elements
+     * in a convenient way. To reduce memory consumption, X::end iterator is a
+     * static member that is initialized with a Bijection::end iterator. If the
+     * compiler decides to initialize X::end before initializing Bijection::end,
+     * then X::end will be in an incoherent state. Unfortunately, we cannot know
+     * for sure in which order static members will be initialized (the order is a
+     * compiler's decision). Hence, we shall enfore the fact that Bijection::end
+     * is initialized before X::end. Using method Bijection::end4Statics will
+     * ensure this fact: it uses the C++ "construct on first use" idiom (see the
+     * C++ FAQ) that ensures that the order fiasco is avoided. More precisely,
+     * end4Statics uses a global variable that is the very end iterator used by
+     * all Bijections. Now, this induces a small overhead. So, we also provide a
+     * Bijection::end() method that returns the Bijection::end iterator without
+     * this small overhead, but assuming that function end4Statics has already
+     * been called once (which is always the case) when a Bijection has been
+     * created.
+     *
+     * So, to summarize: when initializing static members, use endSafe4Statics()
+     * rather than endSafe (). In all the other cases, use simply the usual
+     * method endSafe (). */
+    static const iterator_safe& endSafe4Statics();
+
+    /** @brief returns the unsafe end iterator for other classes' statics (read the
      * detailed description of this method)
      *
      * To reduce the Bijections memory consumption (which are heavily used in
@@ -389,7 +666,7 @@ namespace gum {
      *
      * So, to summarize: when initializing static members, use end4Statics() rather
      * than end(). In all the other cases, use simply the usual method end(). */
-    static const iterator_safe& endSafe4Statics();
+    static const iterator& end4Statics();
 
     /// @}
 
@@ -555,6 +832,8 @@ namespace gum {
     using allocator_type        = Alloc;
     using allocator1_type       = typename Alloc::template rebind<T1>::other;
     using allocator2_type       = Alloc;
+    using iterator              = BijectionIterator<T1,T2>;
+    using const_iterator        = BijectionIterator<T1,T2>;
     using iterator_safe         = BijectionIteratorSafe<T1,T2>;
     using const_iterator_safe   = BijectionIteratorSafe<T1,T2>;
     /// @}
@@ -623,35 +902,156 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /// returns the iterator at the beginning of the bijection
-    /** Note that the notion of a beginning/end of a bijection is rather fuzzy.
+    /// returns the unsafe iterator at the beginning of the bijection
+    /** Unsafe iterators are a little bit faster than safe ones. But this speed
+     * is at the expense of safety: if you point to an element that is deleted,
+     * then try to access it or trying to operate a ++ will most certainly
+     * result in a segfault. So, Unsafe iterators should only be used to parse
+     * bijections where no element is ever deleted. If unsure, prefer using
+     * safe iterators.
+     *
+     * Note that the notion of a beginning/end of a bijection is rather fuzzy.
      * What is important here is that
      * for(iterator iter = begin(); iter != end; ++iter) loops will parse all the
      * associations */
+    iterator begin () const;
+
+    /// returns the unsafe iterator at the beginning of the bijection
+    /** Unsafe iterators are a little bit faster than safe ones. But this speed
+     * is at the expense of safety: if you point to an element that is deleted,
+     * then try to access it or trying to operate a ++ will most certainly
+     * result in a segfault. So, Unsafe iterators should only be used to parse
+     * bijections where no element is ever deleted. If unsure, prefer using
+     * safe iterators.
+     *
+     * Note that the notion of a beginning/end of a bijection is rather fuzzy.
+     * What is important here is that
+     * for(iterator iter = begin(); iter != end; ++iter) loops will parse all the
+     * associations */
+    const_iterator cbegin () const;
+
+    /// returns the unsafe iterator to the end of the bijection
+    /** Unsafe iterators are a little bit faster than safe ones. But this speed
+     * is at the expense of safety: if you point to an element that is deleted,
+     * then try to access it or trying to operate a ++ will most certainly
+     * result in a segfault. So, Unsafe iterators should only be used to parse
+     * bijections where no element is ever deleted. If unsure, prefer using
+     * safe iterators.
+     *
+     * Note that the notion of a beginning/end of a bijection is rather fuzzy.
+     * What is important here is that
+     * for(iterator iter = begin(); iter != end; ++iter) loops will parse all the
+     * associations */
+    const iterator& end () const noexcept;
+
+    /// returns the iterator to the end of the bijection
+    /** Unsafe iterators are a little bit faster than safe ones. But this speed
+     * is at the expense of safety: if you point to an element that is deleted,
+     * then try to access it or trying to operate a ++ will most certainly
+     * result in a segfault. So, Unsafe iterators should only be used to parse
+     * bijections where no element is ever deleted. If unsure, prefer using
+     * safe iterators.
+     *
+     * Note that the notion of a beginning/end of a bijection is rather fuzzy.
+     * What is important here is that
+     * for(iterator iter = begin(); iter != end; ++iter) loops will parse all the
+     * associations */
+    const const_iterator& cend () const noexcept;
+
+    /// returns the safe iterator at the beginning of the bijection
+    /** Safe iterators are slightly slower than unsafe iterators. However, they
+     * guarantee that no segmentation fault can ever occur when trying to access
+     * the element they point to or when applying a ++ operator. When no element
+     * of the bijection is to be deleted during the parsing of the bijection
+     * (as for instance when you parse the bijection to display its content),
+     * prefer using the unsafe iterators, which are a little bit faster and cannot,
+     * in this case, produce segfaults.
+     *
+     * Note that the notion of a beginning/end of a bijection is rather fuzzy.
+     * What is important here is that
+     * for(iterator iter = beginSafe (); iter != endSafe (); ++iter) loops will
+     * parse all the associations */
     iterator_safe beginSafe () const;
 
     /// returns the iterator at the beginning of the bijection
-    /** Note that the notion of a beginning/end of a bijection is rather fuzzy.
+    /** Safe iterators are slightly slower than unsafe iterators. However, they
+     * guarantee that no segmentation fault can ever occur when trying to access
+     * the element they point to or when applying a ++ operator. When no element
+     * of the bijection is to be deleted during the parsing of the bijection
+     * (as for instance when you parse the bijection to display its content),
+     * prefer using the unsafe iterators, which are a little bit faster and cannot,
+     * in this case, produce segfaults.
+     *
+     * Note that the notion of a beginning/end of a bijection is rather fuzzy.
      * What is important here is that
-     * for(iterator iter = begin(); iter != end; ++iter) loops will parse all the
-     * associations */
+     * for(iterator iter = beginSafe (); iter != endSafe (); ++iter) loops will
+     * parse all the associations */
     const_iterator_safe cbeginSafe () const;
 
-    /// returns the iterator to the end of the bijection
-    /** Note that the notion of a beginning/end of a bijection is rather fuzzy.
+    /// returns the safe iterator to the end of the bijection
+    /** Safe iterators are slightly slower than unsafe iterators. However, they
+     * guarantee that no segmentation fault can ever occur when trying to access
+     * the element they point to or when applying a ++ operator. When no element
+     * of the bijection is to be deleted during the parsing of the bijection
+     * (as for instance when you parse the bijection to display its content),
+     * prefer using the unsafe iterators, which are a little bit faster and cannot,
+     * in this case, produce segfaults.
+     *
+     * Note that the notion of a beginning/end of a bijection is rather fuzzy.
      * What is important here is that
      * for(iterator iter = begin(); iter != end; ++iter) loops will parse all the
      * associations */
     const iterator_safe& endSafe () const noexcept;
 
-    /// returns the iterator to the end of the bijection
-    /** Note that the notion of a beginning/end of a bijection is rather fuzzy.
+    /// returns the safe iterator to the end of the bijection
+    /** Safe iterators are slightly slower than unsafe iterators. However, they
+     * guarantee that no segmentation fault can ever occur when trying to access
+     * the element they point to or when applying a ++ operator. When no element
+     * of the bijection is to be deleted during the parsing of the bijection
+     * (as for instance when you parse the bijection to display its content),
+     * prefer using the unsafe iterators, which are a little bit faster and cannot,
+     * in this case, produce segfaults.
+     *
+     * Note that the notion of a beginning/end of a bijection is rather fuzzy.
      * What is important here is that
      * for(iterator iter = begin(); iter != end; ++iter) loops will parse all the
      * associations */
     const const_iterator_safe& cendSafe () const noexcept;
 
-    /** @brief returns the end iterator for other classes' statics (read the
+    /** @brief returns the safe end iterator for other classes' statics (read the
+     * detailed description of this method)
+     *
+     * To reduce the Bijections memory consumption (which are heavily used in
+     * aGrUM) while allowing fast for(iter=begin(); iter!=end();++iter) loops, end
+     * iterators are created just once as a static member of a non-template
+     * Bijection. While this scheme is efficient and it works quite effectively
+     * when manipulating bijections, it has a drawback: other classes with static
+     * members using the Bijection's end() iterator may fail to work due to the
+     * well known "static initialization order fiasco" (see Marshall Cline's C++
+     * FAQ for more details about this C++ feature). OK, so what is the problem?
+     * Consider a class, say X, containing a Bijection that stores all its elements
+     * in a convenient way. To reduce memory consumption, X::end iterator is a
+     * static member that is initialized with a Bijection::end iterator. If the
+     * compiler decides to initialize X::end before initializing Bijection::end,
+     * then X::end will be in an incoherent state. Unfortunately, we cannot know
+     * for sure in which order static members will be initialized (the order is a
+     * compiler's decision). Hence, we shall enfore the fact that Bijection::end
+     * is initialized before X::end. Using method Bijection::end4Statics will
+     * ensure this fact: it uses the C++ "construct on first use" idiom (see the
+     * C++ FAQ) that ensures that the order fiasco is avoided. More precisely,
+     * end4Statics uses a global variable that is the very end iterator used by
+     * all Bijections. Now, this induces a small overhead. So, we also provide a
+     * Bijection::end() method that returns the Bijection::end iterator without
+     * this small overhead, but assuming that function end4Statics has already
+     * been called once (which is always the case) when a Bijection has been
+     * created.
+     *
+     * So, to summarize: when initializing static members, use endSafe4Statics()
+     * rather than endSafe (). In all the other cases, use simply the usual
+     * method endSafe (). */
+    static const iterator_safe& endSafe4Statics();
+
+    /** @brief returns the unsafe end iterator for other classes' statics (read the
      * detailed description of this method)
      *
      * To reduce the Bijections memory consumption (which are heavily used in
@@ -681,7 +1081,7 @@ namespace gum {
      *
      * So, to summarize: when initializing static members, use end4Statics() rather
      * than end(). In all the other cases, use simply the usual method end(). */
-    static const iterator_safe& endSafe4Statics();
+    static const iterator& end4Statics();
 
     /// @}
 
