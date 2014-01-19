@@ -49,7 +49,7 @@ namespace gum {
   template<typename Key, typename Alloc> class Sequence;
   template<typename Key> class SequenceIteratorSafe;
   template<typename Key> using SequenceIterator = SequenceIteratorSafe<Key>;
-
+  template<typename Key> using SequenceConstIterator = SequenceIteratorSafe<Key>;
 
 
   /* =========================================================================== */
@@ -82,7 +82,8 @@ namespace gum {
    * @endcode */
   template<typename Key, typename Alloc, bool Gen>
   class SequenceImplementation {
-    
+
+    template <typename K, typename A, bool> friend class SequenceImplementation;
     friend class SequenceIteratorSafe<Key>;
     friend class Sequence<Key,Alloc>;
 
@@ -386,6 +387,7 @@ namespace gum {
   template <typename Key,typename Alloc>
   class SequenceImplementation<Key,Alloc,true> {
 
+    template <typename K, typename A, bool> friend class SequenceImplementation;
     friend class SequenceIteratorSafe<Key>;
     friend class Sequence<Key,Alloc>;
 

@@ -69,6 +69,9 @@ namespace gum {
   template<typename Key> class SetIterator;
   template<typename Key, typename Alloc> class Set;
 
+  template <typename Key> using SetConstIterator = SetIterator<Key>;
+  template <typename Key> using SetConstIteratorSafe = SetIteratorSafe<Key>;
+
   // a class used to create the static iterator used by Sets. The aim of
   // using this class rather than just creating __SetIterEnd as a global
   // variable is to prevent other classes to access and modify __SetIterEnd
@@ -546,6 +549,7 @@ namespace gum {
     // friends
     friend class SetIterator<Key>;
     friend class SetIteratorSafe<Key>;
+    template <typename K, typename A> friend class Set;
 
     /// a set of X's is actually a hashtable whose keys are the X's
     HashTable<Key,bool,Alloc> __inside;
@@ -845,6 +849,7 @@ namespace gum {
   private:
     /// for efficiency, Set should be able to modify the hashtable iterator
     template <typename K, typename A> friend class Set;
+    friend class SetIteratorSafe<Key>;
 
     /// the underlying iterator for the set's hashtable containing the data
     HashTableConstIterator<Key,bool> __ht_iter;

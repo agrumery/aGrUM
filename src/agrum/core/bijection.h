@@ -379,7 +379,7 @@ namespace gum {
                                 std::is_scalar<T2>::value,
                                 HashTable< T1,T2, std::allocator<T2> >,
                                 HashTable< T1,T2*,std::allocator<T2*> > >::type;
-    using HashIter = typename HashTable12::const_iterator_safe;
+    using HashIter = typename HashTable12::const_iterator;
 
     /// the hashTable iterator that actually does all the job
     HashIter __iter;

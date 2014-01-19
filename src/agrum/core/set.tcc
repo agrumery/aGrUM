@@ -385,6 +385,7 @@ namespace gum {
   template<typename Key, typename Alloc> INLINE
   Set<Key,Alloc>::Set( std::initializer_list<Key> list ) :
     __inside ( list.size () / 2, true, false ) {
+    GUM_CONSTRUCTOR( Set );
     for ( const auto& elt : list ) {
       insert ( elt );
     }
