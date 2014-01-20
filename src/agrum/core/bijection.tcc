@@ -875,9 +875,8 @@ namespace gum {
   BijectionImplementation<T1,T2,Alloc,true>::BijectionImplementation
     ( BijectionImplementation<T1,T2,Alloc,true>&& toCopy ) noexcept :
     __firstToSecond ( std::move ( toCopy.__firstToSecond ) ),
-    __secondToFirst ( std::move ( toCopy.__secondToFirst.capacity ) ) {
-    GUM_CONS_CPY( BijectionImplementation );
-    __copy( toCopy.__firstToSecond );
+    __secondToFirst ( std::move ( toCopy.__secondToFirst ) ) {
+    GUM_CONS_MOV( BijectionImplementation );
   }
 
 
@@ -1245,7 +1244,7 @@ namespace gum {
   Bijection<T1,T2,Alloc>::Bijection( Bijection<T1,T2,Alloc>&& from ) noexcept :
   BijectionImplementation<T1,T2,Alloc,
                           std::is_scalar<T1>::value &&
-                          std::is_scalar<T2>::value> ( std::move ( from) ) {
+                          std::is_scalar<T2>::value> ( std::move ( from ) ) {
     GUM_CONS_MOV ( Bijection );
   }
 

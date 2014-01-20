@@ -92,301 +92,6 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 
-  
-
-
-
-  /* =========================================================================== */
-  /* ===                      BIJECTION SAFE ITERATORS                       === */
-  /* =========================================================================== */
-  /** @class BijectionIteratorSafe
-   * @brief Safe iterators for bijection
-   * @ingroup basicstruct_group
-   */
-  template <typename T1, typename T2>
-  class BijectionIteratorSafe {
-
-    template <typename TT1, typename TT2, typename Alloc, bool>
-    friend class BijectionImplementation;
-
-  public:
-
-    /// types for STL compliance
-    /// @{
-    using iterator_category     = std::forward_iterator_tag;
-    using type1_type            = T1;
-    using type1_reference       = T1&;
-    using type1_const_reference = const T1&;
-    using type1_pointer         = T1*;
-    using type1_const_pointer   = const T1*;    
-    using type2_type            = T2;
-    using type2_reference       = T2&;
-    using type2_const_reference = const T2&;
-    using type2_pointer         = T2*;
-    using type2_const_pointer   = const T2*;
-    using difference_type       = std::ptrdiff_t;
-    /// @}
-
-
-  private:
-
-    // dummy classes that will enable discriminate without overhead between
-    // scalars and non-scalars functions second in iterators
-    using Getter = BijectionIteratorGet<std::is_scalar<T1>::value &&
-                                        std::is_scalar<T2>::value>;
-
-  
-    /// begin constructor
-    /** By default, the iterator points to the starting point of the bijection */
-    template <typename Alloc, bool Gen>
-    BijectionIteratorSafe
-    ( const BijectionImplementation<T1,T2,Alloc,Gen>& bijection );
-
-
-  public:
-    // ############################################################################
-    /// @name Constructors/destructors
-    // ############################################################################
-    /// @{
-
-    /// Default constructor
-    BijectionIteratorSafe() noexcept;
-
-    /// Default constructor
-    template <typename Alloc>
-    BijectionIteratorSafe( const Bijection<T1,T2,Alloc>& bijection );
-
-    /// Copy constructor
-    BijectionIteratorSafe( const BijectionIteratorSafe<T1,T2>& from );
-
-    /// move constructor
-    BijectionIteratorSafe( BijectionIteratorSafe<T1,T2>&& from ) noexcept;
-
-    /// Destructor
-    ~BijectionIteratorSafe () noexcept;
-
-    /// @}
-
-
-    // ############################################################################
-    /// @name Operators
-    // ############################################################################
-    /// @{
-
-    /// Copy operator
-    BijectionIteratorSafe<T1,T2>&
-    operator=( const BijectionIteratorSafe<T1,T2>& toCopy );
-
-    /// move operator
-    BijectionIteratorSafe<T1,T2>&
-    operator=( BijectionIteratorSafe<T1,T2>&& toCopy ) noexcept;
-
-    /// Go to the next association (if it exists)
-    /** @warning if the iterator points to end(), nothing is done */
-    BijectionIteratorSafe<T1,T2>& operator++() noexcept;
-
-    /// moves the iterator by nb elements 
-    /** @warning if the iterator points to end(), nothing is done. If there are
-     * nb or fewer elements to parse to reach the end of the bijection, then
-     * this method makes the iterator point to end () */
-    BijectionIteratorSafe<T1,T2>& operator+=( unsigned int nb ) noexcept;
-
-    /// returns a new iterator
-    /** @warning if the iterator points to end(), the resulting iterator also
-     * points to end (). If there are nb or fewer elements to parse to reach the
-     * end of the bijection, then the resulting iterator points to end () */
-    BijectionIteratorSafe<T1,T2> operator+ ( unsigned int nb ) noexcept;
-    
-    /// Comparison of iterators
-    bool operator!=
-    ( const BijectionIteratorSafe<T1,T2>& toCompare ) const noexcept;
-
-    /// Comparison of iterators
-    bool operator==
-    ( const BijectionIteratorSafe<T1,T2>& toCompare ) const noexcept;
-
-    /// @}
-
-
-    // ############################################################################
-    /// @name Accessors/Modifiers
-    // ############################################################################
-    /// @{
-
-    /// returns the first element of the current association
-    /** @throws UndefinedIteratorValue exception is thrown when the iterator does
-     * not point to a valid element of the bijection */
-    const T1& first() const;
-
-    /// returns the second element of the current association
-    /** @throws UndefinedIteratorValue exception is thrown when the iterator does
-     * not point to a valid element of the bijection */
-    const T2& second() const;
-
-    /// @}
-
-
-  private:
-    using HashTable12 =
-      typename std::conditional<std::is_scalar<T1>::value &&
-                                std::is_scalar<T2>::value,
-                                HashTable< T1,T2, std::allocator<T2> >,
-                                HashTable< T1,T2*,std::allocator<T2*> > >::type;
-    using HashIter = typename HashTable12::const_iterator_safe;
-
-    /// the hashTable iterator that actually does all the job
-    HashIter __iter;
-    
-  };
-
-
-
-
-
-  /* =========================================================================== */
-  /* ===                     BIJECTION UNSAFE ITERATORS                      === */
-  /* =========================================================================== */
-  /** @class BijectionIterator
-   * @brief Unsafe iterators for bijection
-   * @ingroup basicstruct_group
-   */
-  template <typename T1, typename T2>
-  class BijectionIterator {
-
-    template <typename TT1, typename TT2, typename Alloc, bool>
-    friend class BijectionImplementation;
-
-  public:
-
-    /// types for STL compliance
-    /// @{
-    using iterator_category     = std::forward_iterator_tag;
-    using type1_type            = T1;
-    using type1_reference       = T1&;
-    using type1_const_reference = const T1&;
-    using type1_pointer         = T1*;
-    using type1_const_pointer   = const T1*;    
-    using type2_type            = T2;
-    using type2_reference       = T2&;
-    using type2_const_reference = const T2&;
-    using type2_pointer         = T2*;
-    using type2_const_pointer   = const T2*;
-    using difference_type       = std::ptrdiff_t;
-    /// @}
-
-
-  private:
-
-    // dummy classes that will enable discriminate without overhead between
-    // scalars and non-scalars functions second in iterators
-    using Getter = BijectionIteratorGet<std::is_scalar<T1>::value &&
-                                        std::is_scalar<T2>::value>;
-
-  
-    /// begin constructor
-    /** By default, the iterator points to the starting point of the bijection */
-    template <typename Alloc, bool Gen>
-    BijectionIterator
-    ( const BijectionImplementation<T1,T2,Alloc,Gen>& bijection );
-
-
-  public:
-    // ############################################################################
-    /// @name Constructors/destructors
-    // ############################################################################
-    /// @{
-
-    /// Default constructor
-    BijectionIterator() noexcept;
-
-    /// Default constructor
-    template <typename Alloc>
-    BijectionIterator( const Bijection<T1,T2,Alloc>& bijection );
-
-    /// Copy constructor
-    BijectionIterator( const BijectionIterator<T1,T2>& from );
-
-    /// move constructor
-    BijectionIterator( BijectionIterator<T1,T2>&& from ) noexcept;
-
-    /// Destructor
-    ~BijectionIterator () noexcept;
-
-    /// @}
-
-
-    // ############################################################################
-    /// @name Operators
-    // ############################################################################
-    /// @{
-
-    /// Copy operator
-    BijectionIterator<T1,T2>&
-    operator=( const BijectionIterator<T1,T2>& toCopy );
-
-    /// move operator
-    BijectionIterator<T1,T2>&
-    operator=( BijectionIterator<T1,T2>&& toCopy ) noexcept;
-
-    /// Go to the next association (if it exists)
-    /** @warning if the iterator points to end(), nothing is done */
-    BijectionIterator<T1,T2>& operator++() noexcept;
-
-    /// moves the iterator by nb elements 
-    /** @warning if the iterator points to end(), nothing is done. If there are
-     * nb or fewer elements to parse to reach the end of the bijection, then
-     * this method makes the iterator point to end () */
-    BijectionIterator<T1,T2>& operator+=( unsigned int nb ) noexcept;
-
-    /// returns a new iterator
-    /** @warning if the iterator points to end(), the resulting iterator also
-     * points to end (). If there are nb or fewer elements to parse to reach the
-     * end of the bijection, then the resulting iterator points to end () */
-    BijectionIterator<T1,T2> operator+ ( unsigned int nb ) noexcept;
-    
-    /// Comparison of iterators
-    bool operator!=
-    ( const BijectionIterator<T1,T2>& toCompare ) const noexcept;
-
-    /// Comparison of iterators
-    bool operator==
-    ( const BijectionIterator<T1,T2>& toCompare ) const noexcept;
-
-    /// @}
-
-
-    // ############################################################################
-    /// @name Accessors/Modifiers
-    // ############################################################################
-    /// @{
-
-    /// returns the first element of the current association
-    /** @throws UndefinedIteratorValue exception is thrown when the iterator does
-     * not point to a valid element of the bijection */
-    const T1& first() const;
-
-    /// returns the second element of the current association
-    /** @throws UndefinedIteratorValue exception is thrown when the iterator does
-     * not point to a valid element of the bijection */
-    const T2& second() const;
-
-    /// @}
-
-
-  private:
-    using HashTable12 =
-      typename std::conditional<std::is_scalar<T1>::value &&
-                                std::is_scalar<T2>::value,
-                                HashTable< T1,T2, std::allocator<T2> >,
-                                HashTable< T1,T2*,std::allocator<T2*> > >::type;
-    using HashIter = typename HashTable12::const_iterator;
-
-    /// the hashTable iterator that actually does all the job
-    HashIter __iter;
-    
-  };
-
-  
 
 
 
@@ -420,12 +125,15 @@ namespace gum {
     using size_type             = std::size_t;
     using difference_type       = std::ptrdiff_t;
     using allocator_type        = Alloc;
-    using allocator1_type       = typename Alloc::template rebind<T1*>::other;
-    using allocator2_type       = typename Alloc::template rebind<T2*>::other;
     using iterator              = BijectionIterator<T1,T2>;
     using const_iterator        = BijectionIterator<T1,T2>;
     using iterator_safe         = BijectionIteratorSafe<T1,T2>;
     using const_iterator_safe   = BijectionIteratorSafe<T1,T2>;
+
+    using allocator12_type =
+      typename Alloc::template rebind< std::pair<T1,T2*> >::other;
+    using allocator21_type =
+      typename Alloc::template rebind< std::pair<T2,T1*> >::other;
     /// @}
 
     
@@ -764,12 +472,15 @@ namespace gum {
 
 
   private:
-    using HashTable12 = HashTable<T1,T2*,allocator2_type>;
-    using HashTable21 = HashTable<T2,T1*,allocator1_type>;
+    using HashTable12 = HashTable<T1,T2*,allocator12_type>;
+    using HashTable21 = HashTable<T2,T1*,allocator21_type>;
     
     /// a friend to speed-up accesses
     friend class BijectionIteratorSafe<T1,T2>;
+    friend class BijectionIterator<T1,T2>;
     friend class Bijection<T1,T2,Alloc>;
+    template <typename TT1, typename TT2, typename A, bool>
+    friend class BijectionImplementation;
  
     // below, we create the two hashtables used by the bijection. Note that
     // the values of these hashtables are actually pointers. This enables to
@@ -835,12 +546,15 @@ namespace gum {
     using size_type             = std::size_t;
     using difference_type       = std::ptrdiff_t;
     using allocator_type        = Alloc;
-    using allocator1_type       = typename Alloc::template rebind<T1>::other;
-    using allocator2_type       = Alloc;
     using iterator              = BijectionIterator<T1,T2>;
     using const_iterator        = BijectionIterator<T1,T2>;
     using iterator_safe         = BijectionIteratorSafe<T1,T2>;
     using const_iterator_safe   = BijectionIteratorSafe<T1,T2>;
+
+    using allocator12_type =
+      typename Alloc::template rebind<std::pair<T1,T2> >::other;
+    using allocator21_type =
+      typename Alloc::template rebind<std::pair<T2,T1> >::other;
     /// @}
 
 
@@ -1172,13 +886,16 @@ namespace gum {
 
 
   private:
-    using HashTable12 = HashTable<T1,T2,allocator2_type>;
-    using HashTable21 = HashTable<T2,T1,allocator1_type>;
+    using HashTable12 = HashTable<T1,T2,allocator12_type>;
+    using HashTable21 = HashTable<T2,T1,allocator21_type>;
 
     /// a friend to speed-up accesses
     friend class BijectionIteratorSafe<T1,T2>;
+    friend class BijectionIterator<T1,T2>;
     friend class Bijection<T1,T2,Alloc>;
-
+    template <typename TT1, typename TT2, typename A, bool>
+    friend class BijectionImplementation;
+    
     /// hashtable associating T2 scalars to T1 scalars
     HashTable12 __firstToSecond;
 
@@ -1223,10 +940,13 @@ namespace gum {
     using size_type             = std::size_t;
     using difference_type       = std::ptrdiff_t;
     using allocator_type        = Alloc;
+    using iterator              = BijectionIterator<T1,T2>;
+    using const_iterator        = BijectionIterator<T1,T2>;
+    using iterator_safe         = BijectionIteratorSafe<T1,T2>;
+    using const_iterator_safe   = BijectionIteratorSafe<T1,T2>;
+
     using allocator1_type       = typename Alloc::template rebind<T1*>::other;
     using allocator2_type       = typename Alloc::template rebind<T2*>::other;
-    using iterator              = BijectionIteratorSafe<T1,T2>;
-    using const_iterator        = BijectionIteratorSafe<T1,T2>;
     /// @}
 
     using Implementation =
@@ -1284,6 +1004,305 @@ namespace gum {
     /// @}
  
   };
+
+
+
+
+
+
+
+  /* =========================================================================== */
+  /* ===                      BIJECTION SAFE ITERATORS                       === */
+  /* =========================================================================== */
+  /** @class BijectionIteratorSafe
+   * @brief Safe iterators for bijection
+   * @ingroup basicstruct_group
+   */
+  template <typename T1, typename T2>
+  class BijectionIteratorSafe {
+
+    template <typename TT1, typename TT2, typename Alloc, bool>
+    friend class BijectionImplementation;
+
+  public:
+
+    /// types for STL compliance
+    /// @{
+    using iterator_category     = std::forward_iterator_tag;
+    using type1_type            = T1;
+    using type1_reference       = T1&;
+    using type1_const_reference = const T1&;
+    using type1_pointer         = T1*;
+    using type1_const_pointer   = const T1*;    
+    using type2_type            = T2;
+    using type2_reference       = T2&;
+    using type2_const_reference = const T2&;
+    using type2_pointer         = T2*;
+    using type2_const_pointer   = const T2*;
+    using difference_type       = std::ptrdiff_t;
+    /// @}
+
+
+  private:
+
+    // dummy classes that will enable discriminate without overhead between
+    // scalars and non-scalars functions second in iterators
+    using Getter = BijectionIteratorGet<std::is_scalar<T1>::value &&
+                                        std::is_scalar<T2>::value>;
+
+  
+    /// begin constructor
+    /** By default, the iterator points to the starting point of the bijection */
+    template <typename Alloc, bool Gen>
+    BijectionIteratorSafe
+    ( const BijectionImplementation<T1,T2,Alloc,Gen>& bijection );
+
+
+  public:
+    // ############################################################################
+    /// @name Constructors/destructors
+    // ############################################################################
+    /// @{
+
+    /// Default constructor
+    BijectionIteratorSafe() noexcept;
+
+    /// Default constructor
+    template <typename Alloc>
+    BijectionIteratorSafe( const Bijection<T1,T2,Alloc>& bijection );
+
+    /// Copy constructor
+    BijectionIteratorSafe( const BijectionIteratorSafe<T1,T2>& from );
+
+    /// move constructor
+    BijectionIteratorSafe( BijectionIteratorSafe<T1,T2>&& from ) noexcept;
+
+    /// Destructor
+    ~BijectionIteratorSafe () noexcept;
+
+    /// @}
+
+
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
+
+    /// Copy operator
+    BijectionIteratorSafe<T1,T2>&
+    operator=( const BijectionIteratorSafe<T1,T2>& toCopy );
+
+    /// move operator
+    BijectionIteratorSafe<T1,T2>&
+    operator=( BijectionIteratorSafe<T1,T2>&& toCopy ) noexcept;
+
+    /// Go to the next association (if it exists)
+    /** @warning if the iterator points to end(), nothing is done */
+    BijectionIteratorSafe<T1,T2>& operator++() noexcept;
+
+    /// moves the iterator by nb elements 
+    /** @warning if the iterator points to end(), nothing is done. If there are
+     * nb or fewer elements to parse to reach the end of the bijection, then
+     * this method makes the iterator point to end () */
+    BijectionIteratorSafe<T1,T2>& operator+=( unsigned int nb ) noexcept;
+
+    /// returns a new iterator
+    /** @warning if the iterator points to end(), the resulting iterator also
+     * points to end (). If there are nb or fewer elements to parse to reach the
+     * end of the bijection, then the resulting iterator points to end () */
+    BijectionIteratorSafe<T1,T2> operator+ ( unsigned int nb ) noexcept;
+    
+    /// Comparison of iterators
+    bool operator!=
+    ( const BijectionIteratorSafe<T1,T2>& toCompare ) const noexcept;
+
+    /// Comparison of iterators
+    bool operator==
+    ( const BijectionIteratorSafe<T1,T2>& toCompare ) const noexcept;
+
+    /// @}
+
+
+    // ############################################################################
+    /// @name Accessors/Modifiers
+    // ############################################################################
+    /// @{
+
+    /// returns the first element of the current association
+    /** @throws UndefinedIteratorValue exception is thrown when the iterator does
+     * not point to a valid element of the bijection */
+    const T1& first() const;
+
+    /// returns the second element of the current association
+    /** @throws UndefinedIteratorValue exception is thrown when the iterator does
+     * not point to a valid element of the bijection */
+    const T2& second() const;
+
+    /// @}
+
+
+  private:
+    using HashTable12 = typename
+      std::conditional<std::is_scalar<T1>::value && std::is_scalar<T2>::value,
+        HashTable<T1,T2, std::allocator<std::pair<T1,T2> > >,
+        HashTable<T1,T2*,std::allocator<std::pair<T1,T2*> > > >::type;
+    using HashIter = typename HashTable12::const_iterator_safe;
+
+    /// the hashTable iterator that actually does all the job
+    HashIter __iter;
+    
+  };
+
+
+
+
+
+  /* =========================================================================== */
+  /* ===                     BIJECTION UNSAFE ITERATORS                      === */
+  /* =========================================================================== */
+  /** @class BijectionIterator
+   * @brief Unsafe iterators for bijection
+   * @ingroup basicstruct_group
+   */
+  template <typename T1, typename T2>
+  class BijectionIterator {
+
+    template <typename TT1, typename TT2, typename Alloc, bool>
+    friend class BijectionImplementation;
+
+  public:
+
+    /// types for STL compliance
+    /// @{
+    using iterator_category     = std::forward_iterator_tag;
+    using type1_type            = T1;
+    using type1_reference       = T1&;
+    using type1_const_reference = const T1&;
+    using type1_pointer         = T1*;
+    using type1_const_pointer   = const T1*;    
+    using type2_type            = T2;
+    using type2_reference       = T2&;
+    using type2_const_reference = const T2&;
+    using type2_pointer         = T2*;
+    using type2_const_pointer   = const T2*;
+    using difference_type       = std::ptrdiff_t;
+    /// @}
+
+
+  private:
+
+    // dummy classes that will enable discriminate without overhead between
+    // scalars and non-scalars functions second in iterators
+    using Getter = BijectionIteratorGet<std::is_scalar<T1>::value &&
+                                        std::is_scalar<T2>::value>;
+
+  
+    /// begin constructor
+    /** By default, the iterator points to the starting point of the bijection */
+    template <typename Alloc, bool Gen>
+    BijectionIterator
+    ( const BijectionImplementation<T1,T2,Alloc,Gen>& bijection );
+
+
+  public:
+    // ############################################################################
+    /// @name Constructors/destructors
+    // ############################################################################
+    /// @{
+
+    /// Default constructor
+    BijectionIterator() noexcept;
+
+    /// Default constructor
+    template <typename Alloc>
+    BijectionIterator( const Bijection<T1,T2,Alloc>& bijection );
+
+    /// Copy constructor
+    BijectionIterator( const BijectionIterator<T1,T2>& from );
+
+    /// move constructor
+    BijectionIterator( BijectionIterator<T1,T2>&& from ) noexcept;
+
+    /// Destructor
+    ~BijectionIterator () noexcept;
+
+    /// @}
+
+
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
+
+    /// Copy operator
+    BijectionIterator<T1,T2>&
+    operator=( const BijectionIterator<T1,T2>& toCopy );
+
+    /// move operator
+    BijectionIterator<T1,T2>&
+    operator=( BijectionIterator<T1,T2>&& toCopy ) noexcept;
+
+    /// Go to the next association (if it exists)
+    /** @warning if the iterator points to end(), nothing is done */
+    BijectionIterator<T1,T2>& operator++() noexcept;
+
+    /// moves the iterator by nb elements 
+    /** @warning if the iterator points to end(), nothing is done. If there are
+     * nb or fewer elements to parse to reach the end of the bijection, then
+     * this method makes the iterator point to end () */
+    BijectionIterator<T1,T2>& operator+=( unsigned int nb ) noexcept;
+
+    /// returns a new iterator
+    /** @warning if the iterator points to end(), the resulting iterator also
+     * points to end (). If there are nb or fewer elements to parse to reach the
+     * end of the bijection, then the resulting iterator points to end () */
+    BijectionIterator<T1,T2> operator+ ( unsigned int nb ) noexcept;
+    
+    /// Comparison of iterators
+    bool operator!=
+    ( const BijectionIterator<T1,T2>& toCompare ) const noexcept;
+
+    /// Comparison of iterators
+    bool operator==
+    ( const BijectionIterator<T1,T2>& toCompare ) const noexcept;
+
+    /// @}
+
+
+    // ############################################################################
+    /// @name Accessors/Modifiers
+    // ############################################################################
+    /// @{
+
+    /// returns the first element of the current association
+    /** @throws UndefinedIteratorValue exception is thrown when the iterator does
+     * not point to a valid element of the bijection */
+    const T1& first() const;
+
+    /// returns the second element of the current association
+    /** @throws UndefinedIteratorValue exception is thrown when the iterator does
+     * not point to a valid element of the bijection */
+    const T2& second() const;
+
+    /// @}
+
+
+  private:
+    using HashTable12 = typename
+      std::conditional<std::is_scalar<T1>::value && std::is_scalar<T2>::value,
+        HashTable<T1,T2, std::allocator<std::pair<T1,T2> > >,
+        HashTable<T1,T2*,std::allocator<std::pair<T1,T2*> > > >::type;
+    using HashIter = typename HashTable12::const_iterator;
+
+    /// the hashTable iterator that actually does all the job
+    HashIter __iter;
+    
+  };
+
+  
+
+
+
 
 
   
