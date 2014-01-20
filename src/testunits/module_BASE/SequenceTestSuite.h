@@ -21,6 +21,7 @@
 #include <testsuite_utils.h>
 #include <ressources/myalloc.h>
 
+#include <string>
 #include <agrum/core/sequence.h>
 
 namespace gum_tests {
@@ -70,35 +71,39 @@ namespace gum_tests {
     }
 
     void testConstructor2() {
-      gum::Sequence<int*>* p_seq=nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING( p_seq=new gum::Sequence<int*>() );
+      gum::Sequence<std::string>* p_seq=nullptr;
+      TS_GUM_ASSERT_THROWS_NOTHING( p_seq=new gum::Sequence<std::string>() );
       TS_GUM_ASSERT_THROWS_NOTHING( if ( p_seq ) delete( p_seq ) );
 
-      int t[] = { 1, 2, 3, 4, 5 };
-      int *p1 = t, *p2 = t+1, *p3 = t+2, *p4 = t+3, *p5 = t+4;
+      std::string p[5];
+      p[0] = "aa";
+      p[1] = "bb";
+      p[2] = "cc";
+      p[3] = "dd";
+      p[4] = "ee";
       
-      gum::Sequence<int*> seq;
-      TS_GUM_ASSERT_THROWS_NOTHING( seq<<p1 );
-      TS_GUM_ASSERT_THROWS_NOTHING( seq<<p3 );
-      TS_GUM_ASSERT_THROWS_NOTHING( seq<<p5 );
-      TS_GUM_ASSERT_THROWS_NOTHING( seq<<p2 );
-      TS_GUM_ASSERT_THROWS_NOTHING( seq<<p4 );
+      gum::Sequence<std::string> seq;
+      TS_GUM_ASSERT_THROWS_NOTHING( seq<<p[0] );
+      TS_GUM_ASSERT_THROWS_NOTHING( seq<<p[2] );
+      TS_GUM_ASSERT_THROWS_NOTHING( seq<<p[4] );
+      TS_GUM_ASSERT_THROWS_NOTHING( seq<<p[1] );
+      TS_GUM_ASSERT_THROWS_NOTHING( seq<<p[3] );
 
       TS_ASSERT_EQUALS( seq.size(), ( gum::Size ) 5 );
 
       TS_ASSERT( ! seq.empty() );
 
-      gum::Sequence<int*> seq2 { p1, p2, p3 };
+      gum::Sequence<std::string> seq2 { p[0], p[1], p[2] };
       TS_ASSERT ( seq2.size () == 3 );
         
-      gum::Sequence<int*> seq3 ( seq2 );
+      gum::Sequence<std::string> seq3 ( seq2 );
       TS_ASSERT ( seq3 == seq2 );
 
-      gum::Sequence<int*> seq4 ( std::move ( seq2 ) );
+      gum::Sequence<std::string> seq4 ( std::move ( seq2 ) );
       TS_ASSERT ( seq4.size () == 3 );
 
-      gum::Sequence< int*,MyAlloc<int*> > seq5 { p2, p4 };
-      gum::Sequence<int*> seq6 ( seq5 );
+      gum::Sequence< std::string,MyAlloc<std::string> > seq5 { p[1], p[3] };
+      gum::Sequence<std::string> seq6 ( seq5 );
       TS_ASSERT ( seq5 == seq6 );
 
       seq5 = seq;
@@ -153,25 +158,30 @@ namespace gum_tests {
     }
 
     void testEquality2() {
-      gum::Sequence<int*> seq1,seq2;
-      int t[] = { 1, 2, 3, 4, 5 };
-      int *p1 = t, *p2 = t+1, *p3 = t+2, *p4 = t+3, *p5 = t+4;
-      seq1 << p1 << p2;
-      seq2 << p1 << p2;
+      std::string p[5];
+      p[0] = "aa";
+      p[1] = "bb";
+      p[2] = "cc";
+      p[3] = "dd";
+      p[4] = "ee";
+
+      gum::Sequence<std::string> seq1,seq2;
+      seq1 << p[0] << p[1];
+      seq2 << p[0] << p[1];
       TS_ASSERT_EQUALS( seq1,seq2 );
 
-      gum::Sequence<int*> seq3;
+      gum::Sequence<std::string> seq3;
       TS_ASSERT( seq1!=seq3 );
-      seq3<<p1;
+      seq3<<p[0];
       TS_ASSERT( seq1!=seq3 );
-      seq3<<p2<<p3<<p4<<p5;
+      seq3<<p[1]<<p[2]<<p[3]<<p[4];
       TS_ASSERT( seq1!=seq3 );
 
-      gum::Sequence< int*,MyAlloc<int*> > seq4;
+      gum::Sequence< std::string,MyAlloc<std::string> > seq4;
       TS_ASSERT( seq1!=seq4 );
-      seq4<<p1<<p2;
+      seq4<<p[0]<<p[1];
       TS_ASSERT( seq1==seq4 );
-      seq4<<p3<<p4<<p5;
+      seq4<<p[2]<<p[3]<<p[4];
       TS_ASSERT( seq1!=seq4 );
       
     }
@@ -308,67 +318,82 @@ namespace gum_tests {
 
 
     void testIterators3() {
-      gum::Sequence< int*,MyAlloc<int*> > seq;
-      int t[] = { 1, 2, 3, 4, 5 };
-      int *p1 = t, *p2 = t+1, *p3 = t+2, *p4 = t+3, *p5 = t+4;
+      std::string p[6];
+      p[0] = "aa";
+      p[1] = "bb";
+      p[2] = "cc";
+      p[3] = "dd";
+      p[4] = "ee";
+      p[5] = "ff";
+      
+      gum::Sequence< std::string,MyAlloc<std::string> > seq;
 
       int n = 0;
-      for ( gum::Sequence<int*>::iterator_safe it = seq.beginSafe();
+      for ( gum::Sequence<std::string>::iterator_safe it = seq.beginSafe();
             it != seq.endSafe(); ++it ) n++;
       TS_ASSERT_EQUALS( n,0 );
 
       n = 0;
-      for ( gum::Sequence<int*>::iterator_safe it = seq.rbeginSafe();
+      for ( gum::Sequence<std::string>::iterator_safe it = seq.rbeginSafe();
             it != seq.rendSafe(); --it ) n++;
       TS_ASSERT_EQUALS( n,0 );
 
-      seq << p1 << p3 << p5 << p2 << p4;
+      seq << p[1] << p[3] << p[5] << p[2] << p[4];
 
       n=0;
-      for ( gum::Sequence<int*>::iterator_safe it=seq.beginSafe();
+      std::string str;
+      for ( gum::Sequence<std::string>::iterator_safe it=seq.beginSafe();
             it!=seq.endSafe(); ++it ) {
-        n*=10; n+=**it;
+        str += *it;
       }
-      TS_ASSERT_EQUALS( n,13524 );
+      TS_ASSERT ( str == "bbddffccee" );
 
-      n=0;
-      for ( gum::Sequence<int*>::iterator_safe it=seq.rbeginSafe();
+      str = "";
+      for ( gum::Sequence<std::string>::iterator_safe it=seq.rbeginSafe();
             it!=seq.rendSafe(); --it ) {
-        n*=10; n+=**it;
+        str += *it;
       }
-      TS_ASSERT_EQUALS( n,42531 );
+      TS_ASSERT ( str == "eeccffddbb" );
     }
 
-   void testIterators4() {
-      gum::Sequence< int*,MyAlloc<int*> > seq;
-      int t[] = { 1, 2, 3, 4, 5 };
-      int *p1 = t, *p2 = t+1, *p3 = t+2, *p4 = t+3, *p5 = t+4;
+    
+    void testIterators4() {
+      std::string p[6];
+      p[0] = "aa";
+      p[1] = "bb";
+      p[2] = "cc";
+      p[3] = "dd";
+      p[4] = "ee";
+      p[5] = "ff";
+      
+      gum::Sequence< std::string,MyAlloc<std::string> > seq;
 
       int n = 0;
-      for ( gum::Sequence<int*>::iterator it = seq.begin();
+      for ( gum::Sequence<std::string>::iterator it = seq.begin();
             it != seq.end(); ++it ) n++;
       TS_ASSERT_EQUALS( n,0 );
 
       n = 0;
-      for ( gum::Sequence<int*>::iterator it = seq.rbegin();
+      for ( gum::Sequence<std::string>::iterator it = seq.rbegin();
             it != seq.rend(); --it ) n++;
       TS_ASSERT_EQUALS( n,0 );
 
-      seq << p1 << p3 << p5 << p2 << p4;
+      seq << p[1] << p[3] << p[5] << p[2] << p[4];
 
       n=0;
-      for ( gum::Sequence<int*>::iterator it=seq.begin();
+      std::string str;
+      for ( gum::Sequence<std::string>::iterator it=seq.begin();
             it!=seq.end(); ++it ) {
-        n*=10; n+=**it;
+        str += *it;
       }
-      TS_ASSERT_EQUALS( n,13524 );
+      TS_ASSERT ( str == "bbddffccee" );
 
-      n=0;
-      for ( gum::Sequence<int*>::iterator it=seq.rbegin();
+      str = "";
+      for ( gum::Sequence<std::string>::iterator it=seq.rbegin();
             it!=seq.rend(); --it ) {
-        n*=10; n+=**it;
+        str += *it;
       }
-      TS_ASSERT_EQUALS( n,42531 );
+      TS_ASSERT ( str == "eeccffddbb" );
     }
 
     void testInsert1 () {
@@ -393,22 +418,21 @@ namespace gum_tests {
     }
 
     void testInsert2 () {
-      gum::Sequence< int*,MyAlloc<int*> > seq;
-      int x = 1, y = 2;
-      int *p2 = &y;
+      gum::Sequence< std::string,MyAlloc<std::string> > seq;
+      std::string x = "1";
       
-      seq.insert ( &x );
+      seq.insert ( x );
       TS_ASSERT ( seq.size () == 1 );
-      seq.insert ( p2 );
+      seq.insert ( "2" );
       TS_ASSERT ( seq.size () == 2 );
 
       seq.clear ();
-      seq << &x;
+      seq << x;
       TS_ASSERT ( seq.size () == 1 );
-      seq << p2;
+      seq << "2";
       TS_ASSERT ( seq.size () == 2 );
 
-      seq.erase ( &x );
+      seq.erase ( x );
       TS_ASSERT ( seq.size () == 1 );
       seq.erase ( seq.beginSafe () );
       TS_ASSERT ( seq.size () == 0 );
@@ -431,21 +455,27 @@ namespace gum_tests {
     }
  
     void testNewIterOp2 () {
-      gum::Sequence< int*, MyAlloc<int*> > seq;
-      int t[] = { 1, 2, 3, 4, 5 };
-      int *p1 = t, *p2 = t+1, *p3 = t+2, *p4 = t+3, *p5 = t+4;
-      seq << p1 << p2 << p3 << p4 << p5;
-      gum::SequenceIteratorSafe<int*> iter = seq.beginSafe ();
-      TS_ASSERT ( **iter == 1 );
+      std::string p[6];
+      p[0] = "aa";
+      p[1] = "bb";
+      p[2] = "cc";
+      p[3] = "dd";
+      p[4] = "ee";
+      p[5] = "ff";
+
+      gum::Sequence< std::string, MyAlloc<std::string> > seq;
+      seq << p[1] << p[2] << p[3] << p[4] << p[5];
+      gum::SequenceIteratorSafe<std::string> iter = seq.beginSafe ();
+      TS_ASSERT ( *iter == p[1] );
       ++iter;
-      TS_ASSERT ( **iter == 2 );
+      TS_ASSERT ( *iter == p[2] );
       iter += 2;
-      TS_ASSERT ( **iter == 4 );
+      TS_ASSERT ( *iter == p[4] );
       iter -= 3;
-      TS_ASSERT ( **iter == 1 );
+      TS_ASSERT ( *iter == p[1] );
       iter += 3;
-      TS_ASSERT ( **( iter - 2) == 2 );
-      TS_ASSERT ( **( iter + 1) == 5 );
+      TS_ASSERT ( *( iter - 2) == p[2] );
+      TS_ASSERT ( *( iter + 1) == p[5] );
     }
 
 
@@ -466,21 +496,27 @@ namespace gum_tests {
     }
  
     void testNewIterOp4 () {
-      gum::Sequence< int*, MyAlloc<int*> > seq;
-      int t[] = { 1, 2, 3, 4, 5 };
-      int *p1 = t, *p2 = t+1, *p3 = t+2, *p4 = t+3, *p5 = t+4;
-      seq << p1 << p2 << p3 << p4 << p5;
-      gum::SequenceIterator<int*> iter = seq.begin ();
-      TS_ASSERT ( **iter == 1 );
+      std::string p[6];
+      p[0] = "aa";
+      p[1] = "bb";
+      p[2] = "cc";
+      p[3] = "dd";
+      p[4] = "ee";
+      p[5] = "ff";
+
+      gum::Sequence< std::string, MyAlloc<std::string> > seq;
+      seq << p[1] << p[2] << p[3] << p[4] << p[5];
+      gum::SequenceIterator<std::string> iter = seq.begin ();
+      TS_ASSERT ( *iter == p[1] );
       ++iter;
-      TS_ASSERT ( **iter == 2 );
+      TS_ASSERT ( *iter == p[2] );
       iter += 2;
-      TS_ASSERT ( **iter == 4 );
+      TS_ASSERT ( *iter == p[4] );
       iter -= 3;
-      TS_ASSERT ( **iter == 1 );
+      TS_ASSERT ( *iter == p[1] );
       iter += 3;
-      TS_ASSERT ( **( iter - 2) == 2 );
-      TS_ASSERT ( **( iter + 1) == 5 );
+      TS_ASSERT ( *( iter - 2) == p[2] );
+      TS_ASSERT ( *( iter + 1) == p[5] );
     }
     
     void testIdxSeq() {

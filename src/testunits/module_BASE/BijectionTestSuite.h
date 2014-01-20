@@ -23,6 +23,7 @@
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
+#include <ressources/myalloc.h>
 
 #include <agrum/core/bijection.h>
 #include <agrum/variables/labelizedVariable.h>
@@ -33,8 +34,8 @@ namespace gum_tests {
   class BijectionTestSuite: public CxxTest::TestSuite {
     public:
 
-      void test_constructors() {
-        gum::Bijection<int, int> bijection;
+      void test_constructors1() {
+        gum::Bijection<int,int> bijection;
 
         TS_GUM_ASSERT_THROWS_NOTHING( bijection.insert( 1, 2 ) );
         TS_GUM_ASSERT_THROWS_NOTHING( bijection.insert( 3, 4 ) );
@@ -44,8 +45,11 @@ namespace gum_tests {
         TS_ASSERT_THROWS( bijection.insert( 5, 7 ), gum::DuplicateElement );
         TS_ASSERT_THROWS( bijection.insert( 7, 6 ), gum::DuplicateElement );
 
-        gum::Bijection<int, int> bijection2 = bijection;
+        gum::Bijection<int,int> bijection2 ( bijection );
         TS_ASSERT( bijection2.size() == 3 );
+
+        gum::Bijection< int,int,MyAlloc<int> > bij_bis ( bijection );
+        TS_ASSERT( bij_bis.size() == 3 );
 
         gum::Bijection<int, int>* bijection3 = new gum::Bijection<int, int>;
         bijection3->insert( 1, 2 );
@@ -58,6 +62,14 @@ namespace gum_tests {
         TS_ASSERT( bijection4.first( 3 ) == 3 );
         TS_ASSERT( bijection4.second( 1 ) == 2 );
         TS_ASSERT( bijection4.second( 3 ) == 3 );
+
+        gum::Bijection< int,int,MyAlloc<int> > bij_ter ( std::move ( bij_bis ) );
+        TS_ASSERT( bij_ter.size() == 3 );
+
+        gum::Bijection<int, int> bij5 {
+          std::pair<int,int> (3,4),
+          std::pair<int,int> (5,6) }; 
+        TS_ASSERT( bij5.size() == 2 );
       }
 
       void testAccess() {

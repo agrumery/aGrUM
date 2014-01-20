@@ -394,6 +394,18 @@ namespace gum {
     GUM_CONS_CPY( BijectionImplementation );
     __copy( toCopy.__firstToSecond );
   }
+  
+
+  /// Generalized copy constructor
+  template <typename T1, typename T2, typename Alloc, bool Gen>
+  template <typename OtherAlloc> INLINE
+  BijectionImplementation<T1,T2,Alloc,Gen>::BijectionImplementation
+  ( const BijectionImplementation<T1,T2,OtherAlloc,Gen>& toCopy ) :
+    __firstToSecond ( toCopy.__firstToSecond.capacity (), true, false ),
+    __secondToFirst ( toCopy.__secondToFirst.capacity (), true, false ) {
+    GUM_CONS_CPY( BijectionImplementation );
+    __copy( toCopy.__firstToSecond );
+  }
 
 
   /// move constructor

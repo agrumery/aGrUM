@@ -442,6 +442,11 @@ namespace gum {
     /** @param toCopy Bijection to copy */
     BijectionImplementation
     ( const BijectionImplementation<T1,T2,Alloc,Gen>& toCopy );
+
+    /// generalized copy constructor
+    template <typename OtherAlloc>
+    BijectionImplementation
+    ( const BijectionImplementation<T1,T2,OtherAlloc,Gen>& toCopy );
     
     /// move constructor
     BijectionImplementation
