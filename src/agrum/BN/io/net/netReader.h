@@ -100,16 +100,16 @@ namespace gum {
       std::string errMsg ( unsigned int i );
 
       /// send on std::cerr the list of errorswith contents
-      void showElegantErrors();
+      void showElegantErrors(std::ostream& o=std::cerr);
 
       /// send on std::cerr the list of errors or warnings with contents
-      void showElegantErrorsAndWarnings();
+      void showElegantErrorsAndWarnings(std::ostream& o=std::cerr);
 
       /// send on std::cerr the list of errors or warnings
-      void showErrorsAndWarnings();
+      void showErrorsAndWarnings(std::ostream& o=std::cerr);
 
       /// send on std::cerr the number of errors and the number of warnings
-      void showErrorCounts();
+      void showErrorCounts(std::ostream& o=std::cerr);
       /// @}
 
 

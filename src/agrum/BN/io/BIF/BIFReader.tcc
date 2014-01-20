@@ -144,24 +144,24 @@ namespace gum {
   }
 
   template<typename GUM_SCALAR> INLINE
-  void BIFReader<GUM_SCALAR>::showElegantErrors() {
-    if ( __parseDone ) __parser->errors().showElegantErrors();
+  void BIFReader<GUM_SCALAR>::showElegantErrors ( std::ostream& o ) {
+    if ( __parseDone ) __parser->errors().elegantErrors ( o );
     else {
       GUM_ERROR ( OperationNotAllowed, "BIF file not parsed yet" );
     }
   }
 
   template<typename GUM_SCALAR> INLINE
-  void BIFReader<GUM_SCALAR>::showElegantErrorsAndWarnings() {
-    if ( __parseDone ) __parser->errors().showElegantErrorsAndWarnings();
+  void BIFReader<GUM_SCALAR>::showElegantErrorsAndWarnings ( std::ostream& o ) {
+    if ( __parseDone ) __parser->errors().elegantErrorsAndWarnings ( o );
     else {
       GUM_ERROR ( OperationNotAllowed, "BIF file not parsed yet" );
     }
   }
 
   template<typename GUM_SCALAR> INLINE
-  void BIFReader<GUM_SCALAR>::showErrorCounts() {
-    if ( __parseDone ) __parser->errors().showSyntheticResults();
+  void BIFReader<GUM_SCALAR>::showErrorCounts ( std::ostream& o ) {
+    if ( __parseDone ) __parser->errors().syntheticResults ( o );
     else {
       GUM_ERROR ( OperationNotAllowed, "BIF file not parsed yet" );
     }

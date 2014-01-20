@@ -146,45 +146,45 @@ namespace gum {
     return *this;
   }
 
-  void ErrorsContainer::showErrors() const {
+  void ErrorsContainer::simpleErrors ( std::ostream& o ) const {
     if ( count() == 0 )
       return;
 
     for ( int i = 0 ; i < count() ; i++ ) {
       if ( error ( i ).is_error )
-        std::cerr << error ( i ).toString() << std::endl;
+        o << error ( i ).toString() << std::endl;
     }
   }
 
 
-  void ErrorsContainer::showErrorsAndWarnings() const {
+  void ErrorsContainer::simpleErrorsAndWarnings ( std::ostream& o ) const {
     if ( count() == 0 )
       return;
 
     for ( int i = 0 ; i < count() ; i++ )
-      std::cerr << error ( i ).toString() << std::endl;
+      o << error ( i ).toString() << std::endl;
   }
 
 
-  void ErrorsContainer::showElegantErrors() const {
+  void ErrorsContainer::elegantErrors ( std::ostream& o ) const {
     if ( count() == 0 )
       return;
 
     for ( int i = 0 ; i < count() ; i++ ) {
       if ( error ( i ).is_error ) {
-        std::cerr << error ( i ).toElegantString();
-        std::cerr << std::endl;
+        o << error ( i ).toElegantString();
+        o << std::endl;
       }
     }
   }
 
-  void ErrorsContainer::showElegantErrorsAndWarnings() const {
+  void ErrorsContainer::elegantErrorsAndWarnings ( std::ostream& o ) const {
     if ( count() == 0 )
       return;
 
     for ( int i = 0 ; i < count() ; i++ ) {
-      std::cerr << error ( i ).toElegantString();
-      std::cerr << std::endl;
+      o << error ( i ).toElegantString();
+      o << std::endl;
     }
   }
 

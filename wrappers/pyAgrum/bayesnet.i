@@ -80,7 +80,9 @@
 
     bool loadBIF(std::string name, PyObject *l=(PyObject*)0)
     {
+        std::stringstream stream;
         std::vector<PythonLoadListener> py_listener;
+
         try {
             gum::BIFReader<GUM_SCALAR> reader(self,name);
             int l_size=__fillLoadListeners(py_listener,l);
@@ -89,15 +91,16 @@
             }
 
             if (reader.proceed()>0) {
-                reader.showElegantErrorsAndWarnings();
-                reader.showErrorCounts();
-                return false;
+                reader.showElegantErrorsAndWarnings(stream);
+                reader.showErrorCounts(stream);
             } else {
                 return true;
             }
         } catch (gum::IOError& e) {
           throw(e);
         }
+
+        GUM_ERROR(gum::IOError,stream.str());
         return false;
     }
 
@@ -109,6 +112,8 @@
     bool loadDSL(std::string name, PyObject *l=(PyObject*)0)
     {
       std::vector<PythonLoadListener> py_listener;
+      std::stringstream stream;
+
         try {
             gum::DSLReader<GUM_SCALAR> reader(self,name);
             int l_size=__fillLoadListeners(py_listener,l);
@@ -117,13 +122,15 @@
             }
 
             if (reader.proceed()>0) {
-                reader.showElegantErrorsAndWarnings();
-                reader.showErrorCounts();
+                reader.showElegantErrorsAndWarnings(stream);
+                reader.showErrorCounts(stream);
                 return false;
             } else {
                 return true;
             }
         } catch (gum::IOError& e) {throw (e);}
+
+        GUM_ERROR(gum::IOError,stream.str());
         return false;
     }
 
@@ -135,6 +142,8 @@
     bool loadNET(std::string name, PyObject *l=(PyObject*)0)
     {
         std::vector<PythonLoadListener> py_listener;
+        std::stringstream stream;
+  
         try {
             gum::NetReader<GUM_SCALAR> reader(self,name);
             int l_size=__fillLoadListeners(py_listener,l);
@@ -143,13 +152,15 @@
             }
 
             if (reader.proceed()>0) {
-                reader.showElegantErrorsAndWarnings();
-                reader.showErrorCounts();
+                reader.showElegantErrorsAndWarnings(stream);
+                reader.showErrorCounts(stream);
                 return false;
             } else {
                 return true;
             }
         } catch (gum::IOError& e) {GUM_SHOWERROR(e);}
+
+        GUM_ERROR(gum::IOError,stream.str());
         return false;
     }
 

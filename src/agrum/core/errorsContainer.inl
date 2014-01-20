@@ -74,9 +74,9 @@ namespace gum {
   }
 
   INLINE
-  void ErrorsContainer::showSyntheticResults() const {
-    std::cerr << "Errors : " << error_count << std::endl;
-    std::cerr << "Warnings : " << warning_count << std::endl;
+  void ErrorsContainer::syntheticResults ( std::ostream& o ) const {
+    o << "Errors : " << error_count << std::endl;
+    o << "Warnings : " << warning_count << std::endl;
   }
 
   INLINE

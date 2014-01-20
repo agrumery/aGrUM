@@ -86,12 +86,12 @@ namespace gum {
       /// Return the number of errors and warnings
       int count ( void ) const;
 
-      /// Print errors on standard error output.
-      void showSyntheticResults() const;
-      void showErrors() const;
-      void showErrorsAndWarnings() const;
-      void showElegantErrors() const;
-      void showElegantErrorsAndWarnings() const;
+      /// Print errors on output stream.
+      void syntheticResults ( std::ostream& o ) const;
+      void simpleErrors ( std::ostream& o ) const;
+      void simpleErrorsAndWarnings ( std::ostream& o ) const;
+      void elegantErrors ( std::ostream& o ) const;
+      void elegantErrorsAndWarnings ( std::ostream& o ) const;
 
       // Use by coco/R
       void Error ( const std::wstring& filename, int line, int col, const wchar_t* msg );
