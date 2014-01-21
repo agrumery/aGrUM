@@ -52,14 +52,14 @@ namespace gum {
     template < typename GUM_SCALAR >
     class InferenceEngine : public ApproximationScheme {
       private:
-        typedef typename Property< std::vector< std::vector< GUM_SCALAR > > >::onNodes credalSet;
-        typedef typename Property< std::vector< GUM_SCALAR > >::onNodes margi;
+        typedef NodeProperty< std::vector< std::vector< GUM_SCALAR > > > credalSet;
+        typedef NodeProperty< std::vector< GUM_SCALAR > > margi;
         typedef NodeProperty< GUM_SCALAR > expe;
 
         typedef typename gum::HashTable< std::string, std::vector< GUM_SCALAR > > dynExpe;
 
-        typedef typename Property< std::vector< bool > >::onNodes query;
-        typedef typename Property< std::vector< NodeId > >::onNodes cluster;
+        typedef NodeProperty< std::vector< bool > > query;
+        typedef NodeProperty< std::vector< NodeId > > cluster;
 
       protected:
         /** @brief A pointer to the Credal Net used. */
@@ -235,13 +235,13 @@ namespace gum {
          * Get the _t0 cluster.
          * @return A constant reference to the _t0 cluster.
          */
-        const typename Property< std::vector< NodeId > >::onNodes& getT0Cluster() const;
+        const NodeProperty< std::vector< NodeId > >& getT0Cluster() const;
 
         /**
          * Get the _t1 cluster.
          * @return A constant reference to the _t1 cluster.
          */
-        const typename Property< std::vector< NodeId > >::onNodes& getT1Cluster() const;
+        const NodeProperty< std::vector< NodeId > >& getT1Cluster() const;
 
         /**
          * @param repetitive \c True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks.
@@ -308,7 +308,7 @@ namespace gum {
          * Insert evidence from Property.
          * @param evidence The on nodes Property containing likelihoods.
          */
-        void insertEvidence ( const typename Property< std::vector< GUM_SCALAR > >::onNodes& evidence );
+        void insertEvidence ( const NodeProperty< std::vector< GUM_SCALAR > >& evidence );
 
         /**
          * Insert query variables states from file.

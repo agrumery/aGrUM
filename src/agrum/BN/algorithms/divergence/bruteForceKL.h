@@ -54,12 +54,12 @@ namespace gum {
   * @endcode
   */
 
-  template<typename GUM_SCALAR> class BruteForceKL:public KL<GUM_SCALAR> {
+  template<typename GUM_SCALAR> class BruteForceKL: public KL<GUM_SCALAR> {
     public:
       /** constructor must give 2 BNs
        * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or compatible node sets.
        */
-      BruteForceKL ( const IBayesNet<GUM_SCALAR>& P,const IBayesNet<GUM_SCALAR>& Q );
+      BruteForceKL ( const IBayesNet<GUM_SCALAR>& P, const IBayesNet<GUM_SCALAR>& Q );
 
       /** copy constructor
        */

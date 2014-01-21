@@ -71,10 +71,9 @@ class TestRangeVar(VariablesTestCase):
         var2 = RangeVar("var 2", "this is var 2", 1, 4)
 
         var3 = RangeVar(var1)
-
-        self.assertEqual(var3.min(), var1.min())
-        self.assertEqual(var3.max(), var1.max())
-        self.assertNotEqual(var1.max(), var2.max())
+        self.assertEqual(var3.minVal(), var1.minVal())
+        self.assertEqual(var3.maxVal(), var1.maxVal())
+        self.assertNotEqual(var1.maxVal(), var2.maxVal())
 
 
     def testLabels(self):
@@ -82,11 +81,11 @@ class TestRangeVar(VariablesTestCase):
         self.assertEqual(len(var1), 2)
         self.assertFalse(var1.empty())
 
-        var1.setMin(1)
-        var1.setMax(0)
+        var1.setMinVal(1)
+        var1.setMaxVal(0)
         self.assertTrue(var1.empty())
 
-        var1.setMax(9)
+        var1.setMaxVal(9)
         self.assertFalse(var1.empty())
         self.assertEqual(len(var1), 9)
         self.assertTrue(var1.belongs(3))

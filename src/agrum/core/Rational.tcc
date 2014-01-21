@@ -3,11 +3,11 @@
 namespace gum {
 
   template < typename GUM_SCALAR >
-  void Rational< GUM_SCALAR >::testRationalAlgorithms( const unsigned int& iters ) {
+  void Rational< GUM_SCALAR >::testRationalAlgorithms ( const unsigned int& iters ) {
     std::cout << " TESTING RATIONAL ALGORITHMS " << std::endl;
-    std::cout.precision( 10 );
+    std::cout.precision ( 10 );
 
-    std::cout << std::setw( 10 ) << std::left << "iter" << std::setw( 20 ) << std::left << "number" << std::setw( 35 ) << std::left << "farey" << std::setw( 35 ) << std::left << "continued" << std::endl;
+    std::cout << std::setw ( 10 ) << std::left << "iter" << std::setw ( 20 ) << std::left << "number" << std::setw ( 35 ) << std::left << "farey" << std::setw ( 35 ) << std::left << "continued" << std::endl;
 
     double zero = 1e-6;
     double PRECISION = 1000000;
@@ -19,53 +19,53 @@ namespace gum {
     std::stringstream ss;
 
     for ( unsigned int i = 0; i < iters; i++ ) {
-      std::cout << std::setw( 10 ) << std::left << i;
+      std::cout << std::setw ( 10 ) << std::left << i;
       number = ( GUM_SCALAR ) rand() / ( GUM_SCALAR ) RAND_MAX;
-      std::cout << std::setw( 20 ) << std::left << number;
+      std::cout << std::setw ( 20 ) << std::left << number;
 
-      farey( num, den, number, den_max, zero );
-      ss << num << "/" << den << " : "; ss.precision( 10 ); ss << ( double )num/den;
-      std::cout << std::setw( 35 ) << std::left << ss.str();
-      ss.str( std::string() );
+      farey ( num, den, number, den_max, zero );
+      ss << num << "/" << den << " : "; ss.precision ( 10 ); ss << ( double ) num / den;
+      std::cout << std::setw ( 35 ) << std::left << ss.str();
+      ss.str ( std::string() );
 
-      continuedFracFirst( num, den, number, zero );
-      ss << num << "/" << den << " : "; ss.precision( 10 ); ss << ( double )num/den;
-      std::cout << std::setw( 35 ) << std::left << ss.str() << std::endl;
-      ss.str( std::string() );
+      continuedFracFirst ( num, den, number, zero );
+      ss << num << "/" << den << " : "; ss.precision ( 10 ); ss << ( double ) num / den;
+      std::cout << std::setw ( 35 ) << std::left << ss.str() << std::endl;
+      ss.str ( std::string() );
     }
 
     std::cout << std::endl;
 
     // test 0 and 1 !
 
-    std::cout << std::setw( 10 ) << std::left << iters;
+    std::cout << std::setw ( 10 ) << std::left << iters;
     number = 0;
-    std::cout << std::setw( 20 ) << std::left << number;
+    std::cout << std::setw ( 20 ) << std::left << number;
 
-    farey( num, den, number, den_max, zero );
-    ss << num << "/" << den << " : " << ( double )num/den;
-    std::cout << std::setw( 35 ) << std::left << ss.str();
-    ss.str( std::string() );
+    farey ( num, den, number, den_max, zero );
+    ss << num << "/" << den << " : " << ( double ) num / den;
+    std::cout << std::setw ( 35 ) << std::left << ss.str();
+    ss.str ( std::string() );
 
-    continuedFracFirst( num, den, number, zero );
-    ss << num << "/" << den << " : " << ( double )num/den;
-    std::cout << std::setw( 35 ) << std::left << ss.str() << std::endl;
-    ss.str( std::string() );
+    continuedFracFirst ( num, den, number, zero );
+    ss << num << "/" << den << " : " << ( double ) num / den;
+    std::cout << std::setw ( 35 ) << std::left << ss.str() << std::endl;
+    ss.str ( std::string() );
     //////////////////////////////////////////////////////////////////
 
-    std::cout << std::setw( 10 ) << std::left << iters+1;
+    std::cout << std::setw ( 10 ) << std::left << iters + 1;
     number = 1;
-    std::cout << std::setw( 20 ) << std::left << number;
+    std::cout << std::setw ( 20 ) << std::left << number;
 
-    farey( num, den, number, den_max, zero );
-    ss << num << "/" << den << " : " << ( double )num/den;
-    std::cout << std::setw( 35 ) << std::left << ss.str();
-    ss.str( std::string() );
+    farey ( num, den, number, den_max, zero );
+    ss << num << "/" << den << " : " << ( double ) num / den;
+    std::cout << std::setw ( 35 ) << std::left << ss.str();
+    ss.str ( std::string() );
 
-    continuedFracFirst( num, den, number, zero );
-    ss << num << "/" << den << " : " << ( double )num/den;
-    std::cout << std::setw( 35 ) << std::left << ss.str() << std::endl;
-    ss.str( std::string() );
+    continuedFracFirst ( num, den, number, zero );
+    ss << num << "/" << den << " : " << ( double ) num / den;
+    std::cout << std::setw ( 35 ) << std::left << ss.str() << std::endl;
+    ss.str ( std::string() );
 
     std::cout << std::endl;
 
@@ -74,30 +74,30 @@ namespace gum {
     // 1 <= number <= 100 ( don't call farey, it will go through all farey rationals until den_max is met, which is 1000000 )
     double fmin = 1.0, fmax = 100.0;
 
-    for ( unsigned int i = iters+2; i < iters*2+2; i++ ) {
-      std::cout << std::setw( 10 ) << std::left << i;
+    for ( unsigned int i = iters + 2; i < iters * 2 + 2; i++ ) {
+      std::cout << std::setw ( 10 ) << std::left << i;
       number = ( GUM_SCALAR ) rand() / RAND_MAX;
       number = fmin + number * ( fmax - fmin );
-      std::cout << std::setw( 20 ) << std::left << number;
+      std::cout << std::setw ( 20 ) << std::left << number;
 
       // farey
-      std::cout << std::setw( 35 ) << std::left << "1/1, number > 1 !";
+      std::cout << std::setw ( 35 ) << std::left << "1/1, number > 1 !";
 
-      continuedFracFirst( num, den, number, zero );
-      ss << num << "/" << den << " : " << ( double )num/den;
-      std::cout << std::setw( 35 ) << std::left << ss.str() << std::endl;
-      ss.str( std::string() );
+      continuedFracFirst ( num, den, number, zero );
+      ss << num << "/" << den << " : " << ( double ) num / den;
+      std::cout << std::setw ( 35 ) << std::left << ss.str() << std::endl;
+      ss.str ( std::string() );
     }
 
   }
 
 
   template < typename GUM_SCALAR >
-  void Rational< GUM_SCALAR >::farey( long int& numerator, long int& denominator, const GUM_SCALAR& number, const long int& den_max, const double& zero ) {
+  void Rational< GUM_SCALAR >::farey ( long int& numerator, long int& denominator, const GUM_SCALAR& number, const long int& den_max, const double& zero ) {
     bool isNegative = ( number < 0 ) ? true : false;
     GUM_SCALAR pnumber = ( isNegative ) ? - number : number;
 
-    if ( fabs( pnumber - 1. ) < zero ) {
+    if ( fabs ( pnumber - 1. ) < zero ) {
       numerator = ( isNegative ) ? - 1 : 1;
       denominator = 1;
       return;
@@ -107,13 +107,13 @@ namespace gum {
       return;
     }
 
-    int a( 0 ), b( 1 ), c( 1 ), d( 1 );
-    double mediant( 0.0F );
+    int a ( 0 ), b ( 1 ), c ( 1 ), d ( 1 );
+    double mediant ( 0.0F );
 
     while ( b <= den_max && d <= den_max ) {
-      mediant = ( double )( a + c ) / ( double )( b + d );
+      mediant = ( double ) ( a + c ) / ( double ) ( b + d );
 
-      if ( fabs( pnumber - mediant ) < zero )  {
+      if ( fabs ( pnumber - mediant ) < zero )  {
         if ( b + d <= den_max )  {
           numerator = ( isNegative ) ? - ( a + c ) : ( a + c );
           denominator = b + d;
@@ -149,15 +149,15 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  void Rational< GUM_SCALAR >::continuedFracFirst( long int& numerator, long int& denominator, const GUM_SCALAR& number, const double& zero ) {
+  void Rational< GUM_SCALAR >::continuedFracFirst ( long int& numerator, long int& denominator, const GUM_SCALAR& number, const double& zero ) {
     const GUM_SCALAR pnumber = ( number > 0 ) ? number : - number;
 
     /// reciprocal over iterations
     GUM_SCALAR rnumber = pnumber;
 
     /// convergents
-    std::vector< unsigned long int > p( { 0, 1 } );
-    std::vector< unsigned long int > q( { 1, 0 } );
+    std::vector< unsigned long int > p ( { 0, 1 } );
+    std::vector< unsigned long int > q ( { 1, 0 } );
 
     /// quotients
     std::vector< unsigned long int > a;
@@ -170,11 +170,11 @@ namespace gum {
     /// we find all convergents until we found a best one
     /// since we look for a delta < zero, we can start looking for semi-convergents when we found a convergent with delta < zero, and look for the semi-convergents before
     while ( true ) {
-      a.push_back( lrint( floor( rnumber ) ) );
-      p.push_back( a.back() * p.back() + p[ p.size() - 2 ] );
-      q.push_back( a.back() * q.back() + q[ q.size() - 2 ] );
+      a.push_back ( lrint ( floor ( rnumber ) ) );
+      p.push_back ( a.back() * p.back() + p[ p.size() - 2 ] );
+      q.push_back ( a.back() * q.back() + q[ q.size() - 2 ] );
 
-      delta = fabs( pnumber - ( GUM_SCALAR ) p.back() / q.back() );
+      delta = fabs ( pnumber - ( GUM_SCALAR ) p.back() / q.back() );
 
       if ( delta < zero ) {
         numerator = ( number > 0 ) ? p.back() : - p.back();
@@ -182,7 +182,7 @@ namespace gum {
         break;
       }
 
-      if ( fabs( rnumber - a.back() ) < 1e-6 )
+      if ( fabs ( rnumber - a.back() ) < 1e-6 )
         break;
 
       rnumber = 1. / ( rnumber - a.back() );
@@ -200,8 +200,8 @@ namespace gum {
     p_tmp = n * p[ i ] + p[ i - 1 ];
     q_tmp = n * q[ i ] + q[ i - 1 ];
 
-    delta = fabs( pnumber - ( ( double ) p[ i ] ) / q[ i ] );
-    delta_tmp = fabs( pnumber - ( ( double ) p_tmp ) / q_tmp );
+    delta = fabs ( pnumber - ( ( double ) p[ i ] ) / q[ i ] );
+    delta_tmp = fabs ( pnumber - ( ( double ) p_tmp ) / q_tmp );
 
     if ( delta < zero ) {
       numerator = ( number > 0 ) ? p[i] : - p[i];
@@ -220,7 +220,7 @@ namespace gum {
       p_tmp = n * p[ i ] + p[ i - 1 ];
       q_tmp = n * q[ i ] + q[ i - 1 ];
 
-      delta_tmp = fabs( pnumber - ( ( double ) p_tmp ) / q_tmp );
+      delta_tmp = fabs ( pnumber - ( ( double ) p_tmp ) / q_tmp );
 
       if ( delta_tmp < zero ) {
         numerator = ( number > 0 ) ? p_tmp : - p_tmp;
@@ -233,7 +233,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void Rational< GUM_SCALAR >::continuedFracBest( long int& numerator, long int& denominator, const GUM_SCALAR& number, const long int& den_max ) {
+  void Rational< GUM_SCALAR >::continuedFracBest ( long int& numerator, long int& denominator, const GUM_SCALAR& number, const long int& den_max ) {
     const GUM_SCALAR pnumber = ( number > 0 ) ? number : - number;
 
     const unsigned long int denMax = ( unsigned long int ) den_max; /// signed and unsigned comparison resolution ...
@@ -242,8 +242,8 @@ namespace gum {
     GUM_SCALAR rnumber = pnumber;
 
     /// convergents
-    std::vector< unsigned long int > p( { 0, 1 } );
-    std::vector< unsigned long int > q( { 1, 0 } );
+    std::vector< unsigned long int > p ( { 0, 1 } );
+    std::vector< unsigned long int > q ( { 1, 0 } );
 
     /// quotients
     std::vector< unsigned long int > a;
@@ -255,7 +255,7 @@ namespace gum {
 
     /// we find all convergents until we met den_max
     while ( true ) {
-      a.push_back( lrint( floor( rnumber ) ) );
+      a.push_back ( lrint ( floor ( rnumber ) ) );
 
       p_tmp = a.back() * p.back() + p[ p.size() - 2 ];
       q_tmp = a.back() * q.back() + q[ q.size() - 2 ];
@@ -263,10 +263,10 @@ namespace gum {
       if ( q_tmp > denMax || p_tmp > denMax )
         break;
 
-      p.push_back( p_tmp );
-      q.push_back( q_tmp );
+      p.push_back ( p_tmp );
+      q.push_back ( q_tmp );
 
-      if ( fabs( rnumber - a.back() ) < 1e-6 )
+      if ( fabs ( rnumber - a.back() ) < 1e-6 )
         break;
 
       rnumber = 1. / ( rnumber - a.back() );
@@ -301,8 +301,8 @@ namespace gum {
     p_tmp = n * p[ i ] + p[ i - 1 ];
     q_tmp = n * q[ i ] + q[ i - 1 ];
 
-    delta_tmp = fabs( pnumber - ( ( double ) p_tmp ) / q_tmp );
-    delta = fabs( pnumber - ( ( double ) p[ i ] ) / q[ i ] );
+    delta_tmp = fabs ( pnumber - ( ( double ) p_tmp ) / q_tmp );
+    delta = fabs ( pnumber - ( ( double ) p[ i ] ) / q[ i ] );
 
     if ( delta_tmp < delta && q_tmp <= denMax && p_tmp <= denMax ) {
       numerator = ( number > 0 ) ? p_tmp : - p_tmp;

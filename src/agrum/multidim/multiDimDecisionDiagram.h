@@ -55,7 +55,7 @@ namespace gum {
    * @ingroup multidim_group
    *
    */
-  template<typename GUM_SCALAR,template <class> class IApproximationPolicy  = ExactPolicy>
+  template<typename GUM_SCALAR, template <class> class IApproximationPolicy  = ExactPolicy>
 
   class MultiDimDecisionDiagram :  public MultiDimDecisionDiagramBase<GUM_SCALAR>, public IApproximationPolicy<GUM_SCALAR> {
 
@@ -74,12 +74,12 @@ namespace gum {
       /**
        * Copy constructor.
        */
-      MultiDimDecisionDiagram( const MultiDimDecisionDiagram< GUM_SCALAR, IApproximationPolicy >& md );
+      MultiDimDecisionDiagram ( const MultiDimDecisionDiagram< GUM_SCALAR, IApproximationPolicy >& md );
 
       /**
        * Constructor with approximation initialisation
        */
-      MultiDimDecisionDiagram( const IApproximationPolicy<GUM_SCALAR>& md );
+      MultiDimDecisionDiagram ( const IApproximationPolicy<GUM_SCALAR>& md );
 
       /**
        * Destructor.
@@ -124,11 +124,11 @@ namespace gum {
        * Returns a factory that used same approximation pattern
        * Allows to set parameter for that approximation
        */
-      virtual MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* getFactory( const ApproximationPolicy<GUM_SCALAR>& md ) const ;
+      virtual MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* getFactory ( const ApproximationPolicy<GUM_SCALAR>& md ) const ;
 
       /// Convert value to approximation representation
-      inline GUM_SCALAR fromExact( const GUM_SCALAR& value ) const {
-        return IApproximationPolicy<GUM_SCALAR>::fromExact( value );
+      inline GUM_SCALAR fromExact ( const GUM_SCALAR& value ) const {
+        return IApproximationPolicy<GUM_SCALAR>::fromExact ( value );
       };
 
 

@@ -37,7 +37,7 @@ namespace gum {
   MultiDimImplementation<GUM_SCALAR>*
   GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
   ( const MultiDimImplementation<GUM_SCALAR>& ttable,
-    const HashTable<const DiscreteVariable*,Idx>& inst_vars ) {
+    const HashTable<const DiscreteVariable*, Idx>& inst_vars ) {
 #endif
 
     typename PartialInstantiationRegister4MultiDim<GUM_SCALAR>::PartialInstantiationPtr func;
@@ -53,7 +53,7 @@ namespace gum {
     }
 
     // perform the partial instantiation
-    return func( &ttable, inst_vars );
+    return func ( &ttable, inst_vars );
   }
 
 } /* End of namespace gum */

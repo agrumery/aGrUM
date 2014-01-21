@@ -112,8 +112,8 @@ namespace gum {
        */
       std::string __variableDefinition ( const NodeId& varNodeId, const IBayesNet<GUM_SCALAR>& infdiag );
   };
-  
-  extern template class BIFXMLBNWriter<float>;  
+
+  extern template class BIFXMLBNWriter<float>;
   extern template class BIFXMLBNWriter<double>;
 } /* namespace gum */
 

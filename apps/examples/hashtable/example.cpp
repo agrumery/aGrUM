@@ -1,7 +1,7 @@
 /***************************************************************************
 * Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES *
 * {prenom.nom}_at_lip6.fr *
-* 
+*
 * This program is free software; you can redistribute it and/or modify *
 * it under the terms of the GNU General Public License as published by *
 * the Free Software Foundation; either version 2 of the License, or *
@@ -20,11 +20,11 @@
 #include <iostream>
 #include <agrum/core/hashTable.h>
 
-int main(void) {
-  gum::HashTable<std::string,int> h;
-  
-  h.insert("Hello",1);
-  h.insert("World",2);
-  
-  std::cout<<h<<std::endl;
+int main ( void ) {
+  gum::HashTable<std::string, int> h;
+
+  h.insert ( "Hello", 1 );
+  h.insert ( "World", 2 );
+
+  std::cout << h << std::endl;
 }

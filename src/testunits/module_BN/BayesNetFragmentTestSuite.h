@@ -80,7 +80,7 @@ namespace gum_tests {
       }
 
       // the same BN but with no 4-->5
-      void fill2 ( gum::BayesNet<float>& bn,const gum::BayesNet<float>&source ) {
+      void fill2 ( gum::BayesNet<float>& bn, const gum::BayesNet<float>& source ) {
         try {
           auto var1 = gum::LabelizedVariable ( "v1", "1", 2 );
           auto var2 = gum::LabelizedVariable ( "v2", "2", 2 );
@@ -106,14 +106,14 @@ namespace gum_tests {
 
           // copy the cpt except for var5
           for ( const auto node : bn.nodes() )
-            if ( node!=bn.idFromName ( "v5" ) ) {
-              const gum::Potential<float>& pot=bn.cpt ( node );
-              const gum::Potential<float>& src=source.cpt ( source.idFromName ( bn.variable ( node ).name() ) );
+            if ( node != bn.idFromName ( "v5" ) ) {
+              const gum::Potential<float>& pot = bn.cpt ( node );
+              const gum::Potential<float>& src = source.cpt ( source.idFromName ( bn.variable ( node ).name() ) );
               gum::Instantiation I ( pot );
               gum::Instantiation J ( src );
 
-              for ( I.setFirst(),J.setFirst(); ! I.end() ; ++I,++J ) {
-                bn.cpt ( node ).set ( I,src[J] );
+              for ( I.setFirst(), J.setFirst(); ! I.end() ; ++I, ++J ) {
+                bn.cpt ( node ).set ( I, src[J] );
               }
             }
 
@@ -364,7 +364,7 @@ namespace gum_tests {
         gum::Instantiation I ( p1 );
         gum::Instantiation J ( p2 );
 
-        for ( I.setFirst(),J.setFirst(); ! I.end(); ++I,++J )
+        for ( I.setFirst(), J.setFirst(); ! I.end(); ++I, ++J )
           TS_ASSERT_DELTA ( p1[I], p2[J], 1e-6 );
       }
 
@@ -393,7 +393,7 @@ namespace gum_tests {
 
         gum::Potential<float>* newV5 = new gum::Potential<float>();
         ( *newV5 ) << bn.variable ( bn.idFromName ( "v5" ) );
-        newV5->fillWith ( std::vector<float> ( {0.0, 0.0,1.0} ) );
+        newV5->fillWith ( std::vector<float> ( {0.0, 0.0, 1.0} ) );
         frag.installMarginal ( frag.idFromName ( "v5" ), newV5 ); // 1-->3-->6 5
         TS_ASSERT ( frag.checkConsistency() );
         TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 4 );
@@ -420,8 +420,8 @@ namespace gum_tests {
         gum::Potential<float>* newV5bis = new gum::Potential<float>();
         ( *newV5bis ) << bn.variable ( bn.idFromName ( "v5" ) )
                       << bn.variable ( bn.idFromName ( "v2" ) )
-                      <<bn.variable ( bn.idFromName ( "v3" ) );
-        frag.installCPT ( frag.idFromName ( "v5" ) ,newV5bis );
+                      << bn.variable ( bn.idFromName ( "v3" ) );
+        frag.installCPT ( frag.idFromName ( "v5" ) , newV5bis );
         TS_ASSERT ( frag.checkConsistency() );
         TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 5 );
         TS_ASSERT_EQUALS ( frag.sizeArcs(), ( gum::Size ) 4 );
@@ -431,7 +431,7 @@ namespace gum_tests {
         gum::BayesNet<float> bn;
         fill ( bn );
         gum::BayesNet<float> bn2;
-        fill2 ( bn2,bn );
+        fill2 ( bn2, bn );
 
         gum::BayesNetFragment<float> frag ( bn );
 
@@ -445,36 +445,36 @@ namespace gum_tests {
         gum::Potential<float>* newV5 = new gum::Potential<float>();
         ( *newV5 ) << bn.variable ( bn.idFromName ( "v5" ) )
                    << bn.variable ( bn.idFromName ( "v2" ) )
-                   <<bn.variable ( bn.idFromName ( "v3" ) );
+                   << bn.variable ( bn.idFromName ( "v3" ) );
 
-        const gum::Potential<float>& pot2=bn2.cpt ( bn2.idFromName ( "v5" ) );
+        const gum::Potential<float>& pot2 = bn2.cpt ( bn2.idFromName ( "v5" ) );
         gum::Instantiation I ( pot2 );
         gum::Instantiation J ( *newV5 );
 
-        for ( I.setFirst(),J.setFirst(); ! I.end(); ++I,++J )
-          newV5->set ( J,pot2[I] );
+        for ( I.setFirst(), J.setFirst(); ! I.end(); ++I, ++J )
+          newV5->set ( J, pot2[I] );
 
-        frag.installCPT ( frag.idFromName ( "v5" ),newV5 );
+        frag.installCPT ( frag.idFromName ( "v5" ), newV5 );
         TS_ASSERT ( frag.checkConsistency() );
         TS_ASSERT_EQUALS ( frag.size(), ( gum::Size ) 6 );
         TS_ASSERT_EQUALS ( frag.sizeArcs(), ( gum::Size ) 6 );
-        str2file ( "test.dot",bn2.toDot() );
+        str2file ( "test.dot", bn2.toDot() );
 
-        TS_ASSERT ( bn2==frag );
+        TS_ASSERT ( bn2 == frag );
 
         gum::LazyPropagation<float> ie2 ( bn2 );
         ie2.makeInference();
-        const gum::Potential<float>& p2 =ie2.marginal ( bn2.idFromName ( "v5" ) ) ;
+        const gum::Potential<float>& p2 = ie2.marginal ( bn2.idFromName ( "v5" ) ) ;
 
         gum::LazyPropagation<float> ie ( frag );
         ie.makeInference();
-        const gum::Potential<float>& p1=ie.marginal ( frag.idFromName ( "v5" ) ) ;
+        const gum::Potential<float>& p1 = ie.marginal ( frag.idFromName ( "v5" ) ) ;
 
         // comparison
         gum::Instantiation II ( p1 );
         gum::Instantiation JJ ( p2 );
 
-        for ( II.setFirst(),JJ.setFirst(); ! II.end(); ++II,++JJ )
+        for ( II.setFirst(), JJ.setFirst(); ! II.end(); ++II, ++JJ )
           TS_ASSERT_DELTA ( p1[II], p2[JJ], 1e-6 );
       }
   };

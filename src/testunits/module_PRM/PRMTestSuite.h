@@ -100,11 +100,11 @@ namespace gum_tests {
 
         for ( auto attr = i.begin(); attr != i.end(); ++attr ) {
           gum::NodeId id = 0;
-          TS_GUM_ASSERT_THROWS_NOTHING ( ( *( attr.val() ) ).cpf() );
-          TS_GUM_ASSERT_THROWS_NOTHING ( id = bn->idFromName ( ( *( attr.val() ) ).safeName() ) );
+          TS_GUM_ASSERT_THROWS_NOTHING ( ( * ( attr.val() ) ).cpf() );
+          TS_GUM_ASSERT_THROWS_NOTHING ( id = bn->idFromName ( ( * ( attr.val() ) ).safeName() ) );
           TS_GUM_ASSERT_THROWS_NOTHING ( bn->cpt ( id ) );
-          TS_ASSERT_EQUALS ( ( *( attr.val() ) ).cpf().nbrDim(), bn->cpt ( id ).nbrDim() );
-          TS_ASSERT_EQUALS ( ( *( attr.val() ) ).cpf().domainSize(), bn->cpt ( id ).domainSize() );
+          TS_ASSERT_EQUALS ( ( * ( attr.val() ) ).cpf().nbrDim(), bn->cpt ( id ).nbrDim() );
+          TS_ASSERT_EQUALS ( ( * ( attr.val() ) ).cpf().domainSize(), bn->cpt ( id ).domainSize() );
         }
 
         TS_ASSERT ( bn->modalities().size() > 0 );
@@ -119,7 +119,7 @@ namespace gum_tests {
         int count = 0;
 
         for ( auto iter = sys.begin(); iter != sys.end(); ++iter ) {
-          for ( auto jter = ( *( iter.val() ) ).begin(); jter != ( *( iter.val() ) ).end(); ++jter ) {
+          for ( auto jter = ( * ( iter.val() ) ).begin(); jter != ( * ( iter.val() ) ).end(); ++jter ) {
             ++count;
           }
         }
@@ -156,15 +156,15 @@ namespace gum_tests {
         gum::prm::System<double>& sys = prm->system ( "aSys" );
 
         for ( gum::prm::System<double>::iterator iter = sys.begin(); iter != sys.end(); ++iter ) {
-          for ( gum::prm::Instance<double>::iterator jter = ( *( iter.val() ) ).begin(); jter != ( *( iter.val() ) ).end(); ++jter ) {
-            gum::Instantiation i ( ( *( jter.val() ) ).cpf() ), var;
-            var.add ( ( *( jter.val() ) ).type().variable() );
+          for ( gum::prm::Instance<double>::iterator jter = ( * ( iter.val() ) ).begin(); jter != ( * ( iter.val() ) ).end(); ++jter ) {
+            gum::Instantiation i ( ( * ( jter.val() ) ).cpf() ), var;
+            var.add ( ( * ( jter.val() ) ).type().variable() );
 
             for ( i.setFirstOut ( var ); not i.end(); i.incOut ( var ) ) {
               double f = 0.0;
 
               for ( i.setFirstIn ( var ); not i.end(); i.incIn ( var ) ) {
-                f += ( *( jter.val() ) ).cpf().get ( i );
+                f += ( * ( jter.val() ) ).cpf().get ( i );
               }
 
               TS_ASSERT_DELTA ( f, 1.0, 1e-7 );
@@ -191,7 +191,7 @@ namespace gum_tests {
             for ( i.setFirstIn ( j ); not i.end(); i.incIn ( j ) )
               sum += cpt.get ( i );
 
-            TS_ASSERT_DELTA ( sum, 1.0, 1e-7);
+            TS_ASSERT_DELTA ( sum, 1.0, 1e-7 );
             i.unsetOverflow();
           }
         }

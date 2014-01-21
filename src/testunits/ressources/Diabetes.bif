@@ -7592,16 +7592,16 @@ variable bg_24 {
   };
 }
 
-probability( cho_init ) {
+probability ( cho_init ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.85;
 }
-probability( ins_sens ) {
+probability ( ins_sens ) {
   table 0.2, 0.2, 0.2, 0.2, 0.2;
 }
-probability( meal_0 ) {
+probability ( meal_0 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_0 | meal_0, cho_init ) {
+probability ( cho_0 | meal_0, cho_init ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -7939,10 +7939,10 @@ probability( cho_0 | meal_0, cho_init ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_0 ) {
+probability ( bg_0 ) {
   table 0.01, 0.01, 0.02, 0.07, 0.15, 0.3, 0.2, 0.15, 0.07, 0.01, 0.01;
 }
-probability( activ_ins_0 | ins_abs_0, ins_sens ) {
+probability ( activ_ins_0 | ins_abs_0, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -7999,10 +7999,10 @@ probability( activ_ins_0 | ins_abs_0, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_0 ) {
+probability ( ins_abs_0 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_0 | cho_0 ) {
+probability ( gut_abs_0 | cho_0 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -8025,7 +8025,7 @@ probability( gut_abs_0 | cho_0 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_0 | bg_0 ) {
+probability ( renal_cl_0 | bg_0 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -8038,7 +8038,7 @@ probability( renal_cl_0 | bg_0 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_0 | bg_0 ) {
+probability ( ins_indep_util_0 | bg_0 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -8051,7 +8051,7 @@ probability( ins_indep_util_0 | bg_0 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_0 | bg_0, activ_ins_0 ) {
+probability ( ins_dep_util_0 | bg_0, activ_ins_0 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -8163,7 +8163,7 @@ probability( ins_dep_util_0 | bg_0, activ_ins_0 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_0 | activ_ins_0, bg_0 ) {
+probability ( glu_prod_0 | activ_ins_0, bg_0 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -8275,7 +8275,7 @@ probability( glu_prod_0 | activ_ins_0, bg_0 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_0 | renal_cl_0, ins_indep_util_0 ) {
+probability ( ins_indep_0 | renal_cl_0, ins_indep_util_0 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -8286,7 +8286,7 @@ probability( ins_indep_0 | renal_cl_0, ins_indep_util_0 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_0 | ins_dep_util_0, glu_prod_0 ) {
+probability ( ins_dep_0 | ins_dep_util_0, glu_prod_0 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -8336,7 +8336,7 @@ probability( ins_dep_0 | ins_dep_util_0, glu_prod_0 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_0 | ins_indep_0, ins_dep_0 ) {
+probability ( endo_bal_0 | ins_indep_0, ins_dep_0 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -8403,7 +8403,7 @@ probability( endo_bal_0 | ins_indep_0, ins_dep_0 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_0 | cho_0, gut_abs_0 ) {
+probability ( cho_bal_0 | cho_0, gut_abs_0 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -8531,7 +8531,7 @@ probability( cho_bal_0 | cho_0, gut_abs_0 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_0 | gut_abs_0, endo_bal_0 ) {
+probability ( basal_bal_0 | gut_abs_0, endo_bal_0 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -8635,10 +8635,10 @@ probability( basal_bal_0 | gut_abs_0, endo_bal_0 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_0 ) {
+probability ( met_irr_0 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_0 | basal_bal_0, met_irr_0 ) {
+probability ( tot_bal_0 | basal_bal_0, met_irr_0 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -8773,10 +8773,10 @@ probability( tot_bal_0 | basal_bal_0, met_irr_0 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_1 ) {
+probability ( meal_1 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_1 | meal_1, cho_bal_0 ) {
+probability ( cho_1 | meal_1, cho_bal_0 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -9114,7 +9114,7 @@ probability( cho_1 | meal_1, cho_bal_0 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_1 | bg_0, tot_bal_0 ) {
+probability ( bg_1 | bg_0, tot_bal_0 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -9281,7 +9281,7 @@ probability( bg_1 | bg_0, tot_bal_0 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_1 | ins_abs_1, ins_sens ) {
+probability ( activ_ins_1 | ins_abs_1, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -9338,10 +9338,10 @@ probability( activ_ins_1 | ins_abs_1, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_1 ) {
+probability ( ins_abs_1 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_1 | cho_1 ) {
+probability ( gut_abs_1 | cho_1 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -9364,7 +9364,7 @@ probability( gut_abs_1 | cho_1 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_1 | bg_1 ) {
+probability ( renal_cl_1 | bg_1 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -9377,7 +9377,7 @@ probability( renal_cl_1 | bg_1 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_1 | bg_1 ) {
+probability ( ins_indep_util_1 | bg_1 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -9390,7 +9390,7 @@ probability( ins_indep_util_1 | bg_1 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_1 | bg_1, activ_ins_1 ) {
+probability ( ins_dep_util_1 | bg_1, activ_ins_1 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -9502,7 +9502,7 @@ probability( ins_dep_util_1 | bg_1, activ_ins_1 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_1 | activ_ins_1, bg_1 ) {
+probability ( glu_prod_1 | activ_ins_1, bg_1 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -9614,7 +9614,7 @@ probability( glu_prod_1 | activ_ins_1, bg_1 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_1 | renal_cl_1, ins_indep_util_1 ) {
+probability ( ins_indep_1 | renal_cl_1, ins_indep_util_1 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -9625,7 +9625,7 @@ probability( ins_indep_1 | renal_cl_1, ins_indep_util_1 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_1 | ins_dep_util_1, glu_prod_1 ) {
+probability ( ins_dep_1 | ins_dep_util_1, glu_prod_1 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -9675,7 +9675,7 @@ probability( ins_dep_1 | ins_dep_util_1, glu_prod_1 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_1 | ins_indep_1, ins_dep_1 ) {
+probability ( endo_bal_1 | ins_indep_1, ins_dep_1 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -9742,7 +9742,7 @@ probability( endo_bal_1 | ins_indep_1, ins_dep_1 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_1 | cho_1, gut_abs_1 ) {
+probability ( cho_bal_1 | cho_1, gut_abs_1 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -9870,7 +9870,7 @@ probability( cho_bal_1 | cho_1, gut_abs_1 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_1 | gut_abs_1, endo_bal_1 ) {
+probability ( basal_bal_1 | gut_abs_1, endo_bal_1 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -9974,10 +9974,10 @@ probability( basal_bal_1 | gut_abs_1, endo_bal_1 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_1 ) {
+probability ( met_irr_1 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_1 | basal_bal_1, met_irr_1 ) {
+probability ( tot_bal_1 | basal_bal_1, met_irr_1 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -10112,10 +10112,10 @@ probability( tot_bal_1 | basal_bal_1, met_irr_1 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_2 ) {
+probability ( meal_2 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_2 | meal_2, cho_bal_1 ) {
+probability ( cho_2 | meal_2, cho_bal_1 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -10453,7 +10453,7 @@ probability( cho_2 | meal_2, cho_bal_1 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_2 | bg_1, tot_bal_1 ) {
+probability ( bg_2 | bg_1, tot_bal_1 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -10620,7 +10620,7 @@ probability( bg_2 | bg_1, tot_bal_1 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_2 | ins_abs_2, ins_sens ) {
+probability ( activ_ins_2 | ins_abs_2, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -10677,10 +10677,10 @@ probability( activ_ins_2 | ins_abs_2, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_2 ) {
+probability ( ins_abs_2 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_2 | cho_2 ) {
+probability ( gut_abs_2 | cho_2 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -10703,7 +10703,7 @@ probability( gut_abs_2 | cho_2 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_2 | bg_2 ) {
+probability ( renal_cl_2 | bg_2 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -10716,7 +10716,7 @@ probability( renal_cl_2 | bg_2 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_2 | bg_2 ) {
+probability ( ins_indep_util_2 | bg_2 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -10729,7 +10729,7 @@ probability( ins_indep_util_2 | bg_2 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_2 | bg_2, activ_ins_2 ) {
+probability ( ins_dep_util_2 | bg_2, activ_ins_2 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -10841,7 +10841,7 @@ probability( ins_dep_util_2 | bg_2, activ_ins_2 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_2 | activ_ins_2, bg_2 ) {
+probability ( glu_prod_2 | activ_ins_2, bg_2 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -10953,7 +10953,7 @@ probability( glu_prod_2 | activ_ins_2, bg_2 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_2 | renal_cl_2, ins_indep_util_2 ) {
+probability ( ins_indep_2 | renal_cl_2, ins_indep_util_2 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -10964,7 +10964,7 @@ probability( ins_indep_2 | renal_cl_2, ins_indep_util_2 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_2 | ins_dep_util_2, glu_prod_2 ) {
+probability ( ins_dep_2 | ins_dep_util_2, glu_prod_2 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -11014,7 +11014,7 @@ probability( ins_dep_2 | ins_dep_util_2, glu_prod_2 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_2 | ins_indep_2, ins_dep_2 ) {
+probability ( endo_bal_2 | ins_indep_2, ins_dep_2 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -11081,7 +11081,7 @@ probability( endo_bal_2 | ins_indep_2, ins_dep_2 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_2 | cho_2, gut_abs_2 ) {
+probability ( cho_bal_2 | cho_2, gut_abs_2 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -11209,7 +11209,7 @@ probability( cho_bal_2 | cho_2, gut_abs_2 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_2 | gut_abs_2, endo_bal_2 ) {
+probability ( basal_bal_2 | gut_abs_2, endo_bal_2 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -11313,10 +11313,10 @@ probability( basal_bal_2 | gut_abs_2, endo_bal_2 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_2 ) {
+probability ( met_irr_2 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_2 | basal_bal_2, met_irr_2 ) {
+probability ( tot_bal_2 | basal_bal_2, met_irr_2 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -11451,10 +11451,10 @@ probability( tot_bal_2 | basal_bal_2, met_irr_2 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_3 ) {
+probability ( meal_3 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_3 | meal_3, cho_bal_2 ) {
+probability ( cho_3 | meal_3, cho_bal_2 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -11792,7 +11792,7 @@ probability( cho_3 | meal_3, cho_bal_2 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_3 | bg_2, tot_bal_2 ) {
+probability ( bg_3 | bg_2, tot_bal_2 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -11959,7 +11959,7 @@ probability( bg_3 | bg_2, tot_bal_2 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_3 | ins_abs_3, ins_sens ) {
+probability ( activ_ins_3 | ins_abs_3, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -12016,10 +12016,10 @@ probability( activ_ins_3 | ins_abs_3, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_3 ) {
+probability ( ins_abs_3 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_3 | cho_3 ) {
+probability ( gut_abs_3 | cho_3 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -12042,7 +12042,7 @@ probability( gut_abs_3 | cho_3 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_3 | bg_3 ) {
+probability ( renal_cl_3 | bg_3 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -12055,7 +12055,7 @@ probability( renal_cl_3 | bg_3 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_3 | bg_3 ) {
+probability ( ins_indep_util_3 | bg_3 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -12068,7 +12068,7 @@ probability( ins_indep_util_3 | bg_3 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_3 | bg_3, activ_ins_3 ) {
+probability ( ins_dep_util_3 | bg_3, activ_ins_3 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -12180,7 +12180,7 @@ probability( ins_dep_util_3 | bg_3, activ_ins_3 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_3 | activ_ins_3, bg_3 ) {
+probability ( glu_prod_3 | activ_ins_3, bg_3 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -12292,7 +12292,7 @@ probability( glu_prod_3 | activ_ins_3, bg_3 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_3 | renal_cl_3, ins_indep_util_3 ) {
+probability ( ins_indep_3 | renal_cl_3, ins_indep_util_3 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -12303,7 +12303,7 @@ probability( ins_indep_3 | renal_cl_3, ins_indep_util_3 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_3 | ins_dep_util_3, glu_prod_3 ) {
+probability ( ins_dep_3 | ins_dep_util_3, glu_prod_3 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -12353,7 +12353,7 @@ probability( ins_dep_3 | ins_dep_util_3, glu_prod_3 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_3 | ins_indep_3, ins_dep_3 ) {
+probability ( endo_bal_3 | ins_indep_3, ins_dep_3 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -12420,7 +12420,7 @@ probability( endo_bal_3 | ins_indep_3, ins_dep_3 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_3 | cho_3, gut_abs_3 ) {
+probability ( cho_bal_3 | cho_3, gut_abs_3 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -12548,7 +12548,7 @@ probability( cho_bal_3 | cho_3, gut_abs_3 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_3 | gut_abs_3, endo_bal_3 ) {
+probability ( basal_bal_3 | gut_abs_3, endo_bal_3 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -12652,10 +12652,10 @@ probability( basal_bal_3 | gut_abs_3, endo_bal_3 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_3 ) {
+probability ( met_irr_3 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_3 | basal_bal_3, met_irr_3 ) {
+probability ( tot_bal_3 | basal_bal_3, met_irr_3 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -12790,10 +12790,10 @@ probability( tot_bal_3 | basal_bal_3, met_irr_3 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_4 ) {
+probability ( meal_4 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_4 | meal_4, cho_bal_3 ) {
+probability ( cho_4 | meal_4, cho_bal_3 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -13131,7 +13131,7 @@ probability( cho_4 | meal_4, cho_bal_3 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_4 | bg_3, tot_bal_3 ) {
+probability ( bg_4 | bg_3, tot_bal_3 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -13298,7 +13298,7 @@ probability( bg_4 | bg_3, tot_bal_3 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_4 | ins_abs_4, ins_sens ) {
+probability ( activ_ins_4 | ins_abs_4, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -13355,10 +13355,10 @@ probability( activ_ins_4 | ins_abs_4, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_4 ) {
+probability ( ins_abs_4 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_4 | cho_4 ) {
+probability ( gut_abs_4 | cho_4 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -13381,7 +13381,7 @@ probability( gut_abs_4 | cho_4 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_4 | bg_4 ) {
+probability ( renal_cl_4 | bg_4 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -13394,7 +13394,7 @@ probability( renal_cl_4 | bg_4 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_4 | bg_4 ) {
+probability ( ins_indep_util_4 | bg_4 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -13407,7 +13407,7 @@ probability( ins_indep_util_4 | bg_4 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_4 | bg_4, activ_ins_4 ) {
+probability ( ins_dep_util_4 | bg_4, activ_ins_4 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -13519,7 +13519,7 @@ probability( ins_dep_util_4 | bg_4, activ_ins_4 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_4 | activ_ins_4, bg_4 ) {
+probability ( glu_prod_4 | activ_ins_4, bg_4 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -13631,7 +13631,7 @@ probability( glu_prod_4 | activ_ins_4, bg_4 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_4 | renal_cl_4, ins_indep_util_4 ) {
+probability ( ins_indep_4 | renal_cl_4, ins_indep_util_4 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -13642,7 +13642,7 @@ probability( ins_indep_4 | renal_cl_4, ins_indep_util_4 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_4 | ins_dep_util_4, glu_prod_4 ) {
+probability ( ins_dep_4 | ins_dep_util_4, glu_prod_4 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -13692,7 +13692,7 @@ probability( ins_dep_4 | ins_dep_util_4, glu_prod_4 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_4 | ins_indep_4, ins_dep_4 ) {
+probability ( endo_bal_4 | ins_indep_4, ins_dep_4 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -13759,7 +13759,7 @@ probability( endo_bal_4 | ins_indep_4, ins_dep_4 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_4 | cho_4, gut_abs_4 ) {
+probability ( cho_bal_4 | cho_4, gut_abs_4 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -13887,7 +13887,7 @@ probability( cho_bal_4 | cho_4, gut_abs_4 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_4 | gut_abs_4, endo_bal_4 ) {
+probability ( basal_bal_4 | gut_abs_4, endo_bal_4 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -13991,10 +13991,10 @@ probability( basal_bal_4 | gut_abs_4, endo_bal_4 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_4 ) {
+probability ( met_irr_4 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_4 | basal_bal_4, met_irr_4 ) {
+probability ( tot_bal_4 | basal_bal_4, met_irr_4 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -14129,10 +14129,10 @@ probability( tot_bal_4 | basal_bal_4, met_irr_4 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_5 ) {
+probability ( meal_5 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_5 | meal_5, cho_bal_4 ) {
+probability ( cho_5 | meal_5, cho_bal_4 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -14470,7 +14470,7 @@ probability( cho_5 | meal_5, cho_bal_4 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_5 | bg_4, tot_bal_4 ) {
+probability ( bg_5 | bg_4, tot_bal_4 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -14637,7 +14637,7 @@ probability( bg_5 | bg_4, tot_bal_4 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_5 | ins_abs_5, ins_sens ) {
+probability ( activ_ins_5 | ins_abs_5, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -14694,10 +14694,10 @@ probability( activ_ins_5 | ins_abs_5, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_5 ) {
+probability ( ins_abs_5 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_5 | cho_5 ) {
+probability ( gut_abs_5 | cho_5 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -14720,7 +14720,7 @@ probability( gut_abs_5 | cho_5 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_5 | bg_5 ) {
+probability ( renal_cl_5 | bg_5 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -14733,7 +14733,7 @@ probability( renal_cl_5 | bg_5 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_5 | bg_5 ) {
+probability ( ins_indep_util_5 | bg_5 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -14746,7 +14746,7 @@ probability( ins_indep_util_5 | bg_5 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_5 | bg_5, activ_ins_5 ) {
+probability ( ins_dep_util_5 | bg_5, activ_ins_5 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -14858,7 +14858,7 @@ probability( ins_dep_util_5 | bg_5, activ_ins_5 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_5 | activ_ins_5, bg_5 ) {
+probability ( glu_prod_5 | activ_ins_5, bg_5 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -14970,7 +14970,7 @@ probability( glu_prod_5 | activ_ins_5, bg_5 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_5 | renal_cl_5, ins_indep_util_5 ) {
+probability ( ins_indep_5 | renal_cl_5, ins_indep_util_5 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -14981,7 +14981,7 @@ probability( ins_indep_5 | renal_cl_5, ins_indep_util_5 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_5 | ins_dep_util_5, glu_prod_5 ) {
+probability ( ins_dep_5 | ins_dep_util_5, glu_prod_5 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -15031,7 +15031,7 @@ probability( ins_dep_5 | ins_dep_util_5, glu_prod_5 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_5 | ins_indep_5, ins_dep_5 ) {
+probability ( endo_bal_5 | ins_indep_5, ins_dep_5 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -15098,7 +15098,7 @@ probability( endo_bal_5 | ins_indep_5, ins_dep_5 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_5 | cho_5, gut_abs_5 ) {
+probability ( cho_bal_5 | cho_5, gut_abs_5 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -15226,7 +15226,7 @@ probability( cho_bal_5 | cho_5, gut_abs_5 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_5 | gut_abs_5, endo_bal_5 ) {
+probability ( basal_bal_5 | gut_abs_5, endo_bal_5 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -15330,10 +15330,10 @@ probability( basal_bal_5 | gut_abs_5, endo_bal_5 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_5 ) {
+probability ( met_irr_5 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_5 | basal_bal_5, met_irr_5 ) {
+probability ( tot_bal_5 | basal_bal_5, met_irr_5 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -15468,10 +15468,10 @@ probability( tot_bal_5 | basal_bal_5, met_irr_5 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_6 ) {
+probability ( meal_6 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_6 | meal_6, cho_bal_5 ) {
+probability ( cho_6 | meal_6, cho_bal_5 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -15809,7 +15809,7 @@ probability( cho_6 | meal_6, cho_bal_5 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_6 | bg_5, tot_bal_5 ) {
+probability ( bg_6 | bg_5, tot_bal_5 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -15976,7 +15976,7 @@ probability( bg_6 | bg_5, tot_bal_5 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_6 | ins_abs_6, ins_sens ) {
+probability ( activ_ins_6 | ins_abs_6, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -16033,10 +16033,10 @@ probability( activ_ins_6 | ins_abs_6, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_6 ) {
+probability ( ins_abs_6 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_6 | cho_6 ) {
+probability ( gut_abs_6 | cho_6 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -16059,7 +16059,7 @@ probability( gut_abs_6 | cho_6 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_6 | bg_6 ) {
+probability ( renal_cl_6 | bg_6 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -16072,7 +16072,7 @@ probability( renal_cl_6 | bg_6 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_6 | bg_6 ) {
+probability ( ins_indep_util_6 | bg_6 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -16085,7 +16085,7 @@ probability( ins_indep_util_6 | bg_6 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_6 | bg_6, activ_ins_6 ) {
+probability ( ins_dep_util_6 | bg_6, activ_ins_6 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -16197,7 +16197,7 @@ probability( ins_dep_util_6 | bg_6, activ_ins_6 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_6 | activ_ins_6, bg_6 ) {
+probability ( glu_prod_6 | activ_ins_6, bg_6 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -16309,7 +16309,7 @@ probability( glu_prod_6 | activ_ins_6, bg_6 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_6 | renal_cl_6, ins_indep_util_6 ) {
+probability ( ins_indep_6 | renal_cl_6, ins_indep_util_6 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -16320,7 +16320,7 @@ probability( ins_indep_6 | renal_cl_6, ins_indep_util_6 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_6 | ins_dep_util_6, glu_prod_6 ) {
+probability ( ins_dep_6 | ins_dep_util_6, glu_prod_6 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -16370,7 +16370,7 @@ probability( ins_dep_6 | ins_dep_util_6, glu_prod_6 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_6 | ins_indep_6, ins_dep_6 ) {
+probability ( endo_bal_6 | ins_indep_6, ins_dep_6 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -16437,7 +16437,7 @@ probability( endo_bal_6 | ins_indep_6, ins_dep_6 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_6 | cho_6, gut_abs_6 ) {
+probability ( cho_bal_6 | cho_6, gut_abs_6 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -16565,7 +16565,7 @@ probability( cho_bal_6 | cho_6, gut_abs_6 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_6 | gut_abs_6, endo_bal_6 ) {
+probability ( basal_bal_6 | gut_abs_6, endo_bal_6 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -16669,10 +16669,10 @@ probability( basal_bal_6 | gut_abs_6, endo_bal_6 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_6 ) {
+probability ( met_irr_6 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_6 | basal_bal_6, met_irr_6 ) {
+probability ( tot_bal_6 | basal_bal_6, met_irr_6 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -16807,10 +16807,10 @@ probability( tot_bal_6 | basal_bal_6, met_irr_6 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_7 ) {
+probability ( meal_7 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_7 | meal_7, cho_bal_6 ) {
+probability ( cho_7 | meal_7, cho_bal_6 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -17148,7 +17148,7 @@ probability( cho_7 | meal_7, cho_bal_6 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_7 | bg_6, tot_bal_6 ) {
+probability ( bg_7 | bg_6, tot_bal_6 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -17315,7 +17315,7 @@ probability( bg_7 | bg_6, tot_bal_6 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_7 | ins_abs_7, ins_sens ) {
+probability ( activ_ins_7 | ins_abs_7, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -17372,10 +17372,10 @@ probability( activ_ins_7 | ins_abs_7, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_7 ) {
+probability ( ins_abs_7 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_7 | cho_7 ) {
+probability ( gut_abs_7 | cho_7 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -17398,7 +17398,7 @@ probability( gut_abs_7 | cho_7 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_7 | bg_7 ) {
+probability ( renal_cl_7 | bg_7 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -17411,7 +17411,7 @@ probability( renal_cl_7 | bg_7 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_7 | bg_7 ) {
+probability ( ins_indep_util_7 | bg_7 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -17424,7 +17424,7 @@ probability( ins_indep_util_7 | bg_7 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_7 | bg_7, activ_ins_7 ) {
+probability ( ins_dep_util_7 | bg_7, activ_ins_7 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -17536,7 +17536,7 @@ probability( ins_dep_util_7 | bg_7, activ_ins_7 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_7 | activ_ins_7, bg_7 ) {
+probability ( glu_prod_7 | activ_ins_7, bg_7 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -17648,7 +17648,7 @@ probability( glu_prod_7 | activ_ins_7, bg_7 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_7 | renal_cl_7, ins_indep_util_7 ) {
+probability ( ins_indep_7 | renal_cl_7, ins_indep_util_7 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -17659,7 +17659,7 @@ probability( ins_indep_7 | renal_cl_7, ins_indep_util_7 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_7 | ins_dep_util_7, glu_prod_7 ) {
+probability ( ins_dep_7 | ins_dep_util_7, glu_prod_7 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -17709,7 +17709,7 @@ probability( ins_dep_7 | ins_dep_util_7, glu_prod_7 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_7 | ins_indep_7, ins_dep_7 ) {
+probability ( endo_bal_7 | ins_indep_7, ins_dep_7 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -17776,7 +17776,7 @@ probability( endo_bal_7 | ins_indep_7, ins_dep_7 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_7 | cho_7, gut_abs_7 ) {
+probability ( cho_bal_7 | cho_7, gut_abs_7 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -17904,7 +17904,7 @@ probability( cho_bal_7 | cho_7, gut_abs_7 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_7 | gut_abs_7, endo_bal_7 ) {
+probability ( basal_bal_7 | gut_abs_7, endo_bal_7 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -18008,10 +18008,10 @@ probability( basal_bal_7 | gut_abs_7, endo_bal_7 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_7 ) {
+probability ( met_irr_7 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_7 | basal_bal_7, met_irr_7 ) {
+probability ( tot_bal_7 | basal_bal_7, met_irr_7 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -18146,10 +18146,10 @@ probability( tot_bal_7 | basal_bal_7, met_irr_7 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_8 ) {
+probability ( meal_8 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_8 | meal_8, cho_bal_7 ) {
+probability ( cho_8 | meal_8, cho_bal_7 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -18487,7 +18487,7 @@ probability( cho_8 | meal_8, cho_bal_7 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_8 | bg_7, tot_bal_7 ) {
+probability ( bg_8 | bg_7, tot_bal_7 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -18654,7 +18654,7 @@ probability( bg_8 | bg_7, tot_bal_7 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_8 | ins_abs_8, ins_sens ) {
+probability ( activ_ins_8 | ins_abs_8, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -18711,10 +18711,10 @@ probability( activ_ins_8 | ins_abs_8, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_8 ) {
+probability ( ins_abs_8 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_8 | cho_8 ) {
+probability ( gut_abs_8 | cho_8 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -18737,7 +18737,7 @@ probability( gut_abs_8 | cho_8 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_8 | bg_8 ) {
+probability ( renal_cl_8 | bg_8 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -18750,7 +18750,7 @@ probability( renal_cl_8 | bg_8 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_8 | bg_8 ) {
+probability ( ins_indep_util_8 | bg_8 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -18763,7 +18763,7 @@ probability( ins_indep_util_8 | bg_8 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_8 | bg_8, activ_ins_8 ) {
+probability ( ins_dep_util_8 | bg_8, activ_ins_8 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -18875,7 +18875,7 @@ probability( ins_dep_util_8 | bg_8, activ_ins_8 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_8 | activ_ins_8, bg_8 ) {
+probability ( glu_prod_8 | activ_ins_8, bg_8 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -18987,7 +18987,7 @@ probability( glu_prod_8 | activ_ins_8, bg_8 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_8 | renal_cl_8, ins_indep_util_8 ) {
+probability ( ins_indep_8 | renal_cl_8, ins_indep_util_8 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -18998,7 +18998,7 @@ probability( ins_indep_8 | renal_cl_8, ins_indep_util_8 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_8 | ins_dep_util_8, glu_prod_8 ) {
+probability ( ins_dep_8 | ins_dep_util_8, glu_prod_8 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -19048,7 +19048,7 @@ probability( ins_dep_8 | ins_dep_util_8, glu_prod_8 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_8 | ins_indep_8, ins_dep_8 ) {
+probability ( endo_bal_8 | ins_indep_8, ins_dep_8 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -19115,7 +19115,7 @@ probability( endo_bal_8 | ins_indep_8, ins_dep_8 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_8 | cho_8, gut_abs_8 ) {
+probability ( cho_bal_8 | cho_8, gut_abs_8 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -19243,7 +19243,7 @@ probability( cho_bal_8 | cho_8, gut_abs_8 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_8 | gut_abs_8, endo_bal_8 ) {
+probability ( basal_bal_8 | gut_abs_8, endo_bal_8 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -19347,10 +19347,10 @@ probability( basal_bal_8 | gut_abs_8, endo_bal_8 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_8 ) {
+probability ( met_irr_8 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_8 | basal_bal_8, met_irr_8 ) {
+probability ( tot_bal_8 | basal_bal_8, met_irr_8 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -19485,10 +19485,10 @@ probability( tot_bal_8 | basal_bal_8, met_irr_8 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_9 ) {
+probability ( meal_9 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_9 | meal_9, cho_bal_8 ) {
+probability ( cho_9 | meal_9, cho_bal_8 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -19826,7 +19826,7 @@ probability( cho_9 | meal_9, cho_bal_8 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_9 | bg_8, tot_bal_8 ) {
+probability ( bg_9 | bg_8, tot_bal_8 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -19993,7 +19993,7 @@ probability( bg_9 | bg_8, tot_bal_8 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_9 | ins_abs_9, ins_sens ) {
+probability ( activ_ins_9 | ins_abs_9, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -20050,10 +20050,10 @@ probability( activ_ins_9 | ins_abs_9, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_9 ) {
+probability ( ins_abs_9 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_9 | cho_9 ) {
+probability ( gut_abs_9 | cho_9 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -20076,7 +20076,7 @@ probability( gut_abs_9 | cho_9 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_9 | bg_9 ) {
+probability ( renal_cl_9 | bg_9 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -20089,7 +20089,7 @@ probability( renal_cl_9 | bg_9 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_9 | bg_9 ) {
+probability ( ins_indep_util_9 | bg_9 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -20102,7 +20102,7 @@ probability( ins_indep_util_9 | bg_9 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_9 | bg_9, activ_ins_9 ) {
+probability ( ins_dep_util_9 | bg_9, activ_ins_9 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -20214,7 +20214,7 @@ probability( ins_dep_util_9 | bg_9, activ_ins_9 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_9 | activ_ins_9, bg_9 ) {
+probability ( glu_prod_9 | activ_ins_9, bg_9 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -20326,7 +20326,7 @@ probability( glu_prod_9 | activ_ins_9, bg_9 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_9 | renal_cl_9, ins_indep_util_9 ) {
+probability ( ins_indep_9 | renal_cl_9, ins_indep_util_9 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -20337,7 +20337,7 @@ probability( ins_indep_9 | renal_cl_9, ins_indep_util_9 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_9 | ins_dep_util_9, glu_prod_9 ) {
+probability ( ins_dep_9 | ins_dep_util_9, glu_prod_9 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -20387,7 +20387,7 @@ probability( ins_dep_9 | ins_dep_util_9, glu_prod_9 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_9 | ins_indep_9, ins_dep_9 ) {
+probability ( endo_bal_9 | ins_indep_9, ins_dep_9 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -20454,7 +20454,7 @@ probability( endo_bal_9 | ins_indep_9, ins_dep_9 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_9 | cho_9, gut_abs_9 ) {
+probability ( cho_bal_9 | cho_9, gut_abs_9 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -20582,7 +20582,7 @@ probability( cho_bal_9 | cho_9, gut_abs_9 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_9 | gut_abs_9, endo_bal_9 ) {
+probability ( basal_bal_9 | gut_abs_9, endo_bal_9 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -20686,10 +20686,10 @@ probability( basal_bal_9 | gut_abs_9, endo_bal_9 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_9 ) {
+probability ( met_irr_9 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_9 | basal_bal_9, met_irr_9 ) {
+probability ( tot_bal_9 | basal_bal_9, met_irr_9 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -20824,10 +20824,10 @@ probability( tot_bal_9 | basal_bal_9, met_irr_9 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_10 ) {
+probability ( meal_10 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_10 | meal_10, cho_bal_9 ) {
+probability ( cho_10 | meal_10, cho_bal_9 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -21165,7 +21165,7 @@ probability( cho_10 | meal_10, cho_bal_9 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_10 | bg_9, tot_bal_9 ) {
+probability ( bg_10 | bg_9, tot_bal_9 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -21332,7 +21332,7 @@ probability( bg_10 | bg_9, tot_bal_9 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_10 | ins_abs_10, ins_sens ) {
+probability ( activ_ins_10 | ins_abs_10, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -21389,10 +21389,10 @@ probability( activ_ins_10 | ins_abs_10, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_10 ) {
+probability ( ins_abs_10 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_10 | cho_10 ) {
+probability ( gut_abs_10 | cho_10 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -21415,7 +21415,7 @@ probability( gut_abs_10 | cho_10 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_10 | bg_10 ) {
+probability ( renal_cl_10 | bg_10 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -21428,7 +21428,7 @@ probability( renal_cl_10 | bg_10 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_10 | bg_10 ) {
+probability ( ins_indep_util_10 | bg_10 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -21441,7 +21441,7 @@ probability( ins_indep_util_10 | bg_10 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_10 | bg_10, activ_ins_10 ) {
+probability ( ins_dep_util_10 | bg_10, activ_ins_10 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -21553,7 +21553,7 @@ probability( ins_dep_util_10 | bg_10, activ_ins_10 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_10 | activ_ins_10, bg_10 ) {
+probability ( glu_prod_10 | activ_ins_10, bg_10 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -21665,7 +21665,7 @@ probability( glu_prod_10 | activ_ins_10, bg_10 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_10 | renal_cl_10, ins_indep_util_10 ) {
+probability ( ins_indep_10 | renal_cl_10, ins_indep_util_10 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -21676,7 +21676,7 @@ probability( ins_indep_10 | renal_cl_10, ins_indep_util_10 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_10 | ins_dep_util_10, glu_prod_10 ) {
+probability ( ins_dep_10 | ins_dep_util_10, glu_prod_10 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -21726,7 +21726,7 @@ probability( ins_dep_10 | ins_dep_util_10, glu_prod_10 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_10 | ins_indep_10, ins_dep_10 ) {
+probability ( endo_bal_10 | ins_indep_10, ins_dep_10 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -21793,7 +21793,7 @@ probability( endo_bal_10 | ins_indep_10, ins_dep_10 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_10 | cho_10, gut_abs_10 ) {
+probability ( cho_bal_10 | cho_10, gut_abs_10 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -21921,7 +21921,7 @@ probability( cho_bal_10 | cho_10, gut_abs_10 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_10 | gut_abs_10, endo_bal_10 ) {
+probability ( basal_bal_10 | gut_abs_10, endo_bal_10 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -22025,10 +22025,10 @@ probability( basal_bal_10 | gut_abs_10, endo_bal_10 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_10 ) {
+probability ( met_irr_10 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_10 | basal_bal_10, met_irr_10 ) {
+probability ( tot_bal_10 | basal_bal_10, met_irr_10 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -22163,10 +22163,10 @@ probability( tot_bal_10 | basal_bal_10, met_irr_10 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_11 ) {
+probability ( meal_11 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_11 | meal_11, cho_bal_10 ) {
+probability ( cho_11 | meal_11, cho_bal_10 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -22504,7 +22504,7 @@ probability( cho_11 | meal_11, cho_bal_10 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_11 | bg_10, tot_bal_10 ) {
+probability ( bg_11 | bg_10, tot_bal_10 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -22671,7 +22671,7 @@ probability( bg_11 | bg_10, tot_bal_10 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_11 | ins_abs_11, ins_sens ) {
+probability ( activ_ins_11 | ins_abs_11, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -22728,10 +22728,10 @@ probability( activ_ins_11 | ins_abs_11, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_11 ) {
+probability ( ins_abs_11 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_11 | cho_11 ) {
+probability ( gut_abs_11 | cho_11 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -22754,7 +22754,7 @@ probability( gut_abs_11 | cho_11 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_11 | bg_11 ) {
+probability ( renal_cl_11 | bg_11 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -22767,7 +22767,7 @@ probability( renal_cl_11 | bg_11 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_11 | bg_11 ) {
+probability ( ins_indep_util_11 | bg_11 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -22780,7 +22780,7 @@ probability( ins_indep_util_11 | bg_11 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_11 | bg_11, activ_ins_11 ) {
+probability ( ins_dep_util_11 | bg_11, activ_ins_11 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -22892,7 +22892,7 @@ probability( ins_dep_util_11 | bg_11, activ_ins_11 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_11 | activ_ins_11, bg_11 ) {
+probability ( glu_prod_11 | activ_ins_11, bg_11 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -23004,7 +23004,7 @@ probability( glu_prod_11 | activ_ins_11, bg_11 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_11 | renal_cl_11, ins_indep_util_11 ) {
+probability ( ins_indep_11 | renal_cl_11, ins_indep_util_11 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -23015,7 +23015,7 @@ probability( ins_indep_11 | renal_cl_11, ins_indep_util_11 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_11 | ins_dep_util_11, glu_prod_11 ) {
+probability ( ins_dep_11 | ins_dep_util_11, glu_prod_11 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -23065,7 +23065,7 @@ probability( ins_dep_11 | ins_dep_util_11, glu_prod_11 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_11 | ins_indep_11, ins_dep_11 ) {
+probability ( endo_bal_11 | ins_indep_11, ins_dep_11 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -23132,7 +23132,7 @@ probability( endo_bal_11 | ins_indep_11, ins_dep_11 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_11 | cho_11, gut_abs_11 ) {
+probability ( cho_bal_11 | cho_11, gut_abs_11 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -23260,7 +23260,7 @@ probability( cho_bal_11 | cho_11, gut_abs_11 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_11 | gut_abs_11, endo_bal_11 ) {
+probability ( basal_bal_11 | gut_abs_11, endo_bal_11 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -23364,10 +23364,10 @@ probability( basal_bal_11 | gut_abs_11, endo_bal_11 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_11 ) {
+probability ( met_irr_11 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_11 | basal_bal_11, met_irr_11 ) {
+probability ( tot_bal_11 | basal_bal_11, met_irr_11 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -23502,10 +23502,10 @@ probability( tot_bal_11 | basal_bal_11, met_irr_11 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_12 ) {
+probability ( meal_12 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_12 | meal_12, cho_bal_11 ) {
+probability ( cho_12 | meal_12, cho_bal_11 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -23843,7 +23843,7 @@ probability( cho_12 | meal_12, cho_bal_11 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_12 | bg_11, tot_bal_11 ) {
+probability ( bg_12 | bg_11, tot_bal_11 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -24010,7 +24010,7 @@ probability( bg_12 | bg_11, tot_bal_11 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_12 | ins_abs_12, ins_sens ) {
+probability ( activ_ins_12 | ins_abs_12, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -24067,10 +24067,10 @@ probability( activ_ins_12 | ins_abs_12, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_12 ) {
+probability ( ins_abs_12 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_12 | cho_12 ) {
+probability ( gut_abs_12 | cho_12 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -24093,7 +24093,7 @@ probability( gut_abs_12 | cho_12 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_12 | bg_12 ) {
+probability ( renal_cl_12 | bg_12 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -24106,7 +24106,7 @@ probability( renal_cl_12 | bg_12 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_12 | bg_12 ) {
+probability ( ins_indep_util_12 | bg_12 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -24119,7 +24119,7 @@ probability( ins_indep_util_12 | bg_12 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_12 | bg_12, activ_ins_12 ) {
+probability ( ins_dep_util_12 | bg_12, activ_ins_12 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -24231,7 +24231,7 @@ probability( ins_dep_util_12 | bg_12, activ_ins_12 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_12 | activ_ins_12, bg_12 ) {
+probability ( glu_prod_12 | activ_ins_12, bg_12 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -24343,7 +24343,7 @@ probability( glu_prod_12 | activ_ins_12, bg_12 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_12 | renal_cl_12, ins_indep_util_12 ) {
+probability ( ins_indep_12 | renal_cl_12, ins_indep_util_12 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -24354,7 +24354,7 @@ probability( ins_indep_12 | renal_cl_12, ins_indep_util_12 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_12 | ins_dep_util_12, glu_prod_12 ) {
+probability ( ins_dep_12 | ins_dep_util_12, glu_prod_12 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -24404,7 +24404,7 @@ probability( ins_dep_12 | ins_dep_util_12, glu_prod_12 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_12 | ins_indep_12, ins_dep_12 ) {
+probability ( endo_bal_12 | ins_indep_12, ins_dep_12 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -24471,7 +24471,7 @@ probability( endo_bal_12 | ins_indep_12, ins_dep_12 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_12 | cho_12, gut_abs_12 ) {
+probability ( cho_bal_12 | cho_12, gut_abs_12 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -24599,7 +24599,7 @@ probability( cho_bal_12 | cho_12, gut_abs_12 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_12 | gut_abs_12, endo_bal_12 ) {
+probability ( basal_bal_12 | gut_abs_12, endo_bal_12 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -24703,10 +24703,10 @@ probability( basal_bal_12 | gut_abs_12, endo_bal_12 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_12 ) {
+probability ( met_irr_12 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_12 | basal_bal_12, met_irr_12 ) {
+probability ( tot_bal_12 | basal_bal_12, met_irr_12 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -24841,10 +24841,10 @@ probability( tot_bal_12 | basal_bal_12, met_irr_12 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_13 ) {
+probability ( meal_13 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_13 | meal_13, cho_bal_12 ) {
+probability ( cho_13 | meal_13, cho_bal_12 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -25182,7 +25182,7 @@ probability( cho_13 | meal_13, cho_bal_12 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_13 | bg_12, tot_bal_12 ) {
+probability ( bg_13 | bg_12, tot_bal_12 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -25349,7 +25349,7 @@ probability( bg_13 | bg_12, tot_bal_12 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_13 | ins_abs_13, ins_sens ) {
+probability ( activ_ins_13 | ins_abs_13, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -25406,10 +25406,10 @@ probability( activ_ins_13 | ins_abs_13, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_13 ) {
+probability ( ins_abs_13 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_13 | cho_13 ) {
+probability ( gut_abs_13 | cho_13 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -25432,7 +25432,7 @@ probability( gut_abs_13 | cho_13 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_13 | bg_13 ) {
+probability ( renal_cl_13 | bg_13 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -25445,7 +25445,7 @@ probability( renal_cl_13 | bg_13 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_13 | bg_13 ) {
+probability ( ins_indep_util_13 | bg_13 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -25458,7 +25458,7 @@ probability( ins_indep_util_13 | bg_13 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_13 | bg_13, activ_ins_13 ) {
+probability ( ins_dep_util_13 | bg_13, activ_ins_13 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -25570,7 +25570,7 @@ probability( ins_dep_util_13 | bg_13, activ_ins_13 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_13 | activ_ins_13, bg_13 ) {
+probability ( glu_prod_13 | activ_ins_13, bg_13 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -25682,7 +25682,7 @@ probability( glu_prod_13 | activ_ins_13, bg_13 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_13 | renal_cl_13, ins_indep_util_13 ) {
+probability ( ins_indep_13 | renal_cl_13, ins_indep_util_13 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -25693,7 +25693,7 @@ probability( ins_indep_13 | renal_cl_13, ins_indep_util_13 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_13 | ins_dep_util_13, glu_prod_13 ) {
+probability ( ins_dep_13 | ins_dep_util_13, glu_prod_13 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -25743,7 +25743,7 @@ probability( ins_dep_13 | ins_dep_util_13, glu_prod_13 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_13 | ins_indep_13, ins_dep_13 ) {
+probability ( endo_bal_13 | ins_indep_13, ins_dep_13 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -25810,7 +25810,7 @@ probability( endo_bal_13 | ins_indep_13, ins_dep_13 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_13 | cho_13, gut_abs_13 ) {
+probability ( cho_bal_13 | cho_13, gut_abs_13 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -25938,7 +25938,7 @@ probability( cho_bal_13 | cho_13, gut_abs_13 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_13 | gut_abs_13, endo_bal_13 ) {
+probability ( basal_bal_13 | gut_abs_13, endo_bal_13 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -26042,10 +26042,10 @@ probability( basal_bal_13 | gut_abs_13, endo_bal_13 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_13 ) {
+probability ( met_irr_13 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_13 | basal_bal_13, met_irr_13 ) {
+probability ( tot_bal_13 | basal_bal_13, met_irr_13 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -26180,10 +26180,10 @@ probability( tot_bal_13 | basal_bal_13, met_irr_13 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_14 ) {
+probability ( meal_14 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_14 | meal_14, cho_bal_13 ) {
+probability ( cho_14 | meal_14, cho_bal_13 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -26521,7 +26521,7 @@ probability( cho_14 | meal_14, cho_bal_13 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_14 | bg_13, tot_bal_13 ) {
+probability ( bg_14 | bg_13, tot_bal_13 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -26688,7 +26688,7 @@ probability( bg_14 | bg_13, tot_bal_13 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_14 | ins_abs_14, ins_sens ) {
+probability ( activ_ins_14 | ins_abs_14, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -26745,10 +26745,10 @@ probability( activ_ins_14 | ins_abs_14, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_14 ) {
+probability ( ins_abs_14 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_14 | cho_14 ) {
+probability ( gut_abs_14 | cho_14 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -26771,7 +26771,7 @@ probability( gut_abs_14 | cho_14 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_14 | bg_14 ) {
+probability ( renal_cl_14 | bg_14 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -26784,7 +26784,7 @@ probability( renal_cl_14 | bg_14 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_14 | bg_14 ) {
+probability ( ins_indep_util_14 | bg_14 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -26797,7 +26797,7 @@ probability( ins_indep_util_14 | bg_14 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_14 | bg_14, activ_ins_14 ) {
+probability ( ins_dep_util_14 | bg_14, activ_ins_14 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -26909,7 +26909,7 @@ probability( ins_dep_util_14 | bg_14, activ_ins_14 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_14 | activ_ins_14, bg_14 ) {
+probability ( glu_prod_14 | activ_ins_14, bg_14 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -27021,7 +27021,7 @@ probability( glu_prod_14 | activ_ins_14, bg_14 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_14 | renal_cl_14, ins_indep_util_14 ) {
+probability ( ins_indep_14 | renal_cl_14, ins_indep_util_14 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -27032,7 +27032,7 @@ probability( ins_indep_14 | renal_cl_14, ins_indep_util_14 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_14 | ins_dep_util_14, glu_prod_14 ) {
+probability ( ins_dep_14 | ins_dep_util_14, glu_prod_14 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -27082,7 +27082,7 @@ probability( ins_dep_14 | ins_dep_util_14, glu_prod_14 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_14 | ins_indep_14, ins_dep_14 ) {
+probability ( endo_bal_14 | ins_indep_14, ins_dep_14 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -27149,7 +27149,7 @@ probability( endo_bal_14 | ins_indep_14, ins_dep_14 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_14 | cho_14, gut_abs_14 ) {
+probability ( cho_bal_14 | cho_14, gut_abs_14 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -27277,7 +27277,7 @@ probability( cho_bal_14 | cho_14, gut_abs_14 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_14 | gut_abs_14, endo_bal_14 ) {
+probability ( basal_bal_14 | gut_abs_14, endo_bal_14 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -27381,10 +27381,10 @@ probability( basal_bal_14 | gut_abs_14, endo_bal_14 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_14 ) {
+probability ( met_irr_14 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_14 | basal_bal_14, met_irr_14 ) {
+probability ( tot_bal_14 | basal_bal_14, met_irr_14 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -27519,10 +27519,10 @@ probability( tot_bal_14 | basal_bal_14, met_irr_14 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_15 ) {
+probability ( meal_15 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_15 | meal_15, cho_bal_14 ) {
+probability ( cho_15 | meal_15, cho_bal_14 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -27860,7 +27860,7 @@ probability( cho_15 | meal_15, cho_bal_14 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_15 | bg_14, tot_bal_14 ) {
+probability ( bg_15 | bg_14, tot_bal_14 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -28027,7 +28027,7 @@ probability( bg_15 | bg_14, tot_bal_14 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_15 | ins_abs_15, ins_sens ) {
+probability ( activ_ins_15 | ins_abs_15, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -28084,10 +28084,10 @@ probability( activ_ins_15 | ins_abs_15, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_15 ) {
+probability ( ins_abs_15 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_15 | cho_15 ) {
+probability ( gut_abs_15 | cho_15 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -28110,7 +28110,7 @@ probability( gut_abs_15 | cho_15 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_15 | bg_15 ) {
+probability ( renal_cl_15 | bg_15 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -28123,7 +28123,7 @@ probability( renal_cl_15 | bg_15 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_15 | bg_15 ) {
+probability ( ins_indep_util_15 | bg_15 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -28136,7 +28136,7 @@ probability( ins_indep_util_15 | bg_15 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_15 | bg_15, activ_ins_15 ) {
+probability ( ins_dep_util_15 | bg_15, activ_ins_15 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -28248,7 +28248,7 @@ probability( ins_dep_util_15 | bg_15, activ_ins_15 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_15 | activ_ins_15, bg_15 ) {
+probability ( glu_prod_15 | activ_ins_15, bg_15 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -28360,7 +28360,7 @@ probability( glu_prod_15 | activ_ins_15, bg_15 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_15 | renal_cl_15, ins_indep_util_15 ) {
+probability ( ins_indep_15 | renal_cl_15, ins_indep_util_15 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -28371,7 +28371,7 @@ probability( ins_indep_15 | renal_cl_15, ins_indep_util_15 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_15 | ins_dep_util_15, glu_prod_15 ) {
+probability ( ins_dep_15 | ins_dep_util_15, glu_prod_15 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -28421,7 +28421,7 @@ probability( ins_dep_15 | ins_dep_util_15, glu_prod_15 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_15 | ins_indep_15, ins_dep_15 ) {
+probability ( endo_bal_15 | ins_indep_15, ins_dep_15 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -28488,7 +28488,7 @@ probability( endo_bal_15 | ins_indep_15, ins_dep_15 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_15 | cho_15, gut_abs_15 ) {
+probability ( cho_bal_15 | cho_15, gut_abs_15 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -28616,7 +28616,7 @@ probability( cho_bal_15 | cho_15, gut_abs_15 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_15 | gut_abs_15, endo_bal_15 ) {
+probability ( basal_bal_15 | gut_abs_15, endo_bal_15 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -28720,10 +28720,10 @@ probability( basal_bal_15 | gut_abs_15, endo_bal_15 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_15 ) {
+probability ( met_irr_15 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_15 | basal_bal_15, met_irr_15 ) {
+probability ( tot_bal_15 | basal_bal_15, met_irr_15 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -28858,10 +28858,10 @@ probability( tot_bal_15 | basal_bal_15, met_irr_15 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_16 ) {
+probability ( meal_16 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_16 | meal_16, cho_bal_15 ) {
+probability ( cho_16 | meal_16, cho_bal_15 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -29199,7 +29199,7 @@ probability( cho_16 | meal_16, cho_bal_15 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_16 | bg_15, tot_bal_15 ) {
+probability ( bg_16 | bg_15, tot_bal_15 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -29366,7 +29366,7 @@ probability( bg_16 | bg_15, tot_bal_15 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_16 | ins_abs_16, ins_sens ) {
+probability ( activ_ins_16 | ins_abs_16, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -29423,10 +29423,10 @@ probability( activ_ins_16 | ins_abs_16, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_16 ) {
+probability ( ins_abs_16 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_16 | cho_16 ) {
+probability ( gut_abs_16 | cho_16 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -29449,7 +29449,7 @@ probability( gut_abs_16 | cho_16 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_16 | bg_16 ) {
+probability ( renal_cl_16 | bg_16 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -29462,7 +29462,7 @@ probability( renal_cl_16 | bg_16 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_16 | bg_16 ) {
+probability ( ins_indep_util_16 | bg_16 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -29475,7 +29475,7 @@ probability( ins_indep_util_16 | bg_16 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_16 | bg_16, activ_ins_16 ) {
+probability ( ins_dep_util_16 | bg_16, activ_ins_16 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -29587,7 +29587,7 @@ probability( ins_dep_util_16 | bg_16, activ_ins_16 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_16 | activ_ins_16, bg_16 ) {
+probability ( glu_prod_16 | activ_ins_16, bg_16 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -29699,7 +29699,7 @@ probability( glu_prod_16 | activ_ins_16, bg_16 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_16 | renal_cl_16, ins_indep_util_16 ) {
+probability ( ins_indep_16 | renal_cl_16, ins_indep_util_16 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -29710,7 +29710,7 @@ probability( ins_indep_16 | renal_cl_16, ins_indep_util_16 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_16 | ins_dep_util_16, glu_prod_16 ) {
+probability ( ins_dep_16 | ins_dep_util_16, glu_prod_16 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -29760,7 +29760,7 @@ probability( ins_dep_16 | ins_dep_util_16, glu_prod_16 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_16 | ins_indep_16, ins_dep_16 ) {
+probability ( endo_bal_16 | ins_indep_16, ins_dep_16 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -29827,7 +29827,7 @@ probability( endo_bal_16 | ins_indep_16, ins_dep_16 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_16 | cho_16, gut_abs_16 ) {
+probability ( cho_bal_16 | cho_16, gut_abs_16 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -29955,7 +29955,7 @@ probability( cho_bal_16 | cho_16, gut_abs_16 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_16 | gut_abs_16, endo_bal_16 ) {
+probability ( basal_bal_16 | gut_abs_16, endo_bal_16 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -30059,10 +30059,10 @@ probability( basal_bal_16 | gut_abs_16, endo_bal_16 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_16 ) {
+probability ( met_irr_16 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_16 | basal_bal_16, met_irr_16 ) {
+probability ( tot_bal_16 | basal_bal_16, met_irr_16 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -30197,10 +30197,10 @@ probability( tot_bal_16 | basal_bal_16, met_irr_16 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_17 ) {
+probability ( meal_17 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_17 | meal_17, cho_bal_16 ) {
+probability ( cho_17 | meal_17, cho_bal_16 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -30538,7 +30538,7 @@ probability( cho_17 | meal_17, cho_bal_16 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_17 | bg_16, tot_bal_16 ) {
+probability ( bg_17 | bg_16, tot_bal_16 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -30705,7 +30705,7 @@ probability( bg_17 | bg_16, tot_bal_16 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_17 | ins_abs_17, ins_sens ) {
+probability ( activ_ins_17 | ins_abs_17, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -30762,10 +30762,10 @@ probability( activ_ins_17 | ins_abs_17, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_17 ) {
+probability ( ins_abs_17 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_17 | cho_17 ) {
+probability ( gut_abs_17 | cho_17 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -30788,7 +30788,7 @@ probability( gut_abs_17 | cho_17 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_17 | bg_17 ) {
+probability ( renal_cl_17 | bg_17 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -30801,7 +30801,7 @@ probability( renal_cl_17 | bg_17 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_17 | bg_17 ) {
+probability ( ins_indep_util_17 | bg_17 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -30814,7 +30814,7 @@ probability( ins_indep_util_17 | bg_17 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_17 | bg_17, activ_ins_17 ) {
+probability ( ins_dep_util_17 | bg_17, activ_ins_17 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -30926,7 +30926,7 @@ probability( ins_dep_util_17 | bg_17, activ_ins_17 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_17 | activ_ins_17, bg_17 ) {
+probability ( glu_prod_17 | activ_ins_17, bg_17 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -31038,7 +31038,7 @@ probability( glu_prod_17 | activ_ins_17, bg_17 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_17 | renal_cl_17, ins_indep_util_17 ) {
+probability ( ins_indep_17 | renal_cl_17, ins_indep_util_17 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -31049,7 +31049,7 @@ probability( ins_indep_17 | renal_cl_17, ins_indep_util_17 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_17 | ins_dep_util_17, glu_prod_17 ) {
+probability ( ins_dep_17 | ins_dep_util_17, glu_prod_17 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -31099,7 +31099,7 @@ probability( ins_dep_17 | ins_dep_util_17, glu_prod_17 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_17 | ins_indep_17, ins_dep_17 ) {
+probability ( endo_bal_17 | ins_indep_17, ins_dep_17 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -31166,7 +31166,7 @@ probability( endo_bal_17 | ins_indep_17, ins_dep_17 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_17 | cho_17, gut_abs_17 ) {
+probability ( cho_bal_17 | cho_17, gut_abs_17 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -31294,7 +31294,7 @@ probability( cho_bal_17 | cho_17, gut_abs_17 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_17 | gut_abs_17, endo_bal_17 ) {
+probability ( basal_bal_17 | gut_abs_17, endo_bal_17 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -31398,10 +31398,10 @@ probability( basal_bal_17 | gut_abs_17, endo_bal_17 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_17 ) {
+probability ( met_irr_17 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_17 | basal_bal_17, met_irr_17 ) {
+probability ( tot_bal_17 | basal_bal_17, met_irr_17 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -31536,10 +31536,10 @@ probability( tot_bal_17 | basal_bal_17, met_irr_17 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_18 ) {
+probability ( meal_18 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_18 | meal_18, cho_bal_17 ) {
+probability ( cho_18 | meal_18, cho_bal_17 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -31877,7 +31877,7 @@ probability( cho_18 | meal_18, cho_bal_17 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_18 | bg_17, tot_bal_17 ) {
+probability ( bg_18 | bg_17, tot_bal_17 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -32044,7 +32044,7 @@ probability( bg_18 | bg_17, tot_bal_17 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_18 | ins_abs_18, ins_sens ) {
+probability ( activ_ins_18 | ins_abs_18, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -32101,10 +32101,10 @@ probability( activ_ins_18 | ins_abs_18, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_18 ) {
+probability ( ins_abs_18 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_18 | cho_18 ) {
+probability ( gut_abs_18 | cho_18 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -32127,7 +32127,7 @@ probability( gut_abs_18 | cho_18 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_18 | bg_18 ) {
+probability ( renal_cl_18 | bg_18 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -32140,7 +32140,7 @@ probability( renal_cl_18 | bg_18 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_18 | bg_18 ) {
+probability ( ins_indep_util_18 | bg_18 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -32153,7 +32153,7 @@ probability( ins_indep_util_18 | bg_18 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_18 | bg_18, activ_ins_18 ) {
+probability ( ins_dep_util_18 | bg_18, activ_ins_18 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -32265,7 +32265,7 @@ probability( ins_dep_util_18 | bg_18, activ_ins_18 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_18 | activ_ins_18, bg_18 ) {
+probability ( glu_prod_18 | activ_ins_18, bg_18 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -32377,7 +32377,7 @@ probability( glu_prod_18 | activ_ins_18, bg_18 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_18 | renal_cl_18, ins_indep_util_18 ) {
+probability ( ins_indep_18 | renal_cl_18, ins_indep_util_18 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -32388,7 +32388,7 @@ probability( ins_indep_18 | renal_cl_18, ins_indep_util_18 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_18 | ins_dep_util_18, glu_prod_18 ) {
+probability ( ins_dep_18 | ins_dep_util_18, glu_prod_18 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -32438,7 +32438,7 @@ probability( ins_dep_18 | ins_dep_util_18, glu_prod_18 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_18 | ins_indep_18, ins_dep_18 ) {
+probability ( endo_bal_18 | ins_indep_18, ins_dep_18 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -32505,7 +32505,7 @@ probability( endo_bal_18 | ins_indep_18, ins_dep_18 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_18 | cho_18, gut_abs_18 ) {
+probability ( cho_bal_18 | cho_18, gut_abs_18 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -32633,7 +32633,7 @@ probability( cho_bal_18 | cho_18, gut_abs_18 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_18 | gut_abs_18, endo_bal_18 ) {
+probability ( basal_bal_18 | gut_abs_18, endo_bal_18 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -32737,10 +32737,10 @@ probability( basal_bal_18 | gut_abs_18, endo_bal_18 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_18 ) {
+probability ( met_irr_18 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_18 | basal_bal_18, met_irr_18 ) {
+probability ( tot_bal_18 | basal_bal_18, met_irr_18 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -32875,10 +32875,10 @@ probability( tot_bal_18 | basal_bal_18, met_irr_18 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_19 ) {
+probability ( meal_19 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_19 | meal_19, cho_bal_18 ) {
+probability ( cho_19 | meal_19, cho_bal_18 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -33216,7 +33216,7 @@ probability( cho_19 | meal_19, cho_bal_18 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_19 | bg_18, tot_bal_18 ) {
+probability ( bg_19 | bg_18, tot_bal_18 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -33383,7 +33383,7 @@ probability( bg_19 | bg_18, tot_bal_18 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_19 | ins_abs_19, ins_sens ) {
+probability ( activ_ins_19 | ins_abs_19, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -33440,10 +33440,10 @@ probability( activ_ins_19 | ins_abs_19, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_19 ) {
+probability ( ins_abs_19 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_19 | cho_19 ) {
+probability ( gut_abs_19 | cho_19 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -33466,7 +33466,7 @@ probability( gut_abs_19 | cho_19 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_19 | bg_19 ) {
+probability ( renal_cl_19 | bg_19 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -33479,7 +33479,7 @@ probability( renal_cl_19 | bg_19 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_19 | bg_19 ) {
+probability ( ins_indep_util_19 | bg_19 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -33492,7 +33492,7 @@ probability( ins_indep_util_19 | bg_19 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_19 | bg_19, activ_ins_19 ) {
+probability ( ins_dep_util_19 | bg_19, activ_ins_19 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -33604,7 +33604,7 @@ probability( ins_dep_util_19 | bg_19, activ_ins_19 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_19 | activ_ins_19, bg_19 ) {
+probability ( glu_prod_19 | activ_ins_19, bg_19 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -33716,7 +33716,7 @@ probability( glu_prod_19 | activ_ins_19, bg_19 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_19 | renal_cl_19, ins_indep_util_19 ) {
+probability ( ins_indep_19 | renal_cl_19, ins_indep_util_19 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -33727,7 +33727,7 @@ probability( ins_indep_19 | renal_cl_19, ins_indep_util_19 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_19 | ins_dep_util_19, glu_prod_19 ) {
+probability ( ins_dep_19 | ins_dep_util_19, glu_prod_19 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -33777,7 +33777,7 @@ probability( ins_dep_19 | ins_dep_util_19, glu_prod_19 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_19 | ins_indep_19, ins_dep_19 ) {
+probability ( endo_bal_19 | ins_indep_19, ins_dep_19 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -33844,7 +33844,7 @@ probability( endo_bal_19 | ins_indep_19, ins_dep_19 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_19 | cho_19, gut_abs_19 ) {
+probability ( cho_bal_19 | cho_19, gut_abs_19 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -33972,7 +33972,7 @@ probability( cho_bal_19 | cho_19, gut_abs_19 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_19 | gut_abs_19, endo_bal_19 ) {
+probability ( basal_bal_19 | gut_abs_19, endo_bal_19 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -34076,10 +34076,10 @@ probability( basal_bal_19 | gut_abs_19, endo_bal_19 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_19 ) {
+probability ( met_irr_19 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_19 | basal_bal_19, met_irr_19 ) {
+probability ( tot_bal_19 | basal_bal_19, met_irr_19 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -34214,10 +34214,10 @@ probability( tot_bal_19 | basal_bal_19, met_irr_19 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_20 ) {
+probability ( meal_20 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_20 | meal_20, cho_bal_19 ) {
+probability ( cho_20 | meal_20, cho_bal_19 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -34555,7 +34555,7 @@ probability( cho_20 | meal_20, cho_bal_19 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_20 | bg_19, tot_bal_19 ) {
+probability ( bg_20 | bg_19, tot_bal_19 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -34722,7 +34722,7 @@ probability( bg_20 | bg_19, tot_bal_19 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_20 | ins_abs_20, ins_sens ) {
+probability ( activ_ins_20 | ins_abs_20, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -34779,10 +34779,10 @@ probability( activ_ins_20 | ins_abs_20, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_20 ) {
+probability ( ins_abs_20 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_20 | cho_20 ) {
+probability ( gut_abs_20 | cho_20 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -34805,7 +34805,7 @@ probability( gut_abs_20 | cho_20 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_20 | bg_20 ) {
+probability ( renal_cl_20 | bg_20 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -34818,7 +34818,7 @@ probability( renal_cl_20 | bg_20 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_20 | bg_20 ) {
+probability ( ins_indep_util_20 | bg_20 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -34831,7 +34831,7 @@ probability( ins_indep_util_20 | bg_20 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_20 | bg_20, activ_ins_20 ) {
+probability ( ins_dep_util_20 | bg_20, activ_ins_20 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -34943,7 +34943,7 @@ probability( ins_dep_util_20 | bg_20, activ_ins_20 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_20 | activ_ins_20, bg_20 ) {
+probability ( glu_prod_20 | activ_ins_20, bg_20 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -35055,7 +35055,7 @@ probability( glu_prod_20 | activ_ins_20, bg_20 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_20 | renal_cl_20, ins_indep_util_20 ) {
+probability ( ins_indep_20 | renal_cl_20, ins_indep_util_20 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -35066,7 +35066,7 @@ probability( ins_indep_20 | renal_cl_20, ins_indep_util_20 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_20 | ins_dep_util_20, glu_prod_20 ) {
+probability ( ins_dep_20 | ins_dep_util_20, glu_prod_20 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -35116,7 +35116,7 @@ probability( ins_dep_20 | ins_dep_util_20, glu_prod_20 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_20 | ins_indep_20, ins_dep_20 ) {
+probability ( endo_bal_20 | ins_indep_20, ins_dep_20 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -35183,7 +35183,7 @@ probability( endo_bal_20 | ins_indep_20, ins_dep_20 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_20 | cho_20, gut_abs_20 ) {
+probability ( cho_bal_20 | cho_20, gut_abs_20 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -35311,7 +35311,7 @@ probability( cho_bal_20 | cho_20, gut_abs_20 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_20 | gut_abs_20, endo_bal_20 ) {
+probability ( basal_bal_20 | gut_abs_20, endo_bal_20 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -35415,10 +35415,10 @@ probability( basal_bal_20 | gut_abs_20, endo_bal_20 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_20 ) {
+probability ( met_irr_20 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_20 | basal_bal_20, met_irr_20 ) {
+probability ( tot_bal_20 | basal_bal_20, met_irr_20 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -35553,10 +35553,10 @@ probability( tot_bal_20 | basal_bal_20, met_irr_20 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_21 ) {
+probability ( meal_21 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_21 | meal_21, cho_bal_20 ) {
+probability ( cho_21 | meal_21, cho_bal_20 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -35894,7 +35894,7 @@ probability( cho_21 | meal_21, cho_bal_20 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_21 | bg_20, tot_bal_20 ) {
+probability ( bg_21 | bg_20, tot_bal_20 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -36061,7 +36061,7 @@ probability( bg_21 | bg_20, tot_bal_20 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_21 | ins_abs_21, ins_sens ) {
+probability ( activ_ins_21 | ins_abs_21, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -36118,10 +36118,10 @@ probability( activ_ins_21 | ins_abs_21, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_21 ) {
+probability ( ins_abs_21 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_21 | cho_21 ) {
+probability ( gut_abs_21 | cho_21 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -36144,7 +36144,7 @@ probability( gut_abs_21 | cho_21 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_21 | bg_21 ) {
+probability ( renal_cl_21 | bg_21 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -36157,7 +36157,7 @@ probability( renal_cl_21 | bg_21 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_21 | bg_21 ) {
+probability ( ins_indep_util_21 | bg_21 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -36170,7 +36170,7 @@ probability( ins_indep_util_21 | bg_21 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_21 | bg_21, activ_ins_21 ) {
+probability ( ins_dep_util_21 | bg_21, activ_ins_21 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -36282,7 +36282,7 @@ probability( ins_dep_util_21 | bg_21, activ_ins_21 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_21 | activ_ins_21, bg_21 ) {
+probability ( glu_prod_21 | activ_ins_21, bg_21 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -36394,7 +36394,7 @@ probability( glu_prod_21 | activ_ins_21, bg_21 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_21 | renal_cl_21, ins_indep_util_21 ) {
+probability ( ins_indep_21 | renal_cl_21, ins_indep_util_21 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -36405,7 +36405,7 @@ probability( ins_indep_21 | renal_cl_21, ins_indep_util_21 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_21 | ins_dep_util_21, glu_prod_21 ) {
+probability ( ins_dep_21 | ins_dep_util_21, glu_prod_21 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -36455,7 +36455,7 @@ probability( ins_dep_21 | ins_dep_util_21, glu_prod_21 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_21 | ins_indep_21, ins_dep_21 ) {
+probability ( endo_bal_21 | ins_indep_21, ins_dep_21 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -36522,7 +36522,7 @@ probability( endo_bal_21 | ins_indep_21, ins_dep_21 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_21 | cho_21, gut_abs_21 ) {
+probability ( cho_bal_21 | cho_21, gut_abs_21 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -36650,7 +36650,7 @@ probability( cho_bal_21 | cho_21, gut_abs_21 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_21 | gut_abs_21, endo_bal_21 ) {
+probability ( basal_bal_21 | gut_abs_21, endo_bal_21 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -36754,10 +36754,10 @@ probability( basal_bal_21 | gut_abs_21, endo_bal_21 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_21 ) {
+probability ( met_irr_21 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_21 | basal_bal_21, met_irr_21 ) {
+probability ( tot_bal_21 | basal_bal_21, met_irr_21 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -36892,10 +36892,10 @@ probability( tot_bal_21 | basal_bal_21, met_irr_21 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_22 ) {
+probability ( meal_22 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_22 | meal_22, cho_bal_21 ) {
+probability ( cho_22 | meal_22, cho_bal_21 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -37233,7 +37233,7 @@ probability( cho_22 | meal_22, cho_bal_21 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_22 | bg_21, tot_bal_21 ) {
+probability ( bg_22 | bg_21, tot_bal_21 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -37400,7 +37400,7 @@ probability( bg_22 | bg_21, tot_bal_21 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_22 | ins_abs_22, ins_sens ) {
+probability ( activ_ins_22 | ins_abs_22, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -37457,10 +37457,10 @@ probability( activ_ins_22 | ins_abs_22, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_22 ) {
+probability ( ins_abs_22 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_22 | cho_22 ) {
+probability ( gut_abs_22 | cho_22 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -37483,7 +37483,7 @@ probability( gut_abs_22 | cho_22 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_22 | bg_22 ) {
+probability ( renal_cl_22 | bg_22 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -37496,7 +37496,7 @@ probability( renal_cl_22 | bg_22 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_22 | bg_22 ) {
+probability ( ins_indep_util_22 | bg_22 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -37509,7 +37509,7 @@ probability( ins_indep_util_22 | bg_22 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_22 | bg_22, activ_ins_22 ) {
+probability ( ins_dep_util_22 | bg_22, activ_ins_22 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -37621,7 +37621,7 @@ probability( ins_dep_util_22 | bg_22, activ_ins_22 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_22 | activ_ins_22, bg_22 ) {
+probability ( glu_prod_22 | activ_ins_22, bg_22 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -37733,7 +37733,7 @@ probability( glu_prod_22 | activ_ins_22, bg_22 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_22 | renal_cl_22, ins_indep_util_22 ) {
+probability ( ins_indep_22 | renal_cl_22, ins_indep_util_22 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -37744,7 +37744,7 @@ probability( ins_indep_22 | renal_cl_22, ins_indep_util_22 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_22 | ins_dep_util_22, glu_prod_22 ) {
+probability ( ins_dep_22 | ins_dep_util_22, glu_prod_22 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -37794,7 +37794,7 @@ probability( ins_dep_22 | ins_dep_util_22, glu_prod_22 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_22 | ins_indep_22, ins_dep_22 ) {
+probability ( endo_bal_22 | ins_indep_22, ins_dep_22 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -37861,7 +37861,7 @@ probability( endo_bal_22 | ins_indep_22, ins_dep_22 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_22 | cho_22, gut_abs_22 ) {
+probability ( cho_bal_22 | cho_22, gut_abs_22 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -37989,7 +37989,7 @@ probability( cho_bal_22 | cho_22, gut_abs_22 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_22 | gut_abs_22, endo_bal_22 ) {
+probability ( basal_bal_22 | gut_abs_22, endo_bal_22 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -38093,10 +38093,10 @@ probability( basal_bal_22 | gut_abs_22, endo_bal_22 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_22 ) {
+probability ( met_irr_22 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_22 | basal_bal_22, met_irr_22 ) {
+probability ( tot_bal_22 | basal_bal_22, met_irr_22 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -38231,10 +38231,10 @@ probability( tot_bal_22 | basal_bal_22, met_irr_22 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_23 ) {
+probability ( meal_23 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_23 | meal_23, cho_bal_22 ) {
+probability ( cho_23 | meal_23, cho_bal_22 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -38572,7 +38572,7 @@ probability( cho_23 | meal_23, cho_bal_22 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_23 | bg_22, tot_bal_22 ) {
+probability ( bg_23 | bg_22, tot_bal_22 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -38739,7 +38739,7 @@ probability( bg_23 | bg_22, tot_bal_22 ) {
   ( 1mmol_l, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( activ_ins_23 | ins_abs_23, ins_sens ) {
+probability ( activ_ins_23 | ins_abs_23, ins_sens ) {
   ( 100_0mU_kg_h, incr__1_41 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, normal_1_00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100_0mU_kg_h, s_red__0_71 ) 0.9956, 0.0044, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -38796,10 +38796,10 @@ probability( activ_ins_23 | ins_abs_23, ins_sens ) {
   ( 1_6mU_kg_h, reduced_0_50 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1_6mU_kg_h, v_red__0_35 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( ins_abs_23 ) {
+probability ( ins_abs_23 ) {
   table 0.03, 0.04, 0.04, 0.04, 0.1, 0.15, 0.2, 0.2, 0.1, 0.06, 0.04;
 }
-probability( gut_abs_23 | cho_23 ) {
+probability ( gut_abs_23 | cho_23 ) {
   ( 8_0mmol_kg ) 0.5171, 0.3736, 0.0993, 0.0097, 0.0003, 0;
   ( 7_6mmol_kg ) 0.5167, 0.3914, 0.0863, 0.0055, 1E-04, 0;
   ( 7_2mmol_kg ) 0.5074, 0.3964, 0.0901, 0.006, 0.0001, 0;
@@ -38822,7 +38822,7 @@ probability( gut_abs_23 | cho_23 ) {
   ( 0_4mmol_kg ) 0, 0, 0, 0.0004, 0.4998, 0.4998;
   ( 0_0mmol_kg ) 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( renal_cl_23 | bg_23 ) {
+probability ( renal_cl_23 | bg_23 ) {
   ( 20mmol_l ) 0, 1, 0;
   ( 18mmol_l ) 0, 1, 0;
   ( 16mmol_l ) 0, 1, 0;
@@ -38835,7 +38835,7 @@ probability( renal_cl_23 | bg_23 ) {
   ( 2mmol_l ) 0, 0, 1;
   ( 1mmol_l ) 0, 0, 1;
 }
-probability( ins_indep_util_23 | bg_23 ) {
+probability ( ins_indep_util_23 | bg_23 ) {
   ( 20mmol_l ) 1, 0, 0;
   ( 18mmol_l ) 1, 0, 0;
   ( 16mmol_l ) 1, 0, 0;
@@ -38848,7 +38848,7 @@ probability( ins_indep_util_23 | bg_23 ) {
   ( 2mmol_l ) 0.0133013, 0.963396, 0.0233023;
   ( 1mmol_l ) 0.00039996, 0.19728, 0.80232;
 }
-probability( ins_dep_util_23 | bg_23, activ_ins_23 ) {
+probability ( ins_dep_util_23 | bg_23, activ_ins_23 ) {
   ( 20mmol_l, 80mU_l ) 0.5883, 0.3452, 0.0645, 0.002, 0, 0, 0, 0;
   ( 20mmol_l, 56mU_l ) 0.084883, 0.276845, 0.454709, 0.178664, 0.00489902, 0, 0, 0;
   ( 20mmol_l, 40mU_l ) 0.0005, 0.0085, 0.1148, 0.5198, 0.3541, 0.0023, 0, 0;
@@ -38960,7 +38960,7 @@ probability( ins_dep_util_23 | bg_23, activ_ins_23 ) {
   ( 1mmol_l, 5mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
   ( 1mmol_l, 2mU_l ) 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( glu_prod_23 | activ_ins_23, bg_23 ) {
+probability ( glu_prod_23 | activ_ins_23, bg_23 ) {
   ( 80mU_l, 20mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 18mmol_l ) 0, 0, 0, 0, 0, 1;
   ( 80mU_l, 16mmol_l ) 0, 0, 0, 0, 0, 1;
@@ -39072,7 +39072,7 @@ probability( glu_prod_23 | activ_ins_23, bg_23 ) {
   ( 2mU_l, 2mmol_l ) 0.439056, 0.362364, 0.157684, 0.0361964, 0.00439956, 0.00029997;
   ( 2mU_l, 1mmol_l ) 0.4672, 0.3559, 0.143, 0.0303, 0.0034, 0.0002;
 }
-probability( ins_indep_23 | renal_cl_23, ins_indep_util_23 ) {
+probability ( ins_indep_23 | renal_cl_23, ins_indep_util_23 ) {
   ( 0_8mmol_kg_h, 0_8mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0;
   ( 0_8mmol_kg_h, 0_4mmol_kg_h ) 0.00030003, 0.9994, 0.00030003, 0, 0;
   ( 0_8mmol_kg_h, 0_0mmol_kg_h ) 0, 0.00030003, 0.9994, 0.00030003, 0;
@@ -39083,7 +39083,7 @@ probability( ins_indep_23 | renal_cl_23, ins_indep_util_23 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0.0003, 0.9997;
 }
-probability( ins_dep_23 | ins_dep_util_23, glu_prod_23 ) {
+probability ( ins_dep_23 | ins_dep_util_23, glu_prod_23 ) {
   ( 2_8mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0;
@@ -39133,7 +39133,7 @@ probability( ins_dep_23 | ins_dep_util_23, glu_prod_23 ) {
   ( 0_0mmol_kg_h, 0_4mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, 0_0mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0;
 }
-probability( endo_bal_23 | ins_indep_23, ins_dep_23 ) {
+probability ( endo_bal_23 | ins_indep_23, ins_dep_23 ) {
   ( 1_6mmol_kg_h, 2_0mmol_kg_h ) 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_6mmol_kg_h ) 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 1_6mmol_kg_h, 1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -39200,7 +39200,7 @@ probability( endo_bal_23 | ins_indep_23, ins_dep_23 ) {
   ( 0_0mmol_kg_h, __2_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0, 0;
   ( 0_0mmol_kg_h, __2_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003, 0, 0, 0;
 }
-probability( cho_bal_23 | cho_23, gut_abs_23 ) {
+probability ( cho_bal_23 | cho_23, gut_abs_23 ) {
   ( 8_0mmol_kg, 2_0mmol_kg_h ) 0.9997, 0.0003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 8_0mmol_kg, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -39328,7 +39328,7 @@ probability( cho_bal_23 | cho_23, gut_abs_23 ) {
   ( 0_0mmol_kg, 0_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( 0_0mmol_kg, 0_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( basal_bal_23 | gut_abs_23, endo_bal_23 ) {
+probability ( basal_bal_23 | gut_abs_23, endo_bal_23 ) {
   ( 2_0mmol_kg_h, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_6mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_0mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -39432,10 +39432,10 @@ probability( basal_bal_23 | gut_abs_23, endo_bal_23 ) {
   ( 0_0mmol_kg_h, __4_0mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00030003, 0.9994, 0.00030003;
   ( 0_0mmol_kg_h, __4_4mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0003, 0.9997;
 }
-probability( met_irr_23 ) {
+probability ( met_irr_23 ) {
   table 0.02, 0.05, 0.18, 0.5, 0.18, 0.05, 0.02;
 }
-probability( tot_bal_23 | basal_bal_23, met_irr_23 ) {
+probability ( tot_bal_23 | basal_bal_23, met_irr_23 ) {
   ( 2_8mmol_kg_h, 1_2mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 2_8mmol_kg_h, 0_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -39570,10 +39570,10 @@ probability( tot_bal_23 | basal_bal_23, met_irr_23 ) {
   ( __4_4mmol_kg_h, __0_8mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( __4_4mmol_kg_h, __1_2mmol_kg_h ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( meal_24 ) {
+probability ( meal_24 ) {
   table 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.8;
 }
-probability( cho_24 | meal_24, cho_bal_23 ) {
+probability ( cho_24 | meal_24, cho_bal_23 ) {
   ( 100g, 6_0mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_6mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 100g, 5_2mmol_kg ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -39911,7 +39911,7 @@ probability( cho_24 | meal_24, cho_bal_23 ) {
   ( 0g, 0_4mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00470047, 0.0573057, 0.257026, 0.423842, 0.257026;
   ( 0g, 0_0mmol_kg ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00630063, 0.0772077, 0.345935, 0.570357;
 }
-probability( bg_24 | bg_23, tot_bal_23 ) {
+probability ( bg_24 | bg_23, tot_bal_23 ) {
   ( 20mmol_l, 2_8mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_4mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( 20mmol_l, 2_0mmol_kg_h ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;

@@ -536,7 +536,7 @@ namespace gum_tests {
         gum::InfluenceDiagram<float> id;
         gum::List<gum::NodeId> idList;
 
-        for(const auto iter : id.nodes()) {
+        for ( const auto iter : id.nodes() ) {
           TS_ASSERT ( idList.exists ( iter ) );
         }
       }
@@ -694,7 +694,7 @@ namespace gum_tests {
 
         fill ( id, idList );
 
-        for(const auto iter : id.nodes()) {
+        for ( const auto iter : id.nodes() ) {
           TS_ASSERT_EQUALS ( id.idFromName ( id.variable ( iter ).name() ), iter );
           TS_ASSERT_EQUALS ( &id.variableFromName ( id.variable ( iter ).name() ), &id.variable ( iter ) );
         }

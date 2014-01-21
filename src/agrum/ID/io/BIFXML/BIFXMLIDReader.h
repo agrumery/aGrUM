@@ -103,7 +103,7 @@ namespace gum {
        * A reader is created to reading a defined file.
        * Note that an ID as to be created before and given in parameter.
        */
-      BIFXMLIDReader( InfluenceDiagram<GUM_SCALAR>* infdiag, const std::string& filePath );
+      BIFXMLIDReader ( InfluenceDiagram<GUM_SCALAR>* infdiag, const std::string& filePath );
 
       /**
        * Default destructor.
@@ -126,12 +126,12 @@ namespace gum {
       /**
        * Parsing xml element containing data on variables
        */
-      void __parsingVariables( ticpp::Element* parentNetwork );
+      void __parsingVariables ( ticpp::Element* parentNetwork );
 
       /**
        * fill the diagram
        */
-      void __fillingDiagram( ticpp::Element* parentNetwork );
+      void __fillingDiagram ( ticpp::Element* parentNetwork );
 
       /**
        * An handle to the influence diagram in which will be load the content of the xml filePath

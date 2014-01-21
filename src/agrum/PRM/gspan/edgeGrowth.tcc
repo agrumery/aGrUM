@@ -32,7 +32,7 @@ namespace gum {
 
       template<typename GUM_SCALAR> INLINE
       EdgeGrowth<GUM_SCALAR>::EdgeGrowth ( NodeId a_u, LabelData* an_edge,
-                               LabelData* a_l_v, NodeId a_v ) :
+                                           LabelData* a_l_v, NodeId a_v ) :
         u ( a_u ), edge ( an_edge ), l_v ( a_l_v ), v ( a_v ),
         degree_list ( new std::vector<NodeId>() ) {
         GUM_CONSTRUCTOR ( EdgeGrowth );

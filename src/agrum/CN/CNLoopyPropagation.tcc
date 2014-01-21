@@ -786,7 +786,7 @@ namespace gum {
       seq.reserve ( nbrArcs );
 
       for ( auto it = bnet->arcs().beginSafe (); it != bnet->arcs().endSafe(); ++it )
-        seq.push_back ( &( *it ) );
+        seq.push_back ( & ( *it ) );
 
       GUM_SCALAR eps;
       // validate TestSuite
@@ -827,7 +827,7 @@ namespace gum {
       seq.reserve ( nbrArcs );
 
       for ( auto it = bnet->arcs().beginSafe(); it != bnet->arcs().endSafe(); ++it )
-        seq.push_back ( &( *it ) );
+        seq.push_back ( & ( *it ) );
 
       GUM_SCALAR eps;
       // validate TestSuite

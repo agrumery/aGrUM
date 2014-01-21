@@ -67,7 +67,7 @@ namespace gum {
       /** The newly created matrix contains the same variables and the same values as
        * src, but no instantiation is associated to it.
        * @param src the multidimensional matrix we copy into this */
-      MultiDimArray( const MultiDimArray<GUM_SCALAR>& src );
+      MultiDimArray ( const MultiDimArray<GUM_SCALAR>& src );
 
       /// destructor
       /** Note that, when the multidimensional array is removed src memory, its
@@ -113,7 +113,7 @@ namespace gum {
       /** @param v
        * @throw DuplicateElement
        */
-      virtual void add( const DiscreteVariable& v );
+      virtual void add ( const DiscreteVariable& v );
 
       /// removes a dimension, needed for updating the offsets & gaps
       /** If the variable does not belong to the MultiDimBase, then this method does
@@ -122,14 +122,14 @@ namespace gum {
        * @throw NotFound
        * @throw OperationNotAllowed
        */
-      virtual void erase( const DiscreteVariable& v );
+      virtual void erase ( const DiscreteVariable& v );
 
       /// returns the real number of parameters used for this table.
       /** This function is used for compute @see compressionRatio() */
       virtual Size realSize() const;
 
       /// fill the table with d
-      virtual void fill( const GUM_SCALAR& d ) const;
+      virtual void fill ( const GUM_SCALAR& d ) const;
 
       /// returns the element stored in the multidimArray at a given offset
       /** The offset is computed as follows: let S={X1,...,Xk} be the sequence of
@@ -140,7 +140,7 @@ namespace gum {
        * @warning for efficiency reasons, this function does not check whether
        * the element referenced by the offset actually belongs to the MultiDimArray.
        * If you want this additional feature, use instead function getByOffset */
-      const GUM_SCALAR& unsafeGet( Idx offset ) const;
+      const GUM_SCALAR& unsafeGet ( Idx offset ) const;
 
 
       /// returns the element stored in the multidimArray at a given offset
@@ -151,7 +151,7 @@ namespace gum {
        * by using function get with instantiation {x1,...,xk}.
        * @throws OutOfBound exception is thrown if the element referenced does not
        * belong to the MultiDimArray */
-      const GUM_SCALAR& getByOffset( Idx offset ) const;
+      const GUM_SCALAR& getByOffset ( Idx offset ) const;
 
       /// modifies the the element stored in the multidimArray at a given offset
       /** The offset is computed as follows: let S={X1,...,Xk} be the sequence of
@@ -162,7 +162,7 @@ namespace gum {
        * @warning for efficiency reasons, this function does not check whether
        * the element referenced by the offset actually belongs to the MultiDimArray.
        * If you want this additional feature, use instead function setByOffset */
-      void unsafeSet( Idx offset, const GUM_SCALAR& );
+      void unsafeSet ( Idx offset, const GUM_SCALAR& );
 
       /// modifies the the element stored in the multidimArray at a given offset
       /** The offset is computed as follows: let S={X1,...,Xk} be the sequence of
@@ -172,7 +172,7 @@ namespace gum {
        * by using function get with instantiation {x1,...,xk}.
        * @throws OutOfBound exception is thrown if the element referenced does not
        * belong to the MultiDimArray */
-      void setByOffset( Idx offset, const GUM_SCALAR& );
+      void setByOffset ( Idx offset, const GUM_SCALAR& );
 
       /// returns the real name of the multiDimArray
       /** In aGrUM, all the types of multi-dimensional arrays/functionals have a
@@ -193,17 +193,17 @@ namespace gum {
       mutable std::vector<GUM_SCALAR> _values;
 
       /// synchronise content after MultipleChanges
-      virtual void _commitMultipleChanges( void );
-      virtual void _commitMultipleChanges( const GUM_SCALAR& );
+      virtual void _commitMultipleChanges ( void );
+      virtual void _commitMultipleChanges ( const GUM_SCALAR& );
 
       /// data access operator
       /** @param i an Instantiation
        * @throw NotFound
        * @throw NullElement
        */
-      virtual GUM_SCALAR& _get( const Instantiation& i ) const;
+      virtual GUM_SCALAR& _get ( const Instantiation& i ) const;
 
-      virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
+      virtual void _swap ( const DiscreteVariable* x, const DiscreteVariable* y );
   };
 
   extern template class MultiDimArray<float>;

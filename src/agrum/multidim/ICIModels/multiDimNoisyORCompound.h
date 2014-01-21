@@ -60,8 +60,8 @@ namespace gum {
 
       /// Default constructor.
 
-      MultiDimNoisyORCompound( GUM_SCALAR external_weight, GUM_SCALAR default_weight = ( GUM_SCALAR )1.0 );
-      MultiDimNoisyORCompound( const MultiDimNoisyORCompound<GUM_SCALAR>& from );
+      MultiDimNoisyORCompound ( GUM_SCALAR external_weight, GUM_SCALAR default_weight = ( GUM_SCALAR ) 1.0 );
+      MultiDimNoisyORCompound ( const MultiDimNoisyORCompound<GUM_SCALAR>& from );
 
 
       /** Copy constructor using a bijection to swap variables from source.
@@ -69,8 +69,8 @@ namespace gum {
       * @param from the copied instance
       */
 
-      MultiDimNoisyORCompound( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-                               const MultiDimNoisyORCompound<GUM_SCALAR>& from );
+      MultiDimNoisyORCompound ( const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
+                                const MultiDimNoisyORCompound<GUM_SCALAR>& from );
 
 
       /// Destructor.
@@ -102,9 +102,9 @@ namespace gum {
 
     public:
 
-      virtual GUM_SCALAR get( const Instantiation& i ) const;
+      virtual GUM_SCALAR get ( const Instantiation& i ) const;
 
-      const std::string toString( void ) const;
+      const std::string toString ( void ) const;
 
       /// returns the real name of the multiDimArray
       /** In aGrUM, all the types of multi-dimensional arrays/functionals have a

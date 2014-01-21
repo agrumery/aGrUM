@@ -43,7 +43,7 @@ namespace gum {
 
       public:
         /// Association between a class element and it's holding class.
-        typedef std::pair<const ClassElementContainer<GUM_SCALAR>*,const ClassElement<GUM_SCALAR>*> EltPair;
+        typedef std::pair<const ClassElementContainer<GUM_SCALAR>*, const ClassElement<GUM_SCALAR>*> EltPair;
 
         // ========================================================================
         /// @name Constructors and Destructor.
@@ -52,10 +52,10 @@ namespace gum {
 
         /// Default constructor.
         /// @param prm The PRM<GUM_SCALAR> for which this ClassDependencyGraph<GUM_SCALAR> is constructed.
-        ClassDependencyGraph( const PRM<GUM_SCALAR>& prm );
+        ClassDependencyGraph ( const PRM<GUM_SCALAR>& prm );
 
         /// Copy constructor.
-        ClassDependencyGraph( const ClassDependencyGraph<GUM_SCALAR>& source );
+        ClassDependencyGraph ( const ClassDependencyGraph<GUM_SCALAR>& source );
 
         /// Destructor.
         ~ClassDependencyGraph();

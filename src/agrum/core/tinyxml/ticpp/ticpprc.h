@@ -81,7 +81,7 @@ class TiCppRCImp {
     /**
     Initializes m_tiCppRC pointer, and set reference count to 1
     */
-    TiCppRCImp( TiCppRC* tiCppRC );
+    TiCppRCImp ( TiCppRC* tiCppRC );
 
     /**
     Allows the TiCppRC object to set the pointer to itself ( m_tiCppRc ) to nullptr when the TiCppRC object is deleted

@@ -33,9 +33,11 @@ __project_url__ = 'http://forge.lip6.fr/projects/pyagrum'
 
 # selection of imports extracted from dir(pyAgrum)
 from pyAgrum import GUM_MAJOR_VERSION,GUM_MINOR_VERSION,GUM_PATCH_VERSION,GUM_VERSION
-from pyAgrum import Arc,Edge,BayesNet,DiGraph,Sequence_node,Sequence_string,Vector_double
+
+from pyAgrum import Arc,Edge,BayesNet,DiGraph,Vector_double
+from pyAgrum import NodeSequence,StringSequence
 from pyAgrum import DiscreteVar,DiscretizedVar,Instantiation,LabelizedVar,RangeVar,Variable
-from pyAgrum import ListPotentials,Potential
+from pyAgrum import Potential
 from pyAgrum import BruteForceKL,GibbsInference,GibbsKL,LazyPropagation
 from pyAgrum import PythonApproximationListener,PythonBNListener,PythonLoadListener
 from pyAgrum import generateBN
@@ -61,16 +63,19 @@ def loadBN(s,listeners=None):
 
     extension=s.split('.')[-1].upper()
     if extension=="BIF":
-        bn.loadBIF(s,listeners)
+        res=bn.loadBIF(s,listeners)
     elif extension=="BIFXML":
-        bn.loadBIFXML(s,listeners)
+        res=bn.loadBIFXML(s,listeners)
     elif extension=="DSL":
-        bn.loadDSL(s,listeners)
+        res=bn.loadDSL(s,listeners)
     elif extension=="NET":
-        bn.loadNET(s,listeners)
+        res=bn.loadNET(s,listeners)
     else:
         raise Exception("extension "+s.split('.')[-1]+" unknown. Please use "+availableBNExts())
 
+    if not res:
+      raise Exception("Error(s) in "+s)
+    
     bn.setProperty("name",s)
     return bn
 

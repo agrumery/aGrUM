@@ -220,7 +220,7 @@ namespace gum_tests {
         if ( net != 0 ) {
           gum::HashTable<std::string, gum::Id> idMap;
 
-          for(const auto iter : net->nodes()) {
+          for ( const auto iter : net->nodes() ) {
             idMap.insert ( net->variable ( iter ).name(), iter );
           }
 
@@ -574,7 +574,7 @@ namespace gum_tests {
         gum::HashTable<std::string, gum::Id> idMap;
 
 
-        for(const auto iter : net->nodes()) {
+        for ( const auto iter : net->nodes() ) {
           idMap.insert ( net->variable ( iter ).name(), iter );
         }
 
@@ -797,7 +797,7 @@ namespace gum_tests {
       }
 
       void testCarpo() {
-        std::string file = GET_PATH_STR ( "carpo.bif");
+        std::string file = GET_PATH_STR ( "carpo.bif" );
         gum::BayesNet<float>* net = new gum::BayesNet<float>();
         gum::BIFReader<float> reader ( net, file );
 

@@ -60,7 +60,7 @@ namespace gum {
       ignore.insert ( query );
 
       for ( auto iter = query->beginInvRef(); iter != query->endInvRef(); ++iter ) {
-        for ( auto child = ( *( iter.val() ) ).begin(); child != ( *( iter.val() ) ).end(); ++child ) {
+        for ( auto child = ( * ( iter.val() ) ).begin(); child != ( * ( iter.val() ) ).end(); ++child ) {
           if ( not ignore.exists ( child->first ) ) {
             __eliminateNodesDownward ( query, child->first, pool, trash, elim_list, ignore, eliminated );
           } else if ( not eliminated.exists ( child->first ) ) {
@@ -81,7 +81,7 @@ namespace gum {
       }
 
       for ( auto attr = query->begin(); attr != query->end(); ++attr ) {
-        pool.insert ( & ( const_cast<Potential<GUM_SCALAR>&> ( ( *( attr.val () ) ).cpf() ) ) );
+        pool.insert ( & ( const_cast<Potential<GUM_SCALAR>&> ( ( * ( attr.val () ) ).cpf() ) ) );
       }
 
       for ( size_t idx = 0; idx < t.eliminationOrder().size(); ++idx ) {
@@ -163,7 +163,7 @@ namespace gum {
       List<const Instance<GUM_SCALAR>*> my_list;
 
       for ( auto iter = i->beginInvRef(); iter != i->endInvRef(); ++iter ) {
-        for ( auto child = ( *( iter.val() ) ).begin(); child != ( *( iter.val() ) ).end(); ++child ) {
+        for ( auto child = ( * ( iter.val() ) ).begin(); child != ( * ( iter.val() ) ).end(); ++child ) {
           if ( not ignore.exists ( child->first ) ) {
             __eliminateNodesDownward ( i, child->first, pool, trash, my_list, ignore, eliminated );
           } else if ( not eliminated.exists ( child->first ) ) {
@@ -245,7 +245,7 @@ namespace gum {
       ignore.insert ( i );
 
       for ( auto iter = i->beginInvRef(); iter != i->endInvRef(); ++iter ) {
-        for ( auto child = ( *( iter.val() ) ).begin(); child != ( *( iter.val() ) ).end(); ++child ) {
+        for ( auto child = ( * ( iter.val() ) ).begin(); child != ( * ( iter.val() ) ).end(); ++child ) {
           if ( not ignore.exists ( child->first ) ) {
             __eliminateNodesDownward ( i, child->first, pool, trash, elim_list, ignore, eliminated );
           }
@@ -300,7 +300,7 @@ namespace gum {
 
         // We need a local to not eliminate queried inner nodes of the same class
         for ( auto attr = i->begin(); attr != i->end(); ++attr ) {
-          tmp_pool.insert ( & ( ( *( attr.val() ) ).cpf() ) );
+          tmp_pool.insert ( & ( ( * ( attr.val() ) ).cpf() ) );
         }
 
         InstanceBayesNet<GUM_SCALAR> bn ( *i );

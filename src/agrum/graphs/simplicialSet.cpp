@@ -827,7 +827,7 @@ namespace gum {
     // such that the Id of Y and Z are greater than X.
     NodeSetIterator iterZ;
 
-    for ( const auto nodeX:__graph->nodes() ) {
+    for ( const auto nodeX : __graph->nodes() ) {
       unsigned int& nb_adjacent_neighbours_idX = __nb_adjacent_neighbours[nodeX];
 
       const NodeSet& nei = __graph->neighbours ( nodeX );

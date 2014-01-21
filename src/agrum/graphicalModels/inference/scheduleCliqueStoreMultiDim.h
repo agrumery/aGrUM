@@ -53,12 +53,11 @@ namespace gum {
       /// default constructor
       ScheduleCliqueStoreMultiDim
       ( const ScheduleMultiDim<GUM_SCALAR>& table,
-        typename Property<Set<const MultiDimImplementation<GUM_SCALAR>*> >::onNodes&
-        clique_tables,
+        NodeProperty<Set<const MultiDimImplementation<GUM_SCALAR>*> >& clique_tables,
         NodeId clique );
 
       /// copy constructor
-      ScheduleCliqueStoreMultiDim( const ScheduleCliqueStoreMultiDim<GUM_SCALAR>& );
+      ScheduleCliqueStoreMultiDim ( const ScheduleCliqueStoreMultiDim<GUM_SCALAR>& );
 
       /// virtual copy constructor: creates a clone of the operation
       virtual ScheduleCliqueStoreMultiDim<GUM_SCALAR>* newFactory() const;
@@ -111,7 +110,7 @@ namespace gum {
        * amount of memory used during the operation and the second one is the
        * amount of memory still used at the end of the function ( the memory used by
        * the resulting table ) */
-      std::pair<long,long> memoryUsage() const;
+      std::pair<long, long> memoryUsage() const;
 
       /// returns the set of multidims passed in argument to the operation
       const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>& multiDimArgs() const;
@@ -131,8 +130,7 @@ namespace gum {
       ScheduleMultiDim<GUM_SCALAR> __table;
 
       // a mapping assigning to each clique a set of tables
-      typename Property<Set<const MultiDimImplementation<GUM_SCALAR>*> >::onNodes*
-      __tableSet;
+      NodeProperty<Set<const MultiDimImplementation<GUM_SCALAR>*> >* __tableSet;
 
       // the clique into which the table will be stored
       NodeId __clique;

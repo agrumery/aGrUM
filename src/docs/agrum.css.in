@@ -1,5 +1,5 @@
 /* configuration file for agrum.css */
-BODY,H1,H2,H3,H4,H5,H6,P,CENTER,TD,TH,UL,DL,DIV {
+BODY, H1, H2, H3, H4, H5, H6, P, CENTER, TD, TH, UL, DL, DIV {
 font-family: Geneva, Arial, Helvetica, sans-serif;
 }
 
@@ -9,41 +9,41 @@ color: black;
   margin: 1px;
 }
 
-H1,H2,H3,H4,H1 A,H2 A,H3 A,H4 A {
+H1, H2, H3, H4, H1 A, H2 A, H3 A, H4 A {
 color: #AA00FF;
   padding: 4px;
 }
 
 TD {
-  font-size: 90%;
+  font-size: 90 %;
 }
 
 #titlearea {
-height:50px;
+height: 50px;
 font-size: 23px;
 }
 
 #doc-content {
-padding:5px;
-padding-left:10px;
+padding: 5px;
+padding-left: 10px;
 }
 
 #side-nav {
 margin-top: 1px;
 margin-left: 5px;
-font-size: 70%;
+font-size: 70 %;
 }
 
 #nav-path ul {
-margin:0px;
+margin: 0px;
 padding: 0px;
-padding-left:5px;
-padding-right:5px;
+padding-left: 5px;
+padding-right: 5px;
 background: #EEF1F7;
 }
 
 #nav-path li {
-display:inline;
+display: inline;
 }
 #nav-path li:before {
 content: "»";
@@ -53,51 +53,51 @@ content: "»";
 background: #DDE1E7;
 }
 
-H1,.title {
+H1, .title {
 text-align: center;
-  font-size: 180%;
+  font-size: 180 %;
   letter-spacing: 2px;
 counter-reset: subsection;
 }
 H2 {
-  font-size: 140%;
+  font-size: 140 %;
 counter-reset: subsection;
   letter-spacing: 2px;
 }
 H3 {
-  font-size: 120%;
+  font-size: 120 %;
 counter-reset: subsection;
 }
 
-H4:before {
-content: counter( subsection ) "- " ;
+H4: before {
+content: counter ( subsection ) "- " ;
 counter-increment: subsection;
 background-color: #EEEEEE;
 }
 H4 {
-  font-size: 100%;
+  font-size: 100 %;
   margin-left: 50px;
 background-color: #EEEEEE;
 }
 
 CAPTION { font-weight: bold }
 DIV.qindex {
-  width: 100%;
+  width: 100 %;
 background-color: #e8eef2;
   border: 1px solid #84b0c7;
 text-align: center;
   margin: 2px;
   padding: 2px;
-  line-height: 140%;
+  line-height: 140 %;
 }
 DIV.nav {
-  width: 100%;
+  width: 100 %;
 background-color: #e8eef2;
   border: 1px solid #84b0c7;
 text-align: center;
   margin: 2px;
   padding: 2px;
-  line-height: 140%;
+  line-height: 140 %;
 }
 DIV.navtab {
 background-color: #e8eef2;
@@ -108,19 +108,19 @@ text-align: center;
   padding: 2px;
 }
 TD.navtab {
-  font-size: 70%;
+  font-size: 70 %;
 }
 A.qindex {
 text-decoration: none;
 font-weight: bold;
 color: #1A419D;
 }
-A.qindex:visited {
+A.qindex: visited {
 text-decoration: none;
 font-weight: bold;
 color: #1A419D
 }
-A.qindex:hover {
+A.qindex: hover {
 text-decoration: none;
 background-color: #ddddff;
 }
@@ -131,23 +131,23 @@ background-color: #6666cc;
 color: #ffffff;
   border: 1px double #9295C2;
 }
-A.qindexHL:hover {
+A.qindexHL: hover {
 text-decoration: none;
 background-color: #6666cc;
 color: #ffffff;
 }
-A.qindexHL:visited { text-decoration: none; background-color: #6666cc; color: #ffffff }
+A.qindexHL: visited { text-decoration: none; background-color: #6666cc; color: #ffffff }
 A.el { text-decoration: none; font-weight: bold }
 A.elRef { font-weight: bold }
-A.code:link { text-decoration: none; font-weight: normal; color: #0000FF}
-A.code:visited { text-decoration: none; font-weight: normal; color: #0000FF}
-A.codeRef:link { font-weight: normal; color: #0000FF}
-A.codeRef:visited { font-weight: normal; color: #0000FF}
-A:hover { text-decoration: none; background-color: #f2f2ff }
+A.code: link { text-decoration: none; font-weight: normal; color: #0000FF}
+A.code: visited { text-decoration: none; font-weight: normal; color: #0000FF}
+A.codeRef: link { font-weight: normal; color: #0000FF}
+A.codeRef: visited { font-weight: normal; color: #0000FF}
+A: hover { text-decoration: none; background-color: #f2f2ff }
 DL.el { margin-left: -1cm }
 code {
 font-family: monospace, fixed;
-  font-size: 95%;
+  font-size: 95 %;
   border: 1px solid #CCCCCC;
 background-color: #f5f5f5;
   margin-top: 0px;
@@ -161,7 +161,7 @@ background-color: #f5f5f5;
 }
 .fragment {
 font-family: monospace, fixed;
-  font-size: 95%;
+  font-size: 95 %;
 }
 PRE.fragment {
   border: 1px solid #CCCCCC;
@@ -183,7 +183,7 @@ DIV.groupHeader {
   margin-bottom: 6px;
 font-weight: bold;
 }
-DIV.groupText { margin-left: 16px; font-style: italic; font-size: 90% }
+DIV.groupText { margin-left: 16px; font-style: italic; font-size: 90 % }
 TD.indexkey {
 background-color: #e8eef2;
 font-weight: bold;
@@ -225,7 +225,7 @@ SPAN.stringliteral { color: #002080 }
 SPAN.charliteral   { color: #008080 }
 .mdescLeft {
   padding: 0px 8px 4px 8px;
-  font-size: 80%;
+  font-size: 80 %;
 font-style: italic;
 background-color: #FAFAFA;
   border-top: 1px none #E0E0E0;
@@ -236,7 +236,7 @@ background-color: #FAFAFA;
 }
 .mdescRight {
   padding: 0px 8px 4px 8px;
-  font-size: 80%;
+  font-size: 80 %;
 font-style: italic;
 background-color: #FAFAFA;
   border-top: 1px none #E0E0E0;
@@ -261,7 +261,7 @@ border-right-style: none;
 border-bottom-style: none;
 border-left-style: none;
 background-color: #FAFAFA;
-  font-size: 80%;
+  font-size: 80 %;
 }
 .memItemRight {
   padding: 1px 8px 0px 8px;
@@ -279,7 +279,7 @@ border-right-style: none;
 border-bottom-style: none;
 border-left-style: none;
 background-color: #FAFAFA;
-  font-size: 80%;
+  font-size: 80 %;
 }
 .memTemplItemLeft {
   padding: 1px 0px 0px 8px;
@@ -297,7 +297,7 @@ border-right-style: none;
 border-bottom-style: none;
 border-left-style: none;
 background-color: #FAFAFA;
-  font-size: 80%;
+  font-size: 80 %;
 }
 .memTemplItemRight {
   padding: 1px 8px 0px 8px;
@@ -315,7 +315,7 @@ border-right-style: none;
 border-bottom-style: none;
 border-left-style: none;
 background-color: #FAFAFA;
-  font-size: 80%;
+  font-size: 80 %;
 }
 .memTemplParams {
   padding: 1px 0px 0px 8px;
@@ -334,7 +334,7 @@ border-bottom-style: none;
 border-left-style: none;
 color: #606060;
 background-color: #FAFAFA;
-  font-size: 80%;
+  font-size: 80 %;
 }
 .search     {
 color: #003399;
@@ -345,18 +345,18 @@ FORM.search {
   margin-top: 0px;
 }
 INPUT.search {
-  font-size: 75%;
+  font-size: 75 %;
 color: #000080;
 font-weight: normal;
 background-color: #e8eef2;
 }
 TD.tiny      {
-  font-size: 75%;
+  font-size: 75 %;
 }
 a {
 color: #1A41A8;
 }
-a:visited {
+a: visited {
 color: #2A3798;
 }
 .dirtab {
@@ -376,7 +376,7 @@ border: none;
 
 /* Style for detailed member documentation */
 .memtemplate {
-  font-size: 80%;
+  font-size: 80 %;
 color: #606060;
 font-weight: normal;
 }
@@ -405,7 +405,7 @@ font-weight: bold;
 }
 .memproto {
 background-color: #d5e1e8;
-  width: 100%;
+  width: 100 %;
   border-width: 1px;
 border-style: solid;
 border-color: #84b0c7;
@@ -427,12 +427,12 @@ font-style: italic;
 /* for the tree view */
 .ftvtree {
 font-family: sans-serif;
-  margin:0.5em;
+  margin: 0.5em;
 }
 .directory { font-size: 9pt; font-weight: bold; }
 .directory h3 { margin: 0px; margin-top: 1em; font-size: 11pt; }
 .directory > h3 { margin-top: 0; }
 .directory p { margin: 0px; white-space: nowrap; }
 .directory div { display: none; margin: 0px; }
-.directory img { vertical-align: -30%; }
+.directory img { vertical-align: -30 %; }
 

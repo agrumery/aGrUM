@@ -271,7 +271,7 @@ void test_credal() {
   lp.makeInference();
 
   //for ( gum::DAG::NodeIterator id = cn.current_bn().beginNodes(); id != cn.current_bn().endNodes(); ++id ) {
-  for(const auto id : cn.current_bn().nodes()) {
+  for ( const auto id : cn.current_bn().nodes() ) {
     unsigned int dSize = cn.current_bn().variable ( id ).domainSize();
 
     for ( unsigned int mod = 0; mod < dSize; mod++ ) {

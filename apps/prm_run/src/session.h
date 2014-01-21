@@ -30,8 +30,8 @@ struct Session {
   std::string cpaths;
   std::string output;
   bool fail;
-  inline Session():
-    syntax(false), verbose(false), help(false), fail(false)
+  inline Session() :
+    syntax ( false ), verbose ( false ), help ( false ), fail ( false )
   { }
 };
 

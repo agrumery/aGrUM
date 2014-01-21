@@ -33,7 +33,7 @@ namespace gum {
       double
       SearchStrategy<GUM_SCALAR>::_computeCost ( const Pattern& p ) {
         double cost = 0;
-        const Sequence<Instance<GUM_SCALAR>*>& seq = *( this->_tree->data ( p ).iso_map.beginSafe().val() );
+        const Sequence<Instance<GUM_SCALAR>*>& seq = * ( this->_tree->data ( p ).iso_map.beginSafe().val() );
         const Set<SlotChain<GUM_SCALAR>*>* chains = 0;
         const Set<Instance<GUM_SCALAR>*>* instances = 0;
         Sequence<ClassElement<GUM_SCALAR>*> input_set;
@@ -53,7 +53,7 @@ namespace gum {
           }
 
           for ( auto vec = ( **iter ).beginInvRef(); vec != ( **iter ).endInvRef(); ++vec ) {
-            for ( auto inverse = ( *( vec.val() ) ).begin(); inverse != ( *( vec.val() ) ).end(); ++inverse ) {
+            for ( auto inverse = ( * ( vec.val() ) ).begin(); inverse != ( * ( vec.val() ) ).end(); ++inverse ) {
               if ( not seq.exists ( inverse->first ) ) {
                 cost += std::log ( ( *iter )->get ( vec.key() ).type().variable().domainSize() );
                 break;
@@ -73,9 +73,9 @@ namespace gum {
             // Adding the node
             NodeId id = data.graph.insertNode();
             data.node2attr.insert ( id, __str ( *inst, attr.val() ) );
-            data.mod.insert ( id, ( *( attr.val() ) ).type()->domainSize() );
-            data.vars.insert ( id, & ( ( *( attr.val()) ).type().variable() ) );
-            pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( & ( ( *( attr.val() ) ).cpf() ) ) );
+            data.mod.insert ( id, ( * ( attr.val() ) ).type()->domainSize() );
+            data.vars.insert ( id, & ( ( * ( attr.val() ) ).type().variable() ) );
+            pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( & ( ( * ( attr.val() ) ).cpf() ) ) );
           }
         }
 
@@ -85,7 +85,7 @@ namespace gum {
             NodeId node = data.node2attr.first ( __str ( *inst, attr.val() ) );
             bool found = false; // If this is set at true, then node is an outer node
             // Children existing in the instance type's DAG
-            const NodeSet& chldrn = ( **inst ).type().dag().children ( ( *( attr.val() ) ).id() );
+            const NodeSet& chldrn = ( **inst ).type().dag().children ( ( * ( attr.val() ) ).id() );
 
             for ( NodeSetIterator chld = chldrn.beginSafe(); chld != chldrn.endSafe(); ++chld ) {
               data.graph.insertEdge ( node,
@@ -93,7 +93,7 @@ namespace gum {
             }
 
             // Parents existing in the instance type's DAG
-            const NodeSet& prnts  = ( **inst ).type().dag().parents ( ( *( attr.val() ) ).id() );
+            const NodeSet& prnts  = ( **inst ).type().dag().parents ( ( * ( attr.val() ) ).id() );
 
             for ( auto prnt = prnts.beginSafe(); prnt != prnts.endSafe(); ++prnt ) {
               switch ( ( **inst ).type().get ( *prnt ).elt_type() ) {
@@ -118,8 +118,8 @@ namespace gum {
             }
 
             // Referring Attribute<GUM_SCALAR>
-            if ( ( **inst ).hasRefAttr ( ( *( attr.val() ) ).id() ) ) {
-              const std::vector< std::pair<Instance<GUM_SCALAR>*, std::string> >& ref_attr = ( **inst ).getRefAttr ( ( *( attr.val() ) ).id() );
+            if ( ( **inst ).hasRefAttr ( ( * ( attr.val() ) ).id() ) ) {
+              const std::vector< std::pair<Instance<GUM_SCALAR>*, std::string> >& ref_attr = ( **inst ).getRefAttr ( ( * ( attr.val() ) ).id() );
 
               for ( auto pair = ref_attr.begin(); pair != ref_attr.end(); ++pair ) {
                 if ( match.exists ( pair->first ) ) {
@@ -385,7 +385,7 @@ namespace gum {
       StrictSearch<GUM_SCALAR>::__compute_costs ( const Pattern* p ) {
         StrictSearch<GUM_SCALAR>::PData data;
         Set<Potential<GUM_SCALAR>*> pool;
-        __buildPatternGraph ( data, pool, *( this->_tree->data ( *p ).iso_map.beginSafe().val() ) );
+        __buildPatternGraph ( data, pool, * ( this->_tree->data ( *p ).iso_map.beginSafe().val() ) );
         double inner = std::log ( __elimination_cost ( data, pool ).first );
         double outer = this->_computeCost ( *p );
         __map.insert ( p, std::make_pair ( inner, outer ) );

@@ -52,14 +52,14 @@ namespace gum {
       /** @warning tables 1 and 2 are stored by copy into the ScheduleCombine.
        * This is actually compulsory for the appropriate use of
        * ScheduleCombination classes */
-      ScheduleCombine( const ScheduleMultiDim<GUM_SCALAR>& table1,
-                       const ScheduleMultiDim<GUM_SCALAR>& table2,
-                       MultiDimImplementation<GUM_SCALAR>*
-                       ( *combine )( const MultiDimImplementation<GUM_SCALAR>&,
-                                     const MultiDimImplementation<GUM_SCALAR>& ) );
+      ScheduleCombine ( const ScheduleMultiDim<GUM_SCALAR>& table1,
+                        const ScheduleMultiDim<GUM_SCALAR>& table2,
+                        MultiDimImplementation<GUM_SCALAR>*
+                        ( *combine ) ( const MultiDimImplementation<GUM_SCALAR>&,
+                                       const MultiDimImplementation<GUM_SCALAR>& ) );
 
       /// copy constructor
-      ScheduleCombine( const ScheduleCombine<GUM_SCALAR>& );
+      ScheduleCombine ( const ScheduleCombine<GUM_SCALAR>& );
 
       /// virtual copy constructor: creates a clone of the operation
       virtual ScheduleCombine<GUM_SCALAR>* newFactory() const;
@@ -113,7 +113,7 @@ namespace gum {
        * amount of memory used during the operation and the second one is the
        * amount of memory still used at the end of the function ( the memory used by
        * the resulting table ) */
-      std::pair<long,long> memoryUsage() const;
+      std::pair<long, long> memoryUsage() const;
 
       /// returns the scheduleMultidim resulting from the execution of the operation
       INLINE const ScheduleMultiDim<GUM_SCALAR>& result() const;
@@ -149,8 +149,8 @@ namespace gum {
 
       /// the function actually used to perform the combination
       MultiDimImplementation<GUM_SCALAR>*
-      ( *__combine )( const MultiDimImplementation<GUM_SCALAR>&,
-                      const MultiDimImplementation<GUM_SCALAR>& );
+      ( *__combine ) ( const MultiDimImplementation<GUM_SCALAR>&,
+                       const MultiDimImplementation<GUM_SCALAR>& );
   };
 
 

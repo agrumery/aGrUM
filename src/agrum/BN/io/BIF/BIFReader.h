@@ -154,13 +154,13 @@ namespace gum {
       std::string errMsg ( unsigned int i );
 
       /// send on std::cerr the list of errors
-      void showElegantErrors();
+      void showElegantErrors(std::ostream& o=std::cerr);
 
       /// send on std::cerr the list of errors or warnings
-      void showElegantErrorsAndWarnings();
+      void showElegantErrorsAndWarnings(std::ostream& o=std::cerr);
 
       /// send on std::cerr the number of errors and the number of warnings
-      void showErrorCounts();
+      void showErrorCounts(std::ostream& o=std::cerr);
       /// @}
 
     protected:
@@ -176,8 +176,8 @@ namespace gum {
       // a boolean to throw the ioerror not in the constructor but in the proceed()
       bool __ioerror;
   };
-  
-  extern template class BIFReader<float>;  
+
+  extern template class BIFReader<float>;
   extern template class BIFReader<double>;
 } // namespace gum
 

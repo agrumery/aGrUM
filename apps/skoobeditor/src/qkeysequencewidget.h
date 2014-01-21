@@ -8,14 +8,14 @@ class QKeySequenceWidget : public QWidget {
     Q_OBJECT
 
   public:
-    QKeySequenceWidget( QWidget * parent = 0 );
-    QKeySequenceWidget( const QKeySequence & sequence, QWidget * parent = 0 );
+    QKeySequenceWidget ( QWidget* parent = 0 );
+    QKeySequenceWidget ( const QKeySequence& sequence, QWidget* parent = 0 );
 
     virtual QSize sizeHint() const;
 
     virtual QKeySequence keySequence() const;
-    virtual void setKeySequence( const QKeySequence & keySequence );
-    virtual void setKeySequence( const QString & keySequence );
+    virtual void setKeySequence ( const QKeySequence& keySequence );
+    virtual void setKeySequence ( const QString& keySequence );
 
   public slots:
     void clear();
@@ -25,13 +25,13 @@ class QKeySequenceWidget : public QWidget {
     void onLineEditionFinished();
 
   signals:
-    void shortcutChanged( QKeySequence );
+    void shortcutChanged ( QKeySequence );
 
   private:
-    Q_DISABLE_COPY( QKeySequenceWidget )
+    Q_DISABLE_COPY ( QKeySequenceWidget )
 
     struct PrivateData;
-    PrivateData * d;
+    PrivateData* d;
 
     void initParameters();
 };
@@ -46,7 +46,7 @@ class MyLineEdit : public QLineEdit {
     Q_OBJECT
   public:
     /** */
-    MyLineEdit( QWidget * parent = 0 ) : QLineEdit( parent ) {}
+    MyLineEdit ( QWidget* parent = 0 ) : QLineEdit ( parent ) {}
 
     /** */
     ~MyLineEdit() {}
@@ -57,45 +57,45 @@ class MyLineEdit : public QLineEdit {
     }
 
     /** */
-    virtual void setKeySequence( const QKeySequence & keySequence ) {
+    virtual void setKeySequence ( const QKeySequence& keySequence ) {
       seq = keySequence;
-      setText( seq.toString() );
+      setText ( seq.toString() );
     }
 
   public slots:
     /** */
     virtual void clear() {
       seq = QKeySequence();
-      setText( QString() );
+      setText ( QString() );
     }
 
   protected:
     /** */
-    virtual void keyPressEvent( QKeyEvent * event ) {
+    virtual void keyPressEvent ( QKeyEvent* event ) {
       if ( seq.count() <= 4 &&
            event->key() != Qt::Key_Control &&
            event->key() != Qt::Key_Shift &&
            event->key() != Qt::Key_Alt &&
            event->key() != Qt::Key_Meta ) {
 
-        QKeySequence shortcut( event->modifiers() + event->key() );
+        QKeySequence shortcut ( event->modifiers() + event->key() );
 
         if ( seq.count() == 0 || ! selectedText().isEmpty() )
           seq = shortcut;
         else
-          seq = QKeySequence( seq.toString() + "," + shortcut.toString() );
+          seq = QKeySequence ( seq.toString() + "," + shortcut.toString() );
 
-        setText( seq.toString() );
+        setText ( seq.toString() );
       }
 
     }
 
   private:
-    Q_DISABLE_COPY( MyLineEdit )
+    Q_DISABLE_COPY ( MyLineEdit )
 
     QKeySequence seq; ///
 };
 
-QDebug operator<<( QDebug dbg, const QKeySequenceWidget & object );
+QDebug operator<< ( QDebug dbg, const QKeySequenceWidget& object );
 
 #endif // QKEYSEQUENCEWIDGET_H

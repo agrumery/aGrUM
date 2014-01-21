@@ -35,25 +35,25 @@ namespace gum {
 
   /// Default constructor
 
-  INLINE DiscreteVariable::DiscreteVariable( const std::string& aName,
+  INLINE DiscreteVariable::DiscreteVariable ( const std::string& aName,
       const std::string& aDesc )  :
-    Variable( aName, aDesc ) {
-    GUM_CONSTRUCTOR( DiscreteVariable );
+    Variable ( aName, aDesc ) {
+    GUM_CONSTRUCTOR ( DiscreteVariable );
   }
 
 
   /// Copy constructor
 
-  INLINE DiscreteVariable::DiscreteVariable( const DiscreteVariable& aDRV ) :
-    Variable( aDRV ) {
-    GUM_CONSTRUCTOR( DiscreteVariable );
+  INLINE DiscreteVariable::DiscreteVariable ( const DiscreteVariable& aDRV ) :
+    Variable ( aDRV ) {
+    GUM_CONSTRUCTOR ( DiscreteVariable );
   }
 
 
   /// destructor
 
   INLINE DiscreteVariable::~DiscreteVariable() {
-    GUM_DESTRUCTOR( DiscreteVariable );
+    GUM_DESTRUCTOR ( DiscreteVariable );
   }
 
 

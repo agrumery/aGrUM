@@ -86,7 +86,7 @@ namespace gum {
     void
     ClassElementContainer<GUM_SCALAR>::setInputNode ( const ClassElement<GUM_SCALAR>& elt, bool b ) {
       if ( not exists ( elt.safeName() ) ) {
-        GUM_ERROR ( NotFound, ": <"+elt.safeName() +"> is not in <"+name() +">" );
+        GUM_ERROR ( NotFound, ": <" + elt.safeName() + "> is not in <" + name() + ">" );
       } else if ( ClassElement<GUM_SCALAR>::isAttribute ( elt ) or ClassElement<GUM_SCALAR>::isAggregate ( elt ) ) {
         try {
           _getIOFlag ( elt ).second = b;
@@ -114,7 +114,7 @@ namespace gum {
       GUM_TRACE_VAR ( name() );
 
       if ( not exists ( elt.safeName() ) ) {
-        GUM_ERROR ( NotFound, "<"+elt.safeName() +"> is not in <"+name() +">" );
+        GUM_ERROR ( NotFound, "<" + elt.safeName() + "> is not in <" + name() + ">" );
       } else if ( ClassElement<GUM_SCALAR>::isAttribute ( elt ) or ClassElement<GUM_SCALAR>::isAggregate ( elt ) ) {
         try {
           _getIOFlag ( elt ).second = b;

@@ -35,14 +35,14 @@ namespace gum {
 // To PRMObject are equal if they have the same name (which is unique).
     INLINE
     bool
-    PRMObject::operator==( const PRMObject& obj ) const {
+    PRMObject::operator== ( const PRMObject& obj ) const {
       return __name == obj.name();
     }
 
 // To PRMObject are equal if they have the same name (which is unique).
     INLINE
     bool
-    PRMObject::operator!=( const PRMObject& obj ) const {
+    PRMObject::operator!= ( const PRMObject& obj ) const {
       return __name != obj.name();
     }
 

@@ -56,7 +56,7 @@ namespace gum {
        * Note that the BN has to be built outside the reader. There is no delegation to create/destroy
        * the BN from inside the reader.
        */
-      BNReader ( BayesNet<GUM_SCALAR>* bn,const std::string& filename );
+      BNReader ( BayesNet<GUM_SCALAR>* bn, const std::string& filename );
 
       /**
        * Default destructor.
@@ -68,7 +68,7 @@ namespace gum {
        * parameter bayesNet.
        * @return Returns the number of error during the parsing (0 if none).
        */
-      virtual int proceed() =0;
+      virtual int proceed() = 0;
   };
 
   extern template class BNReader<float>;

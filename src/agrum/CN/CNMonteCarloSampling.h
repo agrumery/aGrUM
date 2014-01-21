@@ -117,8 +117,8 @@ namespace gum {
         bool _repetitiveInd;
     };
 
-    extern template class CNMonteCarloSampling<float,LazyPropagation<float>>;
-    extern template class CNMonteCarloSampling<double,LazyPropagation<double>>;
+    extern template class CNMonteCarloSampling<float, LazyPropagation<float>>;
+    extern template class CNMonteCarloSampling<double, LazyPropagation<double>>;
 
   } // namespace cn
 }

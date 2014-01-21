@@ -33,14 +33,14 @@ namespace gum {
       ClassElement<GUM_SCALAR> ( name ), __agg_type ( aggType ),  __type ( new Type<GUM_SCALAR> ( rvType ) ),
       __label ( rvType.variable().domainSize() + 1 ) {
       GUM_CONSTRUCTOR ( Aggregate );
-      this->_safeName =PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
+      this->_safeName = PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
     }
 
     template<typename GUM_SCALAR> Aggregate<GUM_SCALAR>::Aggregate ( const std::string& name, AggregateType aggType, const Type<GUM_SCALAR>& rvType, Idx label ) :
       ClassElement<GUM_SCALAR> ( name ), __agg_type ( aggType ), __type ( new Type<GUM_SCALAR> ( rvType ) ),
       __label ( label ) {
       GUM_CONSTRUCTOR ( Aggregate );
-      this->_safeName =PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
+      this->_safeName = PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
     }
 
     template<typename GUM_SCALAR> Aggregate<GUM_SCALAR>::~Aggregate() {

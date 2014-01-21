@@ -93,7 +93,7 @@ namespace gum {
   }
   template<typename GUM_SCALAR, template<class> class ICPTGenerator, template <class> class ICPTDisturber> INLINE
   void MaxInducedWidthMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::setMaxlog10InducedWidth ( Size maxlog10InducedWidth ) {
-    if ( maxlog10InducedWidth == 0 ) 
+    if ( maxlog10InducedWidth == 0 )
       GUM_ERROR ( OperationNotAllowed, "maxInducedWidth must be at least equal to 1 to have a connexe graph" );
 
     _maxlog10InducedWidth = maxlog10InducedWidth;

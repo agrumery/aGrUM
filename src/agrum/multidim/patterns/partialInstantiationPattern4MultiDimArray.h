@@ -42,7 +42,7 @@ namespace gum {
   MultiDimArray<GUM_SCALAR>*
   GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
   ( const MultiDimArray<GUM_SCALAR>* table,
-    const HashTable<const DiscreteVariable*,Idx>& inst_vars ) {
+    const HashTable<const DiscreteVariable*, Idx>& inst_vars ) {
 #endif
 
 
@@ -53,7 +53,7 @@ namespace gum {
     MultiDimArray<GUM_SCALAR*>*
     GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER_NAME
     ( const MultiDimArray<GUM_SCALAR*>* table,
-      const HashTable<const DiscreteVariable*,Idx>& inst_vars ) {
+      const HashTable<const DiscreteVariable*, Idx>& inst_vars ) {
 #endif
 
 
@@ -63,9 +63,9 @@ namespace gum {
       MultiDimImplementation<GUM_SCALAR>*
       GUM_MULTI_DIM_PARTIAL_INSTANTIATION_IMPL2ARRAY_NAME
       ( const MultiDimImplementation<GUM_SCALAR>* ttable,
-        const HashTable<const DiscreteVariable*,Idx>& inst_vars ) {
+        const HashTable<const DiscreteVariable*, Idx>& inst_vars ) {
         const MultiDimArray<GUM_SCALAR>* table =
-          reinterpret_cast<const MultiDimArray<GUM_SCALAR>*>( ttable );
+          reinterpret_cast<const MultiDimArray<GUM_SCALAR>*> ( ttable );
 #endif
 
 
@@ -76,9 +76,9 @@ namespace gum {
         MultiDimImplementation<GUM_SCALAR*>*
         GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER_IMPL2ARRAY_NAME
         ( const MultiDimImplementation<GUM_SCALAR*>* ttable,
-          const HashTable<const DiscreteVariable*,Idx>& inst_vars ) {
+          const HashTable<const DiscreteVariable*, Idx>& inst_vars ) {
           const MultiDimArray<GUM_SCALAR*>* table =
-            reinterpret_cast<const MultiDimArray<GUM_SCALAR*>*>( ttable );
+            reinterpret_cast<const MultiDimArray<GUM_SCALAR*>*> ( ttable );
 #endif
 
 
@@ -93,15 +93,15 @@ namespace gum {
           // table induced by the instantiation inst_var
           Idx table_alone_offset = 0;
           Idx offset = 1;
-          HashTable<const DiscreteVariable*,Idx> var1offset( table_vars.size() );
+          HashTable<const DiscreteVariable*, Idx> var1offset ( table_vars.size() );
 
           for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
                   table_vars.beginSafe(); iter != table_vars.endSafe(); ++iter ) {
-            if ( inst_vars.exists( *iter ) ) {
+            if ( inst_vars.exists ( *iter ) ) {
               table_alone_offset += inst_vars[*iter] * offset;
             }
 
-            var1offset.insert( *iter, offset );
+            var1offset.insert ( *iter, offset );
             offset *= ( *iter )->domainSize();
           }
 
@@ -121,9 +121,9 @@ namespace gum {
 
           for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
                   table_vars.beginSafe(); iter != table_vars.endSafe(); ++iter ) {
-            if ( ! inst_vars.exists( *iter ) ) {
-              table_and_result_domain.push_back( ( *iter )->domainSize() );
-              table_and_result_offset.push_back( var1offset[*iter] );
+            if ( ! inst_vars.exists ( *iter ) ) {
+              table_and_result_domain.push_back ( ( *iter )->domainSize() );
+              table_and_result_offset.push_back ( var1offset[*iter] );
               result_domain_size *= ( *iter )->domainSize();
               result_varSeq << *iter;
 
@@ -168,10 +168,10 @@ namespace gum {
 #ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
           // fill the matrix with any element
           {
-            const GUM_SCALAR& any_element = *( table->unsafeGet( 0 ) );
+            const GUM_SCALAR& any_element = * ( table->unsafeGet ( 0 ) );
 
             for ( Idx i = 0; i < result_domain_size; ++i ) {
-              result->unsafeSet( i, new GUM_SCALAR( any_element ) );
+              result->unsafeSet ( i, new GUM_SCALAR ( any_element ) );
             }
           }
 #endif /* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER */
@@ -181,19 +181,19 @@ namespace gum {
           // compute the result: it is now sufficient to loop over the variables that
           // were not instantiated. ptable and presult are pointers on the arrays
           // that are directly used for this loop
-          register GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* ptable =
+          GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* ptable =
             const_cast<GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE*>
             ( &( table->unsafeGet( table_alone_offset ) ) );
-          register GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* presult =
+          GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* presult =
             const_cast<GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE*>
-            ( &( result->unsafeGet( 0 ) ) );
+            ( & ( result->unsafeGet ( 0 ) ) );
 
 
           // but before doing so, check whether the instantiated variables are the
           // last ones or not. If so, we can optimize the parsing of ptable and
           // presult as both tables need be parsed using only 1-increments
           if ( has_before_incr ) {
-            for ( register Idx i = 0; i < result_domain_size; ++i ) {
+            for ( Idx i = 0; i < result_domain_size; ++i ) {
 #ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
               ** presult = **ptable;
 #else
@@ -208,17 +208,17 @@ namespace gum {
             // here, some uninstantiated variables exist after the instantiated ones in
             // the variables sequence of table. So, we must perform a more complicated
             // parsing of ptable
-            register Idx table_offset = 0;
+            Idx table_offset = 0;
 
-            for ( register Idx j = 0; j < result_domain_size; ++j ) {
+            for ( Idx j = 0; j < result_domain_size; ++j ) {
 #ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
-              ** presult = *( ptable[table_offset] );
+              ** presult = * ( ptable[table_offset] );
 #else
               *presult = ptable[table_offset];
 #endif
 
               // update the offset of table
-              for ( register unsigned int k = 0;
+              for ( unsigned int k = 0;
                     k < table_and_result_value.size(); ++k ) {
                 --table_and_result_value[k];
 

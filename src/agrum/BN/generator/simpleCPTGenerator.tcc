@@ -34,13 +34,13 @@ namespace gum {
   template <typename GUM_SCALAR> INLINE
   SimpleCPTGenerator<GUM_SCALAR>::SimpleCPTGenerator() :
     ICPTGenerator<GUM_SCALAR>() {
-    GUM_CONSTRUCTOR( SimpleCPTGenerator );
+    GUM_CONSTRUCTOR ( SimpleCPTGenerator );
   }
 
 // Destructor.
   template <typename GUM_SCALAR> INLINE
   SimpleCPTGenerator<GUM_SCALAR>::~SimpleCPTGenerator() {
-    GUM_DESTRUCTOR( SimpleCPTGenerator );
+    GUM_DESTRUCTOR ( SimpleCPTGenerator );
   }
 
 // Generates a CPT using floats.
@@ -49,27 +49,27 @@ namespace gum {
 
 
   template <typename GUM_SCALAR> void
-  SimpleCPTGenerator<GUM_SCALAR>::generateCPT( const Idx& varId, const Potential<GUM_SCALAR>& cpt ) {
+  SimpleCPTGenerator<GUM_SCALAR>::generateCPT ( const Idx& varId, const Potential<GUM_SCALAR>& cpt ) {
     std::vector<GUM_SCALAR> v;
 
     for ( Size i = 0; i < cpt.domainSize();  ++i ) {
-      v.push_back( ( GUM_SCALAR ) rand() );
+      v.push_back ( ( GUM_SCALAR ) rand() );
     }
 
-    cpt.fillWith( v );
+    cpt.fillWith ( v );
     Instantiation varInst;
-    varInst.add( cpt.variable( varId ) );
-    Instantiation cptInst( cpt );
+    varInst.add ( cpt.variable ( varId ) );
+    Instantiation cptInst ( cpt );
 
-    for ( cptInst.setFirstOut( varInst ); !cptInst.end(); cptInst.incOut( varInst ) ) {
+    for ( cptInst.setFirstOut ( varInst ); !cptInst.end(); cptInst.incOut ( varInst ) ) {
       GUM_SCALAR sum = ( GUM_SCALAR ) 0;
 
-      for ( cptInst.setFirstIn( varInst ); !cptInst.end(); cptInst.incIn( varInst ) ) {
+      for ( cptInst.setFirstIn ( varInst ); !cptInst.end(); cptInst.incIn ( varInst ) ) {
         sum += cpt[cptInst];
       }
 
-      for ( cptInst.setFirstIn( varInst ); !cptInst.end(); cptInst.incIn( varInst ) ) {
-        cpt.set( cptInst,cpt[cptInst] / sum );
+      for ( cptInst.setFirstIn ( varInst ); !cptInst.end(); cptInst.incIn ( varInst ) ) {
+        cpt.set ( cptInst, cpt[cptInst] / sum );
       }
 
       cptInst.unsetEnd();

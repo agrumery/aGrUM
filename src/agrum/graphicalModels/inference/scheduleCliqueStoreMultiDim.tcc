@@ -37,7 +37,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   ScheduleCliqueStoreMultiDim<GUM_SCALAR>::ScheduleCliqueStoreMultiDim
   ( const ScheduleMultiDim<GUM_SCALAR>& table,
-    typename Property<Set<const MultiDimImplementation<GUM_SCALAR>*> >::onNodes&
+    NodeProperty<Set<const MultiDimImplementation<GUM_SCALAR>*> >&
     clique_tables,
     NodeId clique ) :
     ScheduleOperation<GUM_SCALAR>

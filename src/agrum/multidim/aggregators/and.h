@@ -72,7 +72,7 @@ namespace gum {
         virtual std::string aggregatorName ( void ) const;
       protected:
         virtual Idx _neutralElt ( void ) const ;
-        virtual Idx _folder ( const DiscreteVariable& v,Idx i1,Idx i2,bool& stop_iteration ) const;
+        virtual Idx _folder ( const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration ) const;
       private:
         Idx __value;
     };

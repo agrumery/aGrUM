@@ -47,9 +47,9 @@ namespace gum {
 } /* namespace gum */
 
 
-int  GUM_PARSE_XML_CSV_parse( gum::Database& );
-int  GUM_PARSE_XML_CSV_error( gum::Database&, const char* );
-bool GUM_PARSE_XML_CSV_parser( gum::Database&, const std::string& );
+int  GUM_PARSE_XML_CSV_parse ( gum::Database& );
+int  GUM_PARSE_XML_CSV_error ( gum::Database&, const char* );
+bool GUM_PARSE_XML_CSV_parser ( gum::Database&, const std::string& );
 
 
 namespace gum {
@@ -81,12 +81,12 @@ namespace gum {
 
       /// basic constructor points toward the nb_caseth case of the database
 
-      DatabaseIterator( const Database& data, unsigned int nb_case );
+      DatabaseIterator ( const Database& data, unsigned int nb_case );
 
 
       /// copy constructor
 
-      DatabaseIterator( const DatabaseIterator& from );
+      DatabaseIterator ( const DatabaseIterator& from );
 
 
       /// destructor
@@ -131,7 +131,7 @@ namespace gum {
        * @throws NotFound exception is raised if the database is empty or if i is
        * greater than or equal to the number of cases in the database. */
 
-      unsigned int at( unsigned int i ) const;
+      unsigned int at ( unsigned int i ) const;
 
       /// @}
 
@@ -175,14 +175,14 @@ namespace gum {
        * returns the index (the integer) corresponding to the value of the ith
        * variable of the database of the case pointed to by the DatabaseIterator. */
 
-      unsigned int operator[]( unsigned int i ) const;
+      unsigned int operator[] ( unsigned int i ) const;
 
       /// @}
 
 
     private:
       /// type used to create the begin/rbegin/end/rend iterators
-      enum class Location: char {
+      enum class Location : char {
         BEGIN,
         RBEGIN,
         END,
@@ -205,7 +205,7 @@ namespace gum {
 
       /// initializers used for begin/rbegin/end/rend
 
-      void __initializeIterator( const Database& data, Location );
+      void __initializeIterator ( const Database& data, Location );
   };
 
 
@@ -236,7 +236,7 @@ namespace gum {
 
       /// copy constructor
 
-      Database( const Database& from );
+      Database ( const Database& from );
 
 
       /// copy operator
@@ -259,10 +259,10 @@ namespace gum {
        * if there are missing values, the number of modalities take into account this
        * "?" label. */
 
-      static Database createFromCSV( const std::string& filename,
-                                     char field_separator = ';',
-                                     char field_delimiter = '"',
-                                     char escape_char = '\\' );
+      static Database createFromCSV ( const std::string& filename,
+                                      char field_separator = ';',
+                                      char field_delimiter = '"',
+                                      char escape_char = '\\' );
 
 
       /// creates a new database by using a BN to find variables and labels.
@@ -276,11 +276,11 @@ namespace gum {
        * this "?" label.
        * @ throws IOError */
 
-      static Database createFromCSVAndBN( IBayesNet<float>* bn,
-                                          const std::string& filename,
-                                          char separator_separator = ';',
-                                          char field_delimiter = '"',
-                                          char escape_char = '\\' );
+      static Database createFromCSVAndBN ( IBayesNet<float>* bn,
+                                           const std::string& filename,
+                                           char separator_separator = ';',
+                                           char field_delimiter = '"',
+                                           char escape_char = '\\' );
 
 
       /// creates a new database from a mixed XML/CSV file
@@ -324,7 +324,7 @@ namespace gum {
        *
        *   Missing value are represented by "?"   */
 
-      static Database createFromXmlCSV( const std::string& filename );
+      static Database createFromXmlCSV ( const std::string& filename );
 
       /// @}
 
@@ -342,7 +342,7 @@ namespace gum {
        * @throw NotFound exception is thrown if the case cannot be found
        * (ncase is too big). */
 
-      const unsigned int* line( unsigned int ncase ) const;
+      const unsigned int* line ( unsigned int ncase ) const;
 
 
       /// get the value of the ith node in the nth case of the database
@@ -350,13 +350,13 @@ namespace gum {
        * @throw NotFound exception is thrown if the value cannot be found,
        * i.e., if n and/or i is/are too big. */
 
-      unsigned int value( unsigned int n, unsigned int i )
+      unsigned int value ( unsigned int n, unsigned int i )
       const ;
 
 
       /// returns the name of the kth node in the database
 
-      const std::string& nodeName( unsigned int k ) const ;
+      const std::string& nodeName ( unsigned int k ) const ;
 
 
       /// returns the names of all the nodes
@@ -366,18 +366,18 @@ namespace gum {
 
       /// returns the names of all the modalities of a given node
 
-      const std::vector<std::string>& modalitiesNames( unsigned int k )const ;
+      const std::vector<std::string>& modalitiesNames ( unsigned int k ) const ;
 
 
       /// returns the kth modality name of the ith node
 
-      const std::string& modalityName( unsigned int k, unsigned int i )const ;
+      const std::string& modalityName ( unsigned int k, unsigned int i ) const ;
 
 
       /// get the number of modalities of the kth node
       /// @warning : including "?" label if there are missing values
 
-      unsigned int nbrModalities( unsigned int k ) const ;
+      unsigned int nbrModalities ( unsigned int k ) const ;
 
 
       /// get the number of modalities of all the nodes
@@ -398,7 +398,7 @@ namespace gum {
       bool hasMissingValue() const;
 
       /// is there any missing value for this row
-      bool hasMissingValue( unsigned int k ) const;
+      bool hasMissingValue ( unsigned int k ) const;
 
       /// returns the name of the file.
       const std::string& filename() const;
@@ -487,9 +487,9 @@ namespace gum {
       friend class DatabaseIterator;
 
       /// enable the XML_CSV parser to fill the Database structure
-      friend int  ::GUM_PARSE_XML_CSV_parse( Database& );
-      friend int  ::GUM_PARSE_XML_CSV_error( Database&, const char* );
-      friend bool ::GUM_PARSE_XML_CSV_parser( Database&, const std::string& );
+      friend int  ::GUM_PARSE_XML_CSV_parse ( Database& );
+      friend int  ::GUM_PARSE_XML_CSV_error ( Database&, const char* );
+      friend bool ::GUM_PARSE_XML_CSV_parser ( Database&, const std::string& );
   };
 
 

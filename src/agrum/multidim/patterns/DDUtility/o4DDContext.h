@@ -74,13 +74,13 @@ namespace gum {
       /// @{
 
       /// Set DD1 diagram current explored Node
-      void setDD1Node( gum::NodeId exploredNode );
+      void setDD1Node ( gum::NodeId exploredNode );
 
       /// Get DD1 diagram current explored Node
       gum::NodeId  getDD1Node() const { return __DD1ExploredNode; };
 
       /// Set DD2 diagram current explored Node
-      void setDD2Node( gum::Idx exploredNode );
+      void setDD2Node ( gum::Idx exploredNode );
 
       /// Get DD2 diagram current explored Node
       gum::NodeId  getDD2Node() const { return __DD2ExploredNode; };
@@ -91,16 +91,16 @@ namespace gum {
       /// @{
 
       /// Returns true if variable is retrograde
-      bool isRetrogradeVar( const gum::DiscreteVariable*  var ) const { return __varSeq.exists( var ); };
+      bool isRetrogradeVar ( const gum::DiscreteVariable*  var ) const { return __varSeq.exists ( var ); };
 
       /// Inserts a new retrograde variable
-      void addRetrogradeVar( const gum::DiscreteVariable*  var );
+      void addRetrogradeVar ( const gum::DiscreteVariable*  var );
 
       /// Changes given variable modality
-      void chgVarModality( const gum::DiscreteVariable* var, gum::Idx newModality );
+      void chgVarModality ( const gum::DiscreteVariable* var, gum::Idx newModality );
 
       /// Returns true if variable is retrograde
-      gum::Idx variableModality( const gum::DiscreteVariable* var ) const { return __retrogradeVarInstantiation[ __varSeq.pos( var ) ]; };
+      gum::Idx variableModality ( const gum::DiscreteVariable* var ) const { return __retrogradeVarInstantiation[ __varSeq.pos ( var ) ]; };
 
       /// Returns current o4DDContext key
       const double contextKey() const;

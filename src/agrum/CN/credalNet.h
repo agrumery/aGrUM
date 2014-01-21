@@ -334,12 +334,12 @@ namespace gum {
         /**
          * @return Returns a constant reference to the ( up-to-date ) CredalNet CPTs.
          */
-        const typename Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes& credalNet_currentCpt() const;
+        const NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >& credalNet_currentCpt() const;
 
         /**
          * @return Returns a constant reference to the ( up-to-date ) CredalNet CPTs.
          */
-        const typename Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes& credalNet_srcCpt() const;
+        const NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >& credalNet_srcCpt() const;
 
         /**
          * @param id The constant reference to the choosen NodeId
@@ -432,13 +432,13 @@ namespace gum {
         BayesNet< GUM_SCALAR >* __current_bn; // = nullptr;
 
         /** @brief This CredalNet original CPTs. */
-        typename Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes __credalNet_src_cpt;
+        NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > > __credalNet_src_cpt;
 
         /** @brief This CredalNet up-to-date CPTs. */
-        typename Property< std::vector< std::vector< std::vector< GUM_SCALAR > > > >::onNodes* __credalNet_current_cpt;// =  nullptr;
+        NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >* __credalNet_current_cpt;// =  nullptr;
 
         /** @deprecated @brief Corresponding bits of each variable. */
-        typename Property< std::vector< NodeId > >::onNodes __var_bits;
+        NodeProperty< std::vector< NodeId > > __var_bits;
 
         /** @brief The NodeType of each node from the ORIGINAL network. */
         NodeProperty< NodeType > __original_nodeType;

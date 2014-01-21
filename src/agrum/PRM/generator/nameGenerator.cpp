@@ -28,7 +28,7 @@
 
 #ifdef GUM_NO_INLINE
 #include <agrum/PRM/generator/nameGenerator.inl>
-#endif 
+#endif
 
 namespace gum {
   namespace prm {

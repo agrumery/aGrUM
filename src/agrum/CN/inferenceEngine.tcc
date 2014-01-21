@@ -214,7 +214,7 @@ namespace gum {
 
     // check that observed variables DO exists in the network (otherwise Lazy report an error and app crash)
     template< typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::insertEvidence ( const typename Property< std::vector < GUM_SCALAR > >::onNodes& evidence ) {
+    void InferenceEngine< GUM_SCALAR >::insertEvidence ( const NodeProperty< std::vector < GUM_SCALAR > >& evidence ) {
       if ( ! _evidence.empty() )
         _evidence.clear();
 
@@ -724,7 +724,7 @@ namespace gum {
         typename std::vector< GUM_SCALAR > dynExp ( it.val()./*second.*/size() );
 
         for ( auto it2 = it.val()./*second.*/beginSafe(), theEnd2 = it.val()./*second.*/endSafe(); it2 != theEnd2; ++it2 ) {
-          dynExp[it2.key() /*->first*/] = it2.val()/*->second*/;
+          dynExp[it2.key() /*->first*/] = it2.val() /*->second*/;
         }
 
         _dynamicExpMin.insert ( it.key(), dynExp );
@@ -736,7 +736,7 @@ namespace gum {
         typename std::vector< GUM_SCALAR > dynExp ( it.val()./*second.*/size() );
 
         for ( auto it2 = it.val()./*second.*/beginSafe(), theEnd2 = it.val()./*second.*/endSafe(); it2 != theEnd2; ++it2 ) {
-          dynExp[it2.key() /*->first*/] = it2.val()/*->second*/;
+          dynExp[it2.key() /*->first*/] = it2.val() /*->second*/;
         }
 
         _dynamicExpMax.insert ( it.key(), dynExp );

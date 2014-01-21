@@ -39,7 +39,7 @@ namespace gum {
 
   INLINE
   void
-  O4DDContext::setDD1Node( gum::NodeId exploredNode ) {
+  O4DDContext::setDD1Node ( gum::NodeId exploredNode ) {
     __DD1ExploredNode = exploredNode;
   }
 
@@ -48,7 +48,7 @@ namespace gum {
 
   INLINE
   void
-  O4DDContext::setDD2Node( gum::NodeId exploredNode ) {
+  O4DDContext::setDD2Node ( gum::NodeId exploredNode ) {
     __DD2ExploredNode = exploredNode;
   }
 
@@ -64,13 +64,13 @@ namespace gum {
 
   INLINE
   void
-  O4DDContext::addRetrogradeVar( const gum::DiscreteVariable*  var )  {
+  O4DDContext::addRetrogradeVar ( const gum::DiscreteVariable*  var )  {
     if ( __varSeq.size() == __nbLogPrime )
-      GUM_ERROR( gum::OperationNotAllowed, "Not enough prime log2 in database. Please add more in o4DDContext.cpp files." );
+      GUM_ERROR ( gum::OperationNotAllowed, "Not enough prime log2 in database. Please add more in o4DDContext.cpp files." );
 
-    __varSeq.insert( var );
-    __retrogradeVarInstantiation.push_back( 0 );
-    __var2PrimeLog.push_back( __logPrime[ __nbLogPrime - __varSeq.pos( var ) - 3 ] );
+    __varSeq.insert ( var );
+    __retrogradeVarInstantiation.push_back ( 0 );
+    __var2PrimeLog.push_back ( __logPrime[ __nbLogPrime - __varSeq.pos ( var ) - 3 ] );
   }
 
 
@@ -78,8 +78,8 @@ namespace gum {
 
   INLINE
   void
-  O4DDContext::chgVarModality( const gum::DiscreteVariable* var, gum::Idx newModality ) {
-    __retrogradeVarInstantiation[ __varSeq.pos( var ) ] = newModality;
+  O4DDContext::chgVarModality ( const gum::DiscreteVariable* var, gum::Idx newModality ) {
+    __retrogradeVarInstantiation[ __varSeq.pos ( var ) ] = newModality;
   }
 
 

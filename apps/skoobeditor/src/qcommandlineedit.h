@@ -7,28 +7,28 @@ class QCommandLineEdit : public QLineEdit {
     Q_OBJECT;
 
   public:
-    QCommandLineEdit( QWidget * parent = 0 );
+    QCommandLineEdit ( QWidget* parent = 0 );
 
     //! \reimp
-    QCompleter * completer() const;
+    QCompleter* completer() const;
     //! \reimp
-    void setCompleter( QCompleter * c );
+    void setCompleter ( QCompleter* c );
 
   public slots:
     /// Autocomplete from QCompleter and its model.
     void autoComplete();
 
   protected:
-    virtual void keyPressEvent( QKeyEvent * event );
+    virtual void keyPressEvent ( QKeyEvent* event );
 
   protected slots:
-    void insertCompletion( const QString& completion );
+    void insertCompletion ( const QString& completion );
     void onReturnPressed();
 
   private:
 
     struct PrivateData;
-    PrivateData * d;
+    PrivateData* d;
 };
 
 #endif // QCOMMANDLINEEDIT_H

@@ -34,55 +34,55 @@ namespace gum {
 
 
   // diamond structure require to explicitely initialize NodeGraphPart
-  DAG::DAG( Size nodes_size ,
-            bool nodes_resize_policy,
-            Size arcs_size ,
-            bool arcs_resize_policy ) :
-    NodeGraphPart( nodes_size,nodes_resize_policy ),
-    DiGraph( nodes_size,nodes_resize_policy ,arcs_size,arcs_resize_policy ) {
-    GUM_CONSTRUCTOR( DAG );
+  DAG::DAG ( Size nodes_size ,
+             bool nodes_resize_policy,
+             Size arcs_size ,
+             bool arcs_resize_policy ) :
+    NodeGraphPart ( nodes_size, nodes_resize_policy ),
+    DiGraph ( nodes_size, nodes_resize_policy , arcs_size, arcs_resize_policy ) {
+    GUM_CONSTRUCTOR ( DAG );
   }
 
   // diamond structure require to explicitely initialize NodeGraphPart
-  DAG::DAG( const DAG& g ) : NodeGraphPart( g ),DiGraph( g ) {
-    GUM_CONS_CPY( DAG );
+  DAG::DAG ( const DAG& g ) : NodeGraphPart ( g ), DiGraph ( g ) {
+    GUM_CONS_CPY ( DAG );
   }
 
   DAG::~DAG() {
-    GUM_DESTRUCTOR( DAG );
+    GUM_DESTRUCTOR ( DAG );
   }
 
   /// we prefer to re-implement this (instead of using ArcGraphPart::directedPath)
   /// for optimisation
   /// @warning : this version is optimized for the search of a directedPath
   /// in a DAG !
-  bool DAG::__hasDirectedPath( const NodeId from, const NodeId to ) {
-    if ( ! exists( from ) ) return false;
+  bool DAG::__hasDirectedPath ( const NodeId from, const NodeId to ) {
+    if ( ! exists ( from ) ) return false;
 
-    if ( from==to ) return true;
+    if ( from == to ) return true;
 
     // not recursive version => use a FIFO for simulating the recursion
     List<NodeId> nodeFIFO;
-    nodeFIFO.pushBack( from );
+    nodeFIFO.pushBack ( from );
 
     NodeSet marked;
-    marked.insert( from );
+    marked.insert ( from );
 
     NodeId new_one;
 
     while ( ! nodeFIFO.empty() ) {
-      new_one=nodeFIFO.front();
+      new_one = nodeFIFO.front();
       //std::cout<<new_one<<std::endl;
       nodeFIFO.popFront();
 
-      const NodeSet& set=children( new_one );
+      const NodeSet& set = children ( new_one );
 
-      for ( NodeSetIterator ite=set.beginSafe(); ite!=set.endSafe(); ++ite ) {
+      for ( NodeSetIterator ite = set.beginSafe(); ite != set.endSafe(); ++ite ) {
         if ( *ite == to ) return true;
 
-        if ( ! marked.contains( *ite ) ) {
-          nodeFIFO.pushBack( *ite );
-          marked.insert( *ite );
+        if ( ! marked.contains ( *ite ) ) {
+          nodeFIFO.pushBack ( *ite );
+          marked.insert ( *ite );
         }
       }
     }

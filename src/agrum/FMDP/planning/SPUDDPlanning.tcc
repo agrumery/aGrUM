@@ -631,7 +631,7 @@ namespace gum {
       __traceAlgoSaveFile.open ( traceFileName.str().c_str(), std::ios::out | std::ios::app );
 
       if ( !__traceAlgoSaveFile ) {
-        GUM_ERROR ( IOError,"log file"<<traceFileName<<" does not open correctly");
+        GUM_ERROR ( IOError, "log file" << traceFileName << " does not open correctly" );
       }
 
       for ( SetIteratorSafe< MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.beginSafe(); VActionsIter != VactionCollector.endSafe(); ++VActionsIter ) {
@@ -708,8 +708,8 @@ namespace gum {
         delete *VActionsIter;
 
         __traceAlgoSaveFile << nbNodeT1 << "\t" << nbNodeT2 << "\t" << nbRetroVarDirect << "\t" << tailleEspaceRetrogradeDirect << "\t" << nbFinalNodeDirect << "\t" <<
-        iterationTimeDirect << "\t" << nbRetroVarIndirect << "\t" << tailleEspaceRetrogradeIndirect << "\t" << nbFinalNodeIndirect << "\t" << iterationTimeIndirect
-        << "\t" << sensDirect << "\t" << iterationTime << "\t" << totalTime << std::endl;
+                            iterationTimeDirect << "\t" << nbRetroVarIndirect << "\t" << tailleEspaceRetrogradeIndirect << "\t" << nbFinalNodeIndirect << "\t" << iterationTimeIndirect
+                            << "\t" << sensDirect << "\t" << iterationTime << "\t" << totalTime << std::endl;
       }
 
       __traceAlgoSaveFile.close();

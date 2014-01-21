@@ -18,7 +18,7 @@ namespace gum {
 class BuildController : public QObject {
     Q_OBJECT
   public:
-    explicit BuildController( MainWindow * mw, QObject *parent = 0 );
+    explicit BuildController ( MainWindow* mw, QObject* parent = 0 );
     ~BuildController();
 
     bool isAutoSyntaxCheck() const;
@@ -27,12 +27,12 @@ class BuildController : public QObject {
     const QSharedPointer<PRMTreeModel> projectModel() const;
 
   public slots:
-    void setAutoSyntaxCheck( bool isAuto );
+    void setAutoSyntaxCheck ( bool isAuto );
 
-    void checkSyntax( QsciScintillaExtended * sci = 0 );
-    void checkSyntax( const QString & filename );
-    void execute( QsciScintillaExtended * sci = 0 );
-    void execute( const QString & filename );
+    void checkSyntax ( QsciScintillaExtended* sci = 0 );
+    void checkSyntax ( const QString& filename );
+    void execute ( QsciScintillaExtended* sci = 0 );
+    void execute ( const QString& filename );
 
     /// Parse all skool files in project.
     void parseProject();
@@ -46,7 +46,7 @@ class BuildController : public QObject {
     void modelCanBeUpdated();
 
   protected slots:
-    void startParsing( bool isAuto = true, bool isExecution = false );
+    void startParsing ( bool isAuto = true, bool isExecution = false );
     void onParsingFinished();
     void onExecutionFinished();
     void onProjectParseFinished();
@@ -54,11 +54,11 @@ class BuildController : public QObject {
     void onCommandValided();
     void onCommandParsed();
 
-    void onMsgDoubleClick( QModelIndex index );
-    void onDocumentClosed( const QString & filename );
+    void onMsgDoubleClick ( QModelIndex index );
+    void onDocumentClosed ( const QString& filename );
 
-    void executeClass( QsciScintillaExtended * sci );
-    void executeSystem( QsciScintillaExtended * sci );
+    void executeClass ( QsciScintillaExtended* sci );
+    void executeSystem ( QsciScintillaExtended* sci );
 
   private slots:
     void triggerInit();
@@ -66,10 +66,10 @@ class BuildController : public QObject {
   private:
     void createNewParser();
 
-    MainWindow * mw;
+    MainWindow* mw;
 
     struct PrivateData;
-    PrivateData * d;
+    PrivateData* d;
 };
 
 #endif // BUILDCONTROLLER_H

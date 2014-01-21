@@ -455,7 +455,7 @@ namespace gum {
             sc = new SlotChain<GUM_SCALAR> ( sc_name, seq );
             sc->setId ( ( **iter ).id() );
 
-            for ( auto child = this->dag().children ( sc->id() ).beginSafe(), zeEnd=this->dag().children ( sc->id() ).endSafe(); child != zeEnd; ++child )
+            for ( auto child = this->dag().children ( sc->id() ).beginSafe(), zeEnd = this->dag().children ( sc->id() ).endSafe(); child != zeEnd; ++child )
               get ( *child ).cpf().swap ( ( **iter ).lastElt().type().variable(), sc->lastElt().type().variable() );
 
             toAdd.push_back ( sc );

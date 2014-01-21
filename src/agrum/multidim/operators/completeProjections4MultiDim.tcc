@@ -35,13 +35,13 @@
 
 #define GUM_MULTI_DIM_DECORATOR_COMPLETE_PROJ(NAME)                   \
   namespace gum { \
-  template<typename GUM_SCALAR>                                           \
-  GUM_SCALAR                                                              \
-  NAME ( const MultiDimDecorator<GUM_SCALAR>& table,                      \
-         Instantiation* instantiation ) {                         \
-    const MultiDimImplementation<GUM_SCALAR>* impl = table.content ();    \
-    return NAME ( *impl, instantiation );                             \
-  } \
+    template<typename GUM_SCALAR>                                           \
+    GUM_SCALAR                                                              \
+    NAME ( const MultiDimDecorator<GUM_SCALAR>& table,                      \
+           Instantiation* instantiation ) {                         \
+      const MultiDimImplementation<GUM_SCALAR>* impl = table.content ();    \
+      return NAME ( *impl, instantiation );                             \
+    } \
   }
 
 
@@ -219,7 +219,7 @@
 #undef GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME
 
 /// the function to be used to add two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_COMPLETE_PROJ( projectMax )
+GUM_MULTI_DIM_DECORATOR_COMPLETE_PROJ ( projectMax )
 
 
 /// the function to be used to project a MultiDimImplementation using a Min
@@ -230,7 +230,7 @@ GUM_MULTI_DIM_DECORATOR_COMPLETE_PROJ( projectMax )
 #undef GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME
 
 /// the function to be used to add two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_COMPLETE_PROJ( projectMin )
+GUM_MULTI_DIM_DECORATOR_COMPLETE_PROJ ( projectMin )
 
 
 /// the function to be used to project a MultiDimImplementation using a Sum
@@ -241,7 +241,7 @@ GUM_MULTI_DIM_DECORATOR_COMPLETE_PROJ( projectMin )
 #undef GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME
 
 /// the function to be used to add two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_COMPLETE_PROJ( projectSum )
+GUM_MULTI_DIM_DECORATOR_COMPLETE_PROJ ( projectSum )
 
 
 /// the function to be used to project a MultiDimImplementation using a Product
@@ -252,7 +252,7 @@ GUM_MULTI_DIM_DECORATOR_COMPLETE_PROJ( projectSum )
 #undef GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME
 
 /// the function to be used to add two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_COMPLETE_PROJ( projectProduct )
+GUM_MULTI_DIM_DECORATOR_COMPLETE_PROJ ( projectProduct )
 
 
 
@@ -316,8 +316,8 @@ namespace gum {
     if ( first_init ) {
       first_init = false;
 
-      std::string MultiDimArrayString( "MultiDimArray" );
-      std::string BaseNameString( "MultiDimImplementation" );
+      std::string MultiDimArrayString ( "MultiDimArray" );
+      std::string BaseNameString ( "MultiDimImplementation" );
 
       // register base functions for multiDimArrays
       registerCompleteProjection<GUM_SCALAR> ( "max", MultiDimArrayString,
@@ -350,8 +350,8 @@ namespace gum {
     if ( first_init ) {
       first_init = false;
 
-      std::string MultiDimArrayString( "MultiDimArray" );
-      std::string BaseNameString( "MultiDimImplementation" );
+      std::string MultiDimArrayString ( "MultiDimArray" );
+      std::string BaseNameString ( "MultiDimImplementation" );
 
       // register base functions for multiDimArrays
       registerCompleteProjection<GUM_SCALAR*> ( "max", MultiDimArrayString,

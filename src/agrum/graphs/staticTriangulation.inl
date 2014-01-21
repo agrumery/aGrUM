@@ -44,7 +44,7 @@ namespace gum {
    * (0 = first node eliminated) */
 
   INLINE
-  unsigned int StaticTriangulation::eliminationOrder( const NodeId id ) {
+  unsigned int StaticTriangulation::eliminationOrder ( const NodeId id ) {
     if ( !__has_triangulation )  __triangulate();
 
     return __reverse_elim_order[id];
@@ -81,7 +81,7 @@ namespace gum {
   StaticTriangulation::junctionTree() {
     // checks if junctionTree already exists
     if ( !__has_junction_tree ) {
-      __junction_tree = &( _junction_tree_strategy->junctionTree() );
+      __junction_tree = & ( _junction_tree_strategy->junctionTree() );
       __has_junction_tree = true;
     }
 
@@ -104,7 +104,7 @@ namespace gum {
    * elimination of a given node during the triangulation process */
 
   INLINE
-  NodeId StaticTriangulation::createdMaxPrimeSubgraph( const NodeId id ) {
+  NodeId StaticTriangulation::createdMaxPrimeSubgraph ( const NodeId id ) {
     if ( !__has_max_prime_junction_tree )  __computeMaxPrimeJunctionTree();
 
     return __node_2_max_prime_clique[id];
@@ -115,8 +115,8 @@ namespace gum {
    * elimination of a given node during the triangulation process */
 
   INLINE
-  NodeId StaticTriangulation::createdJunctionTreeClique( const NodeId id ) {
-    return _junction_tree_strategy->createdClique( id );
+  NodeId StaticTriangulation::createdJunctionTreeClique ( const NodeId id ) {
+    return _junction_tree_strategy->createdClique ( id );
   }
 
 
@@ -135,9 +135,9 @@ namespace gum {
   /// sets/unset the fill-ins storage in the standard triangulation procedure
 
   INLINE
-  void StaticTriangulation::setFillIns( bool b ) {
+  void StaticTriangulation::setFillIns ( bool b ) {
     __we_want_fill_ins = b;
-    _elimination_sequence_strategy->askFillIns( b );
+    _elimination_sequence_strategy->askFillIns ( b );
   }
 
 

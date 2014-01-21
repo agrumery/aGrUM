@@ -32,15 +32,15 @@
 
 namespace gum {
 
-    /**
-     * @brief Complexity allows to characterize the awaited difficulty for an algorithm given a specific instance
-     * Therefore this is not a theoretical characterization but rather a pragmatic rate of that very instance.
-     */
-    enum class Complexity : char {
-      Heavy,
-      Difficult,
-      Correct
-    };
+  /**
+   * @brief Complexity allows to characterize the awaited difficulty for an algorithm given a specific instance
+   * Therefore this is not a theoretical characterization but rather a pragmatic rate of that very instance.
+   */
+  enum class Complexity : char {
+    Heavy,
+    Difficult,
+    Correct
+  };
 
   /**
   * @class KL
@@ -54,7 +54,7 @@ namespace gum {
   * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a case, KL keeps working but trace this error (errorPQ() and errorQP())?
   */
   template<typename GUM_SCALAR> class KL {
-    // difficulty is chosen w.r.t the log10DomainSize of the BN
+      // difficulty is chosen w.r.t the log10DomainSize of the BN
 #define GAP_COMPLEXITY_KL_HEAVY_DIFFICULT double(12.0)
 #define GAP_COMPLEXITY_KL_DIFFICULT_CORRECT double(7.0)
     public:
@@ -62,11 +62,11 @@ namespace gum {
       /** constructor must give 2 BNs
        * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize or compatible node sets.
        */
-      KL( const IBayesNet<GUM_SCALAR>& P,const IBayesNet<GUM_SCALAR>& Q );
+      KL ( const IBayesNet<GUM_SCALAR>& P, const IBayesNet<GUM_SCALAR>& Q );
 
       /** copy constructor
        */
-      KL( const KL< GUM_SCALAR >& kl );
+      KL ( const KL< GUM_SCALAR >& kl );
 
       /** destructor */
       ~KL();
@@ -98,15 +98,15 @@ namespace gum {
       double bhattacharya();
 
       /// @return p
-      const IBayesNet<GUM_SCALAR>& p( void ) const;
+      const IBayesNet<GUM_SCALAR>& p ( void ) const;
 
       /// @return q
-      const IBayesNet<GUM_SCALAR>& q( void ) const;
+      const IBayesNet<GUM_SCALAR>& q ( void ) const;
       /// @}
 
     protected:
       // should be pure virtual but using KL directly is a way to delay the choice between different computation scheme (@see BruteForceKL)
-      virtual void _computeKL( void );
+      virtual void _computeKL ( void );
       void _process();
 
       const IBayesNet<GUM_SCALAR>& _p;
@@ -125,7 +125,7 @@ namespace gum {
       Complexity __difficulty;
       bool __done;
   };
-  
+
   extern template class KL<float>;
   extern template class KL<double>;
 } //namespace gum

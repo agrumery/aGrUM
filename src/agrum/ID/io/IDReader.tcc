@@ -37,8 +37,8 @@ namespace gum {
    * Note that an ID as to be created before and given in parameter.
    */
   template<typename GUM_SCALAR> INLINE
-  IDReader<GUM_SCALAR>:: IDReader( InfluenceDiagram<GUM_SCALAR>* infdiag,const std::string& filePath ) {
-    GUM_CONSTRUCTOR( IDReader );
+  IDReader<GUM_SCALAR>:: IDReader ( InfluenceDiagram<GUM_SCALAR>* infdiag, const std::string& filePath ) {
+    GUM_CONSTRUCTOR ( IDReader );
   }
 
   /*
@@ -46,7 +46,7 @@ namespace gum {
    */
   template<typename GUM_SCALAR> INLINE
   IDReader<GUM_SCALAR>::~IDReader() {
-    GUM_DESTRUCTOR( IDReader );
+    GUM_DESTRUCTOR ( IDReader );
   }
 
 

@@ -27,47 +27,47 @@
 namespace gum {
 
 
-  void Instantiation::__init( MultiDimAdressable* master ) {
+  void Instantiation::__init ( MultiDimAdressable* master ) {
     // for speed issues
     const Sequence<const DiscreteVariable*>& v = master->variablesSequence();
-    __vars.resize( v.size() );
-    __vals.reserve( v.size() );
+    __vars.resize ( v.size() );
+    __vals.reserve ( v.size() );
     // fill the instantiation
 
     for ( Sequence<const DiscreteVariable*>::iterator_safe iter = v.beginSafe();
           iter != v.endSafe(); ++iter ) {
-      __add( **iter );
+      __add ( **iter );
     }
 
-    if ( master ) actAsSlave( master->getMasterRef() );
+    if ( master ) actAsSlave ( master->getMasterRef() );
   }
 
 
   /// constructor for a Instantiation contained into a MultiDimInterface
 
-  Instantiation::Instantiation( MultiDimAdressable& d ) :
-    __master( 0 ), __overflow( false ) {
+  Instantiation::Instantiation ( MultiDimAdressable& d ) :
+    __master ( 0 ), __overflow ( false ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( Instantiation );
-    __init( &d );
+    GUM_CONSTRUCTOR ( Instantiation );
+    __init ( &d );
   }
 
-  Instantiation::Instantiation( const MultiDimAdressable& d ) :
-    __master( 0 ), __overflow( false ) {
+  Instantiation::Instantiation ( const MultiDimAdressable& d ) :
+    __master ( 0 ), __overflow ( false ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( Instantiation );
-    __init( const_cast<MultiDimAdressable*>( &d ) );
+    GUM_CONSTRUCTOR ( Instantiation );
+    __init ( const_cast<MultiDimAdressable*> ( &d ) );
   }
 
 
   /// constructor for a Instantiation contained into a MultiDimInterface
 
-  Instantiation::Instantiation( MultiDimAdressable* d ) :
-    __master( 0 ), __overflow( false ) {
+  Instantiation::Instantiation ( MultiDimAdressable* d ) :
+    __master ( 0 ), __overflow ( false ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( Instantiation );
+    GUM_CONSTRUCTOR ( Instantiation );
 
-    if ( d ) __init( d );
+    if ( d ) __init ( d );
   }
 
 
@@ -75,54 +75,54 @@ namespace gum {
   /** this constructor is needed in order to allow creation of Instantiation(this)
    * in MultiDimAdressable and below */
 
-  Instantiation::Instantiation( const MultiDimAdressable* const_d ) :
-    __master( 0 ), __overflow( false ) {
+  Instantiation::Instantiation ( const MultiDimAdressable* const_d ) :
+    __master ( 0 ), __overflow ( false ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( Instantiation );
+    GUM_CONSTRUCTOR ( Instantiation );
 
-    if ( const_d ) __init( const_cast<MultiDimAdressable*>( const_d ) );
+    if ( const_d ) __init ( const_cast<MultiDimAdressable*> ( const_d ) );
   }
 
 
   /// copy constructor
 
-  Instantiation::Instantiation( const Instantiation& aI,
-                                const bool notifyMaster ) :
-    MultiDimInterface(), __master( 0 ), __overflow( false ) {
+  Instantiation::Instantiation ( const Instantiation& aI,
+                                 const bool notifyMaster ) :
+    MultiDimInterface(), __master ( 0 ), __overflow ( false ) {
     // for debugging purposes
-    GUM_CONS_CPY( Instantiation );
+    GUM_CONS_CPY ( Instantiation );
     // copy the content of aI
     __vars = aI.__vars;
     __vals = aI.__vals;
     __overflow = aI.__overflow;
 
-    if ( aI.__master && notifyMaster ) actAsSlave( *aI.__master );
+    if ( aI.__master && notifyMaster ) actAsSlave ( *aI.__master );
   }
 
   // operator=
   Instantiation& Instantiation::operator= ( const Instantiation& aI ) {
     if ( __master ) {
-      if ( ! aI.isMaster( __master ) ) {  // aI as the same master.
+      if ( ! aI.isMaster ( __master ) ) { // aI as the same master.
         if ( nbrDim() != aI.nbrDim() ) {
-          GUM_ERROR( OperationNotAllowed, "in slave Instantiation" );
+          GUM_ERROR ( OperationNotAllowed, "in slave Instantiation" );
         }
 
         for ( Idx i = 0; i < nbrDim(); i++ ) {
-          if ( ( ! contains( aI.variable( i ) ) ) ||
-               ( ! aI.contains( variable( i ) ) ) ) {
-            GUM_ERROR( OperationNotAllowed, "in slave Instantiation" );
+          if ( ( ! contains ( aI.variable ( i ) ) ) ||
+               ( ! aI.contains ( variable ( i ) ) ) ) {
+            GUM_ERROR ( OperationNotAllowed, "in slave Instantiation" );
           }
         }
       }
 
-      setVals( aI );
+      setVals ( aI );
     } else {
       // copy the content of aI
       __vars = aI.__vars;
       __vals = aI.__vals;
       __overflow = aI.__overflow;
 
-      if ( aI.__master ) actAsSlave( *aI.__master );
+      if ( aI.__master ) actAsSlave ( *aI.__master );
     }
 
     return *this;
@@ -168,11 +168,11 @@ namespace gum {
     Sequence<const DiscreteVariable*>::iterator_safe iter = __vars.beginSafe();
 
     if ( iter != __vars.endSafe() ) {
-      sstr << variable( iter.pos() ).name() << ":" << val( iter.pos() );
+      sstr << variable ( iter.pos() ).name() << ":" << val ( iter.pos() );
       ++iter;
 
       while ( iter != __vars.endSafe() ) {
-        sstr << "|" << variable( iter.pos() ).name() << ":" << val( iter.pos() );
+        sstr << "|" << variable ( iter.pos() ).name() << ":" << val ( iter.pos() );
         ++iter;
       }
     }
@@ -188,27 +188,27 @@ namespace gum {
     Idx res = 0;
 
     do
-      res += val( iter.pos() );
+      res += val ( iter.pos() );
 
     while ( ++iter != __vars.endSafe() );
 
     return res;
   }
 
-  void Instantiation::setValsFrom( const HashTable<const DiscreteVariable*, const DiscreteVariable*>& map, const Instantiation& external ) {
+  void Instantiation::setValsFrom ( const HashTable<const DiscreteVariable*, const DiscreteVariable*>& map, const Instantiation& external ) {
     for ( HashTable<const DiscreteVariable*, const DiscreteVariable*>::const_iterator_safe iter = map.beginSafe(); iter != map.endSafe(); ++iter ) {
-      const DiscreteVariable& var=*( iter.val() );
+      const DiscreteVariable& var = * ( iter.val() );
 
       try {
-        Idx val=external.val( *( iter.key() ) );
+        Idx val = external.val ( * ( iter.key() ) );
 
         try {
-          chgVal( var, val );
+          chgVal ( var, val );
         } catch ( NotFound& ) {
-          GUM_ERROR( NotFound, var.name()<< " : missing variable in instantiation" );
+          GUM_ERROR ( NotFound, var.name() << " : missing variable in instantiation" );
         }
       } catch ( NotFound& ) {
-        GUM_ERROR( NotFound, var.name()<< " : missing variable in external instantiation" );
+        GUM_ERROR ( NotFound, var.name() << " : missing variable in external instantiation" );
       }
     }
   }

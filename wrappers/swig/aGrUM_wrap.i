@@ -1,3 +1,4 @@
+/*%include "includes.i"*/
 /* INCLUDES */
 %{
 #include <iostream>
@@ -51,7 +52,10 @@
 #include <agrum/graphs/graphElements.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/multidim/multiDimArray.h>
+
+#include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/BayesNet.h>
+
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
 #include <agrum/BN/io/DSL/DSLReader.h>
@@ -73,42 +77,42 @@
 #include <agrum/core/signal/listener.h>
 #include <agrum/graphs/diGraphListener.h>
 
-#include <agrum/CN/CredalNet.h>
-#include <agrum/CN/VarMod2BNsMap.h>
-#include <agrum/CN/InferenceEngine.h>
-#include <agrum/CN/MultipleInferenceEngine.h>
+#include <agrum/CN/credalNet.h>
+#include <agrum/CN/varMod2BNsMap.h>
+#include <agrum/CN/inferenceEngine.h>
+#include <agrum/CN/multipleInferenceEngine.h>
 #include <agrum/CN/CNMonteCarloSampling.h>
 #include <agrum/CN/CNLoopyPropagation.h>
 %}
 
+%typemap ( out ) std::vector<double> {
+  std::vector<double> vOut = $1;
+  int iLen = vOut.size();
+  $result = PyList_New ( iLen );
 
-%typemap(out) std::vector<double> {
-    std::vector<double> vOut = $1;
-    int iLen = vOut.size();
-    $result = PyList_New(iLen);
-    for(unsigned int i = 0; i < iLen; i++) {
-        double fVal = vOut.at(i);
-        PyObject *o = PyFloat_FromDouble((double) fVal);
-        PyList_SetItem($result, i, o);
-    }
+  for ( unsigned int i = 0; i < iLen; i++ ) {
+    double fVal = vOut.at ( i );
+    PyObject* o = PyFloat_FromDouble ( ( double ) fVal );
+    PyList_SetItem ( $result, i, o );
+  }
 }
 
 %include "std_vector.i"
 
 namespace std {
-%template(Vector_double) vector<double>;
+  %template ( Vector_double ) vector<double>;
 }
 
 
 %include "std_string.i"
 
 /* DIRECTORS (for cross language polymorphism) */
-%feature("director") gum::Potential; //add the __disown__() method to Potential
-%feature("nodirector") gum::MultiDimContainer::copyFrom;
-%feature("director") gum::LabelizedVariable;
-%feature("director") gum::DiscretizedVariable;
-%feature("director") gum::LazyPropagation;
-%feature("director") gum::GibbsInference;
+%feature ( "director" ) gum::Potential; //add the __disown__() method to Potential
+%feature ( "nodirector" ) gum::MultiDimContainer::copyFrom;
+%feature ( "director" ) gum::LabelizedVariable;
+%feature ( "director" ) gum::DiscretizedVariable;
+%feature ( "director" ) gum::LazyPropagation;
+%feature ( "director" ) gum::GibbsInference;
 
 /* EXCEPTION HANDLING */
 %exceptionclass std::bad_cast;
@@ -136,7 +140,7 @@ namespace std {
 %import <agrum/core/types.h>
 %include <agrum/core/exceptions.h>
 %include <agrum/core/sequence.h>
-%include <agrum/core/set.h>
+//%include <agrum/core/set.h>
 %include <agrum/core/utils_random.h>
 
 %include <agrum/core/OMPThreads.h>
@@ -174,6 +178,7 @@ namespace std {
 
 %import <agrum/graphicalModels/variableNodeMap.h>
 %include <agrum/graphicalModels/DAGmodel.h>
+%include <agrum/BN/IBayesNet.h>
 %include <agrum/BN/BayesNet.h>
 
 %include <agrum/BN/inference/BayesNetInference.h>
@@ -198,57 +203,48 @@ namespace std {
 
 /* CLASS EXTENSIONS */
 %extend gum::DiscreteVariable {
-    gum::LabelizedVariable& toLabelizedVar()
-    {
-        return dynamic_cast<gum::LabelizedVariable &>(*(self));
-    }
+  gum::LabelizedVariable & toLabelizedVar() {
+    return dynamic_cast<gum::LabelizedVariable&> ( * ( self ) );
+  }
 
-    gum::RangeVariable& toRangeVar()
-    {
-        return dynamic_cast<gum::RangeVariable &>(*(self));
-    }
+  gum::RangeVariable & toRangeVar() {
+    return dynamic_cast<gum::RangeVariable&> ( * ( self ) );
+  }
 
-    gum::DiscretizedVariable<float>& toDiscretizedVar()
-    {
-        return dynamic_cast<gum::DiscretizedVariable<float> &>(*(self));
-    }
+  gum::DiscretizedVariable<float>& toDiscretizedVar() {
+    return dynamic_cast<gum::DiscretizedVariable<float> &> ( * ( self ) );
+  }
 }
 
 %extend gum::List {
-    void append(Val val)
-    {
-        self->insert(val);
-    }
+  void append ( Val val ) {
+    self->insert ( val );
+  }
 
-    void push_front(Val val)
-    {
-        self->push_front(val);
-    }
+  void push_front ( Val val ) {
+    self->push_front ( val );
+  }
 
-    void push_back(Val val)
-    {
-        self->push_back(val);
-    }
+  void push_back ( Val val ) {
+    self->push_back ( val );
+  }
 
-    void remove(Val val)
-    {
-        self->eraseByVal(val);
-    }
+  void remove ( Val val ) {
+    self->eraseByVal ( val );
+  }
 
-    void eradicate(Val val)
-    {
-        self->eraseAllVal(val);
-    }
+  void eradicate ( Val val ) {
+    self->eraseAllVal ( val );
+  }
 
-    const Val __getitem__(unsigned int i)
-    {
-        return (*(self))[i];
-    }
+  const Val __getitem__ ( unsigned int i ) {
+    return ( * ( self ) ) [i];
+  }
 
-    bool exists(Val val) const
-    {
-        return self->exists(val);
-    }
+  bool exists ( Val val ) const
+  {
+    return self->exists ( val );
+  }
 }
 
 %extend gum::GibbsInference {
@@ -347,29 +343,29 @@ namespace std {
 }
 
 %extend gum::credal::CNMonteCarloSampling {
-  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::setVerbosity;
-  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::setEpsilon;
-  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::setMinEpsilonRate;
-  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::setMaxIter;
-  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::setMaxTime;
-  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::setPeriodSize;
-  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::setBurnIn;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR, BNInferenceEngine>::setVerbosity;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR, BNInferenceEngine>::setEpsilon;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR, BNInferenceEngine>::setMinEpsilonRate;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR, BNInferenceEngine>::setMaxIter;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR, BNInferenceEngine>::setMaxTime;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR, BNInferenceEngine>::setPeriodSize;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR, BNInferenceEngine>::setBurnIn;
 
-  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::verbosity;
-  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::epsilon;
-  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::minEpsilonRate;
-  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::maxIter;
-  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::maxTime;
-  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::periodSize;
-  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::InferenceEngine::burnIn;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR, BNInferenceEngine>::verbosity;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR, BNInferenceEngine>::epsilon;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR, BNInferenceEngine>::minEpsilonRate;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR, BNInferenceEngine>::maxIter;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR, BNInferenceEngine>::maxTime;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR, BNInferenceEngine>::periodSize;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR, BNInferenceEngine>::InferenceEngine::burnIn;
 
-  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::nbrIterations;
-  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::currentTime;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR, BNInferenceEngine>::nbrIterations;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR, BNInferenceEngine>::currentTime;
 
-  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::messageApproximationScheme;
-  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::history;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR, BNInferenceEngine>::messageApproximationScheme;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR, BNInferenceEngine>::history;
 
-  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR,BNInferenceEngine>::insertEvidenceFile;
+  using gum::credal::MultipleInferenceEngine<PYGUM_SCALAR, BNInferenceEngine>::insertEvidenceFile;
 }
 
 %extend gum::credal::CNLoopyPropagation {
@@ -398,31 +394,31 @@ namespace std {
 
 /* TEMPLATES INSTANTIATIONS */
 
-%template(randomDistribution) gum::randomDistribution<double>;
-%template(Sequence_node) gum::Sequence<gum::NodeId>;
-%template(Sequence_string) gum::Sequence<std::string>;
+%template ( randomDistribution_double ) gum::randomDistribution<double>;
+%template ( NodeSequence ) gum::Sequence<gum::NodeId>;
+%template ( StringSequence ) gum::Sequence<std::string>;
 
-%template(DiscretizedVar) gum::DiscretizedVariable<float>;
+%template ( DiscretizedVar ) gum::DiscretizedVariable<float>;
 
+%template ( MultiDimContainer_double ) gum::MultiDimContainer<double>;
+%template ( MultiDimImplementation_double ) gum::MultiDimImplementation<double>;
+%template ( MultiDimDecorator_double ) gum::MultiDimDecorator<double>;
+%template ( MultiDimWithOffset_double ) gum::MultiDimWithOffset<double>;
+%template ( MultiDimArray_double ) gum::MultiDimArray<double>;
 
-%template(MultiDimContainer_double) gum::MultiDimContainer<double>;
-%template(MultiDimImplementation_double) gum::MultiDimImplementation<double>;
-%template(MultiDimDecorator_double) gum::MultiDimDecorator<double>;
-%template(MultiDimWithOffset_double) gum::MultiDimWithOffset<double>;
-%template(MultiDimArray_double) gum::MultiDimArray<double>;
+%template ( Potential_double ) gum::Potential<double>;
 
-%template(Potential_double) gum::Potential<double>
-%template(ListPotentials_double) gum::List< const gum::Potential<double> *>;
+%template (IBayesNet_double ) gum::IBayesNet<double>;
+%template ( BayesNet_double ) gum::BayesNet<double>;
+%template ( BayesNetInference_double ) gum::BayesNetInference<double>;
+%template ( LazyPropagation_double ) gum::LazyPropagation<double>;
+%template ( GibbsInference_double ) gum::GibbsInference<double>;
 
-%template(BayesNet_double) gum::BayesNet<double>;
-%template(BayesNetInference_double) gum::BayesNetInference<double>;
-%template(LazyPropagation_double) gum::LazyPropagation<double>;
-%template(GibbsInference_double) gum::GibbsInference<double>;
-%template(BruteForceKL_double) gum::BruteForceKL<double>;
-%template(GibbsKL_double) gum::GibbsKL<double>;
+%template ( BruteForceKL_double ) gum::BruteForceKL<double>;
+%template ( GibbsKL_double ) gum::GibbsKL<double>;
 
-%template(CredalNet_double) gum::credal::CredalNet<double>;
-%template(CNInferenceEngine_double) gum::credal::InferenceEngine<double>;
-%template(CNMultipleInferenceEngine_double) gum::credal::MultipleInferenceEngine<double,gum::LazyPropagation<double> >;
-%template(CNMonteCarloSampling_double) gum::credal::CNMonteCarloSampling<double,gum::LazyPropagation<double> >;
-%template(CNLoopyPropagation_double) gum::credal::CNLoopyPropagation<double>;
+%template ( CredalNet_double ) gum::credal::CredalNet<double>;
+%template ( CNInferenceEngine_double ) gum::credal::InferenceEngine<double>;
+%template ( CNMultipleInferenceEngine_double ) gum::credal::MultipleInferenceEngine<double, gum::LazyPropagation<double> >;
+%template ( CNMonteCarloSampling_double ) gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double> >;
+%template ( CNLoopyPropagation_double ) gum::credal::CNLoopyPropagation<double>;

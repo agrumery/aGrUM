@@ -68,37 +68,37 @@ namespace gum {
       /** **************************************************************************************************
         ** Initializes the data structure with operated DD1 et DD2, and compute order for returned diagram
         ** ********************************************************************************************** **/
-      virtual void initialize( const MultiDimDecisionDiagramBase<T>* dD1, const MultiDimDecisionDiagramBase<T>* dD2 ) {
+      virtual void initialize ( const MultiDimDecisionDiagramBase<T>* dD1, const MultiDimDecisionDiagramBase<T>* dD2 ) {
 
         // First, we determine leading order and the sens in which we perform operation on diagrams
         Sequence< const DiscreteVariable* > leadingOrder;
-        __getLeadingSequence( dD1, dD2, leadingOrder );
+        __getLeadingSequence ( dD1, dD2, leadingOrder );
 
 
         // Next, we initialize node for exploration departure
-        conti.setDD1Node( DD1->root() );
-        conti.setDD2Node( DD2->root() );
+        conti.setDD1Node ( DD1->root() );
+        conti.setDD2Node ( DD2->root() );
 
 #ifdef O4DDDEBUG
-        GUM_TRACE( " Mixed Sequence variable : " );
+        GUM_TRACE ( " Mixed Sequence variable : " );
 
         for ( SequenceIteratorSafe< const DiscreteVariable* > iter = leadingOrder.begin(); iter != leadingOrder.end(); ++iter )
-          GUM_TRACE( ( *iter )->toString() << " - " );
+          GUM_TRACE ( ( *iter )->toString() << " - " );
 
-        GUM_TRACE( std::endl );
+        GUM_TRACE ( std::endl );
 #endif
 
 
         // Then we instantiate the factory that will create the new multidim
         // give it its new bounds, and set its variable sequence
         factory = DD1->getFactory( );
-        factory->GUM_APPROXIMATION_COMBINE_FUNCTION( DD2 );
-        factory->setVariablesSequence( leadingOrder );
+        factory->GUM_APPROXIMATION_COMBINE_FUNCTION ( DD2 );
+        factory->setVariablesSequence ( leadingOrder );
 
 
 
         // And we finally instantiates the other data structures
-        explorationTable = new HashTable< double, NodeId >( dD1->realSize()*dD2->realSize(), true, false );
+        explorationTable = new HashTable< double, NodeId > ( dD1->realSize() *dD2->realSize(), true, false );
       };
 
 
@@ -111,7 +111,7 @@ namespace gum {
       };
 
     protected :
-      virtual void __getLeadingSequence( const MultiDimDecisionDiagramBase< T >* dD1, const MultiDimDecisionDiagramBase< T >* dD2, gum::Sequence< const DiscreteVariable* >& leadingOrder ) = 0;
+      virtual void __getLeadingSequence ( const MultiDimDecisionDiagramBase< T >* dD1, const MultiDimDecisionDiagramBase< T >* dD2, gum::Sequence< const DiscreteVariable* >& leadingOrder ) = 0;
   };
 
 
@@ -134,9 +134,9 @@ namespace gum {
       /** **************************************************************************************************
        ** The very implementation of the function that gave order for final diagram
        ** ********************************************************************************************** **/
-      void  __getLeadingSequence( const MultiDimDecisionDiagramBase<T>* dD1, const MultiDimDecisionDiagramBase<T>* dD2, Sequence< const DiscreteVariable* >& leadingOrder ) {
-        this->DD1 = const_cast<MultiDimDecisionDiagramBase<T>*>( dD1 );
-        this->DD2 = const_cast<MultiDimDecisionDiagramBase<T>*>( dD2 );
+      void  __getLeadingSequence ( const MultiDimDecisionDiagramBase<T>* dD1, const MultiDimDecisionDiagramBase<T>* dD2, Sequence< const DiscreteVariable* >& leadingOrder ) {
+        this->DD1 = const_cast<MultiDimDecisionDiagramBase<T>*> ( dD1 );
+        this->DD2 = const_cast<MultiDimDecisionDiagramBase<T>*> ( dD2 );
         leadingOrder = this->DD1->variablesSequence();
       };
   };
@@ -158,32 +158,32 @@ namespace gum {
         ** ********************************************************************************************** **/
       NonOrderedOperatorData( ) : OperatorData<T>( ) {    } ;
 
-      virtual void initialize( const MultiDimDecisionDiagramBase<T>* dD1, const MultiDimDecisionDiagramBase<T>* dD2 ) {
+      virtual void initialize ( const MultiDimDecisionDiagramBase<T>* dD1, const MultiDimDecisionDiagramBase<T>* dD2 ) {
 
-        OperatorData<T>::initialize( dD1, dD2 );
+        OperatorData<T>::initialize ( dD1, dD2 );
 
-        retrogradeVarTable = new HashTable< NodeId, Set< const DiscreteVariable* >* >( this->DD2->realSize(), true, false );
-        this->DD2->findRetrogradeVariables( &( this->factory->variablesSequence() ), retrogradeVarTable );
+        retrogradeVarTable = new HashTable< NodeId, Set< const DiscreteVariable* >* > ( this->DD2->realSize(), true, false );
+        this->DD2->findRetrogradeVariables ( & ( this->factory->variablesSequence() ), retrogradeVarTable );
 
 #ifdef O4DDDEBUG
-        GUM_TRACE( "RETRO VAR TABLE : " );
+        GUM_TRACE ( "RETRO VAR TABLE : " );
 #endif
 
         for ( HashTableIteratorSafe< NodeId, Set< const DiscreteVariable* >* > retroVarIter = retrogradeVarTable->beginSafe(); retroVarIter != retrogradeVarTable->endSafe(); ++retroVarIter )
-          if ( retroVarIter.val() != nullptr && !( retroVarIter.val() )->empty() ) {
+          if ( retroVarIter.val() != nullptr && ! ( retroVarIter.val() )->empty() ) {
 
 #ifdef O4DDDEBUG
-            GUM_TRACE( "\tNode : " << retroVarIter.key() );
+            GUM_TRACE ( "\tNode : " << retroVarIter.key() );
 #endif
 
             for ( SetIteratorSafe< const DiscreteVariable* > iter = ( retroVarIter.val() )->beginSafe(); iter != ( retroVarIter.val() )->endSafe(); ++iter ) {
 
 #ifdef O4DDDEBUG
-              GUM_TRACE( "\t\tVariable : " << ( *iter )->name() );
+              GUM_TRACE ( "\t\tVariable : " << ( *iter )->name() );
 #endif
 
-              if ( ! this->conti.isRetrogradeVar( *iter ) )
-                this->conti.addRetrogradeVar( *iter );
+              if ( ! this->conti.isRetrogradeVar ( *iter ) )
+                this->conti.addRetrogradeVar ( *iter );
             }
           }
       }
@@ -200,7 +200,7 @@ namespace gum {
       /** **************************************************************************************************
        ** The very implementation of the function that gave order for final diagram
        ** ********************************************************************************************** **/
-      virtual void __getLeadingSequence( const MultiDimDecisionDiagramBase< T >* dD1, const MultiDimDecisionDiagramBase< T >* dD2, gum::Sequence< const DiscreteVariable* >& leadingOrder ) {
+      virtual void __getLeadingSequence ( const MultiDimDecisionDiagramBase< T >* dD1, const MultiDimDecisionDiagramBase< T >* dD2, gum::Sequence< const DiscreteVariable* >& leadingOrder ) {
 
 // #ifdef GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION == DecisionDiagramRecur4Subtraction || GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION == DecisionDiagramRecur4Division
 //         __makeMergedVariableSequence( dD1->variablesSequence(), dD2->variablesSequence(), fusVarSeq );
@@ -208,18 +208,18 @@ namespace gum {
 //         follower = dD2;
 // #else
         Sequence< const DiscreteVariable* > mergedVarSeq1;
-        __makeMergedVariableSequence( dD1->variablesSequence(), dD2->variablesSequence(), mergedVarSeq1 );
+        __makeMergedVariableSequence ( dD1->variablesSequence(), dD2->variablesSequence(), mergedVarSeq1 );
         Sequence< const DiscreteVariable* > mergedVarSeq2;
-        __makeMergedVariableSequence( dD2->variablesSequence(), dD1->variablesSequence(), mergedVarSeq2 );
+        __makeMergedVariableSequence ( dD2->variablesSequence(), dD1->variablesSequence(), mergedVarSeq2 );
 
-        if ( __evalRetrogradeVarSpaceSize( mergedVarSeq1, dD2->variablesSequence() ) <= __evalRetrogradeVarSpaceSize( mergedVarSeq2, dD1->variablesSequence() ) ) {
+        if ( __evalRetrogradeVarSpaceSize ( mergedVarSeq1, dD2->variablesSequence() ) <= __evalRetrogradeVarSpaceSize ( mergedVarSeq2, dD1->variablesSequence() ) ) {
           leadingOrder = mergedVarSeq1;
-          this->DD1 = const_cast<MultiDimDecisionDiagramBase<T>*>( dD1 );
-          this->DD2 = const_cast<MultiDimDecisionDiagramBase<T>*>( dD2 );
+          this->DD1 = const_cast<MultiDimDecisionDiagramBase<T>*> ( dD1 );
+          this->DD2 = const_cast<MultiDimDecisionDiagramBase<T>*> ( dD2 );
         } else {
           leadingOrder = mergedVarSeq2;
-          this->DD1 = const_cast<MultiDimDecisionDiagramBase<T>*>( dD2 );
-          this->DD2 = const_cast<MultiDimDecisionDiagramBase<T>*>( dD1 );
+          this->DD1 = const_cast<MultiDimDecisionDiagramBase<T>*> ( dD2 );
+          this->DD2 = const_cast<MultiDimDecisionDiagramBase<T>*> ( dD1 );
         }
 
 // #endif
@@ -231,7 +231,7 @@ namespace gum {
        ** Creates the sequence of variable for returned diagram considering the first variables sequence
        ** given in parameter is the leading one.
        ** ********************************************************************************************** **/
-      void  __makeMergedVariableSequence( const Sequence< const DiscreteVariable* >& dD1VarSeq, const Sequence< const DiscreteVariable* >& dD2VarSeq, Sequence< const DiscreteVariable* >& mergedVarSeq ) {
+      void  __makeMergedVariableSequence ( const Sequence< const DiscreteVariable* >& dD1VarSeq, const Sequence< const DiscreteVariable* >& dD2VarSeq, Sequence< const DiscreteVariable* >& mergedVarSeq ) {
 
         SequenceIteratorSafe< const DiscreteVariable* > iterS1 = dD1VarSeq.beginSafe();
         SequenceIteratorSafe< const DiscreteVariable* > iterS2 = dD2VarSeq.beginSafe();
@@ -239,31 +239,31 @@ namespace gum {
         while ( iterS1 != dD1VarSeq.endSafe() || iterS2 != dD2VarSeq.endSafe() ) {
           if ( iterS1 == dD1VarSeq.endSafe() ) {
             for ( ; iterS2 != dD2VarSeq.endSafe(); ++iterS2 )
-              if ( !mergedVarSeq.exists( *iterS2 ) )
-                mergedVarSeq.insert( *iterS2 );
+              if ( !mergedVarSeq.exists ( *iterS2 ) )
+                mergedVarSeq.insert ( *iterS2 );
           } else if ( iterS2 == dD2VarSeq.endSafe() ) {
             for ( ; iterS1 != dD1VarSeq.endSafe(); ++iterS1 )
-              if ( !mergedVarSeq.exists( *iterS1 ) )
-                mergedVarSeq.insert( *iterS1 );
+              if ( !mergedVarSeq.exists ( *iterS1 ) )
+                mergedVarSeq.insert ( *iterS1 );
           } else {
             if ( *iterS1 == *iterS2 ) {
-              if ( !mergedVarSeq.exists( *iterS1 ) )
-                mergedVarSeq.insert( *iterS1 );
+              if ( !mergedVarSeq.exists ( *iterS1 ) )
+                mergedVarSeq.insert ( *iterS1 );
 
               ++iterS1;
               ++iterS2;
               continue;
             }
 
-            if ( dD1VarSeq.pos( *iterS1 ) <= dD2VarSeq.pos( *iterS2 ) || dD1VarSeq.exists( *iterS2 ) ) {
-              if ( !mergedVarSeq.exists( *iterS1 ) )
-                mergedVarSeq.insert( *iterS1 );
+            if ( dD1VarSeq.pos ( *iterS1 ) <= dD2VarSeq.pos ( *iterS2 ) || dD1VarSeq.exists ( *iterS2 ) ) {
+              if ( !mergedVarSeq.exists ( *iterS1 ) )
+                mergedVarSeq.insert ( *iterS1 );
 
               ++iterS1;
               continue;
             } else {
-              if ( !mergedVarSeq.exists( *iterS2 ) )
-                mergedVarSeq.insert( *iterS2 );
+              if ( !mergedVarSeq.exists ( *iterS2 ) )
+                mergedVarSeq.insert ( *iterS2 );
 
               ++iterS2;
               continue;
@@ -278,7 +278,7 @@ namespace gum {
       /** **************************************************************************************************
         ** Computes size of retrograde var state space generated by the final sequence
         ** ********************************************************************************************** **/
-      Idx __evalRetrogradeVarSpaceSize( const Sequence< const DiscreteVariable* >& leadingVarSeq, const Sequence< const DiscreteVariable* >& followingVarSeq ) {
+      Idx __evalRetrogradeVarSpaceSize ( const Sequence< const DiscreteVariable* >& leadingVarSeq, const Sequence< const DiscreteVariable* >& followingVarSeq ) {
 
         SequenceIteratorSafe< const DiscreteVariable* > iterSfin = followingVarSeq.beginSafe(), iterSfol = followingVarSeq.beginSafe();
 
@@ -288,7 +288,7 @@ namespace gum {
 
         for ( iterSfol = followingVarSeq.beginSafe(); iterSfol != followingVarSeq.endSafe(); ++iterSfol )
           for ( iterSfin = iterSfol; iterSfin != followingVarSeq.rendSafe(); --iterSfin )
-            if ( leadingVarSeq.pos( *iterSfin ) > leadingVarSeq.pos( *iterSfol ) )
+            if ( leadingVarSeq.pos ( *iterSfin ) > leadingVarSeq.pos ( *iterSfol ) )
               sizeRetro *= ( *iterSfol )->domainSize();
 
         return sizeRetro;
@@ -302,7 +302,7 @@ namespace gum {
 
   template<typename T>
   NodeId
-  insertNonTerminalNode( OperatorData<T>& opData, const DiscreteVariable* associatedVariable, std::vector< NodeId >& sonsMap, NodeId defaultSon , const HashTable< NodeId, Idx >& countTable ) {
+  insertNonTerminalNode ( OperatorData<T>& opData, const DiscreteVariable* associatedVariable, std::vector< NodeId >& sonsMap, NodeId defaultSon , const HashTable< NodeId, Idx >& countTable ) {
 
     HashTableConstIteratorSafe< NodeId, Idx > ctIter = countTable.beginSafe();
 
@@ -321,14 +321,14 @@ namespace gum {
 
           if ( *iterArcMap == defaultSon ) {
             ++nbDefault;
-            sonsMap[ std::distance( sonsMap.begin(), iterArcMap ) ] = 0;
+            sonsMap[ std::distance ( sonsMap.begin(), iterArcMap ) ] = 0;
           }
         }
 
         if ( nbDefault == 1 )
           for ( std::vector<NodeId >::iterator iterArcMap = sonsMap.begin(); iterArcMap != sonsMap.end(); ++iterArcMap )
             if ( *iterArcMap == 0 ) {
-              sonsMap[ std::distance( sonsMap.begin(), iterArcMap ) ] = defaultSon;
+              sonsMap[ std::distance ( sonsMap.begin(), iterArcMap ) ] = defaultSon;
               defaultSon = 0;
               break;
             }
@@ -353,7 +353,7 @@ namespace gum {
         if ( defaultSon != 0 ) {
           for ( std::vector<NodeId >::iterator iterArcMap = sonsMap.begin(); iterArcMap != sonsMap.end(); ++iterArcMap )
             if ( *iterArcMap == 0 ) {
-              sonsMap[ std::distance( sonsMap.begin(), iterArcMap ) ] = defaultSon;
+              sonsMap[ std::distance ( sonsMap.begin(), iterArcMap ) ] = defaultSon;
               defaultSon = 0;
               break;
             }
@@ -362,25 +362,25 @@ namespace gum {
         if ( maxNode != defaultSon ) {
           for ( std::vector<NodeId >::iterator iterArcMap = sonsMap.begin(); iterArcMap != sonsMap.end(); ++iterArcMap ) {
             if ( *iterArcMap == 0 )
-              sonsMap[ std::distance( sonsMap.begin(), iterArcMap ) ] = defaultSon;
+              sonsMap[ std::distance ( sonsMap.begin(), iterArcMap ) ] = defaultSon;
 
             if ( *iterArcMap == maxNode )
-              sonsMap[ std::distance( sonsMap.begin(), iterArcMap ) ] = 0;
+              sonsMap[ std::distance ( sonsMap.begin(), iterArcMap ) ] = 0;
           }
 
           defaultSon = maxNode;
         } else {
           for ( std::vector<NodeId >::iterator iterArcMap = sonsMap.begin(); iterArcMap != sonsMap.end(); ++iterArcMap )
             if ( *iterArcMap == maxNode )
-              sonsMap[ std::distance( sonsMap.begin(), iterArcMap ) ] = 0;
+              sonsMap[ std::distance ( sonsMap.begin(), iterArcMap ) ] = 0;
         }
       }
     }
 
 #ifdef O4DDDEBUG
-    return opData.factory->addNonTerminalNodeWithArcs( associatedVariable, sonsMap, defaultSon );
+    return opData.factory->addNonTerminalNodeWithArcs ( associatedVariable, sonsMap, defaultSon );
 #else
-    return opData.factory->unsafeAddNonTerminalNodeWithArcs( associatedVariable, sonsMap, defaultSon );
+    return opData.factory->unsafeAddNonTerminalNodeWithArcs ( associatedVariable, sonsMap, defaultSon );
 #endif
   }
 

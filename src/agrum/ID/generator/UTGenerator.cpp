@@ -31,12 +31,12 @@ namespace gum {
 
   // Default constructor.
   UTGenerator::UTGenerator() {
-    GUM_CONSTRUCTOR( UTGenerator );
+    GUM_CONSTRUCTOR ( UTGenerator );
   }
 
   // Destructor.
   UTGenerator::~UTGenerator() {
-    GUM_DESTRUCTOR( UTGenerator );
+    GUM_DESTRUCTOR ( UTGenerator );
   }
 
 

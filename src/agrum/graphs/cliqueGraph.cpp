@@ -306,7 +306,7 @@ namespace gum {
       /*const NodeSet& cl = clique( node );
 
       for ( NodeSetIterator iter = cl.begin(); iter != cl.end(); ++iter )*/
-      for ( auto cliq = clique ( node ).beginSafe (); cliq != clique(node).endSafe (); ++cliq )
+      for ( auto cliq = clique ( node ).beginSafe (); cliq != clique ( node ).endSafe (); ++cliq )
         stream << "  " << *cliq;
 
       stream << std::endl;
@@ -333,7 +333,7 @@ namespace gum {
       /*const NodeSet& cl = clique ( node );
 
       for ( NodeSetIterator iter = cl.begin(); iter != cl.end(); ++iter )*/
-      for ( auto cliq = clique(node).beginSafe (); cliq != clique(node).endSafe(); ++cliq )
+      for ( auto cliq = clique ( node ).beginSafe (); cliq != clique ( node ).endSafe(); ++cliq )
         stream << "  " << *cliq;
 
       stream << "\"];" << std::endl;

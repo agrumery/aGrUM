@@ -37,47 +37,47 @@ namespace gum {
 
   /// constructor
   template< typename GUM_SCALAR, template<typename> class TABLE >
-  MultiDimCombinationDefault<GUM_SCALAR,TABLE>::MultiDimCombinationDefault
-  ( TABLE<GUM_SCALAR>* ( *combine )( const TABLE<GUM_SCALAR>&,const TABLE<GUM_SCALAR>& ) ) :
-    MultiDimCombination<GUM_SCALAR,TABLE> (),
-    _combine( combine ) {
+  MultiDimCombinationDefault<GUM_SCALAR, TABLE>::MultiDimCombinationDefault
+  ( TABLE<GUM_SCALAR>* ( *combine ) ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) ) :
+    MultiDimCombination<GUM_SCALAR, TABLE> (),
+    _combine ( combine ) {
     /// for debugging purposes
-    GUM_CONSTRUCTOR( MultiDimCombinationDefault );
+    GUM_CONSTRUCTOR ( MultiDimCombinationDefault );
   }
 
 
   /// copy constructor
   template< typename GUM_SCALAR, template<typename> class TABLE >
-  MultiDimCombinationDefault<GUM_SCALAR,TABLE>::MultiDimCombinationDefault
-  ( const MultiDimCombinationDefault<GUM_SCALAR,TABLE>& from ) :
-    MultiDimCombination<GUM_SCALAR,TABLE> (),
-    _combine( from._combine ) {
+  MultiDimCombinationDefault<GUM_SCALAR, TABLE>::MultiDimCombinationDefault
+  ( const MultiDimCombinationDefault<GUM_SCALAR, TABLE>& from ) :
+    MultiDimCombination<GUM_SCALAR, TABLE> (),
+    _combine ( from._combine ) {
     /// for debugging purposes
-    GUM_CONS_CPY( MultiDimCombinationDefault );
+    GUM_CONS_CPY ( MultiDimCombinationDefault );
   }
 
 
   /// destructor
   template< typename GUM_SCALAR, template<typename> class TABLE >
-  MultiDimCombinationDefault<GUM_SCALAR,TABLE>::~MultiDimCombinationDefault() {
+  MultiDimCombinationDefault<GUM_SCALAR, TABLE>::~MultiDimCombinationDefault() {
     /// for debugging purposes
-    GUM_DESTRUCTOR( MultiDimCombinationDefault );
+    GUM_DESTRUCTOR ( MultiDimCombinationDefault );
   }
 
 
   /// virtual constructor
   template< typename GUM_SCALAR, template<typename> class TABLE >
-  MultiDimCombinationDefault<GUM_SCALAR,TABLE>*
-  MultiDimCombinationDefault<GUM_SCALAR,TABLE>::newFactory() const {
-    return new MultiDimCombinationDefault<GUM_SCALAR,TABLE> ( _combine );
+  MultiDimCombinationDefault<GUM_SCALAR, TABLE>*
+  MultiDimCombinationDefault<GUM_SCALAR, TABLE>::newFactory() const {
+    return new MultiDimCombinationDefault<GUM_SCALAR, TABLE> ( _combine );
   }
 
 
   /// changes the function used for combining two TABLES
   template< typename GUM_SCALAR, template<typename> class TABLE >
-  void MultiDimCombinationDefault<GUM_SCALAR,TABLE>::setCombineFunction
+  void MultiDimCombinationDefault<GUM_SCALAR, TABLE>::setCombineFunction
   ( TABLE<GUM_SCALAR>*
-    ( *combine )( const TABLE<GUM_SCALAR>&,const TABLE<GUM_SCALAR>& ) ) {
+    ( *combine ) ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) ) {
     _combine = combine;
   }
 
@@ -85,7 +85,7 @@ namespace gum {
   /// returns the combination function currently used by the combinator
   template< typename GUM_SCALAR, template<typename> class TABLE >
   INLINE TABLE<GUM_SCALAR>*
-  ( * MultiDimCombinationDefault<GUM_SCALAR,TABLE>::combineFunction() )
+  ( * MultiDimCombinationDefault<GUM_SCALAR, TABLE>::combineFunction() )
   ( const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& ) {
     return _combine;
   }
@@ -94,7 +94,7 @@ namespace gum {
   /// returns the domain size of the Cartesian product of the union of all the
   /// variables in seq1 and seq2
   template< typename GUM_SCALAR, template<typename> class TABLE >
-  Size MultiDimCombinationDefault<GUM_SCALAR,TABLE>::_combinedSize
+  Size MultiDimCombinationDefault<GUM_SCALAR, TABLE>::_combinedSize
   ( const Sequence<const DiscreteVariable*>& seq1,
     const Sequence<const DiscreteVariable*>& seq2 ) const {
     if ( seq1.empty() && seq2.empty() ) return 0;
@@ -108,7 +108,7 @@ namespace gum {
 
     for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
             seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
-      if ( ! seq1.exists( *iter ) )
+      if ( ! seq1.exists ( *iter ) )
         size *= ( *iter )->domainSize();
     }
 
@@ -121,28 +121,28 @@ namespace gum {
   /// to swap contents instead of copying it...
   template< typename GUM_SCALAR, template<typename> class TABLE >
   INLINE void
-  MultiDimCombinationDefault<GUM_SCALAR,TABLE>::combine
+  MultiDimCombinationDefault<GUM_SCALAR, TABLE>::combine
   ( TABLE<GUM_SCALAR>& container, const Set<const TABLE<GUM_SCALAR>*>& set ) {
-    TABLE<GUM_SCALAR>* res=combine( set );
-    container=*res;
-    delete( res );
+    TABLE<GUM_SCALAR>* res = combine ( set );
+    container = *res;
+    delete ( res );
   }
 
 
   /// returns the result of the combination
   template< typename GUM_SCALAR, template<typename> class TABLE >
   TABLE<GUM_SCALAR>*
-  MultiDimCombinationDefault<GUM_SCALAR,TABLE>::combine
+  MultiDimCombinationDefault<GUM_SCALAR, TABLE>::combine
   ( const Set<const TABLE<GUM_SCALAR>*>& set ) {
     // check if the set passed in argument is empty. If so, raise an exception
     if ( set.size() < 2 ) {
-      GUM_ERROR( InvalidArgumentsNumber,
-                 "the set passed to a MultiDimCombinationDefault"
-                 " should at least contain two elements" );
+      GUM_ERROR ( InvalidArgumentsNumber,
+                  "the set passed to a MultiDimCombinationDefault"
+                  " should at least contain two elements" );
     }
 
     // create a vector with all the tables to combine
-    std::vector< const TABLE<GUM_SCALAR>* > tables( set.size() );
+    std::vector< const TABLE<GUM_SCALAR>* > tables ( set.size() );
 
     {
       unsigned int i = 0;
@@ -156,24 +156,24 @@ namespace gum {
     // create a vector indicating wether the elements in tables are freshly
     // created TABLE<GUM_SCALAR>* due to the combination of some TABLEs or if they
     // were added by the user into the combination container
-    std::vector<bool> is_t_new( tables.size(), false );
+    std::vector<bool> is_t_new ( tables.size(), false );
 
     // for each pair of tables (i,j), compute the size of the table that would
     // result from the addition of tables i and j and store the result into a
     // priorityQueue
-    std::pair<unsigned int,unsigned int> pair;
+    std::pair<unsigned int, unsigned int> pair;
 
-    PriorityQueue<std::pair<unsigned int,unsigned int>,Size> queue;
+    PriorityQueue<std::pair<unsigned int, unsigned int>, Size> queue;
 
     for ( unsigned int i = 0; i < tables.size(); ++i ) {
       pair.first = i;
       const Sequence<const DiscreteVariable*>& seq1 =
         tables[i]->variablesSequence();
 
-      for ( unsigned int j = i+1; j < tables.size(); ++j ) {
+      for ( unsigned int j = i + 1; j < tables.size(); ++j ) {
         pair.second = j;
         queue.insert
-        ( _combinedSize( seq1, tables[j]->variablesSequence() ), pair );
+        ( _combinedSize ( seq1, tables[j]->variablesSequence() ), pair );
       }
     }
 
@@ -187,7 +187,7 @@ namespace gum {
       unsigned int ti = pair.first;
       unsigned int tj = pair.second;
 
-      TABLE<GUM_SCALAR>* result = _combine( *( tables[ti] ), *( tables[tj] ) );
+      TABLE<GUM_SCALAR>* result = _combine ( * ( tables[ti] ), * ( tables[tj] ) );
 
       // substitute tables[pair.first] by the result
 
@@ -205,16 +205,16 @@ namespace gum {
       for ( unsigned int ind = 0; ind < tj; ++ind ) {
         if ( tables[ind] ) {
           pair.first = ind;
-          queue.eraseByVal( pair );
+          queue.eraseByVal ( pair );
         }
       }
 
       pair.first = tj;
 
-      for ( unsigned int ind = tj+1; ind < tables.size(); ++ind ) {
+      for ( unsigned int ind = tj + 1; ind < tables.size(); ++ind ) {
         if ( tables[ind] ) {
           pair.second = ind;
-          queue.eraseByVal( pair );
+          queue.eraseByVal ( pair );
         }
       }
 
@@ -228,18 +228,18 @@ namespace gum {
         for ( unsigned int ind = 0; ind < ti; ++ind ) {
           if ( tables[ind] ) {
             pair.first = ind;
-            newsize = _combinedSize( seq1, tables[ind]->variablesSequence() );
-            queue.setPriorityByVal( pair, newsize );
+            newsize = _combinedSize ( seq1, tables[ind]->variablesSequence() );
+            queue.setPriorityByVal ( pair, newsize );
           }
         }
 
         pair.first = ti;
 
-        for ( unsigned int ind = ti+1; ind < tables.size(); ++ind ) {
+        for ( unsigned int ind = ti + 1; ind < tables.size(); ++ind ) {
           if ( tables[ind] ) {
             pair.second = ind;
-            newsize = _combinedSize( seq1, tables[ind]->variablesSequence() );
-            queue.setPriorityByVal( pair, newsize );
+            newsize = _combinedSize ( seq1, tables[ind]->variablesSequence() );
+            queue.setPriorityByVal ( pair, newsize );
           }
         }
       }
@@ -251,14 +251,14 @@ namespace gum {
 
     while ( ! tables[k] ) ++k;
 
-    return const_cast<TABLE<GUM_SCALAR>*>( tables[k] );
+    return const_cast<TABLE<GUM_SCALAR>*> ( tables[k] );
   }
 
 
 
   /// returns the result of the combination
   template< typename GUM_SCALAR, template<typename> class TABLE >
-  float MultiDimCombinationDefault<GUM_SCALAR,TABLE>::nbOperations
+  float MultiDimCombinationDefault<GUM_SCALAR, TABLE>::nbOperations
   ( const Set<const Sequence<const DiscreteVariable*>*>& set ) const {
     // check if the set passed in argument is empty.
     if ( set.size() < 2 ) return 0.0f;
@@ -266,7 +266,7 @@ namespace gum {
     float result = 0.0f;
 
     // create a vector with all the tables to combine
-    std::vector< const Sequence<const DiscreteVariable*>* > tables( set.size() );
+    std::vector< const Sequence<const DiscreteVariable*>* > tables ( set.size() );
 
     {
       unsigned int i = 0;
@@ -280,22 +280,22 @@ namespace gum {
     // create a vector indicating wether the elements in tables are freshly
     // created Sequence<const DiscreteVariable *>* due to the combination of some
     // TABLEs or if they were added by the user into the combination container
-    std::vector<bool> is_t_new( tables.size(), false );
+    std::vector<bool> is_t_new ( tables.size(), false );
 
 
     // for each pair of tables (i,j), compute the size of the table that would
     // result from the addition of tables i and j and store the result into a
     // priorityQueue
-    std::pair<unsigned int,unsigned int> pair;
+    std::pair<unsigned int, unsigned int> pair;
 
-    PriorityQueue<std::pair<unsigned int,unsigned int>,Size> queue;
+    PriorityQueue<std::pair<unsigned int, unsigned int>, Size> queue;
 
     for ( unsigned int i = 0; i < tables.size(); ++i ) {
       pair.first = i;
 
-      for ( unsigned int j = i+1; j < tables.size(); ++j ) {
+      for ( unsigned int j = i + 1; j < tables.size(); ++j ) {
         pair.second = j;
-        queue.insert( _combinedSize( *( tables[i] ), *( tables[j] ) ), pair );
+        queue.insert ( _combinedSize ( * ( tables[i] ), * ( tables[j] ) ), pair );
       }
     }
 
@@ -312,22 +312,22 @@ namespace gum {
       // compute the result
       Sequence<const DiscreteVariable*>* new_seq =
         new Sequence<const DiscreteVariable*>;
-      const Sequence<const DiscreteVariable*>& seq1 = *( tables[ti] );
-      const Sequence<const DiscreteVariable*>& seq2 = *( tables[tj] );
+      const Sequence<const DiscreteVariable*>& seq1 = * ( tables[ti] );
+      const Sequence<const DiscreteVariable*>& seq2 = * ( tables[tj] );
 
       Size new_size = 1;
 
       for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
               seq1.beginSafe(); iter != seq1.endSafe(); ++iter ) {
         new_size *= ( *iter )->domainSize();
-        new_seq->insert( *iter );
+        new_seq->insert ( *iter );
       }
 
       for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
               seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
-        if ( ! seq1.exists( *iter ) ) {
+        if ( ! seq1.exists ( *iter ) ) {
           new_size *= ( *iter )->domainSize();
-          new_seq->insert( *iter );
+          new_seq->insert ( *iter );
         }
       }
 
@@ -349,16 +349,16 @@ namespace gum {
       for ( unsigned int ind = 0; ind < tj; ++ind ) {
         if ( tables[ind] ) {
           pair.first = ind;
-          queue.eraseByVal( pair );
+          queue.eraseByVal ( pair );
         }
       }
 
       pair.first = tj;
 
-      for ( unsigned int ind = tj+1; ind < tables.size(); ++ind ) {
+      for ( unsigned int ind = tj + 1; ind < tables.size(); ++ind ) {
         if ( tables[ind] ) {
           pair.second = ind;
-          queue.eraseByVal( pair );
+          queue.eraseByVal ( pair );
         }
       }
 
@@ -370,18 +370,18 @@ namespace gum {
         for ( unsigned int ind = 0; ind < ti; ++ind ) {
           if ( tables[ind] ) {
             pair.first = ind;
-            newsize = _combinedSize( *new_seq, * ( tables[ind] ) );
-            queue.setPriorityByVal( pair, newsize );
+            newsize = _combinedSize ( *new_seq, * ( tables[ind] ) );
+            queue.setPriorityByVal ( pair, newsize );
           }
         }
 
         pair.first = ti;
 
-        for ( unsigned int ind = ti+1; ind < tables.size(); ++ind ) {
+        for ( unsigned int ind = ti + 1; ind < tables.size(); ++ind ) {
           if ( tables[ind] ) {
             pair.second = ind;
-            newsize = _combinedSize( *new_seq, * ( tables[ind] ) );
-            queue.setPriorityByVal( pair, newsize );
+            newsize = _combinedSize ( *new_seq, * ( tables[ind] ) );
+            queue.setPriorityByVal ( pair, newsize );
           }
         }
       }
@@ -401,39 +401,39 @@ namespace gum {
 
   /// returns the result of the combination
   template< typename GUM_SCALAR, template<typename> class TABLE >
-  float MultiDimCombinationDefault<GUM_SCALAR,TABLE>::nbOperations
+  float MultiDimCombinationDefault<GUM_SCALAR, TABLE>::nbOperations
   ( const Set<const TABLE<GUM_SCALAR>*>& set ) const {
     // check if the set passed in argument is empty.
     if ( set.size() < 2 ) return 0.0f;
 
     // create the set of sets of discrete variables involved in the tables
-    Set<const Sequence<const DiscreteVariable*>*> var_set( set.size() );
+    Set<const Sequence<const DiscreteVariable*>*> var_set ( set.size() );
 
     for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator_safe iter =
             set.beginSafe(); iter != set.endSafe(); ++iter ) {
-      var_set << &( ( *iter )->variablesSequence() );
+      var_set << & ( ( *iter )->variablesSequence() );
     }
 
-    return nbOperations( var_set );
+    return nbOperations ( var_set );
   }
 
 
   /// returns the memory consumption used during the combination
   template< typename GUM_SCALAR, template<typename> class TABLE >
-  std::pair<long,long>
-  MultiDimCombinationDefault<GUM_SCALAR,TABLE>::memoryUsage
+  std::pair<long, long>
+  MultiDimCombinationDefault<GUM_SCALAR, TABLE>::memoryUsage
   ( const Set<const Sequence<const DiscreteVariable*>*>& set ) const {
     // check if the set passed in argument is empty.
-    if ( set.size() < 2 ) return std::pair<long,long> ( 0,0 );
+    if ( set.size() < 2 ) return std::pair<long, long> ( 0, 0 );
 
     long max_memory = 0;
 
     long current_memory = 0;
 
     // create a vector with all the tables to combine
-    std::vector< const Sequence<const DiscreteVariable*>* > tables( set.size() );
+    std::vector< const Sequence<const DiscreteVariable*>* > tables ( set.size() );
 
-    std::vector< Size > table_size( set.size() );
+    std::vector< Size > table_size ( set.size() );
 
     {
       unsigned int i = 0;
@@ -457,22 +457,22 @@ namespace gum {
     // create a vector indicating wether the elements in tables are freshly
     // created Sequence<const DiscreteVariable *>* due to the combination of some
     // TABLEs or if they were added by the user into the combination container
-    std::vector<bool> is_t_new( tables.size(), false );
+    std::vector<bool> is_t_new ( tables.size(), false );
 
 
     // for each pair of tables (i,j), compute the size of the table that would
     // result from the addition of tables i and j and store the result into a
     // priorityQueue
-    std::pair<unsigned int,unsigned int> pair;
+    std::pair<unsigned int, unsigned int> pair;
 
-    PriorityQueue<std::pair<unsigned int,unsigned int>,Size> queue;
+    PriorityQueue<std::pair<unsigned int, unsigned int>, Size> queue;
 
     for ( unsigned int i = 0; i < tables.size(); ++i ) {
       pair.first = i;
 
-      for ( unsigned int j = i+1; j < tables.size(); ++j ) {
+      for ( unsigned int j = i + 1; j < tables.size(); ++j ) {
         pair.second = j;
-        queue.insert( _combinedSize( *( tables[i] ), *( tables[j] ) ), pair );
+        queue.insert ( _combinedSize ( * ( tables[i] ), * ( tables[j] ) ), pair );
       }
     }
 
@@ -489,39 +489,39 @@ namespace gum {
       // compute the result
       Sequence<const DiscreteVariable*>* new_seq =
         new Sequence<const DiscreteVariable*>;
-      const Sequence<const DiscreteVariable*>& seq1 = *( tables[ti] );
-      const Sequence<const DiscreteVariable*>& seq2 = *( tables[tj] );
+      const Sequence<const DiscreteVariable*>& seq1 = * ( tables[ti] );
+      const Sequence<const DiscreteVariable*>& seq2 = * ( tables[tj] );
 
       long new_size = 1;
 
       for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
               seq1.beginSafe(); iter != seq1.endSafe(); ++iter ) {
         if ( std::numeric_limits<long>::max() /
-             ( long )( *iter )->domainSize() < new_size ) {
-          GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
+             ( long ) ( *iter )->domainSize() < new_size ) {
+          GUM_ERROR ( OutOfBounds, "memory usage out of long int range" );
         }
 
         new_size *= ( *iter )->domainSize();
 
-        new_seq->insert( *iter );
+        new_seq->insert ( *iter );
       }
 
       for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
               seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
-        if ( ! seq1.exists( *iter ) ) {
+        if ( ! seq1.exists ( *iter ) ) {
           if ( std::numeric_limits<long>::max() /
-               ( long )( *iter )->domainSize() < new_size ) {
-            GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
+               ( long ) ( *iter )->domainSize() < new_size ) {
+            GUM_ERROR ( OutOfBounds, "memory usage out of long int range" );
           }
 
           new_size *= ( *iter )->domainSize();
 
-          new_seq->insert( *iter );
+          new_seq->insert ( *iter );
         }
       }
 
       if ( std::numeric_limits<long>::max() - current_memory < new_size ) {
-        GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
+        GUM_ERROR ( OutOfBounds, "memory usage out of long int range" );
       }
 
       current_memory += new_size;
@@ -553,16 +553,16 @@ namespace gum {
       for ( unsigned int ind = 0; ind < tj; ++ind ) {
         if ( tables[ind] ) {
           pair.first = ind;
-          queue.eraseByVal( pair );
+          queue.eraseByVal ( pair );
         }
       }
 
       pair.first = tj;
 
-      for ( unsigned int ind = tj+1; ind < tables.size(); ++ind ) {
+      for ( unsigned int ind = tj + 1; ind < tables.size(); ++ind ) {
         if ( tables[ind] ) {
           pair.second = ind;
-          queue.eraseByVal( pair );
+          queue.eraseByVal ( pair );
         }
       }
 
@@ -574,18 +574,18 @@ namespace gum {
         for ( unsigned int ind = 0; ind < ti; ++ind ) {
           if ( tables[ind] ) {
             pair.first = ind;
-            newsize = _combinedSize( *new_seq, * ( tables[ind] ) );
-            queue.setPriorityByVal( pair, newsize );
+            newsize = _combinedSize ( *new_seq, * ( tables[ind] ) );
+            queue.setPriorityByVal ( pair, newsize );
           }
         }
 
         pair.first = ti;
 
-        for ( unsigned int ind = ti+1; ind < tables.size(); ++ind ) {
+        for ( unsigned int ind = ti + 1; ind < tables.size(); ++ind ) {
           if ( tables[ind] ) {
             pair.second = ind;
-            newsize = _combinedSize( *new_seq, * ( tables[ind] ) );
-            queue.setPriorityByVal( pair, newsize );
+            newsize = _combinedSize ( *new_seq, * ( tables[ind] ) );
+            queue.setPriorityByVal ( pair, newsize );
           }
         }
       }
@@ -600,27 +600,27 @@ namespace gum {
 
     delete tables[k];
 
-    return std::pair<long,long> ( max_memory,current_memory );
+    return std::pair<long, long> ( max_memory, current_memory );
   }
 
 
   /// returns the memory consumption used during the combination
   template< typename GUM_SCALAR, template<typename> class TABLE >
-  std::pair<long,long>
-  MultiDimCombinationDefault<GUM_SCALAR,TABLE>::memoryUsage
+  std::pair<long, long>
+  MultiDimCombinationDefault<GUM_SCALAR, TABLE>::memoryUsage
   ( const Set<const TABLE<GUM_SCALAR>*>& set ) const {
     // check if the set passed in argument is empty.
-    if ( set.size() < 2 ) return std::pair<long,long> ( 0,0 );
+    if ( set.size() < 2 ) return std::pair<long, long> ( 0, 0 );
 
     // create the set of sets of discrete variables involved in the tables
-    Set<const Sequence<const DiscreteVariable*>*> var_set( set.size() );
+    Set<const Sequence<const DiscreteVariable*>*> var_set ( set.size() );
 
     for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator_safe iter =
             set.beginSafe(); iter != set.endSafe(); ++iter ) {
-      var_set << &( ( *iter )->variablesSequence() );
+      var_set << & ( ( *iter )->variablesSequence() );
     }
 
-    return memoryUsage( var_set );
+    return memoryUsage ( var_set );
   }
 
 

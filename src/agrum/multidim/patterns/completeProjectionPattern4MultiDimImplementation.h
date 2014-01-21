@@ -54,7 +54,7 @@ namespace gum {
     }
 
     // perform the projection
-    return func( &ttable, instantiation );
+    return func ( &ttable, instantiation );
   }
 
 

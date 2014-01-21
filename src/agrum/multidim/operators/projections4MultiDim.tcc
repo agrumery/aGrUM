@@ -391,7 +391,7 @@
 #undef GUM_MULTI_DIM_SYMMETRIC_PROJECTION
 
 /// the function to be used to add two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_PROJ( projectMax )
+GUM_MULTI_DIM_DECORATOR_PROJ ( projectMax )
 
 
 /// the function to be used to project a MultiDimImplementation using a Min
@@ -404,7 +404,7 @@ GUM_MULTI_DIM_DECORATOR_PROJ( projectMax )
 #undef GUM_MULTI_DIM_SYMMETRIC_PROJECTION
 
 /// the function to be used to add two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_PROJ( projectMin )
+GUM_MULTI_DIM_DECORATOR_PROJ ( projectMin )
 
 
 /// the function to be used to project a MultiDimImplementation using a Sum
@@ -417,7 +417,7 @@ GUM_MULTI_DIM_DECORATOR_PROJ( projectMin )
 #undef GUM_MULTI_DIM_SYMMETRIC_PROJECTION
 
 /// the function to be used to add two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_PROJ( projectSum )
+GUM_MULTI_DIM_DECORATOR_PROJ ( projectSum )
 
 
 /// the function to be used to project a MultiDimImplementation using a Product
@@ -430,7 +430,7 @@ GUM_MULTI_DIM_DECORATOR_PROJ( projectSum )
 #undef GUM_MULTI_DIM_SYMMETRIC_PROJECTION
 
 /// the function to be used to add two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_PROJ( projectProduct )
+GUM_MULTI_DIM_DECORATOR_PROJ ( projectProduct )
 
 
 
@@ -490,9 +490,9 @@ namespace gum {
     if ( first_init ) {
       first_init = false;
 
-      std::string MultiDimArrayString( "MultiDimArray" );
-      std::string MultiDimDecisionDiagramString( "MultiDimDecisionDiagram" );
-      std::string BaseNameString( "MultiDimImplementation" );
+      std::string MultiDimArrayString ( "MultiDimArray" );
+      std::string MultiDimDecisionDiagramString ( "MultiDimDecisionDiagram" );
+      std::string BaseNameString ( "MultiDimImplementation" );
 
       // register base functions for multiDimArrays
       registerProjection<GUM_SCALAR> ( "max", MultiDimArrayString,
@@ -535,8 +535,8 @@ namespace gum {
     if ( first_init ) {
       first_init = false;
 
-      std::string MultiDimArrayString( "MultiDimArray" );
-      std::string BaseNameString( "MultiDimImplementation" );
+      std::string MultiDimArrayString ( "MultiDimArray" );
+      std::string BaseNameString ( "MultiDimImplementation" );
 
       // register base functions for multiDimArrays
       registerProjection<GUM_SCALAR*> ( "max", MultiDimArrayString,

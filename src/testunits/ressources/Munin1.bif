@@ -1,4 +1,4 @@
-//%%%%%%%%%%%%%%%%%%%%%%%  M U N I N 1  %%%%%%%%%%%%%%%%%%%%%%%%%
+//%%%%%%%%%%%%%%%%%%%%%%%  M U N I N 1 %%%%%%%%%%%%%%%%%%%%%%%%%
 //% Subset of the Munin network.
 //%
 //% @InCollection{andreassen:jensen:andersen:etal:89,
@@ -1750,9 +1750,9 @@ variable R_APB_QUAN_MUPPOLY {
   property label = "R.APB.QUAN.MUPPOLY";
   property position = ( 1810, 150 );
   type discrete[3] {
-    __12%, // "<12%"
-    12_24%, // "12-24%"
-    __24%// ">24%"
+    __12% , // "<12%"
+    12_24% , // "12-24%"
+    __24% // ">24%"
   };
 }
 
@@ -2312,25 +2312,25 @@ variable R_MEDD2_AMPR_EW {
   };
 }
 
-probability( R_LNLT1_APB_DENERV ) {
+probability ( R_LNLT1_APB_DENERV ) {
   table 1, 0, 0, 0;
 }
-probability( R_LNLT1_APB_NEUR_ACT ) {
+probability ( R_LNLT1_APB_NEUR_ACT ) {
   table 1, 0, 0, 0, 0, 0;
 }
-probability( R_LNLT1_APB_MUDENS ) {
+probability ( R_LNLT1_APB_MUDENS ) {
   table 1, 0, 0;
 }
-probability( R_LNLT1_APB_DE_REGEN ) {
+probability ( R_LNLT1_APB_DE_REGEN ) {
   table 1, 0;
 }
-probability( R_LNLT1_APB_MUSIZE ) {
+probability ( R_LNLT1_APB_MUSIZE ) {
   table 0, 0, 1, 0, 0, 0;
 }
-probability( R_LNLT1_APB_MALOSS ) {
+probability ( R_LNLT1_APB_MALOSS ) {
   table 1, 0, 0, 0, 0;
 }
-probability( DIFFN_M_SEV_PROX | DIFFN_MOT_SEV, DIFFN_DISTR ) {
+probability ( DIFFN_M_SEV_PROX | DIFFN_MOT_SEV, DIFFN_DISTR ) {
   ( NO, DIST ) 1, 0, 0, 0;
   ( NO, PROX ) 1, 0, 0, 0;
   ( NO, RANDOM ) 1, 0, 0, 0;
@@ -2344,13 +2344,13 @@ probability( DIFFN_M_SEV_PROX | DIFFN_MOT_SEV, DIFFN_DISTR ) {
   ( SEV, PROX ) 0, 0.5, 0.5, 0;
   ( SEV, RANDOM ) 0.05, 0.15, 0.4, 0.4;
 }
-probability( DIFFN_TYPE ) {
+probability ( DIFFN_TYPE ) {
   table 0.06, 0.935, 0.005;
 }
-probability( DIFFN_SEV ) {
+probability ( DIFFN_SEV ) {
   table 0.78, 0.1, 0.07, 0.05;
 }
-probability( DIFFN_MOT_SEV | DIFFN_SEV, DIFFN_TYPE ) {
+probability ( DIFFN_MOT_SEV | DIFFN_SEV, DIFFN_TYPE ) {
   ( NO, MOTOR ) 1, 0, 0, 0;
   ( NO, MIXED ) 1, 0, 0, 0;
   ( NO, SENS ) 1, 0, 0, 0;
@@ -2364,10 +2364,10 @@ probability( DIFFN_MOT_SEV | DIFFN_SEV, DIFFN_TYPE ) {
   ( SEV, MIXED ) 0, 0, 0, 1;
   ( SEV, SENS ) 1, 0, 0, 0;
 }
-probability( DIFFN_DISTR ) {
+probability ( DIFFN_DISTR ) {
   table 0.93, 0.02, 0.05;
 }
-probability( DIFFN_SENS_SEV | DIFFN_SEV, DIFFN_TYPE ) {
+probability ( DIFFN_SENS_SEV | DIFFN_SEV, DIFFN_TYPE ) {
   ( NO, MOTOR ) 1, 0, 0, 0;
   ( NO, MIXED ) 1, 0, 0, 0;
   ( NO, SENS ) 1, 0, 0, 0;
@@ -2381,25 +2381,25 @@ probability( DIFFN_SENS_SEV | DIFFN_SEV, DIFFN_TYPE ) {
   ( SEV, MIXED ) 0, 0, 0, 1;
   ( SEV, SENS ) 0, 0, 0, 1;
 }
-probability( R_LNLLP_APB_DENERV ) {
+probability ( R_LNLLP_APB_DENERV ) {
   table 1, 0, 0, 0;
 }
-probability( R_LNLLP_APB_NEUR_ACT ) {
+probability ( R_LNLLP_APB_NEUR_ACT ) {
   table 1, 0, 0, 0, 0, 0;
 }
-probability( R_LNLLP_APB_MUDENS ) {
+probability ( R_LNLLP_APB_MUDENS ) {
   table 1, 0, 0;
 }
-probability( R_LNLLP_APB_DE_REGEN ) {
+probability ( R_LNLLP_APB_DE_REGEN ) {
   table 1, 0;
 }
-probability( R_LNLW_MED_TIME ) {
+probability ( R_LNLW_MED_TIME ) {
   table 0.05, 0.33, 0.6, 0.02;
 }
-probability( DIFFN_TIME ) {
+probability ( DIFFN_TIME ) {
   table 0.01, 0.25, 0.65, 0.09;
 }
-probability( DIFFN_M_SEV_DIST | DIFFN_MOT_SEV, DIFFN_DISTR ) {
+probability ( DIFFN_M_SEV_DIST | DIFFN_MOT_SEV, DIFFN_DISTR ) {
   ( NO, DIST ) 1, 0, 0, 0;
   ( NO, PROX ) 1, 0, 0, 0;
   ( NO, RANDOM ) 1, 0, 0, 0;
@@ -2413,19 +2413,19 @@ probability( DIFFN_M_SEV_DIST | DIFFN_MOT_SEV, DIFFN_DISTR ) {
   ( SEV, PROX ) 0, 0.5, 0.5, 0;
   ( SEV, RANDOM ) 0.05, 0.15, 0.4, 0.4;
 }
-probability( R_LNLBE_MED_TIME ) {
+probability ( R_LNLBE_MED_TIME ) {
   table 0.05, 0.6, 0.3, 0.05;
 }
-probability( R_LNLLP_APB_MUSIZE ) {
+probability ( R_LNLLP_APB_MUSIZE ) {
   table 0, 0, 1, 0, 0, 0;
 }
-probability( R_LNLLP_APB_MALOSS ) {
+probability ( R_LNLLP_APB_MALOSS ) {
   table 1, 0, 0, 0, 0;
 }
-probability( DIFFN_PATHO ) {
+probability ( DIFFN_PATHO ) {
   table 0.086, 0.01, 0.9, 0.002, 0.002;
 }
-probability( DIFFN_S_SEV_DIST | DIFFN_SENS_SEV, DIFFN_DISTR ) {
+probability ( DIFFN_S_SEV_DIST | DIFFN_SENS_SEV, DIFFN_DISTR ) {
   ( NO, DIST ) 1, 0, 0, 0;
   ( NO, PROX ) 1, 0, 0, 0;
   ( NO, RANDOM ) 1, 0, 0, 0;
@@ -2439,13 +2439,13 @@ probability( DIFFN_S_SEV_DIST | DIFFN_SENS_SEV, DIFFN_DISTR ) {
   ( SEV, PROX ) 0, 0.5, 0.5, 0;
   ( SEV, RANDOM ) 0.05, 0.15, 0.4, 0.4;
 }
-probability( R_MYDY_APB_DENERV ) {
+probability ( R_MYDY_APB_DENERV ) {
   table 1, 0, 0, 0;
 }
-probability( R_MYOP_APB_DENERV ) {
+probability ( R_MYOP_APB_DENERV ) {
   table 1, 0, 0, 0;
 }
-probability( R_LNLW_APB_DENERV | R_LNLW_MED_SEV, R_LNLW_MED_TIME, R_LNLW_MED_PATHO ) {
+probability ( R_LNLW_APB_DENERV | R_LNLW_MED_SEV, R_LNLW_MED_TIME, R_LNLW_MED_PATHO ) {
   ( NO, ACUTE, DEMY ) 1, 0, 0, 0;
   ( NO, ACUTE, BLOCK ) 1, 0, 0, 0;
   ( NO, ACUTE, AXONAL ) 1, 0, 0, 0;
@@ -2547,7 +2547,7 @@ probability( R_LNLW_APB_DENERV | R_LNLW_MED_SEV, R_LNLW_MED_TIME, R_LNLW_MED_PAT
   ( TOTAL, OLD, V_E_REIN ) 0, 0, 0.5, 0.5;
   ( TOTAL, OLD, E_REIN ) 0.05, 0.4, 0.5, 0.05;
 }
-probability( R_DIFFN_APB_DENERV | DIFFN_M_SEV_DIST, DIFFN_TIME, DIFFN_PATHO ) {
+probability ( R_DIFFN_APB_DENERV | DIFFN_M_SEV_DIST, DIFFN_TIME, DIFFN_PATHO ) {
   ( NO, ACUTE, DEMY ) 1, 0, 0, 0;
   ( NO, ACUTE, BLOCK ) 1, 0, 0, 0;
   ( NO, ACUTE, AXONAL ) 1, 0, 0, 0;
@@ -2629,7 +2629,7 @@ probability( R_DIFFN_APB_DENERV | DIFFN_M_SEV_DIST, DIFFN_TIME, DIFFN_PATHO ) {
   ( SEV, OLD, V_E_REIN ) 0, 0, 0.5, 0.5;
   ( SEV, OLD, E_REIN ) 0.05, 0.4, 0.5, 0.05;
 }
-probability( R_LNLBE_APB_DENERV | R_LNLBE_MED_SEV, R_LNLBE_MED_TIME, R_LNLBE_MED_PATHO ) {
+probability ( R_LNLBE_APB_DENERV | R_LNLBE_MED_SEV, R_LNLBE_MED_TIME, R_LNLBE_MED_PATHO ) {
   ( NO, ACUTE, DEMY ) 1, 0, 0, 0;
   ( NO, ACUTE, BLOCK ) 1, 0, 0, 0;
   ( NO, ACUTE, AXONAL ) 1, 0, 0, 0;
@@ -2731,7 +2731,7 @@ probability( R_LNLBE_APB_DENERV | R_LNLBE_MED_SEV, R_LNLBE_MED_TIME, R_LNLBE_MED
   ( TOTAL, OLD, V_E_REIN ) 0, 0, 0.5, 0.5;
   ( TOTAL, OLD, E_REIN ) 0.05, 0.4, 0.5, 0.05;
 }
-probability( R_LNLT1_LP_APB_DENERV | R_LNLT1_APB_DENERV, R_LNLLP_APB_DENERV ) {
+probability ( R_LNLT1_LP_APB_DENERV | R_LNLT1_APB_DENERV, R_LNLLP_APB_DENERV ) {
   ( NO, NO ) 1, 0, 0, 0;
   ( NO, MILD ) 0, 1, 0, 0;
   ( NO, MOD ) 0, 0, 1, 0;
@@ -2749,7 +2749,7 @@ probability( R_LNLT1_LP_APB_DENERV | R_LNLT1_APB_DENERV, R_LNLLP_APB_DENERV ) {
   ( SEV, MOD ) 0, 0, 0, 1;
   ( SEV, SEV ) 0, 0, 0, 1;
 }
-probability( R_LNLW_APB_NEUR_ACT | R_LNLW_MED_SEV, R_LNLW_MED_TIME ) {
+probability ( R_LNLW_APB_NEUR_ACT | R_LNLW_MED_SEV, R_LNLW_MED_TIME ) {
   ( NO, ACUTE ) 1, 0, 0, 0, 0, 0;
   ( NO, SUBACUTE ) 1, 0, 0, 0, 0, 0;
   ( NO, CHRONIC ) 1, 0, 0, 0, 0, 0;
@@ -2771,7 +2771,7 @@ probability( R_LNLW_APB_NEUR_ACT | R_LNLW_MED_SEV, R_LNLW_MED_TIME ) {
   ( TOTAL, CHRONIC ) 1, 0, 0, 0, 0, 0;
   ( TOTAL, OLD ) 1, 0, 0, 0, 0, 0;
 }
-probability( R_DIFFN_APB_NEUR_ACT | DIFFN_M_SEV_DIST, DIFFN_TIME ) {
+probability ( R_DIFFN_APB_NEUR_ACT | DIFFN_M_SEV_DIST, DIFFN_TIME ) {
   ( NO, ACUTE ) 1, 0, 0, 0, 0, 0;
   ( NO, SUBACUTE ) 1, 0, 0, 0, 0, 0;
   ( NO, CHRONIC ) 1, 0, 0, 0, 0, 0;
@@ -2789,7 +2789,7 @@ probability( R_DIFFN_APB_NEUR_ACT | DIFFN_M_SEV_DIST, DIFFN_TIME ) {
   ( SEV, CHRONIC ) 0.3, 0.7, 0, 0, 0, 0;
   ( SEV, OLD ) 0.3, 0.7, 0, 0, 0, 0;
 }
-probability( R_LNLBE_APB_NEUR_ACT | R_LNLBE_MED_SEV, R_LNLBE_MED_TIME ) {
+probability ( R_LNLBE_APB_NEUR_ACT | R_LNLBE_MED_SEV, R_LNLBE_MED_TIME ) {
   ( NO, ACUTE ) 1, 0, 0, 0, 0, 0;
   ( NO, SUBACUTE ) 1, 0, 0, 0, 0, 0;
   ( NO, CHRONIC ) 1, 0, 0, 0, 0, 0;
@@ -2811,7 +2811,7 @@ probability( R_LNLBE_APB_NEUR_ACT | R_LNLBE_MED_SEV, R_LNLBE_MED_TIME ) {
   ( TOTAL, CHRONIC ) 1, 0, 0, 0, 0, 0;
   ( TOTAL, OLD ) 1, 0, 0, 0, 0, 0;
 }
-probability( R_LNLT1_LP_APB_NEUR_ACT | R_LNLT1_APB_NEUR_ACT, R_LNLLP_APB_NEUR_ACT ) {
+probability ( R_LNLT1_LP_APB_NEUR_ACT | R_LNLT1_APB_NEUR_ACT, R_LNLLP_APB_NEUR_ACT ) {
   ( NO, NO ) 1, 0, 0, 0, 0, 0;
   ( NO, FASCIC ) 0, 1, 0, 0, 0, 0;
   ( NO, NEUROMYO ) 0, 0, 1, 0, 0, 0;
@@ -2849,13 +2849,13 @@ probability( R_LNLT1_LP_APB_NEUR_ACT | R_LNLT1_APB_NEUR_ACT, R_LNLLP_APB_NEUR_AC
   ( OTHER, TETANUS ) 0, 0, 0, 0, 0, 1;
   ( OTHER, OTHER ) 0, 0, 0, 0, 0, 1;
 }
-probability( R_MYDY_APB_MUDENS ) {
+probability ( R_MYDY_APB_MUDENS ) {
   table 1, 0, 0;
 }
-probability( R_MYOP_APB_MUDENS ) {
+probability ( R_MYOP_APB_MUDENS ) {
   table 1, 0, 0;
 }
-probability( R_LNLW_APB_MUDENS | R_LNLW_MED_SEV, R_LNLW_MED_TIME, R_LNLW_MED_PATHO ) {
+probability ( R_LNLW_APB_MUDENS | R_LNLW_MED_SEV, R_LNLW_MED_TIME, R_LNLW_MED_PATHO ) {
   ( NO, ACUTE, DEMY ) 1, 0, 0;
   ( NO, ACUTE, BLOCK ) 1, 0, 0;
   ( NO, ACUTE, AXONAL ) 1, 0, 0;
@@ -2957,7 +2957,7 @@ probability( R_LNLW_APB_MUDENS | R_LNLW_MED_SEV, R_LNLW_MED_TIME, R_LNLW_MED_PAT
   ( TOTAL, OLD, V_E_REIN ) 0.05, 0.5, 0.45;
   ( TOTAL, OLD, E_REIN ) 0.2, 0.5, 0.3;
 }
-probability( R_DIFFN_APB_MUDENS | DIFFN_M_SEV_DIST, DIFFN_TIME, DIFFN_PATHO ) {
+probability ( R_DIFFN_APB_MUDENS | DIFFN_M_SEV_DIST, DIFFN_TIME, DIFFN_PATHO ) {
   ( NO, ACUTE, DEMY ) 1, 0, 0;
   ( NO, ACUTE, BLOCK ) 1, 0, 0;
   ( NO, ACUTE, AXONAL ) 1, 0, 0;
@@ -3039,7 +3039,7 @@ probability( R_DIFFN_APB_MUDENS | DIFFN_M_SEV_DIST, DIFFN_TIME, DIFFN_PATHO ) {
   ( SEV, OLD, V_E_REIN ) 0.05, 0.5, 0.45;
   ( SEV, OLD, E_REIN ) 0.2, 0.5, 0.3;
 }
-probability( R_LNLBE_APB_MUDENS | R_LNLBE_MED_SEV, R_LNLBE_MED_TIME, R_LNLBE_MED_PATHO ) {
+probability ( R_LNLBE_APB_MUDENS | R_LNLBE_MED_SEV, R_LNLBE_MED_TIME, R_LNLBE_MED_PATHO ) {
   ( NO, ACUTE, DEMY ) 1, 0, 0;
   ( NO, ACUTE, BLOCK ) 1, 0, 0;
   ( NO, ACUTE, AXONAL ) 1, 0, 0;
@@ -3141,7 +3141,7 @@ probability( R_LNLBE_APB_MUDENS | R_LNLBE_MED_SEV, R_LNLBE_MED_TIME, R_LNLBE_MED
   ( TOTAL, OLD, V_E_REIN ) 0.05, 0.5, 0.45;
   ( TOTAL, OLD, E_REIN ) 0.2, 0.5, 0.3;
 }
-probability( R_LNLT1_LP_APB_MUDENS | R_LNLT1_APB_MUDENS, R_LNLLP_APB_MUDENS ) {
+probability ( R_LNLT1_LP_APB_MUDENS | R_LNLT1_APB_MUDENS, R_LNLLP_APB_MUDENS ) {
   ( NORMAL, NORMAL ) 1, 0, 0;
   ( NORMAL, INCR ) 0, 1, 0;
   ( NORMAL, V_INCR ) 0, 0, 1;
@@ -3152,13 +3152,13 @@ probability( R_LNLT1_LP_APB_MUDENS | R_LNLT1_APB_MUDENS, R_LNLLP_APB_MUDENS ) {
   ( V_INCR, INCR ) 0, 0, 1;
   ( V_INCR, V_INCR ) 0, 0, 1;
 }
-probability( R_MYDY_APB_DE_REGEN ) {
+probability ( R_MYDY_APB_DE_REGEN ) {
   table 1, 0;
 }
-probability( R_MYOP_APB_DE_REGEN ) {
+probability ( R_MYOP_APB_DE_REGEN ) {
   table 1, 0;
 }
-probability( R_LNLW_APB_DE_REGEN | R_LNLW_MED_SEV, R_LNLW_MED_TIME, R_LNLW_MED_PATHO ) {
+probability ( R_LNLW_APB_DE_REGEN | R_LNLW_MED_SEV, R_LNLW_MED_TIME, R_LNLW_MED_PATHO ) {
   ( NO, ACUTE, DEMY ) 1, 0;
   ( NO, ACUTE, BLOCK ) 1, 0;
   ( NO, ACUTE, AXONAL ) 1, 0;
@@ -3260,7 +3260,7 @@ probability( R_LNLW_APB_DE_REGEN | R_LNLW_MED_SEV, R_LNLW_MED_TIME, R_LNLW_MED_P
   ( TOTAL, OLD, V_E_REIN ) 0, 1;
   ( TOTAL, OLD, E_REIN ) 0, 1;
 }
-probability( R_DIFFN_APB_DE_REGEN | DIFFN_M_SEV_DIST, DIFFN_TIME, DIFFN_PATHO ) {
+probability ( R_DIFFN_APB_DE_REGEN | DIFFN_M_SEV_DIST, DIFFN_TIME, DIFFN_PATHO ) {
   ( NO, ACUTE, DEMY ) 1, 0;
   ( NO, ACUTE, BLOCK ) 1, 0;
   ( NO, ACUTE, AXONAL ) 1, 0;
@@ -3342,7 +3342,7 @@ probability( R_DIFFN_APB_DE_REGEN | DIFFN_M_SEV_DIST, DIFFN_TIME, DIFFN_PATHO ) 
   ( SEV, OLD, V_E_REIN ) 0, 1;
   ( SEV, OLD, E_REIN ) 0, 1;
 }
-probability( R_LNLBE_APB_DE_REGEN | R_LNLBE_MED_SEV, R_LNLBE_MED_TIME, R_LNLBE_MED_PATHO ) {
+probability ( R_LNLBE_APB_DE_REGEN | R_LNLBE_MED_SEV, R_LNLBE_MED_TIME, R_LNLBE_MED_PATHO ) {
   ( NO, ACUTE, DEMY ) 1, 0;
   ( NO, ACUTE, BLOCK ) 1, 0;
   ( NO, ACUTE, AXONAL ) 1, 0;
@@ -3444,19 +3444,19 @@ probability( R_LNLBE_APB_DE_REGEN | R_LNLBE_MED_SEV, R_LNLBE_MED_TIME, R_LNLBE_M
   ( TOTAL, OLD, V_E_REIN ) 0, 1;
   ( TOTAL, OLD, E_REIN ) 0, 1;
 }
-probability( R_LNLT1_LP_APB_DE_REGEN | R_LNLT1_APB_DE_REGEN, R_LNLLP_APB_DE_REGEN ) {
+probability ( R_LNLT1_LP_APB_DE_REGEN | R_LNLT1_APB_DE_REGEN, R_LNLLP_APB_DE_REGEN ) {
   ( NO, NO ) 1, 0;
   ( NO, YES ) 0, 1;
   ( YES, NO ) 0, 1;
   ( YES, YES ) 0, 1;
 }
-probability( R_MYOP_APB_MUSIZE ) {
+probability ( R_MYOP_APB_MUSIZE ) {
   table 0, 0, 1, 0, 0, 0;
 }
-probability( R_MYDY_APB_MUSIZE ) {
+probability ( R_MYDY_APB_MUSIZE ) {
   table 0, 0, 1, 0, 0, 0;
 }
-probability( R_LNLW_MEDD2_DISP_WD | R_LNLW_MED_SEV, R_LNLW_MED_PATHO ) {
+probability ( R_LNLW_MEDD2_DISP_WD | R_LNLW_MED_SEV, R_LNLW_MED_PATHO ) {
   ( NO, DEMY ) 1, 0, 0, 0;
   ( NO, BLOCK ) 1, 0, 0, 0;
   ( NO, AXONAL ) 1, 0, 0, 0;
@@ -3483,7 +3483,7 @@ probability( R_LNLW_MEDD2_DISP_WD | R_LNLW_MED_SEV, R_LNLW_MED_PATHO ) {
   ( TOTAL, V_E_REIN ) 0, 0, 0, 1;
   ( TOTAL, E_REIN ) 0, 0, 0, 1;
 }
-probability( R_DIFFN_MEDD2_SALOSS | DIFFN_S_SEV_DIST, DIFFN_PATHO ) {
+probability ( R_DIFFN_MEDD2_SALOSS | DIFFN_S_SEV_DIST, DIFFN_PATHO ) {
   ( NO, DEMY ) 1, 0, 0, 0, 0;
   ( NO, BLOCK ) 1, 0, 0, 0, 0;
   ( NO, AXONAL ) 1, 0, 0, 0, 0;
@@ -3505,7 +3505,7 @@ probability( R_DIFFN_MEDD2_SALOSS | DIFFN_S_SEV_DIST, DIFFN_PATHO ) {
   ( SEV, V_E_REIN ) 0, 0, 0, 1, 0;
   ( SEV, E_REIN ) 0, 0, 0.5, 0.5, 0;
 }
-probability( R_LNLW_MEDD2_SALOSS_WD | R_LNLW_MED_SEV, R_LNLW_MED_PATHO ) {
+probability ( R_LNLW_MEDD2_SALOSS_WD | R_LNLW_MED_SEV, R_LNLW_MED_PATHO ) {
   ( NO, DEMY ) 1, 0, 0, 0, 0;
   ( NO, BLOCK ) 1, 0, 0, 0, 0;
   ( NO, AXONAL ) 1, 0, 0, 0, 0;
@@ -3532,7 +3532,7 @@ probability( R_LNLW_MEDD2_SALOSS_WD | R_LNLW_MED_SEV, R_LNLW_MED_PATHO ) {
   ( TOTAL, V_E_REIN ) 0, 0, 0, 1, 0;
   ( TOTAL, E_REIN ) 0, 0, 0.5, 0.5, 0;
 }
-probability( R_NMT_APB_DENERV | R_APB_NMT ) {
+probability ( R_NMT_APB_DENERV | R_APB_NMT ) {
   ( NO ) 1, 0, 0, 0;
   ( MOD_PRE ) 0.4, 0.45, 0.15, 0;
   ( SEV_PRE ) 0.15, 0.35, 0.35, 0.15;
@@ -3541,7 +3541,7 @@ probability( R_NMT_APB_DENERV | R_APB_NMT ) {
   ( SEV_POST ) 0.15, 0.35, 0.35, 0.15;
   ( MIXED ) 0.25, 0.25, 0.25, 0.25;
 }
-probability( R_MYOP_MYDY_APB_DENERV | R_MYOP_APB_DENERV, R_MYDY_APB_DENERV ) {
+probability ( R_MYOP_MYDY_APB_DENERV | R_MYOP_APB_DENERV, R_MYDY_APB_DENERV ) {
   ( NO, NO ) 1, 0, 0, 0;
   ( NO, MILD ) 0, 1, 0, 0;
   ( NO, MOD ) 0, 0, 1, 0;
@@ -3559,7 +3559,7 @@ probability( R_MYOP_MYDY_APB_DENERV | R_MYOP_APB_DENERV, R_MYDY_APB_DENERV ) {
   ( SEV, MOD ) 0, 0, 0, 1;
   ( SEV, SEV ) 0, 0, 0, 1;
 }
-probability( R_DIFFN_LNLW_APB_DENERV | R_DIFFN_APB_DENERV, R_LNLW_APB_DENERV ) {
+probability ( R_DIFFN_LNLW_APB_DENERV | R_DIFFN_APB_DENERV, R_LNLW_APB_DENERV ) {
   ( NO, NO ) 1, 0, 0, 0;
   ( NO, MILD ) 0, 1, 0, 0;
   ( NO, MOD ) 0, 0, 1, 0;
@@ -3577,7 +3577,7 @@ probability( R_DIFFN_LNLW_APB_DENERV | R_DIFFN_APB_DENERV, R_LNLW_APB_DENERV ) {
   ( SEV, MOD ) 0, 0, 0, 1;
   ( SEV, SEV ) 0, 0, 0, 1;
 }
-probability( R_LNLT1_LP_BE_APB_DENERV | R_LNLT1_LP_APB_DENERV, R_LNLBE_APB_DENERV ) {
+probability ( R_LNLT1_LP_BE_APB_DENERV | R_LNLT1_LP_APB_DENERV, R_LNLBE_APB_DENERV ) {
   ( NO, NO ) 1, 0, 0, 0;
   ( NO, MILD ) 0, 1, 0, 0;
   ( NO, MOD ) 0, 0, 1, 0;
@@ -3595,10 +3595,10 @@ probability( R_LNLT1_LP_BE_APB_DENERV | R_LNLT1_LP_APB_DENERV, R_LNLBE_APB_DENER
   ( SEV, MOD ) 0, 0, 0, 1;
   ( SEV, SEV ) 0, 0, 0, 1;
 }
-probability( R_MYAS_APB_MUDENS ) {
+probability ( R_MYAS_APB_MUDENS ) {
   table 1, 0, 0;
 }
-probability( R_MYOP_MYDY_APB_MUDENS | R_MYOP_APB_MUDENS, R_MYDY_APB_MUDENS ) {
+probability ( R_MYOP_MYDY_APB_MUDENS | R_MYOP_APB_MUDENS, R_MYDY_APB_MUDENS ) {
   ( NORMAL, NORMAL ) 1, 0, 0;
   ( NORMAL, INCR ) 0, 1, 0;
   ( NORMAL, V_INCR ) 0, 0, 1;
@@ -3609,7 +3609,7 @@ probability( R_MYOP_MYDY_APB_MUDENS | R_MYOP_APB_MUDENS, R_MYDY_APB_MUDENS ) {
   ( V_INCR, INCR ) 0, 0, 1;
   ( V_INCR, V_INCR ) 0, 0, 1;
 }
-probability( R_DIFFN_LNLW_APB_MUDENS | R_DIFFN_APB_MUDENS, R_LNLW_APB_MUDENS ) {
+probability ( R_DIFFN_LNLW_APB_MUDENS | R_DIFFN_APB_MUDENS, R_LNLW_APB_MUDENS ) {
   ( NORMAL, NORMAL ) 1, 0, 0;
   ( NORMAL, INCR ) 0, 1, 0;
   ( NORMAL, V_INCR ) 0, 0, 1;
@@ -3620,7 +3620,7 @@ probability( R_DIFFN_LNLW_APB_MUDENS | R_DIFFN_APB_MUDENS, R_LNLW_APB_MUDENS ) {
   ( V_INCR, INCR ) 0, 0, 1;
   ( V_INCR, V_INCR ) 0, 0, 1;
 }
-probability( R_LNLT1_LP_BE_APB_MUDENS | R_LNLT1_LP_APB_MUDENS, R_LNLBE_APB_MUDENS ) {
+probability ( R_LNLT1_LP_BE_APB_MUDENS | R_LNLT1_LP_APB_MUDENS, R_LNLBE_APB_MUDENS ) {
   ( NORMAL, NORMAL ) 1, 0, 0;
   ( NORMAL, INCR ) 0, 1, 0;
   ( NORMAL, V_INCR ) 0, 0, 1;
@@ -3631,19 +3631,19 @@ probability( R_LNLT1_LP_BE_APB_MUDENS | R_LNLT1_LP_APB_MUDENS, R_LNLBE_APB_MUDEN
   ( V_INCR, INCR ) 0, 0, 1;
   ( V_INCR, V_INCR ) 0, 0, 1;
 }
-probability( R_DIFFN_LNLW_APB_DE_REGEN | R_DIFFN_APB_DE_REGEN, R_LNLW_APB_DE_REGEN ) {
+probability ( R_DIFFN_LNLW_APB_DE_REGEN | R_DIFFN_APB_DE_REGEN, R_LNLW_APB_DE_REGEN ) {
   ( NO, NO ) 1, 0;
   ( NO, YES ) 0, 1;
   ( YES, NO ) 0, 1;
   ( YES, YES ) 0, 1;
 }
-probability( R_LNLT1_LP_BE_APB_DE_REGEN | R_LNLT1_LP_APB_DE_REGEN, R_LNLBE_APB_DE_REGEN ) {
+probability ( R_LNLT1_LP_BE_APB_DE_REGEN | R_LNLT1_LP_APB_DE_REGEN, R_LNLBE_APB_DE_REGEN ) {
   ( NO, NO ) 1, 0;
   ( NO, YES ) 0, 1;
   ( YES, NO ) 0, 1;
   ( YES, YES ) 0, 1;
 }
-probability( R_DIFFN_APB_MUSIZE | DIFFN_M_SEV_DIST, DIFFN_TIME, DIFFN_PATHO ) {
+probability ( R_DIFFN_APB_MUSIZE | DIFFN_M_SEV_DIST, DIFFN_TIME, DIFFN_PATHO ) {
   ( NO, ACUTE, DEMY ) 0, 0, 1, 0, 0, 0;
   ( NO, ACUTE, BLOCK ) 0, 0, 1, 0, 0, 0;
   ( NO, ACUTE, AXONAL ) 0, 0, 1, 0, 0, 0;
@@ -3725,7 +3725,7 @@ probability( R_DIFFN_APB_MUSIZE | DIFFN_M_SEV_DIST, DIFFN_TIME, DIFFN_PATHO ) {
   ( SEV, OLD, V_E_REIN ) 1, 0, 0, 0, 0, 0;
   ( SEV, OLD, E_REIN ) 0, 1, 0, 0, 0, 0;
 }
-probability( R_LNLW_APB_MUSIZE | R_LNLW_MED_SEV, R_LNLW_MED_TIME, R_LNLW_MED_PATHO ) {
+probability ( R_LNLW_APB_MUSIZE | R_LNLW_MED_SEV, R_LNLW_MED_TIME, R_LNLW_MED_PATHO ) {
   ( NO, ACUTE, DEMY ) 0, 0, 1, 0, 0, 0;
   ( NO, ACUTE, BLOCK ) 0, 0, 1, 0, 0, 0;
   ( NO, ACUTE, AXONAL ) 0, 0, 1, 0, 0, 0;
@@ -3827,7 +3827,7 @@ probability( R_LNLW_APB_MUSIZE | R_LNLW_MED_SEV, R_LNLW_MED_TIME, R_LNLW_MED_PAT
   ( TOTAL, OLD, V_E_REIN ) 1, 0, 0, 0, 0, 0;
   ( TOTAL, OLD, E_REIN ) 0, 1, 0, 0, 0, 0;
 }
-probability( R_DIFFN_APB_MALOSS | DIFFN_M_SEV_DIST, DIFFN_PATHO ) {
+probability ( R_DIFFN_APB_MALOSS | DIFFN_M_SEV_DIST, DIFFN_PATHO ) {
   ( NO, DEMY ) 1, 0, 0, 0, 0;
   ( NO, BLOCK ) 1, 0, 0, 0, 0;
   ( NO, AXONAL ) 1, 0, 0, 0, 0;
@@ -3849,7 +3849,7 @@ probability( R_DIFFN_APB_MALOSS | DIFFN_M_SEV_DIST, DIFFN_PATHO ) {
   ( SEV, V_E_REIN ) 0, 0, 0, 1, 0;
   ( SEV, E_REIN ) 0, 0, 0.5, 0.5, 0;
 }
-probability( R_LNLW_APB_MALOSS | R_LNLW_MED_SEV, R_LNLW_MED_PATHO ) {
+probability ( R_LNLW_APB_MALOSS | R_LNLW_MED_SEV, R_LNLW_MED_PATHO ) {
   ( NO, DEMY ) 1, 0, 0, 0, 0;
   ( NO, BLOCK ) 1, 0, 0, 0, 0;
   ( NO, AXONAL ) 1, 0, 0, 0, 0;
@@ -3876,7 +3876,7 @@ probability( R_LNLW_APB_MALOSS | R_LNLW_MED_SEV, R_LNLW_MED_PATHO ) {
   ( TOTAL, V_E_REIN ) 0, 0, 0, 1, 0;
   ( TOTAL, E_REIN ) 0, 0, 0.5, 0.5, 0;
 }
-probability( R_LNLT1_LP_APB_MUSIZE | R_LNLLP_APB_MUSIZE, R_LNLT1_APB_MUSIZE ) {
+probability ( R_LNLT1_LP_APB_MUSIZE | R_LNLLP_APB_MUSIZE, R_LNLT1_APB_MUSIZE ) {
   ( V_SMALL, V_SMALL ) 1, 0, 0, 0, 0, 0;
   ( V_SMALL, SMALL ) 1, 0, 0, 0, 0, 0;
   ( V_SMALL, NORMAL ) 1, 0, 0, 0, 0, 0;
@@ -3914,7 +3914,7 @@ probability( R_LNLT1_LP_APB_MUSIZE | R_LNLLP_APB_MUSIZE, R_LNLT1_APB_MUSIZE ) {
   ( V_LARGE, LARGE ) 0, 0, 0, 0, 0, 1;
   ( V_LARGE, V_LARGE ) 0, 0, 0, 0, 0, 1;
 }
-probability( R_LNLBE_APB_MUSIZE | R_LNLBE_MED_SEV, R_LNLBE_MED_TIME, R_LNLBE_MED_PATHO ) {
+probability ( R_LNLBE_APB_MUSIZE | R_LNLBE_MED_SEV, R_LNLBE_MED_TIME, R_LNLBE_MED_PATHO ) {
   ( NO, ACUTE, DEMY ) 0, 0, 1, 0, 0, 0;
   ( NO, ACUTE, BLOCK ) 0, 0, 1, 0, 0, 0;
   ( NO, ACUTE, AXONAL ) 0, 0, 1, 0, 0, 0;
@@ -4016,7 +4016,7 @@ probability( R_LNLBE_APB_MUSIZE | R_LNLBE_MED_SEV, R_LNLBE_MED_TIME, R_LNLBE_MED
   ( TOTAL, OLD, V_E_REIN ) 1, 0, 0, 0, 0, 0;
   ( TOTAL, OLD, E_REIN ) 0, 1, 0, 0, 0, 0;
 }
-probability( R_LNLBE_APB_MALOSS | R_LNLBE_MED_SEV, R_LNLBE_MED_PATHO ) {
+probability ( R_LNLBE_APB_MALOSS | R_LNLBE_MED_SEV, R_LNLBE_MED_PATHO ) {
   ( NO, DEMY ) 1, 0, 0, 0, 0;
   ( NO, BLOCK ) 1, 0, 0, 0, 0;
   ( NO, AXONAL ) 1, 0, 0, 0, 0;
@@ -4043,7 +4043,7 @@ probability( R_LNLBE_APB_MALOSS | R_LNLBE_MED_SEV, R_LNLBE_MED_PATHO ) {
   ( TOTAL, V_E_REIN ) 0, 0, 0, 1, 0;
   ( TOTAL, E_REIN ) 0, 0, 0.5, 0.5, 0;
 }
-probability( R_LNLT1_LP_APB_MALOSS | R_LNLT1_APB_MALOSS, R_LNLLP_APB_MALOSS ) {
+probability ( R_LNLT1_LP_APB_MALOSS | R_LNLT1_APB_MALOSS, R_LNLLP_APB_MALOSS ) {
   ( NO, NO ) 1, 0, 0, 0, 0;
   ( NO, MILD ) 0.0022, 0.9977, 0.0001, 0, 0;
   ( NO, MOD ) 0.00019998, 0.0368963, 0.958804, 0.00409959, 0;
@@ -4070,7 +4070,7 @@ probability( R_LNLT1_LP_APB_MALOSS | R_LNLT1_APB_MALOSS, R_LNLLP_APB_MALOSS ) {
   ( TOTAL, SEV ) 0, 0, 0, 0, 1;
   ( TOTAL, TOTAL ) 0, 0, 0, 0, 1;
 }
-probability( R_LNLT1_LP_BE_APB_MUSIZE | R_LNLBE_APB_MUSIZE, R_LNLT1_LP_APB_MUSIZE ) {
+probability ( R_LNLT1_LP_BE_APB_MUSIZE | R_LNLBE_APB_MUSIZE, R_LNLT1_LP_APB_MUSIZE ) {
   ( V_SMALL, V_SMALL ) 1, 0, 0, 0, 0, 0;
   ( V_SMALL, SMALL ) 1, 0, 0, 0, 0, 0;
   ( V_SMALL, NORMAL ) 1, 0, 0, 0, 0, 0;
@@ -4108,7 +4108,7 @@ probability( R_LNLT1_LP_BE_APB_MUSIZE | R_LNLBE_APB_MUSIZE, R_LNLT1_LP_APB_MUSIZ
   ( V_LARGE, LARGE ) 0, 0, 0, 0, 0, 1;
   ( V_LARGE, V_LARGE ) 0, 0, 0, 0, 0, 1;
 }
-probability( R_DIFFN_LNLW_APB_MUSIZE | R_LNLW_APB_MUSIZE, R_DIFFN_APB_MUSIZE ) {
+probability ( R_DIFFN_LNLW_APB_MUSIZE | R_LNLW_APB_MUSIZE, R_DIFFN_APB_MUSIZE ) {
   ( V_SMALL, V_SMALL ) 1, 0, 0, 0, 0, 0;
   ( V_SMALL, SMALL ) 1, 0, 0, 0, 0, 0;
   ( V_SMALL, NORMAL ) 1, 0, 0, 0, 0, 0;
@@ -4146,7 +4146,7 @@ probability( R_DIFFN_LNLW_APB_MUSIZE | R_LNLW_APB_MUSIZE, R_DIFFN_APB_MUSIZE ) {
   ( V_LARGE, LARGE ) 0, 0, 0, 0, 0, 1;
   ( V_LARGE, V_LARGE ) 0, 0, 0, 0, 0, 1;
 }
-probability( R_LNL_DIFFN_APB_DENERV | R_LNLT1_LP_BE_APB_DENERV, R_DIFFN_LNLW_APB_DENERV ) {
+probability ( R_LNL_DIFFN_APB_DENERV | R_LNLT1_LP_BE_APB_DENERV, R_DIFFN_LNLW_APB_DENERV ) {
   ( NO, NO ) 1, 0, 0, 0;
   ( NO, MILD ) 0, 1, 0, 0;
   ( NO, MOD ) 0, 0, 1, 0;
@@ -4164,7 +4164,7 @@ probability( R_LNL_DIFFN_APB_DENERV | R_LNLT1_LP_BE_APB_DENERV, R_DIFFN_LNLW_APB
   ( SEV, MOD ) 0, 0, 0, 1;
   ( SEV, SEV ) 0, 0, 0, 1;
 }
-probability( R_MUSCLE_APB_DENERV | R_MYOP_MYDY_APB_DENERV, R_NMT_APB_DENERV ) {
+probability ( R_MUSCLE_APB_DENERV | R_MYOP_MYDY_APB_DENERV, R_NMT_APB_DENERV ) {
   ( NO, NO ) 1, 0, 0, 0;
   ( NO, MILD ) 0, 1, 0, 0;
   ( NO, MOD ) 0, 0, 1, 0;
@@ -4182,7 +4182,7 @@ probability( R_MUSCLE_APB_DENERV | R_MYOP_MYDY_APB_DENERV, R_NMT_APB_DENERV ) {
   ( SEV, MOD ) 0, 0, 0, 1;
   ( SEV, SEV ) 0, 0, 0, 1;
 }
-probability( R_DIFFN_LNLW_APB_NEUR_ACT | R_DIFFN_APB_NEUR_ACT, R_LNLW_APB_NEUR_ACT ) {
+probability ( R_DIFFN_LNLW_APB_NEUR_ACT | R_DIFFN_APB_NEUR_ACT, R_LNLW_APB_NEUR_ACT ) {
   ( NO, NO ) 1, 0, 0, 0, 0, 0;
   ( NO, FASCIC ) 0, 1, 0, 0, 0, 0;
   ( NO, NEUROMYO ) 0, 0, 1, 0, 0, 0;
@@ -4220,7 +4220,7 @@ probability( R_DIFFN_LNLW_APB_NEUR_ACT | R_DIFFN_APB_NEUR_ACT, R_LNLW_APB_NEUR_A
   ( OTHER, TETANUS ) 0, 0, 0, 0, 0, 1;
   ( OTHER, OTHER ) 0, 0, 0, 0, 0, 1;
 }
-probability( R_LNLT1_LP_BE_APB_NEUR_ACT | R_LNLT1_LP_APB_NEUR_ACT, R_LNLBE_APB_NEUR_ACT ) {
+probability ( R_LNLT1_LP_BE_APB_NEUR_ACT | R_LNLT1_LP_APB_NEUR_ACT, R_LNLBE_APB_NEUR_ACT ) {
   ( NO, NO ) 1, 0, 0, 0, 0, 0;
   ( NO, FASCIC ) 0, 1, 0, 0, 0, 0;
   ( NO, NEUROMYO ) 0, 0, 1, 0, 0, 0;
@@ -4258,7 +4258,7 @@ probability( R_LNLT1_LP_BE_APB_NEUR_ACT | R_LNLT1_LP_APB_NEUR_ACT, R_LNLBE_APB_N
   ( OTHER, TETANUS ) 0, 0, 0, 0, 0, 1;
   ( OTHER, OTHER ) 0, 0, 0, 0, 0, 1;
 }
-probability( R_MUSCLE_APB_MUDENS | R_MYOP_MYDY_APB_MUDENS, R_MYAS_APB_MUDENS ) {
+probability ( R_MUSCLE_APB_MUDENS | R_MYOP_MYDY_APB_MUDENS, R_MYAS_APB_MUDENS ) {
   ( NORMAL, NORMAL ) 1, 0, 0;
   ( NORMAL, INCR ) 0, 1, 0;
   ( NORMAL, V_INCR ) 0, 0, 1;
@@ -4269,7 +4269,7 @@ probability( R_MUSCLE_APB_MUDENS | R_MYOP_MYDY_APB_MUDENS, R_MYAS_APB_MUDENS ) {
   ( V_INCR, INCR ) 0, 0, 1;
   ( V_INCR, V_INCR ) 0, 0, 1;
 }
-probability( R_LNL_DIFFN_APB_MUDENS | R_LNLT1_LP_BE_APB_MUDENS, R_DIFFN_LNLW_APB_MUDENS ) {
+probability ( R_LNL_DIFFN_APB_MUDENS | R_LNLT1_LP_BE_APB_MUDENS, R_DIFFN_LNLW_APB_MUDENS ) {
   ( NORMAL, NORMAL ) 1, 0, 0;
   ( NORMAL, INCR ) 0, 1, 0;
   ( NORMAL, V_INCR ) 0, 0, 1;
@@ -4280,32 +4280,32 @@ probability( R_LNL_DIFFN_APB_MUDENS | R_LNLT1_LP_BE_APB_MUDENS, R_DIFFN_LNLW_APB
   ( V_INCR, INCR ) 0, 0, 1;
   ( V_INCR, V_INCR ) 0, 0, 1;
 }
-probability( R_MYOP_MYDY_APB_DE_REGEN | R_MYOP_APB_DE_REGEN, R_MYDY_APB_DE_REGEN ) {
+probability ( R_MYOP_MYDY_APB_DE_REGEN | R_MYOP_APB_DE_REGEN, R_MYDY_APB_DE_REGEN ) {
   ( NO, NO ) 1, 0;
   ( NO, YES ) 0, 1;
   ( YES, NO ) 0, 1;
   ( YES, YES ) 0, 1;
 }
-probability( R_LNL_DIFFN_APB_DE_REGEN | R_LNLT1_LP_BE_APB_DE_REGEN, R_DIFFN_LNLW_APB_DE_REGEN ) {
+probability ( R_LNL_DIFFN_APB_DE_REGEN | R_LNLT1_LP_BE_APB_DE_REGEN, R_DIFFN_LNLW_APB_DE_REGEN ) {
   ( NO, NO ) 1, 0;
   ( NO, YES ) 0, 1;
   ( YES, NO ) 0, 1;
   ( YES, YES ) 0, 1;
 }
-probability( R_LNLW_MED_SEV ) {
+probability ( R_LNLW_MED_SEV ) {
   table 0.73, 0.16, 0.07, 0.03, 0.01;
 }
-probability( R_LNLW_MED_PATHO ) {
+probability ( R_LNLW_MED_PATHO ) {
   table 0.8, 0.12, 0.07, 0.005, 0.005;
 }
-probability( R_LNLBE_MED_DIFSLOW | R_LNLBE_MED_PATHO ) {
+probability ( R_LNLBE_MED_DIFSLOW | R_LNLBE_MED_PATHO ) {
   ( DEMY ) 1, 0, 0, 0;
   ( BLOCK ) 1, 0, 0, 0;
   ( AXONAL ) 1, 0, 0, 0;
   ( V_E_REIN ) 0, 0, 0, 1;
   ( E_REIN ) 0, 0, 1, 0;
 }
-probability( R_LNLW_MED_BLOCK | R_LNLW_MED_SEV, R_LNLW_MED_PATHO ) {
+probability ( R_LNLW_MED_BLOCK | R_LNLW_MED_SEV, R_LNLW_MED_PATHO ) {
   ( NO, DEMY ) 1, 0, 0, 0, 0;
   ( NO, BLOCK ) 1, 0, 0, 0, 0;
   ( NO, AXONAL ) 1, 0, 0, 0, 0;
@@ -4332,14 +4332,14 @@ probability( R_LNLW_MED_BLOCK | R_LNLW_MED_SEV, R_LNLW_MED_PATHO ) {
   ( TOTAL, V_E_REIN ) 1, 0, 0, 0, 0;
   ( TOTAL, E_REIN ) 1, 0, 0, 0, 0;
 }
-probability( R_MYAS_APB_NMT ) {
+probability ( R_MYAS_APB_NMT ) {
   table 1, 0, 0, 0, 0, 0, 0;
 }
-probability( R_DE_REGEN_APB_NMT | R_APB_DE_REGEN ) {
+probability ( R_DE_REGEN_APB_NMT | R_APB_DE_REGEN ) {
   ( NO ) 1, 0, 0, 0, 0, 0, 0;
   ( YES ) 0.65, 0.02, 0.01, 0.27, 0.02, 0.01, 0.02;
 }
-probability( R_LNL_DIFFN_APB_MUSIZE | R_DIFFN_LNLW_APB_MUSIZE, R_LNLT1_LP_BE_APB_MUSIZE ) {
+probability ( R_LNL_DIFFN_APB_MUSIZE | R_DIFFN_LNLW_APB_MUSIZE, R_LNLT1_LP_BE_APB_MUSIZE ) {
   ( V_SMALL, V_SMALL ) 1, 0, 0, 0, 0, 0;
   ( V_SMALL, SMALL ) 1, 0, 0, 0, 0, 0;
   ( V_SMALL, NORMAL ) 1, 0, 0, 0, 0, 0;
@@ -4377,7 +4377,7 @@ probability( R_LNL_DIFFN_APB_MUSIZE | R_DIFFN_LNLW_APB_MUSIZE, R_LNLT1_LP_BE_APB
   ( V_LARGE, LARGE ) 0, 0, 0, 0, 0, 1;
   ( V_LARGE, V_LARGE ) 0, 0, 0, 0, 0, 1;
 }
-probability( R_MYOP_MYDY_APB_MUSIZE | R_MYDY_APB_MUSIZE, R_MYOP_APB_MUSIZE ) {
+probability ( R_MYOP_MYDY_APB_MUSIZE | R_MYDY_APB_MUSIZE, R_MYOP_APB_MUSIZE ) {
   ( V_SMALL, V_SMALL ) 1, 0, 0, 0, 0, 0;
   ( V_SMALL, SMALL ) 0.9983, 0.0017, 0, 0, 0, 0;
   ( V_SMALL, NORMAL ) 0.9857, 0.0143, 0, 0, 0, 0;
@@ -4415,7 +4415,7 @@ probability( R_MYOP_MYDY_APB_MUSIZE | R_MYDY_APB_MUSIZE, R_MYOP_APB_MUSIZE ) {
   ( V_LARGE, LARGE ) 0, 0, 0, 0, 0.0001, 0.9999;
   ( V_LARGE, V_LARGE ) 0, 0, 0, 0, 0, 1;
 }
-probability( R_DIFFN_LNLW_APB_MALOSS | R_LNLW_APB_MALOSS, R_DIFFN_APB_MALOSS ) {
+probability ( R_DIFFN_LNLW_APB_MALOSS | R_LNLW_APB_MALOSS, R_DIFFN_APB_MALOSS ) {
   ( NO, NO ) 1, 0, 0, 0, 0;
   ( NO, MILD ) 0.0022, 0.9977, 0.0001, 0, 0;
   ( NO, MOD ) 0.00019998, 0.0368963, 0.958804, 0.00409959, 0;
@@ -4442,7 +4442,7 @@ probability( R_DIFFN_LNLW_APB_MALOSS | R_LNLW_APB_MALOSS, R_DIFFN_APB_MALOSS ) {
   ( TOTAL, SEV ) 0, 0, 0, 0, 1;
   ( TOTAL, TOTAL ) 0, 0, 0, 0, 1;
 }
-probability( R_LNLT1_LP_BE_APB_MALOSS | R_LNLT1_LP_APB_MALOSS, R_LNLBE_APB_MALOSS ) {
+probability ( R_LNLT1_LP_BE_APB_MALOSS | R_LNLT1_LP_APB_MALOSS, R_LNLBE_APB_MALOSS ) {
   ( NO, NO ) 1, 0, 0, 0, 0;
   ( NO, MILD ) 0.0022, 0.9977, 0.0001, 0, 0;
   ( NO, MOD ) 0.00019998, 0.0368963, 0.958804, 0.00409959, 0;
@@ -4469,7 +4469,7 @@ probability( R_LNLT1_LP_BE_APB_MALOSS | R_LNLT1_LP_APB_MALOSS, R_LNLBE_APB_MALOS
   ( TOTAL, SEV ) 0, 0, 0, 0, 1;
   ( TOTAL, TOTAL ) 0, 0, 0, 0, 1;
 }
-probability( R_DIFFN_MED_DIFSLOW | DIFFN_M_SEV_DIST, DIFFN_PATHO ) {
+probability ( R_DIFFN_MED_DIFSLOW | DIFFN_M_SEV_DIST, DIFFN_PATHO ) {
   ( NO, DEMY ) 1, 0, 0, 0;
   ( NO, BLOCK ) 1, 0, 0, 0;
   ( NO, AXONAL ) 1, 0, 0, 0;
@@ -4491,13 +4491,13 @@ probability( R_DIFFN_MED_DIFSLOW | DIFFN_M_SEV_DIST, DIFFN_PATHO ) {
   ( SEV, V_E_REIN ) 0, 0, 0, 1;
   ( SEV, E_REIN ) 0, 0, 0.7, 0.3;
 }
-probability( R_LNLBE_MED_SEV ) {
+probability ( R_LNLBE_MED_SEV ) {
   table 0.981, 0.01, 0.005, 0.003, 0.001;
 }
-probability( R_LNLBE_MED_PATHO ) {
+probability ( R_LNLBE_MED_PATHO ) {
   table 0.6, 0.19, 0.2, 0.005, 0.005;
 }
-probability( R_LNLBE_MED_BLOCK | R_LNLBE_MED_SEV, R_LNLBE_MED_PATHO ) {
+probability ( R_LNLBE_MED_BLOCK | R_LNLBE_MED_SEV, R_LNLBE_MED_PATHO ) {
   ( NO, DEMY ) 1, 0, 0, 0, 0;
   ( NO, BLOCK ) 1, 0, 0, 0, 0;
   ( NO, AXONAL ) 1, 0, 0, 0, 0;
@@ -4524,7 +4524,7 @@ probability( R_LNLBE_MED_BLOCK | R_LNLBE_MED_SEV, R_LNLBE_MED_PATHO ) {
   ( TOTAL, V_E_REIN ) 1, 0, 0, 0, 0;
   ( TOTAL, E_REIN ) 1, 0, 0, 0, 0;
 }
-probability( R_DIFFN_MED_BLOCK | DIFFN_M_SEV_DIST, DIFFN_PATHO ) {
+probability ( R_DIFFN_MED_BLOCK | DIFFN_M_SEV_DIST, DIFFN_PATHO ) {
   ( NO, DEMY ) 1, 0, 0, 0, 0;
   ( NO, BLOCK ) 1, 0, 0, 0, 0;
   ( NO, AXONAL ) 1, 0, 0, 0, 0;
@@ -4546,14 +4546,14 @@ probability( R_DIFFN_MED_BLOCK | DIFFN_M_SEV_DIST, DIFFN_PATHO ) {
   ( SEV, V_E_REIN ) 1, 0, 0, 0, 0;
   ( SEV, E_REIN ) 1, 0, 0, 0, 0;
 }
-probability( R_LNLW_MEDD2_RD_WD | R_LNLW_MED_PATHO ) {
+probability ( R_LNLW_MEDD2_RD_WD | R_LNLW_MED_PATHO ) {
   ( DEMY ) 1, 0, 0;
   ( BLOCK ) 1, 0, 0;
   ( AXONAL ) 1, 0, 0;
   ( V_E_REIN ) 0, 0, 1;
   ( E_REIN ) 0, 1, 0;
 }
-probability( R_LNLW_MEDD2_LD_WD | R_LNLW_MED_SEV, R_LNLW_MED_PATHO ) {
+probability ( R_LNLW_MEDD2_LD_WD | R_LNLW_MED_SEV, R_LNLW_MED_PATHO ) {
   ( NO, DEMY ) 1, 0, 0, 0;
   ( NO, BLOCK ) 1, 0, 0, 0;
   ( NO, AXONAL ) 1, 0, 0, 0;
@@ -4580,14 +4580,14 @@ probability( R_LNLW_MEDD2_LD_WD | R_LNLW_MED_SEV, R_LNLW_MED_PATHO ) {
   ( TOTAL, V_E_REIN ) 1, 0, 0, 0;
   ( TOTAL, E_REIN ) 1, 0, 0, 0;
 }
-probability( R_LNLBE_MEDD2_DIFSLOW_WD | R_LNLBE_MED_PATHO ) {
+probability ( R_LNLBE_MEDD2_DIFSLOW_WD | R_LNLBE_MED_PATHO ) {
   ( DEMY ) 1, 0, 0, 0;
   ( BLOCK ) 1, 0, 0, 0;
   ( AXONAL ) 1, 0, 0, 0;
   ( V_E_REIN ) 0, 0, 0, 1;
   ( E_REIN ) 0, 0, 1, 0;
 }
-probability( R_LNLW_MEDD2_BLOCK_WD | R_LNLW_MED_SEV, R_LNLW_MED_PATHO ) {
+probability ( R_LNLW_MEDD2_BLOCK_WD | R_LNLW_MED_SEV, R_LNLW_MED_PATHO ) {
   ( NO, DEMY ) 1, 0, 0, 0, 0;
   ( NO, BLOCK ) 1, 0, 0, 0, 0;
   ( NO, AXONAL ) 1, 0, 0, 0, 0;
@@ -4614,7 +4614,7 @@ probability( R_LNLW_MEDD2_BLOCK_WD | R_LNLW_MED_SEV, R_LNLW_MED_PATHO ) {
   ( TOTAL, V_E_REIN ) 1, 0, 0, 0, 0;
   ( TOTAL, E_REIN ) 1, 0, 0, 0, 0;
 }
-probability( R_DIFFN_LNLW_MEDD2_DISP_WD | R_LNLW_MEDD2_DISP_WD, R_DIFFN_MEDD2_DISP ) {
+probability ( R_DIFFN_LNLW_MEDD2_DISP_WD | R_LNLW_MEDD2_DISP_WD, R_DIFFN_MEDD2_DISP ) {
   ( NO, NO ) 1, 0, 0, 0;
   ( NO, MILD ) 0.0749, 0.8229, 0.1022, 0;
   ( NO, MOD ) 0, 0.0626063, 0.937394, 0;
@@ -4632,7 +4632,7 @@ probability( R_DIFFN_LNLW_MEDD2_DISP_WD | R_LNLW_MEDD2_DISP_WD, R_DIFFN_MEDD2_DI
   ( SEV, MOD ) 0, 0, 0, 1;
   ( SEV, SEV ) 0, 0, 0, 1;
 }
-probability( R_LNLBE_MEDD2_SALOSS_EW | R_LNLBE_MED_SEV, R_LNLBE_MED_PATHO ) {
+probability ( R_LNLBE_MEDD2_SALOSS_EW | R_LNLBE_MED_SEV, R_LNLBE_MED_PATHO ) {
   ( NO, DEMY ) 1, 0, 0, 0, 0;
   ( NO, BLOCK ) 1, 0, 0, 0, 0;
   ( NO, AXONAL ) 1, 0, 0, 0, 0;
@@ -4659,7 +4659,7 @@ probability( R_LNLBE_MEDD2_SALOSS_EW | R_LNLBE_MED_SEV, R_LNLBE_MED_PATHO ) {
   ( TOTAL, V_E_REIN ) 0, 0, 0, 1, 0;
   ( TOTAL, E_REIN ) 0, 0, 0.5, 0.5, 0;
 }
-probability( R_DIFFN_LNLW_MEDD2_SALOSS | R_LNLW_MEDD2_SALOSS_WD, R_DIFFN_MEDD2_SALOSS ) {
+probability ( R_DIFFN_LNLW_MEDD2_SALOSS | R_LNLW_MEDD2_SALOSS_WD, R_DIFFN_MEDD2_SALOSS ) {
   ( NO, NO ) 1, 0, 0, 0, 0;
   ( NO, MILD ) 0.0073, 0.9812, 0.0115, 0, 0;
   ( NO, MOD ) 0.0017, 0.1306, 0.867, 0.0007, 0;
@@ -4686,7 +4686,7 @@ probability( R_DIFFN_LNLW_MEDD2_SALOSS | R_LNLW_MEDD2_SALOSS_WD, R_DIFFN_MEDD2_S
   ( TOTAL, SEV ) 0, 0, 0, 0, 1;
   ( TOTAL, TOTAL ) 0, 0, 0, 0, 1;
 }
-probability( R_DIFFN_MEDD2_DIFSLOW | DIFFN_S_SEV_DIST, DIFFN_PATHO ) {
+probability ( R_DIFFN_MEDD2_DIFSLOW | DIFFN_S_SEV_DIST, DIFFN_PATHO ) {
   ( NO, DEMY ) 1, 0, 0, 0;
   ( NO, BLOCK ) 1, 0, 0, 0;
   ( NO, AXONAL ) 1, 0, 0, 0;
@@ -4708,14 +4708,14 @@ probability( R_DIFFN_MEDD2_DIFSLOW | DIFFN_S_SEV_DIST, DIFFN_PATHO ) {
   ( SEV, V_E_REIN ) 0, 0, 0, 1;
   ( SEV, E_REIN ) 0, 0, 0.7, 0.3;
 }
-probability( R_LNLBE_MEDD2_RD_EW | R_LNLBE_MED_PATHO ) {
+probability ( R_LNLBE_MEDD2_RD_EW | R_LNLBE_MED_PATHO ) {
   ( DEMY ) 1, 0, 0;
   ( BLOCK ) 1, 0, 0;
   ( AXONAL ) 1, 0, 0;
   ( V_E_REIN ) 0, 0, 1;
   ( E_REIN ) 0, 1, 0;
 }
-probability( R_LNLBE_MEDD2_LD_EW | R_LNLBE_MED_SEV, R_LNLBE_MED_PATHO ) {
+probability ( R_LNLBE_MEDD2_LD_EW | R_LNLBE_MED_SEV, R_LNLBE_MED_PATHO ) {
   ( NO, DEMY ) 1, 0, 0, 0;
   ( NO, BLOCK ) 1, 0, 0, 0;
   ( NO, AXONAL ) 1, 0, 0, 0;
@@ -4742,7 +4742,7 @@ probability( R_LNLBE_MEDD2_LD_EW | R_LNLBE_MED_SEV, R_LNLBE_MED_PATHO ) {
   ( TOTAL, V_E_REIN ) 1, 0, 0, 0;
   ( TOTAL, E_REIN ) 1, 0, 0, 0;
 }
-probability( R_LNLBE_MEDD2_BLOCK_EW | R_LNLBE_MED_SEV, R_LNLBE_MED_PATHO ) {
+probability ( R_LNLBE_MEDD2_BLOCK_EW | R_LNLBE_MED_SEV, R_LNLBE_MED_PATHO ) {
   ( NO, DEMY ) 1, 0, 0, 0, 0;
   ( NO, BLOCK ) 1, 0, 0, 0, 0;
   ( NO, AXONAL ) 1, 0, 0, 0, 0;
@@ -4769,7 +4769,7 @@ probability( R_LNLBE_MEDD2_BLOCK_EW | R_LNLBE_MED_SEV, R_LNLBE_MED_PATHO ) {
   ( TOTAL, V_E_REIN ) 1, 0, 0, 0, 0;
   ( TOTAL, E_REIN ) 1, 0, 0, 0, 0;
 }
-probability( R_DIFFN_MEDD2_BLOCK | DIFFN_S_SEV_DIST, DIFFN_PATHO ) {
+probability ( R_DIFFN_MEDD2_BLOCK | DIFFN_S_SEV_DIST, DIFFN_PATHO ) {
   ( NO, DEMY ) 1, 0, 0, 0, 0;
   ( NO, BLOCK ) 1, 0, 0, 0, 0;
   ( NO, AXONAL ) 1, 0, 0, 0, 0;
@@ -4791,7 +4791,7 @@ probability( R_DIFFN_MEDD2_BLOCK | DIFFN_S_SEV_DIST, DIFFN_PATHO ) {
   ( SEV, V_E_REIN ) 1, 0, 0, 0, 0;
   ( SEV, E_REIN ) 1, 0, 0, 0, 0;
 }
-probability( R_LNLBE_MEDD2_DISP_EW | R_LNLBE_MED_SEV, R_LNLBE_MED_PATHO ) {
+probability ( R_LNLBE_MEDD2_DISP_EW | R_LNLBE_MED_SEV, R_LNLBE_MED_PATHO ) {
   ( NO, DEMY ) 1, 0, 0, 0;
   ( NO, BLOCK ) 1, 0, 0, 0;
   ( NO, AXONAL ) 1, 0, 0, 0;
@@ -4818,7 +4818,7 @@ probability( R_LNLBE_MEDD2_DISP_EW | R_LNLBE_MED_SEV, R_LNLBE_MED_PATHO ) {
   ( TOTAL, V_E_REIN ) 0, 0, 0, 1;
   ( TOTAL, E_REIN ) 0, 0, 0, 1;
 }
-probability( R_DIFFN_MEDD2_DISP | DIFFN_S_SEV_DIST, DIFFN_PATHO ) {
+probability ( R_DIFFN_MEDD2_DISP | DIFFN_S_SEV_DIST, DIFFN_PATHO ) {
   ( NO, DEMY ) 1, 0, 0, 0;
   ( NO, BLOCK ) 1, 0, 0, 0;
   ( NO, AXONAL ) 1, 0, 0, 0;
@@ -4840,14 +4840,14 @@ probability( R_DIFFN_MEDD2_DISP | DIFFN_S_SEV_DIST, DIFFN_PATHO ) {
   ( SEV, V_E_REIN ) 0, 0, 0, 1;
   ( SEV, E_REIN ) 0, 0, 0, 1;
 }
-probability( R_MED_RD_WA | R_LNLW_MED_PATHO ) {
+probability ( R_MED_RD_WA | R_LNLW_MED_PATHO ) {
   ( DEMY ) 1, 0, 0;
   ( BLOCK ) 1, 0, 0;
   ( AXONAL ) 1, 0, 0;
   ( V_E_REIN ) 0, 0, 1;
   ( E_REIN ) 0, 1, 0;
 }
-probability( R_MED_LD_WA | R_LNLW_MED_SEV, R_LNLW_MED_PATHO ) {
+probability ( R_MED_LD_WA | R_LNLW_MED_SEV, R_LNLW_MED_PATHO ) {
   ( NO, DEMY ) 1, 0, 0, 0;
   ( NO, BLOCK ) 1, 0, 0, 0;
   ( NO, AXONAL ) 1, 0, 0, 0;
@@ -4874,7 +4874,7 @@ probability( R_MED_LD_WA | R_LNLW_MED_SEV, R_LNLW_MED_PATHO ) {
   ( TOTAL, V_E_REIN ) 0.25, 0.25, 0.25, 0.25;
   ( TOTAL, E_REIN ) 0.25, 0.25, 0.25, 0.25;
 }
-probability( R_MED_DIFSLOW_WA | R_LNLBE_MED_DIFSLOW, R_DIFFN_MED_DIFSLOW ) {
+probability ( R_MED_DIFSLOW_WA | R_LNLBE_MED_DIFSLOW, R_DIFFN_MED_DIFSLOW ) {
   ( NO, NO ) 1, 0, 0, 0;
   ( NO, MILD ) 0.0131987, 0.986201, 0.00059994, 0;
   ( NO, MOD ) 0, 0.0181018, 0.981898, 0;
@@ -4892,7 +4892,7 @@ probability( R_MED_DIFSLOW_WA | R_LNLBE_MED_DIFSLOW, R_DIFFN_MED_DIFSLOW ) {
   ( SEV, MOD ) 0, 0, 0.0006, 0.9994;
   ( SEV, SEV ) 0, 0, 0.0005, 0.9995;
 }
-probability( R_MED_BLOCK_WA | R_DIFFN_MED_BLOCK, R_LNLW_MED_BLOCK ) {
+probability ( R_MED_BLOCK_WA | R_DIFFN_MED_BLOCK, R_LNLW_MED_BLOCK ) {
   ( NO, NO ) 1, 0, 0, 0, 0;
   ( NO, MILD ) 0.0077, 0.9923, 0, 0, 0;
   ( NO, MOD ) 0.0007, 0.0234, 0.9759, 0, 0;
@@ -4919,20 +4919,20 @@ probability( R_MED_BLOCK_WA | R_DIFFN_MED_BLOCK, R_LNLW_MED_BLOCK ) {
   ( TOTAL, SEV ) 0, 0, 0, 0, 1;
   ( TOTAL, TOTAL ) 0, 0, 0, 0, 1;
 }
-probability( R_MED_DIFSLOW_EW | R_DIFFN_MED_DIFSLOW ) {
+probability ( R_MED_DIFSLOW_EW | R_DIFFN_MED_DIFSLOW ) {
   ( NO ) 1, 0, 0, 0;
   ( MILD ) 0.0126, 0.9869, 0.0005, 0;
   ( MOD ) 0, 0.0179, 0.9821, 0;
   ( SEV ) 0, 0.0003, 0.0252, 0.9745;
 }
-probability( R_MED_RD_EW | R_LNLBE_MED_PATHO ) {
+probability ( R_MED_RD_EW | R_LNLBE_MED_PATHO ) {
   ( DEMY ) 1, 0, 0;
   ( BLOCK ) 1, 0, 0;
   ( AXONAL ) 1, 0, 0;
   ( V_E_REIN ) 0, 0, 1;
   ( E_REIN ) 0, 1, 0;
 }
-probability( R_MED_LD_EW | R_LNLBE_MED_SEV, R_LNLBE_MED_PATHO ) {
+probability ( R_MED_LD_EW | R_LNLBE_MED_SEV, R_LNLBE_MED_PATHO ) {
   ( NO, DEMY ) 1, 0, 0, 0;
   ( NO, BLOCK ) 1, 0, 0, 0;
   ( NO, AXONAL ) 1, 0, 0, 0;
@@ -4959,18 +4959,18 @@ probability( R_MED_LD_EW | R_LNLBE_MED_SEV, R_LNLBE_MED_PATHO ) {
   ( TOTAL, V_E_REIN ) 0.25, 0.25, 0.25, 0.25;
   ( TOTAL, E_REIN ) 0.25, 0.25, 0.25, 0.25;
 }
-probability( R_MEDD2_RD_WD | R_LNLW_MEDD2_RD_WD ) {
+probability ( R_MEDD2_RD_WD | R_LNLW_MEDD2_RD_WD ) {
   ( NO ) 1, 0, 0;
   ( MOD ) 0, 1, 0;
   ( SEV ) 0, 0, 1;
 }
-probability( R_MEDD2_LD_WD | R_LNLW_MEDD2_LD_WD ) {
+probability ( R_MEDD2_LD_WD | R_LNLW_MEDD2_LD_WD ) {
   ( NO ) 1, 0, 0, 0;
   ( MILD ) 0, 1, 0, 0;
   ( MOD ) 0, 0, 1, 0;
   ( SEV ) 0, 0, 0, 1;
 }
-probability( R_MEDD2_DIFSLOW_WD | R_LNLBE_MEDD2_DIFSLOW_WD, R_DIFFN_MEDD2_DIFSLOW ) {
+probability ( R_MEDD2_DIFSLOW_WD | R_LNLBE_MEDD2_DIFSLOW_WD, R_DIFFN_MEDD2_DIFSLOW ) {
   ( NO, NO ) 1, 0, 0, 0;
   ( NO, MILD ) 0.0127, 0.9867, 0.0006, 0;
   ( NO, MOD ) 0, 0.0181018, 0.981898, 0;
@@ -4988,7 +4988,7 @@ probability( R_MEDD2_DIFSLOW_WD | R_LNLBE_MEDD2_DIFSLOW_WD, R_DIFFN_MEDD2_DIFSLO
   ( SEV, MOD ) 0, 0, 0.0012, 0.9988;
   ( SEV, SEV ) 0, 0, 0.0009, 0.9991;
 }
-probability( R_MEDD2_BLOCK_WD | R_LNLW_MEDD2_BLOCK_WD, R_DIFFN_MEDD2_BLOCK ) {
+probability ( R_MEDD2_BLOCK_WD | R_LNLW_MEDD2_BLOCK_WD, R_DIFFN_MEDD2_BLOCK ) {
   ( NO, NO ) 1, 0, 0, 0, 0;
   ( NO, MILD ) 0.0077, 0.9923, 0, 0, 0;
   ( NO, MOD ) 0.0007, 0.0234, 0.9759, 0, 0;
@@ -5015,13 +5015,13 @@ probability( R_MEDD2_BLOCK_WD | R_LNLW_MEDD2_BLOCK_WD, R_DIFFN_MEDD2_BLOCK ) {
   ( TOTAL, SEV ) 0, 0, 0, 0, 1;
   ( TOTAL, TOTAL ) 0, 0, 0, 0, 1;
 }
-probability( R_MEDD2_DIFSLOW_EW | R_DIFFN_MEDD2_DIFSLOW ) {
+probability ( R_MEDD2_DIFSLOW_EW | R_DIFFN_MEDD2_DIFSLOW ) {
   ( NO ) 1, 0, 0, 0;
   ( MILD ) 0, 1, 0, 0;
   ( MOD ) 0, 0, 1, 0;
   ( SEV ) 0, 0, 0, 1;
 }
-probability( R_MEDD2_SALOSS | R_DIFFN_LNLW_MEDD2_SALOSS, R_LNLBE_MEDD2_SALOSS_EW ) {
+probability ( R_MEDD2_SALOSS | R_DIFFN_LNLW_MEDD2_SALOSS, R_LNLBE_MEDD2_SALOSS_EW ) {
   ( NO, NO ) 1, 0, 0, 0, 0;
   ( NO, MILD ) 0.0073, 0.9812, 0.0115, 0, 0;
   ( NO, MOD ) 0.0017, 0.1306, 0.867, 0.0007, 0;
@@ -5048,18 +5048,18 @@ probability( R_MEDD2_SALOSS | R_DIFFN_LNLW_MEDD2_SALOSS, R_LNLBE_MEDD2_SALOSS_EW
   ( TOTAL, SEV ) 0, 0, 0, 0, 1;
   ( TOTAL, TOTAL ) 0, 0, 0, 0, 1;
 }
-probability( R_MEDD2_RD_EW | R_LNLBE_MEDD2_RD_EW ) {
+probability ( R_MEDD2_RD_EW | R_LNLBE_MEDD2_RD_EW ) {
   ( NO ) 1, 0, 0;
   ( MOD ) 0, 1, 0;
   ( SEV ) 0, 0, 1;
 }
-probability( R_MEDD2_LD_EW | R_LNLBE_MEDD2_LD_EW ) {
+probability ( R_MEDD2_LD_EW | R_LNLBE_MEDD2_LD_EW ) {
   ( NO ) 1, 0, 0, 0;
   ( MILD ) 0, 1, 0, 0;
   ( MOD ) 0, 0, 1, 0;
   ( SEV ) 0, 0, 0, 1;
 }
-probability( R_MED_DCV_WA | R_APB_MALOSS, R_MED_DIFSLOW_WA ) {
+probability ( R_MED_DCV_WA | R_APB_MALOSS, R_MED_DIFSLOW_WA ) {
   ( NO, NO ) 1, 0, 0, 0, 0, 0, 0, 0, 0;
   ( NO, MILD ) 0.008, 0.168, 0.7407, 0.0833, 0, 0, 0, 0, 0;
   ( NO, MOD ) 0.00069986, 0.00589882, 0.0614877, 0.30064, 0.552589, 0.0781844, 0.0004999, 0, 0;
@@ -5085,7 +5085,7 @@ probability( R_MED_DCV_WA | R_APB_MALOSS, R_MED_DIFSLOW_WA ) {
   ( OTHER, MOD ) 0.0009999, 0.00469953, 0.0279972, 0.118388, 0.364664, 0.392261, 0.0906909, 0.00029997, 0;
   ( OTHER, SEV ) 0, 0.0002, 0.0011, 0.0057, 0.0332, 0.1704, 0.4424, 0.347, 0;
 }
-probability( R_MED_RDLDDEL | R_MED_LD_WA, R_MED_RD_WA ) {
+probability ( R_MED_RDLDDEL | R_MED_LD_WA, R_MED_RD_WA ) {
   ( NO, NO ) 1, 0, 0, 0, 0;
   ( NO, MOD ) 0.0019, 0.5257, 0.4724, 0, 0;
   ( NO, SEV ) 0.0002, 0.0304, 0.9694, 0, 0;
@@ -5099,7 +5099,7 @@ probability( R_MED_RDLDDEL | R_MED_LD_WA, R_MED_RD_WA ) {
   ( SEV, MOD ) 0.00019998, 0.00059994, 0.00369963, 0.9955, 0;
   ( SEV, SEV ) 0, 0.0002, 0.0012, 0.9984, 0.0002;
 }
-probability( R_MED_RDLDCV_EW | R_MED_LD_EW, R_MED_RD_EW ) {
+probability ( R_MED_RDLDCV_EW | R_MED_LD_EW, R_MED_RD_EW ) {
   ( NO, NO ) 0.90449, 0.0953095, 0.00020002, 0, 0, 0;
   ( NO, MOD ) 0.0115, 0.0333, 0.1509, 0.7319, 0.0724, 0;
   ( NO, SEV ) 0, 9.999E-05, 0.00109989, 0.146185, 0.807019, 0.0455954;
@@ -5113,7 +5113,7 @@ probability( R_MED_RDLDCV_EW | R_MED_LD_EW, R_MED_RD_EW ) {
   ( SEV, MOD ) 0.0001, 0.0002, 0.0018, 0.0914, 0.6093, 0.2972;
   ( SEV, SEV ) 0, 0, 0, 0.0014, 0.1063, 0.8923;
 }
-probability( R_MED_DCV_EW | R_APB_MALOSS, R_MED_DIFSLOW_EW ) {
+probability ( R_MED_DCV_EW | R_APB_MALOSS, R_MED_DIFSLOW_EW ) {
   ( NO, NO ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( NO, MILD ) 0.00410041, 0.0247025, 0.154615, 0.738974, 0.0776078, 0, 0, 0, 0, 0;
   ( NO, MOD ) 0.0004, 0.0012, 0.0055, 0.0628, 0.295, 0.5485, 0.0861, 0.0005, 0, 0;
@@ -5139,7 +5139,7 @@ probability( R_MED_DCV_EW | R_APB_MALOSS, R_MED_DIFSLOW_EW ) {
   ( OTHER, MOD ) 0.00059994, 0.00119988, 0.00419958, 0.0283972, 0.114889, 0.357564, 0.39636, 0.0963904, 0.00039996, 0;
   ( OTHER, SEV ) 0, 0, 0.0002, 0.0011, 0.0056, 0.033, 0.1653, 0.4414, 0.3534, 0;
 }
-probability( R_MEDD2_DSLOW_EW | R_MEDD2_SALOSS, R_MEDD2_DIFSLOW_EW ) {
+probability ( R_MEDD2_DSLOW_EW | R_MEDD2_SALOSS, R_MEDD2_DIFSLOW_EW ) {
   ( NO, NO ) 1, 0, 0, 0, 0, 0, 0, 0, 0;
   ( NO, MILD ) 0.0532, 0.2387, 0.495, 0.2072, 0.0059, 0, 0, 0, 0;
   ( NO, MOD ) 0.0007, 0.0063, 0.0614, 0.3006, 0.5524, 0.0781, 0.0005, 0, 0;
@@ -5161,7 +5161,7 @@ probability( R_MEDD2_DSLOW_EW | R_MEDD2_SALOSS, R_MEDD2_DIFSLOW_EW ) {
   ( TOTAL, MOD ) 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( TOTAL, SEV ) 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( R_MEDD2_LSLOW_EW | R_MEDD2_LD_EW, R_MEDD2_RD_EW ) {
+probability ( R_MEDD2_LSLOW_EW | R_MEDD2_LD_EW, R_MEDD2_RD_EW ) {
   ( NO, NO ) 1, 0, 0, 0, 0;
   ( NO, MOD ) 0.00840084, 0.0119012, 0.0619062, 0.917392, 0.00040004;
   ( NO, SEV ) 0.00529947, 0.00619938, 0.0263974, 0.208179, 0.753925;
@@ -5175,7 +5175,7 @@ probability( R_MEDD2_LSLOW_EW | R_MEDD2_LD_EW, R_MEDD2_RD_EW ) {
   ( SEV, MOD ) 0.0023, 0.0036, 0.0217, 0.8326, 0.1398;
   ( SEV, SEV ) 0.0028, 0.0033, 0.0145, 0.1304, 0.849;
 }
-probability( R_MEDD2_DSLOW_WD | R_MEDD2_SALOSS, R_MEDD2_DIFSLOW_WD ) {
+probability ( R_MEDD2_DSLOW_WD | R_MEDD2_SALOSS, R_MEDD2_DIFSLOW_WD ) {
   ( NO, NO ) 1, 0, 0, 0, 0, 0, 0, 0, 0;
   ( NO, MILD ) 0.0532, 0.2387, 0.495, 0.2072, 0.0059, 0, 0, 0, 0;
   ( NO, MOD ) 0.0007, 0.0063, 0.0614, 0.3006, 0.5524, 0.0781, 0.0005, 0, 0;
@@ -5197,7 +5197,7 @@ probability( R_MEDD2_DSLOW_WD | R_MEDD2_SALOSS, R_MEDD2_DIFSLOW_WD ) {
   ( TOTAL, MOD ) 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( TOTAL, SEV ) 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( R_MEDD2_LSLOW_WD | R_MEDD2_LD_WD, R_MEDD2_RD_WD ) {
+probability ( R_MEDD2_LSLOW_WD | R_MEDD2_LD_WD, R_MEDD2_RD_WD ) {
   ( NO, NO ) 1, 0, 0, 0, 0;
   ( NO, MOD ) 0.0021, 0.0042, 0.0295, 0.9642, 0;
   ( NO, SEV ) 0.0001, 0.0002, 0.0014, 0.083, 0.9153;
@@ -5211,7 +5211,7 @@ probability( R_MEDD2_LSLOW_WD | R_MEDD2_LD_WD, R_MEDD2_RD_WD ) {
   ( SEV, MOD ) 0.00020002, 0.00050005, 0.00460046, 0.994499, 0.00020002;
   ( SEV, SEV ) 0, 0, 0, 0.00350035, 0.9965;
 }
-probability( R_MEDD2_EFFAXLOSS | R_MEDD2_BLOCK_WD, R_MEDD2_SALOSS ) {
+probability ( R_MEDD2_EFFAXLOSS | R_MEDD2_BLOCK_WD, R_MEDD2_SALOSS ) {
   ( NO, NO ) 1, 0, 0, 0, 0;
   ( NO, MILD ) 0.0073, 0.9812, 0.0115, 0, 0;
   ( NO, MOD ) 0.0017, 0.1306, 0.867, 0.0007, 0;
@@ -5238,7 +5238,7 @@ probability( R_MEDD2_EFFAXLOSS | R_MEDD2_BLOCK_WD, R_MEDD2_SALOSS ) {
   ( TOTAL, SEV ) 0, 0, 0, 0, 1;
   ( TOTAL, TOTAL ) 0, 0, 0, 0, 1;
 }
-probability( R_MEDD2_DISP_EW | R_DIFFN_MEDD2_DISP, R_LNLBE_MEDD2_DISP_EW ) {
+probability ( R_MEDD2_DISP_EW | R_DIFFN_MEDD2_DISP, R_LNLBE_MEDD2_DISP_EW ) {
   ( NO, NO ) 1, 0, 0, 0;
   ( NO, MILD ) 0.0749, 0.8229, 0.1022, 0;
   ( NO, MOD ) 0, 0.0626063, 0.937394, 0;
@@ -5256,25 +5256,25 @@ probability( R_MEDD2_DISP_EW | R_DIFFN_MEDD2_DISP, R_LNLBE_MEDD2_DISP_EW ) {
   ( SEV, MOD ) 0, 0, 0, 1;
   ( SEV, SEV ) 0, 0, 0, 1;
 }
-probability( R_MEDD2_DISP_WD | R_DIFFN_LNLW_MEDD2_DISP_WD ) {
+probability ( R_MEDD2_DISP_WD | R_DIFFN_LNLW_MEDD2_DISP_WD ) {
   ( NO ) 1, 0, 0, 0;
   ( MILD ) 0, 1, 0, 0;
   ( MOD ) 0, 0, 1, 0;
   ( SEV ) 0, 0, 0, 1;
 }
-probability( R_APB_SPONT_INS_ACT | R_APB_DENERV ) {
+probability ( R_APB_SPONT_INS_ACT | R_APB_DENERV ) {
   ( NO ) 0.98, 0.02;
   ( MILD ) 0.1, 0.9;
   ( MOD ) 0.05, 0.95;
   ( SEV ) 0.05, 0.95;
 }
-probability( R_APB_SPONT_HF_DISCH | R_APB_DENERV ) {
+probability ( R_APB_SPONT_HF_DISCH | R_APB_DENERV ) {
   ( NO ) 0.99, 0.01;
   ( MILD ) 0.97, 0.03;
   ( MOD ) 0.95, 0.05;
   ( SEV ) 0.93, 0.07;
 }
-probability( R_APB_DENERV | R_MUSCLE_APB_DENERV, R_LNL_DIFFN_APB_DENERV ) {
+probability ( R_APB_DENERV | R_MUSCLE_APB_DENERV, R_LNL_DIFFN_APB_DENERV ) {
   ( NO, NO ) 1, 0, 0, 0;
   ( NO, MILD ) 0, 1, 0, 0;
   ( NO, MOD ) 0, 0, 1, 0;
@@ -5292,13 +5292,13 @@ probability( R_APB_DENERV | R_MUSCLE_APB_DENERV, R_LNL_DIFFN_APB_DENERV ) {
   ( SEV, MOD ) 0, 0, 0, 1;
   ( SEV, SEV ) 0, 0, 0, 1;
 }
-probability( R_APB_SPONT_DENERV_ACT | R_APB_DENERV ) {
+probability ( R_APB_SPONT_DENERV_ACT | R_APB_DENERV ) {
   ( NO ) 0.98, 0.02, 0, 0;
   ( MILD ) 0.07, 0.85, 0.08, 0;
   ( MOD ) 0.01, 0.07, 0.85, 0.07;
   ( SEV ) 0, 0.01, 0.07, 0.92;
 }
-probability( R_APB_NEUR_ACT | R_LNLT1_LP_BE_APB_NEUR_ACT, R_DIFFN_LNLW_APB_NEUR_ACT ) {
+probability ( R_APB_NEUR_ACT | R_LNLT1_LP_BE_APB_NEUR_ACT, R_DIFFN_LNLW_APB_NEUR_ACT ) {
   ( NO, NO ) 1, 0, 0, 0, 0, 0;
   ( NO, FASCIC ) 0, 1, 0, 0, 0, 0;
   ( NO, NEUROMYO ) 0, 0, 1, 0, 0, 0;
@@ -5336,7 +5336,7 @@ probability( R_APB_NEUR_ACT | R_LNLT1_LP_BE_APB_NEUR_ACT, R_DIFFN_LNLW_APB_NEUR_
   ( OTHER, TETANUS ) 0, 0, 0, 0, 0, 1;
   ( OTHER, OTHER ) 0, 0, 0, 0, 0, 1;
 }
-probability( R_APB_SPONT_NEUR_DISCH | R_APB_NEUR_ACT ) {
+probability ( R_APB_SPONT_NEUR_DISCH | R_APB_NEUR_ACT ) {
   ( NO ) 0.98, 0.02, 0, 0, 0, 0;
   ( FASCIC ) 0.1, 0.9, 0, 0, 0, 0;
   ( NEUROMYO ) 0.01, 0.04, 0.75, 0.05, 0.05, 0.1;
@@ -5344,7 +5344,7 @@ probability( R_APB_SPONT_NEUR_DISCH | R_APB_NEUR_ACT ) {
   ( TETANUS ) 0.01, 0.04, 0.05, 0.05, 0.75, 0.1;
   ( OTHER ) 0.01, 0.05, 0.05, 0.05, 0.05, 0.79;
 }
-probability( R_APB_MUDENS | R_LNL_DIFFN_APB_MUDENS, R_MUSCLE_APB_MUDENS ) {
+probability ( R_APB_MUDENS | R_LNL_DIFFN_APB_MUDENS, R_MUSCLE_APB_MUDENS ) {
   ( NORMAL, NORMAL ) 1, 0, 0;
   ( NORMAL, INCR ) 0, 1, 0;
   ( NORMAL, V_INCR ) 0, 0, 1;
@@ -5355,12 +5355,12 @@ probability( R_APB_MUDENS | R_LNL_DIFFN_APB_MUDENS, R_MUSCLE_APB_MUDENS ) {
   ( V_INCR, INCR ) 0, 0, 1;
   ( V_INCR, V_INCR ) 0, 0, 1;
 }
-probability( R_APB_SF_DENSITY | R_APB_MUDENS ) {
+probability ( R_APB_SF_DENSITY | R_APB_MUDENS ) {
   ( NORMAL ) 0.97, 0.03, 0;
   ( INCR ) 0.05, 0.9, 0.05;
   ( V_INCR ) 0.01, 0.04, 0.95;
 }
-probability( R_APB_SF_JITTER | R_APB_NMT ) {
+probability ( R_APB_SF_JITTER | R_APB_NMT ) {
   ( NO ) 0.95, 0.05, 0, 0;
   ( MOD_PRE ) 0.02, 0.2, 0.7, 0.08;
   ( SEV_PRE ) 0, 0.1, 0.4, 0.5;
@@ -5369,7 +5369,7 @@ probability( R_APB_SF_JITTER | R_APB_NMT ) {
   ( SEV_POST ) 0, 0.1, 0.4, 0.5;
   ( MIXED ) 0.1, 0.3, 0.3, 0.3;
 }
-probability( R_APB_REPSTIM_POST_DECR | R_APB_NMT ) {
+probability ( R_APB_REPSTIM_POST_DECR | R_APB_NMT ) {
   ( NO ) 0.949, 0.02, 0.01, 0.001, 0.02;
   ( MOD_PRE ) 0.02, 0.1, 0.8, 0.06, 0.02;
   ( SEV_PRE ) 0.001, 0.01, 0.02, 0.949, 0.02;
@@ -5378,7 +5378,7 @@ probability( R_APB_REPSTIM_POST_DECR | R_APB_NMT ) {
   ( SEV_POST ) 0.001, 0.01, 0.02, 0.949, 0.02;
   ( MIXED ) 0.23, 0.23, 0.22, 0.22, 0.1;
 }
-probability( R_APB_REPSTIM_FACILI | R_APB_NMT ) {
+probability ( R_APB_REPSTIM_FACILI | R_APB_NMT ) {
   ( NO ) 0.95, 0.02, 0.01, 0.02;
   ( MOD_PRE ) 0.01, 0.889, 0.1, 0.001;
   ( SEV_PRE ) 0.01, 0.08, 0.909, 0.001;
@@ -5387,7 +5387,7 @@ probability( R_APB_REPSTIM_FACILI | R_APB_NMT ) {
   ( SEV_POST ) 0.02, 0.949, 0.03, 0.001;
   ( MIXED ) 0.25, 0.25, 0.25, 0.25;
 }
-probability( R_APB_REPSTIM_DECR | R_APB_NMT ) {
+probability ( R_APB_REPSTIM_DECR | R_APB_NMT ) {
   ( NO ) 0.949, 0.02, 0.01, 0.001, 0.02;
   ( MOD_PRE ) 0.04, 0.2, 0.7, 0.04, 0.02;
   ( SEV_PRE ) 0.001, 0.01, 0.04, 0.929, 0.02;
@@ -5396,7 +5396,7 @@ probability( R_APB_REPSTIM_DECR | R_APB_NMT ) {
   ( SEV_POST ) 0.001, 0.01, 0.04, 0.929, 0.02;
   ( MIXED ) 0.245, 0.245, 0.245, 0.245, 0.02;
 }
-probability( R_APB_REPSTIM_CMAPAMP | R_APB_ALLAMP_WA ) {
+probability ( R_APB_REPSTIM_CMAPAMP | R_APB_ALLAMP_WA ) {
   ( ZERO ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( A0_01 ) 0.00130013, 0.115912, 0.128013, 0.133013, 0.130013, 0.119412, 0.10311, 0.0838084, 0.0639064, 0.0459046, 0.0310031, 0.019702, 0.0117012, 0.00660066, 0.00350035, 0.00170017, 0.00080008, 0.00040004, 0.00010001, 0.00010001, 0;
   ( A0_10 ) 0, 0.00029997, 0.00129987, 0.00409959, 0.0111989, 0.0260974, 0.0515948, 0.0867913, 0.124688, 0.152485, 0.158884, 0.141086, 0.106789, 0.0687931, 0.0377962, 0.0176982, 0.00709929, 0.00239976, 0.00069993, 0.00019998, 0;
@@ -5407,7 +5407,7 @@ probability( R_APB_REPSTIM_CMAPAMP | R_APB_ALLAMP_WA ) {
   ( A4_00 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.00110011, 0.00610061, 0.0249025, 0.0768077, 0.177918, 0.308931, 0.40404;
   ( A8_00 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0001, 0.0005, 0.0038, 0.0208, 0.086, 0.2659, 0.6229;
 }
-probability( R_APB_NMT | R_DE_REGEN_APB_NMT, R_MYAS_APB_NMT ) {
+probability ( R_APB_NMT | R_DE_REGEN_APB_NMT, R_MYAS_APB_NMT ) {
   ( NO, NO ) 1, 0, 0, 0, 0, 0, 0;
   ( NO, MOD_PRE ) 0, 1, 0, 0, 0, 0, 0;
   ( NO, SEV_PRE ) 0, 0, 1, 0, 0, 0, 0;
@@ -5458,7 +5458,7 @@ probability( R_APB_NMT | R_DE_REGEN_APB_NMT, R_MYAS_APB_NMT ) {
   ( MIXED, SEV_POST ) 0, 0, 0, 0, 0, 0, 1;
   ( MIXED, MIXED ) 0, 0, 0, 0, 0, 0, 1;
 }
-probability( R_APB_MUPINSTAB | R_APB_NMT ) {
+probability ( R_APB_MUPINSTAB | R_APB_NMT ) {
   ( NO ) 0.95, 0.05;
   ( MOD_PRE ) 0.1, 0.9;
   ( SEV_PRE ) 0.03, 0.97;
@@ -5467,17 +5467,17 @@ probability( R_APB_MUPINSTAB | R_APB_NMT ) {
   ( SEV_POST ) 0.03, 0.97;
   ( MIXED ) 0.1, 0.9;
 }
-probability( R_APB_DE_REGEN | R_LNL_DIFFN_APB_DE_REGEN, R_MYOP_MYDY_APB_DE_REGEN ) {
+probability ( R_APB_DE_REGEN | R_LNL_DIFFN_APB_DE_REGEN, R_MYOP_MYDY_APB_DE_REGEN ) {
   ( NO, NO ) 1, 0;
   ( NO, YES ) 0, 1;
   ( YES, NO ) 0, 1;
   ( YES, YES ) 0, 1;
 }
-probability( R_APB_MUPSATEL | R_APB_DE_REGEN ) {
+probability ( R_APB_MUPSATEL | R_APB_DE_REGEN ) {
   ( NO ) 0.95, 0.05;
   ( YES ) 0.2, 0.8;
 }
-probability( R_APB_QUAN_MUPPOLY | R_APB_DE_REGEN, R_APB_EFFMUS ) {
+probability ( R_APB_QUAN_MUPPOLY | R_APB_DE_REGEN, R_APB_EFFMUS ) {
   ( NO, V_SMALL ) 0.109, 0.548, 0.343;
   ( NO, SMALL ) 0.34, 0.564, 0.096;
   ( NO, NORMAL ) 0.925, 0.075, 0;
@@ -5493,12 +5493,12 @@ probability( R_APB_QUAN_MUPPOLY | R_APB_DE_REGEN, R_APB_EFFMUS ) {
   ( YES, V_LARGE ) 0.015, 0.261, 0.724;
   ( YES, OTHER ) 0.015, 0.261, 0.724;
 }
-probability( R_APB_QUAL_MUPPOLY | R_APB_QUAN_MUPPOLY ) {
+probability ( R_APB_QUAL_MUPPOLY | R_APB_QUAN_MUPPOLY ) {
   ( __12% ) 0.95, 0.05;
   ( 12_24% ) 0.3, 0.7;
   ( __24% ) 0.05, 0.95;
 }
-probability( R_APB_QUAL_MUPDUR | R_APB_MUPDUR ) {
+probability ( R_APB_QUAL_MUPDUR | R_APB_MUPDUR ) {
   ( V_SMALL ) 0.8309, 0.1677, 0.0014;
   ( SMALL ) 0.49, 0.49, 0.02;
   ( NORMAL ) 0.1065, 0.787, 0.1065;
@@ -5507,7 +5507,7 @@ probability( R_APB_QUAL_MUPDUR | R_APB_MUPDUR ) {
   ( V_LARGE ) 0.0001, 0.0392, 0.9607;
   ( OTHER ) 0.2597, 0.4806, 0.2597;
 }
-probability( R_APB_MUPDUR | R_APB_EFFMUS ) {
+probability ( R_APB_MUPDUR | R_APB_EFFMUS ) {
   ( V_SMALL ) 0.9388, 0.0412, 0, 0, 0, 0, 0.02;
   ( SMALL ) 0.0396, 0.9008, 0.0396, 0, 0, 0, 0.02;
   ( NORMAL ) 0, 0, 0.98, 0, 0, 0, 0.02;
@@ -5516,7 +5516,7 @@ probability( R_APB_MUPDUR | R_APB_EFFMUS ) {
   ( V_LARGE ) 0, 0, 0, 0.0039, 0.2546, 0.7215, 0.02;
   ( OTHER ) 0.09, 0.235, 0.3236, 0.235, 0.09, 0.0064, 0.02;
 }
-probability( R_APB_QUAN_MUPDUR | R_APB_MUPDUR ) {
+probability ( R_APB_QUAN_MUPDUR | R_APB_MUPDUR ) {
   ( V_SMALL ) 0.09982, 0.183337, 0.240248, 0.224545, 0.14973, 0.0712142, 0.0242048, 0.00580116, 0.0010002, 0.00010002, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( SMALL ) 0.010201, 0.0369037, 0.0951095, 0.174717, 0.228923, 0.214021, 0.142614, 0.0678068, 0.0230023, 0.00560056, 0.0010001, 0.00010001, 0, 0, 0, 0, 0, 0, 0;
   ( NORMAL ) 0, 0.0002, 0.0025, 0.0177, 0.0739, 0.1852, 0.2785, 0.2515, 0.1363, 0.0444, 0.0087, 0.001, 1E-04, 0, 0, 0, 0, 0, 0;
@@ -5525,7 +5525,7 @@ probability( R_APB_QUAN_MUPDUR | R_APB_MUPDUR ) {
   ( V_LARGE ) 0, 0, 0, 0, 0, 9.999E-05, 0.00039996, 0.00179982, 0.0069993, 0.0218978, 0.0540946, 0.105189, 0.161284, 0.194981, 0.185981, 0.139886, 0.0828917, 0.0387961, 0.00569943;
   ( OTHER ) 0.0201, 0.0341, 0.0529, 0.0748, 0.0966, 0.1138, 0.1224, 0.1202, 0.1078, 0.0882, 0.0658, 0.0449, 0.0279, 0.0159, 0.0082, 0.0039, 0.0017, 0.0007, 1E-04;
 }
-probability( R_APB_QUAL_MUPAMP | R_APB_MUPAMP ) {
+probability ( R_APB_QUAL_MUPAMP | R_APB_MUPAMP ) {
   ( V_SMALL ) 0.4289, 0.5209, 0.0499, 0.0003, 0;
   ( SMALL ) 0.0647, 0.5494, 0.3679, 0.018, 0;
   ( NORMAL ) 0, 0.0479048, 0.875388, 0.0767077, 0;
@@ -5534,7 +5534,7 @@ probability( R_APB_QUAL_MUPAMP | R_APB_MUPAMP ) {
   ( V_LARGE ) 0, 0, 0.001, 0.0788, 0.9202;
   ( OTHER ) 0.096, 0.1884, 0.283, 0.3014, 0.1312;
 }
-probability( R_APB_MUPAMP | R_APB_EFFMUS ) {
+probability ( R_APB_MUPAMP | R_APB_EFFMUS ) {
   ( V_SMALL ) 0.782, 0.195, 0.003, 0, 0, 0, 0.02;
   ( SMALL ) 0.10431, 0.771077, 0.10431, 0.00030003, 0, 0, 0.020002;
   ( NORMAL ) 0, 0, 0.98, 0, 0, 0, 0.02;
@@ -5543,7 +5543,7 @@ probability( R_APB_MUPAMP | R_APB_EFFMUS ) {
   ( V_LARGE ) 0, 0, 0, 0.0028, 0.0968, 0.8804, 0.02;
   ( OTHER ) 0.1328, 0.1932, 0.2189, 0.1932, 0.1726, 0.0693, 0.02;
 }
-probability( R_APB_QUAN_MUPAMP | R_APB_MUPAMP ) {
+probability ( R_APB_QUAN_MUPAMP | R_APB_MUPAMP ) {
   ( V_SMALL ) 0.00080024, 0.00370111, 0.0135041, 0.0381114, 0.0835251, 0.142543, 0.189557, 0.196359, 0.158348, 0.0994298, 0.0486146, 0.0185056, 0.00550165, 0.00130039, 0.00020006, 0, 0, 0, 0, 0;
   ( SMALL ) 0, 0.00010002, 0.00080016, 0.00370074, 0.0135027, 0.0381076, 0.0835167, 0.142529, 0.189538, 0.196339, 0.158332, 0.0994199, 0.0486097, 0.0185037, 0.0055011, 0.00130026, 0.00020004, 0, 0, 0;
   ( NORMAL ) 0, 0, 0, 0, 0, 0.00050005, 0.00370037, 0.0187019, 0.0639064, 0.147515, 0.230223, 0.243124, 0.173717, 0.0840084, 0.0275028, 0.00610061, 0.00090009, 0.00010001, 0, 0;
@@ -5552,7 +5552,7 @@ probability( R_APB_QUAN_MUPAMP | R_APB_MUPAMP ) {
   ( V_LARGE ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0001, 0.0006, 0.0024, 0.0082, 0.0232, 0.0542, 0.1041, 0.1645, 0.2137, 0.2283, 0.2007;
   ( OTHER ) 0.0045, 0.0078, 0.0127, 0.0197, 0.0289, 0.0403, 0.0531, 0.0664, 0.0787, 0.0883, 0.0939, 0.0946, 0.0903, 0.0817, 0.07, 0.0569, 0.0438, 0.0319, 0.0221, 0.0144;
 }
-probability( R_APB_TA_CONCL | R_APB_EFFMUS ) {
+probability ( R_APB_TA_CONCL | R_APB_EFFMUS ) {
   ( V_SMALL ) 0, 0, 0.01, 0.1, 0.88, 0.01;
   ( SMALL ) 0, 0, 0.1, 0.8, 0.09, 0.01;
   ( NORMAL ) 0, 0.03, 0.93, 0.03, 0, 0.01;
@@ -5561,7 +5561,7 @@ probability( R_APB_TA_CONCL | R_APB_EFFMUS ) {
   ( V_LARGE ) 0.8, 0.18, 0.01, 0, 0, 0.01;
   ( OTHER ) 0.17, 0.17, 0.17, 0.17, 0.16, 0.16;
 }
-probability( R_APB_EFFMUS | R_APB_NMT, R_APB_MUSIZE ) {
+probability ( R_APB_EFFMUS | R_APB_NMT, R_APB_MUSIZE ) {
   ( NO, V_SMALL ) 0.935, 0.045, 0, 0, 0, 0, 0.02;
   ( NO, SMALL ) 0.0609, 0.8781, 0.04, 0.001, 0, 0, 0.02;
   ( NO, NORMAL ) 0, 0, 0.98, 0, 0, 0, 0.02;
@@ -5612,7 +5612,7 @@ probability( R_APB_EFFMUS | R_APB_NMT, R_APB_MUSIZE ) {
   ( MIXED, V_LARGE ) 0.00089991, 0.0250975, 0.0942906, 0.263774, 0.332167, 0.263774, 0.019998;
   ( MIXED, OTHER ) 0.238124, 0.287029, 0.136414, 0.152315, 0.10451, 0.0616062, 0.020002;
 }
-probability( R_APB_MVA_AMP | R_APB_EFFMUS ) {
+probability ( R_APB_MVA_AMP | R_APB_EFFMUS ) {
   ( V_SMALL ) 0, 0.04, 0.96;
   ( SMALL ) 0.01, 0.15, 0.84;
   ( NORMAL ) 0.05, 0.9, 0.05;
@@ -5621,7 +5621,7 @@ probability( R_APB_MVA_AMP | R_APB_EFFMUS ) {
   ( V_LARGE ) 0.96, 0.04, 0;
   ( OTHER ) 0.33, 0.34, 0.33;
 }
-probability( R_APB_MULOSS | R_MED_BLOCK_WA, R_APB_MALOSS ) {
+probability ( R_APB_MULOSS | R_MED_BLOCK_WA, R_APB_MALOSS ) {
   ( NO, NO ) 0.98, 0, 0, 0, 0, 0.02;
   ( NO, MILD ) 0.0167, 0.9613, 0.002, 0, 0, 0.02;
   ( NO, MOD ) 0.00019998, 0.0534947, 0.923708, 0.00259974, 0, 0.019998;
@@ -5653,7 +5653,7 @@ probability( R_APB_MULOSS | R_MED_BLOCK_WA, R_APB_MALOSS ) {
   ( TOTAL, TOTAL ) 0, 0, 0, 0, 0.98, 0.02;
   ( TOTAL, OTHER ) 0, 0, 0, 0, 0.98, 0.02;
 }
-probability( R_APB_MVA_RECRUIT | R_APB_MULOSS, R_APB_VOL_ACT ) {
+probability ( R_APB_MVA_RECRUIT | R_APB_MULOSS, R_APB_VOL_ACT ) {
   ( NO, NORMAL ) 0.9295, 0.0705, 0, 0;
   ( NO, REDUCED ) 0.1707, 0.7, 0.1293, 0;
   ( NO, V_RED ) 0.0038, 0.174, 0.8222, 0;
@@ -5679,7 +5679,7 @@ probability( R_APB_MVA_RECRUIT | R_APB_MULOSS, R_APB_VOL_ACT ) {
   ( OTHER, V_RED ) 0.036, 0.2144, 0.7496, 0;
   ( OTHER, ABSENT ) 0, 0, 0, 1;
 }
-probability( R_APB_MALOSS | R_LNLT1_LP_BE_APB_MALOSS, R_DIFFN_LNLW_APB_MALOSS ) {
+probability ( R_APB_MALOSS | R_LNLT1_LP_BE_APB_MALOSS, R_DIFFN_LNLW_APB_MALOSS ) {
   ( NO, NO ) 0.98, 0, 0, 0, 0, 0.02;
   ( NO, MILD ) 0.00219978, 0.977702, 9.999E-05, 0, 0, 0.019998;
   ( NO, MOD ) 0.0002, 0.0471, 0.9297, 0.003, 0, 0.02;
@@ -5706,7 +5706,7 @@ probability( R_APB_MALOSS | R_LNLT1_LP_BE_APB_MALOSS, R_DIFFN_LNLW_APB_MALOSS ) 
   ( TOTAL, SEV ) 0, 0, 0, 0, 0.98, 0.02;
   ( TOTAL, TOTAL ) 0, 0, 0, 0, 0.98, 0.02;
 }
-probability( R_APB_MUSIZE | R_MYOP_MYDY_APB_MUSIZE, R_LNL_DIFFN_APB_MUSIZE ) {
+probability ( R_APB_MUSIZE | R_MYOP_MYDY_APB_MUSIZE, R_LNL_DIFFN_APB_MUSIZE ) {
   ( V_SMALL, V_SMALL ) 0.9791, 0.0009, 0, 0, 0, 0, 0.02;
   ( V_SMALL, SMALL ) 0.9637, 0.0163, 0, 0, 0, 0, 0.02;
   ( V_SMALL, NORMAL ) 0.922192, 0.0578058, 0, 0, 0, 0, 0.020002;
@@ -5744,7 +5744,7 @@ probability( R_APB_MUSIZE | R_MYOP_MYDY_APB_MUSIZE, R_LNL_DIFFN_APB_MUSIZE ) {
   ( V_LARGE, LARGE ) 0, 0, 0, 0, 0.0011, 0.9789, 0.02;
   ( V_LARGE, V_LARGE ) 0, 0, 0, 0, 0.0001, 0.9799, 0.02;
 }
-probability( R_APB_MUSCLE_VOL | R_APB_MUSIZE, R_APB_MALOSS ) {
+probability ( R_APB_MUSCLE_VOL | R_APB_MUSIZE, R_APB_MALOSS ) {
   ( V_SMALL, NO ) 0.9896, 0.0104;
   ( V_SMALL, MILD ) 0.9976, 0.0024;
   ( V_SMALL, MOD ) 0.999, 0.001;
@@ -5788,10 +5788,10 @@ probability( R_APB_MUSCLE_VOL | R_APB_MUSIZE, R_APB_MALOSS ) {
   ( OTHER, TOTAL ) 0.9857, 0.0143;
   ( OTHER, OTHER ) 0.5681, 0.4319;
 }
-probability( R_APB_VOL_ACT ) {
+probability ( R_APB_VOL_ACT ) {
   table 1, 0, 0, 0;
 }
-probability( R_APB_FORCE | R_APB_VOL_ACT, R_APB_ALLAMP_WA ) {
+probability ( R_APB_FORCE | R_APB_VOL_ACT, R_APB_ALLAMP_WA ) {
   ( NORMAL, ZERO ) 0, 0, 0, 0.00409959, 0.190781, 0.805119;
   ( NORMAL, A0_01 ) 0.00159984, 0.0185981, 0.0935906, 0.267873, 0.365863, 0.252475;
   ( NORMAL, A0_10 ) 0.0149015, 0.235424, 0.533153, 0.20152, 0.0149015, 0.00010001;
@@ -5829,7 +5829,7 @@ probability( R_APB_FORCE | R_APB_VOL_ACT, R_APB_ALLAMP_WA ) {
   ( ABSENT, A4_00 ) 0.0004, 0.0107, 0.0847, 0.3035, 0.3988, 0.2019;
   ( ABSENT, A8_00 ) 0.0030003, 0.0426043, 0.194819, 0.384938, 0.292929, 0.0817082;
 }
-probability( R_MED_ALLDEL_WA | R_MED_RDLDDEL, R_MED_DCV_WA ) {
+probability ( R_MED_ALLDEL_WA | R_MED_RDLDDEL, R_MED_DCV_WA ) {
   ( MS3_1, M_S60 ) 0.9996, 0.0004, 0, 0, 0, 0, 0, 0, 0;
   ( MS3_1, M_S52 ) 0.5607, 0.4393, 0, 0, 0, 0, 0, 0, 0;
   ( MS3_1, M_S44 ) 0.0069, 0.7963, 0.1968, 0, 0, 0, 0, 0, 0;
@@ -5876,7 +5876,7 @@ probability( R_MED_ALLDEL_WA | R_MED_RDLDDEL, R_MED_DCV_WA ) {
   ( MS20_1, M_S08 ) 0, 0, 0, 0, 0, 0.00030003, 0.0253025, 0.974397, 0;
   ( MS20_1, M_S00 ) 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( R_MED_LAT_WA | R_MED_ALLDEL_WA ) {
+probability ( R_MED_LAT_WA | R_MED_ALLDEL_WA ) {
   ( MS0_0 ) 0.00590059, 0.132613, 0.50325, 0.322632, 0.0350035, 0.00060006, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( MS0_4 ) 0.00069993, 0.019598, 0.168983, 0.425457, 0.312769, 0.0671933, 0.00529947, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( MS0_8 ) 0, 0.0007, 0.0194, 0.1669, 0.4202, 0.3089, 0.0829, 0.001, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -5887,7 +5887,7 @@ probability( R_MED_LAT_WA | R_MED_ALLDEL_WA ) {
   ( MS25_6 ) 0.00079992, 0.00089991, 0.00109989, 0.00119988, 0.00139986, 0.00169983, 0.00249975, 0.00369963, 0.00459954, 0.00559944, 0.0105989, 0.0155984, 0.0213979, 0.0432957, 0.10069, 0.164884, 0.253575, 0.366463, 0;
   ( INFIN ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( R_APB_ALLAMP_WA | R_APB_EFFMUS, R_APB_MULOSS ) {
+probability ( R_APB_ALLAMP_WA | R_APB_EFFMUS, R_APB_MULOSS ) {
   ( V_SMALL, NO ) 0.00260026, 0.368737, 0.607561, 0.0208021, 0.00030003, 0, 0, 0, 0;
   ( V_SMALL, MILD ) 0.0409, 0.8924, 0.0661, 0.0006, 0, 0, 0, 0, 0;
   ( V_SMALL, MOD ) 0.2926, 0.7043, 0.0031, 0, 0, 0, 0, 0, 0;
@@ -5931,7 +5931,7 @@ probability( R_APB_ALLAMP_WA | R_APB_EFFMUS, R_APB_MULOSS ) {
   ( OTHER, TOTAL ) 0.937006, 0.0628937, 9.999E-05, 0, 0, 0, 0, 0, 0;
   ( OTHER, OTHER ) 0.0521052, 0.160816, 0.227223, 0.20132, 0.106611, 0.0792079, 0.0831083, 0.0559056, 0.0337034;
 }
-probability( R_MED_AMP_WA | R_APB_ALLAMP_WA ) {
+probability ( R_MED_AMP_WA | R_APB_ALLAMP_WA ) {
   ( ZERO ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( A0_01 ) 0.00030003, 0.285029, 0.234623, 0.178118, 0.124512, 0.080308, 0.0476048, 0.0261026, 0.0132013, 0.00610061, 0.00260026, 0.0010001, 0.00040004, 0.00010001, 0, 0, 0;
   ( A0_10 ) 0, 0.0135014, 0.0369037, 0.0794079, 0.135314, 0.181818, 0.193219, 0.162216, 0.107711, 0.0564056, 0.0234023, 0.00760076, 0.0020002, 0.00040004, 0.00010001, 0, 0;
@@ -5942,7 +5942,7 @@ probability( R_MED_AMP_WA | R_APB_ALLAMP_WA ) {
   ( A4_00 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0004, 0.0029, 0.0155, 0.0599, 0.1641, 0.3182, 0.439;
   ( A8_00 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00010001, 0.00150015, 0.0115012, 0.0631063, 0.244524, 0.679268;
 }
-probability( R_MED_ALLCV_EW | R_MED_DCV_EW, R_MED_RDLDCV_EW ) {
+probability ( R_MED_ALLCV_EW | R_MED_DCV_EW, R_MED_RDLDCV_EW ) {
   ( M_S60, M_S60 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( M_S60, M_S52 ) 0.00660066, 0.145515, 0.838084, 0.00980098, 0, 0, 0, 0, 0, 0;
   ( M_S60, M_S44 ) 0, 0, 0.0047, 0.9951, 0.0002, 0, 0, 0, 0, 0;
@@ -6004,7 +6004,7 @@ probability( R_MED_ALLCV_EW | R_MED_DCV_EW, R_MED_RDLDCV_EW ) {
   ( M_S00, M_S15 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
   ( M_S00, M_S07 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( R_MED_CV_EW | R_MED_ALLCV_EW ) {
+probability ( R_MED_CV_EW | R_MED_ALLCV_EW ) {
   ( M_S60 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0006, 0.0168, 0.1184, 0.296, 0.3227, 0.1783, 0.056, 0.0112;
   ( M_S56 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0001, 0.0005, 0.0155, 0.1165, 0.2969, 0.3229, 0.1782, 0.0564, 0.0114, 0.0016;
   ( M_S52 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0006, 0.0039, 0.0589, 0.2434, 0.3586, 0.235, 0.0808, 0.0164, 0.0022, 0.0002;
@@ -6016,7 +6016,7 @@ probability( R_MED_CV_EW | R_MED_ALLCV_EW ) {
   ( M_S08 ) 0, 0.126513, 0.765477, 0.10061, 0.0070007, 0.00040004, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( M_S00 ) 0.9999, 0.0001, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
 }
-probability( R_MED_BLOCK_EW | R_DIFFN_MED_BLOCK, R_LNLBE_MED_BLOCK ) {
+probability ( R_MED_BLOCK_EW | R_DIFFN_MED_BLOCK, R_LNLBE_MED_BLOCK ) {
   ( NO, NO ) 1, 0, 0, 0, 0;
   ( NO, MILD ) 0.0077, 0.9923, 0, 0, 0;
   ( NO, MOD ) 0.0007, 0.0234, 0.9759, 0, 0;
@@ -6043,14 +6043,14 @@ probability( R_MED_BLOCK_EW | R_DIFFN_MED_BLOCK, R_LNLBE_MED_BLOCK ) {
   ( TOTAL, SEV ) 0, 0, 0, 0, 1;
   ( TOTAL, TOTAL ) 0, 0, 0, 0, 1;
 }
-probability( R_MED_AMPR_EW | R_MED_BLOCK_EW ) {
+probability ( R_MED_AMPR_EW | R_MED_BLOCK_EW ) {
   ( NO ) 0.0879, 0.4192, 0.4232, 0.0693, 0.0004, 0, 0, 0, 0, 0, 0, 0;
   ( MILD ) 0.00189981, 0.0343966, 0.256674, 0.529147, 0.173483, 0.00439956, 0, 0, 0, 0, 0, 0;
   ( MOD ) 0.0001, 0.001, 0.0076, 0.0403, 0.172, 0.373, 0.342, 0.0633, 0.0007, 0, 0, 0;
   ( SEV ) 0.00090009, 0.00150015, 0.00260026, 0.00490049, 0.00950095, 0.0176018, 0.0347035, 0.0768077, 0.166817, 0.341434, 0.343234, 0;
   ( TOTAL ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( R_MEDD2_ALLCV_WD | R_MEDD2_LSLOW_WD, R_MEDD2_DSLOW_WD ) {
+probability ( R_MEDD2_ALLCV_WD | R_MEDD2_LSLOW_WD, R_MEDD2_DSLOW_WD ) {
   ( NO, M_S60 ) 1, 0, 0, 0, 0, 0, 0, 0, 0;
   ( NO, M_S52 ) 0.030497, 0.967203, 0.00229977, 0, 0, 0, 0, 0, 0;
   ( NO, M_S44 ) 0.00039996, 0.0618938, 0.888111, 0.049595, 0, 0, 0, 0, 0;
@@ -6097,7 +6097,7 @@ probability( R_MEDD2_ALLCV_WD | R_MEDD2_LSLOW_WD, R_MEDD2_DSLOW_WD ) {
   ( V_SEV, M_S08 ) 0, 0, 0, 0.0001, 0.0006, 0.0058, 0.0523, 0.9412, 0;
   ( V_SEV, M_S00 ) 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( R_MEDD2_CV_WD | R_MEDD2_ALLCV_WD ) {
+probability ( R_MEDD2_CV_WD | R_MEDD2_ALLCV_WD ) {
   ( M_S60 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00019998, 0.0108989, 0.0983902, 0.316568, 0.353165, 0.174883, 0.040296, 0.00559944;
   ( M_S52 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.00019998, 0.00849915, 0.0767923, 0.281072, 0.332267, 0.20118, 0.0815918, 0.0160984, 0.00209979, 0.00019998;
   ( M_S44 ) 0, 0, 0, 0, 0, 0, 0, 0.00020002, 0.0139014, 0.112011, 0.291829, 0.313431, 0.191519, 0.0610061, 0.0130013, 0.00280028, 0.00030003, 0, 0;
@@ -6108,7 +6108,7 @@ probability( R_MEDD2_CV_WD | R_MEDD2_ALLCV_WD ) {
   ( M_S08 ) 0, 0.0465047, 0.848285, 0.09991, 0.00510051, 0.00020002, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( M_S00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
 }
-probability( R_MEDD2_ALLAMP_WD | R_MEDD2_DISP_WD, R_MEDD2_EFFAXLOSS ) {
+probability ( R_MEDD2_ALLAMP_WD | R_MEDD2_DISP_WD, R_MEDD2_EFFAXLOSS ) {
   ( NO, NO ) 0, 0, 0, 0, 0.0215, 0.9785;
   ( NO, MILD ) 0, 0, 0, 0.3443, 0.6228, 0.0329;
   ( NO, MOD ) 0, 0, 0.0248, 0.9704, 0.0048, 0;
@@ -6130,7 +6130,7 @@ probability( R_MEDD2_ALLAMP_WD | R_MEDD2_DISP_WD, R_MEDD2_EFFAXLOSS ) {
   ( SEV, SEV ) 0, 0.9999, 0.0001, 0, 0, 0;
   ( SEV, TOTAL ) 1, 0, 0, 0, 0, 0;
 }
-probability( R_MEDD2_AMP_WD | R_MEDD2_ALLAMP_WD ) {
+probability ( R_MEDD2_AMP_WD | R_MEDD2_ALLAMP_WD ) {
   ( ZERO ) 0.750075, 0.187819, 0.0476048, 0.0112011, 0.00260026, 0.00060006, 0.00010001, 0, 0, 0, 0, 0, 0, 0, 0;
   ( A0_01 ) 0.3184, 0.2478, 0.178, 0.1158, 0.0688, 0.038, 0.0189, 0.0086, 0.0036, 0.0014, 0.0005, 0.0002, 0, 0, 0;
   ( A0_10 ) 0.0117012, 0.0392039, 0.0935094, 0.167617, 0.218922, 0.209521, 0.146515, 0.0747075, 0.0287029, 0.00780078, 0.00160016, 0.00020002, 0, 0, 0;
@@ -6138,7 +6138,7 @@ probability( R_MEDD2_AMP_WD | R_MEDD2_ALLAMP_WD ) {
   ( A0_70 ) 0, 0, 0, 0, 0, 9.999E-05, 0.00219978, 0.0217978, 0.10329, 0.259174, 0.325467, 0.209179, 0.0670933, 0.0107989, 0.00089991;
   ( A1_00 ) 0, 0, 0, 0, 0, 0, 0, 0.0004, 0.0072, 0.0656, 0.2449, 0.3735, 0.2388, 0.0624, 0.0072;
 }
-probability( R_MEDD2_ALLCV_EW | R_MEDD2_LSLOW_EW, R_MEDD2_DSLOW_EW ) {
+probability ( R_MEDD2_ALLCV_EW | R_MEDD2_LSLOW_EW, R_MEDD2_DSLOW_EW ) {
   ( NO, M_S60 ) 1, 0, 0, 0, 0, 0, 0, 0, 0;
   ( NO, M_S52 ) 0.030497, 0.967203, 0.00229977, 0, 0, 0, 0, 0, 0;
   ( NO, M_S44 ) 0.00039996, 0.0618938, 0.888111, 0.049595, 0, 0, 0, 0, 0;
@@ -6185,7 +6185,7 @@ probability( R_MEDD2_ALLCV_EW | R_MEDD2_LSLOW_EW, R_MEDD2_DSLOW_EW ) {
   ( V_SEV, M_S08 ) 0, 0, 0, 0.0001, 0.0006, 0.0062, 0.0562, 0.9369, 0;
   ( V_SEV, M_S00 ) 0, 0, 0, 0, 0, 0, 0, 0, 1;
 }
-probability( R_MEDD2_CV_EW | R_MEDD2_ALLCV_EW ) {
+probability ( R_MEDD2_CV_EW | R_MEDD2_ALLCV_EW ) {
   ( M_S60 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0012, 0.0172, 0.1126, 0.2484, 0.321, 0.1935, 0.0803, 0.0258;
   ( M_S52 ) 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0009999, 0.0148985, 0.09959, 0.226177, 0.293371, 0.226177, 0.10199, 0.0288971, 0.00649935, 0.00139986;
   ( M_S44 ) 0, 0, 0, 0, 0, 0, 0, 0, 0.00250025, 0.0317032, 0.144514, 0.263926, 0.292529, 0.167017, 0.0669067, 0.0245025, 0.00540054, 0.00090009, 0.00010001, 0;
@@ -6196,7 +6196,7 @@ probability( R_MEDD2_CV_EW | R_MEDD2_ALLCV_EW ) {
   ( M_S08 ) 0, 0.0199, 0.8041, 0.1629, 0.0125, 0.0006, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( M_S00 ) 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
 }
-probability( R_MEDD2_BLOCK_EW | R_DIFFN_MEDD2_BLOCK, R_LNLBE_MEDD2_BLOCK_EW ) {
+probability ( R_MEDD2_BLOCK_EW | R_DIFFN_MEDD2_BLOCK, R_LNLBE_MEDD2_BLOCK_EW ) {
   ( NO, NO ) 1, 0, 0, 0, 0;
   ( NO, MILD ) 0.0077, 0.9923, 0, 0, 0;
   ( NO, MOD ) 0.0007, 0.0234, 0.9759, 0, 0;
@@ -6223,7 +6223,7 @@ probability( R_MEDD2_BLOCK_EW | R_DIFFN_MEDD2_BLOCK, R_LNLBE_MEDD2_BLOCK_EW ) {
   ( TOTAL, SEV ) 0, 0, 0, 0, 1;
   ( TOTAL, TOTAL ) 0, 0, 0, 0, 1;
 }
-probability( R_MEDD2_DISP_EWD | R_MEDD2_DISP_WD, R_MEDD2_DISP_EW ) {
+probability ( R_MEDD2_DISP_EWD | R_MEDD2_DISP_WD, R_MEDD2_DISP_EW ) {
   ( NO, NO ) 0, 0, 0.0742, 0.9045, 0.0213, 0, 0, 0, 0;
   ( NO, MILD ) 0.0001, 0.2215, 0.7732, 0.0052, 0, 0, 0, 0, 0;
   ( NO, MOD ) 0.1315, 0.8577, 0.0108, 0, 0, 0, 0, 0, 0;
@@ -6241,7 +6241,7 @@ probability( R_MEDD2_DISP_EWD | R_MEDD2_DISP_WD, R_MEDD2_DISP_EW ) {
   ( SEV, MOD ) 0, 0, 0, 0, 0, 0.0052, 0.7732, 0.2215, 0.0001;
   ( SEV, SEV ) 0, 0, 0.0213, 0.9045, 0.0742, 0, 0, 0, 0;
 }
-probability( R_MEDD2_AMPR_EW | R_MEDD2_DISP_EWD, R_MEDD2_BLOCK_EW ) {
+probability ( R_MEDD2_AMPR_EW | R_MEDD2_DISP_EWD, R_MEDD2_BLOCK_EW ) {
   ( R0_15, NO ) 0, 0.282672, 0.716428, 0.00089991, 0, 0, 0, 0, 0, 0, 0, 0;
   ( R0_15, MILD ) 0, 0.9103, 0.0897, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   ( R0_15, MOD ) 0, 0.9974, 0.0026, 0, 0, 0, 0, 0, 0, 0, 0, 0;
