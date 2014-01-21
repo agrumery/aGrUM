@@ -453,7 +453,7 @@ namespace gum {
     __update_end();
   }
 
-  
+
   /// insert an element at the end of the sequence
   template <typename Key, typename Alloc, bool Gen> INLINE
   void SequenceImplementation<Key,Alloc,Gen>::insert( Key&& k ) {
@@ -465,6 +465,18 @@ namespace gum {
   }
 
 
+  /// emplace a new element in the sequence
+  template <typename Key, typename Alloc, bool Gen>
+  template <typename... Args> INLINE
+  void SequenceImplementation<Key,Alloc,Gen>::emplace ( Args&&... args) {
+    Key key ( std::forward<Args> ( args )... );
+    Key& new_key = const_cast<Key&>
+      ( __h.insert( std::move ( key ), __h.size() ).first );
+    __v.push_back( &new_key );
+    __update_end();
+  }
+
+  
   /// insert k in the sequence (synonym for insert)
   template <typename Key, typename Alloc, bool Gen> INLINE
   SequenceImplementation<Key,Alloc,Gen>&
@@ -918,6 +930,17 @@ namespace gum {
     // k will be added at the end. Insert the new key into the hashtable
     __h.insert( k, __h.size() );
     __v.push_back( k );
+    __update_end();
+  }
+
+  
+  /// emplace a new element in the sequence
+  template <typename Key, typename Alloc>
+  template <typename... Args> INLINE
+  void SequenceImplementation<Key,Alloc,true>::emplace ( Args&&... args) {
+    Key new_key ( std::forward<Args> ( args )... );
+    __h.insert ( new_key , __h.size() ).first;
+    __v.push_back( new_key );
     __update_end();
   }
 
