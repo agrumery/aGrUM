@@ -939,10 +939,11 @@ namespace gum {
 
 
   template <typename T1, typename T2, typename Alloc = std::allocator<T2> >
-  struct Bijection :
+  class Bijection :
     public BijectionImplementation<T1,T2,Alloc,
                                    std::is_scalar<T1>::value &&
                                    std::is_scalar<T2>::value> {
+  public:
     /// types for STL compliance
     /// @{
     using type1_type            = T1;

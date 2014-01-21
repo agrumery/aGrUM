@@ -706,8 +706,9 @@ namespace gum {
    *   std::cout << iter->size () << std::endl;
    * @endcode */
   template <typename Key, typename Alloc = std::allocator<Key> >
-  struct Sequence :
+  class Sequence :
     public SequenceImplementation<Key,Alloc,std::is_scalar<Key>::value> {
+  public:
     /// types for STL compliance
     /// @{
     using value_type      = Key;

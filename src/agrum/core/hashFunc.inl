@@ -78,8 +78,8 @@ namespace gum {
   INLINE Size
   HashFunc< std::pair<std::string, std::string> >::operator()
   ( const std::pair<std::string, std::string>& key ) const  {
-    register Size h = 0;
-
+    Size h = 0;
+    
     const std::string& s1 = key.first;
     unsigned int size = s1.size ();
     const char* char_ptr = s1.c_str ();
@@ -119,7 +119,7 @@ namespace gum {
   INLINE Size
   HashFunc< std::vector<Idx> >::operator()
   ( const std::vector<Idx>& key ) const  {
-    register Size h = 0;
+    Size h = 0;
 
     for ( size_t i = 0; i < key.size(); ++i )
       h += i * key[i];
@@ -132,8 +132,8 @@ namespace gum {
   /// returns a hashed key for hash tables the keys of which are represented
   /// by Debugs
   INLINE Size
-  HashFunc<Debug>::operator() ( const Debug& key ) const  {
-    register Size h = 0;
+  HashFunc<Debug>::operator()( const Debug& key ) const  {
+    Size h = 0;
 
     for ( size_t i = 0, j = key.size(); i < j; ++i )
       h = 19 * h + key[i];

@@ -113,14 +113,16 @@ namespace gum {
       /// adds a new clique to the graph
       /** @return the id chosen for the new clique */
 
-      virtual NodeId insertNode ( const NodeSet& clique = NodeSet() );
+      virtual NodeId insertNode( const NodeSet& clique );
+      virtual NodeId insertNode();
 
 
       /// try to add a new clique to the graph
       /** @throws DuplicateElement exception is thrown if the id of the clique
        * already exists within the clique graph */
 
-      virtual void insertNode ( const NodeId id,  const NodeSet& clique = NodeSet() );
+      virtual void insertNode( const NodeId id, const NodeSet& clique );
+      virtual void insertNode( const NodeId id );
 
 
       /// removes a given clique from the clique graph

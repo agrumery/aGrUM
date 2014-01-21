@@ -77,6 +77,9 @@ namespace gum {
     return new_node;
   }
 
+  INLINE NodeId CliqueGraph::insertNode() {
+    return insertNode ( NodeSet () );
+  }
 
   /// adds a new clique to the graph
 
@@ -88,6 +91,9 @@ namespace gum {
     __cliques.insert ( id, clique );
   }
 
+   INLINE void CliqueGraph::insertNode( const NodeId id ) {
+     insertNode ( id, NodeSet () );
+   }
 
   /// removes a given clique from the clique graph
 
