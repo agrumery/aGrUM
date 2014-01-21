@@ -190,18 +190,18 @@ namespace gum {
       }
 
       template<typename GUM_SCALAR> INLINE
-      void O3prmReader<GUM_SCALAR>::showElegantErrors() const {
-        __errors.showElegantErrors();
+      void O3prmReader<GUM_SCALAR>::showElegantErrors(std::ostream& o) const {
+        __errors.elegantErrors(o);
       }
 
       template<typename GUM_SCALAR> INLINE
-      void O3prmReader<GUM_SCALAR>::showElegantErrorsAndWarnings() const {
-        __errors.showElegantErrorsAndWarnings();
+      void O3prmReader<GUM_SCALAR>::showElegantErrorsAndWarnings(std::ostream& o) const {
+        __errors.elegantErrorsAndWarnings(o);
       }
 
       template<typename GUM_SCALAR> INLINE
-      void O3prmReader<GUM_SCALAR>::showErrorCounts() const {
-        __errors.showSyntheticResults();
+      void O3prmReader<GUM_SCALAR>::showErrorCounts(std::ostream& o) const {
+        __errors.syntheticResults(o);
       }
 
       template<typename GUM_SCALAR> INLINE

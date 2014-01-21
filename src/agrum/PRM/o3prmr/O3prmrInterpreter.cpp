@@ -396,7 +396,7 @@ namespace gum {
           if ( m_verbose ) m_log << std::endl << "## Session '" << sessionName << "' finished." << std::endl << std::endl << std::endl;
         }
 
-        if ( isVerboseMode() && errors() != 0 ) m_errors.showElegantErrorsAndWarnings();
+        if ( isVerboseMode() && errors() != 0 ) m_errors.elegantErrorsAndWarnings(m_log);
 
         return errors() == 0;
       }
@@ -901,19 +901,18 @@ namespace gum {
       }
 
 ///
-      void O3prmrInterpreter::showElegantErrors() const {
-        m_errors.showElegantErrors();
+      void O3prmrInterpreter::showElegantErrors(std::ostream& o) const {
+        m_errors.elegantErrors(o);
       }
 
 ///
-      void O3prmrInterpreter::showElegantErrorsAndWarnings() const {
-        m_errors.showElegantErrorsAndWarnings();
+      void O3prmrInterpreter::showElegantErrorsAndWarnings(std::ostream& o) const {
+        m_errors.elegantErrorsAndWarnings(o);
       }
 
 ///
-      void O3prmrInterpreter::showErrorCounts() const {
-        std::cerr << "Errors : "   << m_errors.error_count   << std::endl;
-        std::cerr << "Warnings : " << m_errors.warning_count << std::endl;
+      void O3prmrInterpreter::showErrorCounts(std::ostream& o) const {
+        m_errors.syntheticResults(o);
       }
 
 

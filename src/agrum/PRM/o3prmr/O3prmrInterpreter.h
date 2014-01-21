@@ -128,11 +128,11 @@ namespace gum {
           /// throw a string error if i >= count
           ParseError error ( int i ) const;
           /// send on std::cerr the list of errors
-          void showElegantErrors() const;
+          void showElegantErrors(std::ostream& o=std::cerr) const;
           /// send on std::cerr the list of errors or warnings
-          void showElegantErrorsAndWarnings() const;
+          void showElegantErrorsAndWarnings(std::ostream& o=std::cerr) const;
           /// send on std::cerr the number of errors and the number of warnings
-          void showErrorCounts() const;
+          void showErrorCounts(std::ostream& o=std::cerr) const;
 
         private:
           bool checkSemantic ( O3prmrContext<double>* context );
