@@ -764,7 +764,7 @@ namespace gum {
     stream << "{ ";
     bool first = true;
 
-    for ( iterator_safe iter = beginSafe(); iter != endSafe(); ++iter ) {
+    for ( iterator iter = begin (); iter != end (); ++iter ) {
       if ( ! first ) stream << ", ";
       else first = false;
 
@@ -1195,7 +1195,7 @@ namespace gum {
     stream << "{ ";
     bool first = true;
 
-    for ( iterator_safe iter = beginSafe(); iter != endSafe(); ++iter ) {
+    for ( iterator iter = begin (); iter != end (); ++iter ) {
       if ( ! first ) stream << ", ";
       else first = false;
 
