@@ -152,7 +152,7 @@ namespace gum {
       delete Vnew;
       Vnew = nullptr;
 
-//         for ( SetIterator< MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ) {
+//         for ( SetIteratorSafe< MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.beginSafe(); VActionsIter != VactionCollector.endSafe(); ++VActionsIter ) {
       for ( Idx acta = 1; acta < VactionCollector.size() + 1; acta++ ) {
         Vtemp = Vnew;
 //             Vnew = maximize2MultiDimDecisionDiagrams( Vnew, *VActionsIter );
@@ -175,7 +175,7 @@ namespace gum {
       MultiDimDecisionDiagramBase< GUM_SCALAR >* deltaV = subtract2MultiDimDecisionDiagrams ( Vnew, Vold );
       gap = 0;
 
-      for ( BijectionIterator< NodeId, GUM_SCALAR > valIter = deltaV->valuesMap().begin(); valIter != deltaV->valuesMap().end(); ++valIter )
+      for ( BijectionIteratorSafe< NodeId, GUM_SCALAR > valIter = deltaV->valuesMap().beginSafe(); valIter != deltaV->valuesMap().endSafe(); ++valIter )
         if ( gap < fabs ( valIter.second() ) )
           gap = fabs ( valIter.second() );
 
@@ -245,7 +245,7 @@ namespace gum {
     // To evaluate action value function, we multiply old main value function by transition table
     // of each variable
 //     while ( __fmdp->hasVariable() ) {
-    for ( SequenceIterator<const DiscreteVariable*> varIter = elVarSeq.rbegin(); varIter != elVarSeq.rend(); --varIter ) {
+    for ( SequenceIteratorSafe<const DiscreteVariable*> varIter = elVarSeq.rbeginSafe(); varIter != elVarSeq.rendSafe(); --varIter ) {
       // ***************************************************************************************
       // Multiplication of Vaction by current variable's CPT
       Vtemp = Vaction;
@@ -356,7 +356,7 @@ namespace gum {
     delete Vnew;
     MultiDimDecisionDiagramBase< std::pair< double, long > >* Vamnew = nullptr;
 
-//     for ( BijectionIterator< Idx, MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ) {
+//     for ( BijectionIteratorSafe< Idx, MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ) {
     for ( Idx acta = 1; acta < VactionCollector.size() + 1; acta++ ) {
 //         MultiDimDecisionDiagramBase< std::pair< double, long > >* Vamaction = __createArgMaxCopy( VActionsIter.second(), VActionsIter.first() );
       MultiDimDecisionDiagramBase< std::pair< double, long > >* Vamaction = __createArgMaxCopy ( VactionCollector.second ( acta ), acta );
@@ -389,7 +389,7 @@ namespace gum {
     amcpy->setDiagramNodes ( Vaction->nodesMap() );
     Bijection< NodeId, std::pair< double, long > > amvm ( Vaction->valuesMap().size() );
 
-    for ( BijectionIterator< NodeId, GUM_SCALAR > valueIter = Vaction->valuesMap().begin(); valueIter != Vaction->valuesMap().end(); ++valueIter ) {
+    for ( BijectionIteratorSafe< NodeId, GUM_SCALAR > valueIter = Vaction->valuesMap().beginSafe(); valueIter != Vaction->valuesMap().endSafe(); ++valueIter ) {
       std::pair< double, long >  amv ( ( double ) valueIter.second(), ( long ) actionId );
       amvm.insert ( valueIter.first(), amv );
     }
@@ -634,7 +634,7 @@ namespace gum {
         GUM_ERROR ( IOError,"log file"<<traceFileName<<" does not open correctly");
       }
 
-      for ( SetIterator< MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ) {
+      for ( SetIteratorSafe< MultiDimDecisionDiagramBase< GUM_SCALAR >* > VActionsIter = VactionCollector.beginSafe(); VActionsIter != VactionCollector.endSafe(); ++VActionsIter ) {
 
         if ( Vnew != nullptr )
           nbNodeT1 = Vnew->nodesMap().size();
@@ -730,7 +730,7 @@ namespace gum {
       MultiDimDecisionDiagramBase< GUM_SCALAR >* deltaV = subtract2MultiDimDecisionDiagrams ( Vnew, Vold );
       gap = 0;
 
-      for ( BijectionIterator< NodeId, GUM_SCALAR > valIter = deltaV->valuesMap().begin(); valIter != deltaV->valuesMap().end(); ++valIter )
+      for ( BijectionIteratorSafe< NodeId, GUM_SCALAR > valIter = deltaV->valuesMap().beginSafe(); valIter != deltaV->valuesMap().endSafe(); ++valIter )
         if ( gap < fabs ( valIter.second() ) )
           gap = fabs ( valIter.second() );
 
@@ -1031,16 +1031,16 @@ namespace gum {
     Sequence< const DiscreteVariable* > dD2VarSeq = dD2->variablesSequence();
     Sequence< const DiscreteVariable* > fusVarSeq;
 
-    SequenceIterator< const DiscreteVariable* > iterS1 = dD1VarSeq.begin();
-    SequenceIterator< const DiscreteVariable* > iterS2 = dD2VarSeq.begin();
+    SequenceIteratorSafe< const DiscreteVariable* > iterS1 = dD1VarSeq.beginSafe();
+    SequenceIteratorSafe< const DiscreteVariable* > iterS2 = dD2VarSeq.beginSafe();
 
-    while ( iterS1 != dD1VarSeq.end() || iterS2 != dD2VarSeq.end() ) {
-      if ( iterS1 == dD1VarSeq.end() ) {
-        for ( ; iterS2 != dD2VarSeq.end(); ++iterS2 )
+    while ( iterS1 != dD1VarSeq.endSafe() || iterS2 != dD2VarSeq.endSafe() ) {
+      if ( iterS1 == dD1VarSeq.endSafe() ) {
+        for ( ; iterS2 != dD2VarSeq.endSafe(); ++iterS2 )
           if ( !fusVarSeq.exists ( *iterS2 ) )
             fusVarSeq.insert ( *iterS2 );
-      } else if ( iterS2 == dD2VarSeq.end() ) {
-        for ( ; iterS1 != dD1VarSeq.end(); ++iterS1 )
+      } else if ( iterS2 == dD2VarSeq.endSafe() ) {
+        for ( ; iterS1 != dD1VarSeq.endSafe(); ++iterS1 )
           if ( !fusVarSeq.exists ( *iterS1 ) )
             fusVarSeq.insert ( *iterS1 );
       } else {
@@ -1074,8 +1074,8 @@ namespace gum {
     Idx sizeRetro = 1;
     Idx nbRetroVar = 0;
 
-    for ( iterS2 = dD2VarSeq.begin(); iterS2 != dD2VarSeq.end(); ++iterS2 )
-      for ( iterS1 = iterS2; iterS1 != dD2VarSeq.rend(); --iterS1 )
+    for ( iterS2 = dD2VarSeq.beginSafe(); iterS2 != dD2VarSeq.endSafe(); ++iterS2 )
+      for ( iterS1 = iterS2; iterS1 != dD2VarSeq.rendSafe(); --iterS1 )
         if ( fusVarSeq.pos ( *iterS1 ) > fusVarSeq.pos ( *iterS2 ) ) {
           nbRetroVar++;
           sizeRetro *= ( *iterS2 )->domainSize();

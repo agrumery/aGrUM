@@ -163,7 +163,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS ( edges.size(), 1U );
 
-        TS_ASSERT_EQUALS ( * ( edges.begin() ), gum::Edge ( 20, 50 ) );
+        TS_ASSERT_EQUALS ( * ( edges.beginSafe() ), gum::Edge ( 20, 50 ) );
 
       }
 
@@ -217,11 +217,11 @@ namespace gum_tests {
       void createClique ( gum::UndiGraph& graph, const gum::NodeSet& clique ) {
         gum::NodeSetIterator iter2;
 
-        for ( gum::NodeSetIterator iter = clique.begin();
-              iter != clique.end(); ++iter ) {
+        for ( gum::NodeSetIterator iter = clique.beginSafe();
+              iter != clique.endSafe(); ++iter ) {
           iter2 = iter;
 
-          for ( ++iter2; iter2 != clique.end(); ++iter2 ) {
+          for ( ++iter2; iter2 != clique.endSafe(); ++iter2 ) {
             if ( ! graph.existsEdge ( *iter, *iter2 ) )
               graph.insertEdge ( *iter, *iter2 );
           }

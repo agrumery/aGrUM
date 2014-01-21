@@ -80,10 +80,10 @@ namespace gum {
   BayesNet<GUM_SCALAR>::~BayesNet() {
     GUM_DESTRUCTOR ( BayesNet );
 
-    for ( HashTableConstIterator<NodeId, Potential<GUM_SCALAR>*> iter = __probaMap.begin();
-          iter != __probaMap.end();
+    for ( HashTableConstIteratorSafe<NodeId, Potential<GUM_SCALAR>*> iter = __probaMap.beginSafe();
+          iter != __probaMap.endSafe();
           ++iter ) {
-      delete *iter;
+      delete iter.val ();
     }
   }
 
@@ -213,8 +213,8 @@ namespace gum {
       // Reduce the variable child's CPT
       const NodeSet& children = dag().children ( varId );
 
-      for ( NodeSetIterator iter = children.begin();
-            iter != children.end(); ++iter ) {
+      for ( NodeSetIterator iter = children.beginSafe ();
+            iter != children.endSafe (); ++iter ) {
         __probaMap[ *iter ]->erase ( variable ( varId ) );
       }
 
@@ -290,8 +290,8 @@ namespace gum {
     // remove arc (head, tail)
     eraseArc ( arc );
     // add the necessary arcs to the tail
-    for ( NodeSet::const_iterator iter = new_parents.begin ();
-          iter != new_parents.end (); ++iter ) {
+    for ( NodeSet::const_iterator_safe iter = new_parents.beginSafe ();
+          iter != new_parents.endSafe (); ++iter ) {
       if ( ( *iter != tail ) && ! dag().existsArc ( *iter, tail ) ) {
         addArc ( *iter, tail );
       }
@@ -299,8 +299,8 @@ namespace gum {
     addArc ( head, tail );
     // add the necessary arcs to the head
     new_parents.erase ( tail );
-     for ( NodeSet::const_iterator iter = new_parents.begin ();
-          iter != new_parents.end (); ++iter ) {
+     for ( NodeSet::const_iterator_safe iter = new_parents.beginSafe ();
+          iter != new_parents.endSafe (); ++iter ) {
       if ( ( *iter != head ) && ! dag().existsArc ( *iter, head ) ) {
         addArc ( *iter, head );
       }
@@ -456,8 +456,8 @@ namespace gum {
       if ( dag().children ( node_iter ).size() > 0 ) {
         const NodeSet& children =  dag().children ( node_iter );
 
-        for ( NodeSetIterator arc_iter = children.begin();
-              arc_iter != children.end(); ++arc_iter ) {
+        for ( NodeSetIterator arc_iter = children.beginSafe ();
+              arc_iter != children.endSafe (); ++arc_iter ) {
           output << tab << "\"" << variable ( node_iter ).name() << "\" -> "
                  << "\"" << variable ( *arc_iter ).name() << "\";" << std::endl;
         }
@@ -490,8 +490,8 @@ namespace gum {
   template<typename GUM_SCALAR>
   void BayesNet<GUM_SCALAR>::__clearPotentials() {
     // Removing previous potentials
-    for ( HashTableConstIterator< NodeId, Potential<GUM_SCALAR>* > iter = __probaMap.begin(); iter != __probaMap.end(); ++iter ) {
-      delete *iter;
+    for ( HashTableConstIteratorSafe< NodeId, Potential<GUM_SCALAR>* > iter = __probaMap.beginSafe(); iter != __probaMap.endSafe(); ++iter ) {
+      delete iter.val();
     }
 
     __probaMap.clear();
@@ -502,19 +502,19 @@ namespace gum {
   template<typename GUM_SCALAR>
   void BayesNet<GUM_SCALAR>::__copyPotentials ( const BayesNet<GUM_SCALAR>& source ) {
     // Copying potentials
-    typedef HashTableConstIterator<NodeId, Potential<GUM_SCALAR>*> PotIterator;
+    typedef HashTableConstIteratorSafe<NodeId, Potential<GUM_SCALAR>*> PotIterator;
     Potential<GUM_SCALAR>* copy_array = 0;
 
-    for ( PotIterator srcIter = source.__probaMap.begin(); srcIter != source.__probaMap.end(); ++srcIter ) {
+    for ( PotIterator srcIter = source.__probaMap.beginSafe(); srcIter != source.__probaMap.endSafe(); ++srcIter ) {
       // First we build the node's CPT
       copy_array = new Potential<GUM_SCALAR>();
 
-      for ( gum::Idx i = 0; i < ( *srcIter )->nbrDim(); i++ ) {
-        ( *copy_array ) << variableFromName ( ( *srcIter )->variable ( i ).name() );
+      for ( gum::Idx i = 0; i < ( srcIter.val() )->nbrDim(); i++ ) {
+        ( *copy_array ) << variableFromName ( ( srcIter.val() )->variable ( i ).name() );
       }
 
 
-      copy_array->copyFrom ( **srcIter );
+      copy_array->copyFrom ( *( srcIter.val() ) );
 
       // We add the CPT to the CPT's hashmap
       __probaMap.insert ( srcIter.key(), copy_array );

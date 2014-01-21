@@ -28,6 +28,7 @@
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/arcGraphPart.inl>
 #endif //GUM_NOINLINE
+#include "graphElements.h"
 
 
 namespace gum {
@@ -49,9 +50,9 @@ namespace gum {
     const NodeProperty<NodeSet*>& pars = s.__parents;
     __parents.resize( pars.capacity() );
 
-    for ( NodeProperty<NodeSet*>::const_iterator iter = pars.begin();
-          iter != pars.end(); ++iter ) {
-      NodeSet* newpar = new NodeSet( **iter );
+    for ( NodeProperty<NodeSet*>::const_iterator_safe iter = pars.beginSafe();
+          iter != pars.endSafe(); ++iter ) {
+      NodeSet* newpar = new NodeSet( *( iter.val() ) );
       __parents.insert( iter.key(), newpar );
     }
 
@@ -59,15 +60,15 @@ namespace gum {
     const NodeProperty<NodeSet*>& children = s.__children;
     __children.resize( children.capacity() );
 
-    for ( NodeProperty<NodeSet*>::const_iterator iter = children.begin();
-          iter != children.end(); ++iter ) {
-      NodeSet* newchildren = new NodeSet( **iter );
+    for ( NodeProperty<NodeSet*>::const_iterator_safe iter = children.beginSafe();
+          iter != children.endSafe(); ++iter ) {
+      NodeSet* newchildren = new NodeSet( *( iter.val () ) );
       __children.insert( iter.key(), newchildren );
     }
 
     // send signals to indicate that there are new arcs
     if ( onArcAdded.hasListener() ) {
-      for ( ArcSetIterator iter = __arcs.begin(); iter != __arcs.end(); ++iter ) {
+      for ( ArcSetIterator iter = __arcs.beginSafe(); iter != __arcs.endSafe(); ++iter ) {
         GUM_EMIT2( onArcAdded, iter->tail(), iter->head() );
       }
     }
@@ -82,16 +83,16 @@ namespace gum {
 
 
   void ArcGraphPart::clearArcs() {
-    for ( NodeProperty<NodeSet*>::const_iterator iter = __parents.begin();
-          iter != __parents.end(); ++iter ) {
-      delete *iter;
+    for ( NodeProperty<NodeSet*>::const_iterator_safe iter = __parents.beginSafe();
+          iter != __parents.endSafe(); ++iter ) {
+      delete iter.val ();
     }
 
     __parents.clear();
 
-    for ( NodeProperty<NodeSet*>::const_iterator iter = __children.begin();
-          iter != __children.end(); ++iter ) {
-      delete *iter;
+    for ( NodeProperty<NodeSet*>::const_iterator_safe iter = __children.beginSafe();
+          iter != __children.endSafe(); ++iter ) {
+      delete iter.val ();
     }
 
     __children.clear();
@@ -101,7 +102,7 @@ namespace gum {
       ArcSet tmp = __arcs;
       __arcs.clear();
 
-      for ( ArcSetIterator iter = tmp.begin(); iter != tmp.end(); ++iter )
+      for ( ArcSetIterator iter = tmp.beginSafe(); iter != tmp.endSafe(); ++iter )
         GUM_EMIT2( onArcDeleted, iter->tail(), iter->head() );
     } else {
       __arcs.clear();
@@ -120,9 +121,9 @@ namespace gum {
       const NodeProperty<NodeSet*>& pars = s.__parents;
       __parents.resize( pars.capacity() );
 
-      for ( NodeProperty<NodeSet*>::const_iterator iter = pars.begin();
-            iter != pars.end(); ++iter ) {
-        NodeSet* newpar = new NodeSet( **iter );
+      for ( NodeProperty<NodeSet*>::const_iterator_safe iter = pars.beginSafe();
+            iter != pars.endSafe(); ++iter ) {
+        NodeSet* newpar = new NodeSet( *( iter.val () ) );
         __parents.insert( iter.key(), newpar );
       }
 
@@ -130,15 +131,15 @@ namespace gum {
       const NodeProperty<NodeSet*>& children = s.__children;
       __children.resize( children.capacity() );
 
-      for ( NodeProperty<NodeSet*>::const_iterator iter = children.begin();
-            iter != children.end(); ++iter ) {
-        NodeSet* newchildren = new NodeSet( **iter );
+      for ( NodeProperty<NodeSet*>::const_iterator_safe iter = children.beginSafe();
+            iter != children.endSafe(); ++iter ) {
+        NodeSet* newchildren = new NodeSet( *( iter.val () ) );
         __children.insert( iter.key(), newchildren );
       }
 
       if ( onArcAdded.hasListener() ) {
-        for ( ArcSetIterator iter = __arcs.begin();
-              iter != __arcs.end(); ++iter ) {
+        for ( ArcSetIterator iter = __arcs.beginSafe();
+              iter != __arcs.endSafe(); ++iter ) {
           GUM_EMIT2( onArcAdded, iter->tail(), iter->head() );
         }
       }
@@ -153,7 +154,7 @@ namespace gum {
     bool first=true;
     s<<"{";
 
-    for ( ArcSetIterator it=__arcs.begin(); it!=__arcs.end(); ++it ) {
+    for ( ArcSetIterator it=__arcs.beginSafe(); it!=__arcs.endSafe(); ++it ) {
       if ( first ) {
         first=false;
       } else {
@@ -188,7 +189,7 @@ namespace gum {
       // check the parents  //////////////////////////////////////////////
       const NodeSet& set = parents( current );
 
-      for ( NodeSetIterator ite=set.begin(); ite!=set.end(); ++ite ) {
+      for ( NodeSetIterator ite=set.beginSafe(); ite!=set.endSafe(); ++ite ) {
         NodeId new_one = *ite;
 
         if ( mark.exists( new_one ) ) // if this node is already marked, do not
@@ -234,7 +235,7 @@ namespace gum {
       // check the parents //////////////////////////////////////////////
       const NodeSet& set_parent = parents( current );
 
-      for ( NodeSetIterator ite=set_parent.begin(); ite!=set_parent.end(); ++ite ) {
+      for ( NodeSetIterator ite=set_parent.beginSafe(); ite!=set_parent.endSafe(); ++ite ) {
         NodeId new_one = *ite;
 
         if ( mark.exists( new_one ) )  // the node has already been visited
@@ -259,8 +260,8 @@ namespace gum {
       // check the children //////////////////////////////////////////////
       const NodeSet& set_children = children( current );
 
-      for ( NodeSetIterator ite=set_children.begin();
-            ite!=set_children.end(); ++ite ) {
+      for ( NodeSetIterator ite=set_children.beginSafe();
+            ite!=set_children.endSafe(); ++ite ) {
         NodeId new_one = *ite;
 
         if ( mark.exists( new_one ) )  // the node has already been visited

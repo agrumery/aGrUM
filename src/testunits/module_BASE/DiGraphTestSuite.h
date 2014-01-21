@@ -237,7 +237,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( nodelist.size(), graph.size() );
         gum::Size nodeCount = graph.size();
 
-        for ( gum::NodeSet::iterator iter = nodelist.begin(); iter != nodelist.end(); ++iter ) {
+        for ( gum::NodeSet::iterator_safe iter = nodelist.beginSafe(); iter != nodelist.endSafe(); ++iter ) {
           graph.eraseNode ( *iter );
         }
 
@@ -253,7 +253,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( arclist.size(), graph.sizeArcs() );
         gum::Size arcCount = graph.sizeArcs();
 
-        for ( gum::ArcSet::iterator iter = arclist.begin(); iter != arclist.end(); ++iter ) {
+        for ( gum::ArcSet::iterator_safe iter = arclist.beginSafe(); iter != arclist.endSafe(); ++iter ) {
           graph.eraseArc ( *iter );
         }
 
@@ -295,9 +295,9 @@ namespace gum_tests {
         gum::Size sk = 0;
         gum::Size sv = 0;
 
-        for ( auto iter = hashmap.begin(); iter != hashmap.end(); ++iter ) {
+        for ( auto iter = hashmap.beginSafe(); iter != hashmap.endSafe(); ++iter ) {
           sk += iter.key();
-          sv += *iter;
+          sv += iter.val();
         }
 
         TS_ASSERT_EQUALS ( sk * 2, sv );
@@ -337,11 +337,11 @@ namespace gum_tests {
         gum::Size sv = 0;
 
         for (
-          gum::Property<gum::Size>::onArcs::iterator iter = hashmap.begin();
-          iter != hashmap.end();
+          gum::Property<gum::Size>::onArcs::iterator_safe iter = hashmap.beginSafe();
+          iter != hashmap.endSafe();
           ++iter
         ) {
-          sv += *iter;
+          sv += iter.val();
           sk += iter.key().head() + iter.key().tail();
         }
 

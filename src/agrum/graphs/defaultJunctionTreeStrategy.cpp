@@ -143,7 +143,7 @@ namespace gum {
 
       const NodeSet& nei = __junction_tree.neighbours( C_i );
 
-      for ( iter = nei.begin(); iter != nei.end(); ++iter ) {
+      for ( iter = nei.beginSafe(); iter != nei.endSafe(); ++iter ) {
         NodeId C_jj = *iter;
 
         if ( ( i > C_jj ) && ! mark[Edge( C_i,C_jj )] &&
@@ -159,7 +159,7 @@ namespace gum {
       if ( C_j != C_i ) {
         const NodeSet& nei = __junction_tree.neighbours( C_i );
 
-        for ( iter = nei.begin(); iter != nei.end(); ++iter ) {
+        for ( iter = nei.beginSafe(); iter != nei.endSafe(); ++iter ) {
           __junction_tree.insertEdge( C_j, *iter );
           mark.insert( Edge( C_j, *iter ), true );
         }

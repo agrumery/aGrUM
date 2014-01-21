@@ -111,7 +111,7 @@ namespace gum {
         // We need to add each instance in __graph
         for ( auto iter = sys.begin(); iter != sys.end(); ++iter ) {
           NodeData<GUM_SCALAR>* node = new NodeData<GUM_SCALAR>();
-          node->n = *iter;
+          node->n = iter.val ();
           __label ( node, label_map );
           __graph.insertNode ( iter.key() );
           __idMap.insert ( node->n, iter.key() );
@@ -122,11 +122,11 @@ namespace gum {
         NodeData<GUM_SCALAR>* u = nullptr;
         NodeData<GUM_SCALAR>* v = nullptr;
 
-        for ( auto node = __nodes.begin(); node != __nodes.end(); ++node ) {
-          data = *node;
+        for ( auto node = __nodes.beginSafe(); node != __nodes.endSafe(); ++node ) {
+          data = node.val ();
 
-          for ( auto iter = data->n->type().slotChains().begin(); iter != data->n->type().slotChains().end(); ++iter ) {
-            for ( auto jter = data->n->getInstances ( ( **iter ).id() ).begin(); jter != data->n->getInstances ( ( **iter ).id() ).end(); ++jter ) {
+          for ( auto iter = data->n->type().slotChains().beginSafe(); iter != data->n->type().slotChains().endSafe(); ++iter ) {
+            for ( auto jter = data->n->getInstances ( ( **iter ).id() ).beginSafe(); jter != data->n->getInstances ( ( **iter ).id() ).endSafe(); ++jter ) {
               u = ( __nodes[__idMap[*jter]]->l < data->l ) ? __nodes[__idMap[*jter]] : data;
               v = ( u != data ) ? data : __nodes[__idMap[*jter]];
 
@@ -160,21 +160,21 @@ namespace gum {
         GUM_DESTRUCTOR ( InterfaceGraph );
 
         if ( __erase_flag ) {
-          for ( auto iter = __nodes.begin(); iter != __nodes.end(); ++iter ) {
-            delete *iter;
+          for ( auto iter = __nodes.beginSafe(); iter != __nodes.endSafe(); ++iter ) {
+            delete iter.val ();
           }
 
-          for ( auto iter = __edges.begin(); iter != __edges.end(); ++iter ) {
-            delete *iter;
+          for ( auto iter = __edges.beginSafe(); iter != __edges.endSafe(); ++iter ) {
+            delete iter.val();
           }
 
-          for ( auto iter = __nodeMap.begin(); iter != __nodeMap.end(); ++iter ) {
-            delete *iter;
+          for ( auto iter = __nodeMap.beginSafe(); iter != __nodeMap.endSafe(); ++iter ) {
+            delete iter.val();
             delete iter.key();
           }
 
-          for ( auto iter = __edgeMap.begin(); iter != __edgeMap.end(); ++iter ) {
-            delete *iter;
+          for ( auto iter = __edgeMap.beginSafe(); iter != __edgeMap.endSafe(); ++iter ) {
+            delete iter.val();
             delete iter.key();
           }
         }
@@ -198,7 +198,7 @@ namespace gum {
         // First we search for multiple inputs
         auto& chains=node->n->type().slotChains();
 
-        for ( auto iter = chains.begin(); iter != chains.end(); ++iter ) {
+        for ( auto iter = chains.beginSafe(); iter != chains.endSafe(); ++iter ) {
           if ( ( **iter ).isMultiple() ) {
             sBuff << "-" << node->n->getInstances ( ( **iter ).id() ).size();
             sBuff << ( **iter ).name();
@@ -246,7 +246,7 @@ namespace gum {
         // First looking for edge->u output nodes in v
         const auto& chains_u=edge->u->type().slotChains();
 
-        for ( auto iter=chains_u.begin(); iter != chains_u.end(); ++iter ) {
+        for ( auto iter=chains_u.beginSafe(); iter != chains_u.endSafe(); ++iter ) {
           if ( edge->u->getInstances ( ( **iter ).id() ).exists ( edge->v ) ) {
             sBuff << "-" << edge->v->type().name() << "." << ( **iter ).lastElt().name();
             size *= ( **iter ).lastElt().type().variable().domainSize();
@@ -256,7 +256,7 @@ namespace gum {
         // Second looking for edge->v output nodes in u
         const auto& chains_v=edge->v->type().slotChains();
 
-        for ( auto iter = chains_v.begin(); iter != chains_v.end(); ++iter ) {
+        for ( auto iter = chains_v.beginSafe(); iter != chains_v.endSafe(); ++iter ) {
           if ( edge->v->getInstances ( ( **iter ).id() ).exists ( edge->u ) ) {
             sBuff << "-" << edge->u->type().name() << "." << ( **iter ).lastElt().name();
             size *= ( **iter ).lastElt().type().variable().domainSize();

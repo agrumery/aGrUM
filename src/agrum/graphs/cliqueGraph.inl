@@ -98,7 +98,7 @@ namespace gum {
     // remove the separators
     const NodeSet& set = neighbours( id );
 
-    for ( NodeSetIterator iter = set.begin(); iter != set.end(); ++iter ) {
+    for ( NodeSetIterator iter = set.beginSafe(); iter != set.endSafe(); ++iter ) {
       eraseEdge( Edge( *iter,id ) );
     }
 
@@ -122,9 +122,9 @@ namespace gum {
 
   INLINE NodeId
   CliqueGraph::container( const NodeId id ) const  {
-    for ( NodeProperty<NodeSet>::const_iterator iter = __cliques.begin();
-          iter != __cliques.end(); ++iter )
-      if ( iter->contains( id ) ) return iter.key();
+    for ( NodeProperty<NodeSet>::const_iterator_safe iter = __cliques.beginSafe();
+          iter != __cliques.endSafe(); ++iter )
+      if ( iter.val().contains( id ) ) return iter.key();
 
     GUM_ERROR( NotFound, "This node belongs to no clique" );
   }
@@ -136,7 +136,7 @@ namespace gum {
   CliqueGraph::__updateSeparators( const NodeId id1 ) {
     const NodeSet& nei = neighbours( id1 );
 
-    for ( NodeSetIterator ite = nei.begin(); ite != nei.end(); ++ite ) {
+    for ( NodeSetIterator ite = nei.beginSafe(); ite != nei.endSafe(); ++ite ) {
       __separators[Edge( *ite,id1 )] = __cliques[id1] * __cliques[*ite];
     }
   }

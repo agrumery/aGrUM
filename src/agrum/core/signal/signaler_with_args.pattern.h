@@ -46,7 +46,7 @@ namespace gum {
     class MAKE_NAME ( BasicSignaler ) : public ISignaler {
     protected:
       typedef List < MAKE_NAME ( IConnector ) <LIST_CLASSES> * > ConnectorList;
-      typedef ListConstIteratorUnsafe< MAKE_NAME ( IConnector ) <LIST_CLASSES>*> ConnectorIterator;
+      typedef ListConstIteratorSafe< MAKE_NAME ( IConnector ) <LIST_CLASSES>*> ConnectorIterator;
 
 
       MAKE_NAME ( BasicSignaler ) () {
@@ -58,8 +58,8 @@ namespace gum {
         ISignaler ( s ) {
         GUM_CONS_CPY ( MAKE_NAME ( BasicSignaler ) );
 
-        for ( ConnectorIterator it = _connectors.beginUnsafe ();
-              it != _connectors.endUnsafe (); ++it ) {
+        for ( ConnectorIterator it = _connectors.beginSafe ();
+              it != _connectors.endSafe (); ++it ) {
           (*it)->target()->attachSignal__ ( this );
           _connectors.pushBack ( (*it)->clone() );
         }
@@ -69,8 +69,8 @@ namespace gum {
     public:
       virtual ~MAKE_NAME ( BasicSignaler ) () {
         GUM_DESTRUCTOR ( MAKE_NAME ( BasicSignaler ) );
-        for ( ConnectorIterator it = _connectors.rbeginUnsafe ();
-              it != _connectors.rendUnsafe(); --it ) {
+        for ( ConnectorIterator it = _connectors.rbeginSafe ();
+              it != _connectors.rendSafe(); --it ) {
           (*it)->target()->detachSignal__ ( this );
           delete *it;
         }
@@ -84,8 +84,8 @@ namespace gum {
 
 
       void detach ( Listener* target ) {
-        for ( ConnectorIterator it = _connectors.rbeginUnsafe ();
-              it != _connectors.rendUnsafe (); --it ) {
+        for ( ConnectorIterator it = _connectors.rbeginSafe ();
+              it != _connectors.rendSafe (); --it ) {
           if ( (*it)->target() == target ) {
             delete *it;
             _connectors.erase ( it );
@@ -101,8 +101,8 @@ namespace gum {
       friend class Listener;
 
       void duplicateTarget ( const Listener* oldtarget, Listener* newtarget ) {
-        for ( ConnectorIterator it = _connectors.beginUnsafe ();
-              it != _connectors.endUnsafe (); ++it ) {
+        for ( ConnectorIterator it = _connectors.beginSafe ();
+              it != _connectors.endSafe (); ++it ) {
           if ( (*it)->target() == oldtarget ) {
             _connectors.pushBack ( (*it)->duplicate ( newtarget ) );
           }
@@ -112,8 +112,8 @@ namespace gum {
       void detachFromTarget ( Listener* target ) {
         ConnectorIterator itprev;
 
-        for ( ConnectorIterator it = _connectors.rbeginUnsafe ();
-              it != _connectors.rendUnsafe (); ) {
+        for ( ConnectorIterator it = _connectors.rbeginSafe ();
+              it != _connectors.rendSafe (); ) {
           itprev = it; --it;
 
           if ( (*itprev)->target() == target ) {
@@ -228,8 +228,8 @@ namespace gum {
 
 
     INLINE void operator() ( const void *src , LIST_DECL_ARGS ) {
-      for ( ConnectorIterator it = this->_connectors.beginUnsafe ();
-            it != this->_connectors.endUnsafe (); ++it ) {
+      for ( ConnectorIterator it = this->_connectors.beginSafe ();
+            it != this->_connectors.endSafe (); ++it ) {
         (*it)->notify ( src, LIST_ARGS );
      }
     }

@@ -46,7 +46,7 @@ namespace gum {
     OperatorSet* theset;
 
     if ( ! __set.exists( operation_name ) ) {
-      theset = __set.insert( operation_name, new OperatorSet );
+      theset = __set.insert( operation_name, new OperatorSet ).second;
 #ifndef NDEBUG
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the OperatorRegister4MultiDim will be
@@ -137,9 +137,9 @@ namespace gum {
   template<typename GUM_SCALAR>
   OperatorRegister4MultiDim<GUM_SCALAR>::~OperatorRegister4MultiDim() {
     // remove all the sets
-    for ( typename HashTable<std::string, OperatorSet*>::iterator iter =
-            __set.begin(); iter != __set.end(); ++iter )
-      delete *iter;
+    for ( typename HashTable<std::string, OperatorSet*>::iterator_safe iter =
+            __set.beginSafe(); iter != __set.endSafe(); ++iter )
+      delete iter.val();
   }
 
 

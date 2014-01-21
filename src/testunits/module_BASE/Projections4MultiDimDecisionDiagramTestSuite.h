@@ -183,7 +183,7 @@ namespace gum_tests {
             // else
             if ( !var2NodeIdMap[( *varList ) [ numVar ] ]->empty() ) {
               // for each node associated to that var
-              for ( gum::ListIterator<gum::NodeId> numNode  = var2NodeIdMap[( *varList ) [ numVar ] ]->begin(); numNode != var2NodeIdMap[( *varList ) [ numVar ] ]->end();  ++numNode ) {
+              for ( gum::ListIteratorSafe<gum::NodeId> numNode  = var2NodeIdMap[( *varList ) [ numVar ] ]->beginSafe(); numNode != var2NodeIdMap[( *varList ) [ numVar ] ]->endSafe();  ++numNode ) {
 
                 // we determine a random number of arc starting from that node
                 gum::Idx nbArc  = 1 + rand() % ( ( *varList ) [ numVar ]->domainSize() );
@@ -223,8 +223,8 @@ namespace gum_tests {
             }
           }
 
-          for ( gum::HashTableIterator< const gum::DiscreteVariable*, gum::List<gum::NodeId>* > ht  = var2NodeIdMap.begin(); ht != var2NodeIdMap.end(); ++ht )
-            delete *ht;
+          for ( gum::HashTableIteratorSafe< const gum::DiscreteVariable*, gum::List<gum::NodeId>* > ht  = var2NodeIdMap.beginSafe (); ht != var2NodeIdMap.endSafe(); ++ht )
+            delete ht.val();
 
           ret  = f->getMultiDimDecisionDiagram();
         }
@@ -250,7 +250,7 @@ namespace gum_tests {
 
         output << std::endl;
 
-        for ( gum::SequenceIterator< const gum::DiscreteVariable*> ite = a1->variablesSequence().begin(); ite != a1->variablesSequence().end(); ++ite )
+        for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite = a1->variablesSequence().beginSafe(); ite != a1->variablesSequence().endSafe(); ++ite )
           output << ( *ite )->toString() << " - ";
 
         output << std::endl;
@@ -260,7 +260,7 @@ namespace gum_tests {
         if ( a3 != nullptr ) {
           output << std::endl;
 
-          for ( gum::SequenceIterator< const gum::DiscreteVariable*> ite = a3->variablesSequence().begin(); ite != a3->variablesSequence().end(); ++ite )
+          for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite = a3->variablesSequence().beginSafe(); ite != a3->variablesSequence().endSafe(); ++ite )
             output << ( *ite )->toString() << " - ";
 
           output << std::endl;
@@ -270,7 +270,7 @@ namespace gum_tests {
 
         output << std::endl;
 
-        for ( gum::SetIterator< const gum::DiscreteVariable*> ite = delVars.begin(); ite != delVars.end(); ++ite )
+        for ( gum::SetIteratorSafe< const gum::DiscreteVariable*> ite = delVars.beginSafe(); ite != delVars.endSafe(); ++ite )
           output << ( *ite )->toString() << " - ";
 
         output << std::endl;
@@ -453,7 +453,7 @@ namespace gum_tests {
 
         del_vars.clear();
 
-        for ( gum::SequenceIterator< const gum::DiscreteVariable*> ite  = varList->begin(); ite != varList->end(); ++ite )
+        for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite  = varList->beginSafe(); ite != varList->endSafe(); ++ite )
           delete *ite;
 
         delete varList;
@@ -491,7 +491,7 @@ namespace gum_tests {
 
           del_vars.clear();
 
-          for ( gum::SequenceIterator< const gum::DiscreteVariable*> ite  = varList->begin(); ite != varList->end(); ++ite )
+          for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite  = varList->beginSafe(); ite != varList->endSafe(); ++ite )
             delete *ite;
 
           delete varList;
@@ -560,7 +560,7 @@ namespace gum_tests {
 //       delete a1;
 //       del_vars.clear();
 //
-//       for ( gum::SequenceIterator< const gum::DiscreteVariable*> ite  = varList->begin(); ite != varList->end(); ++ite )
+//       for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite  = varList->begin(); ite != varList->end(); ++ite )
 //    delete *ite;
 //       delete varList;
 //
@@ -593,7 +593,7 @@ namespace gum_tests {
 //    delete a1;
 //    del_vars.clear();
 //
-//    for( gum::SequenceIterator< const gum::DiscreteVariable*> ite  = varList->begin(); ite != varList->end(); ++ite )
+//    for( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite  = varList->begin(); ite != varList->end(); ++ite )
 //        delete *ite;
 //    delete varList;
 //
@@ -702,7 +702,7 @@ namespace gum_tests {
         delete a1;
         del_vars.clear();
 
-        for ( gum::SequenceIterator< const gum::DiscreteVariable*> ite  = varList->begin(); ite != varList->end(); ++ite )
+        for ( gum::SequenceIteratorSafe< const gum::DiscreteVariable*> ite  = varList->beginSafe(); ite != varList->endSafe(); ++ite )
           delete *ite;
 
         delete varList;

@@ -99,13 +99,13 @@ namespace gum {
       // this should help sizing correctly the hashtables
       Set<const DiscreteVariable*> all_vars;
 
-      for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator
-            iter = table_set.begin(); iter != table_set.end(); ++iter ) {
+      for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator_safe
+            iter = table_set.beginSafe(); iter != table_set.endSafe(); ++iter ) {
         const Sequence<const DiscreteVariable*>& iter_vars =
           ( *iter )->variablesSequence();
 
-        for ( typename Sequence<const DiscreteVariable*>::const_iterator
-              it = iter_vars.begin(); it != iter_vars.end(); ++it ) {
+        for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
+              it = iter_vars.beginSafe(); it != iter_vars.endSafe(); ++it ) {
           all_vars.insert( *it );
         }
       }
@@ -129,15 +129,15 @@ namespace gum {
       Set<const TABLE<GUM_SCALAR>*> empty_set( table_set.size() );
       HashTable<const DiscreteVariable*, unsigned int> empty_hash( nb_vars );
 
-      for ( typename Set<const DiscreteVariable*>::const_iterator
-            iter = del_vars.begin(); iter != del_vars.end(); ++iter ) {
+      for ( typename Set<const DiscreteVariable*>::const_iterator_safe
+            iter = del_vars.beginSafe(); iter != del_vars.endSafe(); ++iter ) {
         tables_per_var.insert( *iter, empty_set );
         tables_vars_per_var.insert( *iter, empty_hash );
       }
 
       // update properly tables_per_var and tables_vars_per_var
-      for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator
-            iter = table_set.begin(); iter != table_set.end(); ++iter ) {
+      for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator_safe
+            iter = table_set.beginSafe(); iter != table_set.endSafe(); ++iter ) {
         const Sequence<const DiscreteVariable*>& vars =
           ( *iter )->variablesSequence();
 
@@ -165,16 +165,16 @@ namespace gum {
     // initialize properly product_size
 
     for ( typename HashTable< const DiscreteVariable*,
-          HashTable<const DiscreteVariable*, unsigned int> >::const_iterator
-          iter = tables_vars_per_var.begin();
-          iter != tables_vars_per_var.end(); ++iter ) {
+          HashTable<const DiscreteVariable*, unsigned int> >::const_iterator_safe
+          iter = tables_vars_per_var.beginSafe ();
+          iter != tables_vars_per_var.endSafe (); ++iter ) {
       float size = 1.0f;
-      const HashTable<const DiscreteVariable*, unsigned int>& vars = *iter;
+      const HashTable<const DiscreteVariable*, unsigned int>& vars = iter.val();
 
       if ( vars.size() ) {
         for ( typename HashTable<const DiscreteVariable*,
-              unsigned int>::const_iterator iter2 = vars.begin();
-              iter2 != vars.end(); ++iter2 ) {
+              unsigned int>::const_iterator_safe iter2 = vars.beginSafe();
+              iter2 != vars.endSafe(); ++iter2 ) {
           size *= iter2.key()->domainSize();
         }
 
@@ -210,7 +210,7 @@ namespace gum {
       bool joint_to_delete = false;
 
       if ( tables_to_combine.size() == 1 ) {
-        joint = const_cast<TABLE<GUM_SCALAR>*>( *( tables_to_combine.begin() ) );
+        joint = const_cast<TABLE<GUM_SCALAR>*>( *( tables_to_combine.beginSafe() ) );
         joint_to_delete = false;
       } else {
         joint = __combination->combine( tables_to_combine );
@@ -234,9 +234,9 @@ namespace gum {
       // update accordingly product_size : when a variable is no more used by
       // any TABLE, divide product_size by its domain size
 
-      for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator
-            iter = tables_to_combine.begin();
-            iter != tables_to_combine.end(); ++iter ) {
+      for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator_safe
+            iter = tables_to_combine.beginSafe();
+            iter != tables_to_combine.endSafe(); ++iter ) {
         const Sequence<const DiscreteVariable*>& table_vars =
           ( *iter )->variablesSequence();
 
@@ -402,12 +402,12 @@ namespace gum {
       // this should help sizing correctly the hashtables
       Set<const DiscreteVariable*> all_vars;
 
-      for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator
-            iter = table_set.begin(); iter != table_set.end(); ++iter ) {
+      for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator_safe
+            iter = table_set.beginSafe(); iter != table_set.endSafe(); ++iter ) {
         const Sequence<const DiscreteVariable*>& iter_vars = **iter;
 
-        for ( typename Sequence<const DiscreteVariable*>::const_iterator
-              it = iter_vars.begin(); it != iter_vars.end(); ++it ) {
+        for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
+              it = iter_vars.beginSafe(); it != iter_vars.endSafe(); ++it ) {
           all_vars.insert( *it );
         }
       }
@@ -431,15 +431,15 @@ namespace gum {
       Set<const Sequence<const DiscreteVariable*>*> empty_set( table_set.size() );
       HashTable<const DiscreteVariable*, unsigned int> empty_hash( nb_vars );
 
-      for ( typename Set<const DiscreteVariable*>::const_iterator
-            iter = del_vars.begin(); iter != del_vars.end(); ++iter ) {
+      for ( typename Set<const DiscreteVariable*>::const_iterator_safe
+            iter = del_vars.beginSafe(); iter != del_vars.endSafe(); ++iter ) {
         tables_per_var.insert( *iter, empty_set );
         tables_vars_per_var.insert( *iter, empty_hash );
       }
 
       // update properly tables_per_var and tables_vars_per_var
-      for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator
-            iter = table_set.begin(); iter != table_set.end(); ++iter ) {
+      for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator_safe
+            iter = table_set.beginSafe(); iter != table_set.endSafe(); ++iter ) {
         const Sequence<const DiscreteVariable*>& vars = **iter;
 
         for ( unsigned int i = 0; i < vars.size(); ++i ) {
@@ -466,16 +466,16 @@ namespace gum {
     // initialize properly product_size
 
     for ( typename HashTable< const DiscreteVariable*,
-          HashTable<const DiscreteVariable*, unsigned int> >::const_iterator
-          iter = tables_vars_per_var.begin();
-          iter != tables_vars_per_var.end(); ++iter ) {
+          HashTable<const DiscreteVariable*, unsigned int> >::const_iterator_safe
+          iter = tables_vars_per_var.beginSafe ();
+          iter != tables_vars_per_var.endSafe (); ++iter ) {
       float size = 1.0f;
-      const HashTable<const DiscreteVariable*, unsigned int>& vars = *iter;
+      const HashTable<const DiscreteVariable*, unsigned int>& vars = iter.val();
 
       if ( vars.size() ) {
         for ( typename HashTable<const DiscreteVariable*,
-              unsigned int>::const_iterator iter2 = vars.begin();
-              iter2 != vars.end(); ++iter2 ) {
+              unsigned int>::const_iterator_safe iter2 = vars.beginSafe ();
+              iter2 != vars.endSafe (); ++iter2 ) {
           size *= iter2.key()->domainSize();
         }
 
@@ -516,20 +516,20 @@ namespace gum {
 
       if ( tables_to_combine.size() == 1 ) {
         joint = const_cast<Sequence<const DiscreteVariable*>*>
-                ( *( tables_to_combine.begin() ) );
+                ( *( tables_to_combine.beginSafe() ) );
         joint_to_delete = false;
       } else {
         // here, compute the union of all the variables of the tables to combine
         joint = new Sequence<const DiscreteVariable*>;
 
         for ( typename
-              Set<const Sequence<const DiscreteVariable*>*>::const_iterator
-              iter = tables_to_combine.begin();
-              iter != tables_to_combine.end(); ++iter ) {
+              Set<const Sequence<const DiscreteVariable*>*>::const_iterator_safe
+              iter = tables_to_combine.beginSafe();
+              iter != tables_to_combine.endSafe(); ++iter ) {
           const Sequence<const DiscreteVariable*>& vars = **iter;
 
-          for ( typename Sequence<const DiscreteVariable*>::const_iterator
-                iter2 = vars.begin(); iter2 != vars.end(); ++iter2 ) {
+          for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
+                iter2 = vars.beginSafe(); iter2 != vars.endSafe(); ++iter2 ) {
             if ( ! joint->exists( *iter2 ) ) {
               joint->insert( *iter2 );
             }
@@ -567,9 +567,9 @@ namespace gum {
       // update accordingly product_size : when a variable is no more used by
       // any TABLE, divide product_size by its domain size
 
-      for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator
-            iter = tables_to_combine.begin();
-            iter != tables_to_combine.end(); ++iter ) {
+      for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator_safe
+            iter = tables_to_combine.beginSafe();
+            iter != tables_to_combine.endSafe(); ++iter ) {
         const Sequence<const DiscreteVariable*>& table_vars = **iter;
 
         for ( unsigned int i = 0; i < table_vars.size(); ++i ) {
@@ -643,8 +643,8 @@ namespace gum {
 
     // here, tmp_marginals contains all the newly created tables
 
-    for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator
-          iter = tmp_marginals.begin(); iter != tmp_marginals.end(); ++iter ) {
+    for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator_safe
+          iter = tmp_marginals.beginSafe(); iter != tmp_marginals.endSafe(); ++iter ) {
       delete *iter;
     }
 
@@ -661,8 +661,8 @@ namespace gum {
     // create the set of sets of discrete variables involved in the tables
     Set<const Sequence<const DiscreteVariable*>*> var_set( set.size() );
 
-    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator iter =
-            set.begin(); iter != set.end(); ++iter ) {
+    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator_safe iter =
+            set.beginSafe(); iter != set.endSafe(); ++iter ) {
       var_set << &( ( *iter )->variablesSequence() );
     }
 
@@ -691,12 +691,12 @@ namespace gum {
       // this should help sizing correctly the hashtables
       Set<const DiscreteVariable*> all_vars;
 
-      for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator
-            iter = table_set.begin(); iter != table_set.end(); ++iter ) {
+      for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator_safe
+            iter = table_set.beginSafe(); iter != table_set.endSafe(); ++iter ) {
         const Sequence<const DiscreteVariable*>& iter_vars = **iter;
 
-        for ( typename Sequence<const DiscreteVariable*>::const_iterator
-              it = iter_vars.begin(); it != iter_vars.end(); ++it ) {
+        for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
+              it = iter_vars.beginSafe(); it != iter_vars.endSafe(); ++it ) {
           all_vars.insert( *it );
         }
       }
@@ -720,15 +720,15 @@ namespace gum {
       Set<const Sequence<const DiscreteVariable*>*> empty_set( table_set.size() );
       HashTable<const DiscreteVariable*, unsigned int> empty_hash( nb_vars );
 
-      for ( typename Set<const DiscreteVariable*>::const_iterator
-            iter = del_vars.begin(); iter != del_vars.end(); ++iter ) {
+      for ( typename Set<const DiscreteVariable*>::const_iterator_safe
+            iter = del_vars.beginSafe(); iter != del_vars.endSafe(); ++iter ) {
         tables_per_var.insert( *iter, empty_set );
         tables_vars_per_var.insert( *iter, empty_hash );
       }
 
       // update properly tables_per_var and tables_vars_per_var
-      for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator
-            iter = table_set.begin(); iter != table_set.end(); ++iter ) {
+      for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator_safe
+            iter = table_set.beginSafe(); iter != table_set.endSafe(); ++iter ) {
         const Sequence<const DiscreteVariable*>& vars = **iter;
 
         for ( unsigned int i = 0; i < vars.size(); ++i ) {
@@ -755,16 +755,16 @@ namespace gum {
     // initialize properly product_size
 
     for ( typename HashTable< const DiscreteVariable*,
-          HashTable<const DiscreteVariable*, unsigned int> >::const_iterator
-          iter = tables_vars_per_var.begin();
-          iter != tables_vars_per_var.end(); ++iter ) {
+          HashTable<const DiscreteVariable*, unsigned int> >::const_iterator_safe
+          iter = tables_vars_per_var.beginSafe ();
+          iter != tables_vars_per_var.endSafe (); ++iter ) {
       float size = 1.0f;
-      const HashTable<const DiscreteVariable*, unsigned int>& vars = *iter;
+      const HashTable<const DiscreteVariable*, unsigned int>& vars = iter.val();
 
       if ( vars.size() ) {
         for ( typename HashTable<const DiscreteVariable*,
-              unsigned int>::const_iterator iter2 = vars.begin();
-              iter2 != vars.end(); ++iter2 ) {
+              unsigned int>::const_iterator_safe iter2 = vars.beginSafe ();
+              iter2 != vars.endSafe (); ++iter2 ) {
           size *= iter2.key()->domainSize();
         }
 
@@ -807,20 +807,20 @@ namespace gum {
 
       if ( tables_to_combine.size() == 1 ) {
         joint = const_cast<Sequence<const DiscreteVariable*>*>
-                ( *( tables_to_combine.begin() ) );
+                ( *( tables_to_combine.beginSafe() ) );
         joint_to_delete = false;
       } else {
         // here, compute the union of all the variables of the tables to combine
         joint = new Sequence<const DiscreteVariable*>;
 
         for ( typename
-              Set<const Sequence<const DiscreteVariable*>*>::const_iterator
-              iter = tables_to_combine.begin();
-              iter != tables_to_combine.end(); ++iter ) {
+              Set<const Sequence<const DiscreteVariable*>*>::const_iterator_safe
+              iter = tables_to_combine.beginSafe();
+              iter != tables_to_combine.endSafe(); ++iter ) {
           const Sequence<const DiscreteVariable*>& vars = **iter;
 
-          for ( typename Sequence<const DiscreteVariable*>::const_iterator
-                iter2 = vars.begin(); iter2 != vars.end(); ++iter2 ) {
+          for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
+                iter2 = vars.beginSafe(); iter2 != vars.endSafe(); ++iter2 ) {
             if ( ! joint->exists( *iter2 ) ) {
               joint->insert( *iter2 );
             }
@@ -886,9 +886,9 @@ namespace gum {
       // update accordingly product_size : when a variable is no more used by
       // any TABLE, divide product_size by its domain size
 
-      for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator
-            iter = tables_to_combine.begin();
-            iter != tables_to_combine.end(); ++iter ) {
+      for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator_safe
+            iter = tables_to_combine.beginSafe();
+            iter != tables_to_combine.endSafe(); ++iter ) {
         const Sequence<const DiscreteVariable*>& table_vars = **iter;
 
         for ( unsigned int i = 0; i < table_vars.size(); ++i ) {
@@ -922,8 +922,8 @@ namespace gum {
           long del_size = 1;
           const Sequence<const DiscreteVariable*>& del = **iter;
 
-          for ( typename Sequence<const DiscreteVariable*>::const_iterator
-                iter_del = del.begin(); iter_del != del.end(); ++iter_del ) {
+          for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
+                iter_del = del.beginSafe(); iter_del != del.endSafe(); ++iter_del ) {
             del_size *= ( *iter_del )->domainSize();
           }
 
@@ -971,8 +971,8 @@ namespace gum {
     }
 
     // here, tmp_marginals contains all the newly created tables
-    for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator
-          iter = tmp_marginals.begin(); iter != tmp_marginals.end(); ++iter ) {
+    for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator_safe
+          iter = tmp_marginals.beginSafe(); iter != tmp_marginals.endSafe(); ++iter ) {
       delete *iter;
     }
 
@@ -989,8 +989,8 @@ namespace gum {
     // create the set of sets of discrete variables involved in the tables
     Set<const Sequence<const DiscreteVariable*>*> var_set( set.size() );
 
-    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator iter =
-            set.begin(); iter != set.end(); ++iter ) {
+    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator_safe iter =
+            set.beginSafe(); iter != set.endSafe(); ++iter ) {
       var_set << &( ( *iter )->variablesSequence() );
     }
 

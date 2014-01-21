@@ -71,7 +71,7 @@ namespace gum {
 
       /// Alias for Sequence<DiscreteVariable*>::iterator.
 
-      typedef Sequence<const DiscreteVariable*>::iterator iterator;
+      typedef Sequence<const DiscreteVariable*>::iterator_safe iterator;
 
 
       /// No constructor : interface only.

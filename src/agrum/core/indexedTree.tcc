@@ -83,7 +83,7 @@ namespace gum {
       // create and link properly the children
       children = from.children;
 
-      for ( HashTableIterator< Key,IndexedTree<Key,Data> >
+      for ( HashTableIteratorSafe< Key,IndexedTree<Key,Data> >
             iter = children.begin(); iter != children.end(); ++iter )
         iter->parent = this;
     } catch ( ... ) {
@@ -118,7 +118,7 @@ namespace gum {
 
         children = from.children;
 
-        for ( HashTableIterator< Key,IndexedTree<Key,Data> >
+        for ( HashTableIteratorSafe< Key,IndexedTree<Key,Data> >
               iter = children.begin(); iter != children.end(); ++iter )
           iter->parent = this;
       } catch ( ... ) {

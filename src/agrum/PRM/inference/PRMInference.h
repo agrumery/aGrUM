@@ -55,10 +55,10 @@ namespace gum {
         typedef NodeProperty<const Potential<GUM_SCALAR>*> EMap;
 
         /// Code alias.
-        typedef typename NodeProperty<const Potential<GUM_SCALAR>*>::iterator EMapIterator;
+        typedef typename NodeProperty<const Potential<GUM_SCALAR>*>::iterator_safe EMapIterator;
 
         /// Code alias.
-        typedef typename NodeProperty<const Potential<GUM_SCALAR>*>::const_iterator EMapConstIterator;
+        typedef typename NodeProperty<const Potential<GUM_SCALAR>*>::const_iterator_safe EMapConstIterator;
 
         // ========================================================================
         /// @name Constructor & destructor.
@@ -218,9 +218,9 @@ namespace gum {
         /// @{
 
         /// Code alias.
-        typedef typename HashTable<const Instance<GUM_SCALAR>*, EMap*>::iterator EvidenceIterator;
+        typedef typename HashTable<const Instance<GUM_SCALAR>*, EMap*>::iterator_safe EvidenceIterator;
         /// Code alias.
-        typedef typename HashTable<const Instance<GUM_SCALAR>*, EMap*>::const_iterator EvidenceConstIterator;
+        typedef typename HashTable<const Instance<GUM_SCALAR>*, EMap*>::const_iterator_safe EvidenceConstIterator;
 
         /// Mapping of evidence over Instance<GUM_SCALAR>'s nodes.
         HashTable<const Instance<GUM_SCALAR>*, EMap*> __evidences;

@@ -132,7 +132,7 @@
 
   std::cout<<is_id_odd<<std::cout<<std::endl;
 
-  for ( gum::NodeProperty<bool>::iterator i=is_id_odd.begin();
+  for ( gum::NodeProperty<bool>::iterator_safe i=is_id_odd.begin();
         i!=is_id_odd.end();
         ++i ) {
     std::cout<<i.key()<<" : "<<*i<<std::endl;
@@ -154,7 +154,7 @@
 
   std::cout<<is_id_odd<<std::endl<<std::endl;
 
-  for (gum::NodeProperty<bool>::iterator i=is_id_odd.begin();
+  for (gum::NodeProperty<bool>::iterator_safe i=is_id_odd.begin();
         i!=is_id_odd.end();
         ++i ) {
     std::cout<<i.key()<<" : "<<*i<<std::endl;
@@ -182,7 +182,7 @@
     current=nodeFIFO.front();nodeFIFO.popFront();
 
     const gum::NodeSet& set=g.children( current );
-    for ( gum::NodeSet::const_iterator ite=set.begin();ite!=set.end();++ite ) {
+    for ( gum::NodeSet::const_iterator_safe ite=set.beginSafe();ite!=set.endSafe();++ite ) {
         gum::NodeId new_one=*ite;
         if ( mark[new_one]!=0 ) continue; // if this node is already marked, continue
         mark[new_one]=current;
@@ -546,9 +546,9 @@ namespace gum {
   typedef Set<Edge> EdgeSet;
   typedef Set<Arc> ArcSet;
 
-  typedef ArcSet::const_iterator  ArcSetIterator;
-  typedef EdgeSet::const_iterator EdgeSetIterator;
-  typedef NodeSet::const_iterator NodeSetIterator;
+  typedef ArcSet::const_iterator_safe  ArcSetIterator;
+  typedef EdgeSet::const_iterator_safe EdgeSetIterator;
+  typedef NodeSet::const_iterator_safe NodeSetIterator;
   /** @} */
 
   /** \ingroup graph_group

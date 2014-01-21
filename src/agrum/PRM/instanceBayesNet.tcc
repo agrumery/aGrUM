@@ -43,9 +43,9 @@ namespace gum {
         }
       }
 
-      for ( const auto arc : i.type().dag().arcs() ) {
+      for ( auto arc = i.type().dag().arcs().beginSafe (); arc != i.type().dag().arcs().endSafe (); ++arc ) {
         try {
-          this->_dag.insertArc ( arc.tail(), arc.head() );
+          this->_dag.insertArc ( arc->tail(), arc->head() );
         } catch ( InvalidNode& ) {
           // Not added means not an attribute
         }
@@ -176,8 +176,8 @@ namespace gum {
         if ( this->dag().children ( node ).size() > 0 ) {
           const NodeSet& children = this->dag().children ( node );
 
-          for ( NodeSetIterator arc_iter = children.begin();
-                arc_iter != children.end(); ++arc_iter ) {
+          for ( NodeSetIterator arc_iter = children.beginSafe();
+                arc_iter != children.endSafe(); ++arc_iter ) {
             output << tab << "\"" << variable ( node ).name() << "\" -> ";
             output << "\"" << variable ( *arc_iter ).name() << "\";" << std::endl;
           }

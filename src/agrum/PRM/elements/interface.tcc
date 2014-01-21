@@ -57,8 +57,8 @@ namespace gum {
     Interface<GUM_SCALAR>::~Interface() {
       GUM_DESTRUCTOR ( Interface );
 
-      for ( auto iter = __nodeIdMap.begin(); iter != __nodeIdMap.end(); ++iter ) {
-        delete *iter;
+      for ( auto iter = __nodeIdMap.beginSafe(); iter != __nodeIdMap.endSafe(); ++iter ) {
+        delete iter.val ();
       }
     }
 
@@ -66,7 +66,7 @@ namespace gum {
     void
     Interface<GUM_SCALAR>::__inheritInterface ( const Interface<GUM_SCALAR>& i ) {
       // Copying attributes
-      for ( auto iter = i.__attributes.begin(); iter != i.__attributes.end(); ++iter ) {
+      for ( auto iter = i.__attributes.beginSafe(); iter != i.__attributes.endSafe(); ++iter ) {
         Attribute<GUM_SCALAR>* attr = new Attribute<GUM_SCALAR> ( ( *iter )->name(), ( *iter )->type() );
         attr->setId ( ( *iter )->id() );
         __nodeIdMap.insert ( attr->id(), attr );
@@ -79,7 +79,7 @@ namespace gum {
       }
 
       // Copying reference slots
-      for ( auto iter = i.__referenceSlots.begin(); iter != i.__referenceSlots.end(); ++iter ) {
+      for ( auto iter = i.__referenceSlots.beginSafe(); iter != i.__referenceSlots.endSafe(); ++iter ) {
         ReferenceSlot<GUM_SCALAR>* ref = new ReferenceSlot<GUM_SCALAR> (
           ( *iter )->name(),
           const_cast<ClassElementContainer<GUM_SCALAR>&> ( ( *iter )->slotType() ),
@@ -277,13 +277,13 @@ namespace gum {
     template<typename GUM_SCALAR>
     void
     Interface<GUM_SCALAR>::_updateDescendants ( const ClassElement<GUM_SCALAR>& elt ) {
-      for ( auto iter = __extensions.begin(); iter != __extensions.end(); ++iter ) {
+      for ( auto iter = __extensions.beginSafe(); iter != __extensions.endSafe(); ++iter ) {
         if ( not ( **iter ).isOutputNode ( elt ) ) {
           ( **iter ).setOutputNode ( elt, true );
         }
       }
 
-      for ( auto iter = __implementations.begin(); iter != __implementations.end(); ++iter ) {
+      for ( auto iter = __implementations.beginSafe(); iter != __implementations.endSafe(); ++iter ) {
         // Because of cyclic dependencies we must use a reinterpret cast.
         ClassElementContainer<GUM_SCALAR>* c = reinterpret_cast<ClassElementContainer<GUM_SCALAR>*> ( *iter );
 
@@ -298,25 +298,25 @@ namespace gum {
     template<typename GUM_SCALAR> INLINE
     typename Interface<GUM_SCALAR>::ClassEltIterator
     Interface<GUM_SCALAR>::begin() {
-      return __nodeIdMap.begin();
+      return __nodeIdMap.beginSafe();
     }
 
     template<typename GUM_SCALAR> INLINE
     const typename Interface<GUM_SCALAR>::ClassEltIterator&
     Interface<GUM_SCALAR>::end() {
-      return __nodeIdMap.end();
+      return __nodeIdMap.endSafe();
     }
 
     template<typename GUM_SCALAR> INLINE
     typename Interface<GUM_SCALAR>::const_ClassEltIterator
     Interface<GUM_SCALAR>::begin() const {
-      return __nodeIdMap.begin();
+      return __nodeIdMap.beginSafe();
     }
 
     template<typename GUM_SCALAR> INLINE
     const typename Interface<GUM_SCALAR>::const_ClassEltIterator&
     Interface<GUM_SCALAR>::end() const {
-      return __nodeIdMap.end();
+      return __nodeIdMap.endSafe();
     }
 
     template<typename GUM_SCALAR> INLINE
@@ -460,14 +460,14 @@ namespace gum {
     template<typename GUM_SCALAR>
     void
     Interface<GUM_SCALAR>::_findAllSubtypes ( Set<ClassElementContainer<GUM_SCALAR>*>& set ) {
-      for ( auto iter = __implementations.begin();
-            iter != __implementations.end(); ++iter ) {
+      for ( auto iter = __implementations.beginSafe();
+            iter != __implementations.endSafe(); ++iter ) {
         set.insert ( *iter );
         ( **iter )._findAllSubtypes ( set );
       }
 
-      for ( auto iter = __extensions.begin();
-            iter != __extensions.end(); ++iter ) {
+      for ( auto iter = __extensions.beginSafe();
+            iter != __extensions.endSafe(); ++iter ) {
         set.insert ( *iter );
         ( **iter )._findAllSubtypes ( set );
       }

@@ -54,8 +54,8 @@ namespace gum {
     Sequence<const DiscreteVariable*> vars = __table1.variablesSequence();
     const Sequence<const DiscreteVariable*>& vars2 = __table2.variablesSequence();
 
-    for ( typename Sequence<const DiscreteVariable*>::const_iterator
-          iter = vars2.begin(); iter != vars2.end(); ++iter ) {
+    for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
+          iter = vars2.beginSafe(); iter != vars2.endSafe(); ++iter ) {
       if ( ! vars.exists( *iter ) ) {
         vars.insert( *iter );
       }
@@ -184,13 +184,13 @@ namespace gum {
 
     float size = 1;
 
-    for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-            seq1.begin(); iter != seq1.end(); ++iter ) {
+    for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+            seq1.beginSafe(); iter != seq1.endSafe(); ++iter ) {
       size *= ( *iter )->domainSize();
     }
 
-    for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-            seq2.begin(); iter != seq2.end(); ++iter ) {
+    for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+            seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
       if ( ! seq1.exists( *iter ) )
         size *= ( *iter )->domainSize();
     }
@@ -209,8 +209,8 @@ namespace gum {
 
     long size = 1;
 
-    for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-            seq1.begin(); iter != seq1.end(); ++iter ) {
+    for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+            seq1.beginSafe(); iter != seq1.endSafe(); ++iter ) {
       if ( std::numeric_limits<long>::max() /
            ( long )( *iter )->domainSize() < size ) {
         GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
@@ -219,8 +219,8 @@ namespace gum {
       size *= ( *iter )->domainSize();
     }
 
-    for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-            seq2.begin(); iter != seq2.end(); ++iter ) {
+    for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+            seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
       if ( ! seq1.exists( *iter ) ) {
         if ( std::numeric_limits<long>::max() /
              ( long )( *iter )->domainSize() < size ) {

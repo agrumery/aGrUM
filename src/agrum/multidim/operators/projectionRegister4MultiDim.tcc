@@ -46,7 +46,7 @@ namespace gum {
     ProjectionSet* theset;
 
     if ( ! __set.exists( projection_name ) ) {
-      theset = __set.insert( projection_name, new ProjectionSet );
+      theset = __set.insert( projection_name, new ProjectionSet ).second;
 #ifndef NDEBUG
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the ProjectionRegister4MultiDim will be
@@ -132,9 +132,9 @@ namespace gum {
   template<typename GUM_SCALAR>
   ProjectionRegister4MultiDim<GUM_SCALAR>::~ProjectionRegister4MultiDim() {
     // remove all the sets
-    for ( typename HashTable<std::string, ProjectionSet*>::iterator iter =
-            __set.begin(); iter != __set.end(); ++iter )
-      delete *iter;
+    for ( typename HashTable<std::string, ProjectionSet*>::iterator_safe iter =
+            __set.beginSafe(); iter != __set.endSafe(); ++iter )
+      delete iter.val();
   }
 
 

@@ -72,9 +72,9 @@ namespace gum {
         NodeId id = iso_graph.insertNode();
         degree_list->push_back ( id );
 
-        for ( auto iter = matches.begin(); iter != matches.end(); ++iter ) {
-          if ( ( iter->first == u ) or ( iter->second == u ) or
-               ( iter->first == v ) or ( iter->second == v ) ) {
+        for ( auto iter = matches.beginSafe(); iter != matches.endSafe(); ++iter ) {
+          if ( ( iter.val().first == u ) or ( iter.val().second == u ) or
+               ( iter.val().first == v ) or ( iter.val().second == v ) ) {
             iso_graph.insertEdge ( iter.key(), id );
           }
         }

@@ -36,18 +36,18 @@ namespace gum {
       GUM_CONSTRUCTOR ( Instance );
 
       // First we create attributes for each aggregate in type
-      for ( auto agg = __type->aggregates().begin(); agg != __type->aggregates().end(); ++agg )
+      for ( auto agg = __type->aggregates().beginSafe(); agg != __type->aggregates().endSafe(); ++agg )
         __copyAggregates ( *agg );
 
       // We add attributes in type by reference for inner ones and by copy for output ones
-      for ( auto attr = __type->attributes().begin(); attr != __type->attributes().end(); ++attr )
+      for ( auto attr = __type->attributes().beginSafe(); attr != __type->attributes().endSafe(); ++attr )
         __copyAttribute ( *attr );
 
       // Then we instantiate each parameters in type
       if ( __type->parameters().size() )
         __params = new Set<NodeId>();
 
-      for ( auto iter = __type->parameters().begin(); iter != __type->parameters().end(); ++iter )
+      for ( auto iter = __type->parameters().beginSafe(); iter != __type->parameters().endSafe(); ++iter )
         __copyParameter ( *iter );
     }
 
@@ -69,14 +69,14 @@ namespace gum {
     Instance<GUM_SCALAR>::~Instance() {
       GUM_DESTRUCTOR ( Instance );
 
-      for ( auto iter = __nodeIdMap.begin(); iter != __nodeIdMap.end(); ++iter )
-        delete *iter;
+      for ( auto iter = __nodeIdMap.beginSafe(); iter != __nodeIdMap.endSafe(); ++iter )
+        delete iter.val ();
 
-      for ( auto iter = __referenceMap.begin(); iter != __referenceMap.end(); ++iter )
-        delete *iter;
+      for ( auto iter = __referenceMap.beginSafe(); iter != __referenceMap.endSafe(); ++iter )
+        delete iter.val ();
 
-      for ( auto iter = __referingAttr.begin(); iter != __referingAttr.end(); ++iter )
-        delete *iter;
+      for ( auto iter = __referingAttr.beginSafe(); iter != __referingAttr.endSafe(); ++iter )
+        delete iter.val ();
 
       if ( __params ) delete __params;
     }
@@ -85,28 +85,28 @@ namespace gum {
     void
     Instance<GUM_SCALAR>::instantiate() {
       // First retrieving any referenced instance
-      for ( auto chain = type().slotChains().begin(); chain != type().slotChains().end(); ++chain )
+      for ( auto chain = type().slotChains().beginSafe(); chain != type().slotChains().endSafe(); ++chain )
         __instantiateSlotChain ( *chain );
 
       // Now we need to add referred instance to each input node
       // For Attributes we first add parents, then we initialize CPF
-      for ( auto iter = type().attributes().begin(); iter != type().attributes().end(); ++iter )
+      for ( auto iter = type().attributes().beginSafe(); iter != type().attributes().endSafe(); ++iter )
         if ( not type().isParameter ( **iter ) )
           __copyAttributeCPF ( __nodeIdMap[ ( **iter ).id()] );
 
       // For Aggregate<GUM_SCALAR> we add parents
-      for ( auto iter = type().aggregates().begin(); iter != type().aggregates().end(); ++iter ) {
+      for ( auto iter = type().aggregates().beginSafe(); iter != type().aggregates().endSafe(); ++iter ) {
         const NodeSet& parents = type().dag().parents ( ( *iter )->id() );
         Attribute<GUM_SCALAR>& attr = get ( ( **iter ).safeName() );
 
-        for ( NodeSet::const_iterator arc = parents.begin(); arc != parents.end(); ++arc ) {
+        for ( NodeSet::const_iterator_safe arc = parents.beginSafe(); arc != parents.endSafe(); ++arc ) {
           try {
             attr.addParent ( get ( *arc ) );
           } catch ( NotFound& ) {
             SlotChain<GUM_SCALAR>& sc = static_cast<SlotChain<GUM_SCALAR>&> ( type().get ( *arc ) );
             const Set<Instance<GUM_SCALAR>*>& instances = getInstances ( sc.id() );
 
-            for ( auto i = instances.begin(); i != instances.end(); ++i ) {
+            for ( auto i = instances.beginSafe(); i != instances.endSafe(); ++i ) {
               attr.addParent ( ( *i )->get ( sc.lastElt().safeName() ) );
             }
           }
@@ -139,7 +139,7 @@ namespace gum {
               NodeId refId = sc->chain().atPos ( depth )->id();
               Set<Instance<GUM_SCALAR>*>* instances = current->__referenceMap[refId];
 
-              for ( auto iter = instances->begin(); iter != instances->end(); ++iter )
+              for ( auto iter = instances->beginSafe(); iter != instances->endSafe(); ++iter )
                 stack.push_back ( std::make_pair ( *iter, depth + 1 ) );
             } catch ( NotFound& ) {
               GUM_ERROR ( NotFound, "found an uninstantiated reference" );
@@ -409,7 +409,7 @@ namespace gum {
     Instance<GUM_SCALAR>::getInstance ( NodeId id ) const {
       try {
         if ( __referenceMap[id]->size() > 0 ) {
-          return ** ( __referenceMap[id]->begin() );
+          return ** ( __referenceMap[id]->beginSafe() );
         } else {
           GUM_ERROR ( UndefinedElement, "no Instance associated with the given NodeId" );
         }
@@ -430,19 +430,19 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     typename Instance<GUM_SCALAR>::iterator
-    Instance<GUM_SCALAR>::begin() { return __nodeIdMap.begin(); }
+    Instance<GUM_SCALAR>::begin() { return __nodeIdMap.beginSafe(); }
 
     template<typename GUM_SCALAR> INLINE
     const typename Instance<GUM_SCALAR>::iterator&
-    Instance<GUM_SCALAR>::end() { return __nodeIdMap.end(); }
+    Instance<GUM_SCALAR>::end() { return __nodeIdMap.endSafe(); }
 
     template<typename GUM_SCALAR> INLINE
     typename Instance<GUM_SCALAR>::const_iterator
-    Instance<GUM_SCALAR>::begin() const { return __nodeIdMap.begin(); }
+    Instance<GUM_SCALAR>::begin() const { return __nodeIdMap.beginSafe(); }
 
     template<typename GUM_SCALAR> INLINE
     const typename Instance<GUM_SCALAR>::const_iterator&
-    Instance<GUM_SCALAR>::end() const { return __nodeIdMap.end(); }
+    Instance<GUM_SCALAR>::end() const { return __nodeIdMap.endSafe(); }
 
     template<typename GUM_SCALAR> INLINE
     typename Instance<GUM_SCALAR>::RefIterator
@@ -466,7 +466,7 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     Instance<GUM_SCALAR>::RefIterator::RefIterator ( Set<Instance<GUM_SCALAR>*>& set ) :
-      __set ( set ), __iter ( set.begin() ) {
+      __set ( set ), __iter ( set.beginSafe() ) {
       GUM_CONSTRUCTOR ( Instance<GUM_SCALAR>::RefIterator );
     }
 
@@ -498,7 +498,7 @@ namespace gum {
     template<typename GUM_SCALAR> INLINE
     bool
     Instance<GUM_SCALAR>::RefIterator::isEnd() const {
-      return __iter == __set.end();
+      return __iter == __set.endSafe();
     }
 
     template<typename GUM_SCALAR> INLINE
@@ -527,7 +527,7 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     Instance<GUM_SCALAR>::RefConstIterator::RefConstIterator ( const Set<Instance<GUM_SCALAR>*>& set ) :
-      __set ( set ), __iter ( set.begin() ) {
+      __set ( set ), __iter ( set.beginSafe() ) {
       GUM_CONSTRUCTOR ( Instance<GUM_SCALAR>::RefConstIterator );
     }
 
@@ -559,7 +559,7 @@ namespace gum {
     template<typename GUM_SCALAR> INLINE
     bool
     Instance<GUM_SCALAR>::RefConstIterator::isEnd() const {
-      return __iter == __set.end();
+      return __iter == __set.endSafe();
     }
 
     template<typename GUM_SCALAR> INLINE
@@ -589,25 +589,25 @@ namespace gum {
     template<typename GUM_SCALAR> INLINE
     typename Instance<GUM_SCALAR>::InvRefIterator
     Instance<GUM_SCALAR>::beginInvRef() {
-      return __referingAttr.begin();
+      return __referingAttr.beginSafe();
     }
 
     template<typename GUM_SCALAR> INLINE
     const typename Instance<GUM_SCALAR>::InvRefIterator&
     Instance<GUM_SCALAR>::endInvRef() {
-      return __referingAttr.end();
+      return __referingAttr.endSafe();
     }
 
     template<typename GUM_SCALAR> INLINE
     typename Instance<GUM_SCALAR>::InvRefConstIterator
     Instance<GUM_SCALAR>::beginInvRef() const {
-      return __referingAttr.begin();
+      return __referingAttr.beginSafe();
     }
 
     template<typename GUM_SCALAR> INLINE
     const typename Instance<GUM_SCALAR>::InvRefConstIterator&
     Instance<GUM_SCALAR>::endInvRef() const {
-      return __referingAttr.end();
+      return __referingAttr.endSafe();
     }
 
     template<typename GUM_SCALAR> INLINE
@@ -641,7 +641,7 @@ namespace gum {
         GUM_TRACE_VAR ( attr->safeName() );
         const NodeSet& parents = type().dag().parents ( attr->id() );
 
-        for ( NodeSet::const_iterator node = parents.begin(); node != parents.end(); ++node ) {
+        for ( NodeSet::const_iterator_safe node = parents.beginSafe(); node != parents.endSafe(); ++node ) {
           GUM_TRACE_VAR ( type().get ( *node ).safeName() );
         }
 
@@ -656,7 +656,7 @@ namespace gum {
       //     attr->__cpf = new Potential<GUM_SCALAR>(static_cast<MultiDimImplementation<GUM_SCALAR>*>(type().get(attr->safeName()).cpf().getContent()->newFactory()));
       //     attr->__cpf->add(attr->type().variable());
       //     const NodeSet& parents = type().dag().parents(attr->id());
-      //     for (NodeSet::const_iterator arc = parents.begin(); arc != parents.end(); ++arc)
+      //     for (NodeSet::const_iterator_safe arc = parents.beginSafe(); arc != parents.endSafe(); ++arc)
       //       attr->addParent(get(type().get(*arc).safeName()));
       //   } else {
       //     GUM_TRACE_VAR(name());

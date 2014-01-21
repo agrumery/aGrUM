@@ -84,8 +84,8 @@ namespace gum {
           {
             Idx current_offset = 1;
 
-            for ( typename Sequence<const DiscreteVariable*>::const_iterator iter =
-                    t1_vars.begin(); iter != t1_vars.end(); ++iter ) {
+            for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+                    t1_vars.beginSafe(); iter != t1_vars.endSafe(); ++iter ) {
               t1_offsets.insert( *iter, current_offset );
               current_offset *= ( *iter )->domainSize();
             }
@@ -94,8 +94,8 @@ namespace gum {
           {
             Idx current_offset = 1;
 
-            for ( typename Sequence<const DiscreteVariable*>::const_iterator iter =
-                    t2_vars.begin(); iter != t2_vars.end(); ++iter ) {
+            for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+                    t2_vars.beginSafe(); iter != t2_vars.endSafe(); ++iter ) {
               t2_offsets.insert( *iter, current_offset );
               current_offset *= ( *iter )->domainSize();
             }
@@ -124,8 +124,8 @@ namespace gum {
           Idx t1_and_t2_domain_size = 1;
 
           {
-            for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-                    t1_vars.begin(); iter != t1_vars.end(); ++iter ) {
+            for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+                    t1_vars.beginSafe(); iter != t1_vars.endSafe(); ++iter ) {
               if ( t2_vars.exists( *iter ) ) {
                 t1_and_t2_domain.push_back( ( *iter )->domainSize() );
                 t1_and_t2_var.push_back( *iter );
@@ -137,8 +137,8 @@ namespace gum {
               }
             }
 
-            for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-                    t2_vars.begin(); iter != t2_vars.end(); ++iter ) {
+            for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+                    t2_vars.beginSafe(); iter != t2_vars.endSafe(); ++iter ) {
               if ( ! t1_vars.exists( *iter ) ) {
                 t2_alone_domain.push_back( ( *iter )->domainSize() );
                 t2_alone_var.push_back( *iter );
@@ -156,8 +156,8 @@ namespace gum {
           if ( t1_and_t2_var.size() ) {
             unsigned int nb_t1_t2_vars = 0;
 
-            for ( Sequence<const DiscreteVariable*>::const_iterator
-                  iter = t1_vars.begin(); nb_t1_t2_vars !=  t1_and_t2_var.size();
+            for ( Sequence<const DiscreteVariable*>::const_iterator_safe
+                  iter = t1_vars.beginSafe(); nb_t1_t2_vars !=  t1_and_t2_var.size();
                   ++iter, ++nb_t1_t2_vars ) {
               if ( *iter != t1_and_t2_var[nb_t1_t2_vars] ) break;
             }
@@ -165,8 +165,8 @@ namespace gum {
             if ( nb_t1_t2_vars ==  t1_and_t2_var.size() ) {
               nb_t1_t2_vars = 0;
 
-              for ( Sequence<const DiscreteVariable*>::const_iterator
-                    iter = t2_vars.begin(); nb_t1_t2_vars !=  t1_and_t2_var.size();
+              for ( Sequence<const DiscreteVariable*>::const_iterator_safe
+                    iter = t2_vars.beginSafe(); nb_t1_t2_vars !=  t1_and_t2_var.size();
                     ++iter, ++nb_t1_t2_vars ) {
                 if ( *iter != t1_and_t2_var[nb_t1_t2_vars] ) break;
               }
@@ -198,20 +198,20 @@ namespace gum {
             new MultiDimArray<GUM_MULTI_DIM_OPERATOR_TYPE>;
           result->beginMultipleChanges();
 
-          for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-                  t1_vars.begin(); iter != t1_vars.end(); ++iter ) {
+          for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+                  t1_vars.beginSafe(); iter != t1_vars.endSafe(); ++iter ) {
             if ( t2_vars.exists( *iter ) )
               *result << **iter;
           }
 
-          for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-                  t2_vars.begin(); iter != t2_vars.end(); ++iter ) {
+          for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+                  t2_vars.beginSafe(); iter != t2_vars.endSafe(); ++iter ) {
             if ( ! t1_vars.exists( *iter ) )
               *result << **iter;
           }
 
-          for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-                  t1_vars.begin(); iter != t1_vars.end(); ++iter ) {
+          for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+                  t1_vars.beginSafe(); iter != t1_vars.endSafe(); ++iter ) {
             if ( ! t2_vars.exists( *iter ) ) {
               *result << **iter;
             }

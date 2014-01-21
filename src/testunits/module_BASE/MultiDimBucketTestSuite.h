@@ -382,7 +382,7 @@ namespace gum_tests {
           gum::Size outBucket = 0;
 
           try {
-            for ( gum::Set<const gum::DiscreteVariable*>::iterator iter = bucket->allVariables().begin(); iter != bucket->allVariables().end(); ++iter ) {
+            for ( gum::Set<const gum::DiscreteVariable*>::iterator_safe iter = bucket->allVariables().beginSafe(); iter != bucket->allVariables().endSafe(); ++iter ) {
               if ( bucket->contains( **iter ) ) {
                 inBucket++;
               } else {

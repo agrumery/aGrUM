@@ -101,13 +101,13 @@ namespace gum {
 
     Size size = 1;
 
-    for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-            seq1.begin(); iter != seq1.end(); ++iter ) {
+    for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+            seq1.beginSafe(); iter != seq1.endSafe(); ++iter ) {
       size *= ( *iter )->domainSize();
     }
 
-    for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-            seq2.begin(); iter != seq2.end(); ++iter ) {
+    for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+            seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
       if ( ! seq1.exists( *iter ) )
         size *= ( *iter )->domainSize();
     }
@@ -147,8 +147,8 @@ namespace gum {
     {
       unsigned int i = 0;
 
-      for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator iter =
-              set.begin(); iter != set.end(); ++iter, ++i ) {
+      for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator_safe iter =
+              set.beginSafe(); iter != set.endSafe(); ++iter, ++i ) {
         tables[i] = *iter;
       }
     }
@@ -271,8 +271,8 @@ namespace gum {
     {
       unsigned int i = 0;
 
-      for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator
-            iter = set.begin(); iter != set.end(); ++iter, ++i ) {
+      for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator_safe
+            iter = set.beginSafe(); iter != set.endSafe(); ++iter, ++i ) {
         tables[i] = *iter;
       }
     }
@@ -317,14 +317,14 @@ namespace gum {
 
       Size new_size = 1;
 
-      for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-              seq1.begin(); iter != seq1.end(); ++iter ) {
+      for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+              seq1.beginSafe(); iter != seq1.endSafe(); ++iter ) {
         new_size *= ( *iter )->domainSize();
         new_seq->insert( *iter );
       }
 
-      for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-              seq2.begin(); iter != seq2.end(); ++iter ) {
+      for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+              seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
         if ( ! seq1.exists( *iter ) ) {
           new_size *= ( *iter )->domainSize();
           new_seq->insert( *iter );
@@ -409,8 +409,8 @@ namespace gum {
     // create the set of sets of discrete variables involved in the tables
     Set<const Sequence<const DiscreteVariable*>*> var_set( set.size() );
 
-    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator iter =
-            set.begin(); iter != set.end(); ++iter ) {
+    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator_safe iter =
+            set.beginSafe(); iter != set.endSafe(); ++iter ) {
       var_set << &( ( *iter )->variablesSequence() );
     }
 
@@ -438,15 +438,15 @@ namespace gum {
     {
       unsigned int i = 0;
 
-      for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator
-            iter = set.begin(); iter != set.end(); ++iter, ++i ) {
+      for ( typename Set<const Sequence<const DiscreteVariable*>*>::const_iterator_safe
+            iter = set.beginSafe(); iter != set.endSafe(); ++iter, ++i ) {
         const Sequence<const DiscreteVariable*>* vars = *iter;
         tables[i] = vars;
 
         long size = 0;
 
-        for ( typename Sequence<const DiscreteVariable*>::const_iterator
-              iter2 = vars->begin(); iter2 != vars->end(); ++iter2 ) {
+        for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
+              iter2 = vars->beginSafe(); iter2 != vars->endSafe(); ++iter2 ) {
           size *= ( *iter2 )->domainSize();
         }
 
@@ -494,8 +494,8 @@ namespace gum {
 
       long new_size = 1;
 
-      for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-              seq1.begin(); iter != seq1.end(); ++iter ) {
+      for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+              seq1.beginSafe(); iter != seq1.endSafe(); ++iter ) {
         if ( std::numeric_limits<long>::max() /
              ( long )( *iter )->domainSize() < new_size ) {
           GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
@@ -506,8 +506,8 @@ namespace gum {
         new_seq->insert( *iter );
       }
 
-      for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-              seq2.begin(); iter != seq2.end(); ++iter ) {
+      for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+              seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
         if ( ! seq1.exists( *iter ) ) {
           if ( std::numeric_limits<long>::max() /
                ( long )( *iter )->domainSize() < new_size ) {
@@ -615,8 +615,8 @@ namespace gum {
     // create the set of sets of discrete variables involved in the tables
     Set<const Sequence<const DiscreteVariable*>*> var_set( set.size() );
 
-    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator iter =
-            set.begin(); iter != set.end(); ++iter ) {
+    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator_safe iter =
+            set.beginSafe(); iter != set.endSafe(); ++iter ) {
       var_set << &( ( *iter )->variablesSequence() );
     }
 

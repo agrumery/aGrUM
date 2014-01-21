@@ -105,13 +105,13 @@ namespace gum {
 
     Size size = 1;
 
-    for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-            seq1.begin(); iter != seq1.end(); ++iter ) {
+    for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+            seq1.beginSafe(); iter != seq1.endSafe(); ++iter ) {
       size *= ( *iter )->domainSize();
     }
 
-    for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-            seq2.begin(); iter != seq2.end(); ++iter ) {
+    for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+            seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
       if ( ! seq1.exists( *iter ) )
         size *= ( *iter )->domainSize();
     }
@@ -139,8 +139,8 @@ namespace gum {
     {
       unsigned int i = 0;
 
-      for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator iter =
-              set.begin(); iter != set.end(); ++iter, ++i ) {
+      for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe iter =
+              set.beginSafe(); iter != set.endSafe(); ++iter, ++i ) {
         tables[i] = *iter;
       }
     }
@@ -301,8 +301,8 @@ namespace gum {
     {
       unsigned int i = 0;
 
-      for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator iter =
-              set.begin(); iter != set.end(); ++iter, ++i ) {
+      for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe iter =
+              set.beginSafe(); iter != set.endSafe(); ++iter, ++i ) {
         tables[i] = &( ( *iter )->variablesSequence() );
       }
     }
@@ -348,14 +348,14 @@ namespace gum {
 
       Size new_size = 1;
 
-      for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-              seq1.begin(); iter != seq1.end(); ++iter ) {
+      for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+              seq1.beginSafe(); iter != seq1.endSafe(); ++iter ) {
         new_size *= ( *iter )->domainSize();
         new_seq->insert( *iter );
       }
 
-      for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-              seq2.begin(); iter != seq2.end(); ++iter ) {
+      for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+              seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
         if ( ! seq1.exists( *iter ) ) {
           new_size *= ( *iter )->domainSize();
           new_seq->insert( *iter );
@@ -469,16 +469,16 @@ namespace gum {
     {
       unsigned int i = 0;
 
-      for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator iter =
-              set.begin(); iter != set.end(); ++iter, ++i ) {
+      for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe iter =
+              set.beginSafe(); iter != set.endSafe(); ++iter, ++i ) {
         const Sequence<const DiscreteVariable*>* vars =
           &( ( *iter )->variablesSequence() );
         tables[i] = vars;
 
         Size size = 0;
 
-        for ( typename Sequence<const DiscreteVariable*>::const_iterator
-              iter2 = vars->begin(); iter2 != vars->end(); ++iter2 ) {
+        for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
+              iter2 = vars->beginSafe(); iter2 != vars->endSafe(); ++iter2 ) {
           size *= ( *iter2 )->domainSize();
         }
 
@@ -527,8 +527,8 @@ namespace gum {
 
       long new_size = 1;
 
-      for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-              seq1.begin(); iter != seq1.end(); ++iter ) {
+      for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+              seq1.beginSafe(); iter != seq1.endSafe(); ++iter ) {
         if ( std::numeric_limits<long>::max() /
              ( long )( *iter )->domainSize() < new_size ) {
           GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
@@ -539,8 +539,8 @@ namespace gum {
         new_seq->insert( *iter );
       }
 
-      for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-              seq2.begin(); iter != seq2.end(); ++iter ) {
+      for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+              seq2.beginSafe(); iter != seq2.endSafe(); ++iter ) {
         if ( ! seq1.exists( *iter ) ) {
           if ( std::numeric_limits<long>::max() /
                ( long )( *iter )->domainSize() < new_size ) {

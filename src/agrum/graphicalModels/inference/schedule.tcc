@@ -53,17 +53,17 @@ namespace gum {
     const typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes&
     ops = from.__node2operation;
 
-    for ( typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes::const_iterator
-          iter = ops.begin(); iter != ops.end(); ++iter ) {
-      __node2operation.insert( iter.key(), ( *iter )->newFactory() );
+    for ( typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes::const_iterator_safe
+          iter = ops.beginSafe(); iter != ops.endSafe(); ++iter ) {
+      __node2operation.insert( iter.key(), ( iter.val() )->newFactory() );
     }
 
     // update the set of operations involved with each multidim table
     const HashTable<MultiDimId,NodeSet*>& inv = from.__multidim2operations;
 
-    for ( typename HashTable<MultiDimId,NodeSet*>::const_iterator
-          iter = inv.begin(); iter != inv.end(); ++iter ) {
-      __multidim2operations.insert( iter.key(), new NodeSet( **iter ) );
+    for ( typename HashTable<MultiDimId,NodeSet*>::const_iterator_safe
+          iter = inv.beginSafe (); iter != inv.endSafe (); ++iter ) {
+      __multidim2operations.insert( iter.key(), new NodeSet( *( iter.val() ) ) );
     }
   }
 
@@ -76,17 +76,17 @@ namespace gum {
 
     // remove all the operations that were stored
 
-    for ( typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes::const_iterator
-          iter = __node2operation.begin(); iter != __node2operation.end();
+    for ( typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes::const_iterator_safe
+          iter = __node2operation.beginSafe(); iter != __node2operation.endSafe();
           ++iter ) {
-      delete *iter;
+      delete iter.val();
     }
 
     // remove the sets of operations involved with each multidim table
-    for ( typename HashTable<MultiDimId,NodeSet*>::const_iterator
-          iter = __multidim2operations.begin();
-          iter != __multidim2operations.end(); ++iter ) {
-      delete *iter;
+    for ( typename HashTable<MultiDimId,NodeSet*>::const_iterator_safe
+          iter = __multidim2operations.beginSafe ();
+          iter != __multidim2operations.endSafe (); ++iter ) {
+      delete iter.val();
     }
   }
 
@@ -97,17 +97,17 @@ namespace gum {
     // avoid self assignment
     if ( this != &from ) {
       // remove all the operations that were stored
-      for ( typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes::const_iterator
+      for ( typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes::const_iterator_safe
             iter = __node2operation.begin(); iter != __node2operation.end();
             ++iter ) {
         delete *iter;
       }
 
       // remove the sets of operations involved with each multidim table
-      for ( typename HashTable<MultiDimId,Set<NodeId>*>::const_iterator
-            iter = __multidim2operations.begin();
-            iter != __multidim2operations.end(); ++iter ) {
-        delete *iter;
+      for ( typename HashTable<MultiDimId,Set<NodeId>*>::const_iterator_safe
+            iter = __multidim2operations.beginSafe ();
+            iter != __multidim2operations.endSafe (); ++iter ) {
+        delete iter.val ();
       }
 
       // fill all the data structures with the elements of from
@@ -126,7 +126,7 @@ namespace gum {
       const typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes&
       ops = from.__node2operation;
 
-      for ( typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes::const_iterator
+      for ( typename Property<ScheduleOperation<GUM_SCALAR>*>::onNodes::const_iterator_safe
             iter = ops.begin(); iter != ops.end(); ++iter ) {
         __node2operation.insert( iter.key(), ( *iter )->newFactory() );
       }
@@ -136,9 +136,9 @@ namespace gum {
 
       const HashTable<MultiDimId,NodeSet*>& inv = from.__multidim2operations;
 
-      for ( typename HashTable<MultiDimId,NodeSet*>::const_iterator
-            iter = inv.begin(); iter != inv.end(); ++iter ) {
-        __multidim2operations.insert( iter.key(), new NodeSet( **iter ) );
+      for ( typename HashTable<MultiDimId,NodeSet*>::const_iterator_safe
+            iter = inv.beginSafe(); iter != inv.endSafe(); ++iter ) {
+        __multidim2operations.insert( iter.key(), new NodeSet( *( iter.val() ) ) );
       }
     }
 
@@ -168,8 +168,8 @@ namespace gum {
     const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
     parents = operation->multiDimArgs();
 
-    for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
-          iter = parents.begin(); iter != parents.end(); ++iter ) {
+    for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
+          iter = parents.beginSafe(); iter != parents.endSafe(); ++iter ) {
       if ( ( *iter )->isAbstract() ) {
         // here we shall have a parent in the graph
         operation_available = false;
@@ -196,8 +196,8 @@ namespace gum {
     const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
     created_tables = operation->multiDimResults();
 
-    for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
-          iter = created_tables.begin(); iter != created_tables.end(); ++iter ) {
+    for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
+          iter = created_tables.beginSafe(); iter != created_tables.endSafe(); ++iter ) {
       MultiDimId table_id = ( *iter )->id();
 
       if ( ( *iter )->isAbstract() ) {
@@ -205,7 +205,7 @@ namespace gum {
       }
 
       if ( ! __multidim2operations.exists( table_id ) ) {
-        involved_ops = __multidim2operations.insert( table_id, new NodeSet );
+        involved_ops = __multidim2operations.insert( table_id, new NodeSet ).second;
       } else {
         involved_ops = __multidim2operations[table_id];
       }
@@ -215,12 +215,12 @@ namespace gum {
 
     // update __multidim2operations with the arguments passed to the newly
     // added operation
-    for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
-          iter = parents.begin(); iter != parents.end(); ++iter ) {
+    for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
+          iter = parents.beginSafe(); iter != parents.endSafe(); ++iter ) {
       MultiDimId table_id = ( *iter )->id();
 
       if ( ! __multidim2operations.exists( table_id ) ) {
-        involved_ops = __multidim2operations.insert( table_id, new NodeSet );
+        involved_ops = __multidim2operations.insert( table_id, new NodeSet ).second;
       } else {
         involved_ops = __multidim2operations[table_id];
       }
@@ -236,17 +236,17 @@ namespace gum {
   template <typename GUM_SCALAR>
   void Schedule<GUM_SCALAR>::__updateWrongParents() const {
     // parse all the nodes whose parents sets are incorrect
-    for ( typename NodeSet::const_iterator
-          iter = __operations_with_wrong_parents.begin();
-          iter != __operations_with_wrong_parents.end(); ++iter ) {
+    for ( typename NodeSet::const_iterator_safe
+          iter = __operations_with_wrong_parents.beginSafe();
+          iter != __operations_with_wrong_parents.endSafe(); ++iter ) {
       // get the arguments passed to *iter and check that those that are abstract
       // multidims belong to the schedule
       const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>& args =
         __node2operation[*iter]->multiDimArgs();
       bool still_wrong = false;
 
-      for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
-            iter_args = args.begin(); iter_args != args.end(); ++iter_args ) {
+      for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
+            iter_args = args.beginSafe(); iter_args != args.endSafe(); ++iter_args ) {
         if ( ( *iter_args )->isAbstract() &&
              ! __created_multidims.exists( ( *iter_args )->id() ) ) {
           still_wrong = true;
@@ -261,8 +261,8 @@ namespace gum {
       if ( ! still_wrong ) {
         unsigned int nb_parents = 0;
 
-        for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
-              iter_args = args.begin(); iter_args != args.end(); ++iter_args ) {
+        for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
+              iter_args = args.beginSafe(); iter_args != args.endSafe(); ++iter_args ) {
           if ( ( *iter_args )->isAbstract() ) {
             __dag.insertArc( __created_multidims[( *iter_args )->id()], *iter );
             ++nb_parents;
@@ -309,8 +309,8 @@ namespace gum {
   template <typename GUM_SCALAR>
   void Schedule<GUM_SCALAR>::forceAfter( NodeId op_to_force,
                                          const NodeSet& ops_before ) {
-    for ( typename NodeSet::const_iterator iter = ops_before.begin();
-          iter != ops_before.end(); ++iter ) {
+    for ( typename NodeSet::const_iterator_safe iter = ops_before.beginSafe();
+          iter != ops_before.endSafe(); ++iter ) {
       if ( *iter != op_to_force ) {
         forceAfter( op_to_force, *iter );
       }
@@ -324,8 +324,8 @@ namespace gum {
   void Schedule<GUM_SCALAR>::forceAfter
   ( const ScheduleOperation<GUM_SCALAR>& op_to_force,
     const Set<const ScheduleOperation<GUM_SCALAR>*>& ops_before ) {
-    for ( typename Set<const ScheduleOperation<GUM_SCALAR>*>::const_iterator
-          iter = ops_before.begin(); iter != ops_before.end(); ++iter ) {
+    for ( typename Set<const ScheduleOperation<GUM_SCALAR>*>::const_iterator_safe
+          iter = ops_before.beginSafe(); iter != ops_before.endSafe(); ++iter ) {
       if ( **iter != op_to_force ) {
         forceAfter( op_to_force, **iter );
       }
@@ -362,8 +362,8 @@ namespace gum {
   template <typename GUM_SCALAR>
   void
   Schedule<GUM_SCALAR>::forceBefore( NodeId op_to_force, const NodeSet& ops_after ) {
-    for ( typename NodeSet::const_iterator iter = ops_after.begin();
-          iter != ops_after.end(); ++iter ) {
+    for ( typename NodeSet::const_iterator_safe iter = ops_after.beginSafe();
+          iter != ops_after.endSafe(); ++iter ) {
       if ( *iter != op_to_force ) {
         forceBefore( op_to_force, *iter );
       }
@@ -469,8 +469,8 @@ namespace gum {
     // if and only if it has only one parent
     const NodeSet& children = __dag.children( id );
 
-    for ( NodeSet::const_iterator iter = children.begin();
-          iter != children.end(); ++iter ) {
+    for ( NodeSet::const_iterator_safe iter = children.beginSafe();
+          iter != children.endSafe(); ++iter ) {
       NodeId child = *iter;
 
       if ( __dag.parents( child ).size() == 1 ) {

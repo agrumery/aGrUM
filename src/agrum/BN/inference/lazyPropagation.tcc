@@ -83,8 +83,8 @@ namespace gum {
       unsigned int elim_number = elim_order[node];
       const NodeSet& parents = dag.parents ( node );
 
-      for ( NodeSetIterator parent = parents.begin();
-            parent != parents.end(); ++parent ) {
+      for ( NodeSetIterator parent = parents.beginSafe();
+            parent != parents.endSafe(); ++parent ) {
         NodeId theParent = *parent;
 
         if ( elim_order[theParent] < elim_number ) {
@@ -118,9 +118,9 @@ namespace gum {
     // create empty messages on the separators
     __PotentialSet empty_set;
 
-    for ( const auto & edge : __JT->edges() ) {
-      __sep_potentials.insert ( Arc ( edge.first(), edge.second() ), empty_set );
-      __sep_potentials.insert ( Arc ( edge.second(), edge.first() ), empty_set );
+    for ( auto edge = __JT->edges().beginSafe(); edge != __JT->edges().endSafe(); ++edge ) {
+      __sep_potentials.insert ( Arc ( edge->first(), edge->second() ), empty_set );
+      __sep_potentials.insert ( Arc ( edge->second(), edge->first() ), empty_set );
     }
 
     // indicate that __collect and __diffusion passed through no clique yet
@@ -194,8 +194,8 @@ namespace gum {
     GUM_DESTRUCTOR ( LazyPropagation );
     // remove all the created potentials
 
-    for ( __PotentialSetIterator iter = __created_potentials.begin();
-          iter != __created_potentials.end(); ++iter )
+    for ( __PotentialSetIterator iter = __created_potentials.beginSafe();
+          iter != __created_potentials.endSafe(); ++iter )
       delete ( *iter );
 
     __created_potentials.clear();
@@ -221,7 +221,7 @@ namespace gum {
     // propagate this requirement to id's neighbours
     const NodeSet& nei = __JT->neighbours ( id );
 
-    for ( NodeSetIterator iter = nei.begin(); iter != nei.end(); ++iter ) {
+    for ( NodeSetIterator iter = nei.beginSafe(); iter != nei.endSafe(); ++iter ) {
       NodeId other = *iter;
 
       if ( other != from ) {
@@ -229,8 +229,8 @@ namespace gum {
         Arc sep ( other, id );
         __PotentialSet& del_pots = __sep_potentials[sep];
 
-        for ( __PotentialSetIterator iter2 = del_pots.begin();
-              iter2 != del_pots.end(); ++iter2 )
+        for ( __PotentialSetIterator iter2 = del_pots.beginSafe();
+              iter2 != del_pots.endSafe(); ++iter2 )
           delete *iter2;
 
         __sep_potentials[sep].clear();
@@ -239,8 +239,8 @@ namespace gum {
 
         del_pots = __sep_potentials[sep];
 
-        for ( __PotentialSetIterator iter2 = del_pots.begin();
-              iter2 != del_pots.end(); ++iter2 )
+        for ( __PotentialSetIterator iter2 = del_pots.beginSafe();
+              iter2 != del_pots.endSafe(); ++iter2 )
           delete *iter2;
 
         __sep_potentials[sep].clear();
@@ -264,10 +264,10 @@ namespace gum {
     // remove the potential from the list of evidence of the cliques
     // @todo : elle n'est pas que dans une seule clique ?
     // (donc utiliser pot_clique ligne 204)
-    for ( HashTableIterator< NodeId, List <const Potential<GUM_SCALAR>*> >
-          iter = __clique_evidence.begin();
-          iter != __clique_evidence.end(); ++iter ) {
-      iter->eraseByVal ( pot );
+    for ( HashTableIteratorSafe< NodeId, List <const Potential<GUM_SCALAR>*> >
+          iter = __clique_evidence.beginSafe();
+          iter != __clique_evidence.endSafe(); ++iter ) {
+      iter.val().eraseByVal ( pot );
     }
 
     // remove the potential from the list of evidence
@@ -290,35 +290,35 @@ namespace gum {
     this->_invalidateMarginals();
     // remove the evidence store in the cliques
 
-    for ( HashTableIterator<NodeId, List<const Potential<GUM_SCALAR>*> >
-          iter = __clique_evidence.begin();
-          iter != __clique_evidence.end(); ++iter )
-      iter->clear();
+    for ( HashTableIteratorSafe<NodeId, List<const Potential<GUM_SCALAR>*> >
+          iter = __clique_evidence.beginSafe();
+          iter != __clique_evidence.endSafe(); ++iter )
+      iter.val().clear();
 
     // remove the messages sent during a previous propagation
-    for ( typename Property< __PotentialSet >::onArcs::iterator iter =
-            __sep_potentials.begin();
-          iter != __sep_potentials.end(); ++iter )
-      iter->clear();
+    for ( typename Property< __PotentialSet >::onArcs::iterator_safe iter =
+            __sep_potentials.beginSafe();
+          iter != __sep_potentials.endSafe(); ++iter )
+      iter.val().clear();
 
     // remove actually all the evidence taken into account
     __evidences.clear();
 
     // remove from memory all the created potentials
-    for ( __PotentialSetIterator iter = __created_potentials.begin();
-          iter != __created_potentials.end(); ++iter )
+    for ( __PotentialSetIterator iter = __created_potentials.beginSafe();
+          iter != __created_potentials.endSafe(); ++iter )
       delete *iter;
 
     __created_potentials.clear();
 
     // indicate that, now, new inference is required
-    for ( HashTableIterator<NodeId, bool> iter = __collected_cliques.begin();
-          iter != __collected_cliques.end(); ++iter )
-      *iter = false;
+    for ( HashTableIteratorSafe<NodeId, bool> iter = __collected_cliques.beginSafe();
+          iter != __collected_cliques.endSafe(); ++iter )
+      iter.val() = false;
 
-    for ( HashTableIterator<NodeId, bool> iter = __diffused_cliques.begin();
-          iter != __diffused_cliques.end(); ++iter )
-      *iter = false;
+    for ( HashTableIteratorSafe<NodeId, bool> iter = __diffused_cliques.beginSafe();
+          iter != __diffused_cliques.endSafe(); ++iter )
+      iter.val() = false;
   }
 
 
@@ -330,8 +330,8 @@ namespace gum {
     this->_invalidateMarginals();
     List <const Potential<GUM_SCALAR>*> empty_list;
 
-    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = pot_list.cbegin();
-          iter != pot_list.cend(); ++iter ) {
+    for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter = pot_list.cbeginSafe();
+          iter != pot_list.cendSafe(); ++iter ) {
       // check that the evidence is given w.r.t.only one random variable
       const Sequence<const DiscreteVariable*>& vars = ( *iter )->variablesSequence();
 
@@ -344,8 +344,8 @@ namespace gum {
 
       NodeId var_id = this->bn().nodeId ( *var );
 
-      for ( __PotentialSetIterator iter2 = __evidences.begin();
-            iter2 != __evidences.end();
+      for ( __PotentialSetIterator iter2 = __evidences.beginSafe();
+            iter2 != __evidences.endSafe();
             ++iter2 ) {
         if ( var == ( *iter2 )->variablesSequence().atPos ( 0 ) ) {
           eraseEvidence ( *iter2 );
@@ -391,15 +391,15 @@ namespace gum {
     HashTable<const DiscreteVariable*, unsigned int>
     empty_hash ( 16 ); // @todo why 16 ?
 
-    for ( SetIterator<const DiscreteVariable*> iter = del_vars.begin();
-          iter != del_vars.end(); ++iter ) {
+    for ( SetIteratorSafe<const DiscreteVariable*> iter = del_vars.beginSafe();
+          iter != del_vars.endSafe(); ++iter ) {
       pot_per_var.insert ( *iter, empty_list );
       pot_vars_per_var.insert ( *iter, empty_hash );
     }
 
     // update properly pot_per_var and pot_vars_per_var
-    for ( __PotentialSetIterator iter = pot_list.begin();
-          iter != pot_list.end(); ++iter ) {
+    for ( __PotentialSetIterator iter = pot_list.beginSafe();
+          iter != pot_list.endSafe(); ++iter ) {
       const Sequence<const DiscreteVariable*>& vars =
         ( *iter )->variablesSequence();
 
@@ -420,16 +420,16 @@ namespace gum {
     }
 
     // initialize properly product_size
-    for ( HashTableIterator < const DiscreteVariable*,
+    for ( HashTableIteratorSafe < const DiscreteVariable*,
           HashTable<const DiscreteVariable*, unsigned int> >
-          iter = pot_vars_per_var.begin();
-          iter != pot_vars_per_var.end(); ++iter ) {
+          iter = pot_vars_per_var.beginSafe();
+          iter != pot_vars_per_var.endSafe(); ++iter ) {
       double size = 1.0;
-      HashTable<const DiscreteVariable*, unsigned int>& vars = *iter;
+      HashTable<const DiscreteVariable*, unsigned int>& vars = iter.val();
 
       if ( vars.size() ) {
-        for ( HashTableIterator<const DiscreteVariable*, unsigned int>
-              iter2 = vars.begin(); iter2 != vars.end(); ++iter2 )
+        for ( HashTableIteratorSafe<const DiscreteVariable*, unsigned int>
+              iter2 = vars.beginSafe(); iter2 != vars.endSafe(); ++iter2 )
           size *= iter2.key()->domainSize();
 
         product_size.insert ( size, iter.key() );
@@ -463,7 +463,7 @@ namespace gum {
         joint_to_delete = false;
       } else {
         /*
-          ListConstIterator<const Potential<GUM_SCALAR>*> iter = pot_to_mult.begin();
+          ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter = pot_to_mult.begin();
           joint = **iter;
 
           for ( ++iter; iter != pot_to_mult.end(); ++iter ) {
@@ -471,14 +471,14 @@ namespace gum {
           }*/
 
         if ( pot_to_mult.size() == 1 ) {
-          ListConstIterator<const Potential<GUM_SCALAR>*> iter = pot_to_mult.begin();
+          ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter = pot_to_mult.beginSafe();
           joint = const_cast<Potential<GUM_SCALAR>*> ( *iter );
           joint_to_delete = false;
         } else {
           Set<const Potential<GUM_SCALAR>*> set;
 
-          for ( ListConstIterator<const Potential<GUM_SCALAR>*>iter = pot_to_mult.begin();
-                iter != pot_to_mult.end(); ++iter ) {
+          for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*>iter = pot_to_mult.beginSafe();
+                iter != pot_to_mult.endSafe(); ++iter ) {
             set << *iter;
           }
 
@@ -517,8 +517,8 @@ namespace gum {
       // update accordingly product_size : when a variable is no more used by
       // any potential, divide product_size by its domain size
 
-      for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = pot_to_mult.begin();
-            iter != pot_to_mult.end(); ++iter ) {
+      for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter = pot_to_mult.beginSafe();
+            iter != pot_to_mult.endSafe(); ++iter ) {
         const Sequence<const DiscreteVariable*>& pot_vars =
           ( *iter )->variablesSequence();
 
@@ -596,8 +596,8 @@ namespace gum {
 
     // add to the list of potentials created during propagation the set of marginals
     // that appear in the final list of potentials returned after marginalization
-    for ( __PotentialSetIterator iter = tmp_marginals.begin();
-          iter != tmp_marginals.end(); ++iter ) {
+    for ( __PotentialSetIterator iter = tmp_marginals.beginSafe();
+          iter != tmp_marginals.endSafe(); ++iter ) {
       __created_potentials.insert ( *iter );
     }
   }
@@ -611,30 +611,30 @@ namespace gum {
     const List <const Potential<GUM_SCALAR>*>& clique_pot = __clique_potentials[from_id];
     __PotentialSet pot_list ( clique_pot.size() );
 
-    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = clique_pot.cbegin();
-          iter != clique_pot.cend(); ++iter )
+    for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter = clique_pot.cbeginSafe();
+          iter != clique_pot.cendSafe(); ++iter )
       pot_list.insert ( *iter );
 
     // add the evidence to the clique potentials
     const List <const Potential<GUM_SCALAR>*>& evidence_list =
       __clique_evidence[from_id];
 
-    for ( ListConstIterator <const Potential<GUM_SCALAR>*> iter =
-            evidence_list.cbegin(); iter != evidence_list.cend(); ++iter )
+    for ( ListConstIteratorSafe <const Potential<GUM_SCALAR>*> iter =
+            evidence_list.cbeginSafe(); iter != evidence_list.cendSafe(); ++iter )
       pot_list.insert ( *iter );
 
     // add the messages sent by adjacent nodes to from_id
     const NodeSet& nei = __JT->neighbours ( from_id );
 
-    for ( NodeSetIterator iter = nei.begin(); iter != nei.end(); ++iter ) {
+    for ( NodeSetIterator iter = nei.beginSafe(); iter != nei.endSafe(); ++iter ) {
       NodeId other = *iter;
 
       if ( other != to_id ) {
         Arc sep ( other, from_id );
         const __PotentialSet& sep_pot_list = __sep_potentials[sep];
 
-        for ( __PotentialSetIterator iter2 = sep_pot_list.begin();
-              iter2 != sep_pot_list.end(); ++iter2 )
+        for ( __PotentialSetIterator iter2 = sep_pot_list.beginSafe();
+              iter2 != sep_pot_list.endSafe(); ++iter2 )
           pot_list.insert ( *iter2 );
       }
     }
@@ -646,8 +646,8 @@ namespace gum {
 
     Set<const DiscreteVariable*> del_vars ( from_clique.size() );
 
-    for ( NodeSetIterator iter = from_clique.begin();
-          iter != from_clique.end(); ++iter ) {
+    for ( NodeSetIterator iter = from_clique.beginSafe();
+          iter != from_clique.endSafe(); ++iter ) {
       if ( !separator.contains ( *iter ) )
         del_vars.insert ( & ( this->bn().variable ( *iter ) ) );
     }
@@ -669,8 +669,8 @@ namespace gum {
     __collected_cliques[id] = true;
     const NodeSet& neighbours = __JT->neighbours ( id );
 
-    for ( NodeSetIterator iter = neighbours.begin();
-          iter != neighbours.end(); ++iter ) {
+    for ( NodeSetIterator iter = neighbours.beginSafe();
+          iter != neighbours.endSafe(); ++iter ) {
       NodeId other = *iter;
 
       if ( other != from ) {
@@ -713,8 +713,8 @@ namespace gum {
     // #### TODO: make a more efficient inference using a stack of
     // of partial computations (see GONZALES, Mellouli, Mourali (2007))
 
-    for ( NodeSetIterator iter = neighbours.begin();
-          iter != neighbours.end(); ++iter ) {
+    for ( NodeSetIterator iter = neighbours.beginSafe();
+          iter != neighbours.endSafe(); ++iter ) {
       NodeId other = *iter;
 
       if ( other != from ) {
@@ -760,58 +760,58 @@ namespace gum {
 
     if ( force_inference ) {
       // remove all the separator potentials, if any
-      for ( typename Property< __PotentialSet >::onArcs::iterator
-            iter = __sep_potentials.begin();
-            iter != __sep_potentials.end(); ++iter )
-        iter->clear();
+      for ( typename Property< __PotentialSet >::onArcs::iterator_safe
+            iter = __sep_potentials.beginSafe();
+            iter != __sep_potentials.endSafe(); ++iter )
+        iter.val().clear();
 
-      for ( __PotentialSetIterator iter = __created_potentials.begin();
-            iter != __created_potentials.end(); ++iter )
+      for ( __PotentialSetIterator iter = __created_potentials.beginSafe();
+            iter != __created_potentials.endSafe(); ++iter )
         delete *iter;
 
       __created_potentials.clear();
 
       // indicate that __collect and __diffusion passed through no clique yet
-      for ( HashTableIterator<NodeId, bool> iter = __collected_cliques.begin();
-            iter != __collected_cliques.end(); ++iter )
-        *iter = false;
+      for ( HashTableIteratorSafe<NodeId, bool> iter = __collected_cliques.beginSafe();
+            iter != __collected_cliques.endSafe(); ++iter )
+        iter.val() = false;
 
-      for ( HashTableIterator<NodeId, bool> iter = __diffused_cliques.begin();
-            iter != __diffused_cliques.end(); ++iter )
-        *iter = false;
+      for ( HashTableIteratorSafe<NodeId, bool> iter = __diffused_cliques.beginSafe();
+            iter != __diffused_cliques.endSafe(); ++iter )
+        iter.val() = false;
     }
 
     // perform the __collect in all connected components of the junction tree
-    for ( HashTableIterator<NodeId, bool> iter = __collected_cliques.begin();
-          iter != __collected_cliques.end(); ++iter ) {
-      if ( *iter == false )
+    for ( HashTableIteratorSafe<NodeId, bool> iter = __collected_cliques.beginSafe();
+          iter != __collected_cliques.endSafe(); ++iter ) {
+      if ( iter.val() == false )
         __collect ( iter.key(), iter.key() );
     }
 
     /*
-      for ( NodeSet::const_iterator iter = __roots.begin();
-      iter != __roots.end(); ++iter ) {
+      for ( NodeSet::const_iterator_safe iter = __roots.beginSafe();
+      iter != __roots.endSafe(); ++iter ) {
       __collect( *iter, *iter );
       }
     */
 
     // perform the __diffusion in all connected components of the junction tree
-    for ( HashTableIterator<NodeId, bool> iter = __diffused_cliques.begin();
-          iter != __diffused_cliques.end(); ++iter ) {
-      if ( *iter == false )
+    for ( HashTableIteratorSafe<NodeId, bool> iter = __diffused_cliques.beginSafe();
+          iter != __diffused_cliques.endSafe(); ++iter ) {
+      if ( iter.val() == false )
         __diffusion ( iter.key(), iter.key() );
     }
 
     /*
-      for ( NodeSet::const_iterator iter = __roots.begin();
-      iter != __roots.end(); ++iter ) {
+      for ( NodeSet::const_iterator_safe iter = __roots.beginSafe();
+      iter != __roots.endSafe(); ++iter ) {
       __diffusion( *iter, *iter );
       }
     */
 
     // indicate that we performed the inference with root =
     // __collected_cliques.begin()
-    __last_collect_clique = __collected_cliques.begin().key();
+    __last_collect_clique = __collected_cliques.beginSafe().key();
 
     // ##### bug potentiel a virer : s'il y a plusieurs composantes connexes,
     // il faut plusieurs cliques de collecte
@@ -853,30 +853,30 @@ namespace gum {
     __PotentialSet pot_list ( clique_pot.size() +
                               __clique_evidence[myclique].size() );
 
-    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = clique_pot.cbegin();
-          iter != clique_pot.cend(); ++iter )
+    for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter = clique_pot.cbeginSafe();
+          iter != clique_pot.cendSafe(); ++iter )
       pot_list.insert ( *iter );
 
     // add the evidence to the clique potentials
     const List <const Potential<GUM_SCALAR>*>& evidence_list =
       __clique_evidence[myclique];
 
-    for ( ListConstIterator <const Potential<GUM_SCALAR>*> iter = evidence_list.cbegin();
-          iter != evidence_list.cend(); ++iter )
+    for ( ListConstIteratorSafe <const Potential<GUM_SCALAR>*> iter = evidence_list.cbeginSafe();
+          iter != evidence_list.cendSafe(); ++iter )
       pot_list.insert ( *iter );
 
     // add the messages sent by adjacent nodes to myclique
     const NodeSet& neighbours = __JT->neighbours ( myclique );
 
-    for ( NodeSetIterator iter = neighbours.begin();
-          iter != neighbours.end(); ++iter ) {
+    for ( NodeSetIterator iter = neighbours.beginSafe();
+          iter != neighbours.endSafe(); ++iter ) {
       NodeId other = *iter;
       Arc sep ( other, myclique );
       const __PotentialSet&
       sep_pot_list = __sep_potentials[sep];
 
-      for ( __PotentialSetIterator iter2 = sep_pot_list.begin();
-            iter2 != sep_pot_list.end(); ++iter2 )
+      for ( __PotentialSetIterator iter2 = sep_pot_list.beginSafe();
+            iter2 != sep_pot_list.endSafe(); ++iter2 )
         pot_list.insert ( *iter2 );
     }
 
@@ -885,8 +885,8 @@ namespace gum {
 
     Set<const DiscreteVariable*> del_vars ( nodes.size() );
 
-    for ( NodeSetIterator iter = nodes.begin();
-          iter != nodes.end(); ++iter ) {
+    for ( NodeSetIterator iter = nodes.beginSafe();
+          iter != nodes.endSafe(); ++iter ) {
       if ( *iter != id )
         del_vars.insert ( & ( this->bn().variable ( *iter ) ) );
     }
@@ -896,19 +896,19 @@ namespace gum {
     __marginalizeOut ( pot_list, del_vars );
 
     /*
-      __PotentialSetIterator iter = pot_list.begin();
+      __PotentialSetIterator iter = pot_list.beginSafe();
       marginal = **iter;
-      for ( ++iter; iter != pot_list.end(); ++iter )
+      for ( ++iter; iter != pot_list.endSafe(); ++iter )
       marginal.multiplicateBy( **iter );
     */
 
     if ( pot_list.size() == 1 ) {
-      __PotentialSetIterator iter = pot_list.begin();
+      __PotentialSetIterator iter = pot_list.beginSafe();
       marginal = **iter;
     } else {
       Set<const Potential<GUM_SCALAR>*> set;
 
-      for ( __PotentialSetIterator iter = pot_list.begin(); iter != pot_list.end(); ++iter )
+      for ( __PotentialSetIterator iter = pot_list.beginSafe(); iter != pot_list.endSafe(); ++iter )
         set << *iter;
 
       MultiDimCombinationDefault<GUM_SCALAR, Potential> fast_combination ( multiPotential );
@@ -935,8 +935,8 @@ namespace gum {
       // check whether the clique actually contains all of ids
       bool clique_ok = true;
 
-      for ( const auto node2 : ids ) {
-        if ( !clique.contains ( node2 ) ) {
+      for ( auto node2 = ids.beginSafe(); node2 != ids.endSafe(); ++node2 ) {
+        if ( !clique.contains ( *node2 ) ) {
           clique_ok = false;
           break;
         }
@@ -968,7 +968,7 @@ namespace gum {
 
     bool last_collect_clique_contains_id = true;
 
-    for (NodeSetIterator iter = ids.begin(); iter != ids.end(); ++iter) {
+    for (NodeSetIterator iter = ids.beginSafe(); iter != ids.endSafe(); ++iter) {
     if ( !clique_nodes.contains (*iter) ) {
     last_collect_clique_contains_id = false;
     break;
@@ -1001,30 +1001,30 @@ namespace gum {
     __PotentialSet pot_list ( clique_pot.size() +
                               __clique_evidence[myclique].size() );
 
-    for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = clique_pot.cbegin();
-          iter != clique_pot.cend(); ++iter )
+    for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter = clique_pot.cbeginSafe();
+          iter != clique_pot.cendSafe(); ++iter )
       pot_list.insert ( *iter );
 
     // add the evidence to the clique potentials
     const List <const Potential<GUM_SCALAR>*>& evidence_list =
       __clique_evidence[myclique];
 
-    for ( ListConstIterator <const Potential<GUM_SCALAR>*> iter = evidence_list.cbegin();
-          iter != evidence_list.cend(); ++iter )
+    for ( ListConstIteratorSafe <const Potential<GUM_SCALAR>*> iter = evidence_list.cbeginSafe();
+          iter != evidence_list.cendSafe(); ++iter )
       pot_list.insert ( *iter );
 
     // add the messages sent by adjacent nodes to myclique
     const NodeSet& neighbours = __JT->neighbours ( myclique );
 
-    for ( NodeSetIterator iter = neighbours.begin();
-          iter != neighbours.end(); ++iter ) {
+    for ( NodeSetIterator iter = neighbours.beginSafe();
+          iter != neighbours.endSafe(); ++iter ) {
       NodeId other = *iter;
       Arc sep ( other, myclique );
       const __PotentialSet&
       sep_pot_list = __sep_potentials[sep];
 
-      for ( __PotentialSetIterator iter2 = sep_pot_list.begin();
-            iter2 != sep_pot_list.end(); ++iter2 )
+      for ( __PotentialSetIterator iter2 = sep_pot_list.beginSafe();
+            iter2 != sep_pot_list.endSafe(); ++iter2 )
         pot_list.insert ( *iter2 );
     }
 
@@ -1033,8 +1033,8 @@ namespace gum {
 
     Set<const DiscreteVariable*> del_vars ( nodes.size() );
 
-    for ( NodeSetIterator iter = nodes.begin();
-          iter != nodes.end(); ++iter ) {
+    for ( NodeSetIterator iter = nodes.beginSafe();
+          iter != nodes.endSafe(); ++iter ) {
       if ( ! ids.contains ( *iter ) )
         del_vars.insert ( & ( this->bn().variable ( *iter ) ) );
     }
@@ -1044,18 +1044,18 @@ namespace gum {
     __marginalizeOut ( pot_list, del_vars );
 
     /*
-      __PotentialSetIterator iter = pot_list.begin();
+      __PotentialSetIterator iter = pot_list.beginSafe();
       marginal = **iter;
-      for ( ++iter; iter != pot_list.end(); ++iter )
+      for ( ++iter; iter != pot_list.endSafe(); ++iter )
       marginal.multiplicateBy( **iter );
     */
     if ( pot_list.size() == 1 ) {
-      __PotentialSetIterator iter = pot_list.begin();
+      __PotentialSetIterator iter = pot_list.beginSafe();
       marginal = **iter;
     } else {
       Set<const Potential<GUM_SCALAR>*> set;
 
-      for ( SetIterator<const Potential<GUM_SCALAR>*>iter = pot_list.begin(); iter != pot_list.end(); ++iter )
+      for ( SetIteratorSafe<const Potential<GUM_SCALAR>*>iter = pot_list.beginSafe(); iter != pot_list.endSafe(); ++iter )
         set << *iter;
 
       MultiDimCombinationDefault<GUM_SCALAR, Potential> fast_combination ( multiPotential );
@@ -1091,7 +1091,7 @@ namespace gum {
     // composante connexe et multiplier entre elle les probas P(e) obtenues sur
     // chaque composante. So un TODO a faire rapidement.
     Potential<GUM_SCALAR>* tmp = new Potential<GUM_SCALAR>();
-    Id id = __node_to_clique.begin().key();
+    Id id = __node_to_clique.beginSafe().key();
     __aPosterioriMarginal ( id, *tmp );
 
     GUM_SCALAR sum = 0;

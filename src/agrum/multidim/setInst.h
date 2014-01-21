@@ -568,8 +568,8 @@ namespace gum {
       static void assign_values( Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
                                  const SetInst& i, SetInst& j ) {
         try {
-          for ( Sequence<const DiscreteVariable*>::const_iterator iter = i.variablesSequence().begin();
-                iter != i.variablesSequence().end(); ++iter ) {
+          for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter = i.variablesSequence().beginSafe();
+                iter != i.variablesSequence().endSafe(); ++iter ) {
             j.chgVal( bij.second( *iter ), i.val( *iter ) );
           }
         } catch ( NotFound& ) {

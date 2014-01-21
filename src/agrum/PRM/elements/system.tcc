@@ -46,16 +46,16 @@ namespace gum {
       GUM_DESTRUCTOR ( System );
 
       for ( auto iter = begin(); iter != end(); ++iter ) {
-        delete *iter;
+        delete iter.val();
       }
 
-      for ( auto iter = __instanceMap.begin();
-            iter != __instanceMap.end(); ++iter ) {
-        delete *iter;
+      for ( auto iter = __instanceMap.beginSafe();
+            iter != __instanceMap.endSafe(); ++iter ) {
+        delete iter.val();
       }
 
-      for ( auto iter = __arrayMap.begin(); iter != __arrayMap.end(); ++iter ) {
-        delete iter->second;
+      for ( auto iter = __arrayMap.beginSafe(); iter != __arrayMap.endSafe(); ++iter ) {
+        delete iter.val().second;
       }
     }
 
@@ -120,12 +120,12 @@ namespace gum {
 
       // Adding nodes
       for ( System<GUM_SCALAR>::const_iterator iter = begin(); iter != end(); ++iter ) {
-        __groundAttr ( **iter, factory );
+        __groundAttr ( *( iter.val() ), factory );
       }
 
       // Adding arcs and filling CPTs
       for ( System<GUM_SCALAR>::const_iterator iter = begin(); iter != end(); ++iter ) {
-        __groundRef ( **iter, factory );
+        __groundRef ( *( iter.val() ), factory );
       }
     }
 
@@ -203,11 +203,11 @@ namespace gum {
     System<GUM_SCALAR>::__groundRef ( const Instance<GUM_SCALAR>& instance, BayesNetFactory<GUM_SCALAR>& factory ) const {
       for ( auto iter = instance.begin(); iter != instance.end(); ++iter ) {
         std::stringstream elt_name;
-        elt_name << instance.name() << "." << ( *iter )->safeName();
+        elt_name << instance.name() << "." << ( iter.val() )->safeName();
         factory.startParentsDeclaration ( elt_name.str() );
-        const NodeSet& parents = instance.type().dag().parents ( ( **iter ).id() );
+        const NodeSet& parents = instance.type().dag().parents ( ( *( iter.val() ) ).id() );
 
-        for ( NodeSetIterator arc = parents.begin(); arc != parents.end(); ++arc ) {
+        for ( NodeSetIterator arc = parents.beginSafe(); arc != parents.endSafe(); ++arc ) {
           switch ( instance.type().get ( *arc ).elt_type() ) {
             case ClassElement<GUM_SCALAR>::prm_aggregate:
             case ClassElement<GUM_SCALAR>::prm_attribute: {
@@ -222,7 +222,7 @@ namespace gum {
                 static_cast<const SlotChain<GUM_SCALAR>&> ( instance.type().get ( *arc ) ).lastElt().safeName();
               const Set<Instance<GUM_SCALAR>*>& refs = instance.getInstances ( *arc );
 
-              for ( auto iter = refs.begin(); iter != refs.end(); ++iter ) {
+              for ( auto iter = refs.beginSafe(); iter != refs.endSafe(); ++iter ) {
                 std::stringstream sBuff;
                 sBuff << ( *iter )->name() << "." << parent_name;
                 factory.addParent ( sBuff.str() );
@@ -239,8 +239,8 @@ namespace gum {
 
         // Checking if we need to ground the Potential (only for class level attributes since
         // aggregates Potentials are generated)
-        if ( ClassElement<GUM_SCALAR>::isAttribute ( instance.type().get ( ( **iter ).safeName() ) ) ) {
-          __groundPotential ( instance, **iter, factory );
+        if ( ClassElement<GUM_SCALAR>::isAttribute ( instance.type().get ( ( *( iter.val() ) ).safeName() ) ) ) {
+          __groundPotential ( instance, *( iter.val () ), factory );
         }
       }
     }
@@ -255,7 +255,7 @@ namespace gum {
       const DAG& dag = instance.type().dag();
       const NodeSet& parents = dag.parents ( attr.id() );
 
-      for ( NodeSetIterator parent = parents.begin(); parent != parents.end(); ++parent ) {
+      for ( NodeSetIterator parent = parents.beginSafe(); parent != parents.endSafe(); ++parent ) {
         switch ( instance.type().get ( *parent ).elt_type() ) {
           case ClassElement<GUM_SCALAR>::prm_aggregate:
           case ClassElement<GUM_SCALAR>::prm_attribute: {
@@ -348,7 +348,7 @@ namespace gum {
     void
     System<GUM_SCALAR>::instantiate() {
       for ( auto iter = begin(); iter != end(); ++iter ) {
-        ( **iter ).instantiate();
+        ( *( iter.val() ) ).instantiate();
       }
     }
 
@@ -440,25 +440,25 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     typename System<GUM_SCALAR>::iterator
-    System<GUM_SCALAR>::begin() { return __nodeIdMap.begin(); }
+    System<GUM_SCALAR>::begin() { return __nodeIdMap.beginSafe(); }
 
     template<typename GUM_SCALAR> INLINE
     const typename System<GUM_SCALAR>::iterator&
-    System<GUM_SCALAR>::end() { return __nodeIdMap.end(); }
+    System<GUM_SCALAR>::end() { return __nodeIdMap.endSafe(); }
 
     template<typename GUM_SCALAR> INLINE
     typename System<GUM_SCALAR>::const_iterator
-    System<GUM_SCALAR>::begin() const { return __nodeIdMap.begin(); }
+    System<GUM_SCALAR>::begin() const { return __nodeIdMap.beginSafe(); }
 
     template<typename GUM_SCALAR> INLINE
     const typename System<GUM_SCALAR>::const_iterator&
-    System<GUM_SCALAR>::end() const { return __nodeIdMap.end(); }
+    System<GUM_SCALAR>::end() const { return __nodeIdMap.endSafe(); }
 
     template<typename GUM_SCALAR> INLINE
     typename System<GUM_SCALAR>::array_iterator
     System<GUM_SCALAR>::begin ( const std::string& a ) {
       try {
-        return __arrayMap[a].second->begin();
+        return __arrayMap[a].second->beginSafe();
       } catch ( NotFound& ) {
         GUM_ERROR ( NotFound, "found no array matching the given name" );
       }
@@ -468,7 +468,7 @@ namespace gum {
     const typename System<GUM_SCALAR>::array_iterator&
     System<GUM_SCALAR>::end ( const std::string& a ) {
       try {
-        return __arrayMap[a].second->end();
+        return __arrayMap[a].second->endSafe();
       } catch ( NotFound& ) {
         GUM_ERROR ( NotFound, "found no array matching the given name" );
       }
@@ -478,7 +478,7 @@ namespace gum {
     typename System<GUM_SCALAR>::const_array_iterator
     System<GUM_SCALAR>::begin ( const std::string& a ) const {
       try {
-        return __arrayMap[a].second->begin();
+        return __arrayMap[a].second->beginSafe();
       } catch ( NotFound& ) {
         GUM_ERROR ( NotFound, "found no array matching the given name" );
       }
@@ -488,7 +488,7 @@ namespace gum {
     const typename System<GUM_SCALAR>::const_array_iterator&
     System<GUM_SCALAR>::end ( const std::string& a ) const {
       try {
-        return __arrayMap[a].second->end();
+        return __arrayMap[a].second->endSafe();
       } catch ( NotFound& ) {
         GUM_ERROR ( NotFound, "found no array matching the given name" );
       }

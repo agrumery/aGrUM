@@ -47,7 +47,7 @@ namespace gum {
 
     if ( ! __set.exists( instantiation_func_name ) ) {
       theset = __set.insert( instantiation_func_name,
-                             new PartialInstantiationSet );
+                             new PartialInstantiationSet ).second;
 #ifndef NDEBUG
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the PartialInstantiationRegister4MultiDim
@@ -134,9 +134,9 @@ namespace gum {
   template<typename GUM_SCALAR>
   PartialInstantiationRegister4MultiDim<GUM_SCALAR>::~PartialInstantiationRegister4MultiDim() {
     // remove all the sets
-    for ( typename HashTable<std::string, PartialInstantiationSet*>::iterator
-          iter = __set.begin(); iter != __set.end(); ++iter )
-      delete *iter;
+    for ( typename HashTable<std::string, PartialInstantiationSet*>::iterator_safe
+          iter = __set.beginSafe(); iter != __set.endSafe(); ++iter )
+      delete iter.val();
   }
 
 

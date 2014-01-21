@@ -25,6 +25,7 @@
 #include <sstream>
 #include <limits>
 #include <cmath>
+#include "graphElements.h"
 #include <agrum/graphs/simplicialSet.h>
 
 #ifdef GUM_NO_INLINE
@@ -170,8 +171,8 @@ namespace gum {
       unsigned int nb_almost = ( ( nb_adj - 1 ) * ( nb_adj - 2 ) ) / 2;
       NodeId node1 = 0;
 
-      for ( NodeSetIterator iterEdge = nei.begin();
-            iterEdge != nei.end(); ++iterEdge ) {
+      for ( NodeSetIterator iterEdge = nei.beginSafe();
+            iterEdge != nei.endSafe(); ++iterEdge ) {
         node1 = *iterEdge;
 
         if ( nb_almost == nb - __nb_triangles[ Edge ( *iterEdge, id )] ) {
@@ -200,7 +201,7 @@ namespace gum {
 
       // update the number of triangles of the edges and keep track of the
       // nodes involved.
-      for ( NodeSetIterator iter2 = nei.begin(); iter2 != nei.end(); ++iter2 ) {
+      for ( NodeSetIterator iter2 = nei.beginSafe(); iter2 != nei.endSafe(); ++iter2 ) {
         NodeId node2 = *iter2;
 
         if ( ( node2 != node1 ) && !__graph->existsEdge ( node1, node2 ) ) {
@@ -229,8 +230,8 @@ namespace gum {
                __graph->neighbours ( node2 ).size() ) {
             const NodeSet& nei1 = __graph->neighbours ( node1 );
 
-            for ( NodeSetIterator iterEdge = nei1.begin();
-                  iterEdge != nei1.end(); ++iterEdge )
+            for ( NodeSetIterator iterEdge = nei1.beginSafe();
+                  iterEdge != nei1.endSafe(); ++iterEdge )
               if ( __graph->existsEdge ( *iterEdge, node2 ) ) {
                 // here iter->other (node1) is a neighbour of node1 and node2
                 // hence there is a new triangle to be taken into account:
@@ -248,8 +249,8 @@ namespace gum {
           } else {
             const NodeSet& nei2 = __graph->neighbours ( node2 );
 
-            for ( NodeSetIterator iterEdge = nei2.begin();
-                  iterEdge != nei2.end(); ++iterEdge )
+            for ( NodeSetIterator iterEdge = nei2.beginSafe();
+                  iterEdge != nei2.endSafe(); ++iterEdge )
               if ( __graph->existsEdge ( *iterEdge, node1 ) ) {
                 // here iter->other (node2) is a neighbour of node1 and node2
                 // hence there is a new triangle to be taken into account:
@@ -283,7 +284,7 @@ namespace gum {
       NodeSetIterator iterEdge2;
       const NodeSet& nei = __graph->neighbours ( id );
 
-      for ( NodeSetIterator iter1 = nei.begin(); iter1 != nei.end(); ++iter1 ) {
+      for ( NodeSetIterator iter1 = nei.beginSafe(); iter1 != nei.endSafe(); ++iter1 ) {
         NodeId node1 = *iter1;
         float log_modal_node1 = ( *__log_modalities ) [node1];
         float& __log_weights_node1 = ( *__log_weights ) [node1];
@@ -292,7 +293,7 @@ namespace gum {
 
         iterEdge2 = iter1;
 
-        for ( ++iterEdge2; iterEdge2 != nei.end(); ++iterEdge2 ) {
+        for ( ++iterEdge2; iterEdge2 != nei.endSafe(); ++iterEdge2 ) {
           NodeId node2 = *iterEdge2;
           Edge e1_2 ( node1, node2 );
 
@@ -319,8 +320,8 @@ namespace gum {
                  __graph->neighbours ( node2 ).size() ) {
               const NodeSet& nei1 = __graph->neighbours ( node1 );
 
-              for ( NodeSetIterator iterEdge = nei1.begin();
-                    iterEdge != nei1.end(); ++iterEdge )
+              for ( NodeSetIterator iterEdge = nei1.beginSafe();
+                    iterEdge != nei1.endSafe(); ++iterEdge )
                 if ( __graph->existsEdge ( *iterEdge, node2 ) ) {
                   // here iterEdge->other (node1) is a neighbour of
                   // both node1 and node2
@@ -337,8 +338,8 @@ namespace gum {
             } else {
               const NodeSet& nei2 = __graph->neighbours ( node2 );
 
-              for ( NodeSetIterator iterEdge = nei2.begin();
-                    iterEdge != nei2.end(); ++iterEdge ) {
+              for ( NodeSetIterator iterEdge = nei2.beginSafe();
+                    iterEdge != nei2.endSafe(); ++iterEdge ) {
                 if ( __graph->existsEdge ( *iterEdge, node1 ) ) {
                   // here iterEdge->other (node2) is a neighbour of
                   // both node1 and node2
@@ -417,7 +418,7 @@ namespace gum {
     float log_modal_id = ( *__log_modalities ) [id];
     NodeSetIterator iter2;
 
-    for ( NodeSetIterator iter1 = nei.begin(); iter1 != nei.end(); ++iter1 ) {
+    for ( NodeSetIterator iter1 = nei.beginSafe(); iter1 != nei.endSafe(); ++iter1 ) {
       NodeId node1 = *iter1;
       __nb_adjacent_neighbours[node1] -= nb_adj - 1;
       ( *__log_weights ) [node1] -= log_modal_id;
@@ -429,7 +430,7 @@ namespace gum {
 
       iter2 = iter1;
 
-      for ( ++iter2; iter2 != nei.end(); ++iter2 ) {
+      for ( ++iter2; iter2 != nei.endSafe(); ++iter2 ) {
         NodeId node2 = *iter2;
         Edge e1_2 ( node1, node2 );
         --__nb_triangles[e1_2];
@@ -475,7 +476,7 @@ namespace gum {
     // remove the node and its adjacent edges
     const NodeSet& nei = __graph->neighbours ( id );
 
-    for ( NodeSetIterator iter = nei.begin(); iter != nei.end(); ++iter )
+    for ( NodeSetIterator iter = nei.beginSafe(); iter != nei.endSafe(); ++iter )
       eraseEdge ( Edge ( *iter, id ) );
 
     switch ( __containing_list[id] ) {
@@ -528,7 +529,7 @@ namespace gum {
     unsigned int nb_neigh_n1_n2 = 0;
     const NodeSet& nei1 = __graph->neighbours ( node1 );
 
-    for ( NodeSetIterator iter1 = nei1.begin(); iter1 != nei1.end(); ++iter1 ) {
+    for ( NodeSetIterator iter1 = nei1.beginSafe(); iter1 != nei1.endSafe(); ++iter1 ) {
       NodeId othernode = *iter1;
 
       if ( __graph->existsEdge ( node2, othernode ) ) {
@@ -572,7 +573,7 @@ namespace gum {
 
     const NodeSet& nei1 = __graph->neighbours ( node1 );
 
-    for ( NodeSetIterator iter1 = nei1.begin(); iter1 != nei1.end(); ++iter1 ) {
+    for ( NodeSetIterator iter1 = nei1.beginSafe(); iter1 != nei1.endSafe(); ++iter1 ) {
       NodeId othernode = *iter1;
 
       if ( __graph->existsEdge ( node2, othernode ) ) {
@@ -641,7 +642,7 @@ namespace gum {
     unsigned int nb_almost = ( ( nb_adj - 1 ) * ( nb_adj - 2 ) ) / 2;
     unsigned int nb = __nb_adjacent_neighbours[id];
 
-    for ( NodeSetIterator iter = nei.begin(); iter != nei.end(); ++iter ) {
+    for ( NodeSetIterator iter = nei.beginSafe(); iter != nei.endSafe(); ++iter ) {
       if ( nb_almost == nb - __nb_triangles[Edge ( *iter, id )] ) {
         // the node is an almost simplicial node
         if ( belong != __Belong::ALMOST_SIMPLICIAL ) {
@@ -698,8 +699,8 @@ namespace gum {
 
     // update the elements currently in the almost simplicial list that may
     // now be contained in another list
-    for ( NodeSetIterator iter = __changed_status.begin();
-          iter != __changed_status.end(); ++iter ) {
+    for ( NodeSetIterator iter = __changed_status.beginSafe();
+          iter != __changed_status.endSafe(); ++iter ) {
       if ( __almost_simplicial_nodes.contains ( *iter ) )
         __updateList ( *iter );
     }
@@ -711,8 +712,8 @@ namespace gum {
 
     // if the almost simplicial list does not contain any node that has a low
     // weight, check if a node can enter the almost simplicial list
-    for ( NodeSetIterator iter = __changed_status.begin();
-          iter != __changed_status.end(); ++iter ) {
+    for ( NodeSetIterator iter = __changed_status.beginSafe();
+          iter != __changed_status.endSafe(); ++iter ) {
       __updateList ( *iter );
 
       if ( !__almost_simplicial_nodes.empty() &&
@@ -729,8 +730,8 @@ namespace gum {
   bool SimplicialSet::hasSimplicialNode() {
     // update the elements currently in the simplicial list that may
     // now be contained in another list
-    for ( NodeSetIterator iter = __changed_status.begin();
-          iter != __changed_status.end(); ++iter ) {
+    for ( NodeSetIterator iter = __changed_status.beginSafe();
+          iter != __changed_status.endSafe(); ++iter ) {
       if ( __simplicial_nodes.contains ( *iter ) )
         __updateList ( *iter );
     }
@@ -741,8 +742,8 @@ namespace gum {
 
     // if the simplicial list does not contain any node, check if a
     // node can enter the simplicial list
-    for ( NodeSetIterator iter = __changed_status.begin();
-          iter != __changed_status.end(); ++iter ) {
+    for ( NodeSetIterator iter = __changed_status.beginSafe();
+          iter != __changed_status.endSafe(); ++iter ) {
       __updateList ( *iter );
 
       if ( ! __simplicial_nodes.empty() )
@@ -761,8 +762,8 @@ namespace gum {
 
     // update the elements currently in the quasi simplicial list that may
     // now be contained in another list
-    for ( NodeSetIterator iter = __changed_status.begin();
-          iter != __changed_status.end(); ++iter ) {
+    for ( NodeSetIterator iter = __changed_status.beginSafe();
+          iter != __changed_status.endSafe(); ++iter ) {
       if ( __quasi_simplicial_nodes.contains ( *iter ) )
         __updateList ( *iter );
     }
@@ -774,8 +775,8 @@ namespace gum {
 
     // if the quasi simplicial list does not contain any node that has a low
     // weight, check if a node can enter the quasi simplicial list
-    for ( NodeSetIterator iter = __changed_status.begin();
-          iter != __changed_status.end(); ++iter ) {
+    for ( NodeSetIterator iter = __changed_status.beginSafe();
+          iter != __changed_status.endSafe(); ++iter ) {
       __updateList ( *iter );
 
       if ( !__quasi_simplicial_nodes.empty() &&
@@ -804,7 +805,7 @@ namespace gum {
 
       const NodeSet& edges = __graph->neighbours ( nodeX );
 
-      for ( NodeSetIterator iterY = edges.begin() ; iterY != edges.end(); ++iterY )
+      for ( NodeSetIterator iterY = edges.beginSafe() ; iterY != edges.endSafe(); ++iterY )
         log_weight += ( *__log_modalities ) [*iterY];
 
       __log_weights->insert ( nodeX, log_weight );
@@ -831,7 +832,7 @@ namespace gum {
 
       const NodeSet& nei = __graph->neighbours ( nodeX );
 
-      for ( NodeSetIterator iterY = nei.begin(); iterY != nei.end(); ++iterY )
+      for ( NodeSetIterator iterY = nei.beginSafe(); iterY != nei.endSafe(); ++iterY )
         if ( *iterY > nodeX ) {
           NodeId node_idY = *iterY;
           unsigned int& nb_adjacent_neighbours_idY =
@@ -839,7 +840,7 @@ namespace gum {
 
           iterZ = iterY;
 
-          for ( ++iterZ; iterZ != nei.end(); ++iterZ )
+          for ( ++iterZ; iterZ != nei.endSafe(); ++iterZ )
             if ( ( *iterZ > nodeX ) &&
                  __graph->existsEdge ( node_idY, *iterZ ) ) {
               NodeId node_idZ = *iterZ;

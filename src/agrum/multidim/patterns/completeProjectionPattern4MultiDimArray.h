@@ -138,8 +138,8 @@ namespace gum {
                 const Sequence<const DiscreteVariable*>& table_vars =
                   table->variablesSequence();
 
-                for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-                        table_vars.begin(); iter != table_vars.end(); ++iter ) {
+                for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+                        table_vars.beginSafe(); iter != table_vars.endSafe(); ++iter ) {
                   instantiation->add( **iter );
                 }
 

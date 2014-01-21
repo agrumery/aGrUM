@@ -197,8 +197,8 @@ namespace gum_tests {
         const gum::Sequence< const gum::DiscreteVariable*>&
         vars = inst1.variablesSequence();
 
-        for ( gum::Sequence< const gum::DiscreteVariable*>::const_iterator
-              iter = vars.begin(); iter != vars.end(); ++iter ) {
+        for ( gum::Sequence< const gum::DiscreteVariable*>::const_iterator_safe
+              iter = vars.beginSafe(); iter != vars.endSafe(); ++iter ) {
           if ( inst1.val( **iter ) != inst2.val( **iter ) ) {
             return false;
           }

@@ -30,10 +30,12 @@
 #ifndef GUM_MULTI_DIM_ICI_MODEL_H
 #define GUM_MULTI_DIM_ICI_MODEL_H
 
+#include <agrum/core/bijection.h>
 #include <agrum/multidim/multiDimReadOnly.h>
 
 
 namespace gum {
+  
 
   /* =========================================================================== */
   /* =========================================================================== */

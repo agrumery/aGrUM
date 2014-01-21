@@ -87,8 +87,8 @@ namespace gum {
       // check the neighbours //////////////////////////////////////////////
       const NodeSet& set_neighbour = neighbours( current );
 
-      for ( NodeSetIterator ite=set_neighbour.begin();
-            ite!=set_neighbour.end(); ++ite ) {
+      for ( NodeSetIterator ite=set_neighbour.beginSafe ();
+            ite!=set_neighbour.endSafe (); ++ite ) {
         NodeId new_one = *ite;
 
         if ( mark.exists( new_one ) )  // if the node has already been visited
@@ -113,7 +113,7 @@ namespace gum {
       // check the parents  //////////////////////////////////////////////
       const NodeSet& set = parents( current );
 
-      for ( NodeSetIterator ite=set.begin(); ite!=set.end(); ++ite ) {
+      for ( NodeSetIterator ite=set.beginSafe (); ite!=set.endSafe (); ++ite ) {
         NodeId new_one = *ite;
 
         if ( mark.exists( new_one ) ) // if this node is already marked, do not
@@ -158,8 +158,8 @@ namespace gum {
       // check the neighbours //////////////////////////////////////////////
       const NodeSet& set_neighbour=neighbours( current );
 
-      for ( NodeSetIterator ite=set_neighbour.begin();
-            ite!=set_neighbour.end(); ++ite ) {
+      for ( NodeSetIterator ite=set_neighbour.beginSafe ();
+            ite!=set_neighbour.endSafe (); ++ite ) {
         NodeId new_one = *ite;
 
         if ( mark.exists( new_one ) )  // if the node has already been visited
@@ -184,7 +184,7 @@ namespace gum {
       // check the parents //////////////////////////////////////////////
       const NodeSet& set_parent = parents( current );
 
-      for ( NodeSetIterator ite=set_parent.begin(); ite!=set_parent.end(); ++ite ) {
+      for ( NodeSetIterator ite=set_parent.beginSafe (); ite!=set_parent.endSafe (); ++ite ) {
         NodeId new_one = *ite;
 
         if ( mark.exists( new_one ) )  // the node has already been visited
@@ -209,8 +209,8 @@ namespace gum {
       // check the children //////////////////////////////////////////////
       const NodeSet& set_children = children( current );
 
-      for ( NodeSetIterator ite=set_children.begin();
-            ite!=set_children.end(); ++ite ) {
+      for ( NodeSetIterator ite=set_children.beginSafe ();
+            ite!=set_children.endSafe (); ++ite ) {
         NodeId new_one = *ite;
 
         if ( mark.exists( new_one ) )  // the node has already been visited

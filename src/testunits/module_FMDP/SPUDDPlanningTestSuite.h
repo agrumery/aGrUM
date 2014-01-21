@@ -203,8 +203,8 @@ namespace gum_tests {
 //         //           TS_GUM_ASSERT_THROWS_NOTHING( infPrime.makePlanning(  ) );
 //
 //                   gum::Bijection< const DiscreteVariable*, const DiscreteVariable* > reassignement;
-//                   for( gum::SequenceIterator< const DiscreteVariable* > varIter = res->variablesSequence().begin(); varIter != res->variablesSequence().end(); ++varIter ){
-//                       for( gum::SequenceIterator< const DiscreteVariable* > varPrimeIter = resPrime->variablesSequence().begin(); varPrimeIter != resPrime->variablesSequence().end(); ++varPrimeIter){
+//                   for( gum::SequenceIteratorSafe< const DiscreteVariable* > varIter = res->variablesSequence().begin(); varIter != res->variablesSequence().end(); ++varIter ){
+//                       for( gum::SequenceIteratorSafe< const DiscreteVariable* > varPrimeIter = resPrime->variablesSequence().begin(); varPrimeIter != resPrime->variablesSequence().end(); ++varPrimeIter){
 //                             if( **varIter == **varPrimeIter ){
 //                                 reassignement.insert( *varPrimeIter, *varIter );
 //                                 break;
@@ -217,7 +217,7 @@ namespace gum_tests {
 //
 //                   gum::MultiDimDecisionDiagramBase<double>* comparisonPrime = gum::subtract2MultiDimDecisionDiagrams( res,  comparableResPrime );
 //                     double gapPrime = 0;
-//                     for( gum::BijectionIterator< NodeId, double > valIter = comparisonPrime->valuesMap().begin(); valIter != comparisonPrime->valuesMap().end(); ++valIter )
+//                     for( gum::BijectionIteratorSafe< NodeId, double > valIter = comparisonPrime->valuesMap().begin(); valIter != comparisonPrime->valuesMap().end(); ++valIter )
 //                         if( gapPrime < fabs( valIter.second() ) )
 //                             gapPrime = fabs( valIter.second() );
 //                   std::cout << " ------------------------------- Resultat : " << gapPrime  << std::endl ;

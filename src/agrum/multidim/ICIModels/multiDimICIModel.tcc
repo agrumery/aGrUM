@@ -58,18 +58,17 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   MultiDimICIModel<GUM_SCALAR>::MultiDimICIModel(
-    const Bijection < const DiscreteVariable*,
-    const DiscreteVariable* > &bij,
+    const Bijection < const DiscreteVariable*, const DiscreteVariable* > &bij,
     const MultiDimICIModel<GUM_SCALAR>& from ) : MultiDimReadOnly<GUM_SCALAR>() {
     GUM_CONSTRUCTOR( MultiDimICIModel );
     __default_weight = from.__default_weight;
     __external_weight = from.__external_weight;
 
-    for ( HashTableConstIterator< const DiscreteVariable*, GUM_SCALAR > iter = from.__causal_weights.begin(); iter != from.__causal_weights.end(); ++iter ) {
+    for ( HashTableConstIteratorSafe< const DiscreteVariable*, GUM_SCALAR > iter = from.__causal_weights.beginSafe(); iter != from.__causal_weights.endSafe(); ++iter ) {
       try {
-        causalWeight( * ( bij.first( iter.key() ) ), *iter );
+        causalWeight( * ( bij.first( iter.key() ) ), iter.val () );
       } catch ( NotFound& ) {
-        causalWeight( * ( iter.key() ), *iter );
+        causalWeight( * ( iter.key() ), iter.val () );
       }
     }
   }

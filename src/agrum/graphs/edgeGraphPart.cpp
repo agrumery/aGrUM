@@ -28,6 +28,7 @@
 #ifdef GUM_NO_INLINE
 #include <agrum/graphs/edgeGraphPart.inl>
 #endif //GUM_NOINLINE
+#include "graphElements.h"
 
 
 namespace gum {
@@ -49,16 +50,16 @@ namespace gum {
     const NodeProperty<NodeSet*>& neigh = s.__neighbours;
     __neighbours.resize( neigh.capacity() );
 
-    for ( NodeProperty<NodeSet*>::const_iterator iter = neigh.begin();
-          iter != neigh.end(); ++iter ) {
-      NodeSet* newneigh = new NodeSet( **iter );
+    for ( NodeProperty<NodeSet*>::const_iterator_safe iter = neigh.beginSafe();
+          iter != neigh.endSafe(); ++iter ) {
+      NodeSet* newneigh = new NodeSet( *( iter.val () ) );
       __neighbours.insert( iter.key(), newneigh );
     }
 
     // send signals to indicate that there are new edges
     if ( onEdgeAdded.hasListener() ) {
-      for ( EdgeSetIterator iter = __edges.begin();
-            iter != __edges.end(); ++iter ) {
+      for ( EdgeSetIterator iter = __edges.beginSafe();
+            iter != __edges.endSafe(); ++iter ) {
         GUM_EMIT2( onEdgeAdded, iter->first(), iter->second() );
       }
     }
@@ -73,9 +74,9 @@ namespace gum {
 
 
   void EdgeGraphPart::clearEdges() {
-    for ( NodeProperty<NodeSet*>::const_iterator iter = __neighbours.begin();
-          iter != __neighbours.end(); ++iter ) {
-      delete *iter;
+    for ( NodeProperty<NodeSet*>::const_iterator_safe iter = __neighbours.beginSafe();
+          iter != __neighbours.endSafe(); ++iter ) {
+      delete iter.val ();
     }
 
     __neighbours.clear();
@@ -85,7 +86,7 @@ namespace gum {
 
       __edges.clear();
 
-      for ( EdgeSetIterator iter = tmp.begin(); iter != tmp.end(); ++iter )
+      for ( EdgeSetIterator iter = tmp.beginSafe(); iter != tmp.endSafe(); ++iter )
         GUM_EMIT2( onEdgeDeleted, iter->first(), iter->second() );
     } else {
       __edges.clear();
@@ -104,15 +105,15 @@ namespace gum {
       const NodeProperty<NodeSet*>& neigh = s.__neighbours;
       __neighbours.resize( neigh.capacity() );
 
-      for ( NodeProperty<NodeSet*>::const_iterator iter = neigh.begin();
-            iter != neigh.end(); ++iter ) {
-        NodeSet* newneigh = new NodeSet( **iter );
+      for ( NodeProperty<NodeSet*>::const_iterator_safe iter = neigh.beginSafe();
+            iter != neigh.endSafe(); ++iter ) {
+        NodeSet* newneigh = new NodeSet( *( iter.val () ) );
         __neighbours.insert( iter.key(), newneigh );
       }
 
       if ( onEdgeAdded.hasListener() ) {
-        for ( EdgeSetIterator iter = __edges.begin();
-              iter != __edges.end(); ++iter ) {
+        for ( EdgeSetIterator iter = __edges.beginSafe();
+              iter != __edges.endSafe(); ++iter ) {
           GUM_EMIT2( onEdgeAdded, iter->first(), iter->second() );
         }
       }
@@ -127,7 +128,7 @@ namespace gum {
     bool first = true;
     s << "{";
 
-    for ( EdgeSetIterator it = __edges.begin(); it != __edges.end(); ++it ) {
+    for ( EdgeSetIterator it = __edges.beginSafe(); it != __edges.endSafe(); ++it ) {
       if ( first ) {
         first = false;
       } else {
@@ -162,7 +163,7 @@ namespace gum {
       // check the neighbour //////////////////////////////////////////////
       const NodeSet& set = neighbours( current );
 
-      for ( NodeSetIterator ite = set.begin(); ite != set.end(); ++ite ) {
+      for ( NodeSetIterator ite = set.beginSafe(); ite != set.endSafe(); ++ite ) {
         NodeId new_one = *ite;
 
         if ( mark.exists( new_one ) ) // if this node is already marked, stop

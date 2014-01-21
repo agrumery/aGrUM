@@ -214,7 +214,7 @@ namespace gum {
     // if so, we'll return that node id
     if ( _var2NodeIdMap.exists ( var ) ) {
 
-      for ( ListConstIterator< NodeId > iterNodeList = _var2NodeIdMap[ var ]->begin(); iterNodeList != _var2NodeIdMap[ var ]->end(); ++iterNodeList ) {
+      for ( ListConstIteratorSafe< NodeId > iterNodeList = _var2NodeIdMap[ var ]->beginSafe(); iterNodeList != _var2NodeIdMap[ var ]->endSafe(); ++iterNodeList ) {
         // GUM_TRACE( "\t Noeud observé : " << *iterNodeList);
         bool thesame = true;
 
@@ -330,7 +330,7 @@ namespace gum {
 
     const NodeSet& parents = _model.parents ( n );
 
-    for ( NodeSetIterator parentIter = parents.begin(); parentIter != parents.end(); ++parentIter ) {
+    for ( NodeSetIterator parentIter = parents.beginSafe(); parentIter != parents.endSafe(); ++parentIter ) {
       for ( std::vector< NodeId >::iterator iter = _arcMap[*parentIter]->begin(); iter != _arcMap[*parentIter]->end(); ++iter )
         if ( *iter == n )
           *iter = 0;
@@ -600,7 +600,7 @@ namespace gum {
 
     List<NodeId>* yNodes = new List<NodeId>(), *xNodes = new List<NodeId>();
 
-    for ( ListIterator< NodeId > nodeIter = _var2NodeIdMap[x]->begin(); nodeIter != _var2NodeIdMap[x]->end(); ++nodeIter ) {
+    for ( ListIteratorSafe< NodeId > nodeIter = _var2NodeIdMap[x]->beginSafe(); nodeIter != _var2NodeIdMap[x]->endSafe(); ++nodeIter ) {
 
       std::vector<NodeId>* sonsMap = new std::vector<NodeId> ( y->domainSize(), 0 );
 
@@ -654,7 +654,7 @@ namespace gum {
           bool existSame = false;
           NodeId sameSon = 0;
 
-          for ( ListIterator<NodeId> sonIter = xNodes->begin(); sonIter != xNodes->end(); ++sonIter ) {
+          for ( ListIteratorSafe<NodeId> sonIter = xNodes->beginSafe(); sonIter != xNodes->endSafe(); ++sonIter ) {
             bool thesame = true;
 
             for ( std::vector<NodeId>::iterator iterArcMap = grandSonsMap->begin(); iterArcMap != grandSonsMap->end(); ++iterArcMap )
@@ -710,7 +710,7 @@ namespace gum {
         bool existSame = false;
         NodeId sameNode = 0;
 
-        for ( ListIterator<NodeId> newNodeIter = yNodes->begin(); newNodeIter != yNodes->end(); ++newNodeIter ) {
+        for ( ListIteratorSafe<NodeId> newNodeIter = yNodes->beginSafe(); newNodeIter != yNodes->endSafe(); ++newNodeIter ) {
           bool thesame = true;
 
           for ( std::vector<NodeId>::iterator iterArcMap = sonsMap->begin(); iterArcMap != sonsMap->end(); ++iterArcMap )
@@ -745,7 +745,7 @@ namespace gum {
       _defaultArcMap.erase ( *nodeIter );
       _varMap.erase ( *nodeIter );
 
-      for ( NodeSetIterator parentIter = _model.parents ( *nodeIter ).begin(); parentIter != _model.parents ( *nodeIter ).end(); ++parentIter ) {
+      for ( NodeSetIterator parentIter = _model.parents ( *nodeIter ).beginSafe(); parentIter != _model.parents ( *nodeIter ).endSafe(); ++parentIter ) {
         _model.insertArc ( *parentIter, replacingNode );
 
         std::vector<NodeId>* newSonMap = new std::vector<NodeId> ( _arcMap[*parentIter]->size(), 0 );
@@ -772,7 +772,7 @@ namespace gum {
 
     }
 
-    for ( ListIterator< NodeId > nodeIter = _var2NodeIdMap[y]->begin(); nodeIter != _var2NodeIdMap[y]->end(); ++nodeIter ) {
+    for ( ListIteratorSafe< NodeId > nodeIter = _var2NodeIdMap[y]->beginSafe(); nodeIter != _var2NodeIdMap[y]->endSafe(); ++nodeIter ) {
       if ( !_model.parents ( *nodeIter ).empty() ) {
         yNodes->insert ( *nodeIter );
       } else {
@@ -816,13 +816,13 @@ namespace gum {
     _model.clear();
     _model.insertNode();
 
-    for ( HashTableIterator< const DiscreteVariable*, List<NodeId>* > iter = _var2NodeIdMap.begin(); iter != _var2NodeIdMap.end(); ++iter )
-      delete *iter;
+    for ( HashTableIteratorSafe< const DiscreteVariable*, List<NodeId>* > iter = _var2NodeIdMap.beginSafe(); iter != _var2NodeIdMap.endSafe(); ++iter )
+      delete iter.val();
 
     _var2NodeIdMap.clear();
 
-    for ( HashTableIterator< const DiscreteVariable*, std::vector<Idx>* > iter = _varUsedModalitiesMap.begin(); iter != _varUsedModalitiesMap.end(); ++iter )
-      delete *iter;
+    for ( HashTableIteratorSafe< const DiscreteVariable*, std::vector<Idx>* > iter = _varUsedModalitiesMap.beginSafe(); iter != _varUsedModalitiesMap.endSafe(); ++iter )
+      delete iter.val();
 
     _varUsedModalitiesMap.clear();
   }
@@ -869,7 +869,7 @@ namespace gum {
 
       // ***************************************************************
       // Pour chaque variable
-      for ( Sequence< const DiscreteVariable* >::iterator varIter = _varsSeq.begin(); varIter != _varsSeq.end(); ++varIter ) {
+      for ( Sequence< const DiscreteVariable* >::iterator_safe varIter = _varsSeq.beginSafe(); varIter != _varsSeq.endSafe(); ++varIter ) {
 
         // ***************************************************************
         // Si elle est déjà dans la liste, on passe
@@ -881,14 +881,14 @@ namespace gum {
         // Sinon on cherche les noeuds ratachés à cette variable
         bool addVar = true;
 
-        for ( ListIterator<NodeId> nodeIter = _var2NodeIdMap[*varIter]->begin(); nodeIter != _var2NodeIdMap[*varIter]->end() ; ++nodeIter ) {
+        for ( ListIteratorSafe<NodeId> nodeIter = _var2NodeIdMap[*varIter]->beginSafe(); nodeIter != _var2NodeIdMap[*varIter]->endSafe() ; ++nodeIter ) {
 
           const NodeSet& parents = _model.parents ( *nodeIter );
 
           // ***************************************************************
           // Pour chaque noeud lié à cette variable, on voit si la variable
           // associée au noeuds parents est déjà dans la liste
-          for ( NodeSetIterator parentIter = parents.begin(); parentIter != parents.end(); ++parentIter ) {
+          for ( NodeSetIterator parentIter = parents.beginSafe(); parentIter != parents.endSafe(); ++parentIter ) {
 
             // **********************************************************************
             // Si ce n'est pas le cas, cette variable ci ne sera pas ajoutée

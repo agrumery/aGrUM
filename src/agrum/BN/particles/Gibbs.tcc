@@ -61,8 +61,8 @@ namespace gum {
 
         //const NodeSet& arcs = dag.children ( node );
 
-        for ( const auto node2 : dag.children ( node ) ) {
-          tmp3->push_back ( node2 );
+        for ( auto node2 = dag.children ( node ).beginSafe(); node2 != dag.children ( node ).endSafe(); ++node2 ) {
+          tmp3->push_back ( *node2 );
         }
 
         __node_children.insert ( node, tmp3 );
@@ -78,23 +78,23 @@ namespace gum {
     Gibbs<GUM_SCALAR>::~Gibbs() {
       GUM_DESTRUCTOR ( Gibbs );
 
-      for ( HashTableIterator<NodeId, Instantiation*> iter = __sampling_idx.begin();
-            iter != __sampling_idx.end(); ++iter )
-        delete ( *iter );
+      for ( HashTableIteratorSafe<NodeId, Instantiation*> iter = __sampling_idx.beginSafe();
+            iter != __sampling_idx.endSafe(); ++iter )
+        delete ( iter.val () );
 
-      for ( HashTableIterator<NodeId, Potential<GUM_SCALAR>*> iter =
-              __sampling_posterior.begin();
-            iter != __sampling_posterior.end(); ++iter )
-        delete ( *iter );
+      for ( HashTableIteratorSafe<NodeId, Potential<GUM_SCALAR>*> iter =
+              __sampling_posterior.beginSafe();
+            iter != __sampling_posterior.endSafe(); ++iter )
+        delete ( iter.val() );
 
-      for ( HashTableIterator<NodeId, std::vector<NodeId>*> iter =
-              __node_children.begin();
-            iter != __node_children.end(); ++iter )
-        delete ( *iter );
+      for ( HashTableIteratorSafe<NodeId, std::vector<NodeId>*> iter =
+              __node_children.beginSafe();
+            iter != __node_children.endSafe(); ++iter )
+        delete ( iter.val() );
 
-      for ( HashTableIterator<NodeId, Instantiation*> iter = __cpt_idx.begin();
-            iter != __cpt_idx.end(); ++iter )
-        delete ( *iter );
+      for ( HashTableIteratorSafe<NodeId, Instantiation*> iter = __cpt_idx.beginSafe();
+            iter != __cpt_idx.endSafe(); ++iter )
+        delete ( iter.val () );
     }
 
     template <typename GUM_SCALAR> INLINE
@@ -250,8 +250,8 @@ namespace gum {
     ( const List<const Potential<GUM_SCALAR>*>& pot_list ) {
       eraseAllEvidence();
 
-      for ( ListConstIterator<const Potential<GUM_SCALAR>*> iter = pot_list.cbegin();
-            iter != pot_list.cend(); ++iter ) {
+      for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter = pot_list.cbeginSafe();
+            iter != pot_list.cendSafe(); ++iter ) {
         // check that the evidence is given w.r.t.only one random variable
         const Potential<GUM_SCALAR>& pot = **iter;
         const Sequence<const DiscreteVariable*>& vars = pot.variablesSequence();
@@ -305,8 +305,8 @@ namespace gum {
 
         Sequence<const DiscreteVariable*> seq = I.variablesSequence();
 
-        for ( Sequence<const DiscreteVariable*>::iterator it = seq.begin();
-              it != seq.end(); ++it ) {
+        for ( Sequence<const DiscreteVariable*>::iterator_safe it = seq.beginSafe();
+              it != seq.endSafe(); ++it ) {
           I.chgVal ( it.pos() , __particle.valFromPtr ( *it ) );
         }
 
@@ -332,7 +332,7 @@ namespace gum {
       __nodes_array.clear();
       // nodes to be drawn : not the ones with hard evidence
 
-      for ( Sequence<NodeId>::iterator iter = topo.begin() ; iter != topo.end(); ++iter ) {
+      for ( Sequence<NodeId>::iterator_safe iter = topo.beginSafe() ; iter != topo.endSafe(); ++iter ) {
         if ( ! __hard_evidences.exists ( *iter ) ) {
           __nodes_array.push_back ( *iter );
         } else {

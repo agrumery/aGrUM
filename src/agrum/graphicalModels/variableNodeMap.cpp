@@ -69,8 +69,8 @@ namespace gum {
   }
 
   void VariableNodeMap::clear( void ) {
-    for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter =
-            __nodes2vars.begin(); iter != __nodes2vars.end(); ++iter ) {
+    for ( Bijection<NodeId, const DiscreteVariable*>::iterator_safe iter =
+            __nodes2vars.beginSafe(); iter != __nodes2vars.endSafe(); ++iter ) {
       delete iter.second();
     }
 
@@ -92,9 +92,9 @@ namespace gum {
 
   /// do the copy
   void VariableNodeMap::__copy( const VariableNodeMap& source ) {
-    for ( Bijection<NodeId, const DiscreteVariable*>::iterator iter =
-            source.__nodes2vars.begin();
-          iter != source.__nodes2vars.end(); ++iter ) {
+    for ( Bijection<NodeId, const DiscreteVariable*>::iterator_safe iter =
+            source.__nodes2vars.beginSafe();
+          iter != source.__nodes2vars.endSafe(); ++iter ) {
       __nodes2vars.insert( iter.first(), iter.second()->clone() );
       // copy factory is used inside insert
     }

@@ -77,10 +77,10 @@ namespace gum {
     GUM_DESTRUCTOR( GibbsInference );
 
     // remove all the created potentials and instantiations
-    for ( HashTableIterator<NodeId, Potential<GUM_SCALAR>*> iter =
-            __sampling_nbr.begin();
-          iter != __sampling_nbr.end(); ++iter )
-      delete( *iter );
+    for ( HashTableIteratorSafe<NodeId, Potential<GUM_SCALAR>*> iter =
+            __sampling_nbr.beginSafe ();
+          iter != __sampling_nbr.endSafe (); ++iter )
+      delete( iter.val() );
   }
 
   /// setter/getter for __inference_is_required
@@ -104,10 +104,10 @@ namespace gum {
 
   template <typename GUM_SCALAR> INLINE
   void GibbsInference<GUM_SCALAR>::__initStats() {
-    for ( HashTableIterator<NodeId, Potential<GUM_SCALAR>*> iter =
-            __sampling_nbr.begin();
-          iter != __sampling_nbr.end(); ++iter ) {
-      ( *iter )->fill( ( GUM_SCALAR ) 0 );
+    for ( HashTableIteratorSafe<NodeId, Potential<GUM_SCALAR>*> iter =
+            __sampling_nbr.beginSafe();
+          iter != __sampling_nbr.endSafe(); ++iter ) {
+      ( iter.val() )->fill( ( GUM_SCALAR ) 0 );
     }
   }
 
@@ -124,17 +124,17 @@ namespace gum {
     Size nbr = nb + 1; // we compute the new iteration
     double sum_entropy = 0;
 
-    for ( HashTableIterator<NodeId, Potential<GUM_SCALAR>*> iter =
-            __sampling_nbr.begin();
-          iter != __sampling_nbr.end(); ++iter ) {
+    for ( HashTableIteratorSafe<NodeId, Potential<GUM_SCALAR>*> iter =
+            __sampling_nbr.beginSafe();
+          iter != __sampling_nbr.endSafe(); ++iter ) {
       //NodeId id = iter.key();
       //const DiscreteVariable& v = bn().variable( id );
       //__sampling_idx[id]->chgVal( v, __current_sample.val( v ) );
       //GUM_SCALAR n_v = ( *iter )->get( *__sampling_idx[id] ) + 1;
       //( *iter )->set( *__sampling_idx[id], n_v );
 
-      GUM_SCALAR n_v=1+ ( *iter )->get( particle() );
-      ( *iter )->set( particle(),n_v );
+      GUM_SCALAR n_v=1+ ( iter.val() )->get( particle() );
+      ( iter.val() )->set( particle(),n_v );
 
       if ( n_v == ( GUM_SCALAR ) 1 ) sum_entropy += 100;
       else sum_entropy += n_v * log( n_v / ( n_v - 1 ) );
@@ -146,14 +146,14 @@ namespace gum {
   /** same as __updateStats_with_err but with no entropy computation */
   template <typename GUM_SCALAR> INLINE
   void GibbsInference<GUM_SCALAR>::__updateStats_without_err() {
-    for ( HashTableIterator<NodeId, Potential<GUM_SCALAR>*> iter =
-            __sampling_nbr.begin();
-          iter != __sampling_nbr.end(); ++iter ) {
+    for ( HashTableIteratorSafe<NodeId, Potential<GUM_SCALAR>*> iter =
+            __sampling_nbr.beginSafe();
+          iter != __sampling_nbr.endSafe(); ++iter ) {
       //NodeId id = iter.key();
       //const DiscreteVariable& v = bn().variable( id );
       //__sampling_idx[id]->chgVal( v, __current_sample.val( v ) );
       //( *iter )->set( *__sampling_idx[id], ( *iter )->get( *__sampling_idx[id] ) + 1 );
-      ( *iter )->set( particle(), ( *iter )->get( particle() ) +1 );
+      ( iter.val() )->set( particle(), ( iter.val() )->get( particle() ) +1 );
     }
   }
 

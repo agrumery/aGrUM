@@ -70,8 +70,8 @@ namespace gum {
       Idx offset = 1;
       HashTable<const DiscreteVariable*,Idx> var1offset( table_vars.size() );
 
-      for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-              table_vars.begin(); iter != table_vars.end(); ++iter ) {
+      for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+              table_vars.beginSafe(); iter != table_vars.endSafe(); ++iter ) {
         if ( inst_vars.exists( *iter ) ) {
           table_alone_offset += inst_vars[*iter] * offset;
         }
@@ -94,8 +94,8 @@ namespace gum {
       bool has_before_incr = true;
       bool found_inst_var = false;
 
-      for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-              table_vars.begin(); iter != table_vars.end(); ++iter ) {
+      for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+              table_vars.beginSafe(); iter != table_vars.endSafe(); ++iter ) {
         if ( ! inst_vars.exists( *iter ) ) {
           table_and_result_domain.push_back( ( *iter )->domainSize() );
           table_and_result_offset.push_back( var1offset[*iter] );
@@ -133,8 +133,8 @@ namespace gum {
         new MultiDimArray<GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE>;
       result->beginMultipleChanges();
 
-      for ( Sequence<const DiscreteVariable*>::const_iterator iter =
-              result_varSeq.begin(); iter != result_varSeq.end(); ++iter ) {
+      for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
+              result_varSeq.beginSafe(); iter != result_varSeq.endSafe(); ++iter ) {
         *result << **iter;
       }
 

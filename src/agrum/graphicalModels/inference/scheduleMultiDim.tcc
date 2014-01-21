@@ -252,8 +252,8 @@ namespace gum {
     // compute and store the domain size
     Size size = 1;
 
-    for ( typename Sequence<const DiscreteVariable*>::const_iterator
-          iter = new_vars->begin(); iter != new_vars->end(); ++iter ) {
+    for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe
+          iter = new_vars->beginSafe(); iter != new_vars->endSafe(); ++iter ) {
       size *= ( *iter )->domainSize();
     }
 

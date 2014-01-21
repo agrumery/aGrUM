@@ -199,8 +199,8 @@ namespace gum_tests {
 
           const gum::NodeSet& parentList = source.dag().parents ( nodeIter );
 
-          for ( gum::NodeSet::iterator arcIter = parentList.begin();
-                arcIter != parentList.end();
+          for ( gum::NodeSet::iterator_safe arcIter = parentList.beginSafe();
+                arcIter != parentList.endSafe();
                 ++arcIter ) {
             TS_ASSERT ( copy->dag().existsArc ( gum::Arc ( *arcIter, nodeIter ) ) );
           }
@@ -258,8 +258,8 @@ namespace gum_tests {
 
           const gum::NodeSet& parentList = source.dag().parents ( nodeIter );
 
-          for ( gum::NodeSet::iterator arcIter = parentList.begin();
-                arcIter != parentList.end();
+          for ( gum::NodeSet::iterator_safe arcIter = parentList.beginSafe();
+                arcIter != parentList.endSafe();
                 ++arcIter ) {
             TS_ASSERT ( copy.dag().existsArc ( gum::Arc ( *arcIter, nodeIter ) ) );
           }
@@ -289,13 +289,13 @@ namespace gum_tests {
 
           const gum::Sequence<const gum::DiscreteVariable*>& s_seq = source.cpt ( iter ).variablesSequence();
 
-          for ( gum::Sequence<const gum::DiscreteVariable*>::iterator it = s_seq.begin(); it != s_seq.end(); ++it ) {
+          for ( gum::Sequence<const gum::DiscreteVariable*>::iterator_safe it = s_seq.beginSafe(); it != s_seq.endSafe(); ++it ) {
             s_str << **it << ",";
           }
 
           const gum::Sequence<const gum::DiscreteVariable*>& c_seq = copy.cpt ( iter ).variablesSequence();
 
-          for ( gum::Sequence<const gum::DiscreteVariable*>::iterator it = c_seq.begin(); it != c_seq.end(); ++it ) {
+          for ( gum::Sequence<const gum::DiscreteVariable*>::iterator_safe it = c_seq.beginSafe(); it != c_seq.endSafe(); ++it ) {
             c_str << **it << ",";
           }
 
@@ -376,7 +376,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(cpt,bn.size());
 
         cpt=(gum::Size)0;
-        for(const auto arc : bn.arcs())
+        for(auto arc = bn.arcs().beginSafe(); arc != bn.arcs().endSafe(); ++arc )
           cpt++;
         TS_ASSERT_EQUALS(cpt,bn.sizeArcs());
       }
@@ -420,8 +420,8 @@ namespace gum_tests {
 
         bn.erase ( idList[0] );
 
-        for ( gum::List<gum::NodeId>::iterator iter = idList.begin();
-              iter != idList.end();
+        for ( gum::List<gum::NodeId>::iterator_safe iter = idList.beginSafe();
+              iter != idList.endSafe();
               ++iter ) {
           bn.erase ( *iter );
         }

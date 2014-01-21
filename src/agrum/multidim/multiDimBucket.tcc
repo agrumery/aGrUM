@@ -47,9 +47,9 @@ namespace gum {
   template<typename GUM_SCALAR>
   MultiDimBucket<GUM_SCALAR>::~MultiDimBucket() {
     GUM_DESTRUCTOR( MultiDimBucket );
-    typedef Bijection<Instantiation*, Instantiation*>::iterator BiIter;
+    typedef Bijection<Instantiation*, Instantiation*>::iterator_safe BiIter;
 
-    for ( BiIter iter = __instantiations.begin(); iter != __instantiations.end(); ++iter ) {
+    for ( BiIter iter = __instantiations.beginSafe(); iter != __instantiations.endSafe(); ++iter ) {
       delete iter.second();
     }
 
@@ -57,9 +57,9 @@ namespace gum {
       delete __bucket;
     }
 
-    for ( HashTableIterator<const MultiDimContainer<GUM_SCALAR>*, Instantiation* > iter =
-            __multiDims.begin(); iter != __multiDims.end(); ++iter ) {
-      delete *iter;
+    for ( HashTableIteratorSafe<const MultiDimContainer<GUM_SCALAR>*, Instantiation* > iter =
+            __multiDims.beginSafe (); iter != __multiDims.endSafe (); ++iter ) {
+      delete iter.val();
     }
   }
 
@@ -410,11 +410,11 @@ namespace gum {
     __allVariables.clear();
 
     while ( not __allVarsInst.empty() ) {
-      __allVarsInst.erase( **( __allVarsInst.variablesSequence().begin() ) );
+      __allVarsInst.erase( **( __allVarsInst.variablesSequence().beginSafe() ) );
     }
 
-    for ( HashTableIterator<const MultiDimContainer<GUM_SCALAR>*, Instantiation*> iter =
-            __multiDims.begin(); iter != __multiDims.end(); ++iter ) {
+    for ( HashTableIteratorSafe<const MultiDimContainer<GUM_SCALAR>*, Instantiation*> iter =
+            __multiDims.beginSafe(); iter != __multiDims.endSafe(); ++iter ) {
       for ( MultiDimInterface::iterator jter = iter.key()->begin();
             jter != iter.key()->end(); ++jter ) {
         __addVariable( *jter );
@@ -446,8 +446,8 @@ namespace gum {
   MultiDimBucket<GUM_SCALAR>::__eraseVariable( const DiscreteVariable* var ) {
     bool found = false;
 
-    for ( HashTableIterator<const MultiDimContainer<GUM_SCALAR>*, Instantiation*> iter =
-            __multiDims.begin(); iter != __multiDims.end(); ++iter ) {
+    for ( HashTableIteratorSafe<const MultiDimContainer<GUM_SCALAR>*, Instantiation*> iter =
+            __multiDims.beginSafe(); iter != __multiDims.endSafe(); ++iter ) {
       if ( iter.key()->contains( *var ) ) {
         found = true;
         break;
@@ -465,9 +465,9 @@ namespace gum {
   void
   MultiDimBucket<GUM_SCALAR>::__initializeBuffer() {
     if ( __bucket ) {
-      typedef Bijection<Instantiation*, Instantiation*>::iterator BiIter;
+      typedef Bijection<Instantiation*, Instantiation*>::iterator_safe BiIter;
 
-      for ( BiIter iter = __instantiations.begin(); iter != __instantiations.end(); ++iter ) {
+      for ( BiIter iter = __instantiations.beginSafe(); iter != __instantiations.endSafe(); ++iter ) {
         delete iter.second();
       }
 
@@ -484,7 +484,7 @@ namespace gum {
     }
 
     if ( not this->_slaves().empty() ) {
-      for ( List<Instantiation*>::const_iterator iter = this->_slaves().cbegin(); iter != this->_slaves().cend(); ++iter ) {
+      for ( List<Instantiation*>::const_iterator_safe iter = this->_slaves().cbeginSafe(); iter != this->_slaves().cendSafe(); ++iter ) {
         __instantiations.insert( *iter, new Instantiation( *__bucket ) );
       }
     }
@@ -496,9 +496,9 @@ namespace gum {
   void
   MultiDimBucket<GUM_SCALAR>::__eraseBuffer() {
     if ( __bucket ) {
-      typedef Bijection<Instantiation*, Instantiation*>::iterator BiIter;
+      typedef Bijection<Instantiation*, Instantiation*>::iterator_safe BiIter;
 
-      for ( BiIter iter = __instantiations.begin(); iter != __instantiations.end(); ++iter ) {
+      for ( BiIter iter = __instantiations.beginSafe(); iter != __instantiations.endSafe(); ++iter ) {
         delete iter.second();
       }
 
@@ -520,10 +520,10 @@ namespace gum {
             __allVarsInst.incOut( value ) ) {
         current = ( GUM_SCALAR ) 1;
 
-        for ( HashTableIterator<const MultiDimContainer<GUM_SCALAR>*, Instantiation*> iter =
-                __multiDims.begin(); iter != __multiDims.end(); ++iter ) {
-          ( *iter )->setVals( __allVarsInst );
-          current *= iter.key()->get( **iter );
+        for ( HashTableIteratorSafe<const MultiDimContainer<GUM_SCALAR>*, Instantiation*> iter =
+                __multiDims.beginSafe(); iter != __multiDims.endSafe(); ++iter ) {
+          ( iter.val() )->setVals( __allVarsInst );
+          current *= iter.key()->get( *( iter.val() ) );
         }
 
         sum += current;
@@ -557,9 +557,9 @@ namespace gum {
   void
   MultiDimBucket<GUM_SCALAR>::_swap( const DiscreteVariable* x, const DiscreteVariable* y ) {
     MultiDimImplementation<GUM_SCALAR>::_swap( x, y );
-    typedef Bijection<Instantiation*, Instantiation*>::iterator Iter;
+    typedef Bijection<Instantiation*, Instantiation*>::iterator_safe Iter;
 
-    for ( Iter iter = __instantiations.begin(); iter != __instantiations.end(); ++iter ) {
+    for ( Iter iter = __instantiations.beginSafe(); iter != __instantiations.endSafe(); ++iter ) {
       iter.first()->swap( *x, *y );
       iter.second()->swap( *x, *y );
     }

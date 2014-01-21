@@ -82,7 +82,7 @@ namespace gum {
 #ifdef O4DDDEBUG
         GUM_TRACE( " Mixed Sequence variable : " );
 
-        for ( SequenceIterator< const DiscreteVariable* > iter = leadingOrder.begin(); iter != leadingOrder.end(); ++iter )
+        for ( SequenceIteratorSafe< const DiscreteVariable* > iter = leadingOrder.begin(); iter != leadingOrder.end(); ++iter )
           GUM_TRACE( ( *iter )->toString() << " - " );
 
         GUM_TRACE( std::endl );
@@ -169,14 +169,14 @@ namespace gum {
         GUM_TRACE( "RETRO VAR TABLE : " );
 #endif
 
-        for ( HashTableIterator< NodeId, Set< const DiscreteVariable* >* > retroVarIter = retrogradeVarTable->begin(); retroVarIter != retrogradeVarTable->end(); ++retroVarIter )
-          if ( *retroVarIter != nullptr && !( *retroVarIter )->empty() ) {
+        for ( HashTableIteratorSafe< NodeId, Set< const DiscreteVariable* >* > retroVarIter = retrogradeVarTable->beginSafe(); retroVarIter != retrogradeVarTable->endSafe(); ++retroVarIter )
+          if ( retroVarIter.val() != nullptr && !( retroVarIter.val() )->empty() ) {
 
 #ifdef O4DDDEBUG
             GUM_TRACE( "\tNode : " << retroVarIter.key() );
 #endif
 
-            for ( SetIterator< const DiscreteVariable* > iter = ( *retroVarIter )->begin(); iter != ( *retroVarIter )->end(); ++iter ) {
+            for ( SetIteratorSafe< const DiscreteVariable* > iter = ( retroVarIter.val() )->beginSafe(); iter != ( retroVarIter.val() )->endSafe(); ++iter ) {
 
 #ifdef O4DDDEBUG
               GUM_TRACE( "\t\tVariable : " << ( *iter )->name() );
@@ -189,8 +189,8 @@ namespace gum {
       }
 
       ~NonOrderedOperatorData() {
-        for ( HashTableIterator< NodeId, Set< const DiscreteVariable* >* > iterH = retrogradeVarTable->begin(); iterH != retrogradeVarTable->end(); ++iterH )
-          delete *iterH;
+        for ( HashTableIteratorSafe< NodeId, Set< const DiscreteVariable* >* > iterH = retrogradeVarTable->beginSafe(); iterH != retrogradeVarTable->endSafe(); ++iterH )
+          delete iterH.val();
 
         delete retrogradeVarTable;
       };
@@ -233,16 +233,16 @@ namespace gum {
        ** ********************************************************************************************** **/
       void  __makeMergedVariableSequence( const Sequence< const DiscreteVariable* >& dD1VarSeq, const Sequence< const DiscreteVariable* >& dD2VarSeq, Sequence< const DiscreteVariable* >& mergedVarSeq ) {
 
-        SequenceIterator< const DiscreteVariable* > iterS1 = dD1VarSeq.begin();
-        SequenceIterator< const DiscreteVariable* > iterS2 = dD2VarSeq.begin();
+        SequenceIteratorSafe< const DiscreteVariable* > iterS1 = dD1VarSeq.beginSafe();
+        SequenceIteratorSafe< const DiscreteVariable* > iterS2 = dD2VarSeq.beginSafe();
 
-        while ( iterS1 != dD1VarSeq.end() || iterS2 != dD2VarSeq.end() ) {
-          if ( iterS1 == dD1VarSeq.end() ) {
-            for ( ; iterS2 != dD2VarSeq.end(); ++iterS2 )
+        while ( iterS1 != dD1VarSeq.endSafe() || iterS2 != dD2VarSeq.endSafe() ) {
+          if ( iterS1 == dD1VarSeq.endSafe() ) {
+            for ( ; iterS2 != dD2VarSeq.endSafe(); ++iterS2 )
               if ( !mergedVarSeq.exists( *iterS2 ) )
                 mergedVarSeq.insert( *iterS2 );
-          } else if ( iterS2 == dD2VarSeq.end() ) {
-            for ( ; iterS1 != dD1VarSeq.end(); ++iterS1 )
+          } else if ( iterS2 == dD2VarSeq.endSafe() ) {
+            for ( ; iterS1 != dD1VarSeq.endSafe(); ++iterS1 )
               if ( !mergedVarSeq.exists( *iterS1 ) )
                 mergedVarSeq.insert( *iterS1 );
           } else {
@@ -280,14 +280,14 @@ namespace gum {
         ** ********************************************************************************************** **/
       Idx __evalRetrogradeVarSpaceSize( const Sequence< const DiscreteVariable* >& leadingVarSeq, const Sequence< const DiscreteVariable* >& followingVarSeq ) {
 
-        SequenceIterator< const DiscreteVariable* > iterSfin = followingVarSeq.begin(), iterSfol = followingVarSeq.begin();
+        SequenceIteratorSafe< const DiscreteVariable* > iterSfin = followingVarSeq.beginSafe(), iterSfol = followingVarSeq.beginSafe();
 
         // ******************************************************************************
         // Then we search in second diagram for possible preneeded variable
         Idx sizeRetro = 1;
 
-        for ( iterSfol = followingVarSeq.begin(); iterSfol != followingVarSeq.end(); ++iterSfol )
-          for ( iterSfin = iterSfol; iterSfin != followingVarSeq.rend(); --iterSfin )
+        for ( iterSfol = followingVarSeq.beginSafe(); iterSfol != followingVarSeq.endSafe(); ++iterSfol )
+          for ( iterSfin = iterSfol; iterSfin != followingVarSeq.rendSafe(); --iterSfin )
             if ( leadingVarSeq.pos( *iterSfin ) > leadingVarSeq.pos( *iterSfol ) )
               sizeRetro *= ( *iterSfol )->domainSize();
 
@@ -304,7 +304,7 @@ namespace gum {
   NodeId
   insertNonTerminalNode( OperatorData<T>& opData, const DiscreteVariable* associatedVariable, std::vector< NodeId >& sonsMap, NodeId defaultSon , const HashTable< NodeId, Idx >& countTable ) {
 
-    HashTableConstIterator< NodeId, Idx > ctIter = countTable.begin();
+    HashTableConstIteratorSafe< NodeId, Idx > ctIter = countTable.beginSafe();
 
     if ( countTable.size() == 1 && ( defaultSon == 0 || ctIter.key() == defaultSon ) )
       return  ctIter.key();
@@ -340,9 +340,9 @@ namespace gum {
       Idx max = 0;
       NodeId maxNode = 0;
 
-      while ( ctIter != countTable.end() ) {
-        if ( *ctIter > max ) {
-          max = *ctIter;
+      while ( ctIter != countTable.endSafe() ) {
+        if ( ctIter.val() > max ) {
+          max = ctIter.val();
           maxNode = ctIter.key();
         }
 

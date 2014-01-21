@@ -100,7 +100,7 @@ namespace gum {
     if ( __neighbours.exists( id ) ) {
       const NodeSet& set = neighbours( id );
 
-      for ( NodeSetIterator iter = set.begin(); iter != set.end(); ++iter ) {
+      for ( NodeSetIterator iter = set.beginSafe(); iter != set.endSafe(); ++iter ) {
         // warning: use this erase so that you actually use the virtualized
         // edge removal function
         eraseEdge( Edge( *iter, id ) );
@@ -113,7 +113,7 @@ namespace gum {
     if ( __neighbours.exists( id ) ) {
       const NodeSet& set = neighbours( id );
 
-      for ( NodeSetIterator iter = set.begin(); iter != set.end(); ++iter ) {
+      for ( NodeSetIterator iter = set.beginSafe(); iter != set.endSafe(); ++iter ) {
         EdgeGraphPart::eraseEdge( Edge( *iter, id ) );
       }
     }
@@ -121,12 +121,12 @@ namespace gum {
 
 
   INLINE const EdgeGraphPart::EdgeIterator EdgeGraphPart::beginEdges() const {
-    return __edges.begin();
+    return __edges.beginSafe();
   }
 
 
   INLINE const EdgeGraphPart::EdgeIterator& EdgeGraphPart::endEdges() const {
-    return __edges.end();
+    return __edges.endSafe();
   }
 
 

@@ -76,8 +76,8 @@ namespace gum {
 
     // insert all the edges of the graph into the structure. This will
     // implicitly update the "require_update" field
-    for ( const auto & edge : theGraph.edges() )
-      insertEdge ( edge.first(), edge.second() );
+    for ( auto edge = theGraph.edges().beginSafe () ; edge != theGraph.edges().endSafe (); ++edge )
+      insertEdge ( edge->first(), edge->second() );
   }
 
 
@@ -203,13 +203,13 @@ namespace gum {
     NodeId new_clique = __junction_tree.insertNode ( clique_nodes );
 
     // indicate in which MPS node belongs
-    List<NodeId>& list_of_mps = __mps_of_node.insert ( node, List<NodeId>() );
+    List<NodeId>& list_of_mps = __mps_of_node.insert ( node, List<NodeId>() ).second;
 
     list_of_mps.insert ( MPS );
 
     // indicate in which MPS the clique added to the junction tree belongs
     std::vector<NodeId>& cliquesMPS =
-      __cliques_of_mps.insert ( MPS, std::vector<NodeId>() );
+      __cliques_of_mps.insert ( MPS, std::vector<NodeId>() ).second;
 
     cliquesMPS.push_back ( new_clique );
 
@@ -240,8 +240,8 @@ namespace gum {
     // mark all the neighbour MPS that contain edge
     const NodeSet& neighbours = __T_mpd.neighbours ( My );
 
-    for ( NodeSetIterator iter = neighbours.begin();
-          iter != neighbours.end(); ++iter ) {
+    for ( NodeSetIterator iter = neighbours.beginSafe();
+          iter != neighbours.endSafe(); ++iter ) {
       if ( *iter != Mz ) {
         const NodeSet& Syk = __T_mpd.separator ( Edge ( *iter, My ) );
 
@@ -271,16 +271,16 @@ namespace gum {
     NodeId Mx = mps1[0];
 
     if ( mps1.size() <= mps2.size() ) {
-      for ( ListConstIterator<NodeId> iter = mps1.cbegin();
-            iter != mps1.cend(); ++iter ) {
+      for ( ListConstIteratorSafe<NodeId> iter = mps1.cbeginSafe();
+            iter != mps1.cendSafe(); ++iter ) {
         if ( __T_mpd.clique ( *iter ).contains ( Y ) ) {
           Mx = *iter;
           break;
         }
       }
     } else {
-      for ( ListConstIterator<NodeId> iter = mps2.cbegin();
-            iter != mps2.cend(); ++iter ) {
+      for ( ListConstIteratorSafe<NodeId> iter = mps2.cbeginSafe();
+            iter != mps2.cendSafe(); ++iter ) {
         if ( __T_mpd.clique ( *iter ).contains ( X ) ) {
           Mx = *iter;
           break;
@@ -313,8 +313,8 @@ namespace gum {
     {
       const NodeSet& neighbours = __graph.neighbours ( X );
 
-      for ( NodeSetIterator neighbour_edge = neighbours.begin();
-            neighbour_edge != neighbours.end(); ++neighbour_edge ) {
+      for ( NodeSetIterator neighbour_edge = neighbours.beginSafe();
+            neighbour_edge != neighbours.endSafe(); ++neighbour_edge ) {
         eraseEdge ( Edge ( *neighbour_edge, X ) );
       }
     }
@@ -322,16 +322,16 @@ namespace gum {
     // remove X from the MPS containing X
     List<NodeId>& MPS_of_X = __mps_of_node[X];
 
-    for ( ListIterator<NodeId> iter = MPS_of_X.begin();
-          iter != MPS_of_X.end(); ++iter ) {
+    for ( ListIteratorSafe<NodeId> iter = MPS_of_X.beginSafe();
+          iter != MPS_of_X.endSafe(); ++iter ) {
       __T_mpd.eraseFromClique ( *iter, X );
 
       // if the intersection between *iter and one of its neighbour is empty,
       // remove the edge linking them
       const NodeSet& neighbours = __T_mpd.neighbours ( *iter );
 
-      for ( NodeSetIterator neighbour = neighbours.begin();
-            neighbour != neighbours.end(); ++neighbour ) {
+      for ( NodeSetIterator neighbour = neighbours.beginSafe();
+            neighbour != neighbours.endSafe(); ++neighbour ) {
         Edge neigh ( *neighbour, *iter );
 
         if ( __T_mpd.separator ( neigh ).size() == 0 )
@@ -341,8 +341,8 @@ namespace gum {
 
 
     // remove X from the cliques containing X
-    for ( ListIterator<NodeId> iter = MPS_of_X.begin();
-          iter != MPS_of_X.end(); ++iter ) {
+    for ( ListIteratorSafe<NodeId> iter = MPS_of_X.beginSafe();
+          iter != MPS_of_X.endSafe(); ++iter ) {
       const std::vector<NodeId>& cliques_of_X = __cliques_of_mps[*iter];
 
       for ( unsigned int i = 0; i < cliques_of_X.size(); ++i ) {
@@ -353,8 +353,8 @@ namespace gum {
         // edge in __graph between a node of *iter and a node in the neighbour
         const NodeSet& neighbours = __junction_tree.neighbours ( cliques_of_X[i] );
 
-        for ( NodeSetIterator neighbour = neighbours.begin();
-              neighbour != neighbours.end(); ++neighbour ) {
+        for ( NodeSetIterator neighbour = neighbours.beginSafe();
+              neighbour != neighbours.endSafe(); ++neighbour ) {
           Edge neigh ( *neighbour, cliques_of_X[i] );
 
           if ( __junction_tree.separator ( neigh ).size() == 0 ) {
@@ -366,10 +366,10 @@ namespace gum {
               __junction_tree.clique ( neigh.second() );
             bool hasCommonEdge = false;
 
-            for ( NodeSetIterator iter1 = clique1.begin();
-                  ! hasCommonEdge && iter1 != clique1.end(); ++iter1 ) {
-              for ( NodeSetIterator iter2 = clique2.begin();
-                    iter2 != clique2.end(); ++iter2 ) {
+            for ( NodeSetIterator iter1 = clique1.beginSafe();
+                  ! hasCommonEdge && iter1 != clique1.endSafe(); ++iter1 ) {
+              for ( NodeSetIterator iter2 = clique2.beginSafe();
+                    iter2 != clique2.endSafe(); ++iter2 ) {
                 if ( __graph.existsEdge ( *iter1, *iter2 ) ) {
                   hasCommonEdge = true;
                   break;
@@ -440,8 +440,8 @@ namespace gum {
     // parse Mx's neighbours until we find Y
     const NodeSet& neighbours = __T_mpd.neighbours ( Mx );
 
-    for ( NodeSetIterator neighbour = neighbours.begin();
-          neighbour != neighbours.end(); ++neighbour ) {
+    for ( NodeSetIterator neighbour = neighbours.beginSafe();
+          neighbour != neighbours.endSafe(); ++neighbour ) {
       NodeId other_node = *neighbour;
 
       if ( other_node != Mz ) {
@@ -553,7 +553,7 @@ namespace gum {
         __mps_of_node[Y].insert ( newMPS );
 
       std::vector<NodeId>& cl =
-        __cliques_of_mps.insert ( newMPS, std::vector<NodeId>() );
+        __cliques_of_mps.insert ( newMPS, std::vector<NodeId>() ).second;
 
       cl.push_back ( newNode );
 
@@ -586,12 +586,12 @@ namespace gum {
       for ( const auto cliq : __junction_tree.nodes() ) {
         const NodeSet& clique = __junction_tree.clique ( cliq );
 
-        for ( NodeSetIterator iter2 = clique.begin(); iter2 != clique.end(); ++iter2 )
+        for ( NodeSetIterator iter2 = clique.beginSafe(); iter2 != clique.endSafe(); ++iter2 )
           nodes[*iter2] = true;
       }
 
-      for ( HashTableConstIterator<NodeId, bool> iter = nodes.begin(); iter != nodes.end(); ++iter )
-        if ( ! *iter ) {
+      for ( HashTableConstIteratorSafe<NodeId, bool> iter = nodes.beginSafe(); iter != nodes.endSafe(); ++iter )
+        if ( ! iter.val () ) {
           std::cerr << "check nodes" << std::endl
                     << __graph << std::endl << __junction_tree << std::endl;
           OK = false;
@@ -609,10 +609,10 @@ namespace gum {
       for ( const auto cliq : __junction_tree.nodes() ) {
         const NodeSet& clique = __junction_tree.clique ( cliq );
 
-        for ( NodeSetIterator iter2 = clique.begin(); iter2 != clique.end(); ++iter2 ) {
+        for ( NodeSetIterator iter2 = clique.beginSafe(); iter2 != clique.endSafe(); ++iter2 ) {
           iter3 = iter2;
 
-          for ( ++iter3; iter3 != clique.end(); ++iter3 ) {
+          for ( ++iter3; iter3 != clique.endSafe(); ++iter3 ) {
             thePair.first  = std::min ( *iter2, *iter3 );
             thePair.second = std::max ( *iter2, *iter3 );
 
@@ -622,8 +622,8 @@ namespace gum {
         }
       }
 
-      for ( HashTableConstIterator<Edge, bool> iter = edges.begin(); iter != edges.end(); ++iter )
-        if ( !*iter ) {
+      for ( HashTableConstIteratorSafe<Edge, bool> iter = edges.beginSafe(); iter != edges.endSafe(); ++iter )
+        if ( ! iter.val () ) {
           std::cerr << "check edges" << std::endl
                     << __graph << std::endl << __junction_tree << std::endl;
           OK = false;
@@ -639,12 +639,12 @@ namespace gum {
       for ( const auto cliq : __T_mpd.nodes() ) {
         const NodeSet& clique = __T_mpd.clique ( cliq );
 
-        for ( NodeSetIterator iter2 = clique.begin(); iter2 != clique.end(); ++iter2 )
+        for ( NodeSetIterator iter2 = clique.beginSafe(); iter2 != clique.endSafe(); ++iter2 )
           nodes[*iter2] = true;
       }
 
-      for ( HashTableConstIterator<NodeId, bool> iter = nodes.begin(); iter != nodes.end(); ++iter )
-        if ( !*iter ) {
+      for ( HashTableConstIteratorSafe<NodeId, bool> iter = nodes.beginSafe(); iter != nodes.endSafe(); ++iter )
+        if ( ! iter.val () ) {
           std::cerr << "check nodes" << std::endl
                     << __graph << std::endl << __T_mpd << std::endl;
           OK = false;
@@ -662,10 +662,10 @@ namespace gum {
       for ( const auto cliq : __T_mpd.nodes() ) {
         const NodeSet& clique = __T_mpd.clique ( cliq );
 
-        for ( NodeSetIterator iter2 = clique.begin(); iter2 != clique.end(); ++iter2 ) {
+        for ( NodeSetIterator iter2 = clique.beginSafe(); iter2 != clique.endSafe(); ++iter2 ) {
           iter3 = iter2;
 
-          for ( ++iter3; iter3 != clique.end(); ++iter3 ) {
+          for ( ++iter3; iter3 != clique.endSafe(); ++iter3 ) {
             thePair.first  = std::min ( *iter2, *iter3 );
             thePair.second = std::max ( *iter2, *iter3 );
 
@@ -675,8 +675,8 @@ namespace gum {
         }
       }
 
-      for ( HashTableConstIterator<Edge, bool> iter = edges.begin(); iter != edges.end(); ++iter )
-        if ( !*iter ) {
+      for ( HashTableConstIteratorSafe<Edge, bool> iter = edges.beginSafe(); iter != edges.endSafe(); ++iter )
+        if ( ! iter.val () ) {
           std::cerr << "check edges" << std::endl
                     << __graph << std::endl << __T_mpd << std::endl;
           OK = false;
@@ -695,12 +695,12 @@ namespace gum {
       for ( const auto cliq : __T_mpd.nodes() ) {
         const NodeSet& clique = __T_mpd.clique ( cliq );
 
-        for ( NodeSetIterator iter2 = clique.begin(); iter2 != clique.end(); ++iter2 )
+        for ( NodeSetIterator iter2 = clique.beginSafe(); iter2 != clique.endSafe(); ++iter2 )
           chk[*iter2].insert ( cliq, false );
       }
 
-      for ( HashTableConstIterator< NodeId, List<NodeId> > iter = __mps_of_node.begin(); iter !=  __mps_of_node.end(); ++iter ) {
-        const List<NodeId>& liste = *iter;
+      for ( HashTableConstIteratorSafe< NodeId, List<NodeId> > iter = __mps_of_node.beginSafe(); iter !=  __mps_of_node.endSafe(); ++iter ) {
+        const List<NodeId>& liste = iter.val ();
         HashTable<NodeId, bool>& hash = chk[iter.key()];
 
         for ( ListConstIterator<NodeId> iter2 = liste.cbegin(); iter2 != liste.cend(); ++iter2 ) {
@@ -715,12 +715,12 @@ namespace gum {
         }
       }
 
-      for ( HashTableConstIterator< NodeId, HashTable<NodeId, bool> > iter = chk.begin(); iter != chk.end(); ++iter ) {
-        const HashTable<NodeId, bool>& hash = *iter;
+      for ( HashTableConstIteratorSafe< NodeId, HashTable<NodeId, bool> > iter = chk.beginSafe(); iter != chk.endSafe(); ++iter ) {
+        const HashTable<NodeId, bool>& hash = iter.val ();
 
-        for ( HashTableConstIterator<NodeId, bool> iter2 = hash.begin();
-              iter2 != hash.end(); ++iter2 )
-          if ( !*iter2 ) {
+        for ( HashTableConstIteratorSafe<NodeId, bool> iter2 = hash.beginSafe();
+              iter2 != hash.endSafe(); ++iter2 )
+          if ( ! iter2.val () ) {
             std::cerr << "check mps of nodes2" << std::endl
                       << __T_mpd << std::endl << __mps_of_node << std::endl;
             OK = false;
@@ -824,16 +824,16 @@ namespace gum {
     // get the nodes that are concerned by the triangulation update
     const NodeSet& clique = __junction_tree.clique ( Mx );
 
-    for ( NodeSetIterator iter_node = clique.begin();
-          iter_node != clique.end(); ++iter_node )
+    for ( NodeSetIterator iter_node = clique.beginSafe();
+          iter_node != clique.endSafe(); ++iter_node )
       if ( ! theGraph.exists ( *iter_node ) )
         theGraph.insertNode ( *iter_node );
 
     // go on with the neighbour cliques in the junction tree
     const NodeSet& neighbours =  __junction_tree.neighbours ( Mx );
 
-    for ( NodeSetIterator neighbour = neighbours.begin();
-          neighbour != neighbours.end(); ++neighbour ) {
+    for ( NodeSetIterator neighbour = neighbours.beginSafe();
+          neighbour != neighbours.endSafe(); ++neighbour ) {
       NodeId othernode = *neighbour;
 
       if ( othernode != Mfrom ) {
@@ -868,9 +868,9 @@ namespace gum {
 
     // parse all the affected MPS and get the corresponding cliques
 
-    for ( HashTableConstIterator<NodeId, bool> iter_mps = __mps_affected.begin();
-          iter_mps != __mps_affected.end(); ++iter_mps ) {
-      if ( *iter_mps ) {
+    for ( HashTableConstIteratorSafe<NodeId, bool> iter_mps = __mps_affected.beginSafe();
+          iter_mps != __mps_affected.endSafe(); ++iter_mps ) {
+      if ( iter_mps.val () ) {
         // get the cliques contained in this MPS
         const std::vector<NodeId>& cliques = __cliques_of_mps[iter_mps.key()];
 
@@ -881,10 +881,10 @@ namespace gum {
 
     // for each connected set of cliques involved in the triangulations
     // perform a new triangulation and update the max prime subgraph tree
-    for ( HashTableConstIterator<NodeId, bool> iter_clique = all_cliques_affected.begin();
-          iter_clique != all_cliques_affected.end();
+    for ( HashTableConstIteratorSafe<NodeId, bool> iter_clique = all_cliques_affected.beginSafe();
+          iter_clique != all_cliques_affected.endSafe();
           ++iter_clique ) {
-      if ( *iter_clique ) {
+      if ( iter_clique.val () ) {
         // set up the connected subgraph that need be retriangulated and the
         // cliques that are affected by this triangulation
         tmp_graph.clear();
@@ -894,9 +894,9 @@ namespace gum {
                                         all_cliques_affected );
 
         // insert the edges in tmp_graph
-        for ( const auto & edge : __graph.edges() ) {
+        for ( auto edge = __graph.edges().beginSafe (); edge != __graph.edges().endSafe (); ++edge ) {
           try {
-            tmp_graph.insertEdge ( edge.first(), edge.second() );
+            tmp_graph.insertEdge ( edge->first(), edge->second() );
           } catch ( Exception& ) { } // both extremities must be in tmp_graph
         }
 
@@ -905,10 +905,10 @@ namespace gum {
         for ( const auto node : tmp_graph.nodes() ) {
           List<NodeId>& mps = __mps_of_node[ node];
 
-          for ( HashTableConstIterator<NodeId, bool> iter_mps = __mps_affected.begin();
-                iter_mps != __mps_affected.end();
+          for ( HashTableConstIteratorSafe<NodeId, bool> iter_mps = __mps_affected.beginSafe();
+                iter_mps != __mps_affected.endSafe();
                 ++iter_mps ) {
-            if ( *iter_mps )
+            if ( iter_mps.val () )
               mps.eraseByVal ( iter_mps.key() );
           }
         }
@@ -937,8 +937,8 @@ namespace gum {
         }
 
         // and add the edges of tmp_junction_tree to __junction_tree
-        for ( const auto edge : tmp_junction_tree.edges() )
-          __junction_tree.insertEdge ( tmp2global_junction_tree[edge.first()], tmp2global_junction_tree[edge.second()] );
+        for ( auto edge = tmp_junction_tree.edges().beginSafe (); edge != tmp_junction_tree.edges().endSafe (); ++edge )
+          __junction_tree.insertEdge ( tmp2global_junction_tree[edge->first()], tmp2global_junction_tree[edge->second()] );
 
         // second get the edges in __junction_tree that have an extremal clique R
         // in the affected clique set and the other one S not in the affected set
@@ -957,7 +957,7 @@ namespace gum {
             unsigned int __elim_order = tmp_graph.bound() + 1;
             NodeId elim_node = 0;
 
-            for ( NodeSetIterator iter_sep = sep.begin(); iter_sep != sep.end(); ++iter_sep ) {
+            for ( NodeSetIterator iter_sep = sep.beginSafe(); iter_sep != sep.endSafe(); ++iter_sep ) {
               NodeId id = *iter_sep;
               unsigned int new_order = __triangulation->eliminationOrder ( id );
 
@@ -992,8 +992,8 @@ namespace gum {
 
               const NodeSet& neighbours = __junction_tree.neighbours ( to_connect );
 
-              for ( NodeSetIterator iter_neighbour = neighbours.begin();
-                    iter_neighbour != neighbours.end(); ++iter_neighbour ) {
+              for ( NodeSetIterator iter_neighbour = neighbours.beginSafe();
+                    iter_neighbour != neighbours.endSafe(); ++iter_neighbour ) {
                 __junction_tree.insertEdge ( *iter_neighbour, not_affected );
 
                 if ( ! new_nodes_in_junction_tree.contains ( *iter_neighbour ) )
@@ -1011,16 +1011,16 @@ namespace gum {
     }
 
     // remove the mps that were affected and update the cliques_of_mps table
-    for ( HashTableConstIterator<NodeId, bool> iter_clique =
-            all_cliques_affected.begin();
-          iter_clique != all_cliques_affected.end(); ++iter_clique ) {
+    for ( HashTableConstIteratorSafe<NodeId, bool> iter_clique =
+            all_cliques_affected.beginSafe();
+          iter_clique != all_cliques_affected.endSafe(); ++iter_clique ) {
       __mps_of_clique.erase ( iter_clique.key() );
       __junction_tree.eraseNode ( iter_clique.key() );
     }
 
-    for ( HashTableConstIterator<NodeId, bool> iter_MPS = __mps_affected.begin();
-          iter_MPS != __mps_affected.end(); ++iter_MPS ) {
-      if ( *iter_MPS ) {
+    for ( HashTableConstIteratorSafe<NodeId, bool> iter_MPS = __mps_affected.beginSafe();
+          iter_MPS != __mps_affected.endSafe(); ++iter_MPS ) {
+      if ( iter_MPS.val () ) {
         __cliques_of_mps.erase ( iter_MPS.key() );
         __T_mpd.eraseNode ( iter_MPS.key() );
       }
@@ -1042,8 +1042,8 @@ namespace gum {
     // check the separators on all the adjacent edges of Mx
     const NodeSet& neighbours = __junction_tree.neighbours ( node );
 
-    for ( NodeSetIterator iter_sep = neighbours.begin();
-          iter_sep != neighbours.end(); ++iter_sep ) {
+    for ( NodeSetIterator iter_sep = neighbours.beginSafe();
+          iter_sep != neighbours.endSafe(); ++iter_sep ) {
       NodeId other_node = *iter_sep;
 
       if ( other_node != from ) {
@@ -1053,11 +1053,11 @@ namespace gum {
         // check that the separator between node and other_node is complete
         bool complete = true;
 
-        for ( NodeSetIterator iter_sep1 = separator.begin();
-              iter_sep1 != separator.end() && complete; ++iter_sep1 ) {
+        for ( NodeSetIterator iter_sep1 = separator.beginSafe();
+              iter_sep1 != separator.endSafe() && complete; ++iter_sep1 ) {
           iter_sep2 = iter_sep1;
 
-          for ( ++iter_sep2; iter_sep2 != separator.end(); ++iter_sep2 ) {
+          for ( ++iter_sep2; iter_sep2 != separator.endSafe(); ++iter_sep2 ) {
             if ( ! __graph.existsEdge ( *iter_sep1, *iter_sep2 ) ) {
               complete = false;
               break;
@@ -1103,8 +1103,8 @@ namespace gum {
 
     HashTable<NodeId, bool> mark = T_mpd_cliques.map ( false );
 
-    for ( HashTableConstIterator<NodeId, bool> iter_clique = mark.begin();
-          iter_clique != mark.end(); ++iter_clique )
+    for ( HashTableConstIteratorSafe<NodeId, bool> iter_clique = mark.beginSafe();
+          iter_clique != mark.endSafe(); ++iter_clique )
       if ( !mark[iter_clique.key()] )
         __computeMaxPrimeMergings ( iter_clique.key(), iter_clique.key(),
                                     merged_cliques, mark,
@@ -1130,29 +1130,29 @@ namespace gum {
 
     // First, create the new cliques and create the corresponding
     // cliques_of_mps entries
-    for ( HashTableConstIterator<NodeId, NodeId> iter_clique =
-            T_mpd_cliques.begin();
-          iter_clique != T_mpd_cliques.end(); ++iter_clique ) {
-      if ( iter_clique.key() == *iter_clique ) {
+    for ( HashTableConstIteratorSafe<NodeId, NodeId> iter_clique =
+            T_mpd_cliques.beginSafe();
+          iter_clique != T_mpd_cliques.endSafe(); ++iter_clique ) {
+      if ( iter_clique.key() == iter_clique.val () ) {
         NodeId newId =
-          __T_mpd.insertNode ( __junction_tree.clique ( *iter_clique ) );
-        clique2MPS.insert ( *iter_clique, newId );
-        std::vector<NodeId>& vect_of_cliques = __cliques_of_mps.insert ( newId, std::vector<NodeId>() );
-        vect_of_cliques.push_back ( *iter_clique );
+          __T_mpd.insertNode ( __junction_tree.clique ( iter_clique.val () ) );
+        clique2MPS.insert ( iter_clique.val (), newId );
+        std::vector<NodeId>& vect_of_cliques = __cliques_of_mps.insert ( newId, std::vector<NodeId>() ).second;
+        vect_of_cliques.push_back ( iter_clique.val () );
       }
     }
 
     // add to the cliques previously created the nodes of the cliques that were
     // merged into them and update the cliques_of_mps
-    for ( HashTableConstIterator<NodeId, NodeId> iter = T_mpd_cliques.begin();
-          iter != T_mpd_cliques.end(); ++iter ) {
-      if ( ( iter.key() != *iter ) &&
-           ( new_nodes_in_junction_tree.contains ( *iter ) ) ) {
+    for ( HashTableConstIteratorSafe<NodeId, NodeId> iter = T_mpd_cliques.beginSafe();
+          iter != T_mpd_cliques.endSafe(); ++iter ) {
+      if ( ( iter.key() != iter.val () ) &&
+           ( new_nodes_in_junction_tree.contains ( iter.val () ) ) ) {
         const NodeSet& new_clique = __junction_tree.clique ( iter.key() );
-        const NodeId idMPS = clique2MPS[*iter];
+        const NodeId idMPS = clique2MPS[iter.val ()];
 
-        for ( NodeSetIterator iter_node = new_clique.begin();
-              iter_node != new_clique.end(); ++iter_node ) {
+        for ( NodeSetIterator iter_node = new_clique.beginSafe();
+              iter_node != new_clique.endSafe(); ++iter_node ) {
           try {
             __T_mpd.addToClique ( idMPS, *iter_node );
           } catch ( DuplicateElement& ) { }
@@ -1163,30 +1163,30 @@ namespace gum {
     }
 
     // update the mps_of_node and the mps_of_clique
-    for ( HashTableConstIterator<NodeId, NodeId> iter = T_mpd_cliques.begin();
-          iter != T_mpd_cliques.end(); ++iter ) {
-      const NodeId idMPS = clique2MPS[*iter];
+    for ( HashTableConstIteratorSafe<NodeId, NodeId> iter = T_mpd_cliques.beginSafe();
+          iter != T_mpd_cliques.endSafe(); ++iter ) {
+      const NodeId idMPS = clique2MPS[iter.val()];
       __mps_of_clique.insert ( iter.key(), idMPS );
 
-      if ( iter.key() == *iter ) {
+      if ( iter.key() == iter.val() ) {
         const NodeSet& nodes = __T_mpd.clique ( idMPS );
 
-        for ( NodeSetIterator iter_node = nodes.begin();
-              iter_node != nodes.end(); ++iter_node )
+        for ( NodeSetIterator iter_node = nodes.beginSafe();
+              iter_node != nodes.endSafe(); ++iter_node )
           __mps_of_node[ *iter_node ].insert ( idMPS );
       }
     }
 
     // add the edges to the max prime subgraph tree
-    for ( HashTableConstIterator<NodeId, NodeId> iter = T_mpd_cliques.begin();
-          iter != T_mpd_cliques.end();
+    for ( HashTableConstIteratorSafe<NodeId, NodeId> iter = T_mpd_cliques.beginSafe();
+          iter != T_mpd_cliques.endSafe();
           ++iter ) {
-      NodeId clique = clique2MPS[*iter];
+      NodeId clique = clique2MPS[iter.val()];
 
       const NodeSet& neighbours = __junction_tree.neighbours ( iter.key() );
 
-      for ( NodeSetIterator iter_neighbour = neighbours.begin();
-            iter_neighbour != neighbours.end(); ++iter_neighbour ) {
+      for ( NodeSetIterator iter_neighbour = neighbours.beginSafe();
+            iter_neighbour != neighbours.endSafe(); ++iter_neighbour ) {
         NodeId othernode = *iter_neighbour;
 
         if ( T_mpd_cliques.exists ( othernode ) ) {
@@ -1274,8 +1274,8 @@ namespace gum {
     // apply collect to all the neighbours except from
     const NodeSet& neighbours =  __junction_tree.neighbours ( clique );
 
-    for ( NodeSetIterator neighbour = neighbours.begin();
-          neighbour != neighbours.end(); ++neighbour ) {
+    for ( NodeSetIterator neighbour = neighbours.beginSafe();
+          neighbour != neighbours.endSafe(); ++neighbour ) {
       NodeId otherclique = *neighbour;
 
       if ( otherclique != from )
@@ -1290,15 +1290,15 @@ namespace gum {
     if ( from != clique ) {
       const NodeSet& separator = __junction_tree.separator ( clique, from );
 
-      for ( NodeSetIterator iter = cliquenodes.begin();
-            iter != cliquenodes.end(); ++iter ) {
+      for ( NodeSetIterator iter = cliquenodes.beginSafe();
+            iter != cliquenodes.endSafe(); ++iter ) {
         if ( ! separator.contains ( *iter ) ) {
           __created_JT_cliques.insert ( *iter, clique );
         }
       }
     } else {
-      for ( NodeSetIterator iter = cliquenodes.begin();
-            iter != cliquenodes.end(); ++iter ) {
+      for ( NodeSetIterator iter = cliquenodes.beginSafe();
+            iter != cliquenodes.endSafe(); ++iter ) {
         __created_JT_cliques.insert ( *iter, clique );
       }
     }
@@ -1330,9 +1330,9 @@ namespace gum {
     NodeProperty<bool> examined =
       __junction_tree.nodesProperty<bool> ( false );
 
-    for ( NodeProperty<bool>::iterator iter = examined.begin();
-          iter != examined.end(); ++iter ) {
-      if ( ! *iter ) {
+    for ( NodeProperty<bool>::iterator_safe iter = examined.beginSafe();
+          iter != examined.endSafe(); ++iter ) {
+      if ( ! iter.val() ) {
         __collectJTCliques ( iter.key(), iter.key(), examined );
       }
     }
@@ -1376,8 +1376,8 @@ namespace gum {
     for ( const auto node : theGraph.nodes() )
       insertNode ( node, modal[node] );
 
-    for ( const auto & edge : theGraph.edges() )
-      insertEdge ( edge.first(), edge.second() );
+    for ( auto edge = theGraph.edges().beginSafe (); edge != theGraph.edges().endSafe(); ++edge )
+      insertEdge ( edge->first(), edge->second() );
   }
 
 
@@ -1392,8 +1392,8 @@ namespace gum {
     // apply collect to all the neighbours except from
     const NodeSet& neighbours =  __junction_tree.neighbours ( node );
 
-    for ( NodeSetIterator neighbour = neighbours.begin();
-          neighbour != neighbours.end(); ++neighbour ) {
+    for ( NodeSetIterator neighbour = neighbours.beginSafe();
+          neighbour != neighbours.endSafe(); ++neighbour ) {
       NodeId othernode = *neighbour;
 
       if ( othernode != from )
@@ -1408,7 +1408,7 @@ namespace gum {
     if ( from != node ) {
       const NodeSet& separator = __junction_tree.separator ( node, from );
 
-      for ( NodeSetIterator iter = clique.begin(); iter != clique.end(); ++iter ) {
+      for ( NodeSetIterator iter = clique.beginSafe(); iter != clique.endSafe(); ++iter ) {
         if ( ! separator.contains ( *iter ) ) {
           __elimination_order[index] = *iter;
           __reverse_elimination_order.insert ( *iter, index );
@@ -1416,7 +1416,7 @@ namespace gum {
         }
       }
     } else {
-      for ( NodeSetIterator iter = clique.begin(); iter != clique.end(); ++iter ) {
+      for ( NodeSetIterator iter = clique.beginSafe(); iter != clique.endSafe(); ++iter ) {
         __elimination_order[index] = *iter;
         __reverse_elimination_order.insert ( *iter, index );
         ++index;
@@ -1452,9 +1452,9 @@ namespace gum {
     NodeProperty<bool> examined =
       __junction_tree.nodesProperty<bool> ( false );
 
-    for ( NodeProperty<bool>::iterator iter = examined.begin();
-          iter != examined.end(); ++iter ) {
-      if ( ! *iter ) {
+    for ( NodeProperty<bool>::iterator_safe iter = examined.beginSafe();
+          iter != examined.endSafe(); ++iter ) {
+      if ( ! iter.val() ) {
         __collectEliminationOrder ( iter.key(), iter.key(), examined, index );
       }
     }

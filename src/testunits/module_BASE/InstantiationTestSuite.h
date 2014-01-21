@@ -171,7 +171,7 @@ namespace gum_tests {
 
         gum::Instantiation Order;
 
-        for ( gum::Sequence<gum::NodeId>::iterator it = bn->topologicalOrder().begin(); it !=bn->topologicalOrder().end(); ++it )
+        for ( gum::Sequence<gum::NodeId>::iterator_safe it = bn->topologicalOrder().beginSafe(); it !=bn->topologicalOrder().endSafe(); ++it )
           Order.add( bn->variable( *it ) );
 
 

@@ -77,7 +77,7 @@ namespace gum {
 
       const NodeSet& set=children( new_one );
 
-      for ( NodeSetIterator ite=set.begin(); ite!=set.end(); ++ite ) {
+      for ( NodeSetIterator ite=set.beginSafe(); ite!=set.endSafe(); ++ite ) {
         if ( *ite == to ) return true;
 
         if ( ! marked.contains( *ite ) ) {

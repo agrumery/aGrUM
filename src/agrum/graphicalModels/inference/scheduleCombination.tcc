@@ -66,8 +66,8 @@ namespace gum {
     // first wrap the multidimimplementations into ScheduleMultiDims
     Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
 
-    for ( typename Set<const MultiDimImplementation<GUM_SCALAR>*>::const_iterator
-          iter = set.begin(); iter != set.end(); ++iter ) {
+    for ( typename Set<const MultiDimImplementation<GUM_SCALAR>*>::const_iterator_safe
+          iter = set.beginSafe(); iter != set.endSafe(); ++iter ) {
       sched_set.insert( new ScheduleMultiDim<GUM_SCALAR> ( **iter ) );
     }
 
@@ -75,8 +75,8 @@ namespace gum {
     const ScheduleMultiDim<GUM_SCALAR>& res = combine( sched_set, schedule );
 
     // deallocate the wrappers we just constructed
-    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
-          iter = sched_set.begin(); iter != sched_set.end(); ++iter ) {
+    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
+          iter = sched_set.beginSafe(); iter != sched_set.endSafe(); ++iter ) {
       delete *iter;
     }
 
@@ -93,8 +93,8 @@ namespace gum {
     // first wrap the TABLES into ScheduleMultiDims
     Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
 
-    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator iter = set.begin();
-          iter != set.end(); ++iter ) {
+    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator_safe iter = set.beginSafe();
+          iter != set.endSafe(); ++iter ) {
       sched_set.insert
       ( new ScheduleMultiDim<GUM_SCALAR> ( *( ( *iter )->content() ) ) );
     }
@@ -103,8 +103,8 @@ namespace gum {
     const ScheduleMultiDim<GUM_SCALAR>& res = combine( sched_set, schedule );
 
     // deallocate the wrappers we just constructed
-    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
-          iter = sched_set.begin(); iter != sched_set.end(); ++iter ) {
+    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
+          iter = sched_set.beginSafe(); iter != sched_set.endSafe(); ++iter ) {
       delete *iter;
     }
 
@@ -121,8 +121,8 @@ namespace gum {
     // first wrap the multidimimplementations into ScheduleMultiDims
     Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
 
-    for ( typename Set<const MultiDimImplementation<GUM_SCALAR>*>::const_iterator
-          iter = set.begin(); iter != set.end(); ++iter ) {
+    for ( typename Set<const MultiDimImplementation<GUM_SCALAR>*>::const_iterator_safe
+          iter = set.beginSafe(); iter != set.endSafe(); ++iter ) {
       sched_set.insert( new ScheduleMultiDim<GUM_SCALAR> ( **iter ) );
     }
 
@@ -130,8 +130,8 @@ namespace gum {
     float res = nbOperations( sched_set, schedule );
 
     // deallocate the wrappers we just constructed
-    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
-          iter = sched_set.begin(); iter != sched_set.end(); ++iter ) {
+    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
+          iter = sched_set.beginSafe(); iter != sched_set.endSafe(); ++iter ) {
       delete *iter;
     }
 
@@ -149,8 +149,8 @@ namespace gum {
     // first wrap the TABLES into ScheduleMultiDims
     Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
 
-    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator iter = set.begin();
-          iter != set.end(); ++iter ) {
+    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator_safe iter = set.beginSafe();
+          iter != set.endSafe(); ++iter ) {
       sched_set.insert
       ( new ScheduleMultiDim<GUM_SCALAR> ( *( ( *iter )->content() ) ) );
     }
@@ -159,8 +159,8 @@ namespace gum {
     float res = nbOperations( sched_set, schedule );
 
     // deallocate the wrappers we just constructed
-    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
-          iter = sched_set.begin(); iter != sched_set.end(); ++iter ) {
+    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
+          iter = sched_set.beginSafe(); iter != sched_set.endSafe(); ++iter ) {
       delete *iter;
     }
 
@@ -176,8 +176,8 @@ namespace gum {
     // first wrap the multidimimplementations into ScheduleMultiDims
     Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
 
-    for ( typename Set<const MultiDimImplementation<GUM_SCALAR>*>::const_iterator
-          iter = set.begin(); iter != set.end(); ++iter ) {
+    for ( typename Set<const MultiDimImplementation<GUM_SCALAR>*>::const_iterator_safe
+          iter = set.beginSafe(); iter != set.endSafe(); ++iter ) {
       sched_set.insert( new ScheduleMultiDim<GUM_SCALAR> ( **iter ) );
     }
 
@@ -185,8 +185,8 @@ namespace gum {
     std::pair<long,long> res = memoryUsage( sched_set, schedule );
 
     // deallocate the wrappers we just constructed
-    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
-          iter = sched_set.begin(); iter != sched_set.end(); ++iter ) {
+    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
+          iter = sched_set.beginSafe(); iter != sched_set.endSafe(); ++iter ) {
       delete *iter;
     }
 
@@ -204,8 +204,8 @@ namespace gum {
     // first wrap the TABLES into ScheduleMultiDims
     Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
 
-    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator iter = set.begin();
-          iter != set.end(); ++iter ) {
+    for ( typename Set<const TABLE<GUM_SCALAR>*>::const_iterator_safe iter = set.beginSafe();
+          iter != set.endSafe(); ++iter ) {
       sched_set.insert
       ( new ScheduleMultiDim<GUM_SCALAR> ( *( ( *iter )->content() ) ) );
     }
@@ -214,8 +214,8 @@ namespace gum {
     std::pair<long,long> res = memoryUsage( sched_set, schedule );
 
     // deallocate the wrappers we just constructed
-    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator
-          iter = sched_set.begin(); iter != sched_set.end(); ++iter ) {
+    for ( typename Set<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
+          iter = sched_set.beginSafe(); iter != sched_set.endSafe(); ++iter ) {
       delete *iter;
     }
 

@@ -122,8 +122,8 @@ namespace gum_tests {
           table.variablesSequence();
         result->beginMultipleChanges();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator iter =
-                vars.begin(); iter != vars.end(); ++iter ) {
+        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
+                vars.beginSafe(); iter != vars.endSafe(); ++iter ) {
           if ( ! del_vars.exists( *iter ) ) {
             *result << **iter;
           }

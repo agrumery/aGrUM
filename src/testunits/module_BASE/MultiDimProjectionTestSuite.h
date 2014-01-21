@@ -132,11 +132,11 @@ namespace gum_tests {
                   const gum::MultiDimImplementation<T*>& t2 ) {
         if ( ( t1.nbrDim() == t2.nbrDim() ) &&
              ( t1.domainSize() == t2.domainSize() ) ) {
-          typedef gum::Sequence< const gum::DiscreteVariable* >::const_iterator
+          typedef gum::Sequence< const gum::DiscreteVariable* >::const_iterator_safe
           var_iterator;
 
-          for ( var_iterator iter = t1.variablesSequence().begin();
-                iter != t1.variablesSequence().end(); ++iter ) {
+          for ( var_iterator iter = t1.variablesSequence().beginSafe();
+                iter != t1.variablesSequence().endSafe(); ++iter ) {
             if ( ! t2.variablesSequence().exists( *iter ) ) {
               return false;
             }
@@ -163,11 +163,11 @@ namespace gum_tests {
                   const gum::Potential<T*>& t2 ) {
         if ( ( t1.nbrDim() == t2.nbrDim() ) &&
              ( t1.domainSize() == t2.domainSize() ) ) {
-          typedef gum::Sequence< const gum::DiscreteVariable* >::const_iterator
+          typedef gum::Sequence< const gum::DiscreteVariable* >::const_iterator_safe
           var_iterator;
 
-          for ( var_iterator iter = t1.variablesSequence().begin();
-                iter != t1.variablesSequence().end(); ++iter ) {
+          for ( var_iterator iter = t1.variablesSequence().beginSafe();
+                iter != t1.variablesSequence().endSafe(); ++iter ) {
             if ( ! t2.variablesSequence().exists( *iter ) ) {
               return false;
             }
@@ -210,8 +210,8 @@ namespace gum_tests {
         const gum::Sequence<const gum::DiscreteVariable*>& vars = table.variablesSequence();
         result->beginMultipleChanges();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator iter =
-                vars.begin(); iter != vars.end(); ++iter ) {
+        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
+                vars.beginSafe(); iter != vars.endSafe(); ++iter ) {
           if ( ! del_vars.exists( *iter ) ) {
             *result << **iter;
           }
@@ -241,8 +241,8 @@ namespace gum_tests {
         const gum::Sequence<const gum::DiscreteVariable*>& vars = table.variablesSequence();
         result->beginMultipleChanges();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator iter =
-                vars.begin(); iter != vars.end(); ++iter ) {
+        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
+                vars.beginSafe(); iter != vars.endSafe(); ++iter ) {
           if ( ! del_vars.exists( *iter ) ) {
             *result << **iter;
           }
@@ -277,8 +277,8 @@ namespace gum_tests {
         const gum::Sequence<const gum::DiscreteVariable*>& vars = table.variablesSequence();
         result->beginMultipleChanges();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator iter =
-                vars.begin(); iter != vars.end(); ++iter ) {
+        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
+                vars.beginSafe(); iter != vars.endSafe(); ++iter ) {
           if ( ! del_vars.exists( *iter ) ) {
             *result << **iter;
           }
@@ -308,8 +308,8 @@ namespace gum_tests {
         const gum::Sequence<const gum::DiscreteVariable*>& vars = table.variablesSequence();
         result->beginMultipleChanges();
 
-        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator iter =
-                vars.begin(); iter != vars.end(); ++iter ) {
+        for ( gum::Sequence<const gum::DiscreteVariable*>::const_iterator_safe iter =
+                vars.beginSafe(); iter != vars.endSafe(); ++iter ) {
           if ( ! del_vars.exists( *iter ) ) {
             *result << **iter;
           }
