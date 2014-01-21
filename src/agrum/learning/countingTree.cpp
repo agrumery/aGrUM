@@ -151,9 +151,9 @@ namespace gum {
       // now, for each single node, we know from which pair we shall perform
       // the computation, so we can parse the target sets and fill the target
       // boxes of the single nodes
-      for ( ListConstIteratorUnsafe<CountingTreeTargetSetBox*> iter =
-              __target_records.cbeginUnsafe ();
-            iter != __target_records.cendUnsafe (); ++iter ) {
+      for ( ListConstIterator<CountingTreeTargetSetBox*> iter =
+              __target_records.cbegin ();
+            iter != __target_records.cend (); ++iter ) {
         // fill all the single target boxes of the current target set box
         CountingTreeTargetSetBox* set_box = *iter;
         for ( unsigned int i = 0; i < __db_single_target_ids->size (); ++i ) {

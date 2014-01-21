@@ -339,17 +339,17 @@ namespace gum {
         should_refill = true;
         
         // remove the curent target set boxes
-        for ( ListConstIteratorUnsafe<CountingTreeTargetSetBox*> iter =
-                __target_records.cbeginUnsafe ();
-              iter != __target_records.cendUnsafe (); ++iter ) {
+        for ( ListConstIterator<CountingTreeTargetSetBox*> iter =
+                __target_records.cbegin ();
+              iter != __target_records.cend (); ++iter ) {
           CountingTreeTargetSetBox::deleteBox ( *iter );
         }
 
         // indicate to the conditioning boxes at the last level that their
         // children do not exist anymore
-        for ( ListConstIteratorUnsafe<CountingTreeConditioningBox*> iter =
-                __last_cond_nodes.cbeginUnsafe ();
-              iter != __last_cond_nodes.cendUnsafe (); ++iter ) {
+        for ( ListConstIterator<CountingTreeConditioningBox*> iter =
+                __last_cond_nodes.cbegin ();
+              iter != __last_cond_nodes.cend (); ++iter ) {
           (*iter)->unsetChildren ();
         }
       }
