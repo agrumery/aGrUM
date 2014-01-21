@@ -211,9 +211,9 @@ namespace gum {
 
                 // but before doing so, check whether there exist positive_before_incr. If
                 // this is not the case, optimize by not using before_incr at all
-                register GUM_MULTI_DIM_PROJECTION_TYPE* pt =
+                GUM_MULTI_DIM_PROJECTION_TYPE* pt =
                   const_cast<GUM_MULTI_DIM_PROJECTION_TYPE*>( &( table->unsafeGet( 0 ) ) );
-                register GUM_MULTI_DIM_PROJECTION_TYPE* pres =
+                GUM_MULTI_DIM_PROJECTION_TYPE* pres =
                   const_cast<GUM_MULTI_DIM_PROJECTION_TYPE*>( &( result->unsafeGet( 0 ) ) );
                 GUM_MULTI_DIM_PROJECTION_TYPE* pres_deb = pres;
 
@@ -391,16 +391,16 @@ namespace gum {
                 // one, and so on. For the inner loop, this is similar except that we shall do
                 // these operations only when before_incr[xxx] steps in the loop have
                 // already been made.
-                register GUM_MULTI_DIM_PROJECTION_TYPE* pt =
+                GUM_MULTI_DIM_PROJECTION_TYPE* pt =
                   const_cast<GUM_MULTI_DIM_PROJECTION_TYPE*>( &( table->unsafeGet( 0 ) ) );
-                register GUM_MULTI_DIM_PROJECTION_TYPE* pres =
+                GUM_MULTI_DIM_PROJECTION_TYPE* pres =
                   const_cast<GUM_MULTI_DIM_PROJECTION_TYPE*>( &( result->unsafeGet( 0 ) ) );
 
                 // but before doing so, check whether there exist positive_before_incr. If
                 // this is not the case, optimize by not using before_incr at all
                 if ( ! has_before_incr ) {
-                  for ( register Idx i = 0; i < result_domain_size; ++i ) {
-                    for ( register Idx j = 0; j < table_alone_domain_size; ++j ) {
+                  for ( Idx i = 0; i < result_domain_size; ++i ) {
+                    for ( Idx j = 0; j < table_alone_domain_size; ++j ) {
 #ifdef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
                       GUM_MULTI_DIM_PROJECTION( *pres, *pt );
 #else
@@ -421,10 +421,10 @@ namespace gum {
                 } else {
                   // here there are positive before_incr and we should use them to know
                   // when result_offset needs be changed
-                  register Idx table_offset = 0;
+                  Idx table_offset = 0;
 
-                  for ( register Idx j = 0; j < result_domain_size; ++j ) {
-                    for ( register Idx i = 0; i < table_alone_domain_size; ++i ) {
+                  for ( Idx j = 0; j < result_domain_size; ++j ) {
+                    for ( Idx i = 0; i < table_alone_domain_size; ++i ) {
 #ifdef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
                       GUM_MULTI_DIM_PROJECTION( *pres, pt[table_offset] );
 #else
@@ -436,7 +436,7 @@ namespace gum {
 #endif
 
                       // update the increment of table for the inner loop
-                      for ( register unsigned int k = 0; k < table_alone_value.size(); ++k ) {
+                      for ( unsigned int k = 0; k < table_alone_value.size(); ++k ) {
                         --table_alone_value[k];
 
                         if ( table_alone_value[k] ) {
@@ -450,7 +450,7 @@ namespace gum {
                     }
 
                     // update the offset of table for the outer loop
-                    for ( register unsigned int k = 0;
+                    for ( unsigned int k = 0;
                           k < table_and_result_value.size(); ++k ) {
                       --table_and_result_value[k];
 

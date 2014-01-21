@@ -181,10 +181,10 @@ namespace gum {
           // compute the result: it is now sufficient to loop over the variables that
           // were not instantiated. ptable and presult are pointers on the arrays
           // that are directly used for this loop
-          register GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* ptable =
+          GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* ptable =
             const_cast<GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE*>
             ( &( table->unsafeGet( table_alone_offset ) ) );
-          register GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* presult =
+          GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* presult =
             const_cast<GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE*>
             ( &( result->unsafeGet( 0 ) ) );
 
@@ -193,7 +193,7 @@ namespace gum {
           // last ones or not. If so, we can optimize the parsing of ptable and
           // presult as both tables need be parsed using only 1-increments
           if ( has_before_incr ) {
-            for ( register Idx i = 0; i < result_domain_size; ++i ) {
+            for ( Idx i = 0; i < result_domain_size; ++i ) {
 #ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
               ** presult = **ptable;
 #else
@@ -208,9 +208,9 @@ namespace gum {
             // here, some uninstantiated variables exist after the instantiated ones in
             // the variables sequence of table. So, we must perform a more complicated
             // parsing of ptable
-            register Idx table_offset = 0;
+            Idx table_offset = 0;
 
-            for ( register Idx j = 0; j < result_domain_size; ++j ) {
+            for ( Idx j = 0; j < result_domain_size; ++j ) {
 #ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
               ** presult = *( ptable[table_offset] );
 #else
@@ -218,7 +218,7 @@ namespace gum {
 #endif
 
               // update the offset of table
-              for ( register unsigned int k = 0;
+              for ( unsigned int k = 0;
                     k < table_and_result_value.size(); ++k ) {
                 --table_and_result_value[k];
 
