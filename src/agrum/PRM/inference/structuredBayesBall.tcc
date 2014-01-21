@@ -232,7 +232,7 @@ namespace gum {
       for ( auto iter = marks.beginSafe(); iter != marks.endSafe(); ++iter ) {
         Set<NodeId>* req_set = new Set<NodeId>();
 
-        for ( auto jter = ( *( iter.val() ) ).beginSafe(); jter != ( *( iter.val() ) ).endSafe(); ++jter ) {
+        for ( auto jter = ( * ( iter.val() ) ).beginSafe(); jter != ( * ( iter.val() ) ).endSafe(); ++jter ) {
           if ( jter.val().first ) {
             req_set->insert ( jter.key() );
           }
@@ -245,7 +245,7 @@ namespace gum {
       Set<const Instance<GUM_SCALAR>*> to_remove;
 
       for ( auto iter = req_map.beginSafe(); iter != req_map.endSafe(); ++iter ) {
-        if ( ( *( iter.val() ) ).size() == 0 ) {
+        if ( ( * ( iter.val() ) ).size() == 0 ) {
           to_remove.insert ( iter.key() );
         }
       }
@@ -257,7 +257,7 @@ namespace gum {
 
       // Fill __reqMap and __keyMap
       for ( auto iter = req_map.beginSafe(); iter != req_map.endSafe(); ++iter ) {
-        std::string key = __buildHashKey ( iter.key(), *( iter.val() ) );
+        std::string key = __buildHashKey ( iter.key(), * ( iter.val() ) );
 
         if ( __reqMap.exists ( key ) ) {
           __keyMap.insert ( iter.key(), std::pair<std::string, Set<NodeId>* > ( key, __reqMap[key].first ) );

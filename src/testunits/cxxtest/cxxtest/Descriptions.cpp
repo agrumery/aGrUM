@@ -12,13 +12,13 @@ namespace CxxTest {
   // Convert total tests to string
   //
 #ifndef _CXXTEST_FACTOR
-  char* WorldDescription::strTotalTests( char* s ) const {
-    numberToString( numTotalTests(), s );
+  char* WorldDescription::strTotalTests ( char* s ) const {
+    numberToString ( numTotalTests(), s );
     return s;
   }
 #else // _CXXTEST_FACTOR
-  char* WorldDescription::strTotalTests( char* s ) const {
-    char* p = numberToString( numTotalTests(), s );
+  char* WorldDescription::strTotalTests ( char* s ) const {
+    char* p = numberToString ( numTotalTests(), s );
 
     if ( numTotalTests() <= 1 )
       return s;
@@ -35,19 +35,19 @@ namespace CxxTest {
       if ( !power )
         continue;
 
-      p = numberToString( factor, copyString( p, ( numFactors == 0 ) ? " = " : " * " ) );
+      p = numberToString ( factor, copyString ( p, ( numFactors == 0 ) ? " = " : " * " ) );
 
       if ( power > 1 )
-        p = numberToString( power, copyString( p, "^" ) );
+        p = numberToString ( power, copyString ( p, "^" ) );
 
       ++ numFactors;
     }
 
     if ( n > 1 ) {
       if ( !numFactors )
-        copyString( p, tracker().failedTests() ? " :(" : tracker().warnings() ? " :|" : " :)" );
+        copyString ( p, tracker().failedTests() ? " :(" : tracker().warnings() ? " :|" : " :)" );
       else
-        numberToString( n, copyString( p, " * " ) );
+        numberToString ( n, copyString ( p, " * " ) );
     }
 
     return s;

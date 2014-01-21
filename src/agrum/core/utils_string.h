@@ -50,10 +50,10 @@ namespace gum {
    * @throws IOError is thrown if, in a field, a delimiter is opened
    * but not closed. */
 
-  std::vector<std::string> SplitCSVLine( const std::string& str_to_split,
-                                         char field_separator = ';',
-                                         char field_delimiter = '"',
-                                         char escape_char = '\\' );
+  std::vector<std::string> SplitCSVLine ( const std::string& str_to_split,
+                                          char field_separator = ';',
+                                          char field_delimiter = '"',
+                                          char escape_char = '\\' );
 
 
 } /* namespace gum */

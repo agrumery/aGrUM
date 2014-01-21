@@ -153,7 +153,7 @@ namespace gum {
           // ==========================================================================
           /// @{
           const NodeGraphPart& nodes() const;
-          
+
           const ArcSet& arcs() const;
 
           /// Returns an iterator at the beginning of the set of neighbors of node

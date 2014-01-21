@@ -24,47 +24,47 @@ class PRMTreeModel : public QStandardItemModel {
     /// IsArrayRole is a boolean, use only for references and instances (ex: false).
     enum PRMRoles { LocalDataRole = Qt::UserRole, ObjectRole, TypeRole, IsArrayRole };
 
-    explicit PRMTreeModel( const gum::prm::PRM * prm, const gum::prm::skoor::SkoorContext * context = 0, QObject *parent = 0 );
+    explicit PRMTreeModel ( const gum::prm::PRM* prm, const gum::prm::skoor::SkoorContext* context = 0, QObject* parent = 0 );
     ~PRMTreeModel();
 
     /// \reimp
-    virtual bool canFetchMore( const QModelIndex & parent ) const;
+    virtual bool canFetchMore ( const QModelIndex& parent ) const;
     /// \reimp
-    virtual void fetchMore( const QModelIndex & parent );
+    virtual void fetchMore ( const QModelIndex& parent );
 
     /// Add keywords to model.
-    void setKeywords( const QStringList & keywords );
+    void setKeywords ( const QStringList& keywords );
     ///
-    void update( QSharedPointer<PRMTreeModel> prm, QsciScintillaExtended * currentDocument );
+    void update ( QSharedPointer<PRMTreeModel> prm, QsciScintillaExtended* currentDocument );
 
   protected:
-    const QString & separator() const { return m_separator; }
+    const QString& separator() const { return m_separator; }
 
-    QStandardItem * createChild( const QStringList & datas, QStandardItem * parent = 0 );
-    QStandardItem * createChild( const QString & data, QStandardItem * parent = 0 );
+    QStandardItem* createChild ( const QStringList& datas, QStandardItem* parent = 0 );
+    QStandardItem* createChild ( const QString& data, QStandardItem* parent = 0 );
 
-    QStandardItem * getChild( const QString & data, QStandardItem * parent = 0 ) const;
-    QStandardItem * getChild( const QStringList & path, QStandardItem * parent = 0 ) const;
+    QStandardItem* getChild ( const QString& data, QStandardItem* parent = 0 ) const;
+    QStandardItem* getChild ( const QStringList& path, QStandardItem* parent = 0 ) const;
 
-    void appendSameChildren( const QStandardItem * from , QStandardItem * to );
-    void removeSameChildren( const QStandardItem * from , QStandardItem * in );
+    void appendSameChildren ( const QStandardItem* from , QStandardItem* to );
+    void removeSameChildren ( const QStandardItem* from , QStandardItem* in );
 
     /// Set the current package to allow direct access of its members.
-    void setCurrentPackage( const QStringList & package );
+    void setCurrentPackage ( const QStringList& package );
     /// Set the current class, interface or system, to allow direct access of its members.
-    void setCurrentBlock( const QString & block );
+    void setCurrentBlock ( const QString& block );
     /// Set alias for skoor files.
     /// If alias already exist, it is updated.
-    void addAlias( const QString & alias, const QStringList & to );
+    void addAlias ( const QString& alias, const QStringList& to );
 
     ///
-    QList<QStandardItem *> findItems( const QVariant & data, int role = Qt::DisplayRole ) const;
+    QList<QStandardItem*> findItems ( const QVariant& data, int role = Qt::DisplayRole ) const;
 
   private:
-    static const QString & m_separator;
-    QStandardItem * m_package;
-    QStandardItem * m_block;
-    QStandardItem * m_keywords;
+    static const QString& m_separator;
+    QStandardItem* m_package;
+    QStandardItem* m_block;
+    QStandardItem* m_keywords;
     QList<QStandardItem* > m_aliases;
 };
 

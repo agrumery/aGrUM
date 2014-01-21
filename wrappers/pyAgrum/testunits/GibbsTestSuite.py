@@ -2,7 +2,7 @@
 
 import unittest
 from pyAgrum import BayesNet, LabelizedVar, RangeVar, DiscretizedVar, Potential
-from pyAgrum import ListPotentials, GibbsInference
+from pyAgrum import GibbsInference
 from pyAgrumTestSuite import pyAgrumTestCase
 
 
@@ -88,53 +88,13 @@ class TestDictFeature(GibbsTestCase):
         ie.makeInference()
         result = ie.marginal(self.r)
 
-        ie = GibbsInference(self.bn)
-        ie.setVerbosity(False)
-        ie.setEpsilon(0.0001)
-        ie.setMinEpsilonRate(0.0001)
-        list_pot = ListPotentials()
-        pot = Potential()
-        pot.add(self.bn.variable(self.s))
-        pot[:] = [0, 1]
-        list_pot.append(pot)
-        pot = Potential()
-        pot.add(self.bn.variable(self.w))
-        pot[:] = [1, 0]
-        list_pot.append(pot)
-
-        ie.insertEvidence(list_pot)
-        ie.makeInference()
-        result2 = ie.marginal(self.r)
-
-        self.assertDelta(result.tolist(), result2.tolist())
-
-
-    def testDictOfNumbers(self):
-        ie = GibbsInference(self.bn)
-        ie.setVerbosity(False)
-        ie.setEpsilon(0.0001)
-        ie.setMinEpsilonRate(0.0001)
-        ie.setEvidence({'s': 1, 'w': 0})
-        ie.makeInference()
-        result = ie.marginal(self.r)
-
-        ie = GibbsInference(self.bn)
-        ie.setVerbosity(False)
-        ie.setEpsilon(0.0001)
-        ie.setMinEpsilonRate(0.0001)
-        list_pot = ListPotentials()
-        pot = Potential()
-        pot.add(self.bn.variable(self.s))
-        pot[:] = [0, 1]
-        list_pot.append(pot)
-        pot = Potential()
-        pot.add(self.bn.variable(self.w))
-        pot[:] = [1, 0]
-        list_pot.append(pot)
-
-        ie.insertEvidence(list_pot)
-        ie.makeInference()
-        result2 = ie.marginal(self.r)
+        ie2 = GibbsInference(self.bn)
+        ie2.setVerbosity(False)
+        ie2.setEpsilon(0.0001)
+        ie2.setMinEpsilonRate(0.0001)
+        ie2.setEvidence({'s': 1, 'w': 0})
+        ie2.makeInference()
+        result2 = ie2.marginal(self.r)
 
         self.assertDelta(result.tolist(), result2.tolist())
 
@@ -231,7 +191,6 @@ class TestInferenceResults(GibbsTestCase):
 
 ts = unittest.TestSuite()
 ts.addTest(TestDictFeature('testDictOfSequences'))
-ts.addTest(TestDictFeature('testDictOfNumbers'))
 ts.addTest(TestDictFeature('testDictOfLabels'))
 ts.addTest(TestDictFeature('testWithDifferentVariables'))
 ts.addTest(TestInferenceResults('testOpenBayesSiteExamples'))

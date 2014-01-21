@@ -47,8 +47,8 @@ namespace gum {
 
     template<typename GUM_SCALAR> class Forall : public MultiDimAggregator<GUM_SCALAR> {
       public:
-        Forall( Idx value );
-        Forall( const Forall<GUM_SCALAR>& from );
+        Forall ( Idx value );
+        Forall ( const Forall<GUM_SCALAR>& from );
         virtual ~Forall();
 
         /**
@@ -67,10 +67,10 @@ namespace gum {
         virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
 
 
-        virtual std::string aggregatorName( void ) const;
+        virtual std::string aggregatorName ( void ) const;
       protected:
-        virtual Idx _neutralElt( void ) const ;
-        virtual Idx _folder( const DiscreteVariable& v,Idx i1,Idx i2,bool& stop_iteration ) const;
+        virtual Idx _neutralElt ( void ) const ;
+        virtual Idx _folder ( const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration ) const;
       private:
         Idx __value;
     };

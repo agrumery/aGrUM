@@ -12,7 +12,7 @@ class NewProjectDialog : public QDialog {
     Q_OBJECT
 
   public:
-    explicit NewProjectDialog( QWidget *parent = 0 );
+    explicit NewProjectDialog ( QWidget* parent = 0 );
     ~NewProjectDialog();
 
     QString projectName();
@@ -23,7 +23,7 @@ class NewProjectDialog : public QDialog {
     void on_buttonBox_accepted();
 
   private:
-    Ui::NewProjectDialog *ui;
+    Ui::NewProjectDialog* ui;
 };
 
 #endif // NEWPROJECTDIALOG_H

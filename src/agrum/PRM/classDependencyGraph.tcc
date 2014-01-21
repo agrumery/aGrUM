@@ -50,7 +50,7 @@ namespace gum {
       for ( auto ci = prm.classes().beginSafe(); ci != prm.classes().endSafe(); ++ci ) {
         __node_map.insert ( *ci, new HashTable<const ClassElement<GUM_SCALAR>*, NodeId>() );
 
-        for ( const auto j : (*ci)->dag().nodes() ) {
+        for ( const auto j : ( *ci )->dag().nodes() ) {
           __addNode ( *ci, ( *ci )->get ( j ) );
         }
       }
@@ -58,7 +58,7 @@ namespace gum {
       for ( auto ii = prm.interfaces().beginSafe(); ii != prm.interfaces().endSafe(); ++ii ) {
         __node_map.insert ( *ii, new HashTable<const ClassElement<GUM_SCALAR>*, NodeId>() );
 
-        for ( const auto j : (*ii)->dag().nodes() ) {
+        for ( const auto j : ( *ii )->dag().nodes() ) {
           __addNode ( *ii, ( *ii )->get ( j ) );
         }
       }
@@ -69,7 +69,7 @@ namespace gum {
         for ( DAG::NodeIterator jter = ( *iter )->dag().beginNodes(); jter != ( *iter )->dag().endNodes(); ++jter )
       */
       for ( auto cc = prm.classes().beginSafe (); cc != prm.classes().endSafe(); ++cc )
-        for ( const auto j : (*cc)->dag().nodes() )
+        for ( const auto j : ( *cc )->dag().nodes() )
           __addArcs ( **cc, j, * ( __node_map[*cc] ) );
     }
 
@@ -116,7 +116,7 @@ namespace gum {
       GUM_CONS_CPY ( ClassDependencyGraph );
 
       for ( auto iter = source.__node_map.beginSafe(); iter != source.__node_map.endSafe(); ++iter ) {
-        __node_map.insert ( iter.key(), new HashTable<const ClassElement<GUM_SCALAR>*, NodeId> ( *( iter.val() ) ) );
+        __node_map.insert ( iter.key(), new HashTable<const ClassElement<GUM_SCALAR>*, NodeId> ( * ( iter.val() ) ) );
       }
     }
 

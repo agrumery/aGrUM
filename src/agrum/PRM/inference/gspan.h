@@ -74,7 +74,7 @@ namespace gum {
          * @param strategy The search strategy used for pattern mining, the
          *                 default strategy is gspan::FrequenceSearch.
          */
-        GSpan( const PRM<GUM_SCALAR>& prm, const System<GUM_SCALAR>& sys, gspan::SearchStrategy<GUM_SCALAR>* strategy = 0 );
+        GSpan ( const PRM<GUM_SCALAR>& prm, const System<GUM_SCALAR>& sys, gspan::SearchStrategy<GUM_SCALAR>* strategy = 0 );
 
         /// Destructor.
         ~GSpan();
@@ -98,7 +98,7 @@ namespace gum {
          *
          * @param depth The new maximal DFSTree depth.
          */
-        void setMaxDFSDepth( Size depth );
+        void setMaxDFSDepth ( Size depth );
 
         /**
          * Returns the DFSTree used to discover new patters.
@@ -164,7 +164,7 @@ namespace gum {
          * @returns a mapping between patterns and the sequence of instance in the
          *          interface graph matching them.
          */
-        MatchedInstances& matches( const gspan::Pattern& p );
+        MatchedInstances& matches ( const gspan::Pattern& p );
 
         /**
          * Returns a mapping between patterns and the sequence of instance in the
@@ -172,7 +172,7 @@ namespace gum {
          * @returns a mapping between patterns and the sequence of instance in the
          *          interface graph matching them.
          */
-        const MatchedInstances& matches( const gspan::Pattern& p ) const;
+        const MatchedInstances& matches ( const gspan::Pattern& p ) const;
 
         // /**
         //  * Returns the cumulative sum of all the cliques size created after lifting
@@ -238,7 +238,7 @@ namespace gum {
         /// Discovers new patterns by developing p.
         /// @param graph The interface graph used in this discovery process.
         /// @param p The pattern used as a base for discovery.
-        void __subgraph_mining( gspan::InterfaceGraph<GUM_SCALAR>& graph, gspan::Pattern& p );
+        void __subgraph_mining ( gspan::InterfaceGraph<GUM_SCALAR>& graph, gspan::Pattern& p );
 
         /// Returns the cost with respect to an interface size and its frequency.
         /// TODO replace this by a class to enable different cost policies.
@@ -246,7 +246,7 @@ namespace gum {
         /// @param frequency The frequency of the pattern in the current interface
         ///        graph.
         /// @return the cost with respect to an interface size and its frequency.
-        unsigned long __cost_func( unsigned int interface, unsigned int frequency );
+        unsigned long __cost_func ( unsigned int interface, unsigned int frequency );
 
         /// Sort the patterns and compute their respective costs.
         void __sortPatterns();
@@ -257,12 +257,12 @@ namespace gum {
         // double __instance_cost(Instance<GUM_SCALAR>* i) const;
 
         /// Print an iso map. For debug purpose.
-        void __printIsoMap( gspan::Pattern& p );
+        void __printIsoMap ( gspan::Pattern& p );
 
         /// Returns true if e is an eligible root edge.
         /// @param e An EdgeData<GUM_SCALAR>.
         /// @return true if e is an eligible root edge.
-        bool __isEdgeEligible( gspan::EdgeData<GUM_SCALAR>* e );
+        bool __isEdgeEligible ( gspan::EdgeData<GUM_SCALAR>* e );
 
         /// @}
 
@@ -280,13 +280,13 @@ namespace gum {
            * Default constructor.
            * @param my_gspan A pointer over the GSpan using this class.
            */
-          LabelSort( GSpan* my_gspan );
+          LabelSort ( GSpan* my_gspan );
 
           /**
            * Copy constructor.
            * @param source The copied LabelSort.
            */
-          LabelSort( const LabelSort& source );
+          LabelSort ( const LabelSort& source );
 
           /**
            * Destructor.
@@ -299,7 +299,7 @@ namespace gum {
            * @param j A LabelData.
            * @return true if i's cost is above than j's cost.
            */
-          bool operator()( gspan::LabelData* i, gspan::LabelData* j );
+          bool operator() ( gspan::LabelData* i, gspan::LabelData* j );
 
           /// A pointer over an instance of the GSpan class using this class.
           GSpan* gspan;
@@ -315,13 +315,13 @@ namespace gum {
            * Default constructor.
            * @param my_gspan A pointer over the GSpan using this class.
            */
-          PatternSort( GSpan* my_gspan );
+          PatternSort ( GSpan* my_gspan );
 
           /**
            * Copy constructor.
            * @param source The copied PatternSort.
            */
-          PatternSort( const PatternSort& source );
+          PatternSort ( const PatternSort& source );
 
           /**
            * Destructor.
@@ -334,7 +334,7 @@ namespace gum {
            * @param j A Pattern.
            * @return true if i's cost is above j's cost.
            */
-          bool operator()( gspan::Pattern* i, gspan::Pattern* j );
+          bool operator() ( gspan::Pattern* i, gspan::Pattern* j );
 
           /// A pointer over an instance of the GSpan class using this class.
           GSpan* gspan;

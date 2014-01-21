@@ -33,12 +33,12 @@ namespace gum {
   /* ============================================================================ */
   template<typename GUM_SCALAR> INLINE
   BNWriter<GUM_SCALAR>::BNWriter() {
-    GUM_CONSTRUCTOR( BNWriter );
+    GUM_CONSTRUCTOR ( BNWriter );
   }
 
   template<typename GUM_SCALAR> INLINE
   BNWriter<GUM_SCALAR>::~BNWriter() {
-    GUM_DESTRUCTOR( BNWriter );
+    GUM_DESTRUCTOR ( BNWriter );
   }
 
 

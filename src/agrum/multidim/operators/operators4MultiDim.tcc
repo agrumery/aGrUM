@@ -394,7 +394,7 @@
 #undef GUM_MULTI_DIM_SYMMETRIC_OPERATOR
 
 /// the function to be used to add two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_OP( operator+, + )
+GUM_MULTI_DIM_DECORATOR_OP ( operator+, + )
 
 
 /// the function to be used to multiply two MultiDimImplementations
@@ -407,7 +407,7 @@ GUM_MULTI_DIM_DECORATOR_OP( operator+, + )
 #undef GUM_MULTI_DIM_SYMMETRIC_OPERATOR
 
 /// the function to be used to multiply two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_OP( operator*, * )
+GUM_MULTI_DIM_DECORATOR_OP ( operator*, * )
 
 /// the function to be used to subtract two MultiDimImplementations
 #define GUM_MULTI_DIM_OPERATOR_NAME operator-
@@ -417,7 +417,7 @@ GUM_MULTI_DIM_DECORATOR_OP( operator*, * )
 #undef GUM_MULTI_DIM_OPERATOR_FUNC_NAME
 
 /// the function to be used to subtract two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_OP( operator-, - )
+GUM_MULTI_DIM_DECORATOR_OP ( operator-, - )
 
 /// the function to be used to divide two MultiDimImplementations
 #define GUM_MULTI_DIM_OPERATOR_NAME operator/
@@ -427,7 +427,7 @@ GUM_MULTI_DIM_DECORATOR_OP( operator-, - )
 #undef GUM_MULTI_DIM_OPERATOR_FUNC_NAME
 
 /// the function to be used to divide two MultiDimDecorators
-GUM_MULTI_DIM_DECORATOR_OP( operator/, / )
+GUM_MULTI_DIM_DECORATOR_OP ( operator/, / )
 
 
 
@@ -479,9 +479,9 @@ namespace gum {
     if ( first_init ) {
       first_init = false;
 
-      std::string MultiDimArrayString( "MultiDimArray" );
-      std::string MultiDimDecisionDiagramString( "MultiDimDecisionDiagram" );
-      std::string BaseNameString( "MultiDimImplementation" );
+      std::string MultiDimArrayString ( "MultiDimArray" );
+      std::string MultiDimDecisionDiagramString ( "MultiDimDecisionDiagram" );
+      std::string BaseNameString ( "MultiDimImplementation" );
 
       // register base functions for multiDimArrays
       registerOperator<GUM_SCALAR> ( "+", MultiDimArrayString, MultiDimArrayString,
@@ -524,8 +524,8 @@ namespace gum {
     if ( first_init ) {
       first_init = false;
 
-      std::string MultiDimArrayString( "MultiDimArray" );
-      std::string BaseNameString( "MultiDimImplementation" );
+      std::string MultiDimArrayString ( "MultiDimArray" );
+      std::string BaseNameString ( "MultiDimImplementation" );
 
       // register base functions for multiDimArrays
       registerOperator<GUM_SCALAR*> ( "+", MultiDimArrayString, MultiDimArrayString,

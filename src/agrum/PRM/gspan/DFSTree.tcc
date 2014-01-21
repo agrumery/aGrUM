@@ -81,7 +81,7 @@ namespace gum {
 
         // This is used to compute the max independent set of p->max_indep_set
         for ( auto root = roots_edges.beginSafe(); root != roots_edges.endSafe(); ++root ) {
-          __initialiaze_root ( root.key(), *( root.val() ) );
+          __initialiaze_root ( root.key(), * ( root.val() ) );
           strategy().accept_root ( root.key() );
           delete root.val();
         }
@@ -248,7 +248,7 @@ namespace gum {
             if ( child->code().codes.back()->isForward() ) {
               if ( ( seq.val() )->exists ( match.val().first ) and ( not ( seq.val() )->exists ( match.val().second ) ) ) {
                 // Let's see if the new match is already matched
-                Sequence<Instance<GUM_SCALAR>*>* new_seq = new Sequence<Instance<GUM_SCALAR>*> ( *( seq.val() ) );
+                Sequence<Instance<GUM_SCALAR>*>* new_seq = new Sequence<Instance<GUM_SCALAR>*> ( * ( seq.val() ) );
                 new_seq->insert ( match.val().second );
 
                 if ( __is_new_seq ( *new_seq, data->iso_map ) ) {
@@ -262,7 +262,7 @@ namespace gum {
               }
             } else {
               if ( ( seq.val() )->exists ( match.val().first ) and ( seq.val() )->exists ( match.val().second ) ) {
-                Sequence<Instance<GUM_SCALAR>*>* new_seq = new Sequence<Instance<GUM_SCALAR>*> ( *( seq.val() ) );
+                Sequence<Instance<GUM_SCALAR>*>* new_seq = new Sequence<Instance<GUM_SCALAR>*> ( * ( seq.val() ) );
 
                 if ( __is_new_seq ( *new_seq, data->iso_map ) ) {
                   id = data->iso_graph.insertNode();
@@ -280,7 +280,7 @@ namespace gum {
             // Adding edges in the iso_graph
             for ( const auto node : data->iso_graph.nodes() ) {
               if ( ( node ) != id ) {
-                for ( auto m = (* ( data->iso_map[id] ) ).beginSafe(); m != (* ( data->iso_map[id] ) ).endSafe(); ++m ) {
+                for ( auto m = ( * ( data->iso_map[id] ) ).beginSafe(); m != ( * ( data->iso_map[id] ) ).endSafe(); ++m ) {
                   if ( data->iso_map[node]->exists ( *m ) ) {
                     data->iso_graph.insertEdge ( node, id );
                     break;
@@ -402,7 +402,7 @@ namespace gum {
         GUM_CONS_CPY ( DFSTree<GUM_SCALAR>::PatternData );
 
         for ( auto iter = from.iso_map.beginSafe(); iter != from.iso_map.endSafe(); ++iter ) {
-          iso_map.insert ( iter.key(), new Sequence<Instance<GUM_SCALAR>*> ( *( iter.val() ) ) );
+          iso_map.insert ( iter.key(), new Sequence<Instance<GUM_SCALAR>*> ( * ( iter.val() ) ) );
         }
       }
 

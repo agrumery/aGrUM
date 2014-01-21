@@ -48,10 +48,10 @@ namespace gum {
   /// by a Edge
 
   Size
-  HashFunc<Edge>::operator()( const Edge& key ) const {
+  HashFunc<Edge>::operator() ( const Edge& key ) const {
     pair.first  = key.first();
     pair.second = key.second();
-    return HashFuncSmallKeyPair<NodeId,NodeId>::operator()( pair );
+    return HashFuncSmallKeyPair<NodeId, NodeId>::operator() ( pair );
   }
 
 
@@ -59,10 +59,10 @@ namespace gum {
   /// by a Arc
 
   Size
-  HashFunc<Arc>::operator()( const Arc& key ) const {
+  HashFunc<Arc>::operator() ( const Arc& key ) const {
     pair.first  = key.first();
     pair.second = key.second();
-    return HashFuncSmallKeyPair<NodeId,NodeId>::operator()( pair );
+    return HashFuncSmallKeyPair<NodeId, NodeId>::operator() ( pair );
   }
 
 
@@ -70,14 +70,14 @@ namespace gum {
   /// A \c << operator for edges
 
   std::ostream& operator<< ( std::ostream& stream, const Edge& edge ) {
-    return ( stream << edge.first()<<"--"<<edge.second() );
+    return ( stream << edge.first() << "--" << edge.second() );
   }
 
 
   /// A \c << operator for arcs
 
   std::ostream& operator<< ( std::ostream& stream, const Arc& arc ) {
-    return ( stream << arc.first()<<"->"<<arc.second() );
+    return ( stream << arc.first() << "->" << arc.second() );
   }
 
 

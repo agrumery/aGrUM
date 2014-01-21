@@ -64,8 +64,8 @@ namespace gum {
       // ========================================================================
       /// Default constructor
       // ========================================================================
-      RangeVariable( const std::string& aName, const std::string& aDesc,
-                     Idx minVal=0, Idx maxVal=1 );
+      RangeVariable ( const std::string& aName, const std::string& aDesc,
+                      Idx minVal = 0, Idx maxVal = 1 );
 
       // ========================================================================
       /** Copy Constructor.
@@ -75,7 +75,7 @@ namespace gum {
        * @param aDRV the variable we copy
        */
       // ========================================================================
-      RangeVariable( const RangeVariable& aDRV );
+      RangeVariable ( const RangeVariable& aDRV );
 
       // ========================================================================
       /// destructor
@@ -103,7 +103,7 @@ namespace gum {
 
       /// returns the type of variable
 
-      virtual VarType varType( void ) const;
+      virtual VarType varType ( void ) const;
 
       // ========================================================================
       ///
@@ -113,7 +113,7 @@ namespace gum {
        * @throw OutOfBound
        */
       // ========================================================================
-      virtual const std::string label( Idx indice ) const;
+      virtual const std::string label ( Idx indice ) const;
 
       // ========================================================================
       /**
@@ -127,7 +127,7 @@ namespace gum {
        * Set a new value for the lower bound.
        */
       // ========================================================================
-      void setMinVal( Idx minVal );
+      void setMinVal ( Idx minVal );
 
       // ========================================================================
       /**
@@ -141,20 +141,20 @@ namespace gum {
        * Set a new value of the upper bound.
        */
       // ========================================================================
-      void setMaxVal(Idx maxVal );
+      void setMaxVal ( Idx maxVal );
 
       // ========================================================================
       /**
        * Returns true if the param belongs to the variable's interval.
        */
       // ========================================================================
-      bool belongs( Idx indice ) const;
+      bool belongs ( Idx indice ) const;
 
       /**
        * @return the modality from the label
        * @throw NotFound
        */
-      virtual Idx operator[]( const std::string& ) const;
+      virtual Idx operator[] ( const std::string& ) const;
 
       /// @}
 
@@ -169,7 +169,7 @@ namespace gum {
        * @param aRV to be copied
        * @return a ref to *this */
       // ========================================================================
-      RangeVariable& operator=( const RangeVariable& aRV );
+      RangeVariable& operator= ( const RangeVariable& aRV );
 
       /// @}
 
@@ -194,7 +194,7 @@ namespace gum {
 
   /// For friendly displaying the content of the variable.
 
-  std::ostream& operator<<( std::ostream&, const RangeVariable& );
+  std::ostream& operator<< ( std::ostream&, const RangeVariable& );
 
 
 } /* namespace gum */

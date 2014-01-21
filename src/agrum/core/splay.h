@@ -82,14 +82,14 @@ namespace gum {
   /// Display the node
 
   template <typename Element> INLINE
-  std::ostream& operator<<( std::ostream& out,
-                            const SplayBinaryNode<Element>& e );
+  std::ostream& operator<< ( std::ostream& out,
+                             const SplayBinaryNode<Element>& e );
 
 
   /// Display the tree
 
   template <typename Element> INLINE
-  std::ostream& operator<<( std::ostream& out, const SplayTree<Element>& s );
+  std::ostream& operator<< ( std::ostream& out, const SplayTree<Element>& s );
 
 
 
@@ -158,11 +158,11 @@ namespace gum {
        * @param p the father of the node, can be nullptr if the node
        * is the root of the tree */
 
-      SplayBinaryNode( const Element& e,
-                       HashTable<Element,SplayBinaryNode<Element>*>& addr,
-                       SplayBinaryNode* g = 0,
-                       SplayBinaryNode* d = 0,
-                       SplayBinaryNode* p = 0 );
+      SplayBinaryNode ( const Element& e,
+                        HashTable<Element, SplayBinaryNode<Element>*>& addr,
+                        SplayBinaryNode* g = 0,
+                        SplayBinaryNode* d = 0,
+                        SplayBinaryNode* p = 0 );
 
 
       /// copy constructor
@@ -171,8 +171,8 @@ namespace gum {
       * @param addr TODO don't know what to do here ..
       */
 
-      SplayBinaryNode( const SplayBinaryNode<Element>& from,
-                       HashTable<Element, SplayBinaryNode<Element>*>& addr );
+      SplayBinaryNode ( const SplayBinaryNode<Element>& from,
+                        HashTable<Element, SplayBinaryNode<Element>*>& addr );
 
 
       /// a function used to perform copies
@@ -181,8 +181,8 @@ namespace gum {
       * @param addr TODO don't know what to do here ..
       */
 
-      void _copy( const SplayBinaryNode<Element>& from,
-                  HashTable<Element, SplayBinaryNode<Element>*>& addr );
+      void _copy ( const SplayBinaryNode<Element>& from,
+                   HashTable<Element, SplayBinaryNode<Element>*>& addr );
 
 
       /// destructor
@@ -230,8 +230,8 @@ namespace gum {
        */
 
       SplayBinaryNode<Element>*
-      join( const SplayBinaryNode<Element>* e,
-            HashTable<Element, SplayBinaryNode<Element>*>& addr ) ;
+      join ( const SplayBinaryNode<Element>* e,
+             HashTable<Element, SplayBinaryNode<Element>*>& addr ) ;
 
       /// @}
 
@@ -310,12 +310,12 @@ namespace gum {
        * @param e the element of the tree
        */
 
-      SplayTree( const Element& e );
+      SplayTree ( const Element& e );
 
 
       /// copy constructor
 
-      SplayTree( const SplayTree& from );
+      SplayTree ( const SplayTree& from );
 
 
       /// Assignment operator
@@ -341,8 +341,8 @@ namespace gum {
        * @throw NotFound
        */
 
-      Element& operator[]( const unsigned int i );
-      const Element& operator[]( const unsigned int i ) const;
+      Element& operator[] ( const unsigned int i );
+      const Element& operator[] ( const unsigned int i ) const;
 
 
       /// Get the first element
@@ -373,12 +373,12 @@ namespace gum {
 
       /// Add an element in the first position
 
-      void pushFront( const Element& e ) ;
+      void pushFront ( const Element& e ) ;
 
 
       /// Add an element in the last position
 
-      void pushBack( const Element& e ) ;
+      void pushBack ( const Element& e ) ;
 
 
       /// Add an element to the tree
@@ -386,7 +386,7 @@ namespace gum {
        * @param e the element to add
        */
 
-      void insert( const Element& e );
+      void insert ( const Element& e );
 
 
       /// Concatenation of two trees
@@ -394,7 +394,7 @@ namespace gum {
        * @param s the tree to add
        */
 
-      void join( const SplayTree<Element>& s );
+      void join ( const SplayTree<Element>& s );
 
 
       /// Divide the tree at the position
@@ -404,7 +404,7 @@ namespace gum {
        * are greater than e in the returned tree.
        */
 
-      SplayTree<Element> split( const int i );
+      SplayTree<Element> split ( const int i );
 
 
       /// Divide the tree at the position
@@ -415,7 +415,7 @@ namespace gum {
        * @warning the element e is neither in the trees
        */
 
-      SplayTree<Element> split_by_val( const Element& e );
+      SplayTree<Element> split_by_val ( const Element& e );
 
 
       /// The number of elements in the tree
@@ -429,7 +429,7 @@ namespace gum {
 
       /// Test if the tree contains the element
 
-      bool contains( const Element& ) const ;
+      bool contains ( const Element& ) const ;
 
       /// @}
 
@@ -448,14 +448,14 @@ namespace gum {
 
       /// The hash table to find quickly the position of a node
 
-      HashTable<Element,SplayBinaryNode<Element>*> addr;
+      HashTable<Element, SplayBinaryNode<Element>*> addr;
 
       /// @}
 
 
       /// a function used to perform copies
 
-      void _copy( const SplayTree<Element>& );
+      void _copy ( const SplayTree<Element>& );
 
 
       /// Friendly to display

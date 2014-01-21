@@ -370,15 +370,19 @@ namespace gum_tests {
         gum::List<gum::NodeId> idList;
         TS_GUM_ASSERT_THROWS_NOTHING ( fill ( bn, idList ) );
 
-        gum::Size cpt=(gum::Size)0;
-        for(const auto node : bn.nodes())
-            cpt++;
-        TS_ASSERT_EQUALS(cpt,bn.size());
+        gum::Size cpt = ( gum::Size ) 0;
 
-        cpt=(gum::Size)0;
-        for(auto arc = bn.arcs().beginSafe(); arc != bn.arcs().endSafe(); ++arc )
+        for ( const auto node : bn.nodes() )
           cpt++;
-        TS_ASSERT_EQUALS(cpt,bn.sizeArcs());
+
+        TS_ASSERT_EQUALS ( cpt, bn.size() );
+
+        cpt = ( gum::Size ) 0;
+
+        for ( auto arc = bn.arcs().beginSafe(); arc != bn.arcs().endSafe(); ++arc )
+          cpt++;
+
+        TS_ASSERT_EQUALS ( cpt, bn.sizeArcs() );
       }
 
       void testArcInsertion() {
@@ -735,32 +739,34 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( a, b );
       }
 
-    void testArcReversal () {
-      gum::BayesNet<float> bn;
-      gum::List<gum::NodeId> idList;
-      fill ( bn, idList );
+      void testArcReversal () {
+        gum::BayesNet<float> bn;
+        gum::List<gum::NodeId> idList;
+        fill ( bn, idList );
 
-      std::vector<float> joint;
-      joint.reserve ( 2 * bn.dim () );
-      gum::Instantiation i;
-      bn.completeInstantiation ( i );
-      for ( i.setFirst (); ! i.end (); i.inc () ) {
-        joint.push_back ( bn.jointProbability ( i ) );
+        std::vector<float> joint;
+        joint.reserve ( 2 * bn.dim () );
+        gum::Instantiation i;
+        bn.completeInstantiation ( i );
+
+        for ( i.setFirst (); ! i.end (); i.inc () ) {
+          joint.push_back ( bn.jointProbability ( i ) );
+        }
+
+        bn.reverseArc ( 0, 2 );
+        bn.reverseArc ( gum::Arc ( 3, 4 ) );
+        TS_ASSERT_THROWS ( bn.reverseArc ( gum::Arc ( 3, 4 ) ), gum::InvalidArc );
+        TS_ASSERT_THROWS ( bn.reverseArc ( gum::Arc ( 3, 5 ) ), gum::InvalidArc );
+        TS_ASSERT_THROWS ( bn.reverseArc ( gum::Arc ( 2, 4 ) ), gum::InvalidArc );
+
+        float epsilon = 1e-5;
+        unsigned int j;
+
+        for ( j = 0, i.setFirst (); ! i.end (); i.inc (), ++j ) {
+          TS_ASSERT ( fabs ( bn.jointProbability ( i ) - joint[j] ) <= epsilon );
+        }
+
       }
- 
-      bn.reverseArc ( 0, 2 );
-      bn.reverseArc ( gum::Arc ( 3, 4 ) );
-      TS_ASSERT_THROWS ( bn.reverseArc ( gum::Arc ( 3, 4 ) ), gum::InvalidArc );
-      TS_ASSERT_THROWS ( bn.reverseArc ( gum::Arc ( 3, 5 ) ), gum::InvalidArc );
-      TS_ASSERT_THROWS ( bn.reverseArc ( gum::Arc ( 2, 4 ) ), gum::InvalidArc );
-      
-      float epsilon = 1e-5;
-      unsigned int j;
-      for ( j=0, i.setFirst (); ! i.end (); i.inc (), ++j ) {
-        TS_ASSERT ( fabs ( bn.jointProbability ( i ) - joint[j] ) <= epsilon );
-      }
-      
-    }
   };
 
 } //tests

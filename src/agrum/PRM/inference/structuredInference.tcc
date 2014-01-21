@@ -338,12 +338,12 @@ namespace gum {
       for ( auto inst = match.beginSafe(); inst != match.endSafe(); ++inst ) {
         for ( auto attr = ( **inst ).begin(); attr != ( **inst ).end(); ++attr ) {
           NodeId id = data.graph.insertNode();
-          v = std::make_pair ( inst.pos(), ( *( attr.val() ) ).safeName() );
+          v = std::make_pair ( inst.pos(), ( * ( attr.val() ) ).safeName() );
           data.map.insert ( id, v );
           data.node2attr.insert ( id, __str ( *inst, attr.val() ) );
-          data.mod.insert ( id, ( *( attr.val() ) ).type()->domainSize() );
-          data.vars.insert ( id, & ( ( *( attr.val() ) ).type().variable() ) );
-          pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( & ( ( *( attr.val() ) ).cpf() ) ) );
+          data.mod.insert ( id, ( * ( attr.val() ) ).type()->domainSize() );
+          data.vars.insert ( id, & ( ( * ( attr.val() ) ).type().variable() ) );
+          pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( & ( ( * ( attr.val() ) ).cpf() ) ) );
           pot = & ( ( **inst ).get ( v.second ).cpf() );
 
           for ( auto var = pot->variablesSequence().beginSafe();
@@ -356,7 +356,7 @@ namespace gum {
 
           __insertNodeInElimLists ( data, match, *inst, attr.val(), id, v );
 
-          if ( data.inners().exists ( id ) and ( ( **inst ).type().dag().children ( ( *( attr.val() ) ).id() ).size() == 0 ) and __allInstanceNoRefAttr ( data, v ) )
+          if ( data.inners().exists ( id ) and ( ( **inst ).type().dag().children ( ( * ( attr.val() ) ).id() ).size() == 0 ) and __allInstanceNoRefAttr ( data, v ) )
             data.barren.insert ( id );
         }
       }
@@ -619,7 +619,7 @@ namespace gum {
 
               // Adding the potentials
               for ( auto attr = inst->begin(); attr != inst->end(); ++attr )
-                pool.insert ( & ( ( *( attr.val() ) ).cpf() ) );
+                pool.insert ( & ( ( * ( attr.val() ) ).cpf() ) );
 
               // Adding evidences if any
               if ( this->hasEvidence ( inst ) ) {
@@ -639,7 +639,7 @@ namespace gum {
               // Second case, the instance has evidences
               // Adding the potentials
               for ( auto attr = inst->begin(); attr != inst->end(); ++attr )
-                pool.insert ( & ( ( *( attr.val() ) ).cpf() ) );
+                pool.insert ( & ( ( * ( attr.val() ) ).cpf() ) );
 
               // Adding evidences
 

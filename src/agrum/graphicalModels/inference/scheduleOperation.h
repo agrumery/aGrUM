@@ -42,7 +42,7 @@ namespace gum {
   class ScheduleOperation {
     public:
       /// the currently supported types of operations
-      enum class Type  : char{
+      enum class Type  : char {
         /// combine 2 ScheduleMultiDims
         COMBINE_MULTIDIM,
         /// project a ScheduleMultiDim over a subset of its variables
@@ -122,7 +122,7 @@ namespace gum {
        * amount of memory used during the operation and the second one is the
        * amount of memory still used at the end of the function ( the memory used by
        * the resulting table ) */
-      virtual std::pair<long,long> memoryUsage() const = 0;
+      virtual std::pair<long, long> memoryUsage() const = 0;
 
       /// displays the content of the operation
       virtual std::string toString() const = 0;
@@ -132,10 +132,10 @@ namespace gum {
 
     protected:
       /// default constructor
-      ScheduleOperation( Type t );
+      ScheduleOperation ( Type t );
 
       /// copy constructor
-      ScheduleOperation( const ScheduleOperation<GUM_SCALAR>& from );
+      ScheduleOperation ( const ScheduleOperation<GUM_SCALAR>& from );
 
       /// copy operator
       ScheduleOperation<GUM_SCALAR>& operator= ( const ScheduleOperation<GUM_SCALAR>& );

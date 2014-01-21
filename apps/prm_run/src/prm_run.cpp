@@ -32,7 +32,7 @@
 #include "Parser.h"
 #include "session.h"
 
-void print_help_and_exit(int retVal) {
+void print_help_and_exit ( int retVal ) {
   std::stringstream help;
   help << "usage: prm_run [-vh] [-o output] [-c paths] filename" << std::endl;
   help << "  h : prints this message" << std::endl;
@@ -41,107 +41,119 @@ void print_help_and_exit(int retVal) {
   help << "  o output : prints all messages in output" << std::endl;
   help << "  c paths : defines the class path, where paths is a colon sperated list of paths (don't use quotes)" << std::endl;
   std::cout << help.str();
-  std::exit(retVal);
+  std::exit ( retVal );
 }
 
-void fill_class_path(std::vector<std::string>& class_path, std::string s) {
-  size_t idx = s.find_first_of(':');
-  if (*(s.rbegin()) == ':') s = s.substr(0, s.length() - 1);
-  class_path.push_back(s.substr(0, idx));
-  while (idx != std::string::npos) {
+void fill_class_path ( std::vector<std::string>& class_path, std::string s ) {
+  size_t idx = s.find_first_of ( ':' );
+
+  if ( * ( s.rbegin() ) == ':' ) s = s.substr ( 0, s.length() - 1 );
+
+  class_path.push_back ( s.substr ( 0, idx ) );
+
+  while ( idx != std::string::npos ) {
     size_t last = idx + 1;
-    idx = s.find(':', last);
-    class_path.push_back(s.substr(last, idx));
+    idx = s.find ( ':', last );
+    class_path.push_back ( s.substr ( last, idx ) );
   }
 }
 
-void readOptions(Session& session, int argc, char *argv[]) {
+void readOptions ( Session& session, int argc, char* argv[] ) {
   char c;
-  while ((c = getopt (argc, argv, "hsc:o:")) != -1)
-    switch (c)
-    {
+
+  while ( ( c = getopt ( argc, argv, "hsc:o:" ) ) != -1 )
+    switch ( c ) {
       case 'h':
         session.help = true;
+
       case 's':
         session.syntax = true;
         break;
+
       case 'c':
         session.cpaths = optarg;
         break;
+
       case 'o':
         session.output = optarg;
         break;
+
       case '?':
-        if (optopt == 'c' || optopt == 'o')
-          fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-        else if (isprint (optopt))
-          fprintf (stderr, "Unknown option `-%c'.\n", optopt);
+        if ( optopt == 'c' || optopt == 'o' )
+          fprintf ( stderr, "Option -%c requires an argument.\n", optopt );
+        else if ( isprint ( optopt ) )
+          fprintf ( stderr, "Unknown option `-%c'.\n", optopt );
         else
-          fprintf (stderr,
-              "Unknown option character `\\x%x'.\n",
-              optopt);
-        std::exit(EXIT_FAILURE);
+          fprintf ( stderr,
+                    "Unknown option character `\\x%x'.\n",
+                    optopt );
+
+        std::exit ( EXIT_FAILURE );
+
       default:
-        std::exit(EXIT_FAILURE);
+        std::exit ( EXIT_FAILURE );
     }
 }
 
-int main (int argc, char *argv[]) {
-  
+int main ( int argc, char* argv[] ) {
+
   Session session;
-  
-  if (argc == 1)
-    print_help_and_exit(EXIT_FAILURE);
-    
-  readOptions(session, argc, argv);
-    
-  std::ifstream input_stream(argv[argc - 1]);
+
+  if ( argc == 1 )
+    print_help_and_exit ( EXIT_FAILURE );
+
+  readOptions ( session, argc, argv );
+
+  std::ifstream input_stream ( argv[argc - 1] );
   Scanner* s = 0;
   Parser* p = 0;
   std::ofstream* output = 0;
-  
-  if (input_stream.is_open() and input_stream.good()) {
-    
+
+  if ( input_stream.is_open() and input_stream.good() ) {
+
     try {
-      s = new Scanner(argv[argc - 1]);
-      
-      if (session.output.size()) {
-        output = new std::ofstream(session.output.c_str());
-        if (output->is_open() and output->good()) {
-          p = new Parser(s, *output);
+      s = new Scanner ( argv[argc - 1] );
+
+      if ( session.output.size() ) {
+        output = new std::ofstream ( session.output.c_str() );
+
+        if ( output->is_open() and output->good() ) {
+          p = new Parser ( s, *output );
         } else {
           std::cerr << "Could not open output file, dumping log on the standard output." << std::endl;
-          p = new Parser(s);
+          p = new Parser ( s );
         }
       } else {
-        p = new Parser(s);
+        p = new Parser ( s );
       }
-      
+
       p->verbose = session.verbose;
-      p->setSyntaxMode(session.syntax);
+      p->setSyntaxMode ( session.syntax );
       p->Parse();
       session.fail = false;
-      
-    } catch (gum::Exception& e) {
+
+    } catch ( gum::Exception& e ) {
       std::cerr << "Something went wrong: " << e.content();
       session.fail = true;
-      
-    } catch (std::string&) { // Syntax error, error message already printed
+
+    } catch ( std::string& ) { // Syntax error, error message already printed
       session.fail = true;
     }
-    
+
   } else {
     std::cerr << "Could not open input file." << std::endl;
     session.fail = true;
   }
-  
-  if (p) delete p;
-  if (s) delete s;
-  if (output) delete output;
-  
-  if (session.fail)
-    std::exit(EXIT_FAILURE);
+
+  if ( p ) delete p;
+
+  if ( s ) delete s;
+
+  if ( output ) delete output;
+
+  if ( session.fail )
+    std::exit ( EXIT_FAILURE );
   else
-    std::exit(EXIT_SUCCESS);
+    std::exit ( EXIT_SUCCESS );
 }
 

@@ -35,7 +35,7 @@ namespace gum {
   PartialOrderedEliminationSequenceStrategy::
   PartialOrderedEliminationSequenceStrategy() {
     // for debugging purposes
-    GUM_CONSTRUCTOR( PartialOrderedEliminationSequenceStrategy );
+    GUM_CONSTRUCTOR ( PartialOrderedEliminationSequenceStrategy );
   }
 
 
@@ -44,7 +44,7 @@ namespace gum {
   PartialOrderedEliminationSequenceStrategy
   ( const PartialOrderedEliminationSequenceStrategy& ) {
     // for debugging purposes
-    GUM_CONS_CPY( PartialOrderedEliminationSequenceStrategy );
+    GUM_CONS_CPY ( PartialOrderedEliminationSequenceStrategy );
   }
 
 
@@ -52,7 +52,7 @@ namespace gum {
   PartialOrderedEliminationSequenceStrategy::
   ~PartialOrderedEliminationSequenceStrategy() {
     // for debugging purposes
-    GUM_DESTRUCTOR( PartialOrderedEliminationSequenceStrategy );
+    GUM_DESTRUCTOR ( PartialOrderedEliminationSequenceStrategy );
   }
 
 

@@ -51,7 +51,7 @@ namespace gum {
     return endSafe4Statics();
   }
 
-  
+
   // creates (if needed) and returns the iterator __SetIterEnd
   const SetIterator<int>* SetIteratorStaticEnd::end4Statics() {
     static bool first_time = true;

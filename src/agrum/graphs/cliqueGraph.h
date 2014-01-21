@@ -61,16 +61,16 @@ namespace gum {
        * @param edges_size the size of the hash table used to store all the edges
        * @param edges_resize_policy the resizing policy of this hash table */
 
-      explicit CliqueGraph( Size nodes_size = HashTableConst::default_size,
-                            bool nodes_resize_policy    = true,
-                            Size edges_size = HashTableConst::default_size,
-                            bool edges_resize_policy    = true );
+      explicit CliqueGraph ( Size nodes_size = HashTableConst::default_size,
+                             bool nodes_resize_policy    = true,
+                             Size edges_size = HashTableConst::default_size,
+                             bool edges_resize_policy    = true );
 
 
       /// copy constructor
       /** @param from the CliqueGraph that will be copied into \e this */
 
-      CliqueGraph( const CliqueGraph& from );
+      CliqueGraph ( const CliqueGraph& from );
 
 
       /// destructor
@@ -94,7 +94,7 @@ namespace gum {
        * @throw InvalidNode if first and/or second do not belong to the
        * graph nodes */
 
-      virtual void insertEdge( const NodeId first,const NodeId second );
+      virtual void insertEdge ( const NodeId first, const NodeId second );
 
 
       /// removes an edge (and its separator) from the clique graph
@@ -102,7 +102,7 @@ namespace gum {
        * @warning if the edge does not exist, nothing is done. In particular, no
        * exception is thrown. */
 
-      virtual void eraseEdge( const Edge& edge );
+      virtual void eraseEdge ( const Edge& edge );
 
 
       /// removes all edges and their separators
@@ -113,21 +113,21 @@ namespace gum {
       /// adds a new clique to the graph
       /** @return the id chosen for the new clique */
 
-      virtual NodeId insertNode( const NodeSet& clique = NodeSet() );
+      virtual NodeId insertNode ( const NodeSet& clique = NodeSet() );
 
 
       /// try to add a new clique to the graph
       /** @throws DuplicateElement exception is thrown if the id of the clique
        * already exists within the clique graph */
 
-      virtual void insertNode( const NodeId id,  const NodeSet& clique = NodeSet() );
+      virtual void insertNode ( const NodeId id,  const NodeSet& clique = NodeSet() );
 
 
       /// removes a given clique from the clique graph
       /** If the CliqueGraph does not contain the node, then nothing is done. In
        * particular, no exception is raised. */
 
-      virtual void eraseNode( const NodeId node );
+      virtual void eraseNode ( const NodeId node );
 
 
       /** @brief removes all the cliques and separators from the graph (as well as
@@ -140,7 +140,7 @@ namespace gum {
       /** @throw NotFound exception is raised if the clique does not belong to
        * the clique graph */
 
-      const NodeSet& clique( const NodeId idClique ) const;
+      const NodeSet& clique ( const NodeId idClique ) const;
 
 
       /** @brief returns the id of a clique containing the node the id of which is
@@ -151,7 +151,7 @@ namespace gum {
        * contains idNode.
        * @throws NotFound exception is thrown if no clique contains idNode */
 
-      NodeId container( const NodeId idNode ) const;
+      NodeId container ( const NodeId idNode ) const;
 
 
       /** @brief changes the set of nodes included into a given clique and returns
@@ -159,7 +159,7 @@ namespace gum {
        * @throws NotFound exception is thrown if idClique is not a clique of
        * the clique graph */
 
-      virtual void setClique( const NodeId idClique,const NodeSet& new_clique );
+      virtual void setClique ( const NodeId idClique, const NodeSet& new_clique );
 
 
       /** @brief changes the set of nodes included into a given clique and returns
@@ -169,7 +169,7 @@ namespace gum {
        * @throw DuplicateElement exception is thrown if clique_id set already
        * contains the node */
 
-      virtual void addToClique( const NodeId clique_id,const NodeId node_id );
+      virtual void addToClique ( const NodeId clique_id, const NodeId node_id );
 
 
       /// remove a node from a clique
@@ -177,28 +177,28 @@ namespace gum {
        * nothing. In particular, it does not throw any exception.
        * @throws NotFound exception is thrown if clique_id does not exist */
 
-      virtual void eraseFromClique( const NodeId clique_id,const NodeId node_id );
+      virtual void eraseFromClique ( const NodeId clique_id, const NodeId node_id );
 
 
       /// returns the separator included in a given edge
       /** @throw NotFound exception is thrown if the edge does not belong to the
        * clique graph */
 
-      const NodeSet& separator( const Edge& edge )  const;
+      const NodeSet& separator ( const Edge& edge )  const;
 
 
       /// returns the separator included in an edge specified by its extremities
       /** @throw NotFound exception is thrown if the edge does not belong to the
        * clique graph */
 
-      const NodeSet& separator( const NodeId clique1, const NodeId clique ) const;
+      const NodeSet& separator ( const NodeId clique1, const NodeId clique ) const;
 
 
       /// returns a path from a clique containing node1 to a clique containing node2
       /** @throws NotFound such path cannot be found */
 
       std::vector<NodeId>
-      containerPath( const NodeId node1, const NodeId node2 ) const;
+      containerPath ( const NodeId node1, const NodeId node2 ) const;
 
 
       /// indicates whether the running intersection property holds
@@ -256,7 +256,7 @@ namespace gum {
 
       /// function used to update the separators when a clique is modified
 
-      void __updateSeparators( const NodeId clique1 );
+      void __updateSeparators ( const NodeId clique1 );
 
 
       /// structure used for the computation of the running intersection property
@@ -296,8 +296,8 @@ namespace gum {
 
       /// function used for the computation of the running intersection property
 
-      bool __runningIntersectionDFS( const NodeId clique, const NodeId from,
-                                     __RunningIntersect& infos_DFS ) const ;
+      bool __runningIntersectionDFS ( const NodeId clique, const NodeId from,
+                                      __RunningIntersect& infos_DFS ) const ;
   };
 
 

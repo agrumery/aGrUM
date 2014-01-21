@@ -120,12 +120,12 @@ namespace gum {
 
       // Adding nodes
       for ( System<GUM_SCALAR>::const_iterator iter = begin(); iter != end(); ++iter ) {
-        __groundAttr ( *( iter.val() ), factory );
+        __groundAttr ( * ( iter.val() ), factory );
       }
 
       // Adding arcs and filling CPTs
       for ( System<GUM_SCALAR>::const_iterator iter = begin(); iter != end(); ++iter ) {
-        __groundRef ( *( iter.val() ), factory );
+        __groundRef ( * ( iter.val() ), factory );
       }
     }
 
@@ -205,7 +205,7 @@ namespace gum {
         std::stringstream elt_name;
         elt_name << instance.name() << "." << ( iter.val() )->safeName();
         factory.startParentsDeclaration ( elt_name.str() );
-        const NodeSet& parents = instance.type().dag().parents ( ( *( iter.val() ) ).id() );
+        const NodeSet& parents = instance.type().dag().parents ( ( * ( iter.val() ) ).id() );
 
         for ( NodeSetIterator arc = parents.beginSafe(); arc != parents.endSafe(); ++arc ) {
           switch ( instance.type().get ( *arc ).elt_type() ) {
@@ -239,8 +239,8 @@ namespace gum {
 
         // Checking if we need to ground the Potential (only for class level attributes since
         // aggregates Potentials are generated)
-        if ( ClassElement<GUM_SCALAR>::isAttribute ( instance.type().get ( ( *( iter.val() ) ).safeName() ) ) ) {
-          __groundPotential ( instance, *( iter.val () ), factory );
+        if ( ClassElement<GUM_SCALAR>::isAttribute ( instance.type().get ( ( * ( iter.val() ) ).safeName() ) ) ) {
+          __groundPotential ( instance, * ( iter.val () ), factory );
         }
       }
     }
@@ -348,7 +348,7 @@ namespace gum {
     void
     System<GUM_SCALAR>::instantiate() {
       for ( auto iter = begin(); iter != end(); ++iter ) {
-        ( *( iter.val() ) ).instantiate();
+        ( * ( iter.val() ) ).instantiate();
       }
     }
 

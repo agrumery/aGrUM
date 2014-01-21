@@ -70,7 +70,7 @@ namespace gum {
 
       /// Copy constructor.
 
-      MultiDimAdressable( const MultiDimAdressable& from );
+      MultiDimAdressable ( const MultiDimAdressable& from );
 
 
       /// Destructor.
@@ -89,7 +89,7 @@ namespace gum {
        * @return Returns true if i becomes a slave of this gum::MultiDimAdressable.
        */
 
-      virtual bool registerSlave( Instantiation& i ) =0;
+      virtual bool registerSlave ( Instantiation& i ) = 0;
 
 
       /**
@@ -97,7 +97,7 @@ namespace gum {
        * @return Returns true, whatever happens.
        */
 
-      virtual bool unregisterSlave( Instantiation& i )=0;
+      virtual bool unregisterSlave ( Instantiation& i ) = 0;
 
 
       /**
@@ -108,9 +108,9 @@ namespace gum {
       * @param newval The changed value.
        */
 
-      virtual void changeNotification( Instantiation& i,
-                                       const DiscreteVariable* const var,
-                                       const Idx& oldval,const Idx& newval ) =0;
+      virtual void changeNotification ( Instantiation& i,
+                                        const DiscreteVariable* const var,
+                                        const Idx& oldval, const Idx& newval ) = 0;
 
 
 
@@ -119,7 +119,7 @@ namespace gum {
        * @param i The Instantiation.
        */
 
-      virtual void setFirstNotification( Instantiation& i )=0;
+      virtual void setFirstNotification ( Instantiation& i ) = 0;
 
 
 
@@ -128,7 +128,7 @@ namespace gum {
        * @param i The Instantiation.
        */
 
-      virtual void setLastNotification( Instantiation& i ) =0;
+      virtual void setLastNotification ( Instantiation& i ) = 0;
 
 
       /**
@@ -136,7 +136,7 @@ namespace gum {
        * @param i The Instantiation
        */
 
-      virtual void setIncNotification( Instantiation& i ) =0;
+      virtual void setIncNotification ( Instantiation& i ) = 0;
 
 
       /**
@@ -144,13 +144,13 @@ namespace gum {
        * @param i The Instantiation
        */
 
-      virtual void setDecNotification( Instantiation& i ) =0;
+      virtual void setDecNotification ( Instantiation& i ) = 0;
 
 
 
       /// Listen to an assignment of a value in a Instantiation.
       // ===========================================================================
-      virtual void setChangeNotification( Instantiation& i ) =0;
+      virtual void setChangeNotification ( Instantiation& i ) = 0;
 
 
       /**
@@ -158,7 +158,7 @@ namespace gum {
        * the access to master pointer.
        */
 
-      virtual MultiDimAdressable& getMasterRef( void ) =0;
+      virtual MultiDimAdressable& getMasterRef ( void ) = 0;
 
 
       /**
@@ -166,12 +166,12 @@ namespace gum {
        * the access to master pointer.
        */
 
-      virtual const MultiDimAdressable& getMasterRef( void ) const =0;
+      virtual const MultiDimAdressable& getMasterRef ( void ) const = 0;
 
 
       /// String representation of internal data about i in this.
 
-      virtual const std::string toString( const Instantiation* i ) const = 0;
+      virtual const std::string toString ( const Instantiation* i ) const = 0;
 
       /// @}
   };

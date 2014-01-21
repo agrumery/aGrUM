@@ -54,11 +54,11 @@ namespace gum {
 
         for ( PRMInference<GUM_SCALAR>::EMapIterator jter = ( iter.val() )->beginSafe(); jter != ( iter.val() )->endSafe(); ++jter ) {
           Potential<GUM_SCALAR>* e = new Potential<GUM_SCALAR>();
-          e->add ( * ( ( *( jter.val() ) ).variablesSequence().front() ) );
+          e->add ( * ( ( * ( jter.val() ) ).variablesSequence().front() ) );
           Instantiation i ( *e );
 
           for ( i.setFirst(); not i.end(); i.inc() ) {
-            e->set ( i, ( *( jter.val() ) ).get ( i ) );
+            e->set ( i, ( * ( jter.val() ) ).get ( i ) );
           }
 
           __evidences[iter.key()]->insert ( jter.key(), e );
@@ -78,11 +78,11 @@ namespace gum {
 
         for ( PRMInference<GUM_SCALAR>::EMapIterator jter = ( iter.val () )->beginSafe(); jter != ( iter.val () )->endSafe(); ++jter ) {
           Potential<GUM_SCALAR>* e = new Potential<GUM_SCALAR>();
-          e->add ( * ( ( *( jter.val() ) ).variablesSequence().front() ) );
+          e->add ( * ( ( * ( jter.val() ) ).variablesSequence().front() ) );
           Instantiation i ( *e );
 
           for ( i.setFirst(); not i.end(); i.inc() ) {
-            e->set ( i, ( *( jter.val() ) ).get ( i ) );
+            e->set ( i, ( * ( jter.val() ) ).get ( i ) );
           }
 
           __evidences[iter.key()]->insert ( jter.key(), e );

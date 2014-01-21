@@ -89,7 +89,7 @@ namespace gum {
     return __arcs.beginSafe();
   }
 
-  //deprecated    
+  //deprecated
   INLINE const ArcGraphPart::ArcIterator& ArcGraphPart::endArcs() const {
     return __arcs.endSafe();
   }

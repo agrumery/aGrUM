@@ -38,8 +38,8 @@ namespace gum_tests {
     public:
       void setUp() {
         __driver  = new gum::prm::o3prm::O3prmReader<double>();
-        __driver->readFile( GET_PATH_STR( "o3prm/specialprinters.o3prm" ) );
-        ig = new gum::prm::gspan::InterfaceGraph<double>( __driver->prm()->system( "m" ) );
+        __driver->readFile ( GET_PATH_STR ( "o3prm/specialprinters.o3prm" ) );
+        ig = new gum::prm::gspan::InterfaceGraph<double> ( __driver->prm()->system ( "m" ) );
       }
 
       void tearDown() {
@@ -51,17 +51,17 @@ namespace gum_tests {
       }
 
       void testInterfaceGraph() {
-        TS_ASSERT_EQUALS( ig->graph().size(), ( gum::Size ) 1 + 5*2 + 4*3 + 4*3 + 5 + 3 + 4 );
-        TS_ASSERT_EQUALS( ig->graph().sizeEdges(), ( gum::Size )( 5*2 + 3*4 + 4*3 ) + 5 + 3*3 + 4*2 );
+        TS_ASSERT_EQUALS ( ig->graph().size(), ( gum::Size ) 1 + 5 * 2 + 4 * 3 + 4 * 3 + 5 + 3 + 4 );
+        TS_ASSERT_EQUALS ( ig->graph().sizeEdges(), ( gum::Size ) ( 5 * 2 + 3 * 4 + 4 * 3 ) + 5 + 3 * 3 + 4 * 2 );
       }
 
       void testTree() {
-        gum::prm::GSpan<double>* gspan =nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING( gspan = new gum::prm::GSpan<double>( * ( __driver->prm() ), __driver->prm()->system( "m" ) ) );
+        gum::prm::GSpan<double>* gspan = nullptr;
+        TS_GUM_ASSERT_THROWS_NOTHING ( gspan = new gum::prm::GSpan<double> ( * ( __driver->prm() ), __driver->prm()->system ( "m" ) ) );
 
         if ( gspan != 0 ) {
-          TS_GUM_ASSERT_THROWS_NOTHING( gspan->discoverPatterns() );
-          TS_GUM_ASSERT_THROWS_NOTHING( delete gspan );
+          TS_GUM_ASSERT_THROWS_NOTHING ( gspan->discoverPatterns() );
+          TS_GUM_ASSERT_THROWS_NOTHING ( delete gspan );
         }
       }
 

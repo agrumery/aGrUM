@@ -36,7 +36,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::ScheduleSeparatorStoreMultiDim
   ( const ScheduleMultiDim<GUM_SCALAR>& table,
-    typename Property<Set<const MultiDimImplementation<GUM_SCALAR>*> >::onArcs&
+    ArcProperty<Set<const MultiDimImplementation<GUM_SCALAR>*> >&
     separator_tables,
     Arc separator ) :
     ScheduleOperation<GUM_SCALAR>

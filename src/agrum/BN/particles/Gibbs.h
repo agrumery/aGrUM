@@ -115,13 +115,13 @@ namespace gum {
         NodeProperty<Instantiation*> __cpt_idx;
 
         /// a table of children for each node
-        typename Property<std::vector<NodeId>*>::onNodes __node_children;
+        NodeProperty<std::vector<NodeId>*> __node_children;
 
         /// a table of potential for posterior computed in the markov blanket
-        typename Property<Potential<GUM_SCALAR>*>::onNodes __sampling_posterior;
+        NodeProperty<Potential<GUM_SCALAR>*> __sampling_posterior;
 
         /// a list of all the evidence stored into the graph
-        typename Property<const Potential<GUM_SCALAR>*>::onNodes __evidences;
+        NodeProperty<const Potential<GUM_SCALAR>*> __evidences;
 
         /// a table of instantiation for direct access on _sampling_nbr
         NodeProperty<Instantiation*> __sampling_idx;

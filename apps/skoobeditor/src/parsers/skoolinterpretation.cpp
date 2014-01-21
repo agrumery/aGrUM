@@ -10,8 +10,8 @@ using namespace gum::prm::skool;
 
 
 //! Constructor.
-SkoolInterpretation::SkoolInterpretation( const QsciScintillaExtended * sci, QObject * parent ) :
-    AbstractParser( sci, parent ), m_reader( 0 ), prmChanged( false ) {
+SkoolInterpretation::SkoolInterpretation ( const QsciScintillaExtended* sci, QObject* parent ) :
+  AbstractParser ( sci, parent ), m_reader ( 0 ), prmChanged ( false ) {
 }
 
 //! Destructor.
@@ -37,19 +37,19 @@ void SkoolInterpretation::run() {
 
   m_reader = new SkoolReader();
 
-  m_reader->setClassPath( classPaths().join( ";" ).toStdString() );
+  m_reader->setClassPath ( classPaths().join ( ";" ).toStdString() );
 
   m_reader->showElegantErrorsAndWarnings();
 
   if ( f.isEmpty() ) {
-    m_reader->readString( b );
+    m_reader->readString ( b );
   } else
-    m_reader->readFile( f.toStdString() );
+    m_reader->readFile ( f.toStdString() );
 
-  setErrors( m_reader->errorsContainer() );
+  setErrors ( m_reader->errorsContainer() );
 
-  QSharedPointer<PRMTreeModel> ptr( new PRMTreeModel( m_reader->prm() ) );
+  QSharedPointer<PRMTreeModel> ptr ( new PRMTreeModel ( m_reader->prm() ) );
 
-  setPRM( ptr );
+  setPRM ( ptr );
 }
 

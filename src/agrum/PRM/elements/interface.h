@@ -333,7 +333,7 @@ namespace gum {
 
         /// @}
     };
-    
+
     extern template class Interface<double>;
 
   } /* namespace prm */

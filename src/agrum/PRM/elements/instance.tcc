@@ -123,7 +123,7 @@ namespace gum {
       stack.push_back ( std::pair<Instance<GUM_SCALAR>*, Size> ( this, 0 ) );
       Set<Instance<GUM_SCALAR>*> visited;
       // Last element is an attribute, and we only want the instance containing it
-      Size depth_stop = sc->chain().size() -1;
+      Size depth_stop = sc->chain().size() - 1;
 
       // Let's go!
       while ( not stack.empty() ) {
@@ -261,7 +261,7 @@ namespace gum {
     }
 
     template<typename GUM_SCALAR> INLINE
-    Instance<GUM_SCALAR>&/**/
+    Instance<GUM_SCALAR>& /**/
     Instance<GUM_SCALAR>::operator= ( const Class<GUM_SCALAR>& from ) {
       GUM_ERROR ( FatalError, "do not copy Instance" );
     }
@@ -333,7 +333,7 @@ namespace gum {
     template<typename GUM_SCALAR> INLINE
     bool
     Instance<GUM_SCALAR>::isInitialised ( NodeId id ) const {
-      return ( __params ) ?__params->exists ( id ) :false;
+      return ( __params ) ? __params->exists ( id ) : false;
     }
 
     template<typename GUM_SCALAR> INLINE

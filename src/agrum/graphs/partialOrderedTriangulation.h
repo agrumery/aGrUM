@@ -120,9 +120,9 @@ namespace gum {
        * ordering
        * @warning note that, by aGrUM's rule, the graph and the sequence are not
        * copied but only referenced by the elimination sequence algorithm. */
-      virtual void setGraph( const UndiGraph* graph,
-                             const NodeProperty<Size>* dom,
-                             const List<NodeSet>* partial_order );
+      virtual void setGraph ( const UndiGraph* graph,
+                              const NodeProperty<Size>* dom,
+                              const List<NodeSet>* partial_order );
 
       /// @}
 
@@ -138,7 +138,7 @@ namespace gum {
        * elimination sequence class).
        * @param graph the very graph that is triangulated (this is a copy of
        * __original_graph) */
-      void _initTriangulation( UndiGraph& graph );
+      void _initTriangulation ( UndiGraph& graph );
 
       /// the modalities of the nodes
       const NodeProperty<Size>* __modalities;
@@ -153,7 +153,7 @@ namespace gum {
     private:
 
       /// forbid copy constructor
-      PartialOrderedTriangulation( const PartialOrderedTriangulation& );
+      PartialOrderedTriangulation ( const PartialOrderedTriangulation& );
 
       /// forbid copy operator
       PartialOrderedTriangulation& operator= ( const PartialOrderedTriangulation& );

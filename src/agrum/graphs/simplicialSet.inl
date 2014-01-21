@@ -42,12 +42,12 @@ namespace gum {
   /// indicates whether a given node is a simplicial node
 
   INLINE
-  bool SimplicialSet::isSimplicial( const NodeId id ) {
+  bool SimplicialSet::isSimplicial ( const NodeId id ) {
     // update the list to which the node belongs if needed
-    if ( __changed_status.contains( id ) )  __updateList( id );
+    if ( __changed_status.contains ( id ) )  __updateList ( id );
 
     // check if the node belongs to the simplicial list
-    return __simplicial_nodes.contains( id );
+    return __simplicial_nodes.contains ( id );
   }
 
 
@@ -57,7 +57,7 @@ namespace gum {
   INLINE
   NodeId SimplicialSet::bestSimplicialNode() {
     if ( ! hasSimplicialNode() ) {
-      GUM_ERROR( NotFound, "No simplicial node could be found" );
+      GUM_ERROR ( NotFound, "No simplicial node could be found" );
     }
 
     return __simplicial_nodes.top();
@@ -69,7 +69,7 @@ namespace gum {
   INLINE
   NodeId SimplicialSet::bestAlmostSimplicialNode() {
     if ( ! hasAlmostSimplicialNode() ) {
-      GUM_ERROR( NotFound, "no almost simplicial node could be found" );
+      GUM_ERROR ( NotFound, "no almost simplicial node could be found" );
     }
 
     return __almost_simplicial_nodes.top();
@@ -81,7 +81,7 @@ namespace gum {
   INLINE
   NodeId SimplicialSet::bestQuasiSimplicialNode() {
     if ( ! hasQuasiSimplicialNode() ) {
-      GUM_ERROR( NotFound, "no quasi simplicial node could be found" );
+      GUM_ERROR ( NotFound, "no quasi simplicial node could be found" );
     }
 
     return __quasi_simplicial_nodes.top();
@@ -95,7 +95,7 @@ namespace gum {
     // check if a node can enter the simplicial list
     for ( NodeSetIterator iter = __changed_status.beginSafe();
           iter != __changed_status.endSafe(); ++iter ) {
-      __updateList( *iter );
+      __updateList ( *iter );
     }
   }
 
@@ -103,7 +103,7 @@ namespace gum {
   /// returns all the simplicial nodes
 
   INLINE
-  const PriorityQueue<NodeId,float>&
+  const PriorityQueue<NodeId, float>&
   SimplicialSet::allSimplicialNodes() {
     __updateAllNodes();
     return __simplicial_nodes;
@@ -113,7 +113,7 @@ namespace gum {
   /// returns all the almost simplicial nodes
 
   INLINE
-  const PriorityQueue<NodeId,float>&
+  const PriorityQueue<NodeId, float>&
   SimplicialSet::allAlmostSimplicialNodes() {
     __updateAllNodes();
     return __almost_simplicial_nodes;
@@ -123,7 +123,7 @@ namespace gum {
   /// returns all the quasi simplicial nodes
 
   INLINE
-  const PriorityQueue<NodeId,float>&
+  const PriorityQueue<NodeId, float>&
   SimplicialSet::allQuasiSimplicialNodes() {
     __updateAllNodes();
     return __quasi_simplicial_nodes;
@@ -133,7 +133,7 @@ namespace gum {
   /// sets/unset the fill-ins storage in the standard triangulation procedure
 
   INLINE
-  void SimplicialSet::setFillIns( bool b ) {
+  void SimplicialSet::setFillIns ( bool b ) {
     __we_want_fill_ins = b;
   }
 

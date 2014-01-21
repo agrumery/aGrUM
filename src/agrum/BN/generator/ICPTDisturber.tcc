@@ -32,13 +32,13 @@ namespace gum {
   // Default constructor.
   template < typename GUM_SCALAR>
   ICPTDisturber<GUM_SCALAR>::ICPTDisturber() {
-    GUM_CONSTRUCTOR( ICPTDisturber );
+    GUM_CONSTRUCTOR ( ICPTDisturber );
   }
 
   // Destructor.
   template < typename GUM_SCALAR>
   ICPTDisturber<GUM_SCALAR>::~ICPTDisturber() {
-    GUM_DESTRUCTOR( ICPTDisturber );
+    GUM_DESTRUCTOR ( ICPTDisturber );
   }
 
 

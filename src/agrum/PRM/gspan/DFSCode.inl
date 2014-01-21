@@ -30,22 +30,22 @@ namespace gum {
 
       INLINE
       DFSCode::DFSCode() {
-        GUM_CONSTRUCTOR( DFSCode );
+        GUM_CONSTRUCTOR ( DFSCode );
       }
 
       INLINE
-      DFSCode::DFSCode( const DFSCode& source ) {
-        GUM_CONS_CPY( DFSCode );
+      DFSCode::DFSCode ( const DFSCode& source ) {
+        GUM_CONS_CPY ( DFSCode );
 
         for ( std::vector<EdgeCode*>::const_iterator iter = source.codes.begin();
               iter != source.codes.end(); ++iter ) {
-          codes.push_back( new EdgeCode( **iter ) );
+          codes.push_back ( new EdgeCode ( **iter ) );
         }
       }
 
       INLINE
       DFSCode::~DFSCode() {
-        GUM_DESTRUCTOR( DFSCode );
+        GUM_DESTRUCTOR ( DFSCode );
 
         for ( DFSCode::iterator iter = codes.begin(); iter != codes.end(); ++iter ) {
           delete *iter;
@@ -54,14 +54,14 @@ namespace gum {
 
       INLINE
       DFSCode&
-      DFSCode::operator=( const DFSCode& source ) {
+      DFSCode::operator= ( const DFSCode& source ) {
         for ( DFSCode::iterator iter = codes.begin(); iter != codes.end(); ++iter ) {
           delete *iter;
         }
 
         for ( DFSCode::const_iterator iter = source.codes.begin();
               iter != source.codes.end(); ++iter ) {
-          codes.push_back( new EdgeCode( **iter ) );
+          codes.push_back ( new EdgeCode ( **iter ) );
         }
 
         return *this;
@@ -69,7 +69,7 @@ namespace gum {
 
       INLINE
       bool
-      DFSCode::operator==( const DFSCode& from ) const {
+      DFSCode::operator== ( const DFSCode& from ) const {
         if ( codes.size() == from.codes.size() ) {
           for ( size_t idx = 0; idx < codes.size(); ++idx ) {
             if ( ( *codes[idx] ) != ( *codes[idx] ) ) {
@@ -85,7 +85,7 @@ namespace gum {
 
       INLINE
       bool
-      DFSCode::operator!=( const DFSCode& from ) const {
+      DFSCode::operator!= ( const DFSCode& from ) const {
         if ( codes.size() == from.codes.size() ) {
           for ( size_t idx = 0; idx < codes.size(); ++idx ) {
             if ( ( *codes[idx] ) != ( *codes[idx] ) ) {
@@ -101,7 +101,7 @@ namespace gum {
 
       INLINE
       bool
-      DFSCode::operator<( const DFSCode& from ) const {
+      DFSCode::operator< ( const DFSCode& from ) const {
         DFSCode::const_iterator iter = codes.begin();
         DFSCode::const_iterator jter = from.codes.begin();
 
@@ -152,7 +152,7 @@ namespace gum {
 
       INLINE
       bool
-      DFSCode::operator<=( const DFSCode& from ) const {
+      DFSCode::operator<= ( const DFSCode& from ) const {
         DFSCode::const_iterator iter = codes.begin();
         DFSCode::const_iterator jter = from.codes.begin();
 

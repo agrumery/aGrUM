@@ -57,7 +57,7 @@ namespace gum {
       VEWithBB ( const IBayesNet<GUM_SCALAR>& bn );
 
       VEWithBB ( const VEWithBB<GUM_SCALAR>& source ) = delete;
-      VEWithBB<GUM_SCALAR>& operator= ( const VEWithBB<GUM_SCALAR>& source ) =delete;
+      VEWithBB<GUM_SCALAR>& operator= ( const VEWithBB<GUM_SCALAR>& source ) = delete;
 
       /**
        * Destructor.
@@ -116,7 +116,7 @@ namespace gum {
     private:
 
       /// Mapping between nodes and their evidences.
-      typename Property<const Potential<GUM_SCALAR>*>::onNodes __hardEvidence;
+      NodeProperty<const Potential<GUM_SCALAR>*> __hardEvidence;
 
       /// The VariableElimination algorithm as the inference engine
       VariableElimination<GUM_SCALAR> __ve;

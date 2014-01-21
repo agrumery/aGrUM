@@ -12,11 +12,11 @@ class EditController : public QObject {
     Q_OBJECT
 
   public:
-    explicit EditController( MainWindow * mw, QObject * parent = 0 );
+    explicit EditController ( MainWindow* mw, QObject* parent = 0 );
     ~EditController();
 
     //! Return the completer
-    QCompleter * completer() const;
+    QCompleter* completer() const;
 
   public slots:
 
@@ -49,12 +49,12 @@ class EditController : public QObject {
     void triggerInit();
 
   private:
-    MainWindow * mw;
+    MainWindow* mw;
 
     struct PrivateData;
-    PrivateData * d;
+    PrivateData* d;
 
-    Properties * pr;
+    Properties* pr;
 };
 
 #endif // EDITCONTROLLER_H

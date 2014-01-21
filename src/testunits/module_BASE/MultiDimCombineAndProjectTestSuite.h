@@ -43,13 +43,13 @@ namespace gum_tests {
   class MultiDimCombineAndProjectTestSuite: public CxxTest::TestSuite {
     public:
       void test1() {
-        std::vector<gum::LabelizedVariable*> vars( 11 );
+        std::vector<gum::LabelizedVariable*> vars ( 11 );
 
         for ( unsigned int i = 0; i < 11; ++i ) {
           std::stringstream str;
           str << "x" << i;
           std::string s = str.str();
-          vars[i] = new gum::LabelizedVariable( s, s, 4 );
+          vars[i] = new gum::LabelizedVariable ( s, s, 4 );
         }
 
         gum::Potential<float> t1, t2, t3, t4, t5, t6;
@@ -60,15 +60,15 @@ namespace gum_tests {
         t5 << * ( vars[5] ) << * ( vars[6] );
         t6 << * ( vars[8] ) << * ( vars[9] );
 
-        randomInitP( t1 );
-        randomInitP( t2 );
-        randomInitP( t3 );
-        randomInitP( t4 );
-        randomInitP( t5 );
-        randomInitP( t6 );
+        randomInitP ( t1 );
+        randomInitP ( t2 );
+        randomInitP ( t3 );
+        randomInitP ( t4 );
+        randomInitP ( t5 );
+        randomInitP ( t6 );
 
-        gum::MultiDimCombineAndProjectDefault<float,gum::Potential>
-        projcomb( multPot, mySum );
+        gum::MultiDimCombineAndProjectDefault<float, gum::Potential>
+        projcomb ( multPot, mySum );
 
         gum::Set<const gum::Potential<float>*> to_comb;
         to_comb << &t1 << &t2 << &t3 << &t4 << &t5 << &t6;
@@ -77,56 +77,56 @@ namespace gum_tests {
                  << vars[6] << vars[9] << vars[10];
 
         gum::Set<const gum::Potential<float>*> res =
-          projcomb.combineAndProject( to_comb, del_vars );
-        float nb_ops = projcomb.nbOperations( to_comb, del_vars );
-        std::pair<long,long> yyy = projcomb.memoryUsage( to_comb, del_vars );
+          projcomb.combineAndProject ( to_comb, del_vars );
+        float nb_ops = projcomb.nbOperations ( to_comb, del_vars );
+        std::pair<long, long> yyy = projcomb.memoryUsage ( to_comb, del_vars );
 
-        TS_ASSERT( yyy.first == 244 );
-        TS_ASSERT( yyy.second == 228 );
+        TS_ASSERT ( yyy.first == 244 );
+        TS_ASSERT ( yyy.second == 228 );
 
-        TS_ASSERT( nb_ops == 416 );
-        TS_ASSERT( res.size() == 3 );
+        TS_ASSERT ( nb_ops == 416 );
+        TS_ASSERT ( res.size() == 3 );
 
         gum::Set<const gum::Potential<float>*>::const_iterator_safe iter = res.beginSafe();
         const gum::Potential<float>* res1 = *iter; ++iter;
         const gum::Potential<float>* res2 = *iter; ++iter;
         const gum::Potential<float>* res3 = *iter;
 
-        gum::MultiDimCombinationDefault<float,gum::Potential> comb( multPot );
-        gum::MultiDimProjection<float,gum::Potential> proj( mySum );
+        gum::MultiDimCombinationDefault<float, gum::Potential> comb ( multPot );
+        gum::MultiDimProjection<float, gum::Potential> proj ( mySum );
 
         gum::Set<const gum::Potential<float>*> comb_set;
         comb_set << &t1 << &t2;
         gum::Set<const gum::DiscreteVariable*> del_vars2;
         del_vars2 << vars[1];
-        gum::Potential<float>* tt1 = comb.combine( comb_set );
-        gum::Potential<float>* tt2 = proj.project( *tt1, del_vars2 );
+        gum::Potential<float>* tt1 = comb.combine ( comb_set );
+        gum::Potential<float>* tt2 = proj.project ( *tt1, del_vars2 );
         delete tt1;
-        TS_ASSERT( ( *tt2 == *res1 ) || ( *tt2 == *res2 ) || ( *tt2 == *res3 ) );
+        TS_ASSERT ( ( *tt2 == *res1 ) || ( *tt2 == *res2 ) || ( *tt2 == *res3 ) );
 
         delete tt2;
         comb_set.clear();
         del_vars2.clear();
         comb_set << &t3 << &t4 << &t5;
         del_vars2 << vars[4] << vars[5] << vars[6];
-        tt1 = comb.combine( comb_set );
-        tt2 = proj.project( *tt1, del_vars2 );
+        tt1 = comb.combine ( comb_set );
+        tt2 = proj.project ( *tt1, del_vars2 );
         delete tt1;
-        TS_ASSERT( ( *tt2 == *res1 ) || ( *tt2 == *res2 ) || ( *tt2 == *res3 ) );
+        TS_ASSERT ( ( *tt2 == *res1 ) || ( *tt2 == *res2 ) || ( *tt2 == *res3 ) );
 
         delete tt2;
         del_vars2.clear();
         del_vars2 << vars[9] << vars[10];
-        tt2 = proj.project( t6, del_vars2 );
-        TS_ASSERT( ( *tt2 == *res1 ) || ( *tt2 == *res2 ) || ( *tt2 == *res3 ) );
+        tt2 = proj.project ( t6, del_vars2 );
+        TS_ASSERT ( ( *tt2 == *res1 ) || ( *tt2 == *res2 ) || ( *tt2 == *res3 ) );
         delete tt2;
 
-        gum::MultiDimCombineAndProjectDefault<float,gum::Potential>
+        gum::MultiDimCombineAndProjectDefault<float, gum::Potential>
         projcomb2 = projcomb;
-        projcomb2.setCombineFunction( addPot );
-        projcomb2.setProjectFunction( myMax );
+        projcomb2.setCombineFunction ( addPot );
+        projcomb2.setProjectFunction ( myMax );
 
-        gum::MultiDimCombineAndProjectDefault<float,gum::Potential>*
+        gum::MultiDimCombineAndProjectDefault<float, gum::Potential>*
         projcomb3 = projcomb.newFactory();
 
         delete projcomb3;
@@ -146,39 +146,39 @@ namespace gum_tests {
       // =========================================================================
       /// initialize randomly a table
       // =========================================================================
-      void randomInitP( gum::Potential<float>& t ) {
-        gum::Instantiation i( t );
+      void randomInitP ( gum::Potential<float>& t ) {
+        gum::Instantiation i ( t );
 
         for ( i.setFirst(); ! i.end(); ++i )
-          t.set( i, 1 + ( int )( ( ( float ) rand() / RAND_MAX ) * 50 ) );
+          t.set ( i, 1 + ( int ) ( ( ( float ) rand() / RAND_MAX ) * 50 ) );
       }
 
 
       // the function used to combine two tables
-      static gum::Potential<float>* addPot( const gum::Potential<float>& t1,
-                                            const gum::Potential<float>& t2 ) {
+      static gum::Potential<float>* addPot ( const gum::Potential<float>& t1,
+                                             const gum::Potential<float>& t2 ) {
         return new gum::Potential<float> ( t1 + t2 );
       }
 
 
       // the function used to combine two tables
-      static gum::Potential<float>* multPot( const gum::Potential<float>& t1,
-                                             const gum::Potential<float>& t2 ) {
+      static gum::Potential<float>* multPot ( const gum::Potential<float>& t1,
+                                              const gum::Potential<float>& t2 ) {
         return new gum::Potential<float> ( t1 * t2 );
       }
 
 
       static gum::Potential<float>*
-      mySum( const gum::Potential<float>& table,
-             const gum::Set<const gum::DiscreteVariable*>& del_vars ) {
-        return new gum::Potential<float> ( projectSum( table, del_vars ) );
+      mySum ( const gum::Potential<float>& table,
+              const gum::Set<const gum::DiscreteVariable*>& del_vars ) {
+        return new gum::Potential<float> ( projectSum ( table, del_vars ) );
       }
 
 
       static gum::Potential<float>*
-      myMax( const gum::Potential<float>& table,
-             const gum::Set<const gum::DiscreteVariable*>& del_vars ) {
-        return new gum::Potential<float> ( projectMax( table, del_vars ) );
+      myMax ( const gum::Potential<float>& table,
+              const gum::Set<const gum::DiscreteVariable*>& del_vars ) {
+        return new gum::Potential<float> ( projectMax ( table, del_vars ) );
       }
 
   };

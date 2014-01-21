@@ -44,10 +44,10 @@ namespace gum {
 
   /// returns a new box for the LearnCounting tree
 
-  INLINE LearnCounting::CountingBox::CountingBox( unsigned int modal ) :
-    next( 0 ), nb_cases( modal,0 ), children( modal,0 ) {
+  INLINE LearnCounting::CountingBox::CountingBox ( unsigned int modal ) :
+    next ( 0 ), nb_cases ( modal, 0 ), children ( modal, 0 ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( CountingBox );
+    GUM_CONSTRUCTOR ( CountingBox );
   }
 
 
@@ -55,7 +55,7 @@ namespace gum {
 
   INLINE LearnCounting::CountingBox::~CountingBox() {
     // for debugging purposes
-    GUM_DESTRUCTOR( CountingBox );
+    GUM_DESTRUCTOR ( CountingBox );
   }
 
 
@@ -69,7 +69,7 @@ namespace gum {
 
   /// returns the number of occurrences of modality i found in the database
 
-  INLINE int LearnCounting::CountingBox::getCounter( unsigned int i ) const {
+  INLINE int LearnCounting::CountingBox::getCounter ( unsigned int i ) const {
     return nb_cases[i];
   }
 
@@ -116,7 +116,7 @@ namespace gum {
 
   /// a function that parses the database and store the results into the tree
 
-  INLINE void LearnCounting::parseDatabase( unsigned int min_level,
+  INLINE void LearnCounting::parseDatabase ( unsigned int min_level,
       unsigned int max_level )  {
     CountingBox* box;
     // check if min_level and max_level are OK
@@ -124,24 +124,24 @@ namespace gum {
     if ( tree_level == 0 ) return;
 
     if ( ( min_level > max_level ) || ( max_level >= tree_level ) ) {
-      GUM_ERROR( OutOfBounds, "min_level and/or max_level not ok" );
+      GUM_ERROR ( OutOfBounds, "min_level and/or max_level not ok" );
     }
 
     // parse the database
     unsigned int level, val;
 
-    for ( Database::iterator iter=database.begin(); iter!=database.end(); ++iter ) {
+    for ( Database::iterator iter = database.begin(); iter != database.end(); ++iter ) {
       for ( level = 0, box = level_beg[0]; level != min_level;
             box = box->children[iter[level_row[level++]]] );
 
       while ( level < max_level ) {
         val = iter[level_row[level]];
-        ++( box->nb_cases[val] );
+        ++ ( box->nb_cases[val] );
         box = box->children[val];
         ++level;
       }
 
-      ++( box->nb_cases[iter[level_row[level]]] );
+      ++ ( box->nb_cases[iter[level_row[level]]] );
     }
   }
 
@@ -149,29 +149,29 @@ namespace gum {
   /// a function that parses the database and store the results into the tree
 
   INLINE void LearnCounting::parseDatabase()  {
-    parseDatabase( 0, tree_level - 1 );
+    parseDatabase ( 0, tree_level - 1 );
   }
 
 
   /// returns a new box for the tree
 
   INLINE LearnCounting::CountingBox*
-  LearnCounting::newCountingBox( unsigned int modal ) {
+  LearnCounting::newCountingBox ( unsigned int modal ) {
     // check if we can take a box from the garbage
     if ( garbage ) {
       CountingBox* box = garbage;
       garbage = garbage->next;
       box->next = 0;
-      box->nb_cases.resize( modal );
-      box->children.resize( modal );
+      box->nb_cases.resize ( modal );
+      box->children.resize ( modal );
 
-      for ( unsigned int i = 0; i<modal; ++i )
+      for ( unsigned int i = 0; i < modal; ++i )
         box->nb_cases[i] = 0;
 
       return box;
     } else
       // here we need allocate a new box
-      return new CountingBox( modal );
+      return new CountingBox ( modal );
   }
 
 
@@ -188,7 +188,7 @@ namespace gum {
 
   /// remove a given level of the tree as well as the levels below
 
-  INLINE void LearnCounting::deleteLevel( unsigned int level ) {
+  INLINE void LearnCounting::deleteLevel ( unsigned int level ) {
     if ( tree_level <= level ) return;
 
     while ( level < tree_level ) {
@@ -201,8 +201,8 @@ namespace gum {
 
   /// remove a whole level that does not belong to the tree
 
-  INLINE void LearnCounting::deleteLevel( CountingBox* level_beg,
-                                          CountingBox* level_end ) {
+  INLINE void LearnCounting::deleteLevel ( CountingBox* level_beg,
+      CountingBox* level_end ) {
     level_end->next = garbage;
     garbage = level_beg;
   }
@@ -211,32 +211,32 @@ namespace gum {
   /// extracts a level from the tree
 
   INLINE
-  std::pair<LearnCounting::CountingBox*,LearnCounting::CountingBox*>
+  std::pair<LearnCounting::CountingBox*, LearnCounting::CountingBox*>
   LearnCounting::removeNGetLastLevel() {
     if ( tree_level ) {
       --tree_level;
-      return std::pair<LearnCounting::CountingBox*,
-             LearnCounting::CountingBox*> ( level_beg[tree_level],
-                                            level_end[tree_level] );
+      return std::pair < LearnCounting::CountingBox*,
+             LearnCounting::CountingBox* > ( level_beg[tree_level],
+                                             level_end[tree_level] );
     } else
-      return std::pair<LearnCounting::CountingBox*,
-             LearnCounting::CountingBox*> ( 0,0 );
+      return std::pair < LearnCounting::CountingBox*,
+             LearnCounting::CountingBox* > ( 0, 0 );
   }
 
 
   /// extracts and remove a level from the tree
 
   INLINE
-  std::pair<LearnCounting::CountingBox*,LearnCounting::CountingBox*>
-  LearnCounting::removeNGetLevel( unsigned int level ) {
+  std::pair<LearnCounting::CountingBox*, LearnCounting::CountingBox*>
+  LearnCounting::removeNGetLevel ( unsigned int level ) {
     if ( tree_level <= level )
-      return std::pair<LearnCounting::CountingBox*,
-             LearnCounting::CountingBox*> ( 0,0 );
+      return std::pair < LearnCounting::CountingBox*,
+             LearnCounting::CountingBox* > ( 0, 0 );
     else {
-      deleteLevel( level+1 );
+      deleteLevel ( level + 1 );
       --tree_level;
-      return std::pair<LearnCounting::CountingBox*,
-             LearnCounting::CountingBox*> ( level_beg[level], level_end[level] );
+      return std::pair < LearnCounting::CountingBox*,
+             LearnCounting::CountingBox* > ( level_beg[level], level_end[level] );
     }
   }
 
@@ -254,7 +254,7 @@ namespace gum {
   /// extracts a level from the tree but keep it in the tree
 
   INLINE LearnCounting::CountingBox*
-  LearnCounting::getLevel( unsigned int level )
+  LearnCounting::getLevel ( unsigned int level )
   const  {
     if ( tree_level <= level ) return 0;
 

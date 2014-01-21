@@ -13,17 +13,17 @@ class SearchController : public QObject {
 
 
   public:
-    explicit SearchController( MainWindow * mw, QObject *parent = 0 );
+    explicit SearchController ( MainWindow* mw, QObject* parent = 0 );
 
   public slots:
     void quickSearch();
     void advanceSearch();
     void replace();
-    bool next( QsciScintillaExtended * sci = 0 );
-    bool previous( QsciScintillaExtended * sci = 0 );
-    bool replaceAndNext( QsciScintillaExtended * sci = 0 );
-    bool replaceAndPrevious( QsciScintillaExtended * sci = 0 );
-    void replaceAll( QsciScintillaExtended * sci = 0 );
+    bool next ( QsciScintillaExtended* sci = 0 );
+    bool previous ( QsciScintillaExtended* sci = 0 );
+    bool replaceAndNext ( QsciScintillaExtended* sci = 0 );
+    bool replaceAndPrevious ( QsciScintillaExtended* sci = 0 );
+    void replaceAll ( QsciScintillaExtended* sci = 0 );
 
     void switchMarker();
     void findNextMarker();
@@ -32,23 +32,23 @@ class SearchController : public QObject {
     void hideQuickWidgets();
 
   private slots:
-    void onQuickSearchEditTextChanged( QString );
-    void onQuickReplaceEditTextChanged( QString );
-    void onResultSearchDoubleClick( QTreeWidgetItem * item, int column );
+    void onQuickSearchEditTextChanged ( QString );
+    void onQuickReplaceEditTextChanged ( QString );
+    void onResultSearchDoubleClick ( QTreeWidgetItem* item, int column );
 
     void onSearchOptionButtonClicked();
-    void onCaseSensitiveOptionChecked( bool checked );
-    void onWholeWordOptionChecked( bool checked );
-    void onUseRegexOptionChecked( bool checked );
+    void onCaseSensitiveOptionChecked ( bool checked );
+    void onWholeWordOptionChecked ( bool checked );
+    void onUseRegexOptionChecked ( bool checked );
 
   private:
-    void parseFiles( const QList<QString> & filePaths, bool isReplaceAll );
-    void parseDocuments( const QList<QsciScintillaExtended *> & documents, bool isReplaceAll );
+    void parseFiles ( const QList<QString>& filePaths, bool isReplaceAll );
+    void parseDocuments ( const QList<QsciScintillaExtended*>& documents, bool isReplaceAll );
 
-    MainWindow * mw; // Main Window
+    MainWindow* mw;  // Main Window
 
     struct PrivateData;
-    PrivateData * d;
+    PrivateData* d;
 };
 
 #endif // SEARCHCONTROLLER_H

@@ -49,9 +49,9 @@ namespace gum {
         /** To easily access InferenceEngine< GUM_SCALAR > methods. */
         typedef InferenceEngine<GUM_SCALAR> infE;
 
-        typedef typename Property< std::vector< NodeId > >::onNodes cluster;
-        typedef typename Property< std::vector< std::vector< GUM_SCALAR > > >::onNodes credalSet;
-        typedef typename Property< std::vector< GUM_SCALAR > >::onNodes margi;
+        typedef NodeProperty< std::vector< NodeId > > cluster;
+        typedef NodeProperty< std::vector< std::vector< GUM_SCALAR > > > credalSet;
+        typedef NodeProperty< std::vector< GUM_SCALAR > > margi;
         typedef NodeProperty< GUM_SCALAR > expe;
 
         typedef IBayesNet< GUM_SCALAR > bnet;
@@ -193,8 +193,8 @@ namespace gum {
         /// @}
     };
 
-    extern template class MultipleInferenceEngine<double,gum::LazyPropagation<double>>;
-    extern template class MultipleInferenceEngine<float,gum::LazyPropagation<float>>;
+    extern template class MultipleInferenceEngine<double, gum::LazyPropagation<double>>;
+    extern template class MultipleInferenceEngine<float, gum::LazyPropagation<float>>;
   } // end of namespace
 }
 

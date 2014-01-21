@@ -29,155 +29,155 @@ namespace CxxTest {
 #   define TS_ABORT() CxxTest::doAbortTest()
 
   bool abortTestOnFail();
-  void setAbortTestOnFail( bool value = CXXTEST_DEFAULT_ABORT );
+  void setAbortTestOnFail ( bool value = CXXTEST_DEFAULT_ABORT );
 
   unsigned maxDumpSize();
-  void setMaxDumpSize( unsigned value = CXXTEST_MAX_DUMP_SIZE );
+  void setMaxDumpSize ( unsigned value = CXXTEST_MAX_DUMP_SIZE );
 
-  void doTrace( const char* file, unsigned line, const char* message );
-  void doWarn( const char* file, unsigned line, const char* message );
-  void doFailTest( const char* file, unsigned line, const char* message );
-  void doFailAssert( const char* file, unsigned line, const char* expression, const char* message );
+  void doTrace ( const char* file, unsigned line, const char* message );
+  void doWarn ( const char* file, unsigned line, const char* message );
+  void doFailTest ( const char* file, unsigned line, const char* message );
+  void doFailAssert ( const char* file, unsigned line, const char* expression, const char* message );
 
   template<class X, class Y>
-  bool equals( const X& x, const Y& y ) {
+  bool equals ( const X& x, const Y& y ) {
     return ( x == y );
   }
 
   template<class X, class Y>
-  void doAssertEquals( const char* file, unsigned line,
-                       const char* xExpr, const X& x,
-                       const char* yExpr, const Y& y,
-                       const char* message ) {
-    if ( !equals( x, y ) ) {
-      if ( message )
-        tracker().failedTest( file, line, message );
-
-      tracker().failedAssertEquals( file, line, xExpr, yExpr, TS_AS_STRING( x ), TS_AS_STRING( y ) );
-      TS_ABORT();
-    }
-  }
-
-  void doAssertSameData( const char* file, unsigned line,
-                         const char* xExpr, const void* x,
-                         const char* yExpr, const void* y,
-                         const char* sizeExpr, unsigned size,
-                         const char* message );
-
-  template<class X, class Y>
-  bool differs( const X& x, const Y& y ) {
-    return !( x == y );
-  }
-
-  template<class X, class Y>
-  void doAssertDiffers( const char* file, unsigned line,
+  void doAssertEquals ( const char* file, unsigned line,
                         const char* xExpr, const X& x,
                         const char* yExpr, const Y& y,
                         const char* message ) {
-    if ( !differs( x, y ) ) {
+    if ( !equals ( x, y ) ) {
       if ( message )
-        tracker().failedTest( file, line, message );
+        tracker().failedTest ( file, line, message );
 
-      tracker().failedAssertDiffers( file, line, xExpr, yExpr, TS_AS_STRING( x ) );
+      tracker().failedAssertEquals ( file, line, xExpr, yExpr, TS_AS_STRING ( x ), TS_AS_STRING ( y ) );
+      TS_ABORT();
+    }
+  }
+
+  void doAssertSameData ( const char* file, unsigned line,
+                          const char* xExpr, const void* x,
+                          const char* yExpr, const void* y,
+                          const char* sizeExpr, unsigned size,
+                          const char* message );
+
+  template<class X, class Y>
+  bool differs ( const X& x, const Y& y ) {
+    return ! ( x == y );
+  }
+
+  template<class X, class Y>
+  void doAssertDiffers ( const char* file, unsigned line,
+                         const char* xExpr, const X& x,
+                         const char* yExpr, const Y& y,
+                         const char* message ) {
+    if ( !differs ( x, y ) ) {
+      if ( message )
+        tracker().failedTest ( file, line, message );
+
+      tracker().failedAssertDiffers ( file, line, xExpr, yExpr, TS_AS_STRING ( x ) );
       TS_ABORT();
     }
   }
 
   template<class X, class Y>
-  bool lessThan( const X& x, const Y& y ) {
+  bool lessThan ( const X& x, const Y& y ) {
     return ( x < y );
   }
 
   template<class X, class Y>
-  void doAssertLessThan( const char* file, unsigned line,
-                         const char* xExpr, const X& x,
-                         const char* yExpr, const Y& y,
-                         const char* message ) {
-    if ( !lessThan( x, y ) ) {
+  void doAssertLessThan ( const char* file, unsigned line,
+                          const char* xExpr, const X& x,
+                          const char* yExpr, const Y& y,
+                          const char* message ) {
+    if ( !lessThan ( x, y ) ) {
       if ( message )
-        tracker().failedTest( file, line, message );
+        tracker().failedTest ( file, line, message );
 
-      tracker().failedAssertLessThan( file, line, xExpr, yExpr, TS_AS_STRING( x ), TS_AS_STRING( y ) );
+      tracker().failedAssertLessThan ( file, line, xExpr, yExpr, TS_AS_STRING ( x ), TS_AS_STRING ( y ) );
       TS_ABORT();
     }
   }
 
   template<class X, class Y>
-  bool lessThanEquals( const X& x, const Y& y ) {
+  bool lessThanEquals ( const X& x, const Y& y ) {
     return ( x <= y );
   }
 
   template<class X, class Y>
-  void doAssertLessThanEquals( const char* file, unsigned line,
-                               const char* xExpr, X x,
-                               const char* yExpr, Y y,
-                               const char* message ) {
-    if ( !lessThanEquals( x, y ) ) {
+  void doAssertLessThanEquals ( const char* file, unsigned line,
+                                const char* xExpr, X x,
+                                const char* yExpr, Y y,
+                                const char* message ) {
+    if ( !lessThanEquals ( x, y ) ) {
       if ( message )
-        tracker().failedTest( file, line, message );
+        tracker().failedTest ( file, line, message );
 
-      tracker().failedAssertLessThanEquals( file, line, xExpr, yExpr, TS_AS_STRING( x ), TS_AS_STRING( y ) );
+      tracker().failedAssertLessThanEquals ( file, line, xExpr, yExpr, TS_AS_STRING ( x ), TS_AS_STRING ( y ) );
       TS_ABORT();
     }
   }
 
   template<class X, class P>
-  void doAssertPredicate( const char* file, unsigned line,
-                          const char* pExpr, const P& p,
-                          const char* xExpr, const X& x,
-                          const char* message ) {
-    if ( !p( x ) ) {
+  void doAssertPredicate ( const char* file, unsigned line,
+                           const char* pExpr, const P& p,
+                           const char* xExpr, const X& x,
+                           const char* message ) {
+    if ( !p ( x ) ) {
       if ( message )
-        tracker().failedTest( file, line, message );
+        tracker().failedTest ( file, line, message );
 
-      tracker().failedAssertPredicate( file, line, pExpr, xExpr, TS_AS_STRING( x ) );
+      tracker().failedAssertPredicate ( file, line, pExpr, xExpr, TS_AS_STRING ( x ) );
       TS_ABORT();
     }
   }
 
   template<class X, class Y, class R>
-  void doAssertRelation( const char* file, unsigned line,
-                         const char* rExpr, const R& r,
-                         const char* xExpr, const X& x,
-                         const char* yExpr, const Y& y,
-                         const char* message ) {
-    if ( !r( x, y ) ) {
+  void doAssertRelation ( const char* file, unsigned line,
+                          const char* rExpr, const R& r,
+                          const char* xExpr, const X& x,
+                          const char* yExpr, const Y& y,
+                          const char* message ) {
+    if ( !r ( x, y ) ) {
       if ( message )
-        tracker().failedTest( file, line, message );
+        tracker().failedTest ( file, line, message );
 
-      tracker().failedAssertRelation( file, line, rExpr, xExpr, yExpr, TS_AS_STRING( x ), TS_AS_STRING( y ) );
+      tracker().failedAssertRelation ( file, line, rExpr, xExpr, yExpr, TS_AS_STRING ( x ), TS_AS_STRING ( y ) );
       TS_ABORT();
     }
   }
 
   template<class X, class Y, class D>
-  bool delta( X x, Y y, D d ) {
+  bool delta ( X x, Y y, D d ) {
     return ( ( y >= x - d ) && ( y <= x + d ) );
   }
 
   template<class X, class Y, class D>
-  void doAssertDelta( const char* file, unsigned line,
-                      const char* xExpr, X x,
-                      const char* yExpr, Y y,
-                      const char* dExpr, D d,
-                      const char* message ) {
-    if ( !delta( x, y, d ) ) {
+  void doAssertDelta ( const char* file, unsigned line,
+                       const char* xExpr, X x,
+                       const char* yExpr, Y y,
+                       const char* dExpr, D d,
+                       const char* message ) {
+    if ( !delta ( x, y, d ) ) {
       if ( message )
-        tracker().failedTest( file, line, message );
+        tracker().failedTest ( file, line, message );
 
-      tracker().failedAssertDelta( file, line, xExpr, yExpr, dExpr,
-                                   TS_AS_STRING( x ), TS_AS_STRING( y ), TS_AS_STRING( d ) );
+      tracker().failedAssertDelta ( file, line, xExpr, yExpr, dExpr,
+                                    TS_AS_STRING ( x ), TS_AS_STRING ( y ), TS_AS_STRING ( d ) );
       TS_ABORT();
     }
   }
 
-  void doFailAssertThrows( const char* file, unsigned line,
-                           const char* expr, const char* type,
-                           bool otherThrown,
-                           const char* message );
+  void doFailAssertThrows ( const char* file, unsigned line,
+                            const char* expr, const char* type,
+                            bool otherThrown,
+                            const char* message );
 
-  void doFailAssertThrowsNot( const char* file, unsigned line,
-                              const char* expression, const char* message );
+  void doFailAssertThrowsNot ( const char* file, unsigned line,
+                               const char* expression, const char* message );
 
 #   ifdef _CXXTEST_HAVE_EH
 #       define _TS_TRY try
@@ -474,30 +474,30 @@ namespace CxxTest {
 #   define CXXTEST_INTEGRAL(CXXTEST_T) \
   CXXTEST_COMPARISONS( signed CXXTEST_T, unsigned CXXTEST_T, unsigned CXXTEST_T )
 
-  CXXTEST_INTEGRAL( char )
-  CXXTEST_INTEGRAL( short )
-  CXXTEST_INTEGRAL( int )
-  CXXTEST_INTEGRAL( long )
+  CXXTEST_INTEGRAL ( char )
+  CXXTEST_INTEGRAL ( short )
+  CXXTEST_INTEGRAL ( int )
+  CXXTEST_INTEGRAL ( long )
 #   ifdef _CXXTEST_LONGLONG
-  CXXTEST_INTEGRAL( _CXXTEST_LONGLONG )
+  CXXTEST_INTEGRAL ( _CXXTEST_LONGLONG )
 #   endif // _CXXTEST_LONGLONG
 
 #   define CXXTEST_SMALL_BIG(CXXTEST_SMALL, CXXTEST_BIG) \
   CXXTEST_COMPARISONS( signed CXXTEST_SMALL, unsigned CXXTEST_BIG, unsigned CXXTEST_BIG ) \
   CXXTEST_COMPARISONS( signed CXXTEST_BIG, unsigned CXXTEST_SMALL, unsigned CXXTEST_BIG )
 
-  CXXTEST_SMALL_BIG( char, short )
-  CXXTEST_SMALL_BIG( char, int )
-  CXXTEST_SMALL_BIG( short, int )
-  CXXTEST_SMALL_BIG( char, long )
-  CXXTEST_SMALL_BIG( short, long )
-  CXXTEST_SMALL_BIG( int, long )
+  CXXTEST_SMALL_BIG ( char, short )
+  CXXTEST_SMALL_BIG ( char, int )
+  CXXTEST_SMALL_BIG ( short, int )
+  CXXTEST_SMALL_BIG ( char, long )
+  CXXTEST_SMALL_BIG ( short, long )
+  CXXTEST_SMALL_BIG ( int, long )
 
 #   ifdef _CXXTEST_LONGLONG
-  CXXTEST_SMALL_BIG( char, _CXXTEST_LONGLONG )
-  CXXTEST_SMALL_BIG( short, _CXXTEST_LONGLONG )
-  CXXTEST_SMALL_BIG( int, _CXXTEST_LONGLONG )
-  CXXTEST_SMALL_BIG( long, _CXXTEST_LONGLONG )
+  CXXTEST_SMALL_BIG ( char, _CXXTEST_LONGLONG )
+  CXXTEST_SMALL_BIG ( short, _CXXTEST_LONGLONG )
+  CXXTEST_SMALL_BIG ( int, _CXXTEST_LONGLONG )
+  CXXTEST_SMALL_BIG ( long, _CXXTEST_LONGLONG )
 #   endif // _CXXTEST_LONGLONG
 }
 

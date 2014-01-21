@@ -36,28 +36,28 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
   public:
-    explicit MainWindow( QWidget * parent = 0 );
+    explicit MainWindow ( QWidget* parent = 0 );
     ~MainWindow();
 
   protected:
-    void closeEvent( QCloseEvent * event );
+    void closeEvent ( QCloseEvent* event );
 
   protected slots:
     void showHelp();
     void showAboutDialog();
 
   private:
-    Ui::MainWindow * ui;
+    Ui::MainWindow* ui;
 
-    FileController * fc;
-    EditController * ec;
-    SearchController * sc;
-    ViewController * vc;
-    ProjectController * pc;
-    BuildController * bc;
+    FileController* fc;
+    EditController* ec;
+    SearchController* sc;
+    ViewController* vc;
+    ProjectController* pc;
+    BuildController* bc;
 
     struct PrivateData;
-    PrivateData * d;
+    PrivateData* d;
 
     friend class FileController;
 

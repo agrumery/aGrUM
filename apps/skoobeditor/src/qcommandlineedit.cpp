@@ -9,58 +9,58 @@
 struct QCommandLineEdit::PrivateData {
   QStringList history;
   int idx;
-  QCompleter * completer;
+  QCompleter* completer;
 };
 
-QCommandLineEdit::QCommandLineEdit( QWidget * parent ) : QLineEdit( parent ), d( new PrivateData ) {
+QCommandLineEdit::QCommandLineEdit ( QWidget* parent ) : QLineEdit ( parent ), d ( new PrivateData ) {
   d->idx = 0;
   d->history << "";
   d->completer = 0;
-  connect( this, SIGNAL( returnPressed() ), this, SLOT( onReturnPressed() ) );
+  connect ( this, SIGNAL ( returnPressed() ), this, SLOT ( onReturnPressed() ) );
 }
 
 //! \reimp
-QCompleter * QCommandLineEdit::completer() const {
+QCompleter* QCommandLineEdit::completer() const {
   return d->completer;
 }
 
 //! \reimp
-void QCommandLineEdit::setCompleter( QCompleter * c ) {
+void QCommandLineEdit::setCompleter ( QCompleter* c ) {
   if ( d->completer )
-    disconnect( d->completer, SIGNAL( activated( QString ) ),
-                this, SLOT( insertCompletion( QString ) ) );
+    disconnect ( d->completer, SIGNAL ( activated ( QString ) ),
+                 this, SLOT ( insertCompletion ( QString ) ) );
 
   d->completer = c;
 
-  connect( d->completer, SIGNAL( activated( QString ) ),
-           this, SLOT( insertCompletion( QString ) ) );
+  connect ( d->completer, SIGNAL ( activated ( QString ) ),
+            this, SLOT ( insertCompletion ( QString ) ) );
 }
 
 //! \reimp
 //! Handle Key_Up and Key_Down for historic.
-void QCommandLineEdit::keyPressEvent( QKeyEvent * event ) {
+void QCommandLineEdit::keyPressEvent ( QKeyEvent* event ) {
   if ( d->completer == 0 || d->completer->popup() == 0 || d->completer->popup()->isHidden() ) {
     switch ( event->key() ) {
       case Qt::Key_Up:
 
-        if ( d->idx == d->history.size()-1 )
+        if ( d->idx == d->history.size() - 1 )
           d->history[d->idx] = text();
 
         if ( d->idx > 0 ) {
           d->idx--;
-          setText( d->history[d->idx] );
+          setText ( d->history[d->idx] );
         }
 
         return;
 
       case Qt::Key_Down:
 
-        if ( d->idx == d->history.size()-1 )
+        if ( d->idx == d->history.size() - 1 )
           d->history[d->idx] = text();
 
-        if ( d->idx < d->history.size()-1 ) {
+        if ( d->idx < d->history.size() - 1 ) {
           d->idx++;
-          setText( d->history[d->idx] );
+          setText ( d->history[d->idx] );
         }
 
         return;
@@ -75,14 +75,17 @@ void QCommandLineEdit::keyPressEvent( QKeyEvent * event ) {
 //    case Qt::Key_Backtab:
         event->ignore();
         return; // let the completer do default behavior
+
       case Qt::Key_Right:
-        QLineEdit::keyPressEvent( event );
+        QLineEdit::keyPressEvent ( event );
         autoComplete();
         return;
+
       case Qt::Key_Left:
-        QLineEdit::keyPressEvent( event );
+        QLineEdit::keyPressEvent ( event );
         autoComplete();
         return;
+
       default:
         break;
     }
@@ -90,14 +93,14 @@ void QCommandLineEdit::keyPressEvent( QKeyEvent * event ) {
     if ( event->modifiers() == Qt::ControlModifier )
       return;
 
-    QLineEdit::keyPressEvent( event );
+    QLineEdit::keyPressEvent ( event );
 
     autoComplete();
 
     return;
   }
 
-  QLineEdit::keyPressEvent( event );
+  QLineEdit::keyPressEvent ( event );
 }
 
 /// Autocomplete from QCompleter and its model.
@@ -105,7 +108,7 @@ void QCommandLineEdit::autoComplete() {
   if ( ! d->completer )
     return;
 
-  d->completer->setWidget( this );
+  d->completer->setWidget ( this );
 
   QString lineText = text();
 
@@ -120,14 +123,14 @@ void QCommandLineEdit::autoComplete() {
 
   start++;
 
-  QString prefix = lineText.mid( start, caret - start );
+  QString prefix = lineText.mid ( start, caret - start );
 
   if ( prefix.size() == 0 && d->completer->popup() ) {
     d->completer->popup()->hide();
     return;
   }
 
-  d->completer->setCompletionPrefix( prefix );
+  d->completer->setCompletionPrefix ( prefix );
 
   int count = d->completer->completionCount();
 
@@ -137,17 +140,17 @@ void QCommandLineEdit::autoComplete() {
     return;
   else if ( count == 1 && ! d->completer->popup()->isVisible() ) {
     // Insert directly the result
-    d->completer->setCurrentRow( 0 );
-    insertCompletion( d->completer->currentCompletion() );
+    d->completer->setCurrentRow ( 0 );
+    insertCompletion ( d->completer->currentCompletion() );
   } else {
     // Compute popup size.
-    QPoint topLeft = mapToGlobal( pos() + QPoint( 0,height() ) );
-    QSize size( d->completer->popup()->sizeHintForColumn( 0 ) +
-                d->completer->popup()->verticalScrollBar()->sizeHint().width(),
-                cursorRect().height() );
-    cr = QRect( topLeft, size );
+    QPoint topLeft = mapToGlobal ( pos() + QPoint ( 0, height() ) );
+    QSize size ( d->completer->popup()->sizeHintForColumn ( 0 ) +
+                 d->completer->popup()->verticalScrollBar()->sizeHint().width(),
+                 cursorRect().height() );
+    cr = QRect ( topLeft, size );
     // Select first result
-    d->completer->popup()->setCurrentIndex( d->completer->completionModel()->index( 0, 0 ) );
+    d->completer->popup()->setCurrentIndex ( d->completer->completionModel()->index ( 0, 0 ) );
     // Show popup
     d->completer->complete();
   }
@@ -155,20 +158,20 @@ void QCommandLineEdit::autoComplete() {
 
 /**
   */
-void QCommandLineEdit::insertCompletion( const QString& completion ) {
+void QCommandLineEdit::insertCompletion ( const QString& completion ) {
   if ( d->completer->widget() != this )
     return;
 
   // select prefix
-  setSelection( cursorPosition() - d->completer->completionPrefix().length(), cursorPosition() );
+  setSelection ( cursorPosition() - d->completer->completionPrefix().length(), cursorPosition() );
 
   // remove and insert
   cut();
 
-  insert( completion );
+  insert ( completion );
 
   // Set index
-  setCursorPosition( cursorPosition() + completion.length() );
+  setCursorPosition ( cursorPosition() + completion.length() );
 }
 
 //! We save the command in history.
@@ -180,5 +183,5 @@ void QCommandLineEdit::onReturnPressed() {
 
   d->history << "";
 
-  d->idx = d->history.size()-1;
+  d->idx = d->history.size() - 1;
 }

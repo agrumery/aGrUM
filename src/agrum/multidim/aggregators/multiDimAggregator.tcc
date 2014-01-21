@@ -109,7 +109,7 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     void MultiDimAggregator<GUM_SCALAR>::_swap ( const DiscreteVariable* x, const DiscreteVariable* y ) {
-      MultiDimImplementation<GUM_SCALAR>::_swap ( x,y );
+      MultiDimImplementation<GUM_SCALAR>::_swap ( x, y );
     }
 
 // ==================================================

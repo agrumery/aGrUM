@@ -88,8 +88,8 @@ namespace gum {
        * @param dom the modalities of the nodes (i.e., their domain sizes)
        * @warning note that, by aGrUM's rule, the graph and the modalities are not
        * copied but only referenced by the elimination sequence algorithm. */
-      virtual void setGraph( UndiGraph* graph,
-                             const NodeProperty<Size>* dom ) = 0;
+      virtual void setGraph ( UndiGraph* graph,
+                              const NodeProperty<Size>* dom ) = 0;
 
       /// @}
 

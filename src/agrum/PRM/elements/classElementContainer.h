@@ -96,7 +96,7 @@ namespace gum {
          * @return Returns a constant reference on the member.
          * @throw NotFound Raised if no attribute matches name.
          */
-        virtual ClassElement<GUM_SCALAR>& get ( const std::string& name ) =0;
+        virtual ClassElement<GUM_SCALAR>& get ( const std::string& name ) = 0;
 
         /**
          * Constant getter on a member of this ClassElementContainer.
@@ -104,7 +104,7 @@ namespace gum {
          * @return Returns a constant reference on the member.
          * @throw NotFound Raised if no attribute matches name.
          */
-        virtual const ClassElement<GUM_SCALAR>& get ( const std::string& name ) const =0;
+        virtual const ClassElement<GUM_SCALAR>& get ( const std::string& name ) const = 0;
 
         /**
          * @brief Add a ClassElement<GUM_SCALAR> to this ClassElementContainer.
@@ -127,7 +127,7 @@ namespace gum {
          *
          * @throw DuplicateElement Raised if elt's name is already used in this class.
          */
-        virtual NodeId add ( ClassElement<GUM_SCALAR>* elt ) =0;
+        virtual NodeId add ( ClassElement<GUM_SCALAR>* elt ) = 0;
 
         /**
          * @brief Add a ClassElement<GUM_SCALAR> which overload an inherited ClassElement<GUM_SCALAR>.
@@ -154,12 +154,12 @@ namespace gum {
          * @throw WrongClassElement Raised if the overloading is illegal.
          * @throw TypeError Raised if elt isn't a legal subtype of this->get(elt->name()).
          */
-        virtual NodeId overload ( ClassElement<GUM_SCALAR>* elt ) =0;
+        virtual NodeId overload ( ClassElement<GUM_SCALAR>* elt ) = 0;
 
         /**
          * Add an arc between two ClassElement<GUM_SCALAR>.
          */
-        virtual void insertArc ( const std::string& tail, const std::string& head ) =0;
+        virtual void insertArc ( const std::string& tail, const std::string& head ) = 0;
 
 
         /**
@@ -263,7 +263,7 @@ namespace gum {
          * @return Returns a constant reference on the member.
          * @throw NotFound Raised if no attribute matches name.
          */
-        virtual ClassElement<GUM_SCALAR>& get ( NodeId id ) =0;
+        virtual ClassElement<GUM_SCALAR>& get ( NodeId id ) = 0;
 
         /**
          * Constant getter on a member of this ClassElementContainer.
@@ -271,7 +271,7 @@ namespace gum {
          * @return Returns a constant reference on the member.
          * @throw NotFound Raised if no attribute matches name.
          */
-        virtual const ClassElement<GUM_SCALAR>& get ( NodeId id ) const =0;
+        virtual const ClassElement<GUM_SCALAR>& get ( NodeId id ) const = 0;
 
         /// @}
         // ========================================================================
@@ -285,7 +285,7 @@ namespace gum {
          * @return Returns a constant reference on the member.
          * @throw NotFound Raised if no attribute matches name.
          */
-        virtual ClassElement<GUM_SCALAR>& operator[] ( NodeId id ) =0;
+        virtual ClassElement<GUM_SCALAR>& operator[] ( NodeId id ) = 0;
 
         /**
          * Constant getter on a member of this ClassElementContainer.
@@ -293,7 +293,7 @@ namespace gum {
          * @return Returns a constant reference on the member.
          * @throw NotFound Raised if no attribute matches name.
          */
-        virtual const ClassElement<GUM_SCALAR>& operator[] ( NodeId id ) const =0;
+        virtual const ClassElement<GUM_SCALAR>& operator[] ( NodeId id ) const = 0;
 
         /**
          * Getter on a member of this ClassElementContainer.
@@ -301,7 +301,7 @@ namespace gum {
          * @return Returns a constant reference on the member.
          * @throw NotFound Raised if no attribute matches name.
          */
-        virtual ClassElement<GUM_SCALAR>& operator[] ( const std::string& name ) =0;
+        virtual ClassElement<GUM_SCALAR>& operator[] ( const std::string& name ) = 0;
 
         /**
          * Constant getter on a member of this ClassElementContainer.
@@ -309,7 +309,7 @@ namespace gum {
          * @return Returns a constant reference on the member.
          * @throw NotFound Raised if no attribute matches name.
          */
-        virtual const ClassElement<GUM_SCALAR>& operator[] ( const std::string& name ) const =0;
+        virtual const ClassElement<GUM_SCALAR>& operator[] ( const std::string& name ) const = 0;
 
         /// @}
         // ========================================================================
@@ -323,7 +323,7 @@ namespace gum {
          * @param cec
          * @return return true if this ClassElementContainer is a subtype of cec.
          */
-        virtual bool isSubTypeOf ( const ClassElementContainer& cec ) const =0;
+        virtual bool isSubTypeOf ( const ClassElementContainer& cec ) const = 0;
 
         /**
          * @brief Test if this ClassElementContainer is a super type of cec.
@@ -344,15 +344,15 @@ namespace gum {
         /// Copy constructor. Don't use it.
         ClassElementContainer ( const ClassElementContainer& source );
 
-        virtual const DAG& _dag() const =0;
+        virtual const DAG& _dag() const = 0;
 
         /// Returns a non constant reference over this ClassElementContainer's DAG.
-        virtual DAG& _dag() =0;
+        virtual DAG& _dag() = 0;
 
 
         /// Fills set with all the subtypes of this Interface, this includes extensions
         /// and implementations.
-        virtual void _findAllSubtypes ( Set<ClassElementContainer*>& set ) =0;
+        virtual void _findAllSubtypes ( Set<ClassElementContainer*>& set ) = 0;
 
         /// Returns the IO flags of a ClassElement<GUM_SCALAR>.
         /// @param elt The ClassElement<GUM_SCALAR>.
@@ -382,7 +382,7 @@ namespace gum {
         /// Note that after its declaration, input flags can not be changed and
         /// output flags can only become true.
         /// @param elt A ClassElement<GUM_SCALAR>.
-        virtual void _updateDescendants ( const ClassElement<GUM_SCALAR>& elt ) =0;
+        virtual void _updateDescendants ( const ClassElement<GUM_SCALAR>& elt ) = 0;
 
       private:
         /// input / output flags, useful when inheriting or copying.

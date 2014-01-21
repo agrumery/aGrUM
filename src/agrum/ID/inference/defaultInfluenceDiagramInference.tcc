@@ -61,7 +61,7 @@ namespace gum {
     // the moral graph does not include utility nodes
     UndiGraph partialMoralGraph ( this->influenceDiagram().moralGraph() );
 
-    for(const auto iter : this->influenceDiagram().nodes()) {
+    for ( const auto iter : this->influenceDiagram().nodes() ) {
       if ( this->influenceDiagram().isUtilityNode ( iter ) ) {
         partialMoralGraph.eraseNode ( iter );
       } else {
@@ -348,7 +348,7 @@ namespace gum {
     //***********************************************************************************************************************************
     // Fourth pass to adress utility table to the good clique
     // We go trought all diagram's nodes in search of utility nodes since they do not appear in elimination order
-    for(const auto nodesIter : this->influenceDiagram().nodes()) 
+    for ( const auto nodesIter : this->influenceDiagram().nodes() )
       if ( this->influenceDiagram().isUtilityNode ( nodesIter ) ) {
         // Récupération de la bonne clique
         NodeId cliqueId = __getClique ( elim, nodesIter );
@@ -627,7 +627,7 @@ namespace gum {
               for ( HashTableConstIteratorSafe<const Potential<GUM_SCALAR>*, Instantiation*> potentialIter = absorbedClique->potentialBucket().beginSafe();
                     potentialIter != absorbedClique->potentialBucket().endSafe(); ++potentialIter ) {
                 ( potentialIter.val() )->setVals ( cliqueInstance );
-                currentPotential *= potentialIter.key()->get ( *( potentialIter.val() ) );
+                currentPotential *= potentialIter.key()->get ( * ( potentialIter.val() ) );
               }
             } else {
               Instantiation potentialMarginalInst ( potentialMarginal );
@@ -646,7 +646,7 @@ namespace gum {
               for ( HashTableConstIteratorSafe<const UtilityTable<GUM_SCALAR>*, Instantiation*> utilityIter = absorbedClique->utilityBucket().beginSafe();
                     utilityIter != absorbedClique->utilityBucket().endSafe(); ++utilityIter ) {
                 ( utilityIter.val() )->setVals ( cliqueInstance );
-                currentUtility += utilityIter.key()->get ( *( utilityIter.val() ) );
+                currentUtility += utilityIter.key()->get ( * ( utilityIter.val() ) );
               }
 
               currentUtility *= currentPotential;

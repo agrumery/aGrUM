@@ -39,7 +39,7 @@ namespace gum {
 
   /// for friendly displaying the content of the variable
 
-  std::ostream& operator<<( std::ostream& s, const Variable& LDRV );
+  std::ostream& operator<< ( std::ostream& s, const Variable& LDRV );
 
 
 
@@ -84,7 +84,7 @@ namespace gum {
       /** @param aRV to be copied
        * @return a const ref to *this */
 
-      Variable& operator=( const Variable& aRV );
+      Variable& operator= ( const Variable& aRV );
 
 
       /// equality operator
@@ -107,7 +107,7 @@ namespace gum {
       /// sets the name of the variable
       /** @param theValue */
 
-      void setName( const std::string& theValue );
+      void setName ( const std::string& theValue );
 
 
       /// returns the name of the variable
@@ -119,7 +119,7 @@ namespace gum {
       /// @warning since __description is mutable, setDescription() is const
       /** @param theValue */
 
-      void setDescription( const std::string& theValue ) const;
+      void setDescription ( const std::string& theValue ) const;
 
 
       /// returns the description of the variable
@@ -132,14 +132,14 @@ namespace gum {
 
     protected:
       /// (protected) Default constructor
-      Variable( ) {GUM_CONSTRUCTOR( Variable );};
+      Variable( ) {GUM_CONSTRUCTOR ( Variable );};
 
 
 
       /// protected copy
       /** @param aRV to be copied */
 
-      void _copy( const Variable& aRV );
+      void _copy ( const Variable& aRV );
 
 
 
@@ -147,13 +147,13 @@ namespace gum {
       /** @param aName name of the variable
        * @param aDesc description of the variable */
 
-      Variable( const std::string& aName, const std::string& aDesc );
+      Variable ( const std::string& aName, const std::string& aDesc );
 
 
       /// copy constructor
       /** @param aRV the variable we copy */
 
-      Variable( const Variable& aRV );
+      Variable ( const Variable& aRV );
 
 
     private:

@@ -63,7 +63,7 @@ namespace gum {
       GUM_MULTI_DIM_PROJECTION_NAME_F
       ( const MultiDimImplementation<GUM_SCALAR>* table,
         const Set<const DiscreteVariable*>& del_vars,
-        GUM_SCALAR( *f )( const GUM_SCALAR&, const GUM_SCALAR& ) ) {
+        GUM_SCALAR ( *f ) ( const GUM_SCALAR&, const GUM_SCALAR& ) ) {
 #endif
 
 
@@ -75,7 +75,7 @@ namespace gum {
         GUM_MULTI_DIM_PROJECTION_POINTER_NAME_F
         ( const MultiDimImplementation<GUM_SCALAR*>* table,
           const Set<const DiscreteVariable*>& del_vars,
-          GUM_SCALAR* ( *f )( const GUM_SCALAR const*, const GUM_SCALAR const* ) ) {
+          GUM_SCALAR * ( *f ) ( const GUM_SCALAR const*, const GUM_SCALAR const* ) ) {
 #endif
 
 
@@ -116,17 +116,17 @@ namespace gum {
                       table_vars.beginSafe(); iter != table_vars.endSafe(); ++iter ) {
                 table_domain_size *= ( *iter )->domainSize();
 
-                if ( ! del_vars.exists( *iter ) ) {
+                if ( ! del_vars.exists ( *iter ) ) {
                   if ( has_before_incr ) {
-                    before_incr.push_back( tmp_before_incr - 1 );
+                    before_incr.push_back ( tmp_before_incr - 1 );
                     has_before_incr = false;
                     ++nb_positive_before_incr;
                   } else {
-                    before_incr.push_back( 0 );
+                    before_incr.push_back ( 0 );
                   }
 
-                  table_and_result_domain.push_back( ( *iter )->domainSize() );
-                  table_and_result_offset.push_back( result_domain_size );
+                  table_and_result_domain.push_back ( ( *iter )->domainSize() );
+                  table_and_result_offset.push_back ( result_domain_size );
                   result_domain_size *= ( *iter )->domainSize();
                   tmp_before_incr = 1;
                   result_varSeq << *iter;
@@ -169,11 +169,11 @@ namespace gum {
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER
 
             for ( Idx i = 0; i < result_domain_size; ++i ) {
-              result->unsafeSet( i, new GUM_SCALAR( neutral_element ) );
+              result->unsafeSet ( i, new GUM_SCALAR ( neutral_element ) );
             }
 
 #else
-            result->fill( neutral_element );
+            result->fill ( neutral_element );
 #endif
 
 
@@ -190,18 +190,18 @@ namespace gum {
             // this is not the case, optimize by not using before_incr at all
             if ( ! nb_positive_before_incr ) {
               Idx result_offset = 0;
-              Instantiation table_inst( table );
+              Instantiation table_inst ( table );
 
               for ( Idx i = 0; i < table_alone_domain_size; ++i ) {
                 for ( Idx j = 0; j < result_domain_size; ++j ) {
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER
-                  GUM_MULTI_DIM_PROJECTION_TYPE res = result->unsafeGet( result_offset );
-                  *res = GUM_MULTI_DIM_PROJECTION( res, table->get( table_inst ) );
+                  GUM_MULTI_DIM_PROJECTION_TYPE res = result->unsafeGet ( result_offset );
+                  *res = GUM_MULTI_DIM_PROJECTION ( res, table->get ( table_inst ) );
 #else
                   GUM_MULTI_DIM_PROJECTION_TYPE& res =
                     const_cast<GUM_MULTI_DIM_PROJECTION_TYPE&>
-                    ( result->unsafeGet( result_offset ) );
-                  res = GUM_MULTI_DIM_PROJECTION( res, table->get( table_inst ) );
+                    ( result->unsafeGet ( result_offset ) );
+                  res = GUM_MULTI_DIM_PROJECTION ( res, table->get ( table_inst ) );
 #endif
 
                   // update the offset of table and result
@@ -216,17 +216,17 @@ namespace gum {
               // here there are positive before_incr and we should use them to know
               // when result_offset needs be changed
               Idx result_offset = 0;
-              Instantiation table_inst( table );
+              Instantiation table_inst ( table );
 
               for ( Idx i = 0; i < table_domain_size; ++i ) {
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER
-                GUM_MULTI_DIM_PROJECTION_TYPE res = result->unsafeGet( result_offset );
-                *res = GUM_MULTI_DIM_PROJECTION( res, table->get( table_inst ) );
+                GUM_MULTI_DIM_PROJECTION_TYPE res = result->unsafeGet ( result_offset );
+                *res = GUM_MULTI_DIM_PROJECTION ( res, table->get ( table_inst ) );
 #else
                 GUM_MULTI_DIM_PROJECTION_TYPE& res =
                   const_cast<GUM_MULTI_DIM_PROJECTION_TYPE&>
-                  ( result->unsafeGet( result_offset ) );
-                res = GUM_MULTI_DIM_PROJECTION( res, table->get( table_inst ) );
+                  ( result->unsafeGet ( result_offset ) );
+                res = GUM_MULTI_DIM_PROJECTION ( res, table->get ( table_inst ) );
 #endif
 
                 // update the offset of table
@@ -271,17 +271,17 @@ namespace gum {
             std::vector<Idx> table_alone_domain;
             Idx offset = 1;
             Idx table_alone_domain_size = 1;
-            HashTable<const DiscreteVariable*,Idx> var1offset( table_vars.size() );
+            HashTable<const DiscreteVariable*, Idx> var1offset ( table_vars.size() );
 
             for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
                     table_vars.beginSafe(); iter != table_vars.endSafe(); ++iter ) {
-              if ( del_vars.exists( *iter ) ) {
-                table_alone_domain.push_back( ( *iter )->domainSize() );
-                table_alone_offset.push_back( offset );
+              if ( del_vars.exists ( *iter ) ) {
+                table_alone_domain.push_back ( ( *iter )->domainSize() );
+                table_alone_offset.push_back ( offset );
                 table_alone_domain_size *= ( *iter )->domainSize();
               }
 
-              var1offset.insert( *iter, offset );
+              var1offset.insert ( *iter, offset );
               offset *= ( *iter )->domainSize();
             }
 
@@ -308,9 +308,9 @@ namespace gum {
 
             for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
                     table_vars.beginSafe(); iter != table_vars.endSafe(); ++iter ) {
-              if ( ! del_vars.exists( *iter ) ) {
-                table_and_result_domain.push_back( ( *iter )->domainSize() );
-                table_and_result_offset.push_back( var1offset[*iter] );
+              if ( ! del_vars.exists ( *iter ) ) {
+                table_and_result_domain.push_back ( ( *iter )->domainSize() );
+                table_and_result_offset.push_back ( var1offset[*iter] );
                 found_proj_var = true;
                 result_domain_size *= ( *iter )->domainSize();
                 result_varSeq << *iter;
@@ -346,11 +346,11 @@ namespace gum {
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER
 
             for ( Idx i = 0; i < result_domain_size; ++i ) {
-              result->unsafeSet( i, new GUM_SCALAR( neutral_element ) );
+              result->unsafeSet ( i, new GUM_SCALAR ( neutral_element ) );
             }
 
 #else
-            result->fill( neutral_element );
+            result->fill ( neutral_element );
 #endif
 
             // compute the sum: first loop over the variables X's both in table and in
@@ -370,18 +370,18 @@ namespace gum {
             // this is not the case, optimize by not using before_incr at all
             if ( ! has_before_incr ) {
               Idx result_offset = 0;
-              Instantiation table_inst( table );
+              Instantiation table_inst ( table );
 
               for ( Idx i = 0; i < result_domain_size; ++i ) {
                 for ( Idx j = 0; j < table_alone_domain_size; ++j ) {
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER
-                  GUM_MULTI_DIM_PROJECTION_TYPE res = result->unsafeGet( result_offset );
-                  *res = GUM_MULTI_DIM_PROJECTION( res, table->get( table_inst ) );
+                  GUM_MULTI_DIM_PROJECTION_TYPE res = result->unsafeGet ( result_offset );
+                  *res = GUM_MULTI_DIM_PROJECTION ( res, table->get ( table_inst ) );
 #else
                   GUM_MULTI_DIM_PROJECTION_TYPE& res =
                     const_cast<GUM_MULTI_DIM_PROJECTION_TYPE&>
-                    ( result->unsafeGet( result_offset ) );
-                  res = GUM_MULTI_DIM_PROJECTION( res, table->get( table_inst ) );
+                    ( result->unsafeGet ( result_offset ) );
+                  res = GUM_MULTI_DIM_PROJECTION ( res, table->get ( table_inst ) );
 #endif
 
                   // update the offset of table
@@ -395,18 +395,18 @@ namespace gum {
               // here there are positive before_incr and we should use them to know
               // when result_offset needs be changed
               Idx result_offset = 0;
-              Instantiation table_inst( table );
+              Instantiation table_inst ( table );
 
               for ( Idx j = 0; j < result_domain_size; ++j ) {
                 for ( Idx i = 0; i < table_alone_domain_size; ++i ) {
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER
-                  GUM_MULTI_DIM_PROJECTION_TYPE res = result->unsafeGet( result_offset );
-                  *res = GUM_MULTI_DIM_PROJECTION( res, table->get( table_inst ) );
+                  GUM_MULTI_DIM_PROJECTION_TYPE res = result->unsafeGet ( result_offset );
+                  *res = GUM_MULTI_DIM_PROJECTION ( res, table->get ( table_inst ) );
 #else
                   GUM_MULTI_DIM_PROJECTION_TYPE& res =
                     const_cast<GUM_MULTI_DIM_PROJECTION_TYPE&>
-                    ( result->unsafeGet( result_offset ) );
-                  res = GUM_MULTI_DIM_PROJECTION( res, table->get( table_inst ) );
+                    ( result->unsafeGet ( result_offset ) );
+                  res = GUM_MULTI_DIM_PROJECTION ( res, table->get ( table_inst ) );
 #endif
 
                   // update the increment of table for the inner loop

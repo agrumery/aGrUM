@@ -54,12 +54,12 @@ namespace gum {
   //GCC_DIAG_ON(strict-aliasing)
 
 
-  
+
   /// Destructor for end/rend
   template <> ListConstIteratorSafe<Debug>::~ListConstIteratorSafe() {
   }
 
-  
+
   /// constructor for end/rend
   template <> ListConstIteratorSafe<Debug>::ListConstIteratorSafe() noexcept {
   }
@@ -69,7 +69,7 @@ namespace gum {
   template <> ListConstIterator<Debug>::~ListConstIterator() noexcept {
   }
 
-  
+
   /// constructor for end/rend
   template <> ListConstIterator<Debug>::ListConstIterator() noexcept {
   }
@@ -88,10 +88,10 @@ namespace gum {
     return &__static_list_end;
   }
 
-  const void *const __list_end_safe = __get_list_end_safe ();
-  const void *const __list_end = __get_list_end ();
+  const void* const __list_end_safe = __get_list_end_safe ();
+  const void* const __list_end = __get_list_end ();
 
-  
+
   // to optimize compile-link time, provide the usual lists
   template class List<bool>;
   template class List<int>;

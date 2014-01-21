@@ -41,10 +41,11 @@ namespace gum {
    * this restriction. Function __hashTableLog2 thus returns the size in
    * bits - 1 necessary to store the smallest power of 2 greater than or
    * equal nb. */
-  INLINE unsigned int __hashTableLog2( const Size& nb ) {
+  INLINE unsigned int __hashTableLog2 ( const Size& nb ) {
     unsigned int i = 0;
 
     for ( Size nbb = nb; nbb > 1UL; ++i, nbb >>= 1 ) {};
+
     return ( ( 1UL << i ) < nb ? i + 1U : i );
   }
 
@@ -53,17 +54,18 @@ namespace gum {
   /// returns a hashed key for hash tables the keys of which are represented
   /// by strings
   INLINE Size
-  HashFunc<std::string>::operator()( const std::string& key ) const  {
+  HashFunc<std::string>::operator() ( const std::string& key ) const  {
     Size h = 0;
     unsigned int size = key.size ();
     const char* char_ptr = key.c_str ();
-    const unsigned long* int_ptr = (const unsigned long*) char_ptr;
+    const unsigned long* int_ptr = ( const unsigned long* ) char_ptr;
 
     for ( ; size >= sizeof ( unsigned long );
-          size -= sizeof ( unsigned long), ++int_ptr ) {
+          size -= sizeof ( unsigned long ), ++int_ptr ) {
       h = h * HashFuncConst::gold + *int_ptr;
     }
-    for ( char_ptr = (const char*) int_ptr; size != 0; --size, ++char_ptr ) {
+
+    for ( char_ptr = ( const char* ) int_ptr; size != 0; --size, ++char_ptr ) {
       h = 19 * h + *char_ptr;
     }
 
@@ -77,33 +79,35 @@ namespace gum {
   HashFunc< std::pair<std::string, std::string> >::operator()
   ( const std::pair<std::string, std::string>& key ) const  {
     register Size h = 0;
-    
+
     const std::string& s1 = key.first;
     unsigned int size = s1.size ();
     const char* char_ptr = s1.c_str ();
-    const unsigned long* int_ptr = (const unsigned long*) char_ptr;
+    const unsigned long* int_ptr = ( const unsigned long* ) char_ptr;
 
     for ( ; size >= sizeof ( unsigned long );
-          size -= sizeof ( unsigned long), ++int_ptr ) {
+          size -= sizeof ( unsigned long ), ++int_ptr ) {
       h = h * HashFuncConst::gold + *int_ptr;
     }
-    for ( char_ptr = (const char*) int_ptr; size != 0; --size, ++char_ptr ) {
+
+    for ( char_ptr = ( const char* ) int_ptr; size != 0; --size, ++char_ptr ) {
       h = 19 * h + *char_ptr;
     }
 
     const std::string& s2 = key.second;
     size = s2.size ();
     char_ptr = s2.c_str ();
-    int_ptr = (const unsigned long*) char_ptr;
+    int_ptr = ( const unsigned long* ) char_ptr;
 
     for ( ; size >= sizeof ( unsigned long );
-          size -= sizeof ( unsigned long), ++int_ptr ) {
+          size -= sizeof ( unsigned long ), ++int_ptr ) {
       h = h * HashFuncConst::gold + *int_ptr;
     }
-    for ( char_ptr = (const char*) int_ptr; size != 0; --size, ++char_ptr ) {
+
+    for ( char_ptr = ( const char* ) int_ptr; size != 0; --size, ++char_ptr ) {
       h = 19 * h + *char_ptr;
     }
-    
+
     return ( h & _hash_mask );
   }
 
@@ -118,7 +122,7 @@ namespace gum {
     register Size h = 0;
 
     for ( size_t i = 0; i < key.size(); ++i )
-      h += i*key[i];
+      h += i * key[i];
 
     return ( ( h * HashFuncConst::gold ) & _hash_mask );
   }
@@ -128,7 +132,7 @@ namespace gum {
   /// returns a hashed key for hash tables the keys of which are represented
   /// by Debugs
   INLINE Size
-  HashFunc<Debug>::operator()( const Debug& key ) const  {
+  HashFunc<Debug>::operator() ( const Debug& key ) const  {
     register Size h = 0;
 
     for ( size_t i = 0, j = key.size(); i < j; ++i )
@@ -136,7 +140,7 @@ namespace gum {
 
     return ( ( h * HashFuncConst::gold ) & _hash_mask );
   }
-  
+
 
 } /* namespace gum */
 

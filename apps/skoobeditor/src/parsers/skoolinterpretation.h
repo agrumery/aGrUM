@@ -23,11 +23,11 @@ namespace gum {
 class SkoolInterpretation : public AbstractParser {
     Q_OBJECT
 
-    gum::prm::skool::SkoolReader * m_reader;
+    gum::prm::skool::SkoolReader* m_reader;
     mutable bool prmChanged;
 
   public:
-    SkoolInterpretation( const QsciScintillaExtended * sci, QObject * parent );
+    SkoolInterpretation ( const QsciScintillaExtended* sci, QObject* parent );
     ~SkoolInterpretation();
 
   protected:

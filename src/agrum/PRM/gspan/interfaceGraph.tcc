@@ -196,7 +196,7 @@ namespace gum {
         sBuff << node->n->type().name();
 
         // First we search for multiple inputs
-        auto& chains=node->n->type().slotChains();
+        auto& chains = node->n->type().slotChains();
 
         for ( auto iter = chains.beginSafe(); iter != chains.endSafe(); ++iter ) {
           if ( ( **iter ).isMultiple() ) {
@@ -244,9 +244,9 @@ namespace gum {
         sBuff << edge->u->type().name() << "-" << edge->v->type().name();
 
         // First looking for edge->u output nodes in v
-        const auto& chains_u=edge->u->type().slotChains();
+        const auto& chains_u = edge->u->type().slotChains();
 
-        for ( auto iter=chains_u.beginSafe(); iter != chains_u.endSafe(); ++iter ) {
+        for ( auto iter = chains_u.beginSafe(); iter != chains_u.endSafe(); ++iter ) {
           if ( edge->u->getInstances ( ( **iter ).id() ).exists ( edge->v ) ) {
             sBuff << "-" << edge->v->type().name() << "." << ( **iter ).lastElt().name();
             size *= ( **iter ).lastElt().type().variable().domainSize();
@@ -254,7 +254,7 @@ namespace gum {
         }
 
         // Second looking for edge->v output nodes in u
-        const auto& chains_v=edge->v->type().slotChains();
+        const auto& chains_v = edge->v->type().slotChains();
 
         for ( auto iter = chains_v.beginSafe(); iter != chains_v.endSafe(); ++iter ) {
           if ( edge->v->getInstances ( ( **iter ).id() ).exists ( edge->u ) ) {

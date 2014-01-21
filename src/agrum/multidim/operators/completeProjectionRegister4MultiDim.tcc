@@ -46,20 +46,20 @@ namespace gum {
     // insert the new entry
     CompleteProjectionSet* theset;
 
-    if ( ! __set.exists( projection_name ) ) {
-      theset = __set.insert( projection_name, new CompleteProjectionSet ).second;
+    if ( ! __set.exists ( projection_name ) ) {
+      theset = __set.insert ( projection_name, new CompleteProjectionSet ).second;
 #ifndef NDEBUG
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the CompleteProjectionRegister4MultiDim
       // will be removed at the end of the program's execution.
-      __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
-                                 ( void* ) theset );
+      __debug__::__inc_deletion ( "HashTable", __FILE__, __LINE__, "destructor of",
+                                  ( void* ) theset );
 #endif /* NDEBUG */
     } else {
       theset = __set[projection_name];
     }
 
-    theset->insert( type_multidim, newFunction );
+    theset->insert ( type_multidim, newFunction );
   }
 
 
@@ -68,11 +68,11 @@ namespace gum {
   void CompleteProjectionRegister4MultiDim<GUM_SCALAR>::erase
   ( const std::string& projection_name,
     const std::string& type_multidim ) {
-    if ( ! __set.exists( projection_name ) ) return;
+    if ( ! __set.exists ( projection_name ) ) return;
 
     CompleteProjectionSet* theset = __set[projection_name];
 
-    theset->erase( type_multidim );
+    theset->erase ( type_multidim );
   }
 
 
@@ -81,9 +81,9 @@ namespace gum {
   bool CompleteProjectionRegister4MultiDim<GUM_SCALAR>::exists
   ( const std::string& projection_name,
     const std::string& type_multidim ) const {
-    if ( ! __set.exists( projection_name ) ) return false;
+    if ( ! __set.exists ( projection_name ) ) return false;
 
-    return __set[projection_name].exists( type_multidim );
+    return __set[projection_name].exists ( type_multidim );
   }
 
 
@@ -95,7 +95,7 @@ namespace gum {
   ( const std::string& projection_name,
     const std::string& type_multidim ) const {
     CompleteProjectionSet* theset = __set[projection_name];
-    return theset->operator[]( type_multidim );
+    return theset->operator[] ( type_multidim );
   }
 
 
@@ -113,8 +113,8 @@ namespace gum {
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the CompleteProjectionRegister4MultiDim
       // will be removed at the end of the program's execution.
-      __debug__::__inc_deletion( "HashTable", __FILE__, __LINE__, "destructor of",
-                                 ( void* ) &container.__set );
+      __debug__::__inc_deletion ( "HashTable", __FILE__, __LINE__, "destructor of",
+                                  ( void* ) &container.__set );
     }
 
 #endif /* NDEBUG */

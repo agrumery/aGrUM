@@ -223,7 +223,7 @@ namespace gum {
         Set<System<GUM_SCALAR>*> __systems;
 
         /// @}
-        
+
     };
     extern template class Interface<double>;
 

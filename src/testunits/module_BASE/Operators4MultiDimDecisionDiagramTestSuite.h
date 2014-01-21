@@ -224,6 +224,7 @@ namespace gum_tests {
           double interval = highLimit - lowLimit;
 
           gum::Idx i = 0;
+
           while ( i < 25 ) {
             double newVal = ( rand() % ( ( int ) interval ) ) - interval / 2;
             tnList.insert ( newVal );
@@ -276,6 +277,7 @@ namespace gum_tests {
                       var2NodeIdMap[ toVar ]->insert ( f->unsafeAddNonTerminalNode ( toVar ) );
                       desiredNode = var2NodeIdMap[ toVar ]->size() - 1;
                     }
+
                     // then we add an arc between our current var associated node id and the considered var random node id
                     f->unsafeAddArc ( *numNode, ( *var2NodeIdMap[ toVar ] ) [desiredNode], label );
 
@@ -292,13 +294,13 @@ namespace gum_tests {
 
           for ( gum::HashTableIteratorSafe< const gum::DiscreteVariable*, gum::List<gum::NodeId>* > ht = var2NodeIdMap.beginSafe (); ht != var2NodeIdMap.endSafe(); ++ht )
             delete ht.val();
-          
+
           ret = f->getMultiDimDecisionDiagram ( true, 0, true );
         }
 
         if ( factoryCreatedHere )
           delete f;
-        
+
         return ret;
       }
 

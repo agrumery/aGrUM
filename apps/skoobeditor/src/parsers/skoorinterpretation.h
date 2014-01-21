@@ -33,7 +33,7 @@ class SkoorInterpretation : public AbstractParser {
 
   public:
     //! Constructor. Create skoor interpreter.
-    SkoorInterpretation( const QsciScintillaExtended * sci, QObject * parent );
+    SkoorInterpretation ( const QsciScintillaExtended* sci, QObject* parent );
     //! Destructor. Delete skoor interpreter.
     ~SkoorInterpretation();
 
@@ -44,16 +44,16 @@ class SkoorInterpretation : public AbstractParser {
 
   public slots:
     //! \reimp
-    virtual void parse( Priority priority = InheritPriority );
+    virtual void parse ( Priority priority = InheritPriority );
     //! Parse a single command
-    virtual void parseCommand( const QString & command, Priority priority = InheritPriority );
+    virtual void parseCommand ( const QString& command, Priority priority = InheritPriority );
 
   protected:
     //! \reimp
     virtual void run();
 
     struct PrivateData;
-    PrivateData * d;
+    PrivateData* d;
 };
 
 

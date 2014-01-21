@@ -266,6 +266,7 @@ namespace gum {
          || ! dag().existsArc ( arc ) ) {
       GUM_ERROR ( InvalidArc, "a nonexisting arc cannot be reversed" );
     }
+
     NodeId tail = arc.tail (), head = arc.head ();
 
     // check that the reversal does not induce a cycle
@@ -273,15 +274,14 @@ namespace gum {
       DAG d = dag ();
       d.eraseArc ( arc );
       d.insertArc ( head, tail );
-    }
-    catch ( Exception& e ) {
+    } catch ( Exception& e ) {
       GUM_ERROR ( InvalidArc, "this arc reversal would induce a directed cycle" );
     }
-    
+
     // with the same notations as Shachter (1986), "evaluating influence diagrams",
     // p.878, we shall first compute the product of probabilities:
     // pi_j^old (x_j | x_c^old(j) ) * pi_i^old (x_i | x_c^old(i) )
-    Potential<GUM_SCALAR> prod { cpt ( tail ) * cpt ( head ) };
+    Potential<GUM_SCALAR> prod { cpt ( tail )* cpt ( head ) };
 
     // modify the topology of the graph: add to tail all the parents of head
     // and add to head all the parents of tail
@@ -289,6 +289,7 @@ namespace gum {
     NodeSet new_parents = dag().parents ( tail ) + dag().parents ( head );
     // remove arc (head, tail)
     eraseArc ( arc );
+
     // add the necessary arcs to the tail
     for ( NodeSet::const_iterator_safe iter = new_parents.beginSafe ();
           iter != new_parents.endSafe (); ++iter ) {
@@ -296,20 +297,23 @@ namespace gum {
         addArc ( *iter, tail );
       }
     }
+
     addArc ( head, tail );
     // add the necessary arcs to the head
     new_parents.erase ( tail );
-     for ( NodeSet::const_iterator_safe iter = new_parents.beginSafe ();
+
+    for ( NodeSet::const_iterator_safe iter = new_parents.beginSafe ();
           iter != new_parents.endSafe (); ++iter ) {
       if ( ( *iter != head ) && ! dag().existsArc ( *iter, head ) ) {
         addArc ( *iter, head );
       }
     }
+
     endTopologyTransformation ();
 
     // update the conditional distributions of head and tail
     Set<const DiscreteVariable*> del_vars;
-    del_vars << &(variable (tail));
+    del_vars << & ( variable ( tail ) );
     Potential<GUM_SCALAR> new_cpt_head { projectSum ( prod, del_vars ) };
     Potential<GUM_SCALAR>& cpt_head =
       const_cast<Potential<GUM_SCALAR>&> ( cpt ( head ) );
@@ -320,15 +324,15 @@ namespace gum {
       const_cast<Potential<GUM_SCALAR>&> ( cpt ( tail ) );
     cpt_tail = new_cpt_tail;
   }
-  
+
 
   template<typename GUM_SCALAR> INLINE
   void
   BayesNet<GUM_SCALAR>::reverseArc ( NodeId tail, NodeId head ) {
     reverseArc ( Arc ( tail, head ) );
   }
-  
-  
+
+
   template<typename GUM_SCALAR> INLINE
   NodeId
   BayesNet<GUM_SCALAR>::addOR ( const DiscreteVariable& var ) {
@@ -514,7 +518,7 @@ namespace gum {
       }
 
 
-      copy_array->copyFrom ( *( srcIter.val() ) );
+      copy_array->copyFrom ( * ( srcIter.val() ) );
 
       // We add the CPT to the CPT's hashmap
       __probaMap.insert ( srcIter.key(), copy_array );

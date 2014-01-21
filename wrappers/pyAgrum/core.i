@@ -1,4 +1,5 @@
-
+%ignore *::diffSet;
+ 
 %ignore gum::Instantiation::setValsFrom;
 
 %pythonprepend gum::List::append %{

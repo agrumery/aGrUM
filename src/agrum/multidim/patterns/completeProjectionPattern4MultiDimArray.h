@@ -40,8 +40,8 @@ namespace gum {
   template<typename GUM_SCALAR>
   GUM_SCALAR
   GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
-    ( const MultiDimArray<GUM_SCALAR>* table,
-      Instantiation* instantiation ) {
+  ( const MultiDimArray<GUM_SCALAR>* table,
+    Instantiation* instantiation ) {
 #endif
 
 
@@ -52,55 +52,55 @@ namespace gum {
     GUM_SCALAR*
     GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME
     ( const MultiDimArray<GUM_SCALAR*>* table,
-      Instantiation* instantiation ) {
+      Instantiation * instantiation ) {
 #endif
 
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME_F
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE GUM_SCALAR
-  template<typename GUM_SCALAR>
-  GUM_SCALAR
-  GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME_F
-    ( const MultiDimArray<GUM_SCALAR>* table,
-      GUM_SCALAR (*f) ( const GUM_SCALAR&, const GUM_SCALAR&),
-      Instantiation* instantiation ) {
+      template<typename GUM_SCALAR>
+      GUM_SCALAR
+      GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME_F
+      ( const MultiDimArray<GUM_SCALAR>* table,
+        GUM_SCALAR ( *f ) ( const GUM_SCALAR&, const GUM_SCALAR& ),
+        Instantiation * instantiation ) {
 #endif
 
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME_F
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE GUM_SCALAR*
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
-  template<typename GUM_SCALAR>
-  GUM_SCALAR*
-  GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME_F
-    ( const MultiDimArray<GUM_SCALAR*>* table,
-      GUM_SCALAR* (*f) ( const GUM_SCALAR const*, const GUM_SCALAR const* ),
-      Instantiation* instantiation ) {
+        template<typename GUM_SCALAR>
+        GUM_SCALAR*
+        GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME_F
+        ( const MultiDimArray<GUM_SCALAR*>* table,
+          GUM_SCALAR * ( *f ) ( const GUM_SCALAR const*, const GUM_SCALAR const* ),
+          Instantiation * instantiation ) {
 #endif
 
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE GUM_SCALAR
-  template<typename GUM_SCALAR>
-  GUM_SCALAR
-  GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME
-    ( const MultiDimImplementation<GUM_SCALAR>* ttable,
-      Instantiation* instantiation ) {
-    const MultiDimArray<GUM_SCALAR>* table =
-      reinterpret_cast<const MultiDimArray<GUM_SCALAR>*> (ttable);
+          template<typename GUM_SCALAR>
+          GUM_SCALAR
+          GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME
+          ( const MultiDimImplementation<GUM_SCALAR>* ttable,
+            Instantiation * instantiation ) {
+            const MultiDimArray<GUM_SCALAR>* table =
+              reinterpret_cast<const MultiDimArray<GUM_SCALAR>*> ( ttable );
 #endif
 
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE GUM_SCALAR*
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
-  template<typename GUM_SCALAR>
-    GUM_SCALAR*
-  GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME
-    ( const MultiDimImplementation<GUM_SCALAR*>* ttable,
-      Instantiation* instantiation ) {
-    const MultiDimArray<GUM_SCALAR*>* table =
-      reinterpret_cast<const MultiDimArray<GUM_SCALAR*>*> (ttable);
+            template<typename GUM_SCALAR>
+            GUM_SCALAR*
+            GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME
+            ( const MultiDimImplementation<GUM_SCALAR*>* ttable,
+              Instantiation * instantiation ) {
+              const MultiDimArray<GUM_SCALAR*>* table =
+                reinterpret_cast<const MultiDimArray<GUM_SCALAR*>*> ( ttable );
 #endif
 
 
@@ -111,7 +111,7 @@ namespace gum {
               // neutral element
               register GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE* ptable =
                 const_cast<GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE*>
-                ( &( table->unsafeGet( 0 ) ) );
+                ( & ( table->unsafeGet ( 0 ) ) );
               GUM_SCALAR current_val = GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL;
 
               if ( instantiation ) {
@@ -121,9 +121,9 @@ namespace gum {
 
                 for ( Size i = 0; i < nb_elt; ++i, ++ptable ) {
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
-                  GUM_MULTI_DIM_COMPLETE_PROJECTION( &current_val, *ptable );
+                  GUM_MULTI_DIM_COMPLETE_PROJECTION ( &current_val, *ptable );
 #else
-                  GUM_MULTI_DIM_COMPLETE_PROJECTION( current_val, *ptable );
+                  GUM_MULTI_DIM_COMPLETE_PROJECTION ( current_val, *ptable );
 #endif
 
                   if ( current_val != old_val ) {
@@ -140,11 +140,11 @@ namespace gum {
 
                 for ( Sequence<const DiscreteVariable*>::const_iterator_safe iter =
                         table_vars.beginSafe(); iter != table_vars.endSafe(); ++iter ) {
-                  instantiation->add( **iter );
+                  instantiation->add ( **iter );
                 }
 
                 // return the result
-                table->fromOffset( *instantiation, current_ptr - deb_ptr );
+                table->fromOffset ( *instantiation, current_ptr - deb_ptr );
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
                 return *current_ptr;
 #else
@@ -156,7 +156,7 @@ namespace gum {
                 GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE* current_ptr = ptable;
 
                 for ( Size i = 0; i < nb_elt; ++i, ++ptable ) {
-                  GUM_MULTI_DIM_COMPLETE_PROJECTION( &current_val, *ptable );
+                  GUM_MULTI_DIM_COMPLETE_PROJECTION ( &current_val, *ptable );
 
                   if ( current_val != old_val ) {
                     old_val = current_val;
@@ -168,7 +168,7 @@ namespace gum {
 #else
 
                 for ( Size i = 0; i < nb_elt; ++i, ++ptable ) {
-                  GUM_MULTI_DIM_COMPLETE_PROJECTION( current_val, *ptable );
+                  GUM_MULTI_DIM_COMPLETE_PROJECTION ( current_val, *ptable );
                 }
 
                 return current_val;

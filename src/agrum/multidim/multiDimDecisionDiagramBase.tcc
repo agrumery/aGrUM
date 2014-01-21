@@ -466,7 +466,7 @@ namespace gum {
       HashTableConstIteratorSafe< NodeId, const DiscreteVariable* > ite2 = __variableMap.beginSafe();
 
       while ( ite2 != __variableMap.endSafe() ) {
-        if ( **ite1 == *( ite2.val () ) ) {
+        if ( **ite1 == * ( ite2.val () ) ) {
           isin = true;
           break;
         }
@@ -688,7 +688,7 @@ namespace gum {
 
 
     for ( HashTableIteratorSafe< NodeId, Set< const DiscreteVariable* >* > iterH = retrogradeVariablesTable->beginSafe(); iterH != retrogradeVariablesTable->endSafe(); ++iterH ) {
-      Set< const DiscreteVariable* > finalSet = *( iterH.val () );
+      Set< const DiscreteVariable* > finalSet = * ( iterH.val () );
 
       for ( SetIteratorSafe< const DiscreteVariable* > iterS = finalSet.beginSafe(); iterS != finalSet.endSafe(); ++iterS )
         if ( varsSeq->pos ( *iterS ) >= varsSeq->pos ( this->nodeVariable ( iterH.key() ) ) )
@@ -868,7 +868,7 @@ namespace gum {
     }
 
     for ( HashTableConstIteratorSafe< const DiscreteVariable*, List<NodeId>* > varIter = var2NodeMap.beginSafe(); varIter != var2NodeMap.endSafe(); ++varIter )
-      __var2NodeIdMap.insert ( varIter.key(), new List< NodeId > ( *( varIter.val() ) ) );
+      __var2NodeIdMap.insert ( varIter.key(), new List< NodeId > ( * ( varIter.val() ) ) );
 
   }
 
@@ -885,7 +885,7 @@ namespace gum {
     }
 
     for ( HashTableConstIteratorSafe< const DiscreteVariable*, std::vector<Idx>* > varIter = varUsedModalitiesMap.beginSafe(); varIter != varUsedModalitiesMap.endSafe(); ++varIter )
-      __varUsedModalitiesMap.insert ( varIter.key(), new std::vector<Idx> ( *( varIter.val () ) ) );
+      __varUsedModalitiesMap.insert ( varIter.key(), new std::vector<Idx> ( * ( varIter.val () ) ) );
   }
 
 
@@ -921,7 +921,7 @@ namespace gum {
     __defaultArcMap = defaultArcMap;
 
     for ( HashTableConstIteratorSafe< NodeId, std::vector< NodeId >* > arcIter = arcMap.beginSafe(); arcIter != arcMap.endSafe(); ++arcIter )
-      __arcMap.insert ( arcIter.key(), new std::vector< NodeId > ( *( arcIter.val () ) ) );
+      __arcMap.insert ( arcIter.key(), new std::vector< NodeId > ( * ( arcIter.val () ) ) );
 
   }
 

@@ -32,7 +32,7 @@ namespace std {
     stream << "[";
 
     for ( typename vector<T>::const_iterator iter = val.begin();
-          iter != val.end(); ++iter, deja=true ) {
+          iter != val.end(); ++iter, deja = true ) {
       if ( deja ) stream << " , ";
 
       stream << *iter;

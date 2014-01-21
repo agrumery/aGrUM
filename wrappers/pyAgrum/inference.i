@@ -1,3 +1,4 @@
+%ignore gum::*::insertEvidence;
 
 %pythonappend gum::BayesNetInference::marginal %{
         val.__fill_distrib__()
@@ -13,7 +14,7 @@ def setEvidence(self, evidces):
     bn = self.bn()
 
     # set evidences
-    list_pot = ListPotentials_double()
+    self.list_pot = []
     for var_name, evidce in evidces.iteritems():
         pot = Potential_double()
 
@@ -58,15 +59,39 @@ def setEvidence(self, evidces):
             pot[:] = evidce
         else:
             raise TypeError('dict values must be number, string or sequence')
-        list_pot.append(pot)
+        self.list_pot.append(pot)
 
-    self.insertEvidence(list_pot)
+    self._setEvidence(self.list_pot)
 %}
 
 
 // these void class extensions are rewritten by "shadow" declarations
 %extend gum::BayesNetInference<double> {
     void setEvidence(PyObject *evidces) {}
+
+    // evidences is a python list of potentials*
+    void _setEvidence(PyObject *evidences) {
+      if (PySequence_Check(evidences)==0) {
+        PyErr_SetString(PyExc_TypeError, "arg must be a sequence");
+        return;
+      }
+      gum::List<const gum::Potential<double>* > l;
+
+      for(Py_ssize_t i=0;i<PySequence_Size(evidences);i++) {
+        PyObject* pot=PyList_GetItem(evidences, i);
+
+	void *argp1 = 0 ;
+	int res1 = 0 ;
+	res1 = SWIG_ConvertPtr(pot, &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+	if (!SWIG_IsOK(res1)) {
+	  PyErr_SetString(PyExc_TypeError,"Elements of arg must be Potentials");
+	  return;
+	}
+	gum::Potential< double > *arg1 =  reinterpret_cast< gum::Potential< double > * >(argp1);
+	l.push_front(arg1);
+      }
+      self->insertEvidence(l);
+    }
 }
 
 
@@ -82,10 +107,10 @@ def setEvidence(self, evidces):
 
 %extend gum::LazyPropagation<double> {
     Potential<double>*  joint(PyObject *seq_of_ids) {
-      /*if (PySequence_Check(seq_of_ids)==0) {
+      if (PySequence_Check(seq_of_ids)==0) {
         PyErr_SetString(PyExc_TypeError, "arg must be a sequence");
         return 0;
-      }*/
+      }
 
       gum::NodeSet s;
       for(Py_ssize_t i=0;i<PySequence_Size(seq_of_ids);i++) {
