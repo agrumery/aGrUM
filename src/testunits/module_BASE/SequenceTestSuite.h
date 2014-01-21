@@ -437,6 +437,36 @@ namespace gum_tests {
       seq.erase ( seq.beginSafe () );
       TS_ASSERT ( seq.size () == 0 );
     }
+    
+    void testEmplace1 () {
+      gum::Sequence< std::pair<int,int>,MyAlloc<std::pair<int,int> > > seq;
+      std::pair<int,int> x (2,3);
+      
+      seq.emplace ( 2,3 );
+      TS_ASSERT ( seq.size () == 1 );
+      seq.emplace ( 5,7 );
+      TS_ASSERT ( seq.size () == 2 );
+
+      seq.erase ( x );
+      TS_ASSERT ( seq.size () == 1 );
+      seq.erase ( seq.beginSafe () );
+      TS_ASSERT ( seq.size () == 0 );
+    }
+
+    void testEmplace2 () {
+      gum::Sequence< int,MyAlloc<int> > seq;
+      int x = 2;
+      
+      seq.emplace ( 2 );
+      TS_ASSERT ( seq.size () == 1 );
+      seq.emplace ( 5 );
+      TS_ASSERT ( seq.size () == 2 );
+
+      seq.erase ( x );
+      TS_ASSERT ( seq.size () == 1 );
+      seq.erase ( seq.beginSafe () );
+      TS_ASSERT ( seq.size () == 0 );
+    }
 
     void testNewIterOp1 () {
       gum::Sequence< int, MyAlloc<int> > seq;

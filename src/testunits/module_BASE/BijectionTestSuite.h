@@ -213,6 +213,23 @@ namespace gum_tests {
       TS_ASSERT( bijection.empty() );
     }
 
+    void testEmplace1 () {
+      gum::Bijection<std::string,std::string> bijection;
+
+      TS_GUM_ASSERT_THROWS_NOTHING( bijection.emplace ( "3", "4" ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( bijection.emplace ( "5", "6" ) );
+      TS_ASSERT ( bijection.existsFirst ( "3" ) );
+    }
+    
+    void testEmplace2 () {
+      gum::Bijection<int,int> bijection;
+
+      TS_GUM_ASSERT_THROWS_NOTHING( bijection.emplace ( 3, 4 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( bijection.emplace ( 5, 6 ) );
+      TS_ASSERT ( bijection.existsFirst ( 3 ) );
+    }
+    
+
     void test_ph() {
       gum::Bijection<int, int> carre;
       carre.insert( 1, 1 );

@@ -424,6 +424,15 @@ namespace gum {
      * already exists */
     void insert( T1&& first, T2&& second );
 
+    /// emplace a new element in the bijection
+    /** emplace is a method that allows to construct directly an element of
+     * type Key by passing to its constructor all the arguments it needs
+     * @param args the arguments passed to the constructor
+     * @throws DuplicateElement exception is thrown if the association
+     * already exists  */
+    template <typename... Args>
+    void emplace ( Args&&... args);
+
     /// removes all the associations from the bijection
     void clear ();
 
@@ -837,6 +846,15 @@ namespace gum {
     /**@throws DuplicateElement exception is thrown if the association
      * already exists */
     void insert( const T1 first, const T2 second );
+
+    /// emplace a new element in the bijection
+    /** emplace is a method that allows to construct directly an element of
+     * type Key by passing to its constructor all the arguments it needs
+     * @param args the arguments passed to the constructor
+     * @throws DuplicateElement exception is thrown if the association
+     * already exists  */
+    template <typename... Args>
+    void emplace ( Args&&... args);
 
     /// removes all the associations from the bijection
     void clear();

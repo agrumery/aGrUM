@@ -266,6 +266,14 @@ namespace gum {
      * @throw DuplicateElement is thrown if the sequence contains already k */
     void insert ( Key&& k );
 
+    /// emplace a new element in the sequence
+    /** emplace is a method that allows to construct directly an element of
+     * type Key by passing to its constructor all the arguments it needs
+     * @param args the arguments passed to the constructor
+     * @throw DuplicateElement is thrown if the sequence contains already k */
+    template <typename... Args>
+    void emplace ( Args&&... args);
+
     /// remove an element from the sequence
     /** If the element cannot be found, the function does nothing. In particular,
      * it throws no exception. Complexity \f$o(n)\f$ (need to change the position
@@ -552,6 +560,14 @@ namespace gum {
      * @param k
      * @throw DuplicateElement is thrown if the sequence contains already k */
     void insert ( Key k );
+
+    /// emplace a new element in the sequence
+    /** emplace is a method that allows to construct directly an element of
+     * type Key by passing to its constructor all the arguments it needs
+     * @param args the arguments passed to the constructor
+     * @throw DuplicateElement is thrown if the sequence contains already k */
+    template <typename... Args>
+    void emplace ( Args&&... args);
 
     /// remove an element from the sequence
     /** If the element cannot be found, the function does nothing. In particular,

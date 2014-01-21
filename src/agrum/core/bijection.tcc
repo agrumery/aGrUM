@@ -678,6 +678,15 @@ namespace gum {
     __insert( std::move ( first ), std::move ( second ) );
   }
 
+  
+  /// emplace a new element in the bijection
+  template <typename T1, typename T2, typename Alloc, bool Gen>
+  template <typename... Args> INLINE
+  void BijectionImplementation<T1,T2,Alloc,Gen>::emplace ( Args&&... args) {
+    std::pair<T1,T2> new_elt ( std::forward<Args> ( args )... );
+    __insert( std::move ( new_elt.first ), std::move ( new_elt.second ) );
+  }
+
 
   /// returns true if the bijection doesn't contain any relation
   template <typename T1, typename T2, typename Alloc, bool Gen> INLINE
@@ -1070,6 +1079,15 @@ namespace gum {
   template <typename T1, typename T2, typename Alloc> INLINE
   void BijectionImplementation<T1,T2,Alloc,true>::insert( T1 first, T2 second ) {
     __insert( first,second );
+  }
+  
+
+  /// emplace a new element in the bijection
+  template <typename T1, typename T2, typename Alloc>
+  template <typename... Args> INLINE
+  void BijectionImplementation<T1,T2,Alloc,true>::emplace ( Args&&... args) {
+    std::pair<T1,T2> new_elt ( std::forward<Args> ( args )... );
+    __insert( new_elt.first, new_elt.second );
   }
 
 
