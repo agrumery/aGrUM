@@ -25,7 +25,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // allow projectionPatterns to be used
-#define GUM_PROJECTION_PATTERN_ALLOWED
+#define GUM_PROJECTION_PATTERN_ALLOWED 1
 
 
 #include <agrum/multidim/operators/projectionRegister4MultiDim.h>

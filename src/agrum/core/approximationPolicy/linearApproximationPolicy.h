@@ -73,8 +73,8 @@ namespace gum {
        */
       LinearApproximationPolicy ( const LinearApproximationPolicy<GUM_SCALAR>* md ) :
         ApproximationPolicy<GUM_SCALAR> ( md ),
-        _epsilon ( md._epsilon ),
-        _nbInterval ( md._nbInterval ) {
+        _epsilon ( md->_epsilon ),
+        _nbInterval ( md->_nbInterval ) {
       };
 
       /// @}

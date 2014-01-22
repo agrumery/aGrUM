@@ -939,7 +939,7 @@ namespace gum {
   template <typename... Args> INLINE
   void SequenceImplementation<Key,Alloc,true>::emplace ( Args&&... args) {
     Key new_key ( std::forward<Args> ( args )... );
-    __h.insert ( new_key , __h.size() ).first;
+    __h.insert ( new_key , __h.size() );
     __v.push_back( new_key );
     __update_end();
   }

@@ -67,6 +67,10 @@ bool Visitor::Visit ( const TiXmlComment& comment ) {
   return Visit ( Comment ( const_cast< TiXmlComment* > ( &comment ) ) );
 }
 
+bool Visitor::Visit ( const TiXmlUnknown& x ) {
+  return TiXmlVisitor::Visit ( x );
+}
+
 Attribute::Attribute() {
   SetTiXmlPointer ( new TiXmlAttribute() );
   m_impRC->InitRef();

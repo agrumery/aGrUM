@@ -26,7 +26,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // allow partialInstantiationPatterns to be used
-#define GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED
+#define GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED 1
 
 
 #include <agrum/multidim/partialInstantiationRegister4MultiDim.h>

@@ -138,7 +138,7 @@ namespace gum {
       /// returns the combination function currently used by the combinator
       virtual MultiDimImplementation<GUM_SCALAR>* ( * combineFunction() )
       ( const MultiDimImplementation<GUM_SCALAR>&,
-        const MultiDimImplementation<GUM_SCALAR>& ) const;
+        const MultiDimImplementation<GUM_SCALAR>& );
 
       /** @brief returns a rough estimate of the number of operations that will be
        * performed to compute the combination */

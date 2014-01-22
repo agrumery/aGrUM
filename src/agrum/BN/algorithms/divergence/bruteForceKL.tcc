@@ -48,7 +48,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   void BruteForceKL<GUM_SCALAR>::_computeKL() {
     _klPQ = _klQP = _hellinger = _bhattacharya = ( GUM_SCALAR ) 0.0;
-    _errorPQ = _errorQP = ( GUM_SCALAR ) 0;
+    _errorPQ = _errorQP = 0;
 
     gum::Instantiation Ip; _p.completeInstantiation ( Ip );
     gum::Instantiation Iq; _q.completeInstantiation ( Iq );

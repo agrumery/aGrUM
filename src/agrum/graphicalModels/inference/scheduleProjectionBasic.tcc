@@ -128,7 +128,7 @@ namespace gum {
   INLINE MultiDimImplementation<GUM_SCALAR>*
   ( * ScheduleProjectionBasic<GUM_SCALAR>::projectFunction() )
   ( const MultiDimImplementation<GUM_SCALAR>&,
-    const Set<const DiscreteVariable*>& ) const {
+    const Set<const DiscreteVariable*>& ) {
     return _proj;
   }
 

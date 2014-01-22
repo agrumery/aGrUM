@@ -755,21 +755,28 @@ namespace gum {
 
         s << "0 <= " << __cste;
 
-        if ( __coeffs != nullptr )
-          for ( auto it = __coeffs->beginSafe(), end = __coeffs->endSafe(); it != end; ++it )
+        if ( __coeffs != nullptr ) {
+          for ( auto it = __coeffs->beginSafe(), end = __coeffs->endSafe(); it != end; ++it ) {
             if ( it.val() > 0 ) {
               if ( it.val() != 1 ) {
                 s << " +" << it.val() << "*" << it.key().toString();
-              } else {
+              }
+              else {
                 s << " +" << it.key().toString();
               }
-            } else if ( it.val() < 0 ) {
-              if ( it.val() != -1 ) {
-                s << " " << it.val() << "*" << it.key().toString();
-              } else {
-                s << " -" << it.key().toString();
+            }
+            else {
+              if ( it.val() < 0 ) {
+                if ( it.val() != -1 ) {
+                  s << " " << it.val() << "*" << it.key().toString();
+                }
+                else {
+                  s << " -" << it.key().toString();
+                }
               }
             }
+          }
+        }
 
         return s.str();
       }
@@ -1107,7 +1114,7 @@ namespace gum {
         return expr;
       }
 
-      template< typename T1, forbidden_type<T1, LpExpr> = 0 >
+      template< typename T1, forbidden_type<T1, LpExpr> >
       LpExpr operator+ ( const T1& lhs, LpExpr && rhs ) {
         LpExpr expr = std::move ( rhs );;
         expr += lhs;
@@ -1116,7 +1123,7 @@ namespace gum {
       }
 
 
-      template< typename T1, forbidden_type<T1, LpExpr> = 0 >
+      template< typename T1, forbidden_type<T1, LpExpr> >
       LpExpr operator+ ( const T1& lhs, LpExpr& rhs ) {
         LpExpr expr ( rhs );
         expr += lhs;
@@ -1125,7 +1132,7 @@ namespace gum {
       }
 
 
-      template <typename T2, forbidden_type<T2, LpExpr> = 0>
+      template <typename T2, forbidden_type<T2, LpExpr> >
       LpExpr operator+ ( const LpCol& lhs , const  T2& rhs ) {
         LpExpr expr;
         expr += lhs ;
@@ -1135,8 +1142,8 @@ namespace gum {
       }
 
       template < typename T1,
-               forbidden_type<T1, LpExpr> = 0,
-               forbidden_type<T1, LpCol> = 0 >
+               forbidden_type<T1, LpExpr>,
+               forbidden_type<T1, LpCol> >
       LpExpr operator+ ( const T1& lhs, const LpCol& rhs ) {
         LpExpr expr;
         expr += rhs;
@@ -1162,7 +1169,7 @@ namespace gum {
         return expr;
       }
 
-      template< typename T1, forbidden_type<T1, LpExpr> = 0 >
+      template< typename T1, forbidden_type<T1, LpExpr> >
       LpExpr operator- ( const T1& lhs, LpExpr && rhs ) {
         LpExpr expr;
         expr += std::move ( rhs );;
@@ -1172,7 +1179,7 @@ namespace gum {
       }
 
 
-      template< typename T1, forbidden_type<T1, LpExpr> = 0 >
+      template< typename T1, forbidden_type<T1, LpExpr> >
       LpExpr operator- ( const T1& lhs, LpExpr& rhs ) {
         LpExpr expr;
         expr += rhs ;
@@ -1182,7 +1189,7 @@ namespace gum {
       }
 
 
-      template <typename T2, forbidden_type<T2, LpExpr> = 0>
+      template <typename T2, forbidden_type<T2, LpExpr> >
       LpExpr operator- ( const LpCol& lhs , const  T2& rhs ) {
         LpExpr expr;
         expr += lhs ;
@@ -1192,8 +1199,8 @@ namespace gum {
       }
 
       template < typename T1,
-               forbidden_type<T1, LpExpr> = 0,
-               forbidden_type<T1, LpCol> = 0 >
+               forbidden_type<T1, LpExpr>,
+               forbidden_type<T1, LpCol> >
       LpExpr operator- ( const T1& lhs, const LpCol& rhs ) {
         LpExpr expr;
         expr += rhs;
@@ -1242,15 +1249,15 @@ namespace gum {
       }
 
       template < typename T1,
-               forbidden_type<T1, LpExpr&> = 0  ,
-               forbidden_type<T1, LpCol&> = 0 >
+               forbidden_type<T1, LpExpr&>  ,
+               forbidden_type<T1, LpCol&> >
       LpExpr operator<= ( T1 && lhs,  const LpExpr& rhs ) {
         return LpExpr::lessThan ( std::forward<T1> ( lhs ), rhs );
       }
 
       template < typename T1,
-               forbidden_type<T1, LpExpr&> = 0 ,
-               forbidden_type<T1, LpCol&> = 0 >
+               forbidden_type<T1, LpExpr&> ,
+               forbidden_type<T1, LpCol&> >
       LpExpr operator<= ( T1 && lhs,  const LpCol& rhs ) {
         return LpExpr::lessThan ( std::forward<T1> ( lhs ), rhs );
       }
@@ -1267,15 +1274,15 @@ namespace gum {
       }
 
       template < typename T1,
-               forbidden_type<T1, LpExpr> = 0  ,
-               forbidden_type<T1, LpCol> = 0 >
+               forbidden_type<T1, LpExpr>  ,
+               forbidden_type<T1, LpCol> >
       LpExpr operator<= ( T1 && lhs,  LpExpr && rhs ) {
         return LpExpr::lessThan ( std::forward<T1> ( lhs ), std::move ( rhs ) );
       }
 
       template < typename T1,
-               forbidden_type<T1, LpExpr> = 0 ,
-               forbidden_type<T1, LpCol> = 0 >
+               forbidden_type<T1, LpExpr> ,
+               forbidden_type<T1, LpCol> >
       LpExpr operator<= ( T1 && lhs,  LpCol && rhs ) {
         return LpExpr::lessThan ( std::forward<T1> ( lhs ), std::move ( rhs ) );
       }

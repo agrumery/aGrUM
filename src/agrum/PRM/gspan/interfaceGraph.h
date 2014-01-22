@@ -78,7 +78,8 @@ namespace gum {
        * Inner class to handle data about nodes in __graph.
        */
       template<typename GUM_SCALAR>
-      struct NodeData {
+      class NodeData {
+      public:
         /// Constructor.
         NodeData<GUM_SCALAR>();
         /// Copy Constructor.
@@ -109,7 +110,8 @@ namespace gum {
        * Inner class to handle data about edges in __graph.
        */
       template<typename GUM_SCALAR>
-      struct EdgeData {
+      class EdgeData {
+      public:
         /// Constructor.
         EdgeData();
         /// Copy constructor.
