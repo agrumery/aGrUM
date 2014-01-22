@@ -81,8 +81,10 @@ namespace gum_tests {
 
       // not dynamic (2U network - fast)
       void initCNet() {
+#ifdef _OPENMP 
         gum::setNumberOfThreads ( 1 );
-        gum::BayesNet<double> monBNa;
+#endif
+	gum::BayesNet<double> monBNa;
         gum::BIFReader< double > readera ( &monBNa, GET_PATH_STR ( "cn/2Umin.bif" ) );
         readera.proceed();
 
@@ -98,7 +100,9 @@ namespace gum_tests {
 
       // dynamic (dynaCheese network - slow)
       void initDCNet() {
-        gum::setNumberOfThreads ( 1 );
+#ifdef _OPENMP 
+       gum::setNumberOfThreads ( 1 );
+#endif
         gum::BayesNet<double> monBNa;
         gum::BIFReader< double > readera ( &monBNa, GET_PATH_STR ( "cn/dbn_bin_min.bif" ) );
         readera.proceed();

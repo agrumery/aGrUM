@@ -33,7 +33,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   KL<GUM_SCALAR>::KL ( const IBayesNet<GUM_SCALAR>& P, const IBayesNet<GUM_SCALAR>& Q ) :
     _p ( P ), _q ( Q ),
-    _klPQ ( 0.0 ), _klQP ( 0.0 ), _errorPQ ( false ), _errorQP ( false ),
+    _klPQ ( 0.0 ), _klQP ( 0.0 ), _errorPQ ( 0 ), _errorQP ( 0 ),
     __difficulty ( Complexity::Heavy ), __done ( false ) {
     __checkCompatibility(); //may throw OperationNotAlloxed
     GUM_CONSTRUCTOR ( KL );
@@ -48,7 +48,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   KL<GUM_SCALAR>::KL ( const KL<GUM_SCALAR>& kl ) :
     _p ( kl._p ), _q ( kl._q ),
-    _klPQ ( kl._klPQ ), _klQP ( kl._klQP ), _errorPQ ( kl._errorPQ ), _errorQP ( kl._errorPQ ),
+    _klPQ ( kl._klPQ ), _klQP ( kl._klQP ), _errorPQ ( kl._errorPQ ), _errorQP ( kl._errorQP ),
     __difficulty ( kl.__difficulty ), __done ( kl.__done ) {
     GUM_CONSTRUCTOR ( KL );
   }
@@ -93,14 +93,14 @@ namespace gum {
   }
 
   template<typename GUM_SCALAR> INLINE
-  bool
+  unsigned int
   KL<GUM_SCALAR>::errorPQ() {
     _process();
     return _errorPQ;
   }
 
   template<typename GUM_SCALAR> INLINE
-  bool
+  unsigned int
   KL<GUM_SCALAR>::errorQP() {
     _process();
     return _errorQP;

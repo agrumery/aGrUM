@@ -90,7 +90,7 @@ namespace gum {
   MultiDimImplementation<GUM_SCALAR>*
   ( * ScheduleCombinationBasic<GUM_SCALAR>::combineFunction() )
   ( const MultiDimImplementation<GUM_SCALAR>&,
-    const MultiDimImplementation<GUM_SCALAR>& ) const {
+    const MultiDimImplementation<GUM_SCALAR>& ) {
     return _combine;
   }
 

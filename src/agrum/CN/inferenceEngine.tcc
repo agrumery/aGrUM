@@ -923,8 +923,8 @@ namespace gum {
         for ( auto jt = v.cbegin(), jtEnd = v.cend(),
         minIt = _marginalMin[ id ].cbegin(), minItEnd = _marginalMin[ id ].cend(),
         maxIt = _marginalMax[ id ].cbegin(), maxItEnd = _marginalMax[ id ].cend();
-        jt != jtEnd,
-        minIt != minItEnd,
+        jt != jtEnd &&
+        minIt != minItEnd &&
         maxIt != maxItEnd;
         ++jt,
         ++minIt,
@@ -1130,8 +1130,8 @@ namespace gum {
         for ( auto jt = v.cbegin(), jtEnd = v.cend(),
         minIt = _marginalMin[ id ].cbegin(), minItEnd = _marginalMin[ id ].cend(),
         maxIt = _marginalMax[ id ].cbegin(), maxItEnd = _marginalMax[ id ].cend();
-        jt != jtEnd,
-        minIt != minItEnd,
+        jt != jtEnd &&
+        minIt != minItEnd &&
         maxIt != maxItEnd;
         ++jt,
         ++minIt,

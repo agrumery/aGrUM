@@ -132,7 +132,7 @@ namespace gum {
       /// returns the projection function currently used by the projector
       virtual MultiDimImplementation<GUM_SCALAR>* ( * projectFunction() )
       ( const MultiDimImplementation<GUM_SCALAR>&,
-        const Set<const DiscreteVariable*>& ) const = 0;
+        const Set<const DiscreteVariable*>& ) = 0;
 
       /** @brief returns a rough estimate of the number of operations that will be
        * performed to compute the projection */

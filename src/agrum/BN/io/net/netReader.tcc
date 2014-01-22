@@ -94,7 +94,7 @@ namespace gum {
 
   template<typename GUM_SCALAR>
   int NetReader<GUM_SCALAR>::proceed ( void ) {
-    FILE* tmpfile();
+    //FILE* tmpfile();
 
     if ( __ioerror ) {
       GUM_ERROR ( gum::IOError, "No such file " + streamName() );
