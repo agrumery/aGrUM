@@ -170,7 +170,7 @@ namespace gum {
   /// by "small" integers
   template <typename Key> INLINE
   Size HashFuncLargeCastKey<Key>::operator() ( const Key& key ) const {
-    unsigned long* ptr = reinterpret_cast<unsigned long*> ( &key );
+    const unsigned long* ptr = reinterpret_cast<const unsigned long*> ( &key );
     return ( ( ptr[0] ^ ptr[1] ) * HashFuncConst::gold ) >> _right_shift;
   }
 
