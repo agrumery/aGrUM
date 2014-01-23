@@ -131,6 +131,7 @@ namespace gum {
   /// update the hash function to take into account a resize of the hash table
   template <typename Key> INLINE
   void HashFuncMediumCastKey<Key>::resize ( Size new_size ) {
+    /* SOMETHINGWRONG HERE FOR WINDOWS */
     static_assert ( sizeof ( Key ) == sizeof ( unsigned long ),
                     "Error: using HashFuncSmallCastKey for a key whose size "
                     "is different from that of long int" );

@@ -1,21 +1,30 @@
-- install MinGW compiler (for instance Code::Block with MinGW).
-- install CMAKE
-- install SWIG
-- install Python 2.x
-- change PATH properly
 
-- dans build/linux/release
+- install mingw (http://sourceforge.net/projects/mingwbuilds=
+- install pythonxy (2.7.5.2)
+- install CMAKE
+
+- change PATH properly (a bit complex)
+
+mkdir build\linux\release
+cd build\linux\release
 cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=RELEASE  ../../../src -DCMAKE_VERBOSE_MAKEFILE=OFF
-- dans build/wrappers/pyAgrum
-cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=RELEASE ../../../wrappers/pyAgrum/ -DCMAKE_VERBOSE_MAKEFILE=OFF  -DPYTHON_INCLUDE_DIR="c:\Python27\include" -DPYTHON_LIBRARY="c:\Python27\libs\python27.lib"
-"c:\Program Files (x86)\CodeBlocks\MinGW\bin\mingw32-make.exe"
+cd ..\..
+mkdir wrappers\pyAgrum
+cd wrappers\pyAgrum
+cmake -
+G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=RELEASE ../../../wrappers/pyAgrum/ -DCMAKE_VERBOSE_MAKEFILE=OFF  -DPYTHON_INCLUDE_DIR="c:\Python27\include" -DPYTHON_LIBRARY="c:\Python27\libs\python27.lib"
+make -j
 
 Si souci de linkage, qqchose comme
-C:\PROGRA~2\CODEBL~1\MinGW\bin\G__~1.EXE     -shared -o _pyAgrum.pyd -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\_pyAgrum.dir/objects.a -Wl,--no-whole-archive -Lc:\Python27\libs -lpython27 -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
-"c:\Program Files (x86)\CodeBlocks\MinGW\bin\mingw32-g++.exe" -shared -o _pyAgrum.pyd -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\_pyAgrum.dir/objects.a -Wl,--no-whole-archive -Lc:\Python27\libs -lpython27 -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
-
+C:\PROGRA~2\MINGW-~1\X32-48~1.1-P\mingw32\bin\G__~1.EXE   -lgomp   -shared -o _pyAgrum.so -Wl,--out-implib,lib_pyAgrum.dll.a -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\_pyAgrum.dir/objects.a -Wl,--no-whole-archive c:\Python27\libs\python27.lib -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -fopenmp
+ -Lc:\Python27\libs -lpython27
+ 
+ 
+ 
 - copier pyAgrum.py et _pyAgrum.pyd dans python\Libs\site-package
 copy pyAgrum.py c:\Python27\Lib\site-packages\.
 copy _pyAgrum.pyd c:\Python27\Lib\site-packages\.
 
 et hop
+
+
