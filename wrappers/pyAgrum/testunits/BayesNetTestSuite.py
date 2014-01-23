@@ -136,7 +136,7 @@ class TestFeatures(BayesNetTestCase):
 
         self.fillTopo(bn, idList)
         topoOrder = bn.topologicalOrder()
-        self.assertEqual(topoOrder.size(), 5)
+        self.assertEqual(len(topoOrder), 5)
 
 
 
