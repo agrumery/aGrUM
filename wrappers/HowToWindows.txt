@@ -11,8 +11,7 @@ cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=RELEASE ../../../wrappers/pyAgrum/
 make -j
 
 Si souci de linkage, qqchose comme
-C:\PROGRA~2\MINGW-~1\X32-48~1.1-P\mingw32\bin\G__~1.EXE   -lgomp   -shared -o _pyAgrum.so -Wl,--out-implib,lib_pyAgrum.dll.a -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\_pyAgrum.dir/objects.a -Wl,--no-whole-archive c:\Python27\libs\python27.lib -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -fopenmp
- -Lc:\Python27\libs -lpython27
+C:\PROGRA~2\MINGW-~1\X32-48~1.1-P\mingw32\bin\G__~1.EXE   -lgomp   -shared -o _pyAgrum.so -Wl,--out-implib,lib_pyAgrum.dll.a -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\_pyAgrum.dir/objects.a -Wl,--no-whole-archive c:\Python27\libs\python27.lib -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -fopenmp  -Lc:\Python27\libs -lpython27
  
  
 ==================================================================

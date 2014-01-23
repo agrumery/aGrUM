@@ -46,9 +46,9 @@ namespace gum {
     template< typename GUM_SCALAR >
     bool VarMod2BNsMap< GUM_SCALAR >::insert ( const std::vector< bool >& bn, const std::vector< unsigned int >& key ) {
       _currentHash = _vectHash ( bn );
-      std::list< size_t >& nets = _myVarHashs.getWithDefault ( key, std::list< size_t >() );  //[ key ];
+      std::list< Size >& nets = _myVarHashs.getWithDefault ( key, std::list< Size >() );  //[ key ];
 
-      for ( std::list< size_t >::iterator it = nets.begin(); it != nets.end(); ++it ) {
+      for ( std::list< Size >::iterator it = nets.begin(); it != nets.end(); ++it ) {
         if ( *it == _currentHash )
           return false;
       }
@@ -67,10 +67,10 @@ namespace gum {
     bool VarMod2BNsMap< GUM_SCALAR >::insert ( const std::vector< unsigned int >& key, const bool isBetter ) {
       if ( isBetter ) {
         // get all nets of this key (maybe entry does not exists)
-        std::list< size_t >& old_nets = _myVarHashs.getWithDefault ( key, std::list< size_t >() );  //[ key ];
+        std::list< Size >& old_nets = _myVarHashs.getWithDefault ( key, std::list< Size >() );  //[ key ];
 
         // for each one
-        for ( std::list< size_t >::iterator it = old_nets.begin(); it != old_nets.end(); ++it ) {
+        for ( std::list< Size >::iterator it = old_nets.begin(); it != old_nets.end(); ++it ) {
           // get all keys associated to this net
           std::list< varKey >& netKeys = _myHashVars.getWithDefault ( *it, std::list< varKey >() );  //[ *it ];
 
@@ -103,9 +103,9 @@ namespace gum {
       // another opt net
       else {
         // check that we didn't add it for this key
-        std::list< size_t >& nets = _myVarHashs.getWithDefault ( key, std::list< size_t >() );  //[ key ];
+        std::list< Size >& nets = _myVarHashs.getWithDefault ( key, std::list< Size >() );  //[ key ];
 
-        for ( std::list< size_t >::iterator it = nets.begin(); it != nets.end(); ++it ) {
+        for ( std::list< Size >::iterator it = nets.begin(); it != nets.end(); ++it ) {
           if ( *it == _currentHash )
             return false;
         }
@@ -161,12 +161,12 @@ namespace gum {
       if ( ! _myVarHashs.exists ( key ) )
         return std::vector< std::vector< bool > * >();
 
-      std::list< size_t >& netsHash = _myVarHashs[key]; //.at(key);
+      std::list< Size >& netsHash = _myVarHashs[key]; //.at(key);
 
       std::vector< dBN* > nets;
       nets.resize ( netsHash.size() );
 
-      std::list< size_t >::iterator it = netsHash.begin();
+      std::list< Size >::iterator it = netsHash.begin();
 
       for ( unsigned int i = 0; i < netsHash.size(); i++, ++it ) {
         nets[i] = & _myHashNet/*.at(*/[ *it ];//);
@@ -183,12 +183,12 @@ namespace gum {
       if ( ! _myVarHashs.exists ( key ) )
         return std::vector< std::vector< std::vector< std::vector < bool > > > >();
 
-      std::list< size_t >& netsHash = _myVarHashs[key]; //.at(key);
+      std::list< Size >& netsHash = _myVarHashs[key]; //.at(key);
 
       std::vector< std::vector< std::vector< std::vector < bool > > > > nets;
       nets.resize ( netsHash.size(), _sampleDef );
 
-      std::list< size_t >::iterator it = netsHash.begin();
+      std::list< Size >::iterator it = netsHash.begin();
 
       for ( unsigned int i = 0; i < netsHash.size(); i++, ++it ) {
         //std::vector< std::vector< std::vector < bool > > > net(_sampleDef);
