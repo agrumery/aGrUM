@@ -340,14 +340,14 @@ namespace gum {
   template <> class HashFunc<float> :
     public std::conditional< sizeof ( float ) < sizeof ( long ),
              HashFuncSmallCastKey<float>,
-             std::conditional< sizeof ( float ) == 2 * sizeof ( long ),
+             typename std::conditional< sizeof ( float ) == 2 * sizeof ( long ),
                HashFuncLargeCastKey<float>,
                HashFuncMediumCastKey<float> >::type >::type {};
 
   template <> class HashFunc<double> :
     public std::conditional< sizeof ( double ) < sizeof ( long ),
              HashFuncSmallCastKey<double>,
-             std::conditional< sizeof ( double ) == 2 * sizeof ( long ),
+             typename std::conditional< sizeof ( double ) == 2 * sizeof ( long ),
                HashFuncLargeCastKey<double>,
                HashFuncMediumCastKey<double> >::type >::type {};
 
@@ -382,7 +382,11 @@ namespace gum {
   };
 
   template <typename Type> class HashFunc<Type*> :
-    public HashFunc<unsigned long> {
+    public std::conditional< sizeof ( Type* ) < sizeof ( long ),
+             HashFuncSmallCastKey<Type*>,
+             typename std::conditional< sizeof ( Type* ) == 2 * sizeof ( long ),
+               HashFuncLargeCastKey<Type*>,
+               HashFuncMediumCastKey<Type*> >::type >::type {
     public:
       /// computes the hashed value of a key
       Size operator() ( Type* const& key ) const ;

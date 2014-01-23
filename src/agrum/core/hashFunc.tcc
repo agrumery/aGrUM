@@ -299,10 +299,11 @@ namespace gum {
   /// by a pointer
   template <typename Type> INLINE
   Size HashFunc<Type*>::operator() ( Type* const& key ) const  {
-    static_assert ( sizeof ( int* ) == sizeof ( long ),
-                    "Error: HashFunc<Type*> assumes that pointers have a size "
-                    "equal to a long integer" );
-    return HashFunc<unsigned long>::operator() ( ( unsigned long ) key );
+    return std::conditional< sizeof ( Type* ) < sizeof ( long ),
+             HashFuncSmallCastKey<Type*>,
+             typename std::conditional< sizeof ( Type* ) == 2 * sizeof ( long ),
+               HashFuncLargeCastKey<Type*>,
+               HashFuncMediumCastKey<Type*> >::type >::type::operator() ( key );
   }
 
 
