@@ -13,6 +13,8 @@ to OpenBayes, a free Bayesian Network library for Python."
 
 // this should be removed at some point with a new version of SWIG
 using namespace std;
+
+#include <math.h>
 %}
 
 %pythoncode %{

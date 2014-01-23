@@ -3310,6 +3310,7 @@ class BayesNetInference_double(_object):
             raise TypeError("setEvidence parameter must be dict, not %s"
                             %(type(evidces)))
         bn = self.bn()
+        
 
         # set evidences
         self.list_pot = []
@@ -3358,7 +3359,8 @@ class BayesNetInference_double(_object):
             else:
                 raise TypeError('dict values must be number, string or sequence')
             self.list_pot.append(pot)
-
+            
+        self.eraseAllEvidence()
         self._setEvidence(self.list_pot)
 
 

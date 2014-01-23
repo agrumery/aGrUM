@@ -15,7 +15,7 @@ list (APPEND CMAKE_MODULE_PATH ${AGRUM_SOURCE_DIR}/cmake)
 set(USE_SWIG true)
 
 if (USE_SWIG)
-  find_package(SWIG 3)
+  find_package(SWIG 3.0)
   if (SWIG_FOUND)
     message(STATUS "** aGrUM notification : Swig 3.0 found")
   else ()  
@@ -77,7 +77,7 @@ endforeach(PYFILE ${PYAGRUMFILES})
 
 foreach(SWIGFILE ${MAINSWIGFILES})
   set_source_files_properties(${SWIGFILE} PROPERTIES CPLUSPLUS ON)
-  list(APPEND BUILDSWIGFILES ${MAINSWIGFILES})
+  list(APPEND BUILDSWIGFILES ${SWIGFILE})
 endforeach(SWIGFILE ${MAINSWIGFILES})
 
 foreach(EXTFILE ${PYAGRUM_EXTENSIONS})
@@ -100,6 +100,7 @@ file(GLOB_RECURSE AGRUM_LEARNING_SOURCES RELATIVE ${CMAKE_CURRENT_BINARY_DIR} ${
 
 set(AGRUM_C_SOURCES ${AGRUM_SOURCE_DIR}/agrum/CN/lrslib/lrslib.c ${AGRUM_SOURCE_DIR}/agrum/CN/lrslib/lrsmp.c)
 
+message(${BUILDSWIGFILES})
 # Properties
 set(CMAKE_SWIG_FLAGS  "-Wall" )
 set(SWIG_MODULE_pyAgrum_EXTRA_DEPS ${BUILDSWIGFILES})
