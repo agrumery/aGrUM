@@ -20,11 +20,11 @@ C:\PROGRA~2\MINGW-~1\X32-48~1.1-P\mingw32\bin\G__~1.EXE   -lgomp   -shared -o _p
  -Lc:\Python27\libs -lpython27
  
  
- 
-- copier pyAgrum.py et _pyAgrum.pyd dans python\Libs\site-package
-copy pyAgrum.py c:\Python27\Lib\site-packages\.
-copy _pyAgrum.pyd c:\Python27\Lib\site-packages\.
+==================================================================
+install pyAgrum and gumLib folder in C:\Python27\Lib\site-packages
+pip install pyparsing # (forgotten in pythonxy)
+pip install pydot
 
-et hop
+install graphviz for windows
 
 
