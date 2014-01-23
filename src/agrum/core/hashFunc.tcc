@@ -132,7 +132,7 @@ namespace gum {
   template <typename Key> INLINE
   void HashFuncMediumCastKey<Key>::resize ( Size new_size ) {
     static_assert ( sizeof ( Key ) == sizeof ( unsigned long ),
-                    "Error: using HashFuncSmallCastKey for a key whose size "
+                    "Error: using HashFuncMediumCastKey for a key whose size "
                     "is different from that of long int" );
     HashFuncBase<Key>::resize ( new_size );
     _right_shift = HashFuncConst::offset - HashFuncBase<Key>::_hash_log2_size;
@@ -145,6 +145,33 @@ namespace gum {
   Size HashFuncMediumCastKey<Key>::operator() ( const Key& key ) const  {
     return ( ( * ( ( unsigned long* ) ( &key ) ) *
                HashFuncConst::gold ) >> _right_shift );
+  }
+
+  
+
+  /* =========================================================================== */
+  /* =========================================================================== */
+  /* ===             GUM_HASH_FUNC_LARGE_CAST_KEY IMPLEMENTATION             ===*/
+  /* =========================================================================== */
+  /* =========================================================================== */
+
+  /// update the hash function to take into account a resize of the hash table
+  template <typename Key> INLINE
+  void HashFuncLargeCastKey<Key>::resize ( Size new_size ) {
+    static_assert ( sizeof ( Key ) == 2 * sizeof ( unsigned long ),
+                    "Error: using HashFuncLargeCastKey for a key whose size "
+                    "is different from twice that of long int" );
+    HashFuncBase<Key>::resize ( new_size );
+    _right_shift = HashFuncConst::offset - HashFuncBase<Key>::_hash_log2_size;
+  }
+
+
+  /// returns a hashed key for hash tables the keys of which are represented
+  /// by "small" integers
+  template <typename Key> INLINE
+  Size HashFuncLargeCastKey<Key>::operator() ( const Key& key ) const {
+    unsigned long* ptr = reinterpret_cast<unsigned long*> ( &key );
+    return ( ( ptr[0] ^ ptr[1] ) * HashFuncConst::gold ) >> _right_shift;
   }
 
 

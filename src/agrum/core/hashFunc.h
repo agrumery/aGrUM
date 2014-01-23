@@ -130,7 +130,8 @@ namespace gum {
        * hashtable so that the array is of size s, the hashtable resizes itself to
        * the smallest power of 2 greater than or equal to s. This new size is
        * precisely what is computed by function resize. Hence s should be the size
-       * of the array of lists, not the number of elements stored into the hashtable.
+       * of the array of lists, not the number of elements stored into the
+       * hashtable.
        * @throw HashSize
        */
       virtual void resize ( Size s );
@@ -148,8 +149,8 @@ namespace gum {
       /// log of the size of the hash table in base 2
       unsigned int _hash_log2_size {0};
 
-      /** @brief when you use this mask, you are guarranteed that hashed keys belong
-       * to the set of indices of the hash table */
+      /** @brief when you use this mask, you are guarranteed that hashed keys
+       * belong to the set of indices of the hash table */
       Size _hash_mask {0};
 
   };
@@ -181,29 +182,9 @@ namespace gum {
       unsigned int _right_shift;
   };
 
-
+  
   /** generic hash functions for keys castable as unsigned longs and whose size
-   * is precisely that of unsigned longs */
-  template <typename Key> class HashFuncMediumCastKey :
-    private HashFuncBase<Key> {
-    public:
-      /// update the hash function to take into account a resize of the hash table
-      /** @throw HashSize */
-      void resize ( Size );
-
-      /// computes the hashed value of a key
-      Size operator() ( const Key& ) const;
-
-      using HashFuncBase<Key>::size;
-
-    protected:
-      // the number of right shift to perform to get correct hashed values
-      unsigned int _right_shift;
-  };
-
-
-  /** generic hash functions for keys castable as unsigned longs and whose size
-   * is smaller than that of unsigned longs */
+   * is strictly smaller than that of unsigned longs */
   template <typename Key> class HashFuncSmallCastKey :
     private HashFuncBase<Key> {
     public:
@@ -226,6 +207,45 @@ namespace gum {
       unsigned long _small_key_mask;
   };
 
+
+  /** generic hash functions for keys castable as unsigned longs and whose size
+   * is precisely that of unsigned longs */
+  template <typename Key> class HashFuncMediumCastKey :
+    private HashFuncBase<Key> {
+    public:
+      /// update the hash function to take into account a resize of the hash table
+      /** @throw HashSize */
+      void resize ( Size );
+
+      /// computes the hashed value of a key
+      Size operator() ( const Key& ) const;
+
+      using HashFuncBase<Key>::size;
+
+    protected:
+      // the number of right shift to perform to get correct hashed values
+      unsigned int _right_shift;
+  };
+
+
+  /** generic hash functions for keys castable as unsigned longs and whose size
+   * is precisely twice that of unsigned longs */
+  template <typename Key> class HashFuncLargeCastKey :
+    private HashFuncBase<Key> {
+    public:
+      /// update the hash function to take into account a resize of the hash table
+      /** @throw HashSize */
+      void resize ( Size );
+
+      /// computes the hashed value of a key
+      Size operator() ( const Key& ) const;
+
+      using HashFuncBase<Key>::size;
+
+    protected:
+      // the number of right shift to perform to get correct hashed values
+      unsigned int _right_shift;
+  };
 
 
   /** generic hash functions for pairs of at most long integer keys */
@@ -318,14 +338,18 @@ namespace gum {
     public HashFuncSmallKey<unsigned long> {};
 
   template <> class HashFunc<float> :
-    public std::conditional< sizeof ( float ) >= sizeof ( long ),
-    HashFuncMediumCastKey<float>,
-      HashFuncSmallCastKey<float> >::type {};
+    public std::conditional< sizeof ( float ) < sizeof ( long ),
+             HashFuncSmallCastKey<float>,
+             std::conditional< sizeof ( float ) == 2 * sizeof ( long ),
+               HashFuncLargeCastKey<float>,
+               HashFuncMediumCastKey<float> >::type >::type {};
 
   template <> class HashFunc<double> :
-    public std::conditional< sizeof ( double ) >= sizeof ( long ),
-    HashFuncMediumCastKey<double>,
-      HashFuncSmallCastKey<double> >::type {};
+    public std::conditional< sizeof ( double ) < sizeof ( long ),
+             HashFuncSmallCastKey<double>,
+             std::conditional< sizeof ( double ) == 2 * sizeof ( long ),
+               HashFuncLargeCastKey<double>,
+               HashFuncMediumCastKey<double> >::type >::type {};
 
   template <> class HashFunc< std::pair<int, int> > :
     public HashFuncSmallKeyPair<int, int> {};
