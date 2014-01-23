@@ -5,14 +5,9 @@
 
 - change PATH properly (a bit complex)
 
-mkdir build\linux\release
-cd build\linux\release
-cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=RELEASE  ../../../src -DCMAKE_VERBOSE_MAKEFILE=OFF
-cd ..\..
 mkdir wrappers\pyAgrum
 cd wrappers\pyAgrum
-cmake -
-G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=RELEASE ../../../wrappers/pyAgrum/ -DCMAKE_VERBOSE_MAKEFILE=OFF  -DPYTHON_INCLUDE_DIR="c:\Python27\include" -DPYTHON_LIBRARY="c:\Python27\libs\python27.lib"
+cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=RELEASE ../../../wrappers/pyAgrum/ -DCMAKE_VERBOSE_MAKEFILE=OFF  -DPYTHON_INCLUDE_DIR="c:\Python27\include" -DPYTHON_LIBRARY="c:\Python27\libs\python27.lib"
 make -j
 
 Si souci de linkage, qqchose comme
