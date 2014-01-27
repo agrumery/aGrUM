@@ -1581,7 +1581,7 @@ class LabelizedVar(DiscreteVar):
         return _pyAgrum.LabelizedVar___len__(self)
 
     def labels(self):
-        """labels(LabelizedVar self) -> StringSequence"""
+        """labels(LabelizedVar self) -> gum::Sequence< std::string > const &"""
         return _pyAgrum.LabelizedVar_labels(self)
 
     def varType(self):
@@ -2231,8 +2231,8 @@ class DAGmodel(_object):
 
     def topologicalOrder(self, clear=True):
         """
-        topologicalOrder(DAGmodel self, bool clear=True) -> NodeSequence
-        topologicalOrder(DAGmodel self) -> NodeSequence
+        topologicalOrder(DAGmodel self, bool clear=True) -> gum::Sequence< gum::NodeId > const
+        topologicalOrder(DAGmodel self) -> gum::Sequence< gum::NodeId > const &
         """
         return _pyAgrum.DAGmodel_topologicalOrder(self, clear)
 
@@ -2250,214 +2250,6 @@ __list_end = cvar.__list_end
 def randomDistribution_double(*args):
   """randomDistribution_double(gum::Size n) -> Vector_double"""
   return _pyAgrum.randomDistribution_double(*args)
-class NodeSequence(_object):
-    """Proxy of C++ gum::Sequence<(gum::NodeId)> class"""
-    __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, NodeSequence, name, value)
-    __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, NodeSequence, name)
-    __repr__ = _swig_repr
-    def __init__(self, *args): 
-        """
-        __init__(gum::Sequence<(gum::NodeId)> self) -> NodeSequence
-        __init__(gum::Sequence<(gum::NodeId)> self, NodeSequence aSeq) -> NodeSequence
-        """
-        this = _pyAgrum.new_NodeSequence(*args)
-        try: self.this.append(this)
-        except: self.this = this
-    __swig_destroy__ = _pyAgrum.delete_NodeSequence
-    __del__ = lambda self : None;
-    def beginSafe(self):
-        """beginSafe(NodeSequence self) -> gum::Sequence< unsigned int >::iterator_safe"""
-        return _pyAgrum.NodeSequence_beginSafe(self)
-
-    def rbeginSafe(self):
-        """rbeginSafe(NodeSequence self) -> gum::Sequence< unsigned int >::iterator_safe"""
-        return _pyAgrum.NodeSequence_rbeginSafe(self)
-
-    def endSafe(self):
-        """endSafe(NodeSequence self) -> gum::Sequence< unsigned int >::iterator_safe const &"""
-        return _pyAgrum.NodeSequence_endSafe(self)
-
-    def rendSafe(self):
-        """rendSafe(NodeSequence self) -> gum::Sequence< unsigned int >::iterator_safe const &"""
-        return _pyAgrum.NodeSequence_rendSafe(self)
-
-    def __eq__(self, *args):
-        """__eq__(NodeSequence self, NodeSequence k) -> bool"""
-        return _pyAgrum.NodeSequence___eq__(self, *args)
-
-    def __ne__(self, *args):
-        """__ne__(NodeSequence self, NodeSequence k) -> bool"""
-        return _pyAgrum.NodeSequence___ne__(self, *args)
-
-    def clear(self):
-        """clear(NodeSequence self)"""
-        return _pyAgrum.NodeSequence_clear(self)
-
-    def size(self):
-        """size(NodeSequence self) -> gum::Size"""
-        return _pyAgrum.NodeSequence_size(self)
-
-    def empty(self):
-        """empty(NodeSequence self) -> bool"""
-        return _pyAgrum.NodeSequence_empty(self)
-
-    def exists(self, *args):
-        """exists(NodeSequence self, unsigned int const & k) -> bool"""
-        return _pyAgrum.NodeSequence_exists(self, *args)
-
-    def append(self, *args):
-        """append(NodeSequence self, unsigned int const & k)"""
-        return _pyAgrum.NodeSequence_append(self, *args)
-
-    def remove(self, *args):
-        """remove(NodeSequence self, unsigned int const & k)"""
-        return _pyAgrum.NodeSequence_remove(self, *args)
-
-    def erase(self, *args):
-        """erase(NodeSequence self, gum::Sequence< unsigned int >::iterator_safe const & k)"""
-        return _pyAgrum.NodeSequence_erase(self, *args)
-
-    def __getitem__(self, *args):
-        """__getitem__(NodeSequence self, gum::Idx i) -> unsigned int const &"""
-        return _pyAgrum.NodeSequence___getitem__(self, *args)
-
-    def index(self, *args):
-        """index(NodeSequence self, unsigned int const & key) -> gum::Idx"""
-        return _pyAgrum.NodeSequence_index(self, *args)
-
-    def setAtPos(self, *args):
-        """setAtPos(NodeSequence self, gum::Idx i, unsigned int const & newKey)"""
-        return _pyAgrum.NodeSequence_setAtPos(self, *args)
-
-    def swap(self, *args):
-        """swap(NodeSequence self, gum::Idx i, gum::Idx j)"""
-        return _pyAgrum.NodeSequence_swap(self, *args)
-
-    def front(self):
-        """front(NodeSequence self) -> unsigned int const &"""
-        return _pyAgrum.NodeSequence_front(self)
-
-    def back(self):
-        """back(NodeSequence self) -> unsigned int const &"""
-        return _pyAgrum.NodeSequence_back(self)
-
-    def __str__(self):
-        """__str__(NodeSequence self) -> std::string"""
-        return _pyAgrum.NodeSequence___str__(self)
-
-    def resize(self, *args):
-        """resize(NodeSequence self, unsigned int new_size)"""
-        return _pyAgrum.NodeSequence_resize(self, *args)
-
-NodeSequence_swigregister = _pyAgrum.NodeSequence_swigregister
-NodeSequence_swigregister(NodeSequence)
-
-class StringSequence(_object):
-    """Proxy of C++ gum::Sequence<(std::string)> class"""
-    __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, StringSequence, name, value)
-    __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, StringSequence, name)
-    __repr__ = _swig_repr
-    def __init__(self, *args): 
-        """
-        __init__(gum::Sequence<(std::string)> self) -> StringSequence
-        __init__(gum::Sequence<(std::string)> self, StringSequence aSeq) -> StringSequence
-        """
-        this = _pyAgrum.new_StringSequence(*args)
-        try: self.this.append(this)
-        except: self.this = this
-    __swig_destroy__ = _pyAgrum.delete_StringSequence
-    __del__ = lambda self : None;
-    def beginSafe(self):
-        """beginSafe(StringSequence self) -> gum::Sequence< std::string >::iterator_safe"""
-        return _pyAgrum.StringSequence_beginSafe(self)
-
-    def rbeginSafe(self):
-        """rbeginSafe(StringSequence self) -> gum::Sequence< std::string >::iterator_safe"""
-        return _pyAgrum.StringSequence_rbeginSafe(self)
-
-    def endSafe(self):
-        """endSafe(StringSequence self) -> gum::Sequence< std::string >::iterator_safe const &"""
-        return _pyAgrum.StringSequence_endSafe(self)
-
-    def rendSafe(self):
-        """rendSafe(StringSequence self) -> gum::Sequence< std::string >::iterator_safe const &"""
-        return _pyAgrum.StringSequence_rendSafe(self)
-
-    def __eq__(self, *args):
-        """__eq__(StringSequence self, StringSequence k) -> bool"""
-        return _pyAgrum.StringSequence___eq__(self, *args)
-
-    def __ne__(self, *args):
-        """__ne__(StringSequence self, StringSequence k) -> bool"""
-        return _pyAgrum.StringSequence___ne__(self, *args)
-
-    def clear(self):
-        """clear(StringSequence self)"""
-        return _pyAgrum.StringSequence_clear(self)
-
-    def size(self):
-        """size(StringSequence self) -> gum::Size"""
-        return _pyAgrum.StringSequence_size(self)
-
-    def empty(self):
-        """empty(StringSequence self) -> bool"""
-        return _pyAgrum.StringSequence_empty(self)
-
-    def exists(self, *args):
-        """exists(StringSequence self, std::string const & k) -> bool"""
-        return _pyAgrum.StringSequence_exists(self, *args)
-
-    def append(self, *args):
-        """append(StringSequence self, std::string const & k)"""
-        return _pyAgrum.StringSequence_append(self, *args)
-
-    def remove(self, *args):
-        """remove(StringSequence self, std::string const & k)"""
-        return _pyAgrum.StringSequence_remove(self, *args)
-
-    def erase(self, *args):
-        """erase(StringSequence self, gum::Sequence< std::string >::iterator_safe const & k)"""
-        return _pyAgrum.StringSequence_erase(self, *args)
-
-    def __getitem__(self, *args):
-        """__getitem__(StringSequence self, gum::Idx i) -> std::string const &"""
-        return _pyAgrum.StringSequence___getitem__(self, *args)
-
-    def index(self, *args):
-        """index(StringSequence self, std::string const & key) -> gum::Idx"""
-        return _pyAgrum.StringSequence_index(self, *args)
-
-    def setAtPos(self, *args):
-        """setAtPos(StringSequence self, gum::Idx i, std::string const & newKey)"""
-        return _pyAgrum.StringSequence_setAtPos(self, *args)
-
-    def swap(self, *args):
-        """swap(StringSequence self, gum::Idx i, gum::Idx j)"""
-        return _pyAgrum.StringSequence_swap(self, *args)
-
-    def front(self):
-        """front(StringSequence self) -> std::string const &"""
-        return _pyAgrum.StringSequence_front(self)
-
-    def back(self):
-        """back(StringSequence self) -> std::string const &"""
-        return _pyAgrum.StringSequence_back(self)
-
-    def __str__(self):
-        """__str__(StringSequence self) -> std::string"""
-        return _pyAgrum.StringSequence___str__(self)
-
-    def resize(self, *args):
-        """resize(StringSequence self, unsigned int new_size)"""
-        return _pyAgrum.StringSequence_resize(self, *args)
-
-StringSequence_swigregister = _pyAgrum.StringSequence_swigregister
-StringSequence_swigregister(StringSequence)
-
 class DiscretizedVar(DiscreteVar):
     """Proxy of C++ gum::DiscretizedVariable<(float)> class"""
     __swig_setmethods__ = {}
@@ -3518,6 +3310,7 @@ class BayesNetInference_double(_object):
             raise TypeError("setEvidence parameter must be dict, not %s"
                             %(type(evidces)))
         bn = self.bn()
+        
 
         # set evidences
         self.list_pot = []
@@ -3566,7 +3359,8 @@ class BayesNetInference_double(_object):
             else:
                 raise TypeError('dict values must be number, string or sequence')
             self.list_pot.append(pot)
-
+            
+        self.eraseAllEvidence()
         self._setEvidence(self.list_pot)
 
 

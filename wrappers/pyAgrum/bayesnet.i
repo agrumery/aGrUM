@@ -22,6 +22,14 @@
         val.__fill_distrib__()
 %}
 
+%typemap(out) const gum::Sequence<gum::NodeId>& {
+  PyObject *q=PyList_New(0);
+  for(auto i : *$1) {
+    PyList_Append(q,PyInt_FromLong(i));
+  }
+  $result=q;
+}
+
 %extend gum::BayesNet {
     PyObject *names() const {
       PyObject* q=PyList_New(0);
