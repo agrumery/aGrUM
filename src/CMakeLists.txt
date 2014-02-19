@@ -43,7 +43,7 @@ link_directories(${AGRUM_BINARY_DIR}/lib)
 set(AGRUM_FILES ${AGRUM_SOURCES} ${AGRUM_C_SOURCES} ${AGRUM_INLINES} ${AGRUM_INCLUDES} ${AGRUM_TEMPLATES})
 
 ####################################################################
-## targat library
+## target library
 
 add_library(${LIBAGRUM} SHARED ${AGRUM_FILES})
 if (OPENMP_FOUND)
