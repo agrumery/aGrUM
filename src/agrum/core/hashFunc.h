@@ -289,67 +289,6 @@ namespace gum {
   };
 
 
-  /** generic hash functions for pairs strictly smaller than long integer keys */
-  template <typename Key1, typename Key2> class HashFuncSmallCastKeyPair :
-    public HashFuncBase< std::pair<Key1, Key2> > {
-  public:
-    /// basic constructor
-    HashFuncSmallCastKeyPair();
-
-    /// update the hash function to take into account a resize of the hash table
-    /** @throw HashSize */
-    void resize ( Size );
-
-    /// computes the hashed value of a key
-    Size operator() ( const std::pair<Key1, Key2>& ) const ;
-
-  protected:
-    // the number of right shift to perform to get correct hashed values
-    unsigned int _right_shift;
-
-    // some masks used to ensure that keys with fewer bits than unsigned longs
-    // are cast correctly
-    unsigned long _small_key_mask1;
-    unsigned long _small_key_mask2;
-  };
-
-  
-  /** generic hash functions for pairs of keys whose sizes are precisely that
-   * of unsigned longs and which can be cast into unsigned longs */
-  template <typename Key1, typename Key2> class HashFuncMediumCastKeyPair :
-    public HashFuncBase< std::pair<Key1, Key2> > {
-  public:
-    /// update the hash function to take into account a resize of the hash table
-    /** @throw HashSize */
-    void resize ( Size );
-
-    /// computes the hashed value of a key
-    Size operator() ( const std::pair<Key1, Key2>& ) const ;
-
-  protected:
-    // the number of right shift to perform to get correct hashed values
-    unsigned int _right_shift;
-  };
-
-
-  /** generic hash functions for pairs of keys whose sizes are precisely twice that
-   * of unsigned longs and which can be cast into unsigned longs */
-  template <typename Key1, typename Key2> class HashFuncLargeCastKeyPair :
-    public HashFuncBase< std::pair<Key1, Key2> > {
-  public:
-    /// update the hash function to take into account a resize of the hash table
-    /** @throw HashSize */
-    void resize ( Size );
-
-    /// computes the hashed value of a key
-    Size operator() ( const std::pair<Key1, Key2>& ) const ;
-
-  protected:
-    // the number of right shift to perform to get correct hashed values
-    unsigned int _right_shift;
-  };
-
-
   /** generic hash functions for pairs of keys whose sizes are precisely twice that
    * of unsigned longs and which can be cast into unsigned longs */
   template < typename Key1, typename Key2, typename Func1, typename Func2 >
