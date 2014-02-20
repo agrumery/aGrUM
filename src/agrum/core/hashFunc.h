@@ -177,6 +177,7 @@ namespace gum {
   protected:
     // the number of right shift to perform to get correct hashed values
     unsigned int _right_shift;
+
   };
 
   
@@ -192,6 +193,9 @@ namespace gum {
     /** @throw HashSize */
     void resize ( Size );
 
+    /// returns the value of a key as an unsigned long
+    Size castToSize ( const Key& ) const;
+
     /// computes the hashed value of a key
     Size operator() ( const Key& ) const;
 
@@ -202,6 +206,7 @@ namespace gum {
     // an additional mask to ensure that keys with fewer bits than unsigned longs
     // are cast correctly
     unsigned long _small_key_mask;
+
   };
 
   
@@ -217,11 +222,15 @@ namespace gum {
     /// computes the hashed value of a key
     Size operator() ( const Key& ) const;
 
+    /// returns the value of a key as an unsigned long
+    Size castToSize ( const Key& ) const;
+
     using HashFuncBase<Key>::size;
 
   protected:
     // the number of right shift to perform to get correct hashed values
     unsigned int _right_shift;
+
   };
 
 
@@ -234,6 +243,9 @@ namespace gum {
     /** @throw HashSize */
     void resize ( Size );
 
+    /// returns the value of a key as an unsigned long
+    Size castToSize ( const Key& ) const;
+
     /// computes the hashed value of a key
     Size operator() ( const Key& ) const;
 
@@ -242,6 +254,7 @@ namespace gum {
   protected:
     // the number of right shift to perform to get correct hashed values
     unsigned int _right_shift;
+
   };
 
 
@@ -276,13 +289,12 @@ namespace gum {
   };
 
 
-  /** generic hash functions for pairs strictly smaller than long integer keys */
-  template <typename Key1, typename Key2> class HashFuncSmallCastKeyPair :
+  /** generic hash functions for pairs of keys whose sizes are precisely twice that
+   * of unsigned longs and which can be cast into unsigned longs */
+  template < typename Key1, typename Key2, typename Func1, typename Func2 >
+    class HashFuncAllCastKeyPair :
     public HashFuncBase< std::pair<Key1, Key2> > {
   public:
-    /// basic constructor
-    HashFuncSmallCastKeyPair();
-
     /// update the hash function to take into account a resize of the hash table
     /** @throw HashSize */
     void resize ( Size );
@@ -291,65 +303,24 @@ namespace gum {
     Size operator() ( const std::pair<Key1, Key2>& ) const ;
 
   protected:
-    // the number of right shift to perform to get correct hashed values
+    /// the number of right shift to perform to get correct hashed values
     unsigned int _right_shift;
 
-    // some masks used to ensure that keys with fewer bits than unsigned longs
-    // are cast correctly
-    unsigned long _small_key_mask1;
-    unsigned long _small_key_mask2;
+  private:
+    /// the functions used to hash Key1 and Key2
+    Func1 __func1;
+    Func2 __func2;
   };
 
   
-  /** generic hash functions for pairs of keys whose sizes are precisely that
-   * of unsigned longs and which can be cast into unsigned longs */
-  template <typename Key1, typename Key2> class HashFuncMediumCastKeyPair :
-    public HashFuncBase< std::pair<Key1, Key2> > {
-  public:
-    /// update the hash function to take into account a resize of the hash table
-    /** @throw HashSize */
-    void resize ( Size );
-
-    /// computes the hashed value of a key
-    Size operator() ( const std::pair<Key1, Key2>& ) const ;
-
-  protected:
-    // the number of right shift to perform to get correct hashed values
-    unsigned int _right_shift;
-  };
-
-
-  /** generic hash functions for pairs of keys whose sizes are precisely twice that
-   * of unsigned longs and which can be cast into unsigned longs */
-  template <typename Key1, typename Key2> class HashFuncLargeCastKeyPair :
-    public HashFuncBase< std::pair<Key1, Key2> > {
-  public:
-    /// update the hash function to take into account a resize of the hash table
-    /** @throw HashSize */
-    void resize ( Size );
-
-    /// computes the hashed value of a key
-    Size operator() ( const std::pair<Key1, Key2>& ) const ;
-
-  protected:
-    // the number of right shift to perform to get correct hashed values
-    unsigned int _right_shift;
-  };
-
-
   /** generic hash functions for keys castable as unsigned longs whose size
    * is either smaller than unsigned long, or equal to that of one or two
    * unsigned longs */
   template <typename T1, typename T2>
   struct HashFuncCastKeyPair {
-    using type =
-      typename std::conditional<
-        sizeof ( T1 ) < sizeof ( long ) && sizeof ( T2 ) < sizeof ( long ),
-        HashFuncSmallCastKeyPair<T1,T2>,
-        typename std::conditional<
-          sizeof (T1) == 2 * sizeof (long) && sizeof (T2) == 2 * sizeof (long),
-          HashFuncLargeCastKeyPair<T1,T2>,
-          HashFuncMediumCastKeyPair<T1,T2> >::type >::type;
+    using Func1 = typename HashFuncCastKey<T1>::type;
+    using Func2 = typename HashFuncCastKey<T2>::type;
+    using type = HashFuncAllCastKeyPair<T1,T2,Func1,Func2>;
   };
 
   
@@ -409,12 +380,10 @@ namespace gum {
     public HashFuncCastKeyPair<float,float>::type {};
 
   template <> class HashFunc< std::pair<double, long unsigned int> > :
-    public HashFuncMediumCastKeyPair<double, long unsigned int> {
-  };
+    public HashFuncCastKeyPair<double, long unsigned int>::type {};
 
   template <> class HashFunc< std::pair<double, long int> > :
-    public HashFuncMediumCastKeyPair<double, long int> {
-  };
+    public HashFuncCastKeyPair<double, long int>::type {};
 
   template <typename Type> class HashFunc< RefPtr<Type> > :
     public HashFunc<unsigned int*> {

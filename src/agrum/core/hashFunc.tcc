@@ -104,6 +104,13 @@ namespace gum {
     _right_shift = HashFuncConst::offset - HashFuncBase<Key>::_hash_log2_size;
   }
 
+  
+  /// returns the value of a key as an unsigned long
+  template <typename Key> INLINE
+  Size HashFuncSmallCastKey<Key>::castToSize ( const Key& key ) const {
+    return *( ( unsigned long* ) ( &key ) ) & _small_key_mask;
+  }
+  
 
   /// returns a hashed key for hash tables the keys of which are represented
   /// by "small" integers
@@ -128,7 +135,14 @@ namespace gum {
     HashFuncBase<Key>::resize ( new_size );
     _right_shift = HashFuncConst::offset - HashFuncBase<Key>::_hash_log2_size;
   }
+  
 
+  /// returns the value of a key as an unsigned long
+  template <typename Key> INLINE
+  Size HashFuncMediumCastKey<Key>::castToSize ( const Key& key ) const {
+    return *( ( unsigned long* ) ( &key ) );
+  }
+  
 
   /// returns a hashed key for hash tables the keys of which are represented
   /// by "small" integers
@@ -154,6 +168,14 @@ namespace gum {
     _right_shift = HashFuncConst::offset - HashFuncBase<Key>::_hash_log2_size;
   }
 
+  
+  /// returns the value of a key as an unsigned long
+  template <typename Key> INLINE
+  Size HashFuncLargeCastKey<Key>::castToSize ( const Key& key ) const {
+    const unsigned long* ptr = reinterpret_cast<const unsigned long*> ( &key );
+    return ptr[0] ^ ptr[1];
+  }
+  
 
   /// returns a hashed key for hash tables the keys of which are represented
   /// by "small" integers
@@ -200,27 +222,14 @@ namespace gum {
 
 
   /* =========================================================================== */
-  /* ===           GUM_HASH_FUNC_SMALL_CAST_KEY_PAIR IMPLEMENTATION          === */
+  /* ===              GUM_HASH_FUNC_CAST_KEY_PAIR IMPLEMENTATION             === */
   /* =========================================================================== */
 
-  /// basic constructor
-  template <typename Key1, typename Key2> INLINE
-  HashFuncSmallCastKeyPair<Key1, Key2>::HashFuncSmallCastKeyPair() :
-    HashFuncBase< std::pair<Key1, Key2> >(),
-    _small_key_mask1 ( ( 1UL << ( 8 * sizeof ( Key1 ) ) ) - 1UL ),
-    _small_key_mask2 ( ( 1UL << ( 8 * sizeof ( Key2 ) ) ) - 1UL ) {
-    static_assert ( sizeof ( Key1 ) < sizeof ( unsigned long ),
-                    "Error: using HashFuncSmallCastKeyPair for key1 whose size "
-                    "is longer than or equal to that of long int" );
-    static_assert ( sizeof ( Key2 ) < sizeof ( unsigned long ),
-                    "Error: using HashFuncSmallCastKeyPair for key2 whose size "
-                    "is longer than or equal to that of long int" );
-  }
-
-
   /// update the hash function to take into account a resize of the hash table
-  template <typename Key1, typename Key2> INLINE
-  void HashFuncSmallCastKeyPair<Key1, Key2>::resize ( Size new_size ) {
+  template <typename Key1, typename Key2, typename Func1, typename Func2> INLINE
+  void HashFuncAllCastKeyPair<Key1,Key2,Func1,Func2>::resize ( Size new_size ) {
+    __func1.resize ( new_size );
+    __func2.resize ( new_size );
     HashFuncBase< std::pair<Key1, Key2> >::resize ( new_size );
     _right_shift = HashFuncConst::offset -
                    HashFuncBase< std::pair<Key1, Key2> >::_hash_log2_size;
@@ -229,88 +238,13 @@ namespace gum {
 
   /// returns a hashed key for hash tables the keys of which are represented
   /// by pairs of "small" integers
-  template <typename Key1, typename Key2> INLINE
-  Size HashFuncSmallCastKeyPair<Key1, Key2>::operator()
-  ( const std::pair<Key1, Key2>& key ) const  {
-    const Key1* const key1 = & ( key.first );
-    const Key2* const key2 = & ( key.second );
-    return ( ( ( * ( ( unsigned long* ) key1 ) & _small_key_mask1 ) *
-               HashFuncConst::gold +
-               ( * ( ( unsigned long* ) key2 ) & _small_key_mask2 ) *
-               HashFuncConst::pi ) >> _right_shift );
-  }
-
-
-
-  /* =========================================================================== */
-  /* ===           GUM_HASH_FUNC_MEDIUM_CAST_KEY_PAIR IMPLEMENTATION         === */
-  /* =========================================================================== */
-
-  /// update the hash function to take into account a resize of the hash table
-  template <typename Key1, typename Key2> INLINE
-  void HashFuncMediumCastKeyPair<Key1, Key2>::resize ( Size new_size ) {
-    static_assert ( sizeof ( Key1 ) == sizeof ( unsigned long ),
-                    "Error: using HashFuncMediumCastKeyPair for key1 whose size "
-                    "is different from that of long int" );
-    static_assert ( sizeof ( Key2 ) == sizeof ( unsigned long ),
-                    "Error: using HashFuncMediumCastKeyPair for key2 whose size "
-                    "is different from that of long int" );
-    HashFuncBase< std::pair<Key1, Key2> >::resize ( new_size );
-    _right_shift = HashFuncConst::offset -
-                   HashFuncBase< std::pair<Key1, Key2> >::_hash_log2_size;
-  }
-
-
-  /// returns a hashed key for hash tables the keys of which are represented
-  /// by pairs of "small" integers
-  template <typename Key1, typename Key2> INLINE
-  Size HashFuncMediumCastKeyPair<Key1, Key2>::operator()
-  ( const std::pair<Key1, Key2>& key ) const  {
-    const Key1* const key1 = & ( key.first );
-    const Key2* const key2 = & ( key.second );
-    return ( ( * ( ( unsigned long* ) ( key1 ) ) * HashFuncConst::gold +
-               * ( ( unsigned long* ) ( key2 ) ) * HashFuncConst::pi )
-             >> _right_shift );
-  }
-
-
-
-  
-  /* =========================================================================== */
-  /* ===            GUM_HASH_FUNC_LARGE_CAST_KEY_PAIR IMPLEMENTATION         === */
-  /* =========================================================================== */
-
-  /// update the hash function to take into account a resize of the hash table
-  template <typename Key1, typename Key2> INLINE
-  void HashFuncLargeCastKeyPair<Key1, Key2>::resize ( Size new_size ) {
-    static_assert ( sizeof ( Key1 ) == 2 * sizeof ( unsigned long ),
-                    "Error: using HashFuncLargeCastKeyPair for key1 whose size "
-                    "is different from twice that of long int" );
-    static_assert ( sizeof ( Key2 ) == 2 * sizeof ( unsigned long ),
-                    "Error: using HashFuncLargeCastKeyPair for key2 whose size "
-                    "is different from twice that of long int" );
-    HashFuncBase< std::pair<Key1,Key2> >::resize ( new_size );
-    _right_shift = HashFuncConst::offset -
-                   HashFuncBase< std::pair<Key1, Key2> >::_hash_log2_size;
-  }
-
-
-  /// returns a hashed key for hash tables the keys of which are represented
-  /// by pairs of "small" integers
-  template <typename Key1, typename Key2> INLINE
-  Size HashFuncLargeCastKeyPair<Key1, Key2>::operator()
+  template <typename Key1, typename Key2, typename Func1, typename Func2> INLINE
+  Size HashFuncAllCastKeyPair<Key1,Key2,Func1,Func2>::operator()
   ( const std::pair<Key1,Key2>& key ) const  {
-    const unsigned long* ptr1 =
-      reinterpret_cast<const unsigned long*> ( & ( key.first ) );
-    const unsigned long* ptr2 =
-      reinterpret_cast<const unsigned long*> ( & ( key.second ) );
-    return ( ( ptr1[0] ^ ptr1[1] ) * HashFuncConst::gold +
-             ( ptr2[0] ^ ptr2[1] ) * HashFuncConst::pi )
-             >> _right_shift;
+    return ( __func1.castToSize ( key.first ) * HashFuncConst::gold +
+             __func2.castToSize ( key.second ) * HashFuncConst::pi )
+      >> _right_shift;
   }
-
-
-
 
 
   
