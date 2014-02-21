@@ -164,7 +164,7 @@ namespace gum {
     template <int Nb_inputs, int Nb_outputs> INLINE
     unsigned int&
     CellTranslator<Nb_inputs,Nb_outputs>::out ( unsigned int i ) noexcept {
-      return _output_row->operator[] ( _output_cols [i] );
+      return _output_row->row() [ _output_cols [i] ];
     }
 
 

@@ -187,6 +187,23 @@ namespace gum {
     };
 
 
+
+  } /* namespace learning */
+
+  
+} /* namespace gum */
+
+
+// always include the template implementation
+#include <agrum/learning/filteredRowGeneratorSet.tcc>
+
+
+namespace gum {
+
+  
+  namespace learning {
+
+
     /// a function to create easily a FilteredRowGeneratorSet
     /** Below is an example of the use of this function. Basically, all the
      * arguments are FilteredRowGenerators
