@@ -29,8 +29,7 @@
 
 #include <vector>
 #include <agrum/config.h>
-#include <agrum/learning/database.h>
-#include <agrum/learning/countingTree.h>
+#include <agrum/learning/recordCounter.h>
 
 
 namespace gum {
@@ -48,29 +47,27 @@ namespace gum {
      * (BIC, BDeu, etc)
      *
      * The class should be used as follows: first, to speed-up computations, you
-     * should consider computing all the scores conditioned to a given set of
-     * nodes in one pass. To do so, use the appropriate computeScores method. This
-     * one will compute everything you need. The computeScores methods where you
-     * do not specify a set of conditioning nodes assume that this set is empty.
-     * If available memory is limited, use the setMaxSize method to constrain the
-     * memory that will be used for these computations. Once the computations
-     * have been performed, use methods score to retrieve the scores computed. */
+     * should consider computing all the scores you need in one pass. To do so,
+     * use the appropriate addScores methods. These will compute everything you
+     * need. The addScores methods where you do not specify a set of conditioning
+     * nodes assume that this set is empty. Once the computations have been
+     * performed, use methods score to retrieve the scores computed. */
     /* ========================================================================= */
+    template <typename RowFilter,
+              typename IdSetAlloc = std::allocator<unsigned int>,
+              typename CountAlloc = std::allocator<float> >
     class Score {
     public:
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      /** @param database the database from which the scores will be computed
-       * @param max_tree_size the scores are computed using a CountingTree.
-       * Parameter max_tree_size indicates which maximal size in bytes the tree
-       * should have. This number is used approximately, i.e., we do not count
-       * precisely the number of bytes used but we count them roughly. */
-      Score ( const Database& database,
-              unsigned int max_tree_size = 0 );
+      /** @param filter the row filter that will be used to read the database */
+      Score ( const RowFilter& filter,
+              const std::vector<unsigned int>& var_modalities );
 
       /// destructor
       virtual ~Score ();
@@ -83,103 +80,189 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// modifies the max size of the counting trees
-      /** This function sets the maximal size in bytes that the CountingTree
-       * used to compute score should have. This number is used approximately,
-       * i.e., we do not count precisely the number of bytes used but we count
-       * them roughly. */
-      void setMaxSize ( unsigned int new_size );
- 
-      /// computes the "unconditional" scores of a set of single targets
-      /** The method computes the scores of a set of single target nodes
-       * unconditionally, i.e., the target nodes have no conditioning node.
-       *
-       * The nodes are identified by their id in the database. Their scores can
-       * be retrieved individually using method score.
-       * @warning the method uses a reference to db_single_ids and does
-       * not copy it in order to speed-up computations. Be careful not to
-       * delete this vector from memory before calling the score method. */
-      void computeScores ( const std::vector<unsigned int>& db_single_ids );
+      /// add a new single variable to be counted
+      /** @param var represents the index of the variable in the filtered rows
+       * produced by the database cell filters whose observations shall be counted
+       * @return the index of the produced counting vector: the user should use
+       * class Score to compute in one pass several scores. These and their
+       * corresponding countings in the database are stored into a vector and the
+       * value returned by method addNodeSet is the index of the counts in
+       * this vector. The user shall pass this index as argument to method
+       * countTarget to get the corresponding counting vector. */
+      unsigned int addNodeSet ( unsigned int var );
 
-      /// compute the scores of the set of targets conditioned on some nodes
-      /** The method comptes the scores of some individual target nodes
-       * conditioned to a given set of nodes.
-       *
-       * The nodes are identified by their id in the database. Their scores can
-       * be retrieved individually using method score.
-       * @warning the method uses a reference to db_single_ids and
-       * db_conditioning_ids, and it does not copy these vectors in order to
-       * speed-up computations. So, be careful not to delete these vectors from
-       * memory before calling the score method.*/
-      void computeScores ( const std::vector<unsigned int>& db_conditioning_ids,
-                           const std::vector<unsigned int>& db_single_ids );
+      /// add a new target variable plus some conditioning vars
+      /** @param var represents the index of the target variable in the filtered
+       * rows produced by the database cell filters
+       * @param conditioning_ids the indices of the variables of the conditioning
+       * set in the filtered rows
+       * @return the index of the produced counting vector: the user should use
+       * class Score to compute in one pass several scores. These and their
+       * corresponding countings in the database are stored into a vector and the
+       * value returned by method addNodeSet is the index of the counts in
+       * this vector. The user shall pass this index as argument to methods
+       * countTarget and countConditioning to get the corresponding counting
+       * vectors. The former contains the observed countings for the set of
+       * var and conditioning_ids whereas the countConditioning returns the
+       * observed countings only for the conditioning_ids. */
+      unsigned int
+      addNodeSet ( unsigned int var,
+                   const std::vector<unsigned int>& conditioning_ids );
 
-      /// computes the "unconditional" scores of a set of pairs of targets
-      /** The method computes the scores of a set of pairs of target nodes
-       * unconditionally, i.e., the target nodes have no conditioning node. The
-       * score of a pair (X,Y) of target nodes actually corresponds to the score
-       * of Y conditioned to X. As such, it could be computed by putting X into
-       * the set of conditioning nodes and Y into that of target nodes. However,
-       * in order to avoid parsing too many times the database, it is more
-       * efficient to specify this score as a pair of target node because it
-       * enables to factorize the parsing of the database among several scores.
-       * For instance, assume that we wish to test the scores induced by setting a
-       * node X_1 or X_2 or ... or X_n as the parent of a node Y, then we simply 
-       * need to specify the set of target nodes {(X_1,Y),...,(X_n,Y)}.
-       *
-       * The nodes are identified by their id in the database. Their scores can
-       * be retrieved individually using method score.
-       * @warning the method uses a reference to db_pair_ids and does
-       * not copy it in order to speed-up computations. Be careful not to
-       * delete this vector from memory before calling the score method. */
-      void computeScores
-      ( const std::vector< std::pair<unsigned int,
-                                     unsigned int> >& db_pair_ids );
+      /// add a new pair of target unconditioned variables to be counted
+      /** @param var1 represents the index of the first target variable in the
+       * filtered rows produced by the database cell filters
+       * @param var2 represents the index of the second target variable in the
+       * filtered rows produced by the database cell filters
+       * @return the index of the produced counting vector: the user should use
+       * class Score to compute in one pass several scores. These and their
+       * corresponding countings in the database are stored into a vector and the
+       * value returned by method addNodeSet is the index of the counts in
+       * this vector. The user shall pass this index as argument to method
+       * countTarget to get the corresponding counting vector. */
+      unsigned int addNodeSet ( unsigned int var1,
+                                unsigned int var2 );
+
+      /// add a new pair of target unconditioned variables to be counted
+      /** @param vars represents the index of the target variables in the
+       * filtered rows produced by the database cell filters
+       * @return the index of the produced counting vector: the user should use
+       * class Score to compute in one pass several scores. These and their
+       * corresponding countings in the database are stored into a vector and the
+       * value returned by method addNodeSet is the index of the counts in
+       * this vector. The user shall pass this index as argument to method
+       * countTarget to get the corresponding counting vector. */
+      unsigned int addNodeSet ( const std::pair<unsigned int,unsigned int>& vars );
+
+      /// add a new pair of target conditioned variables to be counted
+      /** @param var1 represents the index of the first target variable in the
+       * filtered rows produced by the database cell filters
+       * @param var2 represents the index of the second target variable in the
+       * filtered rows produced by the database cell filters 
+       * @param conditioning_ids the indices of the variables of the conditioning
+       * set in the filtered rows
+       * @return the index of the produced counting vector: the user should use
+       * class Score to compute in one pass several scores. These and their
+       * corresponding countings in the database are stored into a vector and the
+       * value returned by method addNodeSet is the index of the counts in
+       * this vector. The user shall pass this index as argument to methods
+       * countTarget and countConditioning to get the corresponding counting
+       * vectors. The former contains the observed countings for the set of
+       * var and conditioning_ids whereas the countConditioning returns the
+       * observed countings only for the conditioning_ids. */
+      unsigned int
+      addNodeSet ( unsigned int var1,
+                   unsigned int var2,
+                   const std::vector<unsigned int>& conditioning_ids );
+
+      /// add a new pair of target conditioned variables to be counted
+      /** @param vars represents the index of the target variables in the
+       * filtered rows produced by the database cell filters
+       * @param conditioning_ids the indices of the variables of the conditioning
+       * set in the filtered rows
+       * @return the index of the produced counting vector: the user should use
+       * class Score to compute in one pass several scores. These and their
+       * corresponding countings in the database are stored into a vector and the
+       * value returned by method addNodeSet is the index of the counts in
+       * this vector. The user shall pass this index as argument to methods
+       * countTarget and countConditioning to get the corresponding counting
+       * vectors. The former contains the observed countings for the set of
+       * var and conditioning_ids whereas the countConditioning returns the
+       * observed countings only for the conditioning_ids. */
+      unsigned int
+      addNodeSet ( const std::pair<unsigned int,unsigned int>& vars,
+                   const std::vector<unsigned int>& conditioning_ids );
+
+      /// add new set of "unconditioned" single targets
+      /** This method is a shortcut for the application of addNodeSet on each
+       * variable in vector vars.
+       * @param vars represents the indices of the target variables in the
+       * filtered rows produced by the database cell filters
+       * @return the index of the first produced counting vector: the user should
+       * use class Score to compute in one pass several scores. These and their
+       * corresponding countings in the database are stored into a vector and the
+       * value returned by method addNodeSet is the index of the counts for the
+       * first variable of vars in this vector. The user shall pass this index as
+       * argument to method countTarget to get the corresponding counting vector.
+       * The other counting vectors follow the first one in the vector of
+       * counting vectors (i.e., their indices follow that of the first var). */
+      unsigned int
+      addNodeSets ( const std::vector<unsigned int>& single_vars );
+
+      /// add new set of "conditioned" single targets
+      /** This method is a shortcut for the application of addNodeSet on each
+       * variable in vector vars.
+       * @param vars represents the indices of the target variables in the
+       * filtered rows produced by the database cell filters
+       * @param conditioning_ids the indices of the variables of the conditioning
+       * set in the filtered rows
+       * @return the index of the first produced counting vector: the user should
+       * use class Score to compute in one pass several scores. These and their
+       * corresponding countings in the database are stored into a vector and the
+       * value returned by method addNodeSet is the index of the counts for the
+       * first variable of vars in this vector. The user shall pass this index as
+       * argument to method countTarget to get the corresponding counting vector.
+       * The other counting vectors follow the first one in the vector of
+       * counting vectors (i.e., their indices follow that of the first var). */
+      unsigned int
+      addNodeSets ( const std::vector<unsigned int>& single_vars,
+                    const std::vector<unsigned int>& conditioning_ids );
+
+      /// add new set of "unconditioned" pairs of targets
+      /** This method is a shortcut for the application of addNodeSet on each
+       * variable in vector vars.
+       * @param vars represents the indices of the target variables in the
+       * filtered rows produced by the database cell filters
+       * @return the index of the first produced counting vector: the user should
+       * use class Score to compute in one pass several scores. These and their
+       * corresponding countings in the database are stored into a vector and the
+       * value returned by method addNodeSet is the index of the counts for the
+       * first variable of vars in this vector. The user shall pass this index as
+       * argument to method countTarget to get the corresponding counting vector.
+       * The other counting vectors follow the first one in the vector of
+       * counting vectors (i.e., their indices follow that of the first var). */
+      unsigned int addNodeSets
+      ( const std::vector< std::pair<unsigned int,unsigned int> >& vars );
+
+      /// add new set of "conditioned" pairs of targets
+      /** This method is a shortcut for the application of addNodeSet on each
+       * variable in vector vars.
+       * @param vars represents the indices of the target variables in the
+       * filtered rows produced by the database cell filters
+       * @param conditioning_ids the indices of the variables of the conditioning
+       * set in the filtered rows
+       * @return the index of the first produced counting vector: the user should
+       * use class Score to compute in one pass several scores. These and their
+       * corresponding countings in the database are stored into a vector and the
+       * value returned by method addNodeSet is the index of the counts for the
+       * first variable of vars in this vector. The user shall pass this index as
+       * argument to method countTarget to get the corresponding counting vector.
+       * The other counting vectors follow the first one in the vector of
+       * counting vectors (i.e., their indices follow that of the first var). */
+      unsigned int addNodeSets
+        ( const std::vector< std::pair<unsigned int,unsigned int> >& vars,
+          const std::vector<unsigned int>& conditioning_ids );
+
+      /// returns the counting vector for a given (conditioned) target set
+      /** This method returns the observtion countings for the set of variables
+       * whose index was returned by method addNodeSet or addNodeSets. If the
+       * set was conditioned, the countings correspond to the target variables
+       * @b and the conditioning variables. If you wish to get only the countings
+       * for the conditioning variables, prefer using method countConditioning.
+       * @warning it is assumed that, after using addNodeSet, you have executed
+       * method count() before calling method countTarget. */
+      const std::vector<float,CountAlloc>&
+      getTargetCounts ( unsigned int index ) const noexcept;
+
+      /// returns the counting vector for a conditioning set
+      /** @warning it is assumed that, after using addNodeSet, you have executed
+       * method count() before calling method countTarget. */
+      const std::vector<float,CountAlloc>&
+      getConditioningCounts ( unsigned int index ) const noexcept;
+
+      /// perform the computation of the countings
+      void count ();
       
-      /// compute the scores of the set of targets conditioned on some nodes
-      /** The method computes the scores of a set of pairs of target nodes
-       * conditionally to some other nodes. The score of a pair (X,Y) of target
-       * nodes conditionally to a set Z actually corresponds to the score of Y 
-       * conditioned to Z U {X}. As such, it could be computed by putting X into
-       * the set of conditioning nodes and Y into that of target nodes. However,
-       * in order to avoid parsing too many times the database, it is more
-       * efficient to specify this score as a pair of target node because it
-       * enables to factorize the parsing of the database among several scores.
-       * For instance, assume that we wish to test the scores induced by setting
-       * a node X_1 or X_2 or ... or X_n as the parent of a node Y, then we simply 
-       * need to specify the set of target nodes {(X_1,Y),...,(X_n,Y)}.
-       *
-       * The nodes are identified by their id in the database. Their scores can
-       * be retrieved individually using method score.
-       * @warning the method uses a reference to db_pair_ids and
-       * db_conditioning_ids, and it does not copy these vectors in order to
-       * speed-up computations. So, be careful not to delete these vectors from
-       * memory before calling the score method.*/
-      void computeScores
-      ( const std::vector<unsigned int>& db_conditioning_ids,
-        const std::vector< std::pair<unsigned int,
-                                     unsigned int> >& db_pair_ids );
-
-      /// returns the score of a given single target Y given the conditioning nodes
-      /** This method returns the score of Y conditionally to the set of
-       * conditioning nodes specified in the last computeScores execution.
-       * @warning This function should be called only after a
-       * computeScores ( db_single_ids ) or a
-       * computeScores ( db_conditioning_ids, db_single_ids ) has
-       * been completed, else its result is undetermined and is most probably
-       * an exception raised. */
-      float score ( unsigned int Y ) const;
-      
-      /// returns the score of a given pair X,Y given the conditioning nodes
-      /** This method returns the score of Y conditionally to X plus the set of
-       * conditioning nodes specified in the last computeScores execution.
-       * @warning This function should be called only after a
-       * computeScores ( db_pair_ids ) or a
-       * computeScores ( db_conditioning_ids, db_pair_ids ) 
-       * has been completed, else its result is undetermined and is most probably
-       * an exception raised. */
-      float score ( const std::pair<unsigned int,unsigned int>& XY_pair ) const;
-
       /// clears all the data structures from memory
       void clear ();
 
@@ -187,81 +270,34 @@ namespace gum {
 
 
     protected:
-      /// a pointer to the database
-      const Database* _database;
       
-      /// the counting tree used for the computations
-      CountingTree _tree;
-
-      /// the current set of conditioning nodes
-      const std::vector<unsigned int>* _db_conditioning_ids;
-
-      /// the single ids deduced from pairs of ids, that are needed for the score  
-      std::vector<unsigned int> _db_induced_ids;
-      
-      /// the scores for the single target nodes
-      HashTable<unsigned int,float> _single_scores;
-
-      /// the scores for the pairs of target nodes
-      HashTable<std::pair<unsigned int,unsigned int>,float> _pair_scores;
-
       /// 1 / log(2)
       const float _1log2;
 
 
     private:
-      /// the max size of the tree
-      unsigned int __max_tree_size;
-
-      /// an empty set of conditioning nodes
-      std::vector<unsigned int> __empty_cond_set;
-
-      /// an empty set of target pairs
-      std::vector< std::pair<unsigned int, unsigned int> > __empty_pair_set;
-
-      /// preprocess for the log2f
-      mutable std::vector<float> __logf;
-      mutable std::vector<bool>  __has_logf;
-
-       
-    protected:
-      // ##########################################################################
-      // the real computations of the score given an already constructed tree
-      // ##########################################################################
-
-      /// a function that determines the db single ids needed for the score
-      virtual void _computeInducedSingleIds
-      ( const std::vector< std::pair<unsigned int,
-                                     unsigned int> >& db_pair_ids ) = 0;
-
-      /// the function that computes the scores for single targets
-      /** @warning The function assumes that the counting tree has already been
-       * constructed */
-      virtual void
-      _computeScores ( const std::vector<unsigned int>& db_single_ids ) = 0;
-
-      /// the actual function that computes the scores of pairs of targets
-      /** @warning The function assumes that the counting tree has already been
-       * constructed */
-      virtual void
-      _computeScores
-      ( const std::vector< std::pair<unsigned int,
-        unsigned int> >& db_pair_ids ) = 0;
-
-
-      /// returns the log of an integer (might use a cache to speed-up)
-      float _logf ( unsigned int x ) const;
-
       
-      // ##########################################################################
-      // ##########################################################################
+      /// the recordCounter that will parse the database
+      RecordCounter<RowFilter,IdSetAlloc,CountAlloc> __record_counter;
+      
+      /// the target id sets to count and their indices in the record counter
+      std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* >
+      __target_nodesets;
 
+      /// the conditioning id sets to count and their indices in the record counter
+      std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* >
+      __conditioning_nodesets;
+
+    
+      // ##########################################################################
+      // ##########################################################################
 
       /// prevent copy constructor
-      Score ( const Score& );
+      Score ( const Score<RowFilter,IdSetAlloc,CountAlloc>& ) = delete;
 
       /// prevent copy operator
-      Score& operator= ( const Score& );
+      Score<RowFilter,IdSetAlloc,CountAlloc>&
+      operator= ( const Score<RowFilter,IdSetAlloc,CountAlloc>& ) = delete;
 
     };
 
@@ -272,10 +308,8 @@ namespace gum {
 } /* namespace gum */
 
 
-/// include the inlined functions if necessary
-#ifndef GUM_NO_INLINE
-#include <agrum/learning/score.inl>
-#endif /* GUM_NO_INLINE */
+/// include the template implementation
+#include <agrum/learning/score.tcc>
 
 
 #endif /* GUM_LEARNING_SCORE_H */

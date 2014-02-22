@@ -22,7 +22,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
-#include <agrum/learning/recordCounter.h>
+#include <agrum/learning/score.h>
 
 #define ROWS 500000
 #define COLS 30
@@ -156,9 +156,10 @@ namespace gum_tests {
         modalities.push_back ( 3 );
       }
 
+      /*
       gum::learning::RecordCounter<decltype ( filter ) >
         counter ( filter, modalities );
-
+        
       std::vector<unsigned int> ids1 { 3, 1, 2 };
       std::vector<unsigned int> ids2 { 1 };
       std::vector<unsigned int> ids3 { 2 };
@@ -174,23 +175,33 @@ namespace gum_tests {
 
         counter.count ();
       }
+      */
+      gum::learning::Score<decltype ( filter ) >
+        score ( filter, modalities );
+      unsigned int id1, id2, id3;
+      id1 = score.addNodeSet ( 2, std::vector<unsigned int> { 3, 1 } );
+      id2 = score.addNodeSet ( 1 );
+      id3 = score.addNodeSet ( 2 );
 
+      score.count ();
+
+      
       std::cout << "======================================" << std::endl;
-      const std::vector<float>& count1 = counter.getCounts ( id1 );
+      const std::vector<float>& count1 = score.getTargetCounts ( id1 );
       for ( unsigned int i = 0; i < count1.size (); ++i ) {
         std::cout << count1[i] << " ";
       }
       std::cout << std::endl;
-      
+
       std::cout << "======================================" << std::endl;
-      const std::vector<float>& count2 = counter.getCounts ( id2 );
+      const std::vector<float>& count2 = score.getTargetCounts ( id2 );
       for ( unsigned int i = 0; i < count2.size (); ++i ) {
         std::cout << count2[i] << " ";
       }
       std::cout << std::endl;
       
       std::cout << "======================================" << std::endl;
-      const std::vector<float>& count3 = counter.getCounts ( id3 );
+      const std::vector<float>& count3 = score.getTargetCounts ( id3 );
       for ( unsigned int i = 0; i < count3.size (); ++i ) {
         std::cout << count3[i] << " ";
       }

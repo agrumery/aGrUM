@@ -92,7 +92,7 @@ namespace gum {
       }
 
       // allocate the counting set
-      __countings.push_back ( std::vector<float,CountAllocator> ( size, 0 ) );
+      __countings.push_back ( std::vector<float,CountAlloc> ( size, 0 ) );
       
       return nodeset_id;
     }
@@ -135,9 +135,7 @@ namespace gum {
     /// returns the countings for the nodeset specified in argument
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
     INLINE const
-    std::vector<float,
-                typename RecordCounterThread<RowFilter,IdSetAlloc,CountAlloc>::
-                CountAllocator>&
+    std::vector<float,CountAlloc>&
     RecordCounterThread<RowFilter,IdSetAlloc,CountAlloc>::getCounts
     ( unsigned int nodeset_id ) const noexcept {
       return __countings[ nodeset_id];
@@ -241,7 +239,7 @@ namespace gum {
         set_size *= __modalities->operator[] ( id );
       }
       __countings.push_back
-        ( std::vector<float,CountAllocator> ( set_size, 0.0f ) );
+        ( std::vector<float,CountAlloc> ( set_size, 0.0f ) );
 
       // a priori, the idset is not a subset
       __is_id_subset.push_back ( false );
@@ -327,8 +325,8 @@ namespace gum {
         for ( unsigned int i = 0, size = __countings.size (); i < size; ++i ) {
           if ( ! __is_id_subset[i] ) {
             // get the ith idset countings computed by the curent thread
-            std::vector<float,CountAllocator>& vect =
-              const_cast<std::vector<float,CountAllocator>&>
+            std::vector<float,CountAlloc>& vect =
+              const_cast<std::vector<float,CountAlloc>&>
               ( counter.getCounts ( __set2thread_id[i].second ) );
             size_per_thread =
               ( vect.size () + __nb_thread_counters - 1 ) / __nb_thread_counters;
@@ -339,7 +337,7 @@ namespace gum {
                                    (unsigned int) vect.size () ); 
             for ( unsigned int j = 0; j < __nb_thread_counters; ++j ) {
               if ( j != this_thread ) {
-                const std::vector<float,CountAllocator>& othervect =
+                const std::vector<float,CountAlloc>& othervect =
                   __thread_counters[j].getCounts ( __set2thread_id[i].second );
                 for ( unsigned int k = min_range; k < max_range; ++k ) {
                   vect[k] += othervect[k];
@@ -350,7 +348,7 @@ namespace gum {
             // now copy what we just computed into the countings of the
             // current object
             for ( unsigned int k = min_range; k < max_range; ++k ) {
-              std::vector<float,CountAllocator>& final_vect = __countings[i];
+              std::vector<float,CountAlloc>& final_vect = __countings[i];
               for ( unsigned int k = min_range; k < max_range; ++k ) {
                 final_vect[k] = vect[k];
               }
@@ -365,9 +363,9 @@ namespace gum {
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
     void RecordCounter<RowFilter,IdSetAlloc,CountAlloc>::countSubsets () {
         // perform the countings for the subsets
-        #pragma omp parallel for
+        //#pragma omp parallel for
         for ( unsigned int i = 0; i < __is_id_subset.size (); ++i ) {
-          if ( __is_id_subset[i] &&
+           if ( __is_id_subset[i] &&
                ( __set2thread_id[i].second !=
                  std::numeric_limits<unsigned int>::max () ) ) {
             // get the subset and its superset
@@ -375,8 +373,7 @@ namespace gum {
             const auto& superset_ids = *( __nodesets[__set2thread_id[i].second] );
             auto& subset_vect = __countings[i];
             const auto& superset_vect = __countings[ __set2thread_id[i].second ];
-            
-            
+                         
             // Compute the variables that belong to both the (projection) subset
             // and its superset. Store the number of increments in the computation
             // loops at the end of the function before which the variables of the
@@ -391,37 +388,44 @@ namespace gum {
             {
               unsigned int tmp_before_incr = 1;
               bool has_before_incr = false;
+              unsigned int subset_size = subset_ids.size ();
 
               for ( unsigned int h = 0, j = 0; h < superset_ids.size (); ++h ) {
-                if ( subset_ids[j] == superset_ids[h] ) {
-                  if ( has_before_incr ) {
-                    before_incr.push_back ( tmp_before_incr - 1 );
-                    has_before_incr = false;
-                    ++nb_positive_before_incr;
+                if ( j < subset_size ) {
+                  if ( subset_ids[j] == superset_ids[h] ) {
+                    if ( has_before_incr ) {
+                      before_incr.push_back ( tmp_before_incr - 1 );
+                      has_before_incr = false;
+                      ++nb_positive_before_incr;
+                    }
+                    else {
+                      before_incr.push_back ( 0 );
+                    }
+
+                    unsigned int modality =
+                      __modalities->operator[] ( subset_ids[j] ); 
+                    table_and_result_domain.push_back ( modality );
+                    table_and_result_offset.push_back ( result_domain_size );
+                    result_domain_size *= modality;
+                    tmp_before_incr = 1;
+                    
+                    ++j;
                   }
                   else {
-                    before_incr.push_back ( 0 );
+                    unsigned int modality =
+                      __modalities->operator[] ( subset_ids[j] ); 
+                    tmp_before_incr *= modality;
+                    has_before_incr = true;
+                    table_alone_domain_size *= modality;
                   }
-
-                  unsigned int modality =
-                    __modalities->operator[] ( subset_ids[j] ); 
-                  table_and_result_domain.push_back ( modality );
-                  table_and_result_offset.push_back ( result_domain_size );
-                  result_domain_size *= modality;
-                  tmp_before_incr = 1;
-
-                  ++j;
                 }
                 else {
-                  unsigned int modality =
-                    __modalities->operator[] ( subset_ids[j] ); 
-                  tmp_before_incr *= modality;
-                  has_before_incr = true;
-                  table_alone_domain_size *= modality;
+                  table_alone_domain_size *=
+                    __modalities->operator[] ( superset_ids[h] ); 
                 }
               }
             }
-
+ 
             std::vector<unsigned int>
               table_and_result_value = table_and_result_domain;
             std::vector<unsigned int>
@@ -432,8 +436,7 @@ namespace gum {
             for ( unsigned int j = 0; j < table_and_result_down.size(); ++j ) {
               table_and_result_down[j] *= ( table_and_result_domain[j] - 1 );
             }
-
-
+ 
             // now, fill the subset counting vector: first loop over the variables
             // X's in table that do not belong to result and, for each value of
             // these X's, loop over the variables in both table and result. As
@@ -521,8 +524,7 @@ namespace gum {
     /// returns the counts performed for a given idSet
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
     INLINE const
-    std::vector<float,typename
-                RecordCounter<RowFilter,IdSetAlloc,CountAlloc>::CountAllocator>&
+    std::vector<float,CountAlloc>&
     RecordCounter<RowFilter,IdSetAlloc,CountAlloc>::getCounts
     ( unsigned int idset ) const noexcept {
       return __countings[ idset ];

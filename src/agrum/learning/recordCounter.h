@@ -64,11 +64,8 @@ namespace gum {
      */
     template <typename RowFilter,
               typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<int> >
-    class RecordCounterThread {
-    private:
-      using CountAllocator = typename CountAlloc::template rebind<float>::other;
-      
+              typename CountAlloc = std::allocator<float> >
+    class RecordCounterThread {      
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -109,7 +106,7 @@ namespace gum {
       void count ();
 
       /// returns the countings for the nodeset specified in argument
-      const std::vector<float,CountAllocator>&
+      const std::vector<float,CountAlloc>&
       getCounts ( unsigned int nodeset_id ) const noexcept;
       
       /// returns the filter used for the countings
@@ -130,7 +127,7 @@ namespace gum {
       RowFilter __filter;
 
       /// the nodesets countings 
-      std::vector< std::vector<float,CountAllocator> > __countings;
+      std::vector< std::vector<float,CountAlloc> > __countings;
 
       /// used to prevent cacheline omp parallel problems
       char __align[CACHE_SIZE];
@@ -157,12 +154,10 @@ namespace gum {
      */
     template <typename RowFilter,
               typename IdSetAlloc = std::allocator<unsigned int>,
-              typename CountAlloc = std::allocator<int> >
+              typename CountAlloc = std::allocator<float> >
     class RecordCounter {
     public:
-
-      using CountAllocator = typename CountAlloc::template rebind<float>::other;
-
+      
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -213,7 +208,7 @@ namespace gum {
       RowFilter& filter () noexcept;
       
       /// returns the counts performed for a given idSet
-      const std::vector<float,CountAllocator>&
+      const std::vector<float,CountAlloc>&
       getCounts ( unsigned int idset ) const noexcept;
       
       /// resets the counter, i.e., remove all its sets of ids and counting vectors
@@ -251,7 +246,7 @@ namespace gum {
 
       /// a vector for computing the countings of the IdSets which are subsets
       /** These countings are derived from the countings of the supersets */
-      std::vector< std::vector<float,CountAllocator> > __countings;
+      std::vector< std::vector<float,CountAlloc> > __countings;
 
       /// a hashtable associating to each IdSet its index in __set2thread_id
       HashTable<const IdSet<IdSetAlloc>*, unsigned int> __idset2index;
