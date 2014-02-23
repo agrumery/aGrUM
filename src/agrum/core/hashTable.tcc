@@ -1207,7 +1207,7 @@ HashTableIterator<Key, Val>::HashTableIterator () noexcept :
   template <typename Key, typename Val> INLINE
   typename HashTableIterator<Key, Val>::value_type&
   HashTableIterator<Key, Val>::operator* () {
-    return const_cast<Val&> ( HashTableConstIterator<Key, Val>::operator*() );
+    return const_cast<value_type&>(HashTableConstIterator<Key, Val>::operator*() );
   }
 
 
