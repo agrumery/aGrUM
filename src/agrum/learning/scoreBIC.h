@@ -28,7 +28,6 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-
 #ifndef GUM_LEARNING_SCORE_BIC_H
 #define GUM_LEARNING_SCORE_BIC_H
 
