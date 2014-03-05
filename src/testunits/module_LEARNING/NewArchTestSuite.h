@@ -35,7 +35,7 @@ namespace gum_tests {
     class CellTranslator1 : public gum::learning::CellTranslator<1,1> {
     public:
       void translate () {
-        out (0) = in (0);
+        out (0) = in (0).getUint ();
       }
     };
 
@@ -43,7 +43,8 @@ namespace gum_tests {
     public:
       void translate () {
         outputRow() [outputCols() [0]] =
-          inputRow() [inputCols() [0]] +inputRow() [inputCols() [1]];
+          inputRow() [inputCols() [0]].getUint () +
+          inputRow() [inputCols() [1]].getUint ();
       }
     };
 
@@ -130,7 +131,7 @@ namespace gum_tests {
         gum::learning::DBRow& row = database.data[i];
         row.resize ( COLS );
         for ( unsigned int j = 0; j < COLS; ++j ) {
-          row[j] = j % 3; // 2 * i + j;
+          row[j].setUint ( j % 3 ); // 2 * i + j;
         }
       }
 

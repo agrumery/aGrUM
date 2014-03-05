@@ -35,6 +35,9 @@ namespace gum {
   namespace learning {
 
     
+    /** @class DBRow
+     * @ingroup learning_group
+     * @brief The class for storing a row of DBCells into the database */
     using DBRow = std::vector<DBCell>;
  
 

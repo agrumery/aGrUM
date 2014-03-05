@@ -25,6 +25,10 @@
 #ifndef GUM_LEARNING_DB_CELL_H
 #define GUM_LEARNING_DB_CELL_H
 
+#include <string>
+
+#include <agrum/config.h>
+
 
 namespace gum {
 
@@ -32,13 +36,188 @@ namespace gum {
   namespace learning {
 
 
-    using DBCell = int;
- 
+    /** @class DBCell
+     * @ingroup learning_group
+     * @brief the type of the elements read from the database */
+    class DBCell {
+    public:
+      // ##########################################################################
+      /// @name Constructors / Destructors
+      // ##########################################################################
+
+      /// @{
+
+      /// default constructor
+      DBCell ();
+
+      /// copy constructor
+      DBCell ( const DBCell& from );
+
+      /// destructor
+      ~DBCell ();
+
+      /// @}
+
+      
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+
+      /// @{
+
+      /// copy operator
+      DBCell& operator= ( const DBCell& from );
+
+      /// unsafe set operator (assumes that the preceding type is of the same type)
+      DBCell& operator= ( unsigned int x ) noexcept;
+      
+      /// unsafe set operator (assumes that the preceding type is of the same type)
+      DBCell& operator= ( int x ) noexcept;
+
+      /// unsafe set operator (assumes that the preceding type is of the same type)
+      DBCell& operator= ( float x ) noexcept;
+
+      /// unsafe set operator (assumes that the preceding type is of the same type)
+      DBCell& operator= ( double x ) noexcept;
+
+      /// unsafe set operator (assumes that the preceding type is of the same type)
+      DBCell& operator= ( char x ) noexcept;
+
+      /// unsafe set operator (assumes that the preceding type is of the same type)
+      DBCell& operator= ( const std::string& x ) noexcept;
+      
+      /// @}
+
+
+      // ##########################################################################
+      /// @name Accessors / Modifiers
+      // ##########################################################################
+
+      /// @{
+
+      /// returns the DBcell as an unsigned int (without checking its type)
+      /** @warning this method is unsafe: it assumes that you know the
+       * correct type of the element in the DBCell */
+      unsigned int getUint () const noexcept;
+
+      /// returns the DBcell as an int (without checking its type)
+      /** @warning this method is unsafe: it assumes that you know the
+       * correct type of the element in the DBCell */
+      int getInt () const noexcept;
+      
+      /// returns the DBcell as a float (without checking its type)
+      /** @warning this method is unsafe: it assumes that you know the
+       * correct type of the element in the DBCell */
+      float getFloat () const noexcept;
+
+      /// returns the DBcell as a double (without checking its type)
+      double getDouble () const noexcept;
+
+      /// returns the DBcell as a char (without checking its type)
+      /** @warning this method is unsafe: it assumes that you know the
+       * correct type of the element in the DBCell */
+      char getChar () const noexcept;
+      
+      /// returns the DBcell as a string (without checking its type)
+      /** @warning this method is unsafe: it assumes that you know the
+       * correct type of the element in the DBCell */
+      const std::string& getString () const noexcept;
+      
+      /// returns the DBcell as an unsigned int (safe with type checking)
+      /** @throw TypeError if the DBCell does not contain this type */
+      unsigned int getUintSafe () const;
+
+      /// returns the DBcell as an int (safe with type checking)
+      /** @throw TypeError if the DBCell does not contain this type */
+      int getIntSafe () const;
+      
+      /// returns the DBcell as a float (safe with type checking)
+      /** @throw TypeError if the DBCell does not contain this type */
+      float getFloatSafe () const;
+
+      /// returns the DBcell as a double (safe with type checking)
+      /** @throw TypeError if the DBCell does not contain this type */
+      double getDoubleSafe () const;
+
+      /// returns the DBcell as a char (safe with type checking)
+      /** @throw TypeError if the DBCell does not contain this type */
+      char getCharSafe () const;
+      
+      /// returns the DBcell as a string (safe with type checking)
+      /** @throw TypeError if the DBCell does not contain this type */
+      const std::string& getStringSafe () const;
+
+      /// sets the content of the DBCell (safe type checking)
+      void setUintSafe ( unsigned int elt );
+
+      /// sets the content of the DBCell (safe type checking)
+      void setIntSafe ( int elt );
+
+      /// sets the content of the DBCell (safe type checking)
+      void setFloatSafe ( float elt );
+
+      /// sets the content of the DBCell (safe type checking)
+      void setDoubleSafe ( double elt );
+
+      /// sets the content of the DBCell (safe type checking)
+      void setCharSafe ( char elt );
+
+      /// sets the content of the DBCell (safe type checking)
+      void setStringSafe ( const std::string& elt );
+      
+      /// unsafe set (assumes that the preceding type is of the same type)
+      void setUint ( unsigned int x );
+      
+      /// unsafe set (assumes that the preceding type is of the same type)
+      void setInt ( int x );
+
+      /// unsafe set (assumes that the preceding type is of the same type)
+      void setFloat ( float x );
+
+      /// unsafe set (assumes that the preceding type is of the same type)
+      void setDouble ( double x );
+
+      /// unsafe set (assumes that the preceding type is of the same type)
+      void setChar ( char x );
+
+      /// unsafe set (assumes that the preceding type is of the same type)
+      void setString ( const std::string& x );
+     
+      /// @}
+
+      
+    private:
+      /// the set of types possibly taken by the last element read
+      enum class EltType {
+        UINT, INT, FLOAT, DOUBLE, CHAR, STRING
+      };
+
+      /// the real type of the last element read from the database
+      EltType __type { EltType::UINT };
+
+      /// the element read from the database
+      union {
+        unsigned int __unsigned_int { 0 };
+        int          __int;
+        float        __float;
+        double       __double;
+        char         __char;
+        std::string  __string;
+      };
+
+    };
+    
 
   } /* namespace learning */
 
   
 } /* namespace gum */
+
+
+/// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/learning/DBCell.inl>
+#endif /* GUM_NO_INLINE */
 
 
 #endif /* GUM_LEARNING_DB_CELL_H */
