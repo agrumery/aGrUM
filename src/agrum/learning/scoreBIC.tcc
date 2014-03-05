@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for computing AIC scores
+ * @brief the class for computing BIC scores
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -26,7 +26,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
-#include <agrum/learning/scoreAIC.h>
+#include <agrum/learning/scoreBIC.h>
 
 
 namespace gum {
@@ -37,26 +37,26 @@ namespace gum {
     
     /// default constructor
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    ScoreAIC<RowFilter,IdSetAlloc,CountAlloc>::ScoreAIC
+    ScoreBIC<RowFilter,IdSetAlloc,CountAlloc>::ScoreBIC
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities ) :
       Score<RowFilter,IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
       // for debugging purposes
-      GUM_CONSTRUCTOR ( ScoreAIC );
+      GUM_CONSTRUCTOR ( ScoreBIC );
     }
-    
+ 
 
     /// destructor
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    ScoreAIC<RowFilter,IdSetAlloc,CountAlloc>::~ScoreAIC () {
+    ScoreBIC<RowFilter,IdSetAlloc,CountAlloc>::ScoreBIC::~ScoreBIC () {
       // for debugging purposes
-      GUM_DESTRUCTOR ( ScoreAIC );
+      GUM_DESTRUCTOR ( ScoreBIC );
     }
 
 
     /// returns the score corresponding to a given nodeset
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
-    float ScoreAIC<RowFilter,IdSetAlloc,CountAlloc>::score
+    float ScoreBIC<RowFilter,IdSetAlloc,CountAlloc>::score
     ( unsigned int nodeset_index ) {
       // get the nodes involved in the score as well as their modalities
       const std::vector<unsigned int,IdSetAlloc>& all_nodes =
@@ -98,16 +98,19 @@ namespace gum {
             score += N_ijk[k] * logf ( N_ijk[k] );
           }
         }
+        float N = 0;
         for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
           if ( N_ij[j] ) {
             score -= N_ij[j] * logf ( N_ij[j] );
+            N += N_ij[j];
           }
         }
-        // divide by log(2), since the log likelihood uses log_2
-        score *= this->_1log2;
 
         // finally, remove the penalty
-        score -= penalty;
+        score -= penalty * logf ( N ) * 0.5f;
+
+        // divide by log(2), since the log likelihood uses log_2
+        score *= this->_1log2;
 
         return score;
       }
@@ -140,16 +143,16 @@ namespace gum {
         }
         score -= N * logf ( N );
 
+        // finally, remove the penalty
+        score -= penalty * logf ( N ) * 0.5f;
+
         // divide by log(2), since the log likelihood uses log_2
         score *= this->_1log2;
-
-        // finally, remove the penalty
-        score -= penalty;
 
         return score;
       }
     }
-
+    
 
   } /* namespace learning */
   

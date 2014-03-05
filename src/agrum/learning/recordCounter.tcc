@@ -607,6 +607,18 @@ namespace gum {
     }
 
 
+    /// returns the modalities of the variables in the database
+    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
+    const std::vector<unsigned int>&
+    RecordCounter<RowFilter,IdSetAlloc,CountAlloc>::modalities () const {
+      if ( __modalities ) return *__modalities;
+      else {
+        GUM_ERROR ( NullElement,
+                    "The record Counter does not have any modalities stored yet" );
+      }
+    }
+ 
+
   } /* namespace learning */
 
   

@@ -214,6 +214,9 @@ namespace gum {
       /// resets the counter, i.e., remove all its sets of ids and counting vectors
       void clearNodeSets () noexcept;
 
+      /// returns the modalities of the variables in the database
+      const std::vector<unsigned int>& modalities () const;
+
       /// @}
       
 

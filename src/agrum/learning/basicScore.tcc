@@ -27,10 +27,6 @@
 
 
 #include <cmath>
-#include <agrum/learning/basicScore.h>
-
-
-#define MAX_LOG2F_SIZE 100000
 
 
 namespace gum {
@@ -45,7 +41,6 @@ namespace gum {
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities) :
       _modalities ( var_modalities ), 
-      _1log2 { M_LOG2E },
       __record_counter ( filter, var_modalities ) {
       // for debugging purposes
       GUM_CONSTRUCTOR ( BasicScore );
@@ -77,6 +72,8 @@ namespace gum {
       __conditioning_nodesets.push_back ( nullptr );
       __target_nodesets.push_back ( new_target );
 
+      __counts_computed = false;
+      
       return __target_nodesets.size () - 1;
     }
 
@@ -103,6 +100,8 @@ namespace gum {
       __conditioning_nodesets.push_back ( new_cond );
       __target_nodesets.push_back ( new_target );
 
+      __counts_computed = false;
+      
       return __target_nodesets.size () - 1;
     }
 
@@ -124,6 +123,8 @@ namespace gum {
       __conditioning_nodesets.push_back ( nullptr );
       __target_nodesets.push_back ( new_target );
 
+      __counts_computed = false;
+      
       return __target_nodesets.size () - 1;
     }
 
@@ -160,6 +161,8 @@ namespace gum {
       __conditioning_nodesets.push_back ( new_cond );
       __target_nodesets.push_back ( new_target );
 
+      __counts_computed = false;
+      
       return __target_nodesets.size () - 1;
     }
 
@@ -187,6 +190,8 @@ namespace gum {
       __conditioning_nodesets.push_back ( new_cond );
       __target_nodesets.push_back ( new_target );
 
+      __counts_computed = false;
+      
       return __target_nodesets.size () - 1;
     }
 
@@ -251,13 +256,15 @@ namespace gum {
       for ( auto set : __conditioning_nodesets ) if ( set ) delete set;
       __target_nodesets.clear ();
       __conditioning_nodesets.clear ();
+      __counts_computed = false;
     }
 
 
     /// perform the computation of the countings
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    void BasicScore<RowFilter,IdSetAlloc,CountAlloc>::_count () {
+    void BasicScore<RowFilter,IdSetAlloc,CountAlloc>::__count () {
       __record_counter.count ();
+      __counts_computed = true;
     }
 
     
@@ -265,7 +272,8 @@ namespace gum {
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
     const std::vector<float,CountAlloc>&
     BasicScore<RowFilter,IdSetAlloc,CountAlloc>::_getAllCounts
-    ( unsigned int index ) const noexcept {
+    ( unsigned int index ) {
+      if ( ! __counts_computed ) __count ();
       return __record_counter.getCounts ( __target_nodesets[index]->second );
     }
 
@@ -274,7 +282,8 @@ namespace gum {
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
     const std::vector<float,CountAlloc>&
     BasicScore<RowFilter,IdSetAlloc,CountAlloc>::_getConditioningCounts
-    ( unsigned int index ) const noexcept {
+    ( unsigned int index ) {
+      if ( ! __counts_computed ) __count ();
       return __record_counter.getCounts ( __conditioning_nodesets[index]->second );
     }
 

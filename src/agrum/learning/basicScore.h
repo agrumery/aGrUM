@@ -243,7 +243,7 @@ namespace gum {
           const std::vector<unsigned int>& conditioning_ids );
 
       /// clears all the data structures from memory
-      virtual void clear ();
+      void clear ();
 
       /// returns the score corresponding to a given nodeset
       virtual float score ( unsigned int nodeset_index ) = 0;
@@ -267,16 +267,16 @@ namespace gum {
        * @warning the dimensions of the vector are as follows: first come the
        * nodes of the conditioning set (in the order in which they were specified
        * when callind addNodeset, and then the target nodes.
-       * @warning it is assumed that, after using addNodeSet, you have executed
-       * method count() before calling method countTarget. */
+       * @warning whenever you call this function, if the counts have not been
+       * computed yet, they are computed before the function returns. */
       const std::vector<float,CountAlloc>&
-      _getAllCounts ( unsigned int index ) const noexcept;
+      _getAllCounts ( unsigned int index );
 
       /// returns the counting vector for a conditioning set
-      /** @warning it is assumed that, after using addNodeSet, you have executed
-       * method count() before calling method countTarget. */
+      /** @warning whenever you call this function, if the counts have not been
+       * computed yet, they are computed before the function returns. */
       const std::vector<float,CountAlloc>&
-      _getConditioningCounts ( unsigned int index ) const noexcept;
+      _getConditioningCounts ( unsigned int index );
 
       /// returns the set of target + conditioning nodes
       /** conditioning nodes are always the first ones in the vector and targets
@@ -287,9 +287,6 @@ namespace gum {
       /// returns the conditioning nodes (nullptr if there are no such nodes)
       const std::vector<unsigned int,IdSetAlloc>*
       _getConditioningNodes ( unsigned int index ) const noexcept;
-
-      /// perform the computation of the countings
-      void _count ();
 
       
       /// 1 / log(2)
@@ -309,7 +306,14 @@ namespace gum {
       std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* >
       __conditioning_nodesets;
 
-    
+      /// indicates whether we have already computed the countings of the nodesets
+      bool __counts_computed { false };
+      
+
+      /// perform the computation of the countings
+      void __count ();
+
+      
       // ##########################################################################
       // ##########################################################################
 

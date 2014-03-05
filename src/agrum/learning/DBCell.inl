@@ -138,14 +138,14 @@ namespace gum {
 
     
     /// returns the DBcell as a float (safe with type checking)
-    float DBCell::getFloatSafe () const {
+    INLINE float DBCell::getFloatSafe () const {
       if ( __type == EltType::FLOAT ) return __float;
       else GUM_ERROR ( TypeError, "the DBCell does not contain a float" );
     }
 
 
     /// returns the DBcell as a double (safe with type checking)
-    double DBCell::getDoubleSafe () const {
+    INLINE double DBCell::getDoubleSafe () const {
       if ( __type == EltType::DOUBLE ) return __double;
       else GUM_ERROR ( TypeError, "the DBCell does not contain a double" );
     }

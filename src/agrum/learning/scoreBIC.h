@@ -21,14 +21,10 @@
  * @brief the class for computing BIC scores
  *
  * The class should be used as follows: first, to speed-up computations, you
- * should consider computing all the scores conditioned to a given set of
- * nodes in one pass. To do so, use the appropriate computeScores method. This
- * one will compute everything you need. The computeScores methods where you
- * do not specify a set of conditioning nodes assume that this set is empty.
- * If available memory is limited, use the setMaxSize method to constrain the
- * memory that will be used for these computations. Once the computations
- * have been performed, use methods score to retrieve the scores computed.
- * See the Score class for details.
+ * should consider computing all the scores you need in one pass. To do so, use
+ * the appropriate addNodeSets methods. These will compute everything you need.
+ * Use methods score to retrieve the scores computed. See the Score class for
+ * details.
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
@@ -37,7 +33,7 @@
 #define GUM_LEARNING_SCORE_BIC_H
 
 
-#include <agrum/learning/asymmetricScore.h>
+#include <agrum/learning/score.h>
 
 
 namespace gum {
@@ -47,23 +43,22 @@ namespace gum {
 
     
     /* ========================================================================= */
-    /* ========================================================================= */
     /* ===                         SCORE BIC CLASS                           === */
     /* ========================================================================= */
-    /* ========================================================================= */
-    /** @class ScoreBIC the class for computing BIC scores
+    /** @class ScoreBIC
+     * @ingroup learning_group
+     * @brief The class for computing BIC scores
      *
      * The class should be used as follows: first, to speed-up computations, you
-     * should consider computing all the scores conditioned to a given set of
-     * nodes in one pass. To do so, use the appropriate computeScores method. This
-     * one will compute everything you need. The computeScores methods where you
-     * do not specify a set of conditioning nodes assume that this set is empty.
-     * If available memory is limited, use the setMaxSize method to constrain the
-     * memory that will be used for these computations. Once the computations
-     * have been performed, use methods score to retrieve the scores computed.
-     * See the Score class for details. */
-    /* ========================================================================= */
-    class ScoreBIC : public AsymmetricScore {
+     * should consider computing all the scores you need in one pass. To do so, use
+     * the appropriate addNodeSets methods. These will compute everything you need.
+     * Use methods score to retrieve the scores computed. See the Score class for
+     * details.
+     */
+    template <typename RowFilter,
+              typename IdSetAlloc = std::allocator<unsigned int>,
+              typename CountAlloc = std::allocator<float> >
+    class ScoreBIC : public Score<RowFilter,IdSetAlloc,CountAlloc> {
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -71,13 +66,10 @@ namespace gum {
       /// @{
 
       /// default constructor
-      /** @param database the database from which the scores will be computed
-       * @param max_tree_size the scores are computed using a CountingTree.
-       * Parameter max_tree_size indicates which maximal size in bytes the tree
-       * should have. This number is used approximately, i.e., we do not count
-       * precisely the number of bytes used but we count them roughly. */
-      ScoreBIC ( const Database& database,
-                 unsigned int max_tree_size = 0 );
+      /** @param filter the row filter that will be used to read the database
+       * @param var_modalities the domain sizes of the variables in the database */
+      ScoreBIC ( const RowFilter& filter,
+                 const std::vector<unsigned int>& var_modalities );
 
       /// destructor
       ~ScoreBIC ();
@@ -85,19 +77,16 @@ namespace gum {
       /// @}
 
 
-    protected:
-      /// computes the BIC score of a set of targets
-      /** @warning The function assumes that the counting tree has already been
-       * constructed */
-      void _computeScores ( const std::vector<unsigned int>& db_single_ids );
+      // ##########################################################################
+      /// @name Accessors / Modifiers
+      // ##########################################################################
+      /// @{
 
-      /// computes the BIC score of a set of targets
-      /** @warning The function assumes that the counting tree has already been
-       * constructed */
-      void _computeScores
-      ( const std::vector< std::pair<unsigned int,
-        unsigned int> >& db_pair_ids );
-      
+      /// returns the score corresponding to a given nodeset
+      float score ( unsigned int nodeset_index );
+
+      /// @}
+
     };
     
 
@@ -105,6 +94,10 @@ namespace gum {
   
   
 } /* namespace gum */
+
+
+// always include the template implementation
+#include <agrum/learning/scoreBIC.tcc>
 
 
 #endif /* GUM_LEARNING_SCORE_BIC_H */
