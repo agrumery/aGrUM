@@ -108,10 +108,10 @@ namespace gum {
       addNodeSet ( unsigned int var,
                    const std::vector<unsigned int>& conditioning_ids );
 
-      /// add a new pair of target unconditioned variables to be counted
+      /// add a new target (var1) conditioned by var2 to be counted
       /** @param var1 represents the index of the first target variable in the
        * filtered rows produced by the database cell filters
-       * @param var2 represents the index of the second target variable in the
+       * @param var2 represents the index of the conditioning variable in the
        * filtered rows produced by the database cell filters
        * @return the index of the produced counting vector: the user should use
        * class BasicScore to compute in one pass several scores. These and their
@@ -122,7 +122,7 @@ namespace gum {
       unsigned int addNodeSet ( unsigned int var1,
                                 unsigned int var2 );
 
-      /// add a new pair of target unconditioned variables to be counted
+      /// add a target (vars.first) conditioned by vars.second to be counted
       /** @param vars represents the index of the target variables in the
        * filtered rows produced by the database cell filters
        * @return the index of the produced counting vector: the user should use
@@ -133,7 +133,7 @@ namespace gum {
        * countTarget to get the corresponding counting vector. */
       unsigned int addNodeSet ( const std::pair<unsigned int,unsigned int>& vars );
 
-      /// add a new pair of target conditioned variables to be counted
+      /// add a target conditioned by variables to be counted
       /** @param var1 represents the index of the first target variable in the
        * filtered rows produced by the database cell filters
        * @param var2 represents the index of the second target variable in the

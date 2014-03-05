@@ -22,7 +22,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
-#include <agrum/learning/score.h>
+#include <agrum/learning/indepTestChi2.h>
 
 #define ROWS 500000
 #define COLS 30
@@ -177,15 +177,21 @@ namespace gum_tests {
         counter.count ();
       }
       */
-      gum::learning::Score<decltype ( filter ) >
+      gum::learning::IndepTestChi2<decltype ( filter ) >
         score ( filter, modalities );
       unsigned int id1, id2, id3;
-      id1 = score.addNodeSet ( 2, std::vector<unsigned int> { 3, 1 } );
-      id2 = score.addNodeSet ( 1 );
-      id3 = score.addNodeSet ( 2 );
+      id1 = score.addNodeSet ( 2, 3, std::vector<unsigned int> { 4, 1 } );
+      id2 = score.addNodeSet ( 1, 2 );
+      //id3 = score.addNodeSet ( 3, 2 );
 
-      score.count ();
+      //score.count ();
 
+      std::cout << score.score ( id1 ) << std::endl;
+      std::cout << score.score ( id2 ) << std::endl;
+      //std::cout << score.score ( id3 ) << std::endl;
+      
+      
+      /*
       
       std::cout << "======================================" << std::endl;
       const std::vector<float>& count1 = score.getTargetCounts ( id1 );
@@ -207,7 +213,8 @@ namespace gum_tests {
         std::cout << count3[i] << " ";
       }
       std::cout << std::endl;
-      
+
+      */
     }
     
   };

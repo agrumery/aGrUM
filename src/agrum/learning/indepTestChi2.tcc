@@ -1,0 +1,171 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/** @file
+ * @brief the class for computing Chi2 scores
+ *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ */
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+
+namespace gum {
+
+  
+  namespace learning {
+
+    
+    /// default constructor
+    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
+    IndepTestChi2<RowFilter,IdSetAlloc,CountAlloc>::IndepTestChi2
+    ( const RowFilter& filter,
+      const std::vector<unsigned int>& var_modalities ) :
+      IndependenceTest<RowFilter,IdSetAlloc,CountAlloc> ( filter, var_modalities ),
+      __chi2 ( var_modalities ) {
+      // for debugging purposes
+      GUM_CONSTRUCTOR ( IndepTestChi2 );
+    }
+
+
+    /// destructor
+    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
+    IndepTestChi2<RowFilter,IdSetAlloc,CountAlloc>::~IndepTestChi2 () {
+      // for debugging purposes
+      GUM_DESTRUCTOR ( IndepTestChi2 );
+    }
+
+
+    /// returns the score corresponding to a given nodeset
+    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
+    float IndepTestChi2<RowFilter,IdSetAlloc,CountAlloc>::score
+    ( unsigned int nodeset_index ) {
+      // get the nodes involved in the score as well as their modalities
+      const std::vector<unsigned int,IdSetAlloc>& all_nodes =
+        this->_getAllNodes ( nodeset_index );
+      const std::vector<unsigned int,IdSetAlloc>* conditioning_nodes =
+        this->_getConditioningNodes ( nodeset_index + 1 );
+
+      // here, we distinguish nodesets with conditioning nodes from those
+      // without conditioning nodes
+      if ( conditioning_nodes != nullptr ) {
+        // indicate to the chi2 distribution the set of conditioning nodes
+        __chi2.setConditioningNodes ( *conditioning_nodes );
+
+        // now, perform sum_X sum_Y sum_Z ( #ZYX - #ZX * #ZY / #Z )^2 /
+        // (#ZX * #ZY / #Z )
+        
+        // get the counts for all the targets and for the conditioning nodes
+        const std::vector<float,CountAlloc>& Nzxy = 
+          this->_getAllCounts ( nodeset_index );
+        const std::vector<float,CountAlloc>& Nzy = 
+          this->_getConditioningCounts ( nodeset_index );
+        const std::vector<float,CountAlloc>& Nzx = 
+          this->_getAllCounts ( nodeset_index + 1 );
+        const std::vector<float,CountAlloc>& Nz = 
+          this->_getConditioningCounts ( nodeset_index + 1 );
+        
+        unsigned int Z_size = Nz.size ();
+        unsigned int Y_size = Nzy.size () / Z_size;
+        unsigned int X_size = Nzx.size () / Z_size;
+
+        float score = 0;
+        for ( unsigned int z = 0, zyx = 0; z < Z_size; ++z ) {
+          const float tmp_Nz = Nz[z];
+          if ( tmp_Nz ) {
+            for ( unsigned int y = 0, zy = z; y < Y_size; ++y, zy += Z_size ) {
+              const float tmp_Nzy = Nzy[zy];
+              for ( unsigned int x = 0, zx = z; x < X_size;
+                    ++x, zx += Z_size, ++zyx ) {
+                const float tmp1 = ( tmp_Nzy * Nzx[zx] ) / tmp_Nz;
+                if ( tmp1 ) {
+                  const float tmp2 = Nzxy[zyx] - tmp1;
+                  score += ( tmp2 * tmp2 ) / tmp1;
+                }
+              }
+            }
+          }
+          else {
+            zyx += Y_size * X_size;
+          }
+        }
+
+        // ok, here, score contains the value of the chi2 formula.
+        // To get a meaningful score, we shall compute the critical values
+        // for the Chi2 distribution and assign as the score of 
+        // (score - alpha ) / alpha, where alpha is the critical value
+        float alpha = __chi2.criticalValue
+          ( all_nodes[ all_nodes.size() - 1 ], all_nodes[ all_nodes.size() - 2 ] );
+        return ( score - alpha ) / alpha;
+      }
+      else {
+        // here, there is no conditioning set
+
+        // indicate to the chi2 distribution the set of conditioning nodes
+        __chi2.setConditioningNodes ( __empty_set );
+
+        // now, perform sum_X sum_Y ( #XY - (#X * #Y) / N )^2 / (#X * #Y )/N
+        
+        // get the counts for all the targets and for the conditioning nodes
+        const std::vector<float,CountAlloc>& Nxy = 
+          this->_getAllCounts ( nodeset_index );
+        const std::vector<float,CountAlloc>& Ny = 
+          this->_getConditioningCounts ( nodeset_index );
+        const std::vector<float,CountAlloc>& Nx = 
+          this->_getAllCounts ( nodeset_index + 1 );
+        
+        unsigned int Y_size = Ny.size ();
+        unsigned int X_size = Nx.size ();
+
+        // count N
+        float N = 0;
+        for ( unsigned int i = 0 ; i < Nx.size (); ++i ) {
+          N += Nx[i];
+        }
+
+        float score = 0;
+        for ( unsigned int x = 0, xy = 0; x < X_size; ++x ) {
+          const float tmp_Nx = Nx[x];
+          for ( unsigned int y = 0; y < Y_size; ++y, ++xy ) {
+            const float tmp1 = ( tmp_Nx * Ny[y] ) / N;
+            if ( tmp1 ) {
+              const float tmp2 = Nxy[xy] - tmp1;
+              score += ( tmp2 * tmp2 ) / tmp1;
+            }
+          }
+        }
+
+        // ok, here, score contains the value of the chi2 formula.
+        // To get a meaningful score, we shall compute the critical values
+        // for the Chi2 distribution and assign as the score of 
+        // (score - alpha ) / alpha, where alpha is the critical value
+        float alpha = __chi2.criticalValue
+          ( all_nodes[ all_nodes.size() - 1 ], all_nodes[ all_nodes.size() - 2 ] );
+        return ( score - alpha ) / alpha;
+      }
+    }
+
+
+  } /* namespace learning */
+  
+  
+} /* namespace gum */
+
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

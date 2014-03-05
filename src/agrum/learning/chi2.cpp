@@ -55,9 +55,9 @@ namespace gum {
 
     
     /// default constructor
-    Chi2::Chi2 ( const Database& database,
+    Chi2::Chi2 ( const std::vector<unsigned int>& var_modalities,
                  float confidence_proba ) :
-    __database ( &database ),
+    __modalities ( var_modalities ),
     __confidence_proba ( confidence_proba ) {
       // for debugging purposes
       GUM_CONSTRUCTOR ( Chi2 );

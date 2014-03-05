@@ -119,8 +119,15 @@ namespace gum {
       // assign to it its record counter index
       new_target->second = __record_counter.addNodeSet ( new_target->first );
 
+      // create the conditioning nodeset and assign to it its record counter index
+      std::vector<unsigned int,IdSetAlloc> conditioning_ids { var2 };
+      std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* new_cond =
+        new std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>
+        ( std::move ( conditioning_ids ), 0 );
+      new_cond->second = __record_counter.addNodeSet ( new_cond->first );
+  
       // save it in the score's nodeset
-      __conditioning_nodesets.push_back ( nullptr );
+      __conditioning_nodesets.push_back ( new_cond );
       __target_nodesets.push_back ( new_target );
 
       __counts_computed = false;
@@ -155,6 +162,7 @@ namespace gum {
       std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* new_cond =
         new std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>
         ( conditioning_ids, 0 );
+      new_cond->first.push_back ( var2 );
       new_cond->second = __record_counter.addNodeSet ( new_cond->first );
      
       // save it in the score's nodeset
@@ -184,6 +192,7 @@ namespace gum {
       std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* new_cond =
         new std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>
         ( conditioning_ids, 0 );
+      new_cond->first.push_back ( vars.second );
       new_cond->second = __record_counter.addNodeSet ( new_cond->first );
      
       // save it in the score's nodeset

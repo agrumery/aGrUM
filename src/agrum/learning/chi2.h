@@ -44,9 +44,7 @@ namespace gum {
 
     
     /* ========================================================================= */
-    /* ========================================================================= */
     /* ===                             CHI2 CLASS                            === */
-    /* ========================================================================= */
     /* ========================================================================= */
     class Chi2 {
     public:
@@ -56,7 +54,7 @@ namespace gum {
       /// @{
       
       /// default constructor
-      Chi2 ( const Database& database,
+      Chi2 ( const std::vector<unsigned int>& var_modalities,
              float confidence_proba = GUM_LEARNING_CONFIDENCE_PROBA );
       
       /// destructor
@@ -77,9 +75,16 @@ namespace gum {
       /// computes the critical value according to the number of degrees of freedom
       float criticalValue ( const std::pair<unsigned int, unsigned int>& pair);
 
+      /// computes the critical value according to the number of degrees of freedom
+      float criticalValue ( unsigned int var1, unsigned int var2 );
+
       /// returns the number of degrees of freedom
       unsigned long degreesOfFreedom
       ( const std::pair<unsigned int, unsigned int>& pair );
+
+      /// returns the number of degrees of freedom
+      unsigned long degreesOfFreedom
+      ( unsigned int var1, unsigned int var2 );
 
       /// modifies the confidence proba
       void setConfidenceProba( float new_proba );
@@ -88,8 +93,8 @@ namespace gum {
 
 
     private:
-      /// the database from which we compute deegrees of freedom
-      const Database* __database;
+      /// the modalities of the random variables
+      const std::vector<unsigned int>& __modalities;
 
       /// the confidence probability used for critical values
       float __confidence_proba;
@@ -129,10 +134,10 @@ namespace gum {
 
 
       /// prevent copy constructor
-      Chi2 ( const Chi2& );
+      Chi2 ( const Chi2& ) = delete;
 
       /// prevent copy operator
-      Chi2& operator= ( const Chi2& );
+      Chi2& operator= ( const Chi2& ) = delete;
       
     };
 
