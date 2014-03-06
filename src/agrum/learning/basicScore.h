@@ -338,7 +338,7 @@ namespace gum {
        * for the conditioning variables, prefer using method countConditioning.
        * @warning the dimensions of the vector are as follows: first come the
        * nodes of the conditioning set (in the order in which they were specified
-       * when callind addNodeset, and then the target nodes.
+       * when callind addNodeset, and then the target nodes).
        * @warning whenever you call this function, if the counts have not been
        * computed yet, they are computed before the function returns. */
       const std::vector<float,CountAlloc>&
