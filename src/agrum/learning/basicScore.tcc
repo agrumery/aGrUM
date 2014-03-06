@@ -114,7 +114,7 @@ namespace gum {
       // create the target nodeset
       std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* new_target =
         new std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>
-        ( std::vector<unsigned int,IdSetAlloc> { var1, var2 }, 0 );
+        ( std::vector<unsigned int,IdSetAlloc> { var2, var1 }, 0 );
 
       // assign to it its record counter index
       new_target->second = __record_counter.addNodeSet ( new_target->first );
@@ -154,8 +154,8 @@ namespace gum {
       std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* new_target =
         new std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>
         ( conditioning_ids, 0 );
-      new_target->first.push_back ( var1 );
       new_target->first.push_back ( var2 );
+      new_target->first.push_back ( var1 );
       new_target->second = __record_counter.addNodeSet ( new_target->first );
 
       // create the conditioning nodeset and assign to it its record counter index
