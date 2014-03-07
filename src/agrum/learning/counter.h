@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the base class for all the scores used for learning (BIC, BDeu, etc) as
- * well as all the independence tests.
+ * @brief the base class for all the countings used for learning (BIC, BDeu, etc)
+ * as well as all the independence tests.
  *
  * This class contains all the methods that enable to add (possibly conditioned)
  * nodesets to be subsequently counted to produce a score or the result of an
@@ -47,8 +47,8 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef GUM_LEARNING_BASIC_SCORE_H
-#define GUM_LEARNING_BASIC_SCORE_H
+#ifndef GUM_LEARNING_COUNTER_H
+#define GUM_LEARNING_COUNTER_H
 
 
 #include <vector>
@@ -65,9 +65,10 @@ namespace gum {
     /* ========================================================================= */
     /* ===                         BASIC SCORE CLASS                         === */
     /* ========================================================================= */
-    /** @class BasicScore
-     * @brief The base class for all the scores used for learning
-     * (BIC, BDeu, etc) as well as all the independence tests.
+    /** @class Counter
+     * @brief The counting class for all the scores used for learning
+     * (BIC, BDeu, etc) as well as for all the independence tests.
+     * @ingroup learning_group
      *
      * This class contains all the methods that enable to add (possibly
      * conditioned) nodesets to be subsequently counted to produce a score or the
@@ -100,7 +101,7 @@ namespace gum {
     template <typename RowFilter,
               typename IdSetAlloc = std::allocator<unsigned int>,
               typename CountAlloc = std::allocator<float> >
-    class BasicScore {
+    class Counter {
     public:
 
       // ##########################################################################
@@ -111,11 +112,11 @@ namespace gum {
       /// default constructor
       /** @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database */
-      BasicScore ( const RowFilter& filter,
-                   const std::vector<unsigned int>& var_modalities );
+      Counter ( const RowFilter& filter,
+                const std::vector<unsigned int>& var_modalities );
 
       /// destructor
-      virtual ~BasicScore ();
+      virtual ~Counter ();
 
       /// @}
 
@@ -129,7 +130,7 @@ namespace gum {
       /** @param var represents the index of the variable in the filtered rows
        * produced by the database cell filters whose observations shall be counted
        * @return the index of the produced counting vector: the user should use
-       * class BasicScore to compute in one pass several scores or independence
+       * class Counter to compute in one pass several scores or independence
        * tests. These and their corresponding countings in the database are stored
        * into a vector and the value returned by method addNodeSet is the index of
        * the observed countings of "var" in this vector. The user shall pass this
@@ -143,7 +144,7 @@ namespace gum {
        * @param vars represents the indices of the target variables in the
        * filtered rows produced by the database cell filters
        * @return the index of the first produced counting vector: the user should
-       * use class BasicScore to compute in one pass several scores. These and
+       * use class Counter to compute in one pass several scores. These and
        * their corresponding countings in the database are stored into a vector
        * and the value returned by method addNodeSets is the index of the counts
        * for the first variable of vars in this vector. The user shall pass this
@@ -168,7 +169,7 @@ namespace gum {
        * @param var2 represents the index of the conditioning variable in the
        * filtered rows produced by the database cell filters
        * @return the index of the produced counting vector: the user should use
-       * class BasicScore to compute in one pass several scores or independence
+       * class Counter to compute in one pass several scores or independence
        * tests. These and their corresponding countings in the database are stored
        * into a vector and the value returned by method addNodeSet is the index
        * of the counts in this vector. The user shall pass this index as argument
@@ -182,7 +183,7 @@ namespace gum {
        * filtered rows produced by the database cell filters, and the index
        * of the conditioning variable (second).
        * @return the index of the produced counting vector: the user should use
-       * class BasicScore to compute in one pass several scores. These and their
+       * class Counter to compute in one pass several scores. These and their
        * corresponding countings in the database are stored into a vector and the
        * value returned by method addNodeSet is the index of the counts in
        * this vector. The user shall pass this index as argument to methods
@@ -198,7 +199,7 @@ namespace gum {
        * filtered rows produced by the database cell filters, and the indices
        * of the conditioning variables (second).
        * @return the index of the first produced counting vector: the user should
-       * use class BasicScore to compute in one pass several scores. These and
+       * use class Counter to compute in one pass several scores. These and
        * their corresponding countings in the database are stored into a vector
        * and the value returned by method addNodeSets is the index of the counts
        * for the first variable of vars in this vector. The user shall pass this
@@ -214,7 +215,7 @@ namespace gum {
        * @param conditioning_ids the indices of the variables of the conditioning
        * set in the filtered rows
        * @return the index of the produced counting vector: the user should use
-       * class BasicScore to compute in one pass several scores or independence
+       * class Counter to compute in one pass several scores or independence
        * tests. These and their corresponding countings in the database are
        * stored into a vector and the value returned by method addNodeSet is the
        * index of the countings of (var | conditioning_ids) in this vector. The
@@ -234,7 +235,7 @@ namespace gum {
        * @param conditioning_ids the indices of the variables of the conditioning
        * set in the filtered rows
        * @return the index of the first produced counting vector: the user should
-       * use class BasicScore to compute in one pass several scores. These and
+       * use class Counter to compute in one pass several scores. These and
        * their corresponding countings in the database are stored into a vector
        * and the value returned by method addNodeSets is the index of the counts
        * for the first variable of vars in this vector. The user shall pass this
@@ -255,7 +256,7 @@ namespace gum {
        * set in the filtered rows (minus var2, which is subsequently
        * apended to it).
        * @return the index of the produced counting vector: the user should use
-       * class BasicScore to compute in one pass several scores. These and their
+       * class Counter to compute in one pass several scores. These and their
        * corresponding countings in the database are stored into a vector and the
        * value returned by method addNodeSet is the index of the counts in
        * this vector. The user shall pass this index as argument to methods
@@ -274,7 +275,7 @@ namespace gum {
        * @param conditioning_ids the indices of the variables of the conditioning
        * set in the filtered rows (minus vars.second which is appended to it)
        * @return the index of the produced counting vector: the user should use
-       * class BasicScore to compute in one pass several scores. These and their
+       * class Counter to compute in one pass several scores. These and their
        * corresponding countings in the database are stored into a vector and the
        * value returned by method addNodeSet is the index of the counts in
        * this vector. The user shall pass this index as argument to methods
@@ -294,7 +295,7 @@ namespace gum {
        * @param conditioning_ids the indices of the variables of the conditioning
        * set in the filtered rows (minus vars.second which is appended to it)
        * @return the index of the first produced counting vector: the user should
-       * use class BasicScore to compute in one pass several scores. These and
+       * use class Counter to compute in one pass several scores. These and
        * their corresponding countings in the database are stored into a vector
        * and the value returned by method addNodeSets is the index of the counts
        * for the first variable of vars in this vector. The user shall pass this
@@ -316,9 +317,6 @@ namespace gum {
 
       /// clears all the data structures from memory
       void clear ();
-
-      /// returns the score corresponding to a given nodeset
-      virtual float score ( unsigned int nodeset_index ) = 0;
 
       /// returns the modalities of the variables
       const std::vector<unsigned int>& modalities () const noexcept;
@@ -390,11 +388,11 @@ namespace gum {
       // ##########################################################################
 
       /// prevent copy constructor
-      BasicScore ( const BasicScore<RowFilter,IdSetAlloc,CountAlloc>& ) = delete;
+      Counter ( const Counter<RowFilter,IdSetAlloc,CountAlloc>& ) = delete;
 
       /// prevent copy operator
-      BasicScore<RowFilter,IdSetAlloc,CountAlloc>&
-      operator= ( const BasicScore<RowFilter,IdSetAlloc,CountAlloc>& ) = delete;
+      Counter<RowFilter,IdSetAlloc,CountAlloc>&
+      operator= ( const Counter<RowFilter,IdSetAlloc,CountAlloc>& ) = delete;
 
     };
 
@@ -406,7 +404,7 @@ namespace gum {
 
 
 /// include the template implementation
-#include <agrum/learning/basicScore.tcc>
+#include <agrum/learning/counter.tcc>
 
 
-#endif /* GUM_LEARNING_BASIC_SCORE_H */
+#endif /* GUM_LEARNING_COUNTER_H */

@@ -21,9 +21,10 @@
  * @brief the class for computing Chi2 scores
  *
  * The class should be used as follows: first, to speed-up computations, you
- * should consider computing all the scores you need in one pass. To do so, use
- * the appropriate addNodeSets methods. These will compute everything you need.
- * Use methods score to retrieve the scores computed. See the Score class for
+ * should consider computing all the independence tests you need in one pass.
+ * To do so, use the appropriate addNodeSets methods. These will compute
+ * everything you need. Use method score to retrieve the scores related to
+ * the independence test that were computed. See the IndependenceTest class for
  * details.
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -47,13 +48,16 @@ namespace gum {
     /* ========================================================================= */
     /* ===                         SCORE CHI2 CLASS                          === */
     /* ========================================================================= */
-    /** @class ScoreChi2
+    /** @class IndepTestChi2
+     * @brief the class for computing Chi2 independence test scores
+     * @ingroup learning_group
      *
      * The class should be used as follows: first, to speed-up computations, you
-     * should consider computing all the scores you need in one pass. To do so, use
-     * the appropriate addNodeSets methods. These will compute everything you need.
-     * Use methods score to retrieve the scores computed. See the Score class for
-     * details.
+     * should consider computing all the independence tests you need in one pass.
+     * To do so, use the appropriate addNodeSets methods. These will compute
+     * everything you need. Use method score to retrieve the scores related to
+     * the independence test that were computed. See the IndependenceTest class for
+     * details. 
      */
     template <typename RowFilter,
               typename IdSetAlloc = std::allocator<unsigned int>,
@@ -84,8 +88,8 @@ namespace gum {
       /// @{
 
       /// returns the score corresponding to a given nodeset
-      /** This method computes sum_X sum_Y sum_Z ( #XYZ - #XZ * #YZ / #Z )^2 /
-       * (#XZ * #YZ / #Z ), where #XYZ and #XZ correspond to the number of
+      /** This method computes sum_X sum_Y sum_Z ( #XYZ - (#XZ * #YZ) / #Z )^2 /
+       * (( #XZ * #YZ) / #Z ), where #XYZ and #XZ correspond to the number of
        * occurences of (X,Y,Z) and (X,Z) respectively in the database. */
       float score ( unsigned int nodeset_index );
 

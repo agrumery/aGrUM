@@ -38,7 +38,7 @@ namespace gum {
     Score<RowFilter,IdSetAlloc,CountAlloc>::Score
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities ) :
-      BasicScore<RowFilter,IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
+      Counter<RowFilter,IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
       GUM_CONSTRUCTOR ( Score );
     }
 
@@ -54,7 +54,7 @@ namespace gum {
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
     unsigned int Score<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
     ( unsigned int var ) {
-      return BasicScore<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet ( var );
+      return Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet ( var );
     }
 
 
@@ -64,7 +64,7 @@ namespace gum {
     Score<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
     ( unsigned int var,
       const std::vector<unsigned int>& conditioning_ids ) {
-      return BasicScore<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+      return Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
         ( var,  conditioning_ids );
     }
 
@@ -74,7 +74,7 @@ namespace gum {
     unsigned int
     Score<RowFilter,IdSetAlloc,CountAlloc>::addNodeSets
     ( const std::vector<unsigned int>& single_vars ) {
-      return BasicScore<RowFilter,IdSetAlloc,CountAlloc>::addNodeSets
+      return Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSets
         ( single_vars );
     }
 
@@ -85,7 +85,7 @@ namespace gum {
     Score<RowFilter,IdSetAlloc,CountAlloc>::addNodeSets
     ( const std::vector<unsigned int>& single_vars,
       const std::vector<unsigned int>& conditioning_ids ) {
-      return BasicScore<RowFilter,IdSetAlloc,CountAlloc>::addNodeSets
+      return Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSets
         ( single_vars, conditioning_ids );
     }
     

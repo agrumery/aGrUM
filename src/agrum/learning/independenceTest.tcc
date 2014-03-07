@@ -37,7 +37,7 @@ namespace gum {
     IndependenceTest<RowFilter,IdSetAlloc,CountAlloc>::IndependenceTest
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities ) :
-      BasicScore<RowFilter,IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
+      Counter<RowFilter,IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
       GUM_CONSTRUCTOR ( IndependenceTest );
     }
 
@@ -55,9 +55,9 @@ namespace gum {
     IndependenceTest<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
     ( unsigned int var1,
       unsigned int var2 ) {
-      unsigned int index = BasicScore<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
-        ( var1,var2 );
-      BasicScore<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet ( var1 );
+      unsigned int index = Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+        ( var1, var2 );
+      Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet ( var1 );
       return index;
     }
 
@@ -67,9 +67,9 @@ namespace gum {
     unsigned int
     IndependenceTest<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
     ( const std::pair<unsigned int,unsigned int>& vars ) {
-      unsigned int index = BasicScore<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+      unsigned int index = Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
         ( vars );
-      BasicScore<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet ( vars.first );
+      Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet ( vars.first );
       return index;
     }
 
@@ -81,9 +81,9 @@ namespace gum {
     ( unsigned int var1,
       unsigned int var2,
       const std::vector<unsigned int>& conditioning_ids ) {
-      unsigned int index = BasicScore<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+      unsigned int index = Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
         ( var1, var2, conditioning_ids );
-      BasicScore<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+      Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
         ( var1, conditioning_ids );
       return index;
     }
@@ -95,9 +95,9 @@ namespace gum {
     IndependenceTest<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
     ( const std::pair<unsigned int,unsigned int>& vars,
       const std::vector<unsigned int>& conditioning_ids ) {
-      unsigned int index = BasicScore<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+      unsigned int index = Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
         ( vars, conditioning_ids );
-      BasicScore<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+      Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
         ( vars.first, conditioning_ids );
       return index;
     }

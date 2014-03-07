@@ -37,28 +37,28 @@ namespace gum {
     
     /// default constructor
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    BasicScore<RowFilter,IdSetAlloc,CountAlloc>::BasicScore
+    Counter<RowFilter,IdSetAlloc,CountAlloc>::Counter
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities) :
       _modalities ( var_modalities ), 
       __record_counter ( filter, var_modalities ) {
       // for debugging purposes
-      GUM_CONSTRUCTOR ( BasicScore );
+      GUM_CONSTRUCTOR ( Counter );
     }
 
     
     /// destructor
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
-    BasicScore<RowFilter,IdSetAlloc,CountAlloc>::~BasicScore () {
+    Counter<RowFilter,IdSetAlloc,CountAlloc>::~Counter () {
       // for debugging purposes
-      GUM_DESTRUCTOR ( BasicScore );
+      GUM_DESTRUCTOR ( Counter );
       clear ();
     }
 
     
     /// add a new single variable to be counted
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    unsigned int BasicScore<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+    unsigned int Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
     ( unsigned int var ) {
       // create the target nodeset
       std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* new_target =
@@ -80,7 +80,7 @@ namespace gum {
 
     /// add a new target variable plus some conditioning vars
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    unsigned int BasicScore<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+    unsigned int Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
     ( unsigned int var,
       const std::vector<unsigned int>& conditioning_ids ) {
       // create the target nodeset and assign to it its record counter index
@@ -108,7 +108,7 @@ namespace gum {
 
     /// add a new pair of target unconditioned variables to be counted
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    unsigned int BasicScore<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+    unsigned int Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
     ( unsigned int var1,
       unsigned int var2 ) {
       // create the target nodeset
@@ -137,7 +137,7 @@ namespace gum {
 
     /// add a new pair of target unconditioned variables to be counted
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    unsigned int BasicScore<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+    unsigned int Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
     ( const std::pair<unsigned int,unsigned int>& vars ) {
       return addNodeSet ( vars.first, vars.second );
     }
@@ -145,7 +145,7 @@ namespace gum {
       
     /// add a new pair of target conditioned variables to be counted
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    unsigned int BasicScore<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+    unsigned int Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
     ( unsigned int var1,
       unsigned int var2,
       const std::vector<unsigned int>& conditioning_ids ) {
@@ -176,7 +176,7 @@ namespace gum {
 
     /// add a new pair of target conditioned variables to be counted
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    unsigned int BasicScore<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+    unsigned int Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
     ( const std::pair<unsigned int,unsigned int>& vars,
       const std::vector<unsigned int>& conditioning_ids ) {
       // create the target nodeset and assign to it its record counter index
@@ -206,7 +206,7 @@ namespace gum {
 
     /// add new set of "unconditioned" single targets
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    unsigned int BasicScore<RowFilter,IdSetAlloc,CountAlloc>::addNodeSets
+    unsigned int Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSets
     ( const std::vector<unsigned int>& single_vars ) {
       unsigned int index;
       for ( auto var : single_vars ) {
@@ -219,7 +219,7 @@ namespace gum {
     /// add new set of "conditioned" single targets
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
     unsigned int
-    BasicScore<RowFilter,IdSetAlloc,CountAlloc>::addNodeSets
+    Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSets
     ( const std::vector<unsigned int>& single_vars,
       const std::vector<unsigned int>& conditioning_ids ) {
       unsigned int index;
@@ -232,7 +232,7 @@ namespace gum {
 
     /// add new set of "unconditioned" pairs of targets
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    unsigned int BasicScore<RowFilter,IdSetAlloc,CountAlloc>::addNodeSets
+    unsigned int Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSets
     ( const std::vector< std::pair<unsigned int,unsigned int> >& vars ) {
       unsigned int index;
       for ( const auto& var : vars ) {
@@ -244,7 +244,7 @@ namespace gum {
     
     /// add new set of "conditioned" pairs of targets
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    unsigned int BasicScore<RowFilter,IdSetAlloc,CountAlloc>::addNodeSets
+    unsigned int Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSets
     ( const std::vector< std::pair<unsigned int,unsigned int> >& vars,
       const std::vector<unsigned int>& conditioning_ids ) {
       unsigned int index;
@@ -257,7 +257,7 @@ namespace gum {
 
     /// clears all the data structures from memory
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    void BasicScore<RowFilter,IdSetAlloc,CountAlloc>::clear () {
+    void Counter<RowFilter,IdSetAlloc,CountAlloc>::clear () {
       __record_counter.clearNodeSets ();
 
       for ( auto set : __target_nodesets ) delete set;
@@ -270,7 +270,7 @@ namespace gum {
 
     /// perform the computation of the countings
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    void BasicScore<RowFilter,IdSetAlloc,CountAlloc>::__count () {
+    void Counter<RowFilter,IdSetAlloc,CountAlloc>::__count () {
       __record_counter.count ();
       __counts_computed = true;
     }
@@ -279,7 +279,7 @@ namespace gum {
     /// returns the counting vector for a given (conditioned) target set
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
     const std::vector<float,CountAlloc>&
-    BasicScore<RowFilter,IdSetAlloc,CountAlloc>::_getAllCounts
+    Counter<RowFilter,IdSetAlloc,CountAlloc>::_getAllCounts
     ( unsigned int index ) {
       if ( ! __counts_computed ) __count ();
       return __record_counter.getCounts ( __target_nodesets[index]->second );
@@ -289,7 +289,7 @@ namespace gum {
     /// returns the counting vector for a conditioning set
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
     const std::vector<float,CountAlloc>&
-    BasicScore<RowFilter,IdSetAlloc,CountAlloc>::_getConditioningCounts
+    Counter<RowFilter,IdSetAlloc,CountAlloc>::_getConditioningCounts
     ( unsigned int index ) {
       if ( ! __counts_computed ) __count ();
       return __record_counter.getCounts ( __conditioning_nodesets[index]->second );
@@ -299,7 +299,7 @@ namespace gum {
     /// returns the set of target + conditioning nodes
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
     const std::vector<unsigned int,IdSetAlloc>&
-    BasicScore<RowFilter,IdSetAlloc,CountAlloc>::_getAllNodes
+    Counter<RowFilter,IdSetAlloc,CountAlloc>::_getAllNodes
     ( unsigned int index ) const noexcept {
       return __target_nodesets[index]->first;
     }
@@ -307,7 +307,7 @@ namespace gum {
     /// returns the set of conditioning nodes
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
     const std::vector<unsigned int,IdSetAlloc>*
-    BasicScore<RowFilter,IdSetAlloc,CountAlloc>::_getConditioningNodes
+    Counter<RowFilter,IdSetAlloc,CountAlloc>::_getConditioningNodes
     ( unsigned int index ) const noexcept {
       if ( __conditioning_nodesets[index] != nullptr ) {
         return &( __conditioning_nodesets[index]->first );
@@ -321,7 +321,7 @@ namespace gum {
     /// returns the modalities of the variables
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
     const std::vector<unsigned int>&
-    BasicScore<RowFilter,IdSetAlloc,CountAlloc>::modalities () const noexcept {
+    Counter<RowFilter,IdSetAlloc,CountAlloc>::modalities () const noexcept {
       return _modalities;
     }
 

@@ -23,6 +23,7 @@
 #include <testsuite_utils.h>
 
 #include <agrum/learning/indepTestChi2.h>
+#include <agrum/learning/scoreBIC.h>
 
 #define ROWS 500000
 #define COLS 30
@@ -177,18 +178,18 @@ namespace gum_tests {
         counter.count ();
       }
       */
-      gum::learning::IndepTestChi2<decltype ( filter ) >
-        score ( filter, modalities );
+      gum::learning::IndepTestChi2<decltype ( filter ) > score ( filter, modalities );
+      //gum::learning::ScoreBIC<decltype ( filter ) > score ( filter, modalities );
       unsigned int id1, id2, id3;
-      id1 = score.addNodeSet ( 2, 3, std::vector<unsigned int> { 4, 1 } );
-      id2 = score.addNodeSet ( 1, 2 );
-      //id3 = score.addNodeSet ( 3, 2 );
+      id1 = score.addNodeSet ( 2, 3, std::vector<unsigned int> { 4 } );
+      //id2 = score.addNodeSet ( 1, 2 );
+      id3 = score.addNodeSet ( 3, 2 );
 
       //score.count ();
 
       std::cout << score.score ( id1 ) << std::endl;
-      std::cout << score.score ( id2 ) << std::endl;
-      //std::cout << score.score ( id3 ) << std::endl;
+      //std::cout << score.score ( id2 ) << std::endl;
+      std::cout << score.score ( id3 ) << std::endl;
       
       
       /*

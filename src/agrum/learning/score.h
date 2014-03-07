@@ -20,6 +20,15 @@
 /** @file
  * @brief the base class for all the scores used for learning (BIC, BDeu, etc)
  *
+ * The class should be used as follows: first, to speed-up computations, you
+ * should consider computing all the scores you need in one pass. To do so,
+ * use the appropriate addNodeSet methods. These will compute everything you
+ * need. The addNodeSet methods where you do not specify a set of conditioning
+ * nodes assume that this set is empty. Once the computations have been
+ * performed, use method _getAllCounts and _getConditioningCounts to get the
+ * observed countings if you are developping a new score class, or use
+ * method score to get the computed score if you are an end user.
+ *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_LEARNING_SCORE_H
@@ -27,7 +36,7 @@
 
 
 #include <agrum/config.h>
-#include <agrum/learning/basicScore.h>
+#include <agrum/learning/counter.h>
 
 
 namespace gum {
@@ -39,19 +48,22 @@ namespace gum {
     /* ========================================================================= */
     /* ===                            SCORE CLASS                            === */
     /* ========================================================================= */
-    /** @class Score The base class for all the scores used for learning
-     * (BIC, BDeu, etc)
+    /** @class Score
+     * @brief The base class for all the scores used for learning (BIC, BDeu, etc)
+     * @ingroup learning_group
      *
      * The class should be used as follows: first, to speed-up computations, you
      * should consider computing all the scores you need in one pass. To do so,
-     * use the appropriate addScores methods. These will compute everything you
-     * need. The addScores methods where you do not specify a set of conditioning
+     * use the appropriate addNodeSet methods. These will compute everything you
+     * need. The addNodeSet methods where you do not specify a set of conditioning
      * nodes assume that this set is empty. Once the computations have been
-     * performed, use methods score to retrieve the scores computed. */
+     * performed, use method _getAllCounts and _getConditioningCounts to get the
+     * observed countings if you are developping a new score class, or use
+     * method score to get the computed score if you are an end user. */
     template <typename RowFilter,
               typename IdSetAlloc = std::allocator<unsigned int>,
               typename CountAlloc = std::allocator<float> >
-    class Score : private BasicScore<RowFilter,IdSetAlloc,CountAlloc> {
+    class Score : private Counter<RowFilter,IdSetAlloc,CountAlloc> {
     public:
 
       // ##########################################################################
@@ -80,30 +92,13 @@ namespace gum {
       /** @param var represents the index of the variable in the filtered rows
        * produced by the database cell filters whose observations shall be counted
        * @return the index of the produced counting vector: the user should use
-       * class Score to compute in one pass several scores. These and their
-       * corresponding countings in the database are stored into a vector and the
-       * value returned by method addNodeSet is the index of the counts in
-       * this vector. The user shall pass this index as argument to method
-       * countTarget to get the corresponding counting vector. */
+       * class Score to compute in one pass several scores or independence
+       * tests. These and their corresponding countings in the database are stored
+       * into a vector and the value returned by method addNodeSet is the index of
+       * the observed countings of "var" in this vector. The user shall pass this
+       * index as argument to methods _getAllCounts to get the corresponding
+       * counting vector. */
       unsigned int addNodeSet ( unsigned int var );
-
-      /// add a new target variable plus some conditioning vars
-      /** @param var represents the index of the target variable in the filtered
-       * rows produced by the database cell filters
-       * @param conditioning_ids the indices of the variables of the conditioning
-       * set in the filtered rows
-       * @return the index of the produced counting vector: the user should use
-       * class Score to compute in one pass several scores. These and their
-       * corresponding countings in the database are stored into a vector and the
-       * value returned by method addNodeSet is the index of the counts in
-       * this vector. The user shall pass this index as argument to methods
-       * countTarget and countConditioning to get the corresponding counting
-       * vectors. The former contains the observed countings for the set of
-       * var and conditioning_ids whereas the countConditioning returns the
-       * observed countings only for the conditioning_ids. */
-      unsigned int
-      addNodeSet ( unsigned int var,
-                   const std::vector<unsigned int>& conditioning_ids );
 
       /// add new set of "unconditioned" single targets
       /** This method is a shortcut for the application of addNodeSet on each
@@ -113,17 +108,36 @@ namespace gum {
        * @return the index of the first produced counting vector: the user should
        * use class Score to compute in one pass several scores. These and
        * their corresponding countings in the database are stored into a vector
-       * and the value returned by method addNodeSet is the index of the counts
+       * and the value returned by method addNodeSets is the index of the counts
        * for the first variable of vars in this vector. The user shall pass this
-       * index as argument to method countTarget to get the corresponding counting
-       * vector. The other counting vectors follow the first one in the vector of
-       * counting vectors (i.e., their indices follow that of the first var). */
+       * index as argument to method _getAllCounts to get the corresponding
+       * counting vector. The other counting vectors follow the first one in the
+       * vector of counting vectors (i.e., their indices follow that of the
+       * first var). */
       unsigned int
       addNodeSets ( const std::vector<unsigned int>& single_vars );
 
-      /// add new set of "conditioned" single targets
+      /// add a new target variable plus some conditioning vars
+      /** @param var represents the index of the target variable in the filtered
+       * rows produced by the database cell filters
+       * @param conditioning_ids the indices of the variables of the conditioning
+       * set in the filtered rows
+       * @return the index of the produced counting vector: the user should use
+       * class Score to compute in one pass several scores or independence
+       * tests. These and their corresponding countings in the database are
+       * stored into a vector and the value returned by method addNodeSet is the
+       * index of the countings of (var | conditioning_ids) in this vector. The
+       * user shall pass this index as argument to methods _getAllCounts and
+       * _getConditioningCounts to get the counting vectors of
+       * (conditioning_ids,vars) [in this order] and conditioning_ids
+       * respectively. */
+      unsigned int
+      addNodeSet ( unsigned int var,
+                   const std::vector<unsigned int>& conditioning_ids );
+
+      /// add new set of target variables conditioned by the same variables
       /** This method is a shortcut for the application of addNodeSet on each
-       * variable in vector vars.
+       * variable in vector vars conditioned by conditioning_ids.
        * @param vars represents the indices of the target variables in the
        * filtered rows produced by the database cell filters
        * @param conditioning_ids the indices of the variables of the conditioning
@@ -131,20 +145,21 @@ namespace gum {
        * @return the index of the first produced counting vector: the user should
        * use class Score to compute in one pass several scores. These and
        * their corresponding countings in the database are stored into a vector
-       * and the value returned by method addNodeSet is the index of the counts
+       * and the value returned by method addNodeSets is the index of the counts
        * for the first variable of vars in this vector. The user shall pass this
-       * index as argument to method countTarget to get the corresponding counting
-       * vector. The other counting vectors follow the first one in the vector of
-       * counting vectors (i.e., their indices follow that of the first var). */
+       * index as argument to methods _getAllCounts and _getConditioningCounts
+       * to get the countings of ( conditioning_ids,vars ) [in this order] and
+       * conditioning_ids respectively, where var corresponds to the target
+       * variable. */
       unsigned int
-      addNodeSets ( const std::vector<unsigned int>& single_vars,
+      addNodeSets ( const std::vector<unsigned int>& vars,
                     const std::vector<unsigned int>& conditioning_ids );
 
       /// clears all the data structures from memory
-      using BasicScore<RowFilter,IdSetAlloc,CountAlloc>::clear;
+      using Counter<RowFilter,IdSetAlloc,CountAlloc>::clear;
 
       /// returns the modalities of the variables
-      using BasicScore<RowFilter,IdSetAlloc,CountAlloc>::modalities;
+      using Counter<RowFilter,IdSetAlloc,CountAlloc>::modalities;
 
       /// returns the score corresponding to a given nodeset
       virtual float score ( unsigned int nodeset_index ) = 0;
@@ -164,20 +179,20 @@ namespace gum {
        * when callind addNodeset, and then the target nodes.
        * @warning it is assumed that, after using addNodeSet, you have executed
        * method count() before calling method countTarget. */
-      using BasicScore<RowFilter,IdSetAlloc,CountAlloc>::_getAllCounts;
+      using Counter<RowFilter,IdSetAlloc,CountAlloc>::_getAllCounts;
 
       /// returns the counting vector for a conditioning set
       /** @warning it is assumed that, after using addNodeSet, you have executed
        * method count() before calling method countTarget. */
-      using BasicScore<RowFilter,IdSetAlloc,CountAlloc>::_getConditioningCounts;
+      using Counter<RowFilter,IdSetAlloc,CountAlloc>::_getConditioningCounts;
 
       /// returns the set of target + conditioning nodes
       /** conditioning nodes are always the first ones in the vector and targets
        * are the last ones */
-      using BasicScore<RowFilter,IdSetAlloc,CountAlloc>::_getAllNodes;
+      using Counter<RowFilter,IdSetAlloc,CountAlloc>::_getAllNodes;
 
       /// returns the conditioning nodes (nullptr if there are no such nodes)
-      using BasicScore<RowFilter,IdSetAlloc,CountAlloc>::_getConditioningNodes;
+      using Counter<RowFilter,IdSetAlloc,CountAlloc>::_getConditioningNodes;
 
       
       /// 1 / log(2)

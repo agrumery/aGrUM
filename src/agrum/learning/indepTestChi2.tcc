@@ -61,7 +61,8 @@ namespace gum {
         this->_getAllNodes ( nodeset_index );
       const std::vector<unsigned int,IdSetAlloc>* conditioning_nodes =
         this->_getConditioningNodes ( nodeset_index + 1 );
-
+      const std::vector<unsigned int>& modals = this->modalities ();
+      
       // here, we distinguish nodesets with conditioning nodes from those
       // without conditioning nodes
       if ( conditioning_nodes != nullptr ) {
@@ -72,7 +73,7 @@ namespace gum {
         // (#ZX * #ZY / #Z )
         
         // get the counts for all the targets and for the conditioning nodes
-        const std::vector<float,CountAlloc>& Nzxy = 
+        const std::vector<float,CountAlloc>& Nzyx = 
           this->_getAllCounts ( nodeset_index );
         const std::vector<float,CountAlloc>& Nzy = 
           this->_getConditioningCounts ( nodeset_index );
@@ -80,29 +81,26 @@ namespace gum {
           this->_getAllCounts ( nodeset_index + 1 );
         const std::vector<float,CountAlloc>& Nz = 
           this->_getConditioningCounts ( nodeset_index + 1 );
-        
+
         unsigned int Z_size = Nz.size ();
-        unsigned int Y_size = Nzy.size () / Z_size;
-        unsigned int X_size = Nzx.size () / Z_size;
+        unsigned int Y_size = modals[ all_nodes[all_nodes.size() - 2] ];
+        unsigned int X_size = modals[ all_nodes[all_nodes.size() - 1] ];
 
         float score = 0;
-        for ( unsigned int z = 0, zyx = 0; z < Z_size; ++z ) {
-          const float tmp_Nz = Nz[z];
-          if ( tmp_Nz ) {
-            for ( unsigned int y = 0, zy = z; y < Y_size; ++y, zy += Z_size ) {
-              const float tmp_Nzy = Nzy[zy];
-              for ( unsigned int x = 0, zx = z; x < X_size;
-                    ++x, zx += Z_size, ++zyx ) {
-                const float tmp1 = ( tmp_Nzy * Nzx[zx] ) / tmp_Nz;
+
+        for ( unsigned int x = 0, beg_zx = 0, zyx = 0;
+              x < X_size; ++x, beg_zx += Z_size ) {
+          for ( unsigned int y = 0, zy = 0, zx = beg_zx;
+                y < Y_size; ++y, zx = beg_zx ) {
+            for ( unsigned int z = 0; z < Z_size; ++z, ++zy, ++zx, ++zyx ) {
+              if ( Nz[z] ) {
+                const float tmp1 = ( Nzy[zy] * Nzx[zx] ) / Nz[z];
                 if ( tmp1 ) {
-                  const float tmp2 = Nzxy[zyx] - tmp1;
+                  const float tmp2 = Nzyx[zyx] - tmp1;
                   score += ( tmp2 * tmp2 ) / tmp1;
                 }
               }
             }
-          }
-          else {
-            zyx += Y_size * X_size;
           }
         }
 
@@ -123,7 +121,7 @@ namespace gum {
         // now, perform sum_X sum_Y ( #XY - (#X * #Y) / N )^2 / (#X * #Y )/N
         
         // get the counts for all the targets and for the conditioning nodes
-        const std::vector<float,CountAlloc>& Nxy = 
+        const std::vector<float,CountAlloc>& Nyx = 
           this->_getAllCounts ( nodeset_index );
         const std::vector<float,CountAlloc>& Ny = 
           this->_getConditioningCounts ( nodeset_index );
@@ -140,12 +138,13 @@ namespace gum {
         }
 
         float score = 0;
-        for ( unsigned int x = 0, xy = 0; x < X_size; ++x ) {
+      
+        for ( unsigned int x = 0, yx = 0; x < X_size; ++x ) {
           const float tmp_Nx = Nx[x];
-          for ( unsigned int y = 0; y < Y_size; ++y, ++xy ) {
+          for ( unsigned int y = 0; y < Y_size; ++y, ++yx ) {
             const float tmp1 = ( tmp_Nx * Ny[y] ) / N;
             if ( tmp1 ) {
-              const float tmp2 = Nxy[xy] - tmp1;
+              const float tmp2 = Nyx[yx] - tmp1;
               score += ( tmp2 * tmp2 ) / tmp1;
             }
           }
