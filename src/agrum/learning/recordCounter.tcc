@@ -245,26 +245,35 @@ namespace gum {
       __is_id_subset.push_back ( false );
       
       // create the corresponding idset
-      const IdSet<IdSetAlloc>& idset =
-        __idsets.insert ( IdSet<IdSetAlloc> ( ids ), __idsets.size () ).first;
-      __idset2index.insert ( &idset, __idset2index.size () );
-      __set2thread_id.push_back
-        ( std::pair<const IdSet<IdSetAlloc>*,unsigned int>
-          ( &idset, __set2thread_id.size () ) );
       __nodesets.push_back ( &ids );
+      IdSet<IdSetAlloc> tmp_idset ( ids );
+      if ( ! __idsets.exists ( tmp_idset ) ) {
+        const IdSet<IdSetAlloc>& idset =
+          __idsets.insert ( std::move ( tmp_idset ), __idsets.size () ).first;
+        __idset2index.insert ( &idset, __idset2index.size () );
+        __set2thread_id.push_back
+          ( std::pair<const IdSet<IdSetAlloc>*,unsigned int>
+            ( &idset, __set2thread_id.size () ) );
       
-      // for each variable in ids, indicate that ids contain this variable
-      for ( auto id : ids ) {
-        try {
-          __var2idsets[id].push_back ( &idset );
-        }
-        catch ( NotFound& ) {
-          __var2idsets.insert ( id, std::vector<const IdSet<IdSetAlloc>*> () );
-          __var2idsets[id].push_back ( &idset );
+        // for each variable in ids, indicate that ids contain this variable
+        for ( auto id : ids ) {
+          try {
+            __var2idsets[id].push_back ( &idset );
+          }
+          catch ( NotFound& ) {
+            __var2idsets.insert ( id, std::vector<const IdSet<IdSetAlloc>*> () );
+            __var2idsets[id].push_back ( &idset );
+          }
         }
       }
+      else {
+        __is_id_subset.push_back ( true );
+        __set2thread_id.push_back
+          ( std::pair<const IdSet<IdSetAlloc>*,unsigned int>
+            ( nullptr, __idsets[tmp_idset] ) );
+      }
       
-      return __idset2index.size () - 1;
+      return __nodesets.size () - 1;
     }
 
     
@@ -362,133 +371,142 @@ namespace gum {
     // computes the countings of the subsets from those of their supersets
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
     void RecordCounter<RowFilter,IdSetAlloc,CountAlloc>::countSubsets () {
-        // perform the countings for the subsets
-        //#pragma omp parallel for
-        for ( unsigned int i = 0; i < __is_id_subset.size (); ++i ) {
-           if ( __is_id_subset[i] &&
-               ( __set2thread_id[i].second !=
-                 std::numeric_limits<unsigned int>::max () ) ) {
-            // get the subset and its superset
-            const auto& subset_ids = *( __nodesets[i] );
-            const auto& superset_ids = *( __nodesets[__set2thread_id[i].second] );
-            auto& subset_vect = __countings[i];
-            const auto& superset_vect = __countings[ __set2thread_id[i].second ];
-                         
-            // Compute the variables that belong to both the (projection) subset
-            // and its superset. Store the number of increments in the computation
-            // loops at the end of the function before which the variables of the
-            // projection set need be incremented (vector before_incr).
-            std::vector<unsigned int> table_and_result_offset;
-            std::vector<unsigned int> table_and_result_domain;
-            std::vector<unsigned int> before_incr;
-            unsigned int nb_positive_before_incr = 0;
-            unsigned int table_alone_domain_size = 1;
-            unsigned int result_domain_size = 1;
-            unsigned int table_domain_size = superset_vect.size ();
-            {
-              unsigned int tmp_before_incr = 1;
-              bool has_before_incr = false;
-              unsigned int subset_size = subset_ids.size ();
-
-              for ( unsigned int h = 0, j = 0; h < superset_ids.size (); ++h ) {
-                if ( j < subset_size ) {
-                  if ( subset_ids[j] == superset_ids[h] ) {
-                    if ( has_before_incr ) {
-                      before_incr.push_back ( tmp_before_incr - 1 );
-                      has_before_incr = false;
-                      ++nb_positive_before_incr;
-                    }
-                    else {
-                      before_incr.push_back ( 0 );
-                    }
-
-                    unsigned int modality =
-                      __modalities->operator[] ( subset_ids[j] ); 
-                    table_and_result_domain.push_back ( modality );
-                    table_and_result_offset.push_back ( result_domain_size );
-                    result_domain_size *= modality;
-                    tmp_before_incr = 1;
-                    
-                    ++j;
+      // perform the countings for the subsets
+      //#pragma omp parallel for
+      for ( unsigned int i = 0; i < __is_id_subset.size (); ++i ) {
+        if ( __is_id_subset[i] &&
+             (__set2thread_id[i].first != nullptr ) &&
+             ( __set2thread_id[i].second !=
+               std::numeric_limits<unsigned int>::max () ) ) {
+          // get the subset and its superset
+          const auto& subset_ids = *( __nodesets[i] );
+          const auto& superset_ids = *( __nodesets[__set2thread_id[i].second] );
+          auto& subset_vect = __countings[i];
+          const auto& superset_vect = __countings[ __set2thread_id[i].second ];
+          
+          // Compute the variables that belong to both the (projection) subset
+          // and its superset. Store the number of increments in the computation
+          // loops at the end of the function before which the variables of the
+          // projection set need be incremented (vector before_incr).
+          std::vector<unsigned int> table_and_result_offset;
+          std::vector<unsigned int> table_and_result_domain;
+          std::vector<unsigned int> before_incr;
+          unsigned int nb_positive_before_incr = 0;
+          unsigned int table_alone_domain_size = 1;
+          unsigned int result_domain_size = 1;
+          unsigned int table_domain_size = superset_vect.size ();
+          {
+            unsigned int tmp_before_incr = 1;
+            bool has_before_incr = false;
+            unsigned int subset_size = subset_ids.size ();
+            
+            for ( unsigned int h = 0, j = 0; h < superset_ids.size (); ++h ) {
+              if ( j < subset_size ) {
+                if ( subset_ids[j] == superset_ids[h] ) {
+                  if ( has_before_incr ) {
+                    before_incr.push_back ( tmp_before_incr - 1 );
+                    has_before_incr = false;
+                    ++nb_positive_before_incr;
                   }
                   else {
-                    unsigned int modality =
-                      __modalities->operator[] ( subset_ids[j] ); 
-                    tmp_before_incr *= modality;
-                    has_before_incr = true;
-                    table_alone_domain_size *= modality;
+                    before_incr.push_back ( 0 );
                   }
+                  
+                  unsigned int modality =
+                    __modalities->operator[] ( subset_ids[j] ); 
+                  table_and_result_domain.push_back ( modality );
+                  table_and_result_offset.push_back ( result_domain_size );
+                  result_domain_size *= modality;
+                  tmp_before_incr = 1;
+                  
+                  ++j;
                 }
                 else {
-                  table_alone_domain_size *=
-                    __modalities->operator[] ( superset_ids[h] ); 
+                  unsigned int modality =
+                    __modalities->operator[] ( subset_ids[j] ); 
+                  tmp_before_incr *= modality;
+                  has_before_incr = true;
+                  table_alone_domain_size *= modality;
                 }
               }
-            }
- 
-            std::vector<unsigned int>
-              table_and_result_value = table_and_result_domain;
-            std::vector<unsigned int>
-              current_incr = before_incr;
-            std::vector<unsigned int>
-              table_and_result_down = table_and_result_offset;
-
-            for ( unsigned int j = 0; j < table_and_result_down.size(); ++j ) {
-              table_and_result_down[j] *= ( table_and_result_domain[j] - 1 );
-            }
- 
-            // now, fill the subset counting vector: first loop over the variables
-            // X's in table that do not belong to result and, for each value of
-            // these X's, loop over the variables in both table and result. As
-            // such, in the internal loop, the offsets of "result" need only be
-            // incremented as usually to parse appropriately this table. For
-            // result, the problem is slightly more complicated: in the outer for
-            // loop, we shall always reset resul_offset to 0. For the inner loop,
-            // result_offset should be incremented (++) only when t1
-            // before_incr[xxx] steps in the loop have already been made. but
-            // before doing so, check whether there exist positive_before_incr. If
-            // this is not the case, optimize by not using before_incr at all
-            if ( ! nb_positive_before_incr ) {
-              for ( unsigned int h = 0, k = 0; h < table_alone_domain_size; ++h ) {
-                for ( unsigned int j = 0; j < result_domain_size; ++j, k++ ) {
-                  subset_vect[j] += superset_vect[k];
-                }
+              else {
+                table_alone_domain_size *=
+                  __modalities->operator[] ( superset_ids[h] ); 
               }
             }
-            else {
-              // here there are positive before_incr and we should use them
-              //to know when result_offset needs be changed
-              unsigned int result_offset = 0;
-
-              for ( unsigned int h = 0; h < table_domain_size; ++h ) {
-                subset_vect[result_offset] += superset_vect[h];
-
-                // update the offset of result
-                for ( unsigned int k = 0; k < current_incr.size(); ++k ) {
-                  // check if we need modify result_offset
-                  if ( current_incr[k] ) {
-                    --current_incr[k];
-                    break;
-                  }
-
-                  current_incr[k] = before_incr[k];
-
-                  // here we shall modify result_offset
-                  --table_and_result_value[k];
-
-                  if ( table_and_result_value[k] ) {
-                    result_offset += table_and_result_offset[k];
-                    break;
-                  }
-
-                  table_and_result_value[k] = table_and_result_domain[k];
-                  result_offset -= table_and_result_down[k];
+          }
+          
+          std::vector<unsigned int>
+            table_and_result_value = table_and_result_domain;
+          std::vector<unsigned int>
+            current_incr = before_incr;
+          std::vector<unsigned int>
+            table_and_result_down = table_and_result_offset;
+          
+          for ( unsigned int j = 0; j < table_and_result_down.size(); ++j ) {
+            table_and_result_down[j] *= ( table_and_result_domain[j] - 1 );
+          }
+ 
+          // now, fill the subset counting vector: first loop over the variables
+          // X's in table that do not belong to result and, for each value of
+          // these X's, loop over the variables in both table and result. As
+          // such, in the internal loop, the offsets of "result" need only be
+          // incremented as usually to parse appropriately this table. For
+          // result, the problem is slightly more complicated: in the outer for
+          // loop, we shall always reset resul_offset to 0. For the inner loop,
+          // result_offset should be incremented (++) only when t1
+          // before_incr[xxx] steps in the loop have already been made. but
+          // before doing so, check whether there exist positive_before_incr. If
+          // this is not the case, optimize by not using before_incr at all
+          if ( ! nb_positive_before_incr ) {
+            for ( unsigned int h = 0, k = 0; h < table_alone_domain_size; ++h ) {
+              for ( unsigned int j = 0; j < result_domain_size; ++j, k++ ) {
+                subset_vect[j] += superset_vect[k];
+              }
+            }
+          }
+          else {
+            // here there are positive before_incr and we should use them
+            //to know when result_offset needs be changed
+            unsigned int result_offset = 0;
+            
+            for ( unsigned int h = 0; h < table_domain_size; ++h ) {
+              subset_vect[result_offset] += superset_vect[h];
+              
+              // update the offset of result
+              for ( unsigned int k = 0; k < current_incr.size(); ++k ) {
+                // check if we need modify result_offset
+                if ( current_incr[k] ) {
+                  --current_incr[k];
+                  break;
                 }
+                
+                current_incr[k] = before_incr[k];
+                
+                // here we shall modify result_offset
+                --table_and_result_value[k];
+                
+                if ( table_and_result_value[k] ) {
+                  result_offset += table_and_result_offset[k];
+                  break;
+                }
+                
+                table_and_result_value[k] = table_and_result_domain[k];
+                result_offset -= table_and_result_down[k];
               }
             }
           }
         }
       }
+      
+
+      // for identical subsets, just copy the countings
+      for ( unsigned int i = 0; i < __is_id_subset.size (); ++i ) {
+        if ( __is_id_subset[i] && (__set2thread_id[i].first == nullptr ) ) {
+          __countings[i] = __countings[__set2thread_id[i].second];
+        }
+      }
+    }
             
       
     /// perform the countings of all the sets of ids
@@ -560,38 +578,40 @@ namespace gum {
       // now, for each IdSet, determine if it is a subset of another IdSet
       for ( unsigned int i = 0, j = 0, size = __set2thread_id.size ();
             i< size; ++i ) {
-        // get the IdSet to determine
-        const IdSet<IdSetAlloc>& ids = *( __set2thread_id[i].first );
-        const unsigned int ids_size = ids.ids ().size ();
+        if ( __set2thread_id[i].first != nullptr ) {
+          // get the IdSet to determine
+          const IdSet<IdSetAlloc>& ids = *( __set2thread_id[i].first );
+          const unsigned int ids_size = ids.ids ().size ();
         
-        // empty sets are always subsets
-        if ( ! ids_size ) {
-          __is_id_subset[i] = true;
-          __set2thread_id[i].second = std::numeric_limits<unsigned int>::max ();
-          continue;
-        }
-
-        // get all the sets that contain its first variable and parse them
-        const std::vector<const IdSet<IdSetAlloc>*>&
-          sets = __var2idsets[ ids[0] ];
-        bool subset = false;
-        unsigned int index;
-        for ( const auto set : sets ) {
-          if ( ( set->ids().size () > ids_size ) && ids.isSubset ( *set ) ) {
-            subset = true;
-            index = __idset2index[set];
-            break;
+          // empty sets are always subsets
+          if ( ! ids_size ) {
+            __is_id_subset[i] = true;
+            __set2thread_id[i].second = std::numeric_limits<unsigned int>::max ();
+            continue;
           }
-        }
+
+          // get all the sets that contain its first variable and parse them
+          const std::vector<const IdSet<IdSetAlloc>*>&
+            sets = __var2idsets[ ids[0] ];
+          bool subset = false;
+          unsigned int index;
+          for ( const auto set : sets ) {
+            if ( ( set->ids().size () > ids_size ) && ids.isSubset ( *set ) ) {
+              subset = true;
+              index = __idset2index[set];
+              break;
+            }
+          }
         
-        if ( subset ) {
-          // assign the superset to the subset and allocate the subset's counting
-          __is_id_subset[i] = true;
-          __set2thread_id[i].second = index;
-        }
-        else {
-          __set2thread_id[i].second = j;
-          ++j;
+          if ( subset ) {
+            // assign the superset to the subset and allocate the subset's counting
+            __is_id_subset[i] = true;
+            __set2thread_id[i].second = index;
+          }
+          else {
+            __set2thread_id[i].second = j;
+            ++j;
+          }
         }
       }
     }

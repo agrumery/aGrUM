@@ -21,14 +21,11 @@
  * @brief the class for computing G2 scores
  *
  * The class should be used as follows: first, to speed-up computations, you
- * should consider computing all the scores conditioned to a given set of
- * nodes in one pass. To do so, use the appropriate computeScores method. This
- * one will compute everything you need. The computeScores methods where you
- * do not specify a set of conditioning nodes assume that this set is empty.
- * If available memory is limited, use the setMaxSize method to constrain the
- * memory that will be used for these computations. Once the computations
- * have been performed, use methods score to retrieve the scores computed.
- * See the Score class for details.
+ * should consider computing all the independence tests you need in one pass.
+ * To do so, use the appropriate addNodeSets methods. These will compute
+ * everything you need. Use method score to retrieve the scores related to
+ * the independence test that were computed. See the IndependenceTest class for
+ * details.
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
@@ -48,21 +45,24 @@ namespace gum {
 
     
     /* ========================================================================= */
-    /* ===                          SCORE G2 CLASS                           === */
+    /* ===                       INDEP TEST G2 CLASS                         === */
     /* ========================================================================= */
     /** @class ScoreG2
+     * @brief the class for computing G2 independence test scores
+     * @ingroup learning_group
      *
      * The class should be used as follows: first, to speed-up computations, you
-     * should consider computing all the scores conditioned to a given set of
-     * nodes in one pass. To do so, use the appropriate computeScores method. This
-     * one will compute everything you need. The computeScores methods where you
-     * do not specify a set of conditioning nodes assume that this set is empty.
-     * If available memory is limited, use the setMaxSize method to constrain the
-     * memory that will be used for these computations. Once the computations
-     * have been performed, use methods score to retrieve the scores computed.
-     * See the Score class for details. */
-    /* ========================================================================= */
-    class IndepTestG2 : public SymmetricIndependenceTest {
+     * should consider computing all the independence tests you need in one pass.
+     * To do so, use the appropriate addNodeSets methods. These will compute
+     * everything you need. Use method score to retrieve the scores related to
+     * the independence test that were computed. See the IndependenceTest class for
+     * details. 
+     */
+    template <typename RowFilter,
+              typename IdSetAlloc = std::allocator<unsigned int>,
+              typename CountAlloc = std::allocator<float> >
+    class IndepTestG2 : 
+      public IndependenceTest<RowFilter,IdSetAlloc,CountAlloc> {
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -70,16 +70,33 @@ namespace gum {
       /// @{
 
       /// default constructor
-      /** @param database the database from which the scores will be computed
-       * @param max_tree_size the scores are computed using a CountingTree.
-       * Parameter max_tree_size indicates which maximal size in bytes the tree
-       * should have. This number is used approximately, i.e., we do not count
-       * precisely the number of bytes used but we count them roughly. */
-       IndepTestG2 ( const Database& database,
-                     unsigned int max_tree_size = 0 );
-
+      /** @param filter the row filter that will be used to read the database
+       * @param var_modalities the domain sizes of the variables in the database */
+      IndepTestG2 ( const RowFilter& filter,
+                    const std::vector<unsigned int>& var_modalities );
+ 
       /// destructor
       ~IndepTestG2 ();
+
+      /// @}
+
+
+      // ##########################################################################
+      /// @name Accessors / Modifiers
+      // ##########################################################################
+      /// @{
+
+      /// returns the score corresponding to a given nodeset
+      /** This method computes
+       * sum_X sum_Y sum_Z #XYZ * log ( ( #XYZ * #Z ) / ( #XZ * #YZ ) ),
+       * where #XYZ, #XZ, #YZ, #Z correspond to the number
+       * of occurences of (X,Y,Z), (X,Z), (Y,Z) and Z respectively in the
+       * database. Then, it computes the critical value alpha for the chi2 test
+       * and returns ( #sum - alpha ) / alpha, where #sum corresponds to the
+       * summations mentioned above. Therefore, any positive result should
+       * reflect a dependence whereas negative results should reflect
+       * independences. */
+      float score ( unsigned int nodeset_index );
 
       /// @}
 
@@ -88,20 +105,9 @@ namespace gum {
       /// a chi2 distribution for computing critical values
       Chi2 __chi2;
       
-      /// computes the G2 of (X,Y) given conditioning set Z
-      /** This method computes sum_X sum_Y sum_Z
-       * #XYZ * log ( ( #XYZ * #Z ) / ( #XZ * #YZ ) ), where #XYZ and #XZ
-       * correspond to the number of occurences of (X,Y,Z) and (X,Z) respectively
-       * in the database and #Z to the number of occurrences of Z. Those
-       * numbers are stored in the target set boxes of the counting tree of the
-       * base class Score. #Z is directly accessible from the box using method
-       * nbParentRecords of the targetSetBox.
-       * @warning The function assumes that the counting tree has already been
-       * constructed */
-      void _computeScores
-      ( const std::vector< std::pair<unsigned int,
-                                     unsigned int> >& db_pair_ids );
- 
+      /// an empty vector of ids
+      const std::vector<unsigned int,IdSetAlloc> __empty_set;
+      
     };
     
 
@@ -111,4 +117,8 @@ namespace gum {
 } /* namespace gum */
 
 
-#endif /* GUM_LEARNING_INDEP_TEST_CHI2_H */
+// always include the template implementation
+#include <agrum/learning/indepTestG2.tcc>
+
+
+#endif /* GUM_LEARNING_INDEP_TEST_G2_H */
