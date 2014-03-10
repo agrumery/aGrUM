@@ -68,7 +68,8 @@ namespace gum {
 
       /// default constructor
       template <typename OtherAlloc>
-      IdSet ( const std::vector<unsigned int,OtherAlloc>& ids );
+      IdSet ( const std::vector<unsigned int,OtherAlloc>& ids,
+              unsigned int sz );
 
       /// copy constructor
       IdSet ( const IdSet<Alloc>& from );
@@ -104,7 +105,7 @@ namespace gum {
       /// returns the id stored at a given index
       unsigned int operator[] ( unsigned int index ) const noexcept;
 
-      /// inserts a new element into the set
+      /// inserts a new element into the set (assuming it is a Boolean)
       IdSet<Alloc>& operator<< ( unsigned int id );
 
       /// returns true if both sets are equal
@@ -126,9 +127,15 @@ namespace gum {
       /// returns the set of ids contained in the object
       const std::vector<unsigned int,Alloc>& ids () const noexcept;
 
+      /// returns the domain size of the id set
+      unsigned int size () const noexcept;
+
+      /// sets the domain size of the set
+      void setSize ( unsigned int ) noexcept;
+      
       /// returns the content of the set as a string
       std::string toString () const noexcept;
-      
+
       /// indicates wether the current object is a subset of 'otherset'
       template <typename OtherAlloc>
       bool isSubset ( const IdSet<OtherAlloc>& otherset ) const noexcept;
@@ -139,6 +146,9 @@ namespace gum {
 
       /// the ordered set of ids
       std::vector<unsigned int,Alloc> __ids;
+
+      /// the domain size of the set
+      unsigned int __size { 0 };
       
     };
 

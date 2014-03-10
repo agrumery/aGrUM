@@ -181,16 +181,18 @@ namespace gum_tests {
       */
       gum::learning::IndepTestG2<decltype ( filter ) > score ( filter, modalities );
       //gum::learning::ScoreBIC<decltype ( filter ) > score ( filter, modalities );
-      unsigned int id1, id2, id3;
+      unsigned int id1, id2, id3, id4;
       id1 = score.addNodeSet ( 2, 3, std::vector<unsigned int> { 4 } );
       id2 = score.addNodeSet ( 1, 2 );
       id3 = score.addNodeSet ( 3, 2 );
+      id4 = score.addNodeSet ( 3, 2 );
 
       //score.count ();
 
       std::cout << score.score ( id1 ) << std::endl;
       std::cout << score.score ( id2 ) << std::endl;
-      //std::cout << score.score ( id3 ) << std::endl;
+      std::cout << score.score ( id3 ) << std::endl;
+      std::cout << score.score ( id4 ) << std::endl;
       
       
       /*

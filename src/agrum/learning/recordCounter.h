@@ -34,6 +34,7 @@
 
 #include <agrum/core/hashTable.h>
 #include <agrum/core/OMPThreads.h>
+#include <agrum/graphs/DAG.h>
 #include <agrum/learning/DBRowFilter.h>
 #include <agrum/learning/idSet.h>
 
@@ -227,7 +228,16 @@ namespace gum {
       /// the modalities of the variables
       const std::vector<unsigned int>* __modalities { nullptr };
 
-      /// the set of ordered vectors of ids
+      /// the set of ordered vectors of ids + their indices in __nodesets
+      /** The goal of this structure is essentially to store the vectors of
+       * ordered ids as IdSet<> in such a way that the memory locations of these
+       * idsets never change, even if we add new IdSets (this feature is
+       * guaranteed by aGrUM's hashtables). In addition, it allows to easily
+       * detect identical IdSets (such detection allows for fast computations).
+       * As such, the indices stored as values in the hashtable are the indices
+       * in __nodesets ONLY of one copy of identical sets, the others are
+       * deduced from it. IdSets are used to quickly determine which sets are
+       * included into others. */
       HashTable<IdSet<IdSetAlloc>, unsigned int> __idsets;
       
       /// the vector of the unordered ids' vectors used to generate the idsets
@@ -244,14 +254,28 @@ namespace gum {
       HashTable<unsigned int, std::vector<const IdSet<IdSetAlloc>*> >
       __var2idsets;
 
+      /// the possible states of a set of ids
+      enum SetState {
+        NOT_SUBSET,    // this is a proper nonempty superset
+        STRICT_SUBSET, // the set is included into another one
+        COPY_SET,      // this set is a copy of another one
+        EMPTY_SET      // the set is empty
+      };
+
       /// a table indicating whether each IdSet is a subset of another idSet
-      std::vector<bool> __is_id_subset;
+      std::vector<SetState> __set_state;
 
       /// a vector for computing the countings of the IdSets which are subsets
       /** These countings are derived from the countings of the supersets */
       std::vector< std::vector<float,CountAlloc> > __countings;
 
       /// a hashtable associating to each IdSet its index in __set2thread_id
+      /** This table indicates for each @e distinct set its index in
+       * __set2thread_id or, equivalently, in __nodesets. By @e distinct set,
+       * we mean that, when several sets are identical, only the first one
+       * inserted by addNodeSet is put into the hashtable. This table is
+       * used as a helper in __computeSubsets to determine quickly the
+       * indices of supersets in __nodesets. */
       HashTable<const IdSet<IdSetAlloc>*, unsigned int> __idset2index;
 
       /// a table associating to each IdSet its index in the threadRecordCounters
@@ -260,6 +284,11 @@ namespace gum {
       std::vector<std::pair<const IdSet<IdSetAlloc>*, unsigned int> >
       __set2thread_id;
 
+      /// a partial lattice indicating the relations between subsets and supersets
+      /** In this lattice, an arc X -> Y indicates that X is a superset of Y. As
+       * such, we should perform countings of X before deducing those of Y. */
+      DAG __subset_lattice;
+      
       /// the set of ThreadCounters
       std::vector< RecordCounterThread<RowFilter,IdSetAlloc,CountAlloc> >
       __thread_counters;
@@ -271,6 +300,9 @@ namespace gum {
 
       /// determine which sets are subsets
       void __computeSubsets ();
+
+      // computes the countings of one subset from those of its superset
+      void __countOneSubset ( unsigned int i );
       
       /// the function used to sort vectors of IdSets by increasing size order
       static bool __sortIdSetBySize ( const IdSet<IdSetAlloc>* set1,

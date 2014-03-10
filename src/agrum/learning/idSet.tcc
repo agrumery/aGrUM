@@ -43,10 +43,12 @@ namespace gum {
     template <typename Alloc> INLINE
     IdSet<Alloc>::IdSet ( const std::initializer_list<unsigned int> list ) {
       GUM_CONSTRUCTOR ( IdSet );
-      
+
+      if ( list.size () ) __size = 1;
       __ids.reserve ( list.size () );
       for ( auto elt : list ) {
         __ids.push_back ( elt );
+        __size *= 2;
       }
       std::sort ( __ids.begin (), __ids.end () );
     }
@@ -55,8 +57,10 @@ namespace gum {
     /// default constructor
     template <typename Alloc>
     template <typename OtherAlloc> INLINE
-    IdSet<Alloc>::IdSet ( const std::vector<unsigned int,OtherAlloc>& ids ) :
-      __ids ( ids ) {
+    IdSet<Alloc>::IdSet ( const std::vector<unsigned int,OtherAlloc>& ids,
+                          unsigned int sz ) :
+      __ids ( ids ),
+      __size ( sz ) {
       GUM_CONSTRUCTOR ( IdSet );
       std::sort ( __ids.begin (), __ids.end () );
     }
@@ -65,7 +69,8 @@ namespace gum {
     /// copy constructor
     template <typename Alloc> INLINE
     IdSet<Alloc>::IdSet ( const IdSet<Alloc>& from ) :
-      __ids ( from.__ids ) {
+      __ids ( from.__ids ),
+      __size ( from.__size ) {
       GUM_CONS_CPY ( IdSet );
     }
 
@@ -74,7 +79,8 @@ namespace gum {
     template <typename Alloc>
     template <typename OtherAlloc> INLINE
     IdSet<Alloc>::IdSet ( const IdSet<OtherAlloc>& from ) :
-      __ids ( from.__ids ) {
+      __ids ( from.__ids ),
+      __size ( from.__size ) {
       GUM_CONS_CPY ( IdSet );
     }
 
@@ -82,7 +88,8 @@ namespace gum {
     /// move constructor
     template <typename Alloc> INLINE
     IdSet<Alloc>::IdSet ( IdSet<Alloc>&& from ) :
-      __ids ( std::move ( from.__ids ) ) {
+      __ids ( std::move ( from.__ids ) ),
+      __size ( from.__size ) {
       GUM_CONS_MOV ( IdSet );
     }
 
@@ -99,6 +106,7 @@ namespace gum {
     IdSet<Alloc>& IdSet<Alloc>::operator= ( const IdSet<Alloc>& from ) {
       if ( this != &from ) {
         __ids = from.__ids;
+        __size = from.__size;
       }
       return *this;
     }
@@ -110,6 +118,7 @@ namespace gum {
     IdSet<Alloc>& IdSet<Alloc>::operator= ( const IdSet<OtherAlloc>& from ) {
       if ( this != &from ) {
         __ids = from.__ids;
+        __size = from.__size;
       }
       return *this;
     }
@@ -120,6 +129,7 @@ namespace gum {
     IdSet<Alloc>& IdSet<Alloc>::operator= ( IdSet<Alloc>&& from ) {
       if ( this != &from ) {
         __ids = std::move ( from.__ids );
+        __size = from.__size;
       }
       return *this;
     }
@@ -148,6 +158,7 @@ namespace gum {
 
       // here, min_index is he location where id should be inserted
       __ids.insert ( __ids.begin() + min_index, id );
+      __size *= 2;
       
       return *this;
     }
@@ -158,9 +169,9 @@ namespace gum {
     template <typename OtherAlloc> INLINE
     bool
     IdSet<Alloc>::operator== ( const IdSet<OtherAlloc>& from ) const noexcept {
-      unsigned int size = __ids.size ();
-      if ( size != from.__ids.size () ) return false;
-      for ( unsigned int i = 0; i < size; ++i ) {
+      unsigned int sz = __ids.size ();
+      if ( sz != from.__ids.size () ) return false;
+      for ( unsigned int i = 0; i < sz; ++i ) {
         if ( __ids[i] != from.__ids[i] ) return false;
       }
       return true;
@@ -182,7 +193,21 @@ namespace gum {
       return __ids;
     }
 
+    
+    /// returns the domain size of the id set
+    template <typename Alloc> INLINE
+    unsigned int IdSet<Alloc>::size () const noexcept {
+      return __size;
+    }
 
+    
+    /// sets the domain size of the set
+    template <typename Alloc> INLINE
+    void IdSet<Alloc>::setSize ( unsigned int sz ) noexcept {
+      __size = sz;
+    }
+    
+ 
     /// returns the content of the set as a string
     template <typename Alloc>
     std::string IdSet<Alloc>::toString () const noexcept {
