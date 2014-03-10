@@ -17,10 +17,10 @@ include(Config.agrum)
 configure_file("${CMAKE_CURRENT_CMAKE_DIR}/config.h.in" "${AGRUM_BINARY_DIR}/agrum/config.h")
 
 ### CONDITIONAL RULES (if flex/bison have been found, we add rules) ####
-include("${CMAKE_CURRENT_CMAKE_DIR}/FlexBison.agrum.cmake")
-if(BISON_FLEX_EXECUTABLE STREQUAL "ok")
-    FlexBisonTarget(learning/XmlCsvParser parseXmlCsv)
-endif(BISON_FLEX_EXECUTABLE STREQUAL "ok")
+#include("${CMAKE_CURRENT_CMAKE_DIR}/FlexBison.agrum.cmake")
+#if(BISON_FLEX_EXECUTABLE STREQUAL "ok")
+#    FlexBisonTarget(learning/XmlCsvParser parseXmlCsv)
+#endif(BISON_FLEX_EXECUTABLE STREQUAL "ok")
 ####################################################################
 
 ### CONDITIONAL RULES (if COCO/R has been found, we add rules) ####

@@ -47,10 +47,6 @@ namespace gum {
 } /* namespace gum */
 
 
-int  GUM_PARSE_XML_CSV_parse ( gum::Database& );
-int  GUM_PARSE_XML_CSV_error ( gum::Database&, const char* );
-bool GUM_PARSE_XML_CSV_parser ( gum::Database&, const std::string& );
-
 
 namespace gum {
 
@@ -486,10 +482,6 @@ namespace gum {
 
       friend class DatabaseIterator;
 
-      /// enable the XML_CSV parser to fill the Database structure
-      friend int  ::GUM_PARSE_XML_CSV_parse ( Database& );
-      friend int  ::GUM_PARSE_XML_CSV_error ( Database&, const char* );
-      friend bool ::GUM_PARSE_XML_CSV_parser ( Database&, const std::string& );
   };
 
 
