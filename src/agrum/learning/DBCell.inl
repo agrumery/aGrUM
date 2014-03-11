@@ -250,7 +250,56 @@ namespace gum {
     INLINE void DBCell::setString ( const std::string& x ) {
       __string = x;
     }
-     
+
+    
+    /// sets the content of the DBCell from a string
+    INLINE void DBCell::__setUIntFromStringSafe ( const std::string& elt ) {
+      unsigned int new_elt = stoul ( elt );
+      if ( __type == EltType::STRING ) __string.std::string::~string ();
+      __unsigned_int = new_elt;
+      __type = EltType::UINT;
+    }
+
+    
+    /// sets the content of the DBCell from a string
+    INLINE void DBCell::__setIntFromStringSafe ( const std::string& elt ) {
+      int new_elt = stoi ( elt );
+      if ( __type == EltType::STRING ) __string.std::string::~string ();
+      __int = new_elt;
+      __type = EltType::INT;
+    }
+    
+
+    /// sets the content of the DBCell from a string
+    INLINE void DBCell::__setFloatFromStringSafe ( const std::string& elt ) {
+      float new_elt = stof ( elt );
+      if ( __type == EltType::STRING ) __string.std::string::~string ();
+      __float = new_elt;
+      __type = EltType::FLOAT;
+    }
+
+    
+    /// sets the content of the DBCell from a string
+    INLINE void DBCell::__setDoubleFromStringSafe ( const std::string& elt ) {
+      double new_elt = stod ( elt );
+      if ( __type == EltType::STRING ) __string.std::string::~string ();
+      __double = new_elt;
+      __type = EltType::DOUBLE;
+    }
+
+    
+    /// sets the content of the DBCell from a string
+    INLINE void DBCell::__setCharFromStringSafe ( const std::string& elt ) {
+      if ( elt.size () == 1 ) {
+        if ( __type == EltType::STRING ) __string.std::string::~string ();
+        __char = elt[0];
+        __type = EltType::CHAR;
+      }
+      else {
+        throw std::invalid_argument ("char -> DBCell conversion impossible");
+      }
+    }
+    
 
   } /* namespace learning */
 

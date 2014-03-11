@@ -21,16 +21,16 @@
  * @brief Class for fast parsing of CSV file (never more than one line in application memory)
  *
  * Typical use :
-@code
-std::string filename="foo.csv"
-std::ifstream in(filename.c_str());
-gum::CSVParser csvp(in);
+ @code
+ std::string filename="foo.csv"
+ std::ifstream in(filename.c_str());
+ gum::CSVParser csvp(in);
 
-while (csvp.next()) {
-    csvp.currentData();
-}
-in.close();
-@endcode
+ while (csvp.next()) {
+ csvp.currentData();
+ }
+ in.close();
+ @endcode
  *
  * @author Pierre-Henri WUILLEMIN
  *
@@ -43,10 +43,13 @@ in.close();
 #include <string>
 
 #include <agrum/config.h>
+#include <agrum/learning/DBRow.h>
 
 namespace gum {
 
-  class CSVParser {
+  namespace learning {
+
+    class CSVParser {
     public:
       CSVParser ( std::istream& in, const std::string& delimiter = ",", const char  commentmarker = '#', const char quoteMarker = '"' );
       virtual ~CSVParser();
@@ -85,12 +88,16 @@ namespace gum {
       std::istream& __in;
       std::vector<std::string> __data;
       bool __emptyData;
-  };
+
+    };
+
+  } // namespace learning
 
 } // namespace gum
 
+
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/CSVParser/CSVParser.inl>
+#include <agrum/learning/CSVParser.inl>
 #endif /* GUM_NO_INLINE */
 
 #endif // GUM_CSVPARSER_H

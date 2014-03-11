@@ -165,6 +165,16 @@ namespace gum {
       /// sets the content of the DBCell (safe type checking)
       void setStringSafe ( const std::string& elt );
       
+      /// safely sets the content of the DBCell with the best possible type
+      /** This method is used to parse the string passed in argument and
+       * estimate which internal type is the most appropriate for the DBCell.
+       * Then it fills the DBCell with this type. */
+      void setBestTypeSafe ( const std::string& elt );
+
+      /** @brief safely sets the content of the DBCell with the preceding type or,
+       * if this is not possible, with the best possible type */
+      void setAgainTypeSafe ( const std::string& elt );
+      
       /// unsafe set (assumes that the preceding type is of the same type)
       void setUint ( unsigned int x );
       
@@ -182,7 +192,7 @@ namespace gum {
 
       /// unsafe set (assumes that the preceding type is of the same type)
       void setString ( const std::string& x );
-     
+
       /// @}
 
       
@@ -204,6 +214,27 @@ namespace gum {
         char         __char;
         std::string  __string;
       };
+
+
+      /// sets the content of the DBCell from a string
+      /** @throws std::invalid_argument if the string cannot be converted */
+      void __setUIntFromStringSafe ( const std::string& str );
+
+      /// sets the content of the DBCell from a string
+      /** @throws std::invalid_argument if the string cannot be converted */
+      void __setIntFromStringSafe ( const std::string& str );
+
+      /// sets the content of the DBCell from a string
+      /** @throws std::invalid_argument if the string cannot be converted */
+      void __setFloatFromStringSafe ( const std::string& str );
+
+      /// sets the content of the DBCell from a string
+      /** @throws std::invalid_argument if the string cannot be converted */
+      void __setDoubleFromStringSafe ( const std::string& str );
+
+      /// sets the content of the DBCell from a string
+      /** @throws std::invalid_argument if the string cannot be converted */
+      void __setCharFromStringSafe ( const std::string& str );
 
     };
     
