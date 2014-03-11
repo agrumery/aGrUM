@@ -46,36 +46,8 @@ namespace gum {
 
     
     /// unsafe set operator (assumes that the preceding type is of the same type)
-    INLINE DBCell& DBCell::operator= ( unsigned int x ) noexcept {
-      __unsigned_int = x;
-      return *this;
-    }
-    
-
-    /// unsafe set operator (assumes that the preceding type is of the same type)
-    INLINE DBCell& DBCell::operator= ( int x ) noexcept {
-      __int = x;
-      return *this;
-    }
-
-
-    /// unsafe set operator (assumes that the preceding type is of the same type)
     INLINE DBCell& DBCell::operator= ( float x ) noexcept {
       __float = x;
-      return *this;
-    }
-
-
-    /// unsafe set operator (assumes that the preceding type is of the same type)
-    INLINE DBCell& DBCell::operator= ( double x ) noexcept {
-      __double = x;
-      return *this;
-    }
-
-
-    /// unsafe set operator (assumes that the preceding type is of the same type)
-    INLINE DBCell& DBCell::operator= ( char x ) noexcept {
-      __char = x;
       return *this;
     }
 
@@ -87,35 +59,11 @@ namespace gum {
     }
       
 
-    /// returns the DBcell as an unsigned int (without checking its type)
-    INLINE  unsigned int DBCell::getUint () const noexcept {
-      return __unsigned_int;
-    }
-
-
-    /// returns the DBcell as an int (without checking its type)
-    INLINE int DBCell::getInt () const noexcept {
-      return __int;
-    }
-      
-
     /// returns the DBcell as a float (without checking its type)
     INLINE float DBCell::getFloat () const noexcept {
       return __float;
     }
 
-
-    /// returns the DBcell as a double (without checking its type)
-    INLINE double DBCell::getDouble () const noexcept {
-      return __double;
-    }
-
-    
-    /// returns the DBcell as a char (without checking its type)
-    INLINE char DBCell::getChar () const noexcept {
-      return __char;
-    }
-      
 
     /// returns the DBcell as a string (without checking its type)
     INLINE const std::string& DBCell::getString () const noexcept {
@@ -123,20 +71,6 @@ namespace gum {
     }
       
 
-    /// returns the DBcell as an unsigned int (safe with type checking)
-    INLINE unsigned int DBCell::getUintSafe () const {
-      if ( __type == EltType::UINT ) return __unsigned_int;
-      else GUM_ERROR ( TypeError, "the DBCell does not contain an unsigned int" );
-    }
-
-    
-    /// returns the DBcell as an int (safe with type checking)
-    INLINE int DBCell::getIntSafe () const {
-      if ( __type == EltType::INT ) return __int;
-      else GUM_ERROR ( TypeError, "the DBCell does not contain an int" );
-    }
-
-    
     /// returns the DBcell as a float (safe with type checking)
     INLINE float DBCell::getFloatSafe () const {
       if ( __type == EltType::FLOAT ) return __float;
@@ -144,40 +78,10 @@ namespace gum {
     }
 
 
-    /// returns the DBcell as a double (safe with type checking)
-    INLINE double DBCell::getDoubleSafe () const {
-      if ( __type == EltType::DOUBLE ) return __double;
-      else GUM_ERROR ( TypeError, "the DBCell does not contain a double" );
-    }
-
-    
-    /// returns the DBcell as a char (safe with type checking)
-    INLINE char DBCell::getCharSafe () const {
-      if ( __type == EltType::CHAR ) return __char;
-      else GUM_ERROR ( TypeError, "the DBCell does not contain a char" );
-    }
-      
-
     /// returns the DBcell as a string (safe with type checking)
     INLINE const std::string& DBCell::getStringSafe () const {
       if ( __type == EltType::STRING ) return __string;
       else GUM_ERROR ( TypeError, "the DBCell does not contain a string" );
-    }
-
-
-    /// sets the content of the DBCell (safe type checking)
-    INLINE void DBCell::setUintSafe ( unsigned int elt ) {
-      if ( __type == EltType::STRING ) __string.std::string::~string ();
-      __type = EltType::UINT;
-      __unsigned_int = elt;
-    }
-
-    
-    /// sets the content of the DBCell (safe type checking)
-    INLINE void DBCell::setIntSafe ( int elt ) {
-      if ( __type == EltType::STRING ) __string.std::string::~string ();
-      __type = EltType::INT;
-      __int = elt;
     }
 
 
@@ -190,22 +94,6 @@ namespace gum {
 
     
     /// sets the content of the DBCell (safe type checking)
-    INLINE void DBCell::setDoubleSafe ( double elt ) {
-      if ( __type == EltType::STRING ) __string.std::string::~string ();
-      __type = EltType::DOUBLE;
-      __double = elt;
-    }
-
-
-    /// sets the content of the DBCell (safe type checking)
-    INLINE void DBCell::setCharSafe ( char elt ) {
-      if ( __type == EltType::STRING ) __string.std::string::~string ();
-      __type = EltType::CHAR;
-      __char = elt;
-    }
-
-
-    /// sets the content of the DBCell (safe type checking)
     INLINE void DBCell::setStringSafe ( const std::string& elt ) {
       if ( __type == EltType::STRING )
         __string = elt;
@@ -217,32 +105,8 @@ namespace gum {
 
       
     /// unsafe set (assumes that the preceding type is of the same type)
-    INLINE void DBCell::setUint ( unsigned int x ) {
-      __unsigned_int = x;
-    }
-      
-
-    /// unsafe set (assumes that the preceding type is of the same type)
-    INLINE void DBCell::setInt ( int x ) {
-      __int = x;
-    }
-
-
-    /// unsafe set (assumes that the preceding type is of the same type)
     INLINE void DBCell::setFloat ( float x ) {
       __float = x;
-    }
-
-
-    /// unsafe set (assumes that the preceding type is of the same type)
-    INLINE void DBCell::setDouble ( double x ) {
-      __double = x;
-    }
-
-
-    /// unsafe set (assumes that the preceding type is of the same type)
-    INLINE void DBCell::setChar ( char x ) {
-      __char = x;
     }
 
 
@@ -253,24 +117,6 @@ namespace gum {
 
     
     /// sets the content of the DBCell from a string
-    INLINE void DBCell::__setUIntFromStringSafe ( const std::string& elt ) {
-      unsigned int new_elt = stoul ( elt );
-      if ( __type == EltType::STRING ) __string.std::string::~string ();
-      __unsigned_int = new_elt;
-      __type = EltType::UINT;
-    }
-
-    
-    /// sets the content of the DBCell from a string
-    INLINE void DBCell::__setIntFromStringSafe ( const std::string& elt ) {
-      int new_elt = stoi ( elt );
-      if ( __type == EltType::STRING ) __string.std::string::~string ();
-      __int = new_elt;
-      __type = EltType::INT;
-    }
-    
-
-    /// sets the content of the DBCell from a string
     INLINE void DBCell::__setFloatFromStringSafe ( const std::string& elt ) {
       float new_elt = stof ( elt );
       if ( __type == EltType::STRING ) __string.std::string::~string ();
@@ -279,25 +125,14 @@ namespace gum {
     }
 
     
-    /// sets the content of the DBCell from a string
-    INLINE void DBCell::__setDoubleFromStringSafe ( const std::string& elt ) {
-      double new_elt = stod ( elt );
-      if ( __type == EltType::STRING ) __string.std::string::~string ();
-      __double = new_elt;
-      __type = EltType::DOUBLE;
-    }
+    /// safely sets the content of the DBCell with the best possible type
+    INLINE void DBCell::setBestTypeSafe ( const std::string& elt ) {
+      // try to convert the string into a float
+      try { __setFloatFromStringSafe ( elt ); return; }
+      catch ( std::invalid_argument& ) {}
 
-    
-    /// sets the content of the DBCell from a string
-    INLINE void DBCell::__setCharFromStringSafe ( const std::string& elt ) {
-      if ( elt.size () == 1 ) {
-        if ( __type == EltType::STRING ) __string.std::string::~string ();
-        __char = elt[0];
-        __type = EltType::CHAR;
-      }
-      else {
-        throw std::invalid_argument ("char -> DBCell conversion impossible");
-      }
+      // here, the best type is a string
+      setStringSafe ( elt );
     }
     
 

@@ -44,28 +44,15 @@ namespace gum {
       GUM_CONS_CPY ( DBCell );
       
       switch ( from.__type ) {
-      case EltType::UINT:
-        __unsigned_int = from.__unsigned_int;
-        break;
-        
-      case EltType::INT:
-        __int = from.__int;
-        break;
-        
       case EltType::FLOAT:
         __float = from.__float;
         break;
         
-      case EltType::DOUBLE:
-        __double = from.__double;
-        break;
-        
-      case EltType::CHAR:
-        __char = from.__char;
-        break;
-        
       case EltType::STRING:
         new(&__string) std::string { from.__string };
+        break;
+
+      case EltType::MISSING:
         break;
 
       default:
@@ -86,91 +73,30 @@ namespace gum {
 
       // assign the scalar types
       switch ( from.__type ) {
-      case EltType::UINT:
-        __unsigned_int = from.__unsigned_int;
-        break;
-          
-      case EltType::INT:
-        __int = from.__int;
-        break;
-        
       case EltType::FLOAT:
         __float = from.__float;
         break;
           
-      case EltType::DOUBLE:
-        __double = from.__double;
-        break;
-        
-      case EltType::CHAR:
-        __char = from.__char;
+      case EltType::MISSING:
         break;
         
       default:
         GUM_ERROR ( TypeError, "type not handled in DBCell operator=" );
       }
+
+      __type = from.__type;
       
       return *this;
     }
 
 
     /// safely sets the content of the DBCell with the best possible type
-    void DBCell::setBestTypeSafe ( const std::string& elt ) {
-      // try to convert the string into an unsigned int
-      try { __setUIntFromStringSafe ( elt ); return; }
-      catch ( std::invalid_argument& ) {}
-
-      // try to convert the string into an int
-      try { __setIntFromStringSafe ( elt ); return; }
-      catch ( std::invalid_argument& ) {}
-
-      // try to convert the string into a float
-      try { __setFloatFromStringSafe ( elt ); return; }
-      catch ( std::invalid_argument& ) {}
-
-      // try to convert the string into a double
-      try { __setDoubleFromStringSafe ( elt ); return; }
-      catch ( std::invalid_argument& ) {}
-
-      // try to convert the string into a character
-      try { __setCharFromStringSafe ( elt ); return; }
-      catch ( std::invalid_argument& ) {}
-
-      // here, the best type is a string
-      setStringSafe ( elt );
-    }
-
-    
-    /// safely sets the content of the DBCell with the best possible type
     void DBCell::setAgainTypeSafe ( const std::string& elt ) {
       // try first to set the DBCell with the current type
       switch ( __type ) {
-      case EltType::UINT:
-        try { __setUIntFromStringSafe ( elt ); return; }
-        catch ( std::invalid_argument& ) {}
-        break;
-
-      case EltType::INT:
-        // try to convert the string into an int
-        try { __setIntFromStringSafe ( elt ); return; }
-        catch ( std::invalid_argument& ) {}
-        break;
-
       case EltType::FLOAT:
         // try to convert the string into a float
         try { __setFloatFromStringSafe ( elt ); return; }
-        catch ( std::invalid_argument& ) {}
-        break;
-
-      case EltType::DOUBLE:
-        // try to convert the string into a double
-        try { __setDoubleFromStringSafe ( elt ); return; }
-        catch ( std::invalid_argument& ) {}
-        break;
-
-      case EltType::CHAR:
-        // try to convert the string into a character
-        try { __setCharFromStringSafe ( elt ); return; }
         catch ( std::invalid_argument& ) {}
         break;
 
@@ -179,10 +105,12 @@ namespace gum {
         setStringSafe ( elt );
         return;
 
+      case EltType::MISSING:
+        break;
+        
       default:
         GUM_ERROR ( TypeError, "type not handled in DBCell copy constructor" );
       }
-
 
       // here, set the content of the DBCell with the best type
       setBestTypeSafe ( elt );
