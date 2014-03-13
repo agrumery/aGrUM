@@ -39,7 +39,8 @@ namespace gum {
 
 
     /// copy constructor
-    DBTransformUnifier::DBTransformUnifier ( const DBTransformUnifier& ) {
+    DBTransformUnifier::DBTransformUnifier ( const DBTransformUnifier& from ) :
+      DBTransform ( from ) {
       GUM_CONS_CPY ( DBTransformUnifier );
     }
 
@@ -59,7 +60,8 @@ namespace gum {
 
     /// indicates whether a BDCell contains a missing value
     bool DBTransformUnifier::isMissing ( const DBCell& cell,
-                                         const std::vector<std::string>& miss ) {
+                                         const std::vector<std::string>& miss )
+    const noexcept {
       if ( cell.type () == DBCell::EltType::MISSING )
         return true;
       if ( cell.type () == DBCell::EltType::STRING ) {
@@ -73,7 +75,7 @@ namespace gum {
 
     /// transforms a vector of DBrows to unify the types of its columns
     bool DBTransformUnifier::transform ( std::vector<DBRow>& db,
-                                         std::vector<std::string> miss ) {
+                                         std::vector<std::string> miss ) const {
       if ( ! db.size () ) return true;
       
       // transform each column

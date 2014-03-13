@@ -38,6 +38,7 @@ namespace gum {
 
     /// default constructor
     DatabaseCSV::DatabaseCSV ( const std::string filename,
+                               const DBTransform& transform,
                                const std::string delimiter,
                                const char commentmarker,
                                const char quoteMarker,
@@ -60,8 +61,7 @@ namespace gum {
         vect.push_back ( new_row );
       } while ( parser.next () );
       
-      // if we wish to apply a unifier, do it
-      DBTransformUnifier transform;
+      // if we wish to apply a DBTransform to preprocess the database
       transform.transform ( vect, missingVal );
 
       // for debugging purposes

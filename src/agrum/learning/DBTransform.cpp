@@ -18,18 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The class representing a tabular database created from a CSV
+ * @brief Implementation of DBTransform
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_DATABASE_CSV_H
-#define GUM_DATABASE_CSV_H
 
-
-#include <string>
-#include <vector>
-
-#include <agrum/learning/databaseVector.h>
 #include <agrum/learning/DBTransform.h>
 
 
@@ -38,43 +31,41 @@ namespace gum {
   
   namespace learning {
 
+
+    /// default constructor
+    DBTransform::DBTransform () {
+      GUM_CONSTRUCTOR ( DBTransform );
+    }
+
+
+    /// copy constructor
+    DBTransform::DBTransform ( const DBTransform& ) {
+      GUM_CONS_CPY ( DBTransform );
+    }
+
+
+    /// destructor
+    DBTransform::~DBTransform () {
+      GUM_DESTRUCTOR ( DBTransform );
+    }
+
+
+    /// copy operator
+    DBTransform&
+    DBTransform::operator= ( const DBTransform& ) {
+      return *this;
+    }
+
+
+    /// transforms a vector of DBrows
+    bool DBTransform::transform ( std::vector<DBRow>& db,
+                                  std::vector<std::string> miss ) const {
+      return true;
+    }
+
     
-    class DatabaseCSV : public DatabaseVector {
-    public:
-      // ##########################################################################
-      /// @name Constructors / Destructors
-      // ##########################################################################
-
-      /// @{
-
-      /// default constructor
-      DatabaseCSV
-      ( const std::string filename,
-        const DBTransform& transform = DBTransform (),
-        const std::string delimiter = ",",
-        const char commentmarker = '#',
-        const char quoteMarker = '"',
-        const std::vector<std::string> missingVal = { "?", "N/A", "n/a" } );
-
-      /// copy constructor
-      DatabaseCSV ( const DatabaseCSV& from );
-
-      /// move constructor
-      DatabaseCSV ( DatabaseCSV&& from );
-
-      /// destructor
-      ~DatabaseCSV ();
-      
-      /// @}
-      
-    };
-    
-
   } /* namespace learning */
 
-
+  
 } /* namespace gum */
-
-
-#endif /* GUM_DATABASE_CSV_H */
 

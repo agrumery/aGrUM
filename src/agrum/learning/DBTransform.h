@@ -18,19 +18,20 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A class unifying the type of the DBCells for each column of the database
+ * @brief The base class for preprocessing a database: this class performs an
+ * identity
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_DB_TRANSFORM_UNIFIER_H
-#define GUM_LEARNING_DB_TRANSFORM_UNIFIER_H
+#ifndef GUM_LEARNING_DB_TRANSFORM_H
+#define GUM_LEARNING_DB_TRANSFORM_H
 
 #include <vector>
 #include <string>
 
 #include <agrum/config.h>
 #include <agrum/learning/DBRow.h>
-#include <agrum/learning/DBTransform.h>
+
 
 namespace gum {
 
@@ -39,14 +40,14 @@ namespace gum {
 
 
     // ============================================================================
-    // DB TRANSFORM UNIFIER
+    // DB TRANSFORM
     // ============================================================================
-    /** @class DBTransformUnifier
+    /** @class DBTransform
      * @ingroup learning_group
-     * @brief This class unifies the columns of the DB so that DBCells have the
-     * same type (except for missing values) throughout the database
+     * @brief The base class for preprocessing a database. This class perform an
+     * identity transformation
      */
-    class DBTransformUnifier : public DBTransform {
+    class DBTransform {
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -55,13 +56,13 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DBTransformUnifier ();
+      DBTransform ();
 
       /// copy constructor
-      DBTransformUnifier ( const DBTransformUnifier& );
+      DBTransform ( const DBTransform& );
 
       /// destructor
-      virtual ~DBTransformUnifier ();
+      virtual ~DBTransform ();
 
       /// @}
       
@@ -73,7 +74,7 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBTransformUnifier& operator= ( const DBTransformUnifier& );
+      DBTransform& operator= ( const DBTransform& );
 
       /// @}
 
@@ -84,15 +85,10 @@ namespace gum {
 
       /// @{
 
-      /// indicates whether a BDCell contains a missing value
-      bool isMissing ( const DBCell& cell,
-                       const std::vector<std::string>& miss ) const noexcept;
- 
-      /// transforms a vector of DBrows to unify the types of its columns
-      /** @return true if the unification could be performed successfully. */
-      bool
-      transform ( std::vector<DBRow>& db,
-                  std::vector<std::string> miss = { "?", "N/A", "n/a" } ) const;
+      /// transforms a vector of DBrows
+      /** @return true if the transformation could be performed successfully. */
+      virtual bool transform ( std::vector<DBRow>& db,
+                               std::vector<std::string> miss ) const;
 
       /// @}
 
@@ -106,4 +102,4 @@ namespace gum {
 
     
 
-#endif /* GUM_LEARNING_DB_TRANSFORM_UNIFIER_H */
+#endif /* GUM_LEARNING_DB_TRANSFORM_H */
