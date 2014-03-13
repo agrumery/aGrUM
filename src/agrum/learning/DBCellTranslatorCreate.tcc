@@ -42,7 +42,7 @@ namespace gum {
         ( Translator::input_size == Cols::size,
           "the number of columns is not compatible with the translator" );
       static_assert
-        ( std::is_base_of<BaseCellTranslator,Translator>::value,
+        ( std::is_base_of<BaseDBCellTranslator,Translator>::value,
           "Error: you should pass only CellTranslators to Create<>" );
 
       GUM_CONSTRUCTOR ( CreateOnce );

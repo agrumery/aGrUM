@@ -93,6 +93,13 @@ namespace gum {
     }
 
     
+    /// sets the DBCell as a missing element
+    INLINE void DBCell::setMissingSafe () {
+      if ( __type == EltType::STRING ) __string.std::string::~string ();
+      __type = EltType::MISSING;
+    }
+    
+    
     /// sets the content of the DBCell (safe type checking)
     INLINE void DBCell::setStringSafe ( const std::string& elt ) {
       if ( __type == EltType::STRING )
@@ -134,7 +141,59 @@ namespace gum {
       // here, the best type is a string
       setStringSafe ( elt );
     }
+
+
+    /// returns the current type of the DBCell
+    INLINE DBCell::EltType DBCell::type () const noexcept {
+      return __type;
+    }
+
     
+    /// try to convert the content of the DBCell into another type
+    INLINE bool DBCell::convertType ( EltType type ) {
+      if ( type == __type ) return true;
+      switch ( type ) {
+      case FLOAT:
+        switch ( __type ) {
+        case STRING:
+          try {
+            __float = stof ( __string );
+            return true;
+          }
+          catch ( std::invalid_argument& ) { return false; }
+
+        case MISSING:
+          return false;
+
+        default:
+          GUM_ERROR ( TypeError, "type not supported by DBCell convertType" );
+        }
+
+        
+      case STRING:
+        switch ( __type ) {
+        case FLOAT:
+          __string = std::to_string ( __float );
+          return true;
+          
+        case MISSING:
+          return false;
+
+        default:
+          GUM_ERROR ( TypeError, "type not supported by DBCell convertType" );
+        }
+ 
+      case MISSING:
+        setMissingSafe ();
+        return true;
+
+      default:
+        GUM_ERROR ( TypeError, "type not supported by DBCell convertType" );
+      }
+
+      return false;
+    }
+
 
   } /* namespace learning */
 

@@ -34,14 +34,14 @@ namespace gum_tests {
   class NewArchTestSuite: public CxxTest::TestSuite {
   public:
 
-    class CellTranslator1 : public gum::learning::CellTranslator<1,1> {
+    class CellTranslator1 : public gum::learning::DBCellTranslator<1,1> {
     public:
       void translate () {
         out (0) = in (0).getFloat ();
       }
     };
 
-    class CellTranslator2 : public gum::learning::CellTranslator<2,1> {
+    class CellTranslator2 : public gum::learning::DBCellTranslator<2,1> {
     public:
       void translate () {
         outputRow() [outputCols() [0]] =

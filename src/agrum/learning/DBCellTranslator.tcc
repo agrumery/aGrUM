@@ -34,18 +34,18 @@ namespace gum {
     
     /// default constructor
     template <int Nb_inputs, int Nb_outputs> INLINE
-    CellTranslator<Nb_inputs,Nb_outputs>::CellTranslator () noexcept {
-      GUM_CONSTRUCTOR ( CellTranslator );
+    DBCellTranslator<Nb_inputs,Nb_outputs>::DBCellTranslator () noexcept {
+      GUM_CONSTRUCTOR ( DBCellTranslator );
     }
 
 
     /// copy constructor
     template <int Nb_inputs, int Nb_outputs> INLINE
-    CellTranslator<Nb_inputs,Nb_outputs>::CellTranslator
-    ( const CellTranslator<Nb_inputs,Nb_outputs>& translator ) noexcept :
+    DBCellTranslator<Nb_inputs,Nb_outputs>::DBCellTranslator
+    ( const DBCellTranslator<Nb_inputs,Nb_outputs>& translator ) noexcept :
       _input_row  ( translator._input_row ),
       _output_row ( translator._output_row ) {
-      GUM_CONS_CPY ( CellTranslator );
+      GUM_CONS_CPY ( DBCellTranslator );
       
       memcpy ( _input_cols, translator._input_cols,
                Nb_inputs * sizeof (unsigned int ) );
@@ -56,11 +56,11 @@ namespace gum {
     
     /// move constructor
     template <int Nb_inputs, int Nb_outputs> INLINE
-    CellTranslator<Nb_inputs,Nb_outputs>::CellTranslator
-    ( CellTranslator<Nb_inputs,Nb_outputs>&& translator ) noexcept :
+    DBCellTranslator<Nb_inputs,Nb_outputs>::DBCellTranslator
+    ( DBCellTranslator<Nb_inputs,Nb_outputs>&& translator ) noexcept :
       _input_row ( translator._input_row ),
       _output_row ( translator._output_row ) {
-      GUM_CONS_MOV ( CellTranslator );
+      GUM_CONS_MOV ( DBCellTranslator );
         
       memcpy ( _input_cols, translator._input_cols,
                Nb_inputs * sizeof (unsigned int ) );
@@ -71,14 +71,14 @@ namespace gum {
 
     /// destructor
     template <int Nb_inputs, int Nb_outputs> INLINE
-    CellTranslator<Nb_inputs,Nb_outputs>::~CellTranslator () noexcept {
-      GUM_DESTRUCTOR ( CellTranslator );
+    DBCellTranslator<Nb_inputs,Nb_outputs>::~DBCellTranslator () noexcept {
+      GUM_DESTRUCTOR ( DBCellTranslator );
     }
   
 
     /// sets a new DBRow to translate
     template <int Nb_inputs, int Nb_outputs> INLINE
-    void CellTranslator<Nb_inputs,Nb_outputs>::setInputRow
+    void DBCellTranslator<Nb_inputs,Nb_outputs>::setInputRow
     ( const DBRow& row ) noexcept {
       _input_row = &row;
     }
@@ -86,7 +86,7 @@ namespace gum {
     
     /// sets a new FilteredRow to which the translator will write its output
     template <int Nb_inputs, int Nb_outputs> INLINE
-    void CellTranslator<Nb_inputs,Nb_outputs>::setOutputRow
+    void DBCellTranslator<Nb_inputs,Nb_outputs>::setOutputRow
     ( FilteredRow& row ) noexcept {
       _output_row = &row;
     }
@@ -95,7 +95,7 @@ namespace gum {
     /// sets the input DBRow's columns read by the translator
     template <int Nb_inputs, int Nb_outputs>
     template <int Col1, int... OtherCols> INLINE 
-    void CellTranslator<Nb_inputs,Nb_outputs>::setInputCols
+    void DBCellTranslator<Nb_inputs,Nb_outputs>::setInputCols
     ( const Col<Col1,OtherCols...>& ) noexcept {
       static_assert ( sizeof... ( OtherCols ) + 1 == Nb_inputs,
                       "you set a wrong number of translator's input columns" );
@@ -105,7 +105,7 @@ namespace gum {
     
     /// sets the output FilteredRow's columns written by the translator
     template <int Nb_inputs, int Nb_outputs> INLINE
-    void CellTranslator<Nb_inputs,Nb_outputs>::setOutputCols
+    void DBCellTranslator<Nb_inputs,Nb_outputs>::setOutputCols
     ( unsigned int start ) noexcept {
       for ( unsigned int i = 0; i < Nb_outputs; ++i ) {
         _output_cols[i] = start + i;
@@ -115,14 +115,15 @@ namespace gum {
     
     /// returns the current input DBRow
     template <int Nb_inputs, int Nb_outputs> INLINE
-    const DBRow& CellTranslator<Nb_inputs,Nb_outputs>::inputRow () const noexcept {
+    const DBRow&
+    DBCellTranslator<Nb_inputs,Nb_outputs>::inputRow () const noexcept {
       return *_input_row;
     }
 
     
     /// returns the current output FilteredRow
     template <int Nb_inputs, int Nb_outputs> INLINE
-    FilteredRow& CellTranslator<Nb_inputs,Nb_outputs>::outputFilteredRow ()
+    FilteredRow& DBCellTranslator<Nb_inputs,Nb_outputs>::outputFilteredRow ()
       noexcept {
       return *_output_row;
     }
@@ -131,7 +132,7 @@ namespace gum {
     /// returns the row of unsigned int of the current output FilteredRow
     template <int Nb_inputs, int Nb_outputs> INLINE
     std::vector<unsigned int>&
-    CellTranslator<Nb_inputs,Nb_outputs>::outputRow () noexcept {
+    DBCellTranslator<Nb_inputs,Nb_outputs>::outputRow () noexcept {
       return _output_row->row ();
     }
       
@@ -139,7 +140,7 @@ namespace gum {
     /// returns the set of input DBRow's columns used by the translator
     template <int Nb_inputs, int Nb_outputs> INLINE
     const unsigned int*
-    CellTranslator<Nb_inputs,Nb_outputs>::inputCols () const noexcept {
+    DBCellTranslator<Nb_inputs,Nb_outputs>::inputCols () const noexcept {
       return _input_cols;
     }
 
@@ -147,7 +148,7 @@ namespace gum {
     /// returns the set of output FilteredRow's columns written by the translator
     template <int Nb_inputs, int Nb_outputs> INLINE
     const unsigned int*
-    CellTranslator<Nb_inputs,Nb_outputs>::outputCols () const noexcept {
+    DBCellTranslator<Nb_inputs,Nb_outputs>::outputCols () const noexcept {
       return _output_cols;
     }
 
@@ -155,7 +156,7 @@ namespace gum {
     /// returns the DBCell read at the ith input column of translator
     template <int Nb_inputs, int Nb_outputs> INLINE
     const DBCell&
-    CellTranslator<Nb_inputs,Nb_outputs>::in ( unsigned int i ) const noexcept {
+    DBCellTranslator<Nb_inputs,Nb_outputs>::in ( unsigned int i ) const noexcept {
       return _input_row->operator[] ( _input_cols [i] );
     }
 
@@ -163,7 +164,7 @@ namespace gum {
     /// returns the FilteredRow cell corresponding to the ith output column
     template <int Nb_inputs, int Nb_outputs> INLINE
     unsigned int&
-    CellTranslator<Nb_inputs,Nb_outputs>::out ( unsigned int i ) noexcept {
+    DBCellTranslator<Nb_inputs,Nb_outputs>::out ( unsigned int i ) noexcept {
       return _output_row->row() [ _output_cols [i] ];
     }
 

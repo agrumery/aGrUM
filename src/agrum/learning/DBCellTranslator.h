@@ -25,8 +25,8 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_CELL_TRANSLATOR_H
-#define GUM_LEARNING_CELL_TRANSLATOR_H
+#ifndef GUM_LEARNING_DB_CELL_TRANSLATOR_H
+#define GUM_LEARNING_DB_CELL_TRANSLATOR_H
 
 #include <vector>
 #include <cstring>
@@ -46,20 +46,20 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
     template <int Idx, int... NextIdx>
-    class CellTranslator;
+    class DBCellTranslator;
 
     // This empty class is used to test whether a given filter is a cell translator
     // or not, without having to take into account the template parameters of class
-    // CellTranslator. This is used, for instance, in the "using Create ="
+    // DBCellTranslator. This is used, for instance, in the "using Create ="
     // declaration in order to create a CreateTranslator if the filter passed in
     // parameter to Create<> is a cell translator, and to create a
     // CreateGenerator otherwise.
-    struct BaseCellTranslator {};
+    struct BaseDBCellTranslator {};
 
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
 
-    /** @class CellTranslator
+    /** @class DBCellTranslator
      * @ingroup learning_group
      * @brief The base class for all the tabular database cell translators
      *
@@ -70,14 +70,15 @@ namespace gum {
      * x, but this can also be a discretization of x or a more complex
      * transformation like the addition of two columns of the database. To
      * simplify the design to cell translators, all those should derive from
-     * CellTranslator. By Doing so, implementing a new cell translator essentially
-     * amounts to create method "translate", which will translate the content
-     * of the database, accessible through method "in" or "inputRow", into an
-     * output vector accessible through method "out" or "outputRow". For instance,
-     * here is how an Indentity translator over 1 column can be implemented:
+     * DBCellTranslator. By Doing so, implementing a new cell translator
+     * essentially amounts to create method "translate", which will translate the
+     * content of the database, accessible through method "in" or "inputRow", into
+     * an output vector accessible through method "out" or "outputRow". For
+     * instance, here is how an Indentity translator over 1 column can be
+     * implemented:
      * @code
      * class CellIdentity :
-     *   public CellTranslator<1,1> { // there are 1 col in input and 1 in output
+     *   public DBCellTranslator<1,1> { // there are 1 col in input and 1 in output
      *   public:
      *   void translate () { // the method called to translate the column
      *     out( 0 ) = in ( 0 ); // the first element (0) in input is put into the
@@ -88,7 +89,7 @@ namespace gum {
      * of methods inputRow, outputRow, inputCols and outputCols:
      * @code
      * class CellIdentity :
-     *   public CellTranslator<1,1> { // there are 1 col in input and 1 in output
+     *   public DBCellTranslator<1,1> { // there are 1 col in input and 1 in output
      *   public:
      *   void translate () { // the method called to translate the column
      *     outputRow() [outputCols() [0]] = inputRow() [inputCols() [0]];
@@ -99,7 +100,7 @@ namespace gum {
      * produce in the output vector.
      */
     template <int Nb_inputs, int Nb_outputs>
-    class CellTranslator<Nb_inputs, Nb_outputs> : public BaseCellTranslator {
+    class DBCellTranslator<Nb_inputs, Nb_outputs> : public BaseDBCellTranslator {
     public:
       /// the number of DBRow cells read by the translator
       static constexpr unsigned int input_size = Nb_inputs;
@@ -115,16 +116,16 @@ namespace gum {
       /// @{
 
       /// default constructor
-      CellTranslator () noexcept;
+      DBCellTranslator () noexcept;
 
       /// copy constructor
-      CellTranslator ( const CellTranslator<Nb_inputs,Nb_outputs>& ) noexcept;
+      DBCellTranslator ( const DBCellTranslator<Nb_inputs,Nb_outputs>& ) noexcept;
 
       /// move constructor
-      CellTranslator ( CellTranslator<Nb_inputs,Nb_outputs>&& ) noexcept;
+      DBCellTranslator ( DBCellTranslator<Nb_inputs,Nb_outputs>&& ) noexcept;
 
       /// destructor
-      virtual ~CellTranslator () noexcept;
+      virtual ~DBCellTranslator () noexcept;
 
       /// @}
   
@@ -140,7 +141,7 @@ namespace gum {
       void setInputRow ( const DBRow& row ) noexcept;
 
       /// sets a new FilteredRow to which the translator will write its output
-      /** Every CellTranslator transforms a DBRow into a FilteredRow. */
+      /** Every DBCellTranslator transforms a DBRow into a FilteredRow. */
       void setOutputRow ( FilteredRow& row ) noexcept;
 
       /// sets the input DBRow's columns read by the translator
@@ -148,7 +149,7 @@ namespace gum {
       void setInputCols ( const Col<Col1,OtherCols...>& ) noexcept;
     
       /// sets the output FilteredRow's columns written by the translator
-      /** If the CellTranslator output N columns, then those will be written in
+      /** If the DBCellTranslator output N columns, then those will be written in
        * the output vector at indices start, start+1, ..., start+N-1. */
       void setOutputCols ( unsigned int start ) noexcept;
 
@@ -204,9 +205,9 @@ namespace gum {
 
 
 // always include the template implementation
-#include <agrum/learning/cellTranslator.tcc>
+#include <agrum/learning/DBCellTranslator.tcc>
 
 
-#endif /* GUM_LEARNING_CELL_TRANSLATOR_H */
+#endif /* GUM_LEARNING_DB_CELL_TRANSLATOR_H */
 
 

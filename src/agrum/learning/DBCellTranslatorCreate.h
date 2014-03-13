@@ -48,8 +48,8 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_TRANSLATOR_CREATE_H
-#define GUM_LEARNING_TRANSLATOR_CREATE_H
+#ifndef GUM_LEARNING_DB_CELL_TRANSLATOR_CREATE_H
+#define GUM_LEARNING_DB_CELL_TRANSLATOR_CREATE_H
 
 #include <vector>
 
@@ -57,7 +57,7 @@
 #include <agrum/learning/column.h>
 #include <agrum/learning/DBRow.h>
 #include <agrum/learning/filteredRow.h>
-#include <agrum/learning/cellTranslator.h>
+#include <agrum/learning/DBCellTranslator.h>
 
 
 namespace gum {
@@ -255,7 +255,7 @@ namespace gum {
 
 
 // always include template implementations
-#include <agrum/learning/translatorCreate.tcc>
+#include <agrum/learning/DBCellTranslatorCreate.tcc>
 
 
-#endif /* GUM_LEARNING_TRANSLATOR_CREATE_H */
+#endif /* GUM_LEARNING_DB_CELL_TRANSLATOR_CREATE_H */

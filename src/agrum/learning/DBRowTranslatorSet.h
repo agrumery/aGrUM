@@ -27,8 +27,8 @@
 
 
 #include <agrum/config.h>
-#include <agrum/learning/cellTranslator.h>
-#include <agrum/learning/translatorCreate.h>
+#include <agrum/learning/DBCellTranslator.h>
+#include <agrum/learning/DBCellTranslatorCreate.h>
 
 
 namespace gum {
@@ -172,7 +172,7 @@ namespace gum {
       /// @{
 
       /// default constructor
-      /** @aram translators the set of CellTranslators to apply */
+      /** @param translators the set of DBCellTranslators to apply */
       DBRowTranslatorSet ( const Translators&...  translators );
 
       /// copy constructor

@@ -41,6 +41,12 @@ namespace gum {
      * @brief the type of the elements read from the database */
     class DBCell {
     public:
+      
+      /// the set of types possibly taken by the last element read
+      enum EltType {
+        FLOAT, STRING, MISSING
+      };
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -112,6 +118,9 @@ namespace gum {
 
       /// sets the content of the DBCell (safe type checking)
       void setStringSafe ( const std::string& elt );
+
+      /// sets the DBCell as a missing element
+      void setMissingSafe ();
       
       /// safely sets the content of the DBCell with the best possible type
       /** This method is used to parse the string passed in argument and
@@ -122,15 +131,17 @@ namespace gum {
       /** @brief safely sets the content of the DBCell with the preceding type or,
        * if this is not possible, with the best possible type */
       void setAgainTypeSafe ( const std::string& elt );
-      
+
+      /// returns the current type of the DBCell
+      EltType type () const noexcept;
+
+      /// try to convert the content of the DBCell into another type
+      bool convertType ( EltType );
+
       /// @}
 
       
     private:
-      /// the set of types possibly taken by the last element read
-      enum class EltType {
-        FLOAT, STRING, MISSING
-      };
 
       /// the real type of the last element read from the database
       EltType __type { EltType::FLOAT };
