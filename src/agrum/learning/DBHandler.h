@@ -37,31 +37,45 @@ namespace gum {
   namespace learning {
     
 
-      struct  Handler {
-        /// the number of rows that the handler will parse in the database
-        virtual unsigned long size () const noexcept = 0;
+    /** @class DBHandler
+     * @brief The base class for all database handlers
+     * @ingroup learning_group
+     */
+    class  DBHandler {
+    public:
+      /// returns the number of rows managed by the handler
+      /** A handler needs not necessarily handle all the rows of the database.
+       * For instance, RecordCounters cut the database into several pieces and
+       * assign each piece to a handler. Then each handler is used to perform
+       * countings only on a subset of the database */
+      virtual unsigned long size () const noexcept = 0;
 
-        /// the number of rows in the database
-        virtual unsigned long DBSize () const noexcept = 0;
+      /// the number of rows in the whole database
+      virtual unsigned long DBSize () const noexcept = 0;
+      
+      /// returns the current row of the database
+      /** @throws OutOfBounds if the handler points to the end of its area */
+      virtual const DBRow& row () const = 0;
 
-        /// returns the current row of the database
-        virtual const DBRow& row () noexcept = 0;
+      /// go to the next row in the database
+      virtual void nextRow () noexcept = 0;
 
-        /// go to the next row in the database
-        virtual void nextRow () = 0;
+      /// indicates wether there are still rows to parse in the database
+      virtual bool hasRows () const noexcept = 0;
 
-        /// indicates wether there are still rows to parse in the database
-        virtual bool hasRows () const noexcept = 0;
+      /// puts the handler to the beginning of the database area it handles
+      virtual void reset () = 0;
 
-        /// puts the handler on the first row it should parse
-        virtual void reset () = 0;
+      /// sets the range of rows in the database that the handler will parse
+      virtual void setRange ( unsigned long begin,
+                              unsigned long end ) noexcept = 0;
 
-        /// sets the range of rows in the database that the handler will parse
-        virtual void setRange ( unsigned long begin, unsigned long end ) = 0;
 
-        // to avoid cacheline parallel problems
-        char __align[CACHE_SIZE]; 
-      };
+    private:
+      /// a buffer to avoid cacheline problems due to parallelism
+      char __align[CACHE_SIZE]; 
+
+    };
 
     
   } /* namespace learning */

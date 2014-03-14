@@ -35,8 +35,7 @@
 
 #include <agrum/config.h>
 #include <agrum/learning/DBRow.h>
-
-#define CACHE_SIZE 1024
+#include <agrum/learning/DBHandler.h>
 
 
 namespace gum {
@@ -60,7 +59,7 @@ namespace gum {
        * @brief the handler of tabular databases represented  as vectors of DBRows
        * @ingroup learning_group
        */
-      class Handler {
+      class Handler : public DBHandler {
       public:
         // ########################################################################
         /// @name Constructors
@@ -124,11 +123,8 @@ namespace gum {
 
         /// the row just after the last one managed by the handler
         unsigned long __end_index   { 0 };
-
-        /// a buffer to avoid cacheline problems due to parallelism
-        char __align[CACHE_SIZE];
         
-      } ;
+      };
 
 
 
