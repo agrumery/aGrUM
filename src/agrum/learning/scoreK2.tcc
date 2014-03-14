@@ -47,9 +47,9 @@ namespace gum {
       GUM_CONSTRUCTOR ( ScoreK2 );
 
       // compute the cache for log (n!) for the first integers
-      double nb = 0;
+      float nb = 0;
       for ( unsigned int i = 1; i < MAX_LOG_CACHE; ++i ) {
-        nb += log ( i );
+        nb += logf ( i );
         __log_fact[i] = nb;
       }
     }
@@ -74,8 +74,8 @@ namespace gum {
       }
 
       // returns the approximation by the stirling formula
-      return ( __log_sqrt_2pi + ( n + 0.5f ) * log ( (float) n ) -
-               n + log ( 1.0f + 1.0f / ( 12 * n ) ) );
+      return ( __log_sqrt_2pi + ( n + 0.5f ) * logf ( (float) n ) -
+               n + logf ( 1.0f + 1.0f / ( 12 * n ) ) );
     }
  
 
@@ -100,7 +100,7 @@ namespace gum {
           this->_getConditioningCounts ( nodeset_index );
         unsigned int conditioning_modal = N_ij.size ();
         unsigned int targets_modal = N_ijk.size ();
-
+ 
         // the K2 score can be computed as follows:
         // qi log {(ri - 1)!} + sum_j=1^qi [ - log {(N_ij+ri-1)!} +
         //                                   sum_k=1^ri log { N_ijk! } ]
@@ -148,7 +148,6 @@ namespace gum {
           ri_minus_1 *= modalities[all_nodes[i]] - 1;
         }
         float score = __logFactorial ( ri_minus_1 );
-
         float N = 0;
         for ( unsigned int k = 0; k < targets_modal; ++k ) {
           if ( N_ijk[k] ) {
