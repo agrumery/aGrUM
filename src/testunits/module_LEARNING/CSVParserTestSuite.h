@@ -23,7 +23,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
-#include <agrum/learning/CSVParser/CSVParser.h>
+#include <agrum/learning/CSVParser.h>
 
 namespace gum_tests {
 
@@ -33,7 +33,7 @@ namespace gum_tests {
 
       gum::Size testParseString ( std::string csvstring, std::string& res ) {
         std::istringstream in ( csvstring );
-        gum::CSVParser parser ( in );
+        gum::learning::CSVParser parser ( in );
 
         // no data parser for now
         TS_ASSERT_THROWS ( parser.current(), gum::NullElement )
