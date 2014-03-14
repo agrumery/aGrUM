@@ -56,6 +56,47 @@ namespace gum_tests {
       }
       //0,0,0,1,1,0,0,0
 
+      unsigned int nb = 0;
+      while ( handler.hasRows () ) {
+        ++nb;
+        handler.nextRow ();
+      }
+      TS_ASSERT ( nb == 10000 );
+
+      nb = 0;
+      handler.reset ();
+      while ( handler.hasRows () ) {
+        ++nb;
+        handler.nextRow ();
+      }
+      TS_ASSERT ( nb == 10000 );
+
+      handler.reset ();
+      while ( handler.hasRows () ) {
+        const gum::learning::DBRow& row = handler.row ();
+        for ( unsigned int i = 0; i < row.size (); ++i ) {
+          TS_ASSERT ( row[i].type () == gum::learning::DBCell::EltType::FLOAT );
+          TS_ASSERT ( ( row[i].getFloat () == 0 ) || ( row[i].getFloat () == 1 ) );
+        }
+        handler.nextRow ();
+      }
+      
+      nb = 0;
+      handler.setRange ( 5000, 6000 );
+      while ( handler.hasRows () ) {
+        ++nb;
+        handler.nextRow ();
+      }
+      TS_ASSERT ( nb == 1000 );
+
+      nb = 0;
+      handler.reset ();
+      while ( handler.hasRows () ) {
+        ++nb;
+        handler.nextRow ();
+      }
+      TS_ASSERT ( nb == 1000 );
+      
     }
     
   };

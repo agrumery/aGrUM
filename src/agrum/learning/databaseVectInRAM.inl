@@ -105,6 +105,7 @@ namespace gum {
       if ( begin > end ) std::swap ( begin, end );
       __begin_index = begin;
       __end_index = end;
+      __index = begin;
     }
 
 
