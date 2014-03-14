@@ -120,14 +120,16 @@ namespace gum {
 
     /// copy constructor
     INLINE DatabaseVectInRAM::DatabaseVectInRAM ( const DatabaseVectInRAM& from ) :
-      __data ( from.__data ) {
+      __data ( from.__data ),
+      __variable_names ( from.__variable_names ) {
       GUM_CONS_CPY ( DatabaseVectInRAM );
     }
 
 
     /// move constructor
     INLINE DatabaseVectInRAM::DatabaseVectInRAM ( DatabaseVectInRAM&& from ) :
-      __data ( std::move ( from.__data ) ) {
+      __data ( std::move ( from.__data ) ),
+      __variable_names ( std::move ( from.__variable_names ) ) {
       GUM_CONS_MOV ( DatabaseVectInRAM );
     }
 
@@ -149,7 +151,21 @@ namespace gum {
       return __data;
     }
 
+
+    /// returns the variable names for all the columns
+    INLINE const std::vector<std::string>&
+    DatabaseVectInRAM::variableNames () const noexcept {
+      return __variable_names;
+    }
     
+
+    /// returns the variable names for all the columns
+    INLINE std::vector<std::string>&
+    DatabaseVectInRAM::_variableNames () noexcept {
+      return __variable_names;
+    }
+
+
     /// returns a new handler on the database
     INLINE DatabaseVectInRAM::Handler DatabaseVectInRAM::handler () const {
       return Handler ( *this );

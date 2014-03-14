@@ -32,6 +32,7 @@
 
 
 #include <vector>
+#include <string>
 
 #include <agrum/config.h>
 #include <agrum/learning/DBRow.h>
@@ -150,6 +151,9 @@ namespace gum {
 
       /// returns a new handler on the database
       Handler handler () const;
+
+      /// returns the variable names for all the columns
+      const std::vector<std::string>& variableNames () const noexcept;
       
       /// @}
       
@@ -175,10 +179,16 @@ namespace gum {
       /// returns the content of the database
       std::vector<DBRow>& _content () noexcept;
 
+      /// returns the variable names for all the columns
+      std::vector<std::string>& _variableNames () noexcept;
+
       
     private:
       /// the vector of DBRows
       std::vector<DBRow> __data;
+
+      /// the names of the variables for each column
+      std::vector<std::string> __variable_names;
       
     };
 

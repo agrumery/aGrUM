@@ -24,7 +24,8 @@
  */
 
 #include <iostream> 
-#include <fstream> 
+#include <fstream>
+#include <sstream>
 
 #include <agrum/learning/CSVParser.h>
 #include <agrum/learning/databaseFromCSV.h>
@@ -38,17 +39,25 @@ namespace gum {
     /// default constructor
     DatabaseFromCSV::DatabaseFromCSV
     ( const std::string filename,
+      bool fileContainsNames,
       const DBTransform& transform,
       const std::string delimiter,
       const char commentmarker,
       const char quoteMarker,
       const std::vector<std::string> missingVal ) {
-      // open the file and use the CSVParser to fill the vector of DBRows
+      // open the file and create the CSVParser that will parse it
       std::ifstream in ( filename, std::ifstream::in);
-      CSVParser parser ( in, delimiter, commentmarker, quoteMarker );
-      std::vector<DBRow>& vect = _content ();
+     CSVParser parser ( in, delimiter, commentmarker, quoteMarker );
+
+      // if the first line contains names, store them
+      if ( fileContainsNames ) {
+        parser.next ();
+        _variableNames () = parser.current ();
+      }
       
-      do {
+      // use the CSVParser to fill the vector of DBRows
+      std::vector<DBRow>& vect = _content ();
+      while ( parser.next () ) {
         // read a new line in the input file and convert it into a DBRow
         const std::vector<std::string>& row = parser.current ();
         
@@ -59,10 +68,21 @@ namespace gum {
         
         // add the result into 
         vect.push_back ( new_row );
-      } while ( parser.next () );
-      
+      }
+
       // if we wish to apply a DBTransform to preprocess the database
       transform.transform ( vect, missingVal );
+
+      // if the names of the variables have not been set yet, do it
+      if ( ! fileContainsNames && vect.size () && vect[0].size () ) {
+        std::vector<std::string>& names = _variableNames ();
+        names.resize ( vect[0].size () );
+        for ( unsigned int i = 0; i < names.size (); ++i ) {
+          std::stringstream s;
+          s << "node " << i;
+          names[i] = s.str ();
+        }
+      }
 
       // for debugging purposes
       GUM_CONSTRUCTOR ( DatabaseFromCSV );

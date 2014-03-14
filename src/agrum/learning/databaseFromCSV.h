@@ -51,6 +51,7 @@ namespace gum {
       /// default constructor
       DatabaseFromCSV
       ( const std::string filename,
+        bool fileContainsNames = true,
         const DBTransform& transform = DBTransformIdentity (),
         const std::string delimiter = ",",
         const char commentmarker = '#',
