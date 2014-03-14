@@ -27,8 +27,7 @@
 #include <fstream> 
 
 #include <agrum/learning/CSVParser.h>
-#include <agrum/learning/databaseCSV.h>
-#include <agrum/learning/DBTransformUnifier.h>
+#include <agrum/learning/databaseFromCSV.h>
 
 namespace gum {
 
@@ -37,12 +36,13 @@ namespace gum {
 
 
     /// default constructor
-    DatabaseCSV::DatabaseCSV ( const std::string filename,
-                               const DBTransform& transform,
-                               const std::string delimiter,
-                               const char commentmarker,
-                               const char quoteMarker,
-                               const std::vector<std::string> missingVal ) {
+    DatabaseFromCSV::DatabaseFromCSV
+    ( const std::string filename,
+      const DBTransform& transform,
+      const std::string delimiter,
+      const char commentmarker,
+      const char quoteMarker,
+      const std::vector<std::string> missingVal ) {
       // open the file and use the CSVParser to fill the vector of DBRows
       std::ifstream in ( filename, std::ifstream::in);
       CSVParser parser ( in, delimiter, commentmarker, quoteMarker );
@@ -65,29 +65,29 @@ namespace gum {
       transform.transform ( vect, missingVal );
 
       // for debugging purposes
-      GUM_CONSTRUCTOR ( DatabaseCSV );
+      GUM_CONSTRUCTOR ( DatabaseFromCSV );
     }
 
         
     /// copy constructor
-    DatabaseCSV::DatabaseCSV ( const DatabaseCSV& from ) :
-      DatabaseVector ( from ) {
+    DatabaseFromCSV::DatabaseFromCSV ( const DatabaseFromCSV& from ) :
+      DatabaseVectInRAM ( from ) {
       // for debugging purposes
-      GUM_CONS_CPY ( DatabaseCSV );
+      GUM_CONS_CPY ( DatabaseFromCSV );
     }
       
 
     /// move constructor
-    DatabaseCSV::DatabaseCSV ( DatabaseCSV&& from ) :
-      DatabaseVector ( std::move ( from ) ) {
+    DatabaseFromCSV::DatabaseFromCSV ( DatabaseFromCSV&& from ) :
+      DatabaseVectInRAM ( std::move ( from ) ) {
       // for debugging purposes
-      GUM_CONS_MOV ( DatabaseCSV );
+      GUM_CONS_MOV ( DatabaseFromCSV );
     }
       
 
     /// destructor
-    DatabaseCSV::~DatabaseCSV () {
-      GUM_DESTRUCTOR ( DatabaseCSV );
+    DatabaseFromCSV::~DatabaseFromCSV () {
+      GUM_DESTRUCTOR ( DatabaseFromCSV );
     }
           
 

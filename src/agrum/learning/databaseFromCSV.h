@@ -29,8 +29,9 @@
 #include <string>
 #include <vector>
 
-#include <agrum/learning/databaseVector.h>
+#include <agrum/learning/databaseVectInRAM.h>
 #include <agrum/learning/DBTransform.h>
+#include <agrum/learning/DBTransformIdentity.h>
 
 
 namespace gum {
@@ -39,7 +40,7 @@ namespace gum {
   namespace learning {
 
     
-    class DatabaseCSV : public DatabaseVector {
+    class DatabaseFromCSV : public DatabaseVectInRAM {
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -48,22 +49,22 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DatabaseCSV
+      DatabaseFromCSV
       ( const std::string filename,
-        const DBTransform& transform = DBTransform (),
+        const DBTransform& transform = DBTransformIdentity (),
         const std::string delimiter = ",",
         const char commentmarker = '#',
         const char quoteMarker = '"',
         const std::vector<std::string> missingVal = { "?", "N/A", "n/a" } );
 
       /// copy constructor
-      DatabaseCSV ( const DatabaseCSV& from );
+      DatabaseFromCSV ( const DatabaseFromCSV& from );
 
       /// move constructor
-      DatabaseCSV ( DatabaseCSV&& from );
+      DatabaseFromCSV ( DatabaseFromCSV&& from );
 
       /// destructor
-      ~DatabaseCSV ();
+      ~DatabaseFromCSV ();
       
       /// @}
       

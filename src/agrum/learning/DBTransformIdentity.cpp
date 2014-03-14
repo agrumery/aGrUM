@@ -23,7 +23,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/learning/DBTransform.h>
+#include <agrum/learning/DBTransformIdentity.h>
 
 
 namespace gum {
@@ -33,27 +33,36 @@ namespace gum {
 
 
     /// default constructor
-    DBTransform::DBTransform () {
-      GUM_CONSTRUCTOR ( DBTransform );
+    DBTransformIdentity::DBTransformIdentity () {
+      GUM_CONSTRUCTOR ( DBTransformIdentity );
     }
 
 
     /// copy constructor
-    DBTransform::DBTransform ( const DBTransform& ) {
-      GUM_CONS_CPY ( DBTransform );
+    DBTransformIdentity::DBTransformIdentity ( const DBTransformIdentity& from ) :
+      DBTransform ( from ) {
+      GUM_CONS_CPY ( DBTransformIdentity );
     }
 
 
     /// destructor
-    DBTransform::~DBTransform () {
-      GUM_DESTRUCTOR ( DBTransform );
+    DBTransformIdentity::~DBTransformIdentity () {
+      GUM_DESTRUCTOR ( DBTransformIdentity );
     }
 
 
     /// copy operator
-    DBTransform&
-    DBTransform::operator= ( const DBTransform& ) {
+    DBTransformIdentity&
+    DBTransformIdentity::operator= ( const DBTransformIdentity& from ) {
+      DBTransform::operator=  ( from );
       return *this;
+    }
+
+
+    /// transforms a vector of DBrows
+    bool DBTransformIdentity::transform ( std::vector<DBRow>& db,
+                                          std::vector<std::string> miss ) const {
+      return true;
     }
 
     

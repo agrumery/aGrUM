@@ -36,43 +36,44 @@ namespace gum {
     // ===========================================================================
     
     /// default constructor
-    INLINE DatabaseVector::Handler::Handler ( const DatabaseVector& db ) :
+    INLINE DatabaseVectInRAM::Handler::Handler ( const DatabaseVectInRAM& db ) :
     __row ( db.content () ),
     __end_index ( __row.size () ) {
-      GUM_CONSTRUCTOR ( DatabaseVector::Handler );
+      GUM_CONSTRUCTOR ( DatabaseVectInRAM::Handler );
     }
         
 
     /// copy constructor
-    INLINE DatabaseVector::Handler::Handler ( const DatabaseVector::Handler& h ) :
+    INLINE
+    DatabaseVectInRAM::Handler::Handler ( const DatabaseVectInRAM::Handler& h ) :
       __row ( h.__row ),
       __index ( h.__index ),
       __begin_index ( h.__begin_index ),
       __end_index ( h.__end_index ) {
-      GUM_CONS_CPY ( DatabaseVector::Handler );
+      GUM_CONS_CPY ( DatabaseVectInRAM::Handler );
     }
 
     
     /// destructor
-    INLINE DatabaseVector::Handler::~Handler () {
-      GUM_DESTRUCTOR ( DatabaseVector::Handler );
+    INLINE DatabaseVectInRAM::Handler::~Handler () {
+      GUM_DESTRUCTOR ( DatabaseVectInRAM::Handler );
     }
       
 
     /// returns the number of rows managed by the handler
-    INLINE unsigned long DatabaseVector::Handler::size () const noexcept {
+    INLINE unsigned long DatabaseVectInRAM::Handler::size () const noexcept {
       return __end_index - __begin_index;
     }
 
 
     /// return the number of rows of the whole database
-    INLINE unsigned long DatabaseVector::Handler::DBSize () const noexcept {
+    INLINE unsigned long DatabaseVectInRAM::Handler::DBSize () const noexcept {
       return __row.size ();
     }
 
     
     /// returns the current row pointed to by the handler
-    INLINE const DBRow& DatabaseVector::Handler::row () const {
+    INLINE const DBRow& DatabaseVectInRAM::Handler::row () const {
       if ( __index >= __end_index ) {
         GUM_ERROR ( OutOfBounds, "the handler has reached its end" );
       }
@@ -81,25 +82,25 @@ namespace gum {
 
 
     /// makes the handler point to the next row
-    INLINE void DatabaseVector::Handler::nextRow () noexcept {
+    INLINE void DatabaseVectInRAM::Handler::nextRow () noexcept {
       ++__index;
     }
 
 
     /// indicates whether the handler has reached its end or not
-    INLINE bool DatabaseVector::Handler::hasRows () const noexcept {
+    INLINE bool DatabaseVectInRAM::Handler::hasRows () const noexcept {
       return ( __index < __end_index );
     }
 
 
     /// puts the handler to the beginning of the database area it handles
-    INLINE void DatabaseVector::Handler::reset () noexcept {
+    INLINE void DatabaseVectInRAM::Handler::reset () noexcept {
       __index = __begin_index;
     }
 
 
     /// sets the area in the database the handler will handle
-    INLINE void DatabaseVector::Handler::setRange ( unsigned long begin,
+    INLINE void DatabaseVectInRAM::Handler::setRange ( unsigned long begin,
                                                     unsigned long end ) noexcept {
       if ( begin > end ) std::swap ( begin, end );
       __begin_index = begin;
@@ -108,49 +109,49 @@ namespace gum {
 
 
     // ===========================================================================
-    // Database Vectors
+    // Database VectInRAMs
     // ===========================================================================
 
     /// default constructor
-    INLINE DatabaseVector::DatabaseVector () {
-      GUM_CONSTRUCTOR ( DatabaseVector );
+    INLINE DatabaseVectInRAM::DatabaseVectInRAM () {
+      GUM_CONSTRUCTOR ( DatabaseVectInRAM );
     }
 
 
     /// copy constructor
-    INLINE DatabaseVector::DatabaseVector ( const DatabaseVector& from ) :
+    INLINE DatabaseVectInRAM::DatabaseVectInRAM ( const DatabaseVectInRAM& from ) :
       __data ( from.__data ) {
-      GUM_CONS_CPY ( DatabaseVector );
+      GUM_CONS_CPY ( DatabaseVectInRAM );
     }
 
 
     /// move constructor
-    INLINE DatabaseVector::DatabaseVector ( DatabaseVector&& from ) :
+    INLINE DatabaseVectInRAM::DatabaseVectInRAM ( DatabaseVectInRAM&& from ) :
       __data ( std::move ( from.__data ) ) {
-      GUM_CONS_MOV ( DatabaseVector );
+      GUM_CONS_MOV ( DatabaseVectInRAM );
     }
 
 
     /// destructor
-    INLINE DatabaseVector::~DatabaseVector () {
-      GUM_DESTRUCTOR ( DatabaseVector );
+    INLINE DatabaseVectInRAM::~DatabaseVectInRAM () {
+      GUM_DESTRUCTOR ( DatabaseVectInRAM );
     }
 
 
     /// returns the content of the database
-    INLINE const std::vector<DBRow>& DatabaseVector::content () const noexcept {
+    INLINE const std::vector<DBRow>& DatabaseVectInRAM::content () const noexcept {
       return __data;
     }
 
 
     /// returns the content of the database
-    INLINE std::vector<DBRow>& DatabaseVector::_content () noexcept {
+    INLINE std::vector<DBRow>& DatabaseVectInRAM::_content () noexcept {
       return __data;
     }
 
     
     /// returns a new handler on the database
-    INLINE DatabaseVector::Handler DatabaseVector::handler () const {
+    INLINE DatabaseVectInRAM::Handler DatabaseVectInRAM::handler () const {
       return Handler ( *this );
     }
 

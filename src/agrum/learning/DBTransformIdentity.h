@@ -18,28 +18,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The base class for preprocessing a database: convert a vector of DBRows
- * into another vector of DBRows
+ * @brief The class for preprocessing a database without altering it (identity)
  *
  * The idea of DBTransform is the following: upon initialization, a tabular
  * database first creates its vector of DBRows (for instance by reading a CSV
  * file). The DBCells of the database are filled automatically from the read
- * strings but these fillings may not always be the most appropriate (for instance,
- * for ensuring that all the DBCells of a given column of the database have the
- * same type). Therefore, prior to learning from the database, the latter should
- * execute a preprocessing step which update as needed its DBRows. This is
- * precisely the goal of the DBTransform classes.
+ * strings but these fillings may not always be the most appropriate (for
+ * instance, for ensuring that all the DBCells of a given column of the
+ * database have the same type). Therefore, prior to learning from the
+ * database, the latter should execute a preprocessing step which update as
+ * needed its DBRows. This is precisely the goal of the DBTransform classes.
+ * When no preprocessing is needed, i.e., we should keep the DBRow vector
+ * unchanged, simply use DBTransformIdentity.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_DB_TRANSFORM_H
-#define GUM_LEARNING_DB_TRANSFORM_H
+#ifndef GUM_LEARNING_DB_TRANSFORM_IDENTITY_H
+#define GUM_LEARNING_DB_TRANSFORM_IDENTITY_H
 
 #include <vector>
 #include <string>
 
 #include <agrum/config.h>
-#include <agrum/learning/DBRow.h>
+#include <agrum/learning/DBTransform.h>
 
 
 namespace gum {
@@ -49,12 +50,11 @@ namespace gum {
 
 
     // ============================================================================
-    // DB TRANSFORM
+    // DB TRANSFORM IDENTITY
     // ============================================================================
-    /** @class DBTransform
+    /** @class DBTransformIdentity
      * @ingroup learning_group
-     * @brief The base class for preprocessing a database: convert a vector of
-     * DBRows into another vector of DBRows
+     * @brief The class for preprocessing a database without altering it (identity)
      *
      * The idea of DBTransform is the following: upon initialization, a tabular
      * database first creates its vector of DBRows (for instance by reading a CSV
@@ -64,8 +64,10 @@ namespace gum {
      * database have the same type). Therefore, prior to learning from the
      * database, the latter should execute a preprocessing step which update as
      * needed its DBRows. This is precisely the goal of the DBTransform classes.
+     * When no preprocessing is needed, i.e., we should keep the DBRow vector
+     * unchanged, simply use DBTransformIdentity.
      */
-    class DBTransform {
+    class DBTransformIdentity : public DBTransform {
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -74,13 +76,13 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DBTransform ();
+      DBTransformIdentity ();
 
       /// copy constructor
-      DBTransform ( const DBTransform& );
+      DBTransformIdentity ( const DBTransformIdentity& );
 
       /// destructor
-      virtual ~DBTransform ();
+      virtual ~DBTransformIdentity ();
 
       /// @}
       
@@ -92,7 +94,7 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBTransform& operator= ( const DBTransform& );
+      DBTransformIdentity& operator= ( const DBTransformIdentity& );
 
       /// @}
 
@@ -106,7 +108,7 @@ namespace gum {
       /// transforms a vector of DBrows
       /** @return true if the transformation could be performed successfully. */
       virtual bool transform ( std::vector<DBRow>& db,
-                               std::vector<std::string> miss ) const = 0;
+                               std::vector<std::string> miss ) const;
 
       /// @}
 
@@ -120,4 +122,4 @@ namespace gum {
 
     
 
-#endif /* GUM_LEARNING_DB_TRANSFORM_H */
+#endif /* GUM_LEARNING_DB_TRANSFORM_IDENTITY_H */

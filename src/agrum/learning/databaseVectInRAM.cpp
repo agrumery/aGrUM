@@ -23,10 +23,10 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/learning/databaseVector.h>
+#include <agrum/learning/databaseVectInRAM.h>
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/databaseVector.inl>
+#include <agrum/learning/databaseVectInRAM.inl>
 #endif /* GUM_NO_INLINE */
 

@@ -18,16 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The class representing a tabular database as a vector of DBRows
+ * @brief The class representing a tabular database as a vector of DBRows stored
+ * in RAM
  *
- * Class DatabaseVector is a helper for tabular databases that store all their
- * content into a vector a DBRows. It is not intended to be used as is but
- * rather through inheritance of other classes such as DatabaseCSV.
+ * Class DatabaseVector is a helper for tabular databases that store in RAM all
+ * their content into a vector a DBRows. It is not intended to be used as is but
+ * rather through inheritance of other classes such as DatabaseFromCSV.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_DATABASE_VECTOR_H
-#define GUM_DATABASE_VECTOR_H
+#ifndef GUM_DATABASE_VECT_IN_RAM_H
+#define GUM_DATABASE_VECT_IN_RAM_H
 
 
 #include <vector>
@@ -44,18 +45,18 @@ namespace gum {
   namespace learning {
 
     
-    /** @class DatabaseVector
+    /** @class DatabaseVectInRAM
      * @brief The base class representing a tabular database as a vector of DBRows
      * @ingroup learning_group
      *
-     * Class DatabaseVector is a helper for tabular databases that store all their
-     * content into a vector a DBRows. It is not intended to be used as is but
-     * rather through inheritance of other classes such as DatabaseCSV.
+     * Class DatabaseVectInRAM is a helper for tabular databases that store in RAM
+     * all their content into a vector a DBRows. It is not intended to be used as
+     * is but rather through inheritance of other classes such as DatabaseFromCSV.
      */
-    class DatabaseVector {
+    class DatabaseVectInRAM {
     public:
       
-      /** @class DatabaseVector::Handler
+      /** @class DatabaseVectInRAM::Handler
        * @brief the handler of tabular databases represented  as vectors of DBRows
        * @ingroup learning_group
        */
@@ -67,7 +68,7 @@ namespace gum {
         /// @{
 
         /// default constructor
-        Handler ( const DatabaseVector& db );
+        Handler ( const DatabaseVectInRAM& db );
 
         /// copy constructor
         Handler ( const Handler& h );
@@ -138,7 +139,7 @@ namespace gum {
       /// @{
 
       /// destructor
-      ~DatabaseVector ();
+      ~DatabaseVectInRAM ();
 
       /// @}
 
@@ -164,13 +165,13 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DatabaseVector ();
+      DatabaseVectInRAM ();
 
       /// copy constructor
-      DatabaseVector ( const DatabaseVector& );
+      DatabaseVectInRAM ( const DatabaseVectInRAM& );
 
       /// move constructor
-      DatabaseVector ( DatabaseVector&& );
+      DatabaseVectInRAM ( DatabaseVectInRAM&& );
 
       /// @}
 
@@ -194,9 +195,9 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/databaseVector.inl>
+#include <agrum/learning/databaseVectInRAM.inl>
 #endif /* GUM_NO_INLINE */
 
 
-#endif /* GUM_DATABASE_VECTOR_H */
+#endif /* GUM_DATABASE_VECT_IN_RAM_H */
 
