@@ -285,7 +285,8 @@ namespace gum {
         __set_state.push_back ( SetState::COPY_SET  ); 
         
         __set2thread_id.push_back
-          ( std::pair<const IdSet<IdSetAlloc>*,unsigned int> ( nullptr, 0 ) );
+          ( std::pair<const IdSet<IdSetAlloc>*,unsigned int>
+            ( nullptr, __idsets[tmp_idset] ) );
         
         __subset_lattice.insertArc ( __idsets[tmp_idset], node );
       }
@@ -554,7 +555,7 @@ namespace gum {
       // first, we examine the nodesets to determine which ones are subsets
       // of other nodesets. For those sets, we will derive their countings
       // directly from their supersets
-      __computeSubsets (); 
+      __computeSubsets ();
 
       // divide the countings among threads w.r.t. the database, i.e., each
       // thread will compute all the countings but only on a subset of the

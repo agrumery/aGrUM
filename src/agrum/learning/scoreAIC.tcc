@@ -139,7 +139,7 @@ namespace gum {
           }
         }
         score -= N * logf ( N );
-
+        
         // divide by log(2), since the log likelihood uses log_2
         score *= this->_1log2;
 

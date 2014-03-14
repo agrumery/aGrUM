@@ -68,7 +68,7 @@ namespace gum {
       // here, we distinguish nodesets with conditioning nodes from those
       // without conditioning nodes
       if ( conditioning_nodes ) {
-        // initialize the score: this should be the penalty of the AIC score, i.e.,
+        // initialize the score: this should be the penalty of the BIC score, i.e.,
         // -(ri-1 ) * qi
         float penalty = 1;
         for ( unsigned int i = 0; i < conditioning_nodes->size(); ++i ) {
@@ -87,7 +87,6 @@ namespace gum {
         unsigned int conditioning_modal = N_ij.size ();
         unsigned int targets_modal = N_ijk.size ();
 
-  
         // compute the score: it remains to compute the log likelihood, i.e.,
         // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also
         // equivalent to:
@@ -105,10 +104,10 @@ namespace gum {
             N += N_ij[j];
           }
         }
-
+  
         // finally, remove the penalty
         score -= penalty * logf ( N ) * 0.5f;
-
+ 
         // divide by log(2), since the log likelihood uses log_2
         score *= this->_1log2;
 
@@ -142,7 +141,7 @@ namespace gum {
           }
         }
         score -= N * logf ( N );
-
+        
         // finally, remove the penalty
         score -= penalty * logf ( N ) * 0.5f;
 
