@@ -142,9 +142,9 @@ namespace gum {
         for ( unsigned int x = 0, yx = 0; x < X_size; ++x ) {
           const float tmp_Nx = Nx[x];
           for ( unsigned int y = 0; y < Y_size; ++y, ++yx ) {
-            const float tmp = ( tmp_Nx * Ny[y] ) / N;
+            const float tmp = tmp_Nx * Ny[y];
             if ( tmp ) {
-              score += Nyx[yx] * logf ( Nyx[yx] / tmp );
+              score += Nyx[yx] * logf ( ( Nyx[yx] * N ) / tmp );
             }
           }
         }

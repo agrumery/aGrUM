@@ -485,7 +485,6 @@ namespace gum {
       // result_offset should be incremented (++) only when t1
       // before_incr[xxx] steps in the loop have already been made.
       unsigned int the_result_offset = 0;
-        
       for ( unsigned int h = 0; h < table_domain_size; ++h ) {
         subset_vect[the_result_offset] += superset_vect[h];
         
