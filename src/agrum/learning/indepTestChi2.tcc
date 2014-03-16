@@ -62,7 +62,7 @@ namespace gum {
       const std::vector<unsigned int,IdSetAlloc>* conditioning_nodes =
         this->_getConditioningNodes ( nodeset_index + 1 );
       const std::vector<unsigned int>& modals = this->modalities ();
-      
+
       // here, we distinguish nodesets with conditioning nodes from those
       // without conditioning nodes
       if ( conditioning_nodes != nullptr ) {
@@ -81,7 +81,7 @@ namespace gum {
           this->_getAllCounts ( nodeset_index + 1 );
         const std::vector<float,CountAlloc>& Nz = 
           this->_getConditioningCounts ( nodeset_index + 1 );
-
+        
         unsigned int Z_size = Nz.size ();
         unsigned int Y_size = modals[ all_nodes[all_nodes.size() - 2] ];
         unsigned int X_size = modals[ all_nodes[all_nodes.size() - 1] ];
@@ -130,7 +130,7 @@ namespace gum {
         
         unsigned int Y_size = Ny.size ();
         unsigned int X_size = Nx.size ();
-
+        
         // count N
         float N = 0;
         for ( unsigned int i = 0 ; i < Nx.size (); ++i ) {

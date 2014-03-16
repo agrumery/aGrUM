@@ -26,6 +26,9 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
+#include <agrum/core/set.h>
+
+
 namespace gum {
 
   
@@ -395,15 +398,14 @@ namespace gum {
       const auto& superset_ids = *( __nodesets[__set2thread_id[i].second] );
       auto& subset_vect = __countings[i];
       const auto& superset_vect = __countings[ __set2thread_id[i].second ];
-          
+
       // Compute the variables that belong to both the (projection) subset
       // and its superset. Store the number of increments in the computation
       // loops at the end of the function before which the variables of the
       // projection set need be incremented (vector before_incr).
-      std::vector<unsigned int> table_and_result_offset;
-      std::vector<unsigned int> table_and_result_domain;
-      std::vector<unsigned int> before_incr;
-      unsigned int nb_positive_before_incr = 0;
+      std::vector<unsigned int> result_offset ( subset_ids.size () );
+      std::vector<unsigned int> result_domain ( subset_ids.size () );
+      std::vector<unsigned int> before_incr   ( subset_ids.size () );
       unsigned int table_alone_domain_size = 1;
       unsigned int result_domain_size = 1;
       unsigned int table_domain_size = superset_vect.size ();
@@ -411,31 +413,38 @@ namespace gum {
         unsigned int tmp_before_incr = 1;
         bool has_before_incr = false;
         unsigned int subset_size = subset_ids.size ();
+        std::vector<unsigned int> superset_order ( subset_ids.size () );
+
+        // put the subset ids into a Set in order to know quickly if a given
+        // id belongs to the subset or not
+        HashTable<unsigned int,unsigned int> subset;
+        {
+          unsigned int i = 0;
+          for ( auto id : subset_ids ) {
+            subset.insert ( id, i );
+            ++i;
+          }
+        }
+
             
         for ( unsigned int h = 0, j = 0; h < superset_ids.size (); ++h ) {
           if ( j < subset_size ) {
-            if ( subset_ids[j] == superset_ids[h] ) {
+            if ( subset.exists ( superset_ids[h] ) ) {
               if ( has_before_incr ) {
-                before_incr.push_back ( tmp_before_incr - 1 );
+                before_incr[j] = tmp_before_incr - 1;
                 has_before_incr = false;
-                ++nb_positive_before_incr;
               }
               else {
-                before_incr.push_back ( 0 );
+                before_incr[j] = 0;
               }
               
-              unsigned int modality =
-                __modalities->operator[] ( subset_ids[j] ); 
-              table_and_result_domain.push_back ( modality );
-              table_and_result_offset.push_back ( result_domain_size );
-              result_domain_size *= modality;
+              superset_order[subset[superset_ids[h]]] = j;
               tmp_before_incr = 1;
-              
               ++j;
             }
             else {
               unsigned int modality =
-                __modalities->operator[] ( subset_ids[j] ); 
+                __modalities->operator[] ( superset_ids[h] ); 
               tmp_before_incr *= modality;
               has_before_incr = true;
               table_alone_domain_size *= modality;
@@ -446,17 +455,24 @@ namespace gum {
               __modalities->operator[] ( superset_ids[h] ); 
           }
         }
+
+        // compute the offsets in the correct order
+        for ( unsigned int i = 0; i < subset_ids.size (); ++i ) {
+          unsigned int modality = __modalities->operator[] ( subset_ids[i] ); 
+          unsigned int j = superset_order[i];
+          result_domain[j] = modality;
+          result_offset[j] = result_domain_size;
+          result_domain_size *= modality;
+        }
+
       }
       
-      std::vector<unsigned int>
-        table_and_result_value = table_and_result_domain;
-      std::vector<unsigned int>
-        current_incr = before_incr;
-      std::vector<unsigned int>
-        table_and_result_down = table_and_result_offset;
+      std::vector<unsigned int> result_value = result_domain;
+      std::vector<unsigned int> current_incr = before_incr;
+      std::vector<unsigned int> result_down  = result_offset;
       
-      for ( unsigned int j = 0; j < table_and_result_down.size(); ++j ) {
-        table_and_result_down[j] *= ( table_and_result_domain[j] - 1 );
+      for ( unsigned int j = 0; j < result_down.size(); ++j ) {
+        result_down[j] = ( result_domain[j] - 1 ) * result_offset[j];
       }
  
       // now, fill the subset counting vector: first loop over the variables
@@ -467,45 +483,32 @@ namespace gum {
       // result, the problem is slightly more complicated: in the outer for
       // loop, we shall always reset resul_offset to 0. For the inner loop,
       // result_offset should be incremented (++) only when t1
-      // before_incr[xxx] steps in the loop have already been made. but
-      // before doing so, check whether there exist positive_before_incr. If
-      // this is not the case, optimize by not using before_incr at all
-      if ( ! nb_positive_before_incr ) {
-        for ( unsigned int h = 0, k = 0; h < table_alone_domain_size; ++h ) {
-          for ( unsigned int j = 0; j < result_domain_size; ++j, k++ ) {
-            subset_vect[j] += superset_vect[k];
-          }
-        }
-      }
-      else {
-        // here there are positive before_incr and we should use them
-        //to know when result_offset needs be changed
-        unsigned int result_offset = 0;
+      // before_incr[xxx] steps in the loop have already been made.
+      unsigned int the_result_offset = 0;
         
-        for ( unsigned int h = 0; h < table_domain_size; ++h ) {
-          subset_vect[result_offset] += superset_vect[h];
-          
-          // update the offset of result
-          for ( unsigned int k = 0; k < current_incr.size(); ++k ) {
-            // check if we need modify result_offset
-            if ( current_incr[k] ) {
-              --current_incr[k];
-              break;
-            }
-                
-            current_incr[k] = before_incr[k];
-                
-            // here we shall modify result_offset
-            --table_and_result_value[k];
-            
-            if ( table_and_result_value[k] ) {
-              result_offset += table_and_result_offset[k];
-              break;
-            }
-            
-            table_and_result_value[k] = table_and_result_domain[k];
-            result_offset -= table_and_result_down[k];
+      for ( unsigned int h = 0; h < table_domain_size; ++h ) {
+        subset_vect[the_result_offset] += superset_vect[h];
+        
+        // update the offset of result
+        for ( unsigned int k = 0; k < current_incr.size(); ++k ) {
+          // check if we need modify result_offset
+          if ( current_incr[k] ) {
+            --current_incr[k];
+            break;
           }
+          
+          current_incr[k] = before_incr[k];
+          
+          // here we shall modify result_offset
+          --result_value[k];
+          
+          if ( result_value[k] ) {
+            the_result_offset += result_offset[k];
+            break;
+          }
+          
+          result_value[k] = result_domain[k];
+          the_result_offset -= result_down[k];
         }
       }
     }
