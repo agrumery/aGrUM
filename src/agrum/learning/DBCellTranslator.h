@@ -176,6 +176,21 @@ namespace gum {
       
       /// performs a translation
       virtual void translate () = 0;
+
+      /// performs the initialization of the cell filter
+      /** Upon initialization of the learning algorithms, the database is read
+       * once and this reading allows to initialize the content of the
+       * cellfilter */
+      virtual void initialize () = 0;
+
+      /// back-translate a given output (i.e., returns its input)
+      /** @param col the column in _output_cols corresponding to the translated
+       * value
+       * @param translated_val the value in _output_cols of which we want to
+       * know the original value (that which will be stored into the
+       * Bayesian network) */
+      virtual std::string translateBack ( unsigned int col,
+                                          unsigned int translated_val ) = 0;
       
       /// @}
 

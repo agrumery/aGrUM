@@ -36,6 +36,21 @@ namespace gum {
       GUM_CONSTRUCTOR ( DBCell );
     }
 
+
+    /// constructor for a number
+    INLINE DBCell::DBCell ( float nb ) :
+      __float ( nb ) {
+      GUM_CONSTRUCTOR ( DBCell );
+    }
+
+    
+    /// constructor for a string
+    INLINE DBCell::DBCell ( const std::string& str ) :
+      __type ( DBCell::EltType::STRING ) {
+      GUM_CONSTRUCTOR ( DBCell );
+      new (&__string) std::string { str };
+    }
+
     
     /// destructor
     INLINE DBCell::~DBCell () {

@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <iostream>
+#include <sstream>
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
@@ -33,6 +34,14 @@ namespace gum_tests {
     class CellTranslator : public gum::learning::DBCellTranslator<1,1> {
     public:
       void translate () { out (0) = in (0).getFloat (); }
+      void initialize () {}
+      std::string translateBack ( unsigned int col,
+                                  unsigned int translated_val ) {
+        std::stringstream str;
+        str << translated_val;
+        return  str.str ();
+      }
+      
     };
 
     class SimpleGenerator : public gum::learning::FilteredRowGenerator {

@@ -56,6 +56,12 @@ namespace gum {
       /// default constructor
       DBCell ();
 
+      /// constructor for a number
+      DBCell ( float nb );
+
+       /// constructor for a string
+      DBCell ( const std::string& str );
+
       /// copy constructor
       DBCell ( const DBCell& from );
 
