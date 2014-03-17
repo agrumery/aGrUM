@@ -406,10 +406,8 @@ namespace gum {
       std::vector<unsigned int> result_offset ( subset_ids.size () );
       std::vector<unsigned int> result_domain ( subset_ids.size () );
       std::vector<unsigned int> before_incr   ( subset_ids.size () );
-      unsigned int table_alone_domain_size = 1;
-      unsigned int result_domain_size = 1;
-      unsigned int table_domain_size = superset_vect.size ();
       {
+        unsigned int result_domain_size = 1;
         unsigned int tmp_before_incr = 1;
         bool has_before_incr = false;
         unsigned int subset_size = subset_ids.size ();
@@ -426,7 +424,6 @@ namespace gum {
           }
         }
 
-            
         for ( unsigned int h = 0, j = 0; h < superset_ids.size (); ++h ) {
           if ( j < subset_size ) {
             if ( subset.exists ( superset_ids[h] ) ) {
@@ -447,12 +444,7 @@ namespace gum {
                 __modalities->operator[] ( superset_ids[h] ); 
               tmp_before_incr *= modality;
               has_before_incr = true;
-              table_alone_domain_size *= modality;
-            }
-          }
-          else {
-            table_alone_domain_size *=
-              __modalities->operator[] ( superset_ids[h] ); 
+             }
           }
         }
 
@@ -485,6 +477,7 @@ namespace gum {
       // result_offset should be incremented (++) only when t1
       // before_incr[xxx] steps in the loop have already been made.
       unsigned int the_result_offset = 0;
+      unsigned int table_domain_size = superset_vect.size ();
       for ( unsigned int h = 0; h < table_domain_size; ++h ) {
         subset_vect[the_result_offset] += superset_vect[h];
         
