@@ -76,7 +76,8 @@ namespace gum {
       /// default constructor
       DBRowFilter ( DBHandler& handler,
                     const TranslatorSet& translator_set,
-                    const GeneratorSet& generator_set ) noexcept;
+                    const GeneratorSet& generator_set,
+                    bool require_cell_init = true ) noexcept;
 
       /// copy constructor
       DBRowFilter
@@ -117,6 +118,10 @@ namespace gum {
 
       /// the generator of FilteredRows
       GeneratorSet __generator_set;
+
+
+      /// initialize the cell filters by parsing once the database
+      void __initCellFilters ();
       
     };
 
@@ -134,15 +139,19 @@ namespace gum {
      *   ( EMGenerator (),
      *     TimeSlicerGenerator () );
      *
-     *
+     * // create a filter that will parse the DB to initialize the cell filters
      * auto filter = make_row_filter ( handler, translators, generators );
+     *
+     * // create a filter that will not initialize the cell filters
+     * auto filter = make_row_filter ( handler, translators, generators, false );
      * @endcode
      */
     template<typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     constexpr DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>
     make_row_filter ( DBHandler& handler,
                       const TranslatorSet& translator_set,
-                      const GeneratorSet& generator_set  ) {
+                      const GeneratorSet& generator_set,
+                      bool require_cell_init = true ) {
       return DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>
         ( handler, translator_set, generator_set );
     }

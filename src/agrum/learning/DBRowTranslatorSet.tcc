@@ -95,6 +95,15 @@ namespace gum {
     }
 
 
+    /// initialize the cell filters by parsing once the database
+    template <int Idx, typename Translator, typename... OtherTranslators> INLINE
+    void BasicDBRowTranslatorSet<Idx,Translator,
+                                 OtherTranslators...>::initialize () {
+      __translator.initialize ();
+      NextTranslators::initialize ();
+    }
+    
+
     /// default constructor
     template <typename... Translators> INLINE
     DBRowTranslatorSet<Translators...>::DBRowTranslatorSet
@@ -135,7 +144,14 @@ namespace gum {
       TranslatorSet::translate ();
     }
 
+    
+    /// initialize the cell filters by parsing once the database
+    template <typename... Translators> INLINE
+    void DBRowTranslatorSet<Translators...>::initialize () {
+      TranslatorSet::initialize ();
+    }
 
+    
     /// sets the input row that shall be read by all the cell translators
     template <typename... Translators> INLINE
     void DBRowTranslatorSet<Translators...>::setInputRow

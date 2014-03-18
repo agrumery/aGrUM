@@ -38,10 +38,13 @@ namespace gum {
     DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>::DBRowFilter
     ( DBHandler& handler,
       const TranslatorSet& translator_set,
-      const GeneratorSet& generator_set ) noexcept :
+      const GeneratorSet& generator_set,
+      bool require_cell_init ) noexcept :
       __handler ( handler ),
       __translator_set ( translator_set ),
       __generator_set ( generator_set ) {
+      if ( require_cell_init )
+        __initCellFilters ();
       GUM_CONSTRUCTOR ( DBRowFilter );
     }
 
@@ -71,6 +74,23 @@ namespace gum {
     INLINE bool
     DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>::hasRows () noexcept {
       return __handler.hasRows () || __generator_set.hasRows ();
+    }
+
+
+    /// initialize the cell filters by parsing once the database
+    template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
+    void
+    DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>::__initCellFilters () {
+      __handler.reset ();
+      while ( __handler.hasRows () ) {
+        // get the next row to parse from the database
+        __translator_set.setInputRow ( __handler.row () );
+        __handler.nextRow ();
+
+        // initialize the cell filters with this row
+        __translator_set.initialize ();
+      }
+      __handler.reset ();
     }
 
 

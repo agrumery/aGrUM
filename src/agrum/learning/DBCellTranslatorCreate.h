@@ -124,6 +124,9 @@ namespace gum {
       /// execute a translation of the input row
       void translate ();
 
+      /// initialize the cell filters by parsing once the database
+      void initialize ();
+
       /// @}
   
   
@@ -227,6 +230,9 @@ namespace gum {
       /// apply the translator
       void translate ();
 
+      /// initialize the cell filters by parsing once the database
+      void initialize ();
+
       /// @}
   
     };
@@ -242,7 +248,8 @@ namespace gum {
       void setOutputCols ( unsigned int )  noexcept {}
       void setInputRow   ( const DBRow& )  noexcept {}
       void setOutputRow  ( FilteredRow&  ) noexcept {}
-      void translate () {}
+      void translate ()  noexcept {}
+      void initialize () noexcept {}
     };
 
 #endif // DOXYGEN_SHOULD_SKIP_THIS

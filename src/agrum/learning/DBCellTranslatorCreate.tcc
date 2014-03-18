@@ -112,6 +112,13 @@ namespace gum {
     }
 
 
+    /// initialize the cell filters by parsing once the database
+    template <class Translator, typename Cols> INLINE
+    void CreateOnce<Translator,Cols>::initialize () {
+      __translator.initialize ();
+    }
+
+
     /// default constructor
     template <typename Translator, typename Cols,
               int nb_times, typename ColsIncr> INLINE
@@ -175,6 +182,15 @@ namespace gum {
     void Create<Translator,Cols,nb_times,ColsIncr>::translate () {
       CurrentTranslator::translate ();
       NextTranslators::translate ();
+    }
+
+
+    /// initialize the cell filters by parsing once the database
+    template <typename Translator, typename Cols,
+              int nb_times, typename ColsIncr> INLINE
+    void Create<Translator,Cols,nb_times,ColsIncr>::initialize () {
+      CurrentTranslator::initialize ();
+      NextTranslators::initialize ();
     }
 
     

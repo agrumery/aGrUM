@@ -65,7 +65,7 @@ namespace gum_tests {
       auto generators =  gum::learning::make_generators ( SimpleGenerator () );
       
       auto filter = gum::learning::make_row_filter ( handler, translators,
-                                                     generators );
+                                                     generators, false );
       
       std::vector<unsigned int> modalities ( 8, 2);
 
