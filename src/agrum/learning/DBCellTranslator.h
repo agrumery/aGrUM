@@ -187,6 +187,9 @@ namespace gum {
        * database to initialize itself */
       virtual bool requiresInitialization () const noexcept = 0;
 
+      /// push back the number of modalities of the variables of the output columns
+      virtual void modalities ( std::vector<unsigned int>& modals ) const = 0;
+      
       /// back-translate a given output (i.e., returns its input)
       /** @param col the column in _output_cols corresponding to the translated
        * value

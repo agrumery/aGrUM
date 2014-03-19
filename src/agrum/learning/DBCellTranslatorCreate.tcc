@@ -125,7 +125,15 @@ namespace gum {
     bool CreateOnce<Translator,Cols>::requiresInitialization () const noexcept {
       return __translator.requiresInitialization ();
     }
+    
 
+    /// push back the number of modalities of the variables of the output columns
+    template <class Translator, typename Cols> INLINE
+    void CreateOnce<Translator,Cols>::modalities
+    ( std::vector<unsigned int>& modals ) const {
+      __translator.modalities ( modals );
+    }
+    
 
     /// default constructor
     template <typename Translator, typename Cols,
@@ -210,6 +218,16 @@ namespace gum {
       const noexcept {
       return CurrentTranslator::requiresInitialization () ||
         NextTranslators::requiresInitialization ();
+    }
+
+
+    /// push back the number of modalities of the variables of the output columns
+    template <typename Translator, typename Cols,
+              int nb_times, typename ColsIncr> INLINE
+    void Create<Translator,Cols,nb_times,ColsIncr>::modalities
+    ( std::vector<unsigned int>& modals ) const {
+      CurrentTranslator::modalities ( modals );
+      NextTranslators::modalities ( modals );
     }
 
     

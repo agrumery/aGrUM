@@ -150,6 +150,16 @@ namespace gum {
       return __handler;
     }
 
+    /** @brief returns the number of modalities of the variables, as stored
+     * into the cell filters */
+    template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
+    std::vector<unsigned int>
+    DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>::modalities () const {
+      std::vector<unsigned int> res;
+      __translator_set.modalities ( res );
+      return res;
+    }
+    
     
   } /* namespace learning */
 

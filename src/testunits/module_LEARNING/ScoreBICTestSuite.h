@@ -23,6 +23,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
+#include <agrum/core/set.h>
 #include <agrum/learning/databaseFromCSV.h>
 #include <agrum/learning/scoreBIC.h>
 
@@ -34,7 +35,13 @@ namespace gum_tests {
     class CellTranslator : public gum::learning::DBCellTranslator<1,1> {
     public:
       void translate () { out (0) = in (0).getFloat (); }
-      void initialize () {}
+      void initialize () {
+        unsigned int nb = in(0).getFloat ();
+        if ( ! __values.exists ( nb ) ) __values.insert ( nb );
+      }
+      void modalities ( std::vector<unsigned int>& modal ) const noexcept {
+        modal.push_back ( __values.size () );
+      }
       bool requiresInitialization () const noexcept { return true; }
       std::string translateBack ( unsigned int col,
                                   unsigned int translated_val ) {
@@ -42,6 +49,9 @@ namespace gum_tests {
         str << translated_val;
         return  str.str ();
       }
+
+    private:
+      gum::Set<unsigned int> __values;
       
     };
 
@@ -66,9 +76,9 @@ namespace gum_tests {
       auto generators =  gum::learning::make_generators ( SimpleGenerator () );
       
       auto filter = gum::learning::make_row_filter ( handler, translators,
-                                                     generators, 20 );
-      
-      std::vector<unsigned int> modalities ( 8, 2);
+                                                     generators );
+
+      std::vector<unsigned int> modalities = filter.modalities ();
 
       gum::learning::ScoreBIC<decltype ( filter ) >
         score ( filter, modalities );

@@ -106,8 +106,12 @@ namespace gum {
       /// resets the filter
       virtual void reset ();
 
-      // returns the handler used by the filter
+      /// returns the handler used by the filter
       DBHandler& handler () noexcept;
+
+      /** @brief returns the number of modalities of the variables, as stored
+       * into the cell filters */
+      std::vector<unsigned int> modalities () const;
 
       /// @}
 

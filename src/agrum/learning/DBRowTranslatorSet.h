@@ -59,6 +59,7 @@ namespace gum {
       void translate () noexcept {}
       void initialize () noexcept {}
       bool requiresInitialization () const noexcept { return false; }
+      void modalities ( std::vector<unsigned int>& ) const noexcept {} 
     };
 
 
@@ -127,6 +128,9 @@ namespace gum {
       /** @brief indicates whether one of the translators needs an initial parsing
        * of the database to initialize itself */
       bool requiresInitialization () const noexcept;
+
+      /// push back the number of modalities of the variables of the output columns
+      void modalities ( std::vector<unsigned int>& modals ) const;
 
       /// @}
 
@@ -208,6 +212,9 @@ namespace gum {
       /** @brief indicates whether one of the translators needs an initial parsing
        * of the database to initialize itself */
       bool requiresInitialization () const noexcept;
+
+      /// push back the number of modalities of the variables of the output columns
+      void modalities ( std::vector<unsigned int>& modals ) const;
 
       /// sets the input row that shall be read by all the cell translators
       void setInputRow ( const DBRow& row ) noexcept;

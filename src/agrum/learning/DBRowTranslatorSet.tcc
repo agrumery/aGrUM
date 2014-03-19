@@ -114,6 +114,16 @@ namespace gum {
         NextTranslators::requiresInitialization ();
     }
 
+    
+    /// push back the number of modalities of the variables of the output columns
+    template <int Idx, typename Translator, typename... OtherTranslators> INLINE
+    void BasicDBRowTranslatorSet<Idx,Translator,
+                                 OtherTranslators...>::modalities
+    ( std::vector<unsigned int>& modals ) const {
+      __translator.modalities ( modals );
+      NextTranslators::modalities ( modals );
+    }
+
 
     /// default constructor
     template <typename... Translators> INLINE
@@ -169,6 +179,14 @@ namespace gum {
     bool DBRowTranslatorSet<Translators...>::requiresInitialization ()
       const noexcept {
       return TranslatorSet::requiresInitialization ();
+    }
+
+
+    /// push back the number of modalities of the variables of the output columns
+    template <typename... Translators> INLINE
+    void DBRowTranslatorSet<Translators...>::modalities
+    ( std::vector<unsigned int>& modals ) const {
+      return TranslatorSet::modalities ( modals );
     }
 
     
