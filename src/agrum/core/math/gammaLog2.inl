@@ -40,7 +40,6 @@ namespace gum {
     }
 
     // returns the approximation by the stirling formula
-    ++x;
     return ( __log_sqrt_2pi + ( x - 0.5f ) * logf ( x ) -
              x + logf ( 1.0f + 1.0f / ( 12 * x ) ) ) * __1log2;
   }
