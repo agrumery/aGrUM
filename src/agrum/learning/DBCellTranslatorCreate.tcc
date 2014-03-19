@@ -119,6 +119,14 @@ namespace gum {
     }
 
 
+    /** @brief indicates whether the translator needs an initial parsing of the
+     * database to initialize itself */
+    template <class Translator, typename Cols> INLINE
+    bool CreateOnce<Translator,Cols>::requiresInitialization () const noexcept {
+      return __translator.requiresInitialization ();
+    }
+
+
     /// default constructor
     template <typename Translator, typename Cols,
               int nb_times, typename ColsIncr> INLINE
@@ -191,6 +199,17 @@ namespace gum {
     void Create<Translator,Cols,nb_times,ColsIncr>::initialize () {
       CurrentTranslator::initialize ();
       NextTranslators::initialize ();
+    }
+
+
+    /** @brief indicates whether the translator needs an initial parsing of the
+     * database to initialize itself */
+    template <typename Translator, typename Cols,
+              int nb_times, typename ColsIncr> INLINE
+    bool Create<Translator,Cols,nb_times,ColsIncr>::requiresInitialization ()
+      const noexcept {
+      return CurrentTranslator::requiresInitialization () ||
+        NextTranslators::requiresInitialization ();
     }
 
     

@@ -58,6 +58,7 @@ namespace gum {
       void setOutputRow ( FilteredRow& ) noexcept {}
       void translate () noexcept {}
       void initialize () noexcept {}
+      bool requiresInitialization () const noexcept { return false; }
     };
 
 
@@ -122,6 +123,10 @@ namespace gum {
 
       /// initialize the cell filters by parsing once the database
       void initialize ();
+
+      /** @brief indicates whether one of the translators needs an initial parsing
+       * of the database to initialize itself */
+      bool requiresInitialization () const noexcept;
 
       /// @}
 
@@ -199,6 +204,10 @@ namespace gum {
 
       /// initialize the cell filters by parsing once the database
       void initialize ();
+
+      /** @brief indicates whether one of the translators needs an initial parsing
+       * of the database to initialize itself */
+      bool requiresInitialization () const noexcept;
 
       /// sets the input row that shall be read by all the cell translators
       void setInputRow ( const DBRow& row ) noexcept;

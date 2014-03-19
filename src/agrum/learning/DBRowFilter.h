@@ -25,6 +25,7 @@
 #ifndef GUM_LEARNING_DB_ROW_FILTER_H
 #define GUM_LEARNING_DB_ROW_FILTER_H
 
+#include <limits>
 
 #include <agrum/config.h>
 #include <agrum/learning/DBHandler.h>
@@ -77,7 +78,8 @@ namespace gum {
       DBRowFilter ( DBHandler& handler,
                     const TranslatorSet& translator_set,
                     const GeneratorSet& generator_set,
-                    bool require_cell_init = true ) noexcept;
+                    unsigned long initialization_range =
+                    std::numeric_limits<unsigned long>::max () ) noexcept;
 
       /// copy constructor
       DBRowFilter
@@ -121,7 +123,10 @@ namespace gum {
 
 
       /// initialize the cell filters by parsing once the database
-      void __initCellFilters ();
+      /** @param db_range the number of rows to parse in the database to
+       * initialize the cell filters. If db_range is larger than the size of the
+       * database, then the whole database is parsed. */
+      void __initCellFilters ( unsigned long db_range );
       
     };
 
@@ -151,9 +156,10 @@ namespace gum {
     make_row_filter ( DBHandler& handler,
                       const TranslatorSet& translator_set,
                       const GeneratorSet& generator_set,
-                      bool require_cell_init = true ) {
+                      unsigned long initialization_range =
+                      std::numeric_limits<unsigned long>::max () ) {
       return DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>
-        ( handler, translator_set, generator_set );
+        ( handler, translator_set, generator_set, initialization_range );
     }
 
     

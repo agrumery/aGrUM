@@ -39,12 +39,13 @@ namespace gum {
     ( DBHandler& handler,
       const TranslatorSet& translator_set,
       const GeneratorSet& generator_set,
-      bool require_cell_init ) noexcept :
+      unsigned long initialization_range ) noexcept :
       __handler ( handler ),
       __translator_set ( translator_set ),
       __generator_set ( generator_set ) {
-      if ( require_cell_init )
-        __initCellFilters ();
+      if ( __translator_set.requiresInitialization () ) {
+        __initCellFilters ( initialization_range );
+      }
       GUM_CONSTRUCTOR ( DBRowFilter );
     }
 
@@ -80,8 +81,25 @@ namespace gum {
     /// initialize the cell filters by parsing once the database
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     void
-    DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>::__initCellFilters () {
-      __handler.reset ();
+    DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>::__initCellFilters
+    ( unsigned long db_range ) {
+      // keep track of the previous range to restore it later
+      std::pair<unsigned long,unsigned long> previous_range = __handler.range ();
+
+      // set the handler to the appropriate range
+      if (  __handler.size () != db_range ) {
+        if ( __handler.DBSize () < db_range ) {
+          __handler.setRange ( 0, __handler.DBSize () );
+        }
+        else {
+          __handler.setRange ( 0, db_range );
+        }
+      }
+      else {
+        __handler.reset ();
+      }
+
+      // initialize the cell filters
       while ( __handler.hasRows () ) {
         // get the next row to parse from the database
         __translator_set.setInputRow ( __handler.row () );
@@ -90,7 +108,9 @@ namespace gum {
         // initialize the cell filters with this row
         __translator_set.initialize ();
       }
-      __handler.reset ();
+
+      // restore the previous range
+      __handler.setRange ( previous_range.first, previous_range.second );
     }
 
 

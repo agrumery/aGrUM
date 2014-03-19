@@ -183,6 +183,10 @@ namespace gum {
        * cellfilter */
       virtual void initialize () = 0;
 
+      /** @brief indicates whether the translator needs an initial parsing of the
+       * database to initialize itself */
+      virtual bool requiresInitialization () const noexcept = 0;
+
       /// back-translate a given output (i.e., returns its input)
       /** @param col the column in _output_cols corresponding to the translated
        * value

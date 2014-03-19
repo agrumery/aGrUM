@@ -102,7 +102,18 @@ namespace gum {
       __translator.initialize ();
       NextTranslators::initialize ();
     }
+
     
+    /** @brief indicates whether one of the translators needs an initial parsing
+     * of the database to initialize itself */
+    template <int Idx, typename Translator, typename... OtherTranslators> INLINE
+    bool BasicDBRowTranslatorSet<Idx,Translator,
+                                 OtherTranslators...>::requiresInitialization ()
+      const noexcept {
+      return __translator.requiresInitialization () ||
+        NextTranslators::requiresInitialization ();
+    }
+
 
     /// default constructor
     template <typename... Translators> INLINE
@@ -149,6 +160,15 @@ namespace gum {
     template <typename... Translators> INLINE
     void DBRowTranslatorSet<Translators...>::initialize () {
       TranslatorSet::initialize ();
+    }
+
+
+    /** @brief indicates whether one of the translators needs an initial parsing
+     * of the database to initialize itself */
+    template <typename... Translators> INLINE
+    bool DBRowTranslatorSet<Translators...>::requiresInitialization ()
+      const noexcept {
+      return TranslatorSet::requiresInitialization ();
     }
 
     

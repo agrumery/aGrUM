@@ -26,6 +26,8 @@
 #define GUM_LEARNING_DB_HANDLER_H
 
 
+#include <utility>
+
 #include <agrum/learning/DBRow.h>
 
 #define CACHE_SIZE 1024
@@ -69,6 +71,9 @@ namespace gum {
       /// sets the range of rows in the database that the handler will parse
       virtual void setRange ( unsigned long begin,
                               unsigned long end ) noexcept = 0;
+
+      /// returns the current range of the handler
+      virtual std::pair<unsigned long, unsigned long> range () const noexcept = 0;
 
 
     private:

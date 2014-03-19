@@ -108,6 +108,15 @@ namespace gum {
       __index = begin;
     }
 
+    
+    /// returns the current range of the handler
+    INLINE std::pair<unsigned long, unsigned long>
+    DatabaseVectInRAM::Handler::range () const noexcept {
+      return std::pair<unsigned long,unsigned long> ( __begin_index, __end_index );
+    }
+
+    
+
 
     // ===========================================================================
     // Database VectInRAMs

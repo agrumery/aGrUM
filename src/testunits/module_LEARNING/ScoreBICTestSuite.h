@@ -35,6 +35,7 @@ namespace gum_tests {
     public:
       void translate () { out (0) = in (0).getFloat (); }
       void initialize () {}
+      bool requiresInitialization () const noexcept { return true; }
       std::string translateBack ( unsigned int col,
                                   unsigned int translated_val ) {
         std::stringstream str;
@@ -65,7 +66,7 @@ namespace gum_tests {
       auto generators =  gum::learning::make_generators ( SimpleGenerator () );
       
       auto filter = gum::learning::make_row_filter ( handler, translators,
-                                                     generators, false );
+                                                     generators, 20 );
       
       std::vector<unsigned int> modalities ( 8, 2);
 

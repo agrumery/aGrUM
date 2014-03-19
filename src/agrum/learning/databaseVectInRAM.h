@@ -109,6 +109,9 @@ namespace gum {
 
         /// sets the area in the database the handler will handle
         void setRange ( unsigned long begin, unsigned long end ) noexcept;
+
+        /// returns the current range of the handler
+        std::pair<unsigned long, unsigned long> range () const noexcept;
         
         /// @}
 
