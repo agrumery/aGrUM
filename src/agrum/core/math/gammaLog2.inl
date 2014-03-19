@@ -29,7 +29,7 @@ namespace gum {
 
   /// returns log2 ( gamma (x) ) for x >= 0
   INLINE float GammaLog2::gammaLog2 ( float x ) const {
-    if ( x < 0 )
+    if ( x <= 0 )
       GUM_ERROR ( OutOfBounds,
                   "log2(gamma()) should be called with a positive argument" );
 
@@ -44,6 +44,11 @@ namespace gum {
              x + logf ( 1.0f + 1.0f / ( 12 * x ) ) ) * __1log2;
   }
 
+  
+  /// returns log2 ( gamma (x) ) for x >= 0
+  INLINE float GammaLog2::operator() ( float x ) const {
+    return gammaLog2 ( x );
+  }
 
 } /* namespace gum */
 

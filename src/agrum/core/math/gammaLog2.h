@@ -62,8 +62,20 @@ namespace gum {
     /// @name Operators
     // ############################################################################
     /// @{
+
+    /// returns log2 ( gamma (x) ) for x >= 0
+    /** @hrows OutOfBounds exception is raised if x <= 0 */
+    float operator() ( float x ) const;
+
+    /// @}
+    
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
     
     /// returns log2 ( gamma (x) ) for x >= 0
+    /** @hrows OutOfBounds exception is raised if x <= 0 */
     float gammaLog2 ( float x ) const;
 
     /// @}
