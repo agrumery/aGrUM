@@ -28,15 +28,23 @@ namespace gum {
 
 
   /// returns log2 ( gamma (x) ) for x >= 0
-  INLINE float GammaLog2::gammaLog2 ( float x ) const {
+  ALWAYS_INLINE float GammaLog2::gammaLog2 ( float x ) const {
     if ( x <= 0 )
       GUM_ERROR ( OutOfBounds,
                   "log2(gamma()) should be called with a positive argument" );
 
     // if x is small, use precomputed values
     if ( x < 50 ) {
-      unsigned int index = x * 100;
-      return __small_values[index];
+      if ( __requires_precision ) {
+        unsigned int index = x * 100;
+        return __small_values[index] +
+          ( __small_values[index+1] - __small_values[index] ) *
+          ( x * 100 - index );
+      }
+      else {
+        unsigned int index = x * 100 + 0.5;
+        return __small_values[index];
+      }
     }
 
     // returns the approximation by the stirling formula
@@ -46,9 +54,16 @@ namespace gum {
 
   
   /// returns log2 ( gamma (x) ) for x >= 0
-  INLINE float GammaLog2::operator() ( float x ) const {
+  ALWAYS_INLINE float GammaLog2::operator() ( float x ) const {
     return gammaLog2 ( x );
   }
+
+
+  /// sets whether we need more precision for small values
+  INLINE void GammaLog2::setPrecision ( bool prec ) {
+    __requires_precision = prec;
+  }
+ 
 
 } /* namespace gum */
 

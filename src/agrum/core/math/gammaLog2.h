@@ -44,13 +44,16 @@ namespace gum {
     ///@{
 
     /// default constructor
-    GammaLog2 () {}
+    GammaLog2 ( bool requires_precision = false ) :
+      __requires_precision { requires_precision } {}
 
     /// copy constructor
-    GammaLog2 ( const GammaLog2& ) {}
+    GammaLog2 ( const GammaLog2& from ) :
+      __requires_precision { from.__requires_precision } {}
 
     /// move constructor
-    GammaLog2 ( GammaLog2&& ) {}
+    GammaLog2 ( GammaLog2&& from ) :
+      __requires_precision { from.__requires_precision } {}
 
     /// destructor
     ~GammaLog2 () {}
@@ -63,11 +66,15 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /// returns log2 ( gamma (x) ) for x >= 0
+    /// returns log2 ( gamma (x) ) for x > 0
     /** @hrows OutOfBounds exception is raised if x <= 0 */
     float operator() ( float x ) const;
 
+    /// sets whether we need more precision for small values
+    void setPrecision ( bool );
+
     /// @}
+    
     
     // ############################################################################
     /// @name Operators
@@ -82,6 +89,9 @@ namespace gum {
     
 
   private:
+    /// indicates whether we need more precision for small values
+    bool __requires_precision { false };
+    
     /// 1 / log(2)
     static constexpr float __1log2 { M_LOG2E };
 
