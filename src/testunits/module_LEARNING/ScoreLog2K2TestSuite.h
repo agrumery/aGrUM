@@ -23,26 +23,35 @@
 #include <testsuite_utils.h>
 
 #include <agrum/learning/databaseFromCSV.h>
-#include <agrum/learning/scoreK2.h>
-
-#define MAX_LOG_CACHE 20
+#include <agrum/learning/scoreLog2K2.h>
 
 namespace gum_tests {
 
-  class ScoreK2TestSuite: public CxxTest::TestSuite {
+  class ScoreLog2K2TestSuite: public CxxTest::TestSuite {
   public:
 
     class CellTranslator : public gum::learning::DBCellTranslator<1,1> {
     public:
       void translate () { out (0) = in (0).getFloat (); }
-      void initialize () {}
+      void initialize () {
+        unsigned int nb = in(0).getFloat ();
+        if ( ! __values.exists ( nb ) ) __values.insert ( nb );
+      }
+      void modalities ( std::vector<unsigned int>& modal ) const noexcept {
+        modal.push_back ( __values.size () );
+      }
+      bool requiresInitialization () const noexcept { return true; }
       std::string translateBack ( unsigned int col,
                                   unsigned int translated_val ) {
         std::stringstream str;
         str << translated_val;
         return  str.str ();
       }
-     };
+
+    private:
+      gum::Set<unsigned int> __values;
+      
+    };
 
     class SimpleGenerator : public gum::learning::FilteredRowGenerator {
     public:
@@ -53,31 +62,8 @@ namespace gum_tests {
       unsigned int _computeRows () { return 1; }
     };
 
-    
-    std::vector<float> __log_fact;
-    float __log_sqrt_2pi { 0.5f * logf ( 2 * M_PI) };
-
-      
-    float logFactorial ( unsigned int n ) {
-      // if the log (n!) exists in the cache, returns it
-      if ( n < MAX_LOG_CACHE ) {
-        return __log_fact[n];
-      }
-
-      // returns the approximation by the stirling formula
-      return ( __log_sqrt_2pi + ( n + 0.5f ) * logf ( (float) n ) -
-               n + logf ( 1.0f + 1.0f / ( 12 * n ) ) );
-    }
- 
 
     void test_k2 () {
-      __log_fact.resize ( MAX_LOG_CACHE, 0 );
-      float nb = 0;
-       for ( unsigned int i = 1; i < MAX_LOG_CACHE; ++i ) {
-        nb += logf ( i );
-        __log_fact[i] = nb;
-      }
-
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
       
       auto handler = database.handler ();
@@ -90,31 +76,31 @@ namespace gum_tests {
       auto filter = gum::learning::make_row_filter ( handler, translators,
                                                      generators );
       
-      std::vector<unsigned int> modalities ( 8, 2);
+      std::vector<unsigned int> modalities = filter.modalities ();
 
-      gum::learning::ScoreK2<decltype ( filter ) >
+      gum::learning::ScoreLog2K2<decltype ( filter ) >
         score ( filter, modalities );
 
       unsigned int id1 = score.addNodeSet ( 3 );
       unsigned int id2 = score.addNodeSet ( 1 );
-      TS_ASSERT ( fabs ( score.score ( id1 ) + 690.914  ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( id2 ) + 2100.73 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id1 ) + 996.781  ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id2 ) + 3030.73  ) <= 0.01 );
 
       score.clear ();
       id1 = score.addNodeSet ( 0 );
       id2 = score.addNodeSet ( 2 );
-      TS_ASSERT ( fabs ( score.score ( id1 ) + 6935.7  ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( id2 ) + 6886.97 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id1 ) + 10006.1 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id2 ) + 9935.8  ) <= 0.01 );
 
       score.clear ();
       id1 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 } );
       id2 = score.addNodeSet ( 1, std::vector<unsigned int> { 4 } );
-      TS_ASSERT ( fabs ( score.score ( id1 ) + 686.953 ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( id2 ) + 2100.61 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id1 ) + 991.062 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id2 ) + 3030.55 ) <= 0.01 );
 
       score.clear ();
       id1 = score.addNodeSet ( 3, std::vector<unsigned int> { 1, 2 } );
-      TS_ASSERT ( fabs ( score.score ( id1 ) + 703.137  ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id1 ) + 1014.4 ) <= 0.01 );
 
       unsigned int id3, id4, id5, id6, id7;
       score.clear ();
@@ -125,13 +111,13 @@ namespace gum_tests {
       id5 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 } );
       id6 = score.addNodeSet ( 2 );
       id7 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 } );
-      TS_ASSERT ( fabs ( score.score ( id1 ) + 690.914 ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( id2 ) + 2100.73 ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( id3 ) + 703.137 ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( id4 ) + 6886.97 ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( id5 ) + 686.953 ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( id6 ) + 6886.97 ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( id7 ) + 686.953 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id1 ) + 996.781 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id2 ) + 3030.73 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id3 ) + 1014.4  ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id4 ) + 9935.8  ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id5 ) + 991.062 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id6 ) + 9935.8  ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id7 ) + 991.062 ) <= 0.01 );
     }
 
   };

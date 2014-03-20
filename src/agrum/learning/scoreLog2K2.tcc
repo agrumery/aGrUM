@@ -37,51 +37,26 @@ namespace gum {
     
     /// default constructor
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
-    ScoreK2<RowFilter,IdSetAlloc,CountAlloc>::ScoreK2
+    ScoreLog2K2<RowFilter,IdSetAlloc,CountAlloc>::ScoreLog2K2
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities ) :
-      Score<RowFilter,IdSetAlloc,CountAlloc> ( filter, var_modalities ),
-      __log_fact ( MAX_LOG_CACHE ),
-      __log_sqrt_2pi ( 0.5f * logf ( 2 * M_PI) ) {
+      Score<RowFilter,IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
       // for debugging purposes
-      GUM_CONSTRUCTOR ( ScoreK2 );
-
-      // compute the cache for log (n!) for the first integers
-      float nb = 0;
-      for ( unsigned int i = 1; i < MAX_LOG_CACHE; ++i ) {
-        nb += logf ( i );
-        __log_fact[i] = nb;
-      }
+      GUM_CONSTRUCTOR ( ScoreLog2K2 );
     }
     
 
     /// destructor
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    ScoreK2<RowFilter,IdSetAlloc,CountAlloc>::~ScoreK2 () {
+    ScoreLog2K2<RowFilter,IdSetAlloc,CountAlloc>::~ScoreLog2K2 () {
       // for debugging purposes
-      GUM_DESTRUCTOR ( ScoreK2 );
+      GUM_DESTRUCTOR ( ScoreLog2K2 );
     }
 
     
-    /// computes the log (n!) using the (extended) stirling formula or the cache
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
-    ALWAYS_INLINE float
-    ScoreK2<RowFilter,IdSetAlloc,CountAlloc>::__logFactorial
-    ( unsigned int n ) const {
-      // if the log (n!) exists in the cache, returns it
-      if ( n < MAX_LOG_CACHE ) {
-        return __log_fact[n];
-      }
-
-      // returns the approximation by the stirling formula
-      return ( __log_sqrt_2pi + ( n + 0.5f ) * logf ( (float) n ) -
-               n + logf ( 1.0f + 1.0f / ( 12 * n ) ) );
-    }
- 
-
     /// returns the score corresponding to a given nodeset
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
-    float ScoreK2<RowFilter,IdSetAlloc,CountAlloc>::score
+    float ScoreLog2K2<RowFilter,IdSetAlloc,CountAlloc>::score
     ( unsigned int nodeset_index ) {
       // get the nodes involved in the score as well as their modalities
       const std::vector<unsigned int,IdSetAlloc>& all_nodes =
@@ -116,16 +91,16 @@ namespace gum {
               i < all_nodes.size (); ++i ) {
           ri_minus_1 *= modalities[all_nodes[i]] - 1;
         }
-        float score = qi * __logFactorial ( ri_minus_1 );
+        float score = qi * __gammalog2 ( ri_minus_1 + 1 );
        
         for ( unsigned int k = 0; k < targets_modal; ++k ) {
           if ( N_ijk[k] ) {
-            score += __logFactorial ( N_ijk[k] );           
+            score += __gammalog2 ( N_ijk[k] + 1 );           
           }
         }
         for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
           if ( N_ij[j] ) {
-            score -= __logFactorial ( N_ij[j] + ri_minus_1 );
+            score -= __gammalog2 ( N_ij[j] + ri_minus_1 + 1 );
           }
         }
 
@@ -147,15 +122,15 @@ namespace gum {
         for ( unsigned int i = 0; i < all_nodes.size (); ++i ) {
           ri_minus_1 *= modalities[all_nodes[i]] - 1;
         }
-        float score = __logFactorial ( ri_minus_1 );
+        float score = __gammalog2 ( ri_minus_1 + 1 );
         float N = 0;
         for ( unsigned int k = 0; k < targets_modal; ++k ) {
           if ( N_ijk[k] ) {
-            score += __logFactorial ( N_ijk[k] );
+            score += __gammalog2 ( N_ijk[k] + 1 );
             N += N_ijk[k];
           }
         }
-        score -= __logFactorial ( N + ri_minus_1 );
+        score -= __gammalog2 ( N + ri_minus_1 + 1 );
 
         return score;
       }

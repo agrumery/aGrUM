@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for computing K2 scores
+ * @brief the class for computing K2 scores (actually their log2 value)
  *
  * The class should be used as follows: first, to speed-up computations, you
  * should consider computing all the scores you need in one pass. To do so, use
@@ -29,14 +29,12 @@
  */
 
 
-#ifndef GUM_LEARNING_SCORE_K2_H
-#define GUM_LEARNING_SCORE_K2_H
+#ifndef GUM_LEARNING_SCORE_LOG2_K2_H
+#define GUM_LEARNING_SCORE_LOG2_K2_H
 
 
+#include <agrum/core/math/gammaLog2.h>
 #include <agrum/learning/score.h>
-
-
-#define MAX_LOG_CACHE 20
 
 
 namespace gum {
@@ -46,9 +44,9 @@ namespace gum {
 
     
     /* ========================================================================= */
-    /* ===                          SCORE K2 CLASS                           === */
+    /* ===                        SCORE LOG2 K2 CLASS                        === */
     /* ========================================================================= */
-    /** @class ScoreK2
+    /** @class ScoreLog2K2
      * @ingroup learning_group
      * @brief The class for computing K2 scores
      *
@@ -61,7 +59,7 @@ namespace gum {
     template <typename RowFilter,
               typename IdSetAlloc = std::allocator<unsigned int>,
               typename CountAlloc = std::allocator<float> >
-    class ScoreK2 : public Score<RowFilter,IdSetAlloc,CountAlloc> {
+    class ScoreLog2K2 : public Score<RowFilter,IdSetAlloc,CountAlloc> {
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -71,12 +69,12 @@ namespace gum {
       /// default constructor
       /** @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database */
-      ScoreK2 ( const RowFilter& filter,
-                const std::vector<unsigned int>& var_modalities );
+      ScoreLog2K2 ( const RowFilter& filter,
+                    const std::vector<unsigned int>& var_modalities );
 
       /// destructor
-      ~ScoreK2 ();
-
+      ~ScoreLog2K2 ();
+      
       /// @}
 
       
@@ -92,14 +90,8 @@ namespace gum {
 
       
     private:
-      /// a cache storing the log (n!) for the first n integers
-      std::vector<float> __log_fact;
-
-      /// a cache for log ( sqrt ( 2 pi ) )
-      float __log_sqrt_2pi;
-
-      /// computes the log (n!) using the (extended) stirling formula or the cache
-      float __logFactorial ( unsigned int n ) const;
+      /// the log(gamma (n)) function: generalizes log((n-1)!)
+      GammaLog2 __gammalog2;
       
     };
     
@@ -111,7 +103,7 @@ namespace gum {
 
 
 /// always include the template implementation
-#include <agrum/learning/scoreK2.tcc>
+#include <agrum/learning/scoreLog2K2.tcc>
 
 
-#endif /* GUM_LEARNING_SCORE_K2_H */
+#endif /* GUM_LEARNING_SCORE_LOG2_K2_H */
