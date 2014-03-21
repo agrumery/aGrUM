@@ -23,11 +23,11 @@
 #include <testsuite_utils.h>
 
 #include <agrum/learning/databaseFromCSV.h>
-#include <agrum/learning/scoreAIC.h>
+#include <agrum/learning/scoreBD.h>
 
 namespace gum_tests {
 
-  class ScoreAICTestSuite: public CxxTest::TestSuite {
+  class ScoreBDTestSuite: public CxxTest::TestSuite {
   public:
 
     class CellTranslator : public gum::learning::DBCellTranslator<1,1> {
@@ -53,7 +53,6 @@ namespace gum_tests {
       
     };
 
-
     class SimpleGenerator : public gum::learning::FilteredRowGenerator {
     public:
       gum::learning::FilteredRow& generate () {
@@ -64,7 +63,7 @@ namespace gum_tests {
     };
 
 
-    void test_aic () {
+    void test_BD () {
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
       
       auto handler = database.handler ();
@@ -77,48 +76,55 @@ namespace gum_tests {
       auto filter = gum::learning::make_row_filter ( handler, translators,
                                                      generators );
       
-      std::vector<unsigned int> modalities ( 8, 2);
+      std::vector<unsigned int> modalities = filter.modalities ();
 
-      gum::learning::ScoreAIC<decltype ( filter ) >
+      gum::learning::ScoreBD<decltype ( filter ) >
         score ( filter, modalities );
 
-      unsigned int id1 = score.addNodeSet ( 3 );
-      unsigned int id2 = score.addNodeSet ( 1 );
-      TS_ASSERT ( fabs ( score.score ( id1 ) + 989.314  ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( id2 ) + 3024.254 ) <= 0.01 );
+      // to test, we exploit the fact that if the hyperparameters are all equal
+      // to 1, then score BDeu = score K2
+      const std::vector<float> hp2 ( 2, 1.0f );
+      const std::vector<float> hp4 ( 4, 1.0f );
+      const std::vector<float> hp8 ( 8, 1.0f );
+
+      
+      unsigned int id1 = score.addNodeSet ( 3, hp2 );
+      unsigned int id2 = score.addNodeSet ( 1, hp2 );
+      TS_ASSERT ( fabs ( score.score ( id1 ) + 996.781  ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id2 ) + 3030.73  ) <= 0.01 );
 
       score.clear ();
-      id1 = score.addNodeSet ( 0 );
-      id2 = score.addNodeSet ( 2 );
-      TS_ASSERT ( fabs ( score.score ( id1 ) + 10000.767 ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( id2 ) + 9930.478  ) <= 0.01 );
-     
-      score.clear ();
-      id1 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 } );
-      id2 = score.addNodeSet ( 1, std::vector<unsigned int> { 4 } );
-      TS_ASSERT ( fabs ( score.score ( id1 ) + 980.407 ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( id2 ) + 3019.57 ) <= 0.01 );
+      id1 = score.addNodeSet ( 0, hp2 );
+      id2 = score.addNodeSet ( 2, hp2 );
+      TS_ASSERT ( fabs ( score.score ( id1 ) + 10006.1 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id2 ) + 9935.8  ) <= 0.01 );
 
       score.clear ();
-      id1 = score.addNodeSet ( 3, std::vector<unsigned int> { 1, 2 } );
-      TS_ASSERT ( fabs ( score.score ( id1 ) + 989.801  ) <= 0.01 );
-
+      id1 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 }, hp4 );
+      id2 = score.addNodeSet ( 1, std::vector<unsigned int> { 4 }, hp4 );
+      TS_ASSERT ( fabs ( score.score ( id1 ) + 991.062 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id2 ) + 3030.55 ) <= 0.01 );
+ 
+      score.clear ();
+      id1 = score.addNodeSet ( 3, std::vector<unsigned int> { 1, 2 }, hp8 );
+      TS_ASSERT ( fabs ( score.score ( id1 ) + 1014.4 ) <= 0.01 );
+ 
       unsigned int id3, id4, id5, id6, id7;
       score.clear ();
-      id1 = score.addNodeSet ( 3 );
-      id2 = score.addNodeSet ( 1 );
-      id3 = score.addNodeSet ( 3, std::vector<unsigned int> { 1, 2 } );
-      id4 = score.addNodeSet ( 2 );
-      id5 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 } );
-      id6 = score.addNodeSet ( 2 );
-      id7 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 } );
-      TS_ASSERT ( fabs ( score.score ( id1 ) + 989.314  ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( id2 ) + 3024.254 ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( id3 ) + 989.801  ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( id4 ) + 9930.478 ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( id5 ) + 980.407  ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( id6 ) + 9930.478 ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( id7 ) + 980.407  ) <= 0.01 );
+      id1 = score.addNodeSet ( 3, hp2 );
+      id2 = score.addNodeSet ( 1, hp2 );
+      id3 = score.addNodeSet ( 3, std::vector<unsigned int> { 1, 2 }, hp8 );
+      id4 = score.addNodeSet ( 2, hp2 );
+      id5 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 }, hp4 );
+      id6 = score.addNodeSet ( 2, hp2 );
+      id7 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 }, hp4 );
+      TS_ASSERT ( fabs ( score.score ( id1 ) + 996.781 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id2 ) + 3030.73 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id3 ) + 1014.4  ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id4 ) + 9935.8  ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id5 ) + 991.062 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id6 ) + 9935.8  ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id7 ) + 991.062 ) <= 0.01 );
     }
 
   };

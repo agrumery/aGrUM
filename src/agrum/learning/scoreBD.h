@@ -18,10 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for computing BDeu scores (actually their log2 value)
+ * @brief the class for computing Bayesian Dirichlet (BD) log2 scores
  *
- * @warning This class does not actually compute a BDeu score but rather the
- * log in base 2 of the BDeu score
+ * @warning This class computes the "general" log2 (BD score). If you wish to
+ * reduce the number of hyperparameters, try using ScoreBDeu or ScoreK2.
  *
  * The class should be used as follows: first, to speed-up computations, you
  * should consider computing all the scores you need in one pass. To do so, use
@@ -32,8 +32,8 @@
  */
 
 
-#ifndef GUM_LEARNING_SCORE_BDEU_H
-#define GUM_LEARNING_SCORE_BDEU_H
+#ifndef GUM_LEARNING_SCORE_BD_H
+#define GUM_LEARNING_SCORE_BD_H
 
 
 #include <agrum/core/math/gammaLog2.h>
@@ -47,14 +47,14 @@ namespace gum {
 
     
     /* ========================================================================= */
-    /* ===                         SCORE BDeu CLASS                          === */
+    /* ===                          SCORE BD CLASS                           === */
     /* ========================================================================= */
-    /** @class ScoreBDeu
+    /** @class ScoreBD
      * @ingroup learning_group
-     * @brief The class for computing BDeu scores (actually their log2 value)
+     * @brief The class for computing Bayesian Dirichlet (BD) log2 scores
      *
-     * @warning This class does not actually compute a BDeu score but rather the
-     * log in base 2 of the BDeu score
+     * @warning This class computes the "general" log2 (BD score). If you wish to
+     * reduce the number of hyperparameters, try using ScoreBDeu or ScoreK2.
      *
      * The class should be used as follows: first, to speed-up computations, you
      * should consider computing all the scores you need in one pass. To do so, use
@@ -65,7 +65,7 @@ namespace gum {
     template <typename RowFilter,
               typename IdSetAlloc = std::allocator<unsigned int>,
               typename CountAlloc = std::allocator<float> >
-    class ScoreBDeu : protected Score<RowFilter,IdSetAlloc,CountAlloc> {
+    class ScoreBD : protected Score<RowFilter,IdSetAlloc,CountAlloc> {
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -75,11 +75,11 @@ namespace gum {
       /// default constructor
       /** @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database */
-      ScoreBDeu ( const RowFilter& filter,
-                  const std::vector<unsigned int>& var_modalities );
+      ScoreBD ( const RowFilter& filter,
+                const std::vector<unsigned int>& var_modalities );
 
       /// destructor
-      virtual ~ScoreBDeu ();
+      virtual ~ScoreBD ();
       
       /// @}
 
@@ -92,6 +92,8 @@ namespace gum {
       /// add a new single variable to be counted
       /** @param var represents the index of the variable in the filtered rows
        * produced by the database cell filters whose observations shall be counted
+       * @param N_prime_ijk the (Dirichlet) exponential hyperparameters for the
+       * density function over the parameters of P(var)
        * @return the index of the produced counting vector: the user should use
        * class Score to compute in one pass several scores or independence
        * tests. These and their corresponding countings in the database are stored
@@ -100,31 +102,17 @@ namespace gum {
        * index as argument to methods _getAllCounts to get the corresponding
        * counting vector. */
       unsigned int addNodeSet ( unsigned int var,
-                                float equivalent_sample_size = 1 );
-
-      /// add new set of "unconditioned" single targets
-      /** This method is a shortcut for the application of addNodeSet on each
-       * variable in vector vars.
-       * @param vars represents the indices of the target variables in the
-       * filtered rows produced by the database cell filters
-       * @return the index of the first produced counting vector: the user should
-       * use class Score to compute in one pass several scores. These and
-       * their corresponding countings in the database are stored into a vector
-       * and the value returned by method addNodeSets is the index of the counts
-       * for the first variable of vars in this vector. The user shall pass this
-       * index as argument to method _getAllCounts to get the corresponding
-       * counting vector. The other counting vectors follow the first one in the
-       * vector of counting vectors (i.e., their indices follow that of the
-       * first var). */
-      unsigned int
-      addNodeSets ( const std::vector<unsigned int>& single_vars,
-                    float equivalent_sample_size = 1 );
+                                const std::vector<float>& N_prime_ijk );
 
       /// add a new target variable plus some conditioning vars
       /** @param var represents the index of the target variable in the filtered
        * rows produced by the database cell filters
        * @param conditioning_ids the indices of the variables of the conditioning
        * set in the filtered rows
+       * @param N_prime_ijk the (Dirichlet) exponential hyperparameters for the
+       * density function over the parameters of P(var | conditioning_ids). This
+       * vector actually represents a multidimensional array. The dimensions shall
+       * be, first, the conditioning_ids, then, var.
        * @return the index of the produced counting vector: the user should use
        * class Score to compute in one pass several scores or independence
        * tests. These and their corresponding countings in the database are
@@ -137,28 +125,7 @@ namespace gum {
       unsigned int
       addNodeSet ( unsigned int var,
                    const std::vector<unsigned int>& conditioning_ids,
-                   float equivalent_sample_size = 1 );
-
-      /// add new set of target variables conditioned by the same variables
-      /** This method is a shortcut for the application of addNodeSet on each
-       * variable in vector vars conditioned by conditioning_ids.
-       * @param vars represents the indices of the target variables in the
-       * filtered rows produced by the database cell filters
-       * @param conditioning_ids the indices of the variables of the conditioning
-       * set in the filtered rows
-       * @return the index of the first produced counting vector: the user should
-       * use class Score to compute in one pass several scores. These and
-       * their corresponding countings in the database are stored into a vector
-       * and the value returned by method addNodeSets is the index of the counts
-       * for the first variable of vars in this vector. The user shall pass this
-       * index as argument to methods _getAllCounts and _getConditioningCounts
-       * to get the countings of ( conditioning_ids,vars ) [in this order] and
-       * conditioning_ids respectively, where var corresponds to the target
-       * variable. */
-      unsigned int
-      addNodeSets ( const std::vector<unsigned int>& vars,
-                    const std::vector<unsigned int>& conditioning_ids,
-                    float equivalent_sample_size = 1 );
+                   const std::vector<float>& N_prime_ijk );
 
       /// clears all the data structures from memory
       void clear ();
@@ -177,12 +144,22 @@ namespace gum {
       GammaLog2 __gammalog2;
 
       /// the equivalent sample sizes used for the scores of each nodeset
-      std::vector<float> __ess;
+      std::vector<std::vector<float>> __N_prime_ijk;
+
+      /// an empty vector
+      const std::vector<unsigned int> __empty_vect;
 
 
       /// save an equivalent sample size
-      void __insertESS ( float equivalent_sample_size,
-                         unsigned int index );
+      void __insertHyperParam ( const std::vector<float>& N_prime_ijk,
+                                unsigned int index );
+
+      /// checks that the size of a given N_prime_ijk is correct
+      /** @throws SizeError is raised if the size of N_prime_ijk does not
+       * correspond to that of the Cartesian product of var and conditioning_ids */
+      void __checkHyperParam ( unsigned int var,
+                               const std::vector<unsigned int>& conditioning_ids,
+                               const std::vector<float>& N_prime_ijk ) const;
       
     };
     
@@ -194,7 +171,7 @@ namespace gum {
 
 
 /// always include the template implementation
-#include <agrum/learning/scoreBDeu.tcc>
+#include <agrum/learning/scoreBD.tcc>
 
 
-#endif /* GUM_LEARNING_SCORE_BDEU_H */
+#endif /* GUM_LEARNING_SCORE_BDeu_H */

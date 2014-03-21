@@ -27,7 +27,7 @@
 
 namespace gum_tests {
 
-  class ScoreK2TestSuite: public CxxTest::TestSuite {
+  class ScoreBDeuTestSuite: public CxxTest::TestSuite {
   public:
 
     class CellTranslator : public gum::learning::DBCellTranslator<1,1> {
