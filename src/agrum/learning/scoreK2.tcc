@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for computing K2 scores
+ * @brief the class for computing K2 scores (actually their log2 value)
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -37,26 +37,26 @@ namespace gum {
     
     /// default constructor
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
-    ScoreLog2K2<RowFilter,IdSetAlloc,CountAlloc>::ScoreLog2K2
+    ScoreK2<RowFilter,IdSetAlloc,CountAlloc>::ScoreK2
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities ) :
       Score<RowFilter,IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
       // for debugging purposes
-      GUM_CONSTRUCTOR ( ScoreLog2K2 );
+      GUM_CONSTRUCTOR ( ScoreK2 );
     }
     
 
     /// destructor
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    ScoreLog2K2<RowFilter,IdSetAlloc,CountAlloc>::~ScoreLog2K2 () {
+    ScoreK2<RowFilter,IdSetAlloc,CountAlloc>::~ScoreK2 () {
       // for debugging purposes
-      GUM_DESTRUCTOR ( ScoreLog2K2 );
+      GUM_DESTRUCTOR ( ScoreK2 );
     }
 
     
     /// returns the score corresponding to a given nodeset
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
-    float ScoreLog2K2<RowFilter,IdSetAlloc,CountAlloc>::score
+    float ScoreK2<RowFilter,IdSetAlloc,CountAlloc>::score
     ( unsigned int nodeset_index ) {
       // get the nodes involved in the score as well as their modalities
       const std::vector<unsigned int,IdSetAlloc>& all_nodes =
@@ -99,9 +99,7 @@ namespace gum {
           }
         }
         for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
-          if ( N_ij[j] ) {
-            score -= __gammalog2 ( N_ij[j] + ri_minus_1 + 1 );
-          }
+          score -= __gammalog2 ( N_ij[j] + ri_minus_1 + 1 );
         }
 
         return score;

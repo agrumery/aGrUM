@@ -72,7 +72,7 @@ namespace gum {
                  const std::vector<unsigned int>& var_modalities );
 
       /// destructor
-      ~ScoreAIC ();
+      virtual ~ScoreAIC ();
 
       /// @}
 

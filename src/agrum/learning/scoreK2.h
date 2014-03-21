@@ -20,6 +20,9 @@
 /** @file
  * @brief the class for computing K2 scores (actually their log2 value)
  *
+ * @warning This class does not actually compute a K2 score but rather the
+ * log in base 2 of the K2 score
+ *
  * The class should be used as follows: first, to speed-up computations, you
  * should consider computing all the scores you need in one pass. To do so, use
  * the appropriate addNodeSets methods. These will compute everything you need.
@@ -29,8 +32,8 @@
  */
 
 
-#ifndef GUM_LEARNING_SCORE_LOG2_K2_H
-#define GUM_LEARNING_SCORE_LOG2_K2_H
+#ifndef GUM_LEARNING_SCORE_K2_H
+#define GUM_LEARNING_SCORE_K2_H
 
 
 #include <agrum/core/math/gammaLog2.h>
@@ -44,11 +47,14 @@ namespace gum {
 
     
     /* ========================================================================= */
-    /* ===                        SCORE LOG2 K2 CLASS                        === */
+    /* ===                          SCORE K2 CLASS                           === */
     /* ========================================================================= */
-    /** @class ScoreLog2K2
+    /** @class ScoreK2
      * @ingroup learning_group
-     * @brief The class for computing K2 scores
+     * @brief The class for computing K2 scores (actually their log2 value)
+     *
+     * @warning This class does not actually compute a K2 score but rather the
+     * log in base 2 of the K2 score
      *
      * The class should be used as follows: first, to speed-up computations, you
      * should consider computing all the scores you need in one pass. To do so, use
@@ -59,7 +65,7 @@ namespace gum {
     template <typename RowFilter,
               typename IdSetAlloc = std::allocator<unsigned int>,
               typename CountAlloc = std::allocator<float> >
-    class ScoreLog2K2 : public Score<RowFilter,IdSetAlloc,CountAlloc> {
+    class ScoreK2 : public Score<RowFilter,IdSetAlloc,CountAlloc> {
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -69,11 +75,11 @@ namespace gum {
       /// default constructor
       /** @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database */
-      ScoreLog2K2 ( const RowFilter& filter,
-                    const std::vector<unsigned int>& var_modalities );
+      ScoreK2 ( const RowFilter& filter,
+                const std::vector<unsigned int>& var_modalities );
 
       /// destructor
-      ~ScoreLog2K2 ();
+      virtual ~ScoreK2 ();
       
       /// @}
 
@@ -83,7 +89,7 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// returns the score corresponding to a given nodeset
+      /// returns the log2(K2 score) corresponding to a given nodeset
       float score ( unsigned int nodeset_index );
 
       /// @}
@@ -103,7 +109,7 @@ namespace gum {
 
 
 /// always include the template implementation
-#include <agrum/learning/scoreLog2K2.tcc>
+#include <agrum/learning/scoreK2.tcc>
 
 
-#endif /* GUM_LEARNING_SCORE_LOG2_K2_H */
+#endif /* GUM_LEARNING_SCORE_K2_H */
