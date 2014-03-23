@@ -102,24 +102,6 @@ namespace gum {
       unsigned int addNodeSet ( unsigned int var,
                                 float equivalent_sample_size = 1 );
 
-      /// add new set of "unconditioned" single targets
-      /** This method is a shortcut for the application of addNodeSet on each
-       * variable in vector vars.
-       * @param vars represents the indices of the target variables in the
-       * filtered rows produced by the database cell filters
-       * @return the index of the first produced counting vector: the user should
-       * use class Score to compute in one pass several scores. These and
-       * their corresponding countings in the database are stored into a vector
-       * and the value returned by method addNodeSets is the index of the counts
-       * for the first variable of vars in this vector. The user shall pass this
-       * index as argument to method _getAllCounts to get the corresponding
-       * counting vector. The other counting vectors follow the first one in the
-       * vector of counting vectors (i.e., their indices follow that of the
-       * first var). */
-      unsigned int
-      addNodeSets ( const std::vector<unsigned int>& single_vars,
-                    float equivalent_sample_size = 1 );
-
       /// add a new target variable plus some conditioning vars
       /** @param var represents the index of the target variable in the filtered
        * rows produced by the database cell filters
@@ -139,32 +121,17 @@ namespace gum {
                    const std::vector<unsigned int>& conditioning_ids,
                    float equivalent_sample_size = 1 );
 
-      /// add new set of target variables conditioned by the same variables
-      /** This method is a shortcut for the application of addNodeSet on each
-       * variable in vector vars conditioned by conditioning_ids.
-       * @param vars represents the indices of the target variables in the
-       * filtered rows produced by the database cell filters
-       * @param conditioning_ids the indices of the variables of the conditioning
-       * set in the filtered rows
-       * @return the index of the first produced counting vector: the user should
-       * use class Score to compute in one pass several scores. These and
-       * their corresponding countings in the database are stored into a vector
-       * and the value returned by method addNodeSets is the index of the counts
-       * for the first variable of vars in this vector. The user shall pass this
-       * index as argument to methods _getAllCounts and _getConditioningCounts
-       * to get the countings of ( conditioning_ids,vars ) [in this order] and
-       * conditioning_ids respectively, where var corresponds to the target
-       * variable. */
-      unsigned int
-      addNodeSets ( const std::vector<unsigned int>& vars,
-                    const std::vector<unsigned int>& conditioning_ids,
-                    float equivalent_sample_size = 1 );
-
       /// clears all the data structures from memory
       void clear ();
 
+      /// clears the current cache (clear nodesets as well)
+      using Score<RowFilter,IdSetAlloc,CountAlloc>::clearCache;
+
       /// returns the modalities of the variables
       using Score<RowFilter,IdSetAlloc,CountAlloc>::modalities;
+
+      /// turn on/off the use of a cache of the previously computed score
+      using Score<RowFilter,IdSetAlloc,CountAlloc>::useCache;
       
       /// returns the log2(BDeu score) corresponding to a given nodeset
       float score ( unsigned int nodeset_index );

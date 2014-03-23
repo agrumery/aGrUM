@@ -77,21 +77,6 @@ namespace gum {
     }
 
       
-    /// add new set of "unconditioned" single targets
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    unsigned int
-    ScoreBDeu<RowFilter,IdSetAlloc,CountAlloc>::addNodeSets
-    ( const std::vector<unsigned int>& single_vars,
-      float equivalent_sample_size ) {
-      unsigned int index =
-        Score<RowFilter,IdSetAlloc,CountAlloc>::addNodeSets ( single_vars );
-      for ( unsigned int i = 0; i < single_vars.size (); ++i ) {
-        __insertESS ( equivalent_sample_size, index + i );
-      }
-      return index;
-    }
-
-    
     /// add a new target variable plus some conditioning vars
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
     unsigned int
@@ -102,22 +87,6 @@ namespace gum {
       unsigned int index = Score<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
         ( var, conditioning_ids );
       __insertESS ( equivalent_sample_size, index );
-      return index;
-    }
-
-
-    /// add new set of target variables conditioned by the same variables
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    unsigned int
-    ScoreBDeu<RowFilter,IdSetAlloc,CountAlloc>::addNodeSets
-    ( const std::vector<unsigned int>& vars,
-      const std::vector<unsigned int>& conditioning_ids,
-      float equivalent_sample_size ) {
-      unsigned int index = Score<RowFilter,IdSetAlloc,CountAlloc>::addNodeSets
-        ( vars, conditioning_ids );
-      for ( unsigned int i = 0; i < vars.size (); ++i ) {
-        __insertESS ( equivalent_sample_size, index + i );
-      }
       return index;
     }
 
@@ -134,7 +103,12 @@ namespace gum {
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
     float ScoreBDeu<RowFilter,IdSetAlloc,CountAlloc>::score
     ( unsigned int nodeset_index ) {
-      // get the nodes involved in the score as well as their modalities
+      // if the score has already been computed, get its value
+      if ( this->_isInCache ( nodeset_index ) ) {
+        return this->_cachedScore ( nodeset_index );
+      }
+
+       // get the nodes involved in the score as well as their modalities
       const std::vector<unsigned int,IdSetAlloc>& all_nodes =
         this->_getAllNodes ( nodeset_index );
       const std::vector<unsigned int,IdSetAlloc>* conditioning_nodes =
@@ -180,6 +154,11 @@ namespace gum {
           score += __gammalog2 ( N_ijk[k] + ess_qi_ri );
         }
 
+        // shall we put the score into the cache?
+        if ( this->_isUsingCache () ) {
+          this->_insertIntoCache ( nodeset_index, score );
+        }
+
         return score;
       }
       else {
@@ -208,6 +187,11 @@ namespace gum {
           N += N_ijk[k];
         }
         score -= __gammalog2 ( N + ess );
+
+        // shall we put the score into the cache?
+        if ( this->_isUsingCache () ) {
+          this->_insertIntoCache ( nodeset_index, score );
+        }
 
         return score;
       }

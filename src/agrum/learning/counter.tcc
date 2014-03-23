@@ -56,6 +56,17 @@ namespace gum {
     }
 
     
+    /// add an empty variable set to be counted
+    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
+    unsigned int Counter<RowFilter,IdSetAlloc,CountAlloc>::addEmptyNodeSet () {
+      __conditioning_nodesets.push_back ( nullptr );
+      __target_nodesets.push_back ( nullptr );
+      __counts_computed = false;
+      
+      return __target_nodesets.size () - 1;
+    }
+
+    
     /// add a new single variable to be counted
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
     unsigned int Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
@@ -76,6 +87,7 @@ namespace gum {
       
       return __target_nodesets.size () - 1;
     }
+
 
 
     /// add a new target variable plus some conditioning vars

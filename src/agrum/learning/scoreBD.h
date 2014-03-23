@@ -130,8 +130,14 @@ namespace gum {
       /// clears all the data structures from memory
       void clear ();
 
+      /// clears the current cache (clear nodesets as well)
+      using Score<RowFilter,IdSetAlloc,CountAlloc>::clearCache;
+
       /// returns the modalities of the variables
       using Score<RowFilter,IdSetAlloc,CountAlloc>::modalities;
+
+      /// turn on/off the use of a cache of the previously computed score
+      using Score<RowFilter,IdSetAlloc,CountAlloc>::useCache;
       
       /// returns the log2(BDeu score) corresponding to a given nodeset
       float score ( unsigned int nodeset_index );

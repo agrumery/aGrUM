@@ -126,6 +126,9 @@ namespace gum {
       // ##########################################################################
       /// @{
 
+      /// adds an empty set of variables to count
+      unsigned int addEmptyNodeSet ();
+
       /// add a new single variable to be counted
       /** @param var represents the index of the variable in the filtered rows
        * produced by the database cell filters whose observations shall be counted
