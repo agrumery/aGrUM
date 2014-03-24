@@ -34,13 +34,24 @@ namespace gum_tests {
     class CellTranslator : public gum::learning::DBCellTranslator<1,1> {
     public:
       void translate () { out (0) = in (0).getFloat (); }
-      void initialize () {}
+      void initialize () {
+        unsigned int nb = in(0).getFloat ();
+        if ( ! __values.exists ( nb ) ) __values.insert ( nb );
+      }
+      void modalities ( std::vector<unsigned int>& modal ) const noexcept {
+        modal.push_back ( __values.size () );
+      }
+      bool requiresInitialization () const noexcept { return true; }
       std::string translateBack ( unsigned int col,
                                   unsigned int translated_val ) {
         std::stringstream str;
         str << translated_val;
         return  str.str ();
       }
+
+    private:
+      gum::Set<unsigned int> __values;
+      
     };
 
     class SimpleGenerator : public gum::learning::FilteredRowGenerator {

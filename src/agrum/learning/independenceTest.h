@@ -36,6 +36,7 @@
 
 
 #include <agrum/learning/counter.h>
+#include <agrum/learning/cache4IndepTest.h>
 
 
 namespace gum {
@@ -156,48 +157,15 @@ namespace gum {
       addNodeSet ( const std::pair<unsigned int,unsigned int>& vars,
                    const std::vector<unsigned int>& conditioning_ids );
 
-      /// add a new set of target nodes conditioned by one other node to be counted
-      /** This method is a shortcut for the application of addNodeSet on each
-       * pair of variables in vector vars.
-       * @param vars represents the indices of the target variables (first) in the
-       * filtered rows produced by the database cell filters, and the indices
-       * of the conditioning variables (second).
-       * @return the index of the first produced counting vector: the user should
-       * use class IndependenceTest to compute in one pass several independence
-       * tests. These and their corresponding countings in the database are
-       * stored into a vector and the value returned by method addNodeSets is the
-       * index of the counts for the first variable of vars in this vector. The
-       * user shall pass this index as argument to methods _getAllCounts and
-       * _getConditioningCounts to get the observed countings of
-       * (vars[i].second, vars[i].first)  [in this order] and vars[i].second
-       * respectively. */
-      unsigned int addNodeSets
-      ( const std::vector< std::pair<unsigned int,unsigned int> >& vars );
-
-      /// add new set of "conditioned" targets
-      /** This method is a shortcut for the application of addNodeSet on each
-       * pair of variables in vector vars and on conditioning_ids.
-       * @param vars represents the indices of the target variables (first) in the
-       * filtered rows produced by the database cell filters, and the indices
-       * of the last conditioning variable (second)
-       * @param conditioning_ids the indices of the variables of the conditioning
-       * set in the filtered rows (minus vars.second which is appended to it)
-       * @return the index of the first produced counting vector: the user should
-       * use class IndependenceTest to compute in one pass several independence
-       * tests. These and their corresponding countings in the database are
-       * stored into a vector and the value returned by method addNodeSets is the
-       * index of the counts for the first variable of vars in this vector. The
-       * user shall pass this index as argument to methods _getAllCounts and
-       * _getConditioningCounts to get the observed countings of
-       * (conditioning_ids, vars[i].second, vars[i].first) [in this order] and
-       * (conditioning_ids, vars[i].second) [in this order] respectively. */
-      unsigned int addNodeSets
-        ( const std::vector< std::pair<unsigned int,unsigned int> >& vars,
-          const std::vector<unsigned int>& conditioning_ids );
-
       /// clears all the data structures from memory
-      using Counter<RowFilter,IdSetAlloc,CountAlloc>::clear;
+      void clear ();
+      
+     /// clears the current cache (clear nodesets as well)
+      void clearCache ();
 
+      /// turn on/off the use of a cache of the previously computed score
+      void useCache ( bool on_off ) noexcept;
+      
       /// returns the modalities of the variables
       using Counter<RowFilter,IdSetAlloc,CountAlloc>::modalities;
 
@@ -218,7 +186,10 @@ namespace gum {
 
 
     protected:
-
+      /// 1 / log(2)
+      const float _1log2 { M_LOG2E };
+      
+ 
       /// returns the counting vector for a given (conditioned) target set
       /** This method returns the observtion countings for the set of variables
        * whose index was returned by method addNodeSet or addNodeSets. If the
@@ -245,11 +216,37 @@ namespace gum {
       /// returns the conditioning nodes (nullptr if there are no such nodes)
       using Counter<RowFilter,IdSetAlloc,CountAlloc>::_getConditioningNodes;
 
-      
-      /// 1 / log(2)
-      const float _1log2 { M_LOG2E };
+      /// indicates whether a score belongs to the cache
+      bool _isInCache ( unsigned int nodeset_index ) const noexcept;
 
-     
+      /// inserts a new score into the cache    
+      void _insertIntoCache ( unsigned int nodeset_index, float score );
+
+      /// returns a cached score
+      float _cachedScore ( unsigned int nodeset_index ) const noexcept;
+
+      /// indicates whether we use the cache or not
+      bool _isUsingCache () const noexcept;
+
+      
+    private:
+      /// a cache for the previously computed scores
+      Cache4IndepTest __cache;
+
+      /// a Boolean indicating whether we wish to use the cache
+      bool __use_cache { true };
+
+      /// indicates whether the ith nodeset's score is in the cache or not
+      std::vector<bool> __is_cached_score;
+
+      /// the vector of scores for the current nodesets
+      std::vector<float> __cached_score;
+
+      /// an empty conditioning set
+      const std::vector<unsigned int> __empty_conditioning_set; 
+
+      
+    
       // ##########################################################################
       // ##########################################################################
       

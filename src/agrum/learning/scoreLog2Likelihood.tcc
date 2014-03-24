@@ -57,6 +57,11 @@ namespace gum {
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
     float ScoreLog2Likelihood<RowFilter,IdSetAlloc,CountAlloc>::score
     ( unsigned int nodeset_index ) {
+      // if the score has already been computed, get its value
+      if ( this->_isInCache ( nodeset_index ) ) {
+        return this->_cachedScore ( nodeset_index );
+      }
+
       // get the nodes involved in the score 
       const std::vector<unsigned int,IdSetAlloc>* conditioning_nodes =
         this->_getConditioningNodes ( nodeset_index );
@@ -90,7 +95,12 @@ namespace gum {
         // divide by log(2), since the log likelihood uses log_2
         score *= this->_1log2;
 
-        return score;
+        // shall we put the score into the cache?
+        if ( this->_isUsingCache () ) {
+          this->_insertIntoCache ( nodeset_index, score );
+        }
+
+         return score;
       }
       else {
         // here, there are no conditioning nodes
@@ -116,6 +126,11 @@ namespace gum {
 
         // divide by log(2), since the log likelihood uses log_2
         score *= this->_1log2;
+
+        // shall we put the score into the cache?
+        if ( this->_isUsingCache () ) {
+          this->_insertIntoCache ( nodeset_index, score );
+        }
 
         return score;
       }

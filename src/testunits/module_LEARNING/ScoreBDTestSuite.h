@@ -82,7 +82,7 @@ namespace gum_tests {
         score ( filter, modalities );
 
       // to test, we exploit the fact that if the hyperparameters are all equal
-      // to 1, then score BDeu = score K2
+      // to 1, then score BD = score K2
       const std::vector<float> hp2 ( 2, 1.0f );
       const std::vector<float> hp4 ( 4, 1.0f );
       const std::vector<float> hp8 ( 8, 1.0f );
@@ -127,6 +127,86 @@ namespace gum_tests {
       TS_ASSERT ( fabs ( score.score ( id7 ) + 991.062 ) <= 0.01 );
     }
 
+    
+    void test_cache () {
+      gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
+      auto handler = database.handler ();
+      auto translators = gum::learning::make_translators
+        ( gum::learning::Create<CellTranslator, gum::learning::Col<0>, 8 > () );
+      auto generators =  gum::learning::make_generators ( SimpleGenerator () );
+      auto filter = gum::learning::make_row_filter ( handler, translators,
+                                                     generators );
+      std::vector<unsigned int> modalities = filter.modalities ();
+      gum::learning::ScoreBD<decltype ( filter ) >
+        score ( filter, modalities );
+      //score.useCache ( false );
+
+      // to test, we exploit the fact that if the hyperparameters are all equal
+      // to 1, then score BDeu = score K2
+      const std::vector<float> hp2 ( 2, 1.0f );
+      const std::vector<float> hp4 ( 4, 1.0f );
+      const std::vector<float> hp8 ( 8, 1.0f );
+
+      unsigned int id1, id2, id3, id4, id5, id6, id7;
+      for ( unsigned int i = 0; i < 10000; ++i ) {
+        score.clear ();
+        id1 = score.addNodeSet ( 3, hp2 );
+        id2 = score.addNodeSet ( 1, hp2 );
+        id3 = score.addNodeSet ( 3, std::vector<unsigned int> { 1, 2 }, hp8 );
+        id4 = score.addNodeSet ( 2, hp2 );
+        id5 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 }, hp4 );
+        id6 = score.addNodeSet ( 2, hp2 );
+        id7 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 }, hp4 );
+        TS_ASSERT ( fabs ( score.score ( id1 ) + 996.781 ) <= 0.01 );
+        TS_ASSERT ( fabs ( score.score ( id2 ) + 3030.73 ) <= 0.01 );
+        TS_ASSERT ( fabs ( score.score ( id3 ) + 1014.4  ) <= 0.01 );
+        TS_ASSERT ( fabs ( score.score ( id4 ) + 9935.8  ) <= 0.01 );
+        TS_ASSERT ( fabs ( score.score ( id5 ) + 991.062 ) <= 0.01 );
+        TS_ASSERT ( fabs ( score.score ( id6 ) + 9935.8  ) <= 0.01 );
+        TS_ASSERT ( fabs ( score.score ( id7 ) + 991.062 ) <= 0.01 );
+      }
+    }
+
+    
+    void test_clearcache () {
+      gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
+      auto handler = database.handler ();
+      auto translators = gum::learning::make_translators
+        ( gum::learning::Create<CellTranslator, gum::learning::Col<0>, 8 > () );
+      auto generators =  gum::learning::make_generators ( SimpleGenerator () );
+      auto filter = gum::learning::make_row_filter ( handler, translators,
+                                                     generators );
+      std::vector<unsigned int> modalities = filter.modalities ();
+      gum::learning::ScoreBD<decltype ( filter ) >
+        score ( filter, modalities );
+      //score.useCache ( false );
+
+      // to test, we exploit the fact that if the hyperparameters are all equal
+      // to 1, then score BDeu = score K2
+      const std::vector<float> hp2 ( 2, 1.0f );
+      const std::vector<float> hp4 ( 4, 1.0f );
+      const std::vector<float> hp8 ( 8, 1.0f );
+
+      unsigned int id1, id2, id3, id4, id5, id6, id7;
+      for ( unsigned int i = 0; i < 4; ++i ) {
+        score.clearCache ();
+        id1 = score.addNodeSet ( 3, hp2 );
+        id2 = score.addNodeSet ( 1, hp2 );
+        id3 = score.addNodeSet ( 3, std::vector<unsigned int> { 1, 2 }, hp8 );
+        id4 = score.addNodeSet ( 2, hp2 );
+        id5 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 }, hp4 );
+        id6 = score.addNodeSet ( 2, hp2 );
+        id7 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 }, hp4 );
+        TS_ASSERT ( fabs ( score.score ( id1 ) + 996.781 ) <= 0.01 );
+        TS_ASSERT ( fabs ( score.score ( id2 ) + 3030.73 ) <= 0.01 );
+        TS_ASSERT ( fabs ( score.score ( id3 ) + 1014.4  ) <= 0.01 );
+        TS_ASSERT ( fabs ( score.score ( id4 ) + 9935.8  ) <= 0.01 );
+        TS_ASSERT ( fabs ( score.score ( id5 ) + 991.062 ) <= 0.01 );
+        TS_ASSERT ( fabs ( score.score ( id6 ) + 9935.8  ) <= 0.01 );
+        TS_ASSERT ( fabs ( score.score ( id7 ) + 991.062 ) <= 0.01 );
+      }
+    }
+    
   };
 
 

@@ -32,6 +32,7 @@
 #include <sstream>
 #include <cstring>
 #include <initializer_list>
+#include <utility>
 
 #include <agrum/config.h>
 
@@ -170,6 +171,30 @@ namespace gum {
     Size operator() ( const learning::IdSet<Alloc>& key ) const;
   };
 
+
+  /// the hash function for pairs (idSet,unsigned int)
+  template <typename Alloc>
+  class HashFunc< std::pair<learning::IdSet<Alloc>,unsigned int> > :
+    public HashFuncBase< std::pair<learning::IdSet<Alloc>,unsigned int> > {
+  public:
+    /// computes the hashed value of a key
+    Size operator() ( const std::pair<learning::IdSet<Alloc>,
+                                      unsigned int>& key ) const;
+  };
+
+
+  /// the hash function for pairs (idSet,pair<unsigned int,unsigned int>)
+  template <typename Alloc>
+  class HashFunc< std::tuple<learning::IdSet<Alloc>,unsigned int,unsigned int> > :
+    public HashFuncBase< std::tuple<learning::IdSet<Alloc>,
+                                    unsigned int,unsigned int> > {
+  public:
+    /// computes the hashed value of a key
+    Size operator()
+    ( const std::tuple<learning::IdSet<Alloc>,unsigned int,unsigned int>& key )
+      const;
+  };
+  
   
 } /* namespace gum */
 

@@ -58,6 +58,11 @@ namespace gum {
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
     float ScoreK2<RowFilter,IdSetAlloc,CountAlloc>::score
     ( unsigned int nodeset_index ) {
+      // if the score has already been computed, get its value
+      if ( this->_isInCache ( nodeset_index ) ) {
+        return this->_cachedScore ( nodeset_index );
+      }
+
       // get the nodes involved in the score as well as their modalities
       const std::vector<unsigned int,IdSetAlloc>& all_nodes =
         this->_getAllNodes ( nodeset_index );
@@ -102,6 +107,11 @@ namespace gum {
           score -= __gammalog2 ( N_ij[j] + ri_minus_1 + 1 );
         }
 
+        // shall we put the score into the cache?
+        if ( this->_isUsingCache () ) {
+          this->_insertIntoCache ( nodeset_index, score );
+        }
+
         return score;
       }
       else {
@@ -129,6 +139,11 @@ namespace gum {
           }
         }
         score -= __gammalog2 ( N + ri_minus_1 + 1 );
+
+        // shall we put the score into the cache?
+        if ( this->_isUsingCache () ) {
+          this->_insertIntoCache ( nodeset_index, score );
+        }
 
         return score;
       }

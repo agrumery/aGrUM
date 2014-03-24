@@ -37,6 +37,7 @@
 
 #include <agrum/config.h>
 #include <agrum/learning/counter.h>
+#include <agrum/learning/cache4Score.h>
 
 
 namespace gum {
@@ -100,23 +101,6 @@ namespace gum {
        * counting vector. */
       unsigned int addNodeSet ( unsigned int var );
 
-      /// add new set of "unconditioned" single targets
-      /** This method is a shortcut for the application of addNodeSet on each
-       * variable in vector vars.
-       * @param vars represents the indices of the target variables in the
-       * filtered rows produced by the database cell filters
-       * @return the index of the first produced counting vector: the user should
-       * use class Score to compute in one pass several scores. These and
-       * their corresponding countings in the database are stored into a vector
-       * and the value returned by method addNodeSets is the index of the counts
-       * for the first variable of vars in this vector. The user shall pass this
-       * index as argument to method _getAllCounts to get the corresponding
-       * counting vector. The other counting vectors follow the first one in the
-       * vector of counting vectors (i.e., their indices follow that of the
-       * first var). */
-      unsigned int
-      addNodeSets ( const std::vector<unsigned int>& single_vars );
-
       /// add a new target variable plus some conditioning vars
       /** @param var represents the index of the target variable in the filtered
        * rows produced by the database cell filters
@@ -135,29 +119,15 @@ namespace gum {
       addNodeSet ( unsigned int var,
                    const std::vector<unsigned int>& conditioning_ids );
 
-      /// add new set of target variables conditioned by the same variables
-      /** This method is a shortcut for the application of addNodeSet on each
-       * variable in vector vars conditioned by conditioning_ids.
-       * @param vars represents the indices of the target variables in the
-       * filtered rows produced by the database cell filters
-       * @param conditioning_ids the indices of the variables of the conditioning
-       * set in the filtered rows
-       * @return the index of the first produced counting vector: the user should
-       * use class Score to compute in one pass several scores. These and
-       * their corresponding countings in the database are stored into a vector
-       * and the value returned by method addNodeSets is the index of the counts
-       * for the first variable of vars in this vector. The user shall pass this
-       * index as argument to methods _getAllCounts and _getConditioningCounts
-       * to get the countings of ( conditioning_ids,vars ) [in this order] and
-       * conditioning_ids respectively, where var corresponds to the target
-       * variable. */
-      unsigned int
-      addNodeSets ( const std::vector<unsigned int>& vars,
-                    const std::vector<unsigned int>& conditioning_ids );
-
       /// clears all the data structures from memory
-      using Counter<RowFilter,IdSetAlloc,CountAlloc>::clear;
+      void clear ();
 
+      /// clears the current cache (clear nodesets as well)
+      void clearCache ();
+
+      /// turn on/off the use of a cache of the previously computed score
+      void useCache ( bool on_off ) noexcept;
+      
       /// returns the modalities of the variables
       using Counter<RowFilter,IdSetAlloc,CountAlloc>::modalities;
 
@@ -168,6 +138,10 @@ namespace gum {
 
 
     protected:
+      /// 1 / log(2)
+      const float _1log2 { M_LOG2E };
+
+
       /// returns the counting vector for a given (conditioned) target set
       /** This method returns the observtion countings for the set of variables
        * whose index was returned by method addNodeSet or addNodeSets. If the
@@ -193,10 +167,36 @@ namespace gum {
 
       /// returns the conditioning nodes (nullptr if there are no such nodes)
       using Counter<RowFilter,IdSetAlloc,CountAlloc>::_getConditioningNodes;
-
       
-      /// 1 / log(2)
-      const float _1log2 { M_LOG2E };
+      /// indicates whether a score belongs to the cache
+      bool _isInCache ( unsigned int nodeset_index ) const noexcept;
+
+      /// inserts a new score into the cache    
+      void _insertIntoCache ( unsigned int nodeset_index, float score );
+
+      /// returns a cached score
+      float _cachedScore ( unsigned int nodeset_index ) const noexcept;
+
+      /// indicates whether we use the cache or not
+      bool _isUsingCache () const noexcept;
+      
+
+    private:
+      /// a cache for the previously computed scores
+      Cache4Score __cache;
+
+      /// a Boolean indicating whether we wish to use the cache
+      bool __use_cache { true };
+
+      /// indicates whether the ith nodeset's score is in the cache or not
+      std::vector<bool> __is_cached_score;
+
+      /// the vector of scores for the current nodesets
+      std::vector<float> __cached_score;
+
+      /// an empty conditioning set
+      const std::vector<unsigned int> __empty_conditioning_set; 
+      
 
       
       // ##########################################################################

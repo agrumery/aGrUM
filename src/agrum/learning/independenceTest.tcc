@@ -55,8 +55,23 @@ namespace gum {
     IndependenceTest<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
     ( unsigned int var1,
       unsigned int var2 ) {
+      if ( __use_cache ) {
+        try {
+          float score = __cache.score ( var1, var2, __empty_conditioning_set );
+          __is_cached_score.push_back ( true );
+          __cached_score.push_back ( score );
+          return Counter<RowFilter,IdSetAlloc,CountAlloc>::addEmptyNodeSet ();
+        }
+        catch ( const NotFound& ) {}
+      }
+
+      __is_cached_score.push_back ( false );
+      __cached_score.push_back ( 0 );
       unsigned int index = Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
         ( var1, var2 );
+
+      __is_cached_score.push_back ( false );
+      __cached_score.push_back ( 0 );
       Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet ( var1 );
       return index;
     }
@@ -67,8 +82,24 @@ namespace gum {
     unsigned int
     IndependenceTest<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
     ( const std::pair<unsigned int,unsigned int>& vars ) {
+      if ( __use_cache ) {
+        try {
+          float score = __cache.score ( vars.first, vars.second,
+                                        __empty_conditioning_set );
+          __is_cached_score.push_back ( true );
+          __cached_score.push_back ( score );
+          return Counter<RowFilter,IdSetAlloc,CountAlloc>::addEmptyNodeSet ();
+        }
+        catch ( const NotFound& ) {}
+      }
+
+      __is_cached_score.push_back ( false );
+      __cached_score.push_back ( 0 );
       unsigned int index = Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
         ( vars );
+
+      __is_cached_score.push_back ( false );
+      __cached_score.push_back ( 0 );
       Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet ( vars.first );
       return index;
     }
@@ -81,8 +112,23 @@ namespace gum {
     ( unsigned int var1,
       unsigned int var2,
       const std::vector<unsigned int>& conditioning_ids ) {
+      if ( __use_cache ) {
+        try {
+          float score = __cache.score ( var1, var2, conditioning_ids ); 
+          __is_cached_score.push_back ( true );
+          __cached_score.push_back ( score );
+          return Counter<RowFilter,IdSetAlloc,CountAlloc>::addEmptyNodeSet ();
+        }
+        catch ( const NotFound& ) {}
+      }
+
+      __is_cached_score.push_back ( false );
+      __cached_score.push_back ( 0 );
       unsigned int index = Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
         ( var1, var2, conditioning_ids );
+
+      __is_cached_score.push_back ( false );
+      __cached_score.push_back ( 0 );
       Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
         ( var1, conditioning_ids );
       return index;
@@ -95,38 +141,107 @@ namespace gum {
     IndependenceTest<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
     ( const std::pair<unsigned int,unsigned int>& vars,
       const std::vector<unsigned int>& conditioning_ids ) {
+      if ( __use_cache ) {
+        try {
+          float score = __cache.score ( vars.first, vars.second,
+                                        conditioning_ids ); 
+          __is_cached_score.push_back ( true );
+          __cached_score.push_back ( score );
+          return Counter<RowFilter,IdSetAlloc,CountAlloc>::addEmptyNodeSet ();
+        }
+        catch ( const NotFound& ) {}
+      }
+
+      __is_cached_score.push_back ( false );
+      __cached_score.push_back ( 0 );
       unsigned int index = Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
         ( vars, conditioning_ids );
+
+      __is_cached_score.push_back ( false );
+      __cached_score.push_back ( 0 );
       Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
         ( vars.first, conditioning_ids );
       return index;
     }
 
     
-    /// add new set of "unconditioned" pairs of targets
+    /// clears all the data structures from memory
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    unsigned int
-    IndependenceTest<RowFilter,IdSetAlloc,CountAlloc>::addNodeSets
-    ( const std::vector< std::pair<unsigned int,unsigned int> >& vars ) {
-      unsigned int index = addNodeSets ( vars[0] );
-      for ( unsigned int i = 1; i < vars.size (); ++i ) { 
-        addNodeSets ( vars[i] );
-      }
-      return index;
+    void IndependenceTest<RowFilter,IdSetAlloc,CountAlloc>::clear () {
+      Counter<RowFilter,IdSetAlloc,CountAlloc>::clear ();
+      __is_cached_score.clear ();
+      __cached_score.clear ();
+    }
+
+
+    /// indicates whether a score belongs to the cache
+    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
+    bool IndependenceTest<RowFilter,IdSetAlloc,CountAlloc>::_isInCache
+    ( unsigned int nodeset_index ) const noexcept {
+      return ( ( nodeset_index < __is_cached_score.size () ) &&
+               __is_cached_score[ nodeset_index ] );
     }
 
     
-    /// add new set of "conditioned" pairs of targets
+    /// inserts a new score into the cache    
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    unsigned int
-    IndependenceTest<RowFilter,IdSetAlloc,CountAlloc>::addNodeSets
-    ( const std::vector< std::pair<unsigned int,unsigned int> >& vars,
-      const std::vector<unsigned int>& conditioning_ids ) {
-      unsigned int index = addNodeSets ( vars[0], conditioning_ids );
-      for ( unsigned int i = 1; i < vars.size (); ++i ) { 
-        addNodeSets ( vars[i], conditioning_ids );
+    void IndependenceTest<RowFilter,IdSetAlloc,CountAlloc>::_insertIntoCache
+    ( unsigned int nodeset_index, float score ) {
+      const std::vector<unsigned int,IdSetAlloc>& all_nodes = 
+        _getAllNodes ( nodeset_index );
+      std::vector<unsigned int,IdSetAlloc> conditioning_nodes = 
+        *( _getConditioningNodes ( nodeset_index ) );
+      conditioning_nodes.pop_back ();
+
+      if ( ! conditioning_nodes.empty () ) {
+        try {
+          __cache.insert ( all_nodes[all_nodes.size() - 1],
+                           all_nodes[all_nodes.size() - 2],
+                           conditioning_nodes, score );
+        }
+        catch ( const gum::DuplicateElement& ) {}
       }
-      return index;
+      else {
+        try {
+          __cache.insert ( all_nodes[0], all_nodes[1],
+                           __empty_conditioning_set, score );
+        }
+        catch ( const gum::DuplicateElement& ) {}
+      }
+    }
+
+
+    /// returns a cached score
+    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
+    float IndependenceTest<RowFilter,IdSetAlloc,CountAlloc>::_cachedScore
+    ( unsigned int nodeset_index ) const noexcept {
+      return __cached_score[nodeset_index];
+    }
+
+
+    /// indicates whether we use the cache or not
+    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
+    bool IndependenceTest<RowFilter,IdSetAlloc,CountAlloc>::_isUsingCache ()
+      const noexcept {
+      return __use_cache;
+    }
+
+    
+    /// turn on/off the use of a cache of the previously computed score
+    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
+    void
+    IndependenceTest<RowFilter,IdSetAlloc,CountAlloc>::useCache
+    ( bool on_off ) noexcept {
+      if ( ! on_off ) clear ();
+      __use_cache = on_off;
+    }
+
+    
+    /// clears the current cache (clear nodesets as well)
+    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
+    void IndependenceTest<RowFilter,IdSetAlloc,CountAlloc>::clearCache () {
+      clear ();
+      __cache.clear ();
     }
 
     

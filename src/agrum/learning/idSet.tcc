@@ -279,6 +279,40 @@ namespace gum {
   }
 
   
+  /// the hash function for pairs (idSet,unsigned int)
+  template <typename Alloc>
+  Size HashFunc< std::pair<learning::IdSet<Alloc>,unsigned int> >::operator()
+    ( const std::pair<learning::IdSet<Alloc>,
+                      unsigned int>& key ) const {
+    Size h = 0;
+    size_t i;
+    const std::vector<unsigned int,Alloc>& vect = key.first.ids (); 
+    for ( i = 0; i < vect.size(); ++i )
+      h += i * vect[i];
+    h *= i * key.second;
+    
+    return ( ( h * HashFuncConst::gold ) & this->_hash_mask );
+  }
+
+
+  /// the hash function for pairs (idSet,unsigned int)
+  template <typename Alloc>
+  Size HashFunc< std::tuple<learning::IdSet<Alloc>,
+                            unsigned int,unsigned int> >::operator()
+    ( const std::tuple<learning::IdSet<Alloc>,
+                       unsigned int,unsigned int>& key ) const {
+    Size h = 0;
+    size_t i;
+    const std::vector<unsigned int,Alloc>& vect = std::get<0> ( key ).ids (); 
+    for ( i = 0; i < vect.size(); ++i )
+      h += i * vect[i];
+    h *= i * std::get<1> ( key );
+    h *= ++i * std::get<2> ( key );
+    
+    return ( ( h * HashFuncConst::gold ) & this->_hash_mask );
+  }
+
+  
 } /* namespace gum */
 
 

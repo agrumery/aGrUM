@@ -56,7 +56,12 @@ namespace gum {
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
     float IndepTestG2<RowFilter,IdSetAlloc,CountAlloc>::score
     ( unsigned int nodeset_index ) {
-      // get the nodes involved in the score as well as their modalities
+       // if the score has already been computed, get its value
+      if ( this->_isInCache ( nodeset_index ) ) {
+        return this->_cachedScore ( nodeset_index );
+      }
+
+     // get the nodes involved in the score as well as their modalities
       const std::vector<unsigned int,IdSetAlloc>& all_nodes =
         this->_getAllNodes ( nodeset_index );
       const std::vector<unsigned int,IdSetAlloc>* conditioning_nodes =
@@ -110,7 +115,14 @@ namespace gum {
         // (score - alpha ) / alpha, where alpha is the critical value
         float alpha = __chi2.criticalValue
           ( all_nodes[ all_nodes.size() - 1 ], all_nodes[ all_nodes.size() - 2 ] );
-        return ( score - alpha ) / alpha;
+        score = ( score - alpha ) / alpha;
+        
+        // shall we put the score into the cache?
+        if ( this->_isUsingCache () ) {
+          this->_insertIntoCache ( nodeset_index, score );
+        }
+
+        return score;
       }
       else {
         // here, there is no conditioning set
@@ -155,7 +167,14 @@ namespace gum {
         // (score - alpha ) / alpha, where alpha is the critical value
         float alpha = __chi2.criticalValue
           ( all_nodes[ all_nodes.size() - 1 ], all_nodes[ all_nodes.size() - 2 ] );
-        return ( score - alpha ) / alpha;
+        score = ( score - alpha ) / alpha;
+        
+        // shall we put the score into the cache?
+        if ( this->_isUsingCache () ) {
+          this->_insertIntoCache ( nodeset_index, score );
+        }
+
+        return score;
       }
     }
 
