@@ -48,8 +48,8 @@ namespace gum {
      * into FilteredRows, and a set of generators that will transform the
      * filtered rows into new sets of filtered rows (see FilteredRowGenerator
      * for more details about generators). An example of the construction of
-     * a row filter can be as follows (using helper function make_row_filter that
-     * produces a DBRowFilter):
+     * a row filter can be as follows (using helper function make_DB_row_filter
+     * that produces a DBRowFilter):
      * @code
      * Database::Handler handler ( database );
      *
@@ -62,7 +62,7 @@ namespace gum {
      *     TimeSlicerGenerator () );
      *
      *
-     * auto filter = make_row_filter ( handler, translators, generators );
+     * auto filter = make_DB_row_filter ( handler, translators, generators );
      * @endcode
      */
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
@@ -113,6 +113,9 @@ namespace gum {
        * into the cell filters */
       std::vector<unsigned int> modalities () const;
 
+      /// returns the names of the variables
+      std::vector<std::string> variableNames () const;
+
       /// @}
 
     protected:
@@ -149,19 +152,19 @@ namespace gum {
      *     TimeSlicerGenerator () );
      *
      * // create a filter that will parse the DB to initialize the cell filters
-     * auto filter = make_row_filter ( handler, translators, generators );
+     * auto filter = make_DB_row_filter( handler, translators, generators );
      *
      * // create a filter that will not initialize the cell filters
-     * auto filter = make_row_filter ( handler, translators, generators, false );
+     * auto filter = make_DB_row_filter( handler, translators, generators, false );
      * @endcode
      */
     template<typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     constexpr DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>
-    make_row_filter ( DBHandler& handler,
-                      const TranslatorSet& translator_set,
-                      const GeneratorSet& generator_set,
-                      unsigned long initialization_range =
-                      std::numeric_limits<unsigned long>::max () ) {
+    make_DB_row_filter ( DBHandler& handler,
+                         const TranslatorSet& translator_set,
+                         const GeneratorSet& generator_set,
+                         unsigned long initialization_range =
+                         std::numeric_limits<unsigned long>::max () ) {
       return DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>
         ( handler, translator_set, generator_set, initialization_range );
     }

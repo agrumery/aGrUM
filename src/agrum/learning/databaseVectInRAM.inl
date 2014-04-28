@@ -37,6 +37,7 @@ namespace gum {
     
     /// default constructor
     INLINE DatabaseVectInRAM::Handler::Handler ( const DatabaseVectInRAM& db ) :
+    __db ( db ),
     __row ( db.content () ),
     __end_index ( __row.size () ) {
       GUM_CONSTRUCTOR ( DatabaseVectInRAM::Handler );
@@ -46,6 +47,7 @@ namespace gum {
     /// copy constructor
     INLINE
     DatabaseVectInRAM::Handler::Handler ( const DatabaseVectInRAM::Handler& h ) :
+      __db ( h.__db ),
       __row ( h.__row ),
       __index ( h.__index ),
       __begin_index ( h.__begin_index ),
@@ -116,6 +118,12 @@ namespace gum {
     }
 
     
+    /// returns the names of the variables
+    INLINE const std::vector<std::string>&
+    DatabaseVectInRAM::Handler::variableNames () const noexcept {
+      return __db.variableNames ();
+    }
+
 
 
     // ===========================================================================

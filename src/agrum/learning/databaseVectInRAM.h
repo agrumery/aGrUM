@@ -112,10 +112,16 @@ namespace gum {
 
         /// returns the current range of the handler
         std::pair<unsigned long, unsigned long> range () const noexcept;
+
+        /// returns the names of the variables
+        const std::vector<std::string>& variableNames () const noexcept;
         
         /// @}
 
       private:
+        /// a reference on the whole database, including variable names
+        const DatabaseVectInRAM& __db;
+        
         /// a reference on the database
         const std::vector<DBRow>& __row;
 

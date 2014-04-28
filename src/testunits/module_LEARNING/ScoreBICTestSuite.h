@@ -75,8 +75,8 @@ namespace gum_tests {
 
       auto generators =  gum::learning::make_generators ( SimpleGenerator () );
       
-      auto filter = gum::learning::make_row_filter ( handler, translators,
-                                                     generators );
+      auto filter = gum::learning::make_DB_row_filter ( handler, translators,
+                                                        generators );
 
       std::vector<unsigned int> modalities = filter.modalities ();
 
@@ -129,8 +129,8 @@ namespace gum_tests {
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<CellTranslator, gum::learning::Col<0>, 8 > () );
       auto generators =  gum::learning::make_generators ( SimpleGenerator () );
-      auto filter = gum::learning::make_row_filter ( handler, translators,
-                                                     generators );
+      auto filter = gum::learning::make_DB_row_filter ( handler, translators,
+                                                        generators );
       std::vector<unsigned int> modalities = filter.modalities ();
       gum::learning::ScoreBIC<decltype ( filter ) >
         score ( filter, modalities );
@@ -163,8 +163,8 @@ namespace gum_tests {
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<CellTranslator, gum::learning::Col<0>, 8 > () );
       auto generators =  gum::learning::make_generators ( SimpleGenerator () );
-      auto filter = gum::learning::make_row_filter ( handler, translators,
-                                                     generators );
+      auto filter = gum::learning::make_DB_row_filter ( handler, translators,
+                                                        generators );
       std::vector<unsigned int> modalities = filter.modalities ();
       gum::learning::ScoreBIC<decltype ( filter ) >
         score ( filter, modalities );

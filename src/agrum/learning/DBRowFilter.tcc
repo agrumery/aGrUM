@@ -159,6 +159,16 @@ namespace gum {
       __translator_set.modalities ( res );
       return res;
     }
+
+    
+    /// returns the names of the variables
+    template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
+    std::vector<std::string>
+    DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>::variableNames () const {
+      std::vector<std::string> res;
+      __translator_set.variableNames ( __handler.variableNames (), res );
+      return res;
+    }
     
     
   } /* namespace learning */
