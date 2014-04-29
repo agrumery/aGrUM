@@ -47,7 +47,7 @@ namespace gum {
       const std::vector<std::string> missingVal ) {
       // open the file and create the CSVParser that will parse it
       std::ifstream in ( filename, std::ifstream::in);
-     CSVParser parser ( in, delimiter, commentmarker, quoteMarker );
+      CSVParser parser ( in, delimiter, commentmarker, quoteMarker );
 
       // if the first line contains names, store them
       if ( fileContainsNames ) {

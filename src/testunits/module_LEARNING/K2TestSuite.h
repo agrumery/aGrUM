@@ -77,7 +77,8 @@ namespace gum_tests {
 
       template <typename SCORE>
       gum::DAG learnDAG ( SCORE& score,
-                          const std::vector<unsigned int>& order ) {
+                          const std::vector<unsigned int>& order,
+                          unsigned int nb_max_parents ) {
         // create a DAG with all the nodes but without any arc
         gum::DAG dag;
         unsigned int nb_nodes = order.size ();
@@ -94,7 +95,7 @@ namespace gum_tests {
         for ( unsigned int i = 0; i < nb_nodes; ++i ) {
           scores[i] = score.score ( i );
         }
-       
+
         // now, add as many parents as needed
         unsigned int cont = nb_nodes;
         std::vector<bool> cont_by_node ( nb_nodes, true );
@@ -139,7 +140,11 @@ namespace gum_tests {
                   if ( ! dag.existsArc ( order[k], index ) ) {
                     if ( k == best ) {
                       parents[i].push_back ( order[k] );
-                      dag.insertArc ( order[k], order[i] );
+                      dag.insertArc ( order[k], index );
+                      if ( dag.parents ( index ).size () == nb_max_parents ) {
+                        --cont;
+                        cont_by_node[i] = false;
+                      }
                       break;
                     }
                   }
@@ -152,14 +157,23 @@ namespace gum_tests {
             }
           }
         }
-         
+
+        /*
+        unsigned int nbp = 0;
+        for ( auto iter = dag.begin (); iter != dag.end (); ++iter ) {
+          auto x = dag.parents ( *iter ).size ();
+          if ( x > nbp ) nbp = x;
+        }
+        std::cout << "nb max parents = " << nbp << std::endl;
+        */
+        
         return dag;
       }
 
     };
 
 
-    void test_k2_asia () {
+    void xx_test_k2_asia () {
       K2 k2;
 
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
@@ -184,7 +198,7 @@ namespace gum_tests {
         order[i] = i;
       }
       
-      gum::DAG dag = k2.learnDAG ( score, order );
+      gum::DAG dag = k2.learnDAG ( score, order, 100 );
 
       std::cout << dag << std::endl;
     }
@@ -214,9 +228,13 @@ namespace gum_tests {
       for ( unsigned int i = 0; i < order.size(); ++i ) {
         order[i] = i;
       }
-      
-      gum::DAG dag = k2.learnDAG ( score, order );
 
+      gum::Timer timer;
+      
+      gum::DAG dag = k2.learnDAG ( score, order, 6 );
+
+      std::cout << "learning time = " << timer.step () << std::endl;
+      
       std::cout << dag << std::endl;
     }
 
