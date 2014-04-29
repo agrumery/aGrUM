@@ -33,10 +33,9 @@
 // ============================================================================
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 #include <agrum/core/list.h>
+#include <agrum/core/bijection.h>
 // ============================================================================
 #include <agrum/graphs/graphElements.h>
-// ============================================================================
-#include <agrum/core/bijection.h>
 // ============================================================================
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimDecisionGraphManager.h>
@@ -94,6 +93,40 @@ namespace gum {
         static void _deleteNICL( NICLElem* nodeChain );
       /// @}
 
+  public:
+    // ############################################################################
+    /// Parent Chained list element
+    // ############################################################################
+    /// @{
+      struct PICLElem {
+        // ============================================================================
+        /// NodeId
+        // ============================================================================
+        NodeId parentId;
+
+        Idx modality;
+
+        PICLElem* nextElem;
+      };
+
+  protected :
+      // ============================================================================
+      /// Since elem chain are handled with soa, here is the operation of adding a node
+      /// to the list.
+      // ============================================================================
+      static void _addElemToPICL( PICLElem** parentChain, const NodeId& elemId, const Idx& modality);
+
+      // ============================================================================
+      /// And here the one to remove the elem
+      // ============================================================================
+      static void _removeElemFromPICL( PICLElem** parentChain, const NodeId& elemId, const Idx& modality);
+
+      // ============================================================================
+      /// Delete completely the chain
+      // ============================================================================
+      static void _deletePICL( PICLElem* parentChain );
+    /// @}
+
 
     public :
       // ############################################################################
@@ -120,12 +153,18 @@ namespace gum {
           // ============================================================================
           NodeId* __nodeSons;
 
+          PICLElem* __nodeParents;
+
           public :
             // ============================================================================
             /// Constructors
             // ============================================================================
             InternalNode();
             InternalNode(const DiscreteVariable* v);
+
+            /// You'd better known what you're doing if you're using this one.
+            /// sons must have the size of domainSize of v or the program will fail!
+            InternalNode(const DiscreteVariable* v, NodeId* sons);
 
             // ============================================================================
             /// Destructors
@@ -139,28 +178,43 @@ namespace gum {
             void operator delete(void*);
 
             // ============================================================================
+            /// Node handlers
+            // ============================================================================
+            /// You'd better known what you're doing if you're using this one.
+            /// sons must have the size of domainSize of v or the program will fail!
+            void setNode(const DiscreteVariable* v, NodeId* sons);
+
+            // ============================================================================
             /// Var handlers
             // ============================================================================
-            void setNodeVar(const DiscreteVariable* v){ __nodeVar = v;}
+            void setNodeVar(const DiscreteVariable* v);
+            void _setNodeVar(const DiscreteVariable* v);
             const DiscreteVariable* nodeVar() const { return __nodeVar;}
 
             // ============================================================================
             /// Sons handlers
             // ============================================================================
             void setSon(Idx modality, NodeId son){__nodeSons[modality] = son;}
-            Idx nbSons() const {return __nodeVar->domainSize();}
             NodeId son(Idx modality) const {return __nodeSons[modality];}
+            Idx nbSons() const {return __nodeVar->domainSize();}
+//            void setSons(NodeId* sons);
 
-          protected:
+            // ============================================================================
+            /// Parent handlers
+            // ============================================================================
+            void addParent( NodeId parent, Idx modality);
+            void removeParent( NodeId parent, Idx modality);
+            PICLElem*& parents() {return __nodeParents;}
+
             // ============================================================================
             /// Allocates a table of nodeid of the size given in parameter
             // ============================================================================
-            void _allocateNodeSons();
+            static NodeId* allocateNodeSons(const DiscreteVariable* v);
 
             // ============================================================================
             /// Deallocates a NodeSons table
             // ============================================================================
-            void _deallocateNodeSons();
+            static void deallocateNodeSons(const DiscreteVariable* v, NodeId* s);
 
         };
 
@@ -383,7 +437,7 @@ namespace gum {
         // ============================================================================
         /// Returns a const reference to the manager of this diagram
         // ============================================================================
-        const NodeGraphPart& model() const{return __model;}
+        const NodeGraphPart& model() const { return __model; }
 
         // ============================================================================
         /// Returns a const reference to the manager of this diagram
@@ -411,6 +465,8 @@ namespace gum {
         /// @throw InvalidNode if node is terminal
         // ============================================================================
         const InternalNode* node( NodeId n ) const;
+
+        const NICLElem* varNodeListe( const DiscreteVariable* var ) const { return __var2NodeIdMap[var]; }
 
       /// @}
 
@@ -442,7 +498,7 @@ namespace gum {
 
     private:
       // ============================================================================
-      /// Indicates available nodeIds
+      /// The name of the data structure
       // ============================================================================
       std::string __name;
 
@@ -452,7 +508,7 @@ namespace gum {
       NodeGraphPart __model;
 
       // ============================================================================
-      /// The root node of the decision graph
+      /// A reference to the manager that edits this decision graph
       // ============================================================================
       MultiDimDecisionGraphManager<GUM_SCALAR>* __manager;
 
@@ -484,6 +540,8 @@ namespace gum {
 
       static Idx aNICLE;
       static Idx dNICLE;
+      static Idx aPICLE;
+      static Idx dPICLE;
       static Idx aIN;
       static Idx dIN;
 
@@ -495,5 +553,7 @@ namespace gum {
 }
 
 #include <agrum/multidim/multiDimDecisionGraph.tcc>
+#include <agrum/multidim/multiDimDecisionGraph.Elem.tcc>
+#include <agrum/multidim/multiDimDecisionGraph.InternalNode.tcc>
 
 #endif // GUM_MULTI_DIM_DECISION_GRAPH_H

@@ -106,10 +106,11 @@ namespace gum{
          * Inserts a new non terminal node in graph.
          * NodeId of this node is generated automatically.
          *
+         * @param var Associated variable
          * @return the id of the added non terminal node.
          */
         // ============================================================================
-        NodeId addNonTerminalNode ( NodeId nid = 0 );
+        NodeId addNonTerminalNode ( const DiscreteVariable* var );
 
         // ============================================================================
         /**
@@ -121,7 +122,19 @@ namespace gum{
          * @return the id of the added non terminal node.
          */
         // ============================================================================
-        NodeId addNonTerminalNode ( const DiscreteVariable* var, NodeId nid = 0  );
+        NodeId addNonTerminalNode ( const DiscreteVariable* var, NodeId* sons  );
+
+        // ============================================================================
+        /**
+         * Inserts a new non terminal node in graph.
+         * NodeId of this node is generated automatically.
+         *
+         * @param var Associated variable
+         * @throw OperationNotAllowed if MultiDimDecisionGraph has no variable yet.
+         * @return the id of the added non terminal node.
+         */
+        // ============================================================================
+        NodeId addNonTerminalNode ( const DiscreteVariable* var, NodeId nid  );
 
         // ============================================================================
         /**
@@ -150,57 +163,24 @@ namespace gum{
       /// @}
 
       // ############################################################################
-      /// @name Arcs manipulation methods.
+      /// @name Manipulation methods.
       // ############################################################################
       /// @{
 
         // ============================================================================
-        /**
-         * Adds an arc in the DD
-         *
-         * @param from and
-         * @param to as NodeId
-         * @param modality the modality on which arc is bind
-         * @throw NotFound If from and/or tail are not in the DD.
-         * @throw InvalidNode if head is a terminal node
-         * @throw OperationNotAllowed if arc doesn't respect variable order property
-         * @throw DuplicateElement if another arc linking those nodes already exists
-         */
+        /// Sets nodes son for given modality to designated son node
         // ============================================================================
-        void insertArc ( NodeId from, NodeId to, Idx modality );
+        void setSon( const NodeId& node, const Idx& modality, const NodeId& sonNode );
 
         // ============================================================================
-        /**
-         * Erases arcs in the DD
-         *
-         * @param from and
-         * @param to as NodeId
-         * @throw InvalidArc If arc does not exist
-         * @warning due to the possibility that several arc with different value have the same from and to,
-         * if several arcs have different value but same parent and child, this method will erase all of them .
-         * If you want to erase a specific one, use eraseSpecificArc
-         */
+        /// Sets nodes son for given modality to designated son node
         // ============================================================================
-        void eraseArc ( NodeId from, NodeId to );
+        NodeId checkIsomorphism(const DiscreteVariable* var, NodeId* sons);
 
         // ============================================================================
-        /**
-         * Erases an arc in the DD
-         *
-         * @param from and
-         * @param to as NodeId
-         * @param modality the modality corresponding to the to delete arc
-         * @throw InvalidArc If arc does not exist
-         */
+        /// Sets nodes son for given modality to designated son node
         // ============================================================================
-        void eraseSpecificArc ( NodeId from, NodeId to, Idx modality );
-
-      /// @}
-
-      // ############################################################################
-      /// @name Arcs manipulation methods.
-      // ############################################################################
-      /// @{
+        bool isRedundant(const DiscreteVariable* var, NodeId* sons);
 
         // ============================================================================
         /// Ensures that every isomorphic subgraphs are merged together.
@@ -211,6 +191,9 @@ namespace gum{
         /// Changes var position in variable sequence
         // ============================================================================
         void moveTo( const DiscreteVariable* x, Idx desiredPos );
+
+  protected :
+        void _migrateNode(const NodeId&, const NodeId&);
 
   private :
 
@@ -227,13 +210,6 @@ namespace gum{
         // ============================================================================
         MultiDimDecisionGraph<GUM_SCALAR>* __decisionGraph;
 
-        // ============================================================================
-        ///For faster redundancy check
-        // ============================================================================
-        ListConstIterator< NodeId > __var2NodeIdIter;
-
-
-
   };
 } // namespace gum
 
@@ -242,3 +218,56 @@ namespace gum{
 // ============================================================================
 #endif // GUM_MULTI_DIM_DECISION_GRAPH_MANAGER_H
 // ============================================================================
+
+
+
+#ifdef WASTELAND
+// ############################################################################
+/// @name Arcs manipulation methods.
+// ############################################################################
+/// @{
+
+  // ============================================================================
+  /**
+   * Adds an arc in the DD
+   *
+   * @param from and
+   * @param to as NodeId
+   * @param modality the modality on which arc is bind
+   * @throw NotFound If from and/or tail are not in the DD.
+   * @throw InvalidNode if head is a terminal node
+   * @throw OperationNotAllowed if arc doesn't respect variable order property
+   * @throw DuplicateElement if another arc linking those nodes already exists
+   */
+  // ============================================================================
+//        void insertArc ( NodeId from, NodeId to, Idx modality );
+
+  // ============================================================================
+  /**
+   * Erases arcs in the DD
+   *
+   * @param from and
+   * @param to as NodeId
+   * @throw InvalidArc If arc does not exist
+   * @warning due to the possibility that several arc with different value have the same from and to,
+   * if several arcs have different value but same parent and child, this method will erase all of them .
+   * If you want to erase a specific one, use eraseSpecificArc
+   */
+  // ============================================================================
+//        void eraseArc ( NodeId from, NodeId to );
+
+  // ============================================================================
+  /**
+   * Erases an arc in the DD
+   *
+   * @param from and
+   * @param to as NodeId
+   * @param modality the modality corresponding to the to delete arc
+   * @throw InvalidArc If arc does not exist
+   */
+  // ============================================================================
+//        void eraseSpecificArc ( NodeId from, NodeId to, Idx modality );
+
+/// @}
+
+#endif

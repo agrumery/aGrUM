@@ -31,11 +31,7 @@
 // =======================================================
 #include <agrum/config.h>
 // =======================================================
-#include <agrum/core/sequence.h>
-// =======================================================
-#include <agrum/graphs/graphElements.h>
-// =======================================================
-#include <agrum/variables/discreteVariable.h>
+#include <agrum/multidim/multiDimDecisionGraph.h>
 // =======================================================
 
 namespace gum {
@@ -51,9 +47,6 @@ namespace gum {
 
     public:
 
-      /// Table giving for each node of second diagram, the list of variables requiring instantiation before
-      HashTable< NodeId, Set< const DiscreteVariable* >* >* retrogradeVarTable;
-
       // ===========================================================================
       /// @name Constructors, Destructors.
       // ===========================================================================
@@ -62,7 +55,7 @@ namespace gum {
       /**
       * Default constructor.
       */
-      O4DGContext();
+      O4DGContext( Idx* , Idx );
 
       /**
       * Default destructor.
@@ -77,67 +70,60 @@ namespace gum {
       /// @{
 
       /// Set DG1 diagram current explored Node
-      void setDG1Node( gum::NodeId exploredNode );
+      void setDG1Node( const NodeId& );
 
       /// Get DG1 diagram current explored Node
-      gum::NodeId  getDG1Node() const { return __DG1ExploredNode; }
+      const NodeId&  DG1Node() const { return __DG1ExploredNode; }
 
       /// Set DG2 diagram current explored Node
-      void setDG2Node( gum::Idx exploredNode );
+      void setDG2Node( const NodeId& );
 
       /// Get DG2 diagram current explored Node
-      gum::NodeId  getDG2Node() const { return __DG2ExploredNode; }
+      const NodeId&  DG2Node() const { return __DG2ExploredNode; }
+
 
       // ===========================================================================
       /// @name Variables modalities handlers
       // ===========================================================================
       /// @{
 
-      /// Returns true if variable is retrograde
-      bool isRetrogradeVar( const gum::DiscreteVariable*  var ) const { return __varSeq.exists( var ); }
-
-      /// Inserts a new retrograde variable
-      void addRetrogradeVar( const gum::DiscreteVariable*  var );
+      /// Changes given variable modality
+      void chgVarModality( Idx, Idx );
 
       /// Changes given variable modality
-      void chgVarModality( const gum::DiscreteVariable* var, gum::Idx newModality );
-
-      /// Returns true if variable is retrograde
-      gum::Idx variableModality( const gum::DiscreteVariable* var ) const { return __retrogradeVarInstantiation[ __varSeq.pos( var ) ]; }
-
-      /// Returns current o4DGContext key
-      const double contextKey() const;
+      Idx varModality( Idx );
 
       /// @}
 
-      /// For displaying current o4DGContext
-      std::string toString() const;
+      // ===========================================================================
+      /// @name O4DG Handling methods
+      // ===========================================================================
+      /// @{
+
+      /// Returns o4DGContext key
+      const double& key() const {return __key;}
+
+      /// @}
 
     private:
 
       /// DG1 Diagram current explored node
-      gum::NodeId __DG1ExploredNode;
-      double __DG1PrimeLog;
+      NodeId __DG1ExploredNode;
 
       /// DG2 Diagram current explored node
-      gum::NodeId __DG2ExploredNode;
-      double __DG2PrimeLog;
+      NodeId __DG2ExploredNode;
 
-      /// Variable sequence for faster indexation
-      gum::Sequence< const gum::DiscreteVariable* > __varSeq;
+      /// Vector containing for each retrograde variable its current modality
+      /// 0 meaning no instantiation done => there's an offset
+      Idx* __varInstantiation;
+      Idx __nbVar;
 
-      /// Vector containing for each retrograde variable its current modality (starting from 0 meaning no instantiation done)
-      std::vector< gum::Idx > __retrogradeVarInstantiation;
-
-      /// vector containing for each variable its associated log2 prime number.
-      std::vector< double > __var2PrimeLog;
-
-//      /// Based on Goedl's factorization on prime number, a unique key matching current o4DGContext
-//      double __contextKey;
+      /// The key use to store the context as a key in the hashtable
+      double __key;
 
       /// Table containing the log2 of prime numbers
       static const double __logPrime[];
-      static const gum::Idx __nbLogPrime;
+      static const Idx __nbLogPrime;
   };
 }
 

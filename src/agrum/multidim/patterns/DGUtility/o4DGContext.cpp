@@ -1,22 +1,22 @@
-/*********************************************************************************
+/****************************************************************************
  *    Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
- *   {prenom.nom}_at_lip6.fr                                                                            *
- *                                                                                                                      *
- *   This program is free software; you can redistribute it and/or modify           *
- *   it under the terms of the GNU General Public License as published by       *
- *   the Free Software Foundation; either version 2 of the License, or              *
- *   (at your option) any later version.                                                              *
- *                                                                                                                      *
- *   This program is distributed in the hope that it will be useful,                      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of           *
+ *   {prenom.nom}_at_lip6.fr                                                *
+ *                                                                          *
+ *   This program is free software; you can redistribute it and/or modify   *
+ *   it under the terms of the GNU General Public License as published by   *
+ *   the Free Software Foundation; either version 2 of the License, or      *
+ *   (at your option) any later version.                                    *
+ *                                                                          *
+ *   This program is distributed in the hope that it will be useful,        *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
- *   GNU General Public License for more details.                                             *
- *                                                                                                                      *
- *   You should have received a copy of the GNU General Public License          *
- *   along with this program; if not, write to the                                                *
- *   Free Software Foundation, Inc.,                                                                  *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.                      *
- ********************************************************************************/
+ *   GNU General Public License for more details.                           *
+ *                                                                          *
+ *   You should have received a copy of the GNU General Public License      *
+ *   along with this program; if not, write to the                          *
+ *   Free Software Foundation, Inc.,                                        *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.              *
+ ****************************************************************************/
 
 #include <cmath>
 
@@ -31,7 +31,7 @@ namespace gum {
 // see e.g. http://en.wikipedia.org/wiki/List_of_prime_numbers#The_first_500_prime_numbers if more is needed...
 // Don't forget to change __nbLogPrime to match number of log2 of prime numbers  in that table.
 
-  const gum::Idx O4DGContext::__nbLogPrime = 140;
+  const Idx O4DGContext::__nbLogPrime = 140;
 
   const double O4DGContext::__logPrime[] = {log2( 2 ),log2( 3 ),log2( 5 ),log2( 7 ),log2( 11 ),
       log2( 13 ),log2( 17 ),log2( 19 ),log2( 23 ),log2( 29 ),
@@ -72,35 +72,44 @@ namespace gum {
   /* ********************************************************************************************* */
 
 
-  // Default constructor.
+    // ================================================================
+    // Default constructor.
+    // ================================================================
+    O4DGContext::O4DGContext(Idx *varInst, Idx nbVar ) :
+        __DG1ExploredNode(0),
+        __DG2ExploredNode(0),
+        __key(0){
 
-  O4DGContext::O4DGContext() {
-    __DG1ExploredNode = 0;
-    __DG1PrimeLog = __logPrime[ __nbLogPrime - 1 ];
-    __DG2ExploredNode = 0;
-    __DG2PrimeLog = __logPrime[ __nbLogPrime - 2 ];
-  }
-
-
-  // Default constructor.
-
-  O4DGContext::~O4DGContext() {
-  }
+        GUM_CONSTRUCTOR("O4DGContext");
+        __varInstantiation = varInst;
+        __nbVar = nbVar;
 
 
+    }
 
-  //
+    // ================================================================
+    // Default Destructor.
+    // ================================================================
+    O4DGContext::~O4DGContext() {
 
-  std::string
-  O4DGContext::toString() const {
-    std::stringstream ret;
-    ret << " DG1 Current Node : " << __DG1ExploredNode << " - Log " << __DG1PrimeLog << " | DG2 Current Node : " << __DG2ExploredNode << " - Log " << __DG2PrimeLog  << " | ";
+        GUM_DESTRUCTOR("O4DGContext");
+        MultiDimDecisionGraph::soa.deallocate( __varInstantiation, __nbVar*sizeof(Idx) );
+    }
 
-    for ( SequenceIterator<const DiscreteVariable*> varIter = __varSeq.begin(); varIter != __varSeq.end(); ++varIter )
-      ret << "\t Variable retrograde : " << ( *varIter )->name() << " -> Current Modality : " << __retrogradeVarInstantiation[ __varSeq.pos( *varIter ) ] << " | ";
 
-    return ret.str();
-  }
+
+//  //
+
+//  std::string
+//  O4DGContext::toString() const {
+//    std::stringstream ret;
+//    ret << " DG1 Current Node : " << __DG1ExploredNode << " - Log " << __DG1PrimeLog << " | DG2 Current Node : " << __DG2ExploredNode << " - Log " << __DG2PrimeLog  << " | ";
+
+//    for ( SequenceIterator<const DiscreteVariable*> varIter = __varSeq.begin(); varIter != __varSeq.end(); ++varIter )
+//      ret << "\t Variable retrograde : " << ( *varIter )->name() << " -> Current Modality : " << __retrogradeVarInstantiation[ __varSeq.pos( *varIter ) ] << " | ";
+
+//    return ret.str();
+//  }
 }
 
 

@@ -36,19 +36,16 @@ namespace gum {
 
 
   // Set DG1 diagram current explored Node
-
-  INLINE
-  void
-  O4DGContext::setDG1Node( gum::NodeId exploredNode ) {
+  INLINE void O4DGContext::setDG1Node(const NodeId &exploredNode ) {
+      __key += ( exploredNode - __DG1ExploredNode )*__logPrime[ __nbLogPrime - 1 ];
     __DG1ExploredNode = exploredNode;
   }
 
 
   // Set DG2 diagram current explored Node
 
-  INLINE
-  void
-  O4DGContext::setDG2Node( gum::NodeId exploredNode ) {
+  INLINE void O4DGContext::setDG2Node(const NodeId &exploredNode ) {
+      __key += ( exploredNode - __DG2ExploredNode )*__logPrime[ __nbLogPrime - 2 ];
     __DG2ExploredNode = exploredNode;
   }
 
@@ -60,42 +57,27 @@ namespace gum {
   /* ********************************************************************************************* */
 
 
-  // Inserts a new retrograde variable
-
-  INLINE
-  void
-  O4DGContext::addRetrogradeVar( const gum::DiscreteVariable*  var )  {
-    if ( __varSeq.size() == __nbLogPrime )
-      GUM_ERROR( gum::OperationNotAllowed, "Not enough prime log2 in database. Please add more in o4DGContext.cpp files." );
-
-    __varSeq.insert( var );
-    __retrogradeVarInstantiation.push_back( 0 );
-    __var2PrimeLog.push_back( __logPrime[ __nbLogPrime - __varSeq.pos( var ) - 3 ] );
-  }
-
-
   // Changes given variable modality
 
-  INLINE
-  void
-  O4DGContext::chgVarModality( const gum::DiscreteVariable* var, gum::Idx newModality ) {
-    __retrogradeVarInstantiation[ __varSeq.pos( var ) ] = newModality;
+  INLINE void O4DGContext::chgVarModality(  Idx varIndex, Idx newModality ) {
+      __key += ( newModality - __varInstantiation[ varIndex ] )*__logPrime[ __nbLogPrime - 3 - varIndex ];
+      __varInstantiation[ varIndex ] = newModality;
   }
 
+  /// Changes given variable modality
+  INLINE Idx O4DGContext::varModality( Idx varIndex ){
+      return __varInstantiation[ varIndex ];
+  }
 
-  // Updates o4DGContextKey
+  // ============================================================================
+  /// Allocators and Deallocators redefinition
+  // ============================================================================
+  INLINE void* O4DGContext::operator new(size_t l){
+      return MultiDimDecisionGraph::soa.allocate( l);
+  }
 
-  INLINE
-  const double
-  O4DGContext::contextKey( ) const {
-    double o4DGContextKey = __DG1ExploredNode * __DG1PrimeLog + __DG2ExploredNode * __DG2PrimeLog;
-
-    if ( (*retrogradeVarTable).exists( __DG2ExploredNode ) && ! ((*retrogradeVarTable)[__DG2ExploredNode])->empty() )
-        for ( Idx i = 0; i < __retrogradeVarInstantiation.size(); i++ )
-            if( ((*retrogradeVarTable)[__DG2ExploredNode])->exists( __varSeq.atPos(i) ) )
-                o4DGContextKey += __retrogradeVarInstantiation[i] * __var2PrimeLog[i];
-
-    return o4DGContextKey;
+  INLINE void O4DGContext::operator delete(void* p){
+      MultiDimDecisionGraph::soa.deallocate( p, sizeof(O4DGContext) );
   }
 
 }/* end of namespace gum */

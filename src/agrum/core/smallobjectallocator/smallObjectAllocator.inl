@@ -84,6 +84,7 @@ namespace gum {
         __pool.set(objectSize, *newFa);
       }
       nbAllocation++;
+
       return __pool[objectSize].allocate();
     }
 

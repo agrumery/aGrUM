@@ -82,15 +82,15 @@ namespace gum {
 
 
 
-  template<typename GUM_SCALAR>
-  MultiDimDecisionGraph< GUM_SCALAR >*
-  add2MultiDimDecisionGraphs( const MultiDimDecisionGraph< GUM_SCALAR >* t1,
-                                const MultiDimDecisionGraph< GUM_SCALAR >* t2 );
+//  template<typename GUM_SCALAR>
+//  MultiDimDecisionGraph< GUM_SCALAR >*
+//  add2MultiDimDecisionGraphs( const MultiDimDecisionGraph< GUM_SCALAR >* t1,
+//                                const MultiDimDecisionGraph< GUM_SCALAR >* t2 );
 
-  template<typename GUM_SCALAR>
-  MultiDimImplementation< GUM_SCALAR >*
-  add2MultiDimDecisionGraphs( const MultiDimImplementation< GUM_SCALAR >* t1,
-                                const MultiDimImplementation< GUM_SCALAR >* t2 );
+//  template<typename GUM_SCALAR>
+//  MultiDimImplementation< GUM_SCALAR >*
+//  add2MultiDimDecisionGraphs( const MultiDimImplementation< GUM_SCALAR >* t1,
+//                                const MultiDimImplementation< GUM_SCALAR >* t2 );
 
 
   /// a specialized function for subtracting two multiDimArrays
@@ -137,15 +137,15 @@ namespace gum {
 
 
 
-  template<typename GUM_SCALAR>
-  MultiDimDecisionGraph< GUM_SCALAR >*
-  subtract2MultiDimDecisionGraphs( const MultiDimDecisionGraph< GUM_SCALAR >* t1,
-                                const MultiDimDecisionGraph< GUM_SCALAR >* t2 );
+//  template<typename GUM_SCALAR>
+//  MultiDimDecisionGraph< GUM_SCALAR >*
+//  subtract2MultiDimDecisionGraphs( const MultiDimDecisionGraph< GUM_SCALAR >* t1,
+//                                const MultiDimDecisionGraph< GUM_SCALAR >* t2 );
 
-  template<typename GUM_SCALAR>
-  MultiDimImplementation< GUM_SCALAR >*
-  subtract2MultiDimDecisionGraphs( const MultiDimImplementation< GUM_SCALAR >* t1,
-                                const MultiDimImplementation< GUM_SCALAR >* t2 );
+//  template<typename GUM_SCALAR>
+//  MultiDimImplementation< GUM_SCALAR >*
+//  subtract2MultiDimDecisionGraphs( const MultiDimImplementation< GUM_SCALAR >* t1,
+//                                const MultiDimImplementation< GUM_SCALAR >* t2 );
 
 
   /// a specialized function for multiplying two multiDimArrays
@@ -192,15 +192,15 @@ namespace gum {
 
 
 
-  template<typename GUM_SCALAR>
-  MultiDimDecisionGraph< GUM_SCALAR >*
-  multiply2MultiDimDecisionGraphs( const MultiDimDecisionGraph< GUM_SCALAR >* t1,
-                                const MultiDimDecisionGraph< GUM_SCALAR >* t2 );
+//  template<typename GUM_SCALAR>
+//  MultiDimDecisionGraph< GUM_SCALAR >*
+//  multiply2MultiDimDecisionGraphs( const MultiDimDecisionGraph< GUM_SCALAR >* t1,
+//                                const MultiDimDecisionGraph< GUM_SCALAR >* t2 );
 
-  template<typename GUM_SCALAR>
-  MultiDimImplementation< GUM_SCALAR >*
-  multiply2MultiDimDecisionGraphs( const MultiDimImplementation< GUM_SCALAR >* t1,
-                                const MultiDimImplementation< GUM_SCALAR >* t2 );
+//  template<typename GUM_SCALAR>
+//  MultiDimImplementation< GUM_SCALAR >*
+//  multiply2MultiDimDecisionGraphs( const MultiDimImplementation< GUM_SCALAR >* t1,
+//                                const MultiDimImplementation< GUM_SCALAR >* t2 );
 
 
   /// a specialized function for dividing two multiDimArrays
@@ -247,15 +247,15 @@ namespace gum {
 
 
 
-  template<typename GUM_SCALAR>
-  MultiDimDecisionGraph< GUM_SCALAR >*
-  divide2MultiDimDecisionGraphs( const MultiDimDecisionGraph< GUM_SCALAR >* t1,
-                                const MultiDimDecisionGraph< GUM_SCALAR >* t2 );
+//  template<typename GUM_SCALAR>
+//  MultiDimDecisionGraph< GUM_SCALAR >*
+//  divide2MultiDimDecisionGraphs( const MultiDimDecisionGraph< GUM_SCALAR >* t1,
+//                                const MultiDimDecisionGraph< GUM_SCALAR >* t2 );
 
-  template<typename GUM_SCALAR>
-  MultiDimImplementation< GUM_SCALAR >*
-  divide2MultiDimDecisionGraphs( const MultiDimImplementation< GUM_SCALAR >* t1,
-                                const MultiDimImplementation< GUM_SCALAR >* t2 );
+//  template<typename GUM_SCALAR>
+//  MultiDimImplementation< GUM_SCALAR >*
+//  divide2MultiDimDecisionGraphs( const MultiDimImplementation< GUM_SCALAR >* t1,
+//                                const MultiDimImplementation< GUM_SCALAR >* t2 );
 
 
   /// a specialized function for compare value from two multiDimDecisionDiagramBases and gets the maximal
@@ -278,15 +278,15 @@ namespace gum {
 
 
 
-  template<typename GUM_SCALAR>
-  MultiDimDecisionGraph< GUM_SCALAR >*
-  maximize2MultiDimDecisionGraphs( const MultiDimDecisionGraph< GUM_SCALAR >* t1,
-                                const MultiDimDecisionGraph< GUM_SCALAR >* t2 );
+//  template<typename GUM_SCALAR>
+//  MultiDimDecisionGraph< GUM_SCALAR >*
+//  maximize2MultiDimDecisionGraphs( const MultiDimDecisionGraph< GUM_SCALAR >* t1,
+//                                const MultiDimDecisionGraph< GUM_SCALAR >* t2 );
 
-  template<typename GUM_SCALAR>
-  MultiDimImplementation< GUM_SCALAR >*
-  maximize2MultiDimDecisionGraphs( const MultiDimImplementation< GUM_SCALAR >* t1,
-                                const MultiDimImplementation< GUM_SCALAR >* t2 );
+//  template<typename GUM_SCALAR>
+//  MultiDimImplementation< GUM_SCALAR >*
+//  maximize2MultiDimDecisionGraphs( const MultiDimImplementation< GUM_SCALAR >* t1,
+//                                const MultiDimImplementation< GUM_SCALAR >* t2 );
 
 
   /// a specialized function for functionally combining two multiDimArrays

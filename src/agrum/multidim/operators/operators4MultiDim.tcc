@@ -364,190 +364,190 @@
 /* ******************************************************************************************* */
 
 
-#include <agrum/multidim/patterns/DGUtility/DGModeMacro.h>
+//#include <agrum/multidim/patterns/DGUtility/DGModeMacro.h>
 
 
-/// a specialized function for summing two multiDimDecisionGraph
+///// a specialized function for summing two multiDimDecisionGraph
 
-// addition taking in argument 2 multiDimDecisionGraph
+//// addition taking in argument 2 multiDimDecisionGraph
 
-#define GUM_MULTI_DIM_OPERATOR(x,y) (x) + (y)
-#define GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION DecisionGraphRecur4Addition
+//#define GUM_MULTI_DIM_OPERATOR(x,y) (x) + (y)
+//#define GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION DecisionGraphRecur4Addition
 
-#define GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
-#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION DecisionGraphGoDownOnLeader4Addition
-#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionGraphGoDownOnFollower4Addition
-#ifdef O4DGDEBUG
-#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctionsDebug.h>
-#else
-#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctions.h>
-#endif
-#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION
-#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION
-#undef GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
+//#define GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
+//#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION DecisionGraphGoDownOnLeader4Addition
+//#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionGraphGoDownOnFollower4Addition
+//#ifdef O4DGDEBUG
+//#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctionsDebug.h>
+//#else
+//#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctions.h>
+//#endif
+//#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION
+//#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION
+//#undef GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
 
-#define GUM_MULTI_DIM_OPERATOR_NAME add2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
-#undef GUM_MULTI_DIM_OPERATOR_NAME
+//#define GUM_MULTI_DIM_OPERATOR_NAME add2MultiDimDecisionGraphs
+//#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+//#undef GUM_MULTI_DIM_OPERATOR_NAME
 
-#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME add2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
-#undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
+//#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME add2MultiDimDecisionGraphs
+//#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+//#undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
 
-#undef GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION
-#undef GUM_MULTI_DIM_OPERATOR
-
-
-
-/// a specialized function for subtracting two multiDimDecisionGraphs
-
-
-#define GUM_MULTI_DIM_OPERATOR(x,y) (x) - (y)
-#define GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION DecisionGraphRecur4Subtraction
-
-#define GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
-#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION DecisionGraphGoDownOnLeader4Subtraction
-#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionGraphGoDownOnFollower4Subtraction
-#ifdef O4DGDEBUG
-#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctionsDebug.h>
-#else
-#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctions.h>
-#endif
-#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION
-#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION
-#undef GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
-
-#define GUM_MULTI_DIM_OPERATOR_NAME subtract2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
-#undef GUM_MULTI_DIM_OPERATOR_NAME
-
-#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME subtract2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
-#undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
-
-#undef GUM_MULTI_DIM_OPERATOR
-#undef GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION
+//#undef GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION
+//#undef GUM_MULTI_DIM_OPERATOR
 
 
 
-/// a specialized function for multiplying two multiDimDecisionGraphs
+///// a specialized function for subtracting two multiDimDecisionGraphs
 
 
-#define GUM_MULTI_DIM_OPERATOR(x,y) (x) * (y)
-#define GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION DecisionGraphRecur4Multiplication
+//#define GUM_MULTI_DIM_OPERATOR(x,y) (x) - (y)
+//#define GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION DecisionGraphRecur4Subtraction
 
-#define GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
-#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION DecisionGraphGoDownOnLeader4Multiplication
-#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionGraphGoDownOnFollower4Multiplication
-#ifdef O4DGDEBUG
-#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctionsDebug.h>
-#else
-#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctions.h>
-#endif
-#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION
-#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION
-#undef GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
+//#define GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
+//#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION DecisionGraphGoDownOnLeader4Subtraction
+//#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionGraphGoDownOnFollower4Subtraction
+//#ifdef O4DGDEBUG
+//#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctionsDebug.h>
+//#else
+//#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctions.h>
+//#endif
+//#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION
+//#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION
+//#undef GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
 
-#define GUM_MULTI_DIM_OPERATOR_NAME multiply2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
-#undef GUM_MULTI_DIM_OPERATOR_NAME
+//#define GUM_MULTI_DIM_OPERATOR_NAME subtract2MultiDimDecisionGraphs
+//#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+//#undef GUM_MULTI_DIM_OPERATOR_NAME
 
-#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME multiply2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
-#undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
+//#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME subtract2MultiDimDecisionGraphs
+//#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+//#undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
 
-#undef GUM_MULTI_DIM_OPERATOR
-#undef GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION
-
-
-
-/// a specialized function for dividing two multiDimDecisionGraphs
-
-#define GUM_MULTI_DIM_OPERATOR(x,y) (x) / (y)
-#define GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION DecisionGraphRecur4Division
-
-#define GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
-#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION DecisionGraphGoDownOnLeader4Division
-#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionGraphGoDownOnFollower4Division
-#ifdef O4DGDEBUG
-#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctionsDebug.h>
-#else
-#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctions.h>
-#endif
-#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION
-#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION
-#undef GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
-
-#define GUM_MULTI_DIM_OPERATOR_NAME divide2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
-#undef GUM_MULTI_DIM_OPERATOR_NAME
-
-#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME divide2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
-#undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
-
-#undef GUM_MULTI_DIM_OPERATOR
-#undef GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION
+//#undef GUM_MULTI_DIM_OPERATOR
+//#undef GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION
 
 
 
-/// a specialized function for finding max of two multiDimDecisionGraphs
-
-#define GUM_MULTI_DIM_OPERATOR(x,y) ( x >= y ? x : y )
-#define GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION DecisionGraphRecur4Maximization
-
-#define GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
-#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION DecisionGraphGoDownOnLeader4Maximization
-#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionGraphGoDownOnFollower4Maximization
-#ifdef O4DGDEBUG
-#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctionsDebug.h>
-#else
-#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctions.h>
-#endif
-#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION
-#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION
-#undef GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
-
-#define GUM_MULTI_DIM_OPERATOR_NAME maximize2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
-#undef GUM_MULTI_DIM_OPERATOR_NAME
-
-#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME maximize2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
-#undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
-
-#undef GUM_MULTI_DIM_OPERATOR
-#undef GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION
+///// a specialized function for multiplying two multiDimDecisionGraphs
 
 
+//#define GUM_MULTI_DIM_OPERATOR(x,y) (x) * (y)
+//#define GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION DecisionGraphRecur4Multiplication
 
-/// a specialized function for finding min of two multiDimDecisionGraphs
+//#define GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
+//#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION DecisionGraphGoDownOnLeader4Multiplication
+//#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionGraphGoDownOnFollower4Multiplication
+//#ifdef O4DGDEBUG
+//#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctionsDebug.h>
+//#else
+//#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctions.h>
+//#endif
+//#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION
+//#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION
+//#undef GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
 
-#define GUM_MULTI_DIM_OPERATOR(x,y) ( x <= y ? x : y )
-#define GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION DecisionGraphRecur4Minimization
+//#define GUM_MULTI_DIM_OPERATOR_NAME multiply2MultiDimDecisionGraphs
+//#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+//#undef GUM_MULTI_DIM_OPERATOR_NAME
 
-#define GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
-#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION DecisionGraphGoDownOnLeader4Minimization
-#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionGraphGoDownOnFollower4Minimization
-#ifdef O4DGDEBUG
-#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctionsDebug.h>
-#else
-#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctions.h>
-#endif
-#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION
-#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION
-#undef GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
+//#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME multiply2MultiDimDecisionGraphs
+//#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+//#undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
 
-#define GUM_MULTI_DIM_OPERATOR_NAME minimize2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
-#undef GUM_MULTI_DIM_OPERATOR_NAME
+//#undef GUM_MULTI_DIM_OPERATOR
+//#undef GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION
 
-#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME minimize2MultiDimDecisionGraphs
-#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
-#undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
 
-#undef GUM_MULTI_DIM_OPERATOR
-#undef GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION
+
+///// a specialized function for dividing two multiDimDecisionGraphs
+
+//#define GUM_MULTI_DIM_OPERATOR(x,y) (x) / (y)
+//#define GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION DecisionGraphRecur4Division
+
+//#define GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
+//#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION DecisionGraphGoDownOnLeader4Division
+//#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionGraphGoDownOnFollower4Division
+//#ifdef O4DGDEBUG
+//#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctionsDebug.h>
+//#else
+//#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctions.h>
+//#endif
+//#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION
+//#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION
+//#undef GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
+
+//#define GUM_MULTI_DIM_OPERATOR_NAME divide2MultiDimDecisionGraphs
+//#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+//#undef GUM_MULTI_DIM_OPERATOR_NAME
+
+//#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME divide2MultiDimDecisionGraphs
+//#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+//#undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
+
+//#undef GUM_MULTI_DIM_OPERATOR
+//#undef GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION
+
+
+
+///// a specialized function for finding max of two multiDimDecisionGraphs
+
+//#define GUM_MULTI_DIM_OPERATOR(x,y) ( x >= y ? x : y )
+//#define GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION DecisionGraphRecur4Maximization
+
+//#define GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
+//#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION DecisionGraphGoDownOnLeader4Maximization
+//#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionGraphGoDownOnFollower4Maximization
+//#ifdef O4DGDEBUG
+//#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctionsDebug.h>
+//#else
+//#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctions.h>
+//#endif
+//#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION
+//#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION
+//#undef GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
+
+//#define GUM_MULTI_DIM_OPERATOR_NAME maximize2MultiDimDecisionGraphs
+//#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+//#undef GUM_MULTI_DIM_OPERATOR_NAME
+
+//#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME maximize2MultiDimDecisionGraphs
+//#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+//#undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
+
+//#undef GUM_MULTI_DIM_OPERATOR
+//#undef GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION
+
+
+
+///// a specialized function for finding min of two multiDimDecisionGraphs
+
+//#define GUM_MULTI_DIM_OPERATOR(x,y) ( x <= y ? x : y )
+//#define GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION DecisionGraphRecur4Minimization
+
+//#define GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
+//#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION DecisionGraphGoDownOnLeader4Minimization
+//#define GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION DecisionGraphGoDownOnFollower4Minimization
+//#ifdef O4DGDEBUG
+//#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctionsDebug.h>
+//#else
+//#include <agrum/multidim/patterns/DGUtility/o4DGWithoutOrderRecursionFunctions.h>
+//#endif
+//#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_LEADER_FUNCTION
+//#undef GUM_MULTI_DIM_DECISION_GRAPH_GO_DOWN_ON_FOLLOWER_FUNCTION
+//#undef GUM_DECISION_GRAPH_OPERATOR_FUNCTION_DEFINITION
+
+//#define GUM_MULTI_DIM_OPERATOR_NAME minimize2MultiDimDecisionGraphs
+//#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+//#undef GUM_MULTI_DIM_OPERATOR_NAME
+
+//#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME minimize2MultiDimDecisionGraphs
+//#include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
+//#undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
+
+//#undef GUM_MULTI_DIM_OPERATOR
+//#undef GUM_MULTI_DIM_DECISION_GRAPH_RECUR_FUNCTION
 
 
 
@@ -683,15 +683,15 @@ namespace gum {
       registerOperator<GUM_SCALAR> ( "/", MultiDimDecisionDiagramString, MultiDimDecisionDiagramString,
                                      &divide2MultiDimDecisionDiagrams );
 
-      // register base functions for multiDimDecisionGraphs
-      registerOperator<GUM_SCALAR> ( "+", MultiDimDecisionGraphString, MultiDimDecisionGraphString,
-                                     &add2MultiDimDecisionGraphs );
-      registerOperator<GUM_SCALAR> ( "-", MultiDimDecisionGraphString, MultiDimDecisionGraphString,
-                                     &subtract2MultiDimDecisionGraphs );
-      registerOperator<GUM_SCALAR> ( "*", MultiDimDecisionGraphString, MultiDimDecisionGraphString,
-                                     &multiply2MultiDimDecisionGraphs );
-      registerOperator<GUM_SCALAR> ( "/", MultiDimDecisionGraphString, MultiDimDecisionGraphString,
-                                     &divide2MultiDimDecisionGraphs );
+//      // register base functions for multiDimDecisionGraphs
+//      registerOperator<GUM_SCALAR> ( "+", MultiDimDecisionGraphString, MultiDimDecisionGraphString,
+//                                     &add2MultiDimDecisionGraphs );
+//      registerOperator<GUM_SCALAR> ( "-", MultiDimDecisionGraphString, MultiDimDecisionGraphString,
+//                                     &subtract2MultiDimDecisionGraphs );
+//      registerOperator<GUM_SCALAR> ( "*", MultiDimDecisionGraphString, MultiDimDecisionGraphString,
+//                                     &multiply2MultiDimDecisionGraphs );
+//      registerOperator<GUM_SCALAR> ( "/", MultiDimDecisionGraphString, MultiDimDecisionGraphString,
+//                                     &divide2MultiDimDecisionGraphs );
 
       // register default basename functions
       registerOperator<GUM_SCALAR> ( "+", BaseNameString, BaseNameString,
