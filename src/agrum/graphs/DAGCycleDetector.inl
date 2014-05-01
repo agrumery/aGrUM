@@ -36,31 +36,31 @@ namespace gum {
   INLINE DAGCycleDetector::Change::Change ( ChangeType type,
                                             NodeId tail,
                                             NodeId head ) noexcept :
-  __type { type },
-  __tail { tail },
-  __head { head } {
-    GUM_CONSTRUCTOR ( DAGCycleDetector::Change );
-  }
+    __type { type },
+    __tail { tail },
+    __head { head } {
+      GUM_CONSTRUCTOR ( DAGCycleDetector::Change );
+    }
 
   
   // copy constructor
   INLINE DAGCycleDetector::Change::Change ( const DAGCycleDetector::Change& from )
     noexcept :
-  __type { from.__type },
-  __tail { from.__tail },
-  __head { from.__head } {
-    GUM_CONS_CPY ( DAGCycleDetector::Change );
-  }
+    __type { from.__type },
+    __tail { from.__tail },
+    __head { from.__head } {
+      GUM_CONS_CPY ( DAGCycleDetector::Change );
+    }
 
   
   // move constructor
   INLINE DAGCycleDetector::Change::Change ( DAGCycleDetector::Change&& from )
     noexcept :
-  __type { from.__type },
-  __tail { from.__tail },
-  __head { from.__head } {
-    GUM_CONS_MOV ( DAGCycleDetector::Change );
-  }
+    __type { from.__type },
+    __tail { from.__tail },
+    __head { from.__head } {
+      GUM_CONS_MOV ( DAGCycleDetector::Change );
+    }
 
   
   // destructor
@@ -142,7 +142,7 @@ namespace gum {
     DAGCycleDetector::Change ( std::move ( from.type () ),
                                std::move ( from.tail () ),
                                std::move ( from.head () ) ) {
-    GUM_CONS_MOV ( ADAGCycleDetector::ArcAdd );
+    GUM_CONS_MOV ( DAGCycleDetector::ArcAdd );
   }
     
 
@@ -178,7 +178,7 @@ namespace gum {
   /// default constructor
   INLINE DAGCycleDetector::ArcDel::ArcDel ( NodeId tail,
                                             NodeId head ) noexcept :
-    DAGCycleDetector::Change ( DAGCycleDetector::ChangeType::ARC_ADDITION,
+    DAGCycleDetector::Change ( DAGCycleDetector::ChangeType::ARC_DELETION,
                                tail, head ) {
     GUM_CONSTRUCTOR ( DAGCycleDetector::ArcDel );
   }
@@ -200,7 +200,7 @@ namespace gum {
     DAGCycleDetector::Change ( std::move ( from.type () ),
                                std::move ( from.tail () ),
                                std::move ( from.head () ) ) {
-    GUM_CONS_MOV ( ADAGCycleDetector::ArcDel );
+    GUM_CONS_MOV ( DAGCycleDetector::ArcDel );
   }
     
 
@@ -236,7 +236,7 @@ namespace gum {
   /// default constructor
   INLINE DAGCycleDetector::ArcReverse::ArcReverse ( NodeId tail,
                                                     NodeId head ) noexcept :
-    DAGCycleDetector::Change ( DAGCycleDetector::ChangeType::ARC_ADDITION,
+    DAGCycleDetector::Change ( DAGCycleDetector::ChangeType::ARC_REVERSAL,
                                tail, head ) {
     GUM_CONSTRUCTOR ( DAGCycleDetector::ArcReverse );
   }
@@ -260,7 +260,7 @@ namespace gum {
     DAGCycleDetector::Change ( std::move ( from.type () ),
                                std::move ( from.tail () ),
                                std::move ( from.head () ) ) {
-    GUM_CONS_MOV ( ADAGCycleDetector::ArcReverse );
+    GUM_CONS_MOV ( DAGCycleDetector::ArcReverse );
   }
     
 
@@ -369,10 +369,11 @@ namespace gum {
   INLINE
   void DAGCycleDetector::__addWeightedSet
   ( NodeProperty<unsigned int>& nodeset,
-    const NodeProperty<unsigned int>& set_to_add ) const {
+    const NodeProperty<unsigned int>& set_to_add,
+    unsigned int multiplier ) const {
     for ( auto iter = set_to_add.cbegin (); iter != set_to_add.cend (); ++iter ) {
       if ( nodeset.exists ( iter.key () ) ) {
-        nodeset[iter.key ()] += iter.val ();
+        nodeset[iter.key ()] += iter.val () * multiplier;
       }
       else {
         nodeset.insert ( iter.key (), iter.val () );
@@ -385,12 +386,15 @@ namespace gum {
   INLINE
   void DAGCycleDetector::__delWeightedSet
   ( NodeProperty<unsigned int>& nodeset,
-    const NodeProperty<unsigned int>& set_to_del ) const {
+    const NodeProperty<unsigned int>& set_to_del,
+    unsigned int multiplier ) const {
     for ( auto iter = set_to_del.cbegin (); iter != set_to_del.cend (); ++iter ) {
-      unsigned int& weight = nodeset[iter.key ()];
-      weight -= iter.val ();
-      if ( ! weight ) {
-        nodeset.erase ( iter.key () );
+      if ( nodeset.exists ( iter.key () ) ) {
+        unsigned int& weight = nodeset[iter.key ()];
+        weight -= iter.val () * multiplier;
+        if ( ! weight ) {
+          nodeset.erase ( iter.key () );
+        }
       }
     }
   }

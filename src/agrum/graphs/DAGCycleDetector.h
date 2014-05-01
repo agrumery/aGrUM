@@ -278,6 +278,12 @@ namespace gum {
     bool hascycleFromReversal ( NodeId x, NodeId y ) const noexcept;
 
     /// indicates whether a set of modifications would create a cycle
+    /** the Boolean returned corresponds to the existence (or not) of a cycle
+     * on the graph resulting from the whole sequence of modifications. This
+     * means, for instance, that if, among modifs, there exists an arc (X,Y)
+     * addition involving a cycle but also the same arc (X,Y) deletion, the final
+     * graph obtained does not contains a cycle (due to the deletion) and
+     * the method will thus return false. */
     bool hasCycleFromModifications ( const std::vector<Change>& modifs ) const;
     
     /// @}
@@ -298,11 +304,13 @@ namespace gum {
 
     /// adds a weighted nodeset to another (weights are added)
     void __addWeightedSet ( NodeProperty<unsigned int>& nodeset,
-                            const NodeProperty<unsigned int>& set_to_add ) const;
+                            const NodeProperty<unsigned int>& set_to_add,
+                            unsigned int multiplier ) const;
 
     /// removes a weighted nodeset from another (weights are subtracted)
     void __delWeightedSet ( NodeProperty<unsigned int>& nodeset,
-                            const NodeProperty<unsigned int>& set_to_del ) const;
+                            const NodeProperty<unsigned int>& set_to_del,
+                            unsigned int multiplier ) const;
 
     /** @brief put into a weighted nodeset the nodes of another weighted set that
      * belong to a set of arc extremities */
