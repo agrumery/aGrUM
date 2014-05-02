@@ -260,6 +260,14 @@ namespace gum {
     /// move operator
     DAGCycleDetector& operator= ( DAGCycleDetector&& from );
 
+    /// check the equality between two DAGCycleDetectors
+    /** used essentally for debugging purposes */
+    bool operator== ( const DAGCycleDetector& from ) const;
+
+    /// check the inequality between two DAGCycleDetectors
+    /** used essentally for debugging purposes */
+    bool operator!= ( const DAGCycleDetector& from ) const;
+
     /// @}
     
 
@@ -271,12 +279,27 @@ namespace gum {
     /// sets the initial DAG from which changes shall be applied
     void setDAG ( const DAG& dag );
 
+    /// adds a new arc to the current DAG
+    /** @throws InvalidDirectedCycle if the arc would create a cycle in the dag */
+    void insertArc ( NodeId x, NodeId y );
+
+    /// removes an arc from the current DAG
+    void eraseArc ( NodeId x, NodeId y );
+
+    /// reverses an arc from the DAG
+    /** @throws InvalidDirectedCycle if the arc reversal would create a cycle
+     * in the dag */
+    void reverseArc ( NodeId x, NodeId y );
+    
     /// indicates whether an arc addition would create a cycle
     bool hasCycleFromAddition ( NodeId x, NodeId y ) const noexcept;
 
     /// indicates wether an arc reversal would create a cycle
-    bool hascycleFromReversal ( NodeId x, NodeId y ) const noexcept;
+    bool hasCycleFromReversal ( NodeId x, NodeId y ) const noexcept;
 
+    /// indicates whether an arc deletion would create a cycle
+    bool hasCycleFromDeletion ( NodeId x, NodeId y ) const noexcept;
+    
     /// indicates whether a set of modifications would create a cycle
     /** the Boolean returned corresponds to the existence (or not) of a cycle
      * on the graph resulting from the whole sequence of modifications. This
@@ -291,7 +314,7 @@ namespace gum {
 
   private:
     /// the initial dag from which modifications are applied
-    DAG __dag;
+    DiGraph __dag;
 
     /// the set of ancestors of each node in the dag
     /** for each ancestor, we keep track of the number of paths leading to it */

@@ -358,10 +358,18 @@ namespace gum {
 
   /// indicates wether an arc reversal would create a cycle
   INLINE bool
-  DAGCycleDetector::hascycleFromReversal ( NodeId x,
+  DAGCycleDetector::hasCycleFromReversal ( NodeId x,
                                            NodeId y ) const noexcept {
     return hasCycleFromModifications
       ( std::vector<Change> { ArcDel ( x, y ), ArcAdd ( y, x ) } );
+  }
+
+  
+  /// indicates whether an arc deletion would create a cycle
+  INLINE bool
+  DAGCycleDetector::hasCycleFromDeletion ( NodeId x,
+                                           NodeId y ) const noexcept {
+    return false;
   }
 
 
@@ -376,7 +384,7 @@ namespace gum {
         nodeset[iter.key ()] += iter.val () * multiplier;
       }
       else {
-        nodeset.insert ( iter.key (), iter.val () );
+        nodeset.insert ( iter.key (), iter.val () * multiplier );
       }
     }
   }
@@ -414,6 +422,43 @@ namespace gum {
       }
     }
   }
+
   
+  /// reverses an arc from the DAG
+  INLINE void DAGCycleDetector::reverseArc ( NodeId tail, NodeId head ) {
+    if ( hasCycleFromReversal ( tail, head ) ) {
+      GUM_ERROR ( InvalidDirectedCycle,
+                  "the arc would create a directed into a DAG" );
+    }
+
+    eraseArc ( tail, head );
+    insertArc ( head, tail );
+  }
+
+  
+  /// check the equality between two DAGCycleDetectors
+  INLINE bool
+  DAGCycleDetector::operator== ( const DAGCycleDetector& from ) const {
+    return ( //( __dag == from.__dag ) &&
+             ( __ancestors == from.__ancestors ) &&
+             ( __descendants == from.__descendants ) );
+  }
+
+
+  /// check the inequality between two DAGCycleDetectors
+  INLINE bool
+  DAGCycleDetector::operator!= ( const DAGCycleDetector& from ) const {
+    if ( __ancestors != from.__ancestors ) {
+      std::cout << "anc: " << __ancestors << std::endl
+                << "anc: " << from.__ancestors << std::endl;
+    }
+    if ( __descendants != from.__descendants ) {
+      std::cout << "desc: " << __descendants << std::endl
+                << "desc: " << from.__descendants << std::endl;
+    }
+    
+    return ! operator== ( from );
+  }
+
 
 } /* namespace gum */
