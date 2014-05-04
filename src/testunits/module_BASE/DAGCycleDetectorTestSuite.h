@@ -77,6 +77,7 @@ namespace gum_tests {
         case 0: // deletions
           {
             float nb_arcs = gg.sizeArcs ();
+            if ( ! nb_arcs ) { ++length; break; }
             nb_arcs /= g.size () * g.size ();
             unsigned int nb_del_arc = distrib_arc ( generator ) * nb_arcs;
             if ( nb_del_arc >= gg.sizeArcs () ) nb_del_arc = gg.sizeArcs () - 1;            
@@ -111,9 +112,10 @@ namespace gum_tests {
         case 2: // reversal
           {
             float nb_arcs = gg.sizeArcs ();
+            if ( ! nb_arcs ) { ++length; break; }
             nb_arcs /= g.size () * g.size ();
             unsigned int nb_del_arc = distrib_arc ( generator ) * nb_arcs;
-            if ( nb_del_arc >= gg.sizeArcs () ) nb_del_arc = gg.sizeArcs () - 1;            
+            if ( nb_del_arc >= gg.sizeArcs () ) nb_del_arc = gg.sizeArcs () - 1;
             for ( auto iter = gg.arcs().begin ();
                   iter != gg.arcs().end(); ++iter, --nb_del_arc ) {
               if ( ! nb_del_arc ) {
@@ -369,6 +371,49 @@ namespace gum_tests {
           }
 
           TS_ASSERT ( detector1 == detector2 );
+          
+        }
+      }
+    }
+
+    
+    void testModifications2 () {
+      gum::DAGCycleDetector detector1, detector2;
+      std::vector<gum::DAGCycleDetector::Change> changes;
+      std::vector<gum::DAGCycleDetector::Change> del_add_changes;
+
+      for ( unsigned int i = 7; i < 15; ++i ) {
+        gum::DAG g = __createDAG ( 10, i );
+        detector1.setDAG ( g );
+        detector2.setDAG ( g );
+
+        TS_ASSERT ( detector1 == detector2 );
+        
+        for ( unsigned int j = 0; j < 30; ++j ) {
+          __createChanges ( g, changes, del_add_changes, 1 );
+          TS_ASSERT ( changes.size () == 1 );
+
+          for ( auto& chgt : changes ) {
+            switch ( chgt.type () ) {
+            case gum::DAGCycleDetector::ChangeType::ARC_DELETION:
+              TS_ASSERT ( detector1.hasCycleFromDeletion ( chgt.tail (), chgt.head () ) ==
+                          detector2.hasCycleFromModifications ( changes ) );
+              break;
+
+            case gum::DAGCycleDetector::ChangeType::ARC_ADDITION:
+              TS_ASSERT ( detector1.hasCycleFromAddition ( chgt.tail (), chgt.head () ) ==
+                          detector2.hasCycleFromModifications ( changes ) );
+              break;
+
+            case gum::DAGCycleDetector::ChangeType::ARC_REVERSAL:
+              TS_ASSERT ( detector1.hasCycleFromReversal ( chgt.tail (), chgt.head () ) ==
+                          detector2.hasCycleFromModifications ( changes ) );
+              break;
+              
+            default:
+              GUM_ERROR ( gum::NotFound, "del_add_changes" );
+            }
+          }
           
         }
       }

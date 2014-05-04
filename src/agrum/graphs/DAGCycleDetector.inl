@@ -360,10 +360,9 @@ namespace gum {
   INLINE bool
   DAGCycleDetector::hasCycleFromReversal ( NodeId x,
                                            NodeId y ) const noexcept {
-    return hasCycleFromModifications
-      ( std::vector<Change> { ArcDel ( x, y ), ArcAdd ( y, x ) } );
+    return ( __ancestors[y][x] > 1 );
   }
-
+    
   
   /// indicates whether an arc deletion would create a cycle
   INLINE bool

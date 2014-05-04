@@ -280,24 +280,30 @@ namespace gum {
     void setDAG ( const DAG& dag );
 
     /// adds a new arc to the current DAG
-    /** @throws InvalidDirectedCycle if the arc would create a cycle in the dag */
+    /** worst case complexity: O(h^2) where h is the height of the DAG
+     * @throws InvalidDirectedCycle if the arc would create a cycle in the dag */
     void insertArc ( NodeId x, NodeId y );
 
     /// removes an arc from the current DAG
+    /** worst case complexity: O(h^2) where h is the height of the DAG */
     void eraseArc ( NodeId x, NodeId y );
 
     /// reverses an arc from the DAG
-    /** @throws InvalidDirectedCycle if the arc reversal would create a cycle
+    /**  worst case complexity: O(h^2) where h is the height of the DAG
+     * @throws InvalidDirectedCycle if the arc reversal would create a cycle
      * in the dag */
     void reverseArc ( NodeId x, NodeId y );
     
     /// indicates whether an arc addition would create a cycle
+    /** worst case complexity: O(1) */
     bool hasCycleFromAddition ( NodeId x, NodeId y ) const noexcept;
 
     /// indicates wether an arc reversal would create a cycle
+    /** worst case complexity: O(1) */
     bool hasCycleFromReversal ( NodeId x, NodeId y ) const noexcept;
 
     /// indicates whether an arc deletion would create a cycle
+    /** worst case complexity: O(1) */
     bool hasCycleFromDeletion ( NodeId x, NodeId y ) const noexcept;
     
     /// indicates whether a set of modifications would create a cycle
