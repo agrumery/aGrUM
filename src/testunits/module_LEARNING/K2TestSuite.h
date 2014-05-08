@@ -22,10 +22,13 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
+#include <agrum/graphs/DAG.h>
+#include <agrum/variables/labelizedVariable.h>
+#include <agrum/BN/BayesNet.h>
 #include <agrum/learning/databaseFromCSV.h>
 #include <agrum/learning/scoreK2.h>
 #include <agrum/learning/scoreBDeu.h>
-#include <agrum/graphs/DAG.h>
+#include <agrum/learning/paramEstimatorML.h>
 
 namespace gum_tests {
 
@@ -170,10 +173,76 @@ namespace gum_tests {
         return dag;
       }
 
+      template <typename PARAM_ESTIMATOR>
+      gum::BayesNet<float> learnBN ( PARAM_ESTIMATOR& estimator,
+                                     const gum::DAG& dag,
+                                     const std::vector<std::string>& names,
+                                     const std::vector<unsigned int>& modal ) {
+        gum::BayesNet<float> bn;
+
+        // create a bn with dummy parameters corresponding to the dag
+        for ( const auto id : dag ) {
+          bn.add ( gum::LabelizedVariable ( names[id], "", modal[id] ), id );
+        }
+
+        // add the arcs
+        bn.beginTopologyTransformation ();
+        for ( const auto& arc : dag.arcs() ) {
+          bn.addArc ( arc.tail (), arc.head () );
+        }
+        bn.endTopologyTransformation ();
+
+        // make the targets be the last dimension in the CPTs
+        const gum::VariableNodeMap& varmap = bn.variableNodeMap ();
+        for ( const auto id : dag ) {
+          const gum::DiscreteVariable& var = varmap.get ( id );
+          gum::Potential<float>& pot =
+            const_cast<gum::Potential<float>&> ( bn.cpt ( id ) );
+          const gum::Sequence<const gum::DiscreteVariable*>& vars =
+            pot.variablesSequence ();
+          if ( vars.pos ( &var ) != vars.size () - 1 ) {
+            pot.beginMultipleChanges ();
+            pot.erase ( var );
+            pot.add ( var );
+            pot.endMultipleChanges ();
+          }
+        }
+        
+        // estimate the parameters
+        estimator.clear ();
+        for ( const auto id : dag ) {
+          const gum::Potential<float>& pot = bn.cpt ( id );
+          const gum::Sequence<const gum::DiscreteVariable*>& vars =
+            pot.variablesSequence ();
+          unsigned int target = varmap.get ( *( vars[vars.size() -1] ) );
+          if ( vars.size () > 1 ) {
+            std::vector<unsigned int> cond_ids ( vars.size () - 1 );
+            for ( unsigned int i = 0; i < cond_ids.size (); ++i ) {
+              cond_ids[i] = varmap.get ( *( vars[i] ) );
+            }
+            estimator.addNodeSet ( target, cond_ids );
+          }
+          else {
+            estimator.addNodeSet ( target ); 
+          }
+        }
+
+        // assign the parameters to the potentials
+        unsigned int index = 0;
+        for ( const auto id : dag ) {
+          gum::Potential<float>& pot =
+            const_cast< gum::Potential<float>& > ( bn.cpt ( id ) );
+          estimator.setParameters ( index, pot );
+          ++index;
+        }
+         
+        return bn;
+      }
+
     };
 
 
-    void xx_test_k2_asia () {
+    void xtest_k2_asia () {
       K2 k2;
 
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
@@ -193,14 +262,20 @@ namespace gum_tests {
       gum::learning::ScoreK2<decltype ( filter ) >
         score ( filter, modalities );
 
+      gum::learning::ParamEstimatorML<decltype ( filter ) >
+        estimator ( filter, modalities );
+
       std::vector<unsigned int> order ( filter.modalities ().size() );
       for ( unsigned int i = 0; i < order.size(); ++i ) {
         order[i] = i;
       }
       
       gum::DAG dag = k2.learnDAG ( score, order, 100 );
+      gum::BayesNet<float> bn = k2.learnBN ( estimator, dag,
+                                             database.variableNames (),
+                                             modalities );
 
-      std::cout << dag << std::endl;
+      std::cout << bn << std::endl << bn.dag () << std::endl;
     }
 
     
@@ -224,6 +299,9 @@ namespace gum_tests {
       gum::learning::ScoreK2<decltype ( filter ) >
         score ( filter, modalities );
 
+      gum::learning::ParamEstimatorML<decltype ( filter ) >
+        estimator ( filter, modalities );
+
       std::vector<unsigned int> order ( filter.modalities ().size() );
       for ( unsigned int i = 0; i < order.size(); ++i ) {
         order[i] = i;
@@ -232,10 +310,12 @@ namespace gum_tests {
       gum::Timer timer;
       
       gum::DAG dag = k2.learnDAG ( score, order, 6 );
-
+      gum::BayesNet<float> bn = k2.learnBN ( estimator, dag,
+                                             database.variableNames (),
+                                             modalities );
       std::cout << "learning time = " << timer.step () << std::endl;
       
-      std::cout << dag << std::endl;
+      std::cout << dag << " " << bn << std::endl;
     }
 
   };
