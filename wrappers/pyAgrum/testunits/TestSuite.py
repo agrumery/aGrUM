@@ -4,22 +4,22 @@
 from __future__ import print_function
 
 import unittest
-import SequenceTestSuite
+#import SequenceTestSuite
 import VariablesTestSuite
 import BayesNetTestSuite
 import PythonBNListenerTestSuite
 import PotentialTestSuite
-import ListTestSuite
 import LazyPropagationTestSuite
 import GibbsTestSuite
 
 import time
 import sys
 
-tests = unittest.TestSuite([SequenceTestSuite.ts, VariablesTestSuite.ts,
+tests = unittest.TestSuite([#SequenceTestSuite.ts, 
+                            VariablesTestSuite.ts,
                             BayesNetTestSuite.ts,
                             PythonBNListenerTestSuite.ts,
-                            PotentialTestSuite.ts, ListTestSuite.ts,
+                            PotentialTestSuite.ts,
                             LazyPropagationTestSuite.ts, GibbsTestSuite.ts
                             ])
 

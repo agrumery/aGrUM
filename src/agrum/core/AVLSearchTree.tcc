@@ -43,9 +43,9 @@ namespace gum {
   /// basic constructor: a node without parent nor children
 
   template <typename Val> INLINE
-  BinTreeNode4AVL<Val>::BinTreeNode4AVL( const Val& val ) :
-    BinTreeNode<Val> ( val ), __height( 1 ) {
-    GUM_CONSTRUCTOR( BinTreeNode4AVL );
+  BinTreeNode4AVL<Val>::BinTreeNode4AVL ( const Val& val ) :
+    BinTreeNode<Val> ( val ), __height ( 1 ) {
+    GUM_CONSTRUCTOR ( BinTreeNode4AVL );
   }
 
 
@@ -53,9 +53,9 @@ namespace gum {
    * value as "from" */
 
   template <typename Val> INLINE
-  BinTreeNode4AVL<Val>::BinTreeNode4AVL( const BinTreeNode4AVL<Val>& from ) :
-    BinTreeNode<Val> ( from ), __height( from.__height ) {
-    GUM_CONS_CPY( BinTreeNode4AVL );
+  BinTreeNode4AVL<Val>::BinTreeNode4AVL ( const BinTreeNode4AVL<Val>& from ) :
+    BinTreeNode<Val> ( from ), __height ( from.__height ) {
+    GUM_CONS_CPY ( BinTreeNode4AVL );
   }
 
 
@@ -63,7 +63,7 @@ namespace gum {
 
   template <typename Val> INLINE
   BinTreeNode4AVL<Val>::~BinTreeNode4AVL() {
-    GUM_DESTRUCTOR( BinTreeNode4AVL );
+    GUM_DESTRUCTOR ( BinTreeNode4AVL );
   }
 
 
@@ -73,7 +73,7 @@ namespace gum {
   template <typename Val> INLINE
   BinTreeNode4AVL<Val>&
   BinTreeNode4AVL<Val>::operator= ( const BinTreeNode4AVL<Val>& from ) {
-    GUM_OP_CPY( BinTreeNode4AVL );
+    GUM_OP_CPY ( BinTreeNode4AVL );
     BinTreeNode<Val>::operator= ( from );
     return *this;
   }
@@ -98,8 +98,8 @@ namespace gum {
   /// returns the given child of a node
 
   template <typename Val> INLINE
-  BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::child( BinTreeDir dir ) const {
-    return static_cast<BinTreeNode4AVL<Val>*>( BinTreeNode<Val>::child( dir ) );
+  BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::child ( BinTreeDir dir ) const {
+    return static_cast<BinTreeNode4AVL<Val>*> ( BinTreeNode<Val>::child ( dir ) );
   }
 
 
@@ -107,7 +107,7 @@ namespace gum {
 
   template <typename Val> INLINE
   BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::leftChild() const {
-    return static_cast<BinTreeNode4AVL<Val>*>( BinTreeNode<Val>::leftChild() );
+    return static_cast<BinTreeNode4AVL<Val>*> ( BinTreeNode<Val>::leftChild() );
   }
 
 
@@ -115,7 +115,7 @@ namespace gum {
 
   template <typename Val> INLINE
   BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::rightChild() const {
-    return static_cast<BinTreeNode4AVL<Val>*>( BinTreeNode<Val>::rightChild() );
+    return static_cast<BinTreeNode4AVL<Val>*> ( BinTreeNode<Val>::rightChild() );
   }
 
 
@@ -123,7 +123,7 @@ namespace gum {
 
   template <typename Val> INLINE
   BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::parent() const {
-    return static_cast<BinTreeNode4AVL<Val>*>( BinTreeNode<Val>::parent() );
+    return static_cast<BinTreeNode4AVL<Val>*> ( BinTreeNode<Val>::parent() );
   }
 
 
@@ -151,20 +151,20 @@ namespace gum {
 
     if ( V ) {
       node_P->eraseRightLink();
-      BinTreeNode<Val>::insertLeftChild( *V );
+      BinTreeNode<Val>::insertLeftChild ( *V );
       left_height = V-> __height;
     }
 
-    __height = 1 + std::max( left_height, right_height );
+    __height = 1 + std::max ( left_height, right_height );
 
     if ( the_parent ) {
-      the_parent->eraseLink( parent_dir );
-      the_parent->BinTreeNode<Val>::insertChild( *node_P, parent_dir );
+      the_parent->eraseLink ( parent_dir );
+      the_parent->BinTreeNode<Val>::insertChild ( *node_P, parent_dir );
     }
 
-    node_P->BinTreeNode<Val>::insertRightChild( *this );
+    node_P->BinTreeNode<Val>::insertRightChild ( *this );
     left_height = node_P->leftChild() ? node_P->leftChild()->__height : 0;
-    node_P->__height = 1 + std::max( left_height, __height );
+    node_P->__height = 1 + std::max ( left_height, __height );
 
     return node_P;
   }
@@ -187,20 +187,20 @@ namespace gum {
 
     if ( V ) {
       node_Q->eraseLeftLink();
-      BinTreeNode<Val>::insertRightChild( *V );
+      BinTreeNode<Val>::insertRightChild ( *V );
       right_height = V-> __height;
     }
 
-    __height = 1 + std::max( left_height, right_height );
+    __height = 1 + std::max ( left_height, right_height );
 
     if ( the_parent ) {
-      the_parent->eraseLink( parent_dir );
-      the_parent->BinTreeNode<Val>::insertChild( *node_Q, parent_dir );
+      the_parent->eraseLink ( parent_dir );
+      the_parent->BinTreeNode<Val>::insertChild ( *node_Q, parent_dir );
     }
 
-    node_Q->BinTreeNode<Val>::insertLeftChild( *this );
+    node_Q->BinTreeNode<Val>::insertLeftChild ( *this );
     right_height = node_Q->rightChild() ? node_Q->rightChild()->__height : 0;
-    node_Q->__height = 1 + std::max( __height, right_height );
+    node_Q->__height = 1 + std::max ( __height, right_height );
 
     return node_Q;
   }
@@ -219,7 +219,7 @@ namespace gum {
       unsigned int right_height =
         node->rightChild() ? node->rightChild()->__height : 0;
       unsigned int old_height = node->__height;
-      node->__height = 1 + std::max( left_height, right_height );
+      node->__height = 1 + std::max ( left_height, right_height );
 
       // check whether we need a single or a double rotation
       // see the AVL trees literature to see what need be done
@@ -267,9 +267,9 @@ namespace gum {
   /// adds a new left child to the current node
 
   template <typename Val> INLINE
-  BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::insertLeftChild( const Val& val ) {
+  BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::insertLeftChild ( const Val& val ) {
     BinTreeNode4AVL<Val>* new_child = new BinTreeNode4AVL<Val> ( val );
-    BinTreeNode<Val>::insertLeftChild( *new_child );
+    BinTreeNode<Val>::insertLeftChild ( *new_child );
     return new_child;
   }
 
@@ -277,17 +277,17 @@ namespace gum {
   /// adds a new left child to the current node
 
   template <typename Val> INLINE
-  void BinTreeNode4AVL<Val>::insertLeftChild( BinTreeNode4AVL<Val>& new_child ) {
-    BinTreeNode<Val>::insertLeftChild( new_child );
+  void BinTreeNode4AVL<Val>::insertLeftChild ( BinTreeNode4AVL<Val>& new_child ) {
+    BinTreeNode<Val>::insertLeftChild ( new_child );
   }
 
 
   /// adds a new right child to the current node
 
   template <typename Val> INLINE
-  BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::insertRightChild( const Val& val ) {
+  BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::insertRightChild ( const Val& val ) {
     BinTreeNode4AVL<Val>* new_child = new BinTreeNode4AVL<Val> ( val );
-    BinTreeNode<Val>::insertRightChild( *new_child );
+    BinTreeNode<Val>::insertRightChild ( *new_child );
     return new_child;
   }
 
@@ -295,8 +295,8 @@ namespace gum {
   /// adds a new right child to the current node
 
   template <typename Val> INLINE
-  void BinTreeNode4AVL<Val>::insertRightChild( BinTreeNode4AVL<Val>& new_child ) {
-    BinTreeNode<Val>::insertRightChild( new_child );
+  void BinTreeNode4AVL<Val>::insertRightChild ( BinTreeNode4AVL<Val>& new_child ) {
+    BinTreeNode<Val>::insertRightChild ( new_child );
   }
 
 
@@ -304,9 +304,9 @@ namespace gum {
 
   template <typename Val> INLINE
   BinTreeNode4AVL<Val>*
-  BinTreeNode4AVL<Val>::insertChild( const Val& val, BinTreeDir child_dir ) {
+  BinTreeNode4AVL<Val>::insertChild ( const Val& val, BinTreeDir child_dir ) {
     BinTreeNode4AVL<Val>* new_child = new BinTreeNode4AVL<Val> ( val );
-    BinTreeNode<Val>::insertChild( *new_child, child_dir );
+    BinTreeNode<Val>::insertChild ( *new_child, child_dir );
     return new_child;
   }
 
@@ -314,9 +314,9 @@ namespace gum {
   /// adds a new child to the current node
 
   template <typename Val> INLINE
-  void BinTreeNode4AVL<Val>::insertChild( BinTreeNode4AVL<Val>& new_child,
-                                          BinTreeDir child_dir ) {
-    BinTreeNode<Val>::insertChild( new_child, child_dir );
+  void BinTreeNode4AVL<Val>::insertChild ( BinTreeNode4AVL<Val>& new_child,
+      BinTreeDir child_dir ) {
+    BinTreeNode<Val>::insertChild ( new_child, child_dir );
   }
 
 
@@ -339,8 +339,8 @@ namespace gum {
   /// remove the link between the current node and one of its children
 
   template <typename Val> INLINE
-  void BinTreeNode4AVL<Val>::eraseLink( BinTreeDir tree_dir ) {
-    BinTreeNode<Val>::eraseLink( tree_dir );
+  void BinTreeNode4AVL<Val>::eraseLink ( BinTreeDir tree_dir ) {
+    BinTreeNode<Val>::eraseLink ( tree_dir );
   }
 
 
@@ -348,7 +348,7 @@ namespace gum {
 
   template <typename Val> INLINE
   BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::leftmostNode() const {
-    return static_cast<BinTreeNode4AVL<Val>*>( BinTreeNode<Val>::leftmostNode() );
+    return static_cast<BinTreeNode4AVL<Val>*> ( BinTreeNode<Val>::leftmostNode() );
   }
 
 
@@ -356,7 +356,7 @@ namespace gum {
 
   template <typename Val> INLINE
   BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::rightmostNode() const {
-    return static_cast<BinTreeNode4AVL<Val>*>( BinTreeNode<Val>::rightmostNode() );
+    return static_cast<BinTreeNode4AVL<Val>*> ( BinTreeNode<Val>::rightmostNode() );
   }
 
 
@@ -364,7 +364,7 @@ namespace gum {
 
   template <typename Val> INLINE
   BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::root() const {
-    return static_cast<BinTreeNode4AVL<Val>*>( BinTreeNode<Val>::root() );
+    return static_cast<BinTreeNode4AVL<Val>*> ( BinTreeNode<Val>::root() );
   }
 
 
@@ -382,36 +382,36 @@ namespace gum {
   /// basic constructor: returns an empty binary search tree
 
   template <typename Val, class Cmp> INLINE
-  AVLSearchTree<Val,Cmp>::AVLSearchTree( bool uniqueness_policy ) :
-    BinSearchTree<Val,Cmp,Node> ( uniqueness_policy ) {
-    GUM_CONSTRUCTOR( AVLSearchTree );
+  AVLSearchTree<Val, Cmp>::AVLSearchTree ( bool uniqueness_policy ) :
+    BinSearchTree<Val, Cmp, Node> ( uniqueness_policy ) {
+    GUM_CONSTRUCTOR ( AVLSearchTree );
   }
 
 
   /// copy constructor
 
   template <typename Val, class Cmp> INLINE
-  AVLSearchTree<Val,Cmp>::AVLSearchTree( const AVLSearchTree<Val,Cmp>& from ) :
-    BinSearchTree<Val,Cmp,Node> ( from ) {
-    GUM_CONS_CPY( AVLSearchTree );
+  AVLSearchTree<Val, Cmp>::AVLSearchTree ( const AVLSearchTree<Val, Cmp>& from ) :
+    BinSearchTree<Val, Cmp, Node> ( from ) {
+    GUM_CONS_CPY ( AVLSearchTree );
   }
 
 
   /// destructor
 
   template <typename Val, class Cmp> INLINE
-  AVLSearchTree<Val,Cmp>::~AVLSearchTree() {
-    GUM_DESTRUCTOR( AVLSearchTree );
+  AVLSearchTree<Val, Cmp>::~AVLSearchTree() {
+    GUM_DESTRUCTOR ( AVLSearchTree );
   }
 
 
   /// copy operator
 
   template <typename Val, class Cmp> INLINE
-  AVLSearchTree<Val,Cmp>&
-  AVLSearchTree<Val,Cmp>::operator= ( const AVLSearchTree<Val,Cmp>& from ) {
-    GUM_OP_CPY( AVLSearchTree );
-    BinSearchTree< Val,Cmp,Node>::operator= ( from );
+  AVLSearchTree<Val, Cmp>&
+  AVLSearchTree<Val, Cmp>::operator= ( const AVLSearchTree<Val, Cmp>& from ) {
+    GUM_OP_CPY ( AVLSearchTree );
+    BinSearchTree< Val, Cmp, Node>::operator= ( from );
     return *this;
   }
 
@@ -419,14 +419,14 @@ namespace gum {
   /// erase the node passed in argument
 
   template <typename Val, class Cmp>
-  void AVLSearchTree<Val,Cmp>::_erase( BinTreeNode4AVL<Val>* node ) {
+  void AVLSearchTree<Val, Cmp>::_erase ( BinTreeNode4AVL<Val>* node ) {
     if ( ! node ) return;
 
     // update all the iterators pointing to node that they should point elsewhere
-    BinSearchTree< Val,Cmp,Node>::__updateEraseIterators( node );
+    BinSearchTree< Val, Cmp, Node>::__updateEraseIterators ( node );
 
     // update the number of elements contained in the tree
-    --BinSearchTree< Val,Cmp,Node>::_nb_elements;
+    --BinSearchTree< Val, Cmp, Node>::_nb_elements;
 
     // now remove the node from the tree:
 
@@ -434,7 +434,7 @@ namespace gum {
     if ( ! node->leftChild() && ! node-> rightChild() ) {
       // if the node was the only one in the tree, then the tree becomes empty
       if ( ! node->parent() ) {
-        BinSearchTree<Val,Cmp,Node>::_root = 0;
+        BinSearchTree<Val, Cmp, Node>::_root = 0;
         delete node;
       } else {
         // note that, when node has a parent, there is no need to remove the
@@ -444,7 +444,7 @@ namespace gum {
         delete node;
         Node* new_root = parent->__balance();
 
-        if ( new_root ) BinSearchTree<Val,Cmp,Node>::_root = new_root;
+        if ( new_root ) BinSearchTree<Val, Cmp, Node>::_root = new_root;
       }
     }
     // if there is just a right child
@@ -453,18 +453,18 @@ namespace gum {
       if ( ! node->parent() ) {
         // in this case, no need to remove the link between "node" and its child:
         // this will be taken care of by the destructor of "node"
-        BinSearchTree<Val,Cmp,Node>::_root = node->rightChild();
+        BinSearchTree<Val, Cmp, Node>::_root = node->rightChild();
         delete node;
       } else {
         Node* parent = node->parent(), *child = node->rightChild();
         BinTreeDir dir = node->parentDir();
-        parent->eraseLink( dir );
+        parent->eraseLink ( dir );
         node->eraseRightLink();
-        parent->insertChild( *child, dir );
+        parent->insertChild ( *child, dir );
         delete node;
         Node* new_root = parent->__balance();
 
-        if ( new_root ) BinSearchTree<Val,Cmp,Node>::_root = new_root;
+        if ( new_root ) BinSearchTree<Val, Cmp, Node>::_root = new_root;
       }
     }
     // if there is just a left child
@@ -473,18 +473,18 @@ namespace gum {
       if ( ! node->parent() ) {
         // in this case, no need to remove the link between "node" and its child:
         // this will be taken care of by the destructor of "node"
-        BinSearchTree<Val,Cmp,Node>::_root = node->leftChild();
+        BinSearchTree<Val, Cmp, Node>::_root = node->leftChild();
         delete node;
       } else {
         Node* parent = node->parent(), *child = node->leftChild();
         BinTreeDir dir = node->parentDir();
-        parent->eraseLink( dir );
+        parent->eraseLink ( dir );
         node->eraseLeftLink( );
-        parent->insertChild( *child, dir );
+        parent->insertChild ( *child, dir );
         delete node;
         Node* new_root = parent->__balance();
 
-        if ( new_root ) BinSearchTree<Val,Cmp,Node>::_root = new_root;
+        if ( new_root ) BinSearchTree<Val, Cmp, Node>::_root = new_root;
       }
     }
     // ok, here there are two children
@@ -502,28 +502,28 @@ namespace gum {
       //    is a left child of this parent. We just need to put the right child
       //    of the successor (if any) as the left child of its parent, and to
       //    replace "node" by the successor.
-      Node* successor = this->_succNode( node );
+      Node* successor = this->_succNode ( node );
 
       if ( successor == node->rightChild() ) {  // proceed to case 1:
         Node* left_child = node->leftChild();
         node->eraseLeftLink();
         node->eraseRightLink();
-        successor->insertLeftChild( *left_child );
+        successor->insertLeftChild ( *left_child );
 
         if ( node->parent() ) {
           // rechain node's parent with its successor
           BinTreeDir par_dir = node->parentDir();
           Node* parent = node->parent();
-          parent->eraseLink( par_dir );
-          parent->insertChild( *successor, par_dir );
+          parent->eraseLink ( par_dir );
+          parent->insertChild ( *successor, par_dir );
         }
 
         Node* new_root = successor->__balance();
 
         if ( new_root )
-          BinSearchTree<Val,Cmp,Node>::_root = new_root;
-        else if ( BinSearchTree<Val,Cmp,Node>::_root == node )
-          BinSearchTree<Val,Cmp,Node>::_root = successor;
+          BinSearchTree<Val, Cmp, Node>::_root = new_root;
+        else if ( BinSearchTree<Val, Cmp, Node>::_root == node )
+          BinSearchTree<Val, Cmp, Node>::_root = successor;
       } else { // proceed to case 2:
         Node* parent = successor->parent();
         parent->eraseLeftLink();
@@ -531,30 +531,30 @@ namespace gum {
         if ( successor->rightChild() ) {
           Node* succ_child = successor->rightChild();
           successor->eraseRightLink();
-          parent->insertLeftChild( *succ_child );
+          parent->insertLeftChild ( *succ_child );
         }
 
         Node* left = node->leftChild(), *right = node->rightChild();
         successor->__height = node->__height;
         node->eraseLeftLink();
         node->eraseRightLink();
-        successor->insertLeftChild( *left );
-        successor->insertRightChild( *right );
+        successor->insertLeftChild ( *left );
+        successor->insertRightChild ( *right );
 
         if ( node->parent() ) {
           // rechain node's parent with its successor
           BinTreeDir par_dir = node->parentDir();
           Node* the_parent = node->parent();
-          the_parent->eraseLink( par_dir );
-          the_parent->insertChild( *successor, par_dir );
+          the_parent->eraseLink ( par_dir );
+          the_parent->insertChild ( *successor, par_dir );
         }
 
         Node* new_root = parent->__balance();
 
         if ( new_root )
-          BinSearchTree<Val,Cmp,Node>::_root = new_root;
-        else if ( BinSearchTree<Val,Cmp,Node>::_root == node )
-          BinSearchTree<Val,Cmp,Node>::_root = successor;
+          BinSearchTree<Val, Cmp, Node>::_root = new_root;
+        else if ( BinSearchTree<Val, Cmp, Node>::_root == node )
+          BinSearchTree<Val, Cmp, Node>::_root = successor;
       }
 
       // now we shall physically remove node from memory
@@ -566,7 +566,7 @@ namespace gum {
   /// check the tree to determine whether it is actually AVL balanced
 
   template <typename Val, class Cmp>
-  bool AVLSearchTree<Val,Cmp>::checkAVLStructure() const {
+  bool AVLSearchTree<Val, Cmp>::checkAVLStructure() const {
     for ( iterator iter = begin(); iter != end(); ++iter ) {
       Node* node = iter._node;
 
@@ -576,7 +576,7 @@ namespace gum {
       unsigned int right_height =
         node->rightChild() ? node->rightChild()->__height : 0;
 
-      if ( node->__height != 1 + std::max( left_height,right_height ) )
+      if ( node->__height != 1 + std::max ( left_height, right_height ) )
         return false;
     }
 
@@ -590,24 +590,24 @@ namespace gum {
 
   template <typename Val, class Cmp> INLINE
   BinTreeNode4AVL<Val>*
-  AVLSearchTree<Val,Cmp>::_insert( const Val& val ) {
+  AVLSearchTree<Val, Cmp>::_insert ( const Val& val ) {
     // insert the new value into the tree
-    Node* new_node = BinSearchTree<Val,Cmp,Node>::_insert( val );
+    Node* new_node = BinSearchTree<Val, Cmp, Node>::_insert ( val );
 
     // balance the tree and update its root
     if ( new_node->parent() ) {
       Node* new_root = new_node->parent()->__balance();
 
-      if ( new_root ) BinSearchTree<Val,Cmp,Node>::_root = new_root;
+      if ( new_root ) BinSearchTree<Val, Cmp, Node>::_root = new_root;
     } else {
-      BinSearchTree<Val,Cmp,Node>::_root = new_node;
+      BinSearchTree<Val, Cmp, Node>::_root = new_node;
     }
 
     return new_node;
   }
 
   template <typename Val, class Cmp>
-  const std::string AVLSearchTree<Val,Cmp>::toString() const {
+  const std::string AVLSearchTree<Val, Cmp>::toString() const {
     std::stringstream stream;
     stream << "{ ";
     bool first = true;
@@ -627,7 +627,7 @@ namespace gum {
 /// for friendly displaying the content of AVLSearchTree
 
   template <typename Val, class Cmp>
-  std::ostream& operator<< ( std::ostream& stream, const AVLSearchTree<Val,Cmp>& avl ) {
+  std::ostream& operator<< ( std::ostream& stream, const AVLSearchTree<Val, Cmp>& avl ) {
     stream << avl.toString();
     return stream;
   }

@@ -35,21 +35,21 @@ namespace gum {
   /// default constructor
 
   template <typename Val> INLINE
-  RefPtr<Val>::RefPtr( Val* v )  :
-    __val( v ),
-    __refcount( v ? new unsigned int( 1U ) : 0 ) {
+  RefPtr<Val>::RefPtr ( Val* v )  :
+    __val ( v ),
+    __refcount ( v ? new unsigned int ( 1U ) : 0 ) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( RefPtr );
+    GUM_CONSTRUCTOR ( RefPtr );
   }
 
 
   /// copy constructor
 
   template <typename Val> INLINE
-  RefPtr<Val>::RefPtr( const RefPtr<Val>& from )  :
-    __val( from.__val ), __refcount( from.__refcount ) {
+  RefPtr<Val>::RefPtr ( const RefPtr<Val>& from )  :
+    __val ( from.__val ), __refcount ( from.__refcount ) {
     // for debugging purposes
-    GUM_CONS_CPY( RefPtr );
+    GUM_CONS_CPY ( RefPtr );
 
     if ( __refcount ) ++*__refcount;
   }
@@ -58,10 +58,10 @@ namespace gum {
   /// copy constructor for castable pointers
 
   template <typename Val> template <typename DownVal> INLINE
-  RefPtr<Val>::RefPtr( const RefPtr<DownVal>& from )  :
-    __val( from.__val ), __refcount( from.__refcount ) {
+  RefPtr<Val>::RefPtr ( const RefPtr<DownVal>& from )  :
+    __val ( from.__val ), __refcount ( from.__refcount ) {
     // for debugging purposes
-    GUM_CONS_CPY( RefPtr );
+    GUM_CONS_CPY ( RefPtr );
 
     if ( __refcount ) ++*__refcount;
   }
@@ -70,7 +70,7 @@ namespace gum {
   /// removes the current content of the smart pointer
 
   template <typename Val> INLINE void
-  RefPtr<Val>::__destroy( unsigned int* count, Val* v ) {
+  RefPtr<Val>::__destroy ( unsigned int* count, Val* v ) {
     if ( count ) {
       if ( *count == 1U ) {
         // do not change the order of the deletes (this prevents memory leaks when
@@ -85,11 +85,11 @@ namespace gum {
   /// copy operator
 
   template <typename Val> INLINE RefPtr<Val>&
-  RefPtr<Val>::operator=( const RefPtr<Val>& from ) {
+  RefPtr<Val>::operator= ( const RefPtr<Val>& from ) {
     // avoid self assignment
     if ( __val != from.__val ) {
       // for debugging purposes
-      GUM_OP_CPY( RefPtr );
+      GUM_OP_CPY ( RefPtr );
 
       // keep track of the current refcount and dumb pointer
       unsigned int* old_refcount = __refcount;
@@ -102,7 +102,7 @@ namespace gum {
       if ( __refcount ) ++*__refcount;
 
       // now try to dereference the old dumb pointer
-      __destroy( old_refcount,old_val );
+      __destroy ( old_refcount, old_val );
     }
 
     return *this;
@@ -112,11 +112,11 @@ namespace gum {
   /// copy operator
 
   template <typename Val> INLINE RefPtr<Val>&
-  RefPtr<Val>::operator=( Val* from ) {
+  RefPtr<Val>::operator= ( Val* from ) {
     // avoid self assignment
     if ( __val != from ) {
       // for debugging purposes
-      GUM_OP_CPY( RefPtr );
+      GUM_OP_CPY ( RefPtr );
 
       // keep track of the current refcount and dumb pointer
       unsigned int* old_refcount = __refcount;
@@ -143,7 +143,7 @@ namespace gum {
       }
 
       // now try to dereference the old dumb pointer
-      __destroy( old_refcount,old_val );
+      __destroy ( old_refcount, old_val );
     }
 
     return *this;
@@ -153,9 +153,9 @@ namespace gum {
   /// copy operator for downcastable pointers
 
   template <typename Val> template <typename DownVal>  INLINE RefPtr<Val>&
-  RefPtr<Val>::operator=( const RefPtr<DownVal>& from ) {
+  RefPtr<Val>::operator= ( const RefPtr<DownVal>& from ) {
     // for debugging purposes
-    GUM_OP_CPY( RefPtr );
+    GUM_OP_CPY ( RefPtr );
     // keep track of the current refcount and dumb pointer
     unsigned int* old_refcount = __refcount;
     Val* old_val = __val;
@@ -167,7 +167,7 @@ namespace gum {
     if ( __refcount ) ++*__refcount;
 
     // now try to dereference the old dumb pointer
-    __destroy( old_refcount,old_val );
+    __destroy ( old_refcount, old_val );
 
     return *this;
   }
@@ -177,8 +177,8 @@ namespace gum {
 
   template <typename Val> INLINE RefPtr<Val>::~RefPtr() {
     // for debugging purposes
-    GUM_DESTRUCTOR( RefPtr );
-    __destroy( __refcount,__val );
+    GUM_DESTRUCTOR ( RefPtr );
+    __destroy ( __refcount, __val );
   }
 
 
@@ -203,7 +203,7 @@ namespace gum {
   template <typename Val> INLINE
   Val& RefPtr<Val>::operator*()  {
     if ( !__val ) {
-      GUM_ERROR( NullElement, "dereferencing a nullptr pointer" );
+      GUM_ERROR ( NullElement, "dereferencing a nullptr pointer" );
     }
 
     return *__val;
@@ -215,7 +215,7 @@ namespace gum {
   template <typename Val> INLINE
   const Val& RefPtr<Val>::operator*() const  {
     if ( !__val ) {
-      GUM_ERROR( NullElement, "dereferencing a nullptr pointer" );
+      GUM_ERROR ( NullElement, "dereferencing a nullptr pointer" );
     }
 
     return *__val;
@@ -227,7 +227,7 @@ namespace gum {
   template <typename Val> INLINE
   Val* RefPtr<Val>::operator->() const  {
     if ( !__val ) {
-      GUM_ERROR( NullElement, "dereferencing a nullptr pointer" );
+      GUM_ERROR ( NullElement, "dereferencing a nullptr pointer" );
     }
 
     return __val;
@@ -251,7 +251,7 @@ namespace gum {
     __val = 0;
     __refcount = 0;
     // now try to dereference the old dumb pointer
-    __destroy( old_refcount,old_val );
+    __destroy ( old_refcount, old_val );
   }
 
 
@@ -282,7 +282,7 @@ namespace gum {
    */
 
   template <typename Val> void
-  swap( RefPtr<Val>& ptr1, RefPtr<Val>& ptr2 )  {
+  swap ( RefPtr<Val>& ptr1, RefPtr<Val>& ptr2 )  {
     // save from's content
     Val* tmp_val = ptr2.__val;
     unsigned int* tmp_refcount = ptr2.__refcount;

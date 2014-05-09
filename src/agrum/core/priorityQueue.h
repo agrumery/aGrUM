@@ -91,7 +91,7 @@ namespace gum {
   template <typename Val, typename Priority, typename Cmp> class PriorityQueue;
   template <typename Val, typename Priority, typename Cmp>
   std::ostream& operator<<
-  ( std::ostream&, const PriorityQueue<Val,Priority,Cmp>& );
+  ( std::ostream&, const PriorityQueue<Val, Priority, Cmp>& );
 
 
 
@@ -146,7 +146,7 @@ namespace gum {
    * @endcode
    */
   /* =========================================================================== */
-  template <typename Val, typename Priority=int, typename Cmp=std::less<Priority> >
+  template <typename Val, typename Priority = int, typename Cmp = std::less<Priority> >
 
   class PriorityQueue {
     public:
@@ -166,14 +166,14 @@ namespace gum {
        * @param capacity the size of the internal data structures containing the
        * elements (could be for instance vectors or hashtables) */
 
-      explicit PriorityQueue( Cmp compare = Cmp(),
-                              bool uniqueness = false,
-                              Size capacity = GUM_PRIORITY_QUEUE_DEFAULT_CAPACITY );
+      explicit PriorityQueue ( Cmp compare = Cmp(),
+                               bool uniqueness = false,
+                               Size capacity = GUM_PRIORITY_QUEUE_DEFAULT_CAPACITY );
 
 
       /// copy constructor
 
-      PriorityQueue( const PriorityQueue<Val,Priority,Cmp>& );
+      PriorityQueue ( const PriorityQueue<Val, Priority, Cmp>& );
 
 
       /// destructor
@@ -201,7 +201,7 @@ namespace gum {
 
       /// indicates whether the priority queue contains a given value
 
-      bool contains( const Val& ) const ;
+      bool contains ( const Val& ) const ;
 
 
       /// returns the element at the top of the priority queue
@@ -228,7 +228,7 @@ namespace gum {
        * @throw DuplicateElement exception is thrown if the uniqueness property is
        * set to true and the element already exists */
 
-      Size insert( const Priority& priority, const Val& val );
+      Size insert ( const Priority& priority, const Val& val );
 
 
       /// removes the top of the priority queue (but does not return it)
@@ -251,7 +251,7 @@ namespace gum {
        * unique index for each element. This is precisely what the index passed in
        * argument of the function represents. */
 
-      void erase( Size index );
+      void erase ( Size index );
 
 
       /// removes a given element from the priority queue (but does not return it)
@@ -260,26 +260,26 @@ namespace gum {
        * @param val the element we wish to remove. If the queue contains several
        * times this element, then the one with the smallest index is removed. */
 
-      void eraseByVal( const Val& val );
+      void eraseByVal ( const Val& val );
 
 
       /// modifies the priority of the element at position "index" of the queue
       /** @throw NotFound If the element cannot be found
        */
 
-      Size setPriority( Size index, const Priority& new_priority );
+      Size setPriority ( Size index, const Priority& new_priority );
 
 
       /// modifies the priority of each instance of a given element
 
-      void setPriorityByVal( const Val& elt, const Priority& new_priority );
+      void setPriorityByVal ( const Val& elt, const Priority& new_priority );
 
 
       /// returns the priority of an instance of the value passed in argument
       /** Of course, this method is really meaningful only when there is only one
        * instance of the given element within the PriorityQueue. */
 
-      const Priority& priorityByVal( const Val& elt ) const ;
+      const Priority& priorityByVal ( const Val& elt ) const ;
 
 
       /// removes all the elements from the queue
@@ -292,7 +292,7 @@ namespace gum {
        * priority queue and, for each key, the corresponding value is the list of
        * indices in the queue where we can find the key. */
 
-      const HashTable< Val,std::vector<Size> >& allValues() const ;
+      const HashTable< Val, std::vector<Size> >& allValues() const ;
 
 
       /// displays the content of the queue
@@ -314,8 +314,8 @@ namespace gum {
        * state. Actually, the priority queue becomes empty. An exception is then
        * thrown. */
 
-      PriorityQueue<Val,Priority,Cmp>&
-      operator= ( const PriorityQueue<Val,Priority,Cmp>& );
+      PriorityQueue<Val, Priority, Cmp>&
+      operator= ( const PriorityQueue<Val, Priority, Cmp>& );
 
 
       /// returns the element at index "index_elt" from the priority queue
@@ -323,7 +323,7 @@ namespace gum {
        * @throw NotFound
        */
 
-      const Val& operator[]( Size index_elt ) const;
+      const Val& operator[] ( Size index_elt ) const;
 
       /// @}
 
@@ -341,7 +341,7 @@ namespace gum {
 
       /// changes the size of the internal structure storing the priority queue
 
-      void resize( Size new_size );
+      void resize ( Size new_size );
 
 
       /// returns the current uniqueness policy
@@ -360,7 +360,7 @@ namespace gum {
        * ensures that elements inserted from now on do not already belong to the
        * queue. */
 
-      void setUniquenessPolicy( const bool new_policy ) ;
+      void setUniquenessPolicy ( const bool new_policy ) ;
 
       /// @}
 
@@ -371,7 +371,7 @@ namespace gum {
       std::vector<std::pair<Priority, Val*>*> __heap;
 
       /// a hashtable for quickly finding the elements by their value
-      HashTable< Val,std::vector<Size> > __indices;
+      HashTable< Val, std::vector<Size> > __indices;
 
       /// the number of elements in the heap
       Size __nb_elements;

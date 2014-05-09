@@ -35,33 +35,33 @@ namespace gum {
 
   // Default Constructor
   template <typename GUM_SCALAR>
-  BayesNetInference<GUM_SCALAR>::BayesNetInference( const IBayesNet<GUM_SCALAR>& bn ):
-    __bayesNet( bn ) {
-    GUM_CONSTRUCTOR( BayesNetInference );
+  BayesNetInference<GUM_SCALAR>::BayesNetInference ( const IBayesNet<GUM_SCALAR>& bn ) :
+    __bayesNet ( bn ) {
+    GUM_CONSTRUCTOR ( BayesNetInference );
   }
 
   // Destructor
   template <typename GUM_SCALAR>
   BayesNetInference<GUM_SCALAR>::~BayesNetInference() {
-    GUM_DESTRUCTOR( BayesNetInference );
+    GUM_DESTRUCTOR ( BayesNetInference );
     _invalidateMarginals();
   }
 
   template <typename GUM_SCALAR>
   void BayesNetInference<GUM_SCALAR>::_invalidateMarginals() {
-    for ( typename Property< Potential<GUM_SCALAR> * >::onNodes::iterator it =
-            _marginals.begin(); it != _marginals.end(); ++it ) {
-      if ( *it )delete( *it );
+    for ( typename Property< Potential<GUM_SCALAR> * >::onNodes::iterator_safe it =
+            _marginals.beginSafe(); it != _marginals.endSafe(); ++it ) {
+      if ( it.val() ) delete ( it.val() );
     }
 
     _marginals.clear();
   }
 
   template <typename GUM_SCALAR>
-  const Potential<GUM_SCALAR>& BayesNetInference<GUM_SCALAR>::marginal( NodeId id ) {
-    if ( ! _marginals.exists( id ) ) {
-      _marginals.insert( id, new Potential<GUM_SCALAR>() );
-      _fillMarginal( id, *_marginals[id] );
+  const Potential<GUM_SCALAR>& BayesNetInference<GUM_SCALAR>::marginal ( NodeId id ) {
+    if ( ! _marginals.exists ( id ) ) {
+      _marginals.insert ( id, new Potential<GUM_SCALAR>() );
+      _fillMarginal ( id, *_marginals[id] );
     }
 
     return *_marginals[id];
@@ -75,4 +75,4 @@ namespace gum {
 
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 

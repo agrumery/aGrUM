@@ -10,34 +10,35 @@ include("${AGRUM_SOURCE_DIR}/version.txt")
 list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 list (APPEND CMAKE_MODULE_PATH ${AGRUM_SOURCE_DIR}/cmake)
 
-## for now, we use a special version of swig compliant with C++11. It is not the current release of SWIG.
-if (EXISTS "$ENV{HOME}/usr/bin/swig")
-  set(SWIG_EXECUTABLE "$ENV{HOME}/usr/bin/swig")
-endif (EXISTS "$ENV{HOME}/usr/bin/swig")
 
 ## if you do not want to use swig
 set(USE_SWIG true)
 
 if (USE_SWIG)
-  find_package(SWIG)
+  find_package(SWIG 3.0)
   if (SWIG_FOUND)
-    include(${SWIG_USE_FILE})
-    # modification of SWIG_ADD_MODULE to take outdir into account for generated cpp wrapper.
-    include("cmake/GUM-UseSWIG.cmake")
-  else ()
-    message(STATUS "** aGrUM notification : Swig not found : you cannot change *.i files !")
-  endif ()
+    message(STATUS "** aGrUM notification : Swig 3.0 found")
+  else ()  
+    message(STATUS "** aGrUM notification : Swig 3.0 not found : you cannot change *.i files !")
+  endif (SWIG_FOUND)
 else()
   message(STATUS "** aGrUM notification : Swig not used : you cannot change *.i files !")
   set(SWIG_FOUND false)
 endif()
 
+if (SWIG_FOUND)
+  include(${SWIG_USE_FILE})
+  # modification of SWIG_ADD_MODULE to take outdir into account for generated cpp wrapper.
+  include("cmake/GUM-UseSWIG.cmake")
+endif(SWIG_FOUND)
+
 find_package(PythonInterp)
 
 if (APPLE) # let's assume that PYTHON is there
-  set(PYTHON_LIBRARIES /usr/local/lib/libpython2.7.dylib)
-  set(PYTHON_INCLUDE_PATH /usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/include/python2.7)
-  message(${PYTHON_LIBRARIES})
+  set(PYTHON_LOCAL_PATH /usr/local/Cellar/python/2.7.6/Frameworks/Python.framework/Versions/2.7)
+  set(PYTHON_LIBRARIES ${PYTHON_LOCAL_PATH}/lib/libpython2.7.dylib)
+  set(PYTHON_INCLUDE_PATH ${PYTHON_LOCAL_PATH}/include/python2.7)
+  #find_package(PythonLibs ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} REQUIRED)
 else()
   find_package(PythonLibs ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} REQUIRED)
 endif()
@@ -76,7 +77,7 @@ endforeach(PYFILE ${PYAGRUMFILES})
 
 foreach(SWIGFILE ${MAINSWIGFILES})
   set_source_files_properties(${SWIGFILE} PROPERTIES CPLUSPLUS ON)
-  list(APPEND BUILDSWIGFILES ${MAINSWIGFILES})
+  list(APPEND BUILDSWIGFILES ${SWIGFILE})
 endforeach(SWIGFILE ${MAINSWIGFILES})
 
 foreach(EXTFILE ${PYAGRUM_EXTENSIONS})
@@ -90,6 +91,7 @@ endforeach(EXTFILE ${PYAGRUM_EXTENSIONS})
 include_directories(${AGRUM_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/generated_files)
 file(GLOB_RECURSE AGRUM_CORE_SOURCES RELATIVE ${CMAKE_CURRENT_BINARY_DIR} ${AGRUM_SOURCE_DIR}/agrum/core/*.cpp)
 file(GLOB_RECURSE AGRUM_BN_SOURCES RELATIVE ${CMAKE_CURRENT_BINARY_DIR} ${AGRUM_SOURCE_DIR}/agrum/BN/*.cpp)
+file(GLOB_RECURSE AGRUM_CN_SOURCES RELATIVE ${CMAKE_CURRENT_BINARY_DIR} ${AGRUM_SOURCE_DIR}/agrum/CN/*.cpp)
 file(GLOB_RECURSE AGRUM_GRAPHICALMODEL_SOURCES RELATIVE ${CMAKE_CURRENT_BINARY_DIR} ${AGRUM_SOURCE_DIR}/agrum/graphicalModels/*.cpp)
 file(GLOB_RECURSE AGRUM_GRAPHS_SOURCES RELATIVE ${CMAKE_CURRENT_BINARY_DIR} ${AGRUM_SOURCE_DIR}/agrum/graphs/*.cpp)
 file(GLOB_RECURSE AGRUM_MULTIDIM_SOURCES RELATIVE ${CMAKE_CURRENT_BINARY_DIR} ${AGRUM_SOURCE_DIR}/agrum/multidim/*.cpp)
@@ -98,6 +100,7 @@ file(GLOB_RECURSE AGRUM_LEARNING_SOURCES RELATIVE ${CMAKE_CURRENT_BINARY_DIR} ${
 
 set(AGRUM_C_SOURCES ${AGRUM_SOURCE_DIR}/agrum/CN/lrslib/lrslib.c ${AGRUM_SOURCE_DIR}/agrum/CN/lrslib/lrsmp.c)
 
+message(${BUILDSWIGFILES})
 # Properties
 set(CMAKE_SWIG_FLAGS  "-Wall" )
 set(SWIG_MODULE_pyAgrum_EXTRA_DEPS ${BUILDSWIGFILES})
@@ -114,9 +117,9 @@ set(CMAKE_FLAGS_RELEASE "${AGRUM_OPTIMIZATION} ${AGRUM_INLINING_POLICY} -I${AGRU
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_FLAGS_RELEASE} ${CPLUSPLUSONZE}")
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_FLAGS_RELEASE} -g")
 
-foreach(CPP_FILE ${AGRUM_CORE_SOURCES} ${AGRUM_BN_SOURCES} ${AGRUM_GRAPHICALMODEL_SOURCES} ${AGRUM_GRAPHS_SOURCES} ${AGRUM_MULTIDIM_SOURCES} ${AGRUM_VARIABLES_SOURCES} ${AGRUM_CN_SOURCES})
+foreach(CPP_FILE ${AGRUM_CORE_SOURCES} ${AGRUM_BN_SOURCES} ${AGRUM_CN_SOURCES} ${AGRUM_GRAPHICALMODEL_SOURCES} ${AGRUM_GRAPHS_SOURCES} ${AGRUM_MULTIDIM_SOURCES} ${AGRUM_VARIABLES_SOURCES} ${AGRUM_CN_SOURCES})
     set_source_files_properties(${CPP_FILE} PROPERTIES COMPILE_FLAGS  ${CMAKE_CXX_FLAGS_RELEASE})
-endforeach(CPP_FILE ${AGRUM_CORE_SOURCES} ${AGRUM_BN_SOURCES} ${AGRUM_GRAPHICALMODEL_SOURCES} ${AGRUM_GRAPHS_SOURCES} ${AGRUM_MULTIDIM_SOURCES} ${AGRUM_VARIABLES_SOURCES} ${AGRUM_CN_SOURCES})
+endforeach(CPP_FILE ${AGRUM_CORE_SOURCES} ${AGRUM_BN_SOURCES} ${AGRUM_CN_SOURCES} ${AGRUM_GRAPHICALMODEL_SOURCES} ${AGRUM_GRAPHS_SOURCES} ${AGRUM_MULTIDIM_SOURCES} ${AGRUM_VARIABLES_SOURCES} ${AGRUM_CN_SOURCES})
 
 foreach(C_FILE ${AGRUM_C_SOURCES})
     set_source_files_properties(${C_FILE} PROPERTIES COMPILE_FLAGS ${CMAKE_C_FLAGS_RELEASE})
@@ -125,7 +128,7 @@ endforeach(C_FILE ${AGRUM_C_SOURCES})
 set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i PROPERTIES SWIG_FLAGS "-I${SWIG_SOURCE_DIR}")
 
 if (SWIG_FOUND)
-  gum_swig_add_module(pyAgrum python ${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i ${AGRUM_CORE_SOURCES} ${AGRUM_BN_SOURCES} ${AGRUM_GRAPHICALMODEL_SOURCES} ${AGRUM_GRAPHS_SOURCES} ${AGRUM_MULTIDIM_SOURCES} ${AGRUM_VARIABLES_SOURCES} ${AGRUM_CN_SOURCES} ${AGRUM_C_SOURCES})
+  gum_swig_add_module(pyAgrum python ${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i ${AGRUM_CORE_SOURCES} ${AGRUM_BN_SOURCES} ${AGRUM_CN_SOURCES} ${AGRUM_GRAPHICALMODEL_SOURCES} ${AGRUM_GRAPHS_SOURCES} ${AGRUM_MULTIDIM_SOURCES} ${AGRUM_VARIABLES_SOURCES} ${AGRUM_CN_SOURCES} ${AGRUM_C_SOURCES})
   #for now we do not take for pyAgrum the ${AGRUM_LEARNING_SOURCES}
   swig_link_libraries(pyAgrum ${PYTHON_LIBRARIES})
 else (SWIG_FOUND)

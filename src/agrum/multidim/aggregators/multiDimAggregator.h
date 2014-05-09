@@ -98,7 +98,7 @@ namespace gum {
       public:
         virtual GUM_SCALAR get ( const Instantiation& i ) const;
 
-        virtual std::string aggregatorName ( void ) const=0;
+        virtual std::string aggregatorName ( void ) const = 0;
         const std::string toString ( void ) const;
 
         virtual void changeNotification ( gum::Instantiation&, const gum::DiscreteVariable*, const gum::Idx&, const gum::Idx& ) {};
@@ -135,7 +135,7 @@ namespace gum {
 
         /// _folder is applied on value i1 for variable v. the actual result for precedent applications is i2.
         /// @return the new result for applications up to v.
-        virtual Idx _folder ( const DiscreteVariable& v,Idx i1,Idx i2,bool& stop_iteration ) const = 0;
+        virtual Idx _folder ( const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration ) const = 0;
 
         virtual void _swap ( const DiscreteVariable* x, const DiscreteVariable* y );
     };

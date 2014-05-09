@@ -109,14 +109,15 @@ namespace gum {
       GUM_ERROR( OperationNotAllowed, "Impossible to marginalize" );
     }
 
-    for ( Sequence<const DiscreteVariable*>::iterator iter = seq.begin();
-          iter != seq.end(); ++iter ) {
+    for ( Sequence<const DiscreteVariable*>::iterator_safe iter = seq.beginSafe();
+          iter != seq.endSafe(); ++iter ) {
       if ( ! p.contains( **iter ) ) {
         GUM_ERROR( OperationNotAllowed, "Impossible to marginalize" );
       }
     }
 
-    this->_swapContent( projectSum( p.getMasterRef(),seq.diffSet( p.variablesSequence() ) ) );
+    this->_swapContent( projectSum( p.getMasterRef(),
+                                    p.variablesSequence().diffSet( seq ) ) );
 
     // a const method should return a const ref BUT WE NEED t return a non const ref
     return const_cast<Potential<GUM_SCALAR>&>( *this );
@@ -168,24 +169,24 @@ namespace gum {
     // remove vars in this : WARNING -- THIS IS A COPY OF SEQ !!!!
     const Sequence<const DiscreteVariable*> seq0 = this->variablesSequence() ;
 
-    for ( Sequence<const DiscreteVariable*>::iterator iter = seq0.begin();
-          iter != seq0.end(); ++iter ) {
+    for ( Sequence<const DiscreteVariable*>::iterator_safe iter = seq0.beginSafe();
+          iter != seq0.endSafe(); ++iter ) {
       this->erase( **iter );
     }
 
     // adding vars in p1
     const Sequence<const DiscreteVariable*>& seq1 = p1.variablesSequence() ;
 
-    for ( Sequence<const DiscreteVariable*>::iterator iter = seq1.begin();
-          iter != seq1.end(); ++iter ) {
+    for ( Sequence<const DiscreteVariable*>::iterator_safe iter = seq1.beginSafe();
+          iter != seq1.endSafe(); ++iter ) {
       this->add( **iter );
     }
 
     // adding vars in p2 not already there
     const Sequence<const DiscreteVariable*>& seq2 = p2.variablesSequence() ;
 
-    for ( Sequence<const DiscreteVariable*>::iterator iter = seq2.begin();
-          iter != seq2.end(); ++iter ) {
+    for ( Sequence<const DiscreteVariable*>::iterator_safe iter = seq2.beginSafe();
+          iter != seq2.endSafe(); ++iter ) {
       if ( ! this->contains( **iter ) ) {
         this->add( **iter );
       }

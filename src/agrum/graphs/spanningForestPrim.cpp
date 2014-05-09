@@ -153,8 +153,8 @@ namespace gum {
     // potential next nodes to explore
     const NodeSet& neighbours = __graph.neighbours ( id );
 
-    for ( NodeSet::const_iterator iter = neighbours.begin();
-          iter != neighbours.end(); ++iter ) {
+    for ( NodeSet::const_iterator_safe iter = neighbours.beginSafe();
+          iter != neighbours.endSafe(); ++iter ) {
       if ( ! __spanning_tree.existsNode ( *iter ) ) {
         Edge edge ( *iter, id );
         __edgesToExplore.insert ( __costTable[edge], edge );

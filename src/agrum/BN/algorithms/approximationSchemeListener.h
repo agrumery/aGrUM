@@ -29,15 +29,15 @@ namespace gum {
   class ApproximationSchemeListener : public Listener {
 
     public:
-      ApproximationSchemeListener( ApproximationScheme& sch );
+      ApproximationSchemeListener ( ApproximationScheme& sch );
       virtual ~ApproximationSchemeListener();
 
-      virtual void whenProgress( const void* src,Size pourcent,double error, double time ) =0;
-      virtual void whenStop( const void* src, std::string message )=0;
+      virtual void whenProgress ( const void* src, Size pourcent, double error, double time ) = 0;
+      virtual void whenStop ( const void* src, std::string message ) = 0;
 
     private:
-      ApproximationSchemeListener( const ApproximationSchemeListener& other );
-      ApproximationSchemeListener& operator=( const ApproximationSchemeListener& other );
+      ApproximationSchemeListener ( const ApproximationSchemeListener& other );
+      ApproximationSchemeListener& operator= ( const ApproximationSchemeListener& other );
 
       ApproximationScheme& __sch;
   };

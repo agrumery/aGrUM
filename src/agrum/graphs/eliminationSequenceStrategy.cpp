@@ -38,7 +38,7 @@ namespace gum {
   /// default constructor
   EliminationSequenceStrategy::EliminationSequenceStrategy() {
     // for debugging purposes
-    GUM_CONSTRUCTOR( EliminationSequenceStrategy );
+    GUM_CONSTRUCTOR ( EliminationSequenceStrategy );
   }
 
 
@@ -46,19 +46,19 @@ namespace gum {
   EliminationSequenceStrategy::EliminationSequenceStrategy
   ( const EliminationSequenceStrategy& ) {
     // for debugging purposes
-    GUM_CONS_CPY( EliminationSequenceStrategy );
+    GUM_CONS_CPY ( EliminationSequenceStrategy );
   }
 
 
   /// destructor
   EliminationSequenceStrategy::~EliminationSequenceStrategy() {
     // for debugging purposes
-    GUM_DESTRUCTOR( EliminationSequenceStrategy );
+    GUM_DESTRUCTOR ( EliminationSequenceStrategy );
   }
 
 
   /// performs all the graph/fill-ins updates provided
-  void EliminationSequenceStrategy::eliminationUpdate( const NodeId node ) { }
+  void EliminationSequenceStrategy::eliminationUpdate ( const NodeId node ) { }
 
 
   /** @brief in case fill-ins are provided, this function returns the fill-ins

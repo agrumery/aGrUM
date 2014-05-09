@@ -1,5 +1,9 @@
 %ignore gum::BayesNet::addVariable;
 %ignore gum::BayesNet::eraseVariable;
+%ignore *::beginNodes;
+%ignore *::endNodes;
+%ignore *::beginArcs;
+%ignore *::endArcs;
 
 %pythonprepend gum::BayesNet::insertArc %{
   print("WARNING : pyAgrum.BayesNet.insertArc is deprecated. Please use pyAgrum.BayesNet.addArc")
@@ -9,11 +13,22 @@
   print("WARNING : pyAgrum.BayesNet.insertWeightedArc is deprecated. Please use pyAgrum.BayesNet.addWeightedArc")
 %}
 
+%pythonprepend gum::DAGmodel::nbrArcs%{
+  print("WARNING : pyAgrum.DAGmodel.nbrArcs is deprecated. Please use pyAgrum.BayesNet.sizeArcs")
+%}
 
 
 %pythonappend gum::BayesNet::cpt %{
         val.__fill_distrib__()
 %}
+
+%typemap(out) const gum::Sequence<gum::NodeId>& {
+  PyObject *q=PyList_New(0);
+  for(auto i : *$1) {
+    PyList_Append(q,PyInt_FromLong(i));
+  }
+  $result=q;
+}
 
 %extend gum::BayesNet {
     PyObject *names() const {
@@ -41,7 +56,7 @@
       PyObject* q=PyList_New(0);
 
       const gum::DAG& dag=self->dag();
-      for ( gum::ArcGraphPart::ArcIterator  arc_iter = dag.arcs().begin();arc_iter != dag.Arcs().end(); ++arc_iter ) {
+      for ( auto arc_iter = dag.arcs().begin();arc_iter != dag.arcs().end(); ++arc_iter ) {
         PyList_Append(q,Py_BuildValue("(i,i)", arc_iter->tail(), arc_iter->head()));
       }
 
@@ -73,7 +88,9 @@
 
     bool loadBIF(std::string name, PyObject *l=(PyObject*)0)
     {
+        std::stringstream stream;
         std::vector<PythonLoadListener> py_listener;
+
         try {
             gum::BIFReader<GUM_SCALAR> reader(self,name);
             int l_size=__fillLoadListeners(py_listener,l);
@@ -82,15 +99,16 @@
             }
 
             if (reader.proceed()>0) {
-                reader.showElegantErrorsAndWarnings();
-                reader.showErrorCounts();
-                return false;
+                reader.showElegantErrorsAndWarnings(stream);
+                reader.showErrorCounts(stream);
             } else {
                 return true;
             }
         } catch (gum::IOError& e) {
           throw(e);
         }
+
+        GUM_ERROR(gum::IOError,stream.str());
         return false;
     }
 
@@ -102,6 +120,8 @@
     bool loadDSL(std::string name, PyObject *l=(PyObject*)0)
     {
       std::vector<PythonLoadListener> py_listener;
+      std::stringstream stream;
+
         try {
             gum::DSLReader<GUM_SCALAR> reader(self,name);
             int l_size=__fillLoadListeners(py_listener,l);
@@ -110,13 +130,15 @@
             }
 
             if (reader.proceed()>0) {
-                reader.showElegantErrorsAndWarnings();
-                reader.showErrorCounts();
+                reader.showElegantErrorsAndWarnings(stream);
+                reader.showErrorCounts(stream);
                 return false;
             } else {
                 return true;
             }
         } catch (gum::IOError& e) {throw (e);}
+
+        GUM_ERROR(gum::IOError,stream.str());
         return false;
     }
 
@@ -128,6 +150,8 @@
     bool loadNET(std::string name, PyObject *l=(PyObject*)0)
     {
         std::vector<PythonLoadListener> py_listener;
+        std::stringstream stream;
+  
         try {
             gum::NetReader<GUM_SCALAR> reader(self,name);
             int l_size=__fillLoadListeners(py_listener,l);
@@ -136,13 +160,15 @@
             }
 
             if (reader.proceed()>0) {
-                reader.showElegantErrorsAndWarnings();
-                reader.showErrorCounts();
+                reader.showElegantErrorsAndWarnings(stream);
+                reader.showErrorCounts(stream);
                 return false;
             } else {
                 return true;
             }
         } catch (gum::IOError& e) {GUM_SHOWERROR(e);}
+
+        GUM_ERROR(gum::IOError,stream.str());
         return false;
     }
 

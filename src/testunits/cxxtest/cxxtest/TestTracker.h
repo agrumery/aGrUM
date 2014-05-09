@@ -19,9 +19,9 @@ namespace CxxTest {
 
       static TestTracker& tracker();
 
-      const TestDescription* fixTest( const TestDescription* d ) const;
-      const SuiteDescription* fixSuite( const SuiteDescription* d ) const;
-      const WorldDescription* fixWorld( const WorldDescription* d ) const;
+      const TestDescription* fixTest ( const TestDescription* d ) const;
+      const SuiteDescription* fixSuite ( const SuiteDescription* d ) const;
+      const WorldDescription* fixWorld ( const WorldDescription* d ) const;
 
       const TestDescription& test() const { return *_test; }
       const SuiteDescription& suite() const { return *_suite; }
@@ -37,48 +37,48 @@ namespace CxxTest {
       unsigned suiteFailedTests() const { return _suiteFailedTests; }
       unsigned failedSuites() const { return _failedSuites; }
 
-      void enterWorld( const WorldDescription& wd );
-      void enterSuite( const SuiteDescription& sd );
-      void enterTest( const TestDescription& td );
-      void leaveTest( const TestDescription& td );
-      void leaveSuite( const SuiteDescription& sd );
-      void leaveWorld( const WorldDescription& wd );
-      void trace( const char* file, unsigned line, const char* expression );
-      void warning( const char* file, unsigned line, const char* expression );
-      void failedTest( const char* file, unsigned line, const char* expression );
-      void failedAssert( const char* file, unsigned line, const char* expression );
-      void failedAssertEquals( const char* file, unsigned line,
-                               const char* xStr, const char* yStr,
-                               const char* x, const char* y );
-      void failedAssertSameData( const char* file, unsigned line,
-                                 const char* xStr, const char* yStr,
-                                 const char* sizeStr, const void* x,
-                                 const void* y, unsigned size );
-      void failedAssertDelta( const char* file, unsigned line,
-                              const char* xStr, const char* yStr, const char* dStr,
-                              const char* x, const char* y, const char* d );
-      void failedAssertDiffers( const char* file, unsigned line,
+      void enterWorld ( const WorldDescription& wd );
+      void enterSuite ( const SuiteDescription& sd );
+      void enterTest ( const TestDescription& td );
+      void leaveTest ( const TestDescription& td );
+      void leaveSuite ( const SuiteDescription& sd );
+      void leaveWorld ( const WorldDescription& wd );
+      void trace ( const char* file, unsigned line, const char* expression );
+      void warning ( const char* file, unsigned line, const char* expression );
+      void failedTest ( const char* file, unsigned line, const char* expression );
+      void failedAssert ( const char* file, unsigned line, const char* expression );
+      void failedAssertEquals ( const char* file, unsigned line,
                                 const char* xStr, const char* yStr,
-                                const char* value );
-      void failedAssertLessThan( const char* file, unsigned line,
+                                const char* x, const char* y );
+      void failedAssertSameData ( const char* file, unsigned line,
+                                  const char* xStr, const char* yStr,
+                                  const char* sizeStr, const void* x,
+                                  const void* y, unsigned size );
+      void failedAssertDelta ( const char* file, unsigned line,
+                               const char* xStr, const char* yStr, const char* dStr,
+                               const char* x, const char* y, const char* d );
+      void failedAssertDiffers ( const char* file, unsigned line,
                                  const char* xStr, const char* yStr,
-                                 const char* x, const char* y );
-      void failedAssertLessThanEquals( const char* file, unsigned line,
-                                       const char* xStr, const char* yStr,
-                                       const char* x, const char* y );
-      void failedAssertPredicate( const char* file, unsigned line,
-                                  const char* predicate, const char* xStr, const char* x );
-      void failedAssertRelation( const char* file, unsigned line,
-                                 const char* relation, const char* xStr, const char* yStr,
-                                 const char* x, const char* y );
-      void failedAssertThrows( const char* file, unsigned line,
-                               const char* expression, const char* type,
-                               bool otherThrown );
-      void failedAssertThrowsNot( const char* file, unsigned line, const char* expression );
+                                 const char* value );
+      void failedAssertLessThan ( const char* file, unsigned line,
+                                  const char* xStr, const char* yStr,
+                                  const char* x, const char* y );
+      void failedAssertLessThanEquals ( const char* file, unsigned line,
+                                        const char* xStr, const char* yStr,
+                                        const char* x, const char* y );
+      void failedAssertPredicate ( const char* file, unsigned line,
+                                   const char* predicate, const char* xStr, const char* x );
+      void failedAssertRelation ( const char* file, unsigned line,
+                                  const char* relation, const char* xStr, const char* yStr,
+                                  const char* x, const char* y );
+      void failedAssertThrows ( const char* file, unsigned line,
+                                const char* expression, const char* type,
+                                bool otherThrown );
+      void failedAssertThrowsNot ( const char* file, unsigned line, const char* expression );
 
     private:
-      TestTracker( const TestTracker& );
-      TestTracker& operator=( const TestTracker& );
+      TestTracker ( const TestTracker& );
+      TestTracker& operator= ( const TestTracker& );
 
       static bool _created;
       TestListener _dummyListener;
@@ -93,9 +93,9 @@ namespace CxxTest {
       const SuiteDescription& dummySuite() const;
       const WorldDescription& dummyWorld() const;
 
-      void setWorld( const WorldDescription* w );
-      void setSuite( const SuiteDescription* s );
-      void setTest( const TestDescription* t );
+      void setWorld ( const WorldDescription* w );
+      void setSuite ( const SuiteDescription* s );
+      void setTest ( const TestDescription* t );
       void countWarning();
       void countFailure();
 
@@ -103,7 +103,7 @@ namespace CxxTest {
 
       TestTracker();
       void initialize();
-      void setListener( TestListener* l );
+      void setListener ( TestListener* l );
   };
 
   inline TestTracker& tracker() { return TestTracker::tracker(); }

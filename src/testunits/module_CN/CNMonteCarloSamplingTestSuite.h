@@ -215,7 +215,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.makeInference(); );
 
         try {
-          for(const auto node_idIt : cn->current_bn().nodes()) {
+          for ( const auto node_idIt : cn->current_bn().nodes() ) {
             exp inf ( mcs.marginalMin ( node_idIt ) );
             exp sup ( mcs.marginalMax ( node_idIt ) );
             double e_inf = mcs.expectationMin ( node_idIt );
@@ -269,7 +269,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.makeInference(); );
 
         try {
-          for(const auto node_idIt : cn->current_bn().nodes()) {
+          for ( const auto node_idIt : cn->current_bn().nodes() ) {
             exp inf ( mcs.marginalMin ( node_idIt ) );
             exp sup ( mcs.marginalMax ( node_idIt ) );
             double e_inf = mcs.expectationMin ( node_idIt );

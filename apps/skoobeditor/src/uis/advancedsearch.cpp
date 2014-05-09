@@ -1,10 +1,10 @@
 #include "advancedsearch.h"
 #include "ui_advancedsearch.h"
 
-AdvancedSearch::AdvancedSearch( QWidget *parent ) :
-    QDialog( parent ),
-    ui( new Ui::AdvancedSearch ) {
-  ui->setupUi( this );
+AdvancedSearch::AdvancedSearch ( QWidget* parent ) :
+  QDialog ( parent ),
+  ui ( new Ui::AdvancedSearch ) {
+  ui->setupUi ( this );
 
   m_isSearch = false;
   m_isReplaceAll = false;
@@ -43,23 +43,23 @@ void AdvancedSearch::setProjectSearch() { ui->projectRadio->click(); }
 
 void AdvancedSearch::setOpenFilesSearch() { ui->openFilesRadio->click(); }
 
-void AdvancedSearch::setCaseSensitive( bool checked ) { ui->caseBox->setChecked( checked ); }
+void AdvancedSearch::setCaseSensitive ( bool checked ) { ui->caseBox->setChecked ( checked ); }
 
-void AdvancedSearch::setRegex( bool checked ) { ui->regexBox->setChecked( checked ); }
+void AdvancedSearch::setRegex ( bool checked ) { ui->regexBox->setChecked ( checked ); }
 
-void AdvancedSearch::setWholeWord( bool checked ) { ui->wordBox->setChecked( checked ); }
+void AdvancedSearch::setWholeWord ( bool checked ) { ui->wordBox->setChecked ( checked ); }
 
-void AdvancedSearch::setFilter( Filter filter ) { ui->filterCombo->setCurrentIndex(( int ) filter ); }
+void AdvancedSearch::setFilter ( Filter filter ) { ui->filterCombo->setCurrentIndex ( ( int ) filter ); }
 
-void AdvancedSearch::setSearchText( const QString & text ) { ui->searchEdit->setText( text ); }
+void AdvancedSearch::setSearchText ( const QString& text ) { ui->searchEdit->setText ( text ); }
 
-void AdvancedSearch::setReplaceText( const QString & text ) { ui->replaceEdit->setText( text ); }
+void AdvancedSearch::setReplaceText ( const QString& text ) { ui->replaceEdit->setText ( text ); }
 
-void AdvancedSearch::setProjectSearchEnabled( bool enabled ) {
-  ui->projectRadio->setEnabled( enabled );
+void AdvancedSearch::setProjectSearchEnabled ( bool enabled ) {
+  ui->projectRadio->setEnabled ( enabled );
 
   if ( !enabled )
-    ui->documentRadio->setChecked( true );
+    ui->documentRadio->setChecked ( true );
 }
 
 void AdvancedSearch::on_cancelButton_clicked() {
@@ -80,11 +80,11 @@ void AdvancedSearch::on_replaceAllButton_clicked() {
   accept();
 }
 
-void AdvancedSearch::on_documentRadio_toggled( bool checked ) {
-  ui->filterCombo->setEnabled( !checked );
+void AdvancedSearch::on_documentRadio_toggled ( bool checked ) {
+  ui->filterCombo->setEnabled ( !checked );
 }
 
-void AdvancedSearch::closeEvent( QCloseEvent * ) {
+void AdvancedSearch::closeEvent ( QCloseEvent* ) {
   m_isSearch = false;
   m_isReplaceAll = false;
 }

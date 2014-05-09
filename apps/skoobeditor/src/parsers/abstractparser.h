@@ -28,21 +28,21 @@ class AbstractParser : public QThread {
 
   public:
     //! Constructor
-    explicit AbstractParser( const QsciScintillaExtended * sci, QObject *parent = 0 );
+    explicit AbstractParser ( const QsciScintillaExtended* sci, QObject* parent = 0 );
     //! Destructor
     ~AbstractParser();
 
     //! Class paths are paths where parser search for imported files.
     QStringList classPaths() const;
-    void setClassPaths( const QStringList & paths );
-    void addClassPath( const QString & path );
-    void addClassPaths( const QStringList & paths );
+    void setClassPaths ( const QStringList& paths );
+    void addClassPath ( const QString& path );
+    void addClassPaths ( const QStringList& paths );
 
     //! In syntax mode, any calculation is done, files are just parse.
     bool isSyntaxMode() const;
 
     //! Document to parse.
-    const QsciScintillaExtended * document() const;
+    const QsciScintillaExtended* document() const;
 
     //! Retrieve parsing errors and warnings.
     virtual gum::ErrorsContainer errors() const;
@@ -51,8 +51,8 @@ class AbstractParser : public QThread {
     virtual QSharedPointer<PRMTreeModel> prm() const;
 
   public slots:
-    virtual void parse( Priority priority = InheritPriority );
-    void setSyntaxMode( bool active );
+    virtual void parse ( Priority priority = InheritPriority );
+    void setSyntaxMode ( bool active );
 
   signals:
     void parseDone();
@@ -70,18 +70,18 @@ class AbstractParser : public QThread {
     QString buffer() const;
 
     //! Set the new PRM. Previous will be deleted if unused.
-    void setPRM( const QSharedPointer<PRMTreeModel> & prm );
+    void setPRM ( const QSharedPointer<PRMTreeModel>& prm );
     //! Set the ErrorsContainer
-    void setErrors( const gum::ErrorsContainer & errors );
+    void setErrors ( const gum::ErrorsContainer& errors );
 
-    void start( Priority priority = InheritPriority ) { QThread::start( priority ); }
+    void start ( Priority priority = InheritPriority ) { QThread::start ( priority ); }
 
   private:
-    void setFilename( const QString & filename );
-    void setBuffer( const QString & buffer );
+    void setFilename ( const QString& filename );
+    void setBuffer ( const QString& buffer );
 
     struct PrivateData;
-    PrivateData * d;
+    PrivateData* d;
 
 };
 

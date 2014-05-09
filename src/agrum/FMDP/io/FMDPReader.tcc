@@ -32,13 +32,13 @@ namespace gum {
   /* ===                           GUM_FMDP_WRITTER                           === */
   /* ============================================================================ */
   template<typename GUM_SCALAR> INLINE
-  FMDPReader<GUM_SCALAR>:: FMDPReader( FactoredMarkovDecisionProcess<GUM_SCALAR>* FMDP, const std::string& filename ) {
-    GUM_CONSTRUCTOR( FMDPReader );
+  FMDPReader<GUM_SCALAR>:: FMDPReader ( FactoredMarkovDecisionProcess<GUM_SCALAR>* FMDP, const std::string& filename ) {
+    GUM_CONSTRUCTOR ( FMDPReader );
   }
 
   template<typename GUM_SCALAR> INLINE
   FMDPReader<GUM_SCALAR>::~FMDPReader() {
-    GUM_DESTRUCTOR( FMDPReader );
+    GUM_DESTRUCTOR ( FMDPReader );
   }
 
 

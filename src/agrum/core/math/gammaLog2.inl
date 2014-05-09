@@ -17,57 +17,53 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+/** @file
+ * @brief The class for computing Log2 (Gamma(x))
+ *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ */
 
-#include <agrum/learning/CSVParser/CSVParser.h>
 
 namespace gum {
 
-  INLINE bool CSVParser::next() {
-    while ( getline( __in,__line ) ) {
-      __noLine++;
 
-      if ( __line.size() == 0 ) continue;
+  /// returns log2 ( gamma (x) ) for x >= 0
+  INLINE float GammaLog2::gammaLog2 ( float x ) const {
+    if ( x <= 0 )
+      GUM_ERROR ( OutOfBounds,
+                  "log2(gamma()) should be called with a positive argument" );
 
-      // fast recognition of commented or empty lines lines
-      Size lastPos = __line.find_first_not_of( __spaces, 0 );
-
-      if ( lastPos==std::string::npos ) continue;
-
-      if ( __line.at( lastPos ) == __commentMarker ) continue;
-
-      __tokenize( __line );
-      return true;
+    // if x is small, use precomputed values
+    if ( x < 50 ) {
+      if ( __requires_precision ) {
+        unsigned int index = x * 100;
+        return __small_values[index] +
+          ( __small_values[index+1] - __small_values[index] ) *
+          ( x * 100 - index );
+      }
+      else {
+        unsigned int index = x * 100 + 0.5;
+        return __small_values[index];
+      }
     }
 
-    return false;
+    // returns the approximation by the stirling formula
+    return ( __log_sqrt_2pi + ( x - 0.5f ) * logf ( x ) -
+             x + logf ( 1.0f + 1.0f / ( 12 * x ) ) ) * __1log2;
   }
 
-  // search for quote taking into account the '\'...
-  INLINE Size CSVParser::__correspondingQuoteMarker( const std::string& str, Size pos ) const {
-    Size res=pos,before;
-
-    while ( true ) {
-      res=str.find_first_of( __quoteMarker,res+1 );
-
-      if ( res==std::string::npos ) return res; // no quote found
-
-      before=str.find_last_not_of( '\\',res-1 );
-
-      if ( before==std::string::npos ) return res; // quote found, it is the good one
-
-      if ( ( res-before )%2 ==1 ) return res; // the quote is the good one, even if there are some '\' before
-    }
+  
+  /// returns log2 ( gamma (x) ) for x >= 0
+  INLINE float GammaLog2::operator() ( float x ) const {
+    return gammaLog2 ( x );
   }
 
-  INLINE const std::vector<std::string>& CSVParser::current()  const {
-    if ( __emptyData ) GUM_ERROR( NullElement,"No parsed data" );
 
-    return __data;
+  /// sets whether we need more precision for small values
+  INLINE void GammaLog2::setPrecision ( bool prec ) {
+    __requires_precision = prec;
   }
+ 
 
-  const Size CSVParser::noLine() const {
-    if ( __noLine==0 ) GUM_ERROR( NullElement,"No parsed data" );
+} /* namespace gum */
 
-    return __noLine;
-  }
-}

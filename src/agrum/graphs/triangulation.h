@@ -69,7 +69,7 @@ namespace gum {
       /** @brief returns the number of a given node in the elimination order
        * (0 = first node eliminated) */
 
-      virtual Idx eliminationOrder( const NodeId ) = 0;
+      virtual Idx eliminationOrder ( const NodeId ) = 0;
 
 
       /// returns the triangulated graph
@@ -101,7 +101,7 @@ namespace gum {
       /** @brief returns the Id of the clique created by the
        * elimination of a given node during the triangulation process */
 
-      virtual NodeId createdJunctionTreeClique( const NodeId id ) = 0;
+      virtual NodeId createdJunctionTreeClique ( const NodeId id ) = 0;
 
 
       /** @brief returns the Ids of the cliques of the junction tree created by the
@@ -123,7 +123,7 @@ namespace gum {
       /** @brief returns the Id of the maximal prime subgraph created by the
        * elimination of a given node during the triangulation process */
 
-      virtual NodeId createdMaxPrimeSubgraph( const NodeId id ) = 0;
+      virtual NodeId createdMaxPrimeSubgraph ( const NodeId id ) = 0;
 
 
       /// reinitialize the graph to be triangulated to an empty graph
@@ -151,7 +151,7 @@ namespace gum {
 
     private:
       /// prevent copy constructor
-      Triangulation( const Triangulation& );
+      Triangulation ( const Triangulation& );
 
       /// prevent copy operator
       Triangulation& operator= ( const Triangulation& );

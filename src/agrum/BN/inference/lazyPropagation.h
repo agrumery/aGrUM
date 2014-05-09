@@ -163,7 +163,7 @@ namespace gum {
 
     private:
       typedef Set<const Potential<GUM_SCALAR>*> __PotentialSet;
-      typedef SetIterator<const Potential<GUM_SCALAR>*> __PotentialSetIterator;
+      typedef SetIteratorSafe<const Potential<GUM_SCALAR>*> __PotentialSetIterator;
 
       /// the triangulation class creating the junction tree used for inference
       DefaultTriangulation __triangulation;
@@ -174,15 +174,13 @@ namespace gum {
       HashTable< NodeId, NodeId> __node_to_clique;
 
       /// the list of all potentials stored in the cliques
-      typename Property< List <const Potential<GUM_SCALAR>*> >::onNodes
-      __clique_potentials;
+      NodeProperty< List <const Potential<GUM_SCALAR>*> > __clique_potentials;
 
       /// the list of all the evidence stored in the cliques
-      typename Property< List <const Potential<GUM_SCALAR>*> >::onNodes
-      __clique_evidence;
+      NodeProperty< List <const Potential<GUM_SCALAR>*> > __clique_evidence;
 
       /// the list of all potentials stored in the separators
-      typename Property< __PotentialSet >::onArcs __sep_potentials;
+      ArcProperty< __PotentialSet > __sep_potentials;
 
       /// a list of all the evidence stored into the graph
       __PotentialSet __evidences;

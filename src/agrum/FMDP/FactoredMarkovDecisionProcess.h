@@ -75,62 +75,62 @@ namespace gum {
       // ===========================================================================
       /// @{
 
-      void setProperty( const std::string& propName, const std::string& propValue ) {};
+      void setProperty ( const std::string& propName, const std::string& propValue ) {};
 
       /**
        * Adds a variable to FMDP description
        * @throw DuplicateElement if a similar variable already exists
        */
-      void addVariable( const DiscreteVariable* var );
+      void addVariable ( const DiscreteVariable* var );
 
       /**
        * Adds a primed variable to FMDP description
        * @throw DuplicateElement if a similar variable already exists
        */
-      void addPrimedVariable( const DiscreteVariable* var, const DiscreteVariable* mainVar );
+      void addPrimedVariable ( const DiscreteVariable* var, const DiscreteVariable* mainVar );
 
       /**
        * Adds an action to FMDP description
        * @throw DuplicateElement if an action with same name already exists
        */
-      void addAction( const std::string& action );
+      void addAction ( const std::string& action );
 
       /**
        * Adds a variable transition table to specified action
        * @throw NotFound if action or var does not exists
        * @throw DuplicateElement if variable already has a transition for this action
        */
-      void addTransitionForAction( const DiscreteVariable* var, const MultiDimImplementation<GUM_SCALAR>* transition, const std::string& action );
+      void addTransitionForAction ( const DiscreteVariable* var, const MultiDimImplementation<GUM_SCALAR>* transition, const std::string& action );
 
       /**
        * Adds a default variable transition
        * @throw NotFound if var does not exists
        * @throw DuplicateElement if variable already has a default transition
        */
-      void addTransition( const DiscreteVariable* var, const MultiDimImplementation<GUM_SCALAR>* transition );
+      void addTransition ( const DiscreteVariable* var, const MultiDimImplementation<GUM_SCALAR>* transition );
 
       /**
        * Adds a cost table to specified action
        * @throw NotFound if action does not exists
        */
-      void addCostForAction( const MultiDimImplementation<GUM_SCALAR>* cost, const std::string& action );
+      void addCostForAction ( const MultiDimImplementation<GUM_SCALAR>* cost, const std::string& action );
 
       /**
        * Adds a default variable cost
        * @throw DuplicateElement if a default cost exists already
        */
-      void addCost( const MultiDimImplementation<GUM_SCALAR>* cost );
+      void addCost ( const MultiDimImplementation<GUM_SCALAR>* cost );
 
       /**
        * Adds a default variable reward
        * @throw DuplicateElement if a default reward exists already
        */
-      void addReward( const MultiDimImplementation<GUM_SCALAR>* reward );
+      void addReward ( const MultiDimImplementation<GUM_SCALAR>* reward );
 
       /**
        * Precises the discount factor for that mdp
        */
-      void addDiscount( GUM_SCALAR discount );
+      void addDiscount ( GUM_SCALAR discount );
 
       /// @}
 
@@ -172,7 +172,7 @@ namespace gum {
       /**
        * Returns name of action given in parameter
        */
-      const std::string actionName( Idx actionId ) const;
+      const std::string actionName ( Idx actionId ) const;
 
       /**
        * Resets the variable iterator
@@ -203,7 +203,7 @@ namespace gum {
       /**
        * Returns transition associated to given in parameter variable
        */
-      const MultiDimImplementation< GUM_SCALAR >* transition( const DiscreteVariable* v ) const;
+      const MultiDimImplementation< GUM_SCALAR >* transition ( const DiscreteVariable* v ) const;
 
       /**
        * Returns set of primed variable (variable at next instant )
@@ -223,11 +223,11 @@ namespace gum {
       /**
         * Returns action id
         */
-      const Idx& __actionId( const std::string& ) const;
+      const Idx& __actionId ( const std::string& ) const;
 
       /// Sequence de variables and its iterator
       Sequence< const DiscreteVariable* > __varSeq;
-      SequenceIterator< const DiscreteVariable* > __varIter;
+      SequenceIteratorSafe< const DiscreteVariable* > __varIter;
 
       /// Variable default transition cpt table
       HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* > __defaultTransitionTable;
@@ -257,10 +257,10 @@ namespace gum {
       Idx __nextActionId;
 
       /// Iterator on actions
-      HashTableConstIterator< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* >* > __actionIter;
+      HashTableConstIteratorSafe< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* >* > __actionIter;
 
 //       /// Iterator on variable
-//       HashTableConstIterator< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* > __varIter;
+//       HashTableConstIteratorSafe< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* > __varIter;
   };
 } /* namespace gum */
 

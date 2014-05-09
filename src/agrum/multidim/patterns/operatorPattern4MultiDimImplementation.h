@@ -35,8 +35,8 @@ namespace gum {
 #ifdef GUM_MULTI_DIM_OPERATOR_NAME
   template<typename T>
   MultiDimImplementation<T>*
-  GUM_MULTI_DIM_OPERATOR_NAME( const MultiDimImplementation<T>& impl1,
-                               const MultiDimImplementation<T>& impl2 ) {
+  GUM_MULTI_DIM_OPERATOR_NAME ( const MultiDimImplementation<T>& impl1,
+                                const MultiDimImplementation<T>& impl2 ) {
 #endif
 
     typename OperatorRegister4MultiDim<T>::OperatorPtr func;
@@ -78,9 +78,9 @@ namespace gum {
 
     // perform the addition
     if ( swapped_names )
-      return func( &impl2,&impl1 );
+      return func ( &impl2, &impl1 );
     else
-      return func( &impl1,&impl2 );
+      return func ( &impl1, &impl2 );
   }
 }
 #endif /* GUM_OPERATOR_PATTERN_ALLOWED */

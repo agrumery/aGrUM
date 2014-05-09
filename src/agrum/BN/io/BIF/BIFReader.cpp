@@ -20,5 +20,5 @@
 
 #include <agrum/BN/io/BIF/BIFReader.h>
 
-template class gum::BIFReader<float>;  
+template class gum::BIFReader<float>;
 template class gum::BIFReader<double>;

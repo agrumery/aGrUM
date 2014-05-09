@@ -37,7 +37,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   ScheduleCliqueStoreMultiDim<GUM_SCALAR>::ScheduleCliqueStoreMultiDim
   ( const ScheduleMultiDim<GUM_SCALAR>& table,
-    typename Property<Set<const MultiDimImplementation<GUM_SCALAR>*> >::onNodes&
+    NodeProperty<Set<const MultiDimImplementation<GUM_SCALAR>*> >&
     clique_tables,
     NodeId clique ) :
     ScheduleOperation<GUM_SCALAR>
@@ -189,8 +189,10 @@ namespace gum {
 
     if ( first_time ) {
       first_time = false;
-      __debug__::__inc_deletion( "Sequence", __FILE__, __LINE__, "destructor of",
-                                 ( void* ) &empty_seq );
+      __debug__::__inc_deletion( "Sequence", __FILE__, __LINE__,
+                                 "destructor of", ( void* ) &empty_seq );
+      __debug__::__inc_deletion( "SequenceImplementation", __FILE__, __LINE__,
+                                 "destructor of", ( void* ) &empty_seq );
     }
 
 #endif /* NDEBUG */

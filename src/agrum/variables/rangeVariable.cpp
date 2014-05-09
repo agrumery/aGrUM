@@ -37,11 +37,11 @@ namespace gum {
   // ==========================================================================
   // Default constructor
   // ==========================================================================
-  RangeVariable::RangeVariable( const std::string& aName,
-                                const std::string& aDesc,
-                                Idx minVal, Idx maxVal ):
-    DiscreteVariable( aName, aDesc ), __minBound( minVal ), __maxBound( maxVal ) {
-    GUM_CONSTRUCTOR( RangeVariable );
+  RangeVariable::RangeVariable ( const std::string& aName,
+                                 const std::string& aDesc,
+                                 Idx minVal, Idx maxVal ) :
+    DiscreteVariable ( aName, aDesc ), __minBound ( minVal ), __maxBound ( maxVal ) {
+    GUM_CONSTRUCTOR ( RangeVariable );
   }
 
   // ==========================================================================
@@ -49,16 +49,16 @@ namespace gum {
   // If aDRV haves any listener, it will not be copied.
   // @param aDRV the variable we copy
   // ==========================================================================
-  RangeVariable::RangeVariable( const RangeVariable& aDRV ):
-    DiscreteVariable( aDRV ), __minBound( aDRV.__minBound ), __maxBound( aDRV.__maxBound ) {
-    GUM_CONS_CPY( RangeVariable );
+  RangeVariable::RangeVariable ( const RangeVariable& aDRV ) :
+    DiscreteVariable ( aDRV ), __minBound ( aDRV.__minBound ), __maxBound ( aDRV.__maxBound ) {
+    GUM_CONS_CPY ( RangeVariable );
   }
 
   // ==========================================================================
   // destructor
   // ==========================================================================
   RangeVariable::~RangeVariable() {
-    GUM_DESTRUCTOR( RangeVariable );
+    GUM_DESTRUCTOR ( RangeVariable );
   }
 
 

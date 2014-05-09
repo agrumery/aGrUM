@@ -638,8 +638,8 @@ namespace gum {
 
         const NodeSet& parents = __bn->dag().parents ( varId );
 
-        for ( NodeSet::iterator iter = parents.begin();
-              iter != parents.end(); ++iter ) {
+        for ( NodeSet::iterator_safe iter = parents.beginSafe();
+              iter != parents.endSafe(); ++iter ) {
           if ( ! __parents->contains ( __bn->variable ( *iter ) ) ) {
             inst_default << __bn->variable ( *iter );
           }
@@ -759,8 +759,8 @@ namespace gum {
       } else if ( table->contains ( var ) ) {
         const NodeSet& parents = __bn->dag().parents ( varId );
 
-        for ( NodeSetIterator iter = parents.begin();
-              iter != parents.end(); ++iter ) {
+        for ( NodeSetIterator iter = parents.beginSafe ();
+              iter != parents.endSafe (); ++iter ) {
           if ( ! table->contains ( __bn->variable ( *iter ) ) ) {
             GUM_ERROR ( OperationNotAllowed, "The CPT is not valid in the current BayesNet." );
           }
@@ -882,7 +882,7 @@ namespace gum {
     NodeId varId = __varNameMap[var.name()];
     __bn->_dag.eraseParents ( varId );
 
-    for ( Sequence<const DiscreteVariable*>::iterator iter = table->variablesSequence().begin(); iter != table->variablesSequence().end(); ++iter ) {
+    for ( Sequence<const DiscreteVariable*>::iterator_safe iter = table->variablesSequence().beginSafe(); iter != table->variablesSequence().endSafe(); ++iter ) {
       if ( ( *iter ) != ( &var ) ) {
         __checkVariableName ( ( *iter )->name() );
         __bn->_dag.insertArc ( __varNameMap[ ( *iter )->name()], varId );

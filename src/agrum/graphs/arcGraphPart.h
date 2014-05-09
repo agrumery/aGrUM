@@ -90,7 +90,7 @@ namespace gum {
       /// default constructor
       /** @param arcs_size the size of the hash table used to store all the arcs
        * @param arcs_resize_policy the resizing policy of this hash table*/
-      explicit ArcGraphPart ( Size arcs_size = GUM_HASHTABLE_DEFAULT_SIZE,
+      explicit ArcGraphPart ( Size arcs_size = HashTableConst::default_size,
                               bool arcs_resize_policy    = true );
 
       /// copy constructor
@@ -230,8 +230,7 @@ namespace gum {
        * half the number of arcs. If you do not specify this parameter, the method
        * will assign it for you. */
       template <typename VAL>
-      typename Property< VAL >::onArcs
-      arcsProperty ( VAL ( *f ) ( const Arc& ), Size size = 0 ) const;
+      ArcProperty< VAL > arcsProperty ( VAL ( *f ) ( const Arc& ), Size size = 0 ) const;
 
       /** @brief a method to create a hashMap of VAL from a set of arcs
        * (using for every arc, say x, the VAL a)
@@ -241,8 +240,7 @@ namespace gum {
        * half the number of arcs. If you do not specify this parameter, the method
        * will assign it for you. */
       template <typename VAL>
-      typename Property< VAL >::onArcs
-      arcsProperty ( const VAL& a, Size size = 0 ) const;
+      ArcProperty< VAL > arcsProperty ( const VAL& a, Size size = 0 ) const;
 
       /** @brief a method to create a list of VAL from a set of arcs
        * (using for every arc, say x, the VAL f(x))

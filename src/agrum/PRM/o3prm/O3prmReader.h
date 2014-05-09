@@ -89,13 +89,13 @@ namespace gum {
           std::string errMsg ( unsigned int i ) const;
 
           /// send on std::cerr the list of errors
-          void showElegantErrors() const;
+          void showElegantErrors(std::ostream& o=std::cerr) const;
 
           /// send on std::cerr the list of errors or warnings
-          void showElegantErrorsAndWarnings() const;
+          void showElegantErrorsAndWarnings(std::ostream& o=std::cerr) const;
 
           /// send on std::cerr the number of errors and the number of warnings
-          void showErrorCounts() const;
+          void showErrorCounts(std::ostream& o=std::cerr) const;
           /// @}
 
         private:
@@ -113,7 +113,7 @@ namespace gum {
           // Needed when file can't be parse (can not open it for exemple)
           ErrorsContainer __errors;
       };
-      
+
       extern template class O3prmReader<double>;
     } /* namespace o3prm */
   } /* namespace prm */

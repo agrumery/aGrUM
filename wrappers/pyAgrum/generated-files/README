@@ -1,2 +1,2 @@
 2013-08-13
-We have to use svn checkout svn://svn.code.sf.net/p/swig/code/branches/gsoc2009-matevz swig-code as our swig version since this is the only C++11-complieant version for now.
+We have to use prototype swig 3.0 (git clone  https://github.com/swig/swig.git) as our swig version since this is the only C++11-complieant version for now.

@@ -59,7 +59,7 @@ class Computer extends Equipment {
 
     Printer[] printers;
 
-    boolean exists_printer = exists( [printers.equipState], OK );
+    boolean exists_printer = exists ( [printers.equipState], OK );
 
     boolean can_print dependson equipState, exists_printer {
       // exists_printer |   false  | |   true   |

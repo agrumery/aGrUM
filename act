@@ -31,6 +31,8 @@ from distutils import sysconfig
 numversion="1.6"
 modulestxt="src/modules.txt" # the file to parse to find the modules
 
+nbr_tests_for_stats=40
+
 OKGREEN = '\033[92m'
 WARNING = '\033[93m'
 RED = '\033[91m'
@@ -73,7 +75,7 @@ def initParser(current):
                                         dest="fixed_seed",
                                         default=False)
     parser.add_option("", "--stats",
-                                        help="Consolidation on 20 runs.",
+                                        help="Consolidation on "+str(nbr_tests_for_stats)+" runs.",
                                         action="store_true",
                                         dest="stats",
                                         default=False)
@@ -493,6 +495,12 @@ def getInvocation(current):
         invocation+=getParam('verbose')
       else:
         invocation+=getParam('quiet')
+
+      if (current['stats']):
+        invocation+=getParam('stats')
+
+      if (current['fixed_seed']):
+        invocation+=getParam('fixed_seed')
         
         
       invocation+=getValParam('jobs',str(current['jobs']))
@@ -622,9 +630,8 @@ else:
   time_line=re.compile(r'## Profiling :\s+(.*?)\sms ##')
   stat_line=re.compile(r"Failed (.*?) of (.*?) test")
   
-  nbr_tests=20
   vals=list()
-  for i in range(nbr_tests):
+  for i in range(nbr_tests_for_stats):
     p=subprocess.Popen(sh,shell=True,stderr=subprocess.PIPE,stdout=subprocess.PIPE)
     out=p.stderr.readlines()
     tps=0
@@ -641,7 +648,7 @@ else:
         failed=int(stat_match.groups()[0])
         total=int(stat_match.groups()[1])
        
-    print("Stats {3}/{4} : succes rate {0}/{1} in {2} ms".format(total-failed,total,tps,i+1,nbr_tests))
+    print("Stats {3}/{4} : succes rate {0}/{1} in {2} ms".format(total-failed,total,tps,i+1,nbr_tests_for_stats))
     vals.append(tps)
     
   s=0.0
@@ -649,8 +656,8 @@ else:
   for v in vals:
     s+=v
     s2+=v*v
-  mean=s/nbr_tests
-  var=s2/nbr_tests-mean*mean
+  mean=s/nbr_tests_for_stats
+  var=s2/nbr_tests_for_stats-mean*mean
   print("=======================")
   print("Mean :{0}".format(mean))
   print("StdDev :{0}".format(math.sqrt(var)))

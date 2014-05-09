@@ -60,7 +60,7 @@ namespace gum {
 
     //return the first hole if holes exist
     if ( __holes && ( ! __holes->empty() ) )
-      next = * ( __holes->begin() );
+      next = * ( __holes->beginSafe() );
     else// in other case
       next = __bound;
 
@@ -85,7 +85,7 @@ namespace gum {
 
     //fill the first hole if holes exist
     if ( __holes && ( ! __holes->empty() ) ) {
-      newNode = * ( __holes->begin() );
+      newNode = * ( __holes->beginSafe() );
       __eraseHole ( newNode );
     } else {
       newNode = __bound;

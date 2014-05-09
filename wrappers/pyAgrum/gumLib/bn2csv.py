@@ -129,7 +129,7 @@ class CSVGenerator:
         writer = csv.writer(open(name_out,'wb'))
 
         if visible:
-            print name_in,' ready\r',
+            print name_out,'\r',
             sys.stdout.flush()
 
         titles=[bn.variable(item).name() for item in seq]
@@ -159,7 +159,7 @@ class CSVGenerator:
 
 def generateCSV(name_in, name_out, n,visible=False):
     g=CSVGenerator()
-    g.proceed(name_in, name_out, n,visible)
+    return g.proceed(name_in, name_out, n,visible)
 
 def module_help(exit_value=1):
     """

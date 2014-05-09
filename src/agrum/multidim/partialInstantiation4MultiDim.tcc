@@ -26,7 +26,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // allow partialInstantiationPatterns to be used
-#define GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED
+#define GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED 1
 
 
 #include <agrum/multidim/partialInstantiationRegister4MultiDim.h>
@@ -96,7 +96,7 @@
 #undef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
 
 /// the function to be used to partially instantiate a MultiDimDecorator
-GUM_MULTI_DIM_DECORATOR_PARTIAL_INST( partialInstantiation )
+GUM_MULTI_DIM_DECORATOR_PARTIAL_INST ( partialInstantiation )
 
 
 
@@ -119,9 +119,9 @@ namespace gum {
     if ( first_init ) {
       first_init = false;
 
-      std::string MultiDimArrayString( "MultiDimArray" );
-      std::string MultiDimDecisionDiagramString( "MultiDimDecisionDiagram" );
-      std::string BaseNameString( "MultiDimImplementation" );
+      std::string MultiDimArrayString ( "MultiDimArray" );
+      std::string MultiDimDecisionDiagramString ( "MultiDimDecisionDiagram" );
+      std::string BaseNameString ( "MultiDimImplementation" );
 
       // register base functions for multiDimArrays
       registerPartialInstantiation<GUM_SCALAR>
@@ -144,8 +144,8 @@ namespace gum {
     if ( first_init ) {
       first_init = false;
 
-      std::string MultiDimArrayString( "MultiDimArray" );
-      std::string BaseNameString( "MultiDimImplementation" );
+      std::string MultiDimArrayString ( "MultiDimArray" );
+      std::string BaseNameString ( "MultiDimImplementation" );
 
       // register base functions for multiDimArrays
       registerPartialInstantiation<GUM_SCALAR*>

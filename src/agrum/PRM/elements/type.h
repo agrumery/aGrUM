@@ -41,7 +41,7 @@ namespace gum {
   namespace prm {
 
     template<typename GUM_SCALAR> class PRMFactory;
-    
+
     /**
      * @class Type
      * @brief This is a decoration of the DiscreteVariable class.
@@ -253,7 +253,7 @@ namespace gum {
 
         /// @}
     };
-    
+
     extern template class Type<double>;
   } /* namespace prm */
 } /* namespace gum */

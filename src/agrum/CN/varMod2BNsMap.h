@@ -54,11 +54,11 @@ namespace gum {
 
         typedef typename std::vector< unsigned int > varKey;
 
-        typedef typename gum::HashTable< size_t, dBN > hashNet;
+        typedef typename gum::HashTable< Size, dBN > hashNet;
 
-        typedef typename gum::HashTable< varKey, std::list< size_t > > varHashs;
+        typedef typename gum::HashTable< varKey, std::list< Size > > varHashs;
 
-        typedef typename gum::HashTable< size_t, std::list< varKey > > hashVars;
+        typedef typename gum::HashTable< Size, std::list< varKey > > hashVars;
 
       protected :
         /** Map id - dBN : get a net from it's id. */
@@ -74,7 +74,7 @@ namespace gum {
         /** The current sampled IBayesNet. */
         dBN _currentSample;
         /** The current sampled IBayesNet hash. */
-        size_t _currentHash;
+        Size _currentHash;
         /** The hash fuction. Requires c++11/0x. */
         std::hash< std::vector< bool > > _vectHash;
 

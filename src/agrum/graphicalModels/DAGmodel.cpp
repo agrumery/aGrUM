@@ -76,7 +76,7 @@ namespace gum {
       roots.pop_back();
 
       while ( dag.children ( __mutableTopologicalOrder->back() ).size() ) {
-        NodeId child = * ( dag.children ( __mutableTopologicalOrder->back() ).begin() );
+        NodeId child = * ( dag.children ( __mutableTopologicalOrder->back() ).beginSafe() );
         dag.eraseArc ( Arc ( __mutableTopologicalOrder->back(), child ) );
 
         if ( dag.parents ( child ).empty() )
@@ -94,8 +94,8 @@ namespace gum {
     __mutableMoralGraph->populateNodes ( dag() );
     // transform the arcs into edges
 
-    for ( const auto & iter : arcs() )
-      __mutableMoralGraph->insertEdge ( iter.first(), iter.second() );
+    for ( auto iter = arcs().beginSafe (); iter != arcs().endSafe (); ++iter )
+      __mutableMoralGraph->insertEdge ( iter->first(), iter->second() );
 
     //}
 
@@ -103,10 +103,10 @@ namespace gum {
     for ( const auto node : nodes() ) {
       const NodeSet& parents = dag().parents ( node );
 
-      for ( NodeSetIterator it1 = parents.begin(); it1 != parents.end(); ++it1 ) {
+      for ( NodeSetIterator it1 = parents.beginSafe (); it1 != parents.endSafe (); ++it1 ) {
         NodeSetIterator it2 = it1;
 
-        for ( ++it2; it2 != parents.end(); ++it2 ) {
+        for ( ++it2; it2 != parents.endSafe (); ++it2 ) {
           // will automatically check if this edge already exists
           __mutableMoralGraph->insertEdge ( *it1, *it2 );
         }

@@ -75,7 +75,7 @@ namespace gum {
   INLINE
   void MultiDimWithOffset<GUM_SCALAR>::erase( const DiscreteVariable& v ) {
     Sequence<const DiscreteVariable*> variables=this->variablesSequence();
-    Idx pos=variables[&v]; // throw a NotFound if necessary
+    Idx pos=variables.pos ( &v ); // throw a NotFound if necessary
 
     if ( variables.size() ==1 ) {
       _gaps.clear();
@@ -206,9 +206,9 @@ namespace gum {
   Size MultiDimWithOffset<GUM_SCALAR>::_getOffs( const Instantiation& i ) const {
     Idx off = 0;
 
-    for ( HashTableConstIterator<const DiscreteVariable*,Size> iter=_gaps.begin();
-          iter != _gaps.end(); ++iter )
-      if ( i.contains( iter.key() ) ) off += *iter * i.valFromPtr( iter.key() );
+    for ( HashTableConstIteratorSafe<const DiscreteVariable*,Size> iter=_gaps.beginSafe();
+          iter != _gaps.endSafe(); ++iter )
+      if ( i.contains( iter.key() ) ) off += iter.val() * i.valFromPtr( iter.key() );
 
     return off;
   }

@@ -303,8 +303,8 @@ namespace gum_tests {
 
           const gum::NodeSet& parentList = source.dag().parents ( nodeIter );
 
-          for ( gum::NodeSet::const_iterator arcIter = parentList.begin();
-                arcIter != parentList.end();
+          for ( gum::NodeSet::const_iterator_safe arcIter = parentList.beginSafe();
+                arcIter != parentList.endSafe();
                 ++arcIter ) {
             TS_ASSERT ( copy->dag().existsArc ( *arcIter, nodeIter ) );
           }
@@ -459,8 +459,8 @@ namespace gum_tests {
 
         id.erase ( idList[0] );
 
-        for ( gum::List<gum::NodeId>::iterator iter = idList.begin();
-              iter != idList.end();
+        for ( gum::List<gum::NodeId>::iterator_safe iter = idList.beginSafe();
+              iter != idList.endSafe();
               ++iter ) {
           id.erase ( *iter );
         }
@@ -536,7 +536,7 @@ namespace gum_tests {
         gum::InfluenceDiagram<float> id;
         gum::List<gum::NodeId> idList;
 
-        for(const auto iter : id.nodes()) {
+        for ( const auto iter : id.nodes() ) {
           TS_ASSERT ( idList.exists ( iter ) );
         }
       }
@@ -694,7 +694,7 @@ namespace gum_tests {
 
         fill ( id, idList );
 
-        for(const auto iter : id.nodes()) {
+        for ( const auto iter : id.nodes() ) {
           TS_ASSERT_EQUALS ( id.idFromName ( id.variable ( iter ).name() ), iter );
           TS_ASSERT_EQUALS ( &id.variableFromName ( id.variable ( iter ).name() ), &id.variable ( iter ) );
         }
@@ -726,10 +726,10 @@ namespace gum_tests {
         gum::Size resultat[7][3] = {{8, 6, 4}, {3}, {7}, {1}, {2}, {5}, {0}};
         int i = 0;
 
-        for ( gum::List< gum::NodeSet >::iterator seqIter = partialTemporalOrder.begin(); seqIter != partialTemporalOrder.end(); ++seqIter, ++i ) {
+        for ( gum::List< gum::NodeSet >::iterator_safe seqIter = partialTemporalOrder.beginSafe(); seqIter != partialTemporalOrder.endSafe(); ++seqIter, ++i ) {
           int j = 0;
 
-          for ( gum::NodeSet::const_iterator it = seqIter->begin(); it != seqIter->end(); ++it, ++j ) {
+          for ( gum::NodeSet::const_iterator_safe it = seqIter->beginSafe(); it != seqIter->endSafe(); ++it, ++j ) {
             TS_ASSERT_EQUALS ( *it, resultat[i][j] );
           }
         }

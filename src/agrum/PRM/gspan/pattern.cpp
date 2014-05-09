@@ -55,7 +55,7 @@ namespace gum {
         for ( const auto node : nodes() ) {
           const NodeSet& parents = DiGraph::parents ( node );
 
-          for ( NodeSetIterator next = parents.begin(); next != parents.end(); ++next ) {
+          for ( NodeSetIterator next = parents.beginSafe(); next != parents.endSafe(); ++next ) {
             Size u = label ( node ).id;
             Size v = label ( *next ).id;
             EdgeCode edge_code ( 1, 2, u, label ( *next, node ).id, v );
@@ -71,7 +71,7 @@ namespace gum {
 
           const NodeSet& children = DiGraph::children ( node );
 
-          for ( NodeSetIterator next = children.begin(); next != children.end(); ++next ) {
+          for ( NodeSetIterator next = children.beginSafe(); next != children.endSafe(); ++next ) {
             Size u = label ( node ).id;
             Size v = label ( *next ).id;
             EdgeCode edge_code ( 1, 2, u, label ( node, *next ).id, v );
@@ -107,9 +107,9 @@ namespace gum {
         std::stringstream sBuff;
         sBuff << "digraph " << name << " {\n";
 
-        for ( const auto & arc : arcs() ) {
-          sBuff << label ( arc.tail() ).id << " -> ";
-          sBuff << label ( arc.head() ).id << ";\n";
+        for ( auto arc = arcs().beginSafe(); arc != arcs().endSafe(); ++arc ) {
+          sBuff << label ( arc->tail() ).id << " -> ";
+          sBuff << label ( arc->head() ).id << ";\n";
         }
 
         sBuff << "}\n";
@@ -235,7 +235,7 @@ namespace gum {
           GUM_TRACE_VAR ( node_map.size() );
           std::stringstream sBuff;
 
-          for ( Bijection<NodeId, NodeId>::iterator iter = node_map.begin(); iter != node_map.end(); ++iter ) {
+          for ( Bijection<NodeId, NodeId>::iterator_safe iter = node_map.beginSafe(); iter != node_map.endSafe(); ++iter ) {
             sBuff << "(" << iter.first() << ", " << iter.second() << ") ";
           }
 

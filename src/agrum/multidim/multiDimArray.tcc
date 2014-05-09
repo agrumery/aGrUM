@@ -80,7 +80,7 @@ namespace gum {
   INLINE
   void MultiDimArray<GUM_SCALAR>::erase( const DiscreteVariable& v ) {
     Sequence<const DiscreteVariable*> variables=this->variablesSequence();
-    Idx pos=variables[&v]; // throw a NotFound if necessary
+    Idx pos=variables.pos ( &v ); // throw a NotFound if necessary
 
     if ( variables.size() ==1 ) {
       if ( ! this->_isInMultipleChangeMethod() )

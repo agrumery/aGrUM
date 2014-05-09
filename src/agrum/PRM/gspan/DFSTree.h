@@ -296,7 +296,7 @@ namespace gum {
       };
 
 
-extern template class DFSTree<double>;
+      extern template class DFSTree<double>;
     } /* namespace gspan */
   } /* namespace prm */
 } /* namespace gum */

@@ -37,7 +37,7 @@ namespace gum {
    * @param base The constant unsigned long integer base used to compute \f$ base^{exponent} \f$.
    * @param exponent The unsigned long integer exponent used which will hold the result afterward.
    */
-  inline void intPow( const unsigned long& base, unsigned long& exponent ) {
+  inline void intPow ( const unsigned long& base, unsigned long& exponent ) {
     if ( exponent == 0 ) {
       exponent = 1;
       return;
@@ -56,7 +56,7 @@ namespace gum {
    *
    * @param exponent The unsigned long integer exponent used to compute \f$ 2^{exponent} \f$ which will hold the result of afterward.
    */
-  inline void int2Pow( unsigned long& exponent ) {
+  inline void int2Pow ( unsigned long& exponent ) {
     unsigned long base = 1;
     base <<= exponent;
     exponent = base;
@@ -69,7 +69,7 @@ namespace gum {
    * @param num_bits The unsigned long integer used as a "return" value to get the minimum number of bits used to represend card.
    * @param new_card The unsigned long integer used as a "return" value to get the maximum number those bits can represent, i.e. \f$ 2^{num\_bits} \f$.
    */
-  inline void superiorPow( const unsigned long& card, unsigned long& num_bits, unsigned long& new_card ) {
+  inline void superiorPow ( const unsigned long& card, unsigned long& num_bits, unsigned long& new_card ) {
     if ( card <= 0 ) {
       num_bits = 0;
       new_card = 1;

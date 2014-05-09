@@ -153,7 +153,7 @@ namespace gum {
           // ==========================================================================
           /// @{
           const NodeGraphPart& nodes() const;
-          
+
           const ArcSet& arcs() const;
 
           /// Returns an iterator at the beginning of the set of neighbors of node
@@ -225,6 +225,12 @@ namespace gum {
 
           /// A non recursive bugged version of __rec.
           bool __not_rec ( Pattern& p, Bijection<NodeId, NodeId>& node_map, NodeId u, NodeId v );
+	  
+	  
+	  // to avoid clang++ warnings
+	  using DiGraph::insertNode;
+	  using DiGraph::insertArc;
+	  using DiGraph::toDot;
       };
 
       /**

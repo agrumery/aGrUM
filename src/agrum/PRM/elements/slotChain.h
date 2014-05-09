@@ -161,7 +161,7 @@ namespace gum {
         /// See gum::ClassElement<GUM_SCALAR>::_addChild().
         virtual void addChild ( const ClassElement<GUM_SCALAR>& elt );
 
-        virtual std::string cast ( const Type<GUM_SCALAR>& t ) {
+        virtual std::string cast ( const Type<GUM_SCALAR>& t ) const {
           if ( lastElt().type().isSubTypeOf ( t ) ) {
             std::stringstream sBuff;
 

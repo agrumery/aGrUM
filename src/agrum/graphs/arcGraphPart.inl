@@ -86,12 +86,12 @@ namespace gum {
 
   //deprecated
   INLINE ArcGraphPart::ArcIterator ArcGraphPart::beginArcs() const {
-    return __arcs.begin();
+    return __arcs.beginSafe();
   }
 
-  //deprecated    
+  //deprecated
   INLINE const ArcGraphPart::ArcIterator& ArcGraphPart::endArcs() const {
-    return __arcs.end();
+    return __arcs.endSafe();
   }
 
 
@@ -122,7 +122,7 @@ namespace gum {
 
 
   INLINE void ArcGraphPart::_eraseSetOfArcs ( const ArcSet& set ) {
-    for ( ArcSetIterator iter = set.begin(); iter != set.end(); ++iter )
+    for ( ArcSetIterator iter = set.beginSafe(); iter != set.endSafe(); ++iter )
       eraseArc ( *iter );
   }
 
@@ -131,8 +131,8 @@ namespace gum {
     if ( __parents.exists ( id ) ) {
       NodeSet& parents = * ( __parents[id] );
 
-      for ( NodeSetIterator iter = parents.begin();
-            iter != parents.end(); ++iter ) {
+      for ( NodeSetIterator iter = parents.beginSafe();
+            iter != parents.endSafe(); ++iter ) {
         // warning: use this erase so that you actually use the virtualized
         // arc removal function
         eraseArc ( Arc ( *iter, id ) );
@@ -145,8 +145,8 @@ namespace gum {
     if ( __children.exists ( id ) ) {
       NodeSet& children = * ( __children[id] );
 
-      for ( NodeSetIterator iter = children.begin();
-            iter != children.end(); ++iter ) {
+      for ( NodeSetIterator iter = children.beginSafe();
+            iter != children.endSafe(); ++iter ) {
         // warning: use this erase so that you actually use the vritualized
         // arc removal function
         eraseArc ( Arc ( id, *iter ) );
@@ -156,7 +156,7 @@ namespace gum {
 
 
   INLINE void ArcGraphPart::_unvirtualizedEraseSetOfArcs ( const ArcSet& set ) {
-    for ( ArcSetIterator iter = set.begin(); iter != set.end(); ++iter )
+    for ( ArcSetIterator iter = set.beginSafe(); iter != set.endSafe(); ++iter )
       ArcGraphPart::eraseArc ( *iter );
   }
 
@@ -165,8 +165,8 @@ namespace gum {
     if ( __parents.exists ( id ) ) {
       NodeSet& parents = * ( __parents[id] );
 
-      for ( NodeSetIterator iter = parents.begin();
-            iter != parents.end(); ++iter ) {
+      for ( NodeSetIterator iter = parents.beginSafe();
+            iter != parents.endSafe(); ++iter ) {
         ArcGraphPart::eraseArc ( Arc ( *iter, id ) );
       }
     }
@@ -177,8 +177,8 @@ namespace gum {
     if ( __children.exists ( id ) ) {
       NodeSet& children = * ( __children[id] );
 
-      for ( NodeSetIterator iter = children.begin();
-            iter != children.end(); ++iter ) {
+      for ( NodeSetIterator iter = children.beginSafe();
+            iter != children.endSafe(); ++iter ) {
         ArcGraphPart::eraseArc ( Arc ( id, *iter ) );
       }
     }

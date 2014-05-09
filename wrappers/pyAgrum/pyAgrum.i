@@ -12,8 +12,9 @@ to OpenBayes, a free Bayesian Network library for Python."
 #define SWIG_FILE_WITH_INIT
 
 // this should be removed at some point with a new version of SWIG
-
 using namespace std;
+
+#include <math.h>
 %}
 
 %pythoncode %{
@@ -24,6 +25,7 @@ using namespace std;
 %include "exceptions.i"
 
 /* declaration of code enhancers for pyAgrum */
+
 %include "core.i"
 %include "variables.i"
 %include "potential.i"
@@ -40,8 +42,9 @@ using namespace std;
 
 %pythoncode %{
 Potential = Potential_double
-ListPotentials = ListPotentials_double
+randomDistribution = randomDistribution_double
 
+SimpleBayesNet = IBayesNet_double
 BayesNet = BayesNet_double
 LazyPropagation = LazyPropagation_double
 GibbsInference = GibbsInference_double
@@ -52,6 +55,5 @@ GibbsKL = GibbsKL_double
 CredalNet = CredalNet_double
 CNMonteCarloSampling = CNMonteCarloSampling_double
 CNLoopyPropagation = CNLoopyPropagation_double
-
 %}
 

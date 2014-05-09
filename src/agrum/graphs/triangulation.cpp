@@ -57,8 +57,8 @@ namespace gum {
       const NodeSet& clique = jt.clique ( cl );
       dSize = 0.0;
 
-      for ( const auto nod : clique )
-        dSize += log10 ( _modalities[nod] );
+      for ( auto nod = clique.beginSafe(); nod != clique.endSafe(); ++nod )
+        dSize += log10 ( _modalities[*nod] );
 
       if ( res < dSize ) res = dSize;
     }

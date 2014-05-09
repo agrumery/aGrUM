@@ -37,7 +37,7 @@ namespace gum {
       }
 
       if ( not __obs.empty() ) {
-        for ( auto iter = __obs.begin(); iter != __obs.end(); ++iter ) {
+        for ( auto iter = __obs.beginSafe(); iter != __obs.endSafe(); ++iter ) {
           // We used const ptrs only because of BayesNetInference::addEvidence() requires it
           delete const_cast<Potential<GUM_SCALAR>*> ( *iter );
         }
@@ -70,7 +70,7 @@ namespace gum {
       var_name << chain.first->name() << "." << chain.second->safeName();
       const DiscreteVariable& var = __inf->bn().variableFromName ( var_name.str() );
 
-      for ( auto iter = __obs.begin(); iter != __obs.end(); ++iter ) {
+      for ( auto iter = __obs.beginSafe(); iter != __obs.endSafe(); ++iter ) {
         if ( ( **iter ).contains ( var ) ) {
           __inf->eraseEvidence ( *iter );
           const Potential<GUM_SCALAR>* e = *iter;

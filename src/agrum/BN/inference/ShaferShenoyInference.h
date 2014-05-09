@@ -137,11 +137,11 @@ namespace gum {
       /// Mapping of the nodes with the clique used to put their CPT
       NodeProperty<NodeId> __node2CliqueMap;
 
-      typename Property< CliqueProp<GUM_SCALAR>* >::onNodes __clique_prop;
+      NodeProperty< CliqueProp<GUM_SCALAR>* > __clique_prop;
 
       /// Mapping of an arc and the message which transited from pair.first to
       /// pair.second
-      typename Property< MultiDimBucket<GUM_SCALAR>* >::onArcs __messagesMap;
+      ArcProperty< MultiDimBucket<GUM_SCALAR>* > __messagesMap;
 
       /// @}
       // ====================================================================

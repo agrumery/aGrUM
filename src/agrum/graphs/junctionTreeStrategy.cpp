@@ -33,14 +33,14 @@ namespace gum {
   /// default constructor
   JunctionTreeStrategy::JunctionTreeStrategy() {
     // for debugging purposes
-    GUM_CONSTRUCTOR( JunctionTreeStrategy );
+    GUM_CONSTRUCTOR ( JunctionTreeStrategy );
   }
 
 
   /// destructor
   JunctionTreeStrategy::~JunctionTreeStrategy() {
     // for debugging purposes
-    GUM_DESTRUCTOR( JunctionTreeStrategy );
+    GUM_DESTRUCTOR ( JunctionTreeStrategy );
   }
 
 

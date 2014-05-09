@@ -72,7 +72,7 @@ namespace gum {
 
       /// Copy constructor.
 
-      MultiDimImplementation( const MultiDimImplementation<GUM_SCALAR>& from );
+      MultiDimImplementation ( const MultiDimImplementation<GUM_SCALAR>& from );
 
 
       /// Destructor.
@@ -109,7 +109,7 @@ namespace gum {
       // see gum::MultiDimInterface
 
       virtual const Sequence<const DiscreteVariable*>&
-      variablesSequence( void ) const  ;
+      variablesSequence ( void ) const  ;
 
       /// returns the real name of the multiDim implementation
       /** In aGrUM, all the types of multi-dimensional arrays/functionals have a
@@ -136,12 +136,12 @@ namespace gum {
 
       /// See gum::MultiDimInterface::add(const DiscreteVariable& v)
 
-      virtual void add( const DiscreteVariable& v );
+      virtual void add ( const DiscreteVariable& v );
 
 
       /// See gum::MultiDimInterface::erase(const DiscreteVariable& v)
 
-      virtual void erase( const DiscreteVariable& v );
+      virtual void erase ( const DiscreteVariable& v );
 
 
       /// See gum::MultiDimInterface::nbrDim()
@@ -161,7 +161,7 @@ namespace gum {
        * @see compressionRatio()
        */
 
-      virtual Size realSize() const =0;
+      virtual Size realSize() const = 0;
 
 
       /**
@@ -181,15 +181,15 @@ namespace gum {
 
       /// See gum::MultiDimInterface::variable(Idx i)
 
-      const DiscreteVariable& variable( Idx i ) const ;
+      const DiscreteVariable& variable ( Idx i ) const ;
 
 
-      Idx pos( const DiscreteVariable& v ) const ;
+      Idx pos ( const DiscreteVariable& v ) const ;
 
 
       /// See gum::MultiDimInterface::contains(const DiscreteVariable& v)
 
-      bool contains( const DiscreteVariable& v ) const ;
+      bool contains ( const DiscreteVariable& v ) const ;
 
 
       /// See gum::MultiDimInterface::clear()
@@ -204,16 +204,16 @@ namespace gum {
       // ############################################################################
       /// @{
 
-      virtual MultiDimAdressable& getMasterRef( void );
+      virtual MultiDimAdressable& getMasterRef ( void );
 
 
-      virtual const MultiDimAdressable& getMasterRef( void ) const;
+      virtual const MultiDimAdressable& getMasterRef ( void ) const;
 
 
-      virtual bool registerSlave( Instantiation& i );
+      virtual bool registerSlave ( Instantiation& i );
 
 
-      virtual bool unregisterSlave( Instantiation& i );
+      virtual bool unregisterSlave ( Instantiation& i );
 
       /// @}
 
@@ -226,20 +226,20 @@ namespace gum {
 
       /// See gum::MultiDimContainer::beginMultipleChanges().
 
-      virtual void beginMultipleChanges( void );
+      virtual void beginMultipleChanges ( void );
 
 
       /// See gum::MultiDimContainer::endMultipleChanges().
 
-      virtual void endMultipleChanges( void );
-      virtual void endMultipleChanges( const GUM_SCALAR& );
+      virtual void endMultipleChanges ( void );
+      virtual void endMultipleChanges ( const GUM_SCALAR& );
 
     protected:
 
       /// Synchronize content after MultipleChanges.
 
-      virtual void _commitMultipleChanges( void );
-      virtual void _commitMultipleChanges( const GUM_SCALAR& );
+      virtual void _commitMultipleChanges ( void );
+      virtual void _commitMultipleChanges ( const GUM_SCALAR& );
 
 
       /// Get the actual change method of *this.
@@ -261,7 +261,7 @@ namespace gum {
       /// Technically this should be call by any subclass overloading this method
       /// to proceed with the changes in this class containers.
 
-      virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y ) =0;
+      virtual void _swap ( const DiscreteVariable* x, const DiscreteVariable* y ) = 0;
 
       /// @}
 
@@ -283,13 +283,13 @@ namespace gum {
       List<Instantiation*> __slaveInstantiations;
 
 
-      enum class __InternalChangeMethod:char {
+      enum class __InternalChangeMethod : char {
         DIRECT_CHANGE,
         MULTIPLE_CHANGE
       };
 
 
-      enum class __InternalChangeState :char {
+      enum class __InternalChangeState : char {
         NO_CHANGE,
         NOT_COMMITTED_CHANGE
       };

@@ -204,10 +204,12 @@ namespace gum_tests {
           gum::BayesNet<float>* bayesNet = new gum::BayesNet<float>();
           bnGen.generateBN ( *bayesNet );
 
-          gum::ShaferShenoyInference<float>*  inf=nullptr;
-          TS_GUM_ASSERT_THROWS_NOTHING ( inf=new  gum::ShaferShenoyInference<float>(*bayesNet) );
-          TS_GUM_ASSERT_THROWS_NOTHING ( if (inf) inf->makeInference() );
-          TS_GUM_ASSERT_THROWS_NOTHING ( if (inf) delete inf);
+          gum::ShaferShenoyInference<float>*  inf = nullptr;
+          TS_GUM_ASSERT_THROWS_NOTHING ( inf = new  gum::ShaferShenoyInference<float> ( *bayesNet ) );
+
+          TS_GUM_ASSERT_THROWS_NOTHING ( if ( inf ) inf->makeInference() );
+
+          TS_GUM_ASSERT_THROWS_NOTHING ( if ( inf ) delete inf );
 
           delete bayesNet;
         }

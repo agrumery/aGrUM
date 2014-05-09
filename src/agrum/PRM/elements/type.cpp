@@ -31,7 +31,7 @@ namespace gum {
   namespace prm {
 
     template class Type<double>;
-    
+
   } /* namespace prm */
 } /* namespace gum */
 

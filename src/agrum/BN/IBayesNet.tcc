@@ -86,8 +86,8 @@ namespace gum {
     for ( const auto node : nodes() ) {
       Idx q = 1;
 
-      for ( const auto parent : dag().parents ( node ) )
-        q *= variable ( parent ).domainSize();
+      for ( auto parent = dag().parents ( node ).beginSafe(); parent != dag().parents ( node ).endSafe(); ++parent )
+        q *= variable ( *parent ).domainSize();
 
       dim += ( variable ( node ).domainSize() - 1 ) * q;
     }
@@ -159,9 +159,9 @@ namespace gum {
       if ( dag().children ( node_iter ).size() > 0 ) {
         //const NodeSet& children =  dag().children ( node_iter );
 
-        for ( const auto child_iter : dag().children ( node_iter ) ) {
+        for ( auto child_iter = dag().children ( node_iter ).beginSafe(); child_iter != dag().children ( node_iter ).endSafe(); ++child_iter ) {
           output << tab << "\"" << variable ( node_iter ).name() << "\" -> "
-                 << "\"" << variable ( child_iter ).name() << "\";" << std::endl;
+                 << "\"" << variable ( *child_iter ).name() << "\";" << std::endl;
         }
       } else if ( dag().parents ( node_iter ).size() == 0 ) {
         output << tab << "\"" << variable ( node_iter ).name() << "\";" << std::endl;
@@ -250,11 +250,11 @@ namespace gum {
   template <typename GUM_SCALAR>
   bool
   IBayesNet<GUM_SCALAR>::operator== ( const IBayesNet& from ) const {
-    if ( size() !=from.size() ) {
+    if ( size() != from.size() ) {
       return false;
     }
 
-    if ( sizeArcs() !=from.sizeArcs() ) {
+    if ( sizeArcs() != from.sizeArcs() ) {
       return false;
     }
 
@@ -265,14 +265,14 @@ namespace gum {
       try {
         alignment.insert ( & variable ( node ),
                            & from.variableFromName ( variable ( node ).name() ) );
-      } catch ( NotFound &e ) {
+      } catch ( NotFound& e ) {
         // a name is not found in from
         return false;
       }
     }
 
     for ( const auto node : nodes() ) {
-      NodeId fromnode=from.idFromName ( variable ( node ).name() );
+      NodeId fromnode = from.idFromName ( variable ( node ).name() );
 
       if ( cpt ( node ).nbrDim() != from.cpt ( fromnode ).nbrDim() ) {
         return false;
@@ -287,9 +287,9 @@ namespace gum {
 
 
       for ( i.setFirst(); not i.end(); i.inc() ) {
-        for ( Idx indice=0; indice<cpt ( node ).nbrDim(); ++indice ) {
-          const DiscreteVariable* p=& ( i.variable ( indice ) );
-          j.chgVal ( * ( alignment.second ( p ) ),i.val ( *p ) );
+        for ( Idx indice = 0; indice < cpt ( node ).nbrDim(); ++indice ) {
+          const DiscreteVariable* p = & ( i.variable ( indice ) );
+          j.chgVal ( * ( alignment.second ( p ) ), i.val ( *p ) );
         }
 
         if ( std::pow ( cpt ( node ).get ( i ) - from.cpt ( fromnode ).get ( j ),

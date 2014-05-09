@@ -194,8 +194,8 @@ namespace gum {
         for ( auto jt = v.cbegin(), jtEnd = v.cend(),
         minIt = _l_marginalMin[tId][ id ].cbegin(), minItEnd = _l_marginalMin[tId][ id ].cend(),
         maxIt = _l_marginalMax[tId][ id ].cbegin(), maxItEnd = _l_marginalMax[tId][ id ].cend();
-        jt != jtEnd,
-        minIt != minItEnd,
+        jt != jtEnd &&
+        minIt != minItEnd &&
         maxIt != maxItEnd;
         ++jt,
         ++minIt,
@@ -565,7 +565,7 @@ namespace gum {
             delete _l_optimalNet[bn];
 
         if ( this->_workingSetE[bn] != nullptr ) {
-          for ( auto it = _workingSetE[bn]->begin(), theEnd = _workingSetE[bn]->end(); it != theEnd; ++it )
+          for ( auto it = _workingSetE[bn]->beginSafe(), theEnd = _workingSetE[bn]->endSafe(); it != theEnd; ++it )
             delete *it;
 
           delete _workingSetE[bn];

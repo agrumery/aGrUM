@@ -36,7 +36,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::ScheduleSeparatorStoreMultiDim
   ( const ScheduleMultiDim<GUM_SCALAR>& table,
-    typename Property<Set<const MultiDimImplementation<GUM_SCALAR>*> >::onArcs&
+    ArcProperty<Set<const MultiDimImplementation<GUM_SCALAR>*> >&
     separator_tables,
     Arc separator ) :
     ScheduleOperation<GUM_SCALAR>
@@ -188,8 +188,10 @@ namespace gum {
 
     if ( first_time ) {
       first_time = false;
-      __debug__::__inc_deletion( "Sequence", __FILE__, __LINE__, "destructor of",
-                                 ( void* ) &empty_seq );
+      __debug__::__inc_deletion( "Sequence", __FILE__, __LINE__,
+                                 "destructor of", ( void* ) &empty_seq );
+      __debug__::__inc_deletion( "SequenceImplementation", __FILE__, __LINE__,
+                                 "destructor of", ( void* ) &empty_seq );
     }
 
 #endif /* NDEBUG */

@@ -35,7 +35,7 @@ namespace gum {
   UnconstrainedEliminationSequenceStrategy::
   UnconstrainedEliminationSequenceStrategy() {
     // for debugging purposes
-    GUM_CONSTRUCTOR( UnconstrainedEliminationSequenceStrategy );
+    GUM_CONSTRUCTOR ( UnconstrainedEliminationSequenceStrategy );
   }
 
 
@@ -44,7 +44,7 @@ namespace gum {
   UnconstrainedEliminationSequenceStrategy
   ( const UnconstrainedEliminationSequenceStrategy& ) {
     // for debugging purposes
-    GUM_CONS_CPY( UnconstrainedEliminationSequenceStrategy );
+    GUM_CONS_CPY ( UnconstrainedEliminationSequenceStrategy );
   }
 
 
@@ -52,7 +52,7 @@ namespace gum {
   UnconstrainedEliminationSequenceStrategy::
   ~UnconstrainedEliminationSequenceStrategy() {
     // for debugging purposes
-    GUM_DESTRUCTOR( UnconstrainedEliminationSequenceStrategy );
+    GUM_DESTRUCTOR ( UnconstrainedEliminationSequenceStrategy );
   }
 
 

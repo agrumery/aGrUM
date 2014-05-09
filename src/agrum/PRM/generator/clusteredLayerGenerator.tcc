@@ -154,7 +154,7 @@ namespace gum {
             size = getDomainSize();
             parents = & ( dag.parents ( names.second ( *a ) ) );
 
-            for ( Set<NodeId>::const_iterator prnt = parents->begin(); prnt != parents->end(); ++prnt ) {
+            for ( Set<NodeId>::const_iterator_safe prnt = parents->beginSafe(); prnt != parents->endSafe(); ++prnt ) {
               f.addParent ( names.first ( *prnt ) );
               size *= f.retrieveClass ( l[lvl].c.back() ).get ( names.first ( *prnt ) ).type()->domainSize();
             }
@@ -212,7 +212,7 @@ namespace gum {
               size = getDomainSize();
               parents = & ( dag.parents ( names.second ( *a ) ) );
 
-              for ( Set<NodeId>::const_iterator prnt = parents->begin(); prnt != parents->end(); ++prnt ) {
+              for ( Set<NodeId>::const_iterator_safe prnt = parents->beginSafe(); prnt != parents->endSafe(); ++prnt ) {
                 f.addParent ( names.first ( *prnt ) );
                 size *= f.retrieveClass ( l[lvl].c.back() ).get ( names.first ( *prnt ) ).type()->domainSize();
               }
@@ -261,7 +261,7 @@ namespace gum {
               size = getDomainSize();
               parents = & ( dag.parents ( names.second ( *a ) ) );
 
-              for ( Set<NodeId>::const_iterator prnt = parents->begin(); prnt != parents->end(); ++prnt ) {
+              for ( Set<NodeId>::const_iterator_safe prnt = parents->beginSafe(); prnt != parents->endSafe(); ++prnt ) {
                 f.addParent ( names.first ( *prnt ) );
                 size *= f.retrieveClass ( l[lvl].c.back() ).get ( names.first ( *prnt ) ).type()->domainSize();
               }
@@ -333,7 +333,7 @@ namespace gum {
         size = getDomainSize();
         parents = & ( dag.parents ( names.second ( *a ) ) );
 
-        for ( Set<NodeId>::const_iterator prnt = parents->begin(); prnt != parents->end(); ++prnt ) {
+        for ( Set<NodeId>::const_iterator_safe prnt = parents->beginSafe(); prnt != parents->endSafe(); ++prnt ) {
           f.addParent ( names.first ( *prnt ) );
           size *= f.retrieveClass ( l[lvl].c.back() ).get ( names.first ( *prnt ) ).type()->domainSize();
         }
@@ -396,7 +396,7 @@ namespace gum {
           parents = & ( dag.parents ( node ) );
           std::vector<NodeId> v;
 
-          for ( Set<NodeId>::iterator iter = parents->begin(); iter != parents->end(); ++iter )
+          for ( Set<NodeId>::iterator_safe iter = parents->beginSafe(); iter != parents->endSafe(); ++iter )
             v.push_back ( *iter );
 
           while ( dag.parents ( node ).size() > getMaxParents() ) {
@@ -500,21 +500,21 @@ namespace gum {
     }
 
     template<typename GUM_SCALAR> INLINE
-    ClusteredLayerGenerator<GUM_SCALAR>::ClusteredLayerGenerator():
-      __layers(), __domain_size( 2 ), __max_parents( INT_MAX ), __cluster_ratio( 0.0 ) {
-      GUM_CONSTRUCTOR( ClusteredLayerGenerator );
+    ClusteredLayerGenerator<GUM_SCALAR>::ClusteredLayerGenerator() :
+      __layers(), __domain_size ( 2 ), __max_parents ( INT_MAX ), __cluster_ratio ( 0.0 ) {
+      GUM_CONSTRUCTOR ( ClusteredLayerGenerator );
     }
 
     template<typename GUM_SCALAR> INLINE
-    ClusteredLayerGenerator<GUM_SCALAR>::ClusteredLayerGenerator( const ClusteredLayerGenerator<GUM_SCALAR>& source ):
-      __layers( source.__layers ), __domain_size( source.__domain_size ),
-      __max_parents( source.__max_parents ) {
-      GUM_CONS_CPY( ClusteredLayerGenerator );
+    ClusteredLayerGenerator<GUM_SCALAR>::ClusteredLayerGenerator ( const ClusteredLayerGenerator<GUM_SCALAR>& source ) :
+      __layers ( source.__layers ), __domain_size ( source.__domain_size ),
+      __max_parents ( source.__max_parents ) {
+      GUM_CONS_CPY ( ClusteredLayerGenerator );
     }
 
     template<typename GUM_SCALAR> INLINE
     ClusteredLayerGenerator<GUM_SCALAR>::~ClusteredLayerGenerator() {
-      GUM_DESTRUCTOR( ClusteredLayerGenerator );
+      GUM_DESTRUCTOR ( ClusteredLayerGenerator );
       // typedef HashTable<std::string, std::vector<std::string>*>::iterator Iter;
       // for (Iter iter = __cluster_map.begin(); iter != __cluster_map.end(); ++iter) {
       //   delete *iter;
@@ -523,7 +523,7 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     ClusteredLayerGenerator<GUM_SCALAR>&
-    ClusteredLayerGenerator<GUM_SCALAR>::operator=( const ClusteredLayerGenerator<GUM_SCALAR>& source ) {
+    ClusteredLayerGenerator<GUM_SCALAR>::operator= ( const ClusteredLayerGenerator<GUM_SCALAR>& source ) {
       __layers = source.__layers;
       __domain_size = source.__domain_size;
       __max_parents = source.__max_parents;
@@ -538,7 +538,7 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     void
-    ClusteredLayerGenerator<GUM_SCALAR>::setDomainSize( Size s ) {
+    ClusteredLayerGenerator<GUM_SCALAR>::setDomainSize ( Size s ) {
       __domain_size = s;
     }
 
@@ -550,13 +550,13 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     void
-    ClusteredLayerGenerator<GUM_SCALAR>::setMaxParents( Size s ) {
+    ClusteredLayerGenerator<GUM_SCALAR>::setMaxParents ( Size s ) {
       __max_parents = s;
     }
 
     template<typename GUM_SCALAR> INLINE
     void
-    ClusteredLayerGenerator<GUM_SCALAR>::setLayers( const std::vector<typename LayerGenerator<GUM_SCALAR>::LayerData>& v ) {
+    ClusteredLayerGenerator<GUM_SCALAR>::setLayers ( const std::vector<typename LayerGenerator<GUM_SCALAR>::LayerData>& v ) {
       __layers = v;
     }
 
@@ -580,7 +580,7 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     void
-    ClusteredLayerGenerator<GUM_SCALAR>::setClusterRatio( double ratio ) {
+    ClusteredLayerGenerator<GUM_SCALAR>::setClusterRatio ( double ratio ) {
       __cluster_ratio = ratio;
     }
 

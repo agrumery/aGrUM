@@ -8,7 +8,7 @@ class MainWindow;
 class ViewController : public QObject {
     Q_OBJECT
   public:
-    explicit ViewController( MainWindow * mw, QObject *parent = 0 );
+    explicit ViewController ( MainWindow* mw, QObject* parent = 0 );
 
     bool isFullScreen() const;
     bool isDocksVisible() const;
@@ -28,22 +28,22 @@ class ViewController : public QObject {
     bool isUnprintableCharactersVisible() const;
 
   public slots:
-    void setFullScreen( bool checked );
-    void setDocksVisibility( bool visible );
-    void setDockVisibility( bool visible );
-    void setStatusBarVisibility( bool visible );
-    void setToolBarVisibility( bool visible );
-    void setProjectExploratorVisibility( bool visible );
-    void setSearchDockVisibility( bool visible );
-    void setBuildDockVisibility( bool visible );
-    void setExecuteDockVisibility( bool visible );
-    void setCommandWidgetVisible( bool visible );
+    void setFullScreen ( bool checked );
+    void setDocksVisibility ( bool visible );
+    void setDockVisibility ( bool visible );
+    void setStatusBarVisibility ( bool visible );
+    void setToolBarVisibility ( bool visible );
+    void setProjectExploratorVisibility ( bool visible );
+    void setSearchDockVisibility ( bool visible );
+    void setBuildDockVisibility ( bool visible );
+    void setExecuteDockVisibility ( bool visible );
+    void setCommandWidgetVisible ( bool visible );
 
-    void setLineNumbersVisibility( bool checked );
-    void setBookmarksVisibility( bool checked );
-    void setFoldMargingVisibility( bool checked );
-    void setIndentationGuidesVisibility( bool checked );
-    void setUnprintableCharactersVisibility( bool checked );
+    void setLineNumbersVisibility ( bool checked );
+    void setBookmarksVisibility ( bool checked );
+    void setFoldMargingVisibility ( bool checked );
+    void setIndentationGuidesVisibility ( bool checked );
+    void setUnprintableCharactersVisibility ( bool checked );
 
     void increaseZoom();
     void decreaseZoom();
@@ -52,9 +52,9 @@ class ViewController : public QObject {
   private:
 
     struct PrivateData;
-    PrivateData * d;
+    PrivateData* d;
 
-    MainWindow * mw;
+    MainWindow* mw;
 };
 
 #endif // VIEWCONTROLLER_H

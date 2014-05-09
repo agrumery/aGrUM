@@ -25,7 +25,7 @@
 
 static long get_clock() {
   struct timeval tv;
-  gettimeofday( &tv, nullptr );
+  gettimeofday ( &tv, nullptr );
   return ( tv.tv_sec * 1000000 ) + tv.tv_usec;
 }
 
@@ -42,9 +42,9 @@ namespace gum {
   INLINE
   double Timer::step() const {
     if ( _sleeping )
-      return double( _pause - _start ) / 1000000.0;
+      return double ( _pause - _start ) / 1000000.0;
     else
-      return double( get_clock() - _start ) / 1000000.0;
+      return double ( get_clock() - _start ) / 1000000.0;
   }
 
   INLINE

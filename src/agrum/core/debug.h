@@ -106,7 +106,7 @@ namespace gum {
     void __show_trace ( const char* zeKey, const char* zeFile, long zeLine,
                         const char* zeMsg, const void* zePtr );
     void __inc_creation ( const char* zeKey, const char* zeFile, long zeLine,
-                          const char* zeMsg, const void* zePtr,int zeSize=-1 );
+                          const char* zeMsg, const void* zePtr, int zeSize = -1 );
     void __inc_deletion ( const char* zeKey, const char* zeFile, long zeLine,
                           const char* zeMsg, const void* zePtr );
     void __dumpObjects ( void );

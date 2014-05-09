@@ -53,14 +53,14 @@ namespace gum {
 
       /// default constructor
       /** @warning table and del_vars are passed by copy */
-      ScheduleProject( const ScheduleMultiDim<GUM_SCALAR>& table,
-                       const Set<const DiscreteVariable*>& del_vars,
-                       MultiDimImplementation<GUM_SCALAR>*
-                       ( *project )( const MultiDimImplementation<GUM_SCALAR>&,
-                                     const Set<const DiscreteVariable*>& ) );
+      ScheduleProject ( const ScheduleMultiDim<GUM_SCALAR>& table,
+                        const Set<const DiscreteVariable*>& del_vars,
+                        MultiDimImplementation<GUM_SCALAR>*
+                        ( *project ) ( const MultiDimImplementation<GUM_SCALAR>&,
+                                       const Set<const DiscreteVariable*>& ) );
 
       /// copy constructor
-      ScheduleProject( const ScheduleProject<GUM_SCALAR>& );
+      ScheduleProject ( const ScheduleProject<GUM_SCALAR>& );
 
       /// virtual copy constructor: creates a clone of the operation
       virtual ScheduleProject<GUM_SCALAR>* newFactory() const;
@@ -112,7 +112,7 @@ namespace gum {
        * amount of memory used during the operation and the second one is the
        * amount of memory still used at the end of the function ( the memory used by
        * the resulting table ) */
-      std::pair<long,long> memoryUsage() const;
+      std::pair<long, long> memoryUsage() const;
 
       /// returns the scheduleMultidim resulting from the execution of the operation
       const ScheduleMultiDim<GUM_SCALAR>& result() const;
@@ -148,8 +148,8 @@ namespace gum {
 
       /// the projection operator
       MultiDimImplementation<GUM_SCALAR>*
-      ( *__project )( const MultiDimImplementation<GUM_SCALAR>&,
-                      const Set<const DiscreteVariable*>& );
+      ( *__project ) ( const MultiDimImplementation<GUM_SCALAR>&,
+                       const Set<const DiscreteVariable*>& );
 
   };
 

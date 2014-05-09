@@ -26,14 +26,14 @@ namespace gum {
   double randomProba() {
     return ( ( double ) rand() ) / ( ( double ) RAND_MAX );
   }
- 
+
 // we do not use INLINE but inline instead
   INLINE
-  void initRandom(unsigned int init) {
-    if (init)
-      srand(init);
+  void initRandom ( unsigned int init ) {
+    if ( init )
+      srand ( init );
     else
-      srand( rand() + ( unsigned int ) std::time( nullptr ) );
+      srand ( rand() + ( unsigned int ) std::time ( nullptr ) );
   }
 
 } /* namespace gum */

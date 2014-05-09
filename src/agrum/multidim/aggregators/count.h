@@ -49,11 +49,11 @@ namespace gum {
 
     template<typename GUM_SCALAR> class Count : public MultiDimAggregator<GUM_SCALAR> {
       public:
-        Count( Idx value );
-        Count( const Count<GUM_SCALAR>& from );
+        Count ( Idx value );
+        Count ( const Count<GUM_SCALAR>& from );
         virtual ~Count();
 
-        virtual std::string aggregatorName( void ) const;
+        virtual std::string aggregatorName ( void ) const;
 
         /**
          * This method creates a clone of this object, withouth its content
@@ -72,12 +72,12 @@ namespace gum {
 
 
       protected:
-        virtual Idx _neutralElt( void ) const ;
-        virtual Idx _folder( const DiscreteVariable& v,Idx i1,Idx i2,bool& stop_iteration ) const;
+        virtual Idx _neutralElt ( void ) const ;
+        virtual Idx _folder ( const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration ) const;
       private:
         Idx __value;
     };
-    
+
     extern template class Count<float>;
     extern template class Count<double>;
   } //aggregator

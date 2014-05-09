@@ -60,7 +60,7 @@ namespace gum {
 
       /// Copy constructor
       /// Proceed a deep copy: all variables are copied but keep the same node id.
-      VariableNodeMap( const VariableNodeMap& source );
+      VariableNodeMap ( const VariableNodeMap& source );
 
       /// Destructor
       ~VariableNodeMap();
@@ -78,17 +78,17 @@ namespace gum {
 
       /// Returns a discrete variable given it's node id.
       /** @throws NotFound Raised if no nodes matches id. */
-      const DiscreteVariable& get( NodeId id ) const;
+      const DiscreteVariable& get ( NodeId id ) const;
 
       /// Returns a node id given it's variable.
       /** @throws NotFound Raised if no nodes matches var. */
-      NodeId get( const DiscreteVariable& var ) const;
+      NodeId get ( const DiscreteVariable& var ) const;
 
       /// Return true if id matches a node.
-      bool exists( NodeId id ) const;
+      bool exists ( NodeId id ) const;
 
       /// Return true if var matches a node.
-      bool exists( const DiscreteVariable& var ) const;
+      bool exists ( const DiscreteVariable& var ) const;
 
       /// Maps id with var.
       /**
@@ -96,20 +96,20 @@ namespace gum {
        * @throws DuplicateLabel if this name already exists
        * @throws DuplicateElement if this id already exists
        * @return Returns id (useful in some case); */
-      NodeId insert( NodeId id, const DiscreteVariable& var );
+      NodeId insert ( NodeId id, const DiscreteVariable& var );
 
       /// Removes a var and it's id of this mapping. The pointer is deleted.
       /** @throws NotFound Raised if no nodes matches id. */
-      void erase( NodeId id );
+      void erase ( NodeId id );
 
       /// Removes a var and it's id of this mapping. The pointer is deleted.
       /** @throws NotFound Raised if no nodes matches id. */
-      void erase( const DiscreteVariable& var );
+      void erase ( const DiscreteVariable& var );
 
       /// we allow the user to change the name of a variable
       /** @throws DuplicateLabel if this name already exists
        * @throws NotFound Raised if no nodes matches id. */
-      void changeName( NodeId id,const std::string& new_name );
+      void changeName ( NodeId id, const std::string& new_name );
 
       /// removes all the associations
       void clear();
@@ -123,7 +123,7 @@ namespace gum {
        * @return id's name.
        * @throw NotFound Raised if no variable matches id.
        */
-      const std::string& name( NodeId id ) const;
+      const std::string& name ( NodeId id ) const;
 
       /**
        * Returns the name of a variable.
@@ -131,7 +131,7 @@ namespace gum {
        * @return var's name.
        * @throw NotFound Raised if var is not in this VariableNodeMap.
        */
-      const std::string& name( const DiscreteVariable& var ) const;
+      const std::string& name ( const DiscreteVariable& var ) const;
 
       /// @}
 
@@ -143,11 +143,11 @@ namespace gum {
 
       /// Returns a discrete variable given it's node id.
       /** @throws NotFound Raised if no nodes matches id. */
-      const DiscreteVariable& operator[]( NodeId id ) const;
+      const DiscreteVariable& operator[] ( NodeId id ) const;
 
       /// Returns a node id given it's variable.
       /** @throws NotFound Raised if no nodes matches var. */
-      NodeId operator[]( const DiscreteVariable& var ) const;
+      NodeId operator[] ( const DiscreteVariable& var ) const;
 
       /// @}
 
@@ -158,14 +158,14 @@ namespace gum {
       /// @{
 
       /// @throw NotFound if no such name exists in the graph.
-      NodeId idFromName( const std::string& name ) const;
-      const DiscreteVariable& variableFromName( const std::string& name ) const;
+      NodeId idFromName ( const std::string& name ) const;
+      const DiscreteVariable& variableFromName ( const std::string& name ) const;
 
       /// @}
 
     private:
       /// effectively do the copy (for copy constructor or operator=)
-      void __copy( const VariableNodeMap& source );
+      void __copy ( const VariableNodeMap& source );
 
       /// Bijection between the node's NodeIds and the variables.
       Bijection<NodeId, const DiscreteVariable*> __nodes2vars;
