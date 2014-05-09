@@ -126,7 +126,7 @@ class TestDictFeature(GibbsTestCase):
         ie.setMinEpsilonRate(0.0001)
         ie.setEvidence({'r': [0, 1], 'w': (1, 0)})
         ie.makeInference()
-        result = ie.marginal(self.s)
+        result = ie.marginal(self.s).tolist()
 
         ie = GibbsInference(self.bni)
         ie.setVerbosity(False)
@@ -134,8 +134,8 @@ class TestDictFeature(GibbsTestCase):
         ie.setMinEpsilonRate(0.0001)
         ie.setEvidence({'ri': [0, 1], 'wi': (1, 0)})
         ie.makeInference()
-        result2 = ie.marginal(self.si)
-        self.assertDelta(result.tolist(), result2.tolist())
+        result2 = ie.marginal(self.si).tolist()
+        self.assertDelta(result, result2)
 
         ie = GibbsInference(self.bn)
         ie.setVerbosity(False)
@@ -143,7 +143,7 @@ class TestDictFeature(GibbsTestCase):
         ie.setMinEpsilonRate(0.0001)
         ie.setEvidence({'r': 1, 'w': 0})
         ie.makeInference()
-        result = ie.marginal(self.s)
+        result = ie.marginal(self.s).tolist()
 
         ie = GibbsInference(self.bni)
         ie.setVerbosity(False)
@@ -151,8 +151,8 @@ class TestDictFeature(GibbsTestCase):
         ie.setMinEpsilonRate(0.0001)
         ie.setEvidence({'ri': 6, 'wi': 0.33})
         ie.makeInference()
-        result2 = ie.marginal(self.si)
-        self.assertDelta(result.tolist(), result2.tolist())
+        result2 = ie.marginal(self.si).tolist()
+        self.assertDelta(result, result2)
 
 
 
