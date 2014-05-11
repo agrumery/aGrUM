@@ -29,6 +29,7 @@
 #include <agrum/learning/scoreK2.h>
 #include <agrum/learning/scoreBDeu.h>
 #include <agrum/learning/paramEstimatorML.h>
+#include <agrum/learning/structuralConstraintDAG.h>
 
 namespace gum_tests {
 
@@ -84,10 +85,12 @@ namespace gum_tests {
                           unsigned int nb_max_parents ) {
         // create a DAG with all the nodes but without any arc
         gum::DAG dag;
-        unsigned int nb_nodes = order.size ();
+         unsigned int nb_nodes = order.size ();
         for ( unsigned int i = 0; i < nb_nodes; ++i ) {
           dag.insertNode ( i );
         }
+        //gum::learning::StructuralConstraintDAG constraint;
+        //constraint.setGraph ( dag );
         
         // initialization: assign a score to each node (without parents)
         score.clear ();
