@@ -60,3 +60,10 @@ linuxreleasedoc:
 cppcheck:
 	cppcheck src --force --enable=all 2>cppcheck.txt
 	wc -l cppcheck.txt
+
+gitinspector:
+	@rm -f gitinspector.html
+	gitinspector . --format=html -T > gitinspector.html 
+	firefox gitinspector.html &
+
+	
