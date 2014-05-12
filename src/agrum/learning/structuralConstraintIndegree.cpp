@@ -18,16 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the base class for structural constraints imposed by DAGs
+ * @brief the class for structural constraints limiting the number of parents
+ * of nodes in a directed graph
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <agrum/learning/structuralConstraintDAG.h>
 
+#include <agrum/learning/structuralConstraintIndegree.h>
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/structuralConstraintDAG.inl>
+#include <agrum/learning/structuralConstraintIndegree.inl>
 #endif /* GUM_NO_INLINE */
 
 
@@ -38,36 +39,40 @@ namespace gum {
 
     
     /// default constructor
-    StructuralConstraintDAG::StructuralConstraintDAG () {
-      GUM_CONSTRUCTOR ( StructuralConstraintDAG );
+    StructuralConstraintIndegree::StructuralConstraintIndegree () {
+      GUM_CONSTRUCTOR ( StructuralConstraintIndegree );
     }
 
-    
+
     /// constructor starting with an empty graph with a given number of nodes
-    StructuralConstraintDAG::StructuralConstraintDAG ( unsigned int nb_nodes ) :
+    StructuralConstraintIndegree::StructuralConstraintIndegree
+    ( unsigned int nb_nodes,
+      unsigned int max_indegree ) :
       StructuralConstraintDiGraph ( nb_nodes ) {
-      DAG g;
       for ( unsigned int i = 0; i < nb_nodes; ++i ) {
-        g.insertNode ( i );
+        _max_parents.insert ( i, max_indegree );
       }
-      _cycle_detector.setDAG ( g );
-      GUM_CONSTRUCTOR ( StructuralConstraintDAG );
+      GUM_CONSTRUCTOR ( StructuralConstraintIndegree );
     }
 
-    
+
     /// constructor starting with a given graph
-    StructuralConstraintDAG::StructuralConstraintDAG ( const DAG& graph ) :
+    StructuralConstraintIndegree::StructuralConstraintIndegree
+    ( const DiGraph& graph,
+      unsigned int max_indegree ) :
       StructuralConstraintDiGraph ( graph ) {
-      _cycle_detector.setDAG ( graph );
-      GUM_CONSTRUCTOR ( StructuralConstraintDAG );
+      for ( const auto id : graph ) {
+        _max_parents.insert ( id, max_indegree );
+      }
+      GUM_CONSTRUCTOR ( StructuralConstraintIndegree );
     }
 
-
+       
     /// destructor
-    StructuralConstraintDAG::~StructuralConstraintDAG () {
-      GUM_DESTRUCTOR ( StructuralConstraintDAG );
+    StructuralConstraintIndegree::~StructuralConstraintIndegree () {
+      GUM_DESTRUCTOR ( StructuralConstraintIndegree );
     }
-    
+
  
   } /* namespace learning */
 

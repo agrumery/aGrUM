@@ -36,6 +36,15 @@ namespace gum {
     INLINE void StructuralConstraintDiGraph::setGraph ( const DiGraph& graph ) {
       _graph = graph;
     }
+    
+
+    /// sets a new graph from which we will perform checkings
+    INLINE void StructuralConstraintDiGraph::setGraph ( unsigned int nb_nodes ) {
+      _graph.clear ();
+      for ( unsigned int i = 0; i < nb_nodes; ++i ) {
+        _graph.insertNode ( i );
+      }
+    }
 
 
     /// adds a new arc into the graph (without checking the constraints)
@@ -49,6 +58,28 @@ namespace gum {
       _graph.eraseArc ( Arc ( x, y ) );
     }
 
+    
+    /// checks whether the constraints enable to add arc (x,y)
+    INLINE bool
+    StructuralConstraintDiGraph::checkArcAddition ( NodeId x, NodeId y ) {
+      return _graph.existsNode ( x ) && _graph.existsNode ( y ) &&
+        ! _graph.existsArc ( x, y );
+    }
+
+
+    /// checks whether the constraints enable to remove arc (x,y)
+    INLINE bool
+    StructuralConstraintDiGraph::checkArcDeletion ( NodeId x, NodeId y ) {
+      return _graph.existsArc ( x, y );
+    }
+
+    
+    /// checks whether the constraints enable to reverse arc (x,y)
+    INLINE bool
+    StructuralConstraintDiGraph::checkArcReversal ( NodeId x, NodeId y ) {
+      return _graph.existsArc ( x, y ) && ! _graph.existsArc ( y, x );
+    }
+    
  
   } /* namespace learning */
 

@@ -18,16 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the base class for structural constraints imposed by DAGs
+ * @brief the class for structural constraints over nodes that belong to 2 time
+ * slices
+ *
+ * In DBNs, it is forbidden to add arcs from nodes at time slice t to nodes at
+ * time slice s, where s < t. This class allows for taking this kind of constaint
+ * into account
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <agrum/learning/structuralConstraintDAG.h>
 
+#include <agrum/learning/structuralConstraint2TimeSlice.h>
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/structuralConstraintDAG.inl>
+#include <agrum/learning/structuralConstraint2TimeSlice.inl>
 #endif /* GUM_NO_INLINE */
 
 
@@ -38,34 +43,48 @@ namespace gum {
 
     
     /// default constructor
-    StructuralConstraintDAG::StructuralConstraintDAG () {
-      GUM_CONSTRUCTOR ( StructuralConstraintDAG );
+    StructuralConstraint2TimeSlice::StructuralConstraint2TimeSlice () {
+      GUM_CONSTRUCTOR ( StructuralConstraint2TimeSlice );
     }
 
-    
+
     /// constructor starting with an empty graph with a given number of nodes
-    StructuralConstraintDAG::StructuralConstraintDAG ( unsigned int nb_nodes ) :
-      StructuralConstraintDiGraph ( nb_nodes ) {
-      DAG g;
-      for ( unsigned int i = 0; i < nb_nodes; ++i ) {
-        g.insertNode ( i );
+    StructuralConstraint2TimeSlice::StructuralConstraint2TimeSlice
+    ( const NodeProperty<bool>& time_slice ) {
+      for ( auto iter = time_slice.cbegin(); iter != time_slice.cend (); ++iter ) {
+        _graph.insertNode ( iter.key () );
       }
-      _cycle_detector.setDAG ( g );
-      GUM_CONSTRUCTOR ( StructuralConstraintDAG );
-    }
+      _time_slice = time_slice;
 
+      GUM_CONSTRUCTOR ( StructuralConstraint2TimeSlice );
+    }
+    
     
     /// constructor starting with a given graph
-    StructuralConstraintDAG::StructuralConstraintDAG ( const DAG& graph ) :
-      StructuralConstraintDiGraph ( graph ) {
-      _cycle_detector.setDAG ( graph );
-      GUM_CONSTRUCTOR ( StructuralConstraintDAG );
-    }
+    StructuralConstraint2TimeSlice::StructuralConstraint2TimeSlice
+    ( const DiGraph& graph,
+      const NodeProperty<bool>& time_slice ) :
+    StructuralConstraintDiGraph ( graph ) {
+      // check that each node has an appropriate time slice
+      if ( time_slice.size () != graph.size () ) {
+        GUM_ERROR ( SizeError,
+                    "the graph and the property do not have the same size" );
+      }
+      for ( const auto id : graph ) {
+        if ( ! time_slice.exists ( id ) ) {
+          GUM_ERROR ( InvalidNode,
+                      "there exists a node in the graph without time slice" );
+        }
+      }
+      _time_slice = time_slice;
 
+      GUM_CONSTRUCTOR ( StructuralConstraint2TimeSlice );
+    }
+    
 
     /// destructor
-    StructuralConstraintDAG::~StructuralConstraintDAG () {
-      GUM_DESTRUCTOR ( StructuralConstraintDAG );
+    StructuralConstraint2TimeSlice::~StructuralConstraint2TimeSlice () {
+      GUM_DESTRUCTOR ( StructuralConstraint2TimeSlice );
     }
     
  

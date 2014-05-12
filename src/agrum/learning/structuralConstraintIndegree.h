@@ -18,16 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the base class for structural constraints imposed by DAGs
+ * @brief the class for structural constraints limiting the number of parents
+ * of nodes in a directed graph
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_DAG_H
-#define GUM_LEARNING_STRUCTURAL_CONSTRAINT_DAG_H
+#ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_INDEGREE_H
+#define GUM_LEARNING_STRUCTURAL_CONSTRAINT_INDEGREE_H
 
 
 #include <agrum/config.h>
-#include <agrum/graphs/DAGCycleDetector.h>
 #include <agrum/learning/structuralConstraintDiGraph.h>
 
 
@@ -37,15 +37,14 @@ namespace gum {
   namespace learning {
 
     
-    /** @class StructuralConstraintDAG
-     * @brief The base class for structural constraints imposed by DAGs
+    /** @class StructuralConstraintIndegree
+     * @brief the class for structural constraints limiting the number of parents
+     * of nodes in a directed graph
      *
-     * This base should always be a virtual parents of the structural constraints
-     * classes. This will allow to combine different constraints into a single
-     * class
      * @ingroup learning_group
      */
-    class StructuralConstraintDAG : protected virtual StructuralConstraintDiGraph {
+    class StructuralConstraintIndegree :
+      protected virtual StructuralConstraintDiGraph {
     public:
       
       // ##########################################################################
@@ -54,16 +53,18 @@ namespace gum {
       /// @{
 
       /// default constructor
-      StructuralConstraintDAG ();
+      StructuralConstraintIndegree ();
 
       /// constructor starting with an empty graph with a given number of nodes
-      StructuralConstraintDAG ( unsigned int nb_nodes );
+      StructuralConstraintIndegree ( unsigned int nb_nodes,
+                                     unsigned int max_indegree );
 
       /// constructor starting with a given graph
-      StructuralConstraintDAG ( const DAG& graph );
-
+      StructuralConstraintIndegree ( const DiGraph& graph,
+                                     unsigned int max_indegree );
+       
       /// destructor
-      virtual ~StructuralConstraintDAG ();
+      virtual ~StructuralConstraintIndegree ();
       
       /// @}
 
@@ -75,42 +76,45 @@ namespace gum {
       /// @{
 
       /// sets a new graph from which we will perform checkings
-      virtual void setGraph ( const DAG& graph );
+      virtual void setGraph ( const DiGraph& graph,
+                              const NodeProperty<unsigned int>& max_indegree );
 
-      /// sets a new empty graph from which we will perform checkings
-      virtual void setGraph ( unsigned int nb_nodes ) override;
+      /// sets a new graph from which we will perform checkings
+      virtual void setGraph ( const DiGraph& graph,
+                              unsigned int max_indegree );
 
-      /// adds a new arc into the graph (without checking the constraints)
+      /// adds a new arc into the graph
       /** @warning If the arc already exists, nothing is done. In particular,
        * no exception is raised.
        * @throws InvalidNode exception is thrown if x or y does not belong to the
-       * graph nodes
-       * @throws InvalidDirectedCycle exception is thrown if any (directed) cycle
-       * is created by this arc. */
+       * graph nodes */
       virtual void insertArc ( NodeId x, NodeId y ) override;
 
-      /// removes an arc from the graph (without checking the constraints)
+      /// removes an arc from the graph
       /** @warning if the arc does not exist, nothing is done. In particular,
        * no exception is thrown. */
       virtual void eraseArc ( NodeId x, NodeId y ) override;
 
       /// checks whether the constraints enable to add arc (x,y)
       /** an arc can be added if and only if its extremal nodes belong to the
-       * graph and the arc does not already exist and would not create a cycle */
-      virtual bool checkArcAddition ( NodeId x, NodeId y );
+       * graph and the arc does not already exist. */
+      virtual bool checkArcAddition ( NodeId x, NodeId y ) override;
 
       /// checks whether the constraints enable to remove arc (x,y)
-      virtual bool checkArcDeletion ( NodeId x, NodeId y );
-
+      /** an arc can be removed if and only if the arc exists. */
+      virtual bool checkArcDeletion ( NodeId x, NodeId y ) override;
+ 
       /// checks whether the constraints enable to reverse arc (x,y)
-      virtual bool checkArcReversal ( NodeId x, NodeId y );
+      /** an arc can be reversed if and only if it exists and arc (y,x)
+       * does not. */
+      virtual bool checkArcReversal ( NodeId x, NodeId y ) override;
       
       /// @}
 
 
     protected:
-      /// the cycle detector used to check quickly graph modifications
-      DAGCycleDetector _cycle_detector;
+      /// the max number of parents per node
+      NodeProperty<unsigned int> _max_parents;
 
 
       // ##########################################################################
@@ -119,55 +123,58 @@ namespace gum {
       /// @{
       
       /// sets a new graph from which we will perform checkings
-      void _setGraph ( const DAG& graph );
+      void _setGraph ( const DiGraph& graph,
+                       const NodeProperty<unsigned int>& max_indegree );
 
-      /// sets a new empty graph from which we will perform checkings
-      void _setGraph ( unsigned int nb_nodes );
+      /// sets a new graph from which we will perform checkings
+      void _setGraph ( const DiGraph& graph,
+                       unsigned int max_indegree );
 
-      /// adds a new arc into the graph (without checking the constraints)
+      /// adds a new arc into the graph
       /** @warning If the arc already exists, nothing is done. In particular,
        * no exception is raised.
        * @throws InvalidNode exception is thrown if x or y does not belong to the
-       * graph nodes
-       * @throws InvalidDirectedCycle exception is thrown if any (directed) cycle
-       * is created by this arc. */
+       * graph nodes */
       void _insertArc ( NodeId x, NodeId y );
 
-      /// removes an arc from the graph (without checking the constraints)
+      /// removes an arc from the graph
       /** @warning if the arc does not exist, nothing is done. In particular,
        * no exception is thrown. */
       void _eraseArc ( NodeId x, NodeId y );
 
       /// checks whether the constraints enable to add arc (x,y)
       /** an arc can be added if and only if its extremal nodes belong to the
-       * graph and the arc does not already exist and would not create a cycle */
+       * graph and the arc does not already exist. */
       bool _checkArcAddition ( NodeId x, NodeId y );
 
       /// checks whether the constraints enable to remove arc (x,y)
+      /** an arc can be removed if and only if the arc exists. */
       bool _checkArcDeletion ( NodeId x, NodeId y );
-
+ 
       /// checks whether the constraints enable to reverse arc (x,y)
+      /** an arc can be reversed if and only if it exists and arc (y,x)
+       * does not. */
       bool _checkArcReversal ( NodeId x, NodeId y );
-  
+ 
       /// @}
-
       
+
       
       /// copy constructor
-      StructuralConstraintDAG
-      ( const StructuralConstraintDAG& from ) = delete;
+      StructuralConstraintIndegree
+      ( const StructuralConstraintIndegree& from ) = delete;
 
       /// move constructor
-      StructuralConstraintDAG
-      ( StructuralConstraintDAG&& from ) = delete;
+      StructuralConstraintIndegree
+      ( StructuralConstraintIndegree&& from ) = delete;
 
       /// copy operator
-      StructuralConstraintDAG&
-      operator= ( const StructuralConstraintDAG& from ) = delete;
+      StructuralConstraintIndegree&
+      operator= ( const StructuralConstraintIndegree& from ) = delete;
 
       /// move operator
-      StructuralConstraintDAG&
-      operator= ( StructuralConstraintDAG&& from ) = delete;
+      StructuralConstraintIndegree&
+      operator= ( StructuralConstraintIndegree&& from ) = delete;
 
     };
     
@@ -180,8 +187,8 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/structuralConstraintDAG.inl>
+#include <agrum/learning/structuralConstraintIndegree.inl>
 #endif /* GUM_NO_INLINE */
 
 
-#endif /* GUM_LEARNING_STRUCTURAL_CONSTRAINT_DAG_H */
+#endif /* GUM_LEARNING_STRUCTURAL_CONSTRAINT_INDEGREE_H */

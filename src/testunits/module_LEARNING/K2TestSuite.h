@@ -29,7 +29,10 @@
 #include <agrum/learning/scoreK2.h>
 #include <agrum/learning/scoreBDeu.h>
 #include <agrum/learning/paramEstimatorML.h>
+#include <agrum/learning/structuralConstraintDiGraph.h>
 #include <agrum/learning/structuralConstraintDAG.h>
+#include <agrum/learning/structuralConstraintIndegree.h>
+#include <agrum/learning/structuralConstraint2TimeSlice.h>
 
 namespace gum_tests {
 
@@ -79,18 +82,16 @@ namespace gum_tests {
 
       ~K2 () {}
 
-      template <typename SCORE>
+      template <typename SCORE, typename STRUCT_CONSTRAINT>
       gum::DAG learnDAG ( SCORE& score,
                           const std::vector<unsigned int>& order,
-                          unsigned int nb_max_parents ) {
+                          STRUCT_CONSTRAINT& constraint ) {
         // create a DAG with all the nodes but without any arc
         gum::DAG dag;
          unsigned int nb_nodes = order.size ();
         for ( unsigned int i = 0; i < nb_nodes; ++i ) {
           dag.insertNode ( i );
         }
-        //gum::learning::StructuralConstraintDAG constraint;
-        //constraint.setGraph ( dag );
         
         // initialization: assign a score to each node (without parents)
         score.clear ();
@@ -110,6 +111,7 @@ namespace gum_tests {
         while ( cont ) {
           // compute the scores by adding one additional arc to all the nodes
           score.clear ();
+
           for ( unsigned int i = 0; i < nb_nodes; ++i ) {
             if ( cont_by_node[i] ) {
               unsigned int index = order[i];
@@ -117,11 +119,15 @@ namespace gum_tests {
               std::vector<unsigned int> new_parents = parents[i];
               new_parents.push_back ( 0 );
               for ( unsigned int j = 0; j < i; ++j ) {
-                if ( ! dag.existsArc ( order[j], index ) ) {
+                if ( constraint.checkArcAddition ( order[j], index ) ) {
                   new_parents.back () = order[j];
                   score.addNodeSet ( index, new_parents );
                   ++nb_checked[i];
                 }
+              }
+              if ( nb_checked[i] == 0 ) {
+                cont_by_node[i] = false;
+                --cont;
               }
             }
           }
@@ -132,27 +138,25 @@ namespace gum_tests {
             if ( cont_by_node[i] ) {
               bool better = false;
               unsigned int best;
-              for ( unsigned int j = 0; j < nb_checked[i]; ++j, ++score_index ) {
+              for ( unsigned int k = 0; k < nb_checked[i]; ++k, ++score_index ) {
                 float new_score = score.score ( score_index );
                 if ( new_score > scores[i] ) {
                   better = true;
-                  best = j;
+                  best = k;
                   scores[i] = new_score;
                 }
               }
               if ( better ) {
                 unsigned int index = order[i];
-                for ( unsigned int k = 0; k < i; ++k ) {
-                  if ( ! dag.existsArc ( order[k], index ) ) {
+                for ( unsigned int j = 0, k = 0; j < i; ++j ) {
+                  if ( constraint.checkArcAddition ( order[j], index ) ) {
                     if ( k == best ) {
-                      parents[i].push_back ( order[k] );
-                      dag.insertArc ( order[k], index );
-                      if ( dag.parents ( index ).size () == nb_max_parents ) {
-                        --cont;
-                        cont_by_node[i] = false;
-                      }
+                      parents[i].push_back ( order[j] );
+                      dag.insertArc ( order[j], index );
+                      constraint.insertArc ( order[j], index );
                       break;
                     }
+                    ++k;
                   }
                 }
               }
@@ -162,6 +166,7 @@ namespace gum_tests {
               }
             }
           }
+
         }
 
         /*
@@ -245,7 +250,7 @@ namespace gum_tests {
     };
 
 
-    void xtest_k2_asia () {
+    void test_k2_asia () {
       K2 k2;
 
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
@@ -265,6 +270,9 @@ namespace gum_tests {
       gum::learning::ScoreK2<decltype ( filter ) >
         score ( filter, modalities );
 
+      gum::learning::StructuralConstraintDiGraph
+        struct_constraint ( modalities.size () );
+
       gum::learning::ParamEstimatorML<decltype ( filter ) >
         estimator ( filter, modalities );
 
@@ -273,7 +281,96 @@ namespace gum_tests {
         order[i] = i;
       }
       
-      gum::DAG dag = k2.learnDAG ( score, order, 100 );
+      gum::DAG dag = k2.learnDAG ( score, order, struct_constraint );
+      gum::BayesNet<float> bn = k2.learnBN ( estimator, dag,
+                                             database.variableNames (),
+                                             modalities );
+
+      std::cout << bn << std::endl << bn.dag () << std::endl;
+    }
+    
+    void test_k2_asia_constraint_DAG () {
+      K2 k2;
+
+      gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
+      
+      auto handler = database.handler ();
+      
+      auto translators = gum::learning::make_translators
+        ( gum::learning::Create<CellTranslator, gum::learning::Col<0>, 8 > () );
+
+      auto generators =  gum::learning::make_generators ( SimpleGenerator () );
+      
+      auto filter = gum::learning::make_DB_row_filter ( handler, translators,
+                                                        generators );
+
+      std::vector<unsigned int> modalities = filter.modalities ();
+
+      gum::learning::ScoreK2<decltype ( filter ) >
+        score ( filter, modalities );
+
+      gum::learning::StructuralConstraintDAG
+        struct_constraint ( modalities.size () );
+
+      gum::learning::ParamEstimatorML<decltype ( filter ) >
+        estimator ( filter, modalities );
+
+      std::vector<unsigned int> order ( filter.modalities ().size() );
+      for ( unsigned int i = 0; i < order.size(); ++i ) {
+        order[i] = i;
+      }
+      
+      gum::DAG dag = k2.learnDAG ( score, order, struct_constraint );
+      gum::BayesNet<float> bn = k2.learnBN ( estimator, dag,
+                                             database.variableNames (),
+                                             modalities );
+
+      std::cout << bn << std::endl << bn.dag () << std::endl;
+    }
+
+    
+    void test_k2_asia_constraint_2TimeSlice () {
+      K2 k2;
+
+      gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
+      
+      auto handler = database.handler ();
+      
+      auto translators = gum::learning::make_translators
+        ( gum::learning::Create<CellTranslator, gum::learning::Col<0>, 8 > () );
+
+      auto generators =  gum::learning::make_generators ( SimpleGenerator () );
+      
+      auto filter = gum::learning::make_DB_row_filter ( handler, translators,
+                                                        generators );
+
+      std::vector<unsigned int> modalities = filter.modalities ();
+
+      gum::learning::ScoreK2<decltype ( filter ) >
+        score ( filter, modalities );
+
+      gum::NodeProperty<bool> slices;
+      for ( unsigned int i = 0; i < modalities.size (); ++i ) {
+        if ( i % 2 ) {
+          slices.insert ( i, false );
+        }
+        else {
+          slices.insert ( i, true );
+        }
+      }
+      
+      gum::learning::StructuralConstraint2TimeSlice
+        struct_constraint ( slices );
+
+      gum::learning::ParamEstimatorML<decltype ( filter ) >
+        estimator ( filter, modalities );
+
+      std::vector<unsigned int> order ( filter.modalities ().size() );
+      for ( unsigned int i = 0; i < order.size(); ++i ) {
+        order[i] = i;
+      }
+      
+      gum::DAG dag = k2.learnDAG ( score, order, struct_constraint );
       gum::BayesNet<float> bn = k2.learnBN ( estimator, dag,
                                              database.variableNames (),
                                              modalities );
@@ -302,6 +399,9 @@ namespace gum_tests {
       gum::learning::ScoreK2<decltype ( filter ) >
         score ( filter, modalities );
 
+      gum::learning::StructuralConstraintIndegree
+        struct_constraint ( modalities.size (), 6 );
+
       gum::learning::ParamEstimatorML<decltype ( filter ) >
         estimator ( filter, modalities );
 
@@ -312,7 +412,7 @@ namespace gum_tests {
 
       gum::Timer timer;
       
-      gum::DAG dag = k2.learnDAG ( score, order, 6 );
+      gum::DAG dag = k2.learnDAG ( score, order, struct_constraint );
       gum::BayesNet<float> bn = k2.learnBN ( estimator, dag,
                                              database.variableNames (),
                                              modalities );

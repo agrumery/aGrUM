@@ -43,13 +43,29 @@ namespace gum {
       GUM_CONSTRUCTOR ( StructuralConstraintDiGraph );
     }
 
+    
+    /// constructor starting with an empty graph with a given number of nodes
+    StructuralConstraintDiGraph::StructuralConstraintDiGraph
+    ( unsigned int nb_nodes ) {
+      setGraph ( nb_nodes );
+      GUM_CONSTRUCTOR ( StructuralConstraintDiGraph );
+    }
+
+    
+    /// constructor starting with a given graph
+    StructuralConstraintDiGraph::StructuralConstraintDiGraph
+    ( const DiGraph& graph ) {
+      setGraph ( graph );
+      GUM_CONSTRUCTOR ( StructuralConstraintDiGraph );
+    }
+
 
     /// destructor
     StructuralConstraintDiGraph::~StructuralConstraintDiGraph () {
       GUM_DESTRUCTOR ( StructuralConstraintDiGraph );
     }
     
- 
+
   } /* namespace learning */
 
   

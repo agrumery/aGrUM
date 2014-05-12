@@ -37,52 +37,101 @@ namespace gum {
 
     
     /// sets a new graph from which we will perform checkings
-    INLINE void StructuralConstraintDAG::setGraph ( const DiGraph& graph ) {
-      DAG g;
-      g.populateNodes ( graph.nodes () );
-      for ( const auto& arc : graph.arcs() )
-        g.insertArc ( arc.tail (), arc.head () );
-      _cycle_detector.setDAG ( g );
+    INLINE void StructuralConstraintDAG::_setGraph ( const DAG& graph ) {
+      _cycle_detector.setDAG ( graph );
+    }
+
+    
+   /// sets a new graph from which we will perform checkings
+    INLINE void StructuralConstraintDAG::setGraph ( const DAG& graph ) {
       StructuralConstraintDiGraph::setGraph ( graph );
+      StructuralConstraintDAG::_setGraph ( graph );
     }
 
     
     /// sets a new graph from which we will perform checkings
-    INLINE void StructuralConstraintDAG::setGraph ( const DAG& graph ) {
-      _cycle_detector.setDAG ( graph );
-      StructuralConstraintDiGraph::setGraph ( graph );
+    INLINE void StructuralConstraintDAG::_setGraph ( unsigned int nb_nodes ) {
+      DAG g;
+      for ( unsigned int i = 0; i < nb_nodes; ++i ) {
+        g.insertNode ( i );
+      }
+      _cycle_detector.setDAG ( g );
+    }
+
+
+    /// sets a new graph from which we will perform checkings
+    INLINE void StructuralConstraintDAG::setGraph ( unsigned int nb_nodes ) {
+      StructuralConstraintDiGraph::setGraph ( nb_nodes );
+      StructuralConstraintDAG::_setGraph ( nb_nodes );
+    }
+
+    
+    /// checks whether the constraints enable to add arc (x,y)
+    INLINE bool StructuralConstraintDAG::_checkArcAddition ( NodeId x, NodeId y ) {
+      return ! _cycle_detector.hasCycleFromAddition ( x, y );
+    }
+
+
+    /// checks whether the constraints enable to add arc (x,y)
+    INLINE bool StructuralConstraintDAG::checkArcAddition ( NodeId x, NodeId y ) {
+      return StructuralConstraintDiGraph::checkArcAddition ( x, y ) &&
+        StructuralConstraintDAG::_checkArcAddition ( x, y );
     }
 
 
     /// adds a new arc into the graph (without checking the constraints)
-    INLINE void StructuralConstraintDAG::insertArc ( NodeId x, NodeId y ) {
+    INLINE void StructuralConstraintDAG::_insertArc ( NodeId x, NodeId y ) {
       _cycle_detector.insertArc ( x, y );
-      StructuralConstraintDiGraph::insertArc ( x, y );
+    }
+    
+    
+    /// adds a new arc into the graph (without checking the constraints)
+    INLINE void StructuralConstraintDAG::insertArc ( NodeId x, NodeId y ) {
+      if ( checkArcAddition ( x, y ) ) {
+        StructuralConstraintDAG::_insertArc ( x, y );
+        StructuralConstraintDiGraph::insertArc ( x, y );
+      }
+    }
+
+
+    /// removes an arc from the graph (without checking the constraints)
+    INLINE void StructuralConstraintDAG::_eraseArc ( NodeId x, NodeId y ) {
+      _cycle_detector.eraseArc ( x, y );
     }
 
 
     /// removes an arc from the graph (without checking the constraints)
     INLINE void StructuralConstraintDAG::eraseArc ( NodeId x, NodeId y ) {
-      _cycle_detector.eraseArc ( x, y );
-      StructuralConstraintDiGraph::eraseArc ( x, y );
+      if ( _graph.existsArc ( x, y ) ) {
+        StructuralConstraintDAG::_eraseArc ( x, y );
+        StructuralConstraintDiGraph::eraseArc ( x, y );
+      }
     }
 
     
-    /// checks whether the constraints enable to add arc (x,y)
-    INLINE bool StructuralConstraintDAG::checkArcAddition ( NodeId x, NodeId y ) {
-      return ! _cycle_detector.hasCycleFromAddition ( x, y );
+    /// checks whether the constraints enable to remove arc (x,y)
+    INLINE bool StructuralConstraintDAG::_checkArcDeletion ( NodeId x, NodeId y ) {
+     return ! _cycle_detector.hasCycleFromDeletion ( x, y );
     }
-
-
+    
+    
     /// checks whether the constraints enable to remove arc (x,y)
     INLINE bool StructuralConstraintDAG::checkArcDeletion ( NodeId x, NodeId y ) {
-     return ! _cycle_detector.hasCycleFromDeletion ( x, y );
+      return StructuralConstraintDiGraph::checkArcDeletion ( x, y ) &&
+        StructuralConstraintDAG::_checkArcDeletion ( x, y );
     }
       
 
     /// checks whether the constraints enable to reverse arc (x,y)
-    INLINE bool StructuralConstraintDAG::checkArcReversal ( NodeId x, NodeId y ) {
+    INLINE bool StructuralConstraintDAG::_checkArcReversal ( NodeId x, NodeId y ) {
       return ! _cycle_detector.hasCycleFromReversal ( x, y );
+    }
+
+
+    /// checks whether the constraints enable to reverse arc (x,y)
+    INLINE bool StructuralConstraintDAG::checkArcReversal ( NodeId x, NodeId y ) {
+      return StructuralConstraintDiGraph::checkArcReversal ( x, y ) &&
+        StructuralConstraintDAG::_checkArcReversal ( x, y );
     }
 
     

@@ -18,17 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the base class for structural constraints used by learning algorithms
- * that learn a directed graph structure
+ * @brief the class for structural constraints over nodes that belong to 2 time
+ * slices
+ *
+ * In DBNs, it is forbidden to add arcs from nodes at time slice t to nodes at
+ * time slice s, where s < t. This class allows for taking this kind of constaint
+ * into account
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_DIGRAPH_H
-#define GUM_LEARNING_STRUCTURAL_CONSTRAINT_DIGRAPH_H
+#ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_2TIME_SLICE_H
+#define GUM_LEARNING_STRUCTURAL_CONSTRAINT_2TIME_SLICE_H
 
 
 #include <agrum/config.h>
-#include <agrum/graphs/diGraph.h>
+#include <agrum/learning/structuralConstraintDiGraph.h>
 
 
 namespace gum {
@@ -37,16 +41,14 @@ namespace gum {
   namespace learning {
 
     
-    /** @class StructuralConstraintDiGraph
-     * @brief The base class for structural constraints used by learning
-     * algorithms that learn a directed graph structure
+    /** @class StructuralConstraint2TimeSlice
+     * @brief the class for structural constraints over nodes that belong to 2 time
+     * slices
      *
-     * This base should always be a virtual parents of the structural constraints
-     * classes. This will allow to combine different constraints into a single
-     * class
      * @ingroup learning_group
      */
-    class StructuralConstraintDiGraph {
+    class StructuralConstraint2TimeSlice :
+      protected virtual StructuralConstraintDiGraph {
     public:
       
       // ##########################################################################
@@ -55,16 +57,21 @@ namespace gum {
       /// @{
 
       /// default constructor
-      StructuralConstraintDiGraph ();
+      StructuralConstraint2TimeSlice ();
 
       /// constructor starting with an empty graph with a given number of nodes
-      StructuralConstraintDiGraph ( unsigned int nb_nodes );
+      /** @param nb_nodes the number of nodes in the graph
+       * @param time_slice indicates for each node in the graph whether it belongs
+       * to the first time slice (false) or to the second (true) */
+      StructuralConstraint2TimeSlice ( const NodeProperty<bool>& time_slice );
 
       /// constructor starting with a given graph
-      StructuralConstraintDiGraph ( const DiGraph& graph );
+      StructuralConstraint2TimeSlice ( const DiGraph& graph,
+                                       const NodeProperty<bool>& time_slice );
+
 
       /// destructor
-      virtual ~StructuralConstraintDiGraph ();
+      virtual ~StructuralConstraint2TimeSlice ();
       
       /// @}
 
@@ -76,10 +83,11 @@ namespace gum {
       /// @{
 
       /// sets a new graph from which we will perform checkings
-      virtual void setGraph ( const DiGraph& graph );
+      virtual void setGraph ( const DiGraph& graph,
+                              const NodeProperty<bool>& time_slice );
 
       /// sets a new empty graph from which we will perform checkings
-      virtual void setGraph ( unsigned int nb_nodes );
+      virtual void setGraph ( const NodeProperty<bool>& time_slice );
 
       /// adds a new arc into the graph
       /** @warning If the arc already exists, nothing is done. In particular,
@@ -111,26 +119,67 @@ namespace gum {
 
 
     protected:
-      /// the DiGraph on which we perform checks
-      DiGraph _graph;
+      /// time slices to which belong the nodes ( false = 0 or true = 1 )
+      NodeProperty<bool> _time_slice;
 
+
+      // ##########################################################################
+      /// @name Specific Accessors / Modifiers
+      // ##########################################################################
+      /// @{
       
+      /// sets a new graph from which we will perform checkings
+      void _setGraph ( const DiGraph& graph,
+                       const NodeProperty<bool>& time_slice );
+
+      /// sets a new empty graph from which we will perform checkings
+      void _setGraph ( const NodeProperty<bool>& time_slice );
+
+      /// adds a new arc into the graph
+      /** @warning If the arc already exists, nothing is done. In particular,
+       * no exception is raised.
+       * @throws InvalidNode exception is thrown if x or y does not belong to the
+       * graph nodes */
+      void _insertArc ( NodeId x, NodeId y );
+
+      /// removes an arc from the graph
+      /** @warning if the arc does not exist, nothing is done. In particular,
+       * no exception is thrown. */
+      void _eraseArc ( NodeId x, NodeId y );
+
+      /// checks whether the constraints enable to add arc (x,y)
+      /** an arc can be added if and only if its extremal nodes belong to the
+       * graph and the arc does not already exist. */
+      bool _checkArcAddition ( NodeId x, NodeId y );
+
+      /// checks whether the constraints enable to remove arc (x,y)
+      /** an arc can be removed if and only if the arc exists. */
+      bool _checkArcDeletion ( NodeId x, NodeId y );
+
+      /// checks whether the constraints enable to reverse arc (x,y)
+      /** an arc can be reversed if and only if it exists and arc (y,x)
+       * does not. */
+      bool _checkArcReversal ( NodeId x, NodeId y );
+ 
+      /// @}
+
+
       
       /// copy constructor
-      StructuralConstraintDiGraph
-      ( const StructuralConstraintDiGraph& from ) = delete;
+      StructuralConstraint2TimeSlice
+      ( const StructuralConstraint2TimeSlice& from ) = delete;
 
       /// move constructor
-      StructuralConstraintDiGraph
-      ( StructuralConstraintDiGraph&& from ) = delete;
+      StructuralConstraint2TimeSlice
+      ( StructuralConstraint2TimeSlice&& from ) = delete;
 
       /// copy operator
-      StructuralConstraintDiGraph&
-      operator= ( const StructuralConstraintDiGraph& from ) = delete;
+      StructuralConstraint2TimeSlice&
+      operator= ( const StructuralConstraint2TimeSlice& from ) = delete;
 
       /// move operator
-      StructuralConstraintDiGraph&
-      operator= ( StructuralConstraintDiGraph&& from ) = delete;
+      StructuralConstraint2TimeSlice&
+      operator= ( StructuralConstraint2TimeSlice&& from ) = delete;
 
     };
     
@@ -143,8 +192,8 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/structuralConstraintDiGraph.inl>
+#include <agrum/learning/structuralConstraint2TimeSlice.inl>
 #endif /* GUM_NO_INLINE */
 
 
-#endif /* GUM_LEARNING_STRUCTURAL_CONSTRAINT_DIGRAPH_H */
+#endif /* GUM_LEARNING_STRUCTURAL_CONSTRAINT_2TIME_SLICE_H */
