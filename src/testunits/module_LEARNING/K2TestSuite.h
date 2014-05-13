@@ -92,6 +92,7 @@ namespace gum_tests {
         for ( unsigned int i = 0; i < nb_nodes; ++i ) {
           dag.insertNode ( i );
         }
+        score.setGraph ( dag );
         
         // initialization: assign a score to each node (without parents)
         score.clear ();
@@ -153,7 +154,11 @@ namespace gum_tests {
                     if ( k == best ) {
                       parents[i].push_back ( order[j] );
                       dag.insertArc ( order[j], index );
-                      constraint.insertArc ( order[j], index );
+                      const gum::learning::GraphChange
+                        change ( gum::learning::GraphChangeType::ARC_ADDITION,
+                                 order[j], index );
+                      score.modifyGraph ( change );
+                      constraint.modifyGraph ( change );
                       break;
                     }
                     ++k;
@@ -181,6 +186,27 @@ namespace gum_tests {
         return dag;
       }
 
+
+      void probaVarReordering ( gum::Potential<float>& pot,
+                                const gum::Potential<float>& other_pot ) {
+        // check that the variables are identical
+        gum::Set<const gum::DiscreteVariable*> diff_vars =
+          pot.variablesSequence ().diffSet ( other_pot.variablesSequence () );
+        if ( ! diff_vars.empty () ) {
+          GUM_ERROR ( gum::CPTError,
+                      "the potentials do not have the same variables" );
+        }
+
+        // perform the copy
+        gum::Instantiation i ( other_pot );
+        gum::Instantiation j ( pot );
+        for ( i.setFirst (); ! i.end (); ++i ) {
+          j.setVals ( i );
+          pot.set ( j, other_pot[i] );
+        }
+      }
+      
+
       template <typename PARAM_ESTIMATOR>
       gum::BayesNet<float> learnBN ( PARAM_ESTIMATOR& estimator,
                                      const gum::DAG& dag,
@@ -200,28 +226,21 @@ namespace gum_tests {
         }
         bn.endTopologyTransformation ();
 
-        // make the targets be the last dimension in the CPTs
-        const gum::VariableNodeMap& varmap = bn.variableNodeMap ();
-        for ( const auto id : dag ) {
-          const gum::DiscreteVariable& var = varmap.get ( id );
-          gum::Potential<float>& pot =
-            const_cast<gum::Potential<float>&> ( bn.cpt ( id ) );
-          const gum::Sequence<const gum::DiscreteVariable*>& vars =
-            pot.variablesSequence ();
-          if ( vars.pos ( &var ) != vars.size () - 1 ) {
-            pot.beginMultipleChanges ();
-            pot.erase ( var );
-            pot.add ( var );
-            pot.endMultipleChanges ();
-          }
-        }
-        
         // estimate the parameters
+        const gum::VariableNodeMap& varmap = bn.variableNodeMap ();
         estimator.clear ();
         for ( const auto id : dag ) {
+          // get the sequence of variables and make the targets be the last
           const gum::Potential<float>& pot = bn.cpt ( id );
-          const gum::Sequence<const gum::DiscreteVariable*>& vars =
+          const gum::DiscreteVariable& var = varmap.get ( id );
+          gum::Sequence<const gum::DiscreteVariable*> vars =
             pot.variablesSequence ();
+          if ( vars.pos ( &var ) != vars.size () - 1 ) {
+            vars.erase ( &var );
+            vars.insert ( &var );
+          }
+
+          // setup the setimation
           unsigned int target = varmap.get ( *( vars[vars.size() -1] ) );
           if ( vars.size () > 1 ) {
             std::vector<unsigned int> cond_ids ( vars.size () - 1 );
@@ -238,12 +257,32 @@ namespace gum_tests {
         // assign the parameters to the potentials
         unsigned int index = 0;
         for ( const auto id : dag ) {
+          // get the variables of the CPT of id in the correct order
           gum::Potential<float>& pot =
             const_cast< gum::Potential<float>& > ( bn.cpt ( id ) );
-          estimator.setParameters ( index, pot );
+          const gum::DiscreteVariable& var = varmap.get ( id );
+          gum::Sequence<const gum::DiscreteVariable*> vars =
+            pot.variablesSequence ();
+          if ( vars.pos ( &var ) != vars.size () - 1 ) {
+            vars.erase ( &var );
+            vars.insert ( &var );
+          }
+
+          // create a potential with the appropriate size
+          gum::Potential<float> ordered_pot;
+          ordered_pot.beginMultipleChanges ();
+          for ( const auto var : vars ) {
+            ordered_pot.add ( *var );
+          }
+          ordered_pot.endMultipleChanges ();
+          estimator.setParameters ( index, ordered_pot );
+
+          // assign the potential to the BN
+          probaVarReordering ( pot, ordered_pot );
           ++index;
         }
          
+        
         return bn;
       }
 

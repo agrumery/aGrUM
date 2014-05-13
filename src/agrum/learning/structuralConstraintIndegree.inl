@@ -80,35 +80,6 @@ namespace gum {
       StructuralConstraintDiGraph::setGraph ( graph );
     }
 
-    
-    /// adds a new arc into the graph
-    INLINE void StructuralConstraintIndegree::_insertArc ( NodeId x, NodeId y ) {
-      // check that the max indegree is not already reached
-      if ( _graph.exists ( y ) &&
-           _max_parents[y] == _graph.parents (y).size () ) {
-        GUM_ERROR ( OutOfUpperBound, "there are already too many parents" );
-      }
-    }
-
-    
-    /// adds a new arc into the graph
-    INLINE void StructuralConstraintIndegree::insertArc ( NodeId x, NodeId y ) {
-      StructuralConstraintIndegree::_insertArc ( x, y );
-      StructuralConstraintDiGraph::insertArc ( x, y );
-    }
-
-    
-    /// removes an arc from the graph
-    INLINE void StructuralConstraintIndegree::_eraseArc ( NodeId x, NodeId y ) {
-    }
-
-    
-    /// removes an arc from the graph
-    INLINE void StructuralConstraintIndegree::eraseArc ( NodeId x, NodeId y ) {
-      StructuralConstraintIndegree::_eraseArc ( x, y );
-      StructuralConstraintDiGraph::eraseArc ( x, y );
-    }
-
 
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool StructuralConstraintIndegree::_checkArcAddition
@@ -154,6 +125,46 @@ namespace gum {
         StructuralConstraintIndegree::_checkArcReversal ( x,y );
     }
     
+    
+    /// adds a new arc into the graph
+    INLINE void
+    StructuralConstraintIndegree::_modifyGraph ( const GraphChange& change ) {
+      switch ( change.type () ) {
+      case GraphChangeType::ARC_ADDITION:
+        // check that the max indegree is not already reached
+        if ( _graph.exists ( change.node2 () ) &&
+             _max_parents[change.node2 ()] ==
+             _graph.parents ( change.node2 () ).size () ) {
+          GUM_ERROR ( OutOfUpperBound, "there are already too many parents" );
+        }
+        break;
+
+      case GraphChangeType::ARC_DELETION:
+        break;
+
+      case GraphChangeType::ARC_REVERSAL:
+        // check that the max indegree is not already reached
+        if ( _graph.exists ( change.node1 () ) &&
+             _max_parents[change.node1 ()] ==
+             _graph.parents ( change.node1 () ).size () ) {
+          GUM_ERROR ( OutOfUpperBound, "there are already too many parents" );
+        }
+        break;
+
+      default:
+        GUM_ERROR ( OperationNotAllowed, "edge modifications are not "
+                    "supported by indegree constraints" );
+      }
+    }
+
+    
+    /// adds a new arc into the graph
+    INLINE void
+    StructuralConstraintIndegree::modifyGraph ( const GraphChange& change ) {
+      StructuralConstraintIndegree::_modifyGraph ( change );
+      StructuralConstraintDiGraph::modifyGraph ( change );
+    }
+
     
   } /* namespace learning */
 

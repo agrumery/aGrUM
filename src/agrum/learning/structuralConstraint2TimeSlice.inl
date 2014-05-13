@@ -83,33 +83,6 @@ namespace gum {
     }
 
 
-    /// adds a new arc into the graph
-    INLINE void StructuralConstraint2TimeSlice::_insertArc ( NodeId x, NodeId y ) {
-      if ( _time_slice[x] > _time_slice[y] ) {
-        GUM_ERROR ( InvalidArc, "an backward-time arc cannot be added" );
-      }
-    }
-
-    
-    /// adds a new arc into the graph
-    INLINE void StructuralConstraint2TimeSlice::insertArc ( NodeId x, NodeId y ) {
-      StructuralConstraint2TimeSlice::_insertArc ( x, y );
-      StructuralConstraintDiGraph::insertArc ( x, y );
-    }
-
-    
-    /// removes an arc from the graph
-    INLINE void StructuralConstraint2TimeSlice::_eraseArc ( NodeId x, NodeId y ) {
-    }
-
-    
-    /// removes an arc from the graph
-    INLINE void StructuralConstraint2TimeSlice::eraseArc ( NodeId x, NodeId y ) {
-      StructuralConstraint2TimeSlice::_eraseArc ( x, y );
-      StructuralConstraintDiGraph::eraseArc ( x, y );
-    }
-    
-
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool StructuralConstraint2TimeSlice::_checkArcAddition
     ( NodeId x, NodeId y ) {
@@ -153,7 +126,41 @@ namespace gum {
       return StructuralConstraintDiGraph::checkArcReversal ( x, y ) &&
         StructuralConstraint2TimeSlice::_checkArcReversal ( x, y );
     }
+
     
+        /// adds a new arc into the graph
+    INLINE void
+    StructuralConstraint2TimeSlice::_modifyGraph ( const GraphChange& change ) {
+      switch ( change.type () ) {
+      case GraphChangeType::ARC_ADDITION:
+        if ( _time_slice[change.node1 ()] > _time_slice[change.node2 ()] ) {
+          GUM_ERROR ( InvalidArc, "an backward-time arc cannot be added" );
+        }
+        break;
+
+      case GraphChangeType::ARC_DELETION:
+        break;
+
+      case GraphChangeType::ARC_REVERSAL:
+        if ( _time_slice[change.node1 ()] != _time_slice[change.node2 ()] ) {
+          GUM_ERROR ( InvalidArc, "an backward-time arc cannot be added" );
+        }
+        break;
+
+      default:
+        GUM_ERROR ( OperationNotAllowed, "edge modifications are not "
+                    "supported by 2TimeSlice constraints" );
+      }
+    }
+
+    
+    /// adds a new arc into the graph
+    INLINE void
+    StructuralConstraint2TimeSlice::modifyGraph ( const GraphChange& change ) {
+      StructuralConstraint2TimeSlice::_modifyGraph ( change );
+      StructuralConstraintDiGraph::modifyGraph ( change );
+    }
+
     
   } /* namespace learning */
 

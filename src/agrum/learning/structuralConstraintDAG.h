@@ -80,19 +80,14 @@ namespace gum {
       /// sets a new empty graph from which we will perform checkings
       virtual void setGraph ( unsigned int nb_nodes ) override;
 
-      /// adds a new arc into the graph (without checking the constraints)
-      /** @warning If the arc already exists, nothing is done. In particular,
-       * no exception is raised.
-       * @throws InvalidNode exception is thrown if x or y does not belong to the
-       * graph nodes
+      /// notify the constraint of a modification of the graph
+      /** @warning If an already existing arc is added, or if a nonexisting arc
+       * is removed, nothing is done. In particular, no exception is raised.
+       * @throws InvalidNode exception is thrown if an arc (x,y) is added and x
+       * or y does not belong to the graph nodes 
        * @throws InvalidDirectedCycle exception is thrown if any (directed) cycle
-       * is created by this arc. */
-      virtual void insertArc ( NodeId x, NodeId y ) override;
-
-      /// removes an arc from the graph (without checking the constraints)
-      /** @warning if the arc does not exist, nothing is done. In particular,
-       * no exception is thrown. */
-      virtual void eraseArc ( NodeId x, NodeId y ) override;
+       * is created an arc addition or reversal. */
+      virtual void modifyGraph ( const GraphChange& change ) override;
 
       /// checks whether the constraints enable to add arc (x,y)
       /** an arc can be added if and only if its extremal nodes belong to the
@@ -124,20 +119,15 @@ namespace gum {
       /// sets a new empty graph from which we will perform checkings
       void _setGraph ( unsigned int nb_nodes );
 
-      /// adds a new arc into the graph (without checking the constraints)
-      /** @warning If the arc already exists, nothing is done. In particular,
-       * no exception is raised.
-       * @throws InvalidNode exception is thrown if x or y does not belong to the
-       * graph nodes
+      /// notify the constraint of a modification of the graph
+      /** @warning If an already existing arc is added, or if a nonexisting arc
+       * is removed, nothing is done. In particular, no exception is raised.
+       * @throws InvalidNode exception is thrown if an arc (x,y) is added and x
+       * or y does not belong to the graph nodes 
        * @throws InvalidDirectedCycle exception is thrown if any (directed) cycle
-       * is created by this arc. */
-      void _insertArc ( NodeId x, NodeId y );
-
-      /// removes an arc from the graph (without checking the constraints)
-      /** @warning if the arc does not exist, nothing is done. In particular,
-       * no exception is thrown. */
-      void _eraseArc ( NodeId x, NodeId y );
-
+       * is created an arc addition or reversal. */
+      void _modifyGraph ( const GraphChange& change );
+      
       /// checks whether the constraints enable to add arc (x,y)
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist and would not create a cycle */

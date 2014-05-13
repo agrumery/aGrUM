@@ -48,16 +48,28 @@ namespace gum {
 
 
     /// adds a new arc into the graph (without checking the constraints)
-    INLINE void StructuralConstraintDiGraph::insertArc ( NodeId x, NodeId y ) {
-      _graph.insertArc ( x, y );
+    INLINE void
+    StructuralConstraintDiGraph::modifyGraph (  const GraphChange& change ) {
+      switch ( change.type () ) {
+      case GraphChangeType::ARC_ADDITION:
+        _graph.insertArc ( change.node1(), change.node2 () );
+        break;
+
+      case GraphChangeType::ARC_DELETION:
+        _graph.eraseArc ( Arc ( change.node1(), change.node2 () ) );
+        break;
+
+      case GraphChangeType::ARC_REVERSAL:
+        _graph.eraseArc ( Arc ( change.node1(), change.node2 () ) );
+        _graph.insertArc ( change.node2(), change.node1 () );
+        break;
+
+      default:
+        GUM_ERROR ( OperationNotAllowed,
+                    "edge modifications are not supported by digraph constraint" );
+      }
     }
-
-
-    /// removes an arc from the graph (without checking the constraints)
-    INLINE void StructuralConstraintDiGraph::eraseArc ( NodeId x, NodeId y ) {
-      _graph.eraseArc ( Arc ( x, y ) );
-    }
-
+      
     
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool

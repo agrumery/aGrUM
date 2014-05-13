@@ -29,6 +29,7 @@
 
 #include <agrum/config.h>
 #include <agrum/graphs/diGraph.h>
+#include <agrum/learning/graphChange.h>
 
 
 namespace gum {
@@ -81,18 +82,13 @@ namespace gum {
       /// sets a new empty graph from which we will perform checkings
       virtual void setGraph ( unsigned int nb_nodes );
 
-      /// adds a new arc into the graph
-      /** @warning If the arc already exists, nothing is done. In particular,
-       * no exception is raised.
-       * @throws InvalidNode exception is thrown if x or y does not belong to the
-       * graph nodes */
-      virtual void insertArc ( NodeId x, NodeId y );
-
-      /// removes an arc from the graph
-      /** @warning if the arc does not exist, nothing is done. In particular,
-       * no exception is thrown. */
-      virtual void eraseArc ( NodeId x, NodeId y );
-
+      /// notify the constraint of a modification of the graph
+      /** @warning If an already existing arc is added, or if a nonexisting arc
+       * is removed, nothing is done. In particular, no exception is raised.
+       * @throws InvalidNode exception is thrown if an arc (x,y) is added and x
+       * or y does not belong to the graph nodes */
+      virtual void modifyGraph ( const GraphChange& change );
+      
       /// checks whether the constraints enable to add arc (x,y)
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist. */

@@ -78,37 +78,7 @@ namespace gum {
         StructuralConstraintDAG::_checkArcAddition ( x, y );
     }
 
-
-    /// adds a new arc into the graph (without checking the constraints)
-    INLINE void StructuralConstraintDAG::_insertArc ( NodeId x, NodeId y ) {
-      _cycle_detector.insertArc ( x, y );
-    }
-    
-    
-    /// adds a new arc into the graph (without checking the constraints)
-    INLINE void StructuralConstraintDAG::insertArc ( NodeId x, NodeId y ) {
-      if ( checkArcAddition ( x, y ) ) {
-        StructuralConstraintDAG::_insertArc ( x, y );
-        StructuralConstraintDiGraph::insertArc ( x, y );
-      }
-    }
-
-
-    /// removes an arc from the graph (without checking the constraints)
-    INLINE void StructuralConstraintDAG::_eraseArc ( NodeId x, NodeId y ) {
-      _cycle_detector.eraseArc ( x, y );
-    }
-
-
-    /// removes an arc from the graph (without checking the constraints)
-    INLINE void StructuralConstraintDAG::eraseArc ( NodeId x, NodeId y ) {
-      if ( _graph.existsArc ( x, y ) ) {
-        StructuralConstraintDAG::_eraseArc ( x, y );
-        StructuralConstraintDiGraph::eraseArc ( x, y );
-      }
-    }
-
-    
+     
     /// checks whether the constraints enable to remove arc (x,y)
     INLINE bool StructuralConstraintDAG::_checkArcDeletion ( NodeId x, NodeId y ) {
      return ! _cycle_detector.hasCycleFromDeletion ( x, y );
@@ -135,6 +105,59 @@ namespace gum {
     }
 
     
+    /// adds a new arc into the graph (without checking the constraints)
+    INLINE void
+    StructuralConstraintDAG::_modifyGraph ( const GraphChange& change ) {
+      switch ( change.type () ) {
+      case GraphChangeType::ARC_ADDITION:
+        _cycle_detector.insertArc ( change.node1 (), change.node2 () );
+        break;
+        
+      case GraphChangeType::ARC_DELETION:
+        _cycle_detector.eraseArc ( change.node1(), change.node2 () );
+        break;
+
+      case GraphChangeType::ARC_REVERSAL:
+        _cycle_detector.reverseArc ( change.node1(), change.node2 () );
+        break;
+
+      default:
+        GUM_ERROR ( OperationNotAllowed,
+                    "edge modifications are not supported by DAG constraints" );
+      }
+    }
+
+    
+    /// adds a new arc into the graph (without checking the constraints)
+    INLINE void
+    StructuralConstraintDAG::modifyGraph ( const GraphChange& change ) {
+      bool change_ok;
+      
+      switch ( change.type () ) {
+      case GraphChangeType::ARC_ADDITION:
+        change_ok = checkArcAddition ( change.node1 (), change.node2 () );
+        break;
+
+      case GraphChangeType::ARC_DELETION:
+        change_ok = checkArcDeletion ( change.node1 (), change.node2 () );
+        break;
+
+      case GraphChangeType::ARC_REVERSAL:
+        change_ok = checkArcReversal ( change.node1 (), change.node2 () );
+        break;
+
+      default:
+        GUM_ERROR ( OperationNotAllowed,
+                    "edge modifications are not supported by DAG constraints" );
+      }
+
+      if ( change_ok ) {
+        StructuralConstraintDAG::_modifyGraph ( change );
+        StructuralConstraintDiGraph::modifyGraph ( change );
+      }
+    }
+
+
   } /* namespace learning */
 
   
