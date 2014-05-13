@@ -2505,9 +2505,8 @@ class Potential_double(_object):
 
 
     def __str__(self):
-        self.__fill_distrib__()
-        return self.__distrib__.__str__()
-
+        """__str__(Potential_double self) -> char const *"""
+        return _pyAgrum.Potential_double___str__(self)
 
     def tolist(self):
         self.__fill_distrib__()

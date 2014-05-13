@@ -68,7 +68,7 @@ namespace gum {
 
 
       /**
-       * Creates an empty null dimensional matrix.
+       * Creates an potential around aContent.
        * @param aContent decorated implementation
        */
       explicit Potential ( MultiDimImplementation<GUM_SCALAR>* aContent );
@@ -76,8 +76,6 @@ namespace gum {
 
       /**
        * Copy constructor.
-       * This copy should create a new decorator for the same content ...
-       * Too dangerous.
        */
       explicit Potential ( const Potential<GUM_SCALAR>& src );
 

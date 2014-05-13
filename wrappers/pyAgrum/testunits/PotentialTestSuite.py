@@ -52,6 +52,8 @@ class TestInsertions(PotentialTestCase):
         self.assertFalse(pot.contains(LabelizedVar("a", "", 5)))
 
 
+
+        
     def testVariableDeletion(self):
         pot = Potential()
         pot.add(self.var['s'])
@@ -110,8 +112,29 @@ class TestInsertions(PotentialTestCase):
               [ [ 0.1,  0.9 ], [ 0.01 ,  0.99 ] ] ] )
         self.assertListsAlmostEqual(list3[:], bn.cpt(id_list[3])[:])
 
-
-
+    def testCopyConstructor(self):
+        pot=Potential()
+        pot.add(self.var['c'])
+        pot.add(self.var['s'])
+        pot.add(self.var['r'])
+        
+        i=Instantiation (pot)
+        val=1
+        i.setFirst()
+        while not i.end():
+          pot.set(i,val)
+          val+=1
+          i.inc()
+        self.assertEqual(pot.sum(),36.0)
+        
+        pot2=Potential(pot)
+        self.assertEqual(pot2.sum(),36.0)
+        
+        i.setFirst()
+        pot.set(i,0) # instead of 1
+        self.assertEqual(pot.sum(),35.0)
+        self.assertEqual(pot2.sum(),36.0)
+        
 class TestIndexs(PotentialTestCase):
 
     def testNumpyIndex(self):
@@ -188,5 +211,6 @@ ts.addTest(TestInsertions('testVariableInsertion'))
 ts.addTest(TestInsertions('testVariableDeletion'))
 ts.addTest(TestInsertions('testDimentionIncreasing'))
 ts.addTest(TestInsertions('testWithInstantiation'))
+ts.addTest(TestInsertions('testCopyConstructor'))
 ts.addTest(TestIndexs('testNumpyIndex'))
 ts.addTest(TestIndexs('testDictIndex'))

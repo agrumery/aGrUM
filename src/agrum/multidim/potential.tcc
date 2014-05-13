@@ -47,17 +47,12 @@ namespace gum {
   }
 
 
-  /// copy constructor :
-  /// @warning this copy constructor should reference the same content !!!
-  /// TOO DANGEROUS !!!
-
+  /// copy constructor
   template<typename GUM_SCALAR>
   Potential<GUM_SCALAR>::Potential( const Potential<GUM_SCALAR>& src ) :
-    MultiDimDecorator<GUM_SCALAR> ( src )  {
+    Potential<GUM_SCALAR> ( static_cast<MultiDimImplementation<GUM_SCALAR> *>(src.content()->newFactory()),*(src.content()) )  {
     // for debugging purposes
     GUM_CONS_CPY( Potential );
-    GUM_ERROR( OperationNotAllowed,
-               "No copy for Potential : how to choose the implementation ?" );
   }
 
   // complex copy constructor : we choose the implementation

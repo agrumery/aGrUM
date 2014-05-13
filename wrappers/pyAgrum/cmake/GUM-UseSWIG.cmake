@@ -144,18 +144,15 @@ macro(GUM_SWIG_ADD_SOURCE_TO_MODULE name outfiles infile)
     ${swig_include_dirs}
     -o "${swig_generated_file_fullname}"
     "${swig_source_file_fullname}"
+    COMMAND sed 
+    ARGS -i 's/\bNodeProperty\b/gum::NodeProperty/g' 
+    ${swig_generated_file_fullname}
     MAIN_DEPENDENCY "${swig_source_file_fullname}"
     DEPENDS ${SWIG_MODULE_${name}_EXTRA_DEPS}
     COMMENT "Swig source")
   set_source_files_properties("${swig_generated_file_fullname}" ${swig_extra_generated_files}
     PROPERTIES GENERATED 1)
   set(${outfiles} "${swig_generated_file_fullname}" ${swig_extra_generated_files})
-
-  #message("dealing with SWIG 3.0 bug in ${swig_generated_file_fullname}")
-  #FILE(READ ${swig_generated_file_fullname} FILE_CONTENT)
-  #STRING(REGEX REPLACE "\bNodeProperty\b" "gum::NodeProperty"  MODIFIED_FILE_CONTENT "${FILECONTENT}")
-  #FILE(WRITE ${swig_generated_file_fullname} "${MODIFIED_FILE_CONTENT}")
-  #message("done")
 endmacro()
 
 #

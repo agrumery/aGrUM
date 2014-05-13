@@ -147,13 +147,13 @@
         return tuple(index)
 %}
 
-
-%feature("shadow") gum::Potential::__str__ %{
-    def __str__(self):
-        self.__fill_distrib__()
-        return self.__distrib__.__str__()
-%}
-
+/* 
+* %feature("shadow") gum::Potential::__str__ %{
+*     def __str__(self):
+*         self.__fill_distrib__()
+*         return self.__distrib__.__str__()
+* %}
+*/
 
 %feature("shadow") gum::Potential::tolist %{
     def tolist(self):
