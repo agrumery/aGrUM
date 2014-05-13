@@ -143,6 +143,10 @@ namespace gum {
       /// sum of all elements in this
       const GUM_SCALAR sum() const ;
 
+      /**
+       * string representation of this.
+       */
+      virtual const std::string toString( ) const ;
     protected:
       /// perform the marginalization p over the vars on *this.
       void _marginalize ( const Potential& p, const Set<const DiscreteVariable*>& del_vars ) const;

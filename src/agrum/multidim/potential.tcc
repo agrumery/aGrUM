@@ -236,6 +236,11 @@ namespace gum {
     MultiDimDecorator<GUM_SCALAR>::content()->swap( *x, *y );
   }
 
+  /// string representation of this.
+  template<typename GUM_SCALAR> INLINE
+  const std::string Potential<GUM_SCALAR>::toString( ) const {
+    return MultiDimDecorator<GUM_SCALAR>::content()->toString( );
+  }
 } /* namespace gum */
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
