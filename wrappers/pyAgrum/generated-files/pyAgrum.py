@@ -2504,9 +2504,12 @@ class Potential_double(_object):
         return tuple(index)
 
 
-    def __str__(self):
-        """__str__(Potential_double self) -> char const *"""
-        return _pyAgrum.Potential_double___str__(self)
+    def __str__(self, *args):
+        """
+        __str__(Potential_double self) -> std::string const
+        __str__(Potential_double self) -> char const *
+        """
+        return _pyAgrum.Potential_double___str__(self, *args)
 
     def tolist(self):
         self.__fill_distrib__()
