@@ -40,14 +40,29 @@ namespace gum {
 
     /// sets a new graph from which we will perform checkings
     INLINE void StructuralConstraint2TimeSlice::_setGraph
-    ( const DiGraph& graph,
-      const NodeProperty<bool>& time_slice ) {
+    ( const DiGraph& graph ) {
       // check that each node has an appropriate time slice
-      if ( time_slice.size () != graph.size () ) {
-        GUM_ERROR ( SizeError,
-                    "the graph and the property do not have the same size" );
+      for ( const auto id : _graph ) {
+        if ( ! _time_slice.exists ( id ) ) {
+          GUM_ERROR ( InvalidNode,
+                      "there exists a node in the graph without time slice" );
+        }
       }
-      for ( const auto id : graph ) {
+    }
+
+    
+    /// sets a new graph from which we will perform checkings
+    INLINE void
+    StructuralConstraint2TimeSlice::setGraph ( const DiGraph& graph ) {
+      StructuralConstraint2TimeSlice::_setGraph ( graph );
+      StructuralConstraintDiGraph::setGraph ( graph );
+    }
+
+    
+    /// sets a new empty graph from which we will perform checkings
+    INLINE void StructuralConstraint2TimeSlice::setSlices
+    ( const NodeProperty<bool>& time_slice ) {
+      for ( const auto id : _graph ) {
         if ( ! time_slice.exists ( id ) ) {
           GUM_ERROR ( InvalidNode,
                       "there exists a node in the graph without time slice" );
@@ -55,33 +70,7 @@ namespace gum {
       }
       _time_slice = time_slice;
     }
-
     
-    /// sets a new graph from which we will perform checkings
-    INLINE void StructuralConstraint2TimeSlice::setGraph
-    ( const DiGraph& graph,
-      const NodeProperty<bool>& time_slice ) {
-      StructuralConstraint2TimeSlice::_setGraph ( graph, time_slice );
-      StructuralConstraintDiGraph::setGraph ( graph );
-    }
-
-    
-    /// sets a new empty graph from which we will perform checkings
-    INLINE void StructuralConstraint2TimeSlice::_setGraph
-    ( const NodeProperty<bool>& time_slice ) {
-      _time_slice = time_slice;
-    }
-    
-
-    /// sets a new empty graph from which we will perform checkings
-    INLINE void StructuralConstraint2TimeSlice::setGraph
-    ( const NodeProperty<bool>& time_slice ) {
-      StructuralConstraint2TimeSlice::_setGraph ( time_slice );
-      for ( auto iter = time_slice.cbegin(); iter != time_slice.cend (); ++iter ) {
-        _graph.insertNode ( iter.key () );
-      }
-    }
-
 
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool StructuralConstraint2TimeSlice::_checkArcAddition

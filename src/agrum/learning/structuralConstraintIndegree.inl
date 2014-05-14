@@ -35,51 +35,48 @@ namespace gum {
 
     /// sets a new graph from which we will perform checkings
     INLINE void StructuralConstraintIndegree::_setGraph
-    ( const DiGraph& graph,
-      const NodeProperty<unsigned int>& max_indegree ) {
+    ( const DiGraph& graph ) {
       // check that the max_indegree corresponds to the graph
-      if ( max_indegree.size () != graph.size () ) {
-        GUM_ERROR ( SizeError,
-                    "the graph and the property do not have the same size" );
-      }
       for ( const auto id : graph ) {
-        if ( ! max_indegree.exists ( id ) ) {
+        if ( ! _max_parents.exists ( id ) ) {
           GUM_ERROR ( InvalidNode,
                       "there exists a node in the graph without max indegree" );
         }
       }
-      _max_parents =  max_indegree;
     }
     
     
     /// sets a new graph from which we will perform checkings
     INLINE void StructuralConstraintIndegree::setGraph
-    ( const DiGraph& graph,
-      const NodeProperty<unsigned int>& max_indegree ) {
-      StructuralConstraintIndegree::_setGraph ( graph, max_indegree );
+    ( const DiGraph& graph ) {
+      StructuralConstraintIndegree::_setGraph ( graph );
       StructuralConstraintDiGraph::setGraph ( graph );
     }
-    
 
-    /// sets a new graph from which we will perform checkings
-    INLINE void StructuralConstraintIndegree::_setGraph
-    ( const DiGraph& graph,
-      unsigned int max_indegree ) {
+
+    /// sets the indegree for each node
+    INLINE void StructuralConstraintIndegree::setIndegree
+    ( const NodeProperty<unsigned int>& max_indegree ) {
+      for ( const auto id : _graph ) {
+        if ( ! _max_parents.exists ( id ) ) {
+          GUM_ERROR ( InvalidNode,
+                      "there exists a node in the graph without max indegree" );
+        }
+      }
+
+      _max_parents = max_indegree;
+    }
+
+
+    /// resets the max indegree
+    INLINE void StructuralConstraintIndegree::setIndegree
+    ( unsigned int max_indegree ) {
       _max_parents.clear ();
-      for ( const auto id : graph ) {
+      for ( const auto id : _graph ) {
         _max_parents.insert ( id, max_indegree );
       }
     }
-
     
-    /// sets a new graph from which we will perform checkings
-    INLINE void StructuralConstraintIndegree::setGraph
-    ( const DiGraph& graph,
-      unsigned int max_indegree ) {
-      StructuralConstraintIndegree::_setGraph ( graph, max_indegree );
-      StructuralConstraintDiGraph::setGraph ( graph );
-    }
-
 
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool StructuralConstraintIndegree::_checkArcAddition

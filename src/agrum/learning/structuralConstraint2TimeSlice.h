@@ -83,11 +83,14 @@ namespace gum {
       /// @{
 
       /// sets a new graph from which we will perform checkings
-      virtual void setGraph ( const DiGraph& graph,
-                              const NodeProperty<bool>& time_slice );
+      /** @throws InvalidNode if a node in the graph is not assigned to a
+       * time slice */
+      virtual void setGraph ( const DiGraph& graph );
 
       /// sets a new empty graph from which we will perform checkings
-      virtual void setGraph ( const NodeProperty<bool>& time_slice );
+      /** @throws InvalidNode if a node in the graph is not assigned to a
+       * time slice */
+      void setSlices ( const NodeProperty<bool>& time_slice );
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added, or if a nonexisting arc
@@ -126,11 +129,7 @@ namespace gum {
       /// @{
       
       /// sets a new graph from which we will perform checkings
-      void _setGraph ( const DiGraph& graph,
-                       const NodeProperty<bool>& time_slice );
-
-      /// sets a new empty graph from which we will perform checkings
-      void _setGraph ( const NodeProperty<bool>& time_slice );
+      void _setGraph ( const DiGraph& graph );
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added, or if a nonexisting arc

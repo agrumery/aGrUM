@@ -76,12 +76,16 @@ namespace gum {
       /// @{
 
       /// sets a new graph from which we will perform checkings
-      virtual void setGraph ( const DiGraph& graph,
-                              const NodeProperty<unsigned int>& max_indegree );
+      /** @throws InvalidNode if a node in the graph has no max indegree
+       * already assigned */
+      virtual void setGraph ( const DiGraph& graph );
 
-      /// sets a new graph from which we will perform checkings
-      virtual void setGraph ( const DiGraph& graph,
-                              unsigned int max_indegree );
+      /// sets the indegree for each node
+      /** @throws InvalidNode if a node in the graph has no max indegree */
+      void setIndegree ( const NodeProperty<unsigned int>& max_indegree );
+
+      /// resets the max indegree
+      void setIndegree ( unsigned int max_indegree );
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added, or if a nonexisting arc
@@ -120,12 +124,7 @@ namespace gum {
       /// @{
       
       /// sets a new graph from which we will perform checkings
-      void _setGraph ( const DiGraph& graph,
-                       const NodeProperty<unsigned int>& max_indegree );
-
-      /// sets a new graph from which we will perform checkings
-      void _setGraph ( const DiGraph& graph,
-                       unsigned int max_indegree );
+      void _setGraph ( const DiGraph& graph );
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added, or if a nonexisting arc
