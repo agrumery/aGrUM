@@ -97,16 +97,6 @@ def setEvidence(self, evidces):
 }
 
 
-%feature("shadow") gum::LazyPropagation::__del__ %{
-    def __del__(self):
-        self.__disown__()
-%}
-
-
-%extend gum::LazyPropagation {
-    void __del__() {};
-}
-
 %extend gum::LazyPropagation<double> {
     Potential<double>*  joint(PyObject *seq_of_ids) {
       if (PySequence_Check(seq_of_ids)==0) {
@@ -129,12 +119,3 @@ def setEvidence(self, evidces):
     };
 }
 
-%feature("shadow") gum::GibbsInference::__del__ %{
-    def __del__(self):
-        self.__disown__()
-%}
-
-
-%extend gum::GibbsInference {
-    void __del__() {}
-}

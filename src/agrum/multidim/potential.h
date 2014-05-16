@@ -68,7 +68,7 @@ namespace gum {
 
 
       /**
-       * Creates an empty null dimensional matrix.
+       * Creates an potential around aContent.
        * @param aContent decorated implementation
        */
       explicit Potential ( MultiDimImplementation<GUM_SCALAR>* aContent );
@@ -76,8 +76,6 @@ namespace gum {
 
       /**
        * Copy constructor.
-       * This copy should create a new decorator for the same content ...
-       * Too dangerous.
        */
       explicit Potential ( const Potential<GUM_SCALAR>& src );
 
@@ -145,6 +143,10 @@ namespace gum {
       /// sum of all elements in this
       const GUM_SCALAR sum() const ;
 
+      /**
+       * string representation of this.
+       */
+      virtual const std::string toString( ) const ;
     protected:
       /// perform the marginalization p over the vars on *this.
       void _marginalize ( const Potential& p, const Set<const DiscreteVariable*>& del_vars ) const;
