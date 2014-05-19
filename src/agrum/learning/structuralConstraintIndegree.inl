@@ -163,6 +163,109 @@ namespace gum {
     }
 
     
+    /// indicates whether a change will always violate the constraint
+    INLINE bool
+    StructuralConstraintIndegree::isAlwaysInvalid ( const GraphChange& ) {
+      return false;
+    }
+
+
+    /// checks whether the constraints enable to add an arc
+    INLINE bool
+    StructuralConstraintIndegree::_checkModification ( ArcAddition& change ) {
+      return StructuralConstraintIndegree::_checkArcAddition
+        ( change.node1 (), change.node2 () );
+    }
+
+
+    /// checks whether the constraints enable to remove an arc
+    INLINE bool
+    StructuralConstraintIndegree::_checkModification ( ArcDeletion& change ) {
+      return StructuralConstraintIndegree::_checkArcDeletion
+         ( change.node1 (), change.node2 () );
+    }
+
+
+    /// checks whether the constraints enable to reverse an arc
+    INLINE bool
+    StructuralConstraintIndegree::_checkModification ( ArcReversal& change ) {
+      return StructuralConstraintIndegree::_checkArcReversal
+        ( change.node1 (), change.node2 () );
+    }
+
+      
+    /// checks whether the constraints enable to perform a graph change
+    INLINE bool
+    StructuralConstraintIndegree::_checkModification ( GraphChange& change ) {
+      switch ( change.type () ) {
+      case GraphChangeType::ARC_ADDITION:
+        return StructuralConstraintIndegree::_checkArcAddition
+          ( change.node1 (), change.node2 () );
+
+      case GraphChangeType::ARC_DELETION:
+        return StructuralConstraintIndegree::_checkArcDeletion
+          ( change.node1 (), change.node2 () );
+        
+      case GraphChangeType::ARC_REVERSAL:
+        return StructuralConstraintIndegree::_checkArcReversal
+          ( change.node1 (), change.node2 () );
+        
+      default:
+        GUM_ERROR ( OperationNotAllowed, "edge modifications are not "
+                    "supported by StructuralConstraintIndegree" );
+      }
+    }
+   
+
+    /// checks whether the constraints enable to add an arc
+    INLINE bool
+    StructuralConstraintIndegree::checkModification ( ArcAddition& change ) {
+      return StructuralConstraintIndegree::checkArcAddition
+        ( change.node1 (), change.node2 () );
+    }
+    
+
+    /// checks whether the constraints enable to remove an arc
+    INLINE bool
+    StructuralConstraintIndegree::checkModification ( ArcDeletion& change ) {
+      return StructuralConstraintIndegree::checkArcDeletion
+        ( change.node1 (), change.node2 () );
+    }
+
+    
+    /// checks whether the constraints enable to reverse an arc
+    INLINE bool
+    StructuralConstraintIndegree::checkModification ( ArcReversal& change ) {
+      return StructuralConstraintIndegree::checkArcReversal
+        ( change.node1 (), change.node2 () );
+    }
+
+    
+    /// checks whether the constraints enable to perform a graph change
+    INLINE bool
+    StructuralConstraintIndegree::checkModification ( GraphChange& change ) {
+      switch ( change.type () ) {
+      case GraphChangeType::ARC_ADDITION:
+        return StructuralConstraintIndegree::checkArcAddition
+          ( change.node1 (), change.node2 () );
+        
+      case GraphChangeType::ARC_DELETION:
+        return StructuralConstraintIndegree::checkArcDeletion
+          ( change.node1 (), change.node2 () );
+        
+      case GraphChangeType::ARC_REVERSAL:
+        return StructuralConstraintIndegree::checkArcReversal
+          ( change.node1 (), change.node2 () );
+        
+      default:
+        GUM_ERROR ( OperationNotAllowed, "edge modifications are not "
+                    "supported by StructuralConstraintIndegree" );
+      }
+    }
+    
+
+    
+    
   } /* namespace learning */
 
   

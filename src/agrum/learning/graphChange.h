@@ -18,10 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A class to account for changes in a graph
+ * @brief the classes to account for structure changes in a graph
  *
- * This class shall be used by learning algorithms to notify scores, structural
- * constraints, etc, that the learnt graph has been modified.
+ * The classes included in this file shall be used by learning algorithms to
+ * notify scores, structural constraints, etc, how the learnt graph has been
+ * modified.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -118,6 +119,158 @@ namespace gum {
 
       /// the second node in the edge or arc to be modified
       NodeId __node2;
+
+    };
+
+
+
+    /* ========================================================================= */
+    /* ===                        ARC ADDITION CLASS                         === */
+    /* ========================================================================= */
+    /** @class ArcAddition
+     * @brief The class for notifying learning algorithms of new arc additions
+     * @ingroup learning_group
+     *
+     * This class is convenient to know at compile time which graph change we
+     * are dealing with. Thus, this enables to perform faster code (we can avoid
+     * using a switch on GraphChanges to determine which change corresponds to
+     * this class.
+     */
+    class ArcAddition : public GraphChange {
+    public:
+      // ##########################################################################
+      /// @name Constructors / Destructors
+      // ##########################################################################
+      /// @{
+
+      /// default constructor
+      ArcAddition ( NodeId node1, NodeId node2 ) noexcept;
+
+      /// copy constructor
+      ArcAddition ( const ArcAddition& from ) noexcept;
+
+      /// move constructor
+      ArcAddition ( ArcAddition&& from ) noexcept;
+
+      /// destructor
+      ~ArcAddition () noexcept;
+
+      /// @}
+      
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+      /// @{
+
+      /// copy constructor
+      ArcAddition& operator= ( const ArcAddition& from ) noexcept;
+
+      /// move operator
+      ArcAddition& operator= ( ArcAddition&& from ) noexcept;
+
+      /// @}
+
+    };
+
+
+    /* ========================================================================= */
+    /* ===                        ARC DELETION CLASS                         === */
+    /* ========================================================================= */
+    /** @class ArcDeletion
+     * @brief The class for notifying learning algorithms of arc removals
+     * @ingroup learning_group
+     *
+     * This class is convenient to know at compile time which graph change we
+     * are dealing with. Thus, this enables to perform faster code (we can avoid
+     * using a switch on GraphChanges to determine which change corresponds to
+     * this class.
+     */
+    class ArcDeletion : public GraphChange {
+    public:
+      // ##########################################################################
+      /// @name Constructors / Destructors
+      // ##########################################################################
+      /// @{
+
+      /// default constructor
+      ArcDeletion ( NodeId node1, NodeId node2 ) noexcept;
+
+      /// copy constructor
+      ArcDeletion ( const ArcDeletion& from ) noexcept;
+
+      /// move constructor
+      ArcDeletion ( ArcDeletion&& from ) noexcept;
+
+      /// destructor
+      ~ArcDeletion () noexcept;
+
+      /// @}
+      
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+      /// @{
+
+      /// copy constructor
+      ArcDeletion& operator= ( const ArcDeletion& from ) noexcept;
+
+      /// move operator
+      ArcDeletion& operator= ( ArcDeletion&& from ) noexcept;
+
+      /// @}
+
+    };
+
+
+
+    /* ========================================================================= */
+    /* ===                        ARC REVERSAL CLASS                         === */
+    /* ========================================================================= */
+    /** @class ArcReversal
+     * @brief The class for notifying learning algorithms of arc reversals
+     * @ingroup learning_group
+     *
+     * This class is convenient to know at compile time which graph change we
+     * are dealing with. Thus, this enables to perform faster code (we can avoid
+     * using a switch on GraphChanges to determine which change corresponds to
+     * this class.
+     */
+    class ArcReversal : public GraphChange {
+    public:
+      // ##########################################################################
+      /// @name Constructors / Destructors
+      // ##########################################################################
+      /// @{
+
+      /// default constructor
+      ArcReversal ( NodeId node1, NodeId node2 ) noexcept;
+
+      /// copy constructor
+      ArcReversal ( const ArcReversal& from ) noexcept;
+
+      /// move constructor
+      ArcReversal ( ArcReversal&& from ) noexcept;
+
+      /// destructor
+      ~ArcReversal () noexcept;
+
+      /// @}
+      
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+      /// @{
+
+      /// copy constructor
+      ArcReversal& operator= ( const ArcReversal& from ) noexcept;
+
+      /// move operator
+      ArcReversal& operator= ( ArcReversal&& from ) noexcept;
+
+      /// @}
 
     };
 

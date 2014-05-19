@@ -151,6 +151,120 @@ namespace gum {
     }
 
     
+    /// indicates whether a change will always violate the constraint
+    INLINE bool
+    StructuralConstraint2TimeSlice::isAlwaysInvalid ( const GraphChange& change ) {
+      switch ( change.type () ) {
+      case GraphChangeType::ARC_ADDITION:
+        return ( _time_slice[change.node1 ()] > _time_slice[change.node2 ()] );
+        
+      case GraphChangeType::ARC_DELETION:
+        return false;
+
+      case GraphChangeType::ARC_REVERSAL:
+        return ( _time_slice[change.node1 ()] != _time_slice[change.node2 ()] );
+
+      default:
+        GUM_ERROR ( OperationNotAllowed, "edge modifications are not "
+                    "supported by 2TimeSlice constraints" );
+      }
+    }
+
+
+    /// checks whether the constraints enable to add an arc
+    INLINE bool
+    StructuralConstraint2TimeSlice::_checkModification ( ArcAddition& change ) {
+      return StructuralConstraint2TimeSlice::_checkArcAddition
+        ( change.node1 (), change.node2 () );
+    }
+
+
+    /// checks whether the constraints enable to remove an arc
+    INLINE bool
+    StructuralConstraint2TimeSlice::_checkModification ( ArcDeletion& change ) {
+      return StructuralConstraint2TimeSlice::_checkArcDeletion
+         ( change.node1 (), change.node2 () );
+    }
+
+
+    /// checks whether the constraints enable to reverse an arc
+    INLINE bool
+    StructuralConstraint2TimeSlice::_checkModification ( ArcReversal& change ) {
+      return StructuralConstraint2TimeSlice::_checkArcReversal
+        ( change.node1 (), change.node2 () );
+    }
+
+      
+    /// checks whether the constraints enable to perform a graph change
+    INLINE bool
+    StructuralConstraint2TimeSlice::_checkModification ( GraphChange& change ) {
+      switch ( change.type () ) {
+      case GraphChangeType::ARC_ADDITION:
+        return StructuralConstraint2TimeSlice::_checkArcAddition
+          ( change.node1 (), change.node2 () );
+
+      case GraphChangeType::ARC_DELETION:
+        return StructuralConstraint2TimeSlice::_checkArcDeletion
+          ( change.node1 (), change.node2 () );
+        
+      case GraphChangeType::ARC_REVERSAL:
+        return StructuralConstraint2TimeSlice::_checkArcReversal
+          ( change.node1 (), change.node2 () );
+        
+      default:
+        GUM_ERROR ( OperationNotAllowed, "edge modifications are not "
+                    "supported by StructuralConstraint2TimeSlice" );
+      }
+    }
+   
+
+    /// checks whether the constraints enable to add an arc
+    INLINE bool
+    StructuralConstraint2TimeSlice::checkModification ( ArcAddition& change ) {
+      return StructuralConstraint2TimeSlice::checkArcAddition
+        ( change.node1 (), change.node2 () );
+    }
+    
+
+    /// checks whether the constraints enable to remove an arc
+    INLINE bool
+    StructuralConstraint2TimeSlice::checkModification ( ArcDeletion& change ) {
+      return StructuralConstraint2TimeSlice::checkArcDeletion
+        ( change.node1 (), change.node2 () );
+    }
+
+    
+    /// checks whether the constraints enable to reverse an arc
+    INLINE bool
+    StructuralConstraint2TimeSlice::checkModification ( ArcReversal& change ) {
+      return StructuralConstraint2TimeSlice::checkArcReversal
+        ( change.node1 (), change.node2 () );
+    }
+
+    
+    /// checks whether the constraints enable to perform a graph change
+    INLINE bool
+    StructuralConstraint2TimeSlice::checkModification ( GraphChange& change ) {
+      switch ( change.type () ) {
+      case GraphChangeType::ARC_ADDITION:
+        return StructuralConstraint2TimeSlice::checkArcAddition
+          ( change.node1 (), change.node2 () );
+        
+      case GraphChangeType::ARC_DELETION:
+        return StructuralConstraint2TimeSlice::checkArcDeletion
+          ( change.node1 (), change.node2 () );
+        
+      case GraphChangeType::ARC_REVERSAL:
+        return StructuralConstraint2TimeSlice::checkArcReversal
+          ( change.node1 (), change.node2 () );
+        
+      default:
+        GUM_ERROR ( OperationNotAllowed, "edge modifications are not "
+                    "supported by StructuralConstraint2TimeSlice" );
+      }
+    }
+    
+    
   } /* namespace learning */
 
   

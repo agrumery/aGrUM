@@ -157,6 +157,107 @@ namespace gum {
       }
     }
 
+    
+    /// indicates whether a change will always violate the constraint
+    INLINE bool
+    StructuralConstraintDAG::isAlwaysInvalid ( const GraphChange& ) {
+      return false;
+    }
+
+    
+    /// checks whether the constraints enable to add an arc
+    INLINE bool
+    StructuralConstraintDAG::_checkModification ( ArcAddition& change ) {
+      return StructuralConstraintDAG::_checkArcAddition
+        ( change.node1 (), change.node2 () );
+    }
+
+
+    /// checks whether the constraints enable to remove an arc
+    INLINE bool
+    StructuralConstraintDAG::_checkModification ( ArcDeletion& change ) {
+      return StructuralConstraintDAG::_checkArcDeletion
+         ( change.node1 (), change.node2 () );
+    }
+
+
+    /// checks whether the constraints enable to reverse an arc
+    INLINE bool
+    StructuralConstraintDAG::_checkModification ( ArcReversal& change ) {
+      return StructuralConstraintDAG::_checkArcReversal
+        ( change.node1 (), change.node2 () );
+    }
+
+      
+    /// checks whether the constraints enable to perform a graph change
+    INLINE bool
+    StructuralConstraintDAG::_checkModification ( GraphChange& change ) {
+      switch ( change.type () ) {
+      case GraphChangeType::ARC_ADDITION:
+        return StructuralConstraintDAG::_checkArcAddition
+          ( change.node1 (), change.node2 () );
+
+      case GraphChangeType::ARC_DELETION:
+        return StructuralConstraintDAG::_checkArcDeletion
+          ( change.node1 (), change.node2 () );
+        
+      case GraphChangeType::ARC_REVERSAL:
+        return StructuralConstraintDAG::_checkArcReversal
+          ( change.node1 (), change.node2 () );
+        
+      default:
+        GUM_ERROR ( OperationNotAllowed, "edge modifications are not "
+                    "supported by StructuralConstraintDAG" );
+      }
+    }
+   
+
+    /// checks whether the constraints enable to add an arc
+    INLINE bool
+    StructuralConstraintDAG::checkModification ( ArcAddition& change ) {
+      return StructuralConstraintDAG::checkArcAddition
+        ( change.node1 (), change.node2 () );
+    }
+    
+
+    /// checks whether the constraints enable to remove an arc
+    INLINE bool
+    StructuralConstraintDAG::checkModification ( ArcDeletion& change ) {
+      return StructuralConstraintDAG::checkArcDeletion
+        ( change.node1 (), change.node2 () );
+    }
+
+    
+    /// checks whether the constraints enable to reverse an arc
+    INLINE bool
+    StructuralConstraintDAG::checkModification ( ArcReversal& change ) {
+      return StructuralConstraintDAG::checkArcReversal
+        ( change.node1 (), change.node2 () );
+    }
+
+    
+    /// checks whether the constraints enable to perform a graph change
+    INLINE bool
+    StructuralConstraintDAG::checkModification ( GraphChange& change ) {
+      switch ( change.type () ) {
+      case GraphChangeType::ARC_ADDITION:
+        return StructuralConstraintDAG::checkArcAddition
+          ( change.node1 (), change.node2 () );
+        
+      case GraphChangeType::ARC_DELETION:
+        return StructuralConstraintDAG::checkArcDeletion
+          ( change.node1 (), change.node2 () );
+        
+      case GraphChangeType::ARC_REVERSAL:
+        return StructuralConstraintDAG::checkArcReversal
+          ( change.node1 (), change.node2 () );
+        
+      default:
+        GUM_ERROR ( OperationNotAllowed, "edge modifications are not "
+                    "supported by StructuralConstraintDAG" );
+      }
+    }
+   
 
   } /* namespace learning */
 

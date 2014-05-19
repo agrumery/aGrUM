@@ -101,9 +101,24 @@ namespace gum {
        * is created by an arc addition or reversal. */
       virtual void modifyGraph ( const GraphChange& change ) override;
 
+      /// indicates whether a change will always violate the constraint
+      /** Some learning algorithms need examine several times whether a given
+       * graph change can be applied. For instance, the first time arc (X,Y)
+       * addition is considered, the learning algorithm may discard this change
+       * because it violates the structural constraint (e.g., if the latter
+       * enforces a DAG structure, this arc addition might induce a directed
+       * cycle), but, later on, other arc removal may induce that the arc addition
+       * is now possible. Such change is thus not always invalid. Conversely,
+       * there are changes that can be discarded once and for all. For instance,
+       * in a 2TBN structure, it is always impossible to add a backward-time arc.
+       * Such graph changes are always invalid and are therefore tagged as such
+       * by the isAlwaysInvalid method. */
+      virtual bool isAlwaysInvalid ( const GraphChange& change ) override;
+
       /// checks whether the constraints enable to add arc (x,y)
       /** an arc can be added if and only if its extremal nodes belong to the
-       * graph and the arc does not already exist. */
+       * graph and the arc does not already exist and is not a
+       * backward-time arc. */
       virtual bool checkArcAddition ( NodeId x, NodeId y );
 
       /// checks whether the constraints enable to remove arc (x,y)
@@ -112,9 +127,33 @@ namespace gum {
 
       /// checks whether the constraints enable to reverse arc (x,y)
       /** an arc can be reversed if and only if it exists and arc (y,x)
-       * does not. */
+       * does not and is not a backward-time arc. */
       virtual bool checkArcReversal ( NodeId x, NodeId y );
+
+      /// checks whether the constraints enable to add an arc
+      /** an arc can be added if and only if its extremal nodes belong to the
+       * graph and the arc does not already exist and is not a
+       * backward-time arc. */
+      virtual bool checkModification ( ArcAddition& change ) override;
+
+      /// checks whether the constraints enable to remove an arc
+      /** an arc can be removed if and only if the arc exists. */
+      virtual bool checkModification ( ArcDeletion& change ) override;
+
+      /// checks whether the constraints enable to reverse an arc
+      /** an arc can be reversed if and only if it exists and arc (y,x)
+       * does not and is not a backward-time arc. */
+      virtual bool checkModification ( ArcReversal& change ) override;
       
+      /// checks whether the constraints enable to perform a graph change
+      /** An arc can be added if and only if its extremal nodes belong to the
+       * graph and the arc does not already exist and is not a
+       * backward-time arc..
+       * An arc can be removed if and only if the arc exists.
+       * An arc (x,y) can be reversed if and only if it exists and arc (y,x)
+       * does not and is not a backward-time arc. */
+      virtual bool checkModification ( GraphChange& change ) override;
+
       /// @}
 
 
@@ -142,7 +181,8 @@ namespace gum {
 
       /// checks whether the constraints enable to add arc (x,y)
       /** an arc can be added if and only if its extremal nodes belong to the
-       * graph and the arc does not already exist. */
+       * graph and the arc does not already exist and is not a
+       * backward-time arc. */
       bool _checkArcAddition ( NodeId x, NodeId y );
 
       /// checks whether the constraints enable to remove arc (x,y)
@@ -151,8 +191,32 @@ namespace gum {
 
       /// checks whether the constraints enable to reverse arc (x,y)
       /** an arc can be reversed if and only if it exists and arc (y,x)
-       * does not. */
+       * does not and is not a backward-time arc. */
       bool _checkArcReversal ( NodeId x, NodeId y );
+
+      /// checks whether the constraints enable to add an arc
+      /** an arc can be added if and only if its extremal nodes belong to the
+       * graph and the arc does not already exist and is not a
+       * backward-time arc. */
+      bool _checkModification ( ArcAddition& change );
+
+      /// checks whether the constraints enable to remove an arc
+      /** an arc can be removed if and only if the arc exists. */
+      bool _checkModification ( ArcDeletion& change );
+
+      /// checks whether the constraints enable to reverse an arc
+      /** an arc can be reversed if and only if it exists and arc (y,x)
+       * does not and is not a backward-time arc. */
+      bool _checkModification ( ArcReversal& change );
+      
+      /// checks whether the constraints enable to perform a graph change
+      /** An arc can be added if and only if its extremal nodes belong to the
+       * graph and the arc does not already exist and is not a
+       * backward-time arc.
+       * An arc can be removed if and only if the arc exists.
+       * An arc (x,y) can be reversed if and only if it exists and arc (y,x)
+       * does not and is not a backward-time arc. */
+      bool _checkModification ( GraphChange& change );
  
       /// @}
 

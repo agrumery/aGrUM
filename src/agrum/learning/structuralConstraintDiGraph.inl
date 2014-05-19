@@ -91,8 +91,62 @@ namespace gum {
     StructuralConstraintDiGraph::checkArcReversal ( NodeId x, NodeId y ) {
       return _graph.existsArc ( x, y ) && ! _graph.existsArc ( y, x );
     }
+
     
- 
+    /// checks whether the constraints enable to add an arc
+    INLINE bool
+    StructuralConstraintDiGraph::checkModification ( ArcAddition& change ) {
+      return StructuralConstraintDiGraph::checkArcAddition
+        ( change.node1 (), change.node2 () );
+    }
+
+    
+    /// checks whether the constraints enable to remove an arc
+    INLINE bool
+    StructuralConstraintDiGraph::checkModification ( ArcDeletion& change ) {
+       return StructuralConstraintDiGraph::checkArcDeletion
+         ( change.node1 (), change.node2 () );
+    }
+
+
+    /// checks whether the constraints enable to reverse an arc
+    INLINE bool
+    StructuralConstraintDiGraph::checkModification ( ArcReversal& change ) {
+      return StructuralConstraintDiGraph::checkArcReversal
+         ( change.node1 (), change.node2 () );
+    }
+
+
+    /// checks whether the constraints enable to perform a graph change
+    INLINE bool
+    StructuralConstraintDiGraph::checkModification ( GraphChange& change ) {
+      switch ( change.type () ) {
+      case GraphChangeType::ARC_ADDITION:
+        return StructuralConstraintDiGraph::checkArcAddition
+          ( change.node1 (), change.node2 () );
+
+      case GraphChangeType::ARC_DELETION:
+        return StructuralConstraintDiGraph::checkArcDeletion
+          ( change.node1 (), change.node2 () );
+        
+      case GraphChangeType::ARC_REVERSAL:
+        return StructuralConstraintDiGraph::checkArcReversal
+          ( change.node1 (), change.node2 () );
+        
+      default:
+        GUM_ERROR ( OperationNotAllowed, "edge modifications are not "
+                    "supported by StructuralConstraintDiGraph" );
+      }
+    }
+
+    
+    /// indicates whether a change will always violate the constraint
+    INLINE bool
+    StructuralConstraintDiGraph::isAlwaysInvalid ( const GraphChange& ) {
+      return false;
+    }
+
+
   } /* namespace learning */
 
   

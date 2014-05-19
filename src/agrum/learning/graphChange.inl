@@ -105,6 +105,154 @@ namespace gum {
     INLINE NodeId GraphChange::node2 () const noexcept {
       return __node2;
     }
+
+
+
+
+    /// default constructor
+    INLINE ArcAddition::ArcAddition ( NodeId node1, NodeId node2 ) noexcept :
+      GraphChange ( GraphChangeType::ARC_ADDITION, node1, node2 ) {
+      // do not use GUM_CONSTRUCTOR here because, to speed up GraphChange's
+      // destructor, we did not make the latter's destructor virtual.
+    }
+
+    
+    /// copy constructor
+    INLINE ArcAddition::ArcAddition ( const ArcAddition& from ) noexcept :
+      GraphChange ( from ) {
+      // do not use GUM_CONS_CPY here because, to speed up GraphChange's
+      // destructor, we did not make the latter's destructor virtual.
+    }
+
+
+    /// move constructor
+    INLINE ArcAddition::ArcAddition ( ArcAddition&& from ) noexcept :
+      GraphChange ( std::move ( from ) ) {
+      // do not use GUM_CONS_MOV here because, to speed up GraphChange's
+      // destructor, we did not make the latter's destructor virtual.      
+    }
+
+
+    /// destructor
+    INLINE ArcAddition::~ArcAddition () noexcept {
+      // do not use GUM_DESTRUCTOR here because, to speed up GraphChange's
+      // destructor, we did not make the latter's destructor virtual.      
+    }
+
+
+    /// copy constructor
+    INLINE ArcAddition&
+    ArcAddition::operator= ( const ArcAddition& from ) noexcept {
+      GraphChange::operator= ( from );
+      return *this;
+    }
+      
+    
+    /// move operator
+    INLINE ArcAddition&
+    ArcAddition::operator= ( ArcAddition&& from ) noexcept {
+      GraphChange::operator= ( std::move ( from ) );
+      return *this;
+    }
+
+    
+
+
+    /// default constructor
+    INLINE ArcDeletion::ArcDeletion ( NodeId node1, NodeId node2 ) noexcept :
+      GraphChange ( GraphChangeType::ARC_DELETION, node1, node2 ) {
+      // do not use GUM_CONSTRUCTOR here because, to speed up GraphChange's
+      // destructor, we did not make the latter's destructor virtual.
+    }
+
+    
+    /// copy constructor
+    INLINE ArcDeletion::ArcDeletion ( const ArcDeletion& from ) noexcept :
+      GraphChange ( from ) {
+      // do not use GUM_CONS_CPY here because, to speed up GraphChange's
+      // destructor, we did not make the latter's destructor virtual.
+    }
+
+
+    /// move constructor
+    INLINE ArcDeletion::ArcDeletion ( ArcDeletion&& from ) noexcept :
+      GraphChange ( std::move ( from ) ) {
+      // do not use GUM_CONS_MOV here because, to speed up GraphChange's
+      // destructor, we did not make the latter's destructor virtual.      
+    }
+
+
+    /// destructor
+    INLINE ArcDeletion::~ArcDeletion () noexcept {
+      // do not use GUM_DESTRUCTOR here because, to speed up GraphChange's
+      // destructor, we did not make the latter's destructor virtual.      
+    }
+
+
+    /// copy constructor
+    INLINE ArcDeletion&
+    ArcDeletion::operator= ( const ArcDeletion& from ) noexcept {
+      GraphChange::operator= ( from );
+      return *this;
+    }
+      
+    
+    /// move operator
+    INLINE ArcDeletion&
+    ArcDeletion::operator= ( ArcDeletion&& from ) noexcept {
+      GraphChange::operator= ( std::move ( from ) );
+      return *this;
+    }
+
+    
+
+    
+    /// default constructor
+    INLINE ArcReversal::ArcReversal ( NodeId node1, NodeId node2 ) noexcept :
+      GraphChange ( GraphChangeType::ARC_REVERSAL, node1, node2 ) {
+      // do not use GUM_CONSTRUCTOR here because, to speed up GraphChange's
+      // destructor, we did not make the latter's destructor virtual.
+    }
+
+    
+    /// copy constructor
+    INLINE ArcReversal::ArcReversal ( const ArcReversal& from ) noexcept :
+      GraphChange ( from ) {
+      // do not use GUM_CONS_CPY here because, to speed up GraphChange's
+      // destructor, we did not make the latter's destructor virtual.
+    }
+
+
+    /// move constructor
+    INLINE ArcReversal::ArcReversal ( ArcReversal&& from ) noexcept :
+      GraphChange ( std::move ( from ) ) {
+      // do not use GUM_CONS_MOV here because, to speed up GraphChange's
+      // destructor, we did not make the latter's destructor virtual.      
+    }
+
+
+    /// destructor
+    INLINE ArcReversal::~ArcReversal () noexcept {
+      // do not use GUM_DESTRUCTOR here because, to speed up GraphChange's
+      // destructor, we did not make the latter's destructor virtual.      
+    }
+
+
+    /// copy constructor
+    INLINE ArcReversal&
+    ArcReversal::operator= ( const ArcReversal& from ) noexcept {
+      GraphChange::operator= ( from );
+      return *this;
+    }
+      
+    
+    /// move operator
+    INLINE ArcReversal&
+    ArcReversal::operator= ( ArcReversal&& from ) noexcept {
+      GraphChange::operator= ( std::move ( from ) );
+      return *this;
+    }
+
     
 
   } /* namespace learning */
