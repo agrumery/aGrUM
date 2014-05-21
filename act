@@ -34,9 +34,21 @@ modulestxt="src/modules.txt" # the file to parse to find the modules
 
 nbr_tests_for_stats=40
 
-OKGREEN = '\033[92m'
-WARNING = '\033[93m'
-RED = '\033[91m'
+##########################################################################################################################
+# ANSI colored string
+try:
+   import colorama
+   colorama.init()
+except:
+   try:
+       import tendo.ansiterm
+   except:
+       pass
+
+
+OKGREEN = '\033[1m\033[32m'
+WARNING = '\033[1m\033[33m'
+RED = '\033[1m\033[31m'
 ENDC = '\033[0m'
 
 ##########################################################################################################################
