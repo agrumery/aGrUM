@@ -106,7 +106,23 @@ namespace gum {
       return __node2;
     }
 
+    
+    /// returns whether two graph changes are identical or not
+    INLINE bool
+    GraphChange::operator== ( const GraphChange& from ) const noexcept {
+      return ( ( __node1 == from.__node1 ) &&
+               ( __node2 == from.__node2 ) &&
+               ( __type  == from.__type ) );
+    }
+    
 
+    /// returns whether two graph changes are different or not
+    INLINE bool
+    GraphChange::operator!= ( const GraphChange& from ) const noexcept {
+      return ! operator== ( from );
+    }
+
+ 
 
 
     /// default constructor
@@ -156,8 +172,23 @@ namespace gum {
     }
 
     
+    /// returns whether two graph changes are identical or not
+    INLINE bool
+    ArcAddition::operator== ( const ArcAddition& from ) const noexcept {
+      return ( ( node1 () == from.node1 () ) &&
+               ( node2 () == from.node2 () ) );
+    }
+    
+    
+    /// returns whether two graph changes are different or not
+    INLINE bool
+    ArcAddition::operator!= ( const ArcAddition& from ) const noexcept {
+      return ! operator== ( from );
+    }
 
 
+
+    
     /// default constructor
     INLINE ArcDeletion::ArcDeletion ( NodeId node1, NodeId node2 ) noexcept :
       GraphChange ( GraphChangeType::ARC_DELETION, node1, node2 ) {
@@ -202,6 +233,21 @@ namespace gum {
     ArcDeletion::operator= ( ArcDeletion&& from ) noexcept {
       GraphChange::operator= ( std::move ( from ) );
       return *this;
+    }
+
+    
+    /// returns whether two graph changes are identical or not
+    INLINE bool
+    ArcDeletion::operator== ( const ArcDeletion& from ) const noexcept {
+      return ( ( node1 () == from.node1 () ) &&
+               ( node2 () == from.node2 () ) );
+    }
+    
+    
+    /// returns whether two graph changes are different or not
+    INLINE bool
+    ArcDeletion::operator!= ( const ArcDeletion& from ) const noexcept {
+      return ! operator== ( from );
     }
 
     
@@ -254,6 +300,20 @@ namespace gum {
     }
 
     
+    /// returns whether two arc reversals are identical or not
+    INLINE bool
+    ArcReversal::operator== ( const ArcReversal& from ) const noexcept {
+      return ( ( node1 () == from.node1 () ) &&
+               ( node2 () == from.node2 () ) );
+    }
+    
+    
+    /// returns whether two arc reversals are different or not
+    INLINE bool
+    ArcReversal::operator!= ( const ArcReversal& from ) const noexcept {
+      return ! operator== ( from );
+    }
+
 
   } /* namespace learning */
   

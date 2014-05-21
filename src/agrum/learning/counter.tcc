@@ -95,6 +95,11 @@ namespace gum {
     unsigned int Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
     ( unsigned int var,
       const std::vector<unsigned int>& conditioning_ids ) {
+      // if the conditioning set is empty, perform the unconditional addNodeSet
+      if ( ! conditioning_ids.size () ) {
+        return Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet ( var );
+      }
+          
       // create the target nodeset and assign to it its record counter index
       std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* new_target =
         new std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>
@@ -160,7 +165,12 @@ namespace gum {
     unsigned int Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
     ( unsigned int var1,
       unsigned int var2,
-      const std::vector<unsigned int>& conditioning_ids ) {
+      const std::vector<unsigned int>& conditioning_ids ) {  
+      // if the conditioning set is empty, perform the unconditional addNodeSet
+      if ( ! conditioning_ids.size () ) {
+        return Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet ( var1, var2 );
+      }
+
       // create the target nodeset and assign to it its record counter index
       std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* new_target =
         new std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>
@@ -191,6 +201,12 @@ namespace gum {
     unsigned int Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
     ( const std::pair<unsigned int,unsigned int>& vars,
       const std::vector<unsigned int>& conditioning_ids ) {
+      // if the conditioning set is empty, perform the unconditional addNodeSet
+      if ( ! conditioning_ids.size () ) {
+        return Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+          ( vars.first, vars.second );
+      }
+      
       // create the target nodeset and assign to it its record counter index
       std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* new_target =
         new std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>
@@ -234,6 +250,12 @@ namespace gum {
     Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSets
     ( const std::vector<unsigned int>& single_vars,
       const std::vector<unsigned int>& conditioning_ids ) {
+      // if the conditioning set is empty, perform the unconditional addNodeSet
+      if ( ! conditioning_ids.size () ) {
+        return Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+          ( single_vars );
+      }
+
       unsigned int index;
       for ( auto var : single_vars ) {
         index = addNodeSets ( var, conditioning_ids );
@@ -259,6 +281,11 @@ namespace gum {
     unsigned int Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSets
     ( const std::vector< std::pair<unsigned int,unsigned int> >& vars,
       const std::vector<unsigned int>& conditioning_ids ) {
+      // if the conditioning set is empty, perform the unconditional addNodeSet
+      if ( ! conditioning_ids.size () ) {
+        return Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet ( vars );
+      }
+
       unsigned int index;
       for ( const auto& var : vars ) {
         index = addNodeSets ( var, conditioning_ids );

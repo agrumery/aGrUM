@@ -31,6 +31,7 @@
 
 
 #include <agrum/config.h>
+#include <agrum/core/hashFunc.h>
 #include <agrum/graphs/nodeGraphPart.h>
 
 
@@ -89,6 +90,12 @@ namespace gum {
 
       /// move operator
       GraphChange& operator= ( GraphChange&& from ) noexcept;
+
+      /// returns whether two graph changes are identical or not
+      bool operator== ( const GraphChange& from ) const noexcept;
+
+      /// returns whether two graph changes are different or not
+      bool operator!= ( const GraphChange& from ) const noexcept;
 
       /// @}
 
@@ -169,6 +176,12 @@ namespace gum {
       /// move operator
       ArcAddition& operator= ( ArcAddition&& from ) noexcept;
 
+      /// returns whether two arc additions are identical or not
+      bool operator== ( const ArcAddition& from ) const noexcept;
+
+      /// returns whether two arc additions are different or not
+      bool operator!= ( const ArcAddition& from ) const noexcept;
+
       /// @}
 
     };
@@ -218,6 +231,12 @@ namespace gum {
 
       /// move operator
       ArcDeletion& operator= ( ArcDeletion&& from ) noexcept;
+
+      /// returns whether two arc deletions are identical or not
+      bool operator== ( const ArcDeletion& from ) const noexcept;
+
+      /// returns whether two arc deletions are different or not
+      bool operator!= ( const ArcDeletion& from ) const noexcept;
 
       /// @}
 
@@ -270,6 +289,12 @@ namespace gum {
       /// move operator
       ArcReversal& operator= ( ArcReversal&& from ) noexcept;
 
+      /// returns whether two arc reversals are identical or not
+      bool operator== ( const ArcReversal& from ) const noexcept;
+
+      /// returns whether two arc reversals are different or not
+      bool operator!= ( const ArcReversal& from ) const noexcept;
+
       /// @}
 
     };
@@ -277,7 +302,60 @@ namespace gum {
 
   } /* namespace learning */
   
+
+
+  /// the hash function for Graph Changes
+  template <> class HashFunc<learning::GraphChange> :
+    public HashFuncSmallKey<NodeId> {
+  public:
+    /// computes the hashed value of a key
+    Size operator() ( const learning::GraphChange& key ) const {
+      return ( ( ( unsigned long ) key.node1() * HashFuncConst::gold +
+                 ( unsigned long ) key.node2() * HashFuncConst::pi )
+               >> _right_shift );
+    }
+  };
+
   
+  /// the hash function for Arc Additions
+  template <> class HashFunc<learning::ArcAddition> :
+    public HashFuncSmallKey<NodeId> {
+  public:
+    /// computes the hashed value of a key
+    Size operator() ( const learning::ArcAddition& key ) const {
+      return ( ( ( unsigned long ) key.node1() * HashFuncConst::gold +
+                 ( unsigned long ) key.node2() * HashFuncConst::pi )
+               >> _right_shift );
+    }
+  };
+
+  
+  /// the hash function for Arc Deletions
+  template <> class HashFunc<learning::ArcDeletion> :
+    public HashFuncSmallKey<NodeId> {
+  public:
+    /// computes the hashed value of a key
+    Size operator() ( const learning::ArcDeletion& key ) const {
+      return ( ( ( unsigned long ) key.node1() * HashFuncConst::gold +
+                 ( unsigned long ) key.node2() * HashFuncConst::pi )
+               >> _right_shift );
+    }
+  };
+
+  
+  /// the hash function for Arc Reversals
+  template <> class HashFunc<learning::ArcReversal> :
+    public HashFuncSmallKey<NodeId> {
+  public:
+    /// computes the hashed value of a key
+    Size operator() ( const learning::ArcReversal& key ) const {
+      return ( ( ( unsigned long ) key.node1() * HashFuncConst::gold +
+                 ( unsigned long ) key.node2() * HashFuncConst::pi )
+               >> _right_shift );
+    }
+  };
+
+
 } /* namespace gum */
 
 

@@ -257,7 +257,7 @@ namespace gum {
 
     // the display operator
     template <typename Alloc>
-    std::ostream& operator<< ( std::ostream& stream, IdSet<Alloc>& idset ) {
+    std::ostream& operator<< ( std::ostream& stream, const IdSet<Alloc>& idset ) {
       return stream << idset.toString ();
     }
 

@@ -47,7 +47,29 @@ namespace gum {
     }
 
 
-    /// adds a new arc into the graph (without checking the constraints)
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraintDiGraph::modifyGraph ( const ArcAddition& change ) {
+      _graph.insertArc ( change.node1(), change.node2 () );
+    }
+
+    
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraintDiGraph::modifyGraph ( const ArcDeletion& change ) {
+      _graph.eraseArc ( Arc ( change.node1(), change.node2 () ) );
+    }
+    
+
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraintDiGraph::modifyGraph ( const ArcReversal& change ) {
+      _graph.eraseArc ( Arc ( change.node1(), change.node2 () ) );
+      _graph.insertArc ( change.node2(), change.node1 () );
+    }
+    
+
+    /// notify the constraint of a modification of the graph
     INLINE void
     StructuralConstraintDiGraph::modifyGraph (  const GraphChange& change ) {
       switch ( change.type () ) {
@@ -73,7 +95,8 @@ namespace gum {
     
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool
-    StructuralConstraintDiGraph::checkArcAddition ( NodeId x, NodeId y ) {
+    StructuralConstraintDiGraph::checkArcAddition ( NodeId x, NodeId y )
+      const noexcept {
       return _graph.existsNode ( x ) && _graph.existsNode ( y ) &&
         ! _graph.existsArc ( x, y );
     }
@@ -81,21 +104,24 @@ namespace gum {
 
     /// checks whether the constraints enable to remove arc (x,y)
     INLINE bool
-    StructuralConstraintDiGraph::checkArcDeletion ( NodeId x, NodeId y ) {
+    StructuralConstraintDiGraph::checkArcDeletion ( NodeId x, NodeId y )
+      const noexcept {
       return _graph.existsArc ( x, y );
     }
 
     
     /// checks whether the constraints enable to reverse arc (x,y)
     INLINE bool
-    StructuralConstraintDiGraph::checkArcReversal ( NodeId x, NodeId y ) {
+    StructuralConstraintDiGraph::checkArcReversal ( NodeId x, NodeId y )
+      const noexcept {
       return _graph.existsArc ( x, y ) && ! _graph.existsArc ( y, x );
     }
 
     
     /// checks whether the constraints enable to add an arc
     INLINE bool
-    StructuralConstraintDiGraph::checkModification ( ArcAddition& change ) {
+    StructuralConstraintDiGraph::checkModification ( const ArcAddition& change )
+      const noexcept {
       return StructuralConstraintDiGraph::checkArcAddition
         ( change.node1 (), change.node2 () );
     }
@@ -103,23 +129,26 @@ namespace gum {
     
     /// checks whether the constraints enable to remove an arc
     INLINE bool
-    StructuralConstraintDiGraph::checkModification ( ArcDeletion& change ) {
-       return StructuralConstraintDiGraph::checkArcDeletion
-         ( change.node1 (), change.node2 () );
+    StructuralConstraintDiGraph::checkModification ( const ArcDeletion& change )
+      const noexcept {
+      return StructuralConstraintDiGraph::checkArcDeletion
+        ( change.node1 (), change.node2 () );
     }
 
 
     /// checks whether the constraints enable to reverse an arc
     INLINE bool
-    StructuralConstraintDiGraph::checkModification ( ArcReversal& change ) {
+    StructuralConstraintDiGraph::checkModification ( const ArcReversal& change )
+      const noexcept {
       return StructuralConstraintDiGraph::checkArcReversal
-         ( change.node1 (), change.node2 () );
+        ( change.node1 (), change.node2 () );
     }
 
 
     /// checks whether the constraints enable to perform a graph change
     INLINE bool
-    StructuralConstraintDiGraph::checkModification ( GraphChange& change ) {
+    StructuralConstraintDiGraph::checkModification ( const GraphChange& change )
+      const noexcept {
       switch ( change.type () ) {
       case GraphChangeType::ARC_ADDITION:
         return StructuralConstraintDiGraph::checkArcAddition
@@ -142,7 +171,8 @@ namespace gum {
     
     /// indicates whether a change will always violate the constraint
     INLINE bool
-    StructuralConstraintDiGraph::isAlwaysInvalid ( const GraphChange& ) {
+    StructuralConstraintDiGraph::isAlwaysInvalid ( const GraphChange& )
+      const noexcept {
       return false;
     }
 

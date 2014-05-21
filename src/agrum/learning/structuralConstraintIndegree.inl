@@ -80,14 +80,14 @@ namespace gum {
 
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool StructuralConstraintIndegree::_checkArcAddition
-    ( NodeId x, NodeId y ) {
+    ( NodeId x, NodeId y ) const noexcept {
       return ( _max_parents[y] > _graph.parents (y).size () );
     }
 
 
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool StructuralConstraintIndegree::checkArcAddition
-    ( NodeId x, NodeId y ) {
+    ( NodeId x, NodeId y ) const noexcept {
       return StructuralConstraintDiGraph::checkArcAddition ( x,y ) &&
         StructuralConstraintIndegree::_checkArcAddition ( x,y );
     }
@@ -95,14 +95,14 @@ namespace gum {
     
     /// checks whether the constraints enable to remove arc (x,y)
     INLINE bool StructuralConstraintIndegree::_checkArcDeletion
-    ( NodeId x, NodeId y ) {
+    ( NodeId x, NodeId y ) const noexcept {
       return true;
     }
 
     
     /// checks whether the constraints enable to remove arc (x,y)
     INLINE bool StructuralConstraintIndegree::checkArcDeletion
-    ( NodeId x, NodeId y ) {
+    ( NodeId x, NodeId y ) const noexcept {
       return  StructuralConstraintIndegree::_checkArcDeletion ( x,y ) &&
         StructuralConstraintDiGraph::checkArcDeletion ( x,y );
     }
@@ -110,20 +110,50 @@ namespace gum {
     
     /// checks whether the constraints enable to reverse arc (x,y)
     INLINE bool StructuralConstraintIndegree::_checkArcReversal
-    ( NodeId x, NodeId y ) {   
+    ( NodeId x, NodeId y ) const noexcept {   
       return ( _max_parents[x] > _graph.parents (x).size () );
     }
 
     
     /// checks whether the constraints enable to reverse arc (x,y)
     INLINE bool StructuralConstraintIndegree::checkArcReversal
-    ( NodeId x, NodeId y ) {   
+    ( NodeId x, NodeId y ) const noexcept {   
       return StructuralConstraintDiGraph::checkArcReversal ( x,y ) &&
         StructuralConstraintIndegree::_checkArcReversal ( x,y );
     }
     
+
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraintIndegree::_modifyGraph ( const ArcAddition& change ) {
+      // check that the max indegree is not already reached
+      if ( _graph.exists ( change.node2 () ) &&
+           _max_parents[change.node2 ()] ==
+           _graph.parents ( change.node2 () ).size () ) {
+        GUM_ERROR ( OutOfUpperBound, "there are already too many parents" );
+      }
+    }
+
+
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraintIndegree::_modifyGraph ( const ArcDeletion& change ) {
+    }
+
+
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraintIndegree::_modifyGraph ( const ArcReversal& change ) {
+      // check that the max indegree is not already reached
+      if ( _graph.exists ( change.node1 () ) &&
+           _max_parents[change.node1 ()] ==
+           _graph.parents ( change.node1 () ).size () ) {
+        GUM_ERROR ( OutOfUpperBound, "there are already too many parents" );
+      }
+    }
     
-    /// adds a new arc into the graph
+
+    /// notify the constraint of a modification of the graph
     INLINE void
     StructuralConstraintIndegree::_modifyGraph ( const GraphChange& change ) {
       switch ( change.type () ) {
@@ -157,6 +187,28 @@ namespace gum {
     
     /// adds a new arc into the graph
     INLINE void
+    StructuralConstraintIndegree::modifyGraph ( const ArcAddition& change ) {
+      StructuralConstraintIndegree::_modifyGraph ( change );
+      StructuralConstraintDiGraph::modifyGraph ( change );
+    }
+
+    /// adds a new arc into the graph
+    INLINE void
+    StructuralConstraintIndegree::modifyGraph ( const ArcDeletion& change ) {
+      StructuralConstraintIndegree::_modifyGraph ( change );
+      StructuralConstraintDiGraph::modifyGraph ( change );
+    }
+
+    /// adds a new arc into the graph
+    INLINE void
+    StructuralConstraintIndegree::modifyGraph ( const ArcReversal& change ) {
+      StructuralConstraintIndegree::_modifyGraph ( change );
+      StructuralConstraintDiGraph::modifyGraph ( change );
+    }
+
+    
+    /// adds a new arc into the graph
+    INLINE void
     StructuralConstraintIndegree::modifyGraph ( const GraphChange& change ) {
       StructuralConstraintIndegree::_modifyGraph ( change );
       StructuralConstraintDiGraph::modifyGraph ( change );
@@ -165,14 +217,16 @@ namespace gum {
     
     /// indicates whether a change will always violate the constraint
     INLINE bool
-    StructuralConstraintIndegree::isAlwaysInvalid ( const GraphChange& ) {
+    StructuralConstraintIndegree::isAlwaysInvalid ( const GraphChange& )
+      const noexcept {
       return false;
     }
 
 
     /// checks whether the constraints enable to add an arc
     INLINE bool
-    StructuralConstraintIndegree::_checkModification ( ArcAddition& change ) {
+    StructuralConstraintIndegree::_checkModification ( const ArcAddition& change )
+      const noexcept {
       return StructuralConstraintIndegree::_checkArcAddition
         ( change.node1 (), change.node2 () );
     }
@@ -180,15 +234,17 @@ namespace gum {
 
     /// checks whether the constraints enable to remove an arc
     INLINE bool
-    StructuralConstraintIndegree::_checkModification ( ArcDeletion& change ) {
+    StructuralConstraintIndegree::_checkModification ( const ArcDeletion& change )
+      const noexcept {
       return StructuralConstraintIndegree::_checkArcDeletion
-         ( change.node1 (), change.node2 () );
+        ( change.node1 (), change.node2 () );
     }
 
 
     /// checks whether the constraints enable to reverse an arc
     INLINE bool
-    StructuralConstraintIndegree::_checkModification ( ArcReversal& change ) {
+    StructuralConstraintIndegree::_checkModification ( const ArcReversal& change )
+      const noexcept {
       return StructuralConstraintIndegree::_checkArcReversal
         ( change.node1 (), change.node2 () );
     }
@@ -196,7 +252,8 @@ namespace gum {
       
     /// checks whether the constraints enable to perform a graph change
     INLINE bool
-    StructuralConstraintIndegree::_checkModification ( GraphChange& change ) {
+    StructuralConstraintIndegree::_checkModification ( const GraphChange& change )
+      const noexcept {
       switch ( change.type () ) {
       case GraphChangeType::ARC_ADDITION:
         return StructuralConstraintIndegree::_checkArcAddition
@@ -219,7 +276,8 @@ namespace gum {
 
     /// checks whether the constraints enable to add an arc
     INLINE bool
-    StructuralConstraintIndegree::checkModification ( ArcAddition& change ) {
+    StructuralConstraintIndegree::checkModification ( const ArcAddition& change )
+      const noexcept {
       return StructuralConstraintIndegree::checkArcAddition
         ( change.node1 (), change.node2 () );
     }
@@ -227,7 +285,8 @@ namespace gum {
 
     /// checks whether the constraints enable to remove an arc
     INLINE bool
-    StructuralConstraintIndegree::checkModification ( ArcDeletion& change ) {
+    StructuralConstraintIndegree::checkModification ( const ArcDeletion& change )
+      const noexcept {
       return StructuralConstraintIndegree::checkArcDeletion
         ( change.node1 (), change.node2 () );
     }
@@ -235,7 +294,8 @@ namespace gum {
     
     /// checks whether the constraints enable to reverse an arc
     INLINE bool
-    StructuralConstraintIndegree::checkModification ( ArcReversal& change ) {
+    StructuralConstraintIndegree::checkModification ( const ArcReversal& change )
+      const noexcept {
       return StructuralConstraintIndegree::checkArcReversal
         ( change.node1 (), change.node2 () );
     }
@@ -243,7 +303,8 @@ namespace gum {
     
     /// checks whether the constraints enable to perform a graph change
     INLINE bool
-    StructuralConstraintIndegree::checkModification ( GraphChange& change ) {
+    StructuralConstraintIndegree::checkModification ( const GraphChange& change )
+      const noexcept {
       switch ( change.type () ) {
       case GraphChangeType::ARC_ADDITION:
         return StructuralConstraintIndegree::checkArcAddition

@@ -73,51 +73,81 @@ namespace gum {
     
 
     /// checks whether the constraints enable to add arc (x,y)
-    INLINE bool StructuralConstraint2TimeSlice::_checkArcAddition
-    ( NodeId x, NodeId y ) {
+    INLINE bool
+    StructuralConstraint2TimeSlice::_checkArcAddition ( NodeId x, NodeId y )
+      const noexcept {
       return _time_slice[x] <= _time_slice[y];
     }
 
     
     /// checks whether the constraints enable to add arc (x,y)
-    INLINE bool StructuralConstraint2TimeSlice::checkArcAddition
-    ( NodeId x, NodeId y ) {
+    INLINE bool
+    StructuralConstraint2TimeSlice::checkArcAddition ( NodeId x, NodeId y )
+      const noexcept {
       return StructuralConstraintDiGraph::checkArcAddition ( x, y ) &&
         StructuralConstraint2TimeSlice::_checkArcAddition ( x, y );
     }
 
     
     /// checks whether the constraints enable to remove arc (x,y)
-    INLINE bool StructuralConstraint2TimeSlice::_checkArcDeletion
-    ( NodeId x, NodeId y ) {
+    INLINE bool
+    StructuralConstraint2TimeSlice::_checkArcDeletion ( NodeId x, NodeId y )
+      const noexcept {
       return true;
     }
 
 
     /// checks whether the constraints enable to remove arc (x,y)
-    INLINE bool StructuralConstraint2TimeSlice::checkArcDeletion
-    ( NodeId x, NodeId y ) {
+    INLINE bool
+    StructuralConstraint2TimeSlice::checkArcDeletion ( NodeId x, NodeId y )
+      const noexcept {
       return StructuralConstraintDiGraph::checkArcDeletion ( x, y ) &&
         StructuralConstraint2TimeSlice::_checkArcDeletion ( x, y );
     }
 
     
     /// checks whether the constraints enable to reverse arc (x,y)
-    INLINE bool StructuralConstraint2TimeSlice::_checkArcReversal
-    ( NodeId x, NodeId y ) {
+    INLINE bool
+    StructuralConstraint2TimeSlice::_checkArcReversal ( NodeId x, NodeId y )
+      const noexcept {
       return _time_slice[x] == _time_slice[y];
     }
     
       
     /// checks whether the constraints enable to reverse arc (x,y)
-    INLINE bool StructuralConstraint2TimeSlice::checkArcReversal
-    ( NodeId x, NodeId y ) {
+    INLINE bool
+    StructuralConstraint2TimeSlice::checkArcReversal ( NodeId x, NodeId y )
+      const noexcept {
       return StructuralConstraintDiGraph::checkArcReversal ( x, y ) &&
         StructuralConstraint2TimeSlice::_checkArcReversal ( x, y );
     }
 
     
-        /// adds a new arc into the graph
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraint2TimeSlice::_modifyGraph ( const ArcAddition& change ) {
+      if ( _time_slice[change.node1 ()] > _time_slice[change.node2 ()] ) {
+        GUM_ERROR ( InvalidArc, "an backward-time arc cannot be added" );
+      }
+    }
+
+    
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraint2TimeSlice::_modifyGraph ( const ArcDeletion& change ) {
+    }
+
+    
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraint2TimeSlice::_modifyGraph ( const ArcReversal& change ) {
+      if ( _time_slice[change.node1 ()] != _time_slice[change.node2 ()] ) {
+        GUM_ERROR ( InvalidArc, "an backward-time arc cannot be added" );
+      }
+    }
+
+    
+    /// notify the constraint of a modification of the graph
     INLINE void
     StructuralConstraint2TimeSlice::_modifyGraph ( const GraphChange& change ) {
       switch ( change.type () ) {
@@ -143,7 +173,31 @@ namespace gum {
     }
 
     
-    /// adds a new arc into the graph
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraint2TimeSlice::modifyGraph ( const ArcAddition& change ) {
+      StructuralConstraint2TimeSlice::_modifyGraph ( change );
+      StructuralConstraintDiGraph::modifyGraph ( change );
+    }
+
+    
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraint2TimeSlice::modifyGraph ( const ArcDeletion& change ) {
+      StructuralConstraint2TimeSlice::_modifyGraph ( change );
+      StructuralConstraintDiGraph::modifyGraph ( change );
+    }
+
+    
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraint2TimeSlice::modifyGraph ( const ArcReversal& change ) {
+      StructuralConstraint2TimeSlice::_modifyGraph ( change );
+      StructuralConstraintDiGraph::modifyGraph ( change );
+    }
+
+    
+    /// notify the constraint of a modification of the graph
     INLINE void
     StructuralConstraint2TimeSlice::modifyGraph ( const GraphChange& change ) {
       StructuralConstraint2TimeSlice::_modifyGraph ( change );
@@ -153,7 +207,8 @@ namespace gum {
     
     /// indicates whether a change will always violate the constraint
     INLINE bool
-    StructuralConstraint2TimeSlice::isAlwaysInvalid ( const GraphChange& change ) {
+    StructuralConstraint2TimeSlice::isAlwaysInvalid ( const GraphChange& change )
+      const noexcept {
       switch ( change.type () ) {
       case GraphChangeType::ARC_ADDITION:
         return ( _time_slice[change.node1 ()] > _time_slice[change.node2 ()] );
@@ -173,7 +228,8 @@ namespace gum {
 
     /// checks whether the constraints enable to add an arc
     INLINE bool
-    StructuralConstraint2TimeSlice::_checkModification ( ArcAddition& change ) {
+    StructuralConstraint2TimeSlice::_checkModification
+    ( const ArcAddition& change ) const noexcept {
       return StructuralConstraint2TimeSlice::_checkArcAddition
         ( change.node1 (), change.node2 () );
     }
@@ -181,7 +237,8 @@ namespace gum {
 
     /// checks whether the constraints enable to remove an arc
     INLINE bool
-    StructuralConstraint2TimeSlice::_checkModification ( ArcDeletion& change ) {
+    StructuralConstraint2TimeSlice::_checkModification
+    ( const ArcDeletion& change ) const noexcept {
       return StructuralConstraint2TimeSlice::_checkArcDeletion
          ( change.node1 (), change.node2 () );
     }
@@ -189,7 +246,8 @@ namespace gum {
 
     /// checks whether the constraints enable to reverse an arc
     INLINE bool
-    StructuralConstraint2TimeSlice::_checkModification ( ArcReversal& change ) {
+    StructuralConstraint2TimeSlice::_checkModification
+    ( const ArcReversal& change ) const noexcept {
       return StructuralConstraint2TimeSlice::_checkArcReversal
         ( change.node1 (), change.node2 () );
     }
@@ -197,7 +255,8 @@ namespace gum {
       
     /// checks whether the constraints enable to perform a graph change
     INLINE bool
-    StructuralConstraint2TimeSlice::_checkModification ( GraphChange& change ) {
+    StructuralConstraint2TimeSlice::_checkModification
+    ( const GraphChange& change ) const noexcept {
       switch ( change.type () ) {
       case GraphChangeType::ARC_ADDITION:
         return StructuralConstraint2TimeSlice::_checkArcAddition
@@ -220,7 +279,8 @@ namespace gum {
 
     /// checks whether the constraints enable to add an arc
     INLINE bool
-    StructuralConstraint2TimeSlice::checkModification ( ArcAddition& change ) {
+    StructuralConstraint2TimeSlice::checkModification
+    ( const ArcAddition& change ) const noexcept {
       return StructuralConstraint2TimeSlice::checkArcAddition
         ( change.node1 (), change.node2 () );
     }
@@ -228,7 +288,8 @@ namespace gum {
 
     /// checks whether the constraints enable to remove an arc
     INLINE bool
-    StructuralConstraint2TimeSlice::checkModification ( ArcDeletion& change ) {
+    StructuralConstraint2TimeSlice::checkModification
+    ( const ArcDeletion& change ) const noexcept {
       return StructuralConstraint2TimeSlice::checkArcDeletion
         ( change.node1 (), change.node2 () );
     }
@@ -236,7 +297,8 @@ namespace gum {
     
     /// checks whether the constraints enable to reverse an arc
     INLINE bool
-    StructuralConstraint2TimeSlice::checkModification ( ArcReversal& change ) {
+    StructuralConstraint2TimeSlice::checkModification
+    ( const ArcReversal& change ) const noexcept {
       return StructuralConstraint2TimeSlice::checkArcReversal
         ( change.node1 (), change.node2 () );
     }
@@ -244,7 +306,8 @@ namespace gum {
     
     /// checks whether the constraints enable to perform a graph change
     INLINE bool
-    StructuralConstraint2TimeSlice::checkModification ( GraphChange& change ) {
+    StructuralConstraint2TimeSlice::checkModification
+    ( const GraphChange& change ) const noexcept {
       switch ( change.type () ) {
       case GraphChangeType::ARC_ADDITION:
         return StructuralConstraint2TimeSlice::checkArcAddition
