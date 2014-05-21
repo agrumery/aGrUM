@@ -28,7 +28,7 @@
 namespace CxxTest {
   class AgrumErrorPrinter : public AgrumErrorFormatter {
     public:
-      AgrumErrorPrinter ( CXXTEST_STD ( ostream ) &o = CXXTEST_STD ( cerr ), const char* preLine = ":", const char* postLine = "" ) :
+      AgrumErrorPrinter ( CXXTEST_STD ( ostream ) &o = CXXTEST_STD ( cout ), const char* preLine = ":", const char* postLine = "" ) :
         AgrumErrorFormatter ( new Adapter ( o ), preLine, postLine ) {}
       virtual ~AgrumErrorPrinter() { delete outputStream(); }
 
