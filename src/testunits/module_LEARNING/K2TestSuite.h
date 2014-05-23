@@ -215,8 +215,10 @@ namespace gum_tests {
         gum::BayesNet<float> bn;
 
         // create a bn with dummy parameters corresponding to the dag
-        for ( const auto id : dag ) {
-          bn.add ( gum::LabelizedVariable ( names[id], "", modal[id] ), id );
+        for ( auto iter_id = dag.beginSafe ();
+              iter_id != dag.endSafe (); ++iter_id ) {
+          bn.add ( gum::LabelizedVariable ( names[*iter_id], "",
+                                            modal[*iter_id] ), *iter_id );
         }
 
         // add the arcs
@@ -229,10 +231,11 @@ namespace gum_tests {
         // estimate the parameters
         const gum::VariableNodeMap& varmap = bn.variableNodeMap ();
         estimator.clear ();
-        for ( const auto id : dag ) {
+        for ( auto iter_id = dag.beginSafe ();
+              iter_id != dag.endSafe (); ++iter_id ) {
           // get the sequence of variables and make the targets be the last
-          const gum::Potential<float>& pot = bn.cpt ( id );
-          const gum::DiscreteVariable& var = varmap.get ( id );
+          const gum::Potential<float>& pot = bn.cpt ( *iter_id );
+          const gum::DiscreteVariable& var = varmap.get ( *iter_id );
           gum::Sequence<const gum::DiscreteVariable*> vars =
             pot.variablesSequence ();
           if ( vars.pos ( &var ) != vars.size () - 1 ) {
@@ -256,11 +259,12 @@ namespace gum_tests {
 
         // assign the parameters to the potentials
         unsigned int index = 0;
-        for ( const auto id : dag ) {
+        for ( auto iter_id = dag.beginSafe ();
+              iter_id != dag.endSafe (); ++iter_id ) {
           // get the variables of the CPT of id in the correct order
           gum::Potential<float>& pot =
-            const_cast< gum::Potential<float>& > ( bn.cpt ( id ) );
-          const gum::DiscreteVariable& var = varmap.get ( id );
+            const_cast< gum::Potential<float>& > ( bn.cpt ( *iter_id ) );
+          const gum::DiscreteVariable& var = varmap.get ( *iter_id );
           gum::Sequence<const gum::DiscreteVariable*> vars =
             pot.variablesSequence ();
           if ( vars.pos ( &var ) != vars.size () - 1 ) {
