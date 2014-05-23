@@ -29,7 +29,7 @@
 
 namespace gum {
 
-  INLINE void NodeGraphPartIterator::__validate ( void ) {
+  INLINE void NodeGraphPartIteratorSafe::__validate ( void ) {
     __valid = false;
 
     if ( __pos > __nodes->bound() ) {
@@ -90,7 +90,7 @@ namespace gum {
     } else {
       newNode = __bound;
       ++__bound;
-      __updateEndIterator();
+      __updateEndIteratorSafe();
     }
 
     GUM_EMIT1 ( onNodeAdded, newNode );
@@ -150,18 +150,18 @@ namespace gum {
     __clearNodes();
   }
 
-  INLINE NodeGraphPartIterator NodeGraphPart::begin() const {
-    NodeGraphPartIterator it ( this );
+  INLINE NodeGraphPartIteratorSafe NodeGraphPart::beginSafe() const {
+    NodeGraphPartIteratorSafe it ( this );
     it.__validate(); // stop the iterator at the first not-in-holes
     return it;
   }
 
-  INLINE void NodeGraphPart::__updateEndIterator() {
-    __endIterator.__setPos ( __bound );
+  INLINE void NodeGraphPart::__updateEndIteratorSafe() {
+    __endIteratorSafe.__setPos ( __bound );
   }
 
-  INLINE const NodeGraphPartIterator& NodeGraphPart::end() const {
-    return __endIterator;
+  INLINE const NodeGraphPartIteratorSafe& NodeGraphPart::endSafe() const {
+    return __endIteratorSafe;
   }
 
   INLINE bool NodeGraphPart::operator== ( const NodeGraphPart& p ) const {
@@ -218,26 +218,26 @@ namespace gum {
 
 
   INLINE
-  NodeGraphPartIterator::NodeGraphPartIterator ( const NodeGraphPart* nodes ) :
+  NodeGraphPartIteratorSafe::NodeGraphPartIteratorSafe ( const NodeGraphPart* nodes ) :
     __nodes ( nodes ), __pos ( 0 ), __valid ( false ) {
 
     GUM_CONNECT ( *const_cast<NodeGraphPart*> ( nodes ),
-                  onNodeDeleted, *this, NodeGraphPartIterator::whenNodeDeleted );
-    GUM_CONSTRUCTOR ( NodeGraphPartIterator );
+                  onNodeDeleted, *this, NodeGraphPartIteratorSafe::whenNodeDeleted );
+    GUM_CONSTRUCTOR ( NodeGraphPartIteratorSafe );
   }
 
   INLINE
-  NodeGraphPartIterator::NodeGraphPartIterator ( const NodeGraphPartIterator& it ) :
+  NodeGraphPartIteratorSafe::NodeGraphPartIteratorSafe ( const NodeGraphPartIteratorSafe& it ) :
     __nodes ( it.__nodes ), __pos ( it.__pos ), __valid ( it.__valid ) {
-    GUM_CONS_CPY ( NodeGraphPartIterator );
+    GUM_CONS_CPY ( NodeGraphPartIteratorSafe );
   }
 
-  INLINE NodeGraphPartIterator::~NodeGraphPartIterator() {
-    GUM_DESTRUCTOR ( NodeGraphPartIterator );
+  INLINE NodeGraphPartIteratorSafe::~NodeGraphPartIteratorSafe() {
+    GUM_DESTRUCTOR ( NodeGraphPartIteratorSafe );
   }
 
-  INLINE NodeGraphPartIterator&
-  NodeGraphPartIterator::operator= ( const NodeGraphPartIterator& it ) {
+  INLINE NodeGraphPartIteratorSafe&
+  NodeGraphPartIteratorSafe::operator= ( const NodeGraphPartIteratorSafe& it ) {
     //  avoid self assignment
     if ( &it != this ) {
       __nodes = it.__nodes;
@@ -245,14 +245,14 @@ namespace gum {
       __valid = it.__valid;
 
       Listener::operator= ( it );
-      GUM_OP_CPY ( NodeGraphPartIterator );
+      GUM_OP_CPY ( NodeGraphPartIteratorSafe );
     }
 
     return *this;
   }
 
   INLINE
-  bool NodeGraphPartIterator::operator== ( const NodeGraphPartIterator& it ) const {
+  bool NodeGraphPartIteratorSafe::operator== ( const NodeGraphPartIteratorSafe& it ) const {
     if ( __pos != it.__pos ) return false;
 
     if ( __valid != it.__valid ) return false;
@@ -263,17 +263,17 @@ namespace gum {
   }
 
   INLINE
-  bool NodeGraphPartIterator::operator!= ( const NodeGraphPartIterator& it ) const {
+  bool NodeGraphPartIteratorSafe::operator!= ( const NodeGraphPartIteratorSafe& it ) const {
     return ! ( operator== ( it ) );
   }
 
-  INLINE NodeGraphPartIterator& NodeGraphPartIterator::operator++ ( void ) {
+  INLINE NodeGraphPartIteratorSafe& NodeGraphPartIteratorSafe::operator++ ( void ) {
     ++__pos;
     __validate();
     return *this;
   }
 
-  INLINE NodeId NodeGraphPartIterator::operator* ( void ) const {
+  INLINE NodeId NodeGraphPartIteratorSafe::operator* ( void ) const {
     if ( !__valid ) {
       GUM_ERROR ( UndefinedIteratorValue, "This iterator is not valid !" );
     }
@@ -282,7 +282,7 @@ namespace gum {
   }
 
   // unsafe private method
-  INLINE void NodeGraphPartIterator::__setPos ( NodeId id ) {
+  INLINE void NodeGraphPartIteratorSafe::__setPos ( NodeId id ) {
     __pos = id;
 
     if ( __pos >= __nodes->bound() ) {

@@ -288,11 +288,11 @@ namespace gum_tests {
         //const gum::NodeSet& nodes=source.nodes();
         const gum::DAG dag = source.dag();
 
-        for ( const auto nodeIter : dag.nodes() ) {
-          TS_ASSERT ( copy->dag().exists ( nodeIter ) );
+        for ( auto nodeIter = dag.nodes().beginSafe(); nodeIter != dag.nodes().endSafe(); ++nodeIter ) {
+          TS_ASSERT ( copy->dag().exists ( *nodeIter ) );
 
-          const gum::DiscreteVariable& srcVar = source.variable ( nodeIter );
-          const gum::DiscreteVariable& cpVar = copy->variable ( nodeIter );
+          const gum::DiscreteVariable& srcVar = source.variable ( *nodeIter );
+          const gum::DiscreteVariable& cpVar = copy->variable ( *nodeIter );
           TS_ASSERT_EQUALS ( srcVar.name(), cpVar.name() );
 
           if ( srcVar.domainSize() == cpVar.domainSize() ) {
@@ -301,18 +301,18 @@ namespace gum_tests {
           } else
             TS_ASSERT ( false );
 
-          const gum::NodeSet& parentList = source.dag().parents ( nodeIter );
+          const gum::NodeSet& parentList = source.dag().parents ( *nodeIter );
 
           for ( gum::NodeSet::const_iterator_safe arcIter = parentList.beginSafe();
                 arcIter != parentList.endSafe();
                 ++arcIter ) {
-            TS_ASSERT ( copy->dag().existsArc ( *arcIter, nodeIter ) );
+            TS_ASSERT ( copy->dag().existsArc ( *arcIter, *nodeIter ) );
           }
 
-          if ( source.isChanceNode ( nodeIter ) ) {
-            const gum::Potential<float>& srcCPT = source.cpt ( nodeIter );
+          if ( source.isChanceNode ( *nodeIter ) ) {
+            const gum::Potential<float>& srcCPT = source.cpt ( *nodeIter );
 
-            const gum::Potential<float>& cpCPT = copy->cpt ( nodeIter );
+            const gum::Potential<float>& cpCPT = copy->cpt ( *nodeIter );
 
             gum::Instantiation srcInst ( srcCPT );
 
@@ -327,10 +327,10 @@ namespace gum_tests {
               TS_ASSERT_EQUALS ( cpCPT[cpInst], srcCPT[srcInst] );
             }
 
-          } else if ( source.isUtilityNode ( nodeIter ) ) {
-            const gum::UtilityTable<float>& srcUT = source.utility ( nodeIter );
+          } else if ( source.isUtilityNode ( *nodeIter ) ) {
+            const gum::UtilityTable<float>& srcUT = source.utility ( *nodeIter );
 
-            const gum::UtilityTable<float>& cpUT = copy->utility ( nodeIter );
+            const gum::UtilityTable<float>& cpUT = copy->utility ( *nodeIter );
 
             gum::Instantiation srcInst ( srcUT );
 
@@ -536,8 +536,8 @@ namespace gum_tests {
         gum::InfluenceDiagram<float> id;
         gum::List<gum::NodeId> idList;
 
-        for ( const auto iter : id.nodes() ) {
-          TS_ASSERT ( idList.exists ( iter ) );
+        for ( auto iter = id.nodes().beginSafe(); iter != id.nodes().endSafe(); ++iter ) {
+          TS_ASSERT ( idList.exists ( *iter ) );
         }
       }
 
@@ -694,9 +694,9 @@ namespace gum_tests {
 
         fill ( id, idList );
 
-        for ( const auto iter : id.nodes() ) {
-          TS_ASSERT_EQUALS ( id.idFromName ( id.variable ( iter ).name() ), iter );
-          TS_ASSERT_EQUALS ( &id.variableFromName ( id.variable ( iter ).name() ), &id.variable ( iter ) );
+        for ( auto iter = id.nodes().beginSafe(); iter != id.nodes().endSafe(); ++iter ) {
+          TS_ASSERT_EQUALS ( id.idFromName ( id.variable ( *iter ).name() ), *iter );
+          TS_ASSERT_EQUALS ( &id.variableFromName ( id.variable ( *iter ).name() ), &id.variable ( *iter ) );
         }
 
         TS_ASSERT_THROWS ( id.idFromName ( "choucroute" ), gum::NotFound );

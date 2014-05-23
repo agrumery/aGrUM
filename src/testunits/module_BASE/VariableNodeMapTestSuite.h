@@ -184,8 +184,8 @@ namespace gum_tests {
         gum::BayesNet<float> topo;
         gum::List<gum::Id> idList;
 
-        for ( const auto iter : topo.nodes() ) {
-          TS_ASSERT ( idList.exists ( iter ) );
+        for ( auto iter = topo.nodes().beginSafe(); iter != topo.nodes().endSafe(); ++iter ) {
+          TS_ASSERT ( idList.exists ( *iter ) );
         }
       }
 

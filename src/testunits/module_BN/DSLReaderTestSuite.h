@@ -80,11 +80,11 @@ namespace gum_tests {
           TS_ASSERT_EQUALS ( net->size(), ( gum::Size ) 2 );
           gum::NodeId node_1 = 0, node_2 = 0;
 
-          for ( const auto iter : net->nodes() ) {
-            if ( net->variable ( iter ).name() == "n1" )
-              node_1 = iter;
+          for ( auto iter = net->nodes().beginSafe(); iter != net->nodes().endSafe(); ++iter ) {
+            if ( net->variable ( *iter ).name() == "n1" )
+              node_1 = *iter;
             else
-              node_2 = iter;
+              node_2 = *iter;
           }
 
           const gum::DiscreteVariable& var_1 = net->variable ( node_1 );
@@ -131,11 +131,11 @@ namespace gum_tests {
           TS_ASSERT_EQUALS ( net->size(), ( gum::Size ) 2 );
           gum::NodeId node_1 = 0, node_2 = 0;
 
-          for ( const auto iter : net->nodes() ) {
-            if ( net->variable ( iter ).name() == "n1" ) {
-              node_1 = iter;
+          for ( auto iter = net->nodes().beginSafe(); iter != net->nodes().endSafe(); ++iter ) {
+            if ( net->variable ( *iter ).name() == "n1" ) {
+              node_1 = *iter;
             } else {
-              node_2 = iter;
+              node_2 = *iter;
             }
           }
 
@@ -216,8 +216,8 @@ namespace gum_tests {
 
         gum::HashTable<std::string, gum::Id> idMap;
 
-        for ( const auto iter : net->nodes() ) {
-          idMap.insert ( net->variable ( iter ).name(), iter );
+        for ( auto iter = net->nodes().beginSafe(); iter != net->nodes().endSafe(); ++iter ) {
+          idMap.insert ( net->variable ( *iter ).name(), *iter );
         }
 
         // The node wich we'll test

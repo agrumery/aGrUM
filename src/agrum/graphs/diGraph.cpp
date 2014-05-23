@@ -62,8 +62,8 @@ namespace gum {
     std::string tab = "     ";
     strBuff << "digraph " << name << " {" << std::endl;
 
-    for ( const auto node : nodes() ) {
-      strBuff << tab << node << ";" << std::endl;
+    for ( auto iter_node = nodes().beginSafe (); iter_node != nodes().endSafe(); ++iter_node ) {
+      strBuff << tab << *iter_node << ";" << std::endl;
     }
 
     strBuff << std::endl;

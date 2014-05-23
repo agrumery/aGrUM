@@ -151,10 +151,10 @@ namespace gum {
           i = *iter;
 
           try {
-            for ( const auto node : i->dag(). nodes() ) {
-              name = i->get ( node ).name();
+            for ( auto node = i->dag().nodes().beginSafe (); node != i->dag().nodes().endSafe(); ++node ) {
+              name = i->get ( *node ).name();
 
-              switch ( i->get ( node ).elt_type() ) {
+              switch ( i->get ( *node ).elt_type() ) {
                 case ClassElement<GUM_SCALAR>::prm_aggregate:
                 case ClassElement<GUM_SCALAR>::prm_attribute: {
                   if ( ( c->get ( name ).elt_type() == ClassElement<GUM_SCALAR>::prm_attribute ) or
@@ -248,13 +248,13 @@ namespace gum {
       Size count = 0;
       const Sequence<const DiscreteVariable*>& vars = attr->cpf().variablesSequence();
 
-      for ( const auto node : c->dag().nodes() ) {
+      for ( auto node = c->dag().nodes().beginSafe(); node != c->dag().nodes().endSafe(); ++node ) {
         try {
-          if ( vars.exists ( & ( c->get ( node ).type().variable() ) ) ) {
+          if ( vars.exists ( & ( c->get ( *node ).type().variable() ) ) ) {
             ++count;
 
-            if ( & ( attr->type().variable() ) != & ( c->get ( node ).type().variable() ) ) {
-              c->insertArc ( c->get ( node ).safeName(), attr->safeName() );
+            if ( & ( attr->type().variable() ) != & ( c->get ( *node ).type().variable() ) ) {
+              c->insertArc ( c->get ( *node ).safeName(), attr->safeName() );
             }
           }
         } catch ( OperationNotAllowed& ) { }

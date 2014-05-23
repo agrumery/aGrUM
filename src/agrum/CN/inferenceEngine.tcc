@@ -617,13 +617,13 @@ namespace gum {
       _oldMarginalMax.clear();
 
       //for ( const auto id = _credalNet->current_bn().beginNodes(), theEnd = _credalNet->current_bn().endNodes(); id != theEnd; ++id ) {
-      for ( const auto id : _credalNet->current_bn().nodes() ) {
-        auto dSize = _credalNet->current_bn().variable ( id ).domainSize();
-        _marginalMin.insert ( id, std::vector< GUM_SCALAR > ( dSize, 1 ) );
-        _oldMarginalMin.insert ( id, std::vector< GUM_SCALAR > ( dSize, 1 ) );
+      for ( auto id = _credalNet->current_bn().nodes().beginSafe (); id != _credalNet->current_bn().nodes().endSafe(); ++id ) {
+        auto dSize = _credalNet->current_bn().variable ( *id ).domainSize();
+        _marginalMin.insert ( *id, std::vector< GUM_SCALAR > ( dSize, 1 ) );
+        _oldMarginalMin.insert ( *id, std::vector< GUM_SCALAR > ( dSize, 1 ) );
 
-        _marginalMax.insert ( id, std::vector< GUM_SCALAR > ( dSize, 0 ) );
-        _oldMarginalMax.insert ( id, std::vector< GUM_SCALAR > ( dSize, 0 ) );
+        _marginalMax.insert ( *id, std::vector< GUM_SCALAR > ( dSize, 0 ) );
+        _oldMarginalMax.insert ( *id, std::vector< GUM_SCALAR > ( dSize, 0 ) );
       }
     }
 
@@ -634,8 +634,8 @@ namespace gum {
       if ( ! _storeVertices )
         return;
 
-      for ( const auto id : _credalNet->current_bn().nodes() )
-        _marginalSets.insert ( id, std::vector< std::vector< GUM_SCALAR > >() );
+      for ( auto id = _credalNet->current_bn().nodes().beginSafe (); id != _credalNet->current_bn().nodes().endSafe(); ++id )
+        _marginalSets.insert ( *id, std::vector< std::vector< GUM_SCALAR > >() );
     }
 
 
@@ -649,10 +649,10 @@ namespace gum {
       if ( _modal.empty() )
         return;
 
-      for ( const auto id : _credalNet->current_bn().nodes() ) {
+      for ( auto id = _credalNet->current_bn().nodes().beginSafe (); id != _credalNet->current_bn().nodes().endSafe(); ++id ) {
         std::string var_name, time_step;
 
-        var_name = _credalNet->current_bn().variable ( id ).name();
+        var_name = _credalNet->current_bn().variable ( *id ).name();
         auto delim = var_name.find_first_of ( "_" );
         time_step = var_name.substr ( delim + 1, var_name.size() );
         var_name = var_name.substr ( 0, delim );
@@ -663,8 +663,8 @@ namespace gum {
         if ( ! _modal.exists ( var_name ) )
           continue;
 
-        _expectationMin.insert ( id, _modal[ var_name ].back() );
-        _expectationMax.insert ( id, _modal[ var_name ].front() );
+        _expectationMin.insert ( *id, _modal[ var_name ].back() );
+        _expectationMax.insert ( *id, _modal[ var_name ].front() );
 
         //_expectationMin.insert ( id, it->second[it->second.size()-1] );
         //_expectationMax.insert ( id, it->second[0] );
@@ -753,8 +753,8 @@ namespace gum {
       const DAG& dag = _credalNet->current_bn().dag();
 
       // t = 0 vars belongs to _t0 as keys
-      for ( const auto id : dag.nodes() ) {
-        std::string var_name = _credalNet->current_bn().variable ( id ).name();
+      for ( auto id = dag.nodes().beginSafe(); id != dag.nodes().endSafe(); ++id ) {
+        std::string var_name = _credalNet->current_bn().variable ( *id ).name();
         auto delim = var_name.find_first_of ( "_" );
 
         if ( delim > var_name.size() ) {
@@ -764,12 +764,12 @@ namespace gum {
         std::string time_step = var_name.substr ( delim + 1, 1 );
 
         if ( time_step.compare ( "0" ) == 0 )
-          _t0.insert ( id, std::vector< NodeId >() );
+          _t0.insert ( *id, std::vector< NodeId >() );
       }
 
       // t = 1 vars belongs to either _t0 as member value or _t1 as keys
-      for ( const auto id : dag.nodes() ) {
-        std::string var_name = _credalNet->current_bn().variable ( id ).name();
+      for ( auto id = dag.nodes().beginSafe(); id != dag.nodes().endSafe(); ++id ) {
+        std::string var_name = _credalNet->current_bn().variable ( *id ).name();
         auto delim = var_name.find_first_of ( "_" );
         std::string time_step = var_name.substr ( delim + 1, var_name.size() );
         var_name = var_name.substr ( 0, delim );
@@ -786,13 +786,13 @@ namespace gum {
             var_0_name = var_0_name.substr ( 0, delim );
 
             if ( var_name.compare ( var_0_name ) == 0 ) {
-              const Potential< GUM_SCALAR >* potential ( &_credalNet->current_bn().cpt ( id ) );
+              const Potential< GUM_SCALAR >* potential ( &_credalNet->current_bn().cpt ( *id ) );
               const Potential< GUM_SCALAR >* potential2 ( &_credalNet->current_bn().cpt ( it.key() ) );
 
               if ( potential->domainSize() == potential2->domainSize() )
-                _t0[it.key()].push_back ( id );
+                _t0[it.key()].push_back ( *id );
               else
-                _t1.insert ( id, std::vector< NodeId >() );
+                _t1.insert ( *id, std::vector< NodeId >() );
 
               found = true;
               break;
@@ -800,15 +800,15 @@ namespace gum {
           }
 
           if ( ! found ) {
-            _t1.insert ( id, std::vector< NodeId >() );
+            _t1.insert ( *id, std::vector< NodeId >() );
           }
         }
       }
 
       // t > 1 vars belongs to either _t0 or _t1 as member value
       // remember _timeSteps
-      for ( const auto id : dag.nodes() ) {
-        std::string var_name = _credalNet->current_bn().variable ( id ).name();
+      for ( auto id = dag.nodes().beginSafe(); id != dag.nodes().endSafe(); ++id ) {
+        std::string var_name = _credalNet->current_bn().variable ( *id ).name();
         auto delim = var_name.find_first_of ( "_" );
         std::string time_step = var_name.substr ( delim + 1, var_name.size() );
         var_name = var_name.substr ( 0, delim );
@@ -832,11 +832,11 @@ namespace gum {
             var_0_name = var_0_name.substr ( 0, delim );
 
             if ( var_name.compare ( var_0_name ) == 0 ) {
-              const Potential< GUM_SCALAR >* potential ( &_credalNet->current_bn().cpt ( id ) );
+              const Potential< GUM_SCALAR >* potential ( &_credalNet->current_bn().cpt ( *id ) );
               const Potential< GUM_SCALAR >* potential2 ( &_credalNet->current_bn().cpt ( it.key() ) );
 
               if ( potential->domainSize() == potential2->domainSize() ) {
-                _t0[it.key()].push_back ( id );
+                _t0[it.key()].push_back ( *id );
                 found = true;
                 break;
               }
@@ -851,11 +851,11 @@ namespace gum {
               var_0_name = var_0_name.substr ( 0, delim );
 
               if ( var_name.compare ( var_0_name ) == 0 ) {
-                const Potential< GUM_SCALAR >* potential ( &_credalNet->current_bn().cpt ( id ) );
+                const Potential< GUM_SCALAR >* potential ( &_credalNet->current_bn().cpt ( *id ) );
                 const Potential< GUM_SCALAR >* potential2 ( &_credalNet->current_bn().cpt ( it.key() ) );
 
                 if ( potential->domainSize() == potential2->domainSize() ) {
-                  _t1[it.key()].push_back ( id );
+                  _t1[it.key()].push_back ( *id );
                   break;
                 }
               }

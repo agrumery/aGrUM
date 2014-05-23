@@ -38,24 +38,24 @@ namespace gum {
                                  bool holes_resize_policy ) :
     __holes_size ( holes_size ),
     __holes_resize_policy ( holes_resize_policy ),
-    __endIterator ( this ),
+    __endIteratorSafe ( this ),
     __bound ( 0 ) {
     __holes = 0;
     GUM_CONSTRUCTOR ( NodeGraphPart );
-    __updateEndIterator();
+    __updateEndIteratorSafe();
   }
 
   NodeGraphPart::NodeGraphPart ( const NodeGraphPart& s ) :
     __holes_size ( s.__holes_size ),
     __holes_resize_policy ( s.__holes_resize_policy ),
-    __endIterator ( this ),
+    __endIteratorSafe ( this ),
     __bound ( s.__bound ) {
     __holes = 0;
 
     if ( s.__holes )
       __holes = new NodeSet ( *s.__holes );
 
-    __updateEndIterator();
+    __updateEndIteratorSafe();
 
     GUM_CONS_CPY ( NodeGraphPart );
   }
@@ -76,7 +76,7 @@ namespace gum {
 
     __bound = s.__bound;
 
-    __updateEndIterator();
+    __updateEndIteratorSafe();
   }
 
   // id is assumed to belong to NodeGraphPart
@@ -99,7 +99,7 @@ namespace gum {
         }
       }
 
-      __updateEndIterator();
+      __updateEndIteratorSafe();
     } else {
       if ( !__holes )
         __holes = new NodeSet ( __holes_size, __holes_resize_policy );
@@ -147,7 +147,7 @@ namespace gum {
 
       __bound = id + 1;
 
-      __updateEndIterator();
+      __updateEndIteratorSafe();
     } else {
       if ( __inHoles ( id ) ) { // we fill a hole
         __eraseHole ( id );
@@ -170,7 +170,7 @@ namespace gum {
       }
     }
 
-    __updateEndIterator();
+    __updateEndIteratorSafe();
 
     delete ( __holes );
 
@@ -178,7 +178,7 @@ namespace gum {
   }
 
 
-  void NodeGraphPartIterator::whenNodeDeleted ( const void* src, NodeId id )  {
+  void NodeGraphPartIteratorSafe::whenNodeDeleted ( const void* src, NodeId id )  {
     if ( id == __pos ) { // we just deleted the _pos in NodeGraphPart
       __valid = false;
     }

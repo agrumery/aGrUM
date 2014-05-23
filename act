@@ -22,7 +22,8 @@
 #***************************************************************************
 
 
-import sys,os,re,glob
+import sys,os,re,glob,math
+
 import shelve
 from optparse import OptionParser
 from datetime import datetime
@@ -33,11 +34,40 @@ modulestxt="src/modules.txt" # the file to parse to find the modules
 
 nbr_tests_for_stats=40
 
-OKGREEN = '\033[92m'
-WARNING = '\033[93m'
-RED = '\033[91m'
+##########################################################################################################################
+# ANSI colored string
+try:
+   import colorama
+   colorama.init()
+except:
+   try:
+       import tendo.ansiterm
+   except:
+       pass
+
+
+OKGREEN = '\033[1m\033[32m'
+WARNING = '\033[1m\033[33m'
+RED = '\033[1m\033[31m'
 ENDC = '\033[0m'
 
+##########################################################################################################################
+# for timeout in popen (cross-platform)
+from subprocess import PIPE, Popen
+from threading  import Thread
+
+try:
+    from Queue import Queue, Empty
+except ImportError:
+    from queue import Queue, Empty  # python 3.x
+
+ON_POSIX = 'posix' in sys.builtin_module_names
+
+def enqueue_output(out, queue):
+    for line in iter(out.readline, b''):
+        queue.put(line)
+    out.close()
+    
 ##########################################################################################################################
 def parseModulesTxt(filename):
   modules={}
@@ -52,6 +82,7 @@ def parseModulesTxt(filename):
           descr=module
         modules[module]=descr
   return modules
+
 ##########################################################################################################################
 def initParser(current):
     global list_options,list_rules,list_wrappers
@@ -194,16 +225,21 @@ def writeTestList(l):
   f.close()
 
 ##########################################################################################################################
+def CrossPlatformRelPath(x,y):
+  return os.path.relpath(x,"src/testunits").replace("\\","/") 
+
 def allTests():
     global current
     
     s=[]
     
     if current['test_base']:
-      s+=[os.path.relpath(x,"src/testunits") for x in glob.glob('src/testunits/module_BASE/*TestSuite.h')]
+      s+=[CrossPlatformRelPath(x,"src/testunits")
+          for x in glob.glob('src/testunits/module_BASE/*TestSuite.h')]
       
     for x in current['module'].split('+'):
-      s+=[os.path.relpath(x,"src/testunits") for x in glob.glob('src/testunits/module_'+x.upper()+'/*TestSuite.h')]
+      s+=[CrossPlatformRelPath(x,"src/testunits")
+          for x in glob.glob('src/testunits/module_'+x.upper()+'/*TestSuite.h')]
     
     return sorted(s)
 
@@ -260,18 +296,60 @@ def afficheTests():
     afficheTestsForModule(modul)
 
 ##########################################################################################################################
-def execute(s,exec_cde=False):
+def schedule(act,arg,exec_cde=False):
     global sh,sh_no_exec
-    if(sh!=""):
-        s=" && "+s
-    sh+=s
+    
+    sh.append({'action':act,'argument':arg})
     if not exec_cde:
-      sh_no_exec+=s
-
+      sh_no_exec.append({'action':act,'argument':arg})
+      
+    # safe_cd =>  # cde="[ ! -d "+folder+" ] && mkdir "+folder+" ; cd "+folder
+    # cd .. ou autre
+    # autre
+def execute(actions,verbose=True):
+  nberr=0
+  for k in actions:
+    if verbose:
+      print WARNING+k['action']+' '+OKGREEN+k['argument']+ENDC
+      
+    action=k['action']
+    if action=="safe_cd":
+      folder=k['argument']
+      if not os.path.exists(folder):
+        os.mkdir(folder)
+      os.chdir(folder)
+    elif action=="cd":
+      folder=k['argument'] # most probably folder=".."
+      os.chdir(folder) 
+    else:
+      commande=action+" "+k['argument']
+      proc=Popen(commande,shell=True,stdout=PIPE, bufsize=1, close_fds=ON_POSIX)
+      q = Queue()
+      t = Thread(target=enqueue_output, args=(proc.stdout, q))
+      t.daemon = True # thread dies with the program
+      t.start() 
+      while True:
+        try:
+          line = q.get_nowait()
+          sys.stdout.write(line)
+          sys.stdout.flush()
+        except Empty:
+          if proc.poll() is not None:
+            print(WARNING+"[.]"+ENDC)
+            break
+      
+      #exitcode = proc.returncode
+      
+      #for line in proc.stderr.readlines():
+      #  sys.stdout.write(RED+line+ENDC)
+      
 ##########################################################################################################################
+
 def cleanAll():
+    import shutil
     print WARNING+" cleaning"+ENDC+" ...",
-    os.system("rm -rf build")
+    #os.system("rm -rf build") # 
+    shutil.rmtree("build")
     print OKGREEN+"done"+ENDC
     print
 
@@ -290,8 +368,7 @@ def showAll():
 
 ##########################################################################################################################
 def safe_cd(folder):
-    cde="[ ! -d "+folder+" ] && mkdir "+folder+" ; cd "+folder
-    execute(cde)
+    schedule("safe_cd",folder)
 
 ##########################################################################################################################
 def checkConstraints(parser,options,args):
@@ -324,7 +401,10 @@ def checkConstraints(parser,options,args):
             parser.error(arg+" is an invalid argument")
     else:
         for key in 'rule option wrapper'.split():
+          if key in persistent:
             current[key]=persistent[key]
+          else:
+            current[key]=""
 
     if current['option']=='':
         current['option']='release'
@@ -366,8 +446,8 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
         else:
             cmake_options=cmake_options+"OFF"
         [safe_cd(s) for s in folders]
-        execute("cmake "+cmake_options)
-        [execute("cd ..") for s in folders]
+        schedule("cmake ",cmake_options)
+        [schedule("cd","..") for s in folders]
 
         folders=['build','wrappers',options['wrapper']]
         cmake_options="-DCMAKE_BUILD_TYPE=RELEASE ../../../wrappers/"+options['wrapper']+"/"
@@ -392,8 +472,8 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
             folders=["build",options['platform'],options['option']]
         cmake_options=" -DCMAKE_BUILD_TYPE="+options['option'].upper()+" ../../../src"
         if (options['platform']=="windows"):
-            cmake_options=cmake_options+" -DCMAKE_TOOLCHAIN_FILE=../../../src/cmake/Toolchain-mingw32.cmake -DCMAKE_INSTALL_PREFIX=_CPack_Packages/win32/TGZ/agrum-0.6.0-win32"
-
+            #cmake_options=cmake_options+" -DCMAKE_TOOLCHAIN_FILE=../../../src/cmake/Toolchain-mingw32.cmake -DCMAKE_INSTALL_PREFIX=_CPack_Packages/win32/TGZ/agrum-0.6.0-win32"
+            cmake_options=cmake_options+' -G "MinGW Makefiles" -DCMAKE_INSTALL_PREFIX=_CPack_Packages/TGZ/agrum-0.6.0-win'
         if (options['rule']=="test" or options['rule']=="run"):
             make_options=options['rule']
             run_cde="./"+options['rule']
@@ -427,14 +507,14 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
       cmake_options = cmake_options+create_build(module)
 
     [safe_cd(s) for s in folders]
-    execute("cmake "+cmake_options)
+    schedule("cmake ",cmake_options)
     if options['rule']!='config':
-        execute("make "+make_options)
+        schedule("make ",make_options)
     if (run_cde!=""):
         if (options['platform'] == "windows"):
-            run_cde="wine "+run_cde
-        execute(run_cde,exec_cde=True)
-    [execute("cd ..") for s in folders]
+            schedule("wine ",run_cde,True)
+        schedule(run_cde,"",exec_cde=True)
+    [schedule("cd","..") for s in folders]
 
 ##########################################################################################################################
 def uninstall(options):
@@ -450,8 +530,8 @@ def uninstall(options):
     else:
         folders=["build",options['platform'],options['option']]
         [safe_cd(s) for s in folders]
-        execute("make uninstall")
-        [execute("cd ..") for s in folders]
+        schedule("mak","uninstall")
+        [schedule("cd","..") for s in folders]
 
 ###################################################################################################################
 def _getParam(name):
@@ -577,8 +657,8 @@ if not os.path.exists('src/testunits/testList.cmake'):
     writeTestList(allTests())
     
 global sh,sh_no_exec
-sh="";
-sh_no_exec=""
+sh=[];
+sh_no_exec=[]
 
 ## SPECIAL RULES
 if current['rule']=='show':
@@ -619,14 +699,13 @@ if (options.verbose):
   print("")
 
 if not(current['stats']):
-  os.system(sh)
+  execute(sh)
 else:
-  os.system(sh_no_exec)
+  execute(sh_no_exec)
   print("###########################################")
   print("Processing profile for "+getInvocation(current))
   print("This will take a certain amount of time ...")
   print("###########################################")
-  import subprocess,math
   time_line=re.compile(r'## Profiling :\s+(.*?)\sms ##')
   stat_line=re.compile(r"Failed (.*?) of (.*?) test")
   

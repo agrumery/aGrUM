@@ -67,9 +67,9 @@ namespace gum {
     DAG dag = this->dag();
     std::vector<NodeId> roots;
 
-    for ( const auto n : dag.nodes() )
-      if ( dag.parents ( n ).empty() )
-        roots.push_back ( n );
+    for ( auto iter = dag.nodes().beginSafe (); iter != dag.nodes().endSafe(); ++iter )
+      if ( dag.parents ( *iter ).empty() )
+        roots.push_back ( *iter );
 
     while ( roots.size() ) {
       __mutableTopologicalOrder->insert ( roots.back() );
@@ -100,8 +100,8 @@ namespace gum {
     //}
 
     // marry the parents
-    for ( const auto node : nodes() ) {
-      const NodeSet& parents = dag().parents ( node );
+    for ( auto iter_node = nodes().beginSafe(); iter_node != nodes().endSafe(); ++iter_node ) {
+      const NodeSet& parents = dag().parents ( *iter_node );
 
       for ( NodeSetIterator it1 = parents.beginSafe (); it1 != parents.endSafe (); ++it1 ) {
         NodeSetIterator it2 = it1;

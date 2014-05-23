@@ -61,11 +61,11 @@ namespace gum {
     // the moral graph does not include utility nodes
     UndiGraph partialMoralGraph ( this->influenceDiagram().moralGraph() );
 
-    for ( const auto iter : this->influenceDiagram().nodes() ) {
-      if ( this->influenceDiagram().isUtilityNode ( iter ) ) {
-        partialMoralGraph.eraseNode ( iter );
+    for ( auto iter = this->influenceDiagram().nodes().beginSafe(); iter != this->influenceDiagram().nodes().endSafe(); ++iter ) {
+      if ( this->influenceDiagram().isUtilityNode ( *iter ) ) {
+        partialMoralGraph.eraseNode ( *iter );
       } else {
-        __modalitiesMap.insert ( iter,  this->influenceDiagram().variable ( iter ).domainSize() );
+        __modalitiesMap.insert ( *iter,  this->influenceDiagram().variable ( *iter ).domainSize() );
       }
     }
 
@@ -304,19 +304,19 @@ namespace gum {
 
     //***********************************************************************************************************************************
     // First pass to create the clique's table
-    for ( const auto cli : __triangulation->junctionTree().nodes() ) {
-      __cliquePropertiesMap.insert ( cli, new CliqueProperties<GUM_SCALAR>() );
+    for ( auto cli = __triangulation->junctionTree().nodes().beginSafe(); cli != __triangulation->junctionTree().nodes().endSafe(); ++cli ) {
+      __cliquePropertiesMap.insert ( *cli, new CliqueProperties<GUM_SCALAR>() );
 
-      potentialsCliquesSet.insert ( cli );
-      utilitiesCliqueSet.insert ( cli );
+      potentialsCliquesSet.insert ( *cli );
+      utilitiesCliqueSet.insert ( *cli );
 
       // Insertion in clique properties of the variables contains in the clique
-      for ( NodeSetIterator cliqueNodesIter = __triangulation->junctionTree().clique ( cli ).beginSafe();
-            cliqueNodesIter != __triangulation->junctionTree().clique ( cli ).endSafe(); ++cliqueNodesIter )
-        __cliquePropertiesMap[cli]->addVariable ( this->influenceDiagram().variable ( *cliqueNodesIter ) );
+      for ( NodeSetIterator cliqueNodesIter = __triangulation->junctionTree().clique ( *cli ).beginSafe();
+            cliqueNodesIter != __triangulation->junctionTree().clique ( *cli ).endSafe(); ++cliqueNodesIter )
+        __cliquePropertiesMap[*cli]->addVariable ( this->influenceDiagram().variable ( *cliqueNodesIter ) );
 
       // Creation of clique own elimination order (based on the general one)
-      __cliquePropertiesMap[cli]->makeEliminationOrder ( elim, this->influenceDiagram() );
+      __cliquePropertiesMap[*cli]->makeEliminationOrder ( elim, this->influenceDiagram() );
     }
 
     //***********************************************************************************************************************************
@@ -348,11 +348,11 @@ namespace gum {
     //***********************************************************************************************************************************
     // Fourth pass to adress utility table to the good clique
     // We go trought all diagram's nodes in search of utility nodes since they do not appear in elimination order
-    for ( const auto nodesIter : this->influenceDiagram().nodes() )
-      if ( this->influenceDiagram().isUtilityNode ( nodesIter ) ) {
+    for ( auto nodesIter = this->influenceDiagram().nodes().beginSafe(); nodesIter != this->influenceDiagram().nodes().endSafe(); ++nodesIter )
+      if ( this->influenceDiagram().isUtilityNode ( *nodesIter ) ) {
         // Récupération de la bonne clique
-        NodeId cliqueId = __getClique ( elim, nodesIter );
-        __cliquePropertiesMap[cliqueId]->addUtility ( this->influenceDiagram().utility ( nodesIter ) );
+        NodeId cliqueId = __getClique ( elim, *nodesIter );
+        __cliquePropertiesMap[cliqueId]->addUtility ( this->influenceDiagram().utility ( *nodesIter ) );
         utilitiesCliqueSet.erase ( cliqueId );
       }
 
@@ -376,9 +376,9 @@ namespace gum {
   DefaultInfluenceDiagramInference<GUM_SCALAR>::__makeStrongJunctionTree() {
 
     // Pour chaque clique
-    for ( const auto cli : __triangulation->junctionTree().nodes() ) {
+    for ( auto cli = __triangulation->junctionTree().nodes().beginSafe(); cli != __triangulation->junctionTree().nodes().endSafe(); ++cli ) {
 
-      Sequence<NodeId> eliminationOrder = __cliquePropertiesMap[ cli]->cliqueEliminationOrder();
+      Sequence<NodeId> eliminationOrder = __cliquePropertiesMap[ *cli]->cliqueEliminationOrder();
       SequenceIteratorSafe<NodeId> cliqueNodesIter =  eliminationOrder.beginSafe();
       bool validIndex = false;
 
@@ -420,11 +420,11 @@ namespace gum {
         for ( std::vector<NodeId>::const_iterator eliminationOrderIter = __triangulation->eliminationOrder().begin();
               eliminationOrderIter != __triangulation->eliminationOrder().end() && *eliminationOrderIter != *cliqueNodesIter; ++eliminationOrderIter, ++index );
 
-        __cliqueEliminationMap.insert ( __triangulation->eliminationOrder().size() - index, cli );
+        __cliqueEliminationMap.insert ( __triangulation->eliminationOrder().size() - index, *cli );
 
       } else
         try {
-          __cliqueEliminationMap.insert ( 0, cli );
+          __cliqueEliminationMap.insert ( 0, *cli );
         } catch ( Exception e ) {
           throw ( e );
         }
