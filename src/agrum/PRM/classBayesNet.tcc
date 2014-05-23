@@ -31,11 +31,11 @@ namespace gum {
 
     template<typename GUM_SCALAR>
     void ClassBayesNet<GUM_SCALAR>::__init ( const Class<GUM_SCALAR>& c ) {
-      for ( const auto node : c.dag().nodes() ) {
+      for ( auto node = c.dag().nodes().beginSafe(); node != c.dag().nodes().endSafe(); ++node ) {
         try {
           // Adding the attribute
-          if ( ClassElement<GUM_SCALAR>::isAttribute ( c.get ( node ) ) or ClassElement<GUM_SCALAR>::isAggregate ( c.get ( node ) ) ) {
-            const ClassElement<GUM_SCALAR>& elt = c.get ( node );
+          if ( ClassElement<GUM_SCALAR>::isAttribute ( c.get ( *node ) ) or ClassElement<GUM_SCALAR>::isAggregate ( c.get ( *node ) ) ) {
+            const ClassElement<GUM_SCALAR>& elt = c.get ( *node );
             this->_dag.insertNode ( elt.id() );
             this->__varNodeMap.insert ( & ( elt.type().variable() ), &elt );
           }
@@ -144,8 +144,8 @@ namespace gum {
     template<typename GUM_SCALAR> INLINE
     const NodeProperty<Size>& ClassBayesNet<GUM_SCALAR>::modalities() const {
       if ( __modalities.empty() ) {
-        for ( const auto node : this->nodes() ) {
-          __modalities.insert ( node, ( unsigned int ) variable ( node ).domainSize() );
+        for ( auto node = this->nodes().beginSafe(); node != this->nodes().endSafe(); ++node ) {
+          __modalities.insert ( *node, ( unsigned int ) variable ( *node ).domainSize() );
         }
       }
 
@@ -159,17 +159,17 @@ namespace gum {
       output << "digraph \"";
       output << __class->name() << "\" {" << std::endl;
 
-      for ( const auto node : this->nodes() ) {
-        if ( this->dag().children ( node ).size() > 0 ) {
-          const NodeSet& children = this->dag().children ( node );
+      for ( auto node = this->nodes().beginSafe(); node != this->nodes().endSafe(); ++node ) {
+        if ( this->dag().children ( *node ).size() > 0 ) {
+          const NodeSet& children = this->dag().children ( *node );
 
           for ( NodeSetIterator arc_iter = children.beginSafe();
                 arc_iter != children.endSafe(); ++arc_iter ) {
-            output << tab << "\"" << variable ( node ).name() << "\" -> ";
+            output << tab << "\"" << variable ( *node ).name() << "\" -> ";
             output << "\"" << variable ( *arc_iter ).name() << "\";" << std::endl;
           }
-        } else if ( this->dag().parents ( node ).size() == 0 ) {
-          output << tab << "\"" << variable ( node ).name() << "\";" << std::endl;
+        } else if ( this->dag().parents ( *node ).size() == 0 ) {
+          output << tab << "\"" << variable ( *node ).name() << "\";" << std::endl;
         }
       }
 

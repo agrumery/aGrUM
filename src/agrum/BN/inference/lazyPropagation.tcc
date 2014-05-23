@@ -77,11 +77,11 @@ namespace gum {
 
     const DAG& dag = BN.dag();
 
-    for( const auto node : dag.nodes() ) {
+    for( auto iter_node = dag.nodes().beginSafe(); iter_node != dag.nodes().endSafe(); ++iter_node ) {
       // get the variables in the potential of iter_node
-      NodeId first_var_eliminated = node;
-      unsigned int elim_number = elim_order[node];
-      const NodeSet& parents = dag.parents( node );
+      NodeId first_var_eliminated = *iter_node;
+      unsigned int elim_number = elim_order[*iter_node];
+      const NodeSet& parents = dag.parents( *iter_node );
 
       for( NodeSetIterator parent = parents.beginSafe();
            parent != parents.endSafe(); ++parent ) {
@@ -96,7 +96,7 @@ namespace gum {
       // first_var_eliminated contains the first var (iter or one of its parents)
       // eliminated => the clique created during its elmination contains iter
       // and all of its parents => it can contain iter's potential
-      __node_to_clique.insert( node,
+      __node_to_clique.insert( *iter_node,
                                triangulation.createdJunctionTreeClique( first_var_eliminated ) );
     }
 
@@ -104,15 +104,15 @@ namespace gum {
     // as empty lists of evidence
     List <const Potential<GUM_SCALAR>*> empty_list;
 
-    for( const auto node : __JT->nodes() ) {
-      __clique_potentials.insert( node, empty_list );
-      __clique_evidence.insert( node, empty_list );
+    for( auto iter_node = __JT->nodes().beginSafe(); iter_node != __JT->nodes().endSafe(); ++iter_node ) {
+      __clique_potentials.insert( *iter_node, empty_list );
+      __clique_evidence.insert( *iter_node, empty_list );
     }
 
     // put all the CPT's of the Bayes net nodes into the cliques
-    for( const auto node : dag.nodes() ) {
-      const Potential<GUM_SCALAR>& cpt = BN.cpt( node ) ;
-      __clique_potentials[__node_to_clique[node]].insert( &cpt );
+    for( auto iter_node = dag.nodes().beginSafe(); iter_node != dag.nodes().endSafe(); ++iter_node ) {
+      const Potential<GUM_SCALAR>& cpt = BN.cpt( *iter_node ) ;
+      __clique_potentials[__node_to_clique[*iter_node]].insert( &cpt );
     }
 
     // create empty messages on the separators
@@ -124,9 +124,9 @@ namespace gum {
     }
 
     // indicate that __collect and __diffusion passed through no clique yet
-    for( const auto node : __JT->nodes() ) {
-      __collected_cliques.insert( node, false );
-      __diffused_cliques.insert( node, false );
+    for( auto iter_node = __JT->nodes().beginSafe(); iter_node != __JT->nodes().endSafe(); ++iter_node ) {
+      __collected_cliques.insert( *iter_node, false );
+      __diffused_cliques.insert( *iter_node, false );
     }
   }
 
@@ -144,9 +144,9 @@ namespace gum {
     // domain sizes
     NodeProperty<Size> modalities;
 
-    for( const auto node : this->bn().dag().nodes() ) {
-      const DiscreteVariable& var = this->bn().variable( node );
-      modalities.insert( node, var.domainSize() );
+    for( auto iter_node = this->bn().dag().nodes().beginSafe(); iter_node != this->bn().dag().nodes().endSafe(); ++iter_node ) {
+      const DiscreteVariable& var = this->bn().variable( *iter_node );
+      modalities.insert( *iter_node, var.domainSize() );
     }
 
     // initialize the __triangulation algorithm
@@ -171,9 +171,9 @@ namespace gum {
     // domain sizes
     NodeProperty<Size> modalities;
 
-    for( const auto node : this->bn().dag().nodes() ) {
-      const DiscreteVariable& var = this->bn().variable( node );
-      modalities.insert( node, var.domainSize() );
+    for( auto iter_node = this->bn().dag().nodes().beginSafe(); iter_node != this->bn().dag().nodes().endSafe(); ++iter_node ) {
+      const DiscreteVariable& var = this->bn().variable( *iter_node );
+      modalities.insert( *iter_node, var.domainSize() );
     }
 
     // initialize the __triangulation algorithm
@@ -930,9 +930,9 @@ namespace gum {
     NodeId clique_of_ids = 0;
     bool clique_found = false;
 
-    for( const auto node : __JT->nodes() ) {
+    for( auto iter_node = __JT->nodes().beginSafe(); iter_node != __JT->nodes().endSafe(); ++iter_node ) {
       // get the nodes contained in the clique
-      const NodeSet& clique = __JT->clique( node );
+      const NodeSet& clique = __JT->clique( *iter_node );
       // check whether the clique actually contains all of ids
       bool clique_ok = true;
 
@@ -945,7 +945,7 @@ namespace gum {
 
       // check if we found the clique we wanted
       if( clique_ok ) {
-        clique_of_ids = node;
+        clique_of_ids = *iter_node;
         clique_found = true;
         break;
       }

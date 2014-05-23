@@ -434,8 +434,8 @@ namespace gum {
       TreeWidthSearch<GUM_SCALAR>::accept_root ( const Pattern* r ) {
         Size tree_width = 0;
 
-        for ( const auto n : r->nodes() )
-          tree_width += r->label ( n ).tree_width;
+        for ( auto n = r->nodes().beginSafe(); n != r->nodes().endSafe(); ++n )
+          tree_width += r->label ( *n ).tree_width;
 
         return tree_width >= cost ( *r );
       }

@@ -41,10 +41,10 @@ namespace gum {
       __fromChild ( *iter, dag, hardEvidence );
     }
 
-    for ( const auto node : dag.nodes() ) {
+    for ( auto iter_node = dag.nodes().beginSafe (); iter_node != dag.nodes().endSafe(); ++iter_node ) {
       try {
-        if ( __marks[node].first ) {
-          requisite.insert ( node );
+        if ( __marks[*iter_node].first ) {
+          requisite.insert ( *iter_node );
         }
       } catch ( NotFound& ) {
         // Do nothing

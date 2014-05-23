@@ -153,8 +153,8 @@ namespace gum_tests {
         // modalities from map
         // from file with dynamic network, not 2U
         try {
-          for ( const auto node_idIt : cn->current_bn().nodes() ) {
-            modals[ cn->current_bn().variable ( node_idIt ).name() ] = binaryModal;
+          for ( auto node_idIt = cn->current_bn().nodes().beginSafe(); node_idIt != cn->current_bn().nodes().endSafe(); ++node_idIt ) {
+            modals[ cn->current_bn().variable ( *node_idIt ).name() ] = binaryModal;
           }
         } catch ( gum::Exception& e ) {
           GUM_SHOWERROR ( e );
@@ -173,11 +173,11 @@ namespace gum_tests {
         }
 
         try {
-          for ( const auto node_idIt : cn->current_bn().nodes() ) {
-            std::vector< double > inf ( mcs.marginalMin ( node_idIt ) );
-            std::vector< double > sup ( mcs.marginalMax ( node_idIt ) );
-            double e_inf = mcs.expectationMin ( node_idIt );
-            double e_sup = mcs.expectationMax ( node_idIt );
+          for ( auto node_idIt = cn->current_bn().nodes().beginSafe(); node_idIt != cn->current_bn().nodes().endSafe(); ++node_idIt ) {
+            std::vector< double > inf ( mcs.marginalMin ( *node_idIt ) );
+            std::vector< double > sup ( mcs.marginalMax ( *node_idIt ) );
+            double e_inf = mcs.expectationMin ( *node_idIt );
+            double e_sup = mcs.expectationMax ( *node_idIt );
           }
         } catch ( gum::Exception& e ) {
           GUM_SHOWERROR ( e );
@@ -215,11 +215,11 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.makeInference(); );
 
         try {
-          for ( const auto node_idIt : cn->current_bn().nodes() ) {
-            exp inf ( mcs.marginalMin ( node_idIt ) );
-            exp sup ( mcs.marginalMax ( node_idIt ) );
-            double e_inf = mcs.expectationMin ( node_idIt );
-            double e_sup = mcs.expectationMax ( node_idIt );
+          for ( auto node_idIt = cn->current_bn().nodes().beginSafe(); node_idIt != cn->current_bn().nodes().endSafe(); ++node_idIt ) {
+            exp inf ( mcs.marginalMin ( *node_idIt ) );
+            exp sup ( mcs.marginalMax ( *node_idIt ) );
+            double e_inf = mcs.expectationMin ( *node_idIt );
+            double e_sup = mcs.expectationMax ( *node_idIt );
           }
         } catch ( gum::Exception& e ) {
           GUM_SHOWERROR ( e );
@@ -269,11 +269,11 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( mcs.makeInference(); );
 
         try {
-          for ( const auto node_idIt : cn->current_bn().nodes() ) {
-            exp inf ( mcs.marginalMin ( node_idIt ) );
-            exp sup ( mcs.marginalMax ( node_idIt ) );
-            double e_inf = mcs.expectationMin ( node_idIt );
-            double e_sup = mcs.expectationMax ( node_idIt );
+          for ( auto node_idIt = cn->current_bn().nodes().beginSafe(); node_idIt != cn->current_bn().nodes().endSafe(); ++node_idIt ) {
+            exp inf ( mcs.marginalMin ( *node_idIt ) );
+            exp sup ( mcs.marginalMax ( *node_idIt ) );
+            double e_inf = mcs.expectationMin ( *node_idIt );
+            double e_sup = mcs.expectationMax ( *node_idIt );
           }
         } catch ( gum::Exception& e ) {
           GUM_SHOWERROR ( e );

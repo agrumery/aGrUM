@@ -46,30 +46,30 @@ namespace gum {
       const DAG& dag = this->bn().dag();
 //    const NodeSet& nodes = dag.nodes();
 
-      for ( const auto node : dag.nodes() ) {
-        const DiscreteVariable& var = this->bn().variable ( node );
+      for ( auto iter_node = dag.nodes().beginSafe(); iter_node != dag.nodes().endSafe(); ++iter_node ) {
+        const DiscreteVariable& var = this->bn().variable ( *iter_node );
         //         // feed the sample
         //         __particle << var;
         // feed the __sampling
         Potential<GUM_SCALAR>* tmp = new Potential<GUM_SCALAR>();
-        __sampling_posterior.insert ( node, tmp );
+        __sampling_posterior.insert ( *iter_node, tmp );
         ( *tmp ) << var;
         Instantiation* tmp_idx = new Instantiation ( *tmp );
-        __sampling_idx.insert ( node, tmp_idx );
+        __sampling_idx.insert ( *iter_node, tmp_idx );
         // feed the children
         std::vector<NodeId>* tmp3 = new std::vector<NodeId>();
 
         //const NodeSet& arcs = dag.children ( node );
 
-        for ( auto node2 = dag.children ( node ).beginSafe(); node2 != dag.children ( node ).endSafe(); ++node2 ) {
+        for ( auto node2 = dag.children ( *iter_node ).beginSafe(); node2 != dag.children ( *iter_node ).endSafe(); ++node2 ) {
           tmp3->push_back ( *node2 );
         }
 
-        __node_children.insert ( node, tmp3 );
+        __node_children.insert ( *iter_node, tmp3 );
 
         // feed the instantiation for each cpt
-        Instantiation* tmp4 = new Instantiation ( this->bn().cpt ( node ) );
-        __cpt_idx.insert ( node, tmp4 );
+        Instantiation* tmp4 = new Instantiation ( this->bn().cpt ( *iter_node ) );
+        __cpt_idx.insert ( *iter_node, tmp4 );
       }
 
     }

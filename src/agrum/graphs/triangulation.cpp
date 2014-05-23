@@ -53,8 +53,8 @@ namespace gum {
     double dSize;
     const JunctionTree& jt = junctionTree();
 
-    for ( const auto cl : jt.nodes() ) {
-      const NodeSet& clique = jt.clique ( cl );
+    for ( auto iter_cl = jt.nodes().beginSafe(); iter_cl != jt.nodes().endSafe(); ++iter_cl ) {
+      const NodeSet& clique = jt.clique ( *iter_cl );
       dSize = 0.0;
 
       for ( auto nod = clique.beginSafe(); nod != clique.endSafe(); ++nod )

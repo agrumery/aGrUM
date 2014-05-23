@@ -71,8 +71,8 @@ namespace gum {
     // copy the graph passed in argument and update the structures
     // containing the informations useful for the triangulation
 
-    for ( const auto node : theGraph.nodes() )
-      insertNode ( node, modal[node] );
+    for ( auto iter_node = theGraph.nodes().beginSafe(); iter_node != theGraph.nodes().endSafe(); ++iter_node )
+      insertNode ( *iter_node, modal[*iter_node] );
 
     // insert all the edges of the graph into the structure. This will
     // implicitly update the "require_update" field
@@ -583,8 +583,9 @@ namespace gum {
     {
       NodeProperty<bool> nodes = __graph.nodesProperty<bool> ( false );
 
-      for ( const auto cliq : __junction_tree.nodes() ) {
-        const NodeSet& clique = __junction_tree.clique ( cliq );
+      for ( auto iter_cliq = __junction_tree.nodes().beginSafe(); 
+	iter_cliq != __junction_tree.nodes().endSafe (); ++iter_cliq ) {
+        const NodeSet& clique = __junction_tree.clique ( *iter_cliq );
 
         for ( NodeSetIterator iter2 = clique.beginSafe(); iter2 != clique.endSafe(); ++iter2 )
           nodes[*iter2] = true;
@@ -606,8 +607,8 @@ namespace gum {
       std::pair<NodeId, NodeId> thePair;
       EdgeProperty<bool> edges = __graph.edgesProperty ( false );
 
-      for ( const auto cliq : __junction_tree.nodes() ) {
-        const NodeSet& clique = __junction_tree.clique ( cliq );
+      for ( auto iter_cliq = __junction_tree.nodes().beginSafe(); iter_cliq != __junction_tree.nodes().endSafe(); ++iter_cliq ) {
+        const NodeSet& clique = __junction_tree.clique ( *iter_cliq );
 
         for ( NodeSetIterator iter2 = clique.beginSafe(); iter2 != clique.endSafe(); ++iter2 ) {
           iter3 = iter2;
@@ -636,8 +637,8 @@ namespace gum {
     {
       NodeProperty<bool> nodes = __graph.nodesProperty<bool> ( false );
 
-      for ( const auto cliq : __T_mpd.nodes() ) {
-        const NodeSet& clique = __T_mpd.clique ( cliq );
+      for ( auto iter_cliq = __T_mpd.nodes().beginSafe(); iter_cliq != __T_mpd.nodes().endSafe(); ++iter_cliq ) {
+        const NodeSet& clique = __T_mpd.clique ( *iter_cliq );
 
         for ( NodeSetIterator iter2 = clique.beginSafe(); iter2 != clique.endSafe(); ++iter2 )
           nodes[*iter2] = true;
@@ -659,8 +660,8 @@ namespace gum {
       std::pair<NodeId, NodeId> thePair;
       EdgeProperty<bool> edges = __graph.edgesProperty ( false );
 
-      for ( const auto cliq : __T_mpd.nodes() ) {
-        const NodeSet& clique = __T_mpd.clique ( cliq );
+      for ( auto iter_cliq = __T_mpd.nodes().beginSafe(); iter_cliq != __T_mpd.nodes().endSafe(); ++iter_cliq ) {
+        const NodeSet& clique = __T_mpd.clique ( *iter_cliq );
 
         for ( NodeSetIterator iter2 = clique.beginSafe(); iter2 != clique.endSafe(); ++iter2 ) {
           iter3 = iter2;
@@ -689,14 +690,14 @@ namespace gum {
     {
       HashTable< NodeId, HashTable<NodeId, bool> > chk;
 
-      for ( const auto node : __graph.nodes() )
-        chk.insert ( node, HashTable<NodeId, bool>() );
+      for ( auto iter_node = __graph.nodes().beginSafe(); iter_node != __graph.nodes().endSafe(); ++iter_node )
+        chk.insert ( *iter_node, HashTable<NodeId, bool>() );
 
-      for ( const auto cliq : __T_mpd.nodes() ) {
-        const NodeSet& clique = __T_mpd.clique ( cliq );
+      for ( auto iter_cliq = __T_mpd.nodes().beginSafe(); iter_cliq != __T_mpd.nodes().endSafe(); ++iter_cliq ) {
+        const NodeSet& clique = __T_mpd.clique ( *iter_cliq );
 
         for ( NodeSetIterator iter2 = clique.beginSafe(); iter2 != clique.endSafe(); ++iter2 )
-          chk[*iter2].insert ( cliq, false );
+          chk[*iter2].insert ( *iter_cliq, false );
       }
 
       for ( HashTableConstIteratorSafe< NodeId, List<NodeId> > iter = __mps_of_node.beginSafe(); iter !=  __mps_of_node.endSafe(); ++iter ) {
@@ -757,13 +758,13 @@ namespace gum {
 
       NodeSet nodes;
 
-      for ( const auto node : __graph.nodes() ) {
-        if ( nodes.exists ( node ) ) {
+      for ( auto iter_node = __graph.nodes().beginSafe(); iter_node != __graph.nodes().endSafe(); ++iter_node ) {
+        if ( nodes.exists ( *iter_node ) ) {
           std::cerr << "check elimination order" << std::endl
                     << __elimination_order << std::endl;
           return false;
         } else
-          nodes.insert ( node );
+          nodes.insert ( *iter_node );
       }
 
       if ( nodes.size() != __graph.size() ) {
@@ -778,8 +779,8 @@ namespace gum {
         return false;
       }
 
-      for ( const auto node : __graph.nodes() ) {
-        if ( ! __reverse_elimination_order.exists ( node ) ) {
+      for ( auto iter_node = __graph.nodes().beginSafe(); iter_node != __graph.nodes().endSafe(); ++iter_node ) {
+        if ( ! __reverse_elimination_order.exists ( *iter_node ) ) {
           std::cerr << "check reverse elimination order" << std::endl
                     << __reverse_elimination_order << std::endl;
           return false;
@@ -797,9 +798,9 @@ namespace gum {
         return false;
       }
 
-      for ( const auto node : __graph.nodes() ) {
-        if ( ! __created_JT_cliques.exists ( node ) ||
-             ! __junction_tree.existsNode ( __created_JT_cliques[node] ) ) {
+      for ( auto iter_node = __graph.nodes().beginSafe(); iter_node != __graph.nodes().endSafe(); ++iter_node ) {
+        if ( ! __created_JT_cliques.exists ( *iter_node ) ||
+             ! __junction_tree.existsNode ( __created_JT_cliques[*iter_node] ) ) {
           std::cerr << "check created JT cliques" << std::endl
                     << __created_JT_cliques << std::endl;
           return false;
@@ -902,8 +903,8 @@ namespace gum {
 
         // remove from the mps_of_node table the affected mps containing the node
         // for ( UndiGraph::NodeIterator iter_node = tmp_graph.beginNodes();iter_node != tmp_graph.endNodes(); ++iter_node ) {
-        for ( const auto node : tmp_graph.nodes() ) {
-          List<NodeId>& mps = __mps_of_node[ node];
+        for ( auto iter_node = tmp_graph.nodes().beginSafe(); iter_node != tmp_graph.nodes().endSafe(); ++iter_node ) {
+          List<NodeId>& mps = __mps_of_node[*iter_node];
 
           for ( HashTableConstIteratorSafe<NodeId, bool> iter_mps = __mps_affected.beginSafe();
                 iter_mps != __mps_affected.endSafe();
@@ -926,13 +927,13 @@ namespace gum {
         NodeProperty<NodeId>
         tmp2global_junction_tree ( tmp_junction_tree.size() );
 
-        for ( const auto cliq : tmp_junction_tree.nodes() ) {
+        for ( auto iter_cliq = tmp_junction_tree.nodes().beginSafe(); iter_cliq != tmp_junction_tree.nodes().endSafe(); ++iter_cliq ) {
           // get new ids for the nodes of tmp_junction_tree. These should be
           // greater than or equal to __junction_tree.bound () so that we can
           // use the max_old_id defined at the beginning of the method.
-          NodeId new_id = __junction_tree.insertNode ( tmp_junction_tree.clique ( cliq ) );
+          NodeId new_id = __junction_tree.insertNode ( tmp_junction_tree.clique ( *iter_cliq ) );
           // translate the id of the temprary JT into an id of the global JT
-          tmp2global_junction_tree.insert ( cliq, new_id );
+          tmp2global_junction_tree.insert ( *iter_cliq, new_id );
           new_nodes_in_junction_tree.insert ( new_id );
         }
 
@@ -1093,9 +1094,9 @@ namespace gum {
     HashTable<NodeId, NodeId>
     T_mpd_cliques ( all_cliques_affected.size() );
 
-    for ( const auto cli : __junction_tree.nodes() )
-      if ( new_nodes_in_junction_tree.contains ( cli ) )
-        T_mpd_cliques.insert ( cli, cli );
+    for ( auto iter_cli = __junction_tree.nodes().beginSafe(); iter_cli != __junction_tree.nodes().endSafe(); ++iter_cli )
+      if ( new_nodes_in_junction_tree.contains ( *iter_cli ) )
+        T_mpd_cliques.insert ( *iter_cli, *iter_cli );
 
     // parse all the separators of the junction tree and test those that are not
     // complete in the original graph
@@ -1233,8 +1234,8 @@ namespace gum {
     // reset the MPS that are affected
     __mps_affected.clear();
 
-    for ( const auto node : __T_mpd.nodes() )
-      __mps_affected.insert ( node, false );
+    for ( auto iter_node = __T_mpd.nodes().beginSafe(); iter_node != __T_mpd.nodes().endSafe(); ++iter_node )
+      __mps_affected.insert ( *iter_node, false );
 
     // remove all the structures used by the triangulation algorithm
     __triangulation->clear();
@@ -1373,8 +1374,8 @@ namespace gum {
     // copy the graph passed in arent and update the structures
     // containing the informations useful for the triangulation
 
-    for ( const auto node : theGraph.nodes() )
-      insertNode ( node, modal[node] );
+    for ( auto iter_node = theGraph.nodes().beginSafe(); iter_node != theGraph.nodes().endSafe(); ++iter_node )
+      insertNode ( *iter_node, modal[*iter_node] );
 
     for ( auto edge = theGraph.edges().beginSafe (); edge != theGraph.edges().endSafe(); ++edge )
       insertEdge ( edge->first(), edge->second() );

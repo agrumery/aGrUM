@@ -104,8 +104,8 @@ namespace gum {
     }
 
     // check that each node has a domain size
-    for ( const auto node : graph->nodes() ) {
-      if ( ! modal->exists ( node ) ) {
+    for ( auto iter_node = graph->nodes().beginSafe(); iter_node != graph->nodes().endSafe(); ++iter_node ) {
+      if ( ! modal->exists ( *iter_node ) ) {
         GUM_ERROR ( GraphError,
                     "DefaultEliminationSequenceStrategy needs  "
                     "domain sizes" );
@@ -125,8 +125,8 @@ namespace gum {
         // compute the log of the modalities
         __log_modalities.resize ( __graph->sizeNodes() / 2 );
 
-        for ( const auto node : graph->nodes() ) {
-          __log_modalities.insert ( node, log ( ( *modal ) [node] ) );
+        for ( auto iter_node = graph->nodes().beginSafe(); iter_node != graph->nodes().endSafe(); ++iter_node ) {
+          __log_modalities.insert ( *iter_node, log ( ( *modal ) [*iter_node] ) );
         }
 
         // creation du simplicial set

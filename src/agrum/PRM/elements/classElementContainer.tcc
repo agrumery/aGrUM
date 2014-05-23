@@ -221,17 +221,17 @@ operator<< ( std::ostream& output, const gum::prm::ClassElementContainer<GUM_SCA
   std::string tab = "  ";
   output << "digraph \"" << container.name() << "\" {" << std::endl;
 
-  for ( auto node : container.dag().nodes() ) {
-    if ( container.dag().children ( node ).size() > 0 ) {
-      const gum::NodeSet& children = container.dag().children ( node );
+  for ( auto node = container.dag().nodes().beginSafe(); node != container.dag().nodes().endSafe(); ++node ) {
+    if ( container.dag().children ( *node ).size() > 0 ) {
+      const gum::NodeSet& children = container.dag().children ( *node );
 
       for ( gum::NodeSetIterator child_iter = children.beginSafe();
             child_iter != children.endSafe(); ++child_iter ) {
-        output << tab << "\"" << container.get ( node ).name() << "\" -> "
+        output << tab << "\"" << container.get ( *node ).name() << "\" -> "
                << "\"" << container.get ( *child_iter ).name() << "\";" << std::endl;
       }
-    } else if ( container.dag().parents ( node ).size() == 0 ) {
-      output << tab << "\"" << container.get ( node ).name() << "\";" << std::endl;
+    } else if ( container.dag().parents ( *node ).size() == 0 ) {
+      output << tab << "\"" << container.get ( *node ).name() << "\";" << std::endl;
     }
   }
 

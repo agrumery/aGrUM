@@ -50,16 +50,16 @@ namespace gum {
       for ( auto ci = prm.classes().beginSafe(); ci != prm.classes().endSafe(); ++ci ) {
         __node_map.insert ( *ci, new HashTable<const ClassElement<GUM_SCALAR>*, NodeId>() );
 
-        for ( const auto j : ( *ci )->dag().nodes() ) {
-          __addNode ( *ci, ( *ci )->get ( j ) );
+        for ( auto j = ( *ci )->dag().nodes().beginSafe(); j != ( *ci )->dag().nodes().endSafe(); ++j ) {
+          __addNode ( *ci, ( *ci )->get ( *j ) );
         }
       }
 
       for ( auto ii = prm.interfaces().beginSafe(); ii != prm.interfaces().endSafe(); ++ii ) {
         __node_map.insert ( *ii, new HashTable<const ClassElement<GUM_SCALAR>*, NodeId>() );
 
-        for ( const auto j : ( *ii )->dag().nodes() ) {
-          __addNode ( *ii, ( *ii )->get ( j ) );
+        for ( auto j = ( *ii )->dag().nodes().beginSafe(); j != ( *ii )->dag().nodes().endSafe(); ++j ) {
+          __addNode ( *ii, ( *ii )->get ( *j ) );
         }
       }
 
@@ -69,8 +69,8 @@ namespace gum {
         for ( DAG::NodeIterator jter = ( *iter )->dag().beginNodes(); jter != ( *iter )->dag().endNodes(); ++jter )
       */
       for ( auto cc = prm.classes().beginSafe (); cc != prm.classes().endSafe(); ++cc )
-        for ( const auto j : ( *cc )->dag().nodes() )
-          __addArcs ( **cc, j, * ( __node_map[*cc] ) );
+        for ( auto j = ( *cc )->dag().nodes().beginSafe(); j !=  ( *cc )->dag().nodes().endSafe(); ++j )
+          __addArcs ( **cc, *j, * ( __node_map[*cc] ) );
     }
 
     // Add arcs in __graph.

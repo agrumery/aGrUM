@@ -160,8 +160,9 @@ namespace gum {
     EdgeSet T_prime;
     NodeProperty<unsigned int> R ( __triangulated_graph.size() );
 
-    for ( const auto node : __triangulated_graph.nodes() )
-      R.insert ( node, 0 );
+    for ( auto iter_node = __triangulated_graph.nodes().beginSafe();
+	  iter_node != __triangulated_graph.nodes().endSafe(); ++iter_node )
+      R.insert ( *iter_node, 0 );
 
     // the FMINT loop
     for ( unsigned int i = __added_fill_ins.size() - 1;
@@ -404,8 +405,8 @@ namespace gum {
     // clique.
     NodeProperty<NodeId> T_mpd_cliques ( __junction_tree->size() );
 
-    for ( const auto cliq : __junction_tree->nodes() )
-      T_mpd_cliques.insert ( cliq, cliq );
+    for ( auto iter_cliq = __junction_tree->nodes().beginSafe(); iter_cliq != __junction_tree->nodes().endSafe(); ++iter_cliq )
+      T_mpd_cliques.insert ( *iter_cliq, *iter_cliq );
 
     // parse all the separators of the junction tree and test those that are not
     // complete in the orginal graph
@@ -413,9 +414,10 @@ namespace gum {
 
     NodeSet mark;
 
-    for ( const auto cliq : __junction_tree->nodes() )
-      if ( ! mark.contains ( cliq ) )
-        __computeMaxPrimeMergings ( cliq, cliq, merged_cliques, mark );
+    for ( auto iter_cliq = __junction_tree->nodes().beginSafe(); 
+	  iter_cliq != __junction_tree->nodes().endSafe(); ++iter_cliq )
+      if ( ! mark.contains ( *iter_cliq ) )
+        __computeMaxPrimeMergings ( *iter_cliq, *iter_cliq, merged_cliques, mark );
 
     // compute the transitive closure of merged_cliques. This one will contain
     // pairs (X,Y) indicating that clique X must be merged with clique Y.
@@ -497,9 +499,10 @@ namespace gum {
       // parse all the cliques of the junction tree
       NodeSetIterator iter_clique2;
 
-      for ( const auto node : __junction_tree->nodes() ) {
+      for ( auto iter_node = __junction_tree->nodes().beginSafe();
+	    iter_node != __junction_tree->nodes().endSafe(); ++iter_node ) {
         // for each clique, add the edges necessary to make it complete
-        const NodeSet& clique = __junction_tree->clique ( node );
+        const NodeSet& clique = __junction_tree->clique ( *iter_node );
         std::vector<NodeId> clique_nodes ( clique.size() );
         unsigned int i = 0;
 
@@ -729,9 +732,10 @@ namespace gum {
       // parse all the cliques of the junction tree
       NodeSetIterator iter_clique2;
 
-      for ( const auto node : __junction_tree->nodes() ) {
+      for ( auto iter_node = __junction_tree->nodes().beginSafe(); 
+	iter_node != __junction_tree->nodes().endSafe(); ++iter_node ) {
         // for each clique, add the edges necessary to make it complete
-        const NodeSet& clique = __junction_tree->clique ( node );
+        const NodeSet& clique = __junction_tree->clique ( *iter_node );
         std::vector<NodeId> clique_nodes ( clique.size() );
         unsigned int i = 0;
 

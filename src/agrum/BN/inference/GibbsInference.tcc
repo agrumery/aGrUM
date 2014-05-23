@@ -60,12 +60,12 @@ namespace gum {
     const DAG& dag = bn().dag();
 //    const NodeSet& nodes = dag.nodes();
 
-    for ( auto node : dag.nodes() ) {
-      const DiscreteVariable& var = bn().variable ( node );
+    for ( auto iter_node = dag.nodes().beginSafe(); iter_node != dag.nodes().endSafe(); ++iter_node ) {
+      const DiscreteVariable& var = bn().variable ( *iter_node );
       // feed the __sampling
       Potential<GUM_SCALAR>* tmp = new Potential<GUM_SCALAR>();
       ( *tmp ) << var;
-      __sampling_nbr.insert ( node, tmp );
+      __sampling_nbr.insert ( *iter_node, tmp );
     }
 
     setRequiredInference();

@@ -396,18 +396,18 @@ namespace gum {
       NodeSet inners, outers;
       const Set<NodeId>* parents = 0;
 
-      for ( const auto node : c.dag().nodes() ) {
-        if ( ClassElement<GUM_SCALAR>::isAttribute ( c.get ( node ) ) ) {
-          if ( c.isOutputNode ( c.get ( node ) ) )
-            outers.insert ( node );
-          else if ( not outers.exists ( node ) )
-            inners.insert ( node );
+      for ( auto node = c.dag().nodes().beginSafe(); node != c.dag().nodes().endSafe(); ++node ) {
+        if ( ClassElement<GUM_SCALAR>::isAttribute ( c.get ( *node ) ) ) {
+          if ( c.isOutputNode ( c.get ( *node ) ) )
+            outers.insert ( *node );
+          else if ( not outers.exists ( *node ) )
+            inners.insert ( *node );
 
-          lifted_pool->insert ( const_cast<Potential<GUM_SCALAR>*> ( & ( c.get ( node ).cpf() ) ) );
-        } else if ( ClassElement<GUM_SCALAR>::isAggregate ( c.get ( node ) ) ) {
-          outers.insert ( node );
+          lifted_pool->insert ( const_cast<Potential<GUM_SCALAR>*> ( & ( c.get ( *node ).cpf() ) ) );
+        } else if ( ClassElement<GUM_SCALAR>::isAggregate ( c.get ( *node ) ) ) {
+          outers.insert ( *node );
           // We need to put in the output_elim_order aggregator's parents which are innner nodes
-          parents = & ( c.dag().parents ( node ) );
+          parents = & ( c.dag().parents ( *node ) );
 
           for ( Set<NodeId>::const_iterator_safe prnt = parents->beginSafe(); prnt != parents->endSafe(); ++prnt ) {
             if ( ClassElement<GUM_SCALAR>::isAttribute ( c.get ( *prnt ) ) and c.isInnerNode ( c.get ( *prnt ) ) ) {
@@ -447,8 +447,8 @@ namespace gum {
       __class_elim_order = new Sequence<const ClassElementContainer<GUM_SCALAR>*>();
       std::list<NodeId> l;
 
-      for ( const auto node : cdg.dag().nodes() )
-        if ( cdg.dag().parents ( node ).empty() ) l.push_back ( node );
+      for ( auto node = cdg.dag().nodes().beginSafe(); node != cdg.dag().nodes().endSafe(); ++node )
+        if ( cdg.dag().parents ( *node ).empty() ) l.push_back ( *node );
 
       Set<NodeId> visited_node;
 

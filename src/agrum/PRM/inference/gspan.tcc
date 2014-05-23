@@ -41,9 +41,9 @@ namespace gum {
           gspan::Pattern& p = __tree.pattern ( *root );
           __subgraph_mining ( graph, p );
 
-          for ( const auto node : __tree.iso_graph ( p ).nodes() ) {
-            Instance<GUM_SCALAR>* u = __tree.iso_map ( p, node ).atPos ( 0 );
-            Instance<GUM_SCALAR>* v = __tree.iso_map ( p, node ).atPos ( 1 );
+          for ( auto node = __tree.iso_graph ( p ).nodes().beginSafe(); node != __tree.iso_graph ( p ).nodes().endSafe(); ++node ) {
+            Instance<GUM_SCALAR>* u = __tree.iso_map ( p, *node ).atPos ( 0 );
+            Instance<GUM_SCALAR>* v = __tree.iso_map ( p, *node ).atPos ( 1 );
             graph.graph().eraseEdge ( Edge ( graph.id ( u ), graph.id ( v ) ) );
           }
         }
@@ -125,8 +125,8 @@ namespace gum {
             count_vector.push_back ( new HashTable<std::string, gspan::EdgeGrowth<GUM_SCALAR>*>() );
 
           // For each subgraph represented by p, we look for a valid edge growth for each instance match of p in its isomorphism graph.
-          for ( const auto iso_node : __tree.iso_graph ( *p ).nodes() ) {
-            seq = & ( __tree.iso_map ( *p, iso_node ) );
+          for ( auto iso_node = __tree.iso_graph ( *p ).nodes().beginSafe (); iso_node != __tree.iso_graph ( *p ).nodes().endSafe(); ++iso_node ) {
+            seq = & ( __tree.iso_map ( *p, *iso_node ) );
             idx = 0;
 
             for ( auto node = r_path.begin(); node != r_path.end(); ++node, ++idx ) {
@@ -244,9 +244,9 @@ namespace gum {
           std::vector<NodeId> degree_list;
           iso_graph = & ( tree().iso_graph ( **p ) );
 
-          for ( const auto node : iso_graph->nodes() ) {
+          for ( auto node = iso_graph->nodes().beginSafe(); node != iso_graph->nodes().endSafe(); ++node ) {
             found = false;
-            match = & ( tree().iso_map ( **p, node ) );
+            match = & ( tree().iso_map ( **p, *node ) );
 
             for ( auto i = match->beginSafe(); i != match->endSafe(); ++i ) {
               if ( __chosen.exists ( *i ) ) {
@@ -258,15 +258,15 @@ namespace gum {
             if ( not found ) {
               // We add the pattern to the reduced isomorphism graph to compute the max independent set
               // over the remaining matches
-              reduced_iso_graph.insertNode ( node );
+              reduced_iso_graph.insertNode ( *node );
 
-              for ( const auto iso : reduced_iso_graph.nodes() ) {
-                if ( iso_graph->existsEdge ( node, iso ) ) {
-                  reduced_iso_graph.insertEdge ( node, iso );
+              for ( auto iso = reduced_iso_graph.nodes().beginSafe(); iso != reduced_iso_graph.nodes().endSafe(); ++iso ) {
+                if ( iso_graph->existsEdge ( *node, *iso ) ) {
+                  reduced_iso_graph.insertEdge ( *node, *iso );
                 }
               }
 
-              degree_list.push_back ( node );
+              degree_list.push_back ( *node );
             }
           }
 

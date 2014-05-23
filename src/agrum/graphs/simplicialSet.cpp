@@ -800,15 +800,15 @@ namespace gum {
     __log_tree_width = std::numeric_limits<float>::max();
     __log_weights->clear();
 
-    for ( const auto nodeX : __graph->nodes() ) {
-      float log_weight = ( *__log_modalities ) [nodeX];
+    for ( auto iter_nodeX = __graph->nodes().beginSafe(); iter_nodeX != __graph->nodes().endSafe(); ++iter_nodeX ) {
+      float log_weight = ( *__log_modalities ) [*iter_nodeX];
 
-      const NodeSet& edges = __graph->neighbours ( nodeX );
+      const NodeSet& edges = __graph->neighbours ( *iter_nodeX );
 
       for ( NodeSetIterator iterY = edges.beginSafe() ; iterY != edges.endSafe(); ++iterY )
         log_weight += ( *__log_modalities ) [*iterY];
 
-      __log_weights->insert ( nodeX, log_weight );
+      __log_weights->insert ( *iter_nodeX, log_weight );
 
       if ( __log_tree_width > log_weight )
         __log_tree_width = log_weight;
@@ -827,13 +827,13 @@ namespace gum {
     // such that the Id of Y and Z are greater than X.
     NodeSetIterator iterZ;
 
-    for ( const auto nodeX : __graph->nodes() ) {
-      unsigned int& nb_adjacent_neighbours_idX = __nb_adjacent_neighbours[nodeX];
+    for ( auto iter_nodeX = __graph->nodes().beginSafe(); iter_nodeX != __graph->nodes().endSafe(); ++iter_nodeX ) {
+      unsigned int& nb_adjacent_neighbours_idX = __nb_adjacent_neighbours[*iter_nodeX];
 
-      const NodeSet& nei = __graph->neighbours ( nodeX );
+      const NodeSet& nei = __graph->neighbours ( *iter_nodeX );
 
       for ( NodeSetIterator iterY = nei.beginSafe(); iterY != nei.endSafe(); ++iterY )
-        if ( *iterY > nodeX ) {
+        if ( *iterY > *iter_nodeX ) {
           NodeId node_idY = *iterY;
           unsigned int& nb_adjacent_neighbours_idY =
             __nb_adjacent_neighbours[node_idY];
@@ -841,14 +841,14 @@ namespace gum {
           iterZ = iterY;
 
           for ( ++iterZ; iterZ != nei.endSafe(); ++iterZ )
-            if ( ( *iterZ > nodeX ) &&
+            if ( ( *iterZ > *iter_nodeX ) &&
                  __graph->existsEdge ( node_idY, *iterZ ) ) {
               NodeId node_idZ = *iterZ;
               ++nb_adjacent_neighbours_idX;
               ++nb_adjacent_neighbours_idY;
               ++__nb_adjacent_neighbours[node_idZ];
-              ++__nb_triangles[Edge ( nodeX, node_idY )];
-              ++__nb_triangles[Edge ( nodeX, node_idZ )];
+              ++__nb_triangles[Edge ( *iter_nodeX, node_idY )];
+              ++__nb_triangles[Edge ( *iter_nodeX, node_idZ )];
               ++__nb_triangles[Edge ( node_idZ, node_idY )];
             }
         }

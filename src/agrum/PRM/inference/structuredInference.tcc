@@ -799,15 +799,15 @@ namespace gum {
       GUM_CONSTRUCTOR ( StructuredInference<GUM_SCALAR>::CData );
 
       // First step we add Attributes and Aggregators
-      for ( const auto node : c.dag().nodes() ) {
-        switch ( c.get ( node ).elt_type() ) {
+      for ( auto node = c.dag().nodes().beginSafe(); node != c.dag().nodes().endSafe(); ++node ) {
+        switch ( c.get ( *node ).elt_type() ) {
           case ClassElement<GUM_SCALAR>::prm_attribute: {
-            pool.insert ( & ( const_cast<Potential<GUM_SCALAR>&> ( c.get ( node ).cpf() ) ) );
+            pool.insert ( & ( const_cast<Potential<GUM_SCALAR>&> ( c.get ( *node ).cpf() ) ) );
           }
 
           case ClassElement<GUM_SCALAR>::prm_aggregate: {
-            moral_graph.insertNode ( node );
-            mods.insert ( node, c.get ( node ).type()->domainSize() );
+            moral_graph.insertNode ( *node );
+            mods.insert ( *node, c.get ( *node ).type()->domainSize() );
             break;
           }
 
@@ -819,13 +819,13 @@ namespace gum {
       const NodeSet* parents = 0;
       const ClassElement<GUM_SCALAR>* prnt = 0;
 
-      for ( const auto node : moral_graph.nodes() ) {
-        parents = & ( c.dag().parents ( node ) );
+      for ( auto node = moral_graph.nodes().beginSafe(); node != moral_graph.nodes().endSafe(); ++node ) {
+        parents = & ( c.dag().parents ( *node ) );
 
         // Adding edges and marrying parents
         for ( NodeSet::const_iterator_safe tail = parents->beginSafe(); tail != parents->endSafe(); ++tail ) {
           if ( ClassElement<GUM_SCALAR>::isAttribute ( c.get ( *tail ) ) or ClassElement<GUM_SCALAR>::isAggregate ( c.get ( *tail ) ) ) {
-            moral_graph.insertEdge ( *tail, node );
+            moral_graph.insertEdge ( *tail, *node );
             NodeSet::const_iterator_safe marry = tail;
             ++marry;
 
@@ -839,17 +839,17 @@ namespace gum {
         }
 
         // Adding nodes to the partial ordering
-        switch ( c.get ( node ).elt_type() ) {
+        switch ( c.get ( *node ).elt_type() ) {
           case ClassElement<GUM_SCALAR>::prm_aggregate: {
-            if ( c.isOutputNode ( c.get ( node ) ) )
-              outputs().insert ( node );
+            if ( c.isOutputNode ( c.get ( *node ) ) )
+              outputs().insert ( *node );
             else
-              aggregators().insert ( node );
+              aggregators().insert ( *node );
 
             // If the aggregators is not an output and have parents which are not
             // outputs, we must eliminate the parents after adding the
             // aggregator's CPT
-            parents =  & ( c.dag().parents ( node ) );
+            parents =  & ( c.dag().parents ( *node ) );
 
             for ( NodeSet::const_iterator_safe iter = parents->beginSafe(); iter != parents->endSafe(); ++iter ) {
               prnt = & ( c.get ( *iter ) );
@@ -865,12 +865,12 @@ namespace gum {
           }
 
           case ClassElement<GUM_SCALAR>::prm_attribute: {
-            pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( & ( c.get ( node ).cpf() ) ) );
+            pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( & ( c.get ( *node ).cpf() ) ) );
 
-            if ( c.isOutputNode ( c.get ( node ) ) )
-              outputs().insert ( node );
-            else if ( not aggregators().exists ( node ) )
-              inners().insert ( node );
+            if ( c.isOutputNode ( c.get ( *node ) ) )
+              outputs().insert ( *node );
+            else if ( not aggregators().exists ( *node ) )
+              inners().insert ( *node );
 
             break;
           }

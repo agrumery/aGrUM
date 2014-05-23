@@ -190,7 +190,7 @@ namespace gum_tests {
         nodeset.insertNode();
         unsigned int cpt = 0;
 
-        for ( gum::NodeGraphPartIterator iter = nodeset.begin(); iter != nodeset.end(); ++iter ) {
+        for ( gum::NodeGraphPartIteratorSafe iter = nodeset.beginSafe(); iter != nodeset.endSafe(); ++iter ) {
           if ( cpt == 0 ) {
             nodeset.eraseNode ( *iter );
             cpt++;
@@ -212,7 +212,7 @@ namespace gum_tests {
 
         unsigned int cpt = 0;
 
-        for ( gum::NodeGraphPartIterator iter = nodeset.begin(); iter != nodeset.end(); ++iter, ++cpt ) {
+        for ( gum::NodeGraphPartIteratorSafe iter = nodeset.beginSafe(); iter != nodeset.endSafe(); ++iter, ++cpt ) {
           TS_GUM_ASSERT_THROWS_NOTHING ( nodeset.eraseNode ( *iter ) );
 
           if ( cpt > max_cpt ) {
