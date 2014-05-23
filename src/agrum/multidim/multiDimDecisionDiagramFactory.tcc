@@ -91,7 +91,7 @@ namespace gum {
       NodeId zeroId = 0;
       bool zeroNotCreated = true;
 
-      for ( auto iter = this->_model.nodes().begin(); iter != this->_model.nodes().end(); ++iter ) {
+      for ( auto iter = this->_model.nodes().beginSafe(); iter != this->_model.nodes().endSafe(); ++iter ) {
         if ( *iter != 0 && !newValueMap.existsFirst ( *iter ) ) {
           Idx idxDefault = 0;
           Idx nbDefault = 0;
@@ -199,27 +199,27 @@ namespace gum {
       // ************************************************************************************************
       //  Next we create or displace default arc where needed
       // ************************************************************************************************
-      for ( const auto iter : this->_model.nodes() ) {
-        if ( iter != 0 && !newValueMap.existsFirst ( iter ) ) {
+      for ( auto iter = this->_model.nodes().beginSafe(); iter != this->_model.nodes().endSafe(); ++iter ) {
+        if ( *iter != 0 && !newValueMap.existsFirst ( *iter ) ) {
 
           Idx nbDefault = 0;
           NodeId defaultSon = 0;
 
-          if ( this->_defaultArcMap.exists ( iter ) )
-            defaultSon = this->_defaultArcMap[ iter ];
+          if ( this->_defaultArcMap.exists ( *iter ) )
+            defaultSon = this->_defaultArcMap[ *iter ];
 
-          HashTable< NodeId, Idx > nodeCount ( this->_arcMap[iter]->size(), false, false );
+          HashTable< NodeId, Idx > nodeCount ( this->_arcMap[*iter]->size(), false, false );
 
           Idx dist = 0;
 
-          for ( const auto iterArcMap : * ( this->_arcMap[iter] ) ) {
+          for ( const auto iterArcMap : * ( this->_arcMap[*iter] ) ) {
             if ( iterArcMap == 0 )
               ++nbDefault;
 
             if ( iterArcMap == defaultSon ) {
               ++nbDefault;
-              ( * ( this->_arcMap[iter] ) ) [ dist] = 0; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ] = 0;
-              ( * ( this->_varUsedModalitiesMap[ this->_varMap[iter] ] ) ) [dist]--; //  std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ]--;
+              ( * ( this->_arcMap[*iter] ) ) [ dist] = 0; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ] = 0;
+              ( * ( this->_varUsedModalitiesMap[ this->_varMap[*iter] ] ) ) [dist]--; //  std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ]--;
             }
 
             try {
@@ -243,14 +243,14 @@ namespace gum {
           if ( maxCall == 1 ) {
             dist = 0;
 
-            for ( const auto iterArcMap : * ( this->_arcMap[iter] ) ) {
+            for ( const auto iterArcMap : * ( this->_arcMap[*iter] ) ) {
               if ( iterArcMap == 0 ) {
-                ( * ( this->_arcMap[iter] ) ) [ dist] = defaultSon; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ] = defaultSon;
+                ( * ( this->_arcMap[*iter] ) ) [ dist] = defaultSon; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ] = defaultSon;
 
-                if ( this->_defaultArcMap.exists ( iter ) )
-                  this->_defaultArcMap.erase ( iter );
+                if ( this->_defaultArcMap.exists ( *iter ) )
+                  this->_defaultArcMap.erase ( *iter );
 
-                ( * ( this->_varUsedModalitiesMap[ this->_varMap[iter] ] ) ) [  dist]++; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ]++;
+                ( * ( this->_varUsedModalitiesMap[ this->_varMap[*iter] ] ) ) [  dist]++; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ]++;
                 break;
               }
 
@@ -260,22 +260,22 @@ namespace gum {
             if ( maxNodeId != defaultSon ) {
               dist = 0;
 
-              for ( const auto iterArcMap : * ( this->_arcMap[iter] ) ) {
+              for ( const auto iterArcMap : * ( this->_arcMap[*iter] ) ) {
                 if ( iterArcMap == 0 ) {
-                  ( * ( this->_arcMap[iter] ) ) [ dist] = defaultSon; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ] = defaultSon;
-                  ( * ( this->_varUsedModalitiesMap[ this->_varMap[iter] ] ) ) [  dist]++; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ]++;
+                  ( * ( this->_arcMap[*iter] ) ) [ dist] = defaultSon; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ] = defaultSon;
+                  ( * ( this->_varUsedModalitiesMap[ this->_varMap[*iter] ] ) ) [  dist]++; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ]++;
                 } else if ( iterArcMap == maxNodeId ) {
-                  ( * ( this->_arcMap[iter] ) ) [ dist] = 0; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ] = 0;
-                  ( * ( this->_varUsedModalitiesMap[ this->_varMap[iter] ] ) ) [  dist]--; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ]--;
+                  ( * ( this->_arcMap[*iter] ) ) [ dist] = 0; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ] = 0;
+                  ( * ( this->_varUsedModalitiesMap[ this->_varMap[*iter] ] ) ) [  dist]--; //std::distance ( this->_arcMap[iter]->begin(), iterArcMap ) ]--;
                 }
 
                 dist++;
               }
 
-              if ( this->_defaultArcMap.exists ( iter ) )
-                this->_defaultArcMap[ iter ] = maxNodeId;
+              if ( this->_defaultArcMap.exists ( *iter ) )
+                this->_defaultArcMap[ *iter ] = maxNodeId;
               else
-                this->_defaultArcMap.insert ( iter, maxNodeId );
+                this->_defaultArcMap.insert ( *iter, maxNodeId );
             }
           }
         }
@@ -301,14 +301,14 @@ namespace gum {
     ret->setDiagramArcs ( this->_arcMap, this->_defaultArcMap );
 
     if ( this->_rootId == 0 ) {
-      for ( const auto iter : this->_model.nodes() ) {
-        if ( newValueMap.existsFirst ( iter ) && this->_model.size() == 2 ) {
-          this->_rootId = iter;
+      for ( auto iter = this->_model.nodes().beginSafe(); iter != this->_model.nodes().endSafe(); ++iter ) {
+        if ( newValueMap.existsFirst ( *iter ) && this->_model.size() == 2 ) {
+          this->_rootId = *iter;
           break;
         }
 
-        if ( iter != 0 && !newValueMap.existsFirst ( iter ) && !this->_model.children ( iter ).empty() && this->_model.parents ( iter ).empty() ) {
-          this->_rootId = iter;
+        if ( *iter != 0 && !newValueMap.existsFirst ( *iter ) && !this->_model.children ( *iter ).empty() && this->_model.parents ( *iter ).empty() ) {
+          this->_rootId = *iter;
           break;
         }
       }

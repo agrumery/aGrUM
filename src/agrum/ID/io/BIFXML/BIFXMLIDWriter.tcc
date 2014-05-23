@@ -59,21 +59,21 @@ namespace gum {
     output << __heading() << std::endl;
     output << "<!-- Variables -->" << std::endl;
 
-    for ( const auto iter : infdiag.nodes() ) {
+    for ( auto iter = infdiag.nodes().beginSafe(); iter != infdiag.nodes().endSafe(); ++iter ) {
       int nodeType = 1;
 
-      if ( infdiag.isChanceNode ( iter ) )
+      if ( infdiag.isChanceNode ( *iter ) )
         nodeType = 2;
-      else if ( infdiag.isUtilityNode ( iter ) )
+      else if ( infdiag.isUtilityNode ( *iter ) )
         nodeType = 3;
 
-      output << __variableBloc ( infdiag.variable ( iter ), nodeType ) << std::endl;
+      output << __variableBloc ( infdiag.variable ( *iter ), nodeType ) << std::endl;
     }
 
     output << "<!-- Probability distributions -->" << std::endl;
 
-    for ( const auto iter : infdiag.nodes() )
-      output << __variableDefinition ( iter, infdiag );
+    for ( auto iter = infdiag.nodes().beginSafe(); iter != infdiag.nodes().endSafe(); ++iter )
+      output << __variableDefinition ( *iter, infdiag );
 
     output << std::endl;
     output << __documentend();

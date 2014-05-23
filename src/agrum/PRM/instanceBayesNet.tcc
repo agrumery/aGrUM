@@ -32,10 +32,10 @@ namespace gum {
     template<typename GUM_SCALAR>
     void
     InstanceBayesNet<GUM_SCALAR>::__init ( const Instance<GUM_SCALAR>& i ) {
-      for ( const auto node : i.type().dag().nodes() ) {
+      for ( auto node = i.type().dag().nodes().beginSafe(); node != i.type().dag().nodes().endSafe(); ++node ) {
         try {
           // Adding the attribute
-          const Attribute<GUM_SCALAR>& attr = i.get ( node );
+          const Attribute<GUM_SCALAR>& attr = i.get ( *node );
           this->_dag.insertNode ( attr.id() );
           __varNodeMap.insert ( & ( attr.type().variable() ), &attr );
         } catch ( NotFound& ) {
@@ -155,8 +155,8 @@ namespace gum {
     const NodeProperty<Size>&
     InstanceBayesNet<GUM_SCALAR>::modalities() const {
       if ( __modalities.empty() ) {
-        for ( const auto node : this->nodes() ) {
-          __modalities.insert ( node, variable ( node ).domainSize() );
+        for ( auto node = this->nodes().beginSafe(); node != this->nodes().endSafe(); ++node ) {
+          __modalities.insert ( *node, variable ( *node ).domainSize() );
         }
       }
 
@@ -172,17 +172,17 @@ namespace gum {
       output << "digraph \"";
       output << __inst->name() << "\" {" << std::endl;
 
-      for ( const auto node : this->nodes() ) {
-        if ( this->dag().children ( node ).size() > 0 ) {
-          const NodeSet& children = this->dag().children ( node );
+      for ( auto node = this->nodes().beginSafe(); node != this->nodes().endSafe(); ++node ) {
+        if ( this->dag().children ( *node ).size() > 0 ) {
+          const NodeSet& children = this->dag().children ( *node );
 
           for ( NodeSetIterator arc_iter = children.beginSafe();
                 arc_iter != children.endSafe(); ++arc_iter ) {
-            output << tab << "\"" << variable ( node ).name() << "\" -> ";
+            output << tab << "\"" << variable ( *node ).name() << "\" -> ";
             output << "\"" << variable ( *arc_iter ).name() << "\";" << std::endl;
           }
-        } else if ( this->dag().parents ( node ).size() == 0 ) {
-          output << tab << "\"" << variable ( node ).name() << "\";" << std::endl;
+        } else if ( this->dag().parents ( *node ).size() == 0 ) {
+          output << tab << "\"" << variable ( *node ).name() << "\";" << std::endl;
         }
       }
 

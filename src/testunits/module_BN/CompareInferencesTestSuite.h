@@ -187,14 +187,14 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( inf_gibbs.makeInference() );
 
         {
-          for ( const auto it : bn->nodes() ) {
-            gum::NodeId i = it;
+          for ( auto it = bn->nodes().beginSafe(); it != bn->nodes().endSafe(); ++it ) {
+            gum::NodeId i = *it;
             const gum::Potential<double>& marginal_gibbs = inf_gibbs.marginal ( i );
             const gum::Potential<double>& marginal_ShaShe = inf_ShaShe.marginal ( i );
             const gum::Potential<double>& marginal_LazyProp = inf_LazyProp.marginal ( i );
             const gum::Potential<double>& marginal_ValElim = inf_ValElim.marginal ( i );
 
-            gum::Instantiation I; I << bn->variable ( it );
+            gum::Instantiation I; I << bn->variable ( *it );
 
             for ( I.setFirst() ; ! I.end() ; ++I ) {
               TS_ASSERT_DELTA ( marginal_gibbs[I], marginal_ShaShe[I], 5e-3 ); // APPROX INFERENCE
@@ -414,12 +414,12 @@ namespace gum_tests {
           gum::LazyPropagation<float> infShaf ( *net );
           infShaf.makeInference();
 
-          for ( const auto it : net->nodes() ) {
+          for ( auto it = net->nodes().beginSafe(); it != net->nodes().endSafe(); ++it ) {
             gum::Instantiation I;
-            I << net->variable ( it );
+            I << net->variable ( *it );
 
             for ( I.setFirst(); ! I.end(); ++I ) {
-              TS_ASSERT_DELTA ( infLazy.marginal ( it ) [I], infShaf.marginal ( it ) [I], 1e-6 );
+              TS_ASSERT_DELTA ( infLazy.marginal ( *it ) [I], infShaf.marginal ( *it ) [I], 1e-6 );
             }
           }
         }

@@ -59,15 +59,15 @@ namespace gum {
 
 
   INLINE
-  const DAG::NodeIterator
-  DAGmodel::beginNodes() const {
-    return dag().begin();
+  const DAG::NodeIteratorSafe
+  DAGmodel::beginNodesSafe() const {
+    return dag().beginSafe();
   }
 
   INLINE
-  const DAG::NodeIterator
-  DAGmodel::endNodes() const {
-    return dag().end();
+  const DAG::NodeIteratorSafe
+  DAGmodel::endNodesSafe () const {
+    return dag().endSafe();
   }
 
   INLINE
@@ -99,8 +99,8 @@ namespace gum {
   DAGmodel::log10DomainSize ( void ) const {
     double dSize = 0.0;
 
-    for ( const auto node : nodes() ) {
-      dSize += log10 ( variable ( node ).domainSize() );
+    for ( auto iter_node = nodes().beginSafe(); iter_node != nodes().endSafe (); ++iter_node ) {
+      dSize += log10 ( variable ( *iter_node ).domainSize() );
     }
 
     return dSize;
@@ -111,7 +111,7 @@ namespace gum {
   DAGmodel::completeInstantiation ( Instantiation& I ) const {
     I.clear();
 
-    for ( DAG::NodeIterator node_iter = dag().begin(); node_iter != dag().end(); ++node_iter )
+    for ( DAG::NodeIteratorSafe node_iter = dag().beginSafe(); node_iter != dag().endSafe(); ++node_iter )
       I << variable ( *node_iter );
   }
 

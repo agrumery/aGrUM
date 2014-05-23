@@ -92,11 +92,11 @@ namespace gum {
   */
   template<typename GUM_SCALAR>
   void InfluenceDiagram<GUM_SCALAR>::_removeTables() {
-    for ( const auto node : _dag.nodes() ) {
-      if ( isChanceNode ( node ) )
-        delete &cpt ( node );
-      else if ( isUtilityNode ( node ) )
-        delete &utility ( node );
+    for ( auto node = _dag.nodes().beginSafe(); node != _dag.nodes().endSafe(); ++node ) {
+      if ( isChanceNode ( *node ) )
+        delete &cpt ( *node );
+      else if ( isUtilityNode ( *node ) )
+        delete &utility ( *node );
     }
   }
 
@@ -193,19 +193,19 @@ namespace gum {
     std::string tab = "  ";
 
 //    for ( gum::DAG::NodeIterator node_iter = _dag.beginNodes(); node_iter != _dag.endNodes(); ++node_iter ) {
-    for ( const auto node : _dag.nodes() ) {
-      if ( isChanceNode ( node ) )
-        chanceNode << tab << variable ( node ).name() << ";";
-      else if ( isUtilityNode ( node ) )
-        utilityNode << tab << variable ( node ).name() << ";";
+    for ( auto node = _dag.nodes().beginSafe(); node != _dag.nodes().endSafe(); ++node ) {
+      if ( isChanceNode ( *node ) )
+        chanceNode << tab << variable ( *node ).name() << ";";
+      else if ( isUtilityNode ( *node ) )
+        utilityNode << tab << variable ( *node ).name() << ";";
       else
-        decisionNode << tab << variable ( node ).name() << ";";
+        decisionNode << tab << variable ( *node ).name() << ";";
 
-      if ( _dag.children ( node ).size() > 0 ) {
-        const NodeSet& children = _dag.children ( node );
+      if ( _dag.children ( *node ).size() > 0 ) {
+        const NodeSet& children = _dag.children ( *node );
 
         for ( NodeSetIterator arc_iter = children.beginSafe(); arc_iter != children.endSafe(); ++arc_iter )
-          arcstream << tab <<  variable ( node ).name() << " -> " << variable ( *arc_iter ).name() << ";" << std::endl;
+          arcstream << tab <<  variable ( *node ).name() << " -> " << variable ( *arc_iter ).name() << ";" << std::endl;
       }
     }
 
@@ -608,15 +608,15 @@ namespace gum {
   template<typename GUM_SCALAR>
   void
   InfluenceDiagram<GUM_SCALAR>::_moralGraph ( UndiGraph& graph ) const {
-    for ( const auto node : _dag.nodes() )
-      if ( !isUtilityNode ( node ) ) graph.insertNode ( node );
+    for ( auto node = _dag.nodes().beginSafe(); node != _dag.nodes().endSafe(); ++node )
+      if ( !isUtilityNode ( *node ) ) graph.insertNode ( *node );
 
-    for ( const auto node : _dag.nodes() ) {
-      if ( !isDecisionNode ( node ) ) {
-        const NodeSet& parents = _dag.parents ( node );
+    for ( auto node = _dag.nodes().beginSafe(); node != _dag.nodes().endSafe(); ++node ) {
+      if ( !isDecisionNode ( *node ) ) {
+        const NodeSet& parents = _dag.parents ( *node );
 
         for ( NodeSetIterator arcIter = parents.beginSafe(); arcIter != parents.endSafe(); ++arcIter ) {
-          if ( isChanceNode ( node ) ) graph.insertEdge ( node, *arcIter );
+          if ( isChanceNode ( *node ) ) graph.insertEdge ( *node, *arcIter );
 
           for ( NodeSetIterator arcIterPrime = arcIter; arcIterPrime != parents.endSafe(); ++arcIterPrime )
             if ( *arcIter != *arcIterPrime ) graph.insertEdge ( *arcIter, *arcIterPrime );
@@ -714,19 +714,19 @@ namespace gum {
   InfluenceDiagram<GUM_SCALAR>::getDecisionGraph() const {
     gum::DAG* temporalGraph = new gum::DAG();
 
-    for ( const auto node : _dag.nodes() ) {
-      if ( isDecisionNode ( node ) ) {
-        if ( !temporalGraph->existsNode ( node ) )
-          temporalGraph->insertNode ( node );
+    for ( auto node = _dag.nodes().beginSafe(); node != _dag.nodes().endSafe(); ++node ) {
+      if ( isDecisionNode ( *node ) ) {
+        if ( !temporalGraph->existsNode ( *node ) )
+          temporalGraph->insertNode ( *node );
 
-        Sequence<NodeId>* childrenSequence = _getChildrenDecision ( node );
+        Sequence<NodeId>* childrenSequence = _getChildrenDecision ( *node );
 
         for ( Sequence<NodeId>::const_iterator_safe childrenSeqIter = childrenSequence->beginSafe();
               childrenSeqIter != childrenSequence->endSafe(); ++childrenSeqIter ) {
           if ( !temporalGraph->existsNode ( *childrenSeqIter ) )
             temporalGraph->insertNode ( *childrenSeqIter );
 
-          temporalGraph->insertArc ( node, *childrenSeqIter );
+          temporalGraph->insertArc ( *node, *childrenSeqIter );
         }
 
         delete childrenSequence;

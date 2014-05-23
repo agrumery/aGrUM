@@ -448,26 +448,26 @@ namespace gum {
     output << "  graph [bgcolor=transparent,label=\"" << bn_name << "\"];" << std::endl;
     output << "  node [style=filled fillcolor=\"#ffffaa\"];" << std::endl << std::endl;
 
-    for ( const auto node_iter : nodes() ) {
-      output << "\"" << variable ( node_iter ).name() << "\" [comment=\"" << node_iter << ":" << variable ( node_iter ) << "\"];" << std::endl;
+    for ( auto node_iter = nodes().beginSafe(); node_iter != nodes().endSafe(); ++node_iter ) {
+      output << "\"" << variable ( *node_iter ).name() << "\" [comment=\"" << *node_iter << ":" << variable ( *node_iter ) << "\"];" << std::endl;
     }
 
     output << std::endl;
 
     std::string tab = "  ";
 
-    for ( const auto node_iter : nodes() ) {
-      if ( dag().children ( node_iter ).size() > 0 ) {
-        const NodeSet& children =  dag().children ( node_iter );
+    for ( auto node_iter = nodes().beginSafe(); node_iter != nodes().endSafe(); ++node_iter ) {
+      if ( dag().children ( *node_iter ).size() > 0 ) {
+        const NodeSet& children =  dag().children ( *node_iter );
 
         for ( NodeSetIterator arc_iter = children.beginSafe ();
               arc_iter != children.endSafe (); ++arc_iter ) {
-          output << tab << "\"" << variable ( node_iter ).name() << "\" -> "
+          output << tab << "\"" << variable ( *node_iter ).name() << "\" -> "
                  << "\"" << variable ( *arc_iter ).name() << "\";" << std::endl;
         }
 
-      } else if ( dag().parents ( node_iter ).size() == 0 ) {
-        output << tab << "\"" << variable ( node_iter ).name() << "\";" << std::endl;
+      } else if ( dag().parents ( *node_iter ).size() == 0 ) {
+        output << tab << "\"" << variable ( *node_iter ).name() << "\";" << std::endl;
       }
     }
 
@@ -479,15 +479,15 @@ namespace gum {
   /// begin Multiple Change for all CPTs
   template<typename GUM_SCALAR>
   void BayesNet<GUM_SCALAR>::beginTopologyTransformation() {
-    for ( const auto node_iter : nodes() )
-      __probaMap[node_iter]->beginMultipleChanges();
+    for ( auto node_iter = nodes().beginSafe(); node_iter != nodes().endSafe(); ++node_iter )
+      __probaMap[*node_iter]->beginMultipleChanges();
   }
 
   /// end Multiple Change for all CPTs
   template<typename GUM_SCALAR>
   void BayesNet<GUM_SCALAR>::endTopologyTransformation() {
-    for ( const auto node_iter : nodes() )
-      __probaMap[node_iter]->endMultipleChanges();
+    for ( auto node_iter = nodes().beginSafe(); node_iter != nodes().endSafe(); ++node_iter )
+      __probaMap[*node_iter]->endMultipleChanges();
   }
 
   /// clear all potentials
@@ -530,8 +530,8 @@ namespace gum {
   void BayesNet<GUM_SCALAR>::generateCPTs() {
     SimpleCPTGenerator<GUM_SCALAR> generator;
 
-    for ( const auto iter : nodes() ) {
-      generator.generateCPT ( cpt ( iter ).pos ( variable ( iter ) ),  cpt ( iter ) );
+    for ( auto iter = nodes().beginSafe(); iter != nodes().endSafe(); ++iter) {
+      generator.generateCPT ( cpt ( *iter ).pos ( variable ( *iter ) ),  cpt ( *iter ) );
     }
   }
 

@@ -130,8 +130,8 @@ namespace gum {
       if ( this->_l_inferenceEngine[tId]->evidenceMarginal() > 0 ) {
         const DAG& tDag = this->_workingSet[tId]->dag();
 
-        for ( const auto it : tDag.nodes() ) {
-          const Potential< GUM_SCALAR >& potential ( this->_l_inferenceEngine[tId]->marginal ( it ) );
+        for ( auto it = tDag.nodes().beginSafe(); it != tDag.nodes().endSafe(); ++it ) {
+          const Potential< GUM_SCALAR >& potential ( this->_l_inferenceEngine[tId]->marginal ( *it ) );
           Instantiation ins ( potential );
           std::vector< GUM_SCALAR > vertex;
 
@@ -140,7 +140,7 @@ namespace gum {
 
           // true for redundancy elimination of node it credal set
           // but since global marginals are only updated at the end of each period of approximationScheme, it is "useless" ( and expensive ) to check now
-          this->_updateThread ( it, vertex, false );
+          this->_updateThread ( *it, vertex, false );
 
           //if ( this->_updateThread ( it, vertex, false ) )
           //keepSample = true;
@@ -325,22 +325,22 @@ namespace gum {
           this->_l_optimalNet[this_thread]->setCurrentSample ( sample );
         }
       } else {
-        for ( const auto id : working_bn->nodes() ) {
-          auto dSize = working_bn->variable ( id ).domainSize();
-          Potential< GUM_SCALAR >* potential ( const_cast< Potential< GUM_SCALAR > * > ( &working_bn->cpt ( id ) ) );
+        for ( auto id = working_bn->nodes().beginSafe(); id != working_bn->nodes().endSafe(); ++id ) {
+          auto dSize = working_bn->variable ( *id ).domainSize();
+          Potential< GUM_SCALAR >* potential ( const_cast< Potential< GUM_SCALAR > * > ( &working_bn->cpt ( *id ) ) );
           std::vector< GUM_SCALAR > var_cpt ( potential->domainSize() );
 
-          auto pConfs = ( *cpt ) [id].size();
+          auto pConfs = ( *cpt ) [*id].size();
 
           for ( decltype ( pConfs ) pconf = 0; pconf < pConfs; pconf++ ) {
-            auto nVertices = ( *cpt ) [id][pconf].size();
+            auto nVertices = ( *cpt ) [*id][pconf].size();
             auto choosen_vertex = rand() % nVertices;
 
             if ( infEs::_storeBNOpt )
-              __binaryRep ( ( sample ) [id][pconf], choosen_vertex );
+              __binaryRep ( ( sample ) [*id][pconf], choosen_vertex );
 
             for ( decltype ( dSize ) mod = 0; mod < dSize; mod++ )
-              var_cpt[pconf * dSize + mod] = ( *cpt ) [id][pconf][choosen_vertex][mod];
+              var_cpt[pconf * dSize + mod] = ( *cpt ) [*id][pconf][choosen_vertex][mod];
           } // end of : pconf
 
           potential->fillWith ( var_cpt );

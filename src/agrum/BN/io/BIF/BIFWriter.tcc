@@ -56,12 +56,12 @@ namespace gum {
 
     output << __header ( bn ) << std::endl;
 
-    for ( const auto iter : bn.nodes() ) {
-      output << __variableBloc ( bn.variable ( iter ) ) << std::endl;
+    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter ) {
+      output << __variableBloc ( bn.variable ( *iter ) ) << std::endl;
     }
 
-    for ( const auto iter : bn.nodes() ) {
-      const Potential<GUM_SCALAR>& proba = bn.cpt ( iter );
+    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter  ) {
+      const Potential<GUM_SCALAR>& proba = bn.cpt ( *iter );
       output << __variableCPT ( proba );
     }
 
@@ -92,12 +92,12 @@ namespace gum {
 
     output << __header ( bn ) << std::endl;
 
-    for ( const auto iter : bn.nodes() ) {
-      output << __variableBloc ( bn.variable ( iter ) ) << std::endl;
+    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter ) {
+      output << __variableBloc ( bn.variable ( *iter ) ) << std::endl;
     }
 
-    for ( const auto iter : bn.nodes() ) {
-      const Potential<GUM_SCALAR>& proba = bn.cpt ( iter );
+    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter ) {
+      const Potential<GUM_SCALAR>& proba = bn.cpt ( *iter );
       output << __variableCPT ( proba );
     }
 

@@ -60,16 +60,16 @@ namespace gum {
     std::pair<NodeId, NodeId> thePair;
     NodeId current, from_current, new_node;
 
-    for ( const auto node : nodes() ) {
+    for ( auto iter_node = nodes().beginSafe(); iter_node != nodes().endSafe(); ++iter_node ) {
       // check if the node has already been examined (if this is not the case,
       // this means that we are on a new connected component)
-      if ( ! examined_nodes[node] ) {
+      if ( ! examined_nodes[*iter_node] ) {
         // indicates that we are examining a new node
-        examined_nodes[node] = true;
+        examined_nodes[*iter_node] = true;
 
         // check recursively all the nodes of node's connected component
-        thePair.first = node;
-        thePair.second = node;
+        thePair.first = *iter_node;
+        thePair.second = *iter_node;
         open_nodes.insert ( thePair );
 
         while ( ! open_nodes.empty() ) {
@@ -122,17 +122,17 @@ namespace gum {
     nodeStream << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
 
-    for ( const auto node : nodes() ) {
-      nodeStream << tab << node << ";";
+    for ( auto iter_node = nodes().beginSafe(); iter_node != nodes().endSafe(); ++iter_node ) {
+      nodeStream << tab << *iter_node << ";";
 
-      if ( neighbours ( node ).size() > 0 ) {
-        const NodeSet& neighbs = neighbours ( node );
+      if ( neighbours ( *iter_node ).size() > 0 ) {
+        const NodeSet& neighbs = neighbours ( *iter_node );
 
         for ( NodeSet::const_iterator_safe edgeIter = neighbs.beginSafe(); edgeIter != neighbs.endSafe(); ++edgeIter )
-          if ( !treatedNodes.exists ( *edgeIter ) ) edgeStream << tab <<  node << " -> " <<  *edgeIter << ";" << std::endl;
+          if ( !treatedNodes.exists ( *edgeIter ) ) edgeStream << tab <<  *iter_node << " -> " <<  *edgeIter << ";" << std::endl;
       }
 
-      treatedNodes.insert ( node );
+      treatedNodes.insert ( *iter_node );
     }
 
     output << nodeStream.str() << std::endl << edgeStream.str() << std::endl << "}" << std::endl;

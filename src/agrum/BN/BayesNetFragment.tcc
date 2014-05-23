@@ -39,9 +39,9 @@ namespace gum {
   BayesNetFragment<GUM_SCALAR>::~BayesNetFragment() {
     GUM_DESTRUCTOR ( BayesNetFragment );
 
-    for ( const auto id : nodes() )
-      if ( __localCPTs.exists ( id ) )
-        _uninstallCPT ( id );
+    for ( auto iter_id = nodes().beginSafe(); iter_id != nodes().endSafe(); ++iter_id )
+      if ( __localCPTs.exists ( *iter_id ) )
+        _uninstallCPT ( *iter_id );
   }
 
   //============================================================
@@ -282,8 +282,8 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE bool
   BayesNetFragment<GUM_SCALAR>::checkConsistency () const noexcept {
-    for ( const auto node : nodes() )
-      if ( ! checkConsistency ( node ) ) return false;
+    for ( auto iter_node = nodes().beginSafe (); iter_node != nodes().endSafe(); ++iter_node )
+      if ( ! checkConsistency ( *iter_node ) ) return false;
 
     return true;
   }
@@ -322,13 +322,13 @@ namespace gum {
     output << "  graph [bgcolor=transparent,label=\"" << bn_name << "\"];" << std::endl;
     output << "  node [style=filled];" << std::endl << std::endl;
 
-    for ( const auto node_iter : __bn.nodes() ) {
-      output << "\"" << __bn.variable ( node_iter ).name() << "\" [comment=\"" << node_iter << ":" << __bn.variable ( node_iter ) << ", \"";
+    for ( auto node_iter = __bn.nodes().beginSafe(); node_iter != __bn.nodes().endSafe(); ++node_iter ) {
+      output << "\"" << __bn.variable ( *node_iter ).name() << "\" [comment=\"" << *node_iter << ":" << __bn.variable ( *node_iter ) << ", \"";
 
-      if ( isInstalledNode ( node_iter ) ) {
-        if ( ! checkConsistency ( node_iter ) ) {
+      if ( isInstalledNode ( *node_iter ) ) {
+        if ( ! checkConsistency ( *node_iter ) ) {
           output << notConsistantStyle;
-        } else if ( __localCPTs.exists ( node_iter ) )
+        } else if ( __localCPTs.exists ( *node_iter ) )
           output << styleWithLocalCPT;
         else
           output << inFragmentStyle;
@@ -342,13 +342,13 @@ namespace gum {
 
     std::string tab = "  ";
 
-    for ( const auto node_iter : __bn.nodes() ) {
-      if ( __bn.dag().children ( node_iter ).size() > 0 ) {
-        for ( auto child_iter = __bn.dag().children ( node_iter ).beginSafe(); child_iter != __bn.dag().children ( node_iter ).endSafe(); ++child_iter ) {
-          output << tab << "\"" << __bn.variable ( node_iter ).name() << "\" -> "
+    for ( auto node_iter = __bn.nodes().beginSafe (); node_iter != __bn.nodes().endSafe(); ++node_iter ) {
+      if ( __bn.dag().children ( *node_iter ).size() > 0 ) {
+        for ( auto child_iter = __bn.dag().children ( *node_iter ).beginSafe(); child_iter != __bn.dag().children ( *node_iter ).endSafe(); ++child_iter ) {
+          output << tab << "\"" << __bn.variable ( *node_iter ).name() << "\" -> "
                  << "\"" << __bn.variable ( *child_iter ).name() << "\" [";
 
-          if ( dag().existsArc ( Arc ( node_iter, *child_iter ) ) )
+          if ( dag().existsArc ( Arc ( *node_iter, *child_iter ) ) )
             output << inFragmentStyle;
           else
             output << outFragmentStyle;

@@ -55,11 +55,11 @@ namespace gum {
 
     output << __header ( bn ) << std::endl;
 
-    for ( const auto iter : bn.nodes() )
-      output << __variableBloc ( bn.variable ( iter ) ) << std::endl;
+    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter )
+      output << __variableBloc ( bn.variable ( *iter ) ) << std::endl;
 
-    for ( const auto iter : bn.nodes() )
-      output << __variableCPT ( bn.cpt ( iter ) );
+    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter )
+      output << __variableCPT ( bn.cpt ( *iter ) );
 
     output << std::endl;
 
@@ -88,11 +88,11 @@ namespace gum {
 
     output << __header ( bn ) << std::endl;
 
-    for ( const auto iter : bn.nodes() )
-      output << __variableBloc ( bn.variable ( iter ) ) << std::endl;
+    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter )
+      output << __variableBloc ( bn.variable ( *iter ) ) << std::endl;
 
-    for ( const auto iter : bn.nodes() )
-      output << __variableCPT ( bn.cpt ( iter ) );
+    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter )
+      output << __variableCPT ( bn.cpt ( *iter ) );
 
     output << std::endl;
 

@@ -40,8 +40,8 @@ namespace gum {
 
     NodeProperty<Size> __modalitiesMap;
 
-    for ( const auto node : this->bn().nodes() )
-      __modalitiesMap.insert ( node,  this->bn().variable ( node ).domainSize() );
+    for ( auto iter_node = this->bn().nodes().beginSafe(); iter_node != this->bn().nodes().endSafe(); ++iter_node )
+      __modalitiesMap.insert ( *iter_node,  this->bn().variable ( *iter_node ).domainSize() );
 
     __triangulation = new DefaultTriangulation ( & ( this->bn().moralGraph() ), &__modalitiesMap );
 
@@ -112,11 +112,11 @@ namespace gum {
     NodeId cliqueId = __triangulation->createdJunctionTreeClique ( id );
     // First we find the smallest clique containing id
 
-    for ( const auto node : __triangulation->junctionTree().nodes() ) {
-      if ( ( __triangulation->junctionTree().clique ( node ).contains ( id ) ) and
-           ( __clique_prop[node]->bucket().domainSize() < __clique_prop[cliqueId]->bucket().domainSize() )
+    for ( auto iter_node = __triangulation->junctionTree().nodes().beginSafe(); iter_node != __triangulation->junctionTree().nodes().endSafe(); ++iter_node ) {
+      if ( ( __triangulation->junctionTree().clique ( *iter_node ).contains ( id ) ) and
+           ( __clique_prop[*iter_node]->bucket().domainSize() < __clique_prop[cliqueId]->bucket().domainSize() )
          ) {
-        cliqueId = node;
+        cliqueId = *iter_node;
       }
     }
 
@@ -240,13 +240,13 @@ namespace gum {
     NodeSet cliquesSet;
     // First pass to create the clique's table
 
-    for ( const auto node : __triangulation->junctionTree().nodes() ) {
-      __clique_prop.insert ( node, new CliqueProp<GUM_SCALAR> ( node ) );
-      cliquesSet.insert ( node );
+    for ( auto iter_node = __triangulation->junctionTree().nodes().beginSafe(); iter_node != __triangulation->junctionTree().nodes().endSafe(); ++iter_node ) {
+      __clique_prop.insert ( *iter_node, new CliqueProp<GUM_SCALAR> ( *iter_node ) );
+      cliquesSet.insert ( *iter_node );
 
-      for ( NodeSetIterator jter = __triangulation->junctionTree().clique ( node ).beginSafe();
-            jter != __triangulation->junctionTree().clique ( node ).endSafe(); ++jter ) {
-        __clique_prop[node]->addVariable ( this->bn().variable ( *jter ) );
+      for ( NodeSetIterator jter = __triangulation->junctionTree().clique ( *iter_node ).beginSafe();
+            jter != __triangulation->junctionTree().clique ( *iter_node ).endSafe(); ++jter ) {
+        __clique_prop[*iter_node]->addVariable ( this->bn().variable ( *jter ) );
       }
     }
 

@@ -75,8 +75,8 @@ namespace gum_tests {
         // Builds a hashTable where the keys are the id of the variable,
         // and the values the variable's domain size.
 
-        for ( const auto iter : topo.nodes() )
-          modalities.insert ( iter, topo.variable ( iter ).domainSize() );
+        for ( auto iter = topo.nodes().beginSafe(); iter != topo.nodes().endSafe(); ++iter )
+          modalities.insert ( *iter, topo.variable ( *iter ).domainSize() );
 
         gum::DefaultTriangulation* triangle = nullptr;
 
@@ -102,8 +102,8 @@ namespace gum_tests {
 
         // Builds a hashTable where the keys are the id of the variable,
         // and the values the variable's domain size.
-        for ( const auto iter : topo.nodes() )
-          modalities.insert ( iter, topo.variable ( iter ).domainSize() );
+        for ( auto iter = topo.nodes().beginSafe(); iter != topo.nodes().endSafe(); ++iter )
+          modalities.insert ( *iter, topo.variable ( *iter ).domainSize() );
 
         gum::DefaultTriangulation* triangle = nullptr;
 

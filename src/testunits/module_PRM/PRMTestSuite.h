@@ -126,13 +126,13 @@ namespace gum_tests {
 
         int wount = 0;
 
-        for ( const auto node : bn.nodes() ) {
+        for ( auto node = bn.nodes().beginSafe(); node != bn.nodes().endSafe(); ++node ) {
           wount++;
-          std::string var = bn.variable ( node ).name();
+          std::string var = bn.variable ( *node ).name();
           size_t pos = var.find_first_of ( '.' );
           gum::prm::Instance<double>& instance = sys.get ( var.substr ( 0, pos ) );
           gum::prm::Attribute<double>& attr = instance.get ( var.substr ( pos + 1 ) );
-          TS_ASSERT_DIFFERS ( bn.cpt ( node ).nbrDim(), ( gum::Size ) 0 );
+          TS_ASSERT_DIFFERS ( bn.cpt ( *node ).nbrDim(), ( gum::Size ) 0 );
 
           if ( gum::prm::ClassElement<double>::isAggregate ( instance.type().get ( attr.id() ) ) ) {
             TS_ASSERT_DIFFERS ( attr.cpf().nbrDim(), ( gum::Size ) 1 );
@@ -141,12 +141,12 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS ( count, wount );
 
-        for ( const auto node : bn.nodes() ) {
-          const gum::DiscreteVariable* var = & ( bn.variable ( node ) );
+        for ( auto node = bn.nodes().beginSafe(); node != bn.nodes().endSafe(); ++node ) {
+          const gum::DiscreteVariable* var = & ( bn.variable ( *node ) );
 
-          for ( const auto mode : bn.nodes() ) {
-            if ( node  !=  mode ) {
-              TS_ASSERT_DIFFERS ( var, & ( bn.variable ( mode ) ) );
+          for ( auto mode = bn.nodes().beginSafe(); mode != bn.nodes().endSafe(); ++mode ) {
+            if ( *node  !=  *mode ) {
+              TS_ASSERT_DIFFERS ( var, & ( bn.variable ( *mode ) ) );
             }
           }
         }
@@ -180,10 +180,10 @@ namespace gum_tests {
         gum::BayesNetFactory<double> bn_factory ( &bn );
         TS_GUM_ASSERT_THROWS_NOTHING ( sys.groundedBN ( bn_factory ) );
 
-        for ( const auto node : bn.nodes() ) {
-          const gum::Potential<double>& cpt = bn.cpt ( node );
+        for ( auto node = bn.nodes().beginSafe(); node != bn.nodes().endSafe(); ++node ) {
+          const gum::Potential<double>& cpt = bn.cpt ( *node );
           gum::Instantiation i ( cpt ), j;
-          j.add ( bn.variable ( node ) );
+          j.add ( bn.variable ( *node ) );
 
           for ( i.setFirstOut ( j ); not i.end(); i.incOut ( j ) ) {
             double sum = 0.0;

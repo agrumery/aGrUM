@@ -514,24 +514,24 @@ namespace gum {
     nonTerminalStream << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
 
-    for ( const auto node : op->nodesMap().nodes() ) {
-      if ( node != 0 ) {
+    for ( auto node = op->nodesMap().nodes().beginSafe(); node != op->nodesMap().nodes().endSafe(); ++node ) {
+      if ( *node != 0 ) {
 
-        if ( op->isTerminalNode ( node ) ) {
+        if ( op->isTerminalNode ( *node ) ) {
 
-          terminalStream << tab << node << ";" << tab << node  << " [label=\"" << __fmdp->actionName ( op->nodeValue ( node ) ) << "\"]" << ";" << std::endl;
+          terminalStream << tab << *node << ";" << tab << *node  << " [label=\"" << __fmdp->actionName ( op->nodeValue ( *node ) ) << "\"]" << ";" << std::endl;
 
         } else {
-          nonTerminalStream << tab << node << ";" << tab << node  << " [label=\"" << op->nodeVariable ( node )->name() << "\"]" << ";" << std::endl;
+          nonTerminalStream << tab << *node << ";" << tab << *node  << " [label=\"" << op->nodeVariable ( *node )->name() << "\"]" << ";" << std::endl;
 
-          if ( op->nodeSons ( node ) != nullptr ) {
-            for ( std::vector<NodeId>::const_iterator sonIter =  op->nodeSons ( node )->begin(); sonIter != op->nodeSons ( node )->end(); ++sonIter )
+          if ( op->nodeSons ( *node ) != nullptr ) {
+            for ( std::vector<NodeId>::const_iterator sonIter =  op->nodeSons ( *node )->begin(); sonIter != op->nodeSons ( *node )->end(); ++sonIter )
               if ( *sonIter != 0 )
-                arcstream << tab <<  node << " -> " << *sonIter << " [label=\"" << op->nodeVariable ( node )->label ( std::distance ( op->nodeSons ( node )->begin(), sonIter ) ) << "\",color=\"#0000ff\"]" << ";" << std::endl;
+                arcstream << tab <<  *node << " -> " << *sonIter << " [label=\"" << op->nodeVariable ( *node )->label ( std::distance ( op->nodeSons ( *node )->begin(), sonIter ) ) << "\",color=\"#0000ff\"]" << ";" << std::endl;
           }
 
-          if ( op->hasNodeDefaultSon ( node ) )
-            defaultarcstream << tab <<  node << " -> " << op->nodeDefaultSon ( node ) << " [color=\"#ff0000\"]" << ";" << std::endl;
+          if ( op->hasNodeDefaultSon ( *node ) )
+            defaultarcstream << tab <<  *node << " -> " << op->nodeDefaultSon ( *node ) << " [color=\"#ff0000\"]" << ";" << std::endl;
 
         }
       }
