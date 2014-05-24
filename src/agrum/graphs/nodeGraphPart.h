@@ -45,33 +45,142 @@ namespace gum_tests {
 
 #endif
 
+
 namespace gum {
 
+  
   class NodeGraphPart;
 
-  /**
-   * @class NodeGraphPartIteratorSafe
-   * @brief Safe iterator on the node set of a graph.
-   */
 
-  class NodeGraphPartIteratorSafe : public Listener {
+  /**
+   * @class NodeGraphPartIterator
+   * @brief Unsafe iterator on the node set of a graph.
+   */
+  class NodeGraphPartIterator {
 
     friend class NodeGraphPart;
 
   public:
+    /// types for STL compliance
+    /// @{
+    using iterator_category = std::forward_iterator_tag;
+    using value_type        = NodeId;
+    using reference         = value_type&;
+    using const_reference   = const value_type&;
+    using pointer           = value_type*;
+    using const_pointer     = const value_type*;
+    using difference_type   = std::ptrdiff_t;
+    /// @}
+    
+
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
 
     /// default constructor
-    /** @warning a NodeGraphPartIteratorSafe is built with __valid=false : don't forget to
-     * @ref __validate it (@see NodeGraphPart::beginNodes() code)
+    /** @warning a NodeGraphPartIterator is built with __valid=false:
+     * don't forget to @ref __validate it (@see NodeGraphPart::beginNodes() code)
      **/
-    NodeGraphPartIteratorSafe ( const NodeGraphPart* nodes );
+    NodeGraphPartIterator ( const NodeGraphPart& nodes ) noexcept;
+
+    /// copy constructor
+    NodeGraphPartIterator ( const NodeGraphPartIterator& it ) noexcept;
+
+    /// move constructor
+    NodeGraphPartIterator ( NodeGraphPartIterator&& it ) noexcept;
+    
+    /// destructor
+    virtual ~NodeGraphPartIterator() noexcept;
+
+    /// @}
+
+
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
+
+    /// copy assignment operator
+    NodeGraphPartIterator&
+    operator= ( const NodeGraphPartIterator& it ) noexcept;
+
+    /// move assignment operator
+    NodeGraphPartIterator&
+    operator= ( NodeGraphPartIterator&& it ) noexcept;
+
+    /// checks whether two iterators point toward the same node
+    bool operator== ( const NodeGraphPartIterator& it ) const noexcept;
+
+    /// checks whether two iterators point toward different nodes
+    bool operator!= ( const NodeGraphPartIterator& it ) const noexcept;
+
+    /// increment the iterator
+    NodeGraphPartIterator& operator++ () noexcept;
+
+    /// dereferencing operator
+    value_type operator* ( void ) const;
+
+    /// @}
+    
+  protected:
+    /** @brief this function is used by @ref NodeGraphPart to update
+     * @ref NodeGraphPart::__endIterator */
+    void _setPos ( NodeId id ) noexcept;
+
+    /// ensure that the nodeId is either end() either a valid NodeId
+    void _validate ( void ) noexcept;
+
+    /// the nodegraphpart on which points the iterator
+    const NodeGraphPart* _nodes;
+
+    /// the nodeid on which the iterator points currently
+    NodeId _pos { 0 };
+
+    // is this iterator still valid ?
+    bool _valid { false };
+  };
+
+
+
+  
+  /**
+   * @class NodeGraphPartIteratorSafe
+   * @brief Safe iterator on the node set of a graph.
+   */
+  class NodeGraphPartIteratorSafe : public NodeGraphPartIterator, public Listener {
+
+    friend class NodeGraphPart;
+
+  public:
+    /// types for STL compliance
+    /// @{
+    using iterator_category = std::forward_iterator_tag;
+    using value_type        = NodeId;
+    using reference         = value_type&;
+    using const_reference   = const value_type&;
+    using pointer           = value_type*;
+    using const_pointer     = const value_type*;
+    using difference_type   = std::ptrdiff_t;
+    /// @}
+    
+
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+
+    /// default constructor
+    /** @warning a NodeGraphPartIteratorSafe is built with __valid=false:
+     * don't forget to @ref __validate it (@see NodeGraphPart::beginNodes() code)
+     **/
+    NodeGraphPartIteratorSafe ( const NodeGraphPart& nodes );
 
     /// copy constructor
     NodeGraphPartIteratorSafe ( const NodeGraphPartIteratorSafe& it );
+
+    /// move constructor
+    NodeGraphPartIteratorSafe ( NodeGraphPartIteratorSafe&& it );
 
     /// destructor
     ~NodeGraphPartIteratorSafe();
@@ -87,17 +196,8 @@ namespace gum {
     /// copy assignment operator
     NodeGraphPartIteratorSafe& operator= ( const NodeGraphPartIteratorSafe& it );
 
-    /// checks whether two iterators point toward the same node
-    bool operator== ( const NodeGraphPartIteratorSafe& it ) const;
-
-    /// checks whether two iterators point toward different nodes
-    bool operator!= ( const NodeGraphPartIteratorSafe& it ) const;
-
-    /// increment the iterator
-    NodeGraphPartIteratorSafe& operator++ ( void );
-
-    /// dereferencing operator
-    NodeId operator* ( void ) const;
+    /// move assignment operator
+    NodeGraphPartIteratorSafe& operator= ( NodeGraphPartIteratorSafe&& it );
 
     /// @}
 
@@ -116,19 +216,6 @@ namespace gum {
 
     /// @}
     
-  private:
-    /** @brief this function is used by @ref NodeGraphPart to update
-     * @ref NodeGraphPart::__endIterator */
-    void __setPos ( NodeId id );
-
-    /// ensure that the nodeId is either end() either a valid NodeId
-    void __validate ( void );
-
-    const NodeGraphPart* __nodes;
-    NodeId __pos;
-
-    // is this iterator still valid ?
-    bool __valid;
   };
 
 
@@ -189,8 +276,19 @@ namespace gum {
   class NodeGraphPart {
 
   public:
-    typedef NodeGraphPartIteratorSafe NodeIteratorSafe;
+    /// types for STL compliance
+    /// @{
+    using node_iterator            = NodeGraphPartIterator;
+    using node_const_iterator      = NodeGraphPartIterator;
+    using node_iterator_safe       = NodeGraphPartIteratorSafe;
+    using node_const_iterator_safe = NodeGraphPartIteratorSafe;
 
+    using NodeIterator          = NodeGraphPartIterator;
+    using NodeConstIterator     = NodeGraphPartIterator;
+    using NodeIteratorSafe      = NodeGraphPartIteratorSafe;
+    using NodeConstIteratorSafe = NodeGraphPartIteratorSafe;
+    /// @}
+    
     Signaler1<NodeId> onNodeAdded;
     Signaler1<NodeId> onNodeDeleted;
 
@@ -321,10 +419,16 @@ namespace gum {
     const NodeGraphPart& nodes() const;
 
     /// a begin iterator to parse the set of nodes contained in the NodeGraphPart
-    NodeGraphPartIteratorSafe beginSafe() const;
+    node_iterator_safe beginSafe () const;
 
     /// the end iterator to parse the set of nodes contained in the NodeGraphPart
-    const NodeGraphPartIteratorSafe& endSafe() const;
+    const node_iterator_safe& endSafe () const noexcept;
+
+    /// a begin iterator to parse the set of nodes contained in the NodeGraphPart
+    node_iterator begin () const noexcept;
+
+    /// the end iterator to parse the set of nodes contained in the NodeGraphPart
+    const node_iterator& end() const noexcept;
 
     /// a function to display the set of nodes
     std::string toString() const;
@@ -367,6 +471,7 @@ namespace gum {
 
   private:
 
+    friend class NodeGraphPartIterator;
     friend class NodeGraphPartIteratorSafe;
 
     /// to enable testunits to use __check

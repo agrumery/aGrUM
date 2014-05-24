@@ -38,7 +38,7 @@ namespace gum {
                                  bool holes_resize_policy ) :
     __holes_size ( holes_size ),
     __holes_resize_policy ( holes_resize_policy ),
-    __endIteratorSafe ( this ),
+    __endIteratorSafe ( *this ),
     __bound ( 0 ) {
     __holes = 0;
     GUM_CONSTRUCTOR ( NodeGraphPart );
@@ -48,7 +48,7 @@ namespace gum {
   NodeGraphPart::NodeGraphPart ( const NodeGraphPart& s ) :
     __holes_size ( s.__holes_size ),
     __holes_resize_policy ( s.__holes_resize_policy ),
-    __endIteratorSafe ( this ),
+    __endIteratorSafe ( *this ),
     __bound ( s.__bound ) {
     __holes = 0;
 
@@ -179,13 +179,13 @@ namespace gum {
 
 
   void NodeGraphPartIteratorSafe::whenNodeDeleted ( const void* src, NodeId id )  {
-    if ( id == __pos ) { // we just deleted the _pos in NodeGraphPart
-      __valid = false;
+    if ( id == _pos ) { // we just deleted the _pos in NodeGraphPart
+      _valid = false;
     }
 
-    if ( __pos >= __nodes->bound() ) { // moreover, it was the last position
-      __pos = __nodes->bound();
-      __valid = false;
+    if ( _pos >= _nodes->bound() ) { // moreover, it was the last position
+      _pos = _nodes->bound();
+      _valid = false;
     }
   }
 
