@@ -37,8 +37,9 @@ namespace gum {
     INLINE void StructuralConstraintIndegree::_setGraph
     ( const DiGraph& graph ) {
       // check that the max_indegree corresponds to the graph
-      for ( const auto id : graph ) {
-        if ( ! _max_parents.exists ( id ) ) {
+      for ( auto iter_id = graph.beginSafe ();
+            iter_id != graph.endSafe (); ++iter_id ) {
+        if ( ! _max_parents.exists ( *iter_id ) ) {
           GUM_ERROR ( InvalidNode,
                       "there exists a node in the graph without max indegree" );
         }
@@ -57,8 +58,9 @@ namespace gum {
     /// sets the indegree for each node
     INLINE void StructuralConstraintIndegree::setIndegree
     ( const NodeProperty<unsigned int>& max_indegree ) {
-      for ( const auto id : _graph ) {
-        if ( ! _max_parents.exists ( id ) ) {
+      for ( auto iter_id = _graph.beginSafe ();
+            iter_id != _graph.endSafe (); ++iter_id ) {
+        if ( ! _max_parents.exists ( *iter_id ) ) {
           GUM_ERROR ( InvalidNode,
                       "there exists a node in the graph without max indegree" );
         }
@@ -72,8 +74,9 @@ namespace gum {
     INLINE void StructuralConstraintIndegree::setIndegree
     ( unsigned int max_indegree ) {
       _max_parents.clear ();
-      for ( const auto id : _graph ) {
-        _max_parents.insert ( id, max_indegree );
+      for ( auto iter_id = _graph.beginSafe ();
+            iter_id != _graph.endSafe (); ++iter_id ) {
+        _max_parents.insert ( *iter_id, max_indegree );
       }
     }
     

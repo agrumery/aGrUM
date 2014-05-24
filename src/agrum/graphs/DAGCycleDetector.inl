@@ -446,16 +446,7 @@ namespace gum {
 
   /// check the inequality between two DAGCycleDetectors
   INLINE bool
-  DAGCycleDetector::operator!= ( const DAGCycleDetector& from ) const {
-    if ( __ancestors != from.__ancestors ) {
-      std::cout << "anc: " << __ancestors << std::endl
-                << "anc: " << from.__ancestors << std::endl;
-    }
-    if ( __descendants != from.__descendants ) {
-      std::cout << "desc: " << __descendants << std::endl
-                << "desc: " << from.__descendants << std::endl;
-    }
-    
+  DAGCycleDetector::operator!= ( const DAGCycleDetector& from ) const {    
     return ! operator== ( from );
   }
 
