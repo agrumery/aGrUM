@@ -167,47 +167,6 @@ namespace gum {
       __cache.clear ();
     }
 
-
-    /// assign the DiGraph that is being learnt (useful for a priori settings)
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    void
-    Score<RowFilter,IdSetAlloc,CountAlloc>::setGraph ( const DiGraph& graph ) {
-      __learnt_graph = graph;
-    }
-
-
-    /// returns a reference on the digraph being learnt
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    const DiGraph&
-    Score<RowFilter,IdSetAlloc,CountAlloc>::graph () const noexcept {
-      return __learnt_graph;
-    }
- 
-    
-    /// inform the score that a new arc has been inserted into the learnt graph
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    void Score<RowFilter,IdSetAlloc,CountAlloc>::modifyGraph
-    ( const GraphChange& change ) {
-      switch ( change.type () ) {
-      case GraphChangeType::ARC_ADDITION:
-        __learnt_graph.insertArc ( change.node1(), change.node2 () );
-        break;
-
-      case GraphChangeType::ARC_DELETION:
-        __learnt_graph.eraseArc ( Arc ( change.node1(), change.node2 () ) );
-        break;
-
-      case GraphChangeType::ARC_REVERSAL:
-        __learnt_graph.eraseArc ( Arc ( change.node1(), change.node2 () ) );
-        __learnt_graph.insertArc ( change.node2(), change.node1 () );
-        break;
-        
-      default:
-        GUM_ERROR ( OperationNotAllowed,
-                    "edge modifications are not supported by scores" );
-      }
-    }
-
  
   } /* namespace learning */
   

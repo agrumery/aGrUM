@@ -132,24 +132,6 @@ namespace gum {
       /// returns the modalities of the variables
       using Counter<RowFilter,IdSetAlloc,CountAlloc>::modalities;
 
-      /// assign the DiGraph that is being learnt (useful for a priori settings)
-      /** Some scores need to set some a priori that are learnt from, say, a
-       * Bayesian network that is being learned. For those, it is compulsory
-       * to get a handle on the current structure. This method is useful for
-       * these scores. For the others, it is useless but, as this method is
-       * usually called only once in the learning, this is not harmful. */
-      virtual void setGraph ( const DiGraph& graph );
-
-      /// returns a reference on the digraph being learnt
-      const DiGraph& graph () const noexcept;
-
-      /// notify the score of a modification of the graph
-      /** Some scores use a priori that are computed from the current graph
-       * (e.g., BDe can rely on this feature). It is therefore important for
-       * these scores to be kept informed of the last modifications brought to
-       * the graph. */
-      virtual void modifyGraph ( const GraphChange& change );
-
       /// returns the score corresponding to a given nodeset
       virtual float score ( unsigned int nodeset_index ) = 0;
 
@@ -215,9 +197,6 @@ namespace gum {
 
       /// an empty conditioning set
       const std::vector<unsigned int> __empty_conditioning_set; 
-
-      /// a handle on the current digraph that is being learnt
-      DiGraph __learnt_graph;
 
       
       
