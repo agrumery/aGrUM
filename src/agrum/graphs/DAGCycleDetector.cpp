@@ -48,22 +48,20 @@ namespace gum {
     // get the set of roots and leaves of the dag
     List<NodeId> roots, leaves;
     NodeProperty<unsigned int> nb_parents, nb_children;
-    for ( auto iter_node = dag.beginSafe();
-          iter_node != dag.endSafe (); ++iter_node ) {
-      unsigned int nb_ch = dag.children ( *iter_node ).size ();
-      nb_children.insert ( *iter_node, nb_ch );
-      if ( ! nb_ch ) leaves.insert ( *iter_node );
-      unsigned int nb_pa = dag.parents ( *iter_node ).size ();
-      nb_parents.insert ( *iter_node, nb_pa );
-      if ( ! nb_pa ) roots.insert ( *iter_node );
+    for ( const auto node : dag ) {
+      unsigned int nb_ch = dag.children ( node ).size ();
+      nb_children.insert ( node, nb_ch );
+      if ( ! nb_ch ) leaves.insert ( node );
+      unsigned int nb_pa = dag.parents ( node ).size ();
+      nb_parents.insert ( node, nb_pa );
+      if ( ! nb_pa ) roots.insert ( node );
     }
     
     // recompute the set of ancestors
     NodeProperty<unsigned int> empty_set;
     __ancestors.clear ();
-    for ( auto iter_node = dag.beginSafe();
-          iter_node != dag.endSafe (); ++iter_node ) {
-      __ancestors.insert ( *iter_node, empty_set );
+    for ( const auto node : dag ) {
+      __ancestors.insert ( node, empty_set );
     }
     
     while ( ! roots.empty () ) {
@@ -85,9 +83,8 @@ namespace gum {
     
     // recompute the set of descendants
     __descendants.clear ();
-    for ( auto iter_node = dag.beginSafe ();
-          iter_node != dag.endSafe (); ++iter_node ) {
-      __descendants.insert ( *iter_node, empty_set );
+    for ( const auto node : dag ) {
+      __descendants.insert ( node, empty_set );
     }
     
     while ( ! leaves.empty () ) {

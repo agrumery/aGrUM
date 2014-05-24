@@ -513,10 +513,9 @@ namespace gum {
       // to do so, simply fill it with the nodes without parents in the
       // subset lattice
       List<unsigned int> setFIFO;
-      for ( NodeGraphPartIteratorSafe iter = __subset_lattice.beginSafe ();
-            iter != __subset_lattice.endSafe (); ++iter ) {
-        if ( __subset_lattice.parents ( *iter ).size () == 0 ) {
-          setFIFO.pushBack ( *iter );
+      for ( const auto node : __subset_lattice ) {
+        if ( __subset_lattice.parents ( node ).size () == 0 ) {
+          setFIFO.pushBack ( node );
         }
       }
       

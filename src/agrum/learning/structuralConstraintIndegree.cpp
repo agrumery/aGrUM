@@ -61,9 +61,8 @@ namespace gum {
     ( const DiGraph& graph,
       unsigned int max_indegree ) :
       StructuralConstraintDiGraph ( graph ) {
-      for ( auto iter_id = graph.beginSafe ();
-            iter_id != graph.endSafe (); ++iter_id ) {
-        _max_parents.insert ( *iter_id, max_indegree );
+      for ( const auto id : graph ) {
+        _max_parents.insert ( id, max_indegree );
       }
       GUM_CONSTRUCTOR ( StructuralConstraintIndegree );
     }

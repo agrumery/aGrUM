@@ -42,9 +42,8 @@ namespace gum {
     INLINE void StructuralConstraint2TimeSlice::_setGraph
     ( const DiGraph& graph ) {
       // check that each node has an appropriate time slice
-      for ( auto iter_id = _graph.beginSafe();
-            iter_id != _graph.endSafe (); ++iter_id ) {
-        if ( ! _time_slice.exists ( *iter_id ) ) {
+      for ( const auto id : _graph ) {
+        if ( ! _time_slice.exists ( id ) ) {
           GUM_ERROR ( InvalidNode,
                       "there exists a node in the graph without time slice" );
         }
@@ -63,9 +62,8 @@ namespace gum {
     /// sets a new empty graph from which we will perform checkings
     INLINE void StructuralConstraint2TimeSlice::setSlices
     ( const NodeProperty<bool>& time_slice ) {
-      for ( auto iter_id = _graph.beginSafe ();
-            iter_id != _graph.endSafe (); ++iter_id ) {
-        if ( ! time_slice.exists ( *iter_id ) ) {
+      for ( const auto id : _graph ) {
+        if ( ! time_slice.exists ( id ) ) {
           GUM_ERROR ( InvalidNode,
                       "there exists a node in the graph without time slice" );
         }

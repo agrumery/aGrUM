@@ -70,9 +70,8 @@ namespace gum {
         GUM_ERROR ( SizeError,
                     "the graph and the property do not have the same size" );
       }
-      for ( auto iter_id = graph.beginSafe ();
-            iter_id != graph.endSafe (); ++iter_id ) {
-        if ( ! time_slice.exists ( *iter_id ) ) {
+      for ( const auto id : graph ) {
+        if ( ! time_slice.exists ( id ) ) {
           GUM_ERROR ( InvalidNode,
                       "there exists a node in the graph without time slice" );
         }
