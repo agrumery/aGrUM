@@ -119,7 +119,7 @@ namespace gum {
       while ( __filter.hasRows () ) {
         // get the observed filtered rows
         FilteredRow& row = __filter.row ();
-        
+
         // fill the counts for the ith nodeset
         for ( unsigned int i = 0, size =  __nodesets.size (); i < size; ++i ) {
           const std::vector<unsigned int>& var_ids = *( __nodesets[i] );
@@ -303,10 +303,10 @@ namespace gum {
     void RecordCounter<RowFilter,IdSetAlloc,CountAlloc>::countOnSubDatabase () {
       // now, for all the non-subsets, compute their countings
       // start parallel ThreadCounters
-      #pragma omp parallel num_threads ( omp_get_max_threads() )
+      #pragma omp parallel num_threads ( getMaxNumberOfThreads() )
       {
         // create ThreadCounters if needed
-        int num_threads = gum::getNumberOfRunningThreads();
+        int num_threads = getNumberOfRunningThreads();
         
         #pragma omp single
         {
@@ -338,7 +338,7 @@ namespace gum {
         unsigned long max_range = std::min ( min_range + size_per_thread,
                                              db_size );
         thread_counter.filter().handler().setRange ( min_range, max_range );
-          
+        
         // compute the counts
         thread_counter.count ();
           
