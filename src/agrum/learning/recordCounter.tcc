@@ -303,7 +303,7 @@ namespace gum {
     void RecordCounter<RowFilter,IdSetAlloc,CountAlloc>::countOnSubDatabase () {
       // now, for all the non-subsets, compute their countings
       // start parallel ThreadCounters
-      #pragma omp parallel num_threads ( getMaxNumberOfThreads() )
+      #pragma omp parallel num_threads ( __max_threads_number )
       {
         // create ThreadCounters if needed
         int num_threads = getNumberOfRunningThreads();
@@ -676,7 +676,17 @@ namespace gum {
                     "The record Counter does not have any modalities stored yet" );
       }
     }
- 
+
+    
+    /// sets the maximum number of threads used to perform countings
+    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
+    void RecordCounter<RowFilter,IdSetAlloc,CountAlloc>::setMaxNbThreads
+    ( unsigned int nb ) noexcept {
+      if ( nb == 0 )
+        nb =  getMaxNumberOfThreads();
+      __max_threads_number = nb; 
+    }
+    
 
   } /* namespace learning */
 

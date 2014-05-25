@@ -218,6 +218,9 @@ namespace gum {
       /// returns the modalities of the variables in the database
       const std::vector<unsigned int>& modalities () const;
 
+      /// sets the maximum number of threads used to perform countings
+      void setMaxNbThreads ( unsigned int nb ) noexcept;
+      
       /// @}
       
 
@@ -296,7 +299,9 @@ namespace gum {
       /// the number of thread counter used by the last count ()
       unsigned int __nb_thread_counters { 0 };
       
-
+      /// the max number of threads authorized
+      unsigned int __max_threads_number { getMaxNumberOfThreads() };
+      
 
       /// determine which sets are subsets
       void __computeSubsets ();

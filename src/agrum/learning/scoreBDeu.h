@@ -132,7 +132,10 @@ namespace gum {
 
       /// turn on/off the use of a cache of the previously computed score
       using Score<RowFilter,IdSetAlloc,CountAlloc>::useCache;
-      
+
+      /// sets the maximum number of threads used to compute the scores
+      using Score<RowFilter,IdSetAlloc,CountAlloc>::setMaxNbThreads;
+
       /// returns the log2(BDeu score) corresponding to a given nodeset
       float score ( unsigned int nodeset_index );
 

@@ -88,11 +88,10 @@ namespace gum_tests {
                           STRUCT_CONSTRAINT& constraint ) {
         // create a DAG with all the nodes but without any arc
         gum::DAG dag;
-         unsigned int nb_nodes = order.size ();
+        unsigned int nb_nodes = order.size ();
         for ( unsigned int i = 0; i < nb_nodes; ++i ) {
           dag.insertNode ( i );
         }
-        score.setGraph ( dag );
         
         // initialization: assign a score to each node (without parents)
         score.clear ();
@@ -157,7 +156,6 @@ namespace gum_tests {
                       const gum::learning::GraphChange
                         change ( gum::learning::GraphChangeType::ARC_ADDITION,
                                  order[j], index );
-                      score.modifyGraph ( change );
                       constraint.modifyGraph ( change );
                       break;
                     }

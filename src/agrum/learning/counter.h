@@ -324,6 +324,9 @@ namespace gum {
       /// returns the modalities of the variables
       const std::vector<unsigned int>& modalities () const noexcept;
 
+      /// sets the maximum number of threads used to perform countings
+      void setMaxNbThreads ( unsigned int nb ) noexcept;
+ 
       /// @}
 
       

@@ -132,6 +132,9 @@ namespace gum {
       /// returns the modalities of the variables
       using Counter<RowFilter,IdSetAlloc,CountAlloc>::modalities;
 
+      /// sets the maximum number of threads used to compute the scores
+      using Counter<RowFilter,IdSetAlloc,CountAlloc>::setMaxNbThreads;
+      
       /// returns the score corresponding to a given nodeset
       virtual float score ( unsigned int nodeset_index ) = 0;
 

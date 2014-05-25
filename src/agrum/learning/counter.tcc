@@ -364,6 +364,15 @@ namespace gum {
       return _modalities;
     }
 
+
+    /// sets the maximum number of threads used to perform countings
+    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
+    void
+    Counter<RowFilter,IdSetAlloc,CountAlloc>::setMaxNbThreads ( unsigned int nb )
+      noexcept {
+      __record_counter.setMaxNbThreads ( nb );
+    }
+
  
   } /* namespace learning */
   
