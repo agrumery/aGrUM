@@ -1639,7 +1639,7 @@ HashTableIterator<Key, Val>::HashTableIterator () noexcept :
   HashTable<Key, Val, Alloc>::HashTable
   ( std::initializer_list< std::pair<Key, Val> > list ) :
     // size must be >= 2 else we lose all the bits of the hash function
-    __size { 1UL << __hashTableLog2 ( std::max ( 2UL, list.size () / 2 ) ) } {
+    __size { 1UL << __hashTableLog2 ( std::max<Size> ( Size(2), list.size () / 2 ) ) } {
     // for debugging purposes
     GUM_CONSTRUCTOR ( HashTable );
 

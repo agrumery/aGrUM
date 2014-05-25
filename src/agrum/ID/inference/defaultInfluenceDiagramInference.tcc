@@ -463,7 +463,7 @@ namespace gum {
   DefaultInfluenceDiagramInference<GUM_SCALAR>::displayStrongJunctionTree ( std::ostream& stream ) {
     stream << std::endl << "Strong junction tree map : " << std::endl;
 
-    for ( HashTableConstIteratorSafe< size_t, NodeId > strongJunctionTreeIter = __cliqueEliminationMap.beginSafe();
+    for ( HashTableConstIteratorSafe< Size, NodeId > strongJunctionTreeIter = __cliqueEliminationMap.beginSafe();
           strongJunctionTreeIter != __cliqueEliminationMap.endSafe(); ++strongJunctionTreeIter )
       stream << "Clique  : " << __triangulation->junctionTree().clique ( strongJunctionTreeIter.val() ) << " - Index : " << strongJunctionTreeIter.key() << std::endl;
   }

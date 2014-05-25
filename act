@@ -318,6 +318,8 @@ def execute(actions,verbose=True):
       if not os.path.exists(folder):
         os.mkdir(folder)
       os.chdir(folder)
+    elif action=="back":
+      os.chdir("..") 
     elif action=="cd":
       folder=k['argument'] # most probably folder=".."
       os.chdir(folder) 
@@ -447,7 +449,7 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
             cmake_options=cmake_options+"OFF"
         [safe_cd(s) for s in folders]
         schedule("cmake ",cmake_options)
-        [schedule("cd","..") for s in folders]
+        [schedule("back","") for s in folders]
 
         folders=['build','wrappers',options['wrapper']]
         cmake_options="-DCMAKE_BUILD_TYPE=RELEASE ../../../wrappers/"+options['wrapper']+"/"
@@ -476,7 +478,10 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
             cmake_options=cmake_options+' -G "MinGW Makefiles" -DCMAKE_INSTALL_PREFIX=_CPack_Packages/TGZ/agrum-0.6.0-win'
         if (options['rule']=="test" or options['rule']=="run"):
             make_options=options['rule']
-            run_cde="./"+options['rule']
+            if (options['platform'] != "windows"):
+			  run_cde="./"+options['rule']
+            else:
+              run_cde=".\\"+options['rule']+".exe"
         else:
           if (options['rule']=="agrum" and options['option'].upper()=="DEBUG"):
             make_options="agrum-dbg"
@@ -511,10 +516,8 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
     if options['rule']!='config':
         schedule("make ",make_options)
     if (run_cde!=""):
-        if (options['platform'] == "windows"):
-            schedule("wine ",run_cde,True)
         schedule(run_cde,"",exec_cde=True)
-    [schedule("cd","..") for s in folders]
+    [schedule("back","") for s in folders]
 
 ##########################################################################################################################
 def uninstall(options):
@@ -531,7 +534,7 @@ def uninstall(options):
         folders=["build",options['platform'],options['option']]
         [safe_cd(s) for s in folders]
         schedule("mak","uninstall")
-        [schedule("cd","..") for s in folders]
+        [schedule("back","") for s in folders]
 
 ###################################################################################################################
 def _getParam(name):

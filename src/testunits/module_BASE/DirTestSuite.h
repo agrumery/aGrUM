@@ -58,8 +58,6 @@ namespace gum_tests {
         TS_ASSERT ( gum::Directory ( "./" ).isValid() );
         TS_ASSERT ( gum::Directory ( "../" ).isValid() );
         TS_ASSERT ( gum::Directory ( "../dir/" ).isValid() );
-        TS_ASSERT ( gum::Directory ( "/usr/" ).isValid() );
-        TS_ASSERT ( gum::Directory ( "/usr/../usr/" ).isValid() );
         TS_ASSERT ( ! gum::Directory ( "./undossierauhasard/" ).isValid() );
         TS_ASSERT ( ! gum::Directory ( "/undossierauhasard/" ).isValid() );
         TS_ASSERT ( ! gum::Directory ( "undossierauhasard/" ).isValid() );
