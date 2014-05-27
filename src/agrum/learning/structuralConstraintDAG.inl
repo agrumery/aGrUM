@@ -42,10 +42,22 @@ namespace gum {
     }
 
     
-   /// sets a new graph from which we will perform checkings
+    /// sets a new graph from which we will perform checkings
     INLINE void StructuralConstraintDAG::setGraph ( const DAG& graph ) {
       StructuralConstraintDiGraph::setGraph ( graph );
       StructuralConstraintDAG::_setGraph ( graph );
+    }
+
+    
+    /// sets a new graph from which we will perform checkings
+    INLINE void StructuralConstraintDAG::setGraph ( const DiGraph& graph ) {
+      // check that the digraph has no cycle
+      DAG g;
+      for ( auto node : graph ) g.insertNode ( node );
+      for ( auto& arc : graph.arcs () ) g.insertArc ( arc.tail (), arc.head () );
+
+      StructuralConstraintDiGraph::setGraph ( graph );
+      StructuralConstraintDAG::_setGraph ( g );
     }
 
     

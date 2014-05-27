@@ -77,6 +77,9 @@ namespace gum {
       /// sets a new graph from which we will perform checkings
       virtual void setGraph ( const DAG& graph );
 
+      /// sets a new graph from which we will perform checkings
+      virtual void setGraph ( const DiGraph& graph );
+ 
       /// sets a new empty graph from which we will perform checkings
       virtual void setGraph ( unsigned int nb_nodes ) override;
 
