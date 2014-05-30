@@ -117,14 +117,14 @@ namespace gum {
        *
        * @deprecated use for(auto node:obj.nodes()) instead
        */
-      GUM_DEPRECATED ( const DAG::NodeIterator beginNodes() const );
+      GUM_DEPRECATED ( const DAG::NodeIteratorSafe beginNodesSafe() const );
 
       /**
        * Shortcut for this->dag().endNodes()
        *
        * @deprecated use for(auto node:obj.nodes()) instead
        */
-      GUM_DEPRECATED ( const DAG::NodeIterator endNodes() const );
+      GUM_DEPRECATED ( const DAG::NodeIteratorSafe endNodesSafe() const );
 
       const NodeGraphPart& nodes() const;
 

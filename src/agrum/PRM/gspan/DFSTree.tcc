@@ -278,11 +278,11 @@ namespace gum {
 
           if ( match != edge_growth.matches.endSafe() ) {
             // Adding edges in the iso_graph
-            for ( const auto node : data->iso_graph.nodes() ) {
-              if ( ( node ) != id ) {
+            for ( auto node = data->iso_graph.nodes().beginSafe(); node != data->iso_graph.nodes().endSafe(); ++node ) {
+              if ( ( *node ) != id ) {
                 for ( auto m = ( * ( data->iso_map[id] ) ).beginSafe(); m != ( * ( data->iso_map[id] ) ).endSafe(); ++m ) {
-                  if ( data->iso_map[node]->exists ( *m ) ) {
-                    data->iso_graph.insertEdge ( node, id );
+                  if ( data->iso_map[*node]->exists ( *m ) ) {
+                    data->iso_graph.insertEdge ( *node, id );
                     break;
                   }
                 }

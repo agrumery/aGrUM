@@ -180,6 +180,29 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( ngp2.nextNodeId(), gum::NodeId ( node + 1 ) );
       }
 
+      void testUnsafeIterator() {
+        gum::NodeGraphPart ngp;
+
+        for ( unsigned int i = 0; i < 20; ++i ) {
+          ngp.insertNode ( i );
+        }
+        for ( unsigned int i = 0; i < 20; ++i ) {
+          if ( i % 3 == 0 ) {
+            ngp.eraseNode ( i );
+          }
+        }
+
+        gum::NodeGraphPartIteratorSafe safe_iter = ngp.beginSafe ();
+        for ( gum::NodeGraphPartIterator iter = ngp.begin ();
+              iter != ngp.end (); ++iter, ++safe_iter ) {
+          TS_ASSERT_EQUALS ( *iter, *safe_iter );
+        }
+
+        unsigned int nb = 0, nb2 = 0;
+        for ( auto x : ngp ) { ++nb; nb2 += x; }
+        TS_ASSERT_EQUALS ( nb, 13 );
+      }
+    
 
       void testBigNodeGrapPart() {
         TS_GUM_ASSERT_THROWS_NOTHING ( __testBigNodeGrapPart() );
@@ -190,7 +213,7 @@ namespace gum_tests {
         nodeset.insertNode();
         unsigned int cpt = 0;
 
-        for ( gum::NodeGraphPartIterator iter = nodeset.begin(); iter != nodeset.end(); ++iter ) {
+        for ( gum::NodeGraphPartIteratorSafe iter = nodeset.beginSafe(); iter != nodeset.endSafe(); ++iter ) {
           if ( cpt == 0 ) {
             nodeset.eraseNode ( *iter );
             cpt++;
@@ -212,7 +235,7 @@ namespace gum_tests {
 
         unsigned int cpt = 0;
 
-        for ( gum::NodeGraphPartIterator iter = nodeset.begin(); iter != nodeset.end(); ++iter, ++cpt ) {
+        for ( gum::NodeGraphPartIteratorSafe iter = nodeset.beginSafe(); iter != nodeset.endSafe(); ++iter, ++cpt ) {
           TS_GUM_ASSERT_THROWS_NOTHING ( nodeset.eraseNode ( *iter ) );
 
           if ( cpt > max_cpt ) {

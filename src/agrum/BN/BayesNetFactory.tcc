@@ -43,11 +43,11 @@ namespace gum {
     GUM_CONSTRUCTOR ( BayesNetFactory );
     __states.push_back ( factory_state::NONE );
 
-    for ( const auto node : bn->nodes() ) {
-      if ( __varNameMap.exists ( bn->variable ( node ).name() ) )
-        GUM_ERROR ( DuplicateElement, bn->variable ( node ).name() );
+    for ( auto iter_node = bn->nodes().beginSafe(); iter_node != bn->nodes().endSafe(); ++iter_node ) {
+      if ( __varNameMap.exists ( bn->variable ( *iter_node ).name() ) )
+        GUM_ERROR ( DuplicateElement, bn->variable ( *iter_node ).name() );
 
-      __varNameMap.insert ( bn->variable ( node ).name(), node );
+      __varNameMap.insert ( bn->variable ( *iter_node ).name(), *iter_node );
     }
 
     resetVerbose();

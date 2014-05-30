@@ -74,11 +74,11 @@ namespace gum {
     gum::HashTable<std::string, Idx> protable ;
     gum::HashTable<const gum::DiscreteVariable*, gum::HashTable<std::string, gum::Sequence< gum::Sequence<gum::Instantiation* >* >* >* > cptparamval;
 
-    for ( const auto iter : bn.nodes() ) {
+    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe(); ++iter ) {
       std::stringstream str0 ;
-      const DiscreteVariable* var = &bn.variable ( iter );
+      const DiscreteVariable* var = &bn.variable ( *iter );
 
-      for ( Idx i = 0; i < bn.variable ( iter ).domainSize(); i++ ) {
+      for ( Idx i = 0; i < bn.variable ( *iter ).domainSize(); i++ ) {
         std::stringstream stri ;
         stri << var->name() << "_" << var->label ( i );
         vartable.insert ( stri.str(), ++num );
@@ -88,7 +88,7 @@ namespace gum {
 
       str0 << "0\n"; clause++; numvar++;
       clausstr2 << str0.str();
-      const Potential<GUM_SCALAR>& cpt = bn.cpt ( iter );
+      const Potential<GUM_SCALAR>& cpt = bn.cpt ( *iter );
       Instantiation inst ( cpt ); inst.forgetMaster();
       inst.reorder ( Order );
       cptparamval.insert ( var, new gum::HashTable<std::string, gum::Sequence< gum::Sequence<gum::Instantiation* >* >* >() );
@@ -289,11 +289,11 @@ namespace gum {
     for ( gum::Sequence<gum::NodeId>::iterator_safe it = bn.topologicalOrder().beginSafe(); it != bn.topologicalOrder().endSafe(); ++it )
       Order.add ( bn.variable ( *it ) );
 
-    for ( const auto iter : bn.nodes() ) {
+    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe(); ++iter ) {
       std::stringstream str0 ;
-      const DiscreteVariable* var = &bn.variable ( iter );
+      const DiscreteVariable* var = &bn.variable ( *iter );
 
-      for ( Idx i = 0; i < bn.variable ( iter ).domainSize(); i++ ) {
+      for ( Idx i = 0; i < bn.variable ( *iter ).domainSize(); i++ ) {
         std::stringstream stri ;
         stri << var->name() << "_" << var->label ( i );
         vartable.insert ( stri.str(), ++num );
@@ -303,7 +303,7 @@ namespace gum {
 
       str0 << "0\n"; clause++; numvar++;
       clausstr2 << str0.str();
-      const Potential<GUM_SCALAR>& cpt = bn.cpt ( iter );
+      const Potential<GUM_SCALAR>& cpt = bn.cpt ( *iter );
       Instantiation inst ( cpt ); inst.forgetMaster();
       inst.reorder ( Order );
       cptparamval.insert ( var, new gum::HashTable<std::string, gum::Sequence< gum::Sequence<gum::Instantiation* >* >* >() );

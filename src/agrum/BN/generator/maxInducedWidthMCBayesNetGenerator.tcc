@@ -72,10 +72,10 @@ namespace gum {
   bool MaxInducedWidthMCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber>::__checkConditions() {
     NodeProperty<Size> __modalitiesMap;
 
-    for ( const auto iter : this->_bayesNet.nodes() )
-      __modalitiesMap.insert ( iter,
+    for ( auto iter = this->_bayesNet.nodes().beginSafe(); iter != this->_bayesNet.nodes().endSafe(); ++iter )
+      __modalitiesMap.insert ( *iter,
                                IBayesNetGenerator < GUM_SCALAR,
-                               ICPTGenerator >::_bayesNet.variable ( iter ).domainSize() );
+                               ICPTGenerator >::_bayesNet.variable ( *iter ).domainSize() );
 
     DefaultTriangulation tri ( & ( this->_bayesNet.moralGraph() ), &__modalitiesMap );
 

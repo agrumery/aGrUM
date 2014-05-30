@@ -277,9 +277,9 @@ namespace gum {
       std::stringstream sBuff;
       sBuff << i->type().name();
 
-      for ( const auto node : i->type().dag().nodes() ) {
-        if ( req_nodes.exists ( node ) ) {
-          sBuff << "-" << node;
+      for ( auto node = i->type().dag().nodes().beginSafe(); node != i->type().dag().nodes().endSafe(); ++node ) {
+        if ( req_nodes.exists ( *node ) ) {
+          sBuff << "-" << *node;
         }
       }
 

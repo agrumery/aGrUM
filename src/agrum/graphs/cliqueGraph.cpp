@@ -248,8 +248,8 @@ namespace gum {
     infos_DFS.cliques_DFS_chain = __cliques;
 
     // while there exist unvisited cliques, perform a DFS on them
-    for ( const auto DFSnode : nodes() )
-      if ( ! infos_DFS.visited_cliques.contains ( DFSnode ) ) {
+    for ( auto iter_DFSnode = nodes().beginSafe(); iter_DFSnode != nodes().endSafe(); ++iter_DFSnode )
+      if ( ! infos_DFS.visited_cliques.contains ( *iter_DFSnode ) ) {
         // no nodes are forbidden a priori in the DFS
         infos_DFS.nodes_DFS_forbidden.clear();
 
@@ -258,7 +258,7 @@ namespace gum {
 
         // here iter_DFS points on a clique that has not been visited yet
         // visit the clique graph from this clique
-        if ( ! __runningIntersectionDFS ( DFSnode, DFSnode, infos_DFS ) )
+        if ( ! __runningIntersectionDFS ( *iter_DFSnode, *iter_DFSnode, infos_DFS ) )
           return false;
 
         // the nodes that were seen during the DFS belong to a connected component
@@ -300,13 +300,13 @@ namespace gum {
     std::stringstream stream;
     stream << "list of nodes:" << std::endl;
 
-    for ( const auto node : nodes() ) {
-      stream << " -- node: " << node << std::endl << "    clique:";
+    for ( auto iter_node = nodes().beginSafe(); iter_node != nodes().endSafe(); ++iter_node ) {
+      stream << " -- node: " << *iter_node << std::endl << "    clique:";
 
       /*const NodeSet& cl = clique( node );
 
       for ( NodeSetIterator iter = cl.begin(); iter != cl.end(); ++iter )*/
-      for ( auto cliq = clique ( node ).beginSafe (); cliq != clique ( node ).endSafe (); ++cliq )
+      for ( auto cliq = clique ( *iter_node ).beginSafe (); cliq != clique ( *iter_node ).endSafe (); ++cliq )
         stream << "  " << *cliq;
 
       stream << std::endl;
@@ -327,13 +327,13 @@ namespace gum {
     stream << "graph {" << std::endl;
     stream << "  edge [fontsize=8 fontcolor=red];" << std::endl << std::endl;
 
-    for ( const auto node : nodes() ) {
-      stream << "  " << node << " [ label=\"";
+    for ( auto iter_node = nodes().beginSafe(); iter_node != nodes().endSafe(); ++iter_node ) {
+      stream << "  " << *iter_node << " [ label=\"";
 
       /*const NodeSet& cl = clique ( node );
 
       for ( NodeSetIterator iter = cl.begin(); iter != cl.end(); ++iter )*/
-      for ( auto cliq = clique ( node ).beginSafe (); cliq != clique ( node ).endSafe(); ++cliq )
+      for ( auto cliq = clique ( *iter_node ).beginSafe (); cliq != clique ( *iter_node ).endSafe(); ++cliq )
         stream << "  " << *cliq;
 
       stream << "\"];" << std::endl;

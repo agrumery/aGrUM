@@ -58,22 +58,22 @@ namespace gum {
     Size num = 0;
     Size numparam = 0;
 
-    for ( const auto iter : bn.nodes() )
-      numparam +=  bn.variable ( iter ).domainSize();
+    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter  )
+      numparam +=  bn.variable ( *iter ).domainSize();
 
     Idx clause = 0;
     std::stringstream clausstr;
     gum::HashTable<std::string, Idx> vartable ; //key name::label val num;
     gum::HashTable<std::string, Idx> protable ;
 
-    for ( const auto iter : bn.nodes() ) {
-      for ( Idx i = 0; i <  bn.variable ( iter ).domainSize(); i++ ) {
+    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter ) {
+      for ( Idx i = 0; i <  bn.variable ( *iter ).domainSize(); i++ ) {
         std::stringstream str;
-        str << bn.variable ( iter ).name() << "_" << bn.variable ( iter ).label ( i ) ;
+        str << bn.variable ( *iter ).name() << "_" << bn.variable ( *iter ).label ( i ) ;
         vartable.insert ( str.str(), ++num ); strfile << num << "::" << str.str() << "\n";
       }
 
-      const Potential<GUM_SCALAR>& cpt = bn.cpt ( iter );
+      const Potential<GUM_SCALAR>& cpt = bn.cpt ( *iter );
 
       Instantiation inst ( cpt );
 
@@ -86,24 +86,24 @@ namespace gum {
       }
     }
 
-    for ( const auto iter : bn.nodes() ) {
+    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter ) {
       std::stringstream str0 , str1, str2, str3;
 
-      for ( Idx i = 0; i < bn.variable ( iter ).domainSize(); i++ ) {
+      for ( Idx i = 0; i < bn.variable ( *iter ).domainSize(); i++ ) {
         std::stringstream stri ;//= bn.variable(iter).name()+"_"+ bn.variable(iter).label( i ) ;
-        stri << bn.variable ( iter ).name() << "_" << bn.variable ( iter ).label ( i ) ;
+        stri << bn.variable ( *iter ).name() << "_" << bn.variable ( *iter ).label ( i ) ;
         str0 << vartable[stri.str()] << " ";
 
-        for ( Idx j = i + 1; j <  bn.variable ( iter ).domainSize(); j++ ) {
+        for ( Idx j = i + 1; j <  bn.variable ( *iter ).domainSize(); j++ ) {
           std::stringstream strj;
-          strj << bn.variable ( iter ).name() << "_" << bn.variable ( iter ).label ( j ) ;
+          strj << bn.variable ( *iter ).name() << "_" << bn.variable ( *iter ).label ( j ) ;
           str1 << "-" << vartable[stri.str()] << " -" << vartable[strj.str()] << " 0\n"; clause++;
         }
       }
 
       str0 << "0\n"; clause++;
       clausstr << str0.str() << str1.str();
-      const Potential<GUM_SCALAR>& cpt = bn.cpt ( iter );
+      const Potential<GUM_SCALAR>& cpt = bn.cpt ( *iter );
       Instantiation inst ( cpt );
 
       for ( inst.setFirst(); ! inst.end(); ++inst ) {
@@ -149,22 +149,22 @@ namespace gum {
     Idx num = 0;
     Idx numparam = 0;
 
-    for ( const auto iter : bn.nodes() )
-      numparam +=  bn.variable ( iter ).domainSize();
+    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter )
+      numparam +=  bn.variable ( *iter ).domainSize();
 
     Idx clause = 0;
     std::stringstream clausstr;
     gum::HashTable<std::string, Idx> vartable ; //key name::label val num;
     gum::HashTable<std::string, Idx> protable ;
 
-    for ( const auto iter : bn.nodes() ) {
-      for ( Idx i = 0; i <  bn.variable ( iter ).domainSize(); i++ ) {
+    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter ) {
+      for ( Idx i = 0; i <  bn.variable ( *iter ).domainSize(); i++ ) {
         std::stringstream str;
-        str << bn.variable ( iter ).name() << "_" << bn.variable ( iter ).label ( i ) ;
+        str << bn.variable ( *iter ).name() << "_" << bn.variable ( *iter ).label ( i ) ;
         vartable.insert ( str.str(), ++num ); strfile << num << "::" << str.str() << "\n";
       }
 
-      const Potential<GUM_SCALAR>& cpt = bn.cpt ( iter );
+      const Potential<GUM_SCALAR>& cpt = bn.cpt ( *iter );
 
       Instantiation inst ( cpt );
 
@@ -177,24 +177,24 @@ namespace gum {
       }
     }
 
-    for ( const auto iter : bn.nodes() ) {
+    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter ) {
       std::stringstream str0 , str1, str2, str3;
 
-      for ( Idx i = 0; i < bn.variable ( iter ).domainSize(); i++ ) {
+      for ( Idx i = 0; i < bn.variable ( *iter ).domainSize(); i++ ) {
         std::stringstream stri ;//= bn.variable(iter).name()+"_"+ bn.variable(iter).label( i ) ;
-        stri << bn.variable ( iter ).name() << "_" << bn.variable ( iter ).label ( i ) ;
+        stri << bn.variable ( *iter ).name() << "_" << bn.variable ( *iter ).label ( i ) ;
         str0 << vartable[stri.str()] << " ";
 
-        for ( Idx j = i + 1; j <  bn.variable ( iter ).domainSize(); j++ ) {
+        for ( Idx j = i + 1; j <  bn.variable ( *iter ).domainSize(); j++ ) {
           std::stringstream strj;
-          strj << bn.variable ( iter ).name() << "_" << bn.variable ( iter ).label ( j ) ;
+          strj << bn.variable ( *iter ).name() << "_" << bn.variable ( *iter ).label ( j ) ;
           str1 << "-" << vartable[stri.str()] << " -" << vartable[strj.str()] << " 0\n"; clause++;
         }
       }
 
       str0 << "0\n"; clause++;
       clausstr << str0.str() << str1.str();
-      const Potential<GUM_SCALAR>& cpt = bn.cpt ( iter );
+      const Potential<GUM_SCALAR>& cpt = bn.cpt ( *iter );
       Instantiation inst ( cpt );
 
       for ( inst.setFirst(); ! inst.end(); ++inst ) {

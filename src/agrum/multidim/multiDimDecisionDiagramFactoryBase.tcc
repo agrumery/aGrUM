@@ -503,20 +503,20 @@ namespace gum {
     nonTerminalStream << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
 
-    for ( const auto node : _model.nodes() )
-      if ( node != 0 ) {
-        if ( _valueMap.existsFirst ( node ) )
-          terminalStream << tab << node << ";" << tab << node  << " [label=\"" << this->_valueMap.second ( node ) << "\"]" << ";" << std::endl;
+    for ( auto iter_node = _model.nodes().beginSafe(); iter_node != _model.nodes().endSafe(); ++iter_node )
+      if ( *iter_node != 0 ) {
+        if ( _valueMap.existsFirst ( *iter_node ) )
+          terminalStream << tab << *iter_node << ";" << tab << *iter_node  << " [label=\"" << this->_valueMap.second ( *iter_node ) << "\"]" << ";" << std::endl;
         else {
-          nonTerminalStream << tab << node << ";" << tab << node  << " [label=\"" << _varMap[ node ]->name() << "\"]" << ";" << std::endl;
+          nonTerminalStream << tab << *iter_node << ";" << tab << *iter_node  << " [label=\"" << _varMap[ *iter_node ]->name() << "\"]" << ";" << std::endl;
 
-          if ( _arcMap[node] != nullptr )
-            for ( std::vector<NodeId>::iterator arcIter = _arcMap[node]->begin(); arcIter != _arcMap[node]->end(); ++arcIter )
+          if ( _arcMap[*iter_node] != nullptr )
+            for ( std::vector<NodeId>::iterator arcIter = _arcMap[*iter_node]->begin(); arcIter != _arcMap[*iter_node]->end(); ++arcIter )
               if ( *arcIter != 0 )
-                arcstream << tab <<  node << " -> " << *arcIter << " [label=\"" << _varMap[ node ]->label ( std::distance ( _arcMap[node]->begin(), arcIter ) ) << "\",color=\"#0000ff\"]" << ";" << std::endl;
+                arcstream << tab <<  *iter_node << " -> " << *arcIter << " [label=\"" << _varMap[ *iter_node ]->label ( std::distance ( _arcMap[*iter_node]->begin(), arcIter ) ) << "\",color=\"#0000ff\"]" << ";" << std::endl;
 
-          if ( _defaultArcMap.exists ( node ) )
-            defaultarcstream << tab <<  node << " -> " << _defaultArcMap[node] << " [color=\"#ff0000\"]" << ";" << std::endl;
+          if ( _defaultArcMap.exists ( *iter_node ) )
+            defaultarcstream << tab <<  *iter_node << " -> " << _defaultArcMap[*iter_node] << " [color=\"#ff0000\"]" << ";" << std::endl;
         }
       }
 
@@ -557,25 +557,25 @@ namespace gum {
     _arcMap.resize ( source->nodesMap().size() );
     _defaultArcMap.resize ( source->nodesMap().size() );
 
-    for ( auto node : _model.nodes() ) {
+    for ( auto iter_node = _model.nodes().beginSafe(); iter_node != _model.nodes().endSafe(); ++iter_node ) {
 
-      if ( node != 0 && !source->isTerminalNode ( node ) ) {
+      if ( *iter_node != 0 && !source->isTerminalNode ( *iter_node ) ) {
 
-        _varMap.insert ( node, source->unsafeNodeVariable ( node ) );
+        _varMap.insert ( *iter_node, source->unsafeNodeVariable ( *iter_node ) );
 
-        if ( !_var2NodeIdMap.exists ( source->unsafeNodeVariable ( node ) ) ) {
-          _var2NodeIdMap.insert ( source->unsafeNodeVariable ( node ), new List< NodeId > ( * ( source->variableNodes ( source->unsafeNodeVariable ( node ) ) ) ) );
-          _varUsedModalitiesMap.insert ( source->unsafeNodeVariable ( node ), new std::vector< Idx > ( * ( source->variableUsedModalities ( source->unsafeNodeVariable ( node ) ) ) ) );
+        if ( !_var2NodeIdMap.exists ( source->unsafeNodeVariable ( *iter_node ) ) ) {
+          _var2NodeIdMap.insert ( source->unsafeNodeVariable ( *iter_node ), new List< NodeId > ( * ( source->variableNodes ( source->unsafeNodeVariable ( *iter_node ) ) ) ) );
+          _varUsedModalitiesMap.insert ( source->unsafeNodeVariable ( *iter_node ), new std::vector< Idx > ( * ( source->variableUsedModalities ( source->unsafeNodeVariable ( *iter_node ) ) ) ) );
         }
 
-        _arcMap.insert ( node, new std::vector< NodeId > ( * ( source->unsafeNodeSons ( node ) ) ) );
+        _arcMap.insert ( *iter_node, new std::vector< NodeId > ( * ( source->unsafeNodeSons ( *iter_node ) ) ) );
 
-        for ( std::vector<NodeId>::const_iterator sonIter = source->unsafeNodeSons ( node )->begin(); sonIter != source->unsafeNodeSons ( node )->end(); ++sonIter )
-          _model.insertArc ( node, *sonIter );
+        for ( std::vector<NodeId>::const_iterator sonIter = source->unsafeNodeSons ( *iter_node )->begin(); sonIter != source->unsafeNodeSons ( *iter_node )->end(); ++sonIter )
+          _model.insertArc ( *iter_node, *sonIter );
 
-        if ( source->unsafeHasNodeDefaultSon ( node ) ) {
-          _defaultArcMap.insert ( node, source->unsafeNodeDefaultSon ( node ) );
-          _model.insertArc ( node, source->unsafeNodeDefaultSon ( node ) );
+        if ( source->unsafeHasNodeDefaultSon ( *iter_node ) ) {
+          _defaultArcMap.insert ( *iter_node, source->unsafeNodeDefaultSon ( *iter_node ) );
+          _model.insertArc ( *iter_node, source->unsafeNodeDefaultSon ( *iter_node ) );
         }
       }
     }
@@ -805,9 +805,9 @@ namespace gum {
     _varMap.clear();
     _defaultArcMap.clear();
 
-    for ( auto node : _model.nodes() )
-      if ( node != 0 && !_valueMap.existsFirst ( node ) && _arcMap[node] != nullptr )
-        delete _arcMap[node];
+    for ( auto iter_node = _model.nodes().beginSafe(); iter_node != _model.nodes().endSafe(); ++iter_node )
+      if ( *iter_node != 0 && !_valueMap.existsFirst ( *iter_node ) && _arcMap[*iter_node] != nullptr )
+        delete _arcMap[*iter_node];
 
     _arcMap.clear();
 

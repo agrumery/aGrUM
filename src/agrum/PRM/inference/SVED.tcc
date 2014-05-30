@@ -409,8 +409,8 @@ namespace gum {
       __class_elim_order = new Sequence<const ClassElementContainer<GUM_SCALAR>*>();
       std::list<NodeId> l;
 
-      for ( const auto node : cdg.dag().nodes() )
-        if ( cdg.dag().parents ( node ).empty() ) l.push_back ( node );
+      for ( auto node = cdg.dag().nodes().beginSafe(); node != cdg.dag().nodes().endSafe(); ++node )
+        if ( cdg.dag().parents ( *node ).empty() ) l.push_back ( *node );
 
       Set<NodeId> visited_node;
 

@@ -75,10 +75,10 @@ namespace gum {
 
     GUM_DESTRUCTOR ( MultiDimDecisionDiagramBase );
 
-    for ( const auto node : __graph.nodes() ) {
-      if ( node != 0 )
-        if ( !__valueMap.existsFirst ( node ) && __arcMap[node] != nullptr )
-          delete __arcMap[node];
+    for ( auto iter_node = __graph.nodes().beginSafe(); iter_node != __graph.nodes().endSafe(); ++iter_node ) {
+      if ( *iter_node != 0 )
+        if ( !__valueMap.existsFirst ( *iter_node ) && __arcMap[*iter_node] != nullptr )
+          delete __arcMap[*iter_node];
     }
 
     for ( HashTableIteratorSafe< const DiscreteVariable*, List<NodeId>* > iter = __var2NodeIdMap.beginSafe(); iter != __var2NodeIdMap.endSafe(); ++iter )
@@ -153,7 +153,7 @@ namespace gum {
 
 
   /** *********************************************************************************** **/
-  /**      Implementation of MultiDimInterface                                                                **/
+  /**      Implementation of MultiDimInterface                                            **/
   /** *********************************************************************************** **/
 
 
@@ -272,21 +272,21 @@ namespace gum {
     __arcMap.resize ( source.nodesMap().size() );
     __defaultArcMap.resize ( source.nodesMap().size() );
 
-    for ( const auto node : __graph.nodes() ) {
-      if ( node != 0 && !source.isTerminalNode ( node ) ) {
+    for ( auto iter_node = __graph.nodes().beginSafe(); iter_node != __graph.nodes().endSafe(); ++iter_node ) {
+      if ( *iter_node != 0 && !source.isTerminalNode ( *iter_node ) ) {
 
-        __variableMap.insert ( node, source.nodeVariable ( node ) );
+        __variableMap.insert ( *iter_node, source.nodeVariable ( *iter_node ) );
 
-        if ( !__var2NodeIdMap.exists ( source.nodeVariable ( node ) ) )
-          __var2NodeIdMap.insert ( source.nodeVariable ( node ), new List< NodeId > ( * ( source.variableNodes ( source.nodeVariable ( node ) ) ) ) );
+        if ( !__var2NodeIdMap.exists ( source.nodeVariable ( *iter_node ) ) )
+          __var2NodeIdMap.insert ( source.nodeVariable ( *iter_node ), new List< NodeId > ( * ( source.variableNodes ( source.nodeVariable ( *iter_node ) ) ) ) );
 
-        if ( !__varUsedModalitiesMap.exists ( source.nodeVariable ( node ) ) )
-          __varUsedModalitiesMap.insert ( source.nodeVariable ( node ), new std::vector<Idx > ( * ( source.variableUsedModalities ( source.nodeVariable ( node ) ) ) ) );
+        if ( !__varUsedModalitiesMap.exists ( source.nodeVariable ( *iter_node ) ) )
+          __varUsedModalitiesMap.insert ( source.nodeVariable ( *iter_node ), new std::vector<Idx > ( * ( source.variableUsedModalities ( source.nodeVariable ( *iter_node ) ) ) ) );
 
-        __arcMap.insert ( node, new std::vector<NodeId> ( * ( source.nodeSons ( node ) ) ) );
+        __arcMap.insert ( *iter_node, new std::vector<NodeId> ( * ( source.nodeSons ( *iter_node ) ) ) );
 
-        if ( source.hasNodeDefaultSon ( node ) )
-          __defaultArcMap.insert ( node, source.nodeDefaultSon ( node ) );
+        if ( source.hasNodeDefaultSon ( *iter_node ) )
+          __defaultArcMap.insert ( *iter_node, source.nodeDefaultSon ( *iter_node ) );
 
       }
     }
@@ -345,22 +345,22 @@ namespace gum {
 
     __defaultArcMap.resize ( source->nodesMap().size() );
 
-    for ( const auto nodeIter : source->nodesMap() ) {
+    for ( auto nodeIter = source->nodesMap().beginSafe(); nodeIter != source->nodesMap().endSafe(); ++nodeIter ) {
 
-      if ( nodeIter != 0 && !source->isTerminalNode ( nodeIter ) ) {
+      if ( *nodeIter != 0 && !source->isTerminalNode ( *nodeIter ) ) {
 
-        __variableMap.insert ( nodeIter, old2new.second ( source->unsafeNodeVariable ( nodeIter ) ) );
+        __variableMap.insert ( *nodeIter, old2new.second ( source->unsafeNodeVariable ( *nodeIter ) ) );
 
-        if ( !__var2NodeIdMap.exists ( old2new.second ( source->unsafeNodeVariable ( nodeIter ) ) ) )
-          __var2NodeIdMap.insert ( old2new.second ( source->unsafeNodeVariable ( nodeIter ) ), new List< NodeId > ( * ( source->variableNodes ( source->unsafeNodeVariable ( nodeIter ) ) ) ) );
+        if ( !__var2NodeIdMap.exists ( old2new.second ( source->unsafeNodeVariable ( *nodeIter ) ) ) )
+          __var2NodeIdMap.insert ( old2new.second ( source->unsafeNodeVariable ( *nodeIter ) ), new List< NodeId > ( * ( source->variableNodes ( source->unsafeNodeVariable ( *nodeIter ) ) ) ) );
 
-        if ( !__varUsedModalitiesMap.exists ( old2new.second ( source->unsafeNodeVariable ( nodeIter ) ) ) )
-          __varUsedModalitiesMap.insert ( old2new.second ( source->unsafeNodeVariable ( nodeIter ) ), new std::vector<Idx> ( * ( source->variableUsedModalities ( source->unsafeNodeVariable ( nodeIter ) ) ) ) );
+        if ( !__varUsedModalitiesMap.exists ( old2new.second ( source->unsafeNodeVariable ( *nodeIter ) ) ) )
+          __varUsedModalitiesMap.insert ( old2new.second ( source->unsafeNodeVariable ( *nodeIter ) ), new std::vector<Idx> ( * ( source->variableUsedModalities ( source->unsafeNodeVariable ( *nodeIter ) ) ) ) );
 
-        __arcMap.insert ( nodeIter, new std::vector< NodeId > ( * ( source->unsafeNodeSons ( nodeIter ) ) ) );
+        __arcMap.insert ( *nodeIter, new std::vector< NodeId > ( * ( source->unsafeNodeSons ( *nodeIter ) ) ) );
 
-        if ( source->unsafeHasNodeDefaultSon ( nodeIter ) )
-          __defaultArcMap.insert ( nodeIter, source->unsafeNodeDefaultSon ( nodeIter ) );
+        if ( source->unsafeHasNodeDefaultSon ( *nodeIter ) )
+          __defaultArcMap.insert ( *nodeIter, source->unsafeNodeDefaultSon ( *nodeIter ) );
 
       }
     }
@@ -417,21 +417,21 @@ namespace gum {
     nonTerminalStream << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
 
-    for ( const auto node : __graph.nodes() ) {
-      if ( node != 0 ) {
-        if ( isTerminalNode ( node ) ) {
-          terminalStream << tab << node << ";" << tab << node  << " [label=\"" << node << "-" << std::setprecision ( 15 ) << this->__valueMap.second ( node ) << "\"]" << ";" << std::endl;
+    for ( auto iter_node = __graph.nodes().beginSafe(); iter_node != __graph.nodes().endSafe(); ++iter_node ) {
+      if ( *iter_node != 0 ) {
+        if ( isTerminalNode ( *iter_node ) ) {
+          terminalStream << tab << *iter_node << ";" << tab << *iter_node  << " [label=\"" << *iter_node << "-" << std::setprecision ( 15 ) << this->__valueMap.second ( *iter_node ) << "\"]" << ";" << std::endl;
         } else {
-          nonTerminalStream << tab << node << ";" << tab << node  << " [label=\"" << node << "-" << __variableMap[ node ]->name() << "\"]" << ";" << std::endl;
+          nonTerminalStream << tab << *iter_node << ";" << tab << *iter_node  << " [label=\"" << *iter_node << "-" << __variableMap[ *iter_node ]->name() << "\"]" << ";" << std::endl;
 
-          if ( __arcMap[node] != nullptr ) {
-            for ( std::vector<NodeId>::iterator sonIter =  __arcMap[node]->begin(); sonIter !=  __arcMap[node]->end(); ++sonIter )
+          if ( __arcMap[*iter_node] != nullptr ) {
+            for ( std::vector<NodeId>::iterator sonIter =  __arcMap[*iter_node]->begin(); sonIter !=  __arcMap[*iter_node]->end(); ++sonIter )
               if ( *sonIter != 0 )
-                arcstream << tab <<  node << " -> " << *sonIter << " [label=\"" << __variableMap[ node ]->label ( std::distance ( __arcMap[node]->begin(), sonIter ) ) << "\",color=\"#0000ff\"]" << ";" << std::endl;
+                arcstream << tab <<  *iter_node << " -> " << *sonIter << " [label=\"" << __variableMap[ *iter_node ]->label ( std::distance ( __arcMap[*iter_node]->begin(), sonIter ) ) << "\",color=\"#0000ff\"]" << ";" << std::endl;
           }
 
-          if ( __defaultArcMap.exists ( node ) )
-            defaultarcstream << tab <<  node << " -> " << __defaultArcMap[node] << " [color=\"#ff0000\"]" << ";" << std::endl;
+          if ( __defaultArcMap.exists ( *iter_node ) )
+            defaultarcstream << tab <<  *iter_node << " -> " << __defaultArcMap[*iter_node] << " [color=\"#ff0000\"]" << ";" << std::endl;
         }
       }
     }
@@ -751,18 +751,18 @@ namespace gum {
       if ( newValueMap.existsSecond ( tempVal ) ) {
         NodeId nody = newValueMap.first ( tempVal );
 
-        for ( const auto node : __graph.nodes() )
-          if ( node != 0 && !isTerminalNode ( node ) ) {
-            if ( !__arcMap.exists ( node ) )
-              std::cout << "OW! OW! : " << node << std::endl;
+        for ( auto iter_node = __graph.nodes().beginSafe(); iter_node != __graph.nodes().endSafe(); ++iter_node )
+          if ( *iter_node != 0 && !isTerminalNode ( *iter_node ) ) {
+            if ( !__arcMap.exists ( *iter_node ) )
+              std::cout << "OW! OW! : " << *iter_node << std::endl;
 
-            for ( std::vector<NodeId>::iterator sonsIter = __arcMap[node]->begin(); sonsIter != __arcMap[node]->end(); ++sonsIter )
+            for ( std::vector<NodeId>::iterator sonsIter = __arcMap[*iter_node]->begin(); sonsIter != __arcMap[*iter_node]->end(); ++sonsIter )
               if ( *sonsIter == valueIter.first() )
                 *sonsIter = nody;
 
-            if ( __defaultArcMap.exists ( node ) && __defaultArcMap[node] == valueIter.first() ) {
-              __defaultArcMap.erase ( node );
-              __defaultArcMap.insert ( node, nody );
+            if ( __defaultArcMap.exists ( *iter_node ) && __defaultArcMap[*iter_node] == valueIter.first() ) {
+              __defaultArcMap.erase ( *iter_node );
+              __defaultArcMap.insert ( *iter_node, nody );
             }
           }
 

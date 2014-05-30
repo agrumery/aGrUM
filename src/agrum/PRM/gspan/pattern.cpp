@@ -52,34 +52,34 @@ namespace gum {
 
       bool
       Pattern::isMinimal() {
-        for ( const auto node : nodes() ) {
-          const NodeSet& parents = DiGraph::parents ( node );
+        for ( auto node = nodes().beginSafe(); node != nodes().endSafe(); ++node ) {
+          const NodeSet& parents = DiGraph::parents ( *node );
 
           for ( NodeSetIterator next = parents.beginSafe(); next != parents.endSafe(); ++next ) {
-            Size u = label ( node ).id;
+            Size u = label ( *node ).id;
             Size v = label ( *next ).id;
-            EdgeCode edge_code ( 1, 2, u, label ( *next, node ).id, v );
+            EdgeCode edge_code ( 1, 2, u, label ( *next, *node ).id, v );
 
             if ( edge_code < * ( code().codes.front() ) ) {
               return false;
             } else if ( edge_code == ( *code().codes.front() ) ) {
-              if ( __expandCodeIsMinimal ( node, *next ) ) {
+              if ( __expandCodeIsMinimal ( *node, *next ) ) {
                 return false;
               }
             }
           }
 
-          const NodeSet& children = DiGraph::children ( node );
+          const NodeSet& children = DiGraph::children ( *node );
 
           for ( NodeSetIterator next = children.beginSafe(); next != children.endSafe(); ++next ) {
-            Size u = label ( node ).id;
+            Size u = label ( *node ).id;
             Size v = label ( *next ).id;
-            EdgeCode edge_code ( 1, 2, u, label ( node, *next ).id, v );
+            EdgeCode edge_code ( 1, 2, u, label ( *node, *next ).id, v );
 
             if ( edge_code < * ( code().codes.front() ) ) {
               return false;
             } else if ( edge_code == ( *code().codes.front() ) ) {
-              if ( __expandCodeIsMinimal ( node, *next ) ) {
+              if ( __expandCodeIsMinimal ( *node, *next ) ) {
                 return false;
               }
             }

@@ -159,7 +159,7 @@ namespace gum {
 
       NodeProperty< CliqueProperties<GUM_SCALAR>* > __cliquePropertiesMap;
 
-      HashTable< size_t, NodeId > __cliqueEliminationMap;
+      HashTable< Size, NodeId > __cliqueEliminationMap;
 
       HashTable< NodeId, Idx > __utakenDecisionMap;
 

@@ -210,11 +210,11 @@ namespace gum {
         }
 
         // Second we search for active outputs
-        for ( const auto nn : node->n->type().dag().nodes() ) {
-          if ( node->n->type().isOutputNode ( node->n->type().get ( nn ) ) ) {
+        for ( auto nn = node->n->type().dag().nodes().beginSafe(); nn != node->n->type().dag().nodes().endSafe(); ++nn ) {
+          if ( node->n->type().isOutputNode ( node->n->type().get ( *nn ) ) ) {
             try {
-              sBuff << "-" << node->n->getRefAttr ( nn ).size() << node->n->get ( nn ).name();
-              size *= node->n->get ( nn ).type().variable().domainSize();
+              sBuff << "-" << node->n->getRefAttr ( *nn ).size() << node->n->get ( *nn ).name();
+              size *= node->n->get ( *nn ).type().variable().domainSize();
             } catch ( NotFound& ) {
               // (nn) is an inactive output node
             }

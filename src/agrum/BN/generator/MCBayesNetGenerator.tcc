@@ -34,9 +34,9 @@ namespace gum {
   gum::Size getMaxModality ( gum::BayesNet<GUM_SCALAR>& bayesNet ) {
     gum::Size maxMod = 0;
 
-    for ( const auto node : bayesNet.nodes() )
-      if ( maxMod < bayesNet.variable ( node ).domainSize() )
-        maxMod = bayesNet.variable ( node ).domainSize();
+    for ( auto iter_node = bayesNet.nodes().beginSafe (); iter_node != bayesNet.nodes().endSafe (); ++iter_node )
+      if ( maxMod < bayesNet.variable ( *iter_node ).domainSize() )
+        maxMod = bayesNet.variable ( *iter_node ).domainSize();
 
     return maxMod;
   }
@@ -109,10 +109,10 @@ namespace gum {
       LazyPropagation<GUM_SCALAR> inf ( bayesNetinit );
       inf.makeInference();
 
-      for ( const auto it : bayesNetinit.nodes() ) {
+      for ( auto it = bayesNetinit.nodes().beginSafe(); it != bayesNetinit.nodes().endSafe(); ++it ) {
         Potential<GUM_SCALAR>* pottemp = new Potential<GUM_SCALAR>();
-        pottemp->copy ( inf.marginal ( it ) );
-        _hashMarginal.insert ( it, pottemp );
+        pottemp->copy ( inf.marginal ( *it ) );
+        _hashMarginal.insert ( *it, pottemp );
 
       }
 

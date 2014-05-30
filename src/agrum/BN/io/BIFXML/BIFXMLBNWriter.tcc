@@ -60,13 +60,13 @@ namespace gum {
 
     output << "<!-- Variables -->" << std::endl;
 
-    for ( const auto iter : bn.nodes() )
-      output << __variableBloc ( bn.variable ( iter ) ) << std::endl;
+    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter )
+      output << __variableBloc ( bn.variable ( *iter ) ) << std::endl;
 
     output << "<!-- Probability distributions -->" << std::endl;
 
-    for ( const auto iter : bn.nodes() )
-      output << __variableDefinition ( iter, bn );
+    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter )
+      output << __variableDefinition ( *iter, bn );
 
     output << std::endl;
 

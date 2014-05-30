@@ -83,13 +83,13 @@ namespace gum {
   IBayesNet<GUM_SCALAR>::dim() const {
     Idx dim = 0;
 
-    for ( const auto node : nodes() ) {
+    for ( auto iter_node = nodes().beginSafe(); iter_node != nodes().endSafe(); ++iter_node ) {
       Idx q = 1;
 
-      for ( auto parent = dag().parents ( node ).beginSafe(); parent != dag().parents ( node ).endSafe(); ++parent )
+      for ( auto parent = dag().parents ( *iter_node ).beginSafe(); parent != dag().parents ( *iter_node ).endSafe(); ++parent )
         q *= variable ( *parent ).domainSize();
 
-      dim += ( variable ( node ).domainSize() - 1 ) * q;
+      dim += ( variable ( *iter_node ).domainSize() - 1 ) * q;
     }
 
     return dim;
@@ -102,8 +102,8 @@ namespace gum {
     Size param = 0;
     double dSize = log10DomainSize();
 
-    for ( const auto it : nodes() ) {
-      param += ( ( const MultiDimImplementation<GUM_SCALAR>& ) cpt ( it ).getMasterRef() ).realSize();
+    for ( auto it = nodes().beginSafe(); it != nodes().endSafe(); ++it ) {
+      param += ( ( const MultiDimImplementation<GUM_SCALAR>& ) cpt ( *it ).getMasterRef() ).realSize();
     }
 
     double compressionRatio = log10 ( 1.0 * param ) - dSize;
@@ -147,24 +147,24 @@ namespace gum {
     output << "  graph [bgcolor=transparent,label=\"" << bn_name << "\"];" << std::endl;
     output << "  node [style=filled fillcolor=\"#ffffaa\"];" << std::endl << std::endl;
 
-    for ( const auto node_iter : nodes() ) {
-      output << "\"" << variable ( node_iter ).name() << "\" [comment=\"" << node_iter << ":" << variable ( node_iter ) << "\"];" << std::endl;
+    for ( auto node_iter = nodes().beginSafe(); node_iter != nodes().endSafe(); ++node_iter ) {
+      output << "\"" << variable ( *node_iter ).name() << "\" [comment=\"" << *node_iter << ":" << variable ( *node_iter ) << "\"];" << std::endl;
     }
 
     output << std::endl;
 
     std::string tab = "  ";
 
-    for ( const auto node_iter : nodes() ) {
-      if ( dag().children ( node_iter ).size() > 0 ) {
+    for ( auto node_iter = nodes().beginSafe(); node_iter != nodes().endSafe(); ++node_iter ) {
+      if ( dag().children ( *node_iter ).size() > 0 ) {
         //const NodeSet& children =  dag().children ( node_iter );
 
-        for ( auto child_iter = dag().children ( node_iter ).beginSafe(); child_iter != dag().children ( node_iter ).endSafe(); ++child_iter ) {
-          output << tab << "\"" << variable ( node_iter ).name() << "\" -> "
+        for ( auto child_iter = dag().children ( *node_iter ).beginSafe(); child_iter != dag().children ( *node_iter ).endSafe(); ++child_iter ) {
+          output << tab << "\"" << variable ( *node_iter ).name() << "\" -> "
                  << "\"" << variable ( *child_iter ).name() << "\";" << std::endl;
         }
-      } else if ( dag().parents ( node_iter ).size() == 0 ) {
-        output << tab << "\"" << variable ( node_iter ).name() << "\";" << std::endl;
+      } else if ( dag().parents ( *node_iter ).size() == 0 ) {
+        output << tab << "\"" << variable ( *node_iter ).name() << "\";" << std::endl;
       }
     }
 
@@ -181,8 +181,8 @@ namespace gum {
 
     GUM_SCALAR tmp;
 
-    for ( const auto node_iter : nodes() ) {
-      if ( ( tmp = cpt ( node_iter ) [i] ) == ( GUM_SCALAR ) 0 ) {
+    for ( auto node_iter = nodes().beginSafe(); node_iter != nodes().endSafe(); ++node_iter ) {
+      if ( ( tmp = cpt ( *node_iter ) [i] ) == ( GUM_SCALAR ) 0 ) {
         return ( GUM_SCALAR ) 0;
       }
 
@@ -199,12 +199,12 @@ namespace gum {
 
     GUM_SCALAR tmp;
 
-    for ( const auto node_iter : nodes() ) {
-      if ( ( tmp = cpt ( node_iter ) [i] ) == ( GUM_SCALAR ) 0 ) {
+    for ( auto node_iter = nodes().beginSafe(); node_iter != nodes().endSafe(); ++node_iter  ) {
+      if ( ( tmp = cpt ( *node_iter ) [i] ) == ( GUM_SCALAR ) 0 ) {
         return ( GUM_SCALAR ) ( - std::numeric_limits<double>::infinity( ) );
       }
 
-      value += log2 ( cpt ( node_iter ) [i] );
+      value += log2 ( cpt ( *node_iter ) [i] );
     }
 
     return value;
@@ -218,7 +218,7 @@ namespace gum {
         return false;
       }
 
-      for ( const auto node : nodes() ) {
+      for ( auto node : nodes().beginSafe() ) {
         // We don't use Potential::operator== because BN's don't share
         // DiscreteVariable's pointers.
         Bijection<const DiscreteVariable*, const DiscreteVariable*> bijection;
@@ -261,38 +261,38 @@ namespace gum {
     // alignment of variables between the 2 BNs
     Bijection<const DiscreteVariable*, const DiscreteVariable*> alignment;
 
-    for ( const auto node : nodes() ) {
+    for ( auto node_iter = nodes().beginSafe(); node_iter != nodes().endSafe(); ++node_iter  ) {
       try {
-        alignment.insert ( & variable ( node ),
-                           & from.variableFromName ( variable ( node ).name() ) );
+        alignment.insert ( & variable ( *node_iter ),
+                           & from.variableFromName ( variable ( *node_iter ).name() ) );
       } catch ( NotFound& e ) {
         // a name is not found in from
         return false;
       }
     }
 
-    for ( const auto node : nodes() ) {
-      NodeId fromnode = from.idFromName ( variable ( node ).name() );
+    for ( auto node_iter = nodes().beginSafe(); node_iter != nodes().endSafe(); ++node_iter  ) {
+      NodeId fromnode = from.idFromName ( variable ( *node_iter ).name() );
 
-      if ( cpt ( node ).nbrDim() != from.cpt ( fromnode ).nbrDim() ) {
+      if ( cpt ( *node_iter ).nbrDim() != from.cpt ( fromnode ).nbrDim() ) {
         return false;
       }
 
-      if ( cpt ( node ).domainSize() != from.cpt ( fromnode ).domainSize() ) {
+      if ( cpt ( *node_iter ).domainSize() != from.cpt ( fromnode ).domainSize() ) {
         return false;
       }
 
-      Instantiation i ( cpt ( node ) );
+      Instantiation i ( cpt ( *node_iter ) );
       Instantiation j ( from.cpt ( fromnode ) );
 
 
       for ( i.setFirst(); not i.end(); i.inc() ) {
-        for ( Idx indice = 0; indice < cpt ( node ).nbrDim(); ++indice ) {
+        for ( Idx indice = 0; indice < cpt ( *node_iter ).nbrDim(); ++indice ) {
           const DiscreteVariable* p = & ( i.variable ( indice ) );
           j.chgVal ( * ( alignment.second ( p ) ), i.val ( *p ) );
         }
 
-        if ( std::pow ( cpt ( node ).get ( i ) - from.cpt ( fromnode ).get ( j ),
+        if ( std::pow ( cpt ( *node_iter ).get ( i ) - from.cpt ( fromnode ).get ( j ),
                         ( GUM_SCALAR ) 2 )
              > ( GUM_SCALAR ) 1e-6 ) {
           return false;

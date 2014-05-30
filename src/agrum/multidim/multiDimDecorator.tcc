@@ -266,11 +266,6 @@ namespace gum {
     return _content->toString ( i );
   }
 
-  /// string representation of this.
-  template<typename GUM_SCALAR> INLINE
-  const std::string MultiDimDecorator<GUM_SCALAR>::toString( ) const {
-    return _content->toString( );
-  }
 
   template<typename GUM_SCALAR> INLINE
   void MultiDimDecorator<GUM_SCALAR>::beginMultipleChanges ( void ) {

@@ -29,7 +29,7 @@
 #include <cmath>
 
 #include <agrum/config.h>
-
+#include <agrum/core/math/math.h>
 
 namespace gum {
 

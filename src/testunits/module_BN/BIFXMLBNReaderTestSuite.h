@@ -81,11 +81,11 @@ namespace gum_tests {
           TS_ASSERT_EQUALS ( net->size(), ( gum::Size ) 2 );
           gum::NodeId node_1 = 0, node_2 = 0;
 
-          for ( const auto node : net->nodes() ) {
-            if ( net->variable ( node ).name() == "n1" )
-              node_1 = node;
+          for ( auto node = net->nodes().beginSafe(); node != net->nodes().endSafe (); ++node ) {
+            if ( net->variable ( *node ).name() == "n1" )
+              node_1 = *node;
             else
-              node_2 = node;
+              node_2 = *node;
           }
 
           const gum::DiscreteVariable& var_1 = net->variable ( node_1 );
@@ -157,11 +157,11 @@ namespace gum_tests {
           gum::NodeId node_1 = 0, node_2 = 0;
 
 //          for ( gum::DAG::NodeIterator iter = net->dag().beginNodes(); iter != net->dag().endNodes(); ++iter ) {
-          for ( const auto node : net->nodes() ) {
-            if ( net->variable ( node ).name() == "n1" ) {
-              node_1 = node;
+          for ( auto node = net->nodes().beginSafe(); node != net->nodes().endSafe (); ++node ) {
+            if ( net->variable ( *node ).name() == "n1" ) {
+              node_1 = *node;
             } else {
-              node_2 = node;
+              node_2 = *node;
             }
           }
 
@@ -222,8 +222,8 @@ namespace gum_tests {
         if ( net != 0 ) {
           gum::HashTable<std::string, gum::Id> idMap;
 
-          for ( const auto iter : net->nodes() ) {
-            idMap.insert ( net->variable ( iter ).name(), iter );
+          for ( auto iter = net->nodes().beginSafe(); iter != net->nodes().endSafe (); ++iter ) {
+            idMap.insert ( net->variable ( *iter ).name(), *iter );
           }
 
           const gum::DiscreteVariable& var_1 = net->variable ( idMap["n1"] );
@@ -561,8 +561,8 @@ namespace gum_tests {
 
         gum::HashTable<std::string, gum::Id> idMap;
 
-        for ( const auto iter : net->nodes() ) {
-          idMap.insert ( net->variable ( iter ).name(), iter );
+        for ( auto iter = net->nodes().beginSafe(); iter != net->nodes().endSafe (); ++iter ) {
+          idMap.insert ( net->variable ( *iter ).name(), *iter );
 
         }
 

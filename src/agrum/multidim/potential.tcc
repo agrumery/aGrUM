@@ -47,17 +47,12 @@ namespace gum {
   }
 
 
-  /// copy constructor :
-  /// @warning this copy constructor should reference the same content !!!
-  /// TOO DANGEROUS !!!
-
+  /// copy constructor
   template<typename GUM_SCALAR>
   Potential<GUM_SCALAR>::Potential( const Potential<GUM_SCALAR>& src ) :
-    MultiDimDecorator<GUM_SCALAR> ( src )  {
+    Potential<GUM_SCALAR> ( static_cast<MultiDimImplementation<GUM_SCALAR> *>(src.content()->newFactory()),*(src.content()) )  {
     // for debugging purposes
     GUM_CONS_CPY( Potential );
-    GUM_ERROR( OperationNotAllowed,
-               "No copy for Potential : how to choose the implementation ?" );
   }
 
   // complex copy constructor : we choose the implementation
@@ -241,6 +236,11 @@ namespace gum {
     MultiDimDecorator<GUM_SCALAR>::content()->swap( *x, *y );
   }
 
+  /// string representation of this.
+  template<typename GUM_SCALAR> INLINE
+  const std::string Potential<GUM_SCALAR>::toString( ) const {
+    return MultiDimDecorator<GUM_SCALAR>::content()->toString( );
+  }
 } /* namespace gum */
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
