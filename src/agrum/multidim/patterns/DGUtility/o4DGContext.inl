@@ -37,7 +37,6 @@ namespace gum {
 
   // Set DG1 diagram current explored Node
   INLINE void O4DGContext::setDG1Node(const NodeId &exploredNode ) {
-      __key += ( exploredNode - __DG1ExploredNode )*__logPrime[ __nbLogPrime - 1 ];
     __DG1ExploredNode = exploredNode;
   }
 
@@ -45,7 +44,6 @@ namespace gum {
   // Set DG2 diagram current explored Node
 
   INLINE void O4DGContext::setDG2Node(const NodeId &exploredNode ) {
-      __key += ( exploredNode - __DG2ExploredNode )*__logPrime[ __nbLogPrime - 2 ];
     __DG2ExploredNode = exploredNode;
   }
 
@@ -58,26 +56,31 @@ namespace gum {
 
 
   // Changes given variable modality
-
   INLINE void O4DGContext::chgVarModality(  Idx varIndex, Idx newModality ) {
-      __key += ( newModality - __varInstantiation[ varIndex ] )*__logPrime[ __nbLogPrime - 3 - varIndex ];
       __varInstantiation[ varIndex ] = newModality;
   }
 
-  /// Changes given variable modality
+  // Changes given variable modality
   INLINE Idx O4DGContext::varModality( Idx varIndex ){
       return __varInstantiation[ varIndex ];
   }
 
-  // ============================================================================
-  /// Allocators and Deallocators redefinition
-  // ============================================================================
-  INLINE void* O4DGContext::operator new(size_t l){
-      return MultiDimDecisionGraph::soa.allocate( l);
-  }
 
-  INLINE void O4DGContext::operator delete(void* p){
-      MultiDimDecisionGraph::soa.deallocate( p, sizeof(O4DGContext) );
+  /* ********************************************************************************************* */
+  /*                                                                                               */
+  /*                         O4DG Handling methods                                                 */
+  /*                                                                                               */
+  /* ********************************************************************************************* */
+
+  // Returns o4DGContext key
+  INLINE const double& O4DGContext::key( short int* instNeeded ){
+      __key = __DG1ExploredNode * __logPrime[ __offset1 ] + __DG2ExploredNode * __logPrime[ __offset2 ];
+
+      for( Idx varPos = 0, offset = __offsetv; varPos < __nbVar; varPos++, offset-- )
+          if( instNeeded[varPos] )
+            __key += __varInstantiation[varPos] * __logPrime[ offset ];
+
+      return __key;
   }
 
 }/* end of namespace gum */

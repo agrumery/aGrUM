@@ -95,6 +95,17 @@ namespace gum {
 
       /// @}
 
+      // ============================================================================
+      /// Displays the number of allocation and deallocation made so far
+      // ============================================================================
+      void displayStats(){
+        std::cout << "Nb Small Allocation : " << nbAllocation  << " -  Nb Small Deallocation : " << nbDeallocation << std::endl;
+      }
+
+      Idx nbAlloc(){ return nbAllocation; }
+      Idx nbDealloc(){ return nbDeallocation; }
+
+
     private:
 
       // ============================================================================

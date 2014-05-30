@@ -93,7 +93,8 @@ namespace gum {
         typename MultiDimDecisionGraph< GUM_SCALAR>::InternalNode* newNodeStruct =
                 new typename MultiDimDecisionGraph< GUM_SCALAR>::InternalNode( var );
 
-        __decisionGraph->__internalNodeMap[nid] = newNodeStruct;
+        __decisionGraph->__internalNodeMap.insert(nid, newNodeStruct);
+//        __decisionGraph->__model.
 
         MultiDimDecisionGraph< GUM_SCALAR>::_addElemToNICL( &(__decisionGraph->__var2NodeIdMap[var]), nid );
 

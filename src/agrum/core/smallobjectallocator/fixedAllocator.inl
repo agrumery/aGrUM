@@ -64,6 +64,8 @@ namespace gum {
       // If no block is available return nullptr
       return NULL;
 
+//    std::cout << "Déb Alloc : " << (int)__blocksAvailable << " - " << (int)__firstAvailableBlock << " - " << (void*)__pData << std::endl;
+
     // __pData points to the beginning of allocated space.
     // __firstAvailableBlock gives us how many block to pass before getting
     // the good one. We have to multiply by blockSize to get the good memory emplacement
@@ -76,6 +78,8 @@ namespace gum {
     // We lose one block
     --__blocksAvailable;
 
+//    std::cout << "Fin Alloc : " << (int)__blocksAvailable << " - " << (int)__firstAvailableBlock << " - " << (void*)__pData << std::endl;
+
     return pResult;
   }
 
@@ -84,11 +88,13 @@ namespace gum {
   // ============================================================================
   INLINE void FixedAllocator::__Chunk::__deallocate(void* pDeallocatedBlock, const std::size_t& blockSize){
 
+//    std::cout << "Déb Déalloc : " << (int)__blocksAvailable << " - " << (int)__firstAvailableBlock << " - " << (void*)__pData << std::endl;
+
     // first, ensure that deallocated is in this chunk
     assert(  pDeallocatedBlock >= __pData );
 
     // Conversion pf pointer for handling
-    unsigned char* toRelease = static_cast<unsigned char*>( pDeallocatedBlock);
+    unsigned char* toRelease = static_cast<unsigned char*>( pDeallocatedBlock );
 
     // Alignement check
     assert( (toRelease - __pData) % blockSize == 0 );
@@ -104,6 +110,8 @@ namespace gum {
 
     // We gain one block, yeah
     ++__blocksAvailable;
+
+//    std::cout << "Fin Déalloc : " << (int)__blocksAvailable << " - " << (int)__firstAvailableBlock << " - " << (void*)__pData << std::endl;
   }
 
   // ============================================================================
@@ -169,6 +177,8 @@ namespace gum {
           }
         }
       }
+
+//      std::cout << "Allocateur choisi : " << (void*)__allocChunk->__pData << std::endl;
       return __allocChunk->__allocate(__blockSize);
     }
 

@@ -1,4 +1,3 @@
-
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                               *
@@ -52,7 +51,7 @@ namespace gum {
       // ============================================================================
       /// Default constructor.
       // ============================================================================
-      MultiDimDecisionGraphGenerator(Idx maxVar, Idx minVar, Sequence<const DiscreteVariable *> varSeq);
+      MultiDimDecisionGraphGenerator(Idx maxVar, Idx minVar, const Sequence<const DiscreteVariable *>& varSeq);
 
       // ============================================================================
       /// destructor.
@@ -63,10 +62,19 @@ namespace gum {
 
       MultiDimDecisionGraph<double>* generate();
 
+
+
     private:
+
+      bool __createLeaf(NodeId currentNodeId , HashTable<NodeId, Idx> &node2MinVar);
+      Idx __generateVarPos(Idx offset, Idx span);
+
+
       Idx __minNbVarInDiagram;
       Idx __maxNbVarInDiagram;
-      Sequence<const DiscreteVariable*> __varSeq;
+      const Sequence<const DiscreteVariable*> __varSeq;
+      Idx __nbTotalVar;
+      static Idx __genSeed;
   };
 } /* end of namespace */
 #endif /* GUM_MULTI_DIM_DECISION_GRAPH_GENERATOR_H */

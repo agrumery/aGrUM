@@ -33,7 +33,8 @@ namespace gum {
 
   const Idx O4DGContext::__nbLogPrime = 140;
 
-  const double O4DGContext::__logPrime[] = {log2( 2 ),log2( 3 ),log2( 5 ),log2( 7 ),log2( 11 ),
+  const double O4DGContext::__logPrime[] = {
+      log2( 2 ),log2( 3 ),log2( 5 ),log2( 7 ),log2( 11 ),
       log2( 13 ),log2( 17 ),log2( 19 ),log2( 23 ),log2( 29 ),
       log2( 31 ),log2( 37 ),log2( 41 ),log2( 43 ),log2( 47 ),
       log2( 53 ),log2( 59 ),log2( 61 ),log2( 67 ),log2( 71 ),
@@ -62,6 +63,10 @@ namespace gum {
       log2( 739 ),log2( 743 ),log2( 751 ),log2( 757 ),log2( 761 ),
       log2( 769 ),log2( 773 ),log2( 787 ),log2( 797 ),log2( 809 )
                                            };
+
+  const Idx O4DGContext::__offsetv = O4DGContext::__nbLogPrime - 3;
+  const Idx O4DGContext::__offset1 = O4DGContext::__nbLogPrime - 1;
+  const Idx O4DGContext::__offset2 = O4DGContext::__nbLogPrime - 2;
 // ********************************************************************************************************************
 
 
@@ -80,7 +85,7 @@ namespace gum {
         __DG2ExploredNode(0),
         __key(0){
 
-        GUM_CONSTRUCTOR("O4DGContext");
+        GUM_CONSTRUCTOR(O4DGContext);
         __varInstantiation = varInst;
         __nbVar = nbVar;
 
@@ -92,8 +97,8 @@ namespace gum {
     // ================================================================
     O4DGContext::~O4DGContext() {
 
-        GUM_DESTRUCTOR("O4DGContext");
-        MultiDimDecisionGraph::soa.deallocate( __varInstantiation, __nbVar*sizeof(Idx) );
+        GUM_DESTRUCTOR(O4DGContext);
+//        MultiDimDecisionGraph::soa.deallocate( __varInstantiation, __nbVar*sizeof(Idx) );
     }
 
 

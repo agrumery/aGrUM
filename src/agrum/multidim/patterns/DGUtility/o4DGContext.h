@@ -101,7 +101,7 @@ namespace gum {
       /// @{
 
       /// Returns o4DGContext key
-      const double& key() const {return __key;}
+      const double& key( short int* instNeeded ); // const {return __key;}
 
       /// @}
 
@@ -123,7 +123,7 @@ namespace gum {
 
       /// Table containing the log2 of prime numbers
       static const double __logPrime[];
-      static const Idx __nbLogPrime;
+      static const Idx __nbLogPrime, __offsetv, __offset1, __offset2;
   };
 }
 

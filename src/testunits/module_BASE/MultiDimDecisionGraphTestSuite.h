@@ -76,38 +76,38 @@ namespace gum_tests {
           idList->insert ( factory->manager()->addTerminalNode ( 9 ) );    //18
           idList->insert ( factory->manager()->addTerminalNode ( 1 ) );    //19
 
-          factory->manager()->insertArc ( ( *idList ) [0], ( *idList ) [1], 1 );
-          factory->manager()->insertArc ( ( *idList ) [0], ( *idList ) [8], 0 );
+          factory->manager()->setSon ( ( *idList ) [0], 1, ( *idList ) [1] );
+          factory->manager()->setSon ( ( *idList ) [0], 0, ( *idList ) [8] );
 
-          factory->manager()->insertArc ( ( *idList ) [1], ( *idList ) [17], 1 );
-          factory->manager()->insertArc ( ( *idList ) [1], ( *idList ) [2], 0 );
-          factory->manager()->insertArc ( ( *idList ) [2], ( *idList ) [3], 1 );
-          factory->manager()->insertArc ( ( *idList ) [2], ( *idList ) [5], 0 );
-          factory->manager()->insertArc ( ( *idList ) [3], ( *idList ) [4], 1 );
-          factory->manager()->insertArc ( ( *idList ) [3], ( *idList ) [5], 0 );
-          factory->manager()->insertArc ( ( *idList ) [4], ( *idList ) [7], 1 );
-          factory->manager()->insertArc ( ( *idList ) [4], ( *idList ) [15], 0 );
-          factory->manager()->insertArc ( ( *idList ) [5], ( *idList ) [6], 1 );
-          factory->manager()->insertArc ( ( *idList ) [5], ( *idList ) [15], 0 );
-          factory->manager()->insertArc ( ( *idList ) [6], ( *idList ) [7], 1 );
-          factory->manager()->insertArc ( ( *idList ) [6], ( *idList ) [15], 0 );
-          factory->manager()->insertArc ( ( *idList ) [7], ( *idList ) [17], 1 );
-          factory->manager()->insertArc ( ( *idList ) [7], ( *idList ) [15], 0 );
+          factory->manager()->setSon ( ( *idList ) [1], 1, ( *idList ) [17] );
+          factory->manager()->setSon ( ( *idList ) [1], 0, ( *idList ) [2] );
+          factory->manager()->setSon ( ( *idList ) [2], 1, ( *idList ) [3] );
+          factory->manager()->setSon ( ( *idList ) [2], 0, ( *idList ) [5] );
+          factory->manager()->setSon ( ( *idList ) [3], 1, ( *idList ) [4] );
+          factory->manager()->setSon ( ( *idList ) [3], 0, ( *idList ) [5] );
+          factory->manager()->setSon ( ( *idList ) [4], 1, ( *idList ) [7] );
+          factory->manager()->setSon ( ( *idList ) [4], 0, ( *idList ) [15] );
+          factory->manager()->setSon ( ( *idList ) [5], 1, ( *idList ) [6] );
+          factory->manager()->setSon ( ( *idList ) [5], 0, ( *idList ) [15] );
+          factory->manager()->setSon ( ( *idList ) [6], 1, ( *idList ) [7] );
+          factory->manager()->setSon ( ( *idList ) [6], 0, ( *idList ) [15] );
+          factory->manager()->setSon ( ( *idList ) [7], 1, ( *idList ) [17] );
+          factory->manager()->setSon ( ( *idList ) [7], 0, ( *idList ) [15] );
 
-          factory->manager()->insertArc ( ( *idList ) [8], ( *idList ) [18], 1 );
-          factory->manager()->insertArc ( ( *idList ) [8], ( *idList ) [9], 0 );
-          factory->manager()->insertArc ( ( *idList ) [9], ( *idList ) [10], 1 );
-          factory->manager()->insertArc ( ( *idList ) [9], ( *idList ) [12], 0 );
-          factory->manager()->insertArc ( ( *idList ) [10], ( *idList ) [11], 1 );
-          factory->manager()->insertArc ( ( *idList ) [10], ( *idList ) [12], 0 );
-          factory->manager()->insertArc ( ( *idList ) [11], ( *idList ) [14], 1 );
-          factory->manager()->insertArc ( ( *idList ) [11], ( *idList ) [16], 0 );
-          factory->manager()->insertArc ( ( *idList ) [12], ( *idList ) [13], 1 );
-          factory->manager()->insertArc ( ( *idList ) [12], ( *idList ) [16], 0 );
-          factory->manager()->insertArc ( ( *idList ) [13], ( *idList ) [14], 1 );
-          factory->manager()->insertArc ( ( *idList ) [13], ( *idList ) [16], 0 );
-          factory->manager()->insertArc ( ( *idList ) [14], ( *idList ) [18], 1 );
-          factory->manager()->insertArc ( ( *idList ) [14], ( *idList ) [16], 0 );
+          factory->manager()->setSon ( ( *idList ) [8], 1, ( *idList ) [18] );
+          factory->manager()->setSon ( ( *idList ) [8], 0, ( *idList ) [9] );
+          factory->manager()->setSon ( ( *idList ) [9], 1, ( *idList ) [10] );
+          factory->manager()->setSon ( ( *idList ) [9], 0, ( *idList ) [12] );
+          factory->manager()->setSon ( ( *idList ) [10], 1, ( *idList ) [11] );
+          factory->manager()->setSon ( ( *idList ) [10], 0, ( *idList ) [12] );
+          factory->manager()->setSon ( ( *idList ) [11], 1, ( *idList ) [14] );
+          factory->manager()->setSon ( ( *idList ) [11], 0, ( *idList ) [16] );
+          factory->manager()->setSon ( ( *idList ) [12], 1, ( *idList ) [13] );
+          factory->manager()->setSon ( ( *idList ) [12], 0, ( *idList ) [16] );
+          factory->manager()->setSon ( ( *idList ) [13], 1, ( *idList ) [14] );
+          factory->manager()->setSon ( ( *idList ) [13], 0, ( *idList ) [16] );
+          factory->manager()->setSon ( ( *idList ) [14], 1, ( *idList ) [18] );
+          factory->manager()->setSon ( ( *idList ) [14], 0, ( *idList ) [16] );
         }
 
     public:
@@ -212,7 +212,7 @@ namespace gum_tests {
           __fillFactory ( decisionGraph, &idList );
 
         // For comparison with what readers will return
-        std::string dotfile = GET_PATH_STR ( DecisionGraph.dot );
+        std::string dotfile = GET_PATH_STR ( "DecisionGraph.dot" );
         std::ofstream output ( dotfile.c_str(), std::ios::out | std::ios::trunc );
 
         if ( ! output.good() ) {
@@ -271,38 +271,38 @@ namespace gum_tests {
         // Test sur les fonctions d'ajout et retrait d'arc
         // *********************************************************************
 
-        // Test d'ajout d'un arc ayant pour départ un noeud inexistant (doit lever l'exception gum::NotFound)
-        // (le noeud 15 a été détruit un peu plus haut)
-        TS_ASSERT_THROWS ( decisionGraph->manager()->insertArc ( idList[15], idList[1], 2 ), gum::NotFound );
+//        // Test d'ajout d'un arc ayant pour départ un noeud inexistant (doit lever l'exception gum::NotFound)
+//        // (le noeud 15 a été détruit un peu plus haut)
+//        TS_ASSERT_THROWS ( decisionGraph->manager()->setSon ( idList[15], 2, idList[1] ), gum::NotFound );
 
-        // Test d'ajout d'un arc ayant pour départ un noeud terminal (doit lever l'exception gum::InvalidNode
-        // vu que les noeuds terminaux sont ... terminaux)
-        TS_ASSERT_THROWS ( decisionGraph->manager()->insertArc ( idList[16], idList[1], 3 ), gum::InvalidNode );
+//        // Test d'ajout d'un arc ayant pour départ un noeud terminal (doit lever l'exception gum::InvalidNode
+//        // vu que les noeuds terminaux sont ... terminaux)
+//        TS_ASSERT_THROWS ( decisionGraph->manager()->setSon ( idList[16], 3, idList[1] ), gum::InvalidNode );
 
-        // Test d'ajout d'un arc entre 2 noeuds dépassant le nb de modlaity de la variable originelle
-        TS_ASSERT_THROWS ( decisionGraph->manager()->insertArc ( idList[8], idList[18], 4 ), gum::InvalidArgument );
+//        // Test d'ajout d'un arc entre 2 noeuds dépassant le nb de modlaity de la variable originelle
+//        TS_ASSERT_THROWS ( decisionGraph->manager()->setSon ( idList[8], 4, idList[18] ), gum::InvalidArgument );
 
-        // Test d'ajout d'un arc entre 2 noeuds déjà reliés par un autre arc de valeur égale(doit DuplicateElement)
-        TS_ASSERT_THROWS ( decisionGraph->manager()->insertArc ( idList[8], idList[18], 1 ), gum::DuplicateElement );
+//        // Test d'ajout d'un arc entre 2 noeuds déjà reliés par un autre arc de valeur égale(doit DuplicateElement)
+//        TS_ASSERT_THROWS ( decisionGraph->manager()->setSon ( idList[8], 1, idList[18] ), gum::DuplicateElement );
 
-        // Test d'ajout d'un arc qui viole l'ordre sur les variables (doit lever l'exception gum::OperationNotAllowed)
-        TS_ASSERT_THROWS ( decisionGraph->manager()->insertArc ( idList[8], idList[1], 0 ), gum::OperationNotAllowed );
+//        // Test d'ajout d'un arc qui viole l'ordre sur les variables (doit lever l'exception gum::OperationNotAllowed)
+//        TS_ASSERT_THROWS ( decisionGraph->manager()->setSon ( idList[8], 0, idList[1] ), gum::OperationNotAllowed );
 
-        // Test de retrait d'un arc existant (ne doit lever aucune exception)
-        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph->manager()->eraseArc ( idList[3], idList[4] ) );
+//        // Test de retrait d'un arc existant (ne doit lever aucune exception)
+//        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph->manager()->eraseArc ( idList[3], idList[4] ) );
 
-        // Test de retrait d'un arc avec valeur spécifiée
-        TS_GUM_ASSERT_THROWS_NOTHING( decisionGraph->manager()->eraseSpecificArc( idList[8], idList[18], 1 ) );
+//        // Test de retrait d'un arc avec valeur spécifiée
+//        TS_GUM_ASSERT_THROWS_NOTHING( decisionGraph->manager()->eraseSpecificArc( idList[8], 1, idList[18] ) );
           
-        // Test de retrait d'un arc après une tentative ayant eu pour but d'ajouter un autre arc reliant les deux noeuds
-        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph->manager()->insertArc ( idList[8], idList[18], 1 ) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph->manager()->eraseArc( idList[8], idList[18] ) );
+//        // Test de retrait d'un arc après une tentative ayant eu pour but d'ajouter un autre arc reliant les deux noeuds
+//        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph->manager()->setSon ( idList[8], 1, idList[18] ) );
+//        TS_GUM_ASSERT_THROWS_NOTHING ( decisionGraph->manager()->eraseArc( idList[8], idList[18] ) );
 
-        // Test de retrait de retrait de l'arc qui violait la contrainte d'ordre et donc n'existe pas
-        TS_ASSERT_THROWS ( decisionGraph->manager()->eraseArc ( idList[8], idList[1] ), gum::InvalidArc );
+//        // Test de retrait de retrait de l'arc qui violait la contrainte d'ordre et donc n'existe pas
+//        TS_ASSERT_THROWS ( decisionGraph->manager()->eraseArc ( idList[8], idList[1] ), gum::InvalidArc );
 
-        // Test de retrait d'un arc dont un des noeuds n'existe plus (doit lever l'exception InvalidArc)
-        TS_ASSERT_THROWS ( decisionGraph->manager()->eraseArc ( idList[15], idList[1] ), gum::NotFound );
+//        // Test de retrait d'un arc dont un des noeuds n'existe plus (doit lever l'exception InvalidArc)
+//        TS_ASSERT_THROWS ( decisionGraph->manager()->eraseArc ( idList[15], idList[1] ), gum::NotFound );
 
 
         // *********************************************************************
@@ -630,8 +630,8 @@ namespace gum_tests {
         __fillFactory ( dg2, &idList );
         __fillFactory ( dg3, &idList );
 
-        dg3->manager()->eraseArc ( 3,6 );
-        dg3->manager()->insertArc ( 3,16,0 );
+//        dg3->manager()->eraseArc ( 3,6 );
+        dg3->manager()->setSon ( 3,0,16 );
         // *********************************************************************
         // test tostring() et tostring(gum::Instantiation*)
         // *********************************************************************
@@ -674,7 +674,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( decisionGraph->manager()->moveTo(Cprimevar, decisionGraph->variablesSequence().pos( BOvar ) ) );
 
         // For comparison with what readers will return
-        std::string dotfile = GET_PATH_STR ( DecisionGraphMVBOvar.dot );
+        std::string dotfile = GET_PATH_STR ( "DecisionGraphMVBOvar.dot" );
         std::ofstream output ( dotfile.c_str(), std::ios::out | std::ios::trunc );
 
         if ( ! output.good() ) {

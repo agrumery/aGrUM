@@ -1,0 +1,666 @@
+
+/********************************************************************************
+*   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES *
+*   {prenom.nom}_at_lip6.fr           *
+*               *
+*   This program is free software; you can redistribute it and/or modify   *
+*   it under the terms of the GNU General Public License as published by *
+*   the Free Software Foundation; either version 2 of the License, or   *
+*   (at your option) any later version.        *
+*                *
+*   This program is distributed in the hope that it will be useful,   *
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of   *
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the   *
+*   GNU General Public License for more details.      *
+*                *
+*   You should have received a copy of the GNU General Public License  *
+*   along with this program; if not, write to the       *
+*   Free Software Foundation, Inc.,         *
+*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.    *
+*********************************************************************************/
+
+// ============================================================================
+#include <cstdlib>
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <time.h>
+// =============================================================================
+#include <cxxtest/AgrumTestSuite.h>
+#include <testsuite_utils.h>
+// =============================================================================
+//#include <agrum/core/approximationPolicy/approximationPolicy.h>
+//#include <agrum/core/approximationPolicy/linearApproximationPolicy.h>
+// =============================================================================
+#include <agrum/multidim/potential.h>
+#include <agrum/multidim/instantiation.h>
+#include <agrum/multidim/multiDimDecisionGraph.h>
+#include <agrum/multidim/multiDimDecisionGraphGenerator.h>
+// =============================================================================
+#include <agrum/variables/labelizedVariable.h>
+// =============================================================================
+
+namespace gum_tests {
+
+  class Operators4MultiDimDecisionGraphTestSuite: public CxxTest::TestSuite {
+
+    private :
+
+      /// Defines the maximal number of modalities for a var (which is choose randomly). The domain size will be of 2 + rand()%maxVarDomainSize.
+      static const gum::Idx maxVarDomainSize = 5;
+
+      /// Defines the minimal and maximal number of var in a diagram.
+      static const gum::Size minNbVarInDiagram = 6, maxNbVarInDiagram = 10;
+
+      /// Defines how many different operations we perform (from 2 to 5 )
+      static const gum::Idx nbOperation = 2;
+
+      /// Defines the number of iteration on randomly generated diagram we perform
+      static const gum::Idx nbIter = 100;
+
+
+      // Génération fixe d'une liste de variable
+
+      gum::Sequence< const gum::DiscreteVariable* >* __generateFixVarList() {
+
+        gum::Sequence< const gum::DiscreteVariable* >* ret = new gum::Sequence< const gum::DiscreteVariable* >();
+        ret->insert ( new gum::LabelizedVariable ( "A", "", 2 ) );
+        ret->insert ( new gum::LabelizedVariable ( "B", "", 2 ) );
+        ret->insert ( new gum::LabelizedVariable ( "C", "", 2 ) );
+
+        return ret;
+      }
+
+
+
+
+      // Génération aléatoire d'une liste de 10 variables
+
+      gum::Sequence< const gum::DiscreteVariable* >* __generateRandomVarList ( gum::Idx i ) {
+        gum::Sequence< const gum::DiscreteVariable* >* ret = new gum::Sequence< const gum::DiscreteVariable* >();
+
+        for ( gum::Idx j = 0; j < maxNbVarInDiagram; j++ ) {
+          std::stringstream varName;
+          varName << "var" << j;
+          ret->insert ( new gum::LabelizedVariable ( varName.str(), "", 2  + rand() % maxVarDomainSize ) );
+        }
+
+        return ret;
+      }
+
+
+
+
+      // Brassage aléatoire d'une liste de 10 variables
+
+      void __shuffleVarList ( gum::Sequence< const gum::DiscreteVariable* >* varList, gum::Idx i ) {
+        for ( gum::Idx j = 0; j < 10; j++ )
+          varList->swap ( rand() % ( varList->size() ), rand() % ( varList->size() ) );
+      }
+
+
+
+
+      // Génération fixe de diagramme de décision
+      gum::MultiDimDecisionGraph<double>* __generateDecisionGraph1 ( const gum::Sequence< const gum::DiscreteVariable* >* varList ) {
+
+        gum::MultiDimDecisionGraph<double>* generatedDecisionGraph = new gum::MultiDimDecisionGraph<double>();
+
+        for ( gum::SequenceIterator< const gum::DiscreteVariable* > varIter = varList->begin(); varIter != varList->end(); ++varIter )
+              generatedDecisionGraph->add(**varIter);
+
+        gum::NodeId a = generatedDecisionGraph->manager()->addNonTerminalNode ( varList->atPos ( 0 ) );
+        gum::NodeId b = generatedDecisionGraph->manager()->addNonTerminalNode ( varList->atPos ( 1 ) );
+        gum::NodeId c = generatedDecisionGraph->manager()->addNonTerminalNode ( varList->atPos ( 2 ) );
+
+        gum::NodeId d = generatedDecisionGraph->manager()->addTerminalNode ( 6 );
+        gum::NodeId e = generatedDecisionGraph->manager()->addTerminalNode ( 2 );
+        gum::NodeId g = generatedDecisionGraph->manager()->addTerminalNode ( 3 );
+
+        generatedDecisionGraph->manager()->setSon( a, 0, b );
+        generatedDecisionGraph->manager()->setSon( a, 1, c );
+
+        generatedDecisionGraph->manager()->setSon( b, 0, d );
+        generatedDecisionGraph->manager()->setSon( b, 1, c );
+
+        generatedDecisionGraph->manager()->setSon( c, 0, e );
+        generatedDecisionGraph->manager()->setSon( c, 1, g );
+
+        generatedDecisionGraph->manager()->setRootNode(a);
+
+        return generatedDecisionGraph;
+      }
+
+
+
+
+      // Génération fixe de diagramme de décision
+
+      gum::MultiDimDecisionGraph<double>* __generateDecisionGraph2 ( const gum::Sequence< const gum::DiscreteVariable* >* varList ) {
+
+        gum::MultiDimDecisionGraph<double>* generatedDecisionGraph = new gum::MultiDimDecisionGraph<double>();
+
+        for ( gum::SequenceIterator< const gum::DiscreteVariable* > varIter = varList->begin(); varIter != varList->end(); ++varIter )
+              generatedDecisionGraph->add(**varIter);
+
+        gum::NodeId a = generatedDecisionGraph->manager()->addNonTerminalNode ( varList->atPos ( 0 ) );
+        gum::NodeId c = generatedDecisionGraph->manager()->addNonTerminalNode ( varList->atPos ( 2 ) );
+
+        gum::NodeId d = generatedDecisionGraph->manager()->addTerminalNode ( 4 );
+        gum::NodeId e = generatedDecisionGraph->manager()->addTerminalNode ( 5 );
+        gum::NodeId g = generatedDecisionGraph->manager()->addTerminalNode ( 1 );
+
+        generatedDecisionGraph->manager()->setSon( a, 0, d );
+        generatedDecisionGraph->manager()->setSon( a, 1, c );
+
+        generatedDecisionGraph->manager()->setSon( c, 0, e );
+        generatedDecisionGraph->manager()->setSon( c, 1, g );
+
+        generatedDecisionGraph->manager()->setRootNode(a);
+
+        return generatedDecisionGraph;
+
+      }
+
+
+
+
+      // Génération aléatoire de diagramme de décision
+
+      gum::MultiDimDecisionGraph<double>* __generateRandomDecisionGraph ( const gum::Sequence< const gum::DiscreteVariable* >* varList,
+                                                                          double lowLimit = -100,
+                                                                          double highLimit = 100 ) {
+
+        srand( time(NULL) );
+        gum::MultiDimDecisionGraphGenerator gene( 2, 5, *varList);
+
+        return gene.generate();
+      }
+
+
+
+
+      // Sauvegarde des diagrammes générant une erreur dans un fichier log
+
+      void __saveDiagrams ( gum::MultiDimDecisionGraph<double>* a1, gum::MultiDimDecisionGraph<double>* a2, gum::MultiDimDecisionGraph<double>* a3 ) {
+
+        std::string dotfile = GET_PATH_STR ( "DecisionGraphError.log" );
+        std::ofstream output ( dotfile.c_str(), std::ios::out );
+
+        if ( ! output.good() )
+          GUM_ERROR ( gum::IOError, "Stream states flags are not all unset." );
+
+        output << std::endl;
+
+        for ( gum::SequenceIterator< const gum::DiscreteVariable*> ite = a1->variablesSequence().begin(); ite != a1->variablesSequence().end(); ++ite )
+          output << ( *ite )->toString() << " - ";
+
+        output << std::endl;
+
+        output << a1->toDot();
+
+        output << std::endl;
+
+        for ( gum::SequenceIterator< const gum::DiscreteVariable*> ite = a2->variablesSequence().begin(); ite != a2->variablesSequence().end(); ++ite )
+          output << ( *ite )->toString() << " - ";
+
+        output << std::endl;
+
+        output << a2->toDot();
+
+        if ( a3 != nullptr ) {
+          output << std::endl;
+
+          for ( gum::SequenceIterator< const gum::DiscreteVariable*> ite = a3->variablesSequence().begin(); ite != a3->variablesSequence().end(); ++ite )
+            output << ( *ite )->toString() << " - ";
+
+          output << std::endl;
+
+          output << a3->toDot();
+        }
+
+        output.flush();
+
+        output.close();
+
+        if ( output.fail() )
+          GUM_ERROR ( gum::IOError, "Writting in the ostream failed." );
+      }
+
+
+
+
+      // Evals  given in parameter operation. Returned boolean parameter indicates if all went well or not
+
+      bool __evalOperation ( gum::Idx operationId, gum::MultiDimDecisionGraph<double>* a1, gum::MultiDimDecisionGraph<double>* a2, double& tempsCalcul, double& tempsEval, double delta = 0.01 ) {
+
+        bool hasNoError = true;
+        gum::MultiDimDecisionGraph<double>* a3 = nullptr;
+
+        gum::Timer timy;
+        timy.reset();
+
+        // ******************************************************************************************************
+        // Generation du diagramme résultat
+
+        switch ( operationId ) {
+          case 1 : // Test addition
+            TS_GUM_ASSERT_THROWS_NOTHING ( a3 = add2MultiDimDecisionGraphs ( a1 , a2 ) );
+            break;
+
+//          case 2 : // Test Substraction
+//            TS_GUM_ASSERT_THROWS_NOTHING ( a3 = subtract2MultiDimDecisionGraphs ( a1 , a2 ) );
+//            break;
+
+//          case 3 : // Test Multiplication
+//            TS_GUM_ASSERT_THROWS_NOTHING ( a3 = multiply2MultiDimDecisionGraphs ( a1 , a2 ) );
+//            break;
+
+//          case 4 :  // Test Maximum
+//            TS_GUM_ASSERT_THROWS_NOTHING ( a3 = maximize2MultiDimDecisionGraphs ( a1 , a2 ) );
+//            break;
+
+          default :
+            GUM_ERROR ( gum::OperationNotAllowed, "HEU ....." );
+        }
+
+        // ******************************************************************************************************
+
+        tempsCalcul += timy.step();
+
+//  std::cout << a3->toDot() << std::endl;
+
+        timy.reset();
+
+        // ******************************************************************************************************
+        if ( a3 != nullptr ) {
+          gum::Instantiation inst ( a3 );
+
+          for ( inst.setFirst(); ! inst.end() && hasNoError; ++inst ) {
+
+            switch ( operationId ) {
+              case 1 : // Test addition
+                TS_ASSERT_DELTA ( a3->get ( inst ), a1->get ( inst ) + a2->get ( inst ), delta );
+
+                if ( a3->get ( inst ) != a1->get ( inst ) + a2->get ( inst ) ) {
+                  std::cout << "Instantiation : " << inst.toString() << std::endl;
+                  hasNoError = false;
+                }
+
+                break;
+
+              case 2 : // Test Substraction
+                TS_ASSERT_DELTA ( a3->get ( inst ), a1->get ( inst ) - a2->get ( inst ), delta );
+
+                if ( a3->get ( inst ) != a1->get ( inst ) - a2->get ( inst ) )
+                  hasNoError = false;
+
+                break;
+
+              case 3 : // Test Multiplication
+                TS_ASSERT_DELTA ( a3->get ( inst ), a1->get ( inst ) * a2->get ( inst ), delta );
+
+                if ( a3->get ( inst ) != a1->get ( inst ) * a2->get ( inst ) )
+                  hasNoError = false;
+
+                break;
+
+              case 4 :  // Test Maximum
+                TS_ASSERT_DELTA ( a3->get ( inst ), a1->get ( inst ) > a2->get ( inst ) ? a1->get ( inst ) : a2->get ( inst ), delta );
+
+                if ( a3->get ( inst ) != ( a1->get ( inst ) > a2->get ( inst ) ? a1->get ( inst ) : a2->get ( inst ) ) )
+                  hasNoError = false;
+
+                break;
+
+              default :
+                GUM_ERROR ( gum::OperationNotAllowed, "HEU ....." );
+            }
+          }
+
+          if ( !hasNoError )
+            __saveDiagrams ( a1, a2, a3 );
+
+          delete a3;
+        } else {
+          __saveDiagrams ( a1, a2, a3 );
+          hasNoError = false;
+        }
+
+        tempsEval +=  timy.step();
+
+        return hasNoError;
+
+      }
+
+    public :
+
+
+        //
+        // Test sur les fonctions avec valeurs exactes
+        //
+
+        void test_Operators_Functions_on_MultiDimDecisionGraphs() {
+
+            gum::Timer time;
+            double tempsGene = 0;
+            double tempsCalcul = 0;
+            double tempsEval = 0;
+
+
+            // First we try with a predefine structure
+
+            {
+                time.reset();
+
+//                gum::Sequence< const gum::DiscreteVariable* >* varList = __generateFixVarList();
+
+//                gum::MultiDimDecisionGraph<double>* a1 = nullptr;
+//                TS_GUM_ASSERT_THROWS_NOTHING ( a1 = __generateDecisionGraph1 ( varList ) );
+
+//                gum::MultiDimDecisionGraph<double>* a2 = nullptr;
+//                TS_GUM_ASSERT_THROWS_NOTHING ( a2 = __generateDecisionGraph2 ( varList ) );
+
+//                std::cout << a1->toDot() << std::endl;
+
+//                std::cout << a2->toDot() << std::endl;
+
+//                tempsGene += time.step();
+
+//                bool evalRes = true;
+
+//                for ( gum::Idx opId = 1; opId < nbOperation && evalRes; i++ )
+//                    evalRes = __evalOperation ( 1, a1, a2, tempsCalcul, tempsEval );
+
+//                delete a1;
+
+//                delete a2;
+
+//                for ( gum::SequenceIterator< const gum::DiscreteVariable*> ite = varList->begin(); ite != varList->end(); ++ite )
+//                    delete *ite;
+
+//                delete varList;
+
+//                if ( !evalRes ) {
+//                    std::cout << "An error has occured! Aborting test." <<std::endl;
+//                    return;
+//                }
+
+//                std::cout << ".";
+
+//                std::fflush ( stdout );
+            }
+
+
+            // Then we try with random structure
+
+            //
+
+//            gum::Idx i = 5;
+            for ( gum::Idx i = 0; i < 100; i++ ) {
+
+                time.reset();
+
+                gum::Sequence< const gum::DiscreteVariable* >* varList = __generateRandomVarList ( i + 1 );
+                __shuffleVarList ( varList, i + 2 );
+
+//                std::cout << std::endl << " gum::Sequence variable : ";
+//                for( gum::SequenceIterator< const gum::DiscreteVariable* > iter = varList->begin(); iter != varList->end(); ++iter )
+//                     std::cout << (*iter)->toString() << " | ";
+//                std::cout << std::endl;
+
+                gum::MultiDimDecisionGraph<double>* a1 = nullptr;
+                TS_GUM_ASSERT_THROWS_NOTHING ( a1 = __generateRandomDecisionGraph ( varList, i + 3 ) );
+//                std::cout << a1->toDot() << std::endl;
+
+                __shuffleVarList ( varList, i + 4 );
+
+//                std::cout << std::endl << " gum::Sequence variable : ";
+//                for( gum::SequenceIterator< const gum::DiscreteVariable* > iter = varList->begin(); iter != varList->end(); ++iter )
+//                    std::cout << (*iter)->toString() << " | ";
+//                std::cout << std::endl;
+
+                gum::MultiDimDecisionGraph<double>* a2 = nullptr;
+                TS_GUM_ASSERT_THROWS_NOTHING ( a2 = __generateRandomDecisionGraph ( varList, i + 5 ) );
+//                std::cout << a2->toDot();
+
+                tempsGene += time.step();
+
+                bool evalRes = true;
+
+                gum::Idx j = 1;
+//                  for ( gum::Idx j = 1; j < nbOperation && evalRes; j++ )
+                TS_GUM_ASSERT_THROWS_NOTHING ( evalRes = __evalOperation ( j, a1, a2, tempsCalcul, tempsEval ) );
+//                gum::MultiDimDecisionGraph<double>* a3 = nullptr;
+//                TS_GUM_ASSERT_THROWS_NOTHING ( a3 = add2MultiDimDecisionGraphs ( a1 , a2 ) );
+//                __saveDiagrams ( a1, a2, a3 );
+//                delete a3;
+
+                delete a1;
+                delete a2;
+
+                for ( gum::SequenceIterator< const gum::DiscreteVariable*> ite = varList->begin(); ite != varList->end(); ++ite )
+                    delete *ite;
+
+                delete varList;
+
+//                gum::MultiDimDecisionGraph<double>::soa.displayStats();
+//                if ( gum::MultiDimDecisionGraph<double>::soa.nbAlloc() != gum::MultiDimDecisionGraph<double>::soa.nbDealloc() )
+//                    break;
+
+                if ( !evalRes ) {
+                    std::cout << "An error has occured! Aborting test." << std::endl;
+                    break;
+                }
+
+                test_waiting ( i );
+
+                std::cout << std::endl << "THIS IS I : " << i << std::endl;
+            }
+
+            end_test_waiting();
+            std::cout << std::endl << "Temps Génération : " << tempsGene << "s - Temps Calcul : " << tempsCalcul << "s - Temps Evaluation " << tempsEval << "s " << std::endl;
+        }
+
+
+
+      //
+      // For debug purpose only, the aim of this function is to reproduce specific diagrams in order to find out where the hell the matter is
+      //
+
+      void est_Reproducteur() {
+
+          gum::LabelizedVariable* v0 = new gum::LabelizedVariable( "v0", "", 2 );
+          gum::LabelizedVariable* v1 = new gum::LabelizedVariable( "v1", "", 2 );
+          gum::LabelizedVariable* v2 = new gum::LabelizedVariable( "v2", "", 2 );
+          gum::LabelizedVariable* v3 = new gum::LabelizedVariable( "v3", "", 3 );
+//          gum::LabelizedVariable* v4 = new gum::LabelizedVariable( "4", "", 2 );
+//          gum::LabelizedVariable* v5 = new gum::LabelizedVariable( "5", "", 3 );
+//          gum::LabelizedVariable* v6 = new gum::LabelizedVariable( "6", "", 2 );
+//          gum::LabelizedVariable* v7 = new gum::LabelizedVariable( "7", "", 2 );
+//          gum::LabelizedVariable* v8 = new gum::LabelizedVariable( "8", "", 3 );
+//          gum::LabelizedVariable* v9 = new gum::LabelizedVariable( "9", "", 2 );
+
+          gum::NodeId n01, n02, n03, n04, n05, n06, n07, n08, n09, n10, n11, n12, n13, n14;//, n15;//, n16, n17, n18, n19, n20, n21, n22, n23, n24, n25, n26;
+
+
+          gum::MultiDimDecisionGraph<double>* dg1 = new gum::MultiDimDecisionGraph<double>();
+
+          dg1->add(*v3);
+          dg1->add(*v1);
+          dg1->add(*v0);
+          dg1->add(*v2);
+
+          n01 = dg1->manager()->addNonTerminalNode( v3 );
+          n02 = dg1->manager()->addNonTerminalNode( v0 );
+          n03 = dg1->manager()->addNonTerminalNode( v1 );
+          n04 = dg1->manager()->addNonTerminalNode( v1 );
+          n05 = dg1->manager()->addNonTerminalNode( v2 );
+          n06 = dg1->manager()->addNonTerminalNode( v2 );
+          n07 = dg1->manager()->addNonTerminalNode( v0 );
+          n08 = dg1->manager()->addTerminalNode( 19.0836 );
+          n09 = dg1->manager()->addTerminalNode( 88.4791 );
+          n10 = dg1->manager()->addTerminalNode( 16.2301 );
+          n11 = dg1->manager()->addTerminalNode( 30.7077 );
+          n12 = dg1->manager()->addNonTerminalNode( v2 );
+          n13 = dg1->manager()->addTerminalNode( 90.9853 );
+          n14 = dg1->manager()->addTerminalNode( 28.7184 );
+//          n15 = dg1->manager()->addTerminalNode( 16.5207 );
+//          n16 = dg1->manager()->addTerminalNode( 55.5485 );
+//          n17 = dg1->manager()->addTerminalNode( 8.60651 );
+//          n18 = dg1->manager()->addTerminalNode( 81.2182 );
+//          n19 = dg1->manager()->addTerminalNode( 84.3831 );
+//          n20 = dg1->manager()->addTerminalNode( 6.12946 );
+//          n21 = dg1->manager()->addTerminalNode( 83.9071 );
+//          n22 = dg1->manager()->addTerminalNode( 7.85962 );
+//          n23 = dg1->manager()->addTerminalNode( 19.54 );
+//          n24 = dg1->manager()->addTerminalNode( 82.67 );
+//          n25 = dg1->manager()->addTerminalNode( 46.54 );
+//          n26 = dg1->manager()->addTerminalNode( 92.74 );
+
+          dg1->manager()->setSon( n01, 0, n02 );
+          dg1->manager()->setSon( n01, 1, n03 );
+          dg1->manager()->setSon( n01, 2, n04 );
+
+          dg1->manager()->setSon( n02, 0, n05 );
+          dg1->manager()->setSon( n02, 1, n06 );
+//          dg1->manager()->setSon( n02, 2, n07 );
+
+          dg1->manager()->setSon( n03, 0, n05 );
+          dg1->manager()->setSon( n03, 1, n06 );
+
+          dg1->manager()->setSon( n04, 0, n07 );
+          dg1->manager()->setSon( n04, 1, n05 );
+
+          dg1->manager()->setSon( n05, 0, n10 );
+          dg1->manager()->setSon( n05, 1, n11 );
+//          dg1->manager()->setSon( n05, 2, n16 );
+
+          dg1->manager()->setSon( n06, 0, n08 );
+          dg1->manager()->setSon( n06, 1, n09 );
+//          dg1->manager()->setSon( n06, 2, n11 );
+
+          dg1->manager()->setSon( n07, 0, n05 );
+          dg1->manager()->setSon( n07, 1, n12 );
+
+//          dg1->manager()->setSon( n08, 0, n14 );
+//          dg1->manager()->setSon( n08, 1, n15 );
+//          dg1->manager()->setSon( n08, 2, n05 );
+
+//          dg1->manager()->setSon( n09, 0, n10 );
+//          dg1->manager()->setSon( n09, 1, n11 );
+
+          dg1->manager()->setSon( n12, 0, n13 );
+          dg1->manager()->setSon( n12, 1, n14 );
+//          dg1->manager()->setSon( n12, 2, n19 );
+
+//          dg1->manager()->setSon( n13, 0, n20 );
+//          dg1->manager()->setSon( n13, 1, n21 );
+//          dg1->manager()->setSon( n13, 2, n22 );
+
+          dg1->manager()->setRootNode( n01 );
+
+          gum::MultiDimDecisionGraph<double>* dg2 = new gum::MultiDimDecisionGraph<double>();
+
+          dg2->add(*v0);
+          dg2->add(*v3);
+          dg2->add(*v2);
+          dg2->add(*v1);
+
+          n01 = dg2->manager()->addNonTerminalNode( v0 );
+          n02 = dg2->manager()->addNonTerminalNode( v1 );
+          n03 = dg2->manager()->addNonTerminalNode( v3 );
+          n04 = dg2->manager()->addTerminalNode( 27.0957 );
+          n05 = dg2->manager()->addTerminalNode( 8.01978 );
+          n06 = dg2->manager()->addNonTerminalNode( v2 );
+          n07 = dg2->manager()->addNonTerminalNode( v1 );
+          n08 = dg2->manager()->addNonTerminalNode( v1 );
+          n09 = dg2->manager()->addTerminalNode( 16.2307 );
+          n10 = dg2->manager()->addTerminalNode( 30.7077 );
+          n11 = dg2->manager()->addTerminalNode( 26.1679 );
+          n12 = dg2->manager()->addTerminalNode( 84.2562 );
+//          n13 = dg2->manager()->addTerminalNode( 94.3744 );
+//          n14 = dg2->manager()->addTerminalNode( 0.666253 );
+//          n15 = dg2->manager()->addTerminalNode( 16.5207 );
+//          n16 = dg2->manager()->addTerminalNode( 55.5485 );
+//          n17 = dg2->manager()->addTerminalNode( 8.60651 );
+//          n18 = dg2->manager()->addTerminalNode( 81.2182 );
+//          n19 = dg2->manager()->addTerminalNode( 84.3831 );
+//          n20 = dg2->manager()->addTerminalNode( 6.12946 );
+//          n21 = dg2->manager()->addTerminalNode( 83.9071 );
+//          n22 = dg2->manager()->addTerminalNode( 7.85962 );
+//          n23 = dg2->manager()->addTerminalNode( 19.54 );
+//          n24 = dg2->manager()->addTerminalNode( 82.67 );
+//          n25 = dg2->manager()->addTerminalNode( 46.54 );
+//          n26 = dg2->manager()->addTerminalNode( 92.74 );
+
+          dg2->manager()->setSon( n01, 0, n02 );
+          dg2->manager()->setSon( n01, 1, n03 );
+//          dg2->manager()->setSon( n01, 2, n04 );
+
+          dg2->manager()->setSon( n02, 0, n04 );
+          dg2->manager()->setSon( n02, 1, n05 );
+//          dg2->manager()->setSon( n02, 2, n07 );
+
+          dg2->manager()->setSon( n03, 0, n02 );
+          dg2->manager()->setSon( n03, 1, n06 );
+          dg2->manager()->setSon( n03, 2, n02 );
+
+//          dg2->manager()->setSon( n04, 0, n06 );
+//          dg2->manager()->setSon( n04, 1, n05 );
+
+//          dg2->manager()->setSon( n05, 0, n08 );
+//          dg2->manager()->setSon( n05, 1, n09 );
+//          dg2->manager()->setSon( n05, 2, n16 );
+
+          dg2->manager()->setSon( n06, 0, n07 );
+          dg2->manager()->setSon( n06, 1, n08 );
+//          dg2->manager()->setSon( n06, 2, n11 );
+
+          dg2->manager()->setSon( n07, 0, n09 );
+          dg2->manager()->setSon( n07, 1, n10 );
+
+          dg2->manager()->setSon( n08, 0, n11 );
+          dg2->manager()->setSon( n08, 1, n12 );
+//          dg2->manager()->setSon( n08, 2, n05 );
+
+//          dg2->manager()->setSon( n09, 0, n12 );
+//          dg2->manager()->setSon( n09, 1, n13 );
+
+//          dg2->manager()->setSon( n12, 0, n17 );
+//          dg2->manager()->setSon( n12, 1, n18 );
+//          dg2->manager()->setSon( n12, 2, n19 );
+
+//          dg2->manager()->setSon( n13, 0, n20 );
+//          dg2->manager()->setSon( n13, 1, n21 );
+//          dg2->manager()->setSon( n13, 2, n22 );
+
+          dg2->manager()->setRootNode( n01 );
+
+//          std::cout << std::endl << dg1->toDot()<< std::endl;
+//          std::cout << std::endl << dg2->toDot()<< std::endl;
+          bool evalRes = true;
+          double fuck = 0.0, you = 0.0;
+          TS_GUM_ASSERT_THROWS_NOTHING( evalRes = __evalOperation( 1, dg1, dg2,fuck,you,0.0 ) );
+
+          delete dg1;
+          delete dg2;
+
+          delete  v0;
+          delete  v1;
+          delete  v2;
+          delete  v3;
+//          delete  v4;
+//          delete  v5;
+//          delete  v6;
+//          delete  v7;
+//          delete  v8;
+//          delete  v9;
+      }
+
+
+
+  };
+}

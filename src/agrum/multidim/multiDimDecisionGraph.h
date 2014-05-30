@@ -196,6 +196,11 @@ namespace gum {
             // ============================================================================
             void setSon(Idx modality, NodeId son){__nodeSons[modality] = son;}
             NodeId son(Idx modality) const {return __nodeSons[modality];}
+
+
+//            const NodeId* sons() const {return __nodeSons;}
+
+
             Idx nbSons() const {return __nodeVar->domainSize();}
 //            void setSons(NodeId* sons);
 
@@ -432,7 +437,7 @@ namespace gum {
         // ============================================================================
         /// Returns a const reference to the manager of this diagram
         // ============================================================================
-        std::string toDot() const;
+        std::string toDot( bool withBackArcs = false ) const;
 
         // ============================================================================
         /// Returns a const reference to the manager of this diagram

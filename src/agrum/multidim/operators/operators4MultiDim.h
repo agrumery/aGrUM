@@ -30,6 +30,7 @@
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/multiDimDecisionDiagram.h>
+#include <agrum/multidim/multiDimDecisionGraph.h>
 #include <agrum/multidim/multiDimDecorator.h>
 #include <agrum/core/timer.h>
 
@@ -80,6 +81,18 @@ namespace gum {
                                  const MultiDimImplementation<T>* t2 );
 
 
+
+  template<typename T>
+  MultiDimDecisionGraph<T>*
+  add2MultiDimDecisionGraphs ( const MultiDimDecisionGraph<T>* t1,
+                               const MultiDimDecisionGraph<T>* t2 );
+
+  template<typename T>
+  MultiDimImplementation<T>*
+  add2MultiDimDecisionGraphs ( const MultiDimImplementation<T>* t1,
+                               const MultiDimImplementation<T>* t2 );
+
+
   /// a specialized function for subtracting two multiDimArrays
   /** The function produces a tensorial subtraction of t2 from t1, that is, if t1
    * and t2 are multiDimArrays over variables A,B,C,D and D,B,E respectively,
@@ -121,6 +134,18 @@ namespace gum {
   MultiDimImplementation<T>*
   subtract2MultiDimDecisionDiagrams ( const MultiDimImplementation<T>* t1,
                                       const MultiDimImplementation<T>* t2 );
+
+
+
+  template<typename T>
+  MultiDimDecisionGraph<T>*
+  subtract2MultiDimDecisionGraphs ( const MultiDimDecisionGraph<T>* t1,
+                               const MultiDimDecisionGraph<T>* t2 );
+
+  template<typename T>
+  MultiDimImplementation<T>*
+  subtract2MultiDimDecisionGraphs ( const MultiDimImplementation<T>* t1,
+                               const MultiDimImplementation<T>* t2 );
 
 
   /// a specialized function for multiplying two multiDimArrays
@@ -166,6 +191,18 @@ namespace gum {
                                       const MultiDimImplementation<T>* t2 );
 
 
+
+  template<typename T>
+  MultiDimDecisionGraph<T>*
+  multiply2MultiDimDecisionGraphs ( const MultiDimDecisionGraph<T>* t1,
+                               const MultiDimDecisionGraph<T>* t2 );
+
+  template<typename T>
+  MultiDimImplementation<T>*
+  multiply2MultiDimDecisionGraphs ( const MultiDimImplementation<T>* t1,
+                               const MultiDimImplementation<T>* t2 );
+
+
   /// a specialized function for dividing two multiDimArrays
   /** The function produces a tensorial division of t1 by t2, that is, if t1
    * and t2 are multiDimArrays over variables A,B,C,D and D,B,E respectively,
@@ -209,6 +246,18 @@ namespace gum {
                                     const MultiDimImplementation<T>* t2 );
 
 
+
+  template<typename T>
+  MultiDimDecisionGraph<T>*
+  divide2MultiDimDecisionGraphs ( const MultiDimDecisionGraph<T>* t1,
+                               const MultiDimDecisionGraph<T>* t2 );
+
+  template<typename T>
+  MultiDimImplementation<T>*
+  divide2MultiDimDecisionGraphs ( const MultiDimImplementation<T>* t1,
+                               const MultiDimImplementation<T>* t2 );
+
+
   /// a specialized function for compare value from two multiDimDecisionDiagramBases and gets the maximal
   /** The function produces a tensorial comparison between t1 and t2, that is, if t1
    * and t2 are multiDimDecisionDiagramBases over variables A,B,C,D and D,B,E respectively,
@@ -226,6 +275,18 @@ namespace gum {
   MultiDimImplementation<T>*
   maximise2MultiDimDecisionDiagrams ( const MultiDimImplementation<T>* t1,
                                       const MultiDimImplementation<T>* t2 );
+
+
+
+  template<typename T>
+  MultiDimDecisionGraph<T>*
+  maximise2MultiDimDecisionGraphs ( const MultiDimDecisionGraph<T>* t1,
+                               const MultiDimDecisionGraph<T>* t2 );
+
+  template<typename T>
+  MultiDimImplementation<T>*
+  maximise2MultiDimDecisionGraphs ( const MultiDimImplementation<T>* t1,
+                               const MultiDimImplementation<T>* t2 );
 
 
   /// a specialized function for functionally combining two multiDimArrays

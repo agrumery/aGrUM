@@ -150,6 +150,8 @@ namespace gum{
         // ============================================================================
         NodeId addTerminalNode ( const GUM_SCALAR& value );
 
+//        typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* node(NodeId nid){ return __decisionGraph->__internalNodeMap[nid]; }
+
         // ============================================================================
         /**
          * Erases a node from the diagram.

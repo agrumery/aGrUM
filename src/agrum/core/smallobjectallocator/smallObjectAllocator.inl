@@ -58,8 +58,7 @@ namespace gum {
     INLINE SmallObjectAllocator::~SmallObjectAllocator(){
       GUM_DESTRUCTOR(SmallObjectAllocator)
 //      for(__Pool::iterator pit = __pool.begin(); pit != __pool.end(); ++pit)
-//        delete &*pit;
-              std::cout << "Nb Small Allocation : " << nbAllocation  << " -  Nb Small Deallocation : " << nbDeallocation << std::endl;
+//        delete &*pit;              
     }
 
   // ############################################################################
@@ -94,6 +93,7 @@ namespace gum {
     // @param objectSize is the size of that object (useful for faster deallocation)
     // ============================================================================
     INLINE void SmallObjectAllocator::deallocate(void* pDeallocatedObject, const std::size_t &objectSize){
+//      std::cout << "Deallocating " << pDeallocatedObject << std::endl;
       __pool[objectSize].deallocate(pDeallocatedObject);
       nbDeallocation++;
     }

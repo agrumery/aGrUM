@@ -393,7 +393,7 @@ template<typename GUM_SCALAR>
 
       for(HashTableIterator<NodeId, PICLElem*> pite = parentsTable.begin(); pite != parentsTable.end(); ++pite)
           if( !isTerminalNode( pite.key() ) )
-            __internalNodeMap[ pite.key() ]->parents() = *pite;
+            __internalNodeMap[ pite.key() ]->parents() = pite.val();
 
     }
 
@@ -413,7 +413,7 @@ template<typename GUM_SCALAR>
       for( HashTableIterator<NodeId, InternalNode*> nodeIter = __internalNodeMap.begin();
             nodeIter != __internalNodeMap.end(); ++nodeIter ){
 
-          delete *nodeIter;
+          delete nodeIter.val();
       }
 
       __internalNodeMap.clear();
@@ -421,7 +421,7 @@ template<typename GUM_SCALAR>
       // Nettoyage des liste de noeuds par variables
       for( HashTableIterator<const DiscreteVariable*, NICLElem*> varIter = __var2NodeIdMap.begin();
             varIter != __var2NodeIdMap.end(); ++varIter ){
-        _deleteNICL(*varIter);
+        _deleteNICL(varIter.val());
       }
       __var2NodeIdMap.clear();
 
@@ -437,7 +437,7 @@ template<typename GUM_SCALAR>
     // =============================================================================
     template< typename GUM_SCALAR >
     INLINE
-    std::string MultiDimDecisionGraph< GUM_SCALAR >::toDot() const {
+    std::string MultiDimDecisionGraph< GUM_SCALAR >::toDot( bool withBackArcs ) const {
 
       std::stringstream output;
       std::stringstream terminalStream;
@@ -466,20 +466,20 @@ template<typename GUM_SCALAR>
                 arcstream << tab <<  *nodeIter << " -> " << currentNode->son(sonIter)
                           << " [label=\"" << currentNode->nodeVar()->label ( sonIter ) << "\",color=\"#0000ff\"]"<< ";" << std::endl;
 
-            PICLElem* parentIter = currentNode->parents();
-            while( parentIter != nullptr ){
-                arcstream << tab <<  *nodeIter << " -> " << parentIter->parentId
-                          << " [label=\"" << parentIter->modality << "\",color=\"#ff0000\"]"<< ";" << std::endl;
-                parentIter = parentIter->nextElem;
+            if( withBackArcs ){
+                PICLElem* parentIter = currentNode->parents();
+                while( parentIter != nullptr ){
+                    arcstream << tab <<  *nodeIter << " -> " << parentIter->parentId
+                              << " [label=\"" << parentIter->modality << "\",color=\"#ff0000\"]"<< ";" << std::endl;
+                    parentIter = parentIter->nextElem;
+                }
             }
 
-//              if ( _defaultArcMap.exists ( *nodeIter ) )
-//                defaultarcstream << tab <<  *nodeIter << " -> " << _defaultArcMap[*nodeIter] << " [color=\"#ff0000\"]"<< ";" << std::endl;
           }
         }
 
         output << terminalStream.str() << std::endl << nonTerminalStream.str() << std::endl <<  arcstream.str() << std::endl << "}" << std::endl;
-//        << defaultarcstream.str()
+
         return output.str();
       }
 
