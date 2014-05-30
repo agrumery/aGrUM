@@ -261,7 +261,7 @@ namespace gum {
   /// removes the element at index elt from the priority queue
 
   template <typename Val, typename Priority, typename Cmp>
-  void PriorityQueue<Val, Priority, Cmp>::erase ( Size index ) {
+  void PriorityQueue<Val, Priority, Cmp>::eraseByPos ( Size index ) {
     if ( index >= __nb_elements ) return;
 
     // get the element from both the heap and the hashtable
@@ -332,8 +332,8 @@ namespace gum {
   /// removes a given element from the priority queue (but does not return it)
 
   template <typename Val, typename Priority, typename Cmp> INLINE
-  void PriorityQueue<Val, Priority, Cmp>::eraseByVal ( const Val& val ) {
-    try { erase ( __indices[val][0] ); }
+  void PriorityQueue<Val, Priority, Cmp>::erase ( const Val& val ) {
+    try { eraseByPos ( __indices[val][0] ); }
     catch ( NotFound& ) { }
   }
 
@@ -345,7 +345,7 @@ namespace gum {
     // if the heap is empty, do nothing
     if ( !__nb_elements ) return;
 
-    erase ( 0 );
+    eraseByPos ( 0 );
   }
 
 
@@ -359,7 +359,7 @@ namespace gum {
 
     Val v = * ( __heap[0]->second );
 
-    erase ( 0 );
+    eraseByPos ( 0 );
 
     return v;
   }

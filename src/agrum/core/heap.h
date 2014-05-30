@@ -237,7 +237,7 @@ namespace gum {
        * unique index for each element. This is precisely what the index passed in
        * argument of the function represents. */
 
-      void erase ( Size index );
+      void eraseByPos ( Size index );
 
 
       /// removes a given element from the heap (but does not return it)
@@ -246,7 +246,7 @@ namespace gum {
        * @param val the element we wish to remove. If the heap contains several times
        * this element, then the one with the smallest index is removed. */
 
-      void eraseByVal ( const Val& val );
+      void erase ( const Val& val );
 
 
       /// returns the number of elements in the heap

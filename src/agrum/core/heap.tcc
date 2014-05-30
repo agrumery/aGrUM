@@ -171,7 +171,7 @@ namespace gum {
   /// removes the element at position 'index' from the heap
 
   template <typename Val, typename Cmp>
-  void Heap<Val, Cmp>::erase ( Size index ) {
+  void Heap<Val, Cmp>::eraseByPos ( Size index ) {
     if ( index >= __nb_elements ) return;
 
     // remove the element and put the last element in its place
@@ -204,11 +204,11 @@ namespace gum {
   /// removes a given element from the heap (but does not return it)
 
   template <typename Val, typename Cmp> INLINE
-  void Heap<Val, Cmp>::eraseByVal ( const Val& val ) {
+  void Heap<Val, Cmp>::erase ( const Val& val ) {
     // find val in the heap
     for ( Size i = 0; i < __nb_elements; ++i )
       if ( *__heap[i] == val ) {
-        erase ( i );
+        eraseByPos ( i );
         break;
       }
   }
@@ -221,7 +221,7 @@ namespace gum {
     // if the heap is empty, do nothing
     if ( !__nb_elements ) return;
 
-    erase ( 0 );
+    eraseByPos ( 0 );
   }
 
 
@@ -235,7 +235,7 @@ namespace gum {
 
     Val v = *__heap[0];
 
-    erase ( 0 );
+    eraseByPos ( 0 );
 
     return v;
   }

@@ -115,8 +115,8 @@ namespace gum_tests {
 
         queue2.clear();
         TS_ASSERT ( queue2.size() == 0 );
-        TS_GUM_ASSERT_THROWS_NOTHING ( queue2.erase ( 10 ) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( queue2.eraseByVal ( "RRR" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( queue2.eraseByPos ( 10 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( queue2.erase ( "RRR" ) );
 
         queue2 = queue1;
         queue2.eraseTop();
@@ -135,11 +135,11 @@ namespace gum_tests {
 
         queue2.eraseTop();
         TS_ASSERT ( queue2.topPriority() == 8 );
-        queue2.erase ( 0 );
+        queue2.eraseByPos ( 0 );
         TS_ASSERT ( queue2.topPriority() == 10 );
-        queue2.erase ( 3 );
+        queue2.eraseByPos ( 3 );
         TS_ASSERT ( queue2.size() == 3 );
-        queue2.eraseByVal ( "AAA" );
+        queue2.erase ( "AAA" );
         TS_ASSERT ( queue2.size() == 2 );
 
         const std::string& str1 = queue2[0];
@@ -238,11 +238,11 @@ namespace gum_tests {
 
         queue2.eraseTop();
         TS_ASSERT ( queue2.topPriority() == 8 );
-        queue2.erase ( 0 );
+        queue2.eraseByPos ( 0 );
         TS_ASSERT ( queue2.topPriority() == 10 );
-        queue2.erase ( 3 );
+        queue2.eraseByPos ( 3 );
         TS_ASSERT ( queue2.size() == 3 );
-        queue2.eraseByVal ( set1 );
+        queue2.erase ( set1 );
         TS_ASSERT ( queue2.size() == 2 );
 
         const gum::Set<int>& str3 = queue2[0];

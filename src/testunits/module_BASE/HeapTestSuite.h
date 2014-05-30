@@ -53,11 +53,11 @@ namespace gum_tests {
         TS_ASSERT ( heap1.contains ( 23 ) == true );
         TS_ASSERT ( heap1.contains ( 10 ) == true );
 
-        heap1.eraseByVal ( 10 );
+        heap1.erase ( 10 );
         TS_ASSERT ( heap1.size() == 3 );
-        TS_GUM_ASSERT_THROWS_NOTHING ( heap1.eraseByVal ( 150 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( heap1.erase ( 150 ) );
 
-        heap1.erase ( 0 );
+        heap1.eraseByPos ( 0 );
         TS_ASSERT ( heap1.top() == 23 );
       }
 
@@ -87,11 +87,11 @@ namespace gum_tests {
         TS_ASSERT ( heap1.contains ( 2 ) == true );
         TS_ASSERT ( heap1.contains ( 8 ) == true );
 
-        heap1.eraseByVal ( 10 );
+        heap1.erase ( 10 );
         TS_ASSERT ( heap1.size() == 3 );
-        TS_GUM_ASSERT_THROWS_NOTHING ( heap1.eraseByVal ( 150 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( heap1.erase ( 150 ) );
 
-        heap1.erase ( 0 );
+        heap1.eraseByPos ( 0 );
         TS_ASSERT ( heap1.top() == 8 );
       }
 
@@ -130,13 +130,13 @@ namespace gum_tests {
         heap1.insert ( 10 );
         heap1.insert ( 10 );
 
-        heap1.erase ( 0 );
+        heap1.eraseByPos ( 0 );
         TS_ASSERT ( heap1.top() == 8 );
-        TS_GUM_ASSERT_THROWS_NOTHING ( heap1.erase ( 150 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( heap1.eraseByPos ( 150 ) );
         TS_ASSERT ( heap1.size() == 6 );
-        heap1.erase ( 4 );
+        heap1.eraseByPos ( 4 );
         TS_ASSERT ( heap1.size() == 5 );
-        heap1.erase ( 4 );
+        heap1.eraseByPos ( 4 );
         TS_ASSERT ( heap1.size() == 4 );
         TS_ASSERT ( heap1.contains ( 24 ) == false );
       }
@@ -193,11 +193,11 @@ namespace gum_tests {
         TS_ASSERT ( heap1.contains ( s5 ) == true );
 
         gum::Set<int> s6;
-        heap1.eraseByVal ( s2 );
+        heap1.erase ( s2 );
         TS_ASSERT ( heap1.size() == 3 );
-        TS_GUM_ASSERT_THROWS_NOTHING ( heap1.eraseByVal ( s6 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( heap1.erase ( s6 ) );
 
-        heap1.erase ( 0 );
+        heap1.eraseByPos ( 0 );
         TS_ASSERT ( heap1.top() == s4 );
       }
 
