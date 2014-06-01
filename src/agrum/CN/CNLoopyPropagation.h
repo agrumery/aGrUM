@@ -35,7 +35,7 @@
 #include <limits>
 #include <agrum/CN/inferenceEngine.h>
 
-#include <agrum/core/pow.h>
+#include <agrum/core/math/pow.h>
 
 #define _INF std::numeric_limits<GUM_SCALAR>::infinity()
 

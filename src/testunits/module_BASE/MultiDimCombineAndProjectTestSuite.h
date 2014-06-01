@@ -41,170 +41,170 @@ namespace gum_tests {
 
 
   class MultiDimCombineAndProjectTestSuite: public CxxTest::TestSuite {
-    public:
-      void test1() {
-        std::vector<gum::LabelizedVariable*> vars ( 11 );
+  public:
+    void test1() {
+      std::vector<gum::LabelizedVariable*> vars ( 11 );
 
-        for ( unsigned int i = 0; i < 11; ++i ) {
-          std::stringstream str;
-          str << "x" << i;
-          std::string s = str.str();
-          vars[i] = new gum::LabelizedVariable ( s, s, 4 );
-        }
-		GUM_CHECKPOINT;
-        gum::Potential<float> t1, t2, t3, t4, t5, t6;
-        t1 << * ( vars[0] ) << * ( vars[1] );
-        t2 << * ( vars[1] ) << * ( vars[2] );
-        t3 << * ( vars[3] ) << * ( vars[4] ) << * ( vars[5] );
-        t4 << * ( vars[4] ) << * ( vars[7] );
-        t5 << * ( vars[5] ) << * ( vars[6] );
-        t6 << * ( vars[8] ) << * ( vars[9] );
-		GUM_CHECKPOINT;
+      for ( unsigned int i = 0; i < 11; ++i ) {
+        std::stringstream str;
+        str << "x" << i;
+        std::string s = str.str();
+        vars[i] = new gum::LabelizedVariable ( s, s, 4 );
+      }
+      // GUM_CHECKPOINT;
+      gum::Potential<float> t1, t2, t3, t4, t5, t6;
+      t1 << * ( vars[0] ) << * ( vars[1] );
+      t2 << * ( vars[1] ) << * ( vars[2] );
+      t3 << * ( vars[3] ) << * ( vars[4] ) << * ( vars[5] );
+      t4 << * ( vars[4] ) << * ( vars[7] );
+      t5 << * ( vars[5] ) << * ( vars[6] );
+      t6 << * ( vars[8] ) << * ( vars[9] );
+      // GUM_CHECKPOINT;
 
-        randomInitP ( t1 );
-        randomInitP ( t2 );
-        randomInitP ( t3 );
-        randomInitP ( t4 );
-        randomInitP ( t5 );
-        randomInitP ( t6 );
-		GUM_CHECKPOINT;
+      randomInitP ( t1 );
+      randomInitP ( t2 );
+      randomInitP ( t3 );
+      randomInitP ( t4 );
+      randomInitP ( t5 );
+      randomInitP ( t6 );
+      // GUM_CHECKPOINT;
 
-        gum::MultiDimCombineAndProjectDefault<float, gum::Potential>
+      gum::MultiDimCombineAndProjectDefault<float, gum::Potential>
         projcomb ( multPot, mySum );
 
-        gum::Set<const gum::Potential<float>*> to_comb;
-        to_comb << &t1 << &t2 << &t3 << &t4 << &t5 << &t6;
-        gum::Set<const gum::DiscreteVariable*> del_vars;
-        del_vars << vars[1] << vars[4] << vars[5]
-                 << vars[6] << vars[9] << vars[10];
-		GUM_CHECKPOINT;
+      gum::Set<const gum::Potential<float>*> to_comb;
+      to_comb << &t1 << &t2 << &t3 << &t4 << &t5 << &t6;
+      gum::Set<const gum::DiscreteVariable*> del_vars;
+      del_vars << vars[1] << vars[4] << vars[5]
+               << vars[6] << vars[9] << vars[10];
+      // GUM_CHECKPOINT;
 
-        try {
-			GUM_CHECKPOINT;
-			gum::Set<const gum::Potential<float>*> res = projcomb.combineAndProject ( to_comb, del_vars );
-			GUM_CHECKPOINT;
-			GUM_CHECKPOINT;
-			float nb_ops = projcomb.nbOperations ( to_comb, del_vars );
-			GUM_CHECKPOINT;
-			std::pair<long, long> yyy = projcomb.memoryUsage ( to_comb, del_vars );
-			GUM_CHECKPOINT;
+      try {
+        // GUM_CHECKPOINT;
+        gum::Set<const gum::Potential<float>*> res = projcomb.combineAndProject ( to_comb, del_vars );
+        // GUM_CHECKPOINT;
+        // GUM_CHECKPOINT;
+        float nb_ops = projcomb.nbOperations ( to_comb, del_vars );
+        // GUM_CHECKPOINT;
+        std::pair<long, long> yyy = projcomb.memoryUsage ( to_comb, del_vars );
+        // GUM_CHECKPOINT;
 
-			TS_ASSERT ( yyy.first == 244 );
-			TS_ASSERT ( yyy.second == 228 );
-			GUM_CHECKPOINT;
+        TS_ASSERT ( yyy.first == 244 );
+        TS_ASSERT ( yyy.second == 228 );
+        // GUM_CHECKPOINT;
 
-			TS_ASSERT ( nb_ops == 416 );
-			TS_ASSERT ( res.size() == 3 );
-			GUM_CHECKPOINT;
+        TS_ASSERT ( nb_ops == 416 );
+        TS_ASSERT ( res.size() == 3 );
+        // GUM_CHECKPOINT;
 
-			gum::Set<const gum::Potential<float>*>::const_iterator_safe iter = res.beginSafe();
-			const gum::Potential<float>* res1 = *iter; ++iter;
-			const gum::Potential<float>* res2 = *iter; ++iter;
-			const gum::Potential<float>* res3 = *iter;
-			GUM_CHECKPOINT;
+        gum::Set<const gum::Potential<float>*>::const_iterator_safe iter = res.beginSafe();
+        const gum::Potential<float>* res1 = *iter; ++iter;
+        const gum::Potential<float>* res2 = *iter; ++iter;
+        const gum::Potential<float>* res3 = *iter;
+        // GUM_CHECKPOINT;
 
-			gum::MultiDimCombinationDefault<float, gum::Potential> comb ( multPot );
-			gum::MultiDimProjection<float, gum::Potential> proj ( mySum );
-			GUM_CHECKPOINT;
+        gum::MultiDimCombinationDefault<float, gum::Potential> comb ( multPot );
+        gum::MultiDimProjection<float, gum::Potential> proj ( mySum );
+        // GUM_CHECKPOINT;
 
-			gum::Set<const gum::Potential<float>*> comb_set;
-			comb_set << &t1 << &t2;
-			gum::Set<const gum::DiscreteVariable*> del_vars2;
-			del_vars2 << vars[1];
-			gum::Potential<float>* tt1 = comb.combine ( comb_set );
-			gum::Potential<float>* tt2 = proj.project ( *tt1, del_vars2 );
-			delete tt1;
-			TS_ASSERT ( ( *tt2 == *res1 ) || ( *tt2 == *res2 ) || ( *tt2 == *res3 ) );
-			GUM_CHECKPOINT;
+        gum::Set<const gum::Potential<float>*> comb_set;
+        comb_set << &t1 << &t2;
+        gum::Set<const gum::DiscreteVariable*> del_vars2;
+        del_vars2 << vars[1];
+        gum::Potential<float>* tt1 = comb.combine ( comb_set );
+        gum::Potential<float>* tt2 = proj.project ( *tt1, del_vars2 );
+        delete tt1;
+        TS_ASSERT ( ( *tt2 == *res1 ) || ( *tt2 == *res2 ) || ( *tt2 == *res3 ) );
+        // GUM_CHECKPOINT;
 
-			delete tt2;
-			comb_set.clear();
-			del_vars2.clear();
-			comb_set << &t3 << &t4 << &t5;
-			del_vars2 << vars[4] << vars[5] << vars[6];
-			tt1 = comb.combine ( comb_set );
-			tt2 = proj.project ( *tt1, del_vars2 );
-			delete tt1;
-			TS_ASSERT ( ( *tt2 == *res1 ) || ( *tt2 == *res2 ) || ( *tt2 == *res3 ) );
-			GUM_CHECKPOINT;
+        delete tt2;
+        comb_set.clear();
+        del_vars2.clear();
+        comb_set << &t3 << &t4 << &t5;
+        del_vars2 << vars[4] << vars[5] << vars[6];
+        tt1 = comb.combine ( comb_set );
+        tt2 = proj.project ( *tt1, del_vars2 );
+        delete tt1;
+        TS_ASSERT ( ( *tt2 == *res1 ) || ( *tt2 == *res2 ) || ( *tt2 == *res3 ) );
+        // GUM_CHECKPOINT;
 
-			delete tt2;
-			del_vars2.clear();
-			del_vars2 << vars[9] << vars[10];
-			tt2 = proj.project ( t6, del_vars2 );
-			TS_ASSERT ( ( *tt2 == *res1 ) || ( *tt2 == *res2 ) || ( *tt2 == *res3 ) );
-			delete tt2;
-			GUM_CHECKPOINT;
+        delete tt2;
+        del_vars2.clear();
+        del_vars2 << vars[9] << vars[10];
+        tt2 = proj.project ( t6, del_vars2 );
+        TS_ASSERT ( ( *tt2 == *res1 ) || ( *tt2 == *res2 ) || ( *tt2 == *res3 ) );
+        delete tt2;
+        // GUM_CHECKPOINT;
 
-			gum::MultiDimCombineAndProjectDefault<float, gum::Potential>
-			projcomb2 = projcomb;
-			projcomb2.setCombineFunction ( addPot );
-			projcomb2.setProjectFunction ( myMax );
-			GUM_CHECKPOINT;
+        gum::MultiDimCombineAndProjectDefault<float, gum::Potential>
+          projcomb2 = projcomb;
+        projcomb2.setCombineFunction ( addPot );
+        projcomb2.setProjectFunction ( myMax );
+        // GUM_CHECKPOINT;
 
-			gum::MultiDimCombineAndProjectDefault<float, gum::Potential>*
-			projcomb3 = projcomb.newFactory();
-			GUM_CHECKPOINT;
+        gum::MultiDimCombineAndProjectDefault<float, gum::Potential>*
+          projcomb3 = projcomb.newFactory();
+        // GUM_CHECKPOINT;
 
-			delete projcomb3;
-			GUM_CHECKPOINT;
+        delete projcomb3;
+        // GUM_CHECKPOINT;
 
-			for ( gum::Set<const gum::Potential<float>*>::const_iterator_safe
-				  iter = res.beginSafe(); iter != res.endSafe(); ++iter ) {
-			  delete *iter;
-			}
-			GUM_CHECKPOINT;
+        for ( gum::Set<const gum::Potential<float>*>::const_iterator_safe
+                iter = res.beginSafe(); iter != res.endSafe(); ++iter ) {
+          delete *iter;
+        }
+        // GUM_CHECKPOINT;
 
-			for ( unsigned int i = 0; i < vars.size(); ++i )
-			  delete vars[i];
+        for ( unsigned int i = 0; i < vars.size(); ++i )
+          delete vars[i];
 			  
-			GUM_CHECKPOINT;
-		} catch (gum::NotFound& e) {
-			GUM_SHOWERROR(e);
-			TS_ASSERT(false);
-		}
+        // GUM_CHECKPOINT;
+      } catch (gum::NotFound& e) {
+        GUM_SHOWERROR(e);
+        TS_ASSERT(false);
       }
+    }
 
 
 
-    private:
-      // =========================================================================
-      /// initialize randomly a table
-      // =========================================================================
-      void randomInitP ( gum::Potential<float>& t ) {
-        gum::Instantiation i ( t );
+  private:
+    // =========================================================================
+    /// initialize randomly a table
+    // =========================================================================
+    void randomInitP ( gum::Potential<float>& t ) {
+      gum::Instantiation i ( t );
 
-        for ( i.setFirst(); ! i.end(); ++i )
-          t.set ( i, 1 + ( int ) ( ( ( float ) rand() / RAND_MAX ) * 50 ) );
-      }
-
-
-      // the function used to combine two tables
-      static gum::Potential<float>* addPot ( const gum::Potential<float>& t1,
-                                             const gum::Potential<float>& t2 ) {
-        return new gum::Potential<float> ( t1 + t2 );
-      }
+      for ( i.setFirst(); ! i.end(); ++i )
+        t.set ( i, 1 + ( int ) ( ( ( float ) rand() / RAND_MAX ) * 50 ) );
+    }
 
 
-      // the function used to combine two tables
-      static gum::Potential<float>* multPot ( const gum::Potential<float>& t1,
-                                              const gum::Potential<float>& t2 ) {
-        return new gum::Potential<float> ( t1 * t2 );
-      }
+    // the function used to combine two tables
+    static gum::Potential<float>* addPot ( const gum::Potential<float>& t1,
+                                           const gum::Potential<float>& t2 ) {
+      return new gum::Potential<float> ( t1 + t2 );
+    }
 
 
-      static gum::Potential<float>*
-      mySum ( const gum::Potential<float>& table,
-              const gum::Set<const gum::DiscreteVariable*>& del_vars ) {
-        return new gum::Potential<float> ( projectSum ( table, del_vars ) );
-      }
+    // the function used to combine two tables
+    static gum::Potential<float>* multPot ( const gum::Potential<float>& t1,
+                                            const gum::Potential<float>& t2 ) {
+      return new gum::Potential<float> ( t1 * t2 );
+    }
 
 
-      static gum::Potential<float>*
-      myMax ( const gum::Potential<float>& table,
-              const gum::Set<const gum::DiscreteVariable*>& del_vars ) {
-        return new gum::Potential<float> ( projectMax ( table, del_vars ) );
-      }
+    static gum::Potential<float>*
+    mySum ( const gum::Potential<float>& table,
+            const gum::Set<const gum::DiscreteVariable*>& del_vars ) {
+      return new gum::Potential<float> ( projectSum ( table, del_vars ) );
+    }
+
+
+    static gum::Potential<float>*
+    myMax ( const gum::Potential<float>& table,
+            const gum::Set<const gum::DiscreteVariable*>& del_vars ) {
+      return new gum::Potential<float> ( projectMax ( table, del_vars ) );
+    }
 
   };
 

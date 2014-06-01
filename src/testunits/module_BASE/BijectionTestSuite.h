@@ -139,6 +139,29 @@ namespace gum_tests {
       TS_ASSERT( bij5.size() == 3 );
     }
 
+    void testMoves () {
+      gum::Bijection<int,int> bij1;
+      gum::Bijection<int,int> bij2;
+      gum::Bijection<int,int> bij3;
+      gum::Bijection<int,int> bij4;
+
+      TS_GUM_ASSERT_THROWS_NOTHING( bij1.insert( 1, 2 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( bij1.insert( 3, 4 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( bij1.insert( 5, 6 ) );
+
+      TS_GUM_ASSERT_THROWS_NOTHING( bij2.insert( 7,8 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( bij2.insert( 9,10 ) );
+
+      TS_GUM_ASSERT_THROWS_NOTHING( bij3.insert( 1, 2 ) );
+
+      bij4 = std::move ( bij3 );
+      bij3 = std::move ( bij2 );
+      bij2 = std::move ( bij1 );
+
+      TS_ASSERT ( bij2.size () == 3 );
+      TS_ASSERT ( bij2.second ( 3 ) == 4 );
+    } 
+    
     void testAccess1 () {
       gum::Bijection<int, int> bijection;
 

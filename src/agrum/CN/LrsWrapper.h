@@ -38,7 +38,7 @@
 #include <fstream>
 
 #include <agrum/core/exceptions.h>
-#include <agrum/core/Rational.h>
+#include <agrum/core/math/rational.h>
 
 
 // we force MP (not long or GMP)

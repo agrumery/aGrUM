@@ -114,6 +114,18 @@ namespace gum_tests {
       TS_ASSERT ( seq6.size () == 3 );
     }
 
+    void testMoves () {
+      gum::Sequence<int> seq1 { 1, 2, 3 };
+      gum::Sequence<int> seq2 { 4, 5 };
+      gum::Sequence<int> seq3 { 7, 8, 9, 6 };
+      
+      gum::Sequence<int> seq4 = std::move ( seq3 );
+      seq3 = std::move ( seq2 );
+      seq2 = std::move ( seq1 );
+
+      TS_ASSERT ( seq2.size () == 3 );
+      TS_ASSERT ( seq2.atPos ( 1 ) == 2 );
+    }
  
     void testCopy() {
       gum::Sequence<int> seq;
