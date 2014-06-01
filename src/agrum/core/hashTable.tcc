@@ -197,9 +197,9 @@ namespace gum {
   HashTableConstIteratorSafe<Key, Val>::HashTableConstIteratorSafe
   ( const HashTableConstIteratorSafe<Key, Val>& from )  :
     __table  { from.__table },
-           __index  { from.__index },
-           __bucket { from.__bucket },
-  __next_bucket { from.__next_bucket } {
+    __index  { from.__index },
+    __bucket { from.__bucket },
+    __next_bucket { from.__next_bucket } {
     // make the hashtable keep track of this iterator
     if ( __table != nullptr ) {
       __insertIntoSafeList ();
@@ -215,8 +215,8 @@ namespace gum {
   HashTableConstIteratorSafe<Key, Val>::HashTableConstIteratorSafe
   ( const HashTableConstIterator<Key, Val>& from )  :
     __table  { from.__table },
-           __index  { from.__index },
-  __bucket { from.__bucket } {
+    __index  { from.__index },
+    __bucket { from.__bucket } {
     // make the hashtable keep track of this iterator
     if ( __table != nullptr ) {
       __insertIntoSafeList ();
@@ -232,9 +232,9 @@ namespace gum {
   HashTableConstIteratorSafe<Key, Val>::HashTableConstIteratorSafe
   ( HashTableConstIteratorSafe<Key, Val> && from )  :
     __table  { from.__table },
-           __index  { from.__index },
-           __bucket { from.__bucket },
-  __next_bucket { from.__next_bucket } {
+    __index  { from.__index },
+    __bucket { from.__bucket },
+    __next_bucket { from.__next_bucket } {
     GUM_CONS_MOV ( HashTableConstIteratorSafe );
 
     // find "from" in the hashtable's list of safe iterators and substitute
@@ -1639,7 +1639,8 @@ HashTableIterator<Key, Val>::HashTableIterator () noexcept :
   HashTable<Key, Val, Alloc>::HashTable
   ( std::initializer_list< std::pair<Key, Val> > list ) :
     // size must be >= 2 else we lose all the bits of the hash function
-    __size { 1UL << __hashTableLog2 ( std::max ( 2UL, list.size () / 2 ) ) } {
+    __size { 1UL << __hashTableLog2
+      ( std::max<Size> ( Size(2), list.size () / 2 ) ) } {
     // for debugging purposes
     GUM_CONSTRUCTOR ( HashTable );
 
@@ -1655,11 +1656,11 @@ HashTableIterator<Key, Val>::HashTableIterator () noexcept :
 
   // copy constructor
   template <typename Key, typename Val, typename Alloc>
-  HashTable<Key, Val, Alloc>::HashTable ( const HashTable<Key, Val, Alloc>& table ) :
+  HashTable<Key,Val,Alloc>::HashTable ( const HashTable<Key,Val,Alloc>& table ) :
     __size { table.__size },
-         __resize_policy { table.__resize_policy },
-         __key_uniqueness_policy { table.__key_uniqueness_policy },
-  __begin_index { table.__begin_index } {
+    __resize_policy { table.__resize_policy },
+    __key_uniqueness_policy { table.__key_uniqueness_policy },
+    __begin_index { table.__begin_index } {
     // for debugging purposes
     GUM_CONS_CPY ( HashTable );
 
@@ -1677,9 +1678,9 @@ HashTableIterator<Key, Val>::HashTableIterator () noexcept :
   HashTable<Key, Val, Alloc>::HashTable
   ( const HashTable<Key, Val, OtherAlloc>& table ) :
     __size { table.__size },
-         __resize_policy { table.__resize_policy },
-         __key_uniqueness_policy { table.__key_uniqueness_policy },
-  __begin_index { table.__begin_index } {
+    __resize_policy { table.__resize_policy },
+    __key_uniqueness_policy { table.__key_uniqueness_policy },
+    __begin_index { table.__begin_index } {
     // for debugging purposes
     GUM_CONS_CPY ( HashTable );
 
@@ -1696,14 +1697,15 @@ HashTableIterator<Key, Val>::HashTableIterator () noexcept :
   HashTable<Key, Val, Alloc>::HashTable ( HashTable<Key, Val, Alloc> && table ) :
     __nodes ( std::move ( table.__nodes ) ),
     __size { table.__size },
-         __nb_elements { table.__nb_elements },
-         __hash_func { table.__hash_func },
-         __resize_policy { table.__resize_policy },
-         __key_uniqueness_policy { table.__key_uniqueness_policy },
-         __begin_index { table.__begin_index },
-         __safe_iterators ( std::move ( table.__safe_iterators ) ),
-  __alloc ( std::move ( table.__alloc ) ) {
+    __nb_elements { table.__nb_elements },
+    __hash_func { table.__hash_func },
+    __resize_policy { table.__resize_policy },
+    __key_uniqueness_policy { table.__key_uniqueness_policy },
+    __begin_index { table.__begin_index },
+    __safe_iterators ( std::move ( table.__safe_iterators ) ),
+    __alloc ( std::move ( table.__alloc ) ) {
     // for debugging purposes
+    table.__size = 0;
     GUM_CONS_MOV ( HashTable );
   }
 
@@ -1852,6 +1854,9 @@ HashTableIterator<Key, Val>::HashTableIterator () noexcept :
       __resize_policy  = table.__resize_policy;
       __key_uniqueness_policy = table.__key_uniqueness_policy;
       __begin_index    = table.__begin_index;
+
+      table.__size = 0; // necessary if we wish to perform moves iteratively, i.e.
+                        // x = std::move ( y ); y = std::move ( z ); ...
     }
 
     return *this;
@@ -2027,7 +2032,8 @@ HashTableIterator<Key, Val>::HashTableIterator () noexcept :
 
   /// enables the user to change dynamically the resizing policy.
   template <typename Key, typename Val, typename Alloc> INLINE
-  void HashTable<Key, Val, Alloc>::setResizePolicy ( const bool new_policy ) noexcept {
+  void HashTable<Key,Val,Alloc>::setResizePolicy ( const bool new_policy )
+    noexcept {
     __resize_policy = new_policy;
   }
 
@@ -2042,7 +2048,8 @@ HashTableIterator<Key, Val>::HashTableIterator () noexcept :
   /** @brief enables the user to change dynamically the policy for checking
    * whether there can exist several elements in the table having identical keys */
   template <typename Key, typename Val, typename Alloc> INLINE
-  void HashTable<Key, Val, Alloc>::setKeyUniquenessPolicy ( const bool new_policy ) noexcept {
+  void HashTable<Key,Val,Alloc>::setKeyUniquenessPolicy ( const bool new_policy )
+    noexcept {
     __key_uniqueness_policy = new_policy;
   }
 
@@ -2410,7 +2417,8 @@ HashTableIterator<Key, Val>::HashTableIterator () noexcept :
       size = std::max ( 2UL, __nb_elements / 2 );
 
     // create a new table
-    HashTable<Key, Mount, OtherAlloc> table ( size, resize_pol, key_uniqueness_pol );
+    HashTable<Key, Mount, OtherAlloc>
+      table ( size, resize_pol, key_uniqueness_pol );
 
     // fill the new hash table
     for ( auto iter = begin (); iter != end (); ++iter ) {
@@ -2437,7 +2445,8 @@ HashTableIterator<Key, Val>::HashTableIterator () noexcept :
       size = std::max ( 2UL, __nb_elements / 2 );
 
     // create a new table
-    HashTable<Key, Mount, OtherAlloc> table ( size, resize_pol, key_uniqueness_pol );
+    HashTable<Key, Mount, OtherAlloc>
+      table ( size, resize_pol, key_uniqueness_pol );
 
     // fill the new hash table
     for ( auto iter = begin (); iter != end (); ++iter ) {
@@ -2464,7 +2473,8 @@ HashTableIterator<Key, Val>::HashTableIterator () noexcept :
       size = std::max ( 2UL, __nb_elements / 2 );
 
     // create a new table
-    HashTable<Key, Mount, OtherAlloc> table ( size, resize_pol, key_uniqueness_pol );
+    HashTable<Key, Mount, OtherAlloc>
+      table ( size, resize_pol, key_uniqueness_pol );
 
     // fill the new hash table
     for ( auto iter = begin (); iter != end (); ++iter ) {
@@ -2491,7 +2501,8 @@ HashTableIterator<Key, Val>::HashTableIterator () noexcept :
       size = std::max ( 2UL, __nb_elements / 2 );
 
     // create a new table
-    HashTable<Key, Mount, OtherAlloc> table ( size, resize_pol, key_uniqueness_pol );
+    HashTable<Key, Mount, OtherAlloc>
+      table ( size, resize_pol, key_uniqueness_pol );
 
     // fill the new hash table
     for ( auto iter = begin (); iter != end (); ++iter ) {
@@ -2527,12 +2538,6 @@ HashTableIterator<Key, Val>::HashTableIterator () noexcept :
   ( const HashTable<Key, Val, OtherAlloc>& from ) const {
     return ! operator== ( from );
   }
-
-
-
-
-
-
 
 
   // a << operator for HashTableList

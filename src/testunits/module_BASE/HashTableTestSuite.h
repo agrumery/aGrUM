@@ -61,6 +61,30 @@ namespace gum_tests {
       TS_ASSERT ( t5.size() == 1 );
     }
 
+    void testMoves () {
+      gum::HashTable<int, int> t1 {
+        std::pair<int,int> ( 3,4 ),
+        std::pair<int,int> ( 5,6 )
+      };
+
+      gum::HashTable<int, int> t2 {
+        std::pair<int,int> ( 1,4 ),
+        std::pair<int,int> ( 3,6 ),
+        std::pair<int,int> ( 2,7 )
+      };
+
+      gum::HashTable<int, int> t3 {
+        std::pair<int,int> ( 2,7 )
+      };
+
+      gum::HashTable<int, int> t4 = std::move ( t3 );
+      t3 = std::move ( t2 );
+      t2 = std::move ( t1 );
+
+      TS_ASSERT ( t2.size () == 2 );
+      TS_ASSERT ( t2.exists ( 5 ) );
+    }
+
     void testInsert() {
       gum::HashTable<int, std::string> table;
       TS_GUM_ASSERT_THROWS_NOTHING( table.insert( 1, "a" ) );

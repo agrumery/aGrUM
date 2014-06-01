@@ -146,238 +146,239 @@ namespace gum {
    * @endcode
    */
   /* =========================================================================== */
-  template <typename Val, typename Priority = int, typename Cmp = std::less<Priority> >
+  template <typename Val, typename Priority = int,
+            typename Cmp = std::less<Priority> >
 
   class PriorityQueue {
-    public:
-      // ############################################################################
-      /// @name Constructors / Destructors
-      // ############################################################################
-      /// @{
+  public:
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
 
 
-      /// basic constructor. Creates an empty priority queue
-      /** @param compare a function taking two elements in argument, say e1 and e2,
-       * and returning a Boolean indicating wether e1 < e2, i.e., whether e1 should
-       * be nearer than e2 to the top of the heap.
-       * @param uniqueness turn on/off the uniqueness policy, i.e., the possibility
-       * that a given element appears several times in the queue
-       * (default is nonuniqueness)
-       * @param capacity the size of the internal data structures containing the
-       * elements (could be for instance vectors or hashtables) */
+    /// basic constructor. Creates an empty priority queue
+    /** @param compare a function taking two elements in argument, say e1 and e2,
+     * and returning a Boolean indicating wether e1 < e2, i.e., whether e1 should
+     * be nearer than e2 to the top of the heap.
+     * @param uniqueness turn on/off the uniqueness policy, i.e., the possibility
+     * that a given element appears several times in the queue
+     * (default is nonuniqueness)
+     * @param capacity the size of the internal data structures containing the
+     * elements (could be for instance vectors or hashtables) */
 
-      explicit PriorityQueue ( Cmp compare = Cmp(),
-                               bool uniqueness = false,
-                               Size capacity = GUM_PRIORITY_QUEUE_DEFAULT_CAPACITY );
+    explicit PriorityQueue ( Cmp compare = Cmp(),
+                             bool uniqueness = false,
+                             Size capacity = GUM_PRIORITY_QUEUE_DEFAULT_CAPACITY );
 
 
-      /// copy constructor
+    /// copy constructor
 
-      PriorityQueue ( const PriorityQueue<Val, Priority, Cmp>& );
+    PriorityQueue ( const PriorityQueue<Val, Priority, Cmp>& );
 
 
-      /// destructor
+    /// destructor
 
-      ~PriorityQueue();
+    ~PriorityQueue();
 
-      /// @}
+    /// @}
 
 
-      // ############################################################################
-      /// @name Accessors / Modifiers
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Accessors / Modifiers
+    // ############################################################################
+    /// @{
 
 
-      /// returns the number of elements in the priority queue
+    /// returns the number of elements in the priority queue
 
-      Size size() const ;
+    Size size() const ;
 
 
-      /// indicates whether the priority queue is empty
+    /// indicates whether the priority queue is empty
 
-      bool empty() const ;
+    bool empty() const ;
 
 
-      /// indicates whether the priority queue contains a given value
+    /// indicates whether the priority queue contains a given value
 
-      bool contains ( const Val& ) const ;
+    bool contains ( const Val& ) const ;
 
 
-      /// returns the element at the top of the priority queue
-      /** @throw NotFound exception is thrown if the queue is empty */
+    /// returns the element at the top of the priority queue
+    /** @throw NotFound exception is thrown if the queue is empty */
 
-      const Val& top() const;
+    const Val& top() const;
 
 
-      /// returns the priority of the top element
-      /** @throw NotFound exception is thrown if the queue is empty */
+    /// returns the priority of the top element
+    /** @throw NotFound exception is thrown if the queue is empty */
 
-      const Priority& topPriority() const;
+    const Priority& topPriority() const;
 
 
-      /// removes the top element from the priority queue and return it
-      /** @throw NotFound exception is thrown if the queue is empty */
+    /// removes the top element from the priority queue and return it
+    /** @throw NotFound exception is thrown if the queue is empty */
 
-      Val pop();
+    Val pop();
 
 
-      /// inserts a new (a copy) element in the priority queue
-      /** @return the index of the element inserted into the priority queue (see
-       * method erase for more details about the index)
-       * @throw DuplicateElement exception is thrown if the uniqueness property is
-       * set to true and the element already exists */
+    /// inserts a new (a copy) element in the priority queue
+    /** @return the index of the element inserted into the priority queue (see
+     * method erase for more details about the index)
+     * @throw DuplicateElement exception is thrown if the uniqueness property is
+     * set to true and the element already exists */
 
-      Size insert ( const Priority& priority, const Val& val );
+    Size insert ( const Priority& priority, const Val& val );
 
 
-      /// removes the top of the priority queue (but does not return it)
-      /** If the heap is empty, it does nothing (in particular, it does not throw
-       * any exception). */
+    /// removes the top of the priority queue (but does not return it)
+    /** If the heap is empty, it does nothing (in particular, it does not throw
+     * any exception). */
 
-      void eraseTop();
+    void eraseTop();
 
 
-      /// removes the element at position "index" from the priority queue
-      /** If the element cannot be found, the function returns without throwing any
-       * exception.
-       * @param index represents the position of the element to be removed. This is
-       * computed as follows: suppose that the queue is a complete binary tree, that
-       * is, a binary tree where all levels are completely filled except, maybe, the
-       * last one and, in this case, the elements of this level are all to the left
-       * of the tree. Then parsing the tree from top to bottom and, for each level,
-       * from left to right, and assigning index 0 to the root of the tree and,
-       * incrementing the index by 1 each time we jump to another node, we get a
-       * unique index for each element. This is precisely what the index passed in
-       * argument of the function represents. */
+    /// removes the element at position "index" from the priority queue
+    /** If the element cannot be found, the function returns without throwing any
+     * exception.
+     * @param index represents the position of the element to be removed. This is
+     * computed as follows: suppose that the queue is a complete binary tree, that
+     * is, a binary tree where all levels are completely filled except, maybe, the
+     * last one and, in this case, the elements of this level are all to the left
+     * of the tree. Then parsing the tree from top to bottom and, for each level,
+     * from left to right, and assigning index 0 to the root of the tree and,
+     * incrementing the index by 1 each time we jump to another node, we get a
+     * unique index for each element. This is precisely what the index passed in
+     * argument of the function represents. */
 
-      void erase ( Size index );
+    void eraseByPos ( Size index );
 
 
-      /// removes a given element from the priority queue (but does not return it)
-      /** If the element cannot be found, the function returns without throwing any
-       * exception.
-       * @param val the element we wish to remove. If the queue contains several
-       * times this element, then the one with the smallest index is removed. */
+    /// removes a given element from the priority queue (but does not return it)
+    /** If the element cannot be found, the function returns without throwing any
+     * exception.
+     * @param val the element we wish to remove. If the queue contains several
+     * times this element, then the one with the smallest index is removed. */
 
-      void eraseByVal ( const Val& val );
+    void erase ( const Val& val );
 
 
-      /// modifies the priority of the element at position "index" of the queue
-      /** @throw NotFound If the element cannot be found
-       */
+    /// modifies the priority of the element at position "index" of the queue
+    /** @throw NotFound If the element cannot be found
+     */
 
-      Size setPriority ( Size index, const Priority& new_priority );
+    Size setPriority ( Size index, const Priority& new_priority );
 
 
-      /// modifies the priority of each instance of a given element
+    /// modifies the priority of each instance of a given element
 
-      void setPriorityByVal ( const Val& elt, const Priority& new_priority );
+    void setPriorityByVal ( const Val& elt, const Priority& new_priority );
 
 
-      /// returns the priority of an instance of the value passed in argument
-      /** Of course, this method is really meaningful only when there is only one
-       * instance of the given element within the PriorityQueue. */
+    /// returns the priority of an instance of the value passed in argument
+    /** Of course, this method is really meaningful only when there is only one
+     * instance of the given element within the PriorityQueue. */
 
-      const Priority& priorityByVal ( const Val& elt ) const ;
+    const Priority& priorityByVal ( const Val& elt ) const ;
 
 
-      /// removes all the elements from the queue
+    /// removes all the elements from the queue
 
-      void clear();
+    void clear();
 
 
-      /// returns a hashtable the keys of which are the values stored in the queue
-      /** The keys of the hashtable correspond to the values stored in the
-       * priority queue and, for each key, the corresponding value is the list of
-       * indices in the queue where we can find the key. */
+    /// returns a hashtable the keys of which are the values stored in the queue
+    /** The keys of the hashtable correspond to the values stored in the
+     * priority queue and, for each key, the corresponding value is the list of
+     * indices in the queue where we can find the key. */
 
-      const HashTable< Val, std::vector<Size> >& allValues() const ;
+    const HashTable< Val, std::vector<Size> >& allValues() const ;
 
 
-      /// displays the content of the queue
+    /// displays the content of the queue
 
-      std::string toString() const;
+    std::string toString() const;
 
-      /// @}
+    /// @}
 
 
-      // ############################################################################
-      /// @name Operators
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
 
 
-      /// copy operator
-      /** When a problem occurs during the copy (for instance when not enough memory
-       * is available), the operator guarantees that the heap stays in a coherent
-       * state. Actually, the priority queue becomes empty. An exception is then
-       * thrown. */
+    /// copy operator
+    /** When a problem occurs during the copy (for instance when not enough memory
+     * is available), the operator guarantees that the heap stays in a coherent
+     * state. Actually, the priority queue becomes empty. An exception is then
+     * thrown. */
 
-      PriorityQueue<Val, Priority, Cmp>&
-      operator= ( const PriorityQueue<Val, Priority, Cmp>& );
+    PriorityQueue<Val, Priority, Cmp>&
+    operator= ( const PriorityQueue<Val, Priority, Cmp>& );
 
 
-      /// returns the element at index "index_elt" from the priority queue
-      /**
-       * @throw NotFound
-       */
+    /// returns the element at index "index_elt" from the priority queue
+    /**
+     * @throw NotFound
+     */
 
-      const Val& operator[] ( Size index_elt ) const;
+    const Val& operator[] ( Size index_elt ) const;
 
-      /// @}
+    /// @}
 
 
-      // ############################################################################
-      /// @name Fine tuning
-      // ############################################################################
-      /// @{
+    // ############################################################################
+    /// @name Fine tuning
+    // ############################################################################
+    /// @{
 
 
-      /// return the size of the internal structure storing the priority queue
+    /// return the size of the internal structure storing the priority queue
 
-      Size capacity() const ;
+    Size capacity() const ;
 
 
-      /// changes the size of the internal structure storing the priority queue
+    /// changes the size of the internal structure storing the priority queue
 
-      void resize ( Size new_size );
+    void resize ( Size new_size );
 
 
-      /// returns the current uniqueness policy
+    /// returns the current uniqueness policy
 
-      bool uniquenessPolicy() const ;
+    bool uniquenessPolicy() const ;
 
 
-      /** @brief enables the user to change dynamically the policy for checking
-       * whether there can exist several identical elements in the queue
-       *
-       * By default, queues can store several times the same element. However, for
-       * some applications, we should ensure that all elements in the queue are
-       * distinct.
-       * @warning When setting the policy to "uniqueness", the function does not
-       * check whether the queue already contains identical elements. It thus only
-       * ensures that elements inserted from now on do not already belong to the
-       * queue. */
+    /** @brief enables the user to change dynamically the policy for checking
+     * whether there can exist several identical elements in the queue
+     *
+     * By default, queues can store several times the same element. However, for
+     * some applications, we should ensure that all elements in the queue are
+     * distinct.
+     * @warning When setting the policy to "uniqueness", the function does not
+     * check whether the queue already contains identical elements. It thus only
+     * ensures that elements inserted from now on do not already belong to the
+     * queue. */
 
-      void setUniquenessPolicy ( const bool new_policy ) ;
+    void setUniquenessPolicy ( const bool new_policy ) ;
 
-      /// @}
+    /// @}
 
 
 
-    private:
-      /// an array storing all the elements of the heap as well as their score
-      std::vector<std::pair<Priority, Val*>*> __heap;
+  private:
+    /// an array storing all the elements of the heap as well as their score
+    std::vector<std::pair<Priority, Val*>*> __heap;
 
-      /// a hashtable for quickly finding the elements by their value
-      HashTable< Val, std::vector<Size> > __indices;
+    /// a hashtable for quickly finding the elements by their value
+    HashTable< Val, std::vector<Size> > __indices;
 
-      /// the number of elements in the heap
-      Size __nb_elements;
+    /// the number of elements in the heap
+    Size __nb_elements;
 
-      /// comparison function
-      Cmp __cmp;
+    /// comparison function
+    Cmp __cmp;
   };
 
 

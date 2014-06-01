@@ -1,4 +1,4 @@
-#include "Rational.h"
+#include "rational.h"
 
 namespace gum {
 

@@ -34,8 +34,8 @@
 #include <agrum/core/exceptions.h>
 #include <map>
 
-#include <agrum/core/Rational.h>
-#include <agrum/core/pow.h>
+#include <agrum/core/math/rational.h>
+#include <agrum/core/math/pow.h>
 
 #include <agrum/CN/LrsWrapper.h>
 

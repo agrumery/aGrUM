@@ -205,7 +205,7 @@ namespace gum {
       for ( unsigned int ind = 0; ind < tj; ++ind ) {
         if ( is_cliques_relevant[ind] ) {
           pair.first = ind;
-          queue.eraseByVal ( pair );
+          queue.erase ( pair );
         }
       }
 
@@ -214,7 +214,7 @@ namespace gum {
       for ( unsigned int ind = tj + 1; ind < cliques.size(); ++ind ) {
         if ( is_cliques_relevant[ind] ) {
           pair.second = ind;
-          queue.eraseByVal ( pair );
+          queue.erase ( pair );
         }
       }
 

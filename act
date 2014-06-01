@@ -306,6 +306,7 @@ def schedule(act,arg,exec_cde=False):
     # safe_cd =>  # cde="[ ! -d "+folder+" ] && mkdir "+folder+" ; cd "+folder
     # cd .. ou autre
     # autre
+    
 def execute(actions,verbose=True):
   nberr=0
   for k in actions:
@@ -318,6 +319,8 @@ def execute(actions,verbose=True):
       if not os.path.exists(folder):
         os.mkdir(folder)
       os.chdir(folder)
+    elif action=="back":
+      os.chdir("..") 
     elif action=="cd":
       folder=k['argument'] # most probably folder=".."
       os.chdir(folder) 
@@ -331,11 +334,40 @@ def execute(actions,verbose=True):
       while True:
         try:
           line = q.get_nowait()
-          sys.stdout.write(line)
+          
+          #prettifying the line
+          a1=a2=""
+          
+          # prettifying compilation
+          s=line.split("%]")
+          if len(s)>=2:
+            a1=OKGREEN+"%]".join(s[:-1])+"%]"+ENDC
+            line=s[-1]
+          
+          s=line.split("CMakeFiles/agrum.dir/")
+          if len(s)==2:
+            a2=s[0]+WARNING+s[1]+ENDC
+          else:
+            a2=line
+          
+          #prettifying test execution
+          if (a1==""):
+            s=a2.split(". [")
+            if len(s)==2:
+              a1=s[0]+". "
+              a2=OKGREEN+"["+s[1]+ENDC
+            else:
+              s=a2.split("# [")
+              if len(s)==2:
+                a1=s[0]+"# "
+                a2=OKGREEN+"["+s[1]+ENDC
+                
+          sys.stdout.write(a1+a2)
           sys.stdout.flush()
         except Empty:
           if proc.poll() is not None:
-            print(WARNING+"[.]"+ENDC)
+            if verbose:
+              print(WARNING+"[end of subprocess]"+ENDC)
             break
       
       #exitcode = proc.returncode
@@ -447,7 +479,7 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
             cmake_options=cmake_options+"OFF"
         [safe_cd(s) for s in folders]
         schedule("cmake ",cmake_options)
-        [schedule("cd","..") for s in folders]
+        [schedule("back","") for s in folders]
 
         folders=['build','wrappers',options['wrapper']]
         cmake_options="-DCMAKE_BUILD_TYPE=RELEASE ../../../wrappers/"+options['wrapper']+"/"
@@ -476,7 +508,10 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
             cmake_options=cmake_options+' -G "MinGW Makefiles" -DCMAKE_INSTALL_PREFIX=_CPack_Packages/TGZ/agrum-0.6.0-win'
         if (options['rule']=="test" or options['rule']=="run"):
             make_options=options['rule']
-            run_cde="./"+options['rule']
+            if (options['platform'] != "windows"):
+			  run_cde="./"+options['rule']
+            else:
+              run_cde=".\\"+options['rule']+".exe"
         else:
           if (options['rule']=="agrum" and options['option'].upper()=="DEBUG"):
             make_options="agrum-dbg"
@@ -511,10 +546,8 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
     if options['rule']!='config':
         schedule("make ",make_options)
     if (run_cde!=""):
-        if (options['platform'] == "windows"):
-            schedule("wine ",run_cde,True)
         schedule(run_cde,"",exec_cde=True)
-    [schedule("cd","..") for s in folders]
+    [schedule("back","") for s in folders]
 
 ##########################################################################################################################
 def uninstall(options):
@@ -531,7 +564,7 @@ def uninstall(options):
         folders=["build",options['platform'],options['option']]
         [safe_cd(s) for s in folders]
         schedule("mak","uninstall")
-        [schedule("cd","..") for s in folders]
+        [schedule("back","") for s in folders]
 
 ###################################################################################################################
 def _getParam(name):
@@ -669,13 +702,7 @@ if current['rule']=='clean':
     sys.exit(0)
 if current['rule']=='uninstall':
     uninstall(current)
-    if (options.verbose):
-      print("")
-      print(sh)
-      print("")
-      print(sh_no_exec)
-      print("")
-    os.system(sh)
+    execute(sh)
     sys.exit(0)
     
 if current['rule']=='default':
@@ -691,17 +718,10 @@ shlv.close()
 
 proceed(current,RANDOMSEED_FOR_FIXED_SEED="10")
 
-if (options.verbose):
-  print("")
-  print(sh)
-  print("")
-  print(sh_no_exec)
-  print("")
-
 if not(current['stats']):
-  execute(sh)
+  execute(sh,options.verbose)
 else:
-  execute(sh_no_exec)
+  execute(sh_no_exec,options.verbose)
   print("###########################################")
   print("Processing profile for "+getInvocation(current))
   print("This will take a certain amount of time ...")

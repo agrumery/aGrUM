@@ -24,8 +24,8 @@
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
  */
 
-#ifndef __RATIONAL__H__
-#define __RATIONAL__H__
+#ifndef __GUM_RATIONAL__H__
+#define __GUM_RATIONAL__H__
 
 #include <iostream>
 #include <sstream>
@@ -106,6 +106,6 @@ namespace gum {
 
 } // end of gum namespace
 
-#include <agrum/core/Rational.tcc>
+#include <agrum/core/math/rational.tcc>
 
 #endif
