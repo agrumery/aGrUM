@@ -291,9 +291,11 @@ namespace gum {
     Size setPriorityByPos ( Size index, const Priority& new_priority );
 
     /// modifies the priority of each instance of a given element
+    /** @throw NotFound If the element cannot be found */
     void setPriorityXX ( const Val& elt, const Priority& new_priority );
 
-    /// returns the priority of an instance of the value passed in argument
+    /// returns the priority of the value passed in argument
+    /** @throw NotFound If the element cannot be found */
     const Priority& priorityXX ( const Val& elt ) const;
 
     /// removes all the elements from the queue

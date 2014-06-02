@@ -43,9 +43,10 @@ namespace gum {
   PriorityQueueImplementation<Val,Priority,Cmp,Alloc,Gen>::
   PriorityQueueImplementation ( Cmp compare,
                                 Size capacity ) :
-    __heap ( capacity ),
     __indices ( capacity >> 1, true, true ),
     __cmp ( compare ) {
+    __heap.reserve ( capacity );
+    
     // for debugging purposes
     GUM_CONSTRUCTOR ( PriorityQueueImplementation );
   }
@@ -58,6 +59,7 @@ namespace gum {
   ( std::initializer_list< std::pair<Val,Priority> > list ) :
     __indices ( list.size () / 2, true, true ) {
     // fill the queue
+    __heap.reserve ( list.size () );
     for ( const auto& elt : list ) {
       insertXX ( elt.first, elt.second );
     }
@@ -274,7 +276,7 @@ namespace gum {
   Size
   PriorityQueueImplementation<Val,Priority,Cmp,Alloc,Gen>::capacity ()
     const noexcept {
-    return __heap.size ();
+    return __heap.capacity ();
   }
 
 
@@ -389,7 +391,6 @@ namespace gum {
   Size PriorityQueueImplementation<Val,Priority,Cmp,Alloc,Gen>::insertXX
   ( const Val& val,
     const Priority& priority ) {
-    std::cout << "toto" << std::endl;
     // check whether val already exists in the queue
     if ( __indices.exists ( val ) ) {
       GUM_ERROR ( DuplicateElement, "val already exists in the priority queue" );
@@ -438,18 +439,16 @@ namespace gum {
       GUM_ERROR ( DuplicateElement, "val already exists in the priority queue" );
     }
 
-    std::cout << "titi" << std::endl;
-
     // create the entry in the indices hashtable
     typename HashTable<Val,Size,IndexAllocator>::value_type&
       new_elt = __indices.insert ( std::move ( val ), 0 );
 
     try {
       __heap.push_back ( std::pair<Priority,const Val*>
-                         ( std::move ( priority ), &new_elt.first ) );
+                         ( std::move ( priority ), &( new_elt.first ) ) );
     }
     catch ( ... ) {
-      __indices.erase ( val );
+      __indices.erase ( new_elt.first );
       throw;
     }
 
@@ -468,10 +467,10 @@ namespace gum {
     }
 
     // put the new bucket into the heap
-    __heap[i].first  = new_heap_val.first;
-    __heap[i].second = new_heap_val.second;
+    __heap[i].first  = std::move ( new_heap_val.first );
+    __heap[i].second = &( new_elt.first );
     new_elt.second = i;
-
+    
     return i;
   }
 

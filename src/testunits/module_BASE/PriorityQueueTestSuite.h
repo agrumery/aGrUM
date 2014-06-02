@@ -65,10 +65,9 @@ namespace gum_tests {
 
       const std::string& str = queue1.top();
       TS_ASSERT ( str == "CCC" );
-     /*
       TS_ASSERT ( queue1.topPriority() == 2 );
 
-       std::string str2 = queue1.pop();
+      std::string str2 = queue1.pop();
       TS_ASSERT ( str2 == "CCC" );
       TS_ASSERT ( queue1.top() == "AAA" );
       TS_ASSERT ( queue1.topPriority() == 8 );
@@ -81,7 +80,7 @@ namespace gum_tests {
       queue1.setPriorityXX ( "BBB", 2 );
       TS_ASSERT ( queue1.top() == "BBB" );
       TS_ASSERT ( queue1.topPriority() == 2 );
-      TS_GUM_ASSERT_THROWS_NOTHING ( queue1.setPriorityXX ( "zzz", 4 ) );
+      TS_ASSERT_THROWS ( queue1.setPriorityXX ( "zzz", 4 ), gum::NotFound );
 
       TS_ASSERT_THROWS ( queue1.priorityXX ( "zzz" ), gum::NotFound );
       TS_ASSERT ( queue1.priorityXX ( "BBB" ) == 2 );
@@ -91,20 +90,18 @@ namespace gum_tests {
 
       const gum::HashTable<std::string,gum::Size>& vals = queue1.allValues();
       TS_ASSERT ( vals.size() == 4 );
-      */
     }
 
-    void aatestCopy() {
+    void testCopy() {
       gum::PriorityQueue<std::string> queue1;
       queue1.insertXX ( "AAA", 8  );
       queue1.insertXX ( "BBB", 10 );
       queue1.insertXX ( "CCC", 2  );
       queue1.insertXX ( "DDD", 23 );
       queue1.insertXX ( "EEE", 24 );
-      queue1.insertXX ( "AAA", 10 );
-
+ 
       gum::PriorityQueue<std::string> queue2 = queue1;
-      TS_ASSERT ( queue2.size() == 6 );
+      TS_ASSERT ( queue2.size() == 5 );
       TS_ASSERT ( queue2.empty() == false );
       TS_ASSERT ( queue2.contains ( "AAA" ) == true );
       TS_ASSERT ( queue2.contains ( "ZZZ" ) == false );
@@ -117,12 +114,12 @@ namespace gum_tests {
       queue2 = queue1;
       queue2.eraseTop();
       queue2 = queue1;
-      TS_ASSERT ( queue2.size() == 6 );
+      TS_ASSERT ( queue2.size() == 5 );
       TS_ASSERT ( queue2.empty() == false );
       TS_ASSERT ( queue2.contains ( "AAA" ) == true );
       TS_ASSERT ( queue2.contains ( "ZZZ" ) == false );
       queue2 = queue1;
-      TS_ASSERT ( queue2.size() == 6 );
+      TS_ASSERT ( queue2.size() == 5 );
       TS_ASSERT ( queue2.empty() == false );
       TS_ASSERT ( queue2.contains ( "AAA" ) == true );
       TS_ASSERT ( queue2.contains ( "ZZZ" ) == false );
@@ -134,12 +131,10 @@ namespace gum_tests {
       queue2.eraseByPos ( 3 );
       TS_ASSERT ( queue2.size() == 3 );
       queue2.eraseXX ( "AAA" );
-      TS_ASSERT ( queue2.size() == 2 );
+      TS_ASSERT ( queue2.size() == 3 );
 
       const std::string& str1 = queue2[0];
-      const std::string& str2 = queue2[1];
       TS_ASSERT ( str1 == "BBB" );
-      TS_ASSERT ( str2 == "DDD" );
     }
 
     /*
