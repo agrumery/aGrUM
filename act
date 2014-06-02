@@ -34,6 +34,25 @@ modulestxt="src/modules.txt" # the file to parse to find the modules
 
 nbr_tests_for_stats=40
 
+#################################################################################################
+# find make
+
+def is_tool(prog):
+    for dir in os.environ['PATH'].split(os.pathsep):
+        if os.path.exists(os.path.join(dir, prog)):            
+            return True
+    return False
+
+MAKE=""
+if is_tool("make"):
+  MAKE="make"
+elif is_tool("mingw32-make.exe"):
+  MAKE="mingw32-make.exe"
+
+if MAKE=="":
+  print("No <make> utility found. Exit")
+  exit(1)
+
 ##########################################################################################################################
 # ANSI colored string
 try:
@@ -48,12 +67,12 @@ except:
 
 OKGREEN = '\033[1m\033[32m'
 WARNING = '\033[1m\033[33m'
-RED = '\033[1m\033[31m'
+ERROR = '\033[1m\033[31m'
 ENDC = '\033[0m'
 
 ##########################################################################################################################
 # for timeout in popen (cross-platform)
-from subprocess import PIPE, Popen
+from subprocess import PIPE, Popen, STDOUT
 from threading  import Thread
 
 try:
@@ -196,7 +215,7 @@ def checkTestList(cde):
         name=tryfile
         break
     if name=="":
-      print RED+'Test "src/testunits/[module]/'+OKGREEN+ss+RED+'TestSuite.h" does not exists for the selected modules'+ENDC
+      print ERROR+'Test "src/testunits/[module]/'+OKGREEN+ss+ERROR+'TestSuite.h" does not exists for the selected modules'+ENDC
       print
       afficheTests()
       sys.exit(0)
@@ -257,7 +276,7 @@ def checkTestListCmake():
         if line[0:2]=="  ":
           s=line.strip()
           if not os.path.exists('src/testunits/'+s):
-            print RED+'Test '+WARNING+s[:-11]+RED+' (src/testunits/'+s+') does not exist => removing it from tests list'+ENDC
+            print ERROR+'Test '+WARNING+s[:-11]+ERROR+' (src/testunits/'+s+') does not exist => removing it from tests list'+ENDC
             rewrite=True
           else:
             res.append(s)
@@ -306,7 +325,22 @@ def schedule(act,arg,exec_cde=False):
     # safe_cd =>  # cde="[ ! -d "+folder+" ] && mkdir "+folder+" ; cd "+folder
     # cd .. ou autre
     # autre
-    
+   
+   
+def special_execute(action,argument):    
+  if action=="safe_cd":
+    if not os.path.exists(argument):
+      os.mkdir(argument)
+    os.chdir(argument)
+  elif action=="back":
+    os.chdir("..") 
+  elif action=="cd":
+    os.chdir(argument)
+  else:
+    return False
+  
+  return True
+
 def execute(actions,verbose=True):
   nberr=0
   for k in actions:
@@ -314,19 +348,11 @@ def execute(actions,verbose=True):
       print WARNING+k['action']+' '+OKGREEN+k['argument']+ENDC
       
     action=k['action']
-    if action=="safe_cd":
-      folder=k['argument']
-      if not os.path.exists(folder):
-        os.mkdir(folder)
-      os.chdir(folder)
-    elif action=="back":
-      os.chdir("..") 
-    elif action=="cd":
-      folder=k['argument'] # most probably folder=".."
-      os.chdir(folder) 
-    else:
-      commande=action+" "+k['argument']
-      proc=Popen(commande,shell=True,stdout=PIPE, bufsize=1, close_fds=ON_POSIX)
+    argument=k['argument']
+    
+    if not special_execute(action,argument):
+      commande=action+" "+argument
+      proc=Popen(commande,shell=True,stdout=PIPE, stderr=STDOUT, bufsize=1, close_fds=ON_POSIX)
       q = Queue()
       t = Thread(target=enqueue_output, args=(proc.stdout, q))
       t.daemon = True # thread dies with the program
@@ -336,34 +362,49 @@ def execute(actions,verbose=True):
           line = q.get_nowait()
           
           #prettifying the line
-          a1=a2=""
+          res=""
           
           # prettifying compilation
           s=line.split("%]")
           if len(s)>=2:
-            a1=OKGREEN+"%]".join(s[:-1])+"%]"+ENDC
-            line=s[-1]
+            res+=OKGREEN+"%]".join(s[:-1])+"%]"+ENDC+" "
+            line=s[-1].strip()
           
-          s=line.split("CMakeFiles/agrum.dir/")
-          if len(s)==2:
-            a2=s[0]+WARNING+s[1]+ENDC
-          else:
-            a2=line
+          remove_dirs=lambda s : s[:s.find("/")-1]
+          
+          # prettifying (compacting) path
+          if line[0]!="/": # we keep message beginning with full path
+            s=line.split("/agrum/")
+            if len(s)==2:            
+              res+=remove_dirs(s[0])+WARNING+" agrum/"+s[1].rstrip()+ENDC
+              line=""
+            else:
+              s=line.split("/generated-files/")
+              if len(s)==2:
+                line=""
+                res+=remove_dirs(s[0])+WARNING+" generated-files/"+s[1].rstrip()+ENDC
           
           #prettifying test execution
-          if (a1==""):
-            s=a2.split(". [")
+          if line!="":
+            s=line.split(". [")
             if len(s)==2:
-              a1=s[0]+". "
-              a2=OKGREEN+"["+s[1]+ENDC
+              res+=s[0]+". "+OKGREEN+"["+s[1].rstrip()+ENDC
             else:
-              s=a2.split("# [")
+              s=line.split("# [")
               if len(s)==2:
-                a1=s[0]+"# "
-                a2=OKGREEN+"["+s[1]+ENDC
-                
-          sys.stdout.write(a1+a2)
-          sys.stdout.flush()
+                res+=s[0]+"# "+OKGREEN+"["+s[1].rstrip()+ENDC
+              else:
+                s=line.split(" ... ")
+                if len(s)==2:
+                  res+=OKGREEN+s[0]+ENDC+" ... "+WARNING+"OK"+ENDC
+                else:
+                  res=line
+          
+          res=res.rstrip()
+            
+          if res!="":
+            sys.stdout.write(res.rstrip()+"\n")
+            sys.stdout.flush()
         except Empty:
           if proc.poll() is not None:
             if verbose:
@@ -373,8 +414,40 @@ def execute(actions,verbose=True):
       #exitcode = proc.returncode
       
       #for line in proc.stderr.readlines():
-      #  sys.stdout.write(RED+line+ENDC)
+      #  sys.stdout.write(ERROR+line+ENDC)
       
+def execute_test_with_stats(actions,i,nbr_tests_for_stats): 
+  time_line=re.compile(r'## Profiling :\s+(.*?)\sms ##')
+  stat_line=re.compile(r"Failed (.*?) of (.*?) test")
+  
+  tps=0  
+  for k in actions:
+      
+    action=k['action']
+    argument=k['argument']
+    
+    if not special_execute(action,argument):
+      commande=action+" "+argument
+      proc=Popen(commande,shell=True,stdout=PIPE,stderr=STDOUT)
+      out=proc.stdout.readlines()
+      tps=0
+      failed=0
+      total=0
+      for line in out:
+        time_match = time_line.search(line) 
+        if time_match:
+          tps=int(time_match.groups()[0])
+          continue
+        
+        stat_match = stat_line.search(line)
+        if stat_match:
+          failed=int(stat_match.groups()[0])
+          total=int(stat_match.groups()[1])
+        
+      if total>0:
+        print("Stats {5}{3}/{4}{6} : succes rate {7}{0}/{1}{6} in {8}{2}{6} ms".format(total-failed,total,tps,i+1,nbr_tests_for_stats,OKGREEN,ENDC,WARNING,ERROR))
+      
+  return tps
 ##########################################################################################################################
 
 def cleanAll():
@@ -491,7 +564,7 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
             if options['wrapper']=='pyAgrum':
                 run_cde="PYTHONPATH=. python ../../../wrappers/pyAgrum/testunits/TestSuite.py"
             else:
-                print RED+"No tests for "+options['wrapper']+ENDC
+                print ERROR+"No tests for "+options['wrapper']+ENDC
                 sys.exit(0)
         else:
             run_cde=""
@@ -505,7 +578,7 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
         cmake_options=" -DCMAKE_BUILD_TYPE="+options['option'].upper()+" ../../../src"
         if (options['platform']=="windows"):
             #cmake_options=cmake_options+" -DCMAKE_TOOLCHAIN_FILE=../../../src/cmake/Toolchain-mingw32.cmake -DCMAKE_INSTALL_PREFIX=_CPack_Packages/win32/TGZ/agrum-0.6.0-win32"
-            cmake_options=cmake_options+' -G "MinGW Makefiles" -DCMAKE_INSTALL_PREFIX=_CPack_Packages/TGZ/agrum-0.6.0-win'
+            cmake_options=cmake_options+' -G "MinGW Makefiles" -DCMAKE_INSTALL_PREFIX=_CPack_Packages/TGZ/agrum-win'
         if (options['rule']=="test" or options['rule']=="run"):
             make_options=options['rule']
             if (options['platform'] != "windows"):
@@ -544,7 +617,7 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
     [safe_cd(s) for s in folders]
     schedule("cmake ",cmake_options)
     if options['rule']!='config':
-        schedule("make ",make_options)
+        schedule(MAKE,make_options)
     if (run_cde!=""):
         schedule(run_cde,"",exec_cde=True)
     [schedule("back","") for s in folders]
@@ -554,11 +627,11 @@ def uninstall(options):
     if options['wrapper']!='':
         install_folder=sysconfig.get_python_lib(1,0,prefix=install_folder)
 
-        print "suppresion récursive de "+RED+install_folder+"/pyAgrum"+ENDC
+        print "suppresion récursive de "+ERROR+install_folder+"/pyAgrum"+ENDC
         os.system('cd '+install_folder+' && rm -rf pyAgrum')
-        print "suppresion récursive de "+RED+install_folder+"/gumLib"+ENDC
+        print "suppresion récursive de "+ERROR+install_folder+"/gumLib"+ENDC
         os.system('cd '+install_folder+' && rm -rf gumLib')
-        print "suppresion de "+RED+install_folder+"/pyAgrum*.egg-info"+ENDC
+        print "suppresion de "+ERROR+install_folder+"/pyAgrum*.egg-info"+ENDC
         os.system('rm -f '+install_folder+"/pyAgrum*.egg-info")
     else:
         folders=["build",options['platform'],options['option']]
@@ -568,7 +641,7 @@ def uninstall(options):
 
 ###################################################################################################################
 def _getParam(name):
-  return ENDC+'--'+RED+name
+  return ENDC+'--'+ERROR+name
 
 def getParam(name):
   return _getParam(name)+" "
@@ -666,7 +739,7 @@ for key in default.iterkeys():
     else:
         current[key]=default[key]
 
-print ENDC+RED+"aGrUM"+ENDC+" compilation tool "+RED+"v"+numversion+ENDC
+print ENDC+ERROR+"aGrUM"+ENDC+" compilation tool "+ERROR+"v"+numversion+ENDC
 print "(c) 2010-13 "+OKGREEN+"aGrUM Team"+ENDC
 print
 
@@ -722,33 +795,14 @@ if not(current['stats']):
   execute(sh,options.verbose)
 else:
   execute(sh_no_exec,options.verbose)
+    
   print("###########################################")
   print("Processing profile for "+getInvocation(current))
   print("This will take a certain amount of time ...")
   print("###########################################")
-  time_line=re.compile(r'## Profiling :\s+(.*?)\sms ##')
-  stat_line=re.compile(r"Failed (.*?) of (.*?) test")
-  
   vals=list()
   for i in range(nbr_tests_for_stats):
-    p=subprocess.Popen(sh,shell=True,stderr=subprocess.PIPE,stdout=subprocess.PIPE)
-    out=p.stderr.readlines()
-    tps=0
-    failed=0
-    total=0
-    for line in out:
-      time_match = time_line.search(line) 
-      if time_match:
-        tps=int(time_match.groups()[0])
-        continue
-      
-      stat_match = stat_line.search(line)
-      if stat_match:
-        failed=int(stat_match.groups()[0])
-        total=int(stat_match.groups()[1])
-       
-    print("Stats {3}/{4} : succes rate {0}/{1} in {2} ms".format(total-failed,total,tps,i+1,nbr_tests_for_stats))
-    vals.append(tps)
+    vals.append(execute_test_with_stats(sh,i,nbr_tests_for_stats))
     
   s=0.0
   s2=0.0
