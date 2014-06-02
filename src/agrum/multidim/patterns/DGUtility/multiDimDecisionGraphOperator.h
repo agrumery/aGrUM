@@ -1,21 +1,21 @@
 /****************************************************************************
- *    Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
- *   {prenom.nom}_at_lip6.fr                                                *
+ *  Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES     *
+ *  {prenom.nom}_at_lip6.fr                                                 *
  *                                                                          *
- *   This program is free software; you can redistribute it and/or modify   *
- *   it under the terms of the GNU General Public License as published by   *
- *   the Free Software Foundation; either version 2 of the License, or      *
- *   (at your option) any later version.                                    *
+ *  This program is free software; you can redistribute it and/or modify    *
+ *  it under the terms of the GNU General Public License as published by    *
+ *  the Free Software Foundation; either version 2 of the License, or       *
+ *  (at your option) any later version.                                     *
  *                                                                          *
- *   This program is distributed in the hope that it will be useful,        *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
- *   GNU General Public License for more details.                           *
+ *  This program is distributed in the hope that it will be useful,         *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of          *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the            *
+ *  GNU General Public License for more details.                            *
  *                                                                          *
- *   You should have received a copy of the GNU General Public License      *
- *   along with this program; if not, write to the                          *
- *   Free Software Foundation, Inc.,                                        *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.              *
+ *  You should have received a copy of the GNU General Public License       *
+ *  along with this program; if not, write to the                           *
+ *  Free Software Foundation, Inc.,                                         *
+ *  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.                *
  ****************************************************************************/
 /**
 * @file
@@ -28,51 +28,130 @@
 #ifndef GUM_MULTI_DIM_DECISION_GRAPH_OPERATOR_H
 #define GUM_MULTI_DIM_DECISION_GRAPH_OPERATOR_H
 // =======================================================
-#include <tuple>
-// =======================================================
-#include <agrum/core/bijection.h>
-// =======================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
 #include <agrum/multidim/patterns/DGUtility/o4DGContext.h>
 // =======================================================
 
 namespace gum {
 
-    template <typename GUM_SCALAR, template <typename> class FUNCTOR >
-    class MultiDimDecisionGraphOperator
-    {
-        public:
-            MultiDimDecisionGraphOperator( const MultiDimDecisionGraph<GUM_SCALAR>* DG1, const MultiDimDecisionGraph<GUM_SCALAR>* DG2 );
-            ~MultiDimDecisionGraphOperator();
+/**
+ * @class MultiDimDecisionGraphOperator multiDimDecisionGraphOperator.h <agrum/multidim/patterns/multiDimDecisionGraphOperator.h>
+ * @brief Class used to perform Decision Graph Operations
+ * @ingroup multidim_group
+ *
+ */
 
-            MultiDimDecisionGraph<GUM_SCALAR> *compute();
+  template <typename GUM_SCALAR, template <typename> class FUNCTOR >
+  class MultiDimDecisionGraphOperator
+  {
+    public:
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+
+      // ============================================================================
+      /// Default constructor.
+      // ============================================================================
+      MultiDimDecisionGraphOperator( const MultiDimDecisionGraph<GUM_SCALAR>* DG1, const MultiDimDecisionGraph<GUM_SCALAR>* DG2 );
+
+      // ============================================================================
+      /// Default destructor.
+      // ============================================================================
+      ~MultiDimDecisionGraphOperator();
+
+    /// @}
+
+    // ############################################################################
+    /// @name Main Method
+    // ############################################################################
+    /// @{
+
+      // ============================================================================
+      /// Computes and builds the Decision Graph that is the result of the operation
+      // ============================================================================
+      MultiDimDecisionGraph<GUM_SCALAR> *compute();
+
+    /// @}
 
 
-        private :
+    private :
+      // ============================================================================
+      /// Computes an order for the final Decision graph that will minimize the number
+      /// of re exploration
+      // ============================================================================
+      void __establishVarOrder();
 
-            void __establishVarOrder();
-            Idx __distance(const MultiDimDecisionGraph<GUM_SCALAR> *, const DiscreteVariable*, const DiscreteVariable*);
-            void __findRetrogradeVariables( const MultiDimDecisionGraph<GUM_SCALAR>* dg, HashTable<NodeId, short int*>& dgInstNeed);
+      // ============================================================================
+      /// Heuristic methods to decide which of two retrograde variables should come first
+      // ============================================================================
+      Idx __distance(const MultiDimDecisionGraph<GUM_SCALAR> *, const DiscreteVariable*, const DiscreteVariable*);
 
-            NodeId __compute(O4DGContext & currentSituation, Idx lastInstVarPos , std::string tab);
-            NodeId __nodeRedundancyCheck( const DiscreteVariable* var, NodeId* sonsIds );
+      // ============================================================================
+      /// Establish for each node in both decision graph if it has retrograde variables
+      /// beneath it
+      // ============================================================================
+      void __findRetrogradeVariables( const MultiDimDecisionGraph<GUM_SCALAR>* dg, HashTable<NodeId, short int*>& dgInstNeed);
 
-            const MultiDimDecisionGraph<GUM_SCALAR>* __DG1;
-            const MultiDimDecisionGraph<GUM_SCALAR>* __DG2;
-            MultiDimDecisionGraph<GUM_SCALAR>* __rd;
-            Idx __nbVar;
-            short int* __default;
-            short int* __instNeeded;
+      // ============================================================================
+      /// The main recursion function
+      // ============================================================================
+      NodeId __compute(O4DGContext & currentSituation, Idx lastInstVarPos , std::string tab);
 
-            const FUNCTOR<GUM_SCALAR> __function;
-
-            HashTable<double, NodeId> __explorationTable;
-
-            HashTable<NodeId, short int*> __DG1InstantiationNeeded;
-            HashTable<NodeId, short int*> __DG2InstantiationNeeded;
+      // ============================================================================
+      /// Ensure that no redundancy exists in final diagram
+      // ============================================================================
+      NodeId __nodeRedundancyCheck( const DiscreteVariable* var, NodeId* sonsIds );
 
 
-    };
+
+      // ============================================================================
+      /// One of the two decision graphs used for the operation
+      // ============================================================================
+      const MultiDimDecisionGraph<GUM_SCALAR>* __DG1;
+
+      // ============================================================================
+      /// The other one
+      // ============================================================================
+      const MultiDimDecisionGraph<GUM_SCALAR>* __DG2;
+
+      // ============================================================================
+      /// The resulting decision graph
+      // ============================================================================
+      MultiDimDecisionGraph<GUM_SCALAR>* __rd;
+
+      // ============================================================================
+      /// The total number of variable implied in the operation
+      // ============================================================================
+      Idx __nbVar;
+
+      // ============================================================================
+      /// The function to be performed on the leaves
+      // ============================================================================
+      const FUNCTOR<GUM_SCALAR> __function;
+
+      // ============================================================================
+      /// The hashtable used to know if two pair of nodes have already been visited
+      // ============================================================================
+      HashTable<double, NodeId> __explorationTable;
+
+      // ============================================================================
+      /// Table uses to know if a given node of first decision graph has retrograde
+      /// vrariables
+      // ============================================================================
+      HashTable<NodeId, short int*> __DG1InstantiationNeeded;
+
+      // ============================================================================
+      /// Table uses to know if a given node of second decision graph has retrograde
+      /// vrariables
+      // ============================================================================
+      HashTable<NodeId, short int*> __DG2InstantiationNeeded;
+
+      // ============================================================================
+      /// Just a comptuationnal trick
+      // ============================================================================
+      short int* __default;
+  };
 
 } // namespace gum
 

@@ -94,7 +94,6 @@ namespace gum {
                 new typename MultiDimDecisionGraph< GUM_SCALAR>::InternalNode( var );
 
         __decisionGraph->__internalNodeMap.insert(nid, newNodeStruct);
-//        __decisionGraph->__model.
 
         MultiDimDecisionGraph< GUM_SCALAR>::_addElemToNICL( &(__decisionGraph->__var2NodeIdMap[var]), nid );
 
@@ -156,46 +155,50 @@ namespace gum {
     // Erases a node from the diagram.
     //
     // @param id The id of the variable to erase.
-    // @throw NotFound if node isn't in diagram
     //
     // ============================================================================
     template<typename GUM_SCALAR>
     void
-    MultiDimDecisionGraphManager< GUM_SCALAR>::eraseNode ( NodeId n ){
+    MultiDimDecisionGraphManager< GUM_SCALAR>::eraseNode ( NodeId eraseId, NodeId replacingId ){
 
-      if( !__decisionGraph->__model.exists ( n )){
-        GUM_ERROR ( NotFound, "Node " <<  n << " does not exist in diagram." );
-      }
+        if ( __decisionGraph->isTerminalNode( eraseId ) ) {
 
-      for(SequenceIterator< const DiscreteVariable*> iterVar = __decisionGraph->variablesSequence().begin();
-          iterVar != __decisionGraph->variablesSequence().end(); ++iterVar){
+            for(SequenceIterator< const DiscreteVariable*> iterVar = __decisionGraph->variablesSequence().begin();
+                    iterVar != __decisionGraph->variablesSequence().end(); ++iterVar){
 
-        if( !__decisionGraph->isTerminalNode(n) &&
-            __decisionGraph->variablesSequence().pos(*iterVar) >= __decisionGraph->variablesSequence().pos(__decisionGraph->__internalNodeMap[n]->nodeVar()))
-          continue;
+                typename MultiDimDecisionGraph< GUM_SCALAR>::NICLElem* nodeIter = __decisionGraph->__var2NodeIdMap[*iterVar];
+                while( nodeIter != nullptr ){
 
-        typename MultiDimDecisionGraph< GUM_SCALAR>::NICLElem* currentElem = __decisionGraph->__var2NodeIdMap[*iterVar];
-        while( currentElem != nullptr ){
-          for( Idx iterSon = 0; iterSon < (*iterVar)->domainSize(); ++iterSon)
-            if( __decisionGraph->__internalNodeMap[currentElem->elemId]->son(iterSon) == n )
-              __decisionGraph->__internalNodeMap[currentElem->elemId]->setSon( iterSon, 0 );
+                    for( Idx modality = 0; modality < (*iterVar)->domainSize(); ++modality)
+                        if( __decisionGraph->node( nodeIter->elemId )->son(modality) == eraseId )
+                            setSon( nodeIter->elemId, modality, replacingId );
 
-          currentElem = currentElem->nextElem;
+                    nodeIter = nodeIter->nextElem;
+
+                }
+            }
+            __decisionGraph->__valueMap.eraseFirst( eraseId );
+
+        } else {
+
+            typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* eraseNode = __decisionGraph->__internalNodeMap[eraseId];
+            typename MultiDimDecisionGraph<GUM_SCALAR>::PICLElem* picle = eraseNode->parents();
+            while( picle != nullptr ) {
+                setSon( picle->parentId, picle->modality, replacingId );
+                picle = picle->nextElem;
+            }
+
+            MultiDimDecisionGraph<GUM_SCALAR>::_removeElemFromNICL(
+                        &(__decisionGraph->__var2NodeIdMap[__decisionGraph->__internalNodeMap[eraseId]->nodeVar()]), eraseId );
+            delete __decisionGraph->__internalNodeMap[eraseId];
+            __decisionGraph->__internalNodeMap.erase(eraseId);
         }
-      }
 
-      if ( __decisionGraph->isTerminalNode(n) )
-        __decisionGraph->__valueMap.eraseFirst(n);
-      else {
-          MultiDimDecisionGraph<GUM_SCALAR>::_removeElemFromNICL( &(__decisionGraph->__var2NodeIdMap[__decisionGraph->__internalNodeMap[n]->nodeVar()]), n);
-          delete __decisionGraph->__internalNodeMap[n];
-          __decisionGraph->__internalNodeMap.erase(n);
-      }
+        __decisionGraph->__model.eraseNode(eraseId);
 
-      __decisionGraph->__model.eraseNode(n);
-
-      if ( __decisionGraph->__root == n )
-        __decisionGraph->__root = 0;
+        if ( __decisionGraph->__root == eraseId )
+          __decisionGraph->__root = replacingId;
+//        std::cout << "OH NON, J'ai été appelé!" << std::endl;
     }
 
 

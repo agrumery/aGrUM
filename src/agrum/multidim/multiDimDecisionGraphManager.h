@@ -157,10 +157,11 @@ namespace gum{
          * Erases a node from the diagram.
          *
          * @param id The id of the variable to erase.
+         * @param replacingId offers the possibility to reroute any parent to the given node
          * @throw NotFound if node isn't in diagram
          */
         // ============================================================================
-        void eraseNode ( NodeId id );
+        void eraseNode ( NodeId id, NodeId replacingId = 0 );
 
       /// @}
 

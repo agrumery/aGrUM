@@ -56,9 +56,9 @@ namespace gum {
   class MultiDimDecisionGraph : public MultiDimImplementation< GUM_SCALAR > {
 
     public:
-      // ============================================================================
+      // ############################################################################
       /// The small allocator object used by every decisionGraph to allocate table
-      // ============================================================================
+      // ############################################################################
       static SmallObjectAllocator soa;
 
     public:
@@ -67,11 +67,11 @@ namespace gum {
       // ############################################################################
       /// @{
         struct NICLElem {
-          // ============================================================================
+
           /// NodeId
-          // ============================================================================
           NodeId elemId;
 
+          /// Pointer to next NICLElem
           NICLElem* nextElem;
         };
 
@@ -93,39 +93,40 @@ namespace gum {
         static void _deleteNICL( NICLElem* nodeChain );
       /// @}
 
-  public:
-    // ############################################################################
-    /// Parent Chained list element
-    // ############################################################################
-    /// @{
-      struct PICLElem {
+    public:
+      // ############################################################################
+      /// Parent Chained list element
+      // ############################################################################
+      /// @{
+        struct PICLElem {
+
+          /// NodeId
+          NodeId parentId;
+
+          /// Modality on which this parent is pointing to current node
+          Idx modality;
+
+          // Next elem
+          PICLElem* nextElem;
+        };
+
+    protected :
         // ============================================================================
-        /// NodeId
+        /// Since elem chain are handled with soa, here is the operation of adding a node
+        /// to the list.
         // ============================================================================
-        NodeId parentId;
+        static void _addElemToPICL( PICLElem** parentChain, const NodeId& elemId, const Idx& modality);
 
-        Idx modality;
+        // ============================================================================
+        /// And here the one to remove the elem
+        // ============================================================================
+        static void _removeElemFromPICL( PICLElem** parentChain, const NodeId& elemId, const Idx& modality);
 
-        PICLElem* nextElem;
-      };
-
-  protected :
-      // ============================================================================
-      /// Since elem chain are handled with soa, here is the operation of adding a node
-      /// to the list.
-      // ============================================================================
-      static void _addElemToPICL( PICLElem** parentChain, const NodeId& elemId, const Idx& modality);
-
-      // ============================================================================
-      /// And here the one to remove the elem
-      // ============================================================================
-      static void _removeElemFromPICL( PICLElem** parentChain, const NodeId& elemId, const Idx& modality);
-
-      // ============================================================================
-      /// Delete completely the chain
-      // ============================================================================
-      static void _deletePICL( PICLElem* parentChain );
-    /// @}
+        // ============================================================================
+        /// Delete completely the chain
+        // ============================================================================
+        static void _deletePICL( PICLElem* parentChain );
+      /// @}
 
 
     public :
@@ -526,6 +527,7 @@ namespace gum {
       /// Associates each terminal node to a value
       // ============================================================================
       Bijection< NodeId, GUM_SCALAR > __valueMap;
+      HashTable< NodeId, PICLElem* > __valueParents;
 
       // ============================================================================
       /// Associates each non-terminal node to a variable
