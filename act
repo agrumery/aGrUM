@@ -432,7 +432,7 @@ def execute_test_with_stats(actions,i,nbr_tests_for_stats):
       out=proc.stdout.readlines()
       tps=0
       failed=0
-      total=0
+      total=-1
       for line in out:
         time_match = time_line.search(line) 
         if time_match:
@@ -443,8 +443,8 @@ def execute_test_with_stats(actions,i,nbr_tests_for_stats):
         if stat_match:
           failed=int(stat_match.groups()[0])
           total=int(stat_match.groups()[1])
-        
-      if total>0:
+      
+      if total>=0:
         print("Stats {5}{3}/{4}{6} : succes rate {7}{0}/{1}{6} in {8}{2}{6} ms".format(total-failed,total,tps,i+1,nbr_tests_for_stats,OKGREEN,ENDC,WARNING,ERROR))
       
   return tps
