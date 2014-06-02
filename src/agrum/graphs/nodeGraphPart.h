@@ -282,12 +282,13 @@ namespace gum {
     using node_const_iterator      = NodeGraphPartIterator;
     using node_iterator_safe       = NodeGraphPartIteratorSafe;
     using node_const_iterator_safe = NodeGraphPartIteratorSafe;
-
-    using NodeIterator          = NodeGraphPartIterator;
-    using NodeConstIterator     = NodeGraphPartIterator;
-    using NodeIteratorSafe      = NodeGraphPartIteratorSafe;
-    using NodeConstIteratorSafe = NodeGraphPartIteratorSafe;
     /// @}
+    
+    // something strange with SWIG (with "using", these definitions cored dump the swig process)
+    typedef NodeGraphPartIterator NodeIterator;
+    typedef NodeGraphPartIterator NodeConstIterator;
+    typedef NodeGraphPartIteratorSafe NodeIteratorSafe;
+    typedef NodeGraphPartIteratorSafe NodeConstIteratorSafe;
     
     Signaler1<NodeId> onNodeAdded;
     Signaler1<NodeId> onNodeDeleted;
