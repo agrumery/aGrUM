@@ -261,7 +261,7 @@ namespace gum {
 
     // a structure storing the number of neighbours previously processed
     PriorityQueue< NodeId, unsigned int, std::greater<unsigned int> >
-    numbered_neighbours ( std::greater<unsigned int>(), false,
+    numbered_neighbours ( std::greater<unsigned int>(),
                           __triangulated_graph.size() );
 
     for ( unsigned int i = 0; i < __elim_order.size(); ++i )

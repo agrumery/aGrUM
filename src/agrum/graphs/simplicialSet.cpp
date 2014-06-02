@@ -62,9 +62,9 @@ namespace gum {
     __log_modalities ( theModalities ? theModalities :
                        GUM_ERROR_IN_EXPR ( OperationNotAllowed,
                                            "SimplicialSet requires valid modalities" ) ),
-    __simplicial_nodes ( std::less<float>(), false, __graph->size() ),
-    __almost_simplicial_nodes ( std::less<float>(), false, __graph->size() ),
-    __quasi_simplicial_nodes ( std::less<float>(), false, __graph->size() ),
+    __simplicial_nodes ( std::less<float>(), __graph->size() ),
+    __almost_simplicial_nodes ( std::less<float>(), __graph->size() ),
+    __quasi_simplicial_nodes ( std::less<float>(), __graph->size() ),
     __containing_list ( __graph->size() ),
     __nb_triangles ( __graph->size() * __graph->size() / 2 ),
     __nb_adjacent_neighbours ( __graph->size() ),
