@@ -113,7 +113,7 @@ def animApproximationScheme(apsc):
     else:
       plt.xlim(1,len(apsc.history()))
     plt.plot(np.log10(apsc.history()), 'g')
-    clear_output()
+    clear_output(True)
     display(f)
           
   h.setWhenStop(stopper)
