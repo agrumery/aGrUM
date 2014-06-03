@@ -170,8 +170,8 @@ namespace gum {
 
       for ( unsigned int j = i + 1; j < cliques.size(); ++j ) {
         pair.second = j;
-        queue.insert ( __combinedSize ( nodes1, JT.separator ( cliques[j], clique ),
-                                        domain_sizes ), pair );
+        queue.insertXX ( pair, __combinedSize ( nodes1, JT.separator ( cliques[j], clique ),
+					    domain_sizes ) );
       }
     }
 
@@ -205,7 +205,7 @@ namespace gum {
       for ( unsigned int ind = 0; ind < tj; ++ind ) {
         if ( is_cliques_relevant[ind] ) {
           pair.first = ind;
-          queue.eraseByVal ( pair );
+          queue.eraseXX ( pair );
         }
       }
 
@@ -214,7 +214,7 @@ namespace gum {
       for ( unsigned int ind = tj + 1; ind < cliques.size(); ++ind ) {
         if ( is_cliques_relevant[ind] ) {
           pair.second = ind;
-          queue.eraseByVal ( pair );
+          queue.eraseXX ( pair );
         }
       }
 
@@ -230,7 +230,7 @@ namespace gum {
             newsize = __combinedSize ( nodes1,
                                        JT.separator ( cliques[ind], clique ),
                                        domain_sizes );
-            queue.setPriorityByVal ( pair, newsize );
+            queue.setPriorityXX ( pair, newsize );
           }
         }
 
@@ -242,7 +242,7 @@ namespace gum {
             newsize = __combinedSize ( nodes1,
                                        JT.separator ( cliques[ind], clique ),
                                        domain_sizes );
-            queue.setPriorityByVal ( pair, newsize );
+            queue.setPriorityXX ( pair, newsize );
           }
         }
       }

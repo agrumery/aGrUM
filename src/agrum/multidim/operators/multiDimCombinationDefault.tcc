@@ -172,8 +172,8 @@ namespace gum {
 
       for ( unsigned int j = i + 1; j < tables.size(); ++j ) {
         pair.second = j;
-        queue.insert
-        ( _combinedSize ( seq1, tables[j]->variablesSequence() ), pair );
+        queue.insertXX
+        ( pair, _combinedSize ( seq1, tables[j]->variablesSequence() ) );
       }
     }
 
@@ -205,7 +205,7 @@ namespace gum {
       for ( unsigned int ind = 0; ind < tj; ++ind ) {
         if ( tables[ind] ) {
           pair.first = ind;
-          queue.eraseByVal ( pair );
+          queue.eraseXX ( pair );
         }
       }
 
@@ -214,7 +214,7 @@ namespace gum {
       for ( unsigned int ind = tj + 1; ind < tables.size(); ++ind ) {
         if ( tables[ind] ) {
           pair.second = ind;
-          queue.eraseByVal ( pair );
+          queue.eraseXX ( pair );
         }
       }
 
@@ -229,7 +229,7 @@ namespace gum {
           if ( tables[ind] ) {
             pair.first = ind;
             newsize = _combinedSize ( seq1, tables[ind]->variablesSequence() );
-            queue.setPriorityByVal ( pair, newsize );
+            queue.setPriorityXX ( pair, newsize );
           }
         }
 
@@ -239,7 +239,7 @@ namespace gum {
           if ( tables[ind] ) {
             pair.second = ind;
             newsize = _combinedSize ( seq1, tables[ind]->variablesSequence() );
-            queue.setPriorityByVal ( pair, newsize );
+            queue.setPriorityXX ( pair, newsize );
           }
         }
       }
@@ -295,7 +295,7 @@ namespace gum {
 
       for ( unsigned int j = i + 1; j < tables.size(); ++j ) {
         pair.second = j;
-        queue.insert ( _combinedSize ( * ( tables[i] ), * ( tables[j] ) ), pair );
+        queue.insertXX ( pair, _combinedSize ( * ( tables[i] ), * ( tables[j] ) ) );
       }
     }
 
@@ -349,7 +349,7 @@ namespace gum {
       for ( unsigned int ind = 0; ind < tj; ++ind ) {
         if ( tables[ind] ) {
           pair.first = ind;
-          queue.eraseByVal ( pair );
+          queue.eraseXX ( pair );
         }
       }
 
@@ -358,7 +358,7 @@ namespace gum {
       for ( unsigned int ind = tj + 1; ind < tables.size(); ++ind ) {
         if ( tables[ind] ) {
           pair.second = ind;
-          queue.eraseByVal ( pair );
+          queue.eraseXX ( pair );
         }
       }
 
@@ -371,7 +371,7 @@ namespace gum {
           if ( tables[ind] ) {
             pair.first = ind;
             newsize = _combinedSize ( *new_seq, * ( tables[ind] ) );
-            queue.setPriorityByVal ( pair, newsize );
+            queue.setPriorityXX ( pair, newsize );
           }
         }
 
@@ -381,7 +381,7 @@ namespace gum {
           if ( tables[ind] ) {
             pair.second = ind;
             newsize = _combinedSize ( *new_seq, * ( tables[ind] ) );
-            queue.setPriorityByVal ( pair, newsize );
+            queue.setPriorityXX ( pair, newsize );
           }
         }
       }
@@ -472,7 +472,7 @@ namespace gum {
 
       for ( unsigned int j = i + 1; j < tables.size(); ++j ) {
         pair.second = j;
-        queue.insert ( _combinedSize ( * ( tables[i] ), * ( tables[j] ) ), pair );
+        queue.insertXX ( pair, _combinedSize ( * ( tables[i] ), * ( tables[j] ) ) );
       }
     }
 
@@ -553,7 +553,7 @@ namespace gum {
       for ( unsigned int ind = 0; ind < tj; ++ind ) {
         if ( tables[ind] ) {
           pair.first = ind;
-          queue.eraseByVal ( pair );
+          queue.eraseXX ( pair );
         }
       }
 
@@ -562,7 +562,7 @@ namespace gum {
       for ( unsigned int ind = tj + 1; ind < tables.size(); ++ind ) {
         if ( tables[ind] ) {
           pair.second = ind;
-          queue.eraseByVal ( pair );
+          queue.eraseXX ( pair );
         }
       }
 
@@ -575,7 +575,7 @@ namespace gum {
           if ( tables[ind] ) {
             pair.first = ind;
             newsize = _combinedSize ( *new_seq, * ( tables[ind] ) );
-            queue.setPriorityByVal ( pair, newsize );
+            queue.setPriorityXX ( pair, newsize );
           }
         }
 
@@ -585,7 +585,7 @@ namespace gum {
           if ( tables[ind] ) {
             pair.second = ind;
             newsize = _combinedSize ( *new_seq, * ( tables[ind] ) );
-            queue.setPriorityByVal ( pair, newsize );
+            queue.setPriorityXX ( pair, newsize );
           }
         }
       }

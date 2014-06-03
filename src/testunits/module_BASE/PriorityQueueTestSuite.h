@@ -29,228 +29,431 @@
 namespace gum {
   template <>
   class HashFunc< gum::Set<int> > : public HashFuncBase< gum::Set<int> > {
-    public:
-      /// computes the hashed value of a key
-      Size operator() ( const gum::Set<int>& key ) const  {
-        return ( ( key.size() * gum::HashFuncConst::gold ) & _hash_mask );
-      }
+  public:
+    /// computes the hashed value of a key
+    Size operator() ( const gum::Set<int>& key ) const  {
+      return ( ( key.size() * gum::HashFuncConst::gold ) & _hash_mask );
+    }
   };
 }
 
 namespace gum_tests {
 
   class PriorityQueueTestSuite: public CxxTest::TestSuite {
-    public:
+  public:
 
-      void testConstruct() {
-        gum::PriorityQueue<std::string> queue1;
-        TS_ASSERT ( queue1.size() == 0 );
-        TS_ASSERT ( queue1.empty() == true );
-        TS_ASSERT ( queue1.contains ( "ZZZ" ) == false );
-        TS_ASSERT_THROWS ( queue1.top(), gum::NotFound );
-        TS_ASSERT_THROWS ( queue1.pop(), gum::NotFound );
-        TS_ASSERT_THROWS ( queue1.topPriority(), gum::NotFound );
+    void testConstruct() {
+      gum::PriorityQueue<std::string> queue1;
 
-        queue1.insert ( 8,  "AAA" );
-        queue1.insert ( 10, "BBB" );
-        queue1.insert ( 2,  "CCC" );
-        queue1.insert ( 23, "DDD" );
-        queue1.insert ( 24, "EEE" );
-        queue1.insert ( 10, "AAA" );
+      TS_ASSERT ( queue1.size() == 0 );
+      TS_ASSERT ( queue1.empty() == true );
+      TS_ASSERT ( queue1.contains ( "ZZZ" ) == false );
+      TS_ASSERT_THROWS ( queue1.top(), gum::NotFound );
+      TS_ASSERT_THROWS ( queue1.pop(), gum::NotFound );
+      TS_ASSERT_THROWS ( queue1.topPriority(), gum::NotFound );
 
-        TS_ASSERT ( queue1.size() == 6 );
-        TS_ASSERT ( queue1.empty() == false );
-        TS_ASSERT ( queue1.contains ( "AAA" ) == true );
-        TS_ASSERT ( queue1.contains ( "ZZZ" ) == false );
+      queue1.insertXX ( "AAA", 8  );
+      queue1.insertXX ( "BBB", 10 );
+      queue1.insertXX ( "CCC", 2  );
+      queue1.insertXX ( "DDD", 23 );
+      queue1.insertXX ( "EEE", 24 );
 
-        const std::string& str = queue1.top();
-        TS_ASSERT ( str == "CCC" );
-        TS_ASSERT ( queue1.topPriority() == 2 );
+      TS_ASSERT ( queue1.size() == 5 );
+      TS_ASSERT ( queue1.empty() == false );
+      TS_ASSERT ( queue1.contains ( "AAA" ) == true );
+      TS_ASSERT ( queue1.contains ( "ZZZ" ) == false );
 
-        std::string str2 = queue1.pop();
-        TS_ASSERT ( str2 == "CCC" );
-        TS_ASSERT ( queue1.top() == "AAA" );
-        TS_ASSERT ( queue1.topPriority() == 8 );
+      const std::string& str = queue1.top();
+      TS_ASSERT ( str == "CCC" );
+      TS_ASSERT ( queue1.topPriority() == 2 );
 
-        queue1.setPriority ( 0, 4 );
-        TS_ASSERT ( queue1.top() == "AAA" );
-        TS_ASSERT ( queue1.topPriority() == 4 );
-        TS_ASSERT_THROWS ( queue1.setPriority ( 10, 4 ) , gum::NotFound );
+      std::string str2 = queue1.pop();
+      TS_ASSERT ( str2 == "CCC" );
+      TS_ASSERT ( queue1.top() == "AAA" );
+      TS_ASSERT ( queue1.topPriority() == 8 );
 
-        queue1.setPriorityByVal ( "BBB", 2 );
-        TS_ASSERT ( queue1.top() == "BBB" );
-        TS_ASSERT ( queue1.topPriority() == 2 );
-        TS_GUM_ASSERT_THROWS_NOTHING ( queue1.setPriorityByVal ( "zzz", 4 ) );
+      queue1.setPriorityByPos ( 0, 4 );
+      TS_ASSERT ( queue1.top() == "AAA" );
+      TS_ASSERT ( queue1.topPriority() == 4 );
+      TS_ASSERT_THROWS ( queue1.setPriorityByPos ( 10, 4 ) , gum::NotFound );
 
-        TS_ASSERT_THROWS ( queue1.priorityByVal ( "zzz" ), gum::NotFound );
-        TS_ASSERT ( queue1.priorityByVal ( "BBB" ) == 2 );
+      queue1.setPriorityXX ( "BBB", 2 );
+      TS_ASSERT ( queue1.top() == "BBB" );
+      TS_ASSERT ( queue1.topPriority() == 2 );
+      TS_ASSERT_THROWS ( queue1.setPriorityXX ( "zzz", 4 ), gum::NotFound );
 
-        queue1.resize ( 10 );
-        TS_ASSERT ( queue1.capacity() == 10 );
+      TS_ASSERT_THROWS ( queue1.priorityXX ( "zzz" ), gum::NotFound );
+      TS_ASSERT ( queue1.priorityXX ( "BBB" ) == 2 );
 
-        TS_ASSERT ( queue1.uniquenessPolicy() == false );
-        queue1.setUniquenessPolicy ( true );
-        TS_ASSERT ( queue1.uniquenessPolicy() == true );
-        TS_ASSERT_THROWS ( queue1.insert ( 10, "AAA" ), gum::DuplicateElement );
+      queue1.resize ( 10 );
+      TS_ASSERT ( queue1.capacity() == 10 );
 
-        const gum::HashTable< std::string, std::vector<gum::Size> >&
+      const gum::HashTable<std::string,gum::Size>& vals = queue1.allValues();
+      TS_ASSERT ( vals.size() == 4 );
+    }
+
+    void testCopy() {
+      gum::PriorityQueue<std::string> queue1;
+      queue1.insertXX ( "AAA", 8  );
+      queue1.insertXX ( "BBB", 10 );
+      queue1.insertXX ( "CCC", 2  );
+      queue1.insertXX ( "DDD", 23 );
+      queue1.insertXX ( "EEE", 24 );
+ 
+      gum::PriorityQueue<std::string> queue2 = queue1;
+      TS_ASSERT ( queue2.size() == 5 );
+      TS_ASSERT ( queue2.empty() == false );
+      TS_ASSERT ( queue2.contains ( "AAA" ) == true );
+      TS_ASSERT ( queue2.contains ( "ZZZ" ) == false );
+
+      queue2.clear();
+      TS_ASSERT ( queue2.size() == 0 );
+      TS_GUM_ASSERT_THROWS_NOTHING ( queue2.eraseByPos ( 10 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING ( queue2.eraseXX ( "RRR" ) );
+
+      queue2 = queue1;
+      queue2.eraseTop();
+      queue2 = queue1;
+      TS_ASSERT ( queue2.size() == 5 );
+      TS_ASSERT ( queue2.empty() == false );
+      TS_ASSERT ( queue2.contains ( "AAA" ) == true );
+      TS_ASSERT ( queue2.contains ( "ZZZ" ) == false );
+      queue2 = queue1;
+      TS_ASSERT ( queue2.size() == 5 );
+      TS_ASSERT ( queue2.empty() == false );
+      TS_ASSERT ( queue2.contains ( "AAA" ) == true );
+      TS_ASSERT ( queue2.contains ( "ZZZ" ) == false );
+
+      queue2.eraseTop();
+      TS_ASSERT ( queue2.topPriority() == 8 );
+      queue2.eraseByPos ( 0 );
+      TS_ASSERT ( queue2.topPriority() == 10 );
+      queue2.eraseByPos ( 3 );
+      TS_ASSERT ( queue2.size() == 3 );
+      queue2.eraseXX ( "AAA" );
+      TS_ASSERT ( queue2.size() == 3 );
+
+      const std::string& str1 = queue2[0];
+      TS_ASSERT ( str1 == "BBB" );
+    }
+
+    /*
+    void xxtestConstObj() {
+      gum::Set<int> set1, set2, set3, set4, set5, set6;
+      set1 << 1;
+      set2 << 1 << 2;
+      set3 << 1 << 2 << 3;
+      set4 << 1 << 2 << 3 << 4;
+      set5 << 1 << 2 << 3 << 4 << 5;
+
+      gum::PriorityQueue< gum::Set<int> > queue1;
+      TS_ASSERT ( queue1.size() == 0 );
+      TS_ASSERT ( queue1.empty() == true );
+      TS_ASSERT ( queue1.contains ( set1 ) == false );
+      TS_ASSERT_THROWS ( queue1.top(), gum::NotFound );
+      TS_ASSERT_THROWS ( queue1.pop(), gum::NotFound );
+      TS_ASSERT_THROWS ( queue1.topPriority(), gum::NotFound );
+
+      queue1.insertXX ( set1, 8  );
+      queue1.insertXX ( set2, 10 );
+      queue1.insertXX ( set3, 2  );
+      queue1.insertXX ( set4, 23 );
+      queue1.insertXX ( set5, 24 );
+      queue1.insertXX ( set1, 10 );
+
+      TS_ASSERT ( queue1.size() == 6 );
+      TS_ASSERT ( queue1.empty() == false );
+      TS_ASSERT ( queue1.contains ( set1 ) == true );
+      TS_ASSERT ( queue1.contains ( set6 ) == false );
+
+      const gum::Set<int>& str = queue1.top();
+      TS_ASSERT ( str == set3 );
+      TS_ASSERT ( queue1.topPriority() == 2 );
+
+      gum::Set<int> str2 = queue1.pop();
+      TS_ASSERT ( str2 == set3 );
+      TS_ASSERT ( queue1.top() == set1 );
+      TS_ASSERT ( queue1.topPriority() == 8 );
+
+      queue1.setPriorityByPos ( 0, 4 );
+      TS_ASSERT ( queue1.top() == set1 );
+      TS_ASSERT ( queue1.topPriority() == 4 );
+      TS_ASSERT_THROWS ( queue1.setPriorityByPos ( 10, 4 ) , gum::NotFound );
+
+      queue1.setPriorityXX ( set2, 2 );
+      TS_ASSERT ( queue1.top() == set2 );
+      TS_ASSERT ( queue1.topPriority() == 2 );
+      TS_GUM_ASSERT_THROWS_NOTHING ( queue1.setPriorityXX ( set6, 4 ) );
+
+      TS_ASSERT_THROWS ( queue1.priorityXX ( set6 ), gum::NotFound );
+      TS_ASSERT ( queue1.priorityXX ( set2 ) == 2 );
+
+      queue1.resize ( 10 );
+      TS_ASSERT ( queue1.capacity() == 10 );
+
+      TS_ASSERT ( queue1.uniquenessPolicy() == false );
+      queue1.setUniquenessPolicy ( true );
+      TS_ASSERT ( queue1.uniquenessPolicy() == true );
+      TS_ASSERT_THROWS ( queue1.insertXX ( set1, 10 ), gum::DuplicateElement );
+
+      const gum::HashTable< gum::Set<int>, std::vector<gum::Size> >&
         vals = queue1.allValues();
-        TS_ASSERT ( vals.size() == 4 );
-      }
+      TS_ASSERT ( vals.size() == 4 );
 
-      void testCopy() {
-        gum::PriorityQueue<std::string> queue1;
-        queue1.insert ( 8,  "AAA" );
-        queue1.insert ( 10, "BBB" );
-        queue1.insert ( 2,  "CCC" );
-        queue1.insert ( 23, "DDD" );
-        queue1.insert ( 24, "EEE" );
-        queue1.insert ( 10, "AAA" );
+      queue1.clear();
+      queue1.setUniquenessPolicy ( false );
+      queue1.insertXX ( set1, 8  );
+      queue1.insertXX ( set2, 10 );
+      queue1.insertXX ( set3, 2  );
+      queue1.insertXX ( set4, 23 );
+      queue1.insertXX ( set5, 24 );
+      queue1.insertXX ( set1, 10 );
 
-        gum::PriorityQueue<std::string> queue2 = queue1;
-        TS_ASSERT ( queue2.size() == 6 );
-        TS_ASSERT ( queue2.empty() == false );
-        TS_ASSERT ( queue2.contains ( "AAA" ) == true );
-        TS_ASSERT ( queue2.contains ( "ZZZ" ) == false );
+      gum::PriorityQueue< gum::Set<int> > queue2 = queue1;
+      queue2 = queue1;
+      queue2.eraseTop();
+      queue2 = queue1;
 
-        queue2.clear();
-        TS_ASSERT ( queue2.size() == 0 );
-        TS_GUM_ASSERT_THROWS_NOTHING ( queue2.erase ( 10 ) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( queue2.eraseByVal ( "RRR" ) );
+      TS_ASSERT ( queue2.size() == 6 );
+      TS_ASSERT ( queue2.empty() == false );
+      TS_ASSERT ( queue2.contains ( set1 ) == true );
+      TS_ASSERT ( queue2.contains ( set6 ) == false );
+      queue2.setUniquenessPolicy ( true );
+      queue2 = queue1;
+      TS_ASSERT ( queue2.size() == 6 );
+      TS_ASSERT ( queue2.empty() == false );
+      TS_ASSERT ( queue2.contains ( set1 ) == true );
+      TS_ASSERT ( queue2.contains ( set6 ) == false );
+      TS_ASSERT ( queue2.uniquenessPolicy() == false );
 
-        queue2 = queue1;
-        queue2.eraseTop();
-        queue2 = queue1;
-        TS_ASSERT ( queue2.size() == 6 );
-        TS_ASSERT ( queue2.empty() == false );
-        TS_ASSERT ( queue2.contains ( "AAA" ) == true );
-        TS_ASSERT ( queue2.contains ( "ZZZ" ) == false );
-        queue2.setUniquenessPolicy ( true );
-        queue2 = queue1;
-        TS_ASSERT ( queue2.size() == 6 );
-        TS_ASSERT ( queue2.empty() == false );
-        TS_ASSERT ( queue2.contains ( "AAA" ) == true );
-        TS_ASSERT ( queue2.contains ( "ZZZ" ) == false );
-        TS_ASSERT ( queue2.uniquenessPolicy() == false );
+      queue2.eraseTop();
+      TS_ASSERT ( queue2.topPriority() == 8 );
+      queue2.eraseByPos ( 0 );
+      TS_ASSERT ( queue2.topPriority() == 10 );
+      queue2.eraseByPos ( 3 );
+      TS_ASSERT ( queue2.size() == 3 );
+      queue2.eraseXX ( set1 );
+      TS_ASSERT ( queue2.size() == 2 );
 
-        queue2.eraseTop();
-        TS_ASSERT ( queue2.topPriority() == 8 );
-        queue2.erase ( 0 );
-        TS_ASSERT ( queue2.topPriority() == 10 );
-        queue2.erase ( 3 );
-        TS_ASSERT ( queue2.size() == 3 );
-        queue2.eraseByVal ( "AAA" );
-        TS_ASSERT ( queue2.size() == 2 );
+      const gum::Set<int>& str3 = queue2[0];
+      const gum::Set<int>& str4 = queue2[1];
+      TS_ASSERT ( str3 == set2 );
+      TS_ASSERT ( str4 == set4 );
+    }
 
-        const std::string& str1 = queue2[0];
-        const std::string& str2 = queue2[1];
-        TS_ASSERT ( str1 == "BBB" );
-        TS_ASSERT ( str2 == "DDD" );
-      }
 
-      void testConstObj() {
-        gum::Set<int> set1, set2, set3, set4, set5, set6;
-        set1 << 1;
-        set2 << 1 << 2;
-        set3 << 1 << 2 << 3;
-        set4 << 1 << 2 << 3 << 4;
-        set5 << 1 << 2 << 3 << 4 << 5;
 
-        gum::PriorityQueue< gum::Set<int> > queue1;
-        TS_ASSERT ( queue1.size() == 0 );
-        TS_ASSERT ( queue1.empty() == true );
-        TS_ASSERT ( queue1.contains ( set1 ) == false );
-        TS_ASSERT_THROWS ( queue1.top(), gum::NotFound );
-        TS_ASSERT_THROWS ( queue1.pop(), gum::NotFound );
-        TS_ASSERT_THROWS ( queue1.topPriority(), gum::NotFound );
 
-        queue1.insert ( 8,  set1 );
-        queue1.insert ( 10, set2 );
-        queue1.insert ( 2,  set3 );
-        queue1.insert ( 23, set4 );
-        queue1.insert ( 24, set5 );
-        queue1.insert ( 10, set1 );
+    void xxtestConstruct() {
+      gum::PriorityQueue<std::string> queue1;
+      TS_ASSERT ( queue1.size() == 0 );
+      TS_ASSERT ( queue1.empty() == true );
+      TS_ASSERT ( queue1.contains ( "ZZZ" ) == false );
+      TS_ASSERT_THROWS ( queue1.top(), gum::NotFound );
+      TS_ASSERT_THROWS ( queue1.pop(), gum::NotFound );
+      TS_ASSERT_THROWS ( queue1.topPriority(), gum::NotFound );
 
-        TS_ASSERT ( queue1.size() == 6 );
-        TS_ASSERT ( queue1.empty() == false );
-        TS_ASSERT ( queue1.contains ( set1 ) == true );
-        TS_ASSERT ( queue1.contains ( set6 ) == false );
+      queue1.insertXX ( "AAA", 8  );
+      queue1.insertXX ( "BBB", 10 );
+      queue1.insertXX ( "CCC", 2  );
+      queue1.insertXX ( "DDD", 23 );
+      queue1.insertXX ( "EEE", 24 );
+      queue1.insertXX ( "AAA", 10 );
 
-        const gum::Set<int>& str = queue1.top();
-        TS_ASSERT ( str == set3 );
-        TS_ASSERT ( queue1.topPriority() == 2 );
+      TS_ASSERT ( queue1.size() == 6 );
+      TS_ASSERT ( queue1.empty() == false );
+      TS_ASSERT ( queue1.contains ( "AAA" ) == true );
+      TS_ASSERT ( queue1.contains ( "ZZZ" ) == false );
 
-        gum::Set<int> str2 = queue1.pop();
-        TS_ASSERT ( str2 == set3 );
-        TS_ASSERT ( queue1.top() == set1 );
-        TS_ASSERT ( queue1.topPriority() == 8 );
+      const std::string& str = queue1.top();
+      TS_ASSERT ( str == "CCC" );
+      TS_ASSERT ( queue1.topPriority() == 2 );
 
-        queue1.setPriority ( 0, 4 );
-        TS_ASSERT ( queue1.top() == set1 );
-        TS_ASSERT ( queue1.topPriority() == 4 );
-        TS_ASSERT_THROWS ( queue1.setPriority ( 10, 4 ) , gum::NotFound );
+      std::string str2 = queue1.pop();
+      TS_ASSERT ( str2 == "CCC" );
+      TS_ASSERT ( queue1.top() == "AAA" );
+      TS_ASSERT ( queue1.topPriority() == 8 );
 
-        queue1.setPriorityByVal ( set2, 2 );
-        TS_ASSERT ( queue1.top() == set2 );
-        TS_ASSERT ( queue1.topPriority() == 2 );
-        TS_GUM_ASSERT_THROWS_NOTHING ( queue1.setPriorityByVal ( set6, 4 ) );
+      queue1.setPriorityByPos ( 0, 4 );
+      TS_ASSERT ( queue1.top() == "AAA" );
+      TS_ASSERT ( queue1.topPriority() == 4 );
+      TS_ASSERT_THROWS ( queue1.setPriorityByPos ( 10, 4 ) , gum::NotFound );
 
-        TS_ASSERT_THROWS ( queue1.priorityByVal ( set6 ), gum::NotFound );
-        TS_ASSERT ( queue1.priorityByVal ( set2 ) == 2 );
+      queue1.setPriorityXX ( "BBB", 2 );
+      TS_ASSERT ( queue1.top() == "BBB" );
+      TS_ASSERT ( queue1.topPriority() == 2 );
+      TS_GUM_ASSERT_THROWS_NOTHING ( queue1.setPriorityXX ( "zzz", 4 ) );
 
-        queue1.resize ( 10 );
-        TS_ASSERT ( queue1.capacity() == 10 );
+      TS_ASSERT_THROWS ( queue1.priorityXX ( "zzz" ), gum::NotFound );
+      TS_ASSERT ( queue1.priorityXX ( "BBB" ) == 2 );
 
-        TS_ASSERT ( queue1.uniquenessPolicy() == false );
-        queue1.setUniquenessPolicy ( true );
-        TS_ASSERT ( queue1.uniquenessPolicy() == true );
-        TS_ASSERT_THROWS ( queue1.insert ( 10, set1 ), gum::DuplicateElement );
+      queue1.resize ( 10 );
+      TS_ASSERT ( queue1.capacity() == 10 );
 
-        const gum::HashTable< gum::Set<int>, std::vector<gum::Size> >&
+      TS_ASSERT ( queue1.uniquenessPolicy() == false );
+      queue1.setUniquenessPolicy ( true );
+      TS_ASSERT ( queue1.uniquenessPolicy() == true );
+      TS_ASSERT_THROWS ( queue1.insertXX ( "AAA", 10 ), gum::DuplicateElement );
+
+      const gum::HashTable< std::string, std::vector<gum::Size> >&
         vals = queue1.allValues();
-        TS_ASSERT ( vals.size() == 4 );
+      TS_ASSERT ( vals.size() == 4 );
+    }
 
-        queue1.clear();
-        queue1.setUniquenessPolicy ( false );
-        queue1.insert ( 8,  set1 );
-        queue1.insert ( 10, set2 );
-        queue1.insert ( 2,  set3 );
-        queue1.insert ( 23, set4 );
-        queue1.insert ( 24, set5 );
-        queue1.insert ( 10, set1 );
+    void xxxtestCopy() {
+      gum::PriorityQueue<std::string> queue1;
+      queue1.insertXX ( "AAA", 8  );
+      queue1.insertXX ( "BBB", 10 );
+      queue1.insertXX ( "CCC", 2  );
+      queue1.insertXX ( "DDD", 23 );
+      queue1.insertXX ( "EEE", 24 );
+      queue1.insertXX ( "AAA", 10 );
 
-        gum::PriorityQueue< gum::Set<int> > queue2 = queue1;
-        queue2 = queue1;
-        queue2.eraseTop();
-        queue2 = queue1;
+      gum::PriorityQueue<std::string> queue2 = queue1;
+      TS_ASSERT ( queue2.size() == 6 );
+      TS_ASSERT ( queue2.empty() == false );
+      TS_ASSERT ( queue2.contains ( "AAA" ) == true );
+      TS_ASSERT ( queue2.contains ( "ZZZ" ) == false );
 
-        TS_ASSERT ( queue2.size() == 6 );
-        TS_ASSERT ( queue2.empty() == false );
-        TS_ASSERT ( queue2.contains ( set1 ) == true );
-        TS_ASSERT ( queue2.contains ( set6 ) == false );
-        queue2.setUniquenessPolicy ( true );
-        queue2 = queue1;
-        TS_ASSERT ( queue2.size() == 6 );
-        TS_ASSERT ( queue2.empty() == false );
-        TS_ASSERT ( queue2.contains ( set1 ) == true );
-        TS_ASSERT ( queue2.contains ( set6 ) == false );
-        TS_ASSERT ( queue2.uniquenessPolicy() == false );
+      queue2.clear();
+      TS_ASSERT ( queue2.size() == 0 );
+      TS_GUM_ASSERT_THROWS_NOTHING ( queue2.eraseByPos ( 10 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING ( queue2.eraseXX ( "RRR" ) );
 
-        queue2.eraseTop();
-        TS_ASSERT ( queue2.topPriority() == 8 );
-        queue2.erase ( 0 );
-        TS_ASSERT ( queue2.topPriority() == 10 );
-        queue2.erase ( 3 );
-        TS_ASSERT ( queue2.size() == 3 );
-        queue2.eraseByVal ( set1 );
-        TS_ASSERT ( queue2.size() == 2 );
+      queue2 = queue1;
+      queue2.eraseTop();
+      queue2 = queue1;
+      TS_ASSERT ( queue2.size() == 6 );
+      TS_ASSERT ( queue2.empty() == false );
+      TS_ASSERT ( queue2.contains ( "AAA" ) == true );
+      TS_ASSERT ( queue2.contains ( "ZZZ" ) == false );
+      queue2.setUniquenessPolicy ( true );
+      queue2 = queue1;
+      TS_ASSERT ( queue2.size() == 6 );
+      TS_ASSERT ( queue2.empty() == false );
+      TS_ASSERT ( queue2.contains ( "AAA" ) == true );
+      TS_ASSERT ( queue2.contains ( "ZZZ" ) == false );
+      TS_ASSERT ( queue2.uniquenessPolicy() == false );
 
-        const gum::Set<int>& str3 = queue2[0];
-        const gum::Set<int>& str4 = queue2[1];
-        TS_ASSERT ( str3 == set2 );
-        TS_ASSERT ( str4 == set4 );
-      }
+      queue2.eraseTop();
+      TS_ASSERT ( queue2.topPriority() == 8 );
+      queue2.eraseByPos ( 0 );
+      TS_ASSERT ( queue2.topPriority() == 10 );
+      queue2.eraseByPos ( 3 );
+      TS_ASSERT ( queue2.size() == 3 );
+      queue2.eraseXX ( "AAA" );
+      TS_ASSERT ( queue2.size() == 2 );
 
+      const std::string& str1 = queue2[0];
+      const std::string& str2 = queue2[1];
+      TS_ASSERT ( str1 == "BBB" );
+      TS_ASSERT ( str2 == "DDD" );
+    }
+
+    void xxtestConstObj() {
+      gum::Set<int> set1, set2, set3, set4, set5, set6;
+      set1 << 1;
+      set2 << 1 << 2;
+      set3 << 1 << 2 << 3;
+      set4 << 1 << 2 << 3 << 4;
+      set5 << 1 << 2 << 3 << 4 << 5;
+
+      gum::PriorityQueue< gum::Set<int> > queue1;
+      TS_ASSERT ( queue1.size() == 0 );
+      TS_ASSERT ( queue1.empty() == true );
+      TS_ASSERT ( queue1.contains ( set1 ) == false );
+      TS_ASSERT_THROWS ( queue1.top(), gum::NotFound );
+      TS_ASSERT_THROWS ( queue1.pop(), gum::NotFound );
+      TS_ASSERT_THROWS ( queue1.topPriority(), gum::NotFound );
+
+      queue1.insertXX ( set1, 8  );
+      queue1.insertXX ( set2, 10 );
+      queue1.insertXX ( set3, 2  );
+      queue1.insertXX ( set4, 23 );
+      queue1.insertXX ( set5, 24 );
+      queue1.insertXX ( set1, 10 );
+
+      TS_ASSERT ( queue1.size() == 6 );
+      TS_ASSERT ( queue1.empty() == false );
+      TS_ASSERT ( queue1.contains ( set1 ) == true );
+      TS_ASSERT ( queue1.contains ( set6 ) == false );
+
+      const gum::Set<int>& str = queue1.top();
+      TS_ASSERT ( str == set3 );
+      TS_ASSERT ( queue1.topPriority() == 2 );
+
+      gum::Set<int> str2 = queue1.pop();
+      TS_ASSERT ( str2 == set3 );
+      TS_ASSERT ( queue1.top() == set1 );
+      TS_ASSERT ( queue1.topPriority() == 8 );
+
+      queue1.setPriorityByPos ( 0, 4 );
+      TS_ASSERT ( queue1.top() == set1 );
+      TS_ASSERT ( queue1.topPriority() == 4 );
+      TS_ASSERT_THROWS ( queue1.setPriorityByPos ( 10, 4 ) , gum::NotFound );
+
+      queue1.setPriorityXX ( set2, 2 );
+      TS_ASSERT ( queue1.top() == set2 );
+      TS_ASSERT ( queue1.topPriority() == 2 );
+      TS_GUM_ASSERT_THROWS_NOTHING ( queue1.setPriorityXX ( set6, 4 ) );
+
+      TS_ASSERT_THROWS ( queue1.priorityXX ( set6 ), gum::NotFound );
+      TS_ASSERT ( queue1.priorityXX ( set2 ) == 2 );
+
+      queue1.resize ( 10 );
+      TS_ASSERT ( queue1.capacity() == 10 );
+
+      TS_ASSERT ( queue1.uniquenessPolicy() == false );
+      queue1.setUniquenessPolicy ( true );
+      TS_ASSERT ( queue1.uniquenessPolicy() == true );
+      TS_ASSERT_THROWS ( queue1.insertXX ( set1, 10 ), gum::DuplicateElement );
+
+      const gum::HashTable< gum::Set<int>, std::vector<gum::Size> >&
+        vals = queue1.allValues();
+      TS_ASSERT ( vals.size() == 4 );
+
+      queue1.clear();
+      queue1.setUniquenessPolicy ( false );
+      queue1.insertXX ( set1, 8  );
+      queue1.insertXX ( set2, 10 );
+      queue1.insertXX ( set3, 2  );
+      queue1.insertXX ( set4, 23 );
+      queue1.insertXX ( set5, 24 );
+      queue1.insertXX ( set1, 10 );
+
+      gum::PriorityQueue< gum::Set<int> > queue2 = queue1;
+      queue2 = queue1;
+      queue2.eraseTop();
+      queue2 = queue1;
+
+      TS_ASSERT ( queue2.size() == 6 );
+      TS_ASSERT ( queue2.empty() == false );
+      TS_ASSERT ( queue2.contains ( set1 ) == true );
+      TS_ASSERT ( queue2.contains ( set6 ) == false );
+      queue2.setUniquenessPolicy ( true );
+      queue2 = queue1;
+      TS_ASSERT ( queue2.size() == 6 );
+      TS_ASSERT ( queue2.empty() == false );
+      TS_ASSERT ( queue2.contains ( set1 ) == true );
+      TS_ASSERT ( queue2.contains ( set6 ) == false );
+      TS_ASSERT ( queue2.uniquenessPolicy() == false );
+
+      queue2.eraseTop();
+      TS_ASSERT ( queue2.topPriority() == 8 );
+      queue2.eraseByPos ( 0 );
+      TS_ASSERT ( queue2.topPriority() == 10 );
+      queue2.eraseByPos ( 3 );
+      TS_ASSERT ( queue2.size() == 3 );
+      queue2.eraseXX ( set1 );
+      TS_ASSERT ( queue2.size() == 2 );
+
+      const gum::Set<int>& str3 = queue2[0];
+      const gum::Set<int>& str4 = queue2[1];
+      TS_ASSERT ( str3 == set2 );
+      TS_ASSERT ( str4 == set4 );
+    }
+    */
+    
   };
 
 } /* namespace gum_tests */

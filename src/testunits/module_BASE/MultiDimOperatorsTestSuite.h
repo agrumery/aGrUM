@@ -23,6 +23,8 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+
+#include <agrum/core/utils_random.h>
 #include "../../agrum/core/sequence.h"
 
 #include <cxxtest/AgrumTestSuite.h>
@@ -940,10 +942,9 @@ namespace gum_tests {
       // ==========================================================================
       void randomInit ( gum::MultiDimArray<float>* t ) {
         gum::Instantiation i ( t );
-        gum::initRandom() ;
 
         for ( i.setFirst(); ! i.end(); ++i )
-          t->set ( i, ( int ) ( ( ( float ) rand() / RAND_MAX ) * 100000 ) );
+          t->set ( i, ( int ) (gum::randomProba() * 100000 ) );
       }
 
       // ==========================================================================
@@ -953,7 +954,7 @@ namespace gum_tests {
         gum::Instantiation i ( t );
 
         for ( i.setFirst(); ! i.end(); ++i )
-          t->set ( i, new float ( ( int ) ( ( ( float ) rand() / RAND_MAX ) * 100000 ) ) );
+          t->set ( i, new float ( ( int ) (gum::randomProba() * 100000 ) ) );
       }
 
       // ==========================================================================

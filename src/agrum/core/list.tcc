@@ -49,7 +49,7 @@ namespace gum {
 
   /// construtor for Val rvalues
   template <typename Val> INLINE
-ListBucket<Val>::ListBucket ( Val && v ) noexcept :
+  ListBucket<Val>::ListBucket ( Val && v ) noexcept :
   __val { std::move ( v ) } {
     // for debugging purposes
     GUM_CONSTRUCTOR ( ListBucket );
@@ -158,7 +158,7 @@ ListBucket<Val>::ListBucket ( Val && v ) noexcept :
   template <typename Val>
   template<typename Alloc> INLINE
   ListConstIterator<Val>::ListConstIterator
-( const List<Val, Alloc>& theList ) noexcept :
+  ( const List<Val, Alloc>& theList ) noexcept :
   __bucket { theList.__deb_list } {
     // for debugging purposes
     GUM_CONSTRUCTOR ( ListConstIterator );
@@ -168,7 +168,7 @@ ListBucket<Val>::ListBucket ( Val && v ) noexcept :
   /// copy constructor
   template <typename Val> INLINE
   ListConstIterator<Val>::ListConstIterator
-( const ListConstIterator<Val>& src ) noexcept :
+  ( const ListConstIterator<Val>& src ) noexcept :
   __bucket { src.__bucket } {
     // for debugging purposes
     GUM_CONS_CPY ( ListConstIterator );
@@ -178,7 +178,7 @@ ListBucket<Val>::ListBucket ( Val && v ) noexcept :
   /// move constructor
   template <typename Val> INLINE
   ListConstIterator<Val>::ListConstIterator
-( ListConstIterator<Val> && src ) noexcept :
+  ( ListConstIterator<Val> && src ) noexcept :
   __bucket { std::move ( src.__bucket ) } {
     // for debugging purposes
     GUM_CONS_MOV ( ListConstIterator );
@@ -294,7 +294,8 @@ ListBucket<Val>::ListBucket ( Val && v ) noexcept :
   ( typename ListConstIterator<Val>::difference_type i ) noexcept {
     if ( i >= 0 ) {
       for ( ; i && ( __bucket != nullptr ) ; --i, __bucket = __bucket->__next ) {}
-    } else {
+    }
+    else {
       for ( ; i && ( __bucket != nullptr ) ; ++i, __bucket = __bucket->__prev ) {}
     }
     return *this;
@@ -322,7 +323,8 @@ ListBucket<Val>::ListBucket ( Val && v ) noexcept :
   ( typename ListConstIterator<Val>::difference_type i ) noexcept {
     if ( i >= 0 ) {
       for ( ; i && ( __bucket != nullptr ) ; --i, __bucket = __bucket->__prev ) {}
-    } else {
+    }
+    else {
       for ( ; i && ( __bucket != nullptr ) ; ++i, __bucket = __bucket->__next ) {}
     }
     return *this;
@@ -408,7 +410,7 @@ ListBucket<Val>::ListBucket ( Val && v ) noexcept :
 
   /// basic constructor
   template <typename Val> INLINE
-ListIterator<Val>::ListIterator() noexcept :
+  ListIterator<Val>::ListIterator() noexcept :
   ListConstIterator<Val> {} {
     GUM_CONSTRUCTOR ( ListIterator );
   }
@@ -418,7 +420,7 @@ ListIterator<Val>::ListIterator() noexcept :
   template <typename Val>
   template<typename Alloc> INLINE
   ListIterator<Val>::ListIterator
-( const List<Val, Alloc>& theList ) noexcept :
+  ( const List<Val, Alloc>& theList ) noexcept :
   ListConstIterator<Val> { theList } {
     GUM_CONSTRUCTOR ( ListIterator );
   }
@@ -427,7 +429,7 @@ ListIterator<Val>::ListIterator() noexcept :
   /// copy constructor
   template <typename Val> INLINE
   ListIterator<Val>::ListIterator
-( const ListIterator<Val>& src ) noexcept :
+  ( const ListIterator<Val>& src ) noexcept :
   ListConstIterator<Val> { src } {
     GUM_CONS_CPY ( ListIterator );
   }
@@ -436,7 +438,7 @@ ListIterator<Val>::ListIterator() noexcept :
   /// move constructor
   template <typename Val> INLINE
   ListIterator<Val>::ListIterator
-( ListIterator<Val> && src ) noexcept :
+  ( ListIterator<Val> && src ) noexcept :
   ListConstIterator<Val> ( std::move ( src ) ) {
     GUM_CONS_MOV ( ListIterator );
   }
@@ -570,9 +572,8 @@ ListIterator<Val>::ListIterator() noexcept :
   ListConstIteratorSafe<Val>::ListConstIteratorSafe
   ( const List<Val, Alloc>& theList ) :
     __list { reinterpret_cast<const List< Val, std::allocator<Val> >*>
-    ( &theList )
-  },
-  __bucket { theList.__deb_list } {
+      ( &theList ) },
+    __bucket { theList.__deb_list } {
     // for debugging purposes
     GUM_CONSTRUCTOR ( ListConstIteratorSafe );
 
@@ -586,10 +587,10 @@ ListIterator<Val>::ListIterator() noexcept :
   ListConstIteratorSafe<Val>::ListConstIteratorSafe
   ( const ListConstIteratorSafe<Val>& src ) :
     __list                { src.__list },
-                        __bucket              { src.__bucket },
-                        __next_current_bucket { src.__next_current_bucket },
-                        __prev_current_bucket { src.__prev_current_bucket },
-  __null_pointing       { src.__null_pointing } {
+    __bucket              { src.__bucket },
+    __next_current_bucket { src.__next_current_bucket },
+    __prev_current_bucket { src.__prev_current_bucket },
+    __null_pointing       { src.__null_pointing } {
     // for debugging purposes
     GUM_CONS_CPY ( ListConstIteratorSafe );
 
@@ -601,11 +602,11 @@ ListIterator<Val>::ListIterator() noexcept :
   /// Constructor for an iterator pointing to the \e ind_eltth element of a List.
   template <typename Val>
   template<typename Alloc>
-  ListConstIteratorSafe<Val>::ListConstIteratorSafe ( const List<Val, Alloc>& theList,
-      unsigned int ind_elt ) :
+  ListConstIteratorSafe<Val>::ListConstIteratorSafe
+  ( const List<Val, Alloc>& theList,
+    unsigned int ind_elt ) :
     __list { reinterpret_cast<const List< Val, std::allocator<Val> >*>
-    ( &theList )
-  } {
+      ( &theList ) } {
     // for debugging purposes
     GUM_CONSTRUCTOR ( ListConstIteratorSafe );
 
@@ -637,10 +638,10 @@ ListIterator<Val>::ListIterator() noexcept :
   ListConstIteratorSafe<Val>::ListConstIteratorSafe
   ( ListConstIteratorSafe<Val> && src ) :
     __list                { src.__list },
-                        __bucket              { src.__bucket },
-                        __next_current_bucket { src.__next_current_bucket },
-                        __prev_current_bucket { src.__prev_current_bucket },
-  __null_pointing       { src.__null_pointing } {
+    __bucket              { src.__bucket },
+    __next_current_bucket { src.__next_current_bucket },
+    __prev_current_bucket { src.__prev_current_bucket },
+    __null_pointing       { src.__null_pointing } {
     // for debugging purposes
     GUM_CONS_MOV ( ListConstIteratorSafe );
 
@@ -747,7 +748,8 @@ ListIterator<Val>::ListIterator() noexcept :
 
         if ( __list == nullptr ) {
           vect[index_src] = this;
-        } else {
+        }
+        else {
           vect.erase ( vect.begin() + index_src );
         }
       }
@@ -840,7 +842,8 @@ ListIterator<Val>::ListIterator() noexcept :
       // here, we are at the end of the chained list, hence we shall remain at end
       __bucket = nullptr;
       return *this;
-    } else {
+    }
+    else {
       // if we are pointing to an element of the chained list, just
       // point on the next bucket in this list
       if ( __bucket != nullptr ) {
@@ -864,20 +867,23 @@ ListIterator<Val>::ListIterator() noexcept :
       // but that has a preceding element, just point on the latter
       if ( __prev_current_bucket != nullptr ) {
         __bucket = __prev_current_bucket->__prev;
-      } else {
+      }
+      else {
         // here we were pointing on an extremity of the list (either end or rend)
         // if next_current_bucket is not null, then we are at end and doing
         // a -- shall now point to the beginning of the list
         if ( __next_current_bucket != nullptr ) {
           __bucket = __next_current_bucket;
-        } else {
+        }
+        else {
           // here, we are at the rend of the chained list, hence we shall remain
           // at rend
           __bucket = nullptr;
           return *this;
         }
       }
-    } else {
+    }
+    else {
       // if we are pointing to an element of the chained list, just
       // point on the preceding bucket in this list
       if ( __bucket != nullptr ) {
@@ -903,20 +909,23 @@ ListIterator<Val>::ListIterator() noexcept :
       // but that has a next element, just point on the latter
       if ( __next_current_bucket != nullptr ) {
         __bucket = __next_current_bucket->__next;
-      } else {
+      }
+      else {
         // here we were pointing on an extremity of the list (either end or rend)
         // if prev_current_bucket is not null, then we are at rend and doing
         // a ++ shall now point to the beginning of the list
         if ( __prev_current_bucket != nullptr ) {
           __bucket = __prev_current_bucket;
-        } else {
+        }
+        else {
           // here, we are at the end of the chained list, hence we shall
           // remain at end
           __bucket = nullptr;
           return *this;
         }
       }
-    } else {
+    }
+    else {
       // if we are pointing to an element of the chained list, just
       // point on the next bucket in this list
       if ( __bucket != nullptr ) {
@@ -968,7 +977,8 @@ ListIterator<Val>::ListIterator() noexcept :
       // at rend
       __bucket = nullptr;
       return *this;
-    } else {
+    }
+    else {
       // if we are pointing to an element of the chained list, just
       // point on the preceding bucket in this list
       if ( __bucket != nullptr ) {

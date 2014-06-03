@@ -48,8 +48,8 @@
 #include <agrum/BN/io/BIF/BIFWriter.h>
 #include <agrum/core/exceptions.h>
 
-#include <agrum/core/Rational.h> // custom decimal to rational
-#include <agrum/core/pow.h> // custom pow functions with integers, faster implementation
+#include <agrum/core/math/rational.h> // custom decimal to rational
+#include <agrum/core/math/pow.h> // custom pow functions with integers, faster implementation
 
 #include <agrum/CN/LrsWrapper.h>
 

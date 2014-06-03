@@ -65,6 +65,20 @@ namespace gum_tests {
       TS_ASSERT ( set4.size() == 3 );
     }
 
+    void testMoves () {
+      gum::Set<int> set1 { 1, 2, 3 };
+      gum::Set<int> set2 { 4, 5, 7 };
+      gum::Set<int> set3 { 8, 10 };
+      gum::Set<int> set4 { 20, 50 };
+      
+      gum::Set<int> set5 = std::move ( set4 );
+      set4 = std::move ( set3 );
+      set3 = std::move ( set2 );
+      set2 = std::move ( set1 );
+
+      TS_ASSERT ( set2.size () == 3 );
+    }
+
     void testInsert() {
       gum::Set<std::string> set;
       TS_GUM_ASSERT_THROWS_NOTHING( set.insert( "a" ) );

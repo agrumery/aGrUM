@@ -31,7 +31,7 @@
 
 #include <tr1/functional>
 
-#include <agrum/core/pow.h>
+#include <agrum/core/math/pow.h>
 #include <agrum/core/hashTable.h>
 
 #include <agrum/CN/credalNet.h>
