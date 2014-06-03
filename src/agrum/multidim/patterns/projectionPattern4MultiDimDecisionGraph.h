@@ -30,7 +30,14 @@
 //#warning To use projectionPattern, you must define GUM_PROJECTION_PATTERN_ALLOWED
 
 //#else
-//#include <agrum/multidim/patterns/DDUtility/DDModeMacro.h>
+
+// =======================================================================================
+#include <agrum/multidim/multiDimImplementation.h>
+#include <agrum/multidim/multiDimDecisionGraph.h>
+// =======================================================================================
+#include <agrum/multidim/patterns/DGUtility/multiDimDecisionGraphProjector.h>
+// =======================================================================================
+
 namespace gum {
 
 /// a specialized function for projecting a multiDimDecisionDiagram over a subset of its vars
@@ -40,7 +47,7 @@ namespace gum {
 #define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
 
   template<typename GUM_SCALAR>
-  MultiDimDecisionDiagramBase<GUM_SCALAR>*
+  MultiDimDecisionGraph<GUM_SCALAR>*
   GUM_DECISION_DIAGRAM_PROJECTION_NAME ( const MultiDimDecisionGraph<GUM_SCALAR>* table, const Set<const DiscreteVariable*>& delVars ) {
 
 //#endif
@@ -57,59 +64,10 @@ namespace gum {
 //      const MultiDimDecisionDiagramBase<GUM_SCALAR>* table = reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*> ( ttable );
 
 //#endif
-      MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* factory = table->getFactory();
-      factory->setMultiDimDecisionDiagram ( table );
-      Sequence< const DiscreteVariable* > varSeq = table->variablesSequence();
 
+      MultiDimDecisionGraphProjector< GUM_MULTI_DIM_PROJECTION_TYPE, GUM_MULTI_DIM_OPERATOR> proj( table, delVars);
 
-      SequenceIteratorSafe< const DiscreteVariable* > endSeqIter = varSeq.rbeginSafe();
-      bool modified = true;
-
-      while ( modified && endSeqIter != varSeq.rendSafe() ) {
-        SequenceIteratorSafe< const DiscreteVariable* > varIter = varSeq.beginSafe();
-        SequenceIteratorSafe< const DiscreteVariable* > nextVarIter = varIter;
-        modified = false;
-
-        while ( varIter != endSeqIter ) {
-          ++nextVarIter;
-
-          if ( nextVarIter != varSeq.endSafe() ) {
-            if ( delVars.exists ( *varIter ) && !delVars.exists ( *nextVarIter ) ) {
-              factory->swap ( *varIter, *nextVarIter );
-              varSeq.swap ( varSeq.pos ( *varIter ), varSeq.pos ( *nextVarIter ) );
-              modified = true;
-            }
-          }
-
-          ++varIter;
-        }
-
-        --endSeqIter;
-      }
-
-
-      MultiDimDecisionDiagramBase< GUM_MULTI_DIM_PROJECTION_TYPE >* ret = factory->getMultiDimDecisionDiagram();
-      factory->clear();
-
-      for ( SetIteratorSafe< const DiscreteVariable* > delVarsIter = delVars.beginSafe(); delVarsIter != delVars.endSafe(); ++delVarsIter )
-        varSeq.erase ( *delVarsIter );
-
-      factory->setVariablesSequence ( varSeq );
-      HashTable< NodeId, NodeId > explorationTable;
-      Idx nbOperation = 1;
-
-      for ( SetIteratorSafe< const DiscreteVariable* > delVarsIter = delVars.beginSafe(); delVarsIter != delVars.endSafe(); ++delVarsIter )
-        nbOperation *= ( *delVarsIter )->domainSize();
-
-#ifdef P4DDDEBUG
-      factory->setRootNode ( GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION ( ret, factory, ret->root(), false, explorationTable, delVars, nbOperation, "" ) );
-#else
-      factory->setRootNode ( GUM_DECISION_DIAGRAM_PROJECTION_EXPLORATION_FUNCTION ( ret, factory, ret->root(), false, explorationTable, delVars, nbOperation ) );
-#endif
-      delete ret;
-      ret = factory->getMultiDimDecisionDiagram();
-      delete factory;
-      return ret;
+      return proj.project();
     }
 
 

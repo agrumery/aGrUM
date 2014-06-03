@@ -364,6 +364,128 @@
 #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
 
+
+/* ******************************************************************************************* */
+/*                                                                                             */
+/*                          MultiDimDecisionGraph functions                                  */
+/*                                                                                             */
+/* ******************************************************************************************* */
+
+#include <agrum/multidim/patterns/DDUtility/DDModeMacro.h>
+
+
+/// a specialized max projection function for multiDimDecisionGraphs
+
+
+#define GUM_DECISION_Graph_PROJECTION_EXPLORATION_FUNCTION exploreByMaximising
+#define GUM_DECISION_Graph_PROJECTION_OPERATOR(x,y) ( x >= y ? x : y )
+#define GUM_MULTI_DIM_PROJECTION_NEUTRAL ( -1 * std::numeric_limits<GUM_SCALAR>::max() )
+
+#define GUM_DECISION_Graph_PROJECTION_NAME projectMaxMultiDimDecisionGraph
+#include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionGraph.h>
+#undef GUM_DECISION_Graph_PROJECTION_NAME
+
+
+#define GUM_DECISION_Graph_PROJECTION_IMPL2DECISION_Graph_NAME projectMaxMultiDimDecisionGraph
+#include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionGraph.h>
+#undef GUM_DECISION_Graph_PROJECTION_IMPL2DECISION_Graph_NAME
+
+#undef GUM_DECISION_Graph_PROJECTION_OPERATOR
+#undef GUM_DECISION_Graph_PROJECTION_EXPLORATION_FUNCTION
+#undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+
+
+
+/// a specialized min projection function for multiDimDecisionGraphs
+
+
+#define GUM_DECISION_Graph_PROJECTION_EXPLORATION_FUNCTION exploreByMinimising
+#define GUM_DECISION_Graph_PROJECTION_OPERATOR(x,y) ( x <= y ? x : y )
+#define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<GUM_SCALAR>::max()
+
+#define GUM_DECISION_Graph_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
+#ifdef P4DDDEBUG
+#include <agrum/multidim/patterns/DDUtility/p4DDRecursionFunctionsDebug.h>
+#else
+#include <agrum/multidim/patterns/DDUtility/p4DDRecursionFunctions.h>
+#endif
+#undef GUM_DECISION_Graph_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
+
+#define GUM_DECISION_Graph_PROJECTION_NAME projectMinMultiDimDecisionGraph
+#include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionGraph.h>
+#undef GUM_DECISION_Graph_PROJECTION_NAME
+
+
+#define GUM_DECISION_Graph_PROJECTION_IMPL2DECISION_Graph_NAME projectMinMultiDimDecisionGraph
+#include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionGraph.h>
+#undef GUM_DECISION_Graph_PROJECTION_IMPL2DECISION_Graph_NAME
+
+#undef GUM_DECISION_Graph_PROJECTION_OPERATOR
+#undef GUM_DECISION_Graph_PROJECTION_EXPLORATION_FUNCTION
+#undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+
+
+
+/// a specialized sum projection function for multiDimDecisionGraphs
+
+
+#define GUM_DECISION_Graph_PROJECTION_EXPLORATION_FUNCTION exploreBySumming
+#define GUM_DECISION_Graph_PROJECTION_OPERATOR(x,y) ( x + y )
+#define GUM_MULTI_DIM_PROJECTION_NEUTRAL (GUM_SCALAR) 0
+
+#define GUM_DECISION_Graph_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
+#ifdef P4DDDEBUG
+#include <agrum/multidim/patterns/DDUtility/p4DDRecursionFunctionsDebug.h>
+#else
+#include <agrum/multidim/patterns/DDUtility/p4DDRecursionFunctions.h>
+#endif
+#undef GUM_DECISION_Graph_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
+
+#define GUM_DECISION_Graph_PROJECTION_NAME projectSumMultiDimDecisionGraph
+#include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionGraph.h>
+#undef GUM_DECISION_Graph_PROJECTION_NAME
+
+
+#define GUM_DECISION_Graph_PROJECTION_IMPL2DECISION_Graph_NAME projectSumMultiDimDecisionGraph
+#include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionGraph.h>
+#undef GUM_DECISION_Graph_PROJECTION_IMPL2DECISION_Graph_NAME
+
+#undef GUM_DECISION_Graph_PROJECTION_EXPLORATION_FUNCTION
+#undef GUM_DECISION_Graph_PROJECTION_OPERATOR
+#undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+
+
+
+/// a specialized product projection function for multiDimDecisionGraphs
+
+
+#define GUM_DECISION_Graph_PROJECTION_EXPLORATION_FUNCTION exploreByMultiplicating
+#define GUM_DECISION_Graph_PROJECTION_OPERATOR(x,y) ( x * y )
+#define GUM_MULTI_DIM_PROJECTION_NEUTRAL (GUM_SCALAR) 1
+
+#define GUM_DECISION_Graph_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
+#ifdef P4DDDEBUG
+#include <agrum/multidim/patterns/DDUtility/p4DDRecursionFunctionsDebug.h>
+#else
+#include <agrum/multidim/patterns/DDUtility/p4DDRecursionFunctions.h>
+#endif
+#undef GUM_DECISION_Graph_PROJECTION_EXPLORATION_FUNCTION_DEFINITION
+
+#define GUM_DECISION_Graph_PROJECTION_NAME projectProductMultiDimDecisionGraph
+#include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionGraph.h>
+#undef GUM_DECISION_Graph_PROJECTION_NAME
+
+
+#define GUM_DECISION_Graph_PROJECTION_IMPL2DECISION_Graph_NAME projectProductMultiDimDecisionGraph
+#include <agrum/multidim/patterns/projectionPattern4MultiDimDecisionGraph.h>
+#undef GUM_DECISION_Graph_PROJECTION_IMPL2DECISION_Graph_NAME
+
+#undef GUM_DECISION_Graph_PROJECTION_EXPLORATION_FUNCTION
+#undef GUM_DECISION_Graph_PROJECTION_OPERATOR
+#undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
+
+
+
 /// a specialized function for functionally projecting a multiDimArray
 
 /*

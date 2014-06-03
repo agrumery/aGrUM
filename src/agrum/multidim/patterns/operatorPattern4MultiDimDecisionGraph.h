@@ -32,10 +32,12 @@
 
 #else
 
-
+// =======================================================================================
 #include <agrum/multidim/multiDimImplementation.h>
 #include <agrum/multidim/multiDimDecisionGraph.h>
+// =======================================================================================
 #include <agrum/multidim/patterns/DGUtility/multiDimDecisionGraphOperator.h>
+// =======================================================================================
 
 namespace gum {
 
