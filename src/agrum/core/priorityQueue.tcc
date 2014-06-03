@@ -99,10 +99,12 @@ namespace gum {
     __cmp ( from.__cmp ) {
     // fill the heap structure
     if ( __nb_elements ) {
-      __heap.resize ( from.__heap.size(), from.__heap[0] );
-      for ( auto iter = __indices.cbegin (); iter != __indices.cend (); ++iter ) {
-        __heap[iter.val ()].first  = from.__heap[iter.val ()].first;
-        __heap[iter.val ()].second = &( iter.key () );
+      __heap.reserve ( from.__heap.size() );
+      for ( const auto& elt : from.__heap ) {
+        __heap.push_back ( elt );
+      }
+      for ( const auto& elt : __indices ) {
+        __heap[ elt.second ].second = &( elt.first );
       }
     }
 
@@ -189,16 +191,16 @@ namespace gum {
         // copy the indices and the heap
         __indices = from.__indices;
         __nb_elements = from.__nb_elements;
-        
+
+        __heap.clear ();
         if ( __nb_elements ) {
-          __heap.resize ( from.__heap.size(), __heap[0] );
+          __heap.reserve ( from.__heap.size() );
+          for ( const auto& elt : from.__heap ) {
+            __heap.push_back ( elt );
+          }
           for ( const auto& elt : __indices ) {
-            __heap[ elt.second ].first  = from.__heap[ elt.second ].first;
             __heap[ elt.second ].second = &( elt.first );
           }
-        }
-        else {
-          __heap.clear ();
         }
       }
       catch ( ... ) {
@@ -405,20 +407,23 @@ namespace gum {
       throw;
     }
 
+    std::pair<Priority,const Val*> new_heap_val =
+      std::move ( __heap [ __nb_elements ] );
     ++__nb_elements;
 
     // restore the heap property
     Size i = __nb_elements - 1;
 
-    for ( Size j = ( i - 1 ) >> 1; i && __cmp ( priority, __heap[j].first );
+    for ( Size j = ( i - 1 ) >> 1; i &&
+            __cmp ( new_heap_val.first, __heap[j].first );
           i = j, j = ( j - 1 ) >> 1 ) {
       __heap[i] = std::move ( __heap[j] );
       __indices[* ( __heap[i].second )] = i;
     }
 
     // put the new bucket into the heap
-    __heap[i].first  = priority;
-    __heap[i].second = &new_elt.first;
+    __heap[i].first  = std::move ( new_heap_val.first );
+    __heap[i].second = &( new_elt.first );
     new_elt.second = i;
 
     return i;
@@ -719,10 +724,12 @@ namespace gum {
     __cmp ( from.__cmp ) {
     // fill the heap structure
     if ( __nb_elements ) {
-      __heap.resize ( from.__heap.size(), from.__heap[0] );
-      for ( auto iter = __indices.cbegin (); iter != __indices.cend (); ++iter ) {
-        __heap[iter.val ()].first  = from.__heap[iter.val ()].first;
-        __heap[iter.val ()].second = iter.key ();
+      __heap.reserve ( from.__heap.size() );
+      for ( const auto& elt : from.__heap ) {
+        __heap.push_back ( elt );
+      }
+      for ( const auto& elt : __indices ) {
+        __heap[ elt.second ].second = elt.first;
       }
     }
 
@@ -804,16 +811,16 @@ namespace gum {
         // copy the indices and the heap
         __indices = from.__indices;
         __nb_elements = from.__nb_elements;
-        
+
+        __heap.clear ();
         if ( __nb_elements ) {
-          __heap.resize ( from.__heap.size(), __heap[0] );
+          __heap.reserve ( from.__heap.size() );
+          for ( const auto& elt : from.__heap ) {
+            __heap.push_back ( elt );
+          }
           for ( const auto& elt : __indices ) {
-            __heap[ elt.second ].first  = from.__heap[ elt.second ].first;
             __heap[ elt.second ].second = elt.first;
           }
-        }
-        else {
-          __heap.clear ();
         }
       }
       catch ( ... ) {
@@ -1020,19 +1027,21 @@ namespace gum {
       throw;
     }
 
+    std::pair<Priority,Val> new_heap_val = std::move ( __heap [ __nb_elements ] );
     ++__nb_elements;
 
     // restore the heap property
     Size i = __nb_elements - 1;
 
-    for ( Size j = ( i - 1 ) >> 1; i && __cmp ( priority, __heap[j].first );
+    for ( Size j = ( i - 1 ) >> 1; i &&
+            __cmp ( new_heap_val.first, __heap[j].first );
           i = j, j = ( j - 1 ) >> 1 ) {
       __heap[i] = std::move ( __heap[j] );
       __indices[ __heap[i].second ] = i;
     }
 
     // put the new bucket into the heap
-    __heap[i].first  = priority;
+    __heap[i].first  = std::move ( new_heap_val.first );
     __heap[i].second = val;
     new_elt.second = i;
 

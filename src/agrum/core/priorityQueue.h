@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief priority queues
+ * @brief priority queues (in which an element cannot appear more than once)
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  *
@@ -40,7 +40,6 @@
  * queue1.insert (2,  "CCC");
  * queue1.insert (23, "DDD");
  * queue1.insert (24, "EEE");
- * queue1.insert (10, "AAA");
  *
  * // copy the queue
  * PriorityQueue<std::string> queue2 = queue1;
@@ -63,10 +62,10 @@
  * std::cerr << queue1 << std::endl;
  *
  * // change the priority of the element at position 3
- * Size new_pos=queue1.setPriority (3,100);
+ * Size new_pos=queue1.setPriorityByPos (3,100);
  *
  * // change the priority of all instances of element "AAA"
- * queue1.setPriorityByVal ("AAA",100);
+ * queue1.setPriority ("AAA",100);
  * @endcode
  */
 
@@ -213,9 +212,7 @@ namespace gum {
     ( PriorityQueueImplementation<Val,Priority,Cmp,Alloc,Gen>&& from );
 
     /// returns the element at index "index_elt" from the priority queue
-    /**
-     * @throw NotFound exception is thrown if the element does not exist
-     */
+    /** @throw NotFound exception is thrown if the element does not exist */
     const Val& operator[] ( Size index_elt ) const;
 
     /// @}
@@ -633,7 +630,9 @@ namespace gum {
    * is assigned to each element in the structure. The elements are sorted
    * according to a weak order on the scores. The priority of any element can be
    * changed at any moment by the user. The priority queue then restores a heap
-   * property accordingly.
+   * property accordingly. Duplicate elements are not allowed in priority queues;
+   * if you wish an element to appear several times with different priorities,
+   * prefer using class MultiplePriorityQueue.
    * @par Usage example:
    * @code
    * // create a priority queue of strings, the priorities of which are integers
@@ -646,7 +645,6 @@ namespace gum {
    * queue1.insert (2,  "CCC");
    * queue1.insert (23, "DDD");
    * queue1.insert (24, "EEE");
-   * queue1.insert (10, "AAA");
    *
    * // copy the queue
    * PriorityQueue<std::string> queue2 = queue1;
@@ -670,10 +668,10 @@ namespace gum {
    * std::cerr << queue1 << std::endl;
    *
    * // change the priority of the element at position 3
-   * Size new_pos=queue1.setPriority (3,100);
+   * Size new_pos=queue1.setPriorityByPos (3,100);
    *
    * // change the priority of all instances of element "AAA"
-   * queue1.setPriorityByVal ("AAA",100);
+   * queue1.setPriority ("AAA",100);
    * @endcode
    */
   /* =========================================================================== */
