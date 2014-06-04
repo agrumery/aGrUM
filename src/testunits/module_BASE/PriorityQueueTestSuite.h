@@ -21,6 +21,8 @@
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
+#include <ressources/myalloc.h>
+
 
 #include <agrum/core/priorityQueue.h>
 #include <agrum/core/multiPriorityQueue.h>
@@ -103,6 +105,78 @@ namespace gum_tests {
       TS_ASSERT ( queue10.top () == "bb" );
     }
 
+    void testMoveScalar () {
+      gum::PriorityQueue<int> queue1 { std::pair<int,int> (1, 3 ),
+          std::pair<int,int> (2, 1 ),
+          std::pair<int,int> (3, 10 ) };
+
+      gum::PriorityQueue< int,int,std::less<int>,MyAlloc<int> > queue3;
+      queue3 = queue1;
+      TS_ASSERT ( queue3.top () == 2 );
+      TS_ASSERT ( queue3.topPriority () == 1 );
+      TS_ASSERT ( queue3.size () == 3 );
+
+      gum::PriorityQueue< int,int,std::less<int>,MyAlloc<int> > queue4 ( queue1 );
+      TS_ASSERT ( queue4.top () == 2 );
+      TS_ASSERT ( queue4.topPriority () == 1 );
+      TS_ASSERT ( queue4.size () == 3 );
+
+      gum::PriorityQueue<int> queue2 = std::move ( queue1 );
+      TS_ASSERT ( queue2.top () == 2 );
+      TS_ASSERT ( queue2.topPriority () == 1 );
+      TS_ASSERT ( queue2.size () == 3 );
+
+      gum::PriorityQueue< int,int,std::less<int>,MyAlloc<int> >
+        queue5 ( std::move ( queue4 ) );
+      TS_ASSERT ( queue5.top () == 2 );
+      TS_ASSERT ( queue5.topPriority () == 1 );
+      TS_ASSERT ( queue5.size () == 3 );
+
+      gum::PriorityQueue<int> queue6 { std::pair<int,int> (2, 1 ) };
+      queue6 = std::move ( queue2 );
+      TS_ASSERT ( queue6.top () == 2 );
+      TS_ASSERT ( queue6.topPriority () == 1 );
+      TS_ASSERT ( queue6.size () == 3 );
+    }
+
+    
+    void testMoveGen () {
+      gum::PriorityQueue<std::string>
+        queue1 { std::pair<std::string,int> ("a", 3 ),
+                 std::pair<std::string,int> ("b", 1 ),
+                 std::pair<std::string,int> ("c", 10 ) };
+
+      gum::PriorityQueue< std::string,int,std::less<int>,MyAlloc<int> > queue3;
+      queue3 = queue1;
+      TS_ASSERT ( queue3.top () == "b" );
+      TS_ASSERT ( queue3.topPriority () == 1 );
+      TS_ASSERT ( queue3.size () == 3 );
+
+      gum::PriorityQueue< std::string,int,std::less<int>,MyAlloc<int> >
+        queue4 ( queue1 );
+      TS_ASSERT ( queue4.top () == "b" );
+      TS_ASSERT ( queue4.topPriority () == 1 );
+      TS_ASSERT ( queue4.size () == 3 );
+
+      gum::PriorityQueue<std::string> queue2 = std::move ( queue1 );
+      TS_ASSERT ( queue2.top () == "b" );
+      TS_ASSERT ( queue2.topPriority () == 1 );
+      TS_ASSERT ( queue2.size () == 3 );
+
+      gum::PriorityQueue< std::string,int,std::less<int>,MyAlloc<int> >
+        queue5 ( std::move ( queue4 ) );
+      TS_ASSERT ( queue5.top () == "b" );
+      TS_ASSERT ( queue5.topPriority () == 1 );
+      TS_ASSERT ( queue5.size () == 3 );
+    
+      gum::PriorityQueue< std::string >
+        queue6 { std::pair<std::string,int> ("a", 1 ) };
+      queue6 = std::move ( queue2 );
+      TS_ASSERT ( queue6.top () == "b" );
+      TS_ASSERT ( queue6.topPriority () == 1 );
+      TS_ASSERT ( queue6.size () == 3 );
+    }
+    
     void testScalar () {
       gum::PriorityQueue<int> queue1;
 
@@ -244,7 +318,8 @@ namespace gum_tests {
       TS_ASSERT ( queue1.topPriority() == 4 );
       TS_ASSERT_THROWS ( queue1.setPriorityByPos ( 10, 4 ) , gum::NotFound );
 
-      queue1.setPriorityXX ( set2, 2 );
+      int nb = 2;
+      queue1.setPriorityXX ( set2, nb );
       TS_ASSERT ( queue1.top() == set2 );
       TS_ASSERT ( queue1.topPriority() == 2 );
       TS_ASSERT_THROWS ( queue1.setPriorityXX ( set6, 4 ) , gum::NotFound );
@@ -495,6 +570,41 @@ namespace gum_tests {
       TS_ASSERT ( str4 == set4 );
     }
     
+    void testMultiMoveScalar () {
+      gum::MultiPriorityQueue<int> queue1 { std::pair<int,int> (1, 3 ),
+          std::pair<int,int> (2, 1 ),
+          std::pair<int,int> (3, 10 ) };
+
+      gum::MultiPriorityQueue< int,int,std::less<int>,MyAlloc<int> > queue3;
+      queue3 = queue1;
+      TS_ASSERT ( queue3.top () == 2 );
+      TS_ASSERT ( queue3.topPriority () == 1 );
+      TS_ASSERT ( queue3.size () == 3 );
+
+      gum::MultiPriorityQueue< int,int,std::less<int>,MyAlloc<int> >
+        queue4 ( queue1 );
+      TS_ASSERT ( queue4.top () == 2 );
+      TS_ASSERT ( queue4.topPriority () == 1 );
+      TS_ASSERT ( queue4.size () == 3 );
+
+      gum::MultiPriorityQueue<int> queue2 = std::move ( queue1 );
+      TS_ASSERT ( queue2.top () == 2 );
+      TS_ASSERT ( queue2.topPriority () == 1 );
+      TS_ASSERT ( queue2.size () == 3 );
+
+      gum::MultiPriorityQueue< int,int,std::less<int>,MyAlloc<int> >
+        queue5 ( std::move ( queue4 ) );
+      TS_ASSERT ( queue5.top () == 2 );
+      TS_ASSERT ( queue5.topPriority () == 1 );
+      TS_ASSERT ( queue5.size () == 3 );
+
+      gum::MultiPriorityQueue<int> queue6 { std::pair<int,int> (2, 1 ) };
+      queue6 = std::move ( queue2 );
+      TS_ASSERT ( queue6.top () == 2 );
+      TS_ASSERT ( queue6.topPriority () == 1 );
+      TS_ASSERT ( queue6.size () == 3 );
+    }
+
   };
 
 } /* namespace gum_tests */

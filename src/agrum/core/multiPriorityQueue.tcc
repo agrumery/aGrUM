@@ -140,38 +140,35 @@ namespace gum {
   MultiPriorityQueue<Val,Priority,Cmp,Alloc>&
   MultiPriorityQueue<Val,Priority,Cmp,Alloc>::operator=
   ( const MultiPriorityQueue<Val,Priority,Cmp,Alloc>& from ) {
-    // avoid self assignment
-    if ( this != &from ) {
-      // for debugging purposes
-      GUM_OP_CPY ( MultiPriorityQueue );
+    // for debugging purposes
+    GUM_OP_CPY ( MultiPriorityQueue );
 
-      try {
-        // set the comprison function
-        __cmp = from.__cmp;
+    try {
+      // set the comprison function
+      __cmp = from.__cmp;
         
-        // copy the indices and the heap
-        __indices = from.__indices;
-        __heap = from.__heap;
-        __nb_elements = from.__nb_elements;
-        
-        // restore the link between __indices and __heap
-        for ( const auto& val_and_index : __indices ) {
-          const Val* val = &( val_and_index.first );
-          const std::vector<Size>& vect = val_and_index.second;
-          for ( auto index : vect ) {
-            __heap[ index ].second = val;
-          }
+      // copy the indices and the heap
+      __indices = from.__indices;
+      __heap = from.__heap;
+      __nb_elements = from.__nb_elements;
+      
+      // restore the link between __indices and __heap
+      for ( const auto& val_and_index : __indices ) {
+        const Val* val = &( val_and_index.first );
+        const std::vector<Size>& vect = val_and_index.second;
+        for ( auto index : vect ) {
+          __heap[ index ].second = val;
         }
       }
-      catch ( ... ) {
-        __heap.clear();
-        __indices.clear();
-        __nb_elements = 0;
-
-        throw;
-      }
     }
-
+    catch ( ... ) {
+      __heap.clear();
+      __indices.clear();
+      __nb_elements = 0;
+      
+      throw;
+    }
+    
     return *this;
   }
 
@@ -182,42 +179,39 @@ namespace gum {
   MultiPriorityQueue<Val,Priority,Cmp,Alloc>&
   MultiPriorityQueue<Val,Priority,Cmp,Alloc>::operator=
   ( const MultiPriorityQueue<Val,Priority,Cmp,OtherAlloc>& from ) {
-    // avoid self assignment
-    if ( this != &from ) {
-      // for debugging purposes
-      GUM_OP_CPY ( MultiPriorityQueue );
-
-      try {
-        // set the comprison function
-        __cmp = from.__cmp;
-        
-        // copy the indices and the heap
-        __indices = from.__indices;
-        __nb_elements = from.__nb_elements;
-        
-        // restore the link between __indices and __heap
-        __heap.clear ();
-        __heap.reserve ( from.__heap.size() );
-        for ( const auto& elt : from.__heap ) {
-          __heap.push_back ( elt );
-        }
-        for ( const auto& val_and_index : __indices ) {
-          const Val* val = &( val_and_index.first );
-          const std::vector<Size>& vect = val_and_index.second;
-          for ( auto index : vect ) {
-            __heap[ index ].second = val;
-          }
-        }
+    // for debugging purposes
+    GUM_OP_CPY ( MultiPriorityQueue );
+    
+    try {
+      // set the comprison function
+      __cmp = from.__cmp;
+      
+      // copy the indices and the heap
+      __indices = from.__indices;
+      __nb_elements = from.__nb_elements;
+      
+      // restore the link between __indices and __heap
+      __heap.clear ();
+      __heap.reserve ( from.__heap.size() );
+      for ( const auto& elt : from.__heap ) {
+        __heap.push_back ( elt );
       }
-      catch ( ... ) {
-        __heap.clear();
-        __indices.clear();
-        __nb_elements = 0;
-
-        throw;
+      for ( const auto& val_and_index : __indices ) {
+        const Val* val = &( val_and_index.first );
+        const std::vector<Size>& vect = val_and_index.second;
+        for ( auto index : vect ) {
+          __heap[ index ].second = val;
+        }
       }
     }
-
+    catch ( ... ) {
+      __heap.clear();
+      __indices.clear();
+      __nb_elements = 0;
+      
+      throw;
+    }
+    
     return *this;
   }
 

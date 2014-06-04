@@ -116,7 +116,10 @@ namespace gum {
   class PriorityQueueImplementation {
 
     friend class PriorityQueue<Val,Priority,Cmp,Alloc>;
-    
+
+    template <typename V, typename P, typename C, typename A, bool g>
+    friend class PriorityQueueImplementation;
+   
   public:
     
     /// types for STL compliance
@@ -375,6 +378,9 @@ namespace gum {
   class PriorityQueueImplementation<Val,Priority,Cmp,Alloc,true> {
 
     friend class PriorityQueue<Val,Priority,Cmp,Alloc>;
+
+    template <typename V, typename P, typename C, typename A, bool g>
+    friend class PriorityQueueImplementation;
     
   public:
     

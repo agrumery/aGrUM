@@ -179,37 +179,34 @@ namespace gum {
   PriorityQueueImplementation<Val,Priority,Cmp,Alloc,Gen>&
   PriorityQueueImplementation<Val,Priority,Cmp,Alloc,Gen>::operator=
   ( const PriorityQueueImplementation<Val,Priority,Cmp,OtherAlloc,Gen>& from ) {
-    // avoid self assignment
-    if ( this != &from ) {
-      // for debugging purposes
-      GUM_OP_CPY ( PriorityQueueImplementation );
+    // for debugging purposes
+    GUM_OP_CPY ( PriorityQueueImplementation );
+    
+    try {
+      // set the comprison function
+      __cmp = from.__cmp;
+      
+      // copy the indices and the heap
+      __indices = from.__indices;
+      __nb_elements = from.__nb_elements;
 
-      try {
-        // set the comprison function
-        __cmp = from.__cmp;
-
-        // copy the indices and the heap
-        __indices = from.__indices;
-        __nb_elements = from.__nb_elements;
-
-        __heap.clear ();
-        if ( __nb_elements ) {
-          __heap.reserve ( from.__heap.size() );
-          for ( const auto& elt : from.__heap ) {
-            __heap.push_back ( elt );
-          }
-          for ( const auto& elt : __indices ) {
-            __heap[ elt.second ].second = &( elt.first );
-          }
+      __heap.clear ();
+      if ( __nb_elements ) {
+        __heap.reserve ( from.__heap.size() );
+        for ( const auto& elt : from.__heap ) {
+          __heap.push_back ( elt );
+        }
+        for ( const auto& elt : __indices ) {
+          __heap[ elt.second ].second = &( elt.first );
         }
       }
-      catch ( ... ) {
-        __heap.clear();
-        __indices.clear();
-        __nb_elements = 0;
-
-        throw;
-      }
+    }
+    catch ( ... ) {
+      __heap.clear();
+      __indices.clear();
+      __nb_elements = 0;
+      
+      throw;
     }
 
     return *this;
@@ -728,9 +725,6 @@ namespace gum {
       for ( const auto& elt : from.__heap ) {
         __heap.push_back ( elt );
       }
-      for ( const auto& elt : __indices ) {
-        __heap[ elt.second ].second = elt.first;
-      }
     }
 
     // for debugging purposes
@@ -799,37 +793,31 @@ namespace gum {
   PriorityQueueImplementation<Val,Priority,Cmp,Alloc,true>&
   PriorityQueueImplementation<Val,Priority,Cmp,Alloc,true>::operator=
   ( const PriorityQueueImplementation<Val,Priority,Cmp,OtherAlloc,true>& from ) {
-    // avoid self assignment
-    if ( this != &from ) {
-      // for debugging purposes
-      GUM_OP_CPY ( PriorityQueueImplementation );
+    // for debugging purposes
+    GUM_OP_CPY ( PriorityQueueImplementation );
 
-      try {
-        // set the comprison function
-        __cmp = from.__cmp;
+    try {
+      // set the comprison function
+      __cmp = from.__cmp;
+      
+      // copy the indices and the heap
+      __indices = from.__indices;
+      __nb_elements = from.__nb_elements;
 
-        // copy the indices and the heap
-        __indices = from.__indices;
-        __nb_elements = from.__nb_elements;
-
-        __heap.clear ();
-        if ( __nb_elements ) {
-          __heap.reserve ( from.__heap.size() );
-          for ( const auto& elt : from.__heap ) {
-            __heap.push_back ( elt );
-          }
-          for ( const auto& elt : __indices ) {
-            __heap[ elt.second ].second = elt.first;
-          }
+      __heap.clear ();
+      if ( __nb_elements ) {
+        __heap.reserve ( from.__heap.size() );
+        for ( const auto& elt : from.__heap ) {
+          __heap.push_back ( elt );
         }
       }
-      catch ( ... ) {
-        __heap.clear();
-        __indices.clear();
-        __nb_elements = 0;
-
-        throw;
-      }
+    }
+    catch ( ... ) {
+      __heap.clear();
+      __indices.clear();
+      __nb_elements = 0;
+      
+      throw;
     }
 
     return *this;

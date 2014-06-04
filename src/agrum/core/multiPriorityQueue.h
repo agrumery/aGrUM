@@ -159,6 +159,10 @@ namespace gum {
             typename Cmp = std::less<Priority>,
             typename Alloc = std::allocator<Val> >
   class MultiPriorityQueue {
+
+    template <typename V, typename P, typename C, typename A>
+    friend class MultiPriorityQueue;
+    
   public:
     /// types for STL compliance
     /// @{
