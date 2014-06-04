@@ -261,11 +261,11 @@ namespace gum {
 
     // a structure storing the number of neighbours previously processed
     PriorityQueue< NodeId, unsigned int, std::greater<unsigned int> >
-    numbered_neighbours ( std::greater<unsigned int>(), false,
+    numbered_neighbours ( std::greater<unsigned int>(),
                           __triangulated_graph.size() );
 
     for ( unsigned int i = 0; i < __elim_order.size(); ++i )
-      numbered_neighbours.insert ( 0, __elim_order[i] );
+      numbered_neighbours.insertXX ( __elim_order[i], 0 );
 
     // perform the maximum cardinality search
     for ( unsigned int i = __elim_order.size() - 1;
@@ -280,8 +280,8 @@ namespace gum {
         NodeId neighbour = *iter;
 
         try {
-          numbered_neighbours.setPriorityByVal
-          ( neighbour, 1 + numbered_neighbours.priorityByVal ( neighbour ) );
+          numbered_neighbours.setPriorityXX
+          ( neighbour, 1 + numbered_neighbours.priorityXX ( neighbour ) );
         } catch ( NotFound& ) { }
       }
     }

@@ -975,7 +975,7 @@ namespace gum {
   MultiDimDecisionDiagramBase< GUM_SCALAR >::__makePreceedingVariablesLists ( HashTable<NodeId, Set< const DiscreteVariable* >* >* preceedingVariablesTable ) const {
 
     PriorityQueue<NodeId> fifo;
-    fifo.insert ( this->variablesSequence().pos ( __variableMap[this->__root] ), this->__root );
+    fifo.insertXX ( this->__root, this->variablesSequence().pos ( __variableMap[this->__root] ) );
     preceedingVariablesTable->insert ( this->__root, new Set< const DiscreteVariable* >() );
 
 
@@ -1001,7 +1001,7 @@ namespace gum {
             ( *preceedingVariablesTable ) [ *arcIter ]->insert ( __variableMap[ currentNode ] );
 
             if ( !fifo.contains ( *arcIter ) )
-              fifo.insert ( this->variablesSequence().pos ( __variableMap[*arcIter] ), *arcIter );
+              fifo.insertXX ( *arcIter, this->variablesSequence().pos ( __variableMap[*arcIter] ) );
 
           }
         }
@@ -1022,7 +1022,7 @@ namespace gum {
           ( *preceedingVariablesTable ) [ defaultSon ]->insert ( __variableMap[ currentNode ] );
 
           if ( !fifo.contains ( defaultSon ) )
-            fifo.insert ( this->variablesSequence().pos ( __variableMap[defaultSon] ), defaultSon );
+            fifo.insertXX ( defaultSon, this->variablesSequence().pos ( __variableMap[defaultSon] ) );
 
         }
       }

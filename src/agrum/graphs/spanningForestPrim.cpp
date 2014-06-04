@@ -157,7 +157,7 @@ namespace gum {
           iter != neighbours.endSafe(); ++iter ) {
       if ( ! __spanning_tree.existsNode ( *iter ) ) {
         Edge edge ( *iter, id );
-        __edgesToExplore.insert ( __costTable[edge], edge );
+        __edgesToExplore.insertXX ( edge, __costTable[edge] );
       }
     }
   }

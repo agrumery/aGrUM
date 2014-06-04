@@ -23,6 +23,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
+#include <agrum/core/utils_random.h>
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/graphicalModels/inference/scheduleProject.h>
@@ -96,10 +97,9 @@ namespace gum_tests {
       // ==========================================================================
       void randomInit ( gum::Potential<float>& t ) {
         gum::Instantiation i ( t );
-        gum::initRandom() ;
 
         for ( i.setFirst(); ! i.end(); ++i )
-          t.set ( i, ( int ) ( ( ( float ) rand() / RAND_MAX ) * 100000 ) );
+          t.set ( i, ( int ) ( gum::randomProba() * 100000 ) );
       }
 
   };
