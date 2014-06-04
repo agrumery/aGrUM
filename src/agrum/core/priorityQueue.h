@@ -251,13 +251,13 @@ namespace gum {
     /** @return the index of the element inserted into the priority queue (see
      * method eraseByPos for more details about the index)
      * @throw DuplicateElement exception is thrown if the element already exists */
-    Size insertXX (const Val& val, const Priority& priority );
+    Size insert (const Val& val, const Priority& priority );
 
     /// inserts (by move) a new element in the priority queue
     /** @return the index of the element inserted into the priority queue (see
      * method eraseByPos for more details about the index)
      * @throw DuplicateElement exception is thrown if the element already exists */
-    Size insertXX ( Val&& val, Priority&& priority );
+    Size insert ( Val&& val, Priority&& priority );
 
     /// emplace a new element into the priority queue
     /** @return the index of the element inserted into the priority queue (see
@@ -289,7 +289,7 @@ namespace gum {
     /** If the element cannot be found, the function returns without throwing any
      * exception.
      * @param val the element we wish to remove. */
-    void eraseXX ( const Val& val );
+    void erase ( const Val& val );
 
     /// modifies the priority of the element at position "index" of the queue
     /** @throw NotFound If the element cannot be found */
@@ -301,15 +301,15 @@ namespace gum {
 
     /// modifies the priority of a given element
     /** @throw NotFound If the element cannot be found */
-    void setPriorityXX ( const Val& elt, const Priority& new_priority );
+    void setPriority ( const Val& elt, const Priority& new_priority );
 
     /// modifies the priority of a given element
     /** @throw NotFound If the element cannot be found */
-    void setPriorityXX ( const Val& elt, Priority&& new_priority );
+    void setPriority ( const Val& elt, Priority&& new_priority );
 
     /// returns the priority of the value passed in argument
     /** @throw NotFound If the element cannot be found */
-    const Priority& priorityXX ( const Val& elt ) const;
+    const Priority& priority ( const Val& elt ) const;
 
     /// removes all the elements from the queue
     void clear ();
@@ -515,13 +515,13 @@ namespace gum {
     /** @return the index of the element inserted into the priority queue (see
      * method eraseByPos for more details about the index)
      * @throw DuplicateElement exception is thrown if the element already exists */
-    Size insertXX ( Val val, const Priority& priority );
+    Size insert ( Val val, const Priority& priority );
 
     /// inserts (by move) a new element in the priority queue
     /** @return the index of the element inserted into the priority queue (see
      * method eraseByPos for more details about the index)
      * @throw DuplicateElement exception is thrown if the element already exists */
-    Size insertXX ( Val val, Priority&& priority );
+    Size insert ( Val val, Priority&& priority );
 
     /// emplace a new element into the priority queue
     /** @return the index of the element inserted into the priority queue (see
@@ -553,7 +553,7 @@ namespace gum {
     /** If the element cannot be found, the function returns without throwing any
      * exception.
      * @param val the element we wish to remove. */
-    void eraseXX ( Val val );
+    void erase ( Val val );
 
     /// modifies the priority of the element at position "index" of the queue
     /** @throw NotFound If the element cannot be found */
@@ -565,15 +565,15 @@ namespace gum {
 
     /// modifies the priority of a given element
     /** @throw NotFound If the element cannot be found */
-    void setPriorityXX ( Val elt, const Priority& new_priority );
+    void setPriority ( Val elt, const Priority& new_priority );
 
     /// modifies the priority of a given element
     /** @throw NotFound If the element cannot be found */
-    void setPriorityXX ( Val elt, Priority&& new_priority );
+    void setPriority ( Val elt, Priority&& new_priority );
 
     /// returns the priority of the value passed in argument
     /** @throw NotFound If the element cannot be found */
-    const Priority& priorityXX ( Val elt ) const;
+    const Priority& priority ( Val elt ) const;
 
     /// removes all the elements from the queue
     void clear ();

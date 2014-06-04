@@ -193,7 +193,7 @@ namespace gum {
     for ( NodeSetIterator iter = __nodeset.beginSafe();
           iter != __nodeset.endSafe(); ++iter ) {
       try {
-        float score = possibleNodes.priorityXX ( *iter );
+        float score = possibleNodes.priority ( *iter );
 
         if ( ! found || ( score < min_score ) ) {
           found = true;
