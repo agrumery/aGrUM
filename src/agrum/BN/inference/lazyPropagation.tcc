@@ -432,7 +432,7 @@ namespace gum {
              iter2 = vars.beginSafe(); iter2 != vars.endSafe(); ++iter2 )
           size *= iter2.key()->domainSize();
 
-        product_size.insertXX( iter.key(), size );
+        product_size.insert( iter.key(), size );
       }
     }
 
@@ -542,8 +542,8 @@ namespace gum {
             pot_per_var[pot_vars[i]].eraseByVal( *iter );
 
             if( div_size != 1 ) {
-              product_size.setPriorityXX
-              ( pot_vars[i], product_size.priorityXX( pot_vars[i] ) /
+              product_size.setPriority
+              ( pot_vars[i], product_size.priority( pot_vars[i] ) /
                 div_size );
             }
           }
@@ -582,9 +582,9 @@ namespace gum {
           }
 
           if( mult_size != 1 ) {
-            product_size.setPriorityXX
+            product_size.setPriority
             ( marginal_vars[i],
-              product_size.priorityXX( marginal_vars[i] ) * mult_size );
+              product_size.priority( marginal_vars[i] ) * mult_size );
           }
         }
       }

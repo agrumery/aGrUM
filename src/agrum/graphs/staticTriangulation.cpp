@@ -265,7 +265,7 @@ namespace gum {
                           __triangulated_graph.size() );
 
     for ( unsigned int i = 0; i < __elim_order.size(); ++i )
-      numbered_neighbours.insertXX ( __elim_order[i], 0 );
+      numbered_neighbours.insert ( __elim_order[i], 0 );
 
     // perform the maximum cardinality search
     for ( unsigned int i = __elim_order.size() - 1;
@@ -280,8 +280,8 @@ namespace gum {
         NodeId neighbour = *iter;
 
         try {
-          numbered_neighbours.setPriorityXX
-          ( neighbour, 1 + numbered_neighbours.priorityXX ( neighbour ) );
+          numbered_neighbours.setPriority
+          ( neighbour, 1 + numbered_neighbours.priority ( neighbour ) );
         } catch ( NotFound& ) { }
       }
     }

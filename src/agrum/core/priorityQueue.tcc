@@ -61,7 +61,7 @@ namespace gum {
     // fill the queue
     __heap.reserve ( list.size () );
     for ( const auto& elt : list ) {
-      insertXX ( elt.first, elt.second );
+      insert ( elt.first, elt.second );
     }
 
     // for debugging purposes
@@ -344,7 +344,7 @@ namespace gum {
   /// removes a given element from the priority queue (but does not return it)
   template <typename Val,typename Priority,typename Cmp,typename Alloc,bool Gen>
   INLINE
-  void PriorityQueueImplementation<Val,Priority,Cmp,Alloc,Gen>::eraseXX
+  void PriorityQueueImplementation<Val,Priority,Cmp,Alloc,Gen>::erase
   ( const Val& val ) {
     try { eraseByPos ( __indices[val] ); }
     catch ( NotFound& ) {}
@@ -387,7 +387,7 @@ namespace gum {
   /// inserts a new (a copy) element in the priority queue
   template <typename Val,typename Priority,typename Cmp,typename Alloc,bool Gen>
   INLINE
-  Size PriorityQueueImplementation<Val,Priority,Cmp,Alloc,Gen>::insertXX
+  Size PriorityQueueImplementation<Val,Priority,Cmp,Alloc,Gen>::insert
   ( const Val& val,
     const Priority& priority ) {
     // create the entry in the indices hashtable (if the element already exists,
@@ -430,7 +430,7 @@ namespace gum {
   /// inserts by move a new element in the priority queue
   template <typename Val,typename Priority,typename Cmp,typename Alloc,bool Gen>
   INLINE
-  Size PriorityQueueImplementation<Val,Priority,Cmp,Alloc,Gen>::insertXX
+  Size PriorityQueueImplementation<Val,Priority,Cmp,Alloc,Gen>::insert
   ( Val&& val, Priority&& priority ) {
     // create the entry in the indices hashtable (if the element already exists,
     // __indices.insert will raise a Duplicateelement exception)
@@ -476,7 +476,7 @@ namespace gum {
   ( Args&&... args ) {
     std::pair<Val,Priority> new_elt =
       std::make_pair<Val,Priority> ( std::forward<Args> ( args )... );
-    return insertXX ( std::move ( new_elt.first ),
+    return insert ( std::move ( new_elt.first ),
                       std::move ( new_elt.second ) );
   }
 
@@ -632,7 +632,7 @@ namespace gum {
 
   /// modifies the priority of a given element
   template <typename Val,typename Priority,typename Cmp,typename Alloc,bool Gen>
-  void PriorityQueueImplementation<Val,Priority,Cmp,Alloc,Gen>::setPriorityXX
+  void PriorityQueueImplementation<Val,Priority,Cmp,Alloc,Gen>::setPriority
   ( const Val& elt,
     const Priority& new_priority ) {
     setPriorityByPos ( __indices[elt], new_priority );
@@ -641,7 +641,7 @@ namespace gum {
   
   /// modifies the priority of a given element
   template <typename Val,typename Priority,typename Cmp,typename Alloc,bool Gen>
-  void PriorityQueueImplementation<Val,Priority,Cmp,Alloc,Gen>::setPriorityXX
+  void PriorityQueueImplementation<Val,Priority,Cmp,Alloc,Gen>::setPriority
   ( const Val& elt,
     Priority&& new_priority ) {
     setPriorityByPos ( __indices[elt], std::move ( new_priority ) );
@@ -652,7 +652,7 @@ namespace gum {
   template <typename Val,typename Priority,typename Cmp,typename Alloc,bool Gen>
   INLINE
   const Priority&
-  PriorityQueueImplementation<Val,Priority,Cmp,Alloc,Gen>::priorityXX
+  PriorityQueueImplementation<Val,Priority,Cmp,Alloc,Gen>::priority
   ( const Val& elt ) const {
     return __heap[ __indices[elt] ].first;
   }
@@ -688,7 +688,7 @@ namespace gum {
     // fill the queue
     __heap.reserve ( list.size () );
     for ( const auto& elt : list ) {
-      insertXX ( elt.first, elt.second );
+      insert ( elt.first, elt.second );
     }
 
     // for debugging purposes
@@ -956,7 +956,7 @@ namespace gum {
   /// removes a given element from the priority queue (but does not return it)
   template <typename Val,typename Priority,typename Cmp,typename Alloc>
   INLINE
-  void PriorityQueueImplementation<Val,Priority,Cmp,Alloc,true>::eraseXX
+  void PriorityQueueImplementation<Val,Priority,Cmp,Alloc,true>::erase
   ( Val val ) {
     try { eraseByPos ( __indices[val] ); }
     catch ( NotFound& ) {}
@@ -999,7 +999,7 @@ namespace gum {
   /// inserts a new (a copy) element in the priority queue
   template <typename Val,typename Priority,typename Cmp,typename Alloc>
   INLINE
-  Size PriorityQueueImplementation<Val,Priority,Cmp,Alloc,true>::insertXX
+  Size PriorityQueueImplementation<Val,Priority,Cmp,Alloc,true>::insert
   ( Val val,
     const Priority& priority ) {
     // create the entry in the indices hashtable (if the element already exists,
@@ -1040,7 +1040,7 @@ namespace gum {
   /// inserts by move a new element in the priority queue
   template <typename Val,typename Priority,typename Cmp,typename Alloc>
   INLINE
-  Size PriorityQueueImplementation<Val,Priority,Cmp,Alloc,true>::insertXX
+  Size PriorityQueueImplementation<Val,Priority,Cmp,Alloc,true>::insert
   ( Val val, Priority&& priority ) {
     // create the entry in the indices hashtable (if the element already exists,
     // __indices.insert will raise a Duplicateelement exception)
@@ -1084,7 +1084,7 @@ namespace gum {
   ( Args&&... args ) {
     std::pair<Val,Priority> new_elt =
       std::make_pair<Val,Priority> ( std::forward<Args> ( args )... );
-    return insertXX ( new_elt.first, std::move ( new_elt.second ) );
+    return insert ( new_elt.first, std::move ( new_elt.second ) );
   }
 
 
@@ -1239,7 +1239,7 @@ namespace gum {
 
   /// modifies the priority of a given element
   template <typename Val,typename Priority,typename Cmp,typename Alloc>
-  void PriorityQueueImplementation<Val,Priority,Cmp,Alloc,true>::setPriorityXX
+  void PriorityQueueImplementation<Val,Priority,Cmp,Alloc,true>::setPriority
   ( Val elt,
     const Priority& new_priority ) {
     setPriorityByPos ( __indices[elt], new_priority );
@@ -1248,7 +1248,7 @@ namespace gum {
   
   /// modifies the priority of a given element
   template <typename Val,typename Priority,typename Cmp,typename Alloc>
-  void PriorityQueueImplementation<Val,Priority,Cmp,Alloc,true>::setPriorityXX
+  void PriorityQueueImplementation<Val,Priority,Cmp,Alloc,true>::setPriority
   ( Val elt,
     Priority&& new_priority ) {
     setPriorityByPos ( __indices[elt], std::move ( new_priority ) );
@@ -1259,7 +1259,7 @@ namespace gum {
   template <typename Val,typename Priority,typename Cmp,typename Alloc>
   INLINE
   const Priority&
-  PriorityQueueImplementation<Val,Priority,Cmp,Alloc,true>::priorityXX
+  PriorityQueueImplementation<Val,Priority,Cmp,Alloc,true>::priority
   ( Val elt ) const {
     return __heap[ __indices[elt] ].first;
   }

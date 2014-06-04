@@ -178,7 +178,7 @@ namespace gum {
           size *= iter2.key()->domainSize();
         }
 
-        product_size.insertXX ( iter.key(), size );
+        product_size.insert ( iter.key(), size );
       }
     }
 
@@ -260,8 +260,8 @@ namespace gum {
             tables_per_var[table_vars[i]].erase ( *iter );
 
             if ( div_size != 1 ) {
-              product_size.setPriorityXX
-              ( table_vars[i], product_size.priorityXX ( table_vars[i] ) /
+              product_size.setPriority
+              ( table_vars[i], product_size.priority ( table_vars[i] ) /
                 div_size );
             }
           }
@@ -302,9 +302,9 @@ namespace gum {
           }
 
           if ( mult_size != 1 ) {
-            product_size.setPriorityXX
+            product_size.setPriority
             ( marginal_vars[i],
-              product_size.priorityXX ( marginal_vars[i] ) * mult_size );
+              product_size.priority ( marginal_vars[i] ) * mult_size );
           }
         }
       }
@@ -479,7 +479,7 @@ namespace gum {
           size *= iter2.key()->domainSize();
         }
 
-        product_size.insertXX ( iter.key(), size );
+        product_size.insert ( iter.key(), size );
       }
     }
 
@@ -592,8 +592,8 @@ namespace gum {
             tables_per_var[table_vars[i]].erase ( *iter );
 
             if ( div_size != 1 ) {
-              product_size.setPriorityXX
-              ( table_vars[i], product_size.priorityXX ( table_vars[i] ) /
+              product_size.setPriority
+              ( table_vars[i], product_size.priority ( table_vars[i] ) /
                 div_size );
             }
           }
@@ -632,8 +632,8 @@ namespace gum {
           }
 
           if ( mult_size != 1 ) {
-            product_size.setPriorityXX
-            ( var_i, product_size.priorityXX ( var_i ) * mult_size );
+            product_size.setPriority
+            ( var_i, product_size.priority ( var_i ) * mult_size );
           }
         }
       }
@@ -768,7 +768,7 @@ namespace gum {
           size *= iter2.key()->domainSize();
         }
 
-        product_size.insertXX ( iter.key(), size );
+        product_size.insert ( iter.key(), size );
       }
     }
 
@@ -911,8 +911,8 @@ namespace gum {
             tables_per_var[table_vars[i]].erase ( *iter );
 
             if ( div_size != 1 ) {
-              product_size.setPriorityXX
-              ( table_vars[i], product_size.priorityXX ( table_vars[i] ) /
+              product_size.setPriority
+              ( table_vars[i], product_size.priority ( table_vars[i] ) /
                 div_size );
             }
           }
@@ -961,8 +961,8 @@ namespace gum {
           }
 
           if ( mult_size != 1 ) {
-            product_size.setPriorityXX
-            ( var_i, product_size.priorityXX ( var_i ) * mult_size );
+            product_size.setPriority
+            ( var_i, product_size.priority ( var_i ) * mult_size );
           }
         }
       }
