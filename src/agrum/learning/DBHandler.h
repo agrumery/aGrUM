@@ -76,9 +76,10 @@ namespace gum {
       virtual std::pair<unsigned long, unsigned long> range () const noexcept = 0;
 
 
-    private:
+    protected:
+
       /// a buffer to avoid cacheline problems due to parallelism
-      char __align[CACHE_SIZE]; 
+      char _align[CACHE_SIZE]; 
 
     };
 

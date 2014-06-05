@@ -55,8 +55,10 @@ namespace gum {
     /// destructor
     INLINE DBCell::~DBCell () {
       GUM_DESTRUCTOR ( DBCell );
-      if ( __type == EltType::STRING )
-        __string.std::string::~string ();
+      if ( __type == EltType::STRING ) {
+        using namespace std;
+        __string.~string ();
+      }
     }
 
     
@@ -102,7 +104,10 @@ namespace gum {
 
     /// sets the content of the DBCell (safe type checking)
     INLINE void DBCell::setFloatSafe ( float elt ) {
-      if ( __type == EltType::STRING ) __string.std::string::~string ();
+      if ( __type == EltType::STRING ) {
+        using namespace std;
+        __string.~string ();
+      }
       __type = EltType::FLOAT;
       __float = elt;
     }
@@ -110,7 +115,10 @@ namespace gum {
     
     /// sets the DBCell as a missing element
     INLINE void DBCell::setMissingSafe () {
-      if ( __type == EltType::STRING ) __string.std::string::~string ();
+      if ( __type == EltType::STRING ) {
+        using namespace std;
+        __string.~string ();
+      }
       __type = EltType::MISSING;
     }
     
@@ -141,7 +149,10 @@ namespace gum {
     /// sets the content of the DBCell from a string
     INLINE void DBCell::__setFloatFromStringSafe ( const std::string& elt ) {
       float new_elt = stof ( elt );
-      if ( __type == EltType::STRING ) __string.std::string::~string ();
+      if ( __type == EltType::STRING ) {
+        using namespace std;
+        __string.~string ();
+      }
       __float = new_elt;
       __type = EltType::FLOAT;
     }

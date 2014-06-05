@@ -42,7 +42,7 @@ namespace gum {
     /** @brief the wrapper of Create<>s that will be used to translate
      * a set of database cells */ 
     template<int Idx, typename... Translators>
-    struct BasicDBRowTranslatorSet;
+    class BasicDBRowTranslatorSet;
 
 
     /** @brief the end of the recursive definition of BasicDBRowTranslatorSet:

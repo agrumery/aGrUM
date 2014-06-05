@@ -69,7 +69,10 @@ namespace gum {
       }
 
       // if we stored previously a string, remove it
-      if ( __type == EltType::STRING ) __string.std::string::~string ();
+      if ( __type == EltType::STRING ) {
+        using namespace std;
+        __string.~string ();
+      }
 
       // assign the scalar types
       switch ( from.__type ) {
