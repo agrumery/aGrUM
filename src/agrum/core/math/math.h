@@ -30,5 +30,8 @@
 #define M_PI 3.14159265358979323846
 #endif
 
+#ifndef GUM_LOG_SQRT_2PI // log ( sqrt ( 2pi ) )
+#define GUM_LOG_SQRT_2PI .91893853320467274177
+#endif
 
 #endif /* GUM_MATH_H */

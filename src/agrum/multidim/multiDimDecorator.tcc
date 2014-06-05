@@ -328,7 +328,13 @@ namespace gum {
   //     ( static_cast<MultiDimImplementation<GUM_SCALAR>*>
   //       ( this->getContent()->newFactory() ) );
   // }
+  
 
+  template<typename GUM_SCALAR> INLINE
+  const std::string MultiDimDecorator<GUM_SCALAR>::toString () const {
+    return content()->toString( );
+  }
+  
 
 } /* namespace gum */
 

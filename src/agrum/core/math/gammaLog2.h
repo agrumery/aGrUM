@@ -96,7 +96,7 @@ namespace gum {
     static constexpr float __1log2 { M_LOG2E };
 
     /// log ( sqrt(2pi) )
-    static constexpr float __log_sqrt_2pi { 0.5f * logf ( 2 * M_PI) };
+    static constexpr float __log_sqrt_2pi { GUM_LOG_SQRT_2PI };
     
     /// the 5000 values from 0 to 50 by step of 1/100
     static const std::vector<float> __small_values;

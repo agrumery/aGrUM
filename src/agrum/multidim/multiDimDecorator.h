@@ -285,6 +285,11 @@ namespace gum {
       virtual const std::string toString ( const Instantiation* i ) const ;
 
       /**
+       * string representation of this.
+       */
+      virtual const std::string toString () const;
+
+      /**
        * Perform an homothety on a multiDim container.
        * @param alpha The ratio.
        * @param mul The chosen mult operation.
