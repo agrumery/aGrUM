@@ -823,8 +823,8 @@ namespace gum_tests {
               // std::cout << std::endl << a2->toDot() << std::endl;
 
               bool evalRes = true;
-              double fuck = 0.0, you = 0.0;
-              TS_GUM_ASSERT_THROWS_NOTHING( evalRes = __evalOperation( 1, a1, a2,fuck,you,0.0 ) );
+              double foo = 0.0, bar = 0.0;
+              TS_GUM_ASSERT_THROWS_NOTHING( evalRes = __evalOperation( 1, a1, a2,foo,bar,0.0 ) );
 
               delete a1;
               delete a2;

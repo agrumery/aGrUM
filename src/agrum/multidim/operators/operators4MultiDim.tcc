@@ -454,7 +454,7 @@
 /// a specialized function for finding max of two multiDimDecisionGraphs
 // //////////////////////////////////////////////////////////////////////////////////
 
-#define GUM_MULTI_DIM_OPERATOR std::max
+#define GUM_MULTI_DIM_OPERATOR maximizes
 
 #define GUM_MULTI_DIM_OPERATOR_NAME maximize2MultiDimDecisionGraphs
 #include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
@@ -471,7 +471,7 @@
 /// a specialized function for finding min of two multiDimDecisionGraphs
 // //////////////////////////////////////////////////////////////////////////////////
 
-#define GUM_MULTI_DIM_OPERATOR std::min
+#define GUM_MULTI_DIM_OPERATOR minimizes
 
 #define GUM_MULTI_DIM_OPERATOR_NAME minimize2MultiDimDecisionGraphs
 #include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
@@ -632,7 +632,7 @@ namespace gum {
       registerOperator<GUM_SCALAR> ( "*", MultiDimDecisionGraphString, MultiDimDecisionGraphString,
                                      &multiply2MultiDimDecisionGraphs );
       registerOperator<GUM_SCALAR> ( "/", MultiDimDecisionGraphString, MultiDimDecisionGraphString,
-                                     &divide2MultiDimGraphDiagrams );
+                                     &divide2MultiDimDecisionGraphs );
 
       // register default basename functions
       registerOperator<GUM_SCALAR> ( "+", BaseNameString, BaseNameString,

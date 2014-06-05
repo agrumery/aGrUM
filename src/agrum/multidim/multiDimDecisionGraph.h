@@ -211,6 +211,7 @@ namespace gum {
             void addParent( NodeId parent, Idx modality);
             void removeParent( NodeId parent, Idx modality);
             PICLElem*& parents() {return __nodeParents;}
+            const PICLElem* parentsIter() const {return __nodeParents;}
 
             // ============================================================================
             /// Allocates a table of nodeid of the size given in parameter

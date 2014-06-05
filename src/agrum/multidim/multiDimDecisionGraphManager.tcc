@@ -121,7 +121,7 @@ namespace gum {
         __decisionGraph->__internalNodeMap.insert( nid, newNodeStruct );
         MultiDimDecisionGraph< GUM_SCALAR>::_addElemToNICL( &(__decisionGraph->__var2NodeIdMap[var]), nid );
         for( Idx i = 0; i < newNodeStruct->nbSons(); i++ )
-            if( !__decisionGraph->isTerminalNode( sons[i]))
+            if( !__decisionGraph->isTerminalNode(sons[i]))
                 __decisionGraph->__internalNodeMap[sons[i]]->addParent( nid, i );
 
         return nid;
@@ -159,7 +159,7 @@ namespace gum {
     // ============================================================================
     template<typename GUM_SCALAR>
     void
-    MultiDimDecisionGraphManager< GUM_SCALAR>::eraseNode ( NodeId eraseId, NodeId replacingId ){
+    MultiDimDecisionGraphManager< GUM_SCALAR>::eraseNode ( NodeId eraseId, NodeId replacingId, bool updateParents ){
 
         if ( __decisionGraph->isTerminalNode( eraseId ) ) {
 
@@ -182,10 +182,13 @@ namespace gum {
         } else {
 
             typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* eraseNode = __decisionGraph->__internalNodeMap[eraseId];
-            typename MultiDimDecisionGraph<GUM_SCALAR>::PICLElem* picle = eraseNode->parents();
-            while( picle != nullptr ) {
+
+            if(updateParents){
+              typename MultiDimDecisionGraph<GUM_SCALAR>::PICLElem* picle = eraseNode->parents();
+              while( picle != nullptr ) {
                 setSon( picle->parentId, picle->modality, replacingId );
                 picle = picle->nextElem;
+              }
             }
 
             MultiDimDecisionGraph<GUM_SCALAR>::_removeElemFromNICL(
@@ -198,7 +201,6 @@ namespace gum {
 
         if ( __decisionGraph->__root == eraseId )
           __decisionGraph->__root = replacingId;
-//        std::cout << "OH NON, J'ai été appelé!" << std::endl;
     }
 
 
@@ -210,7 +212,7 @@ namespace gum {
     INLINE
     void MultiDimDecisionGraphManager<GUM_SCALAR>::setSon( const NodeId& node, const Idx& modality, const NodeId& sonNode ){
         __decisionGraph->__internalNodeMap[node]->setSon( modality, sonNode );
-        if( !__decisionGraph->isTerminalNode( sonNode ))
+        if( sonNode && !__decisionGraph->isTerminalNode( sonNode ))
             __decisionGraph->__internalNodeMap[sonNode]->addParent( node, modality );
     }
 
@@ -228,11 +230,57 @@ namespace gum {
         for(Idx currentPos = __decisionGraph->variablesSequence().pos(x); currentPos != desiredPos; currentPos-- ){
           __adjacentSwap( __decisionGraph->variablesSequence().atPos(currentPos - 1), __decisionGraph->variablesSequence().atPos(currentPos));
           __decisionGraph->_invert( currentPos - 1, currentPos );
+
+
+
+
+
+
+//          std::cout << std::endl << "Diagram After intermediate swapping : " << std::endl << __decisionGraph->toDot(true) << std::endl;
+
+//          for(SequenceIteratorSafe<const DiscreteVariable*> varIter = __decisionGraph->variablesSequence().beginSafe();
+//              varIter != __decisionGraph->variablesSequence().endSafe(); ++varIter){
+//            std::cout << "Variable : " << (*varIter)->name();
+//            const typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* nodeIter = __decisionGraph->varNodeListe( *varIter );
+//            while( nodeIter ){
+//              std::cout << " | " << nodeIter->elemId;
+//              nodeIter = nodeIter->nextElem;
+//            }
+//            std::cout << std::endl;
+//          }
+//          std::cout << std::endl << std::endl;
+
+//           exit(1);
+
+
         }
       else
         for(Idx currentPos = __decisionGraph->variablesSequence().pos(x); currentPos != desiredPos; currentPos++ ) {
           __adjacentSwap( __decisionGraph->variablesSequence().atPos(currentPos),__decisionGraph->variablesSequence().atPos(currentPos + 1));
           __decisionGraph->_invert( currentPos, currentPos + 1 );
+
+
+
+
+
+
+//          std::cout << std::endl << "Diagram After intermediate swapping : " << std::endl << __decisionGraph->toDot() << std::endl;
+
+//          for(SequenceIteratorSafe<const DiscreteVariable*> varIter = __decisionGraph->variablesSequence().beginSafe();
+//              varIter != __decisionGraph->variablesSequence().endSafe(); ++varIter){
+//            std::cout << "Variable : " << (*varIter)->name();
+//            const typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* nodeIter = __decisionGraph->varNodeListe( *varIter );
+//            while( nodeIter ){
+//              std::cout << " | " << nodeIter->elemId;
+//              nodeIter = nodeIter->nextElem;
+//            }
+//            std::cout << std::endl;
+//          }
+//          std::cout << std::endl << std::endl;
+
+
+
+
         }
 
       reduce();
@@ -256,13 +304,11 @@ namespace gum {
 
 
       typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* currentOldXNode = nullptr;
-      typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* currentOldXSonNode = nullptr;
-//      typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* currentNewXNode = nullptr;
+//      typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* currentOldXSonNode = nullptr;
       NodeId* currentNewXNodeSons = nullptr;
       NodeId currentNewXNodeId = 0;
       Idx indx = 0;
 
-//      typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* currentNewYNode = nullptr;
       NodeId* currentNewYNodeSons = nullptr;
       NodeId currentNewYNodeId = 0;
       Idx indy = 0;
@@ -276,7 +322,6 @@ namespace gum {
 
         // Creation de la structure amenee à remplacer la structure courante
         // et associée par conséquence à y
-//        currentNewYNode = __decisionGraph->__internalNodeMap[addNonTerminalNode(y,oldxNodes->elemId)];
         currentNewYNodeSons = MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::allocateNodeSons(y);
 
         // Maintenant il faut remapper le graphe en insérant un noeud associé à x
@@ -285,20 +330,12 @@ namespace gum {
 
           // Creation du vecteur fils du noeud associe à x qui sera sont descendant pour cette valeur-ci
             currentNewXNodeSons = MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::allocateNodeSons(x);
-//          currentNewXNodeId = addNonTerminalNode(x);
-//          currentNewXNode = __decisionGraph->__internalNodeMap[currentNewXNodeId];
 
           // Iteration sur les différente valeurs de x pour faire le mapping
-          for( indx = 0; indx < x->domainSize(); ++indx ){
-            if( __decisionGraph->isTerminalNode( currentOldXNode->son( indx ) ) )
-                currentNewXNodeSons[ indx ] = currentOldXNode->son( indx );
-            else {
-              currentOldXSonNode = __decisionGraph->__internalNodeMap[ currentOldXNode->son( indx ) ];
-              if( currentOldXSonNode->nodeVar() == y )
-                currentNewXNodeSons[ indx ] = currentOldXSonNode->son(indy);
-              else
-                currentNewXNodeSons[ indx ] = currentOldXNode->son(indx);
-            }
+          for(indx = 0; indx < x->domainSize(); ++indx){
+            currentNewXNodeSons[ indx ] = currentOldXNode->son(indx);
+            if(!__decisionGraph->isTerminalNode(currentOldXNode->son(indx)) && __decisionGraph->node(currentOldXNode->son(indx))->nodeVar() == y)
+              currentNewXNodeSons[ indx ] = __decisionGraph->node(currentOldXNode->son(indx))->son(indy);
           }
 
           // Insertion du nouveau noeud x
@@ -313,7 +350,6 @@ namespace gum {
                   currentNewXNodeId = addNonTerminalNode( x, currentNewXNodeSons );
               }
           }
-//          currentNewYNode->setSon( indy, currentNewXNodeId);
           currentNewYNodeSons[ indy ] = currentNewXNodeId;
         }
         
@@ -328,13 +364,21 @@ namespace gum {
                 _migrateNode(oldxNodes->elemId, currentNewYNodeId);
                 MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( currentNewYNodeSons, y->domainSize()*sizeof(NodeId) );
             } else {
+                // Mise à jour des fils (il ne doivent plus considérer currentOldXNode comme un parent)
                 for( Idx i = 0; i < currentOldXNode->nodeVar()->domainSize(); ++i){
-                    if( __decisionGraph->__internalNodeMap.exists( currentOldXNode->son(i)))
+                    if( __decisionGraph->__internalNodeMap.exists( currentOldXNode->son(i))){
                         __decisionGraph->__internalNodeMap[currentOldXNode->son(i)]->removeParent(oldxNodes->elemId, i);
-                    if( __decisionGraph->__internalNodeMap.exists( currentNewYNodeSons[i]))
-                        __decisionGraph->__internalNodeMap[currentNewYNodeSons[i]]->addParent(oldxNodes->elemId, i);
+                    }
                 }
+                // Transmutation du noeud d'un noeud associé à X à un noeud associé à Y
                 currentOldXNode->setNode( y, currentNewYNodeSons );
+                // Mise à jour des nouveaux fils (ils doivent considerer currentOldXNode comme un parent)
+                for( Idx i = 0; i < currentOldXNode->nodeVar()->domainSize(); ++i){
+                  if( __decisionGraph->__internalNodeMap.exists( currentNewYNodeSons[i])){
+                    __decisionGraph->__internalNodeMap[currentNewYNodeSons[i]]->addParent(oldxNodes->elemId, i);
+                  }
+                }
+
                 MultiDimDecisionGraph<GUM_SCALAR>::_addElemToNICL( &(__decisionGraph->__var2NodeIdMap[y]), oldxNodes->elemId );
             }
         }
@@ -347,15 +391,17 @@ namespace gum {
       while(oldyNodes){
         nextn = oldyNodes->nextElem;
         if( __decisionGraph->__internalNodeMap[oldyNodes->elemId]->parents() == nullptr ){
+
             for( Idx i = 0; i < __decisionGraph->__internalNodeMap[oldyNodes->elemId]->nodeVar()->domainSize(); ++i)
                 if( __decisionGraph->__internalNodeMap.exists( __decisionGraph->__internalNodeMap[oldyNodes->elemId]->son(i)))
                     __decisionGraph->__internalNodeMap[__decisionGraph->__internalNodeMap[oldyNodes->elemId]->son(i)]->removeParent(oldyNodes->elemId, i);
             delete __decisionGraph->__internalNodeMap[oldyNodes->elemId];
             __decisionGraph->__internalNodeMap.erase(oldyNodes->elemId);
             __decisionGraph->__model.eraseNode(oldyNodes->elemId);
-            MultiDimDecisionGraph<GUM_SCALAR>::_addElemToNICL(&(__decisionGraph->__var2NodeIdMap[y]), oldyNodes->elemId);
-            MultiDimDecisionGraph<GUM_SCALAR>::_removeElemFromNICL(&oldyNodes, oldyNodes->elemId);
+        } else {
+            MultiDimDecisionGraph<GUM_SCALAR>::_addElemToNICL( &(__decisionGraph->__var2NodeIdMap[y]), oldyNodes->elemId);
         }
+        MultiDimDecisionGraph<GUM_SCALAR>::_removeElemFromNICL(&oldyNodes, oldyNodes->elemId);
         oldyNodes = nextn;
       }
     }
@@ -381,7 +427,7 @@ namespace gum {
         // Mis à jour des enfants suite au déplacement
         for( Idx i = 0; i < org->nbSons(); ++i )
             if( __decisionGraph->__internalNodeMap.exists(org->son(i)))
-            __decisionGraph->__internalNodeMap[ org->son(i) ]->removeParent(origin, i);
+                __decisionGraph->__internalNodeMap[ org->son(i) ]->removeParent(origin, i);
 
         delete org;
         __decisionGraph->__internalNodeMap.erase(origin);

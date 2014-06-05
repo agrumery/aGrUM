@@ -52,7 +52,9 @@ namespace gum {
       // ============================================================================
       /// Default constructor.
       // ============================================================================
-      MultiDimDecisionGraphProjector( const MultiDimDecisionGraph<GUM_SCALAR>* src, const Set<const DiscreteVariable*>& delVars );
+      MultiDimDecisionGraphProjector( const MultiDimDecisionGraph<GUM_SCALAR>* src,
+                                      const Set<const DiscreteVariable*>& delVars,
+                                      const GUM_SCALAR neutral );
 
       // ============================================================================
       /// Default destructor.
@@ -84,7 +86,7 @@ namespace gum {
       // ============================================================================
       /// The list of variables on which the projection is performed
       // ============================================================================
-      Set<const DiscreteVariable*>& __delVars;
+      const Set<const DiscreteVariable*>& __delVars;
 
       // ============================================================================
       /// The resulting decision graph
@@ -95,6 +97,11 @@ namespace gum {
       /// The function to be performed on the leaves
       // ============================================================================
       const FUNCTOR<GUM_SCALAR> __function;
+
+      // ============================================================================
+      /// The function to be performed on the leaves
+      // ============================================================================
+      const GUM_SCALAR __neutral;
 
   };
 

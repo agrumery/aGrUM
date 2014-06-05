@@ -75,23 +75,24 @@ namespace gum{
 
 //        while ( ( generatedDecisionGraph->variablesSequence().size() < __minNbVarInDiagram ) || ( generatedDecisionGraph->variablesSequence().size() > __maxNbVarInDiagram ) ) {
 
-            PriorityQueue< NodeId > fifo;
+            std::vector< NodeId > filo;
 
             // L'idée est de d'abord générer un arbre avant de fusionner les sous-graphe isomorphe
 //            generatedDecisionGraph->add( *(__varSeq.atPos(0)));
             generatedDecisionGraph->manager()->setRootNode( generatedDecisionGraph->manager()->addNonTerminalNode( __varSeq.atPos(0) ) );
             node2MinVar.insert(generatedDecisionGraph->root(), 0 );
-            fifo.insert(1,generatedDecisionGraph->root());
+            filo.push_back(generatedDecisionGraph->root());
 
 
 //            std::default_random_engine generator;
 //            int rutidi = 0;
 
-            while( ! fifo.empty() ){ //&& nbIter < 20 ){
+            while( ! filo.empty() ){ //&& nbIter < 20 ){
 
-//                std::cout << fifo << std::endl;
+//                std::cout << filo << std::endl;
 
-                NodeId currentNodeId = fifo.pop();
+                NodeId currentNodeId = filo.back();
+                filo.pop_back();
                 NodeId cvp = node2MinVar[ currentNodeId ];
                 const typename MultiDimDecisionGraph<double>::InternalNode* currentNode = generatedDecisionGraph->node( currentNodeId );
 
@@ -141,7 +142,7 @@ namespace gum{
 //                            std::cout << "Creating Internal Node ..." << std::endl;
                             Idx sonVarPos = __generateVarPos( node2MinVar[currentNodeId] + 1, __nbTotalVar - node2MinVar[ currentNodeId ] - 2 );
                             generatedDecisionGraph->manager()->setSon( currentNodeId, modality, generatedDecisionGraph->manager()->addNonTerminalNode( __varSeq.atPos( sonVarPos ) ) );
-                            fifo.insert(1, currentNode->son( modality));
+                            filo.push_back( currentNode->son( modality));
                             node2MinVar.insert( currentNode->son(modality), sonVarPos);
 //                            std::cout << " | " << modality  << " - I | " << std::endl;
                         }

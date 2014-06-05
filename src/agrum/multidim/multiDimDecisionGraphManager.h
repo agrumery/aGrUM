@@ -158,10 +158,11 @@ namespace gum{
          *
          * @param id The id of the variable to erase.
          * @param replacingId offers the possibility to reroute any parent to the given node
+         * @param updateParents indicates if such remapping has to be done
          * @throw NotFound if node isn't in diagram
          */
         // ============================================================================
-        void eraseNode ( NodeId id, NodeId replacingId = 0 );
+        void eraseNode ( NodeId id, NodeId replacingId = 0, bool updateParents = true );
 
       /// @}
 

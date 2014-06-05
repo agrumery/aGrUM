@@ -24,12 +24,13 @@
  */
 
 #include <agrum/multidim/instantiation.h>
+
 // check if we allowed these patterns to be used
-//#ifndef GUM_PROJECTION_PATTERN_ALLOWED
+#ifndef GUM_PROJECTION_PATTERN_ALLOWED
 
-//#warning To use projectionPattern, you must define GUM_PROJECTION_PATTERN_ALLOWED
+#warning To use projectionPattern, you must define GUM_PROJECTION_PATTERN_ALLOWED
 
-//#else
+#else
 
 // =======================================================================================
 #include <agrum/multidim/multiDimImplementation.h>
@@ -40,37 +41,39 @@
 
 namespace gum {
 
-/// a specialized function for projecting a multiDimDecisionDiagram over a subset of its vars
+/// a specialized function for projecting a multiDimDecisionGraph over a subset of its vars
 
-//#ifdef GUM_DECISION_DIAGRAM_PROJECTION_NAME
+#ifdef GUM_MULTI_DIM_PROJECTION_NAME
 
 #define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
 
   template<typename GUM_SCALAR>
   MultiDimDecisionGraph<GUM_SCALAR>*
-  GUM_DECISION_DIAGRAM_PROJECTION_NAME ( const MultiDimDecisionGraph<GUM_SCALAR>* table, const Set<const DiscreteVariable*>& delVars ) {
+  GUM_MULTI_DIM_PROJECTION_NAME ( const MultiDimDecisionGraph<GUM_SCALAR>* table, const Set<const DiscreteVariable*>& delVars ) {
 
-//#endif
+#endif
 
 
-//#ifdef GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME
+#ifdef GUM_MULTI_DIM_PROJECTION_IMPL2DECISION_GRAPH_NAME
 
-//#define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
+#define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
 
-//    template<typename GUM_SCALAR>
-//    MultiDimImplementation<GUM_SCALAR>*
-//    GUM_DECISION_DIAGRAM_PROJECTION_IMPL2DECISION_DIAGRAM_NAME ( const MultiDimImplementation<GUM_SCALAR>* ttable, const Set<const DiscreteVariable*>& delVars ) {
+    template<typename GUM_SCALAR>
+    MultiDimImplementation<GUM_SCALAR>*
+    GUM_MULTI_DIM_PROJECTION_IMPL2DECISION_GRAPH_NAME ( const MultiDimImplementation<GUM_SCALAR>* ttable,
+                                                             const Set<const DiscreteVariable*>& delVars ) {
 
-//      const MultiDimDecisionDiagramBase<GUM_SCALAR>* table = reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*> ( ttable );
+      const MultiDimDecisionGraph<GUM_SCALAR>* table = reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*> ( ttable );
 
-//#endif
+#endif
 
-      MultiDimDecisionGraphProjector< GUM_MULTI_DIM_PROJECTION_TYPE, GUM_MULTI_DIM_OPERATOR> proj( table, delVars);
+      MultiDimDecisionGraphProjector< GUM_MULTI_DIM_PROJECTION_TYPE, GUM_MULTI_DIM_PROJECTION_OPERATOR> proj(
+                  table, delVars, GUM_MULTI_DIM_PROJECTION_NEUTRAL );
 
       return proj.project();
     }
 
 
 #undef GUM_MULTI_DIM_PROJECTION_TYPE
-  }  /* end of namespace GUM */
-//#endif /* GUM_PROJECTION_PATTERN_ALLOWED */
+}  /* end of namespace GUM */
+#endif /* GUM_PROJECTION_PATTERN_ALLOWED */

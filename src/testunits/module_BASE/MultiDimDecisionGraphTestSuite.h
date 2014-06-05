@@ -681,7 +681,7 @@ namespace gum_tests {
           GUM_ERROR ( gum::IOError, "Stream states flags are not all unset." );
         }
 
-        output << decisionGraph->toDot();
+        output << decisionGraph->toDot(true);
 
         output.flush();
 

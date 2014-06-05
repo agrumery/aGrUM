@@ -352,49 +352,38 @@ template<typename GUM_SCALAR>
       for( SequenceIterator<const DiscreteVariable*> varIter = src.variablesSequence().begin(); varIter != src.variablesSequence().end(); ++varIter)
         this->add(**varIter);
 
-      // Recopie des Ids utilisées
-      this->__model = src.model();
-
       std::vector<NodeId> lifo;
-      lifo.push_back(src.root());
-      __root = src.root();
-      HashTable< NodeId, PICLElem* > parentsTable;
+      Bijection<NodeId, NodeId> src2dest;
+
+      if(src.isTerminalNode(src.root()))
+        this->manager()->setRootNode(this->manager()->addTerminalNode(src.nodeValue(src.root())));
+      else {
+        this->manager()->setRootNode(this->manager()->addNonTerminalNode( src.node(src.root())->nodeVar() ));
+        src2dest.insert( src.root(), this->root() );
+        lifo.push_back(src.root());
+      }
 
       // Parcours en profondeur du diagramme source
       while( !lifo.empty() ){
-        NodeId currentNodeId = lifo.back();
+        NodeId currentSrcNodeId = lifo.back();
         lifo.pop_back();
 
-        if( src.isTerminalNode(currentNodeId ) ){
-          // Si le noeud courant est terminal, sa valeur associée est ajoutée à la table des valeurs
-          __valueMap.insert( currentNodeId , src.nodeValue( currentNodeId ) );
-        }else {
-          // Si le noeud courant n'est pas terminal,
-          // il nous faut dupliquer la structure interne dans une nouvelle structure
-          const InternalNode* currentNode = src.node( currentNodeId );
-          InternalNode* newNode = new InternalNode( currentNode->nodeVar() );
+        const InternalNode* currentSrcNode = src.node(currentSrcNodeId);
 
-          // Recopie des fils
-          for( Idx index = 0; index < currentNode->nbSons(); ++index ){
-            newNode->setSon(index, currentNode->son(index));
-            // Accesoirement on profite du parcours des fils pour mettre la lifo à jour
-            if( !parentsTable.exists(newNode->son(index) ) ){
-              lifo.push_back(newNode->son(index));
-              parentsTable.insert(newNode->son(index), nullptr);
+        for( Idx index = 0; index < currentSrcNode->nbSons(); ++index ){
+          if( !src2dest.existsFirst(currentSrcNode->son(index)) ){
+            NodeId srcSonNodeId = currentSrcNode->son(index), destSonNodeId = 0;
+            if( src.isTerminalNode(srcSonNodeId) ){
+              destSonNodeId = this->manager()->addTerminalNode(src.nodeValue(srcSonNodeId));
+            } else {
+              destSonNodeId = this->manager()->addNonTerminalNode(src.node(srcSonNodeId)->nodeVar());
+              lifo.push_back(srcSonNodeId);
             }
-            if( !src.isTerminalNode( newNode->son(index) ) )
-                _addElemToPICL( &parentsTable[newNode->son(index)], currentNodeId, index);
+            src2dest.insert( srcSonNodeId, destSonNodeId );
           }
-
-          __internalNodeMap.insert( currentNodeId, newNode );
-          _addElemToNICL( &(__var2NodeIdMap[ currentNode->nodeVar() ]), currentNodeId );
+          this->manager()->setSon( src2dest.second(currentSrcNodeId), index, src2dest.second(currentSrcNode->son(index)));
         }
       }
-
-      for(HashTableIterator<NodeId, PICLElem*> pite = parentsTable.begin(); pite != parentsTable.end(); ++pite)
-          if( !isTerminalNode( pite.key() ) )
-            __internalNodeMap[ pite.key() ]->parents() = pite.val();
-
     }
 
     // ============================================================================
@@ -407,6 +396,9 @@ template<typename GUM_SCALAR>
     void MultiDimDecisionGraph<GUM_SCALAR>::clear( ){
 
       __model.clear();
+      // Always discard the nodeId 0
+      __model.insertNode();
+
       __valueMap.clear();
 
       // Nettoyage des noeuds
