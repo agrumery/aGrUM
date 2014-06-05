@@ -212,7 +212,7 @@ namespace gum_tests {
         TS_ASSERT_THROWS ( factory->addArc ( idList[16], idList[1], 3 ), gum::InvalidNode );
 
         // Test d'ajout d'un arc entre 2 noeuds déjà reliés par un autre arc de valeur différente(doit lever aucune exception)
-        TS_GUM_ASSERT_THROWS_NOTHING ( factory->addArc ( idList[8], idList[18], 4 ) );
+        //TS_GUM_ASSERT_THROWS_NOTHING ( factory->addArc ( idList[8], idList[18], 0 ) );
 
         // Test d'ajout d'un arc entre 2 noeuds déjà reliés par un autre arc de valeur égale(doit lever aucune exception)
         TS_ASSERT_THROWS ( factory->addArc ( idList[8], idList[18], 1 ), gum::DuplicateElement );
@@ -225,7 +225,7 @@ namespace gum_tests {
         // factory->showProperties();
 
         // Test de retrait d'un arc avec valeur spécifiée
-        TS_GUM_ASSERT_THROWS_NOTHING ( factory->eraseSpecificArc ( idList[8], idList[18], 4 ) );
+        //TS_GUM_ASSERT_THROWS_NOTHING ( factory->eraseSpecificArc ( idList[8], idList[18], 4 ) );
         // factory->showProperties();
 
         // Test de retrait d'un arc après une tentative ayant eu pour but d'ajouter un autre arc reliant les deux noeuds

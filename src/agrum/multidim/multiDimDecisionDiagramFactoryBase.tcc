@@ -322,6 +322,7 @@ namespace gum {
     if ( _valueMap.existsFirst ( n ) )
       _valueMap.eraseFirst ( n );
     else {
+      _var2NodeIdMap[ _varMap[n] ]->eraseByVal ( n );
       _varMap.erase ( n );
 
       delete _arcMap[n];
@@ -371,7 +372,8 @@ namespace gum {
 
     if ( _valueMap.existsFirst ( from ) ) {
       GUM_ERROR ( InvalidNode, " Origin node " <<  from << " is a terminal Node. No arcs can start from a terminal node" );
-    } else if ( !_noVariableCheckMode && !_valueMap.existsFirst ( to ) ) {
+    } 
+    else if ( !_noVariableCheckMode && !_valueMap.existsFirst ( to ) ) {
       // GUM_TRACE( "From : " << _varMap[from]->toString() << " - To : " << _varMap[ to ]->toString() << std::endl );
       if ( _varsSeq.pos ( _varMap[ from ] ) >= _varsSeq.pos ( _varMap[ to ] ) ) {
         GUM_ERROR ( OperationNotAllowed, " This arc does not respect the variable order property. Variable " <<  _varMap[from]->name() << " tied to node " << from <<
