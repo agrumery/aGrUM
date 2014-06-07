@@ -283,7 +283,7 @@ namespace gum {
 
         }
 
-      reduce();
+//      reduce();
     }
 
 
@@ -432,6 +432,9 @@ namespace gum {
         delete org;
         __decisionGraph->__internalNodeMap.erase(origin);
         __decisionGraph->__model.eraseNode(origin);
+
+        if(__decisionGraph->root() == origin )
+            this->setRootNode( destination );
     }
 
 
@@ -489,72 +492,79 @@ namespace gum {
     void
     MultiDimDecisionGraphManager< GUM_SCALAR>::reduce( ){
 
-//      HashTable<NodeId,NodeId> old2NewId(__decisionGraph->realSize(),true,false);
-//      typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* currentNodeId = nullptr;
-//      typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* nextNodeId = nullptr;
-//      typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* currentNode = nullptr;
-//      bool theSame = true;
-//      Idx currentInd;
+      typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* currentNodeId = nullptr;
+      typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* nextNodeId = nullptr;
+      typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* currentNode = nullptr;
+      bool theSame = true;
+      Idx currentInd;
 
-//      for( SequenceIterator<const DiscreteVariable*> varIter = __decisionGraph->variablesSequence().rbegin();
-//             varIter != __decisionGraph->variablesSequence().rend(); --varIter ){
+      for( SequenceIterator<const DiscreteVariable*> varIter = __decisionGraph->variablesSequence().rbegin();
+             varIter != __decisionGraph->variablesSequence().rend(); --varIter ){
 
-//        currentNodeId = __decisionGraph->__var2NodeIdMap[*varIter];
+        currentNodeId = __decisionGraph->__var2NodeIdMap[*varIter];
 
-//        while( currentNodeId != nullptr ){
-//          currentNode = __decisionGraph->__internalNodeMap[currentNodeId->elemId];
+        while( currentNodeId != nullptr ){
 
-//          // ==================================================================================
-//          // First isomorphism to handle is the one where all node children are the same
-//          theSame = true;
-//          for( currentInd = 0; currentInd < (*varIter)->domainSize(); currentInd++){
-//            if( old2NewId.exists(currentNode->son(currentInd)) )
-//              currentNode->setSon( currentInd, old2NewId[currentNode->son(currentInd)] );
-//            if( currentNode->son(currentInd) != currentNode->son(0))
-//              theSame = false;
-//          }
+          nextNodeId = currentNodeId->nextElem;
+          currentNode = __decisionGraph->__internalNodeMap[currentNodeId->elemId];
 
-//          nextNodeId = currentNodeId->nextElem;
-//          if( theSame == true ){
-//            old2NewId.insert(currentNodeId->elemId, currentNode->son(0) );
-//            delete currentNode;
-//            __decisionGraph->__internalNodeMap.erase(currentNodeId->elemId);
-//            __decisionGraph->__model.eraseNode(currentNodeId->elemId);
-//            MultiDimDecisionGraph<GUM_SCALAR>::_removeElemFromNICL( &(__decisionGraph->__var2NodeIdMap[*varIter]), currentNodeId->elemId);
-//            currentNodeId = nextNodeId;
-//            continue;
-//          }
+          // ==================================================================================
+          // First isomorphism to handle is the one where all node children are the same
+          theSame = true;
+          for( currentInd = 1; currentInd < (*varIter)->domainSize(); currentInd++){
+            if( currentNode->son(currentInd) != currentNode->son(0)){
+              theSame = false;
+              break;
+            }
+          }
+
+          if( theSame == true ){
+            _migrateNode(currentNodeId->elemId, currentNode->son(0));
+            MultiDimDecisionGraph<GUM_SCALAR>::_removeElemFromNICL( &(__decisionGraph->__var2NodeIdMap[*varIter]), currentNodeId->elemId);
+            currentNodeId = nextNodeId;
+            continue;
+          }
 
 
-////          // ====================================================================================
-////          // Second isomorphism to handle is the one where two node have same variable and same children
-////          typename MultiDimDecisionGraph< GUM_SCALAR>::NICLElem* anotherNodeId = currentNodeId->nextElem;
-////          typename MultiDimDecisionGraph< GUM_SCALAR>::InternalNode* anotherNode = nullptr;
-////          Idx modality = 0;
-////          while( anotherNodeId->nextElem != nullptr ){
+          // ====================================================================================
+          // Second isomorphism to handle is the one where two node have same variable and same children
+          if( nextNodeId ){
+            typename MultiDimDecisionGraph< GUM_SCALAR>::NICLElem* anotherNodeId = currentNodeId->nextElem;
+            typename MultiDimDecisionGraph< GUM_SCALAR>::InternalNode* anotherNode = nullptr;
+            Idx modality = 0;
+            while( anotherNodeId->nextElem != nullptr ){
 
-////            nextNodeId = anotherNodeId->nextElem;
-////            anotherNode = __decisionGraph->__internalNodeMap[ anotherNodeId->elemId ];
+              nextNodeId = anotherNodeId->nextElem;
+              anotherNode = __decisionGraph->__internalNodeMap[ anotherNodeId->elemId ];
 
-////            // Check on the other sons
-////            for(modality = 0; modality < (*varIter)->domainSize(); ++modality ) {
-////              if( anotherNode->son(modality) != currentNode->son(modality) )
-////                break;
-////              if( modality == (*varIter)->domainSize() - 1){
-////                old2NewId.insert( anotherNodeId->elemId, currentNodeId->elemId );
-////                delete anotherNode;
-////                __decisionGraph->__internalNodeMap.erase(anotherNodeId->elemId);
-////                __decisionGraph->__model.eraseNode(anotherNodeId->elemId);
-////                MultiDimDecisionGraph<GUM_SCALAR>::_removeElemFromNICL( &(__decisionGraph->__var2NodeIdMap[*varIter]), anotherNodeId->elemId);
-////              }
-////            }
+              // Check on the other sons
+              for(modality = 0; modality < (*varIter)->domainSize(); ++modality ) {
+                if( anotherNode->son(modality) != currentNode->son(modality) )
+                  break;
+                if( modality == (*varIter)->domainSize() - 1){
+                  _migrateNode( anotherNodeId->elemId, currentNodeId->elemId);
+                  MultiDimDecisionGraph<GUM_SCALAR>::_removeElemFromNICL( &(__decisionGraph->__var2NodeIdMap[*varIter]), anotherNodeId->elemId);
+                }
+              }
 
-////            anotherNodeId = nextNodeId;
-////          }
+              anotherNodeId = nextNodeId;
+            }
+          }
 
-//          currentNodeId = currentNodeId->nextElem;
-//        }
-//      }
+          currentNodeId = nextNodeId;
+        }
+      }
+    }
+
+
+    template<typename GUM_SCALAR>
+    INLINE
+    void
+    MultiDimDecisionGraphManager< GUM_SCALAR>::clean( ){
+      Sequence< const DiscreteVariable* > oldSequence(__decisionGraph->variablesSequence());
+      for ( SequenceIterator< const DiscreteVariable* > varIter = oldSequence.begin(); varIter != oldSequence.end(); ++varIter )
+        if( ! __decisionGraph->varNodeListe( *varIter) )
+          __decisionGraph->erase(**varIter);
     }
 
 } // namespace gum

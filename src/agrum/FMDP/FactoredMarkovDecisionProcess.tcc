@@ -24,10 +24,12 @@
 * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 */
 
-#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
+//======================================================================
 #include <cstdio>
 #include <iostream>
-
+//======================================================================
+#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
+//======================================================================
 
 namespace gum {
 
@@ -422,18 +424,17 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   std::string
   FactoredMarkovDecisionProcess<GUM_SCALAR>::show( ) const {
-
     std::stringstream fmdpCore;
 
     for ( HashTableConstIteratorSafe< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* >* > actionIter = __actionTransitionTable.beginSafe(); actionIter != __actionTransitionTable.endSafe(); ++actionIter ) {
       for ( HashTableConstIteratorSafe< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* > tableIter = ( actionIter.val() )->beginSafe(); tableIter != ( actionIter.val() )->endSafe(); ++tableIter ) {
         std::stringstream graphName;
         graphName << " ACTION : " << actionName ( actionIter.key() ) << " VARIABLE : " << tableIter.key()->name();
-        fmdpCore << std::endl << reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*> ( tableIter.val() )->toDot ( graphName.str() );
+        fmdpCore << std::endl << tableIter.val()->toString();
       }
     }
 
-    fmdpCore << std::endl << reinterpret_cast<const MultiDimDecisionDiagramBase<GUM_SCALAR>*> ( __defaultRewardTable )->toDot ( "REWARD" );
+    fmdpCore << std::endl << __defaultRewardTable->toString();
     return fmdpCore.str();
   }
 
@@ -441,7 +442,7 @@ namespace gum {
 
   /* ************************************************************************************************** **/
   /* **                                                                                                 **/
-  /* **                               Protected methods.                                       **/
+  /* **                               Protected methods.                                                **/
   /* **                                                                                                 **/
   /* ************************************************************************************************** **/
 

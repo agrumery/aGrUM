@@ -24,11 +24,14 @@
 // =====================================================================
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
-
+// =====================================================================
 #include <agrum/variables/labelizedVariable.h>
+// =====================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/io/dat/FMDPDatReader.h>
+// =====================================================================
 #include <agrum/multidim/multiDimDecisionDiagramFactory.h>
+// =====================================================================
 
 
 namespace gum_tests {
@@ -39,11 +42,11 @@ namespace gum_tests {
         std::string file = GET_PATH_STR ( "FMDP/coffee/coffee.dat" );
 
         gum::FactoredMarkovDecisionProcess<float> fmdp;
-        gum::MultiDimDecisionDiagramFactory<float> ddf;
+//        gum::MultiDimDecisionDiagramFactory<float> ddf;
 
         gum::FMDPDatReader<float>* reader = 0;
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( reader = new gum::FMDPDatReader<float> ( &fmdp, file, &ddf ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( reader = new gum::FMDPDatReader<float> ( &fmdp, file ) );//, &ddf ) );
 
         TS_GUM_ASSERT_THROWS_NOTHING ( delete reader );
 
@@ -53,9 +56,9 @@ namespace gum_tests {
         std::string file = GET_PATH_STR ( "FMDP/factory/factoryB.dat" );
 
         gum::FactoredMarkovDecisionProcess<float> fmdp;
-        gum::MultiDimDecisionDiagramFactory<float> ddf;
+//        gum::MultiDimDecisionDiagramFactory<float> ddf;
 
-        gum::FMDPDatReader<float> reader ( &fmdp, file, &ddf );
+        gum::FMDPDatReader<float> reader ( &fmdp, file) ;//, &ddf );
 
         reader.trace ( false );
 

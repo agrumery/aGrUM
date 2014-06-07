@@ -29,6 +29,7 @@
 // =========================================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
 #include <agrum/multidim/multiDimDecisionGraphManager.h>
+#include <agrum/multidim/multiDimDecisionGraphGenerator.h>
 #include <agrum/multidim/instantiation.h>
 // =========================================================================
 #include <agrum/variables/labelizedVariable.h>
@@ -138,7 +139,7 @@ namespace gum_tests {
       /** *************************************************************************************/
       /**  Test sur la construction, le remplissage et la destruction d'une factory  */
       /** *************************************************************************************/
-      void testSimpleCreation() {
+      void test_Simple_Creation() {
 
         // *********************************************************************
         // Création du multidim
@@ -164,7 +165,7 @@ namespace gum_tests {
 
 
 
-      void testMultiDimDecisionGraphDiagramHandlersMethods() {
+      void test_MultiDimDecisionGraph_Diagram_Handlers_Methods() {
 
         // *********************************************************************
         // Création du multidim
@@ -202,7 +203,7 @@ namespace gum_tests {
 
       }
 
-      void testToDot() {
+      void test_toDot() {
 
         // *********************************************************************
         // Création du multidim
@@ -237,7 +238,7 @@ namespace gum_tests {
       /** *************************************************************************************/
       /**  Test sur des modifications apportées au remplissage du factory     */
       /** *************************************************************************************/
-      void testManagerGraphicalFunctions() {
+      void test_Manager_Graphical_Functions() {
 
         // *********************************************************************
         // Création du multidim
@@ -337,7 +338,7 @@ namespace gum_tests {
       /** *************************************************************************************/
       /**   Test des fonctions d'accès et de modification du multidim     */
       /** *************************************************************************************/
-      void testMultiDimDecisionGraphAccessorsModifiersMethods() {
+      void test_MultiDimDecisionGraph_Accessors_Modifiers_Methods() {
 
         // *********************************************************************
         // Création du multidim
@@ -543,7 +544,7 @@ namespace gum_tests {
 
 
 
-      void testMultiDimDecisionGraphImplementationMethods() {
+      void test_MultiDimDecisionGraph_Implementation_Methods() {
 
 
         // *********************************************************************
@@ -591,7 +592,7 @@ namespace gum_tests {
 
 
 
-      void testMultiDimDecisionGraphCopyMethods() {
+      void test_MultiDimDecisionGraph_Copy_Methods() {
 
         // *********************************************************************
         // Création du multidim
@@ -617,7 +618,7 @@ namespace gum_tests {
 
 
 
-      void testMultiDimDecisionGraphVariousMethods() {
+      void test_MultiDimDecisionGraph_Various_Methods() {
 
         // *********************************************************************
         // Création du multidim
@@ -660,7 +661,7 @@ namespace gum_tests {
 
       }
 
-      void testMoveTo(){
+      void test_MoveTo(){
 
         // *********************************************************************
         // Création du multidim
@@ -695,159 +696,46 @@ namespace gum_tests {
 
       }
 
-//      void estLinearApproximation() {
+      void test_Generator(){
+          for(gum::Idx i = 0; i < 10000; i++){
 
-//        // *********************************************************************
-//        // Création du multidim
-//        // *********************************************************************
-//        gum::MultiDimDecisionGraph<float, gum::LinearApproximationPolicy>* factory = new gum::MultiDimDecisionGraph<float, gum::LinearApproximationPolicy>();
+         gum::Sequence< const gum::DiscreteVariable* >* varList = new gum::Sequence< const gum::DiscreteVariable* >();
 
-//        factory->setLowLimit ( 0 );
-//        factory->setHighLimit ( 10 );
-//        factory->setEpsilon ( 5 );
+         for ( int j = 0; j < 10; j++ ) {
+           std::stringstream varName;
+           varName << "var" << j;
+           varList->insert ( new gum::LabelizedVariable ( varName.str(), "", 2 + rand() % 4 ) );
+         }
 
-//        gum::List<gum::NodeId> idList;
-//        __fillFactory ( factory, &idList );
+         gum::MultiDimDecisionGraphGenerator gene( 2, 5, *varList);
 
-//        gum::MultiDimDecisionGraphBase<float>* container = NULL;
-//        TS_GUM_ASSERT_THROWS_NOTHING ( container = factory->getMultiDimDecisionGraph() );
+         gum::MultiDimDecisionGraph<double>* dg1 = nullptr;
+         TS_GUM_ASSERT_THROWS_NOTHING( dg1 = gene.generate());
 
-//        delete factory;
+         gum::MultiDimDecisionGraph<double>* dg2 = new gum::MultiDimDecisionGraph<double>();
 
-//        gum::Instantiation inst ( *container );
+         TS_GUM_ASSERT_THROWS_NOTHING( dg2->copy(*dg1) );
+         TS_GUM_ASSERT_THROWS_NOTHING( dg2->manager()->reduce() );
 
-//        for ( inst.setFirst(); ! inst.end(); ++inst )
-//          if ( inst.val ( *Cvar ) == 1 ) {
-//            if ( inst.val ( *Cprimevar ) == 1 ) {
-//              TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 7.5, 0.001 );
-//            } else {
-//              TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 2.5, 0.001 );
-//            }
-//          } else {
+         gum::Instantiation inst(dg1);
+         for ( inst.setFirst(); ! inst.end(); ++inst ){
+             TS_ASSERT_DELTA ( dg1->get(inst), dg2->get(inst), 0.001 );
+         }
 
-//            if ( inst.val ( *PLvar ) == 1 ) {
 
-//              if ( inst.val ( *APUvar ) == 1 ) {
+         dg2->manager()->clean();
+         for ( inst.setFirst(); ! inst.end(); ++inst ){
+             TS_ASSERT_DELTA ( dg1->get(inst), dg2->get(inst), 0.001 );
+         }
 
-//                if ( inst.val ( *BPUvar ) == 1 ) {
+         delete dg1;
+         delete dg2;
 
-//                  if ( inst.val ( *BOvar ) == 1 ) {
+         for ( gum::SequenceIterator< const gum::DiscreteVariable*> ite = varList->begin(); ite != varList->end(); ++ite )
+           delete *ite;
+         delete varList;
+}
 
-//                    if ( inst.val ( *Cprimevar ) == 1 ) {
-//                      TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 7.5, 0.001 );
-//                    } else {
-//                      TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 2.5, 0.001 );
-//                    }
-
-//                  } else {
-
-//                    if ( inst.val ( *Cprimevar ) == 1 ) {
-//                      TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 0, 0.001 );
-//                    } else {
-//                      TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 10, 0.001 );
-//                    }
-
-//                  }
-//                } else {
-
-//                  if ( inst.val ( *Cprimevar ) == 1 ) {
-//                    TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 0, 0.001 );
-//                  } else {
-//                    TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 10, 0.001 );
-//                  }
-
-//                }
-//              } else {
-
-//                if ( inst.val ( *ADRvar ) == 1 ) {
-
-//                  if ( inst.val ( *BDRvar ) == 1 ) {
-
-//                    if ( inst.val ( *BOvar ) == 1 ) {
-
-//                      if ( inst.val ( *Cprimevar ) == 1 ) {
-//                        TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 7.5, 0.001 );
-//                      } else {
-//                        TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 2.5, 0.001 );
-//                      }
-
-//                    } else {
-
-//                      if ( inst.val ( *Cprimevar ) == 1 ) {
-//                        TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 0, 0.001 );
-//                      } else {
-//                        TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 10, 0.001 );
-//                      }
-
-//                    }
-
-//                  } else {
-
-//                    if ( inst.val ( *Cprimevar ) == 1 ) {
-//                      TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 0, 0.001 );
-//                    } else {
-//                      TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 10, 0.001 );
-//                    }
-
-//                  }
-
-//                } else {
-
-//                  if ( inst.val ( *Cprimevar ) == 1 ) {
-//                    TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 0, 0.001 );
-//                  } else {
-//                    TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 10, 0.001 );
-//                  }
-
-//                }
-//              }
-//            } else {
-
-//              if ( inst.val ( *ADRvar ) == 1 ) {
-
-//                if ( inst.val ( *BDRvar ) == 1 ) {
-
-//                  if ( inst.val ( *BOvar ) == 1 ) {
-
-//                    if ( inst.val ( *Cprimevar ) == 1 ) {
-//                      TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 7.5, 0.001 );
-//                    } else {
-//                      TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 2.5, 0.001 );
-//                    }
-
-//                  } else {
-
-//                    if ( inst.val ( *Cprimevar ) == 1 ) {
-//                      TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 0, 0.001 );
-//                    } else {
-//                      TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 10, 0.001 );
-//                    }
-
-//                  }
-
-//                } else {
-
-//                  if ( inst.val ( *Cprimevar ) == 1 ) {
-//                    TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 0, 0.001 );
-//                  } else {
-//                    TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 10, 0.001 );
-//                  }
-
-//                }
-
-//              } else {
-
-//                if ( inst.val ( *Cprimevar ) == 1 ) {
-//                  TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 0, 0.001 );
-//                } else {
-//                  TS_ASSERT_DELTA ( decisionGraph->get ( inst ), 10, 0.001 );
-//                }
-
-//              }
-//            }
-//          }
-
-//        delete container;
-//      }
+      }
   };
 }

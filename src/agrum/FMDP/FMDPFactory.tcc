@@ -36,9 +36,9 @@
 namespace gum {
 
   /* **************************************************************************************************** **/
-  /* **                                                                                                                                                    **/
-  /* **                                                   Constructor & Destructor                                                         **/
-  /* **                                                                                                                                                    **/
+  /* **                                                                                                   **/
+  /* **                                                   Constructor & Destructor                        **/
+  /* **                                                                                                   **/
   /* **************************************************************************************************** **/
 
 
@@ -46,7 +46,7 @@ namespace gum {
   // @param fmdp A pointer over the Factored Markov Decision Process filled by this factory.
 
   template<typename GUM_SCALAR> INLINE
-  FMDPFactory<GUM_SCALAR>::FMDPFactory ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* ddFactory ) : __fmdp ( fmdp ), __decisionDiagramFactory ( ddFactory ) {
+  FMDPFactory<GUM_SCALAR>::FMDPFactory ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp ) : __fmdp ( fmdp ) {
 
     GUM_CONSTRUCTOR ( FMDPFactory );
 
@@ -66,9 +66,9 @@ namespace gum {
   }
 
   /* **************************************************************************************************** **/
-  /* **                                                                                                                                                    **/
-  /* **                                                        Getter and setters                                                               **/
-  /* **                                                                                                                                                    **/
+  /* **                                                                                                   **/
+  /* **                                                        Getter and setters                         **/
+  /* **                                                                                                   **/
   /* **************************************************************************************************** **/
 
 
@@ -116,9 +116,9 @@ namespace gum {
 
 
   /* **************************************************************************************************** **/
-  /* **                                                                                                                                                    **/
-  /* **                            Network declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::PROPERTY)                                      **/
-  /* **                                                                                                                                                    **/
+  /* **                                                                                                   **/
+  /* **       Network declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::PROPERTY)       **/
+  /* **                                                                                                   **/
   /* **************************************************************************************************** **/
 
 
@@ -167,9 +167,9 @@ namespace gum {
 
 
   /* **************************************************************************************************** **/
-  /* **                                                                                                                                                    **/
-  /* **                               Variable declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::VARIABLE)                                     **/
-  /* **                                                                                                                                                    **/
+  /* **                                                                                                   **/
+  /* **   Variable declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::VARIABLE)          **/
+  /* **                                                                                                   **/
   /* **************************************************************************************************** **/
 
 
@@ -309,9 +309,9 @@ namespace gum {
 
 
   /* **************************************************************************************************** **/
-  /* **                                                                                                                                                    **/
-  /* **                                 Action declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::ACTION)                                         **/
-  /* **                                                                                                                                                    **/
+  /* **                                                                                                   **/
+  /* **    Action declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::ACTION)             **/
+  /* **                                                                                                   **/
   /* **************************************************************************************************** **/
 
 
@@ -363,9 +363,10 @@ namespace gum {
 
 
   /* **************************************************************************************************** **/
-  /* **                                                                                                                                                    **/
-  /* **          Transition declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::TRANSITION <-> FMDPfactory_state::ACTION)                                **/
-  /* **                                                                                                                                                    **/
+  /* **                                                                                                   **/
+  /* **                                 Transition declaration methods                                    **/
+  /* **      (FMDPfactory_state::NONE <-> FMDPfactory_state::TRANSITION <-> FMDPfactory_state::ACTION)    **/
+  /* **                                                                                                   **/
   /* **************************************************************************************************** **/
 
 
@@ -380,6 +381,7 @@ namespace gum {
       __states.push_back ( FMDPfactory_state::TRANSITION );
 
 //       VERBOSITY ( "starting transition declaration" );
+    this->__initializeDecisionGraph();
   }
 
 
@@ -411,13 +413,16 @@ namespace gum {
     if ( state() != FMDPfactory_state::TRANSITION )
       __illegalStateError ( "addTransition" );
     else {
+
+      this->__finalizeDecisionGraph();
+
       if ( __foo_flag )
-        __fmdp->addTransitionForAction ( __varNameMap[var], this->__decisionDiagramFactory->getMultiDimDecisionDiagram ( false, ( GUM_SCALAR ) 0, true ), __stringBag[0] );
+        __fmdp->addTransitionForAction ( __varNameMap[var], this->__decisionGraph, __stringBag[0] );
       else
-        __fmdp->addTransition ( __varNameMap[var], this->__decisionDiagramFactory->getMultiDimDecisionDiagram ( false, ( GUM_SCALAR ) 0, true ) );
+        __fmdp->addTransition ( __varNameMap[var], this->__decisionGraph );
 
       // this->__decisionDiagramFactory->showProperties();
-      this->__decisionDiagramFactory->clear();
+//      this->__decisionDiagramFactory->clear();
     }
 
   }
@@ -439,9 +444,10 @@ namespace gum {
 
 
   /* **************************************************************************************************** **/
-  /* **                                                                                                                                                    **/
-  /* **          Cost declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::COST <-> FMDPfactory_state::ACTION)                                                   **/
-  /* **                                                                                                                                                    **/
+  /* **                                                                                                   **/
+  /* **                                  Cost declaration methods                                         **/
+  /* **        (FMDPfactory_state::NONE <-> FMDPfactory_state::COST <-> FMDPfactory_state::ACTION)        **/
+  /* **                                                                                                   **/
   /* **************************************************************************************************** **/
 
 
@@ -456,6 +462,7 @@ namespace gum {
       __states.push_back ( FMDPfactory_state::COST );
 
 //       VERBOSITY ( "starting Cost declaration" );
+    this->__initializeDecisionGraph();
   }
 
 
@@ -485,13 +492,16 @@ namespace gum {
     if ( state() != FMDPfactory_state::COST )
       __illegalStateError ( "addCost" );
     else {
+
+      this->__finalizeDecisionGraph();
+
       if ( __foo_flag )
-        __fmdp->addCostForAction ( this->__decisionDiagramFactory->getMultiDimDecisionDiagram(), __stringBag[0] );
+        __fmdp->addCostForAction ( this->__decisionGraph, __stringBag[0] );
       else
-        __fmdp->addCost ( this->__decisionDiagramFactory->getMultiDimDecisionDiagram() );
+        __fmdp->addCost ( this->__decisionGraph );
 
       // this->__decisionDiagramFactory->showProperties();
-      this->__decisionDiagramFactory->clear();
+//      this->__decisionDiagramFactory->clear();
     }
   }
 
@@ -512,9 +522,10 @@ namespace gum {
 
 
   /* **************************************************************************************************** **/
-  /* **                                                                                                                                                    **/
-  /* **          Reward declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::REWARD <-> FMDPfactory_state::ACTION)                                         **/
-  /* **                                                                                                                                                    **/
+  /* **                                                                                                   **/
+  /* **                                 Reward declaration methods                                        **/
+  /* **       (FMDPfactory_state::NONE <-> FMDPfactory_state::REWARD <-> FMDPfactory_state::ACTION)       **/
+  /* **                                                                                                   **/
   /* **************************************************************************************************** **/
 
 
@@ -529,6 +540,7 @@ namespace gum {
       __states.push_back ( FMDPfactory_state::REWARD );
 
 //       VERBOSITY ( "starting reward declaration" );
+    this->__initializeDecisionGraph();
   }
 
 
@@ -567,13 +579,13 @@ namespace gum {
     if ( state() != FMDPfactory_state::REWARD )
       __illegalStateError ( "addReward" );
     else {
-      if ( __foo_flag )
-        __ddBag.push_back ( this->__decisionDiagramFactory->getMultiDimDecisionDiagram ( false, ( GUM_SCALAR ) 0, true ) );
-      else
-        __fmdp->addReward ( this->__decisionDiagramFactory->getMultiDimDecisionDiagram ( false, ( GUM_SCALAR ) 0, true ) );
 
-//         this->__decisionDiagramFactory->showProperties();
-      this->__decisionDiagramFactory->clear();
+      this->__finalizeDecisionGraph();
+
+      if ( __foo_flag )
+        __ddBag.push_back ( this->__decisionGraph );
+      else
+        __fmdp->addReward ( this->__decisionGraph );
     }
   }
 
@@ -623,15 +635,15 @@ namespace gum {
       __resetParts();
       __states.pop_back();
     }
-
 //       VERBOSITY ( "reward OK" );
   }
 
 
   /* **************************************************************************************************** **/
-  /* **                                                                                                                                                    **/
-  /* **          Discount declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::DISCOUNT <-> FMDPfactory_state::ACTION)                                    **/
-  /* **                                                                                                                                                    **/
+  /* **                                                                                                   **/
+  /* **                                Discount declaration methods                                       **/
+  /* **    (FMDPfactory_state::NONE <-> FMDPfactory_state::DISCOUNT <-> FMDPfactory_state::ACTION)        **/
+  /* **                                                                                                   **/
   /* **************************************************************************************************** **/
 
 
@@ -677,9 +689,10 @@ namespace gum {
 
 
   /* **************************************************************************************************** **/
-  /* **                                                                                                                                                    **/
-  /* **          Discount declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::DISCOUNT <-> FMDPfactory_state::ACTION)                                    **/
-  /* **                                                                                                                                                    **/
+  /* **                                                                                                   **/
+  /* **                                 Discount declaration methods                                      **/
+  /* **       (FMDPfactory_state::NONE <-> FMDPfactory_state::DISCOUNT <-> FMDPfactory_state::ACTION)     **/
+  /* **                                                                                                   **/
   /* **************************************************************************************************** **/
 
 
@@ -688,8 +701,7 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   NodeId
   FMDPFactory<GUM_SCALAR>::addNonTerminalNode ( std::string name_of_var ) {
-
-    return __decisionDiagramFactory->addNonTerminalNode ( variable ( name_of_var ) );
+    return __decisionGraph->manager()->addNonTerminalNode ( variable ( name_of_var ) );
   }
 
 
@@ -698,24 +710,22 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   NodeId
   FMDPFactory<GUM_SCALAR>::addTerminalNode ( float value ) {
-
-    return __decisionDiagramFactory->addTerminalNode ( ( GUM_SCALAR ) value );
+    return __decisionGraph->manager()->addTerminalNode ( ( GUM_SCALAR ) value );
   }
 
 
   // Insert an arc in diagram
-
-  template<typename GUM_SCALAR> INLINE
-  void
-  FMDPFactory<GUM_SCALAR>::insertArc ( NodeId from, NodeId to, Idx modality ) {
-    addArc ( from, to, modality );
-  }
-
   template<typename GUM_SCALAR> INLINE
   void
   FMDPFactory<GUM_SCALAR>::addArc ( NodeId from, NodeId to, Idx modality ) {
+    __decisionGraph->manager()->setSon( from, modality, to );
+  }
 
-    __decisionDiagramFactory->addArc ( from, to, modality );
+
+  template<typename GUM_SCALAR> INLINE
+  void
+  FMDPFactory<GUM_SCALAR>::setRoot( NodeId rootId ) {
+    __decisionGraph->manager()->setRootNode( rootId );
   }
 
   /* **************************************************************************************************** **/
@@ -777,6 +787,35 @@ namespace gum {
     __bar_flag = false;
     __stringBag.clear();
     __ddBag.clear();
+  }
+
+
+  template<typename GUM_SCALAR> INLINE
+  void
+  FMDPFactory<GUM_SCALAR>::__initializeDecisionGraph() {
+
+    this->__decisionGraph = new MultiDimDecisionGraph<GUM_SCALAR>();
+    // Recopie des variables principales dans le graphe de décision
+    __fmdp->resetVariablesIterator();
+    while(__fmdp->hasVariable()){
+      __decisionGraph->add(*(__fmdp->main2prime().first(__fmdp->variable())));
+      __fmdp->nextVariable();
+    }
+
+    // Recopie des version primes des variables dans le graphe de décision
+    __fmdp->resetVariablesIterator();
+    while(__fmdp->hasVariable()){
+      __decisionGraph->add(*(__fmdp->variable()));
+      __fmdp->nextVariable();
+    }
+  }
+
+
+  template<typename GUM_SCALAR> INLINE
+  void
+  FMDPFactory<GUM_SCALAR>::__finalizeDecisionGraph() {
+    this->__decisionGraph->manager()->reduce();
+    this->__decisionGraph->manager()->clean();
   }
 
   //~ ==============

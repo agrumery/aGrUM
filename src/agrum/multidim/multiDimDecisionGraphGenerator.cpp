@@ -178,9 +178,8 @@ namespace gum{
                 ++nbIter;
             }
 
-        for ( SequenceIterator< const DiscreteVariable* > varIter = __varSeq.begin(); varIter != __varSeq.end(); ++varIter )
-            if( ! generatedDecisionGraph->varNodeListe( *varIter) )
-                generatedDecisionGraph->erase(**varIter);
+//        generatedDecisionGraph->manager()->reduce();
+//        generatedDecisionGraph->manager()->clean();
 
         return generatedDecisionGraph;
     }

@@ -177,6 +177,11 @@ namespace gum{
         void setSon( const NodeId& node, const Idx& modality, const NodeId& sonNode );
 
         // ============================================================================
+        /// Changes var position in variable sequence
+        // ============================================================================
+        void moveTo( const DiscreteVariable* x, Idx desiredPos );
+
+        // ============================================================================
         /// Sets nodes son for given modality to designated son node
         // ============================================================================
         NodeId checkIsomorphism(const DiscreteVariable* var, NodeId* sons);
@@ -192,9 +197,11 @@ namespace gum{
         void reduce();
 
         // ============================================================================
-        /// Changes var position in variable sequence
+        /// Removes var without nodes in the diagram
         // ============================================================================
-        void moveTo( const DiscreteVariable* x, Idx desiredPos );
+        void clean();
+
+
 
   protected :
         void _migrateNode(const NodeId&, const NodeId&);

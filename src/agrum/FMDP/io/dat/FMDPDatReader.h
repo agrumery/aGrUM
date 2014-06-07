@@ -58,19 +58,20 @@
  * @author Pierre-Henri WUILLEMIN
  */
 
+// ======================================================================================================
 #ifndef FMDP_DAT_READER_H
 #define FMDP_DAT_READER_H
-
+// ======================================================================================================
 #include <iostream>
 #include <string>
 #include <fstream>
-
+// ======================================================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/FMDPFactory.h>
 #include <agrum/FMDP/io/FMDPReader.h>
-
-#include <agrum/multidim/multiDimDecisionDiagramFactoryBase.h>
-
+// ======================================================================================================
+#include <agrum/multidim/multiDimDecisionGraph.h>
+// ======================================================================================================
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 //including coco-generated PARSER and SCANNER
@@ -86,7 +87,7 @@ namespace gum {
   template< typename GUM_SCALAR >
   class FMDPDatReader : public FMDPReader<GUM_SCALAR> {
     public:
-      FMDPDatReader ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, const std::string& filename, MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* ddf );
+      FMDPDatReader ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, const std::string& filename );
       ~FMDPDatReader();
 
       /// Direct access to FMDPDat scanner (mandatory for listener connection)

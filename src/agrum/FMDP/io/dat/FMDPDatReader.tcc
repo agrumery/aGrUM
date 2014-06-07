@@ -33,7 +33,7 @@
 namespace gum {
 
   template<typename GUM_SCALAR>
-  FMDPDatReader<GUM_SCALAR>::FMDPDatReader ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, const std::string& filename, MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* ddf )
+  FMDPDatReader<GUM_SCALAR>::FMDPDatReader ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, const std::string& filename )
     : FMDPReader<GUM_SCALAR> ( fmdp, filename ) {
 
     GUM_CONSTRUCTOR ( FMDPDatReader );
@@ -41,8 +41,8 @@ namespace gum {
     __fmdp = fmdp;
     __streamName = filename;
     __parseDone = false;
-    ddf->putOnNoVariableCheckMode();
-    __factory = new FMDPFactory<GUM_SCALAR> ( __fmdp, ddf );
+//    ddf->putOnNoVariableCheckMode();
+    __factory = new FMDPFactory<GUM_SCALAR> ( __fmdp );
     //~ __factory->setVerbose();
     __ioerror = false;
 

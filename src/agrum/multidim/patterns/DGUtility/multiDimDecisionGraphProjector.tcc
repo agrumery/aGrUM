@@ -27,6 +27,7 @@
 // =======================================================
 #include <agrum/multidim/patterns/DGUtility/multiDimDecisionGraphProjector.h>
 // =======================================================
+#include <agrum/variables/labelizedVariable.h>
 
 namespace gum {
 
@@ -63,13 +64,72 @@ namespace gum {
   /* This function is the main function. To be call every time an Projection between the two given Decision Graphs is required   */
   /* ***************************************************************************************************************************** */
   template <typename GUM_SCALAR, template <typename> class FUNCTOR >
-  MultiDimDecisionGraph<GUM_SCALAR> *MultiDimDecisionGraphProjector<GUM_SCALAR, FUNCTOR>::project(){
+  MultiDimDecisionGraph<GUM_SCALAR>*
+  MultiDimDecisionGraphProjector<GUM_SCALAR, FUNCTOR>::project(){
 
+//      Sequence<const DiscreteVariable*> seq;
+//      __maker(__delVars, seq, "");
+////        for( SetIteratorSafe<const DiscreteVariable*> varIter = __delVars.beginSafe(); varIter != __delVars.endSafe(); ++varIter )
+////            if( !(*varIter)->name().compare("var4")){
+////                seq.insert(*varIter);
+////                std::cout << (*varIter)->name() << std::endl;
+////                break;
+////            }
+////        for( SetIteratorSafe<const DiscreteVariable*> varIter = __delVars.beginSafe(); varIter != __delVars.endSafe(); ++varIter )
+////            if( !(*varIter)->name().compare("var6")){
+////                seq.insert(*varIter);
+////                break;
+////            }
+////        for( SetIteratorSafe<const DiscreteVariable*> varIter = __delVars.beginSafe(); varIter != __delVars.endSafe(); ++varIter )
+////            if( !(*varIter)->name().compare("var0")){
+////                seq.insert(*varIter);
+////                break;
+////            }
+////        for( SetIteratorSafe<const DiscreteVariable*> varIter = __delVars.beginSafe(); varIter != __delVars.endSafe(); ++varIter )
+////            if( !(*varIter)->name().compare("var1")){
+////                seq.insert(*varIter);
+////                break;
+////            }
+////        for( SetIteratorSafe<const DiscreteVariable*> varIter = __delVars.beginSafe(); varIter != __delVars.endSafe(); ++varIter )
+////            if( !(*varIter)->name().compare("var5")){
+////                seq.insert(*varIter);
+////                break;
+////            }
+////        for( SetIteratorSafe<const DiscreteVariable*> varIter = __delVars.beginSafe(); varIter != __delVars.endSafe(); ++varIter )
+////            if( !(*varIter)->name().compare("var2")){
+////                seq.insert(*varIter);
+////                break;
+////            }
 
-//      std::cout << "BEGIN" << std::endl;
-    __rd->copy( *__src );
+//      return nullptr;
+//  }
+
+//  template <typename GUM_SCALAR, template <typename> class FUNCTOR >
+//  void
+//  MultiDimDecisionGraphProjector<GUM_SCALAR, FUNCTOR>::__maker(Set<const DiscreteVariable*> remainingVar, Sequence<const DiscreteVariable*> seq, std::string tab){
+
+//      Set<const DiscreteVariable*> boulga(remainingVar);
+//      for( SetIteratorSafe<const DiscreteVariable*> varIter = remainingVar.beginSafe(); varIter != remainingVar.endSafe(); ++varIter ){
+//          std::cout << tab << (*varIter)->name() << std::endl;
+//          boulga >> *varIter;
+//          seq << *varIter;
+//          if(boulga.empty()){
+//              __project(seq);
+//          } else {
+//              __maker(boulga, seq, tab + "\t");
+//          }
+//          boulga << *varIter;
+//          seq >> *varIter;
+//      }
+//  }
+
+//  template <typename GUM_SCALAR, template <typename> class FUNCTOR >
+//  MultiDimDecisionGraph<GUM_SCALAR>*
+//  MultiDimDecisionGraphProjector<GUM_SCALAR, FUNCTOR>::__project(Sequence<const DiscreteVariable*> seq){
+      __rd->copy( *__src );
 
     for( SetIteratorSafe<const DiscreteVariable*> varIter = __delVars.beginSafe(); varIter != __delVars.endSafe(); ++varIter ){
+//    for( SequenceIteratorSafe<const DiscreteVariable*> varIter = seq.beginSafe(); varIter != seq.endSafe(); ++varIter ){
 
       const DiscreteVariable* curVar = *varIter;
 

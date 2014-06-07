@@ -26,10 +26,10 @@
 
 #ifndef GUM_FMDP_FACTORY_H
 #define GUM_FMDP_FACTORY_H
-
+//======================================================================
 #include <string>
 #include <vector>
-
+//======================================================================
 #include <agrum/core/sequence.h>
 
 #include <agrum/variables/labelizedVariable.h>
@@ -74,7 +74,7 @@ namespace gum {
        * @param fmdp A pointer over the @ref FactoredMarkovDecisionProcess filled by this factory.
        * @param ddFactory The @ref MultiDimDecisionDiagramFactoryBase that will be used.
        */
-      FMDPFactory ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* ddFactory );
+      FMDPFactory ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp );
 
       //~ /**
       //~ * @brief Copy constructor.
@@ -262,12 +262,11 @@ namespace gum {
       /// Insert in diagram a terminal node
       NodeId addTerminalNode ( float value );
 
-      /// Insert in diagram an arc
-      /// @deprecated use addArc instead
-      GUM_DEPRECATED ( void insertArc ( NodeId from, NodeId to, Idx modality ) );
+      ///
+      void addArc(NodeId from, NodeId to, Idx modality);
 
       /// add an arc in diagram
-      void addArc ( NodeId from, NodeId to, Idx modality );
+      void setRoot(NodeId rootId);
 
       /// @}
 
@@ -277,15 +276,15 @@ namespace gum {
        */
       void setVerbose() {
         __verbose = true;
-      };
+      }
 
       void resetVerbose() {
         __verbose = false;
-      };
+      }
 
       bool isVerbose() {
         return __verbose;
-      };
+      }
       /// @}
 
     private:
@@ -314,6 +313,12 @@ namespace gum {
       /// Reset the different parts used to constructed the FMDP.
       void __resetParts();
 
+      /// Insert every variables in the decision graph
+      void __initializeDecisionGraph();
+
+      /// Insert every variables in the decision graph
+      void __finalizeDecisionGraph();
+
       /// @}
 
       /// State stack.
@@ -322,8 +327,8 @@ namespace gum {
       /// The constructed FMDP
       FactoredMarkovDecisionProcess<GUM_SCALAR>* __fmdp;
 
-      /// The factory used to build up decision diagram
-      MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* __decisionDiagramFactory;
+      /// The decisionGraph we're building at a given time
+      MultiDimDecisionGraph<GUM_SCALAR>* __decisionGraph;
 
       /// Mapping between a declared variable's name and itself.
       HashTable< std::string, const DiscreteVariable* > __varNameMap;

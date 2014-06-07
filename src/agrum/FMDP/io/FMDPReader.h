@@ -29,11 +29,14 @@
  */
 #ifndef GUM_FMDP_READER_H
 #define GUM_FMDP_READER_H
-
+//======================================================================
 #include <iostream>
 #include <string>
+//======================================================================
 #include <agrum/config.h>
+//======================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
+//======================================================================
 
 
 namespace gum {

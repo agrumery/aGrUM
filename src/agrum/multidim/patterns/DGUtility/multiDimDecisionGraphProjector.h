@@ -73,6 +73,9 @@ namespace gum {
       // ============================================================================
       MultiDimDecisionGraph<GUM_SCALAR>* project();
 
+//      void __maker(Set<const DiscreteVariable*> remainingVar, Sequence<const DiscreteVariable*> seq, std::string tab);
+//      MultiDimDecisionGraph<GUM_SCALAR>* __project(Sequence<const DiscreteVariable*> seq);
+
     /// @}
 
 

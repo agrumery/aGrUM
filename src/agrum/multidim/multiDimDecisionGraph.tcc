@@ -315,7 +315,7 @@ template<typename GUM_SCALAR>
     //            the copy (natural order if null).
     // @throw OperationNotAllowed Raised if src does not have the same domain size
     //                            than this MultiDimContainer.
-    ///
+    //
     // ============================================================================
     template<typename GUM_SCALAR>
     INLINE
@@ -328,7 +328,7 @@ template<typename GUM_SCALAR>
     //
     // Removes all variables in this MultiDimContainer and copy the content
     // of src, variables included.
-    ///
+    //
     // ============================================================================
     template<typename GUM_SCALAR>
     INLINE
@@ -340,7 +340,7 @@ template<typename GUM_SCALAR>
     //
     // Removes all variables in this MultiDimContainer and copy the content
     // of src, variables included.
-    ///
+    //
     // ============================================================================
     template<typename GUM_SCALAR>
     INLINE
@@ -349,7 +349,7 @@ template<typename GUM_SCALAR>
       this->clear();
 
       // Insertion des nouvelles variables
-      for( SequenceIterator<const DiscreteVariable*> varIter = src.variablesSequence().begin(); varIter != src.variablesSequence().end(); ++varIter)
+      for( SequenceIteratorSafe<const DiscreteVariable*> varIter = src.variablesSequence().beginSafe(); varIter != src.variablesSequence().endSafe(); ++varIter)
         this->add(**varIter);
 
       std::vector<NodeId> lifo;
@@ -388,6 +388,75 @@ template<typename GUM_SCALAR>
 
     // ============================================================================
     //
+    // Copies src diagrams structure into this diagrams.
+    // However it also changes the variables.
+    //
+    // ============================================================================
+    template<typename GUM_SCALAR>
+    INLINE
+    void MultiDimDecisionGraph<GUM_SCALAR>::copyAndReassign ( const MultiDimDecisionGraph<GUM_SCALAR> &src,
+                                                              const Bijection<const DiscreteVariable*, const DiscreteVariable*> reassign ){
+
+      this->clear();
+
+      // Insertion des nouvelles variables
+      for( SequenceIteratorSafe<const DiscreteVariable*> varIter = src.variablesSequence().beginSafe(); varIter != src.variablesSequence().endSafe(); ++varIter){
+        this->add(*(reassign.second(*varIter)));
+      }
+
+      std::vector<NodeId> lifo;
+      Bijection<NodeId, NodeId> src2dest;
+
+      if(src.isTerminalNode(src.root()))
+        this->manager()->setRootNode(this->manager()->addTerminalNode(src.nodeValue(src.root())));
+      else {
+        this->manager()->setRootNode(this->manager()->addNonTerminalNode( reassign.second(src.node(src.root())->nodeVar() )));
+        src2dest.insert( src.root(), this->root() );
+        lifo.push_back(src.root());
+      }
+
+      // Parcours en profondeur du diagramme source
+      while( !lifo.empty() ){
+        NodeId currentSrcNodeId = lifo.back();
+        lifo.pop_back();
+
+        const InternalNode* currentSrcNode = src.node(currentSrcNodeId);
+
+        for( Idx index = 0; index < currentSrcNode->nbSons(); ++index ){
+          if( !src2dest.existsFirst(currentSrcNode->son(index)) ){
+            NodeId srcSonNodeId = currentSrcNode->son(index), destSonNodeId = 0;
+            if( src.isTerminalNode(srcSonNodeId) ){
+              destSonNodeId = this->manager()->addTerminalNode(src.nodeValue(srcSonNodeId));
+            } else {
+              destSonNodeId = this->manager()->addNonTerminalNode(reassign.second(src.node(srcSonNodeId)->nodeVar()));
+              lifo.push_back(srcSonNodeId);
+            }
+            src2dest.insert( srcSonNodeId, destSonNodeId );
+          }
+          this->manager()->setSon( src2dest.second(currentSrcNodeId), index, src2dest.second(currentSrcNode->son(index)));
+        }
+      }
+    }
+
+    // ============================================================================
+    /**
+     * Copies src diagrams and multiply every value by the given scalar.
+     */
+    // ============================================================================
+    template<typename GUM_SCALAR>
+    INLINE
+    void MultiDimDecisionGraph<GUM_SCALAR>::copyAndMultiplyByScalar ( const MultiDimDecisionGraph<GUM_SCALAR>& src,
+                                                                      GUM_SCALAR gamma ){
+
+      this->copy(src);
+      Bijection<NodeId, GUM_SCALAR> oldValueMap(__valueMap);
+      __valueMap.clear();
+      for(BijectionIteratorSafe<NodeId, GUM_SCALAR> valueIter = oldValueMap.beginSafe(); valueIter != oldValueMap.endSafe(); ++valueIter )
+          __valueMap.insert( valueIter.first(), gamma* valueIter.second());
+    }
+
+    // ============================================================================
+    //
     // Clears the decision graph
     ///
     // ============================================================================
@@ -417,7 +486,7 @@ template<typename GUM_SCALAR>
       }
       __var2NodeIdMap.clear();
 
-     for( SequenceIterator<const DiscreteVariable*> varIter = this->variablesSequence().rbegin(); varIter != this->variablesSequence().rend(); --varIter){
+     for( SequenceIteratorSafe<const DiscreteVariable*> varIter = this->variablesSequence().rbeginSafe(); varIter != this->variablesSequence().rendSafe(); --varIter){
         this->erase(**varIter);
       }
     }
@@ -484,34 +553,6 @@ template<typename GUM_SCALAR>
       if( __manager == nullptr )
         __manager = new MultiDimDecisionGraphManager<GUM_SCALAR>(this);
       return __manager;
-    }
-
-    // ============================================================================
-    // Indicates if given node is terminal or not
-    // ============================================================================
-    template<typename GUM_SCALAR>
-    INLINE
-    bool MultiDimDecisionGraph<GUM_SCALAR>::isTerminalNode(const NodeId& node) const{
-      return __valueMap.existsFirst(node);
-    }
-
-    // ============================================================================
-    // Returns value associated to given node
-    // ============================================================================
-    template<typename GUM_SCALAR>
-    INLINE
-    const GUM_SCALAR& MultiDimDecisionGraph<GUM_SCALAR>::nodeValue( NodeId n ) const {
-      return this->__valueMap.second( n );
-    }
-
-    // ============================================================================
-    // Returns associated variable of given node
-    // @throw InvalidNode if Node is terminal
-    // ============================================================================
-    template<typename GUM_SCALAR>
-    INLINE
-    const typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* MultiDimDecisionGraph<GUM_SCALAR>::node( NodeId n ) const{
-      return this->__internalNodeMap[ n ];
     }
 
     // ============================================================================

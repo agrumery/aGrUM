@@ -424,6 +424,27 @@ namespace gum {
 
         // ============================================================================
         /**
+         * Copies src diagrams structure into this diagrams.
+         * However it also changes the variables.
+         *
+         * This has two implications.
+         * First, this is not just a renaming. Pointers are trully changed.
+         * Second, for each pair of variable, the new variable MUST macth the number
+         * of variables of the old variable.
+         */
+        // ============================================================================
+        void copyAndReassign ( const MultiDimDecisionGraph<GUM_SCALAR> &src,
+                               const Bijection<const DiscreteVariable*, const DiscreteVariable*> reassign );
+
+        // ============================================================================
+        /**
+         * Copies src diagrams and multiply every value by the given scalar.
+         */
+        // ============================================================================
+        void copyAndMultiplyByScalar ( const MultiDimDecisionGraph<GUM_SCALAR>& src, GUM_SCALAR gamma );
+
+        // ============================================================================
+        /**
          * Clears the decision graph
          */
         // ============================================================================
@@ -459,21 +480,23 @@ namespace gum {
         // ============================================================================
         /// Indicates if given node is terminal or not
         // ============================================================================
-        bool isTerminalNode(const NodeId & node) const;
+        bool isTerminalNode(const NodeId & node) const { return __valueMap.existsFirst(node); }
 
         // ============================================================================
         /// Returns value associated to given node
         /// @throw InvalidNode if node isn't terminal
         // ============================================================================
-        const GUM_SCALAR& nodeValue( NodeId n ) const;
+        const GUM_SCALAR& nodeValue( NodeId n ) const { return this->__valueMap.second( n ); }
 
         // ============================================================================
         /// Returns internalNode structure associated to that nodeId
         /// @throw InvalidNode if node is terminal
         // ============================================================================
-        const InternalNode* node( NodeId n ) const;
+        const InternalNode* node( NodeId n ) const {return this->__internalNodeMap[ n ];}
 
         const NICLElem* varNodeListe( const DiscreteVariable* var ) const { return __var2NodeIdMap[var]; }
+
+        const Bijection<NodeId, GUM_SCALAR>& values(  ) const{ return this->__valueMap; }
 
       /// @}
 
