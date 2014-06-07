@@ -91,79 +91,6 @@ class TestDictFeature(LazyPropagationTestCase):
         
         self.assertListsAlmostEqual(result.tolist(),[ 0.95890411,0.04109589])
 
-
-    #def testDictOfSequencesWithId(self):
-        #print("to")
-        #ie = LazyPropagation(self.bn)
-        #ie.setEvidence({'s': [0, 1], 'w': (1, 0)})
-        #ie.makeInference()
-        #result = ie.marginal(self.r)
-
-        #ie = LazyPropagation(self.bn)
-        #list_pot = ListPotentials()
-        #pot = Potential()
-        #pot.add(self.bn.variable(self.s))
-        #pot[:] = [0, 1]
-        #list_pot.append(pot)
-        #pot = Potential()
-        #pot.add(self.bn.variable(self.w))
-        #pot[:] = [1, 0]
-        #list_pot.append(pot)
-
-        #ie.insertEvidence(list_pot)
-        #ie.makeInference()
-        #result2 = ie.marginal(self.r)
-
-        #result.empty()
-        #self.assertListsAlmostEqual(result.tolist(), result2.tolist())
-
-
-    #def testDictOfNumbers(self):
-        #ie = LazyPropagation(self.bn)
-        #ie.setEvidence({'w': 0, 's': 1})
-        #ie.makeInference()
-        #result = ie.marginal(self.r)
-
-        #ie = LazyPropagation(self.bn)
-        #list_pot = []
-        #pot = Potential()
-        #pot.add(self.bn.variable(self.s))
-        #pot[:] = [0, 1]
-        #list_pot.append(pot)
-        #pot = Potential()
-        #pot.add(self.bn.variable(self.w))
-        #pot[:] = [1, 0]
-        #list_pot.append(pot)
-
-        #ie.insertEvidence(list_pot)
-        #ie.makeInference()
-        #result2 = ie.marginal(self.r)
-
-        #self.assertListsAlmostEqual(result.tolist(), result2.tolist())
-
-    #def testDictOfNumbersWithId(self):
-        #ie = LazyPropagation(self.bn)
-        #ie.setEvidence({self.w: 0, self.s: 1})
-        #ie.makeInference()
-        #result = ie.marginal(self.r)
-
-        #ie = LazyPropagation(self.bn)
-        #list_pot = ListPotentials()
-        #pot = Potential()
-        #pot.add(self.bn.variable(self.s))
-        #pot[:] = [0, 1]
-        #list_pot.append(pot)
-        #pot = Potential()
-        #pot.add(self.bn.variable(self.w))
-        #pot[:] = [1, 0]
-        #list_pot.append(pot)
-
-        #ie.insertEvidence(list_pot)
-        #ie.makeInference()
-        #result2 = ie.marginal(self.r)
-        
-        #self.assertListsAlmostEqual(result.tolist(), result2.tolist())
-
     def testDictOfLabels(self):
         ie = LazyPropagation(self.bn)
         ie.setEvidence({'s': 0, 'w': 1})
@@ -187,8 +114,15 @@ class TestDictFeature(LazyPropagationTestCase):
         ie2.setEvidence({self.s: 'no', self.w: 'yes'})
         ie2.makeInference()
         result2 = ie2.marginal(self.r)
+        
+        ie3 = LazyPropagation(self.bn)
+        ie3.addHardEvidence(self.s,0) # 'no'
+        ie3.addHardEvidence(self.w,1) # 'yes'
+        ie3.makeInference()
+        result3 = ie3.marginal(self.r)
 
         self.assertListsAlmostEqual(result.tolist(), result2.tolist())
+        self.assertListsAlmostEqual(result.tolist(), result3.tolist())
 
 
     def testWithDifferentVariables(self):
@@ -263,9 +197,6 @@ class TestInferenceResults(LazyPropagationTestCase):
 
 ts = unittest.TestSuite()
 ts.addTest(TestDictFeature('testSimpleInference'))
-#ts.addTest(TestDictFeature('testDictOfSequencesWithId'))
-#ts.addTest(TestDictFeature('testDictOfNumbers'))
-#ts.addTest(TestDictFeature('testDictOfNumbersWithId'))
 ts.addTest(TestDictFeature('testDictOfLabels'))
 ts.addTest(TestDictFeature('testDictOfLabelsWithId'))
 ts.addTest(TestDictFeature('testWithDifferentVariables'))
