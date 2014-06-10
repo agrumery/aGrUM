@@ -24,6 +24,7 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+#include <iostream>
 
 namespace gum {
 
@@ -61,8 +62,8 @@ namespace gum {
     __StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::operator=
     ( const __StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>& from ) {
       if ( this != &from ) {
-        first_constraint::operator= ( from );
         next_constraints::operator= ( from );
+        first_constraint::operator= ( from );
       }
 
       return *this;
@@ -74,8 +75,8 @@ namespace gum {
     void
     __StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::setGraph
     ( const DiGraph& graph ) {
-      first_constraint::setGraphAlone ( graph );
       next_constraints::setGraph ( graph );
+      first_constraint::setGraphAlone ( graph );
     }
  
 
@@ -84,8 +85,8 @@ namespace gum {
     void
     __StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::modifyGraph
     ( const ArcAddition& change ) {
-      first_constraint::modifyGraphAlone ( change );
       next_constraints::modifyGraph ( change );
+      first_constraint::modifyGraphAlone ( change );
     }
 
 
@@ -94,8 +95,8 @@ namespace gum {
     void
     __StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::modifyGraph
     ( const ArcDeletion& change ) {
-      first_constraint::modifyGraphAlone ( change );
       next_constraints::modifyGraph ( change );
+      first_constraint::modifyGraphAlone ( change );
     }
 
     
@@ -104,8 +105,8 @@ namespace gum {
     void
     __StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::modifyGraph
     ( const ArcReversal& change ) {
-      first_constraint::modifyGraphAlone ( change );
       next_constraints::modifyGraph ( change );
+      first_constraint::modifyGraphAlone ( change );
     }
 
     
@@ -114,8 +115,8 @@ namespace gum {
     void
     __StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::modifyGraph
     ( const GraphChange& change ) {
-      first_constraint::modifyGraphAlone ( change );
       next_constraints::modifyGraph ( change );
+      first_constraint::modifyGraphAlone ( change );
     }
 
 
@@ -124,8 +125,8 @@ namespace gum {
     bool
     __StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::isAlwaysInvalid
     ( const GraphChange& change ) const noexcept {
-      return first_constraint::isAlwaysInvalidAlone ( change ) ||
-        next_constraints::isAlwaysInvalid ( change );
+      return next_constraints::isAlwaysInvalid ( change ) ||
+        first_constraint::isAlwaysInvalidAlone ( change );
     }
 
 
@@ -134,8 +135,8 @@ namespace gum {
     bool
     __StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::checkArcAddition
     ( NodeId x, NodeId y ) const noexcept {
-      return first_constraint::checkArcAdditionAlone ( x, y ) &&
-        next_constraints::checkArcAddition ( x, y );
+      return next_constraints::checkArcAddition ( x, y ) &&
+        first_constraint::checkArcAdditionAlone ( x, y );
     }
 
 
@@ -144,8 +145,8 @@ namespace gum {
     bool
     __StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::checkArcDeletion
     ( NodeId x, NodeId y ) const noexcept {
-      return first_constraint::checkArcDeletionAlone ( x, y ) &&
-        next_constraints::checkArcDeletion ( x, y );
+      return next_constraints::checkArcDeletion ( x, y ) &&
+        first_constraint::checkArcDeletionAlone ( x, y );
     }
 
 
@@ -154,8 +155,8 @@ namespace gum {
     bool
     __StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::checkArcReversal
     ( NodeId x, NodeId y ) const noexcept {
-      return first_constraint::checkArcReversalAlone ( x, y ) &&
-        next_constraints::checkArcReversal ( x, y );
+      return next_constraints::checkArcReversal ( x, y ) &&
+        first_constraint::checkArcReversalAlone ( x, y );
     }
 
 
@@ -164,8 +165,8 @@ namespace gum {
     bool
     __StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::checkModification
     ( const ArcAddition& change ) const noexcept {
-      return first_constraint::checkModificationAlone ( change ) &&
-        next_constraints::checkModification ( change );
+      return next_constraints::checkModification ( change ) &&
+        first_constraint::checkModificationAlone ( change );
     }
 
 
@@ -174,8 +175,8 @@ namespace gum {
     bool
     __StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::checkModification
     ( const ArcDeletion& change ) const noexcept {
-      return first_constraint::checkModificationAlone ( change ) &&
-        next_constraints::checkModification ( change );
+      return next_constraints::checkModification ( change ) &&
+        first_constraint::checkModificationAlone ( change );
     }
 
 
@@ -184,8 +185,8 @@ namespace gum {
     bool
     __StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::checkModification
     ( const ArcReversal& change ) const noexcept {
-      return first_constraint::checkModificationAlone ( change ) &&
-        next_constraints::checkModification ( change );
+      return next_constraints::checkModification ( change ) &&
+        first_constraint::checkModificationAlone ( change );
     }
       
 
@@ -194,8 +195,8 @@ namespace gum {
     bool
     __StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::checkModification
     ( const GraphChange& change ) const noexcept {
-      return first_constraint::checkModificationAlone ( change ) &&
-        next_constraints::checkModification ( change );
+      return next_constraints::checkModification ( change ) &&
+        first_constraint::checkModificationAlone ( change );
     }
 
 
