@@ -33,6 +33,7 @@
 #include <agrum/learning/structuralConstraintDAG.h>
 #include <agrum/learning/structuralConstraintIndegree.h>
 #include <agrum/learning/structuralConstraint2TimeSlice.h>
+#include <agrum/learning/structuralConstraintSet.h>
 
 namespace gum_tests {
 
@@ -311,7 +312,7 @@ namespace gum_tests {
       gum::learning::ScoreK2<decltype ( filter ) >
         score ( filter, modalities );
 
-      gum::learning::StructuralConstraintDiGraph
+      gum::learning::StructuralConstraintDAG
         struct_constraint ( modalities.size () );
 
       gum::learning::ParamEstimatorML<decltype ( filter ) >

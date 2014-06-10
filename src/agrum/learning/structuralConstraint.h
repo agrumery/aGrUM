@@ -18,63 +18,38 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the base class for structural constraints imposed by DAGs
+ * @brief the base class for all structural constraints 
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <agrum/learning/structuralConstraintDAG.h>
+#ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_H
+#define GUM_LEARNING_STRUCTURAL_CONSTRAINT_H
 
 
-/// include the inlined functions if necessary
-#ifdef GUM_NO_INLINE
-#include <agrum/learning/structuralConstraintDAG.inl>
-#endif /* GUM_NO_INLINE */
+#include <agrum/learning/structuralConstraintSet.h>
 
 
 namespace gum {
+    
 
-  
   namespace learning {
 
-    
-    /// default constructor
-    StructuralConstraintDAG::StructuralConstraintDAG () {
-      GUM_CONSTRUCTOR ( StructuralConstraintDAG );
-    }
 
-    
-    /// constructor starting with an empty graph with a given number of nodes
-    StructuralConstraintDAG::StructuralConstraintDAG ( unsigned int nb_nodes ) :
-      StructuralConstraintDiGraph ( nb_nodes ) {
-      StructuralConstraintDiGraph::setGraph ( nb_nodes );
+    /** @class StructuralConstraintEmpty
+     * @brief the base class for all structural constraints
+     * @ingroup learning_group
+     */
+    struct StructuralConstraintEmpty {
       
-      DAG g;
-      for ( unsigned int i = 0; i < nb_nodes; ++i ) {
-        g.insertNode ( i );
-      }
-      _cycle_detector.setDAG ( g );
+      using allConstraints = __ConstraintSet<void>;
 
-      GUM_CONSTRUCTOR ( StructuralConstraintDAG );
-    }
-
-    
-    /// constructor starting with a given graph
-    StructuralConstraintDAG::StructuralConstraintDAG ( const DAG& graph ) {
-      StructuralConstraintDiGraph::setGraph ( graph );
-      _cycle_detector.setDAG ( graph );
-      
-      GUM_CONSTRUCTOR ( StructuralConstraintDAG );
-    }
+    };
 
 
-    /// destructor
-    StructuralConstraintDAG::~StructuralConstraintDAG () {
-      GUM_DESTRUCTOR ( StructuralConstraintDAG );
-    }
-    
- 
   } /* namespace learning */
 
   
 } /* namespace gum */
 
+
+#endif /* GUM_LEARNING_STRUCTURAL_CONSTRAINT_H */

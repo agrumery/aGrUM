@@ -41,7 +41,7 @@ namespace gum {
       __type  { type },
       __node1 { node1 },
       __node2 { node2 } {
-        GUM_CONSTRUCTOR ( learning::GraphChange );
+        GUM_CONSTRUCTOR ( GraphChange );
     }
   
 
@@ -50,7 +50,7 @@ namespace gum {
       __type  { from.__type },
       __node1 { from.__node1 },
       __node2 { from.__node2 } {
-        GUM_CONS_CPY ( learning::GraphChange );
+        GUM_CONS_CPY ( GraphChange );
     }
 
 
@@ -59,13 +59,13 @@ namespace gum {
       __type  { from.__type },
       __node1 { from.__node1 },
       __node2 { from.__node2 } {
-        GUM_CONS_MOV ( learning::GraphChange );
+        GUM_CONS_MOV ( GraphChange );
     }
 
 
     /// destructor
     INLINE GraphChange::~GraphChange () noexcept {
-      GUM_DESTRUCTOR ( learning::GraphChange );
+      GUM_DESTRUCTOR ( GraphChange );
     }
 
 
