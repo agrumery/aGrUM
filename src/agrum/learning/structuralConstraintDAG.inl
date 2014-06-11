@@ -178,19 +178,10 @@ namespace gum {
     }
 
 
-    
-
     /// sets a new graph from which we will perform checkings
     INLINE void StructuralConstraintDAG::setGraph ( const DAG& graph ) {
       constraints::setGraph ( graph );
       _DAG__cycle_detector.setDAG ( graph );
-    }
-
-    
-    /// sets a new graph from which we will perform checkings
-    INLINE void StructuralConstraintDAG::setGraph ( const DiGraph& graph ) {
-      constraints::setGraph ( graph );
-      setGraphAlone ( graph );
     }
 
     
@@ -200,117 +191,11 @@ namespace gum {
       setGraphAlone ( nb_nodes );
     }
 
-    
-    /// checks whether the constraints enable to add arc (x,y)
-    INLINE bool
-    StructuralConstraintDAG::checkArcAddition ( NodeId x, NodeId y )
-      const noexcept {
-      return constraints::checkArcAddition ( x, y ) &&
-        checkArcAdditionAlone ( x, y );
-    }
 
-    
-    /// checks whether the constraints enable to remove arc (x,y)
-    INLINE bool
-    StructuralConstraintDAG::checkArcDeletion ( NodeId x, NodeId y )
-      const noexcept {
-      return constraints::checkArcDeletion ( x, y ) &&
-        checkArcDeletionAlone ( x, y );
-    }
-
-
-    /// checks whether the constraints enable to reverse arc (x,y)
-    INLINE bool
-    StructuralConstraintDAG::checkArcReversal ( NodeId x, NodeId y )
-      const noexcept {
-      return constraints::checkArcReversal ( x, y ) &&
-        checkArcReversalAlone ( x, y );
-    }
-
-
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraintDAG::modifyGraph ( const ArcAddition& change ) {
-      constraints::modifyGraph ( change );
-      modifyGraphAlone ( change );
-    }
-
-    
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraintDAG::modifyGraph ( const ArcDeletion& change ) {
-      constraints::modifyGraph ( change );
-      modifyGraphAlone ( change );
-    }
-
-    
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraintDAG::modifyGraph ( const ArcReversal& change ) {
-      constraints::modifyGraph ( change );
-      modifyGraphAlone ( change );
-    }
-    
-
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraintDAG::modifyGraph ( const GraphChange& change ) {
-      constraints::modifyGraph ( change );
-      modifyGraphAlone ( change );
-    }
-
-    
-    /// indicates whether a change will always violate the constraint
-    INLINE bool
-    StructuralConstraintDAG::isAlwaysInvalid ( const GraphChange& )
-      const noexcept {
-      return false;
-    }
-
-
-        /// checks whether the constraints enable to add an arc
-    INLINE bool
-    StructuralConstraintDAG::checkModification ( const ArcAddition& change )
-      const noexcept {
-      return checkArcAddition ( change.node1 (), change.node2 () );
-    }
-    
-
-    /// checks whether the constraints enable to remove an arc
-    INLINE bool
-    StructuralConstraintDAG::checkModification ( const ArcDeletion& change )
-      const noexcept {
-      return checkArcDeletion ( change.node1 (), change.node2 () );
-    }
-
-    
-    /// checks whether the constraints enable to reverse an arc
-    INLINE bool
-    StructuralConstraintDAG::checkModification ( const ArcReversal& change )
-      const noexcept {
-      return checkArcReversal ( change.node1 (), change.node2 () );
-    }
-
-    
-    /// checks whether the constraints enable to perform a graph change
-    INLINE bool
-    StructuralConstraintDAG::checkModification ( const GraphChange& change )
-      const noexcept {
-      switch ( change.type () ) {
-      case GraphChangeType::ARC_ADDITION:
-        return checkArcAddition ( change.node1 (), change.node2 () );
-        
-      case GraphChangeType::ARC_DELETION:
-        return checkArcDeletion ( change.node1 (), change.node2 () );
-        
-      case GraphChangeType::ARC_REVERSAL:
-        return checkArcReversal ( change.node1 (), change.node2 () );
-        
-      default:
-        GUM_ERROR ( OperationNotAllowed, "edge modifications are not "
-                    "supported by StructuralConstraintDAG" );
-      }
-    }
+    // include all the methods applicable to the whole class hierarchy
+    #define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintDAG
+    #include <agrum/learning/structuralConstraintPatternInline.h>
+    #undef GUM_CONSTRAINT_CLASS_NAME
 
 
   } /* namespace learning */

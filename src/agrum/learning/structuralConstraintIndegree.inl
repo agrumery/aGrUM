@@ -147,17 +147,6 @@ namespace gum {
     }
 
 
-
-
-    
-    /// sets a new graph from which we will perform checkings
-    INLINE void StructuralConstraintIndegree::setGraph
-    ( const DiGraph& graph ) {
-      constraints::setGraph ( graph );
-      setGraphAlone ( graph );
-    }
-
-
     /// sets the indegree for a given set of nodes
     INLINE void StructuralConstraintIndegree::setIndegree
     ( const NodeProperty<unsigned int>& max_indegree ) {
@@ -181,114 +170,11 @@ namespace gum {
     }
     
 
-    /// checks whether the constraints enable to add arc (x,y)
-    INLINE bool StructuralConstraintIndegree::checkArcAddition
-    ( NodeId x, NodeId y ) const noexcept {
-      return constraints::checkArcAddition ( x, y ) &&
-        checkArcAdditionAlone ( x, y );
-    }
+    // include all the methods applicable to the whole class hierarchy
+    #define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintIndegree
+    #include <agrum/learning/structuralConstraintPatternInline.h>
+    #undef GUM_CONSTRAINT_CLASS_NAME
 
-    
-    /// checks whether the constraints enable to remove arc (x,y)
-    INLINE bool StructuralConstraintIndegree::checkArcDeletion
-    ( NodeId x, NodeId y ) const noexcept {
-      return  constraints::checkArcDeletion ( x, y ) &&
-        checkArcDeletionAlone ( x, y );
-    }
-
-    
-    /// checks whether the constraints enable to reverse arc (x,y)
-    INLINE bool StructuralConstraintIndegree::checkArcReversal
-    ( NodeId x, NodeId y ) const noexcept {   
-      return constraints::checkArcReversal ( x, y ) &&
-        checkArcReversalAlone ( x,y );
-    }
-
-
-    /// adds a new arc into the graph
-    INLINE void
-    StructuralConstraintIndegree::modifyGraph ( const ArcAddition& change ) {
-      constraints::modifyGraph ( change );
-      modifyGraphAlone ( change );
-    }
-
-
-    /// adds a new arc into the graph
-    INLINE void
-    StructuralConstraintIndegree::modifyGraph ( const ArcDeletion& change ) {
-      constraints::modifyGraph ( change );
-      modifyGraphAlone ( change );
-    }
-
-    
-    /// adds a new arc into the graph
-    INLINE void
-    StructuralConstraintIndegree::modifyGraph ( const ArcReversal& change ) {
-      constraints::modifyGraph ( change );
-      modifyGraphAlone ( change );
-    }
-
-    
-    /// adds a new arc into the graph
-    INLINE void
-    StructuralConstraintIndegree::modifyGraph ( const GraphChange& change ) {
-      constraints::modifyGraph ( change );
-      modifyGraphAlone ( change );
-    }
-
-    
-    /// indicates whether a change will always violate the constraint
-    INLINE bool
-    StructuralConstraintIndegree::isAlwaysInvalid ( const GraphChange& )
-      const noexcept {
-      return false;
-    }
-
-
-    /// checks whether the constraints enable to add an arc
-    INLINE bool
-    StructuralConstraintIndegree::checkModification ( const ArcAddition& change )
-      const noexcept {
-      return checkArcAddition ( change.node1 (), change.node2 () );
-    }
-    
-
-    /// checks whether the constraints enable to remove an arc
-    INLINE bool
-    StructuralConstraintIndegree::checkModification ( const ArcDeletion& change )
-      const noexcept {
-      return checkArcDeletion ( change.node1 (), change.node2 () );
-    }
-
-    
-    /// checks whether the constraints enable to reverse an arc
-    INLINE bool
-    StructuralConstraintIndegree::checkModification ( const ArcReversal& change )
-      const noexcept {
-      return checkArcReversal ( change.node1 (), change.node2 () );
-    }
-
-    
-    /// checks whether the constraints enable to perform a graph change
-    INLINE bool
-    StructuralConstraintIndegree::checkModification ( const GraphChange& change )
-      const noexcept {
-      switch ( change.type () ) {
-      case GraphChangeType::ARC_ADDITION:
-        return checkArcAddition ( change.node1 (), change.node2 () );
-        
-      case GraphChangeType::ARC_DELETION:
-        return checkArcDeletion ( change.node1 (), change.node2 () );
-        
-      case GraphChangeType::ARC_REVERSAL:
-        return checkArcReversal ( change.node1 (), change.node2 () );
-        
-      default:
-        GUM_ERROR ( OperationNotAllowed, "edge modifications are not "
-                    "supported by StructuralConstraintIndegree" );
-      }
-    }
-    
 
   } /* namespace learning */
 

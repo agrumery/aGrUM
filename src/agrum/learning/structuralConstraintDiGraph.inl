@@ -177,102 +177,10 @@ namespace gum {
     }
 
 
-    /// sets a new graph from which we will perform checkings
-    INLINE void StructuralConstraintDiGraph::setGraph ( const DiGraph& graph ) {
-      setGraphAlone ( graph );
-    }
-    
-
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraintDiGraph::modifyGraph ( const ArcAddition& change ) {
-      modifyGraphAlone ( change );
-    }
-
-    
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraintDiGraph::modifyGraph ( const ArcDeletion& change ) {
-      modifyGraphAlone ( change );
-    }
-    
-
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraintDiGraph::modifyGraph ( const ArcReversal& change ) {
-      modifyGraphAlone ( change );
-    }
-    
-
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraintDiGraph::modifyGraph (  const GraphChange& change ) {
-      modifyGraphAlone ( change );
-    }
-      
-    
-    /// checks whether the constraints enable to add arc (x,y)
-    INLINE bool
-    StructuralConstraintDiGraph::checkArcAddition ( NodeId x, NodeId y )
-      const noexcept {
-      return checkArcAdditionAlone ( x, y );
-    }
-
-
-    /// checks whether the constraints enable to remove arc (x,y)
-    INLINE bool
-    StructuralConstraintDiGraph::checkArcDeletion ( NodeId x, NodeId y )
-      const noexcept {
-      return checkArcDeletionAlone ( x, y );
-    }
-
-    
-    /// checks whether the constraints enable to reverse arc (x,y)
-    INLINE bool
-    StructuralConstraintDiGraph::checkArcReversal ( NodeId x, NodeId y )
-      const noexcept {
-      return checkArcReversalAlone ( x, y );
-    }
-
-    
-    /// checks whether the constraints enable to add an arc
-    INLINE bool
-    StructuralConstraintDiGraph::checkModification ( const ArcAddition& change )
-      const noexcept {
-      return checkModificationAlone ( change );
-    }
-
-    
-    /// checks whether the constraints enable to remove an arc
-    INLINE bool
-    StructuralConstraintDiGraph::checkModification ( const ArcDeletion& change )
-      const noexcept {
-      return checkModificationAlone ( change );
-    }
-
-
-    /// checks whether the constraints enable to reverse an arc
-    INLINE bool
-    StructuralConstraintDiGraph::checkModification ( const ArcReversal& change )
-      const noexcept {
-      return checkModificationAlone ( change );
-    }
-
-
-    /// checks whether the constraints enable to perform a graph change
-    INLINE bool
-    StructuralConstraintDiGraph::checkModification ( const GraphChange& change )
-      const noexcept {
-      return checkModificationAlone ( change );
-    }
-
-    
-    /// indicates whether a change will always violate the constraint
-    INLINE bool
-    StructuralConstraintDiGraph::isAlwaysInvalid ( const GraphChange& change )
-      const noexcept {
-      return isAlwaysInvalidAlone ( change );
-    }
+    // include all the methods applicable to the whole class hierarchy
+    #define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintDiGraph
+    #include <agrum/learning/structuralConstraintPatternRootInline.h>
+    #undef GUM_CONSTRAINT_CLASS_NAME
 
 
   } /* namespace learning */

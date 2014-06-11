@@ -169,15 +169,6 @@ namespace gum {
     }
    
 
-    
-    /// sets a new graph from which we will perform checkings
-    INLINE void
-    StructuralConstraint2TimeSlice::setGraph ( const DiGraph& graph ) {
-      constraints::setGraph ( graph );
-      setGraphAlone ( graph );
-    }
-
-    
     /// sets the time slices of all the nodes in the property 
     INLINE void StructuralConstraint2TimeSlice::setSlices
     ( const NodeProperty<bool>& time_slice ) {
@@ -201,116 +192,10 @@ namespace gum {
     }
 
 
-    /// checks whether the constraints enable to add arc (x,y)
-    INLINE bool
-    StructuralConstraint2TimeSlice::checkArcAddition ( NodeId x, NodeId y )
-      const noexcept {
-      return constraints::checkArcAddition ( x, y ) &&
-        checkArcAdditionAlone ( x, y );
-    }
-
-
-    /// checks whether the constraints enable to remove arc (x,y)
-    INLINE bool
-    StructuralConstraint2TimeSlice::checkArcDeletion ( NodeId x, NodeId y )
-      const noexcept {
-      return constraints::checkArcDeletion ( x, y ) &&
-        checkArcDeletionAlone ( x, y );
-    }
-
-
-    /// checks whether the constraints enable to reverse arc (x,y)
-    INLINE bool
-    StructuralConstraint2TimeSlice::checkArcReversal ( NodeId x, NodeId y )
-      const noexcept {
-      return constraints::checkArcReversal ( x, y ) &&
-        checkArcReversalAlone ( x, y );
-    }
-
-    
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraint2TimeSlice::modifyGraph ( const ArcAddition& change ) {
-      constraints::modifyGraph ( change );
-      modifyGraphAlone ( change );
-    }
-
-    
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraint2TimeSlice::modifyGraph ( const ArcDeletion& change ) {
-      constraints::modifyGraph ( change );
-      modifyGraphAlone ( change );
-    }
-
-    
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraint2TimeSlice::modifyGraph ( const ArcReversal& change ) {
-      constraints::modifyGraph ( change );
-      modifyGraphAlone ( change );
-    }
-
-    
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraint2TimeSlice::modifyGraph ( const GraphChange& change ) {
-      constraints::modifyGraph ( change );
-      modifyGraphAlone ( change );
-    }
-
-    
-    /// indicates whether a change will always violate the constraint
-    INLINE bool
-    StructuralConstraint2TimeSlice::isAlwaysInvalid ( const GraphChange& change )
-      const noexcept {
-      return isAlwaysInvalidAlone ( change );
-    }
-
-    
-    /// checks whether the constraints enable to add an arc
-    INLINE bool
-    StructuralConstraint2TimeSlice::checkModification
-    ( const ArcAddition& change ) const noexcept {
-      return checkArcAddition ( change.node1 (), change.node2 () );
-    }
-    
-
-    /// checks whether the constraints enable to remove an arc
-    INLINE bool
-    StructuralConstraint2TimeSlice::checkModification
-    ( const ArcDeletion& change ) const noexcept {
-      return checkArcDeletion ( change.node1 (), change.node2 () );
-    }
-
-    
-    /// checks whether the constraints enable to reverse an arc
-    INLINE bool
-    StructuralConstraint2TimeSlice::checkModification
-    ( const ArcReversal& change ) const noexcept {
-      return checkArcReversal ( change.node1 (), change.node2 () );
-    }
-
-    
-    /// checks whether the constraints enable to perform a graph change
-    INLINE bool
-    StructuralConstraint2TimeSlice::checkModification
-    ( const GraphChange& change ) const noexcept {
-      switch ( change.type () ) {
-      case GraphChangeType::ARC_ADDITION:
-        return checkArcAddition ( change.node1 (), change.node2 () );
-        
-      case GraphChangeType::ARC_DELETION:
-        return checkArcDeletion ( change.node1 (), change.node2 () );
-        
-      case GraphChangeType::ARC_REVERSAL:
-        return checkArcReversal ( change.node1 (), change.node2 () );
-        
-      default:
-        GUM_ERROR ( OperationNotAllowed, "edge modifications are not "
-                    "supported by StructuralConstraint2TimeSlice" );
-      }
-    }
+    // include all the methods applicable to the whole class hierarchy
+    #define GUM_CONSTRAINT_CLASS_NAME StructuralConstraint2TimeSlice
+    #include <agrum/learning/structuralConstraintPatternInline.h>
+    #undef GUM_CONSTRAINT_CLASS_NAME
 
       
   } /* namespace learning */
