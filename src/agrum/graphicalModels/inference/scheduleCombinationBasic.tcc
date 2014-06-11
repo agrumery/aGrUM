@@ -165,7 +165,7 @@ namespace gum {
 
       for ( unsigned int j = i + 1; j < tables.size(); ++j ) {
         pair.second = j;
-        queue.insertXX
+        queue.insert
         ( pair, _combinedSize ( seq1, tables[j]->variablesSequence() ) );
       }
     }
@@ -214,7 +214,7 @@ namespace gum {
       for ( unsigned int ind = 0; ind < tj; ++ind ) {
         if ( tables[ind] ) {
           pair.first = ind;
-          queue.eraseXX ( pair );
+          queue.erase ( pair );
         }
       }
 
@@ -223,7 +223,7 @@ namespace gum {
       for ( unsigned int ind = tj + 1; ind < tables.size(); ++ind ) {
         if ( tables[ind] ) {
           pair.second = ind;
-          queue.eraseXX ( pair );
+          queue.erase ( pair );
         }
       }
 
@@ -238,7 +238,7 @@ namespace gum {
           if ( tables[ind] ) {
             pair.first = ind;
             newsize = _combinedSize ( seq1, tables[ind]->variablesSequence() );
-            queue.setPriorityXX ( pair, newsize );
+            queue.setPriority ( pair, newsize );
           }
         }
 
@@ -248,7 +248,7 @@ namespace gum {
           if ( tables[ind] ) {
             pair.second = ind;
             newsize = _combinedSize ( seq1, tables[ind]->variablesSequence() );
-            queue.setPriorityXX ( pair, newsize );
+            queue.setPriority ( pair, newsize );
           }
         }
       }
@@ -326,7 +326,7 @@ namespace gum {
 
       for ( unsigned int j = i + 1; j < tables.size(); ++j ) {
         pair.second = j;
-        queue.insertXX ( pair, _combinedSize ( * ( tables[i] ), * ( tables[j] ) ) );
+        queue.insert ( pair, _combinedSize ( * ( tables[i] ), * ( tables[j] ) ) );
       }
     }
 
@@ -380,7 +380,7 @@ namespace gum {
       for ( unsigned int ind = 0; ind < tj; ++ind ) {
         if ( tables[ind] ) {
           pair.first = ind;
-          queue.eraseXX ( pair );
+          queue.erase ( pair );
         }
       }
 
@@ -389,7 +389,7 @@ namespace gum {
       for ( unsigned int ind = tj + 1; ind < tables.size(); ++ind ) {
         if ( tables[ind] ) {
           pair.second = ind;
-          queue.eraseXX ( pair );
+          queue.erase ( pair );
         }
       }
 
@@ -402,7 +402,7 @@ namespace gum {
           if ( tables[ind] ) {
             pair.first = ind;
             newsize = _combinedSize ( *new_seq, * ( tables[ind] ) );
-            queue.setPriorityXX ( pair, newsize );
+            queue.setPriority ( pair, newsize );
           }
         }
 
@@ -412,7 +412,7 @@ namespace gum {
           if ( tables[ind] ) {
             pair.second = ind;
             newsize = _combinedSize ( *new_seq, * ( tables[ind] ) );
-            queue.setPriorityXX ( pair, newsize );
+            queue.setPriority ( pair, newsize );
           }
         }
       }
@@ -505,7 +505,7 @@ namespace gum {
 
       for ( unsigned int j = i + 1; j < tables.size(); ++j ) {
         pair.second = j;
-        queue.insertXX ( pair, _combinedSize ( * ( tables[i] ), * ( tables[j] ) ) );
+        queue.insert ( pair, _combinedSize ( * ( tables[i] ), * ( tables[j] ) ) );
       }
     }
 
@@ -585,7 +585,7 @@ namespace gum {
       for ( unsigned int ind = 0; ind < tj; ++ind ) {
         if ( tables[ind] ) {
           pair.first = ind;
-          queue.eraseXX ( pair );
+          queue.erase ( pair );
         }
       }
 
@@ -594,7 +594,7 @@ namespace gum {
       for ( unsigned int ind = tj + 1; ind < tables.size(); ++ind ) {
         if ( tables[ind] ) {
           pair.second = ind;
-          queue.eraseXX ( pair );
+          queue.erase ( pair );
         }
       }
 
@@ -607,7 +607,7 @@ namespace gum {
           if ( tables[ind] ) {
             pair.first = ind;
             newsize = _combinedSize ( *new_seq, * ( tables[ind] ) );
-            queue.setPriorityXX ( pair, newsize );
+            queue.setPriority ( pair, newsize );
           }
         }
 
@@ -617,7 +617,7 @@ namespace gum {
           if ( tables[ind] ) {
             pair.second = ind;
             newsize = _combinedSize ( *new_seq, * ( tables[ind] ) );
-            queue.setPriorityXX ( pair, newsize );
+            queue.setPriority ( pair, newsize );
           }
         }
       }

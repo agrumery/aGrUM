@@ -145,7 +145,7 @@ macro(GUM_SWIG_ADD_SOURCE_TO_MODULE name outfiles infile)
     -o "${swig_generated_file_fullname}"
     "${swig_source_file_fullname}"
     COMMAND sed 
-    ARGS -i 's/\bNodeProperty\b/gum::NodeProperty/g' 
+    ARGS -i 's/\\bNodeProperty\\b/gum::NodeProperty/g' 
     ${swig_generated_file_fullname}
     MAIN_DEPENDENCY "${swig_source_file_fullname}"
     DEPENDS ${SWIG_MODULE_${name}_EXTRA_DEPS}
