@@ -80,7 +80,8 @@ namespace gum {
             
             // The we go across the tree
             NodeId currentNodeId = __intermediate->root();
-            while( /* qqch*/ ){
+
+            while( /* TO DO :  Condition d'arrêt */ ){
                 
                 // On each encountered node, we update the database
                 __nodeId2Database[currentNodeId]->addObservation( newObs );
@@ -104,10 +105,10 @@ namespace gum {
             // Then we initialize the pool of variables to consider
             Set<const DiscreteVariable*> remainingVars(__setOfVars);
 
-            PriorityQueue<const DiscreteVariable*, double, std::greater> remainingVarsScore;
+            MultiPriorityQueue<const DiscreteVariable*, double, std::greater> remainingVarsScore;
             for( SetIteratorSafe<const DiscreteVariable*> varIter = remainingVars.beginSafe();
                     varIter != remainingVars.endSafe(); ++varIter )
-                remainingVarsScore.insert(__score(*varIter, __intermediate->root()), *varIter);
+                remainingVarsScore.insert(*varIter, __score(*varIter, __intermediate->root()));
 
             // Then, until there's no node remaining
             while( !remainingVars.empty() ){
@@ -142,9 +143,59 @@ namespace gum {
         // ============================================================================
         template <typename GUM_SCALAR>
         INLINE
-        const DiscreteVariable* IMDDI::__score( const DiscreteVariable* var, NodeId nody){
+        double IMDDI::__score( const DiscreteVariable* var, NodeId nody){
 
             double weight = (double)__nodeId2Database[nody]->nbObservation() / (double) this->__nbTotalObservation;
             return weight*__nodeId2Database[nody]->pValue( var );
         }
+
+
+        // ============================================================================
+        // For each node in the given set, this methods checks whether or not
+        // we should installed the given variable as a test.
+        // If so, the node is updated
+        // ============================================================================
+        template <typename GUM_SCALAR>
+        INLINE
+        void IMDDI::__updateNodeSet(Set<NodeId>& nodeSet,
+                                  const DiscreteVariable* selectedVar,
+                                  MultiPriorityQueue<const DiscreteVariable*, double, std::greater>& remainingVarsScore ){
+
+            Set<NodeId> oldNodeSet(nodeSet);
+            nodeSet.clear();
+            for(SetIteratorSafe<NodeId> nodeIter = oldNodeSet.beginSafe(); nodeIter != oldNodeSet.endSafe(); ++nodeIter ){
+
+                if( __nodeId2Database[*nodeIter]->pValue( selectedVar) > __dependenceThreshold ){
+
+                    /* TO DO : Transpose variable */
+
+                    // Then we subtract the from the score given to each variables the quantity given by this node
+                    for( HashTableConstIteratorSafe<const DiscreteVariable*, std::vector<Size>>
+                            varIter = remainingVarsScore.allValues().cbeginSafe();
+                            varIter != remainingVarsScore.allValues().cendSafe();
+                            ++varIter ) {
+                        double newPriority = remainingVarsScore.priority( varIter.key() ) - __score( varIter.key(), *nodeIter );
+                        remainingVarsScore.setPriority(varIter.key(), newPriority);
+                    }
+
+                    // And finally we add all its child to the new set of nodes
+                    // and updates the remaining var's score
+                    for(Idx modality = 0; modality < __intermediate->node(*nodeIter)->nbSons(); ++modality){
+                        nodeSet << __intermediate->node(*nodeIter)->son(modality);
+
+                        for( HashTableConstIteratorSafe<const DiscreteVariable*, std::vector<Size>>
+                                varIter = remainingVarsScore.allValues().cbeginSafe();
+                                varIter != remainingVarsScore.allValues().cendSafe();
+                                ++varIter ) {
+                            double newPriority = remainingVarsScore.priority( varIter.key() )
+                                    + __score( varIter.key(), __intermediate->node(*nodeIter)->son(modality) );
+                            remainingVarsScore.setPriority(varIter.key(), newPriority);
+                        }
+                    }
+                } else {
+                    nodeSet << *nodeIter;
+                }
+            }
+        }
+
 } // end gum namespace

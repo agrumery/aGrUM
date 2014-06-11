@@ -58,7 +58,7 @@ namespace gum {
         // ###################################################################
         /// Default constructor
         // ###################################################################
-        IMDDI (MultiDimDecisionGraph<GUM_SCALAR>* target , double learningThreshold);
+        IMDDI ( MultiDimDecisionGraph<GUM_SCALAR>* target , double learningThreshold );
 
         // ###################################################################
         /// Default destructor
@@ -75,7 +75,7 @@ namespace gum {
         // ###################################################################
         /// Adds a new observation to the structure
         // ###################################################################
-        void addObservation (const Observation*);
+        void addObservation ( const Observation<GUM_SCALAR>* );
 
         // ###################################################################
         /// Updates the tree after a new observation has been added
@@ -94,14 +94,14 @@ namespace gum {
         // ###################################################################
         /// Computes the score of the given variables for the given node
         // ###################################################################
-        double __score(const DiscreteVariable*, NodeId);
+        double __score( const DiscreteVariable*, NodeId );
 
         // ###################################################################
         /// For each node in the given set, this methods checks whether or not
         /// we should installed the given variable as a test.
         /// If so, the node is updated
         // ###################################################################
-        void updateNodeSet(Set<NodeId>&, const DiscreteVariable*);
+        void __updateNodeSet( Set<NodeId>&, const DiscreteVariable*, MultiPriorityQueue<const DiscreteVariable*, double, std::greater>& );
 
         // ###################################################################
         /// Turn the given node into a leaf if not already so
@@ -120,12 +120,11 @@ namespace gum {
       /// which handles every observation that concerns that node
       HashTable<NodeId, NodeDatabase<GUM_SCALAR>*> __nodeId2Database;
 
-      /// This hashtable binds every node to an associated NodeDatabase
-      /// which handles every observation that concerns that node
-      HashTable<NodeId, NodeDatabase<GUM_SCALAR>*> __nodeId2Database;
-
       /// The total number of observation added to this tree
       Idx __nbTotalObservation;
+
+      /// The threshold above which we consider variables to be dependant
+      double __dependenceThreshold;
 
   };
 

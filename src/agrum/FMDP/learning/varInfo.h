@@ -24,10 +24,11 @@
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
-// #define  TRACE_ALGO
 // =========================================================================
 #ifndef GUM_VARIABLE_INFORMATION_H
 #define GUM_VARIABLE_INFORMATION_H
+// =========================================================================
+#include <cmath>
 // =========================================================================
 #include <agrum/core/hashTable.h>
 #include <agrum/core/set.h>
@@ -53,42 +54,74 @@ namespace gum {
 
     public:
 
-      // ==========================================================================
+      // ##########################################################################
       /// @name Constructor & destructor.
-      // ==========================================================================
+      // ##########################################################################
       /// @{
 
-      /**
-      * Default constructor
-      */
-      VarInfo ( const DiscreteVariable*);
+        // ==========================================================================
+        /// Default constructor
+        // ==========================================================================
+        VarInfo ( const DiscreteVariable*, const DiscreteVariable*);
 
-      /**
-      * Default destructor
-      */
-      ~VarInfo();
+        // ==========================================================================
+        /// Default destructor
+        // ==========================================================================
+        ~VarInfo();
 
       /// @}
 
       // ==========================================================================
-      /// @name C
+      /// @name
       // ==========================================================================
       /// @{
 
-      /**
-      *
-      */
-      double pValue ( );
+        // ==========================================================================
+        /// Returns the pValue for this attribute
+        // ==========================================================================
+        void addObservation( const Observation<GUM_SCALAR>* );
+
+        // ==========================================================================
+        /// Returns the pValue for this attribute
+        // ==========================================================================
+        double pValue ( ) { return /* TO DO */__GStat;}
 
       /// @}
 
     private :
 
+      double __GVal(Idx, Idx);
+
       /// Table giving for every variables its instantiation
-      HashTable<Idx, Set<Observation<GUM_SCALAR>*>> __modality2Observations;
+      HashTable<Idx, Set<const Observation<GUM_SCALAR>*>*> __modality2Observations;
 
       /// An eventual observed value for the instantiation
       HashTable<Idx, double> __modality2GStat;
+
+      ///
+      Idx __nbObservation;
+
+      /**
+       * The contingency table used to compute the GStat
+       * Left Idx is for the attribute
+       * Right Idx for the value
+       *
+       * NB: This is a silly and in a hurry implementation of contingency table
+       * If someone ever use this class and has time to correctly implements
+       * a efficient contingency table, you're welcome
+       */
+      HashTable<Idx, HashTable<Idx, Idx>*> __contingencyTable;
+      HashTable<Idx, Idx> __attrMarginalTable;
+      HashTable<Idx, Idx> __valueMarginalTable;
+
+      /// The attribute using this class
+      const DiscreteVariable* __attr;
+
+      /// The value used to compute pValue
+      const DiscreteVariable* __value;
+
+      /// The Gstat
+      double __GStat;
   };
 
   extern template class VarInfo<float>;
