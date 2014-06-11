@@ -25,7 +25,7 @@ endforeach()
 
 #credal networks has a special case for C files
 if (BUILD_CN OR BUILD_ALL)
-  file(GLOB_RECURSE AGRUM_CN_C_SOURCES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/CN/lrslib/lrslib.c ${AGRUM_SOURCE_DIR}/agrum/CN/lrslib/lrsmp.c)
+  file(GLOB_RECURSE AGRUM_CN_C_SOURCES RELATIVE ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/core/math/lrslib/lrslib.c ${AGRUM_SOURCE_DIR}/agrum/core/math/lrslib/lrsmp.c)
 endif()
 
 # we always add the BASE module

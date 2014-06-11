@@ -58,7 +58,7 @@
 #undef LONG
 #undef GMP
 #define MP
-#include <agrum/CN/lrslib/lrslib.h>
+#include <agrum/core/math/lrslib/lrslib.h>
 
 #include <agrum/core/OMPThreads.h>
 

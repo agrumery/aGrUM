@@ -1,7 +1,6 @@
 #include <string.h>
 
 #include "LrsWrapper.h"
-#include "lrslib/lrslib.h"
 
 
 namespace gum {

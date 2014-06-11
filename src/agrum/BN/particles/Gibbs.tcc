@@ -248,8 +248,6 @@ namespace gum {
     template <typename GUM_SCALAR>
     void Gibbs<GUM_SCALAR>::insertEvidence
     ( const List<const Potential<GUM_SCALAR>*>& pot_list ) {
-      eraseAllEvidence();
-
       for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter = pot_list.cbeginSafe();
             iter != pot_list.cendSafe(); ++iter ) {
         // check that the evidence is given w.r.t.only one random variable
