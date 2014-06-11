@@ -426,10 +426,35 @@ namespace gum {
   FactoredMarkovDecisionProcess<GUM_SCALAR>::show( ) const {
     std::stringstream fmdpCore;
 
-    for ( HashTableConstIteratorSafe< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* >* > actionIter = __actionTransitionTable.beginSafe(); actionIter != __actionTransitionTable.endSafe(); ++actionIter ) {
-      for ( HashTableConstIteratorSafe< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* > tableIter = ( actionIter.val() )->beginSafe(); tableIter != ( actionIter.val() )->endSafe(); ++tableIter ) {
-        std::stringstream graphName;
-        graphName << " ACTION : " << actionName ( actionIter.key() ) << " VARIABLE : " << tableIter.key()->name();
+    for ( HashTableConstIteratorSafe< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* >* > actionIter = __actionTransitionTable.beginSafe();
+          actionIter != __actionTransitionTable.endSafe(); ++actionIter ) {
+
+//       std::cout << actionIter.key() << std::endl;
+//      std::cout << actionName ( actionIter.key() ) << std::endl;
+      for ( HashTableConstIteratorSafe< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* > tableIter = ( actionIter.val() )->beginSafe();
+            tableIter != ( actionIter.val() )->endSafe(); ++tableIter ) {
+//        std::cout << "\t ACTION : " << actionName ( actionIter.key() ) << " VARIABLE : " << tableIter.key()->name()<< std::endl;
+
+
+
+
+
+
+//        const MultiDimDecisionGraph<GUM_SCALAR>* recup = reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*>(tableIter.val());
+//        for( SequenceIteratorSafe<const DiscreteVariable*> varIter = recup->variablesSequence().beginSafe();
+//             varIter != recup->variablesSequence().endSafe(); ++varIter)
+//          std::cout << (*varIter)->name() << "   ";
+//        std::cout << std::endl;
+
+//        std::cout << recup->root() << recup->toDot() << std::endl;
+
+
+
+
+
+
+
+
         fmdpCore << std::endl << tableIter.val()->toString();
       }
     }

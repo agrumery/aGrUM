@@ -1,0 +1,144 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/**
+ * @file
+ * @brief Headers of the Observation class.
+ *
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
+ */
+
+// #define  TRACE_ALGO
+// =========================================================================
+#ifndef GUM_OBSERVATION_H
+#define GUM_OBSERVATION_H
+// =========================================================================
+#include <agrum/core/hashTable.h>
+// =========================================================================
+#include <agrum/variables/discreteVariable.h>
+// =========================================================================
+
+namespace gum {
+
+  /**
+   * @class Observation Observation.h <agrum/FMDP/learning/observation.h>
+   * @brief
+   * @ingroup fmdp_group
+   *
+   *
+   *
+   */
+
+  template<typename GUM_SCALAR>
+  class Observation {
+
+    public:
+
+      // ==========================================================================
+      /// @name Constructor & destructor.
+      // ==========================================================================
+      /// @{
+
+        // ###################################################################
+        /// Default constructor
+        // ###################################################################
+        Observation ();
+
+        // ###################################################################
+        /// Default destructor
+        // ###################################################################
+        ~Observation();
+
+      /// @}
+
+      // ==========================================================================
+      /// @name Observation Handlers
+      // ==========================================================================
+      /// @{
+
+        // ###################################################################
+        /**
+         * Returns the modality assumed by the given variable in this observation
+         *
+         * @throws NotFound if variable is not in this observation
+         */
+        // ###################################################################
+        Idx modality( const DiscreteVariable* var ) const { return __varInst[var]; }
+
+        // ###################################################################
+        /**
+         * Sets the modality assumed by the given variable in this observation
+         *
+         * @throws DuplicateElement if a value has already be assigned to
+         * this variable
+         */
+        // ###################################################################
+        void setModality( const DiscreteVariable* var, Idx modality ) { __varInst.insert(var, modality); }
+
+        // ###################################################################
+        /// Returns the reward obtained during this observation
+        // ###################################################################
+        Idx reward( ) const { return __reward; }
+
+        // ###################################################################
+        /// Sets the reward obtained during this observation
+        // ###################################################################
+        void setReward( GUM_SCALAR reward ) { __reward = reward; }
+
+      /// @}
+
+      // ==========================================================================
+      /// @name Iterators on Variables
+      // ==========================================================================
+      /// @{
+
+        // ###################################################################
+        /// Returns an const safe iterator on the beginning of the list of
+        /// variables in this observation
+        // ###################################################################
+        HashTableConstIteratorSafe<const DiscreteVariable*, Idx> cbeginVariablesSafe() const { return __varInst.cbeginSafe(); }
+
+        // ###################################################################
+        /// Returns an const safe iterator on the end of the list of
+        /// variables in this observation
+        // ###################################################################
+        HashTableConstIteratorSafe<const DiscreteVariable*, Idx> cendVariablesSafe() const { return __varInst.cendSafe(); }
+
+      /// @}
+
+    private :
+
+      /// Table giving for every variables its instantiation
+      HashTable<const DiscreteVariable*, Idx> __varInst;
+
+      /// An eventual observed value for the instantiation
+      GUM_SCALAR __reward;
+  };
+
+  extern template class Observation<float>;
+  extern template class Observation<double>;
+} /* namespace gum */
+
+
+#include <agrum/FMDP/learning/observation.tcc>
+
+#endif // GUM_OBSERVATION_H
+
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
+

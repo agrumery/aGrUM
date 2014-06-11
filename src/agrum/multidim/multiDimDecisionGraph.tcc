@@ -46,6 +46,7 @@ template<typename GUM_SCALAR>
     MultiDimDecisionGraph<GUM_SCALAR>::MultiDimDecisionGraph() :
         MultiDimImplementation<GUM_SCALAR>(),
         __name("MultiDimDecisionGraph"),
+        __tableName("NO NAME"),
         __model( 500, true ),
         __manager(nullptr),
         __root(0),
@@ -68,6 +69,7 @@ template<typename GUM_SCALAR>
     MultiDimDecisionGraph<GUM_SCALAR>::MultiDimDecisionGraph( const MultiDimDecisionGraph<GUM_SCALAR>& from ) :
         MultiDimImplementation<GUM_SCALAR>(),
         __name("MultiDimDecisionGraph"),
+        __tableName("No NAME"),
         __model( 500, true ),
         __manager(nullptr),
         __root(0),
@@ -397,10 +399,13 @@ template<typename GUM_SCALAR>
     void MultiDimDecisionGraph<GUM_SCALAR>::copyAndReassign ( const MultiDimDecisionGraph<GUM_SCALAR> &src,
                                                               const Bijection<const DiscreteVariable*, const DiscreteVariable*> reassign ){
 
+
+//        std::cout << src.toDot() << std::endl;
       this->clear();
 
       // Insertion des nouvelles variables
       for( SequenceIteratorSafe<const DiscreteVariable*> varIter = src.variablesSequence().beginSafe(); varIter != src.variablesSequence().endSafe(); ++varIter){
+//         std::cout << (*varIter)->name() << std::endl;
         this->add(*(reassign.second(*varIter)));
       }
 
@@ -448,11 +453,56 @@ template<typename GUM_SCALAR>
     void MultiDimDecisionGraph<GUM_SCALAR>::copyAndMultiplyByScalar ( const MultiDimDecisionGraph<GUM_SCALAR>& src,
                                                                       GUM_SCALAR gamma ){
 
-      this->copy(src);
-      Bijection<NodeId, GUM_SCALAR> oldValueMap(__valueMap);
-      __valueMap.clear();
-      for(BijectionIteratorSafe<NodeId, GUM_SCALAR> valueIter = oldValueMap.beginSafe(); valueIter != oldValueMap.endSafe(); ++valueIter )
-          __valueMap.insert( valueIter.first(), gamma* valueIter.second());
+        std::cout << "Multiply " << std::endl;
+//      this->copy(src);
+//      Bijection<NodeId, GUM_SCALAR> oldValueMap(__valueMap);
+//      __valueMap.clear();
+//      for(BijectionIteratorSafe<NodeId, GUM_SCALAR> valueIter = oldValueMap.beginSafe(); valueIter != oldValueMap.endSafe(); ++valueIter ){
+//          std::cout << valueIter.first() << " - " << valueIter.second() << " - " << gamma*valueIter.second() << std::endl;
+//          if( __valueMap.existsSecond(gamma*valueIter.second()))
+//              std::cout << valueIter.second() - oldValueMap.second(__valueMap.first(gamma*valueIter.second())) << " - " << gamma*valueIter.second() - __valueMap.second(__valueMap.first(gamma*valueIter.second()));
+//          __valueMap.insert( valueIter.first(), gamma*valueIter.second());
+//      }
+
+        this->clear();
+
+        // Insertion des nouvelles variables
+        for( SequenceIteratorSafe<const DiscreteVariable*> varIter = src.variablesSequence().beginSafe(); varIter != src.variablesSequence().endSafe(); ++varIter)
+          this->add(**varIter);
+
+        std::vector<NodeId> lifo;
+        HashTable<NodeId, NodeId> src2dest;
+
+        if(src.isTerminalNode(src.root()))
+          this->manager()->setRootNode(this->manager()->addTerminalNode(gamma*src.nodeValue(src.root())));
+        else {
+          this->manager()->setRootNode(this->manager()->addNonTerminalNode( src.node(src.root())->nodeVar() ));
+          src2dest.insert( src.root(), this->root() );
+          lifo.push_back(src.root());
+        }
+
+        // Parcours en profondeur du diagramme source
+        while( !lifo.empty() ){
+          NodeId currentSrcNodeId = lifo.back();
+          lifo.pop_back();
+
+          const InternalNode* currentSrcNode = src.node(currentSrcNodeId);
+
+          for( Idx index = 0; index < currentSrcNode->nbSons(); ++index ){
+            if( !src2dest.exists(currentSrcNode->son(index)) ){
+              NodeId srcSonNodeId = currentSrcNode->son(index), destSonNodeId = 0;
+              if( src.isTerminalNode(srcSonNodeId) ){
+                destSonNodeId = this->manager()->addTerminalNode(gamma*src.nodeValue(srcSonNodeId));
+              } else {
+                destSonNodeId = this->manager()->addNonTerminalNode(src.node(srcSonNodeId)->nodeVar());
+                lifo.push_back(srcSonNodeId);
+              }
+              src2dest.insert( srcSonNodeId, destSonNodeId );
+            }
+            this->manager()->setSon( src2dest[currentSrcNodeId], index, src2dest[currentSrcNode->son(index)]);
+          }
+        }
+        std::cout << "By SCALR" << std::endl;
     }
 
     // ============================================================================
@@ -505,7 +555,7 @@ template<typename GUM_SCALAR>
       std::stringstream nonTerminalStream;
       std::stringstream arcstream;
 //      std::stringstream defaultarcstream;
-      output << std::endl << "digraph \"no_name\" {" << std::endl;
+      output << std::endl << "digraph \" " << __tableName << "\" {" << std::endl;
 
       terminalStream << "node [shape = box];" << std::endl;
       nonTerminalStream << "node [shape = ellipse];" << std::endl;

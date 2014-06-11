@@ -261,6 +261,16 @@ namespace gum {
     void MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR>::__findRetrogradeVariables( const MultiDimDecisionGraph<GUM_SCALAR> *dg,
                                                                                         HashTable<NodeId, short int*>& dgInstNeed){
 
+
+
+//        std::cout << "Variable Sequence : " << std::endl;
+//        for( SequenceIteratorSafe<const DiscreteVariable*> varIter = dg->variablesSequence().beginSafe();
+//             varIter != dg->variablesSequence().endSafe(); ++varIter)
+//          std::cout << (*varIter)->name() << "   ";
+//        std::cout << std::endl;
+
+//        std::cout << dg->root() << dg->toDot();
+
         HashTable<NodeId, short int*> nodesVarDescendant;
         std::size_t tableSize = __nbVar*sizeof(short int);
 
@@ -268,7 +278,7 @@ namespace gum {
 
             Idx varPos = __rd->variablesSequence().pos( *varIter );
 
-//            std::cout << dgInstNeed << std::endl;
+//            std::cout << (*varIter)->name() << std::endl;
 
             const typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem * nodeIter = dg->varNodeListe(*varIter);
             while( nodeIter != nullptr ){
@@ -300,6 +310,8 @@ namespace gum {
             }
         }
 
+//        std::cout << "PROPAGATION" << std::endl;
+
         for( SequenceIteratorSafe<const DiscreteVariable*> varIter = dg->variablesSequence().beginSafe(); varIter != dg->variablesSequence().endSafe(); ++varIter ) {
 
             const typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem * nodeIter = dg->varNodeListe(*varIter);
@@ -319,6 +331,8 @@ namespace gum {
                 nodeIter = nodeIter->nextElem;
             }
         }
+
+//        std::cout << "FIN"<<std::endl;
 
 //        std::cout << std::endl << "Needed var : " << std::endl;
         for(HashTableIterator<NodeId, short int*> it = nodesVarDescendant.begin(); it != nodesVarDescendant.end(); ++it ){

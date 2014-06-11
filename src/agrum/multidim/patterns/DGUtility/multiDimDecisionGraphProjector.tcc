@@ -208,8 +208,20 @@ namespace gum {
 
 
 
+      if( __rd->isTerminalNode( __rd->root())){
 
 
+        GUM_SCALAR newVal = __neutral, oldVal = __rd->nodeValue( __rd->root() );
+        for( Idx curVarModality = 0; curVarModality < curVar->domainSize(); ++curVarModality )
+          newVal = __function( newVal, oldVal );
+
+        NodeId newSonId = __rd->manager()->addTerminalNode( newVal );
+        __rd->manager()->setRootNode( newSonId );
+
+        if( __rd->variablesSequence().exists(curVar) )
+            __rd->erase( *curVar );
+        continue;
+      }
 
 
 

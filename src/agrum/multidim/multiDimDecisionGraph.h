@@ -494,11 +494,28 @@ namespace gum {
         // ============================================================================
         const InternalNode* node( NodeId n ) const {return this->__internalNodeMap[ n ];}
 
+        // ============================================================================
+        /// Returns the list of node associated to given variable
+        // ============================================================================
         const NICLElem* varNodeListe( const DiscreteVariable* var ) const { return __var2NodeIdMap[var]; }
 
+        // ============================================================================
+        /// Returns a const reference on the value map (for iteration purpose)
+        // ============================================================================
         const Bijection<NodeId, GUM_SCALAR>& values(  ) const{ return this->__valueMap; }
 
       /// @}
+
+      // ============================================================================
+      /// Returns the name of the table represented by this structure
+      // ============================================================================
+      const std::string& tableName() const { return __tableName;}
+
+      // ============================================================================
+      /// Sets the name of the table represented by this structure
+      // ============================================================================
+      void setTableName(const std::string& name) { __tableName = name;}
+
 
     protected:
 
@@ -531,6 +548,11 @@ namespace gum {
       /// The name of the data structure
       // ============================================================================
       std::string __name;
+
+      // ============================================================================
+      /// The name of the data structure
+      // ============================================================================
+      std::string __tableName;
 
       // ============================================================================
       /// Indicates available nodeIds

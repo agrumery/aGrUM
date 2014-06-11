@@ -53,10 +53,10 @@ namespace gum_tests {
           return;
         }
 
-        __traceAlgoSaveFile << fmdp.show();
+        TS_GUM_ASSERT_THROWS_NOTHING ( __traceAlgoSaveFile << fmdp.show() );
 //        std::cout << fmdp.show();
         __traceAlgoSaveFile.close();
-std::cout << "So far so good" << std::endl;
+
         gum::MultiDimDecisionGraph<double>* res = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING ( res = inf.makePlanning( ) );
         delete res;
@@ -78,7 +78,7 @@ std::cout << "So far so good" << std::endl;
         run ( "Elev2", 1 );
       }
 
-      void test_Maze() {
+      void est_Maze() {
         file = GET_PATH_STR ( "FMDP/labyrinth/maze.dat" );
         run ( "maze", 1 );
       }
@@ -101,7 +101,7 @@ std::cout << "So far so good" << std::endl;
       }
 
 
-      void est_Factory0() {
+      void test_Factory0() {
         file = GET_PATH_STR ( "FMDP/factory/factory0.dat" );
         run ( "Factory0", 1 );
       }

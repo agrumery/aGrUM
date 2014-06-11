@@ -491,7 +491,6 @@ namespace gum {
     INLINE
     void
     MultiDimDecisionGraphManager< GUM_SCALAR>::reduce( ){
-
       typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* currentNodeId = nullptr;
       typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* nextNodeId = nullptr;
       typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* currentNode = nullptr;
@@ -550,8 +549,7 @@ namespace gum {
               anotherNodeId = nextNodeId;
             }
           }
-
-          currentNodeId = nextNodeId;
+          currentNodeId = currentNodeId->nextElem;
         }
       }
     }

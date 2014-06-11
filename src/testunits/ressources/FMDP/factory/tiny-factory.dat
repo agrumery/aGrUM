@@ -1,4 +1,4 @@
-(variables  (glue t f)  (typeneeded highq lowq) (connected good bad f) (bolts t f)  (adrilled t f) (bdrilled t f) )
+(variables  (typeneeded highq lowq) (connected good bad f) (glue t f)  (bolts t f)  (adrilled t f) (bdrilled t f) )
 action drilla
 adrilled (connected (good (0.000000 1.000000 ))
 		    (bad (0.000000 1.000000 ))

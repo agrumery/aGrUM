@@ -180,7 +180,7 @@ namespace gum {
 
       delete deltaV;
 
-//      std::cout << " ------------------- Fin itération n° " << nbIte << std::endl << " Gap : " << gap <<  std::endl;
+      std::cout << " ------------------- Fin itération n° " << nbIte << std::endl << " Gap : " << gap <<  std::endl;
       // *****************************************************************************************
       // And eventually we update pointers for next loop
       delete Vold;
@@ -234,7 +234,6 @@ namespace gum {
 
     // *****************************************************************************************
     // Initialisation
-//     __fmdp->resetVariablesIterator();
 
     MultiDimDecisionGraph< GUM_SCALAR >* Vaction = new MultiDimDecisionGraph< GUM_SCALAR >();
     Vaction->copy( *Vold );
@@ -244,25 +243,24 @@ namespace gum {
     // *****************************************************************************************
     // To evaluate action value function, we multiply old main value function by transition table
     // of each variable
-//     while ( __fmdp->hasVariable() ) {
     for ( SequenceIteratorSafe<const DiscreteVariable*> varIter = elVarSeq.rbeginSafe(); varIter != elVarSeq.rendSafe(); --varIter ) {
       // ***************************************************************************************
       // Multiplication of Vaction by current variable's CPT
+//        std::cout << std::endl << " " << std::endl << " " << std::endl << " *************************************************************************************" << std::endl;
+//        std::cout << "DIGRAMA ACTION AVANT" << Vaction->toDot();
+//        std::cout << "DIGRAMA ACTION AVANT" << reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*> ( __fmdp->transition ( __fmdp->main2prime().first ( *varIter ) ) )->toDot();
       Vtemp = Vaction;
-//         Vaction = multiply2MultiDimDecisionGraphs(  Vaction, reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*>( __fmdp->transition() ) );
       Vaction = multiply2MultiDimDecisionGraphs ( Vaction, reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*> ( __fmdp->transition ( __fmdp->main2prime().first ( *varIter ) ) ) );
       delete Vtemp;
 
+//      std::cout << "DIGRAMA ACTION PENDANT" << Vaction->toDot();
       // ***************************************************************************************
       // Projection of Vaction on current var by summing on each of its modalities
       Vtemp = Vaction;
-//         varSet << __fmdp->variable();
       varSet << *varIter;
       Vaction = projectSumMultiDimDecisionGraph ( Vaction, varSet );
       varSet >> *varIter;
       delete Vtemp;
-
-//         __fmdp->nextVariable();
     }
 
     return Vaction;

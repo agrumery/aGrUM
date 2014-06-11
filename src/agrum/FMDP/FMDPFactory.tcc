@@ -416,15 +416,18 @@ namespace gum {
 
       this->__finalizeDecisionGraph();
 
-      if ( __foo_flag )
+      if ( __foo_flag ){
+        this->__decisionGraph->setTableName( "ACTION :" + __stringBag[0] + " - VARIABLE : " + var);
         __fmdp->addTransitionForAction ( __varNameMap[var], this->__decisionGraph, __stringBag[0] );
-      else
+      } else {
         __fmdp->addTransition ( __varNameMap[var], this->__decisionGraph );
+      }
 
       // this->__decisionDiagramFactory->showProperties();
 //      this->__decisionDiagramFactory->clear();
     }
 
+//    std::cout << __varNameMap[var]->name() <<  this->__decisionGraph->toDot() << std::endl;
   }
 
 
@@ -581,12 +584,14 @@ namespace gum {
     else {
 
       this->__finalizeDecisionGraph();
+      __decisionGraph->setTableName("Reward");
 
       if ( __foo_flag )
         __ddBag.push_back ( this->__decisionGraph );
       else
         __fmdp->addReward ( this->__decisionGraph );
     }
+//    std::cout << __decisionGraph->toDot( ) << std::endl;
   }
 
 
@@ -628,7 +633,7 @@ namespace gum {
           if ( temp != nullptr )
             delete temp;
         }
-
+        reinterpret_cast<MultiDimDecisionGraph<GUM_SCALAR>*>(res)->setTableName("Reward");
         __fmdp->addReward ( res );
       }
 

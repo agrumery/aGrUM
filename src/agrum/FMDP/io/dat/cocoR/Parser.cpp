@@ -334,7 +334,9 @@ void Parser::TRANSITION_LEAF() {
 		gum::Idx i = 0;
 		NodeId var_id = __factory->addNonTerminalNode( __currentDecisionDiagramVar );
 		if( !__parentNode.empty() )
-		  __factory->addArc( __parentNode.back(), var_id, __parentModality.back() ); 
+		  __factory->addArc( __parentNode.back(), var_id, __parentModality.back() );
+		else
+		 __factory->setRoot(var_id); 
 		FLOAT(value);
 		NodeId val_id = __factory->addTerminalNode( value );
 		__factory->addArc( var_id, val_id, i ); 
