@@ -23,6 +23,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
+#include <agrum/BN/BayesNet.h>
+
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/BN/inference/lazyPropagation.h>
@@ -124,6 +126,25 @@ namespace gum_tests {
         TS_ASSERT_THROWS_NOTHING ( inf.marginal ( i3 ) );
         TS_ASSERT_THROWS_NOTHING ( inf.marginal ( i4 ) );
         TS_ASSERT_THROWS_NOTHING ( inf.marginal ( i5 ) );
+
+        gum::LazyPropagation<float> inf2(*bn);
+
+        TS_ASSERT_THROWS_NOTHING ( inf2.addHardEvidence ( i1,0) );
+        TS_ASSERT_THROWS_NOTHING ( inf2.addHardEvidence ( i4,1) );
+
+        TS_ASSERT_THROWS_NOTHING ( inf2.makeInference() );
+        TS_ASSERT_THROWS_NOTHING ( inf2.marginal ( i1 ) );
+        TS_ASSERT_THROWS_NOTHING ( inf2.marginal ( i2 ) );
+        TS_ASSERT_THROWS_NOTHING ( inf2.marginal ( i3 ) );
+        TS_ASSERT_THROWS_NOTHING ( inf2.marginal ( i4 ) );
+        TS_ASSERT_THROWS_NOTHING ( inf2.marginal ( i5 ) );
+
+        TS_ASSERT(inf.marginal(i1)==inf2.marginal(i1));
+        TS_ASSERT(inf.marginal(i2)==inf2.marginal(i2));
+        TS_ASSERT(inf.marginal(i3)==inf2.marginal(i3));
+        TS_ASSERT(inf.marginal(i4)==inf2.marginal(i4));
+        TS_ASSERT(inf.marginal(i5)==inf2.marginal(i5));
+
       }
 
       // Testing when there is no evidence

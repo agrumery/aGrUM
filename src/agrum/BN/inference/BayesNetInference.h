@@ -71,15 +71,27 @@ namespace gum {
       virtual const Potential<GUM_SCALAR>& marginal ( NodeId id );
 
       /**
-       * Insert new evidence in the graph.
+       * Insert new evidence in the inference.
        * @warning if an evidence already w.r.t. a given node and a new
-       * evidence w.r.t. this node is onserted, the old evidence is removed.
+       * evidence w.r.t. this node is obserted, the old evidence is removed.
+       *
+       * @warning The potentials are not copied.
+       *
        * @throw OperationNotAllowed Raised if an evidence is over more than one variable.
        */
       virtual void insertEvidence ( const List<const Potential<GUM_SCALAR>*>& pot_list ) = 0;
 
       /**
+       * Insert a new hard evidence in the inference
+       *
+       * @throw OutOfBound if val is not in the domainSize of node id
+       */
+      void addHardEvidence(const NodeId id,const Idx val);
+
+      /**
        * Remove a given evidence from the graph.
+       *
+       * @warning the potential has to be deleted aterward.
        */
       virtual void eraseEvidence ( const Potential<GUM_SCALAR>* e ) = 0;
 

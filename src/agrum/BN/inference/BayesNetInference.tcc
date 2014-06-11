@@ -70,9 +70,28 @@ namespace gum {
   template <typename GUM_SCALAR>
   const IBayesNet<GUM_SCALAR>& BayesNetInference<GUM_SCALAR>::bn() const {return __bayesNet;}
 
+  template <typename GUM_SCALAR>
+  void BayesNetInference<GUM_SCALAR>::addHardEvidence(NodeId id,Idx pos) {
+    List<const Potential<GUM_SCALAR>*> pot_list;
+
+    const DiscreteVariable& v=__bayesNet.variable(id);
+    if (pos>=v.domainSize()) GUM_ERROR(OutOfBounds, "Indice for variable "<<id<<" out of bounds." );
+
+    Potential<GUM_SCALAR>* po=new Potential<GUM_SCALAR>();
+    (*po)<<v;
+    po->fill(GUM_SCALAR(0));
+
+    Instantiation I(*po);
+    I.chgVal(v,pos);
+    po->set(I,GUM_SCALAR(1));
+
+    pot_list.insert(po);
+    insertEvidence(pot_list);
+
+  }
 
 } /* namespace gum */
 
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;
