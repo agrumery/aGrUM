@@ -1,0 +1,208 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}@lip6.fr                                                  *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it wil be useful,        *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/** @file
+ * @brief The mecanism to compute the next available graph changes for learning
+ * search algorithms.
+ *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ */
+#ifndef GUM_LEARNING_GRAPH_CHANGES_SELECTOR_H
+#define GUM_LEARNING_GRAPH_CHANGES_SELECTOR_H
+
+#include <vector>
+
+#include <agrum/core/set.h>
+#include <agrum/core/sequence.h>
+#include <agrum/core/priorityQueue.h>
+#include <agrum/graphs/diGraph.h>
+#include <agrum/learning/graphChange.h>
+
+
+namespace gum {
+
+  
+  namespace learning {
+
+    /** @class GraphChangesSelector
+     * @brief The local search learning algorithm (for directed graphs)
+     * @ingroup learning_group
+     */
+    template <typename SCORE,
+              typename STRUCTURAL_CONSTRAINT,
+              template <typename> class GRAPH_CHANGES_GENERATOR>
+    class GraphChangesSelector {
+    public:
+      // ##########################################################################
+      /// @name Constructors / Destructors
+      // ##########################################################################
+      /// @{
+
+      /// default constructor
+      GraphChangesSelector
+      ( SCORE& score,
+        STRUCTURAL_CONSTRAINT& constraint,
+        GRAPH_CHANGES_GENERATOR<STRUCTURAL_CONSTRAINT>& changes_generator );
+
+      /// copy constructor
+      GraphChangesSelector
+      ( const GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,
+                                   GRAPH_CHANGES_GENERATOR>& from );
+
+      /// move constructor
+      GraphChangesSelector
+      ( GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,
+                             GRAPH_CHANGES_GENERATOR>&& from );
+
+      /// destructor
+      ~GraphChangesSelector ();
+
+      /// @}
+
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+      /// @{
+
+      /// copy operator
+      GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>&
+      operator=
+      ( const GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,
+                                   GRAPH_CHANGES_GENERATOR>& from );
+
+      /// move operator
+      GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>&
+      operator=
+      ( GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,
+                             GRAPH_CHANGES_GENERATOR>&& from );
+
+      /// @}
+
+
+      // ##########################################################################
+      /// @name Accessors / Modifiers
+      // ##########################################################################
+      /// @{
+
+      /// indicates whether the selector still contain graph changes 
+      bool empty ();
+
+      /// returns the best graph change to examine
+      /** @throws NotFound exception is thrown if the selector is empty */
+      const GraphChange& bestChange ();
+
+      /// return the score of the best graph change
+      /** @throws NotFound exception is thrown if the selector is empty */
+      float bestScore ();
+
+      /// indicate to the selector that its best score has been applied
+      void applyChange ( const GraphChange& change );
+
+      /// sets the graph from which scores are computed
+      void setGraph ( DiGraph& graph,
+                      const std::vector<unsigned int>& modal );
+
+      /// @}
+
+
+    private:
+      /// the scoring function
+      SCORE* __score;
+
+      /// the set of constraints used to determine valid changes
+      STRUCTURAL_CONSTRAINT* __constraint;
+
+      /// the generator that restricts the set of possible changes
+      GRAPH_CHANGES_GENERATOR<STRUCTURAL_CONSTRAINT>* __changes_generator;
+
+      /// the graph used to compute scores
+      const DiGraph* __graph { nullptr };
+
+      /// a sequence containing all the possible changes
+      Sequence<GraphChange> __changes;
+
+      /// the scores for the head and tail of all the changes
+      /** the scores are indexed by their index in sequence __changes */
+      std::vector< std::pair<float,float> > __change_scores;
+
+      /// for each node, a priority queue sorting GraphChanges by decreasing score
+      /** within each queue, the changes are determined by their index in
+       * sequence __changes. */
+      std::vector< PriorityQueue<unsigned int,float,std::greater<float> > >
+      __change_queue_per_node;
+
+      /// a global priority queue indicating for each node its best score
+      PriorityQueue< unsigned int,float,std::greater<float> > __node_queue;
+
+      /// the set of changes known to be currently illegal (due to the constraints)
+      /** within each queue, the changes are determined by their index in
+       * sequence __changes. */
+      Set<unsigned int> __illegal_changes;
+
+      /// the current score of each node
+      std::vector<float> __node_current_scores;
+
+      /// the set of parents of each node (speeds-up score computations)
+      std::vector< std::vector<unsigned int> > __parents;
+
+      /// indicates whether we need to recompute whether the queue is empty or not
+      bool __queues_valid { false };
+
+
+      
+
+      /// prepare the next pack of  score computations
+      void __addScoreToCompute ( unsigned int change_index ) const;
+
+      /// indicates whether a given change is valid or not
+      bool __isChangeValid ( unsigned int index ) const;
+
+      /// put a change into the illegal set
+      void __invalidateChange ( unsigned int change_index );
+
+      /// remove the now legal changes from the illegal set
+      void __illegal2LegalChanges ( Set<unsigned int>& changes_to_recompute );
+
+      /// finds the changes that are affected by a given node modification
+      void
+      __findLegalChangesNeedingUpdate ( Set<unsigned int>& changes_to_recompute,
+                                        NodeId target_node );
+
+      /// perform the necessary updates of the scores
+      void __updateScores ( const Set<unsigned int>& changes_to_recompute );
+
+      /// get from the graph change generator a new set of changes
+      void __getNewChanges ();
+      
+    };
+
+
+  } /* namespace learning */
+  
+  
+} /* namespace gum */
+
+
+/// always include templated methods
+#include <agrum/learning/graphChangesSelector.tcc>
+
+
+#endif /* GUM_LEARNING_GRAPH_CHANGES_SELECTOR_H */
+
