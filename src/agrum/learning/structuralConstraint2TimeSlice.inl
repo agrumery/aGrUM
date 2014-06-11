@@ -41,10 +41,9 @@ namespace gum {
     INLINE void StructuralConstraint2TimeSlice::setGraphAlone
     ( const DiGraph& graph ) {
       // check that each node has an appropriate time slice
-      for ( const auto id : _graph ) {
-        if ( ! _time_slice.exists ( id ) ) {
-          GUM_ERROR ( InvalidNode,
-                      "there exists a node in the graph without time slice" );
+      for ( const auto id : graph ) {
+        if ( ! _2TimeSlice__time_slice.exists ( id ) ) {
+          _2TimeSlice__time_slice.insert ( id, _2TimeSlice__default_slice );
         }
       }
     }
@@ -54,7 +53,7 @@ namespace gum {
     INLINE bool
     StructuralConstraint2TimeSlice::checkArcAdditionAlone ( NodeId x, NodeId y )
       const noexcept {
-      return _time_slice[x] <= _time_slice[y];
+      return _2TimeSlice__time_slice[x] <= _2TimeSlice__time_slice[y];
     }
 
     
@@ -70,7 +69,7 @@ namespace gum {
     INLINE bool
     StructuralConstraint2TimeSlice::checkArcReversalAlone ( NodeId x, NodeId y )
       const noexcept {
-      return _time_slice[x] == _time_slice[y];
+      return _2TimeSlice__time_slice[x] == _2TimeSlice__time_slice[y];
     }
     
     
@@ -78,9 +77,6 @@ namespace gum {
     INLINE void
     StructuralConstraint2TimeSlice::modifyGraphAlone
     ( const ArcAddition& change ) {
-      if ( _time_slice[change.node1 ()] > _time_slice[change.node2 ()] ) {
-        GUM_ERROR ( InvalidArc, "an backward-time arc cannot be added" );
-      }
     }
 
     
@@ -95,9 +91,6 @@ namespace gum {
     INLINE void
     StructuralConstraint2TimeSlice::modifyGraphAlone
     ( const ArcReversal& change ) {
-      if ( _time_slice[change.node1 ()] != _time_slice[change.node2 ()] ) {
-        GUM_ERROR ( InvalidArc, "an backward-time arc cannot be added" );
-      }
     }
 
     
@@ -105,26 +98,6 @@ namespace gum {
     INLINE void
     StructuralConstraint2TimeSlice::modifyGraphAlone
     ( const GraphChange& change ) {
-      switch ( change.type () ) {
-      case GraphChangeType::ARC_ADDITION:
-        if ( _time_slice[change.node1 ()] > _time_slice[change.node2 ()] ) {
-          GUM_ERROR ( InvalidArc, "an backward-time arc cannot be added" );
-        }
-        break;
-
-      case GraphChangeType::ARC_DELETION:
-        break;
-
-      case GraphChangeType::ARC_REVERSAL:
-        if ( _time_slice[change.node1 ()] != _time_slice[change.node2 ()] ) {
-          GUM_ERROR ( InvalidArc, "an backward-time arc cannot be added" );
-        }
-        break;
-
-      default:
-        GUM_ERROR ( OperationNotAllowed, "edge modifications are not "
-                    "supported by 2TimeSlice constraints" );
-      }
     }
 
     
@@ -134,13 +107,15 @@ namespace gum {
     ( const GraphChange& change ) const noexcept {
       switch ( change.type () ) {
       case GraphChangeType::ARC_ADDITION:
-        return ( _time_slice[change.node1 ()] > _time_slice[change.node2 ()] );
+        return ( _2TimeSlice__time_slice[change.node1 ()] >
+                 _2TimeSlice__time_slice[change.node2 ()] );
         
       case GraphChangeType::ARC_DELETION:
         return false;
 
       case GraphChangeType::ARC_REVERSAL:
-        return ( _time_slice[change.node1 ()] != _time_slice[change.node2 ()] );
+        return ( _2TimeSlice__time_slice[change.node1 ()] !=
+                 _2TimeSlice__time_slice[change.node2 ()] );
 
       default:
         GUM_ERROR ( OperationNotAllowed, "edge modifications are not "
@@ -203,18 +178,28 @@ namespace gum {
     }
 
     
-    /// sets a new empty graph from which we will perform checkings
+    /// sets the time slices of all the nodes in the property 
     INLINE void StructuralConstraint2TimeSlice::setSlices
     ( const NodeProperty<bool>& time_slice ) {
-      for ( const auto id : _graph ) {
-        if ( ! time_slice.exists ( id ) ) {
-          GUM_ERROR ( InvalidNode,
-                      "there exists a node in the graph without time slice" );
+      for ( const auto& slice : time_slice ) {
+        _2TimeSlice__time_slice.set ( slice.first, slice.second );
+      }
+    }
+
+    
+    /// sets the default time slice
+    INLINE void StructuralConstraint2TimeSlice::setDefaultSlice
+    ( bool time_slice,
+      bool update_all ) {
+      if ( update_all ) {
+        for ( auto& slice : _2TimeSlice__time_slice ) {
+          slice.second = time_slice;
         }
       }
-      _time_slice = time_slice;
+
+      _2TimeSlice__default_slice = time_slice;
     }
-    
+
 
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool

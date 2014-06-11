@@ -52,9 +52,9 @@ namespace gum {
     StructuralConstraint2TimeSlice::StructuralConstraint2TimeSlice
     ( const NodeProperty<bool>& time_slice ) {
       for ( auto iter = time_slice.cbegin(); iter != time_slice.cend (); ++iter ) {
-        _graph.insertNode ( iter.key () );
+        _DiGraph__graph.insertNode ( iter.key () );
       }
-      _time_slice = time_slice;
+      _2TimeSlice__time_slice = time_slice;
 
       GUM_CONSTRUCTOR ( StructuralConstraint2TimeSlice );
     }
@@ -76,7 +76,7 @@ namespace gum {
                       "there exists a node in the graph without time slice" );
         }
       }
-      _time_slice = time_slice;
+      _2TimeSlice__time_slice = time_slice;
 
       GUM_CONSTRUCTOR ( StructuralConstraint2TimeSlice );
     }

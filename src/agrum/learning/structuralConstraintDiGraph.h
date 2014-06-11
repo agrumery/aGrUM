@@ -251,7 +251,7 @@ namespace gum {
 
     protected:
       /// the DiGraph on which we perform checks
-      DiGraph _graph;
+      DiGraph _DiGraph__graph;
 
       
       

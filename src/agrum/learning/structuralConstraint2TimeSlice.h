@@ -88,10 +88,13 @@ namespace gum {
        * time slice */
       void setGraph ( const DiGraph& graph );
 
-      /// sets a new empty graph from which we will perform checkings
-      /** @throws InvalidNode if a node in the graph is not assigned to a
-       * time slice */
+      /// sets the time slices of all the nodes in the property 
       void setSlices ( const NodeProperty<bool>& time_slice );
+
+      /** @brief sets the default time slice (and possibly put all nodes in
+       * this time slice) */
+      void setDefaultSlice ( bool time_slice,
+                             bool update_all = false );
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added, nothing is done. In
@@ -280,8 +283,10 @@ namespace gum {
 
     protected:
       /// time slices to which belong the nodes ( false = 0 or true = 1 )
-      NodeProperty<bool> _time_slice;
+      NodeProperty<bool> _2TimeSlice__time_slice;
 
+      /// the default time slice
+      bool _2TimeSlice__default_slice { false };
 
       
       /// copy constructor

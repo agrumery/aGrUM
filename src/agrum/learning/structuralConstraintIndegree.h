@@ -26,6 +26,7 @@
 #ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_INDEGREE_H
 #define GUM_LEARNING_STRUCTURAL_CONSTRAINT_INDEGREE_H
 
+#include <limits>
 
 #include <agrum/config.h>
 #include <agrum/learning/structuralConstraintSet.h>
@@ -81,12 +82,13 @@ namespace gum {
        * already assigned */
       void setGraph ( const DiGraph& graph );
 
-      /// sets the indegree for each node
-      /** @throws InvalidNode if a node in the graph has no max indegree */
+      /// sets the default max indegree for all the nodes in the property
       void setIndegree ( const NodeProperty<unsigned int>& max_indegree );
 
-      /// resets the max indegree
-      void setIndegree ( unsigned int max_indegree );
+      /** @brief resets the default max indegree and possibly updates the
+       * indegree of all nodes */
+      void setDefaultIndegree ( unsigned int max_indegree,
+                                bool update_all_node = false );
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added, nothing is done. In
@@ -280,7 +282,11 @@ namespace gum {
 
     protected:
       /// the max number of parents per node
-      NodeProperty<unsigned int> _max_parents;
+      NodeProperty<unsigned int> _Indegree__max_parents;
+
+      /// a default max indegree to assign for nodes without specified indegree
+      unsigned int
+      _Indegree__max_indegree { std::numeric_limits<unsigned int>::max () };
 
 
  

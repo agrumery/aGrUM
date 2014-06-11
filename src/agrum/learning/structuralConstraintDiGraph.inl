@@ -35,62 +35,17 @@ namespace gum {
     /// sets a new graph from which we will perform checkings
     INLINE void
     StructuralConstraintDiGraph::setGraphAlone ( const DiGraph& graph ) {
-      _graph = graph;
-    }
-    
-
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraintDiGraph::modifyGraphAlone ( const ArcAddition& change ) {
-      _graph.insertArc ( change.node1(), change.node2 () );
+      _DiGraph__graph = graph;
     }
 
-    
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraintDiGraph::modifyGraphAlone ( const ArcDeletion& change ) {
-      _graph.eraseArc ( Arc ( change.node1(), change.node2 () ) );
-    }
-    
 
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraintDiGraph::modifyGraphAlone ( const ArcReversal& change ) {
-      _graph.eraseArc ( Arc ( change.node1(), change.node2 () ) );
-      _graph.insertArc ( change.node2(), change.node1 () );
-    }
-    
-
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraintDiGraph::modifyGraphAlone (  const GraphChange& change ) {
-      switch ( change.type () ) {
-      case GraphChangeType::ARC_ADDITION:
-        _graph.insertArc ( change.node1(), change.node2 () );
-        break;
-
-      case GraphChangeType::ARC_DELETION:
-        _graph.eraseArc ( Arc ( change.node1(), change.node2 () ) );
-        break;
-
-      case GraphChangeType::ARC_REVERSAL:
-        _graph.eraseArc ( Arc ( change.node1(), change.node2 () ) );
-        _graph.insertArc ( change.node2(), change.node1 () );
-        break;
-
-      default:
-        GUM_ERROR ( OperationNotAllowed,
-                    "edge modifications are not supported by digraph constraint" );
-      }
-    }
-      
-    
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool
     StructuralConstraintDiGraph::checkArcAdditionAlone ( NodeId x, NodeId y )
       const noexcept {
-      return _graph.existsNode ( x ) && _graph.existsNode ( y ) &&
-        ! _graph.existsArc ( x, y );
+      return _DiGraph__graph.existsNode ( x ) &&
+        _DiGraph__graph.existsNode ( y ) &&
+        ! _DiGraph__graph.existsArc ( x, y );
     }
 
 
@@ -98,7 +53,7 @@ namespace gum {
     INLINE bool
     StructuralConstraintDiGraph::checkArcDeletionAlone ( NodeId x, NodeId y )
       const noexcept {
-      return _graph.existsArc ( x, y );
+      return _DiGraph__graph.existsArc ( x, y );
     }
 
     
@@ -106,7 +61,8 @@ namespace gum {
     INLINE bool
     StructuralConstraintDiGraph::checkArcReversalAlone ( NodeId x, NodeId y )
       const noexcept {
-      return _graph.existsArc ( x, y ) && ! _graph.existsArc ( y, x );
+      return _DiGraph__graph.existsArc ( x, y ) &&
+        ! _DiGraph__graph.existsArc ( y, x );
     }
 
     
@@ -158,6 +114,51 @@ namespace gum {
       }
     }
 
+
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraintDiGraph::modifyGraphAlone ( const ArcAddition& change ) {
+      _DiGraph__graph.insertArc ( change.node1(), change.node2 () );
+    }
+
+    
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraintDiGraph::modifyGraphAlone ( const ArcDeletion& change ) {
+      _DiGraph__graph.eraseArc ( Arc ( change.node1(), change.node2 () ) );
+    }
+    
+
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraintDiGraph::modifyGraphAlone ( const ArcReversal& change ) {
+      _DiGraph__graph.eraseArc ( Arc ( change.node1(), change.node2 () ) );
+      _DiGraph__graph.insertArc ( change.node2(), change.node1 () );
+    }
+    
+
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraintDiGraph::modifyGraphAlone (  const GraphChange& change ) {
+      switch ( change.type () ) {
+      case GraphChangeType::ARC_ADDITION:
+        modifyGraphAlone ( reinterpret_cast<const ArcAddition&> ( change ) );
+        break;
+
+      case GraphChangeType::ARC_DELETION:
+        modifyGraphAlone ( reinterpret_cast<const ArcDeletion&> ( change ) );
+        break;
+
+      case GraphChangeType::ARC_REVERSAL:
+        modifyGraphAlone ( reinterpret_cast<const ArcReversal&> ( change ) );
+        break;
+
+      default:
+        GUM_ERROR ( OperationNotAllowed,
+                    "edge modifications are not supported by digraph constraint" );
+      }
+    }
+      
     
     /// indicates whether a change will always violate the constraint
     INLINE bool
@@ -169,9 +170,9 @@ namespace gum {
 
     /// sets a new graph from which we will perform checkings
     INLINE void StructuralConstraintDiGraph::setGraph ( unsigned int nb_nodes ) {
-      _graph.clear ();
+      _DiGraph__graph.clear ();
       for ( unsigned int i = 0; i < nb_nodes; ++i ) {
-        _graph.insertNode ( i );
+        _DiGraph__graph.insertNode ( i );
       }
     }
 

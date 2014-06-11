@@ -38,9 +38,8 @@ namespace gum {
     ( const DiGraph& graph ) {
       // check that the max_indegree corresponds to the graph
       for ( const auto id : graph ) {
-        if ( ! _max_parents.exists ( id ) ) {
-          GUM_ERROR ( InvalidNode,
-                      "there exists a node in the graph without max indegree" );
+        if ( ! _Indegree__max_parents.exists ( id ) ) {
+          _Indegree__max_parents.insert ( id, _Indegree__max_indegree );
         }
       }
     }
@@ -49,7 +48,7 @@ namespace gum {
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool StructuralConstraintIndegree::checkArcAdditionAlone
     ( NodeId x, NodeId y ) const noexcept {
-      return ( _max_parents[y] > _graph.parents (y).size () );
+      return ( _Indegree__max_parents[y] > _DiGraph__graph.parents (y).size () );
     }
 
    
@@ -63,77 +62,7 @@ namespace gum {
     /// checks whether the constraints enable to reverse arc (x,y)
     INLINE bool StructuralConstraintIndegree::checkArcReversalAlone
     ( NodeId x, NodeId y ) const noexcept {   
-      return ( _max_parents[x] > _graph.parents (x).size () );
-    }
-
-
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraintIndegree::modifyGraphAlone ( const ArcAddition& change ) {
-      // check that the max indegree is not already reached
-      if ( _graph.exists ( change.node2 () ) &&
-           _max_parents[change.node2 ()] ==
-           _graph.parents ( change.node2 () ).size () ) {
-        GUM_ERROR ( OutOfUpperBound, "there are already too many parents" );
-      }
-    }
-
-
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraintIndegree::modifyGraphAlone ( const ArcDeletion& change ) {
-    }
-
-
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraintIndegree::modifyGraphAlone ( const ArcReversal& change ) {
-      // check that the max indegree is not already reached
-      if ( _graph.exists ( change.node1 () ) &&
-           _max_parents[change.node1 ()] ==
-           _graph.parents ( change.node1 () ).size () ) {
-        GUM_ERROR ( OutOfUpperBound, "there are already too many parents" );
-      }
-    }
-    
-
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraintIndegree::modifyGraphAlone ( const GraphChange& change ) {
-      switch ( change.type () ) {
-      case GraphChangeType::ARC_ADDITION:
-        // check that the max indegree is not already reached
-        if ( _graph.exists ( change.node2 () ) &&
-             _max_parents[change.node2 ()] ==
-             _graph.parents ( change.node2 () ).size () ) {
-          GUM_ERROR ( OutOfUpperBound, "there are already too many parents" );
-        }
-        break;
-
-      case GraphChangeType::ARC_DELETION:
-        break;
-
-      case GraphChangeType::ARC_REVERSAL:
-        // check that the max indegree is not already reached
-        if ( _graph.exists ( change.node1 () ) &&
-             _max_parents[change.node1 ()] ==
-             _graph.parents ( change.node1 () ).size () ) {
-          GUM_ERROR ( OutOfUpperBound, "there are already too many parents" );
-        }
-        break;
-
-      default:
-        GUM_ERROR ( OperationNotAllowed, "edge modifications are not "
-                    "supported by indegree constraints" );
-      }
-    }
-
-    
-    /// indicates whether a change will always violate the constraint
-    INLINE bool
-    StructuralConstraintIndegree::isAlwaysInvalidAlone ( const GraphChange& )
-      const noexcept {
-      return false;
+      return ( _Indegree__max_parents[x] > _DiGraph__graph.parents (x).size () );
     }
 
 
@@ -185,8 +114,42 @@ namespace gum {
       }
     }
    
+    
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraintIndegree::modifyGraphAlone ( const ArcAddition& change ) {
+    }
 
 
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraintIndegree::modifyGraphAlone ( const ArcDeletion& change ) {
+    }
+
+
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraintIndegree::modifyGraphAlone ( const ArcReversal& change ) {
+    }
+    
+
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraintIndegree::modifyGraphAlone ( const GraphChange& change ) {
+    }
+
+    
+    /// indicates whether a change will always violate the constraint
+    INLINE bool
+    StructuralConstraintIndegree::isAlwaysInvalidAlone ( const GraphChange& )
+      const noexcept {
+      return false;
+    }
+
+
+
+
+    
     /// sets a new graph from which we will perform checkings
     INLINE void StructuralConstraintIndegree::setGraph
     ( const DiGraph& graph ) {
@@ -195,27 +158,26 @@ namespace gum {
     }
 
 
-    /// sets the indegree for each node
+    /// sets the indegree for a given set of nodes
     INLINE void StructuralConstraintIndegree::setIndegree
     ( const NodeProperty<unsigned int>& max_indegree ) {
-      for ( const auto id : _graph ) {
-        if ( ! _max_parents.exists ( id ) ) {
-          GUM_ERROR ( InvalidNode,
-                      "there exists a node in the graph without max indegree" );
-        }
+      for ( const auto& degree : max_indegree ) {
+        _Indegree__max_parents.set ( degree.first, degree.second );
       }
-
-      _max_parents = max_indegree;
     }
 
 
     /// resets the max indegree
-    INLINE void StructuralConstraintIndegree::setIndegree
-    ( unsigned int max_indegree ) {
-      _max_parents.clear ();
-      for ( const auto id : _graph ) {
-        _max_parents.insert ( id, max_indegree );
+    INLINE void StructuralConstraintIndegree::setDefaultIndegree
+    ( unsigned int max_indegree,
+      bool update_all ) {
+      if ( update_all ) {
+        for ( auto& degree : _Indegree__max_parents ) {
+          degree.second = max_indegree;
+        }
       }
+      
+      _Indegree__max_indegree = max_indegree;
     }
     
 

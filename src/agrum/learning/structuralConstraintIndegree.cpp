@@ -48,9 +48,10 @@ namespace gum {
     StructuralConstraintIndegree::StructuralConstraintIndegree
     ( unsigned int nb_nodes,
       unsigned int max_indegree ) :
-      StructuralConstraintDiGraph ( nb_nodes ) {
+      StructuralConstraintDiGraph ( nb_nodes ),
+      _Indegree__max_indegree ( max_indegree ) {
       for ( unsigned int i = 0; i < nb_nodes; ++i ) {
-        _max_parents.insert ( i, max_indegree );
+        _Indegree__max_parents.insert ( i, max_indegree );
       }
       GUM_CONSTRUCTOR ( StructuralConstraintIndegree );
     }
@@ -60,9 +61,10 @@ namespace gum {
     StructuralConstraintIndegree::StructuralConstraintIndegree
     ( const DiGraph& graph,
       unsigned int max_indegree ) :
-      StructuralConstraintDiGraph ( graph ) {
+      StructuralConstraintDiGraph ( graph ),
+      _Indegree__max_indegree ( max_indegree ) {
       for ( const auto id : graph ) {
-        _max_parents.insert ( id, max_indegree );
+        _Indegree__max_parents.insert ( id, max_indegree );
       }
       GUM_CONSTRUCTOR ( StructuralConstraintIndegree );
     }

@@ -52,7 +52,7 @@ namespace gum {
       for ( unsigned int i = 0; i < nb_nodes; ++i ) {
         g.insertNode ( i );
       }
-      _cycle_detector.setDAG ( g );
+      _DAG__cycle_detector.setDAG ( g );
 
       GUM_CONSTRUCTOR ( StructuralConstraintDAG );
     }
@@ -61,7 +61,7 @@ namespace gum {
     /// constructor starting with a given graph
     StructuralConstraintDAG::StructuralConstraintDAG ( const DAG& graph ) {
       StructuralConstraintDiGraph::setGraph ( graph );
-      _cycle_detector.setDAG ( graph );
+      _DAG__cycle_detector.setDAG ( graph );
       
       GUM_CONSTRUCTOR ( StructuralConstraintDAG );
     }

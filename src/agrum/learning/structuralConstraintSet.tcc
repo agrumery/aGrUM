@@ -389,51 +389,6 @@ namespace gum {
     ( const DiGraph& graph ) {
       constraints::setGraph ( graph );
     }
- 
-
-    /// notify the constraint of a modification of the graph
-    template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS> INLINE
-    void
-    StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::modifyGraph
-    ( const ArcAddition& change ) {
-      constraints::modifyGraph ( change );
-    }
-
-    
-    /// notify the constraint of a modification of the graph
-    template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS> INLINE
-    void
-    StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::modifyGraph
-    ( const ArcDeletion& change ) {
-      constraints::modifyGraph ( change );
-    }
-
-
-    /// notify the constraint of a modification of the graph
-    template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS> INLINE
-    void
-    StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::modifyGraph
-    ( const ArcReversal& change ) {
-      constraints::modifyGraph ( change );
-    }
-
-
-    /// notify the constraint of a modification of the graph
-    template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS> INLINE
-    void
-    StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::modifyGraph
-    ( const GraphChange& change ) {
-      constraints::modifyGraph ( change );
-    }
-
-    
-    /// indicates whether a change will always violate the constraint
-    template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS> INLINE
-    bool
-    StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::isAlwaysInvalid
-    ( const GraphChange& change ) const noexcept {
-      return constraints::isAlwaysInvalid ( change );
-    }
 
 
     /// checks whether the constraints enable to add arc (x,y)
@@ -498,6 +453,85 @@ namespace gum {
       return constraints::checkModification ( change );
     }
 
+
+    /// notify the constraint of a modification of the graph
+    template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS> INLINE
+    void
+    StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::modifyGraph
+    ( const ArcAddition& change ) {
+      if ( checkModification ( change ) ) {
+        constraints::modifyGraph ( change );
+      }
+      else {
+        GUM_ERROR ( OperationNotAllowed,
+                    "the constraint set does not allow this arc addition" );
+      }
+    }
+
+    
+    /// notify the constraint of a modification of the graph
+    template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS> INLINE
+    void
+    StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::modifyGraph
+    ( const ArcDeletion& change ) {
+      if ( checkModification ( change ) ) {
+        constraints::modifyGraph ( change );
+      }
+      else {
+        GUM_ERROR ( OperationNotAllowed,
+                    "the constraint set does not allow this arc deletion" );
+      }
+    }
+
+
+    /// notify the constraint of a modification of the graph
+    template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS> INLINE
+    void
+    StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::modifyGraph
+    ( const ArcReversal& change ) {
+      if ( checkModification ( change ) ) {
+        constraints::modifyGraph ( change );
+      }
+      else {
+        GUM_ERROR ( OperationNotAllowed,
+                    "the constraint set does not allow this arc reversal" );
+      }
+    }
+
+
+    /// notify the constraint of a modification of the graph
+    template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS> INLINE
+    void
+    StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::modifyGraph
+    ( const GraphChange& change ) {
+      switch ( change.type () ) {
+      case GraphChangeType::ARC_ADDITION:
+        modifyGraph ( reinterpret_cast<const ArcAddition&> ( change ) );
+        break;
+
+      case GraphChangeType::ARC_DELETION:
+        modifyGraph ( reinterpret_cast<const ArcDeletion&> ( change ) );
+        break;
+
+      case GraphChangeType::ARC_REVERSAL:
+        modifyGraph ( reinterpret_cast<const ArcReversal&> ( change ) );
+        break;
+
+      default:
+        GUM_ERROR ( OperationNotAllowed, "edge modifications are not "
+                    "currently supported by constraint sets" );
+      }
+    }
+
+    
+    /// indicates whether a change will always violate the constraint
+    template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS> INLINE
+    bool
+    StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::isAlwaysInvalid
+    ( const GraphChange& change ) const noexcept {
+      return constraints::isAlwaysInvalid ( change );
+    }
+
     
     // ===========================================================================
 
@@ -543,46 +577,6 @@ namespace gum {
     void StructuralConstraintSet<CONSTRAINT>::setGraph
     ( const DiGraph& graph ) {
       constraints::setGraph ( graph );
-    }
-
-
-    /// notify the constraint of a modification of the graph
-    template <typename CONSTRAINT> INLINE
-    void StructuralConstraintSet<CONSTRAINT>::modifyGraph
-    ( const ArcAddition& change ) {
-      constraints::modifyGraph ( change );
-    }
-
-
-    /// notify the constraint of a modification of the graph
-    template <typename CONSTRAINT> INLINE
-    void StructuralConstraintSet<CONSTRAINT>::modifyGraph
-    ( const ArcDeletion& change ) {
-      constraints::modifyGraph ( change );
-    }
-
-
-    /// notify the constraint of a modification of the graph
-    template <typename CONSTRAINT> INLINE
-    void StructuralConstraintSet<CONSTRAINT>::modifyGraph
-    ( const ArcReversal& change ) {
-      constraints::modifyGraph ( change );
-    }
-
-
-    /// notify the constraint of a modification of the graph
-    template <typename CONSTRAINT> INLINE
-    void StructuralConstraintSet<CONSTRAINT>::modifyGraph
-    ( const GraphChange& change ) {
-      constraints::modifyGraph ( change );
-    }
-
-
-    /// indicates whether a change will always violate the constraint
-    template <typename CONSTRAINT> INLINE
-    bool StructuralConstraintSet<CONSTRAINT>::isAlwaysInvalid
-    ( const GraphChange& change ) const noexcept {
-      return constraints::isAlwaysInvalid ( change );
     }
 
 
@@ -639,6 +633,80 @@ namespace gum {
     bool StructuralConstraintSet<CONSTRAINT>::checkModification
     ( const GraphChange& change ) const noexcept {
       return constraints::checkModification ( change );
+    }
+
+
+    /// notify the constraint of a modification of the graph
+    template <typename CONSTRAINT> INLINE
+    void StructuralConstraintSet<CONSTRAINT>::modifyGraph
+    ( const ArcAddition& change ) {
+      if ( checkModification ( change ) ) {
+        constraints::modifyGraph ( change );
+      }
+      else {
+        GUM_ERROR ( OperationNotAllowed,
+                    "the constraint set does not allow this arc addition" );
+      }
+    }
+
+
+    /// notify the constraint of a modification of the graph
+    template <typename CONSTRAINT> INLINE
+    void StructuralConstraintSet<CONSTRAINT>::modifyGraph
+    ( const ArcDeletion& change ) {
+      if ( checkModification ( change ) ) {
+        constraints::modifyGraph ( change );
+      }
+      else {
+        GUM_ERROR ( OperationNotAllowed,
+                    "the constraint set does not allow this arc deletion" );
+      }
+    }
+
+
+    /// notify the constraint of a modification of the graph
+    template <typename CONSTRAINT> INLINE
+    void StructuralConstraintSet<CONSTRAINT>::modifyGraph
+    ( const ArcReversal& change ) {
+      if ( checkModification ( change ) ) {
+        constraints::modifyGraph ( change );
+      }
+      else {
+        GUM_ERROR ( OperationNotAllowed,
+                    "the constraint set does not allow this arc reversal" );
+      }
+    }
+
+
+    /// notify the constraint of a modification of the graph
+    template <typename CONSTRAINT> INLINE
+    void StructuralConstraintSet<CONSTRAINT>::modifyGraph
+    ( const GraphChange& change ) {
+      switch ( change.type () ) {
+      case GraphChangeType::ARC_ADDITION:
+        modifyGraph ( reinterpret_cast<const ArcAddition&> ( change ) );
+        break;
+
+      case GraphChangeType::ARC_DELETION:
+        modifyGraph ( reinterpret_cast<const ArcDeletion&> ( change ) );
+        break;
+
+      case GraphChangeType::ARC_REVERSAL:
+        modifyGraph ( reinterpret_cast<const ArcReversal&> ( change ) );
+        break;
+
+      default:
+        GUM_ERROR ( OperationNotAllowed, "edge modifications are not "
+                    "currently supported by constraint sets" );
+      }
+    }
+
+
+    /// indicates whether a change will always violate the constraint
+    template <typename CONSTRAINT> INLINE
+    bool StructuralConstraintSet<CONSTRAINT>::isAlwaysInvalid
+    ( const GraphChange& change ) const noexcept {
+      return constraints::isAlwaysInvalid ( change );
     }
 
 

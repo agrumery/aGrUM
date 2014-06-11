@@ -43,7 +43,7 @@ namespace gum {
       for ( auto node : graph ) g.insertNode ( node );
       for ( auto& arc : graph.arcs () ) g.insertArc ( arc.tail (), arc.head () );
 
-      _cycle_detector.setDAG ( g );
+      _DAG__cycle_detector.setDAG ( g );
     }
     
    
@@ -53,7 +53,7 @@ namespace gum {
       for ( unsigned int i = 0; i < nb_nodes; ++i ) {
         g.insertNode ( i );
       }
-      _cycle_detector.setDAG ( g );
+      _DAG__cycle_detector.setDAG ( g );
     }
 
 
@@ -61,7 +61,7 @@ namespace gum {
     INLINE bool
     StructuralConstraintDAG::checkArcAdditionAlone ( NodeId x, NodeId y )
       const noexcept {
-      return ! _cycle_detector.hasCycleFromAddition ( x, y );
+      return ! _DAG__cycle_detector.hasCycleFromAddition ( x, y );
     }
 
     
@@ -69,7 +69,7 @@ namespace gum {
     INLINE bool
     StructuralConstraintDAG::checkArcDeletionAlone ( NodeId x, NodeId y )
       const noexcept {
-      return ! _cycle_detector.hasCycleFromDeletion ( x, y );
+      return ! _DAG__cycle_detector.hasCycleFromDeletion ( x, y );
     }
     
 
@@ -77,62 +77,10 @@ namespace gum {
     INLINE bool
     StructuralConstraintDAG::checkArcReversalAlone ( NodeId x, NodeId y )
       const noexcept {
-      return ! _cycle_detector.hasCycleFromReversal ( x, y );
+      return ! _DAG__cycle_detector.hasCycleFromReversal ( x, y );
     }
 
-    
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraintDAG::modifyGraphAlone ( const ArcAddition& change ) {
-      _cycle_detector.insertArc ( change.node1 (), change.node2 () );
-    }
 
-    
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraintDAG::modifyGraphAlone ( const ArcDeletion& change ) {
-      _cycle_detector.eraseArc ( change.node1(), change.node2 () );
-    }
-
-    
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraintDAG::modifyGraphAlone ( const ArcReversal& change ) {
-      _cycle_detector.reverseArc ( change.node1(), change.node2 () );
-    }
-
-    
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    StructuralConstraintDAG::modifyGraphAlone ( const GraphChange& change ) {
-      switch ( change.type () ) {
-      case GraphChangeType::ARC_ADDITION:
-        _cycle_detector.insertArc ( change.node1 (), change.node2 () );
-        break;
-        
-      case GraphChangeType::ARC_DELETION:
-        _cycle_detector.eraseArc ( change.node1(), change.node2 () );
-        break;
-
-      case GraphChangeType::ARC_REVERSAL:
-        _cycle_detector.reverseArc ( change.node1(), change.node2 () );
-        break;
-
-      default:
-        GUM_ERROR ( OperationNotAllowed,
-                    "edge modifications are not supported by DAG constraints" );
-      }
-    }
-
-    
-    /// indicates whether a change will always violate the constraint
-    INLINE bool
-    StructuralConstraintDAG::isAlwaysInvalidAlone ( const GraphChange& )
-      const noexcept {
-      return false;
-    }
-
-    
     /// checks whether the constraints enable to add an arc
     INLINE bool
     StructuralConstraintDAG::checkModificationAlone ( const ArcAddition& change )
@@ -177,13 +125,65 @@ namespace gum {
       }
     }
 
+    
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraintDAG::modifyGraphAlone ( const ArcAddition& change ) {
+      _DAG__cycle_detector.insertArc ( change.node1 (), change.node2 () );
+    }
+
+    
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraintDAG::modifyGraphAlone ( const ArcDeletion& change ) {
+      _DAG__cycle_detector.eraseArc ( change.node1(), change.node2 () );
+    }
+
+    
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraintDAG::modifyGraphAlone ( const ArcReversal& change ) {
+      _DAG__cycle_detector.reverseArc ( change.node1(), change.node2 () );
+    }
+
+    
+    /// notify the constraint of a modification of the graph
+    INLINE void
+    StructuralConstraintDAG::modifyGraphAlone ( const GraphChange& change ) {
+      switch ( change.type () ) {
+      case GraphChangeType::ARC_ADDITION:
+        modifyGraphAlone ( reinterpret_cast<const ArcAddition&> ( change ) );
+        break;
+        
+      case GraphChangeType::ARC_DELETION:
+        modifyGraphAlone ( reinterpret_cast<const ArcDeletion&> ( change ) );
+        break;
+
+      case GraphChangeType::ARC_REVERSAL:
+        modifyGraphAlone ( reinterpret_cast<const ArcReversal&> ( change ) );
+        break;
+
+      default:
+        GUM_ERROR ( OperationNotAllowed,
+                    "edge modifications are not supported by DAG constraints" );
+      }
+    }
+
+    
+    /// indicates whether a change will always violate the constraint
+    INLINE bool
+    StructuralConstraintDAG::isAlwaysInvalidAlone ( const GraphChange& )
+      const noexcept {
+      return false;
+    }
+
 
     
 
     /// sets a new graph from which we will perform checkings
     INLINE void StructuralConstraintDAG::setGraph ( const DAG& graph ) {
       constraints::setGraph ( graph );
-      _cycle_detector.setDAG ( graph );
+      _DAG__cycle_detector.setDAG ( graph );
     }
 
     
