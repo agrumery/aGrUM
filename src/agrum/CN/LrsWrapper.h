@@ -46,7 +46,7 @@
 #undef GMP
 #define MP
 // lrs stuff
-#include <agrum/CN/lrslib/lrslib.h>
+#include <agrum/core/math/lrslib/lrslib.h>
 
 /* *** from lrs, we need to know BASE to read multiple precision integers *** */
 #ifndef B64

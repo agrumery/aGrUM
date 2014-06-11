@@ -3068,16 +3068,16 @@ class LazyPropagation_double(BayesNetInference_double):
         """_fillMarginal(LazyPropagation_double self, gum::Id id, Potential_double marginal)"""
         return _pyAgrum.LazyPropagation_double__fillMarginal(self, *args)
 
-    def addHardEvidence(self, *args):
-        """addHardEvidence(LazyPropagation_double self, NodeId const id, Idx const val)"""
-        return _pyAgrum.LazyPropagation_double_addHardEvidence(self, *args)
-
     def joint(self, *args):
         """
         joint(LazyPropagation_double self, gum::NodeSet const & nodes) -> Potential_double
         joint(LazyPropagation_double self, PyObject * seq_of_ids) -> Potential_double
         """
         return _pyAgrum.LazyPropagation_double_joint(self, *args)
+
+    def addHardEvidence(self, *args):
+        """addHardEvidence(LazyPropagation_double self, gum::NodeId const id, gum::Idx val)"""
+        return _pyAgrum.LazyPropagation_double_addHardEvidence(self, *args)
 
     def __disown__(self):
         self.this.disown()
@@ -3135,7 +3135,7 @@ class GibbsInference_double(BayesNetInference_double):
         return _pyAgrum.GibbsInference_double__fillMarginal(self, *args)
 
     def addHardEvidence(self, *args):
-        """addHardEvidence(GibbsInference_double self, NodeId const id, Idx const val)"""
+        """addHardEvidence(GibbsInference_double self, gum::NodeId const id, gum::Idx val)"""
         return _pyAgrum.GibbsInference_double_addHardEvidence(self, *args)
 
     def setVerbosity(self, *args):
@@ -3799,6 +3799,78 @@ class CNLoopyPropagation_double(CNInferenceEngine_double):
         except: self.this = this
     __swig_destroy__ = _pyAgrum.delete_CNLoopyPropagation_double
     __del__ = lambda self : None;
+    def setVerbosity(self, *args):
+        """setVerbosity(CNLoopyPropagation_double self, bool v)"""
+        return _pyAgrum.CNLoopyPropagation_double_setVerbosity(self, *args)
+
+    def setEpsilon(self, *args):
+        """setEpsilon(CNLoopyPropagation_double self, double eps)"""
+        return _pyAgrum.CNLoopyPropagation_double_setEpsilon(self, *args)
+
+    def setMinEpsilonRate(self, *args):
+        """setMinEpsilonRate(CNLoopyPropagation_double self, double rate)"""
+        return _pyAgrum.CNLoopyPropagation_double_setMinEpsilonRate(self, *args)
+
+    def setMaxIter(self, *args):
+        """setMaxIter(CNLoopyPropagation_double self, gum::Size max)"""
+        return _pyAgrum.CNLoopyPropagation_double_setMaxIter(self, *args)
+
+    def setMaxTime(self, *args):
+        """setMaxTime(CNLoopyPropagation_double self, double timeout)"""
+        return _pyAgrum.CNLoopyPropagation_double_setMaxTime(self, *args)
+
+    def setPeriodSize(self, *args):
+        """setPeriodSize(CNLoopyPropagation_double self, gum::Size p)"""
+        return _pyAgrum.CNLoopyPropagation_double_setPeriodSize(self, *args)
+
+    def setBurnIn(self, *args):
+        """setBurnIn(CNLoopyPropagation_double self, gum::Size b)"""
+        return _pyAgrum.CNLoopyPropagation_double_setBurnIn(self, *args)
+
+    def verbosity(self):
+        """verbosity(CNLoopyPropagation_double self) -> bool"""
+        return _pyAgrum.CNLoopyPropagation_double_verbosity(self)
+
+    def epsilon(self):
+        """epsilon(CNLoopyPropagation_double self) -> double"""
+        return _pyAgrum.CNLoopyPropagation_double_epsilon(self)
+
+    def minEpsilonRate(self):
+        """minEpsilonRate(CNLoopyPropagation_double self) -> double"""
+        return _pyAgrum.CNLoopyPropagation_double_minEpsilonRate(self)
+
+    def maxIter(self):
+        """maxIter(CNLoopyPropagation_double self) -> gum::Size"""
+        return _pyAgrum.CNLoopyPropagation_double_maxIter(self)
+
+    def maxTime(self):
+        """maxTime(CNLoopyPropagation_double self) -> double"""
+        return _pyAgrum.CNLoopyPropagation_double_maxTime(self)
+
+    def periodSize(self):
+        """periodSize(CNLoopyPropagation_double self) -> gum::Size"""
+        return _pyAgrum.CNLoopyPropagation_double_periodSize(self)
+
+    def burnIn(self):
+        """burnIn(CNLoopyPropagation_double self) -> gum::Size"""
+        return _pyAgrum.CNLoopyPropagation_double_burnIn(self)
+
+    def nbrIterations(self):
+        """nbrIterations(CNLoopyPropagation_double self) -> gum::Size"""
+        return _pyAgrum.CNLoopyPropagation_double_nbrIterations(self)
+
+    def currentTime(self):
+        """currentTime(CNLoopyPropagation_double self) -> double"""
+        return _pyAgrum.CNLoopyPropagation_double_currentTime(self)
+
+    def messageApproximationScheme(self):
+        """messageApproximationScheme(CNLoopyPropagation_double self) -> std::string"""
+        return _pyAgrum.CNLoopyPropagation_double_messageApproximationScheme(self)
+
+    def history(self):
+        """history(CNLoopyPropagation_double self) -> Vector_double"""
+        return _pyAgrum.CNLoopyPropagation_double_history(self)
+
 CNLoopyPropagation_double_swigregister = _pyAgrum.CNLoopyPropagation_double_swigregister
 CNLoopyPropagation_double_swigregister(CNLoopyPropagation_double)
 

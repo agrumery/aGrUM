@@ -106,7 +106,7 @@ class TestDictFeature(GibbsTestCase):
         ie.setMinEpsilonRate(0.0001)
         ie.setEvidence({'s': 0, 'w': 1})
         ie.makeInference()
-        result = ie.marginal(self.r)
+        result = ie.marginal(self.r).tolist()
 
         ie2 = GibbsInference(self.bn)
         ie2.setVerbosity(False)
@@ -114,11 +114,34 @@ class TestDictFeature(GibbsTestCase):
         ie2.setMinEpsilonRate(0.0001)
         ie2.setEvidence({'s': 'no', 'w': 'yes'})
         ie2.makeInference()
+        result2 = ie2.marginal(self.r).tolist()
+        
+        ie3 = GibbsInference(self.bn)
+        ie3.setVerbosity(True)
+        ie3.setEpsilon(0.0001)
+        ie3.setMinEpsilonRate(0.0001)
+        ie3.addHardEvidence(self.s,0) # 'no'
+        ie3.addHardEvidence(self.w,1) # 'yes'
+        ie3.makeInference()
+        result3 = ie3.marginal(self.r).tolist()
+        
+        self.assertListsAlmostEqual(result, result2)
+        self.assertListsAlmostEqual(result, result3)
+
+
+    def testDictOfLabelsWithId(self):
+        ie = GibbsInference(self.bn)
+        ie.setEvidence({self.s: 0, self.w: 1})
+        ie.makeInference()
+        result = ie.marginal(self.r)
+
+        ie2 = GibbsInference(self.bn)
+        ie2.setEvidence({self.s: 'no', self.w: 'yes'})
+        ie2.makeInference()
         result2 = ie2.marginal(self.r)
 
         self.assertListsAlmostEqual(result.tolist(), result2.tolist())
-
-
+        
     def testWithDifferentVariables(self):
         ie = GibbsInference(self.bn)
         ie.setVerbosity(False)
@@ -192,6 +215,7 @@ class TestInferenceResults(GibbsTestCase):
 ts = unittest.TestSuite()
 ts.addTest(TestDictFeature('testDictOfSequences'))
 ts.addTest(TestDictFeature('testDictOfLabels'))
+ts.addTest(TestDictFeature('testDictOfLabelsWithId'))
 ts.addTest(TestDictFeature('testWithDifferentVariables'))
 ts.addTest(TestInferenceResults('testOpenBayesSiteExamples'))
 ts.addTest(TestInferenceResults('testWikipediaExample'))
