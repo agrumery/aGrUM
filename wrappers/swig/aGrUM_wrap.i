@@ -246,8 +246,13 @@ namespace std {
     return self->exists ( val );
   }
 }
+%extend gum::LazyPropagation {
+  using gum::BayesNetInference::addHardEvidence;
+}
 
 %extend gum::GibbsInference {
+  using gum::BayesNetInference::addHardEvidence;
+
   using gum::ApproximationScheme::setVerbosity;
   using gum::ApproximationScheme::setEpsilon;
   using gum::ApproximationScheme::setMinEpsilonRate;

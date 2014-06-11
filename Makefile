@@ -5,8 +5,6 @@
 ACT=./act
 JOBS=7
 
-SKOOL_TEST=StructuredInference
-
 library:
 	$(ACT) agrum release -p linux -j $(JOBS)
 
@@ -40,12 +38,6 @@ windows:
 pyAgrum:
 	$(ACT) wrapper pyAgrum -p linux -j $(JOBS)
 
-skooltest:
-	$(ACT) test release -t $(SKOOL_TEST) -p linux -j 4
-
-skooltestdebug:
-	$(ACT) test debug -t $(SKOOL_TEST) -p linux -j 4
-
 
 clean:
 	$(ACT) clean
@@ -57,13 +49,3 @@ linuxreleasedoc:
 	$(ACT) release doc -p linux
 	cat build/linux/release/warning.txt
 
-cppcheck:
-	cppcheck src --force --enable=all 2>cppcheck.txt
-	wc -l cppcheck.txt
-
-gitinspector:
-	@rm -f gitinspector.html
-	gitinspector . --format=html -T > gitinspector.html 
-	firefox gitinspector.html &
-
-	

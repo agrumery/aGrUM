@@ -2906,6 +2906,10 @@ class BayesNetInference_double(_object):
         """insertEvidence(BayesNetInference_double self, gum::List< gum::Potential< double > const * > const & pot_list)"""
         return _pyAgrum.BayesNetInference_double_insertEvidence(self, *args)
 
+    def addHardEvidence(self, *args):
+        """addHardEvidence(BayesNetInference_double self, gum::NodeId const id, gum::Idx const val)"""
+        return _pyAgrum.BayesNetInference_double_addHardEvidence(self, *args)
+
     def eraseEvidence(self, *args):
         """eraseEvidence(BayesNetInference_double self, Potential_double e)"""
         return _pyAgrum.BayesNetInference_double_eraseEvidence(self, *args)
@@ -3064,6 +3068,10 @@ class LazyPropagation_double(BayesNetInference_double):
         """_fillMarginal(LazyPropagation_double self, gum::Id id, Potential_double marginal)"""
         return _pyAgrum.LazyPropagation_double__fillMarginal(self, *args)
 
+    def addHardEvidence(self, *args):
+        """addHardEvidence(LazyPropagation_double self, NodeId const id, Idx const val)"""
+        return _pyAgrum.LazyPropagation_double_addHardEvidence(self, *args)
+
     def joint(self, *args):
         """
         joint(LazyPropagation_double self, gum::NodeSet const & nodes) -> Potential_double
@@ -3125,6 +3133,10 @@ class GibbsInference_double(BayesNetInference_double):
     def _fillMarginal(self, *args):
         """_fillMarginal(GibbsInference_double self, gum::NodeId id, Potential_double marginal)"""
         return _pyAgrum.GibbsInference_double__fillMarginal(self, *args)
+
+    def addHardEvidence(self, *args):
+        """addHardEvidence(GibbsInference_double self, NodeId const id, Idx const val)"""
+        return _pyAgrum.GibbsInference_double_addHardEvidence(self, *args)
 
     def setVerbosity(self, *args):
         """setVerbosity(GibbsInference_double self, bool v)"""
