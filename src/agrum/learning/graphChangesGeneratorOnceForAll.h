@@ -162,6 +162,9 @@ namespace gum {
       /// empty the set of possible change operators that can be applied
       void clearChanges () noexcept;
 
+      /// notifies the generator that we have parsed all its legal changes
+      void notifyGetCompleted ();
+
       /// @}
       
 

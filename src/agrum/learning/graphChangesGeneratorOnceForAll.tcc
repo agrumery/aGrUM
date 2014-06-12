@@ -225,6 +225,15 @@ namespace gum {
     ( const GraphChange& change ) {
     }
 
+
+    /// notifies the generator that we have parsed all its legal changes
+    template <typename STRUCT_CONSTRAINT> INLINE
+    void
+    GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>::notifyGetCompleted () {
+      if ( _legal_changes.size () )
+        _legal_changes.clear ();
+    }
+
   
   } /* namespace learning */
   

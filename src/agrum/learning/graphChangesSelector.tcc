@@ -293,6 +293,7 @@ namespace gum {
       for ( const auto& change : *__changes_generator ) {
         __changes << change;
       }
+      __changes_generator->notifyGetCompleted ();
 
       // determine the changes that are illegal and prepare the computation of
       // the scores of all the legal changes
@@ -574,6 +575,9 @@ namespace gum {
                                         std::numeric_limits<float>::min () ) );
         }
       }
+
+      // indicate to the generator that we have finished retrieving its changes
+      __changes_generator->notifyGetCompleted ();
     }
 
 
