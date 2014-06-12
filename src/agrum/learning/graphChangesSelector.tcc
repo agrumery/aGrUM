@@ -238,6 +238,17 @@ namespace gum {
       return __constraint->checkModification ( __changes[index] );
     }
 
+
+    /// indicates whether a given change is valid or not
+    template <typename SCORE,
+              typename STRUCTURAL_CONSTRAINT,
+              template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
+    bool
+    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    isChangeValid ( const GraphChange& change ) const {
+      return __constraint->checkModification ( change );
+    }
+
     
     /// sets the graph from which scores are computed
     template <typename SCORE,
@@ -415,6 +426,32 @@ namespace gum {
     }
 
 
+    /// indicates whether the selector still contain graph changes in the ith queue
+    template <typename SCORE,
+              typename STRUCTURAL_CONSTRAINT,
+              template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
+    bool
+    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    empty ( unsigned int i ) {
+      // put into the illegal change set all the top elements of the different
+      // queues that are not valid anymore
+      if ( ! __queues_valid ) {
+        for ( auto& queue : __change_queue_per_node ) {
+          while ( ! queue.empty () &&
+                  ( queue.topPriority () !=
+                    std::numeric_limits<float>::min () ) &&
+                  ! __isChangeValid ( queue.top () ) ) {
+            __invalidateChange ( queue.top() );
+          }
+        }
+        __queues_valid = true;
+      }
+      
+      return __change_queue_per_node[i].topPriority () ==
+        std::numeric_limits<float>::min ();
+    }
+
+
     /// returns the best graph change to examine
     template <typename SCORE,
               typename STRUCTURAL_CONSTRAINT,
@@ -429,6 +466,21 @@ namespace gum {
     }
     
 
+    /// returns the best graph change to examine in the ith queue
+    template <typename SCORE,
+              typename STRUCTURAL_CONSTRAINT,
+              template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
+    const GraphChange&
+    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    bestChange ( unsigned int i ) {
+      GUM_ASSERT ( i < __change_queue_per_node.size () );
+      if ( ! empty ( i ) )
+        return __changes[ __change_queue_per_node[i].top () ];
+      else
+        GUM_ERROR ( NotFound, "there exists no graph change applicable" );
+    }
+    
+
     /// return the score of the best graph change
     template <typename SCORE,
               typename STRUCTURAL_CONSTRAINT,
@@ -438,6 +490,21 @@ namespace gum {
     bestScore () {
       if ( ! empty () ) 
         return __change_queue_per_node[__node_queue.top ()].topPriority ();
+      else
+        GUM_ERROR ( NotFound, "there exists no graph change applicable" );
+    }
+
+
+    /// return the score of the best graph change in the ith queue
+    template <typename SCORE,
+              typename STRUCTURAL_CONSTRAINT,
+              template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
+    float
+    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    bestScore ( unsigned int i ) {
+      GUM_ASSERT ( i < __change_queue_per_node.size () );
+      if ( ! empty ( i ) ) 
+        return __change_queue_per_node[i].topPriority ();
       else
         GUM_ERROR ( NotFound, "there exists no graph change applicable" );
     }
@@ -580,7 +647,7 @@ namespace gum {
       __changes_generator->notifyGetCompleted ();
     }
 
-
+    
     /// indicate to the selector that its best score has been applied
     template <typename SCORE,
               typename STRUCTURAL_CONSTRAINT,
@@ -637,9 +704,9 @@ namespace gum {
 
           // get new possible changes from the graph change generator
           // warning: put the next 3 lines before calling __illegal2LegalChanges
-           __changes_generator->modifyGraph
+          __changes_generator->modifyGraph
             ( static_cast<const ArcDeletion&> ( change ) );
-           __getNewChanges ();
+          __getNewChanges ();
           
           // check whether some illegal changes can be put into the valid queues
           __illegal2LegalChanges ( changes_to_recompute );
@@ -671,7 +738,7 @@ namespace gum {
 
           // get new possible changes from the graph change generator
           // warning: put the next 3 lines before calling __illegal2LegalChanges
-           __changes_generator->modifyGraph
+          __changes_generator->modifyGraph
             ( static_cast<const ArcReversal&> ( change ) );
           __getNewChanges ();
           
@@ -690,7 +757,140 @@ namespace gum {
 
       __queues_valid = false;
     }
-      
+
+    
+    /// applies several changes at a time
+    template <typename SCORE,
+              typename STRUCTURAL_CONSTRAINT,
+              template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
+    void
+    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    applyChangeWithoutScoreUpdate ( const GraphChange& change ) {
+      // create a set that will help determining which queues need be updated
+      //Set<NodeId> queues_to_update ( 2 * changes.size () );
+
+      // first, we get the index of the change
+      unsigned change_index = __changes.pos ( change );
+
+      // perform the change
+      switch ( change.type () ) {
+      case GraphChangeType::ARC_ADDITION:
+        {
+          // update the current score
+          __node_current_scores[change.node2 ()] +=
+            __change_scores[change_index].second;
+          __parents[change.node2 ()].push_back ( change.node1 () );
+
+          // inform the constraint that the graph has been modified
+          __constraint->modifyGraph ( static_cast<const ArcAddition&> ( change ) );
+
+          // get new possible changes from the graph change generator
+          // warning: put the next 3 lines before calling __illegal2LegalChanges
+          __changes_generator->modifyGraph
+            ( static_cast<const ArcAddition&> ( change ) );
+          __getNewChanges ();
+
+          // indicate that we have just applied the change
+          __invalidateChange ( change_index );
+
+          // indicate that the queue to which the change belongs needs be updated
+          __queues_to_update.insert ( change.node2 () );
+        }
+        break;
+
+      case GraphChangeType::ARC_DELETION:
+        {
+          // update the current score
+          __node_current_scores[change.node2 ()] +=
+            __change_scores[change_index].second;
+          std::vector<unsigned int>& parents = __parents[ change.node2 () ];
+          for ( auto& par : parents ) {
+            if ( par == change.node1 () ) {
+              par = *( parents.rbegin () );
+              parents.pop_back ();
+              break;
+            }
+          }
+          
+          // inform the constraint that the graph has been modified
+          __constraint->modifyGraph
+            ( static_cast<const ArcDeletion&> ( change ) );
+          
+          // get new possible changes from the graph change generator
+          // warning: put the next 3 lines before calling __illegal2LegalChanges
+          __changes_generator->modifyGraph
+            ( static_cast<const ArcDeletion&> ( change ) );
+          __getNewChanges ();
+          
+          // indicate that we have just applied the change
+          __invalidateChange ( change_index );
+          
+          // indicate that the queue to which the change belongs needs be updated
+          __queues_to_update.insert ( change.node2 () );
+        }
+        break;
+
+      case GraphChangeType::ARC_REVERSAL:
+        {
+          // update the current score
+          __node_current_scores[change.node1 ()] +=
+            __change_scores[change_index].first;
+          __node_current_scores[change.node2 ()] +=
+            __change_scores[change_index].second;
+          __parents[change.node1 ()].push_back ( change.node2 () );
+          std::vector<unsigned int>& parents = __parents[ change.node2 () ];
+          for ( auto& par : parents ) {
+            if ( par == change.node1 () ) {
+              par = *( parents.rbegin () );
+              parents.pop_back ();
+              break;
+            }
+          }
+
+          // inform the constraint that the graph has been modified
+          __constraint->modifyGraph ( static_cast<const ArcReversal&> ( change ) );
+
+          // get new possible changes from the graph change generator
+          // warning: put the next 3 lines before calling __illegal2LegalChanges
+          __changes_generator->modifyGraph
+            ( static_cast<const ArcReversal&> ( change ) );
+          __getNewChanges ();
+
+          // indicate that we have just applied the change
+          __invalidateChange ( change_index );
+
+          // indicate that the queue to which the change belongs needs be updated
+          __queues_to_update.insert ( change.node1 () );
+          __queues_to_update.insert ( change.node2 () );
+        }
+        break;
+
+      default:
+        GUM_ERROR ( NotFound, "not implemented" );
+      }
+    }
+
+
+    /// applies several changes at a time
+    template <typename SCORE,
+              typename STRUCTURAL_CONSTRAINT,
+              template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
+    void
+    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    updateScoresAfterAppliedChanges () {
+      // update the scores that need be updated
+      Set<unsigned int> changes_to_recompute;
+
+      __illegal2LegalChanges ( changes_to_recompute );
+      for ( const auto& node : __queues_to_update ) {
+        __findLegalChangesNeedingUpdate ( changes_to_recompute, node );
+      }
+      __queues_to_update.clear ();
+      __updateScores ( changes_to_recompute );
+ 
+      __queues_valid = false;
+    }
+   
 
   } /* namespace learning */
   

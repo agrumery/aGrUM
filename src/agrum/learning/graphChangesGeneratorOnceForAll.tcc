@@ -107,7 +107,7 @@ namespace gum {
       _legal_changes.clear ();
       
       // for all the pairs of nodes, consider adding, reverse and removing arcs 
-      std::vector< std::vector<GraphChange> > legal_changes;
+      std::vector< Set<GraphChange> > legal_changes;
       #pragma omp parallel num_threads ( getMaxNumberOfThreads() )
       {
         int num_threads = getNumberOfRunningThreads();
@@ -129,19 +129,19 @@ namespace gum {
                 // try arc additions
                 ArcAddition arc_add ( node1, node2 );
                 if ( ! _constraint->isAlwaysInvalid ( arc_add ) ) {
-                  legal_changes[this_thread].push_back ( std::move ( arc_add ) );
+                  legal_changes[this_thread].insert ( std::move ( arc_add ) );
                 }
 
                 // try arc deletion
                 ArcDeletion arc_del ( node1, node2 );
                 if ( ! _constraint->isAlwaysInvalid ( arc_del ) ) {
-                  legal_changes[this_thread].push_back ( std::move ( arc_del ) );
+                  legal_changes[this_thread].insert ( std::move ( arc_del ) );
                 }
             
                 // try arc reversal
                 ArcReversal arc_rev ( node1, node2 );
                 if ( ! _constraint->isAlwaysInvalid ( arc_rev ) ) {
-                  legal_changes[this_thread].push_back ( std::move ( arc_rev ) );
+                  legal_changes[this_thread].insert ( std::move ( arc_rev ) );
                 }
               }
             }

@@ -104,16 +104,55 @@ namespace gum {
       /// indicates whether the selector still contain graph changes 
       bool empty ();
 
+      /** @brief indicates whether the selector contains graph changes related to
+       * the ith node */
+      bool empty ( unsigned int i );
+
       /// returns the best graph change to examine
       /** @throws NotFound exception is thrown if the selector is empty */
       const GraphChange& bestChange ();
+
+      /// returns the best graph change to examine related to the ith node
+      /** The selector computes not only the best change possible but also the
+       * best changes impacting the parents' set of each node. This method
+       * allows to get the change that is considered the best for modifying the
+       * parents' set of the ith node.
+       * @throws NotFound exception is thrown if the selector is empty */
+      const GraphChange& bestChange ( unsigned int i );
 
       /// return the score of the best graph change
       /** @throws NotFound exception is thrown if the selector is empty */
       float bestScore ();
 
-      /// indicate to the selector that its best score has been applied
+      /// return the score of the best graph change related to the ith node
+      /** The selector computes not only the best change possible but also the
+       * best changes impacting the parents' set of each node. This method
+       * allows to get the score of the change that is considered the best for
+       * modifying the parents' set of the ith node.
+       * @throws NotFound exception is thrown if the selector is empty */
+      float bestScore ( unsigned int i );
+
+      /// indicate to the selector that a change has been applied
       void applyChange ( const GraphChange& change );
+
+      /// indicate to the selector that one of serveral changes has been applied
+      /** This function is to be used rather than applyChange when we wish to
+       * apply several changes at a time. It is faster than applyChange because
+       * it does not recomputes the scores. Then, after applying all changes,
+       * we shall compute the scores with function
+       * updateScoresAfterAppliedChanges (). See class GreedyHillClimbing for
+       * an illustration of the use of this method. */
+      void applyChangeWithoutScoreUpdate ( const GraphChange& change );
+
+      /// recompute all the scores after the application of several changes
+      /** This method needs COMPULSORILY be used after applications of
+       * applyChangeWithoutScoreUpdate in order to ensure the fact that
+       * functions bestScore and bestChange return correct answers. See class
+       * GreedyHillClimbing for an illustration of the use of this method. */
+      void updateScoresAfterAppliedChanges ();
+
+      /// indicates whether a given change is valid or not
+      bool isChangeValid ( const GraphChange& change ) const;
 
       /// sets the graph from which scores are computed
       void setGraph ( DiGraph& graph,
@@ -165,7 +204,8 @@ namespace gum {
       /// indicates whether we need to recompute whether the queue is empty or not
       bool __queues_valid { false };
 
-
+      /// the set of queues to update when applying several changes
+      Set<unsigned int> __queues_to_update;
       
 
       /// prepare the next pack of  score computations
