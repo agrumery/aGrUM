@@ -39,7 +39,7 @@
 
 namespace gum_tests {
 
-  class K2TestSuite: public CxxTest::TestSuite {
+  class GreedyHillClimbingTestSuite: public CxxTest::TestSuite {
   public:
 
     class CellTranslator : public gum::learning::DBCellTranslator<1,1> {
