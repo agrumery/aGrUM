@@ -34,6 +34,7 @@
 #include <agrum/learning/structuralConstraintDAG.h>
 #include <agrum/learning/structuralConstraintIndegree.h>
 #include <agrum/learning/structuralConstraint2TimeSlice.h>
+#include <agrum/learning/structuralConstraintTabuList.h>
 #include <agrum/learning/structuralConstraintSet.h>
 #include <agrum/learning/graphChangesGeneratorOnceForAll.h>
 
@@ -80,7 +81,7 @@ namespace gum_tests {
 
 
     void test_asia () {
-       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
       
       auto handler = database.handler ();
       
@@ -93,17 +94,19 @@ namespace gum_tests {
                                                         generators );
 
       std::vector<unsigned int> modalities = filter.modalities ();
-
+      
       gum::learning::ScoreK2<decltype ( filter ) >
         score ( filter, modalities );
 
       gum::learning::StructuralConstraintSet<
         gum::learning::StructuralConstraintDAG,
         gum::learning::StructuralConstraintIndegree,
-        gum::learning::StructuralConstraint2TimeSlice>
+        gum::learning::StructuralConstraint2TimeSlice,
+        gum::learning::StructuralConstraintTabuList>
         struct_constraint; 
 
       struct_constraint.setDefaultIndegree ( 2 );
+      struct_constraint.setTabuListSize ( 4 );
 
       gum::NodeProperty<bool> slices {
         std::make_pair( gum::NodeId ( 0 ), 0 ),
