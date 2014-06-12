@@ -311,6 +311,10 @@ namespace gum {
     /** @throw NotFound If the element cannot be found */
     const Priority& priority ( const Val& elt ) const;
 
+    /// returns the priority of the value passed in argument
+    /** @throw NotFound If the element cannot be found */
+    const Priority& priorityByPos ( Size index ) const;
+
     /// removes all the elements from the queue
     void clear ();
 
@@ -574,6 +578,10 @@ namespace gum {
     /// returns the priority of the value passed in argument
     /** @throw NotFound If the element cannot be found */
     const Priority& priority ( Val elt ) const;
+
+    /// returns the priority of the value passed in argument
+    /** @throw NotFound If the element cannot be found */
+    const Priority& priorityByPos ( Size index ) const;
 
     /// removes all the elements from the queue
     void clear ();

@@ -54,8 +54,12 @@ namespace gum {
 
       while ( nb_changes_applied ) {
         nb_changes_applied = 0;
+
+        std::vector< std::pair<unsigned int,float> > ordered_queues =
+          selector.nodesSortedByBestScore ();
         
-        for ( unsigned int i = 0; i < dag.size (); ++i ) {
+        for ( unsigned int j = 0; j < dag.size (); ++j ) {
+          unsigned int i = ordered_queues[j].first;
           if ( ! ( selector.empty ( i ) ) && ( selector.bestScore ( i ) > 0 ) ) {
             // pick up the best change
             const GraphChange& change = selector.bestChange ( i );

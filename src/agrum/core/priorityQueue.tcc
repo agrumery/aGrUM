@@ -658,6 +658,20 @@ namespace gum {
   }
 
 
+  /// returns the priority of a given element
+  template <typename Val,typename Priority,typename Cmp,typename Alloc,bool Gen>
+  INLINE
+  const Priority&
+  PriorityQueueImplementation<Val,Priority,Cmp,Alloc,Gen>::priorityByPos
+  ( Size index ) const {
+    if ( index > __nb_elements ) {
+      GUM_ERROR ( NotFound,
+                  "not enough elements in the PriorityQueueImplementation" );      
+    }
+    return __heap[ index ].first;
+  }
+
+
 
 
   /* =========================================================================== */
@@ -1264,6 +1278,19 @@ namespace gum {
     return __heap[ __indices[elt] ].first;
   }
 
+
+  /// returns the priority of a given element
+  template <typename Val,typename Priority,typename Cmp,typename Alloc>
+  INLINE
+  const Priority&
+  PriorityQueueImplementation<Val,Priority,Cmp,Alloc,true>::priorityByPos
+  ( Size index ) const {
+    if ( index > __nb_elements ) {
+      GUM_ERROR ( NotFound,
+                  "not enough elements in the PriorityQueueImplementation" );      
+    }
+    return __heap[ index ].first;
+  }
 
 
 

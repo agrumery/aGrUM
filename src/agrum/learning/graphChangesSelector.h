@@ -158,6 +158,9 @@ namespace gum {
       void setGraph ( DiGraph& graph,
                       const std::vector<unsigned int>& modal );
 
+      /// returns the set of queues sorted by decreasing top priority
+      std::vector< std::pair<unsigned int,float> > nodesSortedByBestScore () const;
+      
       /// @}
 
 

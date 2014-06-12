@@ -890,7 +890,30 @@ namespace gum {
  
       __queues_valid = false;
     }
-   
+
+
+    /// returns the set of queues sorted by decreasing top priority
+    template <typename SCORE,
+              typename STRUCTURAL_CONSTRAINT,
+              template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
+    std::vector< std::pair<unsigned int,float> >
+    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    nodesSortedByBestScore () const {
+      std::vector< std::pair<unsigned int,float> > result ( __node_queue.size () );
+
+      for ( unsigned int i = 0; i < __node_queue.size (); ++i ) {
+        result[i].first  = __node_queue[i];
+        result[i].second = __node_queue.priorityByPos ( i );
+      }
+
+      std::sort ( result.begin (), result.end (),
+                  [] ( const std::pair<unsigned int,float>& a,
+                       const std::pair<unsigned int,float>& b) -> bool { 
+                    return a.second > b.second; 
+                  } );
+      
+      return result;
+    }
 
   } /* namespace learning */
   
