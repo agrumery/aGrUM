@@ -31,7 +31,7 @@ namespace gum {
     CSVParser::CSVParser ( std::istream& in, const std::string& delimiter, const char  commentmarker, const char quoteMarker ) :
       __line(),
       __delimiter ( delimiter ),
-      __spaces ( " \t" ),
+      __spaces ( " \t\r" ),
       __delimiterPlusSpaces ( __delimiter + __spaces ),
       __noLine ( ( Size ) 0 ),
       __commentMarker ( commentmarker ),
