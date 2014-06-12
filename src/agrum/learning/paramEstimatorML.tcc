@@ -80,6 +80,15 @@ namespace gum {
           this->_getConditioningCounts ( nodeset_index );
         unsigned int conditioning_size = N_ij.size ();
 
+        // check that all conditioning nodes have strictly positive counts
+        for ( unsigned int j = 0; j < conditioning_size; ++k, ++j ) {
+          if ( ! N_ij[j] ) {
+            GUM_ERROR ( CPTError, "A conditioning set has a value that never "
+                        "appears in the database" );
+          }
+        }
+
+        // normalize the counts
         for ( unsigned int i = 0, k = 0; i < target_modal; ++i ) {
           for ( unsigned int j = 0; j < conditioning_size; ++k, ++j ) {
             N_ijk[k] /= N_ij[j];

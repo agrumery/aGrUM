@@ -18,17 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The greedy hill learning algorithm (for directed graphs)
+ * @brief The local search learning with tabu list algorithm (for directed graphs)
  *
- * The GreedyHillClimbing class implements a greedy search in which the only the
- * graph changes that increase the global score are applied. Those that increase
- * it the more are applied first. The algorithm stops when no single change can
- * increase the score anymore.
+ * The LocalSearchWithTabuList class implements a greedy search in which we allow
+ * applying at most N consecutive graph changes that decrease the score. To
+ * prevent infinite loops, when using local search, you should use a structural
+ * constraint that includes a tabu list of at least N elements.
  * 
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_GREEDY_HILL_CLIMBING_H
-#define GUM_LEARNING_GREEDY_HILL_CLIMBING_H
+#ifndef GUM_LEARNING_LOCAL_SEARCH_WITH_TABU_LIST_H
+#define GUM_LEARNING_LOCAL_SEARCH_WITH_TABU_LIST_H
 
 
 #include <vector>
@@ -46,16 +46,18 @@ namespace gum {
   namespace learning {
 
     
-    /** @class GreedyHillClimbing
-     * @brief The greedy hill climbing learning algorithm (for directed graphs)
+    /** @class LocalSearchWithTabuList
+     * @brief The local search with tabu list learning algorithm (for
+     * directed graphs)
      *
-     * The GreedyHillClimbing class implements a greedy search in which the only
-     * the graph changes that increase the global score are applied. Those that
-     * increase it the more are applied first. The algorithm stops when no single
-     * change can increase the score anymore.
+     * The LocalSearchWithTabuList class implements a greedy search in which we
+     * allow applying at most N consecutive graph changes that decrease the score.
+     * To prevent infinite loops, when using local search, you should use a
+     * structural constraint that includes a tabu list of at least N elements.
+     *
      * @ingroup learning_group
      */
-    class GreedyHillClimbing {
+    class LocalSearchWithTabuList {
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -63,16 +65,16 @@ namespace gum {
       /// @{
 
       /// default constructor
-      GreedyHillClimbing ();
+      LocalSearchWithTabuList ();
 
       /// copy constructor
-      GreedyHillClimbing ( const GreedyHillClimbing& from );
+      LocalSearchWithTabuList ( const LocalSearchWithTabuList& from );
 
       /// move constructor
-      GreedyHillClimbing ( GreedyHillClimbing&& from );
+      LocalSearchWithTabuList ( LocalSearchWithTabuList&& from );
 
       /// destructor
-      ~GreedyHillClimbing ();
+      ~LocalSearchWithTabuList ();
 
       /// @}
 
@@ -83,10 +85,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      GreedyHillClimbing& operator= ( const GreedyHillClimbing& from );
+      LocalSearchWithTabuList& operator= ( const LocalSearchWithTabuList& from );
 
       /// move operator
-      GreedyHillClimbing& operator= ( GreedyHillClimbing&& from );
+      LocalSearchWithTabuList& operator= ( LocalSearchWithTabuList&& from );
 
       /// @}
       
@@ -105,6 +107,7 @@ namespace gum {
       ( GraphChangesSelector<SCORE,STRUCT_CONSTRAINT,GRAPH_CHANGES_GENERATOR>&
         selector,
         const std::vector<unsigned int>& modal,
+        unsigned int N = 10,
         DAG initial_dag = DAG () );
      
       /// learns the structure and the parameters of a BN
@@ -119,6 +122,7 @@ namespace gum {
         PARAM_ESTIMATOR& estimator,
         const std::vector<std::string>& names,
         const std::vector<unsigned int>& modal,
+        unsigned int N = 10,
         DAG initial_dag = DAG () );
 
       /// @}
@@ -133,8 +137,8 @@ namespace gum {
 
 
 /// always include templated methods
-#include <agrum/learning/greedyHillClimbing.tcc>
+#include <agrum/learning/localSearchWithTabuList.tcc>
 
 
-#endif /* GUM_LEARNING_GREEDY_HILL_CLIMBING_H */
+#endif /* GUM_LEARNING_LOCAL_SEARCH_WITH_TABU_LIST_H */
 

@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The greedy hill learning algorithm (for directed graphs)
+ * @brief The local search with tabu list learning algorithm (for directed graphs)
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -39,10 +39,11 @@ namespace gum {
     template <typename SCORE,
               typename STRUCT_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR>
-    DAG GreedyHillClimbing::learnStructure
+    DAG LocalSearchWithTabuList::learnStructure
     ( GraphChangesSelector<SCORE,STRUCT_CONSTRAINT,GRAPH_CHANGES_GENERATOR>&
       selector,
       const std::vector<unsigned int>& modal,
+      unsigned int N,
       DAG dag ) {
       selector.setGraph ( dag, modal );
       unsigned int nb_changes_applied = 1;
@@ -123,15 +124,16 @@ namespace gum {
               template <typename> class GRAPH_CHANGES_GENERATOR,
               typename PARAM_ESTIMATOR>
     BayesNet<float>
-    GreedyHillClimbing::learnBN
+    LocalSearchWithTabuList::learnBN
     ( GraphChangesSelector<SCORE,STRUCT_CONSTRAINT,GRAPH_CHANGES_GENERATOR>&
       selector,
       PARAM_ESTIMATOR& estimator,
       const std::vector<std::string>& names,
       const std::vector<unsigned int>& modal,
+      unsigned int N,
       DAG initial_dag ) {
       return DAG2BNLearner::createBN ( estimator,
-                                       learnStructure ( selector, modal,
+                                       learnStructure ( selector, modal, N,
                                                         initial_dag ),
                                        names, modal );
     }

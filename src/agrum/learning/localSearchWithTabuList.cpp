@@ -18,12 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The greedy hill learning algorithm (for directed graphs)
+ * @brief The local search learning algorithm (for directed graphs)
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/learning/greedyHillClimbing.h>
+#include <agrum/learning/localSearchWithTabuList.h>
 
 
 namespace gum {
@@ -33,39 +33,41 @@ namespace gum {
 
     
     /// default constructor
-    GreedyHillClimbing::GreedyHillClimbing () {
-      GUM_CONSTRUCTOR ( learning::GreedyHillClimbing );
+    LocalSearchWithTabuList::LocalSearchWithTabuList () {
+      GUM_CONSTRUCTOR ( learning::LocalSearchWithTabuList );
     }
 
     
     /// copy constructor
-    GreedyHillClimbing::GreedyHillClimbing ( const GreedyHillClimbing& from ) {
-      GUM_CONS_CPY ( learning::GreedyHillClimbing );
+    LocalSearchWithTabuList::LocalSearchWithTabuList
+    ( const LocalSearchWithTabuList& from ) {
+      GUM_CONS_CPY ( learning::LocalSearchWithTabuList );
     }
 
 
     /// move constructor
-    GreedyHillClimbing::GreedyHillClimbing ( GreedyHillClimbing&& from ) {
-      GUM_CONS_MOV ( learning::GreedyHillClimbing );
+    LocalSearchWithTabuList::LocalSearchWithTabuList
+    ( LocalSearchWithTabuList&& from ) {
+      GUM_CONS_MOV ( learning::LocalSearchWithTabuList );
     }
 
     
     /// destructor
-    GreedyHillClimbing::~GreedyHillClimbing () {
-      GUM_DESTRUCTOR ( learning::GreedyHillClimbing );
+    LocalSearchWithTabuList::~LocalSearchWithTabuList () {
+      GUM_DESTRUCTOR ( learning::LocalSearchWithTabuList );
     }
 
     
     /// copy operator
-    GreedyHillClimbing&
-    GreedyHillClimbing::operator= ( const GreedyHillClimbing& from ) {
+    LocalSearchWithTabuList&
+    LocalSearchWithTabuList::operator= ( const LocalSearchWithTabuList& from ) {
       return *this;
     }
 
 
     /// move operator
-    GreedyHillClimbing&
-    GreedyHillClimbing::operator= ( GreedyHillClimbing&& from ) {
+    LocalSearchWithTabuList&
+    LocalSearchWithTabuList::operator= ( LocalSearchWithTabuList&& from ) {
       return *this;
     }
 
