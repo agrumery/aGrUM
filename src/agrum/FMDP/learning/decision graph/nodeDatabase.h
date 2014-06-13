@@ -1,0 +1,124 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/**
+ * @file
+ * @brief Headers of the NodeDatabase class.
+ *
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
+ */
+
+// #define  TRACE_ALGO
+// =========================================================================
+#ifndef GUM_NODE_DATABASE_H
+#define GUM_NODE_DATABASE_H
+// =========================================================================
+#include <agrum/core/hashTable.h>
+#include <agrum/core/sequence.h>
+// =========================================================================
+#include <agrum/FMDP/learning/observation.h>
+#include <agrum/FMDP/learning/decision graph/varInfo.h>
+// =========================================================================
+#include <agrum/variables/discreteVariable.h>
+// =========================================================================
+
+namespace gum {
+
+  /**
+   * @class NodeDatabase NodeDatabase.h <agrum/FMDP/learning/nodeDatabase.h>
+   * @brief
+   * @ingroup fmdp_group
+   *
+   *
+   *
+   */
+
+  template<typename GUM_SCALAR>
+  class NodeDatabase {
+
+    public:
+
+      // ==========================================================================
+      /// @name Constructor & destructor.
+      // ==========================================================================
+      /// @{
+
+        // ###################################################################
+        /// Default constructor
+        // ###################################################################
+        NodeDatabase (const Set<const DiscreteVariable*>*, const DiscreteVariable*);
+        NodeDatabase (const Set<const DiscreteVariable*>*, const DiscreteVariable*, const Set<const Observation<GUM_SCALAR>*>*);
+
+        // ###################################################################
+        /// Default destructor
+        // ###################################################################
+        ~NodeDatabase();
+
+      /// @}
+
+      // ==========================================================================
+      /// @name
+      // ==========================================================================
+      /// @{
+
+        // ###################################################################
+        ///
+        // ###################################################################
+        void addObservation( const Observation<GUM_SCALAR>* );
+
+        // ###################################################################
+        ///
+        // ###################################################################
+        Sequence<NodeDatabase<GUM_SCALAR>*> splitOnVar(const DiscreteVariable*);
+
+        // ###################################################################
+        ///
+        // ###################################################################
+        double pValue( const DiscreteVariable* var) const { return __attrTable[var]->pValue(); }
+
+        // ###################################################################
+        ///
+        // ###################################################################
+        Idx nbObservation(){return __nbObservation;}
+
+      /// @}
+
+    private :
+
+      /// Table giving for every variables its instantiation
+      HashTable<const DiscreteVariable*, VarInfo<GUM_SCALAR>*> __attrTable;
+
+      /// A reference to this set of variable is only kept for fast and efficient split
+      const Set<const DiscreteVariable*>* __attrSet;
+      /// So does this reference on the value observed
+      const DiscreteVariable* __value;
+
+      ///
+      Idx __nbObservation;
+
+
+  };
+
+} /* namespace gum */
+
+
+#include <agrum/FMDP/learning/decision graph/nodeDatabase.tcc>
+
+#endif // GUM_NODE_DATABASE_H
+
