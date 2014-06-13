@@ -67,7 +67,8 @@ namespace gum {
     INLINE bool
     StructuralConstraintTabuList::checkArcAdditionAlone ( NodeId x, NodeId y )
       const noexcept {
-      return ! _TabuList__changes.existsFirst ( ArcDeletion ( x, y ) );
+      return ! _TabuList__changes.existsFirst ( ArcDeletion ( x, y ) ) &&
+        ! _TabuList__changes.existsFirst ( ArcAddition ( x, y ) );
     }
 
 
@@ -75,7 +76,8 @@ namespace gum {
     INLINE bool
     StructuralConstraintTabuList::checkArcDeletionAlone ( NodeId x, NodeId y )
       const noexcept {
-      return ! _TabuList__changes.existsFirst ( ArcAddition ( x, y ) );
+      return ! _TabuList__changes.existsFirst ( ArcAddition ( x, y ) ) &&
+        ! _TabuList__changes.existsFirst ( ArcDeletion ( x, y ) );
     }
 
     
@@ -83,7 +85,8 @@ namespace gum {
     INLINE bool
     StructuralConstraintTabuList::checkArcReversalAlone ( NodeId x, NodeId y )
       const noexcept {
-      return ! _TabuList__changes.existsFirst ( ArcReversal ( y, x ) );
+      return ! _TabuList__changes.existsFirst ( ArcReversal ( y, x ) ) &&
+        ! _TabuList__changes.existsFirst ( ArcReversal ( x, y ) );
     }
 
     

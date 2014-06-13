@@ -45,6 +45,7 @@ namespace gum {
       const std::vector<unsigned int>& modal,
       DAG dag ) {
       selector.setGraph ( dag, modal );
+      
       unsigned int nb_changes_applied = 1;
 
       // a vector that indicates which queues have valid scores, i.e., scores

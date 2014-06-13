@@ -447,8 +447,7 @@ namespace gum {
         __queues_valid = true;
       }
       
-      return __change_queue_per_node[i].topPriority () ==
-        std::numeric_limits<float>::min ();
+      return __change_queue_per_node[i].empty ();
     }
 
 
@@ -900,8 +899,7 @@ namespace gum {
     GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
     nodesSortedByBestScore () const {
       std::vector< std::pair<unsigned int,float> > result ( __node_queue.size () );
-
-      for ( unsigned int i = 0; i < __node_queue.size (); ++i ) {
+       for ( unsigned int i = 0; i < __node_queue.size (); ++i ) {
         result[i].first  = __node_queue[i];
         result[i].second = __node_queue.priorityByPos ( i );
       }
@@ -912,7 +910,7 @@ namespace gum {
                     return a.second > b.second; 
                   } );
       
-      return result;
+     return result;
     }
 
   } /* namespace learning */

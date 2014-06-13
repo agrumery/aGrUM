@@ -29,6 +29,8 @@
 #ifndef GUM_LEARNING_GRAPH_CHANGE_H
 #define GUM_LEARNING_GRAPH_CHANGE_H
 
+#include <iostream>
+#include <string>
 
 #include <agrum/config.h>
 #include <agrum/core/hashFunc.h>
@@ -114,6 +116,9 @@ namespace gum {
       /// returns the second node involved in the modification
       NodeId node2 () const noexcept;
 
+      /// put the content of the graph change into a string
+      virtual std::string toString () const;
+
       /// @}
       
       
@@ -183,6 +188,17 @@ namespace gum {
       bool operator!= ( const ArcAddition& from ) const noexcept;
 
       /// @}
+      
+
+      // ##########################################################################
+      /// @name Accessors / Modifiers
+      // ##########################################################################
+      /// @{
+
+      /// put the content of the ArcAddition into a string
+      virtual std::string toString () const final;
+
+      /// @}
 
     };
 
@@ -240,6 +256,17 @@ namespace gum {
 
       /// @}
 
+
+      // ##########################################################################
+      /// @name Accessors / Modifiers
+      // ##########################################################################
+      /// @{
+
+      /// put the content of the ArcDeletion into a string
+      virtual std::string toString () const final;
+
+      /// @}
+ 
     };
 
 
@@ -297,7 +324,36 @@ namespace gum {
 
       /// @}
 
-    };
+
+      // ##########################################################################
+      /// @name Accessors / Modifiers
+      // ##########################################################################
+      /// @{
+
+      /// put the content of the ArcReversal into a string
+      virtual std::string toString () const final;
+
+      /// @}
+
+     };
+
+    
+    /// a \c << operator for GraphChanges
+    std::ostream& operator<< ( std::ostream& stream,
+                               const GraphChange& change );
+
+  
+    /// a \c << operator for ArcAddition
+    std::ostream& operator<< ( std::ostream& stream,
+                               const ArcAddition& change );
+
+    /// a \c << operator for ArcDeletion
+    std::ostream& operator<< ( std::ostream& stream,
+                               const ArcDeletion& change );
+  
+    /// a \c << operator for ArcDeletion
+    std::ostream& operator<< ( std::ostream& stream,
+                               const ArcReversal& change );
 
 
   } /* namespace learning */

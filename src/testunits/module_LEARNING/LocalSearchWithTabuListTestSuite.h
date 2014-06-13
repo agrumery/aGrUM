@@ -106,7 +106,7 @@ namespace gum_tests {
         struct_constraint; 
 
       struct_constraint.setDefaultIndegree ( 2 );
-      struct_constraint.setTabuListSize ( 4 );
+      struct_constraint.setTabuListSize ( 20 );
 
       gum::NodeProperty<bool> slices {
         std::make_pair( gum::NodeId ( 0 ), 0 ),
@@ -128,12 +128,16 @@ namespace gum_tests {
       selector ( score, struct_constraint, op_set );
  
       gum::learning::LocalSearchWithTabuList search;
- 
-      gum::BayesNet<float> bn = search.learnBN ( selector, estimator,
-                                                 database.variableNames (),
-                                                 modalities, 3 );
 
-      std::cout << bn << std::endl << bn.dag () << std::endl;
+      try {
+        gum::BayesNet<float> bn = search.learnBN ( selector, estimator,
+                                                   database.variableNames (),
+                                                   modalities, 5 );
+        std::cout << bn << std::endl << bn.dag () << std::endl;
+      }
+      catch ( gum::Exception& e ) {
+        GUM_SHOWERROR ( e ); }
+      
     }
 
   };

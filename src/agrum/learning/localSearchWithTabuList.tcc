@@ -46,72 +46,114 @@ namespace gum {
       unsigned int N,
       DAG dag ) {
       selector.setGraph ( dag, modal );
-      unsigned int nb_changes_applied = 1;
+      
+      unsigned int nb_changes_applied;
+      bool are_changes_applied_yet;
+      unsigned int applied_change_with_positive_score;
+      unsigned int current_N = 0;
 
       // a vector that indicates which queues have valid scores, i.e., scores
       // that were not invalidated by previously applied changes
       std::vector<bool> impacted_queues ( dag.size (), false );
 
-      while ( nb_changes_applied ) {
-        nb_changes_applied = 0;
-
-        std::vector< std::pair<unsigned int,float> > ordered_queues =
-          selector.nodesSortedByBestScore ();
+      while ( current_N < N ) {
+        are_changes_applied_yet = false;
+        applied_change_with_positive_score = 0;
         
-        for ( unsigned int j = 0; j < dag.size (); ++j ) {
-          unsigned int i = ordered_queues[j].first;
-          if ( ! ( selector.empty ( i ) ) && ( selector.bestScore ( i ) > 0 ) ) {
-            // pick up the best change
-            const GraphChange& change = selector.bestChange ( i );
+        while ( ! are_changes_applied_yet || nb_changes_applied ) {
+          nb_changes_applied = 0;
 
-            // perform the change
-            switch ( change.type () ) {
-            case GraphChangeType::ARC_ADDITION:
-              if ( ! impacted_queues[ change.node2 () ] &&
-                   selector.isChangeValid ( change ) ) {
-                dag.insertArc ( change.node1 (), change.node2 () );
-                impacted_queues[ change.node2 () ] = true;
-                selector.applyChangeWithoutScoreUpdate ( change );
-                ++nb_changes_applied;
-              }
-              break;
+          std::vector< std::pair<unsigned int,float> > ordered_queues =
+            selector.nodesSortedByBestScore ();
+         
+          for ( unsigned int j = 0; j < dag.size (); ++j ) {
+            unsigned int i = ordered_queues[j].first;
+            if ( ! selector.empty ( i ) &&
+                 ( ! are_changes_applied_yet ||
+                   ( selector.bestScore ( i ) > 0 ) ) ) {
+              // pick up the best change
+              const GraphChange& change = selector.bestChange ( i );
+
+              // std::cout << "change = " << change.type () << " "
+              //           << change.node1 () << " " << change.node2 ()
+              //           << "  " << selector.bestScore ( i ) << std::endl;
+
+
+              // perform the change
+              switch ( change.type () ) {
+              case GraphChangeType::ARC_ADDITION:
+                if ( ! impacted_queues[ change.node2 () ] &&
+                     selector.isChangeValid ( change ) ) {
+                  if ( selector.bestScore ( i ) > 0 )
+                    ++applied_change_with_positive_score;
+                  dag.insertArc ( change.node1 (), change.node2 () );
+                  impacted_queues[ change.node2 () ] = true;
+                  selector.applyChangeWithoutScoreUpdate ( change );
+                  ++nb_changes_applied;
+                  are_changes_applied_yet = true;
+                }
+                else { std::cout << std::endl; }
+                break;
             
-            case GraphChangeType::ARC_DELETION:
-              if ( ! impacted_queues[ change.node2 () ] &&
-                   selector.isChangeValid ( change ) ) {
-                dag.eraseArc ( Arc ( change.node1 (), change.node2 () ) );
-                impacted_queues[ change.node2 () ] = true;
-                selector.applyChangeWithoutScoreUpdate ( change );
-                ++nb_changes_applied;
-              }
-              break;
+              case GraphChangeType::ARC_DELETION:
+                if ( ! impacted_queues[ change.node2 () ] &&
+                     selector.isChangeValid ( change ) ) {
+                  if ( selector.bestScore ( i ) > 0 )
+                    ++applied_change_with_positive_score;
+                  dag.eraseArc ( Arc ( change.node1 (), change.node2 () ) );
+                  impacted_queues[ change.node2 () ] = true;
+                  selector.applyChangeWithoutScoreUpdate ( change );
+                  ++nb_changes_applied;
+                  are_changes_applied_yet = true;
+                }
+                else { std::cout << std::endl; }
+                break;
             
-            case GraphChangeType::ARC_REVERSAL:
-              if ( ( ! impacted_queues[ change.node1 () ] ) &&
-                   ( ! impacted_queues[ change.node2 () ] ) &&
-                   selector.isChangeValid ( change ) ) {
-                dag.eraseArc ( Arc ( change.node1 (), change.node2 () ) );
-                dag.insertArc ( change.node2 (), change.node1 () );
-                impacted_queues[ change.node1 () ] = true;
-                impacted_queues[ change.node2 () ] = true;
-                selector.applyChangeWithoutScoreUpdate ( change );
-                ++nb_changes_applied;
-              }
-              break;
-            
-            default:
-              GUM_ERROR ( OperationNotAllowed,
+              case GraphChangeType::ARC_REVERSAL:
+                if ( ( ! impacted_queues[ change.node1 () ] ) &&
+                     ( ! impacted_queues[ change.node2 () ] ) &&
+                     selector.isChangeValid ( change ) ) {
+                  if ( selector.bestScore ( i ) > 0 )
+                    ++applied_change_with_positive_score;
+                  dag.eraseArc ( Arc ( change.node1 (), change.node2 () ) );
+                  dag.insertArc ( change.node2 (), change.node1 () );
+                  impacted_queues[ change.node1 () ] = true;
+                  impacted_queues[ change.node2 () ] = true;
+                  selector.applyChangeWithoutScoreUpdate ( change );
+                  ++nb_changes_applied;
+                  are_changes_applied_yet = true;
+                }
+                else { std::cout << std::endl; }
+                break;
+                
+              default:
+                GUM_ERROR ( OperationNotAllowed,
                           "edge modifications are not supported by local search" );
+              }
             }
           }
-        }
           
-        selector.updateScoresAfterAppliedChanges ();
+          selector.updateScoresAfterAppliedChanges ();
 
-        // reset the impacted queue and applied changes structures
-        for ( auto iter = impacted_queues.begin ();
-              iter != impacted_queues.end (); ++iter )
-          *iter = false;
+          // reset the impacted queue and applied changes structures
+          for ( auto iter = impacted_queues.begin ();
+                iter != impacted_queues.end (); ++iter )
+            *iter = false;
+
+          // stop the loop if we have found no change to apply
+          if ( ! nb_changes_applied )
+            are_changes_applied_yet = true;
+        }
+
+        // update current_N
+        if ( applied_change_with_positive_score ) {
+          current_N = 0;
+        }
+        else {
+          ++current_N;
+        }
+
+        //std::cout << "current N = " << current_N << std::endl;
       }
    
       return dag;
