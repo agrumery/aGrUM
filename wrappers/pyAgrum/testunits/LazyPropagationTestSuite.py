@@ -101,8 +101,15 @@ class TestDictFeature(LazyPropagationTestCase):
         ie2.setEvidence({'s': 'no', 'w': 'yes'})
         ie2.makeInference()
         result2 = ie2.marginal(self.r)
+        
+        ie3= LazyPropagation(self.bn)
+        ie3.addHardEvidence(self.bn.idFromName('s'),0)
+        ie3.addHardEvidence(self.bn.idFromName('w'),1)
+        ie3.makeInference()
+        result3 = ie3.marginal(self.r)
 
         self.assertListsAlmostEqual(result.tolist(), result2.tolist())
+        self.assertListsAlmostEqual(result.tolist(), result3.tolist())
 
     def testDictOfLabelsWithId(self):
         ie = LazyPropagation(self.bn)
