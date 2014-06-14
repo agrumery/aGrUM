@@ -47,7 +47,7 @@ namespace gum {
     INLINE SmallObjectAllocator::SmallObjectAllocator(const std::size_t& chunkSize, const std::size_t& maxObjectSize) :
         __chunkSize(chunkSize), __maxObjectSize(maxObjectSize){
       __pool.setKeyUniquenessPolicy(false);
-      GUM_CONSTRUCTOR(SmallObjectAllocator)
+//      GUM_CONSTRUCTOR(SmallObjectAllocator);
       nbAllocation = 0;
       nbDeallocation = 0;
     }
@@ -56,7 +56,7 @@ namespace gum {
     // Destructor.
     // ============================================================================
     INLINE SmallObjectAllocator::~SmallObjectAllocator(){
-      GUM_DESTRUCTOR(SmallObjectAllocator)
+//      GUM_DESTRUCTOR(SmallObjectAllocator)
 //      for(__Pool::iterator pit = __pool.begin(); pit != __pool.end(); ++pit)
 //        delete &*pit;              
     }

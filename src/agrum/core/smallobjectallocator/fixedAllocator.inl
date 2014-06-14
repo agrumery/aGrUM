@@ -155,6 +155,9 @@ namespace gum {
     // Allocates a block
     // ============================================================================
     INLINE void* FixedAllocator::allocate(){
+
+      std::lock_guard<std::mutex> guardian(__allocMutex);
+
       if(__chunks.empty() || __allocChunk->__blocksAvailable == 0){
         // no available memory in this chunk
         // Try to find one with memory available
@@ -179,13 +182,15 @@ namespace gum {
       }
 
 //      std::cout << "Allocateur choisi : " << (void*)__allocChunk->__pData << std::endl;
-      return __allocChunk->__allocate(__blockSize);
+       return __allocChunk->__allocate(__blockSize);
     }
 
     // ============================================================================
     // Deallocates a block
     // ============================================================================
     INLINE void FixedAllocator::deallocate(void* pDeallocatedBlock){
+
+      std::lock_guard<std::mutex> guardian(__allocMutex);
 
       if(__deallocChunk->__pData > pDeallocatedBlock ||
           pDeallocatedBlock > (__deallocChunk->__pData + ( __numBlocks * __blockSize ) ) ){
