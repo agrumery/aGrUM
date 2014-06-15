@@ -545,7 +545,14 @@ namespace gum {
       const HashTable<unsigned int,Size>&
         changes = __change_queue_per_node[ target_node ].allValues ();
       for ( auto iter = changes.cbegin (); iter != changes.cend (); ++iter ) {
-        changes_to_recompute.insert ( iter.key () );
+        if ( !  changes_to_recompute.exists ( iter.key () ) ) {
+          if ( __isChangeValid ( iter.key () ) ) {
+            changes_to_recompute.insert ( iter.key () );
+          }
+          else {
+            __invalidateChange ( iter.key () );
+          }
+        }
       }
     }
 
@@ -569,7 +576,7 @@ namespace gum {
       for ( auto change_index : changes_to_recompute ) {
         const GraphChange& change = __changes[change_index];
         if ( change.type () == GraphChangeType::ARC_REVERSAL ) {
-          // get the scores of both the tail and the head
+           // get the scores of both the tail and the head
           const float delta2 =
             __score->score ( j ) - __node_current_scores[ change.node2() ];
           ++j;
@@ -598,18 +605,18 @@ namespace gum {
 
           // update the score
           __change_scores[change_index].second = delta;
-
+ 
           // update the head queue
           __change_queue_per_node[change.node2 ()].setPriority
             ( change_index, delta );
 
           // indicate which queue was modified
           modified_nodes.insert ( change.node2 () );
-        }
+       }
 
         ++j;
       }
-
+ 
       // update the node queue
       for ( auto node : modified_nodes ) {
         __node_queue.setPriority

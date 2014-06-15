@@ -174,15 +174,15 @@ namespace gum {
     StructuralConstraintTabuList::modifyGraphAlone (  const GraphChange& change ) {
       switch ( change.type () ) {
       case GraphChangeType::ARC_ADDITION:
-        modifyGraphAlone ( reinterpret_cast<const ArcAddition&> ( change ) );
+        modifyGraphAlone ( static_cast<const ArcAddition&> ( change ) );
         break;
 
       case GraphChangeType::ARC_DELETION:
-        modifyGraphAlone ( reinterpret_cast<const ArcDeletion&> ( change ) );
+        modifyGraphAlone ( static_cast<const ArcDeletion&> ( change ) );
         break;
 
       case GraphChangeType::ARC_REVERSAL:
-        modifyGraphAlone ( reinterpret_cast<const ArcReversal&> ( change ) );
+        modifyGraphAlone ( static_cast<const ArcReversal&> ( change ) );
         break;
 
       default:

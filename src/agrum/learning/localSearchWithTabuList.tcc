@@ -65,7 +65,7 @@ namespace gum {
 
           std::vector< std::pair<unsigned int,float> > ordered_queues =
             selector.nodesSortedByBestScore ();
-         
+
           for ( unsigned int j = 0; j < dag.size (); ++j ) {
             unsigned int i = ordered_queues[j].first;
             if ( ! selector.empty ( i ) &&
@@ -92,7 +92,6 @@ namespace gum {
                   ++nb_changes_applied;
                   are_changes_applied_yet = true;
                 }
-                else { std::cout << std::endl; }
                 break;
             
               case GraphChangeType::ARC_DELETION:
@@ -106,7 +105,6 @@ namespace gum {
                   ++nb_changes_applied;
                   are_changes_applied_yet = true;
                 }
-                else { std::cout << std::endl; }
                 break;
             
               case GraphChangeType::ARC_REVERSAL:
@@ -123,7 +121,6 @@ namespace gum {
                   ++nb_changes_applied;
                   are_changes_applied_yet = true;
                 }
-                else { std::cout << std::endl; }
                 break;
                 
               default:

@@ -106,7 +106,7 @@ namespace gum_tests {
         struct_constraint; 
 
       struct_constraint.setDefaultIndegree ( 2 );
-      struct_constraint.setTabuListSize ( 20 );
+      struct_constraint.setTabuListSize ( 100 );
 
       gum::NodeProperty<bool> slices {
         std::make_pair( gum::NodeId ( 0 ), 0 ),
@@ -132,7 +132,7 @@ namespace gum_tests {
       try {
         gum::BayesNet<float> bn = search.learnBN ( selector, estimator,
                                                    database.variableNames (),
-                                                   modalities, 5 );
+                                                   modalities, 10 );
         std::cout << bn << std::endl << bn.dag () << std::endl;
       }
       catch ( gum::Exception& e ) {
