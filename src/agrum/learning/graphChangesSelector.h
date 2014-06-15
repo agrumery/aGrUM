@@ -174,9 +174,6 @@ namespace gum {
       /// the generator that restricts the set of possible changes
       GRAPH_CHANGES_GENERATOR<STRUCTURAL_CONSTRAINT>* __changes_generator;
 
-      /// the graph used to compute scores
-      const DiGraph* __graph { nullptr };
-
       /// a sequence containing all the possible changes
       Sequence<GraphChange> __changes;
 
@@ -209,6 +206,7 @@ namespace gum {
 
       /// the set of queues to update when applying several changes
       Set<unsigned int> __queues_to_update;
+
       
 
       /// prepare the next pack of  score computations
