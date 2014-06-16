@@ -90,12 +90,23 @@ namespace gum {
         // ###################################################################
         ///
         // ###################################################################
-        double pValue( const DiscreteVariable* var) const { return __attrTable[var]->pValue(); }
+        bool isPValueRelevant( const DiscreteVariable* var ) const { return __attrTable[var]->isPValueRelevant(); }
+        double pValue( const DiscreteVariable* var ) const { return __attrTable[var]->pValue(); }
 
         // ###################################################################
         ///
         // ###################################################################
         Idx nbObservation(){return __nbObservation;}
+
+        // ###################################################################
+        ///
+        // ###################################################################
+        GUM_SCALAR* probDist();
+
+        // ###################################################################
+        ///
+        // ###################################################################
+        GUM_SCALAR rewardValue();
 
       /// @}
 
@@ -111,6 +122,7 @@ namespace gum {
 
       ///
       Idx __nbObservation;
+      HashTable<Idx,Idx> __valueCount;
 
 
   };

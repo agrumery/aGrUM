@@ -80,25 +80,58 @@ namespace gum {
         // ==========================================================================
         /// Returns the pValue for this attribute
         // ==========================================================================
-        void addObservation( const Observation<GUM_SCALAR>* );
+        void addObservation( const Observation<GUM_SCALAR>* );        
+
+        // ==========================================================================
+        /// Used to know if enough information are stored on this node
+        /// to make pvalue relevant
+        // ==========================================================================
+        bool isPValueRelevant() { return __isRelevant;}
 
         // ==========================================================================
         /// Returns the pValue for this attribute
         // ==========================================================================
-        double pValue ( ) { return /* TO DO */__GStat;}
+        double pValue ( ) { return __pvalue;}
 
         const Set<const Observation<GUM_SCALAR>*>* observationSet(Idx modality){ return __modality2Observations[modality];}
 
       /// @}
 
-    private :
+  private :
 
+      void __checkRelevance();
       double __GVal(Idx, Idx);
+
+      // ==========================================================================
+      /// @name Chi2 computation
+      /// (This shouldn't be here but i don't have time to think of a better solution)
+      // ==========================================================================
+      /// @{
+
+        // ==========================================================================
+        /// computes the probability of normal z value
+        // ==========================================================================
+        double __probaZValue ( double z );
+
+        // ==========================================================================
+        /// computes the probability of chi2 value
+        // ==========================================================================
+        double __probaChi2 ( double chi2Val, unsigned long df );
+
+      /// @}
+
+
+      /// The attribute using this class
+      const DiscreteVariable* __attr;
+
+      /// The value used to compute pValue
+      const DiscreteVariable* __value;
 
       /// Table giving for every variables its instantiation
       HashTable<Idx, Set<const Observation<GUM_SCALAR>*>*> __modality2Observations;
 
-      ///
+      /// The number of observation taken into account
+      /// Used for the GStat
       Idx __nbObservation;
 
       /**
@@ -114,14 +147,16 @@ namespace gum {
       HashTable<Idx, Idx> __attrMarginalTable;
       HashTable<Idx, Idx> __valueMarginalTable;
 
-      /// The attribute using this class
-      const DiscreteVariable* __attr;
-
-      /// The value used to compute pValue
-      const DiscreteVariable* __value;
-
-      /// The Gstat
+      /// The Gstat,
+      /// the degree of freedom used for the computation of the p-value
+      /// andn the p-value
       double __GStat;
+      Idx __degreeOfFreedom;
+      double __pvalue;
+
+      /// Boolean to indicates whether p-value is relevant or not
+      bool __isRelevant;
+      std::vector<bool> __areRelevant;
   };
 
 } /* namespace gum */

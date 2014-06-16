@@ -57,8 +57,8 @@ namespace gum {
     // ============================================================================
     INLINE SmallObjectAllocator::~SmallObjectAllocator(){
 //      GUM_DESTRUCTOR(SmallObjectAllocator)
-//      for(__Pool::iterator pit = __pool.begin(); pit != __pool.end(); ++pit)
-//        delete &*pit;              
+      for(__Pool::iterator pit = __pool.begin(); pit != __pool.end(); ++pit)
+        delete pit.val();
     }
 
   // ############################################################################
@@ -80,11 +80,11 @@ namespace gum {
         if( numBlocks > UCHAR_MAX )
           numBlocks = UCHAR_MAX;
         FixedAllocator* newFa = new FixedAllocator(objectSize, numBlocks);
-        __pool.set(objectSize, *newFa);
+        __pool.set(objectSize, newFa);
       }
       nbAllocation++;
 
-      return __pool[objectSize].allocate();
+      return __pool[objectSize]->allocate();
     }
 
     // ============================================================================
@@ -94,7 +94,7 @@ namespace gum {
     // ============================================================================
     INLINE void SmallObjectAllocator::deallocate(void* pDeallocatedObject, const std::size_t &objectSize){
 //      std::cout << "Deallocating " << pDeallocatedObject << std::endl;
-      __pool[objectSize].deallocate(pDeallocatedObject);
+      __pool[objectSize]->deallocate(pDeallocatedObject);
       nbDeallocation++;
     }
 

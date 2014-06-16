@@ -121,7 +121,7 @@ namespace gum {
       // ============================================================================
       /// The pool containing FixedAllocator
       // ============================================================================
-      typedef HashTable<Size,FixedAllocator> __Pool;
+      typedef HashTable<Size,FixedAllocator*> __Pool;
       __Pool __pool;
 
       // ============================================================================

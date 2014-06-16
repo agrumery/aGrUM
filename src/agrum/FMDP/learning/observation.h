@@ -94,12 +94,12 @@ namespace gum {
         // ###################################################################
         /// Returns the reward obtained during this observation
         // ###################################################################
-        Idx reward( ) const { return __reward; }
+//        Idx reward( ) const { return __reward; }
 
         // ###################################################################
         /// Sets the reward obtained during this observation
         // ###################################################################
-        void setReward( GUM_SCALAR reward ) { __reward = reward; }
+//        void setReward( GUM_SCALAR reward ) { __reward = reward; }
 
       /// @}
 
@@ -128,7 +128,7 @@ namespace gum {
       HashTable<const DiscreteVariable*, Idx> __varInst;
 
       /// An eventual observed value for the instantiation
-      GUM_SCALAR __reward;
+//      GUM_SCALAR __reward;
   };
 
   extern template class Observation<float>;

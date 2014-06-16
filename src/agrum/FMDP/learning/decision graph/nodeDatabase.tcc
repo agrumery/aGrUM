@@ -28,6 +28,8 @@
 // =========================================================================
 #include <agrum/FMDP/learning/decision graph/nodeDatabase.h>
 // =========================================================================
+#include <agrum/multidim/multiDimDecisionGraph.h>
+// =========================================================================
 
 namespace gum {
 
@@ -47,6 +49,10 @@ namespace gum {
 
       for(SetIteratorSafe<const DiscreteVariable*> varIter = __attrSet->cbeginSafe(); varIter != __attrSet->cendSafe(); ++varIter)
         __attrTable.insert( *varIter, new VarInfo<GUM_SCALAR>(*varIter, value) );
+
+
+      for(Idx modality = 0; modality < __value->domainSize(); ++modality)
+        __valueCount.insert(modality, 0);
     }
 
 
@@ -65,6 +71,11 @@ namespace gum {
         __attrTable.insert( *varIter, new VarInfo<GUM_SCALAR>(*varIter, value, obsList) );
 
       __nbObservation = obsList->size();
+
+      for(Idx modality = 0; modality < __value->domainSize(); ++modality)
+        __valueCount.insert(modality, 0);
+      for( auto obsIter = obsList->cbeginSafe(); obsIter != obsList->cendSafe(); ++obsIter )
+        __valueCount[(*obsIter)->modality(__value)]++;
     }
 
 
@@ -74,8 +85,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     NodeDatabase<GUM_SCALAR>::~NodeDatabase(){
 
-      for(HashTableConstIteratorSafe<const DiscreteVariable*, VarInfo<GUM_SCALAR>*> varIter = __attrTable.cbeginSafe();
-          varIter != __attrTable.cendSafe(); ++varIter)
+      for(auto varIter = __attrTable.cbeginSafe(); varIter != __attrTable.cendSafe(); ++varIter)
         delete __attrTable[ *varIter ];
 
       GUM_DESTRUCTOR(NodeDatabase);
@@ -93,10 +103,10 @@ namespace gum {
     template <typename GUM_SCALAR>
     void NodeDatabase<GUM_SCALAR>::addObservation( const Observation<GUM_SCALAR>* newObs){
 
-      for(HashTableConstIteratorSafe<const DiscreteVariable*, VarInfo<GUM_SCALAR>*> varIter = __attrTable.cbeginSafe();
-          varIter != __attrTable.cendSafe(); ++varIter)
+      for(auto varIter = __attrTable.cbeginSafe(); varIter != __attrTable.cendSafe(); ++varIter)
         __attrTable[ *varIter ]->addObservation( newObs);
       __nbObservation++;
+      __valueCount[newObs->modality(__value)]++;
     }
 
 
@@ -112,5 +122,27 @@ namespace gum {
         reseq.insert( new NodeDatabase<GUM_SCALAR>( __attrSet, __value, __attrTable[var]->observationSet(modality)) );
 
       return reseq;
+    }
+
+    // ###################################################################
+    ///
+    // ###################################################################
+    template <typename GUM_SCALAR>
+    GUM_SCALAR* NodeDatabase<GUM_SCALAR>::probDist(){
+      GUM_SCALAR* ret = static_cast<GUM_SCALAR*>(MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(GUM_SCALAR)*__value->domainSize()));
+      for(Idx modality = 0; modality < __value->domainSize(); ++modality)
+        ret[modality] = (GUM_SCALAR)__valueCount[modality] / (GUM_SCALAR)__nbObservation;
+      return ret;
+    }
+
+    // ###################################################################
+    ///
+    // ###################################################################
+    template <typename GUM_SCALAR>
+    GUM_SCALAR NodeDatabase<GUM_SCALAR>::rewardValue(){
+      GUM_SCALAR ret = (GUM_SCALAR)0;
+      for(Idx modality = 0; modality < __value->domainSize(); ++modality)
+        ret[modality] = (GUM_SCALAR)__valueCount[modality] / (GUM_SCALAR)__nbObservation * atof(__value->label(modality).c_str());
+      return ret;
     }
 } // End of namespace gum

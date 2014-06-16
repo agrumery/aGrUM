@@ -61,7 +61,7 @@ namespace gum {
         // ###################################################################
         /// Default constructor
         // ###################################################################
-        IMDDI ( MultiDimDecisionGraph<GUM_SCALAR>* , double , Set<const DiscreteVariable*>, const DiscreteVariable*);
+        IMDDI ( MultiDimDecisionGraph<GUM_SCALAR>* , double , Set<const DiscreteVariable*>, const DiscreteVariable*, bool isReward = false);
 
         // ###################################################################
         /// Default destructor
@@ -90,7 +90,7 @@ namespace gum {
   private :
 
       // ==========================================================================
-      /// @name Updating methods
+      /// @name Updating private methods
       // ==========================================================================
       /// @{
 
@@ -112,37 +112,72 @@ namespace gum {
         void __turnIntoLeaf(NodeId);
 
         // ###################################################################
-        /// Bring given variable to the given node
+        /// Install given variable to the given node, ensuring that the variable
+        /// is not present in its subtree
         // ###################################################################
         void __transpose(NodeId, const DiscreteVariable*);
 
+        void __toDG();
+        NodeId __nodeRedundancyCheck( const DiscreteVariable*, NodeId* );
+
       /// @}
+
+
+      // ==========================================================================
+      /// @name Model handling datastructures
+      // ==========================================================================
+      /// @{
+
+        // ###################################################################
+        /// The source of nodeId
+        // ###################################################################
+        NodeGraphPart __model;
+
+        // ###################################################################
+        /// The root of the ordered tree
+        // ###################################################################
+        NodeId __root;
+
+        // ###################################################################
+        /// Gives for any node its associated variable
+        // ###################################################################
+        HashTable<NodeId, const DiscreteVariable*> __nodeVarMap;
+
+        // ###################################################################
+        /// A table giving for any node a table mapping to its son
+        /// idx is the modality of associated variable
+        // ###################################################################
+        HashTable<NodeId, NodeId*> __nodeSonsMap;
+
+        // ###################################################################
+        /// Associates to any variable the list of all nodes associated to
+        /// this variable
+        // ###################################################################
+        HashTable<const DiscreteVariable*, List<NodeId>*> __var2Node;
+
+      /// @}
+
 
       /// The final diagram we're building
       MultiDimDecisionGraph<GUM_SCALAR>* __target;
 
-      /// The total number of observation added to this tree
-      Idx __nbTotalObservation;
-
-      /// The threshold above which we consider variables to be dependant
-      double __dependenceThreshold;
+//      HashTable<NodeId,NodeId> __toTarget;
 
       Set<const DiscreteVariable*> __setOfVars;
-
       const DiscreteVariable* __value;
+      Sequence<const DiscreteVariable*> __varOrder;
+
+      /// The total number of observation added to this tree
+      Idx __nbTotalObservation;
 
       /// This hashtable binds every node to an associated NodeDatabase
       /// which handles every observation that concerns that node
       HashTable<NodeId, NodeDatabase<GUM_SCALAR>*> __nodeId2Database;
 
-      HashTable<NodeId, NodeId*> __nodeSonsMap;
+      /// The threshold above which we consider variables to be dependant
+      double __dependenceThreshold;
 
-      HashTable<NodeId, const DiscreteVariable*> __nodeVarMap;
-
-      NodeGraphPart __model;
-
-      NodeId __root;
-
+      bool __isReward;
   };
 
 } /* namespace gum */
