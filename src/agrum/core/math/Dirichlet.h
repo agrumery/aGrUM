@@ -151,11 +151,11 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/Dirichlet.inl>
+#include <agrum/core/math/Dirichlet.inl>
 #endif /* GUM_NO_INLINE */
 
 /// always include templates
-#include <agrum/learning/Dirichlet.tcc>
+#include <agrum/core/math/Dirichlet.tcc>
 
 
 #endif /* GUM_LEARNING_DIRICHLET_H */

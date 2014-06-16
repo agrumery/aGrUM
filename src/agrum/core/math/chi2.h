@@ -149,7 +149,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/chi2.inl>
+#include <agrum/core/math/chi2.inl>
 #endif /* GUM_NO_INLINE */
 
 

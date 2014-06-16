@@ -29,7 +29,7 @@
 
 
 #include <agrum/config.h>
-#include <agrum/learning/chi2.h>
+#include <agrum/core/math/chi2.h>
 
 
 // constants used by Gary Perlman for his code for computing chi2 critical values
@@ -44,7 +44,7 @@
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/chi2.inl>
+#include <agrum/core/math/chi2.inl>
 #endif /* GUM_NO_INLINE */
 
 

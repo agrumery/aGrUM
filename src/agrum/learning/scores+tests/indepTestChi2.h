@@ -35,7 +35,7 @@
 
 #include <vector>
 
-#include <agrum/learning/chi2.h>
+#include <agrum/core/math/chi2.h>
 #include <agrum/learning/scores+tests/independenceTest.h>
 
 

@@ -23,11 +23,11 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/learning/Dirichlet.h>
+#include <agrum/core/math/Dirichlet.h>
 
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/Dirichlet.inl>
+#include <agrum/core/math/Dirichlet.inl>
 #endif /* GUM_NO_INLINE */
 

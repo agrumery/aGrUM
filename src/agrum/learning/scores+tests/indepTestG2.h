@@ -34,7 +34,7 @@
 #define GUM_LEARNING_INDEP_TEST_G2_H
 
 
-#include <agrum/learning/chi2.h>
+#include <agrum/core/math/chi2.h>
 #include <agrum/learning/scores+tests/independenceTest.h>
 
 

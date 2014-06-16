@@ -22,7 +22,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
-#include <agrum/learning/Dirichlet.h>
+#include <agrum/core/math/Dirichlet.h>
 
 namespace gum_tests {
   
