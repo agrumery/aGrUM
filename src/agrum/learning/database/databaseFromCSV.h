@@ -42,6 +42,11 @@ namespace gum {
     
     class DatabaseFromCSV : public DatabaseVectInRAM {
     public:
+
+      /// the handler used for parsing the database
+      using Handler = typename DatabaseVectInRAM::Handler;
+
+      
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################

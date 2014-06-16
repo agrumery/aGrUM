@@ -104,8 +104,6 @@ namespace gum_tests {
     void test_asia () {
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
       
-      auto handler = database.handler ();
-      
       auto translators1 = gum::learning::make_translators
         ( gum::learning::Create<CellTranslator, gum::learning::Col<0>, 8 > () );
 
@@ -115,14 +113,13 @@ namespace gum_tests {
 
       auto generators = generators1;
       
-      auto filter1 = gum::learning::make_DB_row_filter ( handler, translators,
+      auto filter1 = gum::learning::make_DB_row_filter ( database, translators,
                                                          generators );
 
       auto filter = filter1;
 
-      auto handler1 = database.handler ();
-      auto filter2 = gum::learning::make_DB_row_filter ( handler1, translators,
-                                                         generators );
+      auto filter2 = gum::learning::make_DB_row_filter ( database, translators,
+                                                         generators1 );
       
       filter = std::move ( filter2 );
       

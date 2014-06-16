@@ -179,14 +179,15 @@ namespace gum {
      * auto filter = make_DB_row_filter( handler, translators, generators, false );
      * @endcode
      */
-    template<typename DBHandler, typename TranslatorSet, typename GeneratorSet>
-    constexpr DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>
-    make_DB_row_filter ( DBHandler& handler,
+    template<typename Database, typename TranslatorSet, typename GeneratorSet>
+    constexpr DBRowFilter<typename Database::Handler,TranslatorSet,GeneratorSet>
+    make_DB_row_filter ( const Database& database,
                          const TranslatorSet& translator_set,
                          const GeneratorSet& generator_set,
                          unsigned long initialization_range =
                          std::numeric_limits<unsigned long>::max () ) {
-      return DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>
+      typename Database::Handler handler = database.handler ();
+      return DBRowFilter<typename Database::Handler,TranslatorSet,GeneratorSet>
         ( handler, translator_set, generator_set, initialization_range );
     }
 

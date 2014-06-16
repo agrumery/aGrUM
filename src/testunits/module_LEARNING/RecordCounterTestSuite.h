@@ -66,14 +66,13 @@ namespace gum_tests {
     
     void test1 () {
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
-      auto handler = database.handler ();
 
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<CellTranslator, gum::learning::Col<0>, 8 > () );
 
       auto generators =  gum::learning::make_generators ( SimpleGenerator () );
       
-      auto filter = gum::learning::make_DB_row_filter ( handler, translators,
+      auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
 
       std::vector<unsigned int> modalities ( 8, 2);
