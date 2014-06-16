@@ -81,6 +81,9 @@ namespace gum {
       /// copy constructor
       DBTransformIdentity ( const DBTransformIdentity& );
 
+      /// move constructor
+      DBTransformIdentity ( DBTransformIdentity&& );
+
       /// destructor
       virtual ~DBTransformIdentity ();
 
@@ -95,6 +98,9 @@ namespace gum {
 
       /// copy operator
       DBTransformIdentity& operator= ( const DBTransformIdentity& );
+
+      /// move operator
+      DBTransformIdentity& operator= ( DBTransformIdentity&& );
 
       /// @}
 

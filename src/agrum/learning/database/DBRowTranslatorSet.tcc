@@ -57,6 +57,18 @@ namespace gum {
     }
  
 
+    /// move constructor
+    template <int Idx, typename Translator, typename... OtherTranslators> INLINE
+    BasicDBRowTranslatorSet<Idx,Translator,
+                            OtherTranslators...>::BasicDBRowTranslatorSet
+    ( BasicDBRowTranslatorSet<Idx,Translator,OtherTranslators...>&& from ) :
+      NextTranslators ( std::move ( from ) ),
+      __translator ( std::move ( from.__translator ) ) {
+      GUM_CONS_MOV ( BasicDBRowTranslatorSet );
+      __translator.setOutputCols ( Idx );
+    }
+ 
+
     /// destructor
     template <int Idx, typename Translator, typename... OtherTranslators> INLINE
     BasicDBRowTranslatorSet<Idx,Translator,
@@ -66,6 +78,38 @@ namespace gum {
     }
 
     
+    /// copy operator
+    template <int Idx, typename Translator, typename... OtherTranslators> INLINE
+    BasicDBRowTranslatorSet<Idx,Translator,
+                            OtherTranslators...>&
+    BasicDBRowTranslatorSet<Idx,Translator,
+                            OtherTranslators...>::operator=
+    ( const BasicDBRowTranslatorSet<Idx,Translator,OtherTranslators...>& from ) {
+      if ( this != &from ) {
+        NextTranslators::operator= ( from );
+        __translator = from.__translator;
+        __translator.setOutputCols ( Idx );
+      }
+      return *this;
+    }
+
+    
+    /// move operator
+    template <int Idx, typename Translator, typename... OtherTranslators> INLINE
+    BasicDBRowTranslatorSet<Idx,Translator,
+                            OtherTranslators...>&
+    BasicDBRowTranslatorSet<Idx,Translator,
+                            OtherTranslators...>::operator=
+    ( BasicDBRowTranslatorSet<Idx,Translator,OtherTranslators...>&& from ) {
+      if ( this != &from ) {
+        NextTranslators::operator= ( std::move ( from ) );
+        __translator = std::move ( from.__translator );
+        __translator.setOutputCols ( Idx );
+      }
+      return *this;
+    }
+ 
+
     /// sets the input row to filter
     template <int Idx, typename Translator, typename... OtherTranslators> INLINE
     void BasicDBRowTranslatorSet<Idx,Translator,
@@ -152,10 +196,49 @@ namespace gum {
     }
 
 
+    /// move constructor
+    template <typename... Translators> INLINE
+    DBRowTranslatorSet<Translators...>::DBRowTranslatorSet
+    ( DBRowTranslatorSet<Translators...>&& from ) :
+      TranslatorSet ( std::move ( from ) ),
+      __output_row ( std::move ( from.__output_row ) ) {
+      GUM_CONS_MOV ( DBRowTranslatorSet );
+      TranslatorSet::setOutputRow ( __output_row );
+    }
+
+
     /// destructor
     template <typename... Translators> INLINE
     DBRowTranslatorSet<Translators...>::~DBRowTranslatorSet () noexcept {
       GUM_DESTRUCTOR ( DBRowTranslatorSet );
+    }
+
+    
+    /// copy operator
+    template <typename... Translators> INLINE
+    DBRowTranslatorSet<Translators...>&
+    DBRowTranslatorSet<Translators...>::operator=
+    ( const DBRowTranslatorSet<Translators...>& from )  {
+      if ( this != &from ) {
+        TranslatorSet::operator= ( from );      
+        __output_row.row().resize ( TranslatorSet::output_size );
+        TranslatorSet::setOutputRow ( __output_row );
+      }
+      return *this;
+    }
+
+    
+    /// move operator
+    template <typename... Translators> INLINE
+    DBRowTranslatorSet<Translators...>&
+    DBRowTranslatorSet<Translators...>::operator=
+    ( DBRowTranslatorSet<Translators...>&& from )  {
+      if ( this != &from ) {
+        TranslatorSet::operator= ( std::move ( from ) );      
+        __output_row = std::move ( from.__output_row );
+        TranslatorSet::setOutputRow ( __output_row );
+      }
+      return *this;
     }
 
     

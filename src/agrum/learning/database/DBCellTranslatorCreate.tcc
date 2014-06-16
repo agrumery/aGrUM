@@ -60,13 +60,46 @@ namespace gum {
     }
   
 
+    /// move constructor
+    template <class Translator, typename Cols> INLINE
+    CreateOnce<Translator,Cols>::CreateOnce
+    ( CreateOnce<Translator,Cols>&& call ) :
+      __translator ( std::move ( call.__translator ) ) {
+      GUM_CONS_MOV ( CreateOnce );
+    }
+  
+
     /// destructor
     template <class Translator, typename Cols> INLINE
     CreateOnce<Translator,Cols>::~CreateOnce () noexcept {
       GUM_DESTRUCTOR ( CreateOnce );
     }
-  
 
+    
+    /// copy operator
+    template <class Translator, typename Cols> INLINE
+    CreateOnce<Translator,Cols>&
+    CreateOnce<Translator,Cols>::operator= 
+    ( const CreateOnce<Translator,Cols>& call ) {
+      if ( this != &call ) {
+        __translator = call.__translator;
+      }
+      return *this;
+    }
+
+
+    /// move operator
+    template <class Translator, typename Cols> INLINE
+    CreateOnce<Translator,Cols>&
+    CreateOnce<Translator,Cols>::operator= 
+    ( CreateOnce<Translator,Cols>&& call ) {
+      if ( this != &call ) {
+        __translator = std::move ( call.__translator );
+      }
+      return *this;
+    }
+
+    
     /// sets the row that will be read by the translator
     template <class Translator, typename Cols> INLINE
     void CreateOnce<Translator,Cols>::setInputRow ( const DBRow& row ) noexcept {
@@ -154,13 +187,54 @@ namespace gum {
     }
   
 
+    /// move constructor
+    template <typename Translator, typename Cols,
+              int nb_times, typename ColsIncr> INLINE
+    Create<Translator,Cols,nb_times,ColsIncr>::Create
+    ( Create<Translator,Cols,nb_times,ColsIncr>&& call ) :
+      CurrentTranslator ( std::move ( call ) ),
+      NextTranslators ( std::move ( call ) ) {
+      GUM_CONS_MOV ( Create );
+    }
+  
+
     /// destructor
     template <typename Translator, typename Cols,
               int nb_times, typename ColsIncr> INLINE
     Create<Translator,Cols,nb_times,ColsIncr>::~Create () noexcept {
       GUM_DESTRUCTOR ( Create );
     }
+
+
+    /// copy operator
+    template <typename Translator, typename Cols,
+              int nb_times, typename ColsIncr> INLINE
+    Create<Translator,Cols,nb_times,ColsIncr>&
+    Create<Translator,Cols,nb_times,ColsIncr>::operator= 
+    ( const Create<Translator,Cols,nb_times,ColsIncr>& from ) {
+      if ( this != &from ) {
+        CurrentTranslator::operator= ( from );
+        NextTranslators::operator= ( from );
+      }
+      return *this;
+    }
+
+    
+    /// move operator
+    template <typename Translator, typename Cols,
+              int nb_times, typename ColsIncr> INLINE
+    Create<Translator,Cols,nb_times,ColsIncr>&
+    Create<Translator,Cols,nb_times,ColsIncr>::operator= 
+    ( Create<Translator,Cols,nb_times,ColsIncr>&& from ) {
+      if ( this != &from ) {
+        CurrentTranslator::operator= ( std::move ( from ) );
+        NextTranslators::operator= ( std::move ( from ) );
+      }
+      return *this;
+    }
+
   
+
 
     /// sets the output columns written by all the applications of the translator
     template <typename Translator, typename Cols,

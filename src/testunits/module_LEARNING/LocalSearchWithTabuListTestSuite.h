@@ -45,6 +45,22 @@ namespace gum_tests {
 
     class CellTranslator : public gum::learning::DBCellTranslator<1,1> {
     public:
+      CellTranslator () {}
+
+      ~CellTranslator () {}
+      
+      CellTranslator ( const CellTranslator& from ) :
+      gum::learning::DBCellTranslator<1,1> ( from ),
+      __values ( from.__values ) {}
+      
+      CellTranslator& operator= ( const CellTranslator& from )  {
+        if ( this != & from ) {
+          gum::learning::DBCellTranslator<1,1>::operator= ( from );
+          __values = from.__values;
+        }
+        return *this;
+      }
+      
       void translate () { out (0) = in (0).getFloat (); }
       void initialize () {
         unsigned int nb = in(0).getFloat ();
@@ -70,6 +86,9 @@ namespace gum_tests {
       
     };
 
+
+    
+
     class SimpleGenerator : public gum::learning::FilteredRowGenerator {
     public:
       gum::learning::FilteredRow& generate () {
@@ -79,20 +98,34 @@ namespace gum_tests {
       unsigned int _computeRows () { return 1; }
     };
 
+    
+
 
     void test_asia () {
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
       
       auto handler = database.handler ();
       
-      auto translators = gum::learning::make_translators
+      auto translators1 = gum::learning::make_translators
         ( gum::learning::Create<CellTranslator, gum::learning::Col<0>, 8 > () );
 
-      auto generators =  gum::learning::make_generators ( SimpleGenerator () );
+      auto translators = translators1;
       
-      auto filter = gum::learning::make_DB_row_filter ( handler, translators,
-                                                        generators );
+      auto generators1 =  gum::learning::make_generators ( SimpleGenerator () );
 
+      auto generators = generators1;
+      
+      auto filter1 = gum::learning::make_DB_row_filter ( handler, translators,
+                                                         generators );
+
+      auto filter = filter1;
+
+      auto handler1 = database.handler ();
+      auto filter2 = gum::learning::make_DB_row_filter ( handler1, translators,
+                                                         generators );
+      
+      filter = std::move ( filter2 );
+      
       std::vector<unsigned int> modalities = filter.modalities ();
       
       gum::learning::ScoreK2<decltype ( filter ) >

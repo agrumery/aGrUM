@@ -85,8 +85,29 @@ namespace gum {
       DBRowFilter
       ( const DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>& filter ) noexcept;
 
+      /// move constructor
+      DBRowFilter
+      ( DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>&& filter ) noexcept;
+
       /// destructor
       virtual ~DBRowFilter () noexcept;
+
+      /// @}
+
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+
+      /// @{
+
+      /// copy operator
+      DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>&
+      operator= ( const DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>& );
+
+      /// move operator
+      DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>&
+      operator= ( DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>&& );
 
       /// @}
 

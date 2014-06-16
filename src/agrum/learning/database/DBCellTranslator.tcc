@@ -74,7 +74,41 @@ namespace gum {
     DBCellTranslator<Nb_inputs,Nb_outputs>::~DBCellTranslator () noexcept {
       GUM_DESTRUCTOR ( DBCellTranslator );
     }
-  
+
+    
+    /// copy operator
+    template <int Nb_inputs, int Nb_outputs> INLINE
+    DBCellTranslator<Nb_inputs,Nb_outputs>&
+    DBCellTranslator<Nb_inputs,Nb_outputs>::operator=
+    ( const DBCellTranslator<Nb_inputs,Nb_outputs>& translator ) {
+      if ( this != &translator ) {
+        _input_row  = translator._input_row;
+        _output_row = translator._output_row;
+        memcpy ( _input_cols, translator._input_cols,
+                 Nb_inputs * sizeof (unsigned int ) );
+        memcpy ( _output_cols, translator._output_cols,
+                 Nb_outputs * sizeof (unsigned int ) );
+      }
+      return *this;
+    }
+
+    
+    /// move operator
+    template <int Nb_inputs, int Nb_outputs> INLINE
+    DBCellTranslator<Nb_inputs,Nb_outputs>&
+    DBCellTranslator<Nb_inputs,Nb_outputs>::operator=
+    ( DBCellTranslator<Nb_inputs,Nb_outputs>&& translator ) {
+      if ( this != &translator ) {
+        _input_row  = translator._input_row;
+        _output_row = translator._output_row;
+        memcpy ( _input_cols, translator._input_cols,
+                 Nb_inputs * sizeof (unsigned int ) );
+        memcpy ( _output_cols, translator._output_cols,
+                 Nb_outputs * sizeof (unsigned int ) );
+      }
+      return *this;
+    }
+
 
     /// sets a new DBRow to translate
     template <int Nb_inputs, int Nb_outputs> INLINE

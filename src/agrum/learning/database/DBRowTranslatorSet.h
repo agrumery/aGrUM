@@ -54,6 +54,13 @@ namespace gum {
   
       BasicDBRowTranslatorSet () noexcept {}
       BasicDBRowTranslatorSet( const BasicDBRowTranslatorSet<Idx>& ) noexcept {}
+      BasicDBRowTranslatorSet( BasicDBRowTranslatorSet<Idx>&& ) noexcept {}
+      ~BasicDBRowTranslatorSet () noexcept {}
+      BasicDBRowTranslatorSet<Idx>&
+      operator= ( const BasicDBRowTranslatorSet<Idx>& ) noexcept { return *this; }
+      BasicDBRowTranslatorSet<Idx>&
+      operator= ( BasicDBRowTranslatorSet<Idx>&& ) noexcept { return *this; }
+
       void setInputRow ( const DBRow& ) noexcept {}
       void setOutputRow ( FilteredRow& ) noexcept {}
       void translate () noexcept {}
@@ -99,13 +106,38 @@ namespace gum {
       BasicDBRowTranslatorSet
       ( const BasicDBRowTranslatorSet<Idx,Translator,OtherTranslators...>& from );
   
+      /// move constructor
+      BasicDBRowTranslatorSet
+      ( BasicDBRowTranslatorSet<Idx,Translator,OtherTranslators...>&& from );
+  
     public:
       
      /// destructor
       ~BasicDBRowTranslatorSet () noexcept;
  
       /// @}
+      
 
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+
+      /// @{
+
+    protected:
+
+      /// copy operator
+      BasicDBRowTranslatorSet<Idx,Translator,OtherTranslators...>&
+      operator=
+      ( const BasicDBRowTranslatorSet<Idx,Translator,OtherTranslators...>& );
+
+      /// move operator
+      BasicDBRowTranslatorSet<Idx,Translator,OtherTranslators...>&
+      operator=
+      ( BasicDBRowTranslatorSet<Idx,Translator,OtherTranslators...>&& );
+      
+      /// @}
+      
   
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -191,12 +223,32 @@ namespace gum {
       /// copy constructor
       DBRowTranslatorSet ( const DBRowTranslatorSet<Translators...>& from );
 
+      /// move constructor
+      DBRowTranslatorSet ( DBRowTranslatorSet<Translators...>&& from );
+
       /// destructor
       ~DBRowTranslatorSet () noexcept;
   
       /// @}
   
-  
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+
+      /// @{
+
+      /// copy operator
+      DBRowTranslatorSet<Translators...>&
+      operator= ( const DBRowTranslatorSet<Translators...>& );
+
+      /// move operator
+      DBRowTranslatorSet<Translators...>&
+      operator= ( DBRowTranslatorSet<Translators...>&& );      
+
+      /// @}
+
+ 
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################

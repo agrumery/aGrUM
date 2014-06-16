@@ -46,11 +46,20 @@ namespace gum {
     /// copy constructor
     template<typename Generator, typename... OtherGenerators> INLINE
     FilteredRowGeneratorSet<Generator,OtherGenerators...>::FilteredRowGeneratorSet
-    ( const FilteredRowGeneratorSet<Generator,OtherGenerators...>& from )
-      noexcept :
+    ( const FilteredRowGeneratorSet<Generator,OtherGenerators...>& from ) :
       NextGenerators ( from ),
       __first_generator ( from.__first_generator ) {
       GUM_CONS_CPY ( FilteredRowGeneratorSet );
+    }
+
+
+    /// move constructor
+    template<typename Generator, typename... OtherGenerators> INLINE
+    FilteredRowGeneratorSet<Generator,OtherGenerators...>::FilteredRowGeneratorSet
+    ( FilteredRowGeneratorSet<Generator,OtherGenerators...>&& from ) noexcept :
+      NextGenerators ( std::move ( from ) ),
+      __first_generator ( std::move ( from.__first_generator ) ) {
+      GUM_CONS_MOV ( FilteredRowGeneratorSet );
     }
 
     
@@ -59,6 +68,32 @@ namespace gum {
     FilteredRowGeneratorSet<Generator,OtherGenerators...>::~FilteredRowGeneratorSet
     () noexcept {
       GUM_DESTRUCTOR ( FilteredRowGeneratorSet );
+    }
+
+
+    /// copy operator
+    template<typename Generator, typename... OtherGenerators> INLINE
+    FilteredRowGeneratorSet<Generator,OtherGenerators...>&
+    FilteredRowGeneratorSet<Generator,OtherGenerators...>::operator=
+    ( const FilteredRowGeneratorSet<Generator,OtherGenerators...>& from ) {
+      if ( this != &from ) {
+        NextGenerators::operator= ( from );
+        __first_generator = from.__first_generator;
+      }
+      return *this;
+    }
+
+
+    /// move operator
+    template<typename Generator, typename... OtherGenerators> INLINE
+    FilteredRowGeneratorSet<Generator,OtherGenerators...>&
+    FilteredRowGeneratorSet<Generator,OtherGenerators...>::operator=
+    ( FilteredRowGeneratorSet<Generator,OtherGenerators...>&& from ) {
+      if ( this != &from ) {
+        NextGenerators::operator= ( std::move ( from ) );
+        __first_generator = std::move ( from.__first_generator );
+      }
+      return *this;
     }
 
 

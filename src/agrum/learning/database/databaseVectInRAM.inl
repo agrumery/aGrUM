@@ -37,9 +37,9 @@ namespace gum {
     
     /// default constructor
     INLINE DatabaseVectInRAM::Handler::Handler ( const DatabaseVectInRAM& db ) :
-    __db ( db ),
-    __row ( db.content () ),
-    __end_index ( __row.size () ) {
+    __db ( &db ),
+    __row ( &( db.content () ) ),
+    __end_index ( __row->size () ) {
       GUM_CONSTRUCTOR ( DatabaseVectInRAM::Handler );
     }
         
@@ -56,11 +56,49 @@ namespace gum {
     }
 
     
+    /// move constructor
+    INLINE
+    DatabaseVectInRAM::Handler::Handler ( DatabaseVectInRAM::Handler&& h ) :
+      __db ( h.__db ),
+      __row ( h.__row ),
+      __index ( h.__index ),
+      __begin_index ( h.__begin_index ),
+      __end_index ( h.__end_index ) {
+      GUM_CONS_MOV ( DatabaseVectInRAM::Handler );
+    }
+
+    
     /// destructor
     INLINE DatabaseVectInRAM::Handler::~Handler () {
       GUM_DESTRUCTOR ( DatabaseVectInRAM::Handler );
     }
-      
+
+
+    /// copy operator
+    INLINE
+    DatabaseVectInRAM::Handler&
+    DatabaseVectInRAM::Handler::operator= ( const DatabaseVectInRAM::Handler& h ) {
+      __db = h.__db;
+      __row = h.__row;
+      __index = h.__index;
+      __begin_index = h.__begin_index;
+      __end_index = h.__end_index;
+      return *this;
+    }
+
+
+    /// move operator
+    INLINE
+    DatabaseVectInRAM::Handler&
+    DatabaseVectInRAM::Handler::operator= ( DatabaseVectInRAM::Handler&& h ) {
+      __db = h.__db;
+      __row = h.__row;
+      __index = h.__index;
+      __begin_index = h.__begin_index;
+      __end_index = h.__end_index;
+      return *this;
+    }
+
 
     /// returns the number of rows managed by the handler
     INLINE unsigned long DatabaseVectInRAM::Handler::size () const noexcept {
@@ -70,7 +108,7 @@ namespace gum {
 
     /// return the number of rows of the whole database
     INLINE unsigned long DatabaseVectInRAM::Handler::DBSize () const noexcept {
-      return __row.size ();
+      return __row->size ();
     }
 
     
@@ -79,7 +117,7 @@ namespace gum {
       if ( __index >= __end_index ) {
         GUM_ERROR ( OutOfBounds, "the handler has reached its end" );
       }
-      return __row[ __index ];
+      return __row->operator[] ( __index );
     }
 
 
@@ -121,7 +159,7 @@ namespace gum {
     /// returns the names of the variables
     INLINE const std::vector<std::string>&
     DatabaseVectInRAM::Handler::variableNames () const noexcept {
-      return __db.variableNames ();
+      return __db->variableNames ();
     }
 
 

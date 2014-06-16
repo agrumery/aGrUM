@@ -79,6 +79,9 @@ namespace gum {
       /// copy constructor
       DBTransform ( const DBTransform& );
 
+      /// move constructor
+      DBTransform ( DBTransform&& );
+
       /// destructor
       virtual ~DBTransform ();
 
@@ -93,6 +96,9 @@ namespace gum {
 
       /// copy operator
       DBTransform& operator= ( const DBTransform& );
+
+      /// move operator
+      DBTransform& operator= ( DBTransform&& );
 
       /// @}
 

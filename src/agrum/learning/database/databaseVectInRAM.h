@@ -63,7 +63,7 @@ namespace gum {
       class Handler : public DBHandler {
       public:
         // ########################################################################
-        /// @name Constructors
+        /// @name Constructors / Destructors
         // ########################################################################
         /// @{
 
@@ -73,11 +73,28 @@ namespace gum {
         /// copy constructor
         Handler ( const Handler& h );
 
+        /// move constructor
+        Handler ( Handler&& h );
+
         /// destructor
         virtual ~Handler ();
 
         /// @}
+
         
+        // ########################################################################
+        /// @name Operators
+        // ########################################################################
+        /// @{
+
+        /// copy operator
+        Handler& operator= ( const Handler& );
+
+        /// move operator
+        Handler& operator= ( Handler&& );
+        
+        /// @}
+
 
         // ########################################################################
         /// @name Accessors / Modifiers
@@ -120,10 +137,10 @@ namespace gum {
 
       private:
         /// a reference on the whole database, including variable names
-        const DatabaseVectInRAM& __db;
+        const DatabaseVectInRAM* __db;
         
         /// a reference on the database
-        const std::vector<DBRow>& __row;
+        const std::vector<DBRow>* __row;
 
         /// the index of the row currently pointed to by the handler
         unsigned long __index       { 0 };

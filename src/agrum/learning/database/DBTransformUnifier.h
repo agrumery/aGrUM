@@ -60,6 +60,9 @@ namespace gum {
       /// copy constructor
       DBTransformUnifier ( const DBTransformUnifier& );
 
+      /// move constructor
+      DBTransformUnifier ( DBTransformUnifier&& );
+
       /// destructor
       virtual ~DBTransformUnifier ();
 
@@ -74,6 +77,9 @@ namespace gum {
 
       /// copy operator
       DBTransformUnifier& operator= ( const DBTransformUnifier& );
+
+      /// move operator
+      DBTransformUnifier& operator= ( DBTransformUnifier&& );
 
       /// @}
 

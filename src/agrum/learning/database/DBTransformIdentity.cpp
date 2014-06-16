@@ -45,6 +45,13 @@ namespace gum {
     }
 
 
+    /// move constructor
+    DBTransformIdentity::DBTransformIdentity ( DBTransformIdentity&& from ) :
+      DBTransform ( from ) {
+      GUM_CONS_MOV ( DBTransformIdentity );
+    }
+
+
     /// destructor
     DBTransformIdentity::~DBTransformIdentity () {
       GUM_DESTRUCTOR ( DBTransformIdentity );
@@ -54,7 +61,15 @@ namespace gum {
     /// copy operator
     DBTransformIdentity&
     DBTransformIdentity::operator= ( const DBTransformIdentity& from ) {
-      DBTransform::operator=  ( from );
+      DBTransform::operator= ( from );
+      return *this;
+    }
+
+
+    /// move operator
+    DBTransformIdentity&
+    DBTransformIdentity::operator= ( DBTransformIdentity&& from ) {
+      DBTransform::operator= ( std::move ( from ) );
       return *this;
     }
 

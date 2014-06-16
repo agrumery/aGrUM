@@ -43,6 +43,12 @@ namespace gum {
       GUM_CONS_CPY ( DBTransform );
     }
 
+    
+    /// move constructor
+    DBTransform::DBTransform ( DBTransform&& ) {
+      GUM_CONS_MOV ( DBTransform );
+    }
+
 
     /// destructor
     DBTransform::~DBTransform () {
@@ -53,6 +59,13 @@ namespace gum {
     /// copy operator
     DBTransform&
     DBTransform::operator= ( const DBTransform& ) {
+      return *this;
+    }
+
+
+    /// move operator
+    DBTransform&
+    DBTransform::operator= ( DBTransform&& ) {
       return *this;
     }
 

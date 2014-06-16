@@ -131,6 +131,23 @@ namespace gum {
   
 
       // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+
+      /// @{
+
+      /// copy operator
+      DBCellTranslator<Nb_inputs,Nb_outputs>&
+      operator= ( const DBCellTranslator<Nb_inputs,Nb_outputs>& from );
+
+      /// move operator
+      DBCellTranslator<Nb_inputs,Nb_outputs>&
+      operator= ( DBCellTranslator<Nb_inputs,Nb_outputs>&& from );
+
+      /// @}
+
+
+      // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
 

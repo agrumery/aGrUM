@@ -46,10 +46,37 @@ namespace gum {
       GUM_CONS_CPY ( FilteredRowGenerator );
     }
 
+
+    /// move constructor
+    INLINE FilteredRowGenerator::FilteredRowGenerator
+    ( FilteredRowGenerator&& from ) noexcept :
+      _input_row ( from._input_row ),
+      _nb_remaining_output_rows { from._nb_remaining_output_rows } {
+      GUM_CONS_MOV ( FilteredRowGenerator );
+    }
+
     
     /// destructor
     INLINE FilteredRowGenerator::~FilteredRowGenerator () noexcept {
       GUM_DESTRUCTOR ( FilteredRowGenerator );
+    }
+
+    
+    /// copy operator
+    INLINE FilteredRowGenerator&
+    FilteredRowGenerator::operator= ( const FilteredRowGenerator& from ) noexcept {
+      _input_row = from._input_row;
+      _nb_remaining_output_rows = from._nb_remaining_output_rows;
+      return *this;
+    }
+
+
+    /// move operator
+    INLINE FilteredRowGenerator&
+    FilteredRowGenerator::operator= ( FilteredRowGenerator&& from ) noexcept {
+      _input_row = from._input_row;
+      _nb_remaining_output_rows = from._nb_remaining_output_rows;
+      return *this;
     }
 
 

@@ -88,12 +88,30 @@ namespace gum {
       /// copy constructor
       FilteredRowGenerator ( const FilteredRowGenerator& from ) noexcept;
 
+      /// move constructor
+      FilteredRowGenerator ( FilteredRowGenerator&& from ) noexcept;
+
       /// destructor
       virtual ~FilteredRowGenerator () noexcept;
 
       /// @}
 
-  
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+
+      /// @{
+
+      /// copy constructor
+      FilteredRowGenerator& operator= ( const FilteredRowGenerator& ) noexcept;
+      
+      /// move constructor
+      FilteredRowGenerator& operator= ( FilteredRowGenerator&& ) noexcept;
+      
+      /// @}
+      
+ 
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################

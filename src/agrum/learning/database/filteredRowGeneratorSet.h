@@ -60,8 +60,35 @@ namespace gum {
       FilteredRowGeneratorSet ( const FilteredRowGeneratorSet<>& from ) noexcept :
         __input_row ( from.__input_row ) {}
 
+      /// move constructor
+      FilteredRowGeneratorSet ( FilteredRowGeneratorSet<>&& from ) noexcept :
+        __input_row ( from.__input_row ) {}
+
       /// destructor
       ~FilteredRowGeneratorSet () noexcept {}
+
+      /// @}
+
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+
+      /// @{
+
+      /// copy operator
+      FilteredRowGeneratorSet<>&
+      operator= ( const FilteredRowGeneratorSet<>& from ) {
+        __input_row = from.__input_row;
+        return *this;
+      }
+
+      /// move operator
+      FilteredRowGeneratorSet<>&
+      operator= ( FilteredRowGeneratorSet<>&& from ) {
+        __input_row = from.__input_row;
+        return *this;
+      }
 
       /// @}
 
@@ -151,7 +178,11 @@ namespace gum {
 
       /// copy constructor
       FilteredRowGeneratorSet
-      ( const FilteredRowGeneratorSet<Generator,OtherGenerators...>& from )
+      ( const FilteredRowGeneratorSet<Generator,OtherGenerators...>& from );
+
+      /// move constructor
+      FilteredRowGeneratorSet
+      ( FilteredRowGeneratorSet<Generator,OtherGenerators...>&& from )
       noexcept;
 
       /// destructor
@@ -159,7 +190,24 @@ namespace gum {
 
       /// @}
 
-  
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+
+      /// @{
+
+      /// copy operator
+      FilteredRowGeneratorSet<Generator,OtherGenerators...>&
+      operator= ( const FilteredRowGeneratorSet<Generator,OtherGenerators...>& );
+
+      /// move operator
+      FilteredRowGeneratorSet<Generator,OtherGenerators...>&
+      operator= ( FilteredRowGeneratorSet<Generator,OtherGenerators...>&& );
+
+      /// @}
+
+ 
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################

@@ -62,6 +62,18 @@ namespace gum {
     }
     
 
+    /// move constructor
+    template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
+    INLINE
+    DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>::DBRowFilter
+    ( DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>&& filter ) noexcept :
+      __handler ( std::move ( filter.__handler ) ),
+      __translator_set ( std::move ( filter.__translator_set ) ),
+      __generator_set ( std::move ( filter.__generator_set ) ) {
+      GUM_CONS_MOV ( DBRowFilter );
+    }
+    
+
     /// destructor
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     INLINE
@@ -70,6 +82,36 @@ namespace gum {
     }
 
     
+    /// copy operator
+    template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
+    INLINE
+    DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>&
+    DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>::operator=
+    ( const DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>& filter ) {
+      if ( this != &filter ) {
+        __handler = filter.__handler;
+        __translator_set = filter.__translator_set;
+        __generator_set  = filter.__generator_set;
+      }
+      return *this;
+    }
+
+    
+    /// move operator
+    template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
+    INLINE
+    DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>&
+    DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>::operator=
+    ( DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>&& filter ) {
+      if ( this != &filter ) {
+        __handler = std::move ( filter.__handler );
+        __translator_set = std::move ( filter.__translator_set );
+        __generator_set  = std::move ( filter.__generator_set );
+      }
+      return *this;
+    }
+
+
     /// returns true if there are still rows that can be output by the RowFilter
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     INLINE bool

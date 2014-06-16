@@ -93,11 +93,31 @@ namespace gum {
       /// copy constructor
       CreateOnce ( const CreateOnce<Translator,Cols>& call );
 
+      /// move constructor
+      CreateOnce ( CreateOnce<Translator,Cols>&& call );
+
       /// destructor
       ~CreateOnce () noexcept;
   
       /// @}
 
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+
+      /// @{
+
+      /// copy operator
+      CreateOnce<Translator,Cols>&
+      operator= ( const CreateOnce<Translator,Cols>& from );
+      
+      /// move operator
+      CreateOnce<Translator,Cols>&
+      operator= ( CreateOnce<Translator,Cols>&& from );
+      
+      /// @}
+      
   
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -213,12 +233,32 @@ namespace gum {
       /// copy constructor
       Create ( const Create<Translator,Cols,nb_times,ColsIncr>& call );
   
+      /// move constructor
+      Create ( Create<Translator,Cols,nb_times,ColsIncr>&& call );
+  
       /// destructor
       ~Create () noexcept;
   
       /// @}
 
-  
+      
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+
+      /// @{
+
+      /// copy operator
+      Create<Translator,Cols,nb_times,ColsIncr>&
+      operator= ( const Create<Translator,Cols,nb_times,ColsIncr>& from );
+
+      /// move operator
+      Create<Translator,Cols,nb_times,ColsIncr>&
+      operator= ( Create<Translator,Cols,nb_times,ColsIncr>&& from );
+
+      /// @}
+
+
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
