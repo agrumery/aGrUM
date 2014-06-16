@@ -49,7 +49,6 @@ namespace gum {
    *
    */
 
-  template<typename GUM_SCALAR>
   class VarInfo {
 
     public:
@@ -63,7 +62,7 @@ namespace gum {
         /// Default constructor
         // ==========================================================================
         VarInfo ( const DiscreteVariable*, const DiscreteVariable* );
-        VarInfo ( const DiscreteVariable*, const DiscreteVariable*, const Set<const Observation<GUM_SCALAR>*>* );
+        VarInfo ( const DiscreteVariable*, const DiscreteVariable*, const Set<const Observation*>* );
 
         // ==========================================================================
         /// Default destructor
@@ -80,7 +79,7 @@ namespace gum {
         // ==========================================================================
         /// Returns the pValue for this attribute
         // ==========================================================================
-        void addObservation( const Observation<GUM_SCALAR>* );        
+        void addObservation( const Observation* );
 
         // ==========================================================================
         /// Used to know if enough information are stored on this node
@@ -93,7 +92,7 @@ namespace gum {
         // ==========================================================================
         double pValue ( ) { return __pvalue;}
 
-        const Set<const Observation<GUM_SCALAR>*>* observationSet(Idx modality){ return __modality2Observations[modality];}
+        const Set<const Observation*>* observationSet(Idx modality){ return __modality2Observations[modality];}
 
       /// @}
 
@@ -128,7 +127,7 @@ namespace gum {
       const DiscreteVariable* __value;
 
       /// Table giving for every variables its instantiation
-      HashTable<Idx, Set<const Observation<GUM_SCALAR>*>*> __modality2Observations;
+      HashTable<Idx, Set<const Observation*>*> __modality2Observations;
 
       /// The number of observation taken into account
       /// Used for the GStat

@@ -19,21 +19,22 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the NodeDatabase class.
+ * @brief Headers of the SPIMDDI class.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
 // #define  TRACE_ALGO
 // =========================================================================
-#ifndef GUM_NODE_DATABASE_H
-#define GUM_NODE_DATABASE_H
+#ifndef GUM_SPIMDDI_H
+#define GUM_SPIMDDI_H
 // =========================================================================
 #include <agrum/core/hashTable.h>
-#include <agrum/core/sequence.h>
 // =========================================================================
+#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
+#include <agrum/FMDP/planning/SPUDDPlanning.h>
 #include <agrum/FMDP/learning/observation.h>
-#include <agrum/FMDP/learning/decision graph/varInfo.h>
+#include <agrum/FMDP/learning/decision graph/IMDDI.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>
 // =========================================================================
@@ -41,7 +42,7 @@
 namespace gum {
 
   /**
-   * @class NodeDatabase NodeDatabase.h <agrum/FMDP/learning/nodeDatabase.h>
+   * @class SPIMDDI SPIMDDI.h <agrum/FMDP/learning/SPIMDDI.h>
    * @brief
    * @ingroup fmdp_group
    *
@@ -50,7 +51,7 @@ namespace gum {
    */
 
   template<typename GUM_SCALAR>
-  class NodeDatabase {
+  class SPIMDDI {
 
     public:
 
@@ -62,13 +63,12 @@ namespace gum {
         // ###################################################################
         /// Default constructor
         // ###################################################################
-        NodeDatabase (const Set<const DiscreteVariable*>*, const DiscreteVariable*);
-        NodeDatabase (const Set<const DiscreteVariable*>*, const DiscreteVariable*, const Set<const Observation*>*);
+        SPIMDDI ();
 
         // ###################################################################
         /// Default destructor
         // ###################################################################
-        ~NodeDatabase();
+        ~SPIMDDI ();
 
       /// @}
 
@@ -80,57 +80,45 @@ namespace gum {
         // ###################################################################
         ///
         // ###################################################################
-        void addObservation( const Observation* );
+        addVariable(const DiscreteVariable*);
+
+        addAction(std::string);
+
+      /// @}
+
+      // ==========================================================================
+      /// @name
+      // ==========================================================================
+      /// @{
 
         // ###################################################################
         ///
         // ###################################################################
-        Sequence<NodeDatabase<GUM_SCALAR>*> splitOnVar(const DiscreteVariable*);
-
-        // ###################################################################
-        ///
-        // ###################################################################
-        bool isPValueRelevant( const DiscreteVariable* var ) const { return __attrTable[var]->isPValueRelevant(); }
-        double pValue( const DiscreteVariable* var ) const { return __attrTable[var]->pValue(); }
-
-        // ###################################################################
-        ///
-        // ###################################################################
-        Idx nbObservation(){return __nbObservation;}
-
-        // ###################################################################
-        ///
-        // ###################################################################
-        GUM_SCALAR* probDist();
-
-        // ###################################################################
-        ///
-        // ###################################################################
-        GUM_SCALAR rewardValue();
+        addObservation(Idx, const Observation*);
 
       /// @}
 
     private :
 
-      /// Table giving for every variables its instantiation
-      HashTable<const DiscreteVariable*, VarInfo*> __attrTable;
-
-      /// A reference to this set of variable is only kept for fast and efficient split
-      const Set<const DiscreteVariable*>* __attrSet;
-      /// So does this reference on the value observed
-      const DiscreteVariable* __value;
-
       ///
-      Idx __nbObservation;
-      HashTable<Idx,Idx> __valueCount;
+      FactoredMarkovDecisionProcess<GUM_SCALAR>* __fmdp;
 
+      SPUDDPlanning<GUM_SCALAR>* __planer;
+
+      HashTable<Idx, List<IMDDI<GUM_SCALAR>*>*> __actionLearners;
+      IMDDI<GUM_SCALAR>* __rewardLearner;
+
+      Set<const DiscreteVariable*> __primedVariables;
+      Set<const DiscreteVariable*> __mainVariables;
 
   };
 
 } /* namespace gum */
 
 
-#include <agrum/FMDP/learning/decision graph/nodeDatabase.tcc>
+#include <agrum/FMDP/learning/SPIMDDI.tcc>
 
-#endif // GUM_NODE_DATABASE_H
+#endif // GUM_SPIMDDI_H
+
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
 

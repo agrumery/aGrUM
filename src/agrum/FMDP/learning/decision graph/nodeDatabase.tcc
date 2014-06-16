@@ -48,7 +48,7 @@ namespace gum {
       GUM_CONSTRUCTOR(NodeDatabase);
 
       for(SetIteratorSafe<const DiscreteVariable*> varIter = __attrSet->cbeginSafe(); varIter != __attrSet->cendSafe(); ++varIter)
-        __attrTable.insert( *varIter, new VarInfo<GUM_SCALAR>(*varIter, value) );
+        __attrTable.insert( *varIter, new VarInfo(*varIter, value) );
 
 
       for(Idx modality = 0; modality < __value->domainSize(); ++modality)
@@ -62,13 +62,13 @@ namespace gum {
     template <typename GUM_SCALAR>
     NodeDatabase<GUM_SCALAR>::NodeDatabase(const Set<const DiscreteVariable*>* attrSet,
                                            const DiscreteVariable* value,
-                                           const Set< const Observation<GUM_SCALAR>*>* obsList) : __attrSet(attrSet),
+                                           const Set< const Observation*>* obsList) : __attrSet(attrSet),
                                                                                                   __value(value){
 
       GUM_CONSTRUCTOR(NodeDatabase);
 
       for(SetIteratorSafe<const DiscreteVariable*> varIter = __attrSet->cbeginSafe(); varIter != __attrSet->cendSafe(); ++varIter)
-        __attrTable.insert( *varIter, new VarInfo<GUM_SCALAR>(*varIter, value, obsList) );
+        __attrTable.insert( *varIter, new VarInfo(*varIter, value, obsList) );
 
       __nbObservation = obsList->size();
 
@@ -101,7 +101,7 @@ namespace gum {
     //
     // ###################################################################
     template <typename GUM_SCALAR>
-    void NodeDatabase<GUM_SCALAR>::addObservation( const Observation<GUM_SCALAR>* newObs){
+    void NodeDatabase<GUM_SCALAR>::addObservation( const Observation* newObs){
 
       for(auto varIter = __attrTable.cbeginSafe(); varIter != __attrTable.cendSafe(); ++varIter)
         __attrTable[ *varIter ]->addObservation( newObs);

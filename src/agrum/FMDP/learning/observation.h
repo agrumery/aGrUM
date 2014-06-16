@@ -45,7 +45,6 @@ namespace gum {
    *
    */
 
-  template<typename GUM_SCALAR>
   class Observation {
 
     public:
@@ -126,13 +125,8 @@ namespace gum {
 
       /// Table giving for every variables its instantiation
       HashTable<const DiscreteVariable*, Idx> __varInst;
-
-      /// An eventual observed value for the instantiation
-//      GUM_SCALAR __reward;
   };
 
-  extern template class Observation<float>;
-  extern template class Observation<double>;
 } /* namespace gum */
 
 

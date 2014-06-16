@@ -93,7 +93,7 @@ namespace gum {
        * Adds an action to FMDP description
        * @throw DuplicateElement if an action with same name already exists
        */
-      void addAction ( const std::string& action );
+      Idx addAction ( const std::string& action );
 
       /**
        * Adds a variable transition table to specified action
@@ -204,6 +204,11 @@ namespace gum {
        * Returns transition associated to given in parameter variable
        */
       const MultiDimImplementation< GUM_SCALAR >* transition ( const DiscreteVariable* v ) const;
+
+      /**
+       * Returns transition associated to given in parameter variable and the given action
+       */
+      const MultiDimImplementation< GUM_SCALAR >* transition ( Idx actionId, const DiscreteVariable* v ) const;
 
       /**
        * Returns set of primed variable (variable at next instant )
