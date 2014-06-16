@@ -31,7 +31,6 @@
 
 #include <agrum/config.h>
 #include <agrum/core/hashTable.h>
-#include <agrum/learning/database.h>
 
 
 #define GUM_LEARNING_CONFIDENCE_PROBA 0.05
