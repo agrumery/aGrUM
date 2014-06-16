@@ -25,16 +25,16 @@
 #include <agrum/graphs/DAG.h>
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
-#include <agrum/learning/databaseFromCSV.h>
-#include <agrum/learning/scoreK2.h>
+#include <agrum/learning/database/databaseFromCSV.h>
+#include <agrum/learning/scores+tests/scoreK2.h>
+#include <agrum/learning/scores+tests/scoreBDeu.h>
+#include <agrum/learning/constraints/structuralConstraintDiGraph.h>
+#include <agrum/learning/constraints/structuralConstraintDAG.h>
+#include <agrum/learning/constraints/structuralConstraintIndegree.h>
+#include <agrum/learning/constraints/structuralConstraint2TimeSlice.h>
+#include <agrum/learning/constraints/structuralConstraintSet.h>
 #include <agrum/learning/K2.h>
-#include <agrum/learning/scoreBDeu.h>
 #include <agrum/learning/paramEstimatorML.h>
-#include <agrum/learning/structuralConstraintDiGraph.h>
-#include <agrum/learning/structuralConstraintDAG.h>
-#include <agrum/learning/structuralConstraintIndegree.h>
-#include <agrum/learning/structuralConstraint2TimeSlice.h>
-#include <agrum/learning/structuralConstraintSet.h>
 
 namespace gum_tests {
 

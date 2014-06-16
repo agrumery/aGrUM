@@ -22,8 +22,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
-#include <agrum/learning/databaseFromCSV.h>
-#include <agrum/learning/scoreLog2Likelihood.h>
+#include <agrum/learning/database/databaseFromCSV.h>
+#include <agrum/learning/scores+tests/scoreLog2Likelihood.h>
 
 namespace gum_tests {
 

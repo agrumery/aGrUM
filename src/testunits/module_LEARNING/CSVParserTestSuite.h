@@ -23,7 +23,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
-#include <agrum/learning/CSVParser.h>
+#include <agrum/learning/database/CSVParser.h>
 
 namespace gum_tests {
 

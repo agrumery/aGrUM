@@ -22,8 +22,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
-#include <agrum/learning/databaseFromCSV.h>
-#include <agrum/learning/indepTestChi2.h>
+#include <agrum/learning/database/databaseFromCSV.h>
+#include <agrum/learning/scores+tests/indepTestChi2.h>
 
 namespace gum_tests {
 

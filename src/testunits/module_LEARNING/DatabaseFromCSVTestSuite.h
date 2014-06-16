@@ -22,7 +22,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
-#include <agrum/learning/databaseFromCSV.h>
+#include <agrum/learning/database/databaseFromCSV.h>
 
 
 namespace gum_tests {

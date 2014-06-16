@@ -24,8 +24,8 @@
 #include <testsuite_utils.h>
 
 #include <agrum/core/set.h>
-#include <agrum/learning/databaseFromCSV.h>
-#include <agrum/learning/scoreBIC.h>
+#include <agrum/learning/database/databaseFromCSV.h>
+#include <agrum/learning/scores+tests/scoreBIC.h>
 
 namespace gum_tests {
 
