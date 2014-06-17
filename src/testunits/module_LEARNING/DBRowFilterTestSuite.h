@@ -35,7 +35,7 @@
 namespace gum_tests {
 
 
-  class LocalSearchWithTabuListTestSuite: public CxxTest::TestSuite {
+  class DBRowTestSuite: public CxxTest::TestSuite {
   public:
 
     class CellTranslator : public gum::learning::DBCellTranslator<1,1> {

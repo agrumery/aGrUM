@@ -32,6 +32,26 @@ namespace gum_tests {
 
     class CellTranslator : public gum::learning::DBCellTranslator<1,1> {
     public:
+      CellTranslator () {}
+
+      ~CellTranslator () {}
+      
+      CellTranslator ( const CellTranslator& from ) :
+      gum::learning::DBCellTranslator<1,1> ( from ),
+      __values ( from.__values ) {}
+
+      virtual CellTranslator* copyFactory () final {
+        return new CellTranslator ( *this );
+      }
+      
+      CellTranslator& operator= ( const CellTranslator& from )  {
+        if ( this != & from ) {
+          gum::learning::DBCellTranslator<1,1>::operator= ( from );
+          __values = from.__values;
+        }
+        return *this;
+      }
+      
       void translate () { out (0) = in (0).getFloat (); }
       void initialize () {
         unsigned int nb = in(0).getFloat ();
