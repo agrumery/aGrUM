@@ -33,7 +33,8 @@
 #include <agrum/learning/constraints/structuralConstraintIndegree.h>
 #include <agrum/learning/constraints/structuralConstraint2TimeSlice.h>
 #include <agrum/learning/constraints/structuralConstraintSet.h>
-#include <agrum/learning/graphChangesGeneratorOnceForAll.h>
+#include <agrum/learning/graphChangesGenerator.h>
+#include <agrum/learning/graphChangesGeneratorOnSubGraph.h>
 #include <agrum/learning/greedyHillClimbing.h>
 #include <agrum/learning/paramEstimatorML.h>
 
@@ -134,14 +135,14 @@ namespace gum_tests {
       gum::learning::ParamEstimatorML<decltype ( filter ) >
         estimator ( filter, modalities );
 
-      gum::learning::GraphChangesGeneratorOnceForAll
+      gum::learning::GraphChangesGenerator
         < decltype ( struct_constraint ) >
         op_set ( struct_constraint );
     
       gum::learning::GraphChangesSelector<
         decltype ( score ),
         decltype ( struct_constraint ),
-        gum::learning::GraphChangesGeneratorOnceForAll >
+        gum::learning::GraphChangesGenerator >
       selector ( score, struct_constraint, op_set );
  
       gum::learning::GreedyHillClimbing search;
@@ -176,14 +177,14 @@ namespace gum_tests {
       gum::learning::ParamEstimatorML<decltype ( filter ) >
         estimator ( filter, modalities );
 
-      gum::learning::GraphChangesGeneratorOnceForAll
+      gum::learning::GraphChangesGenerator
         < decltype ( struct_constraint ) >
         op_set ( struct_constraint );
     
       gum::learning::GraphChangesSelector<
         decltype ( score ),
         decltype ( struct_constraint ),
-        gum::learning::GraphChangesGeneratorOnceForAll >
+        gum::learning::GraphChangesGenerator >
       selector ( score, struct_constraint, op_set );
  
       gum::learning::GreedyHillClimbing search;
@@ -224,14 +225,14 @@ namespace gum_tests {
       gum::learning::ParamEstimatorML<decltype ( filter ) >
         estimator ( filter, modalities );
 
-      gum::learning::GraphChangesGeneratorOnceForAll
+      gum::learning::GraphChangesGenerator
         < decltype ( struct_constraint ) >
         op_set ( struct_constraint );
     
       gum::learning::GraphChangesSelector<
         decltype ( score ),
         decltype ( struct_constraint ),
-        gum::learning::GraphChangesGeneratorOnceForAll >
+        gum::learning::GraphChangesGenerator >
       selector ( score, struct_constraint, op_set );
  
       gum::learning::GreedyHillClimbing search;
@@ -275,14 +276,69 @@ namespace gum_tests {
       gum::learning::ParamEstimatorML<decltype ( filter ) >
         estimator ( filter, modalities );
 
-      gum::learning::GraphChangesGeneratorOnceForAll
+      gum::learning::GraphChangesGenerator
         < decltype ( struct_constraint ) >
         op_set ( struct_constraint );
     
       gum::learning::GraphChangesSelector<
         decltype ( score ),
         decltype ( struct_constraint ),
-        gum::learning::GraphChangesGeneratorOnceForAll >
+        gum::learning::GraphChangesGenerator >
+      selector ( score, struct_constraint, op_set );
+ 
+      gum::learning::GreedyHillClimbing search;
+
+      try {
+        gum::Timer timer;
+        gum::DAG bn = search.learnStructure ( selector, modalities );
+        std::cout << timer.step () << " : " << std::endl;
+        std::cout << bn << std::endl;
+      }
+      catch ( gum::Exception& e ) {
+        GUM_SHOWERROR ( e );
+      }
+      
+    }
+
+    
+    void test_alarm4 () {
+      gum::learning::DatabaseFromCSV database ( MY_ALARM );
+      
+      gum::learning::DBRowTranslatorVector< gum::learning::DBCellTranslator<1,1> >
+        translators;
+      translators.insertTranslator ( CellTranslator (),
+                                     gum::learning::Col<0> (),
+                                     database.content()[0].size () );
+      
+           
+      auto generators =  gum::learning::make_generators ( SimpleGenerator () );
+      auto filter = gum::learning::make_DB_row_filter ( database, translators,
+                                                        generators );
+      
+      std::vector<unsigned int> modalities = filter.modalities ();
+      
+      gum::learning::ScoreBDeu<decltype ( filter ) >
+        score ( filter, modalities );
+
+      gum::learning::StructuralConstraintSet<
+        gum::learning::StructuralConstraintDAG>
+        struct_constraint; 
+      
+      gum::learning::ParamEstimatorML<decltype ( filter ) >
+        estimator ( filter, modalities );
+
+      gum::learning::GraphChangesGeneratorOnSubGraph
+        < decltype ( struct_constraint ) >
+        op_set ( struct_constraint );
+
+      gum::NodeSet targets { 0, 1, 2 };
+      op_set.setTargets ( targets );
+      op_set.setTails ( modalities.size () );
+    
+      gum::learning::GraphChangesSelector<
+        decltype ( score ),
+        decltype ( struct_constraint ),
+        gum::learning::GraphChangesGeneratorOnSubGraph >
       selector ( score, struct_constraint, op_set );
  
       gum::learning::GreedyHillClimbing search;

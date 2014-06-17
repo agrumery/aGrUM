@@ -34,7 +34,7 @@
 #include <agrum/learning/constraints/structuralConstraint2TimeSlice.h>
 #include <agrum/learning/constraints/structuralConstraintTabuList.h>
 #include <agrum/learning/constraints/structuralConstraintSet.h>
-#include <agrum/learning/graphChangesGeneratorOnceForAll.h>
+#include <agrum/learning/graphChangesGenerator.h>
 #include <agrum/learning/localSearchWithTabuList.h>
 #include <agrum/learning/paramEstimatorML.h>
 
@@ -156,14 +156,14 @@ namespace gum_tests {
       gum::learning::ParamEstimatorML<decltype ( filter ) >
         estimator ( filter, modalities );
 
-      gum::learning::GraphChangesGeneratorOnceForAll
+      gum::learning::GraphChangesGenerator
         < decltype ( struct_constraint ) >
         op_set ( struct_constraint );
     
       gum::learning::GraphChangesSelector<
         decltype ( score ),
         decltype ( struct_constraint ),
-        gum::learning::GraphChangesGeneratorOnceForAll >
+        gum::learning::GraphChangesGenerator >
       selector ( score, struct_constraint, op_set );
  
     gum::learning::LocalSearchWithTabuList search;
@@ -214,14 +214,14 @@ namespace gum_tests {
       gum::learning::ParamEstimatorML<decltype ( filter ) >
         estimator ( filter, modalities );
 
-      gum::learning::GraphChangesGeneratorOnceForAll
+      gum::learning::GraphChangesGenerator
         < decltype ( struct_constraint ) >
         op_set ( struct_constraint );
     
       gum::learning::GraphChangesSelector<
         decltype ( score ),
         decltype ( struct_constraint ),
-        gum::learning::GraphChangesGeneratorOnceForAll >
+        gum::learning::GraphChangesGenerator >
       selector ( score, struct_constraint, op_set );
  
       gum::learning::LocalSearchWithTabuList search;
@@ -274,14 +274,14 @@ namespace gum_tests {
       gum::learning::ParamEstimatorML<decltype ( filter ) >
         estimator ( filter, modalities );
 
-      gum::learning::GraphChangesGeneratorOnceForAll
+      gum::learning::GraphChangesGenerator
         < decltype ( struct_constraint ) >
         op_set ( struct_constraint );
     
       gum::learning::GraphChangesSelector<
         decltype ( score ),
         decltype ( struct_constraint ),
-        gum::learning::GraphChangesGeneratorOnceForAll >
+        gum::learning::GraphChangesGenerator >
       selector ( score, struct_constraint, op_set );
  
       gum::learning::LocalSearchWithTabuList search;
@@ -336,14 +336,14 @@ namespace gum_tests {
       gum::learning::ParamEstimatorML<decltype ( filter ) >
         estimator ( filter, modalities );
 
-      gum::learning::GraphChangesGeneratorOnceForAll
+      gum::learning::GraphChangesGenerator
         < decltype ( struct_constraint ) >
         op_set ( struct_constraint );
     
       gum::learning::GraphChangesSelector<
         decltype ( score ),
         decltype ( struct_constraint ),
-        gum::learning::GraphChangesGeneratorOnceForAll >
+        gum::learning::GraphChangesGenerator >
       selector ( score, struct_constraint, op_set );
  
       gum::learning::LocalSearchWithTabuList search;

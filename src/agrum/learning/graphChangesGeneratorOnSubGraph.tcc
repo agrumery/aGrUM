@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The basic class for computing the next graph changes possible in a
- * structure learning algorithm
+ * @brief The class for computing the set of graph changes (over a subgraph)
+ * transmitted to learning algorithms
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -33,54 +33,57 @@ namespace gum {
     
     /// default constructor
     template <typename STRUCT_CONSTRAINT>
-    GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>::
-    GraphChangesGeneratorOnceForAll
+    GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::
+    GraphChangesGeneratorOnSubGraph
     ( STRUCT_CONSTRAINT& constraint ) :
     _constraint ( &constraint ) {
-      GUM_CONSTRUCTOR ( GraphChangesGeneratorOnceForAll );
+      GUM_CONSTRUCTOR ( GraphChangesGeneratorOnSubGraph );
     }
 
 
     /// copy constructor
     template <typename STRUCT_CONSTRAINT>
-    GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>::
-    GraphChangesGeneratorOnceForAll
-    ( const GraphChangesGeneratorOnceForAll& from ) :
-      _graph ( from._graph ),
+    GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::
+    GraphChangesGeneratorOnSubGraph
+    ( const GraphChangesGeneratorOnSubGraph& from ) :
       _constraint ( from._constraint ),
+      _target_nodes ( from._target_nodes ),
+      _tail_nodes ( from._tail_nodes ),
       _legal_changes ( from._legal_changes ) {
-      GUM_CONS_CPY ( GraphChangesGeneratorOnceForAll );
+      GUM_CONS_CPY ( GraphChangesGeneratorOnSubGraph );
     }
 
 
     /// move operator
     template <typename STRUCT_CONSTRAINT>
-    GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>::
-    GraphChangesGeneratorOnceForAll
-    ( GraphChangesGeneratorOnceForAll&& from ) :
-      _graph ( std::move ( from._graph ) ),
+    GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::
+    GraphChangesGeneratorOnSubGraph
+    ( GraphChangesGeneratorOnSubGraph&& from ) :
       _constraint ( from._constraint ),
+      _target_nodes ( std::move ( from._target_nodes ) ),
+      _tail_nodes ( std::move ( from._tail_nodes ) ),
       _legal_changes ( std::move ( from._legal_changes ) ) {
-      GUM_CONS_MOV ( GraphChangesGeneratorOnceForAll );
+      GUM_CONS_MOV ( GraphChangesGeneratorOnSubGraph );
     }
 
 
     /// destructor
     template <typename STRUCT_CONSTRAINT>
-    GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>::
-    ~GraphChangesGeneratorOnceForAll () {
-      GUM_DESTRUCTOR ( GraphChangesGeneratorOnceForAll );
+    GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::
+    ~GraphChangesGeneratorOnSubGraph () {
+      GUM_DESTRUCTOR ( GraphChangesGeneratorOnSubGraph );
     }
 
 
     /// copy operator
     template <typename STRUCT_CONSTRAINT>
-    GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>&
-    GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>::operator=
-    ( const GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>& from ) {
+    GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>&
+    GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::operator=
+    ( const GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>& from ) {
       if ( this != &from ) {
-        _graph = from._graph;
         _constraint = from._constraint;
+        _target_nodes  = from._target_nodes;
+        _tail_nodes    = from._tail_nodes;
         _legal_changes = from._legal_changes;
       }
       return *this;
@@ -89,12 +92,13 @@ namespace gum {
 
     /// move operator
     template <typename STRUCT_CONSTRAINT>
-    GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>&
-    GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>::operator=
-    ( GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>&& from ) {
+    GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>&
+    GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::operator=
+    ( GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>&& from ) {
       if ( this != &from ) {
-        _graph = std::move ( from._graph );
         _constraint = std::move ( from._constraint );
+        _target_nodes  = std::move ( from._target_nodes );
+        _tail_nodes    = std::move ( from._tail_nodes );
         _legal_changes = std::move ( from._legal_changes );
       }
       return *this;
@@ -103,7 +107,7 @@ namespace gum {
 
     /// create the set of legal and illegal changes from a given graph
     template <typename STRUCT_CONSTRAINT>
-    void GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>::_createChanges () {
+    void GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::_createChanges () {
       _legal_changes.clear ();
       
       // for all the pairs of nodes, consider adding, reverse and removing arcs 
@@ -122,9 +126,9 @@ namespace gum {
         const int this_thread = getThreadNumber ();
         
         unsigned int i = 0;
-        for ( const auto node1 : _graph ) {
+        for ( const auto node1 : _tail_nodes ) {
           if ( i == this_thread ) {
-            for ( const auto node2 : _graph ) {
+            for ( const auto node2 : _target_nodes ) {
               if ( node1 != node2 ) {
                 // try arc additions
                 ArcAddition arc_add ( node1, node2 );
@@ -152,7 +156,7 @@ namespace gum {
       }
 
       // now store the changes into the protected vectors of the
-      // GraphChangesGeneratorOnceForAll
+      // GraphChangesGeneratorOnSubGraph
       for ( const auto& changes : legal_changes ) {
         for ( const auto& change : changes ) {
           _legal_changes.insert ( std::move ( change ) );
@@ -164,19 +168,75 @@ namespace gum {
     /// sets a new graph from which the operator will compute possible changes
     template <typename STRUCT_CONSTRAINT> INLINE
     void
-    GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>::setGraph
+    GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::setGraph
     ( const DiGraph& graph ) {
-      // sets the current graph
-      _graph = graph;
-
       // generate the set of all changes
       _createChanges ();
     }
 
     
+    /// assign a set of target nodes
+    template <typename STRUCT_CONSTRAINT> INLINE
+    void GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::setTargets
+    ( const NodeSet& nodes ) {
+      _target_nodes = nodes;
+    }
+
+
+    /// adds a new target node
+    template <typename STRUCT_CONSTRAINT> INLINE
+    void GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::addTarget
+    ( NodeId node ) {
+      _target_nodes.insert ( node );
+    }
+
+
+    /// removes a target
+    template <typename STRUCT_CONSTRAINT> INLINE
+    void GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::eraseTarget
+    ( NodeId node ) {
+      _target_nodes.erase ( node );
+    }
+
+
+    /// assign a set of "tail" nodes
+    template <typename STRUCT_CONSTRAINT> INLINE
+    void GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::setTails
+    ( const NodeSet& nodes ) {
+      _tail_nodes = nodes;
+    }
+
+
+    /// assign a set of "tail" nodes
+    template <typename STRUCT_CONSTRAINT> INLINE
+    void GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::setTails
+    ( unsigned int nb_nodes ) {
+      _tail_nodes.clear ();
+      for ( unsigned int i = 0; i < nb_nodes; ++i ) {
+        _tail_nodes.insert ( i );
+      }
+    }
+
+
+    /// adds a new "tail" node
+    template <typename STRUCT_CONSTRAINT> INLINE
+    void GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::addTail
+    ( NodeId node ) {
+      _tail_nodes = node;
+    }
+
+
+    /// removes a tail node
+    template <typename STRUCT_CONSTRAINT> INLINE
+    void GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::eraseTail
+    ( NodeId node ) {
+      _tail_nodes.erase ( node );
+    }
+
+    
     /// empty the set of possible change operators that can be applied
     template <typename STRUCT_CONSTRAINT> INLINE
-    void GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>::clearChanges ()
+    void GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::clearChanges ()
       noexcept {
       _legal_changes.clear ();
      }
@@ -184,44 +244,44 @@ namespace gum {
     
     /// returns an (unsafe) iterator on the beginning of the list of operators
     template <typename STRUCT_CONSTRAINT> INLINE
-    typename GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>::iterator
-    GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>::begin () const {
+    typename GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::iterator
+    GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::begin () const {
       return _legal_changes.cbegin ();
     }
 
     
     /// returns an (unsafe) iterator on the end of the list of operators
     template <typename STRUCT_CONSTRAINT> INLINE
-    const typename GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>::iterator&
-    GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>::end () const {
+    const typename GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::iterator&
+    GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::end () const {
       return _legal_changes.cend ();
     }
 
 
     /// notify the operator set of a change applied to the graph
     template <typename STRUCT_CONSTRAINT> INLINE
-    void GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>::modifyGraph
+    void GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::modifyGraph
     ( const ArcAddition& change ) {
     }
     
 
     /// notify the operator set of a change applied to the graph
     template <typename STRUCT_CONSTRAINT> INLINE
-    void GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>::modifyGraph
+    void GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::modifyGraph
     ( const ArcDeletion& change ) {
     }
 
 
     /// notify the operator set of a change applied to the graph
     template <typename STRUCT_CONSTRAINT> INLINE
-    void GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>::modifyGraph
+    void GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::modifyGraph
     ( const ArcReversal& change ) {
     }
 
 
     /// notify the operator set of a change applied to the graph
     template <typename STRUCT_CONSTRAINT> INLINE
-    void GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>::modifyGraph
+    void GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::modifyGraph
     ( const GraphChange& change ) {
     }
 
@@ -229,7 +289,7 @@ namespace gum {
     /// notifies the generator that we have parsed all its legal changes
     template <typename STRUCT_CONSTRAINT> INLINE
     void
-    GraphChangesGeneratorOnceForAll<STRUCT_CONSTRAINT>::notifyGetCompleted () {
+    GraphChangesGeneratorOnSubGraph<STRUCT_CONSTRAINT>::notifyGetCompleted () {
       if ( _legal_changes.size () )
         _legal_changes.clear ();
     }
