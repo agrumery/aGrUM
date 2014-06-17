@@ -124,6 +124,9 @@ namespace gum {
       /// move constructor
       DBCellTranslator ( DBCellTranslator<Nb_inputs,Nb_outputs>&& ) noexcept;
 
+      /// virtual copy constructor
+      virtual DBCellTranslator<Nb_inputs, Nb_outputs>* copyFactory () = 0;
+
       /// destructor
       virtual ~DBCellTranslator () noexcept;
 

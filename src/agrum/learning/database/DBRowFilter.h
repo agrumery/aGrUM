@@ -31,6 +31,7 @@
 #include <agrum/learning/database/DBHandler.h>
 #include <agrum/learning/database/DBRowTranslatorSet.h>
 #include <agrum/learning/database/filteredRowGeneratorSet.h>
+#include <agrum/learning/database/DBRowTranslatorVector.h>
 
 
 namespace gum {
@@ -42,17 +43,16 @@ namespace gum {
     /** @class DBRowFilter
      * @ingroup learning_group
      * @brief the class used to read a row in the database and to transform it
-     * into a set of FilteredRows that can be used for learning. A DBRowFilter
-     * contains a handler on the database that will actually interact with it
-     * to read DBRows, a set of cell translators that will transform the DBRows
-     * into FilteredRows, and a set of generators that will transform the
-     * filtered rows into new sets of filtered rows (see FilteredRowGenerator
-     * for more details about generators). An example of the construction of
-     * a row filter can be as follows (using helper function make_DB_row_filter
-     * that produces a DBRowFilter):
-     * @code
-     * Database::Handler handler ( database );
+     * into a set of FilteredRows that can be used for learning.
      *
+     * A DBRowFilter contains a handler on the database that will actually
+     * interact with it to read DBRows, a set of cell translators that will
+     * transform the DBRows into FilteredRows, and a set of generators that will
+     * transform the filtered rows into new sets of filtered rows (see
+     * FilteredRowGenerator for more details about generators). An example of the
+     * construction of a row filter can be as follows (using helper function
+     * make_DB_row_filter that produces a DBRowFilter):
+     * @code
      * auto translators = make_translators
      *   ( Create<CellTranslator1, Col<0> > (),
      *     Create<CellTranslator1, Col<1>, 4 > () );
@@ -61,8 +61,7 @@ namespace gum {
      *   ( EMGenerator (),
      *     TimeSlicerGenerator () );
      *
-     *
-     * auto filter = make_DB_row_filter ( handler, translators, generators );
+     * auto filter = make_DB_row_filter ( database, translators, generators );
      * @endcode
      */
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
@@ -162,8 +161,6 @@ namespace gum {
     /// a helper used to easily create a DBRowFilter
     /** The following code shows how to use this function:
      * @code
-     * Database::Handler handler ( database );
-     *
      * auto translators = make_translators
      *   ( Create<CellTranslator1, Col<0> > (),
      *     Create<CellTranslator1, Col<1>, 4 > () );
@@ -173,10 +170,10 @@ namespace gum {
      *     TimeSlicerGenerator () );
      *
      * // create a filter that will parse the DB to initialize the cell filters
-     * auto filter = make_DB_row_filter( handler, translators, generators );
+     * auto filter = make_DB_row_filter( database, translators, generators );
      *
      * // create a filter that will not initialize the cell filters
-     * auto filter = make_DB_row_filter( handler, translators, generators, false );
+     * auto filter = make_DB_row_filter( database, translators, generators, 0 );
      * @endcode
      */
     template<typename Database, typename TranslatorSet, typename GeneratorSet>

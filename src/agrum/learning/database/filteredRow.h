@@ -83,6 +83,24 @@ namespace gum {
       /// @}
 
       
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+
+      /// @{
+
+      /// tests whether two rows are identical
+      bool operator== ( const FilteredRow& from ) {
+        return ( ( __weight == from.__weight ) &&
+                 ( __nb_unobserved == from.__nb_unobserved ) &&
+                 ( __row == from.__row ) );
+      }
+
+      /// tests whether two rows are different
+      bool operator!= ( const FilteredRow& from ) { return ! operator== ( from ); }
+
+      /// @}
+      
     private:
       
       /// the integer-encoded filtered row

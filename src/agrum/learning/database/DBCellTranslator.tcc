@@ -109,7 +109,7 @@ namespace gum {
       return *this;
     }
 
-
+    
     /// sets a new DBRow to translate
     template <int Nb_inputs, int Nb_outputs> INLINE
     void DBCellTranslator<Nb_inputs,Nb_outputs>::setInputRow

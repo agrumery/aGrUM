@@ -37,6 +37,8 @@
 #include <agrum/learning/greedyHillClimbing.h>
 #include <agrum/learning/paramEstimatorML.h>
 
+#define MY_ALARM GET_PATH_STR( "alarm.csv" )
+
 namespace gum_tests {
 
   class GreedyHillClimbingTestSuite: public CxxTest::TestSuite {
@@ -44,6 +46,26 @@ namespace gum_tests {
 
     class CellTranslator : public gum::learning::DBCellTranslator<1,1> {
     public:
+      CellTranslator () {}
+
+      ~CellTranslator () {}
+      
+      CellTranslator ( const CellTranslator& from ) :
+      gum::learning::DBCellTranslator<1,1> ( from ),
+      __values ( from.__values ) {}
+
+      virtual CellTranslator* copyFactory () final {
+        return new CellTranslator ( *this );
+      }
+      
+      CellTranslator& operator= ( const CellTranslator& from )  {
+        if ( this != & from ) {
+          gum::learning::DBCellTranslator<1,1>::operator= ( from );
+          __values = from.__values;
+        }
+        return *this;
+      }
+      
       void translate () { out (0) = in (0).getFloat (); }
       void initialize () {
         unsigned int nb = in(0).getFloat ();
@@ -130,6 +152,154 @@ namespace gum_tests {
 
       std::cout << bn << std::endl << bn.dag () << std::endl;
     }
+
+    
+    void test_alarm1 () {
+      gum::learning::DatabaseFromCSV database ( MY_ALARM );
+      
+      auto translators = gum::learning::make_translators
+        ( gum::learning::Create<CellTranslator, gum::learning::Col<0>, 37> () );
+     
+      auto generators =  gum::learning::make_generators ( SimpleGenerator () );
+      auto filter = gum::learning::make_DB_row_filter ( database, translators,
+                                                        generators );
+      
+      std::vector<unsigned int> modalities = filter.modalities ();
+      
+      gum::learning::ScoreBDeu<decltype ( filter ) >
+        score ( filter, modalities );
+
+      gum::learning::StructuralConstraintSet<
+        gum::learning::StructuralConstraintDAG>
+        struct_constraint; 
+      
+      gum::learning::ParamEstimatorML<decltype ( filter ) >
+        estimator ( filter, modalities );
+
+      gum::learning::GraphChangesGeneratorOnceForAll
+        < decltype ( struct_constraint ) >
+        op_set ( struct_constraint );
+    
+      gum::learning::GraphChangesSelector<
+        decltype ( score ),
+        decltype ( struct_constraint ),
+        gum::learning::GraphChangesGeneratorOnceForAll >
+      selector ( score, struct_constraint, op_set );
+ 
+      gum::learning::GreedyHillClimbing search;
+
+      try {
+        gum::Timer timer;
+        gum::DAG bn = search.learnStructure ( selector, modalities );
+        std::cout << timer.step () << " : " << std::endl;
+        std::cout << bn << std::endl;
+      }
+      catch ( gum::Exception& e ) {
+        GUM_SHOWERROR ( e );
+      }
+      
+    }
+
+
+    void test_alarm2 () {
+      gum::learning::DatabaseFromCSV database ( MY_ALARM );
+      
+      gum::learning::DBRowTranslatorVector<CellTranslator> translators;
+      translators.insertTranslator ( CellTranslator(),
+                                     gum::learning::Col<0> (), 37 );
+      
+      auto generators =  gum::learning::make_generators ( SimpleGenerator () );
+      auto filter = gum::learning::make_DB_row_filter ( database, translators,
+                                                        generators );
+      
+      std::vector<unsigned int> modalities = filter.modalities ();
+      
+      gum::learning::ScoreBDeu<decltype ( filter ) >
+        score ( filter, modalities );
+
+      gum::learning::StructuralConstraintSet<
+        gum::learning::StructuralConstraintDAG>
+        struct_constraint; 
+      
+      gum::learning::ParamEstimatorML<decltype ( filter ) >
+        estimator ( filter, modalities );
+
+      gum::learning::GraphChangesGeneratorOnceForAll
+        < decltype ( struct_constraint ) >
+        op_set ( struct_constraint );
+    
+      gum::learning::GraphChangesSelector<
+        decltype ( score ),
+        decltype ( struct_constraint ),
+        gum::learning::GraphChangesGeneratorOnceForAll >
+      selector ( score, struct_constraint, op_set );
+ 
+      gum::learning::GreedyHillClimbing search;
+
+      try {
+        gum::Timer timer;
+        gum::DAG bn = search.learnStructure ( selector, modalities );
+        std::cout << timer.step () << " : " << std::endl;
+        std::cout << bn << std::endl;
+      }
+      catch ( gum::Exception& e ) {
+        GUM_SHOWERROR ( e );
+      }
+      
+    }
+
+
+    void test_alarm3 () {
+      gum::learning::DatabaseFromCSV database ( MY_ALARM );
+      
+      gum::learning::DBRowTranslatorVector< gum::learning::DBCellTranslator<1,1> >
+        translators;
+      translators.insertTranslator ( CellTranslator (),
+                                     gum::learning::Col<0> (),
+                                     database.content()[0].size () );
+      
+           
+      auto generators =  gum::learning::make_generators ( SimpleGenerator () );
+      auto filter = gum::learning::make_DB_row_filter ( database, translators,
+                                                        generators );
+      
+      std::vector<unsigned int> modalities = filter.modalities ();
+      
+      gum::learning::ScoreBDeu<decltype ( filter ) >
+        score ( filter, modalities );
+
+      gum::learning::StructuralConstraintSet<
+        gum::learning::StructuralConstraintDAG>
+        struct_constraint; 
+      
+      gum::learning::ParamEstimatorML<decltype ( filter ) >
+        estimator ( filter, modalities );
+
+      gum::learning::GraphChangesGeneratorOnceForAll
+        < decltype ( struct_constraint ) >
+        op_set ( struct_constraint );
+    
+      gum::learning::GraphChangesSelector<
+        decltype ( score ),
+        decltype ( struct_constraint ),
+        gum::learning::GraphChangesGeneratorOnceForAll >
+      selector ( score, struct_constraint, op_set );
+ 
+      gum::learning::GreedyHillClimbing search;
+
+      try {
+        gum::Timer timer;
+        gum::DAG bn = search.learnStructure ( selector, modalities );
+        std::cout << timer.step () << " : " << std::endl;
+        std::cout << bn << std::endl;
+      }
+      catch ( gum::Exception& e ) {
+        GUM_SHOWERROR ( e );
+      }
+      
+    }
+
+
 
   };
 

@@ -18,7 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The set of translators stored into a row filter
+ * @brief The "meta-programming" set of translators stored into a row filter
+ *
+ * Basically, there are two ways to create the cell translators needed to parse
+ * a database: either you know at compile time the columns of the database you
+ * will wish to extract and you should definitely use the DBRowTranslatorSet
+ * class to store the cell translators; or you know the columns to extract at
+ * run time and you should use the DBRowTranslatorVector class. DBRowTranslatorSet
+ * is a "meta-programming" based class that packs the cell filters in a most
+ * efficient way (essentially, all methods can be inlined, which makes this class
+ * the fastest one). DBRowTranslatorVectors are less efficient but are more
+ * general. If all their cell translators are identical, translator's methods are
+ * also inlined, otherwise, methods' calls induce virtual function overheads.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -184,10 +195,23 @@ namespace gum {
 
     /** @class DBRowTranslatorSet
      * @ingroup learning_group
-     * @brief the very class that includes cell translator packs into row filters
+     * @brief the "meta-programming" class that includes cell translator packs
+     * into row filters
      *
-     * This class enables to pack cell translators into row filters. To make it
-     * easy to use, you should prefer using its helper creation function
+     * Basically, there are two ways to create the cell translators needed to parse
+     * a database: either you know at compile time the columns of the database you
+     * will wish to extract and you should definitely use the DBRowTranslatorSet
+     * class to store the cell translators; or you know the columns to extract at
+     * run time and you should use the DBRowTranslatorVector class.
+     * DBRowTranslatorSet is a "meta-programming" based class that packs the cell
+     * filters in a most efficient way (essentially, all methods can be inlined,
+     * which makes this class the fastest one). DBRowTranslatorVectors are less
+     * efficient but are more general. If all their cell translators are
+     * identical, translator's methods are also inlined, otherwise, methods' calls
+     * induce virtual function overheads.
+     *
+     * This class enables efficient packing of cell translators into row filters.
+     * To make it easy to use, you should prefer using its helper creation function
      * make_translators. The following code shows how to simply create a
      * DBRowTranslatorSet:
      * @code
