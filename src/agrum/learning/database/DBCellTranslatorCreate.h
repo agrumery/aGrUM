@@ -145,7 +145,12 @@ namespace gum {
       void translate ();
 
       /// initialize the cell filters by parsing once the database
+      /** If initialization is required, this method is called for each row
+       * of the database used for initialization. */
       void initialize ();
+
+      /// perform a post initialization after the database parsing
+      void postInitialize ();
 
       /** @brief indicates whether the translator needs an initial parsing of the
        * database to initialize itself */
@@ -280,6 +285,9 @@ namespace gum {
       /// initialize the cell filters by parsing once the database
       void initialize ();
 
+      /// perform a post initialization after the database parsing
+      void postInitialize ();
+
       /** @brief indicates whether the translator needs an initial parsing of the
        * database to initialize itself */
       bool requiresInitialization () const noexcept;
@@ -304,6 +312,7 @@ namespace gum {
       void setOutputRow  ( FilteredRow&  ) noexcept {}
       void translate ()  noexcept {}
       void initialize () noexcept {}
+      void postInitialize () noexcept {}
       bool requiresInitialization () const noexcept { return false; }
       void modalities ( std::vector<unsigned int>& ) const {}
     };

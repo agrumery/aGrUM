@@ -147,6 +147,15 @@ namespace gum {
       NextTranslators::initialize ();
     }
 
+
+    /// perform a post initialization after the database parsing
+    template <int Idx, typename Translator, typename... OtherTranslators> INLINE
+    void BasicDBRowTranslatorSet<Idx,Translator,
+                                 OtherTranslators...>::postInitialize () {
+      __translator.postInitialize ();
+      NextTranslators::postInitialize ();
+    }
+
     
     /** @brief indicates whether one of the translators needs an initial parsing
      * of the database to initialize itself */
@@ -253,6 +262,13 @@ namespace gum {
     template <typename... Translators> INLINE
     void DBRowTranslatorSet<Translators...>::initialize () {
       TranslatorSet::initialize ();
+    }
+
+
+    /// initialize the cell filters by parsing once the database
+    template <typename... Translators> INLINE
+    void DBRowTranslatorSet<Translators...>::postInitialize () {
+      TranslatorSet::postInitialize ();
     }
 
 

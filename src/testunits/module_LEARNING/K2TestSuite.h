@@ -26,6 +26,7 @@
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/learning/database/databaseFromCSV.h>
+#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
 #include <agrum/learning/scores+tests/scoreK2.h>
 #include <agrum/learning/scores+tests/scoreBDeu.h>
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
@@ -41,53 +42,6 @@ namespace gum_tests {
   class K2TestSuite: public CxxTest::TestSuite {
   public:
 
-    class CellTranslator : public gum::learning::DBCellTranslator<1,1> {
-    public:
-      CellTranslator () {}
-
-      ~CellTranslator () {}
-      
-      CellTranslator ( const CellTranslator& from ) :
-      gum::learning::DBCellTranslator<1,1> ( from ),
-      __values ( from.__values ) {}
-
-      virtual CellTranslator* copyFactory () final {
-        return new CellTranslator ( *this );
-      }
-      
-      CellTranslator& operator= ( const CellTranslator& from )  {
-        if ( this != & from ) {
-          gum::learning::DBCellTranslator<1,1>::operator= ( from );
-          __values = from.__values;
-        }
-        return *this;
-      }
-      
-      void translate () { out (0) = in (0).getFloat (); }
-      void initialize () {
-        unsigned int nb = in(0).getFloat ();
-        if ( ! __values.exists ( nb ) ) __values.insert ( nb );
-      }
-      void modalities ( std::vector<unsigned int>& modal ) const noexcept {
-        modal.push_back ( __values.size () );
-      }
-      bool requiresInitialization () const noexcept { return true; }
-      std::string translateBack ( unsigned int col,
-                                  unsigned int translated_val ) {
-        std::stringstream str;
-        str << translated_val;
-        return  str.str ();
-      }
-      void variableNames ( const std::vector<std::string>& db_var,
-                           std::vector<std::string>& output_vars ) const {
-        output_vars.push_back ( db_var[_input_cols[0]] );
-      }
-
-    private:
-      gum::Set<unsigned int> __values;
-      
-    };
-
     class SimpleGenerator : public gum::learning::FilteredRowGenerator {
     public:
       gum::learning::FilteredRow& generate () {
@@ -102,7 +56,8 @@ namespace gum_tests {
        gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
       
       auto translators = gum::learning::make_translators
-        ( gum::learning::Create<CellTranslator, gum::learning::Col<0>, 8 > () );
+        ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
+                                gum::learning::Col<0>, 8 > () );
 
       auto generators =  gum::learning::make_generators ( SimpleGenerator () );
       
@@ -141,7 +96,7 @@ namespace gum_tests {
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
       
       auto translators = gum::learning::make_translators
-        ( gum::learning::Create<CellTranslator, gum::learning::Col<0>, 8 > () );
+        ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 8 > () );
 
       auto generators =  gum::learning::make_generators ( SimpleGenerator () );
       
@@ -179,7 +134,7 @@ namespace gum_tests {
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
       
       auto translators = gum::learning::make_translators
-        ( gum::learning::Create<CellTranslator, gum::learning::Col<0>, 8 > () );
+        ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 8 > () );
 
       auto generators =  gum::learning::make_generators ( SimpleGenerator () );
       
@@ -227,7 +182,7 @@ namespace gum_tests {
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "alarm.csv" ) );
       
       auto translators = gum::learning::make_translators
-        ( gum::learning::Create<CellTranslator, gum::learning::Col<0>, 37 > () );
+        ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 37 > () );
 
       auto generators =  gum::learning::make_generators ( SimpleGenerator () );
       

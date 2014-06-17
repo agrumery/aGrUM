@@ -151,6 +151,13 @@ namespace gum {
       __translator.initialize ();
     }
 
+    
+    /// perform a post initialization after the database parsing
+    template <class Translator, typename Cols> INLINE
+    void CreateOnce<Translator,Cols>::postInitialize () {
+      __translator.postInitialize ();
+    }
+
 
     /** @brief indicates whether the translator needs an initial parsing of the
      * database to initialize itself */
@@ -281,6 +288,15 @@ namespace gum {
     void Create<Translator,Cols,nb_times,ColsIncr>::initialize () {
       CurrentTranslator::initialize ();
       NextTranslators::initialize ();
+    }
+
+
+    /// perform a post initialization after the database parsing
+    template <typename Translator, typename Cols,
+              int nb_times, typename ColsIncr> INLINE
+    void Create<Translator,Cols,nb_times,ColsIncr>::postInitialize () {
+      CurrentTranslator::postInitialize ();
+      NextTranslators::postInitialize ();
     }
 
 

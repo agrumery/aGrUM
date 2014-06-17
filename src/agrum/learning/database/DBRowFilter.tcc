@@ -150,6 +150,7 @@ namespace gum {
         // initialize the cell filters with this row
         __translator_set.initialize ();
       }
+      __translator_set.postInitialize ();
 
       // restore the previous range
       __handler.setRange ( previous_range.first, previous_range.second );

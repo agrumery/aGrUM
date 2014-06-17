@@ -156,8 +156,13 @@ namespace gum {
       void translate ();
 
       /// initialize the cell filters by parsing once the database
+      /** If initialization is required, this method is called for each row
+       * of the database used for initialization. */
       void initialize ();
 
+      /// perform a post initialization after the database parsing
+      void postInitialize ();
+ 
       /** @brief indicates whether one of the translators needs an initial parsing
        * of the database to initialize itself */
       bool requiresInitialization () const noexcept;

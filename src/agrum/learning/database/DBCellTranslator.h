@@ -200,8 +200,12 @@ namespace gum {
       /// performs the initialization of the cell filter
       /** Upon initialization of the learning algorithms, the database is read
        * once and this reading allows to initialize the content of the
-       * cellfilter */
+       * cellfilter. Method initialize is called for each row of the database
+       * used for initialization. */
       virtual void initialize () = 0;
+
+      /// perform a post initialization after the database parsing
+      virtual void postInitialize () = 0;
 
       /** @brief indicates whether the translator needs an initial parsing of the
        * database to initialize itself */

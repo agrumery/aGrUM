@@ -287,6 +287,15 @@ namespace gum {
     }
 
 
+    /// initialize the cell filters by parsing once the database
+    template <typename Translator> INLINE
+    void DBRowTranslatorVector<Translator>::postInitialize () {
+      for ( auto translator : __translators ) {
+        translator->postInitialize ();
+      }
+    }
+
+
     /// indicates whether one of the translators needs an initial parsing
     /// of the database to initialize itself
     template <typename Translator> INLINE
