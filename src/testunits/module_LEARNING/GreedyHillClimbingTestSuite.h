@@ -105,9 +105,15 @@ namespace gum_tests {
  
       gum::learning::GreedyHillClimbing search;
  
-      gum::BayesNet<float> bn = search.learnBN ( selector, estimator,
-                                                 database.variableNames (),
-                                                 modalities );
+      gum::BayesNet<double> bn =
+        search.learnBN<double> ( selector, estimator,
+                                 database.variableNames (),
+                                 modalities );
+
+      gum::BayesNet<float> bn2 =
+        search.learnBN ( selector, estimator,
+                         database.variableNames (),
+                         modalities );
 
       std::cout << bn << std::endl << bn.dag () << std::endl;
     }

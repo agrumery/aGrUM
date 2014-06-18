@@ -86,6 +86,11 @@ namespace gum_tests {
                                              database.variableNames (),
                                              modalities, order );
 
+      gum::BayesNet<double> bn2 = k2.learnBN<double>
+        ( score, struct_constraint, estimator,
+          database.variableNames (),
+          modalities, order );
+
       std::cout << bn << std::endl << bn.dag () << std::endl;
     }
 

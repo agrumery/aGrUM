@@ -56,29 +56,6 @@ namespace gum {
       GUM_DESTRUCTOR ( learning::DAG2BNLearner );
     }
 
-
-    /// copy a potential into another whose variables' sequence differs 
-    void
-    DAG2BNLearner::__probaVarReordering
-    ( gum::Potential<float>& pot,
-      const gum::Potential<float>& other_pot ) { 
-      // check that the variables are identical
-      Set<const DiscreteVariable*> diff_vars =
-        pot.variablesSequence ().diffSet ( other_pot.variablesSequence () );
-      if ( ! diff_vars.empty () ) {
-        GUM_ERROR ( gum::CPTError,
-                    "the potentials do not have the same variables" );
-      }
-
-      // perform the copy
-      Instantiation i ( other_pot );
-      Instantiation j ( pot );
-      for ( i.setFirst (); ! i.end (); ++i ) {
-        j.setVals ( i );
-        pot.set ( j, other_pot[i] );
-      }
-    }
-
     
   } /* namespace learning */
   

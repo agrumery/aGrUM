@@ -153,20 +153,21 @@ namespace gum {
 
 
     /// learns a BN
-    template <typename SCORE,
+    template <typename GUM_SCALAR,
+              typename SCORE,
               typename STRUCT_CONSTRAINT,
               typename PARAM_ESTIMATOR> INLINE
-    BayesNet<float> K2::learnBN ( SCORE& score,
-                                  STRUCT_CONSTRAINT& constraint,
-                                  PARAM_ESTIMATOR& estimator,
-                                  const std::vector<std::string>& names,
-                                  const std::vector<unsigned int>& modal,
-                                  const std::vector<unsigned int>& order,
-                                  DAG initial_dag ) {
-      return DAG2BNLearner::createBN ( estimator,
-                                       learnStructure ( score, constraint,  order,
-                                                        initial_dag ),
-                                       names, modal );
+    BayesNet<GUM_SCALAR> K2::learnBN ( SCORE& score,
+                                       STRUCT_CONSTRAINT& constraint,
+                                       PARAM_ESTIMATOR& estimator,
+                                       const std::vector<std::string>& names,
+                                       const std::vector<unsigned int>& modal,
+                                       const std::vector<unsigned int>& order,
+                                       DAG initial_dag ) {
+      return DAG2BNLearner::createBN<PARAM_ESTIMATOR,GUM_SCALAR>
+        ( estimator,
+          learnStructure ( score, constraint,  order, initial_dag ),
+          names, modal );
     }
     
 

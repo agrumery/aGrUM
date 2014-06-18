@@ -33,15 +33,37 @@ namespace gum {
   
   namespace learning {
 
+    /// copy a potential into another whose variables' sequence differs 
+    template <typename GUM_SCALAR>
+    void DAG2BNLearner::__probaVarReordering
+    ( gum::Potential<GUM_SCALAR>& pot,
+      const gum::Potential<float>& other_pot ) { 
+      // check that the variables are identical
+      Set<const DiscreteVariable*> diff_vars =
+        pot.variablesSequence ().diffSet ( other_pot.variablesSequence () );
+      if ( ! diff_vars.empty () ) {
+        GUM_ERROR ( gum::CPTError,
+                    "the potentials do not have the same variables" );
+      }
+
+      // perform the copy
+      Instantiation i ( other_pot );
+      Instantiation j ( pot );
+      for ( i.setFirst (); ! i.end (); ++i ) {
+        j.setVals ( i );
+        pot.set ( j, other_pot[i] );
+      }
+    }
+
     
     /// create a BN
-    template <typename PARAM_ESTIMATOR>
-    BayesNet<float>
+    template <typename PARAM_ESTIMATOR, typename GUM_SCALAR>
+    BayesNet<GUM_SCALAR>
     DAG2BNLearner::createBN ( PARAM_ESTIMATOR& estimator,
                               const DAG& dag,
                               const std::vector<std::string>& names,
                               const std::vector<unsigned int>& modal ) {
-      BayesNet<float> bn;
+      BayesNet<GUM_SCALAR> bn;
 
       // create a bn with dummy parameters corresponding to the dag
       for ( const auto id : dag ) {
@@ -60,7 +82,7 @@ namespace gum {
       estimator.clear ();
       for ( const auto id : dag ) {
         // get the sequence of variables and make the targets be the last
-        const Potential<float>& pot = bn.cpt ( id );
+        const Potential<GUM_SCALAR>& pot = bn.cpt ( id );
         const DiscreteVariable& var = varmap.get ( id );
         Sequence<const DiscreteVariable*> vars =
           pot.variablesSequence ();
@@ -69,7 +91,7 @@ namespace gum {
           vars.insert ( &var );
         }
 
-        // setup the setimation
+        // setup the estimation
         unsigned int target = varmap.get ( *( vars[vars.size() -1] ) );
         if ( vars.size () > 1 ) {
           std::vector<unsigned int> cond_ids ( vars.size () - 1 );
@@ -87,8 +109,8 @@ namespace gum {
       unsigned int index = 0;
       for ( const auto id : dag ) {
         // get the variables of the CPT of id in the correct order
-        Potential<float>& pot =
-          const_cast< Potential<float>& > ( bn.cpt ( id ) );
+        Potential<GUM_SCALAR>& pot =
+          const_cast< Potential<GUM_SCALAR>& > ( bn.cpt ( id ) );
         const DiscreteVariable& var = varmap.get ( id );
         Sequence<const DiscreteVariable*> vars =
           pot.variablesSequence ();

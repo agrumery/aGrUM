@@ -92,16 +92,17 @@ namespace gum {
                            DAG initial_dag = DAG () );
      
       /// learns the structure and the parameters of a BN
-      template <typename SCORE,
+      template <typename GUM_SCALAR = float,
+                typename SCORE,
                 typename STRUCT_CONSTRAINT,
                 typename PARAM_ESTIMATOR>
-      BayesNet<float> learnBN ( SCORE& score,
-                                STRUCT_CONSTRAINT& constraint,
-                                PARAM_ESTIMATOR& estimator,
-                                const std::vector<std::string>& names,
-                                const std::vector<unsigned int>& modal,
-                                const std::vector<unsigned int>& order,
-                                DAG initial_dag = DAG () );
+      BayesNet<GUM_SCALAR> learnBN ( SCORE& score,
+                                     STRUCT_CONSTRAINT& constraint,
+                                     PARAM_ESTIMATOR& estimator,
+                                     const std::vector<std::string>& names,
+                                     const std::vector<unsigned int>& modal,
+                                     const std::vector<unsigned int>& order,
+                                     DAG initial_dag = DAG () );
       
     };
 

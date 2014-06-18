@@ -119,11 +119,12 @@ namespace gum {
       
     
     /// learns the structure and the parameters of a BN
-    template <typename SCORE,
+    template <typename GUM_SCALAR,
+              typename SCORE,
               typename STRUCT_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR,
               typename PARAM_ESTIMATOR>
-    BayesNet<float>
+    BayesNet<GUM_SCALAR>
     GreedyHillClimbing::learnBN
     ( GraphChangesSelector<SCORE,STRUCT_CONSTRAINT,GRAPH_CHANGES_GENERATOR>&
       selector,
@@ -131,10 +132,10 @@ namespace gum {
       const std::vector<std::string>& names,
       const std::vector<unsigned int>& modal,
       DAG initial_dag ) {
-      return DAG2BNLearner::createBN ( estimator,
-                                       learnStructure ( selector, modal,
-                                                        initial_dag ),
-                                       names, modal );
+      return DAG2BNLearner::createBN<PARAM_ESTIMATOR,GUM_SCALAR>
+        ( estimator,
+          learnStructure ( selector, modal, initial_dag ),
+          names, modal );
     }
  
 
