@@ -29,22 +29,14 @@
 
 namespace gum {
 
-
-
   // Copy Factory.
-  // @return Returns a pointer on a new copy of this.
-
-  INLINE
+  // @return Returns a pointer on a new copy of this.INLINE  DiscreteVariable*
   DiscreteVariable*
   RangeVariable::clone() const {
-    return new RangeVariable ( *this );
+    return new RangeVariable( *this );
   }
 
-
-
-  // returns the size of the random discrete variable domain
-
-  INLINE
+  // returns the size of the random discrete variable domainINLINE  Size
   Size
   RangeVariable::domainSize() const {
     return ( __maxBound <= __minBound ) ? 0 : ( __maxBound - __minBound + 1 );
@@ -53,32 +45,35 @@ namespace gum {
 
   // Get the indice-th label. This method is pure virtual.
   // @param indice the index of the label we wish to return
-  // @throw OutOfBound
-
-  INLINE
+  // @throw OutOfBoundINLINE  const std::string
   const std::string
-  RangeVariable::label ( Idx indice ) const {
-    if ( belongs ( indice  + __minBound ) ) {
+  RangeVariable::label( Idx indice ) const {
+    if( belongs( indice  + __minBound ) ) {
       std::stringstream strBuff;
       strBuff << indice + __minBound;
       return strBuff.str();
     } else {
-      GUM_ERROR ( OutOfBounds, "Indice out of bounds." );
+      GUM_ERROR( OutOfBounds, "Indice out of bounds." );
     }
   }
 
   INLINE
-  Idx
-  RangeVariable::operator[] ( const std::string& l ) const {
-    std::istringstream i ( l );
+  const double
+  RangeVariable::numerical( Idx indice ) const {
+    return double( __minBound + indice );
+  }
+
+  INLINE  Idx
+  RangeVariable::operator[]( const std::string& l ) const {
+    std::istringstream i( l );
     Idx res;
 
-    if ( ! ( i >> res ) ) {
-      GUM_ERROR ( NotFound, "Bad label" );
+    if( !( i >> res ) ) {
+      GUM_ERROR( NotFound, "Bad label" );
     }
 
-    if ( ! belongs ( res ) ) {
-      GUM_ERROR ( NotFound, "Bad label" );
+    if( ! belongs( res ) ) {
+      GUM_ERROR( NotFound, "Bad label" );
     }
 
     return res - __minBound;
@@ -86,46 +81,36 @@ namespace gum {
 
 
   // Returns the lower bound.
-
-  INLINE
-  Idx
+  INLINE  Idx
   RangeVariable::minVal() const {
     return __minBound;
   }
 
 
   // Set a new value for the lower bound.
-
-  INLINE
-  void
-  RangeVariable::setMinVal ( Idx minVal ) {
+  INLINE  void
+  RangeVariable::setMinVal( Idx minVal ) {
     __minBound = minVal;
   }
 
 
   // Returns the upper bound.
-
-  INLINE
-  Idx
+  INLINE  Idx
   RangeVariable::maxVal() const {
     return __maxBound;
   }
 
 
   // Set a new value of the upper bound.
-
-  INLINE
-  void
-  RangeVariable::setMaxVal ( Idx maxVal ) {
+  INLINE  void
+  RangeVariable::setMaxVal( Idx maxVal ) {
     __maxBound = maxVal;
   }
 
 
   // Returns true if the param belongs to the variable's interval.
-
-  INLINE
-  bool
-  RangeVariable::belongs ( Idx indice ) const {
+  INLINE  bool
+  RangeVariable::belongs( Idx indice ) const {
     return ( ( __minBound <= indice ) && ( indice <= __maxBound ) );
   }
 
@@ -133,18 +118,20 @@ namespace gum {
   // Copy operator
   // @param aRV to be copied
   // @return a ref to *this
-
-  INLINE
-  RangeVariable&
+  INLINE  RangeVariable&
   RangeVariable::operator= ( const RangeVariable& aRV ) {
     __minBound = aRV.__minBound;
     __maxBound = aRV.__maxBound;
     return *this;
   }
 
-  INLINE DiscreteVariable::VarType RangeVariable::varType ( void ) const {
+  INLINE DiscreteVariable::VarType RangeVariable::varType( void ) const {
     return VarType::Range;
   }
 
 } /* namespace gum */
+
+
+
+
 

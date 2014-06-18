@@ -61,31 +61,26 @@ namespace gum {
       /// @name Constructors / Destructors
 
       /// @{
-      // ========================================================================
       /// Default constructor
-      // ========================================================================
-      RangeVariable ( const std::string& aName, const std::string& aDesc,
-                      Idx minVal = 0, Idx maxVal = 1 );
+      RangeVariable( const std::string& aName, const std::string& aDesc,
+                     Idx minVal = 0, Idx maxVal = 1 );
 
-      // ========================================================================
+
       /** Copy Constructor.
        *
        * If aDRV haves any listener, it will not be copied.
        *
        * @param aDRV the variable we copy
        */
-      // ========================================================================
-      RangeVariable ( const RangeVariable& aDRV );
+      RangeVariable( const RangeVariable& aDRV );
 
-      // ========================================================================
+
       /// destructor
-      // ========================================================================
       virtual ~RangeVariable();
 
-      // ========================================================================
+
       /// Copy Factory.
       /// @return Returns a pointer on a new copy of this.
-      // ========================================================================
       virtual DiscreteVariable* clone() const;
 
       /// @}
@@ -95,80 +90,72 @@ namespace gum {
       /// @name Accessors / Modifiers
 
       /// @{
-      // ========================================================================
       /// returns the size of the random discrete variable domain
-      // ========================================================================
       virtual Size domainSize() const;
 
 
       /// returns the type of variable
 
-      virtual VarType varType ( void ) const;
+      virtual VarType varType( void ) const;
 
-      // ========================================================================
+
       ///
       /**
        * Get the indice-th label.
        * @param indice the index of the label we wish to return
        * @throw OutOfBound
        */
-      // ========================================================================
-      virtual const std::string label ( Idx indice ) const;
+      virtual const std::string label( Idx indice ) const;
 
-      // ========================================================================
+      /// get a numerical representation of he indice-the value.
+      virtual const double numerical( Idx indice ) const;
+
+
       /**
        * Returns the lower bound.
        */
-      // ========================================================================
       Idx minVal() const;
 
-      // ========================================================================
+
       /**
        * Set a new value for the lower bound.
        */
-      // ========================================================================
-      void setMinVal ( Idx minVal );
+      void setMinVal( Idx minVal );
 
-      // ========================================================================
+
       /**
        * Returns the upper bound.
        */
-      // ========================================================================
       Idx maxVal() const;
 
-      // ========================================================================
+
       /**
        * Set a new value of the upper bound.
        */
-      // ========================================================================
-      void setMaxVal ( Idx maxVal );
+      void setMaxVal( Idx maxVal );
 
-      // ========================================================================
+
       /**
        * Returns true if the param belongs to the variable's interval.
        */
-      // ========================================================================
-      bool belongs ( Idx indice ) const;
+      bool belongs( Idx indice ) const;
 
       /**
        * @return the modality from the label
        * @throw NotFound
        */
-      virtual Idx operator[] ( const std::string& ) const;
+      virtual Idx operator[]( const std::string& ) const;
+
 
       /// @}
 
 
-
       /// @name Operators
-
       /// @{
-      // ========================================================================
       /**
        * Copy operator
        * @param aRV to be copied
        * @return a ref to *this */
-      // ========================================================================
       RangeVariable& operator= ( const RangeVariable& aRV );
 
       /// @}
@@ -180,7 +167,6 @@ namespace gum {
       /// @name Private Members.
 
       /// @{
-      // ========================================================================
       /// The lower bound.
       Idx __minBound;
 
@@ -192,11 +178,6 @@ namespace gum {
   };
 
 
-  /// For friendly displaying the content of the variable.
-
-  std::ostream& operator<< ( std::ostream&, const RangeVariable& );
-
-
 } /* namespace gum */
 
 
@@ -206,3 +187,4 @@ namespace gum {
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_RANGE_VARIABLE_H */
+
