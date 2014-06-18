@@ -186,6 +186,7 @@ namespace gum_tests {
         for ( unsigned int i = 0; i < 20; ++i ) {
           ngp.insertNode ( i );
         }
+
         for ( unsigned int i = 0; i < 20; ++i ) {
           if ( i % 3 == 0 ) {
             ngp.eraseNode ( i );
@@ -193,16 +194,22 @@ namespace gum_tests {
         }
 
         gum::NodeGraphPartIteratorSafe safe_iter = ngp.beginSafe ();
+
         for ( gum::NodeGraphPartIterator iter = ngp.begin ();
               iter != ngp.end (); ++iter, ++safe_iter ) {
           TS_ASSERT_EQUALS ( *iter, *safe_iter );
         }
 
         unsigned int nb = 0, nb2 = 0;
-        for ( auto x : ngp ) { ++nb; nb2 += x; }
+
+        for ( auto x : ngp ) {
+          ++nb;
+          nb2 += x;
+        }
+
         TS_ASSERT_EQUALS ( nb, 13 );
       }
-    
+
 
       void testBigNodeGrapPart() {
         TS_GUM_ASSERT_THROWS_NOTHING ( __testBigNodeGrapPart() );

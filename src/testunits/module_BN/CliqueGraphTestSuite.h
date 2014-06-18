@@ -232,7 +232,9 @@ namespace gum_tests {
 
         try {
           g1.hasRunningIntersection();
-        } catch ( gum::Exception& e ) {GUM_SHOWERROR ( e );}
+        } catch ( gum::Exception& e ) {
+          GUM_SHOWERROR ( e );
+        }
 
         TS_ASSERT ( g1.hasRunningIntersection() );
 
@@ -617,7 +619,9 @@ namespace gum_tests {
 
         try {
           vec = graph.undirectedPath ( 1, 4 );
-        } catch ( gum::Exception& e ) {GUM_SHOWERROR ( e );}
+        } catch ( gum::Exception& e ) {
+          GUM_SHOWERROR ( e );
+        }
 
         TS_GUM_ASSERT_THROWS_NOTHING ( vec = graph.undirectedPath ( 1, 4 ) );
 

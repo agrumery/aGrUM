@@ -158,8 +158,10 @@ namespace gum {
     if ( per < _p ) {
       __AorR();
 
-      if ( __checkConditions() ) {_bayesNettemp = IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet; __PMMx_multi();}
-      else {
+      if ( __checkConditions() ) {
+        _bayesNettemp = IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet;
+        __PMMx_multi();
+      } else {
 
         IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet = _bayesNettemp ;
         __PMMx_poly();
@@ -205,9 +207,17 @@ namespace gum {
 
       if ( __checkConditions() ) {
         if ( __isPolytree() ) {
-          if ( per < _p )  {_bayesNettemp = IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet ; __PMMx_poly(); }
-          else {IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet = _bayesNettemp; __PMMx_multi();}
-        } else {_bayesNettemp = IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet; __PMMx_multi();}
+          if ( per < _p )  {
+            _bayesNettemp = IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet ;
+            __PMMx_poly();
+          } else {
+            IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet = _bayesNettemp;
+            __PMMx_multi();
+          }
+        } else {
+          _bayesNettemp = IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet;
+          __PMMx_multi();
+        }
       } else {
 
         IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::_bayesNet = _bayesNettemp;

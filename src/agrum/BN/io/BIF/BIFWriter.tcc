@@ -60,7 +60,7 @@ namespace gum {
       output << __variableBloc ( bn.variable ( *iter ) ) << std::endl;
     }
 
-    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter  ) {
+    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter ) {
       const Potential<GUM_SCALAR>& proba = bn.cpt ( *iter );
       output << __variableCPT ( proba );
     }

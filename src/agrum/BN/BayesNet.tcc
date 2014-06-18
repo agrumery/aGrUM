@@ -36,6 +36,8 @@
 #include <agrum/multidim/ICIModels/multiDimNoisyORNet.h>
 #include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
 
+#include <agrum/multidim/ICIModels/multiDimLogit.h>
+
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 
 
@@ -372,6 +374,12 @@ namespace gum {
   BayesNet<GUM_SCALAR>::addNoisyAND ( const DiscreteVariable& var , GUM_SCALAR external_weight ) {
     return add ( var, new MultiDimNoisyAND<GUM_SCALAR> ( external_weight ) );
   }
+  
+  template<typename GUM_SCALAR> INLINE
+  NodeId
+  BayesNet<GUM_SCALAR>::addLogit ( const DiscreteVariable& var , GUM_SCALAR external_weight ) {
+    return add ( var, new MultiDimLogit<GUM_SCALAR> ( external_weight ) );
+  }
 
   template<typename GUM_SCALAR> INLINE
   NodeId
@@ -383,6 +391,12 @@ namespace gum {
   NodeId
   BayesNet<GUM_SCALAR>::addNoisyAND ( const DiscreteVariable& var , GUM_SCALAR external_weight, NodeId id ) {
     return add ( var, new MultiDimNoisyAND<GUM_SCALAR> ( external_weight ) , id );
+  }
+  
+  template<typename GUM_SCALAR> INLINE
+  NodeId
+  BayesNet<GUM_SCALAR>::addLogit ( const DiscreteVariable& var , GUM_SCALAR external_weight, NodeId id ) {
+    return add ( var, new MultiDimLogit<GUM_SCALAR> ( external_weight ) , id );
   }
 
 
