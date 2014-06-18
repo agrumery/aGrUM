@@ -129,6 +129,7 @@ namespace gum_tests {
 
         gum::LazyPropagation<float> inf2 ( *bn );
 
+        /* addHardEvidece : memore leak */
         TS_ASSERT_THROWS_NOTHING ( inf2.addHardEvidence ( i1,0 ) );
         TS_ASSERT_THROWS_NOTHING ( inf2.addHardEvidence ( i4,1 ) );
 
@@ -144,7 +145,6 @@ namespace gum_tests {
         TS_ASSERT ( inf.marginal ( i3 ) ==inf2.marginal ( i3 ) );
         TS_ASSERT ( inf.marginal ( i4 ) ==inf2.marginal ( i4 ) );
         TS_ASSERT ( inf.marginal ( i5 ) ==inf2.marginal ( i5 ) );
-
       }
 
       // Testing when there is no evidence
