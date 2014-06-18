@@ -64,8 +64,7 @@ namespace gum {
     /// copy constructor
     INLINE DBCell::DBCell ( const DBCell& from ) :
       __type ( from.__type ) {
-      std::memcpy ( &__float, &( from.__float ),
-                    std::max ( sizeof ( int ), sizeof ( float ) ) );
+      std::memcpy ( &__float, &( from.__float ), sizeof ( Float ) );
 
       // for debugging
       GUM_CONS_CPY ( DBCell );
@@ -75,8 +74,7 @@ namespace gum {
     /// move constructor
     INLINE DBCell::DBCell ( DBCell&& from ) :
       __type ( from.__type ) {
-      std::memcpy ( &__float, &( from.__float ),
-                    std::max ( sizeof ( int ), sizeof ( float ) ) );
+      std::memcpy ( &__float, &( from.__float ), sizeof ( Float ) );
 
       // for debugging
       GUM_CONS_MOV ( DBCell );
@@ -93,8 +91,7 @@ namespace gum {
     INLINE DBCell& DBCell::operator= ( const DBCell& from ) {
       if ( this != &from ) {
         __type = from.__type;
-        std::memcpy ( &__float, &( from.__float ),
-                      std::max ( sizeof ( int ), sizeof ( float ) ) );
+        std::memcpy ( &__float, &( from.__float ), sizeof ( Float ) );
       }
       
       return *this;
@@ -105,8 +102,7 @@ namespace gum {
     INLINE DBCell& DBCell::operator= ( DBCell&& from ) {
       if ( this != &from ) {
         __type = from.__type;
-        std::memcpy ( &__float, &( from.__float ),
-                      std::max ( sizeof ( int ), sizeof ( float ) ) );
+        std::memcpy ( &__float, &( from.__float ), sizeof ( Float ) );
       }
       
       return *this;
@@ -169,44 +165,11 @@ namespace gum {
     }
 
 
-    /// returns the DBcell as an integer (without checking its type)
-    INLINE float DBCell::getInt () const noexcept {
-      return __int;
-    }
-
-
-    /// returns the DBcell as an integer (safe with type checking)
-    INLINE float DBCell::getIntSafe () const {
-      if ( __type == EltType::INT ) return __int;
-      else GUM_ERROR ( TypeError, "the DBCell does not contain an integer" );
-    }
-
-
-    /// unsafe set (assumes that the preceding type is of the same type)
-    INLINE void DBCell::setInt ( int x ) {
-      __int = x;
-    }
-
-    
-    /// sets the content of the DBCell (safe type checking)
-    INLINE void DBCell::setIntSafe ( int elt ) {
-      __type = EltType::INT;
-      __int = elt;
-    }
-
-    
-    /// sets the content of the DBCell from a string
-    INLINE void DBCell::__setIntFromStringSafe ( const std::string& elt ) {
-      __int = stoi ( elt );
-      __type = EltType::INT;
-    }
-
- 
     /// returns the DBcell as a string (without checking its type)
     INLINE const std::string& DBCell::getString () const noexcept {
       return __strings.first ( __int );
     }
- 
+
 
     /// returns the DBcell as a string (safe with type checking)
     INLINE const std::string& DBCell::getStringSafe () const {
@@ -215,6 +178,25 @@ namespace gum {
     }
 
     
+    /// returns the DBcell as a string index (without checking its type)
+    INLINE int DBCell::getStringIndex () const noexcept {
+      return __int;
+    }
+
+
+    /// returns the DBcell as a string (safe with type checking)
+    INLINE int DBCell::getStringIndexSafe () const {
+      if ( __type == EltType::STRING ) return __int;
+      else GUM_ERROR ( TypeError, "the DBCell does not contain a string" );
+    }
+
+
+    /// returns the DBcell as a string (without checking its type)
+    INLINE const std::string& DBCell::getString ( unsigned int index ) {
+      return __strings.first ( index );
+    }
+    
+ 
     /// unsafe set (assumes that the preceding type is of the same type)
     INLINE void DBCell::setString ( const std::string& str ) {
       if ( ! __strings.existsFirst ( str ) ) {
@@ -272,11 +254,6 @@ namespace gum {
       // ===================================
       case FLOAT:
         switch ( __type ) {
-        case INT:
-          __float = __int;
-          __type = EltType::FLOAT;
-          return true;
-          
         case STRING:
           try {
             __float = stof ( __strings.first ( __int ) );
@@ -294,47 +271,8 @@ namespace gum {
 
         
       // ===================================
-      case INT:
-        switch ( __type ) {
-        case FLOAT:
-          __int = __float;
-          __type = EltType::INT;
-          return true;
-          
-        case STRING:
-          try {
-            __int = stoi ( __strings.first ( __int ) );
-            __type = EltType::INT;
-            return true;
-          }
-          catch ( std::invalid_argument& ) { return false; }
-
-        case MISSING:
-          return false;
-
-        default:
-          GUM_ERROR ( TypeError, "type not supported by DBCell convertType" );
-        }
-
-        
-      // ===================================
       case STRING:
         switch ( __type ) {
-        case INT:
-          {
-            std::string str = std::to_string ( __int );
-            if ( ! __strings.existsFirst ( str ) ) {
-              __strings.insert ( str, __string_max_index );
-              __int = __string_max_index;
-              ++__string_max_index;
-            }
-            else {
-              __int = __strings.second ( str );
-            }
-          __type = EltType::STRING;
-          }
-          return true;
-          
         case FLOAT:
           {
             std::string str = std::to_string ( __float );

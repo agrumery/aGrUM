@@ -139,14 +139,14 @@ namespace gum {
 
 
     /// execute a translation of the input row
-    template <class Translator, typename Cols> INLINE
+    template <class Translator, typename Cols> ALWAYS_INLINE
     void CreateOnce<Translator,Cols>::translate () {
       __translator.translate ();
     }
 
 
     /// initialize the cell filters by parsing once the database
-    template <class Translator, typename Cols> INLINE
+    template <class Translator, typename Cols> ALWAYS_INLINE
     void CreateOnce<Translator,Cols>::initialize () {
       __translator.initialize ();
     }
@@ -275,7 +275,7 @@ namespace gum {
 
     /// apply the translator
     template <typename Translator, typename Cols,
-              int nb_times, typename ColsIncr> INLINE
+              int nb_times, typename ColsIncr> ALWAYS_INLINE
     void Create<Translator,Cols,nb_times,ColsIncr>::translate () {
       CurrentTranslator::translate ();
       NextTranslators::translate ();
@@ -284,7 +284,7 @@ namespace gum {
 
     /// initialize the cell filters by parsing once the database
     template <typename Translator, typename Cols,
-              int nb_times, typename ColsIncr> INLINE
+              int nb_times, typename ColsIncr> ALWAYS_INLINE
     void Create<Translator,Cols,nb_times,ColsIncr>::initialize () {
       CurrentTranslator::initialize ();
       NextTranslators::initialize ();

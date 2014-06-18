@@ -131,7 +131,8 @@ namespace gum {
 
     
     /// perform the translation of a database row
-    template <int Idx, typename Translator, typename... OtherTranslators> INLINE
+    template <int Idx, typename Translator, typename... OtherTranslators>
+    ALWAYS_INLINE
     void BasicDBRowTranslatorSet<Idx,Translator,
                                  OtherTranslators...>::translate () {
       __translator.translate ();
@@ -140,7 +141,8 @@ namespace gum {
 
 
     /// initialize the cell filters by parsing once the database
-    template <int Idx, typename Translator, typename... OtherTranslators> INLINE
+    template <int Idx, typename Translator, typename... OtherTranslators>
+    ALWAYS_INLINE
     void BasicDBRowTranslatorSet<Idx,Translator,
                                  OtherTranslators...>::initialize () {
       __translator.initialize ();
@@ -252,14 +254,14 @@ namespace gum {
 
     
     /// execute all the translations on the current database row
-    template <typename... Translators> INLINE
+    template <typename... Translators> ALWAYS_INLINE
     void DBRowTranslatorSet<Translators...>::translate () {
       TranslatorSet::translate ();
     }
 
     
     /// initialize the cell filters by parsing once the database
-    template <typename... Translators> INLINE
+    template <typename... Translators> ALWAYS_INLINE
     void DBRowTranslatorSet<Translators...>::initialize () {
       TranslatorSet::initialize ();
     }

@@ -18,17 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief An identity function cell translator on integers that assumes the
- * integers it reads forms a compact (interval { 0 ,..., n } )
- *
- * @warning If you are unsure that the integers that the cell translator will
- * parse form an interval { 0 ,..., n }, then, prefer using class
- * CellTranslatorNumber. The latter class is slower but safer.
+ * @brief A cell translator translating any DBCell
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_CELL_TRANSLATOR_COMPACT_INT_ID_H
-#define GUM_LEARNING_CELL_TRANSLATOR_COMPACT_INT_ID_H
+#ifndef GUM_LEARNING_CELL_TRANSLATOR_UNIVERSAL_H
+#define GUM_LEARNING_CELL_TRANSLATOR_UNIVERSAL_H
 
 #include <string>
 #include <vector>
@@ -44,16 +39,11 @@ namespace gum {
   namespace learning {
 
 
-    /** @class CellTranslatorCompactIntId
+    /** @class CellTranslatorUniversal
      * @ingroup learning_group
-     * @brief An identity function cell translator on integers that assumes the
-     * integers it reads forms a compact (interval { 0 ,..., n } )
-     *
-     * @warning If you are unsure that the integers that the cell translator will
-     * parse form an interval { 0 ,..., n }, then, prefer using class
-     * CellTranslatorNumber. The latter class is slower but safer.
+     * @brief A cell translator translating any DBCell
      */
-    class CellTranslatorCompactIntId : public DBCellTranslator<1,1> {
+    class CellTranslatorUniversal : public DBCellTranslator<1,1> {
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -62,19 +52,19 @@ namespace gum {
       /// @{
 
       /// default constructor
-      CellTranslatorCompactIntId ();
+      CellTranslatorUniversal ();
 
       /// copy constructor
-      CellTranslatorCompactIntId ( const CellTranslatorCompactIntId& from );
+      CellTranslatorUniversal ( const CellTranslatorUniversal& from );
 
       /// move constructor
-      CellTranslatorCompactIntId ( CellTranslatorCompactIntId&& from );
+      CellTranslatorUniversal ( CellTranslatorUniversal&& from );
 
       /// virtual copy constructor
-      virtual CellTranslatorCompactIntId* copyFactory () final;
+      virtual CellTranslatorUniversal* copyFactory () final;
  
       /// destructor
-      virtual ~CellTranslatorCompactIntId ();
+      virtual ~CellTranslatorUniversal ();
       
       /// @}
 
@@ -86,12 +76,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      CellTranslatorCompactIntId&
-      operator= ( const CellTranslatorCompactIntId& from );
+      CellTranslatorUniversal&
+      operator= ( const CellTranslatorUniversal& from );
 
       /// move operator
-      CellTranslatorCompactIntId&
-      operator= ( CellTranslatorCompactIntId&& from );
+      CellTranslatorUniversal&
+      operator= ( CellTranslatorUniversal&& from );
 
       /// @}
 
@@ -128,8 +118,14 @@ namespace gum {
                            std::vector<std::string>& output_vars ) const;
       
     private:
-      /// the set of values found so far
-      gum::Set<unsigned int> __values;
+      /// the next max translated value
+      unsigned int __max_value { 0 };
+      
+      /// the set of numbers found so far
+      gum::Bijection<float,unsigned int> __numbers;
+
+      /// the set of strings (actually their indices) found so far
+      gum::Bijection<int,unsigned int> __strings;
       
     };
 
@@ -142,8 +138,8 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.inl>
+#include <agrum/learning/database/DBCellTranslators/cellTranslatorUniversal.inl>
 #endif /* GUM_NO_INLINE */
 
 
-#endif /* GUM_LEARNING_CELL_TRANSLATOR_COMPACT_INT_ID_H */
+#endif /* GUM_LEARNING_CELL_TRANSLATOR_UNIVERSAL_H */

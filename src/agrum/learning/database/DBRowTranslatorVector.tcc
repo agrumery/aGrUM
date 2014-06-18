@@ -270,7 +270,7 @@ namespace gum {
 
 
     /// execute all the translations on the current database row
-    template <typename Translator> INLINE
+    template <typename Translator> ALWAYS_INLINE
     void DBRowTranslatorVector<Translator>::translate () {
       for ( auto translator : __translators ) {
         translator->translate ();
@@ -279,7 +279,7 @@ namespace gum {
 
     
     /// initialize the cell filters by parsing once the database
-    template <typename Translator> INLINE
+    template <typename Translator> ALWAYS_INLINE
     void DBRowTranslatorVector<Translator>::initialize () {
       for ( auto translator : __translators ) {
         translator->initialize ();

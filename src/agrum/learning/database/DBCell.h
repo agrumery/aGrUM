@@ -27,6 +27,7 @@
 
 #include <string>
 #include <cstring>
+#include <type_traits>
 
 #include <agrum/config.h>
 #include <agrum/core/bijection.h>
@@ -46,7 +47,7 @@ namespace gum {
       
       /// the set of types possibly taken by the last element read
       enum EltType {
-        FLOAT, INT, STRING, MISSING
+        FLOAT, STRING, MISSING
       };
 
       // ##########################################################################
@@ -118,29 +119,27 @@ namespace gum {
       /// sets the content of the DBCell (safe type checking)
       void setFloatSafe ( float elt );
       
-      /// returns the DBcell as an integer (without checking its type)
-      /** @warning this method is unsafe: it assumes that you know the
-       * correct type of the element in the DBCell */
-      float getInt () const noexcept;
-
-      /// returns the DBcell as an integer (safe with type checking)
-      /** @throw TypeError if the DBCell does not contain this type */
-      float getIntSafe () const;
-
-      /// unsafe set (assumes that the preceding type is of the same type)
-      void setInt ( int x );
-
-      /// sets the content of the DBCell (safe type checking)
-      void setIntSafe ( int elt );
-
       /// returns the DBcell as a string (without checking its type)
       /** @warning this method is unsafe: it assumes that you know the
        * correct type of the element in the DBCell */
       const std::string& getString () const noexcept;
       
-      /// returns the DBcell as a string (safe with type checking)
+     /// returns the DBcell as a string (safe with type checking)
       /** @throw TypeError if the DBCell does not contain this type */
       const std::string& getStringSafe () const;
+
+      /** @brief returns the DBcell as the index of a string in a static bijection
+       * (without checking its type)
+       *
+       * @warning this method is unsafe: it assumes that you know the
+       * correct type of the element in the DBCell */
+      int getStringIndex () const noexcept;
+      
+      /// returns the DBcell as the index of a string in a static bijection
+      int getStringIndexSafe () const;
+      
+      /// strings are stored into a static bijection. Get its ith string
+      static const std::string& getString ( unsigned int index );
 
      /// unsafe set (assumes that the preceding type is of the same type)
       void setString ( const std::string& x );
@@ -171,14 +170,17 @@ namespace gum {
 
       
     private:
+      using Float =
+        typename std::conditional<sizeof(float)>=sizeof(int),float,double>::type;
+      
 
       /// the real type of the last element read from the database
       EltType __type { EltType::FLOAT };
 
       /// the element read from the database
       union {
-        float       __float { 0.0f };
-        int         __int; // stores integers and string indices
+        Float __float { 0.0f };
+        int   __int; // stores string indices
       };
 
       /// a bijection assigning to each string index its corresponding string
@@ -193,10 +195,6 @@ namespace gum {
       /// sets the content of the DBCell from a string
       /** @throws std::invalid_argument if the string cannot be converted */
       void __setFloatFromStringSafe ( const std::string& str );
-
-      /// sets the content of the DBCell from a string
-      /** @throws std::invalid_argument if the string cannot be converted */
-      void __setIntFromStringSafe ( const std::string& str );
 
     };
     

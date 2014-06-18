@@ -18,8 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief An identity function cell translator on integers that assumes the
- * integers it reads forms a compact (interval { 0 ,..., n } )
+ * @brief A cell translator translating DBCells that contain string
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -33,97 +32,95 @@ namespace gum {
 
 
     /// default constructor
-    INLINE CellTranslatorCompactIntId::CellTranslatorCompactIntId () {
+    INLINE CellTranslatorString::CellTranslatorString () {
     }
 
 
     /// copy constructor
-    INLINE CellTranslatorCompactIntId::CellTranslatorCompactIntId
-    ( const CellTranslatorCompactIntId& from ) :
+    INLINE CellTranslatorString::CellTranslatorString
+    ( const CellTranslatorString& from ) :
       DBCellTranslator<1,1> ( from ),
-      __values ( from.__values ) {
+      __max_value ( from.__max_value ),
+      __strings ( from.__strings ) {
     }
 
 
     /// move constructor
-    INLINE CellTranslatorCompactIntId::CellTranslatorCompactIntId
-    ( CellTranslatorCompactIntId&& from ) :
+    INLINE CellTranslatorString::CellTranslatorString
+    ( CellTranslatorString&& from ) :
       DBCellTranslator<1,1> ( std::move ( from ) ),
-      __values ( std::move ( from.__values ) ) {
+      __max_value ( std::move ( from.__max_value ) ),
+      __strings ( std::move ( from.__strings ) ) {
     }
 
 
     /// virtual copy constructor
-    INLINE CellTranslatorCompactIntId*
-    CellTranslatorCompactIntId::copyFactory () {
-      return new CellTranslatorCompactIntId ( *this );
+    INLINE CellTranslatorString*
+    CellTranslatorString::copyFactory () {
+      return new CellTranslatorString ( *this );
     }
  
 
     /// destructor
-    INLINE CellTranslatorCompactIntId::~CellTranslatorCompactIntId () {
+    INLINE CellTranslatorString::~CellTranslatorString () {
     }
       
 
     /// copy operator
-    INLINE CellTranslatorCompactIntId&
-    CellTranslatorCompactIntId::operator=
-    ( const CellTranslatorCompactIntId& from )  {
+    INLINE CellTranslatorString&
+    CellTranslatorString::operator=
+    ( const CellTranslatorString& from )  {
       if ( this != & from ) {
         DBCellTranslator<1,1>::operator= ( from );
-        __values = from.__values;
+        __max_value = from.__max_value;
+        __strings   = from.__strings;
       }
       return *this;
     }
 
 
     /// move operator
-    INLINE CellTranslatorCompactIntId&
-    CellTranslatorCompactIntId::operator= ( CellTranslatorCompactIntId&& from )  {
+    INLINE CellTranslatorString&
+    CellTranslatorString::operator= ( CellTranslatorString&& from )  {
       if ( this != & from ) {
         DBCellTranslator<1,1>::operator= ( std::move ( from ) );
-        __values = std::move ( from.__values );
+        __max_value = std::move ( from.__max_value );
+        __strings   = std::move ( from.__strings );
       }
       return *this;
     }
 
 
     /// perform the translation
-    ALWAYS_INLINE void CellTranslatorCompactIntId::translate () {
-      out (0) = in (0).getFloat ();
+    ALWAYS_INLINE void CellTranslatorString::translate () {
+      out (0) = __strings.second ( in (0).getStringIndex () );
     }
-
+    
 
     /// initialize the cell translator by a first database parsing
-    ALWAYS_INLINE void CellTranslatorCompactIntId::initialize () {
-      const unsigned int nb = in(0).getFloat ();
-      if ( ! __values.exists ( nb ) ) __values.insert ( nb );
+    ALWAYS_INLINE void CellTranslatorString::initialize () {
+      const int nb = in (0).getStringIndex ();
+      if ( ! __strings.existsFirst ( nb ) ) {
+        __strings.insert ( nb, __max_value );
+        ++__max_value;
+      }
     }
 
     
     /// perform a post initialization after the database parsing
-    INLINE void CellTranslatorCompactIntId::postInitialize () {
-      // check that the values form a compact
-      unsigned int max_val = 0;
-      for ( const auto& val : __values ) {
-        if ( val > max_val ) max_val = val;
-      }
-      if ( max_val >= __values.size () ) {
-        GUM_ERROR ( WrongType, "The CellTranslatorCompactIntId is applied on a "
-                    "non-compact set of integers" );
-      }
+    INLINE void CellTranslatorString::postInitialize () {
     }
 
 
     /// add the number of modalities discovered in the database into a vector
-    INLINE void CellTranslatorCompactIntId::modalities
+    INLINE void CellTranslatorString::modalities
     ( std::vector<unsigned int>& modal ) const noexcept {
-      modal.push_back ( __values.size () );
+      modal.push_back ( __max_value );
     }
 
 
     /// returns whether the translator needs a DB parsing to initialize itself
-    INLINE bool CellTranslatorCompactIntId::requiresInitialization ()
+    INLINE bool CellTranslatorString::requiresInitialization ()
       const noexcept {
       return true;
     }
@@ -131,17 +128,17 @@ namespace gum {
 
     /// returns a given value as stored within the database
     INLINE std::string
-    CellTranslatorCompactIntId::translateBack ( unsigned int col,
-                                                unsigned int translated_val ) {
+    CellTranslatorString::translateBack ( unsigned int col,
+                                             unsigned int translated_val ) {
       std::stringstream str;
-      str << translated_val;
+      str << DBCell::getString ( __strings.first ( translated_val ) );
       return  str.str ();
     }
 
 
     /// returns the name of the variable(s) the translator has processed
     INLINE void
-    CellTranslatorCompactIntId::variableNames
+    CellTranslatorString::variableNames
     ( const std::vector<std::string>& db_var,
       std::vector<std::string>& output_vars ) const {
       output_vars.push_back ( db_var[_input_cols[0]] );
