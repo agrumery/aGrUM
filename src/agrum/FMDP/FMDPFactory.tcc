@@ -52,6 +52,7 @@ namespace gum {
 
     __states.push_back ( FMDPfactory_state::NONE );
     resetVerbose();
+    __actionIdcpt = 1;
   }
 
 
@@ -112,57 +113,6 @@ namespace gum {
     GUM_ERROR ( NotFound, name );
 
     return nullptr;
-  }
-
-
-  /* **************************************************************************************************** **/
-  /* **                                                                                                   **/
-  /* **       Network declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::PROPERTY)       **/
-  /* **                                                                                                   **/
-  /* **************************************************************************************************** **/
-
-
-  // Tells the factory that we're in a fmdp declaration.
-
-  template<typename GUM_SCALAR> INLINE
-  void
-  FMDPFactory<GUM_SCALAR>::startPropertyDeclaration() {
-
-    if ( state() != FMDPfactory_state::NONE )
-      __illegalStateError ( "startPropertyDeclaration" );
-    else
-      __states.push_back ( FMDPfactory_state::PROPERTY );
-
-//       VERBOSITY ( "starting property" );
-  }
-
-
-  // Tells the factory to add a property to the current fmdp.
-
-  template<typename GUM_SCALAR> INLINE
-  void
-  FMDPFactory<GUM_SCALAR>::addProperty ( const std::string& propName, const std::string& propValue ) {
-
-    if ( state() != FMDPfactory_state::PROPERTY )
-      __illegalStateError ( "addProperty" );
-    else
-      __fmdp->setProperty ( propName, propValue );
-
-  }
-
-
-  // Tells the factory that we're out of a fmdp declaration.
-
-  template<typename GUM_SCALAR> INLINE
-  void
-  FMDPFactory<GUM_SCALAR>::endPropertyDeclaration() {
-
-    if ( state() != FMDPfactory_state::PROPERTY )
-      __illegalStateError ( "endPropertyDeclaration" );
-    else
-      __states.pop_back();
-
-//       VERBOSITY ( "property OK" );
   }
 
 
@@ -266,17 +216,14 @@ namespace gum {
     else if ( __foo_flag and ( __stringBag.size() > 3 ) ) {
 
       LabelizedVariable* var = new LabelizedVariable ( __stringBag[0], ( __bar_flag ) ? __stringBag[1] : "", 0 );
-      LabelizedVariable* varPrime = new LabelizedVariable ( __stringBag[0] + "'", ( __bar_flag ) ? __stringBag[1] : "", 0 );
 
       for ( size_t i = 2; i < __stringBag.size(); ++i ) {
         var->addLabel ( __stringBag[i] );
-        varPrime->addLabel ( __stringBag[i] );
       }
 
       __fmdp->addVariable ( var );
       __varNameMap.insert ( var->name(), var );
-      __fmdp->addPrimedVariable ( varPrime, var );
-      __varNameMap.insert ( varPrime->name() , varPrime );
+      __varNameMap.insert ( __fmdp->main2prime(var)->name() , __fmdp->main2prime(var) );
 
       __resetParts();
       __states.pop_back();
@@ -340,7 +287,7 @@ namespace gum {
       __illegalStateError ( "addAction" );
     else {
       __stringBag.push_back ( action );
-      __fmdp->addAction ( action );
+      __fmdp->addAction ( __actionIdcpt++, action );
     }
   }
 
@@ -396,7 +343,7 @@ namespace gum {
     if ( state() != FMDPfactory_state::TRANSITION )
       __illegalStateError ( "addTransition" );
     else if ( __foo_flag )
-      __fmdp->addTransitionForAction ( __varNameMap[var], t, __stringBag[0] );
+      __fmdp->addTransitionForAction ( __stringBag[0], __varNameMap[var], t );
     else
       __fmdp->addTransition ( __varNameMap[var], t );
 
@@ -418,7 +365,7 @@ namespace gum {
 
       if ( __foo_flag ){
         this->__decisionGraph->setTableName( "ACTION :" + __stringBag[0] + " - VARIABLE : " + var);
-        __fmdp->addTransitionForAction ( __varNameMap[var], this->__decisionGraph, __stringBag[0] );
+        __fmdp->addTransitionForAction ( __stringBag[0], __varNameMap[var], this->__decisionGraph );
       } else {
         __fmdp->addTransition ( __varNameMap[var], this->__decisionGraph );
       }
@@ -480,7 +427,7 @@ namespace gum {
     if ( state() != FMDPfactory_state::COST )
       __illegalStateError ( "addCost" );
     else if ( __foo_flag )
-      __fmdp->addCostForAction ( c, __stringBag[0] );
+      __fmdp->addCostForAction ( __stringBag[0], c );
     else
       __fmdp->addCost ( c );
   }
@@ -499,7 +446,7 @@ namespace gum {
       this->__finalizeDecisionGraph();
 
       if ( __foo_flag )
-        __fmdp->addCostForAction ( this->__decisionGraph, __stringBag[0] );
+        __fmdp->addCostForAction ( __stringBag[0], this->__decisionGraph );
       else
         __fmdp->addCost ( this->__decisionGraph );
 
@@ -674,7 +621,7 @@ namespace gum {
     if ( state() != FMDPfactory_state::DISCOUNT )
       __illegalStateError ( "addDiscount" );
     else
-      __fmdp->addDiscount ( ( GUM_SCALAR ) discount );
+      __fmdp->setDiscount ( ( GUM_SCALAR ) discount );
   }
 
 
@@ -706,6 +653,7 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   NodeId
   FMDPFactory<GUM_SCALAR>::addNonTerminalNode ( std::string name_of_var ) {
+//    std::cout << "Adding " << name_of_var << std::endl;
     return __decisionGraph->manager()->addNonTerminalNode ( variable ( name_of_var ) );
   }
 
@@ -755,9 +703,6 @@ namespace gum {
       case FMDPfactory_state::NONE:       msg += "FMDPfactory_state::NONE";
         break;
 
-      case FMDPfactory_state::PROPERTY:    msg += "FMDPfactory_state::PROPERTY";
-        break;
-
       case FMDPfactory_state::VARIABLE:    msg += "FMDPfactory_state::VARIABLE";
         break;
 
@@ -801,17 +746,13 @@ namespace gum {
 
     this->__decisionGraph = new MultiDimDecisionGraph<GUM_SCALAR>();
     // Recopie des variables principales dans le graphe de décision
-    __fmdp->resetVariablesIterator();
-    while(__fmdp->hasVariable()){
-      __decisionGraph->add(*(__fmdp->main2prime().first(__fmdp->variable())));
-      __fmdp->nextVariable();
+    for( auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter){
+      __decisionGraph->add(**varIter);
     }
 
     // Recopie des version primes des variables dans le graphe de décision
-    __fmdp->resetVariablesIterator();
-    while(__fmdp->hasVariable()){
-      __decisionGraph->add(*(__fmdp->variable()));
-      __fmdp->nextVariable();
+    for( auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter){
+      __decisionGraph->add(*(__fmdp->main2prime(*varIter)));
     }
   }
 

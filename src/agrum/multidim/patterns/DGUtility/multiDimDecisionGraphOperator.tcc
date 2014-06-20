@@ -45,7 +45,6 @@ namespace gum {
         __rd = new MultiDimDecisionGraph<GUM_SCALAR>();
         __nbVar = 0;
         __default = nullptr;
-//        __instNeeded = nullptr;
     }
 
 
@@ -58,19 +57,14 @@ namespace gum {
 
         GUM_DESTRUCTOR(MultiDimDecisionGraphOperator);
 
-//        std::cout<<"Destruction"<<std::endl;
 
         MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( __default, sizeof(short int)*__nbVar);
-//        MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( __instNeeded, sizeof(short int)*__nbVar);
 
-//        std::cout << __DG1InstantiationNeeded << std::endl;
         for(HashTableIteratorSafe<NodeId, short int*> instIter = __DG1InstantiationNeeded.beginSafe(); instIter != __DG1InstantiationNeeded.endSafe(); ++instIter )
             MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( instIter.val(), sizeof(short int)*__nbVar);
-//        std::cout<<"DG1 clear"<<std::endl;
 
         for(HashTableIteratorSafe<NodeId, short int*> instIter = __DG2InstantiationNeeded.beginSafe(); instIter != __DG2InstantiationNeeded.endSafe(); ++instIter )
             MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( instIter.val(), sizeof(short int)*__nbVar);
-//        std::cout<<"DG2 clear"<<std::endl;
 
     }
 
@@ -84,11 +78,8 @@ namespace gum {
     template <typename GUM_SCALAR, template <typename> class FUNCTOR >
     MultiDimDecisionGraph<GUM_SCALAR> *MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR>::compute(){
 
-//        std::cout << "Establishing final diagram order ..." <<std::endl;
         __establishVarOrder();
-//        std::cout << "Finding retrograde variable in first diagram ..." <<std::endl;
         __findRetrogradeVariables( __DG1, __DG1InstantiationNeeded );
-//        std::cout << "Finding retrograde variable in second diagram ..." <<std::endl;
         __findRetrogradeVariables( __DG2, __DG2InstantiationNeeded );
 
         Idx* varInst = static_cast<Idx*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate( sizeof(Idx)*__nbVar ) );
@@ -99,18 +90,10 @@ namespace gum {
         conti.setDG1Node( __DG1->root() );
         conti.setDG2Node( __DG2->root() );
 
-//        std::cout << "Computing ..." <<std::endl;
-
-//        std::cout << std::endl << " ============================================================== " << std::endl << std::endl;
-
         NodeId root = __compute( conti, (Idx)0 - 1, "" );
         __rd->manager()->setRootNode( root );
 
-//        std::cout << std::endl << " ============================================================== " << std::endl << std::endl;
-
         MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( varInst, sizeof(Idx)*__nbVar );
-
-//        std::cout << std::endl << " ============================================================== " << std::endl << std::endl;
 
         return __rd;
     }
@@ -206,23 +189,6 @@ namespace gum {
         __default = static_cast<short int*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate( sizeof(short int)*__nbVar ) );
         for( Idx i = 0; i < __nbVar; i++ )
             __default[i] = (short int) 0;
-
-//        std::cout << std::endl << "First diagram var order : " << std::endl;
-//        for( SequenceIteratorSafe<const DiscreteVariable*> varite = __DG1->variablesSequence().beginSafe();
-//                      varite != __DG1->variablesSequence().endSafe(); ++varite)
-//        std::cout << varite.operator *()->name() << std::endl;
-
-//        std::cout << std::endl << "Second diagram var order : " << std::endl;
-//        for( SequenceIteratorSafe<const DiscreteVariable*> varite = __DG2->variablesSequence().beginSafe();
-//                        varite != __DG2->variablesSequence().endSafe(); ++varite)
-//        std::cout << varite.operator *()->name() << std::endl;
-
-//        std::cout << std::endl << "Final diagram var order : " << std::endl;
-//        for( SequenceIteratorSafe<const DiscreteVariable*> varite = __rd->variablesSequence().beginSafe();
-//                        varite != __rd->variablesSequence().endSafe(); ++varite)
-//        std::cout << varite.operator *()->name() << std::endl;
-
-//        std::cout << std::endl << " ============================================================== " << std::endl << std::endl;
     }
 
 
@@ -263,14 +229,6 @@ namespace gum {
 
 
 
-//        std::cout << "Variable Sequence : " << std::endl;
-//        for( SequenceIteratorSafe<const DiscreteVariable*> varIter = dg->variablesSequence().beginSafe();
-//             varIter != dg->variablesSequence().endSafe(); ++varIter)
-//          std::cout << (*varIter)->name() << "   ";
-//        std::cout << std::endl;
-
-//        std::cout << dg->root() << dg->toDot();
-
         HashTable<NodeId, short int*> nodesVarDescendant;
         std::size_t tableSize = __nbVar*sizeof(short int);
 
@@ -278,16 +236,12 @@ namespace gum {
 
             Idx varPos = __rd->variablesSequence().pos( *varIter );
 
-//            std::cout << (*varIter)->name() << std::endl;
-
             const typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem * nodeIter = dg->varNodeListe(*varIter);
             while( nodeIter != nullptr ){
 
                 short int* instantiationNeeded = static_cast<short int*>(MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(tableSize));
-//                std::cout << instantiationNeeded;
                 dgInstNeed.insert( nodeIter->elemId, instantiationNeeded );
                 short int* varDescendant = static_cast<short int*>(MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(tableSize));
-//                std::cout << " - " << varDescendant << std::endl;
                 nodesVarDescendant.insert( nodeIter->elemId, varDescendant );
                 for(Idx j = 0; j < __nbVar; j++ ){
                     instantiationNeeded[j] = (short int) 0;
@@ -310,7 +264,6 @@ namespace gum {
             }
         }
 
-//        std::cout << "PROPAGATION" << std::endl;
 
         for( SequenceIteratorSafe<const DiscreteVariable*> varIter = dg->variablesSequence().beginSafe(); varIter != dg->variablesSequence().endSafe(); ++varIter ) {
 
@@ -321,7 +274,6 @@ namespace gum {
                     NodeId sonId = dg->node( nodeIter->elemId )->son(modality);
                     if( ! dg->isTerminalNode( sonId )) {
                         for(Idx varIdx = 0; varIdx < __nbVar; ++varIdx ){
-//                            std::cout << "Node Id : " << nodeIter->elemId << " | Var Idx : " << varIdx << " | dgInst : " << dgInstNeed[nodeIter->elemId][ varIdx ] << " | Node Var Des : " << nodesVarDescendant[ sonId ][varIdx] << " | Son Var Pos : " << __rd->variablesSequence().pos(dg->node(sonId)->nodeVar()) << std::endl << std::endl;
                             if( dgInstNeed[nodeIter->elemId][ varIdx ] && nodesVarDescendant[ sonId ][varIdx] ){
                                 dgInstNeed[ sonId ][ varIdx ] = (short int) 1;
                             }
@@ -331,33 +283,10 @@ namespace gum {
                 nodeIter = nodeIter->nextElem;
             }
         }
-
-//        std::cout << "FIN"<<std::endl;
-
-//        std::cout << std::endl << "Needed var : " << std::endl;
         for(HashTableIterator<NodeId, short int*> it = nodesVarDescendant.begin(); it != nodesVarDescendant.end(); ++it ){
-
-//                    std::cout << it.key() << " - " << dg->node(it.key())->nodeVar()->name() << " | ";
-//                    for(Idx i = 0; i < __rd->variablesSequence().size(); i++)
-//                        std::cout << "  " << __rd->variablesSequence().atPos(i)->name();
-//                    std::cout << " | ";
-//                    for(Idx i = 0; i < __rd->variablesSequence().size(); i++)
-//                        if(dgInstNeed[it.key()][i])
-//                            std::cout << " T ";
-//                        else
-//                            std::cout << " F ";
-//                    std::cout << " | ";
-//                    for(Idx i = 0; i < __rd->variablesSequence().size(); i++)
-//                        if(nodesVarDescendant[it.key()][i])
-//                            std::cout << " T ";
-//                        else
-//                            std::cout << " F ";
-//                    std::cout << std::endl;
 
             MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate(it.val(),tableSize);
         }
-
-//        std::cout << std::endl << " ============================================================== " << std::endl << std::endl;
 
         nodesVarDescendant.clear();
     }
@@ -384,9 +313,6 @@ namespace gum {
                                                                     Idx lastInstVarPos,
                                                                     std::string tab) {
 
-//        tab += "|\t";
-//        std::cout << tab << "New Recursion : " << "N1 : " <<  currentSituation.DG1Node() << " - N2 : " <<  currentSituation.DG2Node() << std::endl;
-
         NodeId newNode = 0;
 
 
@@ -394,10 +320,6 @@ namespace gum {
         // If both current nodes are terminal,
         // we only have to compute the resulting value
         if ( __DG1->isTerminalNode ( currentSituation.DG1Node() ) && __DG2->isTerminalNode ( currentSituation.DG2Node() ) ) {
-
-//            std::cout << tab << "Terminal Nodes. Node D1 value : " << __DG1->nodeValue(currentSituation.DG1Node());
-//            std::cout << " -  Node D2 value : " << __DG2->nodeValue(currentSituation.DG2Node());
-//            std::cout << " -  Computed value : " << __function( __DG1->nodeValue(currentSituation.DG1Node()), __DG2->nodeValue(currentSituation.DG2Node())) << std::endl;
 
             // We have to compute new valueand we insert a new node in diagram with this value, ...
             return __rd->manager()->addTerminalNode( __function( __DG1->nodeValue(currentSituation.DG1Node()), __DG2->nodeValue(currentSituation.DG2Node())));
@@ -421,38 +343,14 @@ namespace gum {
 
         short int* instNeeded = static_cast<short int*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate( sizeof(short int)*__nbVar ) );
 
-//        std::cout << tab << "Current Situation : " << "N1 : " <<  currentSituation.DG1Node() << " - N2 : " <<  currentSituation.DG2Node();
         for( Idx i = 0; i < __nbVar; i++ ){
 
-//             std::cout << " | ";
-//            if( dg1NeededVar[i] )
-//                 std::cout << "T";
-//            else
-//                 std::cout << "F";
-//             std::cout << " - ";
-
-//            if( dg2NeededVar[i] )
-//                 std::cout << "T";
-//            else
-//                 std::cout << "F";
-//             std::cout << " - ";
-
             instNeeded[i] = dg1NeededVar[i] + dg2NeededVar[i];
-
-//            if( instNeeded[i] )
-//                 std::cout << "T";
-//            else
-//                 std::cout << "F";
-//             std::cout << " <=> " << currentSituation.varModality( i );
         }
-//         std::cout << std::endl;
 
         double curSitKey = currentSituation.key( instNeeded );
-//        std::cout << tab << "Key : " << curSitKey << std::endl;
 
         if ( __explorationTable.exists ( curSitKey ) ){
-
-//            std::cout << tab << "Prune" << std::endl;
             MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( instNeeded, sizeof(short int)*__nbVar);
 
             return __explorationTable[ curSitKey ];
@@ -472,11 +370,7 @@ namespace gum {
 
         if ( ! __DG1->isTerminalNode ( currentSituation.DG1Node() ) ){
 
-//            std::cout << tab << "N1 " << origDG1 << " is not terminal." << std::endl;
-
             if( currentSituation.varModality( dg1CurrentVarPos ) != 0 ){
-
-//                std::cout << tab << "Short Cutting on DG1 - Modality : " <<  currentSituation.varModality( dg1CurrentVarPos ) - 1 << " - Node Id : " << __DG1->node( currentSituation.DG1Node() )->son( currentSituation.varModality( dg1CurrentVarPos ) - 1 ) << std::endl;
                 currentSituation.setDG1Node( __DG1->node( currentSituation.DG1Node() )->son( currentSituation.varModality( dg1CurrentVarPos ) - 1 ) );
 
                 newNode = __compute(currentSituation, lastInstVarPos, tab );
@@ -497,11 +391,8 @@ namespace gum {
 
         if ( ! __DG2->isTerminalNode ( currentSituation.DG2Node() ) ){
 
-//            std::cout << tab << "N2 " << origDG2 << " is not terminal." << std::endl;
-
 
             if( currentSituation.varModality( dg2CurrentVarPos ) != 0 ){
-//                std::cout << tab << "Short Cutting on DG2 - Modality : " <<  currentSituation.varModality( dg2CurrentVarPos ) - 1 << " - Node Id : " << __DG2->node( currentSituation.DG2Node() )->son( currentSituation.varModality( dg2CurrentVarPos ) - 1 ) << std::endl;
                 currentSituation.setDG2Node( __DG2->node( currentSituation.DG2Node() )->son( currentSituation.varModality( dg2CurrentVarPos ) - 1 ) );
 
                 newNode = __compute(currentSituation, lastInstVarPos, tab );
@@ -533,16 +424,10 @@ namespace gum {
 
             if( instNeeded[ varPos ] ){
 
-//                std::cout << tab << "Besoin d'instancier" << std::endl;
-
                 const DiscreteVariable* curVar = __rd->variablesSequence().atPos( varPos );
                 NodeId* sonsIds = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate( sizeof(NodeId)*curVar->domainSize() ) );
 
-//                std::cout << tab << "Exploration retro  - Variable explorée : " << curVar->name() << std::endl;
-
                 for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {
-
-//                    std::cout << tab << "Modality : " << modality << std::endl;
 
                     currentSituation.chgVarModality ( varPos, modality + 1 );
 
@@ -550,8 +435,6 @@ namespace gum {
                 }
 
                 newNode = __nodeRedundancyCheck( curVar, sonsIds );
-
-//                std::cout << tab << "Ajout Noeud Retro - Kay : " << curSitKey << " - Node Id : " << newNode << std::endl;
 
                 __explorationTable.insert ( curSitKey, newNode );
                 currentSituation.chgVarModality ( varPos, 0 );
@@ -579,11 +462,7 @@ namespace gum {
             Idx varPos = __rd->variablesSequence().pos( curVar );
             NodeId* sonsIds = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate( sizeof(NodeId)*curVar->domainSize() ) );
 
-//            std::cout << tab << "Exploration simultanée  - Variable explorée : " << curVar->name() << std::endl;
-
             for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {
-
-//                std::cout << tab << "Modalité : " << modality << " - Noeud Fils DG1 : " <<  dg1Node->son( modality ) << " - Noeud Fils DG2 : " << dg2Node->son( modality ) << std::endl;
 
                 currentSituation.chgVarModality ( varPos, modality + 1 );
                 currentSituation.setDG1Node( dg1Node->son( modality ) );
@@ -593,8 +472,6 @@ namespace gum {
             }
 
             newNode = __nodeRedundancyCheck( curVar, sonsIds );
-
-//            std::cout << tab << "Ajout Noeud Simul - Kay : " << curSitKey << " - Node Id : " << newNode << std::endl;
 
             __explorationTable.insert ( curSitKey, newNode );
             currentSituation.chgVarModality ( varPos, 0 );
@@ -608,23 +485,13 @@ namespace gum {
         // ====================================================
         else {
 
-//            std::cout << tab << "Exploration Autre - ";
-//            if(leaddg == __DG1)
-//                std::cout << "Noeud DG1 : " << leadNodeId << " - ";
-//            else
-//                std::cout << "Noeud DG2 : " << leadNodeId << " - ";
-
 
             const typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* leaddgNode = leaddg->node( leadNodeId );
 
             const DiscreteVariable* curVar = leaddgNode->nodeVar();
             NodeId* sonsIds = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate( sizeof(NodeId)*curVar->domainSize() ) );
 
-//            std::cout << "Variable explorée : " << curVar->name() << std::endl;
-
             for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {
-
-//                std::cout << tab << "Modality : " << modality << " - Noeud Fils : " <<  leaddgNode->son( modality ) << std::endl;
 
                 currentSituation.chgVarModality ( leadVarPos, modality + 1 );
                 (currentSituation.*leadFunction)( leaddgNode->son( modality ) );
@@ -633,8 +500,6 @@ namespace gum {
             }
 
             newNode = __nodeRedundancyCheck( curVar, sonsIds );
-
-//            std::cout << tab << "Ajout Noeud Autre - Kay : " << curSitKey << " - Node Id : " << newNode << std::endl;
 
             __explorationTable.insert ( curSitKey, newNode );
             currentSituation.chgVarModality ( leadVarPos, 0 );
@@ -658,15 +523,12 @@ namespace gum {
         if( __rd->manager()->isRedundant( var, sonsIds ) ){
             newNode = sonsIds[0];
             MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( sonsIds, sizeof(NodeId)*var->domainSize() );
-//            std::cout << "Node Redondant - Child : " << newNode << std::endl;
         } else {
             newNode = __rd->manager()->checkIsomorphism( var, sonsIds );
             if ( newNode == 0 ) {
                 newNode = __rd->manager()->addNonTerminalNode( var, sonsIds);
-//                std::cout << "New Node : " << newNode << std::endl;
             } else {
                 MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( sonsIds, sizeof(NodeId)*var->domainSize() );
-//                std::cout << "Node Redondant - Similar : " << newNode << std::endl;
             }
         }
 

@@ -434,14 +434,15 @@ namespace gum {
          */
         // ============================================================================
         void copyAndReassign ( const MultiDimDecisionGraph<GUM_SCALAR> &src,
-                               const Bijection<const DiscreteVariable*, const DiscreteVariable*> reassign );
+                               const Bijection<const DiscreteVariable*, const DiscreteVariable*>& reassign );
 
         // ============================================================================
         /**
          * Copies src diagrams and multiply every value by the given scalar.
          */
         // ============================================================================
-        void copyAndMultiplyByScalar ( const MultiDimDecisionGraph<GUM_SCALAR>& src, GUM_SCALAR gamma );
+        void copyAndMultiplyByScalar ( const MultiDimDecisionGraph<GUM_SCALAR>& src,
+                                       GUM_SCALAR gamma );
 
         // ============================================================================
         /**

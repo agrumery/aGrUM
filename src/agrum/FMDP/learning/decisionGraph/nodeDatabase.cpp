@@ -18,4 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <agrum/FMDP/learning/decision graph/nodeDatabase.h>
+#include <agrum/FMDP/learning/decisionGraph/nodeDatabase.h>
+
+template class gum::NodeDatabase<float>;
+template class gum::NodeDatabase<double>;

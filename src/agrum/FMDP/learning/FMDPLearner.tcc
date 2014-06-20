@@ -19,14 +19,13 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the SPIMDDI class.
+ * @brief Headers of the FMDPLearner class.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
-
 // =========================================================================
-#include <agrum/FMDP/learning/SPIMDDI.h>
+#include <agrum/FMDP/learning/FMDPLearner.h>
 // =========================================================================
 
 namespace gum {
@@ -39,34 +38,25 @@ namespace gum {
     // Default constructor
     // ###################################################################
     template <typename GUM_SCALAR>
-    SPIMDDI<GUM_SCALAR>::SPIMDDI( ){
-
-      GUM_CONSTRUCTOR(SPIMDDI);
-
-      __fmdp = new FactoredMarkovDecisionProcess<GUM_SCALAR>();
-      __planer = new SPUDDPlanning<GUM_SCALAR>(__fmdp);
+    FMDPLearner<GUM_SCALAR>::FMDPLearner(FactoredMarkovDecisionProcess<GUM_SCALAR> *target, double lT ) : __fmdp(target),
+                                                                                                          __learningThreshold(lT){
+      GUM_CONSTRUCTOR(FMDPLearner);
     }
 
 
     // ###################################################################
-    // Default desstructor
+    // Default destructor
     // ###################################################################
     template <typename GUM_SCALAR>
-    SPIMDDI<GUM_SCALAR>::~SPIMDDI(){
-
-      delete __planer;
-      delete __fmdp;
+    FMDPLearner<GUM_SCALAR>::~FMDPLearner(){
 
       for( auto actionIter = __actionLearners.beginSafe(); actionIter != __actionLearners.endSafe(); ++actionIter ){
-          for( auto learnerIter = (*actionIter)->beginSafe(); learnerIter = (*actionIter)->endSafe(); ++learnerIter)
+          for( auto learnerIter = actionIter.val()->beginSafe(); learnerIter != actionIter.val()->endSafe(); ++learnerIter)
               delete *learnerIter;
-          delete *actionIter;
+          delete actionIter.val();
       }
 
-      for(auto varIter = __primedVariables.beginSafe(); varIter != __primedVariables.endSafe(); ++varIter)
-          delete varIter;
-
-      GUM_DESTRUCTOR(SPIMDDI);
+      GUM_DESTRUCTOR(FMDPLearner);
     }
 
 
@@ -79,29 +69,27 @@ namespace gum {
     //
     // ###################################################################
     template <typename GUM_SCALAR>
-    void SPIMDDI<GUM_SCALAR>::addVariable( const DiscreteVariable* var){
+    void FMDPLearner<GUM_SCALAR>::addVariable( const DiscreteVariable* var ){
         __fmdp->addVariable(var);
-        DiscreteVariable* prime = new LabelizedVariable(var);
-        prime->setName( var->name() + "'");
-        __fmdp->addPrimedVariable(prime);
-        __primedVariables.insert(prime);
-
+        __mainVariables.insert(var);
     }
 
     // ###################################################################
     //
     // ###################################################################
     template <typename GUM_SCALAR>
-    void SPIMDDI<GUM_SCALAR>::addAction(std::string name){
+    void FMDPLearner<GUM_SCALAR>::addAction( Idx actionId, std::string& actionName ){
 
-        Idx actionId = __fmdp->addAction(name);
-        __actionLearners[action] = new List<IMDDI<GUM_SCALAR>*>();
-        __fmdp->resetVariablesIterator();
-        while(__fmdp->hasVariable()){
-            MultiDimDecisionGraph<GUM_SCALAR> varTrans = new MultiDimDecisionGraph<GUM_SCALAR>();
-            __fmdp->addTransitionForAction(__fmdp->variable(), varTrans, __fmdp->actionName(actionId));
-            __actionLearners[actionId]->insert(new IMDDI<GUM_SCALAR>(varTrans,0.95,__mainVariables,__fmdp->variable(),false));
-        }
+        __fmdp->addAction(actionId, actionName);
+        __actionLearners[actionId] = new List<IMDDI<GUM_SCALAR>*>();
+    }
+
+    // ###################################################################
+    //
+    // ###################################################################
+    template <typename GUM_SCALAR>
+    void FMDPLearner<GUM_SCALAR>::addReward( const DiscreteVariable* var ){
+        __rewardVar = var;
     }
 
 
@@ -114,6 +102,31 @@ namespace gum {
     //
     // ###################################################################
     template <typename GUM_SCALAR>
-    void SPIMDDI<GUM_SCALAR>::addObservation( const Observation* newObs){
+    void FMDPLearner<GUM_SCALAR>::initialize(){
+
+      for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter ){
+        for( auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter ){
+            MultiDimDecisionGraph<GUM_SCALAR>* varTrans = new MultiDimDecisionGraph<GUM_SCALAR>();
+            __fmdp->addTransitionForAction(__fmdp->actionName(*actionIter), *varIter, varTrans);
+            __actionLearners[*actionIter]->insert(new IMDDI<GUM_SCALAR>(varTrans,__learningThreshold,__mainVariables,__fmdp->main2prime(*varIter)));
+        }
+      }
+
+      MultiDimDecisionGraph<GUM_SCALAR>* reward = new MultiDimDecisionGraph<GUM_SCALAR>();
+      __fmdp->addReward(reward);
+      __rewardLearner = new IMDDI<GUM_SCALAR>(reward,__learningThreshold,__mainVariables,__rewardVar,true);
+    }
+
+    // ###################################################################
+    //
+    // ###################################################################
+    template <typename GUM_SCALAR>
+    void FMDPLearner<GUM_SCALAR>::addObservation( Idx actionId, const Observation* newObs ){
+
+        for(auto learnerIter = __actionLearners[actionId]->beginSafe(); learnerIter != __actionLearners[actionId]->endSafe(); ++learnerIter)
+            (*learnerIter)->addObservation(newObs);
+
+        __rewardLearner->addObservation(newObs);
+
     }
 } // End of namespace gum

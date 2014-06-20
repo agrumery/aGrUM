@@ -396,8 +396,8 @@ template<typename GUM_SCALAR>
     // ============================================================================
     template<typename GUM_SCALAR>
     INLINE
-    void MultiDimDecisionGraph<GUM_SCALAR>::copyAndReassign ( const MultiDimDecisionGraph<GUM_SCALAR> &src,
-                                                              const Bijection<const DiscreteVariable*, const DiscreteVariable*> reassign ){
+    void MultiDimDecisionGraph<GUM_SCALAR>::copyAndReassign (const MultiDimDecisionGraph<GUM_SCALAR> &src,
+                                                             const Bijection<const DiscreteVariable *, const DiscreteVariable *> &reassign ){
 
 
 //        std::cout << src.toDot() << std::endl;

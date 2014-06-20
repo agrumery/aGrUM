@@ -26,7 +26,7 @@
 // =========================================================================
 #include <cmath>
 // =========================================================================
-#include <agrum/FMDP/learning/decision graph/varInfo.h>
+#include <agrum/FMDP/learning/decisionGraph/varInfo.h>
 // =========================================================================
 
 
@@ -58,7 +58,7 @@ namespace gum {
       GUM_CONSTRUCTOR(VarInfo);
 
       for(Idx modality = 0; modality < __attr->domainSize(); modality++){
-        __modality2Observations.insert(modality, new Set<const Observation<GUM_SCALAR>*>);
+        __modality2Observations.insert(modality, new Set<const Observation*>);
         __contingencyTable.insert( modality, new HashTable<Idx, Idx>());
       }
 

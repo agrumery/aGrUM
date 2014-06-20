@@ -24,7 +24,6 @@
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
-// #define  TRACE_ALGO
 // =========================================================================
 #ifndef GUM_SPIMDDI_H
 #define GUM_SPIMDDI_H
@@ -32,9 +31,12 @@
 #include <agrum/core/hashTable.h>
 // =========================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
-#include <agrum/FMDP/planning/SPUDDPlanning.h>
+#include <agrum/FMDP/planning/spumdd.h>
+#include <agrum/FMDP/learning/FMDPLearner.h>
 #include <agrum/FMDP/learning/observation.h>
-#include <agrum/FMDP/learning/decision graph/IMDDI.h>
+// =========================================================================
+#include <agrum/multidim/instantiation.h>
+#include <agrum/multidim/multiDimDecisionGraph.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>
 // =========================================================================
@@ -42,7 +44,7 @@
 namespace gum {
 
   /**
-   * @class SPIMDDI SPIMDDI.h <agrum/FMDP/learning/SPIMDDI.h>
+   * @class SPIMDDI spimddi.h <agrum/FMDP/learning/spimddi.h>
    * @brief
    * @ingroup fmdp_group
    *
@@ -63,7 +65,7 @@ namespace gum {
         // ###################################################################
         /// Default constructor
         // ###################################################################
-        SPIMDDI ();
+        SPIMDDI (GUM_SCALAR discountFactor, double epsilon, double learningThreshold, Idx nbStep);
 
         // ###################################################################
         /// Default destructor
@@ -80,9 +82,8 @@ namespace gum {
         // ###################################################################
         ///
         // ###################################################################
-        addVariable(const DiscreteVariable*);
-
-        addAction(std::string);
+        void addAction( Idx actionId, std::string actionName );
+        void addVariable( const DiscreteVariable* var );
 
       /// @}
 
@@ -94,29 +95,42 @@ namespace gum {
         // ###################################################################
         ///
         // ###################################################################
-        addObservation(Idx, const Observation*);
+        void feedback( const Instantiation*, Idx );
+
+        // ###################################################################
+        ///
+        // ###################################################################
+        Idx askForAction();
 
       /// @}
 
     private :
 
-      ///
+      /// The learnt Markovian Decision Process
       FactoredMarkovDecisionProcess<GUM_SCALAR>* __fmdp;
 
-      SPUDDPlanning<GUM_SCALAR>* __planer;
+      /// The model learner.
+      /// It will handle by itself the different decision graph learner
+      /// needed to learn the FMDP
+      FMDPLearner<GUM_SCALAR>* __learner;
 
-      HashTable<Idx, List<IMDDI<GUM_SCALAR>*>*> __actionLearners;
-      IMDDI<GUM_SCALAR>* __rewardLearner;
+      /// The planer we use to find the optimal policy
+      SPUMDD<GUM_SCALAR>* __planer;
 
-      Set<const DiscreteVariable*> __primedVariables;
-      Set<const DiscreteVariable*> __mainVariables;
+      /// The optimal policy to use to make some decision
+      MultiDimDecisionGraph<Idx>* __optimalPolicy;
+
+      Instantiation __lastState;
 
   };
+
+  extern template class SPIMDDI<float>;
+  extern template class SPIMDDI<double>;
 
 } /* namespace gum */
 
 
-#include <agrum/FMDP/learning/SPIMDDI.tcc>
+#include <agrum/FMDP/learning/spimddi.tcc>
 
 #endif // GUM_SPIMDDI_H
 

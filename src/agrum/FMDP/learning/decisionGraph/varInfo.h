@@ -41,7 +41,7 @@
 namespace gum {
 
   /**
-   * @class VarInfo VarInfo.h <agrum/FMDP/learning/varInfo.h>
+   * @class VarInfo varInfo.h <agrum/FMDP/learning/decisionGraph/varInfo.h>
    * @brief
    * @ingroup fmdp_group
    *
@@ -85,14 +85,14 @@ namespace gum {
         /// Used to know if enough information are stored on this node
         /// to make pvalue relevant
         // ==========================================================================
-        bool isPValueRelevant() { return __isRelevant;}
+        INLINE bool isPValueRelevant() { return __isRelevant;}
 
         // ==========================================================================
         /// Returns the pValue for this attribute
         // ==========================================================================
-        double pValue ( ) { return __pvalue;}
+        INLINE double pValue ( ) { return __pvalue;}
 
-        const Set<const Observation*>* observationSet(Idx modality){ return __modality2Observations[modality];}
+        INLINE const Set<const Observation*>* observationSet(Idx modality){ return __modality2Observations[modality];}
 
       /// @}
 
@@ -159,8 +159,5 @@ namespace gum {
   };
 
 } /* namespace gum */
-
-
-#include <agrum/FMDP/learning/decision graph/varInfo.tcc>
 
 #endif // GUM_VARIABLE_INFORMATION_H

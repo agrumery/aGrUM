@@ -19,25 +19,27 @@
 ***************************************************************************/
 /**
 * @file
-* @brief Template implementation of FMDP/planning/SPUDDPlanning.h classes.
+* @brief Template implementation of FMDP/planning/SPUMDD.h classes.
 *
 * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 */
 
+// =========================================================================
 #include <math.h>
-#include <fstream>
-
-#include <agrum/core/timer.h>
-#include <agrum/core/exceptions.h>
-
+#include <thread>
+#include <vector>
+#include <algorithm>
+// =========================================================================
 #include <agrum/multidim/potential.h>
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimDecisionGraph.h>
-
-#include <agrum/multidim/patterns/DDUtility/o4DDMiscellaneous.h>
-
+// =========================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
-#include <agrum/FMDP/planning/SPUDDPlanning.h>
+#include <agrum/FMDP/planning/spumdd.h>
+// =========================================================================
+
+/// For shorter line
+#define RECAST(x) reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*>(x)
 
 namespace gum {
 
@@ -52,114 +54,117 @@ namespace gum {
 // Default constructor
 // ===========================================================================
   template<typename GUM_SCALAR> INLINE
-  SPUDDPlanning<GUM_SCALAR>::SPUDDPlanning ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon ) {
+  SPUMDD<GUM_SCALAR>::SPUMDD ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon ) : __fmdp(fmdp) {
 
-    GUM_CONSTRUCTOR ( SPUDDPlanning );
-    __epsilon = epsilon;
-    __fmdp = fmdp;
+    GUM_CONSTRUCTOR ( SPUMDD );
 
+    __threshold = epsilon;
+    __vFunction = nullptr;
   }
 
 // ===========================================================================
 // Default destructor
 // ===========================================================================
   template<typename GUM_SCALAR> INLINE
-  SPUDDPlanning<GUM_SCALAR>::~SPUDDPlanning() {
+  SPUMDD<GUM_SCALAR>::~SPUMDD() {
+    GUM_DESTRUCTOR ( SPUMDD );
 
-    GUM_DESTRUCTOR ( SPUDDPlanning );
-
+    if(__vFunction)
+        delete __vFunction;
   }
 
 
-  /* ************************************************************************************************** **/
-  /* **                                                                                                 **/
-  /* **                                   General Methods                                               **/
-  /* **                                                                                                 **/
-  /* ************************************************************************************************** **/
+/* ************************************************************************************************** **/
+/* **                                                                                                 **/
+/* **                                   Planning Methods                                              **/
+/* **                                                                                                 **/
+/* ************************************************************************************************** **/
 
-// ===========================================================================
-// Makes a spudd planning on FMDP
-// ===========================================================================
+    // ===========================================================================
+    // Makes a spudd planning on FMDP
+    // ===========================================================================
+    template<typename GUM_SCALAR>
+    void SPUMDD<GUM_SCALAR>::initialize(  ) {
+
+        __threshold *= ( 1 - __fmdp->discount() ) / ( 2 * __fmdp->discount() );
+
+        for ( auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter ) {
+          __elVarSeq << *varIter;
+          std::cout << (*varIter)->name() << " ";
+        }
+        std::cout << std::endl;
+
+        for ( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter )
+            std::cout << *actionIter << " ";
+        std::cout << std::endl;
+
+        __vFunction = new MultiDimDecisionGraph< GUM_SCALAR >();
+        __vFunction->copy(*(RECAST(__fmdp->reward())));
+
+    }
+
+  // ===========================================================================
+  // Makes a spudd planning on FMDP
+  // ===========================================================================
   template<typename GUM_SCALAR>
-  MultiDimDecisionGraph<GUM_SCALAR> *SPUDDPlanning<GUM_SCALAR>::makePlanning( ) {
+  MultiDimDecisionGraph<GUM_SCALAR>* SPUMDD<GUM_SCALAR>::makePlanning( Idx nbStep ) {
 
     // *****************************************************************************************
     // Initialisation
     // *****************************************************************************************
 
-    // *****************************************************************************************
-    // Threshold stopping criterion evaluation
-    GUM_SCALAR threshold = this->__epsilon * ( 1 - __fmdp->discount() ) / ( 2 * __fmdp->discount() );
-
-    GUM_SCALAR gap = threshold + 1;
 
 
     // *****************************************************************************************
-    // Initialisation of Vold, Vnew and Vtemp
-    MultiDimDecisionGraph< GUM_SCALAR >* Vold = new MultiDimDecisionGraph< GUM_SCALAR >();
-    Vold->copy(*(reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*>(__fmdp->reward())));
-
+    // Initialisation of  Vnew and Vtemp
     MultiDimDecisionGraph< GUM_SCALAR >* Vnew = nullptr;
     MultiDimDecisionGraph< GUM_SCALAR >* Vtemp = nullptr;
-    HashTable< Idx, MultiDimDecisionGraph< GUM_SCALAR >* > VactionCollector;
-
-    Idx nbIte = 0;
-
-    Sequence< const DiscreteVariable* > elVarSeq;
-    __fmdp->resetVariablesIterator();
-    while ( __fmdp->hasVariable() ) {
-      elVarSeq << __fmdp->variable();
-      __fmdp->nextVariable();
-    }
-    //std::cout << "Elimination sequence : " << elVarSeq.toString() << std::endl;
 
     // *****************************************************************************************
     // Main loop
     // *****************************************************************************************
-    while ( gap >  threshold ) {
+    Idx nbIte = 0;
+    GUM_SCALAR gap = __threshold + 1;
+    while ( gap > __threshold && nbIte < nbStep) {
 
       ++nbIte;
 
       // *****************************************************************************************
       // Loop reset
-      __fmdp->resetActionsIterator();
-//         Set< MultiDimDecisionGraph< GUM_SCALAR >* > VactionCollector;
-
       Vnew = new MultiDimDecisionGraph< GUM_SCALAR >();
-      Vnew->copyAndReassign ( *Vold, __fmdp->main2prime() );
-      //std::cout << Vnew->toDot() << std::endl;
+      Vnew->copyAndReassign ( *__vFunction, __fmdp->mapMainPrime() );
 
+      std::cout << "Hello" << std::endl;
       // *****************************************************************************************
       // For each action
-      while ( __fmdp->hasAction() ) {
-        //std::cout << " Action : " << __fmdp->actionName( __fmdp->actionIterId() ) << std::endl;
-        VactionCollector.insert ( __fmdp->actionIterId(), __evalActionValue ( Vnew, elVarSeq ) );
-
-        //std::cout << VactionCollector[__fmdp->actionIterId()]->toDot() << std::endl;
-        __fmdp->nextAction();
+      std::vector<std::thread> workers;
+      for ( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter  ) {
+        evalQaction( this, Vnew, *actionIter );
+//        NodeId threadActionId = *actionIter;
+//        std::cout << "Launching Thread " << threadActionId << std::endl;
+//        workers.push_back( std::thread([this, Vnew, threadActionId](){evalQaction( this, Vnew, threadActionId );}));
       }
-      //std::cout << "FIN CALCUL VACTION" << std::endl;
+      std::for_each(workers.begin(), workers.end(), [](std::thread &w){ w.join(); });
+
 
       // *****************************************************************************************
       // Next to evaluate main value function, we take maximise over all action value, ...
       delete Vnew;
-      //std::cout << "MAXIMISATION" << std::endl;
 
-      __fmdp->resetActionsIterator();
-      Vnew = VactionCollector[__fmdp->actionIterId()];
-      __fmdp->nextAction();
+      auto actionIter = __fmdp->beginActions();
+      Vnew = __qFunctionTable[*actionIter];
+      ++actionIter;
 
-      while ( __fmdp->hasAction() ) {
+      while ( actionIter != __fmdp->endActions() ) {
         Vtemp = Vnew;
-        Vnew = maximize2MultiDimDecisionGraphs ( Vnew, VactionCollector[ __fmdp->actionIterId() ] );
+        Vnew = maximize2MultiDimDecisionGraphs ( Vnew, __qFunctionTable[ *actionIter ] );
 
         delete Vtemp;
-        delete VactionCollector[ __fmdp->actionIterId() ];
-        __fmdp->nextAction();
+        delete __qFunctionTable[ *actionIter ];
+        ++actionIter;
       }
-      VactionCollector.clear();
+      __qFunctionTable.clear();
 
-      //std::cout << "FIN MAXIMISATION" << std::endl;
 
       // *******************************************************************************************
       // Next, we eval the new function value
@@ -170,38 +175,90 @@ namespace gum {
 
       // *****************************************************************************************
       // Then we compare new value function and the old one
-
-      MultiDimDecisionGraph< GUM_SCALAR >* deltaV = subtract2MultiDimDecisionGraphs ( Vnew, Vold );
+      MultiDimDecisionGraph< GUM_SCALAR >* deltaV = subtract2MultiDimDecisionGraphs ( Vnew, __vFunction );
       gap = 0;
 
-      for ( BijectionIteratorSafe< NodeId, GUM_SCALAR > valIter = deltaV->values().cbeginSafe(); valIter != deltaV->values().cendSafe(); ++valIter )
+      for ( auto valIter = deltaV->values().cbeginSafe(); valIter != deltaV->values().cendSafe(); ++valIter )
         if ( gap < fabs ( valIter.second() ) )
           gap = fabs ( valIter.second() );
 
       delete deltaV;
 
-      std::cout << " ------------------- Fin itération n° " << nbIte << std::endl << " Gap : " << gap <<  std::endl;
+      std::cout << " ------------------- Fin itération n° " << nbIte << std::endl << " Gap : " << gap <<  " - " << __threshold << std::endl;
+
       // *****************************************************************************************
       // And eventually we update pointers for next loop
-      delete Vold;
-      Vold = Vnew;
+      delete __vFunction;
+      __vFunction = Vnew;
 
     }
 
 //    __evalPolicy ( Vold );
-    return Vold;
+    return __vFunction;
 
 //     delete Vold;
+  }  
+
+
+
+  // ===========================================================================
+  // Evals the value function for current fmdp action
+  // ===========================================================================
+  template<typename GUM_SCALAR>
+  void
+//  MultiDimDecisionGraph<GUM_SCALAR>*
+//  SPUMDD<GUM_SCALAR>::__evalActionValue ( const MultiDimDecisionGraph< GUM_SCALAR >* Vold, Idx actionId ) {
+  evalQaction( SPUMDD<GUM_SCALAR>* planer, const MultiDimDecisionGraph< GUM_SCALAR >* Vold, Idx actionId ){
+
+    std::cout << "Thread " << actionId << " has begun." << std::endl;
+
+    // *****************************************************************************************
+    // Initialisation
+    MultiDimDecisionGraph< GUM_SCALAR >* Vaction = new MultiDimDecisionGraph< GUM_SCALAR >();
+    Vaction->copy( *Vold );
+    MultiDimDecisionGraph< GUM_SCALAR >* Vtemp = nullptr;
+    Set< const DiscreteVariable* > varSet;
+
+    // *****************************************************************************************
+    // To evaluate action value function, we multiply old main value function by transition table
+    // of each variable
+//    std::cout << "Thread " << actionId << " initiates var elemination." << std::endl;
+    for ( auto varIter = planer->beginVarElimination(); varIter != planer->endVarElemination(); --varIter ) {
+
+//      std::cout << "Thread " << actionId << " - Var : " << (*varIter)->name() << std::endl;
+      // ***************************************************************************************
+      // Multiplication of Vaction by current variable's CPT
+      Vtemp = Vaction;
+      Vaction = multiply2MultiDimDecisionGraphs ( Vaction, RECAST( planer->fmdp()->transition( actionId, *varIter)));
+      delete Vtemp;
+
+      // ***************************************************************************************
+      // Projection of Vaction on current var by summing on each of its modalities
+      Vtemp = Vaction;
+      varSet << planer->fmdp()->main2prime(*varIter);
+      Vaction = projectSumMultiDimDecisionGraph ( Vaction, varSet );
+      varSet >> planer->fmdp()->main2prime(*varIter);
+      delete Vtemp;
+    }
+
+    planer->addQaction(actionId, Vaction);
+//    return Vaction;
+
   }
-
-
+  template<typename GUM_SCALAR>
+  void
+  SPUMDD<GUM_SCALAR>::addQaction(Idx actionId, MultiDimDecisionGraph< GUM_SCALAR >* qaction) {
+      __qTableMutex.lock();
+      __qFunctionTable.insert ( actionId, qaction );
+      __qTableMutex.unlock();
+  }
 
 // ===========================================================================
 // Evals the policy corresponding to the given value function
 // ===========================================================================
   template<typename GUM_SCALAR>
   void
-  SPUDDPlanning<GUM_SCALAR>::__evalPolicy ( const MultiDimDecisionGraph< GUM_SCALAR >* V ) {
+  SPUMDD<GUM_SCALAR>::__evalPolicy ( const MultiDimDecisionGraph< GUM_SCALAR >* V ) {
 
     // *****************************************************************************************
     // We have to do one last step to get best policy
@@ -226,65 +283,21 @@ namespace gum {
 
 
 // ===========================================================================
-// Evals the value function for current fmdp action
-// ===========================================================================
-  template<typename GUM_SCALAR>
-  MultiDimDecisionGraph<GUM_SCALAR>*
-  SPUDDPlanning<GUM_SCALAR>::__evalActionValue ( const MultiDimDecisionGraph< GUM_SCALAR >* Vold, Sequence< const DiscreteVariable*>& elVarSeq ) {
-
-    // *****************************************************************************************
-    // Initialisation
-
-    MultiDimDecisionGraph< GUM_SCALAR >* Vaction = new MultiDimDecisionGraph< GUM_SCALAR >();
-    Vaction->copy( *Vold );
-    MultiDimDecisionGraph< GUM_SCALAR >* Vtemp = nullptr;
-    Set< const DiscreteVariable* > varSet;
-
-    // *****************************************************************************************
-    // To evaluate action value function, we multiply old main value function by transition table
-    // of each variable
-    for ( SequenceIteratorSafe<const DiscreteVariable*> varIter = elVarSeq.rbeginSafe(); varIter != elVarSeq.rendSafe(); --varIter ) {
-      // ***************************************************************************************
-      // Multiplication of Vaction by current variable's CPT
-//        std::cout << std::endl << " " << std::endl << " " << std::endl << " *************************************************************************************" << std::endl;
-//        std::cout << "DIGRAMA ACTION AVANT" << Vaction->toDot();
-//        std::cout << "DIGRAMA ACTION AVANT" << reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*> ( __fmdp->transition ( __fmdp->main2prime().first ( *varIter ) ) )->toDot();
-      Vtemp = Vaction;
-      Vaction = multiply2MultiDimDecisionGraphs ( Vaction, reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*> ( __fmdp->transition ( __fmdp->main2prime().first ( *varIter ) ) ) );
-      delete Vtemp;
-
-//      std::cout << "DIGRAMA ACTION PENDANT" << Vaction->toDot();
-      // ***************************************************************************************
-      // Projection of Vaction on current var by summing on each of its modalities
-      Vtemp = Vaction;
-      varSet << *varIter;
-      Vaction = projectSumMultiDimDecisionGraph ( Vaction, varSet );
-      varSet >> *varIter;
-      delete Vtemp;
-    }
-
-    return Vaction;
-
-  }
-
-
-
-// ===========================================================================
 // Updates the value function by multiplying by discount and adding reward
 // ===========================================================================
   template<typename GUM_SCALAR>
   MultiDimDecisionGraph<GUM_SCALAR>*
-  SPUDDPlanning<GUM_SCALAR>::__addReward ( const MultiDimDecisionGraph< GUM_SCALAR >* Vold ) {
+  SPUMDD<GUM_SCALAR>::__addReward ( const MultiDimDecisionGraph< GUM_SCALAR >* Vold ) {
 
     // *****************************************************************************************
     // ... we multiply the result by the discount factor, ...
-    MultiDimDecisionGraph< GUM_SCALAR >* Vnew = reinterpret_cast<MultiDimDecisionGraph<GUM_SCALAR>*> ( Vold->newFactory() );
+    MultiDimDecisionGraph< GUM_SCALAR >* Vnew = new MultiDimDecisionGraph<GUM_SCALAR>();
     Vnew->copyAndMultiplyByScalar ( *Vold, __fmdp->discount() );
 
     // *****************************************************************************************
     // ... and finally add reward
     MultiDimDecisionGraph< GUM_SCALAR >* Vtemp = Vnew;
-    Vnew = add2MultiDimDecisionGraphs ( reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*> ( __fmdp->reward() ), Vtemp );
+    Vnew = add2MultiDimDecisionGraphs ( RECAST( __fmdp->reward() ), Vtemp );
 
     delete Vtemp;
 
@@ -305,7 +318,7 @@ namespace gum {
 // ===========================================================================
 //  template<typename GUM_SCALAR>
 //  MultiDimDecisionGraph< std::pair< double, long > >*
-//  SPUDDPlanning< GUM_SCALAR >::__argMaxValueFunction ( const MultiDimDecisionGraph< GUM_SCALAR >* V ) {
+//  SPUMDD< GUM_SCALAR >::__argMaxValueFunction ( const MultiDimDecisionGraph< GUM_SCALAR >* V ) {
 
 //    // *****************************************************************************************
 //    // Loop reset
@@ -347,7 +360,7 @@ namespace gum {
 //      Vaction = add2MultiDimDecisionGraphs ( reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*> ( __fmdp->reward() ), Vaction );
 //      delete Vtemp;
 
-//      VactionCollector.insert ( __fmdp->actionIterId(), Vaction );
+//      VactionCollector.insert ( *actionIter, Vaction );
 //      __fmdp->nextAction();
 //    }
 
@@ -377,7 +390,7 @@ namespace gum {
 // ===========================================================================
 //  template<typename GUM_SCALAR>
 //  MultiDimDecisionGraph< std::pair< double, long > >*
-//  SPUDDPlanning<GUM_SCALAR>::__createArgMaxCopy ( const MultiDimDecisionGraph<GUM_SCALAR>* Vaction, Idx actionId ) {
+//  SPUMDD<GUM_SCALAR>::__createArgMaxCopy ( const MultiDimDecisionGraph<GUM_SCALAR>* Vaction, Idx actionId ) {
 
 //    MultiDimDecisionGraph< std::pair< double, long > >* amcpy = new MultiDimDecisionGraph< std::pair< double, long > >();
 
@@ -420,7 +433,7 @@ namespace gum {
 // ===========================================================================
 //  template<typename GUM_SCALAR>
 //  NodeId
-//  SPUDDPlanning<GUM_SCALAR>::__makeOptimalPolicyDecisionGraph ( const MultiDimDecisionGraph< std::pair< double, long > >* V,
+//  SPUMDD<GUM_SCALAR>::__makeOptimalPolicyDecisionGraph ( const MultiDimDecisionGraph< std::pair< double, long > >* V,
 //      const NodeId& currentNode,
 //      MultiDimDecisionGraphFactoryBase<Idx>* factory,
 //      HashTable< NodeId, NodeId >& explorationTable ) {
@@ -567,7 +580,7 @@ namespace gum {
 // ===========================================================================
 //  template<typename GUM_SCALAR>
 //  void
-//  SPUDDPlanning<GUM_SCALAR>::__displayOptimalPolicy ( MultiDimDecisionGraph< Idx >* op ) {
+//  SPUMDD<GUM_SCALAR>::__displayOptimalPolicy ( MultiDimDecisionGraph< Idx >* op ) {
 
 //    // *****************************************************************************************
 //    // And eventually we display the result
@@ -626,7 +639,7 @@ namespace gum {
 // ===========================================================================
 //  template<typename GUM_SCALAR>
 //  MultiDimDecisionGraph< GUM_SCALAR >*
-//  SPUDDPlanning<GUM_SCALAR>::makePlanningAlgoEvaluation ( const std::string saveFilesName, Idx mode ) {
+//  SPUMDD<GUM_SCALAR>::makePlanningAlgoEvaluation ( const std::string saveFilesName, Idx mode ) {
 
 //    // *****************************************************************************************
 //    // Initialisation
@@ -826,7 +839,7 @@ namespace gum {
 // ===========================================================================
 //  template<typename GUM_SCALAR>
 //  MultiDimDecisionGraph<GUM_SCALAR>*
-//  SPUDDPlanning<GUM_SCALAR>::__evalActionValueAlgoEvaluation ( const MultiDimDecisionGraph< GUM_SCALAR >* Vold, const std::string saveFilesName, Idx mode ) {
+//  SPUMDD<GUM_SCALAR>::__evalActionValueAlgoEvaluation ( const MultiDimDecisionGraph< GUM_SCALAR >* Vold, const std::string saveFilesName, Idx mode ) {
 
 //    __fmdp->resetVariablesIterator();
 
@@ -849,7 +862,7 @@ namespace gum {
 //    double iterationTime;
 //    double totalTime = 0;
 
-//    std::string actionName = __fmdp->actionName ( __fmdp->actionIterId() );
+//    std::string actionName = __fmdp->actionName ( *actionIter );
 //    std::stringstream traceFileName;
 //    traceFileName << "./Trace/" << actionName << "/" << saveFilesName << "." << mode << ".log";
 //    __traceAlgoSaveFile.open ( traceFileName.str().c_str(), std::ios::out | std::ios::app );
@@ -964,7 +977,7 @@ namespace gum {
 // ===========================================================================
 //  template<typename GUM_SCALAR>
 //  MultiDimDecisionGraph<GUM_SCALAR>*
-//  SPUDDPlanning<GUM_SCALAR>::__addRewardAlgoEvaluation ( const MultiDimDecisionGraph< GUM_SCALAR >* Vold, const std::string saveFilesName, Idx mode ) {
+//  SPUMDD<GUM_SCALAR>::__addRewardAlgoEvaluation ( const MultiDimDecisionGraph< GUM_SCALAR >* Vold, const std::string saveFilesName, Idx mode ) {
 
 //    // *****************************************************************************************
 //    // ... we multiply the result by the discount factor, ...
@@ -1086,7 +1099,7 @@ namespace gum {
 // ===========================================================================
 //  template<typename GUM_SCALAR>
 //  std::pair<Idx, Idx>
-//  SPUDDPlanning<GUM_SCALAR>::__evalNbRetrogradeEvaluation ( const MultiDimDecisionGraph<GUM_SCALAR>* dD1, const MultiDimDecisionGraph<GUM_SCALAR>* dD2 ) {
+//  SPUMDD<GUM_SCALAR>::__evalNbRetrogradeEvaluation ( const MultiDimDecisionGraph<GUM_SCALAR>* dD1, const MultiDimDecisionGraph<GUM_SCALAR>* dD2 ) {
 
 
 //    std::pair<Idx, Idx> res;
@@ -1198,7 +1211,7 @@ namespace gum {
 
 //template <typename GUM_SCALAR>
 //gum::MultiDimDecisionGraph< std::pair< double, long > >*
-//gum::SPUDDPlanning<GUM_SCALAR>::__argMaxOn2MultiDimDecisionGraphs ( const gum::MultiDimDecisionGraph< std::pair< double, long > >* Vaction1,
+//gum::SPUMDD<GUM_SCALAR>::__argMaxOn2MultiDimDecisionGraphs ( const gum::MultiDimDecisionGraph< std::pair< double, long > >* Vaction1,
 //    const gum::MultiDimDecisionGraph< std::pair< double, long > >* Vaction2 ) {
 
 //  gum::MultiDimDecisionGraph< std::pair< double, long > >* ret = nullptr;
@@ -1266,7 +1279,7 @@ namespace gum {
 
 //template <typename GUM_SCALAR>
 //gum::MultiDimDecisionGraph< std::pair< double, long > >*
-//gum::SPUDDPlanning<GUM_SCALAR>::__differenceOnPolicy ( const gum::MultiDimDecisionGraph< std::pair< double, long > >* Vaction1,
+//gum::SPUMDD<GUM_SCALAR>::__differenceOnPolicy ( const gum::MultiDimDecisionGraph< std::pair< double, long > >* Vaction1,
 //    const gum::MultiDimDecisionGraph< std::pair< double, long > >* Vaction2 ) {
 
 //  gum::MultiDimDecisionGraph< std::pair< double, long > >* ret = nullptr;

@@ -20,3 +20,5 @@
 
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 
+template class gum::FactoredMarkovDecisionProcess<float>;
+template class gum::FactoredMarkovDecisionProcess<double>;

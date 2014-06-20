@@ -19,15 +19,15 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the SPUDDPlanning class.
+ * @brief Headers of the SPUMDD class.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
 // #define  TRACE_ALGO
 // =========================================================================
-#ifndef GUM_SPUDD_PLANNING_H
-#define GUM_SPUDD_PLANNING_H
+#ifndef GUM_SPUMDD_EVAL_H
+#define GUM_SPUMDD_EVAL_H
 // =========================================================================
 #include <string>
 #include <cstdio>
@@ -42,15 +42,17 @@
 namespace gum {
 
   /**
-   * @class SPUDDPlanning SPUDDPlanning.h <agrum/FMDP/planning/SPUDDPlanning.h>
+   * @class SPUMDDEval spumddEval.h <agrum/FMDP/planning/SPUMDDEval.h>
    * @brief A class to find optimal policy for a given FMDP.
    * @ingroup fmdp_group
+   *
    * Perform a SPUDD planning on given in parameter factored markov decision process
+   * And eval the performance of this algorithm
    *
    */
 
   template<typename GUM_SCALAR>
-  class SPUDDPlanning {
+  class SPUMDDEval {
 
     public:
 
@@ -62,40 +64,12 @@ namespace gum {
       /**
       * Default constructor
       */
-      SPUDDPlanning ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon = 0.00001 );
+      SPUMDDEval ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, GUM_SCALAR epsilon = 0.00001 );
 
       /**
       * Default destructor
       */
-      ~SPUDDPlanning();
-
-      /// @}
-      // ==========================================================================
-      /// @name Planning Methods
-      // ==========================================================================
-      /// @{
-
-      /**
-       * Makes a spudd planning on FMDP
-       */
-      MultiDimDecisionGraph< GUM_SCALAR >* makePlanning();
-
-    private:
-
-      /**
-       * Evals the policy corresponding to the given value function
-       */
-      void __evalPolicy ( const MultiDimDecisionGraph< GUM_SCALAR >* V );
-
-      /**
-       * Evals value function for a given action
-       */
-      MultiDimDecisionGraph< GUM_SCALAR >* __evalActionValue ( const MultiDimDecisionGraph< GUM_SCALAR >* Vold, Sequence< const DiscreteVariable*>& elVarSeq );
-
-      /**
-       * Evals final value function by multiplying by discount reward and adding reward
-       */
-      MultiDimDecisionGraph< GUM_SCALAR >* __addReward ( const MultiDimDecisionGraph< GUM_SCALAR >* Vold );
+      ~SPUMDDEval();
 
       /// @}
       // ==========================================================================
@@ -128,47 +102,6 @@ namespace gum {
 //      std::pair<Idx, Idx> __evalNbRetrogradeEvaluation ( const MultiDimDecisionGraph<GUM_SCALAR>* t1, const MultiDimDecisionGraph<GUM_SCALAR>* t2 );
 
       /// @}
-      // ==========================================================================
-      /// @name Optimal policy evaluation methods
-      // ==========================================================================
-      /// @{
-
-      /**
-        * Performs one last step of the algorithm to obtain the arg max equivalent of the so far computed value function
-        */
-//      MultiDimDecisionGraph< std::pair< double, long > >* __argMaxValueFunction ( const MultiDimDecisionGraph< GUM_SCALAR >* V );
-
-      /**
-       * Creates a copy of given in parameter decision diagram and replaces leaves of that diagram by a pair containing value of the leaf and
-       * action to which is bind this diagram (given in parameter).
-       */
-//      MultiDimDecisionGraph< std::pair< double, long > >* __createArgMaxCopy ( const MultiDimDecisionGraph<GUM_SCALAR>* Vaction, Idx actionId );
-
-      /**
-       * Once final V is computed upon arg max on last Vactions, this function creates a diagram where all leaves tied to the same action are merged together.
-       * Since this function is a recursive one to ease the merge of all identic nodes to converge toward a cannonical policy, a factory and the current node are needed to build
-       * resulting diagram. Also we need an exploration table to avoid exploration of already visited sub-graph part.
-       */
-//      NodeId __makeOptimalPolicyDecisionDiagram ( const MultiDimDecisionGraph< std::pair< double, long > >* V, const gum::NodeId& currentNode, MultiDimDecisionDiagramFactoryBase< Idx >* factory, HashTable< NodeId, NodeId >& explorationTable );
-
-      /**
-       * Displays the optimal computed policy diagram
-       */
-//      void __displayOptimalPolicy ( MultiDimDecisionGraph< Idx >* op );
-
-      /**
-       * Computed arg max of two vactions given in parameter
-       */
-//      MultiDimDecisionGraph< std::pair< double, long > >* __argMaxOn2MultiDimDecisionDiagrams ( const MultiDimDecisionGraph< std::pair< double, long > >* Vaction1, const MultiDimDecisionGraph< std::pair< double, long > >* Vaction2 );
-
-
-
-      /**
-       * Computed arg max of two vactions given in parameter
-       */
-//      MultiDimDecisionGraph< std::pair< double, long > >* __differenceOnPolicy ( const MultiDimDecisionGraph< std::pair< double, long > >* Vaction1, const MultiDimDecisionGraph< std::pair< double, long > >* Vaction2 );
-
-      /// @}
 
       /// The Factored Markov Decision Process on which we do our planning (NB : this one must have decision diagram as transitions and reward functions )
       FactoredMarkovDecisionProcess<GUM_SCALAR>* __fmdp;
@@ -179,15 +112,12 @@ namespace gum {
       /// RetroVar number save file
       std::ofstream __traceAlgoSaveFile;
   };
-
-  extern template class SPUDDPlanning<float>;
-  extern template class SPUDDPlanning<double>;
 } /* namespace gum */
 
 
-#include <agrum/FMDP/planning/SPUDDPlanning.tcc>
+#include <agrum/FMDP/planning/spumddEval.tcc>
 
-#endif // GUM_SPUDD_PLANNING_H
+#endif // GUM_SPUMDD_EVAL_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
 

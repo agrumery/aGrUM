@@ -43,9 +43,11 @@ namespace gum {
    * @class FactoredMarkovDecisionProcess
    * @brief This class is used to implement factored decision process.
    * @ingroup fmdp_group
+   *
    * This class supports a mechanism which allows user to give, for each
    * variable ivolved in the process, a default transition probability table
    * and to describe for specific actions a different table.
+   *
    */
 
   template<typename GUM_SCALAR>
@@ -58,15 +60,15 @@ namespace gum {
       // ===========================================================================
       /// @{
 
-      /**
-       * Default constructor.
-       */
-      FactoredMarkovDecisionProcess();
+        /**
+         * Default constructor.
+         */
+        FactoredMarkovDecisionProcess(bool onDestructionDeleteVar = false);
 
-      /**
-       * Default destructor.
-       */
-      ~FactoredMarkovDecisionProcess();
+        /**
+         * Default destructor.
+         */
+        ~FactoredMarkovDecisionProcess();
 
       /// @}
 
@@ -75,62 +77,56 @@ namespace gum {
       // ===========================================================================
       /// @{
 
-      void setProperty ( const std::string& propName, const std::string& propValue ) {};
+        /**
+         * Adds a variable to FMDP description
+         * @throw DuplicateElement if a similar variable already exists
+         */
+        void addVariable ( const DiscreteVariable* var );
 
-      /**
-       * Adds a variable to FMDP description
-       * @throw DuplicateElement if a similar variable already exists
-       */
-      void addVariable ( const DiscreteVariable* var );
+        /**
+         * Adds an action to FMDP description
+         * @throw DuplicateElement if an action with same name already exists
+         */
+        void addAction ( Idx actionId, const std::string& action );
 
-      /**
-       * Adds a primed variable to FMDP description
-       * @throw DuplicateElement if a similar variable already exists
-       */
-      void addPrimedVariable ( const DiscreteVariable* var, const DiscreteVariable* mainVar );
+        /**
+         * Adds a variable transition table to specified action
+         * @throw NotFound if action or var does not exists
+         * @throw DuplicateElement if variable already has a transition for this action
+         */
+        void addTransitionForAction(const std::string& action ,
+                                    const DiscreteVariable* var,
+                                    const MultiDimImplementation<GUM_SCALAR>* transition);
 
-      /**
-       * Adds an action to FMDP description
-       * @throw DuplicateElement if an action with same name already exists
-       */
-      Idx addAction ( const std::string& action );
+        /**
+         * Adds a default variable transition
+         * @throw NotFound if var does not exists
+         * @throw DuplicateElement if variable already has a default transition
+         */
+        void addTransition ( const DiscreteVariable* var, const MultiDimImplementation<GUM_SCALAR>* transition );
 
-      /**
-       * Adds a variable transition table to specified action
-       * @throw NotFound if action or var does not exists
-       * @throw DuplicateElement if variable already has a transition for this action
-       */
-      void addTransitionForAction ( const DiscreteVariable* var, const MultiDimImplementation<GUM_SCALAR>* transition, const std::string& action );
+        /**
+         * Adds a cost table to specified action
+         * @throw NotFound if action does not exists
+         */
+        void addCostForAction ( const std::string& action, const MultiDimImplementation<GUM_SCALAR>* cost  );
 
-      /**
-       * Adds a default variable transition
-       * @throw NotFound if var does not exists
-       * @throw DuplicateElement if variable already has a default transition
-       */
-      void addTransition ( const DiscreteVariable* var, const MultiDimImplementation<GUM_SCALAR>* transition );
+        /**
+         * Adds a default variable cost
+         * @throw DuplicateElement if a default cost exists already
+         */
+        void addCost ( const MultiDimImplementation<GUM_SCALAR>* cost );
 
-      /**
-       * Adds a cost table to specified action
-       * @throw NotFound if action does not exists
-       */
-      void addCostForAction ( const MultiDimImplementation<GUM_SCALAR>* cost, const std::string& action );
+        /**
+         * Adds a default variable reward
+         * @throw DuplicateElement if a default reward exists already
+         */
+        void addReward ( const MultiDimImplementation<GUM_SCALAR>* reward );
 
-      /**
-       * Adds a default variable cost
-       * @throw DuplicateElement if a default cost exists already
-       */
-      void addCost ( const MultiDimImplementation<GUM_SCALAR>* cost );
-
-      /**
-       * Adds a default variable reward
-       * @throw DuplicateElement if a default reward exists already
-       */
-      void addReward ( const MultiDimImplementation<GUM_SCALAR>* reward );
-
-      /**
-       * Precises the discount factor for that mdp
-       */
-      void addDiscount ( GUM_SCALAR discount );
+        /**
+         * Precises the discount factor for that mdp
+         */
+        void setDiscount ( GUM_SCALAR discount );
 
       /// @}
 
@@ -139,71 +135,56 @@ namespace gum {
       // ===========================================================================
       /// @{
 
-      /**
-       * Returns the discount factor of mdp
-       */
-      const GUM_SCALAR discount( ) const;
+        /**
+         * Returns the discount factor of mdp
+         */
+        const GUM_SCALAR discount( ) const;
 
-      /**
-       * Returns the reward table of mdp
-       */
-      const MultiDimImplementation< GUM_SCALAR >* reward( ) const;
+        /**
+         * Returns the reward table of mdp
+         */
+        const MultiDimImplementation< GUM_SCALAR >* reward( ) const;
 
-      /**
-       * Resets the action iterator
-       */
-      void resetActionsIterator();
+        /**
+         * Returns name of action given in parameter
+         */
+        const std::string actionName ( Idx actionId ) const;
 
-      /**
-       * Indicates if iterator reached end of actions (false then ) or not (true )
-       */
-      bool hasAction() const;
+      /// @}
 
-      /**
-       * Deplaces iterator onto next action
-       */
-      void nextAction();
+      // ===========================================================================
+      /// @name Action Iterator Handling Methods.
+      // ===========================================================================
+      /// @{
 
-      /**
-       * Returns the id of current action pointed by actionIterator
-       */
-      Idx actionIterId() const;
+        /**
+         * Returns an iterator reference to he beginning of the list of actions
+         */
+        SequenceIteratorSafe<Idx>& beginActions() const {return __actionSeq.beginSafe(); }
 
-      /**
-       * Returns name of action given in parameter
-       */
-      const std::string actionName ( Idx actionId ) const;
+        /**
+         * Returns an iterator reference to the end of the list of actions
+         */
+        SequenceIteratorSafe<Idx>& endActions() const { return __actionSeq.endSafe(); }
 
-      /**
-       * Resets the variable iterator
-       */
-      void resetVariablesIterator();
+      /// @}
 
-      /**
-       * Indicates if iterator reached end of variables (false then ) or not (true )
-       */
-      bool hasVariable() const;
+      // ===========================================================================
+      /// @name Variable Iterator Handling Methods.
+      // ===========================================================================
+      /// @{
 
-      /**
-       * Deplaces iterator onto next variable
-       */
-      void nextVariable();
+        /**
+         * Returns an iterator reference to he beginning of the list of variables
+         */
+        SequenceIteratorSafe< const DiscreteVariable* >& beginVariables() const {return __varSeq.beginSafe(); }
 
-      /**
-       * Returns current primed variable pointed by variable iterator
-       */
-      const DiscreteVariable* variable() const;
+        /**
+         * Returns an iterator reference to the end of the list of variables
+         */
+        SequenceIteratorSafe< const DiscreteVariable* >& endVariables() const { return __varSeq.endSafe(); }
 
-      /**
-       * Returns transition associated to current variable pointed by variable iterator
-       * and current action poinbted by action iterator
-       */
-      const MultiDimImplementation< GUM_SCALAR >* transition() const;
-
-      /**
-       * Returns transition associated to given in parameter variable
-       */
-      const MultiDimImplementation< GUM_SCALAR >* transition ( const DiscreteVariable* v ) const;
+      /// @}
 
       /**
        * Returns transition associated to given in parameter variable and the given action
@@ -211,14 +192,19 @@ namespace gum {
       const MultiDimImplementation< GUM_SCALAR >* transition ( Idx actionId, const DiscreteVariable* v ) const;
 
       /**
-       * Returns set of primed variable (variable at next instant )
+       * Returns set of the main variables
        */
-      const Set< const DiscreteVariable* >& primedVariables() const;
+      Set< const DiscreteVariable* > variables() const;
 
       /**
-       * Returns the map on main variable and their primed version
+       * Returns the primed variable associate to the given main variable
        */
-      const Bijection< const DiscreteVariable*, const DiscreteVariable*>& main2prime() const;
+      const DiscreteVariable* main2prime(const DiscreteVariable*) const;
+
+      /**
+       * Returns the map binding main variables and prime variables
+       */
+      INLINE const Bijection<const DiscreteVariable*, const DiscreteVariable*> mapMainPrime() const { return __main2primed; }
 
       /// @}
       std::string show() const;
@@ -232,41 +218,41 @@ namespace gum {
 
       /// Sequence de variables and its iterator
       Sequence< const DiscreteVariable* > __varSeq;
-      SequenceIteratorSafe< const DiscreteVariable* > __varIter;
 
-      /// Variable default transition cpt table
-      HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* > __defaultTransitionTable;
+      Sequence<Idx> __actionSeq;
 
-      /// Table which give for each action a table containing variables transition cpt
-      HashTable< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* >* > __actionTransitionTable;
-
-      /// default cost table
-      const MultiDimImplementation< GUM_SCALAR >* __defaultCostTable;
-
-      /// Table which give for each action cost table
-      HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* > __actionCostTable;
+      /// Mapping from a main variable to its associated primed version
+      Bijection< const DiscreteVariable*, const DiscreteVariable*> __main2primed;
 
       /// Bijection mapping an action name to its id
       Bijection< Idx, const std::string* > __actionMap;
 
+      /// Table which give for each action a table containing variables transition cpt
+      HashTable< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* >* > __actionTransitionTable;
+
+      /// Table which give for each action cost table
+      HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* > __actionCostTable;
+
+      /// Variable default transition cpt table
+      HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* > __defaultTransitionTable;
+
+      /// default cost table
+      const MultiDimImplementation< GUM_SCALAR >* __defaultCostTable;
+
       /// default reward table
       const MultiDimImplementation< GUM_SCALAR >* __defaultRewardTable;
-
-      Set< const DiscreteVariable* > __primedVariablesSet;
-      Bijection< const DiscreteVariable*, const DiscreteVariable*> __main2primed;
 
       /// FMDP discount factor
       GUM_SCALAR __discount;
 
-      /// Gives the next action id
-      Idx __nextActionId;
-
-      /// Iterator on actions
-      HashTableConstIteratorSafe< Idx, HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* >* > __actionIter;
-
-//       /// Iterator on variable
-//       HashTableConstIteratorSafe< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR >* > __varIter;
+      /// Boolean indicates whether or not main variables should be deleted on destruction of this instance
+      /// Usually the case when fmdp has been initialized with the factory
+      bool __onDestructionDeleteVars;
   };
+
+  extern template class FactoredMarkovDecisionProcess<float>;
+  extern template class FactoredMarkovDecisionProcess<double>;
+
 } /* namespace gum */
 
 

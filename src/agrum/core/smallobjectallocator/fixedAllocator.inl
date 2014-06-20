@@ -35,7 +35,7 @@ namespace gum {
   // Initializes a Chunk object
   // ============================================================================
   INLINE void FixedAllocator::__Chunk::__init(const std::size_t& blockSize, const unsigned char & numBlocks){
-      GUM_CONSTRUCTOR(__Chunk);
+//      GUM_CONSTRUCTOR(__Chunk);
 
     // Chunk memory space allocation. A chunk allocates a memory of blockSize * numBlocks size.
     // The chunk will then give us numBlocks distinct blocks of blockSize from that space.
@@ -119,7 +119,7 @@ namespace gum {
   // ============================================================================
   INLINE void FixedAllocator::__Chunk::__release(){
       delete __pData;
-      GUM_DESTRUCTOR(__Chunk);
+//      GUM_DESTRUCTOR(__Chunk);
   }
 
 
@@ -131,7 +131,7 @@ namespace gum {
     // Constructor.
     // ============================================================================
     INLINE FixedAllocator::FixedAllocator(const std::size_t& blockSize, const unsigned char& numBlocks){
-        GUM_CONSTRUCTOR(FixedAllocator)
+//        GUM_CONSTRUCTOR(FixedAllocator)
         __blockSize = blockSize;
         __numBlocks = numBlocks;
         __allocChunk = __chunks.begin();
@@ -144,7 +144,7 @@ namespace gum {
     INLINE FixedAllocator::~FixedAllocator(){
         for(__Chunks::iterator chunkIter = __chunks.begin(); chunkIter != __chunks.end(); ++chunkIter)
           chunkIter->__release();
-        GUM_DESTRUCTOR(FixedAllocator)
+//        GUM_DESTRUCTOR(FixedAllocator)
     }
 
   // ############################################################################

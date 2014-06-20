@@ -27,7 +27,7 @@
 // ==============================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 #include <agrum/FMDP/io/dat/FMDPDatReader.h>
-#include <agrum/FMDP/planning/SPUDDPlanning.h>
+#include <agrum/FMDP/planning/spumdd.h>
 // ==============================================================================
 
 namespace gum_tests {
@@ -37,111 +37,106 @@ namespace gum_tests {
     private :
       std::string file;
 
-      void run ( const std::string showSaveFile, gum::Idx mode ) {
+      void run ( const std::string showSaveFile ) {
 
-        gum::FactoredMarkovDecisionProcess<double> fmdp;
-        gum::SPUDDPlanning<double> inf ( &fmdp );
+        gum::FactoredMarkovDecisionProcess<double> fmdp(true);
+        gum::SPUMDD<double> inf ( &fmdp);//, 10 ); // Epsilon is set high, indeed we just want ot check that the algorithm works fine.
 
         gum::FMDPDatReader<double> reader ( &fmdp, file );
         TS_GUM_ASSERT_THROWS_NOTHING ( reader.trace ( false ) );
         TS_GUM_ASSERT_THROWS_NOTHING ( reader.proceed( ) );
 
-        std::ofstream __traceAlgoSaveFile;
-        __traceAlgoSaveFile.open ( GET_PATH_STR ( "test.dot" ), std::ios::out | std::ios::trunc );
-
-        if ( !__traceAlgoSaveFile ) {
-          return;
-        }
-
-        TS_GUM_ASSERT_THROWS_NOTHING ( __traceAlgoSaveFile << fmdp.show() );
+//        std::ofstream __traceAlgoSaveFile;
+//        __traceAlgoSaveFile.open ( GET_PATH_STR ( "test.dot" ), std::ios::out | std::ios::trunc );
+//        if ( !__traceAlgoSaveFile ) {
+//          return;
+//        }
+//        TS_GUM_ASSERT_THROWS_NOTHING ( __traceAlgoSaveFile << fmdp.show() );
 //        std::cout << fmdp.show();
-        __traceAlgoSaveFile.close();
+//        __traceAlgoSaveFile.close();
 
         gum::MultiDimDecisionGraph<double>* res = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING ( res = inf.makePlanning( ) );
-        delete res;
+        TS_GUM_ASSERT_THROWS_NOTHING ( inf.initialize() );
+        TS_GUM_ASSERT_THROWS_NOTHING ( res = inf.makePlanning(10000) );
+//        delete res;
       }
 
     public:
-      void test_Coffee() {
+
+      void est_Coffee() {
         file = GET_PATH_STR ( "FMDP/coffee/coffee.dat" );
-        run ( "Coffee", 1 );
+        run ( "Coffee" );
       }
 
       void est_FactoryS() {
         file = GET_PATH_STR ( "FMDP/factory/tiny-factory.dat" );
-        run ( "TinyFactory", 1 );
-      }
-
-      void est_Elev2() {
-        file = GET_PATH_STR ( "FMDP/elev/elev2.dat" );
-        run ( "Elev2", 1 );
+        run ( "TinyFactory" );
       }
 
       void est_Maze() {
         file = GET_PATH_STR ( "FMDP/labyrinth/maze.dat" );
-        run ( "maze", 1 );
+        run ( "maze" );
       }
 
 
       void est_MazeB() {
         file = GET_PATH_STR ( "FMDP/labyrinth/mazeb.dat" );
-        run ( "mazeb", 1 );
+        run ( "mazeb" );
       }
 
 
-      void est_Factory() {
+      void test_Factory() {
         file = GET_PATH_STR ( "FMDP/factory/factory.dat" );
-        run ( "Factory", 1 );
+        run ( "Factory" );
       }
 
       void est_FactoryB() {
         file = GET_PATH_STR ( "FMDP/factory/factoryB.dat" );
-        run ( "FactoryB", 1 );
+        run ( "FactoryB" );
       }
 
 
       void est_Factory0() {
         file = GET_PATH_STR ( "FMDP/factory/factory0.dat" );
-        run ( "Factory0", 1 );
+        run ( "Factory0" );
       }
 
       void est_Factory0B() {
         file = GET_PATH_STR ( "FMDP/factory/factory0B.dat" );
-        run ( "Factory0B", 1 );
+        run ( "Factory0B" );
       }
 
 
       void est_Factory1() {
         file = GET_PATH_STR ( "FMDP/factory/factory1.dat" );
-        run ( "Factory1", 1 );
+        run ( "Factory1" );
       }
 
       void est_Factory1B() {
         file = GET_PATH_STR ( "FMDP/factory/factory1B.dat" );
-        run ( "Factory1B", 1 );
+        run ( "Factory1B" );
       }
 
 
       void est_Factory2() {
         file = GET_PATH_STR ( "FMDP/factory/factory2.dat" );
-        run ( "Factory2", 1 );
+        run ( "Factory2" );
       }
 
       void est_Factory2B() {
         file = GET_PATH_STR ( "FMDP/factory/factory2B.dat" );
-        run ( "Factory2B", 1 );
+        run ( "Factory2B" );
       }
 
 
       void est_Factory3() {
         file = GET_PATH_STR ( "FMDP/factory/factory3.dat" );
-        run ( "Factory3", 1 );
+        run ( "Factory3" );
       }
 
       void est_Factory3B() {
         file = GET_PATH_STR ( "FMDP/factory/factory3B.dat" );
-        run ( "Factory3B", 1 );
+        run ( "Factory3B" );
       }
 
   };

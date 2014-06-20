@@ -26,7 +26,7 @@
 
 
 // =========================================================================
-#include <agrum/FMDP/learning/decision graph/nodeDatabase.h>
+#include <agrum/FMDP/learning/decisionGraph/nodeDatabase.h>
 // =========================================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
 // =========================================================================
@@ -63,7 +63,7 @@ namespace gum {
     NodeDatabase<GUM_SCALAR>::NodeDatabase(const Set<const DiscreteVariable*>* attrSet,
                                            const DiscreteVariable* value,
                                            const Set< const Observation*>* obsList) : __attrSet(attrSet),
-                                                                                                  __value(value){
+                                                                                      __value(value){
 
       GUM_CONSTRUCTOR(NodeDatabase);
 
@@ -85,8 +85,8 @@ namespace gum {
     template <typename GUM_SCALAR>
     NodeDatabase<GUM_SCALAR>::~NodeDatabase(){
 
-      for(auto varIter = __attrTable.cbeginSafe(); varIter != __attrTable.cendSafe(); ++varIter)
-        delete __attrTable[ *varIter ];
+      for(auto varIter = __attrTable.beginSafe(); varIter != __attrTable.endSafe(); ++varIter)
+        delete varIter.val();
 
       GUM_DESTRUCTOR(NodeDatabase);
     }
@@ -104,7 +104,7 @@ namespace gum {
     void NodeDatabase<GUM_SCALAR>::addObservation( const Observation* newObs){
 
       for(auto varIter = __attrTable.cbeginSafe(); varIter != __attrTable.cendSafe(); ++varIter)
-        __attrTable[ *varIter ]->addObservation( newObs);
+        varIter.val()->addObservation( newObs);
       __nbObservation++;
       __valueCount[newObs->modality(__value)]++;
     }
@@ -142,7 +142,7 @@ namespace gum {
     GUM_SCALAR NodeDatabase<GUM_SCALAR>::rewardValue(){
       GUM_SCALAR ret = (GUM_SCALAR)0;
       for(Idx modality = 0; modality < __value->domainSize(); ++modality)
-        ret[modality] = (GUM_SCALAR)__valueCount[modality] / (GUM_SCALAR)__nbObservation * atof(__value->label(modality).c_str());
+        ret += (GUM_SCALAR)__valueCount[modality] / (GUM_SCALAR)__nbObservation * std::stod(__value->label(modality));
       return ret;
     }
 } // End of namespace gum

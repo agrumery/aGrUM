@@ -24,7 +24,6 @@
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
-// #define  TRACE_ALGO
 // =========================================================================
 #ifndef GUM_IMDDI_H
 #define GUM_IMDDI_H
@@ -33,13 +32,13 @@
 // =========================================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
 // =========================================================================
-#include <agrum/FMDP/learning/decision graph/nodeDatabase.h>
+#include <agrum/FMDP/learning/decisionGraph/nodeDatabase.h>
 // =========================================================================
 
 namespace gum {
 
   /**
-   * @class IMDDI IMDDI.h <agrum/FMDP/planning/IMDDI.h>
+   * @class IMDDI imddi.h <agrum/FMDP/planning/decisionGraph/imddi.h>
    * @brief
    * @ingroup fmdp_group
    *
@@ -78,7 +77,7 @@ namespace gum {
         // ###################################################################
         /// Adds a new observation to the structure
         // ###################################################################
-        void addObservation ( const Observation<GUM_SCALAR>* );
+        void addObservation ( const Observation* );
 
         // ###################################################################
         /// Updates the tree after a new observation has been added
@@ -104,7 +103,8 @@ namespace gum {
         /// we should installed the given variable as a test.
         /// If so, the node is updated
         // ###################################################################
-        void __updateNodeSet( Set<NodeId>&, const DiscreteVariable*, MultiPriorityQueue<const DiscreteVariable*, double, std::greater<double>>& );
+        void __updateNodeSet( Set<NodeId>&, const DiscreteVariable*,
+                              MultiPriorityQueue<const DiscreteVariable*, double, std::greater<double>>& );
 
         // ###################################################################
         /// Turn the given node into a leaf if not already so
@@ -180,10 +180,13 @@ namespace gum {
       bool __isReward;
   };
 
+  extern template class IMDDI<float>;
+  extern template class IMDDI<double>;
+
 } /* namespace gum */
 
 
-#include <agrum/FMDP/learning/decision graph/IMDDI.tcc>
+#include <agrum/FMDP/learning/decisionGraph/imddi.tcc>
 
 #endif // GUM_IMDDI_H
 

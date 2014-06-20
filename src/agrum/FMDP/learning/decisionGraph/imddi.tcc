@@ -1,21 +1,21 @@
 /*********************************************************************************
- * Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES     *
- * {prenom.nom}_at_lip6.fr                           *
- *                                        *
- * This program is free software; you can redistribute it and/or modify     *
- * it under the terms of the GNU General Public LiceDG2NodeIde as published by *
- * the Free Software Foundation; either version 2 of the LiceDG2NodeIde, or   *
- * (at your option) any later version.                     *
- *                                        *
- * This program is distributed in the hope that it will be useful,       *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the         *
- * GNU General Public LiceDG2NodeIde for more details.             *
- *                                        *
- * You should have received a copy of the GNU General Public LiceDG2NodeIde   *
- * along with this program; if not, write to the                *
- * Free Software Foundation, Inc.,                       *
- * 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.           *
+ * Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES           *
+ * {prenom.nom}_at_lip6.fr                                                       *
+ *                                                                               *
+ * This program is free software; you can redistribute it and/or modify          *
+ * it under the terms of the GNU General Public License as published by          *
+ * the Free Software Foundation; either version 2 of the License, or             *
+ * (at your option) any later version.                                           *
+ *                                                                               *
+ * This program is distributed in the hope that it will be useful,               *
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of                *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the                  *
+ * GNU General Public License for more details.                                  *
+ *                                                                               *
+ * You should have received a copy of the GNU General Public License             *
+ * along with this program; if not, write to the                                 *
+ * Free Software Foundation, Inc.,                                               *
+ * 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.                      *
  *********************************************************************************/
 /**
 * @file
@@ -28,7 +28,7 @@
 #include <agrum/core/types.h>
 #include <agrum/core/multiPriorityQueue.h>
 // =======================================================
-#include <agrum/FMDP/learning/decision graph/IMDDI.h>
+#include <agrum/FMDP/learning/decisionGraph/imddi.h>
 // =======================================================
 #include <agrum/variables/discreteVariable.h>
 // =======================================================
@@ -76,13 +76,13 @@ namespace gum {
     IMDDI<GUM_SCALAR>::~IMDDI(){
 
       for( auto nodeIter = __nodeId2Database.beginSafe(); nodeIter != __nodeId2Database.endSafe(); ++nodeIter )
-        delete *nodeIter;
+        delete nodeIter.val();
 
       for( auto nodeIter = __nodeSonsMap.beginSafe(); nodeIter != __nodeSonsMap.endSafe(); ++nodeIter )
-        MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( *nodeIter, sizeof(NodeId)*__nodeVarMap[nodeIter.key()]->domainSize());
+        MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( nodeIter.val(), sizeof(NodeId)*__nodeVarMap[nodeIter.key()]->domainSize());
 
       for( auto varIter = __var2Node.beginSafe(); varIter != __var2Node.endSafe(); ++varIter )
-          delete *varIter;
+          delete varIter.val();
 
       GUM_DESTRUCTOR(IMDDI);
     }
@@ -97,7 +97,7 @@ namespace gum {
     // Adds a new observation to the structure
     // ============================================================================
     template <typename GUM_SCALAR>
-    void IMDDI<GUM_SCALAR>::addObservation( const Observation<GUM_SCALAR>* newObs ){
+    void IMDDI<GUM_SCALAR>::addObservation(const Observation *newObs ){
 
       // First we increase the total number of observation added
       __nbTotalObservation++;
@@ -111,7 +111,7 @@ namespace gum {
         __nodeId2Database[currentNodeId]->addObservation( newObs );
 
         // The we select the next to go throught
-        currentNodeId = (*__nodeSonsMap[currentNodeId])[newObs->modality( __nodeVarMap[currentNodeId] )];
+        currentNodeId = __nodeSonsMap[currentNodeId][newObs->modality( __nodeVarMap[currentNodeId] )];
       }
 
       // On final insertion into the leave we reach
@@ -135,7 +135,7 @@ namespace gum {
 
       MultiPriorityQueue<const DiscreteVariable*, double, std::greater<double>> remainingVarsScore;
       for( auto varIter = remainingVars.beginSafe(); varIter != remainingVars.endSafe(); ++varIter ) {
-        if( __nodeId2Database[*varIter]->isPValueRelevant(*varIter) )
+        if( __nodeId2Database[__root]->isPValueRelevant(*varIter) )
             remainingVarsScore.insert(*varIter, __score(*varIter, __root));
         else
             remainingVarsScore.insert(*varIter, 0.0);
@@ -245,7 +245,7 @@ namespace gum {
       // Il faut artificiellement insérer un noeud liant à la variable
       if( __nodeVarMap[currentNodeId] == __value ){
 
-        Sequence<NodeDatabase<GUM_SCALAR>*> sonsNodeDatabase = __nodeId2Database[currentNodeId]->splitonVar(desiredVar);
+        Sequence<NodeDatabase<GUM_SCALAR>*> sonsNodeDatabase = __nodeId2Database[currentNodeId]->splitOnVar(desiredVar);
         NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*desiredVar->domainSize()) );
 
         for( Idx modality = 0; modality < desiredVar->domainSize(); ++modality ){
@@ -270,7 +270,7 @@ namespace gum {
       for(Idx modality = 0; modality < __nodeVarMap[currentNodeId]->domainSize(); ++modality )
         __transpose( __nodeSonsMap[currentNodeId][modality], desiredVar );
 
-      Sequence<NodeDatabase<GUM_SCALAR>*> sonsNodeDatabase = __nodeId2Database[currentNodeId]->splitonVar(desiredVar);
+      Sequence<NodeDatabase<GUM_SCALAR>*> sonsNodeDatabase = __nodeId2Database[currentNodeId]->splitOnVar(desiredVar);
       NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*desiredVar->domainSize()) );
 
       // Then we create the new mapping
@@ -367,7 +367,7 @@ namespace gum {
          __target->add(**varIter);
 
        if(!__isReward)
-         __target->add(__value);
+         __target->add(*__value);
 
        HashTable<NodeId, NodeId> toTarget;
 

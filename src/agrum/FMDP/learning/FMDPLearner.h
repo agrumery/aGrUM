@@ -19,17 +19,20 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Headers of the Observation class.
+ * @brief Headers of the FMDPLearner class.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
-// #define  TRACE_ALGO
 // =========================================================================
-#ifndef GUM_OBSERVATION_H
-#define GUM_OBSERVATION_H
+#ifndef GUM_FMDP_LEARNER_H
+#define GUM_FMDP_LEARNER_H
 // =========================================================================
 #include <agrum/core/hashTable.h>
+// =========================================================================
+#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
+#include <agrum/FMDP/learning/observation.h>
+#include <agrum/FMDP/learning/decisionGraph/imddi.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>
 // =========================================================================
@@ -37,7 +40,7 @@
 namespace gum {
 
   /**
-   * @class Observation Observation.h <agrum/FMDP/learning/observation.h>
+   * @class FMDPLearner FMDPLearner.h <agrum/FMDP/learning/FMDPLearner.h>
    * @brief
    * @ingroup fmdp_group
    *
@@ -45,7 +48,8 @@ namespace gum {
    *
    */
 
-  class Observation {
+  template<typename GUM_SCALAR>
+  class FMDPLearner {
 
     public:
 
@@ -57,80 +61,74 @@ namespace gum {
         // ###################################################################
         /// Default constructor
         // ###################################################################
-        Observation ();
+        FMDPLearner ( FactoredMarkovDecisionProcess<GUM_SCALAR>* target, double learningThreshold );
 
         // ###################################################################
         /// Default destructor
         // ###################################################################
-        ~Observation();
+        ~FMDPLearner ();
 
       /// @}
 
       // ==========================================================================
-      /// @name Observation Handlers
+      /// @name
       // ==========================================================================
       /// @{
 
         // ###################################################################
-        /**
-         * Returns the modality assumed by the given variable in this observation
-         *
-         * @throws NotFound if variable is not in this observation
-         */
+        ///
         // ###################################################################
-        INLINE Idx modality( const DiscreteVariable* var ) const { return __varInst[var]; }
+        void addVariable(const DiscreteVariable*);
 
-        // ###################################################################
-        /**
-         * Sets the modality assumed by the given variable in this observation
-         *
-         * @throws DuplicateElement if a value has already be assigned to
-         * this variable
-         */
-        // ###################################################################
-        INLINE void setModality( const DiscreteVariable* var, Idx modality ) { __varInst.insert(var, modality); }
+        void addAction(Idx actionId, std::string &);
 
-        // ###################################################################
-        /// Returns the reward obtained during this observation
-        // ###################################################################
-//        Idx reward( ) const { return __reward; }
-
-        // ###################################################################
-        /// Sets the reward obtained during this observation
-        // ###################################################################
-//        void setReward( GUM_SCALAR reward ) { __reward = reward; }
+        void addReward(const DiscreteVariable*);
 
       /// @}
 
       // ==========================================================================
-      /// @name Iterators on Variables
+      /// @name
       // ==========================================================================
       /// @{
 
         // ###################################################################
-        /// Returns an const safe iterator on the beginning of the list of
-        /// variables in this observation
+        ///
         // ###################################################################
-        HashTableConstIteratorSafe<const DiscreteVariable*, Idx> cbeginVariablesSafe() const { return __varInst.cbeginSafe(); }
+        void initialize();
 
         // ###################################################################
-        /// Returns an const safe iterator on the end of the list of
-        /// variables in this observation
+        ///
         // ###################################################################
-        HashTableConstIteratorSafe<const DiscreteVariable*, Idx> cendVariablesSafe() const { return __varInst.cendSafe(); }
+        void addObservation(Idx, const Observation*);
 
       /// @}
 
     private :
 
-      /// Table giving for every variables its instantiation
-      HashTable<const DiscreteVariable*, Idx> __varInst;
+      /// The FMDP to store the learned model
+      FactoredMarkovDecisionProcess<GUM_SCALAR>* __fmdp;
+
+      /// Set of main variables describing the system'rdfgll
+      Set<const DiscreteVariable*> __mainVariables;
+
+
+      HashTable<Idx, List<IMDDI<GUM_SCALAR>*>*> __actionLearners;
+      IMDDI<GUM_SCALAR>* __rewardLearner;
+      const DiscreteVariable* __rewardVar;
+
+      const double __learningThreshold;
+
   };
+
+  extern template class FMDPLearner<float>;
+  extern template class FMDPLearner<double>;
 
 } /* namespace gum */
 
 
-#endif // GUM_OBSERVATION_H
+#include <agrum/FMDP/learning/FMDPLearner.tcc>
+
+#endif // GUM_FMDP_LEARNER_H
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
 

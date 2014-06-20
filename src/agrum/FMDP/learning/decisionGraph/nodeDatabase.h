@@ -24,7 +24,6 @@
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
-// #define  TRACE_ALGO
 // =========================================================================
 #ifndef GUM_NODE_DATABASE_H
 #define GUM_NODE_DATABASE_H
@@ -33,7 +32,7 @@
 #include <agrum/core/sequence.h>
 // =========================================================================
 #include <agrum/FMDP/learning/observation.h>
-#include <agrum/FMDP/learning/decision graph/varInfo.h>
+#include <agrum/FMDP/learning/decisionGraph/varInfo.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>
 // =========================================================================
@@ -41,7 +40,7 @@
 namespace gum {
 
   /**
-   * @class NodeDatabase NodeDatabase.h <agrum/FMDP/learning/nodeDatabase.h>
+   * @class NodeDatabase NodeDatabase.h <agrum/FMDP/learning/decisionGraph/nodeDatabase.h>
    * @brief
    * @ingroup fmdp_group
    *
@@ -90,13 +89,13 @@ namespace gum {
         // ###################################################################
         ///
         // ###################################################################
-        bool isPValueRelevant( const DiscreteVariable* var ) const { return __attrTable[var]->isPValueRelevant(); }
-        double pValue( const DiscreteVariable* var ) const { return __attrTable[var]->pValue(); }
+        INLINE bool isPValueRelevant( const DiscreteVariable* var ) const { return __attrTable[var]->isPValueRelevant(); }
+        INLINE double pValue( const DiscreteVariable* var ) const { return __attrTable[var]->pValue(); }
 
         // ###################################################################
         ///
         // ###################################################################
-        Idx nbObservation(){return __nbObservation;}
+        INLINE Idx nbObservation(){return __nbObservation;}
 
         // ###################################################################
         ///
@@ -127,10 +126,13 @@ namespace gum {
 
   };
 
+  extern template class NodeDatabase<float>;
+  extern template class NodeDatabase<double>;
+
 } /* namespace gum */
 
 
-#include <agrum/FMDP/learning/decision graph/nodeDatabase.tcc>
+#include <agrum/FMDP/learning/decisionGraph/nodeDatabase.tcc>
 
 #endif // GUM_NODE_DATABASE_H
 
