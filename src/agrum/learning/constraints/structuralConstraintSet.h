@@ -605,7 +605,7 @@ namespace gum {
 
 
 /// always include the templated function definitions
-#include <agrum/learning/structuralConstraintSet.tcc>
+#include <agrum/learning/constraints/structuralConstraintSet.tcc>
 
 
 #endif /* GUM_LEARNING_STRUCTURAL_CONSTRAINT_SET_H */
