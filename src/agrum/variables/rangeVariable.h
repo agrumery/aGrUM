@@ -39,10 +39,6 @@
 
 namespace gum {
 
-
-
-  //                           GUM_DISCRETE_VARIABLE
-
   /**
    * @class RangeVariable
    * @brief Defines a discrete random variable over an integer interval.
@@ -62,8 +58,8 @@ namespace gum {
 
       /// @{
       /// Default constructor
-      RangeVariable( const std::string& aName, const std::string& aDesc,
-                     Idx minVal = 0, Idx maxVal = 1 );
+      RangeVariable ( const std::string& aName, const std::string& aDesc,
+                      Idx minVal = 0, Idx maxVal = 1 );
 
 
       /** Copy Constructor.
@@ -72,7 +68,7 @@ namespace gum {
        *
        * @param aDRV the variable we copy
        */
-      RangeVariable( const RangeVariable& aDRV );
+      RangeVariable ( const RangeVariable& aDRV );
 
 
       /// destructor
@@ -96,7 +92,7 @@ namespace gum {
 
       /// returns the type of variable
 
-      virtual VarType varType( void ) const;
+      virtual VarType varType ( void ) const;
 
 
       ///
@@ -105,10 +101,10 @@ namespace gum {
        * @param indice the index of the label we wish to return
        * @throw OutOfBound
        */
-      virtual const std::string label( Idx indice ) const;
+      virtual const std::string label ( Idx indice ) const;
 
       /// get a numerical representation of he indice-the value.
-      virtual const double numerical( Idx indice ) const;
+      virtual const double numerical ( Idx indice ) const;
 
 
       /**
@@ -120,7 +116,7 @@ namespace gum {
       /**
        * Set a new value for the lower bound.
        */
-      void setMinVal( Idx minVal );
+      void setMinVal ( Idx minVal );
 
 
       /**
@@ -132,19 +128,19 @@ namespace gum {
       /**
        * Set a new value of the upper bound.
        */
-      void setMaxVal( Idx maxVal );
+      void setMaxVal ( Idx maxVal );
 
 
       /**
        * Returns true if the param belongs to the variable's interval.
        */
-      bool belongs( Idx indice ) const;
+      bool belongs ( Idx indice ) const;
 
       /**
        * @return the modality from the label
        * @throw NotFound
        */
-      virtual Idx operator[]( const std::string& ) const;
+      virtual Idx operator[] ( const std::string& ) const;
 
 
       /// @}
@@ -179,8 +175,6 @@ namespace gum {
 
 
 } /* namespace gum */
-
-
 
 #ifndef GUM_NO_INLINE
 #include <agrum/variables/rangeVariable.inl>

@@ -1,22 +1,15 @@
 %ignore gum::BayesNet::addVariable;
 %ignore gum::BayesNet::eraseVariable;
+%ignore gum::BayesNet::insertArc;
+%ignore gum::BayesNet::insertWeightedArc;
+%ignore *::nbrArcs;
+
 %ignore *::beginNodes;
 %ignore *::endNodes;
+%ignore *::beginNodesSafe;
+%ignore *::endNodesSafe;
 %ignore *::beginArcs;
 %ignore *::endArcs;
-
-%pythonprepend gum::BayesNet::insertArc %{
-  print("WARNING : pyAgrum.BayesNet.insertArc is deprecated. Please use pyAgrum.BayesNet.addArc")
-%}
-
-%pythonprepend gum::BayesNet::insertWeightedArc %{
-  print("WARNING : pyAgrum.BayesNet.insertWeightedArc is deprecated. Please use pyAgrum.BayesNet.addWeightedArc")
-%}
-
-%pythonprepend gum::DAGmodel::nbrArcs%{
-  print("WARNING : pyAgrum.DAGmodel.nbrArcs is deprecated. Please use pyAgrum.BayesNet.sizeArcs")
-%}
-
 
 %pythonappend gum::BayesNet::cpt %{
         val.__fill_distrib__()

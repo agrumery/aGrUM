@@ -1505,6 +1505,10 @@ class DiscreteVar(Variable):
         """label(DiscreteVar self, gum::Idx indice) -> std::string const"""
         return _pyAgrum.DiscreteVar_label(self, *args)
 
+    def numerical(self, *args):
+        """numerical(DiscreteVar self, gum::Idx indice) -> double const"""
+        return _pyAgrum.DiscreteVar_numerical(self, *args)
+
     def varType(self):
         """varType(DiscreteVar self) -> gum::DiscreteVariable::VarType"""
         return _pyAgrum.DiscreteVar_varType(self)
@@ -1576,6 +1580,10 @@ class LabelizedVar(DiscreteVar):
         """label(LabelizedVar self, gum::Idx i) -> std::string const"""
         return _pyAgrum.LabelizedVar_label(self, *args)
 
+    def numerical(self, *args):
+        """numerical(LabelizedVar self, gum::Idx indice) -> double const"""
+        return _pyAgrum.LabelizedVar_numerical(self, *args)
+
     def __len__(self):
         """__len__(LabelizedVar self) -> gum::Size"""
         return _pyAgrum.LabelizedVar___len__(self)
@@ -1646,6 +1654,10 @@ class RangeVar(DiscreteVar):
     def label(self, *args):
         """label(RangeVar self, gum::Idx indice) -> std::string const"""
         return _pyAgrum.RangeVar_label(self, *args)
+
+    def numerical(self, *args):
+        """numerical(RangeVar self, gum::Idx indice) -> double const"""
+        return _pyAgrum.RangeVar_numerical(self, *args)
 
     def minVal(self):
         """minVal(RangeVar self) -> gum::Idx"""
@@ -2112,24 +2124,9 @@ class DAGmodel(_object):
         """sizeArcs(DAGmodel self) -> gum::Size"""
         return _pyAgrum.DAGmodel_sizeArcs(self)
 
-    def nbrArcs(self):
-        """nbrArcs(DAGmodel self) -> gum::Size"""
-        print("WARNING : pyAgrum.DAGmodel.nbrArcs is deprecated. Please use pyAgrum.BayesNet.sizeArcs")
-
-
-        return _pyAgrum.DAGmodel_nbrArcs(self)
-
     def empty(self):
         """empty(DAGmodel self) -> bool"""
         return _pyAgrum.DAGmodel_empty(self)
-
-    def beginNodesSafe(self):
-        """beginNodesSafe(DAGmodel self) -> NodeGraphPartIteratorSafe"""
-        return _pyAgrum.DAGmodel_beginNodesSafe(self)
-
-    def endNodesSafe(self):
-        """endNodesSafe(DAGmodel self) -> NodeGraphPartIteratorSafe"""
-        return _pyAgrum.DAGmodel_endNodesSafe(self)
 
     def nodes(self):
         """nodes(DAGmodel self) -> NodeGraphPart"""
@@ -2234,6 +2231,10 @@ class DiscretizedVar(DiscreteVar):
     def label(self, *args):
         """label(DiscretizedVar self, gum::Idx i) -> std::string const"""
         return _pyAgrum.DiscretizedVar_label(self, *args)
+
+    def numerical(self, *args):
+        """numerical(DiscretizedVar self, gum::Idx indice) -> double const"""
+        return _pyAgrum.DiscretizedVar_numerical(self, *args)
 
     def __len__(self):
         """__len__(DiscretizedVar self) -> gum::Size"""
@@ -2713,13 +2714,6 @@ class BayesNet_double(IBayesNet_double):
         """variableFromName(BayesNet_double self, std::string const & name) -> DiscreteVar"""
         return _pyAgrum.BayesNet_double_variableFromName(self, *args)
 
-    def insertArc(self, *args):
-        """insertArc(BayesNet_double self, gum::NodeId tail, gum::NodeId head)"""
-        print("WARNING : pyAgrum.BayesNet.insertArc is deprecated. Please use pyAgrum.BayesNet.addArc")
-
-
-        return _pyAgrum.BayesNet_double_insertArc(self, *args)
-
     def addArc(self, *args):
         """addArc(BayesNet_double self, gum::NodeId tail, gum::NodeId head)"""
         return _pyAgrum.BayesNet_double_addArc(self, *args)
@@ -2774,6 +2768,13 @@ class BayesNet_double(IBayesNet_double):
         """
         return _pyAgrum.BayesNet_double_addNoisyAND(self, *args)
 
+    def addLogit(self, *args):
+        """
+        addLogit(BayesNet_double self, DiscreteVar variable, double externalWeight, gum::NodeId id) -> gum::NodeId
+        addLogit(BayesNet_double self, DiscreteVar variable, double externalWeight) -> gum::NodeId
+        """
+        return _pyAgrum.BayesNet_double_addLogit(self, *args)
+
     def addOR(self, *args):
         """addOR(BayesNet_double self, DiscreteVar variable) -> gum::NodeId"""
         return _pyAgrum.BayesNet_double_addOR(self, *args)
@@ -2781,13 +2782,6 @@ class BayesNet_double(IBayesNet_double):
     def addAND(self, *args):
         """addAND(BayesNet_double self, DiscreteVar variable) -> gum::NodeId"""
         return _pyAgrum.BayesNet_double_addAND(self, *args)
-
-    def insertWeightedArc(self, *args):
-        """insertWeightedArc(BayesNet_double self, gum::NodeId tail, gum::NodeId head, double causalWeight)"""
-        print("WARNING : pyAgrum.BayesNet.insertWeightedArc is deprecated. Please use pyAgrum.BayesNet.addWeightedArc")
-
-
-        return _pyAgrum.BayesNet_double_insertWeightedArc(self, *args)
 
     def addWeightedArc(self, *args):
         """addWeightedArc(BayesNet_double self, gum::NodeId tail, gum::NodeId head, double causalWeight)"""

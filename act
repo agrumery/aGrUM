@@ -643,7 +643,7 @@ def uninstall(options):
     else:
         folders=["build",options['platform'],options['option']]
         [safe_cd(s) for s in folders]
-        schedule("mak","uninstall")
+        schedule("make","uninstall")
         [schedule("back","") for s in folders]
 
 ###################################################################################################################
