@@ -14,7 +14,6 @@
 %rename ( __getitem__ ) gum::Sequence::atPos ( Idx i ) const ;
 
 %rename ( __len__ ) gum::DiscreteVariable::domainSize() const;
-%rename ( __getitem__ ) gum::DiscreteVariable::operator[] ( const std::string& label ) const;
 
 %ignore gum::ListBase::insert;
 %ignore gum::ListBase::pushFront;

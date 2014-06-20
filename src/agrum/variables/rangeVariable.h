@@ -137,10 +137,11 @@ namespace gum {
       bool belongs ( Idx indice ) const;
 
       /**
-       * @return the modality from the label
+       * @return the modality index from the label
        * @throw NotFound
        */
       virtual Idx operator[] ( const std::string& ) const;
+      virtual Idx index( const std::string& ) const;
 
 
       /// @}

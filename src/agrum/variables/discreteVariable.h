@@ -152,6 +152,7 @@ namespace gum {
       /// subclasses.
       /// @throws NotFound
       virtual Idx operator[]( const std::string& label ) const = 0;
+      virtual Idx index( const std::string& label ) const = 0;
 
       /// string version of *this
       virtual const std::string toString() const;

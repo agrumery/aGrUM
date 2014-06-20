@@ -1521,13 +1521,16 @@ class DiscreteVar(Variable):
         """__ne__(DiscreteVar self, DiscreteVar aRV) -> bool"""
         return _pyAgrum.DiscreteVar___ne__(self, *args)
 
-    def __getitem__(self, *args):
-        """__getitem__(DiscreteVar self, std::string const & label) -> gum::Idx"""
-        return _pyAgrum.DiscreteVar___getitem__(self, *args)
+    def index(self, *args):
+        """index(DiscreteVar self, std::string const & label) -> gum::Idx"""
+        return _pyAgrum.DiscreteVar_index(self, *args)
 
     def __str__(self):
         """__str__(DiscreteVar self) -> std::string const"""
         return _pyAgrum.DiscreteVar___str__(self)
+
+    def __getitem__(self,label):   # adding the y() function here
+        return self.index(label)
 
     def toLabelizedVar(self):
         """toLabelizedVar(DiscreteVar self) -> LabelizedVar"""
@@ -1559,9 +1562,9 @@ class LabelizedVar(DiscreteVar):
         """clone(LabelizedVar self) -> DiscreteVar"""
         return _pyAgrum.LabelizedVar_clone(self)
 
-    def __getitem__(self, *args):
-        """__getitem__(LabelizedVar self, std::string const & aLabel) -> gum::Idx"""
-        return _pyAgrum.LabelizedVar___getitem__(self, *args)
+    def index(self, *args):
+        """index(LabelizedVar self, std::string const & label) -> gum::Idx"""
+        return _pyAgrum.LabelizedVar_index(self, *args)
 
     def isLabel(self, *args):
         """isLabel(LabelizedVar self, std::string const & aLabel) -> bool"""
@@ -1679,9 +1682,9 @@ class RangeVar(DiscreteVar):
         """belongs(RangeVar self, gum::Idx indice) -> bool"""
         return _pyAgrum.RangeVar_belongs(self, *args)
 
-    def __getitem__(self, *args):
-        """__getitem__(RangeVar self, std::string const & arg2) -> gum::Idx"""
-        return _pyAgrum.RangeVar___getitem__(self, *args)
+    def index(self, *args):
+        """index(RangeVar self, std::string const & arg2) -> gum::Idx"""
+        return _pyAgrum.RangeVar_index(self, *args)
 
     def __str__(self):
         """__str__(RangeVar self) -> std::string const"""
@@ -2236,6 +2239,13 @@ class DiscretizedVar(DiscreteVar):
         """numerical(DiscretizedVar self, gum::Idx indice) -> double const"""
         return _pyAgrum.DiscretizedVar_numerical(self, *args)
 
+    def index(self, *args):
+        """
+        index(DiscretizedVar self, std::string const & label) -> gum::Idx
+        index(DiscretizedVar self, float const & aTarget) -> gum::Idx
+        """
+        return _pyAgrum.DiscretizedVar_index(self, *args)
+
     def __len__(self):
         """__len__(DiscretizedVar self) -> gum::Size"""
         return _pyAgrum.DiscretizedVar___len__(self)
@@ -2243,10 +2253,6 @@ class DiscretizedVar(DiscreteVar):
     def tick(self, *args):
         """tick(DiscretizedVar self, gum::Idx i) -> float const &"""
         return _pyAgrum.DiscretizedVar_tick(self, *args)
-
-    def index(self, *args):
-        """index(DiscretizedVar self, float const & aTarget) -> gum::Idx"""
-        return _pyAgrum.DiscretizedVar_index(self, *args)
 
     def __disown__(self):
         self.this.disown()

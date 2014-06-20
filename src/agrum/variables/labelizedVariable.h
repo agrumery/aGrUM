@@ -105,8 +105,8 @@ namespace gum {
       /** @param aLabel searched label
        * @return the index of this label
        * @throw NotFound */
-
       Idx operator[]( const std::string& aLabel ) const ;
+      virtual Idx index( const std::string& label ) const;
 
       /// @}
 

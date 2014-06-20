@@ -32,6 +32,7 @@ public:
     virtual bool operator ==(gum::DiscreteVariable const &aRV) const;
     virtual bool operator !=(gum::DiscreteVariable const &aRV) const;
     virtual gum::Idx operator [](std::string const &aLabel) const;
+    virtual gum::Idx index(std::string const &label) const;
     virtual std::string const toString() const;
 
 /* Internal director utilities */
@@ -85,6 +86,7 @@ public:
     virtual bool operator ==(gum::DiscreteVariable const &aRV) const;
     virtual bool operator !=(gum::DiscreteVariable const &aRV) const;
     virtual gum::Idx operator [](std::string const &label) const;
+    virtual gum::Idx index(std::string const &label) const;
     virtual std::string const toString() const;
 
 /* Internal director utilities */
@@ -116,7 +118,7 @@ private:
       return method;
     }
 private:
-    mutable swig::SwigVar_PyObject vtable[10];
+    mutable swig::SwigVar_PyObject vtable[11];
 #endif
 
 };

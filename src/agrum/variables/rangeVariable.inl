@@ -64,16 +64,21 @@ namespace gum {
   }
 
   INLINE  Idx
-  RangeVariable::operator[] ( const std::string& l ) const {
-    std::istringstream i ( l );
+  RangeVariable::operator[] ( const std::string& aLabel ) const {
+    return index ( aLabel );
+  }
+
+  INLINE  Idx
+  RangeVariable::index ( const std::string& aLabel ) const {
+    std::istringstream i ( aLabel );
     Idx res;
 
     if ( ! ( i >> res ) ) {
-      GUM_ERROR ( NotFound, "Bad label" );
+      GUM_ERROR ( NotFound, "Bad label : "<<aLabel<<" for "<<*this );
     }
 
     if ( ! belongs ( res ) ) {
-      GUM_ERROR ( NotFound, "Bad label" );
+      GUM_ERROR ( NotFound, "Bad label : "<<aLabel<<" for "<<*this );
     }
 
     return res - __minBound;
