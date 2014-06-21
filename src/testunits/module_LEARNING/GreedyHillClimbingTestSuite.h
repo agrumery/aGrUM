@@ -30,8 +30,8 @@
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorNumber.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorString.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorUniversal.h>
-#include <agrum/learning/scores+tests/scoreK2.h>
-#include <agrum/learning/scores+tests/scoreBDeu.h>
+#include <agrum/learning/scores_and_tests/scoreK2.h>
+#include <agrum/learning/scores_and_tests/scoreBDeu.h>
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintIndegree.h>

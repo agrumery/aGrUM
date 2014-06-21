@@ -22,7 +22,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
-#include <agrum/learning/scores+tests/cache4Score.h>
+#include <agrum/learning/scores_and_tests/cache4Score.h>
 
 namespace gum_tests {
 

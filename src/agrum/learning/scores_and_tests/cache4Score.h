@@ -34,7 +34,7 @@
 
 #include <agrum/config.h>
 #include <agrum/core/hashTable.h>
-#include <agrum/learning/scores+tests/idSet.h>
+#include <agrum/learning/scores_and_tests/idSet.h>
 
 
 namespace gum {
@@ -153,7 +153,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/scores+tests/cache4Score.inl>
+#include <agrum/learning/scores_and_tests/cache4Score.inl>
 #endif /* GUM_NO_INLINE */
 
 

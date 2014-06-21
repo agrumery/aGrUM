@@ -18,25 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for computing Chi2 scores
+ * @brief the class for computing Log2-likelihood scores
  *
  * The class should be used as follows: first, to speed-up computations, you
- * should consider computing all the independence tests you need in one pass.
- * To do so, use the appropriate addNodeSets methods. These will compute
- * everything you need. Use method score to retrieve the scores related to
- * the independence test that were computed. See the IndependenceTest class for
+ * should consider computing all the scores you need in one pass. To do so, use
+ * the appropriate addNodeSets methods. These will compute everything you need.
+ * Use methods score to retrieve the scores computed. See the Score class for
  * details.
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
+#ifndef GUM_LEARNING_SCORE_LOG2_LIKELIHOOD_H
+#define GUM_LEARNING_SCORE_LOG2_LIKELIHOOD_H
 
-#ifndef GUM_LEARNING_INDEP_TEST_CHI2_H
-#define GUM_LEARNING_INDEP_TEST_CHI2_H
 
-#include <vector>
-
-#include <agrum/core/math/chi2.h>
-#include <agrum/learning/scores+tests/independenceTest.h>
+#include <agrum/learning/scores_and_tests/score.h>
 
 
 namespace gum {
@@ -46,24 +42,22 @@ namespace gum {
 
     
     /* ========================================================================= */
-    /* ===                      INDEP TEST CHI2 CLASS                        === */
+    /* ===                    SCORE LOG2 LIKELIHOOD CLASS                    === */
     /* ========================================================================= */
-    /** @class IndepTestChi2
-     * @brief the class for computing Chi2 independence test scores
+    /** @class ScoreLog2Likelihood
      * @ingroup learning_group
+     * @brief the class for computing log2-likelihood scores
      *
      * The class should be used as follows: first, to speed-up computations, you
-     * should consider computing all the independence tests you need in one pass.
-     * To do so, use the appropriate addNodeSets methods. These will compute
-     * everything you need. Use method score to retrieve the scores related to
-     * the independence test that were computed. See the IndependenceTest class for
-     * details. 
+     * should consider computing all the scores you need in one pass. To do so, use
+     * the appropriate addNodeSets methods. These will compute everything you need.
+     * Use methods score to retrieve the scores computed. See the Score class for
+     * details.
      */
     template <typename RowFilter,
               typename IdSetAlloc = std::allocator<unsigned int>,
               typename CountAlloc = std::allocator<float> >
-    class IndepTestChi2 :
-      public IndependenceTest<RowFilter,IdSetAlloc,CountAlloc> {
+    class ScoreLog2Likelihood : public Score<RowFilter,IdSetAlloc,CountAlloc> {
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -73,11 +67,11 @@ namespace gum {
       /// default constructor
       /** @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database */
-      IndepTestChi2 ( const RowFilter& filter,
-                      const std::vector<unsigned int>& var_modalities );
+      ScoreLog2Likelihood ( const RowFilter& filter,
+                            const std::vector<unsigned int>& var_modalities );
       
       /// destructor
-      ~IndepTestChi2 ();
+      virtual ~ScoreLog2Likelihood ();
 
       /// @}
 
@@ -88,26 +82,10 @@ namespace gum {
       /// @{
 
       /// returns the score corresponding to a given nodeset
-      /** This method computes sum_X sum_Y sum_Z ( #XYZ - (#XZ * #YZ) / #Z )^2 /
-       * (( #XZ * #YZ) / #Z ), where #XYZ, #XZ, #YZ, #Z correspond to the number
-       * of occurences of (X,Y,Z), (X,Z), (Y,Z) and Z respectively in the
-       * database. Then, it computes the critical value alpha for the chi2 test
-       * and returns ( #sum - alpha ) / alpha, where #sum corresponds to the
-       * summations mentioned above. Therefore, any positive result should
-       * reflect a dependence whereas negative results should reflect
-       * independences. */
       float score ( unsigned int nodeset_index );
 
       /// @}
 
-
-    private:
-      /// a chi2 distribution for computing critical values
-      Chi2 __chi2;
-
-      /// an empty vector of ids
-      const std::vector<unsigned int,IdSetAlloc> __empty_set;
-      
     };
     
 
@@ -118,7 +96,7 @@ namespace gum {
 
 
 // always include the template implementation
-#include <agrum/learning/scores+tests/indepTestChi2.tcc>
+#include <agrum/learning/scores_and_tests/scoreLog2Likelihood.tcc>
 
 
-#endif /* GUM_LEARNING_INDEP_TEST_CHI2_H */
+#endif /* GUM_LEARNING_SCORE_LOG2_LIKELIHOOD_H */

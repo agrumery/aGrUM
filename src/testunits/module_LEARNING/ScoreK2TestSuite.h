@@ -23,7 +23,7 @@
 #include <testsuite_utils.h>
 
 #include <agrum/learning/database/databaseFromCSV.h>
-#include <agrum/learning/scores+tests/scoreK2.h>
+#include <agrum/learning/scores_and_tests/scoreK2.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
 
 namespace gum_tests {

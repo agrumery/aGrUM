@@ -37,7 +37,7 @@
 
 
 #include <agrum/core/math/gammaLog2.h>
-#include <agrum/learning/scores+tests/score.h>
+#include <agrum/learning/scores_and_tests/score.h>
 
 
 namespace gum {
@@ -164,7 +164,7 @@ namespace gum {
 
 
 /// always include the template implementation
-#include <agrum/learning/scores+tests/scoreBDeu.tcc>
+#include <agrum/learning/scores_and_tests/scoreBDeu.tcc>
 
 
 #endif /* GUM_LEARNING_SCORE_BDEU_H */

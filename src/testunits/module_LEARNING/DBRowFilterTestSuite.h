@@ -29,9 +29,9 @@
 #include <agrum/learning/database/DBCellTranslator.h>
 #include <agrum/learning/database/DBRowTranslatorSet.h>
 #include <agrum/learning/database/DBRowTranslatorVector.h>
-#include <agrum/learning/scores+tests/scoreK2.h>
 #include <agrum/learning/database/CSVParser.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
+#include <agrum/learning/scores_and_tests/scoreK2.h>
 
 namespace gum_tests {
 

@@ -23,7 +23,7 @@
 #include <testsuite_utils.h>
 
 #include <agrum/learning/database/databaseFromCSV.h>
-#include <agrum/learning/scores+tests/scoreLog2Likelihood.h>
+#include <agrum/learning/scores_and_tests/scoreLog2Likelihood.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
 
 namespace gum_tests {

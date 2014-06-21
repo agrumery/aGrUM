@@ -200,7 +200,7 @@ namespace gum {
 
 
 // always include the template implementation
-#include <agrum/learning/scores+tests/idSet.tcc>
+#include <agrum/learning/scores_and_tests/idSet.tcc>
 
 
 #endif /* GUM_LEARNING_ID_SET_H */

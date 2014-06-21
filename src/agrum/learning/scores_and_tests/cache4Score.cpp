@@ -23,10 +23,10 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/learning/scores+tests/cache4Score.h>
+#include <agrum/learning/scores_and_tests/cache4Score.h>
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/scores+tests/cache4Score.inl>
+#include <agrum/learning/scores_and_tests/cache4Score.inl>
 #endif /* GUM_NO_INLINE */
 

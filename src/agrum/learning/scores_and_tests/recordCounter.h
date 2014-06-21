@@ -36,7 +36,7 @@
 #include <agrum/core/OMPThreads.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/learning/database/DBRowFilter.h>
-#include <agrum/learning/scores+tests/idSet.h>
+#include <agrum/learning/scores_and_tests/idSet.h>
 
 
 // a buffer used to ensure that thread counters will have no cacheline problems
@@ -323,7 +323,7 @@ namespace gum {
 
 
 // always include the template implementation
-#include <agrum/learning/scores+tests/recordCounter.tcc>
+#include <agrum/learning/scores_and_tests/recordCounter.tcc>
 
 
 #endif /* GUM_LEARNING_RECORD_COUNTER_H */

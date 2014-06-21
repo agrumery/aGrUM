@@ -53,7 +53,7 @@
 
 #include <vector>
 #include <agrum/config.h>
-#include <agrum/learning/scores+tests/recordCounter.h>
+#include <agrum/learning/scores_and_tests/recordCounter.h>
 
 
 namespace gum {
@@ -410,7 +410,7 @@ namespace gum {
 
 
 /// include the template implementation
-#include <agrum/learning/scores+tests/counter.tcc>
+#include <agrum/learning/scores_and_tests/counter.tcc>
 
 
 #endif /* GUM_LEARNING_COUNTER_H */

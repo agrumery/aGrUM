@@ -25,7 +25,7 @@
 
 #include <agrum/core/set.h>
 #include <agrum/learning/database/databaseFromCSV.h>
-#include <agrum/learning/scores+tests/scoreBIC.h>
+#include <agrum/learning/scores_and_tests/scoreBIC.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
 
 namespace gum_tests {

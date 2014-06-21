@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for computing AIC scores
+ * @brief the class for computing BIC scores
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -26,7 +26,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
-#include <agrum/learning/scores+tests/scoreAIC.h>
+#include <agrum/learning/scores_and_tests/scoreBIC.h>
 
 
 namespace gum {
@@ -37,26 +37,26 @@ namespace gum {
     
     /// default constructor
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    ScoreAIC<RowFilter,IdSetAlloc,CountAlloc>::ScoreAIC
+    ScoreBIC<RowFilter,IdSetAlloc,CountAlloc>::ScoreBIC
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities ) :
       Score<RowFilter,IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
       // for debugging purposes
-      GUM_CONSTRUCTOR ( ScoreAIC );
+      GUM_CONSTRUCTOR ( ScoreBIC );
     }
-    
+ 
 
     /// destructor
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    ScoreAIC<RowFilter,IdSetAlloc,CountAlloc>::~ScoreAIC () {
+    ScoreBIC<RowFilter,IdSetAlloc,CountAlloc>::ScoreBIC::~ScoreBIC () {
       // for debugging purposes
-      GUM_DESTRUCTOR ( ScoreAIC );
+      GUM_DESTRUCTOR ( ScoreBIC );
     }
 
 
     /// returns the score corresponding to a given nodeset
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
-    float ScoreAIC<RowFilter,IdSetAlloc,CountAlloc>::score
+    float ScoreBIC<RowFilter,IdSetAlloc,CountAlloc>::score
     ( unsigned int nodeset_index ) {
       // if the score has already been computed, get its value
       if ( this->_isInCache ( nodeset_index ) ) {
@@ -73,7 +73,7 @@ namespace gum {
       // here, we distinguish nodesets with conditioning nodes from those
       // without conditioning nodes
       if ( conditioning_nodes ) {
-        // initialize the score: this should be the penalty of the AIC score, i.e.,
+        // initialize the score: this should be the penalty of the BIC score, i.e.,
         // -(ri-1 ) * qi
         float penalty = 1;
         for ( unsigned int i = 0; i < conditioning_nodes->size(); ++i ) {
@@ -92,7 +92,6 @@ namespace gum {
         unsigned int conditioning_modal = N_ij.size ();
         unsigned int targets_modal = N_ijk.size ();
 
-  
         // compute the score: it remains to compute the log likelihood, i.e.,
         // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also
         // equivalent to:
@@ -103,16 +102,19 @@ namespace gum {
             score += N_ijk[k] * logf ( N_ijk[k] );
           }
         }
+        float N = 0;
         for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
           if ( N_ij[j] ) {
             score -= N_ij[j] * logf ( N_ij[j] );
+            N += N_ij[j];
           }
         }
+  
+        // finally, remove the penalty
+        score -= penalty * logf ( N ) * 0.5f;
+ 
         // divide by log(2), since the log likelihood uses log_2
         score *= this->_1log2;
-
-        // finally, remove the penalty
-        score -= penalty;
 
         // shall we put the score into the cache?
         if ( this->_isUsingCache () ) {
@@ -150,11 +152,11 @@ namespace gum {
         }
         score -= N * logf ( N );
         
+        // finally, remove the penalty
+        score -= penalty * logf ( N ) * 0.5f;
+
         // divide by log(2), since the log likelihood uses log_2
         score *= this->_1log2;
-
-        // finally, remove the penalty
-        score -= penalty;
 
         // shall we put the score into the cache?
         if ( this->_isUsingCache () ) {
@@ -164,7 +166,7 @@ namespace gum {
         return score;
       }
     }
-
+    
 
   } /* namespace learning */
   
