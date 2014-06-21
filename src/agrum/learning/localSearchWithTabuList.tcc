@@ -56,6 +56,11 @@ namespace gum {
       // that were not invalidated by previously applied changes
       std::vector<bool> impacted_queues ( dag.size (), false );
 
+      // the best dag found so far with its score
+      DAG best_dag = dag;
+      float best_score = 0;
+      float current_score = 0;
+      
       while ( current_N < N ) {
         are_changes_applied_yet = false;
         applied_change_with_positive_score = 0;
@@ -84,8 +89,14 @@ namespace gum {
               case GraphChangeType::ARC_ADDITION:
                 if ( ! impacted_queues[ change.node2 () ] &&
                      selector.isChangeValid ( change ) ) {
-                  if ( selector.bestScore ( i ) > 0 )
+                  if ( selector.bestScore ( i ) > 0 ) {
                     ++applied_change_with_positive_score;
+                  }
+                  else if ( current_score > best_score ) {
+                    best_score = current_score;
+                    best_dag = dag; 
+                  }
+                  current_score += selector.bestScore ( i );
                   dag.insertArc ( change.node1 (), change.node2 () );
                   impacted_queues[ change.node2 () ] = true;
                   selector.applyChangeWithoutScoreUpdate ( change );
@@ -97,8 +108,14 @@ namespace gum {
               case GraphChangeType::ARC_DELETION:
                 if ( ! impacted_queues[ change.node2 () ] &&
                      selector.isChangeValid ( change ) ) {
-                  if ( selector.bestScore ( i ) > 0 )
+                  if ( selector.bestScore ( i ) > 0 ) {
                     ++applied_change_with_positive_score;
+                  }
+                  else if ( current_score > best_score ) {
+                    best_score = current_score;
+                    best_dag = dag; 
+                  }
+                  current_score += selector.bestScore ( i );
                   dag.eraseArc ( Arc ( change.node1 (), change.node2 () ) );
                   impacted_queues[ change.node2 () ] = true;
                   selector.applyChangeWithoutScoreUpdate ( change );
@@ -111,8 +128,14 @@ namespace gum {
                 if ( ( ! impacted_queues[ change.node1 () ] ) &&
                      ( ! impacted_queues[ change.node2 () ] ) &&
                      selector.isChangeValid ( change ) ) {
-                  if ( selector.bestScore ( i ) > 0 )
+                  if ( selector.bestScore ( i ) > 0 ) {
                     ++applied_change_with_positive_score;
+                  }
+                  else if ( current_score > best_score ) {
+                    best_score = current_score;
+                    best_dag = dag;
+                  }
+                  current_score += selector.bestScore ( i );                  
                   dag.eraseArc ( Arc ( change.node1 (), change.node2 () ) );
                   dag.insertArc ( change.node2 (), change.node1 () );
                   impacted_queues[ change.node1 () ] = true;
@@ -152,8 +175,13 @@ namespace gum {
 
         //std::cout << "current N = " << current_N << std::endl;
       }
-   
-      return dag;
+
+      if ( current_score > best_score ) {
+        return dag;
+      }
+      else {
+        return best_dag;
+      }
     }
       
     
