@@ -22,19 +22,20 @@
  *
  * Basically, there are two ways to create the cell translators needed to parse
  * a database: either you know at compile time the columns of the database you
- * will wish to extract and you should definitely use the DBRowTranslatorSet
+ * will wish to extract and you should definitely use the DBRowTranslatorSetStatic
  * class to store the cell translators; or you know the columns to extract at
- * run time and you should use the DBRowTranslatorVector class. DBRowTranslatorSet
- * is a "meta-programming" based class that packs the cell filters in a most
- * efficient way (essentially, all methods can be inlined, which makes this class
- * the fastest one). DBRowTranslatorVectors are less efficient but are more
- * general. If all their cell translators are identical, translator's methods are
- * also inlined, otherwise, methods' calls induce virtual function overheads.
+ * run time and you should use the DBRowTranslatorSetDynamic class.
+ * DBRowTranslatorSetStatic is a "meta-programming" based class that packs the
+ * cell filters in a most efficient way (essentially, all methods can be inlined,
+ * which makes this class the fastest one). DBRowTranslatorSetDynamics are less
+ * efficient but are more general. If all their cell translators are identical,
+ * translator's methods are also inlined, otherwise, methods' calls induce virtual
+ * function overheads.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_DB_ROW_TRANSLATOR_SET_H
-#define GUM_LEARNING_DB_ROW_TRANSLATOR_SET_H
+#ifndef GUM_LEARNING_DB_ROW_TRANSLATOR_SET_STATIC_H
+#define GUM_LEARNING_DB_ROW_TRANSLATOR_SET_STATIC_H
 
 
 #include <agrum/config.h>
@@ -53,24 +54,28 @@ namespace gum {
     /** @brief the wrapper of Create<>s that will be used to translate
      * a set of database cells */ 
     template<int Idx, typename... Translators>
-    class BasicDBRowTranslatorSet;
+    class BasicDBRowTranslatorSetStatic;
 
 
-    /** @brief the end of the recursive definition of BasicDBRowTranslatorSet:
-     * should do nothing */
+    /** @brief the end of the recursive definition of
+     * BasicDBRowTranslatorSetStatic: should do nothing */
     template <int Idx>
-    class BasicDBRowTranslatorSet<Idx> {
+    class BasicDBRowTranslatorSetStatic<Idx> {
     public:
       static constexpr unsigned int output_size = Idx;
   
-      BasicDBRowTranslatorSet () noexcept {}
-      BasicDBRowTranslatorSet( const BasicDBRowTranslatorSet<Idx>& ) noexcept {}
-      BasicDBRowTranslatorSet( BasicDBRowTranslatorSet<Idx>&& ) noexcept {}
-      ~BasicDBRowTranslatorSet () noexcept {}
-      BasicDBRowTranslatorSet<Idx>&
-      operator= ( const BasicDBRowTranslatorSet<Idx>& ) noexcept { return *this; }
-      BasicDBRowTranslatorSet<Idx>&
-      operator= ( BasicDBRowTranslatorSet<Idx>&& ) noexcept { return *this; }
+      BasicDBRowTranslatorSetStatic () noexcept {}
+      BasicDBRowTranslatorSetStatic
+      ( const BasicDBRowTranslatorSetStatic<Idx>& ) noexcept {}
+      BasicDBRowTranslatorSetStatic
+      ( BasicDBRowTranslatorSetStatic<Idx>&& ) noexcept {}
+      ~BasicDBRowTranslatorSetStatic () noexcept {}
+      BasicDBRowTranslatorSetStatic<Idx>&
+      operator= ( const BasicDBRowTranslatorSetStatic<Idx>& ) noexcept
+      { return *this; }
+      BasicDBRowTranslatorSetStatic<Idx>&
+      operator= ( BasicDBRowTranslatorSetStatic<Idx>&& ) noexcept
+      { return *this; }
 
       void setInputRow ( const DBRow& ) noexcept {}
       void setOutputRow ( FilteredRow& ) noexcept {}
@@ -85,18 +90,18 @@ namespace gum {
     /** @brief the implementation of the wrapper of Create<>s (used to
      * translate the cells of a DBRow) */
     template <int Idx, typename Translator, typename... OtherTranslators>
-    class BasicDBRowTranslatorSet<Idx,Translator,OtherTranslators...> :
-      public BasicDBRowTranslatorSet
+    class BasicDBRowTranslatorSetStatic<Idx,Translator,OtherTranslators...> :
+      public BasicDBRowTranslatorSetStatic
                < Idx + std::remove_reference<Translator>::type::output_size,
                  OtherTranslators... > {
     public:
       
       /// the type of the subsequent Create<>s to apply
-      using NextTranslators = BasicDBRowTranslatorSet
+      using NextTranslators = BasicDBRowTranslatorSetStatic
         < Idx + std::remove_reference<Translator>::type::output_size,
           OtherTranslators... >;
 
-      /// the number of columns written by all the BasicDBRowTranslatorSets
+      /// the number of columns written by all the BasicDBRowTranslatorSetStatics
       static constexpr unsigned int output_size = NextTranslators::output_size;
 
 
@@ -111,21 +116,23 @@ namespace gum {
       /// default constructor
       /** @param first_translator the Create<> for the first translator to apply
        * @param next_translators all the other Create<>s to apply */
-      BasicDBRowTranslatorSet ( const Translator& first_translator,
-                                const OtherTranslators&... next_translators );
+      BasicDBRowTranslatorSetStatic
+      ( const Translator& first_translator,
+        const OtherTranslators&... next_translators );
 
       /// copy constructor
-      BasicDBRowTranslatorSet
-      ( const BasicDBRowTranslatorSet<Idx,Translator,OtherTranslators...>& from );
+      BasicDBRowTranslatorSetStatic
+      ( const BasicDBRowTranslatorSetStatic<Idx,Translator,OtherTranslators...>&
+        from );
   
       /// move constructor
-      BasicDBRowTranslatorSet
-      ( BasicDBRowTranslatorSet<Idx,Translator,OtherTranslators...>&& from );
+      BasicDBRowTranslatorSetStatic
+      ( BasicDBRowTranslatorSetStatic<Idx,Translator,OtherTranslators...>&& from );
   
     public:
       
      /// destructor
-      ~BasicDBRowTranslatorSet () noexcept;
+      ~BasicDBRowTranslatorSetStatic () noexcept;
  
       /// @}
       
@@ -139,14 +146,14 @@ namespace gum {
     protected:
 
       /// copy operator
-      BasicDBRowTranslatorSet<Idx,Translator,OtherTranslators...>&
+      BasicDBRowTranslatorSetStatic<Idx,Translator,OtherTranslators...>&
       operator=
-      ( const BasicDBRowTranslatorSet<Idx,Translator,OtherTranslators...>& );
+      ( const BasicDBRowTranslatorSetStatic<Idx,Translator,OtherTranslators...>& );
 
       /// move operator
-      BasicDBRowTranslatorSet<Idx,Translator,OtherTranslators...>&
+      BasicDBRowTranslatorSetStatic<Idx,Translator,OtherTranslators...>&
       operator=
-      ( BasicDBRowTranslatorSet<Idx,Translator,OtherTranslators...>&& );
+      ( BasicDBRowTranslatorSetStatic<Idx,Translator,OtherTranslators...>&& );
       
       /// @}
       
@@ -188,9 +195,9 @@ namespace gum {
       /// the Create<> translator that should be executed
       Translator __translator;
 
-      /// only DBRowTranslatorSets can create BasicDBRowTranslatorSets
+      /// only DBRowTranslatorSetStatics can create BasicDBRowTranslatorSetStatics
       template <typename... Translators>
-      friend class DBRowTranslatorSet;
+      friend class DBRowTranslatorSetStatic;
 
     };
 
@@ -199,19 +206,20 @@ namespace gum {
 
 
 
-    /** @class DBRowTranslatorSet
+    /** @class DBRowTranslatorSetStatic
      * @ingroup learning_group
      * @brief the "meta-programming" class that includes cell translator packs
      * into row filters
      *
      * Basically, there are two ways to create the cell translators needed to parse
      * a database: either you know at compile time the columns of the database you
-     * will wish to extract and you should definitely use the DBRowTranslatorSet
-     * class to store the cell translators; or you know the columns to extract at
-     * run time and you should use the DBRowTranslatorVector class.
-     * DBRowTranslatorSet is a "meta-programming" based class that packs the cell
-     * filters in a most efficient way (essentially, all methods can be inlined,
-     * which makes this class the fastest one). DBRowTranslatorVectors are less
+     * will wish to extract and you should definitely use the
+     * DBRowTranslatorSetStatic class to store the cell translators; or you know
+     * the columns to extract at run time and you should use the
+     * DBRowTranslatorSetDynamic class. DBRowTranslatorSetStatic is a
+     * "meta-programming" based class that packs the cell filters in a most
+     * efficient way (essentially, all methods can be inlined, which makes this
+     * class the fastest one). DBRowTranslatorSetDynamics are less
      * efficient but are more general. If all their cell translators are
      * identical, translator's methods are also inlined, otherwise, methods' calls
      * induce virtual function overheads.
@@ -219,7 +227,7 @@ namespace gum {
      * This class enables efficient packing of cell translators into row filters.
      * To make it easy to use, you should prefer using its helper creation function
      * make_translators. The following code shows how to simply create a
-     * DBRowTranslatorSet:
+     * DBRowTranslatorSetStatic:
      * @code
      * auto my_filter = make_translators
      * ( Create<Translate, Col<3> > (),   // use Translate to translate column 3
@@ -231,13 +239,14 @@ namespace gum {
      * @endcode
      */
     template <typename... Translators>
-    class DBRowTranslatorSet : BasicDBRowTranslatorSet<0,Translators...> {
+    class DBRowTranslatorSetStatic :
+      BasicDBRowTranslatorSetStatic<0,Translators...> {
     public:
   
-      using TranslatorSet = BasicDBRowTranslatorSet<0,Translators...>;
+      using TranslatorSetStatic = BasicDBRowTranslatorSetStatic<0,Translators...>;
 
       /// the size of the output filtered row
-      static constexpr unsigned int output_size = TranslatorSet::output_size;
+      static constexpr unsigned int output_size = TranslatorSetStatic::output_size;
 
       
       // ##########################################################################
@@ -248,16 +257,18 @@ namespace gum {
 
       /// default constructor
       /** @param translators the set of DBCellTranslators to apply */
-      DBRowTranslatorSet ( const Translators&...  translators );
+      DBRowTranslatorSetStatic ( const Translators&...  translators );
 
       /// copy constructor
-      DBRowTranslatorSet ( const DBRowTranslatorSet<Translators...>& from );
+      DBRowTranslatorSetStatic
+      ( const DBRowTranslatorSetStatic<Translators...>& from );
 
       /// move constructor
-      DBRowTranslatorSet ( DBRowTranslatorSet<Translators...>&& from );
+      DBRowTranslatorSetStatic
+      ( DBRowTranslatorSetStatic<Translators...>&& from );
 
       /// destructor
-      ~DBRowTranslatorSet () noexcept;
+      ~DBRowTranslatorSetStatic () noexcept;
   
       /// @}
   
@@ -269,12 +280,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBRowTranslatorSet<Translators...>&
-      operator= ( const DBRowTranslatorSet<Translators...>& );
+      DBRowTranslatorSetStatic<Translators...>&
+      operator= ( const DBRowTranslatorSetStatic<Translators...>& );
 
       /// move operator
-      DBRowTranslatorSet<Translators...>&
-      operator= ( DBRowTranslatorSet<Translators...>&& );      
+      DBRowTranslatorSetStatic<Translators...>&
+      operator= ( DBRowTranslatorSetStatic<Translators...>&& );      
 
       /// @}
 
@@ -317,7 +328,7 @@ namespace gum {
 
 
     
-    /// a function to create easily a DBRowTranslatorSet
+    /// a function to create easily a DBRowTranslatorSetStatic
     /** Below is an example of the use of this function. Basically, all the
      * arguments are Create<> translators.
      * @code
@@ -331,9 +342,9 @@ namespace gum {
      * @endcode
      */
     template<typename... Args>
-    constexpr DBRowTranslatorSet<Args...>
+    constexpr DBRowTranslatorSetStatic<Args...>
     make_translators ( const Args&... args ) {
-      return DBRowTranslatorSet<Args...> ( args... );
+      return DBRowTranslatorSetStatic<Args...> ( args... );
     }
 
 
@@ -344,8 +355,8 @@ namespace gum {
 
 
 // always include the template implementation
-#include <agrum/learning/database/DBRowTranslatorSet.tcc>
+#include <agrum/learning/database/DBRowTranslatorSetStatic.tcc>
 
     
-#endif /* GUM_LEARNING_DB_ROW_TRANSLATOR_SET_H */
+#endif /* GUM_LEARNING_DB_ROW_TRANSLATOR_SET_STATIC_H */
 

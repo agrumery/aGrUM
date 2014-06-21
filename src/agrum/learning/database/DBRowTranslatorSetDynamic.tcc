@@ -33,15 +33,15 @@ namespace gum {
     
     /// default constructor
     template <typename Translator> INLINE
-    DBRowTranslatorVector<Translator>::DBRowTranslatorVector () {
-      GUM_CONSTRUCTOR ( DBRowTranslatorVector );
+    DBRowTranslatorSetDynamic<Translator>::DBRowTranslatorSetDynamic () {
+      GUM_CONSTRUCTOR ( DBRowTranslatorSetDynamic );
     }
 
     
     /// copy constructor
     template <typename Translator>
-    DBRowTranslatorVector<Translator>::DBRowTranslatorVector
-    ( const DBRowTranslatorVector<Translator>& from ) :
+    DBRowTranslatorSetDynamic<Translator>::DBRowTranslatorSetDynamic
+    ( const DBRowTranslatorSetDynamic<Translator>& from ) :
       __translators ( from.__translators ),
       __output_size ( from.__output_size ),
       __output_row  ( from.__output_row ) {
@@ -51,14 +51,14 @@ namespace gum {
         __translators[i]->setOutputRow ( __output_row );
       }
       
-      GUM_CONS_CPY ( DBRowTranslatorVector );
+      GUM_CONS_CPY ( DBRowTranslatorSetDynamic );
     }
 
 
     /// move constructor
     template <typename Translator> INLINE
-    DBRowTranslatorVector<Translator>::DBRowTranslatorVector
-    ( DBRowTranslatorVector<Translator>&& from ) :
+    DBRowTranslatorSetDynamic<Translator>::DBRowTranslatorSetDynamic
+    ( DBRowTranslatorSetDynamic<Translator>&& from ) :
       __translators ( std::move ( from.__translators ) ),
       __output_size ( std::move ( from.__output_size ) ),
       __output_row  ( std::move ( from.__output_row ) ) {
@@ -66,23 +66,23 @@ namespace gum {
         __translators[i]->setOutputRow ( __output_row );
       }
       
-      GUM_CONS_MOV ( DBRowTranslatorVector );
+      GUM_CONS_MOV ( DBRowTranslatorSetDynamic );
     }
 
 
     /// destructor
     template <typename Translator> INLINE
-    DBRowTranslatorVector<Translator>::~DBRowTranslatorVector () noexcept {
+    DBRowTranslatorSetDynamic<Translator>::~DBRowTranslatorSetDynamic () noexcept {
       for ( unsigned int i = 0, size = __translators.size (); i < size; ++i ) {
         delete __translators[i];
       }
-      GUM_DESTRUCTOR ( DBRowTranslatorVector );
+      GUM_DESTRUCTOR ( DBRowTranslatorSetDynamic );
     }
 
 
     /// remove all the translators from the vector
     template <typename Translator> INLINE
-    void DBRowTranslatorVector<Translator>::clear () noexcept {
+    void DBRowTranslatorSetDynamic<Translator>::clear () noexcept {
       for ( unsigned int i = 0, size = __translators.size (); i < size; ++i ) {
         delete __translators[i];
       }
@@ -93,9 +93,9 @@ namespace gum {
     
     /// copy operator
     template <typename Translator>
-    DBRowTranslatorVector<Translator>&
-    DBRowTranslatorVector<Translator>::operator=
-    ( const DBRowTranslatorVector<Translator>& from ) {
+    DBRowTranslatorSetDynamic<Translator>&
+    DBRowTranslatorSetDynamic<Translator>::operator=
+    ( const DBRowTranslatorSetDynamic<Translator>& from ) {
       if ( this != &from ) {
         clear ();
         
@@ -116,9 +116,9 @@ namespace gum {
 
     /// move operator
     template <typename Translator>
-    DBRowTranslatorVector<Translator>&
-    DBRowTranslatorVector<Translator>::operator=
-    ( DBRowTranslatorVector<Translator>&& from ) {
+    DBRowTranslatorSetDynamic<Translator>&
+    DBRowTranslatorSetDynamic<Translator>::operator=
+    ( DBRowTranslatorSetDynamic<Translator>&& from ) {
       if ( this != &from ) {
         clear ();
         
@@ -138,9 +138,10 @@ namespace gum {
     template <typename Translator>
     template <typename Cols, typename ColsIncr> 
     void
-    DBRowTranslatorVector<Translator>::insertTranslator ( Cols deb_cols,
-                                                          unsigned int nb_times,
-                                                          ColsIncr incr ) {
+    DBRowTranslatorSetDynamic<Translator>::insertTranslator
+    ( Cols deb_cols,
+      unsigned int nb_times,
+      ColsIncr incr ) {
       // we get the contents of deb_cols and incr and we will compute and set the
       // input columns by ourselves
       const unsigned int input_size =
@@ -186,7 +187,7 @@ namespace gum {
     template <typename Translator>
     template <typename NewTranslator, typename Cols, typename ColsIncr> 
     void
-    DBRowTranslatorVector<Translator>::insertTranslator
+    DBRowTranslatorSetDynamic<Translator>::insertTranslator
     ( const NewTranslator& translator,
       Cols deb_cols,
       unsigned int nb_times,
@@ -234,7 +235,7 @@ namespace gum {
     
     /// inserts new translators at the end of the vector
     template <typename Translator>
-    void DBRowTranslatorVector<Translator>::insertTranslator
+    void DBRowTranslatorSetDynamic<Translator>::insertTranslator
     ( unsigned int deb_col,
       unsigned int nb_times,
       unsigned int increment ) {
@@ -271,7 +272,7 @@ namespace gum {
 
     /// execute all the translations on the current database row
     template <typename Translator> ALWAYS_INLINE
-    void DBRowTranslatorVector<Translator>::translate () {
+    void DBRowTranslatorSetDynamic<Translator>::translate () {
       for ( auto translator : __translators ) {
         translator->translate ();
       }
@@ -280,7 +281,7 @@ namespace gum {
     
     /// initialize the cell filters by parsing once the database
     template <typename Translator> ALWAYS_INLINE
-    void DBRowTranslatorVector<Translator>::initialize () {
+    void DBRowTranslatorSetDynamic<Translator>::initialize () {
       for ( auto translator : __translators ) {
         translator->initialize ();
       }
@@ -289,7 +290,7 @@ namespace gum {
 
     /// initialize the cell filters by parsing once the database
     template <typename Translator> INLINE
-    void DBRowTranslatorVector<Translator>::postInitialize () {
+    void DBRowTranslatorSetDynamic<Translator>::postInitialize () {
       for ( auto translator : __translators ) {
         translator->postInitialize ();
       }
@@ -299,7 +300,7 @@ namespace gum {
     /// indicates whether one of the translators needs an initial parsing
     /// of the database to initialize itself
     template <typename Translator> INLINE
-    bool DBRowTranslatorVector<Translator>::requiresInitialization ()
+    bool DBRowTranslatorSetDynamic<Translator>::requiresInitialization ()
       const noexcept {
       for ( auto translator : __translators ) {
         if ( translator->requiresInitialization () )
@@ -311,7 +312,7 @@ namespace gum {
 
     /// push back the number of modalities of the variables of the output columns
     template <typename Translator> INLINE
-    void DBRowTranslatorVector<Translator>::modalities
+    void DBRowTranslatorSetDynamic<Translator>::modalities
     ( std::vector<unsigned int>& modals ) const {
       for ( auto translator : __translators ) {
         translator->modalities ( modals );
@@ -321,7 +322,7 @@ namespace gum {
 
     /// sets the input row that shall be read by all the cell translators
     template <typename Translator> INLINE
-    void DBRowTranslatorVector<Translator>::setInputRow ( const DBRow& row )
+    void DBRowTranslatorSetDynamic<Translator>::setInputRow ( const DBRow& row )
       noexcept {
       for ( auto translator : __translators ) {
         translator->setInputRow ( row );
@@ -331,7 +332,7 @@ namespace gum {
 
     /// returns the current output row
     template <typename Translator> INLINE
-    FilteredRow& DBRowTranslatorVector<Translator>::outputRow () noexcept {
+    FilteredRow& DBRowTranslatorSetDynamic<Translator>::outputRow () noexcept {
       return __output_row;
     }
 

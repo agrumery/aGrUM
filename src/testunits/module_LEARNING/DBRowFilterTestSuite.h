@@ -27,8 +27,8 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/learning/database/databaseFromCSV.h>
 #include <agrum/learning/database/DBCellTranslator.h>
-#include <agrum/learning/database/DBRowTranslatorSet.h>
-#include <agrum/learning/database/DBRowTranslatorVector.h>
+#include <agrum/learning/database/DBRowTranslatorSetStatic.h>
+#include <agrum/learning/database/DBRowTranslatorSetDynamic.h>
 #include <agrum/learning/database/CSVParser.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
 #include <agrum/learning/scores_and_tests/scoreK2.h>
@@ -63,7 +63,7 @@ namespace gum_tests {
       auto filter1 = gum::learning::make_DB_row_filter ( database, translators1,
                                                          generators1 );
       
-      gum::learning::DBRowTranslatorVector
+      gum::learning::DBRowTranslatorSetDynamic
         <gum::learning::CellTranslatorCompactIntId> translators2;
       translators2.insertTranslator ( gum::learning::Col<0> (), 8 );
 
@@ -114,7 +114,7 @@ namespace gum_tests {
       auto filter1 = gum::learning::make_DB_row_filter ( database, translators1,
                                                          generators1 );
       
-      gum::learning::DBRowTranslatorVector< gum::learning::DBCellTranslator<1,1> >
+      gum::learning::DBRowTranslatorSetDynamic< gum::learning::DBCellTranslator<1,1> >
         translators2;
       translators2.insertTranslator ( gum::learning::CellTranslatorCompactIntId (),
                                       gum::learning::Col<0> (), 8 );
@@ -181,7 +181,7 @@ namespace gum_tests {
       auto filter1 = gum::learning::make_DB_row_filter ( database, translators1,
                                                          generators1 );
       
-      gum::learning::DBRowTranslatorVector< gum::learning::DBCellTranslator<1,1> >
+      gum::learning::DBRowTranslatorSetDynamic< gum::learning::DBCellTranslator<1,1> >
         translators2;
       translators2.insertTranslator ( gum::learning::CellTranslatorCompactIntId (),
                                       gum::learning::Col<0> (), 37 );

@@ -266,7 +266,7 @@ namespace gum_tests {
     void test_alarm2 () {
       gum::learning::DatabaseFromCSV database ( MY_ALARM );
       
-      gum::learning::DBRowTranslatorVector
+      gum::learning::DBRowTranslatorSetDynamic
         <gum::learning::CellTranslatorCompactIntId> translators;
       translators.insertTranslator ( gum::learning::CellTranslatorCompactIntId(),
                                      gum::learning::Col<0> (), 37 );
@@ -315,7 +315,7 @@ namespace gum_tests {
     void test_alarm3 () {
       gum::learning::DatabaseFromCSV database ( MY_ALARM );
       
-      gum::learning::DBRowTranslatorVector< gum::learning::DBCellTranslator<1,1> >
+      gum::learning::DBRowTranslatorSetDynamic< gum::learning::DBCellTranslator<1,1> >
         translators;
       translators.insertTranslator ( gum::learning::CellTranslatorCompactIntId (),
                                      gum::learning::Col<0> (),
@@ -366,7 +366,7 @@ namespace gum_tests {
     void test_alarm4 () {
       gum::learning::DatabaseFromCSV database ( MY_ALARM );
       
-      gum::learning::DBRowTranslatorVector< gum::learning::DBCellTranslator<1,1> >
+      gum::learning::DBRowTranslatorSetDynamic< gum::learning::DBCellTranslator<1,1> >
         translators;
       translators.insertTranslator ( gum::learning::CellTranslatorCompactIntId (),
                                      gum::learning::Col<0> (),

@@ -22,19 +22,20 @@
  *
  * Basically, there are two ways to create the cell translators needed to parse
  * a database: either you know at compile time the columns of the database you
- * will wish to extract and you should definitely use the DBRowTranslatorSet
+ * will wish to extract and you should definitely use the DBRowTranslatorSetStatic
  * class to store the cell translators; or you know the columns to extract at
- * run time and you should use the DBRowTranslatorVector class. DBRowTranslatorSet
- * is a "meta-programming" based class that packs the cell filters in a most
- * efficient way (essentially, all methods can be inlined, which makes this class
- * the fastest one). DBRowTranslatorVectors are less efficient but are more
- * general. If all their cell translators are identical, translator's methods are
- * also inlined, otherwise, methods' calls induce virtual function overheads.
+ * run time and you should use the DBRowTranslatorSetDynamic class.
+ * DBRowTranslatorSetStatic is a "meta-programming" based class that packs the
+ * cell filters in a most efficient way (essentially, all methods can be inlined,
+ * which makes this class the fastest one). DBRowTranslatorSetDynamics are less
+ * efficient but are more general. If all their cell translators are identical,
+ * translator's methods are also inlined, otherwise, methods' calls induce
+ * virtual function overheads.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_DB_ROW_TRANSLATOR_VECTOR_H
-#define GUM_LEARNING_DB_ROW_TRANSLATOR_VECTOR_H
+#ifndef GUM_LEARNING_DB_ROW_TRANSLATOR_SET_DYNAMIC_H
+#define GUM_LEARNING_DB_ROW_TRANSLATOR_SET_DYNAMIC_H
 
 
 #include <vector>
@@ -52,25 +53,26 @@ namespace gum {
   namespace learning {
 
     
-    /** @class DBRowTranslatorVector
+    /** @class DBRowTranslatorSetDynamic
      * @ingroup learning_group
      * @brief the "non-meta-programming" class that includes cell translator packs
      * into row filters
      *
      * Basically, there are two ways to create the cell translators needed to parse
      * a database: either you know at compile time the columns of the database you
-     * will wish to extract and you should definitely use the DBRowTranslatorSet
-     * class to store the cell translators; or you know the columns to extract at
-     * run time and you should use the DBRowTranslatorVector class.
-     * DBRowTranslatorSet is a "meta-programming" based class that packs the cell
-     * filters in a most efficient way (essentially, all methods can be inlined,
-     * which makes this class the fastest one). DBRowTranslatorVectors are less
-     * efficient but are more general. If all their cell translators are
-     * identical, translator's methods are also inlined, otherwise, methods' calls
-     * induce virtual function overheads.
+     * will wish to extract and you should definitely use the
+     * DBRowTranslatorSetStatic class to store the cell translators; or you know
+     * the columns to extract at run time and you should use the
+     * DBRowTranslatorSetDynamic class. DBRowTranslatorSetStatic is a
+     * "meta-programming" based class that packs the cell filters in a most
+     * efficient way (essentially, all methods can be inlined, which makes this
+     * class the fastest one). DBRowTranslatorSetDynamics are less efficient but
+     * are more general. If all their cell translators are identical, translator's
+     * methods are also inlined, otherwise, methods' calls induce virtual
+     * function overheads.
      */
     template <typename Translator>
-    class DBRowTranslatorVector {
+    class DBRowTranslatorSetDynamic {
     public:
   
       // ##########################################################################
@@ -80,16 +82,17 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DBRowTranslatorVector ();
+      DBRowTranslatorSetDynamic ();
 
       /// copy constructor
-      DBRowTranslatorVector ( const DBRowTranslatorVector<Translator>& from );
+      DBRowTranslatorSetDynamic
+      ( const DBRowTranslatorSetDynamic<Translator>& from );
 
       /// move constructor
-      DBRowTranslatorVector ( DBRowTranslatorVector<Translator>&& from );
+      DBRowTranslatorSetDynamic ( DBRowTranslatorSetDynamic<Translator>&& from );
 
       /// destructor
-      ~DBRowTranslatorVector () noexcept;
+      ~DBRowTranslatorSetDynamic () noexcept;
   
       /// @}
   
@@ -101,12 +104,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBRowTranslatorVector<Translator>&
-      operator= ( const DBRowTranslatorVector<Translator>& );
+      DBRowTranslatorSetDynamic<Translator>&
+      operator= ( const DBRowTranslatorSetDynamic<Translator>& );
 
       /// move operator
-      DBRowTranslatorVector<Translator>&
-      operator= ( DBRowTranslatorVector<Translator>&& );      
+      DBRowTranslatorSetDynamic<Translator>&
+      operator= ( DBRowTranslatorSetDynamic<Translator>&& );      
 
       /// @}
 
@@ -201,7 +204,7 @@ namespace gum {
 
 
 // always include templated implementation
-#include <agrum/learning/database/DBRowTranslatorVector.tcc>
+#include <agrum/learning/database/DBRowTranslatorSetDynamic.tcc>
 
 
-#endif /* GUM_LEARNING_DB_ROW_TRANSLATOR_VECTOR_H */
+#endif /* GUM_LEARNING_DB_ROW_TRANSLATOR_SET_DYNAMIC_H */
