@@ -35,7 +35,7 @@
 
 #include <agrum/config.h>
 #include <agrum/multidim/potential.h>
-#include <agrum/learning/counter.h>
+#include <agrum/learning/scores+tests/counter.h>
 
 
 namespace gum {
