@@ -54,7 +54,7 @@ namespace gum_tests {
 #ifdef _OPENMP
         gum::setNumberOfThreads ( 1 );
 #endif
-	
+
         cn = new gum::credal::CredalNet < double > ( );
       }
 
@@ -110,13 +110,13 @@ namespace gum_tests {
 
       /// network : A --> C <-- B built manually
       void testCredalNetByLP() {
-       initCNet();
+        initCNet();
 
         std::vector< gum::NodeId > ids;
         ids.push_back ( cn->addNode ( "A", 3 ) ); // id 0
         ids.push_back ( cn->addNode ( "B", 3 ) ); // id 1
         ids.push_back ( cn->addNode ( "C", 3 ) ); // id 2
-	
+
         TS_ASSERT_EQUALS ( ids[ 0 ], 0U );
         TS_ASSERT_EQUALS ( ids[ 1 ], 1U );
         TS_ASSERT_EQUALS ( ids[ 2 ], 2U );

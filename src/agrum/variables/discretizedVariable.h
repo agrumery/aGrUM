@@ -157,9 +157,13 @@ namespace gum {
        */
       virtual const std::string label ( Idx i ) const;
 
+      /// get a numerical representation of he indice-the value.
+      virtual const double numerical( Idx indice ) const;
+
       /// from the label to its index in var.
       /// @throws NotFound
       virtual Idx operator[] ( const std::string& label ) const;
+      virtual Idx index( const std::string& label) const;
 
       /**
        *
@@ -168,6 +172,7 @@ namespace gum {
        * @throw OutOfBound, OutOfLowerBound, OutOfUpperBound
        */
       Idx operator[] ( const T_TICKS& aTarget ) const;
+      Idx index(  const T_TICKS& aTarget) const;
 
       /**
        *

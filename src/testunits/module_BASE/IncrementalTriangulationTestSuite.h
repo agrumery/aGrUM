@@ -362,8 +362,9 @@ namespace gum_tests {
           iter2 = iter;
 
           for ( ++iter2; iter2 != clique.endSafe(); ++iter2 ) {
-            try { triang.insertEdge ( *iter, *iter2 ); }
-            catch ( gum::DuplicateElement& ) {}
+            try {
+              triang.insertEdge ( *iter, *iter2 );
+            } catch ( gum::DuplicateElement& ) {}
           }
         }
       }

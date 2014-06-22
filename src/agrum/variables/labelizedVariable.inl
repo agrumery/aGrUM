@@ -41,14 +41,14 @@ namespace gum {
 
 
 
-  /// erase all the labels
+  // erase all the labels
 
   INLINE void LabelizedVariable::eraseLabels ( void ) {
     __labels.clear();
   }
 
 
-  /// copies the content of aLDRV
+  // copies the content of aLDRV
 
   INLINE void LabelizedVariable::_copy ( const LabelizedVariable& aLDRV ) {
     DiscreteVariable::_copy ( aLDRV );
@@ -57,14 +57,14 @@ namespace gum {
   }
 
 
-  /// returns the set of labels of the variable
+  // returns the set of labels of the variable
 
   INLINE const Sequence<std::string>& LabelizedVariable::labels() const {
     return __labels;
   }
 
 
-  /// add a label with a new index (we assume that we will NEVER remove a label)
+  // add a label with a new index (we assume that we will NEVER remove a label)
 
   INLINE LabelizedVariable& LabelizedVariable::addLabel ( const std::string aLabel ) {
     __labels.insert ( aLabel );
@@ -73,7 +73,7 @@ namespace gum {
   }
 
 
-  /// Default constructor
+  // Default constructor
 
   INLINE LabelizedVariable::LabelizedVariable
   ( const std::string&  aName, const std::string&  aDesc, const int nbrLabel ) :
@@ -89,7 +89,7 @@ namespace gum {
   }
 
 
-  /// Copy constructor
+  // Copy constructor
 
   INLINE
   LabelizedVariable::LabelizedVariable ( const LabelizedVariable& aLDRV ) :
@@ -99,7 +99,7 @@ namespace gum {
   }
 
 
-  /// destructor
+  // destructor
 
   INLINE LabelizedVariable::~LabelizedVariable() {
     eraseLabels();
@@ -114,8 +114,7 @@ namespace gum {
   }
 
 
-  /// copy operator
-
+  // copy operator
   INLINE const LabelizedVariable& LabelizedVariable::operator=
   ( const LabelizedVariable& aLDRV ) {
     // avoid self assignment
@@ -127,23 +126,31 @@ namespace gum {
   }
 
 
-  /// indicates whether the variable already has the label passed in argument
+  // indicates whether the variable already has the label passed in argument
 
   INLINE bool LabelizedVariable::isLabel ( const std::string& aLabel ) const {
     return __labels.exists ( aLabel );
   }
 
 
-  /// returns the ith label
-
+  // returns the ith label
   INLINE const std::string LabelizedVariable::label ( Idx i ) const {
     return __labels.atPos ( i );
   }
 
+  // get a numerical representation of the indice-th value.
+  INLINE const double LabelizedVariable::numerical ( Idx indice ) const {
+    return double ( indice );
+  }
 
-  /// returns the index of a given label
+  // returns the index of a given label
+  INLINE Idx
+  LabelizedVariable::operator[] ( const std::string& aLabel ) const {
+    return index ( aLabel );
+  }
 
-  INLINE Idx LabelizedVariable::operator[] ( const std::string& aLabel ) const {
+  INLINE Idx
+  LabelizedVariable::index ( const std::string& aLabel ) const {
     try {
       return __labels.pos ( aLabel );
     } catch ( ... ) {
@@ -151,9 +158,7 @@ namespace gum {
     }
   }
 
-
-  /// returns the size of the random discrete variable domain
-
+  // returns the size of the random discrete variable domain
   INLINE Size LabelizedVariable::domainSize() const {
     return __labels.size();
   }

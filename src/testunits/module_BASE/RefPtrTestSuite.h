@@ -72,14 +72,18 @@ namespace gum_tests {
         int xxx;
         toto() : xxx ( 4 ) { };
 
-        int getY() { return xxx; }
+        int getY() {
+          return xxx;
+        }
       };
 
       struct titi : public toto {
         int yyy;
         titi() : yyy ( 3 ) { };
 
-        int getY() { return yyy; }
+        int getY() {
+          return yyy;
+        }
       };
 
       void testDowncast() {

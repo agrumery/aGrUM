@@ -144,7 +144,7 @@ namespace gum_tests {
 
           gum::Instantiation j ( p3 );
 
-          TS_ASSERT_EQUALS ( j.toString(), "<a:0|b:0|c:0|d:0>" );
+          TS_ASSERT_EQUALS ( j.toString(), "<a:0|b:0|c:0|d:[3;4[>" );
 
           int nbr_err = 0;
 

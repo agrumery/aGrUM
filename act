@@ -87,6 +87,68 @@ def enqueue_output(out, queue):
         queue.put(line)
     out.close()
     
+def threaded_execution(cde,verbose):
+    proc=Popen(cde,shell=True,stdout=PIPE, stderr=STDOUT, bufsize=1)
+    q = Queue()
+    t = Thread(target=enqueue_output, args=(proc.stdout, q))
+    t.daemon = True # thread dies with the program
+    t.start() 
+    while True:
+      try:
+        line = q.get_nowait()
+        
+        #prettifying the line
+        res=""
+        
+        # prettifying compilation
+        s=line.split("%]")
+        if len(s)>=2:
+          res+=OKGREEN+"%]".join(s[:-1])+"%]"+ENDC+" "
+          line=s[-1].strip()
+        
+        remove_dirs=lambda s : s[:s.find("/")-1]
+        
+        # prettifying (compacting) path
+        if line[0]!="/": # we keep message beginning with full path
+          s=line.split("/agrum/")
+          if len(s)==2:            
+            res+=remove_dirs(s[0])+WARNING+" agrum/"+s[1].rstrip()+ENDC
+            line=""
+          else:
+            s=line.split("/generated-files/")
+            if len(s)==2:
+              line=""
+              res+=remove_dirs(s[0])+WARNING+" generated-files/"+s[1].rstrip()+ENDC
+        
+        #prettifying test execution
+        if line!="":
+          s=line.split(". [")
+          if len(s)==2:
+            res+=s[0]+". "+OKGREEN+"["+s[1].rstrip()+ENDC
+          else:
+            s=line.split("# [")
+            if len(s)==2:
+              res+=s[0]+"# "+OKGREEN+"["+s[1].rstrip()+ENDC
+            else:
+              s=line.split(" ... ")
+              if len(s)==2:
+                res+=OKGREEN+s[0]+ENDC+" ... "+WARNING+"OK"+ENDC
+              else:
+                res=line
+        
+        res=res.rstrip()
+          
+        if res!="":
+          sys.stdout.write(res.rstrip()+"\n")
+          sys.stdout.flush()
+      except Empty:
+        if proc.poll() is not None:
+          if verbose:
+            print(WARNING+"[end of subprocess]"+ENDC)
+          break
+        
+    return proc.returncode
+      
 ##########################################################################################################################
 def parseModulesTxt(filename):
   modules={}
@@ -352,66 +414,11 @@ def execute(actions,verbose=True):
     
     if not special_execute(action,argument):
       commande=action+" "+argument
-      proc=Popen(commande,shell=True,stdout=PIPE, stderr=STDOUT, bufsize=1, close_fds=ON_POSIX)
-      q = Queue()
-      t = Thread(target=enqueue_output, args=(proc.stdout, q))
-      t.daemon = True # thread dies with the program
-      t.start() 
-      while True:
-        try:
-          line = q.get_nowait()
-          
-          #prettifying the line
-          res=""
-          
-          # prettifying compilation
-          s=line.split("%]")
-          if len(s)>=2:
-            res+=OKGREEN+"%]".join(s[:-1])+"%]"+ENDC+" "
-            line=s[-1].strip()
-          
-          remove_dirs=lambda s : s[:s.find("/")-1]
-          
-          # prettifying (compacting) path
-          if line[0]!="/": # we keep message beginning with full path
-            s=line.split("/agrum/")
-            if len(s)==2:            
-              res+=remove_dirs(s[0])+WARNING+" agrum/"+s[1].rstrip()+ENDC
-              line=""
-            else:
-              s=line.split("/generated-files/")
-              if len(s)==2:
-                line=""
-                res+=remove_dirs(s[0])+WARNING+" generated-files/"+s[1].rstrip()+ENDC
-          
-          #prettifying test execution
-          if line!="":
-            s=line.split(". [")
-            if len(s)==2:
-              res+=s[0]+". "+OKGREEN+"["+s[1].rstrip()+ENDC
-            else:
-              s=line.split("# [")
-              if len(s)==2:
-                res+=s[0]+"# "+OKGREEN+"["+s[1].rstrip()+ENDC
-              else:
-                s=line.split(" ... ")
-                if len(s)==2:
-                  res+=OKGREEN+s[0]+ENDC+" ... "+WARNING+"OK"+ENDC
-                else:
-                  res=line
-          
-          res=res.rstrip()
-            
-          if res!="":
-            sys.stdout.write(res.rstrip()+"\n")
-            sys.stdout.flush()
-        except Empty:
-          if proc.poll() is not None:
-            if verbose:
-              print(WARNING+"[end of subprocess]"+ENDC)
-            break
-      
-      #exitcode = proc.returncode
+      rc=threaded_execution(commande,verbose)
+
+      if rc>0:
+        print("** exit code ="+str(rc))
+        return
       
       #for line in proc.stderr.readlines():
       #  sys.stdout.write(ERROR+line+ENDC)
@@ -625,7 +632,7 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
 ##########################################################################################################################
 def uninstall(options):
     if options['wrapper']!='':
-        install_folder=sysconfig.get_python_lib(1,0,prefix=install_folder)
+        install_folder=options['destination'] #sysconfig.get_python_lib(1,0,prefix=install_folder)
 
         print "suppresion récursive de "+ERROR+install_folder+"/pyAgrum"+ENDC
         os.system('cd '+install_folder+' && rm -rf pyAgrum')
@@ -636,7 +643,7 @@ def uninstall(options):
     else:
         folders=["build",options['platform'],options['option']]
         [safe_cd(s) for s in folders]
-        schedule("mak","uninstall")
+        schedule("make","uninstall")
         [schedule("back","") for s in folders]
 
 ###################################################################################################################

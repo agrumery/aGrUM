@@ -325,6 +325,26 @@ namespace gum {
        */
       NodeId addNoisyAND ( const DiscreteVariable& variable, GUM_SCALAR externalWeight );
 
+      /**
+       * Add a variable, its associate node and a Logit implementation.
+       *
+       * @param variable The variable added by copy
+       * @param externalWeight see gum::MultiDimLogit
+       * @param id proposed gum::nodeId for the variable
+       * @warning give an id should be reserved for rare and specific situations !!!
+       * @return the id of the added variable.
+       */
+      NodeId addLogit ( const DiscreteVariable& variable, GUM_SCALAR externalWeight, NodeId id );
+
+      /**
+       * Add a variable, its associate node and a Logit implementation. The id of the new
+       * variable is automatically generated.
+       *
+       * @param variable The variable added by copy.
+       * @param externalWeight see gum::MultiDimLogit
+       * @return the id of the added variable.
+       */
+      NodeId addLogit ( const DiscreteVariable& variable, GUM_SCALAR externalWeight );
 
       /**
        * Add a variable, it's associate node and an OR implementation. The id of the new

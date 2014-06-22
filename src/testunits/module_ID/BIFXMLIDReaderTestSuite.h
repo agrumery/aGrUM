@@ -59,7 +59,9 @@ namespace gum_tests {
         __nbr = percent;
         //std::cout << "Progress : " << percent << "%" << " Status : " << status << std::endl;
       }
-      int getNbr() {return __nbr;};
+      int getNbr() {
+        return __nbr;
+      };
   };
 
 

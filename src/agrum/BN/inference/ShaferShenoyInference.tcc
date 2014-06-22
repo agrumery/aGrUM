@@ -398,8 +398,11 @@ namespace gum {
       }
     }
 
-    try { delete __messagesMap[Arc ( tail, head )]; }
-    catch ( NotFound& ) { /* Nothing to delete */ }
+    try {
+      delete __messagesMap[Arc ( tail, head )];
+    } catch ( NotFound& ) {
+      /* Nothing to delete */
+    }
 
     __messagesMap.insert ( Arc ( tail, head ), message );
   }
