@@ -160,12 +160,12 @@ namespace gum {
         /**
          * Returns an iterator reference to he beginning of the list of actions
          */
-        SequenceIteratorSafe<Idx>& beginActions() const {return __actionSeq.beginSafe(); }
+        SequenceIteratorSafe<Idx> beginActions() const {return __actionSeq.beginSafe(); }
 
         /**
          * Returns an iterator reference to the end of the list of actions
          */
-        SequenceIteratorSafe<Idx>& endActions() const { return __actionSeq.endSafe(); }
+        SequenceIteratorSafe<Idx> endActions() const { return __actionSeq.endSafe(); }
 
       /// @}
 
@@ -177,12 +177,12 @@ namespace gum {
         /**
          * Returns an iterator reference to he beginning of the list of variables
          */
-        SequenceIteratorSafe< const DiscreteVariable* >& beginVariables() const {return __varSeq.beginSafe(); }
+        SequenceIteratorSafe< const DiscreteVariable* > beginVariables() const {return __varSeq.beginSafe(); }
 
         /**
          * Returns an iterator reference to the end of the list of variables
          */
-        SequenceIteratorSafe< const DiscreteVariable* >& endVariables() const { return __varSeq.endSafe(); }
+        SequenceIteratorSafe< const DiscreteVariable* > endVariables() const { return __varSeq.endSafe(); }
 
       /// @}
 
@@ -250,8 +250,8 @@ namespace gum {
       bool __onDestructionDeleteVars;
   };
 
-  extern template class FactoredMarkovDecisionProcess<float>;
-  extern template class FactoredMarkovDecisionProcess<double>;
+//  extern template class FactoredMarkovDecisionProcess<float>;
+//  extern template class FactoredMarkovDecisionProcess<double>;
 
 } /* namespace gum */
 

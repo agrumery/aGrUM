@@ -141,23 +141,26 @@ namespace gum {
             remainingVarsScore.insert(*varIter, 0.0);
       }
 
+      std::cout << remainingVarsScore.toString() << std::endl;
+
       // Then, until there's no node remaining
       while( !remainingVars.empty() ){
 
-        // We select the best var
-        const DiscreteVariable* selectedVar = remainingVarsScore.pop();
+//        // We select the best var
+        /*const DiscreteVariable* selectedVar =*/ remainingVarsScore.pop();
+//        std::cout << "Selected Var : " << selectedVar->name();
 
-        // Then we decide if we update each node according to this var
-        __updateNodeSet( currentNodeSet, selectedVar, remainingVarsScore );
+//        // Then we decide if we update each node according to this var
+//        __updateNodeSet( currentNodeSet, selectedVar, remainingVarsScore );
 
       }
 
       // If there are remaining node that are not leaves after we establish the var order
       // these nodes are turned into leaf.
-      for( SetIteratorSafe<NodeId> nodeIter = currentNodeSet.beginSafe(); nodeIter != currentNodeSet.endSafe(); ++nodeIter )
-        __turnIntoLeaf(*nodeIter);
+//      for( SetIteratorSafe<NodeId> nodeIter = currentNodeSet.beginSafe(); nodeIter != currentNodeSet.endSafe(); ++nodeIter )
+//        __turnIntoLeaf(*nodeIter);
 
-      __toDG();
+//      __toDG();
     }
 
 

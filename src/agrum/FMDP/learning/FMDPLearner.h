@@ -80,7 +80,7 @@ namespace gum {
         // ###################################################################
         void addVariable(const DiscreteVariable*);
 
-        void addAction(Idx actionId, std::string &);
+        void addAction(const Idx actionId, const std::string &);
 
         void addReward(const DiscreteVariable*);
 

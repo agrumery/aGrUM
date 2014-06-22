@@ -65,7 +65,12 @@ namespace gum {
         // ###################################################################
         /// Default constructor
         // ###################################################################
-        SPIMDDI (GUM_SCALAR discountFactor, double epsilon, double learningThreshold, Idx nbStep);
+        SPIMDDI (GUM_SCALAR discountFactor = 0.75,
+                 double epsilon = 0.0001,
+                 double learningThreshold = 0.95,
+                 Idx nbObservation = 100,
+                 Idx nbStep = 10,
+                 double exploThreshold = 0.1);
 
         // ###################################################################
         /// Default destructor
@@ -82,8 +87,13 @@ namespace gum {
         // ###################################################################
         ///
         // ###################################################################
-        void addAction( Idx actionId, std::string actionName );
+        void addAction(const Idx actionId, const std::string &actionName );
+
+        // ###################################################################
+        ///
+        // ###################################################################
         void addVariable( const DiscreteVariable* var );
+        void addReward( GUM_SCALAR );
 
       /// @}
 
@@ -91,11 +101,17 @@ namespace gum {
       /// @name
       // ==========================================================================
       /// @{
+        // ###################################################################
+        ///
+        // ###################################################################
+        void initialize(const Instantiation& initialState);
+
+        INLINE void setCurrentState( const Instantiation&  currentState ) { __lastState = currentState; }
 
         // ###################################################################
         ///
         // ###################################################################
-        void feedback( const Instantiation*, Idx );
+        void feedback(const Instantiation &, GUM_SCALAR );
 
         // ###################################################################
         ///
@@ -104,23 +120,47 @@ namespace gum {
 
       /// @}
 
+
+
     private :
 
       /// The learnt Markovian Decision Process
       FactoredMarkovDecisionProcess<GUM_SCALAR>* __fmdp;
 
       /// The model learner.
-      /// It will handle by itself the different decision graph learner
+      /// It will handle by itself the different decision graph learners
       /// needed to learn the FMDP
       FMDPLearner<GUM_SCALAR>* __learner;
+
+      LabelizedVariable* __rewardVar;
+      Bijection<GUM_SCALAR,Idx> __rewardValue2Idx;
 
       /// The planer we use to find the optimal policy
       SPUMDD<GUM_SCALAR>* __planer;
 
+      /// The number of observation we make before using again the planer
+      Idx __nbObservation;
+
+      /// The number of Value Iteration step we perform
+      Idx __nbStep;
+
       /// The optimal policy to use to make some decision
       MultiDimDecisionGraph<Idx>* __optimalPolicy;
 
+      /// Threshold under which we perform a random action instead of exploiting the optimal one
+      double __exploThreshold;
+
+      Sequence<Idx> __actionSeq;
+
+      /// The state in which the system is before we perform a new action
       Instantiation __lastState;
+      Idx __lastAction;
+
+      /// Since SPIMMDI made these observation, it has to delete them on quitting
+      Set<Observation*> __bin;
+
+      /// Only for random pruposes
+      int __offset;
 
   };
 

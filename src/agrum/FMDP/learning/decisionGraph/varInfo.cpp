@@ -57,11 +57,24 @@ namespace gum {
 
       GUM_CONSTRUCTOR(VarInfo);
 
-      for(Idx modality = 0; modality < __attr->domainSize(); modality++){
+      // Initialisation
+      for(Idx modality = 0; modality < __attr->domainSize(); ++modality ){
+
         __modality2Observations.insert(modality, new Set<const Observation*>);
+
         __contingencyTable.insert( modality, new HashTable<Idx, Idx>());
+        for( Idx valMod = 0; valMod < __value->domainSize(); ++valMod )
+          __contingencyTable[modality]->insert(valMod, 0);
+
+        __attrMarginalTable.insert( modality, 0);
       }
 
+      for( Idx valMod = 0; valMod < __value->domainSize(); ++valMod )
+        __valueMarginalTable.insert(valMod, 0);
+
+      __nbObservation = 0;
+      __GStat = 0;
+      __pvalue = __probaChi2(__GStat, __degreeOfFreedom);
     }
 
 
@@ -72,27 +85,44 @@ namespace gum {
                      const DiscreteVariable* value,
                      const Set<const Observation*>* obsSet) : __attr(attribute),
                                                               __value(value),
-                                                              __degreeOfFreedom( (__value->domainSize()-1)*(__attr->domainSize()-1) ),
+                                                              __degreeOfFreedom( (value->domainSize()-1)*(attribute->domainSize()-1) ),
                                                               __isRelevant(false),
                                                               __areRelevant(attribute->domainSize()*value->domainSize(),false){
 
       GUM_CONSTRUCTOR(VarInfo);
 
+      // Initialisation nécessaire avant la prise en compte des observations
       for(Idx modality = 0; modality < __attr->domainSize(); modality++){
         __modality2Observations.insert(modality, new Set<const Observation*>);
+
         __contingencyTable.insert( modality, new HashTable<Idx, Idx>());
+        for( Idx valMod = 0; valMod < __value->domainSize(); ++valMod )
+          __contingencyTable[modality]->insert(valMod, 0);
+
+        __attrMarginalTable.insert( modality, 0);
       }
 
+      for( Idx valMod = 0; valMod < __value->domainSize(); ++valMod )
+        __valueMarginalTable.insert(valMod, 0);
+
+      __nbObservation = 0;
+
+
+      // Prise en compte des observations
       for(SetIteratorSafe<const Observation*> obsIter = obsSet->cbeginSafe(); obsIter != obsSet->cendSafe(); ++obsIter){
 
         __modality2Observations[(*obsIter)->modality(__attr)]->insert( (*obsIter) );
 
         __nbObservation++;
         __attrMarginalTable[(*obsIter)->modality(__attr)]++;
-        __valueMarginalTable[(*obsIter)->modality(__attr)]++;
+        __valueMarginalTable[(*obsIter)->modality(__value)]++;
         (*__contingencyTable[(*obsIter)->modality(__attr)])[(*obsIter)->modality(__value)]++;
 
       }
+
+
+      // Calcul de la GStat
+      __GStat = 0;
 
       for( Idx attrModality = 0; attrModality < __attr->domainSize(); ++attrModality ){
         Idx rank = attrModality*__value->domainSize();
@@ -132,16 +162,20 @@ namespace gum {
     // ==========================================================================
     void VarInfo::addObservation( const Observation* newObs){
 
+      std::cout << "Hello There : " << __attr->name() << " - " << __value->name()  << " - " << __GStat << std::endl;
       // Addition of the observation to its matching set for fast splitting
       __modality2Observations[newObs->modality(__attr)]->insert( newObs );
 
+
       // Subtraction of the matching ceil GVal before updating
+//      std::cout << "Subtract" << std::endl;
       __GStat -= __GVal(newObs->modality(__attr), newObs->modality(__value));
 
       // Updating
+//      std::cout << "Update" << std::endl;
       __nbObservation++;
       __attrMarginalTable[newObs->modality(__attr)]++;
-      __valueMarginalTable[newObs->modality(__attr)]++;
+      __valueMarginalTable[newObs->modality(__value)]++;
       (*__contingencyTable[newObs->modality(__attr)])[newObs->modality(__value)]++;
 
       if( !__isRelevant && (*__contingencyTable[newObs->modality(__attr)])[newObs->modality(__value)] >= 5 ){
@@ -149,8 +183,13 @@ namespace gum {
         __checkRelevance();
       }
 
+//      std::cout << "Add" << std::endl;
       __GStat += __GVal(newObs->modality(__attr), newObs->modality(__value));
       __pvalue = __probaChi2(__GStat, __degreeOfFreedom);
+
+      std::cout << __GStat  << " - " << __pvalue << std::endl;
+      if ( std::isnan(__GStat) )
+          exit(-1);
     }
 
 

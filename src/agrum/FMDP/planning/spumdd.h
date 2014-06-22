@@ -87,13 +87,13 @@ namespace gum {
          * Returns an iterator reference to the beginning of the var eleminstation sequence
          * @warning in reverse mode (from end to beginning)
          */
-         INLINE SequenceIteratorSafe<const DiscreteVariable*>& beginVarElimination() { return __elVarSeq.rbeginSafe(); }
+         INLINE SequenceIteratorSafe<const DiscreteVariable*> beginVarElimination() { return __elVarSeq.rbeginSafe(); }
 
         /**
          * Returns an iterator to the end
          * @warning in reverse mode (from end to beginning)
          */
-         INLINE SequenceIteratorSafe<const DiscreteVariable*>& endVarElemination() {return __elVarSeq.rendSafe();}
+         INLINE SequenceIteratorSafe<const DiscreteVariable*> endVarElemination() {return __elVarSeq.rendSafe();}
 
          /// Add computed Qaction to table
          void addQaction(Idx, MultiDimDecisionGraph<GUM_SCALAR>*);

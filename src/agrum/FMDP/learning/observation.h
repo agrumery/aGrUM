@@ -57,12 +57,12 @@ namespace gum {
         // ###################################################################
         /// Default constructor
         // ###################################################################
-        Observation ();
+        Observation () {}
 
         // ###################################################################
         /// Default destructor
         // ###################################################################
-        ~Observation();
+        ~Observation() {}
 
       /// @}
 
@@ -91,16 +91,18 @@ namespace gum {
         INLINE void setModality( const DiscreteVariable* var, Idx modality ) { __varInst.insert(var, modality); }
 
         // ###################################################################
-        /// Returns the reward obtained during this observation
+        // Returns the reward obtained during this observation
         // ###################################################################
 //        Idx reward( ) const { return __reward; }
 
         // ###################################################################
-        /// Sets the reward obtained during this observation
+        // Sets the reward obtained during this observation
         // ###################################################################
 //        void setReward( GUM_SCALAR reward ) { __reward = reward; }
 
       /// @}
+      ///
+      std::string toString();
 
       // ==========================================================================
       /// @name Iterators on Variables

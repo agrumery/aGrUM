@@ -19,12 +19,12 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Sources of MultiDimDecisionGraphGenerator.
+ * @brief Sources of
  *
  * @author Jean-Christophe Magnan
  *
  */
-// ==========================================================================
+// =====================================================================
 #include <random>
 #include <cstdlib>
 //======================================================================
@@ -58,12 +58,14 @@ namespace gum {
       ///
       void Simulator::perform( Idx actionId ){
 
+          srand( time(NULL) );
+
           Instantiation newState;
           for( auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter ){
 
               newState.add(**varIter);
               Instantiation transit(__currentState);
-              transit.add(__fmdp->main2prime(*varIter));
+              transit.add(*(__fmdp->main2prime(*varIter)));
 
               const MultiDimDecisionGraph<double>* varDG = reinterpret_cast<const MultiDimDecisionGraph<double>*>( __fmdp->transition(actionId, *varIter) );
 
@@ -72,7 +74,7 @@ namespace gum {
               for(transit.setFirstOut(__currentState);!transit.end();transit.incOut(__currentState)){
                   cdd += varDG->get(transit);
                   if(proba <= cdd) {
-                      newState.chgVal( **varIter, transit.val(__fmdp->main2prime(*varIter)));
+                      newState.chgVal(**varIter, transit.val(*(__fmdp->main2prime(*varIter))));
                       break;
                   }
               }

@@ -19,3 +19,15 @@
  ***************************************************************************/
 
 #include <agrum/FMDP/learning/observation.h>
+
+namespace gum {
+
+std::string Observation::toString(){
+
+    std::stringstream status;
+    for( auto varIter = __varInst.beginSafe(); varIter != __varInst.endSafe(); ++varIter )
+        status << " | " << varIter.key()->name() << " - " << varIter.val() << " | ";
+    status << std::endl;
+    return status.str();
+}
+} // end of namespace gum

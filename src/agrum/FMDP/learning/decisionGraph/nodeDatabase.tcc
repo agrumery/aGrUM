@@ -50,6 +50,7 @@ namespace gum {
       for(SetIteratorSafe<const DiscreteVariable*> varIter = __attrSet->cbeginSafe(); varIter != __attrSet->cendSafe(); ++varIter)
         __attrTable.insert( *varIter, new VarInfo(*varIter, value) );
 
+      __nbObservation = 0;
 
       for(Idx modality = 0; modality < __value->domainSize(); ++modality)
         __valueCount.insert(modality, 0);
@@ -106,6 +107,7 @@ namespace gum {
       for(auto varIter = __attrTable.cbeginSafe(); varIter != __attrTable.cendSafe(); ++varIter)
         varIter.val()->addObservation( newObs);
       __nbObservation++;
+
       __valueCount[newObs->modality(__value)]++;
     }
 

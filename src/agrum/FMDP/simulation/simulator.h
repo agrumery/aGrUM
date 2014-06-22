@@ -26,9 +26,9 @@
 #ifndef GUM_SIMULATOR_H
 #define GUM_SIMULATOR_H
 //======================================================================
-#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
-//======================================================================
 #include <agrum/multidim/instantiation.h>
+//======================================================================
+#include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
 //======================================================================
 //======================================================================
 
@@ -74,7 +74,7 @@ namespace gum {
         INLINE const Instantiation& currentState() { return __currentState; }
 
         ///
-        INLINE double reward() { return __fmdp->reward()->get(__currentState);}
+        INLINE double reward() {return __fmdp->reward()->get(__currentState);}
 
         ///
         void perform( Idx );
@@ -93,7 +93,6 @@ namespace gum {
 } /* namespace gum */
 
 
-#include <agrum/FMDP/FactoredMarkovDecisionProcess.tcc>
 
 #endif // GUM_SIMULATOR_H
 

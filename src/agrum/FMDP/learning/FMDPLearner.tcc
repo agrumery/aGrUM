@@ -56,6 +56,8 @@ namespace gum {
           delete actionIter.val();
       }
 
+      delete __rewardLearner;
+
       GUM_DESTRUCTOR(FMDPLearner);
     }
 
@@ -78,10 +80,9 @@ namespace gum {
     //
     // ###################################################################
     template <typename GUM_SCALAR>
-    void FMDPLearner<GUM_SCALAR>::addAction( Idx actionId, std::string& actionName ){
-
+    void FMDPLearner<GUM_SCALAR>::addAction(const Idx actionId, const std::string &actionName ){
         __fmdp->addAction(actionId, actionName);
-        __actionLearners[actionId] = new List<IMDDI<GUM_SCALAR>*>();
+        __actionLearners.insert( actionId, new List<IMDDI<GUM_SCALAR>*>());
     }
 
     // ###################################################################
@@ -123,10 +124,11 @@ namespace gum {
     template <typename GUM_SCALAR>
     void FMDPLearner<GUM_SCALAR>::addObservation( Idx actionId, const Observation* newObs ){
 
-        for(auto learnerIter = __actionLearners[actionId]->beginSafe(); learnerIter != __actionLearners[actionId]->endSafe(); ++learnerIter)
-            (*learnerIter)->addObservation(newObs);
+//        for(auto learnerIter = __actionLearners[actionId]->beginSafe(); learnerIter != __actionLearners[actionId]->endSafe(); ++learnerIter)
+//            (*learnerIter)->addObservation(newObs);
 
         __rewardLearner->addObservation(newObs);
+        __rewardLearner->updateOrderedTree();
 
     }
 } // End of namespace gum

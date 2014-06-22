@@ -24,7 +24,9 @@
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
-
+// =========================================================================
+#include <random>
+#include <cstdlib>
 // =========================================================================
 #include <agrum/FMDP/learning/spimddi.h>
 // =========================================================================
@@ -35,69 +37,138 @@ namespace gum {
     // Constructor & destructor.
     // ==========================================================================
 
-    // ###################################################################
-    /// Default constructor
-    // ###################################################################
-    template<typename GUM_SCALAR>
-    SPIMDDI<GUM_SCALAR>::SPIMDDI (GUM_SCALAR discountFactor, double epsilon, double learningThreshold, Idx nbStep){
+        // ###################################################################
+        // Default constructor
+        // ###################################################################
+        template<typename GUM_SCALAR>
+        SPIMDDI<GUM_SCALAR>::SPIMDDI ( GUM_SCALAR discountFactor,
+                                       double epsilon,
+                                       double learningThreshold,
+                                       Idx nbObservation,
+                                       Idx nbStep,
+                                       double exploThreshold ) : __nbObservation(nbObservation),
+                                                                 __nbStep(nbStep),
+                                                                 __exploThreshold(exploThreshold){
 
-        __fmdp = new FactoredMarkovDecisionProcess<GUM_SCALAR>();
-        __fmdp->setDiscount(discountFactor);
+            GUM_CONSTRUCTOR(SPIMDDI)
 
-        __learner = new FMDPLearner<GUM_SCALAR>(__fmdp, learningThreshold);
+            __fmdp = new FactoredMarkovDecisionProcess<GUM_SCALAR>();
+            __fmdp->setDiscount(discountFactor);
 
-    }
+            __learner = new FMDPLearner<GUM_SCALAR>(__fmdp, learningThreshold);
 
-    // ###################################################################
-    /// Default destructor
-    // ###################################################################
-    template<typename GUM_SCALAR>
-    SPIMDDI<GUM_SCALAR>::~SPIMDDI (){
+            __planer = new SPUMDD<GUM_SCALAR>(__fmdp, epsilon);
 
-    }
+            __rewardVar = new LabelizedVariable("Reward", "");
+            __rewardVar->eraseLabels();
 
-    /// @}
+            __optimalPolicy = nullptr;
+
+            __offset = 0;
+        }
+
+        // ###################################################################
+        // Default destructor
+        // ###################################################################
+        template<typename GUM_SCALAR>
+        SPIMDDI<GUM_SCALAR>::~SPIMDDI (){
+
+            delete __learner;
+
+            for(auto obsIter = __bin.beginSafe(); obsIter != __bin.endSafe(); ++obsIter)
+                delete *obsIter;
+
+            delete __planer;
+            delete __fmdp;
+
+            delete __rewardVar;
+
+            GUM_DESTRUCTOR(SPIMDDI)
+        }
 
     // ==========================================================================
-    /// @name
+    //
     // ==========================================================================
-    /// @{
 
-    // ###################################################################
-    ///
-    // ###################################################################
-    template<typename GUM_SCALAR>
-    void SPIMDDI<GUM_SCALAR>::addAction( Idx actionId, std::string actionName ){
+        // ###################################################################
+        //
+        // ###################################################################
+        template<typename GUM_SCALAR>
+        void SPIMDDI<GUM_SCALAR>::addAction(const Idx actionId, const std::string &actionName ){
+            __learner->addAction(actionId, actionName);
+            __actionSeq.insert(actionId);
+        }
 
-    }
+        template<typename GUM_SCALAR>
+        void SPIMDDI<GUM_SCALAR>::addVariable( const DiscreteVariable* var ){
+            __learner->addVariable(var);
+        }
 
-    template<typename GUM_SCALAR>
-    void SPIMDDI<GUM_SCALAR>::addVariable( const DiscreteVariable* var ){
-
-    }
-
-    /// @}
+        template<typename GUM_SCALAR>
+        void SPIMDDI<GUM_SCALAR>::addReward( GUM_SCALAR r ){
+            std::ostringstream strs;
+            strs << r;
+            __rewardVar->addLabel( strs.str() );
+            __rewardValue2Idx.insert(r, __rewardVar->labels().pos(strs.str()));
+        }
 
     // ==========================================================================
-    /// @name
+    //
     // ==========================================================================
-    /// @{
 
-    // ###################################################################
-    ///
-    // ###################################################################
-    template<typename GUM_SCALAR>
-    void SPIMDDI<GUM_SCALAR>::feedback( const Instantiation* newState, Idx reward){
+        // ###################################################################
+        //
+        // ###################################################################
+        template<typename GUM_SCALAR>
+        void SPIMDDI<GUM_SCALAR>::initialize( const Instantiation& initialState ){
 
-    }
+            setCurrentState( initialState );
+            __learner->addReward(__rewardVar);
+            __learner->initialize();
+//            __planer->initialize();
+        }
 
-    // ###################################################################
-    ///
-    // ###################################################################
-    template<typename GUM_SCALAR>
-    Idx SPIMDDI<GUM_SCALAR>::askForAction( ){
-        return 0;
-    }
+        // ###################################################################
+        //
+        // ###################################################################
+        template<typename GUM_SCALAR>
+        void SPIMDDI<GUM_SCALAR>::feedback( const Instantiation& newState, GUM_SCALAR reward){
+
+            Observation* obs = new Observation();
+
+            for( auto varIter = __lastState.variablesSequence().beginSafe(); varIter != __lastState.variablesSequence().endSafe(); ++varIter)
+                obs->setModality(*varIter, __lastState.val(**varIter));
+
+            for( auto varIter = newState.variablesSequence().beginSafe(); varIter != newState.variablesSequence().endSafe(); ++varIter)
+                obs->setModality(__fmdp->main2prime(*varIter), newState.val(**varIter));
+
+            obs->setModality( __rewardVar, __rewardValue2Idx.second(reward) );
+
+            std::cout << obs->toString() << std::endl;
+            __learner->addObservation( __lastAction, obs );
+            __bin.insert(obs);
+
+            setCurrentState( newState );
+        }
+
+        // ###################################################################
+        //
+        // ###################################################################
+        template<typename GUM_SCALAR>
+        Idx SPIMDDI<GUM_SCALAR>::askForAction( ){
+
+            srand( time(NULL) + __offset++ );
+
+            double explo = (double)std::rand( ) / (double)RAND_MAX;
+            if( __optimalPolicy != nullptr && explo > __exploThreshold){
+                std::cout << "Exploitons!" << std::endl;
+                __lastAction = __optimalPolicy->get(__lastState);
+            }else{
+                std::cout << "Explorons!" << std::endl;
+                __lastAction = __actionSeq[ (Idx)( (double)std::rand( ) / (double)RAND_MAX * __actionSeq.size()) ] ;
+            }
+            return __lastAction;
+        }
 
 
 } // End of namespace gum
