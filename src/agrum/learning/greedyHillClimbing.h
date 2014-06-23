@@ -46,7 +46,7 @@
 #include <agrum/learning/scores_and_tests/scoreBDeu.h>
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintSet.h>
-#include <agrum/learning/paramEstimatorML.h>
+#include <agrum/learning/paramEstimatorMLwithUniformApriori.h>
 
 
 namespace gum {

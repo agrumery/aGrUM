@@ -207,6 +207,43 @@ namespace gum {
     }
  
 
+    /// basic learning of structure and parameters of a BN from a CSV
+    template <typename GUM_SCALAR>
+    BayesNet<GUM_SCALAR>
+    LocalSearchWithTabuList::learnBNFromCSV ( std::string filename ) {
+      DatabaseFromCSV database ( filename );
+
+      DBRowTranslatorSetDynamic<CellTranslatorUniversal> translators;
+      translators.insertTranslator ( Col<0> (), database.nbVariables () );
+
+      auto generators = make_generators ( RowGeneratorIdentity () );
+      
+      auto filter = make_DB_row_filter ( database, translators, generators );
+
+      std::vector<unsigned int> modalities = filter.modalities ();
+
+      ScoreBDeu<decltype ( filter ) > score ( filter, modalities );
+
+      StructuralConstraintSet<StructuralConstraintDAG,
+                              StructuralConstraintTabuList> struct_constraint;
+      struct_constraint.setTabuListSize ( 100 );
+
+      ParamEstimatorMLwithUniformApriori<decltype ( filter ) >
+        estimator ( filter, modalities );
+
+      GraphChangesGenerator< decltype ( struct_constraint ) >
+        op_set ( struct_constraint );
+    
+      gum::learning::GraphChangesSelector< decltype ( score ),
+                                           decltype ( struct_constraint ),
+                                           GraphChangesGenerator >
+        selector ( score, struct_constraint, op_set );
+
+      return learnBN<GUM_SCALAR> ( selector, estimator,
+                                   database.variableNames (), modalities );
+    }
+
+        
   } /* namespace learning */
   
   

@@ -158,7 +158,8 @@ namespace gum {
 
       StructuralConstraintSet<StructuralConstraintDAG> struct_constraint;
 
-      ParamEstimatorML<decltype ( filter ) > estimator ( filter, modalities );
+      ParamEstimatorMLwithUniformApriori<decltype ( filter ) >
+        estimator ( filter, modalities );
 
       GraphChangesGenerator< decltype ( struct_constraint ) >
         op_set ( struct_constraint );

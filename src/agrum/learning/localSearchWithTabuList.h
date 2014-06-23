@@ -38,6 +38,16 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/learning/graphChange.h>
 #include <agrum/learning/graphChangesSelector.h>
+#include <agrum/learning/graphChangesGenerator.h>
+#include <agrum/learning/database/databaseFromCSV.h>
+#include <agrum/learning/database/DBCellTranslators/cellTranslatorUniversal.h>
+#include <agrum/learning/database/DBRowTranslatorSetDynamic.h>
+#include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
+#include <agrum/learning/scores_and_tests/scoreBDeu.h>
+#include <agrum/learning/constraints/structuralConstraintDAG.h>
+#include <agrum/learning/constraints/structuralConstraintTabuList.h>
+#include <agrum/learning/constraints/structuralConstraintSet.h>
+#include <agrum/learning/paramEstimatorMLwithUniformApriori.h>
 
 
 namespace gum {
@@ -107,7 +117,7 @@ namespace gum {
       ( GraphChangesSelector<SCORE,STRUCT_CONSTRAINT,GRAPH_CHANGES_GENERATOR>&
         selector,
         const std::vector<unsigned int>& modal,
-        unsigned int N = 10,
+        unsigned int N = 2,
         DAG initial_dag = DAG () );
      
       /// learns the structure and the parameters of a BN
@@ -123,8 +133,12 @@ namespace gum {
         PARAM_ESTIMATOR& estimator,
         const std::vector<std::string>& names,
         const std::vector<unsigned int>& modal,
-        unsigned int N = 10,
+        unsigned int N = 2,
         DAG initial_dag = DAG () );
+
+      /// basic learning of structure and parameters of a BN from a CSV
+      template <typename GUM_SCALAR = float>
+      BayesNet<GUM_SCALAR> learnBNFromCSV ( std::string filename );
 
       /// @}
 

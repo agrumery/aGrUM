@@ -189,7 +189,8 @@ namespace gum {
 
       ScoreK2<decltype ( filter ) > score ( filter, modalities );
 
-      ParamEstimatorML<decltype ( filter ) > estimator ( filter, modalities );
+      ParamEstimatorMLwithUniformApriori<decltype ( filter ) >
+        estimator ( filter, modalities );
 
       StructuralConstraintDiGraph struct_constraint;
 
