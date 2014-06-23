@@ -119,6 +119,17 @@ namespace gum_tests {
     }
 
     
+    void test_asia2 () {
+      gum::learning::GreedyHillClimbing search;
+       gum::BayesNet<float> bn =
+         search.learnBNFromCSV ( GET_PATH_STR( "asia.csv" ) );
+       std::cout << bn << std::endl << bn.dag () << std::endl;
+
+       // gum::BayesNet<double> bn2 =
+       //   search.learnBNFromCSV<double> ( GET_PATH_STR( "asia.csv" ) );
+       // std::cout << bn2 << std::endl << bn2.dag () << std::endl;
+    }
+    
     void test_alarm1 () {
       gum::learning::DatabaseFromCSV database ( MY_ALARM );
       

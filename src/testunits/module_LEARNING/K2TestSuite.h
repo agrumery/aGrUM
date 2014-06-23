@@ -98,9 +98,14 @@ namespace gum_tests {
     void test_K2_asia2 () {
       gum::learning::K2 k2;
       std::vector<unsigned int> order { 3,2 };
-      gum::BayesNet<float> bn = k2.learnBNFromCSV ( GET_PATH_STR( "asia.csv" ),
-                                                    order );
+
+      gum::BayesNet<float> bn =
+        k2.learnBNFromCSV ( GET_PATH_STR( "asia.csv" ), order );
       std::cout << bn << std::endl << bn.dag () << std::endl;
+      
+      gum::BayesNet<double> bn2 =
+        k2.learnBNFromCSV<double> ( GET_PATH_STR( "asia.csv" ), order );
+      std::cout << bn2 << std::endl << bn2.dag () << std::endl;
     }
 
 
