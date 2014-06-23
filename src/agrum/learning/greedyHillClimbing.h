@@ -38,7 +38,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/learning/graphChange.h>
 #include <agrum/learning/graphChangesSelector.h>
-#include <agrum/learning/graphChangesGenerator.h>
+#include <agrum/learning/graphChangesGenerator4DiGraph.h>
 #include <agrum/learning/database/databaseFromCSV.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorUniversal.h>
 #include <agrum/learning/database/DBRowTranslatorSetDynamic.h>

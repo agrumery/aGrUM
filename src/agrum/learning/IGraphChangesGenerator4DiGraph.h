@@ -18,12 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The base class for all GraphChangesGenerators
+ * @brief The base class for all GraphChangesGenerators for directed structures
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_IGRAPH_CHANGES_GENERATOR_H
-#define GUM_LEARNING_IGRAPH_CHANGES_GENERATOR_H
+#ifndef GUM_LEARNING_IGRAPH_CHANGES_GENERATOR_4_DIGRAPH_H
+#define GUM_LEARNING_IGRAPH_CHANGES_GENERATOR_4_DIGRAPH_H
 
 
 #include <agrum/config.h>
@@ -38,7 +38,7 @@ namespace gum {
   namespace learning {
    
     
-    class IGraphChangesGenerator {
+    class IGraphChangesGenerator4DiGraph {
     public:
 
       /// the iterator for parsing the list of possible graph change operators
@@ -99,4 +99,4 @@ namespace gum {
 } /* namespace gum */
 
 
-#endif /* GUM_LEARNING_IGRAPH_CHANGES_GENERATOR_H */
+#endif /* GUM_LEARNING_IGRAPH_CHANGES_GENERATOR_4_DIGRAPH_H */

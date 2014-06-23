@@ -18,18 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The basic class for computing the set of graph changes allowed by
+ * @brief The basic class for computing the set of digraph changes allowed by
  * the user to be executed by the learning algorithms
  *
  * Structure learning algorithm try different modifications of the graph. Class
- * GraphChangesGenerator provides a simple way to compute those that we wish to
- * perform. For instance, in the basic LocalSearch algorithm for learning
+ * GraphChangesGenerator4DiGraph provides a simple way to compute those that we
+ * wish to perform. For instance, in the basic LocalSearch algorithm for learning
  * directed graphs, one may expect that all possible arc additions, deletions and
- * reversals can be applied and GraphChangesGenerator provides exactly this set
- * of operations. However, there may be cases where we would like to apply these
- * operators, say, only on a subgraph. In this case, we should use the derived
- * class of GraphChangesGenerator named GraphChangesGeneratorOnSubGraph. Anyway,
- * all the search operator sets should have the following minimal methods:
+ * reversals can be applied and GraphChangesGenerator4DiGraph provides exactly
+ * this set of operations. However, there may be cases where we would like to
+ * apply these operators, say, only on a subgraph. In this case, we should use
+ * the derived class of GraphChangesGenerator4DiGraph named
+ * GraphChangesGeneratorOnSubDiGraph. Anyway, all the search operator sets should
+ * have the following minimal methods:
  *   - void setGraph ( const DiGraph& ) : assigns a new graph as a starting
  *     point to the generator of graph change operators
  *   - void modifyGraph ( const GraphChange& ) : indicate to the operator set
@@ -52,8 +53,8 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_GRAPH_CHANGES_GENERATOR_H
-#define GUM_LEARNING_GRAPH_CHANGES_GENERATOR_H
+#ifndef GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_DIGRAPH_H
+#define GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_DIGRAPH_H
 
 
 #include <agrum/config.h>
@@ -61,7 +62,7 @@
 #include <agrum/core/OMPThreads.h>
 #include <agrum/graphs/diGraph.h>
 #include <agrum/learning/graphChange.h>
-#include <agrum/learning/IGraphChangesGenerator.h>
+#include <agrum/learning/IGraphChangesGenerator4DiGraph.h>
 
 
 namespace gum {
@@ -70,19 +71,19 @@ namespace gum {
   namespace learning {
    
     
-    /** @class GraphChangesGenerator
+    /** @class GraphChangesGenerator4DiGraph
      * @brief The basic class for computing the next graph changes possible in a
      * structure learning algorithm
      *
      * Structure learning algorithm try different modifications of the graph. Class
-     * GraphChangesGenerator provides a simple way to compute those that we wish to
-     * perform. For instance, in the basic LocalSearch algorithm for learning
-     * directed graphs, one may expect that all possible arc additions, deletions
-     * and reversals can be applied and GraphChangesGenerator provides exactly
-     * this set of operations. However, there may be cases where we would like to
-     * apply these operators, say, only on a subgraph. In this case, we should use
-     * the derived class of GraphChangesGenerator named
-     * GraphChangesGeneratorOnSubGraph. Anyway, all the search operator sets
+     * GraphChangesGenerator4DiGraph provides a simple way to compute those that
+     * we wish to perform. For instance, in the basic LocalSearch algorithm for
+     * learning directed graphs, one may expect that all possible arc additions,
+     * deletions and reversals can be applied and GraphChangesGenerator4DiGraph
+     * provides exactly this set of operations. However, there may be cases where
+     * we would like to apply these operators, say, only on a subgraph. In this
+     * case, we should use the derived class of GraphChangesGenerator4DiGraph named
+     * GraphChangesGeneratorOnSubDiGraph. Anyway, all the search operator sets
      * should have the following minimal methods:
      *   - void setGraph ( const DiGraph& ) : assigns a new graph as a starting
      *     point to the generator of graph change operators
@@ -107,7 +108,7 @@ namespace gum {
      * @ingroup learning_group
      */
     template <typename STRUCT_CONSTRAINT>
-    class GraphChangesGenerator {
+    class GraphChangesGenerator4DiGraph : public IGraphChangesGenerator4DiGraph {
     public:
 
       /// the iterator for parsing the list of possible graph change operators
@@ -123,18 +124,18 @@ namespace gum {
       /// @{
 
       /// default constructor
-      GraphChangesGenerator ( STRUCT_CONSTRAINT& constraint );
+      GraphChangesGenerator4DiGraph ( STRUCT_CONSTRAINT& constraint );
 
       /// copy constructor
-      GraphChangesGenerator
-      ( const GraphChangesGenerator<STRUCT_CONSTRAINT>& from );
+      GraphChangesGenerator4DiGraph
+      ( const GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>& from );
 
       /// move operator
-      GraphChangesGenerator
-      ( GraphChangesGenerator<STRUCT_CONSTRAINT>&& from );
+      GraphChangesGenerator4DiGraph
+      ( GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>&& from );
 
       /// destructor
-      virtual ~GraphChangesGenerator ();
+      virtual ~GraphChangesGenerator4DiGraph ();
 
       /// @}
 
@@ -145,14 +146,14 @@ namespace gum {
       /// @{
 
       /// copy operator
-      GraphChangesGenerator<STRUCT_CONSTRAINT>&
+      GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>&
       operator=
-      ( const GraphChangesGenerator<STRUCT_CONSTRAINT>& from );
+      ( const GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>& from );
 
       /// move operator
-      GraphChangesGenerator<STRUCT_CONSTRAINT>&
+      GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>&
       operator=
-      ( GraphChangesGenerator<STRUCT_CONSTRAINT>&& from );
+      ( GraphChangesGenerator4DiGraph<STRUCT_CONSTRAINT>&& from );
 
       /// @}
 
@@ -223,7 +224,7 @@ namespace gum {
 
 
 /// always include the templated functions
-#include <agrum/learning/graphChangesGenerator.tcc>
+#include <agrum/learning/graphChangesGenerator4DiGraph.tcc>
 
 
-#endif /* GUM_LEARNING_GRAPH_CHANGES_GENERATOR_H */
+#endif /* GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_DIGRAPH_H */

@@ -231,12 +231,12 @@ namespace gum {
       ParamEstimatorMLwithUniformApriori<decltype ( filter ) >
         estimator ( filter, modalities );
 
-      GraphChangesGenerator< decltype ( struct_constraint ) >
+      GraphChangesGenerator4DiGraph< decltype ( struct_constraint ) >
         op_set ( struct_constraint );
     
       gum::learning::GraphChangesSelector< decltype ( score ),
                                            decltype ( struct_constraint ),
-                                           GraphChangesGenerator >
+                                           GraphChangesGenerator4DiGraph >
         selector ( score, struct_constraint, op_set );
 
       return learnBN<GUM_SCALAR> ( selector, estimator,
