@@ -169,7 +169,61 @@ namespace gum {
           learnStructure ( score, constraint,  order, initial_dag ),
           names, modal );
     }
-    
+
+
+    /// basic learning of structure and parameters of a BN from a CSV
+    template <typename GUM_SCALAR>
+    BayesNet<GUM_SCALAR> K2::learnBNFromCSV
+    ( std::string filename,
+      std::vector<unsigned int> order ) {
+      DatabaseFromCSV database ( filename );
+      
+      DBRowTranslatorSetDynamic<CellTranslatorUniversal> translators;
+      translators.insertTranslator ( Col<0> (), database.nbVariables () );
+
+      auto generators = make_generators ( RowGeneratorIdentity () );
+      
+      auto filter = make_DB_row_filter ( database, translators, generators );
+
+      std::vector<unsigned int> modalities = filter.modalities ();
+
+      ScoreK2<decltype ( filter ) > score ( filter, modalities );
+
+      ParamEstimatorML<decltype ( filter ) > estimator ( filter, modalities );
+
+      StructuralConstraintDiGraph struct_constraint;
+
+      // if the order is incorrect, fix it:
+      // 1. get the list of the nodes and remove those that were to high
+      unsigned int max_node = database.nbVariables ();
+      HashTable<unsigned int, bool> nodes_in_order;
+      {
+        unsigned int i = 0;
+        while ( i < order.size () ) {
+          if ( nodes_in_order.exists ( order[i] ) || ( order[i] >= max_node ) ) {
+            order[i] = *( order.rbegin () );
+            order.pop_back ();
+          }
+          else {
+            nodes_in_order.insert ( order[i], true );
+            ++i;
+          }
+        }
+      }
+
+      // 2. add at the end all the nodes that were not in nodes_in_order
+      for ( unsigned int i = 0; i < max_node; ++i ) {
+        if ( ! nodes_in_order.exists ( i ) ) {
+          order.push_back ( i );
+        }
+      }
+      
+      return learnBN<GUM_SCALAR> ( score, struct_constraint, estimator,
+                                   database.variableNames (),
+                                   modalities, order );
+      
+    }
+
 
   } /* namespace learning */
   

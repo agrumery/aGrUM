@@ -221,6 +221,13 @@ namespace gum {
       return __variable_names;
     }
 
+    
+    /// returns the number of variables (columns) of the database
+    INLINE unsigned int DatabaseVectInRAM::nbVariables () const noexcept {
+      if ( __data.empty () ) return 0;
+      return __data[0].size ();
+    }
+
 
     /// returns a new handler on the database
     INLINE DatabaseVectInRAM::Handler DatabaseVectInRAM::handler () const {

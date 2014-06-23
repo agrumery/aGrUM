@@ -94,6 +94,16 @@ namespace gum_tests {
       std::cout << bn << std::endl << bn.dag () << std::endl;
     }
 
+
+    void test_K2_asia2 () {
+      gum::learning::K2 k2;
+      std::vector<unsigned int> order { 3,2 };
+      gum::BayesNet<float> bn = k2.learnBNFromCSV ( GET_PATH_STR( "asia.csv" ),
+                                                    order );
+      std::cout << bn << std::endl << bn.dag () << std::endl;
+    }
+
+
     /*
     void xxtest_k2_asia_constraint_DAG () {
       K2 k2;

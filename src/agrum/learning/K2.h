@@ -30,6 +30,13 @@
 
 #include <agrum/graphs/DAG.h>
 #include <agrum/BN/BayesNet.h>
+#include <agrum/learning/database/databaseFromCSV.h>
+#include <agrum/learning/database/DBCellTranslators/cellTranslatorUniversal.h>
+#include <agrum/learning/database/DBRowTranslatorSetDynamic.h>
+#include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
+#include <agrum/learning/scores_and_tests/scoreK2.h>
+#include <agrum/learning/constraints/structuralConstraintDiGraph.h>
+#include <agrum/learning/paramEstimatorML.h>
 
 
 namespace gum {
@@ -103,6 +110,12 @@ namespace gum {
                                      const std::vector<unsigned int>& modal,
                                      const std::vector<unsigned int>& order,
                                      DAG initial_dag = DAG () );
+
+      /// basic learning of structure and parameters of a BN from a CSV
+      template <typename GUM_SCALAR = float>
+      BayesNet<GUM_SCALAR> learnBNFromCSV
+      ( std::string filename,
+        std::vector<unsigned int> order = std::vector<unsigned int> () );
       
     };
 

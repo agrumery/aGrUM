@@ -132,6 +132,9 @@ namespace gum {
 
         /// returns the names of the variables
         const std::vector<std::string>& variableNames () const noexcept;
+
+        /// returns the number of variables (columns) of the database
+        unsigned int nbVariables () const noexcept;
         
         /// @}
 
@@ -180,7 +183,10 @@ namespace gum {
 
       /// returns the variable names for all the columns
       const std::vector<std::string>& variableNames () const noexcept;
-      
+
+      /// returns the number of variables (columns) of the database
+      unsigned int nbVariables () const noexcept;
+
       /// @}
       
       
