@@ -57,6 +57,14 @@ namespace gum {
         stream << "ArcReversal ( " << node1 () << " , " << node2 () << " )";
         return stream.str ();
 
+      case GraphChangeType::EDGE_ADDITION:
+        stream << "EdgeAddition ( " << node1 () << " , " << node2 () << " )";
+        return stream.str ();
+
+      case GraphChangeType::EDGE_DELETION:
+        stream << "EdgeAddition ( " << node1 () << " , " << node2 () << " )";
+        return stream.str ();
+
       default:
         GUM_ERROR ( OperationNotAllowed,
                     "edge modifications are not supported yet" );
@@ -88,6 +96,22 @@ namespace gum {
     }
 
     
+    /// put the content of the EdgeAddition into a string
+    std::string EdgeAddition::toString () const {
+      std::stringstream stream;
+      stream << "EdgeAddition ( " << node1 () << " , " << node2 () << " )";
+      return stream.str ();
+    }
+
+    
+    /// put the content of the EdgeDeletion into a string
+    std::string EdgeDeletion::toString () const {
+      std::stringstream stream;
+      stream << "EdgeDeletion ( " << node1 () << " , " << node2 () << " )";
+      return stream.str ();
+    }
+
+    
     /// a \c << operator for GraphChanges
     std::ostream& operator<< ( std::ostream& stream,
                                const GraphChange& change ) {
@@ -114,8 +138,22 @@ namespace gum {
                                const ArcReversal& change ) {
       return stream << change.toString ();
     }
-    
 
+    
+    /// a \c << operator for EdgeAddition
+    std::ostream& operator<< ( std::ostream& stream,
+                               const EdgeAddition& change ) {
+      return stream << change.toString ();
+    }
+
+    
+    /// a \c << operator for EdgeDeletion
+    std::ostream& operator<< ( std::ostream& stream,
+                               const EdgeDeletion& change ) {
+      return stream << change.toString ();
+    }
+
+ 
   } /* namespace learning */
 
 

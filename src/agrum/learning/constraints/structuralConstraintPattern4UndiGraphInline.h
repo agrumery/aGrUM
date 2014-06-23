@@ -19,52 +19,43 @@
  ***************************************************************************/
 
 // this file should be included at the end of the StructuralConstraints inline
-// files (see StructuralConstraintDAG to see how it should be included).
+// files (see StructuralConstraintDegree to see how it should be included).
 // This concerns only StructuralConstraints that derive from other
 // StructuralConstraints. If your class does not derive from anoter constraint,
-// include file StructuralConstraintPatternRootInline.h instead.
+// include file StructuralConstraintPattern4UndiGraphRootInline.h instead.
 
 
 #ifdef GUM_CONSTRAINT_CLASS_NAME
 
 
     /// sets a new graph from which we will perform checkings
-    INLINE void GUM_CONSTRAINT_CLASS_NAME ::setGraph ( const DiGraph& graph ) {
+    INLINE void GUM_CONSTRAINT_CLASS_NAME ::setGraph ( const UndiGraph& graph ) {
       constraints::setGraph ( graph );
       setGraphAlone ( graph );
     }
 
     
-    /// checks whether the constraints enable to add arc (x,y)
+    /// checks whether the constraints enable to add edge (x,y)
     INLINE bool
-    GUM_CONSTRAINT_CLASS_NAME::checkArcAddition ( NodeId x, NodeId y )
+    GUM_CONSTRAINT_CLASS_NAME::checkEdgeAddition ( NodeId x, NodeId y )
       const noexcept {
-      return constraints::checkArcAddition ( x, y ) &&
-        checkArcAdditionAlone ( x, y );
+      return constraints::checkEdgeAddition ( x, y ) &&
+        checkEdgeAdditionAlone ( x, y );
     }
 
     
-    /// checks whether the constraints enable to remove arc (x,y)
+    /// checks whether the constraints enable to remove edge (x,y)
     INLINE bool
-    GUM_CONSTRAINT_CLASS_NAME::checkArcDeletion ( NodeId x, NodeId y )
+    GUM_CONSTRAINT_CLASS_NAME::checkEdgeDeletion ( NodeId x, NodeId y )
       const noexcept {
-      return constraints::checkArcDeletion ( x, y ) &&
-        checkArcDeletionAlone ( x, y );
-    }
-
-
-    /// checks whether the constraints enable to reverse arc (x,y)
-    INLINE bool
-    GUM_CONSTRAINT_CLASS_NAME::checkArcReversal ( NodeId x, NodeId y )
-      const noexcept {
-      return constraints::checkArcReversal ( x, y ) &&
-        checkArcReversalAlone ( x, y );
+      return constraints::checkEdgeDeletion ( x, y ) &&
+        checkEdgeDeletionAlone ( x, y );
     }
 
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    GUM_CONSTRAINT_CLASS_NAME::modifyGraph ( const ArcAddition& change ) {
+    GUM_CONSTRAINT_CLASS_NAME::modifyGraph ( const EdgeAddition& change ) {
       constraints::modifyGraph ( change );
       modifyGraphAlone ( change );
     }
@@ -72,20 +63,12 @@
     
     /// notify the constraint of a modification of the graph
     INLINE void
-    GUM_CONSTRAINT_CLASS_NAME::modifyGraph ( const ArcDeletion& change ) {
+    GUM_CONSTRAINT_CLASS_NAME::modifyGraph ( const EdgeDeletion& change ) {
       constraints::modifyGraph ( change );
       modifyGraphAlone ( change );
     }
 
     
-    /// notify the constraint of a modification of the graph
-    INLINE void
-    GUM_CONSTRAINT_CLASS_NAME::modifyGraph ( const ArcReversal& change ) {
-      constraints::modifyGraph ( change );
-      modifyGraphAlone ( change );
-    }
-    
-
     /// notify the constraint of a modification of the graph
     INLINE void
     GUM_CONSTRAINT_CLASS_NAME::modifyGraph ( const GraphChange& change ) {
@@ -96,34 +79,26 @@
     
     /// indicates whether a change will always violate the constraint
     INLINE bool
-    GUM_CONSTRAINT_CLASS_NAME::isAlwaysInvalid ( const GraphChange& change )
+    GUM_CONSTRAINT_CLASS_NAME::isAlwaysInvalid ( const GraphChange& )
       const noexcept {
       return constraints::isAlwaysInvalid ( change ) ||
         isAlwaysInvalidAlone ( change );
     }
 
 
-    /// checks whether the constraints enable to add an arc
+        /// checks whether the constraints enable to add an edge
     INLINE bool
-    GUM_CONSTRAINT_CLASS_NAME::checkModification ( const ArcAddition& change )
+    GUM_CONSTRAINT_CLASS_NAME::checkModification ( const EdgeAddition& change )
       const noexcept {
-      return checkArcAddition ( change.node1 (), change.node2 () );
+      return checkEdgeAddition ( change.node1 (), change.node2 () );
     }
     
 
-    /// checks whether the constraints enable to remove an arc
+    /// checks whether the constraints enable to remove an edge
     INLINE bool
-    GUM_CONSTRAINT_CLASS_NAME::checkModification ( const ArcDeletion& change )
+    GUM_CONSTRAINT_CLASS_NAME::checkModification ( const EdgeDeletion& change )
       const noexcept {
-      return checkArcDeletion ( change.node1 (), change.node2 () );
-    }
-
-    
-    /// checks whether the constraints enable to reverse an arc
-    INLINE bool
-    GUM_CONSTRAINT_CLASS_NAME::checkModification ( const ArcReversal& change )
-      const noexcept {
-      return checkArcReversal ( change.node1 (), change.node2 () );
+      return checkEdgeDeletion ( change.node1 (), change.node2 () );
     }
 
     
@@ -132,18 +107,15 @@
     GUM_CONSTRAINT_CLASS_NAME::checkModification ( const GraphChange& change )
       const noexcept {
       switch ( change.type () ) {
-      case GraphChangeType::ARC_ADDITION:
-        return checkArcAddition ( change.node1 (), change.node2 () );
+      case GraphChangeType::EDGE_ADDITION:
+        return checkEdgeAddition ( change.node1 (), change.node2 () );
         
-      case GraphChangeType::ARC_DELETION:
-        return checkArcDeletion ( change.node1 (), change.node2 () );
-        
-      case GraphChangeType::ARC_REVERSAL:
-        return checkArcReversal ( change.node1 (), change.node2 () );
+      case GraphChangeType::EDGE_DELETION:
+        return checkEdgeDeletion ( change.node1 (), change.node2 () );
         
       default:
         GUM_ERROR ( OperationNotAllowed,
-                    "edge modifications are not supported by the constraint" );
+                    "arc modifications are not supported by the constraint" );
       }
     }
 

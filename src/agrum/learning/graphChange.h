@@ -337,6 +337,144 @@ namespace gum {
 
      };
 
+
+
+    /* ========================================================================= */
+    /* ===                        EDGE ADDITION CLASS                        === */
+    /* ========================================================================= */
+    /** @class EdgeAddition
+     * @brief The class for notifying learning algorithms of new edge additions
+     * @ingroup learning_group
+     *
+     * This class is convenient to know at compile time which graph change we
+     * are dealing with. Thus, this enables to perform faster code (we can avoid
+     * using a switch on GraphChanges to determine which change corresponds to
+     * this class.
+     */
+    class EdgeAddition : public GraphChange {
+    public:
+      // ##########################################################################
+      /// @name Constructors / Destructors
+      // ##########################################################################
+      /// @{
+
+      /// default constructor
+      EdgeAddition ( NodeId node1, NodeId node2 ) noexcept;
+
+      /// copy constructor
+      EdgeAddition ( const EdgeAddition& from ) noexcept;
+
+      /// move constructor
+      EdgeAddition ( EdgeAddition&& from ) noexcept;
+
+      /// destructor
+      ~EdgeAddition () noexcept;
+
+      /// @}
+      
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+      /// @{
+
+      /// copy constructor
+      EdgeAddition& operator= ( const EdgeAddition& from ) noexcept;
+
+      /// move operator
+      EdgeAddition& operator= ( EdgeAddition&& from ) noexcept;
+
+      /// returns whether two edge additions are identical or not
+      bool operator== ( const EdgeAddition& from ) const noexcept;
+
+      /// returns whether two edge additions are different or not
+      bool operator!= ( const EdgeAddition& from ) const noexcept;
+
+      /// @}
+      
+
+      // ##########################################################################
+      /// @name Accessors / Modifiers
+      // ##########################################################################
+      /// @{
+
+      /// put the content of the EdgeAddition into a string
+      virtual std::string toString () const final;
+
+      /// @}
+
+    };
+
+
+    
+    /* ========================================================================= */
+    /* ===                        EDGE DELETION CLASS                        === */
+    /* ========================================================================= */
+    /** @class EdgeDeletion
+     * @brief The class for notifying learning algorithms of edge removals
+     * @ingroup learning_group
+     *
+     * This class is convenient to know at compile time which graph change we
+     * are dealing with. Thus, this enables to perform faster code (we can avoid
+     * using a switch on GraphChanges to determine which change corresponds to
+     * this class.
+     */
+    class EdgeDeletion : public GraphChange {
+    public:
+      // ##########################################################################
+      /// @name Constructors / Destructors
+      // ##########################################################################
+      /// @{
+
+      /// default constructor
+      EdgeDeletion ( NodeId node1, NodeId node2 ) noexcept;
+
+      /// copy constructor
+      EdgeDeletion ( const EdgeDeletion& from ) noexcept;
+
+      /// move constructor
+      EdgeDeletion ( EdgeDeletion&& from ) noexcept;
+
+      /// destructor
+      ~EdgeDeletion () noexcept;
+
+      /// @}
+      
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+      /// @{
+
+      /// copy constructor
+      EdgeDeletion& operator= ( const EdgeDeletion& from ) noexcept;
+
+      /// move operator
+      EdgeDeletion& operator= ( EdgeDeletion&& from ) noexcept;
+
+      /// returns whether two edge deletions are identical or not
+      bool operator== ( const EdgeDeletion& from ) const noexcept;
+
+      /// returns whether two edge deletions are different or not
+      bool operator!= ( const EdgeDeletion& from ) const noexcept;
+
+      /// @}
+
+
+      // ##########################################################################
+      /// @name Accessors / Modifiers
+      // ##########################################################################
+      /// @{
+
+      /// put the content of the EdgeDeletion into a string
+      virtual std::string toString () const final;
+
+      /// @}
+ 
+    };
+
+
+
     
     /// a \c << operator for GraphChanges
     std::ostream& operator<< ( std::ostream& stream,
@@ -351,10 +489,18 @@ namespace gum {
     std::ostream& operator<< ( std::ostream& stream,
                                const ArcDeletion& change );
   
-    /// a \c << operator for ArcDeletion
+    /// a \c << operator for ArcReversal
     std::ostream& operator<< ( std::ostream& stream,
                                const ArcReversal& change );
 
+    /// a \c << operator for EdgeAddition
+    std::ostream& operator<< ( std::ostream& stream,
+                               const EdgeAddition& change );
+
+    /// a \c << operator for EdgeDeletion
+    std::ostream& operator<< ( std::ostream& stream,
+                               const EdgeDeletion& change );
+  
 
   } /* namespace learning */
   
@@ -410,6 +556,33 @@ namespace gum {
                >> _right_shift );
     }
   };
+
+  
+  /// the hash function for Edge Additions
+  template <> class HashFunc<learning::EdgeAddition> :
+    public HashFuncSmallKey<NodeId> {
+  public:
+    /// computes the hashed value of a key
+    Size operator() ( const learning::EdgeAddition& key ) const {
+      return ( ( ( unsigned long ) key.node1() * HashFuncConst::gold +
+                 ( unsigned long ) key.node2() * HashFuncConst::pi )
+               >> _right_shift );
+    }
+  };
+
+  
+  /// the hash function for Edge Deletions
+  template <> class HashFunc<learning::EdgeDeletion> :
+    public HashFuncSmallKey<NodeId> {
+  public:
+    /// computes the hashed value of a key
+    Size operator() ( const learning::EdgeDeletion& key ) const {
+      return ( ( ( unsigned long ) key.node1() * HashFuncConst::gold +
+                 ( unsigned long ) key.node2() * HashFuncConst::pi )
+               >> _right_shift );
+    }
+  };
+
 
 
 } /* namespace gum */
