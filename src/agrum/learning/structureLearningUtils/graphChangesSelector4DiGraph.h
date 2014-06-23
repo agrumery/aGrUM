@@ -32,7 +32,7 @@
 #include <agrum/core/sequence.h>
 #include <agrum/core/priorityQueue.h>
 #include <agrum/graphs/diGraph.h>
-#include <agrum/learning/graphChange.h>
+#include <agrum/learning/structureLearningUtils/graphChange.h>
 
 
 namespace gum {
@@ -246,7 +246,7 @@ namespace gum {
 
 
 /// always include templated methods
-#include <agrum/learning/graphChangesSelector4DiGraph.tcc>
+#include <agrum/learning/structureLearningUtils/graphChangesSelector4DiGraph.tcc>
 
 
 #endif /* GUM_LEARNING_GRAPH_CHANGES_SELECTOR_4_DIGRAPH_H */

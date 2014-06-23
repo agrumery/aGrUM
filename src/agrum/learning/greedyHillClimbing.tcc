@@ -25,7 +25,7 @@
 
 #include <agrum/core/set.h>
 #include <agrum/core/priorityQueue.h>
-#include <agrum/learning/DAG2BNLearner.h>
+#include <agrum/learning/paramLearningUtils/DAG2BNLearner.h>
 
 
 namespace gum {

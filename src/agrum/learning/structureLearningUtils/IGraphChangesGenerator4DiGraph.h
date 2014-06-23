@@ -29,7 +29,7 @@
 #include <agrum/config.h>
 #include <agrum/core/set.h>
 #include <agrum/graphs/diGraph.h>
-#include <agrum/learning/graphChange.h>
+#include <agrum/learning/structureLearningUtils/graphChange.h>
 
 
 namespace gum {

@@ -57,8 +57,8 @@
 #include <agrum/core/set.h>
 #include <agrum/core/OMPThreads.h>
 #include <agrum/graphs/undiGraph.h>
-#include <agrum/learning/graphChange.h>
-#include <agrum/learning/IGraphChangesGenerator4UndiGraph.h>
+#include <agrum/learning/structureLearningUtils/graphChange.h>
+#include <agrum/learning/structureLearningUtils/IGraphChangesGenerator4UndiGraph.h>
 
 
 namespace gum {
@@ -215,7 +215,7 @@ namespace gum {
 
 
 /// always include the templated functions
-#include <agrum/learning/graphChangesGenerator4UndiGraph.tcc>
+#include <agrum/learning/structureLearningUtils/graphChangesGenerator4UndiGraph.tcc>
 
 
 #endif /* GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_UNDIGRAPH_H */

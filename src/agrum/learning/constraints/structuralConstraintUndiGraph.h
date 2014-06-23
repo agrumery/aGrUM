@@ -29,7 +29,7 @@
 
 #include <agrum/config.h>
 #include <agrum/graphs/undiGraph.h>
-#include <agrum/learning/graphChange.h>
+#include <agrum/learning/structureLearningUtils/graphChange.h>
 #include <agrum/learning/constraints/structuralConstraint.h>
 
 

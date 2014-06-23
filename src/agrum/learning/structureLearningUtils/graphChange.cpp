@@ -27,11 +27,11 @@
  */
 
 
-#include <agrum/learning/graphChange.h>
+#include <agrum/learning/structureLearningUtils/graphChange.h>
 
 
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/graphChange.inl>
+#include <agrum/learning/structureLearningUtils/graphChange.inl>
 #endif //GUM_NOINLINE
 
 

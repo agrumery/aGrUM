@@ -37,7 +37,7 @@
 
 #include <agrum/config.h>
 #include <agrum/core/bijection.h>
-#include <agrum/learning/graphChange.h>
+#include <agrum/learning/structureLearningUtils/graphChange.h>
 #include <agrum/learning/constraints/structuralConstraint.h>
 
 #define GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE 2

@@ -23,8 +23,8 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/learning/graphChange.h>
-#include <agrum/learning/DAG2BNLearner.h>
+#include <agrum/learning/structureLearningUtils/graphChange.h>
+#include <agrum/learning/paramLearningUtils/DAG2BNLearner.h>
 
 
 namespace gum {

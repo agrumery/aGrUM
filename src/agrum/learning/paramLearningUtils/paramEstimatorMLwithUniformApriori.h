@@ -19,6 +19,7 @@
  ***************************************************************************/
 /** @file
  * @brief the class for estimating parameters of CPTs using Maximum Likelihood
+ * + a uniform apriori
  *
  * The class should be used as follows: first, to speed-up computations, you
  * should consider computing all the parameters you need in one pass. To do so,
@@ -29,11 +30,14 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_PARAM_ESTIMATOR_ML_H
-#define GUM_LEARNING_PARAM_ESTIMATOR_ML_H
+#ifndef GUM_LEARNING_PARAM_ESTIMATOR_ML_WITH_UNIFORM_APRIORI_H
+#define GUM_LEARNING_PARAM_ESTIMATOR_ML_WITH_UNIFORM_APRIORI_H
 
 #include <agrum/config.h>
-#include <agrum/learning/paramEstimator.h>
+#include <agrum/learning/paramLearningUtils/paramEstimator.h>
+
+
+#define GUM_PARAM_ESTIMATOR_ML_DEFAULT_A_PRIORI 1e-4
 
 
 namespace gum {
@@ -45,8 +49,9 @@ namespace gum {
     /* ========================================================================= */
     /* ===                     PARAM ESTIMATOR ML CLASS                      === */
     /* ========================================================================= */
-    /** @class ParamEstimatorML
+    /** @class ParamEstimatorMLwithUniformApriori
      * @brief The class for estimating parameters of CPTs using Maximum Likelihood
+     * + a uniform apriori
      * @ingroup learning_group
      *
      * The class should be used as follows: first, to speed-up computations, you
@@ -59,7 +64,7 @@ namespace gum {
     template <typename RowFilter,
               typename IdSetAlloc = std::allocator<unsigned int>,
               typename CountAlloc = std::allocator<float> >
-    class ParamEstimatorML :
+    class ParamEstimatorMLwithUniformApriori :
       public ParamEstimator<RowFilter,IdSetAlloc,CountAlloc> {
     public:
 
@@ -71,11 +76,13 @@ namespace gum {
       /// default constructor
       /** @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database */
-      ParamEstimatorML ( const RowFilter& filter,
-                         const std::vector<unsigned int>& var_modalities );
+      ParamEstimatorMLwithUniformApriori
+      ( const RowFilter& filter,
+        const std::vector<unsigned int>& var_modalities,
+        float apriori = GUM_PARAM_ESTIMATOR_ML_DEFAULT_A_PRIORI );
 
       /// destructor
-      virtual ~ParamEstimatorML ();
+      virtual ~ParamEstimatorMLwithUniformApriori ();
 
       
 
@@ -87,6 +94,9 @@ namespace gum {
       // ##########################################################################
       /// @{
 
+      /// sets the apriori
+      void setApriori ( float new_apriori );
+
       /// returns the CPT's parameters corresponding to a given nodeset
       /** The vector contains the parameters of an n-dimensional CPT. The
        * distribution of the dimensions of the CPT within the vector is as follows:
@@ -97,6 +107,10 @@ namespace gum {
 
       /// @}
 
+
+    private:
+      /// the apriori
+      float __apriori;
       
     };
 
@@ -108,8 +122,8 @@ namespace gum {
 
 
 /// include the template implementation
-#include <agrum/learning/paramEstimatorML.tcc>
+#include <agrum/learning/paramLearningUtils/paramEstimatorMLwithUniformApriori.tcc>
 
 
 
-#endif /* GUM_LEARNING_PARAM_ESTIMATOR_ML_H */
+#endif /* GUM_LEARNING_PARAM_ESTIMATOR_ML_WITH_UNIFORM_APRIORI_H */

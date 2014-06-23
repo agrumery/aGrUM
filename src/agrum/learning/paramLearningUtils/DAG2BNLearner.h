@@ -104,7 +104,7 @@ namespace gum {
 
     
 /// always include templated methods
-#include <agrum/learning/DAG2BNLearner.tcc>
+#include <agrum/learning/paramLearningUtils/DAG2BNLearner.tcc>
 
 
 #endif /* GUM_LEARNING_DAG_2_BN_LEARNER_H */

@@ -35,9 +35,9 @@
 #include <agrum/learning/constraints/structuralConstraint2TimeSlice.h>
 #include <agrum/learning/constraints/structuralConstraintTabuList.h>
 #include <agrum/learning/constraints/structuralConstraintSet.h>
-#include <agrum/learning/graphChangesGenerator4DiGraph.h>
+#include <agrum/learning/structureLearningUtils/graphChangesGenerator4DiGraph.h>
+#include <agrum/learning/paramLearningUtils/paramEstimatorML.h>
 #include <agrum/learning/localSearchWithTabuList.h>
-#include <agrum/learning/paramEstimatorML.h>
 
 #define MY_ALARM GET_PATH_STR( "alarm.csv" )
 
