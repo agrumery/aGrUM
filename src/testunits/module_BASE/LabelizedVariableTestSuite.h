@@ -35,32 +35,42 @@ namespace gum_tests {
     public:
 
       void testCopy() {
-        gum::LabelizedVariable var1 ( "var1", "this is var1", 2 );
-        gum::LabelizedVariable var2 ( "var2", "this is var2", 2 );
+        gum::LabelizedVariable var1( "var1", "this is var1", 2 );
+        gum::LabelizedVariable var2( "var2", "this is var2", 2 );
 
-        gum::LabelizedVariable var3 ( var1 );
-        gum::LabelizedVariable var4 ( "var4", "this is var4" );
-        TS_GUM_ASSERT_THROWS_NOTHING ( var4 = var2 );
+        gum::LabelizedVariable var3( var1 );
+        gum::LabelizedVariable var4( "var4", "this is var4" );
+        TS_GUM_ASSERT_THROWS_NOTHING( var4 = var2 );
 
-        TS_ASSERT_EQUALS ( var4, var2 );
-        TS_ASSERT_EQUALS ( var1, var3 );
-        TS_ASSERT_DIFFERS ( var4, var1 );
+        TS_ASSERT_EQUALS( var4, var2 );
+        TS_ASSERT_EQUALS( var1, var3 );
+        TS_ASSERT_DIFFERS( var4, var1 );
       }
 
       void testLabels() {
-        gum::LabelizedVariable var1 ( "var1", "this is var1" , 0 );
-        TS_ASSERT_EQUALS ( var1.domainSize(), ( gum::Size ) 0 );
-        TS_ASSERT ( var1.empty() );
-        var1.addLabel ( "4" ).addLabel ( "3" ).addLabel ( "2" ).addLabel ( "1" );
+        gum::LabelizedVariable var1( "var1", "this is var1" , 0 );
+        TS_ASSERT_EQUALS( var1.domainSize(), ( gum::Size ) 0 );
+        TS_ASSERT( var1.empty() );
+        var1.addLabel( "4" ).addLabel( "3" ).addLabel( "2" ).addLabel( "1" );
 
-        TS_ASSERT_EQUALS ( var1.domainSize(), ( gum::Size ) 4 );
-        TS_ASSERT_EQUALS ( var1.label ( 1 ), "3" );
-        TS_ASSERT_EQUALS ( var1["3"], ( gum::Idx ) 1 );
+        TS_ASSERT_EQUALS( var1.domainSize(), ( gum::Size ) 4 );
+        TS_ASSERT_EQUALS( var1.label( 1 ), "3" );
+        TS_ASSERT_EQUALS( var1["3"], ( gum::Idx ) 1 );
 
         std::stringstream s;
         s << var1;
-        TS_ASSERT_EQUALS ( s.str(), "var1<4,3,2,1>" );
-        TS_ASSERT_EQUALS ( var1.toString(), "var1<4,3,2,1>" );
+        TS_ASSERT_EQUALS( s.str(), "var1<4,3,2,1>" );
+        TS_ASSERT_EQUALS( var1.toString(), "var1<4,3,2,1>" );
+      }
+
+      void testNumerical() {
+        gum::LabelizedVariable var1( "var1", "this is var1" , 0 );
+        var1.addLabel( "4" ).addLabel( "3" ).addLabel( "2" ).addLabel( "1" );
+
+        TS_ASSERT_EQUALS( var1.numerical( 0 ), 0 );
+        TS_ASSERT_EQUALS( var1.numerical( 1 ), 1 );
+        TS_ASSERT_EQUALS( var1.numerical( 2 ), 2 );
+        TS_ASSERT_EQUALS( var1.numerical( 3 ), 3 );
       }
   };
 }

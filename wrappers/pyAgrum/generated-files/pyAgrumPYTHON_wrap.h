@@ -27,10 +27,12 @@ public:
     virtual bool operator !=(gum::Variable const &aRV) const;
     virtual gum::Size domainSize() const;
     virtual std::string const label(gum::Idx i) const;
+    virtual double const numerical(gum::Idx indice) const;
     virtual gum::DiscreteVariable::VarType varType() const;
     virtual bool operator ==(gum::DiscreteVariable const &aRV) const;
     virtual bool operator !=(gum::DiscreteVariable const &aRV) const;
     virtual gum::Idx operator [](std::string const &aLabel) const;
+    virtual gum::Idx index(std::string const &label) const;
     virtual std::string const toString() const;
 
 /* Internal director utilities */
@@ -62,7 +64,7 @@ private:
       return method;
     }
 private:
-    mutable swig::SwigVar_PyObject vtable[10];
+    mutable swig::SwigVar_PyObject vtable[11];
 #endif
 
 };
@@ -79,10 +81,12 @@ public:
     virtual bool operator !=(gum::Variable const &aRV) const;
     virtual gum::Size domainSize() const;
     virtual std::string const label(gum::Idx i) const;
+    virtual double const numerical(gum::Idx indice) const;
     virtual gum::DiscreteVariable::VarType varType() const;
     virtual bool operator ==(gum::DiscreteVariable const &aRV) const;
     virtual bool operator !=(gum::DiscreteVariable const &aRV) const;
     virtual gum::Idx operator [](std::string const &label) const;
+    virtual gum::Idx index(std::string const &label) const;
     virtual std::string const toString() const;
 
 /* Internal director utilities */
@@ -114,7 +118,7 @@ private:
       return method;
     }
 private:
-    mutable swig::SwigVar_PyObject vtable[9];
+    mutable swig::SwigVar_PyObject vtable[11];
 #endif
 
 };

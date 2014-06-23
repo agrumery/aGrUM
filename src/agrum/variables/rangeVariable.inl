@@ -29,23 +29,15 @@
 
 namespace gum {
 
-
-
   // Copy Factory.
   // @return Returns a pointer on a new copy of this.
-
-  INLINE
-  DiscreteVariable*
+  INLINE  DiscreteVariable*
   RangeVariable::clone() const {
     return new RangeVariable ( *this );
   }
 
-
-
   // returns the size of the random discrete variable domain
-
-  INLINE
-  Size
+  INLINE  Size
   RangeVariable::domainSize() const {
     return ( __maxBound <= __minBound ) ? 0 : ( __maxBound - __minBound + 1 );
   }
@@ -54,9 +46,7 @@ namespace gum {
   // Get the indice-th label. This method is pure virtual.
   // @param indice the index of the label we wish to return
   // @throw OutOfBound
-
-  INLINE
-  const std::string
+  INLINE const std::string
   RangeVariable::label ( Idx indice ) const {
     if ( belongs ( indice  + __minBound ) ) {
       std::stringstream strBuff;
@@ -68,17 +58,27 @@ namespace gum {
   }
 
   INLINE
-  Idx
-  RangeVariable::operator[] ( const std::string& l ) const {
-    std::istringstream i ( l );
+  const double
+  RangeVariable::numerical ( Idx indice ) const {
+    return double ( __minBound + indice );
+  }
+
+  INLINE  Idx
+  RangeVariable::operator[] ( const std::string& aLabel ) const {
+    return index ( aLabel );
+  }
+
+  INLINE  Idx
+  RangeVariable::index ( const std::string& aLabel ) const {
+    std::istringstream i ( aLabel );
     Idx res;
 
     if ( ! ( i >> res ) ) {
-      GUM_ERROR ( NotFound, "Bad label" );
+      GUM_ERROR ( NotFound, "Bad label : "<<aLabel<<" for "<<*this );
     }
 
     if ( ! belongs ( res ) ) {
-      GUM_ERROR ( NotFound, "Bad label" );
+      GUM_ERROR ( NotFound, "Bad label : "<<aLabel<<" for "<<*this );
     }
 
     return res - __minBound;
@@ -86,45 +86,35 @@ namespace gum {
 
 
   // Returns the lower bound.
-
-  INLINE
-  Idx
+  INLINE  Idx
   RangeVariable::minVal() const {
     return __minBound;
   }
 
 
   // Set a new value for the lower bound.
-
-  INLINE
-  void
+  INLINE  void
   RangeVariable::setMinVal ( Idx minVal ) {
     __minBound = minVal;
   }
 
 
   // Returns the upper bound.
-
-  INLINE
-  Idx
+  INLINE  Idx
   RangeVariable::maxVal() const {
     return __maxBound;
   }
 
 
   // Set a new value of the upper bound.
-
-  INLINE
-  void
+  INLINE  void
   RangeVariable::setMaxVal ( Idx maxVal ) {
     __maxBound = maxVal;
   }
 
 
   // Returns true if the param belongs to the variable's interval.
-
-  INLINE
-  bool
+  INLINE  bool
   RangeVariable::belongs ( Idx indice ) const {
     return ( ( __minBound <= indice ) && ( indice <= __maxBound ) );
   }
@@ -133,9 +123,7 @@ namespace gum {
   // Copy operator
   // @param aRV to be copied
   // @return a ref to *this
-
-  INLINE
-  RangeVariable&
+  INLINE  RangeVariable&
   RangeVariable::operator= ( const RangeVariable& aRV ) {
     __minBound = aRV.__minBound;
     __maxBound = aRV.__maxBound;
@@ -147,4 +135,5 @@ namespace gum {
   }
 
 } /* namespace gum */
+
 

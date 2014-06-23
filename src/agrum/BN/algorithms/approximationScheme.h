@@ -266,7 +266,9 @@ namespace gum {
 
       };
 
-      Size periodSize ( void ) const {return __period_size;};
+      Size periodSize ( void ) const {
+        return __period_size;
+      };
       /// @}
 
       /// size of burn in on number of iteration
@@ -281,7 +283,9 @@ namespace gum {
         __burn_in = b;
       };
 
-      Size burnIn ( void ) const {return __burn_in;};
+      Size burnIn ( void ) const {
+        return __burn_in;
+      };
       /// @}
 
       /// verbosity

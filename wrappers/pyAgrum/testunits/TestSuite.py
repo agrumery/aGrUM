@@ -11,16 +11,19 @@ import PythonBNListenerTestSuite
 import PotentialTestSuite
 import LazyPropagationTestSuite
 import GibbsTestSuite
+import ICIModelsForBN
 
 import time
 import sys
 
-tests = unittest.TestSuite([#SequenceTestSuite.ts, 
+tests = unittest.TestSuite([
                             VariablesTestSuite.ts,
                             BayesNetTestSuite.ts,
                             PythonBNListenerTestSuite.ts,
                             PotentialTestSuite.ts,
-                            LazyPropagationTestSuite.ts, GibbsTestSuite.ts
+                            LazyPropagationTestSuite.ts, 
+                            GibbsTestSuite.ts,
+                            ICIModelsForBN.ts
                             ])
 
 

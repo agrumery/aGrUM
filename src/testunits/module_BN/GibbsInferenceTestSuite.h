@@ -54,8 +54,12 @@ namespace gum_tests {
         __mess = s;
       }
 
-      int getNbr() {return __nbr;}
-      std::string getMess() {return __mess;}
+      int getNbr() {
+        return __nbr;
+      }
+      std::string getMess() {
+        return __mess;
+      }
   };
 
   class GibbsInferenceTestSuite: public CxxTest::TestSuite {

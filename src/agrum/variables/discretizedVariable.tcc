@@ -206,10 +206,25 @@ namespace gum {
     return ss.str();
   }
 
+
+  /// get a numerical representation of he indice-the value.
+  template<typename T_TICKS> INLINE
+  const double DiscretizedVariable<T_TICKS>::numerical ( Idx indice ) const {
+    if ( indice >= __ticks_size - 1 ) {
+      GUM_ERROR ( OutOfBounds, "inexisting label index" );
+    }
+
+    return double ( ( __ticks[indice + 1] + __ticks[indice] ) / 2 );
+  }
+
   template<typename T_TICKS> INLINE
   Idx DiscretizedVariable<T_TICKS>::operator[] ( const T_TICKS& aTarget ) const {
+    return index ( aTarget );
+  }
+  template<typename T_TICKS> INLINE
+  Idx DiscretizedVariable<T_TICKS>::index ( const T_TICKS& aTarget ) const {
     if ( empty() ) {
-      GUM_ERROR ( OutOfBounds, "empty variable " + toString() );
+      GUM_ERROR ( OutOfBounds, "empty variable : " + toString() );
     }
 
     Idx zeTick = _pos ( aTarget );
@@ -218,12 +233,16 @@ namespace gum {
   }
 
   template<typename T_TICKS> INLINE
-  Idx DiscretizedVariable<T_TICKS>::operator[] ( const std::string& l ) const {
+  Idx DiscretizedVariable<T_TICKS>::operator[] ( const std::string& aLabel ) const {
+    return index ( aLabel );
+  }
+  template<typename T_TICKS> INLINE
+  Idx DiscretizedVariable<T_TICKS>::index ( const std::string& aLabel ) const {
     for ( Idx i = 0; i < domainSize(); ++i ) {
-      if ( l.compare ( label ( i ) ) == 0 ) return i;
+      if ( aLabel.compare ( label ( i ) ) == 0 ) return i;
     }
 
-    GUM_ERROR ( NotFound, "label " + l + " not found in " + toString() );
+    GUM_ERROR ( NotFound, "label " + aLabel + " not found in " + toString() );
   }
 
   /**

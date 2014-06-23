@@ -65,7 +65,7 @@ namespace gum {
 
       /// Default constructor
 
-      DiscreteVariable ( const std::string& aName, const std::string& aDesc );
+      DiscreteVariable( const std::string& aName, const std::string& aDesc );
 
 
       /// Copy constructor
@@ -76,7 +76,7 @@ namespace gum {
        *
        * @param aDRV the variable we copy
        */
-      DiscreteVariable ( const DiscreteVariable& aDRV );
+      DiscreteVariable( const DiscreteVariable& aDRV );
 
 
       /// destructor
@@ -112,13 +112,14 @@ namespace gum {
       /** @param indice the index of the label we wish to return
        * @throw OutOfBound
        */
+      virtual const std::string label( Idx indice ) const = 0;
 
-      virtual const std::string label ( Idx indice ) const = 0;
-
+      /// get a numerical representation of the indice-th value.
+      virtual const double numerical( Idx indice ) const = 0;
 
       /// returns the varType of variable
 
-      virtual VarType varType ( void ) const = 0;
+      virtual VarType varType( void ) const = 0;
       /// @}
 
 
@@ -150,7 +151,8 @@ namespace gum {
       ///  @warning This operation may have different complexity in different
       /// subclasses.
       /// @throws NotFound
-      virtual Idx operator[] ( const std::string& label ) const = 0;
+      virtual Idx operator[]( const std::string& label ) const = 0;
+      virtual Idx index( const std::string& label ) const = 0;
 
       /// string version of *this
       virtual const std::string toString() const;
@@ -158,7 +160,7 @@ namespace gum {
 
     protected:
       /// (protected) Default constructor
-      DiscreteVariable( ) {GUM_CONSTRUCTOR ( DiscreteVariable );};
+      DiscreteVariable( ) {GUM_CONSTRUCTOR( DiscreteVariable );};
   };
 
 
