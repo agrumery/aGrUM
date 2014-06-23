@@ -122,6 +122,7 @@ namespace gum {
 
       /// @}
 
+        void __showMap();
 
       // ==========================================================================
       /// @name Model handling datastructures

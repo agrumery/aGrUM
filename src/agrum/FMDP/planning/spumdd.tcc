@@ -210,7 +210,7 @@ namespace gum {
 //  SPUMDD<GUM_SCALAR>::__evalActionValue ( const MultiDimDecisionGraph< GUM_SCALAR >* Vold, Idx actionId ) {
   evalQaction( SPUMDD<GUM_SCALAR>* planer, const MultiDimDecisionGraph< GUM_SCALAR >* Vold, Idx actionId ){
 
-    std::cout << "Thread " << actionId << " has begun." << std::endl;
+//    std::cout << "Thread " << actionId << " has begun." << std::endl;
 
     // *****************************************************************************************
     // Initialisation
@@ -253,33 +253,6 @@ namespace gum {
       __qTableMutex.unlock();
   }
 
-// ===========================================================================
-// Evals the policy corresponding to the given value function
-// ===========================================================================
-  template<typename GUM_SCALAR>
-  void
-  SPUMDD<GUM_SCALAR>::__evalPolicy ( const MultiDimDecisionGraph< GUM_SCALAR >* V ) {
-
-    // *****************************************************************************************
-    // We have to do one last step to get best policy
-    // *****************************************************************************************
-//    MultiDimDecisionGraph< std::pair< double, long > >* Vamnew = __argMaxValueFunction ( V );
-
-//    MultiDimDecisionGraphFactory< Idx >* factory = new MultiDimDecisionGraphFactory<Idx>();
-//    factory->setVariablesSequence ( Vamnew->variablesSequence() );
-//    HashTable< NodeId, NodeId > explorationTable;
-//    __makeOptimalPolicyDecisionGraph ( Vamnew, Vamnew->root(), factory, explorationTable );
-//    delete Vamnew;
-
-//    MultiDimDecisionGraph< Idx >* optimalPolicy = factory->getMultiDimDecisionGraph ( false, 0, true );
-
-//    __displayOptimalPolicy ( optimalPolicy );
-
-//    delete optimalPolicy;
-//    delete factory;
-
-  }
-
 
 
 // ===========================================================================
@@ -312,113 +285,135 @@ namespace gum {
   /* **                                                                                                 **/
   /* ************************************************************************************************** **/
 
+  // ===========================================================================
+  // Evals the policy corresponding to the given value function
+  // ===========================================================================
+    template<typename GUM_SCALAR>
+    void
+    SPUMDD<GUM_SCALAR>::__evalPolicy ( const MultiDimDecisionGraph< GUM_SCALAR >* V ) {
+
+      // *****************************************************************************************
+      // We have to do one last step to get best policy
+      // *****************************************************************************************
+      MultiDimDecisionGraph< std::pair< double, long > >* Vamnew = __argMaxValueFunction ( V );
+
+//      MultiDimDecisionGraphFactory< Idx >* factory = new MultiDimDecisionGraphFactory<Idx>();
+//      factory->setVariablesSequence ( Vamnew->variablesSequence() );
+//      HashTable< NodeId, NodeId > explorationTable;
+//      __makeOptimalPolicyDecisionGraph ( Vamnew, Vamnew->root(), factory, explorationTable );
+//      delete Vamnew;
+
+//      MultiDimDecisionGraph< Idx >* optimalPolicy = factory->getMultiDimDecisionGraph ( false, 0, true );
+
+//      __displayOptimalPolicy ( optimalPolicy );
+
+//      delete optimalPolicy;
+//      delete factory;
+
+    }
+
 // ===========================================================================
 // Performs one last step of the algorithm to obtain the arg max equivalent
 // of the so far computed value function
 // ===========================================================================
-//  template<typename GUM_SCALAR>
-//  MultiDimDecisionGraph< std::pair< double, long > >*
-//  SPUMDD< GUM_SCALAR >::__argMaxValueFunction ( const MultiDimDecisionGraph< GUM_SCALAR >* V ) {
+  template<typename GUM_SCALAR>
+  MultiDimDecisionGraph< std::pair< double, long > >*
+  SPUMDD< GUM_SCALAR >::__argMaxValueFunction ( const MultiDimDecisionGraph< GUM_SCALAR >* V ) {
 
-//    // *****************************************************************************************
-//    // Loop reset
-//    __fmdp->resetActionsIterator();
-//    Bijection< Idx, MultiDimDecisionGraph< GUM_SCALAR >* > VactionCollector;
-//    MultiDimDecisionGraph< GUM_SCALAR >* Vnew = reinterpret_cast<MultiDimDecisionGraph<GUM_SCALAR>*> ( V->newFactory() );
-//    Vnew->copyAndReassign ( V, __fmdp->main2prime() );
-//    MultiDimDecisionGraph< GUM_SCALAR >* Vtemp;
+    // *****************************************************************************************
+    // Loop reset
+    MultiDimDecisionGraph< GUM_SCALAR >* Vnew = new MultiDimDecisionGraph<GUM_SCALAR>();
+    Vnew->copyAndReassign ( V, __fmdp->mapMainPrime() );
+    MultiDimDecisionGraph< GUM_SCALAR >* Vtemp;
 
-//#ifdef O4DDWITHORDER
-//    Sequence< const DiscreteVariable* > elVarSeq;
-//#else
-//    Sequence< const DiscreteVariable* > elVarSeq = Vnew->variablesSequence();
-//#endif
-//    __fmdp->resetVariablesIterator();
+    // *****************************************************************************************
+    // For each action
+    for ( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter ) {
 
-//    while ( __fmdp->hasVariable() ) {
-//      const DiscreteVariable* var = __fmdp->variable();
+      MultiDimDecisionGraph< GUM_SCALAR >* Vaction = __evalActionValue ( Vnew, elVarSeq );
 
-//      if ( ! elVarSeq.exists ( var ) ) {
-//        elVarSeq << var;
-//      }
+      Vtemp = reinterpret_cast<MultiDimDecisionGraph<GUM_SCALAR>*> ( Vaction->newFactory() );
+      Vtemp->multiplyByScalar ( Vaction, __fmdp->discount() );
+      delete Vaction;
+      Vaction = Vtemp;
 
-//      __fmdp->nextVariable();
-//    }
+      Vtemp = Vaction;
+      Vaction = add2MultiDimDecisionGraphs ( reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*> ( __fmdp->reward() ), Vaction );
+      delete Vtemp;
 
-//    // *****************************************************************************************
-//    // For each action
-//    while ( __fmdp->hasAction() ) {
+      VactionCollector.insert ( *actionIter, Vaction );
+      __fmdp->nextAction();
+    }
 
-//      MultiDimDecisionGraph< GUM_SCALAR >* Vaction = __evalActionValue ( Vnew, elVarSeq );
+    delete Vnew;
+    MultiDimDecisionGraph< std::pair< double, long > >* Vamnew = nullptr;
 
-//      Vtemp = reinterpret_cast<MultiDimDecisionGraph<GUM_SCALAR>*> ( Vaction->newFactory() );
-//      Vtemp->multiplyByScalar ( Vaction, __fmdp->discount() );
-//      delete Vaction;
-//      Vaction = Vtemp;
+//     for ( BijectionIteratorSafe< Idx, MultiDimDecisionGraph< GUM_SCALAR >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ) {
+    for ( Idx acta = 1; acta < VactionCollector.size() + 1; acta++ ) {
+//         MultiDimDecisionGraph< std::pair< double, long > >* Vamaction = __createArgMaxCopy( VActionsIter.second(), VActionsIter.first() );
+      MultiDimDecisionGraph< std::pair< double, long > >* Vamaction = __createArgMaxCopy ( VactionCollector.second ( acta ), acta );
+      delete VactionCollector.second ( acta );
+      MultiDimDecisionGraph< std::pair< double, long > >* Vamtemp = Vamnew;
+      Vamnew = __argMaxOn2MultiDimDecisionGraphs ( Vamnew, Vamaction );
+      delete Vamtemp;
+      delete Vamaction;
+    }
 
-//      Vtemp = Vaction;
-//      Vaction = add2MultiDimDecisionGraphs ( reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*> ( __fmdp->reward() ), Vaction );
-//      delete Vtemp;
+    return Vamnew;
+      return nullptr;
 
-//      VactionCollector.insert ( *actionIter, Vaction );
-//      __fmdp->nextAction();
-//    }
-
-//    delete Vnew;
-//    MultiDimDecisionGraph< std::pair< double, long > >* Vamnew = nullptr;
-
-////     for ( BijectionIteratorSafe< Idx, MultiDimDecisionGraph< GUM_SCALAR >* > VActionsIter = VactionCollector.begin(); VActionsIter != VactionCollector.end(); ++VActionsIter ) {
-//    for ( Idx acta = 1; acta < VactionCollector.size() + 1; acta++ ) {
-////         MultiDimDecisionGraph< std::pair< double, long > >* Vamaction = __createArgMaxCopy( VActionsIter.second(), VActionsIter.first() );
-//      MultiDimDecisionGraph< std::pair< double, long > >* Vamaction = __createArgMaxCopy ( VactionCollector.second ( acta ), acta );
-//      delete VactionCollector.second ( acta );
-//      MultiDimDecisionGraph< std::pair< double, long > >* Vamtemp = Vamnew;
-//      Vamnew = __argMaxOn2MultiDimDecisionGraphs ( Vamnew, Vamaction );
-//      delete Vamtemp;
-//      delete Vamaction;
-//    }
-
-//    return Vamnew;
-//      return nullptr;
-
-//  }
+  }
 
 // ===========================================================================
 // Creates a copy of given in parameter decision Graph and replaces leaves
 // of that Graph by a pair containing value of the leaf and action to which
 // is bind this Graph (given in parameter).
 // ===========================================================================
-//  template<typename GUM_SCALAR>
-//  MultiDimDecisionGraph< std::pair< double, long > >*
-//  SPUMDD<GUM_SCALAR>::__createArgMaxCopy ( const MultiDimDecisionGraph<GUM_SCALAR>* Vaction, Idx actionId ) {
+  template<typename GUM_SCALAR>
+  MultiDimDecisionGraph< std::pair< double, long > >*
+  SPUMDD<GUM_SCALAR>::__createArgMaxCopy ( const MultiDimDecisionGraph<GUM_SCALAR>* Vaction, Idx actionId ) {
 
-//    MultiDimDecisionGraph< std::pair< double, long > >* amcpy = new MultiDimDecisionGraph< std::pair< double, long > >();
+    MultiDimDecisionGraph< std::pair< double, long > >* amcpy = new MultiDimDecisionGraph< std::pair< double, long > >();
 
-//    amcpy->beginInstantiation();
+    // Insertion des nouvelles variables
+    for( SequenceIteratorSafe<const DiscreteVariable*> varIter = Vaction->variablesSequence().beginSafe(); varIter != Vaction->variablesSequence().endSafe(); ++varIter)
+      amcpy->add(**varIter);
 
-//    amcpy->setVariableSequence ( Vaction->variablesSequence() );
+    std::vector<NodeId> lifo;
+    Bijection<NodeId, NodeId> src2dest;
 
-//    amcpy->setGraphNodes ( Vaction->nodesMap() );
-//    Bijection< NodeId, std::pair< double, long > > amvm ( Vaction->valuesMap().size() );
+    if(Vaction->isTerminalNode(Vaction->root()))
+      amcpy->manager()->setRootNode(amcpy->manager()->addTerminalNode(Vaction->nodeValue(Vaction->root())));
+    else {
+      amcpy->manager()->setRootNode(amcpy->manager()->addNonTerminalNode( Vaction->node(Vaction->root())->nodeVar() ));
+      src2dest.insert( Vaction->root(), amcpy->root() );
+      lifo.push_back(Vaction->root());
+    }
 
-//    for ( BijectionIteratorSafe< NodeId, GUM_SCALAR > valueIter = Vaction->valuesMap().beginSafe(); valueIter != Vaction->valuesMap().endSafe(); ++valueIter ) {
-//      std::pair< double, long >  amv ( ( double ) valueIter.second(), ( long ) actionId );
-//      amvm.insert ( valueIter.first(), amv );
-//    }
+    // Parcours en profondeur du diagramme source
+    while( !lifo.empty() ){
+      NodeId currentSrcNodeId = lifo.back();
+      lifo.pop_back();
 
-//    amcpy->setValueMap ( amvm );
+      const MultiDimDecisionGraph< GUM_SCALAR >::InternalNode* currentSrcNode = Vaction->node(currentSrcNodeId);
 
-//    amcpy->setVariableMap ( Vaction->variableMap() );
-//    amcpy->setVar2NodeMap ( Vaction-> var2NodeIdMap() );
-//    amcpy->setVarUsedModalitiesMap ( Vaction->varUsedModalitiesMap() );
-//    amcpy->setGraphArcs ( Vaction->arcMap(), Vaction->defaultArcMap() );
+      for( Idx index = 0; index < currentSrcNode->nbSons(); ++index ){
+        if( !src2dest.existsFirst(currentSrcNode->son(index)) ){
+          NodeId srcSonNodeId = currentSrcNode->son(index), destSonNodeId = 0;
+          if( Vaction->isTerminalNode(srcSonNodeId) ){
+            destSonNodeId = amcpy->manager()->addTerminalNode(Vaction->nodeValue(srcSonNodeId));
+          } else {
+            destSonNodeId = amcpy->manager()->addNonTerminalNode(Vaction->node(srcSonNodeId)->nodeVar());
+            lifo.push_back(srcSonNodeId);
+          }
+          src2dest.insert( srcSonNodeId, destSonNodeId );
+        }
+        amcpy->manager()->setSon( src2dest.second(currentSrcNodeId), index, src2dest.second(currentSrcNode->son(index)));
+      }
+    }
 
-//    amcpy->setRoot ( Vaction->root() );
-//    amcpy->endInstantiation();
-
-//    return amcpy;
-//      return nullptr;
-//  }
+    return amcpy;
+  }
 
 
 
@@ -574,609 +569,7 @@ namespace gum {
 //  }
 
 
-
-// ===========================================================================
-// Displays the optimal computed policy Graph
-// ===========================================================================
-//  template<typename GUM_SCALAR>
-//  void
-//  SPUMDD<GUM_SCALAR>::__displayOptimalPolicy ( MultiDimDecisionGraph< Idx >* op ) {
-
-//    // *****************************************************************************************
-//    // And eventually we display the result
-//    // *****************************************************************************************
-//    std::stringstream output;
-//    std::stringstream terminalStream;
-//    std::stringstream nonTerminalStream;
-//    std::stringstream arcstream;
-//    std::stringstream defaultarcstream;
-//    output << "digraph \"Politique Optimale\" {" << std::endl;
-
-//    terminalStream << "node [shape = box];" << std::endl;
-//    nonTerminalStream << "node [shape = ellipse];" << std::endl;
-//    std::string tab = "  ";
-
-//    for ( auto node = op->nodesMap().nodes().beginSafe(); node != op->nodesMap().nodes().endSafe(); ++node ) {
-//      if ( *node != 0 ) {
-
-//        if ( op->isTerminalNode ( *node ) ) {
-
-//          terminalStream << tab << *node << ";" << tab << *node  << " [label=\"" << __fmdp->actionName ( op->nodeValue ( *node ) ) << "\"]" << ";" << std::endl;
-
-//        } else {
-//          nonTerminalStream << tab << *node << ";" << tab << *node  << " [label=\"" << op->nodeVariable ( *node )->name() << "\"]" << ";" << std::endl;
-
-//          if ( op->nodeSons ( *node ) != nullptr ) {
-//            for ( std::vector<NodeId>::const_iterator sonIter =  op->nodeSons ( *node )->begin(); sonIter != op->nodeSons ( *node )->end(); ++sonIter )
-//              if ( *sonIter != 0 )
-//                arcstream << tab <<  *node << " -> " << *sonIter << " [label=\"" << op->nodeVariable ( *node )->label ( std::distance ( op->nodeSons ( *node )->begin(), sonIter ) ) << "\",color=\"#0000ff\"]" << ";" << std::endl;
-//          }
-
-//          if ( op->hasNodeDefaultSon ( *node ) )
-//            defaultarcstream << tab <<  *node << " -> " << op->nodeDefaultSon ( *node ) << " [color=\"#ff0000\"]" << ";" << std::endl;
-
-//        }
-//      }
-//    }
-
-//    output << terminalStream.str() << std::endl << nonTerminalStream.str() << std::endl <<  arcstream.str() << std::endl << defaultarcstream.str() << std::endl << std::endl << "}" << std::endl;
-
-//     //std::cout << std::endl << output.str();
-//  }
-
-
-
-
-
-  /* ************************************************************************************************** **/
-  /* **                                                                                                 **/
-  /* **                                                        Analyse Methods                          **/
-  /* **                                                                                                 **/
-  /* ************************************************************************************************** **/
-
-// ===========================================================================
-// Called for evaluation on algorithm
-// ===========================================================================
-//  template<typename GUM_SCALAR>
-//  MultiDimDecisionGraph< GUM_SCALAR >*
-//  SPUMDD<GUM_SCALAR>::makePlanningAlgoEvaluation ( const std::string saveFilesName, Idx mode ) {
-
-//    // *****************************************************************************************
-//    // Initialisation
-//    // *****************************************************************************************
-
-//    // *****************************************************************************************
-//    // Threshold stopping criterion evaluation
-//    GUM_SCALAR threshold =  0.1;
-
-//    GUM_SCALAR gap = threshold + 1;
-
-//    // *****************************************************************************************
-//    // Initialisation of Vold, Vnew and Vtemp
-//    MultiDimDecisionGraph< GUM_SCALAR >* Vold = reinterpret_cast<MultiDimDecisionGraph<GUM_SCALAR>*> ( __fmdp->reward()->newFactory() );
-//    Vold->copy ( *reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*> ( __fmdp->reward() ) );
-
-//    MultiDimDecisionGraph< GUM_SCALAR >* Vnew = nullptr;
-//    MultiDimDecisionGraph< GUM_SCALAR >* Vtemp = nullptr;
-
-//    Idx nbIte = 0;
-
-//    // *****************************************************************************************
-//    // Main loop
-//    // *****************************************************************************************
-//    while ( gap >  threshold ) {
-
-//      ++nbIte;
-
-//      // *****************************************************************************************
-//      // Loop reset
-//      __fmdp->resetActionsIterator();
-//      Set< MultiDimDecisionGraph< GUM_SCALAR >* > VactionCollector;
-
-//      Vnew = reinterpret_cast<MultiDimDecisionGraph<GUM_SCALAR>*> ( Vold->newFactory() );
-//      Vnew->copyAndReassign ( Vold, __fmdp->main2prime() );
-
-//      // *****************************************************************************************
-//      // For each action
-//      while ( __fmdp->hasAction() ) {
-
-//// //std::cout << " ------------ Evaluation Nouvelle Action " << std::endl;
-//        VactionCollector.insert ( __evalActionValueAlgoEvaluation ( Vnew, saveFilesName, mode ) );
-//// //std::cout << " Fin Evaluation" << std::endl;
-
-//        __fmdp->nextAction();
-//      }
-
-//      // *****************************************************************************************
-//      // Next to evaluate main value function, we take maximise over all action value, ...
-//// //std::cout << " ------------- Maximisation " << std::endl;
-
-//      delete Vnew;
-//      Vnew = nullptr;
-//      Idx nbNodeT1;
-//      Idx nbNodeT2;
-//      Idx nbRetroVarDirect;
-//      Idx tailleEspaceRetrogradeDirect;
-//      Idx nbRetroVarIndirect;
-//      Idx tailleEspaceRetrogradeIndirect;
-
-//      Idx nbFinalNodeDirect;
-//      double iterationTimeDirect;
-//      Idx nbFinalNodeIndirect;
-//      double iterationTimeIndirect;
-
-//      double iterationTime;
-//      double totalTime = 0;
-
-//      std::stringstream traceFileName;
-//      traceFileName << "./Trace/Maximisation/" << saveFilesName << "." << mode << ".log";
-//      __traceAlgoSaveFile.open ( traceFileName.str().c_str(), std::ios::out | std::ios::app );
-
-//      if ( !__traceAlgoSaveFile ) {
-//        GUM_ERROR ( IOError, "log file" << traceFileName << " does not open correctly" );
-//      }
-
-//      for ( SetIteratorSafe< MultiDimDecisionGraph< GUM_SCALAR >* > VActionsIter = VactionCollector.beginSafe(); VActionsIter != VactionCollector.endSafe(); ++VActionsIter ) {
-
-//        if ( Vnew != nullptr )
-//          nbNodeT1 = Vnew->nodesMap().size();
-//        else
-//          nbNodeT1 = 0;
-
-//        nbNodeT2 = ( *VActionsIter )->nodesMap().size();
-
-//        std::pair<Idx, Idx> resEvalRetro = __evalNbRetrogradeEvaluation ( Vnew, *VActionsIter );
-//        nbRetroVarDirect = resEvalRetro.first;
-//        tailleEspaceRetrogradeDirect = resEvalRetro.second;
-
-//        resEvalRetro = __evalNbRetrogradeEvaluation ( *VActionsIter, Vnew );
-//        nbRetroVarIndirect = resEvalRetro.first;
-//        tailleEspaceRetrogradeIndirect = resEvalRetro.second;
-
-//        bool sensDirect = true;
-
-//        switch ( mode ) {
-//          case 2 :
-//            sensDirect = false;
-//            break;
-
-//          case 3 :
-//            if ( nbRetroVarDirect > nbRetroVarIndirect )
-//              sensDirect = false;
-
-//            break;
-
-//          case 4 :
-//            if ( tailleEspaceRetrogradeDirect > tailleEspaceRetrogradeIndirect )
-//              sensDirect = false;
-
-//            break;
-
-//          default :
-//            break;
-//        }
-
-//        Vtemp = Vnew;
-//        Timer time;
-
-//        if ( sensDirect ) {
-//          time.reset();
-//          MultiDimDecisionGraph< GUM_SCALAR >* Vind = maximize2MultiDimDecisionGraphs ( *VActionsIter, Vnew );
-//          nbFinalNodeIndirect = Vind->nodesMap().size();
-//          iterationTimeIndirect = time.step();
-//          delete Vind;
-
-//          time.reset();
-//          Vnew = maximize2MultiDimDecisionGraphs ( Vnew, *VActionsIter );
-//          nbFinalNodeDirect = Vnew->nodesMap().size();
-//          iterationTimeDirect = time.step();
-//          iterationTime = iterationTimeDirect;
-//        } else {
-//          time.reset();
-//          MultiDimDecisionGraph< GUM_SCALAR >* Vind = maximize2MultiDimDecisionGraphs ( Vnew, *VActionsIter );
-//          nbFinalNodeDirect = Vind->nodesMap().size();
-//          iterationTimeDirect = time.step();
-//          delete Vind;
-
-//          time.reset();
-//          Vnew = maximize2MultiDimDecisionGraphs ( *VActionsIter, Vnew );
-//          nbFinalNodeIndirect = Vnew->nodesMap().size();
-//          iterationTimeIndirect = time.step();
-//          iterationTime = iterationTimeIndirect;
-//        }
-
-//        totalTime += time.step();
-//        delete Vtemp;
-//        delete *VActionsIter;
-
-//        __traceAlgoSaveFile << nbNodeT1 << "\t" << nbNodeT2 << "\t" << nbRetroVarDirect << "\t" << tailleEspaceRetrogradeDirect << "\t" << nbFinalNodeDirect << "\t" <<
-//                            iterationTimeDirect << "\t" << nbRetroVarIndirect << "\t" << tailleEspaceRetrogradeIndirect << "\t" << nbFinalNodeIndirect << "\t" << iterationTimeIndirect
-//                            << "\t" << sensDirect << "\t" << iterationTime << "\t" << totalTime << std::endl;
-//      }
-
-//      __traceAlgoSaveFile.close();
-//// //std::cout << " Fin Maximisation " << std::endl;
-
-//      // *******************************************************************************************
-//      // Next, we eval the new function value
-//      Vtemp = Vnew;
-//// //std::cout << " ---------- Ajout Récompense " << std::endl;
-//      Vnew = __addRewardAlgoEvaluation ( Vtemp, saveFilesName, mode );
-//// //std::cout << " Fin Ajout Récompense " << std::endl;
-//      delete Vtemp;
-
-
-//      // *****************************************************************************************
-//      // Then we compare new value function and the old one
-
-//      MultiDimDecisionGraph< GUM_SCALAR >* deltaV = subtract2MultiDimDecisionGraphs ( Vnew, Vold );
-//      gap = 0;
-
-//      for ( BijectionIteratorSafe< NodeId, GUM_SCALAR > valIter = deltaV->valuesMap().beginSafe(); valIter != deltaV->valuesMap().endSafe(); ++valIter )
-//        if ( gap < fabs ( valIter.second() ) )
-//          gap = fabs ( valIter.second() );
-
-//      delete deltaV;
-
-//      // //std::cout << "*************************************************" << std::endl << " Essai : " << saveFilesName << std::endl << " ------------------- Fin itération n° " << nbIte << std::endl << " Gap : " << gap << std::endl;
-//      // ****************************************************************************************
-//      // And eventually we update pointers for next loop
-//      delete Vold;
-//      Vold = Vnew;
-//    }
-
-//    delete Vold;
-//    return Vold;
-
-//      return nullptr;
-
-//  }
-
-
-
-// ===========================================================================
-// Evals the value function for current fmdp action
-// ===========================================================================
-//  template<typename GUM_SCALAR>
-//  MultiDimDecisionGraph<GUM_SCALAR>*
-//  SPUMDD<GUM_SCALAR>::__evalActionValueAlgoEvaluation ( const MultiDimDecisionGraph< GUM_SCALAR >* Vold, const std::string saveFilesName, Idx mode ) {
-
-//    __fmdp->resetVariablesIterator();
-
-//    MultiDimDecisionGraph< GUM_SCALAR >* Vaction = reinterpret_cast<MultiDimDecisionGraph<GUM_SCALAR>*> ( Vold->newFactory() );
-//    Vaction->copy ( *Vold );
-//    MultiDimDecisionGraph< GUM_SCALAR >* Vtemp = nullptr;
-
-//    Idx nbNodeT1;
-//    Idx nbNodeT2;
-//    Idx nbRetroVarDirect;
-//    Idx tailleEspaceRetrogradeDirect;
-//    Idx nbRetroVarIndirect;
-//    Idx tailleEspaceRetrogradeIndirect;
-
-//    Idx nbFinalNodeDirect;
-//    double iterationTimeDirect;
-//    Idx nbFinalNodeIndirect;
-//    double iterationTimeIndirect;
-
-//    double iterationTime;
-//    double totalTime = 0;
-
-//    std::string actionName = __fmdp->actionName ( *actionIter );
-//    std::stringstream traceFileName;
-//    traceFileName << "./Trace/" << actionName << "/" << saveFilesName << "." << mode << ".log";
-//    __traceAlgoSaveFile.open ( traceFileName.str().c_str(), std::ios::out | std::ios::app );
-
-//    if ( !__traceAlgoSaveFile ) {
-//      std::cerr << "Erreur à l'ouverture ! Fichier en cause : " << traceFileName.str() << std::endl;
-//      return nullptr;
-//    }
-
-//    // *****************************************************************************************
-//    // To evaluate action value function, we multiply old main value function by transition table
-//    // of each variable
-//    while ( __fmdp->hasVariable() ) {
-
-
-//      // Multiplication of Vaction by current variable's CPT
-//      const MultiDimDecisionGraph<GUM_SCALAR>* cpt = reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*> ( __fmdp->transition() );
-
-//      nbNodeT1 =  Vaction->nodesMap().size();
-//      nbNodeT2 = cpt->nodesMap().size();
-
-//      std::pair<Idx, Idx> resEvalRetro = __evalNbRetrogradeEvaluation ( Vaction, cpt );
-//      nbRetroVarDirect = resEvalRetro.first;
-//      tailleEspaceRetrogradeDirect = resEvalRetro.second;
-
-//      resEvalRetro = __evalNbRetrogradeEvaluation ( cpt, Vaction );
-//      nbRetroVarIndirect = resEvalRetro.first;
-//      tailleEspaceRetrogradeIndirect = resEvalRetro.second;
-
-//      bool sensDirect = true;
-
-//      switch ( mode ) {
-//        case 2 :
-//          sensDirect = false;
-//          break;
-
-//        case 3 :
-//          if ( nbRetroVarDirect > nbRetroVarIndirect )
-//            sensDirect = false;
-
-//          break;
-
-//        case 4 :
-//          if ( tailleEspaceRetrogradeDirect > tailleEspaceRetrogradeIndirect )
-//            sensDirect = false;
-
-//          break;
-
-//        default :
-//          break;
-//      }
-
-//      Timer time;
-//      Vtemp = Vaction;
-
-//      if ( sensDirect ) {
-//        time.reset();
-//        MultiDimDecisionGraph< GUM_SCALAR >* Vind = multiply2MultiDimDecisionGraphs ( cpt, Vaction );
-//        nbFinalNodeIndirect = Vind->nodesMap().size();
-//        iterationTimeIndirect = time.step();
-//        delete Vind;
-
-//        time.reset();
-//        Vaction = multiply2MultiDimDecisionGraphs ( Vaction, cpt );
-//        nbFinalNodeDirect = Vaction->nodesMap().size();
-//        iterationTimeDirect = time.step();
-//        iterationTime = iterationTimeDirect;
-//      } else {
-//        time.reset();
-//        MultiDimDecisionGraph< GUM_SCALAR >* Vind = multiply2MultiDimDecisionGraphs ( Vaction, cpt );
-//        nbFinalNodeDirect = Vind->nodesMap().size();
-//        iterationTimeDirect = time.step();
-//        delete Vind;
-
-//        time.reset();
-//        Vaction = multiply2MultiDimDecisionGraphs ( cpt, Vaction );
-//        nbFinalNodeIndirect = Vaction->nodesMap().size();
-//        iterationTimeIndirect = time.step();
-//        iterationTime = iterationTimeIndirect;
-//      }
-
-//      delete Vtemp;
-
-//      Vtemp = Vaction;
-//      Set< const DiscreteVariable* > varSet;
-//      varSet << __fmdp->variable();
-//      Vaction = projectSumMultiDimDecisionGraph ( Vaction, varSet );
-//      delete Vtemp;
-//      totalTime += time.step();
-
-//      __traceAlgoSaveFile << nbNodeT1 << "\t" << nbNodeT2 << "\t" << nbRetroVarDirect << "\t" << tailleEspaceRetrogradeDirect << "\t" << nbFinalNodeDirect << "\t" <<
-//                          iterationTimeDirect << "\t" << nbRetroVarIndirect << "\t" << tailleEspaceRetrogradeIndirect << "\t" << nbFinalNodeIndirect << "\t" << iterationTimeIndirect
-//                          << "\t" << sensDirect << "\t" << iterationTime << "\t" << totalTime << std::endl;
-
-//      __fmdp->nextVariable();
-
-//    }
-
-//    __traceAlgoSaveFile.close();
-
-//// //std::cout << "DONE!" << std::endl;
-
-//    return Vaction;
-//      return nullptr;
-
-//  }
-
-
-
-// ===========================================================================
-// Updates the value function by multiplying by discount and adding reward
-// ===========================================================================
-//  template<typename GUM_SCALAR>
-//  MultiDimDecisionGraph<GUM_SCALAR>*
-//  SPUMDD<GUM_SCALAR>::__addRewardAlgoEvaluation ( const MultiDimDecisionGraph< GUM_SCALAR >* Vold, const std::string saveFilesName, Idx mode ) {
-
-//    // *****************************************************************************************
-//    // ... we multiply the result by the discount factor, ...
-//    MultiDimDecisionGraph< GUM_SCALAR >* Vnew = reinterpret_cast<MultiDimDecisionGraph<GUM_SCALAR>*> ( Vold->newFactory() );
-//    Vnew->multiplyByScalar ( Vold, __fmdp->discount() );
-
-//    // *****************************************************************************************
-//    // ... and finally add reward
-//    MultiDimDecisionGraph< GUM_SCALAR >* Vtemp = Vnew;
-
-//    Idx nbNodeT1;
-//    Idx nbNodeT2;
-//    Idx nbRetroVarDirect;
-//    Idx tailleEspaceRetrogradeDirect;
-//    Idx nbRetroVarIndirect;
-//    Idx tailleEspaceRetrogradeIndirect;
-
-//    Idx nbFinalNodeDirect;
-//    double iterationTimeDirect;
-//    Idx nbFinalNodeIndirect;
-//    double iterationTimeIndirect;
-
-//    double totalTime = 0;
-
-//    std::stringstream traceFileName;
-//    traceFileName << "./Trace/AddReward/" << saveFilesName << "." << mode << ".log";
-//    __traceAlgoSaveFile.open ( traceFileName.str().c_str(), std::ios::out | std::ios::app );
-
-//    if ( !__traceAlgoSaveFile ) {
-//      std::cerr << "Erreur à l'ouverture !" << std::endl;
-//      return nullptr;
-//    }
-
-//    const MultiDimDecisionGraph<GUM_SCALAR>* reward = reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*> ( __fmdp->reward() );
-
-//    if ( Vnew != nullptr )
-//      nbNodeT1 = Vnew->nodesMap().size();
-//    else
-//      nbNodeT1 = 0;
-
-//    nbNodeT2 = reward->nodesMap().size();
-
-//    std::pair<Idx, Idx> resEvalRetro = __evalNbRetrogradeEvaluation ( Vnew, reward );
-//    nbRetroVarDirect = resEvalRetro.first;
-//    tailleEspaceRetrogradeDirect = resEvalRetro.second;
-
-//    resEvalRetro = __evalNbRetrogradeEvaluation ( reward, Vnew );
-//    nbRetroVarIndirect = resEvalRetro.first;
-//    tailleEspaceRetrogradeIndirect = resEvalRetro.second;
-
-//    bool sensDirect = true;
-
-//    switch ( mode ) {
-//      case 2 :
-//        sensDirect = false;
-//        break;
-
-//      case 3 :
-//        if ( nbRetroVarDirect > nbRetroVarIndirect )
-//          sensDirect = false;
-
-//        break;
-
-//      case 4 :
-//        if ( tailleEspaceRetrogradeDirect > tailleEspaceRetrogradeIndirect )
-//          sensDirect = false;
-
-//        break;
-
-//      default :
-//        break;
-//    }
-
-
-//    Timer time;
-
-//    if ( sensDirect ) {
-//      time.reset();
-//      MultiDimDecisionGraph< GUM_SCALAR >* Vind = add2MultiDimDecisionGraphs ( reward, Vnew );
-//      nbFinalNodeIndirect = Vind->nodesMap().size();
-//      iterationTimeIndirect = time.step();
-//      delete Vind;
-
-//      time.reset();
-//      Vnew = add2MultiDimDecisionGraphs ( Vnew, reward );
-//      nbFinalNodeDirect = Vnew->nodesMap().size();
-//      iterationTimeDirect = time.step();
-//    } else {
-//      time.reset();
-//      MultiDimDecisionGraph< GUM_SCALAR >* Vind = add2MultiDimDecisionGraphs ( Vnew, reward );
-//      nbFinalNodeDirect = Vind->nodesMap().size();
-//      iterationTimeDirect = time.step();
-//      delete Vind;
-
-//      time.reset();
-//      Vnew = add2MultiDimDecisionGraphs ( reward, Vnew );
-//      nbFinalNodeIndirect = Vnew->nodesMap().size();
-//      iterationTimeIndirect = time.step();
-//    }
-
-//    totalTime += time.step();
-
-//    __traceAlgoSaveFile << nbNodeT1 << "\t" << nbNodeT2 << "\t" << nbRetroVarDirect << "\t" << tailleEspaceRetrogradeDirect << "\t" << nbFinalNodeDirect << "\t" <<
-//                        iterationTimeDirect << "\t" << nbRetroVarIndirect << "\t" << tailleEspaceRetrogradeIndirect << "\t" << nbFinalNodeIndirect << "\t" << iterationTimeIndirect  << "\t" << totalTime << std::endl;
-
-//    __traceAlgoSaveFile.close();
-//    delete Vtemp;
-
-//    return Vnew;
-//      return nullptr;
-
-//  }
-
-
-
-// ===========================================================================
-// Evals how many retrograde variable there will be if we do the operation in
-// that order
-// ===========================================================================
-//  template<typename GUM_SCALAR>
-//  std::pair<Idx, Idx>
-//  SPUMDD<GUM_SCALAR>::__evalNbRetrogradeEvaluation ( const MultiDimDecisionGraph<GUM_SCALAR>* dD1, const MultiDimDecisionGraph<GUM_SCALAR>* dD2 ) {
-
-
-//    std::pair<Idx, Idx> res;
-
-//    if ( dD1 == nullptr || dD2 == nullptr ) {
-//      res.first = 0;
-//      res.second = 0;
-//      return res;
-//    }
-
-//    // *****************************************************************************
-//    // First we determine the new var sequence
-
-//    Sequence< const DiscreteVariable* > dD1VarSeq = dD1->variablesSequence();
-//    Sequence< const DiscreteVariable* > dD2VarSeq = dD2->variablesSequence();
-//    Sequence< const DiscreteVariable* > fusVarSeq;
-
-//    SequenceIteratorSafe< const DiscreteVariable* > iterS1 = dD1VarSeq.beginSafe();
-//    SequenceIteratorSafe< const DiscreteVariable* > iterS2 = dD2VarSeq.beginSafe();
-
-//    while ( iterS1 != dD1VarSeq.endSafe() || iterS2 != dD2VarSeq.endSafe() ) {
-//      if ( iterS1 == dD1VarSeq.endSafe() ) {
-//        for ( ; iterS2 != dD2VarSeq.endSafe(); ++iterS2 )
-//          if ( !fusVarSeq.exists ( *iterS2 ) )
-//            fusVarSeq.insert ( *iterS2 );
-//      } else if ( iterS2 == dD2VarSeq.endSafe() ) {
-//        for ( ; iterS1 != dD1VarSeq.endSafe(); ++iterS1 )
-//          if ( !fusVarSeq.exists ( *iterS1 ) )
-//            fusVarSeq.insert ( *iterS1 );
-//      } else {
-//        if ( *iterS1 == *iterS2 ) {
-//          if ( !fusVarSeq.exists ( *iterS1 ) )
-//            fusVarSeq.insert ( *iterS1 );
-
-//          ++iterS1;
-//          ++iterS2;
-//          continue;
-//        }
-
-//        if ( dD1VarSeq.pos ( *iterS1 ) <= dD2VarSeq.pos ( *iterS2 ) || dD1VarSeq.exists ( *iterS2 ) ) {
-//          if ( !fusVarSeq.exists ( *iterS1 ) )
-//            fusVarSeq.insert ( *iterS1 );
-
-//          ++iterS1;
-//          continue;
-//        } else {
-//          if ( !fusVarSeq.exists ( *iterS2 ) )
-//            fusVarSeq.insert ( *iterS2 );
-
-//          ++iterS2;
-//          continue;
-//        }
-//      }
-//    }
-
-//    // ******************************************************************************
-//    // Then we search in second Graph for possible preneeded variable
-//    Idx sizeRetro = 1;
-//    Idx nbRetroVar = 0;
-
-//    for ( iterS2 = dD2VarSeq.beginSafe(); iterS2 != dD2VarSeq.endSafe(); ++iterS2 )
-//      for ( iterS1 = iterS2; iterS1 != dD2VarSeq.rendSafe(); --iterS1 )
-//        if ( fusVarSeq.pos ( *iterS1 ) > fusVarSeq.pos ( *iterS2 ) ) {
-//          nbRetroVar++;
-//          sizeRetro *= ( *iterS2 )->domainSize();
-//        }
-
-//    res.first = nbRetroVar;
-//    res.second = sizeRetro;
-
-//    return res;
-//      return nullptr;
-
-//  }
-
-
-}
+} // end of namespace gum
 
 
 

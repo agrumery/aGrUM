@@ -52,8 +52,8 @@ namespace gum {
                      const DiscreteVariable* value) : __attr(attribute),
                                                       __value(value),
                                                       __degreeOfFreedom((value->domainSize()-1)*(attribute->domainSize()-1)),
-                                                      __isRelevant(false),
-                                                      __areRelevant(attribute->domainSize()*value->domainSize(),false){
+                                                      __isRelevant(false)/*,
+                                                      __areRelevant(attribute->domainSize()*value->domainSize(),false)*/{
 
       GUM_CONSTRUCTOR(VarInfo);
 
@@ -74,7 +74,7 @@ namespace gum {
 
       __nbObservation = 0;
       __GStat = 0;
-      __pvalue = __probaChi2(__GStat, __degreeOfFreedom);
+      __pvalue = 1 - __probaChi2(__GStat, __degreeOfFreedom);
     }
 
 
@@ -86,8 +86,8 @@ namespace gum {
                      const Set<const Observation*>* obsSet) : __attr(attribute),
                                                               __value(value),
                                                               __degreeOfFreedom( (value->domainSize()-1)*(attribute->domainSize()-1) ),
-                                                              __isRelevant(false),
-                                                              __areRelevant(attribute->domainSize()*value->domainSize(),false){
+                                                              __isRelevant(false)/*,
+                                                              __areRelevant(attribute->domainSize()*value->domainSize(),false)*/{
 
       GUM_CONSTRUCTOR(VarInfo);
 
@@ -122,20 +122,18 @@ namespace gum {
 
 
       // Calcul de la GStat
-      __GStat = 0;
+      __computeG();
+      __pvalue = 1 - __probaChi2(__GStat, __degreeOfFreedom);
 
-      for( Idx attrModality = 0; attrModality < __attr->domainSize(); ++attrModality ){
-        Idx rank = attrModality*__value->domainSize();
-        for( Idx valModality = 0; valModality < __value->domainSize(); ++valModality ) {
-          if( (*__contingencyTable[attrModality])[valModality] >= 5 )
-              __areRelevant[rank+valModality] = true;
-          __GStat += __GVal( attrModality, valModality );
-        }
-      }
-
+      // Check relevance of collected data
+//      for( Idx attrModality = 0; attrModality < __attr->domainSize(); ++attrModality ){
+//        Idx rank = attrModality*__value->domainSize();
+//        for( Idx valModality = 0; valModality < __value->domainSize(); ++valModality ) {
+//          if( (*__contingencyTable[attrModality])[valModality] >= 5 )
+//              __areRelevant[rank+valModality] = true;
+//        }
+//      }
       __checkRelevance();
-
-      __pvalue = __probaChi2(__GStat, __degreeOfFreedom);
     }
 
 
@@ -162,32 +160,25 @@ namespace gum {
     // ==========================================================================
     void VarInfo::addObservation( const Observation* newObs){
 
-      std::cout << "Hello There : " << __attr->name() << " - " << __value->name()  << " - " << __GStat << std::endl;
+//      std::cout << "Hello There : " << __attr->name() << " - " << __value->name()  << std::endl;
       // Addition of the observation to its matching set for fast splitting
       __modality2Observations[newObs->modality(__attr)]->insert( newObs );
 
-
-      // Subtraction of the matching ceil GVal before updating
-//      std::cout << "Subtract" << std::endl;
-      __GStat -= __GVal(newObs->modality(__attr), newObs->modality(__value));
-
       // Updating
-//      std::cout << "Update" << std::endl;
       __nbObservation++;
       __attrMarginalTable[newObs->modality(__attr)]++;
       __valueMarginalTable[newObs->modality(__value)]++;
       (*__contingencyTable[newObs->modality(__attr)])[newObs->modality(__value)]++;
 
-      if( !__isRelevant && (*__contingencyTable[newObs->modality(__attr)])[newObs->modality(__value)] >= 5 ){
-        __areRelevant[newObs->modality(__attr)*__value->domainSize() + newObs->modality(__value)] = true;
+//      if( !__isRelevant && (*__contingencyTable[newObs->modality(__attr)])[newObs->modality(__value)] >= 5 ){
+//        __areRelevant[newObs->modality(__attr)*__value->domainSize() + newObs->modality(__value)] = true;
         __checkRelevance();
-      }
+//      }
 
-//      std::cout << "Add" << std::endl;
-      __GStat += __GVal(newObs->modality(__attr), newObs->modality(__value));
-      __pvalue = __probaChi2(__GStat, __degreeOfFreedom);
+      __computeG();
+      __pvalue = 1 - __probaChi2(__GStat, __degreeOfFreedom);
 
-      std::cout << __GStat  << " - " << __pvalue << std::endl;
+//      std::cout << "GStat final : " << __GStat  << " - " << __pvalue << " - " << __isRelevant << std::endl;
       if ( std::isnan(__GStat) )
           exit(-1);
     }
@@ -196,13 +187,20 @@ namespace gum {
     // ==========================================================================
     //
     // ==========================================================================
-    double VarInfo::__GVal( Idx attrModa, Idx valueModa ){
-      double ceil = (double)(*__contingencyTable[attrModa])[valueModa];
-      if( ceil < 5 )
-        return 0;
-      double expected = (double)__attrMarginalTable[attrModa]*(double)__valueMarginalTable[valueModa]/(double)__nbObservation;
+    void VarInfo::__computeG(){
+      __GStat = 0;
+      for (Idx attrModa = 0; attrModa < __attr->domainSize(); ++attrModa ){
+        double semiExpected = (double)__attrMarginalTable[attrModa]/(double)__nbObservation;
+        for (Idx valModa = 0; valModa < __value->domainSize(); ++valModa) {
+          double ceil = (double)(*__contingencyTable[attrModa])[valModa];
+          if( ceil < 5 )
+            continue;
+          double expected = semiExpected*(double)__valueMarginalTable[valModa];
 
-      return 2*ceil*log(ceil/expected);
+          __GStat += 2*ceil*log(ceil/expected);
+//          std::cout << "Attr Moda : " << attrModa << " - Val Modal : " << valModa << " - Ceil : " << ceil << " - Expected : " << expected <<  " - " << __GStat <<std::endl;
+        }
+      }
     }
 
 
@@ -212,10 +210,10 @@ namespace gum {
     void VarInfo::__checkRelevance(){
         if( __isRelevant ) return;
 
-        if( __nbObservation < 25 ) return;
-
-        for(Idx i = 0; i < __areRelevant.size(); ++i )
-          if( !__areRelevant[i] ) return;
+        if( __nbObservation < 25 ) return;/* {
+            for(Idx i = 0; i < __areRelevant.size(); ++i )
+              if( !__areRelevant[i] ) return;
+        }*/
 
         __isRelevant = true;
     }

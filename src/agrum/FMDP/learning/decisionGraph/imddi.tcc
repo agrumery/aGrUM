@@ -139,26 +139,29 @@ namespace gum {
             remainingVarsScore.insert(*varIter, __score(*varIter, __root));
         else
             remainingVarsScore.insert(*varIter, 0.0);
-      }
 
-      std::cout << remainingVarsScore.toString() << std::endl;
+        std::cout << " Var : " << (*varIter)->name()  << " - p-Value : " << remainingVarsScore.priority(*varIter) << std::endl;
+      }
 
       // Then, until there's no node remaining
       while( !remainingVars.empty() ){
 
 //        // We select the best var
-        /*const DiscreteVariable* selectedVar =*/ remainingVarsScore.pop();
-//        std::cout << "Selected Var : " << selectedVar->name();
+          std::cout << "Selected Var : " << remainingVarsScore.top()->name() << " - " << remainingVarsScore.topPriority() << " - " << __nbTotalObservation << std::endl;
+        const DiscreteVariable* selectedVar = remainingVarsScore.pop();
+        remainingVars >> selectedVar;
 
 //        // Then we decide if we update each node according to this var
-//        __updateNodeSet( currentNodeSet, selectedVar, remainingVarsScore );
+        __updateNodeSet( currentNodeSet, selectedVar, remainingVarsScore );
 
       }
 
       // If there are remaining node that are not leaves after we establish the var order
       // these nodes are turned into leaf.
-//      for( SetIteratorSafe<NodeId> nodeIter = currentNodeSet.beginSafe(); nodeIter != currentNodeSet.endSafe(); ++nodeIter )
-//        __turnIntoLeaf(*nodeIter);
+      std::cout << "Turning remaining nodes into leaves : " << currentNodeSet << std::endl;
+//      __showMap();
+      for( SetIteratorSafe<NodeId> nodeIter = currentNodeSet.beginSafe(); nodeIter != currentNodeSet.endSafe(); ++nodeIter )
+        __turnIntoLeaf(*nodeIter);
 
 //      __toDG();
     }
@@ -200,10 +203,13 @@ namespace gum {
       nodeSet.clear();
       for( SetIteratorSafe<NodeId> nodeIter = oldNodeSet.beginSafe(); nodeIter != oldNodeSet.endSafe(); ++nodeIter ){
 
-        if( __nodeId2Database[*nodeIter]->isPValueRelevant( selectedVar) && __nodeId2Database[*nodeIter]->pValue( selectedVar) > __dependenceThreshold ){
+        if( __nodeId2Database[*nodeIter]->isPValueRelevant( selectedVar)
+                && __nodeId2Database[*nodeIter]->pValue( selectedVar) > __dependenceThreshold ){
 
+//          std::cout << "Transposition noeud : " << *nodeIter << std::endl;
           __transpose(*nodeIter, selectedVar);
 
+//          std::cout << "MAJ Priority Queue" << std::endl;
           // Then we subtract the from the score given to each variables the quantity given by this node
           for( auto varIter = remainingVarsScore.allValues().cbeginSafe(); varIter != remainingVarsScore.allValues().cendSafe(); ++varIter ) {
             if( __nodeId2Database[*nodeIter]->isPValueRelevant( varIter.key() ) ){
@@ -214,6 +220,7 @@ namespace gum {
 
           // And finally we add all its child to the new set of nodes
           // and updates the remaining var's score
+//          std::cout << "MAJ Priority Queue part II" << std::endl;
           for( Idx modality = 0; modality < __nodeVarMap[*nodeIter]->domainSize(); ++modality){
             nodeSet << __nodeSonsMap[*nodeIter][modality];
 
@@ -226,6 +233,7 @@ namespace gum {
             }
           }
         } else {
+//          std::cout << "Not for " << *nodeIter << std::endl;
           nodeSet << *nodeIter;
         }
       }
@@ -239,11 +247,13 @@ namespace gum {
     void IMDDI<GUM_SCALAR>::__transpose( NodeId currentNodeId,
                                          const DiscreteVariable* desiredVar ){
 
+      // #####################################################################################
       // Si le noeud courant contient déjà la variable qu'on souhaite lui amener
       // Il n'y a rien à faire
       if( __nodeVarMap[currentNodeId] == desiredVar )
         return;
 
+      // #####################################################################################
       // Si le noeud courant est terminal,
       // Il faut artificiellement insérer un noeud liant à la variable
       if( __nodeVarMap[currentNodeId] == __value ){
@@ -267,6 +277,7 @@ namespace gum {
         return;
       }
 
+      // #####################################################################################
       // Remains the general case where currentNodeId is an internal node.
 
       // First we ensure that children node use desiredVar as variable
@@ -284,6 +295,7 @@ namespace gum {
 
         NodeId newNodeId = __model.insertNode();
         __nodeVarMap.insert(newNodeId, __nodeVarMap[currentNodeId]);
+        __nodeSonsMap.insert(newNodeId, grandSonsMap);
         __var2Node[__nodeVarMap[currentNodeId]]->insert(newNodeId);
         __nodeId2Database.insert(newNodeId, sonsNodeDatabase.atPos(desiredVarModality));
         sonsMap[desiredVarModality] = newNodeId;
@@ -321,6 +333,10 @@ namespace gum {
     }
 
 
+
+    // ============================================================================
+    // Turn given node into a leaf, recurssively destroying its children
+    // ============================================================================
     template <typename GUM_SCALAR>
     void IMDDI<GUM_SCALAR>::__turnIntoLeaf(NodeId currentNodeId){
 
@@ -338,10 +354,6 @@ namespace gum {
           // Retrait du NodeDatabase
           delete __nodeId2Database[sonId];
           __nodeId2Database.erase(sonId);
-
-          // Retrait du vecteur fils
-          MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( __nodeSonsMap[sonId], sizeof(NodeId)*__nodeVarMap[sonId]->domainSize() );
-          __nodeSonsMap.erase(sonId);
 
           // Retrait de la variable
           __nodeVarMap.erase( sonId );
@@ -362,6 +374,9 @@ namespace gum {
     }
 
 
+    // ============================================================================
+    // Computes the Reduced and Ordered Decision Graph  associated to this ordered tree
+    // ============================================================================
     template <typename GUM_SCALAR>
     void IMDDI<GUM_SCALAR>::__toDG(){
        __target->clear();
@@ -425,5 +440,22 @@ namespace gum {
       }
 
       return newNode;
+    }
+
+
+
+    template <typename GUM_SCALAR >
+    void
+    IMDDI<GUM_SCALAR>::__showMap( ){
+        for( auto varIter = __nodeVarMap.beginSafe(); varIter != __nodeVarMap.endSafe(); ++varIter )
+            std::cout << varIter.key() << " - " << varIter.val()->name() << " | ";
+        std::cout << std::endl;
+        for( auto nodeIter = __nodeSonsMap.beginSafe(); nodeIter != __nodeSonsMap.endSafe(); ++nodeIter ) {
+            std::cout << nodeIter.key() << " : ";
+            for( Idx i = 0; i < __nodeVarMap[nodeIter.key()]->domainSize(); ++i )
+              std::cout << i << " -> " << __nodeSonsMap[nodeIter.key()][i] << " - ";
+            std::cout << " | " << std::endl;
+        }
+        std::cout << std::endl << std::endl;
     }
 } // end gum namespace

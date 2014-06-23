@@ -65,6 +65,7 @@ namespace gum {
             __optimalPolicy = nullptr;
 
             __offset = 0;
+            __timey = time(NULL);
         }
 
         // ###################################################################
@@ -134,6 +135,7 @@ namespace gum {
         template<typename GUM_SCALAR>
         void SPIMDDI<GUM_SCALAR>::feedback( const Instantiation& newState, GUM_SCALAR reward){
 
+            std::cout << "Begin Feeadback" << std::endl;
             Observation* obs = new Observation();
 
             for( auto varIter = __lastState.variablesSequence().beginSafe(); varIter != __lastState.variablesSequence().endSafe(); ++varIter)
@@ -144,7 +146,6 @@ namespace gum {
 
             obs->setModality( __rewardVar, __rewardValue2Idx.second(reward) );
 
-            std::cout << obs->toString() << std::endl;
             __learner->addObservation( __lastAction, obs );
             __bin.insert(obs);
 
@@ -157,7 +158,7 @@ namespace gum {
         template<typename GUM_SCALAR>
         Idx SPIMDDI<GUM_SCALAR>::askForAction( ){
 
-            srand( time(NULL) + __offset++ );
+            srand( __timey + __offset++ );
 
             double explo = (double)std::rand( ) / (double)RAND_MAX;
             if( __optimalPolicy != nullptr && explo > __exploThreshold){

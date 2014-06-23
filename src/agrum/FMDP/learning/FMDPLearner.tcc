@@ -124,8 +124,10 @@ namespace gum {
     template <typename GUM_SCALAR>
     void FMDPLearner<GUM_SCALAR>::addObservation( Idx actionId, const Observation* newObs ){
 
-//        for(auto learnerIter = __actionLearners[actionId]->beginSafe(); learnerIter != __actionLearners[actionId]->endSafe(); ++learnerIter)
-//            (*learnerIter)->addObservation(newObs);
+        for(auto learnerIter = __actionLearners[actionId]->beginSafe(); learnerIter != __actionLearners[actionId]->endSafe(); ++learnerIter){
+            (*learnerIter)->addObservation(newObs);
+            (*learnerIter)->updateOrderedTree();
+        }
 
         __rewardLearner->addObservation(newObs);
         __rewardLearner->updateOrderedTree();

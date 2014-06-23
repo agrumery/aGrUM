@@ -99,7 +99,7 @@ namespace gum {
   private :
 
       void __checkRelevance();
-      double __GVal(Idx, Idx);
+      void __computeG();
 
       // ==========================================================================
       /// @name Chi2 computation
@@ -155,7 +155,7 @@ namespace gum {
 
       /// Boolean to indicates whether p-value is relevant or not
       bool __isRelevant;
-      std::vector<bool> __areRelevant;
+//      std::vector<bool> __areRelevant;
   };
 
 } /* namespace gum */
