@@ -18,17 +18,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The class for computing the set of graph changes (over a subgraph)
- * transmitted to learning algorithms
+ * @brief The basic class for computing the set of undigraph changes allowed by
+ * the user to be executed by the learning algorithms
  *
  * Structure learning algorithm try different modifications of the graph. Class
- * GraphChangesGeneratorOnSubDiGraph provides a simple way to compute those that
- * we wish to perform when we wish to limit the set of changes over a subgraph of
- * the graph we learn. For instance, we may wish to relearn an already partially
- * learnt structure just around nodes A,B,C. In this case, we can set the set of
- * target nodes of the GraphChangesGeneratorOnSubDiGraph to {A,B,C} and the set
- * of starting nodes as all the nodes of the graph. In this case, only the arcs
- * whose heads are A, B or C will be trnasmitted to the learning algorithm.
+ * GraphChangesGenerator4UndiGraph provides a simple way to compute those that we
+ * wish to perform. For instance, in the basic PC algorithm for learning
+ * undirected graphs, one may expect that all possible edge additions and
+ * deletions can be applied and GraphChangesGenerator4UndiGraph provides exactly
+ * this set of operations. This class provides the following minimal methods:
+ *   - void setGraph ( const UndiGraph& ) : assigns a new graph as a starting
+ *     point to the generator of graph change operators
+ *   - void modifyGraph ( const GraphChange& ) : indicate to the operator set
+ *     that the graph has been changed and that we need to compute the new
+ *     operators that result from this change
+ *   - void clearChanges () : empty the set of possible operators
+ *   - methods begin () and end () that return iterators allowing to parse the
+ *     available set of operators.
  *
  * Basically, the idea is to use method setGraph at the beginning of the
  * structure learning in order to initialize the possible set of operators.
@@ -43,16 +49,16 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_GRAPH_CHANGES_GENERATOR_ON_SUBDIGRAPH_H
-#define GUM_LEARNING_GRAPH_CHANGES_GENERATOR_ON_SUBDIGRAPH_H
+#ifndef GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_UNDIGRAPH_H
+#define GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_UNDIGRAPH_H
 
 
 #include <agrum/config.h>
 #include <agrum/core/set.h>
 #include <agrum/core/OMPThreads.h>
-#include <agrum/graphs/diGraph.h>
+#include <agrum/graphs/undiGraph.h>
 #include <agrum/learning/graphChange.h>
-#include <agrum/learning/IGraphChangesGenerator4DiGraph.h>
+#include <agrum/learning/IGraphChangesGenerator4UndiGraph.h>
 
 
 namespace gum {
@@ -61,19 +67,25 @@ namespace gum {
   namespace learning {
    
     
-    /** @class GraphChangesGeneratorOnSubDiGraph
-     * @brief The basic class for computing the next graph changes possible in a
-     * structure learning algorithm
+    /** @class GraphChangesGenerator4UndiGraph
+     * @brief The basic class for computing the next graph changes possible in an
+     * undirected structure learning algorithm
      *
      * Structure learning algorithm try different modifications of the graph. Class
-     * GraphChangesGeneratorOnSubDiGraph provides a simple way to compute those
-     * that we wish to perform when we wish to limit the set of changes over a
-     * subgraph of the graph we learn. For instance, we may wish to relearn an
-     * already partially learnt structure just around nodes A,B,C. In this case,
-     * we can set the set of target nodes of the GraphChangesGeneratorOnSubDiGraph
-     * to {A,B,C} and the set of "tail" nodes as all the nodes of the graph. In
-     * this case, only the arcs whose heads are A, B or C will be trnasmitted to
-     * the learning algorithm.
+     * GraphChangesGenerator4UndiGraph provides a simple way to compute those that
+     * we wish to perform. For instance, in the basic PC algorithm for learning
+     * undirected graphs, one may expect that all possible edge additions and
+     * deletions can be applied and GraphChangesGenerator4UndiGraph provides
+     * exactly this set of operations. This class provides the following minimal
+     * methods:
+     *   - void setGraph ( const UndiGraph& ) : assigns a new graph as a starting
+     *     point to the generator of graph change operators
+     *   - void modifyGraph ( const GraphChange& ) : indicate to the operator set
+     *     that the graph has been changed and that we need to compute the new
+     *     operators that result from this change
+     *   - void clearChanges () : empty the set of possible operators
+     *   - methods begin () and end () that return iterators allowing to parse the
+     *     available set of operators.
      *
      * Basically, the idea is to use method setGraph at the beginning of the
      * structure learning in order to initialize the possible set of operators.
@@ -84,13 +96,13 @@ namespace gum {
      * applied, used again the iterator for loop, and so on. Note that, whenever
      * you execute method modifyGraph, this will automatically flush the current
      * list of changes and put into the list only the changes that are affected
-     * by the graph modification. 
+     * by the graph modification.
      *
      * @ingroup learning_group
      */
     template <typename STRUCT_CONSTRAINT>
-    class GraphChangesGeneratorOnSubDiGraph :
-    public IGraphChangesGenerator4DiGraph {
+    class GraphChangesGenerator4UndiGraph :
+      public IGraphChangesGenerator4UndiGraph {
     public:
 
       /// the iterator for parsing the list of possible graph change operators
@@ -106,18 +118,18 @@ namespace gum {
       /// @{
 
       /// default constructor
-      GraphChangesGeneratorOnSubDiGraph ( STRUCT_CONSTRAINT& constraint );
+      GraphChangesGenerator4UndiGraph ( STRUCT_CONSTRAINT& constraint );
 
       /// copy constructor
-      GraphChangesGeneratorOnSubDiGraph
-      ( const GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>& from );
+      GraphChangesGenerator4UndiGraph
+      ( const GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>& from );
 
       /// move operator
-      GraphChangesGeneratorOnSubDiGraph
-      ( GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>&& from );
+      GraphChangesGenerator4UndiGraph
+      ( GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>&& from );
 
       /// destructor
-      virtual ~GraphChangesGeneratorOnSubDiGraph ();
+      virtual ~GraphChangesGenerator4UndiGraph ();
 
       /// @}
 
@@ -128,14 +140,14 @@ namespace gum {
       /// @{
 
       /// copy operator
-      GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>&
+      GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>&
       operator=
-      ( const GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>& from );
+      ( const GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>& from );
 
       /// move operator
-      GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>&
+      GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>&
       operator=
-      ( GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>&& from );
+      ( GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>&& from );
 
       /// @}
 
@@ -160,37 +172,13 @@ namespace gum {
       /// @{
 
       /// sets a new graph from which the operator will compute possible changes
-      void setGraph ( const DiGraph& graph );
-
-      /// assign a set of target nodes
-      void setTargets ( const NodeSet& nodes );
-
-      /// adds a new target node
-      void addTarget ( NodeId node );
-
-      /// removes a target
-      void eraseTarget ( NodeId node );
-
-      /// assign a set of "tail" nodes
-      void setTails ( const NodeSet& nodes );
-
-      /// assign a set of "tail" nodes from 0 to nb_nodes - 1
-      void setTails ( unsigned int nb_nodes );
-
-      /// adds a new "tail" node
-      void addTail ( NodeId node );
-
-      /// removes a tail node
-      void eraseTail ( NodeId node );
+      void setGraph ( const UndiGraph& graph );
 
       /// notify the operator set of a change applied to the graph
-      void modifyGraph ( const ArcAddition& change );
+      void modifyGraph ( const EdgeAddition& change );
 
       /// notify the operator set of a change applied to the graph
-      void modifyGraph ( const ArcDeletion& change );
-
-      /// notify the operator set of a change applied to the graph
-      void modifyGraph ( const ArcReversal& change );
+      void modifyGraph ( const EdgeDeletion& change );
 
       /// notify the operator set of a change applied to the graph
       void modifyGraph ( const GraphChange& change );
@@ -205,15 +193,12 @@ namespace gum {
       
 
     protected:
+      /// the graph on which we generate operators
+      UndiGraph _graph;
+
       /// a reference on the structural constraint used to restrict the changes
       STRUCT_CONSTRAINT* _constraint;
 
-      /// the set of target nodes
-      NodeSet _target_nodes;
-
-      /// the tail nodes (other extremities than the targets)
-      NodeSet _tail_nodes;
-      
       /// the current set of operators
       Set<GraphChange> _legal_changes;
 
@@ -230,7 +215,7 @@ namespace gum {
 
 
 /// always include the templated functions
-#include <agrum/learning/graphChangesGeneratorOnSubDiGraph.tcc>
+#include <agrum/learning/graphChangesGenerator4UndiGraph.tcc>
 
 
-#endif /* GUM_LEARNING_GRAPH_CHANGES_GENERATOR_ON_SUBDIGRAPH_H */
+#endif /* GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_UNDIGRAPH_H */

@@ -40,8 +40,8 @@ namespace gum {
               typename STRUCT_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR>
     DAG LocalSearchWithTabuList::learnStructure
-    ( GraphChangesSelector<SCORE,STRUCT_CONSTRAINT,GRAPH_CHANGES_GENERATOR>&
-      selector,
+    ( GraphChangesSelector4DiGraph<SCORE,STRUCT_CONSTRAINT,
+                                   GRAPH_CHANGES_GENERATOR>& selector,
       const std::vector<unsigned int>& modal,
       unsigned int N,
       DAG dag ) {
@@ -193,8 +193,8 @@ namespace gum {
               typename PARAM_ESTIMATOR>
     BayesNet<GUM_SCALAR>
     LocalSearchWithTabuList::learnBN
-    ( GraphChangesSelector<SCORE,STRUCT_CONSTRAINT,GRAPH_CHANGES_GENERATOR>&
-      selector,
+    ( GraphChangesSelector4DiGraph<SCORE,STRUCT_CONSTRAINT,
+                                   GRAPH_CHANGES_GENERATOR>& selector,
       PARAM_ESTIMATOR& estimator,
       const std::vector<std::string>& names,
       const std::vector<unsigned int>& modal,
@@ -234,9 +234,9 @@ namespace gum {
       GraphChangesGenerator4DiGraph< decltype ( struct_constraint ) >
         op_set ( struct_constraint );
     
-      gum::learning::GraphChangesSelector< decltype ( score ),
-                                           decltype ( struct_constraint ),
-                                           GraphChangesGenerator4DiGraph >
+      GraphChangesSelector4DiGraph< decltype ( score ),
+                                    decltype ( struct_constraint ),
+                                    GraphChangesGenerator4DiGraph >
         selector ( score, struct_constraint, op_set );
 
       return learnBN<GUM_SCALAR> ( selector, estimator,

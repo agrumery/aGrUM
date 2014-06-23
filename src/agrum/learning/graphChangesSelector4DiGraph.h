@@ -18,13 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The mecanism to compute the next available graph changes for learning
- * search algorithms.
+ * @brief The mecanism to compute the next available graph changes for directed
+ * structure learning search algorithms.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_GRAPH_CHANGES_SELECTOR_H
-#define GUM_LEARNING_GRAPH_CHANGES_SELECTOR_H
+#ifndef GUM_LEARNING_GRAPH_CHANGES_SELECTOR_4_DIGRAPH_H
+#define GUM_LEARNING_GRAPH_CHANGES_SELECTOR_4_DIGRAPH_H
 
 #include <vector>
 
@@ -40,14 +40,16 @@ namespace gum {
   
   namespace learning {
 
-    /** @class GraphChangesSelector
-     * @brief The local search learning algorithm (for directed graphs)
+    
+    /** @class GraphChangesSelector4DiGraph
+     * @brief The mecanism to compute the next available graph changes for
+     * directed structure learning search algorithms.
      * @ingroup learning_group
      */
     template <typename SCORE,
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR>
-    class GraphChangesSelector {
+    class GraphChangesSelector4DiGraph {
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -55,23 +57,23 @@ namespace gum {
       /// @{
 
       /// default constructor
-      GraphChangesSelector
+      GraphChangesSelector4DiGraph
       ( SCORE& score,
         STRUCTURAL_CONSTRAINT& constraint,
         GRAPH_CHANGES_GENERATOR<STRUCTURAL_CONSTRAINT>& changes_generator );
 
       /// copy constructor
-      GraphChangesSelector
-      ( const GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,
-                                   GRAPH_CHANGES_GENERATOR>& from );
+      GraphChangesSelector4DiGraph
+      ( const GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                           GRAPH_CHANGES_GENERATOR>& from );
 
       /// move constructor
-      GraphChangesSelector
-      ( GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,
-                             GRAPH_CHANGES_GENERATOR>&& from );
+      GraphChangesSelector4DiGraph
+      ( GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                     GRAPH_CHANGES_GENERATOR>&& from );
 
       /// destructor
-      ~GraphChangesSelector ();
+      ~GraphChangesSelector4DiGraph ();
 
       /// @}
 
@@ -82,16 +84,18 @@ namespace gum {
       /// @{
 
       /// copy operator
-      GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>&
+      GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                   GRAPH_CHANGES_GENERATOR>&
       operator=
-      ( const GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,
-                                   GRAPH_CHANGES_GENERATOR>& from );
+      ( const GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                           GRAPH_CHANGES_GENERATOR>& from );
 
       /// move operator
-      GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>&
+      GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                   GRAPH_CHANGES_GENERATOR>&
       operator=
-      ( GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,
-                             GRAPH_CHANGES_GENERATOR>&& from );
+      ( GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                     GRAPH_CHANGES_GENERATOR>&& from );
 
       /// @}
 
@@ -242,8 +246,8 @@ namespace gum {
 
 
 /// always include templated methods
-#include <agrum/learning/graphChangesSelector.tcc>
+#include <agrum/learning/graphChangesSelector4DiGraph.tcc>
 
 
-#endif /* GUM_LEARNING_GRAPH_CHANGES_SELECTOR_H */
+#endif /* GUM_LEARNING_GRAPH_CHANGES_SELECTOR_4_DIGRAPH_H */
 

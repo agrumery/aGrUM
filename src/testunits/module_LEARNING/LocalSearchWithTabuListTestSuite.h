@@ -113,7 +113,7 @@ namespace gum_tests {
         < decltype ( struct_constraint ) >
         op_set ( struct_constraint );
     
-      gum::learning::GraphChangesSelector<
+      gum::learning::GraphChangesSelector4DiGraph<
         decltype ( score ),
         decltype ( struct_constraint ),
         gum::learning::GraphChangesGenerator4DiGraph >
@@ -187,7 +187,7 @@ namespace gum_tests {
         < decltype ( struct_constraint ) >
         op_set ( struct_constraint );
     
-      gum::learning::GraphChangesSelector<
+      gum::learning::GraphChangesSelector4DiGraph<
         decltype ( score ),
         decltype ( struct_constraint ),
         gum::learning::GraphChangesGenerator4DiGraph >
@@ -248,7 +248,7 @@ namespace gum_tests {
         < decltype ( struct_constraint ) >
         op_set ( struct_constraint );
     
-      gum::learning::GraphChangesSelector<
+      gum::learning::GraphChangesSelector4DiGraph<
         decltype ( score ),
         decltype ( struct_constraint ),
         gum::learning::GraphChangesGenerator4DiGraph >
@@ -310,7 +310,7 @@ namespace gum_tests {
         < decltype ( struct_constraint ) >
         op_set ( struct_constraint );
     
-      gum::learning::GraphChangesSelector<
+      gum::learning::GraphChangesSelector4DiGraph<
         decltype ( score ),
         decltype ( struct_constraint ),
         gum::learning::GraphChangesGenerator4DiGraph >

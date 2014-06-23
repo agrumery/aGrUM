@@ -38,6 +38,7 @@
 #include <agrum/learning/constraints/structuralConstraint2TimeSlice.h>
 #include <agrum/learning/constraints/structuralConstraintSet.h>
 #include <agrum/learning/graphChangesGenerator4DiGraph.h>
+#include <agrum/learning/graphChangesGenerator4UndiGraph.h>
 #include <agrum/learning/graphChangesGeneratorOnSubDiGraph.h>
 #include <agrum/learning/greedyHillClimbing.h>
 #include <agrum/learning/paramEstimatorML.h>
@@ -97,7 +98,7 @@ namespace gum_tests {
         < decltype ( struct_constraint ) >
         op_set ( struct_constraint );
     
-      gum::learning::GraphChangesSelector<
+      gum::learning::GraphChangesSelector4DiGraph<
         decltype ( score ),
         decltype ( struct_constraint ),
         gum::learning::GraphChangesGenerator4DiGraph >
@@ -157,7 +158,7 @@ namespace gum_tests {
         < decltype ( struct_constraint ) >
         op_set ( struct_constraint );
     
-      gum::learning::GraphChangesSelector<
+      gum::learning::GraphChangesSelector4DiGraph<
         decltype ( score ),
         decltype ( struct_constraint ),
         gum::learning::GraphChangesGenerator4DiGraph >
@@ -205,7 +206,7 @@ namespace gum_tests {
         < decltype ( struct_constraint ) >
         op_set ( struct_constraint );
     
-      gum::learning::GraphChangesSelector<
+      gum::learning::GraphChangesSelector4DiGraph<
         decltype ( score ),
         decltype ( struct_constraint ),
         gum::learning::GraphChangesGenerator4DiGraph >
@@ -253,7 +254,7 @@ namespace gum_tests {
         < decltype ( struct_constraint ) >
         op_set ( struct_constraint );
     
-      gum::learning::GraphChangesSelector<
+      gum::learning::GraphChangesSelector4DiGraph<
         decltype ( score ),
         decltype ( struct_constraint ),
         gum::learning::GraphChangesGenerator4DiGraph >
@@ -302,7 +303,7 @@ namespace gum_tests {
         < decltype ( struct_constraint ) >
         op_set ( struct_constraint );
     
-      gum::learning::GraphChangesSelector<
+      gum::learning::GraphChangesSelector4DiGraph<
         decltype ( score ),
         decltype ( struct_constraint ),
         gum::learning::GraphChangesGenerator4DiGraph >
@@ -353,7 +354,7 @@ namespace gum_tests {
         < decltype ( struct_constraint ) >
         op_set ( struct_constraint );
     
-      gum::learning::GraphChangesSelector<
+      gum::learning::GraphChangesSelector4DiGraph<
         decltype ( score ),
         decltype ( struct_constraint ),
         gum::learning::GraphChangesGenerator4DiGraph >
@@ -400,7 +401,7 @@ namespace gum_tests {
       gum::learning::ParamEstimatorML<decltype ( filter ) >
         estimator ( filter, modalities );
 
-      gum::learning::GraphChangesGeneratorOnSubGraph
+      gum::learning::GraphChangesGeneratorOnSubDiGraph
         < decltype ( struct_constraint ) >
         op_set ( struct_constraint );
 
@@ -408,10 +409,10 @@ namespace gum_tests {
       op_set.setTargets ( targets );
       op_set.setTails ( modalities.size () );
     
-      gum::learning::GraphChangesSelector<
+      gum::learning::GraphChangesSelector4DiGraph<
         decltype ( score ),
         decltype ( struct_constraint ),
-        gum::learning::GraphChangesGeneratorOnSubGraph >
+        gum::learning::GraphChangesGeneratorOnSubDiGraph >
       selector ( score, struct_constraint, op_set );
  
       gum::learning::GreedyHillClimbing search;

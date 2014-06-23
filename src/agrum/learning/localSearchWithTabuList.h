@@ -37,7 +37,7 @@
 #include <agrum/graphs/DAG.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/learning/graphChange.h>
-#include <agrum/learning/graphChangesSelector.h>
+#include <agrum/learning/graphChangesSelector4DiGraph.h>
 #include <agrum/learning/graphChangesGenerator4DiGraph.h>
 #include <agrum/learning/database/databaseFromCSV.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorUniversal.h>
@@ -114,8 +114,8 @@ namespace gum {
                 template <typename> class GRAPH_CHANGES_GENERATOR>
       DAG
       learnStructure
-      ( GraphChangesSelector<SCORE,STRUCT_CONSTRAINT,GRAPH_CHANGES_GENERATOR>&
-        selector,
+      ( GraphChangesSelector4DiGraph<SCORE,STRUCT_CONSTRAINT,
+                                     GRAPH_CHANGES_GENERATOR>& selector,
         const std::vector<unsigned int>& modal,
         unsigned int N = 2,
         DAG initial_dag = DAG () );
@@ -128,8 +128,8 @@ namespace gum {
                 typename PARAM_ESTIMATOR>
       BayesNet<GUM_SCALAR>
       learnBN
-      ( GraphChangesSelector<SCORE,STRUCT_CONSTRAINT,GRAPH_CHANGES_GENERATOR>&
-        selector,
+      ( GraphChangesSelector4DiGraph<SCORE,STRUCT_CONSTRAINT,
+                                     GRAPH_CHANGES_GENERATOR>& selector,
         PARAM_ESTIMATOR& estimator,
         const std::vector<std::string>& names,
         const std::vector<unsigned int>& modal,

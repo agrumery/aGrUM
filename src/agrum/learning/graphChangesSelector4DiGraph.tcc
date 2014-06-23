@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The mecanism to compute the next available graph changes for learning
- * search algorithms.
+ * @brief The mecanism to compute the next available graph changes for directed
+ * structure learning search algorithms.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -39,8 +39,9 @@ namespace gum {
     template <typename SCORE,
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,
-                         GRAPH_CHANGES_GENERATOR>::GraphChangesSelector
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
+    GraphChangesSelector4DiGraph
     ( SCORE& score,
       STRUCTURAL_CONSTRAINT& constraint,
       GRAPH_CHANGES_GENERATOR<STRUCTURAL_CONSTRAINT>& changes_generator ) :
@@ -48,7 +49,7 @@ namespace gum {
       __constraint ( &constraint ),
       __changes_generator ( &changes_generator ) {
       __parents.reserve ( 32 );
-      //GUM_CONSTRUCTOR ( learning::GraphChangesSelector );
+      //GUM_CONSTRUCTOR ( learning::GraphChangesSelector4DiGraph );
     }
 
 
@@ -56,9 +57,10 @@ namespace gum {
     template <typename SCORE,
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR>
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,
-                         GRAPH_CHANGES_GENERATOR>::GraphChangesSelector
-    ( const GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
+    GraphChangesSelector4DiGraph
+    ( const GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
                                  GRAPH_CHANGES_GENERATOR>& from ) :
       __score                 ( from.__score ),
       __constraint            ( from.__constraint ),
@@ -73,7 +75,7 @@ namespace gum {
       __queues_valid          ( from.__queues_valid ),
       __queues_to_update      ( from.__queues_to_update ) {
       // for debugging
-      //GUM_CONS_CPY ( learning::GraphChangesSelector );
+      //GUM_CONS_CPY ( learning::GraphChangesSelector4DiGraph );
     }
 
 
@@ -81,9 +83,10 @@ namespace gum {
     template <typename SCORE,
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR>
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,
-                         GRAPH_CHANGES_GENERATOR>::GraphChangesSelector
-    ( GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
+    GraphChangesSelector4DiGraph
+    ( GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
                            GRAPH_CHANGES_GENERATOR>&& from ) :
       __score                 ( std::move ( from.__score ) ),
       __constraint            ( std::move ( from.__constraint ) ),
@@ -98,7 +101,7 @@ namespace gum {
       __queues_valid          ( std::move ( from.__queues_valid ) ),
       __queues_to_update      ( std::move ( from.__queues_to_update ) ) {
       // for debugging
-      //GUM_CONS_MOV ( learning::GraphChangesSelector );
+      //GUM_CONS_MOV ( learning::GraphChangesSelector4DiGraph );
     }
 
 
@@ -106,9 +109,10 @@ namespace gum {
     template <typename SCORE,
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,
-                         GRAPH_CHANGES_GENERATOR>::~GraphChangesSelector () {
-      GUM_DESTRUCTOR ( learning::GraphChangesSelector );
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
+    ~GraphChangesSelector4DiGraph () {
+      //GUM_DESTRUCTOR ( learning::GraphChangesSelector4DiGraph );
     }
 
 
@@ -116,10 +120,12 @@ namespace gum {
     template <typename SCORE,
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR>
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>&
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
-    operator=  ( const GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,
-                                             GRAPH_CHANGES_GENERATOR>& from ) {
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>&
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
+    operator=  ( const GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                 GRAPH_CHANGES_GENERATOR>& from ) {
       if ( this != &from ) {
         __score                 = from.__score;
         __constraint            = from.__constraint;
@@ -143,10 +149,12 @@ namespace gum {
     template <typename SCORE,
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR>
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>&
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
-    operator= ( GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,
-                                      GRAPH_CHANGES_GENERATOR>&& from ) {
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>&
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
+    operator= ( GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                GRAPH_CHANGES_GENERATOR>&& from ) {
       if ( this != &from ) {
         __score                 = std::move ( from.__score );
         __constraint            = std::move ( from.__constraint );
@@ -171,7 +179,8 @@ namespace gum {
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
     void
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
     __addScoreToCompute ( unsigned int change_index ) const {
       const GraphChange& change = __changes[change_index];
       
@@ -232,7 +241,8 @@ namespace gum {
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
     bool
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
     __isChangeValid ( unsigned int index ) const {
       return __constraint->checkModification ( __changes[index] );
     }
@@ -243,7 +253,8 @@ namespace gum {
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
     bool
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
     isChangeValid ( const GraphChange& change ) const {
       return __constraint->checkModification ( change );
     }
@@ -254,7 +265,8 @@ namespace gum {
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR>
     void
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
     setGraph ( DiGraph& graph,
                const std::vector<unsigned int>& modal ) {
       // fill the DAG with all the missing nodes
@@ -366,7 +378,8 @@ namespace gum {
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
     void
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
     __invalidateChange ( unsigned int change_index ) {
       const GraphChange& change = __changes[change_index];
       if ( change.type () == GraphChangeType::ARC_REVERSAL ) {
@@ -403,7 +416,8 @@ namespace gum {
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
     bool
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
     empty () {
       // put into the illegal change set all the top elements of the different
       // queues that are not valid anymore
@@ -425,7 +439,8 @@ namespace gum {
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
     bool
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
     empty ( unsigned int i ) {
       // put into the illegal change set all the top elements of the different
       // queues that are not valid anymore
@@ -447,7 +462,8 @@ namespace gum {
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
     const GraphChange&
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
     bestChange () {
       if ( ! empty () )
         return __changes[__change_queue_per_node[__node_queue.top ()].top ()];
@@ -461,7 +477,8 @@ namespace gum {
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
     const GraphChange&
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
     bestChange ( unsigned int i ) {
       GUM_ASSERT ( i < __change_queue_per_node.size () );
       if ( ! empty ( i ) )
@@ -476,7 +493,8 @@ namespace gum {
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
     float
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
     bestScore () {
       if ( ! empty () ) 
         return __change_queue_per_node[__node_queue.top ()].topPriority ();
@@ -490,7 +508,8 @@ namespace gum {
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
     float
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
     bestScore ( unsigned int i ) {
       GUM_ASSERT ( i < __change_queue_per_node.size () );
       if ( ! empty ( i ) ) 
@@ -505,7 +524,8 @@ namespace gum {
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
     void
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
     __illegal2LegalChanges ( Set<unsigned int>& changes_to_recompute ) {
       for ( auto iter = __illegal_changes.beginSafe ();
             iter != __illegal_changes.endSafe (); ++iter ) {
@@ -530,7 +550,8 @@ namespace gum {
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
     void
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
     __findLegalChangesNeedingUpdate ( Set<unsigned int>& changes_to_recompute,
                                       NodeId target_node ) {
       const HashTable<unsigned int,Size>&
@@ -553,7 +574,8 @@ namespace gum {
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
     void
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
     __updateScores ( const Set<unsigned int>& changes_to_recompute ) {
       // prepare the computations of the cores
       __score->clear ();
@@ -623,7 +645,8 @@ namespace gum {
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
     void
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
     __getNewChanges () {
       // ask the graph change generator for all its available changes
       for ( const auto& change : *__changes_generator ) {
@@ -650,7 +673,8 @@ namespace gum {
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
     void
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
     applyChange ( const GraphChange& change ) {
       // first, we get the index of the change
       unsigned change_index = __changes.pos ( change );
@@ -761,7 +785,8 @@ namespace gum {
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
     void
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
     applyChangeWithoutScoreUpdate ( const GraphChange& change ) {
       // first, we get the index of the change
       unsigned change_index = __changes.pos ( change );
@@ -870,7 +895,8 @@ namespace gum {
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
     void
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
     updateScoresAfterAppliedChanges () {
       // determine which changes in the illegal set are now legal
       Set<unsigned int> new_legal_changes;
@@ -914,7 +940,8 @@ namespace gum {
               typename STRUCTURAL_CONSTRAINT,
               template <typename> class GRAPH_CHANGES_GENERATOR> INLINE
     std::vector< std::pair<unsigned int,float> >
-    GraphChangesSelector<SCORE,STRUCTURAL_CONSTRAINT,GRAPH_CHANGES_GENERATOR>::
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::
     nodesSortedByBestScore () const {
       std::vector< std::pair<unsigned int,float> > result ( __node_queue.size () );
        for ( unsigned int i = 0; i < __node_queue.size (); ++i ) {
