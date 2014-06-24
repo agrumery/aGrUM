@@ -200,15 +200,57 @@ class PythonApproximationListener(_object):
 PythonApproximationListener_swigregister = _pyAgrum.PythonApproximationListener_swigregister
 PythonApproximationListener_swigregister(PythonApproximationListener)
 
+class BNGenerator(_object):
+    """Proxy of C++ BNGenerator class"""
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, BNGenerator, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, BNGenerator, name)
+    __repr__ = _swig_repr
+    def generate(self, n_nodes=10, n_arcs=15, n_modmax=4):
+        """
+        generate(BNGenerator self, gum::Size n_nodes=10, gum::Size n_arcs=15, gum::Size n_modmax=4) -> BayesNet_double
+        generate(BNGenerator self, gum::Size n_nodes=10, gum::Size n_arcs=15) -> BayesNet_double
+        generate(BNGenerator self, gum::Size n_nodes=10) -> BayesNet_double
+        generate(BNGenerator self) -> BayesNet_double
+        """
+        return _pyAgrum.BNGenerator_generate(self, n_nodes, n_arcs, n_modmax)
 
-def generateBN(n_nodes=10, n_arcs=15, n_modmax=4):
-  """
-    generateBN(gum::Size n_nodes=10, gum::Size n_arcs=15, gum::Size n_modmax=4) -> BayesNet_double
-    generateBN(gum::Size n_nodes=10, gum::Size n_arcs=15) -> BayesNet_double
-    generateBN(gum::Size n_nodes=10) -> BayesNet_double
-    generateBN() -> BayesNet_double
-    """
-  return _pyAgrum.generateBN(n_nodes, n_arcs, n_modmax)
+    def __init__(self): 
+        """__init__(BNGenerator self) -> BNGenerator"""
+        this = _pyAgrum.new_BNGenerator()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _pyAgrum.delete_BNGenerator
+    __del__ = lambda self : None;
+BNGenerator_swigregister = _pyAgrum.BNGenerator_swigregister
+BNGenerator_swigregister(BNGenerator)
+
+class BNLearnerFromCSV(_object):
+    """Proxy of C++ BNLearnerFromCSV class"""
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, BNLearnerFromCSV, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, BNLearnerFromCSV, name)
+    __repr__ = _swig_repr
+    def GreedyHillClimbing(self, *args):
+        """GreedyHillClimbing(BNLearnerFromCSV self, char * filename) -> BayesNet_double"""
+        return _pyAgrum.BNLearnerFromCSV_GreedyHillClimbing(self, *args)
+
+    def LocalSearchWithTabu(self, *args):
+        """LocalSearchWithTabu(BNLearnerFromCSV self, char * filename) -> BayesNet_double"""
+        return _pyAgrum.BNLearnerFromCSV_LocalSearchWithTabu(self, *args)
+
+    def __init__(self): 
+        """__init__(BNLearnerFromCSV self) -> BNLearnerFromCSV"""
+        this = _pyAgrum.new_BNLearnerFromCSV()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _pyAgrum.delete_BNLearnerFromCSV
+    __del__ = lambda self : None;
+BNLearnerFromCSV_swigregister = _pyAgrum.BNLearnerFromCSV_swigregister
+BNLearnerFromCSV_swigregister(BNLearnerFromCSV)
+
 class SwigPyIterator(_object):
     """Proxy of C++ swig::SwigPyIterator class"""
     __swig_setmethods__ = {}

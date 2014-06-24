@@ -39,7 +39,8 @@ from pyAgrum import DiscreteVar,DiscretizedVar,Instantiation,LabelizedVar,RangeV
 from pyAgrum import Potential
 from pyAgrum import BruteForceKL,GibbsInference,GibbsKL,LazyPropagation
 from pyAgrum import PythonApproximationListener,PythonBNListener,PythonLoadListener
-from pyAgrum import generateBN
+from pyAgrum import BNGenerator
+from pyAgrum import BNLearnerFromCSV
 from pyAgrum import initRandom,randomProba,randomDistribution
 
 from pyAgrum import isOMP,setNumberOfThreads,getNumberOfLogicalProcessors,getMaxNumberOfThreads
