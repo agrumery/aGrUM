@@ -947,8 +947,8 @@ namespace gum {
 
       std::vector< std::vector< GUM_SCALAR > > outputCSet; // final set
 
-      char* vfile = tmpnam ( nullptr );
-      std::string svfile ( vfile );
+      std::string svfile = getUniqueFileName (); // generate unique file name, we need to add .ine or .ext for lrs to know which input it is (Hrep to Vrep or Vrep to Hrep)
+
       svfile += ".ext";
 
       std::ofstream v_file ( svfile.c_str(), std::ios::out | std::ios::trunc );
@@ -988,7 +988,7 @@ namespace gum {
       char* args[3];
 
       std::string soft_name = "redund";
-      std::string extfile ( vfile );
+      std::string extfile ( svfile );
       extfile += ".r.ext";
 
       args[0] = new char[soft_name.size()];

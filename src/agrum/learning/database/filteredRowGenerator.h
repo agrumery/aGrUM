@@ -32,7 +32,7 @@
 
 namespace gum {
 
-  
+
   namespace learning {
 
 
@@ -61,7 +61,7 @@ namespace gum {
      *     decreaseRemainingRows ();
      *     return *_input_row;
      *   }
-     * 
+     *
      *   /// the method that computes the set of FilteredRows
      *   unsigned int _computeRows () {
      *     __nb = 0;
@@ -74,88 +74,89 @@ namespace gum {
      * @endcode
      */
     class FilteredRowGenerator {
-    public:
-      
-      // ##########################################################################
-      /// @name Constructors / Destructors
-      // ##########################################################################
+      public:
 
-      /// @{
+        // ##########################################################################
+        /// @name Constructors / Destructors
+        // ##########################################################################
 
-      /// default constructor
-      FilteredRowGenerator () noexcept;
+        /// @{
 
-      /// copy constructor
-      FilteredRowGenerator ( const FilteredRowGenerator& from ) noexcept;
+        /// default constructor
+        FilteredRowGenerator () noexcept;
 
-      /// move constructor
-      FilteredRowGenerator ( FilteredRowGenerator&& from ) noexcept;
+        /// copy constructor
+        FilteredRowGenerator ( const FilteredRowGenerator& from ) noexcept;
 
-      /// destructor
-      virtual ~FilteredRowGenerator () noexcept;
+        /// move constructor
+        FilteredRowGenerator ( FilteredRowGenerator&& from ) noexcept;
 
-      /// @}
+        /// destructor
+        virtual ~FilteredRowGenerator () noexcept;
+
+        /// @}
 
 
-      // ##########################################################################
-      /// @name Operators
-      // ##########################################################################
+        // ##########################################################################
+        /// @name Operators
+        // ##########################################################################
 
-      /// @{
+        /// @{
 
-      /// copy constructor
-      FilteredRowGenerator& operator= ( const FilteredRowGenerator& ) noexcept;
-      
-      /// move constructor
-      FilteredRowGenerator& operator= ( FilteredRowGenerator&& ) noexcept;
-      
-      /// @}
-      
- 
-      // ##########################################################################
-      /// @name Accessors / Modifiers
-      // ##########################################################################
+        /// copy constructor
+        FilteredRowGenerator& operator= ( const FilteredRowGenerator& ) noexcept;
 
-      /// @{
+        /// move constructor
+        FilteredRowGenerator& operator= ( FilteredRowGenerator&& ) noexcept;
 
-      /// returns true if there are still rows that can be output by the RowFilter
-      bool hasRows () noexcept;
+        /// @}
 
-      /// sets the input row from which the generator will create new rows
-      void setInputRow ( FilteredRow& row ) noexcept;
-      
-      /// generate new rows from the input row
-      virtual FilteredRow& generate () = 0;
 
-      /// decrease the number of remaining output rows
-      void decreaseRemainingRows () noexcept;
+        // ##########################################################################
+        /// @name Accessors / Modifiers
+        // ##########################################################################
 
-      /// the method that computes the set of FilteredRows
-      virtual unsigned int _computeRows () = 0;
+        /// @{
 
-      /// resets the filter
-      virtual void reset ();
-      
-      /// @}
+        /// returns true if there are still rows that can be output by the RowFilter
+        bool hasRows () noexcept;
 
-    protected:
-      /// the row used as input to generate the output FilteredRows
-      FilteredRow* _input_row { nullptr };
+        /// sets the input row from which the generator will create new rows
+        void setInputRow ( FilteredRow& row ) noexcept;
 
-      /// the number of output rows still to retrieve through the generate method
-      unsigned int _nb_remaining_output_rows { 0 };
+        /// generate new rows from the input row
+        virtual FilteredRow& generate () = 0;
+
+        /// decrease the number of remaining output rows
+        void decreaseRemainingRows () noexcept;
+
+        /// the method that computes the set of FilteredRows
+        virtual unsigned int _computeRows () = 0;
+
+        /// resets the filter
+        virtual void reset ();
+
+        /// @}
+
+      protected:
+        /// the row used as input to generate the output FilteredRows
+        FilteredRow* _input_row { nullptr };
+
+        /// the number of output rows still to retrieve through the generate method
+        unsigned int _nb_remaining_output_rows { 0 };
 
     };
 
 
   } /* namespace learning */
 
-  
+
 } /* namespace gum */
 
-
-// always include the template implementation
-#include <agrum/learning/database/filteredRowGenerator.tcc>
+/// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/learning/database/filteredRowGenerator.inl>
+#endif /* GUM_NO_INLINE */
 
 
 #endif /* GUM_LEARNING_FILTERED_ROW_GENERATOR_H */

@@ -35,7 +35,7 @@
 
 namespace gum {
 
-  
+
   namespace learning {
 
 
@@ -43,165 +43,165 @@ namespace gum {
      * @ingroup learning_group
      * @brief the type of the elements read from the database */
     class DBCell {
-    public:
-      
-      /// the set of types possibly taken by the last element read
-      enum EltType {
-        FLOAT, STRING, MISSING
-      };
+      public:
 
-      // ##########################################################################
-      /// @name Constructors / Destructors
-      // ##########################################################################
+        /// the set of types possibly taken by the last element read
+        enum EltType {
+          FLOAT, STRING, MISSING
+        };
 
-      /// @{
+        // ##########################################################################
+        /// @name Constructors / Destructors
+        // ##########################################################################
 
-      /// default constructor
-      DBCell ();
+        /// @{
 
-      /// constructor for a real number
-      DBCell ( float nb );
+        /// default constructor
+        DBCell ();
 
-      /// constructor for a string
-      DBCell ( const std::string& str );
+        /// constructor for a real number
+        DBCell ( float nb );
 
-      /// copy constructor
-      DBCell ( const DBCell& from );
+        /// constructor for a string
+        DBCell ( const std::string& str );
 
-      /// move constructor
-      DBCell ( DBCell&& from );
+        /// copy constructor
+        DBCell ( const DBCell& from );
 
-      /// destructor
-      ~DBCell ();
+        /// move constructor
+        DBCell ( DBCell&& from );
 
-      /// @}
+        /// destructor
+        ~DBCell ();
 
-      
-      // ##########################################################################
-      /// @name Operators
-      // ##########################################################################
-
-      /// @{
-
-      /// copy operator
-      DBCell& operator= ( const DBCell& from );
-
-      /// move operator
-      DBCell& operator= ( DBCell&& from );
-
-      /// unsafe set operator (assumes that the preceding type is of the same type)
-      DBCell& operator= ( float x ) noexcept;
-
-      /// unsafe set operator (assumes that the preceding type is of the same type)
-      DBCell& operator= ( const std::string& x ) noexcept;
-      
-      /// @}
+        /// @}
 
 
-      // ##########################################################################
-      /// @name Accessors / Modifiers
-      // ##########################################################################
+        // ##########################################################################
+        /// @name Operators
+        // ##########################################################################
 
-      /// @{
+        /// @{
 
-      /// returns the DBcell as a float (without checking its type)
-      /** @warning this method is unsafe: it assumes that you know the
-       * correct type of the element in the DBCell */
-      float getFloat () const noexcept;
+        /// copy operator
+        DBCell& operator= ( const DBCell& from );
 
-      /// returns the DBcell as a float (safe with type checking)
-      /** @throw TypeError if the DBCell does not contain this type */
-      float getFloatSafe () const;
+        /// move operator
+        DBCell& operator= ( DBCell&& from );
 
-      /// unsafe set (assumes that the preceding type is of the same type)
-      void setFloat ( float x );
+        /// unsafe set operator (assumes that the preceding type is of the same type)
+        DBCell& operator= ( float x ) noexcept;
 
-      /// sets the content of the DBCell (safe type checking)
-      void setFloatSafe ( float elt );
-      
-      /// returns the DBcell as a string (without checking its type)
-      /** @warning this method is unsafe: it assumes that you know the
-       * correct type of the element in the DBCell */
-      const std::string& getString () const noexcept;
-      
-     /// returns the DBcell as a string (safe with type checking)
-      /** @throw TypeError if the DBCell does not contain this type */
-      const std::string& getStringSafe () const;
+        /// unsafe set operator (assumes that the preceding type is of the same type)
+        DBCell& operator= ( const std::string& x ) noexcept;
 
-      /** @brief returns the DBcell as the index of a string in a static bijection
-       * (without checking its type)
-       *
-       * @warning this method is unsafe: it assumes that you know the
-       * correct type of the element in the DBCell */
-      int getStringIndex () const noexcept;
-      
-      /// returns the DBcell as the index of a string in a static bijection
-      int getStringIndexSafe () const;
-      
-      /// strings are stored into a static bijection. Get its ith string
-      static const std::string& getString ( unsigned int index );
+        /// @}
 
-     /// unsafe set (assumes that the preceding type is of the same type)
-      void setString ( const std::string& x );
 
-      /// sets the content of the DBCell (safe type checking)
-      void setStringSafe ( const std::string& elt );
+        // ##########################################################################
+        /// @name Accessors / Modifiers
+        // ##########################################################################
 
-      /// sets the DBCell as a missing element
-      void setMissingSafe ();
-      
-      /// safely sets the content of the DBCell with the best possible type
-      /** This method is used to parse the string passed in argument and
-       * estimate which internal type is the most appropriate for the DBCell.
-       * Then it fills the DBCell with this type. */
-      void setBestTypeSafe ( const std::string& elt );
+        /// @{
 
-      /** @brief safely sets the content of the DBCell with the preceding type or,
-       * if this is not possible, with the best possible type */
-      void setAgainTypeSafe ( const std::string& elt );
+        /// returns the DBcell as a float (without checking its type)
+        /** @warning this method is unsafe: it assumes that you know the
+         * correct type of the element in the DBCell */
+        float getFloat () const noexcept;
 
-      /// returns the current type of the DBCell
-      EltType type () const noexcept;
+        /// returns the DBcell as a float (safe with type checking)
+        /** @throw TypeError if the DBCell does not contain this type */
+        float getFloatSafe () const;
 
-      /// try to convert the content of the DBCell into another type
-      bool convertType ( EltType );
+        /// unsafe set (assumes that the preceding type is of the same type)
+        void setFloat ( float x );
 
-      /// @}
+        /// sets the content of the DBCell (safe type checking)
+        void setFloatSafe ( float elt );
 
-      
-    private:
-      using Float =
-        typename std::conditional<sizeof(float)>=sizeof(int),float,double>::type;
-      
+        /// returns the DBcell as a string (without checking its type)
+        /** @warning this method is unsafe: it assumes that you know the
+         * correct type of the element in the DBCell */
+        const std::string& getString () const noexcept;
 
-      /// the real type of the last element read from the database
-      EltType __type { EltType::FLOAT };
+        /// returns the DBcell as a string (safe with type checking)
+        /** @throw TypeError if the DBCell does not contain this type */
+        const std::string& getStringSafe () const;
 
-      /// the element read from the database
-      union {
-        Float __float { 0.0f };
-        int   __int; // stores string indices
-      };
+        /** @brief returns the DBcell as the index of a string in a static bijection
+         * (without checking its type)
+         *
+         * @warning this method is unsafe: it assumes that you know the
+         * correct type of the element in the DBCell */
+        int getStringIndex () const noexcept;
 
-      /// a bijection assigning to each string index its corresponding string
-      static Bijection<std::string,int> __strings;
+        /// returns the DBcell as the index of a string in a static bijection
+        int getStringIndexSafe () const;
 
-      /// the last index used so far
-      static int __string_max_index;
+        /// strings are stored into a static bijection. Get its ith string
+        static const std::string& getString ( unsigned int index );
 
-      
-      
+        /// unsafe set (assumes that the preceding type is of the same type)
+        void setString ( const std::string& x );
 
-      /// sets the content of the DBCell from a string
-      /** @throws std::invalid_argument if the string cannot be converted */
-      void __setFloatFromStringSafe ( const std::string& str );
+        /// sets the content of the DBCell (safe type checking)
+        void setStringSafe ( const std::string& elt );
+
+        /// sets the DBCell as a missing element
+        void setMissingSafe ();
+
+        /// safely sets the content of the DBCell with the best possible type
+        /** This method is used to parse the string passed in argument and
+         * estimate which internal type is the most appropriate for the DBCell.
+         * Then it fills the DBCell with this type. */
+        void setBestTypeSafe ( const std::string& elt );
+
+        /** @brief safely sets the content of the DBCell with the preceding type or,
+         * if this is not possible, with the best possible type */
+        void setAgainTypeSafe ( const std::string& elt );
+
+        /// returns the current type of the DBCell
+        EltType type () const noexcept;
+
+        /// try to convert the content of the DBCell into another type
+        bool convertType ( EltType );
+
+        /// @}
+
+
+      private:
+        using Float =
+          typename std::conditional<sizeof ( float ) >=sizeof ( int ),float,double>::type;
+
+
+        /// the real type of the last element read from the database
+        EltType __type { EltType::FLOAT };
+
+        /// the element read from the database
+        union {
+          Float __float { 0.0f };
+          int   __int; // stores string indices
+        };
+
+        /// a bijection assigning to each string index its corresponding string
+        static Bijection<std::string,int> __strings;
+
+        /// the last index used so far
+        static int __string_max_index;
+
+
+
+
+        /// sets the content of the DBCell from a string
+        /** @throws std::invalid_argument if the string cannot be converted */
+        void __setFloatFromStringSafe ( const std::string& str );
 
     };
-    
+
 
   } /* namespace learning */
 
-  
+
 } /* namespace gum */
 
 

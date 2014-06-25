@@ -18,23 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief utilities for manipulating strings
+ * @brief The implementation of FilteredRowGenerator
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
- *
  */
-#ifndef GUM_UTILS_STRING_H
-#define GUM_UTILS_STRING_H
 
-#include <vector>
-#include <string>
+#include <agrum/learning/database/filteredRowGenerator.h>
 
-#include <agrum/config.h>
-
-
-namespace gum {
-  std::string getUniqueFileName();
-} /* namespace gum */
-
-
-#endif /* GUM_UTILS_STRING_H */
+/// include the inlined functions if necessary
+#ifdef GUM_NO_INLINE
+#include <agrum/learning/database/filteredRowGenerator.inl>
+#endif /* GUM_NO_INLINE */

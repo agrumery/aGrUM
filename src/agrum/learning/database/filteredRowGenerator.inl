@@ -28,7 +28,7 @@
 
 namespace gum {
 
-  
+
   namespace learning {
 
 
@@ -37,31 +37,29 @@ namespace gum {
       GUM_CONSTRUCTOR ( FilteredRowGenerator );
     }
 
-    
+
     /// copy constructor
-    INLINE FilteredRowGenerator::FilteredRowGenerator
-    ( const FilteredRowGenerator& from ) noexcept :
-      _input_row ( from._input_row ),
-      _nb_remaining_output_rows { from._nb_remaining_output_rows } {
+INLINE FilteredRowGenerator::FilteredRowGenerator ( const FilteredRowGenerator& from ) noexcept :
+    _input_row ( from._input_row ),
+    _nb_remaining_output_rows { from._nb_remaining_output_rows } {
       GUM_CONS_CPY ( FilteredRowGenerator );
     }
 
 
     /// move constructor
-    INLINE FilteredRowGenerator::FilteredRowGenerator
-    ( FilteredRowGenerator&& from ) noexcept :
-      _input_row ( from._input_row ),
-      _nb_remaining_output_rows { from._nb_remaining_output_rows } {
+INLINE FilteredRowGenerator::FilteredRowGenerator ( FilteredRowGenerator&& from ) noexcept :
+    _input_row ( from._input_row ),
+    _nb_remaining_output_rows { from._nb_remaining_output_rows } {
       GUM_CONS_MOV ( FilteredRowGenerator );
     }
 
-    
+
     /// destructor
     INLINE FilteredRowGenerator::~FilteredRowGenerator () noexcept {
       GUM_DESTRUCTOR ( FilteredRowGenerator );
     }
 
-    
+
     /// copy operator
     INLINE FilteredRowGenerator&
     FilteredRowGenerator::operator= ( const FilteredRowGenerator& from ) noexcept {
@@ -92,7 +90,7 @@ namespace gum {
       _nb_remaining_output_rows = _computeRows ();
     }
 
-    
+
     /// decrease the number of remaining output rows
     INLINE void FilteredRowGenerator::decreaseRemainingRows () noexcept {
       --_nb_remaining_output_rows;
@@ -103,11 +101,11 @@ namespace gum {
     INLINE void FilteredRowGenerator::reset () {
       _nb_remaining_output_rows = 0;
     }
-      
-    
+
+
   } /* namespace learning */
 
-  
+
 } /* namespace gum */
 
 
