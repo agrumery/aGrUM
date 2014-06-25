@@ -50,44 +50,44 @@ namespace gum {
   namespace learning {
 
     class CSVParser {
-    public:
-      CSVParser ( std::istream& in, const std::string& delimiter = ",", const char  commentmarker = '#', const char quoteMarker = '"' );
-      virtual ~CSVParser();
+      public:
+        CSVParser ( std::istream& in, const std::string& delimiter = ",", const char  commentmarker = '#', const char quoteMarker = '"' );
+        virtual ~CSVParser();
 
-      /**
-       * gets the next line of the csv stream and parses it
-       *
-       * @return false if there is no next line
-       */
-      bool next();
+        /**
+         * gets the next line of the csv stream and parses it
+         *
+         * @return false if there is no next line
+         */
+        bool next();
 
-      /**
-       * @return the current parsed line
-       *
-       * @throw gum::NullElement if there is no data
-       */
-      const std::vector<std::string>& current()  const;
+        /**
+         * @return the current parsed line
+         *
+         * @throw gum::NullElement if there is no data
+         */
+        const std::vector<std::string>& current()  const;
 
-      /**
-       * return the current noLine of parser line
-       */
-      const Size noLine() const;
+        /**
+         * return the current noLine of parser line
+         */
+        const Size noLine() const;
 
-    private:
-      void __getNextTriplet ( const std::string& str, Size& first_letter_token, Size& next_token, Size& last_letter_token, Size from ) const;
-      void __tokenize ( const std::string& str );
-      Size __correspondingQuoteMarker ( const std::string& str, Size pos ) const;
+      private:
+        void __getNextTriplet ( const std::string& str, Size& first_letter_token, Size& next_token, Size& last_letter_token, Size from ) const;
+        void __tokenize ( const std::string& str );
+        Size __correspondingQuoteMarker ( const std::string& str, Size pos ) const;
 
-      std::string __line;
-      std::string __delimiter;
-      std::string __spaces;
-      std::string __delimiterPlusSpaces;
-      Size __noLine;
-      char __commentMarker;
-      char __quoteMarker;
-      std::istream& __in;
-      std::vector<std::string> __data;
-      bool __emptyData;
+        std::string __line;
+        std::string __delimiter;
+        std::string __spaces;
+        std::string __delimiterPlusSpaces;
+        Size __noLine;
+        char __commentMarker;
+        char __quoteMarker;
+        std::istream& __in;
+        std::vector<std::string> __data;
+        bool __emptyData;
 
     };
 

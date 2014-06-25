@@ -125,6 +125,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS ( __noParsedLine, ( gum::Size ) 4 );
         TS_ASSERT_EQUALS ( res, std::string ( "1:2|5:6:7:8|9:10:11:12|" ) );
       };
+      
 
       void testSimpleCSVwithDoubleQuote() {
         std::string res;

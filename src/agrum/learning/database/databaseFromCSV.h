@@ -36,46 +36,46 @@
 
 namespace gum {
 
-  
+
   namespace learning {
 
-    
+
     class DatabaseFromCSV : public DatabaseVectInRAM {
-    public:
+      public:
 
-      /// the handler used for parsing the database
-      using Handler = typename DatabaseVectInRAM::Handler;
+        /// the handler used for parsing the database
+        using Handler = typename DatabaseVectInRAM::Handler;
 
-      
-      // ##########################################################################
-      /// @name Constructors / Destructors
-      // ##########################################################################
 
-      /// @{
+        // ##########################################################################
+        /// @name Constructors / Destructors
+        // ##########################################################################
 
-      /// default constructor
-      DatabaseFromCSV
-      ( const std::string filename,
-        bool fileContainsNames = true,
-        const DBTransform& transform = DBTransformIdentity (),
-        const std::string delimiter = ",",
-        const char commentmarker = '#',
-        const char quoteMarker = '"',
-        const std::vector<std::string> missingVal = { "?", "N/A", "n/a" } );
+        /// @{
 
-      /// copy constructor
-      DatabaseFromCSV ( const DatabaseFromCSV& from );
+        /// default constructor
+        DatabaseFromCSV
+        ( const std::string filename,
+          bool fileContainsNames = true,
+          const DBTransform& transform = DBTransformIdentity (),
+          const std::string delimiter = ",",
+          const char commentmarker = '#',
+          const char quoteMarker = '"',
+          const std::vector<std::string> missingVal = { "?", "N/A", "n/a" } );
 
-      /// move constructor
-      DatabaseFromCSV ( DatabaseFromCSV&& from );
+        /// copy constructor
+        DatabaseFromCSV ( const DatabaseFromCSV& from );
 
-      /// destructor
-      ~DatabaseFromCSV ();
-      
-      /// @}
-      
+        /// move constructor
+        DatabaseFromCSV ( DatabaseFromCSV&& from );
+
+        /// destructor
+        ~DatabaseFromCSV ();
+
+        /// @}
+
     };
-    
+
 
   } /* namespace learning */
 

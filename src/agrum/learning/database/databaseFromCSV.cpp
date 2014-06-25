@@ -23,7 +23,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <iostream> 
+#include <iostream>
 #include <fstream>
 #include <sstream>
 
@@ -32,7 +32,7 @@
 
 namespace gum {
 
-  
+
   namespace learning {
 
 
@@ -46,7 +46,12 @@ namespace gum {
       const char quoteMarker,
       const std::vector<std::string> missingVal ) {
       // open the file and create the CSVParser that will parse it
-      std::ifstream in ( filename, std::ifstream::in);
+      std::ifstream in ( filename, std::ifstream::in );
+
+      if ( ( in.rdstate() & std::ifstream::failbit ) != 0 ) {
+        GUM_ERROR ( IOError,"File "<<filename<<" not found" );
+      }
+
       CSVParser parser ( in, delimiter, commentmarker, quoteMarker );
 
       // if the first line contains names, store them
@@ -54,19 +59,21 @@ namespace gum {
         parser.next ();
         _variableNames () = parser.current ();
       }
-      
+
       // use the CSVParser to fill the vector of DBRows
       std::vector<DBRow>& vect = _content ();
+
       while ( parser.next () ) {
         // read a new line in the input file and convert it into a DBRow
         const std::vector<std::string>& row = parser.current ();
-        
+
         DBRow new_row ( row.size () );
+
         for ( unsigned int i = 0; i < row.size (); ++i ) {
           new_row[i].setBestTypeSafe ( row[i] );
         }
-        
-        // add the result into 
+
+        // add the result into
         vect.push_back ( new_row );
       }
 
@@ -77,6 +84,7 @@ namespace gum {
       if ( ! fileContainsNames && vect.size () && vect[0].size () ) {
         std::vector<std::string>& names = _variableNames ();
         names.resize ( vect[0].size () );
+
         for ( unsigned int i = 0; i < names.size (); ++i ) {
           std::stringstream s;
           s << "node " << i;
@@ -88,14 +96,14 @@ namespace gum {
       GUM_CONSTRUCTOR ( DatabaseFromCSV );
     }
 
-        
+
     /// copy constructor
     DatabaseFromCSV::DatabaseFromCSV ( const DatabaseFromCSV& from ) :
       DatabaseVectInRAM ( from ) {
       // for debugging purposes
       GUM_CONS_CPY ( DatabaseFromCSV );
     }
-      
+
 
     /// move constructor
     DatabaseFromCSV::DatabaseFromCSV ( DatabaseFromCSV&& from ) :
@@ -103,13 +111,13 @@ namespace gum {
       // for debugging purposes
       GUM_CONS_MOV ( DatabaseFromCSV );
     }
-      
+
 
     /// destructor
     DatabaseFromCSV::~DatabaseFromCSV () {
       GUM_DESTRUCTOR ( DatabaseFromCSV );
     }
-          
+
 
   } /* namespace learning */
 
