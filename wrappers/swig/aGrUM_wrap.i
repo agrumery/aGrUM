@@ -129,6 +129,7 @@ namespace std {
 %exceptionclass gum::OutOfBounds;
 %exceptionclass gum::OutOfLowerBound;
 %exceptionclass gum::OutOfUpperBound;
+%exceptionclass gum::IOError;
 %exceptionclass std::exception;
 
 
