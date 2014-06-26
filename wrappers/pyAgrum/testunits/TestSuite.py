@@ -11,7 +11,8 @@ import PythonBNListenerTestSuite
 import PotentialTestSuite
 import LazyPropagationTestSuite
 import GibbsTestSuite
-import ICIModelsForBN
+import ICIModelsForBNTestSuite
+import BNLearnerTestSuite   
 
 import time
 import sys
@@ -23,7 +24,8 @@ tests = unittest.TestSuite([
                             PotentialTestSuite.ts,
                             LazyPropagationTestSuite.ts, 
                             GibbsTestSuite.ts,
-                            ICIModelsForBN.ts
+                            ICIModelsForBNTestSuite.ts,
+                            BNLearnerTestSuite.ts
                             ])
 
 
