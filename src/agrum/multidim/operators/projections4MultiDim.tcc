@@ -375,7 +375,7 @@
 /// a specialized max projection function for multiDimDecisionGraphs
 // //////////////////////////////////////////////////////////////////////////////////
 
-#define GUM_MULTI_DIM_PROJECTION_OPERATOR maximizes
+#define GUM_MULTI_DIM_PROJECTION_OPERATOR Maximizes
 #define GUM_MULTI_DIM_PROJECTION_NEUTRAL ( -1 * std::numeric_limits<GUM_SCALAR>::max() )
 
 #define GUM_MULTI_DIM_PROJECTION_NAME projectMaxMultiDimDecisionGraph
@@ -394,7 +394,7 @@
 /// a specialized min projection function for multiDimDecisionGraphs
 // //////////////////////////////////////////////////////////////////////////////////
 
-#define GUM_MULTI_DIM_PROJECTION_OPERATOR minimizes
+#define GUM_MULTI_DIM_PROJECTION_OPERATOR Minimizes
 #define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits<GUM_SCALAR>::max()
 
 #define GUM_MULTI_DIM_PROJECTION_NAME projectMinMultiDimDecisionGraph

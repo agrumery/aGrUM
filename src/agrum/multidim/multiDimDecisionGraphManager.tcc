@@ -231,55 +231,11 @@ namespace gum {
           __adjacentSwap( __decisionGraph->variablesSequence().atPos(currentPos - 1), __decisionGraph->variablesSequence().atPos(currentPos));
           __decisionGraph->_invert( currentPos - 1, currentPos );
 
-
-
-
-
-
-//          std::cout << std::endl << "Diagram After intermediate swapping : " << std::endl << __decisionGraph->toDot(true) << std::endl;
-
-//          for(SequenceIteratorSafe<const DiscreteVariable*> varIter = __decisionGraph->variablesSequence().beginSafe();
-//              varIter != __decisionGraph->variablesSequence().endSafe(); ++varIter){
-//            std::cout << "Variable : " << (*varIter)->name();
-//            const typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* nodeIter = __decisionGraph->varNodeListe( *varIter );
-//            while( nodeIter ){
-//              std::cout << " | " << nodeIter->elemId;
-//              nodeIter = nodeIter->nextElem;
-//            }
-//            std::cout << std::endl;
-//          }
-//          std::cout << std::endl << std::endl;
-
-//           exit(1);
-
-
         }
       else
         for(Idx currentPos = __decisionGraph->variablesSequence().pos(x); currentPos != desiredPos; currentPos++ ) {
           __adjacentSwap( __decisionGraph->variablesSequence().atPos(currentPos),__decisionGraph->variablesSequence().atPos(currentPos + 1));
           __decisionGraph->_invert( currentPos, currentPos + 1 );
-
-
-
-
-
-
-//          std::cout << std::endl << "Diagram After intermediate swapping : " << std::endl << __decisionGraph->toDot() << std::endl;
-
-//          for(SequenceIteratorSafe<const DiscreteVariable*> varIter = __decisionGraph->variablesSequence().beginSafe();
-//              varIter != __decisionGraph->variablesSequence().endSafe(); ++varIter){
-//            std::cout << "Variable : " << (*varIter)->name();
-//            const typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* nodeIter = __decisionGraph->varNodeListe( *varIter );
-//            while( nodeIter ){
-//              std::cout << " | " << nodeIter->elemId;
-//              nodeIter = nodeIter->nextElem;
-//            }
-//            std::cout << std::endl;
-//          }
-//          std::cout << std::endl << std::endl;
-
-
-
 
         }
 

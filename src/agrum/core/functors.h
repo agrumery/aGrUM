@@ -31,7 +31,6 @@
 #ifndef FUNCTORS_H
 #define FUNCTORS_H
 
-
 namespace gum {
 
   /**
@@ -43,7 +42,7 @@ namespace gum {
    */
 
   template< class GUM_SCALAR>
-  struct maximizes{
+  struct Maximizes{
 
       // ###########################################################################
       /// @name Operator()
@@ -67,7 +66,7 @@ namespace gum {
    * Returns the minimum of its two arguments
    */
   template< class GUM_SCALAR>
-  struct minimizes{
+  struct Minimizes{
 
       // ###########################################################################
       /// @name Operator()
@@ -75,6 +74,37 @@ namespace gum {
       /// @{
 
         GUM_SCALAR operator() (const GUM_SCALAR& x, const GUM_SCALAR& y) const {return x<=y?x:y;}
+
+      /// @}
+
+      typedef GUM_SCALAR first_argument_type;
+      typedef GUM_SCALAR second_argument_type;
+      typedef GUM_SCALAR result_type;
+  };
+
+  /**
+   * @struct argmax functors.h <agrum/multidim/patterns/functors.h>
+   * @brief Arg Max function object class
+   * @ingroup core
+   *
+   * @param Operator() takes two std::pairs.
+   * First element in each pair is the values we compare to do the argmax.
+   * Second element is the argument that leads to this value.
+   *
+   * @return best pair => the argument that is the arg max is ret.second
+   */
+
+  template< class GUM_SCALAR >
+  struct ArgumentMaximises {
+
+      // ###########################################################################
+      /// @name Operator()
+      // ###########################################################################
+      /// @{
+
+        GUM_SCALAR operator() (const GUM_SCALAR& x, const GUM_SCALAR& y) const {
+           return x.first >= y.first ? x : y;
+        }
 
       /// @}
 

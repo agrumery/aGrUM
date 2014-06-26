@@ -68,8 +68,8 @@ namespace gum {
         SPIMDDI (GUM_SCALAR discountFactor = 0.75,
                  double epsilon = 0.0001,
                  double learningThreshold = 0.95,
-                 Idx nbObservation = 100,
-                 Idx nbStep = 10,
+                 Idx observationPhaseLenght = 100,
+                 Idx nbValueIterationStep = 10,
                  double exploThreshold = 0.1);
 
         // ###################################################################
@@ -139,13 +139,13 @@ namespace gum {
       SPUMDD<GUM_SCALAR>* __planer;
 
       /// The number of observation we make before using again the planer
+      Idx __observationPhaseLenght;
+
+      /// The total number of observation made so far
       Idx __nbObservation;
 
       /// The number of Value Iteration step we perform
-      Idx __nbStep;
-
-      /// The optimal policy to use to make some decision
-      MultiDimDecisionGraph<Idx>* __optimalPolicy;
+      Idx __nbValueIterationStep;
 
       /// Threshold under which we perform a random action instead of exploiting the optimal one
       double __exploThreshold;

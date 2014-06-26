@@ -454,7 +454,7 @@
 /// a specialized function for finding max of two multiDimDecisionGraphs
 // //////////////////////////////////////////////////////////////////////////////////
 
-#define GUM_MULTI_DIM_OPERATOR maximizes
+#define GUM_MULTI_DIM_OPERATOR Maximizes
 
 #define GUM_MULTI_DIM_OPERATOR_NAME maximize2MultiDimDecisionGraphs
 #include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>
@@ -471,7 +471,7 @@
 /// a specialized function for finding min of two multiDimDecisionGraphs
 // //////////////////////////////////////////////////////////////////////////////////
 
-#define GUM_MULTI_DIM_OPERATOR minimizes
+#define GUM_MULTI_DIM_OPERATOR Minimizes
 
 #define GUM_MULTI_DIM_OPERATOR_NAME minimize2MultiDimDecisionGraphs
 #include <agrum/multidim/patterns/operatorPattern4MultiDimDecisionGraph.h>

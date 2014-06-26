@@ -57,8 +57,8 @@ namespace gum {
 
         GUM_DESTRUCTOR(MultiDimDecisionGraphOperator);
 
-
-        MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( __default, sizeof(short int)*__nbVar);
+        if(__nbVar != 0)
+            MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( __default, sizeof(short int)*__nbVar);
 
         for(HashTableIteratorSafe<NodeId, short int*> instIter = __DG1InstantiationNeeded.beginSafe(); instIter != __DG1InstantiationNeeded.endSafe(); ++instIter )
             MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( instIter.val(), sizeof(short int)*__nbVar);
@@ -82,9 +82,13 @@ namespace gum {
         __findRetrogradeVariables( __DG1, __DG1InstantiationNeeded );
         __findRetrogradeVariables( __DG2, __DG2InstantiationNeeded );
 
-        Idx* varInst = static_cast<Idx*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate( sizeof(Idx)*__nbVar ) );
-        for( Idx i = 0; i < __nbVar; i++ )
-            varInst[i] = (Idx) 0;
+        Idx* varInst = nullptr;
+//        std::cout << "MDGO 85" << std::endl;
+        if(__nbVar != 0){
+            varInst = static_cast<Idx*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate( sizeof(Idx)*__nbVar ) );
+            for( Idx i = 0; i < __nbVar; i++ )
+                varInst[i] = (Idx) 0;
+        }
 
         O4DGContext conti( varInst, __nbVar );
         conti.setDG1Node( __DG1->root() );
@@ -93,7 +97,8 @@ namespace gum {
         NodeId root = __compute( conti, (Idx)0 - 1, "" );
         __rd->manager()->setRootNode( root );
 
-        MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( varInst, sizeof(Idx)*__nbVar );
+        if(__nbVar != 0 )
+            MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( varInst, sizeof(Idx)*__nbVar );
 
         return __rd;
     }
@@ -186,9 +191,12 @@ namespace gum {
         // Various initialization needed now that we have a bigger picture
         __nbVar = __rd->variablesSequence().size();
 
-        __default = static_cast<short int*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate( sizeof(short int)*__nbVar ) );
-        for( Idx i = 0; i < __nbVar; i++ )
-            __default[i] = (short int) 0;
+//        std::cout << "MDGO 189" << std::endl;
+        if(__nbVar != 0 ){
+            __default = static_cast<short int*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate( sizeof(short int)*__nbVar ) );
+            for( Idx i = 0; i < __nbVar; i++ )
+                __default[i] = (short int) 0;
+        }
     }
 
 
@@ -239,8 +247,10 @@ namespace gum {
             const typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem * nodeIter = dg->varNodeListe(*varIter);
             while( nodeIter != nullptr ){
 
+//                std::cout << "MDGO 244" << std::endl;
                 short int* instantiationNeeded = static_cast<short int*>(MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(tableSize));
                 dgInstNeed.insert( nodeIter->elemId, instantiationNeeded );
+//                std::cout << "MDGO 247" << std::endl;
                 short int* varDescendant = static_cast<short int*>(MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(tableSize));
                 nodesVarDescendant.insert( nodeIter->elemId, varDescendant );
                 for(Idx j = 0; j < __nbVar; j++ ){
@@ -341,6 +351,7 @@ namespace gum {
         short int* dg2NeededVar = __DG2InstantiationNeeded.exists( currentSituation.DG2Node() )?__DG2InstantiationNeeded[ currentSituation.DG2Node() ]:__default;
         Idx dg2CurrentVarPos = __DG2->isTerminalNode( currentSituation.DG2Node() )?__nbVar:__rd->variablesSequence().pos( __DG2->node( currentSituation.DG2Node() )->nodeVar() );
 
+//        std::cout << "MDGO 348" << std::endl;
         short int* instNeeded = static_cast<short int*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate( sizeof(short int)*__nbVar ) );
 
         for( Idx i = 0; i < __nbVar; i++ ){
@@ -425,6 +436,7 @@ namespace gum {
             if( instNeeded[ varPos ] ){
 
                 const DiscreteVariable* curVar = __rd->variablesSequence().atPos( varPos );
+//                std::cout << "MDGO 433" << std::endl;
                 NodeId* sonsIds = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate( sizeof(NodeId)*curVar->domainSize() ) );
 
                 for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {
@@ -460,6 +472,7 @@ namespace gum {
 
             const DiscreteVariable* curVar = dg1Node->nodeVar();
             Idx varPos = __rd->variablesSequence().pos( curVar );
+//            std::cout << "MDGO 469" << std::endl;
             NodeId* sonsIds = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate( sizeof(NodeId)*curVar->domainSize() ) );
 
             for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {
@@ -489,6 +502,7 @@ namespace gum {
             const typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* leaddgNode = leaddg->node( leadNodeId );
 
             const DiscreteVariable* curVar = leaddgNode->nodeVar();
+//            std::cout << "MDGO 499" << std::endl;
             NodeId* sonsIds = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate( sizeof(NodeId)*curVar->domainSize() ) );
 
             for ( Idx modality = 0; modality < curVar->domainSize(); modality++ ) {

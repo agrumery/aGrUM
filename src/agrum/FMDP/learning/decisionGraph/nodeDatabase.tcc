@@ -131,6 +131,7 @@ namespace gum {
     // ###################################################################
     template <typename GUM_SCALAR>
     GUM_SCALAR* NodeDatabase<GUM_SCALAR>::probDist(){
+//        std::cout << "NodeDataBase 134" << std::endl;
       GUM_SCALAR* ret = static_cast<GUM_SCALAR*>(MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(GUM_SCALAR)*__value->domainSize()));
       for(Idx modality = 0; modality < __value->domainSize(); ++modality)
         ret[modality] = (GUM_SCALAR)__valueCount[modality] / (GUM_SCALAR)__nbObservation;

@@ -89,6 +89,7 @@ namespace gum {
     template<typename GUM_SCALAR>
     INLINE
     NodeId* MultiDimDecisionGraph<GUM_SCALAR>::InternalNode::allocateNodeSons( const DiscreteVariable* v ){
+//        std::cout << "Internal Node 92" << std::endl;
       NodeId* sons = static_cast<NodeId*>( soa.allocate( sizeof(NodeId)*v->domainSize() ) );
       for( gum::Idx i = 0; i < v->domainSize(); ++i)
         sons[i] = 0;

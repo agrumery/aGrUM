@@ -117,7 +117,9 @@ namespace gum {
         // ###################################################################
         void __transpose(NodeId, const DiscreteVariable*);
 
-        void __toDG();
+  public :
+        void toDG();
+  private :
         NodeId __nodeRedundancyCheck( const DiscreteVariable*, NodeId* );
 
       /// @}

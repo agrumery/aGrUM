@@ -28,6 +28,8 @@
 #ifndef GUM_SPUMDD_H
 #define GUM_SPUMDD_H
 // =========================================================================
+#include <thread>
+// =========================================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
 // =========================================================================
 #include <agrum/FMDP/FactoredMarkovDecisionProcess.h>
@@ -43,6 +45,10 @@ namespace gum {
    * Perform a SPUDD planning on given in parameter factored markov decision process
    *
    */
+
+
+//  template<typename GUM_SCALAR>
+//  using futureDG = std::future<MultiDimDecisionGraph<GUM_SCALAR>*>;
 
   template<typename GUM_SCALAR>
   class SPUMDD {
@@ -66,7 +72,21 @@ namespace gum {
 
       /// @}
 
-      INLINE const FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp() {return __fmdp;}
+      // ==========================================================================
+      /// @name Miscelleanous methods
+      // ==========================================================================
+      /// @{
+
+        /// Returns a const ptr on the Factored Markov Decision Process on which we're planning
+        INLINE const FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp() { return __fmdp; }
+
+        /// Returns a const ptr on the value function computed so far
+        INLINE const MultiDimDecisionGraph<GUM_SCALAR>* vFunction() { return __vFunction; }
+
+        /// Returns the best policy obtained so far
+        INLINE const MultiDimDecisionGraph<Idx>* optimalPolicy() { return __optimalPolicy; }
+
+      /// @}
 
       // ==========================================================================
       /// @name Planning Methods
@@ -74,46 +94,50 @@ namespace gum {
       /// @{
 
         /**
-         * Makes a spudd planning on FMDP
+         * Initializes data structure needed for making the planning
+         * @warning No calling this methods before starting the first makePlaninng
+         * will surely and definitely result in a crash
          */
-         void initialize();
+        void initialize();
 
         /**
-         * Makes a spudd planning on FMDP
+         * Performs a value iteration
+         *
+         * @param nbStep : enables you to specify how many value iterations you wish to do.
+         * makePlanning will then stop whether when optimal value function is reach or when nbStep have been performed
          */
-         MultiDimDecisionGraph< GUM_SCALAR >* makePlanning(Idx nbStep);
+        void makePlanning(Idx nbStep = 1000000);
+
+  private:
+
+        /// Performs a single step of value iteration
+        MultiDimDecisionGraph< GUM_SCALAR >* __valueIteration();
+
+  public:
+
+        /// Add computed Qaction to table
+        void addQaction( MultiDimDecisionGraph<GUM_SCALAR>* );
+        void addQaction( MultiDimDecisionGraph< std::pair< double, long > >* );
 
         /**
          * Returns an iterator reference to the beginning of the var eleminstation sequence
          * @warning in reverse mode (from end to beginning)
          */
-         INLINE SequenceIteratorSafe<const DiscreteVariable*> beginVarElimination() { return __elVarSeq.rbeginSafe(); }
+        INLINE SequenceIteratorSafe<const DiscreteVariable*> beginVarElimination() { return __elVarSeq.rbeginSafe(); }
 
         /**
          * Returns an iterator to the end
          * @warning in reverse mode (from end to beginning)
          */
-         INLINE SequenceIteratorSafe<const DiscreteVariable*> endVarElemination() {return __elVarSeq.rendSafe();}
+        INLINE SequenceIteratorSafe<const DiscreteVariable*> endVarElemination() {return __elVarSeq.rendSafe();}
 
-         /// Add computed Qaction to table
-         void addQaction(Idx, MultiDimDecisionGraph<GUM_SCALAR>*);
-
-    private:
-
-       /**
-        * Evals value function for a given action
-        */
-//        MultiDimDecisionGraph< GUM_SCALAR >* __evalActionValue ( const MultiDimDecisionGraph< GUM_SCALAR >* Vold, Idx actionId );
-
-       /**
-        * Evals final value function by multiplying by discount reward and adding reward
-        */
-        MultiDimDecisionGraph< GUM_SCALAR >* __addReward ( const MultiDimDecisionGraph< GUM_SCALAR >* Vold );
+  private:
 
         /**
-         * Evals the policy corresponding to the given value function
+         * Terminates a value iteration by multiplying by discount factor the so far computed value function.
+         * Then adds reward function
          */
-         void __evalPolicy ( const MultiDimDecisionGraph< GUM_SCALAR >* V );
+        MultiDimDecisionGraph< GUM_SCALAR >* __addReward ( const MultiDimDecisionGraph< GUM_SCALAR >* Vold );
 
       /// @}
 
@@ -122,40 +146,25 @@ namespace gum {
       // ==========================================================================
       /// @{
 
-       /**
-        * Performs one last step of the algorithm to obtain the arg max equivalent of the so far computed value function
-        */
-//        MultiDimDecisionGraph< std::pair< double, long > >* __argMaxValueFunction ( const MultiDimDecisionGraph< GUM_SCALAR >* V );
+        /**
+         * Once value ieration is over, this methods is call to find an associated optimal policy
+         */
+        void __evalPolicy ();
 
        /**
         * Creates a copy of given in parameter decision diagram and replaces leaves of that diagram by a pair containing value of the leaf and
         * action to which is bind this diagram (given in parameter).
         */
-//        MultiDimDecisionGraph< std::pair< double, long > >* __createArgMaxCopy ( const MultiDimDecisionGraph<GUM_SCALAR>* Vaction, Idx actionId );
+        MultiDimDecisionGraph< std::pair< double, long > >* __createArgMaxCopy ( const MultiDimDecisionGraph<GUM_SCALAR>* Vaction,
+                                                                                    Idx actionId );
 
        /**
         * Once final V is computed upon arg max on last Vactions, this function creates a diagram where all leaves tied to the same action are merged together.
         * Since this function is a recursive one to ease the merge of all identic nodes to converge toward a cannonical policy, a factory and the current node are needed to build
         * resulting diagram. Also we need an exploration table to avoid exploration of already visited sub-graph part.
         */
-//        NodeId __makeOptimalPolicyDecisionDiagram ( const MultiDimDecisionGraph< std::pair< double, long > >* V, const gum::NodeId& currentNode, MultiDimDecisionDiagramFactoryBase< Idx >* factory, HashTable< NodeId, NodeId >& explorationTable );
+       void __extractOptimalPolicy ( const MultiDimDecisionGraph< std::pair< double, long > >* optimalValueFunction );
 
-       /**
-        * Displays the optimal computed policy diagram
-        */
-//        void __displayOptimalPolicy ( MultiDimDecisionGraph< Idx >* op );
-
-       /**
-        * Computed arg max of two vactions given in parameter
-        */
-//        MultiDimDecisionGraph< std::pair< double, long > >* __argMaxOn2MultiDimDecisionDiagrams ( const MultiDimDecisionGraph< std::pair< double, long > >* Vaction1, const MultiDimDecisionGraph< std::pair< double, long > >* Vaction2 );
-
-
-
-       /**
-        * Computed arg max of two vactions given in parameter
-        */
-//        MultiDimDecisionGraph< std::pair< double, long > >* __differenceOnPolicy ( const MultiDimDecisionGraph< std::pair< double, long > >* Vaction1, const MultiDimDecisionGraph< std::pair< double, long > >* Vaction2 );
 
       /// @}
 
@@ -166,22 +175,34 @@ namespace gum {
       /// The Value Function computed iteratively
       MultiDimDecisionGraph<GUM_SCALAR>* __vFunction;
 
+      /// The associated optimal policy
+      /// @warning This decision graph has Idx as leaf.
+      /// Indeed, its leaves are a match to the fmdp action ids
+      MultiDimDecisionGraph<Idx>* __optimalPolicy;
+
       /// A table giving for every action the associated Q function
-      HashTable<Idx, MultiDimDecisionGraph<GUM_SCALAR>*> __qFunctionTable;
-//      Set<MultiDimDecisionGraph<GUM_SCALAR>*> __qFunctionTable;
+      std::vector<MultiDimDecisionGraph<GUM_SCALAR>*> __qFunctionSet;
+      std::vector<MultiDimDecisionGraph< std::pair< double, long > >*> __argMaxQFunctionSet;
 
       /// A locker on the above table for multitreading purposes
-      std::mutex __qTableMutex;
+      std::mutex __qSetMutex;
 
-      /// The hyperparameter determining when we do stop value iteration.
+      /// The threshold value
+      /// Whenever | Vn - Vn+1 | < threshold, we consider that V <=> V*
       GUM_SCALAR __threshold;
 
       /// A sequence to eleminate primed variables
       Sequence< const DiscreteVariable* > __elVarSeq;
+
+      bool __firstTime;
   };
 
   template<typename GUM_SCALAR>
-  void evalQaction( SPUMDD<GUM_SCALAR>* planer, const MultiDimDecisionGraph<GUM_SCALAR>* Vold, Idx actionId );
+  MultiDimDecisionGraph<GUM_SCALAR>*
+  evalQaction( SPUMDD<GUM_SCALAR>* planer, const MultiDimDecisionGraph<GUM_SCALAR>* Vold, Idx actionId );
+
+//  template<typename GUM_SCALAR>
+//  void evalQactionForArgMax( SPUMDD<GUM_SCALAR>* planer, const MultiDimDecisionGraph<GUM_SCALAR>* Vold, Idx actionId );
 
   extern template class SPUMDD<float>;
   extern template class SPUMDD<double>;

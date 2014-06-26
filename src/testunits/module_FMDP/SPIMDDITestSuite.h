@@ -51,7 +51,7 @@ namespace gum_tests {
         gum::Simulator sim(&fmdp);
         gum::Instantiation initialState;
 
-        gum::SPIMDDI<double> spim(true);
+        gum::SPIMDDI<double> spim;
 
         for(auto varIter = fmdp.beginVariables(); varIter != fmdp.endVariables(); ++varIter){
             spim.addVariable(*varIter);
@@ -67,39 +67,40 @@ namespace gum_tests {
         }
 
         initialState.setFirst();
-//        TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialState(initialState); );
+        TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialState(initialState); );
         TS_GUM_ASSERT_THROWS_NOTHING ( spim.initialize(initialState) );
 
-//        std::cout << initialState.toString() << std::endl;
-//        for( gum::Idx nbIter = 0; nbIter < 100000; ++nbIter){
+        std::cout << initialState.toString() << std::endl;
+        for( gum::Idx nbIter = 0; nbIter < 10000; ++nbIter){
 
-//            gum::Idx actionChosenId = spim.askForAction();
-//            std::cout << "Action : " << fmdp.actionName(actionChosenId) << std::endl;
-//            sim.perform( actionChosenId );
-//            std::cout << sim.currentState().toString() << std::endl;
+            gum::Idx actionChosenId = spim.askForAction();
+            std::cout << "Action : " << fmdp.actionName(actionChosenId) << std::endl;
+            sim.perform( actionChosenId );
+            std::cout << sim.currentState().toString() << std::endl;
 
-//            spim.feedback(sim.currentState(), sim.reward());
-//        }
+            spim.feedback(sim.currentState(), sim.reward());
+        }
+
 
 //        for( gum::Idx i= 0; i < 100; i++){
 
-            for(initialState.setFirst();!initialState.end(); initialState.inc() ){
+//            for(initialState.setFirst();!initialState.end(); initialState.inc() ){
 
 
-                TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialState(initialState); );
-                TS_GUM_ASSERT_THROWS_NOTHING ( spim.setCurrentState(initialState) );
+//                TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialState(initialState); );
+//                TS_GUM_ASSERT_THROWS_NOTHING ( spim.setCurrentState(initialState) );
 
-                std::cout << initialState.toString() << std::endl;
-//                for( gum::Idx nbIter = 0; nbIter < 100000; ++nbIter){
+//                std::cout << initialState.toString() << std::endl;
+//                for( gum::Idx nbIter = 0; nbIter < 100; ++nbIter){
 
-                    gum::Idx actionChosenId = spim.askForAction();
-                    std::cout << "Action : " << fmdp.actionName(actionChosenId) << std::endl;
-                    sim.perform( actionChosenId );
-                    std::cout << sim.currentState().toString() << std::endl;
-                    std::cout << "Obtained Reward : " << sim.reward() << std::endl;
-                    spim.feedback(sim.currentState(), sim.reward());
+//                    gum::Idx actionChosenId = spim.askForAction();
+//                    std::cout << "Action : " << fmdp.actionName(actionChosenId) << std::endl;
+//                    sim.perform( actionChosenId );
+//                    std::cout << sim.currentState().toString() << std::endl;
+//                    std::cout << "Obtained Reward : " << sim.reward() << std::endl;
+//                    spim.feedback(sim.currentState(), sim.reward());
 //                }
-            }
+//            }
 //        }
 
       }

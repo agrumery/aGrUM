@@ -318,15 +318,15 @@ namespace gum {
         std::stringstream fmdpCore;
 
         for ( auto actionIter = __actionTransitionTable.beginSafe(); actionIter != __actionTransitionTable.endSafe(); ++actionIter ) {
-
+            std::cout << "Action : " << actionIter.key() << std::endl;
             for ( auto tableIter = ( actionIter.val() )->beginSafe(); tableIter != ( actionIter.val() )->endSafe(); ++tableIter ) {
-
+                std::cout << "\tVar : " << tableIter.key()->name() << std::endl;
 //                fmdpCore << std::endl << tableIter.val()->toString();
                 fmdpCore << std::endl << reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*>(tableIter.val())->toDot();
             }
         }
 
-        fmdpCore << std::endl << __defaultRewardTable->toString();
+        fmdpCore << std::endl << reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*>(__defaultRewardTable)->toDot();
         return fmdpCore.str();
     }
 

@@ -61,6 +61,11 @@ namespace gum {
       // ############################################################################
       static SmallObjectAllocator soa;
 
+      // ############################################################################
+      /// Only for proper initialization of a certain returned value
+      // ############################################################################
+      const static GUM_SCALAR defaultValue;
+
     public:
       // ############################################################################
       /// NodeId chained list element

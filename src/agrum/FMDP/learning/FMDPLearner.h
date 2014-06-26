@@ -101,6 +101,11 @@ namespace gum {
         // ###################################################################
         void addObservation(Idx, const Observation*);
 
+        // ###################################################################
+        ///
+        // ###################################################################
+        void updateFMDP();
+
       /// @}
 
     private :
@@ -112,7 +117,7 @@ namespace gum {
       Set<const DiscreteVariable*> __mainVariables;
 
 
-      HashTable<Idx, List<IMDDI<GUM_SCALAR>*>*> __actionLearners;
+      HashTable<Idx, Set<IMDDI<GUM_SCALAR>*>*> __actionLearners;
       IMDDI<GUM_SCALAR>* __rewardLearner;
       const DiscreteVariable* __rewardVar;
 

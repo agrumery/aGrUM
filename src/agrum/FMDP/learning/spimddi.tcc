@@ -44,10 +44,10 @@ namespace gum {
         SPIMDDI<GUM_SCALAR>::SPIMDDI ( GUM_SCALAR discountFactor,
                                        double epsilon,
                                        double learningThreshold,
-                                       Idx nbObservation,
-                                       Idx nbStep,
-                                       double exploThreshold ) : __nbObservation(nbObservation),
-                                                                 __nbStep(nbStep),
+                                       Idx observationPhaseLenght,
+                                       Idx nbValueIterationStep,
+                                       double exploThreshold ) : __observationPhaseLenght(observationPhaseLenght),
+                                                                 __nbValueIterationStep(nbValueIterationStep),
                                                                  __exploThreshold(exploThreshold){
 
             GUM_CONSTRUCTOR(SPIMDDI)
@@ -62,7 +62,7 @@ namespace gum {
             __rewardVar = new LabelizedVariable("Reward", "");
             __rewardVar->eraseLabels();
 
-            __optimalPolicy = nullptr;
+            __nbObservation = 1;
 
             __offset = 0;
             __timey = time(NULL);
@@ -73,6 +73,11 @@ namespace gum {
         // ###################################################################
         template<typename GUM_SCALAR>
         SPIMDDI<GUM_SCALAR>::~SPIMDDI (){
+
+            std::cout << __fmdp->show() << std::endl;
+            std::cout << __planer->optimalPolicy()->toDot() << std::endl;
+            for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter)
+                std::cout << *actionIter << " - " << __fmdp->actionName(*actionIter) <<std::endl;
 
             delete __learner;
 
@@ -126,7 +131,7 @@ namespace gum {
             setCurrentState( initialState );
             __learner->addReward(__rewardVar);
             __learner->initialize();
-//            __planer->initialize();
+            __planer->initialize();
         }
 
         // ###################################################################
@@ -135,7 +140,7 @@ namespace gum {
         template<typename GUM_SCALAR>
         void SPIMDDI<GUM_SCALAR>::feedback( const Instantiation& newState, GUM_SCALAR reward){
 
-            std::cout << "Begin Feeadback" << std::endl;
+            std::cout << "Begin Feeadback - Observation n° " << __nbObservation << std::endl;
             Observation* obs = new Observation();
 
             for( auto varIter = __lastState.variablesSequence().beginSafe(); varIter != __lastState.variablesSequence().endSafe(); ++varIter)
@@ -150,6 +155,12 @@ namespace gum {
             __bin.insert(obs);
 
             setCurrentState( newState );
+
+            if( __nbObservation%__observationPhaseLenght == 0) {
+                __learner->updateFMDP();
+                __planer->makePlanning(__nbValueIterationStep);
+            }
+            __nbObservation++;
         }
 
         // ###################################################################
@@ -161,9 +172,9 @@ namespace gum {
             srand( __timey + __offset++ );
 
             double explo = (double)std::rand( ) / (double)RAND_MAX;
-            if( __optimalPolicy != nullptr && explo > __exploThreshold){
+            if( __planer->optimalPolicy() != nullptr && explo > __exploThreshold){
                 std::cout << "Exploitons!" << std::endl;
-                __lastAction = __optimalPolicy->get(__lastState);
+                __lastAction = __planer->optimalPolicy()->get(__lastState);
             }else{
                 std::cout << "Explorons!" << std::endl;
                 __lastAction = __actionSeq[ (Idx)( (double)std::rand( ) / (double)RAND_MAX * __actionSeq.size()) ] ;

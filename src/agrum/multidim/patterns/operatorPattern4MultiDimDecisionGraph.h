@@ -61,19 +61,19 @@ namespace gum {
 #ifdef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
 #define GUM_MULTI_DIM_OPERATOR_TYPE GUM_SCALAR
 
-      template< typename  GUM_SCALAR >
-      MultiDimImplementation< GUM_SCALAR >*
-      GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME( const MultiDimImplementation< GUM_SCALAR >* tt1,
-                                                         const MultiDimImplementation< GUM_SCALAR >* tt2 ) {
-        const MultiDimDecisionGraph< GUM_SCALAR >* dg1 = reinterpret_cast<const MultiDimDecisionGraph< GUM_SCALAR >*>( tt1 );
-        const MultiDimDecisionGraph< GUM_SCALAR >* dg2 = reinterpret_cast<const MultiDimDecisionGraph< GUM_SCALAR >*>( tt2 );
+  template< typename  GUM_SCALAR >
+  MultiDimImplementation< GUM_SCALAR >*
+  GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME( const MultiDimImplementation< GUM_SCALAR >* tt1,
+                                                     const MultiDimImplementation< GUM_SCALAR >* tt2 ) {
+    const MultiDimDecisionGraph< GUM_SCALAR >* dg1 = reinterpret_cast<const MultiDimDecisionGraph< GUM_SCALAR >*>( tt1 );
+    const MultiDimDecisionGraph< GUM_SCALAR >* dg2 = reinterpret_cast<const MultiDimDecisionGraph< GUM_SCALAR >*>( tt2 );
 #endif
 
-        MultiDimDecisionGraphOperator< GUM_MULTI_DIM_OPERATOR_TYPE, GUM_MULTI_DIM_OPERATOR> ope( dg1, dg2);
+    MultiDimDecisionGraphOperator< GUM_MULTI_DIM_OPERATOR_TYPE, GUM_MULTI_DIM_OPERATOR> ope( dg1, dg2);
 
-        return ope.compute();
-      }
+    return ope.compute();
+  }
 #undef GUM_MULTI_DIM_OPERATOR_TYPE
 
-    }
+} // End of namespace gum
 #endif /* GUM_OPERATOR_PATTERN_ALLOWED */

@@ -25,5 +25,12 @@
  * @author Jean-Christophe Magnan
  *
  */
-
+// =============================================================================
 #include <agrum/multidim/multiDimDecisionGraph.h>
+// =============================================================================
+
+namespace gum {
+
+} // end of namespace gum
+
+

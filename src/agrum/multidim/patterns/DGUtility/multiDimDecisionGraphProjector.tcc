@@ -67,149 +67,24 @@ namespace gum {
   MultiDimDecisionGraph<GUM_SCALAR>*
   MultiDimDecisionGraphProjector<GUM_SCALAR, FUNCTOR>::project(){
 
-//      Sequence<const DiscreteVariable*> seq;
-//      __maker(__delVars, seq, "");
-////        for( SetIteratorSafe<const DiscreteVariable*> varIter = __delVars.beginSafe(); varIter != __delVars.endSafe(); ++varIter )
-////            if( !(*varIter)->name().compare("var4")){
-////                seq.insert(*varIter);
-////                std::cout << (*varIter)->name() << std::endl;
-////                break;
-////            }
-////        for( SetIteratorSafe<const DiscreteVariable*> varIter = __delVars.beginSafe(); varIter != __delVars.endSafe(); ++varIter )
-////            if( !(*varIter)->name().compare("var6")){
-////                seq.insert(*varIter);
-////                break;
-////            }
-////        for( SetIteratorSafe<const DiscreteVariable*> varIter = __delVars.beginSafe(); varIter != __delVars.endSafe(); ++varIter )
-////            if( !(*varIter)->name().compare("var0")){
-////                seq.insert(*varIter);
-////                break;
-////            }
-////        for( SetIteratorSafe<const DiscreteVariable*> varIter = __delVars.beginSafe(); varIter != __delVars.endSafe(); ++varIter )
-////            if( !(*varIter)->name().compare("var1")){
-////                seq.insert(*varIter);
-////                break;
-////            }
-////        for( SetIteratorSafe<const DiscreteVariable*> varIter = __delVars.beginSafe(); varIter != __delVars.endSafe(); ++varIter )
-////            if( !(*varIter)->name().compare("var5")){
-////                seq.insert(*varIter);
-////                break;
-////            }
-////        for( SetIteratorSafe<const DiscreteVariable*> varIter = __delVars.beginSafe(); varIter != __delVars.endSafe(); ++varIter )
-////            if( !(*varIter)->name().compare("var2")){
-////                seq.insert(*varIter);
-////                break;
-////            }
 
-//      return nullptr;
-//  }
-
-//  template <typename GUM_SCALAR, template <typename> class FUNCTOR >
-//  void
-//  MultiDimDecisionGraphProjector<GUM_SCALAR, FUNCTOR>::__maker(Set<const DiscreteVariable*> remainingVar, Sequence<const DiscreteVariable*> seq, std::string tab){
-
-//      Set<const DiscreteVariable*> boulga(remainingVar);
-//      for( SetIteratorSafe<const DiscreteVariable*> varIter = remainingVar.beginSafe(); varIter != remainingVar.endSafe(); ++varIter ){
-//          std::cout << tab << (*varIter)->name() << std::endl;
-//          boulga >> *varIter;
-//          seq << *varIter;
-//          if(boulga.empty()){
-//              __project(seq);
-//          } else {
-//              __maker(boulga, seq, tab + "\t");
-//          }
-//          boulga << *varIter;
-//          seq >> *varIter;
-//      }
-//  }
-
-//  template <typename GUM_SCALAR, template <typename> class FUNCTOR >
-//  MultiDimDecisionGraph<GUM_SCALAR>*
-//  MultiDimDecisionGraphProjector<GUM_SCALAR, FUNCTOR>::__project(Sequence<const DiscreteVariable*> seq){
-      __rd->copy( *__src );
+    __rd->copy( *__src );
 
     for( SetIteratorSafe<const DiscreteVariable*> varIter = __delVars.beginSafe(); varIter != __delVars.endSafe(); ++varIter ){
-//    for( SequenceIteratorSafe<const DiscreteVariable*> varIter = seq.beginSafe(); varIter != seq.endSafe(); ++varIter ){
 
       const DiscreteVariable* curVar = *varIter;
 
-
-
-
-
-
-//      std::cout << std::endl << " " << std::endl << " " << std::endl << " *************************************************************************************" << std::endl;
-
-
-//      std::cout << "Removing " << curVar->name() << std::endl;
-
-
-//      std::cout << "Diagram before swapping : " << std::endl << __rd->toDot() << std::endl;
-
-//      for(SequenceIteratorSafe<const DiscreteVariable*> varIter = __rd->variablesSequence().beginSafe();
-//          varIter != __rd->variablesSequence().endSafe(); ++varIter){
-
-//        std::cout << "Variable : " << (*varIter)->name();
-
-//        const typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* nodeIter = __rd->varNodeListe( *varIter );
-//        while( nodeIter ){
-//          std::cout << " | " << nodeIter->elemId << " - ";
-//          const typename MultiDimDecisionGraph<GUM_SCALAR>::PICLElem* parentIter = __rd->node(nodeIter->elemId)->parentsIter();
-//          while(parentIter){
-//              std::cout << " " << parentIter->parentId << " " << parentIter->modality << "   ";
-//              parentIter = parentIter->nextElem;
-//          }
-//          nodeIter = nodeIter->nextElem;
-//        }
-//        std::cout << std::endl;
-//      }
-
-
-
-
-
-
-
-
+      // ******************************************************************************************************
+      // Tout d'abord, on déplace la variable à projeter en fin de séquence afin de simplifier la projection
+      // ******************************************************************************************************
       if( __rd->variablesSequence().exists(curVar) )
         __rd->manager()->moveTo( curVar, __rd->variablesSequence().size() - 1 );
 
 
-
-
-
-
-
-
-
-
-
-
-//      std::cout << "Diagram After swapping : " << std::endl << __rd->toDot(true) << std::endl;
-
-//      for(SequenceIteratorSafe<const DiscreteVariable*> varIter = __rd->variablesSequence().beginSafe();
-//          varIter != __rd->variablesSequence().endSafe(); ++varIter){
-//        std::cout << "Variable : " << (*varIter)->name();
-//        const typename MultiDimDecisionGraph<GUM_SCALAR>::NICLElem* nodeIter = __rd->varNodeListe( *varIter );
-//        while( nodeIter ){
-//          std::cout << " | " << nodeIter->elemId << " - ";
-//          const typename MultiDimDecisionGraph<GUM_SCALAR>::PICLElem* parentIter = __rd->node(nodeIter->elemId)->parentsIter();
-//          while(parentIter){
-//              std::cout << " " << parentIter->parentId << " " << parentIter->modality << "   ";
-//              parentIter = parentIter->nextElem;
-//          }
-//          nodeIter = nodeIter->nextElem;
-//        }
-//        std::cout << std::endl;
-//      }
-//      std::cout << " " << std::endl << " " << std::endl;
-
-
-
-
-
+      // ******************************************************************************************************
+      // 1er cas spécial : le diagramme est un un simple noeud terminal
+      // ******************************************************************************************************
       if( __rd->isTerminalNode( __rd->root())){
-
 
         GUM_SCALAR newVal = __neutral, oldVal = __rd->nodeValue( __rd->root() );
         for( Idx curVarModality = 0; curVarModality < curVar->domainSize(); ++curVarModality )
@@ -223,13 +98,28 @@ namespace gum {
         continue;
       }
 
+      // ******************************************************************************************************
+      // 2ème cas spécial : la racine du diagramme est associée à la variable projetée
+      // ******************************************************************************************************
+      if( __rd->node(__rd->root())->nodeVar() == curVar ){
 
+          const typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* curVarNode = __rd->node( __rd->root() );
+          GUM_SCALAR newVal = __neutral;
+          for( Idx curVarModality = 0; curVarModality < curVar->domainSize(); ++curVarModality )
+            newVal = __function(newVal, __rd->nodeValue( curVarNode->son( curVarModality ) ) );
 
+          NodeId newSonId = __rd->manager()->addTerminalNode( newVal );
 
+          __rd->manager()->eraseNode( __rd->root(), newSonId, false );
 
+          if( __rd->variablesSequence().exists(curVar) )
+              __rd->erase( *curVar );
+          continue;
+      }
 
-
-
+      // ******************************************************************************************************
+      // Cas général
+      // ******************************************************************************************************
       HashTable<NodeId, NodeId> visitedNode(2*__rd->realSize(),true,false);
       std::vector<NodeId> filo;
       filo.push_back( __rd->root() );

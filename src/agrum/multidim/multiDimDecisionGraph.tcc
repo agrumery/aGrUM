@@ -29,8 +29,9 @@
 
 namespace gum {
 
-template<typename GUM_SCALAR>
-  SmallObjectAllocator MultiDimDecisionGraph<GUM_SCALAR>::soa(GUM_DEFAULT_CHUNK_SIZE, GUM_DEFAULT_MAX_OBJECT_SIZE);
+  template<typename GUM_SCALAR>
+  SmallObjectAllocator MultiDimDecisionGraph<GUM_SCALAR>::soa( SmallObjectAllocator::GUM_DEFAULT_CHUNK_SIZE,
+                                                               SmallObjectAllocator::GUM_DEFAULT_MAX_OBJECT_SIZE );
 
 
 
@@ -52,8 +53,7 @@ template<typename GUM_SCALAR>
         __root(0),
         __valueMap(125, true),
         __internalNodeMap(500,true,false),
-        __var2NodeIdMap(500,true,false),
-        __getRet(0){
+        __var2NodeIdMap(500,true,false){
 
       GUM_CONSTRUCTOR( MultiDimDecisionGraph );
       __manager = nullptr;
@@ -75,8 +75,7 @@ template<typename GUM_SCALAR>
         __root(0),
         __valueMap(125, true),
         __internalNodeMap(500,true,false),
-        __var2NodeIdMap(500,true,false),
-        __getRet(0){
+        __var2NodeIdMap(500,true,false){
 
       GUM_CONS_CPY( MultiDimDecisionGraph );
       copy(from);
@@ -453,56 +452,44 @@ template<typename GUM_SCALAR>
     void MultiDimDecisionGraph<GUM_SCALAR>::copyAndMultiplyByScalar ( const MultiDimDecisionGraph<GUM_SCALAR>& src,
                                                                       GUM_SCALAR gamma ){
 
-        std::cout << "Multiply " << std::endl;
-//      this->copy(src);
-//      Bijection<NodeId, GUM_SCALAR> oldValueMap(__valueMap);
-//      __valueMap.clear();
-//      for(BijectionIteratorSafe<NodeId, GUM_SCALAR> valueIter = oldValueMap.beginSafe(); valueIter != oldValueMap.endSafe(); ++valueIter ){
-//          std::cout << valueIter.first() << " - " << valueIter.second() << " - " << gamma*valueIter.second() << std::endl;
-//          if( __valueMap.existsSecond(gamma*valueIter.second()))
-//              std::cout << valueIter.second() - oldValueMap.second(__valueMap.first(gamma*valueIter.second())) << " - " << gamma*valueIter.second() - __valueMap.second(__valueMap.first(gamma*valueIter.second()));
-//          __valueMap.insert( valueIter.first(), gamma*valueIter.second());
-//      }
+      this->clear();
 
-        this->clear();
+      // Insertion des nouvelles variables
+      for( SequenceIteratorSafe<const DiscreteVariable*> varIter = src.variablesSequence().beginSafe(); varIter != src.variablesSequence().endSafe(); ++varIter)
+        this->add(**varIter);
 
-        // Insertion des nouvelles variables
-        for( SequenceIteratorSafe<const DiscreteVariable*> varIter = src.variablesSequence().beginSafe(); varIter != src.variablesSequence().endSafe(); ++varIter)
-          this->add(**varIter);
+      std::vector<NodeId> lifo;
+      HashTable<NodeId, NodeId> src2dest;
 
-        std::vector<NodeId> lifo;
-        HashTable<NodeId, NodeId> src2dest;
+      if(src.isTerminalNode(src.root()))
+        this->manager()->setRootNode(this->manager()->addTerminalNode(gamma*src.nodeValue(src.root())));
+      else {
+        this->manager()->setRootNode(this->manager()->addNonTerminalNode( src.node(src.root())->nodeVar() ));
+        src2dest.insert( src.root(), this->root() );
+        lifo.push_back(src.root());
+      }
 
-        if(src.isTerminalNode(src.root()))
-          this->manager()->setRootNode(this->manager()->addTerminalNode(gamma*src.nodeValue(src.root())));
-        else {
-          this->manager()->setRootNode(this->manager()->addNonTerminalNode( src.node(src.root())->nodeVar() ));
-          src2dest.insert( src.root(), this->root() );
-          lifo.push_back(src.root());
-        }
+      // Parcours en profondeur du diagramme source
+      while( !lifo.empty() ){
+        NodeId currentSrcNodeId = lifo.back();
+        lifo.pop_back();
 
-        // Parcours en profondeur du diagramme source
-        while( !lifo.empty() ){
-          NodeId currentSrcNodeId = lifo.back();
-          lifo.pop_back();
+        const InternalNode* currentSrcNode = src.node(currentSrcNodeId);
 
-          const InternalNode* currentSrcNode = src.node(currentSrcNodeId);
-
-          for( Idx index = 0; index < currentSrcNode->nbSons(); ++index ){
-            if( !src2dest.exists(currentSrcNode->son(index)) ){
-              NodeId srcSonNodeId = currentSrcNode->son(index), destSonNodeId = 0;
-              if( src.isTerminalNode(srcSonNodeId) ){
-                destSonNodeId = this->manager()->addTerminalNode(gamma*src.nodeValue(srcSonNodeId));
-              } else {
-                destSonNodeId = this->manager()->addNonTerminalNode(src.node(srcSonNodeId)->nodeVar());
-                lifo.push_back(srcSonNodeId);
-              }
-              src2dest.insert( srcSonNodeId, destSonNodeId );
+        for( Idx index = 0; index < currentSrcNode->nbSons(); ++index ){
+          if( !src2dest.exists(currentSrcNode->son(index)) ){
+            NodeId srcSonNodeId = currentSrcNode->son(index), destSonNodeId = 0;
+            if( src.isTerminalNode(srcSonNodeId) ){
+              destSonNodeId = this->manager()->addTerminalNode(gamma*src.nodeValue(srcSonNodeId));
+            } else {
+              destSonNodeId = this->manager()->addNonTerminalNode(src.node(srcSonNodeId)->nodeVar());
+              lifo.push_back(srcSonNodeId);
             }
-            this->manager()->setSon( src2dest[currentSrcNodeId], index, src2dest[currentSrcNode->son(index)]);
+            src2dest.insert( srcSonNodeId, destSonNodeId );
           }
+          this->manager()->setSon( src2dest[currentSrcNodeId], index, src2dest[currentSrcNode->son(index)]);
         }
-        std::cout << "By SCALR" << std::endl;
+      }
     }
 
     // ============================================================================

@@ -40,7 +40,7 @@ namespace gum_tests {
       void run ( const std::string showSaveFile ) {
 
         gum::FactoredMarkovDecisionProcess<double> fmdp(true);
-        gum::SPUMDD<double> inf ( &fmdp);//, 10 ); // Epsilon is set high, indeed we just want ot check that the algorithm works fine.
+        gum::SPUMDD<double> planer ( &fmdp);//, 10 ); // Epsilon is set high, indeed we just want ot check that the algorithm works fine.
 
         gum::FMDPDatReader<double> reader ( &fmdp, file );
         TS_GUM_ASSERT_THROWS_NOTHING ( reader.trace ( false ) );
@@ -55,15 +55,17 @@ namespace gum_tests {
 //        std::cout << fmdp.show();
 //        __traceAlgoSaveFile.close();
 
-        gum::MultiDimDecisionGraph<double>* res = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING ( inf.initialize() );
-        TS_GUM_ASSERT_THROWS_NOTHING ( res = inf.makePlanning(10000) );
-//        delete res;
+        TS_GUM_ASSERT_THROWS_NOTHING ( planer.initialize() );
+        TS_GUM_ASSERT_THROWS_NOTHING ( planer.makePlanning(10000) );
+
+        std::cout << planer.optimalPolicy()->toDot() << std::endl;
+        for(auto actionIter = fmdp.beginActions(); actionIter != fmdp.endActions(); ++actionIter )
+            std::cout << "Action Id : " << *actionIter << " - Name : " <<fmdp.actionName(*actionIter) << std::endl;
       }
 
     public:
 
-      void est_Coffee() {
+      void test_Coffee() {
         file = GET_PATH_STR ( "FMDP/coffee/coffee.dat" );
         run ( "Coffee" );
       }
@@ -85,7 +87,7 @@ namespace gum_tests {
       }
 
 
-      void test_Factory() {
+      void est_Factory() {
         file = GET_PATH_STR ( "FMDP/factory/factory.dat" );
         run ( "Factory" );
       }

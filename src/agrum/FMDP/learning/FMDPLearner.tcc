@@ -82,7 +82,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void FMDPLearner<GUM_SCALAR>::addAction(const Idx actionId, const std::string &actionName ){
         __fmdp->addAction(actionId, actionName);
-        __actionLearners.insert( actionId, new List<IMDDI<GUM_SCALAR>*>());
+        __actionLearners.insert( actionId, new Set<IMDDI<GUM_SCALAR>*>());
     }
 
     // ###################################################################
@@ -108,6 +108,7 @@ namespace gum {
       for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter ){
         for( auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter ){
             MultiDimDecisionGraph<GUM_SCALAR>* varTrans = new MultiDimDecisionGraph<GUM_SCALAR>();
+            varTrans->setTableName("ACTION : " + __fmdp->actionName(*actionIter) + " - VARIABLE : " + (*varIter)->name());
             __fmdp->addTransitionForAction(__fmdp->actionName(*actionIter), *varIter, varTrans);
             __actionLearners[*actionIter]->insert(new IMDDI<GUM_SCALAR>(varTrans,__learningThreshold,__mainVariables,__fmdp->main2prime(*varIter)));
         }
@@ -131,6 +132,26 @@ namespace gum {
 
         __rewardLearner->addObservation(newObs);
         __rewardLearner->updateOrderedTree();
+    }
 
+    // ###################################################################
+    //
+    // ###################################################################
+    template <typename GUM_SCALAR>
+    void FMDPLearner<GUM_SCALAR>::updateFMDP(){
+
+//      std::cout << "Beginning update"  << std::endl;
+      for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter ){
+//        std::cout << "Update for action : " << *actionIter << std::endl;
+        for(auto learnerIter = __actionLearners[*actionIter]->beginSafe();
+            learnerIter != __actionLearners[*actionIter]->endSafe(); ++learnerIter){
+//          std::cout << "Update " << std::endl;
+          (*learnerIter)->toDG();
+        }
+      }
+
+//      std::cout << "Reward update"  << std::endl;
+      __rewardLearner->toDG();
+//      std::cout << "Fin"  << std::endl;
     }
 } // End of namespace gum
