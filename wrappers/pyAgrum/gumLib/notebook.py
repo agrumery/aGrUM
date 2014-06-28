@@ -57,7 +57,7 @@ def showProba(p):
     """
     var=p.variable(0)
     ra=np.arange(len(var))
-    vx=[var.label(int(i)) for i in ra]
+    vx=["{0}:{1:1.4f}".format(var.label(int(i)),p[i]) for i in ra]
 
     fig=plt.figure()
     fig.set_figheight(len(var)/4.0)
