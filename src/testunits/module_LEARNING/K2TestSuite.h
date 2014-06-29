@@ -92,6 +92,48 @@ namespace gum_tests {
       std::cout << bn << std::endl << bn.dag () << std::endl;
     }
 
+    void test_k2_asia_bis () {
+      gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
+      
+      auto translators = gum::learning::make_translators
+        ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
+                                gum::learning::Col<0>, 8 > () );
+
+      auto generators =  gum::learning::make_generators ( SimpleGenerator () );
+      
+      auto filter = gum::learning::make_DB_row_filter ( database, translators,
+                                                        generators );
+
+      std::vector<unsigned int> modalities = filter.modalities ();
+
+      gum::learning::ScoreK2<> real_score ( filter, modalities );
+      gum::learning::Score<>& score = real_score;
+      
+      gum::learning::StructuralConstraintDAG
+        struct_constraint ( modalities.size () );
+
+      gum::learning::ParamEstimatorML<> real_estimator ( filter, modalities );
+      gum::learning::ParamEstimator<>& estimator = real_estimator;
+      
+      std::vector<unsigned int> order ( filter.modalities ().size() );
+      for ( unsigned int i = 0; i < order.size(); ++i ) {
+        order[i] = i;
+      }
+
+      gum::learning::K2 k2;
+     
+      gum::BayesNet<float> bn = k2.learnBN ( score, struct_constraint, estimator,
+                                             database.variableNames (),
+                                             modalities, order );
+
+      gum::BayesNet<double> bn2 = k2.learnBN<double>
+        ( score, struct_constraint, estimator,
+          database.variableNames (),
+          modalities, order );
+
+      std::cout << bn << std::endl << bn.dag () << std::endl;
+    }
+
 
     void test_K2_asia2 () {
       gum::learning::K2 k2;
