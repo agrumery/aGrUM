@@ -56,8 +56,7 @@ namespace gum_tests {
       
       std::vector<unsigned int> modalities = filter.modalities ();
 
-      gum::learning::ScoreBD<decltype ( filter ) >
-        score ( filter, modalities );
+      gum::learning::ScoreBD<> score ( filter, modalities );
 
       // to test, we exploit the fact that if the hyperparameters are all equal
       // to 1, then score BD = score K2
@@ -115,8 +114,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
       std::vector<unsigned int> modalities = filter.modalities ();
-      gum::learning::ScoreBD<decltype ( filter ) >
-        score ( filter, modalities );
+      gum::learning::ScoreBD<> score ( filter, modalities );
       //score.useCache ( false );
 
       // to test, we exploit the fact that if the hyperparameters are all equal
@@ -155,8 +153,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
       std::vector<unsigned int> modalities = filter.modalities ();
-      gum::learning::ScoreBD<decltype ( filter ) >
-        score ( filter, modalities );
+      gum::learning::ScoreBD<> score ( filter, modalities );
       //score.useCache ( false );
 
       // to test, we exploit the fact that if the hyperparameters are all equal

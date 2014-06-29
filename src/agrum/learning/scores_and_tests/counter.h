@@ -98,8 +98,7 @@ namespace gum {
      * that this class is not intended to be used as is, but is rather a basis
      * for classes Score and IndependenceTest.
      */
-    template <typename RowFilter,
-              typename IdSetAlloc = std::allocator<unsigned int>,
+    template <typename IdSetAlloc = std::allocator<unsigned int>,
               typename CountAlloc = std::allocator<float> >
     class Counter {
     public:
@@ -112,6 +111,7 @@ namespace gum {
       /// default constructor
       /** @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database */
+      template <typename RowFilter>
       Counter ( const RowFilter& filter,
                 const std::vector<unsigned int>& var_modalities );
 
@@ -372,7 +372,7 @@ namespace gum {
 
     private:
       /// the recordCounter that will parse the database
-      RecordCounter<RowFilter,IdSetAlloc,CountAlloc> __record_counter;
+      RecordCounter<IdSetAlloc,CountAlloc> __record_counter;
       
       /// the target id sets to count and their indices in the record counter
       std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* >
@@ -394,11 +394,11 @@ namespace gum {
       // ##########################################################################
 
       /// prevent copy constructor
-      Counter ( const Counter<RowFilter,IdSetAlloc,CountAlloc>& ) = delete;
+      Counter ( const Counter<IdSetAlloc,CountAlloc>& ) = delete;
 
       /// prevent copy operator
-      Counter<RowFilter,IdSetAlloc,CountAlloc>&
-      operator= ( const Counter<RowFilter,IdSetAlloc,CountAlloc>& ) = delete;
+      Counter<IdSetAlloc,CountAlloc>&
+      operator= ( const Counter<IdSetAlloc,CountAlloc>& ) = delete;
 
     };
 

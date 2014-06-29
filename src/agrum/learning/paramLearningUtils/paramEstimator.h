@@ -59,10 +59,9 @@ namespace gum {
      * performed, use methods _getAllCounts and _getConditioningCounts to retrieve
      * the parameters of interest.
      */
-    template <typename RowFilter,
-              typename IdSetAlloc = std::allocator<unsigned int>,
+    template <typename IdSetAlloc = std::allocator<unsigned int>,
               typename CountAlloc = std::allocator<float> >
-    class ParamEstimator : private Counter<RowFilter,IdSetAlloc,CountAlloc> {
+    class ParamEstimator : private Counter<IdSetAlloc,CountAlloc> {
     public:
 
       // ##########################################################################
@@ -73,6 +72,7 @@ namespace gum {
       /// default constructor
       /** @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database */
+      template <typename RowFilter>
       ParamEstimator ( const RowFilter& filter,
                        const std::vector<unsigned int>& var_modalities );
 
@@ -119,7 +119,7 @@ namespace gum {
       void clear ();
 
       /// returns the modalities of the variables
-      using Counter<RowFilter,IdSetAlloc,CountAlloc>::modalities;
+      using Counter<IdSetAlloc,CountAlloc>::modalities;
 
       /// returns the CPT's parameters corresponding to a given nodeset
       /** The vector contains the parameters of an n-dimensional CPT. The
@@ -150,20 +150,20 @@ namespace gum {
        * when callind addNodeset, and then the target nodes.
        * @warning it is assumed that, after using addNodeSet, you have executed
        * method count() before calling method countTarget. */
-      using Counter<RowFilter,IdSetAlloc,CountAlloc>::_getAllCounts;
+      using Counter<IdSetAlloc,CountAlloc>::_getAllCounts;
 
       /// returns the counting vector for a conditioning set
       /** @warning it is assumed that, after using addNodeSet, you have executed
        * method count() before calling method countTarget. */
-      using Counter<RowFilter,IdSetAlloc,CountAlloc>::_getConditioningCounts;
+      using Counter<IdSetAlloc,CountAlloc>::_getConditioningCounts;
 
       /// returns the set of target + conditioning nodes
       /** conditioning nodes are always the first ones in the vector and targets
        * are the last ones */
-      using Counter<RowFilter,IdSetAlloc,CountAlloc>::_getAllNodes;
+      using Counter<IdSetAlloc,CountAlloc>::_getAllNodes;
 
       /// returns the conditioning nodes (nullptr if there are no such nodes)
-      using Counter<RowFilter,IdSetAlloc,CountAlloc>::_getConditioningNodes;
+      using Counter<IdSetAlloc,CountAlloc>::_getConditioningNodes;
             
 
     protected:
@@ -175,13 +175,11 @@ namespace gum {
       // ##########################################################################
 
       /// prevent copy constructor
-      ParamEstimator ( const ParamEstimator<RowFilter,IdSetAlloc,CountAlloc>& )
-      = delete;
+      ParamEstimator ( const ParamEstimator<IdSetAlloc,CountAlloc>& ) = delete;
 
       /// prevent copy operator
-      ParamEstimator<RowFilter,IdSetAlloc,CountAlloc>&
-      operator= ( const ParamEstimator<RowFilter,IdSetAlloc,CountAlloc>& )
-      = delete;
+      ParamEstimator<IdSetAlloc,CountAlloc>&
+      operator= ( const ParamEstimator<IdSetAlloc,CountAlloc>& ) = delete;
 
     };
 

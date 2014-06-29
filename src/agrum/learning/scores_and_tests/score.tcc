@@ -34,46 +34,47 @@ namespace gum {
 
 
     /// default constructor
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    Score<RowFilter,IdSetAlloc,CountAlloc>::Score
+    template <typename IdSetAlloc, typename CountAlloc>
+    template <typename RowFilter> INLINE
+    Score<IdSetAlloc,CountAlloc>::Score
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities ) :
-      Counter<RowFilter,IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
+      Counter<IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
       GUM_CONSTRUCTOR ( Score );
     }
 
     
     /// destructor
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    Score<RowFilter,IdSetAlloc,CountAlloc>::~Score () {
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    Score<IdSetAlloc,CountAlloc>::~Score () {
       GUM_DESTRUCTOR ( Score );
     }
 
 
     /// add a new single variable to be counted
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    unsigned int Score<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    unsigned int Score<IdSetAlloc,CountAlloc>::addNodeSet
     ( unsigned int var ) {
       if ( __use_cache ) {
         try {
           float score = __cache.score ( var, __empty_conditioning_set );
           __is_cached_score.push_back ( true );
           __cached_score.push_back ( score );
-          return Counter<RowFilter,IdSetAlloc,CountAlloc>::addEmptyNodeSet ();
+          return Counter<IdSetAlloc,CountAlloc>::addEmptyNodeSet ();
         }
         catch ( const NotFound& ) {}
       }
 
       __is_cached_score.push_back ( false );
       __cached_score.push_back ( 0 );
-      return Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet ( var );
+      return Counter<IdSetAlloc,CountAlloc>::addNodeSet ( var );
     }
 
 
     /// add a new target variable plus some conditioning vars
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
     unsigned int
-    Score<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+    Score<IdSetAlloc,CountAlloc>::addNodeSet
     ( unsigned int var,
       const std::vector<unsigned int>& conditioning_ids ) {
       if ( __use_cache ) {
@@ -81,30 +82,29 @@ namespace gum {
           float score = __cache.score ( var, conditioning_ids );
           __is_cached_score.push_back ( true );
           __cached_score.push_back ( score );
-          return Counter<RowFilter,IdSetAlloc,CountAlloc>::addEmptyNodeSet ();
+          return Counter<IdSetAlloc,CountAlloc>::addEmptyNodeSet ();
         }
         catch ( const NotFound& ) {}
       }
 
       __is_cached_score.push_back ( false );
       __cached_score.push_back ( 0 );
-      return Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
-        ( var,  conditioning_ids );
+      return Counter<IdSetAlloc,CountAlloc>::addNodeSet ( var,  conditioning_ids );
     }
 
 
     /// clears all the data structures from memory
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    void Score<RowFilter,IdSetAlloc,CountAlloc>::clear () {
-      Counter<RowFilter,IdSetAlloc,CountAlloc>::clear ();
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    void Score<IdSetAlloc,CountAlloc>::clear () {
+      Counter<IdSetAlloc,CountAlloc>::clear ();
       __is_cached_score.clear ();
       __cached_score.clear ();
     }
 
 
     /// indicates whether a score belongs to the cache
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    bool Score<RowFilter,IdSetAlloc,CountAlloc>::_isInCache
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    bool Score<IdSetAlloc,CountAlloc>::_isInCache
     ( unsigned int nodeset_index ) const noexcept {
       return ( ( nodeset_index < __is_cached_score.size () ) &&
                __is_cached_score[ nodeset_index ] );
@@ -112,8 +112,8 @@ namespace gum {
 
 
     /// inserts a new score into the cache    
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    void Score<RowFilter,IdSetAlloc,CountAlloc>::_insertIntoCache
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    void Score<IdSetAlloc,CountAlloc>::_insertIntoCache
     ( unsigned int nodeset_index, float score ) {
       const std::vector<unsigned int,IdSetAlloc>& all_nodes = 
         _getAllNodes ( nodeset_index );
@@ -137,32 +137,32 @@ namespace gum {
 
 
     /// returns a cached score
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    float Score<RowFilter,IdSetAlloc,CountAlloc>::_cachedScore
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    float Score<IdSetAlloc,CountAlloc>::_cachedScore
     ( unsigned int nodeset_index ) const noexcept {
       return __cached_score[nodeset_index];
     }
 
 
     /// indicates whether we use the cache or not
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    bool Score<RowFilter,IdSetAlloc,CountAlloc>::_isUsingCache () const noexcept {
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    bool Score<IdSetAlloc,CountAlloc>::_isUsingCache () const noexcept {
       return __use_cache;
     }
 
     
     /// turn on/off the use of a cache of the previously computed score
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
     void
-    Score<RowFilter,IdSetAlloc,CountAlloc>::useCache ( bool on_off ) noexcept {
+    Score<IdSetAlloc,CountAlloc>::useCache ( bool on_off ) noexcept {
       if ( ! on_off ) clear ();
       __use_cache = on_off;
     }
 
     
     /// clears the current cache (clear nodesets as well)
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    void Score<RowFilter,IdSetAlloc,CountAlloc>::clearCache () {
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    void Score<IdSetAlloc,CountAlloc>::clearCache () {
       clear ();
       __cache.clear ();
     }

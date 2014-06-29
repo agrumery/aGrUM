@@ -61,10 +61,9 @@ namespace gum {
      * to get the observed countings if you are developping a new independence
      * test class, or use method score to get the computed score of the test if
      * you are an end user. */
-    template <typename RowFilter,
-              typename IdSetAlloc = std::allocator<unsigned int>,
+    template <typename IdSetAlloc = std::allocator<unsigned int>,
               typename CountAlloc = std::allocator<float> >
-    class IndependenceTest : private Counter<RowFilter,IdSetAlloc,CountAlloc> {
+    class IndependenceTest : private Counter<IdSetAlloc,CountAlloc> {
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -74,6 +73,7 @@ namespace gum {
       /// default constructor
       /** @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database */
+      template <typename RowFilter>
       IndependenceTest ( const RowFilter& filter,
                          const std::vector<unsigned int>& var_modalities );
       
@@ -167,7 +167,7 @@ namespace gum {
       void useCache ( bool on_off ) noexcept;
       
       /// returns the modalities of the variables
-      using Counter<RowFilter,IdSetAlloc,CountAlloc>::modalities;
+      using Counter<IdSetAlloc,CountAlloc>::modalities;
 
       /// returns the score corresponding to a given nodeset
       /** Scores are computed by counting formulas (for instance, for Chi2,
@@ -201,20 +201,20 @@ namespace gum {
        * when callind addNodeset, and then the target nodes.
        * @warning it is assumed that, after using addNodeSet, you have executed
        * method count() before calling method countTarget. */
-      using Counter<RowFilter,IdSetAlloc,CountAlloc>::_getAllCounts;
+      using Counter<IdSetAlloc,CountAlloc>::_getAllCounts;
 
       /// returns the counting vector for a conditioning set
       /** @warning it is assumed that, after using addNodeSet, you have executed
        * method count() before calling method countTarget. */
-      using Counter<RowFilter,IdSetAlloc,CountAlloc>::_getConditioningCounts;
+      using Counter<IdSetAlloc,CountAlloc>::_getConditioningCounts;
 
       /// returns the set of target + conditioning nodes
       /** conditioning nodes are always the first ones in the vector and targets
        * are the last ones */
-      using Counter<RowFilter,IdSetAlloc,CountAlloc>::_getAllNodes;
+      using Counter<IdSetAlloc,CountAlloc>::_getAllNodes;
 
       /// returns the conditioning nodes (nullptr if there are no such nodes)
-      using Counter<RowFilter,IdSetAlloc,CountAlloc>::_getConditioningNodes;
+      using Counter<IdSetAlloc,CountAlloc>::_getConditioningNodes;
 
       /// indicates whether a score belongs to the cache
       bool _isInCache ( unsigned int nodeset_index ) const noexcept;
@@ -251,10 +251,11 @@ namespace gum {
       // ##########################################################################
       
       /// prevent copy constructor
-      IndependenceTest ( const IndependenceTest& ) = delete;
+      IndependenceTest ( const IndependenceTest<IdSetAlloc,CountAlloc>& ) = delete;
 
       /// prevent copy operator
-      IndependenceTest& operator= ( const IndependenceTest& ) = delete;
+      IndependenceTest&
+      operator= ( const IndependenceTest<IdSetAlloc,CountAlloc>& ) = delete;
 
     };
 

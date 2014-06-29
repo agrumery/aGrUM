@@ -33,56 +33,57 @@ namespace gum {
 
     
     /// default constructor
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    ParamEstimator<RowFilter,IdSetAlloc,CountAlloc>::ParamEstimator
+    template <typename IdSetAlloc, typename CountAlloc>
+    template <typename RowFilter> INLINE
+    ParamEstimator<IdSetAlloc,CountAlloc>::ParamEstimator
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities ) :
-      Counter<RowFilter,IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
+      Counter<IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
       GUM_CONSTRUCTOR ( ParamEstimator );
     }
 
 
     /// destructor
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    ParamEstimator<RowFilter,IdSetAlloc,CountAlloc>::~ParamEstimator () {
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    ParamEstimator<IdSetAlloc,CountAlloc>::~ParamEstimator () {
       GUM_DESTRUCTOR ( ParamEstimator );
     }
 
 
     /// add a new CPT with a single variable to be estimated 
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
     unsigned int
-    ParamEstimator<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+    ParamEstimator<IdSetAlloc,CountAlloc>::addNodeSet
     ( unsigned int var ) {
       _is_normalized.push_back ( false );
-      return Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet ( var );
+      return Counter<IdSetAlloc,CountAlloc>::addNodeSet ( var );
     }
 
 
     /// add a new target variable plus some conditioning vars
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
     unsigned int
-    ParamEstimator<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+    ParamEstimator<IdSetAlloc,CountAlloc>::addNodeSet
     ( unsigned int var,
       const std::vector<unsigned int>& conditioning_ids ) {
       _is_normalized.push_back ( false );
-      return Counter<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+      return Counter<IdSetAlloc,CountAlloc>::addNodeSet
         ( var,  conditioning_ids );
     }
 
 
     
     /// clears all the data structures from memory
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    void ParamEstimator<RowFilter,IdSetAlloc,CountAlloc>::clear () {
-      Counter<RowFilter,IdSetAlloc,CountAlloc>::clear ();
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    void ParamEstimator<IdSetAlloc,CountAlloc>::clear () {
+      Counter<IdSetAlloc,CountAlloc>::clear ();
       _is_normalized.clear ();
     }
     
 
     /// sets the CPT's parameters corresponding to a given nodeset
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    void ParamEstimator<RowFilter,IdSetAlloc,CountAlloc>::setParameters
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    void ParamEstimator<IdSetAlloc,CountAlloc>::setParameters
     ( unsigned int nodeset_index,
       Potential<float>& pot ) {
       const std::vector<float,CountAlloc>& normalized_counts =

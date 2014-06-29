@@ -32,13 +32,14 @@ namespace gum {
 
     
     /// default constructor
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    ParamEstimatorMLwithUniformApriori<RowFilter,IdSetAlloc,CountAlloc>::
+    template <typename IdSetAlloc, typename CountAlloc>
+    template <typename RowFilter> INLINE
+    ParamEstimatorMLwithUniformApriori<IdSetAlloc,CountAlloc>::
     ParamEstimatorMLwithUniformApriori
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities,
       float apriori ) :
-      ParamEstimator<RowFilter,IdSetAlloc,CountAlloc> ( filter, var_modalities ),
+      ParamEstimator<IdSetAlloc,CountAlloc> ( filter, var_modalities ),
       __apriori ( apriori ) {
       if ( apriori < 0 ) {
         GUM_ERROR ( OutOfBounds, "the apriori must be positive" );
@@ -50,8 +51,8 @@ namespace gum {
 
     
     /// destructor
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    ParamEstimatorMLwithUniformApriori<RowFilter,IdSetAlloc,CountAlloc>::
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    ParamEstimatorMLwithUniformApriori<IdSetAlloc,CountAlloc>::
     ~ParamEstimatorMLwithUniformApriori () {
       // for debugging purposes
       GUM_DESTRUCTOR ( ParamEstimatorMLwithUniformApriori );
@@ -59,9 +60,9 @@ namespace gum {
 
     
     /// sets the apriori
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
     void
-    ParamEstimatorMLwithUniformApriori<RowFilter,IdSetAlloc,CountAlloc>::
+    ParamEstimatorMLwithUniformApriori<IdSetAlloc,CountAlloc>::
     setApriori ( float new_apriori ) {
       if ( new_apriori < 0 ) {
         GUM_ERROR ( OutOfBounds, "the apriori must be positive" );
@@ -71,9 +72,9 @@ namespace gum {
 
     
     /// returns the CPT's parameters corresponding to a given nodeset
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
+    template <typename IdSetAlloc, typename CountAlloc>
     const std::vector<float,CountAlloc>&
-    ParamEstimatorMLwithUniformApriori<RowFilter,IdSetAlloc,CountAlloc>::parameters
+    ParamEstimatorMLwithUniformApriori<IdSetAlloc,CountAlloc>::parameters
     ( unsigned int nodeset_index ) {
       // if all_counts is already normalized, just return it
       if ( this->_is_normalized[nodeset_index] ) {

@@ -103,6 +103,13 @@ namespace gum {
       /// update all the countings of all the nodesets by parsing the database
       virtual void count () = 0;
 
+      /// returns the size of the database
+      virtual unsigned long DBSize () noexcept = 0;
+
+      /// sets the interval of records on which countings should be performed
+      virtual void setRange ( unsigned long min_index,
+                              unsigned long max_index ) = 0;
+
       /// returns the countings for the nodeset specified in argument
       const std::vector<float,CountAlloc>&
       getCounts ( unsigned int nodeset_id ) const noexcept;
@@ -136,7 +143,6 @@ namespace gum {
     /* ===                        THREAD RECORD COUNTER                      === */
     /* ========================================================================= */
     /** @class RecordCounterThread
-     * @ingroup learning_group
      * @brief This class computes the number of observations of tuples of variables
      * in the database
      * A RecordCounterThread just computes the number of records observed for
@@ -200,6 +206,12 @@ namespace gum {
       /// returns the countings for the nodeset specified in argument
       using Base::getCounts;
       
+      /// returns the size of the database
+      unsigned long DBSize () noexcept;
+
+      /// sets the interval of records on which countings should be performed
+      void setRange ( unsigned long min_index, unsigned long max_index );
+
       /// returns the filter used for the countings
       RowFilter& filter () noexcept;
 
@@ -227,8 +239,7 @@ namespace gum {
      * compute countings of observations from tabular databases. It calls
      * as many RecordCounterThreads as possible to do the job in parallel. 
      */
-    template <typename RowFilter,
-              typename IdSetAlloc = std::allocator<unsigned int>,
+    template <typename IdSetAlloc = std::allocator<unsigned int>,
               typename CountAlloc = std::allocator<float> >
     class RecordCounter {
     public:
@@ -239,14 +250,15 @@ namespace gum {
       /// @{
 
       /// default constructor
+      template <typename RowFilter>
       RecordCounter ( const RowFilter& filter,
                       const std::vector<unsigned int>& var_modalities );
 
       /// copy constructor
-      RecordCounter ( const RecordCounter<RowFilter,IdSetAlloc,CountAlloc>& from );
+      RecordCounter ( const RecordCounter<IdSetAlloc,CountAlloc>& from );
 
       /// move constructor
-      RecordCounter ( RecordCounter<RowFilter,IdSetAlloc,CountAlloc>&& from );
+      RecordCounter ( RecordCounter<IdSetAlloc,CountAlloc>&& from );
 
       /// destructor
       ~RecordCounter ();
@@ -279,9 +291,6 @@ namespace gum {
        * performs it. */
       void count ();
 
-      /// returns the filter used for the countings
-      RowFilter& filter () noexcept;
-      
       /// returns the counts performed for a given idSet
       const std::vector<float,CountAlloc>&
       getCounts ( unsigned int idset ) const noexcept;
@@ -299,9 +308,6 @@ namespace gum {
       
 
     private:
-      /// the row filter used to filter the database
-      RowFilter __row_filter;
-      
       /// the modalities of the variables
       const std::vector<unsigned int>* __modalities { nullptr };
 
@@ -367,7 +373,7 @@ namespace gum {
       DAG __subset_lattice;
       
       /// the set of ThreadCounters
-      std::vector< RecordCounterThread<RowFilter,IdSetAlloc,CountAlloc> >
+      std::vector<RecordCounterThreadBase<IdSetAlloc,CountAlloc>*>
       __thread_counters;
 
       /// the number of thread counter used by the last count ()

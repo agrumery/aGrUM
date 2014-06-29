@@ -35,27 +35,28 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    ScoreLog2Likelihood<RowFilter,IdSetAlloc,CountAlloc>::ScoreLog2Likelihood
+    template <typename IdSetAlloc, typename CountAlloc>
+    template <typename RowFilter> INLINE
+    ScoreLog2Likelihood<IdSetAlloc,CountAlloc>::ScoreLog2Likelihood
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities ) :
-      Score<RowFilter,IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
+      Score<IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
       // for debugging purposes
       GUM_CONSTRUCTOR ( ScoreLog2Likelihood );
     }
     
 
     /// destructor
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    ScoreLog2Likelihood<RowFilter,IdSetAlloc,CountAlloc>::~ScoreLog2Likelihood () {
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    ScoreLog2Likelihood<IdSetAlloc,CountAlloc>::~ScoreLog2Likelihood () {
       // for debugging purposes
       GUM_DESTRUCTOR ( ScoreLog2Likelihood );
     }
 
 
     /// returns the score corresponding to a given nodeset
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
-    float ScoreLog2Likelihood<RowFilter,IdSetAlloc,CountAlloc>::score
+    template <typename IdSetAlloc, typename CountAlloc>
+    float ScoreLog2Likelihood<IdSetAlloc,CountAlloc>::score
     ( unsigned int nodeset_index ) {
       // if the score has already been computed, get its value
       if ( this->_isInCache ( nodeset_index ) ) {

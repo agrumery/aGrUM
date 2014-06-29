@@ -36,27 +36,28 @@ namespace gum {
 
     
     /// default constructor
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    ScoreAIC<RowFilter,IdSetAlloc,CountAlloc>::ScoreAIC
+    template <typename IdSetAlloc, typename CountAlloc>
+    template <typename RowFilter> INLINE
+    ScoreAIC<IdSetAlloc,CountAlloc>::ScoreAIC
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities ) :
-      Score<RowFilter,IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
+      Score<IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
       // for debugging purposes
       GUM_CONSTRUCTOR ( ScoreAIC );
     }
     
 
     /// destructor
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    ScoreAIC<RowFilter,IdSetAlloc,CountAlloc>::~ScoreAIC () {
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    ScoreAIC<IdSetAlloc,CountAlloc>::~ScoreAIC () {
       // for debugging purposes
       GUM_DESTRUCTOR ( ScoreAIC );
     }
 
 
     /// returns the score corresponding to a given nodeset
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
-    float ScoreAIC<RowFilter,IdSetAlloc,CountAlloc>::score
+    template <typename IdSetAlloc, typename CountAlloc>
+    float ScoreAIC<IdSetAlloc,CountAlloc>::score
     ( unsigned int nodeset_index ) {
       // if the score has already been computed, get its value
       if ( this->_isInCache ( nodeset_index ) ) {

@@ -55,10 +55,9 @@ namespace gum {
      * Use methods score to retrieve the scores computed. See the Score class for
      * details.
      */
-    template <typename RowFilter,
-              typename IdSetAlloc = std::allocator<unsigned int>,
+    template <typename IdSetAlloc = std::allocator<unsigned int>,
               typename CountAlloc = std::allocator<float> >
-    class ScoreAIC : public Score<RowFilter,IdSetAlloc,CountAlloc> {
+    class ScoreAIC : public Score<IdSetAlloc,CountAlloc> {
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -68,6 +67,7 @@ namespace gum {
       /// default constructor
       /** @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database */
+      template <typename RowFilter>
       ScoreAIC ( const RowFilter& filter,
                  const std::vector<unsigned int>& var_modalities );
 

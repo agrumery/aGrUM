@@ -62,10 +62,9 @@ namespace gum {
      * performed, use method _getAllCounts and _getConditioningCounts to get the
      * observed countings if you are developping a new score class, or use
      * method score to get the computed score if you are an end user. */
-    template <typename RowFilter,
-              typename IdSetAlloc = std::allocator<unsigned int>,
+    template <typename IdSetAlloc = std::allocator<unsigned int>,
               typename CountAlloc = std::allocator<float> >
-    class Score : private Counter<RowFilter,IdSetAlloc,CountAlloc> {
+    class Score : private Counter<IdSetAlloc,CountAlloc> {
     public:
 
       // ##########################################################################
@@ -76,6 +75,7 @@ namespace gum {
       /// default constructor
       /** @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database */
+      template <typename RowFilter>
       Score ( const RowFilter& filter,
               const std::vector<unsigned int>& var_modalities );
 
@@ -130,10 +130,10 @@ namespace gum {
       void useCache ( bool on_off ) noexcept;
       
       /// returns the modalities of the variables
-      using Counter<RowFilter,IdSetAlloc,CountAlloc>::modalities;
+      using Counter<IdSetAlloc,CountAlloc>::modalities;
 
       /// sets the maximum number of threads used to compute the scores
-      using Counter<RowFilter,IdSetAlloc,CountAlloc>::setMaxNbThreads;
+      using Counter<IdSetAlloc,CountAlloc>::setMaxNbThreads;
       
       /// returns the score corresponding to a given nodeset
       virtual float score ( unsigned int nodeset_index ) = 0;
@@ -157,20 +157,20 @@ namespace gum {
        * when callind addNodeset, and then the target nodes.
        * @warning it is assumed that, after using addNodeSet, you have executed
        * method count() before calling method countTarget. */
-      using Counter<RowFilter,IdSetAlloc,CountAlloc>::_getAllCounts;
+      using Counter<IdSetAlloc,CountAlloc>::_getAllCounts;
 
       /// returns the counting vector for a conditioning set
       /** @warning it is assumed that, after using addNodeSet, you have executed
        * method count() before calling method countTarget. */
-      using Counter<RowFilter,IdSetAlloc,CountAlloc>::_getConditioningCounts;
+      using Counter<IdSetAlloc,CountAlloc>::_getConditioningCounts;
 
       /// returns the set of target + conditioning nodes
       /** conditioning nodes are always the first ones in the vector and targets
        * are the last ones */
-      using Counter<RowFilter,IdSetAlloc,CountAlloc>::_getAllNodes;
+      using Counter<IdSetAlloc,CountAlloc>::_getAllNodes;
 
       /// returns the conditioning nodes (nullptr if there are no such nodes)
-      using Counter<RowFilter,IdSetAlloc,CountAlloc>::_getConditioningNodes;
+      using Counter<IdSetAlloc,CountAlloc>::_getConditioningNodes;
       
       /// indicates whether a score belongs to the cache
       bool _isInCache ( unsigned int nodeset_index ) const noexcept;
@@ -207,11 +207,11 @@ namespace gum {
       // ##########################################################################
 
       /// prevent copy constructor
-      Score ( const Score<RowFilter,IdSetAlloc,CountAlloc>& ) = delete;
+      Score ( const Score<IdSetAlloc,CountAlloc>& ) = delete;
 
       /// prevent copy operator
-      Score<RowFilter,IdSetAlloc,CountAlloc>&
-      operator= ( const Score<RowFilter,IdSetAlloc,CountAlloc>& ) = delete;
+      Score<IdSetAlloc,CountAlloc>&
+      operator= ( const Score<IdSetAlloc,CountAlloc>& ) = delete;
 
     };
 

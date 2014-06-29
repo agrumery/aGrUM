@@ -66,14 +66,12 @@ namespace gum_tests {
 
       std::vector<unsigned int> modalities = filter.modalities ();
 
-      gum::learning::ScoreK2<decltype ( filter ) >
-        score ( filter, modalities );
+      gum::learning::ScoreK2<> score ( filter, modalities );
 
       gum::learning::StructuralConstraintDAG
         struct_constraint ( modalities.size () );
 
-      gum::learning::ParamEstimatorML<decltype ( filter ) >
-        estimator ( filter, modalities );
+      gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
 
       std::vector<unsigned int> order ( filter.modalities ().size() );
       for ( unsigned int i = 0; i < order.size(); ++i ) {
@@ -125,14 +123,12 @@ namespace gum_tests {
 
       std::vector<unsigned int> modalities = filter.modalities ();
 
-      gum::learning::ScoreK2<decltype ( filter ) >
-        score ( filter, modalities );
+      gum::learning::ScoreK2<> score ( filter, modalities );
 
       gum::learning::StructuralConstraintDAG
         struct_constraint ( modalities.size () );
 
-      gum::learning::ParamEstimatorML<decltype ( filter ) >
-        estimator ( filter, modalities );
+      gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
 
       std::vector<unsigned int> order ( filter.modalities ().size() );
       for ( unsigned int i = 0; i < order.size(); ++i ) {
@@ -163,8 +159,7 @@ namespace gum_tests {
 
       std::vector<unsigned int> modalities = filter.modalities ();
 
-      gum::learning::ScoreK2<decltype ( filter ) >
-        score ( filter, modalities );
+      gum::learning::ScoreK2<> score ( filter, modalities );
 
       gum::NodeProperty<bool> slices;
       for ( unsigned int i = 0; i < modalities.size (); ++i ) {
@@ -179,8 +174,7 @@ namespace gum_tests {
       gum::learning::StructuralConstraint2TimeSlice
         struct_constraint ( slices );
 
-      gum::learning::ParamEstimatorML<decltype ( filter ) >
-        estimator ( filter, modalities );
+      gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
 
       std::vector<unsigned int> order ( filter.modalities ().size() );
       for ( unsigned int i = 0; i < order.size(); ++i ) {
@@ -211,14 +205,12 @@ namespace gum_tests {
 
       std::vector<unsigned int> modalities = filter.modalities ();
 
-      gum::learning::ScoreK2<decltype ( filter ) >
-        score ( filter, modalities );
+      gum::learning::ScoreK2<> score ( filter, modalities );
 
       gum::learning::StructuralConstraintIndegree
         struct_constraint ( modalities.size (), 6 );
 
-      gum::learning::ParamEstimatorML<decltype ( filter ) >
-        estimator ( filter, modalities );
+      gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
 
       std::vector<unsigned int> order ( filter.modalities ().size() );
       for ( unsigned int i = 0; i < order.size(); ++i ) {

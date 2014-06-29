@@ -61,11 +61,10 @@ namespace gum {
      * nodes assume that this set is empty. Once the computations have been
      * performed, use method parameters to retrieve the parameters of interest.
      */
-    template <typename RowFilter,
-              typename IdSetAlloc = std::allocator<unsigned int>,
+    template <typename IdSetAlloc = std::allocator<unsigned int>,
               typename CountAlloc = std::allocator<float> >
     class ParamEstimatorMLwithUniformApriori :
-      public ParamEstimator<RowFilter,IdSetAlloc,CountAlloc> {
+      public ParamEstimator<IdSetAlloc,CountAlloc> {
     public:
 
       // ##########################################################################
@@ -76,6 +75,7 @@ namespace gum {
       /// default constructor
       /** @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database */
+      template <typename RowFilter>
       ParamEstimatorMLwithUniformApriori
       ( const RowFilter& filter,
         const std::vector<unsigned int>& var_modalities,

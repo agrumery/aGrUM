@@ -36,27 +36,28 @@ namespace gum {
 
     
     /// default constructor
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
-    ScoreBDeu<RowFilter,IdSetAlloc,CountAlloc>::ScoreBDeu
+    template <typename IdSetAlloc, typename CountAlloc>
+    template <typename RowFilter> INLINE
+    ScoreBDeu<IdSetAlloc,CountAlloc>::ScoreBDeu
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities ) :
-      Score<RowFilter,IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
+      Score<IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
       // for debugging purposes
       GUM_CONSTRUCTOR ( ScoreBDeu );
     }
     
 
     /// destructor
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    ScoreBDeu<RowFilter,IdSetAlloc,CountAlloc>::~ScoreBDeu () {
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    ScoreBDeu<IdSetAlloc,CountAlloc>::~ScoreBDeu () {
       // for debugging purposes
       GUM_DESTRUCTOR ( ScoreBDeu );
     }
 
 
     /// save an equivalent sample size
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    void ScoreBDeu<RowFilter,IdSetAlloc,CountAlloc>::__insertESS
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    void ScoreBDeu<IdSetAlloc,CountAlloc>::__insertESS
     ( float equivalent_sample_size,
       unsigned int index ) {
       if ( __ess.size () <= index ) __ess.resize ( index + 1 );
@@ -65,26 +66,26 @@ namespace gum {
     
 
     /// add a new single variable to be counted
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
     unsigned int
-    ScoreBDeu<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+    ScoreBDeu<IdSetAlloc,CountAlloc>::addNodeSet
     ( unsigned int var,
       float equivalent_sample_size ) {
       unsigned int index =
-        Score<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet ( var );
+        Score<IdSetAlloc,CountAlloc>::addNodeSet ( var );
       __insertESS ( equivalent_sample_size, index );
       return index;
     }
 
       
     /// add a new target variable plus some conditioning vars
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
     unsigned int
-    ScoreBDeu<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+    ScoreBDeu<IdSetAlloc,CountAlloc>::addNodeSet
     ( unsigned int var,
       const std::vector<unsigned int>& conditioning_ids,
       float equivalent_sample_size ) {
-      unsigned int index = Score<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+      unsigned int index = Score<IdSetAlloc,CountAlloc>::addNodeSet
         ( var, conditioning_ids );
       __insertESS ( equivalent_sample_size, index );
       return index;
@@ -92,16 +93,16 @@ namespace gum {
 
 
     /// clears all the data structures from memory
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    void ScoreBDeu<RowFilter,IdSetAlloc,CountAlloc>::clear () {
-      Score<RowFilter,IdSetAlloc,CountAlloc>::clear ();
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    void ScoreBDeu<IdSetAlloc,CountAlloc>::clear () {
+      Score<IdSetAlloc,CountAlloc>::clear ();
       __ess.clear ();
     }
       
     
     /// returns the score corresponding to a given nodeset
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
-    float ScoreBDeu<RowFilter,IdSetAlloc,CountAlloc>::score
+    template <typename IdSetAlloc, typename CountAlloc>
+    float ScoreBDeu<IdSetAlloc,CountAlloc>::score
     ( unsigned int nodeset_index ) {
       // if the score has already been computed, get its value
       if ( this->_isInCache ( nodeset_index ) ) {

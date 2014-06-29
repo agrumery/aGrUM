@@ -33,11 +33,12 @@ namespace gum {
 
     
     /// default constructor
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    IndepTestG2<RowFilter,IdSetAlloc,CountAlloc>::IndepTestG2
+    template <typename IdSetAlloc, typename CountAlloc>
+    template <typename RowFilter> INLINE
+    IndepTestG2<IdSetAlloc,CountAlloc>::IndepTestG2
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities ) :
-      IndependenceTest<RowFilter,IdSetAlloc,CountAlloc> ( filter, var_modalities ),
+      IndependenceTest<IdSetAlloc,CountAlloc> ( filter, var_modalities ),
       __chi2 ( var_modalities ) {
       // for debugging purposes
       GUM_CONSTRUCTOR ( IndepTestG2 );
@@ -45,16 +46,16 @@ namespace gum {
 
 
     /// destructor
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    IndepTestG2<RowFilter,IdSetAlloc,CountAlloc>::~IndepTestG2 () {
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    IndepTestG2<IdSetAlloc,CountAlloc>::~IndepTestG2 () {
       // for debugging purposes
       GUM_DESTRUCTOR ( IndepTestG2 );
     }
 
 
     /// returns the score corresponding to a given nodeset
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
-    float IndepTestG2<RowFilter,IdSetAlloc,CountAlloc>::score
+    template <typename IdSetAlloc, typename CountAlloc>
+    float IndepTestG2<IdSetAlloc,CountAlloc>::score
     ( unsigned int nodeset_index ) {
        // if the score has already been computed, get its value
       if ( this->_isInCache ( nodeset_index ) ) {

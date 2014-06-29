@@ -154,12 +154,11 @@ namespace gum {
 
       std::vector<unsigned int> modalities = filter.modalities ();
 
-      ScoreBDeu<decltype ( filter ) > score ( filter, modalities );
+      ScoreBDeu<> score ( filter, modalities );
 
       StructuralConstraintSet<StructuralConstraintDAG> struct_constraint;
 
-      ParamEstimatorMLwithUniformApriori<decltype ( filter ) >
-        estimator ( filter, modalities );
+      ParamEstimatorMLwithUniformApriori<> estimator ( filter, modalities );
 
       GraphChangesGenerator4DiGraph< decltype ( struct_constraint ) >
         op_set ( struct_constraint );

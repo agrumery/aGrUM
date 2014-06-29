@@ -36,27 +36,28 @@ namespace gum {
 
     
     /// default constructor
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
-    ScoreBD<RowFilter,IdSetAlloc,CountAlloc>::ScoreBD
+    template <typename IdSetAlloc, typename CountAlloc>
+    template <typename RowFilter> INLINE
+    ScoreBD<IdSetAlloc,CountAlloc>::ScoreBD
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities ) :
-      Score<RowFilter,IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
+      Score<IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
       // for debugging purposes
       GUM_CONSTRUCTOR ( ScoreBD );
     }
     
 
     /// destructor
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    ScoreBD<RowFilter,IdSetAlloc,CountAlloc>::~ScoreBD () {
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    ScoreBD<IdSetAlloc,CountAlloc>::~ScoreBD () {
       // for debugging purposes
       GUM_DESTRUCTOR ( ScoreBD );
     }
 
 
     /// save an equivalent sample size
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    void ScoreBD<RowFilter,IdSetAlloc,CountAlloc>::__insertHyperParam
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    void ScoreBD<IdSetAlloc,CountAlloc>::__insertHyperParam
     ( const std::vector<float>& N_prime_ijk,
       unsigned int index ) {
       if ( __N_prime_ijk.size () <= index ) __N_prime_ijk.resize ( index + 1 );
@@ -65,8 +66,8 @@ namespace gum {
 
 
     /// checks that the size of a given N_prime_ijk is correct
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    void ScoreBD<RowFilter,IdSetAlloc,CountAlloc>::__checkHyperParam
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    void ScoreBD<IdSetAlloc,CountAlloc>::__checkHyperParam
     ( unsigned int var,
       const std::vector<unsigned int>& conditioning_ids,
       const std::vector<float>& N_prime_ijk ) const {
@@ -81,29 +82,29 @@ namespace gum {
       
 
     /// add a new single variable to be counted
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
     unsigned int
-    ScoreBD<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+    ScoreBD<IdSetAlloc,CountAlloc>::addNodeSet
     ( unsigned int var,
       const std::vector<float>& N_prime_ijk ) {
       __checkHyperParam ( var, __empty_vect, N_prime_ijk );
       unsigned int index =
-        Score<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet ( var );
+        Score<IdSetAlloc,CountAlloc>::addNodeSet ( var );
       __insertHyperParam ( N_prime_ijk, index );
       return index;
     }
 
       
     /// add a new target variable plus some conditioning vars
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
     unsigned int
-    ScoreBD<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+    ScoreBD<IdSetAlloc,CountAlloc>::addNodeSet
     ( unsigned int var,
       const std::vector<unsigned int>& conditioning_ids,
       const std::vector<float>& N_prime_ijk ) {
       __checkHyperParam ( var, conditioning_ids, N_prime_ijk );
       unsigned int index =
-        Score<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
+        Score<IdSetAlloc,CountAlloc>::addNodeSet
         ( var, conditioning_ids );
       __insertHyperParam ( N_prime_ijk, index );
       return index;
@@ -111,16 +112,16 @@ namespace gum {
 
 
     /// clears all the data structures from memory
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    void ScoreBD<RowFilter,IdSetAlloc,CountAlloc>::clear () {
-      Score<RowFilter,IdSetAlloc,CountAlloc>::clear ();
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    void ScoreBD<IdSetAlloc,CountAlloc>::clear () {
+      Score<IdSetAlloc,CountAlloc>::clear ();
       __N_prime_ijk.clear ();
     }
 
     
     /// returns the score corresponding to a given nodeset
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
-    float ScoreBD<RowFilter,IdSetAlloc,CountAlloc>::score
+    template <typename IdSetAlloc, typename CountAlloc>
+    float ScoreBD<IdSetAlloc,CountAlloc>::score
     ( unsigned int nodeset_index ) {
       // if the score has already been computed, get its value
       if ( this->_isInCache ( nodeset_index ) ) {

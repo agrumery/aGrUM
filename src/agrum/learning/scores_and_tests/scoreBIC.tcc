@@ -36,27 +36,28 @@ namespace gum {
 
     
     /// default constructor
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    ScoreBIC<RowFilter,IdSetAlloc,CountAlloc>::ScoreBIC
+    template <typename IdSetAlloc, typename CountAlloc>
+    template <typename RowFilter> INLINE
+    ScoreBIC<IdSetAlloc,CountAlloc>::ScoreBIC
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities ) :
-      Score<RowFilter,IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
+      Score<IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
       // for debugging purposes
       GUM_CONSTRUCTOR ( ScoreBIC );
     }
  
 
     /// destructor
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    ScoreBIC<RowFilter,IdSetAlloc,CountAlloc>::ScoreBIC::~ScoreBIC () {
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    ScoreBIC<IdSetAlloc,CountAlloc>::ScoreBIC::~ScoreBIC () {
       // for debugging purposes
       GUM_DESTRUCTOR ( ScoreBIC );
     }
 
 
     /// returns the score corresponding to a given nodeset
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
-    float ScoreBIC<RowFilter,IdSetAlloc,CountAlloc>::score
+    template <typename IdSetAlloc, typename CountAlloc>
+    float ScoreBIC<IdSetAlloc,CountAlloc>::score
     ( unsigned int nodeset_index ) {
       // if the score has already been computed, get its value
       if ( this->_isInCache ( nodeset_index ) ) {

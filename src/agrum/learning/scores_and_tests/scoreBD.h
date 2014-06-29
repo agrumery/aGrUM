@@ -62,10 +62,9 @@ namespace gum {
      * Use methods score to retrieve the scores computed. See the Score class for
      * details.
      */
-    template <typename RowFilter,
-              typename IdSetAlloc = std::allocator<unsigned int>,
+    template <typename IdSetAlloc = std::allocator<unsigned int>,
               typename CountAlloc = std::allocator<float> >
-    class ScoreBD : protected Score<RowFilter,IdSetAlloc,CountAlloc> {
+    class ScoreBD : protected Score<IdSetAlloc,CountAlloc> {
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -75,6 +74,7 @@ namespace gum {
       /// default constructor
       /** @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database */
+      template <typename RowFilter>
       ScoreBD ( const RowFilter& filter,
                 const std::vector<unsigned int>& var_modalities );
 
@@ -131,16 +131,16 @@ namespace gum {
       void clear ();
 
       /// clears the current cache (clear nodesets as well)
-      using Score<RowFilter,IdSetAlloc,CountAlloc>::clearCache;
+      using Score<IdSetAlloc,CountAlloc>::clearCache;
 
       /// returns the modalities of the variables
-      using Score<RowFilter,IdSetAlloc,CountAlloc>::modalities;
+      using Score<IdSetAlloc,CountAlloc>::modalities;
 
       /// turn on/off the use of a cache of the previously computed score
-      using Score<RowFilter,IdSetAlloc,CountAlloc>::useCache;
+      using Score<IdSetAlloc,CountAlloc>::useCache;
 
       /// sets the maximum number of threads used to compute the scores
-      using Score<RowFilter,IdSetAlloc,CountAlloc>::setMaxNbThreads;
+      using Score<IdSetAlloc,CountAlloc>::setMaxNbThreads;
       
       /// returns the log2(BDeu score) corresponding to a given nodeset
       float score ( unsigned int nodeset_index );

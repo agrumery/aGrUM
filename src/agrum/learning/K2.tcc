@@ -187,10 +187,9 @@ namespace gum {
 
       std::vector<unsigned int> modalities = filter.modalities ();
 
-      ScoreK2<decltype ( filter ) > score ( filter, modalities );
+      ScoreK2<> score ( filter, modalities );
 
-      ParamEstimatorMLwithUniformApriori<decltype ( filter ) >
-        estimator ( filter, modalities );
+      ParamEstimatorMLwithUniformApriori<> estimator ( filter, modalities );
 
       StructuralConstraintDiGraph struct_constraint;
 

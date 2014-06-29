@@ -31,28 +31,29 @@ namespace gum {
 
     
     /// default constructor
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    ParamEstimatorML<RowFilter,IdSetAlloc,CountAlloc>::ParamEstimatorML
+    template <typename IdSetAlloc, typename CountAlloc>
+    template <typename RowFilter> INLINE
+    ParamEstimatorML<IdSetAlloc,CountAlloc>::ParamEstimatorML
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities ) :
-      ParamEstimator<RowFilter,IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
+      ParamEstimator<IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
       // for debugging purposes
       GUM_CONSTRUCTOR ( ParamEstimatorML );
     }
 
     
     /// destructor
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc> INLINE
-    ParamEstimatorML<RowFilter,IdSetAlloc,CountAlloc>::~ParamEstimatorML () {
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    ParamEstimatorML<IdSetAlloc,CountAlloc>::~ParamEstimatorML () {
       // for debugging purposes
       GUM_DESTRUCTOR ( ParamEstimatorML );
     }
 
     
     /// returns the CPT's parameters corresponding to a given nodeset
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
+    template <typename IdSetAlloc, typename CountAlloc>
     const std::vector<float,CountAlloc>&
-    ParamEstimatorML<RowFilter,IdSetAlloc,CountAlloc>::parameters
+    ParamEstimatorML<IdSetAlloc,CountAlloc>::parameters
     ( unsigned int nodeset_index ) {
       // if all_counts is already normalized, just return it
       if ( this->_is_normalized[nodeset_index] ) {

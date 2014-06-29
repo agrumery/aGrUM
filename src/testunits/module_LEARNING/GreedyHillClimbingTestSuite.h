@@ -74,8 +74,7 @@ namespace gum_tests {
 
       std::vector<unsigned int> modalities = filter.modalities ();
 
-      gum::learning::ScoreK2<decltype ( filter ) >
-        score ( filter, modalities );
+      gum::learning::ScoreK2<> score ( filter, modalities );
 
       gum::learning::StructuralConstraintSet<
         gum::learning::StructuralConstraintDAG,
@@ -91,8 +90,7 @@ namespace gum_tests {
       struct_constraint.setSlices ( slices );
       struct_constraint.setDefaultSlice ( 1 );
 
-      gum::learning::ParamEstimatorML<decltype ( filter ) >
-        estimator ( filter, modalities );
+      gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
 
       gum::learning::GraphChangesGenerator4DiGraph
         < decltype ( struct_constraint ) >
@@ -144,15 +142,13 @@ namespace gum_tests {
       
       std::vector<unsigned int> modalities = filter.modalities ();
       
-      gum::learning::ScoreBDeu<decltype ( filter ) >
-        score ( filter, modalities );
+      gum::learning::ScoreBDeu<> score ( filter, modalities );
 
       gum::learning::StructuralConstraintSet<
         gum::learning::StructuralConstraintDAG>
         struct_constraint; 
       
-      gum::learning::ParamEstimatorML<decltype ( filter ) >
-        estimator ( filter, modalities );
+      gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
 
       gum::learning::GraphChangesGenerator4DiGraph
         < decltype ( struct_constraint ) >
@@ -192,15 +188,13 @@ namespace gum_tests {
       
       std::vector<unsigned int> modalities = filter.modalities ();
       
-      gum::learning::ScoreBDeu<decltype ( filter ) >
-        score ( filter, modalities );
+      gum::learning::ScoreBDeu<> score ( filter, modalities );
 
       gum::learning::StructuralConstraintSet<
         gum::learning::StructuralConstraintDAG>
         struct_constraint; 
       
-      gum::learning::ParamEstimatorML<decltype ( filter ) >
-        estimator ( filter, modalities );
+      gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
 
       gum::learning::GraphChangesGenerator4DiGraph
         < decltype ( struct_constraint ) >
@@ -240,15 +234,13 @@ namespace gum_tests {
       
       std::vector<unsigned int> modalities = filter.modalities ();
       
-      gum::learning::ScoreBDeu<decltype ( filter ) >
-        score ( filter, modalities );
+      gum::learning::ScoreBDeu<> score ( filter, modalities );
 
       gum::learning::StructuralConstraintSet<
         gum::learning::StructuralConstraintDAG>
         struct_constraint; 
       
-      gum::learning::ParamEstimatorML<decltype ( filter ) >
-        estimator ( filter, modalities );
+      gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
 
       gum::learning::GraphChangesGenerator4DiGraph
         < decltype ( struct_constraint ) >
@@ -289,15 +281,13 @@ namespace gum_tests {
       
       std::vector<unsigned int> modalities = filter.modalities ();
       
-      gum::learning::ScoreBDeu<decltype ( filter ) >
-        score ( filter, modalities );
+      gum::learning::ScoreBDeu<> score ( filter, modalities );
 
       gum::learning::StructuralConstraintSet<
         gum::learning::StructuralConstraintDAG>
         struct_constraint; 
       
-      gum::learning::ParamEstimatorML<decltype ( filter ) >
-        estimator ( filter, modalities );
+      gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
 
       gum::learning::GraphChangesGenerator4DiGraph
         < decltype ( struct_constraint ) >
@@ -340,15 +330,13 @@ namespace gum_tests {
       
       std::vector<unsigned int> modalities = filter.modalities ();
       
-      gum::learning::ScoreBDeu<decltype ( filter ) >
-        score ( filter, modalities );
+      gum::learning::ScoreBDeu<> score ( filter, modalities );
 
       gum::learning::StructuralConstraintSet<
         gum::learning::StructuralConstraintDAG>
         struct_constraint; 
       
-      gum::learning::ParamEstimatorML<decltype ( filter ) >
-        estimator ( filter, modalities );
+      gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
 
       gum::learning::GraphChangesGenerator4DiGraph
         < decltype ( struct_constraint ) >
@@ -391,15 +379,13 @@ namespace gum_tests {
       
       std::vector<unsigned int> modalities = filter.modalities ();
       
-      gum::learning::ScoreBDeu<decltype ( filter ) >
-        score ( filter, modalities );
+      gum::learning::ScoreBDeu<> score ( filter, modalities );
 
       gum::learning::StructuralConstraintSet<
         gum::learning::StructuralConstraintDAG>
         struct_constraint; 
       
-      gum::learning::ParamEstimatorML<decltype ( filter ) >
-        estimator ( filter, modalities );
+      gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
 
       gum::learning::GraphChangesGeneratorOnSubDiGraph
         < decltype ( struct_constraint ) >

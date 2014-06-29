@@ -56,8 +56,7 @@ namespace gum_tests {
       
       std::vector<unsigned int> modalities ( 8, 2);
 
-      gum::learning::ScoreLog2Likelihood<decltype ( filter ) >
-        score ( filter, modalities );
+      gum::learning::ScoreLog2Likelihood<> score ( filter, modalities );
 
       unsigned int id1 = score.addNodeSet ( 3 );
       unsigned int id2 = score.addNodeSet ( 1 );
@@ -108,8 +107,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
       std::vector<unsigned int> modalities = filter.modalities ();
-      gum::learning::ScoreLog2Likelihood<decltype ( filter ) >
-        score ( filter, modalities );
+      gum::learning::ScoreLog2Likelihood<> score ( filter, modalities );
       //score.useCache ( false );
       
       unsigned int id1, id2, id3, id4, id5, id6, id7;
@@ -142,8 +140,7 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
       std::vector<unsigned int> modalities = filter.modalities ();
-      gum::learning::ScoreLog2Likelihood<decltype ( filter ) >
-        score ( filter, modalities );
+      gum::learning::ScoreLog2Likelihood<> score ( filter, modalities );
       //score.useCache ( false );
       
       unsigned int id1, id2, id3, id4, id5, id6, id7;

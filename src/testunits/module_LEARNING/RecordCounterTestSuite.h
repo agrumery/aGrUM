@@ -57,7 +57,7 @@ namespace gum_tests {
 
       std::vector<unsigned int> modalities ( 8, 2);
 
-      gum::learning::RecordCounter<decltype ( filter ) >
+      gum::learning::RecordCounter<>
         counter ( filter, modalities );
 
       std::vector<unsigned int> set1 { 0 };
