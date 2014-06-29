@@ -39,15 +39,98 @@
 #include <agrum/learning/scores_and_tests/idSet.h>
 
 
-// a buffer used to ensure that thread counters will have no cacheline problems
-#define CACHE_SIZE 1024
-
-
 namespace gum {
 
   
   namespace learning {
 
+
+    /* ========================================================================= */
+    /* ===                      THREAD RECORD COUNTER BASE                   === */
+    /* ========================================================================= */
+    /** @class RecordCounterThreadBase
+     * @brief The database-independent class for preparing the computation of the
+     * number of observations of tuples of variables in a database
+     *
+     * A RecordCounterThreadBase just prepares structures for the computation of
+     * the number of records observed for each value of its target nodes in the
+     * database (a target node usually represents either a single Discrete
+     * Variable or a pair of Discrete Variables). It is not intended to be used as
+     * is but rather to be created by class RecordCounterThread.
+     */
+    template <typename IdSetAlloc = std::allocator<unsigned int>,
+              typename CountAlloc = std::allocator<float> >
+    class RecordCounterThreadBase {      
+    public:
+      // ##########################################################################
+      /// @name Constructors / Destructors
+      // ##########################################################################
+      /// @{
+      
+      /// default constructor
+      RecordCounterThreadBase ( const std::vector<unsigned int>& var_modalities );
+
+      /// copy constructor
+      RecordCounterThreadBase
+      ( const RecordCounterThreadBase<IdSetAlloc,CountAlloc>& from );
+
+      /// move operator
+      RecordCounterThreadBase
+      ( RecordCounterThreadBase<IdSetAlloc,CountAlloc>&& from );
+
+      /// virtual copy constructor
+      virtual RecordCounterThreadBase<IdSetAlloc,CountAlloc>*
+      copyFactory () const = 0;
+
+      /// destructor
+      virtual ~RecordCounterThreadBase ();
+     
+      /// @}
+
+      
+      // ##########################################################################
+      /// @name Accessors / Modifiers
+      // ##########################################################################
+      /// @{
+
+      /// adds a new target nodeset to be counted
+      /** @return the id of the nodeset counter created */
+      unsigned int addNodeSet ( const std::vector<unsigned int,IdSetAlloc>& ids );
+
+      /// remove all the current target nodesets
+      void clearNodeSets () noexcept;
+
+      /// update all the countings of all the nodesets by parsing the database
+      virtual void count () = 0;
+
+      /// returns the countings for the nodeset specified in argument
+      const std::vector<float,CountAlloc>&
+      getCounts ( unsigned int nodeset_id ) const noexcept;
+      
+      /// @}
+
+
+    protected:
+
+      /// the modalities of the variables
+      const std::vector<unsigned int>* _modalities { nullptr };
+
+      /// the nodesets whose observations will be counted
+      std::vector< const std::vector<unsigned int,IdSetAlloc>* > _nodesets;
+
+      /// the nodesets countings 
+      std::vector< std::vector<float,CountAlloc> > _countings;
+
+      /// the size of the cache used to prevent cacheline omp parallel problems
+      static constexpr unsigned int _cache_size { 128 };
+      
+      /// used to prevent cacheline omp parallel problems
+      char _align[ _cache_size ];
+
+    };
+
+
+      
 
     /* ========================================================================= */
     /* ===                        THREAD RECORD COUNTER                      === */
@@ -66,7 +149,11 @@ namespace gum {
     template <typename RowFilter,
               typename IdSetAlloc = std::allocator<unsigned int>,
               typename CountAlloc = std::allocator<float> >
-    class RecordCounterThread {      
+    class RecordCounterThread :
+      public RecordCounterThreadBase<IdSetAlloc,CountAlloc> {      
+
+      using Base = RecordCounterThreadBase<IdSetAlloc,CountAlloc>;
+
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -85,8 +172,12 @@ namespace gum {
       RecordCounterThread
       ( RecordCounterThread<RowFilter,IdSetAlloc,CountAlloc>&& from );
 
+      /// virtual copy constructor
+      virtual RecordCounterThread<RowFilter,IdSetAlloc,CountAlloc>*
+      copyFactory () const;
+
       /// destructor
-      ~RecordCounterThread ();
+      virtual ~RecordCounterThread ();
      
       /// @}
 
@@ -98,17 +189,16 @@ namespace gum {
 
       /// adds a new target nodeset to be counted
       /** @return the id of the nodeset counter created */
-      unsigned int addNodeSet ( const std::vector<unsigned int,IdSetAlloc>& ids );
+      using Base::addNodeSet;
 
       /// remove all the current target nodesets
-      void clearNodeSets () noexcept;
+      using Base::clearNodeSets;
 
       /// update all the countings of all the nodesets by parsing the database
       void count ();
 
       /// returns the countings for the nodeset specified in argument
-      const std::vector<float,CountAlloc>&
-      getCounts ( unsigned int nodeset_id ) const noexcept;
+      using Base::getCounts;
       
       /// returns the filter used for the countings
       RowFilter& filter () noexcept;
@@ -118,26 +208,10 @@ namespace gum {
 
     private:
 
-      /// the modalities of the variables
-      const std::vector<unsigned int>* __modalities { nullptr };
-
-      /// the nodesets whose observations will be counted
-      std::vector< const std::vector<unsigned int,IdSetAlloc>* > __nodesets;
-
       /// the DBRowFilter used to parse the database
       RowFilter __filter;
 
-      /// the nodesets countings 
-      std::vector< std::vector<float,CountAlloc> > __countings;
-
-      /// used to prevent cacheline omp parallel problems
-      char __align[CACHE_SIZE];
-
     };
-
-
-      
-
 
 
 

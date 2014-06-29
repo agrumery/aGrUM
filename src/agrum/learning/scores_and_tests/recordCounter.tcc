@@ -34,6 +34,86 @@ namespace gum {
   
   namespace learning {
 
+
+    /// default constructor
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    RecordCounterThreadBase<IdSetAlloc,CountAlloc>::RecordCounterThreadBase
+    ( const std::vector<unsigned int>& var_modalities ) :
+      _modalities ( &var_modalities ) {
+      GUM_CONSTRUCTOR ( RecordCounterThreadBase );
+    }
+
+
+    /// copy constructor
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    RecordCounterThreadBase<IdSetAlloc,CountAlloc>::RecordCounterThreadBase
+    ( const RecordCounterThreadBase<IdSetAlloc,CountAlloc>& from ) :
+      _modalities ( from._modalities ) {
+      GUM_CONS_CPY ( RecordCounterThreadBase );
+    }
+
+
+    /// move operator
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    RecordCounterThreadBase<IdSetAlloc,CountAlloc>::RecordCounterThreadBase
+    ( RecordCounterThreadBase<IdSetAlloc,CountAlloc>&& from ) :
+      _modalities ( from._modalities ),
+      _nodesets  ( std::move ( from._nodesets ) ),
+      _countings ( std::move ( from._countings ) ) {
+      GUM_CONS_MOV ( RecordCounterThreadBase );
+    }
+
+    
+    /// destructor
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    RecordCounterThreadBase<IdSetAlloc,CountAlloc>::~RecordCounterThreadBase () {
+      GUM_DESTRUCTOR ( RecordCounterThreadBase );
+    }
+    
+     
+    /// adds a new target nodeset to be counted
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    unsigned int RecordCounterThreadBase<IdSetAlloc,CountAlloc>::addNodeSet
+    ( const std::vector<unsigned int,IdSetAlloc>& ids ) {
+      // adds the nodeset
+      unsigned int nodeset_id = _nodesets.size ();
+      _nodesets.push_back ( &ids );
+
+      // compute the size of the nodeset and allocate a counting correspondingly
+      unsigned int size = 1;
+      for ( const auto& id : ids ) {
+        size *= _modalities->operator[] ( id );
+      }
+
+      // allocate the counting set
+      _countings.push_back ( std::vector<float,CountAlloc> ( size, 0 ) );
+      
+      return nodeset_id;
+    }
+
+
+    /// remove all the current target nodesets
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    void RecordCounterThreadBase<IdSetAlloc,CountAlloc>::clearNodeSets ()
+      noexcept {
+      _nodesets.clear ();
+      _countings.clear ();
+    }
+
+
+    /// returns the countings for the nodeset specified in argument
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    const std::vector<float,CountAlloc>&
+    RecordCounterThreadBase<IdSetAlloc,CountAlloc>::getCounts
+    ( unsigned int nodeset_id ) const noexcept {
+      return _countings[ nodeset_id];
+    }
+
+
+    
+    // ============================================================================
+
+
       
     /// default constructor
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
@@ -41,7 +121,7 @@ namespace gum {
     RecordCounterThread<RowFilter,IdSetAlloc,CountAlloc>::RecordCounterThread
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities ) :
-      __modalities ( &var_modalities ),
+      Base ( var_modalities ),
       __filter ( filter ) {
       GUM_CONSTRUCTOR ( RecordCounterThread );
     }
@@ -52,7 +132,7 @@ namespace gum {
     INLINE
     RecordCounterThread<RowFilter,IdSetAlloc,CountAlloc>::RecordCounterThread
     ( const RecordCounterThread<RowFilter,IdSetAlloc,CountAlloc>& from ) :
-      __modalities ( from.__modalities ),
+      Base ( from ),
       __filter ( from.__filter ) {
       GUM_CONS_CPY ( RecordCounterThread );
     }
@@ -63,11 +143,18 @@ namespace gum {
     INLINE
     RecordCounterThread<RowFilter,IdSetAlloc,CountAlloc>::RecordCounterThread
     ( RecordCounterThread<RowFilter,IdSetAlloc,CountAlloc>&& from ) :
-      __modalities ( from.__modalities ),
-      __nodesets  ( std::move ( from.__nodesets ) ),
-      __filter    ( std::move ( from.__filter ) ),
-      __countings ( std::move ( from.__countings ) ){
+      Base ( std::move ( from ) ),
+      __filter    ( std::move ( from.__filter ) ) {
       GUM_CONS_MOV ( RecordCounterThread );
+    }
+
+    
+    /// virtual copy constructor
+    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
+    INLINE
+    RecordCounterThread<RowFilter,IdSetAlloc,CountAlloc>*
+    RecordCounterThread<RowFilter,IdSetAlloc,CountAlloc>::copyFactory () const {
+      return new RecordCounterThread<RowFilter,IdSetAlloc,CountAlloc> ( *this );
     }
 
 
@@ -79,38 +166,6 @@ namespace gum {
     }
     
      
-    /// adds a new target nodeset to be counted
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
-    INLINE unsigned int
-    RecordCounterThread<RowFilter,IdSetAlloc,CountAlloc>::addNodeSet
-    ( const std::vector<unsigned int,IdSetAlloc>& ids ) {
-      // adds the nodeset
-      unsigned int nodeset_id = __nodesets.size ();
-      __nodesets.push_back ( &ids );
-
-      // compute the size of the nodeset and allocate a counting correspondingly
-      unsigned int size = 1;
-      for ( const auto& id : ids ) {
-        size *= __modalities->operator[] ( id );
-      }
-
-      // allocate the counting set
-      __countings.push_back ( std::vector<float,CountAlloc> ( size, 0 ) );
-      
-      return nodeset_id;
-    }
-
-
-    /// remove all the current target nodesets
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
-    INLINE void
-    RecordCounterThread<RowFilter,IdSetAlloc,CountAlloc>::clearNodeSets ()
-      noexcept {
-      __nodesets.clear ();
-      __countings.clear ();
-    }
-
-
     /// update all the countings of all the nodesets by parsing the database
     template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
     INLINE void
@@ -121,27 +176,18 @@ namespace gum {
         FilteredRow& row = __filter.row ();
 
         // fill the counts for the ith nodeset
-        for ( unsigned int i = 0, size =  __nodesets.size (); i < size; ++i ) {
-          const std::vector<unsigned int>& var_ids = *( __nodesets[i] );
+        for ( unsigned int i = 0, size = this->_nodesets.size ();
+              i < size; ++i ) {
+          const std::vector<unsigned int>& var_ids = *( this->_nodesets[i] );
           unsigned int offset = 0;
           unsigned int dim = 1;
           for ( unsigned int j = 0, vsize = var_ids.size (); j < vsize; ++j ) {
             offset += row[var_ids[j]] * dim;
-            dim *= __modalities->operator[] ( var_ids[j] );
+            dim *= this->_modalities->operator[] ( var_ids[j] );
           }
-          __countings[i][offset] += row.weight ();
+          this->_countings[i][offset] += row.weight ();
         }
       }
-    }
-
-
-    /// returns the countings for the nodeset specified in argument
-    template <typename RowFilter, typename IdSetAlloc, typename CountAlloc>
-    INLINE const
-    std::vector<float,CountAlloc>&
-    RecordCounterThread<RowFilter,IdSetAlloc,CountAlloc>::getCounts
-    ( unsigned int nodeset_id ) const noexcept {
-      return __countings[ nodeset_id];
     }
 
       
@@ -153,7 +199,7 @@ namespace gum {
     }
       
 
-
+    // ============================================================================
 
 
     /// default constructor
