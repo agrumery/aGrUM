@@ -74,7 +74,7 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DBRowFilter ( DBHandler& handler,
+      DBRowFilter ( const DBHandler& handler,
                     const TranslatorSet& translator_set,
                     const GeneratorSet& generator_set,
                     unsigned long initialization_range =
@@ -183,9 +183,8 @@ namespace gum {
                          const GeneratorSet& generator_set,
                          unsigned long initialization_range =
                          std::numeric_limits<unsigned long>::max () ) {
-      typename Database::Handler handler = database.handler ();
       return DBRowFilter<typename Database::Handler,TranslatorSet,GeneratorSet>
-        ( handler, translator_set, generator_set, initialization_range );
+        ( database.handler (), translator_set, generator_set, initialization_range );
     }
 
     

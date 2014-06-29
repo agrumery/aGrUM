@@ -36,7 +36,7 @@ namespace gum {
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     INLINE
     DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>::DBRowFilter
-    ( DBHandler& handler,
+    ( const DBHandler& handler,
       const TranslatorSet& translator_set,
       const GeneratorSet& generator_set,
       unsigned long initialization_range ) noexcept :
