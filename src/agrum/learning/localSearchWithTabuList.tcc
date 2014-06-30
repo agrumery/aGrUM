@@ -38,7 +38,7 @@ namespace gum {
     /// learns the structure of a Bayes net
     template <typename SCORE,
               typename STRUCT_CONSTRAINT,
-              template <typename> class GRAPH_CHANGES_SELECTOR>
+              typename GRAPH_CHANGES_SELECTOR>
     DAG LocalSearchWithTabuList::learnStructure
     ( GraphChangesSelector4DiGraph<SCORE,STRUCT_CONSTRAINT,
                                    GRAPH_CHANGES_SELECTOR>& selector,
@@ -188,7 +188,7 @@ namespace gum {
     template <typename GUM_SCALAR,
               typename SCORE,
               typename STRUCT_CONSTRAINT,
-              template <typename> class GRAPH_CHANGES_SELECTOR,
+              typename GRAPH_CHANGES_SELECTOR,
               typename PARAM_ESTIMATOR>
     BayesNet<GUM_SCALAR>
     LocalSearchWithTabuList::learnBN
@@ -233,7 +233,7 @@ namespace gum {
     
       GraphChangesSelector4DiGraph< decltype ( score ),
                                     decltype ( struct_constraint ),
-                                    GraphChangesGenerator4DiGraph >
+                                    decltype ( op_set ) >
         selector ( score, struct_constraint, op_set );
 
       return learnBN<GUM_SCALAR> ( selector, estimator,

@@ -119,19 +119,20 @@ namespace gum {
        * @param initial_dag the DAG we start from for our learning */
       template <typename SCORE,
                 typename STRUCT_CONSTRAINT,
-                template <typename> class GRAPH_CHANGES_SELECTOR>
+                typename GRAPH_CHANGES_SELECTOR>
       DAG
       learnStructure
       ( GraphChangesSelector4DiGraph<SCORE,STRUCT_CONSTRAINT,
                                      GRAPH_CHANGES_SELECTOR>& selector,
         const std::vector<unsigned int>& modal,
         DAG initial_dag = DAG () );
-     
+
+      
       /// learns the structure and the parameters of a BN
       template <typename GUM_SCALAR = float,
                 typename SCORE,
                 typename STRUCT_CONSTRAINT,
-                template <typename> class GRAPH_CHANGES_SELECTOR,
+                typename GRAPH_CHANGES_SELECTOR,
                 typename PARAM_ESTIMATOR>
       BayesNet<GUM_SCALAR>
       learnBN

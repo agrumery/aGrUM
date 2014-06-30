@@ -48,7 +48,7 @@ namespace gum {
      */
     template <typename SCORE,
               typename STRUCTURAL_CONSTRAINT,
-              template <typename> class GRAPH_CHANGES_GENERATOR>
+              typename GRAPH_CHANGES_GENERATOR>
     class GraphChangesSelector4DiGraph {
     public:
       // ##########################################################################
@@ -60,7 +60,7 @@ namespace gum {
       GraphChangesSelector4DiGraph
       ( SCORE& score,
         STRUCTURAL_CONSTRAINT& constraint,
-        GRAPH_CHANGES_GENERATOR<STRUCTURAL_CONSTRAINT>& changes_generator );
+        GRAPH_CHANGES_GENERATOR& changes_generator );
 
       /// copy constructor
       GraphChangesSelector4DiGraph
@@ -176,7 +176,7 @@ namespace gum {
       STRUCTURAL_CONSTRAINT* __constraint;
 
       /// the generator that restricts the set of possible changes
-      GRAPH_CHANGES_GENERATOR<STRUCTURAL_CONSTRAINT>* __changes_generator;
+      GRAPH_CHANGES_GENERATOR* __changes_generator;
 
       /// a sequence containing all the possible changes
       Sequence<GraphChange> __changes;

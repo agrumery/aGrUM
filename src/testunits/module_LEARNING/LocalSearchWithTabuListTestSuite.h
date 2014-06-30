@@ -114,7 +114,7 @@ namespace gum_tests {
       gum::learning::GraphChangesSelector4DiGraph<
         decltype ( score ),
         decltype ( struct_constraint ),
-        gum::learning::GraphChangesGenerator4DiGraph >
+        decltype ( op_set ) >
       selector ( score, struct_constraint, op_set );
  
     gum::learning::LocalSearchWithTabuList search;
@@ -187,7 +187,7 @@ namespace gum_tests {
       gum::learning::GraphChangesSelector4DiGraph<
         decltype ( score ),
         decltype ( struct_constraint ),
-        gum::learning::GraphChangesGenerator4DiGraph >
+        decltype ( op_set ) >
       selector ( score, struct_constraint, op_set );
  
       gum::learning::LocalSearchWithTabuList search;
@@ -246,7 +246,7 @@ namespace gum_tests {
       gum::learning::GraphChangesSelector4DiGraph<
         decltype ( score ),
         decltype ( struct_constraint ),
-        gum::learning::GraphChangesGenerator4DiGraph >
+        decltype ( op_set ) >
       selector ( score, struct_constraint, op_set );
  
       gum::learning::LocalSearchWithTabuList search;
@@ -306,7 +306,7 @@ namespace gum_tests {
       gum::learning::GraphChangesSelector4DiGraph<
         decltype ( score ),
         decltype ( struct_constraint ),
-        gum::learning::GraphChangesGenerator4DiGraph >
+        decltype ( op_set ) >
       selector ( score, struct_constraint, op_set );
  
       gum::learning::LocalSearchWithTabuList search;
