@@ -121,6 +121,15 @@ namespace gum {
     }
 
 
+    /// returns the current row pointed to by the handler
+    INLINE DBRow& DatabaseVectInRAM::Handler::row () {
+      if ( __index >= __end_index ) {
+        GUM_ERROR ( OutOfBounds, "the handler has reached its end" );
+      }
+      return const_cast<std::vector<DBRow>*> ( __row )->operator[]  ( __index );
+    }
+
+
     /// makes the handler point to the next row
     INLINE void DatabaseVectInRAM::Handler::nextRow () noexcept {
       ++__index;

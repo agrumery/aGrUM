@@ -38,7 +38,9 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/learning/database/databaseFromCSV.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorUniversal.h>
+#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
 #include <agrum/learning/database/DBRowTranslatorSetDynamic.h>
+#include <agrum/learning/database/DBTransformCompactInt.h>
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
 #include <agrum/learning/scores_and_tests/scoreBDeu.h>
 #include <agrum/learning/constraints/structuralConstraintDAG.h>

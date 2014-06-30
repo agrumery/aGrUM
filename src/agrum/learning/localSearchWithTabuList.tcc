@@ -203,7 +203,7 @@ namespace gum {
           learnStructure ( selector, modal,initial_dag ),
           names, modal );
     }
- 
+
 
     /// basic learning of structure and parameters of a BN from a CSV
     template <typename GUM_SCALAR>
@@ -211,23 +211,31 @@ namespace gum {
     LocalSearchWithTabuList::learnBNFromCSV ( std::string filename ) {
       DatabaseFromCSV database ( filename );
 
-      DBRowTranslatorSetDynamic<CellTranslatorUniversal> translators;
-      translators.insertTranslator ( Col<0> (), database.nbVariables () );
+      DBRowTranslatorSetDynamic<CellTranslatorUniversal> translators1;
+      translators1.insertTranslator ( Col<0> (), database.nbVariables () );
 
       auto generators = make_generators ( RowGeneratorIdentity () );
       
-      auto filter = make_DB_row_filter ( database, translators, generators );
+      auto filter1 = make_DB_row_filter ( database, translators1, generators );
 
-      std::vector<unsigned int> modalities = filter.modalities ();
+      DBTransformCompactInt transfo;
+      transfo.transform ( filter1 );
 
-      ScoreBDeu<> score ( filter, modalities );
+      DBRowTranslatorSetDynamic<CellTranslatorCompactIntId> translators2;
+      translators2.insertTranslator ( Col<0> (), database.nbVariables () );
+     
+      auto filter2 = make_DB_row_filter ( database, translators2, generators );
+      
+      std::vector<unsigned int> modalities = filter1.modalities ();
+
+      ScoreBDeu<> score ( filter2, modalities );
 
       StructuralConstraintSetStatic<StructuralConstraintDAG,
                                     StructuralConstraintTabuList>
         struct_constraint;
       struct_constraint.setTabuListSize ( 100 );
 
-      ParamEstimatorMLwithUniformApriori<> estimator ( filter, modalities );
+      ParamEstimatorMLwithUniformApriori<> estimator ( filter2, modalities );
 
       GraphChangesGenerator4DiGraph< decltype ( struct_constraint ) >
         op_set ( struct_constraint );

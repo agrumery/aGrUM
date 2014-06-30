@@ -115,6 +115,10 @@ namespace gum {
         /** @throws OutOfBounds if the handler points to the end of its area */
         const DBRow& row () const;
         
+        /// returns the current row pointed to by the handler
+        /** @throws OutOfBounds if the handler points to the end of its area */
+        DBRow& row ();
+        
         /// makes the handler point to the next row
         void nextRow () noexcept;
 
