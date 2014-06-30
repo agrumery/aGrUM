@@ -69,7 +69,7 @@ namespace gum {
     // methods actually used on all these constraints. This is a helper for
     // the class that the user should use, i.e., StructuralConstraintSetStatic
     template <typename FIRST_CONSTRAINT, typename... OTHER_CONSTRAINTS>
-    struct __StructuralConstraintSetStatic;
+    class __StructuralConstraintSetStatic;
 
     
     // ============================================================================
