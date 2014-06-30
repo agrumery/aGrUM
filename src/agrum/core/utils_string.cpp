@@ -30,12 +30,16 @@
 namespace gum {
 
   std::string getUniqueFileName() {
+#ifdef HAVE_MKSTEMP    
     char _tmpFileName[] = "fileXXXXXX";
-    
     int fd=mkstemp ( _tmpFileName );
     close ( fd );
+#else
+    char *_tmpFileName = mktemp(const_cast<char *>("fileXXXXXX"));
+#endif
+
+    return std::string(_tmpFileName);
     
-    return std::string ( _tmpFileName );
   }
 
 } /* namespace gum */

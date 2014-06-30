@@ -1,9 +1,32 @@
 
-- install mingw (http://sourceforge.net/projects/mingwbuilds=
-- install pythonxy (2.7.5.2)
-- install CMAKE
+- install mingw (http://sourceforge.net/projects/mingw-w64/ 4.8.x/i686/posix/dwarf/0)
+- install make (from http://sourceforge.net/projects/mingw for instance)
+- install pythonxy (last version)
+- install CMAKE (last version)
 
-- change PATH properly (a bit complex)
+- change PATH properly (a bit complex : PathEditor helps a lot)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 mkdir wrappers\pyAgrum
 cd wrappers\pyAgrum
