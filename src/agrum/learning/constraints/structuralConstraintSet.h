@@ -41,7 +41,7 @@
 
 #include <agrum/config.h>
 #include <agrum/graphs/diGraph.h>
-#include <agrum/learning/structureLearningUtils/graphChange.h>
+#include <agrum/learning/structureUtils/graphChange.h>
 
 
 namespace gum {

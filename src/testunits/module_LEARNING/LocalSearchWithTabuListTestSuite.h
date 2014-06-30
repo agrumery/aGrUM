@@ -35,8 +35,8 @@
 #include <agrum/learning/constraints/structuralConstraint2TimeSlice.h>
 #include <agrum/learning/constraints/structuralConstraintTabuList.h>
 #include <agrum/learning/constraints/structuralConstraintSet.h>
-#include <agrum/learning/structureLearningUtils/graphChangesGenerator4DiGraph.h>
-#include <agrum/learning/paramLearningUtils/paramEstimatorML.h>
+#include <agrum/learning/structureUtils/graphChangesGenerator4DiGraph.h>
+#include <agrum/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/learning/localSearchWithTabuList.h>
 
 #define MY_ALARM GET_PATH_STR( "alarm.csv" )
@@ -118,15 +118,16 @@ namespace gum_tests {
       selector ( score, struct_constraint, op_set );
  
     gum::learning::LocalSearchWithTabuList search;
+    search.setMaxNbDecreasingChanges ( 3 );
 
     try {
       gum::BayesNet<float> bn = search.learnBN ( selector, estimator,
                                                  database.variableNames (),
-                                                 modalities, 10 );
+                                                 modalities );
       gum::BayesNet<double> bn2 =
         search.learnBN<double> ( selector, estimator,
                                  database.variableNames (),
-                                 modalities, 10 );
+                                 modalities );
       std::cout << bn << std::endl << bn.dag () << std::endl;
     }
     catch ( gum::Exception& e ) {
@@ -193,7 +194,7 @@ namespace gum_tests {
 
       try {
         gum::Timer timer;
-        gum::DAG bn = search.learnStructure ( selector, modalities, 2 );
+        gum::DAG bn = search.learnStructure ( selector, modalities );
         std::cout << timer.step () << " : " << std::endl;
         std::cout << bn << std::endl;
       }
@@ -252,7 +253,7 @@ namespace gum_tests {
 
       try {
         gum::Timer timer;
-        gum::DAG bn = search.learnStructure ( selector, modalities, 2 );
+        gum::DAG bn = search.learnStructure ( selector, modalities );
         std::cout << timer.step () << " : " << std::endl;
         std::cout << bn << std::endl;
       }
@@ -312,7 +313,7 @@ namespace gum_tests {
 
       try {
         gum::Timer timer;
-        gum::DAG bn = search.learnStructure ( selector, modalities, 2 );
+        gum::DAG bn = search.learnStructure ( selector, modalities );
         std::cout << timer.step () << " : " << std::endl;
         std::cout << bn << std::endl;
       }

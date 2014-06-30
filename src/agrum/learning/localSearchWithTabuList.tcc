@@ -25,7 +25,7 @@
 
 #include <agrum/core/set.h>
 #include <agrum/core/priorityQueue.h>
-#include <agrum/learning/paramLearningUtils/DAG2BNLearner.h>
+#include <agrum/learning/paramUtils/DAG2BNLearner.h>
 
 
 namespace gum {
@@ -38,12 +38,11 @@ namespace gum {
     /// learns the structure of a Bayes net
     template <typename SCORE,
               typename STRUCT_CONSTRAINT,
-              template <typename> class GRAPH_CHANGES_GENERATOR>
+              template <typename> class GRAPH_CHANGES_SELECTOR>
     DAG LocalSearchWithTabuList::learnStructure
     ( GraphChangesSelector4DiGraph<SCORE,STRUCT_CONSTRAINT,
-                                   GRAPH_CHANGES_GENERATOR>& selector,
+                                   GRAPH_CHANGES_SELECTOR>& selector,
       const std::vector<unsigned int>& modal,
-      unsigned int N,
       DAG dag ) {
       selector.setGraph ( dag, modal );
       
@@ -61,7 +60,7 @@ namespace gum {
       float best_score = 0;
       float current_score = 0;
       
-      while ( current_N < N ) {
+      while ( current_N < __MaxNbDecreasing ) {
         are_changes_applied_yet = false;
         applied_change_with_positive_score = 0;
         
@@ -189,20 +188,19 @@ namespace gum {
     template <typename GUM_SCALAR,
               typename SCORE,
               typename STRUCT_CONSTRAINT,
-              template <typename> class GRAPH_CHANGES_GENERATOR,
+              template <typename> class GRAPH_CHANGES_SELECTOR,
               typename PARAM_ESTIMATOR>
     BayesNet<GUM_SCALAR>
     LocalSearchWithTabuList::learnBN
     ( GraphChangesSelector4DiGraph<SCORE,STRUCT_CONSTRAINT,
-                                   GRAPH_CHANGES_GENERATOR>& selector,
+                                   GRAPH_CHANGES_SELECTOR>& selector,
       PARAM_ESTIMATOR& estimator,
       const std::vector<std::string>& names,
       const std::vector<unsigned int>& modal,
-      unsigned int N,
       DAG initial_dag ) {
       return DAG2BNLearner::createBN<PARAM_ESTIMATOR,GUM_SCALAR>
         ( estimator,
-          learnStructure ( selector, modal, N, initial_dag ),
+          learnStructure ( selector, modal,initial_dag ),
           names, modal );
     }
  

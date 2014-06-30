@@ -34,7 +34,7 @@
 #include <agrum/learning/constraints/structuralConstraintIndegree.h>
 #include <agrum/learning/constraints/structuralConstraint2TimeSlice.h>
 #include <agrum/learning/constraints/structuralConstraintSet.h>
-#include <agrum/learning/paramLearningUtils/paramEstimatorML.h>
+#include <agrum/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/learning/K2.h>
 
 namespace gum_tests {

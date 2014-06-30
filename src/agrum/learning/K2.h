@@ -36,7 +36,7 @@
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
 #include <agrum/learning/scores_and_tests/scoreK2.h>
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
-#include <agrum/learning/paramLearningUtils/paramEstimatorMLwithUniformApriori.h>
+#include <agrum/learning/paramUtils/paramEstimatorMLwithUniformApriori.h>
 
 
 namespace gum {

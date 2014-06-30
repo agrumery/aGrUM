@@ -43,10 +43,10 @@
 #include <agrum/learning/scores_and_tests/scoreBDeu.h>
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintSet.h>
-#include <agrum/learning/structureLearningUtils/graphChange.h>
-#include <agrum/learning/structureLearningUtils/graphChangesSelector4DiGraph.h>
-#include <agrum/learning/structureLearningUtils/graphChangesGenerator4DiGraph.h>
-#include <agrum/learning/paramLearningUtils/paramEstimatorMLwithUniformApriori.h>
+#include <agrum/learning/structureUtils/graphChange.h>
+#include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
+#include <agrum/learning/structureUtils/graphChangesGenerator4DiGraph.h>
+#include <agrum/learning/paramUtils/paramEstimatorMLwithUniformApriori.h>
 
 
 namespace gum {
@@ -106,13 +106,20 @@ namespace gum {
       /// @{
 
       /// learns the structure of a Bayes net
+      /** @param selector A class that computes the best changes that can be
+       * applied and that enables the user to get them very easily
+       * @param modal the domain sizes of the random variables observed in the
+       * database
+       * @param N the max number of changes that decrease the score that we
+       * allow to apply
+       * @param initial_dag the DAG we start from for our learning */
       template <typename SCORE,
                 typename STRUCT_CONSTRAINT,
-                template <typename> class GRAPH_CHANGES_GENERATOR>
+                template <typename> class GRAPH_CHANGES_SELECTOR>
       DAG
       learnStructure
       ( GraphChangesSelector4DiGraph<SCORE,STRUCT_CONSTRAINT,
-                                     GRAPH_CHANGES_GENERATOR>& selector,
+                                     GRAPH_CHANGES_SELECTOR>& selector,
         const std::vector<unsigned int>& modal,
         DAG initial_dag = DAG () );
      
@@ -120,12 +127,12 @@ namespace gum {
       template <typename GUM_SCALAR = float,
                 typename SCORE,
                 typename STRUCT_CONSTRAINT,
-                template <typename> class GRAPH_CHANGES_GENERATOR,
+                template <typename> class GRAPH_CHANGES_SELECTOR,
                 typename PARAM_ESTIMATOR>
       BayesNet<GUM_SCALAR>
       learnBN
       ( GraphChangesSelector4DiGraph<SCORE,STRUCT_CONSTRAINT,
-                                     GRAPH_CHANGES_GENERATOR>& selector,
+                                     GRAPH_CHANGES_SELECTOR>& selector,
         PARAM_ESTIMATOR& estimator,
         const std::vector<std::string>& names,
         const std::vector<unsigned int>& modal,

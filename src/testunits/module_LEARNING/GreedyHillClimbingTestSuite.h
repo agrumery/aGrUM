@@ -37,10 +37,10 @@
 #include <agrum/learning/constraints/structuralConstraintIndegree.h>
 #include <agrum/learning/constraints/structuralConstraint2TimeSlice.h>
 #include <agrum/learning/constraints/structuralConstraintSet.h>
-#include <agrum/learning/structureLearningUtils/graphChangesGenerator4DiGraph.h>
-#include <agrum/learning/structureLearningUtils/graphChangesGenerator4UndiGraph.h>
-#include <agrum/learning/structureLearningUtils/graphChangesGeneratorOnSubDiGraph.h>
-#include <agrum/learning/paramLearningUtils/paramEstimatorML.h>
+#include <agrum/learning/structureUtils/graphChangesGenerator4DiGraph.h>
+#include <agrum/learning/structureUtils/graphChangesGenerator4UndiGraph.h>
+#include <agrum/learning/structureUtils/graphChangesGeneratorOnSubDiGraph.h>
+#include <agrum/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/learning/greedyHillClimbing.h>
 
 #define MY_ALARM GET_PATH_STR( "alarm.csv" )

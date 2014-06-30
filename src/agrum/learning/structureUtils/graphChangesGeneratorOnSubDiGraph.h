@@ -51,8 +51,8 @@
 #include <agrum/core/set.h>
 #include <agrum/core/OMPThreads.h>
 #include <agrum/graphs/diGraph.h>
-#include <agrum/learning/structureLearningUtils/graphChange.h>
-#include <agrum/learning/structureLearningUtils/IGraphChangesGenerator4DiGraph.h>
+#include <agrum/learning/structureUtils/graphChange.h>
+#include <agrum/learning/structureUtils/IGraphChangesGenerator4DiGraph.h>
 
 
 namespace gum {
@@ -230,7 +230,7 @@ namespace gum {
 
 
 /// always include the templated functions
-#include <agrum/learning/structureLearningUtils/graphChangesGeneratorOnSubDiGraph.tcc>
+#include <agrum/learning/structureUtils/graphChangesGeneratorOnSubDiGraph.tcc>
 
 
 #endif /* GUM_LEARNING_GRAPH_CHANGES_GENERATOR_ON_SUBDIGRAPH_H */

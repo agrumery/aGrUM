@@ -38,7 +38,7 @@
 #include <agrum/config.h>
 #include <agrum/learning/scores_and_tests/counter.h>
 #include <agrum/learning/scores_and_tests/cache4Score.h>
-#include <agrum/learning/structureLearningUtils/graphChange.h>
+#include <agrum/learning/structureUtils/graphChange.h>
 
 
 namespace gum {

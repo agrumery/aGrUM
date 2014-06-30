@@ -33,7 +33,7 @@
 #define GUM_LEARNING_PARAM_ESTIMATOR_ML_H
 
 #include <agrum/config.h>
-#include <agrum/learning/paramLearningUtils/paramEstimator.h>
+#include <agrum/learning/paramUtils/paramEstimator.h>
 
 
 namespace gum {
@@ -108,7 +108,7 @@ namespace gum {
 
 
 /// include the template implementation
-#include <agrum/learning/paramLearningUtils/paramEstimatorML.tcc>
+#include <agrum/learning/paramUtils/paramEstimatorML.tcc>
 
 
 

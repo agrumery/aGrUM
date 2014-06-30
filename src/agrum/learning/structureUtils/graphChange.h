@@ -589,7 +589,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/structureLearningUtils/graphChange.inl>
+#include <agrum/learning/structureUtils/graphChange.inl>
 #endif //GUM_NOINLINE
 
 

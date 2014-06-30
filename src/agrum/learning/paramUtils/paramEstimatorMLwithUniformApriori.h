@@ -34,7 +34,7 @@
 #define GUM_LEARNING_PARAM_ESTIMATOR_ML_WITH_UNIFORM_APRIORI_H
 
 #include <agrum/config.h>
-#include <agrum/learning/paramLearningUtils/paramEstimator.h>
+#include <agrum/learning/paramUtils/paramEstimator.h>
 
 
 #define GUM_PARAM_ESTIMATOR_ML_DEFAULT_A_PRIORI 1e-4
@@ -122,7 +122,7 @@ namespace gum {
 
 
 /// include the template implementation
-#include <agrum/learning/paramLearningUtils/paramEstimatorMLwithUniformApriori.tcc>
+#include <agrum/learning/paramUtils/paramEstimatorMLwithUniformApriori.tcc>
 
 
 

@@ -44,10 +44,10 @@
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintTabuList.h>
 #include <agrum/learning/constraints/structuralConstraintSet.h>
-#include <agrum/learning/structureLearningUtils/graphChange.h>
-#include <agrum/learning/structureLearningUtils/graphChangesSelector4DiGraph.h>
-#include <agrum/learning/structureLearningUtils/graphChangesGenerator4DiGraph.h>
-#include <agrum/learning/paramLearningUtils/paramEstimatorMLwithUniformApriori.h>
+#include <agrum/learning/structureUtils/graphChange.h>
+#include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
+#include <agrum/learning/structureUtils/graphChangesGenerator4DiGraph.h>
+#include <agrum/learning/paramUtils/paramEstimatorMLwithUniformApriori.h>
 
 
 namespace gum {
@@ -108,32 +108,38 @@ namespace gum {
       // ##########################################################################
       /// @{
 
+      /// set the max number of changes decreasing the score that we allow to apply
+      void setMaxNbDecreasingChanges ( unsigned int nb );
+      
       /// learns the structure of a Bayes net
+      /** @param selector A class that computes the best changes that can be
+       * applied and that enables the user to get them very easily
+       * @param modal the domain sizes of the random variables observed in the
+       * database
+       * @param initial_dag the DAG we start from for our learning */
       template <typename SCORE,
                 typename STRUCT_CONSTRAINT,
-                template <typename> class GRAPH_CHANGES_GENERATOR>
+                template <typename> class GRAPH_CHANGES_SELECTOR>
       DAG
       learnStructure
       ( GraphChangesSelector4DiGraph<SCORE,STRUCT_CONSTRAINT,
-                                     GRAPH_CHANGES_GENERATOR>& selector,
+                                     GRAPH_CHANGES_SELECTOR>& selector,
         const std::vector<unsigned int>& modal,
-        unsigned int N = 2,
         DAG initial_dag = DAG () );
      
       /// learns the structure and the parameters of a BN
       template <typename GUM_SCALAR = float,
                 typename SCORE,
                 typename STRUCT_CONSTRAINT,
-                template <typename> class GRAPH_CHANGES_GENERATOR,
+                template <typename> class GRAPH_CHANGES_SELECTOR,
                 typename PARAM_ESTIMATOR>
       BayesNet<GUM_SCALAR>
       learnBN
       ( GraphChangesSelector4DiGraph<SCORE,STRUCT_CONSTRAINT,
-                                     GRAPH_CHANGES_GENERATOR>& selector,
+                                     GRAPH_CHANGES_SELECTOR>& selector,
         PARAM_ESTIMATOR& estimator,
         const std::vector<std::string>& names,
         const std::vector<unsigned int>& modal,
-        unsigned int N = 2,
         DAG initial_dag = DAG () );
 
       /// basic learning of structure and parameters of a BN from a CSV
@@ -142,6 +148,12 @@ namespace gum {
 
       /// @}
 
+
+    private:
+
+      /// the max number of changes decreasing the score that we allow to apply
+      unsigned int __MaxNbDecreasing { 2 };
+
     };
 
 
@@ -149,6 +161,12 @@ namespace gum {
   
   
 } /* namespace gum */
+
+
+/// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/learning/localSearchWithTabuList.inl>
+#endif /* GUM_NO_INLINE */
 
 
 /// always include templated methods

@@ -18,18 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The base class for all GraphChangesGenerators for undirected structures
+ * @brief The base class for all GraphChangesGenerators for directed structures
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_IGRAPH_CHANGES_GENERATOR_4_UNDIGRAPH_H
-#define GUM_LEARNING_IGRAPH_CHANGES_GENERATOR_4_UNDIGRAPH_H
+#ifndef GUM_LEARNING_IGRAPH_CHANGES_GENERATOR_4_DIGRAPH_H
+#define GUM_LEARNING_IGRAPH_CHANGES_GENERATOR_4_DIGRAPH_H
 
 
 #include <agrum/config.h>
 #include <agrum/core/set.h>
-#include <agrum/graphs/undiGraph.h>
-#include <agrum/learning/structureLearningUtils/graphChange.h>
+#include <agrum/graphs/diGraph.h>
+#include <agrum/learning/structureUtils/graphChange.h>
 
 
 namespace gum {
@@ -38,7 +38,7 @@ namespace gum {
   namespace learning {
    
     
-    class IGraphChangesGenerator4UndiGraph {
+    class IGraphChangesGenerator4DiGraph {
     public:
 
       /// the iterator for parsing the list of possible graph change operators
@@ -68,13 +68,16 @@ namespace gum {
       /// @{
 
       /// sets a new graph from which the operator will compute possible changes
-      virtual void setGraph ( const UndiGraph& graph ) = 0;
+      virtual void setGraph ( const DiGraph& graph ) = 0;
 
       /// notify the operator set of a change applied to the graph
-      virtual void modifyGraph ( const EdgeAddition& change ) = 0;
+      virtual void modifyGraph ( const ArcAddition& change ) = 0;
 
       /// notify the operator set of a change applied to the graph
-      virtual void modifyGraph ( const EdgeDeletion& change ) = 0;
+      virtual void modifyGraph ( const ArcDeletion& change ) = 0;
+
+      /// notify the operator set of a change applied to the graph
+      virtual void modifyGraph ( const ArcReversal& change ) = 0;
 
       /// notify the operator set of a change applied to the graph
       virtual void modifyGraph ( const GraphChange& change ) = 0;
@@ -96,4 +99,4 @@ namespace gum {
 } /* namespace gum */
 
 
-#endif /* GUM_LEARNING_IGRAPH_CHANGES_GENERATOR_4_UNDIGRAPH_H */
+#endif /* GUM_LEARNING_IGRAPH_CHANGES_GENERATOR_4_DIGRAPH_H */

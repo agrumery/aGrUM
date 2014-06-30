@@ -18,53 +18,46 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A class that, given a structure and a parameter estimator returns a
- * full Bayes net
+ * @brief The base class for all GraphChangesGenerators for undirected structures
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_DAG_2_BN_LEARNER_H
-#define GUM_LEARNING_DAG_2_BN_LEARNER_H
+#ifndef GUM_LEARNING_IGRAPH_CHANGES_GENERATOR_4_UNDIGRAPH_H
+#define GUM_LEARNING_IGRAPH_CHANGES_GENERATOR_4_UNDIGRAPH_H
 
 
-#include <vector>
-
-#include <agrum/graphs/DAG.h>
-#include <agrum/BN/BayesNet.h>
+#include <agrum/config.h>
+#include <agrum/core/set.h>
+#include <agrum/graphs/undiGraph.h>
+#include <agrum/learning/structureUtils/graphChange.h>
 
 
 namespace gum {
 
   
   namespace learning {
-
+   
     
-    /* ========================================================================= */
-    /* ===                          BN CREATOR CLASS                         === */
-    /* ========================================================================= */
-    /** @class DAG2BNLearner
-     * @brief A class that, given a structure and a parameter estimator returns
-     * a full Bayes net
-     * @ingroup learning_group
-     */
-    class DAG2BNLearner {
+    class IGraphChangesGenerator4UndiGraph {
     public:
+
+      /// the iterator for parsing the list of possible graph change operators
+      using iterator = typename Set<GraphChange>::const_iterator;
+
+      /// the const iterator for parsing the list of graph change operators
+      using const_iterator = iterator;
+      
+
       // ##########################################################################
-      /// @name Constructors / Destructors
+      /// @name Iterators
       // ##########################################################################
       /// @{
 
-      /// default constructor
-      DAG2BNLearner ();
+      /// returns an (unsafe) iterator on the beginning of the list of operators
+      virtual iterator begin () const = 0;
 
-      /// copy constructor
-      DAG2BNLearner ( const DAG2BNLearner& from );
-
-      /// move constructor
-      DAG2BNLearner ( DAG2BNLearner&& from );
-
-      /// destructor
-      ~DAG2BNLearner ();
+      /// returns an (unsafe) iterator on the end of the list of operators
+      virtual const iterator& end () const = 0;
 
       /// @}
 
@@ -74,37 +67,33 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// create a BN
-      template <typename PARAM_ESTIMATOR, typename GUM_SCALAR = float>
-      static BayesNet<GUM_SCALAR>
-      createBN ( PARAM_ESTIMATOR& estimator,
-                 const DAG& dag,
-                 const std::vector<std::string>& names,
-                 const std::vector<unsigned int>& modal );
+      /// sets a new graph from which the operator will compute possible changes
+      virtual void setGraph ( const UndiGraph& graph ) = 0;
+
+      /// notify the operator set of a change applied to the graph
+      virtual void modifyGraph ( const EdgeAddition& change ) = 0;
+
+      /// notify the operator set of a change applied to the graph
+      virtual void modifyGraph ( const EdgeDeletion& change ) = 0;
+
+      /// notify the operator set of a change applied to the graph
+      virtual void modifyGraph ( const GraphChange& change ) = 0;
+
+      /// empty the set of possible change operators that can be applied
+      virtual void clearChanges () noexcept = 0;
+
+      /// notifies the generator that we have parsed all its legal changes
+      virtual void notifyGetCompleted () = 0;
 
       /// @}
-
-
-    private:
-      /// copy a potential into another whose variables' sequence differs 
-      /** The variables of both potential should be the same, only their
-       * order differs */
-      template <typename GUM_SCALAR = float>
-      static void __probaVarReordering ( gum::Potential<GUM_SCALAR>& pot,
-                                         const gum::Potential<float>& other_pot );
- 
-  
+    
     };
 
-    
+
   } /* namespace learning */
   
   
 } /* namespace gum */
 
-    
-/// always include templated methods
-#include <agrum/learning/paramLearningUtils/DAG2BNLearner.tcc>
 
-
-#endif /* GUM_LEARNING_DAG_2_BN_LEARNER_H */
+#endif /* GUM_LEARNING_IGRAPH_CHANGES_GENERATOR_4_UNDIGRAPH_H */

@@ -25,7 +25,7 @@
 
 #include <agrum/core/set.h>
 #include <agrum/core/priorityQueue.h>
-#include <agrum/learning/paramLearningUtils/DAG2BNLearner.h>
+#include <agrum/learning/paramUtils/DAG2BNLearner.h>
 
 
 namespace gum {
@@ -38,10 +38,10 @@ namespace gum {
     /// learns the structure of a Bayes net
     template <typename SCORE,
               typename STRUCT_CONSTRAINT,
-              template <typename> class GRAPH_CHANGES_GENERATOR>
+              template <typename> class GRAPH_CHANGES_SELECTOR>
     DAG GreedyHillClimbing::learnStructure
     ( GraphChangesSelector4DiGraph<SCORE,STRUCT_CONSTRAINT,
-                                   GRAPH_CHANGES_GENERATOR>& selector,
+                                   GRAPH_CHANGES_SELECTOR>& selector,
       const std::vector<unsigned int>& modal,
       DAG dag ) {
       selector.setGraph ( dag, modal );
@@ -122,12 +122,12 @@ namespace gum {
     template <typename GUM_SCALAR,
               typename SCORE,
               typename STRUCT_CONSTRAINT,
-              template <typename> class GRAPH_CHANGES_GENERATOR,
+              template <typename> class GRAPH_CHANGES_SELECTOR,
               typename PARAM_ESTIMATOR>
     BayesNet<GUM_SCALAR>
     GreedyHillClimbing::learnBN
     ( GraphChangesSelector4DiGraph<SCORE,STRUCT_CONSTRAINT,
-                                   GRAPH_CHANGES_GENERATOR>& selector,
+                                   GRAPH_CHANGES_SELECTOR>& selector,
       PARAM_ESTIMATOR& estimator,
       const std::vector<std::string>& names,
       const std::vector<unsigned int>& modal,

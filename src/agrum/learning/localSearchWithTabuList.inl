@@ -22,12 +22,66 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/learning/localSearchWithTabuList.h>
+
+namespace gum {
+
+  
+  namespace learning {
+
+    
+    /// default constructor
+    INLINE LocalSearchWithTabuList::LocalSearchWithTabuList () {
+      GUM_CONSTRUCTOR ( learning::LocalSearchWithTabuList );
+    }
+
+    
+    /// copy constructor
+    INLINE LocalSearchWithTabuList::LocalSearchWithTabuList
+    ( const LocalSearchWithTabuList& from ) {
+      GUM_CONS_CPY ( learning::LocalSearchWithTabuList );
+    }
 
 
-/// include the inlined functions if necessary
-#ifdef GUM_NO_INLINE
-#include <agrum/learning/localSearchWithTabuList.inl>
-#endif /* GUM_NO_INLINE */
+    /// move constructor
+    INLINE LocalSearchWithTabuList::LocalSearchWithTabuList
+    ( LocalSearchWithTabuList&& from ) {
+      GUM_CONS_MOV ( learning::LocalSearchWithTabuList );
+    }
 
+    
+    /// destructor
+    INLINE LocalSearchWithTabuList::~LocalSearchWithTabuList () {
+      GUM_DESTRUCTOR ( learning::LocalSearchWithTabuList );
+    }
+
+    
+    /// copy operator
+    INLINE LocalSearchWithTabuList&
+    LocalSearchWithTabuList::operator= ( const LocalSearchWithTabuList& from ) {
+      return *this;
+    }
+
+
+    /// move operator
+    INLINE LocalSearchWithTabuList&
+    LocalSearchWithTabuList::operator= ( LocalSearchWithTabuList&& from ) {
+      return *this;
+    }
+
+
+    /// set the max number of changes decreasing the score that we allow to apply
+    INLINE void
+    LocalSearchWithTabuList::setMaxNbDecreasingChanges ( unsigned int nb ) {
+      __MaxNbDecreasing = nb;
+    }
+    
+  
+  } /* namespace learning */
+  
+  
+} /* namespace gum */
+
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
