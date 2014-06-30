@@ -65,13 +65,35 @@ namespace gum {
       /// constructor starting with a given graph
       StructuralConstraintIndegree ( const DiGraph& graph,
                                      unsigned int max_indegree );
-       
+      
+      /// copy constructor
+      StructuralConstraintIndegree ( const StructuralConstraintIndegree& from );
+      
+      /// move constructor
+      StructuralConstraintIndegree ( StructuralConstraintIndegree&& from );
+
       /// destructor
       virtual ~StructuralConstraintIndegree ();
       
       /// @}
 
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+      /// @{
+
+      /// copy operator
+      StructuralConstraintIndegree&
+      operator= ( const StructuralConstraintIndegree& from );
+
+      /// move operator
+      StructuralConstraintIndegree&
+      operator= ( StructuralConstraintIndegree&& from );
+       
+      /// @}
       
+
       // ##########################################################################
       /// @name Specific Accessors / Modifiers
       // ##########################################################################
@@ -195,25 +217,6 @@ namespace gum {
       /// a default max indegree to assign for nodes without specified indegree
       unsigned int
       _Indegree__max_indegree { std::numeric_limits<unsigned int>::max () };
-
-
- 
-      
-      /// copy constructor
-      StructuralConstraintIndegree
-      ( const StructuralConstraintIndegree& from ) = delete;
-
-      /// move constructor
-      StructuralConstraintIndegree
-      ( StructuralConstraintIndegree&& from ) = delete;
-
-      /// copy operator
-      StructuralConstraintIndegree&
-      operator= ( const StructuralConstraintIndegree& from ) = delete;
-
-      /// move operator
-      StructuralConstraintIndegree&
-      operator= ( StructuralConstraintIndegree&& from ) = delete;
 
     };
     

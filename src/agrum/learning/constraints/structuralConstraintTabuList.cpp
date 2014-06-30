@@ -71,9 +71,51 @@ namespace gum {
     }
 
 
+    /// copy constructor
+    StructuralConstraintTabuList::StructuralConstraintTabuList
+    ( const StructuralConstraintTabuList& from ) :
+      _TabuList__changes ( from._TabuList__changes ),
+      _TabuList__offset ( from._TabuList__offset ) {
+      GUM_CONS_CPY ( StructuralConstraintTabuList );
+    }
+    
+
+    /// move constructor
+    StructuralConstraintTabuList::StructuralConstraintTabuList
+    ( StructuralConstraintTabuList&& from ) :
+      _TabuList__changes ( std::move ( from._TabuList__changes ) ),
+      _TabuList__offset ( std::move ( from._TabuList__offset ) ) {
+      GUM_CONS_MOV ( StructuralConstraintTabuList );
+    }
+      
+
     /// destructor
     StructuralConstraintTabuList::~StructuralConstraintTabuList () {
       GUM_DESTRUCTOR ( StructuralConstraintTabuList );
+    }
+
+
+    /// copy operator
+    StructuralConstraintTabuList&
+    StructuralConstraintTabuList::operator=
+    ( const StructuralConstraintTabuList& from ) {
+      if ( this != &from ) {
+        _TabuList__changes = from._TabuList__changes;
+        _TabuList__offset  = from._TabuList__offset;
+      }
+      return *this;
+    }
+
+
+    /// move operator
+    StructuralConstraintTabuList&
+    StructuralConstraintTabuList::operator=
+    ( StructuralConstraintTabuList&& from ) {
+      if ( this != &from ) {
+        _TabuList__changes = std::move ( from._TabuList__changes );
+        _TabuList__offset  = std::move ( from._TabuList__offset );
+      }
+      return *this;
     }
     
 

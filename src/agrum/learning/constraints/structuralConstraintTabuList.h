@@ -75,12 +75,34 @@ namespace gum {
       /// constructor starting with a given graph
       StructuralConstraintTabuList ( const DiGraph& graph );
 
+      /// copy constructor
+      StructuralConstraintTabuList ( const StructuralConstraintTabuList& from );
+
+      /// move constructor
+      StructuralConstraintTabuList ( StructuralConstraintTabuList&& from );
+
       /// destructor
       virtual ~StructuralConstraintTabuList ();
       
       /// @}
 
+      
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+      /// @{
 
+      /// copy operator
+      StructuralConstraintTabuList&
+      operator= ( const StructuralConstraintTabuList& from );
+
+      /// move operator
+      StructuralConstraintTabuList&
+      operator= ( StructuralConstraintTabuList&& from );
+
+      /// @}
+      
+      
       // ##########################################################################
       /// @name Specific Accessors / Modifiers
       // ##########################################################################
@@ -186,23 +208,6 @@ namespace gum {
 
       /// the index of the oldest element
       int _TabuList__offset { 0 };
-
-      
-      /// copy constructor
-      StructuralConstraintTabuList
-      ( const StructuralConstraintTabuList& from ) = delete;
-
-      /// move constructor
-      StructuralConstraintTabuList
-      ( StructuralConstraintTabuList&& from ) = delete;
-
-      /// copy operator
-      StructuralConstraintTabuList&
-      operator= ( const StructuralConstraintTabuList& from ) = delete;
-
-      /// move operator
-      StructuralConstraintTabuList&
-      operator= ( StructuralConstraintTabuList&& from ) = delete;
 
     };
     

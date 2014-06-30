@@ -69,10 +69,58 @@ namespace gum {
       GUM_CONSTRUCTOR ( StructuralConstraintIndegree );
     }
 
+
+    /// copy constructor
+    StructuralConstraintIndegree::StructuralConstraintIndegree
+    ( const StructuralConstraintIndegree& from ) :
+      StructuralConstraintDiGraph ( from ),
+      _Indegree__max_parents ( from._Indegree__max_parents ),
+      _Indegree__max_indegree ( from._Indegree__max_indegree ) {
+      GUM_CONS_CPY ( StructuralConstraintIndegree );
+    }
+    
+      
+    /// move constructor
+    StructuralConstraintIndegree::StructuralConstraintIndegree
+    ( StructuralConstraintIndegree&& from ) :
+      StructuralConstraintDiGraph ( std::move ( from ) ),
+      _Indegree__max_parents ( std::move ( from._Indegree__max_parents ) ),
+      _Indegree__max_indegree ( std::move ( from._Indegree__max_indegree ) ) {
+      GUM_CONS_MOV ( StructuralConstraintIndegree );
+    }
+    
        
     /// destructor
     StructuralConstraintIndegree::~StructuralConstraintIndegree () {
       GUM_DESTRUCTOR ( StructuralConstraintIndegree );
+    }
+
+
+    /// copy operator
+    StructuralConstraintIndegree&
+    StructuralConstraintIndegree::operator=
+    ( const StructuralConstraintIndegree& from ) {
+      if ( this != &from ) {
+        StructuralConstraintDiGraph::operator= ( from );
+        _Indegree__max_parents = from._Indegree__max_parents;
+        _Indegree__max_indegree = from. _Indegree__max_indegree;
+      }
+
+      return *this;
+    }
+
+    
+    /// move operator
+    StructuralConstraintIndegree&
+    StructuralConstraintIndegree::operator=
+    ( StructuralConstraintIndegree&& from ) {
+      if ( this != &from ) {
+        StructuralConstraintDiGraph::operator= ( std::move ( from ) );
+        _Indegree__max_parents  = std::move ( from._Indegree__max_parents );
+        _Indegree__max_indegree = std::move ( from. _Indegree__max_indegree );
+      }
+
+      return *this;
     }
 
  

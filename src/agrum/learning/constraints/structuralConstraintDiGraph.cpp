@@ -59,12 +59,49 @@ namespace gum {
       GUM_CONSTRUCTOR ( StructuralConstraintDiGraph );
     }
 
+    
+    /// copy constructor
+    StructuralConstraintDiGraph::StructuralConstraintDiGraph
+    ( const StructuralConstraintDiGraph& from ) :
+      _DiGraph__graph ( from._DiGraph__graph ) {
+      GUM_CONS_CPY ( StructuralConstraintDiGraph );
+    }
+
+
+    /// move constructor
+    StructuralConstraintDiGraph::StructuralConstraintDiGraph
+    ( StructuralConstraintDiGraph&& from ) :
+      _DiGraph__graph ( std::move ( from._DiGraph__graph ) ) {
+      GUM_CONS_MOV ( StructuralConstraintDiGraph );
+    }
+
 
     /// destructor
     StructuralConstraintDiGraph::~StructuralConstraintDiGraph () {
       GUM_DESTRUCTOR ( StructuralConstraintDiGraph );
     }
     
+
+    /// copy operator
+    StructuralConstraintDiGraph&
+    StructuralConstraintDiGraph::operator=
+    ( const StructuralConstraintDiGraph& from ) {
+      if ( this != &from ) {
+        _DiGraph__graph = from._DiGraph__graph;
+      }
+      return *this;
+    }
+
+    
+    /// move operator
+    StructuralConstraintDiGraph&
+    StructuralConstraintDiGraph::operator= ( StructuralConstraintDiGraph&& from ) {
+      if ( this != &from ) {
+        _DiGraph__graph = std::move ( from._DiGraph__graph );
+      }
+      return *this;
+    } 
+
 
   } /* namespace learning */
 

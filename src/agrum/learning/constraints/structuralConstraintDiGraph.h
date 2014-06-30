@@ -65,11 +65,33 @@ namespace gum {
       /// constructor starting with a given graph
       StructuralConstraintDiGraph ( const DiGraph& graph );
 
+      /// copy constructor
+      StructuralConstraintDiGraph ( const StructuralConstraintDiGraph& from );
+
+      /// move constructor
+      StructuralConstraintDiGraph ( StructuralConstraintDiGraph&& from );
+
       /// destructor
       virtual ~StructuralConstraintDiGraph ();
       
       /// @}
 
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+      /// @{
+
+      /// copy operator
+      StructuralConstraintDiGraph&
+      operator= ( const StructuralConstraintDiGraph& from );
+
+      /// move operator
+      StructuralConstraintDiGraph&
+      operator= ( StructuralConstraintDiGraph&& from );
+
+      /// @}
+      
 
       // ##########################################################################
       /// @name Specific Accessors / Modifiers
@@ -173,24 +195,6 @@ namespace gum {
     protected:
       /// the DiGraph on which we perform checks
       DiGraph _DiGraph__graph;
-
-      
-      
-      /// copy constructor
-      StructuralConstraintDiGraph
-      ( const StructuralConstraintDiGraph& from ) = delete;
-
-      /// move constructor
-      StructuralConstraintDiGraph
-      ( StructuralConstraintDiGraph&& from ) = delete;
-
-      /// copy operator
-      StructuralConstraintDiGraph&
-      operator= ( const StructuralConstraintDiGraph& from ) = delete;
-
-      /// move operator
-      StructuralConstraintDiGraph&
-      operator= ( StructuralConstraintDiGraph&& from ) = delete;
 
     };
     

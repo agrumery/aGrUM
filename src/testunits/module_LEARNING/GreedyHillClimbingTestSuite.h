@@ -74,14 +74,20 @@ namespace gum_tests {
         gum::learning::StructuralConstraint2TimeSlice>
         struct_constraint; 
 
-      struct_constraint.setDefaultIndegree ( 2 );
+      struct_constraint.setDefaultIndegree ( 1 );
 
       gum::NodeProperty<bool> slices {
         std::make_pair( gum::NodeId ( 0 ), 0 ),
-        std::make_pair( gum::NodeId ( 1 ), 0 ) };
+        std::make_pair( gum::NodeId ( 1 ), 0 ),
+        std::make_pair( gum::NodeId ( 6 ), 0 ),
+        std::make_pair( gum::NodeId ( 2 ), 1 ) };
       struct_constraint.setSlices ( slices );
       struct_constraint.setDefaultSlice ( 1 );
 
+      gum::learning::StructuralConstraintIndegree constraint1;
+      constraint1.setDefaultIndegree ( 3 );
+      static_cast<gum::learning::StructuralConstraintIndegree&> ( struct_constraint ) = constraint1; 
+ 
       gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
 
       gum::learning::GraphChangesGenerator4DiGraph
@@ -110,7 +116,7 @@ namespace gum_tests {
     }
 
     
-    void test_asia2 () {
+    void xtest_asia2 () {
       gum::learning::GreedyHillClimbing search;
        gum::BayesNet<float> bn =
          search.learnBNFromCSV ( GET_PATH_STR( "asia.csv" ) );
@@ -121,7 +127,7 @@ namespace gum_tests {
        std::cout << bn2 << std::endl << bn2.dag () << std::endl;
     }
     
-    void test_alarm1 () {
+    void xtest_alarm1 () {
       gum::learning::DatabaseFromCSV database ( MY_ALARM );
       
       auto translators = gum::learning::make_translators
@@ -168,7 +174,7 @@ namespace gum_tests {
     }
 
     
-    void test_alarm1bis () {
+    void xtest_alarm1bis () {
       gum::learning::DatabaseFromCSV database ( MY_ALARM );
       
       auto translators = gum::learning::make_translators
@@ -215,7 +221,7 @@ namespace gum_tests {
     }
 
     
-    void test_alarm1ter () {
+    void xtest_alarm1ter () {
       gum::learning::DatabaseFromCSV database ( MY_ALARM );
       
       auto translators = gum::learning::make_translators
@@ -262,7 +268,7 @@ namespace gum_tests {
     }
 
 
-    void test_alarm2 () {
+    void xtest_alarm2 () {
       gum::learning::DatabaseFromCSV database ( MY_ALARM );
       
       gum::learning::DBRowTranslatorSetDynamic
@@ -310,7 +316,7 @@ namespace gum_tests {
     }
 
 
-    void test_alarm3 () {
+    void xtest_alarm3 () {
       gum::learning::DatabaseFromCSV database ( MY_ALARM );
       
       gum::learning::DBRowTranslatorSetDynamic< gum::learning::DBCellTranslator<1,1> >
@@ -360,7 +366,7 @@ namespace gum_tests {
     }
 
     
-    void test_alarm4 () {
+    void xtest_alarm4 () {
       gum::learning::DatabaseFromCSV database ( MY_ALARM );
       
       gum::learning::DBRowTranslatorSetDynamic< gum::learning::DBCellTranslator<1,1> >

@@ -64,11 +64,33 @@ namespace gum {
       /// constructor starting with a given graph
       StructuralConstraintDAG ( const DAG& graph );
 
+      /// copy constructor
+      StructuralConstraintDAG ( const StructuralConstraintDAG& from );
+
+      /// move constructor
+      StructuralConstraintDAG ( StructuralConstraintDAG&& from );
+
       /// destructor
       virtual ~StructuralConstraintDAG ();
       
       /// @}
 
+      
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+      /// @{
+            
+      /// copy operator
+      StructuralConstraintDAG&
+      operator= ( const StructuralConstraintDAG& from );
+
+      /// move operator
+      StructuralConstraintDAG&
+      operator= ( StructuralConstraintDAG&& from );
+
+      /// @}
+      
 
       // ##########################################################################
       /// @name Specific Accessors / Modifiers
@@ -183,25 +205,7 @@ namespace gum {
 
     protected:
       /// the cycle detector used to check quickly graph modifications
-      DAGCycleDetector _DAG__cycle_detector;
-      
-      
-      
-      /// copy constructor
-      StructuralConstraintDAG
-      ( const StructuralConstraintDAG& from ) = delete;
-
-      /// move constructor
-      StructuralConstraintDAG
-      ( StructuralConstraintDAG&& from ) = delete;
-
-      /// copy operator
-      StructuralConstraintDAG&
-      operator= ( const StructuralConstraintDAG& from ) = delete;
-
-      /// move operator
-      StructuralConstraintDAG&
-      operator= ( StructuralConstraintDAG&& from ) = delete;
+      DAGCycleDetector _DAG__cycle_detector;      
 
     };
     

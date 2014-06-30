@@ -71,12 +71,35 @@ namespace gum {
       StructuralConstraint2TimeSlice ( const DiGraph& graph,
                                        const NodeProperty<bool>& time_slice );
 
+      /// copy constructor
+      StructuralConstraint2TimeSlice
+      ( const StructuralConstraint2TimeSlice& from );
+
+      /// move constructor
+      StructuralConstraint2TimeSlice
+      ( StructuralConstraint2TimeSlice&& from );
 
       /// destructor
       virtual ~StructuralConstraint2TimeSlice ();
       
       /// @}
 
+      
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+      /// @{
+      
+      /// copy operator
+      StructuralConstraint2TimeSlice&
+      operator= ( const StructuralConstraint2TimeSlice& from );
+
+      /// move operator
+      StructuralConstraint2TimeSlice&
+      operator= ( StructuralConstraint2TimeSlice&& from );
+
+      /// @}
+      
 
       // ##########################################################################
       /// @name Specific Accessors / Modifiers
@@ -197,23 +220,6 @@ namespace gum {
 
       /// the default time slice
       bool _2TimeSlice__default_slice { false };
-
-      
-      /// copy constructor
-      StructuralConstraint2TimeSlice
-      ( const StructuralConstraint2TimeSlice& from ) = delete;
-
-      /// move constructor
-      StructuralConstraint2TimeSlice
-      ( StructuralConstraint2TimeSlice&& from ) = delete;
-
-      /// copy operator
-      StructuralConstraint2TimeSlice&
-      operator= ( const StructuralConstraint2TimeSlice& from ) = delete;
-
-      /// move operator
-      StructuralConstraint2TimeSlice&
-      operator= ( StructuralConstraint2TimeSlice&& from ) = delete;
 
     };
     

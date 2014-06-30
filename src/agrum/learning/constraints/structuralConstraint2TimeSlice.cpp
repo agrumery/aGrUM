@@ -80,11 +80,58 @@ namespace gum {
 
       GUM_CONSTRUCTOR ( StructuralConstraint2TimeSlice );
     }
-    
 
+
+    /// copy constructor
+    StructuralConstraint2TimeSlice::StructuralConstraint2TimeSlice
+    ( const StructuralConstraint2TimeSlice& from ) :
+      StructuralConstraintDiGraph ( from ),
+      _2TimeSlice__time_slice ( from._2TimeSlice__time_slice ),
+      _2TimeSlice__default_slice ( from._2TimeSlice__default_slice ) {
+      GUM_CONS_CPY ( StructuralConstraint2TimeSlice );
+    }
+    
+      
+    /// move constructor
+    StructuralConstraint2TimeSlice::StructuralConstraint2TimeSlice
+    ( StructuralConstraint2TimeSlice&& from ) :
+    StructuralConstraintDiGraph ( std::move ( from ) ),
+      _2TimeSlice__time_slice ( std::move ( from._2TimeSlice__time_slice ) ),
+      _2TimeSlice__default_slice ( std::move ( from._2TimeSlice__default_slice ) )
+    {
+      GUM_CONS_MOV ( StructuralConstraint2TimeSlice );
+    }
+
+ 
     /// destructor
     StructuralConstraint2TimeSlice::~StructuralConstraint2TimeSlice () {
       GUM_DESTRUCTOR ( StructuralConstraint2TimeSlice );
+    }
+
+
+    /// copy operator
+    StructuralConstraint2TimeSlice&
+    StructuralConstraint2TimeSlice::operator=
+    ( const StructuralConstraint2TimeSlice& from ) {
+      if ( this != &from ) {
+        StructuralConstraintDiGraph::operator= ( from );
+        _2TimeSlice__time_slice = from._2TimeSlice__time_slice;
+        _2TimeSlice__default_slice = from._2TimeSlice__default_slice;
+      }
+      return *this;
+    }
+        
+
+    /// move operator
+    StructuralConstraint2TimeSlice&
+    StructuralConstraint2TimeSlice::operator=
+    ( StructuralConstraint2TimeSlice&& from ) {
+      if ( this != &from ) {
+        StructuralConstraintDiGraph::operator= ( std::move ( from ) );
+        _2TimeSlice__time_slice = std::move ( from._2TimeSlice__time_slice );
+        _2TimeSlice__default_slice = std::move ( from._2TimeSlice__default_slice );
+      }
+      return *this;
     }
     
  

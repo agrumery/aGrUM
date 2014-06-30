@@ -65,12 +65,34 @@ namespace gum {
 
       /// constructor starting with a given graph
       StructuralConstraintUndiGraph ( const UndiGraph& graph );
+      
+      /// copy constructor
+      StructuralConstraintUndiGraph ( const StructuralConstraintUndiGraph& from );
+
+      /// move constructor
+      StructuralConstraintUndiGraph ( StructuralConstraintUndiGraph&& from );
 
       /// destructor
       virtual ~StructuralConstraintUndiGraph ();
       
       /// @}
 
+      
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+      /// @{
+
+      /// copy operator
+      StructuralConstraintUndiGraph&
+      operator= ( const StructuralConstraintUndiGraph& from );
+
+      /// move operator
+      StructuralConstraintUndiGraph&
+      operator= ( StructuralConstraintUndiGraph&& from );
+
+      /// @}
+      
 
       // ##########################################################################
       /// @name Specific Accessors / Modifiers
@@ -154,24 +176,6 @@ namespace gum {
     protected:
       /// the UndiGraph on which we perform checks
       UndiGraph _UndiGraph__graph;
-
-      
-      
-      /// copy constructor
-      StructuralConstraintUndiGraph
-      ( const StructuralConstraintUndiGraph& from ) = delete;
-
-      /// move constructor
-      StructuralConstraintUndiGraph
-      ( StructuralConstraintUndiGraph&& from ) = delete;
-
-      /// copy operator
-      StructuralConstraintUndiGraph&
-      operator= ( const StructuralConstraintUndiGraph& from ) = delete;
-
-      /// move operator
-      StructuralConstraintUndiGraph&
-      operator= ( StructuralConstraintUndiGraph&& from ) = delete;
 
     };
     
