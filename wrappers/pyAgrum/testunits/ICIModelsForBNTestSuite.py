@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 # -*- encoding: UTF-8 -*-
 
+# tests use the compiled version of pyAgrum and not the packaged one. So we directly call the __init__.py file
+import __init__ as gum # read "import pyAgrum as gum"
+
 import unittest
-from pyAgrum import BayesNet,RangeVar,LabelizedVar,LazyPropagation,Instantiation
 from pyAgrumTestSuite import pyAgrumTestCase
 
 
@@ -12,11 +14,11 @@ class ICIModelsForBNTestCase(pyAgrumTestCase):
 	  pass
 
     def testLogit(self):
-        bn = BayesNet()
-        age=bn.add(RangeVar("age","",35,67))
-        taux=bn.add(RangeVar("taux","",115,171))
-        angine=bn.add(LabelizedVar("angine",""))
-        vc=LabelizedVar("coeur","",0)
+        bn = gum.BayesNet()
+        age=bn.add(gum.RangeVar("age","",35,67))
+        taux=bn.add(gum.RangeVar("taux","",115,171))
+        angine=bn.add(gum.LabelizedVar("angine",""))
+        vc=gum.LabelizedVar("coeur","",0)
         vc.addLabel("NON").addLabel("OUI")
         coeur=bn.addLogit (vc,14.4937)
         
@@ -31,7 +33,7 @@ class ICIModelsForBNTestCase(pyAgrumTestCase):
         
         witness_proba = (0.8786,0.5807,0.3912,0.3773,0.2127,0.8760,1-0.0163,1-0.0710,1-0.3765)
         
-        inst=Instantiation(bn.cpt(coeur))
+        inst=gum.Instantiation(bn.cpt(coeur))
         for i in range(len(witness_age)):
 		  inst.chgVal(   bn.variable(age),   bn.variable(age)[   witness_age[i]])
 		  inst.chgVal(  bn.variable(taux),  bn.variable(taux)[  witness_taux[i]])
