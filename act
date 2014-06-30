@@ -531,13 +531,13 @@ def checkConstraints(parser,options,args):
     if current['wrapper']!="":
         if (not current['rule'] in ["wrapper", "install","test","uninstall"]):
             parser.print_help()
-            parser.error("incompatibilty between options <rule>='"+current['rule'] +"' and <wrapper>='"+current['wrapper']+"'")
+            parser.error("incompatibilty ²between options <rule>='"+current['rule'] +"' and <wrapper>='"+current['wrapper']+"'")
         if current['option']!='release':
             parser.print_help()
             parser.error('no debug mode for wrappers compilation')
 
     if current['platform']=='windows':
-        if not current['rule'] in ["agrum","test","run","clean",'package']:
+        if not current['rule'] in ["agrum","test","run","clean",'package','install']:
             parser.print_help()
             parser.error("incompatibilty between options <platform>='"+current['platform']+"' and <rule>='"+current['rule']+"'")
         if not current['option']=='release':
@@ -571,10 +571,10 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
             make_options=""
         if options['rule']=='test':
             if options['wrapper']=='pyAgrum':
-                run_cde="PYTHONPATH=. python ../../../wrappers/pyAgrum/testunits/TestSuite.py"
+              run_cde="python ../../../wrappers/pyAgrum/testunits/TestSuite.py"
             else:
-                print ERROR+"No tests for "+options['wrapper']+ENDC
-                sys.exit(0)
+              print ERROR+"No tests for "+options['wrapper']+ENDC
+              sys.exit(0)
         else:
             run_cde=""
     else:
@@ -588,7 +588,7 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
         if (options['rule']=="test" or options['rule']=="run"):
             make_options=options['rule']
             if (options['platform'] != "windows"):
-			  run_cde="./"+options['rule']
+              run_cde="./"+options['rule']
             else:
               run_cde=".\\"+options['rule']+".exe"
         else:
