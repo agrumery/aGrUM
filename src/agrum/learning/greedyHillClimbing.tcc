@@ -156,7 +156,7 @@ namespace gum {
 
       ScoreBDeu<> score ( filter, modalities );
 
-      StructuralConstraintSet<StructuralConstraintDAG> struct_constraint;
+      StructuralConstraintSetStatic<StructuralConstraintDAG> struct_constraint;
 
       ParamEstimatorMLwithUniformApriori<> estimator ( filter, modalities );
 

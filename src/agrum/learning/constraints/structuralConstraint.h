@@ -26,7 +26,7 @@
 #define GUM_LEARNING_STRUCTURAL_CONSTRAINT_H
 
 
-#include <agrum/learning/constraints/structuralConstraintSet.h>
+#include <agrum/learning/constraints/structuralConstraintSetStatic.h>
 
 
 namespace gum {

@@ -22,7 +22,8 @@
 // files (see StructuralConstraintUndiGraph to see how it should be included).
 // This concerns only StructuralConstraints that do not derive from other
 // StructuralConstraints, i.e., that do not derive from public virtual
-// StructuralConstraintSet<...>. Such a class is StructuralConstraintUndiGraph.
+// StructuralConstraintSetStatic<...>. Such a class is
+// StructuralConstraintUndiGraph.
 // If your class derives from anoter constraint, include file
 // StructuralConstraintPattern4UndiGraphInline.h instead.
 

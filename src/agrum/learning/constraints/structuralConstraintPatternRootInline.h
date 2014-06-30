@@ -22,7 +22,7 @@
 // files (see StructuralConstraintDiGraph to see how it should be included).
 // This concerns only StructuralConstraints that do not derive from other
 // StructuralConstraints, i.e., that do not derive from public virtual
-// StructuralConstraintSet<...>. Such a class is StructuralConstraintDiGraph.
+// StructuralConstraintSetStatic<...>. Such a class is StructuralConstraintDiGraph.
 // If your class derives from anoter constraint, include file
 // StructuralConstraintPatternInline.h instead.
 

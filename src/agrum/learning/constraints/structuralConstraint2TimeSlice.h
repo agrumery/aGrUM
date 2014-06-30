@@ -32,7 +32,7 @@
 
 
 #include <agrum/config.h>
-#include <agrum/learning/constraints/structuralConstraintSet.h>
+#include <agrum/learning/constraints/structuralConstraintSetStatic.h>
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 
 
@@ -49,7 +49,8 @@ namespace gum {
      * @ingroup learning_group
      */
     class StructuralConstraint2TimeSlice :
-      protected virtual StructuralConstraintSet<StructuralConstraintDiGraph> {
+      protected virtual StructuralConstraintSetStatic<StructuralConstraintDiGraph>
+    {
     public:
       
       // ##########################################################################
@@ -183,7 +184,7 @@ namespace gum {
       
       // include the set of methods that enable the structural constraint to
       // be standalone, i.e., that it needs not be included into a
-      // StructuralConstraintSet to be used by learning algorithms
+      // StructuralConstraintSetStatic to be used by learning algorithms
       #define GUM_CONSTRAINT_CLASS_NAME StructuralConstraint2TimeSlice
       #include <agrum/learning/constraints/structuralConstraintPatternHeader.h>
       #undef GUM_CONSTRAINT_CLASS_NAME

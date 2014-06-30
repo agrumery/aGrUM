@@ -43,7 +43,7 @@
 #include <agrum/learning/scores_and_tests/scoreBDeu.h>
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintTabuList.h>
-#include <agrum/learning/constraints/structuralConstraintSet.h>
+#include <agrum/learning/constraints/structuralConstraintSetStatic.h>
 #include <agrum/learning/structureUtils/graphChange.h>
 #include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
 #include <agrum/learning/structureUtils/graphChangesGenerator4DiGraph.h>

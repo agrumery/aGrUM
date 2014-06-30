@@ -144,7 +144,7 @@ namespace gum {
       
       // include the set of methods that enable the structural constraint to
       // be standalone, i.e., that it needs not be included into a
-      // StructuralConstraintSet to be used by learning algorithms
+      // StructuralConstraintSetStatic to be used by learning algorithms
       #define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintUndiGraph
       #include <agrum/learning/constraints/structuralConstraintPattern4UndiGraphHeader.h>
       #undef GUM_CONSTRAINT_CLASS_NAME

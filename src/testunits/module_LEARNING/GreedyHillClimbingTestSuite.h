@@ -36,7 +36,7 @@
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintIndegree.h>
 #include <agrum/learning/constraints/structuralConstraint2TimeSlice.h>
-#include <agrum/learning/constraints/structuralConstraintSet.h>
+#include <agrum/learning/constraints/structuralConstraintSetStatic.h>
 #include <agrum/learning/structureUtils/graphChangesGenerator4DiGraph.h>
 #include <agrum/learning/structureUtils/graphChangesGenerator4UndiGraph.h>
 #include <agrum/learning/structureUtils/graphChangesGeneratorOnSubDiGraph.h>
@@ -76,7 +76,7 @@ namespace gum_tests {
 
       gum::learning::ScoreK2<> score ( filter, modalities );
 
-      gum::learning::StructuralConstraintSet<
+      gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,
         gum::learning::StructuralConstraintIndegree,
         gum::learning::StructuralConstraint2TimeSlice>
@@ -144,7 +144,7 @@ namespace gum_tests {
       
       gum::learning::ScoreBDeu<> score ( filter, modalities );
 
-      gum::learning::StructuralConstraintSet<
+      gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG>
         struct_constraint; 
       
@@ -190,7 +190,7 @@ namespace gum_tests {
       
       gum::learning::ScoreBDeu<> score ( filter, modalities );
 
-      gum::learning::StructuralConstraintSet<
+      gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG>
         struct_constraint; 
       
@@ -236,7 +236,7 @@ namespace gum_tests {
       
       gum::learning::ScoreBDeu<> score ( filter, modalities );
 
-      gum::learning::StructuralConstraintSet<
+      gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG>
         struct_constraint; 
       
@@ -283,7 +283,7 @@ namespace gum_tests {
       
       gum::learning::ScoreBDeu<> score ( filter, modalities );
 
-      gum::learning::StructuralConstraintSet<
+      gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG>
         struct_constraint; 
       
@@ -332,7 +332,7 @@ namespace gum_tests {
       
       gum::learning::ScoreBDeu<> score ( filter, modalities );
 
-      gum::learning::StructuralConstraintSet<
+      gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG>
         struct_constraint; 
       
@@ -381,7 +381,7 @@ namespace gum_tests {
       
       gum::learning::ScoreBDeu<> score ( filter, modalities );
 
-      gum::learning::StructuralConstraintSet<
+      gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG>
         struct_constraint; 
       

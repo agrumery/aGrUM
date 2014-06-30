@@ -222,8 +222,9 @@ namespace gum {
 
       ScoreBDeu<> score ( filter, modalities );
 
-      StructuralConstraintSet<StructuralConstraintDAG,
-                              StructuralConstraintTabuList> struct_constraint;
+      StructuralConstraintSetStatic<StructuralConstraintDAG,
+                                    StructuralConstraintTabuList>
+        struct_constraint;
       struct_constraint.setTabuListSize ( 100 );
 
       ParamEstimatorMLwithUniformApriori<> estimator ( filter, modalities );

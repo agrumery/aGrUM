@@ -25,16 +25,16 @@
  * to add at runtime any constraint you wish. As such, it is very generic but,
  * by not knowing at compile time the constraints that will be stored into the
  * vector, calling its methods has a slight overhead. On the other hand, if you
- * already know all the constraints you wish to apply, the StructuralConstraintSet
- * is better suited because it will compute at compile time how to call the
- * constraint's methods in a most efficient way: if these methods are inlined,
- * there will be no overhead at all when calling these methods. This file
- * defines the StructuralConstraintSet class. 
+ * already know all the constraints you wish to apply, the
+ * StructuralConstraintSetStatic is better suited because it will compute at
+ * compile time how to call the constraint's methods in a most efficient way: if
+ * these methods are inlined, there will be no overhead at all when calling these
+ * methods. This file defines the StructuralConstraintSetStatic class. 
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_SET_H
-#define GUM_LEARNING_STRUCTURAL_CONSTRAINT_SET_H
+#ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_SET_STATIC_H
+#define GUM_LEARNING_STRUCTURAL_CONSTRAINT_SET_STATIC_H
 
 
 #include <type_traits>
@@ -53,7 +53,7 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
     
-    // a class that indicates the we inherit from a StructuralConstraintSet
+    // a class that indicates the we inherit from a StructuralConstraintSetStatic
     struct __StructuralRoot {};
 
     // a temporary structure used to help computing the minimal set of constraints
@@ -67,9 +67,9 @@ namespace gum {
 
     // a helper function to create minimum structural constraint sets and the
     // methods actually used on all these constraints. This is a helper for
-    // the class that the user should use, i.e., StructuralConstraintSet
+    // the class that the user should use, i.e., StructuralConstraintSetStatic
     template <typename FIRST_CONSTRAINT, typename... OTHER_CONSTRAINTS>
-    struct __StructuralConstraintSet;
+    struct __StructuralConstraintSetStatic;
 
     
     // ============================================================================
@@ -106,19 +106,20 @@ namespace gum {
       using minset = typename
         std::conditional<
         __IsInConstraintSet< FIRST_CONSTRAINT,
-          __ConstraintSet<OTHER_CONSTRAINTS...> >::value,
+           __ConstraintSet<OTHER_CONSTRAINTS...> >::value,
         typename __ConstraintSet<OTHER_CONSTRAINTS...>::minset,
         typename __ConcatConstraintSet<FIRST_CONSTRAINT,
-          typename __ConstraintSet<OTHER_CONSTRAINTS...>::minset>::type
+           typename __ConstraintSet<OTHER_CONSTRAINTS...>::minset>::type
         >::type;
-      using set = __StructuralConstraintSet<FIRST_CONSTRAINT,OTHER_CONSTRAINTS...>;
+      using set = __StructuralConstraintSetStatic<FIRST_CONSTRAINT,
+                                                  OTHER_CONSTRAINTS...>;
     };
 
 
     template <typename CONSTRAINT>
     struct __ConstraintSet<CONSTRAINT> {
       using minset = __ConstraintSet<CONSTRAINT>;
-      using set = __StructuralConstraintSet<CONSTRAINT>;
+      using set = __StructuralConstraintSetStatic<CONSTRAINT>;
     };
 
 
@@ -172,28 +173,29 @@ namespace gum {
     // ============================================================================
     // a helper function to create minimum structural constraint sets and the
     // methods actually used on all these constraints. This is a helper for
-    // the class that the user should use, i.e., StructuralConstraintSet
+    // the class that the user should use, i.e., StructuralConstraintSetStatic
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
-    class __StructuralConstraintSet :
+    class __StructuralConstraintSetStatic :
       public virtual CONSTRAINT1,
-      public virtual __StructuralConstraintSet<OTHER_CONSTRAINTS...> {
+      public virtual __StructuralConstraintSetStatic<OTHER_CONSTRAINTS...> {
     public:
       
       /// the type of the first constraint
       using first_constraint = CONSTRAINT1;
 
       /// the type of the next constraints
-      using next_constraints = __StructuralConstraintSet<OTHER_CONSTRAINTS...>;
+      using next_constraints =
+        __StructuralConstraintSetStatic<OTHER_CONSTRAINTS...>;
   
       // determines the set of all constraints in the set (included inherited ones)
       using allConstraints = typename
         __ConcatConstraintSet<
-          typename std::conditional<
-            std::is_base_of<__StructuralRoot,CONSTRAINT1>::value,
-            typename __ConcatConstraintSet< CONSTRAINT1,
-                                            typename CONSTRAINT1::allConstraints
+        typename std::conditional<
+          std::is_base_of<__StructuralRoot,CONSTRAINT1>::value,
+          typename __ConcatConstraintSet< CONSTRAINT1,
+                                          typename CONSTRAINT1::allConstraints
                                           >::type,
-            __ConstraintSet<CONSTRAINT1> >::type,
+          __ConstraintSet<CONSTRAINT1> >::type,
           typename next_constraints::allConstraints
         >::type;
 
@@ -211,16 +213,16 @@ namespace gum {
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
-
+      
       /// default constructor
-      __StructuralConstraintSet ();
+      __StructuralConstraintSetStatic ();
 
       /// copy constructor
-      __StructuralConstraintSet
-      ( const __StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>& );
+      __StructuralConstraintSetStatic
+      ( const __StructuralConstraintSetStatic<CONSTRAINT1,OTHER_CONSTRAINTS...>& );
 
       /// destructor
-      ~__StructuralConstraintSet ();
+      ~__StructuralConstraintSetStatic ();
       
       /// @}
 
@@ -231,9 +233,9 @@ namespace gum {
       /// @{
 
       /// copy operator
-      __StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>&
+      __StructuralConstraintSetStatic<CONSTRAINT1,OTHER_CONSTRAINTS...>&
       operator=
-      ( const __StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>& );
+      ( const __StructuralConstraintSetStatic<CONSTRAINT1,OTHER_CONSTRAINTS...>& );
       
       /// @}
       
@@ -248,34 +250,34 @@ namespace gum {
  
       /// notify the constraint of a modification of the graph
       void modifyGraph ( const ArcAddition& change );
-
+    
       /// notify the constraint of a modification of the graph
       void modifyGraph ( const ArcDeletion& change );
-
+    
       /// notify the constraint of a modification of the graph
       void modifyGraph ( const ArcReversal& change );
-
+    
       /// notify the constraint of a modification of the graph
       void modifyGraph ( const GraphChange& change );
-
+    
       /// indicates whether a change will always violate the constraint
       bool isAlwaysInvalid ( const GraphChange& change ) const noexcept;
-
+    
       /// checks whether the constraints enable to add arc (x,y)
       bool checkArcAddition ( NodeId x, NodeId y ) const noexcept;
-
+      
       /// checks whether the constraints enable to remove arc (x,y)
       bool checkArcDeletion ( NodeId x, NodeId y ) const noexcept;
 
       /// checks whether the constraints enable to reverse arc (x,y)
       bool checkArcReversal ( NodeId x, NodeId y ) const noexcept;
-
+    
       /// checks whether the constraints enable to add an arc
       bool checkModification ( const ArcAddition& change ) const noexcept;
 
       /// checks whether the constraints enable to remove an arc
       bool checkModification ( const ArcDeletion& change ) const noexcept;
-
+      
       /// checks whether the constraints enable to reverse an arc
       bool checkModification ( const ArcReversal& change ) const noexcept;
       
@@ -288,7 +290,7 @@ namespace gum {
 
 
     template <typename CONSTRAINT>
-    class __StructuralConstraintSet<CONSTRAINT> :
+    class __StructuralConstraintSetStatic<CONSTRAINT> :
       public virtual CONSTRAINT,
       public virtual __StructuralRoot {
     public:
@@ -304,10 +306,10 @@ namespace gum {
        * internally. */
       using allConstraints = typename
         std::conditional<
-          std::is_base_of<__StructuralRoot,CONSTRAINT>::value,
-          typename __ConcatConstraintSet<CONSTRAINT,
-                                        typename CONSTRAINT::allConstraints>::type,
-          __ConstraintSet<CONSTRAINT>
+        std::is_base_of<__StructuralRoot,CONSTRAINT>::value,
+        typename __ConcatConstraintSet<CONSTRAINT,
+                                       typename CONSTRAINT::allConstraints>::type,
+        __ConstraintSet<CONSTRAINT>
         >::type;
 
       /** @brief determines the minimal set of constraints included in the set
@@ -327,13 +329,14 @@ namespace gum {
       /// @{
 
       /// default constructor
-      __StructuralConstraintSet ();
+      __StructuralConstraintSetStatic ();
 
       /// copy constructor
-      __StructuralConstraintSet ( const __StructuralConstraintSet<CONSTRAINT>& );
+      __StructuralConstraintSetStatic
+      ( const __StructuralConstraintSetStatic<CONSTRAINT>& );
 
       /// destructor
-      ~__StructuralConstraintSet ();
+      ~__StructuralConstraintSetStatic ();
       
       /// @}
 
@@ -344,8 +347,8 @@ namespace gum {
       /// @{
 
       /// copy operator
-      __StructuralConstraintSet<CONSTRAINT>&
-      operator= ( const __StructuralConstraintSet<CONSTRAINT>& );
+      __StructuralConstraintSetStatic<CONSTRAINT>&
+      operator= ( const __StructuralConstraintSetStatic<CONSTRAINT>& );
       
       /// @}
       
@@ -405,7 +408,7 @@ namespace gum {
 
 
 
-    /** @class StructuralConstraintSet
+    /** @class StructuralConstraintSetStatic
      * @brief the "meta-programming" class for storing structural constraints
      * @ingroup learning_group
      *
@@ -417,12 +420,13 @@ namespace gum {
      * to all the constraints, the class will apply the methods once on each
      * distinct constraint, hence avoiding duplicates. */
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
-    class StructuralConstraintSet :
+    class StructuralConstraintSetStatic :
       public virtual
-      __StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>::minConstraints {
+    __StructuralConstraintSetStatic<CONSTRAINT1,
+                                    OTHER_CONSTRAINTS...>::minConstraints {
     public:
       using constraints =
-        typename __StructuralConstraintSet<CONSTRAINT1,
+        typename __StructuralConstraintSetStatic<CONSTRAINT1,
                                            OTHER_CONSTRAINTS...>::minConstraints;
 
       // ##########################################################################
@@ -431,14 +435,14 @@ namespace gum {
       /// @{
 
       /// default constructor
-      StructuralConstraintSet ();
-
+      StructuralConstraintSetStatic ();
+      
       /// copy constructor
-      StructuralConstraintSet
-      ( const StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>& );
+      StructuralConstraintSetStatic
+      ( const StructuralConstraintSetStatic<CONSTRAINT1,OTHER_CONSTRAINTS...>& );
 
       /// destructor
-      ~StructuralConstraintSet ();
+      ~StructuralConstraintSetStatic ();
       
       /// @}
 
@@ -447,11 +451,11 @@ namespace gum {
       /// @name Operators
       // ##########################################################################
       /// @{
-
+      
       /// copy operator
-      StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>&
+      StructuralConstraintSetStatic<CONSTRAINT1,OTHER_CONSTRAINTS...>&
       operator=
-      ( const StructuralConstraintSet<CONSTRAINT1,OTHER_CONSTRAINTS...>& );
+      ( const StructuralConstraintSetStatic<CONSTRAINT1,OTHER_CONSTRAINTS...>& );
       
       /// @}
 
@@ -481,25 +485,25 @@ namespace gum {
 
       /// checks whether the constraints enable to add arc (x,y)
       bool checkArcAddition ( NodeId x, NodeId y ) const noexcept;
-
+      
       /// checks whether the constraints enable to remove arc (x,y)
       bool checkArcDeletion ( NodeId x, NodeId y ) const noexcept;
-
+      
       /// checks whether the constraints enable to reverse arc (x,y)
       bool checkArcReversal ( NodeId x, NodeId y ) const noexcept;
-
+      
       /// checks whether the constraints enable to add an arc
       bool checkModification ( const ArcAddition& change ) const noexcept;
-
+      
       /// checks whether the constraints enable to remove an arc
       bool checkModification ( const ArcDeletion& change ) const noexcept;
-
+      
       /// checks whether the constraints enable to reverse an arc
       bool checkModification ( const ArcReversal& change ) const noexcept;
       
       /// checks whether the constraints enable to perform a graph change
       bool checkModification ( const GraphChange& change ) const noexcept;
-
+      
       /// @}
       
     };
@@ -510,26 +514,27 @@ namespace gum {
 
 
     template <typename CONSTRAINT>
-    class StructuralConstraintSet<CONSTRAINT> :
-      public virtual __StructuralConstraintSet<CONSTRAINT>::minConstraints {
+    class StructuralConstraintSetStatic<CONSTRAINT> :
+      public virtual __StructuralConstraintSetStatic<CONSTRAINT>::minConstraints {
     public:
       using constraints =
-        typename __StructuralConstraintSet<CONSTRAINT>::minConstraints;
+        typename __StructuralConstraintSetStatic<CONSTRAINT>::minConstraints;
   
       
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
-
+      
       /// default constructor
-      StructuralConstraintSet ();
+      StructuralConstraintSetStatic ();
 
       /// copy constructor
-      StructuralConstraintSet ( const StructuralConstraintSet<CONSTRAINT>& );
+      StructuralConstraintSetStatic
+      ( const StructuralConstraintSetStatic<CONSTRAINT>& );
 
       /// destructor
-      ~StructuralConstraintSet ();
+      ~StructuralConstraintSetStatic ();
       
       /// @}
 
@@ -538,10 +543,10 @@ namespace gum {
       /// @name Operators
       // ##########################################################################
       /// @{
-
+      
       /// copy operator
-      StructuralConstraintSet<CONSTRAINT>&
-      operator= ( const StructuralConstraintSet<CONSTRAINT>& );
+      StructuralConstraintSetStatic<CONSTRAINT>&
+      operator= ( const StructuralConstraintSetStatic<CONSTRAINT>& );
       
       /// @}
       
@@ -605,7 +610,7 @@ namespace gum {
 
 
 /// always include the templated function definitions
-#include <agrum/learning/constraints/structuralConstraintSet.tcc>
+#include <agrum/learning/constraints/structuralConstraintSetStatic.tcc>
 
 
-#endif /* GUM_LEARNING_STRUCTURAL_CONSTRAINT_SET_H */
+#endif /* GUM_LEARNING_STRUCTURAL_CONSTRAINT_SET_STATIC_H */
