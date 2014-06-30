@@ -26,6 +26,7 @@
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/learning/database/databaseFromCSV.h>
+#include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
 #include <agrum/learning/database/DBCellTranslator.h>
 #include <agrum/learning/database/DBRowTranslatorSetStatic.h>
 #include <agrum/learning/database/DBRowTranslatorSetDynamic.h>
@@ -39,18 +40,6 @@ namespace gum_tests {
   class DBRowTestSuite: public CxxTest::TestSuite {
   public:  
 
-    class SimpleGenerator : public gum::learning::FilteredRowGenerator {
-    public:
-      gum::learning::FilteredRow& generate () {
-        decreaseRemainingRows ();
-        return *_input_row;
-      }
-      unsigned int _computeRows () { return 1; }
-    };
-
-    
-
-
     void test_asia1 () {
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
       
@@ -58,7 +47,8 @@ namespace gum_tests {
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>, 8 > () );
 
-      auto generators1 =  gum::learning::make_generators ( SimpleGenerator () );
+      auto generators1 =
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
 
       auto filter1 = gum::learning::make_DB_row_filter ( database, translators1,
                                                          generators1 );
@@ -67,7 +57,8 @@ namespace gum_tests {
         <gum::learning::CellTranslatorCompactIntId> translators2;
       translators2.insertTranslator ( gum::learning::Col<0> (), 8 );
 
-      auto generators2 =  gum::learning::make_generators ( SimpleGenerator () );
+      auto generators2 =
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
 
       auto filter2 = gum::learning::make_DB_row_filter ( database, translators2,
                                                          generators2 );
@@ -109,7 +100,8 @@ namespace gum_tests {
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>, 8 > () );
 
-      auto generators1 =  gum::learning::make_generators ( SimpleGenerator () );
+      auto generators1 =
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
 
       auto filter1 = gum::learning::make_DB_row_filter ( database, translators1,
                                                          generators1 );
@@ -119,7 +111,8 @@ namespace gum_tests {
       translators2.insertTranslator ( gum::learning::CellTranslatorCompactIntId (),
                                       gum::learning::Col<0> (), 8 );
 
-      auto generators2 =  gum::learning::make_generators ( SimpleGenerator () );
+      auto generators2 =
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
 
       auto filter2 = gum::learning::make_DB_row_filter ( database, translators2,
                                                          generators2 );
@@ -176,7 +169,8 @@ namespace gum_tests {
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>, 37 > () );
 
-      auto generators1 =  gum::learning::make_generators ( SimpleGenerator () );
+      auto generators1 =
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
 
       auto filter1 = gum::learning::make_DB_row_filter ( database, translators1,
                                                          generators1 );
@@ -186,7 +180,8 @@ namespace gum_tests {
       translators2.insertTranslator ( gum::learning::CellTranslatorCompactIntId (),
                                       gum::learning::Col<0> (), 37 );
 
-      auto generators2 =  gum::learning::make_generators ( SimpleGenerator () );
+      auto generators2 =
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
 
       auto filter2 = gum::learning::make_DB_row_filter ( database, translators2,
                                                          generators2 );

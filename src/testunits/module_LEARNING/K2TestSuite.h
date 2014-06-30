@@ -27,6 +27,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/learning/database/databaseFromCSV.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
+#include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
 #include <agrum/learning/scores_and_tests/scoreK2.h>
 #include <agrum/learning/scores_and_tests/scoreBDeu.h>
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
@@ -42,16 +43,6 @@ namespace gum_tests {
   class K2TestSuite: public CxxTest::TestSuite {
   public:
 
-    class SimpleGenerator : public gum::learning::FilteredRowGenerator {
-    public:
-      gum::learning::FilteredRow& generate () {
-        decreaseRemainingRows ();
-        return *_input_row;
-      }
-      unsigned int _computeRows () { return 1; }
-    };
-
-
     void test_k2_asia () {
        gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
       
@@ -59,7 +50,7 @@ namespace gum_tests {
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>, 8 > () );
 
-      auto generators =  gum::learning::make_generators ( SimpleGenerator () );
+      auto generators =  gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
       
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
@@ -116,7 +107,7 @@ namespace gum_tests {
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 8 > () );
 
-      auto generators =  gum::learning::make_generators ( SimpleGenerator () );
+      auto generators =  gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
       
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
@@ -152,7 +143,7 @@ namespace gum_tests {
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 8 > () );
 
-      auto generators =  gum::learning::make_generators ( SimpleGenerator () );
+      auto generators =  gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
       
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
@@ -198,7 +189,7 @@ namespace gum_tests {
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId, gum::learning::Col<0>, 37 > () );
 
-      auto generators =  gum::learning::make_generators ( SimpleGenerator () );
+      auto generators =  gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
       
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
