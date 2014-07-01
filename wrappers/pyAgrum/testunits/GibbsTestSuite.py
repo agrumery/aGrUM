@@ -1,21 +1,22 @@
 # -*- encoding: UTF-8 -*-
 
+# tests use the compiled version of pyAgrum and not the packaged one. So we directly call the __init__.py file
+import __init__ as gum # read "import pyAgrum as gum"
+
 import unittest
-from pyAgrum import BayesNet, LabelizedVar, RangeVar, DiscretizedVar, Potential
-from pyAgrum import GibbsInference
 from pyAgrumTestSuite import pyAgrumTestCase
 
 
 class GibbsTestCase(pyAgrumTestCase):
 
     def setUp(self):
-        self.bn = BayesNet()
+        self.bn = gum.BayesNet()
 
         self.c, self.r = \
-            [self.bn.add(LabelizedVar(name, name, 2))
+            [self.bn.add(gum.LabelizedVar(name, name, 2))
              for name in 'c r'.split()]
         self.s, self.w = \
-            [self.bn.add(LabelizedVar(name, name, 0).addLabel('no')\
+            [self.bn.add(gum.LabelizedVar(name, name, 0).addLabel('no')\
                                                     .addLabel('yes'))
              for name in 's w'.split()]
 
@@ -33,14 +34,14 @@ class GibbsTestCase(pyAgrumTestCase):
         self.bn.cpt(self.w)[1,0,:] = [0.1, 0.9]
         self.bn.cpt(self.w)[1,1,:] = [0.01, 0.99]
 
-        self.bni = BayesNet()
+        self.bni = gum.BayesNet()
 
         self.ci, self.si = \
-            [self.bni.add(LabelizedVar(name, name, 2))
+            [self.bni.add(gum.LabelizedVar(name, name, 2))
              for name in 'ci si'.split()]
-        self.ri = self.bni.add(RangeVar('ri', '', 5, 6))
+        self.ri = self.bni.add(gum.RangeVar('ri', '', 5, 6))
 
-        vwi = DiscretizedVar('wi', '')
+        vwi = gum.DiscretizedVar('wi', '')
         vwi.addTick(0.2).addTick(0.4).addTick(0.6)
         self.wi = self.bni.add(vwi)
 
@@ -58,10 +59,10 @@ class GibbsTestCase(pyAgrumTestCase):
         self.bni.cpt(self.wi)[1,0,:] = [0.1, 0.9]
         self.bni.cpt(self.wi)[1,1,:] = [0.01, 0.99]
 
-        self.bn2 = BayesNet()
+        self.bn2 = gum.BayesNet()
 
         self.s2, self.r2, self.w2 = \
-            [self.bn2.add(LabelizedVar(name, name, 2))
+            [self.bn2.add(gum.LabelizedVar(name, name, 2))
              for name in 's2 r2 w2'.split()]
 
         for link in [(self.r2, self.s2), (self.s2, self.w2),
@@ -80,7 +81,7 @@ class GibbsTestCase(pyAgrumTestCase):
 
 class TestDictFeature(GibbsTestCase):
     def testDictOfSequences(self):
-        ie = GibbsInference(self.bn)
+        ie = gum.GibbsInference(self.bn)
         ie.setVerbosity(False)
         ie.setEpsilon(0.0001)
         ie.setMinEpsilonRate(0.0001)
@@ -88,7 +89,7 @@ class TestDictFeature(GibbsTestCase):
         ie.makeInference()
         result = ie.marginal(self.r)
 
-        ie2 = GibbsInference(self.bn)
+        ie2 = gum.GibbsInference(self.bn)
         ie2.setVerbosity(False)
         ie2.setEpsilon(0.0001)
         ie2.setMinEpsilonRate(0.0001)
@@ -100,7 +101,7 @@ class TestDictFeature(GibbsTestCase):
 
 
     def testDictOfLabels(self):
-        ie = GibbsInference(self.bn)
+        ie = gum.GibbsInference(self.bn)
         ie.setVerbosity(False)
         ie.setEpsilon(0.0001)
         ie.setMinEpsilonRate(0.0001)
@@ -108,7 +109,7 @@ class TestDictFeature(GibbsTestCase):
         ie.makeInference()
         result = ie.marginal(self.r).tolist()
 
-        ie2 = GibbsInference(self.bn)
+        ie2 = gum.GibbsInference(self.bn)
         ie2.setVerbosity(False)
         ie2.setEpsilon(0.0001)
         ie2.setMinEpsilonRate(0.0001)
@@ -116,7 +117,7 @@ class TestDictFeature(GibbsTestCase):
         ie2.makeInference()
         result2 = ie2.marginal(self.r).tolist()
         
-        ie3 = GibbsInference(self.bn)
+        ie3 = gum.GibbsInference(self.bn)
         ie3.setVerbosity(True)
         ie3.setEpsilon(0.0001)
         ie3.setMinEpsilonRate(0.0001)
@@ -130,12 +131,12 @@ class TestDictFeature(GibbsTestCase):
 
 
     def testDictOfLabelsWithId(self):
-        ie = GibbsInference(self.bn)
+        ie = gum.GibbsInference(self.bn)
         ie.setEvidence({self.s: 0, self.w: 1})
         ie.makeInference()
         result = ie.marginal(self.r)
 
-        ie2 = GibbsInference(self.bn)
+        ie2 = gum.GibbsInference(self.bn)
         ie2.setEvidence({self.s: 'no', self.w: 'yes'})
         ie2.makeInference()
         result2 = ie2.marginal(self.r)
@@ -143,7 +144,7 @@ class TestDictFeature(GibbsTestCase):
         self.assertListsAlmostEqual(result.tolist(), result2.tolist())
         
     def testWithDifferentVariables(self):
-        ie = GibbsInference(self.bn)
+        ie = gum.GibbsInference(self.bn)
         ie.setVerbosity(False)
         ie.setEpsilon(0.0001)
         ie.setMinEpsilonRate(0.0001)
@@ -151,7 +152,7 @@ class TestDictFeature(GibbsTestCase):
         ie.makeInference()
         result = ie.marginal(self.s).tolist()
 
-        ie = GibbsInference(self.bni)
+        ie = gum.GibbsInference(self.bni)
         ie.setVerbosity(False)
         ie.setEpsilon(0.0001)
         ie.setMinEpsilonRate(0.0001)
@@ -160,7 +161,7 @@ class TestDictFeature(GibbsTestCase):
         result2 = ie.marginal(self.si).tolist()
         self.assertDelta(result, result2)
 
-        ie = GibbsInference(self.bn)
+        ie = gum.GibbsInference(self.bn)
         ie.setVerbosity(False)
         ie.setEpsilon(0.0001)
         ie.setMinEpsilonRate(0.0001)
@@ -168,7 +169,7 @@ class TestDictFeature(GibbsTestCase):
         ie.makeInference()
         result = ie.marginal(self.s).tolist()
 
-        ie = GibbsInference(self.bni)
+        ie = gum.GibbsInference(self.bni)
         ie.setVerbosity(False)
         ie.setEpsilon(0.0001)
         ie.setMinEpsilonRate(0.0001)
@@ -182,14 +183,14 @@ class TestDictFeature(GibbsTestCase):
 class TestInferenceResults(GibbsTestCase):
 
     def testOpenBayesSiteExamples(self):
-        ie = GibbsInference(self.bn)
+        ie = gum.GibbsInference(self.bn)
         ie.setVerbosity(False)
         ie.setEpsilon(0.0001)
         ie.setMinEpsilonRate(0.0001)
         result = ie.marginal(self.w)
         self.assertDelta(result.tolist(), [0.3529, 0.6471])
 
-        ie = GibbsInference(self.bn)
+        ie = gum.GibbsInference(self.bn)
         ie.setVerbosity(False)
         ie.setEpsilon(0.0001)
         ie.setMinEpsilonRate(0.0001)
@@ -200,7 +201,7 @@ class TestInferenceResults(GibbsTestCase):
 
 
     def testWikipediaExample(self):
-        ie = GibbsInference(self.bn2)
+        ie = gum.GibbsInference(self.bn2)
         ie.setVerbosity(False)
         ie.setEpsilon(0.0001)
         ie.setMinEpsilonRate(0.0001)

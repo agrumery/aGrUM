@@ -45,9 +45,11 @@ def is_tool(prog):
 
 MAKE=""
 if is_tool("make"):
-  MAKE="make"
+  MAKE='make '
+  CMAKE='cmake '
 elif is_tool("mingw32-make.exe"):
-  MAKE="mingw32-make.exe"
+  MAKE='mingw32-make.exe '
+  CMAKE='cmake -G "MinGW Makefiles" '
 
 if MAKE=="":
   print("No <make> utility found. Exit")
@@ -529,13 +531,13 @@ def checkConstraints(parser,options,args):
     if current['wrapper']!="":
         if (not current['rule'] in ["wrapper", "install","test","uninstall"]):
             parser.print_help()
-            parser.error("incompatibilty between options <rule>='"+current['rule'] +"' and <wrapper>='"+current['wrapper']+"'")
+            parser.error("incompatibilty ²between options <rule>='"+current['rule'] +"' and <wrapper>='"+current['wrapper']+"'")
         if current['option']!='release':
             parser.print_help()
             parser.error('no debug mode for wrappers compilation')
 
     if current['platform']=='windows':
-        if not current['rule'] in ["agrum","test","run","clean",'package']:
+        if not current['rule'] in ["agrum","test","run","clean",'package','install']:
             parser.print_help()
             parser.error("incompatibilty between options <platform>='"+current['platform']+"' and <rule>='"+current['rule']+"'")
         if not current['option']=='release':
@@ -558,7 +560,7 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
         else:
             cmake_options=cmake_options+"OFF"
         [safe_cd(s) for s in folders]
-        schedule("cmake ",cmake_options)
+        schedule(CMAKE,cmake_options)
         [schedule("back","") for s in folders]
 
         folders=['build','wrappers',options['wrapper']]
@@ -569,10 +571,10 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
             make_options=""
         if options['rule']=='test':
             if options['wrapper']=='pyAgrum':
-                run_cde="PYTHONPATH=. python ../../../wrappers/pyAgrum/testunits/TestSuite.py"
+              run_cde="python ../../../wrappers/pyAgrum/testunits/TestSuite.py"
             else:
-                print ERROR+"No tests for "+options['wrapper']+ENDC
-                sys.exit(0)
+              print ERROR+"No tests for "+options['wrapper']+ENDC
+              sys.exit(0)
         else:
             run_cde=""
     else:
@@ -583,23 +585,24 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
         else:
             folders=["build",options['platform'],options['option']]
         cmake_options=" -DCMAKE_BUILD_TYPE="+options['option'].upper()+" ../../../src"
-        if (options['platform']=="windows"):
-            #cmake_options=cmake_options+" -DCMAKE_TOOLCHAIN_FILE=../../../src/cmake/Toolchain-mingw32.cmake -DCMAKE_INSTALL_PREFIX=_CPack_Packages/win32/TGZ/agrum-0.6.0-win32"
-            cmake_options=cmake_options+' -G "MinGW Makefiles" -DCMAKE_INSTALL_PREFIX=_CPack_Packages/TGZ/agrum-win'
         if (options['rule']=="test" or options['rule']=="run"):
-            make_options=options['rule']
-            if (options['platform'] != "windows"):
-			  run_cde="./"+options['rule']
+            if options['rule']=="test":
+              testcde="gumTest"
+              make_options="gumTest"
             else:
-              run_cde=".\\"+options['rule']+".exe"
+              testcde="run"
+              make_options="run"
+            if (options['platform'] != "windows"):
+              run_cde="./"+testcde
+            else:
+              run_cde=".\\"+testcde+".exe"
         else:
           if (options['rule']=="agrum" and options['option'].upper()=="DEBUG"):
             make_options="agrum-dbg"
           else:
             make_options=options['rule']
 
-    if (options['platform'] != "windows"):
-        cmake_options=cmake_options+" -DCMAKE_INSTALL_PREFIX="+options['destination']
+    cmake_options=cmake_options+" -DCMAKE_INSTALL_PREFIX="+options['destination']
 
     cmake_options=cmake_options+" -DCMAKE_VERBOSE_MAKEFILE="
     if (options['verbose']):
@@ -622,7 +625,7 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
       cmake_options = cmake_options+create_build(module)
 
     [safe_cd(s) for s in folders]
-    schedule("cmake ",cmake_options)
+    schedule(CMAKE,cmake_options)
     if options['rule']!='config':
         schedule(MAKE,make_options)
     if (run_cde!=""):

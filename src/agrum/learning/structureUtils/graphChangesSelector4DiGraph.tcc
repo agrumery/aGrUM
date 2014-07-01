@@ -556,7 +556,8 @@ namespace gum {
                                       NodeId target_node ) {
       const HashTable<unsigned int,Size>&
         changes = __change_queue_per_node[ target_node ].allValues ();
-      for ( auto iter = changes.cbegin (); iter != changes.cend (); ++iter ) {
+      for ( auto iter = changes.cbeginSafe ();
+            iter != changes.cendSafe (); ++iter ) {
         if ( !  changes_to_recompute.exists ( iter.key () ) ) {
           if ( __isChangeValid ( iter.key () ) ) {
             changes_to_recompute.insert ( iter.key () );

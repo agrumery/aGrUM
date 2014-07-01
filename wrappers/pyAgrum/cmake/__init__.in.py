@@ -94,3 +94,13 @@ def saveBN(bn,s):
         bn.saveNET(s)
     else:
         raise Exception("extension "+s.split('.')[-1]+" unknown. Please use "+availableBNExts())
+
+def about():
+  print("pyAgrum version {0}.{1}.{2}".format(GUM_MAJOR_VERSION,GUM_MINOR_VERSION,GUM_PATCH_VERSION))
+  print("(c) Pierre-Henri Wuillemin and others")
+  print("    UPMC 2014")
+  print("""
+	This is free software; see the source code for copying conditions.
+	There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or
+	FITNESS FOR A PARTICULAR PURPOSE.  For details, see 'pyAgrum.warranty'.
+	""")

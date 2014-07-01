@@ -3,6 +3,9 @@
 # -*- encoding: UTF-8 -*-
 from __future__ import print_function
 
+import sys
+sys.path.insert(1,".")
+
 import unittest
 #import SequenceTestSuite
 import VariablesTestSuite
@@ -15,7 +18,7 @@ import ICIModelsForBNTestSuite
 import BNLearnerTestSuite   
 
 import time
-import sys
+
 
 tests = unittest.TestSuite([
                             VariablesTestSuite.ts,

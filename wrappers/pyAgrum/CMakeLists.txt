@@ -2,6 +2,16 @@ project(pyAgrum)
 
 cmake_minimum_required(VERSION 2.6)
 
+if(WIN32)
+  message(STATUS "** aGrUM notification : Windows detected")
+else(WIN32)
+  if(APPLE)
+    message(STATUS "** aGrUM notification : Apple detected")
+  else(APPLE)
+    message(STATUS "** aGrUM notification : Linux detected")
+  endif(APPLE)
+endif(WIN32)
+
 #== Initializing aGrUM
 set(AGRUM_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../src")
 include("${AGRUM_SOURCE_DIR}/version.txt")
@@ -138,12 +148,18 @@ endif (SWIG_FOUND)
 
 set_target_properties(_pyAgrum PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 set_target_properties(_pyAgrum PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS_RELEASE}")
-set_target_properties(_pyAgrum PROPERTIES LINK_FLAGS "-lgomp")
+set_target_properties(_pyAgrum PROPERTIES LINK_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp -lpthread")
+
 
 # for additionnal rule such test pyAgrum
 add_custom_command(TARGET _pyAgrum POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SWIG_OUTDIR}/pyAgrum.py" "${CMAKE_CURRENT_BINARY_DIR}/.")
-set_target_properties(_pyAgrum PROPERTIES PREFIX "")
-set_target_properties(_pyAgrum PROPERTIES SUFFIX ".so")
+
+  set_target_properties(_pyAgrum PROPERTIES PREFIX "")
+if (WIN32)
+  set_target_properties(_pyAgrum PROPERTIES SUFFIX ".pyd")
+else (WIN32)
+  set_target_properties(_pyAgrum PROPERTIES SUFFIX ".so")
+endif (WIN32)
 
 file(GLOB GUMLIB_FILES "${CMAKE_CURRENT_SOURCE_DIR}/gumLib/*.py")
 file(GLOB GUMLIB_UTILS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/gumLib/utils/*.py")
@@ -158,6 +174,12 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/egg-info.in" "${CMAKE_CURRENT_
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/__init__.py DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PYAGRUM_EGGFILE} DESTINATION ${PYTHON_INSTALL})
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/generated-files/pyAgrum.py DESTINATION ${PYTHON_INSTALL}/pyAgrum)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/_pyAgrum.so DESTINATION ${PYTHON_INSTALL}/pyAgrum)
+
+if (WIN32)
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/_pyAgrum.pyd DESTINATION ${PYTHON_INSTALL}/pyAgrum)
+else (WIN32)
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/_pyAgrum.so DESTINATION ${PYTHON_INSTALL}/pyAgrum)
+endif (WIN32)
+
 install(FILES ${GUMLIB_FILES} DESTINATION ${PYTHON_INSTALL}/gumLib)
 install(FILES ${GUMLIB_UTILS_FILES} DESTINATION ${PYTHON_INSTALL}/gumLib/utils)
