@@ -45,6 +45,7 @@
 #include <agrum/learning/greedyHillClimbing.h>
 
 #define MY_ALARM GET_PATH_STR( "alarm.csv" )
+#define MY_ASIA  GET_PATH_STR( "asia.csv" )
 
 namespace gum_tests {
 
@@ -52,11 +53,17 @@ namespace gum_tests {
   public:
 
     void test_k2_asia () {
-       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
+       gum::learning::DatabaseFromCSV database ( MY_ASIA );
       
-      auto translators = gum::learning::make_translators
-        ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>, 8 > () );
+       gum::learning::DBRowTranslatorSetDynamic<gum::learning::CellTranslatorCompactIntId> translators;
+       translators.insertTranslator ( gum::learning::Col<0> (),
+                                      database.nbVariables () );
+
+
+
+       // auto translators = gum::learning::make_translators
+       //  ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
+       //                          gum::learning::Col<0>, 8 > () );
 
       auto generators =
         gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
@@ -70,22 +77,22 @@ namespace gum_tests {
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,
-        gum::learning::StructuralConstraintIndegree,
-        gum::learning::StructuralConstraint2TimeSlice>
-        struct_constraint; 
+        gum::learning::StructuralConstraintIndegree
+        //gum::learning::StructuralConstraint2TimeSlice
+        > struct_constraint; 
 
       struct_constraint.setDefaultIndegree ( 1 );
 
-      gum::NodeProperty<bool> slices {
-        std::make_pair( gum::NodeId ( 0 ), 0 ),
-        std::make_pair( gum::NodeId ( 1 ), 0 ),
-        std::make_pair( gum::NodeId ( 6 ), 0 ),
-        std::make_pair( gum::NodeId ( 2 ), 1 ) };
-      struct_constraint.setSlices ( slices );
-      struct_constraint.setDefaultSlice ( 1 );
+      // gum::NodeProperty<bool> slices {
+      //   std::make_pair( gum::NodeId ( 0 ), 0 ),
+      //   std::make_pair( gum::NodeId ( 1 ), 0 ),
+      //   std::make_pair( gum::NodeId ( 6 ), 0 ),
+      //   std::make_pair( gum::NodeId ( 2 ), 1 ) };
+      // struct_constraint.setSlices ( slices );
+      // struct_constraint.setDefaultSlice ( 1 );
 
       gum::learning::StructuralConstraintIndegree constraint1;
-      constraint1.setDefaultIndegree ( 3 );
+      constraint1.setDefaultIndegree ( 6 );
       static_cast<gum::learning::StructuralConstraintIndegree&> ( struct_constraint ) = constraint1; 
  
       gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
@@ -101,7 +108,11 @@ namespace gum_tests {
       selector ( score, struct_constraint, op_set );
  
       gum::learning::GreedyHillClimbing search;
- 
+
+      gum::Timer timer;
+      gum::DAG dag = search.learnStructure ( selector, modalities );
+      std::cout << timer.step () << "  " << dag << std::endl;
+      /*
       gum::BayesNet<double> bn =
         search.learnBN<double> ( selector, estimator,
                                  database.variableNames (),
@@ -111,8 +122,7 @@ namespace gum_tests {
         search.learnBN ( selector, estimator,
                          database.variableNames (),
                          modalities );
-
-      std::cout << bn << std::endl << bn.dag () << std::endl;
+      */
     }
 
     

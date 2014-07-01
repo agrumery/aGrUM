@@ -108,33 +108,27 @@ namespace gum {
       /// @{
 
       /// learns the structure of a Bayes net
-      /** @param selector A class that computes the best changes that can be
-       * applied and that enables the user to get them very easily
+      /** @param A selector class that computes the best changes that can be
+       * applied and that enables the user to get them very easily. Typically,
+       * the selector is a GraphChangesSelector4DiGraph<SCORE, STRUCT_CONSTRAINT,
+       * GRAPH_CHANGES_GENERATOR>.
        * @param modal the domain sizes of the random variables observed in the
        * database
        * @param N the max number of changes that decrease the score that we
        * allow to apply
        * @param initial_dag the DAG we start from for our learning */
-      template <typename SCORE,
-                typename STRUCT_CONSTRAINT,
-                typename GRAPH_CHANGES_SELECTOR>
-      DAG
-      learnStructure
-      ( GraphChangesSelector4DiGraph<SCORE,STRUCT_CONSTRAINT,
-                                     GRAPH_CHANGES_SELECTOR>& selector,
-        const std::vector<unsigned int>& modal,
-        DAG initial_dag = DAG () );
+      template <typename GRAPH_CHANGES_SELECTOR>
+      DAG learnStructure ( GRAPH_CHANGES_SELECTOR& selector,
+                           const std::vector<unsigned int>& modal,
+                           DAG initial_dag = DAG () );
      
       /// learns the structure and the parameters of a BN
       template <typename GUM_SCALAR = float,
-                typename SCORE,
-                typename STRUCT_CONSTRAINT,
                 typename GRAPH_CHANGES_SELECTOR,
                 typename PARAM_ESTIMATOR>
       BayesNet<GUM_SCALAR>
       learnBN
-      ( GraphChangesSelector4DiGraph<SCORE,STRUCT_CONSTRAINT,
-                                     GRAPH_CHANGES_SELECTOR>& selector,
+      ( GRAPH_CHANGES_SELECTOR& selector,
         PARAM_ESTIMATOR& estimator,
         const std::vector<std::string>& names,
         const std::vector<unsigned int>& modal,

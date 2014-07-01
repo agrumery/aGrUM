@@ -160,13 +160,22 @@ namespace gum {
         
       };
 
-
-
       
+
+
       // ##########################################################################
-      /// @name Destructors
+      /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
+
+      /// default constructor
+      DatabaseVectInRAM ();
+
+      /// copy constructor
+      DatabaseVectInRAM ( const DatabaseVectInRAM& );
+
+      /// move constructor
+      DatabaseVectInRAM ( DatabaseVectInRAM&& );
 
       /// destructor
       ~DatabaseVectInRAM ();
@@ -194,24 +203,7 @@ namespace gum {
       /// @}
       
       
-    protected:
-      // ##########################################################################
-      /// @name Constructors
-      // ##########################################################################
-      /// @{
-
-      /// default constructor
-      DatabaseVectInRAM ();
-
-      /// copy constructor
-      DatabaseVectInRAM ( const DatabaseVectInRAM& );
-
-      /// move constructor
-      DatabaseVectInRAM ( DatabaseVectInRAM&& );
-
-      /// @}
-
-      
+    protected:      
       /// returns the content of the database
       std::vector<DBRow>& _content () noexcept;
 

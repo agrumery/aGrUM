@@ -18,38 +18,41 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The local search learning with tabu list algorithm (for directed graphs)
+ * @brief A pack of learning algorithms that can easily be used
  *
- * The LocalSearchWithTabuList class implements a greedy search in which we allow
- * applying at most N consecutive graph changes that decrease the score. To
- * prevent infinite loops, when using local search, you should use a structural
- * constraint that includes a tabu list of at least N elements.
+ * The pack currently contains K2, GreedyHillClimbing and LocalSearchWithTabuList
  * 
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_LOCAL_SEARCH_WITH_TABU_LIST_H
-#define GUM_LEARNING_LOCAL_SEARCH_WITH_TABU_LIST_H
+#ifndef GUM_LEARNING_ALGO_PACK_H
+#define GUM_LEARNING_ALGO_PACK_H
 
-
-#include <vector>
-#include <string>
 
 #include <agrum/graphs/DAG.h>
 #include <agrum/BN/BayesNet.h>
+
 #include <agrum/learning/database/databaseFromCSV.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorUniversal.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
 #include <agrum/learning/database/DBRowTranslatorSetDynamic.h>
 #include <agrum/learning/database/DBTransformCompactInt.h>
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
+
+#include <agrum/learning/scores_and_tests/scoreBIC.h>
 #include <agrum/learning/scores_and_tests/scoreBDeu.h>
+
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
-#include <agrum/learning/constraints/structuralConstraintTabuList.h>
+#include <agrum/learning/constraints/structuralConstraintIndegree.h>
+#include <agrum/learning/constraints/structuralConstraint2TimeSlice.h>
 #include <agrum/learning/constraints/structuralConstraintSetStatic.h>
+
 #include <agrum/learning/structureUtils/graphChange.h>
 #include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
 #include <agrum/learning/structureUtils/graphChangesGenerator4DiGraph.h>
 #include <agrum/learning/paramUtils/paramEstimatorMLwithUniformApriori.h>
+
+#include <agrum/learning/greedyHillClimbing.h>
+#include <agrum/learning/localSearchWithTabuList.h>
 
 
 namespace gum {
@@ -57,105 +60,139 @@ namespace gum {
   
   namespace learning {
 
-    
-    /** @class LocalSearchWithTabuList
-     * @brief The local search with tabu list learning algorithm (for
-     * directed graphs)
+
+    /** @class LearningAlgoPack
+     * @brief A pack of learning algorithms that can easily be used
      *
-     * The LocalSearchWithTabuList class implements a greedy search in which we
-     * allow applying at most N consecutive graph changes that decrease the score.
-     * To prevent infinite loops, when using local search, you should use a
-     * structural constraint that includes a tabu list of at least N elements.
-     *
+     * The pack currently contains K2, GreedyHillClimbing and
+     * LocalSearchWithTabuList
      * @ingroup learning_group
      */
-    class LocalSearchWithTabuList {
+    class LearningAlgoPack {
     public:
+      
+      /// an enumeration enabling to select easily the score we wish to use
+      enum class ScoreType {
+        SCORE_AIC,
+        SCORE_BD,
+        SCORE_BDEU,
+        SCORE_BIC,
+        SCORE_K2,
+        SCORE_LOG2LIKELIHOOD };
+
+      /// an enumeration to sealect easily the learning algorithm to use
+      enum class AlgoType {
+        GREEDY_HILL_CLIMBING,
+        LOCAL_SEARCH_WITH_TABU_LIST
+      };
+      
+      
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      LocalSearchWithTabuList ();
+      LearningAlgoPack ();
 
       /// copy constructor
-      LocalSearchWithTabuList ( const LocalSearchWithTabuList& from );
+      LearningAlgoPack ( const LearningAlgoPack& );
 
       /// move constructor
-      LocalSearchWithTabuList ( LocalSearchWithTabuList&& from );
+      LearningAlgoPack ( LearningAlgoPack&& );
 
       /// destructor
-      virtual ~LocalSearchWithTabuList ();
+      ~LearningAlgoPack ();
 
       /// @}
 
-      
+
       // ##########################################################################
       /// @name Operators
       // ##########################################################################
       /// @{
 
       /// copy operator
-      LocalSearchWithTabuList& operator= ( const LocalSearchWithTabuList& from );
+      LearningAlgoPack& operator= ( const LearningAlgoPack& );
 
       /// move operator
-      LocalSearchWithTabuList& operator= ( LocalSearchWithTabuList&& from );
+      LearningAlgoPack& operator= ( LearningAlgoPack&& );
 
       /// @}
-      
-      
+
+
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
 
-      /// set the max number of changes decreasing the score that we allow to apply
-      void setMaxNbDecreasingChanges ( unsigned int nb );
-      
-      /// learns the structure of a Bayes net
-      /** @param A selector class that computes the best changes that can be
-       * applied and that enables the user to get them very easily. Typically,
-       * the selector is a GraphChangesSelector4DiGraph<SCORE, STRUCT_CONSTRAINT,
-       * GRAPH_CHANGES_GENERATOR>.
-       * @param modal the domain sizes of the random variables observed in the
-       * database
-       * @param initial_dag the DAG we start from for our learning */
-      template <typename GRAPH_CHANGES_SELECTOR>
-      DAG
-      learnStructure
-      ( GRAPH_CHANGES_SELECTOR& selector,
-        const std::vector<unsigned int>& modal,
-        DAG initial_dag = DAG () );
+      /// learn a structure from a file
+      DAG learnDAG ( std::string filename );
 
-      
-      /// learns the structure and the parameters of a BN
-      template <typename GUM_SCALAR = float,
-                typename GRAPH_CHANGES_SELECTOR,
-                typename PARAM_ESTIMATOR>
-      BayesNet<GUM_SCALAR>
-      learnBN
-      ( GRAPH_CHANGES_SELECTOR& selector,
-        PARAM_ESTIMATOR& estimator,
-        const std::vector<std::string>& names,
-        const std::vector<unsigned int>& modal,
-        DAG initial_dag = DAG () );
-
-      /// basic learning of structure and parameters of a BN from a CSV
+      /// learn a Bayes Net from a file
       template <typename GUM_SCALAR = float>
-      BayesNet<GUM_SCALAR> learnBNFromCSV ( std::string filename );
+      BayesNet<GUM_SCALAR> learnBN ( std::string filename );
 
+      /// sets an initial DAG structure
+      void setInitialDAG ( const DAG& );
+
+      
+      
       /// @}
 
 
-    private:
+      // ##########################################################################
+      /// @name Accessors / Modifiers specific for LocalSearchWithTabuList
+      // ##########################################################################
+      /// @{
 
-      /// the max number of changes decreasing the score that we allow to apply
-      unsigned int __MaxNbDecreasing { 2 };
+      /// set the max number of changes decreasing the score that we allow to apply
+      void setMaxNbDecreasingChanges ( unsigned int nb );
+
+      /// @}
+      
+ 
+    private:
+      /// the greedy hill climbing algorith
+      GreedyHillClimbing __greedy_hill_climbing;
+
+      /// the local search with tabu list algorithm
+      LocalSearchWithTabuList __local_search_with_tabu_list;
+
+      /// an initial DAG given to learners
+      DAG __initial_dag;
+
+      /// the score selected for learning
+      ScoreType __score_type { ScoreType::SCORE_BDEU };
+
+      /// the score used
+      Score<>* __score { nullptr };
+
+      /// the constraint for 2TBNs
+      StructuralConstraint2TimeSlice __constraint_2TimeSlice;
+
+      /// the constraint for indegrees
+      StructuralConstraintIndegree __constraint_Indegree;
+
+      /// the selected learning algorithm
+      AlgoType __selected_algo { AlgoType::GREEDY_HILL_CLIMBING };
+
+
+      /// reads a file and returns a databaseVectInRam
+      DatabaseVectInRAM __readFile ( const std::string& filename );
+
+      /// create the score used for learning
+      template <typename FILTER>
+      void __createScore ( FILTER& filter,
+                           std::vector<unsigned int>& modalities );
+
+      /// returns the DAG learnt
+      template <typename FILTER>
+      DAG __learnDAG ( FILTER& filter, std::vector<unsigned int>& modal );
 
     };
-
-
+    
+      
   } /* namespace learning */
   
   
@@ -164,13 +201,12 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/localSearchWithTabuList.inl>
+#include <agrum/learning/learningAlgoPack.inl>
 #endif /* GUM_NO_INLINE */
 
 
 /// always include templated methods
-#include <agrum/learning/localSearchWithTabuList.tcc>
+#include <agrum/learning/learningAlgoPack.tcc>
 
 
-#endif /* GUM_LEARNING_LOCAL_SEARCH_WITH_TABU_LIST_H */
-
+#endif /* GUM_LEARNING_ALGO_PACK_H */

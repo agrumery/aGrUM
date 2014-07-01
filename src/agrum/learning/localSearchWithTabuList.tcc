@@ -34,14 +34,10 @@ namespace gum {
   namespace learning {
 
 
-
     /// learns the structure of a Bayes net
-    template <typename SCORE,
-              typename STRUCT_CONSTRAINT,
-              typename GRAPH_CHANGES_SELECTOR>
+    template <typename GRAPH_CHANGES_SELECTOR>
     DAG LocalSearchWithTabuList::learnStructure
-    ( GraphChangesSelector4DiGraph<SCORE,STRUCT_CONSTRAINT,
-                                   GRAPH_CHANGES_SELECTOR>& selector,
+    ( GRAPH_CHANGES_SELECTOR& selector,
       const std::vector<unsigned int>& modal,
       DAG dag ) {
       selector.setGraph ( dag, modal );
@@ -186,14 +182,11 @@ namespace gum {
     
     /// learns the structure and the parameters of a BN
     template <typename GUM_SCALAR,
-              typename SCORE,
-              typename STRUCT_CONSTRAINT,
               typename GRAPH_CHANGES_SELECTOR,
               typename PARAM_ESTIMATOR>
     BayesNet<GUM_SCALAR>
     LocalSearchWithTabuList::learnBN
-    ( GraphChangesSelector4DiGraph<SCORE,STRUCT_CONSTRAINT,
-                                   GRAPH_CHANGES_SELECTOR>& selector,
+    ( GRAPH_CHANGES_SELECTOR& selector,
       PARAM_ESTIMATOR& estimator,
       const std::vector<std::string>& names,
       const std::vector<unsigned int>& modal,
