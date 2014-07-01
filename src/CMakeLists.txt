@@ -2,6 +2,8 @@ project(AGRUM)
 
 cmake_minimum_required(VERSION 2.8)
 
+cmake_policy(SET CMP0042 OLD)
+
 include("version.txt")
 include("modules.txt")
 

@@ -586,11 +586,16 @@ def proceed(options,RANDOMSEED_FOR_FIXED_SEED="10"):
             folders=["build",options['platform'],options['option']]
         cmake_options=" -DCMAKE_BUILD_TYPE="+options['option'].upper()+" ../../../src"
         if (options['rule']=="test" or options['rule']=="run"):
-            make_options=options['rule']
-            if (options['platform'] != "windows"):
-              run_cde="./"+options['rule']
+            if options['rule']=="test":
+              testcde="gumTest"
+              make_options="gumTest"
             else:
-              run_cde=".\\"+options['rule']+".exe"
+              testcde="run"
+              make_options="run"
+            if (options['platform'] != "windows"):
+              run_cde="./"+testcde
+            else:
+              run_cde=".\\"+testcde+".exe"
         else:
           if (options['rule']=="agrum" and options['option'].upper()=="DEBUG"):
             make_options="agrum-dbg"
