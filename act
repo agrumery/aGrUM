@@ -22,15 +22,18 @@
 #***************************************************************************
 from __future__ import print_function
 
-import sys,os,re,glob,math
+import sys,os,re,glob,math,io
 
 import shelve
 from optparse import OptionParser
 from datetime import datetime
 from distutils import sysconfig
+from sys import argv
+from subprocess import Popen, PIPE
+from threading import Thread
 
-numversion="1.6"
-modulestxt="src/modules.txt" # the file to parse to find the modules
+numversion="1.7"
+modulesFile="src/modules.txt" # the file to parse to find the modules
 
 nbr_tests_for_stats=40
 
@@ -95,7 +98,8 @@ def prettifying(line):
 
   if line=="":
     return ""
-
+  
+  #print("("+line+")")
   # prettifying compilation
   s=line.split("%]")
 
@@ -120,10 +124,10 @@ def prettifying(line):
         line=""
         res+=remove_dirs(s[0])+WARNING+" generated-files/"+s[1].rstrip()+ENDC
 
-  #prettifying test execution
   if line=="":
     return res.rstrip()
 
+  #prettifying test execution
   s=line.split(". [")
   if len(s)==2:
     res+=s[0]+". "+OKGREEN+"["+s[1].rstrip()+"\n"+ENDC
@@ -131,21 +135,24 @@ def prettifying(line):
     s=line.split("# [")
     if len(s)==2:
       res+=s[0]+"# "+OKGREEN+"["+s[1].rstrip()+"\n"+ENDC
-    else:
+    else: # test pyAgrum
       s=line.split(" ... ")
       if len(s)==2:
         res+=OKGREEN+s[0]+ENDC+" ... "+WARNING+"OK"+"\n"+ENDC
-      else:
-        res=line
+      else: # end of test execution
+        s=line.split("##")
+        if len(s)==3:
+          res+=WARNING+"##"+ENDC+s[1]+WARNING+"##\n"+ENDC
+        elif line[0:6]=="Failed":
+          res+="Failed "+WARNING+line[7:]+"\n"+ENDC
+        elif line[0:6]=="Succes":
+          res+="Success rate: "+WARNING+line[14:]+"\n"+ENDC
+        else:
+          res=line
 
   return res.rstrip()
 
 
-ON_POSIX = 'posix' in sys.builtin_module_names
-from sys import argv
-from subprocess import Popen, PIPE
-import os, io
-from threading import Thread
 def threaded_execution(cde,verbose):
   os.environ["PYTHONUNBUFFERED"]="1"
   p = Popen(cde,shell=True,bufsize=1,stdout=PIPE, stderr=PIPE )
@@ -195,7 +202,7 @@ def threaded_execution(cde,verbose):
       # App still working
       try:
           chan,lines = inp.get( True,timeout = 0.1)
-          if chan=='stdout':
+          if chan=='stdout' and lines is not None:
             lines=(lastline+lines).split("\n")
             if len(lines)==1:
               print("\r"+prettifying(lines[0]),end="")
@@ -208,7 +215,7 @@ def threaded_execution(cde,verbose):
                 else:
                   print("\r"+prettifying(line),end="")
             sys.stdout.flush()
-          elif chan=='stderr':
+          elif chan=='stderr' and lines is not None:
             lines=lines.split("\n")
             for line in lines:
               if line!="":
@@ -779,7 +786,7 @@ def getInvocation(current):
     return invocation
 
 ##########################################################################################################################
-listOfModules=parseModulesTxt(modulestxt)
+listOfModules=parseModulesTxt(modulesFile)
 
 default={}
 current={}
