@@ -81,7 +81,7 @@ namespace gum_tests {
         //gum::learning::StructuralConstraint2TimeSlice
         > struct_constraint; 
 
-      struct_constraint.setDefaultIndegree ( 1 );
+      struct_constraint.setMaxIndegree ( 1 );
 
       // gum::NodeProperty<bool> slices {
       //   std::make_pair( gum::NodeId ( 0 ), 0 ),
@@ -92,7 +92,7 @@ namespace gum_tests {
       // struct_constraint.setDefaultSlice ( 1 );
 
       gum::learning::StructuralConstraintIndegree constraint1;
-      constraint1.setDefaultIndegree ( 6 );
+      constraint1.setMaxIndegree ( 6 );
       static_cast<gum::learning::StructuralConstraintIndegree&> ( struct_constraint ) = constraint1; 
  
       gum::learning::ParamEstimatorML<> estimator ( filter, modalities );

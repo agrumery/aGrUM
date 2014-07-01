@@ -157,7 +157,7 @@ namespace gum {
 
 
     /// resets the max indegree
-    INLINE void StructuralConstraintIndegree::setDefaultIndegree
+    INLINE void StructuralConstraintIndegree::setMaxIndegree
     ( unsigned int max_indegree,
       bool update_all ) {
       if ( update_all ) {

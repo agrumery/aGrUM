@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   Copyright (C) 2007 by Lionel Torti                                    *
  *   {prenom.nom}@lip6.fr                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,10 +17,34 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief A pack of learning algorithms that can easily be used
- *
- * The pack currently contains K2, GreedyHillClimbing and LocalSearchWithTabuList
- * 
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
- */
+
+#include <iostream>
+#include <cxxtest/AgrumTestSuite.h>
+#include <testsuite_utils.h>
+
+#include <agrum/learning/BNLearner.h>
+
+namespace gum_tests {
+
+  class BNLearnerTestSuite: public CxxTest::TestSuite {
+  public:
+
+    void test_asia () {
+      gum::learning::BNLearner learner;
+
+      learner.useLocalSearchWithTabuList ();
+      learner.setMaxIndegree ( 1 );
+      learner.setMaxNbDecreasingChanges ( 1 );
+      learner.useScoreK2 ();
+
+      gum::Timer timer;
+      gum::BayesNet<float> bn = learner.learnBN ( GET_PATH_STR( "alarm.csv" ) );
+      std::cout << timer.step () << " : " << std::endl;
+      std::cout << bn << "  " << bn.dag () << std::endl;
+    }
+
+  };
+
+
+} /* namespace gum_tests */
+

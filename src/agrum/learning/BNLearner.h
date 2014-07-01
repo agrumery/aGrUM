@@ -18,14 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A pack of learning algorithms that can easily be used
+ * @brief A basic pack of learning algorithms that can easily be used
  *
  * The pack currently contains K2, GreedyHillClimbing and LocalSearchWithTabuList
  * 
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_ALGO_PACK_H
-#define GUM_LEARNING_ALGO_PACK_H
+#ifndef GUM_LEARNING_BN_LEARNER_H
+#define GUM_LEARNING_BN_LEARNER_H
 
 
 #include <agrum/graphs/DAG.h>
@@ -38,8 +38,12 @@
 #include <agrum/learning/database/DBTransformCompactInt.h>
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
 
-#include <agrum/learning/scores_and_tests/scoreBIC.h>
+#include <agrum/learning/scores_and_tests/scoreAIC.h>
+#include <agrum/learning/scores_and_tests/scoreBD.h>
 #include <agrum/learning/scores_and_tests/scoreBDeu.h>
+#include <agrum/learning/scores_and_tests/scoreBIC.h>
+#include <agrum/learning/scores_and_tests/scoreK2.h>
+#include <agrum/learning/scores_and_tests/scoreLog2Likelihood.h>
 
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintIndegree.h>
@@ -49,7 +53,10 @@
 #include <agrum/learning/structureUtils/graphChange.h>
 #include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
 #include <agrum/learning/structureUtils/graphChangesGenerator4DiGraph.h>
+
+#include <agrum/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/learning/paramUtils/paramEstimatorMLwithUniformApriori.h>
+#include <agrum/learning/paramUtils/paramEstimatorML.h>
 
 #include <agrum/learning/greedyHillClimbing.h>
 #include <agrum/learning/localSearchWithTabuList.h>
@@ -61,26 +68,32 @@ namespace gum {
   namespace learning {
 
 
-    /** @class LearningAlgoPack
+    /** @class BNLearner
      * @brief A pack of learning algorithms that can easily be used
      *
      * The pack currently contains K2, GreedyHillClimbing and
      * LocalSearchWithTabuList
      * @ingroup learning_group
      */
-    class LearningAlgoPack {
+    class BNLearner {
     public:
       
       /// an enumeration enabling to select easily the score we wish to use
       enum class ScoreType {
-        SCORE_AIC,
-        SCORE_BD,
-        SCORE_BDEU,
-        SCORE_BIC,
-        SCORE_K2,
-        SCORE_LOG2LIKELIHOOD };
+        AIC,
+        BD,
+        BDEU,
+        BIC,
+        K2,
+        LOG2LIKELIHOOD };
 
-      /// an enumeration to sealect easily the learning algorithm to use
+      /// an enumeration to select the type of parameter estimation we shall apply
+      enum ParamEstimatorType {
+        ML,
+        MLwithUniformApriori
+      };
+      
+      /// an enumeration to select easily the learning algorithm to use
       enum class AlgoType {
         GREEDY_HILL_CLIMBING,
         LOCAL_SEARCH_WITH_TABU_LIST
@@ -93,16 +106,16 @@ namespace gum {
       /// @{
 
       /// default constructor
-      LearningAlgoPack ();
+      BNLearner ();
 
       /// copy constructor
-      LearningAlgoPack ( const LearningAlgoPack& );
+      BNLearner ( const BNLearner& );
 
       /// move constructor
-      LearningAlgoPack ( LearningAlgoPack&& );
+      BNLearner ( BNLearner&& );
 
       /// destructor
-      ~LearningAlgoPack ();
+      ~BNLearner ();
 
       /// @}
 
@@ -113,10 +126,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      LearningAlgoPack& operator= ( const LearningAlgoPack& );
+      BNLearner& operator= ( const BNLearner& );
 
       /// move operator
-      LearningAlgoPack& operator= ( LearningAlgoPack&& );
+      BNLearner& operator= ( BNLearner&& );
 
       /// @}
 
@@ -136,23 +149,87 @@ namespace gum {
       /// sets an initial DAG structure
       void setInitialDAG ( const DAG& );
 
+      /// indicate that we wish to use an AIC score
+      void useScoreAIC () noexcept;
+
+      /*
+      /// indicate that we wish to use a BD score
+      void useScoreBD () noexcept;
       
+      /// indicate that we wish to use a BDeu score
+      void useScoreBDeu () noexcept;
+      */
+      
+      /// indicate that we wish to use a BIC score
+      void useScoreBIC () noexcept;
+
+      /// indicate that we wish to use a K2 score
+      void useScoreK2 () noexcept;
+
+      /// indicate that we wish to use a Log2Likelihood score
+      void useScoreLog2Likelihood () noexcept;
+
+      /// indicate that we wish to use a greedy hill climbing algorithm
+      void useGreedyHillClimbing () noexcept;
+
+      /// indicate that we wish to use a local search with tabu list
+      void useLocalSearchWithTabuList () noexcept;
       
       /// @}
 
 
       // ##########################################################################
-      /// @name Accessors / Modifiers specific for LocalSearchWithTabuList
+      /// @name Accessors / Modifiers specific for constraints
       // ##########################################################################
       /// @{
 
-      /// set the max number of changes decreasing the score that we allow to apply
+      /// sets the max indegree
+      void setMaxIndegree ( unsigned int max_indegree );
+
+      /// sets the slices of a 2TBN
+      //void 
+      
+      /// @}
+      
+
+      // ##########################################################################
+      /// @name Accessors / Modifiers specific for learning algorithms
+      // ##########################################################################
+      /// @{
+
+      /** @bried set the max number of changes decreasing the score that we
+       * allow to apply in LocalSearchWithTabuList */
       void setMaxNbDecreasingChanges ( unsigned int nb );
 
       /// @}
       
  
     private:
+      /// the score selected for learning
+      ScoreType __score_type { ScoreType::BIC };
+
+      /// the score used
+      Score<>* __score { nullptr };
+
+      /// the type of the parameter estimator
+      ParamEstimatorType
+      __param_estimator_type { ParamEstimatorType::MLwithUniformApriori };
+
+      /// the parameter estimator to use
+      ParamEstimator<>* __param_estimator { nullptr };
+
+      /// the constraint for 2TBNs
+      StructuralConstraint2TimeSlice __constraint_2TimeSlice;
+
+      /// the constraint for indegrees
+      StructuralConstraintIndegree __constraint_Indegree;
+
+      /// the constraint for tabu lists
+      StructuralConstraintTabuList __constraint_TabuList;
+
+      /// the selected learning algorithm
+      AlgoType __selected_algo { AlgoType::GREEDY_HILL_CLIMBING };
+
       /// the greedy hill climbing algorith
       GreedyHillClimbing __greedy_hill_climbing;
 
@@ -162,22 +239,8 @@ namespace gum {
       /// an initial DAG given to learners
       DAG __initial_dag;
 
-      /// the score selected for learning
-      ScoreType __score_type { ScoreType::SCORE_BDEU };
 
-      /// the score used
-      Score<>* __score { nullptr };
-
-      /// the constraint for 2TBNs
-      StructuralConstraint2TimeSlice __constraint_2TimeSlice;
-
-      /// the constraint for indegrees
-      StructuralConstraintIndegree __constraint_Indegree;
-
-      /// the selected learning algorithm
-      AlgoType __selected_algo { AlgoType::GREEDY_HILL_CLIMBING };
-
-
+      
       /// reads a file and returns a databaseVectInRam
       DatabaseVectInRAM __readFile ( const std::string& filename );
 
@@ -185,6 +248,11 @@ namespace gum {
       template <typename FILTER>
       void __createScore ( FILTER& filter,
                            std::vector<unsigned int>& modalities );
+
+      /// create the parameter estimator used for learning
+      template <typename FILTER>
+      void __createParamEstimator ( FILTER& filter,
+                                    std::vector<unsigned int>& modalities );
 
       /// returns the DAG learnt
       template <typename FILTER>
@@ -201,12 +269,12 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/learningAlgoPack.inl>
+#include <agrum/learning/BNLearner.inl>
 #endif /* GUM_NO_INLINE */
 
 
 /// always include templated methods
-#include <agrum/learning/learningAlgoPack.tcc>
+#include <agrum/learning/BNLearner.tcc>
 
 
-#endif /* GUM_LEARNING_ALGO_PACK_H */
+#endif /* GUM_LEARNING_BN_LEARNER_H */

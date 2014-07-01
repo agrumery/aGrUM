@@ -104,8 +104,8 @@ namespace gum {
 
       /** @brief resets the default max indegree and possibly updates the
        * indegree of all nodes */
-      void setDefaultIndegree ( unsigned int max_indegree,
-                                bool update_all_node = false );
+      void setMaxIndegree ( unsigned int max_indegree,
+                            bool update_all_node = false );
 
       /// sets a new graph from which we will perform checkings
       void setGraphAlone ( const DiGraph& graph );

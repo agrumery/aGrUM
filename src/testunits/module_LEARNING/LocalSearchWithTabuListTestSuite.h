@@ -86,7 +86,7 @@ namespace gum_tests {
         gum::learning::StructuralConstraintTabuList>
         struct_constraint; 
 
-      struct_constraint.setDefaultIndegree ( 2 );
+      struct_constraint.setMaxIndegree ( 2 );
       struct_constraint.setTabuListSize ( 100 );
 
       gum::NodeProperty<bool> slices {
@@ -160,7 +160,7 @@ namespace gum_tests {
         gum::learning::StructuralConstraintTabuList>
         struct_constraint; 
       
-      struct_constraint.setDefaultIndegree ( 4 );
+      struct_constraint.setMaxIndegree ( 4 );
       struct_constraint.setTabuListSize ( 100 );
       
       gum::NodeProperty<bool> slices {
@@ -220,7 +220,7 @@ namespace gum_tests {
         gum::learning::StructuralConstraintTabuList>
         struct_constraint; 
       
-      struct_constraint.setDefaultIndegree ( 4 );
+      struct_constraint.setMaxIndegree ( 4 );
       struct_constraint.setTabuListSize ( 100 );
       
       gum::NodeProperty<bool> slices {
@@ -281,7 +281,7 @@ namespace gum_tests {
         gum::learning::StructuralConstraintTabuList>
         struct_constraint; 
       
-      struct_constraint.setDefaultIndegree ( 4 );
+      struct_constraint.setMaxIndegree ( 4 );
       struct_constraint.setTabuListSize ( 100 );
       
       gum::NodeProperty<bool> slices {

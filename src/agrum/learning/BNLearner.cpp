@@ -25,8 +25,15 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
+#include <algorithm>
+
 #include <agrum/config.h>
-#include <agrum/learning/learningAlgoPack.h>
+#include <agrum/learning/BNLearner.h>
+
+/// include the inlined functions if necessary
+#ifdef GUM_NO_INLINE
+#include <agrum/learning/BNLearner.inl>
+#endif /* GUM_NO_INLINE */
 
 
 namespace gum {
@@ -36,53 +43,71 @@ namespace gum {
 
 
     /// default constructor
-    LearningAlgoPack::LearningAlgoPack () {
-      GUM_CONSTRUCTOR ( LearningAlgoPack );
+    BNLearner::BNLearner () {
+      GUM_CONSTRUCTOR ( BNLearner );
     }
       
 
     /// copy constructor
-    LearningAlgoPack::LearningAlgoPack ( const LearningAlgoPack& from ) {
-      GUM_CONS_CPY ( LearningAlgoPack );
+    BNLearner::BNLearner ( const BNLearner& from ) {
+      GUM_CONS_CPY ( BNLearner );
     }
     
 
     /// move constructor
-    LearningAlgoPack::LearningAlgoPack ( LearningAlgoPack&& from ) {
-      GUM_CONS_MOV ( LearningAlgoPack );
+    BNLearner::BNLearner ( BNLearner&& from ) {
+      GUM_CONS_MOV ( BNLearner );
     }
 
     
     /// destructor
-    LearningAlgoPack::~LearningAlgoPack () {
-      GUM_DESTRUCTOR ( LearningAlgoPack );
+    BNLearner::~BNLearner () {
+      GUM_DESTRUCTOR ( BNLearner );
     }
 
 
     /// copy operator
-    LearningAlgoPack&
-    LearningAlgoPack::operator= ( const LearningAlgoPack& from ) {
+    BNLearner&
+    BNLearner::operator= ( const BNLearner& from ) {
       return *this;
     }
 
 
     /// move operator
-    LearningAlgoPack&
-    LearningAlgoPack::operator= ( LearningAlgoPack&& from ) {
+    BNLearner&
+    BNLearner::operator= ( BNLearner&& from ) {
       return *this;
     }
 
 
+
+    
+
+
     /// reads a file and returns a databaseVectInRam
     DatabaseVectInRAM
-    LearningAlgoPack::__readFile ( const std::string& filename ) {
-      DatabaseFromCSV database ( filename );
-      return database;
+    BNLearner::__readFile ( const std::string& filename ) {
+      // get the extension of the file
+      int filename_size = filename.size ();
+      if ( filename_size < 4 ) {
+        GUM_ERROR ( FormatNotFound, "BNLearner could not determine the "
+                    "file type of the database" );
+      }
+      std::string extension = filename.substr ( filename.size () - 4 );
+      std::transform( extension.begin (), extension.end (),
+                      extension.begin (), ::tolower );
+      
+      if ( extension == ".csv" ) {
+        return DatabaseFromCSV ( filename );
+      }
+
+      GUM_ERROR ( OperationNotAllowed,
+                  "BNLearner does not support yet this type of database file" );
     }
     
 
     /// learn a structure from a file
-    DAG LearningAlgoPack::learnDAG ( std::string filename ) {
+    DAG BNLearner::learnDAG ( std::string filename ) {
       // read the database
       DatabaseVectInRAM database = __readFile ( filename );
 
@@ -98,8 +123,8 @@ namespace gum {
       auto raw_filter = make_DB_row_filter ( database, raw_translators,
                                              generators );
       
-      DBTransformCompactInt transfo;
-      transfo.transform ( raw_filter );
+      DBTransformCompactInt raw2fast_transfo;
+      raw2fast_transfo.transform ( raw_filter );
 
       DBRowTranslatorSetDynamic<CellTranslatorCompactIntId> fast_translators;
       fast_translators.insertTranslator ( Col<0> (), database.nbVariables () );
@@ -112,19 +137,6 @@ namespace gum {
       __createScore ( fast_filter, modalities );
 
       return __learnDAG ( fast_filter, modalities );
-    }
-
-        
-              
-
-
-    /// sets an initial DAG structure
-    void LearningAlgoPack::setInitialDAG ( const DAG& ) {
-    }
-
-  
-    /// set the max number of changes decreasing the score that we allow to apply
-    void LearningAlgoPack::setMaxNbDecreasingChanges ( unsigned int nb ) {
     }
     
   
