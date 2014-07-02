@@ -25,16 +25,23 @@
 #include <agrum/graphs/DAG.h>
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
+
 #include <agrum/learning/database/databaseFromCSV.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
+
 #include <agrum/learning/scores_and_tests/scoreK2.h>
 #include <agrum/learning/scores_and_tests/scoreBDeu.h>
+
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintIndegree.h>
 #include <agrum/learning/constraints/structuralConstraint2TimeSlice.h>
 #include <agrum/learning/constraints/structuralConstraintSetStatic.h>
+
+#include <agrum/learning/structureUtils/graphChangesGenerator4K2.h>
+#include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
+
 #include <agrum/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/learning/K2.h>
 
@@ -50,7 +57,8 @@ namespace gum_tests {
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>, 8 > () );
 
-      auto generators =  gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
+      auto generators =
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
       
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
@@ -69,21 +77,33 @@ namespace gum_tests {
         order[i] = i;
       }
 
+      gum::learning::GraphChangesGenerator4K2
+        < decltype ( struct_constraint ) >
+        op_set ( struct_constraint );
+      op_set.setOrder ( order );
+    
+      gum::learning::GraphChangesSelector4DiGraph<
+        decltype ( score ),
+        decltype ( struct_constraint ),
+        decltype ( op_set ) >
+      selector ( score, struct_constraint, op_set );
+ 
       gum::learning::K2 k2;
      
-      gum::BayesNet<float> bn = k2.learnBN ( score, struct_constraint, estimator,
+      gum::BayesNet<float> bn = k2.learnBN ( selector, estimator,
                                              database.variableNames (),
-                                             modalities, order );
+                                             modalities );
 
-      gum::BayesNet<double> bn2 = k2.learnBN<double>
-        ( score, struct_constraint, estimator,
-          database.variableNames (),
-          modalities, order );
+
+      gum::BayesNet<double> bn2 = k2.learnBN<double> ( selector, estimator,
+                                                       database.variableNames (),
+                                                       modalities );
 
       std::cout << bn << std::endl << bn.dag () << std::endl;
     }
 
-    void test_k2_asia_bis () {
+    /*
+    void xtest_k2_asia_bis () {
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
       
       auto translators = gum::learning::make_translators
@@ -127,7 +147,7 @@ namespace gum_tests {
     }
 
 
-    void test_K2_asia2 () {
+    void xtest_K2_asia2 () {
       gum::learning::K2 k2;
       std::vector<unsigned int> order { 3,2 };
 
@@ -141,7 +161,6 @@ namespace gum_tests {
     }
 
 
-    /*
     void xxtest_k2_asia_constraint_DAG () {
       K2 k2;
 

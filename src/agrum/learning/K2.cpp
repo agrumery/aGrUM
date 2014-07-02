@@ -39,13 +39,17 @@ namespace gum {
 
     
     /// copy constructor
-    K2::K2 ( const K2& from ) {
+    K2::K2 ( const K2& from ) :
+      GreedyHillClimbing ( from ),
+      __order ( from.__order ) {
       GUM_CONS_CPY ( learning::K2 );
     }
 
 
     /// move constructor
-    K2::K2 ( K2&& from ) {
+    K2::K2 ( K2&& from ) :
+      GreedyHillClimbing ( std::move ( from ) ),
+      __order ( std::move ( from.__order ) ) {
       GUM_CONS_MOV ( learning::K2 );
     }
 
@@ -58,15 +62,38 @@ namespace gum {
 
     /// copy operator
     K2& K2::operator= ( const K2& from ) {
+      if ( this != &from ) {
+        GreedyHillClimbing::operator= ( from );
+        __order = from.__order;
+      }
       return *this;
     }
     
 
     /// move operator
     K2& K2::operator= ( K2&& from ) {
+      if ( this != &from ) {
+        GreedyHillClimbing::operator= ( std::move ( from ) );
+        __order = std::move ( from.__order );
+      }
       return *this;
     }
-    
+
+
+    /// sets the order on the variables
+    void K2::setOrder ( const Sequence<NodeId>& order ) {
+      __order = order;
+    }
+
+
+    /// sets the order on the variables
+    void K2::setOrder ( const std::vector<NodeId>& order ) {
+      __order.clear ();
+      for ( const auto node : order ) {
+        __order.insert ( node );
+      }
+    }
+
 
   } /* namespace learning */
   

@@ -978,6 +978,19 @@ namespace gum {
     }
 
     
+    /// returns the generator used by the selector
+    template <typename SCORE,
+              typename STRUCTURAL_CONSTRAINT,
+              typename GRAPH_CHANGES_GENERATOR> INLINE
+    typename GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                          GRAPH_CHANGES_GENERATOR>::GeneratorType&
+    GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
+                                 GRAPH_CHANGES_GENERATOR>::graphChangeGenerator ()
+      const noexcept {
+      return *__changes_generator;
+    }
+
+    
   } /* namespace learning */
   
   

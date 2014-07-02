@@ -28,15 +28,10 @@
 #include <vector>
 #include <string>
 
+#include <agrum/core/sequence.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/BN/BayesNet.h>
-#include <agrum/learning/database/databaseFromCSV.h>
-#include <agrum/learning/database/DBCellTranslators/cellTranslatorUniversal.h>
-#include <agrum/learning/database/DBRowTranslatorSetDynamic.h>
-#include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
-#include <agrum/learning/scores_and_tests/scoreK2.h>
-#include <agrum/learning/constraints/structuralConstraintDiGraph.h>
-#include <agrum/learning/paramUtils/paramEstimatorMLwithUniformApriori.h>
+#include <agrum/learning/greedyHillClimbing.h>
 
 
 namespace gum {
@@ -50,7 +45,7 @@ namespace gum {
      * @brief The K2 algorithm
      * @ingroup learning_group
      */
-    class K2 {
+    class K2 : private GreedyHillClimbing {
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -91,31 +86,44 @@ namespace gum {
       // ##########################################################################
       /// @{
 
+      /// sets the order on the variables
+      void setOrder ( const Sequence<NodeId>& order );
+
+      /// sets the order on the variables
+      void setOrder ( const std::vector<NodeId>& order );
+
       /// learns the structure of a Bayes net
-      template <typename SCORE, typename STRUCT_CONSTRAINT>
-      DAG learnStructure ( SCORE& score,
-                           STRUCT_CONSTRAINT& constraint,
-                           const std::vector<unsigned int>& order,
-                           DAG initial_dag = DAG () );
-     
+      /** @param A selector class that computes the best changes that can be
+       * applied and that enables the user to get them very easily. Typically,
+       * the selector is a GraphChangesSelector4DiGraph<SCORE, STRUCT_CONSTRAINT,
+       * GRAPH_CHANGES_GENERATOR>.
+       * @param modal the domain sizes of the random variables observed in the
+       * database
+       * @param initial_dag the DAG we start from for our learning */
+      template <typename GRAPH_CHANGES_SELECTOR>
+      DAG
+      learnStructure
+      ( GRAPH_CHANGES_SELECTOR& selector,
+        const std::vector<unsigned int>& modal,
+        DAG initial_dag = DAG () );
+
+      
       /// learns the structure and the parameters of a BN
       template <typename GUM_SCALAR = float,
-                typename SCORE,
-                typename STRUCT_CONSTRAINT,
+                typename GRAPH_CHANGES_SELECTOR,
                 typename PARAM_ESTIMATOR>
-      BayesNet<GUM_SCALAR> learnBN ( SCORE& score,
-                                     STRUCT_CONSTRAINT& constraint,
-                                     PARAM_ESTIMATOR& estimator,
-                                     const std::vector<std::string>& names,
-                                     const std::vector<unsigned int>& modal,
-                                     const std::vector<unsigned int>& order,
-                                     DAG initial_dag = DAG () );
+      BayesNet<GUM_SCALAR>
+      learnBN
+      ( GRAPH_CHANGES_SELECTOR& selector,
+        PARAM_ESTIMATOR& estimator,
+        const std::vector<std::string>& names,
+        const std::vector<unsigned int>& modal,
+        DAG initial_dag = DAG () );
 
-      /// basic learning of structure and parameters of a BN from a CSV
-      template <typename GUM_SCALAR = float>
-      BayesNet<GUM_SCALAR> learnBNFromCSV
-      ( std::string filename,
-        std::vector<unsigned int> order = std::vector<unsigned int> () );
+
+    private:
+      /// the order on the variable used for learning
+      Sequence<NodeId> __order;
       
     };
 

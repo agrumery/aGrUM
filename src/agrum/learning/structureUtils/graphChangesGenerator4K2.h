@@ -71,6 +71,10 @@ namespace gum {
 
   
   namespace learning {
+
+
+    // a dummy class used to check that the generator is adapted to K2
+    struct __GraphChangesGenerator4K2 {};
    
     
     /** @class GraphChangesGenerator4K2
@@ -110,7 +114,8 @@ namespace gum {
      * @ingroup learning_group
      */
     template <typename STRUCT_CONSTRAINT>
-    class GraphChangesGenerator4K2 : public IGraphChangesGenerator4DiGraph {
+    class GraphChangesGenerator4K2 :
+      public IGraphChangesGenerator4DiGraph, __GraphChangesGenerator4K2 {
     public:
 
       /// the iterator for parsing the list of possible graph change operators

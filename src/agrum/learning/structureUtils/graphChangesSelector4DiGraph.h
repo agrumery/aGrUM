@@ -51,6 +51,10 @@ namespace gum {
               typename GRAPH_CHANGES_GENERATOR>
     class GraphChangesSelector4DiGraph {
     public:
+      /// the type of the generator
+      using GeneratorType = GRAPH_CHANGES_GENERATOR;
+
+      
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -104,6 +108,9 @@ namespace gum {
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
+
+      /// returns the generator used by the selector
+      GeneratorType& graphChangeGenerator () const noexcept;
 
       /// indicates whether the selector still contain graph changes 
       bool empty ();

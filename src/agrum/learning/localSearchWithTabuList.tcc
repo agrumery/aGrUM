@@ -23,8 +23,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/core/set.h>
-#include <agrum/core/priorityQueue.h>
+#include <agrum/learning/structureUtils/graphChange.h>
 #include <agrum/learning/paramUtils/DAG2BNLearner.h>
 
 
@@ -195,51 +194,6 @@ namespace gum {
         ( estimator,
           learnStructure ( selector, modal,initial_dag ),
           names, modal );
-    }
-
-
-    /// basic learning of structure and parameters of a BN from a CSV
-    template <typename GUM_SCALAR>
-    BayesNet<GUM_SCALAR>
-    LocalSearchWithTabuList::learnBNFromCSV ( std::string filename ) {
-      DatabaseFromCSV database ( filename );
-
-      DBRowTranslatorSetDynamic<CellTranslatorUniversal> translators1;
-      translators1.insertTranslator ( Col<0> (), database.nbVariables () );
-
-      auto generators = make_generators ( RowGeneratorIdentity () );
-      
-      auto filter1 = make_DB_row_filter ( database, translators1, generators );
-
-      DBTransformCompactInt transfo;
-      transfo.transform ( filter1 );
-
-      DBRowTranslatorSetDynamic<CellTranslatorCompactIntId> translators2;
-      translators2.insertTranslator ( Col<0> (), database.nbVariables () );
-     
-      auto filter2 = make_DB_row_filter ( database, translators2, generators );
-      
-      std::vector<unsigned int> modalities = filter1.modalities ();
-
-      ScoreBDeu<> score ( filter2, modalities );
-
-      StructuralConstraintSetStatic<StructuralConstraintDAG,
-                                    StructuralConstraintTabuList>
-        struct_constraint;
-      struct_constraint.setTabuListSize ( 100 );
-
-      ParamEstimatorMLwithUniformApriori<> estimator ( filter2, modalities );
-
-      GraphChangesGenerator4DiGraph< decltype ( struct_constraint ) >
-        op_set ( struct_constraint );
-    
-      GraphChangesSelector4DiGraph< decltype ( score ),
-                                    decltype ( struct_constraint ),
-                                    decltype ( op_set ) >
-        selector ( score, struct_constraint, op_set );
-
-      return learnBN<GUM_SCALAR> ( selector, estimator,
-                                   database.variableNames (), modalities );
     }
 
         
