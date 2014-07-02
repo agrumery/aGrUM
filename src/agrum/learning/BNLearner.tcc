@@ -112,14 +112,35 @@ namespace gum {
     template <typename FILTER>
     DAG BNLearner::__learnDAG ( FILTER& filter,
                                 std::vector<unsigned int>& modal ) {
+      // add the mandatory arcs to the initial dag and remove the forbidden ones
+      // from the initial graph
+      DAG init_graph = __initial_dag;
+      
+      const ArcSet& mandatory_arcs = __constraint_MandatoryArcs.arcs ();
+      for ( const auto& arc : mandatory_arcs ) {
+        if ( ! init_graph.exists ( arc.tail () ) )
+          init_graph.insertNode ( arc.tail () );
+        if ( ! init_graph.exists ( arc.head () ) )
+          init_graph.insertNode ( arc.head () );
+        init_graph.insertArc ( arc.tail (), arc.head () );
+      }
+
+      const ArcSet& forbidden_arcs = __constraint_ForbiddenArcs.arcs ();
+      for ( const auto& arc : forbidden_arcs ) {
+        init_graph.eraseArc ( arc );
+      }
+      
       switch ( __selected_algo ) {
       // ========================================================================
       case AlgoType::GREEDY_HILL_CLIMBING:
         {
-          StructuralConstraintSetStatic<StructuralConstraintForbiddenArcs,
+          StructuralConstraintSetStatic<StructuralConstraintMandatoryArcs,
+                                        StructuralConstraintForbiddenArcs,
                                         StructuralConstraintPartialOrder,
                                         StructuralConstraintIndegree,
                                         StructuralConstraintDAG> gen_constraint;
+          static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
+            __constraint_MandatoryArcs;
           static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
             __constraint_ForbiddenArcs;
           static_cast<StructuralConstraintPartialOrder&> ( gen_constraint ) =
@@ -141,16 +162,19 @@ namespace gum {
             selector ( *__score, sel_constraint, op_set );
                          
           return __greedy_hill_climbing.learnStructure ( selector, modal,
-                                                         __initial_dag );
+                                                         init_graph );
         }
         
        // ========================================================================
        case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST:
         {
-          StructuralConstraintSetStatic<StructuralConstraintForbiddenArcs,
+          StructuralConstraintSetStatic<StructuralConstraintMandatoryArcs,
+                                        StructuralConstraintForbiddenArcs,
                                         StructuralConstraintPartialOrder,
                                         StructuralConstraintIndegree,
                                         StructuralConstraintDAG> gen_constraint;
+          static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
+            __constraint_MandatoryArcs;
           static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
             __constraint_ForbiddenArcs;
           static_cast<StructuralConstraintPartialOrder&> ( gen_constraint ) =
@@ -175,17 +199,20 @@ namespace gum {
             selector ( *__score, sel_constraint, op_set );
           
           return __local_search_with_tabu_list.learnStructure ( selector, modal,
-                                                                __initial_dag );
+                                                                init_graph );
         }
         
       // ========================================================================
       case AlgoType::K2:
         {
-          StructuralConstraintSetStatic<StructuralConstraintForbiddenArcs,
+          StructuralConstraintSetStatic<StructuralConstraintMandatoryArcs,
+                                        StructuralConstraintForbiddenArcs,
                                         StructuralConstraintPartialOrder,
                                         StructuralConstraintIndegree,
                                         StructuralConstraintDiGraph>
             gen_constraint;
+          static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
+            __constraint_MandatoryArcs;
           static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
             __constraint_ForbiddenArcs;
           static_cast<StructuralConstraintPartialOrder&> ( gen_constraint ) =
@@ -209,7 +236,7 @@ namespace gum {
             selector ( *__score, sel_constraint, op_set );
 
           return __greedy_hill_climbing.learnStructure ( selector, modal,
-                                                         __initial_dag );
+                                                         init_graph );
         }
 
        // ========================================================================

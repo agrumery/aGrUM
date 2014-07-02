@@ -61,6 +61,7 @@ namespace gum {
       __constraint_Indegree      ( from.__constraint_Indegree ),
       __constraint_TabuList      ( from.__constraint_TabuList ),
       __constraint_ForbiddenArcs ( from.__constraint_ForbiddenArcs ),
+      __constraint_MandatoryArcs ( from.__constraint_MandatoryArcs ),
       __selected_algo ( from.__selected_algo ),
       __greedy_hill_climbing ( from.__greedy_hill_climbing ),
       __local_search_with_tabu_list ( from.__local_search_with_tabu_list ),
@@ -80,6 +81,7 @@ namespace gum {
       __constraint_Indegree      ( std::move ( from.__constraint_Indegree ) ),
       __constraint_TabuList      ( std::move ( from.__constraint_TabuList ) ),
       __constraint_ForbiddenArcs ( std::move ( from.__constraint_ForbiddenArcs ) ),
+      __constraint_MandatoryArcs ( std::move ( from.__constraint_MandatoryArcs ) ),
       __selected_algo ( from.__selected_algo ),
       __greedy_hill_climbing ( std::move ( from.__greedy_hill_climbing ) ),
       __local_search_with_tabu_list
@@ -124,6 +126,7 @@ namespace gum {
         __constraint_Indegree      = from.__constraint_Indegree;
         __constraint_TabuList      = from.__constraint_TabuList;
         __constraint_ForbiddenArcs = from.__constraint_ForbiddenArcs;
+        __constraint_MandatoryArcs = from.__constraint_MandatoryArcs;
         __selected_algo = from.__selected_algo;
         __greedy_hill_climbing = from.__greedy_hill_climbing;
         __local_search_with_tabu_list = from.__local_search_with_tabu_list;
@@ -156,6 +159,7 @@ namespace gum {
         __constraint_Indegree      = std::move ( from.__constraint_Indegree );
         __constraint_TabuList      = std::move ( from.__constraint_TabuList );
         __constraint_ForbiddenArcs = std::move ( from.__constraint_ForbiddenArcs );
+        __constraint_MandatoryArcs = std::move ( from.__constraint_MandatoryArcs );
         __selected_algo = from.__selected_algo;
         __greedy_hill_climbing = std::move ( from.__greedy_hill_climbing );
         __local_search_with_tabu_list = 

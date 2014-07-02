@@ -42,6 +42,8 @@ namespace gum_tests {
       learner.addForbiddenArc ( gum::Arc (5,1) );
       learner.addForbiddenArc ( gum::Arc (5,7) );
 
+      learner.addMandatoryArc ( gum::Arc (1, 2) );
+
       gum::NodeProperty<unsigned int> partial_order {
         std::make_pair( gum::NodeId ( 0 ), 1 ),
         std::make_pair( gum::NodeId ( 3 ), 0 ),

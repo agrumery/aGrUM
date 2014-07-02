@@ -18,13 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the structural constraint for forbidding the creation of some arcs
- * during structure learning
+ * @brief the structural constraint indicating that some arcs shall never be
+ * removed or reversed
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_FORBIDDEN_ARCS_H
-#define GUM_LEARNING_STRUCTURAL_CONSTRAINT_FORBIDDEN_ARCS_H
+#ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_MANDATORY_ARCS_H
+#define GUM_LEARNING_STRUCTURAL_CONSTRAINT_MANDATORY_ARCS_H
 
 
 #include <agrum/config.h>
@@ -39,12 +39,12 @@ namespace gum {
   namespace learning {
 
     
-    /** @class StructuralConstraintForbiddenArcs
-     * @brief the structural constraint for forbidding the creation of some arcs
-     * during structure learning
+    /** @class StructuralConstraintMandatoryArcs
+     * @brief the structural constraint indicating that some arcs shall never be
+     * removed or reversed
      * @ingroup learning_group
      */
-    class StructuralConstraintForbiddenArcs :
+    class StructuralConstraintMandatoryArcs :
       public virtual StructuralConstraintEmpty {
     public:
       
@@ -54,21 +54,21 @@ namespace gum {
       /// @{
 
       /// default constructor
-      StructuralConstraintForbiddenArcs ();
+      StructuralConstraintMandatoryArcs ();
 
       /// constructor starting with a given graph
-      StructuralConstraintForbiddenArcs ( const DiGraph& graph );
+      StructuralConstraintMandatoryArcs ( const DiGraph& graph );
 
       /// copy constructor
-      StructuralConstraintForbiddenArcs
-      ( const StructuralConstraintForbiddenArcs& from );
+      StructuralConstraintMandatoryArcs
+      ( const StructuralConstraintMandatoryArcs& from );
 
       /// move constructor
-      StructuralConstraintForbiddenArcs
-      ( StructuralConstraintForbiddenArcs&& from );
+      StructuralConstraintMandatoryArcs
+      ( StructuralConstraintMandatoryArcs&& from );
 
       /// destructor
-      virtual ~StructuralConstraintForbiddenArcs ();
+      virtual ~StructuralConstraintMandatoryArcs ();
       
       /// @}
 
@@ -79,12 +79,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      StructuralConstraintForbiddenArcs&
-      operator= ( const StructuralConstraintForbiddenArcs& from );
+      StructuralConstraintMandatoryArcs&
+      operator= ( const StructuralConstraintMandatoryArcs& from );
 
       /// move operator
-      StructuralConstraintForbiddenArcs&
-      operator= ( StructuralConstraintForbiddenArcs&& from );
+      StructuralConstraintMandatoryArcs&
+      operator= ( StructuralConstraintMandatoryArcs&& from );
 
       /// @}
       
@@ -102,11 +102,11 @@ namespace gum {
 
       /// remove a forbidden arc
       void eraseArc ( const Arc& arc );
-      
+
       /// returns the set of mandatory arcs
       const ArcSet& arcs () const noexcept;
       
-       /// sets a new graph from which we will perform checkings
+      /// sets a new graph from which we will perform checkings
       void setGraphAlone ( const DiGraph& graph );
 
       /// notify the constraint of a modification of the graph
@@ -191,15 +191,15 @@ namespace gum {
       // include the set of methods that enable the structural constraint to
       // be standalone, i.e., that it needs not be included into a
       // StructuralConstraintSetStatic to be used by learning algorithms
-      #define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintForbiddenArcs
+      #define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintMandatoryArcs
       #include <agrum/learning/constraints/structuralConstraintPatternHeader.h>
       #undef GUM_CONSTRAINT_CLASS_NAME
 
 
 
     protected:
-      /// the ForbiddenArcs on which we perform checks
-      ArcSet _ForbiddenArcs__forbidden_arcs;
+      /// the MandatoryArcs on which we perform checks
+      ArcSet _MandatoryArcs__mandatory_arcs;
 
     };
     
@@ -212,8 +212,8 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/constraints/structuralConstraintForbiddenArcs.inl>
+#include <agrum/learning/constraints/structuralConstraintMandatoryArcs.inl>
 #endif /* GUM_NO_INLINE */
 
 
-#endif /* GUM_LEARNING_STRUCTURAL_CONSTRAINT_FORBIDDEN_ARCS_H */
+#endif /* GUM_LEARNING_STRUCTURAL_CONSTRAINT_MANDATORY_ARCS_H */

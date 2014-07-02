@@ -123,19 +123,37 @@ namespace gum {
     
     /// assign a set of forbidden arcs
     INLINE void BNLearner::setForbiddenArcs ( const ArcSet& set ) {
-      __constraint_ForbiddenArcs.setForbiddenArcs ( set );
+      __constraint_ForbiddenArcs.setArcs ( set );
     }
 
     
     /// assign a new forbidden arc
     INLINE void BNLearner::addForbiddenArc ( const Arc& arc ) {
-      __constraint_ForbiddenArcs.addForbiddenArc ( arc );
+      __constraint_ForbiddenArcs.addArc ( arc );
     }
 
 
     /// remove a forbidden arc
     INLINE void BNLearner::eraseForbiddenArc ( const Arc& arc ) {
-      __constraint_ForbiddenArcs.eraseForbiddenArc ( arc );
+      __constraint_ForbiddenArcs.eraseArc ( arc );
+    }
+
+    
+    /// assign a set of forbidden arcs
+    INLINE void BNLearner::setMandatoryArcs ( const ArcSet& set ) {
+      __constraint_MandatoryArcs.setArcs ( set );
+    }
+
+
+    /// assign a new forbidden arc
+    INLINE void BNLearner::addMandatoryArc ( const Arc& arc ) {
+      __constraint_MandatoryArcs.addArc ( arc );
+    }
+
+
+    /// remove a forbidden arc
+    INLINE void BNLearner::eraseMandatoryArc ( const Arc& arc ) {
+      __constraint_MandatoryArcs.eraseArc ( arc );
     }
 
     

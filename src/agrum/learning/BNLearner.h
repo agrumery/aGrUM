@@ -51,6 +51,7 @@
 #include <agrum/learning/constraints/structuralConstraintPartialOrder.h>
 #include <agrum/learning/constraints/structuralConstraintTabuList.h>
 #include <agrum/learning/constraints/structuralConstraintForbiddenArcs.h>
+#include <agrum/learning/constraints/structuralConstraintMandatoryArcs.h>
 #include <agrum/learning/constraints/structuralConstraintSetStatic.h>
 
 #include <agrum/learning/structureUtils/graphChange.h>
@@ -225,6 +226,15 @@ namespace gum {
       /// remove a forbidden arc
       void eraseForbiddenArc ( const Arc& arc );
       
+      /// assign a set of forbidden arcs
+      void setMandatoryArcs ( const ArcSet& set );
+
+      /// assign a new forbidden arc
+      void addMandatoryArc ( const Arc& arc );
+
+      /// remove a forbidden arc
+      void eraseMandatoryArc ( const Arc& arc );
+      
       /** @bried set the max number of changes decreasing the score that we
        * allow to apply in LocalSearchWithTabuList */
       void setMaxNbDecreasingChanges ( unsigned int nb );
@@ -263,6 +273,9 @@ namespace gum {
 
       /// the constraint on forbidden arcs
       StructuralConstraintForbiddenArcs __constraint_ForbiddenArcs;
+
+      /// the constraint on forbidden arcs
+      StructuralConstraintMandatoryArcs __constraint_MandatoryArcs;
 
       /// the selected learning algorithm
       AlgoType __selected_algo { AlgoType::GREEDY_HILL_CLIMBING };
