@@ -83,11 +83,17 @@ namespace gum {
 
     
     /// indicate that we wish to use a greedy hill climbing algorithm
+    INLINE void BNLearner::useK2 () noexcept {
+      __selected_algo = AlgoType::K2;
+    }
+
+    
+    /// indicate that we wish to use a greedy hill climbing algorithm
     INLINE void BNLearner::useGreedyHillClimbing () noexcept {
       __selected_algo = AlgoType::GREEDY_HILL_CLIMBING;
     }
 
-
+    
     /// indicate that we wish to use a local search with tabu list
     INLINE void BNLearner::useLocalSearchWithTabuList () noexcept {
       __selected_algo = AlgoType::LOCAL_SEARCH_WITH_TABU_LIST;
@@ -98,7 +104,22 @@ namespace gum {
     INLINE void BNLearner::setMaxNbDecreasingChanges ( unsigned int nb ) {
       __local_search_with_tabu_list.setMaxNbDecreasingChanges ( nb );
     }
+
     
+    /// set an ordering for K2 (by default, nodes are ordered by increasing id)
+    INLINE void BNLearner::setOrder ( const Sequence<NodeId>& order ) {
+      __order = order;
+    }
+      
+
+    /// set an ordering for K2 (by default, nodes are ordered by increasing id)
+    INLINE void BNLearner::setOrder ( const std::vector<NodeId>& order ) {
+      __order.clear ();
+      for ( const auto node : order ) {
+        __order.insert ( node );
+      }
+    }
+
 
   } /* namespace learning */
   

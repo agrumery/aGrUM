@@ -33,12 +33,14 @@ namespace gum_tests {
       gum::learning::BNLearner learner;
 
       learner.useLocalSearchWithTabuList ();
-      learner.setMaxIndegree ( 1 );
+      learner.setMaxIndegree ( 10 );
       learner.setMaxNbDecreasingChanges ( 1 );
       learner.useScoreK2 ();
+      learner.useK2 ();
+      learner.setOrder ( std::vector<gum::NodeId> { 6, 5, 4 } );
 
       gum::Timer timer;
-      gum::BayesNet<float> bn = learner.learnBN ( GET_PATH_STR( "alarm.csv" ) );
+      gum::BayesNet<float> bn = learner.learnBN ( GET_PATH_STR( "asia.csv" ) );
       std::cout << timer.step () << " : " << std::endl;
       std::cout << bn << "  " << bn.dag () << std::endl;
     }

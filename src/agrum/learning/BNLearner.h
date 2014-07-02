@@ -53,6 +53,7 @@
 #include <agrum/learning/structureUtils/graphChange.h>
 #include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
 #include <agrum/learning/structureUtils/graphChangesGenerator4DiGraph.h>
+#include <agrum/learning/structureUtils/graphChangesGenerator4K2.h>
 
 #include <agrum/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/learning/paramUtils/paramEstimatorMLwithUniformApriori.h>
@@ -95,6 +96,7 @@ namespace gum {
       
       /// an enumeration to select easily the learning algorithm to use
       enum class AlgoType {
+        K2,
         GREEDY_HILL_CLIMBING,
         LOCAL_SEARCH_WITH_TABU_LIST
       };
@@ -149,6 +151,14 @@ namespace gum {
       /// sets an initial DAG structure
       void setInitialDAG ( const DAG& );
 
+      /// @}
+      
+      
+      // ##########################################################################
+      /// @name Score selection
+      // ##########################################################################
+      /// @{
+
       /// indicate that we wish to use an AIC score
       void useScoreAIC () noexcept;
 
@@ -168,12 +178,23 @@ namespace gum {
 
       /// indicate that we wish to use a Log2Likelihood score
       void useScoreLog2Likelihood () noexcept;
+      
+      /// @}
 
-      /// indicate that we wish to use a greedy hill climbing algorithm
+      
+      // ##########################################################################
+      /// @name Learning algorithm selection
+      // ##########################################################################
+      /// @{
+
+       /// indicate that we wish to use a greedy hill climbing algorithm
       void useGreedyHillClimbing () noexcept;
 
       /// indicate that we wish to use a local search with tabu list
       void useLocalSearchWithTabuList () noexcept;
+
+      /// indicate that we wish to use K2
+      void useK2 () noexcept;
       
       /// @}
 
@@ -200,6 +221,12 @@ namespace gum {
       /** @bried set the max number of changes decreasing the score that we
        * allow to apply in LocalSearchWithTabuList */
       void setMaxNbDecreasingChanges ( unsigned int nb );
+
+      /// set an ordering for K2 (by default, nodes are ordered by increasing id)
+      void setOrder ( const Sequence<NodeId>& order );
+
+      /// set an ordering for K2 (by default, nodes are ordered by increasing id)
+      void setOrder ( const std::vector<NodeId>& order );
 
       /// @}
       
@@ -238,6 +265,9 @@ namespace gum {
 
       /// an initial DAG given to learners
       DAG __initial_dag;
+
+      /// the order used by K2
+      Sequence<NodeId> __order;
 
 
       

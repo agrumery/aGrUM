@@ -967,7 +967,7 @@ namespace gum {
     std::vector< std::pair<unsigned int,float> >
     GraphChangesSelector4DiGraph<SCORE,STRUCTURAL_CONSTRAINT,
                                  GRAPH_CHANGES_GENERATOR>::
-    nodesUnsortedWithScores () const {
+    nodesUnsortedWithScore () const {
       std::vector< std::pair<unsigned int,float> > result ( __node_queue.size () );
        for ( unsigned int i = 0; i < __node_queue.size (); ++i ) {
         result[i].first  = __node_queue[i];

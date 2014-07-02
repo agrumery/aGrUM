@@ -161,6 +161,30 @@ namespace gum {
           return __local_search_with_tabu_list.learnStructure ( selector, modal,
                                                                 __initial_dag );
         }
+        
+      // ========================================================================
+      case AlgoType::K2:
+        {
+          StructuralConstraintSetStatic<StructuralConstraint2TimeSlice,
+                                        StructuralConstraintIndegree,
+                                        StructuralConstraintDiGraph> constraint;
+          static_cast<StructuralConstraint2TimeSlice&> ( constraint ) =
+            __constraint_2TimeSlice;
+          static_cast<StructuralConstraintIndegree&> ( constraint ) =
+            __constraint_Indegree;
+                         
+          GraphChangesGenerator4K2< decltype ( constraint ) >
+            op_set ( constraint );
+          op_set.setOrder ( __order );
+        
+          GraphChangesSelector4DiGraph< Score<>,
+                                        decltype ( constraint ),
+                                        decltype ( op_set ) >
+            selector ( *__score, constraint, op_set );
+
+          return __greedy_hill_climbing.learnStructure ( selector, modal,
+                                                         __initial_dag );
+        }
 
        // ========================================================================
        default:
