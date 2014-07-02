@@ -8,7 +8,7 @@
 #class ListTestCase(pyAgrumTestCase):
 
     #def setUp(self):
-        #a, b = [LabelizedVar(name, name, 2) for name in 'a b'.split()]
+        #a, b = [LabelizedVariable(name, name, 2) for name in 'a b'.split()]
 
         #self.pot1 = Potential()
 

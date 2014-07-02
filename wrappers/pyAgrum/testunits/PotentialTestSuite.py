@@ -12,12 +12,12 @@ class PotentialTestCase(pyAgrumTestCase):
 
     def setUp(self):
         self.var = {}
-        self.var.update({"c": gum.LabelizedVar("c", "nuages", 2)})
-        self.var.update({"s": gum.LabelizedVar("s", "arrosoir", 2)})
-        r = gum.LabelizedVar("r", "pluie", 0).addLabel('bof')\
+        self.var.update({"c": gum.LabelizedVariable("c", "nuages", 2)})
+        self.var.update({"s": gum.LabelizedVariable("s", "arrosoir", 2)})
+        r = gum.LabelizedVariable("r", "pluie", 0).addLabel('bof')\
                                          .addLabel('carrement')
         self.var.update({"r": r})
-        self.var.update({"w": gum.LabelizedVar("w", "herbe mouillée", 2)})
+        self.var.update({"w": gum.LabelizedVariable("w", "herbe mouillée", 2)})
 
 
     def fillBN(self, bn, id_list):
@@ -51,7 +51,7 @@ class TestInsertions(PotentialTestCase):
             self.assertTrue(pot.contains(var))
             self.assertEqual(pot.variable(id), var)
 
-        self.assertFalse(pot.contains(gum.LabelizedVar("a", "", 5)))
+        self.assertFalse(pot.contains(gum.LabelizedVariable("a", "", 5)))
 
 
 
@@ -76,7 +76,7 @@ class TestInsertions(PotentialTestCase):
         list3[:] = [ [ [ 1,  0     ], [ 0.1 ,  0.9   ] ], \
                      [ [ 0.1,  0.9 ], [ 0.01 ,  0.99 ] ] ]
 
-        addvar = gum.LabelizedVar("d", "rosée", 4)
+        addvar = gum.LabelizedVariable("d", "rosée", 4)
         addvar_id = bn.add(addvar)
         bn.addArc(addvar_id, id_list[3])
 

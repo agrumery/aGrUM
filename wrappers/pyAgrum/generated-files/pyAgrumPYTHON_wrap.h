@@ -15,13 +15,13 @@
 #include <string>
 
 
-class SwigDirector_LabelizedVar : public gum::LabelizedVariable, public Swig::Director {
+class SwigDirector_LabelizedVariable : public gum::LabelizedVariable, public Swig::Director {
 
 public:
-    SwigDirector_LabelizedVar(PyObject *self, std::string const &aName, std::string const &aDesc = "", int const nbrLabel = 2);
-    SwigDirector_LabelizedVar(PyObject *self, gum::LabelizedVariable const &aLDRV);
-    SwigDirector_LabelizedVar(PyObject *self);
-    virtual ~SwigDirector_LabelizedVar();
+    SwigDirector_LabelizedVariable(PyObject *self, std::string const &aName, std::string const &aDesc = "", int const nbrLabel = 2);
+    SwigDirector_LabelizedVariable(PyObject *self, gum::LabelizedVariable const &aLDRV);
+    SwigDirector_LabelizedVariable(PyObject *self);
+    virtual ~SwigDirector_LabelizedVariable();
     virtual gum::DiscreteVariable *clone() const;
     virtual bool operator ==(gum::Variable const &aRV) const;
     virtual bool operator !=(gum::Variable const &aRV) const;
@@ -55,7 +55,7 @@ private:
         swig::SwigVar_PyObject name = SWIG_Python_str_FromChar(method_name);
         method = PyObject_GetAttr(swig_get_self(), name);
         if (!method) {
-          std::string msg = "Method in class LabelizedVar doesn't exist, undefined ";
+          std::string msg = "Method in class LabelizedVariable doesn't exist, undefined ";
           msg += method_name;
           Swig::DirectorMethodException::raise(msg.c_str());
         }
@@ -70,12 +70,12 @@ private:
 };
 
 
-class SwigDirector_DiscretizedVar : public gum::DiscretizedVariable< float >, public Swig::Director {
+class SwigDirector_DiscretizedVariable_double : public gum::DiscretizedVariable< double >, public Swig::Director {
 
 public:
-    SwigDirector_DiscretizedVar(PyObject *self, std::string const &aName, std::string const &aDesc);
-    SwigDirector_DiscretizedVar(PyObject *self, gum::DiscretizedVariable< float > const &aDRV);
-    virtual ~SwigDirector_DiscretizedVar();
+    SwigDirector_DiscretizedVariable_double(PyObject *self, std::string const &aName, std::string const &aDesc);
+    SwigDirector_DiscretizedVariable_double(PyObject *self, gum::DiscretizedVariable< double > const &aDRV);
+    virtual ~SwigDirector_DiscretizedVariable_double();
     virtual gum::DiscreteVariable *clone() const;
     virtual bool operator ==(gum::Variable const &aRV) const;
     virtual bool operator !=(gum::Variable const &aRV) const;
@@ -109,7 +109,7 @@ private:
         swig::SwigVar_PyObject name = SWIG_Python_str_FromChar(method_name);
         method = PyObject_GetAttr(swig_get_self(), name);
         if (!method) {
-          std::string msg = "Method in class DiscretizedVar doesn't exist, undefined ";
+          std::string msg = "Method in class DiscretizedVariable_double doesn't exist, undefined ";
           msg += method_name;
           Swig::DirectorMethodException::raise(msg.c_str());
         }

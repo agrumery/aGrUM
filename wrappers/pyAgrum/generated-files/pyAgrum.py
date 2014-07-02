@@ -86,6 +86,19 @@ except:
 
 import numpy
 
+def DiscretizedVar(*args):
+  print("** Notification pyAgrum : <DiscretizedVar> obsolete. Please use <DiscretizedVariable> now.")
+  return DiscretizedVariable(*args)
+
+def LabelizedVar(*args):
+  print("** Notification pyAgrum : <LabelizedVar> obsolete. Please use <LabelizedVariable> now.")
+  return LabelizedVariable(*args)
+
+def RangeVar(*args):
+  print("** Notification pyAgrum : <RangeVar> obsolet. Please use <RangeVariable> now.")
+  return RangeVariable(*args)
+
+
 class PythonBNListener(_object):
     """Proxy of C++ PythonBNListener class"""
     __swig_setmethods__ = {}
@@ -517,6 +530,7 @@ GUM_INT_SIZE = _pyAgrum.GUM_INT_SIZE
 GUM_LONG_SIZE = _pyAgrum.GUM_LONG_SIZE
 GUM_FLOAT_SIZE = _pyAgrum.GUM_FLOAT_SIZE
 GUM_DOUBLE_SIZE = _pyAgrum.GUM_DOUBLE_SIZE
+HAVE_MKSTEMP = _pyAgrum.HAVE_MKSTEMP
 
 def __createMsg(*args):
   """__createMsg(std::string const & filename, std::string const & function, int const line, std::string const & msg) -> std::string const"""
@@ -1516,224 +1530,224 @@ class Variable(_object):
 Variable_swigregister = _pyAgrum.Variable_swigregister
 Variable_swigregister(Variable)
 
-class DiscreteVar(Variable):
+class DiscreteVariable(Variable):
     """Proxy of C++ gum::DiscreteVariable class"""
     __swig_setmethods__ = {}
     for _s in [Variable]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
-    __setattr__ = lambda self, name, value: _swig_setattr(self, DiscreteVar, name, value)
+    __setattr__ = lambda self, name, value: _swig_setattr(self, DiscreteVariable, name, value)
     __swig_getmethods__ = {}
     for _s in [Variable]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
-    __getattr__ = lambda self, name: _swig_getattr(self, DiscreteVar, name)
+    __getattr__ = lambda self, name: _swig_getattr(self, DiscreteVariable, name)
     def __init__(self, *args, **kwargs): raise AttributeError("No constructor defined - class is abstract")
     __repr__ = _swig_repr
-    Discretized = _pyAgrum.DiscreteVar_Discretized
-    Labelized = _pyAgrum.DiscreteVar_Labelized
-    Range = _pyAgrum.DiscreteVar_Range
-    __swig_destroy__ = _pyAgrum.delete_DiscreteVar
+    Discretized = _pyAgrum.DiscreteVariable_Discretized
+    Labelized = _pyAgrum.DiscreteVariable_Labelized
+    Range = _pyAgrum.DiscreteVariable_Range
+    __swig_destroy__ = _pyAgrum.delete_DiscreteVariable
     __del__ = lambda self : None;
     def clone(self):
-        """clone(DiscreteVar self) -> DiscreteVar"""
-        return _pyAgrum.DiscreteVar_clone(self)
+        """clone(DiscreteVariable self) -> DiscreteVariable"""
+        return _pyAgrum.DiscreteVariable_clone(self)
 
     def empty(self):
-        """empty(DiscreteVar self) -> bool"""
-        return _pyAgrum.DiscreteVar_empty(self)
+        """empty(DiscreteVariable self) -> bool"""
+        return _pyAgrum.DiscreteVariable_empty(self)
 
     def __len__(self):
-        """__len__(DiscreteVar self) -> gum::Size"""
-        return _pyAgrum.DiscreteVar___len__(self)
+        """__len__(DiscreteVariable self) -> gum::Size"""
+        return _pyAgrum.DiscreteVariable___len__(self)
 
     def label(self, *args):
-        """label(DiscreteVar self, gum::Idx indice) -> std::string const"""
-        return _pyAgrum.DiscreteVar_label(self, *args)
+        """label(DiscreteVariable self, gum::Idx indice) -> std::string const"""
+        return _pyAgrum.DiscreteVariable_label(self, *args)
 
     def numerical(self, *args):
-        """numerical(DiscreteVar self, gum::Idx indice) -> double const"""
-        return _pyAgrum.DiscreteVar_numerical(self, *args)
+        """numerical(DiscreteVariable self, gum::Idx indice) -> double const"""
+        return _pyAgrum.DiscreteVariable_numerical(self, *args)
 
     def varType(self):
-        """varType(DiscreteVar self) -> gum::DiscreteVariable::VarType"""
-        return _pyAgrum.DiscreteVar_varType(self)
+        """varType(DiscreteVariable self) -> gum::DiscreteVariable::VarType"""
+        return _pyAgrum.DiscreteVariable_varType(self)
 
     def __eq__(self, *args):
-        """__eq__(DiscreteVar self, DiscreteVar aRV) -> bool"""
-        return _pyAgrum.DiscreteVar___eq__(self, *args)
+        """__eq__(DiscreteVariable self, DiscreteVariable aRV) -> bool"""
+        return _pyAgrum.DiscreteVariable___eq__(self, *args)
 
     def __ne__(self, *args):
-        """__ne__(DiscreteVar self, DiscreteVar aRV) -> bool"""
-        return _pyAgrum.DiscreteVar___ne__(self, *args)
+        """__ne__(DiscreteVariable self, DiscreteVariable aRV) -> bool"""
+        return _pyAgrum.DiscreteVariable___ne__(self, *args)
 
     def index(self, *args):
-        """index(DiscreteVar self, std::string const & label) -> gum::Idx"""
-        return _pyAgrum.DiscreteVar_index(self, *args)
+        """index(DiscreteVariable self, std::string const & label) -> gum::Idx"""
+        return _pyAgrum.DiscreteVariable_index(self, *args)
 
     def __str__(self):
-        """__str__(DiscreteVar self) -> std::string const"""
-        return _pyAgrum.DiscreteVar___str__(self)
+        """__str__(DiscreteVariable self) -> std::string const"""
+        return _pyAgrum.DiscreteVariable___str__(self)
 
     def __getitem__(self,label):   # adding the y() function here
         return self.index(label)
 
     def toLabelizedVar(self):
-        """toLabelizedVar(DiscreteVar self) -> LabelizedVar"""
-        return _pyAgrum.DiscreteVar_toLabelizedVar(self)
+        """toLabelizedVar(DiscreteVariable self) -> LabelizedVariable"""
+        return _pyAgrum.DiscreteVariable_toLabelizedVar(self)
 
     def toRangeVar(self):
-        """toRangeVar(DiscreteVar self) -> RangeVar"""
-        return _pyAgrum.DiscreteVar_toRangeVar(self)
+        """toRangeVar(DiscreteVariable self) -> RangeVariable"""
+        return _pyAgrum.DiscreteVariable_toRangeVar(self)
 
     def toDiscretizedVar(self):
-        """toDiscretizedVar(DiscreteVar self) -> DiscretizedVar"""
-        return _pyAgrum.DiscreteVar_toDiscretizedVar(self)
+        """toDiscretizedVar(DiscreteVariable self) -> DiscretizedVariable_double"""
+        return _pyAgrum.DiscreteVariable_toDiscretizedVar(self)
 
-DiscreteVar_swigregister = _pyAgrum.DiscreteVar_swigregister
-DiscreteVar_swigregister(DiscreteVar)
+DiscreteVariable_swigregister = _pyAgrum.DiscreteVariable_swigregister
+DiscreteVariable_swigregister(DiscreteVariable)
 
-class LabelizedVar(DiscreteVar):
+class LabelizedVariable(DiscreteVariable):
     """Proxy of C++ gum::LabelizedVariable class"""
     __swig_setmethods__ = {}
-    for _s in [DiscreteVar]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
-    __setattr__ = lambda self, name, value: _swig_setattr(self, LabelizedVar, name, value)
+    for _s in [DiscreteVariable]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, LabelizedVariable, name, value)
     __swig_getmethods__ = {}
-    for _s in [DiscreteVar]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
-    __getattr__ = lambda self, name: _swig_getattr(self, LabelizedVar, name)
+    for _s in [DiscreteVariable]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, LabelizedVariable, name)
     __repr__ = _swig_repr
-    __swig_destroy__ = _pyAgrum.delete_LabelizedVar
+    __swig_destroy__ = _pyAgrum.delete_LabelizedVariable
     __del__ = lambda self : None;
     def clone(self):
-        """clone(LabelizedVar self) -> DiscreteVar"""
-        return _pyAgrum.LabelizedVar_clone(self)
+        """clone(LabelizedVariable self) -> DiscreteVariable"""
+        return _pyAgrum.LabelizedVariable_clone(self)
 
     def index(self, *args):
-        """index(LabelizedVar self, std::string const & label) -> gum::Idx"""
-        return _pyAgrum.LabelizedVar_index(self, *args)
+        """index(LabelizedVariable self, std::string const & label) -> gum::Idx"""
+        return _pyAgrum.LabelizedVariable_index(self, *args)
 
     def isLabel(self, *args):
-        """isLabel(LabelizedVar self, std::string const & aLabel) -> bool"""
-        return _pyAgrum.LabelizedVar_isLabel(self, *args)
+        """isLabel(LabelizedVariable self, std::string const & aLabel) -> bool"""
+        return _pyAgrum.LabelizedVariable_isLabel(self, *args)
 
     def addLabel(self,*args):
-      _pyAgrum.LabelizedVar_addLabel(self,*args)
+      _pyAgrum.LabelizedVariable_addLabel(self,*args)
       return self
 
 
     def eraseLabels(self):
-        """eraseLabels(LabelizedVar self)"""
-        return _pyAgrum.LabelizedVar_eraseLabels(self)
+        """eraseLabels(LabelizedVariable self)"""
+        return _pyAgrum.LabelizedVariable_eraseLabels(self)
 
     def label(self, *args):
-        """label(LabelizedVar self, gum::Idx i) -> std::string const"""
-        return _pyAgrum.LabelizedVar_label(self, *args)
+        """label(LabelizedVariable self, gum::Idx i) -> std::string const"""
+        return _pyAgrum.LabelizedVariable_label(self, *args)
 
     def numerical(self, *args):
-        """numerical(LabelizedVar self, gum::Idx indice) -> double const"""
-        return _pyAgrum.LabelizedVar_numerical(self, *args)
+        """numerical(LabelizedVariable self, gum::Idx indice) -> double const"""
+        return _pyAgrum.LabelizedVariable_numerical(self, *args)
 
     def __len__(self):
-        """__len__(LabelizedVar self) -> gum::Size"""
-        return _pyAgrum.LabelizedVar___len__(self)
+        """__len__(LabelizedVariable self) -> gum::Size"""
+        return _pyAgrum.LabelizedVariable___len__(self)
 
     def labels(self):
-        """labels(LabelizedVar self) -> gum::Sequence< std::string > const &"""
-        return _pyAgrum.LabelizedVar_labels(self)
+        """labels(LabelizedVariable self) -> gum::Sequence< std::string > const &"""
+        return _pyAgrum.LabelizedVariable_labels(self)
 
     def varType(self):
-        """varType(LabelizedVar self) -> gum::DiscreteVariable::VarType"""
-        return _pyAgrum.LabelizedVar_varType(self)
+        """varType(LabelizedVariable self) -> gum::DiscreteVariable::VarType"""
+        return _pyAgrum.LabelizedVariable_varType(self)
 
     def __init__(self, *args): 
         """
-        LabelizedVariable(std::string const & aName, std::string const & aDesc="", int const nbrLabel=2) -> LabelizedVar
-        LabelizedVariable(std::string const & aName, std::string const & aDesc="") -> LabelizedVar
-        LabelizedVariable(std::string const & aName) -> LabelizedVar
-        LabelizedVariable(LabelizedVar aLDRV) -> LabelizedVar
-        __init__(gum::LabelizedVariable self) -> LabelizedVar
+        __init__(gum::LabelizedVariable self, std::string const & aName, std::string const & aDesc="", int const nbrLabel=2) -> LabelizedVariable
+        __init__(gum::LabelizedVariable self, std::string const & aName, std::string const & aDesc="") -> LabelizedVariable
+        __init__(gum::LabelizedVariable self, std::string const & aName) -> LabelizedVariable
+        __init__(gum::LabelizedVariable self, LabelizedVariable aLDRV) -> LabelizedVariable
+        __init__(gum::LabelizedVariable self) -> LabelizedVariable
         """
-        if self.__class__ == LabelizedVar:
+        if self.__class__ == LabelizedVariable:
             _self = None
         else:
             _self = self
-        this = _pyAgrum.new_LabelizedVar(_self, *args)
+        this = _pyAgrum.new_LabelizedVariable(_self, *args)
         try: self.this.append(this)
         except: self.this = this
     def __disown__(self):
         self.this.disown()
-        _pyAgrum.disown_LabelizedVar(self)
+        _pyAgrum.disown_LabelizedVariable(self)
         return weakref_proxy(self)
-LabelizedVar_swigregister = _pyAgrum.LabelizedVar_swigregister
-LabelizedVar_swigregister(LabelizedVar)
+LabelizedVariable_swigregister = _pyAgrum.LabelizedVariable_swigregister
+LabelizedVariable_swigregister(LabelizedVariable)
 
-class RangeVar(DiscreteVar):
+class RangeVariable(DiscreteVariable):
     """Proxy of C++ gum::RangeVariable class"""
     __swig_setmethods__ = {}
-    for _s in [DiscreteVar]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
-    __setattr__ = lambda self, name, value: _swig_setattr(self, RangeVar, name, value)
+    for _s in [DiscreteVariable]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, RangeVariable, name, value)
     __swig_getmethods__ = {}
-    for _s in [DiscreteVar]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
-    __getattr__ = lambda self, name: _swig_getattr(self, RangeVar, name)
+    for _s in [DiscreteVariable]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, RangeVariable, name)
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        RangeVariable(std::string const & aName, std::string const & aDesc, gum::Idx minVal=0, gum::Idx maxVal=1) -> RangeVar
-        RangeVariable(std::string const & aName, std::string const & aDesc, gum::Idx minVal=0) -> RangeVar
-        RangeVariable(std::string const & aName, std::string const & aDesc) -> RangeVar
-        __init__(gum::RangeVariable self, RangeVar aDRV) -> RangeVar
+        __init__(gum::RangeVariable self, std::string const & aName, std::string const & aDesc, gum::Idx minVal=0, gum::Idx maxVal=1) -> RangeVariable
+        __init__(gum::RangeVariable self, std::string const & aName, std::string const & aDesc, gum::Idx minVal=0) -> RangeVariable
+        __init__(gum::RangeVariable self, std::string const & aName, std::string const & aDesc) -> RangeVariable
+        __init__(gum::RangeVariable self, RangeVariable aDRV) -> RangeVariable
         """
-        this = _pyAgrum.new_RangeVar(*args)
+        this = _pyAgrum.new_RangeVariable(*args)
         try: self.this.append(this)
         except: self.this = this
-    __swig_destroy__ = _pyAgrum.delete_RangeVar
+    __swig_destroy__ = _pyAgrum.delete_RangeVariable
     __del__ = lambda self : None;
     def clone(self):
-        """clone(RangeVar self) -> DiscreteVar"""
-        return _pyAgrum.RangeVar_clone(self)
+        """clone(RangeVariable self) -> DiscreteVariable"""
+        return _pyAgrum.RangeVariable_clone(self)
 
     def __len__(self):
-        """__len__(RangeVar self) -> gum::Size"""
-        return _pyAgrum.RangeVar___len__(self)
+        """__len__(RangeVariable self) -> gum::Size"""
+        return _pyAgrum.RangeVariable___len__(self)
 
     def varType(self):
-        """varType(RangeVar self) -> gum::DiscreteVariable::VarType"""
-        return _pyAgrum.RangeVar_varType(self)
+        """varType(RangeVariable self) -> gum::DiscreteVariable::VarType"""
+        return _pyAgrum.RangeVariable_varType(self)
 
     def label(self, *args):
-        """label(RangeVar self, gum::Idx indice) -> std::string const"""
-        return _pyAgrum.RangeVar_label(self, *args)
+        """label(RangeVariable self, gum::Idx indice) -> std::string const"""
+        return _pyAgrum.RangeVariable_label(self, *args)
 
     def numerical(self, *args):
-        """numerical(RangeVar self, gum::Idx indice) -> double const"""
-        return _pyAgrum.RangeVar_numerical(self, *args)
+        """numerical(RangeVariable self, gum::Idx indice) -> double const"""
+        return _pyAgrum.RangeVariable_numerical(self, *args)
 
     def minVal(self):
-        """minVal(RangeVar self) -> gum::Idx"""
-        return _pyAgrum.RangeVar_minVal(self)
+        """minVal(RangeVariable self) -> gum::Idx"""
+        return _pyAgrum.RangeVariable_minVal(self)
 
     def setMinVal(self, *args):
-        """setMinVal(RangeVar self, gum::Idx minVal)"""
-        return _pyAgrum.RangeVar_setMinVal(self, *args)
+        """setMinVal(RangeVariable self, gum::Idx minVal)"""
+        return _pyAgrum.RangeVariable_setMinVal(self, *args)
 
     def maxVal(self):
-        """maxVal(RangeVar self) -> gum::Idx"""
-        return _pyAgrum.RangeVar_maxVal(self)
+        """maxVal(RangeVariable self) -> gum::Idx"""
+        return _pyAgrum.RangeVariable_maxVal(self)
 
     def setMaxVal(self, *args):
-        """setMaxVal(RangeVar self, gum::Idx maxVal)"""
-        return _pyAgrum.RangeVar_setMaxVal(self, *args)
+        """setMaxVal(RangeVariable self, gum::Idx maxVal)"""
+        return _pyAgrum.RangeVariable_setMaxVal(self, *args)
 
     def belongs(self, *args):
-        """belongs(RangeVar self, gum::Idx indice) -> bool"""
-        return _pyAgrum.RangeVar_belongs(self, *args)
+        """belongs(RangeVariable self, gum::Idx indice) -> bool"""
+        return _pyAgrum.RangeVariable_belongs(self, *args)
 
     def index(self, *args):
-        """index(RangeVar self, std::string const & arg2) -> gum::Idx"""
-        return _pyAgrum.RangeVar_index(self, *args)
+        """index(RangeVariable self, std::string const & arg2) -> gum::Idx"""
+        return _pyAgrum.RangeVariable_index(self, *args)
 
     def __str__(self):
-        """__str__(RangeVar self) -> std::string const"""
-        return _pyAgrum.RangeVar___str__(self)
+        """__str__(RangeVariable self) -> std::string const"""
+        return _pyAgrum.RangeVariable___str__(self)
 
-RangeVar_swigregister = _pyAgrum.RangeVar_swigregister
-RangeVar_swigregister(RangeVar)
+RangeVariable_swigregister = _pyAgrum.RangeVariable_swigregister
+RangeVariable_swigregister(RangeVariable)
 
 INC_MARKS_ARRAY = _pyAgrum.INC_MARKS_ARRAY
 class Edge(_object):
@@ -1889,6 +1903,274 @@ class DiGraph(_object):
 DiGraph_swigregister = _pyAgrum.DiGraph_swigregister
 DiGraph_swigregister(DiGraph)
 
+class DAG(DiGraph):
+    """Proxy of C++ gum::DAG class"""
+    __swig_setmethods__ = {}
+    for _s in [DiGraph]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, DAG, name, value)
+    __swig_getmethods__ = {}
+    for _s in [DiGraph]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, DAG, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """
+        __init__(gum::DAG self, gum::Size nodes_size=HashTableConst::default_size, bool nodes_resize_policy=True, 
+            gum::Size arcs_size=HashTableConst::default_size, bool arcs_resize_policy=True) -> DAG
+        __init__(gum::DAG self, gum::Size nodes_size=HashTableConst::default_size, bool nodes_resize_policy=True, 
+            gum::Size arcs_size=HashTableConst::default_size) -> DAG
+        __init__(gum::DAG self, gum::Size nodes_size=HashTableConst::default_size, bool nodes_resize_policy=True) -> DAG
+        __init__(gum::DAG self, gum::Size nodes_size=HashTableConst::default_size) -> DAG
+        __init__(gum::DAG self) -> DAG
+        __init__(gum::DAG self, DAG g) -> DAG
+        """
+        this = _pyAgrum.new_DAG(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _pyAgrum.delete_DAG
+    __del__ = lambda self : None;
+    def insertArc(self, *args):
+        """insertArc(DAG self, gum::NodeId const tail, gum::NodeId const head)"""
+        return _pyAgrum.DAG_insertArc(self, *args)
+
+DAG_swigregister = _pyAgrum.DAG_swigregister
+DAG_swigregister(DAG)
+
+class UndiGraph(_object):
+    """Proxy of C++ gum::UndiGraph class"""
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, UndiGraph, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, UndiGraph, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """
+        __init__(gum::UndiGraph self, gum::Size nodes_size=HashTableConst::default_size, bool nodes_resize_policy=True, 
+            gum::Size edges_size=HashTableConst::default_size, bool edges_resize_policy=True) -> UndiGraph
+        __init__(gum::UndiGraph self, gum::Size nodes_size=HashTableConst::default_size, bool nodes_resize_policy=True, 
+            gum::Size edges_size=HashTableConst::default_size) -> UndiGraph
+        __init__(gum::UndiGraph self, gum::Size nodes_size=HashTableConst::default_size, bool nodes_resize_policy=True) -> UndiGraph
+        __init__(gum::UndiGraph self, gum::Size nodes_size=HashTableConst::default_size) -> UndiGraph
+        __init__(gum::UndiGraph self) -> UndiGraph
+        __init__(gum::UndiGraph self, UndiGraph g) -> UndiGraph
+        """
+        this = _pyAgrum.new_UndiGraph(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _pyAgrum.delete_UndiGraph
+    __del__ = lambda self : None;
+    def __eq__(self, *args):
+        """__eq__(UndiGraph self, UndiGraph g) -> bool"""
+        return _pyAgrum.UndiGraph___eq__(self, *args)
+
+    def __ne__(self, *args):
+        """__ne__(UndiGraph self, UndiGraph g) -> bool"""
+        return _pyAgrum.UndiGraph___ne__(self, *args)
+
+    def insertEdge(self, *args):
+        """insertEdge(UndiGraph self, gum::NodeId const first, gum::NodeId const second)"""
+        return _pyAgrum.UndiGraph_insertEdge(self, *args)
+
+    def eraseNode(self, *args):
+        """eraseNode(UndiGraph self, gum::NodeId const id)"""
+        return _pyAgrum.UndiGraph_eraseNode(self, *args)
+
+    def clear(self):
+        """clear(UndiGraph self)"""
+        return _pyAgrum.UndiGraph_clear(self)
+
+    def __str__(self):
+        """__str__(UndiGraph self) -> std::string const"""
+        return _pyAgrum.UndiGraph___str__(self)
+
+    def toDot(self):
+        """toDot(UndiGraph self) -> std::string const"""
+        return _pyAgrum.UndiGraph_toDot(self)
+
+    def hasUndirectedCycle(self):
+        """hasUndirectedCycle(UndiGraph self) -> bool"""
+        return _pyAgrum.UndiGraph_hasUndirectedCycle(self)
+
+    def partialUndiGraph(self, *args):
+        """partialUndiGraph(UndiGraph self, gum::NodeSet nodesSet) -> UndiGraph"""
+        return _pyAgrum.UndiGraph_partialUndiGraph(self, *args)
+
+UndiGraph_swigregister = _pyAgrum.UndiGraph_swigregister
+UndiGraph_swigregister(UndiGraph)
+
+class MixedGraph(UndiGraph,DiGraph):
+    """Proxy of C++ gum::MixedGraph class"""
+    __swig_setmethods__ = {}
+    for _s in [UndiGraph,DiGraph]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, MixedGraph, name, value)
+    __swig_getmethods__ = {}
+    for _s in [UndiGraph,DiGraph]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, MixedGraph, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """
+        __init__(gum::MixedGraph self, gum::Size nodes_size=HashTableConst::default_size, bool nodes_resize_policy=True, 
+            gum::Size arcs_size=HashTableConst::default_size, bool arcs_resize_policy=True, 
+            gum::Size edges_size=HashTableConst::default_size, bool edges_resize_policy=True) -> MixedGraph
+        __init__(gum::MixedGraph self, gum::Size nodes_size=HashTableConst::default_size, bool nodes_resize_policy=True, 
+            gum::Size arcs_size=HashTableConst::default_size, bool arcs_resize_policy=True, 
+            gum::Size edges_size=HashTableConst::default_size) -> MixedGraph
+        __init__(gum::MixedGraph self, gum::Size nodes_size=HashTableConst::default_size, bool nodes_resize_policy=True, 
+            gum::Size arcs_size=HashTableConst::default_size, bool arcs_resize_policy=True) -> MixedGraph
+        __init__(gum::MixedGraph self, gum::Size nodes_size=HashTableConst::default_size, bool nodes_resize_policy=True, 
+            gum::Size arcs_size=HashTableConst::default_size) -> MixedGraph
+        __init__(gum::MixedGraph self, gum::Size nodes_size=HashTableConst::default_size, bool nodes_resize_policy=True) -> MixedGraph
+        __init__(gum::MixedGraph self, gum::Size nodes_size=HashTableConst::default_size) -> MixedGraph
+        __init__(gum::MixedGraph self) -> MixedGraph
+        __init__(gum::MixedGraph self, MixedGraph g) -> MixedGraph
+        """
+        this = _pyAgrum.new_MixedGraph(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _pyAgrum.delete_MixedGraph
+    __del__ = lambda self : None;
+    def __eq__(self, *args):
+        """__eq__(MixedGraph self, MixedGraph g) -> bool"""
+        return _pyAgrum.MixedGraph___eq__(self, *args)
+
+    def __ne__(self, *args):
+        """__ne__(MixedGraph self, MixedGraph g) -> bool"""
+        return _pyAgrum.MixedGraph___ne__(self, *args)
+
+    def eraseNode(self, *args):
+        """eraseNode(MixedGraph self, gum::NodeId const id)"""
+        return _pyAgrum.MixedGraph_eraseNode(self, *args)
+
+    def clear(self):
+        """clear(MixedGraph self)"""
+        return _pyAgrum.MixedGraph_clear(self)
+
+    def mixedOrientedPath(self, *args):
+        """mixedOrientedPath(MixedGraph self, gum::NodeId const node1, gum::NodeId const node2) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > > const"""
+        return _pyAgrum.MixedGraph_mixedOrientedPath(self, *args)
+
+    def mixedUnorientedPath(self, *args):
+        """mixedUnorientedPath(MixedGraph self, gum::NodeId const node1, gum::NodeId const node2) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > > const"""
+        return _pyAgrum.MixedGraph_mixedUnorientedPath(self, *args)
+
+    def __str__(self):
+        """__str__(MixedGraph self) -> std::string const"""
+        return _pyAgrum.MixedGraph___str__(self)
+
+MixedGraph_swigregister = _pyAgrum.MixedGraph_swigregister
+MixedGraph_swigregister(MixedGraph)
+
+class CliqueGraph(UndiGraph):
+    """Proxy of C++ gum::CliqueGraph class"""
+    __swig_setmethods__ = {}
+    for _s in [UndiGraph]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, CliqueGraph, name, value)
+    __swig_getmethods__ = {}
+    for _s in [UndiGraph]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, CliqueGraph, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """
+        __init__(gum::CliqueGraph self, gum::Size nodes_size=HashTableConst::default_size, bool nodes_resize_policy=True, 
+            gum::Size edges_size=HashTableConst::default_size, bool edges_resize_policy=True) -> CliqueGraph
+        __init__(gum::CliqueGraph self, gum::Size nodes_size=HashTableConst::default_size, bool nodes_resize_policy=True, 
+            gum::Size edges_size=HashTableConst::default_size) -> CliqueGraph
+        __init__(gum::CliqueGraph self, gum::Size nodes_size=HashTableConst::default_size, bool nodes_resize_policy=True) -> CliqueGraph
+        __init__(gum::CliqueGraph self, gum::Size nodes_size=HashTableConst::default_size) -> CliqueGraph
+        __init__(gum::CliqueGraph self) -> CliqueGraph
+        __init__(gum::CliqueGraph self, CliqueGraph _from) -> CliqueGraph
+        """
+        this = _pyAgrum.new_CliqueGraph(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _pyAgrum.delete_CliqueGraph
+    __del__ = lambda self : None;
+    def insertEdge(self, *args):
+        """insertEdge(CliqueGraph self, gum::NodeId const first, gum::NodeId const second)"""
+        return _pyAgrum.CliqueGraph_insertEdge(self, *args)
+
+    def eraseEdge(self, *args):
+        """eraseEdge(CliqueGraph self, Edge edge)"""
+        return _pyAgrum.CliqueGraph_eraseEdge(self, *args)
+
+    def clearEdges(self):
+        """clearEdges(CliqueGraph self)"""
+        return _pyAgrum.CliqueGraph_clearEdges(self)
+
+    def insertNode(self, *args):
+        """
+        insertNode(CliqueGraph self, gum::NodeSet const & clique) -> gum::NodeId
+        insertNode(CliqueGraph self) -> gum::NodeId
+        insertNode(CliqueGraph self, gum::NodeId const id, gum::NodeSet const & clique)
+        insertNode(CliqueGraph self, gum::NodeId const id)
+        """
+        return _pyAgrum.CliqueGraph_insertNode(self, *args)
+
+    def eraseNode(self, *args):
+        """eraseNode(CliqueGraph self, gum::NodeId const node)"""
+        return _pyAgrum.CliqueGraph_eraseNode(self, *args)
+
+    def clear(self):
+        """clear(CliqueGraph self)"""
+        return _pyAgrum.CliqueGraph_clear(self)
+
+    def clique(self, *args):
+        """clique(CliqueGraph self, gum::NodeId const idClique) -> gum::NodeSet const &"""
+        return _pyAgrum.CliqueGraph_clique(self, *args)
+
+    def container(self, *args):
+        """container(CliqueGraph self, gum::NodeId const idNode) -> gum::NodeId"""
+        return _pyAgrum.CliqueGraph_container(self, *args)
+
+    def setClique(self, *args):
+        """setClique(CliqueGraph self, gum::NodeId const idClique, gum::NodeSet const & new_clique)"""
+        return _pyAgrum.CliqueGraph_setClique(self, *args)
+
+    def addToClique(self, *args):
+        """addToClique(CliqueGraph self, gum::NodeId const clique_id, gum::NodeId const node_id)"""
+        return _pyAgrum.CliqueGraph_addToClique(self, *args)
+
+    def eraseFromClique(self, *args):
+        """eraseFromClique(CliqueGraph self, gum::NodeId const clique_id, gum::NodeId const node_id)"""
+        return _pyAgrum.CliqueGraph_eraseFromClique(self, *args)
+
+    def separator(self, *args):
+        """
+        separator(CliqueGraph self, Edge edge) -> gum::NodeSet const
+        separator(CliqueGraph self, gum::NodeId const clique1, gum::NodeId const clique) -> gum::NodeSet const &
+        """
+        return _pyAgrum.CliqueGraph_separator(self, *args)
+
+    def containerPath(self, *args):
+        """containerPath(CliqueGraph self, gum::NodeId const node1, gum::NodeId const node2) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > >"""
+        return _pyAgrum.CliqueGraph_containerPath(self, *args)
+
+    def hasRunningIntersection(self):
+        """hasRunningIntersection(CliqueGraph self) -> bool"""
+        return _pyAgrum.CliqueGraph_hasRunningIntersection(self)
+
+    def isJoinTree(self):
+        """isJoinTree(CliqueGraph self) -> bool"""
+        return _pyAgrum.CliqueGraph_isJoinTree(self)
+
+    def __str__(self):
+        """__str__(CliqueGraph self) -> std::string const"""
+        return _pyAgrum.CliqueGraph___str__(self)
+
+    def toDot(self):
+        """toDot(CliqueGraph self) -> std::string const"""
+        return _pyAgrum.CliqueGraph_toDot(self)
+
+    def __ne__(self, *args):
+        """__ne__(CliqueGraph self, CliqueGraph _from) -> bool"""
+        return _pyAgrum.CliqueGraph___ne__(self, *args)
+
+    def __eq__(self, *args):
+        """__eq__(CliqueGraph self, CliqueGraph _from) -> bool"""
+        return _pyAgrum.CliqueGraph___eq__(self, *args)
+
+CliqueGraph_swigregister = _pyAgrum.CliqueGraph_swigregister
+CliqueGraph_swigregister(CliqueGraph)
+
 class Instantiation(_object):
     """Proxy of C++ gum::Instantiation class"""
     __swig_setmethods__ = {}
@@ -1916,11 +2198,11 @@ class Instantiation(_object):
         return _pyAgrum.Instantiation___len__(self)
 
     def add(self, *args):
-        """add(Instantiation self, DiscreteVar v)"""
+        """add(Instantiation self, DiscreteVariable v)"""
         return _pyAgrum.Instantiation_add(self, *args)
 
     def erase(self, *args):
-        """erase(Instantiation self, DiscreteVar v)"""
+        """erase(Instantiation self, DiscreteVariable v)"""
         return _pyAgrum.Instantiation_erase(self, *args)
 
     def clear(self):
@@ -1932,28 +2214,28 @@ class Instantiation(_object):
         return _pyAgrum.Instantiation_domainSize(self)
 
     def pos(self, *args):
-        """pos(Instantiation self, DiscreteVar v) -> gum::Idx"""
+        """pos(Instantiation self, DiscreteVariable v) -> gum::Idx"""
         return _pyAgrum.Instantiation_pos(self, *args)
 
     def val(self, *args):
         """
         val(Instantiation self, gum::Idx i) -> gum::Idx
-        val(Instantiation self, DiscreteVar var) -> gum::Idx
+        val(Instantiation self, DiscreteVariable var) -> gum::Idx
         """
         return _pyAgrum.Instantiation_val(self, *args)
 
     def valFromPtr(self, *args):
-        """valFromPtr(Instantiation self, DiscreteVar pvar) -> gum::Idx"""
+        """valFromPtr(Instantiation self, DiscreteVariable pvar) -> gum::Idx"""
         return _pyAgrum.Instantiation_valFromPtr(self, *args)
 
     def variable(self, *args):
-        """variable(Instantiation self, gum::Idx i) -> DiscreteVar"""
+        """variable(Instantiation self, gum::Idx i) -> DiscreteVariable"""
         return _pyAgrum.Instantiation_variable(self, *args)
 
     def chgVal(self, *args):
         """
-        chgVal(Instantiation self, DiscreteVar v, gum::Idx newval) -> Instantiation
-        chgVal(Instantiation self, DiscreteVar v, gum::Idx newval) -> Instantiation
+        chgVal(Instantiation self, DiscreteVariable v, gum::Idx newval) -> Instantiation
+        chgVal(Instantiation self, DiscreteVariable v, gum::Idx newval) -> Instantiation
         chgVal(Instantiation self, gum::Idx varPos, gum::Idx newval) -> Instantiation
         """
         return _pyAgrum.Instantiation_chgVal(self, *args)
@@ -1964,8 +2246,8 @@ class Instantiation(_object):
 
     def contains(self, *args):
         """
-        contains(Instantiation self, DiscreteVar v) -> bool
-        contains(Instantiation self, DiscreteVar v) -> bool
+        contains(Instantiation self, DiscreteVariable v) -> bool
+        contains(Instantiation self, DiscreteVariable v) -> bool
         """
         return _pyAgrum.Instantiation_contains(self, *args)
 
@@ -2022,19 +2304,19 @@ class Instantiation(_object):
         return _pyAgrum.Instantiation_decOut(self, *args)
 
     def incNotVar(self, *args):
-        """incNotVar(Instantiation self, DiscreteVar v)"""
+        """incNotVar(Instantiation self, DiscreteVariable v)"""
         return _pyAgrum.Instantiation_incNotVar(self, *args)
 
     def decNotVar(self, *args):
-        """decNotVar(Instantiation self, DiscreteVar v)"""
+        """decNotVar(Instantiation self, DiscreteVariable v)"""
         return _pyAgrum.Instantiation_decNotVar(self, *args)
 
     def incVar(self, *args):
-        """incVar(Instantiation self, DiscreteVar v)"""
+        """incVar(Instantiation self, DiscreteVariable v)"""
         return _pyAgrum.Instantiation_incVar(self, *args)
 
     def decVar(self, *args):
-        """decVar(Instantiation self, DiscreteVar v)"""
+        """decVar(Instantiation self, DiscreteVariable v)"""
         return _pyAgrum.Instantiation_decVar(self, *args)
 
     def setFirst(self):
@@ -2062,19 +2344,19 @@ class Instantiation(_object):
         return _pyAgrum.Instantiation_setLastOut(self, *args)
 
     def setFirstNotVar(self, *args):
-        """setFirstNotVar(Instantiation self, DiscreteVar v)"""
+        """setFirstNotVar(Instantiation self, DiscreteVariable v)"""
         return _pyAgrum.Instantiation_setFirstNotVar(self, *args)
 
     def setLastNotVar(self, *args):
-        """setLastNotVar(Instantiation self, DiscreteVar v)"""
+        """setLastNotVar(Instantiation self, DiscreteVariable v)"""
         return _pyAgrum.Instantiation_setLastNotVar(self, *args)
 
     def setFirstVar(self, *args):
-        """setFirstVar(Instantiation self, DiscreteVar v)"""
+        """setFirstVar(Instantiation self, DiscreteVariable v)"""
         return _pyAgrum.Instantiation_setFirstVar(self, *args)
 
     def setLastVar(self, *args):
-        """setLastVar(Instantiation self, DiscreteVar v)"""
+        """setLastVar(Instantiation self, DiscreteVariable v)"""
         return _pyAgrum.Instantiation_setLastVar(self, *args)
 
     def actAsSlave(self, *args):
@@ -2101,11 +2383,11 @@ class Instantiation(_object):
         return _pyAgrum.Instantiation_synchronizeWithMaster(self, *args)
 
     def addWithMaster(self, *args):
-        """addWithMaster(Instantiation self, MultiDimAdressable m, DiscreteVar v)"""
+        """addWithMaster(Instantiation self, MultiDimAdressable m, DiscreteVariable v)"""
         return _pyAgrum.Instantiation_addWithMaster(self, *args)
 
     def eraseWithMaster(self, *args):
-        """eraseWithMaster(Instantiation self, MultiDimAdressable m, DiscreteVar v)"""
+        """eraseWithMaster(Instantiation self, MultiDimAdressable m, DiscreteVariable v)"""
         return _pyAgrum.Instantiation_eraseWithMaster(self, *args)
 
     def __iadd__(self, *args):
@@ -2178,11 +2460,11 @@ class DAGmodel(_object):
         return _pyAgrum.DAGmodel_nodes(self)
 
     def variable(self, *args):
-        """variable(DAGmodel self, gum::NodeId id) -> DiscreteVar"""
+        """variable(DAGmodel self, gum::NodeId id) -> DiscreteVariable"""
         return _pyAgrum.DAGmodel_variable(self, *args)
 
     def nodeId(self, *args):
-        """nodeId(DAGmodel self, DiscreteVar var) -> gum::NodeId"""
+        """nodeId(DAGmodel self, DiscreteVariable var) -> gum::NodeId"""
         return _pyAgrum.DAGmodel_nodeId(self, *args)
 
     def idFromName(self, *args):
@@ -2190,7 +2472,7 @@ class DAGmodel(_object):
         return _pyAgrum.DAGmodel_idFromName(self, *args)
 
     def variableFromName(self, *args):
-        """variableFromName(DAGmodel self, std::string const & name) -> DiscreteVar"""
+        """variableFromName(DAGmodel self, std::string const & name) -> DiscreteVariable"""
         return _pyAgrum.DAGmodel_variableFromName(self, *args)
 
     def completeInstantiation(self, *args):
@@ -2229,79 +2511,79 @@ __list_end = cvar.__list_end
 def randomDistribution_double(*args):
   """randomDistribution_double(gum::Size n) -> Vector_double"""
   return _pyAgrum.randomDistribution_double(*args)
-class DiscretizedVar(DiscreteVar):
-    """Proxy of C++ gum::DiscretizedVariable<(float)> class"""
+class DiscretizedVariable_double(DiscreteVariable):
+    """Proxy of C++ gum::DiscretizedVariable<(double)> class"""
     __swig_setmethods__ = {}
-    for _s in [DiscreteVar]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
-    __setattr__ = lambda self, name, value: _swig_setattr(self, DiscretizedVar, name, value)
+    for _s in [DiscreteVariable]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, DiscretizedVariable_double, name, value)
     __swig_getmethods__ = {}
-    for _s in [DiscreteVar]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
-    __getattr__ = lambda self, name: _swig_getattr(self, DiscretizedVar, name)
+    for _s in [DiscreteVariable]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, DiscretizedVariable_double, name)
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(gum::DiscretizedVariable<(float)> self, std::string const & aName, std::string const & aDesc) -> DiscretizedVar
-        __init__(gum::DiscretizedVariable<(float)> self, DiscretizedVar aDRV) -> DiscretizedVar
+        __init__(gum::DiscretizedVariable<(double)> self, std::string const & aName, std::string const & aDesc) -> DiscretizedVariable_double
+        __init__(gum::DiscretizedVariable<(double)> self, DiscretizedVariable_double aDRV) -> DiscretizedVariable_double
         """
-        if self.__class__ == DiscretizedVar:
+        if self.__class__ == DiscretizedVariable_double:
             _self = None
         else:
             _self = self
-        this = _pyAgrum.new_DiscretizedVar(_self, *args)
+        this = _pyAgrum.new_DiscretizedVariable_double(_self, *args)
         try: self.this.append(this)
         except: self.this = this
-    __swig_destroy__ = _pyAgrum.delete_DiscretizedVar
+    __swig_destroy__ = _pyAgrum.delete_DiscretizedVariable_double
     __del__ = lambda self : None;
     def clone(self):
-        """clone(DiscretizedVar self) -> DiscreteVar"""
-        return _pyAgrum.DiscretizedVar_clone(self)
+        """clone(DiscretizedVariable_double self) -> DiscreteVariable"""
+        return _pyAgrum.DiscretizedVariable_double_clone(self)
 
     def varType(self):
-        """varType(DiscretizedVar self) -> gum::DiscreteVariable::VarType"""
-        return _pyAgrum.DiscretizedVar_varType(self)
+        """varType(DiscretizedVariable_double self) -> gum::DiscreteVariable::VarType"""
+        return _pyAgrum.DiscretizedVariable_double_varType(self)
 
     def isTick(self, *args):
-        """isTick(DiscretizedVar self, float const & aTick) -> bool"""
-        return _pyAgrum.DiscretizedVar_isTick(self, *args)
+        """isTick(DiscretizedVariable_double self, double const & aTick) -> bool"""
+        return _pyAgrum.DiscretizedVariable_double_isTick(self, *args)
 
     def addTick(self,*args):
-      _pyAgrum.DiscretizedVar_addTick(self,*args)
+      _pyAgrum.DiscretizedVariable_double_addTick(self,*args)
       return self
 
 
     def eraseTicks(self):
-        """eraseTicks(DiscretizedVar self)"""
-        return _pyAgrum.DiscretizedVar_eraseTicks(self)
+        """eraseTicks(DiscretizedVariable_double self)"""
+        return _pyAgrum.DiscretizedVariable_double_eraseTicks(self)
 
     def label(self, *args):
-        """label(DiscretizedVar self, gum::Idx i) -> std::string const"""
-        return _pyAgrum.DiscretizedVar_label(self, *args)
+        """label(DiscretizedVariable_double self, gum::Idx i) -> std::string const"""
+        return _pyAgrum.DiscretizedVariable_double_label(self, *args)
 
     def numerical(self, *args):
-        """numerical(DiscretizedVar self, gum::Idx indice) -> double const"""
-        return _pyAgrum.DiscretizedVar_numerical(self, *args)
+        """numerical(DiscretizedVariable_double self, gum::Idx indice) -> double const"""
+        return _pyAgrum.DiscretizedVariable_double_numerical(self, *args)
 
     def index(self, *args):
         """
-        index(DiscretizedVar self, std::string const & label) -> gum::Idx
-        index(DiscretizedVar self, float const & aTarget) -> gum::Idx
+        index(DiscretizedVariable_double self, std::string const & label) -> gum::Idx
+        index(DiscretizedVariable_double self, double const & aTarget) -> gum::Idx
         """
-        return _pyAgrum.DiscretizedVar_index(self, *args)
+        return _pyAgrum.DiscretizedVariable_double_index(self, *args)
 
     def __len__(self):
-        """__len__(DiscretizedVar self) -> gum::Size"""
-        return _pyAgrum.DiscretizedVar___len__(self)
+        """__len__(DiscretizedVariable_double self) -> gum::Size"""
+        return _pyAgrum.DiscretizedVariable_double___len__(self)
 
     def tick(self, *args):
-        """tick(DiscretizedVar self, gum::Idx i) -> float const &"""
-        return _pyAgrum.DiscretizedVar_tick(self, *args)
+        """tick(DiscretizedVariable_double self, gum::Idx i) -> double const &"""
+        return _pyAgrum.DiscretizedVariable_double_tick(self, *args)
 
     def __disown__(self):
         self.this.disown()
-        _pyAgrum.disown_DiscretizedVar(self)
+        _pyAgrum.disown_DiscretizedVariable_double(self)
         return weakref_proxy(self)
-DiscretizedVar_swigregister = _pyAgrum.DiscretizedVar_swigregister
-DiscretizedVar_swigregister(DiscretizedVar)
+DiscretizedVariable_double_swigregister = _pyAgrum.DiscretizedVariable_double_swigregister
+DiscretizedVariable_double_swigregister(DiscretizedVariable_double)
 
 class MultiDimContainer_double(_object):
     """Proxy of C++ gum::MultiDimContainer<(double)> class"""
@@ -2426,7 +2708,7 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double_sum(self)
 
     def _swap(self, *args):
-        """_swap(Potential_double self, DiscreteVar x, DiscreteVar y)"""
+        """_swap(Potential_double self, DiscreteVariable x, DiscreteVariable y)"""
         return _pyAgrum.Potential_double__swap(self, *args)
 
     def get(self, *args):
@@ -2446,11 +2728,11 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double_empty(self)
 
     def pos(self, *args):
-        """pos(Potential_double self, DiscreteVar v) -> gum::Idx"""
+        """pos(Potential_double self, DiscreteVariable v) -> gum::Idx"""
         return _pyAgrum.Potential_double_pos(self, *args)
 
     def contains(self, *args):
-        """contains(Potential_double self, DiscreteVar v) -> bool"""
+        """contains(Potential_double self, DiscreteVariable v) -> bool"""
         return _pyAgrum.Potential_double_contains(self, *args)
 
     def nbrDim(self):
@@ -2458,7 +2740,7 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double_nbrDim(self)
 
     def variable(self, *args):
-        """variable(Potential_double self, gum::Idx i) -> DiscreteVar"""
+        """variable(Potential_double self, gum::Idx i) -> DiscreteVariable"""
         return _pyAgrum.Potential_double_variable(self, *args)
 
     def fillWith(self, *args):
@@ -2470,7 +2752,7 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double_fill(self, *args)
 
     def remove(self, *args):
-        """remove(Potential_double self, DiscreteVar var)"""
+        """remove(Potential_double self, DiscreteVariable var)"""
         val = _pyAgrum.Potential_double_remove(self, *args)
         self._notSync=True
 
@@ -2478,7 +2760,7 @@ class Potential_double(_object):
         return val
 
     def add(self, *args):
-        """add(Potential_double self, DiscreteVar v)"""
+        """add(Potential_double self, DiscreteVariable v)"""
         val = _pyAgrum.Potential_double_add(self, *args)
         self._notSync=True
 
@@ -2644,11 +2926,11 @@ class IBayesNet_double(DAGmodel):
         return _pyAgrum.IBayesNet_double_variableNodeMap(self)
 
     def variable(self, *args):
-        """variable(IBayesNet_double self, gum::NodeId id) -> DiscreteVar"""
+        """variable(IBayesNet_double self, gum::NodeId id) -> DiscreteVariable"""
         return _pyAgrum.IBayesNet_double_variable(self, *args)
 
     def nodeId(self, *args):
-        """nodeId(IBayesNet_double self, DiscreteVar var) -> gum::NodeId"""
+        """nodeId(IBayesNet_double self, DiscreteVariable var) -> gum::NodeId"""
         return _pyAgrum.IBayesNet_double_nodeId(self, *args)
 
     def idFromName(self, *args):
@@ -2656,7 +2938,7 @@ class IBayesNet_double(DAGmodel):
         return _pyAgrum.IBayesNet_double_idFromName(self, *args)
 
     def variableFromName(self, *args):
-        """variableFromName(IBayesNet_double self, std::string const & name) -> DiscreteVar"""
+        """variableFromName(IBayesNet_double self, std::string const & name) -> DiscreteVariable"""
         return _pyAgrum.IBayesNet_double_variableFromName(self, *args)
 
     def jointProbability(self, *args):
@@ -2728,22 +3010,22 @@ class BayesNet_double(IBayesNet_double):
 
     def add(self, *args):
         """
-        add(BayesNet_double self, DiscreteVar variable) -> gum::NodeId
-        add(BayesNet_double self, DiscreteVar variable, gum::MultiDimImplementation< double > * aContent) -> gum::NodeId
-        add(BayesNet_double self, DiscreteVar variable, gum::NodeId id) -> gum::NodeId
-        add(BayesNet_double self, DiscreteVar variable, gum::MultiDimImplementation< double > * aContent, gum::NodeId id) -> gum::NodeId
+        add(BayesNet_double self, DiscreteVariable variable) -> gum::NodeId
+        add(BayesNet_double self, DiscreteVariable variable, gum::MultiDimImplementation< double > * aContent) -> gum::NodeId
+        add(BayesNet_double self, DiscreteVariable variable, gum::NodeId id) -> gum::NodeId
+        add(BayesNet_double self, DiscreteVariable variable, gum::MultiDimImplementation< double > * aContent, gum::NodeId id) -> gum::NodeId
         """
         return _pyAgrum.BayesNet_double_add(self, *args)
 
     def erase(self, *args):
         """
         erase(BayesNet_double self, gum::NodeId id)
-        erase(BayesNet_double self, DiscreteVar var)
+        erase(BayesNet_double self, DiscreteVariable var)
         """
         return _pyAgrum.BayesNet_double_erase(self, *args)
 
     def variable(self, *args):
-        """variable(BayesNet_double self, gum::NodeId id) -> DiscreteVar"""
+        """variable(BayesNet_double self, gum::NodeId id) -> DiscreteVariable"""
         return _pyAgrum.BayesNet_double_variable(self, *args)
 
     def changeVariableName(self, *args):
@@ -2751,7 +3033,7 @@ class BayesNet_double(IBayesNet_double):
         return _pyAgrum.BayesNet_double_changeVariableName(self, *args)
 
     def nodeId(self, *args):
-        """nodeId(BayesNet_double self, DiscreteVar var) -> gum::NodeId"""
+        """nodeId(BayesNet_double self, DiscreteVariable var) -> gum::NodeId"""
         return _pyAgrum.BayesNet_double_nodeId(self, *args)
 
     def idFromName(self, *args):
@@ -2759,7 +3041,7 @@ class BayesNet_double(IBayesNet_double):
         return _pyAgrum.BayesNet_double_idFromName(self, *args)
 
     def variableFromName(self, *args):
-        """variableFromName(BayesNet_double self, std::string const & name) -> DiscreteVar"""
+        """variableFromName(BayesNet_double self, std::string const & name) -> DiscreteVariable"""
         return _pyAgrum.BayesNet_double_variableFromName(self, *args)
 
     def addArc(self, *args):
@@ -2790,45 +3072,45 @@ class BayesNet_double(IBayesNet_double):
 
     def addNoisyOR(self, *args):
         """
-        addNoisyOR(BayesNet_double self, DiscreteVar variable, double externalWeight) -> gum::NodeId
-        addNoisyOR(BayesNet_double self, DiscreteVar variable, double externalWeight, gum::NodeId id) -> gum::NodeId
+        addNoisyOR(BayesNet_double self, DiscreteVariable variable, double externalWeight) -> gum::NodeId
+        addNoisyOR(BayesNet_double self, DiscreteVariable variable, double externalWeight, gum::NodeId id) -> gum::NodeId
         """
         return _pyAgrum.BayesNet_double_addNoisyOR(self, *args)
 
     def addNoisyORNet(self, *args):
         """
-        addNoisyORNet(BayesNet_double self, DiscreteVar variable, double externalWeight) -> gum::NodeId
-        addNoisyORNet(BayesNet_double self, DiscreteVar variable, double externalWeight, gum::NodeId id) -> gum::NodeId
+        addNoisyORNet(BayesNet_double self, DiscreteVariable variable, double externalWeight) -> gum::NodeId
+        addNoisyORNet(BayesNet_double self, DiscreteVariable variable, double externalWeight, gum::NodeId id) -> gum::NodeId
         """
         return _pyAgrum.BayesNet_double_addNoisyORNet(self, *args)
 
     def addNoisyORCompound(self, *args):
         """
-        addNoisyORCompound(BayesNet_double self, DiscreteVar variable, double externalWeight) -> gum::NodeId
-        addNoisyORCompound(BayesNet_double self, DiscreteVar variable, double externalWeight, gum::NodeId id) -> gum::NodeId
+        addNoisyORCompound(BayesNet_double self, DiscreteVariable variable, double externalWeight) -> gum::NodeId
+        addNoisyORCompound(BayesNet_double self, DiscreteVariable variable, double externalWeight, gum::NodeId id) -> gum::NodeId
         """
         return _pyAgrum.BayesNet_double_addNoisyORCompound(self, *args)
 
     def addNoisyAND(self, *args):
         """
-        addNoisyAND(BayesNet_double self, DiscreteVar variable, double externalWeight, gum::NodeId id) -> gum::NodeId
-        addNoisyAND(BayesNet_double self, DiscreteVar variable, double externalWeight) -> gum::NodeId
+        addNoisyAND(BayesNet_double self, DiscreteVariable variable, double externalWeight, gum::NodeId id) -> gum::NodeId
+        addNoisyAND(BayesNet_double self, DiscreteVariable variable, double externalWeight) -> gum::NodeId
         """
         return _pyAgrum.BayesNet_double_addNoisyAND(self, *args)
 
     def addLogit(self, *args):
         """
-        addLogit(BayesNet_double self, DiscreteVar variable, double externalWeight, gum::NodeId id) -> gum::NodeId
-        addLogit(BayesNet_double self, DiscreteVar variable, double externalWeight) -> gum::NodeId
+        addLogit(BayesNet_double self, DiscreteVariable variable, double externalWeight, gum::NodeId id) -> gum::NodeId
+        addLogit(BayesNet_double self, DiscreteVariable variable, double externalWeight) -> gum::NodeId
         """
         return _pyAgrum.BayesNet_double_addLogit(self, *args)
 
     def addOR(self, *args):
-        """addOR(BayesNet_double self, DiscreteVar variable) -> gum::NodeId"""
+        """addOR(BayesNet_double self, DiscreteVariable variable) -> gum::NodeId"""
         return _pyAgrum.BayesNet_double_addOR(self, *args)
 
     def addAND(self, *args):
-        """addAND(BayesNet_double self, DiscreteVar variable) -> gum::NodeId"""
+        """addAND(BayesNet_double self, DiscreteVariable variable) -> gum::NodeId"""
         return _pyAgrum.BayesNet_double_addAND(self, *args)
 
     def addWeightedArc(self, *args):
@@ -2966,10 +3248,9 @@ class BayesNetInference_double(_object):
 
     def setEvidence(self, evidces):
         if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be dict, not %s"
-                            %(type(evidces)))
+            raise TypeError("setEvidence parameter must be dict, not %s"%(type(evidces)))
         bn = self.bn()
-        
+
 
         # set evidences
         self.list_pot = []
@@ -3018,7 +3299,7 @@ class BayesNetInference_double(_object):
             else:
                 raise TypeError('dict values must be number, string or sequence')
             self.list_pot.append(pot)
-            
+
         self.eraseAllEvidence()
         self._setEvidence(self.list_pot)
 
@@ -3930,6 +4211,8 @@ GibbsKL = GibbsKL_double
 CredalNet = CredalNet_double
 CNMonteCarloSampling = CNMonteCarloSampling_double
 CNLoopyPropagation = CNLoopyPropagation_double
+
+DiscretizedVariable = DiscretizedVariable_double
 
 # This file is compatible with both classic and new-style classes.
 

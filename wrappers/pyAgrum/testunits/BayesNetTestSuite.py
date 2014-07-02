@@ -11,11 +11,11 @@ from pyAgrumTestSuite import pyAgrumTestCase
 class BayesNetTestCase(pyAgrumTestCase):
 
     def setUp(self):
-        self.var1 = gum.LabelizedVar("var1", "1", 2)
-        self.var2 = gum.LabelizedVar( "var2", "2", 2 )
-        self.var3 = gum.LabelizedVar( "var3", "3", 2 )
-        self.var4 = gum.LabelizedVar( "var4", "4", 2 )
-        self.var5 = gum.LabelizedVar( "var5", "(gum::Size) 5", 3 )
+        self.var1 = gum.LabelizedVariable("var1", "1", 2)
+        self.var2 = gum.LabelizedVariable( "var2", "2", 2 )
+        self.var3 = gum.LabelizedVariable( "var3", "3", 2 )
+        self.var4 = gum.LabelizedVariable( "var4", "4", 2 )
+        self.var5 = gum.LabelizedVariable( "var5", "(gum::Size) 5", 3 )
         self.bufferlisten = ""
         self.bufferecoute = ""
 
