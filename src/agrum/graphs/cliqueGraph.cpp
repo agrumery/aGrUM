@@ -320,39 +320,95 @@ namespace gum {
     return stream.str();
   }
 
+  const std::string expandClique ( const NodeSet& clique ) {
+    std::stringstream stream;
+    bool first=true;
+
+    stream<<'"';
+
+    for ( auto node:clique ) {
+      if ( !first ) {
+        stream<< "-";
+      }
+
+      stream<<node;
+      first=false;
+    }
+
+    stream<<'"';
+
+    return stream.str();
+  }
+  const std::string expandSeparator ( const NodeSet& clique1,const NodeSet& clique2 ) {
+    std::stringstream stream;
+
+    stream<<'"';
+
+    bool first=true;
+
+    for ( auto node:clique1 ) {
+      if ( !first ) {
+        stream<< "-";
+      }
+
+      stream<<node;
+      first=false;
+    }
+
+    stream<<"+";
+
+    first=true;
+
+    for ( auto node:clique2 ) {
+      if ( !first ) {
+        stream<< "-";
+      }
+
+      stream<<node;
+      first=false;
+    }
+
+    stream<<'"';
+
+    return stream.str();
+
+  }
 
   const std::string
   CliqueGraph::toDot() const {
     std::stringstream stream;
     stream << "graph {" << std::endl;
-    stream << "  edge [fontsize=8 fontcolor=red];" << std::endl << std::endl;
 
-    for ( auto iter_node = nodes().beginSafe(); iter_node != nodes().endSafe(); ++iter_node ) {
-      stream << "  " << *iter_node << " [ label=\"";
-
-      /*const NodeSet& cl = clique ( node );
-
-      for ( NodeSetIterator iter = cl.begin(); iter != cl.end(); ++iter )*/
-      for ( auto cliq = clique ( *iter_node ).beginSafe (); cliq != clique ( *iter_node ).endSafe(); ++cliq )
-        stream << "  " << *cliq;
-
-      stream << "\"];" << std::endl;
+    // cliques as nodes
+    for ( auto node : nodes() ) {
+      std::string nom=expandClique ( clique ( node ) );
+      stream<<"  "
+            << nom
+            <<" [label="<<nom <<",fillcolor=\"burlywood\",style=\"filled\"];"
+            <<std::endl;
     }
 
-    stream << std::endl;
+    stream<<std::endl;
 
-    for ( auto edge = edges().beginSafe(); edge != edges().endSafe(); ++edge ) {
-      stream << *edge << " [ label=\"";
-
-      const NodeSet& sep = separator ( *edge );
-
-      for ( NodeSetIterator iter = sep.beginSafe(); iter != sep.endSafe(); ++iter )
-        stream << "  " << *iter;
-
-      stream << "\"];" << std::endl;
+    // separator as nodes
+    for ( auto edge : edges() ) {
+      stream<<"  "
+            <<expandSeparator ( clique ( edge.first() ),clique ( edge.second() ) )
+            <<" [label="<<expandClique ( separator ( edge ) ) <<",shape=box,fillcolor=\"palegreen\",style=\"filled\",fontsize=8,width=0,height=0];"
+            <<std::endl;
     }
 
-    stream << std::endl << "}" << std::endl;
+    stream<<std::endl;
+
+    //edges now as c1--sep--c2
+    for ( auto edge : edges() )
+      stream<<"  "
+            <<expandClique ( clique ( edge.first() ) ) <<"--"
+            <<expandSeparator ( clique ( edge.first() ),clique ( edge.second() ) ) <<"--"
+            <<expandClique ( clique ( edge.second() ) ) <<";"
+            <<std::endl;
+
+    stream << "}" << std::endl;
 
     return stream.str();
   }

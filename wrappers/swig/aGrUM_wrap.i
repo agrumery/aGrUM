@@ -24,6 +24,10 @@
 #include <agrum/core/list.h>
 #include <agrum/core/OMPThreads.h>
 
+#include <agrum/graphs/edgeGraphPart.h>
+#include <agrum/graphs/arcGraphPart.h>
+#include <agrum/graphs/nodeGraphPart.h>
+
 #include <agrum/graphs/diGraph.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/graphs/undiGraph.h>
@@ -153,8 +157,11 @@ namespace std {
 %include <agrum/variables/discretizedVariable.h>
 
 %include <agrum/graphs/graphElements.h>
-%import <agrum/graphs/nodeGraphPart.h>
+
+%import <agrum/graphs/edgeGraphPart.h>
 %import <agrum/graphs/arcGraphPart.h>
+%import <agrum/graphs/nodeGraphPart.h>
+
 %include <agrum/graphs/diGraph.h>
 %include <agrum/graphs/DAG.h>
 %include <agrum/graphs/undiGraph.h>
@@ -401,6 +408,60 @@ namespace std {
 
   using gum::credal::InferenceEngine<double>::messageApproximationScheme;
   using gum::credal::InferenceEngine<double>::history;
+}
+
+%extend gum::DiGraph {
+  using gum::NodeGraphPart::insertNode;
+  using gum::NodeGraphPart::eraseNode;
+  using gum::NodeGraphPart::existsNode;
+
+  using gum::ArcGraphPart::insertArc;
+  using gum::ArcGraphPart::eraseArc;
+  using gum::ArcGraphPart::existsArc;
+  using gum::ArcGraphPart::eraseParents;
+  using gum::ArcGraphPart::eraseChildren;
+}
+
+%extend gum::DAG {
+  using gum::NodeGraphPart::insertNode;
+  using gum::NodeGraphPart::eraseNode;
+  using gum::NodeGraphPart::existsNode;
+
+  using gum::ArcGraphPart::insertArc;
+  using gum::ArcGraphPart::eraseArc;
+  using gum::ArcGraphPart::existsArc;
+  using gum::ArcGraphPart::eraseParents;
+  using gum::ArcGraphPart::eraseChildren;
+}
+
+%extend gum::UndiGraph {
+  using gum::NodeGraphPart::insertNode;
+  using gum::NodeGraphPart::eraseNode;
+  using gum::NodeGraphPart::existsNode;
+
+  using gum::EdgeGraphPart::insertEdge;
+  using gum::EdgeGraphPart::eraseEdge;
+  using gum::EdgeGraphPart::existsEdge;
+  using gum::EdgeGraphPart::eraseParents;
+  using gum::EdgeGraphPart::eraseChildren;
+}
+
+%extend gum::MixedGraph {
+  using gum::NodeGraphPart::insertNode;
+  using gum::NodeGraphPart::eraseNode;
+  using gum::NodeGraphPart::existsNode;
+
+  using gum::EdgeGraphPart::insertEdge;
+  using gum::EdgeGraphPart::eraseEdge;
+  using gum::EdgeGraphPart::existsEdge;
+  using gum::EdgeGraphPart::eraseParents;
+  using gum::EdgeGraphPart::eraseChildren;
+
+  using gum::ArcGraphPart::insertArc;
+  using gum::ArcGraphPart::eraseArc;
+  using gum::ArcGraphPart::existsArc;
+  using gum::ArcGraphPart::eraseParents;
+  using gum::ArcGraphPart::eraseChildren;
 }
 
 /* TEMPLATES INSTANTIATIONS */

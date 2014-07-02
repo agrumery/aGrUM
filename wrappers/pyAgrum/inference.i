@@ -97,6 +97,10 @@ def setEvidence(self, evidces):
 
 
 %extend gum::LazyPropagation<double> {
+    const std::string junctionTreeToDot() {
+      return self->junctionTree()->toDot();
+    }
+
     Potential<double>*  joint(PyObject *seq_of_ids) {
       if (PySequence_Check(seq_of_ids)==0) {
         PyErr_SetString(PyExc_TypeError, "arg must be a sequence");
