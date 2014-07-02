@@ -47,7 +47,7 @@ def getPosterior(bn,ev,target):
     inf=gum.LazyPropagation(bn)
     inf.setEvidence(ev)
     inf.makeInference()
-    return gum.Potential(inf.marginal(bn.idFromName(target))) 
+    return gum.Potential(inf.marginal(bn.idFromName(target)))
     # creating a new Potential from marginal (will disappear with ie)
 
 def showProba(p):
@@ -61,7 +61,7 @@ def showProba(p):
 
     fig=plt.figure()
     fig.set_figheight(len(var)/4.0)
-    
+
     ax=fig.add_subplot(111)
 
     ax.barh(ra,p.tolist(),align='center')
@@ -90,24 +90,24 @@ def showBN(bn,size="4"):
     p.set_size(size)
     i=IPython.core.display.SVG(p.create_svg())
     IPython.core.display.display(i)
-    
+
 def animApproximationScheme(apsc):
   """
   show an animated version of an approximation scheme
   """
   from IPython.display import clear_output,display
   f=plt.gcf()
-  
+
   h=gum.PythonApproximationListener(apsc)
   apsc.setVerbosity(True)
   apsc.listener=h
-  
+
   def stopper(x):
     clear_output()
     print("Solutions : {0}".format(x))
     print("Time : {0} s".format(apsc.currentTime()))
     print("Iterations : {0}".format(apsc.nbrIterations()))
-    
+
   def progresser(x,y,z):
     if len(apsc.history())<10:
       plt.xlim(1,10)
@@ -116,11 +116,11 @@ def animApproximationScheme(apsc):
     plt.plot(np.log10(apsc.history()), 'g')
     clear_output(True)
     display(f)
-          
+
   h.setWhenStop(stopper)
   h.setWhenProgress(progresser)
-  
- 
+
+
 cdict = {'red': ((0.0, 0.1, 0.3),
                  (1.0, 0.6, 1.0)),
          'green': ((0.0, 0.0, 0.0),
@@ -155,21 +155,23 @@ def _proba2fgcolor(p,cmap=INFOcmap):
 def getBN(bn,size="4",vals=None,cmap=INFOcmap):
     """
     Shows a graphviz svg representation of the BN using size ("1" ,"2" , ...)
-    vals is a dictionnary name:value of value in [0,1] for each node 
+    vals is a dictionnary name:value of value in [0,1] for each node
     (with special color for 0 and 1)
-    """    
+    """
+    getZeName=lambda n : '"{0} : {1}"'.format(bn.idFromName(n),n)
+
     graph=pydot.Dot(graph_type='digraph')
     for n in bn.names():
-        if vals is None: 
-          bgcol="#666666"
+        if vals is None:
+          bgcol="#444444"
           fgcol="#FFFFFF"
         else:
           bgcol=_proba2bgcolor(vals[n],cmap)
           fgcol=_proba2fgcolor(vals[n],cmap)
-        node=pydot.Node(n,style="filled",fillcolor=bgcol,fontcolor=fgcol)
+        node=pydot.Node(getZeName(n),style="filled",fillcolor=bgcol,fontcolor=fgcol)
         graph.add_node(node)
     for a in bn.arcs():
-        edge=pydot.Edge(bn.variable(a[0]).name(),bn.variable(a[1]).name())
+        edge=pydot.Edge(getZeName(bn.variable(a[0]).name()),getZeName(bn.variable(a[1]).name()))
         graph.add_edge(edge)
     graph.set_size(size)
     return IPython.display.SVG(graph.create_svg())
@@ -177,8 +179,8 @@ def getBN(bn,size="4",vals=None,cmap=INFOcmap):
 def showBN(bn,size="4",vals=None,cmap=INFOcmap):
   gr=getBN(bn,size,vals,cmap)
   IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))
-  
-  
+
+
 def normalizeVals(vals,hilightExtrema=False):
     """
     normalisation if vals is not a proba (max>1)
@@ -194,19 +196,19 @@ def normalizeVals(vals,hilightExtrema=False):
       else:
         vmi=0
         vma=1
-    
+
       return {name:vmi+(val-mi)*(vma-vmi)/(ma-mi) for name,val in vals.iteritems()}
-  
+
 def showInference(bn,ie,size="4",cmap=INFOcmap):
   """
   Shows a bn annoted with results from inference : entropy and mutual informations
   """
   vals={bn.variable(n).name():ie.H(n) for n in bn.ids()}
   gr=getBN(bn,size,normalizeVals(vals,hilightExtrema=False),cmap)
-  
+
   mi=min(vals.values())
   ma=max(vals.values())
-  
+
   fig = mpl.figure.Figure(figsize=(8,3))
   canvas = fc(fig)
   ax1 = fig.add_axes([0.05, 0.80, 0.9, 0.15])
@@ -217,7 +219,7 @@ def showInference(bn,ie,size="4",cmap=INFOcmap):
   cb1.set_label('Entropy')
   png=print_figure(canvas.figure,"png") # from IPython.core.pylabtools
   png_legend="<img style='vertical-align:middle' src='data:image/png;base64,%s'>"%encodestring(png).decode('ascii')
-    
+
   IPython.display.display(IPython.display.HTML("<div align='center'>"+
                               gr.data+
                               "</div><div align='center'>"+
@@ -225,3 +227,13 @@ def showInference(bn,ie,size="4",cmap=INFOcmap):
                               +png_legend+
                               "<font color='"+_proba2bgcolor(0.99,cmap)+"'>"+str(ma)+"</font>"
                               "</div>"))
+
+def getJunctionTree(bn,size="4"):
+  ie=gum.LazyPropagation(bn)
+  graph=pydot.graph_from_dot_data(ie.junctionTreeToDot())
+  graph.set_size(size)
+  return IPython.display.SVG(graph.create_svg())
+
+def showJunctionTree(bn,size="4"):
+  gr=getJunctionTree(bn,size)
+  IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))

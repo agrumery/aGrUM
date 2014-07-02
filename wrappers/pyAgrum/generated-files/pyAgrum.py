@@ -1900,6 +1900,36 @@ class DiGraph(_object):
         """
         return _pyAgrum.DiGraph_toDot(self, name)
 
+    def insertNode(self, *args):
+        """
+        insertNode(DiGraph self) -> gum::NodeId
+        insertNode(DiGraph self, gum::NodeId const id)
+        """
+        return _pyAgrum.DiGraph_insertNode(self, *args)
+
+    def existsNode(self, *args):
+        """existsNode(DiGraph self, gum::NodeId const id) -> bool"""
+        return _pyAgrum.DiGraph_existsNode(self, *args)
+
+    def eraseArc(self, *args):
+        """eraseArc(DiGraph self, Arc arc)"""
+        return _pyAgrum.DiGraph_eraseArc(self, *args)
+
+    def existsArc(self, *args):
+        """
+        existsArc(DiGraph self, Arc arc) -> bool
+        existsArc(DiGraph self, gum::NodeId const tail, gum::NodeId const head) -> bool
+        """
+        return _pyAgrum.DiGraph_existsArc(self, *args)
+
+    def eraseParents(self, *args):
+        """eraseParents(DiGraph self, gum::NodeId const id)"""
+        return _pyAgrum.DiGraph_eraseParents(self, *args)
+
+    def eraseChildren(self, *args):
+        """eraseChildren(DiGraph self, gum::NodeId const id)"""
+        return _pyAgrum.DiGraph_eraseChildren(self, *args)
+
 DiGraph_swigregister = _pyAgrum.DiGraph_swigregister
 DiGraph_swigregister(DiGraph)
 
@@ -1931,6 +1961,40 @@ class DAG(DiGraph):
     def insertArc(self, *args):
         """insertArc(DAG self, gum::NodeId const tail, gum::NodeId const head)"""
         return _pyAgrum.DAG_insertArc(self, *args)
+
+    def insertNode(self, *args):
+        """
+        insertNode(DAG self) -> gum::NodeId
+        insertNode(DAG self, gum::NodeId const id)
+        """
+        return _pyAgrum.DAG_insertNode(self, *args)
+
+    def eraseNode(self, *args):
+        """eraseNode(DAG self, gum::NodeId const id)"""
+        return _pyAgrum.DAG_eraseNode(self, *args)
+
+    def existsNode(self, *args):
+        """existsNode(DAG self, gum::NodeId const id) -> bool"""
+        return _pyAgrum.DAG_existsNode(self, *args)
+
+    def eraseArc(self, *args):
+        """eraseArc(DAG self, Arc arc)"""
+        return _pyAgrum.DAG_eraseArc(self, *args)
+
+    def existsArc(self, *args):
+        """
+        existsArc(DAG self, Arc arc) -> bool
+        existsArc(DAG self, gum::NodeId const tail, gum::NodeId const head) -> bool
+        """
+        return _pyAgrum.DAG_existsArc(self, *args)
+
+    def eraseParents(self, *args):
+        """eraseParents(DAG self, gum::NodeId const id)"""
+        return _pyAgrum.DAG_eraseParents(self, *args)
+
+    def eraseChildren(self, *args):
+        """eraseChildren(DAG self, gum::NodeId const id)"""
+        return _pyAgrum.DAG_eraseChildren(self, *args)
 
 DAG_swigregister = _pyAgrum.DAG_swigregister
 DAG_swigregister(DAG)
@@ -1994,6 +2058,28 @@ class UndiGraph(_object):
         """partialUndiGraph(UndiGraph self, gum::NodeSet nodesSet) -> UndiGraph"""
         return _pyAgrum.UndiGraph_partialUndiGraph(self, *args)
 
+    def insertNode(self, *args):
+        """
+        insertNode(UndiGraph self) -> gum::NodeId
+        insertNode(UndiGraph self, gum::NodeId const id)
+        """
+        return _pyAgrum.UndiGraph_insertNode(self, *args)
+
+    def existsNode(self, *args):
+        """existsNode(UndiGraph self, gum::NodeId const id) -> bool"""
+        return _pyAgrum.UndiGraph_existsNode(self, *args)
+
+    def eraseEdge(self, *args):
+        """eraseEdge(UndiGraph self, Edge edge)"""
+        return _pyAgrum.UndiGraph_eraseEdge(self, *args)
+
+    def existsEdge(self, *args):
+        """
+        existsEdge(UndiGraph self, Edge edge) -> bool
+        existsEdge(UndiGraph self, gum::NodeId const n1, gum::NodeId const n2) -> bool
+        """
+        return _pyAgrum.UndiGraph_existsEdge(self, *args)
+
 UndiGraph_swigregister = _pyAgrum.UndiGraph_swigregister
 UndiGraph_swigregister(UndiGraph)
 
@@ -2055,6 +2141,61 @@ class MixedGraph(UndiGraph,DiGraph):
     def __str__(self):
         """__str__(MixedGraph self) -> std::string const"""
         return _pyAgrum.MixedGraph___str__(self)
+
+    def insertNode(self, *args):
+        """
+        insertNode(MixedGraph self) -> gum::NodeId
+        insertNode(MixedGraph self, gum::NodeId const id)
+        """
+        return _pyAgrum.MixedGraph_insertNode(self, *args)
+
+    def existsNode(self, *args):
+        """existsNode(MixedGraph self, gum::NodeId const id) -> bool"""
+        return _pyAgrum.MixedGraph_existsNode(self, *args)
+
+    def insertEdge(self, *args):
+        """insertEdge(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2)"""
+        return _pyAgrum.MixedGraph_insertEdge(self, *args)
+
+    def eraseEdge(self, *args):
+        """eraseEdge(MixedGraph self, Edge edge)"""
+        return _pyAgrum.MixedGraph_eraseEdge(self, *args)
+
+    def existsEdge(self, *args):
+        """
+        existsEdge(MixedGraph self, Edge edge) -> bool
+        existsEdge(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2) -> bool
+        """
+        return _pyAgrum.MixedGraph_existsEdge(self, *args)
+
+    def insertArc(self, *args):
+        """insertArc(MixedGraph self, gum::NodeId const tail, gum::NodeId const head)"""
+        return _pyAgrum.MixedGraph_insertArc(self, *args)
+
+    def eraseArc(self, *args):
+        """eraseArc(MixedGraph self, Arc arc)"""
+        return _pyAgrum.MixedGraph_eraseArc(self, *args)
+
+    def existsArc(self, *args):
+        """
+        existsArc(MixedGraph self, Arc arc) -> bool
+        existsArc(MixedGraph self, gum::NodeId const tail, gum::NodeId const head) -> bool
+        """
+        return _pyAgrum.MixedGraph_existsArc(self, *args)
+
+    def eraseParents(self, *args):
+        """
+        eraseParents(MixedGraph self)
+        eraseParents(MixedGraph self, gum::NodeId const id)
+        """
+        return _pyAgrum.MixedGraph_eraseParents(self, *args)
+
+    def eraseChildren(self, *args):
+        """
+        eraseChildren(MixedGraph self)
+        eraseChildren(MixedGraph self, gum::NodeId const id)
+        """
+        return _pyAgrum.MixedGraph_eraseChildren(self, *args)
 
 MixedGraph_swigregister = _pyAgrum.MixedGraph_swigregister
 MixedGraph_swigregister(MixedGraph)
@@ -3390,6 +3531,10 @@ class LazyPropagation_double(BayesNetInference_double):
     def _fillMarginal(self, *args):
         """_fillMarginal(LazyPropagation_double self, gum::Id id, Potential_double marginal)"""
         return _pyAgrum.LazyPropagation_double__fillMarginal(self, *args)
+
+    def junctionTreeToDot(self):
+        """junctionTreeToDot(LazyPropagation_double self) -> std::string const"""
+        return _pyAgrum.LazyPropagation_double_junctionTreeToDot(self)
 
     def joint(self, *args):
         """
