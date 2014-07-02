@@ -24,22 +24,30 @@
  *
  */
 #include <cstdlib>
+
 #include <agrum/core/utils_string.h>
+
+#ifndef HAVE_MKSTEMP //mainly windows
+#warning "No mkstemp"
+#include <io.h>
+#endif
+
 
 
 namespace gum {
 
   std::string getUniqueFileName() {
-#ifdef HAVE_MKSTEMP    
+#ifdef HAVE_MKSTEMP
     char _tmpFileName[] = "fileXXXXXX";
     int fd=mkstemp ( _tmpFileName );
     close ( fd );
-#else
-    char *_tmpFileName = mktemp(const_cast<char *>("fileXXXXXX"));
+#else // mainly Windows
+    char _tmpFileName[] = "fileXXXXXX";
+    _mktemp_s ( _tmpFileName,strlen(_tmpFileName));
 #endif
 
-    return std::string(_tmpFileName);
-    
+    return std::string ( _tmpFileName );
+
   }
 
 } /* namespace gum */

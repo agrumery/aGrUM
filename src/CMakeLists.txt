@@ -41,8 +41,8 @@ endif(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
 
 include(openMP)
 
-include_directories(${AGRUM_BINARY_DIR})
-include_directories(${AGRUM_SOURCE_DIR})
+include_directories(BEFORE ${AGRUM_BINARY_DIR})
+include_directories(BEFORE ${AGRUM_SOURCE_DIR})
 link_directories(${AGRUM_BINARY_DIR}/lib)
 set(AGRUM_FILES ${AGRUM_SOURCES} ${AGRUM_C_SOURCES} ${AGRUM_INLINES} ${AGRUM_INCLUDES} ${AGRUM_TEMPLATES})
 
