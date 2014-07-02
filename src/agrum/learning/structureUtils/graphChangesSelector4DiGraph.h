@@ -165,6 +165,9 @@ namespace gum {
       /// returns the set of queues sorted by decreasing top priority
       std::vector< std::pair<unsigned int,float> > nodesSortedByBestScore () const;
       
+      /// returns the set of queues top priorities
+      std::vector< std::pair<unsigned int,float> > nodesUnsortedWithScore () const;
+      
       /// @}
 
 
