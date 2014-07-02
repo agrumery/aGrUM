@@ -21,6 +21,7 @@
 // ==============================================================================
 #include <iostream>
 #include <string>
+#include <stdarg.h>
 // ==============================================================================
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
@@ -38,70 +39,100 @@ namespace gum_tests {
     private :
       std::string file;
 
-      void run ( const std::string showSaveFile ) {
+      void run ( const std::string showSaveFile, gum::Idx nbVar, ... ) {
 
         std::cout << "" << std::endl;
 
+        // *********************************************************************************************
+        // Chargement du fmdp servant de base
+        // *********************************************************************************************
         gum::FactoredMarkovDecisionProcess<double> fmdp(true);
         gum::FMDPDatReader<double> reader ( &fmdp, file );
         TS_GUM_ASSERT_THROWS_NOTHING ( reader.trace ( false ) );
         TS_GUM_ASSERT_THROWS_NOTHING ( reader.proceed( ) );
 
-//        std::cout << fmdp.show() << std::endl;
+        // *********************************************************************************************
+        // Initialisation des divers objets
+        // *********************************************************************************************
         gum::Simulator sim(&fmdp);
-        gum::Instantiation initialState;
-
         gum::SPIMDDI<double> spim;
+        gum::Instantiation initialState, endState;
 
+        // Enregistrement des actions possibles auprès de SPIMDDI
+        for( auto actionIter = fmdp.beginActions(); actionIter != fmdp.endActions(); ++actionIter)
+            spim.addAction( *actionIter, fmdp.actionName(*actionIter));
+
+        // Enregistrement des variables caractérisant les états auprès de SPIMDDI
         for(auto varIter = fmdp.beginVariables(); varIter != fmdp.endVariables(); ++varIter){
             spim.addVariable(*varIter);
             initialState.add(**varIter);
         }
 
-        for( auto actionIter = fmdp.beginActions(); actionIter != fmdp.endActions(); ++actionIter)
-            spim.addAction( *actionIter, fmdp.actionName(*actionIter));
+        // Récupération des caractéristiques d'états finaux
+        va_list ap;
+        va_start(ap, nbVar);
+        for(gum::Idx nbArg = 0; nbArg < nbVar; ++nbArg){
+            std::string varName( va_arg(ap, char*) );
+            std::string varModa( va_arg(ap, char*) );
 
-        const gum::MultiDimDecisionGraph<double>* reward = reinterpret_cast<const gum::MultiDimDecisionGraph<double>*>(fmdp.reward());
-        for( auto rewardIter = reward->values().beginSafe(); rewardIter != reward->values().endSafe(); ++rewardIter){
-            spim.addReward(rewardIter.second());
+            const gum::DiscreteVariable* varPtr = nullptr;
+            for(auto varIter = fmdp.beginVariables(); varIter != fmdp.endVariables(); ++varIter)
+                if(!varName.compare( (*varIter)->name())){
+                    varPtr= *varIter;
+                    break;
+                }
+
+            endState.add(*varPtr);
+
+            gum::Idx varModaIdx = 0;
+            for(gum::Idx varm = 0; varm < varPtr->domainSize(); ++varm)
+                if(!varModa.compare( varPtr->label(varm))){
+                    varModaIdx = varm;
+                    break;
+                }
+            endState.chgVal(*varPtr, varModaIdx);
         }
+        va_end(ap);
 
-        initialState.setFirst();
-        TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialState(initialState); );
-        TS_GUM_ASSERT_THROWS_NOTHING ( spim.initialize(initialState) );
+        // Création de la variables récompenses (to be deprecated)
+        const gum::MultiDimDecisionGraph<double>* reward = reinterpret_cast<const gum::MultiDimDecisionGraph<double>*>(fmdp.reward());
+        for( auto rewardIter = reward->values().beginSafe(); rewardIter != reward->values().endSafe(); ++rewardIter)
+            spim.addReward(rewardIter.second());
+
+        // Ouverture du fichier de sauvegarde des données
+        std::ofstream __traceAlgoSaveFile;
+        __traceAlgoSaveFile.open ( GET_PATH_STR ( "FMDP/SPIMDDIVALUATION/" + showSaveFile ), std::ios::out | std::ios::trunc );
+        if ( !__traceAlgoSaveFile )
+          return;
+
+//        initialState.setFirst();
+//        TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialState(initialState) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( sim.setEndState(endState) );
+//        TS_GUM_ASSERT_THROWS_NOTHING ( spim.initialize(initialState) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( spim.initialize() );
 
         std::cout << initialState.toString() << std::endl;
-        for( gum::Idx nbIter = 0; nbIter < 10000; ++nbIter){
+        for( gum::Idx nbRun = 0; nbRun < 250; ++nbRun ){
 
-            gum::Idx actionChosenId = spim.askForAction();
-            std::cout << "Action : " << fmdp.actionName(actionChosenId) << std::endl;
-            sim.perform( actionChosenId );
-            std::cout << sim.currentState().toString() << std::endl;
+            std::cout << "###############################################" << std::endl;
 
-            spim.feedback(sim.currentState(), sim.reward());
+            TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialStateRandomly() );
+            TS_GUM_ASSERT_THROWS_NOTHING ( spim.setCurrentState(sim.currentState()) );
+
+
+            while(!sim.hasReachEnd()){
+                gum::Idx actionChosenId = spim.takeAction();
+                std::cout << "Trajectoire : " << nbRun << " - Action : " << fmdp.actionName(actionChosenId) << std::endl;
+                sim.perform( actionChosenId );
+                std::cout << "\t" << sim.currentState().toString() << std::endl;
+
+                spim.feedback(sim.currentState(), sim.reward());
+            }
         }
 
+        __traceAlgoSaveFile.close();
 
-//        for( gum::Idx i= 0; i < 100; i++){
-
-//            for(initialState.setFirst();!initialState.end(); initialState.inc() ){
-
-
-//                TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialState(initialState); );
-//                TS_GUM_ASSERT_THROWS_NOTHING ( spim.setCurrentState(initialState) );
-
-//                std::cout << initialState.toString() << std::endl;
-//                for( gum::Idx nbIter = 0; nbIter < 100; ++nbIter){
-
-//                    gum::Idx actionChosenId = spim.askForAction();
-//                    std::cout << "Action : " << fmdp.actionName(actionChosenId) << std::endl;
-//                    sim.perform( actionChosenId );
-//                    std::cout << sim.currentState().toString() << std::endl;
-//                    std::cout << "Obtained Reward : " << sim.reward() << std::endl;
-//                    spim.feedback(sim.currentState(), sim.reward());
-//                }
-//            }
-//        }
+        std::cout << spim.toString() << std::endl;
 
       }
 
@@ -109,7 +140,9 @@ namespace gum_tests {
 
       void test_Coffee() {
         file = GET_PATH_STR ( "FMDP/coffee/coffee.dat" );
-        run ( "Coffee" );
+        std::string varName("huc");
+        std::string varModa("yes");
+        run ( "Coffee", 1, varName.c_str(), varModa.c_str() );
       }
 
   };

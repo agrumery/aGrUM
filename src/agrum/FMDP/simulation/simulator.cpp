@@ -51,9 +51,31 @@ namespace gum {
           GUM_DESTRUCTOR(Simulator)
       }
 
+
     // ===========================================================================
     //
     // ===========================================================================
+
+      ///
+      void Simulator::setInitialStateRandomly() {
+
+          do{
+              __currentState.clear();
+              for(auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter){
+                  __currentState.add(**varIter);
+                  __currentState.chgVal(*varIter,  (Idx)(((double)std::rand( ) / (double)RAND_MAX) * (*varIter)->domainSize()));
+              }
+          }while(hasReachEnd());
+      }
+
+      ///
+      bool Simulator::hasReachEnd(){
+
+          for(auto varIter = __endState.variablesSequence().beginSafe(); varIter != __endState.variablesSequence().endSafe(); ++varIter)
+              if(__endState.val(**varIter) != __currentState.val(**varIter))
+                  return false;
+          return true;
+      }
 
       ///
       void Simulator::perform( Idx actionId ){

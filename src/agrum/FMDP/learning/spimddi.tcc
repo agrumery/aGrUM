@@ -74,11 +74,6 @@ namespace gum {
         template<typename GUM_SCALAR>
         SPIMDDI<GUM_SCALAR>::~SPIMDDI (){
 
-            std::cout << __fmdp->show() << std::endl;
-            std::cout << __planer->optimalPolicy()->toDot() << std::endl;
-            for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter)
-                std::cout << *actionIter << " - " << __fmdp->actionName(*actionIter) <<std::endl;
-
             delete __learner;
 
             for(auto obsIter = __bin.beginSafe(); obsIter != __bin.endSafe(); ++obsIter)
@@ -127,8 +122,16 @@ namespace gum {
         // ###################################################################
         template<typename GUM_SCALAR>
         void SPIMDDI<GUM_SCALAR>::initialize( const Instantiation& initialState ){
-
+            initialize();
             setCurrentState( initialState );
+        }
+
+        // ###################################################################
+        //
+        // ###################################################################
+        template<typename GUM_SCALAR>
+        void SPIMDDI<GUM_SCALAR>::initialize(  ){
+
             __learner->addReward(__rewardVar);
             __learner->initialize();
             __planer->initialize();
@@ -167,7 +170,7 @@ namespace gum {
         //
         // ###################################################################
         template<typename GUM_SCALAR>
-        Idx SPIMDDI<GUM_SCALAR>::askForAction( ){
+        Idx SPIMDDI<GUM_SCALAR>::takeAction( ){
 
             srand( __timey + __offset++ );
 
@@ -182,5 +185,24 @@ namespace gum {
             return __lastAction;
         }
 
+        // ###################################################################
+        //
+        // ###################################################################
+        template<typename GUM_SCALAR>
+        std::string SPIMDDI<GUM_SCALAR>::toString( ){
+
+            std::stringstream description;
+
+            description << __fmdp->show() << std::endl;
+
+            if(__planer->optimalPolicy() )
+                description << __planer->optimalPolicy()->toDot() << std::endl;
+
+            for( auto actionIter = __fmdp->beginActions(); actionIter != __fmdp->endActions(); ++actionIter)
+                description << *actionIter << " - " << __fmdp->actionName(*actionIter) <<std::endl;
+
+            return description.str();
+
+        }
 
 } // End of namespace gum

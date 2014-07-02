@@ -67,8 +67,17 @@ namespace gum {
       // ===========================================================================
       /// @{
 
-        ///
+        /// Sets the intial statefrom which we begun the simulation
         INLINE void setInitialState( const Instantiation& initialState ) { __currentState = initialState; }
+
+        /// Choses a random state as the first test for a run
+        void setInitialStateRandomly();
+
+        /// Sets the final states upon which a run is over
+        INLINE void setEndState( const Instantiation& endState ) { __endState = endState; }
+
+        /// Tests if end state has been reached
+        bool hasReachEnd();
 
         ///
         INLINE const Instantiation& currentState() { return __currentState; }
@@ -87,7 +96,7 @@ namespace gum {
       const FactoredMarkovDecisionProcess<double>* __fmdp;
 
       /// Tha state in which the system currently is
-      Instantiation __currentState;
+      Instantiation __currentState, __endState;
   };
 
 } /* namespace gum */

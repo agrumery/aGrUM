@@ -26,6 +26,8 @@
  *
  */
 // ============================================================================
+#include <assert.h>
+// ============================================================================
 #include <agrum/core/smallobjectallocator/fixedAllocator.h>
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // ============================================================================
@@ -39,13 +41,13 @@ namespace gum {
  * These chuncks are pre-allocated memory space which are
  * then split in small memory space of the size of a small object
  */
-const size_t SmallObjectAllocator::GUM_DEFAULT_CHUNK_SIZE = 8096;
+//const size_t SmallObjectAllocator::GUM_DEFAULT_CHUNK_SIZE = 8096;
 
 /*
  * @variable The default maximal size under which an object is considered small.
  * If an object size is over this limit, the normal new allocator is called.
  */
-const size_t SmallObjectAllocator::GUM_DEFAULT_MAX_OBJECT_SIZE = 512;
+//const size_t SmallObjectAllocator::GUM_DEFAULT_MAX_OBJECT_SIZE = 512;
 
   // ############################################################################
   // @name Constructors / Destructors
@@ -84,6 +86,9 @@ const size_t SmallObjectAllocator::GUM_DEFAULT_MAX_OBJECT_SIZE = 512;
     // Allocates an object
     // ============================================================================
     INLINE void* SmallObjectAllocator::allocate(const std::size_t& objectSize){
+
+      assert(objectSize > 0 && "Small Object Allocator called for an object of size equals to 0");
+
       // If objectSize is greater than maxObjectSize, normal new is called
       if( objectSize > __maxObjectSize )
           return new unsigned char[objectSize];
@@ -108,6 +113,9 @@ const size_t SmallObjectAllocator::GUM_DEFAULT_MAX_OBJECT_SIZE = 512;
     // @param objectSize is the size of that object (useful for faster deallocation)
     // ============================================================================
     INLINE void SmallObjectAllocator::deallocate(void* pDeallocatedObject, const std::size_t &objectSize){
+
+      assert(objectSize > 0 && "Small Object Allocator called for an object of size equals to 0");
+
 //      std::cout << "Deallocating " << pDeallocatedObject << std::endl;
       __pool[objectSize]->deallocate(pDeallocatedObject);
       nbDeallocation++;
