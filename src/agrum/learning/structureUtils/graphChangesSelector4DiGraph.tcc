@@ -278,6 +278,11 @@ namespace gum {
       }
 
       __constraint->setGraph ( graph );
+      if ( reinterpret_cast<STRUCTURAL_CONSTRAINT*>
+           ( &( __changes_generator->constraint () ) ) != __constraint ) {
+        __changes_generator->constraint ().setGraph ( graph );
+      }
+
       __changes_generator->setGraph ( graph );
 
       // save the set of parents of each node (this will speed-up the
@@ -692,7 +697,12 @@ namespace gum {
 
           // inform the constraint that the graph has been modified
           __constraint->modifyGraph ( static_cast<const ArcAddition&> ( change ) );
-
+          if ( reinterpret_cast<STRUCTURAL_CONSTRAINT*>
+               ( &( __changes_generator->constraint () ) ) != __constraint ) {
+            __changes_generator->constraint ().modifyGraph
+              ( static_cast<const ArcAddition&> ( change ) );
+          }
+          
           // get new possible changes from the graph change generator
           // warning: put the next 3 lines before calling __illegal2LegalChanges
           __changes_generator->modifyGraph
@@ -723,6 +733,11 @@ namespace gum {
           
           // inform the constraint that the graph has been modified
           __constraint->modifyGraph ( static_cast<const ArcDeletion&> ( change ) );
+          if ( reinterpret_cast<STRUCTURAL_CONSTRAINT*>
+               ( &( __changes_generator->constraint () ) ) != __constraint ) {
+            __changes_generator->constraint ().modifyGraph
+              ( static_cast<const ArcDeletion&> ( change ) );
+          }
 
           // get new possible changes from the graph change generator
           // warning: put the next 3 lines before calling __illegal2LegalChanges
@@ -757,6 +772,11 @@ namespace gum {
 
           // inform the constraint that the graph has been modified
           __constraint->modifyGraph ( static_cast<const ArcReversal&> ( change ) );
+          if ( reinterpret_cast<STRUCTURAL_CONSTRAINT*>
+               ( &( __changes_generator->constraint () ) ) != __constraint ) {
+            __changes_generator->constraint ().modifyGraph
+              ( static_cast<const ArcReversal&> ( change ) );
+          }
 
           // get new possible changes from the graph change generator
           // warning: put the next 3 lines before calling __illegal2LegalChanges
@@ -803,6 +823,11 @@ namespace gum {
 
           // inform the constraint that the graph has been modified
           __constraint->modifyGraph ( static_cast<const ArcAddition&> ( change ) );
+          if ( reinterpret_cast<STRUCTURAL_CONSTRAINT*>
+               ( &( __changes_generator->constraint () ) ) != __constraint ) {
+            __changes_generator->constraint ().modifyGraph
+              ( static_cast<const ArcAddition&> ( change ) );
+          }
 
           // get new possible changes from the graph change generator
           // warning: put the next 3 lines before calling __illegal2LegalChanges
@@ -835,6 +860,11 @@ namespace gum {
           // inform the constraint that the graph has been modified
           __constraint->modifyGraph
             ( static_cast<const ArcDeletion&> ( change ) );
+          if ( reinterpret_cast<STRUCTURAL_CONSTRAINT*>
+               ( &( __changes_generator->constraint () ) ) != __constraint ) {
+            __changes_generator->constraint ().modifyGraph
+              ( static_cast<const ArcDeletion&> ( change ) );
+          }
           
           // get new possible changes from the graph change generator
           // warning: put the next 3 lines before calling __illegal2LegalChanges
@@ -869,6 +899,11 @@ namespace gum {
 
           // inform the constraint that the graph has been modified
           __constraint->modifyGraph ( static_cast<const ArcReversal&> ( change ) );
+          if ( reinterpret_cast<STRUCTURAL_CONSTRAINT*>
+               ( &( __changes_generator->constraint () ) ) != __constraint ) {
+            __changes_generator->constraint ().modifyGraph
+              ( static_cast<const ArcReversal&> ( change ) );
+          }
 
           // get new possible changes from the graph change generator
           // warning: put the next 3 lines before calling __illegal2LegalChanges

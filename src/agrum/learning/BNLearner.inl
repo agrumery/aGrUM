@@ -120,6 +120,24 @@ namespace gum {
       }
     }
 
+    
+    /// assign a set of forbidden arcs
+    INLINE void BNLearner::setForbiddenArcs ( const ArcSet& set ) {
+      __constraint_ForbiddenArcs.setForbiddenArcs ( set );
+    }
+
+    
+    /// assign a new forbidden arc
+    INLINE void BNLearner::addForbiddenArc ( const Arc& arc ) {
+      __constraint_ForbiddenArcs.addForbiddenArc ( arc );
+    }
+
+
+    /// remove a forbidden arc
+    INLINE void BNLearner::eraseForbiddenArc ( const Arc& arc ) {
+      __constraint_ForbiddenArcs.eraseForbiddenArc ( arc );
+    }
+
 
   } /* namespace learning */
   

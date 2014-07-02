@@ -116,22 +116,30 @@ namespace gum {
       // ========================================================================
       case AlgoType::GREEDY_HILL_CLIMBING:
         {
-          StructuralConstraintSetStatic<StructuralConstraint2TimeSlice,
+          StructuralConstraintSetStatic<StructuralConstraintForbiddenArcs,
+                                        StructuralConstraint2TimeSlice,
                                         StructuralConstraintIndegree,
-                                        StructuralConstraintDAG> constraint;
-          static_cast<StructuralConstraint2TimeSlice&> ( constraint ) =
+                                        StructuralConstraintDAG> gen_constraint;
+          static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
+            __constraint_ForbiddenArcs;
+          static_cast<StructuralConstraint2TimeSlice&> ( gen_constraint ) =
             __constraint_2TimeSlice;
-          static_cast<StructuralConstraintIndegree&> ( constraint ) =
+          static_cast<StructuralConstraintIndegree&> ( gen_constraint ) =
             __constraint_Indegree;
                          
-          GraphChangesGenerator4DiGraph< decltype ( constraint ) >
-            op_set ( constraint );
+          GraphChangesGenerator4DiGraph< decltype ( gen_constraint ) >
+            op_set ( gen_constraint );
         
+          StructuralConstraintSetStatic<StructuralConstraintIndegree,
+                                        StructuralConstraintDAG> sel_constraint;
+          static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
+            __constraint_Indegree;
+          
           GraphChangesSelector4DiGraph< Score<>,
-                                        decltype ( constraint ),
+                                        decltype ( sel_constraint ),
                                         decltype ( op_set ) >
-            selector ( *__score, constraint, op_set );
-
+            selector ( *__score, sel_constraint, op_set );
+                         
           return __greedy_hill_climbing.learnStructure ( selector, modal,
                                                          __initial_dag );
         }
@@ -139,24 +147,32 @@ namespace gum {
        // ========================================================================
        case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST:
         {
-          StructuralConstraintSetStatic<StructuralConstraint2TimeSlice,
-                                        StructuralConstraintTabuList,
+          StructuralConstraintSetStatic<StructuralConstraintForbiddenArcs,
+                                        StructuralConstraint2TimeSlice,
                                         StructuralConstraintIndegree,
-                                        StructuralConstraintDAG> constraint;
-          static_cast<StructuralConstraint2TimeSlice&> ( constraint ) =
+                                        StructuralConstraintDAG> gen_constraint;
+          static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
+            __constraint_ForbiddenArcs;
+          static_cast<StructuralConstraint2TimeSlice&> ( gen_constraint ) =
             __constraint_2TimeSlice;
-          static_cast<StructuralConstraintTabuList&> ( constraint ) =
-            __constraint_TabuList;
-          static_cast<StructuralConstraintIndegree&> ( constraint ) =
+          static_cast<StructuralConstraintIndegree&> ( gen_constraint ) =
             __constraint_Indegree;
           
-          GraphChangesGenerator4DiGraph< decltype ( constraint ) >
-            op_set ( constraint );
+          GraphChangesGenerator4DiGraph< decltype ( gen_constraint ) >
+            op_set ( gen_constraint );
+          
+          StructuralConstraintSetStatic<StructuralConstraintTabuList,
+                                        StructuralConstraintIndegree,
+                                        StructuralConstraintDAG> sel_constraint;
+          static_cast<StructuralConstraintTabuList&> ( sel_constraint ) =
+            __constraint_TabuList;
+          static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
+            __constraint_Indegree;
           
           GraphChangesSelector4DiGraph< Score<>,
-                                        decltype ( constraint ),
+                                        decltype ( sel_constraint ),
                                         decltype ( op_set ) >
-            selector ( *__score, constraint, op_set );
+            selector ( *__score, sel_constraint, op_set );
           
           return __local_search_with_tabu_list.learnStructure ( selector, modal,
                                                                 __initial_dag );
@@ -165,22 +181,32 @@ namespace gum {
       // ========================================================================
       case AlgoType::K2:
         {
-          StructuralConstraintSetStatic<StructuralConstraint2TimeSlice,
+          StructuralConstraintSetStatic<StructuralConstraintForbiddenArcs,
+                                        StructuralConstraint2TimeSlice,
                                         StructuralConstraintIndegree,
-                                        StructuralConstraintDiGraph> constraint;
-          static_cast<StructuralConstraint2TimeSlice&> ( constraint ) =
+                                        StructuralConstraintDiGraph>
+            gen_constraint;
+          static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
+            __constraint_ForbiddenArcs;
+          static_cast<StructuralConstraint2TimeSlice&> ( gen_constraint ) =
             __constraint_2TimeSlice;
-          static_cast<StructuralConstraintIndegree&> ( constraint ) =
+          static_cast<StructuralConstraintIndegree&> ( gen_constraint ) =
             __constraint_Indegree;
                          
-          GraphChangesGenerator4K2< decltype ( constraint ) >
-            op_set ( constraint );
+          GraphChangesGenerator4K2< decltype ( gen_constraint ) >
+            op_set ( gen_constraint );
           op_set.setOrder ( __order );
         
+          StructuralConstraintSetStatic<StructuralConstraintIndegree,
+                                        StructuralConstraintDiGraph>
+            sel_constraint;
+          static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
+            __constraint_Indegree;
+          
           GraphChangesSelector4DiGraph< Score<>,
-                                        decltype ( constraint ),
+                                        decltype ( sel_constraint ),
                                         decltype ( op_set ) >
-            selector ( *__score, constraint, op_set );
+            selector ( *__score, sel_constraint, op_set );
 
           return __greedy_hill_climbing.learnStructure ( selector, modal,
                                                          __initial_dag );

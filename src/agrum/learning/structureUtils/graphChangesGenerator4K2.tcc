@@ -113,7 +113,7 @@ namespace gum {
     template <typename STRUCT_CONSTRAINT>
     void GraphChangesGenerator4K2<STRUCT_CONSTRAINT>::_createChanges () {
       _legal_changes.clear ();
-      
+
       // for all the pairs of nodes, consider adding, reverse and removing arcs 
       std::vector< Set<GraphChange> > legal_changes;
       #pragma omp parallel num_threads ( __max_threads_number )
@@ -161,16 +161,18 @@ namespace gum {
       // sets the current graph
       _graph = graph;
 
-      // cheack that all the nodes belong to the sequence, else add them in
-      // increasing nodeid
-      Sequence<NodeId> new_nodes;
-      for ( const auto node : graph ) {
-        if ( ! _order.exists ( node ) ) {
-          new_nodes.insert ( node );
+      // check that all the nodes of the graph belong to the sequence.
+      // If some are missing, add them in increasing order into the sequence.
+      // If some element of _order do not belong to the graph, remove them
+      for ( auto node = _order.beginSafe (); node != _order.endSafe (); ++node ) {
+        if ( ! graph.exists ( *node ) ) {
+          _order.erase ( node );
         }
       }
-      for ( const auto node : new_nodes ) {
-        _order.insert ( node );
+      for ( const auto node : graph ) {
+        if ( ! _order.exists ( node ) ) {
+          _order.insert ( node );
+        }
       }
 
       // generate the set of all changes
@@ -269,6 +271,14 @@ namespace gum {
       #else
         __max_threads_number = 1;
       #endif /* _OPENMP && NDEBUG */
+    }
+
+    
+    /// returns the constraint that is used by the generator
+    template <typename STRUCT_CONSTRAINT> INLINE
+    STRUCT_CONSTRAINT&
+    GraphChangesGenerator4K2<STRUCT_CONSTRAINT>::constraint () const noexcept {
+      return *_constraint;
     }
  
   

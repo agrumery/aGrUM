@@ -38,6 +38,9 @@ namespace gum_tests {
       learner.useScoreK2 ();
       learner.useK2 ();
       learner.setOrder ( std::vector<gum::NodeId> { 6, 5, 4 } );
+      learner.addForbiddenArc ( gum::Arc (4,3) );
+      learner.addForbiddenArc ( gum::Arc (5,1) );
+      learner.addForbiddenArc ( gum::Arc (5,7) );
 
       gum::Timer timer;
       gum::BayesNet<float> bn = learner.learnBN ( GET_PATH_STR( "asia.csv" ) );

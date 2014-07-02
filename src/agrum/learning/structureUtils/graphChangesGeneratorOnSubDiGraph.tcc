@@ -311,7 +311,16 @@ namespace gum {
         __max_threads_number = 1;
       #endif /* _OPENMP && NDEBUG */
     }
- 
+    
+     
+    /// returns the constraint that is used by the generator
+    template <typename STRUCT_CONSTRAINT> INLINE
+    STRUCT_CONSTRAINT&
+    GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::constraint ()
+      const noexcept {
+      return *_constraint;
+    }
+
   
   } /* namespace learning */
   

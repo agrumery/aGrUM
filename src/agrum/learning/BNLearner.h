@@ -50,6 +50,7 @@
 #include <agrum/learning/constraints/structuralConstraintIndegree.h>
 #include <agrum/learning/constraints/structuralConstraint2TimeSlice.h>
 #include <agrum/learning/constraints/structuralConstraintTabuList.h>
+#include <agrum/learning/constraints/structuralConstraintForbiddenArcs.h>
 #include <agrum/learning/constraints/structuralConstraintSetStatic.h>
 
 #include <agrum/learning/structureUtils/graphChange.h>
@@ -202,7 +203,7 @@ namespace gum {
 
 
       // ##########################################################################
-      /// @name Accessors / Modifiers specific for constraints
+      /// @name Accessors / Modifiers for adding constraints on learning
       // ##########################################################################
       /// @{
 
@@ -210,16 +211,17 @@ namespace gum {
       void setMaxIndegree ( unsigned int max_indegree );
 
       /// sets the slices of a 2TBN
-      //void 
-      
-      /// @}
-      
+      //void
 
-      // ##########################################################################
-      /// @name Accessors / Modifiers specific for learning algorithms
-      // ##########################################################################
-      /// @{
+      /// assign a set of forbidden arcs
+      void setForbiddenArcs ( const ArcSet& set );
 
+      /// assign a new forbidden arc
+      void addForbiddenArc ( const Arc& arc );
+
+      /// remove a forbidden arc
+      void eraseForbiddenArc ( const Arc& arc );
+      
       /** @bried set the max number of changes decreasing the score that we
        * allow to apply in LocalSearchWithTabuList */
       void setMaxNbDecreasingChanges ( unsigned int nb );
@@ -255,6 +257,9 @@ namespace gum {
 
       /// the constraint for tabu lists
       StructuralConstraintTabuList __constraint_TabuList;
+
+      /// the constraint on forbidden arcs
+      StructuralConstraintForbiddenArcs __constraint_ForbiddenArcs;
 
       /// the selected learning algorithm
       AlgoType __selected_algo { AlgoType::GREEDY_HILL_CLIMBING };

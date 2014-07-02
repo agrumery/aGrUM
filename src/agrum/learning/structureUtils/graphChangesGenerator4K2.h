@@ -184,6 +184,9 @@ namespace gum {
       // ##########################################################################
       /// @{
 
+      /// returns the constraint that is used by the generator
+      STRUCT_CONSTRAINT& constraint () const noexcept;
+
       /// sets a new graph from which the operator will compute possible changes
       void setGraph ( const DiGraph& graph );
 
