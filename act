@@ -98,7 +98,7 @@ def prettifying(line):
 
   if line=="":
     return ""
-  
+
   # prettifying compilation
   s=line.split("%]")
 
@@ -137,7 +137,7 @@ def prettifying(line):
     else: # test pyAgrum
       s=line.split(" ... ")
       if len(s)==2:
-        res+=OKGREEN+s[0]+ENDC+" ... "+WARNING+"OK"+ENDC
+        res+=OKGREEN+s[0]+ENDC+" ... "+WARNING+"OK   "+ENDC
       else: # end of test execution
         s=line.split("##")
         if len(s)==3:
@@ -145,9 +145,15 @@ def prettifying(line):
         elif line[0:6]=="Failed":
           res+="Failed "+WARNING+line[7:]+ENDC
         elif line[0:6]=="Succes":
-          res+="Success rate: "+WARNING+line[14:]+ENDC
+          res+="Success rate: "+WARNING+line[14:]+ENDC         
+        elif line[-11:]=="<--- failed":
+          res=line[0:-11]+ERROR+"<--- failed"+ENDC
         else:
-          res=line
+          s=line.split("Memory leaks found")
+          if len(s)==2:
+            res=s[0]+ERROR+"Memory leaks found"+ENDC+s[1]
+          else:
+            res=line
 
   return res.rstrip()
 
@@ -194,11 +200,11 @@ def threaded_execution(cde,verbose):
   Pump(serr, 'stderr')
 
   waiter = "|/-\\"
-  w_pos=0  
-  lastline = ""  
+  w_pos=0
+  lastline = ""
 
   def readerLoop(lastline):
-    chan,lines = inp.get( True,timeout = 0.1)    
+    chan,lines = inp.get( True,timeout = 0.1)
     if chan=='stdout' and lines is not None:
       lines=(lastline+lines).split("\n")
       for i in range(len(lines)-1):
@@ -212,19 +218,17 @@ def threaded_execution(cde,verbose):
       lines=lines.split("\n")
       for line in lines:
         if line!="":
-          print(ERROR+line+ENDC)          
-    return lastline      
-  
+          print(ERROR+line+ENDC)
+    return lastline
+
   while p.poll() is None:
     # App still working
     try:
       lastline=readerLoop(lastline)
     except Empty:
       print(waiter[w_pos]+"\b",end="")
-      w_pos=(w_pos+1)%len(waiter)
       sys.stdout.flush()
-      
-  readerLoop(lastline)
+      w_pos=(w_pos+1)%len(waiter)
 
   return p.returncode
 

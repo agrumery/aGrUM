@@ -11,8 +11,8 @@ from pyAgrumTestSuite import pyAgrumTestCase
 class VariablesTestCase(pyAgrumTestCase):
 
     def setUp(self):
-        self.varL1 = gum.LabelizedVar("var1", "1")
-        self.varL2 = gum.LabelizedVar( "var2", "2", 5 )
+        self.varL1 = gum.LabelizedVariable("var1", "1")
+        self.varL2 = gum.LabelizedVariable( "var2", "2", 5 )
 
 
     def tearDown(self):
@@ -20,7 +20,7 @@ class VariablesTestCase(pyAgrumTestCase):
 
 
 
-class TestDiscreteVar(VariablesTestCase):
+class TestDiscreteVariable(VariablesTestCase):
 
     def testLabelizedVarCopy(self):
         self.varL1.addLabel("coucou")
@@ -31,14 +31,14 @@ class TestDiscreteVar(VariablesTestCase):
 
 
 
-class TestLabelizedVar(VariablesTestCase):
+class TestLabelizedVariable(VariablesTestCase):
 
     def testCopyConstructor(self):
-        var = gum.LabelizedVar(self.varL1)
+        var = gum.LabelizedVariable(self.varL1)
 
 
     def testPythonListComprehension(self):
-        c, s, r, w = [ gum.LabelizedVar(name, name, 2) \
+        c, s, r, w = [ gum.LabelizedVariable(name, name, 2) \
                        for name in 'c s r w'.split() ]
         for var, name in zip([c, s, r, w], 'c s r w'.split()):
             self.assertEqual(var.name(), name)
@@ -47,7 +47,7 @@ class TestLabelizedVar(VariablesTestCase):
 
 
     def testLabels(self):
-        gum.LabelizedVar('a', '', 0).addLabel('a1').addLabel('a2')\
+        gum.LabelizedVariable('a', '', 0).addLabel('a1').addLabel('a2')\
                                 .addLabel('a3').addLabel('a4')\
                                 .addLabel('a5').addLabel('a6')
         self.assertEqual(len(self.varL2), 5)
@@ -65,20 +65,20 @@ class TestLabelizedVar(VariablesTestCase):
 
 
 
-class TestRangeVar(VariablesTestCase):
+class TestRangeVariable(VariablesTestCase):
 
     def testCopyConstructor(self):
-        var1 = gum.RangeVar("var 1", "this is var 1")
-        var2 = gum.RangeVar("var 2", "this is var 2", 1, 4)
+        var1 = gum.RangeVariable("var 1", "this is var 1")
+        var2 = gum.RangeVariable("var 2", "this is var 2", 1, 4)
 
-        var3 = gum.RangeVar(var1)
+        var3 = gum.RangeVariable(var1)
         self.assertEqual(var3.minVal(), var1.minVal())
         self.assertEqual(var3.maxVal(), var1.maxVal())
         self.assertNotEqual(var1.maxVal(), var2.maxVal())
 
 
     def testLabels(self):
-        var1 = gum.RangeVar("var 1", "this is var 1")
+        var1 = gum.RangeVariable("var 1", "this is var 1")
         self.assertEqual(len(var1), 2)
         self.assertFalse(var1.empty())
 
@@ -103,14 +103,12 @@ class TestRangeVar(VariablesTestCase):
 
 
 
-class TestDiscretizedVar(VariablesTestCase):
+class TestDiscretizedVariable(VariablesTestCase):
 
     def testAddTicks(self):
-        gum.DiscretizedVar('a', '').addTick(0.5).addTick(5.9)\
-                               .addTick(5.99).addTick(0.1)\
-                               .addTick(0.23).addTick(12)
+        gum.DiscretizedVariable('a', '').addTick(0.5).addTick(5.9).addTick(5.99).addTick(0.1).addTick(0.23).addTick(12)
 
-        var = gum.DiscretizedVar("var", "test var")
+        var = gum.DiscretizedVariable("var", "test var")
 
         self.assertTrue(var.empty())
         self.assertEqual(len(var), 0)
@@ -129,7 +127,7 @@ class TestDiscretizedVar(VariablesTestCase):
 
 
     def testNormalLimits(self):
-        var = gum.DiscretizedVar("var", "test var")
+        var = gum.DiscretizedVariable("var", "test var")
 
         var.addTick(2.1).addTick(2.5).addTick(2.3).addTick(2.7)
         self.assertEqual(str(var), "var<[2.1;2.3[,[2.3;2.5[,[2.5;2.7]>")
@@ -146,7 +144,7 @@ class TestDiscretizedVar(VariablesTestCase):
 
 
     def toto(self, i, j, k, l, m, n):
-        var = gum.DiscretizedVar("var", "test var")
+        var = gum.DiscretizedVariable("var", "test var")
         var.addTick(i).addTick(j).addTick(k).addTick(l).addTick(m).addTick(n)
         self.assertEqual(len(var), 5);
         self.assertEqual(str(var), "var<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>")
@@ -165,14 +163,14 @@ class TestDiscretizedVar(VariablesTestCase):
 
 
 ts = unittest.TestSuite()
-ts.addTest(TestDiscreteVar('testLabelizedVarCopy'))
-ts.addTest(TestLabelizedVar('testCopyConstructor'))
-ts.addTest(TestLabelizedVar('testPythonListComprehension'))
-ts.addTest(TestLabelizedVar('testLabels'))
-ts.addTest(TestLabelizedVar('testEraseLabels'))
-ts.addTest(TestRangeVar('testCopyConstructor'))
-ts.addTest(TestRangeVar('testLabels'))
-ts.addTest(TestRangeVar('testEraseLabels'))
-ts.addTest(TestDiscretizedVar('testAddTicks'))
-ts.addTest(TestDiscretizedVar('testNormalLimits'))
-ts.addTest(TestDiscretizedVar('testOrderTicks'))
+ts.addTest(TestDiscreteVariable('testLabelizedVarCopy'))
+ts.addTest(TestLabelizedVariable('testCopyConstructor'))
+ts.addTest(TestLabelizedVariable('testPythonListComprehension'))
+ts.addTest(TestLabelizedVariable('testLabels'))
+ts.addTest(TestLabelizedVariable('testEraseLabels'))
+ts.addTest(TestRangeVariable('testCopyConstructor'))
+ts.addTest(TestRangeVariable('testLabels'))
+ts.addTest(TestRangeVariable('testEraseLabels'))
+ts.addTest(TestDiscretizedVariable('testAddTicks'))
+ts.addTest(TestDiscretizedVariable('testNormalLimits'))
+ts.addTest(TestDiscretizedVariable('testOrderTicks'))

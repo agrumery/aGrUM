@@ -34,20 +34,29 @@ __project_url__ = 'http://forge.lip6.fr/projects/pyagrum'
 # selection of imports extracted from dir(pyAgrum)
 from pyAgrum import GUM_MAJOR_VERSION,GUM_MINOR_VERSION,GUM_PATCH_VERSION,GUM_VERSION
 
-from pyAgrum import Arc,Edge,BayesNet,DiGraph,Vector_double
-from pyAgrum import DiscreteVar,DiscretizedVar,Instantiation,LabelizedVar,RangeVar,Variable
-from pyAgrum import Potential
-from pyAgrum import BruteForceKL,GibbsInference,GibbsKL,LazyPropagation
+from pyAgrum import Vector_double
+from pyAgrum import Arc,Edge,DiGraph,UndiGraph,MixedGraph,DAG,CliqueGraph
+
+from pyAgrum import BayesNet
+from pyAgrum import DiscretizedVariable,LabelizedVariable,RangeVariable,DiscreteVariable
+from pyAgrum import Potential,Instantiation
+from pyAgrum import BruteForceKL,GibbsKL
+from pyAgrum import GibbsInference,LazyPropagation
 from pyAgrum import PythonApproximationListener,PythonBNListener,PythonLoadListener
+
 from pyAgrum import BNGenerator
 from pyAgrum import BNLearnerFromCSV
+
 from pyAgrum import initRandom,randomProba,randomDistribution
 
 from pyAgrum import isOMP,setNumberOfThreads,getNumberOfLogicalProcessors,getMaxNumberOfThreads
+
 from pyAgrum import CredalNet,CNMonteCarloSampling,CNLoopyPropagation
 
 from pyAgrum import DefaultInLabel,DuplicateElement,DuplicateLabel,EmptyBSTree,EmptySet,Exception,FatalError,FormatNotFound,GraphError,IOError,IdError,InvalidArc,InvalidArgument,InvalidArgumentsNumber,InvalidDirectedCycle,InvalidEdge,InvalidNode,NoChild,NoNeighbour,NoParent,NotFound,NullElement,OperationNotAllowed,OutOfBounds,OutOfLowerBound,OutOfUpperBound,ReferenceError,SizeError,SyntaxError,UndefinedElement,UndefinedIteratorKey,UndefinedIteratorValue
 
+#obsolete
+from pyAgrum import DiscretizedVar,LabelizedVar,RangeVar
 
 def availableBNExts():
     """
@@ -75,7 +84,7 @@ def loadBN(s,listeners=None):
 
     if not res:
       raise Exception("Error(s) in "+s)
-    
+
     bn.setProperty("name",s)
     return bn
 

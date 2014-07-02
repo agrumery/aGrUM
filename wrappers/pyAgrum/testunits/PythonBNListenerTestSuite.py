@@ -14,9 +14,9 @@ class PythonBNListenerTestCase(pyAgrumTestCase):
         self.bn = gum.BayesNet()
         self.buffer0 = ""
         self.buffer1 = ""
-        self.var1 = gum.LabelizedVar("a", "le noeud a", 2)
-        self.var2 = gum.LabelizedVar("b", "le noeud b", 2)
-        self.var3 = gum.LabelizedVar("c", "le noeud c", 3)
+        self.var1 = gum.LabelizedVariable("a", "le noeud a", 2)
+        self.var2 = gum.LabelizedVariable("b", "le noeud b", 2)
+        self.var3 = gum.LabelizedVariable("c", "le noeud c", 3)
 
 
     def bufferize(self, str):

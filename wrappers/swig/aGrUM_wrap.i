@@ -1,4 +1,3 @@
-/*%include "includes.i"*/
 /* INCLUDES */
 %{
 #include <iostream>
@@ -28,6 +27,7 @@
 #include <agrum/graphs/diGraph.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/graphs/undiGraph.h>
+#include <agrum/graphs/mixedGraph.h>
 #include <agrum/graphs/cliqueGraph.h>
 #include <agrum/graphs/defaultTriangulation.h>
 #include <agrum/variables/discreteVariable.h>
@@ -156,9 +156,10 @@ namespace std {
 %import <agrum/graphs/nodeGraphPart.h>
 %import <agrum/graphs/arcGraphPart.h>
 %include <agrum/graphs/diGraph.h>
-%import <agrum/graphs/DAG.h>
-%import <agrum/graphs/undiGraph.h>
-%import <agrum/graphs/cliqueGraph.h>
+%include <agrum/graphs/DAG.h>
+%include <agrum/graphs/undiGraph.h>
+%include <agrum/graphs/mixedGraph.h>
+%include <agrum/graphs/cliqueGraph.h>
 %import <agrum/graphs/defaultTriangulation.h>
 
 %include <agrum/multidim/multiDimInterface.h>
@@ -212,8 +213,8 @@ namespace std {
     return dynamic_cast<gum::RangeVariable&> ( * ( self ) );
   }
 
-  gum::DiscretizedVariable<float>& toDiscretizedVar() {
-    return dynamic_cast<gum::DiscretizedVariable<float> &> ( * ( self ) );
+  gum::DiscretizedVariable<double>& toDiscretizedVar() {
+    return dynamic_cast<gum::DiscretizedVariable<double> &> ( * ( self ) );
   }
 }
 
@@ -406,7 +407,7 @@ namespace std {
 
 %template ( randomDistribution_double ) gum::randomDistribution<double>;
 
-%template ( DiscretizedVar ) gum::DiscretizedVariable<float>;
+%template ( DiscretizedVariable_double ) gum::DiscretizedVariable<double>;
 
 %template ( MultiDimContainer_double ) gum::MultiDimContainer<double>;
 %template ( MultiDimImplementation_double ) gum::MultiDimImplementation<double>;

@@ -15,10 +15,10 @@ class ICIModelsForBNTestCase(pyAgrumTestCase):
 
     def testLogit(self):
         bn = gum.BayesNet()
-        age=bn.add(gum.RangeVar("age","",35,67))
-        taux=bn.add(gum.RangeVar("taux","",115,171))
-        angine=bn.add(gum.LabelizedVar("angine",""))
-        vc=gum.LabelizedVar("coeur","",0)
+        age=bn.add(gum.RangeVariable("age","",35,67))
+        taux=bn.add(gum.RangeVariable("taux","",115,171))
+        angine=bn.add(gum.LabelizedVariable("angine",""))
+        vc=gum.LabelizedVariable("coeur","",0)
         vc.addLabel("NON").addLabel("OUI")
         coeur=bn.addLogit (vc,14.4937)
         
