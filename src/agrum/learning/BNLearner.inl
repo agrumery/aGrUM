@@ -138,6 +138,20 @@ namespace gum {
       __constraint_ForbiddenArcs.eraseForbiddenArc ( arc );
     }
 
+    
+    /// sets a partial order on the nodes
+    INLINE void BNLearner::setPartialOrder
+    ( const NodeProperty<unsigned int>& partial_order ) {
+      __constraint_PartialOrder = partial_order;
+    }
+
+
+    /// sets a kTBN constraint (alias for setPartialOrder)
+    INLINE void BNLearner::setkTBN
+    ( const NodeProperty<unsigned int>& partial_order ) {
+      __constraint_PartialOrder = partial_order;
+    }
+
 
   } /* namespace learning */
   

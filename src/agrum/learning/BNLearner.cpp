@@ -57,9 +57,9 @@ namespace gum {
       __param_estimator_type ( from.__param_estimator_type ),
       __param_estimator ( from.__param_estimator != nullptr ?
                           from.__param_estimator->copyFactory () : nullptr ),
-      __constraint_2TimeSlice ( from.__constraint_2TimeSlice ),
-      __constraint_Indegree   ( from.__constraint_Indegree ),
-      __constraint_TabuList   ( from.__constraint_TabuList ),
+      __constraint_PartialOrder  ( from.__constraint_PartialOrder ),
+      __constraint_Indegree      ( from.__constraint_Indegree ),
+      __constraint_TabuList      ( from.__constraint_TabuList ),
       __constraint_ForbiddenArcs ( from.__constraint_ForbiddenArcs ),
       __selected_algo ( from.__selected_algo ),
       __greedy_hill_climbing ( from.__greedy_hill_climbing ),
@@ -76,9 +76,9 @@ namespace gum {
       __score ( from.__score ),
       __param_estimator_type ( from.__param_estimator_type ),
       __param_estimator ( from.__param_estimator ),
-      __constraint_2TimeSlice ( std::move ( from.__constraint_2TimeSlice ) ),
-      __constraint_Indegree   ( std::move ( from.__constraint_Indegree ) ),
-      __constraint_TabuList   ( std::move ( from.__constraint_TabuList ) ),
+      __constraint_PartialOrder  ( std::move ( from.__constraint_PartialOrder ) ),
+      __constraint_Indegree      ( std::move ( from.__constraint_Indegree ) ),
+      __constraint_TabuList      ( std::move ( from.__constraint_TabuList ) ),
       __constraint_ForbiddenArcs ( std::move ( from.__constraint_ForbiddenArcs ) ),
       __selected_algo ( from.__selected_algo ),
       __greedy_hill_climbing ( std::move ( from.__greedy_hill_climbing ) ),
@@ -120,9 +120,9 @@ namespace gum {
         __param_estimator_type = from.__param_estimator_type;
         __param_estimator = from.__param_estimator ?
           from.__param_estimator->copyFactory () : nullptr;
-        __constraint_2TimeSlice = from.__constraint_2TimeSlice;
-        __constraint_Indegree   = from.__constraint_Indegree;
-        __constraint_TabuList   = from.__constraint_TabuList;
+        __constraint_PartialOrder  = from.__constraint_PartialOrder;
+        __constraint_Indegree      = from.__constraint_Indegree;
+        __constraint_TabuList      = from.__constraint_TabuList;
         __constraint_ForbiddenArcs = from.__constraint_ForbiddenArcs;
         __selected_algo = from.__selected_algo;
         __greedy_hill_climbing = from.__greedy_hill_climbing;
@@ -152,9 +152,9 @@ namespace gum {
         __score = from.__score;
         __param_estimator_type = from.__param_estimator_type;
         __param_estimator = from.__param_estimator;
-        __constraint_2TimeSlice = std::move ( from.__constraint_2TimeSlice );
-        __constraint_Indegree   = std::move ( from.__constraint_Indegree );
-        __constraint_TabuList   = std::move ( from.__constraint_TabuList );
+        __constraint_PartialOrder  = std::move ( from.__constraint_PartialOrder );
+        __constraint_Indegree      = std::move ( from.__constraint_Indegree );
+        __constraint_TabuList      = std::move ( from.__constraint_TabuList );
         __constraint_ForbiddenArcs = std::move ( from.__constraint_ForbiddenArcs );
         __selected_algo = from.__selected_algo;
         __greedy_hill_climbing = std::move ( from.__greedy_hill_climbing );

@@ -42,6 +42,12 @@ namespace gum_tests {
       learner.addForbiddenArc ( gum::Arc (5,1) );
       learner.addForbiddenArc ( gum::Arc (5,7) );
 
+      gum::NodeProperty<unsigned int> partial_order {
+        std::make_pair( gum::NodeId ( 0 ), 1 ),
+        std::make_pair( gum::NodeId ( 3 ), 0 ),
+        std::make_pair( gum::NodeId ( 1 ), 0 ) };
+      learner.setPartialOrder ( partial_order );
+
       gum::Timer timer;
       gum::BayesNet<float> bn = learner.learnBN ( GET_PATH_STR( "asia.csv" ) );
       std::cout << timer.step () << " : " << std::endl;

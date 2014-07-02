@@ -18,12 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for structural constraints over nodes that belong to 2 time
- * slices
+ * @brief the structural constraint imposing a partial order over nodes
  *
  * In DBNs, it is forbidden to add arcs from nodes at time slice t to nodes at
- * time slice s, where s < t. This class allows for taking this kind of constaint
- * into account
+ * time slice s, where s < t. This class allows for taking this kind of constraint
+ * into account by imposing a partial order over the nodes: arcs (X,Y) can then
+ * only be added if X <= Y in the partial order.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -38,12 +38,12 @@ namespace gum {
 
 
     /// sets a new graph from which we will perform checkings
-    INLINE void StructuralConstraint2TimeSlice::setGraphAlone
+    INLINE void StructuralConstraintPartialOrder::setGraphAlone
     ( const DiGraph& graph ) {
       // check that each node has an appropriate time slice
       for ( const auto id : graph ) {
-        if ( ! _2TimeSlice__time_slice.exists ( id ) ) {
-          _2TimeSlice__time_slice.insert ( id, _2TimeSlice__default_slice );
+        if ( ! _PartialOrder__order.exists ( id ) ) {
+          _PartialOrder__order.insert ( id, _PartialOrder__default_slice );
         }
       }
     }
@@ -51,15 +51,15 @@ namespace gum {
     
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool
-    StructuralConstraint2TimeSlice::checkArcAdditionAlone ( NodeId x, NodeId y )
+    StructuralConstraintPartialOrder::checkArcAdditionAlone ( NodeId x, NodeId y )
       const noexcept {
-      return _2TimeSlice__time_slice[x] <= _2TimeSlice__time_slice[y];
+      return _PartialOrder__order[x] <= _PartialOrder__order[y];
     }
 
     
     /// checks whether the constraints enable to remove arc (x,y)
     INLINE bool
-    StructuralConstraint2TimeSlice::checkArcDeletionAlone ( NodeId x, NodeId y )
+    StructuralConstraintPartialOrder::checkArcDeletionAlone ( NodeId x, NodeId y )
       const noexcept {
       return true;
     }
@@ -67,66 +67,66 @@ namespace gum {
     
     /// checks whether the constraints enable to reverse arc (x,y)
     INLINE bool
-    StructuralConstraint2TimeSlice::checkArcReversalAlone ( NodeId x, NodeId y )
+    StructuralConstraintPartialOrder::checkArcReversalAlone ( NodeId x, NodeId y )
       const noexcept {
-      return _2TimeSlice__time_slice[x] == _2TimeSlice__time_slice[y];
+      return _PartialOrder__order[x] == _PartialOrder__order[y];
     }
     
     
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraint2TimeSlice::modifyGraphAlone
+    StructuralConstraintPartialOrder::modifyGraphAlone
     ( const ArcAddition& change ) {
     }
 
     
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraint2TimeSlice::modifyGraphAlone
+    StructuralConstraintPartialOrder::modifyGraphAlone
     ( const ArcDeletion& change ) {
     }
 
     
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraint2TimeSlice::modifyGraphAlone
+    StructuralConstraintPartialOrder::modifyGraphAlone
     ( const ArcReversal& change ) {
     }
 
     
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraint2TimeSlice::modifyGraphAlone
+    StructuralConstraintPartialOrder::modifyGraphAlone
     ( const GraphChange& change ) {
     }
 
     
     /// indicates whether a change will always violate the constraint
     INLINE bool
-    StructuralConstraint2TimeSlice::isAlwaysInvalidAlone
+    StructuralConstraintPartialOrder::isAlwaysInvalidAlone
     ( const GraphChange& change ) const noexcept {
       switch ( change.type () ) {
       case GraphChangeType::ARC_ADDITION:
-        return ( _2TimeSlice__time_slice[change.node1 ()] >
-                 _2TimeSlice__time_slice[change.node2 ()] );
+        return ( _PartialOrder__order[change.node1 ()] >
+                 _PartialOrder__order[change.node2 ()] );
         
       case GraphChangeType::ARC_DELETION:
         return false;
 
       case GraphChangeType::ARC_REVERSAL:
-        return ( _2TimeSlice__time_slice[change.node1 ()] !=
-                 _2TimeSlice__time_slice[change.node2 ()] );
+        return ( _PartialOrder__order[change.node1 ()] !=
+                 _PartialOrder__order[change.node2 ()] );
 
       default:
         GUM_ERROR ( OperationNotAllowed, "edge modifications are not "
-                    "supported by 2TimeSlice constraints" );
+                    "supported by PartialOrder constraints" );
       }
     }
 
 
     /// checks whether the constraints enable to add an arc
     INLINE bool
-    StructuralConstraint2TimeSlice::checkModificationAlone
+    StructuralConstraintPartialOrder::checkModificationAlone
     ( const ArcAddition& change ) const noexcept {
       return checkArcAdditionAlone ( change.node1 (), change.node2 () );
     }
@@ -134,7 +134,7 @@ namespace gum {
 
     /// checks whether the constraints enable to remove an arc
     INLINE bool
-    StructuralConstraint2TimeSlice::checkModificationAlone
+    StructuralConstraintPartialOrder::checkModificationAlone
     ( const ArcDeletion& change ) const noexcept {
       return checkArcDeletionAlone ( change.node1 (), change.node2 () );
     }
@@ -142,7 +142,7 @@ namespace gum {
 
     /// checks whether the constraints enable to reverse an arc
     INLINE bool
-    StructuralConstraint2TimeSlice::checkModificationAlone
+    StructuralConstraintPartialOrder::checkModificationAlone
     ( const ArcReversal& change ) const noexcept {
       return checkArcReversalAlone ( change.node1 (), change.node2 () );
     }
@@ -150,7 +150,7 @@ namespace gum {
       
     /// checks whether the constraints enable to perform a graph change
     INLINE bool
-    StructuralConstraint2TimeSlice::checkModificationAlone
+    StructuralConstraintPartialOrder::checkModificationAlone
     ( const GraphChange& change ) const noexcept {
       switch ( change.type () ) {
       case GraphChangeType::ARC_ADDITION:
@@ -164,36 +164,36 @@ namespace gum {
         
       default:
         GUM_ERROR ( OperationNotAllowed, "edge modifications are not "
-                    "supported by StructuralConstraint2TimeSlice" );
+                    "supported by StructuralConstraintPartialOrder" );
       }
     }
    
 
     /// sets the time slices of all the nodes in the property 
-    INLINE void StructuralConstraint2TimeSlice::setSlices
-    ( const NodeProperty<bool>& time_slice ) {
-      for ( const auto& slice : time_slice ) {
-        _2TimeSlice__time_slice.set ( slice.first, slice.second );
+    INLINE void StructuralConstraintPartialOrder::setPartialOrder
+    ( const NodeProperty<unsigned int>& order ) {
+      for ( const auto& slice : order ) {
+        _PartialOrder__order.set ( slice.first, slice.second );
       }
     }
 
     
     /// sets the default time slice
-    INLINE void StructuralConstraint2TimeSlice::setDefaultSlice
-    ( bool time_slice,
+    INLINE void StructuralConstraintPartialOrder::setDefaultSlice
+    ( unsigned int slice,
       bool update_all ) {
       if ( update_all ) {
-        for ( auto& slice : _2TimeSlice__time_slice ) {
-          slice.second = time_slice;
+        for ( auto& node : _PartialOrder__order ) {
+          node.second = slice;
         }
       }
 
-      _2TimeSlice__default_slice = time_slice;
+      _PartialOrder__default_slice = slice;
     }
 
 
     // include all the methods applicable to the whole class hierarchy
-    #define GUM_CONSTRAINT_CLASS_NAME StructuralConstraint2TimeSlice
+    #define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintPartialOrder
     #include <agrum/learning/constraints/structuralConstraintPatternInline.h>
     #undef GUM_CONSTRAINT_CLASS_NAME
 

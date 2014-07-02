@@ -48,7 +48,7 @@
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintIndegree.h>
-#include <agrum/learning/constraints/structuralConstraint2TimeSlice.h>
+#include <agrum/learning/constraints/structuralConstraintPartialOrder.h>
 #include <agrum/learning/constraints/structuralConstraintTabuList.h>
 #include <agrum/learning/constraints/structuralConstraintForbiddenArcs.h>
 #include <agrum/learning/constraints/structuralConstraintSetStatic.h>
@@ -210,8 +210,11 @@ namespace gum {
       /// sets the max indegree
       void setMaxIndegree ( unsigned int max_indegree );
 
-      /// sets the slices of a 2TBN
-      //void
+      /// sets a partial order on the nodes
+      void setPartialOrder ( const NodeProperty<unsigned int>& partial_order );
+
+      /// sets a kTBN constraint (alias for setPartialOrder)
+      void setkTBN ( const NodeProperty<unsigned int>& partial_order );
 
       /// assign a set of forbidden arcs
       void setForbiddenArcs ( const ArcSet& set );
@@ -250,7 +253,7 @@ namespace gum {
       ParamEstimator<>* __param_estimator { nullptr };
 
       /// the constraint for 2TBNs
-      StructuralConstraint2TimeSlice __constraint_2TimeSlice;
+      StructuralConstraintPartialOrder __constraint_PartialOrder;
 
       /// the constraint for indegrees
       StructuralConstraintIndegree __constraint_Indegree;

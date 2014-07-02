@@ -39,7 +39,7 @@
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintIndegree.h>
-#include <agrum/learning/constraints/structuralConstraint2TimeSlice.h>
+#include <agrum/learning/constraints/structuralConstraintPartialOrder.h>
 #include <agrum/learning/constraints/structuralConstraintSetStatic.h>
 
 #include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
@@ -84,7 +84,7 @@ namespace gum_tests {
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,
         gum::learning::StructuralConstraintIndegree
-        //gum::learning::StructuralConstraint2TimeSlice
+        //gum::learning::StructuralConstraintPartialOrder
         > struct_constraint; 
 
       struct_constraint.setMaxIndegree ( 1 );
@@ -94,7 +94,7 @@ namespace gum_tests {
       //   std::make_pair( gum::NodeId ( 1 ), 0 ),
       //   std::make_pair( gum::NodeId ( 6 ), 0 ),
       //   std::make_pair( gum::NodeId ( 2 ), 1 ) };
-      // struct_constraint.setSlices ( slices );
+      // struct_constraint.setPartialOrder ( slices );
       // struct_constraint.setDefaultSlice ( 1 );
 
       gum::learning::StructuralConstraintIndegree constraint1;

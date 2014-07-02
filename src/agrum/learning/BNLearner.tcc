@@ -117,13 +117,13 @@ namespace gum {
       case AlgoType::GREEDY_HILL_CLIMBING:
         {
           StructuralConstraintSetStatic<StructuralConstraintForbiddenArcs,
-                                        StructuralConstraint2TimeSlice,
+                                        StructuralConstraintPartialOrder,
                                         StructuralConstraintIndegree,
                                         StructuralConstraintDAG> gen_constraint;
           static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
             __constraint_ForbiddenArcs;
-          static_cast<StructuralConstraint2TimeSlice&> ( gen_constraint ) =
-            __constraint_2TimeSlice;
+          static_cast<StructuralConstraintPartialOrder&> ( gen_constraint ) =
+            __constraint_PartialOrder;
           static_cast<StructuralConstraintIndegree&> ( gen_constraint ) =
             __constraint_Indegree;
                          
@@ -148,13 +148,13 @@ namespace gum {
        case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST:
         {
           StructuralConstraintSetStatic<StructuralConstraintForbiddenArcs,
-                                        StructuralConstraint2TimeSlice,
+                                        StructuralConstraintPartialOrder,
                                         StructuralConstraintIndegree,
                                         StructuralConstraintDAG> gen_constraint;
           static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
             __constraint_ForbiddenArcs;
-          static_cast<StructuralConstraint2TimeSlice&> ( gen_constraint ) =
-            __constraint_2TimeSlice;
+          static_cast<StructuralConstraintPartialOrder&> ( gen_constraint ) =
+            __constraint_PartialOrder;
           static_cast<StructuralConstraintIndegree&> ( gen_constraint ) =
             __constraint_Indegree;
           
@@ -182,14 +182,14 @@ namespace gum {
       case AlgoType::K2:
         {
           StructuralConstraintSetStatic<StructuralConstraintForbiddenArcs,
-                                        StructuralConstraint2TimeSlice,
+                                        StructuralConstraintPartialOrder,
                                         StructuralConstraintIndegree,
                                         StructuralConstraintDiGraph>
             gen_constraint;
           static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
             __constraint_ForbiddenArcs;
-          static_cast<StructuralConstraint2TimeSlice&> ( gen_constraint ) =
-            __constraint_2TimeSlice;
+          static_cast<StructuralConstraintPartialOrder&> ( gen_constraint ) =
+            __constraint_PartialOrder;
           static_cast<StructuralConstraintIndegree&> ( gen_constraint ) =
             __constraint_Indegree;
                          

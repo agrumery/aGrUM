@@ -36,7 +36,7 @@
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintIndegree.h>
-#include <agrum/learning/constraints/structuralConstraint2TimeSlice.h>
+#include <agrum/learning/constraints/structuralConstraintPartialOrder.h>
 #include <agrum/learning/constraints/structuralConstraintTabuList.h>
 #include <agrum/learning/constraints/structuralConstraintSetStatic.h>
 
@@ -88,17 +88,17 @@ namespace gum_tests {
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,
         gum::learning::StructuralConstraintIndegree,
-        gum::learning::StructuralConstraint2TimeSlice,
+        gum::learning::StructuralConstraintPartialOrder,
         gum::learning::StructuralConstraintTabuList>
         struct_constraint; 
 
       struct_constraint.setMaxIndegree ( 2 );
       struct_constraint.setTabuListSize ( 100 );
 
-      gum::NodeProperty<bool> slices {
+      gum::NodeProperty<unsigned int> slices {
         std::make_pair( gum::NodeId ( 0 ), 0 ),
-          std::make_pair( gum::NodeId ( 1 ), 0 ) };
-      struct_constraint.setSlices ( slices );
+        std::make_pair( gum::NodeId ( 1 ), 0 ) };
+      struct_constraint.setPartialOrder ( slices );
       struct_constraint.setDefaultSlice ( 1 );
 
       gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
@@ -150,17 +150,17 @@ namespace gum_tests {
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,
         gum::learning::StructuralConstraintIndegree,
-        gum::learning::StructuralConstraint2TimeSlice,
+        gum::learning::StructuralConstraintPartialOrder,
         gum::learning::StructuralConstraintTabuList>
         struct_constraint; 
       
       struct_constraint.setMaxIndegree ( 4 );
       struct_constraint.setTabuListSize ( 100 );
       
-      gum::NodeProperty<bool> slices {
+      gum::NodeProperty<unsigned int> slices {
         std::make_pair( gum::NodeId ( 0 ), 0 ),
         std::make_pair( gum::NodeId ( 1 ), 0 ) };
-      struct_constraint.setSlices ( slices );
+      struct_constraint.setPartialOrder ( slices );
       struct_constraint.setDefaultSlice ( 1 );
 
       gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
@@ -210,17 +210,17 @@ namespace gum_tests {
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,
         gum::learning::StructuralConstraintIndegree,
-        gum::learning::StructuralConstraint2TimeSlice,
+        gum::learning::StructuralConstraintPartialOrder,
         gum::learning::StructuralConstraintTabuList>
         struct_constraint; 
       
       struct_constraint.setMaxIndegree ( 4 );
       struct_constraint.setTabuListSize ( 100 );
       
-      gum::NodeProperty<bool> slices {
+      gum::NodeProperty<unsigned int> slices {
         std::make_pair( gum::NodeId ( 0 ), 0 ),
         std::make_pair( gum::NodeId ( 1 ), 0 ) };
-      struct_constraint.setSlices ( slices );
+      struct_constraint.setPartialOrder ( slices );
       struct_constraint.setDefaultSlice ( 1 );
 
       gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
@@ -271,17 +271,17 @@ namespace gum_tests {
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,
         gum::learning::StructuralConstraintIndegree,
-        gum::learning::StructuralConstraint2TimeSlice,
+        gum::learning::StructuralConstraintPartialOrder,
         gum::learning::StructuralConstraintTabuList>
         struct_constraint; 
       
       struct_constraint.setMaxIndegree ( 4 );
       struct_constraint.setTabuListSize ( 100 );
       
-      gum::NodeProperty<bool> slices {
+      gum::NodeProperty<unsigned int> slices {
         std::make_pair( gum::NodeId ( 0 ), 0 ),
         std::make_pair( gum::NodeId ( 1 ), 0 ) };
-      struct_constraint.setSlices ( slices );
+      struct_constraint.setPartialOrder ( slices );
       struct_constraint.setDefaultSlice ( 1 );
 
       gum::learning::ParamEstimatorML<> estimator ( filter, modalities );

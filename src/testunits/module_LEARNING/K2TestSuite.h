@@ -36,7 +36,7 @@
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintIndegree.h>
-#include <agrum/learning/constraints/structuralConstraint2TimeSlice.h>
+#include <agrum/learning/constraints/structuralConstraintPartialOrder.h>
 #include <agrum/learning/constraints/structuralConstraintSetStatic.h>
 
 #include <agrum/learning/structureUtils/graphChangesGenerator4K2.h>
@@ -197,7 +197,7 @@ namespace gum_tests {
     }
 
     
-    void xxtest_k2_asia_constraint_2TimeSlice () {
+    void xxtest_k2_asia_constraint_PartialOrder () {
       K2 k2;
 
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
@@ -224,7 +224,7 @@ namespace gum_tests {
         }
       }
       
-      gum::learning::StructuralConstraint2TimeSlice
+      gum::learning::StructuralConstraintPartialOrder
         struct_constraint ( slices );
 
       gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
