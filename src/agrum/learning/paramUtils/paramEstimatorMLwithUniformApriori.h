@@ -81,10 +81,20 @@ namespace gum {
         const std::vector<unsigned int>& var_modalities,
         float apriori = GUM_PARAM_ESTIMATOR_ML_DEFAULT_A_PRIORI );
 
+      /// copy constructor
+      ParamEstimatorMLwithUniformApriori
+      ( const ParamEstimatorMLwithUniformApriori<IdSetAlloc,CountAlloc>& );
+
+      /// move constructor
+      ParamEstimatorMLwithUniformApriori
+      ( ParamEstimatorMLwithUniformApriori<IdSetAlloc,CountAlloc>&& );
+
+      /// virtual copy factory
+      virtual ParamEstimatorMLwithUniformApriori<IdSetAlloc,CountAlloc>*
+      copyFactory () const;
+ 
       /// destructor
       virtual ~ParamEstimatorMLwithUniformApriori ();
-
-      
 
       /// @}
 

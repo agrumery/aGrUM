@@ -79,6 +79,9 @@ namespace gum {
       Score ( const RowFilter& filter,
               const std::vector<unsigned int>& var_modalities );
 
+      /// virtual copy factory
+      virtual Score<IdSetAlloc,CountAlloc>* copyFactory () const = 0;
+
       /// destructor
       virtual ~Score ();
 
@@ -183,7 +186,13 @@ namespace gum {
 
       /// indicates whether we use the cache or not
       bool _isUsingCache () const noexcept;
-      
+
+      /// copy constructor: to be used by the virtual copy constructor
+      Score ( const Score<IdSetAlloc,CountAlloc>& );
+
+      /// move constructor: to be used by the descendants in the hierarchy
+      Score ( Score<IdSetAlloc,CountAlloc>&& );
+
 
     private:
       /// a cache for the previously computed scores
@@ -205,9 +214,6 @@ namespace gum {
       
       // ##########################################################################
       // ##########################################################################
-
-      /// prevent copy constructor
-      Score ( const Score<IdSetAlloc,CountAlloc>& ) = delete;
 
       /// prevent copy operator
       Score<IdSetAlloc,CountAlloc>&

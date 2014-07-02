@@ -76,6 +76,9 @@ namespace gum {
       ParamEstimator ( const RowFilter& filter,
                        const std::vector<unsigned int>& var_modalities );
 
+      /// virtual copy factory
+      virtual ParamEstimator<IdSetAlloc,CountAlloc>* copyFactory () const = 0;
+ 
       /// destructor
       virtual ~ParamEstimator ();
 
@@ -139,6 +142,11 @@ namespace gum {
 
 
     protected:
+ 
+      /// indicate whether we have already normalized the parameters
+      std::vector<bool> _is_normalized;
+
+
       /// returns the counting vector for a given (conditioned) target set
       /** This method returns the observtion countings for the set of variables
        * whose index was returned by method addNodeSet or addNodeSets. If the
@@ -165,17 +173,16 @@ namespace gum {
       /// returns the conditioning nodes (nullptr if there are no such nodes)
       using Counter<IdSetAlloc,CountAlloc>::_getConditioningNodes;
             
+      /// copy constructor
+      ParamEstimator ( const ParamEstimator<IdSetAlloc,CountAlloc>& );
 
-    protected:
-      /// indicate whether we have already normalized the parameters
-      std::vector<bool> _is_normalized;
+      /// move constructor
+      ParamEstimator ( ParamEstimator<IdSetAlloc,CountAlloc>&& );
 
+ 
       
       // ##########################################################################
       // ##########################################################################
-
-      /// prevent copy constructor
-      ParamEstimator ( const ParamEstimator<IdSetAlloc,CountAlloc>& ) = delete;
 
       /// prevent copy operator
       ParamEstimator<IdSetAlloc,CountAlloc>&

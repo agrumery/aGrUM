@@ -43,6 +43,32 @@ namespace gum {
       GUM_CONSTRUCTOR ( Score );
     }
 
+
+    /// copy constructor: to be used by the virtual copy constructor
+    template <typename IdSetAlloc, typename CountAlloc>
+    Score<IdSetAlloc,CountAlloc>::Score
+    ( const Score<IdSetAlloc,CountAlloc>& from ) :
+      Counter<IdSetAlloc,CountAlloc> ( from ),
+      __cache ( from.__cache ),
+      __use_cache ( from.__use_cache ),
+      __is_cached_score ( from.__is_cached_score ),
+      __cached_score ( from.__cached_score ) {
+      GUM_CONS_CPY ( Score );
+    }
+
+
+    /// copy constructor: to be used by the virtual copy constructor
+    template <typename IdSetAlloc, typename CountAlloc>
+    Score<IdSetAlloc,CountAlloc>::Score
+    ( Score<IdSetAlloc,CountAlloc>&& from ) :
+      Counter<IdSetAlloc,CountAlloc> ( std::move ( from ) ),
+      __cache ( std::move ( from.__cache ) ),
+      __use_cache ( std::move ( from.__use_cache ) ),
+      __is_cached_score ( std::move ( from.__is_cached_score ) ),
+      __cached_score ( std::move ( from.__cached_score ) ) {
+      GUM_CONS_CPY ( Score );
+    }
+
     
     /// destructor
     template <typename IdSetAlloc, typename CountAlloc> INLINE

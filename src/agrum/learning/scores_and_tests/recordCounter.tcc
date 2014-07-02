@@ -245,6 +245,7 @@ namespace gum {
     ( const RecordCounter<IdSetAlloc,CountAlloc>& from ) :
       __modalities ( from.__modalities ),
       __idsets ( from.__idsets ),
+      __nodesets ( from.__nodesets ),
       __set_state ( from.__set_state ),
       __countings ( from.__countings ),
       __subset_lattice ( from.__subset_lattice ),
@@ -269,7 +270,6 @@ namespace gum {
       for ( auto iter = __idsets.cbegin (); iter != __idsets.cend (); ++iter ) {
         const auto& idset = iter.key ();
         __idset2index.insert ( &idset, iter.val () );
-        __nodesets[iter.val()] = &idset;
         __set2thread_id[iter.val()].first = &idset;
         __set2thread_id[iter.val()].second =
           from.__set2thread_id[iter.val()].second;
@@ -760,9 +760,13 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc> INLINE
     void RecordCounter<IdSetAlloc,CountAlloc>::setMaxNbThreads
     ( unsigned int nb ) noexcept {
+#ifdef _OPENMP
       if ( nb == 0 )
         nb =  getMaxNumberOfThreads();
-      __max_threads_number = nb; 
+      __max_threads_number = nb;
+#else
+      __max_threads_number = 1;
+#endif
     }
     
 

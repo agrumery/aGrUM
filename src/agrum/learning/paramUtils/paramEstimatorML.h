@@ -74,7 +74,16 @@ namespace gum {
       ParamEstimatorML ( const RowFilter& filter,
                          const std::vector<unsigned int>& var_modalities );
 
-      /// destructor
+      /// copy constructor
+      ParamEstimatorML ( const ParamEstimatorML<IdSetAlloc,CountAlloc>& );
+
+      /// move constructor
+      ParamEstimatorML ( ParamEstimatorML<IdSetAlloc,CountAlloc>&& );
+
+      /// virtual copy factory
+      virtual ParamEstimatorML<IdSetAlloc,CountAlloc>* copyFactory () const;
+ 
+       /// destructor
       virtual ~ParamEstimatorML ();
 
       

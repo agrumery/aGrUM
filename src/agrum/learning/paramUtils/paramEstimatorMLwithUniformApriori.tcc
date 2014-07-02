@@ -50,6 +50,40 @@ namespace gum {
     }
 
     
+    /// copy constructor
+    template <typename IdSetAlloc, typename CountAlloc>
+    ParamEstimatorMLwithUniformApriori<IdSetAlloc,CountAlloc>::
+    ParamEstimatorMLwithUniformApriori
+    ( const ParamEstimatorMLwithUniformApriori<IdSetAlloc,CountAlloc>& from ) :
+      ParamEstimator<IdSetAlloc,CountAlloc> ( from ),
+      __apriori ( from.__apriori ) {
+      // for debugging purposes
+      GUM_CONS_CPY ( ParamEstimatorMLwithUniformApriori );
+    }
+
+
+    /// move constructor
+    template <typename IdSetAlloc, typename CountAlloc>
+    ParamEstimatorMLwithUniformApriori<IdSetAlloc,CountAlloc>::
+    ParamEstimatorMLwithUniformApriori
+    ( ParamEstimatorMLwithUniformApriori<IdSetAlloc,CountAlloc>&& from ) :
+      ParamEstimator<IdSetAlloc,CountAlloc> ( std::move ( from ) ),
+      __apriori ( std::move ( from.__apriori ) ) {
+      // for debugging purposes
+      GUM_CONS_MOV ( ParamEstimatorMLwithUniformApriori );
+    }
+
+
+    /// virtual copy factory
+    template <typename IdSetAlloc, typename CountAlloc>
+    ParamEstimatorMLwithUniformApriori<IdSetAlloc,CountAlloc>*
+    ParamEstimatorMLwithUniformApriori<IdSetAlloc,CountAlloc>::copyFactory ()
+      const {
+      return
+        new ParamEstimatorMLwithUniformApriori<IdSetAlloc,CountAlloc> ( *this );
+    }
+    
+ 
     /// destructor
     template <typename IdSetAlloc, typename CountAlloc> INLINE
     ParamEstimatorMLwithUniformApriori<IdSetAlloc,CountAlloc>::

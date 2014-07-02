@@ -48,6 +48,72 @@ namespace gum {
     }
 
     
+    /// copy constructor
+    template <typename IdSetAlloc, typename CountAlloc>
+    Counter<IdSetAlloc,CountAlloc>::Counter
+    ( const Counter<IdSetAlloc,CountAlloc>& from ) :
+      _modalities ( from._modalities ),
+      __record_counter ( from.__record_counter ),
+      __counts_computed ( from.__counts_computed ) {
+      // copy the target nodesets
+      __target_nodesets.reserve ( from.__target_nodesets.size () );
+      for ( const auto set : from.__target_nodesets ) {
+        __target_nodesets.push_back
+          ( new std::pair<std::vector<unsigned int,IdSetAlloc>,
+                          unsigned int> ( *set ) );
+      }
+      
+      // copy the conditioning nodesets
+      __conditioning_nodesets.reserve ( from.__conditioning_nodesets.size () );
+      for ( const auto set : from.__conditioning_nodesets ) {
+        __conditioning_nodesets.push_back
+          ( new std::pair<std::vector<unsigned int,IdSetAlloc>,
+                          unsigned int> ( *set ) );
+      }
+
+      // now update the __nodesets of the record counter, as this one still
+      // points to the nodesets of from
+      std::vector<const std::vector<unsigned int,IdSetAlloc>* >&
+        nodesets = __record_counter.__nodesets;
+      const std::vector<const std::vector<unsigned int,IdSetAlloc>* >&
+        from_nodesets = from.__record_counter.__nodesets;
+      for ( unsigned int i = 0, j = 0, size = from.__target_nodesets.size ();
+            i < size; ++i ) {
+        if ( from_nodesets[j] == &( from.__target_nodesets[i]->first ) ) {
+          nodesets[j] = &( __target_nodesets[i]->first );
+          ++j;
+        }
+      }
+      for ( unsigned int i = 0, j = 0, size = from.__conditioning_nodesets.size ();
+            i < size; ++i ) {
+        if ( from_nodesets[j] == &( from.__conditioning_nodesets[i]->first ) ) {
+          nodesets[j] = &( __conditioning_nodesets[i]->first );
+          ++j;
+        }
+      }
+
+      // for debugging purposes
+      GUM_CONS_CPY ( Counter );
+    }
+      
+
+    /// move constructor
+    template <typename IdSetAlloc, typename CountAlloc>
+    Counter<IdSetAlloc,CountAlloc>::Counter
+    ( Counter<IdSetAlloc,CountAlloc>&& from ) :
+      _modalities ( from._modalities ),
+      __record_counter  ( std::move ( from.__record_counter ) ),
+      __target_nodesets ( std::move ( from.__target_nodesets ) ),
+      __conditioning_nodesets ( std::move ( from.__conditioning_nodesets ) ),
+      __counts_computed ( std::move ( from.__counts_computed ) ) {
+      from.__target_nodesets.clear ();
+      from.__conditioning_nodesets.clear ();
+      
+      // for debugging purposes
+      GUM_CONS_CPY ( Counter );
+    }
+    
+    
     /// destructor
     template <typename IdSetAlloc, typename CountAlloc>
     Counter<IdSetAlloc,CountAlloc>::~Counter () {

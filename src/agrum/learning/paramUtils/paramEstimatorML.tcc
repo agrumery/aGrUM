@@ -42,6 +42,34 @@ namespace gum {
     }
 
     
+    /// copy constructor
+    template <typename IdSetAlloc, typename CountAlloc>
+    ParamEstimatorML<IdSetAlloc,CountAlloc>::ParamEstimatorML
+    ( const ParamEstimatorML<IdSetAlloc,CountAlloc>& from ) :
+      ParamEstimator<IdSetAlloc,CountAlloc> ( from ) {
+      // for debugging purposes
+      GUM_CONS_CPY ( ParamEstimatorML );
+    }
+
+      
+    /// move constructor
+    template <typename IdSetAlloc, typename CountAlloc>
+    ParamEstimatorML<IdSetAlloc,CountAlloc>::ParamEstimatorML
+    ( ParamEstimatorML<IdSetAlloc,CountAlloc>&& from ) :
+      ParamEstimator<IdSetAlloc,CountAlloc> ( from ) {
+      // for debugging purposes
+      GUM_CONS_MOV ( ParamEstimatorML );
+    }
+
+
+    /// virtual copy factory
+    template <typename IdSetAlloc, typename CountAlloc>
+    ParamEstimatorML<IdSetAlloc,CountAlloc>*
+    ParamEstimatorML<IdSetAlloc,CountAlloc>::copyFactory () const {
+      return new ParamEstimatorML<IdSetAlloc,CountAlloc> ( *this );
+    }
+ 
+    
     /// destructor
     template <typename IdSetAlloc, typename CountAlloc> INLINE
     ParamEstimatorML<IdSetAlloc,CountAlloc>::~ParamEstimatorML () {

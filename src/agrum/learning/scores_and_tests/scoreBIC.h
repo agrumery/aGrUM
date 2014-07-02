@@ -70,6 +70,15 @@ namespace gum {
       ScoreBIC ( const RowFilter& filter,
                  const std::vector<unsigned int>& var_modalities );
 
+      /// copy constructor
+      ScoreBIC ( const ScoreBIC<IdSetAlloc,CountAlloc>& );
+
+      /// move constructor
+      ScoreBIC ( ScoreBIC<IdSetAlloc,CountAlloc>&& );
+
+      /// virtual copy factory
+      virtual ScoreBIC<IdSetAlloc,CountAlloc>* copyFactory () const;
+
       /// destructor
       virtual ~ScoreBIC ();
 

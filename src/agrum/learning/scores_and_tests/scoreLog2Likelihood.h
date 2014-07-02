@@ -69,7 +69,16 @@ namespace gum {
       template <typename RowFilter>
       ScoreLog2Likelihood ( const RowFilter& filter,
                             const std::vector<unsigned int>& var_modalities );
-      
+
+      /// copy constructor
+      ScoreLog2Likelihood ( const ScoreLog2Likelihood<IdSetAlloc,CountAlloc>& );
+
+      /// move constructor
+      ScoreLog2Likelihood ( ScoreLog2Likelihood<IdSetAlloc,CountAlloc>&& );
+
+      /// virtual copy factory
+      virtual ScoreLog2Likelihood<IdSetAlloc,CountAlloc>* copyFactory () const;
+
       /// destructor
       virtual ~ScoreLog2Likelihood ();
 

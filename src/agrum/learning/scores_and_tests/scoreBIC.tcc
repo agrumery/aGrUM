@@ -45,7 +45,35 @@ namespace gum {
       // for debugging purposes
       GUM_CONSTRUCTOR ( ScoreBIC );
     }
- 
+
+    
+    /// copy constructor
+    template <typename IdSetAlloc, typename CountAlloc>
+    ScoreBIC<IdSetAlloc,CountAlloc>::ScoreBIC
+    ( const ScoreBIC<IdSetAlloc,CountAlloc>& from ) :
+      Score<IdSetAlloc,CountAlloc> ( from ) {
+      // for debugging purposes
+      GUM_CONS_CPY ( ScoreBIC );
+    }
+
+
+    /// move constructor
+    template <typename IdSetAlloc, typename CountAlloc>
+    ScoreBIC<IdSetAlloc,CountAlloc>::ScoreBIC
+    ( ScoreBIC<IdSetAlloc,CountAlloc>&& from ) :
+      Score<IdSetAlloc,CountAlloc> ( std::move ( from ) ) {
+      // for debugging purposes
+      GUM_CONS_MOV ( ScoreBIC );
+    }
+      
+
+    /// virtual copy factory
+    template <typename IdSetAlloc, typename CountAlloc>
+    ScoreBIC<IdSetAlloc,CountAlloc>*
+    ScoreBIC<IdSetAlloc,CountAlloc>::copyFactory () const {
+      return new ScoreBIC<IdSetAlloc,CountAlloc> ( *this );
+    }
+    
 
     /// destructor
     template <typename IdSetAlloc, typename CountAlloc> INLINE

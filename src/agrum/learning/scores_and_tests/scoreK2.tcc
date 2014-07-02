@@ -45,6 +45,34 @@ namespace gum {
       // for debugging purposes
       GUM_CONSTRUCTOR ( ScoreK2 );
     }
+
+    
+    /// copy constructor
+    template <typename IdSetAlloc, typename CountAlloc>
+    ScoreK2<IdSetAlloc,CountAlloc>::ScoreK2
+    ( const ScoreK2<IdSetAlloc,CountAlloc>& from ) :
+      Score<IdSetAlloc,CountAlloc> ( from ),
+      __gammalog2 ( from.__gammalog2 ) {
+      GUM_CONS_CPY ( ScoreK2 );
+    }
+    
+
+    /// move constructor
+    template <typename IdSetAlloc, typename CountAlloc>
+    ScoreK2<IdSetAlloc,CountAlloc>::ScoreK2
+    ( ScoreK2<IdSetAlloc,CountAlloc>&& from ) :
+      Score<IdSetAlloc,CountAlloc> ( std::move ( from ) ),
+      __gammalog2 ( std::move ( from.__gammalog2 ) ) {
+      GUM_CONS_MOV ( ScoreK2 );
+    }
+      
+
+    /// virtual copy factory
+    template <typename IdSetAlloc, typename CountAlloc>
+    ScoreK2<IdSetAlloc,CountAlloc>*
+    ScoreK2<IdSetAlloc,CountAlloc>::copyFactory () const {
+      return new ScoreK2<IdSetAlloc,CountAlloc> ( *this );
+    }
     
 
     /// destructor

@@ -47,6 +47,38 @@ namespace gum {
     }
     
 
+    /// copy constructor
+    template <typename IdSetAlloc, typename CountAlloc>
+    ScoreBD<IdSetAlloc,CountAlloc>::ScoreBD
+    ( const ScoreBD<IdSetAlloc,CountAlloc>& from ) :
+      Score<IdSetAlloc,CountAlloc> ( from ),
+      __gammalog2 ( from.__gammalog2 ),
+      __N_prime_ijk ( from.__N_prime_ijk ) {
+      // for debugging purposes
+      GUM_CONS_CPY ( ScoreBD );
+    }
+      
+
+    /// move constructor
+    template <typename IdSetAlloc, typename CountAlloc>
+    ScoreBD<IdSetAlloc,CountAlloc>::ScoreBD
+    ( ScoreBD<IdSetAlloc,CountAlloc>&& from ) :
+      Score<IdSetAlloc,CountAlloc> ( std::move ( from ) ),
+      __gammalog2 ( std::move ( from.__gammalog2 ) ),
+      __N_prime_ijk ( std::move ( from.__N_prime_ijk ) ) {
+      // for debugging purposes
+      GUM_CONS_MOV ( ScoreBD );
+    }
+      
+
+    /// virtual copy factory
+    template <typename IdSetAlloc, typename CountAlloc>
+    ScoreBD<IdSetAlloc,CountAlloc>*
+    ScoreBD<IdSetAlloc,CountAlloc>::copyFactory () const {
+      return new ScoreBD<IdSetAlloc,CountAlloc> ( *this );
+    }
+
+    
     /// destructor
     template <typename IdSetAlloc, typename CountAlloc> INLINE
     ScoreBD<IdSetAlloc,CountAlloc>::~ScoreBD () {

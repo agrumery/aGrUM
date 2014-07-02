@@ -78,6 +78,15 @@ namespace gum {
       ScoreBDeu ( const RowFilter& filter,
                   const std::vector<unsigned int>& var_modalities );
 
+      /// copy constructor
+      ScoreBDeu ( const ScoreBDeu<IdSetAlloc,CountAlloc>& );
+
+      /// move constructor
+      ScoreBDeu ( ScoreBDeu<IdSetAlloc,CountAlloc>&& );
+
+      /// virtual copy factory
+      virtual ScoreBDeu<IdSetAlloc,CountAlloc>* copyFactory () const;
+
       /// destructor
       virtual ~ScoreBDeu ();
       

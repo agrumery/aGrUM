@@ -115,6 +115,12 @@ namespace gum {
       Counter ( const RowFilter& filter,
                 const std::vector<unsigned int>& var_modalities );
 
+      /// copy constructor
+      Counter ( const Counter<IdSetAlloc,CountAlloc>& );
+
+      /// move constructor
+      Counter ( Counter<IdSetAlloc,CountAlloc>&& );
+      
       /// destructor
       virtual ~Counter ();
 
@@ -392,9 +398,6 @@ namespace gum {
       
       // ##########################################################################
       // ##########################################################################
-
-      /// prevent copy constructor
-      Counter ( const Counter<IdSetAlloc,CountAlloc>& ) = delete;
 
       /// prevent copy operator
       Counter<IdSetAlloc,CountAlloc>&

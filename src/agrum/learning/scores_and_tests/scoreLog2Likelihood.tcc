@@ -46,6 +46,32 @@ namespace gum {
     }
     
 
+    /// copy constructor
+    template <typename IdSetAlloc, typename CountAlloc>
+    ScoreLog2Likelihood<IdSetAlloc,CountAlloc>::ScoreLog2Likelihood
+    ( const ScoreLog2Likelihood<IdSetAlloc,CountAlloc>& from ) :
+      Score<IdSetAlloc,CountAlloc> ( from ) {
+      GUM_CONS_CPY ( ScoreLog2Likelihood );
+    }
+    
+
+    /// move constructor
+    template <typename IdSetAlloc, typename CountAlloc>
+    ScoreLog2Likelihood<IdSetAlloc,CountAlloc>::ScoreLog2Likelihood
+    ( ScoreLog2Likelihood<IdSetAlloc,CountAlloc>&& from ) :
+      Score<IdSetAlloc,CountAlloc> ( std::move ( from ) ) {
+      GUM_CONS_MOV ( ScoreLog2Likelihood );
+    }
+      
+
+    /// virtual copy factory
+    template <typename IdSetAlloc, typename CountAlloc>
+    ScoreLog2Likelihood<IdSetAlloc,CountAlloc>*
+    ScoreLog2Likelihood<IdSetAlloc,CountAlloc>::copyFactory () const {
+      return new ScoreLog2Likelihood<IdSetAlloc,CountAlloc> ( *this );
+    }
+
+ 
     /// destructor
     template <typename IdSetAlloc, typename CountAlloc> INLINE
     ScoreLog2Likelihood<IdSetAlloc,CountAlloc>::~ScoreLog2Likelihood () {

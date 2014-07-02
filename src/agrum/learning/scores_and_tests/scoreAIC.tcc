@@ -45,7 +45,35 @@ namespace gum {
       // for debugging purposes
       GUM_CONSTRUCTOR ( ScoreAIC );
     }
-    
+
+
+    /// copy constructor
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    ScoreAIC<IdSetAlloc,CountAlloc>::ScoreAIC
+    ( const ScoreAIC<IdSetAlloc,CountAlloc>& from ) :
+      Score<IdSetAlloc,CountAlloc> ( from ) {
+      // for debugging purposes
+      GUM_CONS_CPY ( ScoreAIC );
+    }
+      
+
+    /// move constructor
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    ScoreAIC<IdSetAlloc,CountAlloc>::ScoreAIC
+    ( ScoreAIC<IdSetAlloc,CountAlloc>&& from ) :
+      Score<IdSetAlloc,CountAlloc> ( std::move ( from ) ) {
+      // for debugging purposes
+      GUM_CONS_MOV ( ScoreAIC );
+    }
+      
+
+    /// virtual copy factory
+    template <typename IdSetAlloc, typename CountAlloc>
+    ScoreAIC<IdSetAlloc,CountAlloc>*
+    ScoreAIC<IdSetAlloc,CountAlloc>::copyFactory () const {
+      return new ScoreAIC<IdSetAlloc,CountAlloc> ( *this );
+    }
+
 
     /// destructor
     template <typename IdSetAlloc, typename CountAlloc> INLINE

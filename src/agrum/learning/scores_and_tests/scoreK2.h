@@ -78,6 +78,15 @@ namespace gum {
       ScoreK2 ( const RowFilter& filter,
                 const std::vector<unsigned int>& var_modalities );
 
+      /// copy constructor
+      ScoreK2 ( const ScoreK2<IdSetAlloc,CountAlloc>& );
+
+      /// move constructor
+      ScoreK2 ( ScoreK2<IdSetAlloc,CountAlloc>&& );
+
+      /// virtual copy factory
+      virtual ScoreK2<IdSetAlloc,CountAlloc>* copyFactory () const;
+
       /// destructor
       virtual ~ScoreK2 ();
       

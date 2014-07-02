@@ -44,24 +44,57 @@ namespace gum {
 
     /// default constructor
     BNLearner::BNLearner () {
+      // for debugging purposes
       GUM_CONSTRUCTOR ( BNLearner );
     }
       
 
     /// copy constructor
-    BNLearner::BNLearner ( const BNLearner& from ) {
+    BNLearner::BNLearner ( const BNLearner& from ) :
+      __score_type ( from.__score_type ),
+      __score ( from.__score != nullptr ?
+                from.__score->copyFactory () : nullptr ),
+      __param_estimator_type ( from.__param_estimator_type ),
+      __param_estimator ( from.__param_estimator != nullptr ?
+                          from.__param_estimator->copyFactory () : nullptr ),
+      __constraint_2TimeSlice ( from.__constraint_2TimeSlice ),
+      __constraint_Indegree   ( from.__constraint_Indegree ),
+      __constraint_TabuList   ( from.__constraint_TabuList ),
+      __selected_algo ( from.__selected_algo ),
+      __greedy_hill_climbing ( from.__greedy_hill_climbing ),
+      __local_search_with_tabu_list ( from.__local_search_with_tabu_list ),
+      __initial_dag ( from.__initial_dag ) {
+      // for debugging purposes
       GUM_CONS_CPY ( BNLearner );
     }
     
 
     /// move constructor
-    BNLearner::BNLearner ( BNLearner&& from ) {
+    BNLearner::BNLearner ( BNLearner&& from ) :
+      __score_type ( from.__score_type ),
+      __score ( from.__score ),
+      __param_estimator_type ( from.__param_estimator_type ),
+      __param_estimator ( from.__param_estimator ),
+      __constraint_2TimeSlice ( std::move ( from.__constraint_2TimeSlice ) ),
+      __constraint_Indegree   ( std::move ( from.__constraint_Indegree ) ),
+      __constraint_TabuList   ( std::move ( from.__constraint_TabuList ) ),
+      __selected_algo ( from.__selected_algo ),
+      __greedy_hill_climbing ( std::move ( from.__greedy_hill_climbing ) ),
+      __local_search_with_tabu_list
+      ( std::move ( from.__local_search_with_tabu_list ) ),
+      __initial_dag ( std::move ( from.__initial_dag ) ) {
+      from.__score = nullptr;
+      from.__param_estimator = nullptr;
+      
       GUM_CONS_MOV ( BNLearner );
     }
 
     
     /// destructor
     BNLearner::~BNLearner () {
+      if ( __score ) delete __score;
+      if ( __param_estimator ) delete __param_estimator;
+      
       GUM_DESTRUCTOR ( BNLearner );
     }
 
@@ -69,6 +102,31 @@ namespace gum {
     /// copy operator
     BNLearner&
     BNLearner::operator= ( const BNLearner& from ) {
+      if ( this != &from ) {
+        if ( __score ) {
+          delete __score;
+          __score = nullptr;
+        }
+
+        if ( __param_estimator ) {
+          delete __param_estimator;
+          __param_estimator = nullptr;
+        }
+        
+        __score_type = from.__score_type;
+        __score = from.__score ? from.__score->copyFactory () : nullptr;
+        __param_estimator_type = from.__param_estimator_type;
+        __param_estimator = from.__param_estimator ?
+          from.__param_estimator->copyFactory () : nullptr;
+        __constraint_2TimeSlice = from.__constraint_2TimeSlice;
+        __constraint_Indegree   = from.__constraint_Indegree;
+        __constraint_TabuList   = from.__constraint_TabuList;
+        __selected_algo = from.__selected_algo;
+        __greedy_hill_climbing = from.__greedy_hill_climbing;
+        __local_search_with_tabu_list = from.__local_search_with_tabu_list;
+        __initial_dag = from.__initial_dag;
+      }
+      
       return *this;
     }
 
@@ -76,12 +134,35 @@ namespace gum {
     /// move operator
     BNLearner&
     BNLearner::operator= ( BNLearner&& from ) {
+      if ( this != &from ) {
+        if ( __score ) {
+          delete __score;
+          __score = nullptr;
+        }
+
+        if ( __param_estimator ) {
+          delete __param_estimator;
+          __param_estimator = nullptr;
+        }
+
+        __score_type = from.__score_type;
+        __score = from.__score;
+        __param_estimator_type = from.__param_estimator_type;
+        __param_estimator = from.__param_estimator;
+        __constraint_2TimeSlice = std::move ( from.__constraint_2TimeSlice );
+        __constraint_Indegree   = std::move ( from.__constraint_Indegree );
+        __constraint_TabuList   = std::move ( from.__constraint_TabuList );
+        __selected_algo = from.__selected_algo;
+        __greedy_hill_climbing = std::move ( from.__greedy_hill_climbing );
+        __local_search_with_tabu_list = 
+          std::move ( from.__local_search_with_tabu_list );
+        __initial_dag = std::move ( from.__initial_dag );
+        from.__score = nullptr;
+        from.__param_estimator = nullptr;
+      }
+
       return *this;
     }
-
-
-
-    
 
 
     /// reads a file and returns a databaseVectInRam

@@ -71,6 +71,15 @@ namespace gum {
       ScoreAIC ( const RowFilter& filter,
                  const std::vector<unsigned int>& var_modalities );
 
+      /// copy constructor
+      ScoreAIC ( const ScoreAIC<IdSetAlloc,CountAlloc>& );
+
+      /// move constructor
+      ScoreAIC ( ScoreAIC<IdSetAlloc,CountAlloc>&& );
+
+      /// virtual copy factory
+      virtual ScoreAIC<IdSetAlloc,CountAlloc>* copyFactory () const;
+
       /// destructor
       virtual ~ScoreAIC ();
 

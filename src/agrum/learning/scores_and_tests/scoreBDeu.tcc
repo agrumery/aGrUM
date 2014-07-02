@@ -47,6 +47,38 @@ namespace gum {
     }
     
 
+    /// copy constructor
+    template <typename IdSetAlloc, typename CountAlloc>
+    ScoreBDeu<IdSetAlloc,CountAlloc>::ScoreBDeu
+    ( const ScoreBDeu<IdSetAlloc,CountAlloc>& from ) :
+      Score<IdSetAlloc,CountAlloc> ( from ),
+      __gammalog2 ( from.__gammalog2 ),
+      __ess ( from.__ess ) {
+      // for debugging purposes
+      GUM_CONS_CPY ( ScoreBDeu );
+    }
+    
+
+    /// move constructor
+    template <typename IdSetAlloc, typename CountAlloc>
+    ScoreBDeu<IdSetAlloc,CountAlloc>::ScoreBDeu
+    ( ScoreBDeu<IdSetAlloc,CountAlloc>&& from ) :
+      Score<IdSetAlloc,CountAlloc> ( std::move ( from ) ),
+      __gammalog2 ( std::move ( from.__gammalog2 ) ),
+      __ess ( std::move ( from.__ess ) ) {
+      // for debugging purposes
+      GUM_CONS_MOV ( ScoreBDeu );
+    }
+      
+
+    /// virtual copy factory
+    template <typename IdSetAlloc, typename CountAlloc>
+    ScoreBDeu<IdSetAlloc,CountAlloc>*
+    ScoreBDeu<IdSetAlloc,CountAlloc>::copyFactory () const {
+      return new ScoreBDeu<IdSetAlloc,CountAlloc> ( *this );
+    }
+
+
     /// destructor
     template <typename IdSetAlloc, typename CountAlloc> INLINE
     ScoreBDeu<IdSetAlloc,CountAlloc>::~ScoreBDeu () {
