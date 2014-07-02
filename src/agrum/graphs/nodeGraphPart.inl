@@ -95,6 +95,7 @@ namespace gum {
     _nodes = it._nodes;
     _pos   = it._pos;
     _valid = it._valid;
+    GUM_OP_CPY ( NodeGraphPartIterator );
     
     return *this;
   }
@@ -106,7 +107,8 @@ namespace gum {
     _nodes = it._nodes;
     _pos   = it._pos;
     _valid = it._valid;
-    
+    GUM_OP_MOV ( NodeGraphPartIterator );
+     
     return *this;
   }
   
@@ -227,7 +229,7 @@ namespace gum {
     if ( &it != this ) {
       NodeGraphPartIterator::operator= ( std::move ( it ) );
       Listener::operator= ( std::move ( it ) );
-      GUM_OP_CPY ( NodeGraphPartIteratorSafe );
+      GUM_OP_MOV ( NodeGraphPartIteratorSafe );
     }
 
     return *this;

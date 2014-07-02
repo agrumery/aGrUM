@@ -231,6 +231,11 @@ namespace gum {
 
       __dec_creation ( "Set", "__empty_edge_set", 0, "static variable correction", 0 );
       __dec_creation ( "HashTable"  , "__empty_edge_set", 0, "static variable correction", 0 );
+
+      __dec_creation ( "Bijection", "__strings", 0, "BCell string bijection", 0 );
+      __dec_creation ( "BijectionImplementation", "__strings", 0, "BCell string bijection", 0 );
+      __dec_creation ( "HashTable", "__strings", 0, "BCell string bijection", 0 );
+      __dec_creation ( "HashTable", "__strings", 0, "BCell string bijection", 0 );
     }
 
     void __atexit ( void ) {

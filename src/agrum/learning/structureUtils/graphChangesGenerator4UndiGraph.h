@@ -189,6 +189,9 @@ namespace gum {
       /// notifies the generator that we have parsed all its legal changes
       void notifyGetCompleted ();
 
+      /// sets the maximum number of threads used to compute the set of changes
+      void setMaxNbThreads ( unsigned int nb ) noexcept;
+      
       /// @}
       
 
@@ -204,7 +207,16 @@ namespace gum {
 
       /// create the set of legal and illegal changes from a given graph
       void _createChanges ();
+      
     
+    private:
+      /// the max number of threads authorized
+      #if defined(_OPENMP) && defined(NDEBUG)
+        unsigned int __max_threads_number { getMaxNumberOfThreads() };
+      #else
+        unsigned int __max_threads_number { 1 };
+      #endif /* NDEBUG */
+
     };
 
 

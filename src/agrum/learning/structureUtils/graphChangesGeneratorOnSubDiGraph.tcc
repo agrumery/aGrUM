@@ -49,7 +49,8 @@ namespace gum {
       _constraint ( from._constraint ),
       _target_nodes ( from._target_nodes ),
       _tail_nodes ( from._tail_nodes ),
-      _legal_changes ( from._legal_changes ) {
+      _legal_changes ( from._legal_changes ),
+      __max_threads_number ( from.__max_threads_number ) {
       GUM_CONS_CPY ( GraphChangesGeneratorOnSubDiGraph );
     }
 
@@ -62,7 +63,8 @@ namespace gum {
       _constraint ( from._constraint ),
       _target_nodes ( std::move ( from._target_nodes ) ),
       _tail_nodes ( std::move ( from._tail_nodes ) ),
-      _legal_changes ( std::move ( from._legal_changes ) ) {
+      _legal_changes ( std::move ( from._legal_changes ) ),
+      __max_threads_number ( from.__max_threads_number ) {
       GUM_CONS_MOV ( GraphChangesGeneratorOnSubDiGraph );
     }
 
@@ -85,6 +87,7 @@ namespace gum {
         _target_nodes  = from._target_nodes;
         _tail_nodes    = from._tail_nodes;
         _legal_changes = from._legal_changes;
+        __max_threads_number = from.__max_threads_number; 
       }
       return *this;
     }
@@ -100,6 +103,7 @@ namespace gum {
         _target_nodes  = std::move ( from._target_nodes );
         _tail_nodes    = std::move ( from._tail_nodes );
         _legal_changes = std::move ( from._legal_changes );
+        __max_threads_number = from.__max_threads_number; 
       }
       return *this;
     }
@@ -112,7 +116,7 @@ namespace gum {
       
       // for all the pairs of nodes, consider adding, reverse and removing arcs 
       std::vector< Set<GraphChange> > legal_changes;
-      #pragma omp parallel num_threads ( getMaxNumberOfThreads() )
+      #pragma omp parallel num_threads ( __max_threads_number )
       {
         int num_threads = getNumberOfRunningThreads();
 
@@ -294,6 +298,20 @@ namespace gum {
         _legal_changes.clear ();
     }
 
+    
+    /// sets the maximum number of threads used to perform countings
+    template <typename STRUCT_CONSTRAINT> INLINE
+    void GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::setMaxNbThreads
+    ( unsigned int nb ) noexcept {
+      #if defined(_OPENMP) && defined(NDEBUG)
+        if ( nb == 0 )
+          nb =  getMaxNumberOfThreads();
+        __max_threads_number = nb;
+      #else
+        __max_threads_number = 1;
+      #endif /* _OPENMP && NDEBUG */
+    }
+ 
   
   } /* namespace learning */
   

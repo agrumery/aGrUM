@@ -48,7 +48,8 @@ namespace gum {
     ( const GraphChangesGenerator4UndiGraph& from ) :
       _graph ( from._graph ),
       _constraint ( from._constraint ),
-      _legal_changes ( from._legal_changes ) {
+      _legal_changes ( from._legal_changes ),
+      __max_threads_number ( from.__max_threads_number ) {
       GUM_CONS_CPY ( GraphChangesGenerator4UndiGraph );
     }
 
@@ -60,7 +61,8 @@ namespace gum {
     ( GraphChangesGenerator4UndiGraph&& from ) :
       _graph ( std::move ( from._graph ) ),
       _constraint ( from._constraint ),
-      _legal_changes ( std::move ( from._legal_changes ) ) {
+      _legal_changes ( std::move ( from._legal_changes ) ),
+      __max_threads_number ( from.__max_threads_number ) {
       GUM_CONS_MOV ( GraphChangesGenerator4UndiGraph );
     }
 
@@ -82,6 +84,7 @@ namespace gum {
         _graph = from._graph;
         _constraint = from._constraint;
         _legal_changes = from._legal_changes;
+        __max_threads_number = from.__max_threads_number; 
       }
       return *this;
     }
@@ -96,6 +99,7 @@ namespace gum {
         _graph = std::move ( from._graph );
         _constraint = std::move ( from._constraint );
         _legal_changes = std::move ( from._legal_changes );
+        __max_threads_number = from.__max_threads_number; 
       }
       return *this;
     }
@@ -108,7 +112,7 @@ namespace gum {
       
       // for all the pairs of nodes, consider adding, reverse and removing edges 
       std::vector< Set<GraphChange> > legal_changes;
-      #pragma omp parallel num_threads ( getMaxNumberOfThreads() )
+      #pragma omp parallel num_threads ( __max_threads_number )
       {
         int num_threads = getNumberOfRunningThreads();
 
@@ -219,6 +223,20 @@ namespace gum {
     GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>::notifyGetCompleted () {
       if ( _legal_changes.size () )
         _legal_changes.clear ();
+    }
+
+                       
+    /// sets the maximum number of threads used to perform countings
+    template <typename STRUCT_CONSTRAINT> INLINE
+    void GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>::setMaxNbThreads
+    ( unsigned int nb ) noexcept {
+      #if defined(_OPENMP) && defined(NDEBUG)
+        if ( nb == 0 )
+          nb =  getMaxNumberOfThreads();
+        __max_threads_number = nb;
+      #else
+        __max_threads_number = 1;
+      #endif /* _OPENMP && NDEBUG */
     }
 
   

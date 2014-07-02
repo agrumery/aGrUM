@@ -385,8 +385,11 @@ namespace gum {
       unsigned int __nb_thread_counters { 0 };
       
       /// the max number of threads authorized
-      unsigned int __max_threads_number { getMaxNumberOfThreads() };
-      
+      #if defined(_OPENMP) && defined(NDEBUG)
+        unsigned int __max_threads_number { getMaxNumberOfThreads() };
+      #else
+        unsigned int __max_threads_number { 1 };
+      #endif /* NDEBUG */
 
       /// determine which sets are subsets
       void __computeSubsets ();

@@ -760,13 +760,13 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc> INLINE
     void RecordCounter<IdSetAlloc,CountAlloc>::setMaxNbThreads
     ( unsigned int nb ) noexcept {
-#ifdef _OPENMP
-      if ( nb == 0 )
-        nb =  getMaxNumberOfThreads();
-      __max_threads_number = nb;
-#else
-      __max_threads_number = 1;
-#endif
+      #if defined(_OPENMP) && defined(NDEBUG)
+        if ( nb == 0 )
+          nb =  getMaxNumberOfThreads();
+        __max_threads_number = nb;
+      #else
+        __max_threads_number = 1;
+      #endif /* _OPENMP && NDEBUG */
     }
     
 
