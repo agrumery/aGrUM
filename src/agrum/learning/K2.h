@@ -39,7 +39,6 @@ namespace gum {
   
   namespace learning {
 
-
     
     /** @class K2
      * @brief The K2 algorithm
@@ -85,6 +84,9 @@ namespace gum {
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
+
+      /// returns the approximation policy of the learning algorithm
+      ApproximationScheme& approximationScheme ();
 
       /// sets the order on the variables
       void setOrder ( const Sequence<NodeId>& order );

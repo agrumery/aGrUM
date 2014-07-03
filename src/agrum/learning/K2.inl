@@ -120,7 +120,13 @@ namespace gum {
                     "given to K2 that has no domain size" );
       }
     }
- 
+
+    
+    /// returns the approximation policy of the learning algorithm
+    INLINE ApproximationScheme& K2::approximationScheme () {
+      return GreedyHillClimbing::approximationScheme ();
+    }
+
 
   } /* namespace learning */
   

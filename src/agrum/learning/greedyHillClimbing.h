@@ -95,6 +95,9 @@ namespace gum {
       // ##########################################################################
       /// @{
 
+      /// returns the approximation policy of the learning algorithm
+      ApproximationScheme& approximationScheme ();
+
       /// learns the structure of a Bayes net
       /** @param A selector class that computes the best changes that can be
        * applied and that enables the user to get them very easily. Typically,
@@ -109,13 +112,12 @@ namespace gum {
       DAG learnStructure ( GRAPH_CHANGES_SELECTOR& selector,
                            const std::vector<unsigned int>& modal,
                            DAG initial_dag = DAG () );
-     
+      
       /// learns the structure and the parameters of a BN
       template <typename GUM_SCALAR = float,
                 typename GRAPH_CHANGES_SELECTOR,
                 typename PARAM_ESTIMATOR>
-      BayesNet<GUM_SCALAR>
-      learnBN
+      BayesNet<GUM_SCALAR> learnBN
       ( GRAPH_CHANGES_SELECTOR& selector,
         PARAM_ESTIMATOR& estimator,
         const std::vector<std::string>& names,

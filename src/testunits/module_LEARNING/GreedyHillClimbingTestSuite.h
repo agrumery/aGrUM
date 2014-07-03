@@ -50,13 +50,45 @@
 #include <agrum/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/learning/greedyHillClimbing.h>
 
+#include <agrum/BN/algorithms/approximationScheme.h>
+#include <agrum/BN/algorithms/approximationSchemeListener.h>
+
 #define MY_ALARM GET_PATH_STR( "alarm.csv" )
 #define MY_ASIA  GET_PATH_STR( "asia.csv" )
 
 namespace gum_tests {
 
+
+  class aSimpleListener : public gum::ApproximationSchemeListener {
+    private:
+      int __nbr;
+      std::string __mess;
+    public:
+
+    aSimpleListener ( gum::ApproximationScheme& sch ) :
+      gum::ApproximationSchemeListener ( sch ), __nbr ( 0 ), __mess ( "" ) {};
+    
+    void whenProgress ( const void* buffer, gum::Size a, double b, double c ) {
+        __nbr++;
+        std::cout << __nbr << ": error = " << b << std::endl;
+    }
+
+    void whenStop ( const void* buffer, std::string s ) {
+      __mess = s;
+    }
+
+    int getNbr() {
+      return __nbr;
+    }
+
+    std::string getMess() {
+      return __mess;
+    }
+  };
+
   class GreedyHillClimbingTestSuite: public CxxTest::TestSuite {
   public:
+
 
     void test_k2_asia () {
        gum::learning::DatabaseFromCSV database ( MY_ASIA );
@@ -114,7 +146,9 @@ namespace gum_tests {
       selector ( score, struct_constraint, op_set );
  
       gum::learning::GreedyHillClimbing search;
-
+      //aSimpleListener agsl ( search );
+      search.approximationScheme ().setEpsilon ( 1000 );
+      
       gum::Timer timer;
       gum::DAG dag = search.learnStructure ( selector, modalities );
       std::cout << timer.step () << "  " << dag << std::endl;

@@ -34,18 +34,24 @@ namespace gum {
     
     /// default constructor
     GreedyHillClimbing::GreedyHillClimbing () {
+      setEpsilon ( 0 );
+      disableMinEpsilonRate ();
+      disableMaxIter ();
+      disableMaxTime ();
       GUM_CONSTRUCTOR ( learning::GreedyHillClimbing );
     }
 
     
     /// copy constructor
-    GreedyHillClimbing::GreedyHillClimbing ( const GreedyHillClimbing& from ) {
+    GreedyHillClimbing::GreedyHillClimbing ( const GreedyHillClimbing& from ) :
+      ApproximationScheme ( from ) {
       GUM_CONS_CPY ( learning::GreedyHillClimbing );
     }
 
 
     /// move constructor
-    GreedyHillClimbing::GreedyHillClimbing ( GreedyHillClimbing&& from ) {
+    GreedyHillClimbing::GreedyHillClimbing ( GreedyHillClimbing&& from ) :
+      ApproximationScheme ( std::move ( from ) ) {
       GUM_CONS_MOV ( learning::GreedyHillClimbing );
     }
 
@@ -59,6 +65,7 @@ namespace gum {
     /// copy operator
     GreedyHillClimbing&
     GreedyHillClimbing::operator= ( const GreedyHillClimbing& from ) {
+      ApproximationScheme::operator= ( from );
       return *this;
     }
 
@@ -66,10 +73,17 @@ namespace gum {
     /// move operator
     GreedyHillClimbing&
     GreedyHillClimbing::operator= ( GreedyHillClimbing&& from ) {
+      ApproximationScheme::operator= ( std::move ( from ) );
       return *this;
     }
 
-  
+    
+    /// returns the approximation policy of the learning algorithm
+    ApproximationScheme& GreedyHillClimbing::approximationScheme () {
+      return *this;
+    }
+
+
   } /* namespace learning */
   
   

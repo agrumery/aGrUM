@@ -115,7 +115,7 @@ namespace gum {
               iter != impacted_queues.end (); ++iter )
           *iter = false;
 
-        updateApproximationScheme ();
+        updateApproximationScheme ( nb_changes_applied );
         
       } while ( nb_changes_applied &&
                 continueApproximationScheme( delta_score ) );

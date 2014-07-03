@@ -91,6 +91,7 @@ namespace gum_tests {
  
       gum::learning::K2 k2;
       k2.setOrder ( order );
+      k2.approximationScheme ().setEpsilon ( 1000 );
 
       try {
         gum::BayesNet<float> bn = k2.learnBN ( selector, estimator,
