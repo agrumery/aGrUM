@@ -83,30 +83,6 @@ namespace gum {
     class BNLearner {
       public:
 
-        /// an enumeration enabling to select easily the score we wish to use
-        enum class ScoreType {
-          AIC,
-          BD,
-          BDEU,
-          BIC,
-          K2,
-          LOG2LIKELIHOOD
-        };
-
-        /// an enumeration to select the type of parameter estimation we shall apply
-        enum ParamEstimatorType {
-          ML,
-          MLwithUniformApriori
-        };
-
-        /// an enumeration to select easily the learning algorithm to use
-        enum class AlgoType {
-          K2,
-          GREEDY_HILL_CLIMBING,
-          LOCAL_SEARCH_WITH_TABU_LIST
-        };
-
-
         // ##########################################################################
         /// @name Constructors / Destructors
         // ##########################################################################
@@ -250,6 +226,31 @@ namespace gum {
 
 
       private:
+
+        /// an enumeration enabling to select easily the score we wish to use
+        enum class ScoreType {
+          AIC,
+          BD,
+          BDEU,
+          BIC,
+          K2Score,
+          LOG2LIKELIHOOD
+        };
+
+        /// an enumeration to select the type of parameter estimation we shall apply
+        enum ParamEstimatorType {
+          ML,
+          MLwithUniformApriori
+        };
+
+        /// an enumeration to select easily the learning algorithm to use
+        enum class AlgoType {
+          K2,
+          GREEDY_HILL_CLIMBING,
+          LOCAL_SEARCH_WITH_TABU_LIST
+        };
+
+
         /// the score selected for learning
         ScoreType __score_type { ScoreType::BIC };
 

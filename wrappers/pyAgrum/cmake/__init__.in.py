@@ -45,7 +45,7 @@ from pyAgrum import GibbsInference,LazyPropagation
 from pyAgrum import PythonApproximationListener,PythonBNListener,PythonLoadListener
 
 from pyAgrum import BNGenerator
-from pyAgrum import BNLearnerFromCSV
+from pyAgrum import BNLearner
 
 from pyAgrum import initRandom,randomProba,randomDistribution
 

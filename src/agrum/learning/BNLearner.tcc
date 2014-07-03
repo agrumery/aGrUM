@@ -61,7 +61,7 @@ namespace gum {
           __score = new ScoreBIC<> ( filter, modalities );
           break;
 
-        case ScoreType::K2:
+        case ScoreType::K2Score:
           __score = new ScoreK2<> ( filter, modalities );
           break;
 
