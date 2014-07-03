@@ -18,42 +18,51 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Base Class for all elimination sequence algorithms that require only the
- * graph to be triangulated and the nodes domain sizes to produce the node
- * elimination ordering.
+ * @brief source file for virtual Base classes for non-oriented graphs listener
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Pierre-Henri WUILLEMIN
  */
 
+#include <agrum/graphs/listeners/undiGraphListener.h>
 
-#include <agrum/graphs/unconstrainedEliminationSequenceStrategy.h>
+#ifdef GUM_NO_INLINE
+#include <agrum/graphs/listeners/undiGraphListener.inl>
+#endif //GUM_NOINLINE
 
 
 namespace gum {
 
-  /// default constructor
-  UnconstrainedEliminationSequenceStrategy::
-  UnconstrainedEliminationSequenceStrategy() {
-    // for debugging purposes
-    GUM_CONSTRUCTOR ( UnconstrainedEliminationSequenceStrategy );
+
+  UndiGraphListener::UndiGraphListener ( const UndiGraphListener& d ) {
+    GUM_CONS_CPY ( UndiGraphListener );
+    GUM_ERROR ( OperationNotAllowed, "No copy constructor for UndiGraphListener" );
   }
 
-
-  /// copy constructor
-  UnconstrainedEliminationSequenceStrategy::
-  UnconstrainedEliminationSequenceStrategy
-  ( const UnconstrainedEliminationSequenceStrategy& ) {
-    // for debugging purposes
-    GUM_CONS_CPY ( UnconstrainedEliminationSequenceStrategy );
+  UndiGraphListener& UndiGraphListener::operator= ( const UndiGraphListener& d ) {
+    GUM_OP_CPY ( UndiGraphListener );
+    GUM_ERROR ( OperationNotAllowed, "No copy operator for UndiGraphListener" );
   }
 
+  UndiGraphListener::UndiGraphListener ( UndiGraph* g ) {
+    if ( !g ) {
+      GUM_ERROR ( OperationNotAllowed, "A graph listener need a graph to listen to" );
+    }
 
-  /// destructor
-  UnconstrainedEliminationSequenceStrategy::
-  ~UnconstrainedEliminationSequenceStrategy() {
-    // for debugging purposes
-    GUM_DESTRUCTOR ( UnconstrainedEliminationSequenceStrategy );
+    GUM_CONSTRUCTOR ( UndiGraphListener );
+    _graph = g;
+
+    GUM_CONNECT ( ( *_graph ), onNodeAdded, ( *this ),
+                  UndiGraphListener::whenNodeAdded );
+    GUM_CONNECT ( ( *_graph ), onNodeDeleted, ( *this ),
+                  UndiGraphListener::whenNodeDeleted );
+    GUM_CONNECT ( ( *_graph ), onEdgeAdded , ( *this ),
+                  UndiGraphListener::whenEdgeAdded );
+    GUM_CONNECT ( ( *_graph ), onEdgeDeleted, ( *this ),
+                  UndiGraphListener::whenEdgeDeleted );
   }
 
+  UndiGraphListener::~UndiGraphListener() {
+    GUM_DESTRUCTOR ( UndiGraphListener );
+  }
 
-} /* namespace gum */
+} // namespace gum

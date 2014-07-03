@@ -27,7 +27,7 @@
 
 #include <agrum/config.h>
 
-#include <agrum/graphs/partialOrderedTriangulation.h>
+#include <agrum/graphs/triangulations/partialOrderedTriangulation.h>
 
 
 namespace gum {

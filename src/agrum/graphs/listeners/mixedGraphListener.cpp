@@ -23,10 +23,10 @@
  * @author Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/graphs/mixedGraphListener.h>
+#include <agrum/graphs/listeners/mixedGraphListener.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/mixedGraphListener.inl>
+#include <agrum/graphs/listeners/mixedGraphListener.inl>
 #endif //GUM_NOINLINE
 
 namespace gum {

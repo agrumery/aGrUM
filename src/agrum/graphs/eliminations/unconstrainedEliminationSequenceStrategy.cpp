@@ -18,61 +18,42 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Abstract base class for computing triangulations of graphs
+ * @brief Base Class for all elimination sequence algorithms that require only the
+ * graph to be triangulated and the nodes domain sizes to produce the node
+ * elimination ordering.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <math.h>
 
-#include <agrum/config.h>
-#include <agrum/graphs/triangulation.h>
+
+#include <agrum/graphs/eliminations/unconstrainedEliminationSequenceStrategy.h>
 
 
 namespace gum {
 
-
-
-  /// constructor
-
-  Triangulation::Triangulation() {
+  /// default constructor
+  UnconstrainedEliminationSequenceStrategy::
+  UnconstrainedEliminationSequenceStrategy() {
     // for debugging purposes
-    GUM_CONSTRUCTOR ( Triangulation );
+    GUM_CONSTRUCTOR ( UnconstrainedEliminationSequenceStrategy );
   }
 
+
+  /// copy constructor
+  UnconstrainedEliminationSequenceStrategy::
+  UnconstrainedEliminationSequenceStrategy
+  ( const UnconstrainedEliminationSequenceStrategy& ) {
+    // for debugging purposes
+    GUM_CONS_CPY ( UnconstrainedEliminationSequenceStrategy );
+  }
 
 
   /// destructor
-
-  Triangulation::~Triangulation() {
+  UnconstrainedEliminationSequenceStrategy::
+  ~UnconstrainedEliminationSequenceStrategy() {
     // for debugging purposes
-    GUM_DESTRUCTOR ( Triangulation );
+    GUM_DESTRUCTOR ( UnconstrainedEliminationSequenceStrategy );
   }
 
-  double Triangulation::maxLog10CliqueDomainSize() {
-    double res = 0.0;
-    double dSize;
-    const JunctionTree& jt = junctionTree();
-
-    for ( auto iter_cl = jt.nodes().beginSafe(); iter_cl != jt.nodes().endSafe(); ++iter_cl ) {
-      const NodeSet& clique = jt.clique ( *iter_cl );
-      dSize = 0.0;
-
-      for ( auto nod = clique.beginSafe(); nod != clique.endSafe(); ++nod )
-        dSize += log10 ( _modalities[*nod] );
-
-      if ( res < dSize ) res = dSize;
-    }
-
-    return res;
-  }
-
-
-  /// returns the modalities of the variables of the graph to be triangulated
-
-  const NodeProperty<Size>& Triangulation::modalities() const {
-    return _modalities;
-  }
 
 } /* namespace gum */
-
-

@@ -18,51 +18,61 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief source file for virtual Base classes for non-oriented graphs listener
+ * @brief Abstract base class for computing triangulations of graphs
  *
- * @author Pierre-Henri WUILLEMIN
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
+#include <math.h>
 
-#include <agrum/graphs/undiGraphListener.h>
-
-#ifdef GUM_NO_INLINE
-#include <agrum/graphs/undiGraphListener.inl>
-#endif //GUM_NOINLINE
+#include <agrum/config.h>
+#include <agrum/graphs/triangulations/triangulation.h>
 
 
 namespace gum {
 
 
-  UndiGraphListener::UndiGraphListener ( const UndiGraphListener& d ) {
-    GUM_CONS_CPY ( UndiGraphListener );
-    GUM_ERROR ( OperationNotAllowed, "No copy constructor for UndiGraphListener" );
+
+  /// constructor
+
+  Triangulation::Triangulation() {
+    // for debugging purposes
+    GUM_CONSTRUCTOR ( Triangulation );
   }
 
-  UndiGraphListener& UndiGraphListener::operator= ( const UndiGraphListener& d ) {
-    GUM_OP_CPY ( UndiGraphListener );
-    GUM_ERROR ( OperationNotAllowed, "No copy operator for UndiGraphListener" );
+
+
+  /// destructor
+
+  Triangulation::~Triangulation() {
+    // for debugging purposes
+    GUM_DESTRUCTOR ( Triangulation );
   }
 
-  UndiGraphListener::UndiGraphListener ( UndiGraph* g ) {
-    if ( !g ) {
-      GUM_ERROR ( OperationNotAllowed, "A graph listener need a graph to listen to" );
+  double Triangulation::maxLog10CliqueDomainSize() {
+    double res = 0.0;
+    double dSize;
+    const JunctionTree& jt = junctionTree();
+
+    for ( auto iter_cl = jt.nodes().beginSafe(); iter_cl != jt.nodes().endSafe(); ++iter_cl ) {
+      const NodeSet& clique = jt.clique ( *iter_cl );
+      dSize = 0.0;
+
+      for ( auto nod = clique.beginSafe(); nod != clique.endSafe(); ++nod )
+        dSize += log10 ( _modalities[*nod] );
+
+      if ( res < dSize ) res = dSize;
     }
 
-    GUM_CONSTRUCTOR ( UndiGraphListener );
-    _graph = g;
-
-    GUM_CONNECT ( ( *_graph ), onNodeAdded, ( *this ),
-                  UndiGraphListener::whenNodeAdded );
-    GUM_CONNECT ( ( *_graph ), onNodeDeleted, ( *this ),
-                  UndiGraphListener::whenNodeDeleted );
-    GUM_CONNECT ( ( *_graph ), onEdgeAdded , ( *this ),
-                  UndiGraphListener::whenEdgeAdded );
-    GUM_CONNECT ( ( *_graph ), onEdgeDeleted, ( *this ),
-                  UndiGraphListener::whenEdgeDeleted );
+    return res;
   }
 
-  UndiGraphListener::~UndiGraphListener() {
-    GUM_DESTRUCTOR ( UndiGraphListener );
+
+  /// returns the modalities of the variables of the graph to be triangulated
+
+  const NodeProperty<Size>& Triangulation::modalities() const {
+    return _modalities;
   }
 
-} // namespace gum
+} /* namespace gum */
+
+

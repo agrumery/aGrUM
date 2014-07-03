@@ -24,11 +24,11 @@
  */
 
 
-#include <agrum/graphs/staticTriangulation.h>
+#include <agrum/graphs/triangulations/staticTriangulation.h>
 #include <agrum/core/priorityQueue.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/staticTriangulation.inl>
+#include <agrum/graphs/triangulations/staticTriangulation.inl>
 #endif //GUM_NO_INLINE
 
 

@@ -18,35 +18,32 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Base classes for mixed graph listeners
+ * @brief Base classes for oriented graph listeners
  *
  * @author Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_MIXEDGRAPH_LISTENER_H
-#define GUM_MIXEDGRAPH_LISTENER_H
+#ifndef GUM_DIGRAPH_LISTENER_H
+#define GUM_DIGRAPH_LISTENER_H
 
 #include <agrum/core/signal/listener.h>
-#include <agrum/graphs/mixedGraph.h>
-
+#include <agrum/graphs/diGraph.h>
 
 namespace gum {
-  /** @class MixedGraphListener
-   * @brief Abstract Base class for all mixed Graph Listener
+  /** @class DiGraphListener
+   * @brief Abstract Base class for all diGraph Listener
    *
    * \ingroup graph_group
    *
    *
-   * This is the virtual base class for mixed graphs meta-listener.
+   * This is the virtual base class for graphs meta-listener.
    *
-   * A MixedGraphListener will have to implement following pure methods :
+   * A DiGraphListener will have to implement following pure methods :
    *  - void whenNodeAdded( const void * ,gum::NodeId )
    *  - void whenNodeDeleted( const void *,gum::NodeId )
    *  - void whenArcAdded( const void *,gum::NodeId,gum::NodeId )
    *  - void whenArcDeleted( const void *,gum::NodeId,gum::NodeId )
-   *  - void whenEdgeAdded( const void *,gum::NodeId,gum::NodeId )
-   *  - void whenEdgeDeleted( const void *,gum::NodeId,gum::NodeId )
    */
-  class MixedGraphListener : public Listener {
+  class DiGraphListener : public Listener {
     public:
       // ############################################################################
       /// @name Constructors / Destructors
@@ -54,14 +51,14 @@ namespace gum {
       /// @{
 
       /// default constructor
-      /** @param g the graph to listen to
+      /** @param g the graph to listen to.
        * @warning Note that, by the aGrUM's constructor parameter's rule, the fact
        * that g is passed as a pointer means that g is not copied, but only
        * referenced by the listener. */
-      MixedGraphListener ( MixedGraph* g );
+      DiGraphListener ( const DiGraph* g );
 
       /// destructor
-      ~MixedGraphListener();
+      ~DiGraphListener();
 
       /// @}
 
@@ -93,41 +90,30 @@ namespace gum {
        * @param to the id of head of the arc removed from the graph */
       virtual void whenArcDeleted ( const void* src, NodeId from, NodeId to ) = 0;
 
-      /// the action to take when a new edge is inserted into the graph
-      /** @param src the object that sent the signal
-       * @param id1 the id of one node of the edge inserted into the graph
-       * @param id2 the id of the other node of the edge inserted into the graph */
-      virtual void whenEdgeAdded ( const void* src, NodeId id1, NodeId id2 ) = 0;
-
-      /// the action to take when an edge has just been removed from the graph
-      /** @param src the object that sent the signal
-       * @param from the id of one node of the edge removed from the graph
-       * @param to the id of the other node of the edge removed from the graph */
-      virtual void whenEdgeDeleted ( const void* src, NodeId from, NodeId to ) = 0;
-
       /// @}
 
 
     protected:
       /// the graph to listen to
-      MixedGraph* _graph;
+      DiGraph* _graph;
 
 
     private:
       /// copy constructor (for the moment, this operation is forbidden)
-      /** @param d the MixedGraphListener to copy */
-      MixedGraphListener ( const MixedGraphListener& d );
+      /** @param d the DiGraphListener to copy */
+      DiGraphListener ( const DiGraphListener& d );
 
       /// copy operator (for the moment, this operation is forbidden)
-      /** @param d the MixedGraphListener to copy */
-      MixedGraphListener& operator= ( const MixedGraphListener& d );
+      /** @param d the DiGraphListener to copy */
+      DiGraphListener& operator= ( const DiGraphListener& d );
 
   };
 
 } // namespace gum
 
+
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/mixedGraphListener.inl>
+#include <agrum/graphs/listeners/diGraphListener.inl>
 #endif //GUM_NOINLINE
 
-#endif // GUM_MIXEDGRAPH_LISTENER_H
+#endif // GUM_DIGRAPH_LISTENER_H

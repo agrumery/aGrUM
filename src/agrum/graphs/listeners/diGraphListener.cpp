@@ -23,10 +23,10 @@
  * @author Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/graphs/diGraphListener.h>
+#include <agrum/graphs/listeners/diGraphListener.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/diGraphListener.inl>
+#include <agrum/graphs/listeners/diGraphListener.inl>
 #endif //GUM_NOINLINE
 
 

@@ -26,7 +26,7 @@
 #include <Python.h>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/graphs/diGraphListener.h>
+#include <agrum/graphs/listeners/diGraphListener.h>
 
 
 class PythonBNListener : public gum::DiGraphListener {

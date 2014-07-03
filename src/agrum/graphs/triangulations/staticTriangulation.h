@@ -31,8 +31,8 @@
 #include <agrum/config.h>
 
 #include <agrum/graphs/cliqueGraph.h>
-#include <agrum/graphs/triangulation.h>
-#include <agrum/graphs/eliminationSequenceStrategy.h>
+#include <agrum/graphs/triangulations/triangulation.h>
+#include <agrum/graphs/eliminations/eliminationSequenceStrategy.h>
 #include <agrum/graphs/junctionTreeStrategy.h>
 
 
@@ -302,7 +302,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/staticTriangulation.inl>
+#include <agrum/graphs/triangulations/staticTriangulation.inl>
 #endif //GUM_NO_INLINE
 
 

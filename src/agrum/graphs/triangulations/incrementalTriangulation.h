@@ -33,7 +33,7 @@
 
 #include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/cliqueGraph.h>
-#include <agrum/graphs/unconstrainedTriangulation.h>
+#include <agrum/graphs/triangulations/unconstrainedTriangulation.h>
 
 
 
@@ -353,7 +353,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/incrementalTriangulation.inl>
+#include <agrum/graphs/triangulations/incrementalTriangulation.inl>
 #endif //GUM_NO_INLINE
 
 

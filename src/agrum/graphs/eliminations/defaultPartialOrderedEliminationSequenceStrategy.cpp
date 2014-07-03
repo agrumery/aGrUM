@@ -29,7 +29,7 @@
 #include <agrum/config.h>
 
 #include <agrum/graphs/undiGraph.h>
-#include <agrum/graphs/defaultPartialOrderedEliminationSequenceStrategy.h>
+#include <agrum/graphs/eliminations/defaultPartialOrderedEliminationSequenceStrategy.h>
 
 
 namespace gum {

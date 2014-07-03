@@ -33,7 +33,7 @@
 
 
 #include <agrum/core/list.h>
-#include <agrum/graphs/eliminationSequenceStrategy.h>
+#include <agrum/graphs/eliminations/eliminationSequenceStrategy.h>
 #include <agrum/graphs/undiGraph.h>
 
 

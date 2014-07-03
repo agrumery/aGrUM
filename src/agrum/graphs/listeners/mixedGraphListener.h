@@ -18,33 +18,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Base classes for undirected graph listeners
+ * @brief Base classes for mixed graph listeners
  *
  * @author Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_UNDIGRAPH_LISTENER_H
-#define GUM_UNDIGRAPH_LISTENER_H
+#ifndef GUM_MIXEDGRAPH_LISTENER_H
+#define GUM_MIXEDGRAPH_LISTENER_H
 
 #include <agrum/core/signal/listener.h>
-#include <agrum/graphs/undiGraph.h>
+#include <agrum/graphs/mixedGraph.h>
 
 
 namespace gum {
-  /** @class UndiGraphListener
-   * @brief Abstract Base class for all undiGraph Listener
+  /** @class MixedGraphListener
+   * @brief Abstract Base class for all mixed Graph Listener
    *
    * \ingroup graph_group
    *
    *
-   * This is the virtual base class for not-oriented graphs meta-listener.
+   * This is the virtual base class for mixed graphs meta-listener.
    *
-   * An UndiGraphListener will have to implement following pure methods :
+   * A MixedGraphListener will have to implement following pure methods :
    *  - void whenNodeAdded( const void * ,gum::NodeId )
    *  - void whenNodeDeleted( const void *,gum::NodeId )
+   *  - void whenArcAdded( const void *,gum::NodeId,gum::NodeId )
+   *  - void whenArcDeleted( const void *,gum::NodeId,gum::NodeId )
    *  - void whenEdgeAdded( const void *,gum::NodeId,gum::NodeId )
    *  - void whenEdgeDeleted( const void *,gum::NodeId,gum::NodeId )
    */
-  class UndiGraphListener : public Listener {
+  class MixedGraphListener : public Listener {
     public:
       // ############################################################################
       /// @name Constructors / Destructors
@@ -56,10 +58,10 @@ namespace gum {
        * @warning Note that, by the aGrUM's constructor parameter's rule, the fact
        * that g is passed as a pointer means that g is not copied, but only
        * referenced by the listener. */
-      UndiGraphListener ( UndiGraph* g );
+      MixedGraphListener ( MixedGraph* g );
 
       /// destructor
-      ~UndiGraphListener();
+      ~MixedGraphListener();
 
       /// @}
 
@@ -79,6 +81,18 @@ namespace gum {
        * @param id the id of the node has just been removed from the graph */
       virtual void whenNodeDeleted ( const void* src, NodeId id ) = 0;
 
+      /// the action to take when a new arc is inserted into the graph
+      /** @param src the object that sent the signal
+       * @param from the id of tail of the new arc inserted into the graph
+       * @param to the id of head of the new arc inserted into the graph */
+      virtual void whenArcAdded ( const void* src, NodeId from, NodeId to ) = 0;
+
+      /// the action to take when an arc has just been removed from the graph
+      /** @param src the object that sent the signal
+       * @param from the id of tail of the arc removed from the graph
+       * @param to the id of head of the arc removed from the graph */
+      virtual void whenArcDeleted ( const void* src, NodeId from, NodeId to ) = 0;
+
       /// the action to take when a new edge is inserted into the graph
       /** @param src the object that sent the signal
        * @param id1 the id of one node of the edge inserted into the graph
@@ -96,24 +110,24 @@ namespace gum {
 
     protected:
       /// the graph to listen to
-      UndiGraph* _graph;
+      MixedGraph* _graph;
 
 
     private:
       /// copy constructor (for the moment, this operation is forbidden)
-      /** @param d the UndiGraphListener to copy */
-      UndiGraphListener ( const UndiGraphListener& d );
+      /** @param d the MixedGraphListener to copy */
+      MixedGraphListener ( const MixedGraphListener& d );
 
       /// copy operator (for the moment, this operation is forbidden)
-      /** @param d the UndiGraphListener to copy */
-      UndiGraphListener& operator= ( const UndiGraphListener& d );
+      /** @param d the MixedGraphListener to copy */
+      MixedGraphListener& operator= ( const MixedGraphListener& d );
 
   };
 
 } // namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/undiGraphListener.inl>
+#include <agrum/graphs/listeners/mixedGraphListener.inl>
 #endif //GUM_NOINLINE
 
-#endif // GUM_UNDIGRAPH_LISTENER_H
+#endif // GUM_MIXEDGRAPH_LISTENER_H

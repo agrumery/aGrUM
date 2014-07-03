@@ -24,11 +24,9 @@
 }
 
 %include "extensions/BNGenerator.h"
-%include "extensions/BNLearner.h"
 
 %{
 #include "extensions/BNGenerator.h"
-#include "extensions/BNLearner.h"
 %}
 
 

@@ -32,11 +32,11 @@
 
 #include <agrum/core/list.h>
 #include <agrum/graphs/undiGraph.h>
-#include <agrum/graphs/incrementalTriangulation.h>
+#include <agrum/graphs/triangulations/incrementalTriangulation.h>
 
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/incrementalTriangulation.inl>
+#include <agrum/graphs/triangulation/incrementalTriangulation.inl>
 #endif //GUM_NO_INLINE
 
 

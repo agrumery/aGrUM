@@ -27,7 +27,7 @@
 
 
 #include <agrum/graphs/simplicialSet.h>
-#include <agrum/graphs/unconstrainedTriangulation.h>
+#include <agrum/graphs/triangulations/unconstrainedTriangulation.h>
 
 
 namespace gum {

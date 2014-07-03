@@ -18,54 +18,42 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief implementation of the base class for all elimination sequence algorithms
+ * @brief Base Class for all elimination sequence algorithms that require only the
+ * graph to be triangulated and the nodes domain sizes to produce the node
+ * elimination ordering.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 
-#include <agrum/config.h>
-#include <agrum/graphs/eliminationSequenceStrategy.h>
+#include <agrum/graphs/eliminations/partialOrderedEliminationSequenceStrategy.h>
 
 
 namespace gum {
 
-
-  // an empty fill-ins set returned by default when we ask for a fill-ins set
-  const EdgeSet EliminationSequenceStrategy::__empty_fill_ins;
-
-
   /// default constructor
-  EliminationSequenceStrategy::EliminationSequenceStrategy() {
+  PartialOrderedEliminationSequenceStrategy::
+  PartialOrderedEliminationSequenceStrategy() {
     // for debugging purposes
-    GUM_CONSTRUCTOR ( EliminationSequenceStrategy );
+    GUM_CONSTRUCTOR ( PartialOrderedEliminationSequenceStrategy );
   }
 
 
   /// copy constructor
-  EliminationSequenceStrategy::EliminationSequenceStrategy
-  ( const EliminationSequenceStrategy& ) {
+  PartialOrderedEliminationSequenceStrategy::
+  PartialOrderedEliminationSequenceStrategy
+  ( const PartialOrderedEliminationSequenceStrategy& ) {
     // for debugging purposes
-    GUM_CONS_CPY ( EliminationSequenceStrategy );
+    GUM_CONS_CPY ( PartialOrderedEliminationSequenceStrategy );
   }
 
 
   /// destructor
-  EliminationSequenceStrategy::~EliminationSequenceStrategy() {
+  PartialOrderedEliminationSequenceStrategy::
+  ~PartialOrderedEliminationSequenceStrategy() {
     // for debugging purposes
-    GUM_DESTRUCTOR ( EliminationSequenceStrategy );
+    GUM_DESTRUCTOR ( PartialOrderedEliminationSequenceStrategy );
   }
 
-
-  /// performs all the graph/fill-ins updates provided
-  void EliminationSequenceStrategy::eliminationUpdate ( const NodeId node ) { }
-
-
-  /** @brief in case fill-ins are provided, this function returns the fill-ins
-   * due to all the nodes eliminated so far */
-  const EdgeSet& EliminationSequenceStrategy::fillIns() {
-    return __empty_fill_ins;
-  }
 
 } /* namespace gum */
-

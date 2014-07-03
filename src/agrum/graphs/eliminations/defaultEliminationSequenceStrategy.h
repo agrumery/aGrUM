@@ -18,11 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief An Elimination sequence algorithm that imposes a given partial ordering
- * on the nodes elimination sequence, that is, the set of all the nodes is divided
- * into several subsets. All the nodes of the first subset must be eliminated
- * before the nodes of the second, which must be eliminated before those of the
- * third subset, and so on. Within a subset, the ordering is determined as follows:
+ * @brief An efficient unconstrained elimination sequence algorithm
+ *
+ * Class DefaultEliminationSequenceStrategy implements an unconstrained elimination
+ * sequence algorithm (that is, there is no external constraint on the possible
+ * elimination ordering). The ordering is determined as follows:
  * # the nodes that are simplicial (i.e., those that already form a clique with
  * their neighbours) are eliminated first
  * # then the nodes that are almost simplicial (i.e. if we remove one of their
@@ -36,29 +36,27 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef GUM_DEFAULT_PARTIAL_ORDERED_ELIMINATION_SEQUENCE_STRATEGY_H
-#define GUM_DEFAULT_PARTIAL_ORDERED_ELIMINATION_SEQUENCE_STRATEGY_H
+#ifndef GUM_DEFAULT_ELIMINATION_SEQUENCE_STRATEGY_H
+#define GUM_DEFAULT_ELIMINATION_SEQUENCE_STRATEGY_H
 
 
-#include <agrum/core/priorityQueue.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/simplicialSet.h>
-#include <agrum/graphs/partialOrderedEliminationSequenceStrategy.h>
+#include <agrum/graphs/eliminations/unconstrainedEliminationSequenceStrategy.h>
 
 
 namespace gum {
 
 
-  /** @class DefaultPartialOrderedEliminationSequenceStrategy
-   * @brief An Elimination sequence algorithm that imposes a given partial ordering
-   * on the nodes elimination sequence, that is, the set of all the nodes is
-   * divided into several subsets. All the nodes of the first subset must be
-   * eliminated before the nodes of the second, which must be eliminated before
-   * those of the third subset, and so on. Within a subset, the ordering is
-   * determined as follows:
+  /** @class DefaultEliminationSequenceStrategy
+   * @brief An efficient unconstrained elimination sequence algorithm
+   *
+   * Class DefaultEliminationSequenceStrategy implements an unconstrained
+   * elimination sequence algorithm (that is, there is no external constraint on
+   * the possible elimination ordering). The ordering is determined as follows:
    * # the nodes that are simplicial (i.e., those that already form a clique with
    * their neighbours) are eliminated first
-   * # then the nodes that are almost simplicial (i.e. if we remove one of their
+   * # then the nodes that are almost simplicial (i.e., if we remove one of their
    * neighbours, they become simplicial) and that create small cliques, are
    * eliminated
    * # the quasi simplicial nodes (i.e., nodes that do not require many fill-ins to
@@ -69,8 +67,8 @@ namespace gum {
    * \ingroup graph_group
    *
    */
-  class DefaultPartialOrderedEliminationSequenceStrategy :
-    public PartialOrderedEliminationSequenceStrategy {
+  class DefaultEliminationSequenceStrategy :
+    public UnconstrainedEliminationSequenceStrategy {
     public:
       // ############################################################################
       /// @name Constructors / Destructors
@@ -82,40 +80,36 @@ namespace gum {
        * DefaultEliminationSequenceStrategy
        * @param theThreshold the weight threshhold of the SimplicialSet included in
        * the DefaultEliminationSequenceStrategy */
-      DefaultPartialOrderedEliminationSequenceStrategy
-      ( float theRatio = GUM_QUASI_RATIO,
-        float theThreshold = GUM_WEIGHT_THRESHOLD );
+      DefaultEliminationSequenceStrategy ( float theRatio = GUM_QUASI_RATIO,
+                                           float theThreshold = GUM_WEIGHT_THRESHOLD );
 
       /// constructor for an a priori non empty graph
       /** @param graph the graph to be triangulated, i.e., the nodes of which will
        * be eliminated
-       * @param dom the modalities of the nodes (i.e., their domain sizes)
-       * @param subsets the list of the subsets constituting the partial ordering
+       * @param dom the domain sizes of the nodes to be eliminated
        * @param ratio the ratio used by the SimplicialSet included in the
        * DefaultEliminationSequenceStrategy
        * @param threshold the weight threshhold of the SimplicialSet included in
        * the DefaultEliminationSequenceStrategy
-       * @warning note that, by aGrUM's rule, the graph and the sequence are not
+       * @warning note that, by aGrUM's rule, the graph and the modalities are not
        * copied but only referenced by the elimination sequence algorithm. */
-      DefaultPartialOrderedEliminationSequenceStrategy
-      ( UndiGraph* graph,
-        const NodeProperty<Size>* dom,
-        const List<NodeSet>* subsets,
-        float ratio = GUM_QUASI_RATIO,
-        float threshold = GUM_WEIGHT_THRESHOLD );
+      DefaultEliminationSequenceStrategy ( UndiGraph* graph,
+                                           const NodeProperty<Size>* dom,
+                                           float ratio = GUM_QUASI_RATIO,
+                                           float threshold = GUM_WEIGHT_THRESHOLD );
 
       /// copy constructor
-      DefaultPartialOrderedEliminationSequenceStrategy
-      ( const DefaultPartialOrderedEliminationSequenceStrategy& );
+      DefaultEliminationSequenceStrategy
+      ( const DefaultEliminationSequenceStrategy& );
 
       /// destructor
-      virtual ~DefaultPartialOrderedEliminationSequenceStrategy();
+      virtual ~DefaultEliminationSequenceStrategy();
 
       /** @brief creates a new elimination sequence of the same type as the current
        * object, but this sequence contains only an empty graph
        * @warning you must deallocate by yourself the object returned
        * @return an empty clone of the current object with the same type */
-      virtual DefaultPartialOrderedEliminationSequenceStrategy* newFactory() const;
+      DefaultEliminationSequenceStrategy* newFactory() const;
 
       /// @}
 
@@ -126,16 +120,14 @@ namespace gum {
       /// @{
 
       /// sets a new graph to be triangulated
-      /** The elimination sequence algorithms reinitializes its data to start a new
-       * triangulation with graph Graph
+      /** The elimination sequence algorithm reinitializes its data to start a new
+       * triangulation with Graph "graph"
        * @param graph the new graph to be triangulated
        * @param dom the modalities of the nodes (i.e., their domain sizes)
-       * @param subsets the list of the subsets constituting the partial ordering
-       * @warning note that, by aGrUM's rule, the graph and the sequence are not
+       * @warning note that, by aGrUM's rule, the graph and the modalities are not
        * copied but only referenced by the elimination sequence algorithm. */
       void setGraph ( UndiGraph* graph,
-                      const NodeProperty<Size>* dom,
-                      const List<NodeSet>* subsets );
+                      const NodeProperty<Size>* dom );
 
       /// clears the sequence (to prepare, for instance, a new elimination sequence)
       void clear();
@@ -163,7 +155,15 @@ namespace gum {
       bool providesFillIns() const;
 
       /** @brief indicates whether the elimination sequence updates by itself the
-       * graph after a node has been eliminated */
+       * graph after a node has been eliminated
+       *
+       * Some algorithms have more informations than the triangulation algorithm
+       * to update the graph after a node has been eliminated. They can thus exploit
+       * these informations to update the graph faster than the triangulation. Hence
+       * the latter should delegate this operation to the elimination sequence. This
+       * is the case, for instance, for the defaultEliminationSequence, which uses
+       * a SimplicialSet that knows that some eliminated nodes do not require any
+       * fill-in. */
       bool providesGraphUpdate() const;
 
       /// performs all the graph/fill-ins updates provided (if any)
@@ -178,7 +178,7 @@ namespace gum {
 
 
     private:
-      /// the graph to triangulate
+      /// the graph to be triangulated
       UndiGraph* __graph;
 
       /// the modalities of the nodes (domain sizes)
@@ -189,15 +189,6 @@ namespace gum {
 
       /// for each node, the weight of the clique created by the node's elimination
       NodeProperty<float> __log_weights;
-
-      /// the subsets constituting the partial ordering
-      const List<NodeSet>* __subsets;
-
-      /// the iterator indicating which is the current subset on which we work
-      List<NodeSet>::const_iterator_safe __subset_iter;
-
-      /// the nodes which can be currently eliminated
-      NodeSet __nodeset;
 
       /// the simplicial set used for determining the best nodes to eliminate
       SimplicialSet* __simplicial_set;
@@ -212,16 +203,10 @@ namespace gum {
       bool __provide_fill_ins;
 
 
-
-      /// returns the best possible node to be eliminated
-      /** this function is used by method nextNodeToEliminate */
-      NodeId __nodeToEliminate ( const PriorityQueue<NodeId, float>& possibleNodes );
-
-
   };
 
 
 }  /* namespace gum */
 
 
-#endif /* GUM_DEFAULT_PARTIAL_ORDERED_ELIMINATION_SEQUENCE_STRATEGY_H */
+#endif /* GUM_DEFAULT_ELIMINATION_SEQUENCE_STRATEGY_H */

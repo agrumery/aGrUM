@@ -27,7 +27,7 @@
 
 #include <agrum/config.h>
 
-#include <agrum/graphs/orderedEliminationSequenceStrategy.h>
+#include <agrum/graphs/eliminations/orderedEliminationSequenceStrategy.h>
 
 
 namespace gum {

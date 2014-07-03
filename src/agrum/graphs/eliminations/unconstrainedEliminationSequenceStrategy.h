@@ -42,7 +42,7 @@
 #define GUM_UNCONSTRAINED_ELIMINATION_SEQUENCE_STRATEGY_H
 
 
-#include <agrum/graphs/eliminationSequenceStrategy.h>
+#include <agrum/graphs/eliminations/eliminationSequenceStrategy.h>
 #include <agrum/graphs/undiGraph.h>
 
 namespace gum {

@@ -25,8 +25,8 @@
  */
 
 #include <agrum/config.h>
-#include <agrum/graphs/unconstrainedEliminationSequenceStrategy.h>
-#include <agrum/graphs/unconstrainedTriangulation.h>
+#include <agrum/graphs/eliminations/unconstrainedEliminationSequenceStrategy.h>
+#include <agrum/graphs/triangulations/unconstrainedTriangulation.h>
 
 
 namespace gum {
