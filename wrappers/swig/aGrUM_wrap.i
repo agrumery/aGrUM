@@ -33,7 +33,7 @@
 #include <agrum/graphs/undiGraph.h>
 #include <agrum/graphs/mixedGraph.h>
 #include <agrum/graphs/cliqueGraph.h>
-#include <agrum/graphs/defaultTriangulation.h>
+#include <agrum/graphs/triangulations/defaultTriangulation.h>
 #include <agrum/variables/discreteVariable.h>
 #include <agrum/multidim/multiDimInterface.h>
 #include <agrum/multidim/multiDimAdressable.h>
@@ -79,7 +79,7 @@
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
 
 #include <agrum/core/signal/listener.h>
-#include <agrum/graphs/diGraphListener.h>
+#include <agrum/graphs/listeners/diGraphListener.h>
 
 #include <agrum/CN/credalNet.h>
 #include <agrum/CN/varMod2BNsMap.h>
@@ -169,7 +169,7 @@ namespace std {
 %include <agrum/graphs/undiGraph.h>
 %include <agrum/graphs/mixedGraph.h>
 %include <agrum/graphs/cliqueGraph.h>
-%import <agrum/graphs/defaultTriangulation.h>
+%import <agrum/graphs/triangulations/defaultTriangulation.h>
 
 %include <agrum/multidim/multiDimInterface.h>
 %import <agrum/multidim/multiDimAdressable.h>
@@ -202,7 +202,7 @@ namespace std {
 %include <agrum/BN/algorithms/divergence/GibbsKL.h>
 
 %import <agrum/core/signal/listener.h>
-%import <agrum/graphs/diGraphListener.h>
+%import <agrum/graphs/listeners/diGraphListener.h>
 %import <agrum/BN/io/BIF/BIFReader.h>
 
 %include <agrum/CN/credalNet.h>
