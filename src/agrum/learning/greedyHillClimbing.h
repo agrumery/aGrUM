@@ -36,6 +36,7 @@
 
 #include <agrum/graphs/DAG.h>
 #include <agrum/BN/BayesNet.h>
+#include <agrum/BN/algorithms/approximationScheme.h>
 
 
 namespace gum {
@@ -53,7 +54,7 @@ namespace gum {
      * change can increase the score anymore.
      * @ingroup learning_group
      */
-    class GreedyHillClimbing {
+    class GreedyHillClimbing : public ApproximationScheme {
     public:
       // ##########################################################################
       /// @name Constructors / Destructors

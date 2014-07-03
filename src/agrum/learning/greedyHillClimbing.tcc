@@ -42,13 +42,17 @@ namespace gum {
       selector.setGraph ( dag, modal );
       
       unsigned int nb_changes_applied = 1;
-
+      float delta_score;
+      
+      initApproximationScheme ();
+      
       // a vector that indicates which queues have valid scores, i.e., scores
       // that were not invalidated by previously applied changes
       std::vector<bool> impacted_queues ( dag.size (), false );
 
-      while ( nb_changes_applied ) {
+      do {
         nb_changes_applied = 0;
+        delta_score = 0;
 
         std::vector< std::pair<unsigned int,float> > ordered_queues =
           selector.nodesSortedByBestScore ();
@@ -64,6 +68,7 @@ namespace gum {
             case GraphChangeType::ARC_ADDITION:
               if ( ! impacted_queues[ change.node2 () ] &&
                    selector.isChangeValid ( change ) ) {
+                delta_score += selector.bestScore ( i );
                 dag.insertArc ( change.node1 (), change.node2 () );
                 impacted_queues[ change.node2 () ] = true;
                 selector.applyChangeWithoutScoreUpdate ( change );
@@ -74,6 +79,7 @@ namespace gum {
             case GraphChangeType::ARC_DELETION:
               if ( ! impacted_queues[ change.node2 () ] &&
                    selector.isChangeValid ( change ) ) {
+                delta_score += selector.bestScore ( i );
                 dag.eraseArc ( Arc ( change.node1 (), change.node2 () ) );
                 impacted_queues[ change.node2 () ] = true;
                 selector.applyChangeWithoutScoreUpdate ( change );
@@ -85,6 +91,7 @@ namespace gum {
               if ( ( ! impacted_queues[ change.node1 () ] ) &&
                    ( ! impacted_queues[ change.node2 () ] ) &&
                    selector.isChangeValid ( change ) ) {
+                delta_score += selector.bestScore ( i );
                 dag.eraseArc ( Arc ( change.node1 (), change.node2 () ) );
                 dag.insertArc ( change.node2 (), change.node1 () );
                 impacted_queues[ change.node1 () ] = true;
@@ -107,7 +114,11 @@ namespace gum {
         for ( auto iter = impacted_queues.begin ();
               iter != impacted_queues.end (); ++iter )
           *iter = false;
-      }
+
+        updateApproximationScheme ();
+        
+      } while ( nb_changes_applied &&
+                continueApproximationScheme( delta_score ) );
    
       return dag;
     }
