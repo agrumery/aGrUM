@@ -33,20 +33,26 @@ namespace gum {
     
     /// default constructor
     INLINE LocalSearchWithTabuList::LocalSearchWithTabuList () {
+      disableEpsilon ();
+      disableMinEpsilonRate ();
+      disableMaxIter ();
+      disableMaxTime ();
       GUM_CONSTRUCTOR ( learning::LocalSearchWithTabuList );
     }
 
     
     /// copy constructor
     INLINE LocalSearchWithTabuList::LocalSearchWithTabuList
-    ( const LocalSearchWithTabuList& from ) {
+    ( const LocalSearchWithTabuList& from ) :
+      ApproximationScheme ( from ) {
       GUM_CONS_CPY ( learning::LocalSearchWithTabuList );
     }
 
 
     /// move constructor
     INLINE LocalSearchWithTabuList::LocalSearchWithTabuList
-    ( LocalSearchWithTabuList&& from ) {
+    ( LocalSearchWithTabuList&& from ) :
+      ApproximationScheme ( std::move ( from ) ) {
       GUM_CONS_MOV ( learning::LocalSearchWithTabuList );
     }
 
@@ -60,6 +66,7 @@ namespace gum {
     /// copy operator
     INLINE LocalSearchWithTabuList&
     LocalSearchWithTabuList::operator= ( const LocalSearchWithTabuList& from ) {
+      ApproximationScheme::operator= ( from );
       return *this;
     }
 
@@ -67,6 +74,7 @@ namespace gum {
     /// move operator
     INLINE LocalSearchWithTabuList&
     LocalSearchWithTabuList::operator= ( LocalSearchWithTabuList&& from ) {
+      ApproximationScheme::operator= ( std::move ( from ) );
       return *this;
     }
 
@@ -76,7 +84,13 @@ namespace gum {
     LocalSearchWithTabuList::setMaxNbDecreasingChanges ( unsigned int nb ) {
       __MaxNbDecreasing = nb;
     }
-    
+
+
+    /// returns the approximation policy of the learning algorithm
+    INLINE ApproximationScheme& LocalSearchWithTabuList::approximationScheme () {
+      return *this;
+    }
+
   
   } /* namespace learning */
   

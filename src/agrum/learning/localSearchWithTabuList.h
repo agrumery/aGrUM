@@ -36,6 +36,7 @@
 
 #include <agrum/graphs/DAG.h>
 #include <agrum/BN/BayesNet.h>
+#include <agrum/BN/algorithms/approximationScheme.h>
 
 
 namespace gum {
@@ -55,7 +56,7 @@ namespace gum {
      *
      * @ingroup learning_group
      */
-    class LocalSearchWithTabuList {
+    class LocalSearchWithTabuList : public ApproximationScheme {
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -95,6 +96,9 @@ namespace gum {
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
+
+      /// returns the approximation policy of the learning algorithm
+      ApproximationScheme& approximationScheme ();
 
       /// set the max number of changes decreasing the score that we allow to apply
       void setMaxNbDecreasingChanges ( unsigned int nb );

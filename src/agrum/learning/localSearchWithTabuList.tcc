@@ -45,7 +45,10 @@ namespace gum {
       bool are_changes_applied_yet;
       unsigned int applied_change_with_positive_score;
       unsigned int current_N = 0;
-
+      float delta_score;
+      
+      initApproximationScheme ();
+ 
       // a vector that indicates which queues have valid scores, i.e., scores
       // that were not invalidated by previously applied changes
       std::vector<bool> impacted_queues ( dag.size (), false );
@@ -59,8 +62,9 @@ namespace gum {
         are_changes_applied_yet = false;
         applied_change_with_positive_score = 0;
         
-        while ( ! are_changes_applied_yet || nb_changes_applied ) {
+        do {
           nb_changes_applied = 0;
+          delta_score = 0;
 
           std::vector< std::pair<unsigned int,float> > ordered_queues =
             selector.nodesSortedByBestScore ();
@@ -90,6 +94,7 @@ namespace gum {
                     best_score = current_score;
                     best_dag = dag; 
                   }
+                  delta_score += selector.bestScore ( i );
                   current_score += selector.bestScore ( i );
                   dag.insertArc ( change.node1 (), change.node2 () );
                   impacted_queues[ change.node2 () ] = true;
@@ -109,6 +114,7 @@ namespace gum {
                     best_score = current_score;
                     best_dag = dag; 
                   }
+                  delta_score += selector.bestScore ( i );
                   current_score += selector.bestScore ( i );
                   dag.eraseArc ( Arc ( change.node1 (), change.node2 () ) );
                   impacted_queues[ change.node2 () ] = true;
@@ -129,6 +135,7 @@ namespace gum {
                     best_score = current_score;
                     best_dag = dag;
                   }
+                  delta_score += selector.bestScore ( i );
                   current_score += selector.bestScore ( i );                  
                   dag.eraseArc ( Arc ( change.node1 (), change.node2 () ) );
                   dag.insertArc ( change.node2 (), change.node1 () );
@@ -154,11 +161,16 @@ namespace gum {
                 iter != impacted_queues.end (); ++iter )
             *iter = false;
 
+          updateApproximationScheme ( nb_changes_applied );
+          
           // stop the loop if we have found no change to apply
           if ( ! nb_changes_applied )
             are_changes_applied_yet = true;
         }
+        while ( ( ! are_changes_applied_yet || nb_changes_applied ) &&
+                continueApproximationScheme( delta_score ) );
 
+        
         // update current_N
         if ( applied_change_with_positive_score ) {
           current_N = 0;
