@@ -136,6 +136,13 @@ namespace gum {
       // ###################################################################
       std::string toString();
 
+      Size learnerSize() { return __learner->size(); }
+
+      Size modelSize() { return __fmdp->size(); }
+
+      Size valueFunctionSize() { return __planer->vFunction()->realSize(); }
+
+      Size optimalPolicySize() { return __planer->optimalPolicy()->realSize(); }
 
 
     private :
@@ -174,10 +181,6 @@ namespace gum {
 
       /// Since SPIMMDI made these observation, it has to delete them on quitting
       Set<Observation*> __bin;
-
-      /// Only for random pruposes
-      int __offset;
-      int __timey;
 
   };
 

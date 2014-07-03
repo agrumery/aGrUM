@@ -115,8 +115,11 @@ namespace gum {
       }
 
       MultiDimDecisionGraph<GUM_SCALAR>* reward = new MultiDimDecisionGraph<GUM_SCALAR>();
+      Set<const DiscreteVariable*> primeVariables;
+      for (auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter)
+        primeVariables.insert(__fmdp->main2prime(*varIter));
       __fmdp->addReward(reward);
-      __rewardLearner = new IMDDI<GUM_SCALAR>(reward,__learningThreshold,__mainVariables,__rewardVar,true);
+      __rewardLearner = new IMDDI<GUM_SCALAR>(reward,__learningThreshold,primeVariables,__rewardVar,true);
     }
 
     // ###################################################################
@@ -138,6 +141,24 @@ namespace gum {
     //
     // ###################################################################
     template <typename GUM_SCALAR>
+    Size FMDPLearner<GUM_SCALAR>::size( ){
+
+        Size s = 0;
+        for( auto actionIter = __actionLearners.beginSafe(); actionIter != __actionLearners.endSafe(); ++actionIter )
+            for( auto learnerIter = actionIter.val()->beginSafe(); learnerIter != actionIter.val()->endSafe(); ++learnerIter)
+                s+= (*learnerIter)->size();
+
+        s += __rewardLearner->size();
+
+        return s;
+    }
+
+
+
+    // ###################################################################
+    //
+    // ###################################################################
+    template <typename GUM_SCALAR>
     void FMDPLearner<GUM_SCALAR>::updateFMDP(){
 
 //      std::cout << "Beginning update"  << std::endl;
@@ -151,7 +172,7 @@ namespace gum {
       }
 
 //      std::cout << "Reward update"  << std::endl;
-      __rewardLearner->toDG();
+      __rewardLearner->toDG(__fmdp->mapMainPrime());
 //      std::cout << "Fin"  << std::endl;
     }
 } // End of namespace gum

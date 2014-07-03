@@ -118,7 +118,22 @@ namespace gum {
         void __transpose(NodeId, const DiscreteVariable*);
 
   public :
+
+        // ###################################################################
+        ///
+        // ###################################################################
         void toDG();
+
+        // ###################################################################
+        ///
+        // ###################################################################
+        void toDG(const Bijection<const DiscreteVariable*, const DiscreteVariable*>&);
+
+        // ###################################################################
+        ///
+        // ###################################################################
+        Size size(){ return __nodeVarMap.size(); }
+
   private :
         NodeId __nodeRedundancyCheck( const DiscreteVariable*, NodeId* );
 
@@ -163,8 +178,6 @@ namespace gum {
 
       /// The final diagram we're building
       MultiDimDecisionGraph<GUM_SCALAR>* __target;
-
-//      HashTable<NodeId,NodeId> __toTarget;
 
       Set<const DiscreteVariable*> __setOfVars;
       const DiscreteVariable* __value;

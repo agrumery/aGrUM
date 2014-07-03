@@ -204,10 +204,19 @@ namespace gum {
       /**
        * Returns the map binding main variables and prime variables
        */
-      INLINE const Bijection<const DiscreteVariable*, const DiscreteVariable*> mapMainPrime() const { return __main2primed; }
+      INLINE const Bijection<const DiscreteVariable*, const DiscreteVariable*>& mapMainPrime() const { return __main2primed; }
 
       /// @}
+
+      /**
+       * Returns the map binding main variables and prime variables
+       */
       std::string show() const;
+
+      /**
+       * Returns the map binding main variables and prime variables
+       */
+      Size size() const;
 
     private :
 

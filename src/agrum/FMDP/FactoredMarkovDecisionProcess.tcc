@@ -318,16 +318,25 @@ namespace gum {
         std::stringstream fmdpCore;
 
         for ( auto actionIter = __actionTransitionTable.beginSafe(); actionIter != __actionTransitionTable.endSafe(); ++actionIter ) {
-            std::cout << "Action : " << actionIter.key() << std::endl;
             for ( auto tableIter = ( actionIter.val() )->beginSafe(); tableIter != ( actionIter.val() )->endSafe(); ++tableIter ) {
-                std::cout << "\tVar : " << tableIter.key()->name() << std::endl;
-//                fmdpCore << std::endl << tableIter.val()->toString();
                 fmdpCore << std::endl << reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*>(tableIter.val())->toDot();
             }
         }
 
         fmdpCore << std::endl << reinterpret_cast<const MultiDimDecisionGraph<GUM_SCALAR>*>(__defaultRewardTable)->toDot();
         return fmdpCore.str();
+    }
+
+
+    template<typename GUM_SCALAR> INLINE
+    Size
+    FactoredMarkovDecisionProcess<GUM_SCALAR>::size( ) const {
+        Size s = 0;
+        for ( auto actionIter = beginActions(); actionIter != endActions(); ++actionIter )
+            for ( auto varIter = beginVariables(); varIter != endVariables(); ++varIter )
+                s += this->transition(*actionIter, *varIter)->realSize();
+        s += __defaultRewardTable->realSize();
+        return s;
     }
 
 

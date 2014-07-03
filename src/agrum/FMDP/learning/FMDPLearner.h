@@ -108,6 +108,8 @@ namespace gum {
 
       /// @}
 
+      Size size();
+
     private :
 
       /// The FMDP to store the learned model

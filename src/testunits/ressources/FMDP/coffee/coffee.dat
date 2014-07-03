@@ -18,8 +18,8 @@ l ( l ( office ( 0.1 0.9 ) )
       ( shop ( 0.9 0.1 ) ) )
 endaction
 action delc
-huc ( huc ( yes ( 0.25 0.75 ) )
-          ( no ( hrc ( yes ( l ( office ( 0.25 0.75 ) )
+huc ( huc ( yes ( 0 1 ) )
+          ( no ( hrc ( yes ( l ( office ( 0.15 0.85 ) )
                                ( shop ( 1 0 ) ) ) )
                      ( no ( 1 0 ) ) ) ) )
 hrc ( hrc ( yes ( l ( office ( 0.9 0.1 ) )

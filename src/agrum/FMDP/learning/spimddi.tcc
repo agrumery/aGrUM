@@ -64,8 +64,7 @@ namespace gum {
 
             __nbObservation = 1;
 
-            __offset = 0;
-            __timey = time(NULL);
+            srand(time(NULL));
         }
 
         // ###################################################################
@@ -143,7 +142,7 @@ namespace gum {
         template<typename GUM_SCALAR>
         void SPIMDDI<GUM_SCALAR>::feedback( const Instantiation& newState, GUM_SCALAR reward){
 
-            std::cout << "Begin Feeadback - Observation n° " << __nbObservation << std::endl;
+            std::cout << "Begin Feedback - Observation n° " << __nbObservation << std::endl;
             Observation* obs = new Observation();
 
             for( auto varIter = __lastState.variablesSequence().beginSafe(); varIter != __lastState.variablesSequence().endSafe(); ++varIter)
@@ -172,15 +171,13 @@ namespace gum {
         template<typename GUM_SCALAR>
         Idx SPIMDDI<GUM_SCALAR>::takeAction( ){
 
-            srand( __timey + __offset++ );
-
             double explo = (double)std::rand( ) / (double)RAND_MAX;
-            if( __planer->optimalPolicy() != nullptr && explo > __exploThreshold){
+            if( __planer->optimalPolicy()->realSize() && explo > __exploThreshold){
                 std::cout << "Exploitons!" << std::endl;
                 __lastAction = __planer->optimalPolicy()->get(__lastState);
             }else{
                 std::cout << "Explorons!" << std::endl;
-                __lastAction = __actionSeq[ (Idx)( (double)std::rand( ) / (double)RAND_MAX * __actionSeq.size()) ] ;
+                __lastAction = __actionSeq[ (Idx)((double)std::rand( ) / (double)RAND_MAX * __actionSeq.size()) ] ;
             }
             return __lastAction;
         }

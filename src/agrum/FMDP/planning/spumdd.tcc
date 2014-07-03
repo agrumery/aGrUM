@@ -104,6 +104,7 @@ namespace gum {
 
       // Initialisation of the value function
       __vFunction = new MultiDimDecisionGraph< GUM_SCALAR >();
+      __optimalPolicy = new MultiDimDecisionGraph< Idx >();
       __firstTime = true;
     }
 
@@ -443,9 +444,7 @@ namespace gum {
     void
     SPUMDD<GUM_SCALAR>::__extractOptimalPolicy ( const MultiDimDecisionGraph< std::pair< double, long > >* argMaxOptimalPolicy ) {
 
-      if(__optimalPolicy)
-        delete __optimalPolicy;
-      __optimalPolicy = new MultiDimDecisionGraph< Idx >();
+      __optimalPolicy->clear();
 
       // Insertion des nouvelles variables
       for( SequenceIteratorSafe<const DiscreteVariable*> varIter = argMaxOptimalPolicy->variablesSequence().beginSafe(); varIter != argMaxOptimalPolicy->variablesSequence().endSafe(); ++varIter)

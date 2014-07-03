@@ -21,7 +21,6 @@
 // ==============================================================================
 #include <iostream>
 #include <string>
-#include <stdarg.h>
 // ==============================================================================
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
@@ -34,14 +33,11 @@
 
 namespace gum_tests {
 
-  class SPUDDPlanningTestSuite: public CxxTest::TestSuite {
+  class SPIMDDITestSuite: public CxxTest::TestSuite {
 
     private :
-      std::string file;
 
       void run ( const std::string showSaveFile, gum::Idx nbVar, ... ) {
-
-        std::cout << "" << std::endl;
 
         // *********************************************************************************************
         // Chargement du fmdp servant de base
@@ -99,47 +95,33 @@ namespace gum_tests {
         for( auto rewardIter = reward->values().beginSafe(); rewardIter != reward->values().endSafe(); ++rewardIter)
             spim.addReward(rewardIter.second());
 
-        // Ouverture du fichier de sauvegarde des données
-        std::ofstream __traceAlgoSaveFile;
-        __traceAlgoSaveFile.open ( GET_PATH_STR ( "FMDP/SPIMDDIVALUATION/" + showSaveFile ), std::ios::out | std::ios::trunc );
-        if ( !__traceAlgoSaveFile )
-          return;
-
-//        initialState.setFirst();
-//        TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialState(initialState) );
         TS_GUM_ASSERT_THROWS_NOTHING ( sim.setEndState(endState) );
-//        TS_GUM_ASSERT_THROWS_NOTHING ( spim.initialize(initialState) );
         TS_GUM_ASSERT_THROWS_NOTHING ( spim.initialize() );
+        TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialStateRandomly() );
 
-        std::cout << initialState.toString() << std::endl;
-        for( gum::Idx nbRun = 0; nbRun < 250; ++nbRun ){
 
-            std::cout << "###############################################" << std::endl;
 
-            TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialStateRandomly() );
+        for( gum::Idx nbRun = 0; nbRun < 1000; ++nbRun ){
+
             TS_GUM_ASSERT_THROWS_NOTHING ( spim.setCurrentState(sim.currentState()) );
 
-
             while(!sim.hasReachEnd()){
+
+                // Normal Iteration Part
                 gum::Idx actionChosenId = spim.takeAction();
-                std::cout << "Trajectoire : " << nbRun << " - Action : " << fmdp.actionName(actionChosenId) << std::endl;
                 sim.perform( actionChosenId );
-                std::cout << "\t" << sim.currentState().toString() << std::endl;
 
                 spim.feedback(sim.currentState(), sim.reward());
+
             }
+            TS_GUM_ASSERT_THROWS_NOTHING ( sim.setInitialStateRandomly() );
         }
-
-        __traceAlgoSaveFile.close();
-
-        std::cout << spim.toString() << std::endl;
 
       }
 
     public:
 
       void test_Coffee() {
-        file = GET_PATH_STR ( "FMDP/coffee/coffee.dat" );
         std::string varName("huc");
         std::string varModa("yes");
         run ( "Coffee", 1, varName.c_str(), varModa.c_str() );

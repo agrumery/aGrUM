@@ -80,8 +80,6 @@ namespace gum {
       ///
       void Simulator::perform( Idx actionId ){
 
-          srand( time(NULL) );
-
           Instantiation newState;
           for( auto varIter = __fmdp->beginVariables(); varIter != __fmdp->endVariables(); ++varIter ){
 
@@ -103,7 +101,6 @@ namespace gum {
 
           }
           __currentState = newState;
-
       }
 
 

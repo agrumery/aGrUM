@@ -143,31 +143,26 @@ namespace gum {
         else
             remainingVarsScore.insert(*varIter, 0.0);
 
-//        std::cout << " Var : " << (*varIter)->name()  << " - p-Value : " << remainingVarsScore.priority(*varIter) << std::endl;
       }
 
       // Then, until there's no node remaining
       while( !remainingVars.empty() ){
 
-//        // We select the best var
-//          std::cout << "Selected Var : " << remainingVarsScore.top()->name() << " - " << remainingVarsScore.topPriority() << " - " << __nbTotalObservation << std::endl;
+        // We select the best var
         const DiscreteVariable* selectedVar = remainingVarsScore.pop();
         remainingVars >> selectedVar;
         __varOrder.insert(selectedVar);
 
-//        // Then we decide if we update each node according to this var
+        // Then we decide if we update each node according to this var
         __updateNodeSet( currentNodeSet, selectedVar, remainingVarsScore );
 
       }
 
       // If there are remaining node that are not leaves after we establish the var order
       // these nodes are turned into leaf.
-//      std::cout << "Turning remaining nodes into leaves : " << currentNodeSet << std::endl;
-//      __showMap();
 
       for( SetIteratorSafe<NodeId> nodeIter = currentNodeSet.beginSafe(); nodeIter != currentNodeSet.endSafe(); ++nodeIter )
         __turnIntoLeaf(*nodeIter);
-//            __showMap();
 
     }
 
@@ -211,10 +206,8 @@ namespace gum {
         if( __nodeId2Database[*nodeIter]->isPValueRelevant( selectedVar)
                 && __nodeId2Database[*nodeIter]->pValue( selectedVar) > __dependenceThreshold ){
 
-//          std::cout << "Transposition noeud : " << *nodeIter << std::endl;
           __transpose(*nodeIter, selectedVar);
 
-//          std::cout << "MAJ Priority Queue" << std::endl;
           // Then we subtract the from the score given to each variables the quantity given by this node
           for( auto varIter = remainingVarsScore.allValues().cbeginSafe(); varIter != remainingVarsScore.allValues().cendSafe(); ++varIter ) {
             if( __nodeId2Database[*nodeIter]->isPValueRelevant( varIter.key() ) ){
@@ -225,7 +218,6 @@ namespace gum {
 
           // And finally we add all its child to the new set of nodes
           // and updates the remaining var's score
-//          std::cout << "MAJ Priority Queue part II" << std::endl;
           for( Idx modality = 0; modality < __nodeVarMap[*nodeIter]->domainSize(); ++modality){
             nodeSet << __nodeSonsMap[*nodeIter][modality];
 
@@ -238,7 +230,6 @@ namespace gum {
             }
           }
         } else {
-//          std::cout << "Not for " << *nodeIter << std::endl;
           nodeSet << *nodeIter;
         }
       }
@@ -264,7 +255,6 @@ namespace gum {
       if( __nodeVarMap[currentNodeId] == __value ){
 
         Sequence<NodeDatabase<GUM_SCALAR>*> sonsNodeDatabase = __nodeId2Database[currentNodeId]->splitOnVar(desiredVar);
-//        std::cout << "IMDDI 267" << std::endl;
         NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*desiredVar->domainSize()) );
 
         for( Idx modality = 0; modality < desiredVar->domainSize(); ++modality ){
@@ -292,12 +282,10 @@ namespace gum {
         __transpose( __nodeSonsMap[currentNodeId][modality], desiredVar );
 
       Sequence<NodeDatabase<GUM_SCALAR>*> sonsNodeDatabase = __nodeId2Database[currentNodeId]->splitOnVar(desiredVar);
-//      std::cout << "IMDDI 294" << std::endl;
       NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*desiredVar->domainSize()) );
 
       // Then we create the new mapping
       for(Idx desiredVarModality = 0; desiredVarModality < desiredVar->domainSize(); ++desiredVarModality){
-//          std::cout << "IMDDI 298" << std::endl;
         NodeId* grandSonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*__nodeVarMap[currentNodeId]->domainSize()) );
         for(Idx currentVarModality = 0; currentVarModality < __nodeVarMap[currentNodeId]->domainSize(); ++currentVarModality )
           grandSonsMap[currentVarModality] = __nodeSonsMap[__nodeSonsMap[currentNodeId][currentVarModality]][desiredVarModality];
@@ -388,42 +376,27 @@ namespace gum {
     // ============================================================================
     template <typename GUM_SCALAR>
     void IMDDI<GUM_SCALAR>::toDG(){
-//        __showMap();
-       __target->clear();
 
-//       std::cout << "2DG I " << __value->name() << std::endl;
+       __target->clear();
        for( auto varIter = __varOrder.beginSafe(); varIter != __varOrder.endSafe(); ++varIter )
          __target->add(**varIter);
-
-//       std::cout << "2DG II" << std::endl;
-       if(!__isReward)
-         __target->add(*__value);
-//       std::cout << "2DG III" << std::endl;
+       __target->add(*__value);
 
        HashTable<NodeId, NodeId> toTarget;
-//       std::cout << "2DG IV" << std::endl;
 
 
        for( auto nodeIter = __var2Node[__value]->cbeginSafe(); nodeIter != __var2Node[__value]->cendSafe(); ++nodeIter ){
-//            std::cout << *nodeIter << std::endl;
-         if(__isReward){
-           toTarget.insert(*nodeIter, __target->manager()->addTerminalNode(__nodeId2Database[*nodeIter]->rewardValue()));
-         } else {
-           GUM_SCALAR* probDist = __nodeId2Database[*nodeIter]->probDist();
-//           std::cout << "IMDDI 410" << std::endl;
-           NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*__value->domainSize()) );
-           for(Idx modality = 0; modality < __value->domainSize(); ++modality )
-             sonsMap[modality] = __target->manager()->addTerminalNode( probDist[modality] );
-           toTarget.insert(*nodeIter, __nodeRedundancyCheck( __value, sonsMap ) );
-           MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( probDist, sizeof(GUM_SCALAR)*__value->domainSize());
-         }
+         GUM_SCALAR* probDist = __nodeId2Database[*nodeIter]->probDist();
+         NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*__value->domainSize()) );
+         for(Idx modality = 0; modality < __value->domainSize(); ++modality )
+           sonsMap[modality] = __target->manager()->addTerminalNode( probDist[modality] );
+         toTarget.insert(*nodeIter, __nodeRedundancyCheck( __value, sonsMap ) );
+         MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( probDist, sizeof(GUM_SCALAR)*__value->domainSize());
        }
-//       std::cout << "2DG V" << std::endl;
 
        for( auto varIter = __varOrder.rbeginSafe(); varIter != __varOrder.rendSafe(); --varIter ) {
 
          for( auto nodeIter = __var2Node[*varIter]->cbeginSafe(); nodeIter != __var2Node[*varIter]->cendSafe(); ++nodeIter ){
-//             std::cout << "IMDDI 423" << std::endl;
            NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*(*varIter)->domainSize()) );
            for(Idx modality = 0; modality < (*varIter)->domainSize(); ++modality ){
 
@@ -433,13 +406,42 @@ namespace gum {
          }
 
        }
-//       std::cout << "2DG VI" << std::endl;
-//       std::cout << __root << std::endl;
        __target->manager()->setRootNode( toTarget[__root] );
-//       std::cout << "2DG VII" << std::endl;
+       __target->manager()->clean();
+    }
+
+
+    // ============================================================================
+    // Computes the Reduced and Ordered Decision Graph  associated to this ordered tree
+    // ============================================================================
+    template <typename GUM_SCALAR>
+    void IMDDI<GUM_SCALAR>::toDG(const Bijection<const DiscreteVariable*, const DiscreteVariable*>& main2prime){
+       __target->clear();
+
+       for( auto varIter = __varOrder.beginSafe(); varIter != __varOrder.endSafe(); ++varIter )
+         __target->add(*( main2prime.first(*varIter) ) );
+
+       HashTable<NodeId, NodeId> toTarget;
+
+
+       for( auto nodeIter = __var2Node[__value]->cbeginSafe(); nodeIter != __var2Node[__value]->cendSafe(); ++nodeIter )
+         toTarget.insert(*nodeIter, __target->manager()->addTerminalNode(__nodeId2Database[*nodeIter]->rewardValue()));
+
+       for( auto varIter = __varOrder.rbeginSafe(); varIter != __varOrder.rendSafe(); --varIter ) {
+         const DiscreteVariable* mainy = main2prime.first(*varIter);
+         for( auto nodeIter = __var2Node[*varIter]->cbeginSafe(); nodeIter != __var2Node[*varIter]->cendSafe(); ++nodeIter ){
+           NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*mainy->domainSize()) );
+           for(Idx modality = 0; modality < mainy->domainSize(); ++modality ){
+
+             sonsMap[modality] = toTarget[__nodeSonsMap[*nodeIter][modality]];
+           }
+           toTarget.insert(*nodeIter, __nodeRedundancyCheck( mainy, sonsMap ) );
+         }
+
+       }
+       __target->manager()->setRootNode( toTarget[__root] );
 
        __target->manager()->clean();
-//       std::cout << "2DG VIII" << std::endl;
     }
 
 
@@ -470,8 +472,6 @@ namespace gum {
     template <typename GUM_SCALAR >
     void
     IMDDI<GUM_SCALAR>::__showMap( ){
-
-        __showMap();
 
         for( auto varIter = __nodeVarMap.beginSafe(); varIter != __nodeVarMap.endSafe(); ++varIter )
             std::cout << varIter.key() << " - " << varIter.val()->name() << " | ";
