@@ -82,9 +82,17 @@ namespace gum {
     }
 
     
-    /// indicate that we wish to use a greedy hill climbing algorithm
-    INLINE void BNLearner::useK2 () noexcept {
+    /// indicate that we wish to use a K2 algorithm
+    INLINE void BNLearner::useK2 ( const Sequence<NodeId>& order ) noexcept {
       __selected_algo = AlgoType::K2;
+      __K2.setOrder ( order );
+    }
+
+
+    /// indicate that we wish to use a K2 algorithm
+    INLINE void BNLearner::useK2 ( const std::vector<NodeId>& order ) noexcept {
+      __selected_algo = AlgoType::K2;
+      __K2.setOrder ( order );
     }
 
     
@@ -95,32 +103,15 @@ namespace gum {
 
     
     /// indicate that we wish to use a local search with tabu list
-    INLINE void BNLearner::useLocalSearchWithTabuList () noexcept {
+    INLINE void
+    BNLearner::useLocalSearchWithTabuList ( unsigned int tabu_size,
+                                            unsigned int nb_decrease ) noexcept {
       __selected_algo = AlgoType::LOCAL_SEARCH_WITH_TABU_LIST;
+      __constraint_TabuList.setTabuListSize ( tabu_size );
+      __local_search_with_tabu_list.setMaxNbDecreasingChanges ( nb_decrease );
     }
     
   
-    /// set the max number of changes decreasing the score that we allow to apply
-    INLINE void BNLearner::setMaxNbDecreasingChanges ( unsigned int nb ) {
-      __local_search_with_tabu_list.setMaxNbDecreasingChanges ( nb );
-    }
-
-    
-    /// set an ordering for K2 (by default, nodes are ordered by increasing id)
-    INLINE void BNLearner::setOrder ( const Sequence<NodeId>& order ) {
-      __order = order;
-    }
-      
-
-    /// set an ordering for K2 (by default, nodes are ordered by increasing id)
-    INLINE void BNLearner::setOrder ( const std::vector<NodeId>& order ) {
-      __order.clear ();
-      for ( const auto node : order ) {
-        __order.insert ( node );
-      }
-    }
-
-    
     /// assign a set of forbidden arcs
     INLINE void BNLearner::setForbiddenArcs ( const ArcSet& set ) {
       __constraint_ForbiddenArcs.setArcs ( set );
@@ -158,16 +149,9 @@ namespace gum {
 
     
     /// sets a partial order on the nodes
-    INLINE void BNLearner::setPartialOrder
-    ( const NodeProperty<unsigned int>& partial_order ) {
-      __constraint_PartialOrder = partial_order;
-    }
-
-
-    /// sets a kTBN constraint (alias for setPartialOrder)
-    INLINE void BNLearner::setkTBN
-    ( const NodeProperty<unsigned int>& partial_order ) {
-      __constraint_PartialOrder = partial_order;
+    INLINE void BNLearner::setSliceOrder
+    ( const NodeProperty<unsigned int>& slice_order ) {
+      __constraint_SliceOrder = slice_order;
     }
 
 

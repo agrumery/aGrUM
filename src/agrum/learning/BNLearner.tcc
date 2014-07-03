@@ -136,18 +136,15 @@ namespace gum {
         {
           StructuralConstraintSetStatic<StructuralConstraintMandatoryArcs,
                                         StructuralConstraintForbiddenArcs,
-                                        StructuralConstraintPartialOrder,
-                                        StructuralConstraintIndegree,
-                                        StructuralConstraintDAG> gen_constraint;
+                                        StructuralConstraintSliceOrder>
+            gen_constraint;
           static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
             __constraint_MandatoryArcs;
           static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
             __constraint_ForbiddenArcs;
-          static_cast<StructuralConstraintPartialOrder&> ( gen_constraint ) =
-            __constraint_PartialOrder;
-          static_cast<StructuralConstraintIndegree&> ( gen_constraint ) =
-            __constraint_Indegree;
-                         
+          static_cast<StructuralConstraintSliceOrder&> ( gen_constraint ) =
+            __constraint_SliceOrder;
+          
           GraphChangesGenerator4DiGraph< decltype ( gen_constraint ) >
             op_set ( gen_constraint );
         
@@ -170,17 +167,14 @@ namespace gum {
         {
           StructuralConstraintSetStatic<StructuralConstraintMandatoryArcs,
                                         StructuralConstraintForbiddenArcs,
-                                        StructuralConstraintPartialOrder,
-                                        StructuralConstraintIndegree,
-                                        StructuralConstraintDAG> gen_constraint;
+                                        StructuralConstraintSliceOrder>
+            gen_constraint;
           static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
             __constraint_MandatoryArcs;
           static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
             __constraint_ForbiddenArcs;
-          static_cast<StructuralConstraintPartialOrder&> ( gen_constraint ) =
-            __constraint_PartialOrder;
-          static_cast<StructuralConstraintIndegree&> ( gen_constraint ) =
-            __constraint_Indegree;
+          static_cast<StructuralConstraintSliceOrder&> ( gen_constraint ) =
+            __constraint_SliceOrder;
           
           GraphChangesGenerator4DiGraph< decltype ( gen_constraint ) >
             op_set ( gen_constraint );
@@ -206,37 +200,58 @@ namespace gum {
       case AlgoType::K2:
         {
           StructuralConstraintSetStatic<StructuralConstraintMandatoryArcs,
-                                        StructuralConstraintForbiddenArcs,
-                                        StructuralConstraintPartialOrder,
-                                        StructuralConstraintIndegree,
-                                        StructuralConstraintDiGraph>
+                                        StructuralConstraintForbiddenArcs>
             gen_constraint;
           static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
             __constraint_MandatoryArcs;
           static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
             __constraint_ForbiddenArcs;
-          static_cast<StructuralConstraintPartialOrder&> ( gen_constraint ) =
-            __constraint_PartialOrder;
-          static_cast<StructuralConstraintIndegree&> ( gen_constraint ) =
-            __constraint_Indegree;
                          
           GraphChangesGenerator4K2< decltype ( gen_constraint ) >
             op_set ( gen_constraint );
-          op_set.setOrder ( __order );
-        
-          StructuralConstraintSetStatic<StructuralConstraintIndegree,
-                                        StructuralConstraintDiGraph>
-            sel_constraint;
-          static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
-            __constraint_Indegree;
-          
-          GraphChangesSelector4DiGraph< Score<>,
-                                        decltype ( sel_constraint ),
-                                        decltype ( op_set ) >
-            selector ( *__score, sel_constraint, op_set );
 
-          return __greedy_hill_climbing.learnStructure ( selector, modal,
-                                                         init_graph );
+          // if some mandatory arcs are incompatible with the order, use a DAG
+          // constraint instead of a DiGraph constraint to avoid cycles
+          const ArcSet& mandatory_arcs =
+            static_cast<StructuralConstraintMandatoryArcs&>
+            ( gen_constraint ).arcs ();
+          const Sequence<NodeId>& order = __K2.order ();
+          bool order_compatible = true;
+          for ( const auto& arc : mandatory_arcs ) {
+            if ( order.pos ( arc.tail () ) >= order.pos ( arc.head () ) ) {
+              order_compatible = false;
+              break;
+            }
+          }
+
+          if ( order_compatible ) {
+            StructuralConstraintSetStatic<StructuralConstraintIndegree,
+                                          StructuralConstraintDiGraph>
+              sel_constraint;
+            static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
+              __constraint_Indegree;
+          
+            GraphChangesSelector4DiGraph< Score<>,
+                                          decltype ( sel_constraint ),
+                                          decltype ( op_set ) >
+              selector ( *__score, sel_constraint, op_set );
+            
+            return __K2.learnStructure ( selector, modal, init_graph );
+          }
+          else {
+            StructuralConstraintSetStatic<StructuralConstraintIndegree,
+                                          StructuralConstraintDAG>
+              sel_constraint;
+            static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
+              __constraint_Indegree;
+          
+            GraphChangesSelector4DiGraph< Score<>,
+                                          decltype ( sel_constraint ),
+                                          decltype ( op_set ) >
+              selector ( *__score, sel_constraint, op_set );
+            
+            return __K2.learnStructure ( selector, modal, init_graph );
+          }
         }
 
        // ========================================================================

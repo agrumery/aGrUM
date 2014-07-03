@@ -24,11 +24,16 @@
  * time slice s, where s < t. This class allows for taking this kind of constraint
  * into account by imposing a partial order over the nodes: arcs (X,Y) can then
  * only be added if X <= Y in the partial order.
+ * @warning: there may exist free variables, that is variables whose order
+ * w.r.t. the other variables is unspecified. In this case, arcs adjacent
+ * to them can be constructed. The partial order is specified by assigning
+ * numbers to nodes (through a NodeProperty). Nodes without number (i.e., that
+ * do not belong to the property) are free.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_PARTIAL_ORDER_H
-#define GUM_LEARNING_STRUCTURAL_CONSTRAINT_PARTIAL_ORDER_H
+#ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_SLICE_ORDER_H
+#define GUM_LEARNING_STRUCTURAL_CONSTRAINT_SLICE_ORDER_H
 
 
 #include <agrum/config.h>
@@ -42,17 +47,22 @@ namespace gum {
   namespace learning {
 
     
-    /** @class StructuralConstraintPartialOrder
+    /** @class StructuralConstraintSliceOrder
      * @brief the structural constraint imposing a partial order over nodes
      *
      * In DBNs, it is forbidden to add arcs from nodes at time slice t to nodes at
      * time slice s, where s < t. This class allows for taking this kind of
      * constraint into account by imposing a partial order over the nodes:
      * arcs (X,Y) can then only be added if X <= Y in the partial order.
+     * @warning: there may exist free variables, that is variables whose order
+     * w.r.t. the other variables is unspecified. In this case, arcs adjacent
+     * to them can be constructed. The partial order is specified by assigning
+     * numbers to nodes (through a NodeProperty). Nodes without number (i.e., that
+     * do not belong to the property) are free.
      *
      * @ingroup learning_group
      */
-    class StructuralConstraintPartialOrder :
+    class StructuralConstraintSliceOrder :
       protected virtual StructuralConstraintSetStatic<StructuralConstraintDiGraph>
     {
     public:
@@ -63,26 +73,26 @@ namespace gum {
       /// @{
 
       /// default constructor
-      StructuralConstraintPartialOrder ();
+      StructuralConstraintSliceOrder ();
 
       /// constructor starting with an empty graph with a given number of nodes
       /** param order the partial order  */
-      StructuralConstraintPartialOrder ( const NodeProperty<unsigned int>& order );
+      StructuralConstraintSliceOrder ( const NodeProperty<unsigned int>& order );
 
       /// constructor starting with a given graph
-      StructuralConstraintPartialOrder ( const DiGraph& graph,
-                                         const NodeProperty<unsigned int>& order );
+      StructuralConstraintSliceOrder ( const DiGraph& graph,
+                                       const NodeProperty<unsigned int>& order );
 
       /// copy constructor
-      StructuralConstraintPartialOrder
-      ( const StructuralConstraintPartialOrder& from );
+      StructuralConstraintSliceOrder
+      ( const StructuralConstraintSliceOrder& from );
 
       /// move constructor
-      StructuralConstraintPartialOrder
-      ( StructuralConstraintPartialOrder&& from );
+      StructuralConstraintSliceOrder
+      ( StructuralConstraintSliceOrder&& from );
 
       /// destructor
-      virtual ~StructuralConstraintPartialOrder ();
+      virtual ~StructuralConstraintSliceOrder ();
       
       /// @}
 
@@ -93,12 +103,12 @@ namespace gum {
       /// @{
       
       /// copy operator
-      StructuralConstraintPartialOrder&
-      operator= ( const StructuralConstraintPartialOrder& from );
+      StructuralConstraintSliceOrder&
+      operator= ( const StructuralConstraintSliceOrder& from );
 
       /// move operator
-      StructuralConstraintPartialOrder&
-      operator= ( StructuralConstraintPartialOrder&& from );
+      StructuralConstraintSliceOrder&
+      operator= ( StructuralConstraintSliceOrder&& from );
 
       /// @}
       
@@ -109,12 +119,17 @@ namespace gum {
       /// @{
 
       /// sets the time slices of all the nodes in the property 
-      void setPartialOrder ( const NodeProperty<unsigned int>& time_slice );
+      void setSliceOrder ( const NodeProperty<unsigned int>& slice );
 
-      /** @brief sets the default slice in the partial order (and possibly put
-       * all nodes in this slice) */
-      void setDefaultSlice ( unsigned int slice,
-                             bool update_all = false );
+      /// returns the current slice order
+      const NodeProperty<unsigned int>& sliceOrder () const noexcept;
+
+      /// adds a new node in the slice order
+      void addNode ( NodeId node, unsigned int slice );
+
+      /** @brief assign a given slice to all the nodes specified in the
+       * partial order */
+      void setDefaultSlice ( unsigned int slice );
       
       /// sets a new graph from which we will perform checkings
       void setGraphAlone ( const DiGraph& graph );
@@ -210,7 +225,7 @@ namespace gum {
       // include the set of methods that enable the structural constraint to
       // be standalone, i.e., that it needs not be included into a
       // StructuralConstraintSetStatic to be used by learning algorithms
-      #define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintPartialOrder
+      #define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintSliceOrder
       #include <agrum/learning/constraints/structuralConstraintPatternHeader.h>
       #undef GUM_CONSTRAINT_CLASS_NAME
 
@@ -218,10 +233,7 @@ namespace gum {
 
     protected:
       /// slices to which belong the nodes
-      NodeProperty<unsigned int> _PartialOrder__order;
-
-      /// the default time slice
-      unsigned int _PartialOrder__default_slice { 0 };
+      NodeProperty<unsigned int> _SliceOrder__order;
 
     };
     
@@ -234,8 +246,8 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/constraints/structuralConstraintPartialOrder.inl>
+#include <agrum/learning/constraints/structuralConstraintSliceOrder.inl>
 #endif /* GUM_NO_INLINE */
 
 
-#endif /* GUM_LEARNING_STRUCTURAL_CONSTRAINT_PARTIAL_ORDER_H */
+#endif /* GUM_LEARNING_STRUCTURAL_CONSTRAINT_SLICE_ORDER_H */

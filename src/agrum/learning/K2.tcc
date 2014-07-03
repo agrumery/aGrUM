@@ -34,8 +34,8 @@ namespace gum {
 
   
   namespace learning {
-    
 
+    
     /// learns the structure of a Bayes net
     template <typename GRAPH_CHANGES_SELECTOR>
     DAG K2::learnStructure ( GRAPH_CHANGES_SELECTOR& selector,
@@ -47,6 +47,9 @@ namespace gum {
                           typename GRAPH_CHANGES_SELECTOR::GeneratorType>::value,
           "K2 must be called with a K2-compliant Graph Change Generator" );
 
+      // check that the order passed in argument concerns all the nodes
+      __checkOrder ( modal );
+      
       // get the generator and assign the order
       auto& generator = selector.graphChangeGenerator ();
       generator.setOrder ( __order );
@@ -71,6 +74,9 @@ namespace gum {
                           typename GRAPH_CHANGES_SELECTOR::GeneratorType>::value,
           "K2 must be called with a K2-compliant Graph Change Generator" );
 
+      // check that the order passed in argument concerns all the nodes
+      __checkOrder ( modal );
+      
       // get the generator and assign the order
       auto& generator = selector.graphChangeGenerator ();
       generator.setOrder ( __order );

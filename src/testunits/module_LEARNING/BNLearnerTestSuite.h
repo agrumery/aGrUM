@@ -32,28 +32,31 @@ namespace gum_tests {
     void test_asia () {
       gum::learning::BNLearner learner;
 
-      learner.useLocalSearchWithTabuList ();
+      learner.useLocalSearchWithTabuList ( 100, 1 );
       learner.setMaxIndegree ( 10 );
-      learner.setMaxNbDecreasingChanges ( 1 );
       learner.useScoreK2 ();
-      learner.useK2 ();
-      learner.setOrder ( std::vector<gum::NodeId> { 6, 5, 4 } );
-      learner.addForbiddenArc ( gum::Arc (4,3) );
-      learner.addForbiddenArc ( gum::Arc (5,1) );
-      learner.addForbiddenArc ( gum::Arc (5,7) );
+      learner.useK2 ( std::vector<gum::NodeId> { 1, 5, 2, 6, 0, 3, 4, 7 } );
+      // learner.addForbiddenArc ( gum::Arc (4,3) );
+      // learner.addForbiddenArc ( gum::Arc (5,1) );
+      // learner.addForbiddenArc ( gum::Arc (5,7) );
 
-      learner.addMandatoryArc ( gum::Arc (1, 2) );
+      learner.addMandatoryArc ( gum::Arc (2, 1) );
 
       gum::NodeProperty<unsigned int> partial_order {
         std::make_pair( gum::NodeId ( 0 ), 1 ),
         std::make_pair( gum::NodeId ( 3 ), 0 ),
         std::make_pair( gum::NodeId ( 1 ), 0 ) };
-      learner.setPartialOrder ( partial_order );
+      //learner.setSliceOrder ( partial_order );
 
-      gum::Timer timer;
-      gum::BayesNet<float> bn = learner.learnBN ( GET_PATH_STR( "asia.csv" ) );
-      std::cout << timer.step () << " : " << std::endl;
-      std::cout << bn << "  " << bn.dag () << std::endl;
+      try {
+        gum::Timer timer;
+        gum::BayesNet<float> bn = learner.learnBN ( GET_PATH_STR( "asia.csv" ) );
+        std::cout << timer.step () << " : " << std::endl;
+        std::cout << bn << "  " << bn.dag () << std::endl;
+      }
+      catch ( gum::Exception& e ) {
+        GUM_SHOWERROR ( e );
+      }
     }
 
   };

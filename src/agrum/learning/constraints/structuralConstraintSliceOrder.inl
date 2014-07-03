@@ -24,6 +24,11 @@
  * time slice s, where s < t. This class allows for taking this kind of constraint
  * into account by imposing a partial order over the nodes: arcs (X,Y) can then
  * only be added if X <= Y in the partial order.
+ * @warning: there may exist free variables, that is variables whose order
+ * w.r.t. the other variables is unspecified. In this case, arcs adjacent
+ * to them can be constructed. The partial order is specified by assigning
+ * numbers to nodes (through a NodeProperty). Nodes without number (i.e., that
+ * do not belong to the property) are free.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -38,28 +43,27 @@ namespace gum {
 
 
     /// sets a new graph from which we will perform checkings
-    INLINE void StructuralConstraintPartialOrder::setGraphAlone
+    INLINE void StructuralConstraintSliceOrder::setGraphAlone
     ( const DiGraph& graph ) {
-      // check that each node has an appropriate time slice
-      for ( const auto id : graph ) {
-        if ( ! _PartialOrder__order.exists ( id ) ) {
-          _PartialOrder__order.insert ( id, _PartialOrder__default_slice );
-        }
-      }
     }
 
     
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool
-    StructuralConstraintPartialOrder::checkArcAdditionAlone ( NodeId x, NodeId y )
+    StructuralConstraintSliceOrder::checkArcAdditionAlone ( NodeId x, NodeId y )
       const noexcept {
-      return _PartialOrder__order[x] <= _PartialOrder__order[y];
+      try {
+        return _SliceOrder__order[x] <= _SliceOrder__order[y];
+      }
+      catch ( const Exception& ) {
+        return true;
+      }
     }
 
     
     /// checks whether the constraints enable to remove arc (x,y)
     INLINE bool
-    StructuralConstraintPartialOrder::checkArcDeletionAlone ( NodeId x, NodeId y )
+    StructuralConstraintSliceOrder::checkArcDeletionAlone ( NodeId x, NodeId y )
       const noexcept {
       return true;
     }
@@ -67,66 +71,81 @@ namespace gum {
     
     /// checks whether the constraints enable to reverse arc (x,y)
     INLINE bool
-    StructuralConstraintPartialOrder::checkArcReversalAlone ( NodeId x, NodeId y )
+    StructuralConstraintSliceOrder::checkArcReversalAlone ( NodeId x, NodeId y )
       const noexcept {
-      return _PartialOrder__order[x] == _PartialOrder__order[y];
+      try {
+        return _SliceOrder__order[x] == _SliceOrder__order[y];
+      }
+      catch ( const Exception& ) {
+        return true;
+      }
     }
-    
+
     
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintPartialOrder::modifyGraphAlone
+    StructuralConstraintSliceOrder::modifyGraphAlone
     ( const ArcAddition& change ) {
     }
 
     
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintPartialOrder::modifyGraphAlone
+    StructuralConstraintSliceOrder::modifyGraphAlone
     ( const ArcDeletion& change ) {
     }
 
     
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintPartialOrder::modifyGraphAlone
+    StructuralConstraintSliceOrder::modifyGraphAlone
     ( const ArcReversal& change ) {
     }
 
     
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintPartialOrder::modifyGraphAlone
+    StructuralConstraintSliceOrder::modifyGraphAlone
     ( const GraphChange& change ) {
     }
 
     
     /// indicates whether a change will always violate the constraint
     INLINE bool
-    StructuralConstraintPartialOrder::isAlwaysInvalidAlone
+    StructuralConstraintSliceOrder::isAlwaysInvalidAlone
     ( const GraphChange& change ) const noexcept {
       switch ( change.type () ) {
       case GraphChangeType::ARC_ADDITION:
-        return ( _PartialOrder__order[change.node1 ()] >
-                 _PartialOrder__order[change.node2 ()] );
-        
+        try {
+          return ( _SliceOrder__order[change.node1 ()] >
+                   _SliceOrder__order[change.node2 ()] );
+        }
+        catch ( const Exception& ) {
+          return false;
+        }
+
       case GraphChangeType::ARC_DELETION:
         return false;
 
       case GraphChangeType::ARC_REVERSAL:
-        return ( _PartialOrder__order[change.node1 ()] !=
-                 _PartialOrder__order[change.node2 ()] );
-
+        try {
+          return ( _SliceOrder__order[change.node1 ()] !=
+                   _SliceOrder__order[change.node2 ()] );
+        }
+        catch ( const Exception& ) {
+          return false;
+        }
+        
       default:
         GUM_ERROR ( OperationNotAllowed, "edge modifications are not "
-                    "supported by PartialOrder constraints" );
+                    "supported by SliceOrder constraints" );
       }
     }
 
 
     /// checks whether the constraints enable to add an arc
     INLINE bool
-    StructuralConstraintPartialOrder::checkModificationAlone
+    StructuralConstraintSliceOrder::checkModificationAlone
     ( const ArcAddition& change ) const noexcept {
       return checkArcAdditionAlone ( change.node1 (), change.node2 () );
     }
@@ -134,7 +153,7 @@ namespace gum {
 
     /// checks whether the constraints enable to remove an arc
     INLINE bool
-    StructuralConstraintPartialOrder::checkModificationAlone
+    StructuralConstraintSliceOrder::checkModificationAlone
     ( const ArcDeletion& change ) const noexcept {
       return checkArcDeletionAlone ( change.node1 (), change.node2 () );
     }
@@ -142,7 +161,7 @@ namespace gum {
 
     /// checks whether the constraints enable to reverse an arc
     INLINE bool
-    StructuralConstraintPartialOrder::checkModificationAlone
+    StructuralConstraintSliceOrder::checkModificationAlone
     ( const ArcReversal& change ) const noexcept {
       return checkArcReversalAlone ( change.node1 (), change.node2 () );
     }
@@ -150,7 +169,7 @@ namespace gum {
       
     /// checks whether the constraints enable to perform a graph change
     INLINE bool
-    StructuralConstraintPartialOrder::checkModificationAlone
+    StructuralConstraintSliceOrder::checkModificationAlone
     ( const GraphChange& change ) const noexcept {
       switch ( change.type () ) {
       case GraphChangeType::ARC_ADDITION:
@@ -164,36 +183,44 @@ namespace gum {
         
       default:
         GUM_ERROR ( OperationNotAllowed, "edge modifications are not "
-                    "supported by StructuralConstraintPartialOrder" );
+                    "supported by StructuralConstraintSliceOrder" );
       }
     }
    
 
     /// sets the time slices of all the nodes in the property 
-    INLINE void StructuralConstraintPartialOrder::setPartialOrder
+    INLINE void StructuralConstraintSliceOrder::setSliceOrder
     ( const NodeProperty<unsigned int>& order ) {
-      for ( const auto& slice : order ) {
-        _PartialOrder__order.set ( slice.first, slice.second );
-      }
+      _SliceOrder__order = order;
     }
 
     
     /// sets the default time slice
-    INLINE void StructuralConstraintPartialOrder::setDefaultSlice
-    ( unsigned int slice,
-      bool update_all ) {
-      if ( update_all ) {
-        for ( auto& node : _PartialOrder__order ) {
-          node.second = slice;
-        }
+    INLINE void StructuralConstraintSliceOrder::setDefaultSlice
+    ( unsigned int slice ) {
+      for ( auto& node : _SliceOrder__order ) {
+        node.second = slice;
       }
+    }
 
-      _PartialOrder__default_slice = slice;
+    
+    /// adds a new node in the slice order
+    INLINE void StructuralConstraintSliceOrder::addNode ( NodeId node,
+                                                          unsigned int slice ) {
+      _SliceOrder__order.set ( node, slice );
+    }
+
+    
+    /// returns the current slice order
+    INLINE const NodeProperty<unsigned int>&
+    StructuralConstraintSliceOrder::sliceOrder () const noexcept {
+      return _SliceOrder__order;
     }
 
 
+
     // include all the methods applicable to the whole class hierarchy
-    #define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintPartialOrder
+    #define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintSliceOrder
     #include <agrum/learning/constraints/structuralConstraintPatternInline.h>
     #undef GUM_CONSTRAINT_CLASS_NAME
 

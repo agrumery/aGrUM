@@ -24,15 +24,20 @@
  * time slice s, where s < t. This class allows for taking this kind of constraint
  * into account by imposing a partial order over the nodes: arcs (X,Y) can then
  * only be added if X <= Y in the partial order.
+ * @warning: there may exist free variables, that is variables whose order
+ * w.r.t. the other variables is unspecified. In this case, arcs adjacent
+ * to them can be constructed. The partial order is specified by assigning
+ * numbers to nodes (through a NodeProperty). Nodes without number (i.e., that
+ * do not belong to the property) are free.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/learning/constraints/structuralConstraintPartialOrder.h>
+#include <agrum/learning/constraints/structuralConstraintSliceOrder.h>
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/constraints/structuralConstraintPartialOrder.inl>
+#include <agrum/learning/constraints/structuralConstraintSliceOrder.inl>
 #endif /* GUM_NO_INLINE */
 
 
@@ -43,94 +48,76 @@ namespace gum {
 
     
     /// default constructor
-    StructuralConstraintPartialOrder::StructuralConstraintPartialOrder () {
-      GUM_CONSTRUCTOR ( StructuralConstraintPartialOrder );
+    StructuralConstraintSliceOrder::StructuralConstraintSliceOrder () {
+      GUM_CONSTRUCTOR ( StructuralConstraintSliceOrder );
     }
 
 
     /// constructor starting with an empty graph with a given number of nodes
-    StructuralConstraintPartialOrder::StructuralConstraintPartialOrder
+    StructuralConstraintSliceOrder::StructuralConstraintSliceOrder
     ( const NodeProperty<unsigned int>& order ) {
       for ( auto iter = order.cbegin(); iter != order.cend (); ++iter ) {
         _DiGraph__graph.insertNode ( iter.key () );
       }
-      _PartialOrder__order = order;
+      _SliceOrder__order = order;
 
-      GUM_CONSTRUCTOR ( StructuralConstraintPartialOrder );
+      GUM_CONSTRUCTOR ( StructuralConstraintSliceOrder );
     }
     
     
     /// constructor starting with a given graph
-    StructuralConstraintPartialOrder::StructuralConstraintPartialOrder
+    StructuralConstraintSliceOrder::StructuralConstraintSliceOrder
     ( const DiGraph& graph,
       const NodeProperty<unsigned int>& order ) :
-      StructuralConstraintDiGraph ( graph ) {
-      // check that each node has an appropriate time slice
-      if ( order.size () != graph.size () ) {
-        GUM_ERROR ( SizeError,
-                    "the graph and the partial order do not have the same size" );
-      }
-      for ( const auto id : graph ) {
-        if ( ! order.exists ( id ) ) {
-          GUM_ERROR ( InvalidNode, "there exists a node in the graph that does "
-                      "not belong to the partial order" );
-        }
-      }
-      _PartialOrder__order = order;
-
-      GUM_CONSTRUCTOR ( StructuralConstraintPartialOrder );
+      StructuralConstraintDiGraph ( graph ),
+      _SliceOrder__order ( order ) {
+      GUM_CONSTRUCTOR ( StructuralConstraintSliceOrder );
     }
 
 
     /// copy constructor
-    StructuralConstraintPartialOrder::StructuralConstraintPartialOrder
-    ( const StructuralConstraintPartialOrder& from ) :
+    StructuralConstraintSliceOrder::StructuralConstraintSliceOrder
+    ( const StructuralConstraintSliceOrder& from ) :
       StructuralConstraintDiGraph ( from ),
-      _PartialOrder__order ( from._PartialOrder__order ),
-      _PartialOrder__default_slice ( from._PartialOrder__default_slice ) {
-      GUM_CONS_CPY ( StructuralConstraintPartialOrder );
+      _SliceOrder__order ( from._SliceOrder__order ) {
+      GUM_CONS_CPY ( StructuralConstraintSliceOrder );
     }
     
       
     /// move constructor
-    StructuralConstraintPartialOrder::StructuralConstraintPartialOrder
-    ( StructuralConstraintPartialOrder&& from ) :
+    StructuralConstraintSliceOrder::StructuralConstraintSliceOrder
+    ( StructuralConstraintSliceOrder&& from ) :
       StructuralConstraintDiGraph ( std::move ( from ) ),
-      _PartialOrder__order ( std::move ( from._PartialOrder__order ) ),
-      _PartialOrder__default_slice
-      ( std::move ( from._PartialOrder__default_slice ) ) {
-      GUM_CONS_MOV ( StructuralConstraintPartialOrder );
+      _SliceOrder__order ( std::move ( from._SliceOrder__order ) ) {
+      GUM_CONS_MOV ( StructuralConstraintSliceOrder );
     }
 
  
     /// destructor
-    StructuralConstraintPartialOrder::~StructuralConstraintPartialOrder () {
-      GUM_DESTRUCTOR ( StructuralConstraintPartialOrder );
+    StructuralConstraintSliceOrder::~StructuralConstraintSliceOrder () {
+      GUM_DESTRUCTOR ( StructuralConstraintSliceOrder );
     }
 
 
     /// copy operator
-    StructuralConstraintPartialOrder&
-    StructuralConstraintPartialOrder::operator=
-    ( const StructuralConstraintPartialOrder& from ) {
+    StructuralConstraintSliceOrder&
+    StructuralConstraintSliceOrder::operator=
+    ( const StructuralConstraintSliceOrder& from ) {
       if ( this != &from ) {
         StructuralConstraintDiGraph::operator= ( from );
-        _PartialOrder__order = from._PartialOrder__order;
-        _PartialOrder__default_slice = from._PartialOrder__default_slice;
+        _SliceOrder__order = from._SliceOrder__order;
       }
       return *this;
     }
         
 
     /// move operator
-    StructuralConstraintPartialOrder&
-    StructuralConstraintPartialOrder::operator=
-    ( StructuralConstraintPartialOrder&& from ) {
+    StructuralConstraintSliceOrder&
+    StructuralConstraintSliceOrder::operator=
+    ( StructuralConstraintSliceOrder&& from ) {
       if ( this != &from ) {
         StructuralConstraintDiGraph::operator= ( std::move ( from ) );
-        _PartialOrder__order = std::move ( from._PartialOrder__order );
-        _PartialOrder__default_slice =
-          std::move ( from._PartialOrder__default_slice );
+        _SliceOrder__order = std::move ( from._SliceOrder__order );
       }
       return *this;
     }

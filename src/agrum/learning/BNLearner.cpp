@@ -57,12 +57,13 @@ namespace gum {
       __param_estimator_type ( from.__param_estimator_type ),
       __param_estimator ( from.__param_estimator != nullptr ?
                           from.__param_estimator->copyFactory () : nullptr ),
-      __constraint_PartialOrder  ( from.__constraint_PartialOrder ),
+      __constraint_SliceOrder    ( from.__constraint_SliceOrder ),
       __constraint_Indegree      ( from.__constraint_Indegree ),
       __constraint_TabuList      ( from.__constraint_TabuList ),
       __constraint_ForbiddenArcs ( from.__constraint_ForbiddenArcs ),
       __constraint_MandatoryArcs ( from.__constraint_MandatoryArcs ),
       __selected_algo ( from.__selected_algo ),
+      __K2 ( from.__K2 ),
       __greedy_hill_climbing ( from.__greedy_hill_climbing ),
       __local_search_with_tabu_list ( from.__local_search_with_tabu_list ),
       __initial_dag ( from.__initial_dag ) {
@@ -77,12 +78,13 @@ namespace gum {
       __score ( from.__score ),
       __param_estimator_type ( from.__param_estimator_type ),
       __param_estimator ( from.__param_estimator ),
-      __constraint_PartialOrder  ( std::move ( from.__constraint_PartialOrder ) ),
+      __constraint_SliceOrder    ( std::move ( from.__constraint_SliceOrder ) ),
       __constraint_Indegree      ( std::move ( from.__constraint_Indegree ) ),
       __constraint_TabuList      ( std::move ( from.__constraint_TabuList ) ),
       __constraint_ForbiddenArcs ( std::move ( from.__constraint_ForbiddenArcs ) ),
       __constraint_MandatoryArcs ( std::move ( from.__constraint_MandatoryArcs ) ),
       __selected_algo ( from.__selected_algo ),
+      __K2 ( std::move ( from.__K2 ) ),
       __greedy_hill_climbing ( std::move ( from.__greedy_hill_climbing ) ),
       __local_search_with_tabu_list
       ( std::move ( from.__local_search_with_tabu_list ) ),
@@ -122,12 +124,13 @@ namespace gum {
         __param_estimator_type = from.__param_estimator_type;
         __param_estimator = from.__param_estimator ?
           from.__param_estimator->copyFactory () : nullptr;
-        __constraint_PartialOrder  = from.__constraint_PartialOrder;
+        __constraint_SliceOrder    = from.__constraint_SliceOrder;
         __constraint_Indegree      = from.__constraint_Indegree;
         __constraint_TabuList      = from.__constraint_TabuList;
         __constraint_ForbiddenArcs = from.__constraint_ForbiddenArcs;
         __constraint_MandatoryArcs = from.__constraint_MandatoryArcs;
         __selected_algo = from.__selected_algo;
+        __K2 = from.__K2;
         __greedy_hill_climbing = from.__greedy_hill_climbing;
         __local_search_with_tabu_list = from.__local_search_with_tabu_list;
         __initial_dag = from.__initial_dag;
@@ -155,12 +158,13 @@ namespace gum {
         __score = from.__score;
         __param_estimator_type = from.__param_estimator_type;
         __param_estimator = from.__param_estimator;
-        __constraint_PartialOrder  = std::move ( from.__constraint_PartialOrder );
+        __constraint_SliceOrder    = std::move ( from.__constraint_SliceOrder );
         __constraint_Indegree      = std::move ( from.__constraint_Indegree );
         __constraint_TabuList      = std::move ( from.__constraint_TabuList );
         __constraint_ForbiddenArcs = std::move ( from.__constraint_ForbiddenArcs );
         __constraint_MandatoryArcs = std::move ( from.__constraint_MandatoryArcs );
         __selected_algo = from.__selected_algo;
+        __K2 = from.__K2;
         __greedy_hill_climbing = std::move ( from.__greedy_hill_climbing );
         __local_search_with_tabu_list = 
           std::move ( from.__local_search_with_tabu_list );

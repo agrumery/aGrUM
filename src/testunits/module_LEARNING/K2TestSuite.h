@@ -36,13 +36,14 @@
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintIndegree.h>
-#include <agrum/learning/constraints/structuralConstraintPartialOrder.h>
+#include <agrum/learning/constraints/structuralConstraintSliceOrder.h>
 #include <agrum/learning/constraints/structuralConstraintSetStatic.h>
 
 #include <agrum/learning/structureUtils/graphChangesGenerator4K2.h>
 #include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
 
 #include <agrum/learning/paramUtils/paramEstimatorML.h>
+#include <agrum/learning/paramUtils/paramEstimatorMLwithUniformApriori.h>
 #include <agrum/learning/K2.h>
 
 namespace gum_tests {
@@ -70,7 +71,8 @@ namespace gum_tests {
       gum::learning::StructuralConstraintDAG
         struct_constraint ( modalities.size () );
 
-      gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
+      gum::learning::ParamEstimatorMLwithUniformApriori<>
+        estimator ( filter, modalities );
 
       std::vector<unsigned int> order ( filter.modalities ().size() );
       for ( unsigned int i = 0; i < order.size(); ++i ) {
@@ -80,7 +82,6 @@ namespace gum_tests {
       gum::learning::GraphChangesGenerator4K2
         < decltype ( struct_constraint ) >
         op_set ( struct_constraint );
-      op_set.setOrder ( order );
     
       gum::learning::GraphChangesSelector4DiGraph<
         decltype ( score ),
@@ -89,17 +90,23 @@ namespace gum_tests {
       selector ( score, struct_constraint, op_set );
  
       gum::learning::K2 k2;
-     
-      gum::BayesNet<float> bn = k2.learnBN ( selector, estimator,
-                                             database.variableNames (),
-                                             modalities );
+      k2.setOrder ( order );
+
+      try {
+        gum::BayesNet<float> bn = k2.learnBN ( selector, estimator,
+                                               database.variableNames (),
+                                               modalities );
 
 
-      gum::BayesNet<double> bn2 = k2.learnBN<double> ( selector, estimator,
-                                                       database.variableNames (),
-                                                       modalities );
-
-      std::cout << bn << std::endl << bn.dag () << std::endl;
+        gum::BayesNet<double> bn2 = k2.learnBN<double> ( selector, estimator,
+                                                         database.variableNames (),
+                                                         modalities );
+       std::cout << bn << std::endl << bn.dag () << std::endl;
+     }
+      catch ( gum::Exception& e ) {
+        GUM_SHOWERROR ( e );
+      }
+      
     }
 
     /*
@@ -197,7 +204,7 @@ namespace gum_tests {
     }
 
     
-    void xxtest_k2_asia_constraint_PartialOrder () {
+    void xxtest_k2_asia_constraint_SliceOrder () {
       K2 k2;
 
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
@@ -224,7 +231,7 @@ namespace gum_tests {
         }
       }
       
-      gum::learning::StructuralConstraintPartialOrder
+      gum::learning::StructuralConstraintSliceOrder
         struct_constraint ( slices );
 
       gum::learning::ParamEstimatorML<> estimator ( filter, modalities );

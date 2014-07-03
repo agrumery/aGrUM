@@ -48,7 +48,7 @@
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintIndegree.h>
-#include <agrum/learning/constraints/structuralConstraintPartialOrder.h>
+#include <agrum/learning/constraints/structuralConstraintSliceOrder.h>
 #include <agrum/learning/constraints/structuralConstraintTabuList.h>
 #include <agrum/learning/constraints/structuralConstraintForbiddenArcs.h>
 #include <agrum/learning/constraints/structuralConstraintMandatoryArcs.h>
@@ -63,6 +63,7 @@
 #include <agrum/learning/paramUtils/paramEstimatorMLwithUniformApriori.h>
 #include <agrum/learning/paramUtils/paramEstimatorML.h>
 
+#include <agrum/learning/K2.h>
 #include <agrum/learning/greedyHillClimbing.h>
 #include <agrum/learning/localSearchWithTabuList.h>
 
@@ -195,10 +196,17 @@ namespace gum {
       void useGreedyHillClimbing () noexcept;
 
       /// indicate that we wish to use a local search with tabu list
-      void useLocalSearchWithTabuList () noexcept;
+      /** @param tabu_size indicate the size of the tabu list
+       * @param nb_decrease indicate the max number of changes decreasing the
+       * score consecutively that we allow to apply */
+      void useLocalSearchWithTabuList ( unsigned int tabu_size = 100,
+                                        unsigned int nb_decrease = 2 ) noexcept;
 
       /// indicate that we wish to use K2
-      void useK2 () noexcept;
+      void useK2 ( const Sequence<NodeId>& order ) noexcept;
+      
+      /// indicate that we wish to use K2
+      void useK2 ( const std::vector<NodeId>& order ) noexcept;
       
       /// @}
 
@@ -212,10 +220,7 @@ namespace gum {
       void setMaxIndegree ( unsigned int max_indegree );
 
       /// sets a partial order on the nodes
-      void setPartialOrder ( const NodeProperty<unsigned int>& partial_order );
-
-      /// sets a kTBN constraint (alias for setPartialOrder)
-      void setkTBN ( const NodeProperty<unsigned int>& partial_order );
+      void setSliceOrder ( const NodeProperty<unsigned int>& slice_order );
 
       /// assign a set of forbidden arcs
       void setForbiddenArcs ( const ArcSet& set );
@@ -235,16 +240,6 @@ namespace gum {
       /// remove a forbidden arc
       void eraseMandatoryArc ( const Arc& arc );
       
-      /** @bried set the max number of changes decreasing the score that we
-       * allow to apply in LocalSearchWithTabuList */
-      void setMaxNbDecreasingChanges ( unsigned int nb );
-
-      /// set an ordering for K2 (by default, nodes are ordered by increasing id)
-      void setOrder ( const Sequence<NodeId>& order );
-
-      /// set an ordering for K2 (by default, nodes are ordered by increasing id)
-      void setOrder ( const std::vector<NodeId>& order );
-
       /// @}
       
  
@@ -263,7 +258,7 @@ namespace gum {
       ParamEstimator<>* __param_estimator { nullptr };
 
       /// the constraint for 2TBNs
-      StructuralConstraintPartialOrder __constraint_PartialOrder;
+      StructuralConstraintSliceOrder __constraint_SliceOrder;
 
       /// the constraint for indegrees
       StructuralConstraintIndegree __constraint_Indegree;
@@ -280,7 +275,10 @@ namespace gum {
       /// the selected learning algorithm
       AlgoType __selected_algo { AlgoType::GREEDY_HILL_CLIMBING };
 
-      /// the greedy hill climbing algorith
+      /// the K2 algorithm
+      K2 __K2;
+
+      /// the greedy hill climbing algorithm
       GreedyHillClimbing __greedy_hill_climbing;
 
       /// the local search with tabu list algorithm
@@ -289,9 +287,7 @@ namespace gum {
       /// an initial DAG given to learners
       DAG __initial_dag;
 
-      /// the order used by K2
-      Sequence<NodeId> __order;
-
+ 
 
       
       /// reads a file and returns a databaseVectInRam

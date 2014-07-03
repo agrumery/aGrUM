@@ -92,6 +92,9 @@ namespace gum {
       /// sets the order on the variables
       void setOrder ( const std::vector<NodeId>& order );
 
+      /// returns the current order
+      const Sequence<NodeId>& order () const noexcept;
+
       /// learns the structure of a Bayes net
       /** @param A selector class that computes the best changes that can be
        * applied and that enables the user to get them very easily. Typically,
@@ -124,6 +127,11 @@ namespace gum {
     private:
       /// the order on the variable used for learning
       Sequence<NodeId> __order;
+
+
+      /** @brief checks that the order passed to K2 is coherent with the variables
+       * as specified by their modalities */
+      void __checkOrder ( const std::vector<unsigned int>& modal );
       
     };
 
@@ -132,6 +140,12 @@ namespace gum {
   
   
 } /* namespace gum */
+
+
+/// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/learning/K2.inl>
+#endif /* GUM_NO_INLINE */
 
 
 /// always include templated methods
