@@ -2,7 +2,7 @@
 #here is a simple wrapper to act embedded in Makefile
 #
 
-ACT=./act
+ACT=./act --no-fun 
 JOBS=7
 
 library:
