@@ -171,7 +171,7 @@ namespace gum {
       for ( unsigned int j = i + 1; j < cliques.size(); ++j ) {
         pair.second = j;
         queue.insert ( pair, __combinedSize ( nodes1, JT.separator ( cliques[j], clique ),
-					    domain_sizes ) );
+                                              domain_sizes ) );
       }
     }
 
@@ -189,10 +189,10 @@ namespace gum {
       // and remove the edges between ti, tj and clique
       const NodeSet& nodes1 = JT.separator ( cliques[ti], clique );
       const NodeSet& nodes2 = JT.separator ( cliques[tj], clique );
-      NodeId new_node = JT.insertNode ( nodes1 + nodes2 );
-      JT.insertEdge ( cliques[ti], new_node );
-      JT.insertEdge ( cliques[tj], new_node );
-      JT.insertEdge ( clique, new_node );
+      NodeId new_node = JT.addNode ( nodes1 + nodes2 );
+      JT.addEdge ( cliques[ti], new_node );
+      JT.addEdge ( cliques[tj], new_node );
+      JT.addEdge ( clique, new_node );
       JT.eraseEdge ( Edge ( cliques[ti], clique ) );
       JT.eraseEdge ( Edge ( cliques[tj], clique ) );
 

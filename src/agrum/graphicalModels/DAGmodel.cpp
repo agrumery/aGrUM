@@ -95,7 +95,7 @@ namespace gum {
     // transform the arcs into edges
 
     for ( auto iter = arcs().beginSafe (); iter != arcs().endSafe (); ++iter )
-      __mutableMoralGraph->insertEdge ( iter->first(), iter->second() );
+      __mutableMoralGraph->addEdge ( iter->first(), iter->second() );
 
     //}
 
@@ -108,7 +108,7 @@ namespace gum {
 
         for ( ++it2; it2 != parents.endSafe (); ++it2 ) {
           // will automatically check if this edge already exists
-          __mutableMoralGraph->insertEdge ( *it1, *it2 );
+          __mutableMoralGraph->addEdge ( *it1, *it2 );
         }
       }
     }

@@ -55,15 +55,15 @@ namespace gum {
    * UndiGraph g1,g2;
    *
    * // adding nodes and edges to g1
-   * NodeId i1=g1.insertNode();
-   * NodeId i2=g1.insertNode();
-   * NodeId i3=g1.insertNode();
-   * g1.insertEdge( i1,i2 );
-   * g1.insertEdge( i1,i3 );
-   * g1.insertEdge( i2,i3 );
+   * NodeId i1=g1.addNode();
+   * NodeId i2=g1.addNode();
+   * NodeId i3=g1.addNode();
+   * g1.addEdge( i1,i2 );
+   * g1.addEdge( i1,i3 );
+   * g1.addEdge( i2,i3 );
    *
    * //throw an InvalidNode
-   * // g1.insertEdge( i1+i2+i3,i1 );
+   * // g1.addEdge( i1+i2+i3,i1 );
    *
    * // copying graphs
    * UndiGraph g3 = g1;
@@ -164,7 +164,8 @@ namespace gum {
        * exception is raised.
        * @throw InvalidNode if first and/or second do not belong to the
        * graph nodes */
-      virtual void insertEdge ( const NodeId first, const NodeId second );
+      GUM_DEPRECATED(virtual void insertEdge ( const NodeId first, const NodeId second ));
+      virtual void addEdge ( const NodeId first, const NodeId second );
 
       /// remove a node and its adjacent edges from the graph
       /** @param id the id of the node to be removed

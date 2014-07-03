@@ -102,20 +102,19 @@ namespace gum {
 
 
       /// adds a new node to the graph
-
-      void insertNode ( const NodeId node, Size modal );
+      GUM_DEPRECATED ( void insertNode ( const NodeId node, Size modal ) );
+      void addNode ( const NodeId node, Size modal );
 
 
       /** @brief removes a node from the graph (the join tree may need a
        * triangulation update) */
-
       void eraseNode ( const NodeId node );
-
 
       /** @brief adds a new edge to the graph (the join tree may need a
        * triangulation update) */
 
-      void insertEdge ( const NodeId X, const NodeId Y );
+      GUM_DEPRECATED ( void insertEdge ( const NodeId X, const NodeId Y ) );
+      void addEdge ( const NodeId X, const NodeId Y );
 
 
       /// removes an edge from the graph (the join tree may need a retriangulation)

@@ -161,7 +161,7 @@ namespace gum {
     NodeProperty<unsigned int> R ( __triangulated_graph.size() );
 
     for ( auto iter_node = __triangulated_graph.nodes().beginSafe();
-	  iter_node != __triangulated_graph.nodes().endSafe(); ++iter_node )
+          iter_node != __triangulated_graph.nodes().endSafe(); ++iter_node )
       R.insert ( *iter_node, 0 );
 
     // the FMINT loop
@@ -318,7 +318,7 @@ namespace gum {
     __elim_tree.clear();
 
     for ( unsigned int i = 0; i < __elim_order.size(); ++i )
-      __elim_tree.insertNode ( i, __elim_cliques[__elim_order[i]] );
+      __elim_tree.addNode ( i, __elim_cliques[__elim_order[i]] );
 
     // create the edges of the elimination tree: join a node to the one in
     // its clique that is eliminated first
@@ -338,7 +338,7 @@ namespace gum {
       if ( child <= __original_graph->bound() ) {
         // WARNING: here, we assume that the nodes of the elimination tree are
         // indexed from 0 to n-1
-        __elim_tree.insertEdge ( i, child );
+        __elim_tree.addEdge ( i, child );
       }
     }
 
@@ -414,8 +414,8 @@ namespace gum {
 
     NodeSet mark;
 
-    for ( auto iter_cliq = __junction_tree->nodes().beginSafe(); 
-	  iter_cliq != __junction_tree->nodes().endSafe(); ++iter_cliq )
+    for ( auto iter_cliq = __junction_tree->nodes().beginSafe();
+          iter_cliq != __junction_tree->nodes().endSafe(); ++iter_cliq )
       if ( ! mark.contains ( *iter_cliq ) )
         __computeMaxPrimeMergings ( *iter_cliq, *iter_cliq, merged_cliques, mark );
 
@@ -432,8 +432,8 @@ namespace gum {
             T_mpd_cliques.beginSafe();
           iter_clique != T_mpd_cliques.endSafe(); ++iter_clique ) {
       if ( iter_clique.key() == iter_clique.val () ) {
-        __max_prime_junction_tree.insertNode
-        ( iter_clique.val (), __junction_tree->clique ( iter_clique.val () ) );
+        __max_prime_junction_tree.addNode ( iter_clique.val (),
+                                            __junction_tree->clique ( iter_clique.val () ) );
       }
     }
 
@@ -460,7 +460,7 @@ namespace gum {
 
       if ( node1 != node2 ) {
         try {
-          __max_prime_junction_tree.insertEdge ( node1, node2 );
+          __max_prime_junction_tree.addEdge ( node1, node2 );
         } catch ( DuplicateElement& ) { }
       }
     }
@@ -500,7 +500,7 @@ namespace gum {
       NodeSetIterator iter_clique2;
 
       for ( auto iter_node = __junction_tree->nodes().beginSafe();
-	    iter_node != __junction_tree->nodes().endSafe(); ++iter_node ) {
+            iter_node != __junction_tree->nodes().endSafe(); ++iter_node ) {
         // for each clique, add the edges necessary to make it complete
         const NodeSet& clique = __junction_tree->clique ( *iter_node );
         std::vector<NodeId> clique_nodes ( clique.size() );
@@ -513,8 +513,8 @@ namespace gum {
         for ( i = 0; i < clique_nodes.size(); ++i ) {
           for ( unsigned int j = i + 1; j < clique_nodes.size(); ++j ) {
             try {
-              __triangulated_graph.insertEdge ( clique_nodes[i],
-                                                clique_nodes[j] );
+              __triangulated_graph.addEdge ( clique_nodes[i],
+                                             clique_nodes[j] );
             } catch ( DuplicateElement& ) { }
           }
         }
@@ -620,7 +620,7 @@ namespace gum {
 
             if ( !tmp_graph.existsEdge ( edge ) ) {
               current_fill.insert ( edge );
-              __triangulated_graph.insertEdge ( node1, node2 );
+              __triangulated_graph.addEdge ( node1, node2 );
             }
           }
         }
@@ -677,7 +677,7 @@ namespace gum {
             Edge edge ( node1, node2 );
 
             if ( !tmp_graph.existsEdge ( edge ) ) {
-              tmp_graph.insertEdge ( node1, node2 );
+              tmp_graph.addEdge ( node1, node2 );
             }
           }
         }
@@ -732,8 +732,8 @@ namespace gum {
       // parse all the cliques of the junction tree
       NodeSetIterator iter_clique2;
 
-      for ( auto iter_node = __junction_tree->nodes().beginSafe(); 
-	iter_node != __junction_tree->nodes().endSafe(); ++iter_node ) {
+      for ( auto iter_node = __junction_tree->nodes().beginSafe();
+            iter_node != __junction_tree->nodes().endSafe(); ++iter_node ) {
         // for each clique, add the edges necessary to make it complete
         const NodeSet& clique = __junction_tree->clique ( *iter_node );
         std::vector<NodeId> clique_nodes ( clique.size() );
@@ -748,8 +748,9 @@ namespace gum {
             Edge edge ( clique_nodes[i], clique_nodes[j] );
 
             if ( ! __original_graph->existsEdge ( edge ) ) {
-              try { __fill_ins.insert ( edge ); }
-              catch ( DuplicateElement& ) { }
+              try {
+                __fill_ins.insert ( edge );
+              } catch ( DuplicateElement& ) { }
             }
           }
         }

@@ -229,48 +229,48 @@ namespace gum_tests {
       gum::NodeId id5;
 
       void buildDAG ( gum::DiGraph& g ) {
-        id1 = g.insertNode();
-        id2 = g.insertNode();
-        id3 = g.insertNode();
-        id4 = g.insertNode();
-        id5 = g.insertNode();
+        id1 = g.addNode();
+        id2 = g.addNode();
+        id3 = g.addNode();
+        id4 = g.addNode();
+        id5 = g.addNode();
 
-        g.insertArc ( id1, id3 );
-        g.insertArc ( id3, id5 );
-        g.insertArc ( id2, id4 );
-        g.insertArc ( id1, id4 );
-        g.insertArc ( id4, id5 );
-        g.insertArc ( id2, id5 );
+        g.addArc ( id1, id3 );
+        g.addArc ( id3, id5 );
+        g.addArc ( id2, id4 );
+        g.addArc ( id1, id4 );
+        g.addArc ( id4, id5 );
+        g.addArc ( id2, id5 );
       }
 
       void buildUndiGraph ( gum::UndiGraph& g ) {
-        id3 = g.insertNode();
-        id4 = g.insertNode();
-        id5 = g.insertNode();
-        id1 = g.insertNode();
-        id2 = g.insertNode();
+        id3 = g.addNode();
+        id4 = g.addNode();
+        id5 = g.addNode();
+        id1 = g.addNode();
+        id2 = g.addNode();
 
-        g.insertEdge ( id4, id5 );
-        g.insertEdge ( id2, id5 );
-        g.insertEdge ( id2, id4 );
-        g.insertEdge ( id1, id4 );
-        g.insertEdge ( id1, id3 );
-        g.insertEdge ( id3, id5 );
+        g.addEdge ( id4, id5 );
+        g.addEdge ( id2, id5 );
+        g.addEdge ( id2, id4 );
+        g.addEdge ( id1, id4 );
+        g.addEdge ( id1, id3 );
+        g.addEdge ( id3, id5 );
       }
 
       void buildMixedGraph ( gum::MixedGraph& g ) {
-        id3 = g.insertNode();
-        id4 = g.insertNode();
-        id5 = g.insertNode();
-        id1 = g.insertNode();
-        id2 = g.insertNode();
+        id3 = g.addNode();
+        id4 = g.addNode();
+        id5 = g.addNode();
+        id1 = g.addNode();
+        id2 = g.addNode();
 
-        g.insertEdge ( id4, id5 );
-        g.insertEdge ( id3, id5 );
-        g.insertArc ( id2, id5 );
-        g.insertArc ( id2, id4 );
-        g.insertEdge ( id1, id4 );
-        g.insertArc ( id1, id3 );
+        g.addEdge ( id4, id5 );
+        g.addEdge ( id3, id5 );
+        g.addArc ( id2, id5 );
+        g.addArc ( id2, id4 );
+        g.addEdge ( id1, id4 );
+        g.addArc ( id1, id3 );
       }
 
     public:
@@ -302,7 +302,7 @@ namespace gum_tests {
 
         buildDAG ( g2 ); // 5 nodes/6 arcs for g2
 
-        g1.insertArc ( g1.insertNode(), g1.insertNode() );
+        g1.addArc ( g1.addNode(), g1.addNode() );
         buildDAG ( g1 ); // 7 nodes/7 arcs for g1
 
 
@@ -368,7 +368,7 @@ namespace gum_tests {
 
         buildUndiGraph ( g2 ); // 5 nodes/6 edges for g2
 
-        g1.insertEdge ( g1.insertNode(), g1.insertNode() );
+        g1.addEdge ( g1.addNode(), g1.addNode() );
         buildUndiGraph ( g1 ); // 7 nodes/7 edges for g1
 
 
@@ -457,7 +457,7 @@ namespace gum_tests {
 
         buildMixedGraph ( g2 ); // 5 nodes/3 edges /3 arcs for g2
 
-        g1.insertEdge ( g1.insertNode(), g1.insertNode() );
+        g1.addEdge ( g1.addNode(), g1.addNode() );
         buildMixedGraph ( g1 ); // 7 nodes/4 edges / 3 arcs for g1
 
 
@@ -571,7 +571,7 @@ namespace gum_tests {
 
         buildDAG ( g ); // 5 nodes/6 arcs for g
 
-        TS_ASSERT_THROWS ( g.insertArc ( id5, id2 ), gum::InvalidDirectedCycle ); // should throw InvalidDirectedCycle and should not call the listeners
+        TS_ASSERT_THROWS ( g.addArc ( id5, id2 ), gum::InvalidDirectedCycle ); // should throw InvalidDirectedCycle and should not call the listeners
 
         TS_ASSERT_EQUALS ( c.nodes(), 5 );
         TS_ASSERT_EQUALS ( c.arcs(), 6 );

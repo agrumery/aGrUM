@@ -27,34 +27,35 @@
 namespace gum_tests {
 
   class BNLearnerTestSuite: public CxxTest::TestSuite {
-  public:
+    public:
 
-    void test_asia () {
-      gum::learning::BNLearner learner;
+      void test_asia () {
+        gum::learning::BNLearner learner;
 
-      learner.useLocalSearchWithTabuList ();
-      learner.setMaxIndegree ( 10 );
-      learner.setMaxNbDecreasingChanges ( 1 );
-      learner.useScoreK2 ();
-      learner.useK2 ();
-      learner.setOrder ( std::vector<gum::NodeId> { 6, 5, 4 } );
-      learner.addForbiddenArc ( gum::Arc (4,3) );
-      learner.addForbiddenArc ( gum::Arc (5,1) );
-      learner.addForbiddenArc ( gum::Arc (5,7) );
+        learner.useLocalSearchWithTabuList ();
+        learner.setMaxIndegree ( 10 );
+        learner.setMaxNbDecreasingChanges ( 1 );
+        learner.useScoreK2 ();
+        learner.useK2 ();
+        learner.setOrder ( std::vector<gum::NodeId> { 6, 5, 4 } );
+        learner.addForbiddenArc ( gum::Arc ( 4,3 ) );
+        learner.addForbiddenArc ( gum::Arc ( 5,1 ) );
+        learner.addForbiddenArc ( gum::Arc ( 5,7 ) );
 
-      learner.addMandatoryArc ( gum::Arc (1, 2) );
+        learner.addMandatoryArc ( gum::Arc ( 1, 2 ) );
 
-      gum::NodeProperty<unsigned int> partial_order {
-        std::make_pair( gum::NodeId ( 0 ), 1 ),
-        std::make_pair( gum::NodeId ( 3 ), 0 ),
-        std::make_pair( gum::NodeId ( 1 ), 0 ) };
-      learner.setPartialOrder ( partial_order );
+        gum::NodeProperty<unsigned int> partial_order {
+          std::make_pair ( gum::NodeId ( 0 ), 1 ),
+          std::make_pair ( gum::NodeId ( 3 ), 0 ),
+          std::make_pair ( gum::NodeId ( 1 ), 0 )
+        };
+        learner.setPartialOrder ( partial_order );
 
-      gum::Timer timer;
-      gum::BayesNet<float> bn = learner.learnBN ( GET_PATH_STR( "asia.csv" ) );
-      std::cout << timer.step () << " : " << std::endl;
-      std::cout << bn << "  " << bn.dag () << std::endl;
-    }
+        gum::Timer timer;
+        gum::BayesNet<float> bn = learner.learnBN ( GET_PATH_STR ( "asia.csv" ) );
+        std::cout << timer.step () << " : " << std::endl;
+        std::cout << bn << "  " << bn.dag () << std::endl;
+      }
 
   };
 

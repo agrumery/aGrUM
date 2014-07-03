@@ -154,7 +154,7 @@ namespace gum {
     ScheduleOperation<GUM_SCALAR>* operation = op.newFactory();
 
     // create a new node for the operation in the DAG
-    NodeId node_id = __dag.insertNode();
+    NodeId node_id = __dag.addNode();
 
     // assign the operation to the new node
     __node2operation.insert ( node_id, operation );
@@ -177,7 +177,7 @@ namespace gum {
         MultiDimId multidim_id = ( *iter )->id();
 
         if ( __created_multidims.exists ( multidim_id ) ) {
-          __dag.insertArc ( __created_multidims[multidim_id], node_id );
+          __dag.addArc ( __created_multidims[multidim_id], node_id );
         } else {
           __operations_with_wrong_parents.insert ( node_id );
           break;
@@ -267,7 +267,7 @@ namespace gum {
         for ( typename Sequence<const ScheduleMultiDim<GUM_SCALAR>*>::const_iterator_safe
               iter_args = args.beginSafe(); iter_args != args.endSafe(); ++iter_args ) {
           if ( ( *iter_args )->isAbstract() ) {
-            __dag.insertArc ( __created_multidims[ ( *iter_args )->id()], *iter );
+            __dag.addArc ( __created_multidims[ ( *iter_args )->id()], *iter );
             ++nb_parents;
           }
         }
@@ -289,7 +289,7 @@ namespace gum {
   INLINE void
   Schedule<GUM_SCALAR>::forceAfter ( NodeId op_to_force, NodeId op_before ) {
     // first, add the constraint into the graph
-    __dag.insertArc ( op_before, op_to_force );
+    __dag.addArc ( op_before, op_to_force );
 
     // if op_to_force was available, it is not anymore
     __operations_available.erase ( op_to_force );
@@ -343,7 +343,7 @@ namespace gum {
   INLINE void
   Schedule<GUM_SCALAR>::forceBefore ( NodeId op_to_force, NodeId op_after ) {
     // first, add the constraint into the graph
-    __dag.insertArc ( op_to_force, op_after );
+    __dag.addArc ( op_to_force, op_after );
 
     // if op_to_force was available, it is not anymore
     __operations_available.erase ( op_after );

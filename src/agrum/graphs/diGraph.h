@@ -55,12 +55,12 @@ namespace gum {
    * DiGraph g1,g2;
    *
    * // adding nodes and arcs to g1
-   * NodeId i1=g1.insertNode();
-   * NodeId i2=g1.insertNode();
-   * NodeId i3=g1.insertNode();
-   * g1.insertArc( i1,i2 );
-   * g1.insertArc( i1,i3 );
-   * g1.insertArc( i2,i3 );
+   * NodeId i1=g1.addNode();
+   * NodeId i2=g1.addNode();
+   * NodeId i3=g1.addNode();
+   * g1.addArc( i1,i2 );
+   * g1.addArc( i1,i3 );
+   * g1.addArc( i2,i3 );
    *
    * //throw an InvalidNode
    * // g1.insertArc( i1+i2+i3,i1 );
@@ -162,7 +162,8 @@ namespace gum {
        * @warning if the arc already exists, nothing is done. In particular, no
        * exception is raised.
        * @throw InvalidNode if head or tail does not belong to the graph nodes */
-      virtual void insertArc ( const NodeId tail, const NodeId head );
+      GUM_DEPRECATED ( virtual void insertArc ( const NodeId tail, const NodeId head ) );
+      virtual void addArc ( const NodeId tail, const NodeId head );
 
       /// remove a node and its adjacent arcs from the graph
       /** @param id the id of the node to be removed

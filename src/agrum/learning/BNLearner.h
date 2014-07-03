@@ -21,7 +21,7 @@
  * @brief A basic pack of learning algorithms that can easily be used
  *
  * The pack currently contains K2, GreedyHillClimbing and LocalSearchWithTabuList
- * 
+ *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_LEARNING_BN_LEARNER_H
@@ -69,7 +69,7 @@
 
 namespace gum {
 
-  
+
   namespace learning {
 
 
@@ -81,242 +81,243 @@ namespace gum {
      * @ingroup learning_group
      */
     class BNLearner {
-    public:
-      
-      /// an enumeration enabling to select easily the score we wish to use
-      enum class ScoreType {
-        AIC,
-        BD,
-        BDEU,
-        BIC,
-        K2,
-        LOG2LIKELIHOOD };
+      public:
 
-      /// an enumeration to select the type of parameter estimation we shall apply
-      enum ParamEstimatorType {
-        ML,
-        MLwithUniformApriori
-      };
-      
-      /// an enumeration to select easily the learning algorithm to use
-      enum class AlgoType {
-        K2,
-        GREEDY_HILL_CLIMBING,
-        LOCAL_SEARCH_WITH_TABU_LIST
-      };
-      
-      
-      // ##########################################################################
-      /// @name Constructors / Destructors
-      // ##########################################################################
-      /// @{
+        /// an enumeration enabling to select easily the score we wish to use
+        enum class ScoreType {
+          AIC,
+          BD,
+          BDEU,
+          BIC,
+          K2,
+          LOG2LIKELIHOOD
+        };
 
-      /// default constructor
-      BNLearner ();
+        /// an enumeration to select the type of parameter estimation we shall apply
+        enum ParamEstimatorType {
+          ML,
+          MLwithUniformApriori
+        };
 
-      /// copy constructor
-      BNLearner ( const BNLearner& );
-
-      /// move constructor
-      BNLearner ( BNLearner&& );
-
-      /// destructor
-      ~BNLearner ();
-
-      /// @}
+        /// an enumeration to select easily the learning algorithm to use
+        enum class AlgoType {
+          K2,
+          GREEDY_HILL_CLIMBING,
+          LOCAL_SEARCH_WITH_TABU_LIST
+        };
 
 
-      // ##########################################################################
-      /// @name Operators
-      // ##########################################################################
-      /// @{
+        // ##########################################################################
+        /// @name Constructors / Destructors
+        // ##########################################################################
+        /// @{
 
-      /// copy operator
-      BNLearner& operator= ( const BNLearner& );
+        /// default constructor
+        BNLearner ();
 
-      /// move operator
-      BNLearner& operator= ( BNLearner&& );
+        /// copy constructor
+        BNLearner ( const BNLearner& );
 
-      /// @}
+        /// move constructor
+        BNLearner ( BNLearner&& );
 
+        /// destructor
+        ~BNLearner ();
 
-      // ##########################################################################
-      /// @name Accessors / Modifiers
-      // ##########################################################################
-      /// @{
-
-      /// learn a structure from a file
-      DAG learnDAG ( std::string filename );
-
-      /// learn a Bayes Net from a file
-      template <typename GUM_SCALAR = float>
-      BayesNet<GUM_SCALAR> learnBN ( std::string filename );
-
-      /// sets an initial DAG structure
-      void setInitialDAG ( const DAG& );
-
-      /// @}
-      
-      
-      // ##########################################################################
-      /// @name Score selection
-      // ##########################################################################
-      /// @{
-
-      /// indicate that we wish to use an AIC score
-      void useScoreAIC () noexcept;
-
-      /*
-      /// indicate that we wish to use a BD score
-      void useScoreBD () noexcept;
-      
-      /// indicate that we wish to use a BDeu score
-      void useScoreBDeu () noexcept;
-      */
-      
-      /// indicate that we wish to use a BIC score
-      void useScoreBIC () noexcept;
-
-      /// indicate that we wish to use a K2 score
-      void useScoreK2 () noexcept;
-
-      /// indicate that we wish to use a Log2Likelihood score
-      void useScoreLog2Likelihood () noexcept;
-      
-      /// @}
-
-      
-      // ##########################################################################
-      /// @name Learning algorithm selection
-      // ##########################################################################
-      /// @{
-
-       /// indicate that we wish to use a greedy hill climbing algorithm
-      void useGreedyHillClimbing () noexcept;
-
-      /// indicate that we wish to use a local search with tabu list
-      void useLocalSearchWithTabuList () noexcept;
-
-      /// indicate that we wish to use K2
-      void useK2 () noexcept;
-      
-      /// @}
+        /// @}
 
 
-      // ##########################################################################
-      /// @name Accessors / Modifiers for adding constraints on learning
-      // ##########################################################################
-      /// @{
+        // ##########################################################################
+        /// @name Operators
+        // ##########################################################################
+        /// @{
 
-      /// sets the max indegree
-      void setMaxIndegree ( unsigned int max_indegree );
+        /// copy operator
+        BNLearner& operator= ( const BNLearner& );
 
-      /// sets a partial order on the nodes
-      void setPartialOrder ( const NodeProperty<unsigned int>& partial_order );
+        /// move operator
+        BNLearner& operator= ( BNLearner&& );
 
-      /// sets a kTBN constraint (alias for setPartialOrder)
-      void setkTBN ( const NodeProperty<unsigned int>& partial_order );
-
-      /// assign a set of forbidden arcs
-      void setForbiddenArcs ( const ArcSet& set );
-
-      /// assign a new forbidden arc
-      void addForbiddenArc ( const Arc& arc );
-
-      /// remove a forbidden arc
-      void eraseForbiddenArc ( const Arc& arc );
-      
-      /// assign a set of forbidden arcs
-      void setMandatoryArcs ( const ArcSet& set );
-
-      /// assign a new forbidden arc
-      void addMandatoryArc ( const Arc& arc );
-
-      /// remove a forbidden arc
-      void eraseMandatoryArc ( const Arc& arc );
-      
-      /** @bried set the max number of changes decreasing the score that we
-       * allow to apply in LocalSearchWithTabuList */
-      void setMaxNbDecreasingChanges ( unsigned int nb );
-
-      /// set an ordering for K2 (by default, nodes are ordered by increasing id)
-      void setOrder ( const Sequence<NodeId>& order );
-
-      /// set an ordering for K2 (by default, nodes are ordered by increasing id)
-      void setOrder ( const std::vector<NodeId>& order );
-
-      /// @}
-      
- 
-    private:
-      /// the score selected for learning
-      ScoreType __score_type { ScoreType::BIC };
-
-      /// the score used
-      Score<>* __score { nullptr };
-
-      /// the type of the parameter estimator
-      ParamEstimatorType
-      __param_estimator_type { ParamEstimatorType::MLwithUniformApriori };
-
-      /// the parameter estimator to use
-      ParamEstimator<>* __param_estimator { nullptr };
-
-      /// the constraint for 2TBNs
-      StructuralConstraintPartialOrder __constraint_PartialOrder;
-
-      /// the constraint for indegrees
-      StructuralConstraintIndegree __constraint_Indegree;
-
-      /// the constraint for tabu lists
-      StructuralConstraintTabuList __constraint_TabuList;
-
-      /// the constraint on forbidden arcs
-      StructuralConstraintForbiddenArcs __constraint_ForbiddenArcs;
-
-      /// the constraint on forbidden arcs
-      StructuralConstraintMandatoryArcs __constraint_MandatoryArcs;
-
-      /// the selected learning algorithm
-      AlgoType __selected_algo { AlgoType::GREEDY_HILL_CLIMBING };
-
-      /// the greedy hill climbing algorith
-      GreedyHillClimbing __greedy_hill_climbing;
-
-      /// the local search with tabu list algorithm
-      LocalSearchWithTabuList __local_search_with_tabu_list;
-
-      /// an initial DAG given to learners
-      DAG __initial_dag;
-
-      /// the order used by K2
-      Sequence<NodeId> __order;
+        /// @}
 
 
-      
-      /// reads a file and returns a databaseVectInRam
-      DatabaseVectInRAM __readFile ( const std::string& filename );
+        // ##########################################################################
+        /// @name Accessors / Modifiers
+        // ##########################################################################
+        /// @{
 
-      /// create the score used for learning
-      template <typename FILTER>
-      void __createScore ( FILTER& filter,
-                           std::vector<unsigned int>& modalities );
+        /// learn a structure from a file
+        DAG learnDAG ( std::string filename );
 
-      /// create the parameter estimator used for learning
-      template <typename FILTER>
-      void __createParamEstimator ( FILTER& filter,
-                                    std::vector<unsigned int>& modalities );
+        /// learn a Bayes Net from a file
+        template <typename GUM_SCALAR = float>
+        BayesNet<GUM_SCALAR> learnBN ( std::string filename );
 
-      /// returns the DAG learnt
-      template <typename FILTER>
-      DAG __learnDAG ( FILTER& filter, std::vector<unsigned int>& modal );
+        /// sets an initial DAG structure
+        void setInitialDAG ( const DAG& );
+
+        /// @}
+
+
+        // ##########################################################################
+        /// @name Score selection
+        // ##########################################################################
+        /// @{
+
+        /// indicate that we wish to use an AIC score
+        void useScoreAIC () noexcept;
+
+        /*
+        /// indicate that we wish to use a BD score
+        void useScoreBD () noexcept;
+
+        /// indicate that we wish to use a BDeu score
+        void useScoreBDeu () noexcept;
+        */
+
+        /// indicate that we wish to use a BIC score
+        void useScoreBIC () noexcept;
+
+        /// indicate that we wish to use a K2 score
+        void useScoreK2 () noexcept;
+
+        /// indicate that we wish to use a Log2Likelihood score
+        void useScoreLog2Likelihood () noexcept;
+
+        /// @}
+
+
+        // ##########################################################################
+        /// @name Learning algorithm selection
+        // ##########################################################################
+        /// @{
+
+        /// indicate that we wish to use a greedy hill climbing algorithm
+        void useGreedyHillClimbing () noexcept;
+
+        /// indicate that we wish to use a local search with tabu list
+        void useLocalSearchWithTabuList () noexcept;
+
+        /// indicate that we wish to use K2
+        void useK2 () noexcept;
+
+        /// @}
+
+
+        // ##########################################################################
+        /// @name Accessors / Modifiers for adding constraints on learning
+        // ##########################################################################
+        /// @{
+
+        /// sets the max indegree
+        void setMaxIndegree ( unsigned int max_indegree );
+
+        /// sets a partial order on the nodes
+        void setPartialOrder ( const NodeProperty<unsigned int>& partial_order );
+
+        /// sets a kTBN constraint (alias for setPartialOrder)
+        void setkTBN ( const NodeProperty<unsigned int>& partial_order );
+
+        /// assign a set of forbidden arcs
+        void setForbiddenArcs ( const ArcSet& set );
+
+        /// assign a new forbidden arc
+        void addForbiddenArc ( const Arc& arc );
+
+        /// remove a forbidden arc
+        void eraseForbiddenArc ( const Arc& arc );
+
+        /// assign a set of forbidden arcs
+        void setMandatoryArcs ( const ArcSet& set );
+
+        /// assign a new forbidden arc
+        void addMandatoryArc ( const Arc& arc );
+
+        /// remove a forbidden arc
+        void eraseMandatoryArc ( const Arc& arc );
+
+        /** @bried set the max number of changes decreasing the score that we
+         * allow to apply in LocalSearchWithTabuList */
+        void setMaxNbDecreasingChanges ( unsigned int nb );
+
+        /// set an ordering for K2 (by default, nodes are ordered by increasing id)
+        void setOrder ( const Sequence<NodeId>& order );
+
+        /// set an ordering for K2 (by default, nodes are ordered by increasing id)
+        void setOrder ( const std::vector<NodeId>& order );
+
+        /// @}
+
+
+      private:
+        /// the score selected for learning
+        ScoreType __score_type { ScoreType::BIC };
+
+        /// the score used
+        Score<>* __score { nullptr };
+
+        /// the type of the parameter estimator
+        ParamEstimatorType
+        __param_estimator_type { ParamEstimatorType::MLwithUniformApriori };
+
+        /// the parameter estimator to use
+        ParamEstimator<>* __param_estimator { nullptr };
+
+        /// the constraint for 2TBNs
+        StructuralConstraintPartialOrder __constraint_PartialOrder;
+
+        /// the constraint for indegrees
+        StructuralConstraintIndegree __constraint_Indegree;
+
+        /// the constraint for tabu lists
+        StructuralConstraintTabuList __constraint_TabuList;
+
+        /// the constraint on forbidden arcs
+        StructuralConstraintForbiddenArcs __constraint_ForbiddenArcs;
+
+        /// the constraint on forbidden arcs
+        StructuralConstraintMandatoryArcs __constraint_MandatoryArcs;
+
+        /// the selected learning algorithm
+        AlgoType __selected_algo { AlgoType::GREEDY_HILL_CLIMBING };
+
+        /// the greedy hill climbing algorith
+        GreedyHillClimbing __greedy_hill_climbing;
+
+        /// the local search with tabu list algorithm
+        LocalSearchWithTabuList __local_search_with_tabu_list;
+
+        /// an initial DAG given to learners
+        DAG __initial_dag;
+
+        /// the order used by K2
+        Sequence<NodeId> __order;
+
+
+
+        /// reads a file and returns a databaseVectInRam
+        DatabaseVectInRAM __readFile ( const std::string& filename );
+
+        /// create the score used for learning
+        template <typename FILTER>
+        void __createScore ( FILTER& filter,
+                             std::vector<unsigned int>& modalities );
+
+        /// create the parameter estimator used for learning
+        template <typename FILTER>
+        void __createParamEstimator ( FILTER& filter,
+                                      std::vector<unsigned int>& modalities );
+
+        /// returns the DAG learnt
+        template <typename FILTER>
+        DAG __learnDAG ( FILTER& filter, std::vector<unsigned int>& modal );
 
     };
-    
-      
+
+
   } /* namespace learning */
-  
-  
+
+
 } /* namespace gum */
 
 

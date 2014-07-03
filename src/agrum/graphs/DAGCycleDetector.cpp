@@ -48,22 +48,27 @@ namespace gum {
     // get the set of roots and leaves of the dag
     List<NodeId> roots, leaves;
     NodeProperty<unsigned int> nb_parents, nb_children;
+
     for ( const auto node : dag ) {
       unsigned int nb_ch = dag.children ( node ).size ();
       nb_children.insert ( node, nb_ch );
+
       if ( ! nb_ch ) leaves.insert ( node );
+
       unsigned int nb_pa = dag.parents ( node ).size ();
       nb_parents.insert ( node, nb_pa );
+
       if ( ! nb_pa ) roots.insert ( node );
     }
-    
+
     // recompute the set of ancestors
     NodeProperty<unsigned int> empty_set;
     __ancestors.clear ();
+
     for ( const auto node : dag ) {
       __ancestors.insert ( node, empty_set );
     }
-    
+
     while ( ! roots.empty () ) {
       // get a node and update the ancestors of its children
       NodeId node = roots.front ();
@@ -75,18 +80,20 @@ namespace gum {
       for ( const auto ch : node_children ) {
         __addWeightedSet ( __ancestors[ch], node_ancestors, 1 );
         --nb_parents[ch];
+
         if ( ! nb_parents[ch] ) {
           roots.insert ( ch );
         }
       }
     }
-    
+
     // recompute the set of descendants
     __descendants.clear ();
+
     for ( const auto node : dag ) {
       __descendants.insert ( node, empty_set );
     }
-    
+
     while ( ! leaves.empty () ) {
       // get a node and update the descendants of its parents
       NodeId node = leaves.front ();
@@ -98,13 +105,14 @@ namespace gum {
       for ( const auto pa : node_parents ) {
         __addWeightedSet ( __descendants[pa], node_descendants, 1 );
         --nb_children[pa];
+
         if ( ! nb_children[pa] ) {
           leaves.insert ( pa );
         }
       }
     }
   }
-  
+
 
   /// indicates whether a set of modifications would create a cycle
   bool DAGCycleDetector::hasCycleFromModifications
@@ -115,31 +123,38 @@ namespace gum {
     // we try to add an arc (X,X) we return that it induces a cycle
     HashTable<Arc,unsigned int> deletions ( modifs.size () );
     HashTable<Arc,unsigned int> additions ( modifs.size () );
+
     for ( const auto& modif : modifs ) {
       Arc arc ( modif.tail (), modif.head () );
 
       switch ( modif.type () ) {
-      case ChangeType::ARC_DELETION:
-        if ( deletions.exists ( arc ) ) ++deletions[arc];
-        else deletions.insert ( arc, 1 );
-        break;
+        case ChangeType::ARC_DELETION:
+          if ( deletions.exists ( arc ) ) ++deletions[arc];
+          else deletions.insert ( arc, 1 );
 
-      case ChangeType::ARC_ADDITION:
-        if ( modif.tail () == modif.head () ) return true;
-        if ( additions.exists ( arc ) ) ++additions[arc];
-        else additions.insert ( arc, 1 );
-        break;
+          break;
 
-      case ChangeType::ARC_REVERSAL:
-        if ( deletions.exists ( arc ) ) ++deletions[arc];
-        else deletions.insert ( arc, 1 );
-        arc = Arc ( modif.head (), modif.tail () );
-        if ( additions.exists ( arc ) ) ++additions[arc];
-        else additions.insert ( arc, 1 );
-        break;
+        case ChangeType::ARC_ADDITION:
+          if ( modif.tail () == modif.head () ) return true;
 
-      default:
-        GUM_ERROR ( OperationNotAllowed, "undefined change type" );
+          if ( additions.exists ( arc ) ) ++additions[arc];
+          else additions.insert ( arc, 1 );
+
+          break;
+
+        case ChangeType::ARC_REVERSAL:
+          if ( deletions.exists ( arc ) ) ++deletions[arc];
+          else deletions.insert ( arc, 1 );
+
+          arc = Arc ( modif.head (), modif.tail () );
+
+          if ( additions.exists ( arc ) ) ++additions[arc];
+          else additions.insert ( arc, 1 );
+
+          break;
+
+        default:
+          GUM_ERROR ( OperationNotAllowed, "undefined change type" );
       }
     }
 
@@ -148,15 +163,14 @@ namespace gum {
       if ( deletions.exists ( iter.key () ) ) {
         unsigned int& nb_del = deletions[iter.key()];
         unsigned int& nb_add = iter.val ();
+
         if ( nb_del > nb_add ) {
           additions.erase ( iter );
           nb_del -= nb_add;
-        }
-        else if ( nb_del < nb_add ) {
+        } else if ( nb_del < nb_add ) {
           deletions.erase ( iter.key () );
           nb_add -= nb_del;
-        }
-        else {
+        } else {
           deletions.erase ( iter.key () );
           additions.erase ( iter );
         }
@@ -165,6 +179,7 @@ namespace gum {
 
     // get the set of nodes involved in the modifications
     NodeSet extremities;
+
     for ( const auto& modif : modifs ) {
       extremities.insert ( modif.tail () );
       extremities.insert ( modif.head () );
@@ -181,12 +196,13 @@ namespace gum {
           ancestors.insert ( modif.tail (),
                              NodeProperty<unsigned int> () ).second;
         __restrictWeightedSet ( anc, __ancestors[modif.tail ()], extremities );
-        
+
         NodeProperty<unsigned int>& desc =
           descendants.insert ( modif.tail (),
                                NodeProperty<unsigned int> () ).second;
         __restrictWeightedSet ( desc, __descendants[modif.tail ()], extremities );
       }
+
       if ( ! ancestors.exists ( modif.head () ) ) {
         NodeProperty<unsigned int>& anc =
           ancestors.insert ( modif.head (),
@@ -200,7 +216,7 @@ namespace gum {
       }
     }
 
-    // we apply all the suppressions: 
+    // we apply all the suppressions:
     // assume that the modif concerns arc (X,Y). Then, after removing
     // arc (X,Y), the sets of descendants of the nodes T in
     // ( X + ancestors (X) ) are updated by subtracting the number of paths
@@ -220,6 +236,7 @@ namespace gum {
       NodeProperty<unsigned int> set_to_del = desc_head;
       set_to_del.insert ( head, 1 );
       __delWeightedSet ( descendants[tail], set_to_del, 1 );
+
       for ( auto iter = anc_tail.cbegin (); iter != anc_tail.cend (); ++iter ) {
         __delWeightedSet ( descendants[iter.key ()], set_to_del,
                            descendants[iter.key()][tail] );
@@ -229,6 +246,7 @@ namespace gum {
       set_to_del = anc_tail;
       set_to_del.insert ( tail, 1 );
       __delWeightedSet ( ancestors[head], set_to_del, 1 );
+
       for ( auto iter = desc_head.cbegin ();
             iter != desc_head.cend (); ++iter ) {
         __delWeightedSet ( ancestors[iter.key ()], set_to_del,
@@ -250,25 +268,29 @@ namespace gum {
       NodeId head = arc.head ();
 
       const NodeProperty<unsigned int>& anc_tail = ancestors[tail];
+
       if ( anc_tail.exists ( head ) ) {
         return true;
       }
+
       const NodeProperty<unsigned int>& desc_head = descendants[head];
 
       // update the set of ancestors
       NodeProperty<unsigned int> set_to_add = anc_tail;
       set_to_add.insert ( tail, 1 );
       __addWeightedSet ( ancestors[head], set_to_add, 1 );
+
       for ( auto iter = desc_head.cbegin ();
             iter != desc_head.cend (); ++iter ) {
         __addWeightedSet ( ancestors[iter.key ()], set_to_add,
-                           ancestors[iter.key ()][head]);
+                           ancestors[iter.key ()][head] );
       }
 
       // update the set of descendants
       set_to_add = desc_head;
       set_to_add.insert ( head, 1 );
       __addWeightedSet ( descendants[tail], set_to_add, 1 );
+
       for ( auto iter = anc_tail.cbegin (); iter != anc_tail.cend (); ++iter ) {
         __addWeightedSet ( descendants[iter.key ()], set_to_add,
                            descendants[iter.key ()][tail] );
@@ -281,16 +303,20 @@ namespace gum {
 
   /// adds a new arc to the current DAG
   void DAGCycleDetector::insertArc ( NodeId tail, NodeId head ) {
+    addArc ( tail,head );
+  }
+  /// adds a new arc to the current DAG
+  void DAGCycleDetector::addArc ( NodeId tail, NodeId head ) {
     // check that the arc does not already exist
     if ( __dag.existsArc ( tail, head ) ) return;
-    
+
     // check that the arc would not create a cycle
     if ( hasCycleFromAddition ( tail, head ) ) {
       GUM_ERROR ( InvalidDirectedCycle,
                   "the arc would create a directed into a DAG" );
     }
 
-    __dag.insertArc ( tail, head );
+    __dag.addArc ( tail, head );
 
     // now we apply the addition of the arc as done in method
     // hasCycleFromModifications
@@ -301,30 +327,32 @@ namespace gum {
     NodeProperty<unsigned int> set_to_add = anc_tail;
     set_to_add.insert ( tail, 1 );
     __addWeightedSet ( __ancestors[head], set_to_add, 1 );
+
     for ( auto iter = desc_head.cbegin ();
           iter != desc_head.cend (); ++iter ) {
       __addWeightedSet ( __ancestors[iter.key ()], set_to_add,
-                         __ancestors[iter.key ()][head]);
+                         __ancestors[iter.key ()][head] );
     }
 
     // update the set of descendants
     set_to_add = desc_head;
     set_to_add.insert ( head, 1 );
     __addWeightedSet ( __descendants[tail], set_to_add, 1 );
+
     for ( auto iter = anc_tail.cbegin (); iter != anc_tail.cend (); ++iter ) {
       __addWeightedSet ( __descendants[iter.key ()], set_to_add,
                          __descendants[iter.key ()][tail] );
     }
   }
 
-  
+
   /// removes an arc from the current DAG
   void DAGCycleDetector::eraseArc ( NodeId tail, NodeId head ) {
     // check that the arc exists
     if ( ! __dag.existsArc ( tail, head ) ) return;
 
     __dag.eraseArc ( Arc ( tail, head ) );
-    
+
     // we apply the deletion of the arc as done in method
     // hasCycleFromModifications
     const NodeProperty<unsigned int>& anc_tail = __ancestors[tail];
@@ -334,21 +362,23 @@ namespace gum {
     NodeProperty<unsigned int> set_to_del = desc_head;
     set_to_del.insert ( head, 1 );
     __delWeightedSet ( __descendants[tail], set_to_del, 1 );
+
     for ( auto iter = anc_tail.cbegin (); iter != anc_tail.cend (); ++iter ) {
       __delWeightedSet ( __descendants[iter.key ()], set_to_del,
                          __descendants[iter.key()][tail] );
     }
-    
+
     // update the set of ancestors
     set_to_del = anc_tail;
     set_to_del.insert ( tail, 1 );
     __delWeightedSet ( __ancestors[head], set_to_del, 1 );
+
     for ( auto iter = desc_head.cbegin (); iter != desc_head.cend (); ++iter ) {
       __delWeightedSet ( __ancestors[iter.key ()], set_to_del,
                          __ancestors[iter.key ()][head] );
     }
   }
 
-  
+
 } /* namespace gum */
 

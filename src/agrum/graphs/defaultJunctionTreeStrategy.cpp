@@ -160,7 +160,7 @@ namespace gum {
         const NodeSet& nei = __junction_tree.neighbours ( C_i );
 
         for ( iter = nei.beginSafe(); iter != nei.endSafe(); ++iter ) {
-          __junction_tree.insertEdge ( C_j, *iter );
+          __junction_tree.addEdge ( C_j, *iter );
           mark.insert ( Edge ( C_j, *iter ), true );
         }
 

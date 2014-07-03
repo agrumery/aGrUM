@@ -207,7 +207,7 @@ namespace gum {
         if ( ( node2 != node1 ) && !__graph->existsEdge ( node1, node2 ) ) {
           // add the edge
           Edge e1_2 ( node1, node2 );
-          __graph->insertEdge ( node1, node2 );
+          __graph->addEdge ( node1, node2 );
 
           if ( __we_want_fill_ins )
             __fill_ins_list.insert ( e1_2 );
@@ -299,7 +299,7 @@ namespace gum {
 
           if ( !__graph->existsEdge ( e1_2 ) ) {
             // add the edge
-            __graph->insertEdge ( node1, node2 );
+            __graph->addEdge ( node1, node2 );
 
             if ( __we_want_fill_ins )
               __fill_ins_list.insert ( e1_2 );
@@ -559,6 +559,9 @@ namespace gum {
   /// adds a new edge to the __graph and recomputes the simplicial set
 
   void SimplicialSet::insertEdge ( NodeId node1, NodeId node2 ) {
+    addEdge ( node1,node2 );
+  }
+  void SimplicialSet::addEdge ( NodeId node1, NodeId node2 ) {
     // if the edge already exists, do nothing
     Edge edge ( node1, node2 );
 
@@ -595,7 +598,7 @@ namespace gum {
     __nb_adjacent_neighbours[node2] += nb_neigh_n1_n2;
 
     // add the edge
-    __graph->insertEdge ( node1, node2 );
+    __graph->addEdge ( node1, node2 );
     __nb_triangles.insert ( edge, nb_triangle_in_new_edge );
 
     if ( !__changed_status.contains ( node1 ) )

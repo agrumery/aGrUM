@@ -96,6 +96,9 @@ namespace gum {
 
 
   INLINE void ArcGraphPart::insertArc ( const NodeId tail, const NodeId head ) {
+    addArc ( tail,head );
+  }
+  INLINE void ArcGraphPart::addArc ( const NodeId tail, const NodeId head ) {
     Arc arc ( tail, head );
 
     __arcs.insert ( arc );

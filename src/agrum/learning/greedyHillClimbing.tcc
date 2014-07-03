@@ -29,7 +29,7 @@
 
 namespace gum {
 
-  
+
   namespace learning {
 
 
@@ -40,7 +40,7 @@ namespace gum {
                                          const std::vector<unsigned int>& modal,
                                          DAG dag ) {
       selector.setGraph ( dag, modal );
-      
+
       unsigned int nb_changes_applied = 1;
 
       // a vector that indicates which queues have valid scores, i.e., scores
@@ -52,55 +52,59 @@ namespace gum {
 
         std::vector< std::pair<unsigned int,float> > ordered_queues =
           selector.nodesSortedByBestScore ();
-        
+
         for ( unsigned int j = 0; j < dag.size (); ++j ) {
           unsigned int i = ordered_queues[j].first;
+
           if ( ! ( selector.empty ( i ) ) && ( selector.bestScore ( i ) > 0 ) ) {
             // pick up the best change
             const GraphChange& change = selector.bestChange ( i );
 
             // perform the change
             switch ( change.type () ) {
-            case GraphChangeType::ARC_ADDITION:
-              if ( ! impacted_queues[ change.node2 () ] &&
-                   selector.isChangeValid ( change ) ) {
-                dag.insertArc ( change.node1 (), change.node2 () );
-                impacted_queues[ change.node2 () ] = true;
-                selector.applyChangeWithoutScoreUpdate ( change );
-                ++nb_changes_applied;
-              }
-              break;
-            
-            case GraphChangeType::ARC_DELETION:
-              if ( ! impacted_queues[ change.node2 () ] &&
-                   selector.isChangeValid ( change ) ) {
-                dag.eraseArc ( Arc ( change.node1 (), change.node2 () ) );
-                impacted_queues[ change.node2 () ] = true;
-                selector.applyChangeWithoutScoreUpdate ( change );
-                ++nb_changes_applied;
-              }
-              break;
-            
-            case GraphChangeType::ARC_REVERSAL:
-              if ( ( ! impacted_queues[ change.node1 () ] ) &&
-                   ( ! impacted_queues[ change.node2 () ] ) &&
-                   selector.isChangeValid ( change ) ) {
-                dag.eraseArc ( Arc ( change.node1 (), change.node2 () ) );
-                dag.insertArc ( change.node2 (), change.node1 () );
-                impacted_queues[ change.node1 () ] = true;
-                impacted_queues[ change.node2 () ] = true;
-                selector.applyChangeWithoutScoreUpdate ( change );
-                ++nb_changes_applied;
-              }
-              break;
-            
-            default:
-              GUM_ERROR ( OperationNotAllowed,
-                          "edge modifications are not supported by local search" );
+              case GraphChangeType::ARC_ADDITION:
+                if ( ! impacted_queues[ change.node2 () ] &&
+                     selector.isChangeValid ( change ) ) {
+                  dag.addArc ( change.node1 (), change.node2 () );
+                  impacted_queues[ change.node2 () ] = true;
+                  selector.applyChangeWithoutScoreUpdate ( change );
+                  ++nb_changes_applied;
+                }
+
+                break;
+
+              case GraphChangeType::ARC_DELETION:
+                if ( ! impacted_queues[ change.node2 () ] &&
+                     selector.isChangeValid ( change ) ) {
+                  dag.eraseArc ( Arc ( change.node1 (), change.node2 () ) );
+                  impacted_queues[ change.node2 () ] = true;
+                  selector.applyChangeWithoutScoreUpdate ( change );
+                  ++nb_changes_applied;
+                }
+
+                break;
+
+              case GraphChangeType::ARC_REVERSAL:
+                if ( ( ! impacted_queues[ change.node1 () ] ) &&
+                     ( ! impacted_queues[ change.node2 () ] ) &&
+                     selector.isChangeValid ( change ) ) {
+                  dag.eraseArc ( Arc ( change.node1 (), change.node2 () ) );
+                  dag.addArc ( change.node2 (), change.node1 () );
+                  impacted_queues[ change.node1 () ] = true;
+                  impacted_queues[ change.node2 () ] = true;
+                  selector.applyChangeWithoutScoreUpdate ( change );
+                  ++nb_changes_applied;
+                }
+
+                break;
+
+              default:
+                GUM_ERROR ( OperationNotAllowed,
+                            "edge modifications are not supported by local search" );
             }
           }
         }
-          
+
         selector.updateScoresAfterAppliedChanges ();
 
         // reset the impacted queue and applied changes structures
@@ -108,15 +112,15 @@ namespace gum {
               iter != impacted_queues.end (); ++iter )
           *iter = false;
       }
-   
+
       return dag;
     }
-      
-    
+
+
     /// learns the structure and the parameters of a BN
     template <typename GUM_SCALAR,
-              typename GRAPH_CHANGES_SELECTOR,
-              typename PARAM_ESTIMATOR>
+             typename GRAPH_CHANGES_SELECTOR,
+             typename PARAM_ESTIMATOR>
     BayesNet<GUM_SCALAR>
     GreedyHillClimbing::learnBN
     ( GRAPH_CHANGES_SELECTOR& selector,
@@ -125,14 +129,14 @@ namespace gum {
       const std::vector<unsigned int>& modal,
       DAG initial_dag ) {
       return DAG2BNLearner::createBN<PARAM_ESTIMATOR,GUM_SCALAR>
-        ( estimator,
-          learnStructure ( selector, modal, initial_dag ),
-          names, modal );
+             ( estimator,
+               learnStructure ( selector, modal, initial_dag ),
+               names, modal );
     }
-    
-    
+
+
   } /* namespace learning */
-  
-  
+
+
 } /* namespace gum */
 

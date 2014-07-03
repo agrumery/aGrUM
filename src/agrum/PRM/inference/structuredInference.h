@@ -135,9 +135,13 @@ namespace gum {
           /// Destructor.
           ~RGData();
           /// Returns the set of outputs nodes (which will be eliminated).
-          inline NodeSet& outputs() { return partial_order[0]; }
+          inline NodeSet& outputs() {
+            return partial_order[0];
+          }
           /// Returns the set of query nodes (which will not be eliminated).
-          inline NodeSet& queries() { return partial_order[1]; }
+          inline NodeSet& queries() {
+            return partial_order[1];
+          }
         };
 
         /// Private structure to represent data about a pattern.
@@ -169,13 +173,21 @@ namespace gum {
             /// Destructor
             ~PData();
             /// Returns the set of inner nodes
-            inline NodeSet& inners() { return __partial_order[0]; }
+            inline NodeSet& inners() {
+              return __partial_order[0];
+            }
             /// Returns the set of inner and observed nodes given all the matches of pattern
-            inline NodeSet& obs() { return __partial_order[1]; }
+            inline NodeSet& obs() {
+              return __partial_order[1];
+            }
             /// Returns the set of outputs nodes given all the matches of pattern
-            inline NodeSet& outputs() { return __partial_order[2]; }
+            inline NodeSet& outputs() {
+              return __partial_order[2];
+            }
             /// Returns the set of queried nodes given all the matches of pattern
-            inline NodeSet& queries() { return __partial_order[3]; }
+            inline NodeSet& queries() {
+              return __partial_order[3];
+            }
             // We use the first match for computations
             // inline const Sequence<Instance<GUM_SCALAR>*>& match() const { return **(matches.begin());}
             // Remove any empty set in partial_order
@@ -207,13 +219,21 @@ namespace gum {
             /// Destructor.
             ~CData();
             /// Returns the set of inner nodes.
-            inline NodeSet& inners() { return __inners; }
+            inline NodeSet& inners() {
+              return __inners;
+            }
             /// Returns the set of aggregators and their parents.
-            inline NodeSet& aggregators() { return __aggregators; }
+            inline NodeSet& aggregators() {
+              return __aggregators;
+            }
             /// Returns the set of outputs nodes.
-            inline NodeSet& outputs() { return __outputs; }
+            inline NodeSet& outputs() {
+              return __outputs;
+            }
             /// The elimination order for nodes of this class
-            inline std::vector<NodeId>& elim_order() { return __elim_order; }
+            inline std::vector<NodeId>& elim_order() {
+              return __elim_order;
+            }
           private:
             std::vector<NodeId> __elim_order;
             NodeSet __inners;

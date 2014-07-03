@@ -189,7 +189,8 @@ namespace gum {
         virtual NodeId overload ( ClassElement<GUM_SCALAR>* elt );
 
         /// See gum::prm::ClassElementContainer<GUM_SCALAR>::insertArc().
-        virtual void insertArc ( const std::string& tail, const std::string& head );
+        GUM_DEPRECATED ( void insertArc ( const std::string& tail, const std::string& head ) );
+        virtual void addArc ( const std::string& tail, const std::string& head );
 
         /**
          * Returns the set of Attribute<GUM_SCALAR> of this Class<GUM_SCALAR>.

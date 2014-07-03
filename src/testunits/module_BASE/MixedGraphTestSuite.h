@@ -42,18 +42,18 @@ namespace gum_tests {
     private:
       gum::MixedGraph buildGraph() {
         gum::MixedGraph g;
-        id1 = g.insertNode();
-        id2 = g.insertNode();
-        id3 = g.insertNode();
-        id4 = g.insertNode();
-        id5 = g.insertNode();
+        id1 = g.addNode();
+        id2 = g.addNode();
+        id3 = g.addNode();
+        id4 = g.addNode();
+        id5 = g.addNode();
 
-        g.insertEdge ( id1, id3 );
-        g.insertEdge ( id3, id5 );
-        g.insertEdge ( id2, id4 );
-        g.insertArc ( id1, id4 );
-        g.insertArc ( id4, id5 );
-        g.insertArc ( id5, id2 );
+        g.addEdge ( id1, id3 );
+        g.addEdge ( id3, id5 );
+        g.addEdge ( id2, id4 );
+        g.addArc ( id1, id4 );
+        g.addArc ( id4, id5 );
+        g.addArc ( id5, id2 );
 
         return g;
       }
@@ -86,19 +86,19 @@ namespace gum_tests {
       void testInsert1() {
         gum::MixedGraph graph;
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( graph.insertNode( ) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( graph.insertNode( ) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( graph.insertNode( ) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( graph.insertNode( ) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( graph.insertNode( ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( graph.addNode( ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( graph.addNode( ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( graph.addNode( ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( graph.addNode( ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( graph.addNode( ) );
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( graph.insertEdge ( 0, 2 ) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( graph.insertEdge ( 2, 4 ) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( graph.insertEdge ( 1, 3 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( graph.addEdge ( 0, 2 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( graph.addEdge ( 2, 4 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( graph.addEdge ( 1, 3 ) );
 
-        TS_GUM_ASSERT_THROWS_NOTHING ( graph.insertArc ( 0, 3 ) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( graph.insertArc ( 3, 4 ) );
-        TS_GUM_ASSERT_THROWS_NOTHING ( graph.insertArc ( 4, 1 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( graph.addArc ( 0, 3 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( graph.addArc ( 3, 4 ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( graph.addArc ( 4, 1 ) );
       }
 
       void testCopyConstructor() {
@@ -453,7 +453,7 @@ namespace gum_tests {
         gum::MixedGraph graph = buildGraph();
 
         gum::MixedGraph g2 = buildGraph();
-        g2.insertNode();
+        g2.addNode();
 
         gum::MixedGraph g3;
         gum::MixedGraph g4;

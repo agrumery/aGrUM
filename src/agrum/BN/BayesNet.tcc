@@ -153,7 +153,7 @@ namespace gum {
   NodeId
   BayesNet<GUM_SCALAR>::add ( const DiscreteVariable& var, MultiDimImplementation<GUM_SCALAR>* aContent , NodeId id ) {
     __varMap.insert ( id, var );
-    this->_dag.insertNode ( id );
+    this->_dag.addNode ( id );
 
     Potential<GUM_SCALAR>* cpt = new Potential<GUM_SCALAR> ( aContent );
     ( *cpt ) << variable ( id );
@@ -237,7 +237,7 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   BayesNet<GUM_SCALAR>::addArc ( NodeId tail, NodeId head ) {
-    this->_dag.insertArc ( tail, head );
+    this->_dag.addArc ( tail, head );
     // Add parent in the child's CPT
     ( * ( __probaMap[head] ) ) << variable ( tail );
   }
@@ -275,7 +275,7 @@ namespace gum {
     try {
       DAG d = dag ();
       d.eraseArc ( arc );
-      d.insertArc ( head, tail );
+      d.addArc ( head, tail );
     } catch ( Exception& e ) {
       GUM_ERROR ( InvalidArc, "this arc reversal would induce a directed cycle" );
     }
@@ -374,7 +374,7 @@ namespace gum {
   BayesNet<GUM_SCALAR>::addNoisyAND ( const DiscreteVariable& var , GUM_SCALAR external_weight ) {
     return add ( var, new MultiDimNoisyAND<GUM_SCALAR> ( external_weight ) );
   }
-  
+
   template<typename GUM_SCALAR> INLINE
   NodeId
   BayesNet<GUM_SCALAR>::addLogit ( const DiscreteVariable& var , GUM_SCALAR external_weight ) {
@@ -392,7 +392,7 @@ namespace gum {
   BayesNet<GUM_SCALAR>::addNoisyAND ( const DiscreteVariable& var , GUM_SCALAR external_weight, NodeId id ) {
     return add ( var, new MultiDimNoisyAND<GUM_SCALAR> ( external_weight ) , id );
   }
-  
+
   template<typename GUM_SCALAR> INLINE
   NodeId
   BayesNet<GUM_SCALAR>::addLogit ( const DiscreteVariable& var , GUM_SCALAR external_weight, NodeId id ) {
@@ -544,7 +544,7 @@ namespace gum {
   void BayesNet<GUM_SCALAR>::generateCPTs() {
     SimpleCPTGenerator<GUM_SCALAR> generator;
 
-    for ( auto iter = nodes().beginSafe(); iter != nodes().endSafe(); ++iter) {
+    for ( auto iter = nodes().beginSafe(); iter != nodes().endSafe(); ++iter ) {
       generator.generateCPT ( cpt ( *iter ).pos ( variable ( *iter ) ),  cpt ( *iter ) );
     }
   }

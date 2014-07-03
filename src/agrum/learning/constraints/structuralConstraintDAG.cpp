@@ -33,40 +33,40 @@
 
 namespace gum {
 
-  
+
   namespace learning {
 
-    
+
     /// default constructor
     StructuralConstraintDAG::StructuralConstraintDAG () {
       GUM_CONSTRUCTOR ( StructuralConstraintDAG );
     }
 
-    
+
     /// constructor starting with an empty graph with a given number of nodes
     StructuralConstraintDAG::StructuralConstraintDAG ( unsigned int nb_nodes ) :
       StructuralConstraintDiGraph ( nb_nodes ) {
       StructuralConstraintDiGraph::setGraph ( nb_nodes );
-      
+
       DAG g;
       for ( unsigned int i = 0; i < nb_nodes; ++i ) {
-        g.insertNode ( i );
+        g.addNode ( i );
       }
       _DAG__cycle_detector.setDAG ( g );
 
       GUM_CONSTRUCTOR ( StructuralConstraintDAG );
     }
 
-    
+
     /// constructor starting with a given graph
     StructuralConstraintDAG::StructuralConstraintDAG ( const DAG& graph ) {
       StructuralConstraintDiGraph::setGraph ( graph );
       _DAG__cycle_detector.setDAG ( graph );
-      
+
       GUM_CONSTRUCTOR ( StructuralConstraintDAG );
     }
 
-    
+
     /// copy constructor
     StructuralConstraintDAG::StructuralConstraintDAG
     ( const StructuralConstraintDAG& from ) :
@@ -74,7 +74,7 @@ namespace gum {
       _DAG__cycle_detector ( from._DAG__cycle_detector ) {
       GUM_CONS_CPY ( StructuralConstraintDAG );
     }
-      
+
 
     /// move constructor
     StructuralConstraintDAG::StructuralConstraintDAG
@@ -83,7 +83,7 @@ namespace gum {
       _DAG__cycle_detector ( std::move ( from._DAG__cycle_detector ) ) {
       GUM_CONS_MOV ( StructuralConstraintDAG );
     }
-      
+
 
     /// destructor
     StructuralConstraintDAG::~StructuralConstraintDAG () {
@@ -100,7 +100,7 @@ namespace gum {
       }
       return *this;
     }
-    
+
 
     /// move operator
     StructuralConstraintDAG&
@@ -111,10 +111,10 @@ namespace gum {
       }
       return *this;
     }
- 
- 
+
+
   } /* namespace learning */
 
-  
+
 } /* namespace gum */
 

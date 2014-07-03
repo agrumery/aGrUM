@@ -135,18 +135,18 @@ namespace gum {
       GUM_ERROR ( NotFound, "Node " << id << " does not exist in referred BayesNet" );
 
     if ( !isInstalledNode ( id ) ) {
-      this->_dag.insertNode ( id );
+      this->_dag.addNode ( id );
 
       // adding arcs with id as a tail
       for ( auto pa = this->__bn.dag().parents ( id ).beginSafe(); pa != this->__bn.dag().parents ( id ).endSafe(); ++pa ) {
         if ( isInstalledNode ( *pa ) )
-          this->_dag.insertArc ( *pa, id );
+          this->_dag.addArc ( *pa, id );
       }
 
       //addin arcs with id as a head
       for ( auto son = this->__bn.dag().children ( id ).beginSafe(); son != this->__bn.dag().children ( id ).endSafe(); ++son )
         if ( isInstalledNode ( *son ) )
-          this->_dag.insertArc ( id, *son );
+          this->_dag.addArc ( id, *son );
     }
   }
 
@@ -174,7 +174,7 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE void
   BayesNetFragment<GUM_SCALAR>::_installArc ( NodeId from, NodeId to ) noexcept {
-    this->_dag.insertArc ( from, to );
+    this->_dag.addArc ( from, to );
   }
 
   template<typename GUM_SCALAR> void

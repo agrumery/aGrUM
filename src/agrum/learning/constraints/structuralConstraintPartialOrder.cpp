@@ -38,10 +38,10 @@
 
 namespace gum {
 
-  
+
   namespace learning {
 
-    
+
     /// default constructor
     StructuralConstraintPartialOrder::StructuralConstraintPartialOrder () {
       GUM_CONSTRUCTOR ( StructuralConstraintPartialOrder );
@@ -52,14 +52,14 @@ namespace gum {
     StructuralConstraintPartialOrder::StructuralConstraintPartialOrder
     ( const NodeProperty<unsigned int>& order ) {
       for ( auto iter = order.cbegin(); iter != order.cend (); ++iter ) {
-        _DiGraph__graph.insertNode ( iter.key () );
+        _DiGraph__graph.addNode ( iter.key () );
       }
       _PartialOrder__order = order;
 
       GUM_CONSTRUCTOR ( StructuralConstraintPartialOrder );
     }
-    
-    
+
+
     /// constructor starting with a given graph
     StructuralConstraintPartialOrder::StructuralConstraintPartialOrder
     ( const DiGraph& graph,
@@ -90,8 +90,8 @@ namespace gum {
       _PartialOrder__default_slice ( from._PartialOrder__default_slice ) {
       GUM_CONS_CPY ( StructuralConstraintPartialOrder );
     }
-    
-      
+
+
     /// move constructor
     StructuralConstraintPartialOrder::StructuralConstraintPartialOrder
     ( StructuralConstraintPartialOrder&& from ) :
@@ -102,7 +102,7 @@ namespace gum {
       GUM_CONS_MOV ( StructuralConstraintPartialOrder );
     }
 
- 
+
     /// destructor
     StructuralConstraintPartialOrder::~StructuralConstraintPartialOrder () {
       GUM_DESTRUCTOR ( StructuralConstraintPartialOrder );
@@ -120,7 +120,7 @@ namespace gum {
       }
       return *this;
     }
-        
+
 
     /// move operator
     StructuralConstraintPartialOrder&
@@ -134,10 +134,10 @@ namespace gum {
       }
       return *this;
     }
-    
- 
+
+
   } /* namespace learning */
 
-  
+
 } /* namespace gum */
 

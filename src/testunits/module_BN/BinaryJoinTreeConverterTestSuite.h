@@ -48,19 +48,19 @@ namespace gum_tests {
         cliques[10] << 14 << 16;
 
         for ( unsigned int i = 0; i <= 10; ++i ) {
-          graph.insertNode ( i, cliques[i] );
+          graph.addNode ( i, cliques[i] );
         }
 
-        graph.insertEdge ( 0, 5 );
-        graph.insertEdge ( 1, 5 );
-        graph.insertEdge ( 2, 5 );
-        graph.insertEdge ( 3, 5 );
-        graph.insertEdge ( 4, 5 );
-        graph.insertEdge ( 5, 8 );
-        graph.insertEdge ( 6, 8 );
-        graph.insertEdge ( 7, 8 );
-        graph.insertEdge ( 8, 9 );
-        graph.insertEdge ( 9, 10 );
+        graph.addEdge ( 0, 5 );
+        graph.addEdge ( 1, 5 );
+        graph.addEdge ( 2, 5 );
+        graph.addEdge ( 3, 5 );
+        graph.addEdge ( 4, 5 );
+        graph.addEdge ( 5, 8 );
+        graph.addEdge ( 6, 8 );
+        graph.addEdge ( 7, 8 );
+        graph.addEdge ( 8, 9 );
+        graph.addEdge ( 9, 10 );
 
         gum::NodeProperty<gum::Size> domain_sizes;
 

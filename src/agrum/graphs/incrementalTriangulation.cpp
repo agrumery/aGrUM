@@ -31,6 +31,7 @@
 #include <agrum/config.h>
 
 #include <agrum/core/list.h>
+#include <agrum/graphs/undiGraph.h>
 #include <agrum/graphs/incrementalTriangulation.h>
 
 
@@ -72,12 +73,12 @@ namespace gum {
     // containing the informations useful for the triangulation
 
     for ( auto iter_node = theGraph.nodes().beginSafe(); iter_node != theGraph.nodes().endSafe(); ++iter_node )
-      insertNode ( *iter_node, modal[*iter_node] );
+      addNode ( *iter_node, modal[*iter_node] );
 
     // insert all the edges of the graph into the structure. This will
     // implicitly update the "require_update" field
     for ( auto edge = theGraph.edges().beginSafe () ; edge != theGraph.edges().endSafe (); ++edge )
-      insertEdge ( edge->first(), edge->second() );
+      addEdge ( edge->first(), edge->second() );
   }
 
 
@@ -185,11 +186,15 @@ namespace gum {
 
   void
   IncrementalTriangulation::insertNode ( const NodeId node, Size modal ) {
+    addNode(node,modal);
+  }
+  void
+  IncrementalTriangulation::addNode ( const NodeId node, Size modal ) {
     // check if the node already exists
     if ( __graph.existsNode ( node ) ) return;
 
     // add the new node to the graph
-    __graph.insertNode ( node );
+    __graph.addNode ( node );
 
     _modalities.insert ( node, modal );
 
@@ -198,9 +203,9 @@ namespace gum {
 
     clique_nodes.insert ( node );
 
-    NodeId MPS = __T_mpd.insertNode ( clique_nodes );
+    NodeId MPS = __T_mpd.addNode ( clique_nodes );
 
-    NodeId new_clique = __junction_tree.insertNode ( clique_nodes );
+    NodeId new_clique = __junction_tree.addNode ( clique_nodes );
 
     // indicate in which MPS node belongs
     List<NodeId>& list_of_mps = __mps_of_node.insert ( node, List<NodeId>() ).second;
@@ -466,8 +471,10 @@ namespace gum {
 
 
   /// adds a new edge to the graph (the join tree may need a triangulation update)
-
   void IncrementalTriangulation::insertEdge ( const NodeId X, const NodeId Y ) {
+    addEdge(X,Y);
+  }
+  void IncrementalTriangulation::addEdge ( const NodeId X, const NodeId Y ) {
     // check that the edge exist
     if ( ( X == Y ) ||
          ! __graph.existsNode ( X ) ||
@@ -475,7 +482,7 @@ namespace gum {
          __graph.existsEdge ( Edge ( X, Y ) ) ) return;
 
     // add the edge to the graph
-    __graph.insertEdge ( X, Y );
+    __graph.addEdge ( X, Y );
 
     // take any MPS containing X and search its tree to find Y
     NodeId& mps_X = __mps_of_node[X][0];
@@ -514,17 +521,15 @@ namespace gum {
 
       nodes.insert ( Y );
 
-      NodeId newNode = __junction_tree.insertNode ( nodes );
+      NodeId newNode = __junction_tree.addNode ( nodes );
 
-      __junction_tree.insertEdge ( newNode, c_X );
+      __junction_tree.addEdge ( newNode, c_X );
+      __junction_tree.addEdge ( newNode, c_Y );
 
-      __junction_tree.insertEdge ( newNode, c_Y );
+      NodeId newMPS = __T_mpd.addNode ( nodes );
 
-      NodeId newMPS = __T_mpd.insertNode ( nodes );
-
-      __T_mpd.insertEdge ( newMPS, mps_X );
-
-      __T_mpd.insertEdge ( newMPS, mps_Y );
+      __T_mpd.addEdge ( newMPS, mps_X );
+      __T_mpd.addEdge ( newMPS, mps_Y );
 
       // check that the maximal prime subgraph containing X is not X alone
       // in this case, remove this max prime subgraph, as well as the corresponding
@@ -583,8 +588,8 @@ namespace gum {
     {
       NodeProperty<bool> nodes = __graph.nodesProperty<bool> ( false );
 
-      for ( auto iter_cliq = __junction_tree.nodes().beginSafe(); 
-	iter_cliq != __junction_tree.nodes().endSafe (); ++iter_cliq ) {
+      for ( auto iter_cliq = __junction_tree.nodes().beginSafe();
+            iter_cliq != __junction_tree.nodes().endSafe (); ++iter_cliq ) {
         const NodeSet& clique = __junction_tree.clique ( *iter_cliq );
 
         for ( NodeSetIterator iter2 = clique.beginSafe(); iter2 != clique.endSafe(); ++iter2 )
@@ -828,7 +833,7 @@ namespace gum {
     for ( NodeSetIterator iter_node = clique.beginSafe();
           iter_node != clique.endSafe(); ++iter_node )
       if ( ! theGraph.exists ( *iter_node ) )
-        theGraph.insertNode ( *iter_node );
+        theGraph.addNode ( *iter_node );
 
     // go on with the neighbour cliques in the junction tree
     const NodeSet& neighbours =  __junction_tree.neighbours ( Mx );
@@ -897,7 +902,7 @@ namespace gum {
         // insert the edges in tmp_graph
         for ( auto edge = __graph.edges().beginSafe (); edge != __graph.edges().endSafe (); ++edge ) {
           try {
-            tmp_graph.insertEdge ( edge->first(), edge->second() );
+            tmp_graph.addEdge ( edge->first(), edge->second() );
           } catch ( Exception& ) { } // both extremities must be in tmp_graph
         }
 
@@ -931,7 +936,7 @@ namespace gum {
           // get new ids for the nodes of tmp_junction_tree. These should be
           // greater than or equal to __junction_tree.bound () so that we can
           // use the max_old_id defined at the beginning of the method.
-          NodeId new_id = __junction_tree.insertNode ( tmp_junction_tree.clique ( *iter_cliq ) );
+          NodeId new_id = __junction_tree.addNode ( tmp_junction_tree.clique ( *iter_cliq ) );
           // translate the id of the temprary JT into an id of the global JT
           tmp2global_junction_tree.insert ( *iter_cliq, new_id );
           new_nodes_in_junction_tree.insert ( new_id );
@@ -939,7 +944,7 @@ namespace gum {
 
         // and add the edges of tmp_junction_tree to __junction_tree
         for ( auto edge = tmp_junction_tree.edges().beginSafe (); edge != tmp_junction_tree.edges().endSafe (); ++edge )
-          __junction_tree.insertEdge ( tmp2global_junction_tree[edge->first()], tmp2global_junction_tree[edge->second()] );
+          __junction_tree.addEdge ( tmp2global_junction_tree[edge->first()], tmp2global_junction_tree[edge->second()] );
 
         // second get the edges in __junction_tree that have an extremal clique R
         // in the affected clique set and the other one S not in the affected set
@@ -977,11 +982,11 @@ namespace gum {
                                   notAffectedneighbourCliques[i].second() :
                                   notAffectedneighbourCliques[i].first();
 
-            __junction_tree.insertEdge ( not_affected, to_connect );
+            __junction_tree.addEdge ( not_affected, to_connect );
 
             if ( ! new_nodes_in_junction_tree.contains ( to_connect ) ) {
-              __T_mpd.insertEdge ( __mps_of_clique[to_connect],
-                                   __mps_of_clique[not_affected] );
+              __T_mpd.addEdge ( __mps_of_clique[to_connect],
+                                __mps_of_clique[not_affected] );
             }
 
             // check that the separator created by the new edge is not equal to
@@ -995,11 +1000,11 @@ namespace gum {
 
               for ( NodeSetIterator iter_neighbour = neighbours.beginSafe();
                     iter_neighbour != neighbours.endSafe(); ++iter_neighbour ) {
-                __junction_tree.insertEdge ( *iter_neighbour, not_affected );
+                __junction_tree.addEdge ( *iter_neighbour, not_affected );
 
                 if ( ! new_nodes_in_junction_tree.contains ( *iter_neighbour ) )
-                  __T_mpd.insertEdge ( __mps_of_clique[*iter_neighbour],
-                                       __mps_of_clique[not_affected] );
+                  __T_mpd.addEdge ( __mps_of_clique[*iter_neighbour],
+                                    __mps_of_clique[not_affected] );
               }
 
               __junction_tree.eraseNode ( to_connect );
@@ -1136,7 +1141,7 @@ namespace gum {
           iter_clique != T_mpd_cliques.endSafe(); ++iter_clique ) {
       if ( iter_clique.key() == iter_clique.val () ) {
         NodeId newId =
-          __T_mpd.insertNode ( __junction_tree.clique ( iter_clique.val () ) );
+          __T_mpd.addNode ( __junction_tree.clique ( iter_clique.val () ) );
         clique2MPS.insert ( iter_clique.val (), newId );
         std::vector<NodeId>& vect_of_cliques = __cliques_of_mps.insert ( newId, std::vector<NodeId>() ).second;
         vect_of_cliques.push_back ( iter_clique.val () );
@@ -1197,10 +1202,10 @@ namespace gum {
 
           // avoid adding the same edge several times
           if ( clique > otherClique ) {
-            __T_mpd.insertEdge ( clique, otherClique );
+            __T_mpd.addEdge ( clique, otherClique );
           }
         } else {
-          __T_mpd.insertEdge ( clique, __mps_of_clique[othernode] );
+          __T_mpd.addEdge ( clique, __mps_of_clique[othernode] );
         }
       }
     }
@@ -1375,10 +1380,10 @@ namespace gum {
     // containing the informations useful for the triangulation
 
     for ( auto iter_node = theGraph.nodes().beginSafe(); iter_node != theGraph.nodes().endSafe(); ++iter_node )
-      insertNode ( *iter_node, modal[*iter_node] );
+      addNode ( *iter_node, modal[*iter_node] );
 
     for ( auto edge = theGraph.edges().beginSafe (); edge != theGraph.edges().endSafe(); ++edge )
-      insertEdge ( edge->first(), edge->second() );
+      addEdge ( edge->first(), edge->second() );
   }
 
 

@@ -21,7 +21,7 @@
  * @brief A pack of learning algorithms that can easily be used
  *
  * The pack currently contains K2, GreedyHillClimbing and LocalSearchWithTabuList
- * 
+ *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -29,10 +29,10 @@
 
 namespace gum {
 
-  
+
   namespace learning {
 
-    
+
     /// create the score used for learning
     template <typename FILTER>
     void
@@ -43,42 +43,42 @@ namespace gum {
 
       // create the new scoring function
       switch ( __score_type ) {
-      case ScoreType::AIC:
-        __score = new ScoreAIC<> ( filter, modalities );
-        break;;
+        case ScoreType::AIC:
+          __score = new ScoreAIC<> ( filter, modalities );
+          break;;
 
-        /*
-      case ScoreType::BD:
-        __score = new ScoreBD<> ( filter, modalities );
-        break;
+          /*
+          case ScoreType::BD:
+          __score = new ScoreBD<> ( filter, modalities );
+          break;
 
-      case ScoreType::BDEU:
-        __score = new ScoreBDeu<> ( filter, modalities );
-        break;
-        */
-        
-      case ScoreType::BIC:
-        __score = new ScoreBIC<> ( filter, modalities );
-        break;
-        
-      case ScoreType::K2:
-        __score = new ScoreK2<> ( filter, modalities );
-        break;
-        
-      case ScoreType::LOG2LIKELIHOOD:
-        __score = new ScoreLog2Likelihood<> ( filter, modalities );
-        break;
+          case ScoreType::BDEU:
+          __score = new ScoreBDeu<> ( filter, modalities );
+          break;
+          */
 
-      default:
-        GUM_ERROR ( OperationNotAllowed,
-                    "BNLearner does not support yet this score" );
+        case ScoreType::BIC:
+          __score = new ScoreBIC<> ( filter, modalities );
+          break;
+
+        case ScoreType::K2:
+          __score = new ScoreK2<> ( filter, modalities );
+          break;
+
+        case ScoreType::LOG2LIKELIHOOD:
+          __score = new ScoreLog2Likelihood<> ( filter, modalities );
+          break;
+
+        default:
+          GUM_ERROR ( OperationNotAllowed,
+                      "BNLearner does not support yet this score" );
       }
 
       // remove the old score, if any
       if ( old_score != nullptr ) delete old_score;
     }
 
-    
+
     /// create the parameter estimator used for learning
     template <typename FILTER>
     void BNLearner::__createParamEstimator
@@ -86,28 +86,28 @@ namespace gum {
       std::vector<unsigned int>& modalities ) {
       // first, save the old estimator, to be delete if everything is ok
       ParamEstimator<>* old_estimator = __param_estimator;
-      
+
       // create the new estimator
       switch ( __param_estimator_type ) {
-      case ParamEstimatorType::ML:
-        __param_estimator = new ParamEstimatorML<> ( filter, modalities );
-        break;
+        case ParamEstimatorType::ML:
+          __param_estimator = new ParamEstimatorML<> ( filter, modalities );
+          break;
 
-      case ParamEstimatorType::MLwithUniformApriori:
-        __param_estimator =
-          new ParamEstimatorMLwithUniformApriori<> ( filter, modalities );
-        break;
+        case ParamEstimatorType::MLwithUniformApriori:
+          __param_estimator =
+            new ParamEstimatorMLwithUniformApriori<> ( filter, modalities );
+          break;
 
-      default:
-         GUM_ERROR ( OperationNotAllowed,
-                    "BNLearner does not support yet this parameter estimator" );
+        default:
+          GUM_ERROR ( OperationNotAllowed,
+                      "BNLearner does not support yet this parameter estimator" );
       }
 
       // remove the old estimator, if any
       if ( old_estimator != nullptr ) delete old_estimator;
     }
 
-    
+
     /// learn a structure from a file
     template <typename FILTER>
     DAG BNLearner::__learnDAG ( FILTER& filter,
@@ -115,25 +115,28 @@ namespace gum {
       // add the mandatory arcs to the initial dag and remove the forbidden ones
       // from the initial graph
       DAG init_graph = __initial_dag;
-      
+
       const ArcSet& mandatory_arcs = __constraint_MandatoryArcs.arcs ();
+
       for ( const auto& arc : mandatory_arcs ) {
         if ( ! init_graph.exists ( arc.tail () ) )
-          init_graph.insertNode ( arc.tail () );
+          init_graph.addNode ( arc.tail () );
+
         if ( ! init_graph.exists ( arc.head () ) )
-          init_graph.insertNode ( arc.head () );
-        init_graph.insertArc ( arc.tail (), arc.head () );
+          init_graph.addNode ( arc.head () );
+
+        init_graph.addArc ( arc.tail (), arc.head () );
       }
 
       const ArcSet& forbidden_arcs = __constraint_ForbiddenArcs.arcs ();
+
       for ( const auto& arc : forbidden_arcs ) {
         init_graph.eraseArc ( arc );
       }
-      
+
       switch ( __selected_algo ) {
-      // ========================================================================
-      case AlgoType::GREEDY_HILL_CLIMBING:
-        {
+          // ========================================================================
+        case AlgoType::GREEDY_HILL_CLIMBING: {
           StructuralConstraintSetStatic<StructuralConstraintMandatoryArcs,
                                         StructuralConstraintForbiddenArcs,
                                         StructuralConstraintPartialOrder,
@@ -147,27 +150,26 @@ namespace gum {
             __constraint_PartialOrder;
           static_cast<StructuralConstraintIndegree&> ( gen_constraint ) =
             __constraint_Indegree;
-                         
+
           GraphChangesGenerator4DiGraph< decltype ( gen_constraint ) >
-            op_set ( gen_constraint );
-        
+          op_set ( gen_constraint );
+
           StructuralConstraintSetStatic<StructuralConstraintIndegree,
                                         StructuralConstraintDAG> sel_constraint;
           static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
             __constraint_Indegree;
-          
+
           GraphChangesSelector4DiGraph< Score<>,
                                         decltype ( sel_constraint ),
                                         decltype ( op_set ) >
-            selector ( *__score, sel_constraint, op_set );
-                         
+                                        selector ( *__score, sel_constraint, op_set );
+
           return __greedy_hill_climbing.learnStructure ( selector, modal,
-                                                         init_graph );
+                 init_graph );
         }
-        
-       // ========================================================================
-       case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST:
-        {
+
+        // ========================================================================
+        case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST: {
           StructuralConstraintSetStatic<StructuralConstraintMandatoryArcs,
                                         StructuralConstraintForbiddenArcs,
                                         StructuralConstraintPartialOrder,
@@ -181,10 +183,10 @@ namespace gum {
             __constraint_PartialOrder;
           static_cast<StructuralConstraintIndegree&> ( gen_constraint ) =
             __constraint_Indegree;
-          
+
           GraphChangesGenerator4DiGraph< decltype ( gen_constraint ) >
-            op_set ( gen_constraint );
-          
+          op_set ( gen_constraint );
+
           StructuralConstraintSetStatic<StructuralConstraintTabuList,
                                         StructuralConstraintIndegree,
                                         StructuralConstraintDAG> sel_constraint;
@@ -192,25 +194,24 @@ namespace gum {
             __constraint_TabuList;
           static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
             __constraint_Indegree;
-          
+
           GraphChangesSelector4DiGraph< Score<>,
                                         decltype ( sel_constraint ),
                                         decltype ( op_set ) >
-            selector ( *__score, sel_constraint, op_set );
-          
+                                        selector ( *__score, sel_constraint, op_set );
+
           return __local_search_with_tabu_list.learnStructure ( selector, modal,
-                                                                init_graph );
+                 init_graph );
         }
-        
-      // ========================================================================
-      case AlgoType::K2:
-        {
+
+        // ========================================================================
+        case AlgoType::K2: {
           StructuralConstraintSetStatic<StructuralConstraintMandatoryArcs,
                                         StructuralConstraintForbiddenArcs,
                                         StructuralConstraintPartialOrder,
                                         StructuralConstraintIndegree,
                                         StructuralConstraintDiGraph>
-            gen_constraint;
+                                        gen_constraint;
           static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
             __constraint_MandatoryArcs;
           static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
@@ -219,35 +220,35 @@ namespace gum {
             __constraint_PartialOrder;
           static_cast<StructuralConstraintIndegree&> ( gen_constraint ) =
             __constraint_Indegree;
-                         
+
           GraphChangesGenerator4K2< decltype ( gen_constraint ) >
-            op_set ( gen_constraint );
+          op_set ( gen_constraint );
           op_set.setOrder ( __order );
-        
+
           StructuralConstraintSetStatic<StructuralConstraintIndegree,
                                         StructuralConstraintDiGraph>
-            sel_constraint;
+                                        sel_constraint;
           static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
             __constraint_Indegree;
-          
+
           GraphChangesSelector4DiGraph< Score<>,
                                         decltype ( sel_constraint ),
                                         decltype ( op_set ) >
-            selector ( *__score, sel_constraint, op_set );
+                                        selector ( *__score, sel_constraint, op_set );
 
           return __greedy_hill_climbing.learnStructure ( selector, modal,
-                                                         init_graph );
+                 init_graph );
         }
 
-       // ========================================================================
-       default:
-        GUM_ERROR ( OperationNotAllowed,
-                    "the learnDAG method has not been implemented for this "
-                    "learning algorithm" );
+        // ========================================================================
+        default:
+          GUM_ERROR ( OperationNotAllowed,
+                      "the learnDAG method has not been implemented for this "
+                      "learning algorithm" );
       }
     }
 
-      
+
     /// learn a Bayes Net from a file
     template <typename GUM_SCALAR>
     BayesNet<GUM_SCALAR> BNLearner::learnBN ( std::string filename ) {
@@ -262,16 +263,16 @@ namespace gum {
       raw_translators.insertTranslator ( Col<0> (), database.nbVariables () );
 
       auto generators = make_generators ( RowGeneratorIdentity () );
-      
+
       auto raw_filter = make_DB_row_filter ( database, raw_translators,
                                              generators );
-      
+
       DBTransformCompactInt raw2fast_transfo;
       raw2fast_transfo.transform ( raw_filter );
 
       DBRowTranslatorSetDynamic<CellTranslatorCompactIntId> fast_translators;
       fast_translators.insertTranslator ( Col<0> (), database.nbVariables () );
-     
+
       auto fast_filter = make_DB_row_filter ( database, fast_translators,
                                               generators );
 
@@ -283,14 +284,14 @@ namespace gum {
       __createParamEstimator ( fast_filter, modalities );
 
       return DAG2BNLearner::createBN<ParamEstimator<>,GUM_SCALAR>
-        ( *__param_estimator, __learnDAG ( fast_filter, modalities ),
-          database.variableNames (), modalities );
+             ( *__param_estimator, __learnDAG ( fast_filter, modalities ),
+               database.variableNames (), modalities );
     }
 
 
   } /* namespace learning */
-  
-  
+
+
 } /* namespace gum */
 
 

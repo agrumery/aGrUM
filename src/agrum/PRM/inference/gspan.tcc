@@ -258,11 +258,11 @@ namespace gum {
             if ( not found ) {
               // We add the pattern to the reduced isomorphism graph to compute the max independent set
               // over the remaining matches
-              reduced_iso_graph.insertNode ( *node );
+              reduced_iso_graph.addNode ( *node );
 
               for ( auto iso = reduced_iso_graph.nodes().beginSafe(); iso != reduced_iso_graph.nodes().endSafe(); ++iso ) {
                 if ( iso_graph->existsEdge ( *node, *iso ) ) {
-                  reduced_iso_graph.insertEdge ( *node, *iso );
+                  reduced_iso_graph.addEdge ( *node, *iso );
                 }
               }
 
@@ -350,11 +350,15 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     gspan::DFSTree<GUM_SCALAR>&
-    GSpan<GUM_SCALAR>::tree() { return __tree; }
+    GSpan<GUM_SCALAR>::tree() {
+      return __tree;
+    }
 
     template<typename GUM_SCALAR> INLINE
     const gspan::DFSTree<GUM_SCALAR>&
-    GSpan<GUM_SCALAR>::tree() const { return __tree; }
+    GSpan<GUM_SCALAR>::tree() const {
+      return __tree;
+    }
 
     template<typename GUM_SCALAR> INLINE
     unsigned long

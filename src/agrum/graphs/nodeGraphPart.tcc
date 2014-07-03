@@ -59,7 +59,7 @@ namespace gum {
         GUM_ERROR ( DuplicateElement, new_one << " already exists in the graph" );
       }
 
-      insertNode ( new_one );
+      addNode ( new_one );
     }
   }
 
@@ -68,4 +68,4 @@ namespace gum {
 
 
 #endif    // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;
