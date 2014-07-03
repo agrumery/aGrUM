@@ -450,14 +450,14 @@ def afficheTestsForModule(m):
   nbr=80/w
   i=0
   for s in l:
-      print(" "+s.ljust(w),end=" ")
+      print(s.ljust(w),end="\t")
       i+=1
       if i>nbr:
           i=0
-          print
+          print("")
   if i!=0:
-      print
-  print
+      print("")
+  print("")
 
 
 def afficheTests():
