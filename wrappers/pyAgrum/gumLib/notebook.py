@@ -79,18 +79,6 @@ def showPosterior(bn,ev,target):
     """
     showProba(getPosterior(bn,ev,target))
 
-def showBN(bn,size="4"):
-    """
-    Shows a graphviz svg representation of the BN using size ("1" ,"2" , ..., "6")
-    """
-    import pydot
-    import IPython.core.display
-
-    p=pydot.graph_from_dot_data(bn.toDot())
-    p.set_size(size)
-    i=IPython.core.display.SVG(p.create_svg())
-    IPython.core.display.display(i)
-
 def animApproximationScheme(apsc):
   """
   show an animated version of an approximation scheme
@@ -158,20 +146,24 @@ def getBN(bn,size="4",vals=None,cmap=INFOcmap):
     vals is a dictionnary name:value of value in [0,1] for each node
     (with special color for 0 and 1)
     """
-    getZeName=lambda n : '"{0} : {1}"'.format(bn.idFromName(n),n)
-
     graph=pydot.Dot(graph_type='digraph')
     for n in bn.names():
-        if vals is None:
+        if vals is None or n not in vals:
           bgcol="#444444"
           fgcol="#FFFFFF"
+          res=""
         else:
           bgcol=_proba2bgcolor(vals[n],cmap)
           fgcol=_proba2fgcolor(vals[n],cmap)
-        node=pydot.Node(getZeName(n),style="filled",fillcolor=bgcol,fontcolor=fgcol)
+          res=" : {0:2.5f}".format(vals[n])
+
+        node=pydot.Node(n,style="filled",
+                          fillcolor=bgcol,
+                          fontcolor=fgcol,
+                          tooltip='"({0}) {1}{2}"'.format(bn.idFromName(n),n,res))
         graph.add_node(node)
     for a in bn.arcs():
-        edge=pydot.Edge(getZeName(bn.variable(a[0]).name()),getZeName(bn.variable(a[1]).name()))
+        edge=pydot.Edge(bn.variable(a[0]).name(),bn.variable(a[1]).name())
         graph.add_edge(edge)
     graph.set_size(size)
     return IPython.display.SVG(graph.create_svg())
