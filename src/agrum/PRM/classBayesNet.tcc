@@ -36,7 +36,7 @@ namespace gum {
           // Adding the attribute
           if ( ClassElement<GUM_SCALAR>::isAttribute ( c.get ( *node ) ) or ClassElement<GUM_SCALAR>::isAggregate ( c.get ( *node ) ) ) {
             const ClassElement<GUM_SCALAR>& elt = c.get ( *node );
-            this->_dag.insertNode ( elt.id() );
+            this->_dag.addNode ( elt.id() );
             this->__varNodeMap.insert ( & ( elt.type().variable() ), &elt );
           }
         } catch ( NotFound& ) {
@@ -46,7 +46,7 @@ namespace gum {
 
       for ( auto arc = c.dag().arcs().beginSafe(); arc != c.dag().arcs().endSafe(); ++arc ) {
         try {
-          this->_dag.insertArc ( arc->tail(), arc->head() );
+          this->_dag.addArc ( arc->tail(), arc->head() );
         } catch ( InvalidNode& ) {
           // Not added means not an attribute
         }

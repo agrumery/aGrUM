@@ -55,42 +55,42 @@ namespace gum_tests {
       void fillG1 ( gum::CliqueGraph& graph ) {
         gum::NodeSet A, B, C, D, E; fillSets ( A, B, C, D, E );
 
-        graph.insertNode ( 1, A );
-        graph.insertNode ( 2, B );
-        graph.insertNode ( 3, C );
-        graph.insertNode ( 4, D );
+        graph.addNode ( 1, A );
+        graph.addNode ( 2, B );
+        graph.addNode ( 3, C );
+        graph.addNode ( 4, D );
 
-        graph.insertEdge ( 1, 2 );
-        graph.insertEdge ( 2, 3 );
-        graph.insertEdge ( 2, 4 );
+        graph.addEdge ( 1, 2 );
+        graph.addEdge ( 2, 3 );
+        graph.addEdge ( 2, 4 );
       }
 
       void fillG2 ( gum::CliqueGraph& graph ) {
         gum::NodeSet A, B, C, D, E; fillSets ( A, B, C, D, E );
 
-        graph.insertNode ( 1, A );
-        graph.insertNode ( 2, B );
-        graph.insertNode ( 3, C );
-        graph.insertNode ( 4, D );
+        graph.addNode ( 1, A );
+        graph.addNode ( 2, B );
+        graph.addNode ( 3, C );
+        graph.addNode ( 4, D );
 
-        graph.insertEdge ( 1, 2 );
-        graph.insertEdge ( 2, 3 );
-        graph.insertEdge ( 2, 4 );
-        graph.insertEdge ( 4, 3 );
-        graph.insertEdge ( 1, 3 );
+        graph.addEdge ( 1, 2 );
+        graph.addEdge ( 2, 3 );
+        graph.addEdge ( 2, 4 );
+        graph.addEdge ( 4, 3 );
+        graph.addEdge ( 1, 3 );
       }
 
       void fillG3 ( gum::CliqueGraph& graph ) {
         gum::NodeSet A, B, C, D, E; fillSets ( A, B, C, D, E );
 
-        graph.insertNode ( 1, A );
-        graph.insertNode ( 2, B );
-        graph.insertNode ( 3, C );
-        graph.insertNode ( 4, E );
+        graph.addNode ( 1, A );
+        graph.addNode ( 2, B );
+        graph.addNode ( 3, C );
+        graph.addNode ( 4, E );
 
-        graph.insertEdge ( 1, 2 );
-        graph.insertEdge ( 2, 3 );
-        graph.insertEdge ( 2, 4 );
+        graph.addEdge ( 1, 2 );
+        graph.addEdge ( 2, 3 );
+        graph.addEdge ( 2, 4 );
       }
 
     public:
@@ -502,7 +502,7 @@ namespace gum_tests {
         TS_ASSERT ( clique.contains ( 2 ) );
 
         gum::NodeId new_1 = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING ( new_1 = graph.insertNode ( clique ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( new_1 = graph.addNode ( clique ) );
         TS_ASSERT_EQUALS ( clique, graph.clique ( new_1 ) );
       }
 
@@ -687,37 +687,37 @@ namespace gum_tests {
         n1.insert ( ( gum::NodeId ) 1 );
         n1.insert ( ( gum::NodeId ) 2 );
         n1.insert ( ( gum::NodeId ) 3 );
-        g.insertNode ( ( gum::NodeId ) 1, n1 );
+        g.addNode ( ( gum::NodeId ) 1, n1 );
 
         gum::NodeSet n2; // BCD
         n2.insert ( ( gum::NodeId ) 2 );
         n2.insert ( ( gum::NodeId ) 3 );
         n2.insert ( ( gum::NodeId ) 4 );
-        g.insertNode ( ( gum::NodeId ) 2, n2 );
+        g.addNode ( ( gum::NodeId ) 2, n2 );
 
         gum::NodeSet n3; // CDE
         n3.insert ( ( gum::NodeId ) 3 );
         n3.insert ( ( gum::NodeId ) 4 );
         n3.insert ( ( gum::NodeId ) 5 );
-        g.insertNode ( ( gum::NodeId ) 3, n3 );
+        g.addNode ( ( gum::NodeId ) 3, n3 );
 
         gum::NodeSet n4; // ADE
         n4.insert ( ( gum::NodeId ) 4 );
         n4.insert ( ( gum::NodeId ) 5 );
         n4.insert ( ( gum::NodeId ) 1 );
-        g.insertNode ( ( gum::NodeId ) 4, n4 );
+        g.addNode ( ( gum::NodeId ) 4, n4 );
 
         gum::NodeSet n5; // ABE
         n5.insert ( ( gum::NodeId ) 5 );
         n5.insert ( ( gum::NodeId ) 1 );
         n5.insert ( ( gum::NodeId ) 2 );
-        g.insertNode ( ( gum::NodeId ) 5, n5 );
+        g.addNode ( ( gum::NodeId ) 5, n5 );
 
-        g.insertEdge ( 1, 2 );
-        g.insertEdge ( 2, 3 );
-        g.insertEdge ( 3, 4 );
-        g.insertEdge ( 4, 5 );
-        g.insertEdge ( 5, 1 );
+        g.addEdge ( 1, 2 );
+        g.addEdge ( 2, 3 );
+        g.addEdge ( 3, 4 );
+        g.addEdge ( 4, 5 );
+        g.addEdge ( 5, 1 );
 
         TS_ASSERT ( g.hasRunningIntersection() == true );
 

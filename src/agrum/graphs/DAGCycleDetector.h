@@ -39,7 +39,7 @@
 
 namespace gum {
 
-  
+
   /* =========================================================================== */
   // DAG CYCLE DETECTOR
   /* =========================================================================== */
@@ -54,7 +54,7 @@ namespace gum {
    * the class is designed to be fast for such modifications. However, the number
    * of modifications checked should be higher than at least 3 for this class to
    * be competitive.
-   */ 
+   */
   class DAGCycleDetector {
   public:
 
@@ -83,7 +83,7 @@ namespace gum {
       /// @name Accessors/Modifiers
       // ##########################################################################
       /// @{
-      
+
       /// returns the type of the operation
       ChangeType type () const noexcept;
 
@@ -94,7 +94,7 @@ namespace gum {
       NodeId head () const noexcept;
 
       /// @}
-      
+
     private:
       /// the type of modification
       ChangeType __type;
@@ -106,7 +106,7 @@ namespace gum {
       NodeId __head;
     };
 
-    
+
     /** @class DAGCycleDetector::ArcAdd
      * @brief the class to indicate that we wish to add a new arc
      * @ingroup graph_group
@@ -143,7 +143,7 @@ namespace gum {
       ArcAdd& operator= ( ArcAdd&& from ) noexcept;
 
       /// @}
-      
+
     };
 
 
@@ -183,7 +183,7 @@ namespace gum {
       ArcDel& operator= ( ArcDel&& from ) noexcept;
 
       /// @}
-      
+
     };
 
 
@@ -223,17 +223,17 @@ namespace gum {
       ArcReverse& operator= ( ArcReverse&& from ) noexcept;
 
       /// @}
-      
+
     };
 
 
-    
-    
+
+
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
-    
+
     /// default constructor
     DAGCycleDetector () noexcept;
 
@@ -242,7 +242,7 @@ namespace gum {
 
     /// move constructor
     DAGCycleDetector ( DAGCycleDetector&& from );
-    
+
     /// destructor
     ~DAGCycleDetector ();
 
@@ -269,7 +269,7 @@ namespace gum {
     bool operator!= ( const DAGCycleDetector& from ) const;
 
     /// @}
-    
+
 
     // ############################################################################
     /// @name Accessors/Modifiers
@@ -282,7 +282,8 @@ namespace gum {
     /// adds a new arc to the current DAG
     /** worst case complexity: O(h^2) where h is the height of the DAG
      * @throws InvalidDirectedCycle if the arc would create a cycle in the dag */
-    void insertArc ( NodeId x, NodeId y );
+    GUM_DEPRECATED(void insertArc ( NodeId x, NodeId y ));
+    void addArc ( NodeId x, NodeId y );
 
     /// removes an arc from the current DAG
     /** worst case complexity: O(h^2) where h is the height of the DAG */
@@ -293,7 +294,7 @@ namespace gum {
      * @throws InvalidDirectedCycle if the arc reversal would create a cycle
      * in the dag */
     void reverseArc ( NodeId x, NodeId y );
-    
+
     /// indicates whether an arc addition would create a cycle
     /** worst case complexity: O(1) */
     bool hasCycleFromAddition ( NodeId x, NodeId y ) const noexcept;
@@ -305,7 +306,7 @@ namespace gum {
     /// indicates whether an arc deletion would create a cycle
     /** worst case complexity: O(1) */
     bool hasCycleFromDeletion ( NodeId x, NodeId y ) const noexcept;
-    
+
     /// indicates whether a set of modifications would create a cycle
     /** the Boolean returned corresponds to the existence (or not) of a cycle
      * on the graph resulting from the whole sequence of modifications. This
@@ -314,7 +315,7 @@ namespace gum {
      * graph obtained does not contains a cycle (due to the deletion) and
      * the method will thus return false. */
     bool hasCycleFromModifications ( const std::vector<Change>& modifs ) const;
-    
+
     /// @}
 
 
@@ -346,7 +347,7 @@ namespace gum {
     void __restrictWeightedSet ( NodeProperty<unsigned int>& result_set,
                                  const NodeProperty<unsigned int>& set_to_restrict,
                                  const NodeSet& extrmities ) const;
- 
+
   };
 
 

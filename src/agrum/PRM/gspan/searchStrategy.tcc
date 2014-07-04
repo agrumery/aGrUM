@@ -71,7 +71,7 @@ namespace gum {
         for ( auto inst = match.beginSafe(); inst != match.endSafe(); ++inst ) {
           for ( auto attr = ( **inst ).begin(); attr != ( **inst ).end(); ++attr ) {
             // Adding the node
-            NodeId id = data.graph.insertNode();
+            NodeId id = data.graph.addNode();
             data.node2attr.insert ( id, __str ( *inst, attr.val() ) );
             data.mod.insert ( id, ( * ( attr.val() ) ).type()->domainSize() );
             data.vars.insert ( id, & ( ( * ( attr.val() ) ).type().variable() ) );
@@ -88,8 +88,8 @@ namespace gum {
             const NodeSet& chldrn = ( **inst ).type().dag().children ( ( * ( attr.val() ) ).id() );
 
             for ( NodeSetIterator chld = chldrn.beginSafe(); chld != chldrn.endSafe(); ++chld ) {
-              data.graph.insertEdge ( node,
-                                      data.node2attr.first ( __str ( *inst, ( **inst ).get ( *chld ) ) ) );
+              data.graph.addEdge ( node,
+                                   data.node2attr.first ( __str ( *inst, ( **inst ).get ( *chld ) ) ) );
             }
 
             // Parents existing in the instance type's DAG
@@ -99,7 +99,7 @@ namespace gum {
               switch ( ( **inst ).type().get ( *prnt ).elt_type() ) {
                 case ClassElement<GUM_SCALAR>::prm_attribute:
                 case ClassElement<GUM_SCALAR>::prm_aggregate: {
-                  data.graph.insertEdge ( node, data.node2attr.first ( __str ( *inst, ( **inst ).get ( *prnt ) ) ) );
+                  data.graph.addEdge ( node, data.node2attr.first ( __str ( *inst, ( **inst ).get ( *prnt ) ) ) );
                   break;
                 }
 
@@ -108,12 +108,14 @@ namespace gum {
 
                   for ( auto jnst = ref.beginSafe(); jnst != ref.endSafe(); ++jnst )
                     if ( match.exists ( *jnst ) )
-                      data.graph.insertEdge ( node, data.node2attr.first ( __str ( *jnst, static_cast<const SlotChain<GUM_SCALAR>&> ( ( **inst ).type().get ( *prnt ) ) ) ) );
+                      data.graph.addEdge ( node, data.node2attr.first ( __str ( *jnst, static_cast<const SlotChain<GUM_SCALAR>&> ( ( **inst ).type().get ( *prnt ) ) ) ) );
 
                   break;
                 }
 
-                default: { /* Do nothing */ }
+                default: {
+                  /* Do nothing */
+                }
               }
             }
 
@@ -127,7 +129,7 @@ namespace gum {
                   const NodeSet& children = pair->first->type().dag().children ( id );
 
                   for ( NodeSet::const_iterator_safe child = children.beginSafe(); child != children.endSafe(); ++child )
-                    data.graph.insertEdge ( node, data.node2attr.first ( __str ( pair->first, pair->first->get ( *child ) ) ) );
+                    data.graph.addEdge ( node, data.node2attr.first ( __str ( pair->first, pair->first->get ( *child ) ) ) );
                 } else {
                   found = true;
                 }

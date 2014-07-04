@@ -239,31 +239,6 @@ class BNGenerator(_object):
 BNGenerator_swigregister = _pyAgrum.BNGenerator_swigregister
 BNGenerator_swigregister(BNGenerator)
 
-class BNLearnerFromCSV(_object):
-    """Proxy of C++ BNLearnerFromCSV class"""
-    __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, BNLearnerFromCSV, name, value)
-    __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, BNLearnerFromCSV, name)
-    __repr__ = _swig_repr
-    def GreedyHillClimbing(self, *args):
-        """GreedyHillClimbing(BNLearnerFromCSV self, char * filename) -> BayesNet_double"""
-        return _pyAgrum.BNLearnerFromCSV_GreedyHillClimbing(self, *args)
-
-    def LocalSearchWithTabu(self, *args):
-        """LocalSearchWithTabu(BNLearnerFromCSV self, char * filename) -> BayesNet_double"""
-        return _pyAgrum.BNLearnerFromCSV_LocalSearchWithTabu(self, *args)
-
-    def __init__(self): 
-        """__init__(BNLearnerFromCSV self) -> BNLearnerFromCSV"""
-        this = _pyAgrum.new_BNLearnerFromCSV()
-        try: self.this.append(this)
-        except: self.this = this
-    __swig_destroy__ = _pyAgrum.delete_BNLearnerFromCSV
-    __del__ = lambda self : None;
-BNLearnerFromCSV_swigregister = _pyAgrum.BNLearnerFromCSV_swigregister
-BNLearnerFromCSV_swigregister(BNLearnerFromCSV)
-
 class SwigPyIterator(_object):
     """Proxy of C++ swig::SwigPyIterator class"""
     __swig_setmethods__ = {}
@@ -1877,9 +1852,9 @@ class DiGraph(_object):
         """__ne__(DiGraph self, DiGraph g) -> bool"""
         return _pyAgrum.DiGraph___ne__(self, *args)
 
-    def insertArc(self, *args):
-        """insertArc(DiGraph self, gum::NodeId const tail, gum::NodeId const head)"""
-        return _pyAgrum.DiGraph_insertArc(self, *args)
+    def addArc(self, *args):
+        """addArc(DiGraph self, gum::NodeId const tail, gum::NodeId const head)"""
+        return _pyAgrum.DiGraph_addArc(self, *args)
 
     def eraseNode(self, *args):
         """eraseNode(DiGraph self, gum::NodeId const id)"""
@@ -1900,12 +1875,12 @@ class DiGraph(_object):
         """
         return _pyAgrum.DiGraph_toDot(self, name)
 
-    def insertNode(self, *args):
+    def addNode(self, *args):
         """
-        insertNode(DiGraph self) -> gum::NodeId
-        insertNode(DiGraph self, gum::NodeId const id)
+        addNode(DiGraph self) -> gum::NodeId
+        addNode(DiGraph self, gum::NodeId const id)
         """
-        return _pyAgrum.DiGraph_insertNode(self, *args)
+        return _pyAgrum.DiGraph_addNode(self, *args)
 
     def existsNode(self, *args):
         """existsNode(DiGraph self, gum::NodeId const id) -> bool"""
@@ -1958,16 +1933,16 @@ class DAG(DiGraph):
         except: self.this = this
     __swig_destroy__ = _pyAgrum.delete_DAG
     __del__ = lambda self : None;
-    def insertArc(self, *args):
-        """insertArc(DAG self, gum::NodeId const tail, gum::NodeId const head)"""
-        return _pyAgrum.DAG_insertArc(self, *args)
+    def addArc(self, *args):
+        """addArc(DAG self, gum::NodeId const tail, gum::NodeId const head)"""
+        return _pyAgrum.DAG_addArc(self, *args)
 
-    def insertNode(self, *args):
+    def addNode(self, *args):
         """
-        insertNode(DAG self) -> gum::NodeId
-        insertNode(DAG self, gum::NodeId const id)
+        addNode(DAG self) -> gum::NodeId
+        addNode(DAG self, gum::NodeId const id)
         """
-        return _pyAgrum.DAG_insertNode(self, *args)
+        return _pyAgrum.DAG_addNode(self, *args)
 
     def eraseNode(self, *args):
         """eraseNode(DAG self, gum::NodeId const id)"""
@@ -2030,10 +2005,6 @@ class UndiGraph(_object):
         """__ne__(UndiGraph self, UndiGraph g) -> bool"""
         return _pyAgrum.UndiGraph___ne__(self, *args)
 
-    def insertEdge(self, *args):
-        """insertEdge(UndiGraph self, gum::NodeId const first, gum::NodeId const second)"""
-        return _pyAgrum.UndiGraph_insertEdge(self, *args)
-
     def eraseNode(self, *args):
         """eraseNode(UndiGraph self, gum::NodeId const id)"""
         return _pyAgrum.UndiGraph_eraseNode(self, *args)
@@ -2058,12 +2029,12 @@ class UndiGraph(_object):
         """partialUndiGraph(UndiGraph self, gum::NodeSet nodesSet) -> UndiGraph"""
         return _pyAgrum.UndiGraph_partialUndiGraph(self, *args)
 
-    def insertNode(self, *args):
+    def addNode(self, *args):
         """
-        insertNode(UndiGraph self) -> gum::NodeId
-        insertNode(UndiGraph self, gum::NodeId const id)
+        addNode(UndiGraph self) -> gum::NodeId
+        addNode(UndiGraph self, gum::NodeId const id)
         """
-        return _pyAgrum.UndiGraph_insertNode(self, *args)
+        return _pyAgrum.UndiGraph_addNode(self, *args)
 
     def existsNode(self, *args):
         """existsNode(UndiGraph self, gum::NodeId const id) -> bool"""
@@ -2142,20 +2113,16 @@ class MixedGraph(UndiGraph,DiGraph):
         """__str__(MixedGraph self) -> std::string const"""
         return _pyAgrum.MixedGraph___str__(self)
 
-    def insertNode(self, *args):
+    def addNode(self, *args):
         """
-        insertNode(MixedGraph self) -> gum::NodeId
-        insertNode(MixedGraph self, gum::NodeId const id)
+        addNode(MixedGraph self) -> gum::NodeId
+        addNode(MixedGraph self, gum::NodeId const id)
         """
-        return _pyAgrum.MixedGraph_insertNode(self, *args)
+        return _pyAgrum.MixedGraph_addNode(self, *args)
 
     def existsNode(self, *args):
         """existsNode(MixedGraph self, gum::NodeId const id) -> bool"""
         return _pyAgrum.MixedGraph_existsNode(self, *args)
-
-    def insertEdge(self, *args):
-        """insertEdge(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2)"""
-        return _pyAgrum.MixedGraph_insertEdge(self, *args)
 
     def eraseEdge(self, *args):
         """eraseEdge(MixedGraph self, Edge edge)"""
@@ -2168,9 +2135,9 @@ class MixedGraph(UndiGraph,DiGraph):
         """
         return _pyAgrum.MixedGraph_existsEdge(self, *args)
 
-    def insertArc(self, *args):
-        """insertArc(MixedGraph self, gum::NodeId const tail, gum::NodeId const head)"""
-        return _pyAgrum.MixedGraph_insertArc(self, *args)
+    def addArc(self, *args):
+        """addArc(MixedGraph self, gum::NodeId const tail, gum::NodeId const head)"""
+        return _pyAgrum.MixedGraph_addArc(self, *args)
 
     def eraseArc(self, *args):
         """eraseArc(MixedGraph self, Arc arc)"""
@@ -2225,9 +2192,9 @@ class CliqueGraph(UndiGraph):
         except: self.this = this
     __swig_destroy__ = _pyAgrum.delete_CliqueGraph
     __del__ = lambda self : None;
-    def insertEdge(self, *args):
-        """insertEdge(CliqueGraph self, gum::NodeId const first, gum::NodeId const second)"""
-        return _pyAgrum.CliqueGraph_insertEdge(self, *args)
+    def addEdge(self, *args):
+        """addEdge(CliqueGraph self, gum::NodeId const first, gum::NodeId const second)"""
+        return _pyAgrum.CliqueGraph_addEdge(self, *args)
 
     def eraseEdge(self, *args):
         """eraseEdge(CliqueGraph self, Edge edge)"""
@@ -2237,14 +2204,14 @@ class CliqueGraph(UndiGraph):
         """clearEdges(CliqueGraph self)"""
         return _pyAgrum.CliqueGraph_clearEdges(self)
 
-    def insertNode(self, *args):
+    def addNode(self, *args):
         """
-        insertNode(CliqueGraph self, gum::NodeSet const & clique) -> gum::NodeId
-        insertNode(CliqueGraph self) -> gum::NodeId
-        insertNode(CliqueGraph self, gum::NodeId const id, gum::NodeSet const & clique)
-        insertNode(CliqueGraph self, gum::NodeId const id)
+        addNode(CliqueGraph self, gum::NodeSet const & clique) -> gum::NodeId
+        addNode(CliqueGraph self) -> gum::NodeId
+        addNode(CliqueGraph self, gum::NodeId const id, gum::NodeSet const & clique)
+        addNode(CliqueGraph self, gum::NodeId const id)
         """
-        return _pyAgrum.CliqueGraph_insertNode(self, *args)
+        return _pyAgrum.CliqueGraph_addNode(self, *args)
 
     def eraseNode(self, *args):
         """eraseNode(CliqueGraph self, gum::NodeId const node)"""
@@ -2647,6 +2614,114 @@ DAGmodel_swigregister(DAGmodel)
 cvar = _pyAgrum.cvar
 __list_end_safe = cvar.__list_end_safe
 __list_end = cvar.__list_end
+
+class BNLearner(_object):
+    """Proxy of C++ gum::learning::BNLearner class"""
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, BNLearner, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, BNLearner, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """
+        __init__(gum::learning::BNLearner self) -> BNLearner
+        __init__(gum::learning::BNLearner self, BNLearner arg2) -> BNLearner
+        __init__(gum::learning::BNLearner self, BNLearner arg2) -> BNLearner
+        """
+        this = _pyAgrum.new_BNLearner(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _pyAgrum.delete_BNLearner
+    __del__ = lambda self : None;
+    def learnDAG(self, *args):
+        """learnDAG(BNLearner self, std::string filename) -> DAG"""
+        return _pyAgrum.BNLearner_learnDAG(self, *args)
+
+    def setInitialDAG(self, *args):
+        """setInitialDAG(BNLearner self, DAG arg2)"""
+        return _pyAgrum.BNLearner_setInitialDAG(self, *args)
+
+    def useScoreAIC(self):
+        """useScoreAIC(BNLearner self)"""
+        return _pyAgrum.BNLearner_useScoreAIC(self)
+
+    def useScoreBIC(self):
+        """useScoreBIC(BNLearner self)"""
+        return _pyAgrum.BNLearner_useScoreBIC(self)
+
+    def useScoreK2(self):
+        """useScoreK2(BNLearner self)"""
+        return _pyAgrum.BNLearner_useScoreK2(self)
+
+    def useScoreLog2Likelihood(self):
+        """useScoreLog2Likelihood(BNLearner self)"""
+        return _pyAgrum.BNLearner_useScoreLog2Likelihood(self)
+
+    def useGreedyHillClimbing(self):
+        """useGreedyHillClimbing(BNLearner self)"""
+        return _pyAgrum.BNLearner_useGreedyHillClimbing(self)
+
+    def useLocalSearchWithTabuList(self):
+        """useLocalSearchWithTabuList(BNLearner self)"""
+        return _pyAgrum.BNLearner_useLocalSearchWithTabuList(self)
+
+    def useK2(self):
+        """useK2(BNLearner self)"""
+        return _pyAgrum.BNLearner_useK2(self)
+
+    def setMaxIndegree(self, *args):
+        """setMaxIndegree(BNLearner self, unsigned int max_indegree)"""
+        return _pyAgrum.BNLearner_setMaxIndegree(self, *args)
+
+    def setPartialOrder(self, *args):
+        """setPartialOrder(BNLearner self, NodeProperty< unsigned int > const & partial_order)"""
+        return _pyAgrum.BNLearner_setPartialOrder(self, *args)
+
+    def setkTBN(self, *args):
+        """setkTBN(BNLearner self, NodeProperty< unsigned int > const & partial_order)"""
+        return _pyAgrum.BNLearner_setkTBN(self, *args)
+
+    def setForbiddenArcs(self, *args):
+        """setForbiddenArcs(BNLearner self, gum::ArcSet const & set)"""
+        return _pyAgrum.BNLearner_setForbiddenArcs(self, *args)
+
+    def addForbiddenArc(self, *args):
+        """addForbiddenArc(BNLearner self, Arc arc)"""
+        return _pyAgrum.BNLearner_addForbiddenArc(self, *args)
+
+    def eraseForbiddenArc(self, *args):
+        """eraseForbiddenArc(BNLearner self, Arc arc)"""
+        return _pyAgrum.BNLearner_eraseForbiddenArc(self, *args)
+
+    def setMandatoryArcs(self, *args):
+        """setMandatoryArcs(BNLearner self, gum::ArcSet const & set)"""
+        return _pyAgrum.BNLearner_setMandatoryArcs(self, *args)
+
+    def addMandatoryArc(self, *args):
+        """addMandatoryArc(BNLearner self, Arc arc)"""
+        return _pyAgrum.BNLearner_addMandatoryArc(self, *args)
+
+    def eraseMandatoryArc(self, *args):
+        """eraseMandatoryArc(BNLearner self, Arc arc)"""
+        return _pyAgrum.BNLearner_eraseMandatoryArc(self, *args)
+
+    def setMaxNbDecreasingChanges(self, *args):
+        """setMaxNbDecreasingChanges(BNLearner self, unsigned int nb)"""
+        return _pyAgrum.BNLearner_setMaxNbDecreasingChanges(self, *args)
+
+    def setOrder(self, *args):
+        """
+        setOrder(BNLearner self, gum::Sequence< gum::NodeId > const & order)
+        setOrder(BNLearner self, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & order)
+        """
+        return _pyAgrum.BNLearner_setOrder(self, *args)
+
+    def learnBN(self, *args):
+        """learnBN(BNLearner self, std::string const filename) -> BayesNet_double"""
+        return _pyAgrum.BNLearner_learnBN(self, *args)
+
+BNLearner_swigregister = _pyAgrum.BNLearner_swigregister
+BNLearner_swigregister(BNLearner)
 
 
 def randomDistribution_double(*args):

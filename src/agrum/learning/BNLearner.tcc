@@ -119,10 +119,10 @@ namespace gum {
       const ArcSet& mandatory_arcs = __constraint_MandatoryArcs.arcs ();
       for ( const auto& arc : mandatory_arcs ) {
         if ( ! init_graph.exists ( arc.tail () ) )
-          init_graph.insertNode ( arc.tail () );
+          init_graph.addNode ( arc.tail () );
         if ( ! init_graph.exists ( arc.head () ) )
-          init_graph.insertNode ( arc.head () );
-        init_graph.insertArc ( arc.tail (), arc.head () );
+          init_graph.addNode ( arc.head () );
+        init_graph.addArc ( arc.tail (), arc.head () );
       }
 
       const ArcSet& forbidden_arcs = __constraint_ForbiddenArcs.arcs ();

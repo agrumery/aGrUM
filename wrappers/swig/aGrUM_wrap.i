@@ -33,7 +33,7 @@
 #include <agrum/graphs/undiGraph.h>
 #include <agrum/graphs/mixedGraph.h>
 #include <agrum/graphs/cliqueGraph.h>
-#include <agrum/graphs/defaultTriangulation.h>
+#include <agrum/graphs/triangulations/defaultTriangulation.h>
 #include <agrum/variables/discreteVariable.h>
 #include <agrum/multidim/multiDimInterface.h>
 #include <agrum/multidim/multiDimAdressable.h>
@@ -79,7 +79,7 @@
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
 
 #include <agrum/core/signal/listener.h>
-#include <agrum/graphs/diGraphListener.h>
+#include <agrum/graphs/listeners/diGraphListener.h>
 
 #include <agrum/CN/credalNet.h>
 #include <agrum/CN/varMod2BNsMap.h>
@@ -87,6 +87,8 @@
 #include <agrum/CN/multipleInferenceEngine.h>
 #include <agrum/CN/CNMonteCarloSampling.h>
 #include <agrum/CN/CNLoopyPropagation.h>
+
+#include <agrum/learning/BNLearner.h>
 %}
 
 %typemap ( out ) std::vector<double> {
@@ -167,7 +169,7 @@ namespace std {
 %include <agrum/graphs/undiGraph.h>
 %include <agrum/graphs/mixedGraph.h>
 %include <agrum/graphs/cliqueGraph.h>
-%import <agrum/graphs/defaultTriangulation.h>
+%import <agrum/graphs/triangulations/defaultTriangulation.h>
 
 %include <agrum/multidim/multiDimInterface.h>
 %import <agrum/multidim/multiDimAdressable.h>
@@ -200,7 +202,7 @@ namespace std {
 %include <agrum/BN/algorithms/divergence/GibbsKL.h>
 
 %import <agrum/core/signal/listener.h>
-%import <agrum/graphs/diGraphListener.h>
+%import <agrum/graphs/listeners/diGraphListener.h>
 %import <agrum/BN/io/BIF/BIFReader.h>
 
 %include <agrum/CN/credalNet.h>
@@ -209,6 +211,8 @@ namespace std {
 %include <agrum/CN/multipleInferenceEngine.h>
 %include <agrum/CN/CNMonteCarloSampling.h>
 %include <agrum/CN/CNLoopyPropagation.h>
+
+%include <agrum/learning/BNLearner.h>
 
 /* CLASS EXTENSIONS */
 %extend gum::DiscreteVariable {
@@ -411,11 +415,11 @@ namespace std {
 }
 
 %extend gum::DiGraph {
-  using gum::NodeGraphPart::insertNode;
+  using gum::NodeGraphPart::addNode;
   using gum::NodeGraphPart::eraseNode;
   using gum::NodeGraphPart::existsNode;
 
-  using gum::ArcGraphPart::insertArc;
+  using gum::ArcGraphPart::addArc;
   using gum::ArcGraphPart::eraseArc;
   using gum::ArcGraphPart::existsArc;
   using gum::ArcGraphPart::eraseParents;
@@ -423,11 +427,11 @@ namespace std {
 }
 
 %extend gum::DAG {
-  using gum::NodeGraphPart::insertNode;
+  using gum::NodeGraphPart::addNode;
   using gum::NodeGraphPart::eraseNode;
   using gum::NodeGraphPart::existsNode;
 
-  using gum::ArcGraphPart::insertArc;
+  using gum::ArcGraphPart::addArc;
   using gum::ArcGraphPart::eraseArc;
   using gum::ArcGraphPart::existsArc;
   using gum::ArcGraphPart::eraseParents;
@@ -435,11 +439,11 @@ namespace std {
 }
 
 %extend gum::UndiGraph {
-  using gum::NodeGraphPart::insertNode;
+  using gum::NodeGraphPart::addNode;
   using gum::NodeGraphPart::eraseNode;
   using gum::NodeGraphPart::existsNode;
 
-  using gum::EdgeGraphPart::insertEdge;
+  using gum::EdgeGraphPart::addEdge;
   using gum::EdgeGraphPart::eraseEdge;
   using gum::EdgeGraphPart::existsEdge;
   using gum::EdgeGraphPart::eraseParents;
@@ -447,17 +451,17 @@ namespace std {
 }
 
 %extend gum::MixedGraph {
-  using gum::NodeGraphPart::insertNode;
+  using gum::NodeGraphPart::addNode;
   using gum::NodeGraphPart::eraseNode;
   using gum::NodeGraphPart::existsNode;
 
-  using gum::EdgeGraphPart::insertEdge;
+  using gum::EdgeGraphPart::addEdge;
   using gum::EdgeGraphPart::eraseEdge;
   using gum::EdgeGraphPart::existsEdge;
   using gum::EdgeGraphPart::eraseParents;
   using gum::EdgeGraphPart::eraseChildren;
 
-  using gum::ArcGraphPart::insertArc;
+  using gum::ArcGraphPart::addArc;
   using gum::ArcGraphPart::eraseArc;
   using gum::ArcGraphPart::existsArc;
   using gum::ArcGraphPart::eraseParents;
@@ -492,3 +496,4 @@ namespace std {
 %template ( CNMultipleInferenceEngine_double ) gum::credal::MultipleInferenceEngine<double, gum::LazyPropagation<double> >;
 %template ( CNMonteCarloSampling_double ) gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double> >;
 %template ( CNLoopyPropagation_double ) gum::credal::CNLoopyPropagation<double>;
+

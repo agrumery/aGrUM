@@ -27,7 +27,7 @@
 #include <math.h>
 
 #include <agrum/BN/inference/BayesNetInference.h>
-#include <agrum/graphs/defaultTriangulation.h>
+#include <agrum/graphs/triangulations/defaultTriangulation.h>
 
 namespace gum {
   /**

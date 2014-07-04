@@ -885,7 +885,7 @@ namespace gum {
     for ( Sequence<const DiscreteVariable*>::iterator_safe iter = table->variablesSequence().beginSafe(); iter != table->variablesSequence().endSafe(); ++iter ) {
       if ( ( *iter ) != ( &var ) ) {
         __checkVariableName ( ( *iter )->name() );
-        __bn->_dag.insertArc ( __varNameMap[ ( *iter )->name()], varId );
+        __bn->_dag.addArc ( __varNameMap[ ( *iter )->name()], varId );
       }
     }
 
@@ -903,5 +903,5 @@ namespace gum {
   }
 } /* namespace gum */
 
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;
 

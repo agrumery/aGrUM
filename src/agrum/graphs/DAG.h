@@ -49,18 +49,18 @@ namespace gum {
    * gum::DAG g1,g2;
    *
    * // adding nodes and arcs to g1
-   * gum::NodeId i1=g1.insertNode();
-   * gum::NodeId i2=g1.insertNode();
-   * gum::NodeId i3=g1.insertNode();
-   * g1.insertArc( i1,i2 );
-   * g1.insertArc( i1,i3 );
-   * g1.insertArc( i2,i3 );
+   * gum::NodeId i1=g1.addNode();
+   * gum::NodeId i2=g1.addNode();
+   * gum::NodeId i3=g1.addNode();
+   * g1.addArc( i1,i2 );
+   * g1.addArc( i1,i3 );
+   * g1.addArc( i2,i3 );
    *
    * //throw an InvalidNode
-   * // g1.insertArc( i1+i2+i3,i1 );
+   * // g1.addArc( i1+i2+i3,i1 );
    *
    * // throw an InvalidDirectedCycle
-   * // g1.insertArc( i3,i1 );
+   * // g1.addArc( i3,i1 );
    *
    * // copying graphs
    * gum::DAG g3 = g1;
@@ -155,8 +155,8 @@ namespace gum {
        * @warning Unfortunately, this means that insertArc is not in constant
        * time anymore.
        */
-      virtual void insertArc ( const NodeId tail, const NodeId head );
-
+      GUM_DEPRECATED ( virtual void insertArc ( const NodeId tail, const NodeId head ) );
+      virtual void addArc ( const NodeId tail, const NodeId head );
       /// @}
 
 

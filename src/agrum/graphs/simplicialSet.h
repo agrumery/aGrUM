@@ -179,7 +179,8 @@ namespace gum {
        * exception is raised.
        * @throw InvalidNode if first and/or second do not belong to the
        * graph nodes */
-      void insertEdge ( NodeId first, NodeId second );
+      GUM_DEPRECATED(void insertEdge ( NodeId first, NodeId second ));
+      void addEdge ( NodeId first, NodeId second );
 
       /// indicates whether a given node is a simplicial node
       /** A simplicial node is a node such that the latter and its neighbours form

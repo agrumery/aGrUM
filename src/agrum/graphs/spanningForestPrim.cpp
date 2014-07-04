@@ -111,7 +111,7 @@ namespace gum {
   /// compute a spanning tree
   void SpanningForestPrim::__computeInAComponent ( const NodeId id ) {
     // add the node to the spanning tree
-    __spanning_tree.insertNode ( id );
+    __spanning_tree.addNode ( id );
 
     // explore its neighborhood
     __exploreNode ( id );
@@ -128,16 +128,16 @@ namespace gum {
 
       if ( ! __spanning_tree.existsNode ( first ) ) {
         // add the edge to the spanning tree
-        __spanning_tree.insertNode ( first );
-        __spanning_tree.insertEdge ( first, second );
+        __spanning_tree.addNode ( first );
+        __spanning_tree.addEdge ( first, second );
         __spanning_tree_cost += __costTable[edge];
 
         // We must explore the first node's neighborhood
         __exploreNode ( first );
       } else if ( ! __spanning_tree.existsNode ( second ) ) {
         // add the edge to the spanning tree
-        __spanning_tree.insertNode ( second );
-        __spanning_tree.insertEdge ( first, second );
+        __spanning_tree.addNode ( second );
+        __spanning_tree.addEdge ( first, second );
         __spanning_tree_cost += __costTable[edge];
 
         // We must explore the second node

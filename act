@@ -29,7 +29,7 @@ from optparse import OptionParser
 from datetime import datetime
 from distutils import sysconfig
 from sys import argv
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, call
 from threading import Thread
 
 numversion="1.7"
@@ -145,7 +145,7 @@ def prettifying(line):
         elif line[0:6]=="Failed":
           res+="Failed "+WARNING+line[7:]+ENDC
         elif line[0:6]=="Succes":
-          res+="Success rate: "+WARNING+line[14:]+ENDC         
+          res+="Success rate: "+WARNING+line[14:]+ENDC
         elif line[-11:]=="<--- failed":
           res=line[0:-11]+ERROR+"<--- failed"+ENDC
         else:
@@ -218,7 +218,10 @@ def threaded_execution(cde,verbose):
       lines=lines.split("\n")
       for line in lines:
         if line!="":
-          print(ERROR+line+ENDC)
+          if line[0]=="/":
+            print(line)
+          else:
+            print(ERROR+line+ENDC)
     return lastline
 
   while p.poll() is None:
@@ -254,6 +257,11 @@ def initParser(current):
     us="%prog [options] ["+"|".join(list_rules)+"] ["+"|".join(list_options)+"] ["+"|".join(list_wrappers)+"]"
     parser=OptionParser(usage=us,description="Compilation tools for aGrUM/pyAgrum",
                         version="%prog v"+numversion)
+    parser.add_option("", "--no-fun",
+                                        help="No fancy output parser",
+                                        action="store_true",
+                                        dest="no_fun",
+                                        default=False)
     parser.add_option("-v", "--verbose",
                                         help="more message on what is happening",
                                         action="store_true",
@@ -442,14 +450,14 @@ def afficheTestsForModule(m):
   nbr=80/w
   i=0
   for s in l:
-      print(" "+s.ljust(w),end=" ")
+      print(s.ljust(w),end="\t")
       i+=1
       if i>nbr:
           i=0
-          print
+          print("")
   if i!=0:
-      print
-  print
+      print("")
+  print("")
 
 
 def afficheTests():
@@ -486,10 +494,10 @@ def special_execute(action,argument):
 
   return True
 
-def execute(actions,verbose=True):
+def execute(actions,options):
   nberr=0
   for k in actions:
-    if verbose:
+    if options.verbose:
       print(WARNING+k['action']+' '+OKGREEN+k['argument']+ENDC)
 
     action=k['action']
@@ -497,7 +505,10 @@ def execute(actions,verbose=True):
 
     if not special_execute(action,argument):
       commande=action+" "+argument
-      rc=threaded_execution(commande,verbose)
+      if options.no_fun:
+        rc=call(commande,shell=True)
+      else:
+        rc=threaded_execution(commande,options.verbose)
 
       if rc>0:
         print("** exit code ="+str(rc))
@@ -576,6 +587,7 @@ def checkConstraints(parser,options,args):
     current['destination']=options.destination
     current['jobs']=options.jobs
     current['fixed_seed']=options.fixed_seed
+    current['no_fun']=options.no_fun
     current['stats']=options.stats
     current['test_base']=options.test_base
     current['testlist']=options.testlist
@@ -779,6 +791,9 @@ def getInvocation(current):
 
       if (current['fixed_seed']):
         invocation+=getParam('fixed_seed')
+        
+      if (current['no_fun']):
+        invocation+=getParam('no_fun')
 
 
       invocation+=getValParam('jobs',str(current['jobs']))
@@ -809,6 +824,7 @@ default['jobs']="5"
 default['test_base']=True
 default['verbose']=False
 default['fixed_seed']=False
+default['no_fun']=False
 default['stats']=False
 default['module']='ALL'
 default['testlist']='all'
@@ -820,10 +836,6 @@ shlv=shelve.open(".options.mak.py",writeback=True)
 if shlv.has_key('persistent'):
     persistent=shlv['persistent']
 
-#shlv=shelve.open(".options.mak.py",writeback=True)
-#if shlv.has_key('persistent'):
-#    persistent=shlv['persistent']
-
 for key in default.iterkeys():
   if not key in not_persistent_options:
     if persistent.has_key(key):
@@ -831,15 +843,21 @@ for key in default.iterkeys():
     else:
         current[key]=default[key]
 
-print(ENDC+ERROR+"aGrUM"+ENDC+" compilation tool "+ERROR+"v"+numversion+ENDC)
-print("(c) 2010-13 "+OKGREEN+"aGrUM Team"+ENDC)
-print()
-
-
 parser=initParser(current)
 (options, args)=parser.parse_args()
 
 checkConstraints(parser,options,args)
+
+if options.no_fun:
+  OKGREEN = ''
+  WARNING = ''
+  ERROR = ''
+  ENDC = ''
+  
+
+print(ENDC+ERROR+"aGrUM"+ENDC+" compilation tool "+ERROR+"v"+numversion+ENDC)
+print("(c) 2010-13 "+OKGREEN+"aGrUM Team"+ENDC)
+print()
 
 moduleManagement(options.module)
 
@@ -884,9 +902,9 @@ shlv.close()
 proceed(current,RANDOMSEED_FOR_FIXED_SEED="10")
 
 if not(current['stats']):
-  execute(sh,options.verbose)
+  execute(sh,options)
 else:
-  execute(sh_no_exec,options.verbose)
+  execute(sh_no_exec,options)
 
   print("###########################################")
   print("Processing profile for "+getInvocation(current))

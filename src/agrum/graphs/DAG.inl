@@ -40,13 +40,16 @@ namespace gum {
   }
 
   INLINE void DAG::insertArc ( const NodeId tail, const NodeId head ) {
+    addArc(tail,head);
+  }
+  INLINE void DAG::addArc ( const NodeId tail, const NodeId head ) {
     if ( __hasDirectedPath ( head, tail ) ) {
       GUM_ERROR ( InvalidDirectedCycle, "Add a directed cycle in a dag !" );
     }
 
     // checking whether tail and head do belong to the graph is performed
     // within class DiGraph
-    DiGraph::insertArc ( tail, head );
+    DiGraph::addArc ( tail, head );
   }
 
 

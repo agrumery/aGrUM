@@ -28,7 +28,7 @@
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/multidim/operators/multiDimCombinationDefault.h>
 #include <agrum/graphs/binaryJoinTreeConverterDefault.h>
-#include <agrum/graphs/orderedTriangulation.h>
+#include <agrum/graphs/triangulations/orderedTriangulation.h>
 
 // to ease IDE parsers
 #include <agrum/BN/inference/BayesNetInference.h>

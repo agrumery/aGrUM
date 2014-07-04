@@ -29,7 +29,7 @@
 
 namespace gum {
 
-  
+
   namespace learning {
 
 
@@ -40,7 +40,7 @@ namespace gum {
                                          const std::vector<unsigned int>& modal,
                                          DAG dag ) {
       selector.setGraph ( dag, modal );
-      
+
       unsigned int nb_changes_applied = 1;
       float delta_score;
       
@@ -56,9 +56,10 @@ namespace gum {
 
         std::vector< std::pair<unsigned int,float> > ordered_queues =
           selector.nodesSortedByBestScore ();
-        
+
         for ( unsigned int j = 0; j < dag.size (); ++j ) {
           unsigned int i = ordered_queues[j].first;
+
           if ( ! ( selector.empty ( i ) ) && ( selector.bestScore ( i ) > 0 ) ) {
             // pick up the best change
             const GraphChange& change = selector.bestChange ( i );
@@ -69,7 +70,7 @@ namespace gum {
               if ( ! impacted_queues[ change.node2 () ] &&
                    selector.isChangeValid ( change ) ) {
                 delta_score += selector.bestScore ( i );
-                dag.insertArc ( change.node1 (), change.node2 () );
+                dag.addArc ( change.node1 (), change.node2 () );
                 impacted_queues[ change.node2 () ] = true;
                 selector.applyChangeWithoutScoreUpdate ( change );
                 ++nb_changes_applied;
@@ -93,7 +94,7 @@ namespace gum {
                    selector.isChangeValid ( change ) ) {
                 delta_score += selector.bestScore ( i );
                 dag.eraseArc ( Arc ( change.node1 (), change.node2 () ) );
-                dag.insertArc ( change.node2 (), change.node1 () );
+                dag.addArc ( change.node2 (), change.node1 () );
                 impacted_queues[ change.node1 () ] = true;
                 impacted_queues[ change.node2 () ] = true;
                 selector.applyChangeWithoutScoreUpdate ( change );
@@ -104,10 +105,11 @@ namespace gum {
             default:
               GUM_ERROR ( OperationNotAllowed,
                           "edge modifications are not supported by local search" );
+
             }
           }
         }
-          
+
         selector.updateScoresAfterAppliedChanges ();
 
         // reset the impacted queue and applied changes structures
@@ -119,15 +121,15 @@ namespace gum {
         
       } while ( nb_changes_applied &&
                 continueApproximationScheme( delta_score ) );
-   
+      
       return dag;
     }
-      
-    
+
+
     /// learns the structure and the parameters of a BN
     template <typename GUM_SCALAR,
-              typename GRAPH_CHANGES_SELECTOR,
-              typename PARAM_ESTIMATOR>
+             typename GRAPH_CHANGES_SELECTOR,
+             typename PARAM_ESTIMATOR>
     BayesNet<GUM_SCALAR>
     GreedyHillClimbing::learnBN
     ( GRAPH_CHANGES_SELECTOR& selector,
@@ -136,14 +138,14 @@ namespace gum {
       const std::vector<unsigned int>& modal,
       DAG initial_dag ) {
       return DAG2BNLearner::createBN<PARAM_ESTIMATOR,GUM_SCALAR>
-        ( estimator,
-          learnStructure ( selector, modal, initial_dag ),
-          names, modal );
+             ( estimator,
+               learnStructure ( selector, modal, initial_dag ),
+               names, modal );
     }
-    
-    
+
+
   } /* namespace learning */
-  
-  
+
+
 } /* namespace gum */
 

@@ -43,7 +43,7 @@ namespace gum_tests {
         gum::UndiGraph graph;
 
         for ( unsigned int i = 1; i <= 8; ++i )
-          graph.insertNode ( 10 * i );
+          graph.addNode ( 10 * i );
 
         createClique ( graph, c1 );
 
@@ -151,7 +151,7 @@ namespace gum_tests {
         gum::UndiGraph graph;
 
         for ( unsigned int i = 1; i <= 8; ++i )
-          graph.insertNode ( 10 * i );
+          graph.addNode ( 10 * i );
 
         createClique ( graph, c1 );
 
@@ -189,12 +189,12 @@ namespace gum_tests {
         gum::UndiGraph graph;
 
         for ( unsigned int i = 1; i <= 8; ++i )
-          graph.insertNode ( i );
+          graph.addNode ( i );
 
         for ( unsigned int i = 1; i <= 7; ++i )
-          graph.insertEdge ( i, i + 1 );
+          graph.addEdge ( i, i + 1 );
 
-        graph.insertEdge ( 8, 1 );
+        graph.addEdge ( 8, 1 );
 
         gum::NodeProperty<gum::Size> dom;
 
@@ -237,7 +237,7 @@ namespace gum_tests {
 
           for ( ++iter2; iter2 != clique.endSafe(); ++iter2 ) {
             if ( ! graph.existsEdge ( *iter, *iter2 ) )
-              graph.insertEdge ( *iter, *iter2 );
+              graph.addEdge ( *iter, *iter2 );
           }
         }
       }

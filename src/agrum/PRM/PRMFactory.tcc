@@ -254,7 +254,7 @@ namespace gum {
             ++count;
 
             if ( & ( attr->type().variable() ) != & ( c->get ( *node ).type().variable() ) ) {
-              c->insertArc ( c->get ( *node ).safeName(), attr->safeName() );
+              c->addArc ( c->get ( *node ).safeName(), attr->safeName() );
             }
           }
         } catch ( OperationNotAllowed& ) { }
@@ -286,14 +286,14 @@ namespace gum {
               GUM_ERROR ( OperationNotAllowed, "can not add a multiple slot chain to an attribute" );
             }
 
-            c->insertArc ( name, a->name() );
+            c->addArc ( name, a->name() );
 
             break;
           }
 
           case ClassElement<GUM_SCALAR>::prm_attribute:
           case ClassElement<GUM_SCALAR>::prm_aggregate: {
-            c->insertArc ( name, a->name() );
+            c->addArc ( name, a->name() );
             break;
           }
 
@@ -310,7 +310,7 @@ namespace gum {
           GUM_ERROR ( NotFound, msg + name );
         } else if ( not sc->isMultiple() ) {
           c->add ( sc );
-          c->insertArc ( sc->name(), a->name() );
+          c->addArc ( sc->name(), a->name() );
         } else {
           delete sc;
           GUM_ERROR ( OperationNotAllowed, "Impossible to add a multiple reference slot as"
@@ -584,8 +584,9 @@ namespace gum {
           break;
         }
 
-        default:
-        { GUM_ERROR ( FatalError, "Unknown aggregator." ); }
+        default: {
+          GUM_ERROR ( FatalError, "Unknown aggregator." );
+        }
       }
 
       std::string safe_name = agg->safeName();
@@ -615,7 +616,7 @@ namespace gum {
       }
 
       for ( auto iter = inputs.begin(); iter != inputs.end(); ++iter ) {
-        c->insertArc ( ( *iter )->safeName(), safe_name );
+        c->addArc ( ( *iter )->safeName(), safe_name );
       }
     }
 
@@ -801,7 +802,9 @@ namespace gum {
                 return 0;
               }
 
-            default: { return 0; }
+            default: {
+              return 0;
+            }
           }
         } catch ( NotFound& ) {
           return 0;
@@ -1092,7 +1095,9 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     PRM<GUM_SCALAR>*
-    PRMFactory<GUM_SCALAR>::prm() const { return __prm; }
+    PRMFactory<GUM_SCALAR>::prm() const {
+      return __prm;
+    }
 
     template<typename GUM_SCALAR> INLINE
     PRMObject::PRMType
@@ -1138,7 +1143,9 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     std::string
-    PRMFactory<GUM_SCALAR>::currentPackage() const { return ( __packages.empty() ) ? "" : __packages.back(); }
+    PRMFactory<GUM_SCALAR>::currentPackage() const {
+      return ( __packages.empty() ) ? "" : __packages.back();
+    }
 
     template<typename GUM_SCALAR> INLINE
     void

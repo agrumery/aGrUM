@@ -474,7 +474,7 @@ namespace gum {
 
     __variableMap.insert ( proposedId, variableType );
 
-    _dag.insertNode ( proposedId );
+    _dag.addNode ( proposedId );
 
     // end critical section
     return proposedId;
@@ -555,7 +555,7 @@ namespace gum {
       GUM_ERROR ( InvalidArc, "Tail cannot be a utility node" );
     }
 
-    _dag.insertArc ( tail, head );
+    _dag.addArc ( tail, head );
 
     if ( isChanceNode ( head ) )
       // Add parent in the child's CPT
@@ -609,17 +609,17 @@ namespace gum {
   void
   InfluenceDiagram<GUM_SCALAR>::_moralGraph ( UndiGraph& graph ) const {
     for ( auto node = _dag.nodes().beginSafe(); node != _dag.nodes().endSafe(); ++node )
-      if ( !isUtilityNode ( *node ) ) graph.insertNode ( *node );
+      if ( !isUtilityNode ( *node ) ) graph.addNode ( *node );
 
     for ( auto node = _dag.nodes().beginSafe(); node != _dag.nodes().endSafe(); ++node ) {
       if ( !isDecisionNode ( *node ) ) {
         const NodeSet& parents = _dag.parents ( *node );
 
         for ( NodeSetIterator arcIter = parents.beginSafe(); arcIter != parents.endSafe(); ++arcIter ) {
-          if ( isChanceNode ( *node ) ) graph.insertEdge ( *node, *arcIter );
+          if ( isChanceNode ( *node ) ) graph.addEdge ( *node, *arcIter );
 
           for ( NodeSetIterator arcIterPrime = arcIter; arcIterPrime != parents.endSafe(); ++arcIterPrime )
-            if ( *arcIter != *arcIterPrime ) graph.insertEdge ( *arcIter, *arcIterPrime );
+            if ( *arcIter != *arcIterPrime ) graph.addEdge ( *arcIter, *arcIterPrime );
         }
       }
     }
@@ -717,16 +717,16 @@ namespace gum {
     for ( auto node = _dag.nodes().beginSafe(); node != _dag.nodes().endSafe(); ++node ) {
       if ( isDecisionNode ( *node ) ) {
         if ( !temporalGraph->existsNode ( *node ) )
-          temporalGraph->insertNode ( *node );
+          temporalGraph->addNode ( *node );
 
         Sequence<NodeId>* childrenSequence = _getChildrenDecision ( *node );
 
         for ( Sequence<NodeId>::const_iterator_safe childrenSeqIter = childrenSequence->beginSafe();
               childrenSeqIter != childrenSequence->endSafe(); ++childrenSeqIter ) {
           if ( !temporalGraph->existsNode ( *childrenSeqIter ) )
-            temporalGraph->insertNode ( *childrenSeqIter );
+            temporalGraph->addNode ( *childrenSeqIter );
 
-          temporalGraph->insertArc ( *node, *childrenSeqIter );
+          temporalGraph->addArc ( *node, *childrenSeqIter );
         }
 
         delete childrenSequence;
@@ -858,5 +858,5 @@ namespace gum {
   }
 
 }
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;
 

@@ -107,8 +107,10 @@ namespace gum {
          * @throw WrongClassElement<GUM_SCALAR> Raised if ref does not name a ReferenceSlot.
          * @throw TypeError Raised if v's type does not match ref range type.
          */
-        void insertArc ( const std::string& u, const std::string& v,
-                         const std::string& ref );
+        GUM_DEPRECATED ( void insertArc ( const std::string& u, const std::string& v,
+                                          const std::string& ref ) );
+        void addArc ( const std::string& u, const std::string& v,
+                      const std::string& ref );
 
         /// @}
         // ========================================================================

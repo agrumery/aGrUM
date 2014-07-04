@@ -82,7 +82,7 @@ namespace gum {
      * @ingroup learning_group
      */
     class BNLearner {
-    public:
+    private:
       
       /// an enumeration enabling to select easily the score we wish to use
       enum class ScoreType {
@@ -106,6 +106,8 @@ namespace gum {
         LOCAL_SEARCH_WITH_TABU_LIST
       };
       
+      
+     public:
       
       // ##########################################################################
       /// @name Constructors / Destructors

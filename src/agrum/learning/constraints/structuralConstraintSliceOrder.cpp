@@ -43,10 +43,10 @@
 
 namespace gum {
 
-  
+
   namespace learning {
 
-    
+
     /// default constructor
     StructuralConstraintSliceOrder::StructuralConstraintSliceOrder () {
       GUM_CONSTRUCTOR ( StructuralConstraintSliceOrder );
@@ -57,14 +57,14 @@ namespace gum {
     StructuralConstraintSliceOrder::StructuralConstraintSliceOrder
     ( const NodeProperty<unsigned int>& order ) {
       for ( auto iter = order.cbegin(); iter != order.cend (); ++iter ) {
-        _DiGraph__graph.insertNode ( iter.key () );
+        _DiGraph__graph.addNode ( iter.key () );
       }
       _SliceOrder__order = order;
 
       GUM_CONSTRUCTOR ( StructuralConstraintSliceOrder );
     }
-    
-    
+
+
     /// constructor starting with a given graph
     StructuralConstraintSliceOrder::StructuralConstraintSliceOrder
     ( const DiGraph& graph,
@@ -82,8 +82,8 @@ namespace gum {
       _SliceOrder__order ( from._SliceOrder__order ) {
       GUM_CONS_CPY ( StructuralConstraintSliceOrder );
     }
-    
-      
+
+
     /// move constructor
     StructuralConstraintSliceOrder::StructuralConstraintSliceOrder
     ( StructuralConstraintSliceOrder&& from ) :
@@ -92,7 +92,7 @@ namespace gum {
       GUM_CONS_MOV ( StructuralConstraintSliceOrder );
     }
 
- 
+
     /// destructor
     StructuralConstraintSliceOrder::~StructuralConstraintSliceOrder () {
       GUM_DESTRUCTOR ( StructuralConstraintSliceOrder );
@@ -109,7 +109,7 @@ namespace gum {
       }
       return *this;
     }
-        
+
 
     /// move operator
     StructuralConstraintSliceOrder&
@@ -121,10 +121,10 @@ namespace gum {
       }
       return *this;
     }
-    
- 
+
+
   } /* namespace learning */
 
-  
+
 } /* namespace gum */
 

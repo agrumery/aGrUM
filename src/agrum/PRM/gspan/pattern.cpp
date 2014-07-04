@@ -40,13 +40,13 @@ namespace gum {
         NodeProperty<NodeId> node_map;
 
         for ( NodeId node = 1; node <= source.size(); ++node ) {
-          node_map.insert ( node, insertNode ( const_cast<LabelData&> ( source.label ( node ) ) ) );
+          node_map.insert ( node, addNode ( const_cast<LabelData&> ( source.label ( node ) ) ) );
         }
 
         for ( std::vector<EdgeCode*>::const_iterator edge = source.code().codes.begin();
               edge != source.code().codes.end(); ++edge ) {
-          insertArc ( node_map[ ( **edge ).i], node_map[ ( **edge ).j],
-                      const_cast<LabelData&> ( source.label ( node_map[ ( **edge ).i], node_map[ ( **edge ).j] ) ) );
+          addArc ( node_map[ ( **edge ).i], node_map[ ( **edge ).j],
+                   const_cast<LabelData&> ( source.label ( node_map[ ( **edge ).i], node_map[ ( **edge ).j] ) ) );
         }
       }
 
@@ -120,13 +120,13 @@ namespace gum {
       Pattern::__expandCodeIsMinimal ( NodeId u, NodeId v ) {
         Bijection<NodeId, NodeId> node_map;
         Pattern p;
-        node_map.insert ( u, p.insertNode ( label ( u ) ) );
-        node_map.insert ( v, p.insertNode ( label ( v ) ) );
+        node_map.insert ( u, p.addNode ( label ( u ) ) );
+        node_map.insert ( v, p.addNode ( label ( v ) ) );
 
         try {
-          p.insertArc ( 1, 2, label ( u, v ) );
+          p.addArc ( 1, 2, label ( u, v ) );
         } catch ( NotFound& ) {
-          p.insertArc ( 1, 2, label ( v, u ) );
+          p.addArc ( 1, 2, label ( v, u ) );
         }
 
         for ( NeighborIterator iter = beginNeighbors ( u ); not iter.isEnd(); ++iter ) {
@@ -160,7 +160,7 @@ namespace gum {
             return false;
           }
         } else {
-          node_map.insert ( v, p.insertNode ( label ( v ) ) );
+          node_map.insert ( v, p.addNode ( label ( v ) ) );
         }
 
         // Retrieving arc label data
@@ -174,7 +174,7 @@ namespace gum {
 
         // Adding arc
         try {
-          p.insertArc ( node_map.second ( u ), node_map.second ( v ), *data );
+          p.addArc ( node_map.second ( u ), node_map.second ( v ), *data );
         } catch ( OperationNotAllowed& ) {
           // Invalid neighbor
           if ( node_map.second ( u ) < node_map.second ( v ) ) {
@@ -261,7 +261,7 @@ namespace gum {
                 go = false;
               }
             } else {
-              node_map.insert ( v, p.insertNode ( label ( v ) ) );
+              node_map.insert ( v, p.addNode ( label ( v ) ) );
             }
 
             if ( go ) {
@@ -276,7 +276,7 @@ namespace gum {
 
               // Adding arc
               try {
-                p.insertArc ( node_map.second ( u ), node_map.second ( v ), *data );
+                p.addArc ( node_map.second ( u ), node_map.second ( v ), *data );
               } catch ( OperationNotAllowed& ) {
                 // Invalid neighbor
                 if ( node_map.second ( u ) < node_map.second ( v ) ) {

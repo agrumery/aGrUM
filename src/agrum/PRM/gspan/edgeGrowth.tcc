@@ -69,13 +69,13 @@ namespace gum {
       template<typename GUM_SCALAR>
       void
       EdgeGrowth<GUM_SCALAR>::insert ( Instance<GUM_SCALAR>* u, Instance<GUM_SCALAR>* v ) {
-        NodeId id = iso_graph.insertNode();
+        NodeId id = iso_graph.addNode();
         degree_list->push_back ( id );
 
         for ( auto iter = matches.beginSafe(); iter != matches.endSafe(); ++iter ) {
           if ( ( iter.val().first == u ) or ( iter.val().second == u ) or
                ( iter.val().first == v ) or ( iter.val().second == v ) ) {
-            iso_graph.insertEdge ( iter.key(), id );
+            iso_graph.addEdge ( iter.key(), id );
           }
         }
 

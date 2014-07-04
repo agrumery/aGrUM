@@ -60,7 +60,7 @@
   <h4>ID factory</h4>
   For aGrUM, each node has (is) an id. IDs begin from 1 (id>0).
 
-  For the uniqueness of ids, insertNode() in NodeGraphPart contains an internal
+  For the uniqueness of ids, addNode() in NodeGraphPart contains an internal
   idFactory which guarantees this property.
 
   There are two ways to bypass the idFactory :
@@ -71,7 +71,7 @@
   (@ref gum::NodeGraphPart::populateNodes() clears
   the @ref gum::NodeGraphPart before copying).
 
-  - use @ref gum::NodeGraphPart::insertNode(gum::NodeId id) which allow the user
+  - use @ref gum::NodeGraphPart::addNode(gum::NodeId id) which allow the user
   to give a specific id to a new node. <i> This method
   should be used very carefully !! It may throw exception (id=0 or id already
   used) and it may deteriorate the compacity of
@@ -118,9 +118,9 @@
   gum::UndiGraph g;
   gum::NodeProperty<bool> is_id_odd=g.nodesProperty( false );
 
-  g.insertNode();
-  g.insertNode();
-  g.insertNode();
+  g.addNode();
+  g.addNode();
+  g.addNode();
 
   for ( auto i=g.nodes().begin(); i!=g.nodes().end(); ++i ) {
     is_id_odd.set( *i, *i % 2 == 0 );
@@ -128,15 +128,8 @@
 
   std::cout<<is_id_odd<<std::cout<<std::endl;
 
-<<<<<<< HEAD
-  for ( auto i=is_id_odd.begin();
-=======
-  for ( gum::NodeProperty<bool>::iterator_safe i=is_id_odd.begin();
->>>>>>> master
-        i!=is_id_odd.end();
-        ++i ) {
-    std::cout<<i.key()<<" : "<<*i<<std::endl;
-  }
+  for ( auto i : is_id_odd)
+    std::cout<<i.first()<<" : "<<i.second()<<std::endl;
   @endcode
 
   Equivalently, you could have written :
@@ -146,9 +139,9 @@
   }
 
   gum::UndiGraph g;
-  g.insertNode();
-  g.insertNode();
-  g.insertNode();
+  g.addNode();
+  g.addNode();
+  g.addNode();
 
   gum::NodeProperty<bool> is_id_odd=g.nodesProperty(is_it_odd);
 

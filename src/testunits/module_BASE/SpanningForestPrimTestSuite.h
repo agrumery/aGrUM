@@ -35,32 +35,32 @@ namespace gum_tests {
       void test1() {
         gum::UndiGraph g;
 
-        gum::NodeId id1 = g.insertNode();
-        gum::NodeId id2 = g.insertNode();
-        gum::NodeId id3 = g.insertNode();
-        gum::NodeId id4 = g.insertNode();
-        gum::NodeId id5 = g.insertNode();
-        gum::NodeId id6 = g.insertNode();
-        gum::NodeId id7 = g.insertNode();
-        gum::NodeId id8 = g.insertNode();
-        gum::NodeId id9 = g.insertNode();
-        gum::NodeId id10 = g.insertNode();
-        gum::NodeId id11 = g.insertNode();
-        g.insertNode();
+        gum::NodeId id1 = g.addNode();
+        gum::NodeId id2 = g.addNode();
+        gum::NodeId id3 = g.addNode();
+        gum::NodeId id4 = g.addNode();
+        gum::NodeId id5 = g.addNode();
+        gum::NodeId id6 = g.addNode();
+        gum::NodeId id7 = g.addNode();
+        gum::NodeId id8 = g.addNode();
+        gum::NodeId id9 = g.addNode();
+        gum::NodeId id10 = g.addNode();
+        gum::NodeId id11 = g.addNode();
+        g.addNode();
 
-        g.insertEdge ( id1, id2 );
-        g.insertEdge ( id1, id3 );
-        g.insertEdge ( id1, id6 );
-        g.insertEdge ( id2, id4 );
-        g.insertEdge ( id2, id5 );
-        g.insertEdge ( id3, id4 );
-        g.insertEdge ( id5, id6 );
+        g.addEdge ( id1, id2 );
+        g.addEdge ( id1, id3 );
+        g.addEdge ( id1, id6 );
+        g.addEdge ( id2, id4 );
+        g.addEdge ( id2, id5 );
+        g.addEdge ( id3, id4 );
+        g.addEdge ( id5, id6 );
 
-        g.insertEdge ( id7, id8 );
-        g.insertEdge ( id8, id9 );
-        g.insertEdge ( id9, id10 );
-        g.insertEdge ( id10, id11 );
-        g.insertEdge ( id8, id10 );
+        g.addEdge ( id7, id8 );
+        g.addEdge ( id8, id9 );
+        g.addEdge ( id9, id10 );
+        g.addEdge ( id10, id11 );
+        g.addEdge ( id8, id10 );
 
         gum::EdgeProperty<float> cost;
         cost.insert ( gum::Edge ( id1, id2 ), 1 );

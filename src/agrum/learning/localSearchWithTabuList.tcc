@@ -96,7 +96,7 @@ namespace gum {
                   }
                   delta_score += selector.bestScore ( i );
                   current_score += selector.bestScore ( i );
-                  dag.insertArc ( change.node1 (), change.node2 () );
+                  dag.addArc ( change.node1 (), change.node2 () );
                   impacted_queues[ change.node2 () ] = true;
                   selector.applyChangeWithoutScoreUpdate ( change );
                   ++nb_changes_applied;
@@ -138,7 +138,7 @@ namespace gum {
                   delta_score += selector.bestScore ( i );
                   current_score += selector.bestScore ( i );                  
                   dag.eraseArc ( Arc ( change.node1 (), change.node2 () ) );
-                  dag.insertArc ( change.node2 (), change.node1 () );
+                  dag.addArc ( change.node2 (), change.node1 () );
                   impacted_queues[ change.node1 () ] = true;
                   impacted_queues[ change.node2 () ] = true;
                   selector.applyChangeWithoutScoreUpdate ( change );
