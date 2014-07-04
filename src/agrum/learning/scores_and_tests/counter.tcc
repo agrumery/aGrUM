@@ -440,6 +440,32 @@ namespace gum {
       __record_counter.setMaxNbThreads ( nb );
     }
 
+    
+    /// returns all the countings performed (both targets and conditioned)
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    std::vector< std::vector<float,CountAlloc> >&
+    Counter<IdSetAlloc,CountAlloc>::_getCounts () noexcept {
+      return __record_counter.__getCounts ();
+    }
+
+    
+    /// returns all the sets of target + cond nodes, and their counting indices
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    const std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,
+                                 unsigned int>* >&
+    Counter<IdSetAlloc,CountAlloc>::_getAllNodes () const noexcept {
+      return __target_nodesets;
+    }
+
+
+    /// returns all the sets of conditioning nodes
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    const std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,
+                                 unsigned int>* >&
+    Counter<IdSetAlloc,CountAlloc>::_getConditioningNodes () const noexcept {
+      return __conditioning_nodesets;
+    }
+      
  
   } /* namespace learning */
   

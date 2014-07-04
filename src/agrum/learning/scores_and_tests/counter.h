@@ -360,15 +360,34 @@ namespace gum {
       const std::vector<float,CountAlloc>&
       _getConditioningCounts ( unsigned int index );
 
+      /// returns all the countings performed (both targets and conditioned)
+      /** this method returns the countings of the record counter. It should
+       * be used in conjunction with methods _getConditioningNodes () and
+       * _getTargetNodes () that indicate, for each nodeset, the index of
+       * the corresponding counting in the vector returned by _getCounts (). */
+      std::vector< std::vector<float,CountAlloc> >& _getCounts () noexcept;
+
       /// returns the set of target + conditioning nodes
       /** conditioning nodes are always the first ones in the vector and targets
        * are the last ones */
       const std::vector<unsigned int,IdSetAlloc>&
       _getAllNodes ( unsigned int index ) const noexcept;
 
+      /// returns all the sets of target + cond nodes, and their counting indices
+      /** conditioning nodes are always the first ones in the vector and targets
+       * are the last ones */
+      const std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,
+                                  unsigned int>* >&
+      _getAllNodes () const noexcept;
+
       /// returns the conditioning nodes (nullptr if there are no such nodes)
       const std::vector<unsigned int,IdSetAlloc>*
       _getConditioningNodes ( unsigned int index ) const noexcept;
+
+      /// returns all the sets of conditioning nodes
+      const std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,
+                                   unsigned int>* >&
+      _getConditioningNodes () const noexcept;
 
       
       /// 1 / log(2)

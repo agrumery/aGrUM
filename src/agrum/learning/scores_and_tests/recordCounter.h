@@ -397,6 +397,9 @@ namespace gum {
       // computes the countings of one subset from those of its superset
       void __countOneSubset ( unsigned int i );
       
+      /// returns the counting performed
+      std::vector< std::vector<float,CountAlloc> >& __getCounts () noexcept;
+
       /// the function used to sort vectors of IdSets by increasing size order
       static bool __sortIdSetBySize ( const IdSet<IdSetAlloc>* set1,
                                       const IdSet<IdSetAlloc>* set2 );

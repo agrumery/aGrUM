@@ -774,7 +774,6 @@ namespace gum {
     void RecordCounter<IdSetAlloc,CountAlloc>::setMaxNbThreads
     ( unsigned int nb ) noexcept {
 #if defined(_OPENMP) && defined(NDEBUG)
-
       if ( nb == 0 )
         nb =  getMaxNumberOfThreads();
 
@@ -782,6 +781,14 @@ namespace gum {
 #else
       __max_threads_number = 1;
 #endif /* _OPENMP && NDEBUG */
+    }
+
+    
+    /// returns the counting performed
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    std::vector< std::vector<float,CountAlloc> >&
+    RecordCounter<IdSetAlloc,CountAlloc>::__getCounts () noexcept {
+      return __countings;
     }
 
 
