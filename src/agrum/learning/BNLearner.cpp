@@ -10,7 +10,7 @@
  *   This program is distributed in the hope that it wil be useful,        *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
+ *   GNU General Public License __for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
@@ -21,7 +21,7 @@
  * @brief A pack of learning algorithms that can easily be used
  *
  * The pack currently contains K2, GreedyHillClimbing and LocalSearchWithTabuList
- * 
+ *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
@@ -29,6 +29,7 @@
 
 #include <agrum/config.h>
 #include <agrum/learning/BNLearner.h>
+#include <agrum/learning/BNLearnerListener.h>
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
@@ -38,7 +39,7 @@
 
 namespace gum {
 
-  
+
   namespace learning {
 
 
@@ -46,8 +47,12 @@ namespace gum {
     BNLearner::BNLearner () {
       // for debugging purposes
       GUM_CONSTRUCTOR ( BNLearner );
+
+      //__forK2=new BNLearnerListener ( this,__K2 );
+      __forGreedyHillClimbing=new BNLearnerListener ( this,__greedy_hill_climbing );
+      __forLocalSearch=new BNLearnerListener ( this,__local_search_with_tabu_list );
     }
-      
+
 
     /// copy constructor
     BNLearner::BNLearner ( const BNLearner& from ) :
@@ -57,9 +62,9 @@ namespace gum {
       __param_estimator_type ( from.__param_estimator_type ),
       __param_estimator ( from.__param_estimator != nullptr ?
                           from.__param_estimator->copyFactory () : nullptr ),
-      __constraint_SliceOrder    ( from.__constraint_SliceOrder ),
-      __constraint_Indegree      ( from.__constraint_Indegree ),
-      __constraint_TabuList      ( from.__constraint_TabuList ),
+      __constraint_SliceOrder ( from.__constraint_SliceOrder ),
+      __constraint_Indegree ( from.__constraint_Indegree ),
+      __constraint_TabuList ( from.__constraint_TabuList ),
       __constraint_ForbiddenArcs ( from.__constraint_ForbiddenArcs ),
       __constraint_MandatoryArcs ( from.__constraint_MandatoryArcs ),
       __selected_algo ( from.__selected_algo ),
@@ -69,8 +74,12 @@ namespace gum {
       __initial_dag ( from.__initial_dag ) {
       // for debugging purposes
       GUM_CONS_CPY ( BNLearner );
+
+      //__forK2=new BNLearnerListener ( this,__K2 );
+      __forGreedyHillClimbing=new BNLearnerListener ( this,__greedy_hill_climbing );
+      __forLocalSearch=new BNLearnerListener ( this,__local_search_with_tabu_list );
     }
-    
+
 
     /// move constructor
     BNLearner::BNLearner ( BNLearner&& from ) :
@@ -78,9 +87,9 @@ namespace gum {
       __score ( from.__score ),
       __param_estimator_type ( from.__param_estimator_type ),
       __param_estimator ( from.__param_estimator ),
-      __constraint_SliceOrder    ( std::move ( from.__constraint_SliceOrder ) ),
-      __constraint_Indegree      ( std::move ( from.__constraint_Indegree ) ),
-      __constraint_TabuList      ( std::move ( from.__constraint_TabuList ) ),
+      __constraint_SliceOrder ( std::move ( from.__constraint_SliceOrder ) ),
+      __constraint_Indegree ( std::move ( from.__constraint_Indegree ) ),
+      __constraint_TabuList ( std::move ( from.__constraint_TabuList ) ),
       __constraint_ForbiddenArcs ( std::move ( from.__constraint_ForbiddenArcs ) ),
       __constraint_MandatoryArcs ( std::move ( from.__constraint_MandatoryArcs ) ),
       __selected_algo ( from.__selected_algo ),
@@ -91,16 +100,24 @@ namespace gum {
       __initial_dag ( std::move ( from.__initial_dag ) ) {
       from.__score = nullptr;
       from.__param_estimator = nullptr;
-      
+
       GUM_CONS_MOV ( BNLearner );
+
+      //__forK2=new BNLearnerListener ( this,__K2 );
+      __forGreedyHillClimbing=new BNLearnerListener ( this,__greedy_hill_climbing );
+      __forLocalSearch=new BNLearnerListener ( this,__local_search_with_tabu_list );
     }
 
-    
+
     /// destructor
     BNLearner::~BNLearner () {
       if ( __score ) delete __score;
       if ( __param_estimator ) delete __param_estimator;
-      
+
+      //delete __forK2;
+      delete __forGreedyHillClimbing;
+      delete __forLocalSearch;
+
       GUM_DESTRUCTOR ( BNLearner );
     }
 
@@ -118,12 +135,12 @@ namespace gum {
           delete __param_estimator;
           __param_estimator = nullptr;
         }
-        
+
         __score_type = from.__score_type;
         __score = from.__score ? from.__score->copyFactory () : nullptr;
         __param_estimator_type = from.__param_estimator_type;
         __param_estimator = from.__param_estimator ?
-          from.__param_estimator->copyFactory () : nullptr;
+                            from.__param_estimator->copyFactory () : nullptr;
         __constraint_SliceOrder    = from.__constraint_SliceOrder;
         __constraint_Indegree      = from.__constraint_Indegree;
         __constraint_TabuList      = from.__constraint_TabuList;
@@ -134,8 +151,12 @@ namespace gum {
         __greedy_hill_climbing = from.__greedy_hill_climbing;
         __local_search_with_tabu_list = from.__local_search_with_tabu_list;
         __initial_dag = from.__initial_dag;
+
+        //__forK2=new BNLearnerListener ( this,__K2 );
+        __forGreedyHillClimbing=new BNLearnerListener ( this,__greedy_hill_climbing );
+        __forLocalSearch=new BNLearnerListener ( this,__local_search_with_tabu_list );
       }
-      
+
       return *this;
     }
 
@@ -166,11 +187,15 @@ namespace gum {
         __selected_algo = from.__selected_algo;
         __K2 = from.__K2;
         __greedy_hill_climbing = std::move ( from.__greedy_hill_climbing );
-        __local_search_with_tabu_list = 
+        __local_search_with_tabu_list =
           std::move ( from.__local_search_with_tabu_list );
         __initial_dag = std::move ( from.__initial_dag );
         from.__score = nullptr;
         from.__param_estimator = nullptr;
+
+        //__forK2=new BNLearnerListener ( this,__K2 );
+        __forGreedyHillClimbing=new BNLearnerListener ( this,__greedy_hill_climbing );
+        __forLocalSearch=new BNLearnerListener ( this,__local_search_with_tabu_list );
       }
 
       return *this;
@@ -187,9 +212,9 @@ namespace gum {
                     "file type of the database" );
       }
       std::string extension = filename.substr ( filename.size () - 4 );
-      std::transform( extension.begin (), extension.end (),
-                      extension.begin (), ::tolower );
-      
+      std::transform ( extension.begin (), extension.end (),
+                       extension.begin (), ::tolower );
+
       if ( extension == ".csv" ) {
         return DatabaseFromCSV ( filename );
       }
@@ -197,7 +222,7 @@ namespace gum {
       GUM_ERROR ( OperationNotAllowed,
                   "BNLearner does not support yet this type of database file" );
     }
-    
+
 
     /// learn a structure from a file
     DAG BNLearner::learnDAG ( std::string filename ) {
@@ -212,16 +237,16 @@ namespace gum {
       raw_translators.insertTranslator ( Col<0> (), database.nbVariables () );
 
       auto generators = make_generators ( RowGeneratorIdentity () );
-      
+
       auto raw_filter = make_DB_row_filter ( database, raw_translators,
                                              generators );
-      
+
       DBTransformCompactInt raw2fast_transfo;
       raw2fast_transfo.transform ( raw_filter );
 
       DBRowTranslatorSetDynamic<CellTranslatorCompactIntId> fast_translators;
       fast_translators.insertTranslator ( Col<0> (), database.nbVariables () );
-     
+
       auto fast_filter = make_DB_row_filter ( database, fast_translators,
                                               generators );
 
@@ -231,10 +256,9 @@ namespace gum {
 
       return __learnDAG ( fast_filter, modalities );
     }
-    
-  
+
   } /* namespace learning */
-  
-  
+
+
 } /* namespace gum */
 

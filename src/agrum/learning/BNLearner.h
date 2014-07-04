@@ -63,9 +63,14 @@
 #include <agrum/learning/paramUtils/paramEstimatorMLwithUniformApriori.h>
 #include <agrum/learning/paramUtils/paramEstimatorML.h>
 
+#include <agrum/BN/algorithms/approximationSchemeListener.h>
+#include <agrum/BN/algorithms/approximationScheme.h>
+
 #include <agrum/learning/K2.h>
 #include <agrum/learning/greedyHillClimbing.h>
 #include <agrum/learning/localSearchWithTabuList.h>
+
+#include <agrum/core/signal/signaler.h>
 
 
 namespace gum {
@@ -73,6 +78,7 @@ namespace gum {
 
   namespace learning {
 
+    class BNLearnerListener;
 
     /** @class BNLearner
      * @brief A pack of learning algorithms that can easily be used
@@ -81,241 +87,248 @@ namespace gum {
      * LocalSearchWithTabuList
      * @ingroup learning_group
      */
-    class BNLearner {
-    private:
+    class BNLearner: public ApproximationScheme {
+      private:
 
-      /// an enumeration enabling to select easily the score we wish to use
-      enum class ScoreType {
-        AIC,
-        BD,
-        BDEU,
-        BIC,
-        K2,
-        LOG2LIKELIHOOD };
+        /// an enumeration enabling to select easily the score we wish to use
+        enum class ScoreType {
+          AIC,
+          BD,
+          BDEU,
+          BIC,
+          K2,
+          LOG2LIKELIHOOD
+        };
 
-      /// an enumeration to select the type of parameter estimation we shall apply
-      enum ParamEstimatorType {
-        ML,
-        MLwithUniformApriori
-      };
+        /// an enumeration to select the type of parameter estimation we shall apply
+        enum ParamEstimatorType {
+          ML,
+          MLwithUniformApriori
+        };
 
-      /// an enumeration to select easily the learning algorithm to use
-      enum class AlgoType {
-        K2,
-        GREEDY_HILL_CLIMBING,
-        LOCAL_SEARCH_WITH_TABU_LIST
-      };
+        /// an enumeration to select easily the learning algorithm to use
+        enum class AlgoType {
+          K2,
+          GREEDY_HILL_CLIMBING,
+          LOCAL_SEARCH_WITH_TABU_LIST
+        };
 
 
-     public:
+      public:
 
-      // ##########################################################################
-      /// @name Constructors / Destructors
-      // ##########################################################################
-      /// @{
 
-      /// default constructor
-      BNLearner ();
+        // ##########################################################################
+        /// @name Constructors / Destructors
+        // ##########################################################################
+        /// @{
 
-      /// copy constructor
-      BNLearner ( const BNLearner& );
+        /// default constructor
+        BNLearner ();
 
-      /// move constructor
-      BNLearner ( BNLearner&& );
+        /// copy constructor
+        BNLearner ( const BNLearner& );
 
-      /// destructor
-      ~BNLearner ();
+        /// move constructor
+        BNLearner ( BNLearner&& );
 
-      /// @}
+        /// destructor
+        ~BNLearner ();
 
+        /// @}
 
-      // ##########################################################################
-      /// @name Operators
-      // ##########################################################################
-      /// @{
 
-      /// copy operator
-      BNLearner& operator= ( const BNLearner& );
+        // ##########################################################################
+        /// @name Operators
+        // ##########################################################################
+        /// @{
 
-      /// move operator
-      BNLearner& operator= ( BNLearner&& );
+        /// copy operator
+        BNLearner& operator= ( const BNLearner& );
 
-      /// @}
+        /// move operator
+        BNLearner& operator= ( BNLearner&& );
 
+        /// @}
 
-      // ##########################################################################
-      /// @name Accessors / Modifiers
-      // ##########################################################################
-      /// @{
 
-      /// learn a structure from a file
-      DAG learnDAG ( std::string filename );
+        // ##########################################################################
+        /// @name Accessors / Modifiers
+        // ##########################################################################
+        /// @{
 
-      /// learn a Bayes Net from a file
-      template <typename GUM_SCALAR = float>
-      BayesNet<GUM_SCALAR> learnBN ( std::string filename );
+        /// learn a structure from a file
+        DAG learnDAG ( std::string filename );
 
-      /// sets an initial DAG structure
-      void setInitialDAG ( const DAG& );
+        /// learn a Bayes Net from a file
+        template <typename GUM_SCALAR = float>
+        BayesNet<GUM_SCALAR> learnBN ( std::string filename );
 
-      /// @}
+        /// sets an initial DAG structure
+        void setInitialDAG ( const DAG& );
 
+        /// @}
 
-      // ##########################################################################
-      /// @name Score selection
-      // ##########################################################################
-      /// @{
 
-      /// indicate that we wish to use an AIC score
-      void useScoreAIC () noexcept;
+        // ##########################################################################
+        /// @name Score selection
+        // ##########################################################################
+        /// @{
 
-      /*
-      /// indicate that we wish to use a BD score
-      void useScoreBD () noexcept;
+        /// indicate that we wish to use an AIC score
+        void useScoreAIC () noexcept;
 
-      /// indicate that we wish to use a BDeu score
-      void useScoreBDeu () noexcept;
-      */
+        /*
+        /// indicate that we wish to use a BD score
+        void useScoreBD () noexcept;
 
-      /// indicate that we wish to use a BIC score
-      void useScoreBIC () noexcept;
+        /// indicate that we wish to use a BDeu score
+        void useScoreBDeu () noexcept;
+        */
 
-      /// indicate that we wish to use a K2 score
-      void useScoreK2 () noexcept;
+        /// indicate that we wish to use a BIC score
+        void useScoreBIC () noexcept;
 
-      /// indicate that we wish to use a Log2Likelihood score
-      void useScoreLog2Likelihood () noexcept;
+        /// indicate that we wish to use a K2 score
+        void useScoreK2 () noexcept;
 
-      /// @}
+        /// indicate that we wish to use a Log2Likelihood score
+        void useScoreLog2Likelihood () noexcept;
 
+        /// @}
 
-      // ##########################################################################
-      /// @name Learning algorithm selection
-      // ##########################################################################
-      /// @{
 
-       /// indicate that we wish to use a greedy hill climbing algorithm
-      void useGreedyHillClimbing () noexcept;
+        // ##########################################################################
+        /// @name Learning algorithm selection
+        // ##########################################################################
+        /// @{
 
-      /// indicate that we wish to use a local search with tabu list
-      /** @param tabu_size indicate the size of the tabu list
-       * @param nb_decrease indicate the max number of changes decreasing the
-       * score consecutively that we allow to apply */
-      void useLocalSearchWithTabuList ( unsigned int tabu_size = 100,
-                                        unsigned int nb_decrease = 2 ) noexcept;
+        /// indicate that we wish to use a greedy hill climbing algorithm
+        void useGreedyHillClimbing () noexcept;
 
-      /// indicate that we wish to use K2
-      void useK2 ( const Sequence<NodeId>& order ) noexcept;
+        /// indicate that we wish to use a local search with tabu list
+        /** @param tabu_size indicate the size of the tabu list
+         * @param nb_decrease indicate the max number of changes decreasing the
+         * score consecutively that we allow to apply */
+        void useLocalSearchWithTabuList ( unsigned int tabu_size = 100,
+                                          unsigned int nb_decrease = 2 ) noexcept;
 
-      /// indicate that we wish to use K2
-      void useK2 ( const std::vector<NodeId>& order ) noexcept;
+        /// indicate that we wish to use K2
+        void useK2 ( const Sequence<NodeId>& order ) noexcept;
 
-      /// @}
+        /// indicate that we wish to use K2
+        void useK2 ( const std::vector<NodeId>& order ) noexcept;
 
+        /// @}
 
-      // ##########################################################################
-      /// @name Accessors / Modifiers for adding constraints on learning
-      // ##########################################################################
-      /// @{
 
-      /// sets the max indegree
-      void setMaxIndegree ( unsigned int max_indegree );
+        // ##########################################################################
+        /// @name Accessors / Modifiers for adding constraints on learning
+        // ##########################################################################
+        /// @{
 
-      /// sets a partial order on the nodes
-      void setSliceOrder ( const NodeProperty<unsigned int>& slice_order );
+        /// sets the max indegree
+        void setMaxIndegree ( unsigned int max_indegree );
 
-      /// assign a set of forbidden arcs
-      void setForbiddenArcs ( const ArcSet& set );
+        /// sets a partial order on the nodes
+        void setSliceOrder ( const NodeProperty<unsigned int>& slice_order );
 
-      /// assign a new forbidden arc
-      void addForbiddenArc ( const Arc& arc );
+        /// assign a set of forbidden arcs
+        void setForbiddenArcs ( const ArcSet& set );
 
-      /// remove a forbidden arc
-      void eraseForbiddenArc ( const Arc& arc );
+        /// assign a new forbidden arc
+        void addForbiddenArc ( const Arc& arc );
 
-      /// assign a set of forbidden arcs
-      void setMandatoryArcs ( const ArcSet& set );
+        /// remove a forbidden arc
+        void eraseForbiddenArc ( const Arc& arc );
 
-      /// assign a new forbidden arc
-      void addMandatoryArc ( const Arc& arc );
+        /// assign a set of forbidden arcs
+        void setMandatoryArcs ( const ArcSet& set );
 
-      /// remove a forbidden arc
-      void eraseMandatoryArc ( const Arc& arc );
+        /// assign a new forbidden arc
+        void addMandatoryArc ( const Arc& arc );
 
-      /// @}
+        /// remove a forbidden arc
+        void eraseMandatoryArc ( const Arc& arc );
 
+        /// @}
 
-    private:
-      /// the score selected for learning
-      ScoreType __score_type { ScoreType::BIC };
+        /// @name redistribute signals
+        /// {@
+        void distributeProgress ( Size pourcent, double error, double time );
+        void distributeStop ( std::string message );
+        /// @}
 
-      /// the score used
+      private:
 
-      Score<>* __score { nullptr };
+        /// the score selected for learning
+        ScoreType __score_type { ScoreType::BIC };
 
-      /// the type of the parameter estimator
-      ParamEstimatorType
-      __param_estimator_type { ParamEstimatorType::MLwithUniformApriori };
+        /// the score used
 
-      /// the parameter estimator to use
-      ParamEstimator<>* __param_estimator { nullptr };
+        Score<>* __score { nullptr };
 
-      /// the constraint for 2TBNs
-      StructuralConstraintSliceOrder __constraint_SliceOrder;
+        /// the type of the parameter estimator
+        ParamEstimatorType
+        __param_estimator_type { ParamEstimatorType::MLwithUniformApriori };
 
-      /// the constraint for indegrees
-      StructuralConstraintIndegree __constraint_Indegree;
+        /// the parameter estimator to use
+        ParamEstimator<>* __param_estimator { nullptr };
 
-      /// the constraint for tabu lists
-      StructuralConstraintTabuList __constraint_TabuList;
+        /// the constraint for 2TBNs
+        StructuralConstraintSliceOrder __constraint_SliceOrder;
 
-      /// the constraint on forbidden arcs
-      StructuralConstraintForbiddenArcs __constraint_ForbiddenArcs;
+        /// the constraint for indegrees
+        StructuralConstraintIndegree __constraint_Indegree;
 
-      /// the constraint on forbidden arcs
-      StructuralConstraintMandatoryArcs __constraint_MandatoryArcs;
+        /// the constraint for tabu lists
+        StructuralConstraintTabuList __constraint_TabuList;
 
-      /// the selected learning algorithm
-      AlgoType __selected_algo { AlgoType::GREEDY_HILL_CLIMBING };
+        /// the constraint on forbidden arcs
+        StructuralConstraintForbiddenArcs __constraint_ForbiddenArcs;
 
-      /// the K2 algorithm
-      K2 __K2;
+        /// the constraint on forbidden arcs
+        StructuralConstraintMandatoryArcs __constraint_MandatoryArcs;
 
-      /// the greedy hill climbing algorithm
-      GreedyHillClimbing __greedy_hill_climbing;
+        /// the selected learning algorithm
+        AlgoType __selected_algo { AlgoType::GREEDY_HILL_CLIMBING };
 
-      /// the local search with tabu list algorithm
-      LocalSearchWithTabuList __local_search_with_tabu_list;
+        /// the K2 algorithm
+        K2 __K2;
 
-      /// an initial DAG given to learners
-      DAG __initial_dag;
+        /// the greedy hill climbing algorithm
+        GreedyHillClimbing __greedy_hill_climbing;
 
+        /// the local search with tabu list algorithm
+        LocalSearchWithTabuList __local_search_with_tabu_list;
 
+        /// an initial DAG given to learners
+        DAG __initial_dag;
 
 
-      /// reads a file and returns a databaseVectInRam
-      DatabaseVectInRAM __readFile ( const std::string& filename );
 
-      /// create the score used for learning
-      template <typename FILTER>
-      void __createScore ( FILTER& filter,
-                           std::vector<unsigned int>& modalities );
 
-      /// create the parameter estimator used for learning
-      template <typename FILTER>
-      void __createParamEstimator ( FILTER& filter,
-                                    std::vector<unsigned int>& modalities );
+        /// reads a file and returns a databaseVectInRam
+        DatabaseVectInRAM __readFile ( const std::string& filename );
 
-      /// returns the DAG learnt
-      template <typename FILTER>
-      DAG __learnDAG ( FILTER& filter, std::vector<unsigned int>& modal );
+        /// create the score used for learning
+        template <typename FILTER>
+        void __createScore ( FILTER& filter,
+                             std::vector<unsigned int>& modalities );
 
+        /// create the parameter estimator used for learning
+        template <typename FILTER>
+        void __createParamEstimator ( FILTER& filter,
+                                      std::vector<unsigned int>& modalities );
+
+        /// returns the DAG learnt
+        template <typename FILTER>
+        DAG __learnDAG ( FILTER& filter, std::vector<unsigned int>& modal );
+
+        BNLearnerListener* __forK2;
+        BNLearnerListener* __forGreedyHillClimbing;
+        BNLearnerListener* __forLocalSearch;
     };
-
-
   } /* namespace learning */
-
-
 } /* namespace gum */
 
 

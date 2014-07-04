@@ -21,16 +21,16 @@
  * @brief A pack of learning algorithms that can easily be used
  *
  * The pack currently contains K2, GreedyHillClimbing and LocalSearchWithTabuList
- * 
+ *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 namespace gum {
 
-  
+
   namespace learning {
 
-    
+
     /// sets an initial DAG structure
     INLINE void BNLearner::setInitialDAG ( const DAG& dag ) {
       __initial_dag = dag;
@@ -42,13 +42,13 @@ namespace gum {
       __score_type = ScoreType::AIC;
     }
 
-    
+
     /*
     /// indicate that we wish to use a BD score
     INLINE void BNLearner::useScoreBD () noexcept {
        __score_type = ScoreType::BD;
     }
-     
+
 
     /// indicate that we wish to use a BDeu score
     INLINE void BNLearner::useScoreBDeu () noexcept;
@@ -56,32 +56,32 @@ namespace gum {
     }
     */
 
-    
+
     /// indicate that we wish to use a BIC score
     INLINE void BNLearner::useScoreBIC () noexcept {
       __score_type = ScoreType::BIC;
     }
 
-    
+
     /// indicate that we wish to use a K2 score
     INLINE void BNLearner::useScoreK2 () noexcept {
       __score_type = ScoreType::K2;
     }
 
-  
+
     /// indicate that we wish to use a Log2Likelihood score
     INLINE void BNLearner::useScoreLog2Likelihood () noexcept {
       __score_type = ScoreType::LOG2LIKELIHOOD;
     }
 
-    
+
     /// sets the max indegree
     INLINE void
     BNLearner::setMaxIndegree ( unsigned int max_indegree ) {
       __constraint_Indegree.setMaxIndegree ( max_indegree );
     }
 
-    
+
     /// indicate that we wish to use a K2 algorithm
     INLINE void BNLearner::useK2 ( const Sequence<NodeId>& order ) noexcept {
       __selected_algo = AlgoType::K2;
@@ -95,13 +95,13 @@ namespace gum {
       __K2.setOrder ( order );
     }
 
-    
+
     /// indicate that we wish to use a greedy hill climbing algorithm
     INLINE void BNLearner::useGreedyHillClimbing () noexcept {
       __selected_algo = AlgoType::GREEDY_HILL_CLIMBING;
     }
 
-    
+
     /// indicate that we wish to use a local search with tabu list
     INLINE void
     BNLearner::useLocalSearchWithTabuList ( unsigned int tabu_size,
@@ -110,14 +110,14 @@ namespace gum {
       __constraint_TabuList.setTabuListSize ( tabu_size );
       __local_search_with_tabu_list.setMaxNbDecreasingChanges ( nb_decrease );
     }
-    
-  
+
+
     /// assign a set of forbidden arcs
     INLINE void BNLearner::setForbiddenArcs ( const ArcSet& set ) {
       __constraint_ForbiddenArcs.setArcs ( set );
     }
 
-    
+
     /// assign a new forbidden arc
     INLINE void BNLearner::addForbiddenArc ( const Arc& arc ) {
       __constraint_ForbiddenArcs.addArc ( arc );
@@ -129,7 +129,7 @@ namespace gum {
       __constraint_ForbiddenArcs.eraseArc ( arc );
     }
 
-    
+
     /// assign a set of forbidden arcs
     INLINE void BNLearner::setMandatoryArcs ( const ArcSet& set ) {
       __constraint_MandatoryArcs.setArcs ( set );
@@ -147,16 +147,22 @@ namespace gum {
       __constraint_MandatoryArcs.eraseArc ( arc );
     }
 
-    
+
     /// sets a partial order on the nodes
     INLINE void BNLearner::setSliceOrder
     ( const NodeProperty<unsigned int>& slice_order ) {
       __constraint_SliceOrder = slice_order;
     }
 
-
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    INLINE void BNLearner::distributeProgress ( Size pourcent, double error, double time ) {
+      if ( onProgress.hasListener() ) GUM_EMIT3 ( onProgress, pourcent,error,time );
+    }
+    INLINE void BNLearner::distributeStop ( std::string message ) {
+      if ( onStop.hasListener() ) GUM_EMIT1 ( onStop, message );
+    }
   } /* namespace learning */
-  
-  
+
+
 } /* namespace gum */
 
