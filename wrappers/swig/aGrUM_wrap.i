@@ -340,6 +340,30 @@ namespace std {
   using gum::ApproximationScheme::history;
 }
 
+%extend gum::learning::BNLearner {
+  using gum::credal::InferenceEngine<double>::setVerbosity;
+  using gum::credal::InferenceEngine<double>::setEpsilon;
+  using gum::credal::InferenceEngine<double>::setMinEpsilonRate;
+  using gum::credal::InferenceEngine<double>::setMaxIter;
+  using gum::credal::InferenceEngine<double>::setMaxTime;
+  using gum::credal::InferenceEngine<double>::setPeriodSize;
+  using gum::credal::InferenceEngine<double>::setBurnIn;
+
+  using gum::credal::InferenceEngine<double>::verbosity;
+  using gum::credal::InferenceEngine<double>::epsilon;
+  using gum::credal::InferenceEngine<double>::minEpsilonRate;
+  using gum::credal::InferenceEngine<double>::maxIter;
+  using gum::credal::InferenceEngine<double>::maxTime;
+  using gum::credal::InferenceEngine<double>::periodSize;
+  using gum::credal::InferenceEngine<double>::burnIn;
+
+  using gum::credal::InferenceEngine<double>::nbrIterations;
+  using gum::credal::InferenceEngine<double>::currentTime;
+
+  using gum::credal::InferenceEngine<double>::messageApproximationScheme;
+  using gum::credal::InferenceEngine<double>::history;
+}
+
 %extend gum::credal::MultipleInferenceEngine<double> {
   using gum::credal::InferenceEngine<double>::setVerbosity;
   using gum::credal::InferenceEngine<double>::setEpsilon;
