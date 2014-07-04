@@ -27,6 +27,8 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
+#include <agrum/learning/BNLearnerListener.h>
+
 namespace gum {
 
 
@@ -133,6 +135,7 @@ namespace gum {
       switch ( __selected_algo ) {
           // ========================================================================
         case AlgoType::GREEDY_HILL_CLIMBING: {
+          BNLearnerListener listener( this,__greedy_hill_climbing );
           StructuralConstraintSetStatic<StructuralConstraintMandatoryArcs,
                                         StructuralConstraintForbiddenArcs,
                                         StructuralConstraintSliceOrder>
@@ -163,6 +166,7 @@ namespace gum {
 
         // ========================================================================
         case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST: {
+          BNLearnerListener listener( this,__local_search_with_tabu_list );
           StructuralConstraintSetStatic<StructuralConstraintMandatoryArcs,
                                         StructuralConstraintForbiddenArcs,
                                         StructuralConstraintSliceOrder>
@@ -196,6 +200,7 @@ namespace gum {
 
         // ========================================================================
         case AlgoType::K2: {
+          BNLearnerListener listener( this,__K2.approximationScheme() );
           StructuralConstraintSetStatic<StructuralConstraintMandatoryArcs,
                                         StructuralConstraintForbiddenArcs>
                                         gen_constraint;

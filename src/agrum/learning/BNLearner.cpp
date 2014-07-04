@@ -29,7 +29,6 @@
 
 #include <agrum/config.h>
 #include <agrum/learning/BNLearner.h>
-#include <agrum/learning/BNLearnerListener.h>
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
@@ -47,10 +46,6 @@ namespace gum {
     BNLearner::BNLearner () {
       // for debugging purposes
       GUM_CONSTRUCTOR ( BNLearner );
-
-      //__forK2=new BNLearnerListener ( this,__K2 );
-      __forGreedyHillClimbing=new BNLearnerListener ( this,__greedy_hill_climbing );
-      __forLocalSearch=new BNLearnerListener ( this,__local_search_with_tabu_list );
     }
 
 
@@ -74,15 +69,11 @@ namespace gum {
       __initial_dag ( from.__initial_dag ) {
       // for debugging purposes
       GUM_CONS_CPY ( BNLearner );
-
-      //__forK2=new BNLearnerListener ( this,__K2 );
-      __forGreedyHillClimbing=new BNLearnerListener ( this,__greedy_hill_climbing );
-      __forLocalSearch=new BNLearnerListener ( this,__local_search_with_tabu_list );
     }
 
 
     /// move constructor
-    BNLearner::BNLearner ( BNLearner&& from ) :
+    BNLearner::BNLearner ( BNLearner && from ) :
       __score_type ( from.__score_type ),
       __score ( from.__score ),
       __param_estimator_type ( from.__param_estimator_type ),
@@ -102,21 +93,14 @@ namespace gum {
       from.__param_estimator = nullptr;
 
       GUM_CONS_MOV ( BNLearner );
-
-      //__forK2=new BNLearnerListener ( this,__K2 );
-      __forGreedyHillClimbing=new BNLearnerListener ( this,__greedy_hill_climbing );
-      __forLocalSearch=new BNLearnerListener ( this,__local_search_with_tabu_list );
     }
 
 
     /// destructor
     BNLearner::~BNLearner () {
       if ( __score ) delete __score;
-      if ( __param_estimator ) delete __param_estimator;
 
-      //delete __forK2;
-      delete __forGreedyHillClimbing;
-      delete __forLocalSearch;
+      if ( __param_estimator ) delete __param_estimator;
 
       GUM_DESTRUCTOR ( BNLearner );
     }
@@ -152,9 +136,6 @@ namespace gum {
         __local_search_with_tabu_list = from.__local_search_with_tabu_list;
         __initial_dag = from.__initial_dag;
 
-        //__forK2=new BNLearnerListener ( this,__K2 );
-        __forGreedyHillClimbing=new BNLearnerListener ( this,__greedy_hill_climbing );
-        __forLocalSearch=new BNLearnerListener ( this,__local_search_with_tabu_list );
       }
 
       return *this;
@@ -163,7 +144,7 @@ namespace gum {
 
     /// move operator
     BNLearner&
-    BNLearner::operator= ( BNLearner&& from ) {
+    BNLearner::operator= ( BNLearner && from ) {
       if ( this != &from ) {
         if ( __score ) {
           delete __score;
@@ -192,10 +173,6 @@ namespace gum {
         __initial_dag = std::move ( from.__initial_dag );
         from.__score = nullptr;
         from.__param_estimator = nullptr;
-
-        //__forK2=new BNLearnerListener ( this,__K2 );
-        __forGreedyHillClimbing=new BNLearnerListener ( this,__greedy_hill_climbing );
-        __forLocalSearch=new BNLearnerListener ( this,__local_search_with_tabu_list );
       }
 
       return *this;
@@ -207,10 +184,12 @@ namespace gum {
     BNLearner::__readFile ( const std::string& filename ) {
       // get the extension of the file
       int filename_size = filename.size ();
+
       if ( filename_size < 4 ) {
         GUM_ERROR ( FormatNotFound, "BNLearner could not determine the "
                     "file type of the database" );
       }
+
       std::string extension = filename.substr ( filename.size () - 4 );
       std::transform ( extension.begin (), extension.end (),
                        extension.begin (), ::tolower );

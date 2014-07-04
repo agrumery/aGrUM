@@ -323,10 +323,6 @@ namespace gum {
         /// returns the DAG learnt
         template <typename FILTER>
         DAG __learnDAG ( FILTER& filter, std::vector<unsigned int>& modal );
-
-        BNLearnerListener* __forK2;
-        BNLearnerListener* __forGreedyHillClimbing;
-        BNLearnerListener* __forLocalSearch;
     };
   } /* namespace learning */
 } /* namespace gum */
