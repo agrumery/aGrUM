@@ -2661,25 +2661,28 @@ class BNLearner(_object):
         """useGreedyHillClimbing(BNLearner self)"""
         return _pyAgrum.BNLearner_useGreedyHillClimbing(self)
 
-    def useLocalSearchWithTabuList(self):
-        """useLocalSearchWithTabuList(BNLearner self)"""
-        return _pyAgrum.BNLearner_useLocalSearchWithTabuList(self)
+    def useLocalSearchWithTabuList(self, tabu_size=100, nb_decrease=2):
+        """
+        useLocalSearchWithTabuList(BNLearner self, unsigned int tabu_size=100, unsigned int nb_decrease=2)
+        useLocalSearchWithTabuList(BNLearner self, unsigned int tabu_size=100)
+        useLocalSearchWithTabuList(BNLearner self)
+        """
+        return _pyAgrum.BNLearner_useLocalSearchWithTabuList(self, tabu_size, nb_decrease)
 
-    def useK2(self):
-        """useK2(BNLearner self)"""
-        return _pyAgrum.BNLearner_useK2(self)
+    def useK2(self, *args):
+        """
+        useK2(BNLearner self, gum::Sequence< gum::NodeId > const & order)
+        useK2(BNLearner self, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & order)
+        """
+        return _pyAgrum.BNLearner_useK2(self, *args)
 
     def setMaxIndegree(self, *args):
         """setMaxIndegree(BNLearner self, unsigned int max_indegree)"""
         return _pyAgrum.BNLearner_setMaxIndegree(self, *args)
 
-    def setPartialOrder(self, *args):
-        """setPartialOrder(BNLearner self, NodeProperty< unsigned int > const & partial_order)"""
-        return _pyAgrum.BNLearner_setPartialOrder(self, *args)
-
-    def setkTBN(self, *args):
-        """setkTBN(BNLearner self, NodeProperty< unsigned int > const & partial_order)"""
-        return _pyAgrum.BNLearner_setkTBN(self, *args)
+    def setSliceOrder(self, *args):
+        """setSliceOrder(BNLearner self, NodeProperty< unsigned int > const & slice_order)"""
+        return _pyAgrum.BNLearner_setSliceOrder(self, *args)
 
     def setForbiddenArcs(self, *args):
         """setForbiddenArcs(BNLearner self, gum::ArcSet const & set)"""
@@ -2704,17 +2707,6 @@ class BNLearner(_object):
     def eraseMandatoryArc(self, *args):
         """eraseMandatoryArc(BNLearner self, Arc arc)"""
         return _pyAgrum.BNLearner_eraseMandatoryArc(self, *args)
-
-    def setMaxNbDecreasingChanges(self, *args):
-        """setMaxNbDecreasingChanges(BNLearner self, unsigned int nb)"""
-        return _pyAgrum.BNLearner_setMaxNbDecreasingChanges(self, *args)
-
-    def setOrder(self, *args):
-        """
-        setOrder(BNLearner self, gum::Sequence< gum::NodeId > const & order)
-        setOrder(BNLearner self, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & order)
-        """
-        return _pyAgrum.BNLearner_setOrder(self, *args)
 
     def learnBN(self, *args):
         """learnBN(BNLearner self, std::string const filename) -> BayesNet_double"""

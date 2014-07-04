@@ -21,7 +21,7 @@
  * @brief A basic pack of learning algorithms that can easily be used
  *
  * The pack currently contains K2, GreedyHillClimbing and LocalSearchWithTabuList
- * 
+ *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_LEARNING_BN_LEARNER_H
@@ -70,7 +70,7 @@
 
 namespace gum {
 
-  
+
   namespace learning {
 
 
@@ -83,7 +83,7 @@ namespace gum {
      */
     class BNLearner {
     private:
-      
+
       /// an enumeration enabling to select easily the score we wish to use
       enum class ScoreType {
         AIC,
@@ -98,17 +98,17 @@ namespace gum {
         ML,
         MLwithUniformApriori
       };
-      
+
       /// an enumeration to select easily the learning algorithm to use
       enum class AlgoType {
         K2,
         GREEDY_HILL_CLIMBING,
         LOCAL_SEARCH_WITH_TABU_LIST
       };
-      
-      
+
+
      public:
-      
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -159,8 +159,8 @@ namespace gum {
       void setInitialDAG ( const DAG& );
 
       /// @}
-      
-      
+
+
       // ##########################################################################
       /// @name Score selection
       // ##########################################################################
@@ -172,11 +172,11 @@ namespace gum {
       /*
       /// indicate that we wish to use a BD score
       void useScoreBD () noexcept;
-      
+
       /// indicate that we wish to use a BDeu score
       void useScoreBDeu () noexcept;
       */
-      
+
       /// indicate that we wish to use a BIC score
       void useScoreBIC () noexcept;
 
@@ -185,10 +185,10 @@ namespace gum {
 
       /// indicate that we wish to use a Log2Likelihood score
       void useScoreLog2Likelihood () noexcept;
-      
+
       /// @}
 
-      
+
       // ##########################################################################
       /// @name Learning algorithm selection
       // ##########################################################################
@@ -206,10 +206,10 @@ namespace gum {
 
       /// indicate that we wish to use K2
       void useK2 ( const Sequence<NodeId>& order ) noexcept;
-      
+
       /// indicate that we wish to use K2
       void useK2 ( const std::vector<NodeId>& order ) noexcept;
-      
+
       /// @}
 
 
@@ -232,7 +232,7 @@ namespace gum {
 
       /// remove a forbidden arc
       void eraseForbiddenArc ( const Arc& arc );
-      
+
       /// assign a set of forbidden arcs
       void setMandatoryArcs ( const ArcSet& set );
 
@@ -241,15 +241,16 @@ namespace gum {
 
       /// remove a forbidden arc
       void eraseMandatoryArc ( const Arc& arc );
-      
+
       /// @}
-      
- 
+
+
     private:
       /// the score selected for learning
       ScoreType __score_type { ScoreType::BIC };
 
       /// the score used
+
       Score<>* __score { nullptr };
 
       /// the type of the parameter estimator
@@ -289,9 +290,9 @@ namespace gum {
       /// an initial DAG given to learners
       DAG __initial_dag;
 
- 
 
-      
+
+
       /// reads a file and returns a databaseVectInRam
       DatabaseVectInRAM __readFile ( const std::string& filename );
 
@@ -310,11 +311,11 @@ namespace gum {
       DAG __learnDAG ( FILTER& filter, std::vector<unsigned int>& modal );
 
     };
-    
-      
+
+
   } /* namespace learning */
-  
-  
+
+
 } /* namespace gum */
 
 

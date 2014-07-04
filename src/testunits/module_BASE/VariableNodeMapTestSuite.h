@@ -27,7 +27,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/variables/labelizedVariable.h>
-#include <agrum/graphs/defaultTriangulation.h>
+#include <agrum/graphs/triangulations/defaultTriangulation.h>
 
 
 // The graph used for the tests:

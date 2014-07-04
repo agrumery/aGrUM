@@ -30,9 +30,9 @@
 #include <agrum/graphs/undiGraph.h>
 #include <agrum/graphs/mixedGraph.h>
 
-#include <agrum/graphs/diGraphListener.h>
-#include <agrum/graphs/undiGraphListener.h>
-#include <agrum/graphs/mixedGraphListener.h>
+#include <agrum/graphs/listeners/diGraphListener.h>
+#include <agrum/graphs/listeners/undiGraphListener.h>
+#include <agrum/graphs/listeners/mixedGraphListener.h>
 
 // The graph used for the tests:
 //          0   1_          0 -> 2
