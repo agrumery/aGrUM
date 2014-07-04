@@ -88,10 +88,16 @@ namespace gum_tests {
       gum::learning::BNLearner learner;
       aSimpleBNLeanerListener listen(learner);
       
+      learner.setVerbosity(true);
+      learner.setMaxIndegree ( 10 );
+      learner.useScoreK2 ();
+      learner.useK2 ( std::vector<gum::NodeId> { 1, 5, 2, 6, 0, 3, 4, 7 } );
+      
       gum::BayesNet<double> bn = learner.learnBN<double> ( GET_PATH_STR( "asia.csv" ) );
       
       GUM_TRACE_VAR(listen.getNbr());
       GUM_TRACE_VAR(listen.getMess());
+      GUM_TRACE_VAR(learner.messageApproximationScheme());
     }
 
   };
