@@ -2708,6 +2708,14 @@ class BNLearner(_object):
         """eraseMandatoryArc(BNLearner self, Arc arc)"""
         return _pyAgrum.BNLearner_eraseMandatoryArc(self, *args)
 
+    def distributeProgress(self, *args):
+        """distributeProgress(BNLearner self, gum::Size pourcent, double error, double time)"""
+        return _pyAgrum.BNLearner_distributeProgress(self, *args)
+
+    def distributeStop(self, *args):
+        """distributeStop(BNLearner self, std::string message)"""
+        return _pyAgrum.BNLearner_distributeStop(self, *args)
+
     def learnBN(self, *args):
         """learnBN(BNLearner self, std::string const filename) -> BayesNet_double"""
         return _pyAgrum.BNLearner_learnBN(self, *args)
