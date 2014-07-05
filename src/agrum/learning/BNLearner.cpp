@@ -10,7 +10,7 @@
  *   This program is distributed in the hope that it wil be useful,        *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License __for more details.                          *
+ *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
@@ -77,7 +77,7 @@ namespace gum {
 
 
     /// move constructor
-    BNLearner::BNLearner ( BNLearner && from ) :
+    BNLearner::BNLearner ( BNLearner&& from ) :
       __score_type ( from.__score_type ),
       __score ( from.__score ),
       __param_estimator_type ( from.__param_estimator_type ),
@@ -160,7 +160,7 @@ namespace gum {
 
     /// move operator
     BNLearner&
-    BNLearner::operator= ( BNLearner && from ) {
+    BNLearner::operator= ( BNLearner&& from ) {
       if ( this != &from ) {
         if ( __score ) {
           delete __score;
@@ -261,7 +261,8 @@ namespace gum {
 
       return __learnDAG ( fast_filter, modalities );
     }
-
+    
+  
   } /* namespace learning */
 
 

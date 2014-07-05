@@ -211,6 +211,7 @@ namespace gum {
         {
           std::vector<unsigned int> parents = __parents[ change.node1 () ];
           parents.push_back ( change.node2 () );
+
           __score->addNodeSet ( change.node1 (), std::move ( parents ) );
         }
         break;
@@ -225,6 +226,7 @@ namespace gum {
               break;
             }
           }
+
           __score->addNodeSet ( change.node2 (), std::move ( parents ) );
         }
         break;
@@ -589,8 +591,8 @@ namespace gum {
         __addScoreToCompute ( change_index );
       }
 
-      // update the scores
-      unsigned int j = 0;
+     // update the scores
+      unsigned int j = 0;      
       Set<unsigned int> modified_nodes ( changes_to_recompute.size () );
       for ( const auto change_index : changes_to_recompute ) {
         const GraphChange& change = __changes[change_index];

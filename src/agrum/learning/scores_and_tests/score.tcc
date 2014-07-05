@@ -203,17 +203,12 @@ namespace gum {
     const std::vector<float,CountAlloc>&
     Score<IdSetAlloc,CountAlloc>::_getAllCounts ( unsigned int index ) {
       if ( ! this->_counts_computed ) {
-        const std::vector<float,CountAlloc>& counts =
-          Counter<IdSetAlloc,CountAlloc>::_getAllCounts ( index );
         _apriori->addApriori ( this->_modalities,
                                Counter<IdSetAlloc,CountAlloc>::_getCounts (),
                                this->_target_nodesets,
                                this->_conditioning_nodesets );
-        return counts;
       }
-      else {
-        return Counter<IdSetAlloc,CountAlloc>::_getAllCounts ( index );
-      }
+      return Counter<IdSetAlloc,CountAlloc>::_getAllCounts ( index );
     }
  
      
@@ -222,17 +217,12 @@ namespace gum {
     const std::vector<float,CountAlloc>&
     Score<IdSetAlloc,CountAlloc>::_getConditioningCounts ( unsigned int index ) {
       if ( ! this->_counts_computed ) {
-        const std::vector<float,CountAlloc>& counts =
-          Counter<IdSetAlloc,CountAlloc>::_getConditioningCounts ( index );
         _apriori->addApriori ( this->_modalities,
                                Counter<IdSetAlloc,CountAlloc>::_getCounts (),
                                this->_target_nodesets,
                                this->_conditioning_nodesets );
-        return counts;
       }
-      else {
-        return Counter<IdSetAlloc,CountAlloc>::_getConditioningCounts ( index );
-      }
+      return Counter<IdSetAlloc,CountAlloc>::_getConditioningCounts ( index );
     }
 
  

@@ -445,6 +445,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc> INLINE
     std::vector< std::vector<float,CountAlloc> >&
     Counter<IdSetAlloc,CountAlloc>::_getCounts () noexcept {
+      if ( ! _counts_computed ) _count ();
       return _record_counter.__getCounts ();
     }
 
