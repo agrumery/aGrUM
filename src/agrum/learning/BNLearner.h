@@ -45,6 +45,8 @@
 #include <agrum/learning/scores_and_tests/scoreK2.h>
 #include <agrum/learning/scores_and_tests/scoreLog2Likelihood.h>
 
+#include <agrum/learning/aprioris/aprioriSmoothing.h>
+
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintIndegree.h>
@@ -97,6 +99,11 @@ namespace gum {
       enum ParamEstimatorType {
         ML,
         MLwithUniformApriori
+      };
+
+      /// an enumeration to select the apriori
+      enum AprioriType {
+        SMOOTHING
       };
 
       /// an enumeration to select easily the learning algorithm to use
@@ -190,11 +197,33 @@ namespace gum {
 
 
       // ##########################################################################
+      /// @name A priori selection / parameterization
+      // ##########################################################################
+      /// @{
+
+      /// sets the apriori weight
+      void setAprioriWeight ( float weight );
+      
+      /// use the apriori smoothing
+      void useAprioriSmoothing ();
+      
+      /// @}
+      
+
+      // ##########################################################################
+      /// @name Parameter estimator selection
+      // ##########################################################################
+      /// @{
+      
+      /// @}
+      
+
+      // ##########################################################################
       /// @name Learning algorithm selection
       // ##########################################################################
       /// @{
 
-       /// indicate that we wish to use a greedy hill climbing algorithm
+      /// indicate that we wish to use a greedy hill climbing algorithm
       void useGreedyHillClimbing () noexcept;
 
       /// indicate that we wish to use a local search with tabu list
@@ -250,7 +279,6 @@ namespace gum {
       ScoreType __score_type { ScoreType::BIC };
 
       /// the score used
-
       Score<>* __score { nullptr };
 
       /// the type of the parameter estimator
@@ -260,6 +288,15 @@ namespace gum {
       /// the parameter estimator to use
       ParamEstimator<>* __param_estimator { nullptr };
 
+      /// the a priori selected for the score and parameters
+      AprioriType __apriori_type { AprioriType::SMOOTHING };
+
+      /// the apriori used
+      Apriori<>* __apriori { nullptr };
+
+      /// the weight of the apriori
+      float __apriori_weight { 1.0f };
+      
       /// the constraint for 2TBNs
       StructuralConstraintSliceOrder __constraint_SliceOrder;
 
@@ -305,6 +342,9 @@ namespace gum {
       template <typename FILTER>
       void __createParamEstimator ( FILTER& filter,
                                     std::vector<unsigned int>& modalities );
+
+      /// create the apriori used for learning
+      void __createApriori ();
 
       /// returns the DAG learnt
       template <typename FILTER>

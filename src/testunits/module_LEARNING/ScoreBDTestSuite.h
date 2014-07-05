@@ -26,6 +26,7 @@
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
 #include <agrum/learning/scores_and_tests/scoreBD.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
+#include <agrum/learning/aprioris/aprioriSmoothing.h>
 
 namespace gum_tests {
 
@@ -46,7 +47,9 @@ namespace gum_tests {
       
       std::vector<unsigned int> modalities = filter.modalities ();
 
-      gum::learning::ScoreBD<> score ( filter, modalities );
+      gum::learning::AprioriSmoothing<> apriori;
+      apriori.setWeight ( 0 );
+      gum::learning::ScoreBD<> score ( filter, modalities, apriori );
 
       // to test, we exploit the fact that if the hyperparameters are all equal
       // to 1, then score BD = score K2
@@ -104,7 +107,9 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
       std::vector<unsigned int> modalities = filter.modalities ();
-      gum::learning::ScoreBD<> score ( filter, modalities );
+      gum::learning::AprioriSmoothing<> apriori;
+      apriori.setWeight ( 0 );
+      gum::learning::ScoreBD<> score ( filter, modalities, apriori );
       //score.useCache ( false );
 
       // to test, we exploit the fact that if the hyperparameters are all equal
@@ -143,7 +148,9 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
       std::vector<unsigned int> modalities = filter.modalities ();
-      gum::learning::ScoreBD<> score ( filter, modalities );
+      gum::learning::AprioriSmoothing<> apriori;
+      apriori.setWeight ( 0 );
+      gum::learning::ScoreBD<> score ( filter, modalities, apriori );
       //score.useCache ( false );
 
       // to test, we exploit the fact that if the hyperparameters are all equal

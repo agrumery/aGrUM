@@ -155,6 +155,45 @@ namespace gum {
     }
 
 
+    /// use the apriori smoothing
+    INLINE void BNLearner::useAprioriSmoothing () {
+      __apriori_type = AprioriType::SMOOTHING;
+    }
+
+
+    /// sets the apriori weight
+    INLINE void BNLearner::setAprioriWeight ( float weight ) {
+      if ( weight < 0 ) {
+        GUM_ERROR ( OutOfBounds, "the weight of the apriori must be positive" );
+      }
+      __apriori_weight = weight;
+    }
+    
+
+    /// create the apriori used for learning
+    INLINE void BNLearner::__createApriori () {
+      // first, save the old apriori, to be delete if everything is ok
+      Apriori<>* old_apriori = __apriori;
+
+      // create the new apriori
+      switch ( __apriori_type ) {
+      case AprioriType::SMOOTHING:
+        __apriori = new AprioriSmoothing<>;
+        break;
+
+      default:
+        GUM_ERROR ( OperationNotAllowed,
+                    "BNLearner does not support yet this apriori" );
+      }
+
+      // do not forget to assign a weight to the apriori
+      __apriori->setWeight ( __apriori_weight );
+
+      // remove the old apriori, if any
+      if ( old_apriori != nullptr ) delete old_apriori;
+    }
+
+
   } /* namespace learning */
   
   

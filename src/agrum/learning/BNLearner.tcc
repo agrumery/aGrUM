@@ -44,29 +44,29 @@ namespace gum {
       // create the new scoring function
       switch ( __score_type ) {
       case ScoreType::AIC:
-        __score = new ScoreAIC<> ( filter, modalities );
-        break;;
+        __score = new ScoreAIC<> ( filter, modalities, *__apriori );
+        break;
 
         /*
       case ScoreType::BD:
-        __score = new ScoreBD<> ( filter, modalities );
+        __score = new ScoreBD<> ( filter, modalities, *__apriori );
         break;
 
       case ScoreType::BDEU:
-        __score = new ScoreBDeu<> ( filter, modalities );
+        __score = new ScoreBDeu<> ( filter, modalities, *__apriori );
         break;
         */
         
       case ScoreType::BIC:
-        __score = new ScoreBIC<> ( filter, modalities );
+        __score = new ScoreBIC<> ( filter, modalities, *__apriori );
         break;
         
       case ScoreType::K2:
-        __score = new ScoreK2<> ( filter, modalities );
+        __score = new ScoreK2<> ( filter, modalities, *__apriori );
         break;
         
       case ScoreType::LOG2LIKELIHOOD:
-        __score = new ScoreLog2Likelihood<> ( filter, modalities );
+        __score = new ScoreLog2Likelihood<> ( filter, modalities, *__apriori );
         break;
 
       default:
@@ -292,6 +292,7 @@ namespace gum {
 
       // get the modalities and create the score
       std::vector<unsigned int> modalities = raw_filter.modalities ();
+      __createApriori ();
       __createScore ( fast_filter, modalities );
 
       // create the parameter estimator

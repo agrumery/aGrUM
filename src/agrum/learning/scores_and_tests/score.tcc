@@ -38,8 +38,10 @@ namespace gum {
     template <typename RowFilter> INLINE
     Score<IdSetAlloc,CountAlloc>::Score
     ( const RowFilter& filter,
-      const std::vector<unsigned int>& var_modalities ) :
-      Counter<IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
+      const std::vector<unsigned int>& var_modalities,
+      Apriori<IdSetAlloc,CountAlloc>& apriori ) :
+      Counter<IdSetAlloc,CountAlloc> ( filter, var_modalities ),
+      _apriori ( &apriori ) {
       GUM_CONSTRUCTOR ( Score );
     }
 
@@ -49,6 +51,7 @@ namespace gum {
     Score<IdSetAlloc,CountAlloc>::Score
     ( const Score<IdSetAlloc,CountAlloc>& from ) :
       Counter<IdSetAlloc,CountAlloc> ( from ),
+      _apriori ( from._apriori ),
       __cache ( from.__cache ),
       __use_cache ( from.__use_cache ),
       __is_cached_score ( from.__is_cached_score ),
@@ -62,6 +65,7 @@ namespace gum {
     Score<IdSetAlloc,CountAlloc>::Score
     ( Score<IdSetAlloc,CountAlloc>&& from ) :
       Counter<IdSetAlloc,CountAlloc> ( std::move ( from ) ),
+      _apriori ( std::move ( from._apriori ) ),
       __cache ( std::move ( from.__cache ) ),
       __use_cache ( std::move ( from.__use_cache ) ),
       __is_cached_score ( std::move ( from.__is_cached_score ) ),
@@ -191,6 +195,44 @@ namespace gum {
     void Score<IdSetAlloc,CountAlloc>::clearCache () {
       clear ();
       __cache.clear ();
+    }
+
+    
+    /// returns the counting vector for a given (conditioned) target set
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    const std::vector<float,CountAlloc>&
+    Score<IdSetAlloc,CountAlloc>::_getAllCounts ( unsigned int index ) {
+      if ( ! this->_counts_computed ) {
+        const std::vector<float,CountAlloc>& counts =
+          Counter<IdSetAlloc,CountAlloc>::_getAllCounts ( index );
+        _apriori->addApriori ( this->_modalities,
+                               Counter<IdSetAlloc,CountAlloc>::_getCounts (),
+                               this->_target_nodesets,
+                               this->_conditioning_nodesets );
+        return counts;
+      }
+      else {
+        return Counter<IdSetAlloc,CountAlloc>::_getAllCounts ( index );
+      }
+    }
+ 
+     
+    /// returns the counting vector for a conditioning set
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    const std::vector<float,CountAlloc>&
+    Score<IdSetAlloc,CountAlloc>::_getConditioningCounts ( unsigned int index ) {
+      if ( ! this->_counts_computed ) {
+        const std::vector<float,CountAlloc>& counts =
+          Counter<IdSetAlloc,CountAlloc>::_getConditioningCounts ( index );
+        _apriori->addApriori ( this->_modalities,
+                               Counter<IdSetAlloc,CountAlloc>::_getCounts (),
+                               this->_target_nodesets,
+                               this->_conditioning_nodesets );
+        return counts;
+      }
+      else {
+        return Counter<IdSetAlloc,CountAlloc>::_getConditioningCounts ( index );
+      }
     }
 
  

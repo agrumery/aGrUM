@@ -340,6 +340,10 @@ namespace gum {
       /// the modalities of the variables
       const std::vector<unsigned int>& _modalities;
 
+      /// indicates whether we have already computed the countings of the nodesets
+      bool _counts_computed { false };
+
+      
       /// returns the counting vector for a given (conditioned) target set
       /** This method returns the observtion countings for the set of variables
        * whose index was returned by method addNodeSet or addNodeSets. If the
@@ -395,24 +399,20 @@ namespace gum {
 
       
 
-    private:
       /// the recordCounter that will parse the database
-      RecordCounter<IdSetAlloc,CountAlloc> __record_counter;
+      RecordCounter<IdSetAlloc,CountAlloc> _record_counter;
       
       /// the target id sets to count and their indices in the record counter
       std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* >
-      __target_nodesets;
+      _target_nodesets;
 
       /// the conditioning id sets to count and their indices in the record counter
       std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* >
-      __conditioning_nodesets;
+      _conditioning_nodesets;
 
-      /// indicates whether we have already computed the countings of the nodesets
-      bool __counts_computed { false };
-      
-
+ 
       /// perform the computation of the countings
-      void __count ();
+      void _count ();
 
       
       // ##########################################################################

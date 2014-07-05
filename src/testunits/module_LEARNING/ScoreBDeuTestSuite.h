@@ -26,6 +26,7 @@
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
 #include <agrum/learning/scores_and_tests/scoreBDeu.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
+#include <agrum/learning/aprioris/aprioriSmoothing.h>
 
 namespace gum_tests {
 
@@ -46,7 +47,9 @@ namespace gum_tests {
       
       std::vector<unsigned int> modalities = filter.modalities ();
 
-      gum::learning::ScoreBDeu<> score ( filter, modalities );
+      gum::learning::AprioriSmoothing<> apriori;
+      apriori.setWeight ( 0 );
+      gum::learning::ScoreBDeu<> score ( filter, modalities, apriori );
 
       // to test, we exploit the fact that if the effective sample size is
       // equal to ri * qi, then score BDeu = score K2
@@ -100,7 +103,9 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
       std::vector<unsigned int> modalities = filter.modalities ();
-      gum::learning::ScoreBDeu<> score ( filter, modalities );
+      gum::learning::AprioriSmoothing<> apriori;
+      apriori.setWeight ( 0 );
+      gum::learning::ScoreBDeu<> score ( filter, modalities, apriori );
       //score.useCache ( false );
       
       unsigned int id1, id2, id3, id4, id5, id6, id7;
@@ -133,7 +138,9 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
       std::vector<unsigned int> modalities = filter.modalities ();
-      gum::learning::ScoreBDeu<> score ( filter, modalities );
+      gum::learning::AprioriSmoothing<> apriori;
+      apriori.setWeight ( 0 );
+      gum::learning::ScoreBDeu<> score ( filter, modalities, apriori );
       //score.useCache ( false );
       
       unsigned int id1, id2, id3, id4, id5, id6, id7;

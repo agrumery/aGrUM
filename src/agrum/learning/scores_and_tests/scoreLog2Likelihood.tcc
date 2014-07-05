@@ -39,8 +39,9 @@ namespace gum {
     template <typename RowFilter> INLINE
     ScoreLog2Likelihood<IdSetAlloc,CountAlloc>::ScoreLog2Likelihood
     ( const RowFilter& filter,
-      const std::vector<unsigned int>& var_modalities ) :
-      Score<IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
+      const std::vector<unsigned int>& var_modalities,
+      Apriori<IdSetAlloc,CountAlloc>& apriori ) :
+      Score<IdSetAlloc,CountAlloc> ( filter, var_modalities, apriori ) {
       // for debugging purposes
       GUM_CONSTRUCTOR ( ScoreLog2Likelihood );
     }

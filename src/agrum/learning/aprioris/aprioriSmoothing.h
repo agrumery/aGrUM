@@ -18,22 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for computing AIC scores
+ * @brief the smooth a priori: adds a weight w to all the countings
  *
- * The class should be used as follows: first, to speed-up computations, you
- * should consider computing all the scores you need in one pass. To do so, use
- * the appropriate addNodeSets methods. These will compute everything you need.
- * Use methods score to retrieve the scores computed. See the Score class for
- * details.
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
+#ifndef GUM_LEARNING_A_PRIORI_SMOOTHING_H
+#define GUM_LEARNING_A_PRIORI_SMOOTHING_H
 
+#include <vector>
 
-#ifndef GUM_LEARNING_SCORE_AIC_H
-#define GUM_LEARNING_SCORE_AIC_H
-
-
-#include <agrum/learning/scores_and_tests/score.h>
+#include <agrum/config.h>
+#include <agrum/learning/aprioris/apriori.h>
 
 
 namespace gum {
@@ -41,48 +36,28 @@ namespace gum {
   
   namespace learning {
 
-    
-    /* ========================================================================= */
-    /* ===                         SCORE AIC CLASS                           === */
-    /* ========================================================================= */
-    /** @class ScoreAIC
+
+    /** @class AprioriSmoothing
+     * @brief the base class for all a prioris
      * @ingroup learning_group
-     * @brief the class for computing AIC scores
-     *
-     * The class should be used as follows: first, to speed-up computations, you
-     * should consider computing all the scores you need in one pass. To do so, use
-     * the appropriate addNodeSets methods. These will compute everything you need.
-     * Use methods score to retrieve the scores computed. See the Score class for
-     * details.
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
               typename CountAlloc = std::allocator<float> >
-    class ScoreAIC : public Score<IdSetAlloc,CountAlloc> {
+    class AprioriSmoothing : public Apriori<IdSetAlloc,CountAlloc> {
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
-
+      
       /// default constructor
-      /** @param filter the row filter that will be used to read the database
-       * @param var_modalities the domain sizes of the variables in the database */
-      template <typename RowFilter>
-      ScoreAIC ( const RowFilter& filter,
-                 const std::vector<unsigned int>& var_modalities,
-                 Apriori<IdSetAlloc,CountAlloc>& apriori  );
+      AprioriSmoothing ();
 
-      /// copy constructor
-      ScoreAIC ( const ScoreAIC<IdSetAlloc,CountAlloc>& );
-
-      /// move constructor
-      ScoreAIC ( ScoreAIC<IdSetAlloc,CountAlloc>&& );
-
-      /// virtual copy factory
-      virtual ScoreAIC<IdSetAlloc,CountAlloc>* copyFactory () const;
+      /// virtual copy constructor
+      virtual AprioriSmoothing<IdSetAlloc,CountAlloc>* copyFactory () const;
 
       /// destructor
-      virtual ~ScoreAIC ();
+      virtual ~AprioriSmoothing ();
 
       /// @}
 
@@ -92,22 +67,43 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// returns the score corresponding to a given nodeset
-      float score ( unsigned int nodeset_index );
-
+      /// include the apriori into a given set of counts
+      virtual void addApriori 
+      ( const std::vector<unsigned int>& modalities,
+        std::vector< std::vector<float,CountAlloc> >& counts,
+        const std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,
+                                     unsigned int>* >& target_nodesets,
+        const std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,
+                                     unsigned int>* >& conditioning_nodesets )
+      final;
+ 
       /// @}
 
-    };
-    
+      
+    protected:
 
+      /// copy constructor
+      AprioriSmoothing ( const AprioriSmoothing<IdSetAlloc,CountAlloc>& from );
+      
+      /// move constructor
+      AprioriSmoothing ( AprioriSmoothing<IdSetAlloc,CountAlloc>&& from );
+
+      /// prevent copy operator
+      AprioriSmoothing<IdSetAlloc,CountAlloc>&
+      operator= ( const AprioriSmoothing<IdSetAlloc,CountAlloc>& ) = delete;
+
+    };
+
+    
   } /* namespace learning */
   
   
 } /* namespace gum */
 
 
-// always include the template implementation
-#include <agrum/learning/scores_and_tests/scoreAIC.tcc>
+/// include the template implementation
+#include <agrum/learning/aprioris/aprioriSmoothing.tcc>
 
 
-#endif /* GUM_LEARNING_SCORE_AIC_H */
+#endif /* GUM_LEARNING_A_PRIORI_SMOOTHING_H */
+

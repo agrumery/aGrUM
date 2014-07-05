@@ -33,6 +33,8 @@
 #include <agrum/learning/scores_and_tests/scoreK2.h>
 #include <agrum/learning/scores_and_tests/scoreBDeu.h>
 
+#include <agrum/learning/aprioris/aprioriSmoothing.h>
+
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintIndegree.h>
@@ -66,7 +68,8 @@ namespace gum_tests {
 
       std::vector<unsigned int> modalities = filter.modalities ();
 
-      gum::learning::ScoreK2<> score ( filter, modalities );
+      gum::learning::AprioriSmoothing<> apriori;
+      gum::learning::ScoreK2<> score ( filter, modalities, apriori );
 
       gum::learning::StructuralConstraintDAG
         struct_constraint ( modalities.size () );
@@ -126,7 +129,8 @@ namespace gum_tests {
 
       std::vector<unsigned int> modalities = filter.modalities ();
 
-      gum::learning::ScoreK2<> real_score ( filter, modalities );
+      gum::learning::AprioriSmoothing<> apriori;
+      gum::learning::ScoreK2<> real_score ( filter, modalities, apriori );
       gum::learning::Score<>& score = real_score;
       
       gum::learning::StructuralConstraintDAG
@@ -184,7 +188,8 @@ namespace gum_tests {
 
       std::vector<unsigned int> modalities = filter.modalities ();
 
-      gum::learning::ScoreK2<> score ( filter, modalities );
+      gum::learning::AprioriSmoothing<> apriori;
+      gum::learning::ScoreK2<> score ( filter, modalities, apriori );
 
       gum::learning::StructuralConstraintDAG
         struct_constraint ( modalities.size () );
@@ -220,7 +225,8 @@ namespace gum_tests {
 
       std::vector<unsigned int> modalities = filter.modalities ();
 
-      gum::learning::ScoreK2<> score ( filter, modalities );
+      gum::learning::AprioriSmoothing<> apriori;
+      gum::learning::ScoreK2<> score ( filter, modalities, apriori );
 
       gum::NodeProperty<bool> slices;
       for ( unsigned int i = 0; i < modalities.size (); ++i ) {
@@ -266,7 +272,8 @@ namespace gum_tests {
 
       std::vector<unsigned int> modalities = filter.modalities ();
 
-      gum::learning::ScoreK2<> score ( filter, modalities );
+      gum::learning::AprioriSmoothing<> apriori;
+      gum::learning::ScoreK2<> score ( filter, modalities, apriori );
 
       gum::learning::StructuralConstraintIndegree
         struct_constraint ( modalities.size (), 6 );

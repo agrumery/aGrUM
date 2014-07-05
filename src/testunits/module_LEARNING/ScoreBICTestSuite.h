@@ -28,6 +28,7 @@
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
 #include <agrum/learning/scores_and_tests/scoreBIC.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
+#include <agrum/learning/aprioris/aprioriSmoothing.h>
 
 namespace gum_tests {
 
@@ -48,7 +49,9 @@ namespace gum_tests {
 
       std::vector<unsigned int> modalities = filter.modalities ();
 
-      gum::learning::ScoreBIC<> score ( filter, modalities );
+      gum::learning::AprioriSmoothing<> apriori;
+      apriori.setWeight ( 0 );
+      gum::learning::ScoreBIC<> score ( filter, modalities, apriori );
 
       unsigned int id1 = score.addNodeSet ( 3 );
       unsigned int id2 = score.addNodeSet ( 1 );
@@ -99,7 +102,9 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
       std::vector<unsigned int> modalities = filter.modalities ();
-      gum::learning::ScoreBIC<> score ( filter, modalities );
+      gum::learning::AprioriSmoothing<> apriori;
+      apriori.setWeight ( 0 );
+      gum::learning::ScoreBIC<> score ( filter, modalities, apriori );
       //score.useCache ( false );
       
       unsigned int id1, id2, id3, id4, id5, id6, id7;
@@ -132,7 +137,9 @@ namespace gum_tests {
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
       std::vector<unsigned int> modalities = filter.modalities ();
-      gum::learning::ScoreBIC<> score ( filter, modalities );
+      gum::learning::AprioriSmoothing<> apriori;
+      apriori.setWeight ( 0 );
+      gum::learning::ScoreBIC<> score ( filter, modalities, apriori );
       
       unsigned int id1, id2, id3, id4, id5, id6, id7;
       for ( unsigned int i = 0; i < 4; ++i ) {

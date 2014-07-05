@@ -42,7 +42,7 @@ namespace gum {
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities) :
       _modalities ( var_modalities ), 
-      __record_counter ( filter, var_modalities ) {
+      _record_counter ( filter, var_modalities ) {
       // for debugging purposes
       GUM_CONSTRUCTOR ( Counter );
     }
@@ -53,20 +53,20 @@ namespace gum {
     Counter<IdSetAlloc,CountAlloc>::Counter
     ( const Counter<IdSetAlloc,CountAlloc>& from ) :
       _modalities ( from._modalities ),
-      __record_counter ( from.__record_counter ),
-      __counts_computed ( from.__counts_computed ) {
+      _counts_computed ( from._counts_computed ),
+      _record_counter ( from._record_counter ) {
       // copy the target nodesets
-      __target_nodesets.reserve ( from.__target_nodesets.size () );
-      for ( const auto set : from.__target_nodesets ) {
-        __target_nodesets.push_back
+      _target_nodesets.reserve ( from._target_nodesets.size () );
+      for ( const auto set : from._target_nodesets ) {
+        _target_nodesets.push_back
           ( new std::pair<std::vector<unsigned int,IdSetAlloc>,
                           unsigned int> ( *set ) );
       }
       
       // copy the conditioning nodesets
-      __conditioning_nodesets.reserve ( from.__conditioning_nodesets.size () );
-      for ( const auto set : from.__conditioning_nodesets ) {
-        __conditioning_nodesets.push_back
+      _conditioning_nodesets.reserve ( from._conditioning_nodesets.size () );
+      for ( const auto set : from._conditioning_nodesets ) {
+        _conditioning_nodesets.push_back
           ( new std::pair<std::vector<unsigned int,IdSetAlloc>,
                           unsigned int> ( *set ) );
       }
@@ -74,20 +74,20 @@ namespace gum {
       // now update the __nodesets of the record counter, as this one still
       // points to the nodesets of from
       std::vector<const std::vector<unsigned int,IdSetAlloc>* >&
-        nodesets = __record_counter.__nodesets;
+        nodesets = _record_counter.__nodesets;
       const std::vector<const std::vector<unsigned int,IdSetAlloc>* >&
-        from_nodesets = from.__record_counter.__nodesets;
-      for ( unsigned int i = 0, j = 0, size = from.__target_nodesets.size ();
+        from_nodesets = from._record_counter.__nodesets;
+      for ( unsigned int i = 0, j = 0, size = from._target_nodesets.size ();
             i < size; ++i ) {
-        if ( from_nodesets[j] == &( from.__target_nodesets[i]->first ) ) {
-          nodesets[j] = &( __target_nodesets[i]->first );
+        if ( from_nodesets[j] == &( from._target_nodesets[i]->first ) ) {
+          nodesets[j] = &( _target_nodesets[i]->first );
           ++j;
         }
       }
-      for ( unsigned int i = 0, j = 0, size = from.__conditioning_nodesets.size ();
+      for ( unsigned int i = 0, j = 0, size = from._conditioning_nodesets.size ();
             i < size; ++i ) {
-        if ( from_nodesets[j] == &( from.__conditioning_nodesets[i]->first ) ) {
-          nodesets[j] = &( __conditioning_nodesets[i]->first );
+        if ( from_nodesets[j] == &( from._conditioning_nodesets[i]->first ) ) {
+          nodesets[j] = &( _conditioning_nodesets[i]->first );
           ++j;
         }
       }
@@ -102,12 +102,12 @@ namespace gum {
     Counter<IdSetAlloc,CountAlloc>::Counter
     ( Counter<IdSetAlloc,CountAlloc>&& from ) :
       _modalities ( from._modalities ),
-      __record_counter  ( std::move ( from.__record_counter ) ),
-      __target_nodesets ( std::move ( from.__target_nodesets ) ),
-      __conditioning_nodesets ( std::move ( from.__conditioning_nodesets ) ),
-      __counts_computed ( std::move ( from.__counts_computed ) ) {
-      from.__target_nodesets.clear ();
-      from.__conditioning_nodesets.clear ();
+      _counts_computed ( std::move ( from._counts_computed ) ),
+      _record_counter  ( std::move ( from._record_counter ) ),
+      _target_nodesets ( std::move ( from._target_nodesets ) ),
+      _conditioning_nodesets ( std::move ( from._conditioning_nodesets ) ) {
+      from._target_nodesets.clear ();
+      from._conditioning_nodesets.clear ();
       
       // for debugging purposes
       GUM_CONS_CPY ( Counter );
@@ -126,11 +126,11 @@ namespace gum {
     /// add an empty variable set to be counted
     template <typename IdSetAlloc, typename CountAlloc> INLINE
     unsigned int Counter<IdSetAlloc,CountAlloc>::addEmptyNodeSet () {
-      __conditioning_nodesets.push_back ( nullptr );
-      __target_nodesets.push_back ( nullptr );
-      __counts_computed = false;
+      _conditioning_nodesets.push_back ( nullptr );
+      _target_nodesets.push_back ( nullptr );
+      _counts_computed = false;
       
-      return __target_nodesets.size () - 1;
+      return _target_nodesets.size () - 1;
     }
 
     
@@ -144,15 +144,15 @@ namespace gum {
         ( std::vector<unsigned int,IdSetAlloc> { var }, 0 );
 
       // assign to it its record counter index
-      new_target->second = __record_counter.addNodeSet ( new_target->first );
+      new_target->second = _record_counter.addNodeSet ( new_target->first );
 
       // save it in the score's nodeset
-      __conditioning_nodesets.push_back ( nullptr );
-      __target_nodesets.push_back ( new_target );
+      _conditioning_nodesets.push_back ( nullptr );
+      _target_nodesets.push_back ( new_target );
 
-      __counts_computed = false;
+      _counts_computed = false;
       
-      return __target_nodesets.size () - 1;
+      return _target_nodesets.size () - 1;
     }
 
 
@@ -172,21 +172,21 @@ namespace gum {
         new std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>
         ( conditioning_ids, 0 );
       new_target->first.push_back ( var );
-      new_target->second = __record_counter.addNodeSet ( new_target->first );
+      new_target->second = _record_counter.addNodeSet ( new_target->first );
 
       // create the conditioning nodeset and assign to it its record counter index
       std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* new_cond =
         new std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>
         ( conditioning_ids, 0 );
-      new_cond->second = __record_counter.addNodeSet ( new_cond->first );
+      new_cond->second = _record_counter.addNodeSet ( new_cond->first );
      
       // save it in the score's nodeset
-      __conditioning_nodesets.push_back ( new_cond );
-      __target_nodesets.push_back ( new_target );
+      _conditioning_nodesets.push_back ( new_cond );
+      _target_nodesets.push_back ( new_target );
 
-      __counts_computed = false;
+      _counts_computed = false;
       
-      return __target_nodesets.size () - 1;
+      return _target_nodesets.size () - 1;
     }
 
 
@@ -201,21 +201,21 @@ namespace gum {
         ( std::vector<unsigned int,IdSetAlloc> { var2, var1 }, 0 );
 
       // assign to it its record counter index
-      new_target->second = __record_counter.addNodeSet ( new_target->first );
+      new_target->second = _record_counter.addNodeSet ( new_target->first );
 
       // create the conditioning nodeset and assign to it its record counter index
       std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* new_cond =
         new std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>
         ( std::vector<unsigned int,IdSetAlloc> { var2 }, 0 );
-      new_cond->second = __record_counter.addNodeSet ( new_cond->first );
+      new_cond->second = _record_counter.addNodeSet ( new_cond->first );
   
       // save it in the score's nodeset
-      __conditioning_nodesets.push_back ( new_cond );
-      __target_nodesets.push_back ( new_target );
+      _conditioning_nodesets.push_back ( new_cond );
+      _target_nodesets.push_back ( new_target );
 
-      __counts_computed = false;
+      _counts_computed = false;
       
-      return __target_nodesets.size () - 1;
+      return _target_nodesets.size () - 1;
     }
 
 
@@ -244,22 +244,22 @@ namespace gum {
         ( conditioning_ids, 0 );
       new_target->first.push_back ( var2 );
       new_target->first.push_back ( var1 );
-      new_target->second = __record_counter.addNodeSet ( new_target->first );
+      new_target->second = _record_counter.addNodeSet ( new_target->first );
 
       // create the conditioning nodeset and assign to it its record counter index
       std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* new_cond =
         new std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>
         ( conditioning_ids, 0 );
       new_cond->first.push_back ( var2 );
-      new_cond->second = __record_counter.addNodeSet ( new_cond->first );
+      new_cond->second = _record_counter.addNodeSet ( new_cond->first );
      
       // save it in the score's nodeset
-      __conditioning_nodesets.push_back ( new_cond );
-      __target_nodesets.push_back ( new_target );
+      _conditioning_nodesets.push_back ( new_cond );
+      _target_nodesets.push_back ( new_target );
 
-      __counts_computed = false;
+      _counts_computed = false;
       
-      return __target_nodesets.size () - 1;
+      return _target_nodesets.size () - 1;
     }
 
 
@@ -280,22 +280,22 @@ namespace gum {
         ( conditioning_ids, 0 );
       new_target->first.push_back ( vars.second );
       new_target->first.push_back ( vars.first );
-      new_target->second = __record_counter.addNodeSet ( new_target->first );
+      new_target->second = _record_counter.addNodeSet ( new_target->first );
 
       // create the conditioning nodeset and assign to it its record counter index
       std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* new_cond =
         new std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>
         ( conditioning_ids, 0 );
       new_cond->first.push_back ( vars.second );
-      new_cond->second = __record_counter.addNodeSet ( new_cond->first );
+      new_cond->second = _record_counter.addNodeSet ( new_cond->first );
      
       // save it in the score's nodeset
-      __conditioning_nodesets.push_back ( new_cond );
-      __target_nodesets.push_back ( new_target );
+      _conditioning_nodesets.push_back ( new_cond );
+      _target_nodesets.push_back ( new_target );
 
-      __counts_computed = false;
+      _counts_computed = false;
       
-      return __target_nodesets.size () - 1;
+      return _target_nodesets.size () - 1;
     }
 
 
@@ -364,21 +364,21 @@ namespace gum {
     /// clears all the data structures from memory
     template <typename IdSetAlloc, typename CountAlloc> INLINE
     void Counter<IdSetAlloc,CountAlloc>::clear () {
-      __record_counter.clearNodeSets ();
+      _record_counter.clearNodeSets ();
 
-      for ( auto set : __target_nodesets ) delete set;
-      for ( auto set : __conditioning_nodesets ) if ( set ) delete set;
-      __target_nodesets.clear ();
-      __conditioning_nodesets.clear ();
-      __counts_computed = false;
+      for ( auto set : _target_nodesets ) delete set;
+      for ( auto set : _conditioning_nodesets ) if ( set ) delete set;
+      _target_nodesets.clear ();
+      _conditioning_nodesets.clear ();
+      _counts_computed = false;
     }
 
 
     /// perform the computation of the countings
     template <typename IdSetAlloc, typename CountAlloc> INLINE
-    void Counter<IdSetAlloc,CountAlloc>::__count () {
-      __record_counter.count ();
-      __counts_computed = true;
+    void Counter<IdSetAlloc,CountAlloc>::_count () {
+      _record_counter.count ();
+      _counts_computed = true;
     }
 
     
@@ -387,8 +387,8 @@ namespace gum {
     const std::vector<float,CountAlloc>&
     Counter<IdSetAlloc,CountAlloc>::_getAllCounts
     ( unsigned int index ) {
-      if ( ! __counts_computed ) __count ();
-      return __record_counter.getCounts ( __target_nodesets[index]->second );
+      if ( ! _counts_computed ) _count ();
+      return _record_counter.getCounts ( _target_nodesets[index]->second );
     }
 
     
@@ -397,8 +397,8 @@ namespace gum {
     const std::vector<float,CountAlloc>&
     Counter<IdSetAlloc,CountAlloc>::_getConditioningCounts
     ( unsigned int index ) {
-      if ( ! __counts_computed ) __count ();
-      return __record_counter.getCounts ( __conditioning_nodesets[index]->second );
+      if ( ! _counts_computed ) _count ();
+      return _record_counter.getCounts ( _conditioning_nodesets[index]->second );
     }
 
     
@@ -407,7 +407,7 @@ namespace gum {
     const std::vector<unsigned int,IdSetAlloc>&
     Counter<IdSetAlloc,CountAlloc>::_getAllNodes
     ( unsigned int index ) const noexcept {
-      return __target_nodesets[index]->first;
+      return _target_nodesets[index]->first;
     }
 
     /// returns the set of conditioning nodes
@@ -415,8 +415,8 @@ namespace gum {
     const std::vector<unsigned int,IdSetAlloc>*
     Counter<IdSetAlloc,CountAlloc>::_getConditioningNodes
     ( unsigned int index ) const noexcept {
-      if ( __conditioning_nodesets[index] != nullptr ) {
-        return &( __conditioning_nodesets[index]->first );
+      if ( _conditioning_nodesets[index] != nullptr ) {
+        return &( _conditioning_nodesets[index]->first );
       }
       else {
         return nullptr;
@@ -437,7 +437,7 @@ namespace gum {
     void
     Counter<IdSetAlloc,CountAlloc>::setMaxNbThreads ( unsigned int nb )
       noexcept {
-      __record_counter.setMaxNbThreads ( nb );
+      _record_counter.setMaxNbThreads ( nb );
     }
 
     
@@ -445,7 +445,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc> INLINE
     std::vector< std::vector<float,CountAlloc> >&
     Counter<IdSetAlloc,CountAlloc>::_getCounts () noexcept {
-      return __record_counter.__getCounts ();
+      return _record_counter.__getCounts ();
     }
 
     
@@ -454,7 +454,7 @@ namespace gum {
     const std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,
                                  unsigned int>* >&
     Counter<IdSetAlloc,CountAlloc>::_getAllNodes () const noexcept {
-      return __target_nodesets;
+      return _target_nodesets;
     }
 
 
@@ -463,7 +463,7 @@ namespace gum {
     const std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,
                                  unsigned int>* >&
     Counter<IdSetAlloc,CountAlloc>::_getConditioningNodes () const noexcept {
-      return __conditioning_nodesets;
+      return _conditioning_nodesets;
     }
       
  

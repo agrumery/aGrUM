@@ -57,6 +57,10 @@ namespace gum {
       __param_estimator_type ( from.__param_estimator_type ),
       __param_estimator ( from.__param_estimator != nullptr ?
                           from.__param_estimator->copyFactory () : nullptr ),
+      __apriori_type ( from.__apriori_type ),
+      __apriori ( from.__apriori != nullptr ?
+                  from.__apriori->copyFactory () : nullptr ),
+      __apriori_weight ( from.__apriori_weight ),
       __constraint_SliceOrder    ( from.__constraint_SliceOrder ),
       __constraint_Indegree      ( from.__constraint_Indegree ),
       __constraint_TabuList      ( from.__constraint_TabuList ),
@@ -78,6 +82,9 @@ namespace gum {
       __score ( from.__score ),
       __param_estimator_type ( from.__param_estimator_type ),
       __param_estimator ( from.__param_estimator ),
+      __apriori_type ( from.__apriori_type ),
+      __apriori ( from.__apriori ),
+      __apriori_weight ( from.__apriori_weight ),
       __constraint_SliceOrder    ( std::move ( from.__constraint_SliceOrder ) ),
       __constraint_Indegree      ( std::move ( from.__constraint_Indegree ) ),
       __constraint_TabuList      ( std::move ( from.__constraint_TabuList ) ),
@@ -91,6 +98,7 @@ namespace gum {
       __initial_dag ( std::move ( from.__initial_dag ) ) {
       from.__score = nullptr;
       from.__param_estimator = nullptr;
+      from.__apriori = nullptr;
       
       GUM_CONS_MOV ( BNLearner );
     }
@@ -100,6 +108,7 @@ namespace gum {
     BNLearner::~BNLearner () {
       if ( __score ) delete __score;
       if ( __param_estimator ) delete __param_estimator;
+      if ( __apriori ) delete __apriori;
       
       GUM_DESTRUCTOR ( BNLearner );
     }
@@ -118,12 +127,20 @@ namespace gum {
           delete __param_estimator;
           __param_estimator = nullptr;
         }
+
+        if ( __apriori ) {
+          delete __apriori;
+          __apriori = nullptr;
+        }
         
         __score_type = from.__score_type;
         __score = from.__score ? from.__score->copyFactory () : nullptr;
         __param_estimator_type = from.__param_estimator_type;
         __param_estimator = from.__param_estimator ?
           from.__param_estimator->copyFactory () : nullptr;
+        __apriori_type = from.__apriori_type;
+        __apriori = from.__apriori ? from.__apriori->copyFactory () : nullptr;
+        __apriori_weight = from.__apriori_weight;
         __constraint_SliceOrder    = from.__constraint_SliceOrder;
         __constraint_Indegree      = from.__constraint_Indegree;
         __constraint_TabuList      = from.__constraint_TabuList;
@@ -154,10 +171,18 @@ namespace gum {
           __param_estimator = nullptr;
         }
 
+        if ( __apriori ) {
+          delete __apriori;
+          __apriori = nullptr;
+        }
+
         __score_type = from.__score_type;
         __score = from.__score;
         __param_estimator_type = from.__param_estimator_type;
         __param_estimator = from.__param_estimator;
+        __apriori_type = from.__apriori_type;
+        __apriori = from.__apriori;
+        __apriori_weight = from.__apriori_weight;
         __constraint_SliceOrder    = std::move ( from.__constraint_SliceOrder );
         __constraint_Indegree      = std::move ( from.__constraint_Indegree );
         __constraint_TabuList      = std::move ( from.__constraint_TabuList );
@@ -171,6 +196,7 @@ namespace gum {
         __initial_dag = std::move ( from.__initial_dag );
         from.__score = nullptr;
         from.__param_estimator = nullptr;
+        from.__apriori = nullptr;
       }
 
       return *this;
@@ -225,8 +251,9 @@ namespace gum {
       auto fast_filter = make_DB_row_filter ( database, fast_translators,
                                               generators );
 
-      // get the modalities and create the score
+      // get the modalities and create the score and the apriori
       std::vector<unsigned int> modalities = raw_filter.modalities ();
+      __createApriori ();
       __createScore ( fast_filter, modalities );
 
       return __learnDAG ( fast_filter, modalities );

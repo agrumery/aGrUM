@@ -39,6 +39,7 @@
 #include <agrum/learning/scores_and_tests/counter.h>
 #include <agrum/learning/scores_and_tests/cache4Score.h>
 #include <agrum/learning/structureUtils/graphChange.h>
+#include <agrum/learning/aprioris/apriori.h>
 
 
 namespace gum {
@@ -77,7 +78,8 @@ namespace gum {
        * @param var_modalities the domain sizes of the variables in the database */
       template <typename RowFilter>
       Score ( const RowFilter& filter,
-              const std::vector<unsigned int>& var_modalities );
+              const std::vector<unsigned int>& var_modalities,
+              Apriori<IdSetAlloc,CountAlloc>& apriori );
 
       /// virtual copy factory
       virtual Score<IdSetAlloc,CountAlloc>* copyFactory () const = 0;
@@ -148,7 +150,11 @@ namespace gum {
       /// 1 / log(2)
       const float _1log2 { M_LOG2E };
 
+      /// the a priori used by the score
+      Apriori<IdSetAlloc,CountAlloc>* _apriori;
 
+
+      
       /// returns the counting vector for a given (conditioned) target set
       /** This method returns the observtion countings for the set of variables
        * whose index was returned by method addNodeSet or addNodeSets. If the
@@ -160,12 +166,14 @@ namespace gum {
        * when callind addNodeset, and then the target nodes.
        * @warning it is assumed that, after using addNodeSet, you have executed
        * method count() before calling method countTarget. */
-      using Counter<IdSetAlloc,CountAlloc>::_getAllCounts;
+      const std::vector<float,CountAlloc>&
+      _getAllCounts ( unsigned int index );
 
       /// returns the counting vector for a conditioning set
       /** @warning it is assumed that, after using addNodeSet, you have executed
        * method count() before calling method countTarget. */
-      using Counter<IdSetAlloc,CountAlloc>::_getConditioningCounts;
+      const std::vector<float,CountAlloc>&
+      _getConditioningCounts ( unsigned int index );
 
       /// returns the set of target + conditioning nodes
       /** conditioning nodes are always the first ones in the vector and targets

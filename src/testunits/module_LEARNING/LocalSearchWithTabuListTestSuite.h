@@ -33,6 +33,8 @@
 #include <agrum/learning/scores_and_tests/scoreK2.h>
 #include <agrum/learning/scores_and_tests/scoreBDeu.h>
 
+#include <agrum/learning/aprioris/aprioriSmoothing.h>
+
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintIndegree.h>
@@ -83,7 +85,8 @@ namespace gum_tests {
       
       std::vector<unsigned int> modalities = filter.modalities ();
       
-      gum::learning::ScoreK2<> score ( filter, modalities );
+      gum::learning::AprioriSmoothing<> apriori;
+      gum::learning::ScoreK2<> score ( filter, modalities, apriori );
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,
@@ -145,7 +148,8 @@ namespace gum_tests {
       
       std::vector<unsigned int> modalities = filter.modalities ();
       
-      gum::learning::ScoreK2<> score ( filter, modalities );
+      gum::learning::AprioriSmoothing<> apriori;
+      gum::learning::ScoreK2<> score ( filter, modalities, apriori );
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,
@@ -205,7 +209,8 @@ namespace gum_tests {
       
       std::vector<unsigned int> modalities = filter.modalities ();
       
-      gum::learning::ScoreK2<> score ( filter, modalities );
+      gum::learning::AprioriSmoothing<> apriori;
+      gum::learning::ScoreK2<> score ( filter, modalities, apriori );
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,
@@ -266,7 +271,8 @@ namespace gum_tests {
       
       std::vector<unsigned int> modalities = filter.modalities ();
       
-      gum::learning::ScoreK2<> score ( filter, modalities );
+      gum::learning::AprioriSmoothing<> apriori;
+      gum::learning::ScoreK2<> score ( filter, modalities, apriori );
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,

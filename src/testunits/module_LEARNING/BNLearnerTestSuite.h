@@ -42,6 +42,10 @@ namespace gum_tests {
 
       learner.addMandatoryArc ( gum::Arc (2, 1) );
 
+      learner.useAprioriSmoothing ();
+      learner.setAprioriWeight ( 10 );
+      
+
       gum::NodeProperty<unsigned int> partial_order {
         std::make_pair( gum::NodeId ( 0 ), 1 ),
         std::make_pair( gum::NodeId ( 3 ), 0 ),
