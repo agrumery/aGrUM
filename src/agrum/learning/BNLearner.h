@@ -62,7 +62,6 @@
 #include <agrum/learning/structureUtils/graphChangesGenerator4K2.h>
 
 #include <agrum/learning/paramUtils/DAG2BNLearner.h>
-#include <agrum/learning/paramUtils/paramEstimatorMLwithUniformApriori.h>
 #include <agrum/learning/paramUtils/paramEstimatorML.h>
 
 #include <agrum/BN/algorithms/approximationSchemeListener.h>
@@ -104,8 +103,7 @@ namespace gum {
 
       /// an enumeration to select the type of parameter estimation we shall apply
       enum ParamEstimatorType {
-        ML,
-        MLwithUniformApriori
+        ML
       };
 
       /// an enumeration to select the apriori
@@ -301,7 +299,7 @@ namespace gum {
 
       /// the type of the parameter estimator
       ParamEstimatorType
-      __param_estimator_type { ParamEstimatorType::MLwithUniformApriori };
+      __param_estimator_type { ParamEstimatorType::ML };
 
       /// the parameter estimator to use
       ParamEstimator<>* __param_estimator { nullptr };

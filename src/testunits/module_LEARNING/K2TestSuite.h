@@ -45,7 +45,6 @@
 #include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
 
 #include <agrum/learning/paramUtils/paramEstimatorML.h>
-#include <agrum/learning/paramUtils/paramEstimatorMLwithUniformApriori.h>
 #include <agrum/learning/K2.h>
 
 namespace gum_tests {
@@ -74,8 +73,8 @@ namespace gum_tests {
       gum::learning::StructuralConstraintDAG
         struct_constraint ( modalities.size () );
 
-      gum::learning::ParamEstimatorMLwithUniformApriori<>
-        estimator ( filter, modalities );
+      gum::learning::ParamEstimatorML<>
+        estimator ( filter, modalities, apriori );
 
       std::vector<unsigned int> order ( filter.modalities ().size() );
       for ( unsigned int i = 0; i < order.size(); ++i ) {

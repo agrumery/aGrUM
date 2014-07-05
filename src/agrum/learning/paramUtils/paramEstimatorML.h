@@ -72,7 +72,8 @@ namespace gum {
        * @param var_modalities the domain sizes of the variables in the database */
       template <typename RowFilter>
       ParamEstimatorML ( const RowFilter& filter,
-                         const std::vector<unsigned int>& var_modalities );
+                         const std::vector<unsigned int>& var_modalities,
+                         Apriori<IdSetAlloc,CountAlloc>& apriori );
 
       /// copy constructor
       ParamEstimatorML ( const ParamEstimatorML<IdSetAlloc,CountAlloc>& );

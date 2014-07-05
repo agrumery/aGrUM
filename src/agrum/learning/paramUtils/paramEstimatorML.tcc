@@ -35,8 +35,9 @@ namespace gum {
     template <typename RowFilter> INLINE
     ParamEstimatorML<IdSetAlloc,CountAlloc>::ParamEstimatorML
     ( const RowFilter& filter,
-      const std::vector<unsigned int>& var_modalities ) :
-      ParamEstimator<IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
+      const std::vector<unsigned int>& var_modalities,
+      Apriori<IdSetAlloc,CountAlloc>& apriori ) :
+      ParamEstimator<IdSetAlloc,CountAlloc> ( filter, var_modalities, apriori ) {
       // for debugging purposes
       GUM_CONSTRUCTOR ( ParamEstimatorML );
     }

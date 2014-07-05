@@ -36,6 +36,7 @@
 #include <agrum/config.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/learning/scores_and_tests/counter.h>
+#include <agrum/learning/aprioris/apriori.h>
 
 
 namespace gum {
@@ -71,10 +72,13 @@ namespace gum {
 
       /// default constructor
       /** @param filter the row filter that will be used to read the database
-       * @param var_modalities the domain sizes of the variables in the database */
+       * @param var_modalities the domain sizes of the variables in the database
+       * @param apriori the a priori that is taken into account in the
+       * score/countings */
       template <typename RowFilter>
       ParamEstimator ( const RowFilter& filter,
-                       const std::vector<unsigned int>& var_modalities );
+                       const std::vector<unsigned int>& var_modalities,
+                       Apriori<IdSetAlloc,CountAlloc>& apriori );
 
       /// virtual copy factory
       virtual ParamEstimator<IdSetAlloc,CountAlloc>* copyFactory () const = 0;
@@ -143,6 +147,9 @@ namespace gum {
 
     protected:
  
+      /// the a priori used by the score
+      Apriori<IdSetAlloc,CountAlloc>* _apriori;
+
       /// indicate whether we have already normalized the parameters
       std::vector<bool> _is_normalized;
 
@@ -158,12 +165,14 @@ namespace gum {
        * when callind addNodeset, and then the target nodes.
        * @warning it is assumed that, after using addNodeSet, you have executed
        * method count() before calling method countTarget. */
-      using Counter<IdSetAlloc,CountAlloc>::_getAllCounts;
+      const std::vector<float,CountAlloc>&
+      _getAllCounts ( unsigned int index );
 
       /// returns the counting vector for a conditioning set
       /** @warning it is assumed that, after using addNodeSet, you have executed
        * method count() before calling method countTarget. */
-      using Counter<IdSetAlloc,CountAlloc>::_getConditioningCounts;
+      const std::vector<float,CountAlloc>&
+      _getConditioningCounts ( unsigned int index );
 
       /// returns the set of target + conditioning nodes
       /** conditioning nodes are always the first ones in the vector and targets

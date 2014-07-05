@@ -92,12 +92,8 @@ namespace gum {
       // create the new estimator
       switch ( __param_estimator_type ) {
       case ParamEstimatorType::ML:
-        __param_estimator = new ParamEstimatorML<> ( filter, modalities );
-        break;
-
-      case ParamEstimatorType::MLwithUniformApriori:
         __param_estimator =
-          new ParamEstimatorMLwithUniformApriori<> ( filter, modalities );
+          new ParamEstimatorML<> ( filter, modalities, *__apriori );
         break;
 
       default:
