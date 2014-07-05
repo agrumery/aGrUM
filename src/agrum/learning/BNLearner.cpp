@@ -43,103 +43,108 @@ namespace gum {
 
 
     /// default constructor
-    BNLearner::BNLearner () {
+    BNLearner::BNLearner() {
       // for debugging purposes
-      GUM_CONSTRUCTOR ( BNLearner );
+      __current_algorithm = nullptr;
+      GUM_CONSTRUCTOR( BNLearner );
     }
 
 
     /// copy constructor
-    BNLearner::BNLearner ( const BNLearner& from ) :
-      __score_type ( from.__score_type ),
-      __score ( from.__score != nullptr ?
-                from.__score->copyFactory () : nullptr ),
-      __param_estimator_type ( from.__param_estimator_type ),
-      __param_estimator ( from.__param_estimator != nullptr ?
-                          from.__param_estimator->copyFactory () : nullptr ),
-      __apriori_type ( from.__apriori_type ),
-      __apriori ( from.__apriori != nullptr ?
-                  from.__apriori->copyFactory () : nullptr ),
-      __apriori_weight ( from.__apriori_weight ),
-      __constraint_SliceOrder    ( from.__constraint_SliceOrder ),
-      __constraint_Indegree      ( from.__constraint_Indegree ),
-      __constraint_TabuList      ( from.__constraint_TabuList ),
-      __constraint_ForbiddenArcs ( from.__constraint_ForbiddenArcs ),
-      __constraint_MandatoryArcs ( from.__constraint_MandatoryArcs ),
-      __selected_algo ( from.__selected_algo ),
-      __K2 ( from.__K2 ),
-      __greedy_hill_climbing ( from.__greedy_hill_climbing ),
-      __local_search_with_tabu_list ( from.__local_search_with_tabu_list ),
-      __initial_dag ( from.__initial_dag ) {
+    BNLearner::BNLearner( const BNLearner& from ) :
+      __score_type( from.__score_type ),
+      __score( from.__score != nullptr ?
+               from.__score->copyFactory() : nullptr ),
+      __param_estimator_type( from.__param_estimator_type ),
+      __param_estimator( from.__param_estimator != nullptr ?
+                         from.__param_estimator->copyFactory() : nullptr ),
+      __apriori_type( from.__apriori_type ),
+      __apriori( from.__apriori != nullptr ?
+                 from.__apriori->copyFactory() : nullptr ),
+      __apriori_weight( from.__apriori_weight ),
+      __constraint_SliceOrder( from.__constraint_SliceOrder ),
+      __constraint_Indegree( from.__constraint_Indegree ),
+      __constraint_TabuList( from.__constraint_TabuList ),
+      __constraint_ForbiddenArcs( from.__constraint_ForbiddenArcs ),
+      __constraint_MandatoryArcs( from.__constraint_MandatoryArcs ),
+      __selected_algo( from.__selected_algo ),
+      __K2( from.__K2 ),
+      __greedy_hill_climbing( from.__greedy_hill_climbing ),
+      __local_search_with_tabu_list( from.__local_search_with_tabu_list ),
+      __initial_dag( from.__initial_dag ) {
       // for debugging purposes
-      GUM_CONS_CPY ( BNLearner );
+      __current_algorithm = nullptr;
+      GUM_CONS_CPY( BNLearner );
     }
 
 
     /// move constructor
-    BNLearner::BNLearner ( BNLearner&& from ) :
-      __score_type ( from.__score_type ),
-      __score ( from.__score ),
-      __param_estimator_type ( from.__param_estimator_type ),
-      __param_estimator ( from.__param_estimator ),
-      __apriori_type ( from.__apriori_type ),
-      __apriori ( from.__apriori ),
-      __apriori_weight ( from.__apriori_weight ),
-      __constraint_SliceOrder    ( std::move ( from.__constraint_SliceOrder ) ),
-      __constraint_Indegree      ( std::move ( from.__constraint_Indegree ) ),
-      __constraint_TabuList      ( std::move ( from.__constraint_TabuList ) ),
-      __constraint_ForbiddenArcs ( std::move ( from.__constraint_ForbiddenArcs ) ),
-      __constraint_MandatoryArcs ( std::move ( from.__constraint_MandatoryArcs ) ),
-      __selected_algo ( from.__selected_algo ),
-      __K2 ( std::move ( from.__K2 ) ),
-      __greedy_hill_climbing ( std::move ( from.__greedy_hill_climbing ) ),
+    BNLearner::BNLearner( BNLearner && from ) :
+      __score_type( from.__score_type ),
+      __score( from.__score ),
+      __param_estimator_type( from.__param_estimator_type ),
+      __param_estimator( from.__param_estimator ),
+      __apriori_type( from.__apriori_type ),
+      __apriori( from.__apriori ),
+      __apriori_weight( from.__apriori_weight ),
+      __constraint_SliceOrder( std::move( from.__constraint_SliceOrder ) ),
+      __constraint_Indegree( std::move( from.__constraint_Indegree ) ),
+      __constraint_TabuList( std::move( from.__constraint_TabuList ) ),
+      __constraint_ForbiddenArcs( std::move( from.__constraint_ForbiddenArcs ) ),
+      __constraint_MandatoryArcs( std::move( from.__constraint_MandatoryArcs ) ),
+      __selected_algo( from.__selected_algo ),
+      __K2( std::move( from.__K2 ) ),
+      __greedy_hill_climbing( std::move( from.__greedy_hill_climbing ) ),
       __local_search_with_tabu_list
-      ( std::move ( from.__local_search_with_tabu_list ) ),
-      __initial_dag ( std::move ( from.__initial_dag ) ) {
+      ( std::move( from.__local_search_with_tabu_list ) ),
+      __initial_dag( std::move( from.__initial_dag ) ) {
       from.__score = nullptr;
       from.__param_estimator = nullptr;
       from.__apriori = nullptr;
 
-      GUM_CONS_MOV ( BNLearner );
+      __current_algorithm = nullptr;
+      GUM_CONS_MOV( BNLearner );
     }
 
 
     /// destructor
-    BNLearner::~BNLearner () {
-      if ( __score ) delete __score;
-      if ( __param_estimator ) delete __param_estimator;
-      if ( __apriori ) delete __apriori;
+    BNLearner::~BNLearner() {
+      if( __score ) delete __score;
 
-      GUM_DESTRUCTOR ( BNLearner );
+      if( __param_estimator ) delete __param_estimator;
+
+      if( __apriori ) delete __apriori;
+
+      GUM_DESTRUCTOR( BNLearner );
     }
 
 
     /// copy operator
     BNLearner&
     BNLearner::operator= ( const BNLearner& from ) {
-      if ( this != &from ) {
-        if ( __score ) {
+      if( this != &from ) {
+        if( __score ) {
           delete __score;
           __score = nullptr;
         }
 
-        if ( __param_estimator ) {
+        if( __param_estimator ) {
           delete __param_estimator;
           __param_estimator = nullptr;
         }
 
-        if ( __apriori ) {
+        if( __apriori ) {
           delete __apriori;
           __apriori = nullptr;
         }
-        
+
         __score_type = from.__score_type;
-        __score = from.__score ? from.__score->copyFactory () : nullptr;
+        __score = from.__score ? from.__score->copyFactory() : nullptr;
         __param_estimator_type = from.__param_estimator_type;
         __param_estimator = from.__param_estimator ?
-          from.__param_estimator->copyFactory () : nullptr;
+                            from.__param_estimator->copyFactory() : nullptr;
         __apriori_type = from.__apriori_type;
-        __apriori = from.__apriori ? from.__apriori->copyFactory () : nullptr;
+        __apriori = from.__apriori ? from.__apriori->copyFactory() : nullptr;
         __apriori_weight = from.__apriori_weight;
         __constraint_SliceOrder    = from.__constraint_SliceOrder;
         __constraint_Indegree      = from.__constraint_Indegree;
@@ -151,6 +156,7 @@ namespace gum {
         __greedy_hill_climbing = from.__greedy_hill_climbing;
         __local_search_with_tabu_list = from.__local_search_with_tabu_list;
         __initial_dag = from.__initial_dag;
+        __current_algorithm = nullptr;
 
       }
 
@@ -160,19 +166,19 @@ namespace gum {
 
     /// move operator
     BNLearner&
-    BNLearner::operator= ( BNLearner&& from ) {
-      if ( this != &from ) {
-        if ( __score ) {
+    BNLearner::operator= ( BNLearner && from ) {
+      if( this != &from ) {
+        if( __score ) {
           delete __score;
           __score = nullptr;
         }
 
-        if ( __param_estimator ) {
+        if( __param_estimator ) {
           delete __param_estimator;
           __param_estimator = nullptr;
         }
 
-        if ( __apriori ) {
+        if( __apriori ) {
           delete __apriori;
           __apriori = nullptr;
         }
@@ -184,20 +190,21 @@ namespace gum {
         __apriori_type = from.__apriori_type;
         __apriori = from.__apriori;
         __apriori_weight = from.__apriori_weight;
-        __constraint_SliceOrder    = std::move ( from.__constraint_SliceOrder );
-        __constraint_Indegree      = std::move ( from.__constraint_Indegree );
-        __constraint_TabuList      = std::move ( from.__constraint_TabuList );
-        __constraint_ForbiddenArcs = std::move ( from.__constraint_ForbiddenArcs );
-        __constraint_MandatoryArcs = std::move ( from.__constraint_MandatoryArcs );
+        __constraint_SliceOrder    = std::move( from.__constraint_SliceOrder );
+        __constraint_Indegree      = std::move( from.__constraint_Indegree );
+        __constraint_TabuList      = std::move( from.__constraint_TabuList );
+        __constraint_ForbiddenArcs = std::move( from.__constraint_ForbiddenArcs );
+        __constraint_MandatoryArcs = std::move( from.__constraint_MandatoryArcs );
         __selected_algo = from.__selected_algo;
         __K2 = from.__K2;
-        __greedy_hill_climbing = std::move ( from.__greedy_hill_climbing );
+        __greedy_hill_climbing = std::move( from.__greedy_hill_climbing );
         __local_search_with_tabu_list =
-          std::move ( from.__local_search_with_tabu_list );
-        __initial_dag = std::move ( from.__initial_dag );
+          std::move( from.__local_search_with_tabu_list );
+        __initial_dag = std::move( from.__initial_dag );
         from.__score = nullptr;
         from.__param_estimator = nullptr;
         from.__apriori = nullptr;
+        __current_algorithm = nullptr;
       }
 
       return *this;
@@ -206,63 +213,63 @@ namespace gum {
 
     /// reads a file and returns a databaseVectInRam
     DatabaseVectInRAM
-    BNLearner::__readFile ( const std::string& filename ) {
+    BNLearner::__readFile( const std::string& filename ) {
       // get the extension of the file
-      int filename_size = filename.size ();
+      int filename_size = filename.size();
 
-      if ( filename_size < 4 ) {
-        GUM_ERROR ( FormatNotFound, "BNLearner could not determine the "
-                    "file type of the database" );
+      if( filename_size < 4 ) {
+        GUM_ERROR( FormatNotFound, "BNLearner could not determine the "
+                   "file type of the database" );
       }
 
-      std::string extension = filename.substr ( filename.size () - 4 );
-      std::transform ( extension.begin (), extension.end (),
-                       extension.begin (), ::tolower );
+      std::string extension = filename.substr( filename.size() - 4 );
+      std::transform( extension.begin(), extension.end(),
+                      extension.begin(), ::tolower );
 
-      if ( extension == ".csv" ) {
-        return DatabaseFromCSV ( filename );
+      if( extension == ".csv" ) {
+        return DatabaseFromCSV( filename );
       }
 
-      GUM_ERROR ( OperationNotAllowed,
-                  "BNLearner does not support yet this type of database file" );
+      GUM_ERROR( OperationNotAllowed,
+                 "BNLearner does not support yet this type of database file" );
     }
 
 
     /// learn a structure from a file
-    DAG BNLearner::learnDAG ( std::string filename ) {
+    DAG BNLearner::learnDAG( std::string filename ) {
       // read the database
-      DatabaseVectInRAM database = __readFile ( filename );
+      DatabaseVectInRAM database = __readFile( filename );
 
       // create the RowFilter used for learning: we first generate a universal
       // filter that can parse any database. Then, we parse once the DB to
       // convert it into a compact int (an interval 0..N-1) so that we can
       // parse it very quickly
       DBRowTranslatorSetDynamic<CellTranslatorUniversal> raw_translators;
-      raw_translators.insertTranslator ( Col<0> (), database.nbVariables () );
+      raw_translators.insertTranslator( Col<0> (), database.nbVariables() );
 
-      auto generators = make_generators ( RowGeneratorIdentity () );
+      auto generators = make_generators( RowGeneratorIdentity() );
 
-      auto raw_filter = make_DB_row_filter ( database, raw_translators,
-                                             generators );
+      auto raw_filter = make_DB_row_filter( database, raw_translators,
+                                            generators );
 
       DBTransformCompactInt raw2fast_transfo;
-      raw2fast_transfo.transform ( raw_filter );
+      raw2fast_transfo.transform( raw_filter );
 
       DBRowTranslatorSetDynamic<CellTranslatorCompactIntId> fast_translators;
-      fast_translators.insertTranslator ( Col<0> (), database.nbVariables () );
+      fast_translators.insertTranslator( Col<0> (), database.nbVariables() );
 
-      auto fast_filter = make_DB_row_filter ( database, fast_translators,
-                                              generators );
+      auto fast_filter = make_DB_row_filter( database, fast_translators,
+                                             generators );
 
       // get the modalities and create the score and the apriori
-      std::vector<unsigned int> modalities = raw_filter.modalities ();
-      __createApriori ();
-      __createScore ( fast_filter, modalities );
+      std::vector<unsigned int> modalities = raw_filter.modalities();
+      __createApriori();
+      __createScore( fast_filter, modalities );
 
-      return __learnDAG ( fast_filter, modalities );
+      return __learnDAG( fast_filter, modalities );
     }
-    
-  
+
+
   } /* namespace learning */
 
 

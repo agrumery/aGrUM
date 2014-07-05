@@ -32,13 +32,13 @@ namespace gum {
 
 
     /// sets an initial DAG structure
-    INLINE void BNLearner::setInitialDAG ( const DAG& dag ) {
+    INLINE void BNLearner::setInitialDAG( const DAG& dag ) {
       __initial_dag = dag;
     }
 
 
     /// indicate that we wish to use an AIC score
-    INLINE void BNLearner::useScoreAIC () noexcept {
+    INLINE void BNLearner::useScoreAIC() noexcept {
       __score_type = ScoreType::AIC;
     }
 
@@ -58,93 +58,93 @@ namespace gum {
 
 
     /// indicate that we wish to use a BIC score
-    INLINE void BNLearner::useScoreBIC () noexcept {
+    INLINE void BNLearner::useScoreBIC() noexcept {
       __score_type = ScoreType::BIC;
     }
 
 
     /// indicate that we wish to use a K2 score
-    INLINE void BNLearner::useScoreK2 () noexcept {
+    INLINE void BNLearner::useScoreK2() noexcept {
       __score_type = ScoreType::K2;
     }
 
 
     /// indicate that we wish to use a Log2Likelihood score
-    INLINE void BNLearner::useScoreLog2Likelihood () noexcept {
+    INLINE void BNLearner::useScoreLog2Likelihood() noexcept {
       __score_type = ScoreType::LOG2LIKELIHOOD;
     }
 
 
     /// sets the max indegree
     INLINE void
-    BNLearner::setMaxIndegree ( unsigned int max_indegree ) {
-      __constraint_Indegree.setMaxIndegree ( max_indegree );
+    BNLearner::setMaxIndegree( unsigned int max_indegree ) {
+      __constraint_Indegree.setMaxIndegree( max_indegree );
     }
 
 
     /// indicate that we wish to use a K2 algorithm
-    INLINE void BNLearner::useK2 ( const Sequence<NodeId>& order ) noexcept {
+    INLINE void BNLearner::useK2( const Sequence<NodeId>& order ) noexcept {
       __selected_algo = AlgoType::K2;
-      __K2.setOrder ( order );
+      __K2.setOrder( order );
     }
 
 
     /// indicate that we wish to use a K2 algorithm
-    INLINE void BNLearner::useK2 ( const std::vector<NodeId>& order ) noexcept {
+    INLINE void BNLearner::useK2( const std::vector<NodeId>& order ) noexcept {
       __selected_algo = AlgoType::K2;
-      __K2.setOrder ( order );
+      __K2.setOrder( order );
     }
 
 
     /// indicate that we wish to use a greedy hill climbing algorithm
-    INLINE void BNLearner::useGreedyHillClimbing () noexcept {
+    INLINE void BNLearner::useGreedyHillClimbing() noexcept {
       __selected_algo = AlgoType::GREEDY_HILL_CLIMBING;
     }
 
 
     /// indicate that we wish to use a local search with tabu list
     INLINE void
-    BNLearner::useLocalSearchWithTabuList ( unsigned int tabu_size,
-                                            unsigned int nb_decrease ) noexcept {
+    BNLearner::useLocalSearchWithTabuList( unsigned int tabu_size,
+                                           unsigned int nb_decrease ) noexcept {
       __selected_algo = AlgoType::LOCAL_SEARCH_WITH_TABU_LIST;
-      __constraint_TabuList.setTabuListSize ( tabu_size );
-      __local_search_with_tabu_list.setMaxNbDecreasingChanges ( nb_decrease );
+      __constraint_TabuList.setTabuListSize( tabu_size );
+      __local_search_with_tabu_list.setMaxNbDecreasingChanges( nb_decrease );
     }
 
 
     /// assign a set of forbidden arcs
-    INLINE void BNLearner::setForbiddenArcs ( const ArcSet& set ) {
-      __constraint_ForbiddenArcs.setArcs ( set );
+    INLINE void BNLearner::setForbiddenArcs( const ArcSet& set ) {
+      __constraint_ForbiddenArcs.setArcs( set );
     }
 
 
     /// assign a new forbidden arc
-    INLINE void BNLearner::addForbiddenArc ( const Arc& arc ) {
-      __constraint_ForbiddenArcs.addArc ( arc );
+    INLINE void BNLearner::addForbiddenArc( const Arc& arc ) {
+      __constraint_ForbiddenArcs.addArc( arc );
     }
 
 
     /// remove a forbidden arc
-    INLINE void BNLearner::eraseForbiddenArc ( const Arc& arc ) {
-      __constraint_ForbiddenArcs.eraseArc ( arc );
+    INLINE void BNLearner::eraseForbiddenArc( const Arc& arc ) {
+      __constraint_ForbiddenArcs.eraseArc( arc );
     }
 
 
     /// assign a set of forbidden arcs
-    INLINE void BNLearner::setMandatoryArcs ( const ArcSet& set ) {
-      __constraint_MandatoryArcs.setArcs ( set );
+    INLINE void BNLearner::setMandatoryArcs( const ArcSet& set ) {
+      __constraint_MandatoryArcs.setArcs( set );
     }
 
 
     /// assign a new forbidden arc
-    INLINE void BNLearner::addMandatoryArc ( const Arc& arc ) {
-      __constraint_MandatoryArcs.addArc ( arc );
+    INLINE void BNLearner::addMandatoryArc( const Arc& arc ) {
+      __constraint_MandatoryArcs.addArc( arc );
     }
 
 
     /// remove a forbidden arc
-    INLINE void BNLearner::eraseMandatoryArc ( const Arc& arc ) {
-      __constraint_MandatoryArcs.eraseArc ( arc );
+    INLINE void BNLearner::eraseMandatoryArc( const Arc& arc ) {
+      __constraint_MandatoryArcs.eraseArc( arc );
     }
 
 
@@ -156,58 +156,43 @@ namespace gum {
 
 
     /// use the apriori smoothing
-    INLINE void BNLearner::useAprioriSmoothing () noexcept {
+    INLINE void BNLearner::useAprioriSmoothing() noexcept {
       __apriori_type = AprioriType::SMOOTHING;
     }
 
 
     /// sets the apriori weight
-    INLINE void BNLearner::setAprioriWeight ( float weight ) noexcept {
-      if ( weight < 0 ) {
-        GUM_ERROR ( OutOfBounds, "the weight of the apriori must be positive" );
+    INLINE void BNLearner::setAprioriWeight( float weight ) noexcept {
+      if( weight < 0 ) {
+        GUM_ERROR( OutOfBounds, "the weight of the apriori must be positive" );
       }
+
       __apriori_weight = weight;
     }
-    
+
 
     /// create the apriori used for learning
-    INLINE void BNLearner::__createApriori () {
+    INLINE void BNLearner::__createApriori() {
       // first, save the old apriori, to be delete if everything is ok
       Apriori<>* old_apriori = __apriori;
 
       // create the new apriori
-      switch ( __apriori_type ) {
-      case AprioriType::SMOOTHING:
-        __apriori = new AprioriSmoothing<>;
-        break;
+      switch( __apriori_type ) {
+        case AprioriType::SMOOTHING:
+          __apriori = new AprioriSmoothing<>;
+          break;
 
-      default:
-        GUM_ERROR ( OperationNotAllowed,
-                    "BNLearner does not support yet this apriori" );
+        default:
+          GUM_ERROR( OperationNotAllowed,
+                     "BNLearner does not support yet this apriori" );
       }
 
       // do not forget to assign a weight to the apriori
-      __apriori->setWeight ( __apriori_weight );
+      __apriori->setWeight( __apriori_weight );
 
       // remove the old apriori, if any
-      if ( old_apriori != nullptr ) delete old_apriori;
+      if( old_apriori != nullptr ) delete old_apriori;
     }
-
-
-    /// distribute signals
-    INLINE void BNLearner::distributeProgress
-    ( Size pourcent, double error, double time ) {
-      if ( onProgress.hasListener() )
-        GUM_EMIT3 ( onProgress, pourcent,error,time );
-    }
-
-    
-    /// distribute signals
-    INLINE void BNLearner::distributeStop ( std::string message ) {
-      if ( onStop.hasListener() ) GUM_EMIT1 ( onStop, message );
-    }
-
-    
   } /* namespace learning */
 
 

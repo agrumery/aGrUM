@@ -51,8 +51,8 @@
 #include <agrum/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/learning/greedyHillClimbing.h>
 
-#include <agrum/BN/algorithms/approximationScheme.h>
-#include <agrum/BN/algorithms/approximationSchemeListener.h>
+#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
+#include <agrum/core/algorithms/approximationScheme/approximationSchemeListener.h>
 
 #define MY_ALARM GET_PATH_STR( "alarm.csv" )
 #define MY_ASIA  GET_PATH_STR( "asia.csv" )

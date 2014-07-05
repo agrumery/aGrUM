@@ -28,7 +28,7 @@
 #define __CN_LOOPY_PROPAGATION__H__
 
 #include <agrum/CN/credalNet.h>
-#include <agrum/BN/algorithms/approximationScheme.h>
+#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
 #include <agrum/core/sequence.h>
 #include <cstdlib>
 #include <ctime>

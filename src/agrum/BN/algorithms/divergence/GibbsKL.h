@@ -29,7 +29,7 @@
 
 #include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/particles/Gibbs.h>
-#include <agrum/BN/algorithms/approximationScheme.h>
+#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
 
 #include <agrum/core/signal/signaler.h>
 
