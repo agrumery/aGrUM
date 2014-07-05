@@ -233,6 +233,14 @@ def threaded_execution(cde,verbose):
       sys.stdout.flush()
       w_pos=(w_pos+1)%len(waiter)
 
+  # flushing the buffers
+  while True:
+    try:
+      lastline=readerLoop(lastline)
+    except Empty:
+      break
+    
+    
   return p.returncode
 
 ##########################################################################################################################
