@@ -31,8 +31,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
-#include <agrum/core/approximationPolicy/approximationPolicy.h>
-#include <agrum/core/approximationPolicy/linearApproximationPolicy.h>
+#include <agrum/core/algorithms/approximationPolicy/approximationPolicy.h>
+#include <agrum/core/algorithms/approximationPolicy/linearApproximationPolicy.h>
 
 #include <agrum/multidim/potential.h>
 #include <agrum/variables/labelizedVariable.h>

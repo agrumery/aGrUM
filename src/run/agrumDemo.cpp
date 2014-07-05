@@ -17,7 +17,7 @@
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/BN/algorithms/approximationSchemeListener.h>
+#include <agrum/core/algorithms/approximationScheme/approximationSchemeListener.h>
 #include <agrum/core/OMPThreads.h>
 //<<<<<<< HEAD
 

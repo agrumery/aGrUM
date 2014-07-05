@@ -86,7 +86,6 @@ namespace gum_tests {
       std::vector<unsigned int> modalities = filter.modalities ();
       
       gum::learning::AprioriSmoothing<> apriori;
-      apriori.setWeight ( 0 );
       gum::learning::ScoreK2<> score ( filter, modalities, apriori );
 
       gum::learning::StructuralConstraintSetStatic<
@@ -105,7 +104,7 @@ namespace gum_tests {
       struct_constraint.setSliceOrder ( slices );
       struct_constraint.setDefaultSlice ( 1 );
 
-      gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
+      gum::learning::ParamEstimatorML<> estimator ( filter, modalities, apriori );
 
       gum::learning::GraphChangesGenerator4DiGraph
         < decltype ( struct_constraint ) >
@@ -118,7 +117,7 @@ namespace gum_tests {
       selector ( score, struct_constraint, op_set );
  
     gum::learning::LocalSearchWithTabuList search;
-    search.setMaxNbDecreasingChanges ( 0 );
+    search.setMaxNbDecreasingChanges ( 2 );
 
     try {
       gum::BayesNet<float> bn = search.learnBN ( selector, estimator,
@@ -169,7 +168,7 @@ namespace gum_tests {
       struct_constraint.setSliceOrder ( slices );
       struct_constraint.setDefaultSlice ( 1 );
 
-      gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
+      gum::learning::ParamEstimatorML<> estimator ( filter, modalities, apriori );
 
       gum::learning::GraphChangesGenerator4DiGraph
         < decltype ( struct_constraint ) >
@@ -231,7 +230,7 @@ namespace gum_tests {
       struct_constraint.setSliceOrder ( slices );
       struct_constraint.setDefaultSlice ( 1 );
 
-      gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
+      gum::learning::ParamEstimatorML<> estimator ( filter, modalities, apriori );
 
       gum::learning::GraphChangesGenerator4DiGraph
         < decltype ( struct_constraint ) >
@@ -294,7 +293,8 @@ namespace gum_tests {
       struct_constraint.setSliceOrder ( slices );
       struct_constraint.setDefaultSlice ( 1 );
 
-      gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
+      apriori.setWeight ( 0 );
+      gum::learning::ParamEstimatorML<> estimator ( filter, modalities, apriori );
 
       gum::learning::GraphChangesGenerator4DiGraph
         < decltype ( struct_constraint ) >

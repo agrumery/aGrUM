@@ -69,13 +69,15 @@
 #include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
 #include <agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
 
+#include <agrum/core/algorithms/approximationScheme/IApproximationSchemeConfiguration.h>
+#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
+
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/GibbsInference.h>
 
 #include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
-#include <agrum/BN/algorithms/approximationScheme.h>
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
 
 #include <agrum/core/signal/listener.h>
@@ -113,12 +115,14 @@ namespace std {
 %include "std_string.i"
 
 /* DIRECTORS (for cross language polymorphism) */
-%feature ( "director" ) gum::Potential; //add the __disown__() method to Potential
-%feature ( "nodirector" ) gum::MultiDimContainer::copyFrom;
-%feature ( "director" ) gum::LabelizedVariable;
-%feature ( "director" ) gum::DiscretizedVariable;
-%feature ( "director" ) gum::LazyPropagation;
-%feature ( "director" ) gum::GibbsInference;
+/* director features are removed as they are not used .. ??
+feature ( "director" ) gum::Potential; //add the __disown__() method to Potential
+feature ( "nodirector" ) gum::MultiDimContainer::copyFrom;
+feature ( "director" ) gum::LabelizedVariable;
+feature ( "director" ) gum::DiscretizedVariable;
+feature ( "director" ) gum::LazyPropagation;
+feature ( "director" ) gum::GibbsInference;
+*/
 
 /* EXCEPTION HANDLING */
 %exceptionclass std::bad_cast;
@@ -192,9 +196,11 @@ namespace std {
 %include <agrum/BN/IBayesNet.h>
 %include <agrum/BN/BayesNet.h>
 
+%import <agrum/core/algorithms/approximationScheme/IApproximationSchemeConfiguration.h>
+%import <agrum/core/algorithms/approximationScheme/approximationScheme.h>
+
 %include <agrum/BN/inference/BayesNetInference.h>
 %include <agrum/BN/inference/lazyPropagation.h>
-%import <agrum/BN/algorithms/approximationScheme.h>
 %include <agrum/BN/inference/GibbsInference.h>
 
 %import <agrum/BN/algorithms/divergence/KL.h>

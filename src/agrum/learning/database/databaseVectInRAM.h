@@ -157,6 +157,15 @@ namespace gum {
 
         /// the row just after the last one managed by the handler
         unsigned long __end_index   { 0 };
+
+        
+        /// attach a new handler to the database
+        void __attachHandler ();
+
+        /// detach a handler
+        void __detachHandler ();
+
+        friend class DatabaseVectInRAM;
         
       };
 
@@ -200,6 +209,52 @@ namespace gum {
       /// returns the number of variables (columns) of the database
       unsigned int nbVariables () const noexcept;
 
+      /// insert a new DBRow at the end of the database
+      void insertDBRow ( const DBRow& new_row );
+
+      /// insert a new DBRow at the end of the database
+      void insertDBRow ( DBRow&& new_row );
+
+      /// insert a set of new DBRow at the end of the database
+      void insertDBRows ( const std::vector<DBRow>& new_rows );
+
+      /// insert a set of new DBRows at the end of the database
+      void insertDBRows ( std::vector<DBRow>&& new_rows );
+
+      /// erase a given row
+      /** if the row does not exist, nothing is done. In particular, no
+       * exception is raised. */
+      void eraseDBRow ( unsigned long index );
+
+      /// erase the first row
+      /** if the row does not exist, nothing is done. In particular, no
+       * exception is raised. */
+      void eraseFirstDBRow ();
+      
+      /// erase the last row
+      /** if the row does not exist, nothing is done. In particular, no
+       * exception is raised. */
+      void eraseLastDBRow ();
+      
+      /// erase the k first rows
+      /** if there are fewer than k rows in the database, the database is
+       * completely emptied */
+      void eraseFirstDBRows ( unsigned long nb_rows );
+
+      /// erase the k last rows
+      /** if there are fewer than k rows in the database, the database is
+       * completely emptied */
+      void eraseLastDBRows ( unsigned long nb_rows );
+
+      /// erase the rows from the debth to the endth (not included)
+      void eraseDBRows ( unsigned long deb, unsigned long end );
+
+      /// erase all the rows
+      void eraseAllDBRows ();
+      
+      /// erase the content of the database, including the names of the variables
+      void clear ();
+      
       /// @}
       
       
@@ -217,6 +272,17 @@ namespace gum {
 
       /// the names of the variables for each column
       std::vector<std::string> __variable_names;
+
+      /// the list of handlers currently attached to the database
+      /** this is useful when the database is resized */
+      mutable std::vector<Handler*> __list_of_handlers;
+
+
+      /// update the handlers when the size of the database changes
+      void __updateHandlers ( unsigned long new_size );
+
+      /// allow the handlers to access the database directly
+      friend class Handler;
       
     };
 

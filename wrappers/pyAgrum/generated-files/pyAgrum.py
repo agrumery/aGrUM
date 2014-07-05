@@ -188,7 +188,7 @@ class PythonApproximationListener(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, PythonApproximationListener, name)
     __repr__ = _swig_repr
     def __init__(self, *args): 
-        """__init__(PythonApproximationListener self, ApproximationScheme algo) -> PythonApproximationListener"""
+        """__init__(PythonApproximationListener self, IApproximationSchemeConfiguration algo) -> PythonApproximationListener"""
         this = _pyAgrum.new_PythonApproximationListener(*args)
         try: self.this.append(this)
         except: self.this = this
@@ -1587,6 +1587,16 @@ class LabelizedVariable(DiscreteVariable):
     for _s in [DiscreteVariable]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
     __getattr__ = lambda self, name: _swig_getattr(self, LabelizedVariable, name)
     __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """
+        __init__(gum::LabelizedVariable self, std::string const & aName, std::string const & aDesc="", int const nbrLabel=2) -> LabelizedVariable
+        __init__(gum::LabelizedVariable self, std::string const & aName, std::string const & aDesc="") -> LabelizedVariable
+        __init__(gum::LabelizedVariable self, std::string const & aName) -> LabelizedVariable
+        __init__(gum::LabelizedVariable self, LabelizedVariable aLDRV) -> LabelizedVariable
+        """
+        this = _pyAgrum.new_LabelizedVariable(*args)
+        try: self.this.append(this)
+        except: self.this = this
     __swig_destroy__ = _pyAgrum.delete_LabelizedVariable
     __del__ = lambda self : None;
     def clone(self):
@@ -1630,25 +1640,6 @@ class LabelizedVariable(DiscreteVariable):
         """varType(LabelizedVariable self) -> gum::DiscreteVariable::VarType"""
         return _pyAgrum.LabelizedVariable_varType(self)
 
-    def __init__(self, *args): 
-        """
-        __init__(gum::LabelizedVariable self, std::string const & aName, std::string const & aDesc="", int const nbrLabel=2) -> LabelizedVariable
-        __init__(gum::LabelizedVariable self, std::string const & aName, std::string const & aDesc="") -> LabelizedVariable
-        __init__(gum::LabelizedVariable self, std::string const & aName) -> LabelizedVariable
-        __init__(gum::LabelizedVariable self, LabelizedVariable aLDRV) -> LabelizedVariable
-        __init__(gum::LabelizedVariable self) -> LabelizedVariable
-        """
-        if self.__class__ == LabelizedVariable:
-            _self = None
-        else:
-            _self = self
-        this = _pyAgrum.new_LabelizedVariable(_self, *args)
-        try: self.this.append(this)
-        except: self.this = this
-    def __disown__(self):
-        self.this.disown()
-        _pyAgrum.disown_LabelizedVariable(self)
-        return weakref_proxy(self)
 LabelizedVariable_swigregister = _pyAgrum.LabelizedVariable_swigregister
 LabelizedVariable_swigregister(LabelizedVariable)
 
@@ -2657,6 +2648,14 @@ class BNLearner(_object):
         """useScoreLog2Likelihood(BNLearner self)"""
         return _pyAgrum.BNLearner_useScoreLog2Likelihood(self)
 
+    def setAprioriWeight(self, *args):
+        """setAprioriWeight(BNLearner self, float weight)"""
+        return _pyAgrum.BNLearner_setAprioriWeight(self, *args)
+
+    def useAprioriSmoothing(self):
+        """useAprioriSmoothing(BNLearner self)"""
+        return _pyAgrum.BNLearner_useAprioriSmoothing(self)
+
     def useGreedyHillClimbing(self):
         """useGreedyHillClimbing(BNLearner self)"""
         return _pyAgrum.BNLearner_useGreedyHillClimbing(self)
@@ -2709,88 +2708,140 @@ class BNLearner(_object):
         return _pyAgrum.BNLearner_eraseMandatoryArc(self, *args)
 
     def distributeProgress(self, *args):
-        """distributeProgress(BNLearner self, gum::Size pourcent, double error, double time)"""
+        """distributeProgress(BNLearner self, ApproximationScheme as, gum::Size pourcent, double error, double time)"""
         return _pyAgrum.BNLearner_distributeProgress(self, *args)
 
     def distributeStop(self, *args):
-        """distributeStop(BNLearner self, std::string message)"""
+        """distributeStop(BNLearner self, ApproximationScheme as, std::string message)"""
         return _pyAgrum.BNLearner_distributeStop(self, *args)
-
-    def learnBN(self, *args):
-        """learnBN(BNLearner self, std::string const filename) -> BayesNet_double"""
-        return _pyAgrum.BNLearner_learnBN(self, *args)
-
-    def setVerbosity(self, *args):
-        """setVerbosity(BNLearner self, bool v)"""
-        return _pyAgrum.BNLearner_setVerbosity(self, *args)
 
     def setEpsilon(self, *args):
         """setEpsilon(BNLearner self, double eps)"""
         return _pyAgrum.BNLearner_setEpsilon(self, *args)
 
-    def setMinEpsilonRate(self, *args):
-        """setMinEpsilonRate(BNLearner self, double rate)"""
-        return _pyAgrum.BNLearner_setMinEpsilonRate(self, *args)
-
-    def setMaxIter(self, *args):
-        """setMaxIter(BNLearner self, gum::Size max)"""
-        return _pyAgrum.BNLearner_setMaxIter(self, *args)
-
-    def setMaxTime(self, *args):
-        """setMaxTime(BNLearner self, double timeout)"""
-        return _pyAgrum.BNLearner_setMaxTime(self, *args)
-
-    def setPeriodSize(self, *args):
-        """setPeriodSize(BNLearner self, gum::Size p)"""
-        return _pyAgrum.BNLearner_setPeriodSize(self, *args)
-
-    def setBurnIn(self, *args):
-        """setBurnIn(BNLearner self, gum::Size b)"""
-        return _pyAgrum.BNLearner_setBurnIn(self, *args)
-
-    def verbosity(self):
-        """verbosity(BNLearner self) -> bool"""
-        return _pyAgrum.BNLearner_verbosity(self)
-
     def epsilon(self):
         """epsilon(BNLearner self) -> double"""
         return _pyAgrum.BNLearner_epsilon(self)
+
+    def disableEpsilon(self):
+        """disableEpsilon(BNLearner self)"""
+        return _pyAgrum.BNLearner_disableEpsilon(self)
+
+    def enableEpsilon(self):
+        """enableEpsilon(BNLearner self)"""
+        return _pyAgrum.BNLearner_enableEpsilon(self)
+
+    def isEnabledEpsilon(self):
+        """isEnabledEpsilon(BNLearner self) -> bool"""
+        return _pyAgrum.BNLearner_isEnabledEpsilon(self)
+
+    def setMinEpsilonRate(self, *args):
+        """setMinEpsilonRate(BNLearner self, double rate)"""
+        return _pyAgrum.BNLearner_setMinEpsilonRate(self, *args)
 
     def minEpsilonRate(self):
         """minEpsilonRate(BNLearner self) -> double"""
         return _pyAgrum.BNLearner_minEpsilonRate(self)
 
+    def disableMinEpsilonRate(self):
+        """disableMinEpsilonRate(BNLearner self)"""
+        return _pyAgrum.BNLearner_disableMinEpsilonRate(self)
+
+    def enableMinEpsilonRate(self):
+        """enableMinEpsilonRate(BNLearner self)"""
+        return _pyAgrum.BNLearner_enableMinEpsilonRate(self)
+
+    def isEnabledMinEpsilonRate(self):
+        """isEnabledMinEpsilonRate(BNLearner self) -> bool"""
+        return _pyAgrum.BNLearner_isEnabledMinEpsilonRate(self)
+
+    def setMaxIter(self, *args):
+        """setMaxIter(BNLearner self, gum::Size max)"""
+        return _pyAgrum.BNLearner_setMaxIter(self, *args)
+
     def maxIter(self):
         """maxIter(BNLearner self) -> gum::Size"""
         return _pyAgrum.BNLearner_maxIter(self)
+
+    def disableMaxIter(self):
+        """disableMaxIter(BNLearner self)"""
+        return _pyAgrum.BNLearner_disableMaxIter(self)
+
+    def enableMaxIter(self):
+        """enableMaxIter(BNLearner self)"""
+        return _pyAgrum.BNLearner_enableMaxIter(self)
+
+    def isEnabledMaxIter(self):
+        """isEnabledMaxIter(BNLearner self) -> bool"""
+        return _pyAgrum.BNLearner_isEnabledMaxIter(self)
+
+    def setMaxTime(self, *args):
+        """setMaxTime(BNLearner self, double timeout)"""
+        return _pyAgrum.BNLearner_setMaxTime(self, *args)
 
     def maxTime(self):
         """maxTime(BNLearner self) -> double"""
         return _pyAgrum.BNLearner_maxTime(self)
 
+    def currentTime(self):
+        """currentTime(BNLearner self) -> double"""
+        return _pyAgrum.BNLearner_currentTime(self)
+
+    def disableMaxTime(self):
+        """disableMaxTime(BNLearner self)"""
+        return _pyAgrum.BNLearner_disableMaxTime(self)
+
+    def enableMaxTime(self):
+        """enableMaxTime(BNLearner self)"""
+        return _pyAgrum.BNLearner_enableMaxTime(self)
+
+    def isEnabledMaxTime(self):
+        """isEnabledMaxTime(BNLearner self) -> bool"""
+        return _pyAgrum.BNLearner_isEnabledMaxTime(self)
+
+    def setPeriodSize(self, *args):
+        """setPeriodSize(BNLearner self, gum::Size p)"""
+        return _pyAgrum.BNLearner_setPeriodSize(self, *args)
+
     def periodSize(self):
         """periodSize(BNLearner self) -> gum::Size"""
         return _pyAgrum.BNLearner_periodSize(self)
+
+    def setBurnIn(self, *args):
+        """setBurnIn(BNLearner self, gum::Size b)"""
+        return _pyAgrum.BNLearner_setBurnIn(self, *args)
 
     def burnIn(self):
         """burnIn(BNLearner self) -> gum::Size"""
         return _pyAgrum.BNLearner_burnIn(self)
 
+    def setVerbosity(self, *args):
+        """setVerbosity(BNLearner self, bool v)"""
+        return _pyAgrum.BNLearner_setVerbosity(self, *args)
+
+    def verbosity(self):
+        """verbosity(BNLearner self) -> bool"""
+        return _pyAgrum.BNLearner_verbosity(self)
+
+    def stateApproximationScheme(self):
+        """stateApproximationScheme(BNLearner self) -> gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE"""
+        return _pyAgrum.BNLearner_stateApproximationScheme(self)
+
     def nbrIterations(self):
         """nbrIterations(BNLearner self) -> gum::Size"""
         return _pyAgrum.BNLearner_nbrIterations(self)
 
-    def currentTime(self):
-        """currentTime(BNLearner self) -> double"""
-        return _pyAgrum.BNLearner_currentTime(self)
+    def history(self):
+        """history(BNLearner self) -> Vector_double"""
+        return _pyAgrum.BNLearner_history(self)
+
+    def learnBN(self, *args):
+        """learnBN(BNLearner self, std::string const filename) -> BayesNet_double"""
+        return _pyAgrum.BNLearner_learnBN(self, *args)
 
     def messageApproximationScheme(self):
         """messageApproximationScheme(BNLearner self) -> std::string"""
         return _pyAgrum.BNLearner_messageApproximationScheme(self)
-
-    def history(self):
-        """history(BNLearner self) -> Vector_double"""
-        return _pyAgrum.BNLearner_history(self)
 
 BNLearner_swigregister = _pyAgrum.BNLearner_swigregister
 BNLearner_swigregister(BNLearner)
@@ -2813,11 +2864,7 @@ class DiscretizedVariable_double(DiscreteVariable):
         __init__(gum::DiscretizedVariable<(double)> self, std::string const & aName, std::string const & aDesc) -> DiscretizedVariable_double
         __init__(gum::DiscretizedVariable<(double)> self, DiscretizedVariable_double aDRV) -> DiscretizedVariable_double
         """
-        if self.__class__ == DiscretizedVariable_double:
-            _self = None
-        else:
-            _self = self
-        this = _pyAgrum.new_DiscretizedVariable_double(_self, *args)
+        this = _pyAgrum.new_DiscretizedVariable_double(*args)
         try: self.this.append(this)
         except: self.this = this
     __swig_destroy__ = _pyAgrum.delete_DiscretizedVariable_double
@@ -2866,10 +2913,6 @@ class DiscretizedVariable_double(DiscreteVariable):
         """tick(DiscretizedVariable_double self, gum::Idx i) -> double const &"""
         return _pyAgrum.DiscretizedVariable_double_tick(self, *args)
 
-    def __disown__(self):
-        self.this.disown()
-        _pyAgrum.disown_DiscretizedVariable_double(self)
-        return weakref_proxy(self)
 DiscretizedVariable_double_swigregister = _pyAgrum.DiscretizedVariable_double_swigregister
 DiscretizedVariable_double_swigregister(DiscretizedVariable_double)
 
@@ -2958,11 +3001,7 @@ class Potential_double(_object):
         __init__(gum::Potential<(double)> self, Potential_double src) -> Potential_double
         __init__(gum::Potential<(double)> self, gum::MultiDimImplementation< double > * aContent, MultiDimContainer_double src) -> Potential_double
         """
-        if self.__class__ == Potential_double:
-            _self = None
-        else:
-            _self = self
-        this = _pyAgrum.new_Potential_double(_self, *args)
+        this = _pyAgrum.new_Potential_double(*args)
         try: self.this.append(this)
         except: self.this = this
         self._notSync=True
@@ -2994,10 +3033,6 @@ class Potential_double(_object):
     def sum(self):
         """sum(Potential_double self) -> double const"""
         return _pyAgrum.Potential_double_sum(self)
-
-    def _swap(self, *args):
-        """_swap(Potential_double self, DiscreteVariable x, DiscreteVariable y)"""
-        return _pyAgrum.Potential_double__swap(self, *args)
 
     def get(self, *args):
         """get(Potential_double self, Instantiation i) -> double"""
@@ -3181,14 +3216,6 @@ class Potential_double(_object):
         self.__fill_distrib__()
         return self._var_dims
 
-
-    def __disown__(self):
-        self.this.disown()
-        _pyAgrum.disown_Potential_double(self)
-        return weakref_proxy(self)
-    def _get(self, *args):
-        """_get(Potential_double self, Instantiation i) -> double &"""
-        return _pyAgrum.Potential_double__get(self, *args)
 
 Potential_double_swigregister = _pyAgrum.Potential_double_swigregister
 Potential_double_swigregister(Potential_double)
@@ -3613,17 +3640,13 @@ class LazyPropagation_double(BayesNetInference_double):
         __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN) -> LazyPropagation_double
         __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & elim_order) -> LazyPropagation_double
         """
-        if self.__class__ == LazyPropagation_double:
-            _self = None
-        else:
-            _self = self
-        this = _pyAgrum.new_LazyPropagation_double(_self, *args)
+        this = _pyAgrum.new_LazyPropagation_double(*args)
         try: self.this.append(this)
         except: self.this = this
     __swig_destroy__ = _pyAgrum.delete_LazyPropagation_double
     __del__ = lambda self : None;
     def insertEvidence(self, *args):
-        """insertEvidence(LazyPropagation_double self, gum::List< gum::Potential< double > const * > const & arg0)"""
+        """insertEvidence(LazyPropagation_double self, gum::List< gum::Potential< double > const * > const & arg2)"""
         return _pyAgrum.LazyPropagation_double_insertEvidence(self, *args)
 
     def eraseAllEvidence(self):
@@ -3631,7 +3654,7 @@ class LazyPropagation_double(BayesNetInference_double):
         return _pyAgrum.LazyPropagation_double_eraseAllEvidence(self)
 
     def eraseEvidence(self, *args):
-        """eraseEvidence(LazyPropagation_double self, Potential_double arg0)"""
+        """eraseEvidence(LazyPropagation_double self, Potential_double arg2)"""
         return _pyAgrum.LazyPropagation_double_eraseEvidence(self, *args)
 
     def collect(self, *args):
@@ -3675,10 +3698,6 @@ class LazyPropagation_double(BayesNetInference_double):
         """VI(LazyPropagation_double self, gum::NodeId X, gum::NodeId Y) -> double"""
         return _pyAgrum.LazyPropagation_double_VI(self, *args)
 
-    def _fillMarginal(self, *args):
-        """_fillMarginal(LazyPropagation_double self, gum::Id id, Potential_double marginal)"""
-        return _pyAgrum.LazyPropagation_double__fillMarginal(self, *args)
-
     def junctionTreeToDot(self):
         """junctionTreeToDot(LazyPropagation_double self) -> std::string const"""
         return _pyAgrum.LazyPropagation_double_junctionTreeToDot(self)
@@ -3694,10 +3713,6 @@ class LazyPropagation_double(BayesNetInference_double):
         """addHardEvidence(LazyPropagation_double self, gum::NodeId const id, gum::Idx val)"""
         return _pyAgrum.LazyPropagation_double_addHardEvidence(self, *args)
 
-    def __disown__(self):
-        self.this.disown()
-        _pyAgrum.disown_LazyPropagation_double(self)
-        return weakref_proxy(self)
 LazyPropagation_double_swigregister = _pyAgrum.LazyPropagation_double_swigregister
 LazyPropagation_double_swigregister(LazyPropagation_double)
 
@@ -3712,11 +3727,7 @@ class GibbsInference_double(BayesNetInference_double):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """__init__(gum::GibbsInference<(double)> self, IBayesNet_double BN) -> GibbsInference_double"""
-        if self.__class__ == GibbsInference_double:
-            _self = None
-        else:
-            _self = self
-        this = _pyAgrum.new_GibbsInference_double(_self, *args)
+        this = _pyAgrum.new_GibbsInference_double(*args)
         try: self.this.append(this)
         except: self.this = this
     __swig_destroy__ = _pyAgrum.delete_GibbsInference_double
@@ -3744,10 +3755,6 @@ class GibbsInference_double(BayesNetInference_double):
     def isInferenceRequired(self):
         """isInferenceRequired(GibbsInference_double self) -> bool"""
         return _pyAgrum.GibbsInference_double_isInferenceRequired(self)
-
-    def _fillMarginal(self, *args):
-        """_fillMarginal(GibbsInference_double self, gum::NodeId id, Potential_double marginal)"""
-        return _pyAgrum.GibbsInference_double__fillMarginal(self, *args)
 
     def addHardEvidence(self, *args):
         """addHardEvidence(GibbsInference_double self, gum::NodeId const id, gum::Idx val)"""
@@ -3825,10 +3832,6 @@ class GibbsInference_double(BayesNetInference_double):
         """history(GibbsInference_double self) -> Vector_double"""
         return _pyAgrum.GibbsInference_double_history(self)
 
-    def __disown__(self):
-        self.this.disown()
-        _pyAgrum.disown_GibbsInference_double(self)
-        return weakref_proxy(self)
 GibbsInference_double_swigregister = _pyAgrum.GibbsInference_double_swigregister
 GibbsInference_double_swigregister(GibbsInference_double)
 

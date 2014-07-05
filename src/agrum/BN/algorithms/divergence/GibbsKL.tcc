@@ -32,7 +32,7 @@
 #include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
 #include <agrum/BN/particles/Gibbs.h>
-#include <agrum/BN/algorithms/approximationScheme.h>
+#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
 
 #define KL_DEFAULT_MAXITER 10000000
 #define KL_DEFAULT_EPSILON 1e-10
@@ -143,7 +143,7 @@ namespace gum {
         }
       }
 
-      if ( this->testMinEpsilonRate() /* replace check_rate */ ) {
+      if ( this->isEnabledMinEpsilonRate() /* replace check_rate */ ) {
         // delta is used as a temporary variable
         delta = _klPQ / nbrIterations();
         error = ( double ) fabs ( delta - oldPQ );
@@ -158,4 +158,4 @@ namespace gum {
   }
 
 } // namespace gum
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

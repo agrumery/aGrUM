@@ -25,9 +25,9 @@
 #define BNLEARNERLISTENER_H
 
 #include <agrum/config.h>
-#include <agrum/BN/algorithms/approximationSchemeListener.h>
+#include <agrum/core/algorithms/approximationScheme/approximationSchemeListener.h>
 
-#include <agrum/BN/algorithms/approximationScheme.h>
+#include <agrum/core/algorithms/approximationScheme/approximationScheme.h>
 
 namespace gum {
   namespace learning {

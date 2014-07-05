@@ -37,8 +37,10 @@ namespace gum {
     template <typename RowFilter> INLINE
     ParamEstimator<IdSetAlloc,CountAlloc>::ParamEstimator
     ( const RowFilter& filter,
-      const std::vector<unsigned int>& var_modalities ) :
-      Counter<IdSetAlloc,CountAlloc> ( filter, var_modalities ) {
+      const std::vector<unsigned int>& var_modalities,
+      Apriori<IdSetAlloc,CountAlloc>& apriori ) :
+      Counter<IdSetAlloc,CountAlloc> ( filter, var_modalities ),
+      _apriori ( &apriori ) {
       GUM_CONSTRUCTOR ( ParamEstimator );
     }
 
@@ -48,6 +50,7 @@ namespace gum {
     ParamEstimator<IdSetAlloc,CountAlloc>::ParamEstimator
     ( const ParamEstimator<IdSetAlloc,CountAlloc>& from ) :
       Counter<IdSetAlloc,CountAlloc> ( from ),
+      _apriori ( from._apriori ),
       _is_normalized ( from._is_normalized ) {
       GUM_CONS_CPY ( ParamEstimator );
     }
@@ -58,6 +61,7 @@ namespace gum {
     ParamEstimator<IdSetAlloc,CountAlloc>::ParamEstimator
     ( ParamEstimator<IdSetAlloc,CountAlloc>&& from ) :
       Counter<IdSetAlloc,CountAlloc> ( std::move ( from ) ),
+      _apriori ( std::move ( from._apriori ) ),
       _is_normalized ( std::move ( from._is_normalized ) ) {
       GUM_CONS_MOV ( ParamEstimator );
     }
@@ -109,6 +113,35 @@ namespace gum {
       const std::vector<float,CountAlloc>& normalized_counts =
         parameters ( nodeset_index );
       pot.fillWith ( normalized_counts );
+    }
+
+
+    /// returns the counting vector for a given (conditioned) target set
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    const std::vector<float,CountAlloc>&
+    ParamEstimator<IdSetAlloc,CountAlloc>::_getAllCounts ( unsigned int index ) {
+      if ( ! this->_counts_computed ) {
+        _apriori->addApriori ( this->_modalities,
+                               Counter<IdSetAlloc,CountAlloc>::_getCounts (),
+                               this->_target_nodesets,
+                               this->_conditioning_nodesets );
+      }
+      return Counter<IdSetAlloc,CountAlloc>::_getAllCounts ( index );
+    }
+ 
+     
+    /// returns the counting vector for a conditioning set
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    const std::vector<float,CountAlloc>&
+    ParamEstimator<IdSetAlloc,CountAlloc>::_getConditioningCounts
+    ( unsigned int index ) {
+      if ( ! this->_counts_computed ) {
+        _apriori->addApriori ( this->_modalities,
+                               Counter<IdSetAlloc,CountAlloc>::_getCounts (),
+                               this->_target_nodesets,
+                               this->_conditioning_nodesets );
+      }
+      return Counter<IdSetAlloc,CountAlloc>::_getConditioningCounts ( index );
     }
 
 
