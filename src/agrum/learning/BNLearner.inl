@@ -156,13 +156,13 @@ namespace gum {
 
 
     /// use the apriori smoothing
-    INLINE void BNLearner::useAprioriSmoothing () {
+    INLINE void BNLearner::useAprioriSmoothing () noexcept {
       __apriori_type = AprioriType::SMOOTHING;
     }
 
 
     /// sets the apriori weight
-    INLINE void BNLearner::setAprioriWeight ( float weight ) {
+    INLINE void BNLearner::setAprioriWeight ( float weight ) noexcept {
       if ( weight < 0 ) {
         GUM_ERROR ( OutOfBounds, "the weight of the apriori must be positive" );
       }

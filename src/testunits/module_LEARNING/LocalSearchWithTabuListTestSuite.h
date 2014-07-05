@@ -86,6 +86,7 @@ namespace gum_tests {
       std::vector<unsigned int> modalities = filter.modalities ();
       
       gum::learning::AprioriSmoothing<> apriori;
+      apriori.setWeight ( 0 );
       gum::learning::ScoreK2<> score ( filter, modalities, apriori );
 
       gum::learning::StructuralConstraintSetStatic<
@@ -117,7 +118,7 @@ namespace gum_tests {
       selector ( score, struct_constraint, op_set );
  
     gum::learning::LocalSearchWithTabuList search;
-    search.setMaxNbDecreasingChanges ( 3 );
+    search.setMaxNbDecreasingChanges ( 0 );
 
     try {
       gum::BayesNet<float> bn = search.learnBN ( selector, estimator,
@@ -134,7 +135,7 @@ namespace gum_tests {
       
   }
 
-    void test_alarm1 () {
+    void xtest_alarm1 () {
       gum::learning::DatabaseFromCSV database ( MY_ALARM );
       
       auto translators = gum::learning::make_translators
@@ -149,6 +150,7 @@ namespace gum_tests {
       std::vector<unsigned int> modalities = filter.modalities ();
       
       gum::learning::AprioriSmoothing<> apriori;
+      apriori.setWeight ( 0 );
       gum::learning::ScoreK2<> score ( filter, modalities, apriori );
 
       gum::learning::StructuralConstraintSetStatic<
@@ -194,7 +196,7 @@ namespace gum_tests {
     }
 
 
-    void test_alarm2 () {
+    void xtest_alarm2 () {
       gum::learning::DatabaseFromCSV database ( MY_ALARM );
       
       gum::learning::DBRowTranslatorSetDynamic
@@ -210,6 +212,7 @@ namespace gum_tests {
       std::vector<unsigned int> modalities = filter.modalities ();
       
       gum::learning::AprioriSmoothing<> apriori;
+      apriori.setWeight ( 0 );
       gum::learning::ScoreK2<> score ( filter, modalities, apriori );
 
       gum::learning::StructuralConstraintSetStatic<
@@ -255,7 +258,7 @@ namespace gum_tests {
     }
 
 
-    void test_alarm3 () {
+    void xtest_alarm3 () {
       gum::learning::DatabaseFromCSV database ( MY_ALARM );
       
       gum::learning::DBRowTranslatorSetDynamic< gum::learning::DBCellTranslator<1,1> >
@@ -272,6 +275,7 @@ namespace gum_tests {
       std::vector<unsigned int> modalities = filter.modalities ();
       
       gum::learning::AprioriSmoothing<> apriori;
+      apriori.setWeight ( 0 );
       gum::learning::ScoreK2<> score ( filter, modalities, apriori );
 
       gum::learning::StructuralConstraintSetStatic<

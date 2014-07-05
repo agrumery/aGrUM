@@ -299,6 +299,13 @@ namespace gum {
       /// the score used
       Score<>* __score { nullptr };
 
+      /// the type of the parameter estimator
+      ParamEstimatorType
+      __param_estimator_type { ParamEstimatorType::MLwithUniformApriori };
+
+      /// the parameter estimator to use
+      ParamEstimator<>* __param_estimator { nullptr };
+
       /// the a priori selected for the score and parameters
       AprioriType __apriori_type { AprioriType::SMOOTHING };
 
@@ -308,13 +315,6 @@ namespace gum {
       /// the weight of the apriori
       float __apriori_weight { 1.0f };
       
-      /// the type of the parameter estimator
-      ParamEstimatorType
-      __param_estimator_type { ParamEstimatorType::MLwithUniformApriori };
-
-      /// the parameter estimator to use
-      ParamEstimator<>* __param_estimator { nullptr };
-
       /// the constraint for 2TBNs
       StructuralConstraintSliceOrder __constraint_SliceOrder;
 
