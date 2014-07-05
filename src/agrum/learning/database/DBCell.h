@@ -28,7 +28,8 @@
 #include <string>
 #include <cstring>
 #include <type_traits>
-
+#include <stdexcept>
+	
 #include <agrum/config.h>
 #include <agrum/core/bijection.h>
 
