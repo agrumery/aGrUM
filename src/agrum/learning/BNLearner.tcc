@@ -21,18 +21,20 @@
  * @brief A pack of learning algorithms that can easily be used
  *
  * The pack currently contains K2, GreedyHillClimbing and LocalSearchWithTabuList
- * 
+ *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
+#include <agrum/learning/BNLearnerListener.h>
+
 namespace gum {
 
-  
+
   namespace learning {
 
-    
+
     /// create the score used for learning
     template <typename FILTER>
     void
@@ -48,13 +50,13 @@ namespace gum {
         break;
 
         /*
-      case ScoreType::BD:
-        __score = new ScoreBD<> ( filter, modalities, *__apriori );
-        break;
+          case ScoreType::BD:
+          __score = new ScoreBD<> ( filter, modalities, *__apriori );
+          break;
 
-      case ScoreType::BDEU:
-        __score = new ScoreBDeu<> ( filter, modalities, *__apriori );
-        break;
+          case ScoreType::BDEU:
+          __score = new ScoreBDeu<> ( filter, modalities, *__apriori );
+          break;
         */
         
       case ScoreType::BIC:
@@ -78,7 +80,7 @@ namespace gum {
       if ( old_score != nullptr ) delete old_score;
     }
 
-    
+
     /// create the parameter estimator used for learning
     template <typename FILTER>
     void BNLearner::__createParamEstimator
@@ -86,7 +88,7 @@ namespace gum {
       std::vector<unsigned int>& modalities ) {
       // first, save the old estimator, to be delete if everything is ok
       ParamEstimator<>* old_estimator = __param_estimator;
-      
+
       // create the new estimator
       switch ( __param_estimator_type ) {
       case ParamEstimatorType::ML:
@@ -99,7 +101,7 @@ namespace gum {
         break;
 
       default:
-         GUM_ERROR ( OperationNotAllowed,
+        GUM_ERROR ( OperationNotAllowed,
                     "BNLearner does not support yet this parameter estimator" );
       }
 
@@ -107,7 +109,7 @@ namespace gum {
       if ( old_estimator != nullptr ) delete old_estimator;
     }
 
-    
+
     /// learn a structure from a file
     template <typename FILTER>
     DAG BNLearner::__learnDAG ( FILTER& filter,
@@ -115,7 +117,7 @@ namespace gum {
       // add the mandatory arcs to the initial dag and remove the forbidden ones
       // from the initial graph
       DAG init_graph = __initial_dag;
-      
+
       const ArcSet& mandatory_arcs = __constraint_MandatoryArcs.arcs ();
       for ( const auto& arc : mandatory_arcs ) {
         if ( ! init_graph.exists ( arc.tail () ) )
@@ -129,140 +131,140 @@ namespace gum {
       for ( const auto& arc : forbidden_arcs ) {
         init_graph.eraseArc ( arc );
       }
-      
+
       switch ( __selected_algo ) {
       // ========================================================================
-      case AlgoType::GREEDY_HILL_CLIMBING:
-        {
-          StructuralConstraintSetStatic<StructuralConstraintMandatoryArcs,
-                                        StructuralConstraintForbiddenArcs,
-                                        StructuralConstraintSliceOrder>
-            gen_constraint;
-          static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
-            __constraint_MandatoryArcs;
-          static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
-            __constraint_ForbiddenArcs;
-          static_cast<StructuralConstraintSliceOrder&> ( gen_constraint ) =
-            __constraint_SliceOrder;
-          
-          GraphChangesGenerator4DiGraph< decltype ( gen_constraint ) >
-            op_set ( gen_constraint );
+      case AlgoType::GREEDY_HILL_CLIMBING: {
+        BNLearnerListener listener( this,__greedy_hill_climbing );
+        StructuralConstraintSetStatic<StructuralConstraintMandatoryArcs,
+                                      StructuralConstraintForbiddenArcs,
+                                      StructuralConstraintSliceOrder>
+          gen_constraint;
+        static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
+          __constraint_MandatoryArcs;
+        static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
+          __constraint_ForbiddenArcs;
+        static_cast<StructuralConstraintSliceOrder&> ( gen_constraint ) =
+          __constraint_SliceOrder;
+
+        GraphChangesGenerator4DiGraph< decltype ( gen_constraint ) >
+          op_set ( gen_constraint );
+
+        StructuralConstraintSetStatic<StructuralConstraintIndegree,
+                                      StructuralConstraintDAG> sel_constraint;
+        static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
+          __constraint_Indegree;
+
+        GraphChangesSelector4DiGraph< Score<>,
+                                      decltype ( sel_constraint ),
+                                      decltype ( op_set ) >
+          selector ( *__score, sel_constraint, op_set );
+
+        return __greedy_hill_climbing.learnStructure ( selector, modal,
+                                                       init_graph );
+      }
+
+      // ========================================================================
+      case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST: {
+        BNLearnerListener listener( this,__local_search_with_tabu_list );
+        StructuralConstraintSetStatic<StructuralConstraintMandatoryArcs,
+                                      StructuralConstraintForbiddenArcs,
+                                      StructuralConstraintSliceOrder>
+          gen_constraint;
+        static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
+          __constraint_MandatoryArcs;
+        static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
+          __constraint_ForbiddenArcs;
+        static_cast<StructuralConstraintSliceOrder&> ( gen_constraint ) =
+          __constraint_SliceOrder;
+
+        GraphChangesGenerator4DiGraph< decltype ( gen_constraint ) >
+          op_set ( gen_constraint );
+
+        StructuralConstraintSetStatic<StructuralConstraintTabuList,
+                                      StructuralConstraintIndegree,
+                                      StructuralConstraintDAG> sel_constraint;
+        static_cast<StructuralConstraintTabuList&> ( sel_constraint ) =
+          __constraint_TabuList;
+        static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
+          __constraint_Indegree;
+
+        GraphChangesSelector4DiGraph< Score<>,
+                                      decltype ( sel_constraint ),
+                                      decltype ( op_set ) >
+          selector ( *__score, sel_constraint, op_set );
         
-          StructuralConstraintSetStatic<StructuralConstraintIndegree,
-                                        StructuralConstraintDAG> sel_constraint;
-          static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
-            __constraint_Indegree;
-          
-          GraphChangesSelector4DiGraph< Score<>,
-                                        decltype ( sel_constraint ),
-                                        decltype ( op_set ) >
-            selector ( *__score, sel_constraint, op_set );
-                         
-          return __greedy_hill_climbing.learnStructure ( selector, modal,
-                                                         init_graph );
-        }
-        
-       // ========================================================================
-       case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST:
-        {
-          StructuralConstraintSetStatic<StructuralConstraintMandatoryArcs,
-                                        StructuralConstraintForbiddenArcs,
-                                        StructuralConstraintSliceOrder>
-            gen_constraint;
-          static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
-            __constraint_MandatoryArcs;
-          static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
-            __constraint_ForbiddenArcs;
-          static_cast<StructuralConstraintSliceOrder&> ( gen_constraint ) =
-            __constraint_SliceOrder;
-          
-          GraphChangesGenerator4DiGraph< decltype ( gen_constraint ) >
-            op_set ( gen_constraint );
-          
-          StructuralConstraintSetStatic<StructuralConstraintTabuList,
-                                        StructuralConstraintIndegree,
-                                        StructuralConstraintDAG> sel_constraint;
-          static_cast<StructuralConstraintTabuList&> ( sel_constraint ) =
-            __constraint_TabuList;
-          static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
-            __constraint_Indegree;
-          
-          GraphChangesSelector4DiGraph< Score<>,
-                                        decltype ( sel_constraint ),
-                                        decltype ( op_set ) >
-            selector ( *__score, sel_constraint, op_set );
-          
-          return __local_search_with_tabu_list.learnStructure ( selector, modal,
-                                                                init_graph );
-        }
+        return __local_search_with_tabu_list.learnStructure ( selector, modal,
+                                                              init_graph );
+      }
         
       // ========================================================================
-      case AlgoType::K2:
-        {
-          StructuralConstraintSetStatic<StructuralConstraintMandatoryArcs,
-                                        StructuralConstraintForbiddenArcs>
-            gen_constraint;
-          static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
-            __constraint_MandatoryArcs;
-          static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
-            __constraint_ForbiddenArcs;
-                         
-          GraphChangesGenerator4K2< decltype ( gen_constraint ) >
-            op_set ( gen_constraint );
+      case AlgoType::K2: {
+        BNLearnerListener listener( this,__K2.approximationScheme() );
+        StructuralConstraintSetStatic<StructuralConstraintMandatoryArcs,
+                                      StructuralConstraintForbiddenArcs>
+          gen_constraint;
+        static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
+          __constraint_MandatoryArcs;
+        static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
+          __constraint_ForbiddenArcs;
 
-          // if some mandatory arcs are incompatible with the order, use a DAG
-          // constraint instead of a DiGraph constraint to avoid cycles
-          const ArcSet& mandatory_arcs =
-            static_cast<StructuralConstraintMandatoryArcs&>
-            ( gen_constraint ).arcs ();
-          const Sequence<NodeId>& order = __K2.order ();
-          bool order_compatible = true;
-          for ( const auto& arc : mandatory_arcs ) {
-            if ( order.pos ( arc.tail () ) >= order.pos ( arc.head () ) ) {
-              order_compatible = false;
-              break;
-            }
-          }
+        GraphChangesGenerator4K2< decltype ( gen_constraint ) >
+          op_set ( gen_constraint );
 
-          if ( order_compatible ) {
-            StructuralConstraintSetStatic<StructuralConstraintIndegree,
-                                          StructuralConstraintDiGraph>
-              sel_constraint;
-            static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
-              __constraint_Indegree;
-          
-            GraphChangesSelector4DiGraph< Score<>,
-                                          decltype ( sel_constraint ),
-                                          decltype ( op_set ) >
-              selector ( *__score, sel_constraint, op_set );
-            
-            return __K2.learnStructure ( selector, modal, init_graph );
-          }
-          else {
-            StructuralConstraintSetStatic<StructuralConstraintIndegree,
-                                          StructuralConstraintDAG>
-              sel_constraint;
-            static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
-              __constraint_Indegree;
-          
-            GraphChangesSelector4DiGraph< Score<>,
-                                          decltype ( sel_constraint ),
-                                          decltype ( op_set ) >
-              selector ( *__score, sel_constraint, op_set );
-            
-            return __K2.learnStructure ( selector, modal, init_graph );
+        // if some mandatory arcs are incompatible with the order, use a DAG
+        // constraint instead of a DiGraph constraint to avoid cycles
+        const ArcSet& mandatory_arcs =
+          static_cast<StructuralConstraintMandatoryArcs&>
+          ( gen_constraint ).arcs ();
+        const Sequence<NodeId>& order = __K2.order ();
+        bool order_compatible = true;
+        for ( const auto& arc : mandatory_arcs ) {
+          if ( order.pos ( arc.tail () ) >= order.pos ( arc.head () ) ) {
+            order_compatible = false;
+            break;
           }
         }
 
-       // ========================================================================
-       default:
+        if ( order_compatible ) {
+          StructuralConstraintSetStatic<StructuralConstraintIndegree,
+                                        StructuralConstraintDiGraph>
+            sel_constraint;
+          static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
+            __constraint_Indegree;
+
+          GraphChangesSelector4DiGraph< Score<>,
+                                        decltype ( sel_constraint ),
+                                        decltype ( op_set ) >
+            selector ( *__score, sel_constraint, op_set );
+          
+          return __K2.learnStructure ( selector, modal, init_graph );
+        }
+        else {
+          StructuralConstraintSetStatic<StructuralConstraintIndegree,
+                                        StructuralConstraintDAG>
+            sel_constraint;
+          static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
+            __constraint_Indegree;
+
+          GraphChangesSelector4DiGraph< Score<>,
+                                        decltype ( sel_constraint ),
+                                        decltype ( op_set ) >
+            selector ( *__score, sel_constraint, op_set );
+          
+          return __K2.learnStructure ( selector, modal, init_graph );
+        }
+      }
+
+      // ========================================================================
+      default:
         GUM_ERROR ( OperationNotAllowed,
                     "the learnDAG method has not been implemented for this "
                     "learning algorithm" );
       }
     }
 
-      
+
     /// learn a Bayes Net from a file
     template <typename GUM_SCALAR>
     BayesNet<GUM_SCALAR> BNLearner::learnBN ( std::string filename ) {
@@ -277,16 +279,16 @@ namespace gum {
       raw_translators.insertTranslator ( Col<0> (), database.nbVariables () );
 
       auto generators = make_generators ( RowGeneratorIdentity () );
-      
+
       auto raw_filter = make_DB_row_filter ( database, raw_translators,
                                              generators );
-      
+
       DBTransformCompactInt raw2fast_transfo;
       raw2fast_transfo.transform ( raw_filter );
 
       DBRowTranslatorSetDynamic<CellTranslatorCompactIntId> fast_translators;
       fast_translators.insertTranslator ( Col<0> (), database.nbVariables () );
-     
+
       auto fast_filter = make_DB_row_filter ( database, fast_translators,
                                               generators );
 
@@ -305,8 +307,8 @@ namespace gum {
 
 
   } /* namespace learning */
-  
-  
+
+
 } /* namespace gum */
 
 

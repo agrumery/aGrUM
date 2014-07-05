@@ -36,7 +36,7 @@
 
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/triangulation/incrementalTriangulation.inl>
+#include <agrum/graphs/triangulations/incrementalTriangulation.inl>
 #endif //GUM_NO_INLINE
 
 

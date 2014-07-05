@@ -10,7 +10,7 @@
  *   This program is distributed in the hope that it wil be useful,        *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
+ *   GNU General Public License __for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
@@ -21,7 +21,7 @@
  * @brief A pack of learning algorithms that can easily be used
  *
  * The pack currently contains K2, GreedyHillClimbing and LocalSearchWithTabuList
- * 
+ *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
@@ -38,7 +38,7 @@
 
 namespace gum {
 
-  
+
   namespace learning {
 
 
@@ -47,7 +47,7 @@ namespace gum {
       // for debugging purposes
       GUM_CONSTRUCTOR ( BNLearner );
     }
-      
+
 
     /// copy constructor
     BNLearner::BNLearner ( const BNLearner& from ) :
@@ -74,10 +74,10 @@ namespace gum {
       // for debugging purposes
       GUM_CONS_CPY ( BNLearner );
     }
-    
+
 
     /// move constructor
-    BNLearner::BNLearner ( BNLearner&& from ) :
+    BNLearner::BNLearner ( BNLearner && from ) :
       __score_type ( from.__score_type ),
       __score ( from.__score ),
       __param_estimator_type ( from.__param_estimator_type ),
@@ -99,17 +99,17 @@ namespace gum {
       from.__score = nullptr;
       from.__param_estimator = nullptr;
       from.__apriori = nullptr;
-      
+
       GUM_CONS_MOV ( BNLearner );
     }
 
-    
+
     /// destructor
     BNLearner::~BNLearner () {
       if ( __score ) delete __score;
       if ( __param_estimator ) delete __param_estimator;
       if ( __apriori ) delete __apriori;
-      
+
       GUM_DESTRUCTOR ( BNLearner );
     }
 
@@ -151,15 +151,16 @@ namespace gum {
         __greedy_hill_climbing = from.__greedy_hill_climbing;
         __local_search_with_tabu_list = from.__local_search_with_tabu_list;
         __initial_dag = from.__initial_dag;
+
       }
-      
+
       return *this;
     }
 
 
     /// move operator
     BNLearner&
-    BNLearner::operator= ( BNLearner&& from ) {
+    BNLearner::operator= ( BNLearner && from ) {
       if ( this != &from ) {
         if ( __score ) {
           delete __score;
@@ -191,7 +192,7 @@ namespace gum {
         __selected_algo = from.__selected_algo;
         __K2 = from.__K2;
         __greedy_hill_climbing = std::move ( from.__greedy_hill_climbing );
-        __local_search_with_tabu_list = 
+        __local_search_with_tabu_list =
           std::move ( from.__local_search_with_tabu_list );
         __initial_dag = std::move ( from.__initial_dag );
         from.__score = nullptr;
@@ -208,14 +209,16 @@ namespace gum {
     BNLearner::__readFile ( const std::string& filename ) {
       // get the extension of the file
       int filename_size = filename.size ();
+
       if ( filename_size < 4 ) {
         GUM_ERROR ( FormatNotFound, "BNLearner could not determine the "
                     "file type of the database" );
       }
+
       std::string extension = filename.substr ( filename.size () - 4 );
-      std::transform( extension.begin (), extension.end (),
-                      extension.begin (), ::tolower );
-      
+      std::transform ( extension.begin (), extension.end (),
+                       extension.begin (), ::tolower );
+
       if ( extension == ".csv" ) {
         return DatabaseFromCSV ( filename );
       }
@@ -223,7 +226,7 @@ namespace gum {
       GUM_ERROR ( OperationNotAllowed,
                   "BNLearner does not support yet this type of database file" );
     }
-    
+
 
     /// learn a structure from a file
     DAG BNLearner::learnDAG ( std::string filename ) {
@@ -238,16 +241,16 @@ namespace gum {
       raw_translators.insertTranslator ( Col<0> (), database.nbVariables () );
 
       auto generators = make_generators ( RowGeneratorIdentity () );
-      
+
       auto raw_filter = make_DB_row_filter ( database, raw_translators,
                                              generators );
-      
+
       DBTransformCompactInt raw2fast_transfo;
       raw2fast_transfo.transform ( raw_filter );
 
       DBRowTranslatorSetDynamic<CellTranslatorCompactIntId> fast_translators;
       fast_translators.insertTranslator ( Col<0> (), database.nbVariables () );
-     
+
       auto fast_filter = make_DB_row_filter ( database, fast_translators,
                                               generators );
 
@@ -258,10 +261,9 @@ namespace gum {
 
       return __learnDAG ( fast_filter, modalities );
     }
-    
-  
+
   } /* namespace learning */
-  
-  
+
+
 } /* namespace gum */
 

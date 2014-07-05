@@ -65,9 +65,14 @@
 #include <agrum/learning/paramUtils/paramEstimatorMLwithUniformApriori.h>
 #include <agrum/learning/paramUtils/paramEstimatorML.h>
 
+#include <agrum/BN/algorithms/approximationSchemeListener.h>
+#include <agrum/BN/algorithms/approximationScheme.h>
+
 #include <agrum/learning/K2.h>
 #include <agrum/learning/greedyHillClimbing.h>
 #include <agrum/learning/localSearchWithTabuList.h>
+
+#include <agrum/core/signal/signaler.h>
 
 
 namespace gum {
@@ -75,6 +80,7 @@ namespace gum {
 
   namespace learning {
 
+    class BNLearnerListener;
 
     /** @class BNLearner
      * @brief A pack of learning algorithms that can easily be used
@@ -83,7 +89,7 @@ namespace gum {
      * LocalSearchWithTabuList
      * @ingroup learning_group
      */
-    class BNLearner {
+    class BNLearner: public ApproximationScheme {
     private:
 
       /// an enumeration enabling to select easily the score we wish to use
@@ -93,7 +99,8 @@ namespace gum {
         BDEU,
         BIC,
         K2,
-        LOG2LIKELIHOOD };
+        LOG2LIKELIHOOD
+      };
 
       /// an enumeration to select the type of parameter estimation we shall apply
       enum ParamEstimatorType {
@@ -114,7 +121,7 @@ namespace gum {
       };
 
 
-     public:
+    public:
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -195,17 +202,17 @@ namespace gum {
 
       /// @}
 
-
+      
       // ##########################################################################
       /// @name A priori selection / parameterization
       // ##########################################################################
       /// @{
 
       /// sets the apriori weight
-      void setAprioriWeight ( float weight );
+      void setAprioriWeight ( float weight ) noexcept;
       
       /// use the apriori smoothing
-      void useAprioriSmoothing ();
+      void useAprioriSmoothing () noexcept;
       
       /// @}
       
@@ -274,19 +281,23 @@ namespace gum {
       /// @}
 
 
+      // ##########################################################################
+      /// @name redistribute signals
+      // ##########################################################################
+
+      /// {@
+      void distributeProgress ( Size pourcent, double error, double time );
+      void distributeStop ( std::string message );
+      /// @}
+
+
     private:
+
       /// the score selected for learning
       ScoreType __score_type { ScoreType::BIC };
 
       /// the score used
       Score<>* __score { nullptr };
-
-      /// the type of the parameter estimator
-      ParamEstimatorType
-      __param_estimator_type { ParamEstimatorType::MLwithUniformApriori };
-
-      /// the parameter estimator to use
-      ParamEstimator<>* __param_estimator { nullptr };
 
       /// the a priori selected for the score and parameters
       AprioriType __apriori_type { AprioriType::SMOOTHING };
@@ -297,6 +308,13 @@ namespace gum {
       /// the weight of the apriori
       float __apriori_weight { 1.0f };
       
+      /// the type of the parameter estimator
+      ParamEstimatorType
+      __param_estimator_type { ParamEstimatorType::MLwithUniformApriori };
+
+      /// the parameter estimator to use
+      ParamEstimator<>* __param_estimator { nullptr };
+
       /// the constraint for 2TBNs
       StructuralConstraintSliceOrder __constraint_SliceOrder;
 
@@ -333,6 +351,9 @@ namespace gum {
       /// reads a file and returns a databaseVectInRam
       DatabaseVectInRAM __readFile ( const std::string& filename );
 
+      /// create the apriori used for learning
+      void __createApriori ();
+
       /// create the score used for learning
       template <typename FILTER>
       void __createScore ( FILTER& filter,
@@ -342,9 +363,6 @@ namespace gum {
       template <typename FILTER>
       void __createParamEstimator ( FILTER& filter,
                                     std::vector<unsigned int>& modalities );
-
-      /// create the apriori used for learning
-      void __createApriori ();
 
       /// returns the DAG learnt
       template <typename FILTER>

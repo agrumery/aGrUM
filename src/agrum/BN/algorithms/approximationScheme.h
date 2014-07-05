@@ -346,16 +346,14 @@ namespace gum {
       bool startOfPeriod() {
         if ( __current_step < __burn_in ) return false;
 
+        if ( __period_size == 1 ) return true;
+
         return ( ( __current_step - __burn_in ) % __period_size == 0 );
       }
 
-      /// update the scheme w.r.t the new error
-      void updateApproximationScheme() {
-        __current_step++ ;
-      }
 
       /// update the scheme w.r.t the new error and incr steps
-      void updateApproximationScheme ( unsigned int incr ) {
+      void updateApproximationScheme ( unsigned int incr =1) {
         __current_step += incr;
       }
 
@@ -370,7 +368,8 @@ namespace gum {
       /// @throw OperationNotAllowed if stat!=ApproximationSchemeSTATE::Continue
       /// @return false if state become != ApproximationSchemeSTATE::Continue
       bool continueApproximationScheme ( double error ) {
-        // For coherence, we fix the time used in the method.
+        // For coherence, we fix the time used in the method
+        
         double timer_step = __timer.step();
 
         if ( __test__max_time ) {
@@ -425,7 +424,7 @@ namespace gum {
 
         if ( stateApproximationScheme() == ApproximationSchemeSTATE::Continue ) {
           if ( onProgress.hasListener() ) GUM_EMIT3 ( onProgress, ( __current_step * 100 ) / __max_iter, __current_epsilon, timer_step );
-
+          
           return true;
         } else
           return false;

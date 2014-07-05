@@ -194,13 +194,13 @@ namespace gum {
 
 
   template<LIST_DECL_CLASSES>
-  class MAKE_NAME ( Signaler ) :
-    public __sig__::MAKE_NAME ( BasicSignaler ) <LIST_CLASSES> {
+  class MAKE_NAME ( Signaler ) : public __sig__::MAKE_NAME ( BasicSignaler ) <LIST_CLASSES> {
 
       typedef typename __sig__::MAKE_NAME ( BasicSignaler ) <LIST_CLASSES>::ConnectorIterator ConnectorIterator;
 
-
     public:
+      using BasicSignaler = __sig__::MAKE_NAME ( BasicSignaler ) <LIST_CLASSES>;
+
       MAKE_NAME ( Signaler ) () {
         GUM_CONSTRUCTOR ( MAKE_NAME ( Signaler ) );
       }

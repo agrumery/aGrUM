@@ -2708,9 +2708,89 @@ class BNLearner(_object):
         """eraseMandatoryArc(BNLearner self, Arc arc)"""
         return _pyAgrum.BNLearner_eraseMandatoryArc(self, *args)
 
+    def distributeProgress(self, *args):
+        """distributeProgress(BNLearner self, gum::Size pourcent, double error, double time)"""
+        return _pyAgrum.BNLearner_distributeProgress(self, *args)
+
+    def distributeStop(self, *args):
+        """distributeStop(BNLearner self, std::string message)"""
+        return _pyAgrum.BNLearner_distributeStop(self, *args)
+
     def learnBN(self, *args):
         """learnBN(BNLearner self, std::string const filename) -> BayesNet_double"""
         return _pyAgrum.BNLearner_learnBN(self, *args)
+
+    def setVerbosity(self, *args):
+        """setVerbosity(BNLearner self, bool v)"""
+        return _pyAgrum.BNLearner_setVerbosity(self, *args)
+
+    def setEpsilon(self, *args):
+        """setEpsilon(BNLearner self, double eps)"""
+        return _pyAgrum.BNLearner_setEpsilon(self, *args)
+
+    def setMinEpsilonRate(self, *args):
+        """setMinEpsilonRate(BNLearner self, double rate)"""
+        return _pyAgrum.BNLearner_setMinEpsilonRate(self, *args)
+
+    def setMaxIter(self, *args):
+        """setMaxIter(BNLearner self, gum::Size max)"""
+        return _pyAgrum.BNLearner_setMaxIter(self, *args)
+
+    def setMaxTime(self, *args):
+        """setMaxTime(BNLearner self, double timeout)"""
+        return _pyAgrum.BNLearner_setMaxTime(self, *args)
+
+    def setPeriodSize(self, *args):
+        """setPeriodSize(BNLearner self, gum::Size p)"""
+        return _pyAgrum.BNLearner_setPeriodSize(self, *args)
+
+    def setBurnIn(self, *args):
+        """setBurnIn(BNLearner self, gum::Size b)"""
+        return _pyAgrum.BNLearner_setBurnIn(self, *args)
+
+    def verbosity(self):
+        """verbosity(BNLearner self) -> bool"""
+        return _pyAgrum.BNLearner_verbosity(self)
+
+    def epsilon(self):
+        """epsilon(BNLearner self) -> double"""
+        return _pyAgrum.BNLearner_epsilon(self)
+
+    def minEpsilonRate(self):
+        """minEpsilonRate(BNLearner self) -> double"""
+        return _pyAgrum.BNLearner_minEpsilonRate(self)
+
+    def maxIter(self):
+        """maxIter(BNLearner self) -> gum::Size"""
+        return _pyAgrum.BNLearner_maxIter(self)
+
+    def maxTime(self):
+        """maxTime(BNLearner self) -> double"""
+        return _pyAgrum.BNLearner_maxTime(self)
+
+    def periodSize(self):
+        """periodSize(BNLearner self) -> gum::Size"""
+        return _pyAgrum.BNLearner_periodSize(self)
+
+    def burnIn(self):
+        """burnIn(BNLearner self) -> gum::Size"""
+        return _pyAgrum.BNLearner_burnIn(self)
+
+    def nbrIterations(self):
+        """nbrIterations(BNLearner self) -> gum::Size"""
+        return _pyAgrum.BNLearner_nbrIterations(self)
+
+    def currentTime(self):
+        """currentTime(BNLearner self) -> double"""
+        return _pyAgrum.BNLearner_currentTime(self)
+
+    def messageApproximationScheme(self):
+        """messageApproximationScheme(BNLearner self) -> std::string"""
+        return _pyAgrum.BNLearner_messageApproximationScheme(self)
+
+    def history(self):
+        """history(BNLearner self) -> Vector_double"""
+        return _pyAgrum.BNLearner_history(self)
 
 BNLearner_swigregister = _pyAgrum.BNLearner_swigregister
 BNLearner_swigregister(BNLearner)

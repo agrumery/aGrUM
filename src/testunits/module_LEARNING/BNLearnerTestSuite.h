@@ -24,7 +24,32 @@
 
 #include <agrum/learning/BNLearner.h>
 
+#include <agrum/BN/algorithms/approximationSchemeListener.h>
+
+
 namespace gum_tests {
+  
+  class aSimpleBNLeanerListener : public gum::ApproximationSchemeListener {
+  private:
+    int __nbr;
+    std::string __mess;
+  public:
+    aSimpleBNLeanerListener ( gum::ApproximationScheme& sch ) : gum::ApproximationSchemeListener ( sch ), __nbr ( 0 ), __mess ( "" ) {};
+    void whenProgress ( const void* buffer, gum::Size a, double b, double c ) {
+      __nbr++;
+    }
+    void whenStop ( const void* buffer, std::string s ) {
+      __mess = s;
+    }
+    
+    int getNbr() {
+      return __nbr;
+    }
+    std::string getMess() {
+      return __mess;
+    }
+  };
+  
 
   class BNLearnerTestSuite: public CxxTest::TestSuite {
   public:
@@ -61,6 +86,22 @@ namespace gum_tests {
       catch ( gum::Exception& e ) {
         GUM_SHOWERROR ( e );
       }
+    }
+    
+    void test_listener() {
+      gum::learning::BNLearner learner;
+      aSimpleBNLeanerListener listen(learner);
+      
+      learner.setVerbosity(true);
+      learner.setMaxIndegree ( 10 );
+      learner.useScoreK2 ();
+      learner.useK2 ( std::vector<gum::NodeId> { 1, 5, 2, 6, 0, 3, 4, 7 } );
+      
+      gum::BayesNet<double> bn = learner.learnBN<double> ( GET_PATH_STR( "asia.csv" ) );
+      
+      GUM_TRACE_VAR(listen.getNbr());
+      GUM_TRACE_VAR(listen.getMess());
+      GUM_TRACE_VAR(learner.messageApproximationScheme());
     }
 
   };
