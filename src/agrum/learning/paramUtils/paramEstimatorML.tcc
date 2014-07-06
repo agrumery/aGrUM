@@ -110,34 +110,71 @@ namespace gum {
           this->_getConditioningCounts ( nodeset_index );
         unsigned int conditioning_size = N_ij.size ();
 
-        // check that all conditioning nodes have strictly positive counts
-        for ( unsigned int j = 0; j < conditioning_size; ++j ) {
-          if ( ! N_ij[j] ) {
-            GUM_ERROR ( CPTError, "A conditioning set has a value that never "
-                        "appears in the database" );
+        if ( this->_apriori->weight () ) {
+          const std::vector<float,CountAlloc>& N_prime_ijk = 
+            this->_getAllApriori ( nodeset_index );
+          const std::vector<float,CountAlloc>& N_prime_ij = 
+            this->_getConditioningApriori ( nodeset_index );
+        
+          // check that all conditioning nodes have strictly positive counts
+          for ( unsigned int j = 0; j < conditioning_size; ++j ) {
+            if ( N_ij[j] + N_prime_ij[j] == 0 ) {
+              GUM_ERROR ( CPTError, "A conditioning set has a value that never "
+                          "appears in the database" );
+            }
+          }
+
+          // normalize the counts
+          for ( unsigned int i = 0, k = 0; i < target_modal; ++i ) {
+            for ( unsigned int j = 0; j < conditioning_size; ++k, ++j ) {
+              N_ijk[k] = ( N_ijk[k] + N_prime_ijk[k] ) /
+                ( N_ij[j] + N_prime_ij[j] );
+            }
           }
         }
-
-        // normalize the counts
-        for ( unsigned int i = 0, k = 0; i < target_modal; ++i ) {
-          for ( unsigned int j = 0; j < conditioning_size; ++k, ++j ) {
-            N_ijk[k] /= N_ij[j];
+        else {
+          // check that all conditioning nodes have strictly positive counts
+          for ( unsigned int j = 0; j < conditioning_size; ++j ) {
+            if ( ! N_ij[j] ) {
+              GUM_ERROR ( CPTError, "A conditioning set has a value that never "
+                          "appears in the database" );
+            }
           }
+
+          // normalize the counts
+          for ( unsigned int i = 0, k = 0; i < target_modal; ++i ) {
+            for ( unsigned int j = 0; j < conditioning_size; ++k, ++j ) {
+              N_ijk[k] /= N_ij[j];
+            }
+          }
+  
         }
       }
       else {
-        // here, there are no conditioning nodes
         float sum = 0;
-        for ( unsigned int k = 0; k < target_modal; ++k ) {
-          sum += N_ijk[k];
+
+        if ( this->_apriori->weight () ) {
+          const std::vector<float,CountAlloc>& N_prime_ijk = 
+            this->_getAllApriori ( nodeset_index );
+          
+          // here, there are no conditioning nodes
+          for ( unsigned int k = 0; k < target_modal; ++k ) {
+            sum += N_ijk[k] + N_prime_ijk[k];
+          }
         }
+        else {
+          // here, there are no conditioning nodes
+          for ( unsigned int k = 0; k < target_modal; ++k ) {
+            sum += N_ijk[k];
+          }
+        }
+        
         if ( sum ) {
           for ( unsigned int k = 0; k < target_modal; ++k ) {
             N_ijk[k] /= sum;
           }
         }
-      }
-        
+      } 
 
       // counts are normalized
       this->_is_normalized[nodeset_index] = true;

@@ -18,12 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the smooth a priori: adds a weight w to all the countings
+ * @brief the no a priori class: corresponds to 0 weight-sample
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_A_PRIORI_SMOOTHING_H
-#define GUM_LEARNING_A_PRIORI_SMOOTHING_H
+#ifndef GUM_LEARNING_A_PRIORI_NO_APRIORI_H
+#define GUM_LEARNING_A_PRIORI_NO_APRIORI_H
 
 #include <vector>
 
@@ -37,13 +37,13 @@ namespace gum {
   namespace learning {
 
 
-    /** @class AprioriSmoothing
-     * @brief the base class for all a prioris
+    /** @class AprioriNoApriori
+     * @brief the no a priori class: corresponds to 0 weight-sample
      * @ingroup learning_group
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
               typename CountAlloc = std::allocator<float> >
-    class AprioriSmoothing :
+    class AprioriNoApriori :
       public Apriori<IdSetAlloc,CountAlloc> {
     public:
       // ##########################################################################
@@ -52,13 +52,13 @@ namespace gum {
       /// @{
       
       /// default constructor
-      AprioriSmoothing ();
+      AprioriNoApriori ();
 
       /// virtual copy constructor
-      virtual AprioriSmoothing<IdSetAlloc,CountAlloc>* copyFactory () const;
+      virtual AprioriNoApriori<IdSetAlloc,CountAlloc>* copyFactory () const;
 
       /// destructor
-      virtual ~AprioriSmoothing ();
+      virtual ~AprioriNoApriori ();
 
       /// @}
 
@@ -74,20 +74,23 @@ namespace gum {
       /// indicates whether an apriori is of a certain type
       virtual bool isOfType ( const std::string& type ) final;
 
+      /// sets the weight of the a priori
+      virtual void setWeight ( float weight ) final;
+
       /// @}
 
       
     protected:
 
       /// copy constructor
-      AprioriSmoothing ( const AprioriSmoothing<IdSetAlloc,CountAlloc>& from );
+      AprioriNoApriori ( const AprioriNoApriori<IdSetAlloc,CountAlloc>& from );
       
       /// move constructor
-      AprioriSmoothing ( AprioriSmoothing<IdSetAlloc,CountAlloc>&& from );
+      AprioriNoApriori ( AprioriNoApriori<IdSetAlloc,CountAlloc>&& from );
 
       /// prevent copy operator
-      AprioriSmoothing<IdSetAlloc,CountAlloc>&
-      operator= ( const AprioriSmoothing<IdSetAlloc,CountAlloc>& ) = delete;
+      AprioriNoApriori<IdSetAlloc,CountAlloc>&
+      operator= ( const AprioriNoApriori<IdSetAlloc,CountAlloc>& ) = delete;
 
     };
 
@@ -99,8 +102,8 @@ namespace gum {
 
 
 /// include the template implementation
-#include <agrum/learning/aprioris/aprioriSmoothing.tcc>
+#include <agrum/learning/aprioris/aprioriNoApriori.tcc>
 
 
-#endif /* GUM_LEARNING_A_PRIORI_SMOOTHING_H */
+#endif /* GUM_LEARNING_A_PRIORI_NO_APRIORI_H */
 

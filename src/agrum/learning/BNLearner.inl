@@ -43,7 +43,6 @@ namespace gum {
     }
 
 
-    /*
     /// indicate that we wish to use a BD score
     INLINE void BNLearner::useScoreBD () noexcept {
        __score_type = ScoreType::BD;
@@ -51,12 +50,11 @@ namespace gum {
 
 
     /// indicate that we wish to use a BDeu score
-    INLINE void BNLearner::useScoreBDeu () noexcept;
+    INLINE void BNLearner::useScoreBDeu () noexcept {
       __score_type = ScoreType::BDeu;
     }
-    */
 
-
+  
     /// indicate that we wish to use a BIC score
     INLINE void BNLearner::useScoreBIC() noexcept {
       __score_type = ScoreType::BIC;

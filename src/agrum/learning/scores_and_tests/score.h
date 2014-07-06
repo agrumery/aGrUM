@@ -158,24 +158,20 @@ namespace gum {
 
       
       /// returns the counting vector for a given (conditioned) target set
-      /** This method returns the observtion countings for the set of variables
+      /** This method returns the observation countings for the set of variables
        * whose index was returned by method addNodeSet or addNodeSets. If the
        * set was conditioned, the countings correspond to the target variables
        * @b and the conditioning variables. If you wish to get only the countings
-       * for the conditioning variables, prefer using method countConditioning.
+       * for the conditioning variables, prefer using method
+       * _getConditioningCounts.
        * @warning the dimensions of the vector are as follows: first come the
        * nodes of the conditioning set (in the order in which they were specified
-       * when callind addNodeset, and then the target nodes.
-       * @warning it is assumed that, after using addNodeSet, you have executed
-       * method count() before calling method countTarget. */
-      const std::vector<float,CountAlloc>&
-      _getAllCounts ( unsigned int index );
-
+       * when callind addNodeset, and then the target nodes. */
+      using Counter<IdSetAlloc,CountAlloc>::_getAllCounts;
+ 
       /// returns the counting vector for a conditioning set
-      /** @warning it is assumed that, after using addNodeSet, you have executed
-       * method count() before calling method countTarget. */
-      const std::vector<float,CountAlloc>&
-      _getConditioningCounts ( unsigned int index );
+      /** see method _getAllCounts for details */
+      using Counter<IdSetAlloc,CountAlloc>::_getConditioningCounts;
 
       /// returns the set of target + conditioning nodes
       /** conditioning nodes are always the first ones in the vector and targets
@@ -184,6 +180,23 @@ namespace gum {
 
       /// returns the conditioning nodes (nullptr if there are no such nodes)
       using Counter<IdSetAlloc,CountAlloc>::_getConditioningNodes;
+
+      /// returns the apriori vector for a given (conditioned) target set
+      /** This method returns the observation countings for the set of variables
+       * whose index was returned by method addNodeSet or addNodeSets. If the
+       * set was conditioned, the countings correspond to the target variables
+       * @b and the conditioning variables. If you wish to get only the countings
+       * for the conditioning variables, prefer using method
+       * _getConditioningApriori.
+       * @warning the dimensions of the vector are as follows: first come the
+       * nodes of the conditioning set (in the order in which they were specified
+       * when callind addNodeset, and then the target nodes. */
+      const std::vector<float,CountAlloc>&
+      _getAllApriori ( unsigned int index );
+
+      /// returns the apriori vector for a conditioning set
+      const std::vector<float,CountAlloc>&
+      _getConditioningApriori ( unsigned int index );
       
       /// indicates whether a score belongs to the cache
       bool _isInCache ( unsigned int nodeset_index ) const noexcept;
@@ -217,8 +230,11 @@ namespace gum {
       /// the vector of scores for the current nodesets
       std::vector<float> __cached_score;
 
+      /// has the a priori been computed
+      bool __apriori_computed { false };
+
       /// an empty conditioning set
-      const std::vector<unsigned int> __empty_conditioning_set; 
+      const std::vector<unsigned int> __empty_conditioning_set;
 
       
       

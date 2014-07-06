@@ -55,7 +55,8 @@ namespace gum {
       __cache ( from.__cache ),
       __use_cache ( from.__use_cache ),
       __is_cached_score ( from.__is_cached_score ),
-      __cached_score ( from.__cached_score ) {
+      __cached_score ( from.__cached_score ),
+      __apriori_computed ( from.__apriori_computed ) {
       GUM_CONS_CPY ( Score );
     }
 
@@ -69,7 +70,8 @@ namespace gum {
       __cache ( std::move ( from.__cache ) ),
       __use_cache ( std::move ( from.__use_cache ) ),
       __is_cached_score ( std::move ( from.__is_cached_score ) ),
-      __cached_score ( std::move ( from.__cached_score ) ) {
+      __cached_score ( std::move ( from.__cached_score ) ),
+      __apriori_computed ( std::move ( from.__apriori_computed ) ) {
       GUM_CONS_CPY ( Score );
     }
 
@@ -97,6 +99,7 @@ namespace gum {
 
       __is_cached_score.push_back ( false );
       __cached_score.push_back ( 0 );
+      __apriori_computed = false;
       return Counter<IdSetAlloc,CountAlloc>::addNodeSet ( var );
     }
 
@@ -119,6 +122,7 @@ namespace gum {
 
       __is_cached_score.push_back ( false );
       __cached_score.push_back ( 0 );
+      __apriori_computed = false;
       return Counter<IdSetAlloc,CountAlloc>::addNodeSet ( var,  conditioning_ids );
     }
 
@@ -129,6 +133,7 @@ namespace gum {
       Counter<IdSetAlloc,CountAlloc>::clear ();
       __is_cached_score.clear ();
       __cached_score.clear ();
+      __apriori_computed = false;
     }
 
 
@@ -197,34 +202,40 @@ namespace gum {
       __cache.clear ();
     }
 
-    
-    /// returns the counting vector for a given (conditioned) target set
+
+    /// returns the apriori vector for a given (conditioned) target set
     template <typename IdSetAlloc, typename CountAlloc> INLINE
     const std::vector<float,CountAlloc>&
-    Score<IdSetAlloc,CountAlloc>::_getAllCounts ( unsigned int index ) {
-      if ( ! this->_counts_computed ) {
-        _apriori->addApriori ( this->_modalities,
-                               Counter<IdSetAlloc,CountAlloc>::_getCounts (),
-                               this->_target_nodesets,
-                               this->_conditioning_nodesets );
+    Score<IdSetAlloc,CountAlloc>::_getAllApriori ( unsigned int index ) {
+      if ( ! __apriori_computed ) {
+        _apriori->setParameters ( this->_modalities,
+                                  Counter<IdSetAlloc,CountAlloc>::_getCounts (),
+                                  this->_target_nodesets,
+                                  this->_conditioning_nodesets );
+        _apriori->compute ();
+        __apriori_computed = true;
       }
-      return Counter<IdSetAlloc,CountAlloc>::_getAllCounts ( index );
-    }
- 
-     
-    /// returns the counting vector for a conditioning set
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    const std::vector<float,CountAlloc>&
-    Score<IdSetAlloc,CountAlloc>::_getConditioningCounts ( unsigned int index ) {
-      if ( ! this->_counts_computed ) {
-        _apriori->addApriori ( this->_modalities,
-                               Counter<IdSetAlloc,CountAlloc>::_getCounts (),
-                               this->_target_nodesets,
-                               this->_conditioning_nodesets );
-      }
-      return Counter<IdSetAlloc,CountAlloc>::_getConditioningCounts ( index );
+
+      return _apriori->getAllApriori ( index );
     }
 
+    
+    /// returns the apriori vector for a conditioning set
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    const std::vector<float,CountAlloc>&
+    Score<IdSetAlloc,CountAlloc>::_getConditioningApriori ( unsigned int index ) {
+      if ( ! __apriori_computed ) {
+        _apriori->setParameters ( this->_modalities,
+                                  Counter<IdSetAlloc,CountAlloc>::_getCounts (),
+                                  this->_target_nodesets,
+                                  this->_conditioning_nodesets );
+        _apriori->compute ();
+        __apriori_computed = true;
+      }
+
+      return _apriori->getAllApriori ( index );
+    }
+     
  
   } /* namespace learning */
   

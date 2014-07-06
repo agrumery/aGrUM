@@ -59,7 +59,7 @@ namespace gum_tests {
 
       learner.useLocalSearchWithTabuList ( 100, 1 );
       learner.setMaxIndegree ( 10 );
-      learner.useScoreK2 ();
+      learner.useScoreLog2Likelihood ();
       learner.useK2 ( std::vector<gum::NodeId> { 1, 5, 2, 6, 0, 3, 4, 7 } );
       // learner.addForbiddenArc ( gum::Arc (4,3) );
       // learner.addForbiddenArc ( gum::Arc (5,1) );
@@ -68,7 +68,7 @@ namespace gum_tests {
       learner.addMandatoryArc ( gum::Arc (2, 1) );
 
       learner.useAprioriSmoothing ();
-      learner.setAprioriWeight ( 10 );
+      learner.setAprioriWeight ( 0 );
 
 
       gum::NodeProperty<unsigned int> partial_order {

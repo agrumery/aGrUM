@@ -49,16 +49,14 @@ namespace gum {
         __score = new ScoreAIC<> ( filter, modalities, *__apriori );
         break;
 
-        /*
-          case ScoreType::BD:
-          __score = new ScoreBD<> ( filter, modalities, *__apriori );
-          break;
+      case ScoreType::BD:
+        __score = new ScoreBD<> ( filter, modalities, *__apriori );
+        break;
 
-          case ScoreType::BDEU:
-          __score = new ScoreBDeu<> ( filter, modalities, *__apriori );
-          break;
-        */
-        
+      case ScoreType::BDeu:
+        __score = new ScoreBDeu<> ( filter, modalities, *__apriori );
+        break;
+                
       case ScoreType::BIC:
         __score = new ScoreBIC<> ( filter, modalities, *__apriori );
         break;

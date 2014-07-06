@@ -26,9 +26,11 @@
 #define GUM_LEARNING_A_PRIORI_H
 
 #include <vector>
+#include <string>
 
 #include <agrum/config.h>
 #include <agrum/core/exceptions.h>
+#include <agrum/learning/aprioris/aprioriTypes.h>
 
 
 namespace gum {
@@ -68,17 +70,34 @@ namespace gum {
       /// @{
 
       /// sets the weight of the a priori (kind of effective sample size)
-      void setWeight ( float weight );
+      virtual void setWeight ( float weight );
 
-      /// include the apriori into a given set of counts
-      virtual void addApriori 
+      /// returns the weight assigned to the apriori
+      float weight () const noexcept;
+      
+      /// indicates whether an apriori is of a certain type
+      virtual bool isOfType ( const std::string& type ) = 0;
+
+      /// sets the parameters for the apriori
+      void setParameters
       ( const std::vector<unsigned int>& modalities,
         std::vector< std::vector<float,CountAlloc> >& counts,
         const std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,
                                      unsigned int>* >& target_nodesets,
         const std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,
-                                     unsigned int>* >& conditioning_nodesets ) = 0;
- 
+                                     unsigned int>* >& conditioning_nodesets );
+
+      /// compute the apriori into a given set of counts
+      virtual void compute () = 0;
+
+      /// returns the apriori vector for a given (conditioned) target set
+      const std::vector<float,CountAlloc>&
+      getAllApriori ( unsigned int index );
+
+      /// returns the apriori vector for a conditioning set
+      const std::vector<float,CountAlloc>&
+      getConditioningApriori ( unsigned int index );
+      
       /// @}
 
       
@@ -110,28 +129,28 @@ namespace gum {
       /** for details, see _target_nodesets */
       const std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,
                                    unsigned int>* >*
-      _conditioning_nodesets  { nullptr };
+      _conditioning_nodesets { nullptr };
+
+      /// the a priori
+      std::vector< std::vector<float,CountAlloc> > _apriori_counts;
 
 
-      
+
       /// copy constructor
       Apriori ( const Apriori<IdSetAlloc,CountAlloc>& from );
       
       /// move constructor
       Apriori ( Apriori<IdSetAlloc,CountAlloc>&& from );
 
-      /// sets the parameters for the apriori
-      void _setParameters
-      ( const std::vector<unsigned int>& modalities,
-        std::vector< std::vector<float,CountAlloc> >& counts,
-        const std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,
-                                     unsigned int>* >& target_nodesets,
-        const std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,
-                                     unsigned int>* >& conditioning_nodesets );
 
-
+    private:
+      
       // ##########################################################################
       // ##########################################################################
+
+      /// a dummy empty vector (useful when the weight is 0)
+      const std::vector<float,CountAlloc> __empty_vector;
+      
 
       /// prevent copy operator
       Apriori<IdSetAlloc,CountAlloc>&

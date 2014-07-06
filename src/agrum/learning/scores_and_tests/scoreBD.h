@@ -64,7 +64,7 @@ namespace gum {
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,
               typename CountAlloc = std::allocator<float> >
-    class ScoreBD : protected Score<IdSetAlloc,CountAlloc> {
+    class ScoreBD : public Score<IdSetAlloc,CountAlloc> {
     public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -99,59 +99,6 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// add a new single variable to be counted
-      /** @param var represents the index of the variable in the filtered rows
-       * produced by the database cell filters whose observations shall be counted
-       * @param N_prime_ijk the (Dirichlet) exponential hyperparameters for the
-       * density function over the parameters of P(var)
-       * @return the index of the produced counting vector: the user should use
-       * class Score to compute in one pass several scores or independence
-       * tests. These and their corresponding countings in the database are stored
-       * into a vector and the value returned by method addNodeSet is the index of
-       * the observed countings of "var" in this vector. The user shall pass this
-       * index as argument to methods _getAllCounts to get the corresponding
-       * counting vector. */
-      unsigned int addNodeSet ( unsigned int var,
-                                const std::vector<float>& N_prime_ijk );
-
-      /// add a new target variable plus some conditioning vars
-      /** @param var represents the index of the target variable in the filtered
-       * rows produced by the database cell filters
-       * @param conditioning_ids the indices of the variables of the conditioning
-       * set in the filtered rows
-       * @param N_prime_ijk the (Dirichlet) exponential hyperparameters for the
-       * density function over the parameters of P(var | conditioning_ids). This
-       * vector actually represents a multidimensional array. The dimensions shall
-       * be, first, the conditioning_ids, then, var.
-       * @return the index of the produced counting vector: the user should use
-       * class Score to compute in one pass several scores or independence
-       * tests. These and their corresponding countings in the database are
-       * stored into a vector and the value returned by method addNodeSet is the
-       * index of the countings of (var | conditioning_ids) in this vector. The
-       * user shall pass this index as argument to methods _getAllCounts and
-       * _getConditioningCounts to get the counting vectors of
-       * (conditioning_ids,vars) [in this order] and conditioning_ids
-       * respectively. */
-      unsigned int
-      addNodeSet ( unsigned int var,
-                   const std::vector<unsigned int>& conditioning_ids,
-                   const std::vector<float>& N_prime_ijk );
-
-      /// clears all the data structures from memory
-      void clear ();
-
-      /// clears the current cache (clear nodesets as well)
-      using Score<IdSetAlloc,CountAlloc>::clearCache;
-
-      /// returns the modalities of the variables
-      using Score<IdSetAlloc,CountAlloc>::modalities;
-
-      /// turn on/off the use of a cache of the previously computed score
-      using Score<IdSetAlloc,CountAlloc>::useCache;
-
-      /// sets the maximum number of threads used to compute the scores
-      using Score<IdSetAlloc,CountAlloc>::setMaxNbThreads;
-      
       /// returns the log2(BDeu score) corresponding to a given nodeset
       float score ( unsigned int nodeset_index );
 
@@ -162,23 +109,8 @@ namespace gum {
       /// the log(gamma (n)) function: generalizes log((n-1)!)
       GammaLog2 __gammalog2;
 
-      /// the equivalent sample sizes used for the scores of each nodeset
-      std::vector<std::vector<float>> __N_prime_ijk;
-
       /// an empty vector
       const std::vector<unsigned int> __empty_vect;
-
-
-      /// save an equivalent sample size
-      void __insertHyperParam ( const std::vector<float>& N_prime_ijk,
-                                unsigned int index );
-
-      /// checks that the size of a given N_prime_ijk is correct
-      /** @throws SizeError is raised if the size of N_prime_ijk does not
-       * correspond to that of the Cartesian product of var and conditioning_ids */
-      void __checkHyperParam ( unsigned int var,
-                               const std::vector<unsigned int>& conditioning_ids,
-                               const std::vector<float>& N_prime_ijk ) const;
       
     };
     

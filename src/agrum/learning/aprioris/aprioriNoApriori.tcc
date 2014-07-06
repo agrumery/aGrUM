@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief  the smooth a priori: adds a weight w to all the countings
+ * @brief the no a priori class: corresponds to 0 weight-sample
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -33,71 +33,62 @@ namespace gum {
      
     /// default constructor
     template <typename IdSetAlloc, typename CountAlloc> INLINE
-    AprioriSmoothing<IdSetAlloc,CountAlloc>::AprioriSmoothing () {
-      GUM_CONSTRUCTOR ( AprioriSmoothing );
+    AprioriNoApriori<IdSetAlloc,CountAlloc>::AprioriNoApriori () :
+      _weight { 0.0f } {
+      GUM_CONSTRUCTOR ( AprioriNoApriori );
     }
 
 
     /// copy constructor
     template <typename IdSetAlloc, typename CountAlloc> INLINE
-    AprioriSmoothing<IdSetAlloc,CountAlloc>::AprioriSmoothing
-    ( const AprioriSmoothing<IdSetAlloc,CountAlloc>& from ) :
+    AprioriNoApriori<IdSetAlloc,CountAlloc>::AprioriNoApriori
+    ( const AprioriNoApriori<IdSetAlloc,CountAlloc>& from ) :
       Apriori<IdSetAlloc,CountAlloc> ( from ) {
-      GUM_CONS_CPY ( AprioriSmoothing );
+      GUM_CONS_CPY ( AprioriNoApriori );
     }
       
 
     /// move constructor
     template <typename IdSetAlloc, typename CountAlloc> INLINE
-    AprioriSmoothing<IdSetAlloc,CountAlloc>::AprioriSmoothing
-    ( AprioriSmoothing<IdSetAlloc,CountAlloc>&& from ) :
+    AprioriNoApriori<IdSetAlloc,CountAlloc>::AprioriNoApriori
+    ( AprioriNoApriori<IdSetAlloc,CountAlloc>&& from ) :
       Apriori<IdSetAlloc,CountAlloc> ( std::move ( from ) ) {
-      GUM_CONS_MOV ( AprioriSmoothing );
+      GUM_CONS_MOV ( AprioriNoApriori );
     }
 
 
     /// virtual copy constructor
     template <typename IdSetAlloc, typename CountAlloc> INLINE
-    AprioriSmoothing<IdSetAlloc,CountAlloc>*
-    AprioriSmoothing<IdSetAlloc,CountAlloc>::copyFactory () const {
-      return new AprioriSmoothing<IdSetAlloc,CountAlloc> ( *this );
+    AprioriNoApriori<IdSetAlloc,CountAlloc>*
+    AprioriNoApriori<IdSetAlloc,CountAlloc>::copyFactory () const {
+      return new AprioriNoApriori<IdSetAlloc,CountAlloc> ( *this );
     }
 
 
     /// destructor
     template <typename IdSetAlloc, typename CountAlloc> INLINE
-    AprioriSmoothing<IdSetAlloc,CountAlloc>::~AprioriSmoothing () {
-      GUM_DESTRUCTOR ( AprioriSmoothing );
+    AprioriNoApriori<IdSetAlloc,CountAlloc>::~AprioriNoApriori () {
+      GUM_DESTRUCTOR ( AprioriNoApriori );
     }
 
     
     /// include the apriori into a given set of counts
     template <typename IdSetAlloc, typename CountAlloc> INLINE
-    void AprioriSmoothing<IdSetAlloc,CountAlloc>::compute () {
-      if ( this->_weight != 0 ) {
-        if ( this->_weight != 1 ) {
-          for ( auto& countings : this->_apriori_counts ) {
-            for ( auto& count : countings ) {
-              count += this->_weight;
-            }
-          }
-        }
-        else {
-          for ( auto& countings : this->_apriori_counts ) {
-            for ( auto& count : countings ) {
-              ++count;
-            }
-          }
-        }
-      }
+    void AprioriNoApriori<IdSetAlloc,CountAlloc>::compute () {
+    }
+
+
+    /// sets the weight of the a priori
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    void AprioriNoApriori<IdSetAlloc,CountAlloc>::setWeight ( float ) {
     }
 
 
     /// indicates whether an apriori is of a certain type
     template <typename IdSetAlloc, typename CountAlloc>
-    bool AprioriSmoothing<IdSetAlloc,CountAlloc>::isOfType
+    bool AprioriNoApriori<IdSetAlloc,CountAlloc>::isOfType
     ( const std::string& type ) {
-      return AprioriSmoothingType::isOfType ( type );
+      return AprioriNoAprioriType::isOfType ( type );
     }
 
 

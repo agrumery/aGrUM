@@ -43,6 +43,13 @@ namespace gum {
       const std::vector<unsigned int>& var_modalities,
       Apriori<IdSetAlloc,CountAlloc>& apriori ) :
       Score<IdSetAlloc,CountAlloc> ( filter, var_modalities, apriori ) {
+     // check that the apriori is compatible with the score
+      if ( ! apriori.isOfType ( AprioriSmoothingType::type ) ||
+           ( apriori.weight () != 1 ) ) {
+        GUM_ERROR ( InvalidArgument,
+                    "The apriori is incompatible with the K2 score: shall be a "
+                    "smoothing apriori with a weight of 1 (N'_ijk = 1)" );
+      }
       // for debugging purposes
       GUM_CONSTRUCTOR ( ScoreK2 );
     }
@@ -93,6 +100,12 @@ namespace gum {
         return this->_cachedScore ( nodeset_index );
       }
 
+      // get the counts for all the targets and for the conditioning nodes
+      const std::vector<float,CountAlloc>& N_ijk = 
+        this->_getAllCounts ( nodeset_index );
+      unsigned int targets_modal = N_ijk.size ();
+      float score = 0;
+
       // get the nodes involved in the score as well as their modalities
       const std::vector<unsigned int,IdSetAlloc>& all_nodes =
         this->_getAllNodes ( nodeset_index );
@@ -103,13 +116,9 @@ namespace gum {
       // here, we distinguish nodesets with conditioning nodes from those
       // without conditioning nodes
       if ( conditioning_nodes ) {
-        // get the counts for all the targets and for the conditioning nodes
-        const std::vector<float,CountAlloc>& N_ijk = 
-          this->_getAllCounts ( nodeset_index );
         const std::vector<float,CountAlloc>& N_ij = 
           this->_getConditioningCounts ( nodeset_index );
         unsigned int conditioning_modal = N_ij.size ();
-        unsigned int targets_modal = N_ijk.size ();
  
         // the K2 score can be computed as follows:
         // qi log {(ri - 1)!} + sum_j=1^qi [ - log {(N_ij+ri-1)!} +
@@ -126,7 +135,7 @@ namespace gum {
               i < all_nodes.size (); ++i ) {
           ri_minus_1 *= modalities[all_nodes[i]] - 1;
         }
-        float score = qi * __gammalog2 ( ri_minus_1 + 1 );
+        score = qi * __gammalog2 ( ri_minus_1 + 1 );
        
         for ( unsigned int k = 0; k < targets_modal; ++k ) {
           if ( N_ijk[k] ) {
@@ -147,11 +156,6 @@ namespace gum {
       else {
         // here, there are no conditioning nodes
 
-        // get the counts for all the targets and for the conditioning nodes
-        const std::vector<float,CountAlloc>& N_ijk = 
-          this->_getAllCounts ( nodeset_index );
-        unsigned int targets_modal = N_ijk.size ();
-
         // the K2 score can be computed as follows:
         // log {(ri - 1)!} - log {(N + ri-1)!} + sum_k=1^ri log { N_ijk! } ]
      
@@ -160,7 +164,7 @@ namespace gum {
         for ( unsigned int i = 0; i < all_nodes.size (); ++i ) {
           ri_minus_1 *= modalities[all_nodes[i]] - 1;
         }
-        float score = __gammalog2 ( ri_minus_1 + 1 );
+        score = __gammalog2 ( ri_minus_1 + 1 );
         float N = 0;
         for ( unsigned int k = 0; k < targets_modal; ++k ) {
           if ( N_ijk[k] ) {
@@ -179,6 +183,7 @@ namespace gum {
       }
     }
 
+    
   } /* namespace learning */
   
   

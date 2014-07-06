@@ -43,6 +43,14 @@ namespace gum {
       const std::vector<unsigned int>& var_modalities,
       Apriori<IdSetAlloc,CountAlloc>& apriori ) :
       Score<IdSetAlloc,CountAlloc> ( filter, var_modalities, apriori ) {
+      // check that the apriori is compatible with the score
+      if ( ! apriori.isOfType ( AprioriSmoothingType::type ) &&
+           ! apriori.isOfType ( AprioriNoAprioriType::type ) ) {
+        GUM_ERROR ( InvalidArgument, "The apriori is incompatible with the BDeu "
+                    "score: shall be smoothing or no apriori" );
+        
+      }
+ 
       // for debugging purposes
       GUM_CONSTRUCTOR ( ScoreBDeu );
     }
@@ -53,8 +61,7 @@ namespace gum {
     ScoreBDeu<IdSetAlloc,CountAlloc>::ScoreBDeu
     ( const ScoreBDeu<IdSetAlloc,CountAlloc>& from ) :
       Score<IdSetAlloc,CountAlloc> ( from ),
-      __gammalog2 ( from.__gammalog2 ),
-      __ess ( from.__ess ) {
+      __gammalog2 ( from.__gammalog2 ) {
       // for debugging purposes
       GUM_CONS_CPY ( ScoreBDeu );
     }
@@ -65,8 +72,7 @@ namespace gum {
     ScoreBDeu<IdSetAlloc,CountAlloc>::ScoreBDeu
     ( ScoreBDeu<IdSetAlloc,CountAlloc>&& from ) :
       Score<IdSetAlloc,CountAlloc> ( std::move ( from ) ),
-      __gammalog2 ( std::move ( from.__gammalog2 ) ),
-      __ess ( std::move ( from.__ess ) ) {
+      __gammalog2 ( std::move ( from.__gammalog2 ) ) {
       // for debugging purposes
       GUM_CONS_MOV ( ScoreBDeu );
     }
@@ -86,52 +92,7 @@ namespace gum {
       // for debugging purposes
       GUM_DESTRUCTOR ( ScoreBDeu );
     }
-
-
-    /// save an equivalent sample size
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    void ScoreBDeu<IdSetAlloc,CountAlloc>::__insertESS
-    ( float equivalent_sample_size,
-      unsigned int index ) {
-      if ( __ess.size () <= index ) __ess.resize ( index + 1 );
-      __ess[index] = equivalent_sample_size <= 0 ? 1 : equivalent_sample_size;
-    }
     
-
-    /// add a new single variable to be counted
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    unsigned int
-    ScoreBDeu<IdSetAlloc,CountAlloc>::addNodeSet
-    ( unsigned int var,
-      float equivalent_sample_size ) {
-      unsigned int index =
-        Score<IdSetAlloc,CountAlloc>::addNodeSet ( var );
-      __insertESS ( equivalent_sample_size, index );
-      return index;
-    }
-
-      
-    /// add a new target variable plus some conditioning vars
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    unsigned int
-    ScoreBDeu<IdSetAlloc,CountAlloc>::addNodeSet
-    ( unsigned int var,
-      const std::vector<unsigned int>& conditioning_ids,
-      float equivalent_sample_size ) {
-      unsigned int index = Score<IdSetAlloc,CountAlloc>::addNodeSet
-        ( var, conditioning_ids );
-      __insertESS ( equivalent_sample_size, index );
-      return index;
-    }
-
-
-    /// clears all the data structures from memory
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    void ScoreBDeu<IdSetAlloc,CountAlloc>::clear () {
-      Score<IdSetAlloc,CountAlloc>::clear ();
-      __ess.clear ();
-    }
-      
     
     /// returns the score corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
@@ -142,7 +103,13 @@ namespace gum {
         return this->_cachedScore ( nodeset_index );
       }
 
-       // get the nodes involved in the score as well as their modalities
+      // get the counts for all the targets and for the conditioning nodes
+      const std::vector<float,CountAlloc>& N_ijk = 
+        this->_getAllCounts ( nodeset_index );
+      unsigned int targets_modal = N_ijk.size ();
+      float score = 0;
+ 
+      // get the nodes involved in the score as well as their modalities
       const std::vector<unsigned int,IdSetAlloc>& all_nodes =
         this->_getAllNodes ( nodeset_index );
       const std::vector<unsigned int,IdSetAlloc>* conditioning_nodes =
@@ -152,40 +119,52 @@ namespace gum {
       // here, we distinguish nodesets with conditioning nodes from those
       // without conditioning nodes
       if ( conditioning_nodes ) {
-        // get the counts for all the targets and for the conditioning nodes
-        const std::vector<float,CountAlloc>& N_ijk = 
-          this->_getAllCounts ( nodeset_index );
+        // get the count of the conditioning nodes
         const std::vector<float,CountAlloc>& N_ij = 
           this->_getConditioningCounts ( nodeset_index );
         unsigned int conditioning_modal = N_ij.size ();
-        unsigned int targets_modal = N_ijk.size ();
- 
-        // the BDeu score can be computed as follows:
-        // qi * gammalog2 (ess / qi) - ri * qi * gammalog2 (ess / (ri * qi) )
-        // - sum_j=1^qi [ gammalog2 ( N_ij + ess / qi ) ]
-        // + sum_j=1^qi sum_k=1^ri log [ gammalog2 ( N_ijk + ess / (ri * qi) ) ]
 
-        // precompute qi and ri
-        unsigned int qi = 1;
-        for ( unsigned int i = 0; i < conditioning_nodes->size(); ++i ) {
-          qi *= modalities[conditioning_nodes->operator[] ( i )];
-        }
-        unsigned int ri = 1;
-        for ( unsigned int i = conditioning_nodes->size ();
-              i < all_nodes.size (); ++i ) {
-          ri *= modalities[all_nodes[i]];
-        }
+        if ( this->_apriori->weight () ) {
+          // the BDeu score can be computed as follows:
+          // qi * gammalog2 (ess / qi) - ri * qi * gammalog2 (ess / (ri * qi) )
+          // - sum_j=1^qi [ gammalog2 ( N_ij + ess / qi ) ]
+          // + sum_j=1^qi sum_k=1^ri log [ gammalog2 ( N_ijk + ess / (ri * qi) ) ]
+
+          // precompute qi and ri
+          unsigned int qi = 1;
+          for ( unsigned int i = 0; i < conditioning_nodes->size(); ++i ) {
+            qi *= modalities[conditioning_nodes->operator[] ( i )];
+          }
+          unsigned int ri = 1;
+          for ( unsigned int i = conditioning_nodes->size ();
+                i < all_nodes.size (); ++i ) {
+            ri *= modalities[all_nodes[i]];
+          }
         
-        const float ess_qi = __ess[nodeset_index] / qi;
-        const float ess_qi_ri = __ess[nodeset_index] / ( qi * ri );
-        float score = qi * __gammalog2 ( ess_qi ) -
-          ri * qi * __gammalog2 ( ess_qi_ri );
+          const float ess_qi = this->_apriori->weight () / qi;
+          const float ess_qi_ri = ess_qi / ri;
+          
+          score = qi * __gammalog2 ( ess_qi ) -
+            ri * qi * __gammalog2 ( ess_qi_ri );
        
-        for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
-          score -= __gammalog2 ( N_ij[j] + ess_qi );
+          for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
+            score -= __gammalog2 ( N_ij[j] + ess_qi );
+          }
+          for ( unsigned int k = 0; k < targets_modal; ++k ) {
+            score += __gammalog2 ( N_ijk[k] + ess_qi_ri );
+          }
         }
-        for ( unsigned int k = 0; k < targets_modal; ++k ) {
-          score += __gammalog2 ( N_ijk[k] + ess_qi_ri );
+        else {
+          // the BDeu score can be computed as follows:
+          // - sum_j=1^qi [ gammalog2 ( N_ij ) ]
+          // + sum_j=1^qi sum_k=1^ri log [ gammalog2 ( N_ijk ) ]
+          
+          for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
+            if ( N_ij[j] ) score -= __gammalog2 ( N_ij[j] );
+          }
+          for ( unsigned int k = 0; k < targets_modal; ++k ) {
+            if ( N_ijk[k] ) score += __gammalog2 ( N_ijk[k] );
+          }
         }
 
         // shall we put the score into the cache?
@@ -198,30 +177,40 @@ namespace gum {
       else {
         // here, there are no conditioning nodes
 
-        // get the counts for all the targets and for the conditioning nodes
-        const std::vector<float,CountAlloc>& N_ijk = 
-          this->_getAllCounts ( nodeset_index );
-        unsigned int targets_modal = N_ijk.size ();
-
-        // the BDeu score can be computed as follows:
-        // gammalog2 ( ess ) - ri * gammalog2 (ess / ri ) - gammalog2 ( N + ess )
-        // + sum_k=1^ri log [ gammalog2 ( N_ijk + ess / ri ) ]
+        if ( this->_apriori->weight () ) {
+          // the BDeu score can be computed as follows:
+          // gammalog2 ( ess ) - ri * gammalog2 (ess / ri ) - gammalog2 ( N + ess )
+          // + sum_k=1^ri log [ gammalog2 ( N_ijk + ess / ri ) ]
      
-        // precompute ri
-        unsigned int ri = 1;
-        for ( unsigned int i = 0; i < all_nodes.size (); ++i ) {
-          ri *= modalities[all_nodes[i]];
+          // precompute ri
+          unsigned int ri = 1;
+          for ( unsigned int i = 0; i < all_nodes.size (); ++i ) {
+            ri *= modalities[all_nodes[i]];
+          }
+          const float ess = this->_apriori->weight ();
+          const float ess_ri = ess / ri;
+          score = __gammalog2 ( ess ) - ri * __gammalog2 ( ess_ri );
+          float N = 0;
+          for ( unsigned int k = 0; k < targets_modal; ++k ) {
+            score += __gammalog2 ( N_ijk[k] + ess_ri );
+            N += N_ijk[k];
+          }
+          score -= __gammalog2 ( N + ess );
         }
-        const float ess = __ess[nodeset_index];
-        const float ess_ri = __ess[nodeset_index] / ri;
-        float score = __gammalog2 ( ess ) - ri * __gammalog2 ( ess_ri );
-        float N = 0;
-        for ( unsigned int k = 0; k < targets_modal; ++k ) {
-          score += __gammalog2 ( N_ijk[k] + ess_ri );
-          N += N_ijk[k];
+        else {
+          // the BDeu score can be computed as follows:
+          // - gammalog2 ( N ) + sum_k=1^ri log [ gammalog2 ( N_ijk ) ]
+     
+          float N = 0;
+          for ( unsigned int k = 0; k < targets_modal; ++k ) {
+            if ( N_ijk[k] ) {
+              score += __gammalog2 ( N_ijk[k] );
+              N += N_ijk[k];
+            }
+          }
+          score -= __gammalog2 ( N );
         }
-        score -= __gammalog2 ( N + ess );
-
+          
         // shall we put the score into the cache?
         if ( this->_isUsingCache () ) {
           this->_insertIntoCache ( nodeset_index, score );

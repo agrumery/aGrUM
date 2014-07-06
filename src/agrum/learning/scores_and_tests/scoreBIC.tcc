@@ -43,6 +43,14 @@ namespace gum {
       const std::vector<unsigned int>& var_modalities,
       Apriori<IdSetAlloc,CountAlloc>& apriori ) :
       Score<IdSetAlloc,CountAlloc> ( filter, var_modalities, apriori ) {
+      // check that the apriori is compatible with the score
+      if ( ! apriori.isOfType ( AprioriDirichletType::type ) &&
+           ! apriori.isOfType ( AprioriSmoothingType::type ) &&
+           ! apriori.isOfType ( AprioriNoAprioriType::type ) ) {
+        GUM_ERROR ( InvalidArgument, "The apriori is incompatible with the BIC "
+                    "score: shall be Dirichlet, smoothing or no apriori" );
+      }
+
       // for debugging purposes
       GUM_CONSTRUCTOR ( ScoreBIC );
     }
@@ -93,6 +101,12 @@ namespace gum {
         return this->_cachedScore ( nodeset_index );
       }
 
+      // get the counts for all the targets and for the conditioning nodes
+      const std::vector<float,CountAlloc>& N_ijk = 
+        this->_getAllCounts ( nodeset_index );
+      unsigned int targets_modal = N_ijk.size ();
+      float score = 0;
+ 
       // get the nodes involved in the score as well as their modalities
       const std::vector<unsigned int,IdSetAlloc>& all_nodes =
         this->_getAllNodes ( nodeset_index );
@@ -115,34 +129,60 @@ namespace gum {
         }
 
         // get the counts for all the targets and for the conditioning nodes
-        const std::vector<float,CountAlloc>& N_ijk = 
-          this->_getAllCounts ( nodeset_index );
         const std::vector<float,CountAlloc>& N_ij = 
           this->_getConditioningCounts ( nodeset_index );
         unsigned int conditioning_modal = N_ij.size ();
-        unsigned int targets_modal = N_ijk.size ();
 
-        // compute the score: it remains to compute the log likelihood, i.e.,
-        // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also
-        // equivalent to:
-        // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
-        float score = 0;
-        for ( unsigned int k = 0; k < targets_modal; ++k ) {
-          if ( N_ijk[k] ) {
-            score += N_ijk[k] * logf ( N_ijk[k] );
-          }
-        }
-        float N = 0;
-        for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
-          if ( N_ij[j] ) {
-            score -= N_ij[j] * logf ( N_ij[j] );
-            N += N_ij[j];
-          }
-        }
-  
-        // finally, remove the penalty
-        score -= penalty * logf ( N ) * 0.5f;
+        if ( this->_apriori->weight () ) {
+          const std::vector<float,CountAlloc>& N_prime_ijk = 
+            this->_getAllApriori ( nodeset_index );
+          const std::vector<float,CountAlloc>& N_prime_ij = 
+            this->_getConditioningApriori ( nodeset_index );
  
+          // compute the score: it remains to compute the log likelihood, i.e.,
+          // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also
+          // equivalent to:
+          // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
+          for ( unsigned int k = 0; k < targets_modal; ++k ) {
+            if ( N_ijk[k] + N_prime_ijk[k] ) {
+              score += ( N_ijk[k] + N_prime_ijk[k] ) *
+                logf ( N_ijk[k] + N_prime_ijk[k] );
+            }
+          }
+          float N = 0;
+          for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
+            if ( N_ij[j] + N_prime_ij[j] ) {
+              score -= ( N_ij[j] + N_prime_ij[j] ) *
+                logf ( N_ij[j] + N_prime_ij[j] );
+              N += N_ij[j] + N_prime_ij[j];
+            }
+          }
+          
+          // finally, remove the penalty
+          score -= penalty * logf ( N ) * 0.5f;
+        }
+        else {
+          // compute the score: it remains to compute the log likelihood, i.e.,
+          // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also
+          // equivalent to:
+          // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
+          for ( unsigned int k = 0; k < targets_modal; ++k ) {
+            if ( N_ijk[k] ) {
+              score += N_ijk[k] * logf ( N_ijk[k] );
+            }
+          }
+          float N = 0;
+          for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
+            if ( N_ij[j] ) {
+              score -= N_ij[j] * logf ( N_ij[j] );
+              N += N_ij[j];
+            }
+          }
+          
+          // finally, remove the penalty
+          score -= penalty * logf ( N ) * 0.5f;
+        }
+        
         // divide by log(2), since the log likelihood uses log_2
         score *= this->_1log2;
 
@@ -163,28 +203,45 @@ namespace gum {
           penalty *= modalities[all_nodes[i]] - 1;
         }
 
-        // get the counts for all the targets and for the conditioning nodes
-        const std::vector<float,CountAlloc>& N_ijk =
-          this->_getAllCounts ( nodeset_index );
-        unsigned int targets_modal = N_ijk.size ();
- 
-        // compute the score: it remains to compute the log likelihood, i.e.,
-        // sum_k=1^r_i N_ijk log (N_ijk / N), which is also
-        // equivalent to:
-        // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - N log N
-        float score = 0;
-        float N = 0;
-        for ( unsigned int k = 0; k < targets_modal; ++k ) {
-          if ( N_ijk[k] ) {
-            score += N_ijk[k] * logf ( N_ijk[k] );
-            N += N_ijk[k];
+        if ( this->_apriori->weight () ) {
+          const std::vector<float,CountAlloc>& N_prime_ijk = 
+            this->_getAllApriori ( nodeset_index );
+          
+          // compute the score: it remains to compute the log likelihood, i.e.,
+          // sum_k=1^r_i N_ijk log (N_ijk / N), which is also
+          // equivalent to:
+          // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - N log N
+          float N = 0;
+          for ( unsigned int k = 0; k < targets_modal; ++k ) {
+            if ( N_ijk[k] + N_prime_ijk[k] ) {
+              score += ( N_ijk[k] + N_prime_ijk[k] ) *
+                logf ( N_ijk[k] + N_prime_ijk[k] );
+              N += N_ijk[k] + N_prime_ijk[k];
+            }
           }
-        }
-        score -= N * logf ( N );
+          score -= N * logf ( N );
         
-        // finally, remove the penalty
-        score -= penalty * logf ( N ) * 0.5f;
-
+          // finally, remove the penalty
+          score -= penalty * logf ( N ) * 0.5f;
+        }
+        else {
+          // compute the score: it remains to compute the log likelihood, i.e.,
+          // sum_k=1^r_i N_ijk log (N_ijk / N), which is also
+          // equivalent to:
+          // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - N log N
+          float N = 0;
+          for ( unsigned int k = 0; k < targets_modal; ++k ) {
+            if ( N_ijk[k] ) {
+              score += N_ijk[k] * logf ( N_ijk[k] );
+              N += N_ijk[k];
+            }
+          }
+          score -= N * logf ( N );
+          
+          // finally, remove the penalty
+          score -= penalty * logf ( N ) * 0.5f;
+        }
+        
         // divide by log(2), since the log likelihood uses log_2
         score *= this->_1log2;
 
