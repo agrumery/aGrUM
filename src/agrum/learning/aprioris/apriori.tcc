@@ -91,15 +91,8 @@ namespace gum {
         // reserve the _apriori_counts
         unsigned int apriori_size = _apriori_counts.size ();
         unsigned int count_size = counts.size ();
-        if ( apriori_size < count_size ) {
-          _apriori_counts.reserve ( count_size );
-          do {
-            _apriori_counts.push_back
-              ( std::vector<float,CountAlloc> ( counts[apriori_size].size () ) );
-            ++apriori_size;
-          } while ( apriori_size < count_size );
-        }
-        else if ( apriori_size > count_size ) {
+
+        if ( apriori_size > count_size ) {
           do {
             _apriori_counts.pop_back ();
             --apriori_size;
@@ -108,6 +101,15 @@ namespace gum {
         
         for ( unsigned int i = 0; i < apriori_size; ++i ) {
           _apriori_counts[i].resize ( counts[i].size () );
+        }
+        
+        if ( apriori_size < count_size ) {
+          _apriori_counts.reserve ( count_size );
+          do {
+            _apriori_counts.push_back
+              ( std::vector<float,CountAlloc> ( counts[apriori_size].size () ) );
+            ++apriori_size;
+          } while ( apriori_size < count_size );
         }
       }
     }

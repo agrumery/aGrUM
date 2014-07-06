@@ -68,7 +68,7 @@ namespace gum_tests {
       learner.addMandatoryArc ( gum::Arc (2, 1) );
 
       learner.useAprioriSmoothing ();
-      learner.setAprioriWeight ( 0 );
+      learner.setAprioriWeight ( 1 );
 
 
       gum::NodeProperty<unsigned int> partial_order {

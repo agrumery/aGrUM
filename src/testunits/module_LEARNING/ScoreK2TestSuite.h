@@ -48,7 +48,6 @@ namespace gum_tests {
       std::vector<unsigned int> modalities = filter.modalities ();
 
       gum::learning::AprioriSmoothing<> apriori;
-      apriori.setWeight ( 0 );
       gum::learning::ScoreK2<> score ( filter, modalities, apriori );
 
       unsigned int id1 = score.addNodeSet ( 3 );
@@ -101,7 +100,6 @@ namespace gum_tests {
                                                         generators );
       std::vector<unsigned int> modalities = filter.modalities ();
       gum::learning::AprioriSmoothing<> apriori;
-      apriori.setWeight ( 0 );
       gum::learning::ScoreK2<> score ( filter, modalities, apriori );
       //score.useCache ( false );
       
@@ -136,7 +134,6 @@ namespace gum_tests {
                                                         generators );
       std::vector<unsigned int> modalities = filter.modalities ();
       gum::learning::AprioriSmoothing<> apriori;
-      apriori.setWeight ( 0 );
       gum::learning::ScoreK2<> score ( filter, modalities, apriori );
      
       unsigned int id1, id2, id3, id4, id5, id6, id7;

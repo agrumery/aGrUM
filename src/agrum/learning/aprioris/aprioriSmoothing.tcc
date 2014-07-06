@@ -75,17 +75,25 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc> INLINE
     void AprioriSmoothing<IdSetAlloc,CountAlloc>::compute () {
       if ( this->_weight != 0 ) {
-        if ( this->_weight != 1 ) {
-          for ( auto& countings : this->_apriori_counts ) {
-            for ( auto& count : countings ) {
-              count += this->_weight;
+        // put the weight into the countings for the targets
+        // and the sum of the weight times the target for the conditioning nodes
+        unsigned int size = this->_target_nodesets->size ();
+        for ( unsigned int i = 0; i < size; ++i ) {
+          if ( this->_target_nodesets->operator[] ( i ) != nullptr ) {
+            std::vector<float,CountAlloc>& apriori = this->_apriori_counts
+              [ this->_target_nodesets->operator[] ( i )->second ];
+            for ( auto& count : apriori ) {
+              count = this->_weight;
             }
           }
-        }
-        else {
-          for ( auto& countings : this->_apriori_counts ) {
-            for ( auto& count : countings ) {
-              ++count;
+
+          if ( this->_conditioning_nodesets->operator[] ( i ) != nullptr ) {
+            float weight = this->_weight * ( *( this->_modalities ) )
+              [ ( *( this->_target_nodesets) ) [i]->first.back () ];
+            std::vector<float,CountAlloc>& apriori = this->_apriori_counts
+              [ this->_conditioning_nodesets->operator[] ( i )->second ];
+            for ( auto& count : apriori ) {
+              count = weight;
             }
           }
         }

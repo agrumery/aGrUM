@@ -233,7 +233,7 @@ namespace gum {
         __apriori_computed = true;
       }
 
-      return _apriori->getAllApriori ( index );
+      return _apriori->getConditioningApriori ( index );
     }
      
  

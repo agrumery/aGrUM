@@ -122,7 +122,7 @@ namespace gum {
             this->_getAllApriori ( nodeset_index );
           const std::vector<float,CountAlloc>& N_prime_ij = 
             this->_getConditioningApriori ( nodeset_index );
- 
+          
           // the BD score can be computed as follows:
           // sum_j=1^qi [ gammalog2 ( N'_ij ) - gammalog2 ( N_ij + N'_ij )
           //              + sum_k=1^ri { gammlog2 ( N_ijk + N'_ijk ) -

@@ -48,46 +48,48 @@ namespace gum_tests {
       std::vector<unsigned int> modalities = filter.modalities ();
 
       gum::learning::AprioriSmoothing<> apriori;
-      apriori.setWeight ( 0 );
       gum::learning::ScoreBD<> score ( filter, modalities, apriori );
 
       // to test, we exploit the fact that if the hyperparameters are all equal
       // to 1, then score BD = score K2
-      const std::vector<float> hp2 ( 2, 1.0f );
-      const std::vector<float> hp4 ( 4, 1.0f );
-      const std::vector<float> hp8 ( 8, 1.0f );
+      apriori.setWeight ( 1 );
 
-      
-      unsigned int id1 = score.addNodeSet ( 3, hp2 );
-      unsigned int id2 = score.addNodeSet ( 1, hp2 );
-      TS_ASSERT ( fabs ( score.score ( id1 ) + 996.781  ) <= 0.01 );
-      TS_ASSERT ( fabs ( score.score ( id2 ) + 3030.73  ) <= 0.01 );
-
-      score.clear ();
-      id1 = score.addNodeSet ( 0, hp2 );
-      id2 = score.addNodeSet ( 2, hp2 );
+      unsigned int id1 = score.addNodeSet ( 0 );
+      unsigned int id2 = score.addNodeSet ( 2 );
       TS_ASSERT ( fabs ( score.score ( id1 ) + 10006.1 ) <= 0.01 );
       TS_ASSERT ( fabs ( score.score ( id2 ) + 9935.8  ) <= 0.01 );
-
+      
       score.clear ();
-      id1 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 }, hp4 );
-      id2 = score.addNodeSet ( 1, std::vector<unsigned int> { 4 }, hp4 );
+      id1 = score.addNodeSet ( 3 );
+      id2 = score.addNodeSet ( 1 );
+      TS_ASSERT ( fabs ( score.score ( id1 ) + 996.781  ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id2 ) + 3030.73  ) <= 0.01 );
+ 
+      id1 = score.addNodeSet ( 0 );
+      id2 = score.addNodeSet ( 2 );
+      TS_ASSERT ( fabs ( score.score ( id1 ) + 10006.1 ) <= 0.01 );
+      TS_ASSERT ( fabs ( score.score ( id2 ) + 9935.8  ) <= 0.01 );
+      
+      score.clear ();
+      id1 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 } );
+      id2 = score.addNodeSet ( 1, std::vector<unsigned int> { 4 } );
       TS_ASSERT ( fabs ( score.score ( id1 ) + 991.062 ) <= 0.01 );
       TS_ASSERT ( fabs ( score.score ( id2 ) + 3030.55 ) <= 0.01 );
  
       score.clear ();
-      id1 = score.addNodeSet ( 3, std::vector<unsigned int> { 1, 2 }, hp8 );
+      id1 = score.addNodeSet ( 3, std::vector<unsigned int> { 1, 2 } );
       TS_ASSERT ( fabs ( score.score ( id1 ) + 1014.4 ) <= 0.01 );
  
       unsigned int id3, id4, id5, id6, id7;
       score.clear ();
-      id1 = score.addNodeSet ( 3, hp2 );
-      id2 = score.addNodeSet ( 1, hp2 );
-      id3 = score.addNodeSet ( 3, std::vector<unsigned int> { 1, 2 }, hp8 );
-      id4 = score.addNodeSet ( 2, hp2 );
-      id5 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 }, hp4 );
-      id6 = score.addNodeSet ( 2, hp2 );
-      id7 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 }, hp4 );
+      apriori.setWeight ( 1 );
+      id1 = score.addNodeSet ( 3 );
+      id2 = score.addNodeSet ( 1 );
+      id3 = score.addNodeSet ( 3, std::vector<unsigned int> { 1, 2 } );
+      id4 = score.addNodeSet ( 2 );
+      id5 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 } );
+      id6 = score.addNodeSet ( 2 );
+      id7 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 } );
       TS_ASSERT ( fabs ( score.score ( id1 ) + 996.781 ) <= 0.01 );
       TS_ASSERT ( fabs ( score.score ( id2 ) + 3030.73 ) <= 0.01 );
       TS_ASSERT ( fabs ( score.score ( id3 ) + 1014.4  ) <= 0.01 );
@@ -98,7 +100,7 @@ namespace gum_tests {
     }
 
     
-    void test_cache () {
+    void xtest_cache () {
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
@@ -108,26 +110,23 @@ namespace gum_tests {
                                                         generators );
       std::vector<unsigned int> modalities = filter.modalities ();
       gum::learning::AprioriSmoothing<> apriori;
-      apriori.setWeight ( 0 );
       gum::learning::ScoreBD<> score ( filter, modalities, apriori );
       //score.useCache ( false );
 
       // to test, we exploit the fact that if the hyperparameters are all equal
       // to 1, then score BDeu = score K2
-      const std::vector<float> hp2 ( 2, 1.0f );
-      const std::vector<float> hp4 ( 4, 1.0f );
-      const std::vector<float> hp8 ( 8, 1.0f );
+      apriori.setWeight ( 1 );
 
       unsigned int id1, id2, id3, id4, id5, id6, id7;
       for ( unsigned int i = 0; i < 10000; ++i ) {
         score.clear ();
-        id1 = score.addNodeSet ( 3, hp2 );
-        id2 = score.addNodeSet ( 1, hp2 );
-        id3 = score.addNodeSet ( 3, std::vector<unsigned int> { 1, 2 }, hp8 );
-        id4 = score.addNodeSet ( 2, hp2 );
-        id5 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 }, hp4 );
-        id6 = score.addNodeSet ( 2, hp2 );
-        id7 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 }, hp4 );
+        id1 = score.addNodeSet ( 3 );
+        id2 = score.addNodeSet ( 1 );
+        id3 = score.addNodeSet ( 3, std::vector<unsigned int> { 1, 2 } );
+        id4 = score.addNodeSet ( 2 );
+        id5 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 } );
+        id6 = score.addNodeSet ( 2 );
+        id7 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 } );
         TS_ASSERT ( fabs ( score.score ( id1 ) + 996.781 ) <= 0.01 );
         TS_ASSERT ( fabs ( score.score ( id2 ) + 3030.73 ) <= 0.01 );
         TS_ASSERT ( fabs ( score.score ( id3 ) + 1014.4  ) <= 0.01 );
@@ -139,7 +138,7 @@ namespace gum_tests {
     }
 
     
-    void test_clearcache () {
+    void xtest_clearcache () {
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
@@ -149,26 +148,23 @@ namespace gum_tests {
                                                         generators );
       std::vector<unsigned int> modalities = filter.modalities ();
       gum::learning::AprioriSmoothing<> apriori;
-      apriori.setWeight ( 0 );
       gum::learning::ScoreBD<> score ( filter, modalities, apriori );
       //score.useCache ( false );
 
       // to test, we exploit the fact that if the hyperparameters are all equal
       // to 1, then score BDeu = score K2
-      const std::vector<float> hp2 ( 2, 1.0f );
-      const std::vector<float> hp4 ( 4, 1.0f );
-      const std::vector<float> hp8 ( 8, 1.0f );
+      apriori.setWeight ( 1 );
 
       unsigned int id1, id2, id3, id4, id5, id6, id7;
       for ( unsigned int i = 0; i < 4; ++i ) {
         score.clearCache ();
-        id1 = score.addNodeSet ( 3, hp2 );
-        id2 = score.addNodeSet ( 1, hp2 );
-        id3 = score.addNodeSet ( 3, std::vector<unsigned int> { 1, 2 }, hp8 );
-        id4 = score.addNodeSet ( 2, hp2 );
-        id5 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 }, hp4 );
-        id6 = score.addNodeSet ( 2, hp2 );
-        id7 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 }, hp4 );
+        id1 = score.addNodeSet ( 3 );
+        id2 = score.addNodeSet ( 1 );
+        id3 = score.addNodeSet ( 3, std::vector<unsigned int> { 1, 2 } );
+        id4 = score.addNodeSet ( 2 );
+        id5 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 } );
+        id6 = score.addNodeSet ( 2 );
+        id7 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 } );
         TS_ASSERT ( fabs ( score.score ( id1 ) + 996.781 ) <= 0.01 );
         TS_ASSERT ( fabs ( score.score ( id2 ) + 3030.73 ) <= 0.01 );
         TS_ASSERT ( fabs ( score.score ( id3 ) + 1014.4  ) <= 0.01 );
