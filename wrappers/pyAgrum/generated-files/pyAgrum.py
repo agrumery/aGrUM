@@ -174,7 +174,10 @@ PythonLoadListener_swigregister(PythonLoadListener)
 
 
 def __fillLoadListeners(*args):
-  """__fillLoadListeners(std::vector< PythonLoadListener > & py_listener, PyObject * l) -> int"""
+  """
+    __fillLoadListeners(std::vector< PythonLoadListener,std::allocator< PythonLoadListener > > & py_listener, 
+        PyObject * l) -> int
+    """
   return _pyAgrum.__fillLoadListeners(*args)
 class PythonApproximationListener(_object):
     """Proxy of C++ PythonApproximationListener class"""
@@ -234,6 +237,263 @@ class BNGenerator(_object):
     __del__ = lambda self : None;
 BNGenerator_swigregister = _pyAgrum.BNGenerator_swigregister
 BNGenerator_swigregister(BNGenerator)
+
+class SwigPyIterator(_object):
+    """Proxy of C++ swig::SwigPyIterator class"""
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, SwigPyIterator, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, SwigPyIterator, name)
+    def __init__(self, *args, **kwargs): raise AttributeError("No constructor defined - class is abstract")
+    __repr__ = _swig_repr
+    __swig_destroy__ = _pyAgrum.delete_SwigPyIterator
+    __del__ = lambda self : None;
+    def value(self):
+        """value(SwigPyIterator self) -> PyObject *"""
+        return _pyAgrum.SwigPyIterator_value(self)
+
+    def incr(self, n=1):
+        """
+        incr(SwigPyIterator self, size_t n=1) -> SwigPyIterator
+        incr(SwigPyIterator self) -> SwigPyIterator
+        """
+        return _pyAgrum.SwigPyIterator_incr(self, n)
+
+    def decr(self, n=1):
+        """
+        decr(SwigPyIterator self, size_t n=1) -> SwigPyIterator
+        decr(SwigPyIterator self) -> SwigPyIterator
+        """
+        return _pyAgrum.SwigPyIterator_decr(self, n)
+
+    def distance(self, *args):
+        """distance(SwigPyIterator self, SwigPyIterator x) -> ptrdiff_t"""
+        return _pyAgrum.SwigPyIterator_distance(self, *args)
+
+    def equal(self, *args):
+        """equal(SwigPyIterator self, SwigPyIterator x) -> bool"""
+        return _pyAgrum.SwigPyIterator_equal(self, *args)
+
+    def copy(self):
+        """copy(SwigPyIterator self) -> SwigPyIterator"""
+        return _pyAgrum.SwigPyIterator_copy(self)
+
+    def next(self):
+        """next(SwigPyIterator self) -> PyObject *"""
+        return _pyAgrum.SwigPyIterator_next(self)
+
+    def __next__(self):
+        """__next__(SwigPyIterator self) -> PyObject *"""
+        return _pyAgrum.SwigPyIterator___next__(self)
+
+    def previous(self):
+        """previous(SwigPyIterator self) -> PyObject *"""
+        return _pyAgrum.SwigPyIterator_previous(self)
+
+    def advance(self, *args):
+        """advance(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator"""
+        return _pyAgrum.SwigPyIterator_advance(self, *args)
+
+    def __eq__(self, *args):
+        """__eq__(SwigPyIterator self, SwigPyIterator x) -> bool"""
+        return _pyAgrum.SwigPyIterator___eq__(self, *args)
+
+    def __ne__(self, *args):
+        """__ne__(SwigPyIterator self, SwigPyIterator x) -> bool"""
+        return _pyAgrum.SwigPyIterator___ne__(self, *args)
+
+    def __iadd__(self, *args):
+        """__iadd__(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator"""
+        return _pyAgrum.SwigPyIterator___iadd__(self, *args)
+
+    def __isub__(self, *args):
+        """__isub__(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator"""
+        return _pyAgrum.SwigPyIterator___isub__(self, *args)
+
+    def __add__(self, *args):
+        """__add__(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator"""
+        return _pyAgrum.SwigPyIterator___add__(self, *args)
+
+    def __sub__(self, *args):
+        """
+        __sub__(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator
+        __sub__(SwigPyIterator self, SwigPyIterator x) -> ptrdiff_t
+        """
+        return _pyAgrum.SwigPyIterator___sub__(self, *args)
+
+    def __iter__(self): return self
+SwigPyIterator_swigregister = _pyAgrum.SwigPyIterator_swigregister
+SwigPyIterator_swigregister(SwigPyIterator)
+
+class Vector_double(_object):
+    """Proxy of C++ std::vector<(double)> class"""
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Vector_double, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Vector_double, name)
+    __repr__ = _swig_repr
+    def iterator(self):
+        """iterator(Vector_double self) -> SwigPyIterator"""
+        return _pyAgrum.Vector_double_iterator(self)
+
+    def __iter__(self): return self.iterator()
+    def __nonzero__(self):
+        """__nonzero__(Vector_double self) -> bool"""
+        return _pyAgrum.Vector_double___nonzero__(self)
+
+    def __bool__(self):
+        """__bool__(Vector_double self) -> bool"""
+        return _pyAgrum.Vector_double___bool__(self)
+
+    def __len__(self):
+        """__len__(Vector_double self) -> std::vector< double >::size_type"""
+        return _pyAgrum.Vector_double___len__(self)
+
+    def pop(self):
+        """pop(Vector_double self) -> std::vector< double >::value_type"""
+        return _pyAgrum.Vector_double_pop(self)
+
+    def __getslice__(self, *args):
+        """__getslice__(Vector_double self, std::vector< double >::difference_type i, std::vector< double >::difference_type j) -> Vector_double"""
+        return _pyAgrum.Vector_double___getslice__(self, *args)
+
+    def __setslice__(self, *args):
+        """
+        __setslice__(Vector_double self, std::vector< double >::difference_type i, std::vector< double >::difference_type j, 
+            Vector_double v=std::vector< double,std::allocator< double > >())
+        __setslice__(Vector_double self, std::vector< double >::difference_type i, std::vector< double >::difference_type j)
+        """
+        return _pyAgrum.Vector_double___setslice__(self, *args)
+
+    def __delslice__(self, *args):
+        """__delslice__(Vector_double self, std::vector< double >::difference_type i, std::vector< double >::difference_type j)"""
+        return _pyAgrum.Vector_double___delslice__(self, *args)
+
+    def __delitem__(self, *args):
+        """
+        __delitem__(Vector_double self, std::vector< double >::difference_type i)
+        __delitem__(Vector_double self, PySliceObject * slice)
+        """
+        return _pyAgrum.Vector_double___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        """
+        __getitem__(Vector_double self, PySliceObject * slice) -> Vector_double
+        __getitem__(Vector_double self, std::vector< double >::difference_type i) -> std::vector< double >::value_type const &
+        """
+        return _pyAgrum.Vector_double___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        """
+        __setitem__(Vector_double self, PySliceObject * slice, Vector_double v)
+        __setitem__(Vector_double self, PySliceObject * slice)
+        __setitem__(Vector_double self, std::vector< double >::difference_type i, std::vector< double >::value_type const & x)
+        """
+        return _pyAgrum.Vector_double___setitem__(self, *args)
+
+    def append(self, *args):
+        """append(Vector_double self, std::vector< double >::value_type const & x)"""
+        return _pyAgrum.Vector_double_append(self, *args)
+
+    def empty(self):
+        """empty(Vector_double self) -> bool"""
+        return _pyAgrum.Vector_double_empty(self)
+
+    def size(self):
+        """size(Vector_double self) -> std::vector< double >::size_type"""
+        return _pyAgrum.Vector_double_size(self)
+
+    def clear(self):
+        """clear(Vector_double self)"""
+        return _pyAgrum.Vector_double_clear(self)
+
+    def swap(self, *args):
+        """swap(Vector_double self, Vector_double v)"""
+        return _pyAgrum.Vector_double_swap(self, *args)
+
+    def get_allocator(self):
+        """get_allocator(Vector_double self) -> std::vector< double >::allocator_type"""
+        return _pyAgrum.Vector_double_get_allocator(self)
+
+    def begin(self):
+        """begin(Vector_double self) -> std::vector< double >::iterator"""
+        return _pyAgrum.Vector_double_begin(self)
+
+    def end(self):
+        """end(Vector_double self) -> std::vector< double >::iterator"""
+        return _pyAgrum.Vector_double_end(self)
+
+    def rbegin(self):
+        """rbegin(Vector_double self) -> std::vector< double >::reverse_iterator"""
+        return _pyAgrum.Vector_double_rbegin(self)
+
+    def rend(self):
+        """rend(Vector_double self) -> std::vector< double >::reverse_iterator"""
+        return _pyAgrum.Vector_double_rend(self)
+
+    def pop_back(self):
+        """pop_back(Vector_double self)"""
+        return _pyAgrum.Vector_double_pop_back(self)
+
+    def erase(self, *args):
+        """
+        erase(Vector_double self, std::vector< double >::iterator pos) -> std::vector< double >::iterator
+        erase(Vector_double self, std::vector< double >::iterator first, std::vector< double >::iterator last) -> std::vector< double >::iterator
+        """
+        return _pyAgrum.Vector_double_erase(self, *args)
+
+    def __init__(self, *args): 
+        """
+        __init__(std::vector<(double)> self) -> Vector_double
+        __init__(std::vector<(double)> self, Vector_double arg2) -> Vector_double
+        __init__(std::vector<(double)> self, std::vector< double >::size_type size) -> Vector_double
+        __init__(std::vector<(double)> self, std::vector< double >::size_type size, std::vector< double >::value_type const & value) -> Vector_double
+        """
+        this = _pyAgrum.new_Vector_double(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    def push_back(self, *args):
+        """push_back(Vector_double self, std::vector< double >::value_type const & x)"""
+        return _pyAgrum.Vector_double_push_back(self, *args)
+
+    def front(self):
+        """front(Vector_double self) -> std::vector< double >::value_type const &"""
+        return _pyAgrum.Vector_double_front(self)
+
+    def back(self):
+        """back(Vector_double self) -> std::vector< double >::value_type const &"""
+        return _pyAgrum.Vector_double_back(self)
+
+    def assign(self, *args):
+        """assign(Vector_double self, std::vector< double >::size_type n, std::vector< double >::value_type const & x)"""
+        return _pyAgrum.Vector_double_assign(self, *args)
+
+    def resize(self, *args):
+        """
+        resize(Vector_double self, std::vector< double >::size_type new_size)
+        resize(Vector_double self, std::vector< double >::size_type new_size, std::vector< double >::value_type const & x)
+        """
+        return _pyAgrum.Vector_double_resize(self, *args)
+
+    def insert(self, *args):
+        """
+        insert(Vector_double self, std::vector< double >::iterator pos, std::vector< double >::value_type const & x) -> std::vector< double >::iterator
+        insert(Vector_double self, std::vector< double >::iterator pos, std::vector< double >::size_type n, std::vector< double >::value_type const & x)
+        """
+        return _pyAgrum.Vector_double_insert(self, *args)
+
+    def reserve(self, *args):
+        """reserve(Vector_double self, std::vector< double >::size_type n)"""
+        return _pyAgrum.Vector_double_reserve(self, *args)
+
+    def capacity(self):
+        """capacity(Vector_double self) -> std::vector< double >::size_type"""
+        return _pyAgrum.Vector_double_capacity(self)
+
+    __swig_destroy__ = _pyAgrum.delete_Vector_double
+    __del__ = lambda self : None;
+Vector_double_swigregister = _pyAgrum.Vector_double_swigregister
+Vector_double_swigregister(Vector_double)
 
 GUM_MAJOR_VERSION = _pyAgrum.GUM_MAJOR_VERSION
 GUM_MINOR_VERSION = _pyAgrum.GUM_MINOR_VERSION
@@ -1832,11 +2092,11 @@ class MixedGraph(UndiGraph,DiGraph):
         return _pyAgrum.MixedGraph_clear(self)
 
     def mixedOrientedPath(self, *args):
-        """mixedOrientedPath(MixedGraph self, gum::NodeId const node1, gum::NodeId const node2) -> std::vector< gum::NodeId > const"""
+        """mixedOrientedPath(MixedGraph self, gum::NodeId const node1, gum::NodeId const node2) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > > const"""
         return _pyAgrum.MixedGraph_mixedOrientedPath(self, *args)
 
     def mixedUnorientedPath(self, *args):
-        """mixedUnorientedPath(MixedGraph self, gum::NodeId const node1, gum::NodeId const node2) -> std::vector< gum::NodeId > const"""
+        """mixedUnorientedPath(MixedGraph self, gum::NodeId const node1, gum::NodeId const node2) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > > const"""
         return _pyAgrum.MixedGraph_mixedUnorientedPath(self, *args)
 
     def __str__(self):
@@ -1979,7 +2239,7 @@ class CliqueGraph(UndiGraph):
         return _pyAgrum.CliqueGraph_separator(self, *args)
 
     def containerPath(self, *args):
-        """containerPath(CliqueGraph self, gum::NodeId const node1, gum::NodeId const node2) -> std::vector< gum::NodeId >"""
+        """containerPath(CliqueGraph self, gum::NodeId const node1, gum::NodeId const node2) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > >"""
         return _pyAgrum.CliqueGraph_containerPath(self, *args)
 
     def hasRunningIntersection(self):
@@ -2375,6 +2635,14 @@ class BNLearner(_object):
         """useScoreAIC(BNLearner self)"""
         return _pyAgrum.BNLearner_useScoreAIC(self)
 
+    def useScoreBD(self):
+        """useScoreBD(BNLearner self)"""
+        return _pyAgrum.BNLearner_useScoreBD(self)
+
+    def useScoreBDeu(self):
+        """useScoreBDeu(BNLearner self)"""
+        return _pyAgrum.BNLearner_useScoreBDeu(self)
+
     def useScoreBIC(self):
         """useScoreBIC(BNLearner self)"""
         return _pyAgrum.BNLearner_useScoreBIC(self)
@@ -2560,7 +2828,7 @@ class BNLearner(_object):
         return _pyAgrum.BNLearner_nbrIterations(self)
 
     def history(self):
-        """history(BNLearner self) -> std::vector< double > const &"""
+        """history(BNLearner self) -> Vector_double"""
         return _pyAgrum.BNLearner_history(self)
 
     def learnBN(self, *args):
@@ -2584,7 +2852,7 @@ BNLearner_swigregister(BNLearner)
 
 
 def randomDistribution_double(*args):
-  """randomDistribution_double(gum::Size n) -> std::vector< double >"""
+  """randomDistribution_double(gum::Size n) -> Vector_double"""
   return _pyAgrum.randomDistribution_double(*args)
 class DiscretizedVariable_double(DiscreteVariable):
     """Proxy of C++ gum::DiscretizedVariable<(double)> class"""
@@ -2675,7 +2943,7 @@ class MultiDimContainer_double(_object):
         return _pyAgrum.MultiDimContainer_double_fill(self, *args)
 
     def fillWith(self, *args):
-        """fillWith(MultiDimContainer_double self, std::vector< double > const & v)"""
+        """fillWith(MultiDimContainer_double self, Vector_double v)"""
         return _pyAgrum.MultiDimContainer_double_fillWith(self, *args)
 
     def copyFrom(self, *args):
@@ -2803,7 +3071,7 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double_variable(self, *args)
 
     def fillWith(self, *args):
-        """fillWith(Potential_double self, std::vector< double > const & v)"""
+        """fillWith(Potential_double self, Vector_double v)"""
         return _pyAgrum.Potential_double_fillWith(self, *args)
 
     def fill(self, *args):
@@ -3374,7 +3642,7 @@ class LazyPropagation_double(BayesNetInference_double):
     def __init__(self, *args): 
         """
         __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN) -> LazyPropagation_double
-        __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN, std::vector< gum::NodeId > const & elim_order) -> LazyPropagation_double
+        __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & elim_order) -> LazyPropagation_double
         """
         this = _pyAgrum.new_LazyPropagation_double(*args)
         try: self.this.append(this)
@@ -3565,7 +3833,7 @@ class GibbsInference_double(BayesNetInference_double):
         return _pyAgrum.GibbsInference_double_messageApproximationScheme(self)
 
     def history(self):
-        """history(GibbsInference_double self) -> std::vector< double > const &"""
+        """history(GibbsInference_double self) -> Vector_double"""
         return _pyAgrum.GibbsInference_double_history(self)
 
 GibbsInference_double_swigregister = _pyAgrum.GibbsInference_double_swigregister
@@ -3685,7 +3953,7 @@ class GibbsKL_double(_object):
         return _pyAgrum.GibbsKL_double_messageApproximationScheme(self)
 
     def history(self):
-        """history(GibbsKL_double self) -> std::vector< double > const &"""
+        """history(GibbsKL_double self) -> Vector_double"""
         return _pyAgrum.GibbsKL_double_history(self)
 
 GibbsKL_double_swigregister = _pyAgrum.GibbsKL_double_swigregister
@@ -3724,25 +3992,24 @@ class CredalNet_double(_object):
         return _pyAgrum.CredalNet_double_addArc(self, *args)
 
     def setCPTs(self, *args):
-        """setCPTs(CredalNet_double self, gum::NodeId const & id, std::vector< std::vector< std::vector< double > > > const & cpt)"""
+        """setCPTs(CredalNet_double self, gum::NodeId const & id, std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > const & cpt)"""
         return _pyAgrum.CredalNet_double_setCPTs(self, *args)
 
     def setCPT(self, *args):
         """
-        setCPT(CredalNet_double self, gum::NodeId const & id, unsigned long & entry, std::vector< std::vector< double > > const & cpt)
-        setCPT(CredalNet_double self, gum::NodeId const & id, Instantiation ins, std::vector< std::vector< double > > const & cpt)
+        setCPT(CredalNet_double self, gum::NodeId const & id, unsigned long & entry, std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const & cpt)
+        setCPT(CredalNet_double self, gum::NodeId const & id, Instantiation ins, std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const & cpt)
         """
         return _pyAgrum.CredalNet_double_setCPT(self, *args)
 
     def fillConstraints(self, *args):
-        """fillConstraints(CredalNet_double self, gum::NodeId const & id, std::vector< double > const & lower, std::vector< double > const & upper)"""
+        """fillConstraints(CredalNet_double self, gum::NodeId const & id, Vector_double lower, Vector_double upper)"""
         return _pyAgrum.CredalNet_double_fillConstraints(self, *args)
 
     def fillConstraint(self, *args):
         """
-        fillConstraint(CredalNet_double self, gum::NodeId const & id, unsigned long & entry, std::vector< double > const & lower, 
-            std::vector< double > const & upper)
-        fillConstraint(CredalNet_double self, gum::NodeId const & id, Instantiation ins, std::vector< double > const & lower, std::vector< double > const & upper)
+        fillConstraint(CredalNet_double self, gum::NodeId const & id, unsigned long & entry, Vector_double lower, Vector_double upper)
+        fillConstraint(CredalNet_double self, gum::NodeId const & id, Instantiation ins, Vector_double lower, Vector_double upper)
         """
         return _pyAgrum.CredalNet_double_fillConstraint(self, *args)
 
@@ -3806,11 +4073,11 @@ class CredalNet_double(_object):
         return _pyAgrum.CredalNet_double_current_bn(self)
 
     def credalNet_currentCpt(self):
-        """credalNet_currentCpt(CredalNet_double self) -> NodeProperty< std::vector< std::vector< std::vector< double > > > > const &"""
+        """credalNet_currentCpt(CredalNet_double self) -> NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &"""
         return _pyAgrum.CredalNet_double_credalNet_currentCpt(self)
 
     def credalNet_srcCpt(self):
-        """credalNet_srcCpt(CredalNet_double self) -> NodeProperty< std::vector< std::vector< std::vector< double > > > > const &"""
+        """credalNet_srcCpt(CredalNet_double self) -> NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &"""
         return _pyAgrum.CredalNet_double_credalNet_srcCpt(self)
 
     def currentNodeType(self, *args):
@@ -3838,11 +4105,11 @@ class CredalNet_double(_object):
         return _pyAgrum.CredalNet_double_isSeparatelySpecified(self)
 
     def get_CPT_min(self):
-        """get_CPT_min(CredalNet_double self) -> std::vector< std::vector< double > > const &"""
+        """get_CPT_min(CredalNet_double self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &"""
         return _pyAgrum.CredalNet_double_get_CPT_min(self)
 
     def get_CPT_max(self):
-        """get_CPT_max(CredalNet_double self) -> std::vector< std::vector< double > > const &"""
+        """get_CPT_max(CredalNet_double self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &"""
         return _pyAgrum.CredalNet_double_get_CPT_max(self)
 
 CredalNet_double_swigregister = _pyAgrum.CredalNet_double_swigregister
@@ -3871,11 +4138,11 @@ class CNInferenceEngine_double(_object):
         return _pyAgrum.CNInferenceEngine_double_credalNet(self)
 
     def getT0Cluster(self):
-        """getT0Cluster(CNInferenceEngine_double self) -> NodeProperty< std::vector< gum::NodeId > > const &"""
+        """getT0Cluster(CNInferenceEngine_double self) -> NodeProperty< std::vector< gum::NodeId,std::allocator< gum::NodeId > > > const &"""
         return _pyAgrum.CNInferenceEngine_double_getT0Cluster(self)
 
     def getT1Cluster(self):
-        """getT1Cluster(CNInferenceEngine_double self) -> NodeProperty< std::vector< gum::NodeId > > const &"""
+        """getT1Cluster(CNInferenceEngine_double self) -> NodeProperty< std::vector< gum::NodeId,std::allocator< gum::NodeId > > > const &"""
         return _pyAgrum.CNInferenceEngine_double_getT1Cluster(self)
 
     def setRepetitiveInd(self, *args):
@@ -3905,7 +4172,7 @@ class CNInferenceEngine_double(_object):
         return _pyAgrum.CNInferenceEngine_double_insertModalsFile(self, *args)
 
     def insertModals(self, *args):
-        """insertModals(CNInferenceEngine_double self, std::map< std::string,std::vector< double > > const & modals)"""
+        """insertModals(CNInferenceEngine_double self, std::map< std::string,std::vector< double,std::allocator< double > > > const & modals)"""
         return _pyAgrum.CNInferenceEngine_double_insertModals(self, *args)
 
     def insertEvidenceFile(self, *args):
@@ -3914,8 +4181,8 @@ class CNInferenceEngine_double(_object):
 
     def insertEvidence(self, *args):
         """
-        insertEvidence(CNInferenceEngine_double self, std::map< std::string,std::vector< double > > const & eviMap)
-        insertEvidence(CNInferenceEngine_double self, NodeProperty< std::vector< double > > const & evidence)
+        insertEvidence(CNInferenceEngine_double self, std::map< std::string,std::vector< double,std::allocator< double > > > const & eviMap)
+        insertEvidence(CNInferenceEngine_double self, NodeProperty< std::vector< double,std::allocator< double > > > const & evidence)
         """
         return _pyAgrum.CNInferenceEngine_double_insertEvidence(self, *args)
 
@@ -3924,7 +4191,7 @@ class CNInferenceEngine_double(_object):
         return _pyAgrum.CNInferenceEngine_double_insertQueryFile(self, *args)
 
     def insertQuery(self, *args):
-        """insertQuery(CNInferenceEngine_double self, NodeProperty< std::vector< bool > > const & query)"""
+        """insertQuery(CNInferenceEngine_double self, NodeProperty< std::vector< bool,std::allocator< bool > > > const & query)"""
         return _pyAgrum.CNInferenceEngine_double_insertQuery(self, *args)
 
     def eraseAllEvidence(self):
@@ -3933,15 +4200,15 @@ class CNInferenceEngine_double(_object):
 
     def marginalMin(self, *args):
         """
-        marginalMin(CNInferenceEngine_double self, gum::NodeId const id) -> std::vector< double > const
-        marginalMin(CNInferenceEngine_double self, std::string const & varName) -> std::vector< double > const &
+        marginalMin(CNInferenceEngine_double self, gum::NodeId const id) -> Vector_double
+        marginalMin(CNInferenceEngine_double self, std::string const & varName) -> Vector_double
         """
         return _pyAgrum.CNInferenceEngine_double_marginalMin(self, *args)
 
     def marginalMax(self, *args):
         """
-        marginalMax(CNInferenceEngine_double self, gum::NodeId const id) -> std::vector< double > const
-        marginalMax(CNInferenceEngine_double self, std::string const & varName) -> std::vector< double > const &
+        marginalMax(CNInferenceEngine_double self, gum::NodeId const id) -> Vector_double
+        marginalMax(CNInferenceEngine_double self, std::string const & varName) -> Vector_double
         """
         return _pyAgrum.CNInferenceEngine_double_marginalMax(self, *args)
 
@@ -3960,15 +4227,15 @@ class CNInferenceEngine_double(_object):
         return _pyAgrum.CNInferenceEngine_double_expectationMax(self, *args)
 
     def dynamicExpMin(self, *args):
-        """dynamicExpMin(CNInferenceEngine_double self, std::string const & varName) -> std::vector< double > const &"""
+        """dynamicExpMin(CNInferenceEngine_double self, std::string const & varName) -> Vector_double"""
         return _pyAgrum.CNInferenceEngine_double_dynamicExpMin(self, *args)
 
     def dynamicExpMax(self, *args):
-        """dynamicExpMax(CNInferenceEngine_double self, std::string const & varName) -> std::vector< double > const &"""
+        """dynamicExpMax(CNInferenceEngine_double self, std::string const & varName) -> Vector_double"""
         return _pyAgrum.CNInferenceEngine_double_dynamicExpMax(self, *args)
 
     def vertices(self, *args):
-        """vertices(CNInferenceEngine_double self, gum::NodeId const id) -> std::vector< std::vector< double > > const &"""
+        """vertices(CNInferenceEngine_double self, gum::NodeId const id) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &"""
         return _pyAgrum.CNInferenceEngine_double_vertices(self, *args)
 
     def saveMarginals(self, *args):
@@ -4064,7 +4331,7 @@ class CNInferenceEngine_double(_object):
         return _pyAgrum.CNInferenceEngine_double_messageApproximationScheme(self)
 
     def history(self):
-        """history(CNInferenceEngine_double self) -> std::vector< double > const &"""
+        """history(CNInferenceEngine_double self) -> Vector_double"""
         return _pyAgrum.CNInferenceEngine_double_history(self)
 
 CNInferenceEngine_double_swigregister = _pyAgrum.CNInferenceEngine_double_swigregister
@@ -4223,7 +4490,7 @@ class CNLoopyPropagation_double(CNInferenceEngine_double):
         return _pyAgrum.CNLoopyPropagation_double_messageApproximationScheme(self)
 
     def history(self):
-        """history(CNLoopyPropagation_double self) -> std::vector< double > const &"""
+        """history(CNLoopyPropagation_double self) -> Vector_double"""
         return _pyAgrum.CNLoopyPropagation_double_history(self)
 
 CNLoopyPropagation_double_swigregister = _pyAgrum.CNLoopyPropagation_double_swigregister

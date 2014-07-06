@@ -93,6 +93,14 @@
 #include <agrum/learning/BNLearner.h>
 %}
 
+
+%include "std_vector.i"
+                                                                                                                                                      
+namespace std {                                                                                                                                        
+  %template ( Vector_double) vector<double>;                                                                                                          
+}
+  
+
 %typemap ( out ) std::vector<double> {
   std::vector<double> vOut = $1;
   unsigned int iLen = vOut.size();
@@ -104,7 +112,6 @@
     PyList_SetItem ( $result, i, o );
   }
 }
-
 %include "std_string.i"
 
 /* DIRECTORS (for cross language polymorphism) */

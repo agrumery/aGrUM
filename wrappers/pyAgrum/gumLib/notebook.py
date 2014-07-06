@@ -79,7 +79,7 @@ def showPosterior(bn,ev,target):
     """
     showProba(getPosterior(bn,ev,target))
 
-def animApproximationScheme(apsc):
+def animApproximationScheme(apsc,scale=np.log10):
   """
   show an animated version of an approximation scheme
   """
@@ -91,17 +91,16 @@ def animApproximationScheme(apsc):
   apsc.listener=h
 
   def stopper(x):
-    clear_output()
-    print("Solutions : {0}".format(x))
-    print("Time : {0} s".format(apsc.currentTime()))
-    print("Iterations : {0}".format(apsc.nbrIterations()))
+    clear_output(True)
+    plt.title("{0} \n Time : {1} s | Iterations : {2} | Espilon : {3}".format(x,apsc.currentTime(),apsc.nbrIterations(),apsc.epsilon()))
+
 
   def progresser(x,y,z):
     if len(apsc.history())<10:
       plt.xlim(1,10)
     else:
       plt.xlim(1,len(apsc.history()))
-    plt.plot(np.log10(apsc.history()), 'g')
+    plt.plot(scale(apsc.history()), 'g')
     clear_output(True)
     display(f)
 
