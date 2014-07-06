@@ -95,7 +95,7 @@
 
 %typemap ( out ) std::vector<double> {
   std::vector<double> vOut = $1;
-  int iLen = vOut.size();
+  unsigned int iLen = vOut.size();
   $result = PyList_New ( iLen );
 
   for ( unsigned int i = 0; i < iLen; i++ ) {
@@ -104,13 +104,6 @@
     PyList_SetItem ( $result, i, o );
   }
 }
-
-%include "std_vector.i"
-
-namespace std {
-  %template ( Vector_double ) vector<double>;
-}
-
 
 %include "std_string.i"
 

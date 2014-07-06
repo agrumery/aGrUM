@@ -2,8 +2,7 @@
 "pyAgrum is a Python wrapper for the C++ aGrUM library. It provides a high-level
 interface to the part of agrum allowing to create, handle and make computations
 into Bayesian Networks. The module is a straightforward application of the SWIG
-interface generator. Custom-written code was added to make the interface similar
-to OpenBayes, a free Bayesian Network library for Python."
+interface generator."
 %enddef
 %module(docstring=DOCSTRING, directors="1") pyAgrum
 %feature("autodoc", "1");

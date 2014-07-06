@@ -34,7 +34,6 @@ __project_url__ = 'http://forge.lip6.fr/projects/pyagrum'
 # selection of imports extracted from dir(pyAgrum)
 from pyAgrum import GUM_MAJOR_VERSION,GUM_MINOR_VERSION,GUM_PATCH_VERSION,GUM_VERSION
 
-from pyAgrum import Vector_double
 from pyAgrum import Arc,Edge,DiGraph,UndiGraph,MixedGraph,DAG,CliqueGraph
 
 from pyAgrum import BayesNet
