@@ -56,19 +56,29 @@ namespace gum {
                                              __generators );
 
       __modalities = raw_filter.modalities ();
-     
+
+      // create the fast translators
       DBTransformCompactInt raw2fast_transfo;
       raw2fast_transfo.transform ( raw_filter );
 
       __translators.insertTranslator ( CellTranslatorCompactIntId ( false ),
                                        Col<0> (), __database.nbVariables() );
-     
+
+      // create the row filter using the fast translators
       __row_filter = new
         DBRowFilter< DatabaseVectInRAM::Handler,
                      DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
                      FilteredRowGeneratorSet<RowGeneratorIdentity> >
         ( __database.handler (), __translators, __generators );
-     }
+
+      // fill the variable name -> nodeid hashtable
+      const std::vector<std::string>& var_names = __database.variableNames ();
+      unsigned int id = 0;
+      for ( const auto& name : var_names ) {
+        __name2nodeId.insert ( const_cast<std::string&> ( name ), id );
+        ++id;
+      }
+    }
 
     
     /// Database default constructor
@@ -126,6 +136,7 @@ namespace gum {
                      FilteredRowGeneratorSet<RowGeneratorIdentity> >
         ( __database.handler (), __translators, __generators );
 
+      __name2nodeId = score_database.__name2nodeId;
     }
 
 
@@ -135,7 +146,8 @@ namespace gum {
     __raw_translators ( from.__raw_translators ),
     __translators ( from.__translators ),
     __generators ( from.__generators ),
-    __modalities ( from.__modalities ) {
+    __modalities ( from.__modalities ),
+    __name2nodeId ( from.__name2nodeId ) {
       // create the row filter for the __database
       __row_filter = new
         DBRowFilter< DatabaseVectInRAM::Handler,
@@ -151,7 +163,8 @@ namespace gum {
       __raw_translators ( std::move ( from.__raw_translators ) ),
       __translators ( std::move ( from.__translators ) ),
       __generators ( std::move ( from.__generators ) ),
-      __modalities ( std::move ( from.__modalities ) ) {
+      __modalities ( std::move ( from.__modalities ) ),
+      __name2nodeId ( std::move ( from.__name2nodeId ) ) {
       // create the row filter for the __database
       __row_filter = new
         DBRowFilter< DatabaseVectInRAM::Handler,
@@ -178,7 +191,8 @@ namespace gum {
         __translators = from.__translators;
         __generators = from.__generators;
         __modalities = from.__modalities;
-
+        __name2nodeId = from.__name2nodeId;
+        
         // create the row filter for the __database
         __row_filter = new
           DBRowFilter< DatabaseVectInRAM::Handler,
@@ -202,7 +216,8 @@ namespace gum {
         __translators = std::move ( from.__translators );
         __generators = std::move ( from.__generators );
         __modalities = std::move ( from.__modalities );
-
+        __name2nodeId = std::move ( from.__name2nodeId );
+ 
         // create the row filter for the __database
         __row_filter = new
           DBRowFilter< DatabaseVectInRAM::Handler,

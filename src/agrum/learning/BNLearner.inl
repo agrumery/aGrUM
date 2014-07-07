@@ -53,8 +53,48 @@ namespace gum {
       return __database.variableNames ();
     }
 
+    /// returns the node id corresponding to a variable name
+    INLINE NodeId
+    BNLearner::Database::nodeId ( const std::string& var_name ) const {
+      return __name2nodeId.second ( const_cast<std::string&> ( var_name ) );
+    }
     
+    
+    /// returns the variable name corresponding to a given node id
+    INLINE const std::string&
+    BNLearner::Database::variableName ( NodeId id ) const {
+      return __name2nodeId.first ( id );
+    }
 
+
+    // ===========================================================================
+
+
+    /// returns the node id corresponding to a variable name
+    INLINE NodeId
+    BNLearner::nodeId ( const std::string& var_name ) const {
+      if ( __score_database != nullptr ) {
+        return __score_database->nodeId ( var_name );
+      }
+      else {
+        GUM_ERROR ( OperationNotAllowed, "to get the node id of a variable, you "
+                    "must first read a database" );
+      }
+    }
+    
+    
+    /// returns the variable name corresponding to a given node id
+    INLINE const std::string&
+    BNLearner::variableName ( NodeId id ) const {
+      if ( __score_database != nullptr ) {
+        return __score_database->variableName ( id );
+    }
+      else {
+        GUM_ERROR ( OperationNotAllowed, "to get the variable's name corresponding"
+                    " to a given id, must first read a database" );
+      }
+    }
+    
     
     /// sets an initial DAG structure
     INLINE void BNLearner::setInitialDAG ( const DAG& dag ) {
@@ -153,6 +193,20 @@ namespace gum {
     }
 
 
+    /// assign a new forbidden arc
+    INLINE void BNLearner::addForbiddenArc
+    ( const std::string& tail, const std::string& head ) {
+      addForbiddenArc ( Arc ( nodeId ( tail ), nodeId ( head ) ) );
+    }
+
+    
+    /// remove a forbidden arc
+    INLINE void BNLearner::eraseForbiddenArc
+    ( const std::string& tail, const std::string& head ) {
+      eraseForbiddenArc ( Arc ( nodeId ( tail ), nodeId ( head ) ) );
+    }
+
+
     /// assign a set of forbidden arcs
     INLINE void BNLearner::setMandatoryArcs ( const ArcSet& set ) {
       __constraint_MandatoryArcs.setArcs ( set );
@@ -168,6 +222,20 @@ namespace gum {
     /// remove a forbidden arc
     INLINE void BNLearner::eraseMandatoryArc ( const Arc& arc ) {
       __constraint_MandatoryArcs.eraseArc ( arc );
+    }
+
+    
+    /// assign a new forbidden arc
+    INLINE void BNLearner::addMandatoryArc
+    ( const std::string& tail, const std::string& head ) {
+      addMandatoryArc ( Arc ( nodeId ( tail ), nodeId ( head ) ) );
+    }
+    
+
+    /// remove a forbidden arc
+    INLINE void BNLearner::eraseMandatoryArc
+    ( const std::string& tail, const std::string& head ) {
+      eraseMandatoryArc ( Arc ( nodeId ( tail ), nodeId ( head ) ) );
     }
 
 

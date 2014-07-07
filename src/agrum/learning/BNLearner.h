@@ -28,6 +28,8 @@
 #define GUM_LEARNING_BN_LEARNER_H
 
 
+#include <agrum/config.h>
+#include <agrum/core/bijection.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/BN/BayesNet.h>
 
@@ -186,7 +188,13 @@ namespace gum {
 
         /// returns the names of the variables in the database
         const std::vector<std::string>& variableNames () const noexcept;
+      
+        /// returns the node id corresponding to a variable name
+        NodeId nodeId ( const std::string& var_name ) const;
 
+        /// returns the variable name corresponding to a given node id
+        const std::string& variableName ( NodeId id ) const;
+      
         /// returns the "raw" translators (needed for the aprioris)
         /** We must ensure that, when reading the apriori database, if the
          * "apriori" rowFilter says that a given variable has value i
@@ -221,6 +229,9 @@ namespace gum {
 
         /// the modalities of the variables
         std::vector<unsigned int> __modalities;
+
+        /// a hashtable assigning to each variable name its NodeId
+        Bijection<std::string, NodeId> __name2nodeId;
         
       };
 
@@ -283,6 +294,12 @@ namespace gum {
 
       /// returns the names of the variables in the database
       const std::vector<std::string>& variableNames () const;
+
+      /// rreturns the node id corresponding to a variable name
+      NodeId nodeId ( const std::string& var_name ) const;
+    
+      /// returns the variable name corresponding to a given node id
+      const std::string& variableName ( NodeId id ) const;
 
       /// @}
 
@@ -382,6 +399,12 @@ namespace gum {
       /// remove a forbidden arc
       void eraseForbiddenArc ( const Arc& arc );
 
+      /// assign a new forbidden arc
+      void addForbiddenArc ( const std::string& tail, const std::string& head );
+
+      /// remove a forbidden arc
+      void eraseForbiddenArc ( const std::string& tail, const std::string& head );
+
       /// assign a set of forbidden arcs
       void setMandatoryArcs ( const ArcSet& set );
 
@@ -390,6 +413,12 @@ namespace gum {
 
       /// remove a forbidden arc
       void eraseMandatoryArc ( const Arc& arc );
+
+      /// assign a new forbidden arc
+      void addMandatoryArc ( const std::string& tail, const std::string& head );
+
+      /// remove a forbidden arc
+      void eraseMandatoryArc ( const std::string& tail, const std::string& head );
 
       /// @}
 

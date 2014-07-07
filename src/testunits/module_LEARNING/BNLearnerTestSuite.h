@@ -65,11 +65,15 @@ namespace gum_tests {
       // learner.addForbiddenArc ( gum::Arc (5,1) );
       // learner.addForbiddenArc ( gum::Arc (5,7) );
 
-      learner.addMandatoryArc ( gum::Arc (2, 1) );
+      learner.readDatabase ( GET_PATH_STR( "asia.csv" ) );
+      // learner.addMandatoryArc ( gum::Arc ( learner.nodeId ( "bronchitis?" ),
+      //                                      learner.nodeId ( "lung_cancer?" ) ) );
+
+      learner.addMandatoryArc ( "bronchitis?" , "lung_cancer?" );
 
       learner.useAprioriSmoothing ();
       learner.setAprioriWeight ( 1 );
-      learner.useAprioriDirichlet (  GET_PATH_STR( "asia.csv" ) );
+      //learner.useAprioriDirichlet (  GET_PATH_STR( "asia.csv" ) );
 
       gum::NodeProperty<unsigned int> partial_order {
         std::make_pair( gum::NodeId ( 0 ), 1 ),
@@ -77,7 +81,6 @@ namespace gum_tests {
         std::make_pair( gum::NodeId ( 1 ), 0 ) };
       //learner.setSliceOrder ( partial_order );
 
-      learner.readDatabase ( GET_PATH_STR( "asia.csv" ) );
       const std::vector<std::string>& names = learner.variableNames ();
       TS_ASSERT ( ! names.empty () );
 
