@@ -41,7 +41,101 @@ namespace gum {
 
   namespace learning {
 
+    
+    /// Database default constructor
+    BNLearner::Database::Database ( std::string filename ) :
+      __database ( BNLearner::__readFile ( filename ) ),
+      __generators ( RowGeneratorIdentity() ) {
+      // create the RowFilter used for learning: we first generate a universal
+      // filter that can parse any database. Then, we parse once the DB to
+      // convert it into a compact int (an interval 0..N-1) so that we can
+      // parse it very quickly
+      __raw_translators.insertTranslator ( Col<0> (), __database.nbVariables() );
 
+      auto raw_filter = make_DB_row_filter ( __database, __raw_translators,
+                                             __generators );
+
+      DBTransformCompactInt raw2fast_transfo;
+      raw2fast_transfo.transform ( raw_filter );
+
+      __translators.insertTranslator ( Col<0> (), __database.nbVariables() );
+      
+      __row_filter = new
+        DBRowFilter< DatabaseVectInRAM::Handler,
+                     DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                     FilteredRowGeneratorSet<RowGeneratorIdentity> >
+        ( __database.handler (), __translators, __generators );
+
+      __modalities = __row_filter->modalities();
+    }
+
+    
+    /// Database default constructor
+    BNLearner::Database::Database ( std::string filename,
+                                    Database& score_database ) :
+      __database ( BNLearner::__readFile ( filename ) ),
+      __generators ( RowGeneratorIdentity() ) {
+      // check that there are at least as many variables in the a priori
+      // database as those in the score_database
+      if ( __database.nbVariables () <
+           score_database.__database.nbVariables () ) {
+        GUM_ERROR ( InvalidArgument, "the a priori seems to have fewer variables "
+                    "than the observed database" );
+      }
+      const std::vector<std::string>& score_vars =
+        score_database.__database.variableNames ();
+      const std::vector<std::string>& apriori_vars =
+        __database.variableNames ();
+      for ( unsigned int i = 0, size = score_vars.size (); i < size; ++i ) {
+        if ( score_vars[i] != apriori_vars[i] ) {
+          GUM_ERROR ( InvalidArgument, "some a priori variables do not match "
+                      "their counterpart in the score database" );
+        }
+      }
+      
+      // create the RowFilter used for learning: we first generate a universal
+      // filter that can parse any database. Then, we parse once the DB to
+      // convert it into a compact int (an interval 0..N-1) so that we can
+      // parse it very quickly. We first copy the raw translators of the score
+      // database so that we take into account the values observed in this
+      // database. Then we copy back these raw translators so that the score
+      // filter knows about these values.
+      __raw_translators = score_database.__raw_translators;
+      
+      auto raw_filter = make_DB_row_filter ( __database, __raw_translators,
+                                             __generators );
+      
+      score_database.__raw_translators = __raw_translators;
+      
+      // create the fast translators
+      DBTransformCompactInt raw2fast_transfo;
+      raw2fast_transfo.transform ( raw_filter );
+
+      __translators.insertTranslator ( Col<0> (),
+                                       score_database.__database.nbVariables() );
+      
+      __row_filter = new
+        DBRowFilter< DatabaseVectInRAM::Handler,
+                     DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                     FilteredRowGeneratorSet<RowGeneratorIdentity> >
+        ( __database.handler (), __translators, __generators );
+
+      __modalities = __row_filter->modalities();
+ 
+      // update the modalities of the score database
+      score_database.__modalities = __modalities;
+    }
+
+    
+    /// destructor
+    BNLearner::Database::~Database () {
+      delete __row_filter;
+    }
+
+    
+    // ===========================================================================
+
+    
     /// default constructor
     BNLearner::BNLearner() {
       // for debugging purposes
@@ -234,39 +328,307 @@ namespace gum {
                   "BNLearner does not support yet this type of database file" );
     }
 
+    
+    /// read the database file for the score / parameter estimation
+    void BNLearner::readDatabase ( const std::string& filename ) {
+      if ( __score_database != nullptr ) {
+        delete __score_database;
+        __score_database = nullptr;
+      }
+      __score_database = new Database ( filename );
+    }
 
+    
+    /// create the apriori used for learning
+    void BNLearner::__createApriori() {
+      // first, save the old apriori, to be delete if everything is ok
+      Apriori<>* old_apriori = __apriori;
+
+      // create the new apriori
+      switch ( __apriori_type ) {
+      case AprioriType::SMOOTHING:
+        __apriori = new AprioriSmoothing<>;
+        break;
+
+      case AprioriType::DIRICHLET_FROM_DATABASE:
+        if ( __score_database == nullptr ) {
+          GUM_ERROR ( OperationNotAllowed, "the observation database is "
+                      "needed to create the a priori" );
+        }
+        if ( __apriori_database != nullptr ) {
+          delete __apriori_database;
+          __apriori_database = nullptr;
+        }
+        __apriori_database = new Database ( __apriori_dbname, *__score_database );
+  
+        __apriori = new AprioriDirichletFromDatabase<>
+          ( __apriori_database->rowFilter (),
+            __apriori_database->modalities () );
+        break;
+
+      default:
+        GUM_ERROR ( OperationNotAllowed,
+                    "BNLearner does not support yet this apriori" );
+      }
+
+      // do not forget to assign a weight to the apriori
+      __apriori->setWeight ( __apriori_weight );
+
+      // remove the old apriori, if any
+      if ( old_apriori != nullptr ) delete old_apriori;
+    }
+
+
+    /// create the score used for learning
+    void BNLearner::__createScore () {
+      // first, save the old score, to be delete if everything is ok
+      Score<>* old_score = __score;
+
+      // create the new scoring function
+      switch ( __score_type ) {
+        case ScoreType::AIC:
+          __score = new ScoreAIC<> ( __score_database->rowFilter (),
+                                     __score_database->modalities (),
+                                     *__apriori );
+          break;
+
+        case ScoreType::BD:
+          __score = new ScoreBD<> ( __score_database->rowFilter (),
+                                    __score_database->modalities (),
+                                    *__apriori );
+          break;
+
+        case ScoreType::BDeu:
+          __score = new ScoreBDeu<> ( __score_database->rowFilter (),
+                                      __score_database->modalities (),
+                                      *__apriori );
+          break;
+
+        case ScoreType::BIC:
+          __score = new ScoreBIC<> ( __score_database->rowFilter (),
+                                     __score_database->modalities (),
+                                     *__apriori );
+          break;
+
+        case ScoreType::K2:
+          __score = new ScoreK2<> ( __score_database->rowFilter (),
+                                    __score_database->modalities (),
+                                    *__apriori );
+          break;
+
+        case ScoreType::LOG2LIKELIHOOD:
+          __score = new ScoreLog2Likelihood<> ( __score_database->rowFilter (),
+                                                __score_database->modalities (),
+                                                *__apriori );
+          break;
+
+        default:
+          GUM_ERROR ( OperationNotAllowed,
+                      "BNLearner does not support yet this score" );
+      }
+
+      // remove the old score, if any
+      if ( old_score != nullptr ) delete old_score;
+    }
+
+
+    /// create the parameter estimator used for learning
+    void BNLearner::__createParamEstimator () {
+      // first, save the old estimator, to be delete if everything is ok
+      ParamEstimator<>* old_estimator = __param_estimator;
+      
+      // create the new estimator
+      switch ( __param_estimator_type ) {
+      case ParamEstimatorType::ML:
+        __param_estimator =
+          new ParamEstimatorML<> ( __score_database->rowFilter (),
+                                   __score_database->modalities (),
+                                   *__apriori );
+        break;
+
+      default:
+        GUM_ERROR ( OperationNotAllowed,
+                    "BNLearner does not support yet this parameter estimator" );
+      }
+
+      // remove the old estimator, if any
+      if ( old_estimator != nullptr ) delete old_estimator;
+    }
+
+    
     /// learn a structure from a file
-    DAG BNLearner::learnDAG ( std::string filename ) {
-      // read the database
-      DatabaseVectInRAM database = __readFile ( filename );
+    DAG BNLearner::learnDAG () {
+      // check that we have read a database
+      if ( __score_database == nullptr ) {
+        GUM_ERROR ( OperationNotAllowed, "you need to read a database before "
+                    "learning from it" );
+      }
 
-      // create the RowFilter used for learning: we first generate a universal
-      // filter that can parse any database. Then, we parse once the DB to
-      // convert it into a compact int (an interval 0..N-1) so that we can
-      // parse it very quickly
-      DBRowTranslatorSetDynamic<CellTranslatorUniversal> raw_translators;
-      raw_translators.insertTranslator ( Col<0> (), database.nbVariables() );
+      // create the score and the apriori
+      __createApriori ();
+      __createScore ();
 
-      auto generators = make_generators ( RowGeneratorIdentity() );
+      return __learnDAG ();
+    }
 
-      auto raw_filter = make_DB_row_filter ( database, raw_translators,
-                                             generators );
+    
+    /// learn a structure from a file
+    DAG BNLearner::__learnDAG () {
+      // add the mandatory arcs to the initial dag and remove the forbidden ones
+      // from the initial graph
+      DAG init_graph = __initial_dag;
 
-      DBTransformCompactInt raw2fast_transfo;
-      raw2fast_transfo.transform ( raw_filter );
+      const ArcSet& mandatory_arcs = __constraint_MandatoryArcs.arcs ();
 
-      DBRowTranslatorSetDynamic<CellTranslatorCompactIntId> fast_translators;
-      fast_translators.insertTranslator ( Col<0> (), database.nbVariables() );
+      for ( const auto & arc : mandatory_arcs ) {
+        if ( ! init_graph.exists ( arc.tail () ) )
+          init_graph.addNode ( arc.tail () );
 
-      auto fast_filter = make_DB_row_filter ( database, fast_translators,
-                                              generators );
+        if ( ! init_graph.exists ( arc.head () ) )
+          init_graph.addNode ( arc.head () );
 
-      // get the modalities and create the score and the apriori
-      std::vector<unsigned int> modalities = raw_filter.modalities();
-      __createApriori();
-      __createScore ( fast_filter, modalities );
+        init_graph.addArc ( arc.tail (), arc.head () );
+      }
 
-      return __learnDAG ( fast_filter, modalities );
+      const ArcSet& forbidden_arcs = __constraint_ForbiddenArcs.arcs ();
+
+      for ( const auto & arc : forbidden_arcs ) {
+        init_graph.eraseArc ( arc );
+      }
+
+      switch ( __selected_algo ) {
+      // ========================================================================
+      case AlgoType::GREEDY_HILL_CLIMBING: {
+        BNLearnerListener listener ( this, __greedy_hill_climbing );
+        StructuralConstraintSetStatic < StructuralConstraintMandatoryArcs,
+                                        StructuralConstraintForbiddenArcs,
+                                        StructuralConstraintSliceOrder >
+          gen_constraint;
+        static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
+          __constraint_MandatoryArcs;
+        static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
+          __constraint_ForbiddenArcs;
+        static_cast<StructuralConstraintSliceOrder&> ( gen_constraint ) =
+          __constraint_SliceOrder;
+
+        GraphChangesGenerator4DiGraph< decltype ( gen_constraint ) >
+          op_set ( gen_constraint );
+
+        StructuralConstraintSetStatic < StructuralConstraintIndegree,
+                                        StructuralConstraintDAG > sel_constraint;
+        static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
+          __constraint_Indegree;
+
+        GraphChangesSelector4DiGraph < Score<>,
+                                       decltype ( sel_constraint ),
+                                       decltype ( op_set ) >
+          selector ( *__score, sel_constraint, op_set );
+
+        return __greedy_hill_climbing.learnStructure
+          ( selector, __score_database->modalities (), init_graph );
+      }
+
+      // ========================================================================
+      case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST: {
+        BNLearnerListener listener ( this, __local_search_with_tabu_list );
+        StructuralConstraintSetStatic < StructuralConstraintMandatoryArcs,
+                                        StructuralConstraintForbiddenArcs,
+                                        StructuralConstraintSliceOrder >
+          gen_constraint;
+        static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
+          __constraint_MandatoryArcs;
+        static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
+          __constraint_ForbiddenArcs;
+        static_cast<StructuralConstraintSliceOrder&> ( gen_constraint ) =
+          __constraint_SliceOrder;
+        
+        GraphChangesGenerator4DiGraph< decltype ( gen_constraint ) >
+          op_set ( gen_constraint );
+
+        StructuralConstraintSetStatic < StructuralConstraintTabuList,
+                                        StructuralConstraintIndegree,
+                                        StructuralConstraintDAG > sel_constraint;
+        static_cast<StructuralConstraintTabuList&> ( sel_constraint ) =
+          __constraint_TabuList;
+        static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
+          __constraint_Indegree;
+        
+        GraphChangesSelector4DiGraph < Score<>,
+                                       decltype ( sel_constraint ),
+                                       decltype ( op_set ) >
+          selector ( *__score, sel_constraint, op_set );
+        
+        return __local_search_with_tabu_list.learnStructure
+          ( selector, __score_database->modalities (), init_graph );
+      }
+
+      // ========================================================================
+      case AlgoType::K2: {
+        BNLearnerListener listener ( this, __K2.approximationScheme() );
+        StructuralConstraintSetStatic < StructuralConstraintMandatoryArcs,
+                                        StructuralConstraintForbiddenArcs >
+          gen_constraint;
+        static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
+          __constraint_MandatoryArcs;
+        static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
+          __constraint_ForbiddenArcs;
+        
+        GraphChangesGenerator4K2< decltype ( gen_constraint ) >
+          op_set ( gen_constraint );
+        
+        // if some mandatory arcs are incompatible with the order, use a DAG
+        // constraint instead of a DiGraph constraint to avoid cycles
+        const ArcSet& mandatory_arcs =
+          static_cast<StructuralConstraintMandatoryArcs&>
+          ( gen_constraint ).arcs ();
+        const Sequence<NodeId>& order = __K2.order ();
+        bool order_compatible = true;
+        
+        for ( const auto & arc : mandatory_arcs ) {
+          if ( order.pos ( arc.tail () ) >= order.pos ( arc.head () ) ) {
+            order_compatible = false;
+            break;
+          }
+        }
+
+        if ( order_compatible ) {
+          StructuralConstraintSetStatic < StructuralConstraintIndegree,
+                                          StructuralConstraintDiGraph >
+            sel_constraint;
+          static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
+            __constraint_Indegree;
+          
+          GraphChangesSelector4DiGraph < Score<>,
+                                         decltype ( sel_constraint ),
+                                         decltype ( op_set ) >
+            selector ( *__score, sel_constraint, op_set );
+          
+          return __K2.learnStructure
+            ( selector, __score_database->modalities (), init_graph );
+        }
+        else {
+          StructuralConstraintSetStatic < StructuralConstraintIndegree,
+                                          StructuralConstraintDAG >
+            sel_constraint;
+          static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
+            __constraint_Indegree;
+          
+          GraphChangesSelector4DiGraph < Score<>,
+                                         decltype ( sel_constraint ),
+                                         decltype ( op_set ) >
+            selector ( *__score, sel_constraint, op_set );
+          
+          return __K2.learnStructure
+            ( selector, __score_database->modalities (), init_graph );
+        }
+      }
+
+      // ========================================================================
+      default:
+        GUM_ERROR ( OperationNotAllowed,
+                    "the learnDAG method has not been implemented for this "
+                    "learning algorithm" );
+      }
     }
 
 

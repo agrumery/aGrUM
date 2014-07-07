@@ -69,7 +69,7 @@ namespace gum_tests {
 
       learner.useAprioriSmoothing ();
       learner.setAprioriWeight ( 1 );
-
+      learner.useAprioriDirichlet (  GET_PATH_STR( "asia.csv" ) );
 
       gum::NodeProperty<unsigned int> partial_order {
         std::make_pair( gum::NodeId ( 0 ), 1 ),
@@ -77,9 +77,13 @@ namespace gum_tests {
         std::make_pair( gum::NodeId ( 1 ), 0 ) };
       //learner.setSliceOrder ( partial_order );
 
+      learner.readDatabase ( GET_PATH_STR( "asia.csv" ) );
+      const std::vector<std::string>& names = learner.variableNames ();
+      TS_ASSERT ( ! names.empty () );
+
       try {
         gum::Timer timer;
-        gum::BayesNet<float> bn = learner.learnBN ( GET_PATH_STR( "asia.csv" ) );
+        gum::BayesNet<float> bn = learner.learnBN ();
         std::cout << timer.step () << " : " << std::endl;
         std::cout << bn << "  " << bn.dag () << std::endl;
       }
@@ -96,8 +100,9 @@ namespace gum_tests {
       learner.setMaxIndegree ( 10 );
       learner.useScoreK2 ();
       learner.useK2 ( std::vector<gum::NodeId> { 1, 5, 2, 6, 0, 3, 4, 7 } );
-
-      gum::BayesNet<double> bn = learner.learnBN<double> ( GET_PATH_STR( "asia.csv" ) );
+      learner.readDatabase ( GET_PATH_STR( "asia.csv" ) );
+      
+      gum::BayesNet<double> bn = learner.learnBN<double> ();
 
       GUM_TRACE_VAR(listen.getNbr());
       GUM_TRACE_VAR(listen.getMess());

@@ -148,10 +148,6 @@ namespace gum {
       // ##########################################################################
       // ##########################################################################
 
-      /// a dummy empty vector (useful when the weight is 0)
-      const std::vector<float,CountAlloc> __empty_vector;
-      
-
       /// prevent copy operator
       Apriori<IdSetAlloc,CountAlloc>&
       operator= ( const Apriori<IdSetAlloc,CountAlloc>& ) = delete;

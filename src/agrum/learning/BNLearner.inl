@@ -30,7 +30,32 @@ namespace gum {
 
   namespace learning {
 
+    
+    /// returns the row filter
+    INLINE DBRowFilter< DatabaseVectInRAM::Handler,
+                        DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                        FilteredRowGeneratorSet<RowGeneratorIdentity> >&
+    BNLearner::Database::rowFilter () {
+      return *__row_filter;
+    }
 
+    
+    /// returns the modalities of the variables
+    INLINE std::vector<unsigned int>&
+    BNLearner::Database::modalities () noexcept {
+      return __modalities;
+    }
+
+    
+    /// returns the names of the variables in the database
+    INLINE const std::vector<std::string>&
+    BNLearner::Database::variableNames () const noexcept {
+      return __database.variableNames ();
+    }
+
+    
+
+    
     /// sets an initial DAG structure
     INLINE void BNLearner::setInitialDAG ( const DAG& dag ) {
       __initial_dag = dag;
@@ -168,29 +193,24 @@ namespace gum {
       __apriori_weight = weight;
     }
 
-
-    /// create the apriori used for learning
-    INLINE void BNLearner::__createApriori() {
-      // first, save the old apriori, to be delete if everything is ok
-      Apriori<>* old_apriori = __apriori;
-
-      // create the new apriori
-      switch ( __apriori_type ) {
-        case AprioriType::SMOOTHING:
-          __apriori = new AprioriSmoothing<>;
-          break;
-
-        default:
-          GUM_ERROR ( OperationNotAllowed,
-                      "BNLearner does not support yet this apriori" );
-      }
-
-      // do not forget to assign a weight to the apriori
-      __apriori->setWeight ( __apriori_weight );
-
-      // remove the old apriori, if any
-      if ( old_apriori != nullptr ) delete old_apriori;
+    
+    /// use the Dirichlet apriori
+    INLINE void
+    BNLearner::useAprioriDirichlet ( const std::string& filename ) noexcept {
+      __apriori_dbname = filename;
+      __apriori_type = AprioriType::DIRICHLET_FROM_DATABASE;
     }
+
+
+    /// returns the names of the variables in the database
+    INLINE const std::vector<std::string>& BNLearner::variableNames () const {
+      if ( __score_database == nullptr ) {
+        GUM_ERROR ( NullElement, "you did not read any database yet" );
+      }
+      return __score_database->variableNames ();
+    }
+      
+    
   } /* namespace learning */
 
 

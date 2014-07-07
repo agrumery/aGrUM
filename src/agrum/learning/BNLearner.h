@@ -46,6 +46,7 @@
 #include <agrum/learning/scores_and_tests/scoreLog2Likelihood.h>
 
 #include <agrum/learning/aprioris/aprioriSmoothing.h>
+#include <agrum/learning/aprioris/aprioriDirichletFromDatabase.h>
 
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
@@ -89,543 +90,665 @@ namespace gum {
      * @ingroup learning_group
      */
     class BNLearner: public IApproximationSchemeConfiguration {
-      private:
+    private:
 
-        /// an enumeration enabling to select easily the score we wish to use
-        enum class ScoreType {
-          AIC,
-          BD,
-          BDeu,
-          BIC,
-          K2,
-          LOG2LIKELIHOOD
-        };
+      /// an enumeration enabling to select easily the score we wish to use
+      enum class ScoreType {
+        AIC,
+        BD,
+        BDeu,
+        BIC,
+        K2,
+        LOG2LIKELIHOOD
+      };
 
-        /// an enumeration to select the type of parameter estimation we shall apply
-        enum ParamEstimatorType {
-          ML
-        };
+      /// an enumeration to select the type of parameter estimation we shall apply
+      enum ParamEstimatorType {
+        ML
+      };
 
-        /// an enumeration to select the apriori
-        enum AprioriType {
-          SMOOTHING
-        };
+      /// an enumeration to select the apriori
+      enum AprioriType {
+        SMOOTHING,
+        DIRICHLET_FROM_DATABASE
+      };
 
-        /// an enumeration to select easily the learning algorithm to use
-        enum class AlgoType {
-          K2,
-          GREEDY_HILL_CLIMBING,
-          LOCAL_SEARCH_WITH_TABU_LIST
-        };
+      /// an enumeration to select easily the learning algorithm to use
+      enum class AlgoType {
+        K2,
+        GREEDY_HILL_CLIMBING,
+        LOCAL_SEARCH_WITH_TABU_LIST
+      };
 
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+      
+      /// a helper to read easily databases
+      class Database {
       public:
-
-        // ##########################################################################
+        // ########################################################################
         /// @name Constructors / Destructors
-        // ##########################################################################
+        // ########################################################################
         /// @{
 
         /// default constructor
-        BNLearner();
+        Database ( std::string filename );
 
-        /// copy constructor
-        BNLearner ( const BNLearner& );
+        /// default constructor for the aprioris
+        /** We must ensure that, when reading the apriori database, if the
+         * "apriori" rowFilter says that a given variable has value i
+         * (given by its fast translator), the corresponding "raw" value in the
+         * apriori database is the same as in the score/parameter database
+         * read before creating the apriori. This is compulsory to have
+         * aprioris that make sense. */
+        Database ( std::string filename,
+                   Database& score_database );
 
-        /// move constructor
-        BNLearner ( BNLearner && );
+        /// prevent copy constructor
+        Database ( const Database& ) = delete;
+
+        /// prevent move constructor
+        Database ( Database&& ) = delete;
 
         /// destructor
-        virtual ~BNLearner();
+        ~Database ();
 
         /// @}
 
 
-        // ##########################################################################
+        // ########################################################################
         /// @name Operators
-        // ##########################################################################
+        // ########################################################################
         /// @{
-
-        /// copy operator
-        BNLearner& operator= ( const BNLearner& );
-
-        /// move operator
-        BNLearner& operator= ( BNLearner && );
-
+        
+        /// prevent copy operator
+        Database& operator= ( const Database& ) = delete;
+        
+        /// prevent move operator
+        Database& operator= ( Database&& ) = delete;
+        
         /// @}
 
-
-        // ##########################################################################
+        
+        // ########################################################################
         /// @name Accessors / Modifiers
-        // ##########################################################################
+        // ########################################################################
         /// @{
+        
+        /// returns the row filter
+        DBRowFilter< DatabaseVectInRAM::Handler,
+                     DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                     FilteredRowGeneratorSet<RowGeneratorIdentity> >&
+        rowFilter ();
 
-        /// learn a structure from a file
-        DAG learnDAG ( std::string filename );
+        /// returns the modalities of the variables
+        std::vector<unsigned int>& modalities () noexcept;
 
-        /// learn a Bayes Net from a file
-        template <typename GUM_SCALAR = float>
-        BayesNet<GUM_SCALAR> learnBN ( std::string filename );
+        /// returns the names of the variables in the database
+        const std::vector<std::string>& variableNames () const noexcept;
 
-        /// sets an initial DAG structure
-        void setInitialDAG ( const DAG& );
+        /// returns the "raw" translators (needed for the aprioris)
+        /** We must ensure that, when reading the apriori database, if the
+         * "apriori" rowFilter says that a given variable has value i
+         * (given by its fast translator), the corresponding "raw" value in the
+         * apriori database is the same as in the score/parameter database
+         * read before creating the apriori. This is compulsory to have
+         * aprioris that make sense. */
+        DBRowTranslatorSetDynamic<CellTranslatorUniversal>&
+        rawTranslators ();
 
         /// @}
-
-
-        // ##########################################################################
-        /// @name Score selection
-        // ##########################################################################
-        /// @{
-
-        /// indicate that we wish to use an AIC score
-        void useScoreAIC() noexcept;
-
-        /// indicate that we wish to use a BD score
-        void useScoreBD () noexcept;
-
-        /// indicate that we wish to use a BDeu score
-        void useScoreBDeu () noexcept;
-
-        /// indicate that we wish to use a BIC score
-        void useScoreBIC() noexcept;
-
-        /// indicate that we wish to use a K2 score
-        void useScoreK2() noexcept;
-
-        /// indicate that we wish to use a Log2Likelihood score
-        void useScoreLog2Likelihood() noexcept;
-
-        /// @}
-
-
-        // ##########################################################################
-        /// @name A priori selection / parameterization
-        // ##########################################################################
-        /// @{
-
-        /// sets the apriori weight
-        void setAprioriWeight ( float weight ) noexcept;
-
-        /// use the apriori smoothing
-        void useAprioriSmoothing() noexcept;
-
-        /// @}
-
-
-        // ##########################################################################
-        /// @name Parameter estimator selection
-        // ##########################################################################
-        /// @{
-
-        /// @}
-
-
-        // ##########################################################################
-        /// @name Learning algorithm selection
-        // ##########################################################################
-        /// @{
-
-        /// indicate that we wish to use a greedy hill climbing algorithm
-        void useGreedyHillClimbing() noexcept;
-
-        /// indicate that we wish to use a local search with tabu list
-        /** @param tabu_size indicate the size of the tabu list
-         * @param nb_decrease indicate the max number of changes decreasing the
-         * score consecutively that we allow to apply */
-        void useLocalSearchWithTabuList ( unsigned int tabu_size = 100,
-                                          unsigned int nb_decrease = 2 ) noexcept;
-
-        /// indicate that we wish to use K2
-        void useK2 ( const Sequence<NodeId>& order ) noexcept;
-
-        /// indicate that we wish to use K2
-        void useK2 ( const std::vector<NodeId>& order ) noexcept;
-
-        /// @}
-
-
-        // ##########################################################################
-        /// @name Accessors / Modifiers for adding constraints on learning
-        // ##########################################################################
-        /// @{
-
-        /// sets the max indegree
-        void setMaxIndegree ( unsigned int max_indegree );
-
-        /// sets a partial order on the nodes
-        void setSliceOrder ( const NodeProperty<unsigned int>& slice_order );
-
-        /// assign a set of forbidden arcs
-        void setForbiddenArcs ( const ArcSet& set );
-
-        /// assign a new forbidden arc
-        void addForbiddenArc ( const Arc& arc );
-
-        /// remove a forbidden arc
-        void eraseForbiddenArc ( const Arc& arc );
-
-        /// assign a set of forbidden arcs
-        void setMandatoryArcs ( const ArcSet& set );
-
-        /// assign a new forbidden arc
-        void addMandatoryArc ( const Arc& arc );
-
-        /// remove a forbidden arc
-        void eraseMandatoryArc ( const Arc& arc );
-
-        /// @}
-
-
-
+        
+        
       private:
+        /// the database itself
+        DatabaseVectInRAM __database;
 
-        /// the score selected for learning
-        ScoreType __score_type { ScoreType::BIC };
+        /// the rwo translators
+        DBRowTranslatorSetDynamic<CellTranslatorUniversal> __raw_translators;
+        
+        /// the translators used for reading the database
+        DBRowTranslatorSetDynamic<CellTranslatorCompactIntId> __translators;
 
-        /// the score used
-        Score<>* __score { nullptr };
+        /// the generators used for reading the database
+        FilteredRowGeneratorSet<RowGeneratorIdentity> __generators; 
+        
+        /// the filtered row that reads the database
+        DBRowFilter< DatabaseVectInRAM::Handler,
+                     DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                     FilteredRowGeneratorSet<RowGeneratorIdentity> >*
+        __row_filter;
 
-        /// the type of the parameter estimator
-        ParamEstimatorType
-        __param_estimator_type { ParamEstimatorType::ML };
+        /// the modalities of the variables
+        std::vector<unsigned int> __modalities;
+        
+      };
 
-        /// the parameter estimator to use
-        ParamEstimator<>* __param_estimator { nullptr };
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+        
 
-        /// the a priori selected for the score and parameters
-        AprioriType __apriori_type { AprioriType::SMOOTHING };
+    public:
 
-        /// the apriori used
-        Apriori<>* __apriori { nullptr };
+      // ##########################################################################
+      /// @name Constructors / Destructors
+      // ##########################################################################
+      /// @{
 
-        /// the weight of the apriori
-        float __apriori_weight { 1.0f };
+      /// default constructor
+      BNLearner();
 
-        /// the constraint for 2TBNs
-        StructuralConstraintSliceOrder __constraint_SliceOrder;
+      /// copy constructor
+      BNLearner ( const BNLearner& );
 
-        /// the constraint for indegrees
-        StructuralConstraintIndegree __constraint_Indegree;
+      /// move constructor
+      BNLearner ( BNLearner && );
 
-        /// the constraint for tabu lists
-        StructuralConstraintTabuList __constraint_TabuList;
+      /// destructor
+      virtual ~BNLearner();
 
-        /// the constraint on forbidden arcs
-        StructuralConstraintForbiddenArcs __constraint_ForbiddenArcs;
-
-        /// the constraint on forbidden arcs
-        StructuralConstraintMandatoryArcs __constraint_MandatoryArcs;
-
-        /// the selected learning algorithm
-        AlgoType __selected_algo { AlgoType::GREEDY_HILL_CLIMBING };
-
-        /// the K2 algorithm
-        K2 __K2;
-
-        /// the greedy hill climbing algorithm
-        GreedyHillClimbing __greedy_hill_climbing;
-
-        /// the local search with tabu list algorithm
-        LocalSearchWithTabuList __local_search_with_tabu_list;
-
-        /// an initial DAG given to learners
-        DAG __initial_dag;
-
-        /// reads a file and returns a databaseVectInRam
-        DatabaseVectInRAM __readFile ( const std::string& filename );
-
-        /// create the apriori used for learning
-        void __createApriori();
-
-        /// create the score used for learning
-        template <typename FILTER>
-        void __createScore ( FILTER& filter,
-                             std::vector<unsigned int>& modalities );
-
-        /// create the parameter estimator used for learning
-        template <typename FILTER>
-        void __createParamEstimator ( FILTER& filter,
-                                      std::vector<unsigned int>& modalities );
-
-        /// returns the DAG learnt
-        template <typename FILTER>
-        DAG __learnDAG ( FILTER& filter, std::vector<unsigned int>& modal );
-
-        // the current algorithm as an approximationScheme
-        const ApproximationScheme* __current_algorithm;
-
-      public:
-        // ##########################################################################
-        /// @name redistribute signals AND implemenation of interface IApproximationSchemeConfiguration
-        // ##########################################################################
-        // in order to not pollute the proper code of BNLearner, we directly implement thos
-        // very simples methods here.
-        /// {@    /// distribute signals
-        INLINE void setCurrentApproximationScheme ( const ApproximationScheme* as ) {
-          __current_algorithm = as;
-        }
-
-        INLINE void distributeProgress ( const ApproximationScheme* as, Size pourcent, double error, double time ) {
-          setCurrentApproximationScheme ( as );
-
-          if ( onProgress.hasListener() ) GUM_EMIT3 ( onProgress, pourcent, error, time );
-        };
-
-        /// distribute signals
-        INLINE void distributeStop ( const ApproximationScheme* as, std::string message ) {
-          setCurrentApproximationScheme ( as );
-
-          if ( onStop.hasListener() ) GUM_EMIT1 ( onStop, message );
-        };
-        /// @}
-
-        /// Given that we approximate f(t), stopping criterion on |f(t+1)-f(t)|
-        /// If the criterion was disabled it will be enabled
-        /// @{
-        /// @throw OutOfLowerBound if eps<0
-        void setEpsilon ( double eps ) {
-          __K2.approximationScheme().setEpsilon ( eps );
-          __greedy_hill_climbing.setEpsilon ( eps );
-          __local_search_with_tabu_list.setEpsilon ( eps );
-        };
-
-        /// Get the value of epsilon
-        double epsilon ( void ) const {
-          if ( __current_algorithm != nullptr )
-            return __current_algorithm->epsilon();
-          else
-            GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
-        };
-
-        /// Disable stopping criterion on epsilon
-        void disableEpsilon() {
-          __K2.approximationScheme().disableEpsilon( );
-          __greedy_hill_climbing.disableEpsilon( );
-          __local_search_with_tabu_list.disableEpsilon( );
-        };
-
-        /// Enable stopping criterion on epsilon
-        void enableEpsilon() {
-          __K2.approximationScheme().enableEpsilon( );
-          __greedy_hill_climbing.enableEpsilon( );
-          __local_search_with_tabu_list.enableEpsilon( );
-        };
-
-        /// @return true if stopping criterion on epsilon is enabled, false otherwise
-        bool isEnabledEpsilon() const {
-          if ( __current_algorithm != nullptr )
-            return __current_algorithm->isEnabledEpsilon();
-          else
-            GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
-        };
-        /// @}
-
-        /// Given that we approximate f(t), stopping criterion on d/dt(|f(t+1)-f(t)|)
-        /// If the criterion was disabled it will be enabled
-        /// @{
-        /// @throw OutOfLowerBound if rate<0
-        void setMinEpsilonRate ( double rate ) {
-          __K2.approximationScheme().setMinEpsilonRate ( rate );
-          __greedy_hill_climbing.setMinEpsilonRate ( rate );
-          __local_search_with_tabu_list.setMinEpsilonRate ( rate );
-        };
-
-        /// Get the value of the minimal epsilon rate
-        double minEpsilonRate ( void ) const {
-          if ( __current_algorithm != nullptr )
-            return __current_algorithm->minEpsilonRate();
-          else
-            GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
-        };
-
-        /// Disable stopping criterion on epsilon rate
-        void disableMinEpsilonRate() {
-          __K2.approximationScheme().disableMinEpsilonRate( );
-          __greedy_hill_climbing.disableMinEpsilonRate( );
-          __local_search_with_tabu_list.disableMinEpsilonRate( );
-        };
-        /// Enable stopping criterion on epsilon rate
-        void enableMinEpsilonRate() {
-          __K2.approximationScheme().enableMinEpsilonRate( );
-          __greedy_hill_climbing.enableMinEpsilonRate( );
-          __local_search_with_tabu_list.enableMinEpsilonRate( );
-        };
-        /// @return true if stopping criterion on epsilon rate is enabled, false otherwise
-        bool isEnabledMinEpsilonRate() const {
-          if ( __current_algorithm != nullptr )
-            return __current_algorithm->isEnabledMinEpsilonRate();
-          else
-            GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
-        };
-        /// @}
-
-        /// stopping criterion on number of iterations
-        /// @{
-        /// If the criterion was disabled it will be enabled
-        /// @param max The maximum number of iterations
-        /// @throw OutOfLowerBound if max<=1
-        void setMaxIter ( Size max ) {
-          __K2.approximationScheme().setMaxIter ( max );
-          __greedy_hill_climbing.setMaxIter ( max );
-          __local_search_with_tabu_list.setMaxIter ( max );
-        };
-
-        /// @return the criterion on number of iterations
-        Size maxIter ( void )  const {
-          if ( __current_algorithm != nullptr )
-            return __current_algorithm->maxIter();
-          else
-            GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
-        };
-
-        /// Disable stopping criterion on max iterations
-        void disableMaxIter()  {
-          __K2.approximationScheme().disableMaxIter( );
-          __greedy_hill_climbing.disableMaxIter( );
-          __local_search_with_tabu_list.disableMaxIter( );
-        };
-        /// Enable stopping criterion on max iterations
-        void enableMaxIter()   {
-          __K2.approximationScheme().enableMaxIter( );
-          __greedy_hill_climbing.enableMaxIter( );
-          __local_search_with_tabu_list.enableMaxIter( );
-        };
-        /// @return true if stopping criterion on max iterations is enabled, false otherwise
-        bool isEnabledMaxIter() const {
-          if ( __current_algorithm != nullptr )
-            return __current_algorithm->isEnabledMaxIter();
-          else
-            GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
-        };
-        /// @}
+      /// @}
 
 
-        /// stopping criterion on timeout
-        /// If the criterion was disabled it will be enabled
-        /// @{
-        /// @throw OutOfLowerBound if timeout<=0.0
-        /** timeout is time in second (double).
-         */
-        void setMaxTime ( double timeout ) {
-          __K2.approximationScheme().setMaxTime ( timeout );
-          __greedy_hill_climbing.setMaxTime ( timeout );
-          __local_search_with_tabu_list.setMaxTime ( timeout );
-        }
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+      /// @{
 
-        /// returns the timeout (in seconds)
-        double maxTime ( void ) const {
-          if ( __current_algorithm != nullptr )
-            return __current_algorithm->maxTime();
-          else
-            GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
-        };
+      /// copy operator
+      BNLearner& operator= ( const BNLearner& );
 
-        /// get the current running time in second (double)
-        double currentTime ( void ) const {
-          if ( __current_algorithm != nullptr )
-            return __current_algorithm->currentTime();
-          else
-            GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
-        };
+      /// move operator
+      BNLearner& operator= ( BNLearner && );
 
-        /// Disable stopping criterion on timeout
-        void disableMaxTime()  {
-          __K2.approximationScheme().disableMaxTime( );
-          __greedy_hill_climbing.disableMaxTime( );
-          __local_search_with_tabu_list.disableMaxTime( );
-        };
-        void enableMaxTime()  {
-          __K2.approximationScheme().enableMaxTime( );
-          __greedy_hill_climbing.enableMaxTime( );
-          __local_search_with_tabu_list.enableMaxTime( );
-        };
-        /// @return true if stopping criterion on timeout is enabled, false otherwise
-        bool isEnabledMaxTime() const {
-          if ( __current_algorithm != nullptr )
-            return __current_algorithm->isEnabledMaxTime();
-          else
-            GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
-        };
-        /// @}
+      /// @}
 
-        /// how many samples between 2 stopping isEnableds
-        /// @{
-        /// @throw OutOfLowerBound if p<1
-        void setPeriodSize ( Size p ) {
-          __K2.approximationScheme().setPeriodSize ( p );
-          __greedy_hill_climbing.setPeriodSize ( p );
-          __local_search_with_tabu_list.setPeriodSize ( p );
-        };
 
-        Size periodSize ( void ) const {
-          if ( __current_algorithm != nullptr )
-            return __current_algorithm->periodSize();
-          else
-            GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
-        };
-        /// @}
+      // ##########################################################################
+      /// @name Accessors / Modifiers
+      // ##########################################################################
+      /// @{
 
-        /// size of burn in on number of iteration
-        /// @{
+      /// learn a structure from a file (must have read the db before)
+      DAG learnDAG ();
 
-        /// @throw OutOfLowerBound if b<1
-        void setBurnIn ( Size b ) {
-          __K2.approximationScheme().setBurnIn ( b );
-          __greedy_hill_climbing.setBurnIn ( b );
-          __local_search_with_tabu_list.setBurnIn ( b );
-        };
+      /// learn a Bayes Net from a file (must have read the db before)
+      template <typename GUM_SCALAR = float>
+      BayesNet<GUM_SCALAR> learnBN ();
 
-        Size burnIn ( void ) const  {
-          if ( __current_algorithm != nullptr )
-            return __current_algorithm->burnIn();
-          else
-            GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
-        };
-        /// @}
+      /// sets an initial DAG structure
+      void setInitialDAG ( const DAG& );
 
-        /// verbosity
-        /// @{
-        void setVerbosity ( bool v ) {
-          __K2.approximationScheme().setVerbosity ( v );
-          __greedy_hill_climbing.setVerbosity ( v );
-          __local_search_with_tabu_list.setVerbosity ( v );
-        };
+      /// read the database file for the score / parameter estimation
+      void readDatabase ( const std::string& filename );
 
-        bool verbosity ( void ) const  {
-          if ( __current_algorithm != nullptr )
-            return __current_algorithm->verbosity();
-          else
-            GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
-        };
-        /// @}
+      /// returns the names of the variables in the database
+      const std::vector<std::string>& variableNames () const;
 
-        /// history
-        /// @{
+      /// @}
 
-        ApproximationSchemeSTATE stateApproximationScheme() const {
-          if ( __current_algorithm != nullptr )
-            return __current_algorithm->stateApproximationScheme();
-          else
-            GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
-        };
 
-        /// @throw OperationNotAllowed if scheme not performed
-        Size nbrIterations() const  {
-          if ( __current_algorithm != nullptr )
-            return __current_algorithm->nbrIterations();
-          else
-            GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
-        };
+      // ##########################################################################
+      /// @name Score selection
+      // ##########################################################################
+      /// @{
 
-        /// @throw OperationNotAllowed if scheme not performed or verbosity=false
-        const std::vector<double>& history() const  {
-          if ( __current_algorithm != nullptr )
-            return __current_algorithm->history();
-          else
-            GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
-        };
-        /// @}
+      /// indicate that we wish to use an AIC score
+      void useScoreAIC() noexcept;
+
+      /// indicate that we wish to use a BD score
+      void useScoreBD () noexcept;
+
+      /// indicate that we wish to use a BDeu score
+      void useScoreBDeu () noexcept;
+
+      /// indicate that we wish to use a BIC score
+      void useScoreBIC() noexcept;
+
+      /// indicate that we wish to use a K2 score
+      void useScoreK2() noexcept;
+
+      /// indicate that we wish to use a Log2Likelihood score
+      void useScoreLog2Likelihood() noexcept;
+
+      /// @}
+
+
+      // ##########################################################################
+      /// @name A priori selection / parameterization
+      // ##########################################################################
+      /// @{
+
+      /// sets the apriori weight
+      void setAprioriWeight ( float weight ) noexcept;
+
+      /// use the apriori smoothing
+      void useAprioriSmoothing() noexcept;
+
+      /// use the Dirichlet apriori
+      void useAprioriDirichlet ( const std::string& filename ) noexcept;
+
+      /// @}
+
+
+      // ##########################################################################
+      /// @name Parameter estimator selection
+      // ##########################################################################
+      /// @{
+
+      /// @}
+
+
+      // ##########################################################################
+      /// @name Learning algorithm selection
+      // ##########################################################################
+      /// @{
+
+      /// indicate that we wish to use a greedy hill climbing algorithm
+      void useGreedyHillClimbing() noexcept;
+
+      /// indicate that we wish to use a local search with tabu list
+      /** @param tabu_size indicate the size of the tabu list
+       * @param nb_decrease indicate the max number of changes decreasing the
+       * score consecutively that we allow to apply */
+      void useLocalSearchWithTabuList ( unsigned int tabu_size = 100,
+                                        unsigned int nb_decrease = 2 ) noexcept;
+
+      /// indicate that we wish to use K2
+      void useK2 ( const Sequence<NodeId>& order ) noexcept;
+
+      /// indicate that we wish to use K2
+      void useK2 ( const std::vector<NodeId>& order ) noexcept;
+
+      /// @}
+
+
+      // ##########################################################################
+      /// @name Accessors / Modifiers for adding constraints on learning
+      // ##########################################################################
+      /// @{
+
+      /// sets the max indegree
+      void setMaxIndegree ( unsigned int max_indegree );
+
+      /// sets a partial order on the nodes
+      void setSliceOrder ( const NodeProperty<unsigned int>& slice_order );
+
+      /// assign a set of forbidden arcs
+      void setForbiddenArcs ( const ArcSet& set );
+
+      /// assign a new forbidden arc
+      void addForbiddenArc ( const Arc& arc );
+
+      /// remove a forbidden arc
+      void eraseForbiddenArc ( const Arc& arc );
+
+      /// assign a set of forbidden arcs
+      void setMandatoryArcs ( const ArcSet& set );
+
+      /// assign a new forbidden arc
+      void addMandatoryArc ( const Arc& arc );
+
+      /// remove a forbidden arc
+      void eraseMandatoryArc ( const Arc& arc );
+
+      /// @}
+
+
+
+    private:
+
+      /// the score selected for learning
+      ScoreType __score_type { ScoreType::BIC };
+
+      /// the score used
+      Score<>* __score { nullptr };
+
+      /// the type of the parameter estimator
+      ParamEstimatorType
+      __param_estimator_type { ParamEstimatorType::ML };
+
+      /// the parameter estimator to use
+      ParamEstimator<>* __param_estimator { nullptr };
+
+      /// the a priori selected for the score and parameters
+      AprioriType __apriori_type { AprioriType::SMOOTHING };
+
+      /// the apriori used
+      Apriori<>* __apriori { nullptr };
+
+      /// the weight of the apriori
+      float __apriori_weight { 1.0f };
+
+      /// the constraint for 2TBNs
+      StructuralConstraintSliceOrder __constraint_SliceOrder;
+
+      /// the constraint for indegrees
+      StructuralConstraintIndegree __constraint_Indegree;
+
+      /// the constraint for tabu lists
+      StructuralConstraintTabuList __constraint_TabuList;
+
+      /// the constraint on forbidden arcs
+      StructuralConstraintForbiddenArcs __constraint_ForbiddenArcs;
+
+      /// the constraint on forbidden arcs
+      StructuralConstraintMandatoryArcs __constraint_MandatoryArcs;
+
+      /// the selected learning algorithm
+      AlgoType __selected_algo { AlgoType::GREEDY_HILL_CLIMBING };
+
+      /// the K2 algorithm
+      K2 __K2;
+
+      /// the greedy hill climbing algorithm
+      GreedyHillClimbing __greedy_hill_climbing;
+
+      /// the local search with tabu list algorithm
+      LocalSearchWithTabuList __local_search_with_tabu_list;
+
+      /// the database to be used by the scores and parameter estimators
+      Database* __score_database { nullptr };
+
+      /// the database used by the Dirichlet a priori
+      Database* __apriori_database { nullptr };
+
+      /// the filename for the Dirichlet a priori, if any
+      std::string __apriori_dbname;
+
+      /// an initial DAG given to learners
+      DAG __initial_dag;
+
+
+      
+      /// reads a file and returns a databaseVectInRam
+      static DatabaseVectInRAM __readFile ( const std::string& filename );
+
+      /// create the apriori used for learning
+      void __createApriori();
+
+      /// create the score used for learning
+      void __createScore ();
+
+      /// create the parameter estimator used for learning
+      void __createParamEstimator ();
+
+      /// returns the DAG learnt
+      DAG __learnDAG ();
+
+      // the current algorithm as an approximationScheme
+      const ApproximationScheme* __current_algorithm;
+
+    public:
+      // ##########################################################################
+      /// @name redistribute signals AND implemenation of interface IApproximationSchemeConfiguration
+      // ##########################################################################
+      // in order to not pollute the proper code of BNLearner, we directly implement thos
+      // very simples methods here.
+      /// {@    /// distribute signals
+      INLINE void setCurrentApproximationScheme ( const ApproximationScheme* as ) {
+        __current_algorithm = as;
+      }
+
+      INLINE void distributeProgress ( const ApproximationScheme* as, Size pourcent, double error, double time ) {
+        setCurrentApproximationScheme ( as );
+
+        if ( onProgress.hasListener() ) GUM_EMIT3 ( onProgress, pourcent, error, time );
+      };
+
+      /// distribute signals
+      INLINE void distributeStop ( const ApproximationScheme* as, std::string message ) {
+        setCurrentApproximationScheme ( as );
+
+        if ( onStop.hasListener() ) GUM_EMIT1 ( onStop, message );
+      };
+      /// @}
+
+      /// Given that we approximate f(t), stopping criterion on |f(t+1)-f(t)|
+      /// If the criterion was disabled it will be enabled
+      /// @{
+      /// @throw OutOfLowerBound if eps<0
+      void setEpsilon ( double eps ) {
+        __K2.approximationScheme().setEpsilon ( eps );
+        __greedy_hill_climbing.setEpsilon ( eps );
+        __local_search_with_tabu_list.setEpsilon ( eps );
+      };
+
+      /// Get the value of epsilon
+      double epsilon ( void ) const {
+        if ( __current_algorithm != nullptr )
+          return __current_algorithm->epsilon();
+        else
+          GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
+      };
+
+      /// Disable stopping criterion on epsilon
+      void disableEpsilon() {
+        __K2.approximationScheme().disableEpsilon( );
+        __greedy_hill_climbing.disableEpsilon( );
+        __local_search_with_tabu_list.disableEpsilon( );
+      };
+
+      /// Enable stopping criterion on epsilon
+      void enableEpsilon() {
+        __K2.approximationScheme().enableEpsilon( );
+        __greedy_hill_climbing.enableEpsilon( );
+        __local_search_with_tabu_list.enableEpsilon( );
+      };
+
+      /// @return true if stopping criterion on epsilon is enabled, false otherwise
+      bool isEnabledEpsilon() const {
+        if ( __current_algorithm != nullptr )
+          return __current_algorithm->isEnabledEpsilon();
+        else
+          GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
+      };
+      /// @}
+
+      /// Given that we approximate f(t), stopping criterion on d/dt(|f(t+1)-f(t)|)
+      /// If the criterion was disabled it will be enabled
+      /// @{
+      /// @throw OutOfLowerBound if rate<0
+      void setMinEpsilonRate ( double rate ) {
+        __K2.approximationScheme().setMinEpsilonRate ( rate );
+        __greedy_hill_climbing.setMinEpsilonRate ( rate );
+        __local_search_with_tabu_list.setMinEpsilonRate ( rate );
+      };
+
+      /// Get the value of the minimal epsilon rate
+      double minEpsilonRate ( void ) const {
+        if ( __current_algorithm != nullptr )
+          return __current_algorithm->minEpsilonRate();
+        else
+          GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
+      };
+
+      /// Disable stopping criterion on epsilon rate
+      void disableMinEpsilonRate() {
+        __K2.approximationScheme().disableMinEpsilonRate( );
+        __greedy_hill_climbing.disableMinEpsilonRate( );
+        __local_search_with_tabu_list.disableMinEpsilonRate( );
+      };
+      /// Enable stopping criterion on epsilon rate
+      void enableMinEpsilonRate() {
+        __K2.approximationScheme().enableMinEpsilonRate( );
+        __greedy_hill_climbing.enableMinEpsilonRate( );
+        __local_search_with_tabu_list.enableMinEpsilonRate( );
+      };
+      /// @return true if stopping criterion on epsilon rate is enabled, false otherwise
+      bool isEnabledMinEpsilonRate() const {
+        if ( __current_algorithm != nullptr )
+          return __current_algorithm->isEnabledMinEpsilonRate();
+        else
+          GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
+      };
+      /// @}
+
+      /// stopping criterion on number of iterations
+      /// @{
+      /// If the criterion was disabled it will be enabled
+      /// @param max The maximum number of iterations
+      /// @throw OutOfLowerBound if max<=1
+      void setMaxIter ( Size max ) {
+        __K2.approximationScheme().setMaxIter ( max );
+        __greedy_hill_climbing.setMaxIter ( max );
+        __local_search_with_tabu_list.setMaxIter ( max );
+      };
+
+      /// @return the criterion on number of iterations
+      Size maxIter ( void )  const {
+        if ( __current_algorithm != nullptr )
+          return __current_algorithm->maxIter();
+        else
+          GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
+      };
+
+      /// Disable stopping criterion on max iterations
+      void disableMaxIter()  {
+        __K2.approximationScheme().disableMaxIter( );
+        __greedy_hill_climbing.disableMaxIter( );
+        __local_search_with_tabu_list.disableMaxIter( );
+      };
+      /// Enable stopping criterion on max iterations
+      void enableMaxIter()   {
+        __K2.approximationScheme().enableMaxIter( );
+        __greedy_hill_climbing.enableMaxIter( );
+        __local_search_with_tabu_list.enableMaxIter( );
+      };
+      /// @return true if stopping criterion on max iterations is enabled, false otherwise
+      bool isEnabledMaxIter() const {
+        if ( __current_algorithm != nullptr )
+          return __current_algorithm->isEnabledMaxIter();
+        else
+          GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
+      };
+      /// @}
+
+
+      /// stopping criterion on timeout
+      /// If the criterion was disabled it will be enabled
+      /// @{
+      /// @throw OutOfLowerBound if timeout<=0.0
+      /** timeout is time in second (double).
+       */
+      void setMaxTime ( double timeout ) {
+        __K2.approximationScheme().setMaxTime ( timeout );
+        __greedy_hill_climbing.setMaxTime ( timeout );
+        __local_search_with_tabu_list.setMaxTime ( timeout );
+      }
+
+      /// returns the timeout (in seconds)
+      double maxTime ( void ) const {
+        if ( __current_algorithm != nullptr )
+          return __current_algorithm->maxTime();
+        else
+          GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
+      };
+
+      /// get the current running time in second (double)
+      double currentTime ( void ) const {
+        if ( __current_algorithm != nullptr )
+          return __current_algorithm->currentTime();
+        else
+          GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
+      };
+
+      /// Disable stopping criterion on timeout
+      void disableMaxTime()  {
+        __K2.approximationScheme().disableMaxTime( );
+        __greedy_hill_climbing.disableMaxTime( );
+        __local_search_with_tabu_list.disableMaxTime( );
+      };
+      void enableMaxTime()  {
+        __K2.approximationScheme().enableMaxTime( );
+        __greedy_hill_climbing.enableMaxTime( );
+        __local_search_with_tabu_list.enableMaxTime( );
+      };
+      /// @return true if stopping criterion on timeout is enabled, false otherwise
+      bool isEnabledMaxTime() const {
+        if ( __current_algorithm != nullptr )
+          return __current_algorithm->isEnabledMaxTime();
+        else
+          GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
+      };
+      /// @}
+
+      /// how many samples between 2 stopping isEnableds
+      /// @{
+      /// @throw OutOfLowerBound if p<1
+      void setPeriodSize ( Size p ) {
+        __K2.approximationScheme().setPeriodSize ( p );
+        __greedy_hill_climbing.setPeriodSize ( p );
+        __local_search_with_tabu_list.setPeriodSize ( p );
+      };
+
+      Size periodSize ( void ) const {
+        if ( __current_algorithm != nullptr )
+          return __current_algorithm->periodSize();
+        else
+          GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
+      };
+      /// @}
+
+      /// size of burn in on number of iteration
+      /// @{
+
+      /// @throw OutOfLowerBound if b<1
+      void setBurnIn ( Size b ) {
+        __K2.approximationScheme().setBurnIn ( b );
+        __greedy_hill_climbing.setBurnIn ( b );
+        __local_search_with_tabu_list.setBurnIn ( b );
+      };
+
+      Size burnIn ( void ) const  {
+        if ( __current_algorithm != nullptr )
+          return __current_algorithm->burnIn();
+        else
+          GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
+      };
+      /// @}
+
+      /// verbosity
+      /// @{
+      void setVerbosity ( bool v ) {
+        __K2.approximationScheme().setVerbosity ( v );
+        __greedy_hill_climbing.setVerbosity ( v );
+        __local_search_with_tabu_list.setVerbosity ( v );
+      };
+
+      bool verbosity ( void ) const  {
+        if ( __current_algorithm != nullptr )
+          return __current_algorithm->verbosity();
+        else
+          GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
+      };
+      /// @}
+
+      /// history
+      /// @{
+
+      ApproximationSchemeSTATE stateApproximationScheme() const {
+        if ( __current_algorithm != nullptr )
+          return __current_algorithm->stateApproximationScheme();
+        else
+          GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
+      };
+
+      /// @throw OperationNotAllowed if scheme not performed
+      Size nbrIterations() const  {
+        if ( __current_algorithm != nullptr )
+          return __current_algorithm->nbrIterations();
+        else
+          GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
+      };
+
+      /// @throw OperationNotAllowed if scheme not performed or verbosity=false
+      const std::vector<double>& history() const  {
+        if ( __current_algorithm != nullptr )
+          return __current_algorithm->history();
+        else
+          GUM_ERROR ( FatalError, "No chosen algorithm for learning" );
+      };
+      /// @}
 
     };
 

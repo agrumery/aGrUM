@@ -141,7 +141,8 @@ namespace gum {
           _apriori_counts[ _target_nodesets->operator[] ( index )->second ];
       }
       else {
-        return __empty_vector;
+        GUM_ERROR ( OperationNotAllowed, "Scores and Parameter estimators should "
+                    "not get a priori countings when the apriori weight is zero" );
       }
     }
 
@@ -155,7 +156,8 @@ namespace gum {
           _apriori_counts[ _conditioning_nodesets->operator[] ( index )->second ];
       }
       else {
-        return __empty_vector;
+        GUM_ERROR ( OperationNotAllowed, "Scores and Parameter estimators should "
+                    "not get a priori countings when the apriori weight is zero" );
       }
     }
  
