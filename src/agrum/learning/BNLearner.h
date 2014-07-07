@@ -144,11 +144,11 @@ namespace gum {
         Database ( std::string filename,
                    Database& score_database );
 
-        /// prevent copy constructor
-        Database ( const Database& ) = delete;
+        /// copy constructor
+        Database ( const Database& from );
 
-        /// prevent move constructor
-        Database ( Database&& ) = delete;
+        /// move constructor
+        Database ( Database&& from );
 
         /// destructor
         ~Database ();
@@ -161,11 +161,11 @@ namespace gum {
         // ########################################################################
         /// @{
         
-        /// prevent copy operator
-        Database& operator= ( const Database& ) = delete;
+        /// copy operator
+        Database& operator= ( const Database& from );
         
-        /// prevent move operator
-        Database& operator= ( Database&& ) = delete;
+        /// move operator
+        Database& operator= ( Database&& from );
         
         /// @}
 
@@ -217,7 +217,7 @@ namespace gum {
         DBRowFilter< DatabaseVectInRAM::Handler,
                      DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
                      FilteredRowGeneratorSet<RowGeneratorIdentity> >*
-        __row_filter;
+        __row_filter { nullptr };
 
         /// the modalities of the variables
         std::vector<unsigned int> __modalities;
@@ -458,6 +458,9 @@ namespace gum {
       /// an initial DAG given to learners
       DAG __initial_dag;
 
+      // the current algorithm as an approximationScheme
+      const ApproximationScheme* __current_algorithm { nullptr };
+
 
       
       /// reads a file and returns a databaseVectInRam
@@ -475,10 +478,9 @@ namespace gum {
       /// returns the DAG learnt
       DAG __learnDAG ();
 
-      // the current algorithm as an approximationScheme
-      const ApproximationScheme* __current_algorithm;
 
-    public:
+      
+     public:
       // ##########################################################################
       /// @name redistribute signals AND implemenation of interface IApproximationSchemeConfiguration
       // ##########################################################################

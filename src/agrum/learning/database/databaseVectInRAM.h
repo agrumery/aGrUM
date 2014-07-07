@@ -191,7 +191,21 @@ namespace gum {
 
       /// @}
 
+      
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+      /// @{
+        
+      /// copy operator
+      DatabaseVectInRAM& operator= ( const DatabaseVectInRAM& from );
 
+      /// move constructor
+      DatabaseVectInRAM& operator= ( DatabaseVectInRAM&& from );
+
+      /// @}
+
+      
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################

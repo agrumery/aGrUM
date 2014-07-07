@@ -62,7 +62,16 @@ namespace gum {
       /// @{
 
       /// default constructor
-      CellTranslatorCompactIntId ();
+      /** @param By default, CellTranslatorCompactIntId parses the database at
+       * initialization to check that its values actually form an interval
+       * { 0 ,..., n }. If this is not the case, it raises an exception. However,
+       * there exist cases where this check is unncessary (for instance in the
+       * BNLearner class) and, by setting check_database to false, we avoid
+       * this unnecessary step.
+       * @warning Note that if you set check_database to false, method
+       * modalities () will raise an exception because the modalities are
+       * computed at initialization by parsing the database */
+      CellTranslatorCompactIntId ( bool check_database = true );
 
       /// copy constructor
       CellTranslatorCompactIntId ( const CellTranslatorCompactIntId& from );
@@ -130,6 +139,9 @@ namespace gum {
     private:
       /// the set of values found so far
       gum::Set<unsigned int> __values;
+
+      /// do we need to parse the database at initialization?
+      bool __check_database { true };
       
     };
 

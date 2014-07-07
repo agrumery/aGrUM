@@ -245,6 +245,38 @@ namespace gum {
     }
 
 
+    /// copy operator
+    INLINE DatabaseVectInRAM&
+    DatabaseVectInRAM::operator= ( const DatabaseVectInRAM& from ) {
+      if ( this != &from ) {
+        // invalidate the current handlers
+        for ( auto handler : __list_of_handlers ) {
+          handler->__db  = nullptr;
+          handler->__row = nullptr;
+        }
+        __data = from.__data;
+        __variable_names = from.__variable_names;
+     }
+      return *this;
+    }
+        
+
+    /// move constructor
+    INLINE DatabaseVectInRAM&
+    DatabaseVectInRAM::operator= ( DatabaseVectInRAM&& from ) {
+      if ( this != &from ) {
+        // invalidate the current handlers
+        for ( auto handler : __list_of_handlers ) {
+          handler->__db  = nullptr;
+          handler->__row = nullptr;
+        }
+        __data = std::move ( from.__data );
+        __variable_names = std::move ( from.__variable_names );
+      }
+      return *this;
+    }
+ 
+
     /// returns the content of the database
     INLINE const std::vector<DBRow>& DatabaseVectInRAM::content () const noexcept {
       return __data;
