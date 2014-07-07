@@ -36,6 +36,8 @@
 
 
 #include <agrum/config.h>
+#include <agrum/core/math/math.h>
+
 #include <agrum/learning/scores_and_tests/counter.h>
 #include <agrum/learning/scores_and_tests/cache4Score.h>
 #include <agrum/learning/structureUtils/graphChange.h>
@@ -44,10 +46,10 @@
 
 namespace gum {
 
-  
+
   namespace learning {
 
-    
+
     /* ========================================================================= */
     /* ===                            SCORE CLASS                            === */
     /* ========================================================================= */
@@ -91,7 +93,7 @@ namespace gum {
 
       /// @}
 
-      
+
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
@@ -135,13 +137,13 @@ namespace gum {
 
       /// turn on/off the use of a cache of the previously computed score
       void useCache ( bool on_off ) noexcept;
-      
+
       /// returns the modalities of the variables
       using Counter<IdSetAlloc,CountAlloc>::modalities;
 
       /// sets the maximum number of threads used to compute the scores
       using Counter<IdSetAlloc,CountAlloc>::setMaxNbThreads;
-      
+
       /// returns the score corresponding to a given nodeset
       virtual float score ( unsigned int nodeset_index ) = 0;
 
@@ -156,7 +158,7 @@ namespace gum {
       Apriori<IdSetAlloc,CountAlloc>* _apriori;
 
 
-      
+
       /// returns the counting vector for a given (conditioned) target set
       /** This method returns the observation countings for the set of variables
        * whose index was returned by method addNodeSet or addNodeSets. If the
@@ -168,7 +170,7 @@ namespace gum {
        * nodes of the conditioning set (in the order in which they were specified
        * when callind addNodeset, and then the target nodes. */
       using Counter<IdSetAlloc,CountAlloc>::_getAllCounts;
- 
+
       /// returns the counting vector for a conditioning set
       /** see method _getAllCounts for details */
       using Counter<IdSetAlloc,CountAlloc>::_getConditioningCounts;
@@ -197,11 +199,11 @@ namespace gum {
       /// returns the apriori vector for a conditioning set
       const std::vector<float,CountAlloc>&
       _getConditioningApriori ( unsigned int index );
-      
+
       /// indicates whether a score belongs to the cache
       bool _isInCache ( unsigned int nodeset_index ) const noexcept;
 
-      /// inserts a new score into the cache    
+      /// inserts a new score into the cache
       void _insertIntoCache ( unsigned int nodeset_index, float score );
 
       /// returns a cached score
@@ -236,8 +238,8 @@ namespace gum {
       /// an empty conditioning set
       const std::vector<unsigned int> __empty_conditioning_set;
 
-      
-      
+
+
       // ##########################################################################
       // ##########################################################################
 
@@ -249,8 +251,8 @@ namespace gum {
 
 
   } /* namespace learning */
-  
-  
+
+
 } /* namespace gum */
 
 
