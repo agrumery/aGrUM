@@ -25,6 +25,9 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
+// to help IDE parser
+#include <agrum/learning/BNLearner.h>
+
 namespace gum {
 
 

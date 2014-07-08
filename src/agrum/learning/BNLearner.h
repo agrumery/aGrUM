@@ -125,7 +125,7 @@ namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-        /// a helper to read easily databases
+        /// a helper to easily read databases
         class Database {
           public:
             // ########################################################################

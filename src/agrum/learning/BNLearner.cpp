@@ -66,10 +66,10 @@ namespace gum {
 
       // create the row filter using the fast translators
       __row_filter = new
-        DBRowFilter< DatabaseVectInRAM::Handler,
-                     DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
-                     FilteredRowGeneratorSet<RowGeneratorIdentity> >
-        ( __database.handler (), __translators, __generators );
+      DBRowFilter< DatabaseVectInRAM::Handler,
+      DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+      FilteredRowGeneratorSet<RowGeneratorIdentity> >
+      ( __database.handler (), __translators, __generators );
 
       // fill the variable name -> nodeid hashtable
       const std::vector<std::string>& var_names = __database.variableNames ();
@@ -131,10 +131,10 @@ namespace gum {
                                        score_database.__database.nbVariables() );
 
       __row_filter = new
-        DBRowFilter< DatabaseVectInRAM::Handler,
-                     DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
-                     FilteredRowGeneratorSet<RowGeneratorIdentity> >
-        ( __database.handler (), __translators, __generators );
+      DBRowFilter< DatabaseVectInRAM::Handler,
+      DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+      FilteredRowGeneratorSet<RowGeneratorIdentity> >
+      ( __database.handler (), __translators, __generators );
 
       __name2nodeId = score_database.__name2nodeId;
     }
@@ -142,17 +142,17 @@ namespace gum {
 
     /// prevent copy constructor
     BNLearner::Database::Database ( const Database& from ) :
-    __database ( from.__database ),
-    __raw_translators ( from.__raw_translators ),
-    __translators ( from.__translators ),
-    __generators ( from.__generators ),
-    __modalities ( from.__modalities ),
-    __name2nodeId ( from.__name2nodeId ) {
+      __database ( from.__database ),
+      __raw_translators ( from.__raw_translators ),
+      __translators ( from.__translators ),
+      __generators ( from.__generators ),
+      __modalities ( from.__modalities ),
+      __name2nodeId ( from.__name2nodeId ) {
       // create the row filter for the __database
       __row_filter = new
-        DBRowFilter< DatabaseVectInRAM::Handler,
-                     DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
-                     FilteredRowGeneratorSet<RowGeneratorIdentity> >
+      DBRowFilter< DatabaseVectInRAM::Handler,
+      DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+      FilteredRowGeneratorSet<RowGeneratorIdentity> >
       ( __database.handler (), __translators, __generators );
     }
 
@@ -167,9 +167,9 @@ namespace gum {
       __name2nodeId ( std::move ( from.__name2nodeId ) ) {
       // create the row filter for the __database
       __row_filter = new
-        DBRowFilter< DatabaseVectInRAM::Handler,
-                     DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
-                     FilteredRowGeneratorSet<RowGeneratorIdentity> >
+      DBRowFilter< DatabaseVectInRAM::Handler,
+      DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+      FilteredRowGeneratorSet<RowGeneratorIdentity> >
       ( __database.handler (), __translators, __generators );
     }
 
@@ -195,10 +195,10 @@ namespace gum {
 
         // create the row filter for the __database
         __row_filter = new
-          DBRowFilter< DatabaseVectInRAM::Handler,
-                       DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
-                       FilteredRowGeneratorSet<RowGeneratorIdentity> >
-          ( __database.handler (), __translators, __generators );
+        DBRowFilter< DatabaseVectInRAM::Handler,
+        DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+        FilteredRowGeneratorSet<RowGeneratorIdentity> >
+        ( __database.handler (), __translators, __generators );
       }
 
       return *this;
@@ -208,7 +208,7 @@ namespace gum {
     /// move operator
     BNLearner::Database&
     BNLearner::Database::operator= ( Database&& from ) {
-           if ( this != & from ) {
+      if ( this != & from ) {
         delete __row_filter;
         __row_filter = nullptr;
         __database = std::move ( from.__database );
@@ -220,10 +220,10 @@ namespace gum {
 
         // create the row filter for the __database
         __row_filter = new
-          DBRowFilter< DatabaseVectInRAM::Handler,
-                       DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
-                       FilteredRowGeneratorSet<RowGeneratorIdentity> >
-          ( __database.handler (), __translators, __generators );
+        DBRowFilter< DatabaseVectInRAM::Handler,
+        DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+        FilteredRowGeneratorSet<RowGeneratorIdentity> >
+        ( __database.handler (), __translators, __generators );
       }
 
       return *this;
@@ -234,7 +234,7 @@ namespace gum {
 
 
     /// default constructor
-    BNLearner::BNLearner(const std::string& filename) {
+    BNLearner::BNLearner ( const std::string& filename ) {
       // for debugging purposes
       GUM_CONSTRUCTOR ( BNLearner );
 
@@ -417,29 +417,29 @@ namespace gum {
 
       // create the new apriori
       switch ( __apriori_type ) {
-      case AprioriType::SMOOTHING:
-        __apriori = new AprioriSmoothing<>;
-        break;
+        case AprioriType::SMOOTHING:
+          __apriori = new AprioriSmoothing<>;
+          break;
 
-      case AprioriType::DIRICHLET_FROM_DATABASE:
-        if ( __score_database == nullptr ) {
-          GUM_ERROR ( OperationNotAllowed, "the observation database is "
-                      "needed to create the a priori" );
-        }
-        if ( __apriori_database != nullptr ) {
-          delete __apriori_database;
-          __apriori_database = nullptr;
-        }
-        __apriori_database = new Database ( __apriori_dbname, *__score_database );
+        case AprioriType::DIRICHLET_FROM_DATABASE:
+          if ( __score_database == nullptr ) {
+            GUM_ERROR ( OperationNotAllowed, "the observation database is "
+                        "needed to create the a priori" );
+          }
+          if ( __apriori_database != nullptr ) {
+            delete __apriori_database;
+            __apriori_database = nullptr;
+          }
+          __apriori_database = new Database ( __apriori_dbname, *__score_database );
 
-        __apriori = new AprioriDirichletFromDatabase<>
+          __apriori = new AprioriDirichletFromDatabase<>
           ( __apriori_database->rowFilter (),
             __apriori_database->modalities () );
-        break;
+          break;
 
-      default:
-        GUM_ERROR ( OperationNotAllowed,
-                    "BNLearner does not support yet this apriori" );
+        default:
+          GUM_ERROR ( OperationNotAllowed,
+                      "BNLearner does not support yet this apriori" );
       }
 
       // do not forget to assign a weight to the apriori
@@ -510,16 +510,16 @@ namespace gum {
 
       // create the new estimator
       switch ( __param_estimator_type ) {
-      case ParamEstimatorType::ML:
-        __param_estimator =
-          new ParamEstimatorML<> ( __score_database->rowFilter (),
-                                   __score_database->modalities (),
-                                   *__apriori );
-        break;
+        case ParamEstimatorType::ML:
+          __param_estimator =
+            new ParamEstimatorML<> ( __score_database->rowFilter (),
+                                     __score_database->modalities (),
+                                     *__apriori );
+          break;
 
-      default:
-        GUM_ERROR ( OperationNotAllowed,
-                    "BNLearner does not support yet this parameter estimator" );
+        default:
+          GUM_ERROR ( OperationNotAllowed,
+                      "BNLearner does not support yet this parameter estimator" );
       }
 
       // remove the old estimator, if any
@@ -568,137 +568,136 @@ namespace gum {
       }
 
       switch ( __selected_algo ) {
-      // ========================================================================
-      case AlgoType::GREEDY_HILL_CLIMBING: {
-        BNLearnerListener listener ( this, __greedy_hill_climbing );
-        StructuralConstraintSetStatic < StructuralConstraintMandatoryArcs,
+          // ========================================================================
+        case AlgoType::GREEDY_HILL_CLIMBING: {
+          BNLearnerListener listener ( this, __greedy_hill_climbing );
+          StructuralConstraintSetStatic < StructuralConstraintMandatoryArcs,
                                         StructuralConstraintForbiddenArcs,
                                         StructuralConstraintSliceOrder >
-          gen_constraint;
-        static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
-          __constraint_MandatoryArcs;
-        static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
-          __constraint_ForbiddenArcs;
-        static_cast<StructuralConstraintSliceOrder&> ( gen_constraint ) =
-          __constraint_SliceOrder;
+                                        gen_constraint;
+          static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
+            __constraint_MandatoryArcs;
+          static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
+            __constraint_ForbiddenArcs;
+          static_cast<StructuralConstraintSliceOrder&> ( gen_constraint ) =
+            __constraint_SliceOrder;
 
-        GraphChangesGenerator4DiGraph< decltype ( gen_constraint ) >
+          GraphChangesGenerator4DiGraph< decltype ( gen_constraint ) >
           op_set ( gen_constraint );
 
-        StructuralConstraintSetStatic < StructuralConstraintIndegree,
+          StructuralConstraintSetStatic < StructuralConstraintIndegree,
                                         StructuralConstraintDAG > sel_constraint;
-        static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
-          __constraint_Indegree;
+          static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
+            __constraint_Indegree;
 
-        GraphChangesSelector4DiGraph < Score<>,
+          GraphChangesSelector4DiGraph < Score<>,
                                        decltype ( sel_constraint ),
                                        decltype ( op_set ) >
-          selector ( *__score, sel_constraint, op_set );
+                                       selector ( *__score, sel_constraint, op_set );
 
-        return __greedy_hill_climbing.learnStructure
-          ( selector, __score_database->modalities (), init_graph );
-      }
+          return __greedy_hill_climbing.learnStructure
+                 ( selector, __score_database->modalities (), init_graph );
+        }
 
-      // ========================================================================
-      case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST: {
-        BNLearnerListener listener ( this, __local_search_with_tabu_list );
-        StructuralConstraintSetStatic < StructuralConstraintMandatoryArcs,
+        // ========================================================================
+        case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST: {
+          BNLearnerListener listener ( this, __local_search_with_tabu_list );
+          StructuralConstraintSetStatic < StructuralConstraintMandatoryArcs,
                                         StructuralConstraintForbiddenArcs,
                                         StructuralConstraintSliceOrder >
-          gen_constraint;
-        static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
-          __constraint_MandatoryArcs;
-        static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
-          __constraint_ForbiddenArcs;
-        static_cast<StructuralConstraintSliceOrder&> ( gen_constraint ) =
-          __constraint_SliceOrder;
+                                        gen_constraint;
+          static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
+            __constraint_MandatoryArcs;
+          static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
+            __constraint_ForbiddenArcs;
+          static_cast<StructuralConstraintSliceOrder&> ( gen_constraint ) =
+            __constraint_SliceOrder;
 
-        GraphChangesGenerator4DiGraph< decltype ( gen_constraint ) >
+          GraphChangesGenerator4DiGraph< decltype ( gen_constraint ) >
           op_set ( gen_constraint );
 
-        StructuralConstraintSetStatic < StructuralConstraintTabuList,
+          StructuralConstraintSetStatic < StructuralConstraintTabuList,
                                         StructuralConstraintIndegree,
                                         StructuralConstraintDAG > sel_constraint;
-        static_cast<StructuralConstraintTabuList&> ( sel_constraint ) =
-          __constraint_TabuList;
-        static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
-          __constraint_Indegree;
+          static_cast<StructuralConstraintTabuList&> ( sel_constraint ) =
+            __constraint_TabuList;
+          static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
+            __constraint_Indegree;
 
-        GraphChangesSelector4DiGraph < Score<>,
+          GraphChangesSelector4DiGraph < Score<>,
                                        decltype ( sel_constraint ),
                                        decltype ( op_set ) >
-          selector ( *__score, sel_constraint, op_set );
+                                       selector ( *__score, sel_constraint, op_set );
 
-        return __local_search_with_tabu_list.learnStructure
-          ( selector, __score_database->modalities (), init_graph );
-      }
+          return __local_search_with_tabu_list.learnStructure
+                 ( selector, __score_database->modalities (), init_graph );
+        }
 
-      // ========================================================================
-      case AlgoType::K2: {
-        BNLearnerListener listener ( this, __K2.approximationScheme() );
-        StructuralConstraintSetStatic < StructuralConstraintMandatoryArcs,
+        // ========================================================================
+        case AlgoType::K2: {
+          BNLearnerListener listener ( this, __K2.approximationScheme() );
+          StructuralConstraintSetStatic < StructuralConstraintMandatoryArcs,
                                         StructuralConstraintForbiddenArcs >
-          gen_constraint;
-        static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
-          __constraint_MandatoryArcs;
-        static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
-          __constraint_ForbiddenArcs;
+                                        gen_constraint;
+          static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
+            __constraint_MandatoryArcs;
+          static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
+            __constraint_ForbiddenArcs;
 
-        GraphChangesGenerator4K2< decltype ( gen_constraint ) >
+          GraphChangesGenerator4K2< decltype ( gen_constraint ) >
           op_set ( gen_constraint );
 
-        // if some mandatory arcs are incompatible with the order, use a DAG
-        // constraint instead of a DiGraph constraint to avoid cycles
-        const ArcSet& mandatory_arcs =
-          static_cast<StructuralConstraintMandatoryArcs&>
-          ( gen_constraint ).arcs ();
-        const Sequence<NodeId>& order = __K2.order ();
-        bool order_compatible = true;
+          // if some mandatory arcs are incompatible with the order, use a DAG
+          // constraint instead of a DiGraph constraint to avoid cycles
+          const ArcSet& mandatory_arcs =
+            static_cast<StructuralConstraintMandatoryArcs&>
+            ( gen_constraint ).arcs ();
+          const Sequence<NodeId>& order = __K2.order ();
+          bool order_compatible = true;
 
-        for ( const auto & arc : mandatory_arcs ) {
-          if ( order.pos ( arc.tail () ) >= order.pos ( arc.head () ) ) {
-            order_compatible = false;
-            break;
+          for ( const auto & arc : mandatory_arcs ) {
+            if ( order.pos ( arc.tail () ) >= order.pos ( arc.head () ) ) {
+              order_compatible = false;
+              break;
+            }
+          }
+
+          if ( order_compatible ) {
+            StructuralConstraintSetStatic < StructuralConstraintIndegree,
+                                          StructuralConstraintDiGraph >
+                                          sel_constraint;
+            static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
+              __constraint_Indegree;
+
+            GraphChangesSelector4DiGraph < Score<>,
+                                         decltype ( sel_constraint ),
+                                         decltype ( op_set ) >
+                                         selector ( *__score, sel_constraint, op_set );
+
+            return __K2.learnStructure
+                   ( selector, __score_database->modalities (), init_graph );
+          } else {
+            StructuralConstraintSetStatic < StructuralConstraintIndegree,
+                                          StructuralConstraintDAG >
+                                          sel_constraint;
+            static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
+              __constraint_Indegree;
+
+            GraphChangesSelector4DiGraph < Score<>,
+                                         decltype ( sel_constraint ),
+                                         decltype ( op_set ) >
+                                         selector ( *__score, sel_constraint, op_set );
+
+            return __K2.learnStructure
+                   ( selector, __score_database->modalities (), init_graph );
           }
         }
 
-        if ( order_compatible ) {
-          StructuralConstraintSetStatic < StructuralConstraintIndegree,
-                                          StructuralConstraintDiGraph >
-            sel_constraint;
-          static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
-            __constraint_Indegree;
-
-          GraphChangesSelector4DiGraph < Score<>,
-                                         decltype ( sel_constraint ),
-                                         decltype ( op_set ) >
-            selector ( *__score, sel_constraint, op_set );
-
-          return __K2.learnStructure
-            ( selector, __score_database->modalities (), init_graph );
-        }
-        else {
-          StructuralConstraintSetStatic < StructuralConstraintIndegree,
-                                          StructuralConstraintDAG >
-            sel_constraint;
-          static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
-            __constraint_Indegree;
-
-          GraphChangesSelector4DiGraph < Score<>,
-                                         decltype ( sel_constraint ),
-                                         decltype ( op_set ) >
-            selector ( *__score, sel_constraint, op_set );
-
-          return __K2.learnStructure
-            ( selector, __score_database->modalities (), init_graph );
-        }
-      }
-
-      // ========================================================================
-      default:
-        GUM_ERROR ( OperationNotAllowed,
-                    "the learnDAG method has not been implemented for this "
-                    "learning algorithm" );
+        // ========================================================================
+        default:
+          GUM_ERROR ( OperationNotAllowed,
+                      "the learnDAG method has not been implemented for this "
+                      "learning algorithm" );
       }
     }
 
