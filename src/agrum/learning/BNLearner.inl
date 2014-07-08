@@ -30,23 +30,23 @@ namespace gum {
 
   namespace learning {
 
-    
+
     /// returns the row filter
     INLINE DBRowFilter< DatabaseVectInRAM::Handler,
-                        DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
-                        FilteredRowGeneratorSet<RowGeneratorIdentity> >&
+           DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+           FilteredRowGeneratorSet<RowGeneratorIdentity> >&
     BNLearner::Database::rowFilter () {
       return *__row_filter;
     }
 
-    
+
     /// returns the modalities of the variables
     INLINE std::vector<unsigned int>&
     BNLearner::Database::modalities () noexcept {
       return __modalities;
     }
 
-    
+
     /// returns the names of the variables in the database
     INLINE const std::vector<std::string>&
     BNLearner::Database::variableNames () const noexcept {
@@ -55,14 +55,14 @@ namespace gum {
 
     /// returns the node id corresponding to a variable name
     INLINE NodeId
-    BNLearner::Database::nodeId ( const std::string& var_name ) const {
+    BNLearner::Database::idFromName ( const std::string& var_name ) const {
       return __name2nodeId.second ( const_cast<std::string&> ( var_name ) );
     }
-    
-    
+
+
     /// returns the variable name corresponding to a given node id
     INLINE const std::string&
-    BNLearner::Database::variableName ( NodeId id ) const {
+    BNLearner::Database::nameFromId ( NodeId id ) const {
       return __name2nodeId.first ( id );
     }
 
@@ -72,30 +72,28 @@ namespace gum {
 
     /// returns the node id corresponding to a variable name
     INLINE NodeId
-    BNLearner::nodeId ( const std::string& var_name ) const {
+    BNLearner::idFromName ( const std::string& var_name ) const {
       if ( __score_database != nullptr ) {
-        return __score_database->nodeId ( var_name );
-      }
-      else {
+        return __score_database->idFromName ( var_name );
+      } else {
         GUM_ERROR ( OperationNotAllowed, "to get the node id of a variable, you "
                     "must first read a database" );
       }
     }
-    
-    
+
+
     /// returns the variable name corresponding to a given node id
     INLINE const std::string&
-    BNLearner::variableName ( NodeId id ) const {
+    BNLearner::nameFromId ( NodeId id ) const {
       if ( __score_database != nullptr ) {
-        return __score_database->variableName ( id );
-    }
-      else {
+        return __score_database->nameFromId ( id );
+      } else {
         GUM_ERROR ( OperationNotAllowed, "to get the variable's name corresponding"
                     " to a given id, must first read a database" );
       }
     }
-    
-    
+
+
     /// sets an initial DAG structure
     INLINE void BNLearner::setInitialDAG ( const DAG& dag ) {
       __initial_dag = dag;
@@ -168,7 +166,7 @@ namespace gum {
     /// indicate that we wish to use a local search with tabu list
     INLINE void
     BNLearner::useLocalSearchWithTabuList ( unsigned int tabu_size,
-                                            unsigned int nb_decrease ) noexcept {
+    unsigned int nb_decrease ) noexcept {
       __selected_algo = AlgoType::LOCAL_SEARCH_WITH_TABU_LIST;
       __constraint_TabuList.setTabuListSize ( tabu_size );
       __local_search_with_tabu_list.setMaxNbDecreasingChanges ( nb_decrease );
@@ -194,16 +192,25 @@ namespace gum {
 
 
     /// assign a new forbidden arc
-    INLINE void BNLearner::addForbiddenArc
-    ( const std::string& tail, const std::string& head ) {
-      addForbiddenArc ( Arc ( nodeId ( tail ), nodeId ( head ) ) );
+    INLINE void BNLearner::addForbiddenArc ( const NodeId tail, const NodeId head ) {
+      addForbiddenArc ( Arc ( tail,head ) );
     }
 
-    
+
     /// remove a forbidden arc
-    INLINE void BNLearner::eraseForbiddenArc
-    ( const std::string& tail, const std::string& head ) {
-      eraseForbiddenArc ( Arc ( nodeId ( tail ), nodeId ( head ) ) );
+    INLINE void BNLearner::eraseForbiddenArc ( const NodeId tail, const NodeId head ) {
+      eraseForbiddenArc ( Arc ( tail,head ) );
+    }
+
+    /// assign a new forbidden arc
+    INLINE void BNLearner::addForbiddenArc ( const std::string& tail, const std::string& head ) {
+      addForbiddenArc ( Arc ( idFromName ( tail ), idFromName ( head ) ) );
+    }
+
+
+    /// remove a forbidden arc
+    INLINE void BNLearner::eraseForbiddenArc ( const std::string& tail, const std::string& head ) {
+      eraseForbiddenArc ( Arc ( idFromName ( tail ), idFromName ( head ) ) );
     }
 
 
@@ -224,18 +231,18 @@ namespace gum {
       __constraint_MandatoryArcs.eraseArc ( arc );
     }
 
-    
+
     /// assign a new forbidden arc
     INLINE void BNLearner::addMandatoryArc
     ( const std::string& tail, const std::string& head ) {
-      addMandatoryArc ( Arc ( nodeId ( tail ), nodeId ( head ) ) );
+      addMandatoryArc ( Arc ( idFromName ( tail ), idFromName ( head ) ) );
     }
-    
+
 
     /// remove a forbidden arc
     INLINE void BNLearner::eraseMandatoryArc
     ( const std::string& tail, const std::string& head ) {
-      eraseMandatoryArc ( Arc ( nodeId ( tail ), nodeId ( head ) ) );
+      eraseMandatoryArc ( Arc ( idFromName ( tail ), idFromName ( head ) ) );
     }
 
 
@@ -261,7 +268,7 @@ namespace gum {
       __apriori_weight = weight;
     }
 
-    
+
     /// use the Dirichlet apriori
     INLINE void
     BNLearner::useAprioriDirichlet ( const std::string& filename ) noexcept {
@@ -277,8 +284,8 @@ namespace gum {
       }
       return __score_database->variableNames ();
     }
-      
-    
+
+
   } /* namespace learning */
 
 

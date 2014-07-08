@@ -55,7 +55,7 @@ namespace gum_tests {
   public:
 
     void test_asia () {
-      gum::learning::BNLearner learner;
+      gum::learning::BNLearner learner(GET_PATH_STR( "asia.csv" ) );
 
       learner.useLocalSearchWithTabuList ( 100, 1 );
       learner.setMaxIndegree ( 10 );
@@ -65,7 +65,6 @@ namespace gum_tests {
       // learner.addForbiddenArc ( gum::Arc (5,1) );
       // learner.addForbiddenArc ( gum::Arc (5,7) );
 
-      learner.readDatabase ( GET_PATH_STR( "asia.csv" ) );
       // learner.addMandatoryArc ( gum::Arc ( learner.nodeId ( "bronchitis?" ),
       //                                      learner.nodeId ( "lung_cancer?" ) ) );
 
@@ -75,11 +74,11 @@ namespace gum_tests {
       learner.setAprioriWeight ( 1 );
       //learner.useAprioriDirichlet (  GET_PATH_STR( "asia.csv" ) );
 
-      gum::NodeProperty<unsigned int> partial_order {
+      gum::NodeProperty<unsigned int> slice_order {
         std::make_pair( gum::NodeId ( 0 ), 1 ),
         std::make_pair( gum::NodeId ( 3 ), 0 ),
         std::make_pair( gum::NodeId ( 1 ), 0 ) };
-      //learner.setSliceOrder ( partial_order );
+      //learner.setSliceOrder ( slice_order );
 
       const std::vector<std::string>& names = learner.variableNames ();
       TS_ASSERT ( ! names.empty () );
@@ -87,6 +86,7 @@ namespace gum_tests {
       try {
         gum::Timer timer;
         gum::BayesNet<float> bn = learner.learnBN ();
+        std::cout<<learner.currentTime()<< " : " << std::endl;
         std::cout << timer.step () << " : " << std::endl;
         std::cout << bn << "  " << bn.dag () << std::endl;
       }
@@ -96,15 +96,14 @@ namespace gum_tests {
     }
 
     void test_listener() {
-      gum::learning::BNLearner learner;
+      gum::learning::BNLearner learner( GET_PATH_STR( "asia.csv" ) );
       aSimpleBNLeanerListener listen(learner);
 
       learner.setVerbosity(true);
       learner.setMaxIndegree ( 10 );
       learner.useScoreK2 ();
       learner.useK2 ( std::vector<gum::NodeId> { 1, 5, 2, 6, 0, 3, 4, 7 } );
-      learner.readDatabase ( GET_PATH_STR( "asia.csv" ) );
-      
+
       gum::BayesNet<double> bn = learner.learnBN<double> ();
 
       GUM_TRACE_VAR(listen.getNbr());

@@ -27,6 +27,9 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
+// to help IDE parser
+#include <agrum/learning/BNLearner.h>
+
 #include <agrum/learning/BNLearnerListener.h>
 
 
