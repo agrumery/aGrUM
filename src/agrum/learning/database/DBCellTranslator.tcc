@@ -203,6 +203,22 @@ namespace gum {
     }
 
 
+    /// returns the size of the input for this cell translator
+    template <int Nb_inputs, int Nb_outputs> INLINE
+    unsigned int
+    DBCellTranslator<Nb_inputs,Nb_outputs>::inputSize () const noexcept {
+      return Nb_inputs;
+    }
+    
+
+    /// returns the size of the output for this cell translator
+    template <int Nb_inputs, int Nb_outputs> INLINE
+    unsigned int
+    DBCellTranslator<Nb_inputs,Nb_outputs>::outputSize () const noexcept {
+      return Nb_outputs;
+    }
+ 
+
   } /* namespace learning */
 
   

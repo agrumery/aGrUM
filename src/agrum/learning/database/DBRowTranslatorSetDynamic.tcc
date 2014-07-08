@@ -338,6 +338,30 @@ namespace gum {
     }
 
 
+    /// returns the name of the jth value of the ith column
+    template <typename Translator>
+    std::string DBRowTranslatorSetDynamic<Translator>::translateBack
+    ( unsigned int col,
+      unsigned int translated_val ) {
+      unsigned int size = __translators.size ();
+      if ( size == 0 ) {
+        GUM_ERROR ( UndefinedElement, "the set of translators is empty, so it is "
+                    "not possible to translate back a value" );
+      }
+      unsigned int i = 0, j = 0;
+      for ( ; i < __translators.size () &&
+                  col >= j + __translators[i]->outputSize ();
+              j += __translators[i]->outputSize (), ++i ) {
+      }
+      if ( i >= __translators.size () ) {
+        GUM_ERROR ( UndefinedElement, "the set of translators does not contain "
+                    "the column to be translated back" );
+      }
+  
+      return __translators[i]->translateBack ( col - j, translated_val );
+    }
+ 
+
   } /* namespace learning */
 
   

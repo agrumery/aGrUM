@@ -42,22 +42,20 @@ namespace gum {
     /// learn a Bayes Net from a file
     template <typename GUM_SCALAR>
     BayesNet<GUM_SCALAR> BNLearner::learnBN () {
-      // check that we have read a database
-      if ( __score_database == nullptr ) {
-        GUM_ERROR ( OperationNotAllowed, "you need to read a database before "
-                    "learning from it" );
-      }
-
       // create the score, the apriori and the estimator
       __createApriori ();
       __createScore ();
       __createParamEstimator ();
-
-      return DAG2BNLearner::createBN<ParamEstimator<>, GUM_SCALAR>
-        ( *__param_estimator,
-          __learnDAG (),
-          __score_database->names (),
-          __score_database->modalities () );
+     
+      return
+        DAG2BNLearner::createBN
+        <ParamEstimator<>,
+         DBRowTranslatorSetDynamic<CellTranslatorUniversal>,
+         GUM_SCALAR> ( *__param_estimator,
+                       __learnDAG (),
+                       __score_database.names (),
+                       __score_database.modalities (),
+                       __score_database.rawTranslators () );
     }
 
 

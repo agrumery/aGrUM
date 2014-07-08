@@ -55,6 +55,7 @@ namespace gum {
       auto raw_filter = make_DB_row_filter ( __database, __raw_translators,
                                              __generators );
 
+      __raw_translators = raw_filter.translatorSet ();
       __modalities = raw_filter.modalities ();
 
       // create the fast translators
@@ -66,10 +67,11 @@ namespace gum {
 
       // create the row filter using the fast translators
       __row_filter = new
-      DBRowFilter< DatabaseVectInRAM::Handler,
-      DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
-      FilteredRowGeneratorSet<RowGeneratorIdentity> >
-      ( __database.handler (), __translators, __generators );
+        DBRowFilter< DatabaseVectInRAM::Handler,
+                     DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                     FilteredRowGeneratorSet<RowGeneratorIdentity> >
+        ( __database.handler (), __translators, __generators );
+      __translators = __row_filter->translatorSet ();
 
       // fill the variable name -> nodeid hashtable
       const std::vector<std::string>& var_names = __database.variableNames ();
@@ -112,11 +114,10 @@ namespace gum {
       // database. Then we copy back these raw translators so that the score
       // filter knows about these values.
       __raw_translators = score_database.__raw_translators;
-
       auto raw_filter = make_DB_row_filter ( __database, __raw_translators,
                                              __generators );
-
-      score_database.__raw_translators = __raw_translators;
+      __raw_translators = raw_filter.translatorSet ();
+      score_database.__raw_translators = raw_filter.translatorSet ();
 
       // update the modalities of the two databases
       __modalities = raw_filter.modalities ();
@@ -125,17 +126,18 @@ namespace gum {
       // create the fast translators
       DBTransformCompactInt raw2fast_transfo;
       raw2fast_transfo.transform ( raw_filter );
-
+      
       __translators.insertTranslator ( CellTranslatorCompactIntId ( false ),
                                        Col<0> (),
                                        score_database.__database.nbVariables() );
 
       __row_filter = new
-      DBRowFilter< DatabaseVectInRAM::Handler,
-      DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
-      FilteredRowGeneratorSet<RowGeneratorIdentity> >
-      ( __database.handler (), __translators, __generators );
-
+        DBRowFilter< DatabaseVectInRAM::Handler,
+                     DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                     FilteredRowGeneratorSet<RowGeneratorIdentity> >
+        ( __database.handler (), __translators, __generators );
+      __translators = __row_filter->translatorSet ();
+      
       __name2nodeId = score_database.__name2nodeId;
     }
 
@@ -150,10 +152,10 @@ namespace gum {
       __name2nodeId ( from.__name2nodeId ) {
       // create the row filter for the __database
       __row_filter = new
-      DBRowFilter< DatabaseVectInRAM::Handler,
-      DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
-      FilteredRowGeneratorSet<RowGeneratorIdentity> >
-      ( __database.handler (), __translators, __generators );
+        DBRowFilter< DatabaseVectInRAM::Handler,
+                     DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                     FilteredRowGeneratorSet<RowGeneratorIdentity> >
+        ( __database.handler (), __translators, __generators );
     }
 
 
@@ -167,10 +169,10 @@ namespace gum {
       __name2nodeId ( std::move ( from.__name2nodeId ) ) {
       // create the row filter for the __database
       __row_filter = new
-      DBRowFilter< DatabaseVectInRAM::Handler,
-      DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
-      FilteredRowGeneratorSet<RowGeneratorIdentity> >
-      ( __database.handler (), __translators, __generators );
+        DBRowFilter< DatabaseVectInRAM::Handler,
+                     DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                     FilteredRowGeneratorSet<RowGeneratorIdentity> >
+        ( __database.handler (), __translators, __generators );
     }
 
 
@@ -195,10 +197,10 @@ namespace gum {
 
         // create the row filter for the __database
         __row_filter = new
-        DBRowFilter< DatabaseVectInRAM::Handler,
-        DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
-        FilteredRowGeneratorSet<RowGeneratorIdentity> >
-        ( __database.handler (), __translators, __generators );
+          DBRowFilter< DatabaseVectInRAM::Handler,
+                       DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                       FilteredRowGeneratorSet<RowGeneratorIdentity> >
+          ( __database.handler (), __translators, __generators );
       }
 
       return *this;
@@ -220,10 +222,10 @@ namespace gum {
 
         // create the row filter for the __database
         __row_filter = new
-        DBRowFilter< DatabaseVectInRAM::Handler,
-        DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
-        FilteredRowGeneratorSet<RowGeneratorIdentity> >
-        ( __database.handler (), __translators, __generators );
+          DBRowFilter< DatabaseVectInRAM::Handler,
+                       DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                       FilteredRowGeneratorSet<RowGeneratorIdentity> >
+          ( __database.handler (), __translators, __generators );
       }
 
       return *this;
@@ -234,11 +236,10 @@ namespace gum {
 
 
     /// default constructor
-    BNLearner::BNLearner ( const std::string& filename ) {
+    BNLearner::BNLearner ( const std::string& filename ) :
+      __score_database ( filename ) {
       // for debugging purposes
       GUM_CONSTRUCTOR ( BNLearner );
-
-      __score_database = new Database ( filename );
     }
 
 
@@ -258,7 +259,7 @@ namespace gum {
       __greedy_hill_climbing ( from.__greedy_hill_climbing ),
       __local_search_with_tabu_list ( from.__local_search_with_tabu_list ),
       __score_database ( from.__score_database ),
-      __apriori_database ( from.__apriori_database ),
+      __apriori_dbname ( from.__apriori_dbname ),
       __initial_dag ( from.__initial_dag ) {
       // for debugging purposes
       GUM_CONS_CPY ( BNLearner );
@@ -282,7 +283,7 @@ namespace gum {
       __local_search_with_tabu_list
       ( std::move ( from.__local_search_with_tabu_list ) ),
       __score_database ( std::move ( from.__score_database ) ),
-      __apriori_database ( std::move ( from.__apriori_database ) ),
+      __apriori_dbname ( std::move ( from.__apriori_dbname ) ),
       __initial_dag ( std::move ( from.__initial_dag ) ) {
       // for debugging purposes
       GUM_CONS_MOV ( BNLearner );
@@ -294,7 +295,6 @@ namespace gum {
       if ( __score ) delete __score;
       if ( __param_estimator ) delete __param_estimator;
       if ( __apriori ) delete __apriori;
-      if ( __score_database ) delete __score_database;
       if ( __apriori_database ) delete __apriori_database;
 
       GUM_DESTRUCTOR ( BNLearner );
@@ -320,6 +320,11 @@ namespace gum {
           __apriori = nullptr;
         }
 
+        if ( __apriori_database ) {
+          delete __apriori_database;
+          __apriori_database = nullptr;
+        }
+
         __score_type           = from.__score_type;
         __param_estimator_type = from.__param_estimator_type;
         __apriori_type         = from.__apriori_type;
@@ -334,7 +339,7 @@ namespace gum {
         __greedy_hill_climbing = from.__greedy_hill_climbing;
         __local_search_with_tabu_list = from.__local_search_with_tabu_list;
         __score_database = from.__score_database;
-        __apriori_database = from.__apriori_database;
+        __apriori_dbname = from.__apriori_dbname;
         __initial_dag = from.__initial_dag;
         __current_algorithm = nullptr;
       }
@@ -362,6 +367,11 @@ namespace gum {
           __apriori = nullptr;
         }
 
+        if ( __apriori_database ) {
+          delete __apriori_database;
+          __apriori_database = nullptr;
+        }
+
         __score_type           = from.__score_type;
         __param_estimator_type = from.__param_estimator_type;
         __apriori_type         = from.__apriori_type;
@@ -377,7 +387,7 @@ namespace gum {
         __local_search_with_tabu_list =
           std::move ( from.__local_search_with_tabu_list );
         __score_database = std::move ( from.__score_database );
-        __apriori_database = std::move ( from.__apriori_database );
+        __apriori_dbname = std::move ( from.__apriori_dbname );
         __initial_dag = std::move ( from.__initial_dag );
         __current_algorithm = nullptr;
       }
@@ -417,29 +427,25 @@ namespace gum {
 
       // create the new apriori
       switch ( __apriori_type ) {
-        case AprioriType::SMOOTHING:
-          __apriori = new AprioriSmoothing<>;
-          break;
+      case AprioriType::SMOOTHING:
+        __apriori = new AprioriSmoothing<>;
+        break;
 
-        case AprioriType::DIRICHLET_FROM_DATABASE:
-          if ( __score_database == nullptr ) {
-            GUM_ERROR ( OperationNotAllowed, "the observation database is "
-                        "needed to create the a priori" );
-          }
-          if ( __apriori_database != nullptr ) {
-            delete __apriori_database;
-            __apriori_database = nullptr;
-          }
-          __apriori_database = new Database ( __apriori_dbname, *__score_database );
+      case AprioriType::DIRICHLET_FROM_DATABASE:
+        if ( __apriori_database != nullptr ) {
+          delete __apriori_database;
+          __apriori_database = nullptr;
+        }
+        __apriori_database = new Database ( __apriori_dbname, __score_database );
 
-          __apriori = new AprioriDirichletFromDatabase<>
+        __apriori = new AprioriDirichletFromDatabase<>
           ( __apriori_database->rowFilter (),
             __apriori_database->modalities () );
-          break;
+        break;
 
-        default:
-          GUM_ERROR ( OperationNotAllowed,
-                      "BNLearner does not support yet this apriori" );
+      default:
+        GUM_ERROR ( OperationNotAllowed,
+                    "BNLearner does not support yet this apriori" );
       }
 
       // do not forget to assign a weight to the apriori
@@ -457,45 +463,45 @@ namespace gum {
 
       // create the new scoring function
       switch ( __score_type ) {
-        case ScoreType::AIC:
-          __score = new ScoreAIC<> ( __score_database->rowFilter (),
-                                     __score_database->modalities (),
-                                     *__apriori );
-          break;
+      case ScoreType::AIC:
+        __score = new ScoreAIC<> ( __score_database.rowFilter (),
+                                   __score_database.modalities (),
+                                   *__apriori );
+        break;
 
-        case ScoreType::BD:
-          __score = new ScoreBD<> ( __score_database->rowFilter (),
-                                    __score_database->modalities (),
+      case ScoreType::BD:
+        __score = new ScoreBD<> ( __score_database.rowFilter (),
+                                  __score_database.modalities (),
+                                  *__apriori );
+        break;
+
+      case ScoreType::BDeu:
+        __score = new ScoreBDeu<> ( __score_database.rowFilter (),
+                                    __score_database.modalities (),
                                     *__apriori );
-          break;
+        break;
 
-        case ScoreType::BDeu:
-          __score = new ScoreBDeu<> ( __score_database->rowFilter (),
-                                      __score_database->modalities (),
-                                      *__apriori );
-          break;
+      case ScoreType::BIC:
+        __score = new ScoreBIC<> ( __score_database.rowFilter (),
+                                   __score_database.modalities (),
+                                   *__apriori );
+        break;
 
-        case ScoreType::BIC:
-          __score = new ScoreBIC<> ( __score_database->rowFilter (),
-                                     __score_database->modalities (),
-                                     *__apriori );
-          break;
+      case ScoreType::K2:
+        __score = new ScoreK2<> ( __score_database.rowFilter (),
+                                  __score_database.modalities (),
+                                  *__apriori );
+        break;
 
-        case ScoreType::K2:
-          __score = new ScoreK2<> ( __score_database->rowFilter (),
-                                    __score_database->modalities (),
-                                    *__apriori );
-          break;
+      case ScoreType::LOG2LIKELIHOOD:
+        __score = new ScoreLog2Likelihood<> ( __score_database.rowFilter (),
+                                              __score_database.modalities (),
+                                              *__apriori );
+        break;
 
-        case ScoreType::LOG2LIKELIHOOD:
-          __score = new ScoreLog2Likelihood<> ( __score_database->rowFilter (),
-                                                __score_database->modalities (),
-                                                *__apriori );
-          break;
-
-        default:
-          GUM_ERROR ( OperationNotAllowed,
-                      "BNLearner does not support yet this score" );
+      default:
+        GUM_ERROR ( OperationNotAllowed,
+                    "BNLearner does not support yet this score" );
       }
 
       // remove the old score, if any
@@ -510,16 +516,16 @@ namespace gum {
 
       // create the new estimator
       switch ( __param_estimator_type ) {
-        case ParamEstimatorType::ML:
-          __param_estimator =
-            new ParamEstimatorML<> ( __score_database->rowFilter (),
-                                     __score_database->modalities (),
-                                     *__apriori );
-          break;
+      case ParamEstimatorType::ML:
+        __param_estimator =
+          new ParamEstimatorML<> ( __score_database.rowFilter (),
+                                   __score_database.modalities (),
+                                   *__apriori );
+        break;
 
-        default:
-          GUM_ERROR ( OperationNotAllowed,
-                      "BNLearner does not support yet this parameter estimator" );
+      default:
+        GUM_ERROR ( OperationNotAllowed,
+                    "BNLearner does not support yet this parameter estimator" );
       }
 
       // remove the old estimator, if any
@@ -529,12 +535,6 @@ namespace gum {
 
     /// learn a structure from a file
     DAG BNLearner::learnDAG () {
-      // check that we have read a database
-      if ( __score_database == nullptr ) {
-        GUM_ERROR ( OperationNotAllowed, "you need to read a database before "
-                    "learning from it" );
-      }
-
       // create the score and the apriori
       __createApriori ();
       __createScore ();
@@ -550,7 +550,7 @@ namespace gum {
       DAG init_graph = __initial_dag;
 
       const ArcSet& mandatory_arcs = __constraint_MandatoryArcs.arcs ();
-
+      
       for ( const auto & arc : mandatory_arcs ) {
         if ( ! init_graph.exists ( arc.tail () ) )
           init_graph.addNode ( arc.tail () );
@@ -568,136 +568,137 @@ namespace gum {
       }
 
       switch ( __selected_algo ) {
-          // ========================================================================
-        case AlgoType::GREEDY_HILL_CLIMBING: {
-          BNLearnerListener listener ( this, __greedy_hill_climbing );
-          StructuralConstraintSetStatic < StructuralConstraintMandatoryArcs,
+      // ========================================================================
+      case AlgoType::GREEDY_HILL_CLIMBING: {
+        BNLearnerListener listener ( this, __greedy_hill_climbing );
+        StructuralConstraintSetStatic < StructuralConstraintMandatoryArcs,
                                         StructuralConstraintForbiddenArcs,
                                         StructuralConstraintSliceOrder >
-                                        gen_constraint;
-          static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
-            __constraint_MandatoryArcs;
-          static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
-            __constraint_ForbiddenArcs;
-          static_cast<StructuralConstraintSliceOrder&> ( gen_constraint ) =
-            __constraint_SliceOrder;
+          gen_constraint;
+        static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
+          __constraint_MandatoryArcs;
+        static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
+          __constraint_ForbiddenArcs;
+        static_cast<StructuralConstraintSliceOrder&> ( gen_constraint ) =
+          __constraint_SliceOrder;
 
-          GraphChangesGenerator4DiGraph< decltype ( gen_constraint ) >
+        GraphChangesGenerator4DiGraph< decltype ( gen_constraint ) >
           op_set ( gen_constraint );
 
-          StructuralConstraintSetStatic < StructuralConstraintIndegree,
+        StructuralConstraintSetStatic < StructuralConstraintIndegree,
                                         StructuralConstraintDAG > sel_constraint;
-          static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
-            __constraint_Indegree;
+        static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
+          __constraint_Indegree;
 
-          GraphChangesSelector4DiGraph < Score<>,
+        GraphChangesSelector4DiGraph < Score<>,
                                        decltype ( sel_constraint ),
                                        decltype ( op_set ) >
-                                       selector ( *__score, sel_constraint, op_set );
+          selector ( *__score, sel_constraint, op_set );
 
-          return __greedy_hill_climbing.learnStructure
-                 ( selector, __score_database->modalities (), init_graph );
-        }
+        return __greedy_hill_climbing.learnStructure
+          ( selector, __score_database.modalities (), init_graph );
+      }
 
-        // ========================================================================
-        case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST: {
-          BNLearnerListener listener ( this, __local_search_with_tabu_list );
-          StructuralConstraintSetStatic < StructuralConstraintMandatoryArcs,
+      // ========================================================================
+      case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST: {
+        BNLearnerListener listener ( this, __local_search_with_tabu_list );
+        StructuralConstraintSetStatic < StructuralConstraintMandatoryArcs,
                                         StructuralConstraintForbiddenArcs,
                                         StructuralConstraintSliceOrder >
-                                        gen_constraint;
-          static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
-            __constraint_MandatoryArcs;
-          static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
-            __constraint_ForbiddenArcs;
-          static_cast<StructuralConstraintSliceOrder&> ( gen_constraint ) =
-            __constraint_SliceOrder;
+          gen_constraint;
+        static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
+          __constraint_MandatoryArcs;
+        static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
+          __constraint_ForbiddenArcs;
+        static_cast<StructuralConstraintSliceOrder&> ( gen_constraint ) =
+          __constraint_SliceOrder;
 
-          GraphChangesGenerator4DiGraph< decltype ( gen_constraint ) >
+        GraphChangesGenerator4DiGraph< decltype ( gen_constraint ) >
           op_set ( gen_constraint );
 
-          StructuralConstraintSetStatic < StructuralConstraintTabuList,
+        StructuralConstraintSetStatic < StructuralConstraintTabuList,
                                         StructuralConstraintIndegree,
                                         StructuralConstraintDAG > sel_constraint;
-          static_cast<StructuralConstraintTabuList&> ( sel_constraint ) =
-            __constraint_TabuList;
-          static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
-            __constraint_Indegree;
+        static_cast<StructuralConstraintTabuList&> ( sel_constraint ) =
+          __constraint_TabuList;
+        static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
+          __constraint_Indegree;
 
-          GraphChangesSelector4DiGraph < Score<>,
+        GraphChangesSelector4DiGraph < Score<>,
                                        decltype ( sel_constraint ),
                                        decltype ( op_set ) >
-                                       selector ( *__score, sel_constraint, op_set );
+          selector ( *__score, sel_constraint, op_set );
 
-          return __local_search_with_tabu_list.learnStructure
-                 ( selector, __score_database->modalities (), init_graph );
-        }
+        return __local_search_with_tabu_list.learnStructure
+          ( selector, __score_database.modalities (), init_graph );
+      }
 
-        // ========================================================================
-        case AlgoType::K2: {
-          BNLearnerListener listener ( this, __K2.approximationScheme() );
-          StructuralConstraintSetStatic < StructuralConstraintMandatoryArcs,
+      // ========================================================================
+      case AlgoType::K2: {
+        BNLearnerListener listener ( this, __K2.approximationScheme() );
+        StructuralConstraintSetStatic < StructuralConstraintMandatoryArcs,
                                         StructuralConstraintForbiddenArcs >
-                                        gen_constraint;
-          static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
-            __constraint_MandatoryArcs;
-          static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
-            __constraint_ForbiddenArcs;
-
-          GraphChangesGenerator4K2< decltype ( gen_constraint ) >
+          gen_constraint;
+        static_cast<StructuralConstraintMandatoryArcs&> ( gen_constraint ) =
+          __constraint_MandatoryArcs;
+        static_cast<StructuralConstraintForbiddenArcs&> ( gen_constraint ) =
+          __constraint_ForbiddenArcs;
+        
+        GraphChangesGenerator4K2< decltype ( gen_constraint ) >
           op_set ( gen_constraint );
 
-          // if some mandatory arcs are incompatible with the order, use a DAG
-          // constraint instead of a DiGraph constraint to avoid cycles
-          const ArcSet& mandatory_arcs =
-            static_cast<StructuralConstraintMandatoryArcs&>
-            ( gen_constraint ).arcs ();
-          const Sequence<NodeId>& order = __K2.order ();
-          bool order_compatible = true;
-
-          for ( const auto & arc : mandatory_arcs ) {
-            if ( order.pos ( arc.tail () ) >= order.pos ( arc.head () ) ) {
-              order_compatible = false;
-              break;
-            }
-          }
-
-          if ( order_compatible ) {
-            StructuralConstraintSetStatic < StructuralConstraintIndegree,
-                                          StructuralConstraintDiGraph >
-                                          sel_constraint;
-            static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
-              __constraint_Indegree;
-
-            GraphChangesSelector4DiGraph < Score<>,
-                                         decltype ( sel_constraint ),
-                                         decltype ( op_set ) >
-                                         selector ( *__score, sel_constraint, op_set );
-
-            return __K2.learnStructure
-                   ( selector, __score_database->modalities (), init_graph );
-          } else {
-            StructuralConstraintSetStatic < StructuralConstraintIndegree,
-                                          StructuralConstraintDAG >
-                                          sel_constraint;
-            static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
-              __constraint_Indegree;
-
-            GraphChangesSelector4DiGraph < Score<>,
-                                         decltype ( sel_constraint ),
-                                         decltype ( op_set ) >
-                                         selector ( *__score, sel_constraint, op_set );
-
-            return __K2.learnStructure
-                   ( selector, __score_database->modalities (), init_graph );
+        // if some mandatory arcs are incompatible with the order, use a DAG
+        // constraint instead of a DiGraph constraint to avoid cycles
+        const ArcSet& mandatory_arcs =
+          static_cast<StructuralConstraintMandatoryArcs&>
+          ( gen_constraint ).arcs ();
+        const Sequence<NodeId>& order = __K2.order ();
+        bool order_compatible = true;
+        
+        for ( const auto & arc : mandatory_arcs ) {
+          if ( order.pos ( arc.tail () ) >= order.pos ( arc.head () ) ) {
+            order_compatible = false;
+            break;
           }
         }
 
-        // ========================================================================
-        default:
-          GUM_ERROR ( OperationNotAllowed,
-                      "the learnDAG method has not been implemented for this "
-                      "learning algorithm" );
+        if ( order_compatible ) {
+          StructuralConstraintSetStatic < StructuralConstraintIndegree,
+                                          StructuralConstraintDiGraph >
+            sel_constraint;
+          static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
+            __constraint_Indegree;
+          
+          GraphChangesSelector4DiGraph < Score<>,
+                                         decltype ( sel_constraint ),
+                                         decltype ( op_set ) >
+            selector ( *__score, sel_constraint, op_set );
+          
+          return __K2.learnStructure
+            ( selector, __score_database.modalities (), init_graph );
+        }
+        else {
+          StructuralConstraintSetStatic < StructuralConstraintIndegree,
+                                          StructuralConstraintDAG >
+            sel_constraint;
+          static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
+            __constraint_Indegree;
+          
+          GraphChangesSelector4DiGraph < Score<>,
+                                         decltype ( sel_constraint ),
+                                         decltype ( op_set ) >
+            selector ( *__score, sel_constraint, op_set );
+          
+          return __K2.learnStructure
+            ( selector, __score_database.modalities (), init_graph );
+        }
+      }
+
+      // ========================================================================
+      default:
+        GUM_ERROR ( OperationNotAllowed,
+                    "the learnDAG method has not been implemented for this "
+                    "learning algorithm" );
       }
     }
 

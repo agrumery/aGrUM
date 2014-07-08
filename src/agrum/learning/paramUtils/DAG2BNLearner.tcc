@@ -57,17 +57,25 @@ namespace gum {
 
     
     /// create a BN
-    template <typename PARAM_ESTIMATOR, typename GUM_SCALAR>
+    template <typename PARAM_ESTIMATOR,
+              typename CELL_TRANSLATORS,
+              typename GUM_SCALAR>
     BayesNet<GUM_SCALAR>
     DAG2BNLearner::createBN ( PARAM_ESTIMATOR& estimator,
                               const DAG& dag,
                               const std::vector<std::string>& names,
-                              const std::vector<unsigned int>& modal ) {
+                              const std::vector<unsigned int>& modal,
+                              CELL_TRANSLATORS& translator ) {
       BayesNet<GUM_SCALAR> bn;
 
       // create a bn with dummy parameters corresponding to the dag
       for ( const auto id : dag ) {
-        bn.add ( LabelizedVariable ( names[id], "", modal[id] ), id );
+        // create the labelized variable
+        LabelizedVariable variable ( names[id], "", 0 );
+        for ( unsigned int i = 0; i < modal[id]; ++i ) {
+          variable.addLabel ( translator.translateBack ( id, i ) );
+        }
+        bn.add ( variable, id );
       }
 
       // add the arcs

@@ -136,6 +136,12 @@ namespace gum {
       /// returns the names of the variables
       std::vector<std::string> variableNames () const;
 
+      /// returns the translator set that is actually used
+      const TranslatorSet& translatorSet () const noexcept;
+
+      /// returns the generator set that is actually used
+      const GeneratorSet& generatorSet () const noexcept;
+
       /// @}
 
     protected:

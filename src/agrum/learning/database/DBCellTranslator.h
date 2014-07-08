@@ -222,6 +222,12 @@ namespace gum {
        * Bayesian network) */
       virtual std::string translateBack ( unsigned int col,
                                           unsigned int translated_val ) = 0;
+
+      /// returns the size of the input for this cell translator
+      unsigned int inputSize () const noexcept;
+
+      /// returns the size of the output for this cell translator
+      unsigned int outputSize () const noexcept;
       
       /// @}
 

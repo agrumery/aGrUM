@@ -70,30 +70,27 @@ namespace gum {
     }
 
 
+    /// returns the "raw" translators (needed for the aprioris)
+    INLINE DBRowTranslatorSetDynamic<CellTranslatorUniversal>&
+    BNLearner::Database::rawTranslators () {
+      return __raw_translators;
+    }
+
+
     // ===========================================================================
 
 
     /// returns the node id corresponding to a variable name
     INLINE NodeId
     BNLearner::idFromName ( const std::string& var_name ) const {
-      if ( __score_database != nullptr ) {
-        return __score_database->idFromName ( var_name );
-      } else {
-        GUM_ERROR ( OperationNotAllowed, "to get the node id of a variable, you "
-                    "must first read a database" );
-      }
+      return __score_database.idFromName ( var_name );
     }
 
 
     /// returns the variable name corresponding to a given node id
     INLINE const std::string&
     BNLearner::nameFromId ( NodeId id ) const {
-      if ( __score_database != nullptr ) {
-        return __score_database->nameFromId ( id );
-      } else {
-        GUM_ERROR ( OperationNotAllowed, "to get the variable's name corresponding"
-                    " to a given id, must first read a database" );
-      }
+      return __score_database.nameFromId ( id );
     }
 
 
@@ -292,10 +289,7 @@ namespace gum {
 
     /// returns the names of the variables in the database
     INLINE const std::vector<std::string>& BNLearner::names () const {
-      if ( __score_database == nullptr ) {
-        GUM_ERROR ( NullElement, "you did not read any database yet" );
-      }
-      return __score_database->names ();
+      return __score_database.names ();
     }
 
 

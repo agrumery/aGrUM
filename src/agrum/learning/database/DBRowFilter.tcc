@@ -212,7 +212,25 @@ namespace gum {
       __translator_set.variableNames ( __handler.variableNames (), res );
       return res;
     }
-    
+
+
+    /// returns the translator set that is actually used
+    template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
+    const TranslatorSet&
+    DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>::translatorSet ()
+      const noexcept {
+      return __translator_set;
+    }
+
+
+    /// returns the generator set that is actually used
+    template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
+    const GeneratorSet&
+    DBRowFilter<DBHandler,TranslatorSet,GeneratorSet>::generatorSet ()
+      const noexcept {
+      return __generator_set;
+    }
+
     
   } /* namespace learning */
 

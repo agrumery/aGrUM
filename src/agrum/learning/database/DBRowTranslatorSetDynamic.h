@@ -182,6 +182,10 @@ namespace gum {
       /// remove all the translators from the vector
       void clear () noexcept;
 
+      /// returns the name of the jth value of the ith column
+      std::string translateBack ( unsigned int col,
+                                  unsigned int translated_val );
+      
       /// @}
   
   private:
