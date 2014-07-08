@@ -83,13 +83,14 @@ namespace gum {
     /// remove all the translators from the vector
     template <typename Translator> INLINE
     void DBRowTranslatorSetDynamic<Translator>::clear () noexcept {
-      for ( unsigned int i = 0, size = __translators.size (); i < size; ++i ) {
-        delete __translators[i];
+      for ( auto translator : __translators ) {
+        delete translator;
       }
       __translators.clear ();
       __output_size = 0;
+      __output_row.row().clear ();
     }
-    
+
     
     /// copy operator
     template <typename Translator>
