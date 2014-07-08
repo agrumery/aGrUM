@@ -2,9 +2,16 @@
 %ignore  gum::learning::BNLearner::useK2( const Sequence<NodeId>& order);
 %ignore  gum::learning::BNLearner::useK2( const std::vector<NodeId>& order );
 
+%ignore  gum::learning::BNLearner::setForbiddenArcs(const ArcSet& set);
+%ignore  gum::learning::BNLearner::setMandatoryArcs(const ArcSet& set);
+%ignore  gum::learning::BNLearner::addForbiddenArc(const Arc& arc);
+%ignore  gum::learning::BNLearner::addMandatoryArc(const Arc& arc);
+%ignore  gum::learning::BNLearner::eraseForbiddenArc(const Arc& arc);
+%ignore  gum::learning::BNLearner::eraseMandatoryArc(const Arc& arc);
+
 %extend gum::learning::BNLearner {
-  gum::BayesNet<double> learnBN(const std::string filename) {
-    return self->learnBN<double>(filename);
+  gum::BayesNet<double> learnBN() {
+    return self->learnBN<double>();
   }
 
   void setSliceOrder(PyObject *l) {
@@ -14,7 +21,7 @@
       PyErr_SetString(PyExc_TypeError, "arg must be a sequence");
       return;
     }
-    
+
     for(Py_ssize_t i=0;i<PySequence_Size(l);i++) {
       PyObject* rows=PyList_GetItem(l, i);
       if (PyList_Check(rows)==0) {
@@ -53,5 +60,6 @@
 
     $self->useK2(v);
   }
+
 }
 

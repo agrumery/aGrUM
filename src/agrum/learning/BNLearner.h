@@ -187,7 +187,7 @@ namespace gum {
             std::vector<unsigned int>& modalities () noexcept;
 
             /// returns the names of the variables in the database
-            const std::vector<std::string>& variableNames () const noexcept;
+            const std::vector<std::string>& names () const noexcept;
 
             /// returns the node id corresponding to a variable name
             NodeId idFromName( const std::string& var_name ) const;
@@ -293,7 +293,7 @@ namespace gum {
         void setInitialDAG ( const DAG& );
 
         /// returns the names of the variables in the database
-        const std::vector<std::string>& variableNames () const;
+        const std::vector<std::string>& names () const;
 
         /// returns the node id corresponding to a variable name
         NodeId idFromName ( const std::string& var_name ) const;

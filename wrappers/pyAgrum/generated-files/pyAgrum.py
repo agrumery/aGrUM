@@ -2614,7 +2614,7 @@ class BNLearner(_object):
     __repr__ = _swig_repr
     def __init__(self, *args): 
         """
-        __init__(gum::learning::BNLearner self) -> BNLearner
+        __init__(gum::learning::BNLearner self, std::string const & filename) -> BNLearner
         __init__(gum::learning::BNLearner self, BNLearner arg2) -> BNLearner
         __init__(gum::learning::BNLearner self, BNLearner arg2) -> BNLearner
         """
@@ -2623,13 +2623,25 @@ class BNLearner(_object):
         except: self.this = this
     __swig_destroy__ = _pyAgrum.delete_BNLearner
     __del__ = lambda self : None;
-    def learnDAG(self, *args):
-        """learnDAG(BNLearner self, std::string filename) -> DAG"""
-        return _pyAgrum.BNLearner_learnDAG(self, *args)
+    def learnDAG(self):
+        """learnDAG(BNLearner self) -> DAG"""
+        return _pyAgrum.BNLearner_learnDAG(self)
 
     def setInitialDAG(self, *args):
         """setInitialDAG(BNLearner self, DAG arg2)"""
         return _pyAgrum.BNLearner_setInitialDAG(self, *args)
+
+    def names(self):
+        """names(BNLearner self) -> std::vector< std::string,std::allocator< std::string > > const &"""
+        return _pyAgrum.BNLearner_names(self)
+
+    def idFromName(self, *args):
+        """idFromName(BNLearner self, std::string const & var_name) -> gum::NodeId"""
+        return _pyAgrum.BNLearner_idFromName(self, *args)
+
+    def nameFromId(self, *args):
+        """nameFromId(BNLearner self, gum::NodeId id) -> std::string const &"""
+        return _pyAgrum.BNLearner_nameFromId(self, *args)
 
     def useScoreAIC(self):
         """useScoreAIC(BNLearner self)"""
@@ -2663,6 +2675,10 @@ class BNLearner(_object):
         """useAprioriSmoothing(BNLearner self)"""
         return _pyAgrum.BNLearner_useAprioriSmoothing(self)
 
+    def useAprioriDirichlet(self, *args):
+        """useAprioriDirichlet(BNLearner self, std::string const & filename)"""
+        return _pyAgrum.BNLearner_useAprioriDirichlet(self, *args)
+
     def useGreedyHillClimbing(self):
         """useGreedyHillClimbing(BNLearner self)"""
         return _pyAgrum.BNLearner_useGreedyHillClimbing(self)
@@ -2679,29 +2695,37 @@ class BNLearner(_object):
         """setMaxIndegree(BNLearner self, unsigned int max_indegree)"""
         return _pyAgrum.BNLearner_setMaxIndegree(self, *args)
 
-    def setForbiddenArcs(self, *args):
-        """setForbiddenArcs(BNLearner self, gum::ArcSet const & set)"""
-        return _pyAgrum.BNLearner_setForbiddenArcs(self, *args)
-
     def addForbiddenArc(self, *args):
-        """addForbiddenArc(BNLearner self, Arc arc)"""
+        """
+        addForbiddenArc(BNLearner self, gum::NodeId const tail, gum::NodeId const head)
+        addForbiddenArc(BNLearner self, std::string const & tail, std::string const & head)
+        """
         return _pyAgrum.BNLearner_addForbiddenArc(self, *args)
 
     def eraseForbiddenArc(self, *args):
-        """eraseForbiddenArc(BNLearner self, Arc arc)"""
+        """
+        eraseForbiddenArc(BNLearner self, gum::NodeId const tail, gum::NodeId const head)
+        eraseForbiddenArc(BNLearner self, std::string const & tail, std::string const & head)
+        """
         return _pyAgrum.BNLearner_eraseForbiddenArc(self, *args)
 
-    def setMandatoryArcs(self, *args):
-        """setMandatoryArcs(BNLearner self, gum::ArcSet const & set)"""
-        return _pyAgrum.BNLearner_setMandatoryArcs(self, *args)
-
     def addMandatoryArc(self, *args):
-        """addMandatoryArc(BNLearner self, Arc arc)"""
+        """
+        addMandatoryArc(BNLearner self, gum::NodeId const tail, gum::NodeId const head)
+        addMandatoryArc(BNLearner self, std::string const & tail, std::string const & head)
+        """
         return _pyAgrum.BNLearner_addMandatoryArc(self, *args)
 
     def eraseMandatoryArc(self, *args):
-        """eraseMandatoryArc(BNLearner self, Arc arc)"""
+        """
+        eraseMandatoryArc(BNLearner self, gum::NodeId const tail, gum::NodeId const head)
+        eraseMandatoryArc(BNLearner self, std::string const & tail, std::string const & head)
+        """
         return _pyAgrum.BNLearner_eraseMandatoryArc(self, *args)
+
+    def setCurrentApproximationScheme(self, *args):
+        """setCurrentApproximationScheme(BNLearner self, ApproximationScheme as)"""
+        return _pyAgrum.BNLearner_setCurrentApproximationScheme(self, *args)
 
     def distributeProgress(self, *args):
         """distributeProgress(BNLearner self, ApproximationScheme as, gum::Size pourcent, double error, double time)"""
@@ -2831,9 +2855,9 @@ class BNLearner(_object):
         """history(BNLearner self) -> Vector_double"""
         return _pyAgrum.BNLearner_history(self)
 
-    def learnBN(self, *args):
-        """learnBN(BNLearner self, std::string const filename) -> BayesNet_double"""
-        return _pyAgrum.BNLearner_learnBN(self, *args)
+    def learnBN(self):
+        """learnBN(BNLearner self) -> BayesNet_double"""
+        return _pyAgrum.BNLearner_learnBN(self)
 
     def setSliceOrder(self, *args):
         """setSliceOrder(BNLearner self, PyObject * l)"""

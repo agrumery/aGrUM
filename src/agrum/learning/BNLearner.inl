@@ -52,7 +52,7 @@ namespace gum {
 
     /// returns the names of the variables in the database
     INLINE const std::vector<std::string>&
-    BNLearner::Database::variableNames () const noexcept {
+    BNLearner::Database::names () const noexcept {
       return __database.variableNames ();
     }
 
@@ -236,16 +236,26 @@ namespace gum {
 
 
     /// assign a new forbidden arc
-    INLINE void BNLearner::addMandatoryArc
-    ( const std::string& tail, const std::string& head ) {
+    INLINE void BNLearner::addMandatoryArc ( const std::string& tail, const std::string& head ) {
       addMandatoryArc ( Arc ( idFromName ( tail ), idFromName ( head ) ) );
     }
 
 
     /// remove a forbidden arc
-    INLINE void BNLearner::eraseMandatoryArc
-    ( const std::string& tail, const std::string& head ) {
+    INLINE void BNLearner::eraseMandatoryArc ( const std::string& tail, const std::string& head ) {
       eraseMandatoryArc ( Arc ( idFromName ( tail ), idFromName ( head ) ) );
+    }
+
+
+    /// assign a new forbidden arc
+    INLINE void BNLearner::addMandatoryArc ( const NodeId tail, const NodeId head ) {
+      addMandatoryArc ( Arc ( tail , head ) );
+    }
+
+
+    /// remove a forbidden arc
+    INLINE void BNLearner::eraseMandatoryArc ( const NodeId tail, const NodeId head ) {
+      eraseMandatoryArc ( Arc ( tail , head ) );
     }
 
 
@@ -281,11 +291,11 @@ namespace gum {
 
 
     /// returns the names of the variables in the database
-    INLINE const std::vector<std::string>& BNLearner::variableNames () const {
+    INLINE const std::vector<std::string>& BNLearner::names () const {
       if ( __score_database == nullptr ) {
         GUM_ERROR ( NullElement, "you did not read any database yet" );
       }
-      return __score_database->variableNames ();
+      return __score_database->names ();
     }
 
 

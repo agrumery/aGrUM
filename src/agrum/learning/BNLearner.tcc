@@ -56,7 +56,7 @@ namespace gum {
       return DAG2BNLearner::createBN<ParamEstimator<>, GUM_SCALAR>
         ( *__param_estimator,
           __learnDAG (),
-          __score_database->variableNames (),
+          __score_database->names (),
           __score_database->modalities () );
     }
 

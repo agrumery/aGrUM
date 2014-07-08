@@ -15,16 +15,16 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
 
     def testHillClimbing(self):
-        learner=gum.BNLearner()
+        learner=gum.BNLearner("../../../src/testunits/ressources/asia.csv")
         learner.useGreedyHillClimbing()
-        bn=learner.learnBN("../../../src/testunits/ressources/asia.csv")
+        bn=learner.learnBN()
         self.assertEqual(len(bn),8)
 
         with self.assertRaises(gum.IOError):
-          bn=learner.learnBN("shouldNotExist.csv")
+          learner=gum.BNLearner("shouldNotExist.csv")
 
         try:
-          bn=learner.learnBN("shouldNotExist.csv")
+          learner=gum.BNLearner("shouldNotExist.csv")
         except gum.IOError:
           self.assertTrue(True)
           pass
@@ -32,9 +32,9 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
           self.assertTrue(False)
 
     def testHillClimbingAccurate(self):
-        learner=gum.BNLearner()
+        learner=gum.BNLearner("../../../src/testunits/ressources/asia.csv")
         learner.useGreedyHillClimbing()
-        bn=learner.learnBN("../../../src/testunits/ressources/asia.csv")
+        bn=learner.learnBN()
 
         ref=gum.loadBN("../../../src/testunits/ressources/asia2.bif")
 
@@ -43,16 +43,11 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
         self.assertDelta(res['klPQ'],0,1)
 
     def testLocalSearchWithTabu(self):
-        learner=gum.BNLearner()
-        learner.useLocalSearchWithTabuList()
-        bn=learner.learnBN("../../../src/testunits/ressources/asia.csv")
-        self.assertEqual(len(bn),8)
-
         with self.assertRaises(gum.IOError):
-          bn=learner.learnBN("shouldNotExist.csv")
+          learner=gum.BNLearner("shouldNotExist.csv")
 
         try:
-          bn=learner.learnBN("shouldNotExist.csv")
+          learner=gum.BNLearner("shouldNotExist.csv")
         except gum.IOError:
           self.assertTrue(True)
           pass
@@ -60,9 +55,9 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
           self.assertTrue(False)
 
     def testLocalSearchWithTabuAccurate(self):
-        learner=gum.BNLearner()
+        learner=gum.BNLearner("../../../src/testunits/ressources/asia.csv")
         learner.useLocalSearchWithTabuList()
-        bn=learner.learnBN("../../../src/testunits/ressources/asia.csv")
+        bn=learner.learnBN()
 
         ref=gum.loadBN("../../../src/testunits/ressources/asia2.bif")
 

@@ -95,34 +95,34 @@
 
 
 %include "std_vector.i"
-                                                                                                                                                      
-namespace std {                                                                                                                                        
-  %template ( Vector_double) vector<double>;                                                                                                          
-}
-  
-
-%typemap ( out ) std::vector<double> {
-  std::vector<double> vOut = $1;
-  unsigned int iLen = vOut.size();
-  $result = PyList_New ( iLen );
-
-  for ( unsigned int i = 0; i < iLen; i++ ) {
-    double fVal = vOut.at ( i );
-    PyObject* o = PyFloat_FromDouble ( ( double ) fVal );
-    PyList_SetItem ( $result, i, o );
-  }
-}
 %include "std_string.i"
 
-/* DIRECTORS (for cross language polymorphism) */
-/* director features are removed as they are not used .. ??
-feature ( "director" ) gum::Potential; //add the __disown__() method to Potential
-feature ( "nodirector" ) gum::MultiDimContainer::copyFrom;
-feature ( "director" ) gum::LabelizedVariable;
-feature ( "director" ) gum::DiscretizedVariable;
-feature ( "director" ) gum::LazyPropagation;
-feature ( "director" ) gum::GibbsInference;
-*/
+namespace std {
+  %template ( Vector_double) vector<double>;
+}
+
+
+%typemap ( out ) std::vector<double> {
+  unsigned int iLen = $1.size();
+  $result = PyList_New ( iLen );
+
+  for ( unsigned int i = 0;
+        i < iLen;
+        i++ ) {
+    PyList_SetItem ( $result, i, PyFloat_FromDouble ( ( double ) $1.at ( i ) ));
+  }
+}
+
+%typemap ( out ) const std::vector<std::string>& {
+  unsigned int iLen = $1->size();
+  $result = PyList_New ( iLen );
+
+  for ( unsigned int i = 0;
+        i < iLen;
+        i++ ) {
+    PyList_SetItem ( $result, i, PyString_FromString ( $1->at ( i ).c_str() ));
+  }
+}
 
 /* EXCEPTION HANDLING */
 %exceptionclass std::bad_cast;
