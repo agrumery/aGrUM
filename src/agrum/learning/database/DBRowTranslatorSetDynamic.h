@@ -184,7 +184,7 @@ namespace gum {
 
       /// returns the name of the jth value of the ith column
       std::string translateBack ( unsigned int col,
-                                  unsigned int translated_val );
+                                  unsigned int translated_val ) const;
       
       /// @}
   

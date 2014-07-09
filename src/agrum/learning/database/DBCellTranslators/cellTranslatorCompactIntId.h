@@ -130,7 +130,7 @@ namespace gum {
 
       /// returns a given value as stored within the database
       std::string translateBack ( unsigned int col,
-                                  unsigned int translated_val );
+                                  unsigned int translated_val ) const;
 
       /// returns the name of the variable(s) the translator has processed
       void variableNames ( const std::vector<std::string>& db_var,

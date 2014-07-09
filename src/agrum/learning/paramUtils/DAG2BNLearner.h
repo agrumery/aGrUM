@@ -83,7 +83,7 @@ namespace gum {
                  const DAG& dag,
                  const std::vector<std::string>& names,
                  const std::vector<unsigned int>& modal,
-                 CELL_TRANSLATORS& translator );
+                 const CELL_TRANSLATORS& translator );
 
       /// @}
 

@@ -129,7 +129,7 @@ namespace gum {
     /// returns a given value as stored within the database
     INLINE std::string
     CellTranslatorString::translateBack ( unsigned int col,
-                                             unsigned int translated_val ) {
+                                             unsigned int translated_val ) const {
       std::stringstream str;
       str << DBCell::getString ( __strings.first ( translated_val ) );
       return  str.str ();

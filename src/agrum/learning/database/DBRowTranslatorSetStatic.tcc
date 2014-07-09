@@ -136,6 +136,22 @@ namespace gum {
       NextTranslators::translate ();
     }
 
+    
+    /// returns the name of the jth value of the ith column
+    template <int Idx, typename Translator, typename... OtherTranslators> INLINE
+    std::string BasicDBRowTranslatorSetStatic<Idx,Translator,
+                                              OtherTranslators...>::translateBack
+    ( unsigned int col,
+      unsigned int translated_val ) const {
+      if ( col < Translator::output_size ) {
+        return __translator.translateBack ( col, translated_val );
+      }
+      else {
+        return NextTranslators::translateBack ( col - Translator::output_size,
+                                                translated_val );
+      }
+    }
+
 
     /// initialize the cell filters by parsing once the database
     template <int Idx, typename Translator, typename... OtherTranslators>
@@ -258,6 +274,15 @@ namespace gum {
     }
 
     
+    /// back-translate a given output (i.e., returns its input)
+    template <typename... Translators> ALWAYS_INLINE
+    std::string DBRowTranslatorSetStatic<Translators...>::translateBack
+    ( unsigned int col,
+      unsigned int translated_val ) const {
+      return TranslatorSetStatic::translateBack ( col, translated_val );
+    }
+    
+      
     /// initialize the cell filters by parsing once the database
     template <typename... Translators> ALWAYS_INLINE
     void DBRowTranslatorSetStatic<Translators...>::initialize () {

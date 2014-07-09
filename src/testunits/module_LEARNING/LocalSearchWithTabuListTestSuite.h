@@ -122,11 +122,13 @@ namespace gum_tests {
     try {
       gum::BayesNet<float> bn = search.learnBN ( selector, estimator,
                                                  database.variableNames (),
-                                                 modalities );
+                                                 modalities,
+                                                 filter.translatorSet () );
       gum::BayesNet<double> bn2 =
         search.learnBN<double> ( selector, estimator,
                                  database.variableNames (),
-                                 modalities );
+                                 modalities,
+                                 filter.translatorSet () );
       std::cout << bn << std::endl << bn.dag () << std::endl;
     }
     catch ( gum::Exception& e ) {

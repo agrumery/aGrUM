@@ -342,7 +342,7 @@ namespace gum {
     template <typename Translator>
     std::string DBRowTranslatorSetDynamic<Translator>::translateBack
     ( unsigned int col,
-      unsigned int translated_val ) {
+      unsigned int translated_val ) const {
       unsigned int size = __translators.size ();
       if ( size == 0 ) {
         GUM_ERROR ( UndefinedElement, "the set of translators is empty, so it is "

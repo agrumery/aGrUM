@@ -52,6 +52,7 @@
 #define GUM_LEARNING_DB_CELL_TRANSLATOR_CREATE_H
 
 #include <vector>
+#include <string>
 
 #include <agrum/config.h>
 #include <agrum/learning/database/column.h>
@@ -143,6 +144,15 @@ namespace gum {
 
       /// execute a translation of the input row
       void translate ();
+
+      /// back-translate a given output (i.e., returns its input)
+      /** @param col the column in _output_cols corresponding to the translated
+       * value
+       * @param translated_val the value in _output_cols of which we want to
+       * know the original value (that which will be stored into the
+       * Bayesian network) */
+      std::string translateBack ( unsigned int col,
+                                  unsigned int translated_val ) const;
 
       /// initialize the cell filters by parsing once the database
       /** If initialization is required, this method is called for each row
@@ -282,6 +292,15 @@ namespace gum {
       /// apply the translator
       void translate ();
 
+      /// back-translate a given output (i.e., returns its input)
+      /** @param col the column in _output_cols corresponding to the translated
+       * value
+       * @param translated_val the value in _output_cols of which we want to
+       * know the original value (that which will be stored into the
+       * Bayesian network) */
+      std::string translateBack ( unsigned int col,
+                                  unsigned int translated_val ) const;
+
       /// initialize the cell filters by parsing once the database
       void initialize ();
 
@@ -315,6 +334,10 @@ namespace gum {
       void postInitialize () noexcept {}
       bool requiresInitialization () const noexcept { return false; }
       void modalities ( std::vector<unsigned int>& ) const {}
+      std::string translateBack ( unsigned int, unsigned int ) const {
+        GUM_ERROR ( UndefinedElement, "the set of translators does not contain "
+                    "the column to be translated back" );
+      }
     };
 
 #endif // DOXYGEN_SHOULD_SKIP_THIS

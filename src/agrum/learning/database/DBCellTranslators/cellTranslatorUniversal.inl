@@ -144,7 +144,7 @@ namespace gum {
     /// returns a given value as stored within the database
     INLINE std::string
     CellTranslatorUniversal::translateBack ( unsigned int col,
-                                             unsigned int translated_val ) {
+                                             unsigned int translated_val ) const {
       std::stringstream str;
       if ( __numbers.existsSecond ( translated_val ) )
         str << __numbers.first ( translated_val );

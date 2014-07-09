@@ -451,9 +451,15 @@ namespace gum_tests {
 
     try {
       gum::Timer timer;
-      gum::DAG bn = search.learnStructure ( selector, modalities );
+      gum::DAG bn_dag = search.learnStructure ( selector, modalities );
       std::cout << timer.step () << " : " << std::endl;
-      std::cout << bn << std::endl;
+      std::cout << bn_dag << std::endl;
+
+      gum::BayesNet<float> bn = search.learnBN ( selector, estimator,
+                                                 database.variableNames (),
+                                                 modalities,
+                                                 filter.translatorSet () );
+      
     } catch ( gum::Exception& e ) {
       GUM_SHOWERROR ( e );
     }

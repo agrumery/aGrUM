@@ -130,7 +130,7 @@ namespace gum {
         PARAM_ESTIMATOR& estimator,
         const std::vector<std::string>& names,
         const std::vector<unsigned int>& modal,
-        CELL_TRANSLATORS& translator,
+        const CELL_TRANSLATORS& translator,
         DAG initial_dag = DAG () );
 
       /// @}

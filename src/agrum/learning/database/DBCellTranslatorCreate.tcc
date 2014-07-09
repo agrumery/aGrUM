@@ -145,6 +145,16 @@ namespace gum {
     }
 
 
+    /// back-translate a given output (i.e., returns its input)
+    template <class Translator, typename Cols> INLINE
+    std::string
+    CreateOnce<Translator,Cols>::translateBack ( unsigned int col,
+                                                 unsigned int translated_val )
+      const {
+      return __translator.translateBack ( col, translated_val );
+    }
+
+
     /// initialize the cell filters by parsing once the database
     template <class Translator, typename Cols> ALWAYS_INLINE
     void CreateOnce<Translator,Cols>::initialize () {
@@ -279,6 +289,23 @@ namespace gum {
     void Create<Translator,Cols,nb_times,ColsIncr>::translate () {
       CurrentTranslator::translate ();
       NextTranslators::translate ();
+    }
+
+    
+    /// back-translate a given output (i.e., returns its input)
+    template <typename Translator, typename Cols,
+              int nb_times, typename ColsIncr> INLINE
+    std::string
+    Create<Translator,Cols,nb_times,ColsIncr>::translateBack
+    ( unsigned int col,
+      unsigned int translated_val ) const {
+      if ( col < Translator::output_size ) {
+        return CurrentTranslator::translateBack ( col, translated_val );
+      }
+      else {
+        return NextTranslators::translateBack ( col - Translator::output_size,
+                                                translated_val );
+      }
     }
 
 
