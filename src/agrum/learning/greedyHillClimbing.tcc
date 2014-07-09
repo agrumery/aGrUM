@@ -139,7 +139,7 @@ namespace gum {
       const std::vector<unsigned int>& modal,
       const CELL_TRANSLATORS& translator,
       DAG initial_dag ) {
-      return DAG2BNLearner::createBN<PARAM_ESTIMATOR,CELL_TRANSLATORS,GUM_SCALAR>
+      return DAG2BNLearner::createBN<GUM_SCALAR,PARAM_ESTIMATOR,CELL_TRANSLATORS>
              ( estimator,
                learnStructure ( selector, modal, initial_dag ),
                names, modal, translator );

@@ -57,9 +57,9 @@ namespace gum {
 
     
     /// create a BN
-    template <typename PARAM_ESTIMATOR,
-              typename CELL_TRANSLATORS,
-              typename GUM_SCALAR>
+    template <typename GUM_SCALAR,
+              typename PARAM_ESTIMATOR,
+              typename CELL_TRANSLATORS>
     BayesNet<GUM_SCALAR>
     DAG2BNLearner::createBN ( PARAM_ESTIMATOR& estimator,
                               const DAG& dag,
