@@ -112,3 +112,5 @@ def about():
 	There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or
 	FITNESS FOR A PARTICULAR PURPOSE.  For details, see 'pyAgrum.warranty'.
 	""")
+  
+  
