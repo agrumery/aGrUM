@@ -103,7 +103,11 @@ namespace gum {
     /// initialize the cell translator by a first database parsing
     ALWAYS_INLINE void CellTranslatorCompactIntId::initialize () {
       if ( __check_database ) {
-        const unsigned int nb = in(0).getFloat ();
+        const int nb = in(0).getFloat ();
+        if ( nb < 0 ) {
+          GUM_ERROR ( WrongType, "the CellTranslatorCompactIntId has read "
+                      "a negative value" );
+        }
         if ( ! __values.exists ( nb ) ) __values.insert ( nb );
       }
     }

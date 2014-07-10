@@ -62,6 +62,7 @@ namespace gum {
       __translators ( std::move ( from.__translators ) ),
       __output_size ( std::move ( from.__output_size ) ),
       __output_row  ( std::move ( from.__output_row ) ) {
+      from.__translators.clear ();
       for ( unsigned int i = 0, size = __translators.size (); i < size; ++i ) {
         __translators[i]->setOutputRow ( __output_row );
       }
@@ -73,8 +74,8 @@ namespace gum {
     /// destructor
     template <typename Translator> INLINE
     DBRowTranslatorSetDynamic<Translator>::~DBRowTranslatorSetDynamic () noexcept {
-      for ( unsigned int i = 0, size = __translators.size (); i < size; ++i ) {
-        delete __translators[i];
+      for ( auto translator : __translators ) {
+        delete translator;
       }
       GUM_DESTRUCTOR ( DBRowTranslatorSetDynamic );
     }
@@ -126,6 +127,7 @@ namespace gum {
         __translators = std::move ( from.__translators );
         __output_size = std::move ( from.__output_size );
         __output_row  = std::move ( from.__output_row );
+        from.__translators.clear ();
         for ( unsigned int i = 0, size = __translators.size (); i < size; ++i ) {
           __translators[i]->setOutputRow ( __output_row );
         }
@@ -168,17 +170,17 @@ namespace gum {
         // assign its output columns and rowFilter
         new_translator->setOutputRow  ( __output_row );
         new_translator->setOutputCols ( __output_size );
-       __output_size += std::remove_reference<Translator>::type::output_size;
-
-       // assign the input col
-       unsigned int* inputs = const_cast<unsigned int*>
-         ( new_translator->inputCols () );
-       std::memcpy ( inputs, input_cols, input_size * sizeof ( unsigned int ) );
-       for ( unsigned int j = 0; j < input_size; ++j ) {
-         inputs[j] = input_cols[j]; 
+        __output_size += std::remove_reference<Translator>::type::output_size;
+        
+        // assign the input col
+        unsigned int* inputs = const_cast<unsigned int*>
+          ( new_translator->inputCols () );
+        std::memcpy ( inputs, input_cols, input_size * sizeof ( unsigned int ) );
+        for ( unsigned int j = 0; j < input_size; ++j ) {
+          inputs[j] = input_cols[j]; 
           input_cols[j] += incr_cols[j];
         }
-       }
+      }
 
       __output_row.row().resize ( __output_size );
     }
