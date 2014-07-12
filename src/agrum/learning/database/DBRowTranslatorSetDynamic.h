@@ -120,7 +120,7 @@ namespace gum {
 
       /// @{
 
-      /// inserts new translators at the end of the vector
+      /// inserts new translators at the end of the set
       /** insert a new translator that will read columns deb_cols. If we wish to
        * insert several translators, use an nb_times different from 1. In this
        * case, the other translators will read columns of the database deduced
@@ -132,7 +132,7 @@ namespace gum {
         unsigned int nb_times = 1,
         ColsIncr incr  = ColsIncr () );
 
-      /// inserts new translators at the end of the vector
+      /// inserts new translators at the end of the set
       /** insert a new translator that will read columns deb_cols. If we wish to
        * insert several translators, use an nb_times different from 1. In this
        * case, the other translators will read columns of the database deduced
@@ -146,7 +146,7 @@ namespace gum {
         unsigned int nb_times = 1,
         ColsIncr incr  = ColsIncr () );
 
-      /// inserts new translators at the end of the vector
+      /// inserts new translators at the end of the set
       /** insert a new translator that will read only one column, namely deb_col.
        * If we wish to insert several translators, use an nb_times different
        * from 1. In this case, the other translators will read columns of the
@@ -158,15 +158,15 @@ namespace gum {
       /// execute all the translations on the current database row
       void translate ();
 
-      /// initialize the cell filters by parsing once the database
+      /// initialize the cell translators by parsing once the database
       /** If initialization is required, this method is called for each row
        * of the database used for initialization. */
       void initialize ();
 
-      /// perform a post initialization after the database parsing
+      /// performs a post initialization after the database parsing
       void postInitialize ();
  
-      /** @brief indicates whether one of the translators needs an initial parsing
+      /** @brief indicates whether some of the translators need an initial parsing
        * of the database to initialize itself */
       bool requiresInitialization () const noexcept;
 
@@ -175,7 +175,10 @@ namespace gum {
 
       /// sets the input row that shall be read by all the cell translators
       void setInputRow ( const DBRow& row ) noexcept;
-      
+
+      /// returns the current input DBRow
+      const DBRow& inputRow () const;
+
       /// returns the current output row
       FilteredRow& outputRow () noexcept;
 
@@ -185,7 +188,13 @@ namespace gum {
       /// returns the name of the jth value of the ith column
       std::string translateBack ( unsigned int col,
                                   unsigned int translated_val ) const;
-      
+
+      /// returns the size of the input as used by the cell translators
+      unsigned int inputSize () const noexcept;
+
+      /// returns the size of the output of the cell translators
+      unsigned int outputSize () const noexcept;
+
       /// @}
   
   private:

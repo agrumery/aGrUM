@@ -127,6 +127,24 @@ namespace gum {
     }
 
     
+    /// returns the current input DBRow
+    template <int Idx, typename Translator, typename... OtherTranslators> INLINE
+    const DBRow&
+    BasicDBRowTranslatorSetStatic<Idx,Translator,
+                                  OtherTranslators...>::inputRow () const {
+      return __translator.inputRow ();
+    }
+    
+
+    /// returns the current output row
+    template <int Idx, typename Translator, typename... OtherTranslators> INLINE
+    FilteredRow&
+    BasicDBRowTranslatorSetStatic<Idx,Translator,
+                                  OtherTranslators...>::outputRow () {
+      return __translator.outputRow ();
+    }
+
+    
     /// perform the translation of a database row
     template <int Idx, typename Translator, typename... OtherTranslators>
     ALWAYS_INLINE
@@ -192,6 +210,29 @@ namespace gum {
       NextTranslators::modalities ( modals );
     }
 
+    
+    /// returns the size of the input as used by the cell translators
+    template <int Idx, typename Translator, typename... OtherTranslators> INLINE
+    unsigned int
+    BasicDBRowTranslatorSetStatic<Idx,Translator,
+                                  OtherTranslators...>::inputSize ()
+      const noexcept {
+      return __translator.inputSize () + NextTranslators::inputSize ();
+    }
+
+
+    /// returns the size of the output of the cell translators
+    template <int Idx, typename Translator, typename... OtherTranslators> INLINE
+    unsigned int
+    BasicDBRowTranslatorSetStatic<Idx,Translator,
+                                  OtherTranslators...>::outputSize ()
+      const noexcept {
+      return output_size;
+    }
+
+
+    // ===========================================================================
+    
 
     /// default constructor
     template <typename... Translators> INLINE
@@ -326,6 +367,29 @@ namespace gum {
     template <typename... Translators> INLINE
     FilteredRow& DBRowTranslatorSetStatic<Translators...>::outputRow () noexcept {
       return __output_row;
+    }
+    
+
+    /// returns the current input DBRow
+    template <typename... Translators> INLINE
+    const DBRow& DBRowTranslatorSetStatic<Translators...>::inputRow () const {
+      return TranslatorSetStatic::inputRow ();
+    }
+
+
+    /// returns the size of the input as used by the cell translators
+    template <typename... Translators> INLINE
+    unsigned int
+    DBRowTranslatorSetStatic<Translators...>::inputSize () const noexcept {
+      return TranslatorSetStatic::inputSize ();
+    }
+
+
+    /// returns the size of the output of the cell translators
+    template <typename... Translators> INLINE
+    unsigned int
+    DBRowTranslatorSetStatic<Translators...>::outputSize () const noexcept {
+      return const_cast<FilteredRow&> ( __output_row ).row ().size ();
     }
     
 

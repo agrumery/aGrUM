@@ -175,6 +175,12 @@ namespace gum {
       /// sets the output rows of the translators
       void setOutputRow ( FilteredRow& output_row ) noexcept;
 
+      /// returns the current input DBRow
+      const DBRow& inputRow () const;
+
+      /// returns the current output row
+      FilteredRow& outputRow ();
+
       /// perform the translation of a database row
       void translate ();
 
@@ -197,6 +203,12 @@ namespace gum {
       /// push back the number of modalities of the variables of the output columns
       void modalities ( std::vector<unsigned int>& modals ) const;
 
+      /// returns the size of the input as used by the cell translators
+      unsigned int inputSize () const noexcept;
+
+      /// returns the size of the output of the cell translators
+      unsigned int outputSize () const noexcept;
+ 
       /// @}
 
       
@@ -335,6 +347,15 @@ namespace gum {
       
       /// returns the current output row
       FilteredRow& outputRow () noexcept;
+
+      /// returns the current input DBRow
+      const DBRow& inputRow () const;
+
+      /// returns the size of the input as used by the cell translators
+      unsigned int inputSize () const noexcept;
+
+      /// returns the size of the output of the cell translators
+      unsigned int outputSize () const noexcept;
 
       /// @}
   

@@ -345,24 +345,54 @@ namespace gum {
     std::string DBRowTranslatorSetDynamic<Translator>::translateBack
     ( unsigned int col,
       unsigned int translated_val ) const {
-      unsigned int size = __translators.size ();
+      const unsigned int size = __translators.size ();
       if ( size == 0 ) {
         GUM_ERROR ( UndefinedElement, "the set of translators is empty, so it is "
                     "not possible to translate back a value" );
       }
       unsigned int i = 0, j = 0;
-      for ( ; i < __translators.size () &&
-                  col >= j + __translators[i]->outputSize ();
+      for ( ; i < size && col >= j + __translators[i]->outputSize ();
               j += __translators[i]->outputSize (), ++i ) {
       }
-      if ( i >= __translators.size () ) {
+      if ( i >= size ) {
         GUM_ERROR ( UndefinedElement, "the set of translators does not contain "
                     "the column to be translated back" );
       }
   
       return __translators[i]->translateBack ( col - j, translated_val );
     }
- 
+
+    
+    /// returns the current input DBRow
+    template <typename Translator> INLINE
+    const DBRow&
+    DBRowTranslatorSetDynamic<Translator>::inputRow () const {
+      if ( __translators.empty () )
+        GUM_ERROR ( UndefinedElement, "There are no translators in the "
+                    "DBRowTranslatorSetDynamic, to there is no input row" );
+      return __translators[0]->inputRow ();
+    }
+
+    
+    /// returns the size of the input as used by the cell translators
+    template <typename Translator> INLINE
+    unsigned int
+    DBRowTranslatorSetDynamic<Translator>::inputSize () const noexcept {
+      unsigned int size = 0;
+      for ( auto translator : __translators ) {
+        size += translator->inputSize ();
+      }
+      return size;
+    }
+
+
+    /// returns the size of the output of the cell translators
+    template <typename Translator> INLINE
+    unsigned int
+    DBRowTranslatorSetDynamic<Translator>::outputSize () const noexcept {
+      return __output_size;
+    }
+
 
   } /* namespace learning */
 
