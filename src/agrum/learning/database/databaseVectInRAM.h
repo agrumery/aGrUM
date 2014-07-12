@@ -205,6 +205,20 @@ namespace gum {
         /** @throws OutOfBounds if the handler points to the end of its area */
         DBRow& row ();
         
+        /// returns the current row pointed to by the handler
+        /** @warning The method does not check whether the handler already points
+         * to the end of its area. It is thus faster than method row () but, when
+         * you call it, you must be sure that the row actually exists, i.e., that
+         * the handler has not reached its end. */
+        const DBRow& rowUnsafe () const;
+        
+        /// returns the current row pointed to by the handler
+        /** @warning The method does not check whether the handler already points
+         * to the end of its area. It is thus faster than method row () but, when
+         * you call it, you must be sure that the row actually exists, i.e., that
+         * the handler has not reached its end. */
+        DBRow& rowUnsafe ();
+        
         /// makes the handler point to the next row
         void nextRow () noexcept;
 
@@ -215,9 +229,12 @@ namespace gum {
         void reset () noexcept;
 
         /// sets the area in the database the handler will handle
+        /** @param begin the first row to be handled
+         * @end the handler handles rows in interval [begin,end). Thus, the endth
+         * row is not included in the set of rows handled. g*/
         void setRange ( unsigned long begin, unsigned long end ) noexcept;
 
-        /// returns the current range of the handler
+        /// returns the current range of the handler [begin,end)
         std::pair<unsigned long, unsigned long> range () const noexcept;
 
         /// returns the names of the variables

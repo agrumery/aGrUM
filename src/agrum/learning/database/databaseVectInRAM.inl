@@ -163,6 +163,18 @@ namespace gum {
       return const_cast<std::vector<DBRow>*> ( __row )->operator[]  ( __index );
     }
 
+    
+    /// returns the current row pointed to by the handler
+    INLINE const DBRow& DatabaseVectInRAM::Handler::rowUnsafe () const {
+      return __row->operator[] ( __index );
+    }
+
+
+    /// returns the current row pointed to by the handler
+    INLINE DBRow& DatabaseVectInRAM::Handler::rowUnsafe () {
+      return const_cast<std::vector<DBRow>*> ( __row )->operator[]  ( __index );
+    }
+
 
     /// makes the handler point to the next row
     INLINE void DatabaseVectInRAM::Handler::nextRow () noexcept {
@@ -187,6 +199,13 @@ namespace gum {
     DatabaseVectInRAM::Handler::setRange ( unsigned long begin,
                                            unsigned long end ) noexcept {
       if ( begin > end ) std::swap ( begin, end );
+
+      // check that the end belongs to the database, else raise an exception
+      if ( end > __row->size () ) {
+        GUM_ERROR ( SizeError, "the database has fewer rows than the upper range "
+                    "specified to the handler" );
+      }
+      
       __begin_index = begin;
       __end_index = end;
       __index = begin;
@@ -240,6 +259,8 @@ namespace gum {
       for ( auto handler : __list_of_handlers ) {
         handler->__db  = nullptr;
         handler->__row = nullptr;
+        handler->__end_index = 0;
+        handler->__index = 0;
       }
       GUM_DESTRUCTOR ( DatabaseVectInRAM );
     }
@@ -253,6 +274,8 @@ namespace gum {
         for ( auto handler : __list_of_handlers ) {
           handler->__db  = nullptr;
           handler->__row = nullptr;
+          handler->__end_index = 0;
+          handler->__index = 0;
         }
         __data = from.__data;
         __variable_names = from.__variable_names;
@@ -269,6 +292,8 @@ namespace gum {
         for ( auto handler : __list_of_handlers ) {
           handler->__db  = nullptr;
           handler->__row = nullptr;
+          handler->__end_index = 0;
+          handler->__index = 0;
         }
         __data = std::move ( from.__data );
         __variable_names = std::move ( from.__variable_names );
@@ -318,8 +343,10 @@ namespace gum {
 
     /// returns the number of variables (columns) of the database
     INLINE unsigned int DatabaseVectInRAM::nbVariables () const noexcept {
-      if ( __data.empty () ) return 0;
-      return __data[0].size ();
+      if ( __data.empty () )
+        return __variable_names.size ();
+      else
+        return __data[0].size ();
     }
 
 
@@ -507,8 +534,8 @@ namespace gum {
       }
       else {
         __updateHandlers ( db_size - nb_rows );
-        __data.erase ( __data.begin () + ( db_size - 1 ),
-                       __data.begin () + ( db_size - 1 - nb_rows ) );
+        __data.erase ( __data.begin () + ( db_size - nb_rows ),
+                       __data.begin () + db_size );
       }
     }
 
@@ -528,9 +555,8 @@ namespace gum {
         }
       }
       else {
-        unsigned long nb_rows = end - deb;
-        __updateHandlers ( db_size - nb_rows );
-        __data.erase ( __data.begin () + deb, __data.begin () + nb_rows );
+        __updateHandlers ( db_size - ( end - deb ) );
+        __data.erase ( __data.begin () + deb, __data.begin () + end );
       }
     }
       

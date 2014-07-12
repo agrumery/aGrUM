@@ -31,98 +31,67 @@ namespace gum_tests {
     public:
 
       void test_db1 () {
-        gum::learning::DatabaseVectInRAM database;
-
-        /*
+        gum::learning::DatabaseVectInRAM database;        
         TS_ASSERT ( database.content().size() == 0 );
-        TS_ASSERT ( database.variableNames().size() == 8 );
-        TS_ASSERT ( database.variableNames() [0] == "smoking?" );
-        TS_ASSERT ( database.variableNames() [7] == "positive_XraY?" );
+        TS_ASSERT ( database.variableNames().size() == 0 );
 
-        auto handler = database.handler ();
-        TS_ASSERT ( handler.DBSize () == 10000 );
-        TS_ASSERT ( handler.size () == 10000 );
+        database.setVariableNames ( { "v1", "v2", "v3" } );
+        TS_ASSERT ( database.variableNames().size() == 3 );
+        TS_ASSERT ( database.nbVariables () == 3 );
 
-        const gum::learning::DBRow& row = handler.row ();
+        gum::learning::DBRow row ( 3, gum::learning::DBCell ( 2 ) );
+        database.insertDBRow ( row );
 
-        for ( unsigned int i = 0; i < row.size (); ++i ) {
-          TS_ASSERT ( row[i].type () == gum::learning::DBCell::EltType::FLOAT );
-        }
+        TS_ASSERT ( database.content().size() == 1 );
+        gum::learning::DatabaseVectInRAM::Handler handler ( database );
+        database.insertDBRow ( row );
+        database.insertDBRow ( row );
+        database.insertDBRow ( std::move ( row ) );
+        TS_ASSERT ( database.content().size() == 4 );
+        auto range = handler.range ();
+        TS_ASSERT ( range.second == 4 );
 
-        for ( unsigned int i = 0; i < row.size (); ++i ) {
-          if ( ( i != 3 ) && ( i != 4 ) ) {
-            TS_ASSERT ( row[i].getFloat () == 0 );
-          } else {
-            TS_ASSERT ( row[i].getFloat () == 1 );
-          }
-        }
+        gum::learning::DatabaseVectInRAM database2 = database;
+        TS_ASSERT ( database2.content().size() == 4 );
+        TS_ASSERT ( database2.variableNames().size() == 3 );
+        TS_ASSERT ( database2.nbVariables () == 3 );
 
-        //0,0,0,1,1,0,0,0
+        gum::learning::DBRow row2 ( 4, gum::learning::DBCell ( 2 ) );
+        TS_ASSERT_THROWS ( database2.insertDBRow ( row2 ), gum::SizeError );
 
-        unsigned int nb = 0;
+        gum::learning::DBRow row3 ( 3, gum::learning::DBCell ( 4 ) );
+        gum::learning::DBRow row4 ( 3, gum::learning::DBCell ( 5 ) );
+        database2.insertDBRows ( { row3, row4 } );
+        gum::learning::DatabaseVectInRAM::Handler handler2 ( database2 );
+        gum::learning::DatabaseVectInRAM::Handler handler3 ( database2 );
+        handler2.setRange ( 4, 6 );
+        handler3.setRange ( 5, 6 );
+        TS_ASSERT ( handler2.row()[0].getFloat() == 4 );
+        TS_ASSERT ( handler3.row()[0].getFloat() == 5 );
+        database2.eraseLastDBRow ();
+        TS_ASSERT ( handler2.row()[0].getFloat() == 4 );
+        TS_ASSERT_THROWS ( handler3.row()[0].getFloat(), gum::OutOfBounds );
 
-        while ( handler.hasRows () ) {
-          ++nb;
-          handler.nextRow ();
-        }
+        gum::learning::DatabaseVectInRAM database3 ( std::move ( database2 ) );
+        database2 = std::move ( database );
+        TS_ASSERT ( database2.content().size() == 4 );
+        TS_ASSERT ( database.content().size() == 0 );
+        database = std::move ( database3 );
+        TS_ASSERT ( database.content().size() == 5 );
 
-        TS_ASSERT ( nb == 10000 );
-
-        nb = 0;
-        handler.reset ();
-
-        while ( handler.hasRows () ) {
-          ++nb;
-          handler.nextRow ();
-        }
-
-        TS_ASSERT ( nb == 10000 );
-
-        handler.reset ();
-
-        while ( handler.hasRows () ) {
-          const gum::learning::DBRow& row = handler.row ();
-
-          for ( unsigned int i = 0; i < row.size (); ++i ) {
-            TS_ASSERT ( row[i].type () == gum::learning::DBCell::EltType::FLOAT );
-            TS_ASSERT ( ( row[i].getFloat () == 0 ) || ( row[i].getFloat () == 1 ) );
-          }
-
-          handler.nextRow ();
-        }
-
-        nb = 0;
-        handler.setRange ( 5000, 6000 );
-
-        while ( handler.hasRows () ) {
-          ++nb;
-          handler.nextRow ();
-        }
-
-        TS_ASSERT ( nb == 1000 );
-
-        nb = 0;
-        handler.reset ();
-
-        while ( handler.hasRows () ) {
-          ++nb;
-          handler.nextRow ();
-        }
-
-        TS_ASSERT ( nb == 1000 );
-        */
-      }
-
-      void xtestOnError() {
-        try {
-          gum::learning::DatabaseFromCSV database ( GET_PATH_STR ( "notExistingDummyDatabse.csv" ) );
-        } catch ( gum::IOError& e ) {
-          TS_ASSERT ( true );
-          return;
-        } catch ( ... ) {
-        }
-
-        TS_ASSERT ( false );
+        handler2 = database.handler ();
+        TS_ASSERT ( handler2.range().second == 5 );
+        handler2.nextRow ();
+        handler2.nextRow ();
+        handler2.nextRow ();
+        handler3 = std::move ( handler2 );
+        TS_ASSERT ( handler3.range().second == 5 );
+        TS_ASSERT ( handler3.hasRows () );
+        handler3.nextRow ();
+        TS_ASSERT ( handler3.hasRows () );
+        handler3.nextRow ();
+        TS_ASSERT ( handler3.hasRows () == false );
+        
       }
   };
 
