@@ -30,7 +30,7 @@
 
 #include <agrum/learning/database/DBRow.h>
 
-#define CACHE_SIZE 1024
+#define CACHE_SIZE 128
 
 
 namespace gum {
@@ -57,8 +57,26 @@ namespace gum {
       
       /// returns the current row of the database
       /** @throws OutOfBounds if the handler points to the end of its area */
-      virtual const DBRow& row () const = 0;
+      virtual const DBRow& rowSafe () const = 0;
 
+     /// returns the current row of the database
+      /** @throws OutOfBounds if the handler points to the end of its area */
+      virtual DBRow& rowSafe () = 0;
+
+      /// returns the current row pointed to by the handler (unsafe version)
+      /** @warning The method does not check whether the handler already points
+       * to the end of its area. It is thus faster than method rowSafe () but,
+       * when you call it, you must be sure that the row actually exists, i.e.,
+       * that the handler has not reached its end. */
+      virtual const DBRow& row () const = 0;
+        
+      /// returns the current row pointed to by the handler (unsafe version)
+      /** @warning The method does not check whether the handler already points
+       * to the end of its area. It is thus faster than method rowSafe () but,
+       * when you call it, you must be sure that the row actually exists, i.e.,
+       * that the handler has not reached its end. */
+      virtual DBRow& row () = 0;
+        
       /// go to the next row in the database
       virtual void nextRow () noexcept = 0;
 
@@ -75,6 +93,12 @@ namespace gum {
       /// returns the current range of the handler
       virtual std::pair<unsigned long, unsigned long> range () const noexcept = 0;
 
+      /// returns the names of the variables
+      virtual const std::vector<std::string>& variableNames () const noexcept = 0;
+
+      /// returns the number of variables (columns) of the database
+      virtual unsigned int nbVariables () const noexcept = 0;
+        
 
     protected:
 

@@ -23,6 +23,42 @@
  * This file contains the basis for interacting with a tabular database as
  * a translator. Every translator should derive from this class. 
  *
+ * To parse databases, learning algorithms use row filters that translate
+ * the content of the database into an integer-encoded array. This translation
+ * is performed by cell translators. Each one is specialized to perform a
+ * given translation: this can be an identity translator that, given x, returns
+ * x, but this can also be a discretization of x or a more complex
+ * transformation like the addition of two columns of the database. To
+ * simplify the design to cell translators, all those should derive from
+ * DBCellTranslator. By Doing so, implementing a new cell translator
+ * essentially amounts to create method "translate", which will translate the
+ * content of the database, accessible through method "in" or "inputRow", into
+ * an output vector accessible through method "out" or "outputRow". For
+ * instance, here is how an Indentity translator over 1 column can be
+ * implemented:
+ * @code
+ * class CellIdentity :
+ *   public DBCellTranslator<1,1> { // there are 1 col in input and 1 in output
+ *   public:
+ *   void translate () {    // the method called to translate the column
+ *     out( 0 ) = in ( 0 ); // the first element (0) in input is put into the
+ *                          // the first element (0) in the output vector
+ * };
+ * @endcode
+ * A similar way of specifying the operations to perform is through the use
+ * of methods inputRow, outputRow, inputCols and outputCols:
+ * @code
+ * class CellIdentity :
+ *   public DBCellTranslator<1,1> { // there are 1 col in input and 1 in output
+ *   public:
+ *   void translate () { // the method called to translate the column
+ *     outputRow() [outputCols() [0]] = inputRow() [inputCols() [0]];
+ * };     
+ * @endcode
+ * The template parameters Nb_inputs and Nb_outputs indicate how many columns
+ * are read from the database by the cell translator and how many it will
+ * produce in the output vector.
+ *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_LEARNING_DB_CELL_TRANSLATOR_H
@@ -80,7 +116,7 @@ namespace gum {
      * class CellIdentity :
      *   public DBCellTranslator<1,1> { // there are 1 col in input and 1 in output
      *   public:
-     *   void translate () { // the method called to translate the column
+     *   void translate () {    // the method called to translate the column
      *     out( 0 ) = in ( 0 ); // the first element (0) in input is put into the
      *                          // the first element (0) in the output vector
      * };
@@ -169,7 +205,7 @@ namespace gum {
       void setInputCols ( const Col<Col1,OtherCols...>& ) noexcept;
     
       /// sets the output FilteredRow's columns written by the translator
-      /** If the DBCellTranslator output N columns, then those will be written in
+      /** If the DBCellTranslator outputs N columns, then those will be written in
        * the output vector at indices start, start+1, ..., start+N-1. */
       void setOutputCols ( unsigned int start ) noexcept;
 
@@ -204,7 +240,7 @@ namespace gum {
        * used for initialization. */
       virtual void initialize () = 0;
 
-      /// perform a post initialization after the database parsing
+      /// performs a post initialization after the database parsing
       virtual void postInitialize () = 0;
 
       /** @brief indicates whether the translator needs an initial parsing of the
@@ -212,14 +248,17 @@ namespace gum {
       virtual bool requiresInitialization () const noexcept = 0;
 
       /// push back the number of modalities of the variables of the output columns
+      /** After initialization, most cell translators know exactly all the values
+       * found in the columns they translate. They can thus push back the numbers
+       * of such values into vector "modals". */
       virtual void modalities ( std::vector<unsigned int>& modals ) const = 0;
       
-      /// back-translate a given output (i.e., returns its input)
+      /// back-translate a given output (i.e., returns its input value)
       /** @param col the column in _output_cols corresponding to the translated
        * value
        * @param translated_val the value in _output_cols of which we want to
-       * know the original value (that which will be stored into the
-       * Bayesian network) */
+       * know the original value (that which was actually read from the
+       * database) */
       virtual std::string translateBack ( unsigned int col,
                                           unsigned int translated_val ) const = 0;
 

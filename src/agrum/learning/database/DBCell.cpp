@@ -54,7 +54,7 @@ namespace gum {
 
       case EltType::STRING:
         // here, the best type is a string
-        setStringSafe ( elt );
+        setString ( elt );
         return;
 
       case EltType::MISSING:

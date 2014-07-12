@@ -136,6 +136,15 @@ namespace gum {
        * by the translator */
       void setOutputCols ( unsigned int first_col ) noexcept;
 
+      /// returns the current input DBRow
+      const DBRow& inputRow () const noexcept;
+
+      /// returns the current output FilteredRow
+      FilteredRow& outputFilteredRow () noexcept;
+
+      /// returns the row of unsigned int of the current output FilteredRow
+      std::vector<unsigned int>& outputRow () noexcept;      
+      
       /// returns the translator that does all the job
       Translator& getTranslator () noexcept;
 
@@ -149,8 +158,8 @@ namespace gum {
       /** @param col the column in _output_cols corresponding to the translated
        * value
        * @param translated_val the value in _output_cols of which we want to
-       * know the original value (that which will be stored into the
-       * Bayesian network) */
+       * know the original value (that which was actually read from the
+       * database) */
       std::string translateBack ( unsigned int col,
                                   unsigned int translated_val ) const;
 
@@ -168,7 +177,13 @@ namespace gum {
 
       /// push back the number of modalities of the variables of the output columns
       void modalities ( std::vector<unsigned int>& modals ) const;
- 
+
+      /// returns the size of the input for this cell translator
+      unsigned int inputSize () const noexcept;
+
+      /// returns the size of the output for this cell translator
+      unsigned int outputSize () const noexcept;
+
       /// @}
   
   
@@ -289,6 +304,15 @@ namespace gum {
       /// sets the row to which the translator will write its output
       void setOutputRow ( FilteredRow& row ) noexcept;
 
+      /// returns the current input DBRow
+      const DBRow& inputRow () const noexcept;
+
+      /// returns the current output FilteredRow
+      FilteredRow& outputFilteredRow () noexcept;
+
+      /// returns the row of unsigned int of the current output FilteredRow
+      std::vector<unsigned int>& outputRow () noexcept;      
+      
       /// apply the translator
       void translate ();
 
@@ -296,8 +320,8 @@ namespace gum {
       /** @param col the column in _output_cols corresponding to the translated
        * value
        * @param translated_val the value in _output_cols of which we want to
-       * know the original value (that which will be stored into the
-       * Bayesian network) */
+       * know the original value (that which was actually read from the
+       * database) */
       std::string translateBack ( unsigned int col,
                                   unsigned int translated_val ) const;
 
@@ -313,6 +337,12 @@ namespace gum {
 
       /// push back the number of modalities of the variables of the output columns
       void modalities ( std::vector<unsigned int>& modals ) const;
+
+      /// returns the size of the input for the cell translators
+      unsigned int inputSize () const noexcept;
+
+      /// returns the size of the output for the cell translators
+      unsigned int outputSize () const noexcept;
 
       /// @}
   

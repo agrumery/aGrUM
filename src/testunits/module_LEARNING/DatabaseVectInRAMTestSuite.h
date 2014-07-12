@@ -70,7 +70,7 @@ namespace gum_tests {
         TS_ASSERT ( handler3.row()[0].getFloat() == 5 );
         database2.eraseLastDBRow ();
         TS_ASSERT ( handler2.row()[0].getFloat() == 4 );
-        TS_ASSERT_THROWS ( handler3.row()[0].getFloat(), gum::OutOfBounds );
+        TS_ASSERT_THROWS ( handler3.rowSafe()[0].getFloat(), gum::OutOfBounds );
 
         gum::learning::DatabaseVectInRAM database3 ( std::move ( database2 ) );
         database2 = std::move ( database );

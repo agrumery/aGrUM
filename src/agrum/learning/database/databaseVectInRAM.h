@@ -197,27 +197,27 @@ namespace gum {
         /// return the number of rows of the whole database
         unsigned long DBSize () const noexcept;
 
-        /// returns the current row pointed to by the handler
+        /// returns the current row pointed to by the handler (safe version)
         /** @throws OutOfBounds if the handler points to the end of its area */
+        const DBRow& rowSafe () const;
+        
+        /// returns the current row pointed to by the handler (safe version)
+        /** @throws OutOfBounds if the handler points to the end of its area */
+        DBRow& rowSafe ();
+        
+        /// returns the current row pointed to by the handler (unsafe version)
+        /** @warning The method does not check whether the handler already points
+         * to the end of its area. It is thus faster than method rowSafe () but,
+         * when you call it, you must be sure that the row actually exists, i.e.,
+         * that the handler has not reached its end. */
         const DBRow& row () const;
         
-        /// returns the current row pointed to by the handler
-        /** @throws OutOfBounds if the handler points to the end of its area */
+        /// returns the current row pointed to by the handler (unsafe version)
+        /** @warning The method does not check whether the handler already points
+         * to the end of its area. It is thus faster than method rowSafe () but,
+         * when you call it, you must be sure that the row actually exists, i.e.,
+         * that the handler has not reached its end. */
         DBRow& row ();
-        
-        /// returns the current row pointed to by the handler
-        /** @warning The method does not check whether the handler already points
-         * to the end of its area. It is thus faster than method row () but, when
-         * you call it, you must be sure that the row actually exists, i.e., that
-         * the handler has not reached its end. */
-        const DBRow& rowUnsafe () const;
-        
-        /// returns the current row pointed to by the handler
-        /** @warning The method does not check whether the handler already points
-         * to the end of its area. It is thus faster than method row () but, when
-         * you call it, you must be sure that the row actually exists, i.e., that
-         * the handler has not reached its end. */
-        DBRow& rowUnsafe ();
         
         /// makes the handler point to the next row
         void nextRow () noexcept;
@@ -290,7 +290,7 @@ namespace gum {
       DatabaseVectInRAM ( DatabaseVectInRAM&& );
 
       /// destructor
-      ~DatabaseVectInRAM ();
+      virtual ~DatabaseVectInRAM ();
 
       /// @}
 

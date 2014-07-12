@@ -183,8 +183,47 @@ namespace gum {
     ( std::vector<unsigned int>& modals ) const {
       __translator.modalities ( modals );
     }
-    
 
+    
+    /// returns the current input DBRow
+    template <class Translator, typename Cols> INLINE
+    const DBRow& CreateOnce<Translator,Cols>::inputRow () const noexcept {
+      return __translator.inputRow ();
+    }
+
+
+    /// returns the current output FilteredRow
+    template <class Translator, typename Cols> INLINE
+    FilteredRow& CreateOnce<Translator,Cols>::outputFilteredRow () noexcept {
+      return __translator.outputFilteredRow ();
+    }
+
+    
+    /// returns the row of unsigned int of the current output FilteredRow
+    template <class Translator, typename Cols> INLINE
+    std::vector<unsigned int>&
+    CreateOnce<Translator,Cols>::outputRow () noexcept {
+      return __translator.outputRow ();
+    }
+      
+
+    /// returns the size of the input for this cell translator
+    template <class Translator, typename Cols> INLINE
+    unsigned int CreateOnce<Translator,Cols>::inputSize () const noexcept {
+      return __translator.inputSize ();
+    }
+
+
+    /// returns the size of the output for this cell translator
+    template <class Translator, typename Cols> INLINE
+    unsigned int CreateOnce<Translator,Cols>::outputSize () const noexcept {
+      return __translator.outputSize ();
+    }
+ 
+
+    // ===========================================================================
+
+    
     /// default constructor
     template <typename Translator, typename Cols,
               int nb_times, typename ColsIncr> INLINE
@@ -250,8 +289,6 @@ namespace gum {
       return *this;
     }
 
-  
-
 
     /// sets the output columns written by all the applications of the translator
     template <typename Translator, typename Cols,
@@ -282,6 +319,33 @@ namespace gum {
       NextTranslators::setOutputRow ( row );
     }
 
+    
+    /// returns the current input DBRow
+    template <typename Translator, typename Cols,
+              int nb_times, typename ColsIncr> INLINE
+    const DBRow&
+    Create<Translator,Cols,nb_times,ColsIncr>::inputRow () const noexcept {
+      return CurrentTranslator::inputRow ();
+    }
+    
+
+    /// returns the current output FilteredRow
+    template <typename Translator, typename Cols,
+              int nb_times, typename ColsIncr> INLINE
+    FilteredRow&
+    Create<Translator,Cols,nb_times,ColsIncr>::outputFilteredRow () noexcept {
+      return CurrentTranslator::outputFilteredRow ();
+    }
+    
+      
+    /// returns the row of unsigned int of the current output FilteredRow
+    template <typename Translator, typename Cols,
+              int nb_times, typename ColsIncr> INLINE
+    std::vector<unsigned int>&
+    Create<Translator,Cols,nb_times,ColsIncr>::outputRow () noexcept {
+      return CurrentTranslator::outputRow ();
+    }
+   
 
     /// apply the translator
     template <typename Translator, typename Cols,
@@ -347,7 +411,25 @@ namespace gum {
       NextTranslators::modalities ( modals );
     }
 
-    
+
+    /// returns the size of the input for the cell translators
+    template <typename Translator, typename Cols,
+              int nb_times, typename ColsIncr> INLINE
+    unsigned int
+    Create<Translator,Cols,nb_times,ColsIncr>::inputSize () const noexcept {
+      return nb_times * CurrentTranslator::inputSize ();
+    }
+
+
+    /// returns the size of the output for the cell translators
+    template <typename Translator, typename Cols,
+              int nb_times, typename ColsIncr> INLINE
+    unsigned int
+    Create<Translator,Cols,nb_times,ColsIncr>::outputSize () const noexcept {
+      return nb_times * CurrentTranslator::outputSize ();
+    }
+
+
   } /* namespace learning */
 
   

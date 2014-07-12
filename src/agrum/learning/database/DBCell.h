@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The class representing cells in tabular database
+ * @brief The class representing cells in tabular databases
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -60,7 +60,7 @@ namespace gum {
       /// default constructor
       DBCell ();
 
-      /// constructor for a real number
+      /// constructor for a number
       DBCell ( float nb );
 
       /// constructor for a string
@@ -172,7 +172,8 @@ namespace gum {
 
     private:
       using Float =
-        typename std::conditional<sizeof ( float ) >=sizeof ( int ),float,double>::type;
+        typename std::conditional<sizeof ( float ) >=sizeof ( int ),
+                                  float, double>::type;
 
 
       /// the real type of the last element read from the database

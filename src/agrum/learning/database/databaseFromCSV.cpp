@@ -30,6 +30,12 @@
 #include <agrum/learning/database/CSVParser.h>
 #include <agrum/learning/database/databaseFromCSV.h>
 
+/// include the inlined functions if necessary
+#ifdef GUM_NO_INLINE
+#include <agrum/learning/database/databaseFromCSV.inl>
+#endif /* GUM_NO_INLINE */
+
+
 namespace gum {
 
 
@@ -94,28 +100,6 @@ namespace gum {
 
       // for debugging purposes
       GUM_CONSTRUCTOR ( DatabaseFromCSV );
-    }
-
-
-    /// copy constructor
-    DatabaseFromCSV::DatabaseFromCSV ( const DatabaseFromCSV& from ) :
-      DatabaseVectInRAM ( from ) {
-      // for debugging purposes
-      GUM_CONS_CPY ( DatabaseFromCSV );
-    }
-
-
-    /// move constructor
-    DatabaseFromCSV::DatabaseFromCSV ( DatabaseFromCSV&& from ) :
-      DatabaseVectInRAM ( std::move ( from ) ) {
-      // for debugging purposes
-      GUM_CONS_MOV ( DatabaseFromCSV );
-    }
-
-
-    /// destructor
-    DatabaseFromCSV::~DatabaseFromCSV () {
-      GUM_DESTRUCTOR ( DatabaseFromCSV );
     }
 
 

@@ -147,7 +147,7 @@ namespace gum {
 
     
     /// returns the current row pointed to by the handler
-    INLINE const DBRow& DatabaseVectInRAM::Handler::row () const {
+    INLINE const DBRow& DatabaseVectInRAM::Handler::rowSafe () const {
       if ( __index >= __end_index ) {
         GUM_ERROR ( OutOfBounds, "the handler has reached its end" );
       }
@@ -156,7 +156,7 @@ namespace gum {
 
 
     /// returns the current row pointed to by the handler
-    INLINE DBRow& DatabaseVectInRAM::Handler::row () {
+    INLINE DBRow& DatabaseVectInRAM::Handler::rowSafe () {
       if ( __index >= __end_index ) {
         GUM_ERROR ( OutOfBounds, "the handler has reached its end" );
       }
@@ -165,13 +165,13 @@ namespace gum {
 
     
     /// returns the current row pointed to by the handler
-    INLINE const DBRow& DatabaseVectInRAM::Handler::rowUnsafe () const {
+    INLINE const DBRow& DatabaseVectInRAM::Handler::row () const {
       return __row->operator[] ( __index );
     }
 
 
     /// returns the current row pointed to by the handler
-    INLINE DBRow& DatabaseVectInRAM::Handler::rowUnsafe () {
+    INLINE DBRow& DatabaseVectInRAM::Handler::row () {
       return const_cast<std::vector<DBRow>*> ( __row )->operator[]  ( __index );
     }
 
@@ -225,7 +225,13 @@ namespace gum {
       return __db->variableNames ();
     }
 
+    
+    /// returns the number of variables (columns) of the database
+    INLINE unsigned int DatabaseVectInRAM::Handler::nbVariables () const noexcept {
+      return __db->variableNames ().size ();
+    }
 
+    
 
     // ===========================================================================
     // Database VectInRAMs

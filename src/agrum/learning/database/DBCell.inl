@@ -263,7 +263,8 @@ namespace gum {
           catch ( std::invalid_argument& ) { return false; }
 
         case MISSING:
-          return false;
+          __type = EltType::MISSING;
+          return true;
 
         default:
           GUM_ERROR ( TypeError, "type not supported by DBCell convertType" );
@@ -289,7 +290,8 @@ namespace gum {
           return true;
           
         case MISSING:
-          return false;
+          __type = EltType::MISSING;
+          return true;
 
         default:
           GUM_ERROR ( TypeError, "type not supported by DBCell convertType" );

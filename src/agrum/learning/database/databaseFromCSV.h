@@ -20,6 +20,15 @@
 /** @file
  * @brief The class representing a tabular database created from a CSV
  *
+ * Class DatabaseFromCSV first reads a database from a CSV file and stores
+ * its content into a DatabaseVectInRAM. Then, the database is accessed as
+ * a standard DatabaseVectInRAM. The CSV file may contain missing data, in
+ * which case, we just indicate in the arguments passed to the constructor
+ * which strings represent these missing data. If the CSV file does not
+ * contain names for its columns, the DatabaseFromCSV creates some (those
+ * are "node X", where X is the number of the column, the first column having
+ * number 0).
+ *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_DATABASE_FROM_CSV_H
@@ -40,39 +49,73 @@ namespace gum {
   namespace learning {
 
 
+    /** @class DatabaseFromCSV
+     * @brief The class representing a tabular database created from a CSV
+     * @ingroup learning_group
+     * Class DatabaseFromCSV first reads a database from a CSV file and stores
+     * its content into a DatabaseVectInRAM. Then, the database is accessed as
+     * a standard DatabaseVectInRAM. The CSV file may contain missing data, in
+     * which case, we just indicate in the arguments passed to the constructor
+     * which strings represent these missing data. If the CSV file does not
+     * contain names for its columns, the DatabaseFromCSV creates some (those
+     * are "node X", where X is the number of the column, the first column having
+     * number 0).
+     */
     class DatabaseFromCSV : public DatabaseVectInRAM {
-      public:
+    public:
 
-        /// the handler used for parsing the database
-        using Handler = typename DatabaseVectInRAM::Handler;
+      /// the handler used for parsing the database
+      using Handler = typename DatabaseVectInRAM::Handler;
 
 
-        // ##########################################################################
-        /// @name Constructors / Destructors
-        // ##########################################################################
+      // ##########################################################################
+      /// @name Constructors / Destructors
+      // ##########################################################################
 
-        /// @{
+      /// @{
 
-        /// default constructor
-        DatabaseFromCSV
-        ( const std::string filename,
-          bool fileContainsNames = true,
-          const DBTransform& transform = DBTransformIdentity (),
-          const std::string delimiter = ",",
-          const char commentmarker = '#',
-          const char quoteMarker = '"',
-          const std::vector<std::string> missingVal = { "?", "N/A", "n/a" } );
+      /// default constructor
+      /** Class DatabaseFromCSV first reads a database from a CSV file and stores
+       * its content into a DatabaseVectInRAM. Then, the database is accessed as
+       * a standard DatabaseVectInRAM. The CSV file may contain missing data, in
+       * which case, we just indicate in the arguments passed to the constructor
+       * which strings represent these missing data. If the CSV file does not
+       * contain names for its columns, the DatabaseFromCSV creates some (those
+       * are "node X", where X is the number of the column, the first column having
+       * number 0). */
+      DatabaseFromCSV
+      ( const std::string filename,
+        bool fileContainsNames = true,
+        const DBTransform& transform = DBTransformIdentity (),
+        const std::string delimiter = ",",
+        const char commentmarker = '#',
+        const char quoteMarker = '"',
+        const std::vector<std::string> missingVal = { "?", "N/A", "n/a" } );
 
-        /// copy constructor
-        DatabaseFromCSV ( const DatabaseFromCSV& from );
+      /// copy constructor
+      DatabaseFromCSV ( const DatabaseFromCSV& from );
 
-        /// move constructor
-        DatabaseFromCSV ( DatabaseFromCSV&& from );
+      /// move constructor
+      DatabaseFromCSV ( DatabaseFromCSV&& from );
 
-        /// destructor
-        ~DatabaseFromCSV ();
+      /// destructor
+      virtual ~DatabaseFromCSV ();
 
-        /// @}
+      /// @}
+
+      
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+      /// @{
+        
+      /// copy operator
+      DatabaseFromCSV& operator= ( const DatabaseFromCSV& from );
+
+      /// move constructor
+      DatabaseFromCSV& operator= ( DatabaseFromCSV&& from );
+
+      /// @}
 
     };
 
@@ -81,6 +124,12 @@ namespace gum {
 
 
 } /* namespace gum */
+
+
+/// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/learning/database/databaseFromCSV.inl>
+#endif /* GUM_NO_INLINE */
 
 
 #endif /* GUM_DATABASE_FROM_CSV_H */
