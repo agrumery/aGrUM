@@ -303,6 +303,19 @@ namespace gum {
     }
 
     
+    /// sets the names of the variables
+    INLINE void DatabaseVectInRAM::setVariableNames
+    ( const std::vector<std::string>& names ) {
+      if ( __data.empty () || ( names.size () == __data[0].size () ) ) {
+        __variable_names = names;
+      }
+      else {
+        GUM_ERROR ( SizeError, "the number of variable's names does not "
+                    "correspond to the number of columns of the database" );
+      }
+    }
+    
+
     /// returns the number of variables (columns) of the database
     INLINE unsigned int DatabaseVectInRAM::nbVariables () const noexcept {
       if ( __data.empty () ) return 0;
@@ -333,8 +346,13 @@ namespace gum {
     /// insert a new DBRow at the end of the database
     INLINE void DatabaseVectInRAM::insertDBRow ( const DBRow& new_row ) {
       // check that the size of the row is the same as the rest of the database
-      unsigned long db_size = __data.size ();
+      const unsigned long db_size = __data.size ();
       if ( db_size && ( new_row.size () != __data[0].size () ) ) {
+        GUM_ERROR ( SizeError, "the new row has not the same size as the "
+                    "rest of the database" );
+      }
+      const unsigned int nb_cols = __variable_names.size ();
+      if ( nb_cols && ( new_row.size () != nb_cols ) ) {
         GUM_ERROR ( SizeError, "the new row has not the same size as the "
                     "rest of the database" );
       }
@@ -347,8 +365,13 @@ namespace gum {
     /// insert a new DBRow at the end of the database
     INLINE void DatabaseVectInRAM::insertDBRow ( DBRow&& new_row ) {
       // check that the size of the row is the same as the rest of the database
-      unsigned long db_size = __data.size ();
+      const unsigned long db_size = __data.size ();
       if ( db_size && ( new_row.size () != __data[0].size () ) ) {
+        GUM_ERROR ( SizeError, "the new row has not the same size as the "
+                    "rest of the database" );
+      }
+      const unsigned int nb_cols = __variable_names.size ();
+      if ( nb_cols && ( new_row.size () != nb_cols ) ) {
         GUM_ERROR ( SizeError, "the new row has not the same size as the "
                     "rest of the database" );
       }
@@ -361,17 +384,28 @@ namespace gum {
     /// insert a set of new DBRow at the end of the database
     INLINE void DatabaseVectInRAM::insertDBRows
     ( const std::vector<DBRow>& new_rows ) {
+      if ( new_rows.empty () ) return;
+      
+      // check that all the rows have the same size
+      const unsigned int new_size = new_rows[0].size ();
+      for ( const auto& row : new_rows ) {
+        if ( row.size () != new_size ) {
+          GUM_ERROR ( SizeError, "all the new rows do not have the same "
+                      "nunber of columns" );
+        }
+      }
+      
       // check that the sizes of the new rows are the same as the rest of
       // the database
-      unsigned long db_size = __data.size ();
-      if ( db_size ) {
-        unsigned long row_size = __data[0].size ();
-        for ( const auto& row : new_rows ) {
-          if ( row.size () != row_size ) {
-            GUM_ERROR ( SizeError, "the new row has not the same size as the "
-                        "rest of the database" );
-          }
-        }
+      const unsigned long db_size = __data.size ();
+      const unsigned int  nb_cols = __variable_names.size ();
+      if ( db_size && ( __data[0].size () != new_size ) ) {
+        GUM_ERROR ( SizeError, "the new rows have not the same size as the "
+                    "rest of the database" );
+      }
+      if ( nb_cols && ( new_size != nb_cols ) ) {
+        GUM_ERROR ( SizeError, "the new rows have not the same size as the "
+                    "number of columns in the database" );
       }
 
       __updateHandlers ( db_size + new_rows.size () );
@@ -384,17 +418,28 @@ namespace gum {
     /// insert a set of new DBRow at the end of the database
     INLINE void DatabaseVectInRAM::insertDBRows
     ( std::vector<DBRow>&& new_rows ) {
+      if ( new_rows.empty () ) return;
+      
+      // check that all the rows have the same size
+      const unsigned int new_size = new_rows[0].size ();
+      for ( const auto& row : new_rows ) {
+        if ( row.size () != new_size ) {
+          GUM_ERROR ( SizeError, "all the new rows do not have the same "
+                      "nunber of columns" );
+        }
+      }
+      
       // check that the sizes of the new rows are the same as the rest of
       // the database
-      unsigned long db_size = __data.size ();
-      if ( db_size ) {
-        unsigned long row_size = __data[0].size ();
-        for ( const auto& row : new_rows ) {
-          if ( row.size () != row_size ) {
-            GUM_ERROR ( SizeError, "the new row has not the same size as the "
-                        "rest of the database" );
-          }
-        }
+      const unsigned long db_size = __data.size ();
+      const unsigned int  nb_cols = __variable_names.size ();
+      if ( db_size && ( __data[0].size () != new_size ) ) {
+        GUM_ERROR ( SizeError, "the new rows have not the same size as the "
+                    "rest of the database" );
+      }
+      if ( nb_cols && ( new_size != nb_cols ) ) {
+        GUM_ERROR ( SizeError, "the new rows have not the same size as the "
+                    "number of columns in the database" );
       }
 
       __updateHandlers ( db_size + new_rows.size () );

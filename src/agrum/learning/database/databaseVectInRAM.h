@@ -21,9 +21,52 @@
  * @brief The class representing a tabular database as a vector of DBRows stored
  * in RAM
  *
- * Class DatabaseVector is a helper for tabular databases that store in RAM all
- * their content into a vector a DBRows. It is not intended to be used as is but
- * rather through inheritance of other classes such as DatabaseFromCSV.
+ * Class DatabaseVectInRAM represents a tabular database that stores in the
+ * computer's random access memory (RAM) its content as a vector a DBRows.
+ * Usually, users will not create directly DatabaseVectInRAM and fill them
+ * manually but rather will use calles like DatabaseFromCSV that read data from
+ * files and store them into a DatabaseVectInRAM.
+ * @par Usage example:
+ * @code
+ * // create an empty database
+ * DatabaseVectInRAM database;
+ *
+ * // create a new row with 3 DBCells containing integer 2
+ * DBRow new_row ( 3, DBCell ( 2 ) );
+ *
+ * // add it into the database
+ * database.insertDBRow ( row );
+ * database.insertDBRow ( std::move ( row ) );
+ *
+ * // erase the first DBRow
+ * database.eraseFirstDBRow ();
+ *
+ * returns the content of the database
+ * const std::vector<DBRow>& content = database.content ();
+ *
+ * // sets the names of the variables (the columns) of the database
+ * std::vector<std::string> new_names { "col1", "col2", "col3" };
+ * database.setVariableNames ( new_names );
+ *
+ * // print the names of the columns
+ * std::cout << database.variableNames () << std::endl;
+ *
+ * // print all the records of the database
+ * for ( auto handler = database.handler ();
+ *       handler.hasRows (); handler.nextRow () )
+ *   std::cout << handler.row ();
+ *
+ * // make the handler parse the 3rd record to the 5th records
+ * auto handler = database.handler ();
+ * handler.setRange ( 2, 5 ); // 2 = 3rd record; 5 = 6th record (not included) 
+ * while ( handler.hasRows () ) {
+ *   std::cout << handler.row ();
+ *   handler.nextRow ();
+ * }
+ *
+ * // clear the content of the database and update the database's handlers
+ * database.clear ();
+ * @endcode
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -46,18 +89,61 @@ namespace gum {
 
     
     /** @class DatabaseVectInRAM
-     * @brief The base class representing a tabular database as a vector of DBRows
+     * @brief The class representing a tabular database as a vector of DBRows
+     * stored in RAM
      * @ingroup learning_group
+     * Class DatabaseVectInRAM represents a tabular database that stores in the
+     * computer's random access memory (RAM) its content as a vector a DBRows.
+     * Usually, users will not create directly DatabaseVectInRAM and fill them
+     * manually but rather will use calles like DatabaseFromCSV that read data
+     * from files and store them into a DatabaseVectInRAM.
+     * @par Usage example:
+     * @code
+     * // create an empty database
+     * DatabaseVectInRAM database;
      *
-     * Class DatabaseVectInRAM is a helper for tabular databases that store in RAM
-     * all their content into a vector a DBRows. It is not intended to be used as
-     * is but rather through inheritance of other classes such as DatabaseFromCSV.
+     * // create a new row with 3 DBCells containing integer 2
+     * DBRow new_row ( 3, DBCell ( 2 ) );
+     *
+     * // add it into the database
+     * database.insertDBRow ( row );
+     * database.insertDBRow ( std::move ( row ) );
+     *
+     * // erase the first DBRow
+     * database.eraseFirstDBRow ();
+     *
+     * returns the content of the database
+     * const std::vector<DBRow>& content = database.content ();
+     *
+     * // sets the names of the variables (the columns) of the database
+     * std::vector<std::string> new_names { "col1", "col2", "col3" };
+     * database.setVariableNames ( new_names );
+     *
+     * // print the names of the columns
+     * std::cout << database.variableNames () << std::endl;
+     *
+     * // print all the records of the database
+     * for ( auto handler = database.handler ();
+     *       handler.hasRows (); handler.nextRow () )
+     *   std::cout << handler.row ();
+     *
+     * // make the handler parse the 3rd record to the 5th records
+     * auto handler = database.handler ();
+     * handler.setRange ( 2, 5 ); // 2 = 3rd record; 5 = 6th record (not included) 
+     * while ( handler.hasRows () ) {
+     *   std::cout << handler.row ();
+     *   handler.nextRow ();
+     * }
+     *
+     * // clear the content of the database and update the database's handlers
+     * database.clear ();
+     * @endcode
      */
     class DatabaseVectInRAM {
     public:
       
       /** @class DatabaseVectInRAM::Handler
-       * @brief the handler of tabular databases represented  as vectors of DBRows
+       * @brief the handler of tabular databases represented as vectors of DBRows
        * @ingroup learning_group
        */
       class Handler : public DBHandler {
@@ -219,6 +305,9 @@ namespace gum {
 
       /// returns the variable names for all the columns
       const std::vector<std::string>& variableNames () const noexcept;
+
+      /// sets the names of the variables
+      void setVariableNames ( const std::vector<std::string>& names );
 
       /// returns the number of variables (columns) of the database
       unsigned int nbVariables () const noexcept;

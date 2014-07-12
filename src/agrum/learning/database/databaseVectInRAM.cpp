@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The implementation of DatabaseVector
+ * @brief The implementation of DatabaseVectInRAM
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
