@@ -96,7 +96,7 @@ namespace gum {
       Idx getBestDecisionChoice ( NodeId decisionId );
 
       /// displays the result of an inference
-      void displayResult ( std::ostream& stream = std::cout );
+      std::string displayResult ( void );
 
       /// @}
       // ====================================================================
@@ -126,6 +126,7 @@ namespace gum {
       /// for test purpose only
       void displayStrongJunctionTree ( std::ostream& stream = std::cout );
 
+      const InfluenceDiagram<GUM_SCALAR>& infDiag();
     private:
 
       // ====================================================================

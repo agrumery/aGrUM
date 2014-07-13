@@ -185,7 +185,8 @@ namespace gum {
     } catch ( NotFound& ) {
       output << "no_name\" {" << std::endl;
     }
-
+    output <<"  node [bgcolor=\"#AAAAAA\", style=filled];"<<std::endl;
+    
     decisionNode << "node [shape = box];" << std::endl;
 
     utilityNode << "node [shape = diamond];" << std::endl;

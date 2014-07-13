@@ -166,23 +166,30 @@ namespace gum {
   }
 
 
+  template <typename GUM_SCALAR> INLINE
+  const InfluenceDiagram<GUM_SCALAR>& DefaultInfluenceDiagramInference<GUM_SCALAR>::infDiag() {
+    return  this->__infDiag;
+  }
+
   // displayResult : displays results obtained from inference
 
   template <typename GUM_SCALAR>
-  void
-  DefaultInfluenceDiagramInference<GUM_SCALAR>::displayResult ( std::ostream& stream ) {
+  std::string
+  DefaultInfluenceDiagramInference<GUM_SCALAR>::displayResult () {
+    std::stringstream stream;
 
     if ( !__inferenceMade )
       GUM_ERROR ( OperationNotAllowed, "No inference have yet been made" );
 
-    stream << "Espérance d'utilité finale : " << std::endl << std::flush;
+    stream << "max EU : " << std::endl ;
     stream << *__inferenceUtility << std::endl;
 
-    stream << "Choix maximisant l'espérance d'utilité : " << std::endl << std::flush;
+    stream << "Best choices : " << std::endl ;
 
     for ( HashTableConstIteratorSafe< NodeId, Idx > utilityIter = __utakenDecisionMap.beginSafe(); utilityIter != __utakenDecisionMap.endSafe(); ++utilityIter )
-      stream << "Decision " << this->influenceDiagram().variable ( utilityIter.key() ) << " : " << this->influenceDiagram().variable ( utilityIter.key() ).label ( utilityIter.val() ) << std::endl;
+      stream << "  - Decision " << this->influenceDiagram().variable ( utilityIter.key() ) << " : " << this->influenceDiagram().variable ( utilityIter.key() ).label ( utilityIter.val() ) << std::endl;
 
+    return stream.str();
   }
 
 
@@ -999,9 +1006,6 @@ namespace gum {
 
     __evidences.clear();
   }
-
-
-
 
 } /* namespace gum */
 

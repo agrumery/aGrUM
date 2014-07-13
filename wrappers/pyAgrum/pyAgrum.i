@@ -36,20 +36,19 @@ using namespace std;
 %include "potential.i"
 %include "utility.i"
 
+%include "graphs.i"
+
 %include "pylisteners.i"
 
 %include "bayesnet.i"
 %include "inference.i"
+%include "learning.i"
 %include "kl.i"
 
 %include "credalnet.i"
 
 %include "influenceDiagram.i"
 %include "influenceDiagramInference.i"
-
-%include "graphs.i"
-
-%include "learning.i"
 
 //////////////////////////////////////////////////////////////////
 /* extraction of the API for all wrappers */

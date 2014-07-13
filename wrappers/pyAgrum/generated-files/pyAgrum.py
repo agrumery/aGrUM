@@ -5963,7 +5963,11 @@ class InfluenceDiagram_double(DAGmodel):
 
     def utility(self, *args):
         """utility(InfluenceDiagram_double self, gum::NodeId varId) -> UtilityTable_double"""
-        return _pyAgrum.InfluenceDiagram_double_utility(self, *args)
+        val = _pyAgrum.InfluenceDiagram_double_utility(self, *args)
+        val.__fill_distrib__()
+
+
+        return val
 
 
     def isUtilityNode(self, *args):
@@ -6171,12 +6175,9 @@ class InfluenceDiagramInference_double(_object):
         return _pyAgrum.InfluenceDiagramInference_double_getBestDecisionChoice(self, *args)
 
 
-    def displayResult(self, *args):
-        """
-        displayResult(InfluenceDiagramInference_double self, std::ostream & stream=std::cout)
-        displayResult(InfluenceDiagramInference_double self)
-        """
-        return _pyAgrum.InfluenceDiagramInference_double_displayResult(self, *args)
+    def displayResult(self):
+        """displayResult(InfluenceDiagramInference_double self) -> std::string"""
+        return _pyAgrum.InfluenceDiagramInference_double_displayResult(self)
 
 
     def insertEvidence(self, *args):
@@ -6197,6 +6198,11 @@ class InfluenceDiagramInference_double(_object):
     def displayStrongJunctionTree(self, *args):
         """displayStrongJunctionTree(InfluenceDiagramInference_double self, std::ostream & stream=std::cout)"""
         return _pyAgrum.InfluenceDiagramInference_double_displayStrongJunctionTree(self, *args)
+
+
+    def infDiag(self):
+        """infDiag(InfluenceDiagramInference_double self) -> InfluenceDiagram_double"""
+        return _pyAgrum.InfluenceDiagramInference_double_infDiag(self)
 
 InfluenceDiagramInference_double_swigregister = _pyAgrum.InfluenceDiagramInference_double_swigregister
 InfluenceDiagramInference_double_swigregister(InfluenceDiagramInference_double)

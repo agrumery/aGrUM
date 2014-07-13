@@ -7,8 +7,7 @@
 def setEvidence(self, evidces):
     if not isinstance(evidces, dict):
         raise TypeError("setEvidence parameter must be dict, not %s"%(type(evidces)))
-    bn = self.bn()
-
+    bn = self.infDiag()
 
     # set evidences
     self.list_pot = []
@@ -90,10 +89,7 @@ def setEvidence(self, evidces):
       }
       self->insertEvidence(l);
     }
-}
 
-
-%extend gum::DefaultInfluenceDiagram<double> {
     const std::string junctionTreeToDot() {
       std::stringstream str;
       self->displayStrongJunctionTree(str);

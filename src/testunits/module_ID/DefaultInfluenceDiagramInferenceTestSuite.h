@@ -29,6 +29,7 @@
 #include <agrum/graphs/graphElements.h>
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/ID/inference/defaultInfluenceDiagramInference.h>
+#include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
 
 
 // The graph used for the tests:
@@ -482,15 +483,15 @@ namespace gum_tests {
 
         TS_ASSERT_THROWS ( dIDI->getMEU(), gum::OperationNotAllowed );
         TS_ASSERT_THROWS ( dIDI->getBestDecisionChoice ( idList[0] ), gum::OperationNotAllowed );
-        TS_ASSERT_THROWS ( dIDI->displayResult ( devnull ), gum::OperationNotAllowed );
+        TS_ASSERT_THROWS ( dIDI->displayResult (  ), gum::OperationNotAllowed );
         TS_GUM_ASSERT_THROWS_NOTHING ( dIDI->makeInference() );
         TS_GUM_ASSERT_THROWS_NOTHING ( dIDI->getMEU() );
         TS_GUM_ASSERT_THROWS_NOTHING ( dIDI->getBestDecisionChoice ( idList[0] ) );
         TS_ASSERT_THROWS ( dIDI->getBestDecisionChoice ( idList[2] ), gum::InvalidNode );
-        TS_GUM_ASSERT_THROWS_NOTHING ( dIDI->displayResult ( devnull ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( dIDI->displayResult (  ) );
 
         TS_GUM_ASSERT_THROWS_NOTHING ( dIDI->makeInference() );
-        TS_GUM_ASSERT_THROWS_NOTHING ( dIDI->displayResult ( devnull ) );
+        TS_GUM_ASSERT_THROWS_NOTHING ( dIDI->displayResult (  ) );
 
         delete dIDI;
         delete topology;
