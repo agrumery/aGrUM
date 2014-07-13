@@ -121,10 +121,10 @@ namespace gum {
       /// the next max translated value
       unsigned int __max_value { 0 };
       
-      /// the set of numbers found so far
+      /// the set of numbers found so far in the database
       gum::Bijection<float,unsigned int> __numbers;
 
-      /// the set of strings (actually their indices) found so far
+      /// the set of strings (actually their indices) found so far in the database
       gum::Bijection<int,unsigned int> __strings;
       
     };

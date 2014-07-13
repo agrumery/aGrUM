@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A class that transforms DBCell into compact ints (to speed-up learning)
+ * @brief A class that transforms DBCells into compact ints (to speed-up learning)
  *
  * This class is intended to be used after the initialization of a filteredRow
  * on a database. By using this filteredRow, we can convert the database into a
@@ -51,7 +51,7 @@ namespace gum {
     // ============================================================================
     /** @class DBTransformCompactInt
      * @ingroup learning_group
-     * @brief A class that transforms DBCell into compact ints
+     * @brief A class that transforms DBCells into compact ints
      * (to speed-up learning)
      *
      * This class is intended to be used after the initialization of a filteredRow

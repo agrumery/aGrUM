@@ -41,18 +41,23 @@ namespace gum {
       DBHandler& handler = filter.handler ();
 
       // parse the database
-      while ( filter.hasRows () ) {
-        // get the initial row
-        DBRow& input_row = handler.row ();
+      try {
+        while ( filter.hasRows () ) {
+          // get the initial row
+          DBRow& input_row = handler.row ();
 
-        // get the row as converted by the cell translators
-        FilteredRow& output_row = filter.row ();
+          // get the row as converted by the cell translators
+          FilteredRow& output_row = filter.row ();
 
-        // assign the output row to the intput
-        for ( unsigned int i = 0, size = input_row.size (); i < size; ++i ) {
-          input_row[i].setFloat ( output_row[i] );
+          // assign the output row to the intput
+          for ( unsigned int i = 0, size = input_row.size (); i < size; ++i ) {
+            input_row[i].setFloat ( output_row[i] );
+          }
         }
       }
+      catch ( NotFound& ) {} // NotFound is raised if the row filter does not
+                             // produce any output row for the last rows of
+                             // the database
       
       return true;
     } 
