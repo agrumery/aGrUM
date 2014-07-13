@@ -105,8 +105,9 @@ namespace gum {
       }
 
       /// sets the filtered row used as input to generate new output filtered rows 
-      void setInputRow ( FilteredRow& row ) noexcept {
+      bool setInputRow ( FilteredRow& row ) noexcept {
         __input_row = &row;
+        return true;
       }
 
       /// clear the sets of rows to generate
@@ -218,7 +219,7 @@ namespace gum {
       bool hasRows () noexcept;
 
       /// sets the input row from which the generator will create new rows
-      void setInputRow ( FilteredRow& row ) noexcept;
+      bool setInputRow ( FilteredRow& row ) noexcept;
       
       /// generate new rows from the input row
       FilteredRow& generate ();

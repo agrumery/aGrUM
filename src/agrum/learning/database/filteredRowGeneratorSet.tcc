@@ -101,15 +101,28 @@ namespace gum {
     template<typename Generator, typename... OtherGenerators> INLINE
     bool
     FilteredRowGeneratorSet<Generator,OtherGenerators...>::hasRows () noexcept {
-      return __first_generator.hasRows () || NextGenerators::hasRows ();
+      if ( NextGenerators::hasRows () ) return true;
+      while ( __first_generator.hasRows () ) {
+        if ( NextGenerators::setInputRow ( __first_generator.generate () ) ) {
+          return true;
+        }
+      }
+      return false;
     }
 
 
     /// sets the input row from which the generator will create new rows
     template<typename Generator, typename... OtherGenerators> INLINE
-    void FilteredRowGeneratorSet<Generator,OtherGenerators...>::setInputRow
+    bool FilteredRowGeneratorSet<Generator,OtherGenerators...>::setInputRow
     ( FilteredRow& row ) noexcept {
       __first_generator.setInputRow ( row );
+      while ( __first_generator.hasRows () ) {
+        if ( NextGenerators::setInputRow ( __first_generator.generate () ) ) {
+          return true;
+        }
+      }
+
+      return false;
     }
 
     
@@ -117,7 +130,7 @@ namespace gum {
     template<typename Generator, typename... OtherGenerators> INLINE
     FilteredRow&
     FilteredRowGeneratorSet<Generator,OtherGenerators...>::generate () {
-      if ( ! NextGenerators::hasRows () )
+      if ( ! NextGenerators::hasRows () && __first_generator.hasRows () )
         NextGenerators::setInputRow ( __first_generator.generate () );
       return NextGenerators::generate ();
     }

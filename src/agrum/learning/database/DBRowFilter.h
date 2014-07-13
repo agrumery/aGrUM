@@ -118,10 +118,56 @@ namespace gum {
       /// @{
 
       /// returns true if there are still rows that can be output by the RowFilter
+      /** The usual way of calling this method is to encapsulate it into a while
+       * loop whose stopping condition is when the handler has no more rows.
+       * This loop shall be inside a try-catch statement that enables to
+       * stop properly the loop when the NotFound exception is raised. In most
+       * practical cases, this exception will never be raised, but if you use
+       * a row generator that enables to return 0 row (say, for instance an
+       * intelligent EM that does not return any row when there are too many
+       * missing data) and if the last rows of the database are such that this
+       * generator will return no row, then the exception will be raised.
+       * Actually, it is not efficient to parse all the database to detect such
+       * a case before trying to return the rows, especially because this
+       * situation is very unlikely to occur. So a correct code to use method
+       * row () is like:
+       * @code
+       * try {
+       *   while ( handler.hasRows () ) {
+       *     FilteredRow& row = row_filter.row ();
+       *     do_whatever_you_want_with_the_row... ;
+       *   }
+       * }
+       * catch ( NotFound& ) { // stop, there are no more rows to process }
+       * @encode
+       */
       bool hasRows () noexcept;
 
       /// returns a new output row with its corresponding weight
-      FilteredRow& row () noexcept;
+      /** The usual way of calling this method is to encapsulate it into a while
+       * loop whose stopping condition is when the handler has no more rows.
+       * This loop shall be inside a try-catch statement that enables to
+       * stop properly the loop when the NotFound exception is raised. In most
+       * practical cases, this exception will never be raised, but if you use
+       * a row generator that enables to return 0 row (say, for instance an
+       * intelligent EM that does not return any row when there are too many
+       * missing data) and if the last rows of the database are such that this
+       * generator will return no row, then the exception will be raised.
+       * Actually, it is not efficient to parse all the database to detect such
+       * a case before trying to return the rows, especially because this
+       * situation is very unlikely to occur. So a correct code to use method
+       * row () is like:
+       * @code
+       * try {
+       *   while ( handler.hasRows () ) {
+       *     FilteredRow& row = row_filter.row ();
+       *     do_whatever_you_want_with_the_row... ;
+       *   }
+       * }
+       * catch ( NotFound& ) { // stop, there are no more rows to process }
+       * @encode
+       */
+      FilteredRow& row ();
       
       /// resets the filter
       virtual void reset ();
@@ -134,8 +180,11 @@ namespace gum {
       std::vector<unsigned int> modalities () const;
 
       /// returns the names of the variables
-      std::vector<std::string> variableNames () const;
+      const std::vector<std::string>& variableNames () const noexcept;
 
+      /// returns the number of variables
+      unsigned int nbVariables () const noexcept;
+      
       /// returns the translator set that is actually used
       const TranslatorSet& translatorSet () const noexcept;
 
