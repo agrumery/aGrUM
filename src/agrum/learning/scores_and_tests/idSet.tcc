@@ -79,8 +79,12 @@ namespace gum {
     template <typename Alloc>
     template <typename OtherAlloc> INLINE
     IdSet<Alloc>::IdSet ( const IdSet<OtherAlloc>& from ) :
-      __ids ( from.__ids ),
       __size ( from.__size ) {
+      __ids.reserve ( from.__ids.size () );
+      for ( auto id : from.__ids ) {
+        __ids.push_back ( id );
+      }
+        
       GUM_CONS_CPY ( IdSet );
     }
 
@@ -116,10 +120,12 @@ namespace gum {
     template <typename Alloc>
     template <typename OtherAlloc> INLINE
     IdSet<Alloc>& IdSet<Alloc>::operator= ( const IdSet<OtherAlloc>& from ) {
-      if ( this != &from ) {
-        __ids = from.__ids;
-        __size = from.__size;
+      __ids.clear ();
+      for ( auto id : from.__ids ) {
+        __ids.push_back ( id );
       }
+      __size = from.__size;
+      
       return *this;
     }
 
@@ -157,6 +163,9 @@ namespace gum {
       }
 
       // here, min_index is he location where id should be inserted
+      // it can correspond to end(), i.e., the insertion has to take place
+      // after the last element of the vector, but this is OK, the STL vector
+      // allows for this operation.
       __ids.insert ( __ids.begin() + min_index, id );
       __size *= 2;
       

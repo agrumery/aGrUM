@@ -76,13 +76,13 @@ namespace gum {
     unsigned int RecordCounterThreadBase<IdSetAlloc,CountAlloc>::addNodeSet
     ( const std::vector<unsigned int,IdSetAlloc>& ids ) {
       // adds the nodeset
-      unsigned int nodeset_id = _nodesets.size ();
+      const unsigned int nodeset_id = _nodesets.size ();
       _nodesets.push_back ( &ids );
 
       // compute the size of the nodeset and allocate a counting correspondingly
       unsigned int size = 1;
 
-      for ( const auto& id : ids ) {
+      for ( const auto id : ids ) {
         size *= _modalities->operator[] ( id );
       }
 
@@ -173,25 +173,32 @@ namespace gum {
     RecordCounterThread<RowFilter,IdSetAlloc,CountAlloc>::count () {
       __filter.reset ();
 
-      while ( __filter.hasRows () ) {
-        // get the observed filtered rows
-        FilteredRow& row = __filter.row ();
+      // get the number of nodesets to process
+      const unsigned int size = this->_nodesets.size ();
+      
+      try {
+        while ( __filter.hasRows () ) {
+          // get the observed filtered rows
+          FilteredRow& row = __filter.row ();
 
-        // fill the counts for the ith nodeset
-        for ( unsigned int i = 0, size = this->_nodesets.size ();
-              i < size; ++i ) {
-          const std::vector<unsigned int>& var_ids = * ( this->_nodesets[i] );
-          unsigned int offset = 0;
-          unsigned int dim = 1;
+          // fill the counts for the ith nodeset
+          for ( unsigned int i = 0; i < size; ++i ) {
+            const std::vector<unsigned int>& var_ids = * ( this->_nodesets[i] );
+            unsigned int offset = 0;
+            unsigned int dim = 1;
 
-          for ( unsigned int j = 0, vsize = var_ids.size (); j < vsize; ++j ) {
-            offset += row[var_ids[j]] * dim;
-            dim *= this->_modalities->operator[] ( var_ids[j] );
+            for ( unsigned int j = 0, vsize = var_ids.size (); j < vsize; ++j ) {
+              offset += row[var_ids[j]] * dim;
+              dim *= this->_modalities->operator[] ( var_ids[j] );
+            }
+
+            this->_countings[i][offset] += row.weight ();
           }
-
-          this->_countings[i][offset] += row.weight ();
         }
       }
+      catch ( NotFound& ) {} // this exception is raised by the row filter if the
+                             // row generators create no output row from the last
+                             // rows of the database 
     }
 
 
@@ -270,7 +277,6 @@ namespace gum {
         throw;
       }
 
-      __nodesets.resize ( __idsets.size () );
       __set2thread_id.resize ( __idsets.size () );
 
       for ( auto iter = __idsets.cbegin (); iter != __idsets.cend (); ++iter ) {
@@ -334,7 +340,7 @@ namespace gum {
       // allocate a count vector of the domain size of the idset
       unsigned int set_size = 1;
 
-      for ( const auto& id : ids ) {
+      for ( const auto id : ids ) {
         set_size *= __modalities->operator[] ( id );
       }
 
@@ -346,7 +352,7 @@ namespace gum {
       __nodesets.push_back ( &ids );
 
       // for empty sets
-      if ( ! set_size ) {
+      if ( ids.empty () ) {
         __set_state.push_back ( SetState::EMPTY_SET );
         __set2thread_id.push_back
         ( std::pair<const IdSet<IdSetAlloc>*,unsigned int> ( nullptr, 0 ) );
@@ -362,7 +368,7 @@ namespace gum {
         __set_state.push_back ( SetState::NOT_SUBSET );
 
         const IdSet<IdSetAlloc>& idset =
-          __idsets.insert ( std::move ( tmp_idset ), node ).first;
+          __idsets.insert ( std::move ( tmp_idset ), std::move ( node ) ).first;
         __idset2index.insert ( &idset, node );
         __set2thread_id.push_back
         ( std::pair<const IdSet<IdSetAlloc>*,unsigned int> ( &idset, node ) );
@@ -371,12 +377,14 @@ namespace gum {
         for ( auto id : ids ) {
           try {
             __var2idsets[id].push_back ( &idset );
-          } catch ( NotFound& ) {
+          }
+          catch ( NotFound& ) {
             __var2idsets.insert ( id, std::vector<const IdSet<IdSetAlloc>*> () );
             __var2idsets[id].push_back ( &idset );
           }
         }
-      } else {
+      }
+      else {
         // this set is a copy of another set
         __set_state.push_back ( SetState::COPY_SET );
 
@@ -396,12 +404,12 @@ namespace gum {
     void RecordCounter<IdSetAlloc,CountAlloc>::countOnSubDatabase () {
       // now, for all the non-subsets, compute their countings
       // start parallel ThreadCounters
-      unsigned long db_size = __thread_counters[0]->DBSize ();
+      const unsigned long db_size = __thread_counters[0]->DBSize ();
 
       #pragma omp parallel num_threads ( __max_threads_number )
       {
         // create ThreadCounters if needed
-        int num_threads = getNumberOfRunningThreads();
+        const int num_threads = getNumberOfRunningThreads();
 
         #pragma omp single
         {
@@ -413,7 +421,7 @@ namespace gum {
         }
 
         // initialize the thread counters
-        int this_thread = getThreadNumber();
+        const int this_thread = getThreadNumber();
         RecordCounterThreadBase<IdSetAlloc,CountAlloc>&
         thread_counter = * ( __thread_counters[this_thread] );
         thread_counter.clearNodeSets ();
@@ -425,11 +433,11 @@ namespace gum {
         }
 
         // indicate to the filter which part of the database it must parse
-        unsigned long
+        const unsigned long
         size_per_thread = ( db_size + num_threads - 1 ) / num_threads;
-        unsigned long min_range = size_per_thread * this_thread;
-        unsigned long max_range = std::min ( min_range + size_per_thread,
-                                             db_size );
+        const unsigned long min_range = size_per_thread * this_thread;
+        const unsigned long max_range = std::min ( min_range + size_per_thread,
+                                                   db_size );
         thread_counter.setRange ( min_range, max_range );
 
         // compute the counts
@@ -441,9 +449,9 @@ namespace gum {
       // perform the aggregation of the countings
       #pragma omp parallel num_threads ( __nb_thread_counters )
       {
-        int this_thread = getThreadNumber ();
+        const int this_thread = getThreadNumber ();
         auto& counter = * ( __thread_counters[this_thread] );
-        unsigned int size_per_thread, min_range, max_range;
+        unsigned long size_per_thread, min_range, max_range;
 
         for ( unsigned int i = 0, size = __countings.size (); i < size; ++i ) {
           if ( __set_state[i] == SetState::NOT_SUBSET ) {
@@ -457,7 +465,7 @@ namespace gum {
             // add to vect the countings of the other threads
             min_range = size_per_thread * this_thread;
             max_range = std::min ( min_range + size_per_thread,
-                                   ( unsigned int ) vect.size () );
+                                   ( unsigned long ) vect.size () );
 
             for ( unsigned int j = 0; j < __nb_thread_counters; ++j ) {
               if ( j != this_thread ) {
@@ -472,12 +480,10 @@ namespace gum {
 
             // now copy what we just computed into the countings of the
             // current object
-            for ( unsigned int k = min_range; k < max_range; ++k ) {
-              std::vector<float,CountAlloc>& final_vect = __countings[i];
+            std::vector<float,CountAlloc>& final_vect = __countings[i];
 
-              for ( unsigned int k = min_range; k < max_range; ++k ) {
-                final_vect[k] = vect[k];
-              }
+            for ( unsigned int k = min_range; k < max_range; ++k ) {
+              final_vect[k] = vect[k];
             }
           }
         }
@@ -698,7 +704,11 @@ namespace gum {
       // sort the idSets by increasing size order for each variable
       for ( auto iter = __var2idsets.begin ();
             iter != __var2idsets.end (); ++iter ) {
-        std::sort ( iter.val().begin(), iter.val().end(), __sortIdSetBySize );
+        std::sort ( iter.val().begin(), iter.val().end(),
+                    [] ( const IdSet<IdSetAlloc>* set1,
+                         const IdSet<IdSetAlloc>* set2 ) -> bool {
+                      return set1->ids().size () < set2->ids().size ();
+                    } );
       }
 
       // now, for each IdSet, determine if it is a subset of another IdSet

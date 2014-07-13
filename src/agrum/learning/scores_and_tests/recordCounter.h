@@ -18,7 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A class used by RecordCounter to detect subsets of variables
+ * @brief The class that computes countings of observations from the database.
+ *
+ * This class is the one to be called by scores and independence tests to
+ * compute countings of observations from tabular databases. It calls
+ * as many RecordCounterThreads as possible to do the job in parallel. 
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -135,7 +139,7 @@ namespace gum {
       static constexpr unsigned int _cache_size { 128 };
       
       /// used to prevent cacheline omp parallel problems
-      char _align[ _cache_size ];
+      const char _align[ _cache_size ] {};
 
     };
 
@@ -238,7 +242,7 @@ namespace gum {
      * @ingroup learning_group
      * @brief The class that computes countings of observations from the database.
      *
-     * This calls is the one to be called by scores and independence tests to
+     * This class is the one to be called by scores and independence tests to
      * compute countings of observations from tabular databases. It calls
      * as many RecordCounterThreads as possible to do the job in parallel. 
      */
@@ -280,10 +284,11 @@ namespace gum {
       /// performs countings from the database by cutting it into several pieces
       /** This method implements a parallel counting strategy which consists of
        * cutting the database into a set of more or less equal-size pieces and
-       * to call one RecordThreadCounter for each such piece. The latter then
-       * perform countings for all the non-included sets of ids. When all the
-       * database has been parsed, the countings are aggregated to result in
-       * countings over the whole database. */
+       * to call one RecordCounterThread for each such piece. The latter then
+       * perform countings for all the sets of ids non-included into other sets
+       * (i.e., proper supersets). When all the database has been parsed, the
+       * countings are aggregated to result in countings over the whole
+       * database. */
       void countOnSubDatabase ();
 
       /// performs the countings of the ids' subsets from those of their supersets

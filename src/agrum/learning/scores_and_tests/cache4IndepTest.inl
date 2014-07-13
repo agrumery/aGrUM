@@ -85,7 +85,8 @@ namespace gum {
                               float score ) {
       if ( var1 > var2 ) std::swap ( var1, var2 );
       __scores.insert ( std::tuple<IdSet<>,unsigned int,unsigned int>
-                        ( IdSet<> ( conditioning_set, 0 ), var1, var2 ), score );
+                        ( IdSet<> ( conditioning_set, 0 ), var1, var2 ),
+                        std::move ( score ) );
     }
 
     
@@ -98,7 +99,8 @@ namespace gum {
                               float score ) {
       if ( var1 > var2 ) std::swap ( var1, var2 );
       __scores.insert ( std::tuple<IdSet<>,unsigned int,unsigned int>
-                        ( IdSet<> ( conditioning_set ), var1, var2 ), score );
+                        ( IdSet<> ( conditioning_set ), var1, var2 ),
+                        std::move ( score ) );
     }
 
 
@@ -121,7 +123,7 @@ namespace gum {
                              const IdSet<Alloc>& conditioning_set ) {
       if ( var1 > var2 ) std::swap ( var1, var2 );
       __scores.erase ( std::tuple<IdSet<>,unsigned int,unsigned int>
-                       ( IdSet<> ( conditioning_set ), var1, var2 ) );
+                       ( conditioning_set, var1, var2 ) );
     }
                    
 

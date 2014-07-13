@@ -83,7 +83,8 @@ namespace gum {
                           const std::vector<unsigned int>& conditioning_set,
                           float score ) {
       __scores.insert ( std::pair<IdSet<>,unsigned int>
-                        ( IdSet<> ( conditioning_set, 0 ), var ), score );
+                        ( IdSet<> ( conditioning_set, 0 ), var ),
+                        std::move ( score ) );
     }
 
     
@@ -94,7 +95,8 @@ namespace gum {
                           IdSet<Alloc>& conditioning_set,
                           float score ) {
       __scores.insert ( std::pair<IdSet<>,unsigned int>
-                        ( IdSet<> ( conditioning_set ), var ), score );
+                        ( IdSet<> ( conditioning_set ), var ),
+                        std::move ( score ) );
     }
 
 
@@ -113,7 +115,7 @@ namespace gum {
     Cache4Score::erase ( unsigned int var,
                          const IdSet<Alloc>& conditioning_set ) {
       __scores.erase ( std::pair<IdSet<>,unsigned int>
-                       ( IdSet<> ( conditioning_set ), var ) );
+                       ( conditioning_set, var ) );
     }
                    
 
