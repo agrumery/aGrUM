@@ -32,7 +32,9 @@ using namespace std;
 //////////////////////////////////////////////////////////////////
 %include "core.i"
 %include "variables.i"
+
 %include "potential.i"
+%include "utility.i"
 
 %include "pylisteners.i"
 
@@ -41,6 +43,9 @@ using namespace std;
 %include "kl.i"
 
 %include "credalnet.i"
+
+%include "influenceDiagram.i"
+%include "influenceDiagramInference.i"
 
 %include "graphs.i"
 
@@ -54,6 +59,8 @@ using namespace std;
 
 %pythoncode %{
 Potential = Potential_double
+UtilityTable = UtilityTable_double
+
 randomDistribution = randomDistribution_double
 
 SimpleBayesNet = IBayesNet_double
@@ -69,5 +76,8 @@ CNMonteCarloSampling = CNMonteCarloSampling_double
 CNLoopyPropagation = CNLoopyPropagation_double
 
 DiscretizedVariable = DiscretizedVariable_double
+
+InfluenceDiagram = InfluenceDiagram_double
+InfluenceDiagramInference = InfluenceDiagramInference_double
 %}
 

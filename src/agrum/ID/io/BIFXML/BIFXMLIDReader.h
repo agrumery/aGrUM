@@ -82,9 +82,6 @@ public:
 
 
 namespace gum {
-
-
-
   /**
    * @class BIFXMLIDReader
    * @brief Read an influence diagram from an XML file with BIF format.

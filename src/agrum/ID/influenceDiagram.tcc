@@ -761,11 +761,13 @@ namespace gum {
       current = nodeFIFO.front();
       nodeFIFO.popFront();
 
+      /*
       const ArcSet& set = _dag.children ( current );
 
       for ( ArcSet::const_iterator_safe childIte = set.beginSafe(); childIte != set.endSafe(); ++childIte ) {
-        NodeId new_one = childIte->head();
+        NodeId new_one = childIte->head();*/
 
+      for ( auto new_one : _dag.children ( current ) ) {
         if ( mark[new_one] ) continue; // if this node is already marked, continue
 
         mark[new_one] = true;
@@ -858,5 +860,5 @@ namespace gum {
   }
 
 }
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
 

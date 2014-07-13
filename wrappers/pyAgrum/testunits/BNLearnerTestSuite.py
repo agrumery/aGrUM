@@ -33,6 +33,20 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     def testHillClimbingAccurate(self):
         learner=gum.BNLearner("../../../src/testunits/ressources/asia.csv")
+        
+        witness=['smoking?',
+                 'lung_cancer?',
+                 'bronchitis?',
+                 'visit_to_Asia?',
+                 'tuberculosis?',
+                 'tuberculos_or_cancer?',
+                 'dyspnoea?',
+                 'positive_XraY?']
+        for n in witness:
+          self.assertTrue(n in learner.names())
+        for n in learner.names():
+          self.assertTrue(n in witness)
+          
         learner.useGreedyHillClimbing()
         bn=learner.learnBN()
 

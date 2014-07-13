@@ -4,7 +4,7 @@
 %ignore gum::MultiDimDecorator;
 %ignore gum::MultiDimArray;
 
-/* Synchronisation between gom::Potential and numpy array */
+/* Synchronisation between gum::Potential and numpy array */
 %pythonappend gum::Potential::Potential %{
         self._notSync=True
 %}

@@ -228,3 +228,13 @@ def getJunctionTree(bn,size="4"):
 def showJunctionTree(bn,size="4"):
   gr=getJunctionTree(bn,size)
   IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))
+
+def getInfluenceDiagram(diag,size="4"):
+  graph=pydot.graph_from_dot_data(diag.toDot())
+  graph.set_size(size)
+  return IPython.display.SVG(graph.create_svg())
+
+def showInfluenceDiagram(diag,size="4"):
+  gr=getInfluenceDiagram(diag,size)
+  IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))
+  

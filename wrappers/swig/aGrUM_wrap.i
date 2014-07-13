@@ -55,6 +55,7 @@
 #include <agrum/variables/discretizedVariable.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/multidim/potential.h>
+#include <agrum/multidim/utilityTable.h>
 #include <agrum/multidim/multiDimArray.h>
 
 #include <agrum/BN/IBayesNet.h>
@@ -91,6 +92,12 @@
 #include <agrum/CN/CNLoopyPropagation.h>
 
 #include <agrum/learning/BNLearner.h>
+
+#include <agrum/ID/influenceDiagram.h>
+#include <agrum/ID/inference/defaultInfluenceDiagramInference.h>
+#include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
+#include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
+#include <agrum/ID/generator/influenceDiagramGenerator.h>
 %}
 
 
@@ -99,30 +106,9 @@
 
 namespace std {
   %template ( Vector_double) vector<double>;
+  %template ( Vector_string) vector<string>;
 }
 
-
-%typemap ( out ) std::vector<double> {
-  unsigned int iLen = $1.size();
-  $result = PyList_New ( iLen );
-
-  for ( unsigned int i = 0;
-        i < iLen;
-        i++ ) {
-    PyList_SetItem ( $result, i, PyFloat_FromDouble ( ( double ) $1.at ( i ) ));
-  }
-}
-
-%typemap ( out ) const std::vector<std::string>& {
-  unsigned int iLen = $1->size();
-  $result = PyList_New ( iLen );
-
-  for ( unsigned int i = 0;
-        i < iLen;
-        i++ ) {
-    PyList_SetItem ( $result, i, PyString_FromString ( $1->at ( i ).c_str() ));
-  }
-}
 
 /* EXCEPTION HANDLING */
 %exceptionclass std::bad_cast;
@@ -186,6 +172,7 @@ namespace std {
 %include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
 %include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
 %include <agrum/multidim/potential.h>
+%include <agrum/multidim/utilityTable.h>
 %include <agrum/multidim/multiDimArray.h>
 
 %import <agrum/core/refPtr.h>
@@ -211,6 +198,8 @@ namespace std {
 %import <agrum/graphs/listeners/diGraphListener.h>
 %import <agrum/BN/io/BIF/BIFReader.h>
 
+%include <agrum/learning/BNLearner.h>
+
 %include <agrum/CN/credalNet.h>
 %include <agrum/CN/varMod2BNsMap.h>
 %include <agrum/CN/inferenceEngine.h>
@@ -218,7 +207,8 @@ namespace std {
 %include <agrum/CN/CNMonteCarloSampling.h>
 %include <agrum/CN/CNLoopyPropagation.h>
 
-%include <agrum/learning/BNLearner.h>
+%include <agrum/ID/influenceDiagram.h>
+%include <agrum/ID/inference/defaultInfluenceDiagramInference.h>
 
 /* CLASS EXTENSIONS */
 %extend gum::DiscreteVariable {
@@ -511,6 +501,7 @@ namespace std {
 %template ( MultiDimArray_double ) gum::MultiDimArray<double>;
 
 %template ( Potential_double ) gum::Potential<double>;
+%template ( UtilityTable_double ) gum::UtilityTable<double>;
 
 %template (IBayesNet_double ) gum::IBayesNet<double>;
 %template ( BayesNet_double ) gum::BayesNet<double>;
@@ -527,3 +518,5 @@ namespace std {
 %template ( CNMonteCarloSampling_double ) gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double> >;
 %template ( CNLoopyPropagation_double ) gum::credal::CNLoopyPropagation<double>;
 
+%template ( InfluenceDiagram_double) gum::InfluenceDiagram<double>;
+%template ( InfluenceDiagramInference_double) gum::DefaultInfluenceDiagramInference<double>;
