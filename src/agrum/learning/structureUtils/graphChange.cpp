@@ -50,7 +50,7 @@ namespace gum {
         return stream.str ();
 
       case GraphChangeType::ARC_DELETION:
-        stream << "ArcAddition ( " << node1 () << " , " << node2 () << " )";
+        stream << "ArcDeletion ( " << node1 () << " , " << node2 () << " )";
         return stream.str ();
 
       case GraphChangeType::ARC_REVERSAL:
@@ -62,12 +62,12 @@ namespace gum {
         return stream.str ();
 
       case GraphChangeType::EDGE_DELETION:
-        stream << "EdgeAddition ( " << node1 () << " , " << node2 () << " )";
+        stream << "EdgeDeletion ( " << node1 () << " , " << node2 () << " )";
         return stream.str ();
 
       default:
         GUM_ERROR ( OperationNotAllowed,
-                    "edge modifications are not supported yet" );
+                    "this graph modification is not supported yet" );
       }
    }
 
@@ -133,7 +133,7 @@ namespace gum {
     }
 
     
-    /// a \c << operator for ArcDeletion
+    /// a \c << operator for ArcReversal
     std::ostream& operator<< ( std::ostream& stream,
                                const ArcReversal& change ) {
       return stream << change.toString ();

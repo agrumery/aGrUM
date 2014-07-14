@@ -29,22 +29,22 @@
  * this set of operations. However, there may be cases where we would like to
  * apply these operators, say, only on a subgraph. In this case, we should use
  * the derived class of GraphChangesGenerator4DiGraph named
- * GraphChangesGeneratorOnSubDiGraph. Anyway, all the search operator sets should
+ * GraphChangesGeneratorOnSubDiGraph. Anyway, all the search generators should
  * have the following minimal methods:
  *   - void setGraph ( const DiGraph& ) : assigns a new graph as a starting
  *     point to the generator of graph change operators
- *   - void modifyGraph ( const GraphChange& ) : indicate to the operator set
+ *   - void modifyGraph ( const GraphChange& ) : indicate to the generator
  *     that the graph has been changed and that we need to compute the new
  *     operators that result from this change
- *   - void clearChanges () : empty the set of possible operators
+ *   - void clearChanges () : empty the set of possible changes
  *   - methods begin () and end () that return iterators allowing to parse the
- *     available set of operators.
+ *     available set of changes.
  *
  * Basically, the idea is to use method setGraph at the beginning of the
- * structure learning in order to initialize the possible set of operators.
- * Then, parse this set using a for ( auto iter = operator_set.begin ();
- * iter != operator_set.end (); ++iter ) loop and compute the scores
- * induced by these changes. When this is done, flush the operator set by
+ * structure learning in order to initialize the possible set of changes.
+ * Then, parse this set using a for ( auto iter = generator.begin ();
+ * iter != generator.end (); ++iter ) loop and compute the scores
+ * induced by these changes. When this is done, flush the generator by
  * calling method clearChanges. Then iterate changes and after each new change
  * applied, used again the iterator for loop, and so on. Note that, whenever
  * you execute method modifyGraph, this will automatically flush the current
@@ -83,22 +83,22 @@ namespace gum {
      * provides exactly this set of operations. However, there may be cases where
      * we would like to apply these operators, say, only on a subgraph. In this
      * case, we should use the derived class of GraphChangesGenerator4DiGraph named
-     * GraphChangesGeneratorOnSubDiGraph. Anyway, all the search operator sets
+     * GraphChangesGeneratorOnSubDiGraph. Anyway, all the search generators
      * should have the following minimal methods:
      *   - void setGraph ( const DiGraph& ) : assigns a new graph as a starting
      *     point to the generator of graph change operators
-     *   - void modifyGraph ( const GraphChange& ) : indicate to the operator set
+     *   - void modifyGraph ( const GraphChange& ) : indicate to the generator
      *     that the graph has been changed and that we need to compute the new
      *     operators that result from this change
-     *   - void clearChanges () : empty the set of possible operators
+     *   - void clearChanges () : empty the set of possible changes
      *   - methods begin () and end () that return iterators allowing to parse the
-     *     available set of operators.
+     *     available set of changes.
      *
      * Basically, the idea is to use method setGraph at the beginning of the
-     * structure learning in order to initialize the possible set of operators.
-     * Then, parse this set using a for ( auto iter = operator_set.begin ();
-     * iter != operator_set.end (); ++iter ) loop and compute the scores
-     * induced by these changes. When this is done, flush the operator set by
+     * structure learning in order to initialize the possible set of changes.
+     * Then, parse this set using a for ( auto iter = generator.begin ();
+     * iter != generator.end (); ++iter ) loop and compute the scores
+     * induced by these changes. When this is done, flush the generator by
      * calling method clearChanges. Then iterate changes and after each new change
      * applied, used again the iterator for loop, and so on. Note that, whenever
      * you execute method modifyGraph, this will automatically flush the current
@@ -180,19 +180,19 @@ namespace gum {
       /// returns the constraint that is used by the generator
       STRUCT_CONSTRAINT& constraint () const noexcept;
 
-      /// sets a new graph from which the operator will compute possible changes
+      /// sets a new graph from which the generator will compute possible changes
       void setGraph ( const DiGraph& graph );
 
-      /// notify the operator set of a change applied to the graph
+      /// notify the generator of a change applied to the graph
       void modifyGraph ( const ArcAddition& change );
 
-      /// notify the operator set of a change applied to the graph
+      /// notify the generator of a change applied to the graph
       void modifyGraph ( const ArcDeletion& change );
 
-      /// notify the operator set of a change applied to the graph
+      /// notify the generator of a change applied to the graph
       void modifyGraph ( const ArcReversal& change );
 
-      /// notify the operator set of a change applied to the graph
+      /// notify the generator of a change applied to the graph
       void modifyGraph ( const GraphChange& change );
 
       /// empty the set of possible change operators that can be applied
@@ -211,10 +211,10 @@ namespace gum {
       /// the graph on which we generate operators
       DiGraph _graph;
 
-      /// a reference on the structural constraint used to restrict the changes
+      /// the structural constraint used to restrict the changes
       STRUCT_CONSTRAINT* _constraint;
 
-      /// the current set of operators
+      /// the current set of graph changes
       Set<GraphChange> _legal_changes;
 
       /// create the set of legal and illegal changes from a given graph
