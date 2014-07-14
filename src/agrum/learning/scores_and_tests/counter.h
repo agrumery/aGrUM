@@ -53,6 +53,7 @@
 
 #include <vector>
 #include <agrum/config.h>
+#include <agrum/core/math/math.h>
 #include <agrum/learning/scores_and_tests/recordCounter.h>
 
 
@@ -337,13 +338,32 @@ namespace gum {
 
       
     protected:
-      /// the modalities of the variables
+      /// 1 / log(2)
+      const float _1log2 { M_LOG2E };
+
+       /// the modalities of the variables
       const std::vector<unsigned int>& _modalities;
 
       /// indicates whether we have already computed the countings of the nodesets
       bool _counts_computed { false };
 
+      /// the recordCounter that will parse the database
+      RecordCounter<IdSetAlloc,CountAlloc> _record_counter;
       
+      /// the target id sets to count and their indices in the record counter
+      std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* >
+      _target_nodesets;
+
+      /// the conditioning id sets to count and their indices in the record counter
+      std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* >
+      _conditioning_nodesets;
+
+      
+ 
+      
+      /// perform the computation of the countings
+      void _count ();
+
       /// returns the counting vector for a given (conditioned) target set
       /** This method returns the observtion countings for the set of variables
        * whose index was returned by method addNodeSet or addNodeSets. If the
@@ -394,26 +414,6 @@ namespace gum {
       _getConditioningNodes () const noexcept;
 
       
-      /// 1 / log(2)
-      const float _1log2 { M_LOG2E };
-
-      
-
-      /// the recordCounter that will parse the database
-      RecordCounter<IdSetAlloc,CountAlloc> _record_counter;
-      
-      /// the target id sets to count and their indices in the record counter
-      std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* >
-      _target_nodesets;
-
-      /// the conditioning id sets to count and their indices in the record counter
-      std::vector< std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* >
-      _conditioning_nodesets;
-
- 
-      /// perform the computation of the countings
-      void _count ();
-
       
       // ##########################################################################
       // ##########################################################################

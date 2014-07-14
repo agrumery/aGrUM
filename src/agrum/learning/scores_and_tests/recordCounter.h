@@ -37,6 +37,7 @@
 #include <climits>
 
 #include <agrum/core/hashTable.h>
+#include <agrum/core/bijection.h>
 #include <agrum/core/OMPThreads.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/learning/database/DBRowFilter.h>
@@ -331,7 +332,7 @@ namespace gum {
        * in __nodesets ONLY of one copy of identical sets, the others are
        * deduced from it. IdSets are used to quickly determine which sets are
        * included into others. */
-      HashTable<IdSet<IdSetAlloc>, unsigned int> __idsets;
+      Bijection<IdSet<IdSetAlloc>, unsigned int> __idsets;
       
       /// the vector of the unordered ids' vectors used to generate the idsets
       /** When the user add nodes (i.e., vectors of ids), those are unordered
@@ -368,7 +369,9 @@ namespace gum {
        * we mean that, when several sets are identical, only the first one
        * inserted by addNodeSet is put into the hashtable. This table is
        * used as a helper in __computeSubsets to determine quickly the
-       * indices of supersets in __nodesets. */
+       * indices of supersets in __nodesets (the content of __idset2index is
+       * similar to that of __idsets, except that it is faster to search
+       * within hashtables pointer to idsets rather than idsets themselves. */
       HashTable<const IdSet<IdSetAlloc>*, unsigned int> __idset2index;
 
       /// a table associating to each IdSet its index in the threadRecordCounters
@@ -404,10 +407,6 @@ namespace gum {
       
       /// returns the counting performed
       std::vector< std::vector<float,CountAlloc> >& __getCounts () noexcept;
-
-      /// the function used to sort vectors of IdSets by increasing size order
-      static bool __sortIdSetBySize ( const IdSet<IdSetAlloc>* set1,
-                                      const IdSet<IdSetAlloc>* set2 );
 
     };
 

@@ -58,17 +58,27 @@ namespace gum {
       // copy the target nodesets
       _target_nodesets.reserve ( from._target_nodesets.size () );
       for ( const auto set : from._target_nodesets ) {
-        _target_nodesets.push_back
-          ( new std::pair<std::vector<unsigned int,IdSetAlloc>,
-                          unsigned int> ( *set ) );
+        if ( set != nullptr ) {
+          _target_nodesets.push_back
+            ( new std::pair<std::vector<unsigned int,IdSetAlloc>,
+                            unsigned int> ( *set ) );
+        }
+        else {
+          _target_nodesets.push_back ( nullptr );
+        }
       }
       
       // copy the conditioning nodesets
       _conditioning_nodesets.reserve ( from._conditioning_nodesets.size () );
       for ( const auto set : from._conditioning_nodesets ) {
-        _conditioning_nodesets.push_back
-          ( new std::pair<std::vector<unsigned int,IdSetAlloc>,
-                          unsigned int> ( *set ) );
+        if ( set != nullptr ) {
+          _conditioning_nodesets.push_back
+            ( new std::pair<std::vector<unsigned int,IdSetAlloc>,
+                            unsigned int> ( *set ) );
+        }
+        else {
+          _conditioning_nodesets.push_back ( nullptr );
+        }
       }
 
       // now update the __nodesets of the record counter, as this one still
@@ -79,16 +89,20 @@ namespace gum {
         from_nodesets = from._record_counter.__nodesets;
       for ( unsigned int i = 0, j = 0, size = from._target_nodesets.size ();
             i < size; ++i ) {
-        if ( from_nodesets[j] == &( from._target_nodesets[i]->first ) ) {
+        if ( from._target_nodesets[i] != nullptr ) {
+          while ( from_nodesets[j] != &( from._target_nodesets[i]->first ) ) {
+            ++j;
+          }
           nodesets[j] = &( _target_nodesets[i]->first );
-          ++j;
         }
       }
       for ( unsigned int i = 0, j = 0, size = from._conditioning_nodesets.size ();
             i < size; ++i ) {
-        if ( from_nodesets[j] == &( from._conditioning_nodesets[i]->first ) ) {
+        if ( from._conditioning_nodesets[i] != nullptr ) {
+          while ( from_nodesets[j] != &(from._conditioning_nodesets[i]->first) ) {
+            ++j;
+          }
           nodesets[j] = &( _conditioning_nodesets[i]->first );
-          ++j;
         }
       }
 
@@ -366,7 +380,7 @@ namespace gum {
     void Counter<IdSetAlloc,CountAlloc>::clear () {
       _record_counter.clearNodeSets ();
 
-      for ( auto set : _target_nodesets ) delete set;
+      for ( auto set : _target_nodesets ) if ( set ) delete set;
       for ( auto set : _conditioning_nodesets ) if ( set ) delete set;
       _target_nodesets.clear ();
       _conditioning_nodesets.clear ();

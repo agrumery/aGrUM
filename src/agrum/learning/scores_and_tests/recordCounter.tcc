@@ -277,22 +277,34 @@ namespace gum {
         throw;
       }
 
-      __set2thread_id.resize ( __idsets.size () );
+      // create the idsets2index
+      for ( auto iter = __idsets.begin (); iter != __idsets.end (); ++iter ) {
+        __idset2index.insert ( &( iter.first () ), iter.second () );
+      }
 
-      for ( auto iter = __idsets.cbegin (); iter != __idsets.cend (); ++iter ) {
-        const auto& idset = iter.key ();
-        __idset2index.insert ( &idset, iter.val () );
-        __set2thread_id[iter.val()].first = &idset;
-        __set2thread_id[iter.val()].second =
-          from.__set2thread_id[iter.val()].second;
+      // fill the set2thread_id
+      __set2thread_id.reserve ( from.__set2thread_id.size () );
+      for ( const auto& thepair : from.__set2thread_id ) {
+        if ( thepair.first != nullptr ) {
+          __set2thread_id.push_back
+            ( std::pair<const IdSet<IdSetAlloc>*, unsigned int>
+              ( &( __idsets.first ( thepair.second ) ), thepair.second ) );
+        }
+        else {
+          __set2thread_id.push_back
+            ( std::pair<const IdSet<IdSetAlloc>*, unsigned int>
+              ( nullptr, thepair.second ) );
+        }
+      }
 
-        // for each variable in ids, indicate that ids contain this variable
-        const std::vector<unsigned int,IdSetAlloc>& ids = idset.ids();
-
-        for ( auto id : ids ) {
+      // fill the var2idsets
+      for ( auto iter = __idsets.begin (); iter != __idsets.end (); ++iter ) {
+        const IdSet<IdSetAlloc>& idset = iter.first ();
+        for ( const auto id : idset.ids () ) {
           try {
             __var2idsets[id].push_back ( &idset );
-          } catch ( NotFound& ) {
+          }
+          catch ( NotFound& ) {
             __var2idsets.insert ( id, std::vector<const IdSet<IdSetAlloc>*> () );
             __var2idsets[id].push_back ( &idset );
           }
@@ -363,12 +375,12 @@ namespace gum {
       __subset_lattice.addNode ( node );
       IdSet<IdSetAlloc> tmp_idset ( ids, set_size );
 
-      if ( ! __idsets.exists ( tmp_idset ) ) {
+      if ( ! __idsets.existsFirst ( tmp_idset ) ) {
         // a priori, the idset is not a subset
         __set_state.push_back ( SetState::NOT_SUBSET );
-
-        const IdSet<IdSetAlloc>& idset =
-          __idsets.insert ( std::move ( tmp_idset ), std::move ( node ) ).first;
+        
+        __idsets.insert ( std::move ( tmp_idset ), std::move ( node ) );
+        const IdSet<IdSetAlloc>& idset = __idsets.first ( node );
         __idset2index.insert ( &idset, node );
         __set2thread_id.push_back
         ( std::pair<const IdSet<IdSetAlloc>*,unsigned int> ( &idset, node ) );
@@ -390,9 +402,9 @@ namespace gum {
 
         __set2thread_id.push_back
         ( std::pair<const IdSet<IdSetAlloc>*,unsigned int>
-          ( nullptr, __idsets[tmp_idset] ) );
+          ( nullptr, __idsets.second ( tmp_idset ) ) );
 
-        __subset_lattice.addArc ( __idsets[tmp_idset], node );
+        __subset_lattice.addArc ( __idsets.second ( tmp_idset ), node );
       }
 
       return node;
@@ -754,16 +766,6 @@ namespace gum {
           __subset_lattice.eraseNode ( i );
         }
       }
-    }
-
-
-    /// the function used to sort vectors of IdSets by increasing size order
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    bool
-    RecordCounter<IdSetAlloc,CountAlloc>::__sortIdSetBySize
-    ( const IdSet<IdSetAlloc>* set1,
-      const IdSet<IdSetAlloc>* set2 ) {
-      return set1->ids().size () < set2->ids().size ();
     }
 
 

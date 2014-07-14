@@ -158,8 +158,124 @@ namespace gum_tests {
         TS_ASSERT ( vectx2 == counter.getCounts ( id7 ) );
       }
         
+    }
+
+
+    void test_copy_move () {
+      gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
+
+      auto translators = gum::learning::make_translators
+        ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
+                                gum::learning::Col<0>, 8 > () );
+
+      auto generators =
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
+      
+      auto filter = gum::learning::make_DB_row_filter ( database, translators,
+                                                        generators );
+
+      std::vector<unsigned int> modalities ( 8, 2);
+
+      gum::learning::RecordCounter<>
+        counter ( filter, modalities );
+
+      std::vector<unsigned int> set1 { 0 };
+      std::vector<unsigned int> set2 { 1 };
+      std::vector<unsigned int> set3 { 1, 0 };
+
+      {
+        unsigned int id1 = counter.addNodeSet ( set1 );
+        unsigned int id2 = counter.addNodeSet ( set2 );
+        unsigned int id3 = counter.addNodeSet ( set3 );
+
+        counter.count ();
+
+        gum::learning::RecordCounter<> counter2 ( counter );
+        
+        const std::vector<float>& vect1 = counter2.getCounts ( id1 );
+        const std::vector<float>& vect2 = counter2.getCounts ( id2 );
+        const std::vector<float>& vect3 = counter2.getCounts ( id3 );
+
+        TS_ASSERT ( vect1[0] == 5028 );
+        TS_ASSERT ( vect1[1] == 4972);
+        TS_ASSERT ( vect2[0] == 538);
+        TS_ASSERT ( vect2[1] == 9462);
+
+        TS_ASSERT ( vect3[0] == 498 );
+        TS_ASSERT ( vect3[1] == 4530 );
+        TS_ASSERT ( vect3[2] == 40 );
+        TS_ASSERT ( vect3[3] == 4932 );
+
+        gum::learning::RecordCounter<> counter3 ( std::move ( counter2 ) );
+
+        const std::vector<float>& vvect1 = counter3.getCounts ( id1 );
+        const std::vector<float>& vvect2 = counter3.getCounts ( id2 );
+        const std::vector<float>& vvect3 = counter3.getCounts ( id3 );
+
+        TS_ASSERT ( vvect1[0] == 5028 );
+        TS_ASSERT ( vvect1[1] == 4972);
+        TS_ASSERT ( vvect2[0] == 538);
+        TS_ASSERT ( vvect2[1] == 9462);
+
+        TS_ASSERT ( vvect3[0] == 498 );
+        TS_ASSERT ( vvect3[1] == 4530 );
+        TS_ASSERT ( vvect3[2] == 40 );
+        TS_ASSERT ( vvect3[3] == 4932 );
+        
+      }
+
+      counter.clearNodeSets ();
+      std::vector<unsigned int> set4 { 1, 2, 3 };
+      {
+        counter.addNodeSet ( set2 );
+        unsigned int id2 = counter.addNodeSet ( set4 );
+        counter.addNodeSet ( set1 );
+        unsigned int id4 = counter.addNodeSet ( set4 );
+ 
+        counter.count ();
+
+        TS_ASSERT ( counter.getCounts ( id2 ) == counter.getCounts ( id4 ) );
+      }
+
+      counter.clearNodeSets ();
+      unsigned int id = counter.addNodeSet ( set4 );
+      counter.count ();
+      std::vector<float> vect = counter.getCounts ( id );
+
+      counter.clearNodeSets ();
+      {
+        std::vector<unsigned int> set5 { 2, 1, 3 };
+        std::vector<unsigned int> set6 { 3, 1, 2 };
+        std::vector<unsigned int> set7 { 3, 2, 1 };
+        std::vector<unsigned int> set8 { 1, 3, 2 };
+        unsigned int id1 = counter.addNodeSet ( set4 );
+        unsigned int id2 = counter.addNodeSet ( set5 );
+        unsigned int id3 = counter.addNodeSet ( set6 );
+        unsigned int id4 = counter.addNodeSet ( set7 );
+        unsigned int id5 = counter.addNodeSet ( set8 );
+
+        gum::learning::RecordCounter<> counter2 ( counter );       
+        gum::learning::RecordCounter<> counter2bis ( counter );       
+        gum::learning::RecordCounter<> counter3 ( std::move ( counter2bis ) );
+
+        counter2.count ();
+        counter3.count ();
+
+        TS_ASSERT ( compare_vect3 ( vect, counter2.getCounts ( id1 ), {1,2,3} ) );
+        TS_ASSERT ( compare_vect3 ( vect, counter2.getCounts ( id2 ), {2,1,3} ) );
+        TS_ASSERT ( compare_vect3 ( vect, counter2.getCounts ( id3 ), {3,1,2} ) );
+        TS_ASSERT ( compare_vect3 ( vect, counter2.getCounts ( id4 ), {3,2,1} ) );
+        TS_ASSERT ( compare_vect3 ( vect, counter2.getCounts ( id5 ), {1,3,2} ) );
+
+        TS_ASSERT ( compare_vect3 ( vect, counter3.getCounts ( id1 ), {1,2,3} ) );
+        TS_ASSERT ( compare_vect3 ( vect, counter3.getCounts ( id2 ), {2,1,3} ) );
+        TS_ASSERT ( compare_vect3 ( vect, counter3.getCounts ( id3 ), {3,1,2} ) );
+        TS_ASSERT ( compare_vect3 ( vect, counter3.getCounts ( id4 ), {3,2,1} ) );
+        TS_ASSERT ( compare_vect3 ( vect, counter3.getCounts ( id5 ), {1,3,2} ) );
+      } 
       
     }
+
 
     bool compare_vect3 ( const std::vector<float>& v1,
                          const std::vector<float>& v2,
