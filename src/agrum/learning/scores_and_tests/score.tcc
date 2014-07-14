@@ -61,7 +61,7 @@ namespace gum {
     }
 
 
-    /// copy constructor: to be used by the virtual copy constructor
+    /// move constructor
     template <typename IdSetAlloc, typename CountAlloc>
     Score<IdSetAlloc,CountAlloc>::Score
     ( Score<IdSetAlloc,CountAlloc>&& from ) :
@@ -72,7 +72,7 @@ namespace gum {
       __is_cached_score ( std::move ( from.__is_cached_score ) ),
       __cached_score ( std::move ( from.__cached_score ) ),
       __apriori_computed ( std::move ( from.__apriori_computed ) ) {
-      GUM_CONS_CPY ( Score );
+      GUM_CONS_MOV ( Score );
     }
 
     

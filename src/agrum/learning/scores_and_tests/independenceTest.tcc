@@ -68,7 +68,7 @@ namespace gum {
 
       __is_cached_score.push_back ( false );
       __cached_score.push_back ( 0 );
-      unsigned int index = Counter<IdSetAlloc,CountAlloc>::addNodeSet
+      const unsigned int index = Counter<IdSetAlloc,CountAlloc>::addNodeSet
         ( var1, var2 );
 
       __is_cached_score.push_back ( false );
@@ -96,7 +96,7 @@ namespace gum {
 
       __is_cached_score.push_back ( false );
       __cached_score.push_back ( 0 );
-      unsigned int index = Counter<IdSetAlloc,CountAlloc>::addNodeSet
+      const unsigned int index = Counter<IdSetAlloc,CountAlloc>::addNodeSet
         ( vars );
 
       __is_cached_score.push_back ( false );
@@ -125,7 +125,7 @@ namespace gum {
 
       __is_cached_score.push_back ( false );
       __cached_score.push_back ( 0 );
-      unsigned int index = Counter<IdSetAlloc,CountAlloc>::addNodeSet
+      const unsigned int index = Counter<IdSetAlloc,CountAlloc>::addNodeSet
         ( var1, var2, conditioning_ids );
 
       __is_cached_score.push_back ( false );
@@ -155,7 +155,7 @@ namespace gum {
 
       __is_cached_score.push_back ( false );
       __cached_score.push_back ( 0 );
-      unsigned int index = Counter<IdSetAlloc,CountAlloc>::addNodeSet
+      const unsigned int index = Counter<IdSetAlloc,CountAlloc>::addNodeSet
         ( vars, conditioning_ids );
 
       __is_cached_score.push_back ( false );

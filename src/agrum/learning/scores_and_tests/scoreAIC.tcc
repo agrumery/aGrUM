@@ -42,15 +42,7 @@ namespace gum {
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities,
       Apriori<IdSetAlloc,CountAlloc>& apriori ) :
-      Score<IdSetAlloc,CountAlloc> ( filter, var_modalities, apriori ) {
-      // check that the apriori is compatible with the score
-      if ( ! apriori.isOfType ( AprioriDirichletType::type ) &&
-           ! apriori.isOfType ( AprioriSmoothingType::type ) &&
-           ! apriori.isOfType ( AprioriNoAprioriType::type ) ) {
-        GUM_ERROR ( InvalidArgument, "The apriori is incompatible with the AIC "
-                    "score: shall be Dirichlet, smoothing or no apriori" );
-      }
-      
+      Score<IdSetAlloc,CountAlloc> ( filter, var_modalities, apriori ) {     
       // for debugging purposes
       GUM_CONSTRUCTOR ( ScoreAIC );
     }
@@ -89,6 +81,23 @@ namespace gum {
     ScoreAIC<IdSetAlloc,CountAlloc>::~ScoreAIC () {
       // for debugging purposes
       GUM_DESTRUCTOR ( ScoreAIC );
+    }
+
+    
+    /// indicates whether the apriori is compatible (meaningful) with the score
+    template <typename IdSetAlloc, typename CountAlloc>
+    bool ScoreAIC<IdSetAlloc,CountAlloc>::isAprioriCompatible () const {
+      // check that the apriori is compatible with the score
+      if ( ! this->_apriori->isOfType ( AprioriDirichletType::type ) &&
+           ! this->_apriori->isOfType ( AprioriSmoothingType::type ) &&
+           ! this->_apriori->isOfType ( AprioriNoAprioriType::type ) ) {
+        return false;
+        // GUM_ERROR ( InvalidArgument, "The apriori is incompatible with the AIC "
+        //             "score: shall be Dirichlet, smoothing or no apriori" );
+      }
+      else {
+        return true;
+      }
     }
 
 

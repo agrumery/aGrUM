@@ -93,6 +93,15 @@ namespace gum {
 
       /// returns the score corresponding to a given nodeset
       float score ( unsigned int nodeset_index );
+      
+      /// indicates whether the apriori is compatible (meaningful) with the score
+      /** The combination of some scaores and aprioris can be meaningless. For
+       * instance, adding a Dirichlet apriori to the K2 score is not very
+       * meaningful since K2 corresonds to a BD score with a 1-smoothing apriori.
+       * aGrUM allows you to perform such combination, but yuou can check with
+       * method isAprioriCompatible () whether the result the score will give
+       * you is meaningful or not. */
+      virtual bool isAprioriCompatible () const final;
 
       /// @}
 

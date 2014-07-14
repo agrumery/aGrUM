@@ -88,9 +88,9 @@ namespace gum {
         const std::vector<float,CountAlloc>& Nz = 
           this->_getConditioningCounts ( nodeset_index + 1 );
         
-        unsigned int Z_size = Nz.size ();
-        unsigned int Y_size = modals[ all_nodes[all_nodes.size() - 2] ];
-        unsigned int X_size = modals[ all_nodes[all_nodes.size() - 1] ];
+        const unsigned int Z_size = Nz.size ();
+        const unsigned int Y_size = modals[ all_nodes[all_nodes.size() - 2] ];
+        const unsigned int X_size = modals[ all_nodes[all_nodes.size() - 1] ];
 
         float score = 0;
 
@@ -114,7 +114,7 @@ namespace gum {
         // To get a meaningful score, we shall compute the critical values
         // for the Chi2 distribution and assign as the score of 
         // (score - alpha ) / alpha, where alpha is the critical value
-        float alpha = __chi2.criticalValue
+        const float alpha = __chi2.criticalValue
           ( all_nodes[ all_nodes.size() - 1 ], all_nodes[ all_nodes.size() - 2 ] );
         score = ( score - alpha ) / alpha;
         
@@ -141,8 +141,8 @@ namespace gum {
         const std::vector<float,CountAlloc>& Nx = 
           this->_getAllCounts ( nodeset_index + 1 );
         
-        unsigned int Y_size = Ny.size ();
-        unsigned int X_size = Nx.size ();
+        const unsigned int Y_size = Ny.size ();
+        const unsigned int X_size = Nx.size ();
         
         // count N
         float N = 0;
@@ -167,7 +167,7 @@ namespace gum {
         // To get a meaningful score, we shall compute the critical values
         // for the Chi2 distribution and assign as the score of 
         // (score - alpha ) / alpha, where alpha is the critical value
-        float alpha = __chi2.criticalValue
+        const float alpha = __chi2.criticalValue
           ( all_nodes[ all_nodes.size() - 1 ], all_nodes[ all_nodes.size() - 2 ] );
         score = ( score - alpha ) / alpha;
         

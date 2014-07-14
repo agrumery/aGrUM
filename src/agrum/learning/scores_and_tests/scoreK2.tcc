@@ -43,13 +43,6 @@ namespace gum {
       const std::vector<unsigned int>& var_modalities,
       Apriori<IdSetAlloc,CountAlloc>& apriori ) :
       Score<IdSetAlloc,CountAlloc> ( filter, var_modalities, apriori ) {
-     // check that the apriori is compatible with the score
-      if ( ! apriori.isOfType ( AprioriSmoothingType::type ) ||
-           ( apriori.weight () != 1 ) ) {
-        GUM_ERROR ( InvalidArgument,
-                    "The apriori is incompatible with the K2 score: shall be a "
-                    "smoothing apriori with a weight of 1 (N'_ijk = 1)" );
-      }
       // for debugging purposes
       GUM_CONSTRUCTOR ( ScoreK2 );
     }
@@ -90,6 +83,23 @@ namespace gum {
       GUM_DESTRUCTOR ( ScoreK2 );
     }
 
+
+    /// indicates whether the apriori is compatible (meaningful) with the score
+    template <typename IdSetAlloc, typename CountAlloc>
+    bool ScoreK2<IdSetAlloc,CountAlloc>::isAprioriCompatible () const {
+      // check that the apriori is compatible with the score
+      if ( ! this->_apriori->isOfType ( AprioriSmoothingType::type ) ||
+           ( this->_apriori->weight () != 1 ) ) {
+        return false;
+        // GUM_ERROR ( InvalidArgument,
+        //             "The apriori is incompatible with the K2 score: shall be a "
+        //             "smoothing apriori with a weight of 1 (N'_ijk = 1)" );
+      }
+      else {
+        return true;
+      }
+    }
+
     
     /// returns the score corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
@@ -103,7 +113,7 @@ namespace gum {
       // get the counts for all the targets and for the conditioning nodes
       const std::vector<float,CountAlloc>& N_ijk = 
         this->_getAllCounts ( nodeset_index );
-      unsigned int targets_modal = N_ijk.size ();
+      const unsigned int targets_modal = N_ijk.size ();
       float score = 0;
 
       // get the nodes involved in the score as well as their modalities
@@ -118,7 +128,7 @@ namespace gum {
       if ( conditioning_nodes ) {
         const std::vector<float,CountAlloc>& N_ij = 
           this->_getConditioningCounts ( nodeset_index );
-        unsigned int conditioning_modal = N_ij.size ();
+        const unsigned int conditioning_modal = N_ij.size ();
  
         // the K2 score can be computed as follows:
         // qi log {(ri - 1)!} + sum_j=1^qi [ - log {(N_ij+ri-1)!} +

@@ -43,14 +43,6 @@ namespace gum {
       const std::vector<unsigned int>& var_modalities,
       Apriori<IdSetAlloc,CountAlloc>& apriori ) :
       Score<IdSetAlloc,CountAlloc> ( filter, var_modalities, apriori ) {
-      // check that the apriori is compatible with the score
-      if ( ! apriori.isOfType ( AprioriSmoothingType::type ) &&
-           ! apriori.isOfType ( AprioriNoAprioriType::type ) ) {
-        GUM_ERROR ( InvalidArgument, "The apriori is incompatible with the BDeu "
-                    "score: shall be smoothing or no apriori" );
-        
-      }
- 
       // for debugging purposes
       GUM_CONSTRUCTOR ( ScoreBDeu );
     }
@@ -93,7 +85,23 @@ namespace gum {
       GUM_DESTRUCTOR ( ScoreBDeu );
     }
     
-    
+
+    /// indicates whether the apriori is compatible (meaningful) with the score
+    template <typename IdSetAlloc, typename CountAlloc>
+    bool ScoreBDeu<IdSetAlloc,CountAlloc>::isAprioriCompatible () const {
+      // check that the apriori is compatible with the score
+      if ( ! this->_apriori->isOfType ( AprioriSmoothingType::type ) &&
+           ! this->_apriori->isOfType ( AprioriNoAprioriType::type ) ) {
+        return false;
+        // GUM_ERROR ( InvalidArgument, "The apriori is incompatible with "
+        //             "the BDeu score: shall be smoothing or no apriori" );
+      }
+      else {
+        return true;
+      }
+    }
+
+
     /// returns the score corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
     float ScoreBDeu<IdSetAlloc,CountAlloc>::score
