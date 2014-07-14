@@ -101,7 +101,9 @@ namespace gum {
       /** The vector contains the parameters of an n-dimensional CPT. The
        * distribution of the dimensions of the CPT within the vector is as follows:
        * first, there are the conditioning nodes (in the order in which they
-       * were specified) and, then, the target node. */
+       * were specified) and, then, the target node.
+       * @throw CPTError is raised if some values of the conditioning sets were
+       * not observed in the database. */
       const std::vector<float,CountAlloc>&
       parameters ( unsigned int nodeset_index );
 

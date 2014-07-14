@@ -38,7 +38,7 @@ namespace gum {
 
 
     /** @class AprioriSmoothing
-     * @brief the base class for all a prioris
+     * @brief the smooth a priori: adds a weight w to all the countings
      * @ingroup learning_group
      */
     template <typename IdSetAlloc = std::allocator<unsigned int>,

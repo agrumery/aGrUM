@@ -57,7 +57,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     ParamEstimatorML<IdSetAlloc,CountAlloc>::ParamEstimatorML
     ( ParamEstimatorML<IdSetAlloc,CountAlloc>&& from ) :
-      ParamEstimator<IdSetAlloc,CountAlloc> ( from ) {
+      ParamEstimator<IdSetAlloc,CountAlloc> ( std::move ( from ) ) {
       // for debugging purposes
       GUM_CONS_MOV ( ParamEstimatorML );
     }
@@ -96,7 +96,7 @@ namespace gum {
         this->_getAllNodes ( nodeset_index );
       const std::vector<unsigned int,IdSetAlloc>* conditioning_nodes =
         this->_getConditioningNodes ( nodeset_index );
-      unsigned int target_modal =
+      const unsigned int target_modal =
         this->modalities () [all_nodes[all_nodes.size ()-1]];
       std::vector<float,CountAlloc>& N_ijk = 
         const_cast<std::vector<float,CountAlloc>&>
@@ -108,7 +108,7 @@ namespace gum {
         // get the counts for all the targets and for the conditioning nodes
         const std::vector<float,CountAlloc>& N_ij = 
           this->_getConditioningCounts ( nodeset_index );
-        unsigned int conditioning_size = N_ij.size ();
+        const unsigned int conditioning_size = N_ij.size ();
 
         if ( this->_apriori->weight () ) {
           const std::vector<float,CountAlloc>& N_prime_ijk = 
@@ -173,6 +173,10 @@ namespace gum {
           for ( unsigned int k = 0; k < target_modal; ++k ) {
             N_ijk[k] /= sum;
           }
+        }
+        else {
+          GUM_ERROR ( CPTError, "The database being empty, it is impossible "
+                      "to estimate the parameters by maximum likelihood" );
         }
       } 
 

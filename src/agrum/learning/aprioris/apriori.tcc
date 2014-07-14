@@ -90,13 +90,11 @@ namespace gum {
 
         // reserve the _apriori_counts
         unsigned int apriori_size = _apriori_counts.size ();
-        unsigned int count_size = counts.size ();
+        const unsigned int count_size = counts.size ();
 
-        if ( apriori_size > count_size ) {
-          do {
-            _apriori_counts.pop_back ();
-            --apriori_size;
-          } while ( apriori_size > count_size );
+        while ( apriori_size > count_size ) {
+          _apriori_counts.pop_back ();
+          --apriori_size;
         }
         
         for ( unsigned int i = 0; i < apriori_size; ++i ) {

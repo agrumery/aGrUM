@@ -87,7 +87,7 @@ namespace gum {
       if ( this->_weight != 0 ) {
         // perform the countings
         Counter<IdSetAlloc,CountAlloc>::clear ();
-        unsigned int size =
+        const unsigned int size =
           Apriori<IdSetAlloc,CountAlloc>::_target_nodesets->size ();
         for ( unsigned int i = 0; i < size; ++i ) {
           if ( Apriori<IdSetAlloc,CountAlloc>::

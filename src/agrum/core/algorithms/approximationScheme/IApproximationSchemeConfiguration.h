@@ -64,7 +64,7 @@ namespace gum {
 
 
       ~IApproximationSchemeConfiguration() {
-        GUM_DESTRUCTOR( ApproximationScheme );
+        GUM_DESTRUCTOR( IApproximationSchemeConfiguration );
       };
       /// @}
 
