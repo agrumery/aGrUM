@@ -94,7 +94,8 @@
 #include <agrum/learning/BNLearner.h>
 
 #include <agrum/ID/influenceDiagram.h>
-#include <agrum/ID/inference/defaultInfluenceDiagramInference.h>
+#include <agrum/ID/inference/IInfluenceDiagramInference.h>
+#include <agrum/ID/inference/influenceDiagramInference.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
 #include <agrum/ID/generator/influenceDiagramGenerator.h>
@@ -208,7 +209,7 @@ namespace std {
 %include <agrum/CN/CNLoopyPropagation.h>
 
 %include <agrum/ID/influenceDiagram.h>
-%include <agrum/ID/inference/defaultInfluenceDiagramInference.h>
+%include <agrum/ID/inference/influenceDiagramInference.h>
 
 /* CLASS EXTENSIONS */
 %extend gum::DiscreteVariable {
@@ -519,4 +520,4 @@ namespace std {
 %template ( CNLoopyPropagation_double ) gum::credal::CNLoopyPropagation<double>;
 
 %template ( InfluenceDiagram_double) gum::InfluenceDiagram<double>;
-%template ( InfluenceDiagramInference_double) gum::DefaultInfluenceDiagramInference<double>;
+%template ( InfluenceDiagramInference_double) gum::InfluenceDiagramInference<double>;

@@ -6143,7 +6143,7 @@ InfluenceDiagram_double_swigregister = _pyAgrum.InfluenceDiagram_double_swigregi
 InfluenceDiagram_double_swigregister(InfluenceDiagram_double)
 
 class InfluenceDiagramInference_double(_object):
-    """Proxy of C++ gum::DefaultInfluenceDiagramInference<(double)> class"""
+    """Proxy of C++ gum::InfluenceDiagramInference<(double)> class"""
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, InfluenceDiagramInference_double, name, value)
     __swig_getmethods__ = {}
@@ -6151,7 +6151,7 @@ class InfluenceDiagramInference_double(_object):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """__init__(gum::DefaultInfluenceDiagramInference<(double)> self, InfluenceDiagram_double infDiag) -> InfluenceDiagramInference_double"""
+        """__init__(gum::InfluenceDiagramInference<(double)> self, InfluenceDiagram_double infDiag) -> InfluenceDiagramInference_double"""
         this = _pyAgrum.new_InfluenceDiagramInference_double(*args)
         try:
             self.this.append(this)
@@ -6200,9 +6200,76 @@ class InfluenceDiagramInference_double(_object):
         return _pyAgrum.InfluenceDiagramInference_double_displayStrongJunctionTree(self, *args)
 
 
-    def infDiag(self):
-        """infDiag(InfluenceDiagramInference_double self) -> InfluenceDiagram_double"""
-        return _pyAgrum.InfluenceDiagramInference_double_infDiag(self)
+    def influenceDiagram(self):
+        """influenceDiagram(InfluenceDiagramInference_double self) -> InfluenceDiagram_double"""
+        return _pyAgrum.InfluenceDiagramInference_double_influenceDiagram(self)
+
+    def setEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be dict, not %s"%(type(evidces)))
+        bn = self.influenceDiagram()
+
+        # set evidences
+        self.list_pot = []
+        for var_name, evidce in evidces.iteritems():
+            pot = Potential_double()
+
+            if isinstance(var_name, int):
+                var = bn.variable(var_name)
+            elif isinstance(var_name, str):
+                var = bn.variableFromName(var_name)
+            else:
+                raise TypeError('values of the dict must be int or string')
+
+            pot.add(var)
+            if isinstance(evidce, (int, float, str)):
+                pot[:] = 0
+                # determine the var type
+                try:
+                    cast_var = var.toLabelizedVar()
+                    if isinstance(evidce, int):
+                        index = evidce
+                    elif isinstance(evidce, str):
+                        index = cast_var[evidce]
+                    else:
+                        raise TypeError('values of the dict must be int or string')
+                except RuntimeError:
+                    try:
+                        cast_var = var.toRangeVar()
+                        if isinstance(evidce, int):
+                            index = cast_var[str(evidce)]
+                        elif isinstance(evidce, str):
+                            index = cast_var[evidce]
+                        else:
+                            raise TypeError('values of the dict must be int or string')
+                    except RuntimeError:
+                        cast_var = var.toDiscretizedVar()
+                        if isinstance(evidce, float):
+                            index = cast_var.index(evidce)
+                        elif isinstance(evidce, str):
+                            index = cast_var.index(float(evidce))
+                        else:
+                            raise TypeError('values of the dict must be float or string')
+                pot[index] = 1
+            elif isinstance(evidce, (list, tuple)):
+                pot[:] = evidce
+            else:
+                raise TypeError('dict values must be number, string or sequence')
+            self.list_pot.append(pot)
+
+        self.eraseAllEvidence()
+        self._setEvidence(self.list_pot)
+
+
+
+    def _setEvidence(self, *args):
+        """_setEvidence(InfluenceDiagramInference_double self, PyObject * evidences)"""
+        return _pyAgrum.InfluenceDiagramInference_double__setEvidence(self, *args)
+
+
+    def junctionTreeToDot(self):
+        """junctionTreeToDot(InfluenceDiagramInference_double self) -> std::string const"""
+        return _pyAgrum.InfluenceDiagramInference_double_junctionTreeToDot(self)
 
 InfluenceDiagramInference_double_swigregister = _pyAgrum.InfluenceDiagramInference_double_swigregister
 InfluenceDiagramInference_double_swigregister(InfluenceDiagramInference_double)

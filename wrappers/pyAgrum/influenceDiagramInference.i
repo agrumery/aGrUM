@@ -3,11 +3,11 @@
 %ignore *::displayStrongJunctionTree();
 
 // copy: M indicates the modifications
-%feature("shadow") gum::DefaultInfluenceDiagramInference<double>::setEvidence %{
+%feature("shadow") gum::InfluenceDiagramInference<double>::setEvidence %{
 def setEvidence(self, evidces):
     if not isinstance(evidces, dict):
         raise TypeError("setEvidence parameter must be dict, not %s"%(type(evidces)))
-    bn = self.infDiag()
+    bn = self.influenceDiagram()
 
     # set evidences
     self.list_pot = []
@@ -63,7 +63,10 @@ def setEvidence(self, evidces):
 
 
 // these void class extensions are rewritten by "shadow" declarations
-%extend gum::DefaultInfluenceDiagram<double> {
+%extend gum::InfluenceDiagramInference<double> {
+    const gum::InfluenceDiagram<double>& influenceDiagram() const {
+      return static_cast<const gum::IInfluenceDiagramInference<double> *>($self)->influenceDiagram();
+    }
     void setEvidence(PyObject *evidces) {}
 
     // evidences is a python list of potentials*
@@ -91,9 +94,9 @@ def setEvidence(self, evidces):
     }
 
     const std::string junctionTreeToDot() {
-      std::stringstream str;
-      self->displayStrongJunctionTree(str);
-      return std::string(str);
+      std::stringstream stream;
+      self->displayStrongJunctionTree(stream);
+      return stream.str();
     };
 
 }
