@@ -39,9 +39,8 @@ namespace gum {
     ( gum::Potential<GUM_SCALAR>& pot,
       const gum::Potential<float>& other_pot ) { 
       // check that the variables are identical
-      Set<const DiscreteVariable*> diff_vars =
-        pot.variablesSequence ().diffSet ( other_pot.variablesSequence () );
-      if ( ! diff_vars.empty () ) {
+      if ( ! pot.variablesSequence ().diffSet
+           ( other_pot.variablesSequence () ).empty () ) {
         GUM_ERROR ( gum::CPTError,
                     "the potentials do not have the same variables" );
       }
@@ -100,16 +99,15 @@ namespace gum {
         }
 
         // setup the estimation
-        unsigned int target = varmap.get ( *( vars[vars.size() -1] ) );
         if ( vars.size () > 1 ) {
           std::vector<unsigned int> cond_ids ( vars.size () - 1 );
           for ( unsigned int i = 0; i < cond_ids.size (); ++i ) {
             cond_ids[i] = varmap.get ( *( vars[i] ) );
           }
-          estimator.addNodeSet ( target, cond_ids );
+          estimator.addNodeSet ( id, cond_ids );
         }
         else {
-          estimator.addNodeSet ( target ); 
+          estimator.addNodeSet ( id ); 
         }
       }
 

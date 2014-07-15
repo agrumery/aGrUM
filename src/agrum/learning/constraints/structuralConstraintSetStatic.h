@@ -21,11 +21,11 @@
  * @brief the "meta-programming" class for storing several structural constraints
  *
  * In aGrUM, there are two ways to store sets of structural constraints: the
- * first one is to put them into a StructuralConstraintVector. This class allows
- * to add at runtime any constraint you wish. As such, it is very generic but,
- * by not knowing at compile time the constraints that will be stored into the
- * vector, calling its methods has a slight overhead. On the other hand, if you
- * already know all the constraints you wish to apply, the
+ * first one is to put them into a StructuralConstraintSetDynamic. This class
+ * allows to add at runtime any constraint you wish. As such, it is very generic
+ * but, by not knowing at compile time the constraints that will be stored into
+ * the vector, calling its methods has a slight overhead. On the other hand, if
+ * you already know all the constraints you wish to apply, the
  * StructuralConstraintSetStatic is better suited because it will compute at
  * compile time how to call the constraint's methods in a most efficient way: if
  * these methods are inlined, there will be no overhead at all when calling these
@@ -411,6 +411,17 @@ namespace gum {
     /** @class StructuralConstraintSetStatic
      * @brief the "meta-programming" class for storing structural constraints
      * @ingroup learning_group
+     *
+     * In aGrUM, there are two ways to store sets of structural constraints: the
+     * first one is to put them into a StructuralConstraintSetDynamic. This class
+     * allows to add at runtime any constraint you wish. As such, it is very
+     * generic but, by not knowing at compile time the constraints that will be
+     * stored into the vector, calling its methods has a slight overhead. On the
+     * other hand, if you already know all the constraints you wish to apply, the
+     * StructuralConstraintSetStatic is better suited because it will compute at
+     * compile time how to call the constraint's methods in a most efficient way:
+     * if these methods are inlined, there will be no overhead at all when calling
+     * these methods.
      *
      * This class is intended to store structural constraints and help applying
      * them during learning in a most efficient way. The idea is that it will

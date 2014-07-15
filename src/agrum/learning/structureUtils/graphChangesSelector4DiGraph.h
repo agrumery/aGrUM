@@ -112,7 +112,7 @@ namespace gum {
       /// returns the generator used by the selector
       GeneratorType& graphChangeGenerator () const noexcept;
 
-      /// indicates whether the selector still contain graph changes 
+      /// indicates whether the selector still contains graph changes 
       bool empty ();
 
       /** @brief indicates whether the selector contains graph changes related to
@@ -185,7 +185,7 @@ namespace gum {
       /// the set of constraints used to determine valid changes
       STRUCTURAL_CONSTRAINT* __constraint;
 
-      /// the generator that restricts the set of possible changes
+      /// the generator that returns the set of possible changes
       GRAPH_CHANGES_GENERATOR* __changes_generator;
 
       /// a sequence containing all the possible changes

@@ -279,6 +279,20 @@ namespace gum {
         }
       }
 
+      // remove the node that do not have modalities
+      for ( auto node : graph ) {
+        if ( node >= nb_nodes ) {
+          graph.eraseNode ( node );
+        }
+      }
+
+      // __constraint is the constraint used by the selector to restrict the set
+      // of applicable changes. However, the generator may have a different set of
+      // constraints (e.g., a constraintSliceOrder needs be tested only by the
+      // generator because the changes returned by the generator will always
+      // statisfy this constraint, hence the selector needs not test this
+      // constraint). Therefore, if the selector and generator have different
+      // constraints, both should use method setGraph() to initialize themselves.
       __constraint->setGraph ( graph );
       if ( reinterpret_cast<STRUCTURAL_CONSTRAINT*>
            ( &( __changes_generator->constraint () ) ) != __constraint ) {
