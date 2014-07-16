@@ -52,7 +52,8 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     ScoreBIC<IdSetAlloc,CountAlloc>::ScoreBIC
     ( const ScoreBIC<IdSetAlloc,CountAlloc>& from ) :
-      Score<IdSetAlloc,CountAlloc> ( from ) {
+      Score<IdSetAlloc,CountAlloc> ( from ),
+      __internal_apriori ( from.__internal_apriori ) {
       // for debugging purposes
       GUM_CONS_CPY ( ScoreBIC );
     }
@@ -62,7 +63,8 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     ScoreBIC<IdSetAlloc,CountAlloc>::ScoreBIC
     ( ScoreBIC<IdSetAlloc,CountAlloc>&& from ) :
-      Score<IdSetAlloc,CountAlloc> ( std::move ( from ) ) {
+      Score<IdSetAlloc,CountAlloc> ( std::move ( from ) ),
+      __internal_apriori ( std::move ( from.__internal_apriori ) ) {
       // for debugging purposes
       GUM_CONS_MOV ( ScoreBIC );
     }
@@ -98,6 +100,14 @@ namespace gum {
       else {
         return true;
       }
+    }
+
+
+    /// returns the internal apriori of the score
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    const ScoreInternalApriori<IdSetAlloc,CountAlloc>&
+    ScoreBIC<IdSetAlloc,CountAlloc>::internalApriori () const noexcept {
+      return __internal_apriori;
     }
 
 

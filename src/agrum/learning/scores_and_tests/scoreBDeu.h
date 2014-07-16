@@ -38,6 +38,7 @@
 
 #include <agrum/core/math/gammaLog2.h>
 #include <agrum/learning/scores_and_tests/score.h>
+#include <agrum/learning/scores_and_tests/scoreInternalBDeuApriori.h>
 
 
 namespace gum {
@@ -111,13 +112,36 @@ namespace gum {
        * you is meaningful or not. */
       virtual bool isAprioriCompatible () const final;
  
+      /// returns the internal apriori of the score
+      /** Some scores include an apriori. For instance, the K2 score is a BD score
+       * with a Laplace Apriori ( smoothing(1) ). BDeu is a BD score with a
+       * N'/(r_i * q_i) apriori, where N' is an effective sample size and r_i is
+       * the domain size of the target variable and q_i is the domain size of the
+       * Cartesian product of its parents. The goal of the score's internal apriori
+       * classes is to enable to account for these aprioris outside the score,
+       * e.g., when performing parameter estimation. It is important to note that,
+       * to be meaningfull a structure + parameter learning requires that the same
+       * aprioris are taken into account during structure learning and parameter
+       * learning. */
+      virtual const ScoreInternalApriori<IdSetAlloc,CountAlloc>&
+      internalApriori () const noexcept final;
+
+      /// sets the effective sample size of the internal apriori
+      void setEffectiveSampleSize ( float ess );
+      
       /// @}
 
       
     private:
       /// the log(gamma (n)) function: generalizes log((n-1)!)
       GammaLog2 __gammalog2;
-     
+           
+      /// the internal apriori of the score
+      ScoreInternalBDeuApriori<IdSetAlloc,CountAlloc> __internal_apriori;
+
+      /// the effective sample size of the internal apriori
+      float __ess { 1.0f };
+ 
     };
     
 

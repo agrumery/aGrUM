@@ -53,7 +53,8 @@ namespace gum {
     ScoreBD<IdSetAlloc,CountAlloc>::ScoreBD
     ( const ScoreBD<IdSetAlloc,CountAlloc>& from ) :
       Score<IdSetAlloc,CountAlloc> ( from ),
-      __gammalog2 ( from.__gammalog2 ) {
+      __gammalog2 ( from.__gammalog2 ),
+      __internal_apriori ( from.__internal_apriori )  {
       // for debugging purposes
       GUM_CONS_CPY ( ScoreBD );
     }
@@ -64,7 +65,8 @@ namespace gum {
     ScoreBD<IdSetAlloc,CountAlloc>::ScoreBD
     ( ScoreBD<IdSetAlloc,CountAlloc>&& from ) :
       Score<IdSetAlloc,CountAlloc> ( std::move ( from ) ),
-      __gammalog2 ( std::move ( from.__gammalog2 ) ) {
+      __gammalog2 ( std::move ( from.__gammalog2 ) ),
+      __internal_apriori ( std::move ( from.__internal_apriori ) )  {
       // for debugging purposes
       GUM_CONS_MOV ( ScoreBD );
     }
@@ -102,6 +104,14 @@ namespace gum {
     }
 
     
+    /// returns the internal apriori of the score
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    const ScoreInternalApriori<IdSetAlloc,CountAlloc>&
+    ScoreBD<IdSetAlloc,CountAlloc>::internalApriori () const noexcept {
+      return __internal_apriori;
+    }
+
+    
     /// returns the score corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
     float ScoreBD<IdSetAlloc,CountAlloc>::score
@@ -111,10 +121,16 @@ namespace gum {
         return this->_cachedScore ( nodeset_index );
       }
 
+      // if the weight of the apriori is 0, then gammaLog2 will fail
+      if ( this->_apriori->weight () == 0 ) {
+        GUM_ERROR ( OutOfBounds,
+                    "log2(gamma()) should be called with a positive argument" );
+      }
+ 
       // get the counts for all the targets and the conditioning nodes
       const std::vector<float,CountAlloc>& N_ijk = 
         this->_getAllCounts ( nodeset_index );
-      unsigned int targets_modal = N_ijk.size ();
+      const unsigned int targets_modal = N_ijk.size ();
       float score = 0;
 
       // here, we distinguish nodesets with conditioning nodes from those
@@ -123,106 +139,52 @@ namespace gum {
         // get the count of the conditioning nodes
         const std::vector<float,CountAlloc>& N_ij = 
           this->_getConditioningCounts ( nodeset_index );
-        unsigned int conditioning_modal = N_ij.size ();
+        const unsigned int conditioning_modal = N_ij.size ();
         
-        if ( this->_apriori->weight () ) {
-          const std::vector<float,CountAlloc>& N_prime_ijk = 
-            this->_getAllApriori ( nodeset_index );
-          const std::vector<float,CountAlloc>& N_prime_ij = 
-            this->_getConditioningApriori ( nodeset_index );
+        const std::vector<float,CountAlloc>& N_prime_ijk = 
+          this->_getAllApriori ( nodeset_index );
+        const std::vector<float,CountAlloc>& N_prime_ij = 
+          this->_getConditioningApriori ( nodeset_index );
           
-          // the BD score can be computed as follows:
-          // sum_j=1^qi [ gammalog2 ( N'_ij ) - gammalog2 ( N_ij + N'_ij )
-          //              + sum_k=1^ri { gammlog2 ( N_ijk + N'_ijk ) -
-          //                             gammalog2 ( N'_ijk ) } ]
+        // the BD score can be computed as follows:
+        // sum_j=1^qi [ gammalog2 ( N'_ij ) - gammalog2 ( N_ij + N'_ij )
+        //              + sum_k=1^ri { gammlog2 ( N_ijk + N'_ijk ) -
+        //                             gammalog2 ( N'_ijk ) } ]
 
-          for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
-            if ( N_prime_ij[j] ) {
-              score += __gammalog2 ( N_prime_ij[j] ) -
-                __gammalog2 ( N_ij[j] + N_prime_ij[j] );
-            }
-            else if ( N_ij[j] ) {
-              score += __gammalog2 ( N_ij[j] );
-            }
-          }
-          for ( unsigned int k = 0; k < targets_modal; ++k ) {
-            if ( N_prime_ijk[k] ) {
-              score += __gammalog2 ( N_ijk[k] + N_prime_ijk[k] ) -
-                __gammalog2 ( N_prime_ijk[k] );
-            }
-            else if ( N_ijk[k] ) {
-              score += __gammalog2 ( N_ijk[k] );
-            }
-          }
+        for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
+          score += __gammalog2 ( N_prime_ij[j] ) -
+            __gammalog2 ( N_ij[j] + N_prime_ij[j] );
         }
-        else {
-          // the BD score can be computed as follows:
-          // sum_j=1^qi [ - gammalog2 ( N_ij )
-          //              + sum_k=1^ri { gammlog2 ( N_ijk ) } ]
-
-          for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
-            if ( N_ij[j] ) score -= __gammalog2 ( N_ij[j] );
-          }
-          for ( unsigned int k = 0; k < targets_modal; ++k ) {
-            if ( N_ijk[k] ) score += __gammalog2 ( N_ijk[k] );
-          }
+        for ( unsigned int k = 0; k < targets_modal; ++k ) {
+          score += __gammalog2 ( N_ijk[k] + N_prime_ijk[k] ) -
+            __gammalog2 ( N_prime_ijk[k] );
         }
-          
-        // shall we put the score into the cache?
-        if ( this->_isUsingCache () ) {
-          this->_insertIntoCache ( nodeset_index, score );
-        }
-        
-        return score;
       }
       else {
-        if ( this->_apriori->weight () ) {
-          const std::vector<float,CountAlloc>& N_prime_ijk = 
-            this->_getAllApriori ( nodeset_index );
+        const std::vector<float,CountAlloc>& N_prime_ijk = 
+          this->_getAllApriori ( nodeset_index );
 
-          // the BD score can be computed as follows:
-          // gammalog2 ( N' ) - gammalog2 ( N + N' )
-          // + sum_k=1^ri { gammlog2 ( N_i + N'_i ) - gammalog2 ( N'_i ) }
-     
-          // precompute N'
-          float N_prime = 0;
-          for ( const auto elt : N_prime_ijk ) N_prime += elt;
+        // the BD score can be computed as follows:
+        // gammalog2 ( N' ) - gammalog2 ( N + N' )
+        // + sum_k=1^ri { gammlog2 ( N_i + N'_i ) - gammalog2 ( N'_i ) }
         
-          score = __gammalog2 ( N_prime );
-          float N = 0;
-          for ( unsigned int k = 0; k < targets_modal; ++k ) {
-            if ( N_prime_ijk[k] ) {
-              score += __gammalog2 ( N_ijk[k] + N_prime_ijk[k] ) -
-                __gammalog2 ( N_prime_ijk[k] );
-            }
-            else if ( N_ijk[k] ) {
-              score += __gammalog2 ( N_ijk[k] );
-            }
-            N += N_ijk[k];
-          }
-          score -= __gammalog2 ( N + N_prime );
+        float N = 0;
+        float N_prime = 0;
+        for ( unsigned int k = 0; k < targets_modal; ++k ) {
+          score += __gammalog2 ( N_ijk[k] + N_prime_ijk[k] ) -
+            __gammalog2 ( N_prime_ijk[k] );
+          N += N_ijk[k];
+          N_prime += N_prime_ijk[k];
         }
-        else {
-          // the BD score can be computed as follows:
-          // - gammalog2 ( N ) + sum_k=1^ri { gammlog2 ( N_i ) }
-          
-          float N = 0;
-          for ( unsigned int k = 0; k < targets_modal; ++k ) {
-            if ( N_ijk[k] ) {
-              score += __gammalog2 ( N_ijk[k] );
-              N += N_ijk[k];
-            }
-          }
-          score -= __gammalog2 ( N );
-        }
-        
-        // shall we put the score into the cache?
-        if ( this->_isUsingCache () ) {
-          this->_insertIntoCache ( nodeset_index, score );
-        }
-
-        return score;
+        score += __gammalog2 ( N_prime ) - __gammalog2 ( N + N_prime );
       }
+
+      // shall we put the score into the cache?
+      if ( this->_isUsingCache () ) {
+        this->_insertIntoCache ( nodeset_index, score );
+      }
+
+      return score;
     }
 
     

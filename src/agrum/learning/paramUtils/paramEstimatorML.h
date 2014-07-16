@@ -34,6 +34,7 @@
 
 #include <agrum/config.h>
 #include <agrum/learning/paramUtils/paramEstimator.h>
+#include <agrum/learning/scores_and_tests/scoreInternalNoApriori.h>
 
 
 namespace gum {
@@ -71,9 +72,12 @@ namespace gum {
       /** @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database */
       template <typename RowFilter>
-      ParamEstimatorML ( const RowFilter& filter,
-                         const std::vector<unsigned int>& var_modalities,
-                         Apriori<IdSetAlloc,CountAlloc>& apriori );
+      ParamEstimatorML
+      ( const RowFilter& filter,
+        const std::vector<unsigned int>& var_modalities,
+        Apriori<IdSetAlloc,CountAlloc>& apriori,
+        const ScoreInternalApriori<IdSetAlloc,CountAlloc>& score_internal_apriori =
+        ScoreInternalNoApriori<IdSetAlloc,CountAlloc> ()  );
 
       /// copy constructor
       ParamEstimatorML ( const ParamEstimatorML<IdSetAlloc,CountAlloc>& );

@@ -36,6 +36,7 @@
 #include <agrum/config.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/learning/scores_and_tests/counter.h>
+#include <agrum/learning/scores_and_tests/scoreInternalApriori.h>
 #include <agrum/learning/aprioris/apriori.h>
 
 
@@ -78,7 +79,9 @@ namespace gum {
       template <typename RowFilter>
       ParamEstimator ( const RowFilter& filter,
                        const std::vector<unsigned int>& var_modalities,
-                       Apriori<IdSetAlloc,CountAlloc>& apriori );
+                       Apriori<IdSetAlloc,CountAlloc>& apriori,
+                       const ScoreInternalApriori<IdSetAlloc,CountAlloc>&
+                       score_internal_apriori );
 
       /// virtual copy factory
       virtual ParamEstimator<IdSetAlloc,CountAlloc>* copyFactory () const = 0;
@@ -150,6 +153,9 @@ namespace gum {
       /// the a priori used by the score
       Apriori<IdSetAlloc,CountAlloc>* _apriori;
 
+      /// the score that was use for structure learning (used for its apriori)
+      ScoreInternalApriori<IdSetAlloc,CountAlloc>* _score_internal_apriori;
+
       /// indicate whether we have already normalized the parameters
       std::vector<bool> _is_normalized;
 
@@ -196,6 +202,9 @@ namespace gum {
       /// returns the apriori vector for a conditioning set
       const std::vector<float,CountAlloc>&
       _getConditioningApriori ( unsigned int index );
+
+      /// if needed insert the score apriori into the countings
+      void _insertScoreApriori ();
       
        /// copy constructor
       ParamEstimator ( const ParamEstimator<IdSetAlloc,CountAlloc>& );
@@ -209,6 +218,9 @@ namespace gum {
       /// has the a priori been computed
       bool __apriori_computed { false };
 
+      /// has the score's internal apriori been inserted into the countings ?
+      bool __score_apriori_inserted { false };
+      
 
       // ##########################################################################
       // ##########################################################################

@@ -43,6 +43,7 @@ namespace gum {
       const std::vector<unsigned int>& var_modalities,
       Apriori<IdSetAlloc,CountAlloc>& apriori ) :
       Score<IdSetAlloc,CountAlloc> ( filter, var_modalities, apriori ) {
+      __internal_apriori.setEffectiveSampleSize ( __ess );
       // for debugging purposes
       GUM_CONSTRUCTOR ( ScoreBDeu );
     }
@@ -53,7 +54,8 @@ namespace gum {
     ScoreBDeu<IdSetAlloc,CountAlloc>::ScoreBDeu
     ( const ScoreBDeu<IdSetAlloc,CountAlloc>& from ) :
       Score<IdSetAlloc,CountAlloc> ( from ),
-      __gammalog2 ( from.__gammalog2 ) {
+      __gammalog2 ( from.__gammalog2 ),
+      __internal_apriori ( from.__internal_apriori ) {
       // for debugging purposes
       GUM_CONS_CPY ( ScoreBDeu );
     }
@@ -64,7 +66,8 @@ namespace gum {
     ScoreBDeu<IdSetAlloc,CountAlloc>::ScoreBDeu
     ( ScoreBDeu<IdSetAlloc,CountAlloc>&& from ) :
       Score<IdSetAlloc,CountAlloc> ( std::move ( from ) ),
-      __gammalog2 ( std::move ( from.__gammalog2 ) ) {
+      __gammalog2 ( std::move ( from.__gammalog2 ) ),
+      __internal_apriori ( std::move ( from.__internal_apriori ) ) {
       // for debugging purposes
       GUM_CONS_MOV ( ScoreBDeu );
     }
@@ -101,6 +104,28 @@ namespace gum {
       }
     }
 
+    
+    /// returns the internal apriori of the score
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    const ScoreInternalApriori<IdSetAlloc,CountAlloc>&
+    ScoreBDeu<IdSetAlloc,CountAlloc>::internalApriori () const noexcept {
+      return __internal_apriori;
+    }
+
+    
+    /// sets the effective sample size of the internal apriori
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    void ScoreBDeu<IdSetAlloc,CountAlloc>::setEffectiveSampleSize ( float ess ) {
+      if ( ess < 0 ) {
+        GUM_ERROR ( OutOfBounds, "The effective sample size of the BDeu's "
+                    "internal apriori shall be positive" );
+      }
+      else {
+        __ess = ess;
+        __internal_apriori.setEffectiveSampleSize ( ess );
+      }
+    }
+      
 
     /// returns the score corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>

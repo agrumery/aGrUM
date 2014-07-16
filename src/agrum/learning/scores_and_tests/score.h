@@ -40,6 +40,8 @@
 
 #include <agrum/learning/scores_and_tests/counter.h>
 #include <agrum/learning/scores_and_tests/cache4Score.h>
+#include <agrum/learning/scores_and_tests/scoreInternalApriori.h>
+
 #include <agrum/learning/structureUtils/graphChange.h>
 #include <agrum/learning/aprioris/apriori.h>
 
@@ -156,6 +158,20 @@ namespace gum {
        * you is meaningful or not. */
       virtual bool isAprioriCompatible () const = 0;
 
+      /// returns the internal apriori of the score
+      /** Some scores include an apriori. For instance, the K2 score is a BD score
+       * with a Laplace Apriori ( smoothing(1) ). BDeu is a BD score with a
+       * N'/(r_i * q_i) apriori, where N' is an effective sample size and r_i is
+       * the domain size of the target variable and q_i is the domain size of the
+       * Cartesian product of its parents. The goal of the score's internal apriori
+       * classes is to enable to account for these aprioris outside the score,
+       * e.g., when performing parameter estimation. It is important to note that,
+       * to be meaningfull a structure + parameter learning requires that the same
+       * aprioris are taken into account during structure learning and parameter
+       * learning. */
+      virtual const ScoreInternalApriori<IdSetAlloc,CountAlloc>&
+      internalApriori () const noexcept = 0;
+
       /// @}
 
 
@@ -228,6 +244,7 @@ namespace gum {
       Score ( Score<IdSetAlloc,CountAlloc>&& );
 
 
+      
     private:
       /// a cache for the previously computed scores
       Cache4Score __cache;

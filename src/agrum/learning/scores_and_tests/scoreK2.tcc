@@ -53,7 +53,8 @@ namespace gum {
     ScoreK2<IdSetAlloc,CountAlloc>::ScoreK2
     ( const ScoreK2<IdSetAlloc,CountAlloc>& from ) :
       Score<IdSetAlloc,CountAlloc> ( from ),
-      __gammalog2 ( from.__gammalog2 ) {
+      __gammalog2 ( from.__gammalog2 ),
+      __internal_apriori ( from.__internal_apriori ) {
       GUM_CONS_CPY ( ScoreK2 );
     }
     
@@ -63,7 +64,8 @@ namespace gum {
     ScoreK2<IdSetAlloc,CountAlloc>::ScoreK2
     ( ScoreK2<IdSetAlloc,CountAlloc>&& from ) :
       Score<IdSetAlloc,CountAlloc> ( std::move ( from ) ),
-      __gammalog2 ( std::move ( from.__gammalog2 ) ) {
+      __gammalog2 ( std::move ( from.__gammalog2 ) ),
+      __internal_apriori ( std::move ( from.__internal_apriori ) ) {
       GUM_CONS_MOV ( ScoreK2 );
     }
       
@@ -101,6 +103,14 @@ namespace gum {
     }
 
     
+    /// returns the internal apriori of the score
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    const ScoreInternalApriori<IdSetAlloc,CountAlloc>&
+    ScoreK2<IdSetAlloc,CountAlloc>::internalApriori () const noexcept {
+      return __internal_apriori;
+    }
+
+
     /// returns the score corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
     float ScoreK2<IdSetAlloc,CountAlloc>::score

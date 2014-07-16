@@ -36,8 +36,11 @@ namespace gum {
     ParamEstimatorML<IdSetAlloc,CountAlloc>::ParamEstimatorML
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities,
-      Apriori<IdSetAlloc,CountAlloc>& apriori ) :
-      ParamEstimator<IdSetAlloc,CountAlloc> ( filter, var_modalities, apriori ) {
+      Apriori<IdSetAlloc,CountAlloc>& apriori,
+      const ScoreInternalApriori<IdSetAlloc,CountAlloc>&
+      score_internal_apriori ) :
+      ParamEstimator<IdSetAlloc,CountAlloc> ( filter, var_modalities,
+                                              apriori, score_internal_apriori ) {
       // for debugging purposes
       GUM_CONSTRUCTOR ( ParamEstimatorML );
     }
@@ -78,7 +81,7 @@ namespace gum {
       GUM_DESTRUCTOR ( ParamEstimatorML );
     }
 
-    
+
     /// returns the CPT's parameters corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
     const std::vector<float,CountAlloc>&
@@ -101,6 +104,9 @@ namespace gum {
       std::vector<float,CountAlloc>& N_ijk = 
         const_cast<std::vector<float,CountAlloc>&>
         ( this->_getAllCounts ( nodeset_index ) );
+
+      // if we did not count yet the internal apriori of the score, do it
+      this->_insertScoreApriori ();
 
       // here, we distinguish nodesets with conditioning nodes from those
       // without conditioning nodes

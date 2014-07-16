@@ -38,9 +38,11 @@ namespace gum {
     ParamEstimator<IdSetAlloc,CountAlloc>::ParamEstimator
     ( const RowFilter& filter,
       const std::vector<unsigned int>& var_modalities,
-      Apriori<IdSetAlloc,CountAlloc>& apriori ) :
+      Apriori<IdSetAlloc,CountAlloc>& apriori,
+      const ScoreInternalApriori<IdSetAlloc,CountAlloc>& score_internal_apriori ) :
       Counter<IdSetAlloc,CountAlloc> ( filter, var_modalities ),
-      _apriori ( &apriori ) {
+      _apriori ( &apriori ),
+      _score_internal_apriori ( score_internal_apriori.copyFactory () ) {
       GUM_CONSTRUCTOR ( ParamEstimator );
     }
 
@@ -51,8 +53,10 @@ namespace gum {
     ( const ParamEstimator<IdSetAlloc,CountAlloc>& from ) :
       Counter<IdSetAlloc,CountAlloc> ( from ),
       _apriori ( from._apriori ),
+      _score_internal_apriori ( from._score_internal_apriori->copyFactory () ),
       _is_normalized ( from._is_normalized ),
-      __apriori_computed ( from.__apriori_computed ) {
+      __apriori_computed ( from.__apriori_computed ),
+      __score_apriori_inserted ( from.__score_apriori_inserted ) {
       GUM_CONS_CPY ( ParamEstimator );
     }
       
@@ -63,8 +67,11 @@ namespace gum {
     ( ParamEstimator<IdSetAlloc,CountAlloc>&& from ) :
       Counter<IdSetAlloc,CountAlloc> ( std::move ( from ) ),
       _apriori ( std::move ( from._apriori ) ),
+      _score_internal_apriori ( std::move ( from._score_internal_apriori ) ),
       _is_normalized ( std::move ( from._is_normalized ) ),
-      __apriori_computed ( std::move ( from.__apriori_computed ) ) {
+      __apriori_computed ( std::move ( from.__apriori_computed ) ),
+      __score_apriori_inserted ( std::move ( from.__score_apriori_inserted ) ) {
+      from._score_internal_apriori = nullptr;
       GUM_CONS_MOV ( ParamEstimator );
     }
       
@@ -72,6 +79,7 @@ namespace gum {
     /// destructor
     template <typename IdSetAlloc, typename CountAlloc> INLINE
     ParamEstimator<IdSetAlloc,CountAlloc>::~ParamEstimator () {
+      if ( _score_internal_apriori != nullptr ) delete _score_internal_apriori;
       GUM_DESTRUCTOR ( ParamEstimator );
     }
 
@@ -104,6 +112,8 @@ namespace gum {
     void ParamEstimator<IdSetAlloc,CountAlloc>::clear () {
       Counter<IdSetAlloc,CountAlloc>::clear ();
       _is_normalized.clear ();
+      __apriori_computed = false;
+      __score_apriori_inserted = false;
     }
     
 
@@ -151,7 +161,22 @@ namespace gum {
 
       return _apriori->getConditioningApriori ( index );
     }
-     
+
+
+    /// if needed insert the score apriori into the countings
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    void ParamEstimator<IdSetAlloc,CountAlloc>::_insertScoreApriori () {
+      if ( ! __score_apriori_inserted ) {
+        _score_internal_apriori->insertScoreApriori
+          ( Counter<IdSetAlloc,CountAlloc>::_modalities,
+            Counter<IdSetAlloc,CountAlloc>::_getCounts (),
+            Counter<IdSetAlloc,CountAlloc>::_target_nodesets,
+            Counter<IdSetAlloc,CountAlloc>::_conditioning_nodesets );
+        
+        __score_apriori_inserted = true;
+      }
+    }
+    
 
   } /* namespace learning */
   

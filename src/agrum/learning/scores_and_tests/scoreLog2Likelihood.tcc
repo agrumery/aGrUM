@@ -51,7 +51,8 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     ScoreLog2Likelihood<IdSetAlloc,CountAlloc>::ScoreLog2Likelihood
     ( const ScoreLog2Likelihood<IdSetAlloc,CountAlloc>& from ) :
-      Score<IdSetAlloc,CountAlloc> ( from ) {
+      Score<IdSetAlloc,CountAlloc> ( from ),
+      __internal_apriori ( from.__internal_apriori ) {
       GUM_CONS_CPY ( ScoreLog2Likelihood );
     }
     
@@ -60,7 +61,8 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     ScoreLog2Likelihood<IdSetAlloc,CountAlloc>::ScoreLog2Likelihood
     ( ScoreLog2Likelihood<IdSetAlloc,CountAlloc>&& from ) :
-      Score<IdSetAlloc,CountAlloc> ( std::move ( from ) ) {
+      Score<IdSetAlloc,CountAlloc> ( std::move ( from ) ),
+      __internal_apriori ( std::move ( from.__internal_apriori ) ) {
       GUM_CONS_MOV ( ScoreLog2Likelihood );
     }
       
@@ -97,7 +99,15 @@ namespace gum {
       }
     }
 
+    
+    /// returns the internal apriori of the score
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    const ScoreInternalApriori<IdSetAlloc,CountAlloc>&
+    ScoreLog2Likelihood<IdSetAlloc,CountAlloc>::internalApriori () const noexcept {
+      return __internal_apriori;
+    }
 
+    
     /// returns the score corresponding to a given nodeset
     template <typename IdSetAlloc, typename CountAlloc>
     float ScoreLog2Likelihood<IdSetAlloc,CountAlloc>::score

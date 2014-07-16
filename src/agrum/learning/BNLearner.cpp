@@ -29,6 +29,7 @@
 
 #include <agrum/config.h>
 #include <agrum/learning/BNLearner.h>
+#include <agrum/learning/scores_and_tests/scoreInternalNoApriori.h>
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
@@ -517,10 +518,19 @@ namespace gum {
       // create the new estimator
       switch ( __param_estimator_type ) {
       case ParamEstimatorType::ML:
-        __param_estimator =
-          new ParamEstimatorML<> ( __score_database.rowFilter (),
-                                   __score_database.modalities (),
-                                   *__apriori );
+        if ( __score != nullptr ) {
+          __param_estimator =
+            new ParamEstimatorML<> ( __score_database.rowFilter (),
+                                     __score_database.modalities (),
+                                     *__apriori,
+                                     __score->internalApriori () );
+        }
+        else {
+          __param_estimator =
+            new ParamEstimatorML<> ( __score_database.rowFilter (),
+                                     __score_database.modalities (),
+                                     *__apriori );
+        }
         break;
 
       default:

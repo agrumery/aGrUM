@@ -133,9 +133,11 @@ namespace gum_tests {
 
       gum::learning::StructuralConstraintIndegree constraint1;
       constraint1.setMaxIndegree ( 6 );
-      static_cast<gum::learning::StructuralConstraintIndegree&> ( struct_constraint ) = constraint1;
+      static_cast<gum::learning::StructuralConstraintIndegree&>
+        ( struct_constraint ) = constraint1;
 
-      gum::learning::ParamEstimatorML<> estimator ( filter, modalities, apriori );
+      gum::learning::ParamEstimatorML<> estimator ( filter, modalities, apriori,
+                                                    score.internalApriori () );
 
       gum::learning::GraphChangesGenerator4DiGraph
         < decltype ( struct_constraint ) >
@@ -147,25 +149,25 @@ namespace gum_tests {
         decltype ( op_set ) >
       selector ( score, struct_constraint, op_set );
 
-    gum::learning::GreedyHillClimbing search;
-    //simpleListenerForGHC agsl ( search );
-    search.approximationScheme ().setEpsilon ( 1000 );
+      gum::learning::GreedyHillClimbing search;
+      //simpleListenerForGHC agsl ( search );
+      search.approximationScheme ().setEpsilon ( 1000 );
 
-    gum::Timer timer;
-    gum::DAG dag = search.learnStructure ( selector, modalities );
-    std::cout << timer.step () << "  " << dag << std::endl;
-    /*
-      gum::BayesNet<double> bn =
-      search.learnBN<double> ( selector, estimator,
-      database.variableNames (),
-      modalities );
+      gum::Timer timer;
+      gum::DAG dag = search.learnStructure ( selector, modalities );
+      std::cout << timer.step () << "  " << dag << std::endl;
+      /*
+        gum::BayesNet<double> bn =
+        search.learnBN<double> ( selector, estimator,
+        database.variableNames (),
+        modalities );
 
-      gum::BayesNet<float> bn2 =
-      search.learnBN ( selector, estimator,
-      database.variableNames (),
-      modalities );
-    */
-  }
+        gum::BayesNet<float> bn2 =
+        search.learnBN ( selector, estimator,
+        database.variableNames (),
+        modalities );
+      */
+    }
 
 
     void xtest_alarm1 () {
@@ -173,7 +175,254 @@ namespace gum_tests {
 
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-          gum::learning::Col<0>, 37> () );
+                                gum::learning::Col<0>, 37> () );
+
+      auto generators =
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
+      auto filter = gum::learning::make_DB_row_filter ( database, translators,
+                                                        generators );
+
+      std::vector<unsigned int> modalities = filter.modalities ();
+
+      gum::learning::AprioriSmoothing<> apriori;
+      gum::learning::ScoreBDeu<> score ( filter, modalities, apriori );
+
+      gum::learning::StructuralConstraintSetStatic<
+        gum::learning::StructuralConstraintDAG>
+        struct_constraint;
+
+      gum::learning::ParamEstimatorML<> estimator ( filter, modalities, apriori,
+                                                    score.internalApriori () );
+
+      gum::learning::GraphChangesGenerator4DiGraph
+        < decltype ( struct_constraint ) >
+        op_set ( struct_constraint );
+
+      gum::learning::GraphChangesSelector4DiGraph<
+        decltype ( score ),
+        decltype ( struct_constraint ),
+        decltype ( op_set ) >
+      selector ( score, struct_constraint, op_set );
+
+      gum::learning::GreedyHillClimbing search;
+
+      try {
+        gum::Timer timer;
+        gum::DAG bn = search.learnStructure ( selector, modalities );
+        std::cout << timer.step () << " : " << std::endl;
+        std::cout << bn << std::endl;
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR ( e );
+      }
+
+    }
+
+
+    void xtest_alarm1bis () {
+      gum::learning::DatabaseFromCSV database ( MY_ALARM );
+
+      auto translators = gum::learning::make_translators
+        ( gum::learning::Create<gum::learning::CellTranslatorNumber,
+                                gum::learning::Col<0>, 37> () );
+
+      auto generators =
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
+      auto filter = gum::learning::make_DB_row_filter ( database, translators,
+                                                        generators );
+
+      std::vector<unsigned int> modalities = filter.modalities ();
+
+      gum::learning::AprioriSmoothing<> apriori;
+      gum::learning::ScoreBDeu<> score ( filter, modalities, apriori );
+
+      gum::learning::StructuralConstraintSetStatic<
+        gum::learning::StructuralConstraintDAG>
+        struct_constraint;
+
+      gum::learning::ParamEstimatorML<> estimator ( filter, modalities, apriori,
+                                                    score.internalApriori () );
+
+      gum::learning::GraphChangesGenerator4DiGraph
+        < decltype ( struct_constraint ) >
+        op_set ( struct_constraint );
+
+      gum::learning::GraphChangesSelector4DiGraph<
+        decltype ( score ),
+        decltype ( struct_constraint ),
+        decltype ( op_set ) >
+      selector ( score, struct_constraint, op_set );
+
+      gum::learning::GreedyHillClimbing search;
+
+      try {
+        gum::Timer timer;
+        gum::DAG bn = search.learnStructure ( selector, modalities );
+        std::cout << timer.step () << " : " << std::endl;
+        std::cout << bn << std::endl;
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR ( e );
+      }
+
+    }
+
+
+    void xtest_alarm1ter () {
+      gum::learning::DatabaseFromCSV database ( MY_ALARM );
+
+      auto translators = gum::learning::make_translators
+        ( gum::learning::Create<gum::learning::CellTranslatorUniversal,
+                                gum::learning::Col<0>, 37> () );
+
+      auto generators =
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
+      auto filter = gum::learning::make_DB_row_filter ( database, translators,
+                                                        generators );
+
+      std::vector<unsigned int> modalities = filter.modalities ();
+
+      gum::learning::AprioriSmoothing<> apriori;
+      gum::learning::ScoreBDeu<> score ( filter, modalities, apriori );
+
+      gum::learning::StructuralConstraintSetStatic<
+        gum::learning::StructuralConstraintDAG>
+        struct_constraint;
+
+      gum::learning::ParamEstimatorML<> estimator ( filter, modalities, apriori,
+                                                    score.internalApriori () );
+
+      gum::learning::GraphChangesGenerator4DiGraph
+        < decltype ( struct_constraint ) >
+        op_set ( struct_constraint );
+
+      gum::learning::GraphChangesSelector4DiGraph<
+        decltype ( score ),
+        decltype ( struct_constraint ),
+        decltype ( op_set ) >
+      selector ( score, struct_constraint, op_set );
+
+      gum::learning::GreedyHillClimbing search;
+
+      try {
+        gum::Timer timer;
+        gum::DAG bn = search.learnStructure ( selector, modalities );
+        std::cout << timer.step () << " : " << std::endl;
+        std::cout << bn << std::endl;
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR ( e );
+      }
+
+    }
+
+
+    void xtest_alarm2 () {
+      gum::learning::DatabaseFromCSV database ( MY_ALARM );
+
+      gum::learning::DBRowTranslatorSetDynamic
+        <gum::learning::CellTranslatorCompactIntId> translators;
+      translators.insertTranslator ( gum::learning::CellTranslatorCompactIntId(),
+                                     gum::learning::Col<0> (), 37 );
+
+      auto generators =
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
+      auto filter = gum::learning::make_DB_row_filter ( database, translators,
+                                                        generators );
+
+      std::vector<unsigned int> modalities = filter.modalities ();
+
+      gum::learning::AprioriSmoothing<> apriori;
+      gum::learning::ScoreBDeu<> score ( filter, modalities, apriori );
+
+      gum::learning::StructuralConstraintSetStatic<
+        gum::learning::StructuralConstraintDAG>
+        struct_constraint;
+
+      gum::learning::ParamEstimatorML<> estimator ( filter, modalities, apriori,
+                                                    score.internalApriori () );
+
+      gum::learning::GraphChangesGenerator4DiGraph
+        < decltype ( struct_constraint ) >
+        op_set ( struct_constraint );
+
+      gum::learning::GraphChangesSelector4DiGraph<
+        decltype ( score ),
+        decltype ( struct_constraint ),
+        decltype ( op_set ) >
+      selector ( score, struct_constraint, op_set );
+
+      gum::learning::GreedyHillClimbing search;
+
+      try {
+        gum::Timer timer;
+        gum::DAG bn = search.learnStructure ( selector, modalities );
+        std::cout << timer.step () << " : " << std::endl;
+        std::cout << bn << std::endl;
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR ( e );
+      }
+
+    }
+
+
+    void xtest_alarm3 () {
+      gum::learning::DatabaseFromCSV database ( MY_ALARM );
+
+      gum::learning::DBRowTranslatorSetDynamic< gum::learning::DBCellTranslator<1,1> >
+        translators;
+      translators.insertTranslator ( gum::learning::CellTranslatorCompactIntId (),
+                                     gum::learning::Col<0> (),
+                                     database.content() [0].size () );
+
+
+      auto generators =
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
+      auto filter = gum::learning::make_DB_row_filter ( database, translators,
+                                                        generators );
+
+      std::vector<unsigned int> modalities = filter.modalities ();
+
+      gum::learning::AprioriSmoothing<> apriori;
+      gum::learning::ScoreBDeu<> score ( filter, modalities, apriori );
+
+      gum::learning::StructuralConstraintSetStatic<
+        gum::learning::StructuralConstraintDAG>
+        struct_constraint;
+
+      gum::learning::ParamEstimatorML<> estimator ( filter, modalities, apriori,
+                                                    score.internalApriori () );
+
+      gum::learning::GraphChangesGenerator4DiGraph
+        < decltype ( struct_constraint ) >
+        op_set ( struct_constraint );
+
+      gum::learning::GraphChangesSelector4DiGraph<
+        decltype ( score ),
+        decltype ( struct_constraint ),
+        decltype ( op_set ) >
+      selector ( score, struct_constraint, op_set );
+
+      gum::learning::GreedyHillClimbing search;
+
+      try {
+        gum::Timer timer;
+        gum::DAG bn = search.learnStructure ( selector, modalities );
+        std::cout << timer.step () << " : " << std::endl;
+        std::cout << bn << std::endl;
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR ( e );
+      }
+
+    }
+
+
+    void xtest_alarm4 () {
+      gum::learning::DatabaseFromCSV database ( MY_ALARM );
+
+      gum::learning::DBRowTranslatorSetDynamic< gum::learning::DBCellTranslator<1,1> >
+        translators;
+      translators.insertTranslator ( gum::learning::CellTranslatorCompactIntId (),
+                                     gum::learning::Col<0> (),
+                                     database.content() [0].size () );
+
 
       auto generators =
         gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
@@ -191,280 +440,38 @@ namespace gum_tests {
 
       gum::learning::ParamEstimatorML<> estimator ( filter, modalities, apriori );
 
-      gum::learning::GraphChangesGenerator4DiGraph
+      gum::learning::GraphChangesGeneratorOnSubDiGraph
         < decltype ( struct_constraint ) >
         op_set ( struct_constraint );
+
+      gum::NodeSet targets { 0, 1, 2 };
+      op_set.setTargets ( targets );
+      op_set.setTails ( modalities.size () );
 
       gum::learning::GraphChangesSelector4DiGraph<
         decltype ( score ),
         decltype ( struct_constraint ),
         decltype ( op_set ) >
-        selector ( score, struct_constraint, op_set );
+      selector ( score, struct_constraint, op_set );
 
       gum::learning::GreedyHillClimbing search;
 
       try {
         gum::Timer timer;
-        gum::DAG bn = search.learnStructure ( selector, modalities );
+        gum::DAG bn_dag = search.learnStructure ( selector, modalities );
         std::cout << timer.step () << " : " << std::endl;
-        std::cout << bn << std::endl;
+        std::cout << bn_dag << std::endl;
+
+        gum::BayesNet<float> bn = search.learnBN ( selector, estimator,
+                                                   database.variableNames (),
+                                                   modalities,
+                                                   filter.translatorSet () );
+      
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR ( e );
       }
 
     }
-
-
-  void xtest_alarm1bis () {
-    gum::learning::DatabaseFromCSV database ( MY_ALARM );
-
-    auto translators = gum::learning::make_translators
-      ( gum::learning::Create<gum::learning::CellTranslatorNumber,
-        gum::learning::Col<0>, 37> () );
-
-    auto generators =
-      gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
-    auto filter = gum::learning::make_DB_row_filter ( database, translators,
-                                                      generators );
-
-    std::vector<unsigned int> modalities = filter.modalities ();
-
-    gum::learning::AprioriSmoothing<> apriori;
-    gum::learning::ScoreBDeu<> score ( filter, modalities, apriori );
-
-    gum::learning::StructuralConstraintSetStatic<
-      gum::learning::StructuralConstraintDAG>
-      struct_constraint;
-
-    gum::learning::ParamEstimatorML<> estimator ( filter, modalities, apriori );
-
-    gum::learning::GraphChangesGenerator4DiGraph
-      < decltype ( struct_constraint ) >
-      op_set ( struct_constraint );
-
-    gum::learning::GraphChangesSelector4DiGraph<
-      decltype ( score ),
-      decltype ( struct_constraint ),
-      decltype ( op_set ) >
-      selector ( score, struct_constraint, op_set );
-
-    gum::learning::GreedyHillClimbing search;
-
-    try {
-      gum::Timer timer;
-      gum::DAG bn = search.learnStructure ( selector, modalities );
-      std::cout << timer.step () << " : " << std::endl;
-      std::cout << bn << std::endl;
-    } catch ( gum::Exception& e ) {
-      GUM_SHOWERROR ( e );
-    }
-
-  }
-
-
-  void xtest_alarm1ter () {
-    gum::learning::DatabaseFromCSV database ( MY_ALARM );
-
-    auto translators = gum::learning::make_translators
-      ( gum::learning::Create<gum::learning::CellTranslatorUniversal,
-        gum::learning::Col<0>, 37> () );
-
-    auto generators =
-      gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
-    auto filter = gum::learning::make_DB_row_filter ( database, translators,
-                                                      generators );
-
-    std::vector<unsigned int> modalities = filter.modalities ();
-
-    gum::learning::AprioriSmoothing<> apriori;
-    gum::learning::ScoreBDeu<> score ( filter, modalities, apriori );
-
-    gum::learning::StructuralConstraintSetStatic<
-      gum::learning::StructuralConstraintDAG>
-      struct_constraint;
-
-    gum::learning::ParamEstimatorML<> estimator ( filter, modalities, apriori );
-
-    gum::learning::GraphChangesGenerator4DiGraph
-      < decltype ( struct_constraint ) >
-      op_set ( struct_constraint );
-
-    gum::learning::GraphChangesSelector4DiGraph<
-      decltype ( score ),
-      decltype ( struct_constraint ),
-      decltype ( op_set ) >
-      selector ( score, struct_constraint, op_set );
-
-    gum::learning::GreedyHillClimbing search;
-
-    try {
-      gum::Timer timer;
-      gum::DAG bn = search.learnStructure ( selector, modalities );
-      std::cout << timer.step () << " : " << std::endl;
-      std::cout << bn << std::endl;
-    } catch ( gum::Exception& e ) {
-      GUM_SHOWERROR ( e );
-    }
-
-  }
-
-
-  void xtest_alarm2 () {
-    gum::learning::DatabaseFromCSV database ( MY_ALARM );
-
-    gum::learning::DBRowTranslatorSetDynamic
-      <gum::learning::CellTranslatorCompactIntId> translators;
-    translators.insertTranslator ( gum::learning::CellTranslatorCompactIntId(),
-                                   gum::learning::Col<0> (), 37 );
-
-    auto generators =
-      gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
-    auto filter = gum::learning::make_DB_row_filter ( database, translators,
-                                                      generators );
-
-    std::vector<unsigned int> modalities = filter.modalities ();
-
-    gum::learning::AprioriSmoothing<> apriori;
-    gum::learning::ScoreBDeu<> score ( filter, modalities, apriori );
-
-    gum::learning::StructuralConstraintSetStatic<
-      gum::learning::StructuralConstraintDAG>
-      struct_constraint;
-
-    gum::learning::ParamEstimatorML<> estimator ( filter, modalities, apriori );
-
-    gum::learning::GraphChangesGenerator4DiGraph
-      < decltype ( struct_constraint ) >
-      op_set ( struct_constraint );
-
-    gum::learning::GraphChangesSelector4DiGraph<
-      decltype ( score ),
-      decltype ( struct_constraint ),
-      decltype ( op_set ) >
-      selector ( score, struct_constraint, op_set );
-
-    gum::learning::GreedyHillClimbing search;
-
-    try {
-      gum::Timer timer;
-      gum::DAG bn = search.learnStructure ( selector, modalities );
-      std::cout << timer.step () << " : " << std::endl;
-      std::cout << bn << std::endl;
-    } catch ( gum::Exception& e ) {
-      GUM_SHOWERROR ( e );
-    }
-
-  }
-
-
-  void xtest_alarm3 () {
-    gum::learning::DatabaseFromCSV database ( MY_ALARM );
-
-    gum::learning::DBRowTranslatorSetDynamic< gum::learning::DBCellTranslator<1,1> >
-      translators;
-    translators.insertTranslator ( gum::learning::CellTranslatorCompactIntId (),
-                                   gum::learning::Col<0> (),
-                                   database.content() [0].size () );
-
-
-    auto generators =
-      gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
-    auto filter = gum::learning::make_DB_row_filter ( database, translators,
-                                                      generators );
-
-    std::vector<unsigned int> modalities = filter.modalities ();
-
-    gum::learning::AprioriSmoothing<> apriori;
-    gum::learning::ScoreBDeu<> score ( filter, modalities, apriori );
-
-    gum::learning::StructuralConstraintSetStatic<
-      gum::learning::StructuralConstraintDAG>
-      struct_constraint;
-
-    gum::learning::ParamEstimatorML<> estimator ( filter, modalities, apriori );
-
-    gum::learning::GraphChangesGenerator4DiGraph
-      < decltype ( struct_constraint ) >
-      op_set ( struct_constraint );
-
-    gum::learning::GraphChangesSelector4DiGraph<
-      decltype ( score ),
-      decltype ( struct_constraint ),
-      decltype ( op_set ) >
-      selector ( score, struct_constraint, op_set );
-
-    gum::learning::GreedyHillClimbing search;
-
-    try {
-      gum::Timer timer;
-      gum::DAG bn = search.learnStructure ( selector, modalities );
-      std::cout << timer.step () << " : " << std::endl;
-      std::cout << bn << std::endl;
-    } catch ( gum::Exception& e ) {
-      GUM_SHOWERROR ( e );
-    }
-
-  }
-
-
-  void xtest_alarm4 () {
-    gum::learning::DatabaseFromCSV database ( MY_ALARM );
-
-    gum::learning::DBRowTranslatorSetDynamic< gum::learning::DBCellTranslator<1,1> >
-      translators;
-    translators.insertTranslator ( gum::learning::CellTranslatorCompactIntId (),
-                                   gum::learning::Col<0> (),
-                                   database.content() [0].size () );
-
-
-    auto generators =
-      gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
-    auto filter = gum::learning::make_DB_row_filter ( database, translators,
-                                                      generators );
-
-    std::vector<unsigned int> modalities = filter.modalities ();
-
-    gum::learning::AprioriSmoothing<> apriori;
-    gum::learning::ScoreBDeu<> score ( filter, modalities, apriori );
-
-    gum::learning::StructuralConstraintSetStatic<
-      gum::learning::StructuralConstraintDAG>
-      struct_constraint;
-
-    gum::learning::ParamEstimatorML<> estimator ( filter, modalities, apriori );
-
-    gum::learning::GraphChangesGeneratorOnSubDiGraph
-      < decltype ( struct_constraint ) >
-      op_set ( struct_constraint );
-
-    gum::NodeSet targets { 0, 1, 2 };
-    op_set.setTargets ( targets );
-    op_set.setTails ( modalities.size () );
-
-    gum::learning::GraphChangesSelector4DiGraph<
-      decltype ( score ),
-      decltype ( struct_constraint ),
-      decltype ( op_set ) >
-      selector ( score, struct_constraint, op_set );
-
-    gum::learning::GreedyHillClimbing search;
-
-    try {
-      gum::Timer timer;
-      gum::DAG bn_dag = search.learnStructure ( selector, modalities );
-      std::cout << timer.step () << " : " << std::endl;
-      std::cout << bn_dag << std::endl;
-
-      gum::BayesNet<float> bn = search.learnBN ( selector, estimator,
-                                                 database.variableNames (),
-                                                 modalities,
-                                                 filter.translatorSet () );
-      
-    } catch ( gum::Exception& e ) {
-      GUM_SHOWERROR ( e );
-    }
-
-  }
 
 
 
