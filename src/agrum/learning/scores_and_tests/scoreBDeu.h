@@ -25,7 +25,7 @@
  *
  * The class should be used as follows: first, to speed-up computations, you
  * should consider computing all the scores you need in one pass. To do so, use
- * the appropriate addNodeSets methods. These will compute everything you need.
+ * the appropriate addNodeSet methods. These will compute everything you need.
  * Use methods score to retrieve the scores computed. See the Score class for
  * details.
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
@@ -59,7 +59,7 @@ namespace gum {
      *
      * The class should be used as follows: first, to speed-up computations, you
      * should consider computing all the scores you need in one pass. To do so, use
-     * the appropriate addNodeSets methods. These will compute everything you need.
+     * the appropriate addNodeSet methods. These will compute everything you need.
      * Use methods score to retrieve the scores computed. See the Score class for
      * details.
      */

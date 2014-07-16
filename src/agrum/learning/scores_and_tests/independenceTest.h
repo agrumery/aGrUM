@@ -192,7 +192,7 @@ namespace gum {
  
       /// returns the counting vector for a given (conditioned) target set
       /** This method returns the observtion countings for the set of variables
-       * whose index was returned by method addNodeSet or addNodeSets. If the
+       * whose index was returned by method addNodeSet or addNodeSet. If the
        * set was conditioned, the countings correspond to the target variables
        * @b and the conditioning variables. If you wish to get only the countings
        * for the conditioning variables, prefer using method countConditioning.

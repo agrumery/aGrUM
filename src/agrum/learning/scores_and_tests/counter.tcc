@@ -204,6 +204,39 @@ namespace gum {
     }
 
 
+    /// add a new target variable plus some conditioning vars
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    unsigned int Counter<IdSetAlloc,CountAlloc>::addNodeSet
+    ( unsigned int var,
+      std::vector<unsigned int>&& conditioning_ids ) {
+      // if the conditioning set is empty, perform the unconditional addNodeSet
+      if ( ! conditioning_ids.size () ) {
+        return Counter<IdSetAlloc,CountAlloc>::addNodeSet ( var );
+      }
+          
+      // create the target nodeset and assign to it its record counter index
+      std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* new_target =
+        new std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>
+        ( conditioning_ids, 0 );
+      new_target->first.push_back ( var );
+      new_target->second = _record_counter.addNodeSet ( new_target->first );
+
+      // create the conditioning nodeset and assign to it its record counter index
+      std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* new_cond =
+        new std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>
+        ( std::move ( conditioning_ids ), 0 );
+      new_cond->second = _record_counter.addNodeSet ( new_cond->first );
+     
+      // save it in the score's nodeset
+      _conditioning_nodesets.push_back ( new_cond );
+      _target_nodesets.push_back ( new_target );
+
+      _counts_computed = false;
+      
+      return _target_nodesets.size () - 1;
+    }
+
+
     /// add a new pair of target unconditioned variables to be counted
     template <typename IdSetAlloc, typename CountAlloc> INLINE
     unsigned int Counter<IdSetAlloc,CountAlloc>::addNodeSet
@@ -280,6 +313,42 @@ namespace gum {
     /// add a new pair of target conditioned variables to be counted
     template <typename IdSetAlloc, typename CountAlloc> INLINE
     unsigned int Counter<IdSetAlloc,CountAlloc>::addNodeSet
+    ( unsigned int var1,
+      unsigned int var2,
+      std::vector<unsigned int>&& conditioning_ids ) {  
+      // if the conditioning set is empty, perform the unconditional addNodeSet
+      if ( ! conditioning_ids.size () ) {
+        return Counter<IdSetAlloc,CountAlloc>::addNodeSet ( var1, var2 );
+      }
+
+      // create the target nodeset and assign to it its record counter index
+      std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* new_target =
+        new std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>
+        ( conditioning_ids, 0 );
+      new_target->first.push_back ( var2 );
+      new_target->first.push_back ( var1 );
+      new_target->second = _record_counter.addNodeSet ( new_target->first );
+
+      // create the conditioning nodeset and assign to it its record counter index
+      std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* new_cond =
+        new std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>
+        ( std::move ( conditioning_ids ), 0 );
+      new_cond->first.push_back ( var2 );
+      new_cond->second = _record_counter.addNodeSet ( new_cond->first );
+     
+      // save it in the score's nodeset
+      _conditioning_nodesets.push_back ( new_cond );
+      _target_nodesets.push_back ( new_target );
+
+      _counts_computed = false;
+      
+      return _target_nodesets.size () - 1;
+    }
+
+
+    /// add a new pair of target conditioned variables to be counted
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    unsigned int Counter<IdSetAlloc,CountAlloc>::addNodeSet
     ( const std::pair<unsigned int,unsigned int>& vars,
       const std::vector<unsigned int>& conditioning_ids ) {
       // if the conditioning set is empty, perform the unconditional addNodeSet
@@ -313,65 +382,39 @@ namespace gum {
     }
 
 
-    /// add new set of "unconditioned" single targets
+    /// add a new pair of target conditioned variables to be counted
     template <typename IdSetAlloc, typename CountAlloc> INLINE
-    unsigned int Counter<IdSetAlloc,CountAlloc>::addNodeSets
-    ( const std::vector<unsigned int>& single_vars ) {
-      unsigned int index;
-      for ( auto var : single_vars ) {
-        index = addNodeSets ( var );
-      }
-      return index - single_vars.size () + 1;
-    }
-
-
-    /// add new set of "conditioned" single targets
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    unsigned int
-    Counter<IdSetAlloc,CountAlloc>::addNodeSets
-    ( const std::vector<unsigned int>& single_vars,
-      const std::vector<unsigned int>& conditioning_ids ) {
+    unsigned int Counter<IdSetAlloc,CountAlloc>::addNodeSet
+    ( const std::pair<unsigned int,unsigned int>& vars,
+      std::vector<unsigned int>&& conditioning_ids ) {
       // if the conditioning set is empty, perform the unconditional addNodeSet
       if ( ! conditioning_ids.size () ) {
         return Counter<IdSetAlloc,CountAlloc>::addNodeSet
-          ( single_vars );
+          ( vars.first, vars.second );
       }
+      
+      // create the target nodeset and assign to it its record counter index
+      std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* new_target =
+        new std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>
+        ( conditioning_ids, 0 );
+      new_target->first.push_back ( vars.second );
+      new_target->first.push_back ( vars.first );
+      new_target->second = _record_counter.addNodeSet ( new_target->first );
 
-      unsigned int index;
-      for ( auto var : single_vars ) {
-        index = addNodeSets ( var, conditioning_ids );
-      }
-      return index - single_vars.size () + 1;
-    }
+      // create the conditioning nodeset and assign to it its record counter index
+      std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>* new_cond =
+        new std::pair<std::vector<unsigned int,IdSetAlloc>,unsigned int>
+        ( std::move ( conditioning_ids ), 0 );
+      new_cond->first.push_back ( vars.second );
+      new_cond->second = _record_counter.addNodeSet ( new_cond->first );
+     
+      // save it in the score's nodeset
+      _conditioning_nodesets.push_back ( new_cond );
+      _target_nodesets.push_back ( new_target );
 
-
-    /// add new set of "unconditioned" pairs of targets
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    unsigned int Counter<IdSetAlloc,CountAlloc>::addNodeSets
-    ( const std::vector< std::pair<unsigned int,unsigned int> >& vars ) {
-      unsigned int index;
-      for ( const auto& var : vars ) {
-        index = addNodeSets ( var );
-      }
-      return index - vars.size () + 1;
-    }
-
-    
-    /// add new set of "conditioned" pairs of targets
-    template <typename IdSetAlloc, typename CountAlloc> INLINE
-    unsigned int Counter<IdSetAlloc,CountAlloc>::addNodeSets
-    ( const std::vector< std::pair<unsigned int,unsigned int> >& vars,
-      const std::vector<unsigned int>& conditioning_ids ) {
-      // if the conditioning set is empty, perform the unconditional addNodeSet
-      if ( ! conditioning_ids.size () ) {
-        return Counter<IdSetAlloc,CountAlloc>::addNodeSet ( vars );
-      }
-
-      unsigned int index;
-      for ( const auto& var : vars ) {
-        index = addNodeSets ( var, conditioning_ids );
-      }
-      return index - vars.size () + 1;
+      _counts_computed = false;
+      
+      return _target_nodesets.size () - 1;
     }
 
 

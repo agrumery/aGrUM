@@ -22,7 +22,7 @@
  *
  * The class should be used as follows: first, to speed-up computations, you
  * should consider computing all the independence tests you need in one pass.
- * To do so, use the appropriate addNodeSets methods. These will compute
+ * To do so, use the appropriate addNodeSet methods. These will compute
  * everything you need. Use method score to retrieve the scores related to
  * the independence test that were computed. See the IndependenceTest class for
  * details.
@@ -54,7 +54,7 @@ namespace gum {
      *
      * The class should be used as follows: first, to speed-up computations, you
      * should consider computing all the independence tests you need in one pass.
-     * To do so, use the appropriate addNodeSets methods. These will compute
+     * To do so, use the appropriate addNodeSet methods. These will compute
      * everything you need. Use method score to retrieve the scores related to
      * the independence test that were computed. See the IndependenceTest class for
      * details. 
