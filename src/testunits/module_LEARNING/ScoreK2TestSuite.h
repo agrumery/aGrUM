@@ -27,6 +27,7 @@
 #include <agrum/learning/scores_and_tests/scoreK2.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
 #include <agrum/learning/aprioris/aprioriSmoothing.h>
+#include <agrum/learning/aprioris/aprioriNoApriori.h>
 
 namespace gum_tests {
 
@@ -40,14 +41,15 @@ namespace gum_tests {
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>, 8 > () );
 
-      auto generators =  gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
+      auto generators =
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
       
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
       
       std::vector<unsigned int> modalities = filter.modalities ();
 
-      gum::learning::AprioriSmoothing<> apriori;
+      gum::learning::AprioriNoApriori<> apriori;
       gum::learning::ScoreK2<> score ( filter, modalities, apriori );
 
       unsigned int id1 = score.addNodeSet ( 3 );
@@ -95,11 +97,12 @@ namespace gum_tests {
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>, 8 > () );
-      auto generators =  gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
+      auto generators =
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
       std::vector<unsigned int> modalities = filter.modalities ();
-      gum::learning::AprioriSmoothing<> apriori;
+      gum::learning::AprioriNoApriori<> apriori;
       gum::learning::ScoreK2<> score ( filter, modalities, apriori );
       //score.useCache ( false );
       
@@ -129,11 +132,12 @@ namespace gum_tests {
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>, 8 > () );
-      auto generators =  gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
+      auto generators =
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
       std::vector<unsigned int> modalities = filter.modalities ();
-      gum::learning::AprioriSmoothing<> apriori;
+      gum::learning::AprioriNoApriori<> apriori;
       gum::learning::ScoreK2<> score ( filter, modalities, apriori );
      
       unsigned int id1, id2, id3, id4, id5, id6, id7;

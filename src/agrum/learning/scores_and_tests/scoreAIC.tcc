@@ -123,7 +123,7 @@ namespace gum {
       // get the counts for all the targets and for the conditioning nodes
       const std::vector<float,CountAlloc>& N_ijk = 
         this->_getAllCounts ( nodeset_index );
-      unsigned int targets_modal = N_ijk.size ();
+      const unsigned int targets_modal = N_ijk.size ();
       float score = 0;
  
       // get the nodes involved in the score as well as their modalities
@@ -136,22 +136,16 @@ namespace gum {
       // here, we distinguish nodesets with conditioning nodes from those
       // without conditioning nodes
       if ( conditioning_nodes ) {
-        // initialize the score: this should be the penalty of the AIC score, i.e.,
-        // -(ri-1 ) * qi
-        float penalty = 1;
-        for ( unsigned int i = 0; i < conditioning_nodes->size(); ++i ) {
-          penalty *= modalities[conditioning_nodes->operator[] ( i )];
-        }
-        for ( unsigned int i = conditioning_nodes->size();
-              i < all_nodes.size (); ++i ) {
-          penalty *= modalities[all_nodes[i]] - 1;
-        }
-
-        // get the counts for all the targets and for the conditioning nodes
+        // get the counts for the conditioning nodes
         const std::vector<float,CountAlloc>& N_ij = 
           this->_getConditioningCounts ( nodeset_index );
-        unsigned int conditioning_modal = N_ij.size ();
+        const unsigned int conditioning_modal = N_ij.size ();
 
+        // initialize the score: this should be the penalty of the AIC score, i.e.,
+        // -(ri-1 ) * qi
+        const float penalty =
+          conditioning_modal * ( modalities[all_nodes.back ()] - 1 );
+ 
         if ( this->_apriori->weight () ) {
           const std::vector<float,CountAlloc>& N_prime_ijk = 
             this->_getAllApriori ( nodeset_index );
@@ -163,15 +157,15 @@ namespace gum {
           // equivalent to:
           // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
          for ( unsigned int k = 0; k < targets_modal; ++k ) {
-            if ( N_ijk[k] + N_prime_ijk[k] ) {
-              score += ( N_ijk[k] + N_prime_ijk[k] ) *
-                logf ( N_ijk[k] + N_prime_ijk[k] );
+           const float new_count = N_ijk[k] + N_prime_ijk[k];
+            if ( new_count ) {
+              score += new_count * logf ( new_count );
             }
           }
           for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
-            if ( N_ij[j] + N_prime_ij[j] ) {
-              score -= ( N_ij[j] + N_prime_ij[j] ) *
-                logf ( N_ij[j] + N_prime_ij[j] );
+            const float new_count = N_ij[j] + N_prime_ij[j];
+            if ( new_count ) {
+              score -= new_count * logf ( new_count );
             }
           }
         }
@@ -210,10 +204,7 @@ namespace gum {
 
         // initialize the score: this should be the penalty of the AIC score, i.e.,
         // -(ri-1 )
-        float penalty = 1;
-        for ( unsigned int i = 0; i < all_nodes.size (); ++i ) {
-          penalty *= modalities[all_nodes[i]] - 1;
-        }
+        const float penalty = modalities[all_nodes.back ()] - 1;
 
         if ( this->_apriori->weight () ) {
           const std::vector<float,CountAlloc>& N_prime_ijk = 
@@ -225,10 +216,10 @@ namespace gum {
           // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - N log N
           float N = 0;
           for ( unsigned int k = 0; k < targets_modal; ++k ) {
-            if ( N_ijk[k] + N_prime_ijk[k] ) {
-              score += ( N_ijk[k] + N_prime_ijk[k] ) *
-                logf ( N_ijk[k] + N_prime_ijk[k] );
-              N += N_ijk[k] + N_prime_ijk[k];
+            const float new_count = N_ijk[k] + N_prime_ijk[k];
+            if ( new_count ) {
+              score += new_count * logf ( new_count );
+              N += new_count;
             }
           }
           score -= N * logf ( N );

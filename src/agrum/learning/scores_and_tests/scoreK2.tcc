@@ -140,30 +140,46 @@ namespace gum {
           this->_getConditioningCounts ( nodeset_index );
         const unsigned int conditioning_modal = N_ij.size ();
  
-        // the K2 score can be computed as follows:
-        // qi log {(ri - 1)!} + sum_j=1^qi [ - log {(N_ij+ri-1)!} +
-        //                                   sum_k=1^ri log { N_ijk! } ]
+        if ( this->_apriori->weight () ) {
+          // the score to compute is that of BD with aprioris N'_ijk + 1
+          // (the + 1 is here to take into account the internal apriori of K2)
+          const std::vector<float,CountAlloc>& N_prime_ijk = 
+            this->_getAllApriori ( nodeset_index );
+          const std::vector<float,CountAlloc>& N_prime_ij = 
+            this->_getConditioningApriori ( nodeset_index );
+          
+          // the K2 score can be computed as follows:
+          // sum_j=1^qi [ gammalog2 ( N'_ij + r_i ) -
+          //              gammalog2 ( N_ij + N'_ij + r_i )
+          //              + sum_k=1^ri { gammlog2 ( N_ijk + N'_ijk + 1 ) -
+          //                             gammalog2 ( N'_ijk + 1 ) } ]
 
-        unsigned int qi = 1;
-        for ( unsigned int i = 0; i < conditioning_nodes->size(); ++i ) {
-          qi *= modalities[conditioning_nodes->operator[] ( i )];
-        }
-    
-        // precompute the log of (ri - 1)! and add the initial penalty to the score
-        unsigned int ri_minus_1 = 1;
-        for ( unsigned int i = conditioning_nodes->size ();
-              i < all_nodes.size (); ++i ) {
-          ri_minus_1 *= modalities[all_nodes[i]] - 1;
-        }
-        score = qi * __gammalog2 ( ri_minus_1 + 1 );
-       
-        for ( unsigned int k = 0; k < targets_modal; ++k ) {
-          if ( N_ijk[k] ) {
-            score += __gammalog2 ( N_ijk[k] + 1 );           
+          const float r_i = modalities[all_nodes.back ()];
+          for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
+            score += __gammalog2 ( N_prime_ij[j] + r_i ) -
+              __gammalog2 ( N_ij[j] + N_prime_ij[j] + r_i );
+          }
+          for ( unsigned int k = 0; k < targets_modal; ++k ) {
+            score += __gammalog2 ( N_ijk[k] + N_prime_ijk[k] + 1 ) -
+            __gammalog2 ( N_prime_ijk[k] + 1 );
           }
         }
-        for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
-          score -= __gammalog2 ( N_ij[j] + ri_minus_1 + 1 );
+        else {
+          // the K2 score can be computed as follows:
+          // qi log {(ri - 1)!} + sum_j=1^qi [ - log {(N_ij+ri-1)!} +
+          //                                   sum_k=1^ri log { N_ijk! } ]
+
+          // put the first term: qi log {(ri - 1)!} into the score
+          const float r_i = modalities[all_nodes.back ()];
+          score = conditioning_modal * __gammalog2 ( r_i );
+       
+          for ( unsigned int k = 0; k < targets_modal; ++k ) {
+            score += __gammalog2 ( N_ijk[k] + 1 );
+          }
+          
+          for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
+            score -= __gammalog2 ( N_ij[j] + r_i );
+          }
         }
 
         // shall we put the score into the cache?
@@ -176,23 +192,44 @@ namespace gum {
       else {
         // here, there are no conditioning nodes
 
-        // the K2 score can be computed as follows:
-        // log {(ri - 1)!} - log {(N + ri-1)!} + sum_k=1^ri log { N_ijk! } ]
-     
-        // precompute the log of (ri - 1)! and add the initial penalty to the score
-        unsigned int ri_minus_1 = 1;
-        for ( unsigned int i = 0; i < all_nodes.size (); ++i ) {
-          ri_minus_1 *= modalities[all_nodes[i]] - 1;
+        if ( this->_apriori->weight () ) {
+          const std::vector<float,CountAlloc>& N_prime_ijk = 
+            this->_getAllApriori ( nodeset_index );
+
+          // the score to compute is that of BD with aprioris N'_ijk + 1
+          // (the + 1 is here to take into account the internal apriori of K2)
+
+          // the BD score can be computed as follows:
+          // gammalog2 ( N' + r_i ) - gammalog2 ( N + N' + r_i )
+          // + sum_k=1^ri { gammlog2 ( N_i + N'_i + 1 ) - gammalog2 ( N'_i + 1 ) }
+          const float r_i = modalities[all_nodes.back ()];
+          float N = 0;
+          float N_prime = 0;
+          for ( unsigned int k = 0; k < targets_modal; ++k ) {
+            score += __gammalog2 ( N_ijk[k] + N_prime_ijk[k] + 1 ) -
+              __gammalog2 ( N_prime_ijk[k] + 1 );
+            N += N_ijk[k];
+            N_prime += N_prime_ijk[k];
+          }
+          score += __gammalog2 ( N_prime + r_i ) -
+            __gammalog2 ( N + N_prime + r_i );
         }
-        score = __gammalog2 ( ri_minus_1 + 1 );
-        float N = 0;
-        for ( unsigned int k = 0; k < targets_modal; ++k ) {
-          if ( N_ijk[k] ) {
+        else {
+          // the K2 score can be computed as follows:
+          // log {(ri - 1)!} - log {(N + ri-1)!} + sum_k=1^ri log { N_ijk! } ]
+     
+          // put the first term: log {(ri - 1)!} into the score
+          const float r_i = modalities[all_nodes.back ()];
+          score = __gammalog2 ( r_i );
+
+          float N = 0;
+          for ( unsigned int k = 0; k < targets_modal; ++k ) {
             score += __gammalog2 ( N_ijk[k] + 1 );
             N += N_ijk[k];
           }
+
+          score -= __gammalog2 ( N + r_i );
         }
-        score -= __gammalog2 ( N + ri_minus_1 + 1 );
 
         // shall we put the score into the cache?
         if ( this->_isUsingCache () ) {

@@ -27,6 +27,7 @@
 #include <agrum/learning/scores_and_tests/scoreBDeu.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
 #include <agrum/learning/aprioris/aprioriSmoothing.h>
+#include <agrum/learning/aprioris/aprioriNoApriori.h>
 
 namespace gum_tests {
 
@@ -40,20 +41,21 @@ namespace gum_tests {
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>, 8 > () );
 
-      auto generators =  gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
+      auto generators =
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
       
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
       
       std::vector<unsigned int> modalities = filter.modalities ();
 
-      gum::learning::AprioriSmoothing<> apriori;
+      gum::learning::AprioriNoApriori<> apriori;
       gum::learning::ScoreBDeu<> score ( filter, modalities, apriori );
 
       // to test, we exploit the fact that if the effective sample size is
       // equal to ri * qi, then score BDeu = score K2
 
-      apriori.setWeight ( 2 );
+      score.setEffectiveSampleSize ( 2 );
       unsigned int id1 = score.addNodeSet ( 3 );
       unsigned int id2 = score.addNodeSet ( 1 );
       TS_ASSERT ( fabs ( score.score ( id1 ) + 996.781  ) <= 0.01 );
@@ -66,14 +68,14 @@ namespace gum_tests {
       TS_ASSERT ( fabs ( score.score ( id2 ) + 9935.8  ) <= 0.01 );
 
       score.clear ();
-      apriori.setWeight ( 4 );
+      score.setEffectiveSampleSize ( 4 );
       id1 = score.addNodeSet ( 3, std::vector<unsigned int> { 4 } );
       id2 = score.addNodeSet ( 1, std::vector<unsigned int> { 4 } );
       TS_ASSERT ( fabs ( score.score ( id1 ) + 991.062 ) <= 0.01 );
       TS_ASSERT ( fabs ( score.score ( id2 ) + 3030.55 ) <= 0.01 );
 
       score.clear ();
-      apriori.setWeight ( 8 );
+      score.setEffectiveSampleSize ( 8 );
       id1 = score.addNodeSet ( 3, std::vector<unsigned int> { 1, 2 } );
       TS_ASSERT ( fabs ( score.score ( id1 ) + 1014.4 ) <= 0.01 );
 
@@ -103,17 +105,19 @@ namespace gum_tests {
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>, 8 > () );
-      auto generators =  gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
+      auto generators =
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
       std::vector<unsigned int> modalities = filter.modalities ();
       gum::learning::AprioriSmoothing<> apriori;
-      apriori.setWeight ( 2 );
+      apriori.setWeight ( 0 );
       gum::learning::ScoreBDeu<> score ( filter, modalities, apriori );
+      score.setEffectiveSampleSize ( 2 );
       //score.useCache ( false );
       
       unsigned int id1, id2, id4, id6;
-      for ( unsigned int i = 0; i < 10000; ++i ) {
+      for ( unsigned int i = 0; i < 1000; ++i ) {
         score.clear ();
         id1 = score.addNodeSet ( 3 );
         id2 = score.addNodeSet ( 1 );
@@ -132,13 +136,14 @@ namespace gum_tests {
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>, 8 > () );
-      auto generators =  gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
+      auto generators =
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
       std::vector<unsigned int> modalities = filter.modalities ();
-      gum::learning::AprioriSmoothing<> apriori;
-      apriori.setWeight ( 2 );
+      gum::learning::AprioriNoApriori<> apriori;
       gum::learning::ScoreBDeu<> score ( filter, modalities, apriori );
+      score.setEffectiveSampleSize ( 2 );
       //score.useCache ( false );
       
       unsigned int id1, id2, id4, id6;

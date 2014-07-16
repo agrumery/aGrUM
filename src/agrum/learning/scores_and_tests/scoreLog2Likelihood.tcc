@@ -120,7 +120,7 @@ namespace gum {
       // get the counts for all the targets and for the conditioning nodes
       const std::vector<float,CountAlloc>& N_ijk = 
         this->_getAllCounts ( nodeset_index );
-      unsigned int targets_modal = N_ijk.size ();
+      const unsigned int targets_modal = N_ijk.size ();
       float score = 0;
  
       // get the nodes involved in the score 
@@ -133,7 +133,7 @@ namespace gum {
         // get the counts for all the targets and for the conditioning nodes
         const std::vector<float,CountAlloc>& N_ij = 
           this->_getConditioningCounts ( nodeset_index );
-        unsigned int conditioning_modal = N_ij.size ();
+        const unsigned int conditioning_modal = N_ij.size ();
 
         if ( this->_apriori->weight () ) {
           const std::vector<float,CountAlloc>& N_prime_ijk = 
@@ -146,15 +146,15 @@ namespace gum {
           // equivalent to:
           // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
           for ( unsigned int k = 0; k < targets_modal; ++k ) {
-            if ( N_ijk[k] + N_prime_ijk[k] ) {
-              score += ( N_ijk[k]  + N_prime_ijk[k] ) *
-                logf ( N_ijk[k] + N_prime_ijk[k] );
+            const float new_count = N_ijk[k] + N_prime_ijk[k];
+            if ( new_count ) {
+              score += new_count * logf ( new_count );
             }
           }
           for ( unsigned int j = 0; j < conditioning_modal; ++j ) {
-            if ( N_ij[j] + N_prime_ij[j] ) {
-              score -= ( N_ij[j] + N_prime_ij[j] ) *
-                logf ( N_ij[j] + N_prime_ij[j] );
+            const float new_count = N_ij[j] + N_prime_ij[j];
+            if ( new_count ) {
+              score -= new_count * logf ( new_count );
             }
           }
         }
@@ -183,7 +183,7 @@ namespace gum {
           this->_insertIntoCache ( nodeset_index, score );
         }
 
-         return score;
+        return score;
       }
       else {
         // here, there are no conditioning nodes
@@ -191,7 +191,7 @@ namespace gum {
         // get the counts for all the targets and for the conditioning nodes
         const std::vector<float,CountAlloc>& N_ijk =
           this->_getAllCounts ( nodeset_index );
-        unsigned int targets_modal = N_ijk.size ();
+        const unsigned int targets_modal = N_ijk.size ();
  
         if ( this->_apriori->weight () ) {
           const std::vector<float,CountAlloc>& N_prime_ijk = 
@@ -201,15 +201,15 @@ namespace gum {
           // sum_k=1^r_i N_ijk log (N_ijk / N), which is also
           // equivalent to:
           // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - N log N
-          float N = 0;
+          float N_plus_N_prime = 0;
           for ( unsigned int k = 0; k < targets_modal; ++k ) {
-            if ( N_ijk[k] + N_prime_ijk[k] ) {
-              score += ( N_ijk[k] + N_prime_ijk[k] ) *
-                logf ( N_ijk[k] + N_prime_ijk[k] );
-              N += N_ijk[k] + N_prime_ijk[k];
+            const float new_count = N_ijk[k] + N_prime_ijk[k];
+            if ( new_count ) {
+              score += new_count * logf ( new_count );
+              N_plus_N_prime += new_count;
             }
           }
-          score -= N * logf ( N );
+          score -= N_plus_N_prime * logf ( N_plus_N_prime );
         }
         else {
           // compute the score: it remains to compute the log likelihood, i.e.,

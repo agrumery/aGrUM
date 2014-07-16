@@ -33,8 +33,8 @@ namespace gum {
      
     /// default constructor
     template <typename IdSetAlloc, typename CountAlloc> INLINE
-    AprioriNoApriori<IdSetAlloc,CountAlloc>::AprioriNoApriori () :
-      _weight { 0.0f } {
+    AprioriNoApriori<IdSetAlloc,CountAlloc>::AprioriNoApriori () {
+      setWeight ( 0 );
       GUM_CONSTRUCTOR ( AprioriNoApriori );
     }
 

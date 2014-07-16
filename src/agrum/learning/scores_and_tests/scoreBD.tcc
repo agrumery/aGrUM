@@ -124,7 +124,7 @@ namespace gum {
       // if the weight of the apriori is 0, then gammaLog2 will fail
       if ( this->_apriori->weight () == 0 ) {
         GUM_ERROR ( OutOfBounds,
-                    "log2(gamma()) should be called with a positive argument" );
+                    "The BD score requires the apriori to be strictly positive" );
       }
  
       // get the counts for all the targets and the conditioning nodes
