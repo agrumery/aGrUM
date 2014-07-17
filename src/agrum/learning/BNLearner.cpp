@@ -515,14 +515,14 @@ namespace gum {
 
 
     /// create the parameter estimator used for learning
-    void BNLearner::__createParamEstimator () {
+    void BNLearner::__createParamEstimator ( bool take_into_account_score ) {
       // first, save the old estimator, to be delete if everything is ok
       ParamEstimator<>* old_estimator = __param_estimator;
 
       // create the new estimator
       switch ( __param_estimator_type ) {
       case ParamEstimatorType::ML:
-        if ( __score != nullptr ) {
+        if ( take_into_account_score && ( __score != nullptr ) ) {
           __param_estimator =
             new ParamEstimatorML<> ( __score_database.rowFilter (),
                                      __score_database.modalities (),

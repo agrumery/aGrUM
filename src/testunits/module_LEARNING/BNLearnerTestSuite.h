@@ -88,7 +88,6 @@ namespace gum_tests {
       TS_ASSERT ( ! names.empty () );
 
       try {
-        gum::Timer timer;
         gum::BayesNet<float> bn = learner.learnBN ();
         TS_ASSERT ( bn.dag ().arcs().size () == 9 );
       }
@@ -96,6 +95,33 @@ namespace gum_tests {
         GUM_SHOWERROR ( e );
       }
     }
+
+
+   void test_asia_param () {
+      gum::learning::BNLearner learner(GET_PATH_STR( "asia3.csv" ) );
+
+      gum::DAG dag;
+      for ( unsigned int i = 0; i < 8; ++i ) {
+        dag.addNode ( i );
+      }
+      for ( unsigned int i = 0; i < 7; ++i ) {
+        dag.addArc ( i, i+1 );
+      }
+      dag.addArc ( 0, 7 );
+      dag.addArc ( 2, 4 );
+      dag.addArc ( 5, 7 );
+      dag.addArc ( 3, 6 );
+      
+      learner.useNoApriori ();
+      try {
+        gum::BayesNet<float> bn = learner.learnParameters ( dag );
+        TS_ASSERT ( bn.dim () == 25 );
+      }
+      catch ( gum::Exception& e ) {
+        GUM_SHOWERROR ( e );
+      }
+    }
+
 
     void xtest_listener() {
       gum::learning::BNLearner learner( GET_PATH_STR( "asia.csv" ) );

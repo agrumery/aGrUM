@@ -59,6 +59,28 @@ namespace gum {
             __score_database.rawTranslators () );
     }
 
+    
+    /// learns a BN (its parameters) when its structure is known
+    template <typename GUM_SCALAR>
+    BayesNet<GUM_SCALAR>
+    BNLearner::learnParameters ( const DAG& dag,
+                                 bool take_into_account_score ) {
+      // create the apriori and the estimator
+      __createApriori ();
+      __createParamEstimator ( take_into_account_score );
+     
+      return
+        DAG2BNLearner::createBN
+        <GUM_SCALAR,
+         ParamEstimator<>,
+         DBRowTranslatorSetDynamic<CellTranslatorUniversal> >
+          ( *__param_estimator,
+            dag,
+            __score_database.names (),
+            __score_database.modalities (),
+            __score_database.rawTranslators () );
+    }
+
 
   } /* namespace learning */
 

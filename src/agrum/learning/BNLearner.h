@@ -292,6 +292,20 @@ namespace gum {
       template <typename GUM_SCALAR = float>
       BayesNet<GUM_SCALAR> learnBN ();
 
+      /// learns a BN (its parameters) when its structure is known
+      /** @param dag the structure of the Bayesian network
+       * @param take_into_account_score The dag passed in argument may have been
+       * learnt from a structure learning. In this case, if the score used to
+       * learn the structure has an implicit apriori (like K2 which has a
+       * 1-smoothing apriori), it is important to also take into account this
+       * implicit apriori for parameter learning. By default, if a score exists,
+       * we will learn parameters by taking into account the apriori specified by
+       * methods useAprioriXXX () + the implicit apriori of the score, else we
+       * just take into account the apriori specified by useAprioriXXX () */
+      template <typename GUM_SCALAR = float>
+      BayesNet<GUM_SCALAR> learnParameters ( const DAG& dag,
+                                             bool take_into_account_score = true );
+
       /// sets an initial DAG structure
       void setInitialDAG ( const DAG& );
 
@@ -507,7 +521,7 @@ namespace gum {
       void __createScore ();
 
       /// create the parameter estimator used for learning
-      void __createParamEstimator ();
+      void __createParamEstimator ( bool take_into_account_score = true );
 
       /// returns the DAG learnt
       DAG __learnDAG ();

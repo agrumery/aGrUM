@@ -106,7 +106,7 @@ namespace gum_tests {
                                                          database.variableNames (),
                                                          modalities,
                                                          filter.translatorSet () );
-       std::cout << bn << std::endl << bn.dag () << std::endl;
+        TS_ASSERT ( bn.dag ().arcs().size () == 8 );
      }
       catch ( gum::Exception& e ) {
         GUM_SHOWERROR ( e );

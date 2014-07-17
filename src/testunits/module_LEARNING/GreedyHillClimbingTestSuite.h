@@ -153,9 +153,8 @@ namespace gum_tests {
       //simpleListenerForGHC agsl ( search );
       search.approximationScheme ().setEpsilon ( 1000 );
 
-      gum::Timer timer;
       gum::DAG dag = search.learnStructure ( selector, modalities );
-      std::cout << timer.step () << "  " << dag << std::endl;
+      TS_ASSERT ( dag.arcs().size () == 11 );
       /*
         gum::BayesNet<double> bn =
         search.learnBN<double> ( selector, estimator,
