@@ -281,6 +281,9 @@ namespace gum {
 
       /// add a new nodeset to count
       unsigned int addNodeSet ( const std::vector<unsigned int,IdSetAlloc>& ids );
+      
+      /// returns the size of the database
+      unsigned long DBSize () noexcept;
 
       /// performs countings from the database by cutting it into several pieces
       /** This method implements a parallel counting strategy which consists of

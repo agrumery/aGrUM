@@ -26,6 +26,9 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
+#include <limits>
+
+
 namespace gum {
 
   
@@ -57,6 +60,7 @@ namespace gum {
     ( unsigned int var1,
       unsigned int var2 ) {
       if ( __use_cache ) {
+        // check whether the score is already in the cache
         try {
           float score = __cache.score ( var1, var2, __empty_conditioning_set );
           __is_cached_score.push_back ( true );
@@ -64,6 +68,17 @@ namespace gum {
           return Counter<IdSetAlloc,CountAlloc>::addEmptyNodeSet ();
         }
         catch ( const NotFound& ) {}
+      }
+      
+      // check if the number of parameters is not too high compared to the
+      // size of the database (basically, if there are fewer than an average
+      // of 5 observations per parameter in the database, the independence
+      // test will be incorrect)
+      if ( this->_modalities[ var1 ] * this->_modalities[ var2 ] * 5 >
+           this->_record_counter.DBSize () ) {
+        __is_cached_score.push_back ( true );
+        __cached_score.push_back ( std::numeric_limits<float>::max () );
+        return Counter<IdSetAlloc,CountAlloc>::addEmptyNodeSet ();
       }
 
       __is_cached_score.push_back ( false );
@@ -83,28 +98,9 @@ namespace gum {
     unsigned int
     IndependenceTest<IdSetAlloc,CountAlloc>::addNodeSet
     ( const std::pair<unsigned int,unsigned int>& vars ) {
-      if ( __use_cache ) {
-        try {
-          float score = __cache.score ( vars.first, vars.second,
-                                        __empty_conditioning_set );
-          __is_cached_score.push_back ( true );
-          __cached_score.push_back ( score );
-          return Counter<IdSetAlloc,CountAlloc>::addEmptyNodeSet ();
-        }
-        catch ( const NotFound& ) {}
-      }
-
-      __is_cached_score.push_back ( false );
-      __cached_score.push_back ( 0 );
-      const unsigned int index = Counter<IdSetAlloc,CountAlloc>::addNodeSet
-        ( vars );
-
-      __is_cached_score.push_back ( false );
-      __cached_score.push_back ( 0 );
-      Counter<IdSetAlloc,CountAlloc>::addNodeSet ( vars.first );
-      return index;
+      return addNodeSet ( vars.first, vars.second );
     }
-
+    
 
     /// add a new pair of target conditioned variables to be counted
     template <typename IdSetAlloc, typename CountAlloc> INLINE
@@ -123,6 +119,21 @@ namespace gum {
         catch ( const NotFound& ) {}
       }
 
+      // check if the number of parameters is not too high compared to the
+      // size of the database (basically, if there are fewer than an average
+      // of 5 observations per parameter in the database, the independence
+      // test will be incorrect)
+      unsigned long cpt_size =
+        this->_modalities[ var1 ] * this->_modalities[ var2 ] * 5;
+      for ( auto node : conditioning_ids ) {
+        cpt_size *= this->_modalities[ node ];
+      } 
+      if ( cpt_size > this->_record_counter.DBSize () ) {
+        __is_cached_score.push_back ( true );
+        __cached_score.push_back ( std::numeric_limits<float>::max () );
+        return Counter<IdSetAlloc,CountAlloc>::addEmptyNodeSet ();
+      }
+  
       __is_cached_score.push_back ( false );
       __cached_score.push_back ( 0 );
       const unsigned int index = Counter<IdSetAlloc,CountAlloc>::addNodeSet
@@ -142,10 +153,20 @@ namespace gum {
     IndependenceTest<IdSetAlloc,CountAlloc>::addNodeSet
     ( const std::pair<unsigned int,unsigned int>& vars,
       const std::vector<unsigned int>& conditioning_ids ) {
+      return addNodeSet ( vars.first, vars.second, conditioning_ids );
+    }
+
+
+    /// add a new pair of target conditioned variables to be counted
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    unsigned int
+    IndependenceTest<IdSetAlloc,CountAlloc>::addNodeSet
+    ( unsigned int var1,
+      unsigned int var2,
+      std::vector<unsigned int>&& conditioning_ids ) {
       if ( __use_cache ) {
         try {
-          float score = __cache.score ( vars.first, vars.second,
-                                        conditioning_ids ); 
+          float score = __cache.score ( var1, var2, conditioning_ids ); 
           __is_cached_score.push_back ( true );
           __cached_score.push_back ( score );
           return Counter<IdSetAlloc,CountAlloc>::addEmptyNodeSet ();
@@ -153,19 +174,45 @@ namespace gum {
         catch ( const NotFound& ) {}
       }
 
+      // check if the number of parameters is not too high compared to the
+      // size of the database (basically, if there are fewer than an average
+      // of 5 observations per parameter in the database, the independence
+      // test will be incorrect)
+      unsigned long cpt_size =
+        this->_modalities[ var1 ] * this->_modalities[ var2 ] * 5;
+      for ( auto node : conditioning_ids ) {
+        cpt_size *= this->_modalities[ node ];
+      } 
+      if ( cpt_size > this->_record_counter.DBSize () ) {
+        __is_cached_score.push_back ( true );
+        __cached_score.push_back ( std::numeric_limits<float>::max () );
+        return Counter<IdSetAlloc,CountAlloc>::addEmptyNodeSet ();
+      }
+  
       __is_cached_score.push_back ( false );
       __cached_score.push_back ( 0 );
       const unsigned int index = Counter<IdSetAlloc,CountAlloc>::addNodeSet
-        ( vars, conditioning_ids );
+        ( var1, var2, conditioning_ids );
 
       __is_cached_score.push_back ( false );
       __cached_score.push_back ( 0 );
       Counter<IdSetAlloc,CountAlloc>::addNodeSet
-        ( vars.first, conditioning_ids );
+        ( var1, std::move ( conditioning_ids ) );
       return index;
     }
 
     
+    /// add a new pair of target conditioned variables to be counted
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    unsigned int
+    IndependenceTest<IdSetAlloc,CountAlloc>::addNodeSet
+    ( const std::pair<unsigned int,unsigned int>& vars,
+      std::vector<unsigned int>&& conditioning_ids ) {
+      return addNodeSet ( vars.first, vars.second,
+                          std::move ( conditioning_ids ) );
+    }
+
+
     /// clears all the data structures from memory
     template <typename IdSetAlloc, typename CountAlloc> INLINE
     void IndependenceTest<IdSetAlloc,CountAlloc>::clear () {

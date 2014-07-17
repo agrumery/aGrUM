@@ -803,6 +803,13 @@ namespace gum {
       return __countings;
     }
 
+    
+    /// returns the size of the database
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    unsigned long RecordCounter<IdSetAlloc,CountAlloc>::DBSize () noexcept {
+      return __thread_counters[0]->DBSize ();
+    }
+
 
   } /* namespace learning */
 
