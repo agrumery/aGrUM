@@ -99,7 +99,7 @@ namespace gum {
 
       if ( weight == 0 ) {
         GUM_ERROR ( PossiblyIncompatibleScoreApriori,
-                    "The apriori is currently compatible with the score but if "
+                    "The apriori is currently compatible with the K2 score but if "
                     "you change the weight, it will become incompatible" );
       }
 
@@ -107,8 +107,8 @@ namespace gum {
       if ( ( apriori_type == AprioriDirichletType::type ) ||
            ( apriori_type == AprioriSmoothingType::type ) ) {
         GUM_ERROR ( IncompatibleScoreApriori,
-                    "The score already contains a different 'implicit' apriori. "
-                    "Therefore, the learning will probably be meaningless." );
+                    "The K2 score already contains a different 'implicit' apriori."
+                    " Therefore, the learning will probably be meaningless." );
       }
 
       // apriori types unsupported by the type checker

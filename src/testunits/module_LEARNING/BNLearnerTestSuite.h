@@ -53,13 +53,17 @@ namespace gum_tests {
 
   class BNLearnerTestSuite: public CxxTest::TestSuite {
   public:
-
     void test_asia () {
       gum::learning::BNLearner learner(GET_PATH_STR( "asia3.csv" ) );
 
       learner.useLocalSearchWithTabuList ( 100, 1 );
       learner.setMaxIndegree ( 10 );
       learner.useScoreLog2Likelihood ();
+
+      TS_ASSERT_THROWS ( learner.useScoreBD (), gum::IncompatibleScoreApriori );
+      TS_GUM_ASSERT_THROWS_NOTHING ( learner.useScoreBDeu () );
+      learner.useScoreLog2Likelihood ();
+      
       learner.useK2 ( std::vector<gum::NodeId> { 1, 5, 2, 6, 0, 3, 4, 7 } );
       // learner.addForbiddenArc ( gum::Arc (4,3) );
       // learner.addForbiddenArc ( gum::Arc (5,1) );
@@ -86,9 +90,7 @@ namespace gum_tests {
       try {
         gum::Timer timer;
         gum::BayesNet<float> bn = learner.learnBN ();
-        std::cout<<learner.currentTime()<< " : " << std::endl;
-        std::cout << timer.step () << " : " << std::endl;
-        std::cout << bn << "  " << bn.dag () << std::endl;
+        TS_ASSERT ( bn.dag ().arcs().size () == 9 );
       }
       catch ( gum::Exception& e ) {
         GUM_SHOWERROR ( e );

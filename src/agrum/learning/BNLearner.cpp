@@ -428,6 +428,10 @@ namespace gum {
 
       // create the new apriori
       switch ( __apriori_type ) {
+      case AprioriType::NO_APRIORI:
+        __apriori = new AprioriNoApriori<>;
+        break;
+        
       case AprioriType::SMOOTHING:
         __apriori = new AprioriSmoothing<>;
         break;
@@ -709,6 +713,37 @@ namespace gum {
         GUM_ERROR ( OperationNotAllowed,
                     "the learnDAG method has not been implemented for this "
                     "learning algorithm" );
+      }
+    }
+
+    
+    /// checks whether the current score and apriori are compatible
+    bool BNLearner::__checkScoreAprioriCompatibility () {
+      const std::string& apriori = __getAprioriType ();
+
+      switch ( __score_type ) {
+      case ScoreType::AIC:
+        return ScoreAIC<>::isAprioriCompatible ( apriori, __apriori_weight );
+        
+      case ScoreType::BD:
+        return ScoreBD<>::isAprioriCompatible ( apriori, __apriori_weight );
+
+      case ScoreType::BDeu:
+        return ScoreBDeu<>::isAprioriCompatible ( apriori, __apriori_weight );
+        
+      case ScoreType::BIC:
+        return ScoreBIC<>::isAprioriCompatible ( apriori, __apriori_weight );
+         
+      case ScoreType::K2:
+        return ScoreK2<>::isAprioriCompatible ( apriori, __apriori_weight );
+ 
+      case ScoreType::LOG2LIKELIHOOD:
+        return ScoreLog2Likelihood<>::isAprioriCompatible
+          ( apriori, __apriori_weight );
+ 
+      default:
+        GUM_ERROR ( OperationNotAllowed,
+                    "BNLearner does not support yet this score" );
       }
     }
 

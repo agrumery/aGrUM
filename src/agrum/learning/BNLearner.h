@@ -47,6 +47,7 @@
 #include <agrum/learning/scores_and_tests/scoreK2.h>
 #include <agrum/learning/scores_and_tests/scoreLog2Likelihood.h>
 
+#include <agrum/learning/aprioris/aprioriNoApriori.h>
 #include <agrum/learning/aprioris/aprioriSmoothing.h>
 #include <agrum/learning/aprioris/aprioriDirichletFromDatabase.h>
 
@@ -112,6 +113,7 @@ namespace gum {
 
       /// an enumeration to select the apriori
       enum AprioriType {
+        NO_APRIORI,
         SMOOTHING,
         DIRICHLET_FROM_DATABASE
       };
@@ -311,22 +313,22 @@ namespace gum {
       /// @{
 
       /// indicate that we wish to use an AIC score
-      void useScoreAIC() noexcept;
+      void useScoreAIC ();
 
       /// indicate that we wish to use a BD score
-      void useScoreBD () noexcept;
+      void useScoreBD ();
 
       /// indicate that we wish to use a BDeu score
-      void useScoreBDeu () noexcept;
+      void useScoreBDeu ();
 
       /// indicate that we wish to use a BIC score
-      void useScoreBIC() noexcept;
+      void useScoreBIC ();
 
       /// indicate that we wish to use a K2 score
-      void useScoreK2() noexcept;
+      void useScoreK2 ();
 
       /// indicate that we wish to use a Log2Likelihood score
-      void useScoreLog2Likelihood() noexcept;
+      void useScoreLog2Likelihood ();
 
       /// @}
 
@@ -337,22 +339,20 @@ namespace gum {
       /// @{
 
       /// sets the apriori weight
-      void setAprioriWeight ( float weight ) noexcept;
+      void setAprioriWeight ( float weight );
+
+      /// use no apriori
+      void useNoApriori ();
 
       /// use the apriori smoothing
-      void useAprioriSmoothing() noexcept;
+      /** @param weight pass in argument a weight if you wish to assign a weight
+       * to the smoothing, else the current weight of the BNLearner will
+       * be used. */
+      void useAprioriSmoothing ( float weight = -1 );
 
       /// use the Dirichlet apriori
-      void useAprioriDirichlet ( const std::string& filename ) noexcept;
+      void useAprioriDirichlet ( const std::string& filename );
       
-      /// @}
-
-
-      // ##########################################################################
-      /// @name Parameter estimator selection
-      // ##########################################################################
-      /// @{
-
       /// @}
 
 
@@ -432,7 +432,7 @@ namespace gum {
     private:
 
       /// the score selected for learning
-      ScoreType __score_type { ScoreType::BIC };
+      ScoreType __score_type { ScoreType::BDeu };
       
       /// the score used
       Score<>* __score { nullptr };
@@ -445,7 +445,7 @@ namespace gum {
       ParamEstimator<>* __param_estimator { nullptr };
 
       /// the a priori selected for the score and parameters
-      AprioriType __apriori_type { AprioriType::SMOOTHING };
+      AprioriType __apriori_type { AprioriType::NO_APRIORI };
 
       /// the apriori used
       Apriori<>* __apriori { nullptr };
@@ -512,6 +512,27 @@ namespace gum {
       /// returns the DAG learnt
       DAG __learnDAG ();
 
+      /// checks whether the current score and apriori are compatible
+      /** @returns true if the apriori is compatible with the score.
+       * @throws IncompatibleScoreApriori is raised if the apriori is known to
+       * be incompatible with the score. Such a case usually arises because the
+       * score already implicitly contains an apriori which should not be combined
+       * with the apriori passed in argument. aGrUM will nevertheless allow you to
+       * use this apriori with the score, but you should be warned that the result
+       * of learning will most probably be meaningless.
+       * @throws PossiblyIncompatibleScoreApriori is raised if, in general, the
+       * apriori is incompatible with the score but, with its current weight, it
+       * becomes compatible (e.g., a Dirichlet apriori with a 0-weight is the
+       * same as a NoApriori). In such a case, you should not modify the weight.
+       * aGrUM will allow you to do so but the result of learning will most
+       * probably be meaningless.
+       * @throws InvalidArgument is raised if the apriori is not handled yet by
+       * method isAprioriCompatible (the method needs be updated to take it into
+       * account). */
+      bool __checkScoreAprioriCompatibility ();
+
+      /// returns the type (as a string) of a given apriori
+      const std::string& __getAprioriType () const;
 
 
     public:

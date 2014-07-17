@@ -101,7 +101,7 @@ namespace gum {
       
       if ( weight != 0 ) {
         GUM_ERROR ( PossiblyIncompatibleScoreApriori,
-                    "The apriori is currently compatible with the score but if "
+                    "The apriori is currently compatible with the BD score but if "
                     "you change the weight, it may become incompatible" );
       }
 

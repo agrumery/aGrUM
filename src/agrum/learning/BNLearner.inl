@@ -101,38 +101,44 @@ namespace gum {
 
 
     /// indicate that we wish to use an AIC score
-    INLINE void BNLearner::useScoreAIC() noexcept {
+    INLINE void BNLearner::useScoreAIC() {
       __score_type = ScoreType::AIC;
+      __checkScoreAprioriCompatibility ();
     }
 
 
     /// indicate that we wish to use a BD score
-    INLINE void BNLearner::useScoreBD () noexcept {
+    INLINE void BNLearner::useScoreBD () {
       __score_type = ScoreType::BD;
+      __checkScoreAprioriCompatibility ();
     }
 
 
     /// indicate that we wish to use a BDeu score
-    INLINE void BNLearner::useScoreBDeu () noexcept {
+    INLINE void BNLearner::useScoreBDeu () {
       __score_type = ScoreType::BDeu;
+      __checkScoreAprioriCompatibility ();
     }
 
 
     /// indicate that we wish to use a BIC score
-    INLINE void BNLearner::useScoreBIC() noexcept {
+    INLINE void BNLearner::useScoreBIC() {
       __score_type = ScoreType::BIC;
+      __checkScoreAprioriCompatibility ();
     }
 
 
     /// indicate that we wish to use a K2 score
-    INLINE void BNLearner::useScoreK2() noexcept {
+    INLINE void BNLearner::useScoreK2() {
       __score_type = ScoreType::K2;
+      __checkScoreAprioriCompatibility ();
     }
 
 
     /// indicate that we wish to use a Log2Likelihood score
-    INLINE void BNLearner::useScoreLog2Likelihood() noexcept {
+    INLINE void BNLearner::useScoreLog2Likelihood() {
       __score_type = ScoreType::LOG2LIKELIHOOD;
+      __checkScoreAprioriCompatibility ();
     }
 
 
@@ -192,24 +198,28 @@ namespace gum {
 
 
     /// assign a new forbidden arc
-    INLINE void BNLearner::addForbiddenArc ( const NodeId tail, const NodeId head ) {
+    INLINE void BNLearner::addForbiddenArc
+    ( const NodeId tail, const NodeId head ) {
       addForbiddenArc ( Arc ( tail,head ) );
     }
 
 
     /// remove a forbidden arc
-    INLINE void BNLearner::eraseForbiddenArc ( const NodeId tail, const NodeId head ) {
+    INLINE void BNLearner::eraseForbiddenArc
+    ( const NodeId tail, const NodeId head ) {
       eraseForbiddenArc ( Arc ( tail,head ) );
     }
 
     /// assign a new forbidden arc
-    INLINE void BNLearner::addForbiddenArc ( const std::string& tail, const std::string& head ) {
+    INLINE void BNLearner::addForbiddenArc
+    ( const std::string& tail, const std::string& head ) {
       addForbiddenArc ( Arc ( idFromName ( tail ), idFromName ( head ) ) );
     }
 
 
     /// remove a forbidden arc
-    INLINE void BNLearner::eraseForbiddenArc ( const std::string& tail, const std::string& head ) {
+    INLINE void BNLearner::eraseForbiddenArc
+    ( const std::string& tail, const std::string& head ) {
       eraseForbiddenArc ( Arc ( idFromName ( tail ), idFromName ( head ) ) );
     }
 
@@ -233,25 +243,29 @@ namespace gum {
 
 
     /// assign a new forbidden arc
-    INLINE void BNLearner::addMandatoryArc ( const std::string& tail, const std::string& head ) {
+    INLINE void BNLearner::addMandatoryArc
+    ( const std::string& tail, const std::string& head ) {
       addMandatoryArc ( Arc ( idFromName ( tail ), idFromName ( head ) ) );
     }
 
 
     /// remove a forbidden arc
-    INLINE void BNLearner::eraseMandatoryArc ( const std::string& tail, const std::string& head ) {
+    INLINE void BNLearner::eraseMandatoryArc
+    ( const std::string& tail, const std::string& head ) {
       eraseMandatoryArc ( Arc ( idFromName ( tail ), idFromName ( head ) ) );
     }
 
 
     /// assign a new forbidden arc
-    INLINE void BNLearner::addMandatoryArc ( const NodeId tail, const NodeId head ) {
+    INLINE void BNLearner::addMandatoryArc
+    ( const NodeId tail, const NodeId head ) {
       addMandatoryArc ( Arc ( tail , head ) );
     }
 
 
     /// remove a forbidden arc
-    INLINE void BNLearner::eraseMandatoryArc ( const NodeId tail, const NodeId head ) {
+    INLINE void BNLearner::eraseMandatoryArc
+    ( const NodeId tail, const NodeId head ) {
       eraseMandatoryArc ( Arc ( tail , head ) );
     }
 
@@ -263,29 +277,61 @@ namespace gum {
     }
 
 
-    /// use the apriori smoothing
-    INLINE void BNLearner::useAprioriSmoothing() noexcept {
-      __apriori_type = AprioriType::SMOOTHING;
-    }
-
-
     /// sets the apriori weight
-    INLINE void BNLearner::setAprioriWeight ( float weight ) noexcept {
+    INLINE void BNLearner::setAprioriWeight ( float weight ) {
       if ( weight < 0 ) {
         GUM_ERROR ( OutOfBounds, "the weight of the apriori must be positive" );
       }
 
       __apriori_weight = weight;
+      __checkScoreAprioriCompatibility ();
+    }
+
+
+    /// use the apriori smoothing
+    INLINE void BNLearner::useNoApriori () {
+      __apriori_type = AprioriType::NO_APRIORI;
+      __checkScoreAprioriCompatibility ();
+    }
+
+
+    /// use the apriori smoothing
+    INLINE void BNLearner::useAprioriSmoothing ( float weight ) {
+      __apriori_type = AprioriType::SMOOTHING;
+      if ( weight >= 0 ) {
+        setAprioriWeight ( weight );
+      }
+      __checkScoreAprioriCompatibility ();
     }
 
 
     /// use the Dirichlet apriori
     INLINE void
-    BNLearner::useAprioriDirichlet ( const std::string& filename ) noexcept {
+    BNLearner::useAprioriDirichlet ( const std::string& filename ) {
       __apriori_dbname = filename;
       __apriori_type = AprioriType::DIRICHLET_FROM_DATABASE;
+      __checkScoreAprioriCompatibility ();
     }
 
+
+    /// returns the type (as a string) of a given apriori
+    INLINE const std::string& BNLearner::__getAprioriType () const {
+      switch ( __apriori_type ) {
+      case AprioriType::NO_APRIORI:
+        return AprioriNoApriori<>::type::type;
+        
+      case AprioriType::SMOOTHING:
+        return AprioriSmoothing<>::type::type;
+
+      case AprioriType::DIRICHLET_FROM_DATABASE:
+        return AprioriDirichletFromDatabase<>::type::type;
+        
+      default:
+        GUM_ERROR ( OperationNotAllowed,
+                    "BNLearner getAprioriType does not support yet this apriori" );
+      }
+    }
+    
 
     /// returns the names of the variables in the database
     INLINE const std::vector<std::string>& BNLearner::names () const {

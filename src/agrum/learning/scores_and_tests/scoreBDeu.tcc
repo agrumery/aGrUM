@@ -102,16 +102,16 @@ namespace gum {
 
       if ( weight == 0 ) {
         GUM_ERROR ( PossiblyIncompatibleScoreApriori,
-                    "The apriori is currently compatible with the score but if "
-                    "you change the weight, it will become incompatible" );
+                    "The apriori is currently compatible with the BDeu score but "
+                    "if you change the weight, it will become incompatible" );
       }
 
       // known incompatible aprioris
       if ( ( apriori_type == AprioriDirichletType::type ) ||
            ( apriori_type == AprioriSmoothingType::type ) ) {
         GUM_ERROR ( IncompatibleScoreApriori,
-                    "The score already contains a different 'implicit' apriori. "
-                    "Therefore, the learning will probably be meaningless." );
+                    "The BDeu score already contains a different 'implicit' aprio"
+                    "ri. Therefore, the learning will probably be meaningless." );
       }
 
       // apriori types unsupported by the type checker
