@@ -150,7 +150,7 @@ namespace gum {
       virtual float score ( unsigned int nodeset_index ) = 0;
 
       /// indicates whether the apriori is compatible (meaningful) with the score
-      /** The combination of some scaores and aprioris can be meaningless. For
+      /** The combination of some scores and aprioris can be meaningless. For
        * instance, adding a Dirichlet apriori to the K2 score is not very
        * meaningful since K2 corresonds to a BD score with a 1-smoothing apriori.
        * aGrUM allows you to perform such combination, but yuou can check with

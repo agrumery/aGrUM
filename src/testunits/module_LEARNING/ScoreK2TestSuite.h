@@ -50,8 +50,26 @@ namespace gum_tests {
       std::vector<unsigned int> modalities = filter.modalities ();
 
       gum::learning::AprioriNoApriori<> apriori;
+      gum::learning::AprioriSmoothing<> apriori2;
       gum::learning::ScoreK2<> score ( filter, modalities, apriori );
 
+      TS_GUM_ASSERT_THROWS_NOTHING
+        ( gum::learning::ScoreK2<>::isAprioriCompatible
+          ( gum::learning::AprioriNoApriori<>::type::type ) );
+      TS_GUM_ASSERT_THROWS_NOTHING
+        ( gum::learning::ScoreK2<>::isAprioriCompatible ( apriori ) );
+      TS_ASSERT_THROWS
+        ( gum::learning::ScoreK2<>::isAprioriCompatible ( apriori2 ),
+          gum::IncompatibleScoreApriori );
+      TS_ASSERT_THROWS
+        ( gum::learning::ScoreK2<>::isAprioriCompatible
+          ( gum::learning::AprioriSmoothing<>::type::type ),
+          gum::IncompatibleScoreApriori );
+      apriori2.setWeight ( 0 ) ;
+      TS_ASSERT_THROWS
+        ( gum::learning::ScoreK2<>::isAprioriCompatible ( apriori2 ),
+          gum::PossiblyIncompatibleScoreApriori );
+      
       unsigned int id1 = score.addNodeSet ( 3 );
       unsigned int id2 = score.addNodeSet ( 1 );
       TS_ASSERT ( fabs ( score.score ( id1 ) + 996.781  ) <= 0.01 );

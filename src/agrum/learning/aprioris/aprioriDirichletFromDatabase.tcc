@@ -122,10 +122,19 @@ namespace gum {
 
 
     /// indicates whether an apriori is of a certain type
-    template <typename IdSetAlloc, typename CountAlloc>
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
     bool AprioriDirichletFromDatabase<IdSetAlloc,CountAlloc>::isOfType
     ( const std::string& type ) {
       return AprioriDirichletType::isOfType ( type );
+    }
+
+
+    /// returns the type of the apriori
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    const std::string&
+    AprioriDirichletFromDatabase<IdSetAlloc,CountAlloc>::getType ()
+      const noexcept {
+      return AprioriDirichletType::type;
     }
 
 

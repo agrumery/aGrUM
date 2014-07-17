@@ -57,6 +57,14 @@ namespace gum {
      * @warning This class does not actually compute a BDeu score but rather the
      * log in base 2 of the BDeu score
      *
+     * @warning As BDeu already includes an implicit ESS / (ri * qi) apriori on
+     * all the cells of contingency tables, the apriori passed to the score should
+     * be a NoApriori. But aGrUM will let you use another (certainly incompatible)
+     * apriori with the score. In this case, this apriori will be included in
+     * addition to the implicit BDeu apriori in a BD fashion, i.e., we will
+     * ressort to the Bayesian Dirichlet (BD) formula to include the sum of the
+     * two aprioris into the score.
+     *
      * The class should be used as follows: first, to speed-up computations, you
      * should consider computing all the scores you need in one pass. To do so, use
      * the appropriate addNodeSet methods. These will compute everything you need.
@@ -74,7 +82,15 @@ namespace gum {
 
       /// default constructor
       /** @param filter the row filter that will be used to read the database
-       * @param var_modalities the domain sizes of the variables in the database */
+       * @param var_modalities the domain sizes of the variables in the database
+       * @param apriori the apriori we add to the score. As BDeu already includes
+       * an implicit ESS / (ri * qi) apriori on all the cells of contingency
+       * tables, the apriori passed in argument should be a NoApriori. But aGrUM
+       * will let you use another (certainly incompatible) apriori with the score.
+       * In this case, this apriori will be included in addition to the implicit
+       * BDeu apriori in a BD fashion, i.e., we will ressort to the Bayesian
+       * Dirichlet (BD) formula to include the sum of the two aprioris into the
+       * score. */
       template <typename RowFilter>
       ScoreBDeu ( const RowFilter& filter,
                   const std::vector<unsigned int>& var_modalities,
@@ -104,14 +120,73 @@ namespace gum {
       float score ( unsigned int nodeset_index );
 
       /// indicates whether the apriori is compatible (meaningful) with the score
-      /** The combination of some scaores and aprioris can be meaningless. For
-       * instance, adding a Dirichlet apriori to the K2 score is not very
-       * meaningful since K2 corresonds to a BD score with a 1-smoothing apriori.
-       * aGrUM allows you to perform such combination, but yuou can check with
-       * method isAprioriCompatible () whether the result the score will give
-       * you is meaningful or not. */
+      /** When using the BDeu score, you should use a NoApriori: actually,
+       * BDeu already implicitly includes an ESS / (ri * qi) apriori on all the
+       * cells of contingency tables.
+       * @returns true if the apriori is compatible with the score.
+       * @throws IncompatibleScoreApriori is raised if the apriori is known to
+       * be incompatible with the score. Such a case arises because the score
+       * already implicitly contains an apriori which should not be combined
+       * with the apriori passed in argument. aGrUM will nevertheless allow you to
+       * use this apriori with the score, but you should be warned that the result
+       * of learning will most probably be meaningless.
+       * @throws PossiblyIncompatibleScoreApriori is raised if, in general, the
+       * apriori is incompatible with the score but, with its current weight, it
+       * becomes compatible (e.g., a Dirichlet apriori with a 0-weight is the
+       * same as a NoApriori). In such a case, you should not modify the weight.
+       * aGrUM will allow you to do so but the result of learning will most
+       * probably be meaningless.
+       * @throws InvalidArgument is raised if the apriori is not handled yet by
+       * method isAprioriCompatible (the method needs be updated to take it into
+       * account). */
       virtual bool isAprioriCompatible () const final;
- 
+
+      /// indicates whether the apriori is compatible (meaningful) with the score
+      /** When using the BDeu score, you should use a NoApriori: actually,
+       * BDeu already implicitly includes an ESS / (ri * qi) apriori on all the
+       * cells of contingency tables.
+       * @returns true if the apriori is compatible with the score.
+       * @throws IncompatibleScoreApriori is raised if the apriori is known to
+       * be incompatible with the score. Such a case arises because the score
+       * already implicitly contains an apriori which should not be combined
+       * with the apriori passed in argument. aGrUM will nevertheless allow you to
+       * use this apriori with the score, but you should be warned that the result
+       * of learning will most probably be meaningless.
+       * @throws PossiblyIncompatibleScoreApriori is raised if, in general, the
+       * apriori is incompatible with the score but, with its current weight, it
+       * becomes compatible (e.g., a Dirichlet apriori with a 0-weight is the
+       * same as a NoApriori). In such a case, you should not modify the weight.
+       * aGrUM will allow you to do so but the result of learning will most
+       * probably be meaningless.
+       * @throws InvalidArgument is raised if the apriori is not handled yet by
+       * method isAprioriCompatible (the method needs be updated to take it into
+       * account). */
+      static bool isAprioriCompatible ( const std::string& apriori_type,
+                                        float weight = 1.0f );
+
+      /// indicates whether the apriori is compatible (meaningful) with the score
+      /** When using the BDeu score, you should use a NoApriori: actually,
+       * BDeu already implicitly includes an ESS / (ri * qi) apriori on all the
+       * cells of contingency tables.
+       * @returns true if the apriori is compatible with the score.
+       * @throws IncompatibleScoreApriori is raised if the apriori is known to
+       * be incompatible with the score. Such a case arises because the score
+       * already implicitly contains an apriori which should not be combined
+       * with the apriori passed in argument. aGrUM will nevertheless allow you to
+       * use this apriori with the score, but you should be warned that the result
+       * of learning will most probably be meaningless.
+       * @throws PossiblyIncompatibleScoreApriori is raised if, in general, the
+       * apriori is incompatible with the score but, with its current weight, it
+       * becomes compatible (e.g., a Dirichlet apriori with a 0-weight is the
+       * same as a NoApriori). In such a case, you should not modify the weight.
+       * aGrUM will allow you to do so but the result of learning will most
+       * probably be meaningless.
+       * @throws InvalidArgument is raised if the apriori is not handled yet by
+       * method isAprioriCompatible (the method needs be updated to take it into
+       * account). */
+      static bool
+      isAprioriCompatible ( const Apriori<IdSetAlloc,CountAlloc>& apriori );
+      
       /// returns the internal apriori of the score
       /** Some scores include an apriori. For instance, the K2 score is a BD score
        * with a Laplace Apriori ( smoothing(1) ). BDeu is a BD score with a

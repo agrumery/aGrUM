@@ -27,6 +27,7 @@
 #include <agrum/learning/scores_and_tests/scoreBD.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
 #include <agrum/learning/aprioris/aprioriSmoothing.h>
+#include <agrum/learning/aprioris/aprioriNoApriori.h>
 
 namespace gum_tests {
 
@@ -40,7 +41,8 @@ namespace gum_tests {
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>, 8 > () );
 
-      auto generators =  gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
+      auto generators =
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
       
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
@@ -53,6 +55,23 @@ namespace gum_tests {
       // to test, we exploit the fact that if the hyperparameters are all equal
       // to 1, then score BD = score K2
       apriori.setWeight ( 1 );
+
+      TS_ASSERT_THROWS
+        ( gum::learning::ScoreBD<>::isAprioriCompatible ( apriori ),
+          gum::PossiblyIncompatibleScoreApriori );
+      TS_ASSERT_THROWS
+        ( gum::learning::ScoreBD<>::isAprioriCompatible
+          ( gum::learning::AprioriNoApriori<>::type::type ),
+          gum::IncompatibleScoreApriori );
+
+      TS_ASSERT_THROWS
+        ( score.isAprioriCompatible ( apriori ),
+          gum::PossiblyIncompatibleScoreApriori );
+      TS_ASSERT_THROWS
+        ( score.isAprioriCompatible
+          ( gum::learning::AprioriNoApriori<>::type::type ),
+          gum::IncompatibleScoreApriori );
+     
 
       unsigned int id1 = score.addNodeSet ( 0 );
       unsigned int id2 = score.addNodeSet ( 2 );
@@ -100,12 +119,13 @@ namespace gum_tests {
     }
 
     
-    void xtest_cache () {
+    void test_cache () {
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>, 8 > () );
-      auto generators =  gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
+      auto generators =
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
       std::vector<unsigned int> modalities = filter.modalities ();
@@ -138,12 +158,13 @@ namespace gum_tests {
     }
 
     
-    void xtest_clearcache () {
+    void test_clearcache () {
       gum::learning::DatabaseFromCSV database ( GET_PATH_STR( "asia.csv" ) );
       auto translators = gum::learning::make_translators
         ( gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>, 8 > () );
-      auto generators =  gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
+      auto generators =
+        gum::learning::make_generators ( gum::learning::RowGeneratorIdentity () );
       auto filter = gum::learning::make_DB_row_filter ( database, translators,
                                                         generators );
       std::vector<unsigned int> modalities = filter.modalities ();

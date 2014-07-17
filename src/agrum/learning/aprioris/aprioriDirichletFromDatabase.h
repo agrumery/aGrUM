@@ -50,6 +50,8 @@ namespace gum {
       public Apriori<IdSetAlloc,CountAlloc>,
       private Counter<IdSetAlloc,CountAlloc> {
     public:
+      using type = AprioriDirichletType;
+      
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -81,6 +83,9 @@ namespace gum {
 
       /// indicates whether an apriori is of a certain type
       virtual bool isOfType ( const std::string& type ) final;
+
+      /// returns the type of the apriori
+      virtual const std::string& getType () const noexcept final;
 
       /// @}
 

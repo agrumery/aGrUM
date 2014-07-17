@@ -32,7 +32,9 @@
 #ifndef GUM_LEARNING_SCORE_AIC_H
 #define GUM_LEARNING_SCORE_AIC_H
 
+#include <string>
 
+#include <agrum/config.h>
 #include <agrum/learning/scores_and_tests/score.h>
 #include <agrum/learning/scores_and_tests/scoreInternalNoApriori.h>
 
@@ -49,6 +51,9 @@ namespace gum {
     /** @class ScoreAIC
      * @ingroup learning_group
      * @brief the class for computing AIC scores
+     *
+     * @warning If you pass an apriori to the score, this one will be added
+     * into the log-likelihood part of the score.
      *
      * The class should be used as follows: first, to speed-up computations, you
      * should consider computing all the scores you need in one pass. To do so, use
@@ -97,13 +102,63 @@ namespace gum {
       virtual float score ( unsigned int nodeset_index ) final;
 
       /// indicates whether the apriori is compatible (meaningful) with the score
-      /** The combination of some scaores and aprioris can be meaningless. For
-       * instance, adding a Dirichlet apriori to the K2 score is not very
-       * meaningful since K2 corresonds to a BD score with a 1-smoothing apriori.
-       * aGrUM allows you to perform such combination, but yuou can check with
-       * method isAprioriCompatible () whether the result the score will give
-       * you is meaningful or not. */
+      /** @returns true if the apriori is compatible with the score.
+       * @throws IncompatibleScoreApriori is raised if the apriori is known to
+       * be incompatible with the score. Such a case arises because the score
+       * already implicitly contains an apriori which should not be combined
+       * with the apriori passed in argument. aGrUM will nevertheless allow you to
+       * use this apriori with the score, but you should be warned that the result
+       * of learning will most probably be meaningless.
+       * @throws PossiblyIncompatibleScoreApriori is raised if, in general, the
+       * apriori is incompatible with the score but, with its current weight, it
+       * becomes compatible (e.g., a Dirichlet apriori with a 0-weight is the
+       * same as a NoApriori). In such a case, you should not modify the weight.
+       * aGrUM will allow you to do so but the result of learning will most
+       * probably be meaningless.
+       * @throws InvalidArgument is raised if the apriori is not handled yet by
+       * method isAprioriCompatible (the method needs be updated to take it into
+       * account). */
       virtual bool isAprioriCompatible () const final;
+
+      /// indicates whether the apriori is compatible (meaningful) with the score
+      /** @returns true if the apriori is compatible with the score.
+       * @throws IncompatibleScoreApriori is raised if the apriori is known to
+       * be incompatible with the score. Such a case arises because the score
+       * already implicitly contains an apriori which should not be combined
+       * with the apriori passed in argument. aGrUM will nevertheless allow you to
+       * use this apriori with the score, but you should be warned that the result
+       * of learning will most probably be meaningless.
+       * @throws PossiblyIncompatibleScoreApriori is raised if, in general, the
+       * apriori is incompatible with the score but, with its current weight, it
+       * becomes compatible (e.g., a Dirichlet apriori with a 0-weight is the
+       * same as a NoApriori). In such a case, you should not modify the weight.
+       * aGrUM will allow you to do so but the result of learning will most
+       * probably be meaningless.
+       * @throws InvalidArgument is raised if the apriori is not handled yet by
+       * method isAprioriCompatible (the method needs be updated to take it into
+       * account). */
+      static bool isAprioriCompatible ( const std::string& apriori_type,
+                                        float weight = 1.0f );
+
+      /// indicates whether the apriori is compatible (meaningful) with the score
+      /** @returns true if the apriori is compatible with the score.
+       * @throws IncompatibleScoreApriori is raised if the apriori is known to
+       * be incompatible with the score. Such a case arises because the score
+       * already implicitly contains an apriori which should not be combined
+       * with the apriori passed in argument. aGrUM will nevertheless allow you to
+       * use this apriori with the score, but you should be warned that the result
+       * of learning will most probably be meaningless.
+       * @throws PossiblyIncompatibleScoreApriori is raised if, in general, the
+       * apriori is incompatible with the score but, with its current weight, it
+       * becomes compatible (e.g., a Dirichlet apriori with a 0-weight is the
+       * same as a NoApriori). In such a case, you should not modify the weight.
+       * aGrUM will allow you to do so but the result of learning will most
+       * probably be meaningless.
+       * @throws InvalidArgument is raised if the apriori is not handled yet by
+       * method isAprioriCompatible (the method needs be updated to take it into
+       * account). */
+      static bool
+      isAprioriCompatible ( const Apriori<IdSetAlloc,CountAlloc>& apriori );
 
       /// returns the internal apriori of the score
       /** Some scores include an apriori. For instance, the K2 score is a BD score

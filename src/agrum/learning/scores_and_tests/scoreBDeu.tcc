@@ -27,6 +27,7 @@
 
 
 #include <cmath>
+#include <sstream>
 
 
 namespace gum {
@@ -87,21 +88,52 @@ namespace gum {
       // for debugging purposes
       GUM_DESTRUCTOR ( ScoreBDeu );
     }
+
+    
+    /// indicates whether the apriori is compatible (meaningful) with the score
+    template <typename IdSetAlloc, typename CountAlloc>
+    bool ScoreBDeu<IdSetAlloc,CountAlloc>::isAprioriCompatible
+    ( const std::string& apriori_type,
+      float weight ) {
+      // check that the apriori is compatible with the score
+      if ( apriori_type == AprioriNoAprioriType::type ) {
+        return true;
+      }
+
+      if ( weight == 0 ) {
+        GUM_ERROR ( PossiblyIncompatibleScoreApriori,
+                    "The apriori is currently compatible with the score but if "
+                    "you change the weight, it will become incompatible" );
+      }
+
+      // known incompatible aprioris
+      if ( ( apriori_type == AprioriDirichletType::type ) ||
+           ( apriori_type == AprioriSmoothingType::type ) ) {
+        GUM_ERROR ( IncompatibleScoreApriori,
+                    "The score already contains a different 'implicit' apriori. "
+                    "Therefore, the learning will probably be meaningless." );
+      }
+
+      // apriori types unsupported by the type checker
+      std::stringstream msg;
+      msg << "The apriori '" << apriori_type
+          << "' is not yet supported by method isAprioriCompatible";
+      GUM_ERROR ( InvalidArgument, msg.str () );
+    }
+
+    
+    /// indicates whether the apriori is compatible (meaningful) with the score
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    bool ScoreBDeu<IdSetAlloc,CountAlloc>::isAprioriCompatible
+    ( const Apriori<IdSetAlloc,CountAlloc>& apriori ) {
+      return isAprioriCompatible ( apriori.getType (), apriori.weight () );
+    }
     
 
     /// indicates whether the apriori is compatible (meaningful) with the score
-    template <typename IdSetAlloc, typename CountAlloc>
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
     bool ScoreBDeu<IdSetAlloc,CountAlloc>::isAprioriCompatible () const {
-      // check that the apriori is compatible with the score
-      if ( ! this->_apriori->isOfType ( AprioriSmoothingType::type ) &&
-           ! this->_apriori->isOfType ( AprioriNoAprioriType::type ) ) {
-        return false;
-        // GUM_ERROR ( InvalidArgument, "The apriori is incompatible with "
-        //             "the BDeu score: shall be smoothing or no apriori" );
-      }
-      else {
-        return true;
-      }
+      return isAprioriCompatible ( *this->_apriori );
     }
 
     

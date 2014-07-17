@@ -102,10 +102,18 @@ namespace gum {
 
 
     /// indicates whether an apriori is of a certain type
-    template <typename IdSetAlloc, typename CountAlloc>
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
     bool AprioriSmoothing<IdSetAlloc,CountAlloc>::isOfType
     ( const std::string& type ) {
       return AprioriSmoothingType::isOfType ( type );
+    }
+
+
+    /// returns the type of the apriori
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    const std::string&
+    AprioriSmoothing<IdSetAlloc,CountAlloc>::getType () const noexcept {
+      return AprioriSmoothingType::type;
     }
 
 

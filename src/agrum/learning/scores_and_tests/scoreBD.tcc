@@ -27,6 +27,7 @@
 
 
 #include <cmath>
+#include <sstream>
 
 
 namespace gum {
@@ -90,17 +91,40 @@ namespace gum {
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template <typename IdSetAlloc, typename CountAlloc>
+    bool ScoreBD<IdSetAlloc,CountAlloc>::isAprioriCompatible
+    ( const std::string& apriori_type,
+      float weight ) {
+      if ( apriori_type == AprioriNoAprioriType::type ) {
+        GUM_ERROR ( IncompatibleScoreApriori,
+                    "The BD score requires an apriori" );
+      }
+      
+      if ( weight != 0 ) {
+        GUM_ERROR ( PossiblyIncompatibleScoreApriori,
+                    "The apriori is currently compatible with the score but if "
+                    "you change the weight, it may become incompatible" );
+      }
+
+      // apriori types unsupported by the type checker
+      std::stringstream msg;
+      msg << "The apriori '" << apriori_type
+          << "' is not yet supported by method isAprioriCompatible";
+      GUM_ERROR ( InvalidArgument, msg.str () );
+    }
+
+
+    /// indicates whether the apriori is compatible (meaningful) with the score
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    bool ScoreBD<IdSetAlloc,CountAlloc>::isAprioriCompatible
+    ( const Apriori<IdSetAlloc,CountAlloc>& apriori ) {
+      return isAprioriCompatible ( apriori.getType (), apriori.weight () );
+    }
+    
+
+    /// indicates whether the apriori is compatible (meaningful) with the score
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
     bool ScoreBD<IdSetAlloc,CountAlloc>::isAprioriCompatible () const {
-      // check that the apriori is compatible with the score
-      if ( ! this->_apriori->isOfType ( AprioriDirichletType::type ) &&
-           ! this->_apriori->isOfType ( AprioriSmoothingType::type ) ) {
-        return false;
-        // GUM_ERROR ( InvalidArgument, "The apriori is incompatible with the BD "
-        //             "score: shall be Dirichlet, smoothing or no apriori" );
-      }
-      else {
-        return true;
-      }
+      return isAprioriCompatible ( *this->_apriori );
     }
 
     

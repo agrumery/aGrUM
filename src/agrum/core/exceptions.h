@@ -169,6 +169,14 @@ namespace gum {
   GUM_MAKE_ERROR ( WrongClassElement, FactoryError, "wrong ClassElement for this operation" )
   GUM_MAKE_ERROR ( TypeError, FactoryError, "wrong subtype or subclass" )
 
+///////////////////////////////////
+/// Exceptions for learning
+  GUM_MAKE_ERROR ( IncompatibleScoreApriori, Exception, "The score already "
+                   "contains a different 'implicit' apriori" )
+  GUM_MAKE_ERROR ( PossiblyIncompatibleScoreApriori, Exception,
+                   "Due to its weight, the apriori is currently compatible with the score but if you change the weight, it will become incompatible" )
+
+  
   /// special exception for syntax errors in files
   class SyntaxError : public IOError {
     protected:

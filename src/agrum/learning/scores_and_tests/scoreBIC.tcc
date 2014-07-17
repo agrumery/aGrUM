@@ -26,6 +26,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
+#include <sstream>
 #include <agrum/learning/scores_and_tests/scoreBIC.h>
 
 
@@ -88,21 +89,39 @@ namespace gum {
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template <typename IdSetAlloc, typename CountAlloc>
-    bool ScoreBIC<IdSetAlloc,CountAlloc>::isAprioriCompatible () const {
+    bool ScoreBIC<IdSetAlloc,CountAlloc>::isAprioriCompatible
+    ( const std::string& apriori_type,
+      float weight ) {
       // check that the apriori is compatible with the score
-      if ( ! this->_apriori->isOfType ( AprioriDirichletType::type ) &&
-           ! this->_apriori->isOfType ( AprioriSmoothingType::type ) &&
-           ! this->_apriori->isOfType ( AprioriNoAprioriType::type ) ) {
-        return false;
-        // GUM_ERROR ( InvalidArgument, "The apriori is incompatible with the BIC "
-        //             "score: shall be Dirichlet, smoothing or no apriori" );
-      }
-      else {
+      if ( ( apriori_type == AprioriDirichletType::type ) ||
+           ( apriori_type == AprioriSmoothingType::type ) ||
+           ( apriori_type == AprioriNoAprioriType::type ) ) {
         return true;
       }
+
+      // apriori types unsupported by the type checker
+      std::stringstream msg;
+      msg << "The apriori '" << apriori_type
+          << "' is not yet supported by method isAprioriCompatible";
+      GUM_ERROR ( InvalidArgument, msg.str () );
+    }
+    
+
+    /// indicates whether the apriori is compatible (meaningful) with the score
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    bool ScoreBIC<IdSetAlloc,CountAlloc>::isAprioriCompatible
+    ( const Apriori<IdSetAlloc,CountAlloc>& apriori ) {
+      return isAprioriCompatible ( apriori.getType (), apriori.weight () );
+    }
+    
+
+    /// indicates whether the apriori is compatible (meaningful) with the score
+    template <typename IdSetAlloc, typename CountAlloc> INLINE
+    bool ScoreBIC<IdSetAlloc,CountAlloc>::isAprioriCompatible () const {
+      return isAprioriCompatible ( *this->_apriori );
     }
 
-
+    
     /// returns the internal apriori of the score
     template <typename IdSetAlloc, typename CountAlloc> INLINE
     const ScoreInternalApriori<IdSetAlloc,CountAlloc>&

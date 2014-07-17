@@ -53,6 +53,17 @@ namespace gum_tests {
       apriori.setWeight ( 0 );
       gum::learning::ScoreAIC<> score ( filter, modalities, apriori );
 
+      TS_GUM_ASSERT_THROWS_NOTHING
+        ( gum::learning::ScoreAIC<>::isAprioriCompatible
+          ( gum::learning::AprioriSmoothing<>::type::type ) );
+      TS_GUM_ASSERT_THROWS_NOTHING
+        ( gum::learning::ScoreAIC<>::isAprioriCompatible ( apriori ) );
+      TS_GUM_ASSERT_THROWS_NOTHING
+        ( score.isAprioriCompatible
+          ( gum::learning::AprioriSmoothing<>::type::type ) );
+      TS_GUM_ASSERT_THROWS_NOTHING
+        ( score.isAprioriCompatible ( apriori ) );
+
       unsigned int id1 = score.addNodeSet ( 3 );
       unsigned int id2 = score.addNodeSet ( 1 );
       TS_ASSERT ( fabs ( score.score ( id1 ) + 989.314  ) <= 0.01 );

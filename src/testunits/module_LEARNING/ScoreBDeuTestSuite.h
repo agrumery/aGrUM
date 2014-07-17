@@ -50,7 +50,26 @@ namespace gum_tests {
       std::vector<unsigned int> modalities = filter.modalities ();
 
       gum::learning::AprioriNoApriori<> apriori;
+      gum::learning::AprioriSmoothing<> apriori2;
       gum::learning::ScoreBDeu<> score ( filter, modalities, apriori );
+
+      TS_GUM_ASSERT_THROWS_NOTHING
+        ( gum::learning::ScoreBDeu<>::isAprioriCompatible
+          ( gum::learning::AprioriNoApriori<>::type::type ) );
+      TS_GUM_ASSERT_THROWS_NOTHING
+        ( gum::learning::ScoreBDeu<>::isAprioriCompatible ( apriori ) );
+      TS_ASSERT_THROWS
+        ( gum::learning::ScoreBDeu<>::isAprioriCompatible ( apriori2 ),
+          gum::IncompatibleScoreApriori );
+      TS_ASSERT_THROWS
+        ( gum::learning::ScoreBDeu<>::isAprioriCompatible
+          ( gum::learning::AprioriSmoothing<>::type::type ),
+          gum::IncompatibleScoreApriori );
+      apriori2.setWeight ( 0 ) ;
+      TS_ASSERT_THROWS
+        ( gum::learning::ScoreBDeu<>::isAprioriCompatible ( apriori2 ),
+          gum::PossiblyIncompatibleScoreApriori );
+      
 
       // to test, we exploit the fact that if the effective sample size is
       // equal to ri * qi, then score BDeu = score K2
