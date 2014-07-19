@@ -167,22 +167,32 @@ namespace gum {
           for ( unsigned int k = 0; k < target_modal; ++k ) {
             sum += N_ijk[k] + N_prime_ijk[k];
           }
+
+          if ( sum ) {
+            for ( unsigned int k = 0; k < target_modal; ++k ) {
+              N_ijk[k] = ( N_ijk[k] + N_prime_ijk[k] ) / sum;
+            }
+          }
+          else {
+            GUM_ERROR ( CPTError, "The database being empty, it is impossible "
+                        "to estimate the parameters by maximum likelihood" );
+          }
         }
         else {
           // here, there are no conditioning nodes
           for ( unsigned int k = 0; k < target_modal; ++k ) {
             sum += N_ijk[k];
           }
-        }
         
-        if ( sum ) {
-          for ( unsigned int k = 0; k < target_modal; ++k ) {
-            N_ijk[k] /= sum;
+          if ( sum ) {
+            for ( unsigned int k = 0; k < target_modal; ++k ) {
+              N_ijk[k] /= sum;
+            }
           }
-        }
-        else {
-          GUM_ERROR ( CPTError, "The database being empty, it is impossible "
-                      "to estimate the parameters by maximum likelihood" );
+          else {
+            GUM_ERROR ( CPTError, "The database being empty, it is impossible "
+                        "to estimate the parameters by maximum likelihood" );
+          }
         }
       } 
 
