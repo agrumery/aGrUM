@@ -93,14 +93,14 @@ namespace gum {
   }
 
   template<typename GUM_SCALAR> INLINE
-  unsigned int
+  Size
   KL<GUM_SCALAR>::errorPQ() {
     _process();
     return _errorPQ;
   }
 
   template<typename GUM_SCALAR> INLINE
-  unsigned int
+  Size
   KL<GUM_SCALAR>::errorQP() {
     _process();
     return _errorQP;

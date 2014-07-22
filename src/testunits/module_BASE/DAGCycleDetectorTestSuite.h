@@ -34,8 +34,7 @@ namespace gum_tests {
   class DAGCycleDetectorTestSuite: public CxxTest::TestSuite {
     private:
 
-      std::default_random_engine generator
-      { ( unsigned long ) std::chrono::system_clock::now().time_since_epoch().count() };
+      std::default_random_engine generator{ ( unsigned int ) std::chrono::system_clock::now().time_since_epoch().count() };
 
 
       gum::DAG __createDAG ( unsigned int nb_nodes, unsigned int nb_arcs ) {

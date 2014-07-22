@@ -55,7 +55,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING ( p.causalWeight ( d, 0.7 ) );
         TS_ASSERT_EQUALS ( p.toString(), "a<0,1>=logit(0.2 +0.4*b<0,1> +0.7*d<0,1>)" );
 
-        TS_ASSERT_EQUALS ( p.nbrDim(), 4 );
+        TS_ASSERT_EQUALS ( p.nbrDim(), ( gum::Size ) 4 );
         TS_ASSERT_EQUALS ( p.realSize(), ( gum::Size ) 4 );
 
         gum::MultiDimLogit<float> q ( p );

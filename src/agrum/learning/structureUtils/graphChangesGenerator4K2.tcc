@@ -127,7 +127,7 @@ namespace gum {
           legal_changes.resize ( num_threads );
         }
 
-        const int this_thread = getThreadNumber ();
+        const unsigned int this_thread = getThreadNumber ();
         
         for ( unsigned int i = 0, j = 0; j < _order.size ();
               i = (i+1) % num_threads,  ++j ) {

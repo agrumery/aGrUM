@@ -123,7 +123,7 @@ namespace gum {
           legal_changes.resize ( num_threads );
         }
 
-        const int this_thread = getThreadNumber ();
+        const unsigned int this_thread = getThreadNumber ();
         
         unsigned int i = 0;
         for ( const auto node1 : _graph ) {

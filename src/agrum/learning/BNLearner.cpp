@@ -601,8 +601,7 @@ namespace gum {
 
         StructuralConstraintSetStatic < StructuralConstraintIndegree,
                                         StructuralConstraintDAG > sel_constraint;
-        static_cast<StructuralConstraintIndegree&> ( sel_constraint ) =
-          __constraint_Indegree;
+        static_cast<StructuralConstraintIndegree&> ( sel_constraint ) = __constraint_Indegree;
 
         GraphChangesSelector4DiGraph < Score<>,
                                        decltype ( sel_constraint ),

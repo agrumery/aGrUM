@@ -421,7 +421,7 @@ namespace gum {
       #pragma omp parallel num_threads ( __max_threads_number )
       {
         // create ThreadCounters if needed
-        const int num_threads = getNumberOfRunningThreads();
+        const unsigned int num_threads = getNumberOfRunningThreads();
 
         #pragma omp single
         {
@@ -461,7 +461,7 @@ namespace gum {
       // perform the aggregation of the countings
       #pragma omp parallel num_threads ( __nb_thread_counters )
       {
-        const int this_thread = getThreadNumber ();
+        const unsigned int this_thread = getThreadNumber ();
         auto& counter = * ( __thread_counters[this_thread] );
         unsigned long size_per_thread, min_range, max_range;
 

@@ -83,13 +83,13 @@ namespace gum {
       double klPQ();
 
       /// @return the number of errors while processing divergence KL(P||Q)
-      unsigned int errorPQ();
+      Size errorPQ();
 
       /// @return divergence KL(Q||P)
       double klQP();
 
       /// @return the number of errors while processing divergence KL(Q||P)
-      unsigned int errorQP();
+      Size errorQP();
 
       /// @return hellinger distance (@see http://en.wikipedia.org/wiki/Hellinger_distance)
       double hellinger();
@@ -117,8 +117,8 @@ namespace gum {
       GUM_SCALAR _hellinger;
       GUM_SCALAR _bhattacharya;
 
-      unsigned int _errorPQ;
-      unsigned int _errorQP;
+      Size _errorPQ;
+      Size _errorQP;
 
     private:
       bool __checkCompatibility() const;
