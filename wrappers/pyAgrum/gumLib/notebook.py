@@ -28,6 +28,8 @@ tools for BN analysis in ipython qtconsole and notebook
 """
 from base64 import encodestring
 import numpy as np
+import scipy
+import time
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -39,6 +41,29 @@ import IPython.display
 from IPython.core.pylabtools import print_figure
 
 import pyAgrum as gum
+
+def configuration():
+  from collections import OrderedDict
+  import sys,os
+
+  packages=OrderedDict()
+  packages["OS"]=   "%s [%s]" % (os.name, sys.platform)
+  packages["Python"]= sys.version
+  packages["IPython"]= IPython.__version__
+  packages["MatPlotLib"]= mpl.__version__
+  packages["Numpy"]= np.__version__
+  packages["SciPy"]= scipy.__version__
+  packages["pyAgrum"]= gum.__version__
+
+  res = "<table width='100%'><tr><th>Library</th><th>Version</th></tr>"
+
+  for name in packages:
+      res += "<tr><td>%s</td><td>%s</td></tr>" % (name, packages[name])
+
+  res += "</table><div align='right'><small>%s</small></div>" % time.strftime(
+      '%a %b %d %H:%M:%S %Y %Z')
+
+  return IPython.display.HTML(res)
 
 def getPosterior(bn,ev,target):
     """
@@ -172,7 +197,7 @@ def showBN(bn,size="4",vals=None,cmap=INFOcmap):
   IPython.display.display(IPython.display.HTML("<div align='center'>"+gr.data+"</div>"))
 
 
-def normalizeVals(vals,hilightExtrema=False):
+def _normalizeVals(vals,hilightExtrema=False):
     """
     normalisation if vals is not a proba (max>1)
     """
@@ -195,7 +220,7 @@ def showInference(bn,ie,size="4",cmap=INFOcmap):
   Shows a bn annoted with results from inference : entropy and mutual informations
   """
   vals={bn.variable(n).name():ie.H(n) for n in bn.ids()}
-  gr=getBN(bn,size,normalizeVals(vals,hilightExtrema=False),cmap)
+  gr=getBN(bn,size,_normalizeVals(vals,hilightExtrema=False),cmap)
 
   mi=min(vals.values())
   ma=max(vals.values())
