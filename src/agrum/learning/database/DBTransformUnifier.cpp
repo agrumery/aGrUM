@@ -101,7 +101,7 @@ namespace gum {
         std::vector<unsigned int> counts ( sizeof ( DBCell::EltType ), 0 );
 
         // parse the database and fill counts
-        for ( auto& row : db ) {
+        for ( DBRow& row : db ) {
           if ( isMissing ( row[i], miss ) ) {
             row[i].setMissingSafe ();
           }

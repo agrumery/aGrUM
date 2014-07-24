@@ -360,6 +360,7 @@ namespace gum {
     void DBRowTranslatorSetStatic<Translators...>::setInputRow
     ( const DBRow& row ) noexcept {
       TranslatorSetStatic::setInputRow ( row );
+      __output_row.weight () = row.weight ();
     }
 
     

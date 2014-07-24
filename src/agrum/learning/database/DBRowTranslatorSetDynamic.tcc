@@ -330,6 +330,7 @@ namespace gum {
       for ( auto translator : __translators ) {
         translator->setInputRow ( row );
       }
+      __output_row.weight() = row.weight ();
     }
       
 
