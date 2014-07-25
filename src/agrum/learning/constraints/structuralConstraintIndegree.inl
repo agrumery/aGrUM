@@ -141,9 +141,19 @@ namespace gum {
     
     /// indicates whether a change will always violate the constraint
     INLINE bool
-    StructuralConstraintIndegree::isAlwaysInvalidAlone ( const GraphChange& )
-      const noexcept {
-      return false;
+    StructuralConstraintIndegree::isAlwaysInvalidAlone
+    ( const GraphChange& change ) const noexcept {
+      if ( ( change.type () == GraphChangeType::ARC_ADDITION ) &&
+           ( _Indegree__max_parents[change.node2 ()] == 0 ) ) {
+        return true;
+      }
+      else if ( ( change.type () == GraphChangeType::ARC_REVERSAL ) &&
+           ( _Indegree__max_parents[change.node1 ()] == 0 ) ) {
+        return true;
+      }
+      else {
+        return false;
+      }
     }
 
 
