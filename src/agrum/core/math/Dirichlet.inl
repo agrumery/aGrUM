@@ -24,7 +24,7 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <chrono>
+#include <agrum/core/utils_random.h>
 
 
 namespace gum {
@@ -36,8 +36,7 @@ namespace gum {
     /// default constructor
     INLINE Dirichlet::Dirichlet ( const param_type& params,
                                   unsigned int seed ) :
-      __generator ( seed ? seed :
-                    std::chrono::system_clock::now().time_since_epoch().count() ),
+      __generator ( seed ? seed : gum::randomGeneratorSeed () ),
       __params ( params ) {
       GUM_CONSTRUCTOR ( Dirichlet );
     }

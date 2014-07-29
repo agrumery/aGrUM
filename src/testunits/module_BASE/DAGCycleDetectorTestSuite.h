@@ -25,6 +25,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 
+#include <agrum/core/utils_random.h>
 #include <agrum/graphs/DAGCycleDetector.h>
 
 
@@ -34,7 +35,7 @@ namespace gum_tests {
   class DAGCycleDetectorTestSuite: public CxxTest::TestSuite {
     private:
 
-      std::default_random_engine generator{ ( unsigned int ) std::chrono::system_clock::now().time_since_epoch().count() };
+    std::default_random_engine generator{ gum::randomGeneratorSeed () };
 
 
       gum::DAG __createDAG ( unsigned int nb_nodes, unsigned int nb_arcs ) {
