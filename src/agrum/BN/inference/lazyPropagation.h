@@ -50,13 +50,11 @@ namespace gum {
 
 
       /// constructor with a given elimination sequence
-
       LazyPropagation ( const IBayesNet<GUM_SCALAR>& BN,
                         const std::vector<NodeId>& elim_order );
 
 
       /// destructor
-
       ~LazyPropagation();
 
       /// @}
@@ -70,43 +68,35 @@ namespace gum {
       /// insert new evidence in the graph
       /** @warning if an evidence already exists w.r.t. a given node and a new
        * evidence w.r.t. this node is inserted, the old evidence is removed. */
-
       virtual void insertEvidence ( const List<const Potential<GUM_SCALAR>*>& );
 
 
       /// remove all evidence from the graph
-
       virtual void eraseAllEvidence();
 
 
       /// remove a given evidence from the graph
-
       virtual void eraseEvidence ( const Potential<GUM_SCALAR>* );
 
 
       /// performs the collect phase of Lazy Propagation
-
       void collect ( NodeId id, bool force_collect = false );
 
 
       /// performs the diffusion phase of Lazy Propagation
-
       void diffusion ( NodeId id, bool force_diffusion = false );
 
 
       /// perfoms a whole inference (with force_inference flag at false)
-
       virtual void makeInference();
 
 
       /// performs a whole inference (collect + diffusion)
-
       void makeInference ( bool force_inference );
 
 
       /// returns the probability P(e) of the evidence enterred into the BN
-
-      GUM_SCALAR evidenceMarginal();
+      GUM_SCALAR evidenceProbability();
 
 
       /// returns the joint a posteriori probability P(nodes|e)
@@ -117,7 +107,6 @@ namespace gum {
        * @return a pointer to a dynamically allocated Potential<GUM_SCALAR>
        * @throw OperationNotAllowed
        */
-
       Potential<GUM_SCALAR>* joint ( const NodeSet& nodes );
 
       const JunctionTree* junctionTree() const ;
@@ -155,10 +144,10 @@ namespace gum {
        * Returns the probability of the variable.
        *
        * @param id The variable's id.
-       * @param marginal the potential to fill
+       * @param posterior the potential to fill
        * @throw ElementNotFound Raised if no variable matches id.
        */
-      virtual void _fillMarginal ( Id id , Potential<GUM_SCALAR>& marginal );
+      virtual void _fillPosterior ( Id id , Potential<GUM_SCALAR>& posterior );
 
 
     private:
@@ -225,18 +214,18 @@ namespace gum {
 
       /// remove variables del_vars from the list of potentials pot_list
       /** The function actually updates pot_list and, when it returns, pot_list
-       * contains the list of potentials resulting from the marginalization */
+       * contains the list of potentials resulting from the marginalization of the posterior*/
 
       void __marginalizeOut ( __PotentialSet& pot_list,
                               Set<const DiscreteVariable*>& del_vars );
 
 
 
-      void __aPosterioriMarginal ( NodeId id, Potential<GUM_SCALAR>& marginal );
+      void __aPosterioriMarginal ( NodeId id, Potential<GUM_SCALAR>& posterior );
 
 
 
-      void __aPosterioriJoint ( const NodeSet& ids, Potential<GUM_SCALAR>& marginal );
+      void __aPosterioriJoint ( const NodeSet& ids, Potential<GUM_SCALAR>& posterior );
 
 
 

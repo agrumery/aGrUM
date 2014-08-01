@@ -111,7 +111,7 @@ namespace gum {
 
       for ( auto it = bayesNetinit.nodes().beginSafe(); it != bayesNetinit.nodes().endSafe(); ++it ) {
         Potential<GUM_SCALAR>* pottemp = new Potential<GUM_SCALAR>();
-        pottemp->copy ( inf.marginal ( *it ) );
+        pottemp->copy ( inf.posterior ( *it ) );
         _hashMarginal.insert ( *it, pottemp );
 
       }

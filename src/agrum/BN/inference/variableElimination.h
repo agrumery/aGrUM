@@ -153,7 +153,7 @@ namespace gum {
        * @param marginal the potential to fill
        * @throw ElementNotFound Raised if no variable matches id.
        */
-      virtual void _fillMarginal ( NodeId id, Potential<GUM_SCALAR>& marginal );
+      virtual void _fillPosterior ( NodeId id, Potential<GUM_SCALAR>& marginal );
 
     private:
 

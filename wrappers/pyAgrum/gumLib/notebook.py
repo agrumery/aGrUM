@@ -72,8 +72,8 @@ def getPosterior(bn,ev,target):
     inf=gum.LazyPropagation(bn)
     inf.setEvidence(ev)
     inf.makeInference()
-    return gum.Potential(inf.marginal(bn.idFromName(target)))
-    # creating a new Potential from marginal (will disappear with ie)
+    return gum.Potential(inf.posterior(bn.idFromName(target)))
+    # creating a new Potential from posterior (will disappear with ie)
 
 def showProba(p):
     """

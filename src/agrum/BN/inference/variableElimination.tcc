@@ -91,7 +91,7 @@ namespace gum {
       }
     }
 
-    this->_invalidateMarginals();
+    this->_invalidatePosteriors();
   }
 
   template<typename GUM_SCALAR> INLINE
@@ -102,14 +102,14 @@ namespace gum {
     }
 
     __evidences.erase ( this->bn().nodeId ( e->variable ( 0 ) ) );
-    this->_invalidateMarginals();
+    this->_invalidatePosteriors();
   }
 
   template<typename GUM_SCALAR> INLINE
   void
   VariableElimination<GUM_SCALAR>::eraseAllEvidence() {
     __evidences.clear();
-    this->_invalidateMarginals();
+    this->_invalidatePosteriors();
   }
 
   template <typename GUM_SCALAR>
@@ -124,14 +124,11 @@ namespace gum {
 
   template<typename GUM_SCALAR>
   void
-  VariableElimination<GUM_SCALAR>::_fillMarginal ( NodeId id, Potential<GUM_SCALAR>& marginal ) {
+  VariableElimination<GUM_SCALAR>::_fillPosterior ( NodeId id, Potential<GUM_SCALAR>& marginal ) {
     __computeEliminationOrder();
     __createInitialPool();
     Set< Potential<GUM_SCALAR>* > pool ( __pool );
 
-    // for ( typename Property< const Potential<GUM_SCALAR>* >::onNodes::iterator iter = __evidences.begin(); iter != __evidences.end(); ++iter ) {
-    //   pool.insert( const_cast< Potential<GUM_SCALAR>* >( *iter ) );
-    // }
     for ( size_t i = 0; i < __eliminationOrder.size(); ++i ) {
       if ( __eliminationOrder[i] != id ) {
         __eliminateNode ( __eliminationOrder[i], pool, __trash );

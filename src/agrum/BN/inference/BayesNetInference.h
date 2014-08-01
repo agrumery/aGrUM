@@ -60,7 +60,7 @@ namespace gum {
       /**
        * @brief Returns the probability of the variable.
        *
-       * If makeInference() wasn't called yet, then only the marginal
+       * If makeInference() wasn't called yet, then only the posterior
        * of the given variable will be computed.
        *
        * @param id The variable's id.
@@ -68,7 +68,7 @@ namespace gum {
        * @throw NotFound Raised if no variable matches id.
        * @throw OperationNotAllowed Raised if the inference can not be done.
        */
-      virtual const Potential<GUM_SCALAR>& marginal ( NodeId id );
+      virtual const Potential<GUM_SCALAR>& posterior ( NodeId id );
 
       /**
        * Insert new evidence in the inference.
@@ -108,33 +108,30 @@ namespace gum {
     protected:
 
       /**
-       * @brief READ FULL DOCUMENTATION (THAT MEANS CLICK ON ME!!)
+       * @brief Fill the potential with the computed posterior
        *
-       * This method is called when a BayesNetInference user ask for the marginal of
+       * This method is called when a BayesNetInference user ask for the posterior of
        * a given variable.
        *
-       * The reference "marginal" is a reference over an empty Potential, it doesn't
+       * The reference "posterior" is a reference over an empty Potential, it doesn't
        * even contains a reference over the variable's DiscreteVariable (don't forget
        * to add it!).
        *
-       * TODO Change this method and either return a pointer or delegate marginal
-       *      handling to subclasses.
-       *
        * @param id The variable's id.
-       * @param marginal The completely empty potential to fill.
+       * @param posterior The completely empty potential to fill.
        * @throw ElementNotFound Raised if no variable matches id.
        */
-      virtual void _fillMarginal ( NodeId id, Potential<GUM_SCALAR>& marginal ) = 0;
+      virtual void _fillPosterior ( NodeId id, Potential<GUM_SCALAR>& posterior ) = 0;
 
       /**
-       * Invalidate the set of marginals kept here.
+       * Invalidate the set of posterior kept here.
        */
-      void _invalidateMarginals();
+      void _invalidatePosteriors();
 
       /**
-       * Mapping between marginals and __bayesNet's nodes.
+       * Mapping between posterior and __bayesNet's nodes.
        */
-      NodeProperty<Potential<GUM_SCALAR>*> _marginals;
+      NodeProperty<Potential<GUM_SCALAR>*> _posteriors;
 
     private:
       /**
@@ -152,5 +149,3 @@ namespace gum {
 #include <agrum/BN/inference/BayesNetInference.tcc>
 
 #endif /* GUM_INFERENCE_H */
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

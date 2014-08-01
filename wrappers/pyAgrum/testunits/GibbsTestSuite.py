@@ -87,7 +87,7 @@ class TestDictFeature(GibbsTestCase):
         ie.setMinEpsilonRate(0.0001)
         ie.setEvidence({'s': [0, 1], 'w': (1, 0)})
         ie.makeInference()
-        result = ie.marginal(self.r)
+        result = ie.posterior(self.r)
 
         ie2 = gum.GibbsInference(self.bn)
         ie2.setVerbosity(False)
@@ -95,7 +95,7 @@ class TestDictFeature(GibbsTestCase):
         ie2.setMinEpsilonRate(0.0001)
         ie2.setEvidence({'s': 1, 'w': 0})
         ie2.makeInference()
-        result2 = ie2.marginal(self.r)
+        result2 = ie2.posterior(self.r)
 
         self.assertDelta(result.tolist(), result2.tolist())
 
@@ -107,7 +107,7 @@ class TestDictFeature(GibbsTestCase):
         ie.setMinEpsilonRate(0.0001)
         ie.setEvidence({'s': 0, 'w': 1})
         ie.makeInference()
-        result = ie.marginal(self.r).tolist()
+        result = ie.posterior(self.r).tolist()
 
         ie2 = gum.GibbsInference(self.bn)
         ie2.setVerbosity(False)
@@ -115,7 +115,7 @@ class TestDictFeature(GibbsTestCase):
         ie2.setMinEpsilonRate(0.0001)
         ie2.setEvidence({'s': 'no', 'w': 'yes'})
         ie2.makeInference()
-        result2 = ie2.marginal(self.r).tolist()
+        result2 = ie2.posterior(self.r).tolist()
         
         ie3 = gum.GibbsInference(self.bn)
         ie3.setVerbosity(True)
@@ -124,7 +124,7 @@ class TestDictFeature(GibbsTestCase):
         ie3.addHardEvidence(self.s,0) # 'no'
         ie3.addHardEvidence(self.w,1) # 'yes'
         ie3.makeInference()
-        result3 = ie3.marginal(self.r).tolist()
+        result3 = ie3.posterior(self.r).tolist()
         
         self.assertListsAlmostEqual(result, result2)
         self.assertListsAlmostEqual(result, result3)
@@ -134,12 +134,12 @@ class TestDictFeature(GibbsTestCase):
         ie = gum.GibbsInference(self.bn)
         ie.setEvidence({self.s: 0, self.w: 1})
         ie.makeInference()
-        result = ie.marginal(self.r)
+        result = ie.posterior(self.r)
 
         ie2 = gum.GibbsInference(self.bn)
         ie2.setEvidence({self.s: 'no', self.w: 'yes'})
         ie2.makeInference()
-        result2 = ie2.marginal(self.r)
+        result2 = ie2.posterior(self.r)
 
         self.assertListsAlmostEqual(result.tolist(), result2.tolist())
         
@@ -150,7 +150,7 @@ class TestDictFeature(GibbsTestCase):
         ie.setMinEpsilonRate(0.0001)
         ie.setEvidence({'r': [0, 1], 'w': (1, 0)})
         ie.makeInference()
-        result = ie.marginal(self.s).tolist()
+        result = ie.posterior(self.s).tolist()
 
         ie = gum.GibbsInference(self.bni)
         ie.setVerbosity(False)
@@ -158,7 +158,7 @@ class TestDictFeature(GibbsTestCase):
         ie.setMinEpsilonRate(0.0001)
         ie.setEvidence({'ri': [0, 1], 'wi': (1, 0)})
         ie.makeInference()
-        result2 = ie.marginal(self.si).tolist()
+        result2 = ie.posterior(self.si).tolist()
         self.assertDelta(result, result2)
 
         ie = gum.GibbsInference(self.bn)
@@ -167,7 +167,7 @@ class TestDictFeature(GibbsTestCase):
         ie.setMinEpsilonRate(0.0001)
         ie.setEvidence({'r': 1, 'w': 0})
         ie.makeInference()
-        result = ie.marginal(self.s).tolist()
+        result = ie.posterior(self.s).tolist()
 
         ie = gum.GibbsInference(self.bni)
         ie.setVerbosity(False)
@@ -175,7 +175,7 @@ class TestDictFeature(GibbsTestCase):
         ie.setMinEpsilonRate(0.0001)
         ie.setEvidence({'ri': 6, 'wi': 0.33})
         ie.makeInference()
-        result2 = ie.marginal(self.si).tolist()
+        result2 = ie.posterior(self.si).tolist()
         self.assertDelta(result, result2)
 
 
@@ -187,7 +187,7 @@ class TestInferenceResults(GibbsTestCase):
         ie.setVerbosity(False)
         ie.setEpsilon(0.0001)
         ie.setMinEpsilonRate(0.0001)
-        result = ie.marginal(self.w)
+        result = ie.posterior(self.w)
         self.assertDelta(result.tolist(), [0.3529, 0.6471])
 
         ie = gum.GibbsInference(self.bn)
@@ -196,7 +196,7 @@ class TestInferenceResults(GibbsTestCase):
         ie.setMinEpsilonRate(0.0001)
         ie.setEvidence({'s': 1, 'c': 0})
         ie.makeInference()
-        result = ie.marginal(self.w)
+        result = ie.posterior(self.w)
         self.assertDelta(result.tolist(), [0.082, 0.918])
 
 
@@ -207,7 +207,7 @@ class TestInferenceResults(GibbsTestCase):
         ie.setMinEpsilonRate(0.0001)
         ie.setEvidence({'w2': 1})
         ie.makeInference()
-        result = ie.marginal(self.r2)
+        result = ie.posterior(self.r2)
         expected = [1-0.3577, 0.3577]
         self.assertDelta(result.tolist(), expected)
 

@@ -344,7 +344,7 @@ namespace gum_tests {
         gum::List<const gum::Potential<float>*> l {&ev};
         inf_complete.insertEvidence ( l );
         inf_complete.makeInference();
-        const gum::Potential<float>& p1 = inf_complete.marginal ( bn.idFromName ( "v6" ) );
+        const gum::Potential<float>& p1 = inf_complete.posterior ( bn.idFromName ( "v6" ) );
 
         // propagation in the fragment
         gum::BayesNetFragment<float> frag ( bn );
@@ -358,7 +358,7 @@ namespace gum_tests {
 
         gum::LazyPropagation<float> inf_frag ( frag );
         inf_frag.makeInference();
-        const gum::Potential<float>& p2 = inf_frag.marginal ( bn.idFromName ( "v6" ) );
+        const gum::Potential<float>& p2 = inf_frag.posterior ( bn.idFromName ( "v6" ) );
 
         // comparison
         gum::Instantiation I ( p1 );
@@ -464,11 +464,11 @@ namespace gum_tests {
 
         gum::LazyPropagation<float> ie2 ( bn2 );
         ie2.makeInference();
-        const gum::Potential<float>& p2 = ie2.marginal ( bn2.idFromName ( "v5" ) ) ;
+        const gum::Potential<float>& p2 = ie2.posterior ( bn2.idFromName ( "v5" ) ) ;
 
         gum::LazyPropagation<float> ie ( frag );
         ie.makeInference();
-        const gum::Potential<float>& p1 = ie.marginal ( frag.idFromName ( "v5" ) ) ;
+        const gum::Potential<float>& p1 = ie.posterior ( frag.idFromName ( "v5" ) ) ;
 
         // comparison
         gum::Instantiation II ( p1 );

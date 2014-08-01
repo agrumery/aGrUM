@@ -87,7 +87,7 @@ class TestDictFeature(LazyPropagationTestCase):
         ie = gum.LazyPropagation(self.bn)
         ie.setEvidence({self.s: [0, 1], self.w: (1, 0)})
         ie.makeInference()
-        result = ie.marginal(self.r)
+        result = ie.posterior(self.r)
 
         self.assertListsAlmostEqual(result.tolist(),[ 0.95890411,0.04109589])
 
@@ -95,18 +95,18 @@ class TestDictFeature(LazyPropagationTestCase):
         ie = gum.LazyPropagation(self.bn)
         ie.setEvidence({'s': 0, 'w': 1})
         ie.makeInference()
-        result = ie.marginal(self.r)
+        result = ie.posterior(self.r)
 
         ie2 = gum.LazyPropagation(self.bn)
         ie2.setEvidence({'s': 'no', 'w': 'yes'})
         ie2.makeInference()
-        result2 = ie2.marginal(self.r)
+        result2 = ie2.posterior(self.r)
 
         ie3= gum.LazyPropagation(self.bn)
         ie3.addHardEvidence(self.bn.idFromName('s'),0)
         ie3.addHardEvidence(self.bn.idFromName('w'),1)
         ie3.makeInference()
-        result3 = ie3.marginal(self.r)
+        result3 = ie3.posterior(self.r)
 
         self.assertListsAlmostEqual(result.tolist(), result2.tolist())
         self.assertListsAlmostEqual(result.tolist(), result3.tolist())
@@ -115,18 +115,18 @@ class TestDictFeature(LazyPropagationTestCase):
         ie = gum.LazyPropagation(self.bn)
         ie.setEvidence({self.s: 0, self.w: 1})
         ie.makeInference()
-        result = ie.marginal(self.r)
+        result = ie.posterior(self.r)
 
         ie2 = gum.LazyPropagation(self.bn)
         ie2.setEvidence({self.s: 'no', self.w: 'yes'})
         ie2.makeInference()
-        result2 = ie2.marginal(self.r)
+        result2 = ie2.posterior(self.r)
 
         ie3 = gum.LazyPropagation(self.bn)
         ie3.addHardEvidence(self.s,0) # 'no'
         ie3.addHardEvidence(self.w,1) # 'yes'
         ie3.makeInference()
-        result3 = ie3.marginal(self.r)
+        result3 = ie3.posterior(self.r)
 
         self.assertListsAlmostEqual(result.tolist(), result2.tolist())
         self.assertListsAlmostEqual(result.tolist(), result3.tolist())
@@ -136,42 +136,42 @@ class TestDictFeature(LazyPropagationTestCase):
         ie = gum.LazyPropagation(self.bn)
         ie.setEvidence({'r': [0, 1], 'w': (1, 0)})
         ie.makeInference()
-        result = ie.marginal(self.s).tolist()
+        result = ie.posterior(self.s).tolist()
         ie = gum.LazyPropagation(self.bni)
         ie.setEvidence({'ri': [0, 1], 'wi': (1, 0)})
         ie.makeInference()
-        result2 = ie.marginal(self.si).tolist()
+        result2 = ie.posterior(self.si).tolist()
         self.assertListsAlmostEqual(result, result2)
 
         ie = gum.LazyPropagation(self.bn)
         ie.setEvidence({'r': 1, 'w': 0})
         ie.makeInference()
-        result = ie.marginal(self.s).tolist()
+        result = ie.posterior(self.s).tolist()
         ie = gum.LazyPropagation(self.bni)
         ie.setEvidence({'ri': 6, 'wi': 0.33})
         ie.makeInference()
-        result = ie.marginal(self.si).tolist()
+        result = ie.posterior(self.si).tolist()
         self.assertListsAlmostEqual(result, result2)
 
     def testWithDifferentVariablesWithId(self):
         ie = gum.LazyPropagation(self.bn)
         ie.setEvidence({self.r: [0, 1], self.w: (1, 0)})
         ie.makeInference()
-        result = ie.marginal(self.s).tolist()
+        result = ie.posterior(self.s).tolist()
         ie = gum.LazyPropagation(self.bni)
         ie.setEvidence({self.ri: [0, 1], self.wi: (1, 0)})
         ie.makeInference()
-        result2 = ie.marginal(self.si).tolist()
+        result2 = ie.posterior(self.si).tolist()
         self.assertListsAlmostEqual(result, result2)
 
         ie = gum.LazyPropagation(self.bn)
         ie.setEvidence({self.r: 1, self.w: 0})
         ie.makeInference()
-        result = ie.marginal(self.s).tolist()
+        result = ie.posterior(self.s).tolist()
         ie = gum.LazyPropagation(self.bni)
         ie.setEvidence({self.ri: 6, self.wi: 0.33})
         ie.makeInference()
-        result2 = ie.marginal(self.si).tolist()
+        result2 = ie.posterior(self.si).tolist()
         self.assertListsAlmostEqual(result, result2)
 
 
@@ -181,14 +181,14 @@ class TestInferenceResults(LazyPropagationTestCase):
     def testOpenBayesSiteExamples(self):
         ie = gum.LazyPropagation(self.bn)
         ie.makeInference()
-        result = ie.marginal(self.w)
+        result = ie.posterior(self.w)
         self.assertListsAlmostEqual(result.tolist(), [0.3529, 0.6471],
                                     places=4)
 
         ie = gum.LazyPropagation(self.bn)
         ie.setEvidence({'s': 1, 'c': 0})
         ie.makeInference()
-        result = ie.marginal(self.w)
+        result = ie.posterior(self.w)
         self.assertListsAlmostEqual(result.tolist(), [0.082, 0.918], places=4)
 
 
@@ -196,7 +196,7 @@ class TestInferenceResults(LazyPropagationTestCase):
         ie = gum.LazyPropagation(self.bn2)
         ie.setEvidence({'w2': 1})
         ie.makeInference()
-        result = ie.marginal(self.r2)
+        result = ie.posterior(self.r2)
         expected = [1-0.3577, 0.3577]
         self.assertListsAlmostEqual(result.tolist(), expected, places=4)
 

@@ -84,7 +84,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   void
   ShaferShenoyInference<GUM_SCALAR>::makeInference() {
-    this->_invalidateMarginals();
+    this->_invalidatePosteriors();
 
     // Setting all collect flags at false
     for ( typename Property< CliqueProp<GUM_SCALAR>* >::onNodes::iterator_safe
@@ -107,8 +107,7 @@ namespace gum {
 // @throw OperationNotAllowed Raised if the inference haven't be done.
   template<typename GUM_SCALAR>
   void
-  ShaferShenoyInference<GUM_SCALAR>::_fillMarginal ( NodeId id,
-      Potential<GUM_SCALAR>& marginal ) {
+  ShaferShenoyInference<GUM_SCALAR>::_fillPosterior ( NodeId id, Potential<GUM_SCALAR>& posterior ) {
     NodeId cliqueId = __triangulation->createdJunctionTreeClique ( id );
     // First we find the smallest clique containing id
 
@@ -123,13 +122,11 @@ namespace gum {
     // Second we launch a collect starting from cliqueId
     __collectFromClique ( cliqueId );
 
-    // Third we fill the marginal with the good values using a bucket
+    // Third we fill the posterior with the good values using a bucket
     MultiDimBucket<GUM_SCALAR> bucket;
 
     bucket.add ( this->bn().variable ( id ) );
-
     bucket.add ( __clique_prop[cliqueId]->bucket() );
-
     const NodeSet& neighbours = __getNeighbours ( cliqueId );
 
     for ( NodeSetIterator iter = neighbours.beginSafe ();
@@ -137,15 +134,15 @@ namespace gum {
       bucket.add ( __messagesMap[Arc ( *iter, cliqueId )] );
     }
 
-    marginal.add ( this->bn().variable ( id ) ); // marginal is empty, this is stupid... (I know I'm the guy who did it...)
+    posterior.add ( this->bn().variable ( id ) ); // posterior is empty, this is stupid... (I know I'm the guy who did it...)
 
-    Instantiation inst ( marginal );
+    Instantiation inst ( posterior );
 
     for ( inst.setFirst(); not inst.end(); inst.inc() ) {
-      marginal.set ( inst, bucket.get ( inst ) );
+      posterior.set ( inst, bucket.get ( inst ) );
     }
 
-    marginal.normalize();
+    posterior.normalize();
   }
 
 // insert new evidence in the graph

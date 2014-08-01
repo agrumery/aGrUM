@@ -120,7 +120,7 @@ def computeROCpoints(bn,csv_name,target,label,visible=False):
         try:
             engine.setEvidence(e)
             engine.makeInference()
-            px=engine.marginal(idTarget)[{target:label}]
+            px=engine.posterior(idTarget)[{target:label}]
             res.append((px,int(data[positions[idTarget]])))
         except gum.OutOfBounds as err:
             print err

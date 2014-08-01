@@ -1,6 +1,6 @@
 %ignore *::insertEvidence();
 
-%pythonappend gum::BayesNetInference::marginal %{
+%pythonappend gum::BayesNetInference::posterior %{
         val.__fill_distrib__()
 %}
 

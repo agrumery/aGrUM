@@ -103,11 +103,11 @@ namespace gum_tests {
         gum::LazyPropagation<float> inf ( *bn );
 
         TS_ASSERT_THROWS_NOTHING ( inf.makeInference() );
-        TS_ASSERT_THROWS_NOTHING ( inf.marginal ( i1 ) );
-        TS_ASSERT_THROWS_NOTHING ( inf.marginal ( i2 ) );
-        TS_ASSERT_THROWS_NOTHING ( inf.marginal ( i3 ) );
-        TS_ASSERT_THROWS_NOTHING ( inf.marginal ( i4 ) );
-        TS_ASSERT_THROWS_NOTHING ( inf.marginal ( i5 ) );
+        TS_ASSERT_THROWS_NOTHING ( inf.posterior ( i1 ) );
+        TS_ASSERT_THROWS_NOTHING ( inf.posterior ( i2 ) );
+        TS_ASSERT_THROWS_NOTHING ( inf.posterior ( i3 ) );
+        TS_ASSERT_THROWS_NOTHING ( inf.posterior ( i4 ) );
+        TS_ASSERT_THROWS_NOTHING ( inf.posterior ( i5 ) );
       }
 
       void testMarginalWithEvidence() {
@@ -121,11 +121,11 @@ namespace gum_tests {
         TS_ASSERT_THROWS_NOTHING ( inf.insertEvidence ( e_list ) );
 
         TS_ASSERT_THROWS_NOTHING ( inf.makeInference() );
-        TS_ASSERT_THROWS_NOTHING ( inf.marginal ( i1 ) );
-        TS_ASSERT_THROWS_NOTHING ( inf.marginal ( i2 ) );
-        TS_ASSERT_THROWS_NOTHING ( inf.marginal ( i3 ) );
-        TS_ASSERT_THROWS_NOTHING ( inf.marginal ( i4 ) );
-        TS_ASSERT_THROWS_NOTHING ( inf.marginal ( i5 ) );
+        TS_ASSERT_THROWS_NOTHING ( inf.posterior ( i1 ) );
+        TS_ASSERT_THROWS_NOTHING ( inf.posterior ( i2 ) );
+        TS_ASSERT_THROWS_NOTHING ( inf.posterior ( i3 ) );
+        TS_ASSERT_THROWS_NOTHING ( inf.posterior ( i4 ) );
+        TS_ASSERT_THROWS_NOTHING ( inf.posterior ( i5 ) );
 
         gum::LazyPropagation<float> inf2 ( *bn );
 
@@ -134,17 +134,17 @@ namespace gum_tests {
         TS_ASSERT_THROWS_NOTHING ( inf2.addHardEvidence ( i4,1 ) );
 
         TS_ASSERT_THROWS_NOTHING ( inf2.makeInference() );
-        TS_ASSERT_THROWS_NOTHING ( inf2.marginal ( i1 ) );
-        TS_ASSERT_THROWS_NOTHING ( inf2.marginal ( i2 ) );
-        TS_ASSERT_THROWS_NOTHING ( inf2.marginal ( i3 ) );
-        TS_ASSERT_THROWS_NOTHING ( inf2.marginal ( i4 ) );
-        TS_ASSERT_THROWS_NOTHING ( inf2.marginal ( i5 ) );
+        TS_ASSERT_THROWS_NOTHING ( inf2.posterior ( i1 ) );
+        TS_ASSERT_THROWS_NOTHING ( inf2.posterior ( i2 ) );
+        TS_ASSERT_THROWS_NOTHING ( inf2.posterior ( i3 ) );
+        TS_ASSERT_THROWS_NOTHING ( inf2.posterior ( i4 ) );
+        TS_ASSERT_THROWS_NOTHING ( inf2.posterior ( i5 ) );
 
-        TS_ASSERT ( inf.marginal ( i1 ) ==inf2.marginal ( i1 ) );
-        TS_ASSERT ( inf.marginal ( i2 ) ==inf2.marginal ( i2 ) );
-        TS_ASSERT ( inf.marginal ( i3 ) ==inf2.marginal ( i3 ) );
-        TS_ASSERT ( inf.marginal ( i4 ) ==inf2.marginal ( i4 ) );
-        TS_ASSERT ( inf.marginal ( i5 ) ==inf2.marginal ( i5 ) );
+        TS_ASSERT ( inf.posterior ( i1 ) ==inf2.posterior ( i1 ) );
+        TS_ASSERT ( inf.posterior ( i2 ) ==inf2.posterior ( i2 ) );
+        TS_ASSERT ( inf.posterior ( i3 ) ==inf2.posterior ( i3 ) );
+        TS_ASSERT ( inf.posterior ( i4 ) ==inf2.posterior ( i4 ) );
+        TS_ASSERT ( inf.posterior ( i5 ) ==inf2.posterior ( i5 ) );
       }
 
       // Testing when there is no evidence

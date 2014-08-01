@@ -135,7 +135,7 @@ namespace gum {
       }
 
       sBuff << chain.first->name() << "." << chain.second->safeName();
-      m = __inf->marginal ( __inf->bn().idFromName ( sBuff.str() ) );
+      m = __inf->posterior ( __inf->bn().idFromName ( sBuff.str() ) );
     }
 
     template<typename GUM_SCALAR> INLINE

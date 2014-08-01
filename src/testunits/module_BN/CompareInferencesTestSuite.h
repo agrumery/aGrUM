@@ -189,10 +189,10 @@ namespace gum_tests {
         {
           for ( auto it = bn->nodes().beginSafe(); it != bn->nodes().endSafe(); ++it ) {
             gum::NodeId i = *it;
-            const gum::Potential<double>& marginal_gibbs = inf_gibbs.marginal ( i );
-            const gum::Potential<double>& marginal_ShaShe = inf_ShaShe.marginal ( i );
-            const gum::Potential<double>& marginal_LazyProp = inf_LazyProp.marginal ( i );
-            const gum::Potential<double>& marginal_ValElim = inf_ValElim.marginal ( i );
+            const gum::Potential<double>& marginal_gibbs = inf_gibbs.posterior ( i );
+            const gum::Potential<double>& marginal_ShaShe = inf_ShaShe.posterior ( i );
+            const gum::Potential<double>& marginal_LazyProp = inf_LazyProp.posterior ( i );
+            const gum::Potential<double>& marginal_ValElim = inf_ValElim.posterior ( i );
 
             gum::Instantiation I; I << bn->variable ( *it );
 
@@ -289,7 +289,7 @@ namespace gum_tests {
           inf.setVerbosity ( false );
           inf.makeInference();
           {
-            const gum::Potential<float>& p = inf.marginal ( w ) ;
+            const gum::Potential<float>& p = inf.posterior ( w ) ;
             gum::Instantiation I ( p );
             TS_ASSERT_DELTA ( p[I], 0.3529, 3e-2 );
             ++I;
@@ -300,7 +300,7 @@ namespace gum_tests {
           inf.insertEvidence ( list_pot );
           inf.makeInference();
           {
-            const gum::Potential<float>& p = inf.marginal ( w ) ;
+            const gum::Potential<float>& p = inf.posterior ( w ) ;
             gum::Instantiation I ( p );
             TS_ASSERT_DELTA ( p[I], 0.082, 1e-2 );
             ++I;
@@ -312,7 +312,7 @@ namespace gum_tests {
           gum::LazyPropagation<float> inf ( *bn );
           inf.makeInference();
           {
-            const gum::Potential<float>& p = inf.marginal ( w ) ;
+            const gum::Potential<float>& p = inf.posterior ( w ) ;
             gum::Instantiation I ( p );
             TS_ASSERT_DELTA ( p[I], 0.3529, 1e-7 );
             ++I;
@@ -323,7 +323,7 @@ namespace gum_tests {
           inf.insertEvidence ( list_pot );
           inf.makeInference();
           {
-            const gum::Potential<float>& p = inf.marginal ( w ) ;
+            const gum::Potential<float>& p = inf.posterior ( w ) ;
             gum::Instantiation I ( p );
             TS_ASSERT_DELTA ( p[I], 0.082, 1e-7 );
             ++I;
@@ -335,7 +335,7 @@ namespace gum_tests {
           gum::ShaferShenoyInference<float> inf ( *bn );
           inf.makeInference();
           {
-            const gum::Potential<float>& p = inf.marginal ( w ) ;
+            const gum::Potential<float>& p = inf.posterior ( w ) ;
             gum::Instantiation I ( p );
             TS_ASSERT_DELTA ( p[I], 0.3529, 1e-5 );
             ++I;
@@ -346,7 +346,7 @@ namespace gum_tests {
           inf.insertEvidence ( list_pot );
           inf.makeInference();
           {
-            const gum::Potential<float>& p = inf.marginal ( w ) ;
+            const gum::Potential<float>& p = inf.posterior ( w ) ;
             gum::Instantiation I ( p );
             TS_ASSERT_DELTA ( p[I], 0.082, 1e-7 );
             ++I;
@@ -358,7 +358,7 @@ namespace gum_tests {
           gum::VariableElimination<float> inf ( *bn );
           inf.makeInference();
           {
-            const gum::Potential<float>& p = inf.marginal ( w ) ;
+            const gum::Potential<float>& p = inf.posterior ( w ) ;
             gum::Instantiation I ( p );
             TS_ASSERT_DELTA ( p[I], 0.3529, 1e-5 );
             ++I;
@@ -369,7 +369,7 @@ namespace gum_tests {
           inf.insertEvidence ( list_pot );
           inf.makeInference();
           {
-            const gum::Potential<float>& p = inf.marginal ( w ) ;
+            const gum::Potential<float>& p = inf.posterior ( w ) ;
             gum::Instantiation I ( p );
             TS_ASSERT_DELTA ( p[I], 0.082, 1e-7 );
             ++I;
@@ -419,7 +419,7 @@ namespace gum_tests {
             I << net->variable ( *it );
 
             for ( I.setFirst(); ! I.end(); ++I ) {
-              TS_ASSERT_DELTA ( infLazy.marginal ( *it ) [I], infShaf.marginal ( *it ) [I], 1e-6 );
+              TS_ASSERT_DELTA ( infLazy.posterior ( *it ) [I], infShaf.posterior ( *it ) [I], 1e-6 );
             }
           }
         }

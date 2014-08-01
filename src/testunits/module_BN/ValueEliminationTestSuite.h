@@ -186,34 +186,34 @@ namespace gum_tests {
         if ( inf != 0 ) {
           TS_GUM_ASSERT_THROWS_NOTHING ( inf->makeInference() );
 
-          const gum::Potential<float>* marginal_1 = 0;
-          TS_GUM_ASSERT_THROWS_NOTHING ( marginal_1 = & ( inf->marginal ( i1 ) ) );
+          const gum::Potential<float>* posterior_1 = 0;
+          TS_GUM_ASSERT_THROWS_NOTHING ( posterior_1 = & ( inf->posterior ( i1 ) ) );
 
-          if ( marginal_1 != 0 ) printProba ( *marginal_1 );
+          if ( posterior_1 != 0 ) printProba ( *posterior_1 );
 
-          const gum::Potential<float>* marginal_2 = 0;
+          const gum::Potential<float>* posterior_2 = 0;
 
-          TS_GUM_ASSERT_THROWS_NOTHING ( marginal_2 = & ( inf->marginal ( i2 ) ) );
+          TS_GUM_ASSERT_THROWS_NOTHING ( posterior_2 = & ( inf->posterior ( i2 ) ) );
 
-          if ( marginal_2 != 0 ) printProba ( *marginal_2 );
+          if ( posterior_2 != 0 ) printProba ( *posterior_2 );
 
-          const gum::Potential<float>* marginal_3 = 0;
+          const gum::Potential<float>* posterior_3 = 0;
 
-          TS_GUM_ASSERT_THROWS_NOTHING ( marginal_3 = & ( inf->marginal ( i3 ) ) );
+          TS_GUM_ASSERT_THROWS_NOTHING ( posterior_3 = & ( inf->posterior ( i3 ) ) );
 
-          if ( marginal_3 != 0 ) printProba ( *marginal_3 );
+          if ( posterior_3 != 0 ) printProba ( *posterior_3 );
 
-          const gum::Potential<float>* marginal_4 = 0;
+          const gum::Potential<float>* posterior_4 = 0;
 
-          TS_GUM_ASSERT_THROWS_NOTHING ( marginal_4 = & ( inf->marginal ( i4 ) ) );
+          TS_GUM_ASSERT_THROWS_NOTHING ( posterior_4 = & ( inf->posterior ( i4 ) ) );
 
-          if ( marginal_4 != 0 ) printProba ( *marginal_4 );
+          if ( posterior_4 != 0 ) printProba ( *posterior_4 );
 
-          const gum::Potential<float>* marginal_5 = 0;
+          const gum::Potential<float>* posterior_5 = 0;
 
-          TS_GUM_ASSERT_THROWS_NOTHING ( marginal_5 = & ( inf->marginal ( i5 ) ) );
+          TS_GUM_ASSERT_THROWS_NOTHING ( posterior_5 = & ( inf->posterior ( i5 ) ) );
 
-          if ( marginal_5 != 0 ) printProba ( *marginal_5 );
+          if ( posterior_5 != 0 ) printProba ( *posterior_5 );
 
           TS_GUM_ASSERT_THROWS_NOTHING ( delete inf );
         }
@@ -231,34 +231,34 @@ namespace gum_tests {
         if ( inf != 0 ) {
           TS_GUM_ASSERT_THROWS_NOTHING ( inf->insertEvidence ( e_list ) );
 
-          const gum::Potential<float>* marginal_1 = 0;
-          TS_GUM_ASSERT_THROWS_NOTHING ( marginal_1 = & ( inf->marginal ( i1 ) ) );
+          const gum::Potential<float>* posterior_1 = 0;
+          TS_GUM_ASSERT_THROWS_NOTHING ( posterior_1 = & ( inf->posterior ( i1 ) ) );
 
-          if ( marginal_1 != 0 ) printProba ( *marginal_1 );
+          if ( posterior_1 != 0 ) printProba ( *posterior_1 );
 
-          const gum::Potential<float>* marginal_2 = 0;
+          const gum::Potential<float>* posterior_2 = 0;
 
-          TS_GUM_ASSERT_THROWS_NOTHING ( marginal_2 = & ( inf->marginal ( i2 ) ) );
+          TS_GUM_ASSERT_THROWS_NOTHING ( posterior_2 = & ( inf->posterior ( i2 ) ) );
 
-          if ( marginal_2 != 0 ) printProba ( *marginal_2 );
+          if ( posterior_2 != 0 ) printProba ( *posterior_2 );
 
-          const gum::Potential<float>* marginal_3 = 0;
+          const gum::Potential<float>* posterior_3 = 0;
 
-          TS_GUM_ASSERT_THROWS_NOTHING ( marginal_3 = & ( inf->marginal ( i3 ) ) );
+          TS_GUM_ASSERT_THROWS_NOTHING ( posterior_3 = & ( inf->posterior ( i3 ) ) );
 
-          if ( marginal_3 != 0 ) printProba ( *marginal_3 );
+          if ( posterior_3 != 0 ) printProba ( *posterior_3 );
 
-          const gum::Potential<float>* marginal_4 = 0;
+          const gum::Potential<float>* posterior_4 = 0;
 
-          TS_GUM_ASSERT_THROWS_NOTHING ( marginal_4 = & ( inf->marginal ( i4 ) ) );
+          TS_GUM_ASSERT_THROWS_NOTHING ( posterior_4 = & ( inf->posterior ( i4 ) ) );
 
-          if ( marginal_4 != 0 ) printProba ( *marginal_4 );
+          if ( posterior_4 != 0 ) printProba ( *posterior_4 );
 
-          const gum::Potential<float>* marginal_5 = 0;
+          const gum::Potential<float>* posterior_5 = 0;
 
-          TS_GUM_ASSERT_THROWS_NOTHING ( marginal_5 = & ( inf->marginal ( i5 ) ) );
+          TS_GUM_ASSERT_THROWS_NOTHING ( posterior_5 = & ( inf->posterior ( i5 ) ) );
 
-          if ( marginal_5 != 0 ) printProba ( *marginal_5 );
+          if ( posterior_5 != 0 ) printProba ( *posterior_5 );
 
           TS_GUM_ASSERT_THROWS_NOTHING ( delete inf );
         }
@@ -275,9 +275,9 @@ namespace gum_tests {
       //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
       //   for (gum::DAG::NodeIterator iter = alarm.dag().beginNodes(); iter != alarm.dag().endNodes(); ++iter) {
       //     const gum::Potential<float>* pot_1 = 0;
-      //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
+      //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.posterior(*iter)));
       //     const gum::Potential<float>* pot_2 = 0;
-      //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
+      //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.posterior(*iter)));
       //     if ((*pot_1) != (*pot_2)) {
       //       TS_ASSERT(false);
       //     }
@@ -295,9 +295,9 @@ namespace gum_tests {
       //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
       //   for (gum::DAG::NodeIterator iter = diabetes.dag().beginNodes(); iter != diabetes.dag().endNodes(); ++iter) {
       //     const gum::Potential<float>* pot_1 = 0;
-      //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
+      //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.posterior(*iter)));
       //     const gum::Potential<float>* pot_2 = 0;
-      //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
+      //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.posterior(*iter)));
       //     if ((*pot_1) != (*pot_2)) {
       //       TS_ASSERT(false);
       //     }
@@ -315,9 +315,9 @@ namespace gum_tests {
       //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
       //   for (gum::DAG::NodeIterator iter = link.dag().beginNodes(); iter != link.dag().endNodes(); ++iter) {
       //     const gum::Potential<float>* pot_1 = 0;
-      //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
+      //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.posterior(*iter)));
       //     const gum::Potential<float>* pot_2 = 0;
-      //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
+      //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.posterior(*iter)));
       //     if ((*pot_1) != (*pot_2)) {
       //       TS_ASSERT(false);
       //     }
@@ -335,9 +335,9 @@ namespace gum_tests {
       //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
       //   for (gum::DAG::NodeIterator iter = water.dag().beginNodes(); iter != water.dag().endNodes(); ++iter) {
       //     const gum::Potential<float>* pot_1 = 0;
-      //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
+      //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.posterior(*iter)));
       //     const gum::Potential<float>* pot_2 = 0;
-      //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
+      //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.posterior(*iter)));
       //     if ((*pot_1) != (*pot_2)) {
       //       TS_ASSERT(false);
       //     }
@@ -355,9 +355,9 @@ namespace gum_tests {
       //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
       //   for (gum::DAG::NodeIterator iter = carpo.dag().beginNodes(); iter != carpo.dag().endNodes(); ++iter) {
       //     const gum::Potential<float>* pot_1 = 0;
-      //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
+      //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.posterior(*iter)));
       //     const gum::Potential<float>* pot_2 = 0;
-      //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
+      //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.posterior(*iter)));
       //     if ((*pot_1) != (*pot_2)) {
       //       TS_ASSERT(false);
       //     }
@@ -375,9 +375,9 @@ namespace gum_tests {
       //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
       //   for (gum::DAG::NodeIterator iter = mildew.dag().beginNodes(); iter != mildew.dag().endNodes(); ++iter) {
       //     const gum::Potential<float>* pot_1 = 0;
-      //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
+      //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.posterior(*iter)));
       //     const gum::Potential<float>* pot_2 = 0;
-      //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
+      //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.posterior(*iter)));
       //     if ((*pot_1) != (*pot_2)) {
       //       TS_ASSERT(false);
       //     }
@@ -395,9 +395,9 @@ namespace gum_tests {
       //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
       //   for (gum::DAG::NodeIterator iter = hailfinder.dag().beginNodes(); iter != hailfinder.dag().endNodes(); ++iter) {
       //     const gum::Potential<float>* pot_1 = 0;
-      //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
+      //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.posterior(*iter)));
       //     const gum::Potential<float>* pot_2 = 0;
-      //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
+      //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.posterior(*iter)));
       //     if ((*pot_1) != (*pot_2)) {
       //       TS_ASSERT(false);
       //     }
@@ -415,9 +415,9 @@ namespace gum_tests {
       //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
       //   for (gum::DAG::NodeIterator iter = munin1.dag().beginNodes(); iter != munin1.dag().endNodes(); ++iter) {
       //     const gum::Potential<float>* pot_1 = 0;
-      //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
+      //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.posterior(*iter)));
       //     const gum::Potential<float>* pot_2 = 0;
-      //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
+      //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.posterior(*iter)));
       //     if ((*pot_1) != (*pot_2)) {
       //       TS_ASSERT(false);
       //     }
@@ -435,9 +435,9 @@ namespace gum_tests {
       //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
       //   for (gum::DAG::NodeIterator iter = insurance.dag().beginNodes(); iter != insurance.dag().endNodes(); ++iter) {
       //     const gum::Potential<float>* pot_1 = 0;
-      //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
+      //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.posterior(*iter)));
       //     const gum::Potential<float>* pot_2 = 0;
-      //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
+      //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.posterior(*iter)));
       //     if ((*pot_1) != (*pot_2)) {
       //       TS_ASSERT(false);
       //     }
@@ -455,9 +455,9 @@ namespace gum_tests {
       //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
       //   for (gum::DAG::NodeIterator iter = pigs.dag().beginNodes(); iter != pigs.dag().endNodes(); ++iter) {
       //     const gum::Potential<float>* pot_1 = 0;
-      //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
+      //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.posterior(*iter)));
       //     const gum::Potential<float>* pot_2 = 0;
-      //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
+      //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.posterior(*iter)));
       //     if ((*pot_1) != (*pot_2)) {
       //       TS_ASSERT(false);
       //     }
@@ -475,9 +475,9 @@ namespace gum_tests {
       //   TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
       //   for (gum::DAG::NodeIterator iter = barley.dag().beginNodes(); iter != barley.dag().endNodes(); ++iter) {
       //     const gum::Potential<float>* pot_1 = 0;
-      //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.marginal(*iter)));
+      //     TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.posterior(*iter)));
       //     const gum::Potential<float>* pot_2 = 0;
-      //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.marginal(*iter)));
+      //     TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.posterior(*iter)));
       //     if ((*pot_1) != (*pot_2)) {
       //       TS_ASSERT(false);
       //     }

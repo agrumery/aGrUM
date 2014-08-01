@@ -86,7 +86,7 @@ namespace gum {
     }
 
     __ve.insertEvidence ( pot_list );
-    this->_invalidateMarginals();
+    this->_invalidatePosteriors();
   }
 
   template<typename GUM_SCALAR> INLINE
@@ -98,7 +98,7 @@ namespace gum {
 
     __hardEvidence.erase ( ( this->bn().nodeId ( * ( e->variablesSequence().atPos ( 0 ) ) ) ) );
     __ve.eraseEvidence ( e );
-    this->_invalidateMarginals();
+    this->_invalidatePosteriors();
   }
 
   template<typename GUM_SCALAR> INLINE
@@ -106,7 +106,7 @@ namespace gum {
   VEWithBB<GUM_SCALAR>::eraseAllEvidence() {
     __hardEvidence.clear();
     __ve.eraseAllEvidence();
-    this->_invalidateMarginals();
+    this->_invalidatePosteriors();
   }
 
   template<typename GUM_SCALAR> INLINE
@@ -127,7 +127,7 @@ namespace gum {
 
   template<typename GUM_SCALAR>
   void
-  VEWithBB<GUM_SCALAR>::_fillMarginal ( NodeId id, Potential<GUM_SCALAR>& marginal ) {
+  VEWithBB<GUM_SCALAR>::_fillPosterior ( NodeId id, Potential<GUM_SCALAR>& posterior ) {
     Set<NodeId> requisite_nodes;
     __fillRequisiteNode ( id, requisite_nodes );
     Set<Potential<GUM_SCALAR>*> pool;
@@ -158,7 +158,7 @@ namespace gum {
 
     Set<Potential<GUM_SCALAR>*> trash;
     __ve.eliminateNodes ( elim_order, pool, trash );
-    marginal.add ( this->bn().variable ( id ) );
+    posterior.add ( this->bn().variable ( id ) );
 
     try {
       pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( __ve.__evidences[id] ) );
@@ -173,14 +173,14 @@ namespace gum {
     }
 
     bucket.add ( this->bn().variable ( id ) );
-    Instantiation i ( marginal );
+    Instantiation i ( posterior );
     Instantiation j ( bucket );
 
     for ( i.setFirst(), j.setFirst(); not i.end(); i.inc(), j.inc() ) {
-      marginal.set ( i, bucket.get ( j ) );
+      posterior.set ( i, bucket.get ( j ) );
     }
 
-    marginal.normalize();
+    posterior.normalize();
 
     for ( SetIteratorSafe<Potential<GUM_SCALAR>*> iter = trash.beginSafe();
           iter != trash.endSafe(); ++iter ) {

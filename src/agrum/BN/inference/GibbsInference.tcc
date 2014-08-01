@@ -86,7 +86,7 @@ namespace gum {
   /// setter/getter for __inference_is_required
   template <typename GUM_SCALAR> INLINE
   void GibbsInference<GUM_SCALAR>::setRequiredInference() {
-    this->_invalidateMarginals();
+    this->_invalidatePosteriors();
     __inference_is_required = true;
   }
 
@@ -175,19 +175,18 @@ namespace gum {
   template <typename GUM_SCALAR> INLINE
   void GibbsInference<GUM_SCALAR>::insertEvidence
   ( const List<const Potential<GUM_SCALAR>*>& pot_list ) {
-    this->_invalidateMarginals();
+    this->_invalidatePosteriors();
     particle::Gibbs<GUM_SCALAR>::insertEvidence ( pot_list );
     setRequiredInference();
   }
 
   /// Returns the probability of the variable.
   template <typename GUM_SCALAR> INLINE
-  void GibbsInference<GUM_SCALAR>::_fillMarginal ( NodeId id, Potential<GUM_SCALAR>& marginal ) {
+  void GibbsInference<GUM_SCALAR>::_fillPosterior ( NodeId id, Potential<GUM_SCALAR>& posterior ) {
     if ( isInferenceRequired() ) makeInference();
 
-    marginal = * ( __sampling_nbr[id] );
-
-    marginal.normalize();
+    posterior = * ( __sampling_nbr[id] );
+    posterior.normalize();
   }
 
   INLINE

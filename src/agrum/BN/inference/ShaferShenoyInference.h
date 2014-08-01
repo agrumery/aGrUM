@@ -112,8 +112,8 @@ namespace gum {
 
     protected:
 
-      /// @see gum::BayesNetInference::_fillMarginal().
-      virtual void _fillMarginal ( NodeId id , Potential<GUM_SCALAR>& marginal );
+      /// @see gum::BayesNetInference::_fillPosterior().
+      virtual void _fillPosterior ( NodeId id , Potential<GUM_SCALAR>& posterior );
 
     private:
 

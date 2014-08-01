@@ -127,11 +127,11 @@ namespace gum {
       int tId = getThreadNumber();
       //bool keepSample = false;
 
-      if ( this->_l_inferenceEngine[tId]->evidenceMarginal() > 0 ) {
+      if ( this->_l_inferenceEngine[tId]->evidenceProbability() > 0 ) {
         const DAG& tDag = this->_workingSet[tId]->dag();
 
         for ( auto it = tDag.nodes().beginSafe(); it != tDag.nodes().endSafe(); ++it ) {
-          const Potential< GUM_SCALAR >& potential ( this->_l_inferenceEngine[tId]->marginal ( *it ) );
+          const Potential< GUM_SCALAR >& potential ( this->_l_inferenceEngine[tId]->posterior ( *it ) );
           Instantiation ins ( potential );
           std::vector< GUM_SCALAR > vertex;
 
