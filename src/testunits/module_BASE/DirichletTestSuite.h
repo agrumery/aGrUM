@@ -30,7 +30,7 @@ namespace gum_tests {
   public:
     void testXX () {
       std::vector<float> param { 1, 1 };
-      gum::learning::Dirichlet dir ( param );
+      gum::Dirichlet dir ( param );
 
       std::vector<float> res ( 2, 0 );
       float sum = 0;

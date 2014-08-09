@@ -166,6 +166,12 @@ namespace gum {
     }
 
 
+    /// resize a given row
+    INLINE void DBRow::resize ( unsigned int new_size ) {
+      _row.resize ( new_size );
+    }
+    
+
   } /* namespace learning */
 
   

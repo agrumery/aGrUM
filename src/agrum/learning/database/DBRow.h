@@ -130,6 +130,9 @@ namespace gum {
       /// returns the size of the row
       unsigned int size () const noexcept;
 
+      /// resize a given row
+      void resize ( unsigned int new_size );
+      
       /// @}
       
 

@@ -38,111 +38,105 @@
 
 namespace gum {
 
-  
-  namespace learning {
-
     
-    /* ========================================================================= */
-    /* ===                             CHI2 CLASS                            === */
-    /* ========================================================================= */
-    class Chi2 {
-    public:
-      // ##########################################################################
-      /// @name Constructors / Destructors
-      // ##########################################################################
-      /// @{
+  /* ========================================================================= */
+  /* ===                             CHI2 CLASS                            === */
+  /* ========================================================================= */
+  class Chi2 {
+  public:
+    // ##########################################################################
+    /// @name Constructors / Destructors
+    // ##########################################################################
+    /// @{
       
-      /// default constructor
-      Chi2 ( const std::vector<unsigned int>& var_modalities,
-             float confidence_proba = GUM_LEARNING_CONFIDENCE_PROBA );
+    /// default constructor
+    Chi2 ( const std::vector<unsigned int>& var_modalities,
+           float confidence_proba = GUM_LEARNING_CONFIDENCE_PROBA );
       
-      /// destructor
-      ~Chi2 ();
+    /// destructor
+    ~Chi2 ();
       
-      /// @}
+    /// @}
 
 
-      // ##########################################################################
-      /// @name Accessors / Modifiers
-      // ##########################################################################
-      /// @{
+    // ##########################################################################
+    /// @name Accessors / Modifiers
+    // ##########################################################################
+    /// @{
 
-      /// sets the conditioning nodes (useful for computing degrees of freedom)
-      void setConditioningNodes
-      ( const std::vector<unsigned int>& db_conditioning_ids );
+    /// sets the conditioning nodes (useful for computing degrees of freedom)
+    void setConditioningNodes
+    ( const std::vector<unsigned int>& db_conditioning_ids );
       
-      /// computes the critical value according to the number of degrees of freedom
-      float criticalValue ( const std::pair<unsigned int, unsigned int>& pair);
+    /// computes the critical value according to the number of degrees of freedom
+    float criticalValue ( const std::pair<unsigned int, unsigned int>& pair);
 
-      /// computes the critical value according to the number of degrees of freedom
-      float criticalValue ( unsigned int var1, unsigned int var2 );
+    /// computes the critical value according to the number of degrees of freedom
+    float criticalValue ( unsigned int var1, unsigned int var2 );
 
-      /// returns the number of degrees of freedom
-      unsigned long degreesOfFreedom
-      ( const std::pair<unsigned int, unsigned int>& pair );
+    /// returns the number of degrees of freedom
+    unsigned long degreesOfFreedom
+    ( const std::pair<unsigned int, unsigned int>& pair );
 
-      /// returns the number of degrees of freedom
-      unsigned long degreesOfFreedom
-      ( unsigned int var1, unsigned int var2 );
+    /// returns the number of degrees of freedom
+    unsigned long degreesOfFreedom
+    ( unsigned int var1, unsigned int var2 );
 
-      /// modifies the confidence proba
-      void setConfidenceProba( float new_proba );
+    /// modifies the confidence proba
+    void setConfidenceProba( float new_proba );
 
-      /// @}
+    /// @}
 
 
-    private:
-      /// the modalities of the random variables
-      const std::vector<unsigned int>& __modalities;
+  private:
+    /// the modalities of the random variables
+    const std::vector<unsigned int>& __modalities;
 
-      /// the confidence probability used for critical values
-      float __confidence_proba;
+    /// the confidence probability used for critical values
+    float __confidence_proba;
 
-      /// the domain size of the conditioning nodes 
-      unsigned long __conditioning_size;
+    /// the domain size of the conditioning nodes 
+    unsigned long __conditioning_size;
       
-      /// a set of already computed critical values
-      HashTable<unsigned int, float> __critical_values;
+    /// a set of already computed critical values
+    HashTable<unsigned int, float> __critical_values;
 
 
 
-      /// computes the critical value of a given chi2 test (used by the cache)
-      /** This code has been written by Gary Perlman */
-      static double __criticalValue ( double proba, unsigned long df );
+    /// computes the critical value of a given chi2 test (used by the cache)
+    /** This code has been written by Gary Perlman */
+    static double __criticalValue ( double proba, unsigned long df );
 
-      /// computes the probability of chi2 value
-      /** This code has been written by Gary Perlman.
-       * ALGORITHM Compute probability of chi square value.
-       * Adapted from:
-       * Hill, I. D. and Pike, M. C.  Algorithm 299
-       * Collected Algorithms for the CACM 1967 p. 243
-       * Updated for rounding errors based on remark in
-       * ACM TOMS June 1985, page 185 */
-      static double __probaChi2 ( double x, unsigned long df );
-
-
-      /// computes the probability of normal z value
-      /** This code has been written by Gary Perlman.
-       * ALGORITHM Adapted from a polynomial approximation in:
-       * Ibbetson D, Algorithm 209
-       * Collected Algorithms of the CACM 1963 p. 616
-       * Note:
-       * This routine has six digit accuracy, so it is only useful for absolute
-       * z values < 6.  For z values >= to 6.0, __probaZValue() returns 0.0. */
-      static double __probaZValue( double z );
+    /// computes the probability of chi2 value
+    /** This code has been written by Gary Perlman.
+     * ALGORITHM Compute probability of chi square value.
+     * Adapted from:
+     * Hill, I. D. and Pike, M. C.  Algorithm 299
+     * Collected Algorithms for the CACM 1967 p. 243
+     * Updated for rounding errors based on remark in
+     * ACM TOMS June 1985, page 185 */
+    static double __probaChi2 ( double x, unsigned long df );
 
 
-      /// prevent copy constructor
-      Chi2 ( const Chi2& ) = delete;
+    /// computes the probability of normal z value
+    /** This code has been written by Gary Perlman.
+     * ALGORITHM Adapted from a polynomial approximation in:
+     * Ibbetson D, Algorithm 209
+     * Collected Algorithms of the CACM 1963 p. 616
+     * Note:
+     * This routine has six digit accuracy, so it is only useful for absolute
+     * z values < 6.  For z values >= to 6.0, __probaZValue() returns 0.0. */
+    static double __probaZValue( double z );
 
-      /// prevent copy operator
-      Chi2& operator= ( const Chi2& ) = delete;
+
+    /// prevent copy constructor
+    Chi2 ( const Chi2& ) = delete;
+
+    /// prevent copy operator
+    Chi2& operator= ( const Chi2& ) = delete;
       
-    };
+  };
 
-
-  } /* namespace learning */
-  
   
 } /* namespace gum */
 

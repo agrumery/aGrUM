@@ -34,117 +34,111 @@
 
 namespace gum {
 
-  
-  namespace learning {
-
     
-    /* ========================================================================= */
-    /* ===                          DIRICHLET CLASS                          === */
-    /* ========================================================================= */
-    /** @class Dirichlet
-     * @brief a class for sampling w.r.t. Dirichlet distributions
-     * @ingroup learning_group
-     */
-    class Dirichlet {
-    public:
-      /// the parameter type
-      using param_type = std::vector<float>;
+  /* ========================================================================= */
+  /* ===                          DIRICHLET CLASS                          === */
+  /* ========================================================================= */
+  /** @class Dirichlet
+   * @brief a class for sampling w.r.t. Dirichlet distributions
+   * @ingroup math_group
+   */
+  class Dirichlet {
+  public:
+    /// the parameter type
+    using param_type = std::vector<float>;
 
-      /// the type for the samples generated
-      using result_type = std::vector<float>;
+    /// the type for the samples generated
+    using result_type = std::vector<float>;
       
       
-      // ##########################################################################
-      /// @name Constructors / Destructors
-      // ##########################################################################
-      /// @{
+    // ##########################################################################
+    /// @name Constructors / Destructors
+    // ##########################################################################
+    /// @{
 
-      /// default constructor
-      Dirichlet ( const param_type& params,
-                  unsigned int seed = 0 );
+    /// default constructor
+    Dirichlet ( const param_type& params,
+                unsigned int seed = 0 );
 
-      /// copy constructor
-      Dirichlet ( const Dirichlet& from );
+    /// copy constructor
+    Dirichlet ( const Dirichlet& from );
 
-      /// move constructor
-      Dirichlet ( Dirichlet&& from );
+    /// move constructor
+    Dirichlet ( Dirichlet&& from );
 
-      /// destructor
-      ~Dirichlet ();
+    /// destructor
+    ~Dirichlet ();
       
-      /// @}
+    /// @}
 
 
-      // ##########################################################################
-      /// @name Operators
-      // ##########################################################################
-      /// @{
+    // ##########################################################################
+    /// @name Operators
+    // ##########################################################################
+    /// @{
 
-      /// copy operator
-      Dirichlet& operator= ( const Dirichlet& from );
+    /// copy operator
+    Dirichlet& operator= ( const Dirichlet& from );
 
-      /// move operator
-      Dirichlet& operator= ( Dirichlet&& from );
+    /// move operator
+    Dirichlet& operator= ( Dirichlet&& from );
 
-      /// returns a sample from the Dirichlet distribution
-      result_type operator() ();
+    /// returns a sample from the Dirichlet distribution
+    result_type operator() ();
 
-      /// returns a sample from the Dirichlet distribution
-      /** @param parm An object representing the distribution's parameters,
-       * obtained by a call to member function param. */
-      result_type operator() ( const param_type& parm );
+    /// returns a sample from the Dirichlet distribution
+    /** @param parm An object representing the distribution's parameters,
+     * obtained by a call to member function param. */
+    result_type operator() ( const param_type& parm );
 
-      /// returns a sample from the Dirichlet distribution
-      /** @param generator A uniform random number generator object, used as the
-       * source of randomness. URNG shall be a uniform random number generator
-       * type, such as one of the standard generator classes.
-       * @param parm An object representing the distribution's parameters,
-       * obtained by a call to member function param. */
-      template<class URNG>
-      result_type operator() ( URNG& generator, const param_type& parm );
+    /// returns a sample from the Dirichlet distribution
+    /** @param generator A uniform random number generator object, used as the
+     * source of randomness. URNG shall be a uniform random number generator
+     * type, such as one of the standard generator classes.
+     * @param parm An object representing the distribution's parameters,
+     * obtained by a call to member function param. */
+    template<class URNG>
+    result_type operator() ( URNG& generator, const param_type& parm );
 
-      /// @}
-
-
-      // ##########################################################################
-      /// @name Accessors / Modifiers
-      // ##########################################################################
-      /// @{
-
-      /// returns the parameters of the distribution
-      const param_type& param () const noexcept;
-
-      /// sets the parameters of the distribution
-      /** @param parm An object representing the distribution's parameters,
-       * obtained by a call to member function param. */
-      void param ( const param_type& parm );
-
-      /** @brief Returns the greatest lower bound of the range of values returned
-       * by operator() */
-      float min () const noexcept;
-
-      /** @brief Returns the lowest higher bound of the range of values returned
-       * by operator() */
-      float max () const noexcept;
-
-      /// @}
+    /// @}
 
 
-    private:
-      /// the random engine used by the unform random distribution
-      std::default_random_engine __generator;
+    // ##########################################################################
+    /// @name Accessors / Modifiers
+    // ##########################################################################
+    /// @{
 
-      /// the gamma distribution used to compute the Dirichlet unnormalized samples
-      std::gamma_distribution<float> __gamma;
+    /// returns the parameters of the distribution
+    const param_type& param () const noexcept;
+
+    /// sets the parameters of the distribution
+    /** @param parm An object representing the distribution's parameters,
+     * obtained by a call to member function param. */
+    void param ( const param_type& parm );
+
+    /** @brief Returns the greatest lower bound of the range of values returned
+     * by operator() */
+    float min () const noexcept;
+
+    /** @brief Returns the lowest higher bound of the range of values returned
+     * by operator() */
+    float max () const noexcept;
+
+    /// @}
+
+
+  private:
+    /// the random engine used by the unform random distribution
+    std::default_random_engine __generator;
+
+    /// the gamma distribution used to compute the Dirichlet unnormalized samples
+    std::gamma_distribution<float> __gamma;
       
-      /// the parameters of the distribution
-      param_type __params;
+    /// the parameters of the distribution
+    param_type __params;
       
-    };
+  };
     
- 
-  } /* namespace learning */
-
   
 } /* namespace gum */
 
