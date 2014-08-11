@@ -134,10 +134,9 @@ namespace gum {
         // ###################################################################
         Size size(){ return __nodeVarMap.size(); }
 
-  private :
-        NodeId __nodeRedundancyCheck( const DiscreteVariable*, NodeId* );
-
       /// @}
+
+  private :
 
         void __showMap();
 

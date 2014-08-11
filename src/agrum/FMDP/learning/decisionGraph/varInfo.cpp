@@ -27,17 +27,11 @@
 #include <cmath>
 // =========================================================================
 #include <agrum/FMDP/learning/decisionGraph/varInfo.h>
+#include <agrum/FMDP/learning/decisionGraph/chiSquare.h>
 // =========================================================================
 
 
 // constants used by Gary Perlman for his code for computing chi2 critical values
-#define GUM_Z_MAX       6.0          // maximum meaningful z value
-#define GUM_CHI_EPSILON 0.000001     // accuracy of critchi approximation
-#define GUM_CHI_MAX     99999.0      // maximum chi square value
-#define GUM_LOG_SQRT_PI 0.5723649429247000870717135   // log (sqrt (pi))
-#define GUM_I_SQRT_PI   0.5641895835477562869480795   // 1 / sqrt (pi)
-#define GUM_BIGX        20.0         // max value to represent exp (x)
-#define gum__ex(x) (((x) < -GUM_BIGX) ? 0.0 : exp (x))
 
 namespace gum {
 
@@ -74,7 +68,7 @@ namespace gum {
 
       __nbObservation = 0;
       __GStat = 0;
-      __pvalue = 1 - __probaChi2(__GStat, __degreeOfFreedom);
+      __pvalue = 1 - ChiSquare::probaChi2(__GStat, __degreeOfFreedom);
     }
 
 
@@ -123,7 +117,7 @@ namespace gum {
 
       // Calcul de la GStat
       __computeG();
-      __pvalue = 1 - __probaChi2(__GStat, __degreeOfFreedom);
+      __pvalue = 1 - ChiSquare::probaChi2(__GStat, __degreeOfFreedom);
 
       // Check relevance of collected data
 //      for( Idx attrModality = 0; attrModality < __attr->domainSize(); ++attrModality ){
@@ -176,7 +170,7 @@ namespace gum {
 //      }
 
       __computeG();
-      __pvalue = 1 - __probaChi2(__GStat, __degreeOfFreedom);
+      __pvalue = 1 - ChiSquare::probaChi2(__GStat, __degreeOfFreedom);
 
 //      std::cout << "GStat final : " << __GStat  << " - " << __pvalue << " - " << __isRelevant << std::endl;
       if ( std::isnan(__GStat) )
@@ -216,98 +210,6 @@ namespace gum {
         }*/
 
         __isRelevant = true;
-    }
-
-
-
-
-
-    // ==========================================================================
-    /// computes the probability of normal z value (used by the cache)
-    // ==========================================================================
-    double VarInfo::__probaZValue ( double z ) {
-      double y, x, w;
-
-      if ( z == 0.0 )
-        x = 0.0;
-      else {
-        y = 0.5 * fabs( z );
-
-        if ( y >= ( GUM_Z_MAX * 0.5 ) )
-          x = 1.0;
-        else if ( y < 1.0 ) {
-          w = y*y;
-          x = (((((((( 0.000124818987 * w
-                       -0.001075204047 ) * w +0.005198775019 ) * w
-                    -0.019198292004 ) * w +0.059054035642 ) * w
-                  -0.151968751364 ) * w +0.319152932694 ) * w
-                -0.531923007300 ) * w +0.797884560593 ) * y * 2.0;
-        } else {
-          y -= 2.0;
-          x = ((((((((((((( -0.000045255659 * y
-                            +0.000152529290 ) * y -0.000019538132 ) * y
-                         -0.000676904986 ) * y +0.001390604284 ) * y
-                       -0.000794620820 ) * y -0.002034254874 ) * y
-                     +0.006549791214 ) * y -0.010557625006 ) * y
-                   +0.011630447319 ) * y -0.009279453341 ) * y
-                 +0.005353579108 ) * y -0.002141268741 ) * y
-               +0.000535310849 ) * y +0.999936657524;
-        }
-      }
-
-      return ( z > 0.0 ? (( x + 1.0 ) * 0.5 ) : (( 1.0 - x ) * 0.5 ) );
-    }
-
-
-    // ==========================================================================
-    /// computes the probability of chi2 value (used by the cache)
-    // ==========================================================================
-    double VarInfo::__probaChi2 ( double x, unsigned long df ) {
-      double a, y = 0, s;
-      double e, c, z;
-      int even; /* true if df is an even number */
-
-      if (( x <= 0.0 ) || ( df < 1 ) )
-        return ( 1.0 );
-
-      a = 0.5 * x;
-
-      even = ( 2*( df/2 ) ) == df;
-
-      if ( df > 1 )
-        y = gum__ex( -a );
-
-      s = ( even ? y : ( 2.0 * __probaZValue( -sqrt( x ) ) ) );
-
-      if ( df > 2 ) {
-        x = 0.5 * ( df - 1.0 );
-        z = ( even ? 1.0 : 0.5 );
-
-        if ( a > GUM_BIGX ) {
-          e = ( even ? 0.0 : GUM_LOG_SQRT_PI );
-          c = log( a );
-
-          while ( z <= x ) {
-            e = log( z ) + e;
-            s += gum__ex( c*z-a-e );
-            z += 1.0;
-          }
-
-          return ( s );
-        } else {
-          e = ( even ? 1.0 : ( GUM_I_SQRT_PI / sqrt( a ) ) );
-          c = 0.0;
-
-          while ( z <= x ) {
-            e = e * ( a / z );
-            c = c + e;
-            z += 1.0;
-          }
-
-          return ( c * y + s );
-        }
-      } else
-        return ( s );
     }
 
 } // End of namespace gum

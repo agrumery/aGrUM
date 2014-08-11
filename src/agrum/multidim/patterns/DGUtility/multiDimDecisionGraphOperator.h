@@ -98,11 +98,6 @@ namespace gum {
       // ============================================================================
       NodeId __compute(O4DGContext & currentSituation, Idx lastInstVarPos , std::string tab);
 
-      // ============================================================================
-      /// Ensure that no redundancy exists in final diagram
-      // ============================================================================
-      NodeId __nodeRedundancyCheck( const DiscreteVariable* var, NodeId* sonsIds );
-
 
 
       // ============================================================================

@@ -3,16 +3,16 @@
  *   {prenom.nom}_at_lip6.fr                                                *
  *                                                                          *
  *   This program is free software; you can redistribute it and/or modify   *
- *   it under the terms of the GNU General Public LiceDG2NodeIde as published by   *
- *   the Free Software Foundation; either version 2 of the LiceDG2NodeIde, or      *
+ *   it under the terms of the GNU General Public License as published by   *
+ *   the Free Software Foundation; either version 2 of the License, or      *
  *   (at your option) any later version.                                    *
  *                                                                          *
  *   This program is distributed in the hope that it will be useful,        *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
- *   GNU General Public LiceDG2NodeIde for more details.                           *
+ *   GNU General Public License for more details.                           *
  *                                                                          *
- *   You should have received a copy of the GNU General Public LiceDG2NodeIde      *
+ *   You should have received a copy of the GNU General Public License      *
  *   along with this program; if not, write to the                          *
  *   Free Software Foundation, Inc.,                                        *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.              *
@@ -446,7 +446,7 @@ namespace gum {
                     sonsIds[ modality ] = __compute( currentSituation, varPos, tab );
                 }
 
-                newNode = __nodeRedundancyCheck( curVar, sonsIds );
+                newNode = __rd->manager()->nodeRedundancyCheck( curVar, sonsIds );
 
                 __explorationTable.insert ( curSitKey, newNode );
                 currentSituation.chgVarModality ( varPos, 0 );
@@ -484,7 +484,7 @@ namespace gum {
                 sonsIds[ modality ] = __compute( currentSituation, varPos, tab );
             }
 
-            newNode = __nodeRedundancyCheck( curVar, sonsIds );
+            newNode = __rd->manager()->nodeRedundancyCheck( curVar, sonsIds );
 
             __explorationTable.insert ( curSitKey, newNode );
             currentSituation.chgVarModality ( varPos, 0 );
@@ -513,7 +513,7 @@ namespace gum {
                 sonsIds[ modality ] = __compute( currentSituation, leadVarPos, tab );
             }
 
-            newNode = __nodeRedundancyCheck( curVar, sonsIds );
+            newNode = __rd->manager()->nodeRedundancyCheck( curVar, sonsIds );
 
             __explorationTable.insert ( curSitKey, newNode );
             currentSituation.chgVarModality ( leadVarPos, 0 );
@@ -524,29 +524,6 @@ namespace gum {
 
             return newNode;
         }
-    }
-
-
-
-    template <typename GUM_SCALAR, template <typename> class FUNCTOR >
-    NodeId
-    MultiDimDecisionGraphOperator<GUM_SCALAR, FUNCTOR>::__nodeRedundancyCheck( const DiscreteVariable* var, NodeId* sonsIds ){
-
-        NodeId newNode = 0;
-
-        if( __rd->manager()->isRedundant( var, sonsIds ) ){
-            newNode = sonsIds[0];
-            MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( sonsIds, sizeof(NodeId)*var->domainSize() );
-        } else {
-            newNode = __rd->manager()->checkIsomorphism( var, sonsIds );
-            if ( newNode == 0 ) {
-                newNode = __rd->manager()->addNonTerminalNode( var, sonsIds);
-            } else {
-                MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( sonsIds, sizeof(NodeId)*var->domainSize() );
-            }
-        }
-
-        return newNode;
     }
 
 } // namespace gum

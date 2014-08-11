@@ -101,24 +101,6 @@ namespace gum {
       void __checkRelevance();
       void __computeG();
 
-      // ==========================================================================
-      /// @name Chi2 computation
-      /// (This shouldn't be here but i don't have time to think of a better solution)
-      // ==========================================================================
-      /// @{
-
-        // ==========================================================================
-        /// computes the probability of normal z value
-        // ==========================================================================
-        double __probaZValue ( double z );
-
-        // ==========================================================================
-        /// computes the probability of chi2 value
-        // ==========================================================================
-        double __probaChi2 ( double chi2Val, unsigned long df );
-
-      /// @}
-
 
       /// The attribute using this class
       const DiscreteVariable* __attr;

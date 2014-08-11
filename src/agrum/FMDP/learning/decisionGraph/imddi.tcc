@@ -243,13 +243,13 @@ namespace gum {
     void IMDDI<GUM_SCALAR>::__transpose( NodeId currentNodeId,
                                          const DiscreteVariable* desiredVar ){
 
-      // #####################################################################################
+      // **************************************************************************************
       // Si le noeud courant contient déjà la variable qu'on souhaite lui amener
       // Il n'y a rien à faire
       if( __nodeVarMap[currentNodeId] == desiredVar )
         return;
 
-      // #####################################################################################
+      // **************************************************************************************
       // Si le noeud courant est terminal,
       // Il faut artificiellement insérer un noeud liant à la variable
       if( __nodeVarMap[currentNodeId] == __value ){
@@ -274,58 +274,58 @@ namespace gum {
         return;
       }
 
-      // #####################################################################################
+      // *************************************************************************************
       // Remains the general case where currentNodeId is an internal node.
 
-      // First we ensure that children node use desiredVar as variable
-      for(Idx modality = 0; modality < __nodeVarMap[currentNodeId]->domainSize(); ++modality )
-        __transpose( __nodeSonsMap[currentNodeId][modality], desiredVar );
+          // First we ensure that children node use desiredVar as variable
+          for(Idx modality = 0; modality < __nodeVarMap[currentNodeId]->domainSize(); ++modality )
+            __transpose( __nodeSonsMap[currentNodeId][modality], desiredVar );
 
-      Sequence<NodeDatabase<GUM_SCALAR>*> sonsNodeDatabase = __nodeId2Database[currentNodeId]->splitOnVar(desiredVar);
-      NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*desiredVar->domainSize()) );
+          Sequence<NodeDatabase<GUM_SCALAR>*> sonsNodeDatabase = __nodeId2Database[currentNodeId]->splitOnVar(desiredVar);
+          NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*desiredVar->domainSize()) );
 
-      // Then we create the new mapping
-      for(Idx desiredVarModality = 0; desiredVarModality < desiredVar->domainSize(); ++desiredVarModality){
-        NodeId* grandSonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*__nodeVarMap[currentNodeId]->domainSize()) );
-        for(Idx currentVarModality = 0; currentVarModality < __nodeVarMap[currentNodeId]->domainSize(); ++currentVarModality )
-          grandSonsMap[currentVarModality] = __nodeSonsMap[__nodeSonsMap[currentNodeId][currentVarModality]][desiredVarModality];
+          // Then we create the new mapping
+          for(Idx desiredVarModality = 0; desiredVarModality < desiredVar->domainSize(); ++desiredVarModality){
+            NodeId* grandSonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*__nodeVarMap[currentNodeId]->domainSize()) );
+            for(Idx currentVarModality = 0; currentVarModality < __nodeVarMap[currentNodeId]->domainSize(); ++currentVarModality )
+              grandSonsMap[currentVarModality] = __nodeSonsMap[__nodeSonsMap[currentNodeId][currentVarModality]][desiredVarModality];
 
-        NodeId newNodeId = __model.insertNode();
-        __nodeVarMap.insert(newNodeId, __nodeVarMap[currentNodeId]);
-        __nodeSonsMap.insert(newNodeId, grandSonsMap);
-        __var2Node[__nodeVarMap[currentNodeId]]->insert(newNodeId);
-        __nodeId2Database.insert(newNodeId, sonsNodeDatabase.atPos(desiredVarModality));
-        sonsMap[desiredVarModality] = newNodeId;
-      }
+            NodeId newNodeId = __model.insertNode();
+            __nodeVarMap.insert(newNodeId, __nodeVarMap[currentNodeId]);
+            __nodeSonsMap.insert(newNodeId, grandSonsMap);
+            __var2Node[__nodeVarMap[currentNodeId]]->insert(newNodeId);
+            __nodeId2Database.insert(newNodeId, sonsNodeDatabase.atPos(desiredVarModality));
+            sonsMap[desiredVarModality] = newNodeId;
+          }
 
-      // Finally we clean the old remaining nodes
-      for(Idx currentVarModality = 0; currentVarModality < __nodeVarMap[currentNodeId]->domainSize(); ++currentVarModality ){
-        NodeId sonId = __nodeSonsMap[currentNodeId][currentVarModality];
+          // Finally we clean the old remaining nodes
+          for(Idx currentVarModality = 0; currentVarModality < __nodeVarMap[currentNodeId]->domainSize(); ++currentVarModality ){
+            NodeId sonId = __nodeSonsMap[currentNodeId][currentVarModality];
 
-        // Retriat de l'id
-        __model.eraseNode( sonId );
+            // Retriat de l'id
+            __model.eraseNode( sonId );
 
-        // Retrait de la variable
-        __var2Node[__nodeVarMap[sonId]]->eraseByVal(sonId);
-        __nodeVarMap.erase( sonId );
+            // Retrait de la variable
+            __var2Node[__nodeVarMap[sonId]]->eraseByVal(sonId);
+            __nodeVarMap.erase( sonId );
 
-        // Retrait du NodeDatabase
-        delete __nodeId2Database[sonId];
-        __nodeId2Database.erase(sonId);
+            // Retrait du NodeDatabase
+            delete __nodeId2Database[sonId];
+            __nodeId2Database.erase(sonId);
 
-        // Retrait du vecteur fils
-        MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( __nodeSonsMap[sonId], sizeof(NodeId)*desiredVar->domainSize() );
-        __nodeSonsMap.erase(sonId);
-      }
+            // Retrait du vecteur fils
+            MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( __nodeSonsMap[sonId], sizeof(NodeId)*desiredVar->domainSize() );
+            __nodeSonsMap.erase(sonId);
+          }
 
-      // We suppress the old sons map and remap to the new one
-      MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( __nodeSonsMap[currentNodeId], sizeof(NodeId)*__nodeVarMap[currentNodeId]->domainSize() );
-      __nodeSonsMap[currentNodeId] = sonsMap;
+          // We suppress the old sons map and remap to the new one
+          MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( __nodeSonsMap[currentNodeId], sizeof(NodeId)*__nodeVarMap[currentNodeId]->domainSize() );
+          __nodeSonsMap[currentNodeId] = sonsMap;
 
-      __var2Node[__nodeVarMap[currentNodeId]]->eraseByVal(currentNodeId);
-      __var2Node[desiredVar]->insert(currentNodeId);
+          __var2Node[__nodeVarMap[currentNodeId]]->eraseByVal(currentNodeId);
+          __var2Node[desiredVar]->insert(currentNodeId);
 
-      __nodeVarMap[currentNodeId] = desiredVar;
+          __nodeVarMap[currentNodeId] = desiredVar;
 
     }
 
@@ -390,7 +390,7 @@ namespace gum {
          NodeId* sonsMap = static_cast<NodeId*>( MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(NodeId)*__value->domainSize()) );
          for(Idx modality = 0; modality < __value->domainSize(); ++modality )
            sonsMap[modality] = __target->manager()->addTerminalNode( probDist[modality] );
-         toTarget.insert(*nodeIter, __nodeRedundancyCheck( __value, sonsMap ) );
+         toTarget.insert(*nodeIter, __target->manager()->nodeRedundancyCheck( __value, sonsMap ) );
          MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( probDist, sizeof(GUM_SCALAR)*__value->domainSize());
        }
 
@@ -402,7 +402,7 @@ namespace gum {
 
              sonsMap[modality] = toTarget[__nodeSonsMap[*nodeIter][modality]];
            }
-           toTarget.insert(*nodeIter, __nodeRedundancyCheck( *varIter, sonsMap ) );
+           toTarget.insert(*nodeIter, __target->manager()->nodeRedundancyCheck( *varIter, sonsMap ) );
          }
 
        }
@@ -435,36 +435,13 @@ namespace gum {
 
              sonsMap[modality] = toTarget[__nodeSonsMap[*nodeIter][modality]];
            }
-           toTarget.insert(*nodeIter, __nodeRedundancyCheck( mainy, sonsMap ) );
+           toTarget.insert(*nodeIter, __target->manager()->nodeRedundancyCheck( mainy, sonsMap ) );
          }
 
        }
        __target->manager()->setRootNode( toTarget[__root] );
 
        __target->manager()->clean();
-    }
-
-
-
-    template <typename GUM_SCALAR >
-    NodeId
-    IMDDI<GUM_SCALAR>::__nodeRedundancyCheck( const DiscreteVariable* var, NodeId* sonsIds ){
-
-      NodeId newNode = 0;
-
-      if( __target->manager()->isRedundant( var, sonsIds ) ){
-        newNode = sonsIds[0];
-        MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( sonsIds, sizeof(NodeId)*var->domainSize() );
-      } else {
-        newNode = __target->manager()->checkIsomorphism( var, sonsIds );
-        if ( newNode == 0 ) {
-          newNode = __target->manager()->addNonTerminalNode( var, sonsIds);
-        } else {
-          MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( sonsIds, sizeof(NodeId)*var->domainSize() );
-        }
-      }
-
-      return newNode;
     }
 
 

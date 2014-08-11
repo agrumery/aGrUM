@@ -148,4 +148,15 @@ namespace gum {
         ret += (GUM_SCALAR)__valueCount[modality] / (GUM_SCALAR)__nbObservation * std::stod(__value->label(modality));
       return ret;
     }
+
+    // ###################################################################
+    ///
+    // ###################################################################
+    template <typename GUM_SCALAR>
+    GUM_SCALAR* NodeDatabase<GUM_SCALAR>::effectif(){
+        GUM_SCALAR* ret = static_cast<GUM_SCALAR*>(MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate(sizeof(GUM_SCALAR)*__value->domainSize()));
+        for(Idx modality = 0; modality < __value->domainSize(); ++modality)
+          ret[modality] = (GUM_SCALAR)__valueCount[modality];
+        return ret;
+    }
 } // End of namespace gum

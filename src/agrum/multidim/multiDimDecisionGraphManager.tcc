@@ -262,7 +262,6 @@ namespace gum {
       typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* currentOldXNode = nullptr;
 //      typename MultiDimDecisionGraph<GUM_SCALAR>::InternalNode* currentOldXSonNode = nullptr;
       NodeId* currentNewXNodeSons = nullptr;
-      NodeId currentNewXNodeId = 0;
       Idx indx = 0;
 
       NodeId* currentNewYNodeSons = nullptr;
@@ -295,18 +294,7 @@ namespace gum {
           }
 
           // Insertion du nouveau noeud x
-          currentNewXNodeId = currentNewXNodeSons[0];
-          if( isRedundant( x, currentNewXNodeSons ) ) {
-              MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( currentNewXNodeSons, x->domainSize()*sizeof(NodeId) );
-          } else {
-              currentNewXNodeId = checkIsomorphism( x, currentNewXNodeSons );
-              if( currentNewXNodeId != 0 ) {
-                  MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( currentNewXNodeSons, x->domainSize()*sizeof(NodeId) );
-              } else {
-                  currentNewXNodeId = addNonTerminalNode( x, currentNewXNodeSons );
-              }
-          }
-          currentNewYNodeSons[ indy ] = currentNewXNodeId;
+          currentNewYNodeSons[ indy ] = nodeRedundancyCheck( x, currentNewXNodeSons);
         }
         
         // Transformation de l'ancien noeud x en nouveau noeud y
@@ -396,7 +384,37 @@ namespace gum {
 
 
     // ============================================================================
-    //
+    // Checks if a similar node does not already exists in the graph or
+    // if it has the same child for every variable value
+    // @warning : will deallocate by itslef sonsMap if a match exists
+    // ============================================================================
+    template <typename GUM_SCALAR >
+    INLINE
+    NodeId
+    MultiDimDecisionGraphManager< GUM_SCALAR>::nodeRedundancyCheck( const DiscreteVariable* var, NodeId* sonsIds ){
+
+      NodeId newNode = sonsIds[0];
+
+      if( isRedundant( var, sonsIds ) ){
+        MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( sonsIds, sizeof(NodeId)*var->domainSize() );
+      } else {
+        newNode = checkIsomorphism( var, sonsIds );
+        if ( newNode == 0 ) {
+          newNode = addNonTerminalNode( var, sonsIds);
+        } else {
+          MultiDimDecisionGraph<GUM_SCALAR>::soa.deallocate( sonsIds, sizeof(NodeId)*var->domainSize() );
+        }
+      }
+
+      return newNode;
+    }
+
+
+
+    // ============================================================================
+    // Checks if a similar node does not already exists in the graph
+    // (meaning for every value assume by the associated variable, these two nodes
+    // have the same children)
     // ============================================================================
     template<typename GUM_SCALAR>
     INLINE
@@ -428,7 +446,8 @@ namespace gum {
 
 
     // ============================================================================
-    //
+    // Checks if node has the same child for every variable value
+    // @warning WON'T deallocate sons
     // ============================================================================
     template<typename GUM_SCALAR>
     INLINE

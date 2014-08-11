@@ -181,31 +181,6 @@ namespace gum{
         // ============================================================================
         void moveTo( const DiscreteVariable* x, Idx desiredPos );
 
-        // ============================================================================
-        /// Sets nodes son for given modality to designated son node
-        // ============================================================================
-        NodeId checkIsomorphism(const DiscreteVariable* var, NodeId* sons);
-
-        // ============================================================================
-        /// Sets nodes son for given modality to designated son node
-        // ============================================================================
-        bool isRedundant(const DiscreteVariable* var, NodeId* sons);
-
-        // ============================================================================
-        /// Ensures that every isomorphic subgraphs are merged together.
-        // ============================================================================
-        void reduce();
-
-        // ============================================================================
-        /// Removes var without nodes in the diagram
-        // ============================================================================
-        void clean();
-
-
-
-  protected :
-        void _migrateNode(const NodeId&, const NodeId&);
-
   private :
 
         // ============================================================================
@@ -215,6 +190,61 @@ namespace gum{
         /// Not respecting this constraint leads to unattended behaviour.
         // ============================================================================
         void __adjacentSwap( const DiscreteVariable* x, const DiscreteVariable* y );
+
+  protected :
+
+        // ============================================================================
+        /// Remaps all arcs going to ou going from the first given node to the second
+        /// node, then delete first node.
+        // ============================================================================
+        void _migrateNode(const NodeId&, const NodeId&);
+
+      /// @}
+
+      // ############################################################################
+      /// @name Redundancy methods.
+      // ############################################################################
+      /// @{
+
+  public :
+
+        // ============================================================================
+        /// Checks if a similar node does not already exists in the graph or
+        /// if it has the same child for every variable value
+        /// If no node is a match, this node is added to the graph
+        /// @warning : will deallocate by itslef sonsMap if a match exists
+        // ============================================================================
+        NodeId nodeRedundancyCheck( const DiscreteVariable* var, NodeId* sonsMap );
+
+        // ============================================================================
+        /// Checks if a similar node does not already exists in the graph
+        /// (meaning for every value assume by the associated variable, these two nodes
+        /// have the same children)
+        /// @warning WON'T deallocate sons
+        // ============================================================================
+        NodeId checkIsomorphism(const DiscreteVariable* var, NodeId* sons);
+
+        // ============================================================================
+        /// Checks if node has the same child for every variable value
+        /// @warning WON'T deallocate sons
+        // ============================================================================
+        bool isRedundant(const DiscreteVariable* var, NodeId* sons);
+
+        // ============================================================================
+        /// Ensures that every isomorphic subgraphs are merged together.
+        // ============================================================================
+        void reduce();
+
+      /// @}
+
+        // ============================================================================
+        /// Removes var without nodes in the diagram
+        // ============================================================================
+        void clean();
+
+
+
+  private :
 
         // ============================================================================
         /// The multidimdecisiongraph supposed to be edited.
