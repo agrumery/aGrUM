@@ -29,7 +29,8 @@
 #include <vector>
 
 #include <agrum/config.h>
-#include <agrum/core/set.h>
+#include <agrum/core/sequence.h>
+#include <agrum/core/bijection.h>
 #include <agrum/learning/database/DBCellTranslator.h>
 
 
@@ -52,7 +53,58 @@ namespace gum {
       /// @{
 
       /// default constructor
-      CellTranslatorUniversal ();
+      /** @param values The user can specify the values which the cell translator
+       * should expect. If none is specified, the cell translator will determine
+       * the values stored in the database by parsing it. If values are specified
+       * and check_database is set to false, then the translator will assume that
+       * the sequence of values specified is exactly what it shall translate and,
+       * therefore, it will not parse the database to initialize itself. However,
+       * if some value encountered during translations does not belong to sequence
+       * values, an exception will be raised during those translations. So,
+       * be sure to give exactly the values the translator should encounter. Also
+       * beware that the domain size of the variable the translator will process
+       * is usually determined by asking the translator how many values it
+       * encountered, so avoid providing values that do not exist in the database
+       * (else this will certainly make scorings/independence tests incorrect).
+       * If sequence "values" is specified and check_database is set to true, then
+       * the translator will initialize itself by parsing the database and will
+       * handle only those values it encountered in the database; sequence values
+       * will then only be used to specifiy the order in which the values
+       * encountered in the database will appear in the set of values of the
+       * variable at the end of the learning. This feature proves particularly
+       * useful for learning non-stationary Bayesian networks.
+       * @param check_database indicates whether we shall parse the database to
+       * initialize the translator. */
+      CellTranslatorUniversal
+      ( Sequence<float> values = Sequence<float> (),
+        bool check_database = true );
+
+      /// default constructor
+      /** @param values The user can specify the values which the cell translator
+       * should expect. If none is specified, the cell translator will determine
+       * the values stored in the database by parsing it. If values are specified
+       * and check_database is set to false, then the translator will assume that
+       * the sequence of values specified is exactly what it shall translate and,
+       * therefore, it will not parse the database to initialize itself. However,
+       * if some value encountered during translations does not belong to sequence
+       * values, an exception will be raised during those translations. So,
+       * be sure to give exactly the values the translator should encounter. Also
+       * beware that the domain size of the variable the translator will process
+       * is usually determined by asking the translator how many values it
+       * encountered, so avoid providing values that do not exist in the database
+       * (else this will certainly make scorings/independence tests incorrect).
+       * If sequence "values" is specified and check_database is set to true, then
+       * the translator will initialize itself by parsing the database and will
+       * handle only those values it encountered in the database; sequence values
+       * will then only be used to specifiy the order in which the values
+       * encountered in the database will appear in the set of values of the
+       * variable at the end of the learning. This feature proves particularly
+       * useful for learning non-stationary Bayesian networks.
+       * @param check_database indicates whether we shall parse the database to
+       * initialize the translator. */
+      CellTranslatorUniversal
+      ( Sequence<std::string> values,
+        bool check_database = true );
 
       /// copy constructor
       CellTranslatorUniversal ( const CellTranslatorUniversal& from );
@@ -122,11 +174,20 @@ namespace gum {
       unsigned int __max_value { 0 };
       
       /// the set of numbers found so far in the database
-      gum::Bijection<float,unsigned int> __numbers;
+      Bijection<float,unsigned int> __numbers;
 
       /// the set of strings (actually their indices) found so far in the database
-      gum::Bijection<int,unsigned int> __strings;
-      
+      Bijection<int,unsigned int> __strings;
+
+      /// the sequence of string values specified by the user
+      Sequence<std::string>* __str_user_values { nullptr };
+
+      /// the sequence of numeric values specified by the user
+      Sequence<float>* __num_user_values { nullptr };
+
+      /// indicates whether the translator shall be initialized by DB parsing
+      bool __check_database { true };
+
     };
 
 

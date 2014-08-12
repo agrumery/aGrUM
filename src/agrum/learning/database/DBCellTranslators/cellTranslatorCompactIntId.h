@@ -138,7 +138,7 @@ namespace gum {
       
     private:
       /// the set of values found so far
-      gum::Set<unsigned int> __values;
+      Set<unsigned int> __values;
 
       /// do we need to parse the database at initialization?
       bool __check_database { true };

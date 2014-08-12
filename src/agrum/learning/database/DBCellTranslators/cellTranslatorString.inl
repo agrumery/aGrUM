@@ -31,17 +31,16 @@ namespace gum {
   namespace learning {
 
 
-    /// default constructor
-    INLINE CellTranslatorString::CellTranslatorString () {
-    }
-
-
     /// copy constructor
     INLINE CellTranslatorString::CellTranslatorString
     ( const CellTranslatorString& from ) :
       DBCellTranslator<1,1> ( from ),
       __max_value ( from.__max_value ),
-      __strings ( from.__strings ) {
+      __strings ( from.__strings ),
+      __check_database ( from.__check_database ) {
+      if ( from.__user_values != nullptr ) {
+        __user_values = new Sequence<std::string> ( *from.__user_values );
+      }
     }
 
 
@@ -50,7 +49,12 @@ namespace gum {
     ( CellTranslatorString&& from ) :
       DBCellTranslator<1,1> ( std::move ( from ) ),
       __max_value ( std::move ( from.__max_value ) ),
-      __strings ( std::move ( from.__strings ) ) {
+      __strings ( std::move ( from.__strings ) ),
+      __check_database ( std::move ( from.__check_database ) ) {
+      if ( from.__user_values != nullptr ) {
+        __user_values = new Sequence<std::string>
+          ( std::move ( *from.__user_values ) );
+      }
     }
 
 
@@ -63,6 +67,9 @@ namespace gum {
 
     /// destructor
     INLINE CellTranslatorString::~CellTranslatorString () {
+      if ( __user_values != nullptr ) {
+        delete __user_values;
+      }
     }
       
 
@@ -73,7 +80,15 @@ namespace gum {
       if ( this != & from ) {
         DBCellTranslator<1,1>::operator= ( from );
         __max_value = from.__max_value;
-        __strings   = from.__strings;
+        __strings = from.__strings;
+        __check_database = from.__check_database;
+        if ( __user_values ) {
+          delete __user_values;
+          __user_values = nullptr;
+        }
+        if ( from.__user_values != nullptr ) {
+          __user_values = new Sequence<std::string> ( *from.__user_values );
+        }
       }
       return *this;
     }
@@ -86,6 +101,15 @@ namespace gum {
         DBCellTranslator<1,1>::operator= ( std::move ( from ) );
         __max_value = std::move ( from.__max_value );
         __strings   = std::move ( from.__strings );
+        __check_database = from.__check_database;
+        if ( __user_values ) {
+          delete __user_values;
+          __user_values = nullptr;
+        }
+        if ( from.__user_values != nullptr ) {
+          __user_values = new Sequence<std::string>
+            ( std::move ( *from.__user_values ) );
+        }
       }
       return *this;
     }
@@ -107,11 +131,6 @@ namespace gum {
     }
 
     
-    /// perform a post initialization after the database parsing
-    INLINE void CellTranslatorString::postInitialize () {
-    }
-
-
     /// add the number of modalities discovered in the database into a vector
     INLINE void CellTranslatorString::modalities
     ( std::vector<unsigned int>& modal ) const noexcept {
@@ -122,7 +141,7 @@ namespace gum {
     /// returns whether the translator needs a DB parsing to initialize itself
     INLINE bool CellTranslatorString::requiresInitialization ()
       const noexcept {
-      return true;
+      return __check_database;
     }
 
 

@@ -31,18 +31,20 @@ namespace gum {
   namespace learning {
 
 
-    /// default constructor
-    INLINE CellTranslatorUniversal::CellTranslatorUniversal () {
-    }
-
-
     /// copy constructor
     INLINE CellTranslatorUniversal::CellTranslatorUniversal
     ( const CellTranslatorUniversal& from ) :
       DBCellTranslator<1,1> ( from ),
       __max_value ( from.__max_value ),
       __numbers ( from.__numbers ),
-      __strings ( from.__strings ) {
+      __strings ( from.__strings ),
+      __check_database ( from.__check_database ) {
+      if ( from.__str_user_values != nullptr ) {
+        __str_user_values = new Sequence<std::string> ( *from.__str_user_values );
+      }
+      if ( from.__num_user_values != nullptr ) {
+        __num_user_values = new Sequence<float> ( *from.__num_user_values );
+      }
     }
 
 
@@ -52,7 +54,16 @@ namespace gum {
       DBCellTranslator<1,1> ( std::move ( from ) ),
       __max_value ( std::move ( from.__max_value ) ),
       __numbers ( std::move ( from.__numbers ) ),
-      __strings ( std::move ( from.__strings ) ) {
+      __strings ( std::move ( from.__strings ) ),
+      __check_database ( std::move ( from.__check_database ) ) {
+      if ( from.__str_user_values != nullptr ) {
+        __str_user_values = new Sequence<std::string>
+          ( std::move ( *from.__str_user_values ) );
+      }
+      if ( from.__num_user_values != nullptr ) {
+        __num_user_values = new Sequence<float>
+          ( std::move ( *from.__num_user_values ) );
+      }
     }
 
 
@@ -65,6 +76,12 @@ namespace gum {
 
     /// destructor
     INLINE CellTranslatorUniversal::~CellTranslatorUniversal () {
+      if ( __str_user_values != nullptr ) {
+        delete __str_user_values;
+      }
+      if ( __num_user_values != nullptr ) {
+        delete __num_user_values;
+      }
     }
       
 
@@ -77,6 +94,22 @@ namespace gum {
         __max_value = from.__max_value;
         __numbers   = from.__numbers;
         __strings   = from.__strings;
+        __check_database = from.__check_database;
+        if ( __str_user_values ) {
+          delete __str_user_values;
+          __str_user_values = nullptr;
+        }
+        if ( __num_user_values ) {
+          delete __num_user_values;
+          __num_user_values = nullptr;
+        }
+        if ( from.__str_user_values != nullptr ) {
+          __str_user_values =
+            new Sequence<std::string> ( *from.__str_user_values );
+        }
+        if ( from.__num_user_values != nullptr ) {
+          __num_user_values = new Sequence<float> ( *from.__num_user_values );
+        }
       }
       return *this;
     }
@@ -90,6 +123,23 @@ namespace gum {
         __max_value = std::move ( from.__max_value );
         __numbers   = std::move ( from.__numbers );
         __strings   = std::move ( from.__strings );
+        __check_database = from.__check_database;
+        if ( __str_user_values ) {
+          delete __str_user_values;
+          __str_user_values = nullptr;
+        }
+        if ( __num_user_values ) {
+          delete __num_user_values;
+          __num_user_values = nullptr;
+        }
+        if ( from.__str_user_values != nullptr ) {
+          __str_user_values = new Sequence<std::string>
+            ( std::move ( *from.__str_user_values ) );
+        }
+        if ( from.__num_user_values != nullptr ) {
+          __num_user_values = new Sequence<float>
+            ( std::move ( *from.__num_user_values ) );
+        }
       }
       return *this;
     }
@@ -121,11 +171,6 @@ namespace gum {
       }
     }
 
-    
-    /// perform a post initialization after the database parsing
-    INLINE void CellTranslatorUniversal::postInitialize () {
-    }
-
 
     /// add the number of modalities discovered in the database into a vector
     INLINE void CellTranslatorUniversal::modalities
@@ -137,7 +182,7 @@ namespace gum {
     /// returns whether the translator needs a DB parsing to initialize itself
     INLINE bool CellTranslatorUniversal::requiresInitialization ()
       const noexcept {
-      return true;
+      return __check_database;
     }
 
 
