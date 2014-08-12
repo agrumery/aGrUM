@@ -23,12 +23,14 @@
 *
 * @author Jean-Christophe Magnan
 */
-
+// =======================================================
+#include <cmath>
 // =======================================================
 #include <agrum/core/types.h>
 #include <agrum/core/multiPriorityQueue.h>
 // =======================================================
 #include <agrum/FMDP/learning/decisionGraph/imddi.h>
+#include <agrum/FMDP/learning/decisionGraph/chiSquare.h>
 // =======================================================
 #include <agrum/variables/discreteVariable.h>
 // =======================================================
@@ -444,6 +446,107 @@ namespace gum {
        __target->manager()->clean();
     }
 
+
+    // ============================================================================
+    // Performs the leaves merging
+    // ============================================================================
+    template <typename GUM_SCALAR>
+    void IMDDI<GUM_SCALAR>::__mergeLeaves( HashTable<NodeId, NodeId>& toTarget ){
+
+        MultiPriorityQueue<std::pair<NodeId,NodeId>, double, std::less<double>>* remainingPairs = new MultiPriorityQueue<std::pair<NodeId,NodeId>, double, std::less<double>>();
+        HashTable<NodeId, double*> effectifTable;
+        HashTable<NodeId, double> totalTable;
+
+        HashTable<NodeId, NodeId> leafMap;
+
+        for( auto lNodeIter = __var2Node[__value]->beginSafe(); lNodeIter != __var2Node[__value]->endSafe(); ++lNodeIter){
+            effectifTable.insert( *lNodeIter, __nodeId2Database[*lNodeIter]->effectif() );
+            totalTable.insert( *lNodeIter, __nodeId2Database[*lNodeIter]->nbObservation() );
+            for( auto rNodeIter = lNodeIter; ++rNodeIter != __var2Node[__value]->endSafe();){
+                effectifTable.insert( *rNodeIter, __nodeId2Database[*rNodeIter]->effectif() );
+                totalTable.insert( *rNodeIter, __nodeId2Database[*rNodeIter]->nbObservation() );
+                double d = __evalPair( effectifTable[*lNodeIter], totalTable[*lNodeIter], effectifTable[*rNodeIter], totalTable[*rNodeIter]);
+                if( d < __similarityTreshold )
+                    remainingPairs->insert( std::pair<NodeId, NodeId>(*lNodeIter, *rNodeIter), d );
+            }
+        }
+
+        while(!remainingPairs->empty()){
+
+            std::pair<NodeId,NodeId> p = remainingPairs->top();
+            remainingPairs->eraseTop();
+
+            NodeId nlid = __model.insertNode();
+            totalTable.insert( nlid, totalTable[p.first] + totalTable[p.second] );
+            double* nls = MultiDimDecisionGraph<GUM_SCALAR>::soa.allocate( sizeof(GUM_SCALAR)*__value->domainSize() );
+            for( Idx moda = 0; moda < __value->domainSize(); moda++ )
+                nls[moda] = effectifTable[p.first][moda] + effectifTable[p.second][moda];
+            effectifTable.insert(nlid, nls);
+
+            MultiPriorityQueue<std::pair<NodeId,NodeId>, double, std::less<double>>* nextRemainingPairs = new MultiPriorityQueue<std::pair<NodeId,NodeId>, double, std::less<double>>();
+            while( !remainingPairs->empty() ){
+
+                std::pair<NodeId,NodeId> op = remainingPairs->top();
+                double od = remainingPairs->topPriority();
+                remainingPairs->eraseTop();
+
+                if( op.first == p.first || op.first == p.second ){
+                    double d = __evalPair( effectifTable[nlid], totalTable[nlid], effectifTable[op.second], totalTable[op.second] );
+                    if( d < __similarityTreshold )
+                        nextRemainingPairs->insert( std::pair<NodeId, NodeId>(nlid, op.second),  );
+                } else {
+                    if( op.second == p.first || op.second == p.second ){
+                        double d = __evalPair( effectifTable[nlid], totalTable[nlid], effectifTable[op.first], totalTable[op.first] );
+                        if( d < __similarityTreshold )
+                            nextRemainingPairs->insert( std::pair<NodeId, NodeId>(nlid, op.first),  );
+                    } else {
+                        nextRemainingPairs->insert( op, od );
+                    }
+                }
+            }
+            delete remainingPairs;
+            remainingPairs = nextRemainingPairs;
+
+            leafMap.insert(p.first, nlid);
+            leafMap.insert(p.first, nlid);
+        }
+
+
+        for( auto nodeIter = __var2Node[__value]->beginSafe(); nodeIter != __var2Node[__value]->endSafe(); ++nodeIter){
+
+            NodeId ti = *nodeIter;
+            while( leafMap.exists(ti) )
+                ti = leafMap[ti];
+
+            if(!__target->)
+        }
+    }
+
+
+    // ============================================================================
+    // Performs the leaves merging
+    // ============================================================================
+    template <typename GUM_SCALAR>
+    double IMDDI<GUM_SCALAR>::__evalPair( double* feffectif, double ftotal, double* seffectif, double stotal ){
+
+        double fg = 0.0;
+        double sg = 0.0;
+        double fScalingFactor = ftotal / (ftotal + stotal);
+        double sScalingFactor = stotal / (ftotal + stotal);
+
+        for( Idx moda = 0; moda < __value->domainSize(); moda++ ){
+            if( feffectif[moda] != 0 || seffectif[moda] != 0 ){
+                if( feffectif[moda] != 0 )
+                    fg += feffectif[moda] * log( feffectif[moda] / ( ( feffectif[moda] + seffectif[moda] ) * fScalingFactor ) );
+                if( seffectif[moda] != 0 )
+                    sg += seffectif[moda] * log( seffectif[moda] / ( ( feffectif[moda] + seffectif[moda] ) * sScalingFactor ) );
+            }
+        }
+
+        double fp = ChiSquare::probaChi2( fg, __value->domainSize() - 1 );
+        double sp = ChiSquare::probaChi2( sg, __value->domainSize() - 1 );
+        return fp > sp ? sp : fp;
+    }
 
 
     template <typename GUM_SCALAR >
