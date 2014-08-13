@@ -1,5 +1,5 @@
 
-network aGrUM_BN {
+network unnamedBN{
    property version 1.0;
    property author aGrUM;
 }

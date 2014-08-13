@@ -173,11 +173,14 @@ namespace gum {
 // Returns the header of the BN file.
   template<typename GUM_SCALAR> INLINE
   std::string
-  NetWriter<GUM_SCALAR>::__header ( const IBayesNet<GUM_SCALAR>& ) {
+  NetWriter<GUM_SCALAR>::__header ( const IBayesNet<GUM_SCALAR>& bn ) {
     std::stringstream str;
     std::string tab = "   "; // poor tabulation
     str << std::endl << "net {" << std::endl;
-    str << "node_size = (50 50);" << std::endl << "}" << std::endl;
+    str << "  name = " << bn.propertyWithDefault ( "name", "unnamedBN" ) << std::endl;
+    str << "  software aGrUM " << GUM_VERSION << std::endl;
+    str << "  node_size = (50 50);" << std::endl;
+    str << "}" << std::endl;
     return str.str();
   }
 
@@ -208,5 +211,5 @@ namespace gum {
 
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on;
 

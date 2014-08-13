@@ -56,17 +56,17 @@ namespace gum {
       GUM_ERROR ( IOError, "Stream states flags are not all unset." );
     }
 
-    output << __heading() << std::endl;
+    output << __heading(bn) << std::endl;
 
     output << "<!-- Variables -->" << std::endl;
 
-    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter )
-      output << __variableBloc ( bn.variable ( *iter ) ) << std::endl;
+    for ( auto node : bn.nodes() )
+      output << __variableBloc ( bn.variable (node) ) << std::endl;
 
     output << "<!-- Probability distributions -->" << std::endl;
 
-    for ( auto iter = bn.nodes().beginSafe(); iter != bn.nodes().endSafe (); ++iter )
-      output << __variableDefinition ( *iter, bn );
+    for ( auto node : bn.nodes() )
+      output << __variableDefinition ( node, bn );
 
     output << std::endl;
 
@@ -109,7 +109,7 @@ namespace gum {
    */
   template<typename GUM_SCALAR> INLINE
   std::string
-  BIFXMLBNWriter<GUM_SCALAR>::__heading() {
+  BIFXMLBNWriter<GUM_SCALAR>::__heading(const IBayesNet<GUM_SCALAR>& bn) {
     std::stringstream str;
 
     // Header for every xml
@@ -137,6 +137,8 @@ namespace gum {
 
     // Network declaration
     str << "<NETWORK>" << std::endl;
+    str << "<NAME>"<< bn.propertyWithDefault ( "name", "unnamedBN" ) << "</NAME>" << std::endl;
+    str << "<PROPERTY> software aGrUM "<< GUM_VERSION << "</PROPERTY>" << std::endl;
 
     return str.str();
   }

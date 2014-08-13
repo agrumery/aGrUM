@@ -19,9 +19,9 @@
 ***************************************************************************/
 /**
 * @file
-* @brief Class representing Abstract Bayesian networks
+* @brief Class representing probabilistic DAG model
 *
-* @author Lionel TORTI and Pierre-Henri WUILLEMIN
+* @author Pierre-Henri WUILLEMIN and Christophe GONZALES
 *
 */
 #ifndef GUM_DAGMODEL_H
@@ -67,13 +67,19 @@ namespace gum {
       /// @{
 
       /**
-       * Return the value of the property "name" of this IBayesNet.
-       * @throw NotFound Raised if no "name" property is found.
+       * Return the value of the property name of this DAGModel.
+       * @throw NotFound Raised if no name property is found.
        */
       const std::string& property ( const std::string& name ) const;
 
       /**
-       * Add or change a property of this IBayesNet.
+       * Return the value of the property name of this DAGModel.
+       * return byDefault if the property name is not found
+       */
+      const std::string& propertyWithDefault ( const std::string& name, const std::string& byDefault ) const;
+
+      /**
+       * Add or change a property of this DAGModel.
        */
       void setProperty ( const std::string& name, const std::string& value );
 
@@ -207,11 +213,11 @@ namespace gum {
 
     private:
 
-      /// Returns the moral graph of this IBayesNet.
+      /// Returns the moral graph of this DAGModel.
       /// @warning __mutableMoralGraph is assumed to be valid and empty
       void __moralGraph( ) const;
 
-      /// Returns a topological order of this IBayesNet.
+      /// Returns a topological order of this DAGModel.
       /// @warning __mutableTopologicalOrder is assumed to be valid and empty
       void __topologicalOrder( ) const;
 

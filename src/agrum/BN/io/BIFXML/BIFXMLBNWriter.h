@@ -95,7 +95,7 @@ namespace gum {
       /**
        * Returns the header of the BIF file.
        */
-      std::string __heading();
+      std::string __heading(const IBayesNet<GUM_SCALAR>& bn);
 
       /**
        * Returns the end of the BIF file.
