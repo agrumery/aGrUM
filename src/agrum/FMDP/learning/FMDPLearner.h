@@ -48,7 +48,6 @@ namespace gum {
    *
    */
 
-  template<typename GUM_SCALAR>
   class FMDPLearner {
 
     public:
@@ -61,7 +60,7 @@ namespace gum {
         // ###################################################################
         /// Default constructor
         // ###################################################################
-        FMDPLearner ( FactoredMarkovDecisionProcess<GUM_SCALAR>* target, double learningThreshold );
+        FMDPLearner ( FactoredMarkovDecisionProcess<double>* target, double learningThreshold );
 
         // ###################################################################
         /// Default destructor
@@ -113,22 +112,20 @@ namespace gum {
     private :
 
       /// The FMDP to store the learned model
-      FactoredMarkovDecisionProcess<GUM_SCALAR>* __fmdp;
+      FactoredMarkovDecisionProcess<double>* __fmdp;
 
       /// Set of main variables describing the system'rdfgll
       Set<const DiscreteVariable*> __mainVariables;
 
 
-      HashTable<Idx, Set<IMDDI<GUM_SCALAR>*>*> __actionLearners;
-      IMDDI<GUM_SCALAR>* __rewardLearner;
+      HashTable<Idx, Set<IMDDI*>*> __actionLearners;
+      IMDDI* __rewardLearner;
       const DiscreteVariable* __rewardVar;
 
       const double __learningThreshold;
 
   };
 
-  extern template class FMDPLearner<float>;
-  extern template class FMDPLearner<double>;
 
 } /* namespace gum */
 

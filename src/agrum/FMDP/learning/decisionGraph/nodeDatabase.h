@@ -48,7 +48,6 @@ namespace gum {
    *
    */
 
-  template<typename GUM_SCALAR>
   class NodeDatabase {
 
     public:
@@ -84,7 +83,7 @@ namespace gum {
         // ###################################################################
         ///
         // ###################################################################
-        Sequence<NodeDatabase<GUM_SCALAR>*> splitOnVar(const DiscreteVariable*);
+        Sequence<NodeDatabase*> splitOnVar(const DiscreteVariable*);
 
         // ###################################################################
         ///
@@ -100,17 +99,7 @@ namespace gum {
         // ###################################################################
         ///
         // ###################################################################
-        GUM_SCALAR* probDist();
-
-        // ###################################################################
-        ///
-        // ###################################################################
-        GUM_SCALAR* effectif();
-
-        // ###################################################################
-        ///
-        // ###################################################################
-        GUM_SCALAR rewardValue();
+        double* effectif();
 
       /// @}
 
@@ -131,8 +120,6 @@ namespace gum {
 
   };
 
-  extern template class NodeDatabase<float>;
-  extern template class NodeDatabase<double>;
 
 } /* namespace gum */
 

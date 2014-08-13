@@ -47,7 +47,6 @@ namespace gum {
    */
 
 
-  template<typename GUM_SCALAR>
   class IMDDI {
 
     public:
@@ -60,7 +59,7 @@ namespace gum {
         // ###################################################################
         /// Default constructor
         // ###################################################################
-        IMDDI ( MultiDimDecisionGraph<GUM_SCALAR>* , double , Set<const DiscreteVariable*>, const DiscreteVariable*, bool isReward = false);
+        IMDDI ( MultiDimDecisionGraph<double>* , double, double, Set<const DiscreteVariable*>, const DiscreteVariable*, bool isReward = false);
 
         // ###################################################################
         /// Default destructor
@@ -176,7 +175,7 @@ namespace gum {
 
 
       /// The final diagram we're building
-      MultiDimDecisionGraph<GUM_SCALAR>* __target;
+      MultiDimDecisionGraph<double>* __target;
 
       Set<const DiscreteVariable*> __setOfVars;
       const DiscreteVariable* __value;
@@ -187,16 +186,17 @@ namespace gum {
 
       /// This hashtable binds every node to an associated NodeDatabase
       /// which handles every observation that concerns that node
-      HashTable<NodeId, NodeDatabase<GUM_SCALAR>*> __nodeId2Database;
+      HashTable<NodeId, NodeDatabase*> __nodeId2Database;
 
       /// The threshold above which we consider variables to be dependant
       double __dependenceThreshold;
 
+      /// The threshold above which two leaves does not share the same probability distribution
+      double __similarityThreshold;
+
       bool __isReward;
   };
 
-  extern template class IMDDI<float>;
-  extern template class IMDDI<double>;
 
 } /* namespace gum */
 

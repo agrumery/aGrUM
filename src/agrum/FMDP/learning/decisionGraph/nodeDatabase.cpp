@@ -1,24 +1,133 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
- *   {prenom.nom}@lip6.fr                                                  *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *  Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN *
+ *  {prenom.nom}_at_lip6.fr                        *
+ *                                     *
+ *  This program is free software; you can redistribute it and/or modify *
+ *  it under the terms of the GNU General Public License as published by *
+ *  the Free Software Foundation; either version 2 of the License, or   *
+ *  (at your option) any later version.                  *
+ *                                     *
+ *  This program is distributed in the hope that it will be useful,    *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of    *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the     *
+ *  GNU General Public License for more details.             *
+ *                                     *
+ *  You should have received a copy of the GNU General Public License   *
+ *  along with this program; if not, write to the             *
+ *  Free Software Foundation, Inc.,                    *
+ *  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.       *
  ***************************************************************************/
+/**
+ * @file
+ * @brief Headers of the NodeDatabase class.
+ *
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
+ */
 
+
+// =========================================================================
 #include <agrum/FMDP/learning/decisionGraph/nodeDatabase.h>
+// =========================================================================
+#include <agrum/multidim/multiDimDecisionGraph.h>
+// =========================================================================
 
-template class gum::NodeDatabase<float>;
-template class gum::NodeDatabase<double>;
+namespace gum {
+
+  // ==========================================================================
+  // Constructor & destructor.
+  // ==========================================================================
+
+    // ###################################################################
+    // Default constructor
+    // ###################################################################
+    NodeDatabase::NodeDatabase(const Set<const DiscreteVariable*>* attrSet,
+                                           const DiscreteVariable* value ) : __attrSet(attrSet),
+                                                                             __value(value){
+
+      GUM_CONSTRUCTOR(NodeDatabase);
+
+      for(SetIteratorSafe<const DiscreteVariable*> varIter = __attrSet->cbeginSafe(); varIter != __attrSet->cendSafe(); ++varIter)
+        __attrTable.insert( *varIter, new VarInfo(*varIter, value) );
+
+      __nbObservation = 0;
+
+      for(Idx modality = 0; modality < __value->domainSize(); ++modality)
+        __valueCount.insert(modality, 0);
+    }
+
+
+    // ###################################################################
+    // Default constructor
+    // ###################################################################
+    NodeDatabase::NodeDatabase(const Set<const DiscreteVariable*>* attrSet,
+                                           const DiscreteVariable* value,
+                                           const Set< const Observation*>* obsList) : __attrSet(attrSet),
+                                                                                      __value(value){
+
+      GUM_CONSTRUCTOR(NodeDatabase);
+
+      for(SetIteratorSafe<const DiscreteVariable*> varIter = __attrSet->cbeginSafe(); varIter != __attrSet->cendSafe(); ++varIter)
+        __attrTable.insert( *varIter, new VarInfo(*varIter, value, obsList) );
+
+      __nbObservation = obsList->size();
+
+      for(Idx modality = 0; modality < __value->domainSize(); ++modality)
+        __valueCount.insert(modality, 0);
+      for( auto obsIter = obsList->cbeginSafe(); obsIter != obsList->cendSafe(); ++obsIter )
+        __valueCount[(*obsIter)->modality(__value)]++;
+    }
+
+
+    // ###################################################################
+    // Default desstructor
+    // ###################################################################
+    NodeDatabase::~NodeDatabase(){
+
+      for(auto varIter = __attrTable.beginSafe(); varIter != __attrTable.endSafe(); ++varIter)
+        delete varIter.val();
+
+      GUM_DESTRUCTOR(NodeDatabase);
+    }
+
+
+
+  // ==========================================================================
+  //
+  // ==========================================================================
+
+    // ###################################################################
+    //
+    // ###################################################################
+    void NodeDatabase::addObservation( const Observation* newObs){
+
+      for(auto varIter = __attrTable.cbeginSafe(); varIter != __attrTable.cendSafe(); ++varIter)
+        varIter.val()->addObservation( newObs);
+      __nbObservation++;
+
+      __valueCount[newObs->modality(__value)]++;
+    }
+
+
+    // ###################################################################
+    //
+    // ###################################################################
+    Sequence<NodeDatabase*> NodeDatabase::splitOnVar(const DiscreteVariable* var){
+
+      Sequence<NodeDatabase*> reseq;
+
+      for(Idx modality = 0; modality < var->domainSize(); ++modality)
+        reseq.insert( new NodeDatabase( __attrSet, __value, __attrTable[var]->observationSet(modality)) );
+
+      return reseq;
+    }
+
+    // ###################################################################
+    ///
+    // ###################################################################
+    double *NodeDatabase::effectif(){
+        double* ret = static_cast<double*>(MultiDimDecisionGraph<double>::soa.allocate(sizeof(double)*__value->domainSize()));
+        for(Idx modality = 0; modality < __value->domainSize(); ++modality)
+          ret[modality] = (double)__valueCount[modality];
+        return ret;
+    }
+} // End of namespace gum

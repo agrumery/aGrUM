@@ -52,7 +52,6 @@ namespace gum {
    *
    */
 
-  template<typename GUM_SCALAR>
   class SPIMDDI {
 
     public:
@@ -65,7 +64,7 @@ namespace gum {
         // ###################################################################
         /// Default constructor
         // ###################################################################
-        SPIMDDI (GUM_SCALAR discountFactor = 0.75,
+        SPIMDDI (double discountFactor = 0.75,
                  double epsilon = 0.0001,
                  double learningThreshold = 0.95,
                  Idx observationPhaseLenght = 100,
@@ -93,7 +92,7 @@ namespace gum {
         ///
         // ###################################################################
         void addVariable( const DiscreteVariable* var );
-        void addReward( GUM_SCALAR );
+        void addReward( double );
 
       /// @}
 
@@ -120,7 +119,7 @@ namespace gum {
         // ###################################################################
         ///
         // ###################################################################
-        void feedback(const Instantiation &, GUM_SCALAR );
+        void feedback(const Instantiation &, double );
 
         // ###################################################################
         ///
@@ -148,18 +147,18 @@ namespace gum {
     private :
 
       /// The learnt Markovian Decision Process
-      FactoredMarkovDecisionProcess<GUM_SCALAR>* __fmdp;
+      FactoredMarkovDecisionProcess<double>* __fmdp;
 
       /// The model learner.
       /// It will handle by itself the different decision graph learners
       /// needed to learn the FMDP
-      FMDPLearner<GUM_SCALAR>* __learner;
+      FMDPLearner<double>* __learner;
 
       LabelizedVariable* __rewardVar;
-      Bijection<GUM_SCALAR,Idx> __rewardValue2Idx;
+      Bijection<double,Idx> __rewardValue2Idx;
 
       /// The planer we use to find the optimal policy
-      SPUMDD<GUM_SCALAR>* __planer;
+      SPUMDD<double>* __planer;
 
       /// The number of observation we make before using again the planer
       Idx __observationPhaseLenght;
@@ -184,8 +183,6 @@ namespace gum {
 
   };
 
-  extern template class SPIMDDI<float>;
-  extern template class SPIMDDI<double>;
 
 } /* namespace gum */
 
