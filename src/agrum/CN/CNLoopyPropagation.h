@@ -266,16 +266,16 @@ namespace gum {
 
       private:
         /** To easily access InferenceEngine< GUM_SCALAR > methods. */
-        typedef InferenceEngine<GUM_SCALAR> infE;
+        typedef InferenceEngine<GUM_SCALAR> __infE;
 
         /** The choosen inference type. nodeToNeighbours by Default. */
         InferenceType __inferenceType;
 
         /** A pointer to the CredalNet to be used. */
-        const CredalNet<GUM_SCALAR>* cn;
+        const CredalNet<GUM_SCALAR>* __cn;
 
         /** A pointer to it's IBayesNet used as a DAG. */
-        const IBayesNet<GUM_SCALAR>* bnet;
+        const IBayesNet<GUM_SCALAR>* __bnet;
 
         //typedef const CredalNet< GUM_SCALAR > * (infE::*cnfunc) ();
         //cnfunc getCN = &infE::getCN;

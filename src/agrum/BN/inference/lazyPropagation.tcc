@@ -308,11 +308,11 @@ namespace gum {
       const DiscreteVariable* var = vars.atPos ( 0 );
       NodeId var_id = this->bn().nodeId ( *var );
 
-      for ( __PotentialSetIterator iter2 = __evidences.beginSafe(); // needed here
+      for ( __PotentialSetIterator iter2 = __evidences.beginSafe(); // safe iterator needed here
             iter2 != __evidences.endSafe();
             ++iter2 ) {
         if ( var == ( *iter2 )->variablesSequence().atPos ( 0 ) ) {
-          eraseEvidence ( *iter2 ); // erase in _evidences => beginSafe is needed
+          eraseEvidence ( *iter2 ); // erase in _evidences => safe iterator needed here
           break;
         }
       }
@@ -699,7 +699,7 @@ namespace gum {
 
     // indicate that we performed the inference with root =
     // __collected_cliques.begin()
-    __last_collect_clique = __collected_cliques.beginSafe().key();
+    __last_collect_clique = __collected_cliques.begin().key();
 
     // ##### bug potentiel a virer : s'il y a plusieurs composantes connexes,
     // il faut plusieurs cliques de collecte
@@ -864,7 +864,7 @@ namespace gum {
     __marginalizeOut ( pot_list, del_vars );
 
     if ( pot_list.size() == 1 ) {
-      marginal = **pot_list.beginSafe();
+      marginal = **pot_list.begin();
     } else {
       Set<const Potential<GUM_SCALAR>*> set;
 
@@ -903,7 +903,7 @@ namespace gum {
     // composante connexe et multiplier entre elle les probas P(e) obtenues sur
     // chaque composante. So un TODO a faire rapidement.
     Potential<GUM_SCALAR>* tmp = new Potential<GUM_SCALAR>();
-    Id id = __node_to_clique.beginSafe().key();
+    Id id = __node_to_clique.begin().key();
     __aPosterioriMarginal ( id, *tmp );
 
     GUM_SCALAR sum = 0;

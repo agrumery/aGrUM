@@ -125,8 +125,7 @@ namespace gum {
 
       while ( _hashMarginal.size() ) {
         delete ( _hashMarginal.begin().val() );
-        _hashMarginal.erase ( _hashMarginal.beginSafe() );
-
+        _hashMarginal.erase ( _hashMarginal.beginSafe() ); // safe iterator needed here.
       }
 
     } else {
@@ -557,7 +556,7 @@ namespace gum {
     else {
       excluded.insert ( tail );
 
-      for ( auto node : __dag.children ( tail )) {
+      for ( auto node : __dag.children ( tail ) ) {
         if ( !excluded.exists ( node ) && __directedPath ( node, head, excluded ) )
           return true;
       }

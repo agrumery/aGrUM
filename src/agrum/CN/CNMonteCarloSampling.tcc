@@ -6,10 +6,10 @@ namespace gum {
 
     template< typename GUM_SCALAR, class BNInferenceEngine >
     CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::CNMonteCarloSampling ( const CredalNet< GUM_SCALAR >& credalNet ) : MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::MultipleInferenceEngine ( credalNet ) {
-      infEs::_repetitiveInd = false;
-      //infEs::_iterStop = 1000;
-      infEs::_storeVertices = false;
-      infEs::_storeBNOpt = false;
+      __infEs::_repetitiveInd = false;
+      //__infEs::_iterStop = 1000;
+      __infEs::_storeVertices = false;
+      __infEs::_storeBNOpt = false;
 
       this->setMaxTime ( 60 );
       this->enableMaxTime();
@@ -29,12 +29,12 @@ namespace gum {
     template< typename GUM_SCALAR, class BNInferenceEngine >
     void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::makeInference() {
 
-      if ( infEs::_repetitiveInd ) {
+      if ( __infEs::_repetitiveInd ) {
         try {
           this->_repetitiveInit();
         } catch ( InvalidArgument& err ) {
           GUM_SHOWERROR ( err );
-          infEs::_repetitiveInd = false;
+          __infEs::_repetitiveInd = false;
         }
       }
 
@@ -109,10 +109,10 @@ namespace gum {
       if ( ! this->_modal.empty() )
         this->_expFusion();
 
-      if ( infEs::_storeBNOpt )
+      if ( __infEs::_storeBNOpt )
         this->_optFusion();
 
-      if ( infEs::_storeVertices )
+      if ( __infEs::_storeVertices )
         this->_verticesFusion();
 
       if ( ! this->_modal.empty() )
@@ -130,8 +130,8 @@ namespace gum {
       if ( this->_l_inferenceEngine[tId]->evidenceProbability() > 0 ) {
         const DAG& tDag = this->_workingSet[tId]->dag();
 
-        for ( auto it = tDag.nodes().beginSafe(); it != tDag.nodes().endSafe(); ++it ) {
-          const Potential< GUM_SCALAR >& potential ( this->_l_inferenceEngine[tId]->posterior ( *it ) );
+        for ( auto node : tDag.nodes() ) {
+          const Potential< GUM_SCALAR >& potential ( this->_l_inferenceEngine[tId]->posterior ( node ) );
           Instantiation ins ( potential );
           std::vector< GUM_SCALAR > vertex;
 
@@ -140,10 +140,7 @@ namespace gum {
 
           // true for redundancy elimination of node it credal set
           // but since global marginals are only updated at the end of each period of approximationScheme, it is "useless" ( and expensive ) to check now
-          this->_updateThread ( *it, vertex, false );
-
-          //if ( this->_updateThread ( it, vertex, false ) )
-          //keepSample = true;
+          this->_updateThread ( node, vertex, false );
 
         } // end of : for all nodes
       } // end of : if ( p(e) > 0 )
@@ -187,10 +184,10 @@ namespace gum {
           // should we ask for max threads instead ( no differences here in practice )
           num_threads = getNumberOfRunningThreads();
 
-          this->_initThreadsData ( num_threads, infEs::_storeVertices, infEs::_storeBNOpt );
+          this->_initThreadsData ( num_threads, __infEs::_storeVertices, __infEs::_storeBNOpt );
           this->_l_inferenceEngine.resize ( num_threads, nullptr );
 
-          //if ( infEs::_storeBNOpt )
+          //if ( __infEs::_storeBNOpt )
           //this->_l_sampledNet.resize ( num_threads );
         } // end of : single region
 
@@ -211,11 +208,11 @@ namespace gum {
         this->_l_expectationMax[this_thread] = this->_expectationMax;
         this->_l_modal[this_thread] = this->_modal;
 
-        infEs::_l_clusters[this_thread].resize ( 2 );
-        infEs::_l_clusters[this_thread][0] = infEs::_t0;
-        infEs::_l_clusters[this_thread][1] = infEs::_t1;
+        __infEs::_l_clusters[this_thread].resize ( 2 );
+        __infEs::_l_clusters[this_thread][0] = __infEs::_t0;
+        __infEs::_l_clusters[this_thread][1] = __infEs::_t1;
 
-        if ( infEs::_storeVertices )
+        if ( __infEs::_storeVertices )
           this->_l_marginalSets[this_thread] = this->_marginalSets;
 
         List< const Potential< GUM_SCALAR > * >* evi_list = new List< const Potential< GUM_SCALAR > * >();
@@ -224,7 +221,7 @@ namespace gum {
         BNInferenceEngine* inference_engine = new BNInferenceEngine ( * ( this->_workingSet[this_thread] ) );
         this->_l_inferenceEngine[this_thread] = inference_engine;
 
-        if ( infEs::_storeBNOpt ) {
+        if ( __infEs::_storeBNOpt ) {
           VarMod2BNsMap<GUM_SCALAR>* threadOpt = new VarMod2BNsMap<GUM_SCALAR> ( *this->_credalNet );
           this->_l_optimalNet[this_thread] = threadOpt;
         }
@@ -254,99 +251,97 @@ namespace gum {
 
       dBN sample;
 
-      if ( infEs::_storeBNOpt )
+      if ( __infEs::_storeBNOpt )
         sample = dBN ( this->_l_optimalNet[this_thread]->getSampleDef() );
 
-      if ( infEs::_repetitiveInd ) {
-        const typename Property< std::vector< NodeId > >::onNodes& t0 = infEs::_l_clusters[this_thread][0];
-        const typename Property< std::vector< NodeId > >::onNodes& t1 = infEs::_l_clusters[this_thread][1];
+      if ( __infEs::_repetitiveInd ) {
+        const typename Property< std::vector< NodeId > >::onNodes& t0 = __infEs::_l_clusters[this_thread][0];
+        const typename Property< std::vector< NodeId > >::onNodes& t1 = __infEs::_l_clusters[this_thread][1];
 
-        // use cbegin() when available
-        for ( auto it = t0.beginSafe(), theEnd = t0.endSafe(); it != theEnd; ++it ) {
-          auto dSize = working_bn->variable ( it.key() ).domainSize();
-          Potential< GUM_SCALAR >* potential ( const_cast< Potential< GUM_SCALAR > * > ( &working_bn->cpt ( it.key() ) ) );
+        for ( const auto & elt : t0 ) {
+          auto dSize = working_bn->variable ( elt.first ).domainSize();
+          Potential< GUM_SCALAR >* potential ( const_cast< Potential< GUM_SCALAR > * > ( &working_bn->cpt ( elt.first ) ) );
           std::vector< GUM_SCALAR > var_cpt ( potential->domainSize() );
 
-          auto pconfs = ( *cpt ) [it.key()].size();
+          Size pconfs = ( *cpt ) [elt.first].size();
 
-          for ( decltype ( pconfs ) pconf = 0; pconf < pconfs; pconf++ ) {
-            auto choosen_vertex = rand() % ( *cpt ) [it.key()][pconf].size();
+          for ( Size pconf = 0; pconf < pconfs; pconf++ ) {
+            auto choosen_vertex = rand() % ( *cpt ) [elt.first][pconf].size();
 
-            if ( infEs::_storeBNOpt )
-              __binaryRep ( ( sample ) [it.key()][pconf], choosen_vertex );
+            if ( __infEs::_storeBNOpt )
+              __binaryRep ( sample[elt.first][pconf], choosen_vertex );
 
-            for ( decltype ( dSize ) mod = 0; mod < dSize; mod++ )
-              var_cpt[pconf * dSize + mod] = ( *cpt ) [it.key()][pconf][choosen_vertex][mod];
+            for ( Size mod = 0; mod < dSize; mod++ )
+              var_cpt[pconf * dSize + mod] = ( *cpt ) [elt.first][pconf][choosen_vertex][mod];
           } // end of : pconf
 
           potential->fillWith ( var_cpt );
 
-          auto t0esize = it.val().size();
+          Size t0esize = elt.second.size();
 
-          for ( decltype ( t0esize ) pos = 0; pos < t0esize; pos++ ) {
-            if ( infEs::_storeBNOpt )
-              ( sample ) [ ( it.val() ) [pos]] = ( sample ) [it.key()];
+          for ( Size pos = 0; pos < t0esize; pos++ ) {
+            if ( __infEs::_storeBNOpt )
+              sample [ elt.second[pos]] = sample[elt.first];
 
-            Potential< GUM_SCALAR >* potential2 ( const_cast< Potential< GUM_SCALAR > * > ( &working_bn->cpt ( ( it.val() ) [pos] ) ) );
+            Potential< GUM_SCALAR >* potential2 ( const_cast< Potential< GUM_SCALAR > * > ( &working_bn->cpt ( elt.second[pos] ) ) );
             potential2->fillWith ( var_cpt );
           }
         }
 
-        // use cbegin()
-        for ( auto it = t1.beginSafe(), theEnd = t1.endSafe(); it != theEnd; ++it ) {
-          auto dSize = working_bn->variable ( it.key() ).domainSize();
-          Potential< GUM_SCALAR >* potential ( const_cast< Potential< GUM_SCALAR > * > ( &working_bn->cpt ( it.key() ) ) );
+        for ( const auto & elt : t1 ) {
+          auto dSize = working_bn->variable ( elt.first ).domainSize();
+          Potential< GUM_SCALAR >* potential ( const_cast< Potential< GUM_SCALAR > * > ( &working_bn->cpt ( elt.first ) ) );
           std::vector< GUM_SCALAR > var_cpt ( potential->domainSize() );
 
-          for ( Size pconf = 0; pconf < ( *cpt ) [it.key()].size(); pconf++ ) {
-            auto choosen_vertex = rand() % ( *cpt ) [it.key()][pconf].size();
+          for ( Size pconf = 0; pconf < ( *cpt ) [elt.first].size(); pconf++ ) {
+            auto choosen_vertex = rand() % ( *cpt ) [elt.first][pconf].size();
 
-            if ( infEs::_storeBNOpt )
-              __binaryRep ( ( sample ) [it.key()][pconf], choosen_vertex );
+            if ( __infEs::_storeBNOpt )
+              __binaryRep ( sample[elt.first][pconf], choosen_vertex );
 
             for ( decltype ( dSize ) mod = 0; mod < dSize; mod++ )
-              var_cpt[pconf * dSize + mod] = ( *cpt ) [it.key()][pconf][choosen_vertex][mod];
+              var_cpt[pconf * dSize + mod] = ( *cpt ) [elt.first][pconf][choosen_vertex][mod];
           } // end of : pconf
 
           potential->fillWith ( var_cpt );
 
-          auto t1esize = it.val().size();
+          auto t1esize = elt.second.size();
 
           for ( decltype ( t1esize ) pos = 0; pos < t1esize; pos++ ) {
-            if ( infEs::_storeBNOpt )
-              ( sample ) [ ( it.val() ) [pos]] = ( sample ) [it.key()];
+            if ( __infEs::_storeBNOpt )
+              sample[ elt.second[pos]] = sample[elt.first];
 
-            Potential< GUM_SCALAR >* potential2 ( const_cast< Potential< GUM_SCALAR > * > ( &working_bn->cpt ( ( it.val() ) [pos] ) ) );
+            Potential< GUM_SCALAR >* potential2 ( const_cast< Potential< GUM_SCALAR > * > ( &working_bn->cpt ( elt.second[pos] ) ) );
             potential2->fillWith ( var_cpt );
           }
         }
 
-        if ( infEs::_storeBNOpt ) {
+        if ( __infEs::_storeBNOpt ) {
           this->_l_optimalNet[this_thread]->setCurrentSample ( sample );
         }
       } else {
-        for ( auto id = working_bn->nodes().beginSafe(); id != working_bn->nodes().endSafe(); ++id ) {
-          auto dSize = working_bn->variable ( *id ).domainSize();
-          Potential< GUM_SCALAR >* potential ( const_cast< Potential< GUM_SCALAR > * > ( &working_bn->cpt ( *id ) ) );
+        for ( auto node : working_bn->nodes() ) {
+          auto dSize = working_bn->variable ( node ).domainSize();
+          Potential< GUM_SCALAR >* potential ( const_cast< Potential< GUM_SCALAR > * > ( &working_bn->cpt ( node ) ) );
           std::vector< GUM_SCALAR > var_cpt ( potential->domainSize() );
 
-          auto pConfs = ( *cpt ) [*id].size();
+          auto pConfs = ( *cpt ) [node].size();
 
           for ( decltype ( pConfs ) pconf = 0; pconf < pConfs; pconf++ ) {
-            auto nVertices = ( *cpt ) [*id][pconf].size();
+            auto nVertices = ( *cpt ) [node][pconf].size();
             auto choosen_vertex = rand() % nVertices;
 
-            if ( infEs::_storeBNOpt )
-              __binaryRep ( ( sample ) [*id][pconf], choosen_vertex );
+            if ( __infEs::_storeBNOpt )
+              __binaryRep ( sample[node][pconf], choosen_vertex );
 
             for ( decltype ( dSize ) mod = 0; mod < dSize; mod++ )
-              var_cpt[pconf * dSize + mod] = ( *cpt ) [*id][pconf][choosen_vertex][mod];
+              var_cpt[pconf * dSize + mod] = ( *cpt ) [node][pconf][choosen_vertex][mod];
           } // end of : pconf
 
           potential->fillWith ( var_cpt );
         }
 
-        if ( infEs::_storeBNOpt )
+        if ( __infEs::_storeBNOpt )
           this->_l_optimalNet[this_thread]->setCurrentSample ( sample );
       }
 
@@ -370,17 +365,13 @@ namespace gum {
         return;
       }
 
-      typename Property< std::vector< GUM_SCALAR > >::onNodes thread_evidence = this->_evidence;
-
-      // use cbegin()
-      for ( auto it = thread_evidence.beginSafe(), theEnd = thread_evidence.endSafe(); it != theEnd; ++it ) {
+      for ( const auto & elt : this->_evidence ) {
         Potential< GUM_SCALAR >* p = new Potential< GUM_SCALAR >;
-        ( *p ) << working_bn->variable ( it.key() );
+        ( *p ) << working_bn->variable ( elt.first );
 
         try {
-          p->fillWith ( it.val() );
+          p->fillWith ( elt.second );
         } catch ( Exception& err ) {
-          std::cout << "Error while inserting evidence : " << std::endl;
           GUM_SHOWERROR ( err );
           throw ( err );
         }

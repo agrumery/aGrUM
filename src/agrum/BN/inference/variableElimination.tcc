@@ -153,9 +153,8 @@ namespace gum {
     marginal.normalize();
 
     // Cleaning up the mess
-    for ( SetIteratorSafe< Potential<GUM_SCALAR>* > iter = __trash.beginSafe(); iter != __trash.endSafe(); ++iter ) {
-      delete *iter;
-    }
+    for ( auto pot : __trash )
+      delete pot;
 
     __trash.clear();
   }
@@ -215,8 +214,7 @@ namespace gum {
       if ( pots.size() == 0 ) {
         return;
       } else if ( pots.size() == 1 ) {
-        tmp = const_cast<Potential<GUM_SCALAR>*> ( * ( pots.beginSafe() ) );
-        pot = new Potential<GUM_SCALAR> ( projectSum ( *tmp, var_set ) );
+        pot = new Potential<GUM_SCALAR> ( projectSum ( **pots.begin(), var_set ) );
       } else {
         MultiDimCombinationDefault<GUM_SCALAR, Potential> Comb ( multPotential );
         tmp = Comb.combine ( pots );

@@ -50,7 +50,7 @@ namespace gum {
     class CNMonteCarloSampling : public MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > {
       private:
         /** To easily acces MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > methods. */
-        typedef MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > infEs;
+        typedef MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > __infEs;
 
         /// @name Private initialization methods
         /// @{
@@ -106,10 +106,6 @@ namespace gum {
 
         /// @}
 
-        /** Erase all inference data (including thread data). */
-        //void eraseAllEvidence();
-
-        //// debug /////
 
         ///unsigned int notOptDelete;
 

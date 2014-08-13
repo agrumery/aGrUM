@@ -210,14 +210,14 @@ namespace gum {
          * @param id The \c NodeId we want an instantiation from
          * @return The instantiation
          */
-        inline Instantiation instantiation ( const NodeId& id );
+        Instantiation instantiation ( const NodeId& id );
 
         /**
          * @brief %Get the cardinality of a node
          * @param id The \c NodeId of the node
          * @return The cardinality of the node
          */
-        inline Size domainSize ( const NodeId& id );
+        Size domainSize ( const NodeId& id );
 
         /// @}
 

@@ -46,10 +46,6 @@ namespace gum {
         return out;
       }
 
-      void LpCol::print() const {
-        std::cout << "col_" << std::to_string ( __id );
-      }
-
       std::string LpCol::toString() const {
         return "V" + std::to_string ( __id );
       }
@@ -266,8 +262,8 @@ namespace gum {
         if ( ! __imiddle )
           __imiddle = true;
 
-        for ( auto it = rhs.__mCoeffs->beginSafe(), end = rhs.__mCoeffs->endSafe(); it != end; ++it )
-          __mCoeffs->getWithDefault ( it.key(), 0. ) += it.val();
+        for ( const auto & elt : *rhs.__mCoeffs )
+          __mCoeffs->getWithDefault ( elt.first, 0. ) += elt.second;
 
         __mValue += rhs.__mValue;
 
@@ -288,8 +284,8 @@ namespace gum {
           return *this;
         }
 
-        for ( auto it = rhs.__mCoeffs->beginSafe(), end = rhs.__mCoeffs->endSafe(); it != end; ++it )
-          __mCoeffs->getWithDefault ( it.key(), 0. ) += it.val();
+        for ( const auto & elt : *rhs.__mCoeffs )
+          __mCoeffs->getWithDefault ( elt.first, 0. ) += elt.second;
 
         __mValue += rhs.__mValue;
 
@@ -328,8 +324,8 @@ namespace gum {
         if ( ! __imiddle )
           __imiddle = true;
 
-        for ( auto it = rhs.__mCoeffs->beginSafe(), end = rhs.__mCoeffs->endSafe(); it != end; ++it )
-          __mCoeffs->getWithDefault ( it.key(), 0. ) -= it.val();
+        for ( const auto & elt : *rhs.__mCoeffs )
+          __mCoeffs->getWithDefault ( elt.first, 0. ) -= elt.second;
 
         __mValue -= rhs.__mValue;
 
@@ -553,73 +549,33 @@ namespace gum {
         __iright = false;
       }
 
-
-      void LpExpr::print() const {
-        std::cout << std::endl;
-
-        std::cout << "left side : " << std::endl;
-
-        if ( __lCoeffs != nullptr )
-          for ( auto it = __lCoeffs->beginSafe(), end = __lCoeffs->endSafe(); it != end; ++it )
-            std::cout << it.key().toString() << " " << it.val () << " | ";
-
-        std::cout << std::endl;
-
-        std::cout << "middle side : " << std::endl;
-
-        if ( __mCoeffs != nullptr )
-          for ( auto it = __mCoeffs->beginSafe(), end = __mCoeffs->endSafe(); it != end; ++it )
-            std::cout << it.key().toString() << " " << it.val() << " | ";
-
-        std::cout << std::endl;
-
-        std::cout << "right side : " << std::endl;
-
-        if ( __rCoeffs != nullptr )
-          for ( auto it = __rCoeffs->beginSafe(), end = __rCoeffs->endSafe(); it != end; ++it )
-            std::cout << it.key().toString() << " " << it.val() << " | ";
-
-        std::cout << std::endl;
-
-        std::cout << "lvalue : " << __lValue << std::endl;
-        std::cout << "mvalue : " << __mValue << std::endl;
-        std::cout << "rvalue : " << __rValue << std::endl;
-
-        std::cout << std::endl;
-      }
-
       std::string LpExpr::toString() const {
         std::ostringstream s;
 
-        s << "\nleft side : \n";
+        s << std::endl << "left side : " << std::endl;
 
         if ( __lCoeffs != nullptr )
-          for ( auto it = __lCoeffs->beginSafe(), end = __lCoeffs->endSafe(); it != end; ++it )
-            s << it.key().toString() << " " << it.val() << " | ";
+          for ( const auto & elt : *__lCoeffs )
+            s << elt.first.toString() << " " << elt.second << " | ";
 
-        s << "\n";
-
-        s << "middle side : \n";
+        s << std::endl << "middle side : " << std::endl;
 
         if ( __mCoeffs != nullptr )
-          for ( auto it = __mCoeffs->beginSafe(), end = __mCoeffs->endSafe(); it != end; ++it )
-            s << it.key().toString() << " " << it.val() << " | ";
+          for ( const auto & elt : *__mCoeffs )
+            s << elt.first.toString() << " " << elt.second << " | ";
 
-        s << "\n";
-
-        s << "right side : \n";
+        s << std::endl << "right side : " << std::endl;
 
         if ( __rCoeffs != nullptr )
-          for ( auto it = __rCoeffs->beginSafe(), end = __rCoeffs->endSafe(); it != end; ++it )
-            s << it.key().toString() << " " << it.val() << " | ";
+          for ( const auto & elt : *__rCoeffs )
+            s << elt.first.toString() << " " << elt.second << " | ";
 
-        s << "\n";
+        s << std::endl
+          << "lvalue : " << __lValue << std::endl
+          << "mvalue : " << __mValue << std::endl
+          << "rvalue : " << __rValue << std::endl;
 
-        s << "lvalue : " << __lValue << "\n";
-        s << "mvalue : " << __mValue << "\n";
-        s << "rvalue : " << __rValue << "\n";
-
-        s << "\n";
+        s << std::endl;
 
         return s.str();
       }
@@ -745,10 +701,6 @@ namespace gum {
         return out;
       }
 
-      void LpRow::print() const {
-        std::cout << toString();
-      }
-
 
       std::string LpRow::toString() const {
         std::ostringstream s;
@@ -756,22 +708,19 @@ namespace gum {
         s << "0 <= " << __cste;
 
         if ( __coeffs != nullptr ) {
-          for ( auto it = __coeffs->beginSafe(), end = __coeffs->endSafe(); it != end; ++it ) {
-            if ( it.val() > 0 ) {
-              if ( it.val() != 1 ) {
-                s << " +" << it.val() << "*" << it.key().toString();
+          for ( const auto & elt : *__coeffs ) {
+            if ( elt.second > 0 ) {
+              if ( elt.second != 1 ) {
+                s << " +" << elt.second << "*" << elt.first.toString();
+              } else {
+                s << " +" << elt.first.toString();
               }
-              else {
-                s << " +" << it.key().toString();
-              }
-            }
-            else {
-              if ( it.val() < 0 ) {
-                if ( it.val() != -1 ) {
-                  s << " " << it.val() << "*" << it.key().toString();
-                }
-                else {
-                  s << " -" << it.key().toString();
+            } else {
+              if ( elt.second < 0 ) {
+                if ( elt.second != -1 ) {
+                  s << " " << elt.second << "*" << elt.first.toString();
+                } else {
+                  s << " -" << elt.first.toString();
                 }
               }
             }
@@ -979,18 +928,6 @@ namespace gum {
 
       template< typename GUM_SCALAR >
       std::vector< std::vector< GUM_SCALAR > > LpInterface< GUM_SCALAR >::solve() {
-        /*
-        if ( ! __positivity&& ! __sumIsOne ) {
-          addProba();
-        }
-        else if ( __positivity&& ! __sumIsOne ) {
-          addSumIsOne();
-        }
-        else if ( ! __positivity&& __sumIsOne ) {
-          addPositivity();
-        }
-        */
-
         LRSWrapper< GUM_SCALAR > lrs;
 
         lrs.setUpH ( __cols.size() );
@@ -1002,8 +939,8 @@ namespace gum {
 
           expandedRow [ 0 ] = row->__cste;
 
-          for ( auto it = row->__coeffs->beginSafe(), end = row->__coeffs->endSafe(); it != end; ++it )
-            expandedRow [ it.key().id() + 1 ] = it.val();
+          for ( const auto & elt : *row->__coeffs )
+            expandedRow [ elt.first.id() + 1 ] = elt.second;
 
           lrsMatrix.push_back ( expandedRow );
         }
@@ -1021,43 +958,20 @@ namespace gum {
       }
 
       template< typename GUM_SCALAR >
-      void LpInterface< GUM_SCALAR >::print() const {
-        std::cout << "\n\nVariables : \n";
-
-        for ( const auto & col : __cols ) {
-          std::cout << " ";
-          col.print();
-        }
-
-        std::cout << std::endl;
-
-        for ( const auto & row : __rows ) {
-          std::cout << "\n";
-          row->print();
-        }
-
-        std::cout << std::endl << std::endl;
-      }
-
-      template< typename GUM_SCALAR >
       std::string LpInterface< GUM_SCALAR >::toString() const {
         std::ostringstream s;
 
-        s << "\n\nVariables : \n";
+        s << std::endl << std::endl << "Variables : " << std::endl;
 
-        for ( const auto & col : __cols ) {
-          s << " ";
-          s << col.toString();
-        }
+        for ( const auto & col : __cols )
+          s << " " << col.toString();
 
-        s << "\n";
+        s << std::endl;
 
-        for ( const auto & row : __rows ) {
-          s << "\n";
-          s << row->toString();
-        }
+        for ( const auto & row : __rows )
+          s << std::endl << row->toString();
 
-        s << "\n\n";
+        s << std::endl << std::endl;
 
         return s.str();
       }
