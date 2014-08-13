@@ -106,6 +106,41 @@ namespace gum {
       }
     }
 
+    
+    /// specify the set of possible values (to do before creating the row filter)
+    void CellTranslatorNumber::setUserValues ( const Sequence<float>& values,
+                                               bool check_database ) {
+      // clear all current data
+      __values.clear ();
+      __max_value = 0;
+      if ( __user_values != nullptr ) {
+        delete __user_values;
+        __user_values = nullptr;
+      }
+
+      // set the internal structures according to the method's parameters
+      __check_database = check_database;
+
+      if ( ! check_database ) {
+        if ( values.empty () ) {
+          __check_database = true;
+        }
+        else {
+          // if we do not want to parse the database, store all the values directly
+          for ( const auto& val : values ) {
+            __values.insert ( val, __max_value );
+            ++__max_value;
+          }
+        }
+      }
+      else {
+        // if we specified values, store them
+        if ( ! values.empty () ) {
+          __user_values = new Sequence<float> ( values );
+        }
+      }
+    }
+
 
   } /* namespace learning */
 

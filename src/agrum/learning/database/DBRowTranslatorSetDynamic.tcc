@@ -394,6 +394,28 @@ namespace gum {
       return __output_size;
     }
 
+    
+    /// returns the ith translator
+    template <typename Translator> INLINE
+    Translator&
+    DBRowTranslatorSetDynamic<Translator>::operator[] ( unsigned int i ) {
+      if ( __translators.size () <= i ) {
+        GUM_ERROR ( NotFound, "the translator cannot be found" );
+      }
+      return *( __translators[i] );
+    }
+
+    
+    /// returns the ith translator
+    template <typename Translator> INLINE
+    const Translator&
+    DBRowTranslatorSetDynamic<Translator>::operator[] ( unsigned int i ) const {
+      if ( __translators.size () <= i ) {
+        GUM_ERROR ( NotFound, "the translator cannot be found" );
+      }
+      return *( __translators[i] );
+    }
+    
 
   } /* namespace learning */
 

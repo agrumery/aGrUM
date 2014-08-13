@@ -109,7 +109,17 @@ namespace gum {
 
       /// move operator
       DBRowTranslatorSetDynamic<Translator>&
-      operator= ( DBRowTranslatorSetDynamic<Translator>&& );      
+      operator= ( DBRowTranslatorSetDynamic<Translator>&& );
+
+      /// returns the ith translator
+      /** @throws NotFound is raised if there are fewer than i translators in
+       * the translator set */
+      Translator& operator[] ( unsigned int i );
+
+      /// returns the ith translator
+      /** @throws NotFound is raised if there are fewer than i translators in
+       * the translator set */
+      const Translator& operator[] ( unsigned int i ) const;
 
       /// @}
 
