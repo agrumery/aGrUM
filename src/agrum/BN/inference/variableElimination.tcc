@@ -144,9 +144,9 @@ namespace gum {
     marginal.add ( this->bn().variable ( id ) );
     marginal.fill ( ( GUM_SCALAR ) 1 );
 
-    for ( SetIteratorSafe< Potential<GUM_SCALAR>* > iter = pool.beginSafe(); iter != pool.endSafe(); ++iter ) {
-      if ( ( **iter ).nbrDim() > 0 ) {
-        marginal.multiplicateBy ( **iter );
+    for ( auto pot : pool ) {
+      if ( pot->nbrDim() > 0 ) {
+        marginal.multiplicateBy ( *pot );
       }
     }
 
@@ -166,8 +166,8 @@ namespace gum {
     if ( __eliminationOrder.empty() ) {
       NodeProperty<Size> modalities;
 
-      for ( auto iter_node = this->bn().nodes().beginSafe(); iter_node != this->bn().nodes().endSafe (); ++iter_node )
-        modalities.insert ( *iter_node, this->bn().variable ( *iter_node ).domainSize() );
+      for ( auto node : this->bn().nodes() )
+        modalities.insert ( node, this->bn().variable ( node ).domainSize() );
 
       DefaultTriangulation triang ( & ( this->bn().moralGraph() ), &modalities );
       __eliminationOrder = triang.eliminationOrder();
@@ -179,11 +179,11 @@ namespace gum {
   VariableElimination<GUM_SCALAR>::__createInitialPool() {
     __pool.clear();
 
-    for ( auto iter_node = this->bn().nodes().beginSafe(); iter_node != this->bn().nodes().endSafe (); ++iter_node) {
-      __pool.insert ( const_cast< Potential<GUM_SCALAR>* > ( & ( this->bn().cpt ( *iter_node ) ) ) );
+    for ( auto node : this->bn().nodes() ) {
+      __pool.insert ( const_cast< Potential<GUM_SCALAR>* > ( & ( this->bn().cpt ( node ) ) ) );
 
-      if ( __evidences.exists ( *iter_node ) )
-        __pool.insert ( const_cast< Potential<GUM_SCALAR>* > ( __evidences[*iter_node] ) );
+      if ( __evidences.exists ( node ) )
+        __pool.insert ( const_cast< Potential<GUM_SCALAR>* > ( __evidences[node] ) );
     }
   }
   // the function used to combine two tables
@@ -208,9 +208,9 @@ namespace gum {
       var_set.insert ( var );
       Set<const Potential<GUM_SCALAR>*> pots;
 
-      for ( SetIteratorSafe<Potential<GUM_SCALAR>*> iter = pool.beginSafe(); iter != pool.endSafe(); ++iter )
-        if ( ( *iter )->contains ( *var ) )
-          pots.insert ( *iter );
+      for ( auto pot : pool )
+        if ( pot->contains ( *var ) )
+          pots.insert ( pot );
 
       if ( pots.size() == 0 ) {
         return;
@@ -224,12 +224,12 @@ namespace gum {
         delete tmp;
       }
 
-      for ( typename Set<const Potential<GUM_SCALAR>*>::iterator_safe iter = pots.beginSafe(); iter != pots.endSafe(); ++iter ) {
-        pool.erase ( const_cast<Potential<GUM_SCALAR>*> ( *iter ) );
+      for ( auto  pot : pots ) {
+        pool.erase ( const_cast<Potential<GUM_SCALAR>*> ( pot ) );
 
-        if ( trash.exists ( const_cast<Potential<GUM_SCALAR>*> ( *iter ) ) ) {
-          trash.erase ( const_cast<Potential<GUM_SCALAR>*> ( *iter ) );
-          delete const_cast<Potential<GUM_SCALAR>*> ( *iter );
+        if ( trash.exists ( const_cast<Potential<GUM_SCALAR>*> ( pot ) ) ) {
+          trash.erase ( const_cast<Potential<GUM_SCALAR>*> ( pot ) );
+          delete const_cast<Potential<GUM_SCALAR>*> ( pot );
         }
       }
 

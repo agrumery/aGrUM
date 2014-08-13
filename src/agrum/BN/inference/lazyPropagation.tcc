@@ -139,16 +139,15 @@ namespace gum {
     // set the correspondance between variables and their id and get the variables
     // domain sizes
     NodeProperty<Size> modalities;
+    auto& bn = this->bn();
 
-    for ( auto iter_node = this->bn().dag().nodes().beginSafe(); iter_node != this->bn().dag().nodes().endSafe(); ++iter_node ) {
-      const DiscreteVariable& var = this->bn().variable ( *iter_node );
-      modalities.insert ( *iter_node, var.domainSize() );
-    }
+    for ( auto node : bn.dag().nodes() )
+      modalities.insert ( node, bn.variable ( node ).domainSize() );
 
     // initialize the __triangulation algorithm
-    __triangulation.setGraph ( & ( this->bn().moralGraph() ), &modalities );
+    __triangulation.setGraph ( & ( bn.moralGraph() ), &modalities );
 
-    __initialize ( this->bn(), __triangulation, modalities );
+    __initialize ( bn, __triangulation, modalities );
   }
 
 
@@ -313,16 +312,16 @@ namespace gum {
             iter2 != __evidences.endSafe();
             ++iter2 ) {
         if ( var == ( *iter2 )->variablesSequence().atPos ( 0 ) ) {
-          eraseEvidence ( *iter2 );
+          eraseEvidence ( *iter2 ); // erase in _evidences => beginSafe is needed
           break;
         }
       }
 
       // insert the evidence
-      __evidences.insert ( pot);
+      __evidences.insert ( pot );
 
       NodeId clique_id = __node_to_clique[var_id];
-      __clique_evidence[clique_id].insert (pot);
+      __clique_evidence[clique_id].insert ( pot );
 
       // indicate that, now, new inference is required
       __setRequiredInference ( clique_id, clique_id );
@@ -416,8 +415,7 @@ namespace gum {
         joint_to_delete = false;
       } else {
         if ( pot_to_mult.size() == 1 ) {
-          ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter = pot_to_mult.beginSafe();
-          joint = const_cast<Potential<GUM_SCALAR>*> ( *iter );
+          joint = const_cast<Potential<GUM_SCALAR>*> ( * ( pot_to_mult.begin() ) );
           joint_to_delete = false;
         } else {
           Set<const Potential<GUM_SCALAR>*> set;
@@ -460,11 +458,10 @@ namespace gum {
       // update accordingly pot_per_vars : remove these potentials
       // update accordingly product_size : when a variable is no more used by
       // any potential, divide product_size by its domain size
-      for ( ListConstIteratorSafe<const Potential<GUM_SCALAR>*> iter = pot_to_mult.beginSafe();
-            iter != pot_to_mult.endSafe(); ++iter ) { // beginSafe is needed
-        const Sequence<const DiscreteVariable*>& pot_vars = ( *iter )->variablesSequence();
+      for ( auto pot : pot_to_mult ) {
+        const Sequence<const DiscreteVariable*>& pot_vars = pot->variablesSequence();
 
-        for ( unsigned int i = 0; i < pot_vars.size(); ++i ) {
+        for ( Idx i = 0; i < pot_vars.size(); ++i ) {
           if ( del_vars.contains ( pot_vars[i] ) ) {
             // ok, here we have a variable that needed to be removed => update
             // product_size, pot_per_var and pot_vars_per_var
@@ -472,8 +469,8 @@ namespace gum {
             pot_vars_of_var_i = pot_vars_per_var[pot_vars[i]];
             double div_size = 1;
 
-            for ( unsigned int j = 0; j < pot_vars.size(); ++j ) {
-              unsigned int k = --pot_vars_of_var_i[pot_vars[j]];
+            for ( Idx j = 0; j < pot_vars.size(); ++j ) {
+              Idx k = --pot_vars_of_var_i[pot_vars[j]];
 
               if ( k == 0 ) {
                 div_size *= pot_vars[j]->domainSize();
@@ -481,7 +478,7 @@ namespace gum {
               }
             }
 
-            pot_per_var[pot_vars[i]].eraseByVal ( *iter );
+            pot_per_var[pot_vars[i]].eraseByVal ( pot );
 
             if ( div_size != 1 ) {
               product_size.setPriority
@@ -491,12 +488,12 @@ namespace gum {
           }
         }
 
-        if ( tmp_marginals.contains ( *iter ) ) {
-          delete *iter;
-          tmp_marginals.erase ( *iter );
+        if ( tmp_marginals.contains ( pot ) ) {
+          delete pot;
+          tmp_marginals.erase ( pot );
         }
 
-        pot_list.erase ( *iter );
+        pot_list.erase ( pot );
       }
 
       pot_per_var.erase ( del_var );
