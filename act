@@ -839,8 +839,8 @@ default['testlist']='all'
 
 not_persistent_options=['fixed_seed','stats']
 
-
 shlv=shelve.open(".options.mak.py",writeback=True)
+
 if shlv.has_key('persistent'):
     persistent=shlv['persistent']
 
@@ -904,6 +904,7 @@ for key in current:
   if not key in not_persistent_options:
     persistent[key]=current[key]
 shlv['persistent']=persistent
+shlv.sync()
 shlv.close()
 
 
