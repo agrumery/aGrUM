@@ -29,6 +29,8 @@
 
 #include <vector>
 
+#include <agrum/config.h>
+
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/inference/BayesNetInference.h>
 #include <agrum/BN/inference/variableElimination.h>

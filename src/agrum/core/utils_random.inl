@@ -21,14 +21,12 @@
 
 namespace gum {
 
-  // we do not use INLINE but inline instead
   INLINE
   double randomProba() {
     return ( ( double ) rand() ) / ( ( double ) RAND_MAX );
   }
 
   
-  // we do not use INLINE but inline instead
   INLINE
   void initRandom ( unsigned int init ) {
     if ( init ) {

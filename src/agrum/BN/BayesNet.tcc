@@ -82,10 +82,8 @@ namespace gum {
   BayesNet<GUM_SCALAR>::~BayesNet() {
     GUM_DESTRUCTOR ( BayesNet );
 
-    for ( HashTableConstIteratorSafe<NodeId, Potential<GUM_SCALAR>*> iter = __probaMap.beginSafe();
-          iter != __probaMap.endSafe();
-          ++iter ) {
-      delete iter.val ();
+    for ( auto p : __probaMap ) {
+      delete p.second;
     }
   }
 
@@ -215,9 +213,8 @@ namespace gum {
       // Reduce the variable child's CPT
       const NodeSet& children = dag().children ( varId );
 
-      for ( NodeSetIterator iter = children.beginSafe ();
-            iter != children.endSafe (); ++iter ) {
-        __probaMap[ *iter ]->erase ( variable ( varId ) );
+      for ( auto c : children ) {
+        __probaMap[ c ]->erase ( variable ( varId ) );
       }
 
       delete __probaMap[varId];
@@ -293,10 +290,9 @@ namespace gum {
     eraseArc ( arc );
 
     // add the necessary arcs to the tail
-    for ( NodeSet::const_iterator_safe iter = new_parents.beginSafe ();
-          iter != new_parents.endSafe (); ++iter ) {
-      if ( ( *iter != tail ) && ! dag().existsArc ( *iter, tail ) ) {
-        addArc ( *iter, tail );
+    for ( auto p : new_parents ) {
+      if ( ( p != tail ) && ! dag().existsArc ( p, tail ) ) {
+        addArc ( p, tail );
       }
     }
 
@@ -304,10 +300,9 @@ namespace gum {
     // add the necessary arcs to the head
     new_parents.erase ( tail );
 
-    for ( NodeSet::const_iterator_safe iter = new_parents.beginSafe ();
-          iter != new_parents.endSafe (); ++iter ) {
-      if ( ( *iter != head ) && ! dag().existsArc ( *iter, head ) ) {
-        addArc ( *iter, head );
+    for ( auto p : new_parents ) {
+      if ( ( p != head ) && ! dag().existsArc ( p, head ) ) {
+        addArc ( p, head );
       }
     }
 
@@ -462,26 +457,22 @@ namespace gum {
     output << "  graph [bgcolor=transparent,label=\"" << bn_name << "\"];" << std::endl;
     output << "  node [style=filled fillcolor=\"#ffffaa\"];" << std::endl << std::endl;
 
-    for ( auto node_iter = nodes().beginSafe(); node_iter != nodes().endSafe(); ++node_iter ) {
-      output << "\"" << variable ( *node_iter ).name() << "\" [comment=\"" << *node_iter << ":" << variable ( *node_iter ) << "\"];" << std::endl;
+    for ( auto node : nodes() ) {
+      output << "\"" << variable ( node ).name() << "\" [comment=\"" << node << ":" << variable ( node ) << "\"];" << std::endl;
     }
 
     output << std::endl;
 
     std::string tab = "  ";
 
-    for ( auto node_iter = nodes().beginSafe(); node_iter != nodes().endSafe(); ++node_iter ) {
-      if ( dag().children ( *node_iter ).size() > 0 ) {
-        const NodeSet& children =  dag().children ( *node_iter );
-
-        for ( NodeSetIterator arc_iter = children.beginSafe ();
-              arc_iter != children.endSafe (); ++arc_iter ) {
-          output << tab << "\"" << variable ( *node_iter ).name() << "\" -> "
-                 << "\"" << variable ( *arc_iter ).name() << "\";" << std::endl;
+    for ( auto node : nodes() ) {
+      if ( dag().children ( node ).size() > 0 ) {
+        for ( auto child : dag().children ( node ) ) {
+          output << tab << "\"" << variable ( node ).name() << "\" -> "
+                 << "\"" << variable ( child ).name() << "\";" << std::endl;
         }
-
-      } else if ( dag().parents ( *node_iter ).size() == 0 ) {
-        output << tab << "\"" << variable ( *node_iter ).name() << "\";" << std::endl;
+      } else if ( dag().parents ( node ).size() == 0 ) {
+        output << tab << "\"" << variable ( node ).name() << "\";" << std::endl;
       }
     }
 
@@ -493,23 +484,23 @@ namespace gum {
   /// begin Multiple Change for all CPTs
   template<typename GUM_SCALAR>
   void BayesNet<GUM_SCALAR>::beginTopologyTransformation() {
-    for ( auto node_iter = nodes().beginSafe(); node_iter != nodes().endSafe(); ++node_iter )
-      __probaMap[*node_iter]->beginMultipleChanges();
+    for ( auto node : nodes() )
+      __probaMap[node]->beginMultipleChanges();
   }
 
   /// end Multiple Change for all CPTs
   template<typename GUM_SCALAR>
   void BayesNet<GUM_SCALAR>::endTopologyTransformation() {
-    for ( auto node_iter = nodes().beginSafe(); node_iter != nodes().endSafe(); ++node_iter )
-      __probaMap[*node_iter]->endMultipleChanges();
+    for ( auto node : nodes() )
+      __probaMap[node]->endMultipleChanges();
   }
 
   /// clear all potentials
   template<typename GUM_SCALAR>
   void BayesNet<GUM_SCALAR>::__clearPotentials() {
     // Removing previous potentials
-    for ( HashTableConstIteratorSafe< NodeId, Potential<GUM_SCALAR>* > iter = __probaMap.beginSafe(); iter != __probaMap.endSafe(); ++iter ) {
-      delete iter.val();
+    for ( auto& elt : __probaMap ) {
+      delete elt.second;
     }
 
     __probaMap.clear();
@@ -520,22 +511,21 @@ namespace gum {
   template<typename GUM_SCALAR>
   void BayesNet<GUM_SCALAR>::__copyPotentials ( const BayesNet<GUM_SCALAR>& source ) {
     // Copying potentials
-    typedef HashTableConstIteratorSafe<NodeId, Potential<GUM_SCALAR>*> PotIterator;
-    Potential<GUM_SCALAR>* copy_array = 0;
+    Potential<GUM_SCALAR>* copy_array = nullptr;
 
-    for ( PotIterator srcIter = source.__probaMap.beginSafe(); srcIter != source.__probaMap.endSafe(); ++srcIter ) {
+    for ( auto  src : source.__probaMap ) {
       // First we build the node's CPT
       copy_array = new Potential<GUM_SCALAR>();
 
-      for ( gum::Idx i = 0; i < ( srcIter.val() )->nbrDim(); i++ ) {
-        ( *copy_array ) << variableFromName ( ( srcIter.val() )->variable ( i ).name() );
+      for ( gum::Idx i = 0; i < src.second->nbrDim(); i++ ) {
+        ( *copy_array ) << variableFromName ( src.second->variable ( i ).name() );
       }
 
 
-      copy_array->copyFrom ( * ( srcIter.val() ) );
+      copy_array->copyFrom ( * ( src.second ) );
 
       // We add the CPT to the CPT's hashmap
-      __probaMap.insert ( srcIter.key(), copy_array );
+      __probaMap.insert ( src.first, copy_array );
     }
   }
 
@@ -544,8 +534,8 @@ namespace gum {
   void BayesNet<GUM_SCALAR>::generateCPTs() {
     SimpleCPTGenerator<GUM_SCALAR> generator;
 
-    for ( auto iter = nodes().beginSafe(); iter != nodes().endSafe(); ++iter ) {
-      generator.generateCPT ( cpt ( *iter ).pos ( variable ( *iter ) ),  cpt ( *iter ) );
+    for ( auto node : nodes() ) {
+      generator.generateCPT ( cpt ( node ).pos ( variable ( node ) ),  cpt ( node ) );
     }
   }
 
@@ -559,7 +549,7 @@ namespace gum {
 
     for ( Idx i = 0; i < cpt ( id ).nbrDim(); i++ ) {
       if ( &cpt ( id ).variable ( i ) != & ( newPot->variable ( i ) ) ) {
-        GUM_ERROR ( OperationNotAllowed, "cannot exchange potentails because, for variable with id " << id << ", dimension " << i << " differs. " );
+        GUM_ERROR ( OperationNotAllowed, "cannot exchange potentials because, for variable with id " << id << ", dimension " << i << " differs. " );
       }
     }
 

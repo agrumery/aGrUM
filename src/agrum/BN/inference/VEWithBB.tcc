@@ -116,10 +116,8 @@ namespace gum {
     query.insert ( id );
     Set<NodeId> hardEvidence;
 
-    for ( typename Property<const Potential<GUM_SCALAR>*>::onNodes::iterator_safe iter = __hardEvidence.beginSafe ();
-          iter != __hardEvidence.endSafe (); ++iter ) {
-      hardEvidence.insert ( iter.key() );
-    }
+    for ( auto& elt : __hardEvidence )
+      hardEvidence.insert ( elt.first );
 
     BayesBall bb;
     bb.requisiteNodes ( this->bn().dag(), query, hardEvidence, requisite_nodes );
@@ -133,17 +131,13 @@ namespace gum {
     Set<Potential<GUM_SCALAR>*> pool;
     Set<NodeId> elim_set;
 
-    for ( Set<NodeId>::iterator_safe node = requisite_nodes.beginSafe(); node != requisite_nodes.endSafe(); ++node ) {
-      pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( & ( this->bn().cpt ( *node ) ) ) );
-      elim_set.insert ( *node );
-      const NodeSet& parents = this->bn().dag().parents ( *node );
+    for ( auto node : requisite_nodes ) {
+      pool.insert ( const_cast<Potential<GUM_SCALAR>*> ( & ( this->bn().cpt ( node ) ) ) );
+      elim_set.insert ( node );
 
-      for ( NodeSetIterator parent = parents.beginSafe();
-            parent != parents.endSafe(); ++parent ) {
-        if ( __hardEvidence.exists ( *parent ) ) {
-          elim_set.insert ( *parent );
-        }
-      }
+      for ( auto parent : this->bn().dag().parents ( node ) )
+        if ( __hardEvidence.exists ( parent ) )
+          elim_set.insert ( parent );
     }
 
     elim_set.erase ( id );
@@ -168,9 +162,8 @@ namespace gum {
 
     MultiDimBucket<GUM_SCALAR> bucket;
 
-    for ( SetIteratorSafe<Potential<GUM_SCALAR>*> iter = pool.beginSafe(); iter != pool.endSafe(); ++iter ) {
-      bucket.add ( **iter );
-    }
+    for ( auto pot : pool )
+      bucket.add ( *pot );
 
     bucket.add ( this->bn().variable ( id ) );
     Instantiation i ( posterior );
@@ -182,10 +175,8 @@ namespace gum {
 
     posterior.normalize();
 
-    for ( SetIteratorSafe<Potential<GUM_SCALAR>*> iter = trash.beginSafe();
-          iter != trash.endSafe(); ++iter ) {
-      delete *iter;
-    }
+    for ( auto pot : trash )
+      delete pot;
   }
 
 } /* namespace gum */

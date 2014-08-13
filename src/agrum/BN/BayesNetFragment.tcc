@@ -39,9 +39,9 @@ namespace gum {
   BayesNetFragment<GUM_SCALAR>::~BayesNetFragment() {
     GUM_DESTRUCTOR ( BayesNetFragment );
 
-    for ( auto iter_id = nodes().beginSafe(); iter_id != nodes().endSafe(); ++iter_id )
-      if ( __localCPTs.exists ( *iter_id ) )
-        _uninstallCPT ( *iter_id );
+    for ( auto node : nodes() )
+      if ( __localCPTs.exists ( node ) )
+        _uninstallCPT ( node );
   }
 
   //============================================================
@@ -138,15 +138,15 @@ namespace gum {
       this->_dag.addNode ( id );
 
       // adding arcs with id as a tail
-      for ( auto pa = this->__bn.dag().parents ( id ).beginSafe(); pa != this->__bn.dag().parents ( id ).endSafe(); ++pa ) {
-        if ( isInstalledNode ( *pa ) )
-          this->_dag.addArc ( *pa, id );
+      for ( auto pa : this->__bn.dag().parents ( id ) ) {
+        if ( isInstalledNode ( pa ) )
+          this->_dag.addArc ( pa, id );
       }
 
       //addin arcs with id as a head
-      for ( auto son = this->__bn.dag().children ( id ).beginSafe(); son != this->__bn.dag().children ( id ).endSafe(); ++son )
-        if ( isInstalledNode ( *son ) )
-          this->_dag.addArc ( id, *son );
+      for ( auto son : this->__bn.dag().children ( id ) )
+        if ( isInstalledNode ( son ) )
+          this->_dag.addArc ( id, son );
     }
   }
 
@@ -155,8 +155,8 @@ namespace gum {
     installNode ( id );
 
     // bn is a dag => this will have an end ...
-    for ( auto pa = this->__bn.dag().parents ( id ).beginSafe(); pa != this->__bn.dag().parents ( id ).endSafe(); ++pa )
-      installAscendants ( *pa );
+    for ( auto pa : this->__bn.dag().parents ( id ) )
+      installAscendants ( pa );
   }
 
   template<typename GUM_SCALAR> INLINE void
@@ -180,8 +180,8 @@ namespace gum {
   template<typename GUM_SCALAR> void
   BayesNetFragment<GUM_SCALAR>::_installCPT ( NodeId id, const Potential<GUM_SCALAR>* pot ) noexcept {
     // topology
-    for ( auto node = dag().parents ( id ).beginSafe(); node != dag().parents ( id ).endSafe(); ++node )
-      _uninstallArc ( *node, id ) ;
+    for ( auto node : dag().parents ( id ) )
+      _uninstallArc ( node, id );
 
     for ( Idx i = 1; i < pot->nbrDim(); i++ ) {
       NodeId parent = __bn.idFromName ( pot->variable ( i ).name() );
@@ -282,8 +282,8 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE bool
   BayesNetFragment<GUM_SCALAR>::checkConsistency () const noexcept {
-    for ( auto iter_node = nodes().beginSafe (); iter_node != nodes().endSafe(); ++iter_node )
-      if ( ! checkConsistency ( *iter_node ) ) return false;
+    for ( auto node : nodes() )
+      if ( ! checkConsistency ( node ) ) return false;
 
     return true;
   }
@@ -322,13 +322,13 @@ namespace gum {
     output << "  graph [bgcolor=transparent,label=\"" << bn_name << "\"];" << std::endl;
     output << "  node [style=filled];" << std::endl << std::endl;
 
-    for ( auto node_iter = __bn.nodes().beginSafe(); node_iter != __bn.nodes().endSafe(); ++node_iter ) {
-      output << "\"" << __bn.variable ( *node_iter ).name() << "\" [comment=\"" << *node_iter << ":" << __bn.variable ( *node_iter ) << ", \"";
+    for ( auto node : __bn.nodes() ) {
+      output << "\"" << __bn.variable ( node ).name() << "\" [comment=\"" << node << ":" << __bn.variable ( node ) << ", \"";
 
-      if ( isInstalledNode ( *node_iter ) ) {
-        if ( ! checkConsistency ( *node_iter ) ) {
+      if ( isInstalledNode ( node ) ) {
+        if ( ! checkConsistency ( node ) ) {
           output << notConsistantStyle;
-        } else if ( __localCPTs.exists ( *node_iter ) )
+        } else if ( __localCPTs.exists ( node ) )
           output << styleWithLocalCPT;
         else
           output << inFragmentStyle;
@@ -342,13 +342,13 @@ namespace gum {
 
     std::string tab = "  ";
 
-    for ( auto node_iter = __bn.nodes().beginSafe (); node_iter != __bn.nodes().endSafe(); ++node_iter ) {
-      if ( __bn.dag().children ( *node_iter ).size() > 0 ) {
-        for ( auto child_iter = __bn.dag().children ( *node_iter ).beginSafe(); child_iter != __bn.dag().children ( *node_iter ).endSafe(); ++child_iter ) {
-          output << tab << "\"" << __bn.variable ( *node_iter ).name() << "\" -> "
-                 << "\"" << __bn.variable ( *child_iter ).name() << "\" [";
+    for ( auto node :  __bn.nodes() ) {
+      if ( __bn.dag().children ( node ).size() > 0 ) {
+        for ( auto child : __bn.dag().children ( node ) ) {
+          output << tab << "\"" << __bn.variable ( node ).name() << "\" -> "
+                 << "\"" << __bn.variable ( child ).name() << "\" [";
 
-          if ( dag().existsArc ( Arc ( *node_iter, *child_iter ) ) )
+          if ( dag().existsArc ( Arc ( node, child ) ) )
             output << inFragmentStyle;
           else
             output << outFragmentStyle;

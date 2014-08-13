@@ -43,11 +43,11 @@ namespace gum {
     GUM_CONSTRUCTOR ( BayesNetFactory );
     __states.push_back ( factory_state::NONE );
 
-    for ( auto iter_node = bn->nodes().beginSafe(); iter_node != bn->nodes().endSafe(); ++iter_node ) {
-      if ( __varNameMap.exists ( bn->variable ( *iter_node ).name() ) )
-        GUM_ERROR ( DuplicateElement, bn->variable ( *iter_node ).name() );
+    for ( auto node : bn->nodes() ) {
+      if ( __varNameMap.exists ( bn->variable ( node ).name() ) )
+        GUM_ERROR ( DuplicateElement, bn->variable ( node ).name() );
 
-      __varNameMap.insert ( bn->variable ( *iter_node ).name(), *iter_node );
+      __varNameMap.insert ( bn->variable ( node ).name(), node );
     }
 
     resetVerbose();
@@ -636,12 +636,9 @@ namespace gum {
         Instantiation inst_default;
         inst_default << var;
 
-        const NodeSet& parents = __bn->dag().parents ( varId );
-
-        for ( NodeSet::iterator_safe iter = parents.beginSafe();
-              iter != parents.endSafe(); ++iter ) {
-          if ( ! __parents->contains ( __bn->variable ( *iter ) ) ) {
-            inst_default << __bn->variable ( *iter );
+        for ( auto node : __bn->dag().parents ( varId ) ) {
+          if ( ! __parents->contains ( __bn->variable ( node ) ) ) {
+            inst_default << __bn->variable ( node );
           }
         }
 
@@ -757,11 +754,8 @@ namespace gum {
       if ( redefineParents ) {
         __setCPTAndParents ( var, table );
       } else if ( table->contains ( var ) ) {
-        const NodeSet& parents = __bn->dag().parents ( varId );
-
-        for ( NodeSetIterator iter = parents.beginSafe ();
-              iter != parents.endSafe (); ++iter ) {
-          if ( ! table->contains ( __bn->variable ( *iter ) ) ) {
+        for ( auto node : __bn->dag().parents ( varId ) ) {
+          if ( ! table->contains ( __bn->variable ( node ) ) ) {
             GUM_ERROR ( OperationNotAllowed, "The CPT is not valid in the current BayesNet." );
           }
         }
@@ -882,10 +876,10 @@ namespace gum {
     NodeId varId = __varNameMap[var.name()];
     __bn->_dag.eraseParents ( varId );
 
-    for ( Sequence<const DiscreteVariable*>::iterator_safe iter = table->variablesSequence().beginSafe(); iter != table->variablesSequence().endSafe(); ++iter ) {
-      if ( ( *iter ) != ( &var ) ) {
-        __checkVariableName ( ( *iter )->name() );
-        __bn->_dag.addArc ( __varNameMap[ ( *iter )->name()], varId );
+    for ( auto v : table->variablesSequence() ) {
+      if ( v != ( &var ) ) {
+        __checkVariableName ( v->name() );
+        __bn->_dag.addArc ( __varNameMap[ v->name()], varId );
       }
     }
 
@@ -903,5 +897,5 @@ namespace gum {
   }
 } /* namespace gum */
 
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 2; replace-tabs on; 
 

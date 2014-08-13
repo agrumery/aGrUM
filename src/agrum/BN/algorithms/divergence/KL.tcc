@@ -122,8 +122,8 @@ namespace gum {
   template<typename GUM_SCALAR>
   bool
   KL<GUM_SCALAR>::__checkCompatibility() const {
-    for ( auto it = _p.nodes().beginSafe (); it != _p.nodes().endSafe (); ++it ) {
-      const DiscreteVariable& vp = _p.variable ( *it );
+    for ( auto node : _p.nodes() ) {
+      const DiscreteVariable& vp = _p.variable ( node );
 
       try {
         const DiscreteVariable& vq = _q.variableFromName ( vp.name() );
@@ -137,7 +137,7 @@ namespace gum {
 
           } catch ( OutOfBounds& e ) {
 
-            GUM_ERROR ( OperationNotAllowed, "KL : the 2 BNs are not compatible (not the same labels for " + vp.name() + ")" );
+            GUM_ERROR ( OperationNotAllowed, "KL : the 2 BNs are not compatible F(not the same labels for " + vp.name() + ")" );
           }
         }
       } catch ( NotFound& e ) {

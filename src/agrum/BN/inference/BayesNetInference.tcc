@@ -49,8 +49,6 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   void BayesNetInference<GUM_SCALAR>::_invalidatePosteriors() {
-    //BEGINSAFE for ( typename Property< Potential<GUM_SCALAR> * >::onNodes::iterator_safe it =
-    //BEGINSAFE        _posteriors.beginSafe(); it != _posteriors.endSafe(); ++it ) {
     for ( auto it : _posteriors ) {
       if ( it.second != nullptr ) delete ( it.second );
     }

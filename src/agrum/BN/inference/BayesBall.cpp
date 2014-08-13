@@ -37,14 +37,14 @@ namespace gum {
                               Set<NodeId>& requisite ) {
     __marks.clear();
 
-    for ( Set<NodeId>::iterator_safe iter = query.beginSafe(); iter != query.endSafe(); ++iter ) {
-      __fromChild ( *iter, dag, hardEvidence );
+    for ( auto node : query ) {
+      __fromChild ( node, dag, hardEvidence );
     }
 
-    for ( auto iter_node = dag.nodes().beginSafe (); iter_node != dag.nodes().endSafe(); ++iter_node ) {
+    for ( auto node : dag.nodes() ) {
       try {
-        if ( __marks[*iter_node].first ) {
-          requisite.insert ( *iter_node );
+        if ( __marks[node].first ) {
+          requisite.insert ( node );
         }
       } catch ( NotFound& ) {
         // Do nothing
@@ -60,19 +60,17 @@ namespace gum {
 
     if ( ( not hardEvidence.exists ( node ) ) and ( not __marks[node].first ) ) {
       __marks[node].first = true;
-      const NodeSet& parents =  dag.parents ( node );
 
-      for ( NodeSetIterator iter = parents.beginSafe(); iter != parents.endSafe(); ++iter ) {
-        __fromChild ( *iter, dag, hardEvidence );
+      for ( auto par : dag.parents ( node ) ) {
+        __fromChild ( par, dag, hardEvidence );
       }
     }
 
     if ( not __marks[node].second ) {
       __marks[node].second = true;
-      const NodeSet& children = dag.children ( node );
 
-      for ( NodeSetIterator iter = children.beginSafe(); iter != children.endSafe(); ++iter ) {
-        __fromParent ( *iter, dag, hardEvidence );
+      for ( auto chi :  dag.children ( node ) ) {
+        __fromParent ( chi, dag, hardEvidence );
       }
     }
   }
@@ -85,17 +83,15 @@ namespace gum {
 
     if ( hardEvidence.exists ( node ) and ( not __marks[node].first ) ) {
       __marks[node].first = true;
-      const NodeSet& parents = dag.parents ( node );
 
-      for ( NodeSetIterator iter = parents.beginSafe(); iter != parents.endSafe(); ++iter ) {
-        __fromChild ( *iter, dag, hardEvidence );
+      for ( auto par : dag.parents ( node ) ) {
+        __fromChild ( par, dag, hardEvidence );
       }
     } else if ( !__marks[node].second ) {
       __marks[node].second = true;
-      const NodeSet& children = dag.children ( node );
 
-      for ( NodeSetIterator iter = children.beginSafe(); iter != children.endSafe(); ++iter ) {
-        __fromParent ( *iter, dag, hardEvidence );
+      for ( auto chi : dag.children ( node ) ) {
+        __fromParent ( chi, dag, hardEvidence );
       }
     }
   }
