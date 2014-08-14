@@ -100,12 +100,12 @@ namespace gum {
         // order of the values specified by the user
         std::vector<int> no_user_vals;
         std::vector< std::pair<unsigned int,unsigned int> > user_vals;
-        for ( unsigned int i = 0; i < __max_value; ++i ) {
-          const unsigned int str_index = __strings.first ( i );
+        for ( auto iter = __strings.begin (); iter != __strings.end (); ++iter ) {
+          const int str_index = iter.first ();
           const std::string& str = DBCell::getString ( str_index );
           if ( __str_user_values->exists ( str ) ) {
             user_vals.push_back ( std::pair<unsigned int,unsigned int>
-                                  ( str_index, __str_user_values->pos ( str ) ) );
+                                  ( str_index,  __str_user_values->pos ( str ) ) );
           }
           else {
             no_user_vals.push_back ( str_index );
@@ -130,6 +130,19 @@ namespace gum {
           ++__max_value;
         }
 
+        // if there existed numbers, add them (in any order)
+        std::vector<float> numbers ( __numbers.size () );
+        unsigned int i = 0;
+        for ( auto iter = __numbers.begin ();
+              iter != __numbers.end (); ++iter, ++i ) {
+          numbers[i] = iter.first ();
+        }
+        __numbers.clear ();
+        for ( const auto num : numbers ) {
+          __numbers.insert ( num, __max_value );
+          ++__max_value;
+        }
+
         // the user values are not needed any more, so, remove them
         delete __str_user_values;
         __str_user_values = nullptr;
@@ -139,8 +152,8 @@ namespace gum {
         // order of the values specified by the user
         std::vector<float> no_user_vals;
         std::vector< std::pair<float,unsigned int> > user_vals;
-        for ( unsigned int i = 0; i < __max_value; ++i ) {
-          const float val = __numbers.first ( i );
+        for ( auto iter = __numbers.begin (); iter != __numbers.end (); ++iter ) {
+          const float val = iter.first ();
           if ( __num_user_values->exists ( val ) ) {
             user_vals.push_back ( std::pair<float,unsigned int>
                                   ( val, __num_user_values->pos ( val ) ) );
@@ -165,6 +178,19 @@ namespace gum {
         }
         for ( const auto val : no_user_vals ) {
           __numbers.insert ( val, __max_value );
+          ++__max_value;
+        }
+        
+        // if there existed strings, add them (in any order)
+        std::vector<int> strings ( __strings.size () );
+        unsigned int i = 0;
+        for ( auto iter = __strings.begin ();
+              iter != __strings.end (); ++iter, ++i ) {
+          strings[i] = iter.first ();
+        }
+        __strings.clear ();
+        for ( const auto str : strings ) {
+          __strings.insert ( str, __max_value );
           ++__max_value;
         }
 
