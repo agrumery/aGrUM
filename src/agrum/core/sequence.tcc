@@ -1308,6 +1308,15 @@ namespace gum {
     return res;
   }
 
+  
+  /// a << operator for displaying the content of the Sequence
+  template <typename Key, typename Alloc> INLINE
+  std::ostream& operator<< ( std::ostream& stream,
+                             const Sequence<Key,Alloc>& seq ) {
+    stream << seq.toString();
+    return stream;
+  }
+
 
 } /* namespace gum */
 
