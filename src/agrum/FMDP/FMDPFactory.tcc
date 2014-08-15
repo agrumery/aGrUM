@@ -46,11 +46,11 @@ namespace gum {
   // @param fmdp A pointer over the Factored Markov Decision Process filled by this factory.
 
   template<typename GUM_SCALAR> INLINE
-  FMDPFactory<GUM_SCALAR>::FMDPFactory ( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* ddFactory ) : __fmdp ( fmdp ), __decisionDiagramFactory ( ddFactory ) {
+  FMDPFactory<GUM_SCALAR>::FMDPFactory( FactoredMarkovDecisionProcess<GUM_SCALAR>* fmdp, MultiDimDecisionDiagramFactoryBase<GUM_SCALAR>* ddFactory ) : __fmdp( fmdp ), __decisionDiagramFactory( ddFactory ) {
 
-    GUM_CONSTRUCTOR ( FMDPFactory );
+    GUM_CONSTRUCTOR( FMDPFactory );
 
-    __states.push_back ( FMDPfactory_state::NONE );
+    __states.push_back( FMDPfactory_state::NONE );
     resetVerbose();
   }
 
@@ -61,7 +61,7 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   FMDPFactory<GUM_SCALAR>::~FMDPFactory() {
 
-    GUM_DESTRUCTOR ( FMDPFactory );
+    GUM_DESTRUCTOR( FMDPFactory );
 
   }
 
@@ -78,8 +78,8 @@ namespace gum {
   FactoredMarkovDecisionProcess<GUM_SCALAR>*
   FMDPFactory<GUM_SCALAR>::FMDP() const {
 
-    if ( state() != FMDPfactory_state::NONE )
-      GUM_ERROR ( OperationNotAllowed, "Illegal state to return the factored markov decision process: it is not yet finished." );
+    if( state() != FMDPfactory_state::NONE )
+      GUM_ERROR( OperationNotAllowed, "Illegal state to return the factored markov decision process: it is not yet finished." );
 
     return __fmdp;
   }
@@ -100,25 +100,22 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   const DiscreteVariable*
-  FMDPFactory<GUM_SCALAR>::variable ( const std::string& name ) const {
+  FMDPFactory<GUM_SCALAR>::variable( const std::string& name ) const {
 
-    for ( HashTableConstIteratorSafe< std::string, const DiscreteVariable* > iterM = __varNameMap.beginSafe(); iterM != __varNameMap.endSafe(); ++iterM )
-      if ( iterM.key().compare ( name ) == 0 )
-        return iterM.val();
+    for( const auto & elt : __varNameMap )
+      if( elt.first.compare( name ) == 0 )
+        return elt.second;
 
-
-    GUM_TRACE ( __varNameMap );
-
-    GUM_ERROR ( NotFound, name );
+    GUM_ERROR( NotFound, name );
 
     return nullptr;
   }
 
 
   /* **************************************************************************************************** **/
-  /* **                                                                                                                                                    **/
-  /* **                            Network declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::PROPERTY)                                      **/
-  /* **                                                                                                                                                    **/
+  /* **                                                                                                   **/
+  /* ** Network declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::PROPERTY)             **/
+  /* **                                                                                                   **/
   /* **************************************************************************************************** **/
 
 
@@ -128,10 +125,10 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::startPropertyDeclaration() {
 
-    if ( state() != FMDPfactory_state::NONE )
-      __illegalStateError ( "startPropertyDeclaration" );
+    if( state() != FMDPfactory_state::NONE )
+      __illegalStateError( "startPropertyDeclaration" );
     else
-      __states.push_back ( FMDPfactory_state::PROPERTY );
+      __states.push_back( FMDPfactory_state::PROPERTY );
 
 //       VERBOSITY ( "starting property" );
   }
@@ -141,12 +138,12 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   void
-  FMDPFactory<GUM_SCALAR>::addProperty ( const std::string& propName, const std::string& propValue ) {
+  FMDPFactory<GUM_SCALAR>::addProperty( const std::string& propName, const std::string& propValue ) {
 
-    if ( state() != FMDPfactory_state::PROPERTY )
-      __illegalStateError ( "addProperty" );
+    if( state() != FMDPfactory_state::PROPERTY )
+      __illegalStateError( "addProperty" );
     else
-      __fmdp->setProperty ( propName, propValue );
+      __fmdp->setProperty( propName, propValue );
 
   }
 
@@ -157,8 +154,8 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::endPropertyDeclaration() {
 
-    if ( state() != FMDPfactory_state::PROPERTY )
-      __illegalStateError ( "endPropertyDeclaration" );
+    if( state() != FMDPfactory_state::PROPERTY )
+      __illegalStateError( "endPropertyDeclaration" );
     else
       __states.pop_back();
 
@@ -179,12 +176,12 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::startVariableDeclaration() {
 
-    if ( state() != FMDPfactory_state::NONE )
-      __illegalStateError ( "startVariableDeclaration" );
+    if( state() != FMDPfactory_state::NONE )
+      __illegalStateError( "startVariableDeclaration" );
     else {
-      __states.push_back ( FMDPfactory_state::VARIABLE );
-      __stringBag.push_back ( "name" );
-      __stringBag.push_back ( "desc" );
+      __states.push_back( FMDPfactory_state::VARIABLE );
+      __stringBag.push_back( "name" );
+      __stringBag.push_back( "desc" );
     }
 
 //       VERBOSITY ( "  starting variable" );
@@ -195,14 +192,14 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   void
-  FMDPFactory<GUM_SCALAR>::variableName ( const std::string& name ) {
+  FMDPFactory<GUM_SCALAR>::variableName( const std::string& name ) {
 
-    if ( state() != FMDPfactory_state::VARIABLE )
-      __illegalStateError ( "variableName" );
+    if( state() != FMDPfactory_state::VARIABLE )
+      __illegalStateError( "variableName" );
     else {
 
-      if ( __varNameMap.exists ( name ) )
-        GUM_ERROR ( DuplicateElement, "Name already used: " + name );
+      if( __varNameMap.exists( name ) )
+        GUM_ERROR( DuplicateElement, "Name already used: " + name );
 
       __foo_flag = true;
       __stringBag[0] = name;
@@ -215,10 +212,10 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   void
-  FMDPFactory<GUM_SCALAR>::variableDescription ( const std::string& desc ) {
+  FMDPFactory<GUM_SCALAR>::variableDescription( const std::string& desc ) {
 
-    if ( state() != FMDPfactory_state::VARIABLE )
-      __illegalStateError ( "variableDescription" );
+    if( state() != FMDPfactory_state::VARIABLE )
+      __illegalStateError( "variableDescription" );
     else {
       __bar_flag = true;
       __stringBag[1] = desc;
@@ -232,13 +229,13 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   void
-  FMDPFactory<GUM_SCALAR>::addModality ( const std::string& name ) {
+  FMDPFactory<GUM_SCALAR>::addModality( const std::string& name ) {
 
-    if ( state() != FMDPfactory_state::VARIABLE )
-      __illegalStateError ( "addModality" );
+    if( state() != FMDPfactory_state::VARIABLE )
+      __illegalStateError( "addModality" );
     else {
-      __checkModalityInBag ( name );
-      __stringBag.push_back ( name );
+      __checkModalityInBag( name );
+      __stringBag.push_back( name );
     }
   }
 
@@ -247,11 +244,11 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   void
-  FMDPFactory<GUM_SCALAR>::__checkModalityInBag ( const std::string& mod ) {
+  FMDPFactory<GUM_SCALAR>::__checkModalityInBag( const std::string& mod ) {
 
-    for ( size_t i = 2; i < __stringBag.size(); ++i )
-      if ( mod == __stringBag[i] )
-        GUM_ERROR ( DuplicateElement, mod );
+    for( size_t i = 2; i < __stringBag.size(); ++i )
+      if( mod == __stringBag[i] )
+        GUM_ERROR( DuplicateElement, mod );
   }
 
 
@@ -261,22 +258,22 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::endVariableDeclaration() {
 
-    if ( state() != FMDPfactory_state::VARIABLE )
-      __illegalStateError ( "endVariableDeclaration" );
-    else if ( __foo_flag and ( __stringBag.size() > 3 ) ) {
+    if( state() != FMDPfactory_state::VARIABLE )
+      __illegalStateError( "endVariableDeclaration" );
+    else if( __foo_flag and ( __stringBag.size() > 3 ) ) {
 
-      LabelizedVariable* var = new LabelizedVariable ( __stringBag[0], ( __bar_flag ) ? __stringBag[1] : "", 0 );
-      LabelizedVariable* varPrime = new LabelizedVariable ( __stringBag[0] + "'", ( __bar_flag ) ? __stringBag[1] : "", 0 );
+      LabelizedVariable* var = new LabelizedVariable( __stringBag[0], ( __bar_flag ) ? __stringBag[1] : "", 0 );
+      LabelizedVariable* varPrime = new LabelizedVariable( __stringBag[0] + "'", ( __bar_flag ) ? __stringBag[1] : "", 0 );
 
-      for ( size_t i = 2; i < __stringBag.size(); ++i ) {
-        var->addLabel ( __stringBag[i] );
-        varPrime->addLabel ( __stringBag[i] );
+      for( size_t i = 2; i < __stringBag.size(); ++i ) {
+        var->addLabel( __stringBag[i] );
+        varPrime->addLabel( __stringBag[i] );
       }
 
-      __fmdp->addVariable ( var );
-      __varNameMap.insert ( var->name(), var );
-      __fmdp->addPrimedVariable ( varPrime, var );
-      __varNameMap.insert ( varPrime->name() , varPrime );
+      __fmdp->addVariable( var );
+      __varNameMap.insert( var->name(), var );
+      __fmdp->addPrimedVariable( varPrime, var );
+      __varNameMap.insert( varPrime->name() , varPrime );
 
       __resetParts();
       __states.pop_back();
@@ -288,14 +285,14 @@ namespace gum {
       std::stringstream msg;
       msg << "Not enough modalities (";
 
-      if ( __stringBag.size() > 2 )
+      if( __stringBag.size() > 2 )
         msg << __stringBag.size() - 2;
       else
         msg << 0;
 
       msg << ") declared for variable ";
 
-      if ( __foo_flag )
+      if( __foo_flag )
         msg << __stringBag[0];
       else
         msg << "unknown";
@@ -303,7 +300,7 @@ namespace gum {
       __resetParts();
       __states.pop_back();
 
-      GUM_ERROR ( OperationNotAllowed, msg.str() );
+      GUM_ERROR( OperationNotAllowed, msg.str() );
     }
   }
 
@@ -320,11 +317,11 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   FMDPFactory<GUM_SCALAR>::startActionDeclaration( ) {
-    if ( state() != FMDPfactory_state::NONE )
-      __illegalStateError ( "startActionDeclaration" );
+    if( state() != FMDPfactory_state::NONE )
+      __illegalStateError( "startActionDeclaration" );
     else {
       __foo_flag = true;
-      __states.push_back ( FMDPfactory_state::ACTION );
+      __states.push_back( FMDPfactory_state::ACTION );
     }
 
 //       VERBOSITY ( "starting action declaration" );
@@ -335,12 +332,12 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   void
-  FMDPFactory<GUM_SCALAR>::addAction ( const std::string& action ) {
-    if ( state() != FMDPfactory_state::ACTION )
-      __illegalStateError ( "addAction" );
+  FMDPFactory<GUM_SCALAR>::addAction( const std::string& action ) {
+    if( state() != FMDPfactory_state::ACTION )
+      __illegalStateError( "addAction" );
     else {
-      __stringBag.push_back ( action );
-      __fmdp->addAction ( action );
+      __stringBag.push_back( action );
+      __fmdp->addAction( action );
     }
   }
 
@@ -351,8 +348,8 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::endActionDeclaration() {
 
-    if ( state() != FMDPfactory_state::ACTION )
-      __illegalStateError ( "endActionDeclaration" );
+    if( state() != FMDPfactory_state::ACTION )
+      __illegalStateError( "endActionDeclaration" );
     else {
       __states.pop_back();
       __resetParts();
@@ -374,10 +371,10 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   FMDPFactory<GUM_SCALAR>::startTransitionDeclaration( ) {
-    if ( state() != FMDPfactory_state::NONE && state() != FMDPfactory_state::ACTION )
-      __illegalStateError ( "startTransitionDeclaration" );
+    if( state() != FMDPfactory_state::NONE && state() != FMDPfactory_state::ACTION )
+      __illegalStateError( "startTransitionDeclaration" );
     else
-      __states.push_back ( FMDPfactory_state::TRANSITION );
+      __states.push_back( FMDPfactory_state::TRANSITION );
 
 //       VERBOSITY ( "starting transition declaration" );
   }
@@ -387,16 +384,16 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   void
-  FMDPFactory<GUM_SCALAR>::addTransition ( const std::string& var, const MultiDimAdressable* transition ) {
+  FMDPFactory<GUM_SCALAR>::addTransition( const std::string& var, const MultiDimAdressable* transition ) {
 
-    const MultiDimImplementation<GUM_SCALAR>* t = reinterpret_cast<const MultiDimImplementation<GUM_SCALAR>*> ( transition );
+    const MultiDimImplementation<GUM_SCALAR>* t = reinterpret_cast<const MultiDimImplementation<GUM_SCALAR>*>( transition );
 
-    if ( state() != FMDPfactory_state::TRANSITION )
-      __illegalStateError ( "addTransition" );
-    else if ( __foo_flag )
-      __fmdp->addTransitionForAction ( __varNameMap[var], t, __stringBag[0] );
+    if( state() != FMDPfactory_state::TRANSITION )
+      __illegalStateError( "addTransition" );
+    else if( __foo_flag )
+      __fmdp->addTransitionForAction( __varNameMap[var], t, __stringBag[0] );
     else
-      __fmdp->addTransition ( __varNameMap[var], t );
+      __fmdp->addTransition( __varNameMap[var], t );
 
   }
 
@@ -406,15 +403,15 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   void
-  FMDPFactory<GUM_SCALAR>::addTransition ( const std::string& var ) {
+  FMDPFactory<GUM_SCALAR>::addTransition( const std::string& var ) {
 
-    if ( state() != FMDPfactory_state::TRANSITION )
-      __illegalStateError ( "addTransition" );
+    if( state() != FMDPfactory_state::TRANSITION )
+      __illegalStateError( "addTransition" );
     else {
-      if ( __foo_flag )
-        __fmdp->addTransitionForAction ( __varNameMap[var], this->__decisionDiagramFactory->getMultiDimDecisionDiagram ( false, ( GUM_SCALAR ) 0, true ), __stringBag[0] );
+      if( __foo_flag )
+        __fmdp->addTransitionForAction( __varNameMap[var], this->__decisionDiagramFactory->getMultiDimDecisionDiagram( false, ( GUM_SCALAR ) 0, true ), __stringBag[0] );
       else
-        __fmdp->addTransition ( __varNameMap[var], this->__decisionDiagramFactory->getMultiDimDecisionDiagram ( false, ( GUM_SCALAR ) 0, true ) );
+        __fmdp->addTransition( __varNameMap[var], this->__decisionDiagramFactory->getMultiDimDecisionDiagram( false, ( GUM_SCALAR ) 0, true ) );
 
       // this->__decisionDiagramFactory->showProperties();
       this->__decisionDiagramFactory->clear();
@@ -429,8 +426,8 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::endTransitionDeclaration() {
 
-    if ( state() != FMDPfactory_state::TRANSITION )
-      __illegalStateError ( "endTransitionDeclaration" );
+    if( state() != FMDPfactory_state::TRANSITION )
+      __illegalStateError( "endTransitionDeclaration" );
     else
       __states.pop_back();
 
@@ -450,10 +447,10 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   FMDPFactory<GUM_SCALAR>::startCostDeclaration( ) {
-    if ( state() != FMDPfactory_state::NONE && state() != FMDPfactory_state::ACTION )
-      __illegalStateError ( "startTransitionDeclaration" );
+    if( state() != FMDPfactory_state::NONE && state() != FMDPfactory_state::ACTION )
+      __illegalStateError( "startTransitionDeclaration" );
     else
-      __states.push_back ( FMDPfactory_state::COST );
+      __states.push_back( FMDPfactory_state::COST );
 
 //       VERBOSITY ( "starting Cost declaration" );
   }
@@ -463,16 +460,16 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   void
-  FMDPFactory<GUM_SCALAR>::addCost ( const MultiDimAdressable* cost ) {
+  FMDPFactory<GUM_SCALAR>::addCost( const MultiDimAdressable* cost ) {
 
-    const MultiDimImplementation<GUM_SCALAR>* c = reinterpret_cast<const MultiDimImplementation<GUM_SCALAR>*> ( cost );
+    const MultiDimImplementation<GUM_SCALAR>* c = reinterpret_cast<const MultiDimImplementation<GUM_SCALAR>*>( cost );
 
-    if ( state() != FMDPfactory_state::COST )
-      __illegalStateError ( "addCost" );
-    else if ( __foo_flag )
-      __fmdp->addCostForAction ( c, __stringBag[0] );
+    if( state() != FMDPfactory_state::COST )
+      __illegalStateError( "addCost" );
+    else if( __foo_flag )
+      __fmdp->addCostForAction( c, __stringBag[0] );
     else
-      __fmdp->addCost ( c );
+      __fmdp->addCost( c );
   }
 
 
@@ -482,13 +479,13 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   FMDPFactory<GUM_SCALAR>::addCost( ) {
-    if ( state() != FMDPfactory_state::COST )
-      __illegalStateError ( "addCost" );
+    if( state() != FMDPfactory_state::COST )
+      __illegalStateError( "addCost" );
     else {
-      if ( __foo_flag )
-        __fmdp->addCostForAction ( this->__decisionDiagramFactory->getMultiDimDecisionDiagram(), __stringBag[0] );
+      if( __foo_flag )
+        __fmdp->addCostForAction( this->__decisionDiagramFactory->getMultiDimDecisionDiagram(), __stringBag[0] );
       else
-        __fmdp->addCost ( this->__decisionDiagramFactory->getMultiDimDecisionDiagram() );
+        __fmdp->addCost( this->__decisionDiagramFactory->getMultiDimDecisionDiagram() );
 
       // this->__decisionDiagramFactory->showProperties();
       this->__decisionDiagramFactory->clear();
@@ -502,8 +499,8 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::endCostDeclaration() {
 
-    if ( state() != FMDPfactory_state::COST )
-      __illegalStateError ( "endCostDeclaration" );
+    if( state() != FMDPfactory_state::COST )
+      __illegalStateError( "endCostDeclaration" );
     else
       __states.pop_back();
 
@@ -523,10 +520,10 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   FMDPFactory<GUM_SCALAR>::startRewardDeclaration( ) {
-    if ( state() != FMDPfactory_state::NONE && state() != FMDPfactory_state::ACTION )
-      __illegalStateError ( "startRewardDeclaration" );
+    if( state() != FMDPfactory_state::NONE && state() != FMDPfactory_state::ACTION )
+      __illegalStateError( "startRewardDeclaration" );
     else
-      __states.push_back ( FMDPfactory_state::REWARD );
+      __states.push_back( FMDPfactory_state::REWARD );
 
 //       VERBOSITY ( "starting reward declaration" );
   }
@@ -536,10 +533,10 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   void
-  FMDPFactory<GUM_SCALAR>::setOperationModeOn ( std::string operationType ) {
+  FMDPFactory<GUM_SCALAR>::setOperationModeOn( std::string operationType ) {
     __foo_flag = true;
-    std::string ot ( operationType );
-    __stringBag.push_back ( ot );
+    std::string ot( operationType );
+    __stringBag.push_back( ot );
   }
 
 
@@ -547,14 +544,14 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   void
-  FMDPFactory<GUM_SCALAR>::addReward ( const MultiDimAdressable* reward ) {
+  FMDPFactory<GUM_SCALAR>::addReward( const MultiDimAdressable* reward ) {
 
-    const MultiDimImplementation<GUM_SCALAR>* r = reinterpret_cast<const MultiDimImplementation<GUM_SCALAR>*> ( reward );
+    const MultiDimImplementation<GUM_SCALAR>* r = reinterpret_cast<const MultiDimImplementation<GUM_SCALAR>*>( reward );
 
-    if ( state() != FMDPfactory_state::REWARD )
-      __illegalStateError ( "addReward" );
+    if( state() != FMDPfactory_state::REWARD )
+      __illegalStateError( "addReward" );
     else
-      __fmdp->addReward ( r );
+      __fmdp->addReward( r );
   }
 
 
@@ -564,13 +561,13 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   void
   FMDPFactory<GUM_SCALAR>::addReward( ) {
-    if ( state() != FMDPfactory_state::REWARD )
-      __illegalStateError ( "addReward" );
+    if( state() != FMDPfactory_state::REWARD )
+      __illegalStateError( "addReward" );
     else {
-      if ( __foo_flag )
-        __ddBag.push_back ( this->__decisionDiagramFactory->getMultiDimDecisionDiagram ( false, ( GUM_SCALAR ) 0, true ) );
+      if( __foo_flag )
+        __ddBag.push_back( this->__decisionDiagramFactory->getMultiDimDecisionDiagram( false, ( GUM_SCALAR ) 0, true ) );
       else
-        __fmdp->addReward ( this->__decisionDiagramFactory->getMultiDimDecisionDiagram ( false, ( GUM_SCALAR ) 0, true ) );
+        __fmdp->addReward( this->__decisionDiagramFactory->getMultiDimDecisionDiagram( false, ( GUM_SCALAR ) 0, true ) );
 
 //         this->__decisionDiagramFactory->showProperties();
       this->__decisionDiagramFactory->clear();
@@ -584,40 +581,40 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::endRewardDeclaration() {
 
-    if ( state() != FMDPfactory_state::REWARD )
-      __illegalStateError ( "endRewardDeclaration" );
+    if( state() != FMDPfactory_state::REWARD )
+      __illegalStateError( "endRewardDeclaration" );
     else {
-      if ( __foo_flag ) {
+      if( __foo_flag ) {
         MultiDimImplementation<GUM_SCALAR>* res = nullptr;
         MultiDimImplementation<GUM_SCALAR>* temp;
 
-        for ( typename std::vector< const MultiDimImplementation<GUM_SCALAR>* >::iterator miter = __ddBag.begin(); miter != __ddBag.end(); ++miter ) {
+        for( const auto elt : __ddBag ) {
 
           temp = res;
 
-          switch ( __stringBag[0][0] ) {
-            case '+' : res = add2MultiDimDecisionDiagrams ( res,  *miter );
+          switch( __stringBag[0][0] ) {
+            case '+' : res = add2MultiDimDecisionDiagrams( res,  elt );
               break;
 
-            case '-' : res = subtract2MultiDimDecisionDiagrams ( res,  *miter );
+            case '-' : res = subtract2MultiDimDecisionDiagrams( res,  elt );
               break;
 
-            case '*' : res = multiply2MultiDimDecisionDiagrams ( res,  *miter );
+            case '*' : res = multiply2MultiDimDecisionDiagrams( res,  elt );
               break;
 
-            case '/' : res = divide2MultiDimDecisionDiagrams ( res,  *miter );
+            case '/' : res = divide2MultiDimDecisionDiagrams( res,  elt );
               break;
 
             default : break;
           }
 
-          delete *miter;
+          delete elt;
 
-          if ( temp != nullptr )
+          if( temp != nullptr )
             delete temp;
         }
 
-        __fmdp->addReward ( res );
+        __fmdp->addReward( res );
       }
 
       __resetParts();
@@ -629,21 +626,20 @@ namespace gum {
 
 
   /* **************************************************************************************************** **/
-  /* **                                                                                                                                                    **/
-  /* **          Discount declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::DISCOUNT <-> FMDPfactory_state::ACTION)                                    **/
-  /* **                                                                                                                                                    **/
+  /* **                                                                                                   **/
+  /* ** Discount declaration methods (FMDPfactory_state::NONE <-> FMDPfactory_state::DISCOUNT <-> FMDPfactory_state::ACTION) **/
+  /* **                                                                                                   **/
   /* **************************************************************************************************** **/
 
 
   // Tells the factory that we're declaring discount
-
   template<typename GUM_SCALAR> INLINE
   void
   FMDPFactory<GUM_SCALAR>::startDiscountDeclaration( ) {
-    if ( state() != FMDPfactory_state::NONE )
-      __illegalStateError ( "startDiscountDeclaration" );
+    if( state() != FMDPfactory_state::NONE )
+      __illegalStateError( "startDiscountDeclaration" );
     else
-      __states.push_back ( FMDPfactory_state::DISCOUNT );
+      __states.push_back( FMDPfactory_state::DISCOUNT );
 
 //       VERBOSITY ( "starting discount declaration" );
   }
@@ -653,11 +649,11 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   void
-  FMDPFactory<GUM_SCALAR>::addDiscount ( float discount ) {
-    if ( state() != FMDPfactory_state::DISCOUNT )
-      __illegalStateError ( "addDiscount" );
+  FMDPFactory<GUM_SCALAR>::addDiscount( float discount ) {
+    if( state() != FMDPfactory_state::DISCOUNT )
+      __illegalStateError( "addDiscount" );
     else
-      __fmdp->addDiscount ( ( GUM_SCALAR ) discount );
+      __fmdp->addDiscount( ( GUM_SCALAR ) discount );
   }
 
 
@@ -667,8 +663,8 @@ namespace gum {
   void
   FMDPFactory<GUM_SCALAR>::endDiscountDeclaration() {
 
-    if ( state() != FMDPfactory_state::DISCOUNT )
-      __illegalStateError ( "endDiscountDeclaration" );
+    if( state() != FMDPfactory_state::DISCOUNT )
+      __illegalStateError( "endDiscountDeclaration" );
     else
       __states.pop_back();
 
@@ -687,9 +683,9 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   NodeId
-  FMDPFactory<GUM_SCALAR>::addNonTerminalNode ( std::string name_of_var ) {
+  FMDPFactory<GUM_SCALAR>::addNonTerminalNode( std::string name_of_var ) {
 
-    return __decisionDiagramFactory->addNonTerminalNode ( variable ( name_of_var ) );
+    return __decisionDiagramFactory->addNonTerminalNode( variable( name_of_var ) );
   }
 
 
@@ -697,9 +693,9 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   NodeId
-  FMDPFactory<GUM_SCALAR>::addTerminalNode ( float value ) {
+  FMDPFactory<GUM_SCALAR>::addTerminalNode( float value ) {
 
-    return __decisionDiagramFactory->addTerminalNode ( ( GUM_SCALAR ) value );
+    return __decisionDiagramFactory->addTerminalNode( ( GUM_SCALAR ) value );
   }
 
 
@@ -707,15 +703,15 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   void
-  FMDPFactory<GUM_SCALAR>::insertArc ( NodeId from, NodeId to, Idx modality ) {
-    addArc ( from, to, modality );
+  FMDPFactory<GUM_SCALAR>::insertArc( NodeId from, NodeId to, Idx modality ) {
+    addArc( from, to, modality );
   }
 
   template<typename GUM_SCALAR> INLINE
   void
-  FMDPFactory<GUM_SCALAR>::addArc ( NodeId from, NodeId to, Idx modality ) {
+  FMDPFactory<GUM_SCALAR>::addArc( NodeId from, NodeId to, Idx modality ) {
 
-    __decisionDiagramFactory->addArc ( from, to, modality );
+    __decisionDiagramFactory->addArc( from, to, modality );
   }
 
   /* **************************************************************************************************** **/
@@ -729,13 +725,13 @@ namespace gum {
 
   template<typename GUM_SCALAR> INLINE
   void
-  FMDPFactory<GUM_SCALAR>::__illegalStateError ( const std::string& s ) {
+  FMDPFactory<GUM_SCALAR>::__illegalStateError( const std::string& s ) {
 
     std::string msg = "Illegal state call (";
     msg += s;
     msg += ") in state ";
 
-    switch ( state() ) {
+    switch( state() ) {
 
       case FMDPfactory_state::NONE:       msg += "FMDPfactory_state::NONE";
         break;
@@ -764,7 +760,7 @@ namespace gum {
       default:      msg += "Unknown state";
     }
 
-    GUM_ERROR ( OperationNotAllowed, msg );
+    GUM_ERROR( OperationNotAllowed, msg );
   }
 
 
@@ -796,7 +792,7 @@ namespace gum {
   template<typename GUM_SCALAR> INLINE
   FMDPFactory<GUM_SCALAR>&
   FMDPFactory<GUM_SCALAR>::operator= ( const FMDPFactory<GUM_SCALAR>& source ) {
-    GUM_ERROR ( FatalError, "Illegal!" );
+    GUM_ERROR( FatalError, "Illegal!" );
     // For noisy compilers
     return *this;
   }

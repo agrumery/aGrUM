@@ -143,19 +143,19 @@ namespace gum {
     if ( ! infdiag->decisionOrderExists() ) {
       Sequence<NodeId> order = infdiag->topologicalOrder ( true );
 
-      Sequence<NodeId>::const_iterator_safe orderIter = order.beginSafe();
+      auto orderIter = order.begin();
 
-      while ( ( orderIter != order.endSafe() ) && ( !infdiag->isDecisionNode ( *orderIter ) ) )
+      while ( ( orderIter != order.end() ) && ( !infdiag->isDecisionNode ( *orderIter ) ) )
         ++orderIter;
 
-      if ( orderIter == order.endSafe() )
+      if ( orderIter == order.end() )
         return;
 
       NodeId parentDecision = ( *orderIter );
 
       ++orderIter;
 
-      for ( ; orderIter != order.endSafe(); ++orderIter )
+      for ( ; orderIter != order.end(); ++orderIter )
         if ( infdiag->isDecisionNode ( *orderIter ) ) {
           infdiag->addArc ( parentDecision, ( *orderIter ) );
           parentDecision = ( *orderIter );
