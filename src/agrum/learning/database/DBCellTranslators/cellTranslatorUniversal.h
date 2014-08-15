@@ -227,6 +227,12 @@ namespace gum {
       void setUserValues ( const Sequence<std::string>& values,
                            bool check_database = true );
 
+      /// returns the set of translations for string values in the database
+      const Bijection<int,unsigned int>& stringTranslations () const noexcept;
+
+      /// returns the set of translations for number values in the database
+      const Bijection<float,unsigned int>& numberTranslations () const noexcept;
+
       /// @}
       
       

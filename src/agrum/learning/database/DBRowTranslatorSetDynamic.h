@@ -205,6 +205,9 @@ namespace gum {
       /// returns the size of the output of the cell translators
       unsigned int outputSize () const noexcept;
 
+      /// returns the number of translators stored into the set
+      unsigned int nbTranslators () const noexcept;
+
       /// @}
   
   private:

@@ -415,7 +415,15 @@ namespace gum {
       }
       return *( __translators[i] );
     }
+
     
+    /// returns the number of translators stored into the set
+    template <typename Translator> INLINE
+    unsigned int
+    DBRowTranslatorSetDynamic<Translator>::nbTranslators () const noexcept {
+      return __translators.size ();
+    }
+
 
   } /* namespace learning */
 
