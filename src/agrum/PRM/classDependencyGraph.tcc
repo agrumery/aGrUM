@@ -31,70 +31,60 @@ namespace gum {
 // Destructor.
     template<typename GUM_SCALAR>
     ClassDependencyGraph<GUM_SCALAR>::~ClassDependencyGraph() {
-      GUM_DESTRUCTOR ( ClassDependencyGraph );
+      GUM_DESTRUCTOR( ClassDependencyGraph );
 
-      for ( auto iter = __node_map.beginSafe(); iter != __node_map.endSafe(); ++iter ) {
-        delete iter.val();
-      }
+      for( const auto & elt : __node_map )
+        delete elt.second;
 
-      for ( auto iter = __elt_map.beginSafe(); iter != __elt_map.endSafe(); ++iter ) {
-        delete iter.val();
-      }
+      for( const auto & elt : __elt_map )
+        delete elt.second;
     }
 
 // Build the class dependency graph.
     template<typename GUM_SCALAR>
     void
-    ClassDependencyGraph<GUM_SCALAR>::__buildGraph ( const PRM<GUM_SCALAR>& prm ) {
+    ClassDependencyGraph<GUM_SCALAR>::__buildGraph( const PRM<GUM_SCALAR>& prm ) {
       // First we add all nodes
-      for ( auto ci = prm.classes().beginSafe(); ci != prm.classes().endSafe(); ++ci ) {
-        __node_map.insert ( *ci, new HashTable<const ClassElement<GUM_SCALAR>*, NodeId>() );
+      for( const auto ci : prm.classes() ) {
+        __node_map.insert( ci, new HashTable<const ClassElement<GUM_SCALAR>*, NodeId>() );
 
-        for ( auto j = ( *ci )->dag().nodes().beginSafe(); j != ( *ci )->dag().nodes().endSafe(); ++j ) {
-          __addNode ( *ci, ( *ci )->get ( *j ) );
-        }
+        for( const auto node : ci->dag().nodes() )
+          __addNode( ci, ci->get( node ) );
       }
 
-      for ( auto ii = prm.interfaces().beginSafe(); ii != prm.interfaces().endSafe(); ++ii ) {
-        __node_map.insert ( *ii, new HashTable<const ClassElement<GUM_SCALAR>*, NodeId>() );
+      for( const auto ii : prm.interfaces() ) {
+        __node_map.insert( ii, new HashTable<const ClassElement<GUM_SCALAR>*, NodeId>() );
 
-        for ( auto j = ( *ii )->dag().nodes().beginSafe(); j != ( *ii )->dag().nodes().endSafe(); ++j ) {
-          __addNode ( *ii, ( *ii )->get ( *j ) );
+        for( const auto node  : ii->dag().nodes() ) {
+          __addNode( ii, ii->get( node ) );
         }
       }
 
       // Then we add the arcs
-      /*
-      for ( Set<Class*>::const_iterator iter = prm.classes().begin(); iter != prm.classes().end(); ++iter )
-        for ( DAG::NodeIterator jter = ( *iter )->dag().beginNodes(); jter != ( *iter )->dag().endNodes(); ++jter )
-      */
-      for ( auto cc = prm.classes().beginSafe (); cc != prm.classes().endSafe(); ++cc )
-        for ( auto j = ( *cc )->dag().nodes().beginSafe(); j != ( *cc )->dag().nodes().endSafe(); ++j )
-          __addArcs ( **cc, *j, * ( __node_map[*cc] ) );
+      for( const auto cc : prm.classes() )
+        for( const auto node : cc->dag().nodes() )
+          __addArcs( *cc, node, * ( __node_map[cc] ) );
     }
 
     // Add arcs in __graph.
     template<typename GUM_SCALAR>
     void
-    ClassDependencyGraph<GUM_SCALAR>::__addArcs ( const ClassElementContainer<GUM_SCALAR>& c, NodeId node,
+    ClassDependencyGraph<GUM_SCALAR>::__addArcs( const ClassElementContainer<GUM_SCALAR>& c, NodeId node,
         HashTable<const ClassElement<GUM_SCALAR>*, NodeId>& map ) {
-      switch ( c.get ( node ).elt_type() ) {
+      switch( c.get( node ).elt_type() ) {
         case ClassElement<GUM_SCALAR>::prm_slotchain: {
-          const SlotChain<GUM_SCALAR>& sc = static_cast<const SlotChain<GUM_SCALAR>&> ( c.get ( node ) );
-          const NodeSet& children = c.dag().children ( node );
+          const SlotChain<GUM_SCALAR>& sc = static_cast<const SlotChain<GUM_SCALAR>&>( c.get( node ) );
 
-          for ( NodeSetIterator arc = children.beginSafe(); arc != children.endSafe(); ++arc )
-            __graph.addArc ( ( * ( __node_map[& ( sc.end() )] ) ) [& ( sc.end().get ( sc.lastElt().safeName() ) )], map[& ( c.get ( *arc ) )] );
+          for( const auto chi :  c.dag().children( node ) )
+            __graph.addArc( ( * ( __node_map[& ( sc.end() )] ) ) [& ( sc.end().get( sc.lastElt().safeName() ) )], map[& ( c.get( chi ) )] );
 
           break;
         }
 
         case ClassElement<GUM_SCALAR>::prm_aggregate:
         case ClassElement<GUM_SCALAR>::prm_attribute: {
-          const NodeSet& children = c.dag().children ( node );
-
-          for ( NodeSetIterator arc = children.beginSafe(); arc != children.endSafe(); ++arc )
-            __graph.addArc ( map[& ( c.get ( node ) )], map[& ( c.get ( *arc ) )] );
+          for( const auto chi : c.dag().children( node ) )
+            __graph.addArc( map[& ( c.get( node ) )], map[& ( c.get( chi ) )] );
 
           break;
         }
@@ -106,19 +96,19 @@ namespace gum {
     }
 
     template<typename GUM_SCALAR> INLINE
-    ClassDependencyGraph<GUM_SCALAR>::ClassDependencyGraph ( const PRM<GUM_SCALAR>& prm ) {
-      GUM_CONSTRUCTOR ( ClassDependencyGraph );
-      __buildGraph ( prm );
+    ClassDependencyGraph<GUM_SCALAR>::ClassDependencyGraph( const PRM<GUM_SCALAR>& prm ) {
+      GUM_CONSTRUCTOR( ClassDependencyGraph );
+      __buildGraph( prm );
     }
 
     template<typename GUM_SCALAR> INLINE
-    ClassDependencyGraph<GUM_SCALAR>::ClassDependencyGraph ( const ClassDependencyGraph<GUM_SCALAR>& source ) :
-      __graph ( source.__graph ), __modalitites ( source.__modalitites ),
-      __elt_map ( source.__elt_map ) {
-      GUM_CONS_CPY ( ClassDependencyGraph );
+    ClassDependencyGraph<GUM_SCALAR>::ClassDependencyGraph( const ClassDependencyGraph<GUM_SCALAR>& source ) :
+      __graph( source.__graph ), __modalitites( source.__modalitites ),
+      __elt_map( source.__elt_map ) {
+      GUM_CONS_CPY( ClassDependencyGraph );
 
-      for ( auto iter = source.__node_map.beginSafe(); iter != source.__node_map.endSafe(); ++iter ) {
-        __node_map.insert ( iter.key(), new HashTable<const ClassElement<GUM_SCALAR>*, NodeId> ( * ( iter.val() ) ) );
+      for( const auto elt : source.__node_map ) {
+        __node_map.insert( elt.first, new HashTable<const ClassElement<GUM_SCALAR>*, NodeId> ( *elt.second ) );
       }
     }
 
@@ -130,13 +120,13 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     const typename ClassDependencyGraph<GUM_SCALAR>::EltPair&
-    ClassDependencyGraph<GUM_SCALAR>::get ( NodeId id ) const {
+    ClassDependencyGraph<GUM_SCALAR>::get( NodeId id ) const {
       return * ( __elt_map[id] );
     }
 
     template<typename GUM_SCALAR> INLINE
     NodeId
-    ClassDependencyGraph<GUM_SCALAR>::get ( const ClassElementContainer<GUM_SCALAR>& c, const ClassElement<GUM_SCALAR>& elt ) const {
+    ClassDependencyGraph<GUM_SCALAR>::get( const ClassElementContainer<GUM_SCALAR>& c, const ClassElement<GUM_SCALAR>& elt ) const {
       return ( * ( __node_map[&c] ) ) [&elt];
     }
 
@@ -148,14 +138,14 @@ namespace gum {
 
     template<typename GUM_SCALAR> INLINE
     void
-    ClassDependencyGraph<GUM_SCALAR>::__addNode ( const ClassElementContainer<GUM_SCALAR>* c, const ClassElement<GUM_SCALAR>& elt ) {
-      switch ( elt.elt_type() ) {
+    ClassDependencyGraph<GUM_SCALAR>::__addNode( const ClassElementContainer<GUM_SCALAR>* c, const ClassElement<GUM_SCALAR>& elt ) {
+      switch( elt.elt_type() ) {
         case ClassElement<GUM_SCALAR>::prm_attribute:
         case ClassElement<GUM_SCALAR>::prm_aggregate: {
           NodeId id = __graph.addNode();
-          __elt_map.insert ( id, new ClassDependencyGraph<GUM_SCALAR>::EltPair ( c, &elt ) );
-          __node_map[c]->insert ( &elt, id );
-          __modalitites.insert ( id, elt.type().variable().domainSize() );
+          __elt_map.insert( id, new ClassDependencyGraph<GUM_SCALAR>::EltPair( c, &elt ) );
+          __node_map[c]->insert( &elt, id );
+          __modalitites.insert( id, elt.type().variable().domainSize() );
           break;
         }
 

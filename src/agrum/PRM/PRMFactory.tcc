@@ -691,8 +691,8 @@ namespace gum {
         GUM_ERROR( NotFound, "left value does not name an instance or an array" );
       }
 
-      for( auto l : lefts ) {
-        for( auto r : rights ) {
+      for( const auto l : lefts ) {
+        for( const auto r : rights ) {
           if( ( *l ).type().get( l_ref ).elt_type() == ClassElement<GUM_SCALAR>::prm_refslot ) {
             ( *l ).add( ( *l ).type().get( l_ref ).id(), *r );
           } else {

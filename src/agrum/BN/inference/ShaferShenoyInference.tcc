@@ -40,7 +40,7 @@ namespace gum {
 
     NodeProperty<Size> __modalitiesMap;
 
-    for( auto node : this->bn().nodes() )
+    for( const auto node : this->bn().nodes() )
       __modalitiesMap.insert( node,  this->bn().variable( node ).domainSize() );
 
     __triangulation = new DefaultTriangulation( & ( this->bn().moralGraph() ), &__modalitiesMap );
@@ -56,15 +56,15 @@ namespace gum {
 
     delete __triangulation;
 
-    for( auto & elt : __messagesMap ) {
+    for( const auto & elt : __messagesMap ) {
       delete elt.second;
     }
 
-    for( auto & elt : __clique_prop ) {
+    for( const auto & elt : __clique_prop ) {
       delete elt.second;
     }
 
-    for( auto & elt : __dummies ) {
+    for( const auto & elt : __dummies ) {
       delete elt;
     }
 
@@ -84,11 +84,11 @@ namespace gum {
     this->_invalidatePosteriors();
 
     // Setting all collect flags at false
-    for( auto elt : __clique_prop ) {
+    for( const auto elt : __clique_prop ) {
       elt.second->isCollected = false;
     }
 
-    for( auto & elt : __clique_prop ) {
+    for( const auto & elt : __clique_prop ) {
       if( not( elt.second->isCollected ) ) {
         __collectFromClique( elt.first );
         __diffuseFromClique( elt.first );
@@ -106,7 +106,7 @@ namespace gum {
     NodeId cliqueId = __triangulation->createdJunctionTreeClique( id );
     // First we find the smallest clique containing id
 
-    for( auto node : __triangulation->junctionTree().nodes() ) {
+    for( const auto node : __triangulation->junctionTree().nodes() ) {
       if( ( __triangulation->junctionTree().clique( node ).contains( id ) ) &&
           ( __clique_prop[node]->bucket().domainSize() < __clique_prop[cliqueId]->bucket().domainSize() )
         ) {
@@ -123,7 +123,7 @@ namespace gum {
     bucket.add( this->bn().variable( id ) );
     bucket.add( __clique_prop[cliqueId]->bucket() );
 
-    for( auto nei : __getNeighbours( cliqueId ) ) {
+    for( const auto nei : __getNeighbours( cliqueId ) ) {
       bucket.add( __messagesMap[Arc( nei, cliqueId )] );
     }
 
@@ -164,7 +164,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   void
   ShaferShenoyInference<GUM_SCALAR>::eraseAllEvidence() {
-    for( auto & elt : __clique_prop ) {
+    for( const auto & elt : __clique_prop ) {
       __removeDiffusedMessages( elt.first );
       elt.second->removeAllEvidence();
     }
@@ -192,7 +192,7 @@ namespace gum {
     Set<NodeId> idSet;
     idSet.insert( id );
 
-    for( auto par : this->bn().dag().parents( id ) )
+    for( const auto par : this->bn().dag().parents( id ) )
       idSet.insert( par );
 
     for( size_t i = 0; i < eliminationOrder.size(); ++i ) {
@@ -213,11 +213,11 @@ namespace gum {
     NodeSet cliquesSet;
     // First pass to create the clique's table
 
-    for( auto cliq : __triangulation->junctionTree().nodes() ) {
+    for( const auto cliq : __triangulation->junctionTree().nodes() ) {
       __clique_prop.insert( cliq, new CliqueProp<GUM_SCALAR> ( cliq ) );
       cliquesSet.insert( cliq );
 
-      for( auto node :  __triangulation->junctionTree().clique( cliq ) )
+      for( const auto node :  __triangulation->junctionTree().clique( cliq ) )
         __clique_prop[cliq]->addVariable( this->bn().variable( node ) );
 
     }
@@ -231,7 +231,7 @@ namespace gum {
     }
 
     // Second pass to fill empty cliques with "one" matrices.
-    for( auto clique : cliquesSet )
+    for( const auto clique : cliquesSet )
       __clique_prop[clique]->addPotential( *__makeDummyPotential( clique ) );
   }
 
@@ -242,7 +242,7 @@ namespace gum {
     __clique_prop[source]->isCollected = true;
 
     try {
-      for( auto nei : __getNeighbours( source ) )
+      for( const auto nei : __getNeighbours( source ) )
         __collect( source, nei );
     } catch( NotFound& ) {
       // Raised if source has no neighbours
@@ -256,7 +256,7 @@ namespace gum {
     __clique_prop[current]->isCollected = true;
     bool newMsg = false; // Flag used to know if we must recompute the message current -> source
 
-    for( auto nei : __getNeighbours( current ) )
+    for( const auto nei : __getNeighbours( current ) )
       if( nei != source )
         if( __collect( current, nei ) )
           newMsg = true;
@@ -282,7 +282,7 @@ namespace gum {
   void
   ShaferShenoyInference<GUM_SCALAR>::__diffuseFromClique( NodeId source ) {
     try {
-      for( auto nei :  __getNeighbours( source ) )
+      for( const auto nei :  __getNeighbours( source ) )
         if( __messageExists( source, nei ) ) {
           // No new evidence and msg already computed
           __diffuse( source, nei, false );
@@ -300,7 +300,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   void
   ShaferShenoyInference<GUM_SCALAR>::__diffuse( NodeId source, NodeId current, bool recompute ) {
-    for( auto nei : __getNeighbours( current ) )
+    for( const auto nei : __getNeighbours( current ) )
       if( nei != source ) {
         if( recompute or ( not __messageExists( current, nei ) ) ) {
           // New evidence or first call
@@ -321,7 +321,7 @@ namespace gum {
     // Building the message's table held by the separator
     MultiDimBucket<GUM_SCALAR>* message = new MultiDimBucket<GUM_SCALAR>();
 
-    for( auto node : __getSeparator( tail, head ) )
+    for( const auto node : __getSeparator( tail, head ) )
       message->add( this->bn().variable( node ) );
 
     // Check if the clique was initialized
@@ -332,7 +332,7 @@ namespace gum {
     }
 
     // Second, add message from tail's neighbours
-    for( auto nei : __getNeighbours( tail ) )
+    for( const auto nei : __getNeighbours( tail ) )
       if( nei != head ) {
         try {
           message->add( __messagesMap[Arc( nei, tail )] );
@@ -359,7 +359,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   void
   ShaferShenoyInference<GUM_SCALAR>::__removeDiffusedMessages( NodeId cliqueId ) {
-    for( auto nei : __getNeighbours( cliqueId ) ) {
+    for( const auto nei : __getNeighbours( cliqueId ) ) {
       if( __messagesMap.exists( Arc( cliqueId, nei ) ) ) {
         delete __messagesMap[Arc( cliqueId, nei )];
         __messagesMap.erase( Arc( cliqueId, nei ) );
@@ -375,7 +375,7 @@ namespace gum {
     Potential<GUM_SCALAR>* pot = new Potential<GUM_SCALAR> ( new MultiDimSparse<GUM_SCALAR> ( ( GUM_SCALAR ) 1 ) );
     __dummies.insert( pot );
 
-    for( auto node : __triangulation->junctionTree().clique( cliqueId ) )
+    for( const auto node : __triangulation->junctionTree().clique( cliqueId ) )
       pot->add( this->bn().variable( node ) );
 
     return pot;
@@ -465,7 +465,7 @@ namespace gum {
       __varsPotential = __potential;
       __potential = new MultiDimBucket<GUM_SCALAR>();
 
-      for( auto var : __varsPotential->variablesSequence() )
+      for( const auto var : __varsPotential->variablesSequence() )
         __potential->add( *var );
 
       __potential->add( __varsPotential );

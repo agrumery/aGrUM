@@ -35,16 +35,8 @@
 #include <agrum/ID/inference/influenceDiagramInference.h>
 
 namespace gum {
-  /* **************************************************************************************************** **/
-  /* **                                                                                                                                                    **/
-  /* **                                                   Constructor & Destructor                                                         **/
-  /* **                                                                                                                                                    **/
-  /* **************************************************************************************************** **/
-
-
   // Default constructor.
   // @param inDiag The influence diagram on which we perform inferences
-
   template<typename GUM_SCALAR>
   InfluenceDiagramInference<GUM_SCALAR>::InfluenceDiagramInference( const InfluenceDiagram<GUM_SCALAR>& infDiag ) :
     IInfluenceDiagramInference<GUM_SCALAR> ( infDiag ),
@@ -636,9 +628,8 @@ namespace gum {
     Potential<GUM_SCALAR>* pot = new Potential<GUM_SCALAR> ( new MultiDimSparse<GUM_SCALAR> ( ( GUM_SCALAR ) 1 ) );
     __potentialDummies.insert( pot );
 
-    for( NodeSet::const_iterator_safe cliqueNodesIter = __triangulation->junctionTree().clique( cliqueId ).beginSafe();
-         cliqueNodesIter != __triangulation->junctionTree().clique( cliqueId ).endSafe(); ++cliqueNodesIter )
-      pot->add( this->influenceDiagram().variable( *cliqueNodesIter ) );
+    for( const auto cliqueNode :  __triangulation->junctionTree().clique( cliqueId ) )
+      pot->add( this->influenceDiagram().variable( cliqueNode ) );
 
     pot->normalize();
     return pot;
@@ -653,9 +644,8 @@ namespace gum {
     UtilityTable<GUM_SCALAR>* ut = new UtilityTable<GUM_SCALAR> ( new MultiDimSparse<GUM_SCALAR> ( ( GUM_SCALAR ) 0 ) );
     __utilityDummies.insert( ut );
 
-    for( NodeSet::const_iterator_safe cliqueNodesIter = __triangulation->junctionTree().clique( cliqueId ).beginSafe();
-         cliqueNodesIter != __triangulation->junctionTree().clique( cliqueId ).endSafe(); ++cliqueNodesIter )
-      ut->add( this->influenceDiagram().variable( *cliqueNodesIter ) );
+    for( const auto cliqueNode : __triangulation->junctionTree().clique( cliqueId ) )
+      ut->add( this->influenceDiagram().variable( cliqueNode ) );
 
     return ut;
   }
@@ -666,7 +656,6 @@ namespace gum {
 
 
   // Default constructor
-
   template <typename GUM_SCALAR>
   CliqueProperties<GUM_SCALAR>::CliqueProperties() {
     GUM_CONSTRUCTOR( CliqueProperties );
@@ -674,29 +663,24 @@ namespace gum {
 
 
   // Default destructor
-
   template <typename GUM_SCALAR>
   CliqueProperties<GUM_SCALAR>::~CliqueProperties() {
     GUM_DESTRUCTOR( CliqueProperties );
 
     cleanFromInference();
-
     removeAllEvidence();
 
-    for( HashTableIteratorSafe<const Potential<GUM_SCALAR>*, Instantiation*> potentialIter = __potentialBucket.beginSafe();
-         potentialIter != __potentialBucket.endSafe(); ++potentialIter )
-      delete potentialIter.val();
+    for( const auto & pot : __potentialBucket )
+      delete pot.second;
 
-    for( HashTableIteratorSafe<const UtilityTable<GUM_SCALAR>*, Instantiation*> utilityIter = __utilityBucket.beginSafe();
-         utilityIter != __utilityBucket.endSafe(); ++utilityIter )
-      delete utilityIter.val();
+    for( const auto & uti : __utilityBucket )
+      delete uti.second;
   }
 
 
 
 
   // addVariable : adds a variable to the clique
-
   template <typename GUM_SCALAR>
   void
   CliqueProperties<GUM_SCALAR>::addVariable( const DiscreteVariable& v ) {
@@ -709,7 +693,6 @@ namespace gum {
 
 
   // cliqueVariables : returns List containing all variables contained in this clique
-
   // @return returns List containing all variables contained in this clique
   template <typename GUM_SCALAR> INLINE
   const Sequence< const DiscreteVariable*>&
@@ -719,7 +702,6 @@ namespace gum {
 
 
   // cliqueInstantiation : returns instanciation on variable within this clique
-
   // @return returns instanciation on variable within this clique
   template <typename GUM_SCALAR> INLINE
   Instantiation&
@@ -729,7 +711,6 @@ namespace gum {
 
 
   // addPotential : adds a potential to this clique
-
   // The removable boolean inidcates if this potential can be cleaned off after an inference or not
   template <typename GUM_SCALAR>
   void
@@ -752,7 +733,6 @@ namespace gum {
 
 
   // potentialBucket : Returns the potential bucket of this Clique
-
   template <typename GUM_SCALAR> INLINE
   const HashTable<const Potential<GUM_SCALAR>*, Instantiation* >&
   CliqueProperties<GUM_SCALAR>::potentialBucket() {
@@ -762,7 +742,6 @@ namespace gum {
 
 
   // addUtility : adds a utility table to this clique
-
   // The removable boolean inidcates if this utilityTable can be cleaned off after an inference or not
   template <typename GUM_SCALAR>
   void
@@ -785,7 +764,6 @@ namespace gum {
 
 
   //  utilityBucket : Returns the utiluty table bucket of this Clique
-
   template <typename GUM_SCALAR> INLINE
   const HashTable<const UtilityTable<GUM_SCALAR>*, Instantiation* >&
   CliqueProperties<GUM_SCALAR>::utilityBucket() {
@@ -795,37 +773,31 @@ namespace gum {
 
 
   // cleanFromInference : performs a cleaning of the clique after an inference
-
   // This is done by removing the "message" given by a child clique to its parents, meaning the potentials and utility tables obtained by
   // variable elemination in the clique.
   template <typename GUM_SCALAR>
   void
   CliqueProperties<GUM_SCALAR>::cleanFromInference() {
-
     // Removed added variables during inference (normally, the __removableVarList is empty, but we never know )
-    for( ListIteratorSafe<const DiscreteVariable*> removedVarIter =  __removableVarList.beginSafe(); removedVarIter !=  __removableVarList.endSafe(); ++removedVarIter ) {
-      __allVarsInst.erase( **removedVarIter );
-      __removableVarList.erase( removedVarIter );
-    }
+    for( const auto removableVar : __removableVarList )
+      __allVarsInst.erase( *removableVar );
 
     // Removed added potentials during inference
-    for( ListIteratorSafe<const Potential<GUM_SCALAR>* > removedPotIter =  __removablePotentialList.beginSafe();
-         removedPotIter !=  __removablePotentialList.endSafe(); ++removedPotIter ) {
-      delete __potentialBucket[ *removedPotIter ];
-      __potentialBucket.erase( *removedPotIter );
-      delete *removedPotIter;
+    for( const auto removablePot : __removablePotentialList ) {
+      delete __potentialBucket[ removablePot ];
+      __potentialBucket.erase( removablePot );
+      delete removablePot;
     }
-
-    __removablePotentialList.clear();
 
     // Removed added utility tables during inference
-    for( ListIteratorSafe<const UtilityTable<GUM_SCALAR>* > removedUtIter =  __removableUtilityList.beginSafe();
-         removedUtIter !=  __removableUtilityList.endSafe(); ++removedUtIter ) {
-      delete __utilityBucket[ *removedUtIter ];
-      __utilityBucket.erase( *removedUtIter );
-      delete *removedUtIter;
+    for( const auto removabledUt :  __removableUtilityList ) {
+      delete __utilityBucket[removabledUt ];
+      __utilityBucket.erase( removabledUt );
+      delete removabledUt;
     }
 
+    __removableVarList.clear();
+    __removablePotentialList.clear();
     __removableUtilityList.clear();
   }
 
@@ -833,7 +805,6 @@ namespace gum {
 
 
   // makeEliminationOrder : creates an elimination order in the clique compatible with global elimination order
-
   // The global elimination order is given by elim.
   template <typename GUM_SCALAR>
   void
@@ -846,7 +817,6 @@ namespace gum {
 
 
   // cliqueEliminationOrder : returns the elimination sequence for this clique
-
   template <typename GUM_SCALAR> INLINE
   const Sequence<NodeId>&
   CliqueProperties<GUM_SCALAR>::cliqueEliminationOrder() {
@@ -857,7 +827,6 @@ namespace gum {
 
 
   // addEvidence : add evidence over one variable present in the clique
-
   // @throw OperationNotAllowed if evidence has more than one variable.
   // @throw NotFound Raised if the evidence is on a variable not present in this clique.
   // @throw DuplicateElement, if another evidence over this variable exists for this clique
@@ -885,7 +854,6 @@ namespace gum {
 
 
   // evidences : Returns the mapping of evidences on variables in this clique
-
   template <typename GUM_SCALAR> INLINE
   const HashTable<const DiscreteVariable*, const Potential<GUM_SCALAR>* >&
   CliqueProperties<GUM_SCALAR>::evidences() const {
@@ -894,7 +862,6 @@ namespace gum {
 
 
   // removeEvidence : Removes the evidence over v
-
   template <typename GUM_SCALAR> INLINE
   void
   CliqueProperties<GUM_SCALAR>::removeEvidence( const DiscreteVariable& v ) {
@@ -907,13 +874,11 @@ namespace gum {
 
 
   // removeAllEvidence : Removes all the evidences
-
   template <typename GUM_SCALAR> INLINE
   void
   CliqueProperties<GUM_SCALAR>::removeAllEvidence() {
-    for( HashTableIteratorSafe< const DiscreteVariable*, const Potential<GUM_SCALAR>*  > evidencesIter = __evidences.beginSafe();
-         evidencesIter != __evidences.endSafe(); )
-      removeEvidence( * ( evidencesIter.key() ) );
+    for( const auto & elt :  __evidences )
+      removeEvidence( * elt.first );
 
     __evidences.clear();
   }

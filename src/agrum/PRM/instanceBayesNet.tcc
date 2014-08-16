@@ -32,10 +32,10 @@ namespace gum {
     template<typename GUM_SCALAR>
     void
     InstanceBayesNet<GUM_SCALAR>::__init( const Instance<GUM_SCALAR>& i ) {
-      for( auto node = i.type().dag().nodes().beginSafe(); node != i.type().dag().nodes().endSafe(); ++node ) {
+      for( const auto node : i.type().dag().nodes()) {
         try {
           // Adding the attribute
-          const Attribute<GUM_SCALAR>& attr = i.get( *node );
+          const Attribute<GUM_SCALAR>& attr = i.get( node );
           this->_dag.addNode( attr.id() );
           __varNodeMap.insert( & ( attr.type().variable() ), &attr );
         } catch( NotFound& ) {

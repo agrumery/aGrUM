@@ -77,12 +77,12 @@ namespace gum {
 
     const DAG& dag = BN.dag();
 
-    for( auto node : dag.nodes() ) {
+    for( const auto node : dag.nodes() ) {
       // get the variables in the potential of iter_node
       NodeId first_eliminated_node = node;
       unsigned int elim_number = elim_order[node];
 
-      for( auto parent : dag.parents( node ) ) {
+      for( const auto parent : dag.parents( node ) ) {
         if( elim_order[parent] < elim_number ) {
           elim_number = elim_order[parent];
           first_eliminated_node = parent;
@@ -100,13 +100,13 @@ namespace gum {
     // as empty lists of evidence
     List <const Potential<GUM_SCALAR>*> empty_list;
 
-    for( auto node : __JT->nodes() ) {
+    for( const auto node : __JT->nodes() ) {
       __clique_potentials.insert( node, empty_list );
       __clique_evidence.insert( node, empty_list );
     }
 
     // put all the CPT's of the Bayes net nodes into the cliques
-    for( auto node : dag.nodes() ) {
+    for( const auto node : dag.nodes() ) {
       const Potential<GUM_SCALAR>& cpt = BN.cpt( node ) ;
       __clique_potentials[__node_to_clique[node]].insert( &cpt );
     }
@@ -114,13 +114,13 @@ namespace gum {
     // create empty messages on the separators
     __PotentialSet empty_set;
 
-    for( auto edge : __JT->edges() ) {
+    for( const auto edge : __JT->edges() ) {
       __sep_potentials.insert( Arc( edge.first(), edge.second() ), empty_set );
       __sep_potentials.insert( Arc( edge.second(), edge.first() ), empty_set );
     }
 
     // indicate that __collect and __diffusion passed through no clique yet
-    for( auto node : __JT->nodes() ) {
+    for( const auto node : __JT->nodes() ) {
       __collected_cliques.insert( node, false );
       __diffused_cliques.insert( node, false );
     }
@@ -141,7 +141,7 @@ namespace gum {
     NodeProperty<Size> modalities;
     auto& bn = this->bn();
 
-    for( auto node : bn.dag().nodes() )
+    for( const auto node : bn.dag().nodes() )
       modalities.insert( node, bn.variable( node ).domainSize() );
 
     // initialize the __triangulation algorithm
@@ -166,7 +166,7 @@ namespace gum {
     // domain sizes
     NodeProperty<Size> modalities;
 
-    for( auto node : this->bn().dag().nodes() ) {
+    for( const auto node : this->bn().dag().nodes() ) {
       const DiscreteVariable& var = this->bn().variable( node );
       modalities.insert( node, var.domainSize() );
     }
@@ -189,7 +189,7 @@ namespace gum {
     GUM_DESTRUCTOR( LazyPropagation );
     // remove all the created potentials
 
-    for( auto pot : __created_potentials )
+    for( const auto pot : __created_potentials )
       delete( pot );
 
     __created_potentials.clear();
@@ -211,13 +211,13 @@ namespace gum {
     __diffused_cliques[id]  = false;
 
     // propagate this requirement to id's neighbours
-    for( auto other : __JT->neighbours( id ) ) {
+    for( const auto other : __JT->neighbours( id ) ) {
       if( other != from ) {
         // remove the potentials sent on clique id's adjacent separators
-        for( auto pot : __sep_potentials[Arc( other, id )] )
+        for( const auto pot : __sep_potentials[Arc( other, id )] )
           delete pot;
 
-        for( auto pot : __sep_potentials[Arc( id, other )] )
+        for( const auto pot : __sep_potentials[Arc( id, other )] )
           delete pot;
 
         __sep_potentials[Arc( other, id )].clear();
@@ -276,7 +276,7 @@ namespace gum {
     __evidences.clear();
 
     // remove from memory all the created potentials
-    for( auto pot : __created_potentials )
+    for( const auto pot : __created_potentials )
       delete pot;
 
     __created_potentials.clear();
@@ -296,7 +296,7 @@ namespace gum {
     this->_invalidatePosteriors();
     List <const Potential<GUM_SCALAR>*> empty_list;
 
-    for( auto pot : pot_list ) {
+    for( const auto pot : pot_list ) {
       // check that the evidence is given w.r.t.only one random variable
       const Sequence<const DiscreteVariable*>& vars = pot->variablesSequence();
 
@@ -352,13 +352,13 @@ namespace gum {
     List<const Potential<GUM_SCALAR>*> empty_list;
     HashTable<const DiscreteVariable*, unsigned int> empty_hash( 16 );  // @todo why 16 ?
 
-    for( auto var : del_vars ) {
+    for( const auto var : del_vars ) {
       pot_per_var.insert( var, empty_list );
       pot_vars_per_var.insert( var, empty_hash );
     }
 
     // update properly pot_per_var and pot_vars_per_var
-    for( auto pot : pot_list ) {
+    for( const auto pot : pot_list ) {
       const Sequence<const DiscreteVariable*>& vars = pot->variablesSequence();
 
       for( unsigned int i = 0; i < vars.size(); ++i ) {
@@ -377,11 +377,11 @@ namespace gum {
     }
 
     // initialize properly product_size
-    for( auto & elt : pot_vars_per_var ) {
+    for( const auto & elt : pot_vars_per_var ) {
       double size = 1.0;
 
       if( elt.second.size() ) {
-        for( auto var : elt.second )
+        for( const auto var : elt.second )
           size *= var.first->domainSize();
 
         product_size.insert( elt.first, size );
@@ -420,7 +420,7 @@ namespace gum {
         } else {
           Set<const Potential<GUM_SCALAR>*> set;
 
-          for( auto pot : pot_to_mult ) {
+          for( const auto pot : pot_to_mult ) {
             set << pot;
           }
 
@@ -458,7 +458,7 @@ namespace gum {
       // update accordingly pot_per_vars : remove these potentials
       // update accordingly product_size : when a variable is no more used by
       // any potential, divide product_size by its domain size
-      for( auto pot : pot_to_mult ) {
+      for( const auto pot : pot_to_mult ) {
         const Sequence<const DiscreteVariable*>& pot_vars = pot->variablesSequence();
 
         for( Idx i = 0; i < pot_vars.size(); ++i ) {
@@ -534,7 +534,7 @@ namespace gum {
 
     // add to the list of potentials created during propagation the set of marginals
     // that appear in the final list of potentials returned after marginalization
-    for( auto pot : tmp_marginals )
+    for( const auto pot : tmp_marginals )
       __created_potentials.insert( pot );
   }
 
@@ -559,9 +559,9 @@ namespace gum {
       pot_list.insert( *iter );
 
     // add the messages sent by adjacent nodes to from_id
-    for( auto other : __JT->neighbours( from_id ) )
+    for( const auto other : __JT->neighbours( from_id ) )
       if( other != to_id )
-        for( auto pot : __sep_potentials[Arc( other, from_id )] )
+        for( const auto pot : __sep_potentials[Arc( other, from_id )] )
           pot_list.insert( pot );
 
     // get the set of variables that need be removed from the potentials
@@ -569,7 +569,7 @@ namespace gum {
     const NodeSet& separator = __JT->separator( from_id, to_id );
     Set<const DiscreteVariable*> del_vars( from_clique.size() );
 
-    for( auto node : from_clique )
+    for( const auto node : from_clique )
       if( !separator.contains( node ) )
         del_vars.insert( & ( this->bn().variable( node ) ) );
 
@@ -586,7 +586,7 @@ namespace gum {
   void LazyPropagation<GUM_SCALAR>::__collect( NodeId id, NodeId from ) {
     __collected_cliques[id] = true;
 
-    for( auto other : __JT->neighbours( id ) )
+    for( const auto other : __JT->neighbours( id ) )
       if( other != from )
         __collect( other, id );
 
@@ -623,7 +623,7 @@ namespace gum {
 
     // #### TODO: make a more efficient inference using a stack of
     // of partial computations (see GONZALES, Mellouli, Mourali (2007))
-    for( auto other : __JT->neighbours( id ) )
+    for( const auto other : __JT->neighbours( id ) )
       if( other != from ) {
         __produceMessage( id, other );
         __diffusion( other, id );
@@ -669,7 +669,7 @@ namespace gum {
       for( auto & elt : __sep_potentials )
         elt.second.clear();
 
-      for( auto pot : __created_potentials )
+      for( const auto pot : __created_potentials )
         delete pot;
 
       __created_potentials.clear();
@@ -686,12 +686,12 @@ namespace gum {
 
 
     // perform the __collect in all connected components of the junction tree
-    for( auto & elt : __collected_cliques )
+    for( const auto & elt : __collected_cliques )
       if( ! elt.second )
         __collect( elt.first, elt.first );
 
     // perform the __diffusion in all connected components of the junction tree
-    for( auto & elt : __diffused_cliques )
+    for( const auto & elt : __diffused_cliques )
       if( ! elt.second )
         __diffusion( elt.first, elt.first );
 
@@ -748,15 +748,15 @@ namespace gum {
       pot_list.insert( *iter );
 
     // add the messages sent by adjacent nodes to targetClique
-    for( auto other : __JT->neighbours( targetClique ) )
-      for( auto pot : __sep_potentials[Arc( other, targetClique )] )
+    for( const auto other : __JT->neighbours( targetClique ) )
+      for( const auto pot : __sep_potentials[Arc( other, targetClique )] )
         pot_list.insert( pot );
 
     // get the set of variables that need be removed from the potentials
     const NodeSet& nodes = __JT->clique( targetClique );
     Set<const DiscreteVariable*> del_vars( nodes.size() );
 
-    for( auto node : nodes )
+    for( const auto node : nodes )
       if( node != id )
         del_vars.insert( & ( this->bn().variable( node ) ) );
 
@@ -769,7 +769,7 @@ namespace gum {
     } else {
       Set<const Potential<GUM_SCALAR>*> set;
 
-      for( auto pot : pot_list )
+      for( const auto pot : pot_list )
         set << pot;
 
       MultiDimCombinationDefault<GUM_SCALAR, Potential> fast_combination( multiPotential );
@@ -788,13 +788,13 @@ namespace gum {
     NodeId clique_of_ids = 0;
     bool clique_found = false;
 
-    for( auto node : __JT->nodes() ) {
+    for( const auto node : __JT->nodes() ) {
       // get the nodes contained in the clique
       const NodeSet& clique = __JT->clique( node );
       // check whether the clique actually contains all of ids
       bool clique_ok = true;
 
-      for( auto node2 : ids ) {
+      for( const auto node2 : ids ) {
         if( !clique.contains( node2 ) ) {
           clique_ok = false;
           break;
@@ -842,8 +842,8 @@ namespace gum {
     }
 
     // add the messages sent by adjacent nodes to clique_of_ids
-    for( auto other : __JT->neighbours( clique_of_ids ) )
-      for( auto pot : __sep_potentials[Arc( other, clique_of_ids )] ) {
+    for( const auto other : __JT->neighbours( clique_of_ids ) )
+      for( const auto pot : __sep_potentials[Arc( other, clique_of_ids )] ) {
         pot_list.insert( pot );
       }
 
@@ -852,7 +852,7 @@ namespace gum {
 
     Set<const DiscreteVariable*> del_vars( nodes.size() );
 
-    for( auto node : nodes )
+    for( const auto node : nodes )
       if( ! ids.contains( node ) )
         del_vars.insert( & ( this->bn().variable( node ) ) );
 
@@ -865,7 +865,7 @@ namespace gum {
     } else {
       Set<const Potential<GUM_SCALAR>*> set;
 
-      for( auto pot : pot_list )
+      for( const auto pot : pot_list )
         set << pot;
 
       MultiDimCombinationDefault<GUM_SCALAR, Potential> fast_combination( multiPotential );

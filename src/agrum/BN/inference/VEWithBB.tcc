@@ -116,7 +116,7 @@ namespace gum {
     query.insert( id );
     Set<NodeId> hardEvidence;
 
-    for( auto & elt : __hardEvidence )
+    for( const auto & elt : __hardEvidence )
       hardEvidence.insert( elt.first );
 
     BayesBall bb;
@@ -131,11 +131,11 @@ namespace gum {
     Set<Potential<GUM_SCALAR>*> pool;
     Set<NodeId> elim_set;
 
-    for( auto node : requisite_nodes ) {
+    for( const auto node : requisite_nodes ) {
       pool.insert( const_cast<Potential<GUM_SCALAR>*>( & ( this->bn().cpt( node ) ) ) );
       elim_set.insert( node );
 
-      for( auto parent : this->bn().dag().parents( node ) )
+      for( const auto parent : this->bn().dag().parents( node ) )
         if( __hardEvidence.exists( parent ) )
           elim_set.insert( parent );
     }
@@ -162,7 +162,7 @@ namespace gum {
 
     MultiDimBucket<GUM_SCALAR> bucket;
 
-    for( auto pot : pool )
+    for( const auto pot : pool )
       bucket.add( *pot );
 
     bucket.add( this->bn().variable( id ) );
@@ -175,7 +175,7 @@ namespace gum {
 
     posterior.normalize();
 
-    for( auto pot : trash )
+    for( const auto pot : trash )
       delete pot;
   }
 
