@@ -69,7 +69,7 @@ namespace gum {
       // Adding other implementation
       if( __implements == nullptr ) { // super has not created __implements
         __implements = new Set<Interface<GUM_SCALAR>*> ( set );
-      } else {
+      } else { // we just add the new implementations
         for( const auto elt : set ) {
           __implements->insert( elt );
         }
